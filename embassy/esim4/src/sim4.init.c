@@ -62,7 +62,7 @@
 #ifndef __lint     
 /*@unused@*/       
 static const char rcsid[] =
-"$Id: sim4.init.c,v 1.14 2009/01/26 14:55:10 rice Exp $";
+"$Id: sim4.init.c,v 1.15 2009/02/19 16:19:36 rice Exp $";
 #endif         
            
 
@@ -121,10 +121,13 @@ static void polystats(int,int,int,int,int,int,int,int);
 /* globals that were extern in sim4.h, and a few other things */
 FILE *    SIM4_OUTDEV;  /* value set in main(), below to stdout or from command line*/
 #ifdef EMBASSY 
-AjPSeqall esim4_seqall;
+AjPSeqall esim4_seqall=NULL;
 AjPSeq    esim4_sequence=NULL;
 AjPSeq    esim4_rsequence=NULL;
 AjPSeq    esim4_genome=NULL;
+AjPStr    esim4_strand=NULL;
+AjPStr    esim4_cdsregion=NULL;
+        
 AjPFile   ESIM4_OUTDEV;  /* value set in sim4_argvals(), below */
 /* example: a is esim4_genome, b is revseq1 */
 #define ESIM4REVSEQ(a,b)    ajSeqReverseDo(a); (void) strcpy((char *) b,ajSeqGetSeqC(a));
@@ -139,10 +142,10 @@ AjPFile   ESIM4_OUTDEV;  /* value set in sim4_argvals(), below */
        
 int main(int argc, char *argv[])
 {
-        sim4_uchar  *revseq1=NULL; 
         int    len1, len2, count, dist, match_ori, in_K, in_C, in_H;
         int pA, pT, xpT, xpA, rev_xpT, rev_xpA;
         int cds_from, cds_to;
+        sim4_uchar  *revseq1=NULL; 
         sim4_uchar *seq1;
 	sim4_uchar *seq2;
         char  *cds_gene=NULL, *line;
@@ -192,7 +195,7 @@ int main(int argc, char *argv[])
 	if (!is_DNA(seq1, len1))
                 fatal("The mRNA sequence is not a DNA sequence.");
         seq_toupper(seq1, len1, h1);
-        
+
         if( ! ajSeqallNext(esim4_seqall,&esim4_genome)){
                 fatal("The genomic sequence file specification is invalid.");
         }
@@ -216,7 +219,7 @@ int main(int argc, char *argv[])
  
         revseq1 = malloc(sizeof(sim4_uchar) * (1 + len1 ));
         esim4_rsequence = ajSeqNew ();
-	ajSeqAssignSeqS(esim4_rsequence,ajSeqGetSeqCopyS(esim4_sequence));
+	ajSeqAssignSeqS(esim4_rsequence,ajSeqGetSeqS(esim4_sequence));
         ESIM4REVSEQ(esim4_rsequence,revseq1);
 
         if (rs.ali_flag==5) {
@@ -340,7 +343,7 @@ else {
            if (count) { /* skip the first seq2, already in memory */
 #ifdef EMBASSY
 	      /* AJB: Trim sequence again */
-	       ajSeqFmtUpper(esim4_genome);
+	      ajSeqFmtUpper(esim4_genome);
 	      ajSeqTrim(esim4_genome);
 	      len2 = strlen(ajSeqGetSeqC(esim4_genome));
               if(seq2 != NULL)free(seq2);
@@ -641,6 +644,7 @@ else {
  
               default:fatal("Unrecognized option for alignment output.");
            }
+
 #ifdef _STATS
            print_exon_stats((match_ori==FWD) ? Exons:rev_Exons,
                             (file_type==EST_GEN) ? argv[1]:tok+1,
@@ -669,7 +673,21 @@ else {
        seq_close(sf1);
        seq_close(sf2);
 #endif
-	embExit();
+       ajSeqallDel(&esim4_seqall);
+       ajSeqDel(&esim4_sequence);
+       ajSeqDel(&esim4_rsequence);
+       ajSeqDel(&esim4_genome);
+       ajStrDel(&esim4_strand);
+       ajStrDel(&esim4_cdsregion);
+       ajFileClose(&ESIM4_OUTDEV);
+
+       AJFREE(h1);
+       AJFREE(h2);
+       AJFREE(seq1);
+       AJFREE(seq2);
+       AJFREE(revseq1);
+
+       embExit();
 
        return 0;
 }
@@ -769,9 +787,6 @@ static void print_align_lat(sim4_uchar *seq1, sim4_uchar *seq2, int len1, int le
 #ifdef EMBASSY
 static void sim4_argvals(sim4_args_t *args)
 {
-AjPStr   esim4_strand;
-AjPStr   esim4_cdsregion;
-        
         esim4_sequence    = ajAcdGetSeq ("asequence");
         esim4_seqall      = ajAcdGetSeqall ("bsequence");
         ESIM4_OUTDEV      = ajAcdGetOutfile ("outfile");
@@ -792,6 +807,7 @@ AjPStr   esim4_cdsregion;
         args->S           = ajStrGetPtr(esim4_cdsregion);  
         args->set_K       = ajAcdGetToggle ("useramsp");
         args->set_C       = ajAcdGetToggle ("userbmsp");
+
 	if(args->weight == 0 ){
            args->set_H  = SIMFALSE;  
         }
