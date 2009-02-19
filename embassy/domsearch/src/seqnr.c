@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     AjPDir     singlets  = NULL;    /* Singlets (input).                     */
     AjBool     dosets    = ajFalse; /* Filter using sets of sequences.       */
     AjPDir     insets    = NULL;    /* Sets (input).                         */
-    AjPStr    *mode      = NULL;    /* Mode of operation                     */
+    AjPStr     mode      = NULL;    /* Mode of operation                     */
     ajint      moden     = 0;       /* Mode 1: single threshold for redundancy
 				       removal, 2: lower and upper thresholds
 				       for redundancy removal.               */
@@ -113,7 +113,7 @@ int main(int argc, char **argv)
     singlets    = ajAcdGetDirectory("singletsdir");
     dosets    = ajAcdGetToggle("dosets");
     insets    = ajAcdGetDirectory("insetsdir");
-    mode      = ajAcdGetList("mode");  
+    mode      = ajAcdGetListSingle("mode");  
     thresh    = ajAcdGetFloat("thresh");
     threshlow = ajAcdGetFloat("threshlow");
     threshup  = ajAcdGetFloat("threshup");
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
     outname     = ajStrNew();
 
 
-    if(!(ajStrToInt(mode[0], &moden)))
+    if(!(ajStrToInt(mode, &moden)))
 	ajFatal("Could not parse ACD node option");
 
 
@@ -479,13 +479,14 @@ int main(int argc, char **argv)
 	ajDiroutDel(&outred);
     ajFileClose(&logf);
 
+    ajMatrixfDel(&matrix);
 
     ajStrDel(&filtername);
     ajStrDel(&outname);
+    ajStrDel(&mode);
 
-    
 
-    ajExit();
+    embExit();
     return 0;
 }
 

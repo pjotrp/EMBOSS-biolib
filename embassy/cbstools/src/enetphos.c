@@ -130,6 +130,7 @@ int main(int argc, char **argv)
     ajStrDel(&cl);
     ajStrDel(&fn);
     ajStrDel(&stmp);
+    ajStrDel(&rsd);
     ajSeqoutDel(&seqout);
     ajSeqsetDel(&seqset);
 

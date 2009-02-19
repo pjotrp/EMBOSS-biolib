@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 				     sequence matches.                       */
 
     EmbPSignature sig=NULL;       /* Signature data structure.               */
-    AjPStr       *nterm=NULL;     /* Holds N-terminal matching options from 
+    AjPStr        nterm=NULL;     /* Holds N-terminal matching options from 
 				     acd.                                    */
     ajint         ntopt=0;        /* N-terminal option as int. */
 
@@ -108,11 +108,11 @@ int main(int argc, char **argv)
     nhits      = ajAcdGetInt("nhits");
     hitsf      = ajAcdGetOutfile("hitsfile");
     alignf     = ajAcdGetOutfile("alignfile"); 
-    nterm      = ajAcdGetList("nterm");
+    nterm      = ajAcdGetListSingle("nterm");
 
 
     /*Assign N-terminal matching option */
-    ajFmtScanS(nterm[0], "%d", &ntopt);
+    ajFmtScanS(nterm, "%d", &ntopt);
     
 
     /* READ SIGNATURE FILE */
@@ -185,8 +185,9 @@ int main(int argc, char **argv)
     ajFileClose(&sigin);
     ajFileClose(&hitsf);
     ajFileClose(&alignf);
+    ajStrDel(&nterm);
 
-    ajExit();
+    embExit();
     return 0;    
 }
 

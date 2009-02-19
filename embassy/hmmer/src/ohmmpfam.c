@@ -15,7 +15,7 @@
  * Conditionally includes PVM parallelization when HMMER_PVM is defined
  *    at compile time; hmmpfam --pvm runs the PVM version.
  *    
- * RCS $Id: ohmmpfam.c,v 1.7 2008/06/26 08:40:56 rice Exp $
+ * RCS $Id: ohmmpfam.c,v 1.8 2009/02/19 13:14:37 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -529,6 +529,11 @@ int main(int argc, char **argv)
     if (current_size != orig_size) malloc_list(2, histid1, histid2);
     else fprintf(stderr, "[No memory leaks.]\n");
 #endif
+
+    ajSeqallDel(&seqall);
+    ajSeqDel(&ajseq);
+    ajStrDel(&infname);
+    ajFileClose(&outf);
 
     embExit();
     return 0;

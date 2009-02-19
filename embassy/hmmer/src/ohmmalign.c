@@ -12,7 +12,7 @@
  * SRE, Thu Dec 18 16:05:29 1997 [St. Louis]
  * 
  * main() for aligning a set of sequences to an HMM.
- * RCS $Id: ohmmalign.c,v 1.6 2008/06/26 08:40:56 rice Exp $
+ * RCS $Id: ohmmalign.c,v 1.7 2009/02/19 13:14:37 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */ 
 
@@ -263,6 +263,10 @@ int main(int argc, char **argv)
   if (current_size != orig_size) malloc_list(2, histid1, histid2);
   else fprintf(stderr, "[No memory leaks.]\n");
 #endif
+
+  ajSeqsetDel(&seqset);
+  ajFileClose(&ajwithali);
+  ajFileClose(&ajmapali);
 
   embExit();
   

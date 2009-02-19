@@ -15,7 +15,7 @@
  * Conditionally includes PVM parallelization when HMMER_PVM is defined
  *    at compile time; hmmsearch --pvm runs the PVM version.
  *
- * RCS $Id: ohmmsearch.c,v 1.8 2008/06/26 08:40:56 rice Exp $
+ * RCS $Id: ohmmsearch.c,v 1.9 2009/02/19 13:14:37 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -108,7 +108,7 @@ static void main_loop_pvm(AjPFile outf,struct plan7_s *hmm, AjPSeqall seqall,
 
 int main(int argc, char **argv) 
 {
-    char    *hmmfile;		/* file to read HMM(s) from                */
+    char    *hmmfile = NULL;    /* file to read HMM(s) from                */
     HMMFILE *hmmfp;		/* opened hmmfile for reading              */
     int       i; 
     struct plan7_s  *hmm;	/* HMM to search with                      */ 
@@ -486,6 +486,11 @@ int main(int argc, char **argv)
     else
 	fprintf(stderr, "[No memory leaks.]\n");
 #endif
+
+    ajSeqallDel(&seqall);
+    ajFileClose(&outf);
+    AJFREE(hmmfile);
+
     embExit();
     return 0;
 }
@@ -637,6 +642,7 @@ static void main_loop_serial(AjPFile outf, struct plan7_s *hmm,
 #endif
 
     ajStrDel(&ajstr);
+    ajSeqDel(&ajseq);
 
     *ret_nseq = nseq;
     return;

@@ -38,10 +38,10 @@ int main(int argc, char **argv)
     AjPSeqset  dataset   = NULL;
     AjPFile    bfile     = NULL;
     AjPFile    plib      = NULL;
-    AjPStr*    mod       = NULL;
+    AjPStr     mod       = NULL;
     ajint      nmotifs   = 0;
     AjBool     text      = ajFalse;
-    AjPStr*    prior     = NULL;
+    AjPStr     prior     = NULL;
     float      evt       = 0.0;
     ajint      nsites    = 0;
     ajint      minsites  = 0;
@@ -61,7 +61,7 @@ int main(int argc, char **argv)
     float      distance  = 0.0;
     float      b         = 0.0;
     float      spfuzz    = 0.0;
-    AjPStr*    spmap     = NULL;
+    AjPStr     spmap     = NULL;
     AjPStr     cons      = NULL;
     ajint      maxsize   = 0;
     ajint      p         = 0;
@@ -94,10 +94,10 @@ int main(int argc, char **argv)
     dataset   = ajAcdGetSeqset("dataset");
     bfile     = ajAcdGetInfile("bfile");
     plib      = ajAcdGetInfile("plibfile");
-    mod       = ajAcdGetSelect("mod");
+    mod       = ajAcdGetSelectSingle("mod");
     nmotifs   = ajAcdGetInt("nmotifs");
     text      = ajAcdGetBoolean("text");
-    prior     = ajAcdGetSelect("prior");
+    prior     = ajAcdGetSelectSingle("prior");
     evt       = ajAcdGetFloat("evt");
     nsites    = ajAcdGetInt("nsites");
     minsites  = ajAcdGetInt("minsites");
@@ -117,7 +117,7 @@ int main(int argc, char **argv)
     distance  = ajAcdGetFloat("distance");
     b         = ajAcdGetFloat("b");
     spfuzz    = ajAcdGetFloat("spfuzz");
-    spmap     = ajAcdGetSelect("spmap");
+    spmap     = ajAcdGetSelectSingle("spmap");
     cons      = ajAcdGetString("cons");
     maxsize   = ajAcdGetInt("maxsize");
     p         = ajAcdGetInt("p");
@@ -184,7 +184,7 @@ int main(int argc, char **argv)
     if(plib)
 	ajFmtPrintAppS(&cmd, " -plib %s ", ajFileGetNameC(plib));
 
-    option = ajStrGetCharFirst(mod[0]);
+    option = ajStrGetCharFirst(mod);
     if(option == 'o')
 	ajStrAppendC(&cmd, " -mod oops ");
     else if(option == 'z')
@@ -198,7 +198,7 @@ int main(int argc, char **argv)
     if(text)
 	ajFmtPrintAppS(&cmd, " -text ");
 
-    ajFmtPrintAppS(&cmd,  " -prior %S ", prior[0]);
+    ajFmtPrintAppS(&cmd,  " -prior %S ", prior);
 
     if(evt != -1)
 	ajFmtPrintAppS(&cmd, " -evt %f ", evt);
@@ -260,8 +260,8 @@ int main(int argc, char **argv)
 	ajFmtPrintAppS(&cmd, " -spfuzz %f ", spfuzz);
 
     
-    if(!ajStrMatchC(spmap[0],"default"))
-        ajFmtPrintAppS(&cmd,  " -spmap %S ", spmap[0]);
+    if(!ajStrMatchC(spmap,"default"))
+        ajFmtPrintAppS(&cmd,  " -spmap %S ", spmap);
 
     if(MAJSTRGETLEN(cons))
 	ajFmtPrintAppS(&cmd, "-cons %S", cons);
@@ -313,12 +313,12 @@ int main(int argc, char **argv)
     /* 6. Exit cleanly */
 
     ajSeqsetDel(&dataset);
+
     ajStrDel(&cons);
     ajStrDel(&sf);
-
-    /* Should delete mod, prior and spmap here, but no convenient way 
-       so leave it to the o.s. */
-    
+    ajStrDel(&mod);
+    ajStrDel(&prior);
+    ajStrDel(&spmap);
     ajStrDel(&cmd);
     ajStrDel(&outsname);
     ajStrDel(&tmp);
@@ -326,6 +326,9 @@ int main(int argc, char **argv)
     
     ajDiroutDel(&outdir);
     
+    ajFileClose(&bfile);
+    ajFileClose(&plib);
+
     embExit();
 
     return 0;

@@ -620,8 +620,10 @@ int main(int argc, char **argv)
     ajStrDel(&cmd);
     ajListstrFree(&inseqsdhf);
     ajListstrFree(&inseqsdaf);
+    ajDirDel(&dhfin);
     ajDiroutDel(&dafout);
     ajStrDel(&tmp_name);
+    ajStrDel(&outname);
     ajStrDel(&clustin1);
     ajStrDel(&clustin2);
     ajStrDel(&clustout);

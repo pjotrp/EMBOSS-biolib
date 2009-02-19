@@ -200,10 +200,13 @@ int main(ajint argc, char **argv)
 
 
     /* Tidy up. */
+    ajStrDel(&temp2);
+
     ajStrDel(&cpdb_name);
     ajFileClose(&dcfout);
     ajFileClose(&dcfin);
     ajListFree(&cpdb_path);
+    ajListFree(&entry);
     AJFREE(entryarr);
     
   

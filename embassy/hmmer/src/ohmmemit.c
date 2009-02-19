@@ -12,7 +12,7 @@
  * SRE, Sun Mar  8 14:11:24 1998 [St. Louis]
  * 
  * main() for generating sequences from an HMM
- * RCS $Id: ohmmemit.c,v 1.6 2008/06/26 08:40:56 rice Exp $
+ * RCS $Id: ohmmemit.c,v 1.7 2009/02/19 13:14:37 rice Exp $
  *
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
@@ -255,6 +255,8 @@ int main(int argc, char **argv)
 
     ajStrDel(&instr);
     ajStrDel(&outstr);
+    ajFileClose(&inf);
+    ajFileClose(&outf);
 
     embExit();
     return 0;

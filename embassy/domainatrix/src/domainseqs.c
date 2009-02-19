@@ -127,7 +127,7 @@ int main(int argc, char **argv)
     
     ajint      type       = 0;   /* Type of domain (ajSCOP or ajCATH) in the 
 				    DCF file.                                */
-
+    AjPPdbtosp pdbtosp = NULL;
     
     /* Initialise strings, lists,  etc */
     msg        = ajStrNew();
@@ -356,6 +356,11 @@ int main(int argc, char **argv)
 
     
     /* Memory management.  */
+
+    while(ajListPop(list, (void**) &pdbtosp))
+        ajPdbtospDel(&pdbtosp);
+    ajListFree(&list);
+
     ajDirDel(&dpdb_path);
     ajMatrixfDel(&matrix);
     ajStrDel(&msg);

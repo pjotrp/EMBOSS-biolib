@@ -53,7 +53,7 @@
 **
 ******************************************************************************/
 
-/* @data AjPLighit ************************************************************
+/* @data SigPLighit ************************************************************
 ** 
 ** Lighit object.
 **
@@ -61,8 +61,8 @@
 **
 ** AjPLighit is implemented as a pointer to a C data structure.
 **
-** @alias AjSLighit
-** @alias AjOLighit
+** @alias SigSLighit
+** @alias SigOLighit
 **
 ** @attr  ligid [AjPStr]  Ligand id code. 
 ** @attr  ns    [ajint]   No. of sites in library for this ligand. 
@@ -73,13 +73,13 @@
 ** @delete embSigposDel Default Sigdat object destructor
 ** @@
 ******************************************************************************/
-typedef struct AjSLighit
+typedef struct SigSLighit
 {
     AjPStr ligid;
     ajint  ns;
     ajint  np;
     float  score;
-} AjOLighit, *AjPLighit;
+} SigOLighit, *SigPLighit;
 
 
 
@@ -109,8 +109,8 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
 /* static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
 						  AjPList siglist, 
 						  AjPList hits); */
-void sigscanlig_LigHitDel(AjPLighit *obj);
-AjPLighit sigscanlig_LighitNew(void);
+void sigscanlig_LigHitDel(SigPLighit *obj);
+SigPLighit sigscanlig_LighitNew(void);
 AjPList sigscanlig_score_ligands_patch(AjPList hits);
 AjPList sigscanlig_score_ligands_site(AjPList hits);
 ajint sigscanlig_MatchinvScore(const void *hit1, const void *hit2);
@@ -150,7 +150,7 @@ int main(int argc, char **argv)
     float        gapo =0.0;       /* Gap insertion penalty.                  */
     float        gape =0.0;       /* Gap extension penalty.                  */
 
-    AjPStr       *nterm=NULL;     /* Holds N-terminal matching options from 
+    AjPStr        nterm=NULL;     /* Holds N-terminal matching options from 
 				     acd.                                    */
     ajint         ntermi=0;        /* N-terminal option as int. */
 
@@ -165,13 +165,11 @@ int main(int argc, char **argv)
     AjPFile    resultsf =NULL;    /* Results file (output).  */
     AjPDirout  resultsdir=NULL;   /* Directory of results files (output).  */
 
-    AjPStr *mode         = NULL;  /* Mode, 1: Patch score mode, 2:
+    AjPStr  mode         = NULL;  /* Mode, 1: Patch score mode, 2:
 				     Site score mode.  */
     ajint   modei        = 0;     /* Selected mode as integer.  */
 
-
-    AjIList iter        = NULL;   /* Iterator. */
-    
+    SigPLighit lighit   = NULL;
 
     embInitP("sigscanlig", argc, argv, "SIGNATURE");
     
@@ -182,17 +180,17 @@ int main(int argc, char **argv)
     sub        = ajAcdGetMatrixf("sub");
     gapo       = ajAcdGetFloat("gapo");
     gape       = ajAcdGetFloat("gape");
-    nterm      = ajAcdGetList("nterm");
+    nterm      = ajAcdGetListSingle("nterm");
     hitsdir    = ajAcdGetOutdir("hitsoutdir");
     aligndir   = ajAcdGetOutdir("alignoutdir"); 
     resultsdir = ajAcdGetOutdir("resultsoutdir"); 
-    mode        = ajAcdGetList("mode");
+    mode        = ajAcdGetListSingle("mode");
 
 
 
     /*Assign N-terminal matching option etc. */
-    ajFmtScanS(nterm[0], "%d", &ntermi);
-    modei       = (ajint) ajStrGetCharFirst(*mode)-48;
+    ajFmtScanS(nterm, "%d", &ntermi);
+    modei       = (ajint) ajStrGetCharFirst(mode)-48;
 
 
 
@@ -297,8 +295,6 @@ int main(int argc, char **argv)
 	ajListSortTwo(hits, embMatchLigid, embMatchSN);
 
 
-	iter = ajListIterNew(hits);
-
 	if(modei==1)
 	    ligands = sigscanlig_score_ligands_patch(hits);
 	else if(modei==2)
@@ -319,6 +315,10 @@ int main(int argc, char **argv)
 	while(ajListPop(hits, (void **) &hit))
 	    embHitDel(&hit);
 	ajListFree(&hits);
+
+        while(ajListPop(ligands, (void **) &lighit))
+            sigscanlig_LigHitDel(&lighit);
+        ajListFree(&ligands);
     }	
     
 
@@ -326,17 +326,19 @@ int main(int argc, char **argv)
     while(ajListPop(siglist, (void **) &sig))
 	embSignatureDel(&sig);
     ajListFree(&siglist);
+
     ajSeqallDel(&database);
     ajMatrixfDel(&sub);
 	
-    AJFREE(nterm);    
+    ajStrDel(&nterm);    
     ajDiroutDel(&hitsdir);
     ajDiroutDel(&aligndir);
     ajDiroutDel(&resultsdir);
-    AJFREE(mode);
+    ajStrDel(&mode);
 
 
-    ajExit();
+    embExit();
+
     return 0;    
 }
 
@@ -670,9 +672,9 @@ AjBool sigscanlig_WriteFasta(AjPFile outf, AjPList hits)
 ** @return [AjBool] True on success
 ** @@
 ******************************************************************************/
-AjPLighit sigscanlig_LighitNew(void)
+SigPLighit sigscanlig_LighitNew(void)
 {
-    AjPLighit ret = NULL;
+    SigPLighit ret = NULL;
     
     AJNEW0(ret);
     
@@ -691,12 +693,12 @@ AjPLighit sigscanlig_LighitNew(void)
 **
 ** Destructor for Lighit object. 
 ** 
-** @param [r] obj [AjPLighit *]  
+** @param [r] obj [SigPLighit *]  
 **
 ** @return [AjBool] True on success
 ** @@
 ******************************************************************************/
-void sigscanlig_LigHitDel(AjPLighit *obj)
+void sigscanlig_LigHitDel(SigPLighit *obj)
 {
     if((!obj) || (!(*obj)))
 	return;
@@ -852,7 +854,7 @@ AjPList sigscanlig_score_ligands_patch(AjPList hits)
     AjIList iter        = NULL;   /* Iterator. */
     EmbPHit  hit         = NULL;   
     AjPStr  prev_ligand = NULL;
-    AjPLighit lighit    = NULL;
+    SigPLighit lighit    = NULL;
     float  score        = 0.0;
     ajint  nhits      = 0;      /* No. of hits (patches) for current ligand. */
     ajint  nsites     = 0;      /* No. of sites for current ligand. */
@@ -951,7 +953,7 @@ AjPList sigscanlig_score_ligands_site(AjPList hits)
     AjIList iter        = NULL;   /* Iterator. */
     EmbPHit  hit         = NULL;   
     AjPStr  prev_ligand = NULL;
-    AjPLighit lighit    = NULL;
+    SigPLighit lighit    = NULL;
 
 
     ajint  prevsn      = -1;        /* Previous site number */
@@ -1080,11 +1082,11 @@ AjPList sigscanlig_score_ligands_site(AjPList hits)
 
 ajint sigscanlig_MatchinvScore(const void *hit1, const void *hit2)
 {
-    AjPLighit p = NULL;
-    AjPLighit q = NULL;
+    SigPLighit p = NULL;
+    SigPLighit q = NULL;
 
-    p = (*(AjPLighit*)hit1);
-    q = (*(AjPLighit*)hit2);
+    p = (*(SigPLighit*)hit1);
+    q = (*(SigPLighit*)hit2);
     
     if(p->score > q->score)
 	return -1;
@@ -1110,14 +1112,14 @@ ajint sigscanlig_MatchinvScore(const void *hit1, const void *hit2)
 void sigscanlig_WriteResults(AjPList results, AjPFile resultsf)
 {
     AjIList   iter      = NULL;   /* Iterator. */
-    AjPLighit lighit    = NULL;
+    SigPLighit lighit    = NULL;
     
     iter = ajListIterNew(results);
 
     ajFmtPrintF(resultsf, "%-10s%-10s%-10s%-10s\n",
 		"LIGID", "PATCHES", "SITES", "SCORE");
     
-    while((lighit = (AjPLighit) ajListIterGet(iter)))
+    while((lighit = (SigPLighit) ajListIterGet(iter)))
 	ajFmtPrintF(resultsf, "%-10S%-10d%-10d%-10.2f\n",
 		    lighit->ligid, lighit->np, lighit->ns, lighit->score);
 

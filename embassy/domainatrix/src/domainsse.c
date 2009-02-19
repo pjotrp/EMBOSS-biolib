@@ -235,8 +235,8 @@ int main(int argc, char **argv)
     ajFileClose(&errf);   
     ajFileClose(&dcf_inf);
     ajFileClose(&dcf_outf);	    
-    
+    ajDirDel(&dccf);
 
-    ajExit();
+    embExit();
     return 0;
 }

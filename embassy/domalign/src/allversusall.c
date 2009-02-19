@@ -189,8 +189,9 @@ int main(int argc, char **argv)
     ajDiroutDel(&out);
     ajFileClose(&logf);
     ajStrDel(&outname);
+    ajMatrixfDel(&matrix);
 
-    ajExit();
+    embExit();
     return 0;
 }
 

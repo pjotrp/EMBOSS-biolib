@@ -242,6 +242,15 @@ int main(int argc, char **argv)
     ajStrDel(&stdoutname);
     ajStrDel(&stdouttemp);
     ajStrDel(&outfilename);
+
+    ajStrDel(&mf);
+    ajStrDel(&df);
+    ajStrDel(&diag);
+
+    ajFileClose(&mfile);
+    ajFileClose(&d);
+    ajFileClose(&a);
+    ajFileClose(&bfile);
     ajFileClose(&stdoutf);
     
     embExit();

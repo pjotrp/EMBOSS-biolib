@@ -61,13 +61,13 @@ int main(ajint argc, char **argv)
     AjPFile   Calclogf=NULL;     /* log file for sums for the calculation of 
 				    the final matrix.                        */
 
-    AjPStr   *modee=NULL;        /* Holds environment options from acd.      */
+    AjPStr    modee=NULL;        /* Holds environment options from acd.      */
     ajint     modeei=0;	         /* modee as an int.                         */
 
-    AjPStr   *mode=NULL;         /* Holds selection option from acd.         */
+    AjPStr    mode=NULL;         /* Holds selection option from acd.         */
     ajint     modei=0;	         /* modee as an int.                         */
 
-    AjPStr   *model=NULL;        /* Holds ligand option from acd.            */
+    AjPStr    model=NULL;        /* Holds ligand option from acd.            */
     ajint     modeli=0;	         /* model as an int.                         */
 
     AjPFile   SCMatrixOut=NULL;	 /* final scoring matrix.                    */
@@ -161,15 +161,15 @@ int main(ajint argc, char **argv)
     logf        = ajAcdGetOutfile("logfile");
     SCMatrixOut = ajAcdGetOutfile("scmatrixfile");
     Calclogf    = ajAcdGetOutfile("calclogfile");
-    mode        = ajAcdGetList("mode");
-    model       = ajAcdGetList("model");
-    modee       = ajAcdGetList("modee");
+    mode        = ajAcdGetListSingle("mode");
+    model       = ajAcdGetListSingle("model");
+    modee       = ajAcdGetListSingle("modee");
 
 
     /*Assigns the options as integers */
-    ajFmtScanS(modee[0], "%d", &modeei);   
-    ajFmtScanS(mode[0],  "%d", &modei);   
-    ajFmtScanS(model[0], "%d", &modeli);   
+    ajFmtScanS(modee, "%d", &modeei);   
+    ajFmtScanS(mode,  "%d", &modei);   
+    ajFmtScanS(model, "%d", &modeli);   
     
     
     /* Memory allocation */
@@ -537,6 +537,11 @@ int main(ajint argc, char **argv)
 	AJFREE(cmap_arr);
     }
     
+
+    ajStrDel(&OEnv);
+    ajStrDel(&mode);
+    ajStrDel(&model);
+    ajStrDel(&modee);
 
     ajStrDel(&msg);
     ajStrDel(&label);

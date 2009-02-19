@@ -98,7 +98,7 @@ static void libgen_henikoff_profile(AjPSeqset seqset,
 
 int main(int argc, char **argv)
 {
-    AjPStr    *mode      = NULL;  /* Mode of operation 
+    AjPStr     mode      = NULL;  /* Mode of operation 
 				     1:Frequency, 2:Gribskov,3:Henikoff,
 				     4:HMM (HMMER)                         */
     ajint      modei     = 0;     /* Mode as an integer.                   */
@@ -141,7 +141,7 @@ int main(int argc, char **argv)
     
     
     /* ACD processing. */
-    mode       = ajAcdGetList("mode");
+    mode       = ajAcdGetListSingle("mode");
     indir      = ajAcdGetDirlist("dafinpath");
     outdir     = ajAcdGetOutdir("outdir");
     threshold  = ajAcdGetInt("threshold");
@@ -152,7 +152,7 @@ int main(int argc, char **argv)
 
 
     /* Housekeeping. */
-    modei      = (ajint) ajStrGetCharFirst(*mode)-48;
+    modei      = (ajint) ajStrGetCharFirst(mode)-48;
     gapopen    = ajRoundF(gapopen,8);
     gapextend  = ajRoundF(gapextend,8);
     seqsfname  = ajStrNew();
@@ -316,14 +316,20 @@ int main(int argc, char **argv)
 
  
     /* Tidy up. */
-    ajStrDel(&mode[0]);
-    AJFREE(mode);
+
+    ajStrDel(&mode);
     ajListFree(&indir);
     ajDiroutDel(&outdir);
     ajStrDel(&seqsfname);
+    ajMatrixfDel(&matrixf);
+
     ajStrDel(&cmd);
-    
-    ajExit();
+    ajStrDel(&cons);
+    ajStrDel(&database);
+    ajStrDel(&outname);
+
+    embExit();
+
     return 0;
 }
 

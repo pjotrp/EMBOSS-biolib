@@ -14,7 +14,7 @@
  * Recover a specific HMM file from an HMM database, using
  * a GSI index (created with hmmindex).
  * 
- * RCS $Id: ohmmfetch.c,v 1.5 2008/06/26 08:40:56 rice Exp $
+ * RCS $Id: ohmmfetch.c,v 1.6 2009/02/19 13:14:37 rice Exp $
  *
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
@@ -110,6 +110,9 @@ int main(int argc, char **argv)
     else
 	fprintf(stderr, "[No memory leaks]\n");
 #endif
+
+    ajStrDel(&ajdb);
+    ajStrDel(&ajname);
 
     embExit();
     return 0;

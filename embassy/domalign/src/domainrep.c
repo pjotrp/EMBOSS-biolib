@@ -117,7 +117,7 @@ int main(int argc, char **argv)
     float      min        = 0.0;  /* Used for writing ordered scop output file */    
 
    
-    AjPStr    *node       = NULL; /* Node of redundancy removal */
+    AjPStr     node       = NULL; /* Node of redundancy removal */
     ajint      noden      = 0;    /*1: Class (SCOP), 2: Fold (SCOP) etc, see ACD file */
     ajint      type       = 0;    /* Type of domain (ajSCOP or ajCATH) in the DCF file */
 
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
     temp     = ajStrNew();
     scan     = ajStrNew();
 
-    famlist    = ajListNew();
+    famlist  = ajListNew();
 
 
     /* Read data from acd */
@@ -140,11 +140,11 @@ int main(int argc, char **argv)
 
     dcfin     = ajAcdGetInfile("dcfinfile");
     dcfout    = ajAcdGetOutfile("dcfoutfile");
-    node      = ajAcdGetList("node");
+    node      = ajAcdGetListSingle("node");
 
     
     /* Convert the selected node to an integer. */
-    if(!(ajStrToInt(node[0], &noden)))
+    if(!(ajStrToInt(node, &noden)))
 	ajFatal("Could not parse ACD node option");
 
     /* Initialise random number generator for naming of temp. files*/
@@ -552,8 +552,11 @@ int main(int argc, char **argv)
 
     
     /* Tidy up*/
-    ajStrDel(&node[0]);
-    AJFREE(node);
+    while(ajListPop(famlist,(void**)&tmp))
+        ajDomainDel(&tmp);
+    ajListFree(&famlist);
+
+    ajStrDel(&node);
 
     ajFileClose(&dcfin);	
     ajFileClose(&dcfout);	
@@ -564,6 +567,7 @@ int main(int argc, char **argv)
     ajStrDel(&out);
     ajStrDel(&name);
     ajStrDel(&temp); 
+    ajStrDel(&scan); 
 
     
     /* All done. */

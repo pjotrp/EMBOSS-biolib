@@ -14,7 +14,7 @@
  * Score an HMM against random sequence data sets;
  * set histogram fitting parameters.
  * 
- * RCS $Id: ohmmcalibrate.c,v 1.7 2008/06/26 08:40:56 rice Exp $
+ * RCS $Id: ohmmcalibrate.c,v 1.8 2009/02/19 13:14:37 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -121,7 +121,7 @@ int main(int argc, char **argv)
     float   lenmean;			/* mean of length distribution     */
     float   lensd;			/* std dev of length distribution  */
     int     do_pvm;			/* TRUE to use PVM                 */
-    char   *histfile;			/* histogram save file             */
+    char   *histfile = NULL;		/* histogram save file             */
     FILE   *hfp;			/* open file pointer for histfile  */
 
     int   num_threads;			/* number of worker threads */   
@@ -344,7 +344,11 @@ int main(int argc, char **argv)
 
 
     ajCharDel(&hmmfile);
-  
+    ajCharDel(&histfile);
+    ajFileClose(&outf);
+    AJFREE(mu);
+    AJFREE(lambda);
+
     embExit();
     return 0;
 }

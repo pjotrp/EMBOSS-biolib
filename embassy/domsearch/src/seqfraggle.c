@@ -282,6 +282,8 @@ int main(int argc, char **argv)
     ajListFree(&dhfin);
     ajDiroutDel(&dhfout);
     ajStrDel(&exec);
+    ajStrDel(&temp);
+    ajStrDel(&temp2);
 
 
     /* Return. */

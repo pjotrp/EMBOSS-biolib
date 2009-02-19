@@ -78,15 +78,15 @@ int main(ajint argc, char **argv)
     AjPResidue residue         = NULL;  /* Temp. object.                     */
     
     
-    AjPStr *mode         = NULL;  /* Mode, 1: Full-length signatures, 
+    AjPStr  mode         = NULL;  /* Mode, 1: Full-length signatures, 
 				     2: Patch signatures.                    */
     ajint   modei        = 0;     /* Selected mode as integer.               */
     
-    AjPStr *type         = NULL;  /* Type, 1: 1D (sequence) signature, 
+    AjPStr  type         = NULL;  /* Type, 1: 1D (sequence) signature, 
 				     2: 3D (structural) signature.           */
     ajint   typei        = 0;     /* Selected mode as integer.               */
     
-    AjPStr  *envdef      = NULL;  /* Holds environment options from acd.     */
+    AjPStr  envdef       = NULL;  /* Holds environment options from acd.     */
     ajint   envdefi      = 0;     /* envdef as an int.                       */
     ajint   patchsize    = 0;     /* Minimum patch size.                     */
     ajint   gapdistance  = 0;     /* Maximum gap distance.                   */
@@ -127,9 +127,9 @@ int main(ajint argc, char **argv)
     conf        = ajAcdGetInfile("confile");
     ccfd        = ajAcdGetDirectory("ccfddir");
     ccfp        = ajAcdGetDirectory("ccfpdir");
-    mode        = ajAcdGetList("mode");
-    type        = ajAcdGetList("type");
-    envdef      = ajAcdGetList("environment");
+    mode        = ajAcdGetListSingle("mode");
+    type        = ajAcdGetListSingle("type");
+    envdef      = ajAcdGetListSingle("environment");
     patchsize   = ajAcdGetInt("patchsize");
     gapdistance = ajAcdGetInt("gapdistance");
     wsiz        = ajAcdGetInt("wsiz");
@@ -138,9 +138,9 @@ int main(ajint argc, char **argv)
     
     
     
-    modei       = (ajint) ajStrGetCharFirst(*mode)-48;
-    typei       = (ajint) ajStrGetCharFirst(*type)-48;
-    envdefi     = (ajint) ajStrGetCharFirst(*envdef)-48;
+    modei       = (ajint) ajStrGetCharFirst(mode)-48;
+    typei       = (ajint) ajStrGetCharFirst(type)-48;
+    envdefi     = (ajint) ajStrGetCharFirst(envdef)-48;
     
     
     
@@ -442,15 +442,14 @@ int main(ajint argc, char **argv)
     while(ajListPop(cmap_list, (void **) &cmap))
 	ajCmapDel(&cmap);
     ajListFree(&cmap_list);
-    AJFREE(mode);
-    AJFREE(type);
-    AJFREE(envdef);
     ajListIterDel(&iter);
     ajDiroutDel(&sigdir);
     ajStrDel(&sigfname);
-    ajStrDel(&OEnv);
+    ajStrDel(&mode);
+    ajStrDel(&type);
+    ajStrDel(&envdef);
     
-    ajExit();
+    embExit();
     return 0;
 }
 

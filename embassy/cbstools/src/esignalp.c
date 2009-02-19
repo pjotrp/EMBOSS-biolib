@@ -133,9 +133,10 @@ int main(int argc, char **argv)
     ajSysFileUnlink(fn);
 
     ajStrDel(&cl);
-    ajStrDel(&gmode);
-    ajStrDel(&format);
+    ajStrDel(&type);
     ajStrDel(&method);
+    ajStrDel(&format);
+    ajStrDel(&gmode);
     ajStrDel(&synver);
     ajStrDel(&stmp);
     ajStrDel(&fn);
