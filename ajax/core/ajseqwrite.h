@@ -21,17 +21,20 @@ extern "C"
 ** @attr Gi [AjPStr] GI NCBI version number
 ** @attr Desc [AjPStr] One-line description
 ** @attr Tax [AjPStr] Main taxonomy (species)
+** @attr Taxid [AjPStr] Main taxonomy (species) id in NCBI taxonomy
 ** @attr Organelle [AjPStr] Organelle taxonomy
 ** @attr Type [AjPStr] Type N or P
 ** @attr Outputtype [AjPStr] Output sequence known type
 ** @attr Molecule [AjPStr] Molecule type
 ** @attr Class [AjPStr] Class of entry
 ** @attr Division [AjPStr] Database division
+** @attr Evidence [AjPStr] Experimental evidence (e.g. from UniProt)
 ** @attr Db [AjPStr] Database name from input name
 ** @attr Setdb [AjPStr] Database name from input command line
 ** @attr Setoutdb [AjPStr] Database name from command line
 ** @attr Full [AjPStr] Full name
 ** @attr Date [AjPSeqDate] Dates
+** @attr Fulldesc [AjPSeqDesc] Dates
 ** @attr Doc [AjPStr] Obsolete - see TextPtr
 ** @attr Rev [AjBool] true: to be reverse-complemented
 ** @attr Circular [AjBool] true: circular nucleotide molecule
@@ -50,7 +53,8 @@ extern "C"
 ** @attr Entryname [AjPStr] Entry name
 ** @attr Acclist [AjPList] Secondary accessions
 ** @attr Keylist [AjPList] Keyword list
-** @attr Taxlist [AjPList] Taxonomy list (just species for now)
+** @attr Taxlist [AjPList] Taxonomy list
+** @attr Genelist [AjPList] Gene list
 ** @attr Reflist [AjPList] References (citations)
 ** @attr Cmtlist [AjPList] Comment block list
 ** @attr Xreflist [AjPList] Database cross reference list
@@ -87,17 +91,20 @@ typedef struct AjSSeqout {
   AjPStr Gi;
   AjPStr Desc;
   AjPStr Tax;
+  AjPStr Taxid;
   AjPStr Organelle;
   AjPStr Type;
   AjPStr Outputtype;
   AjPStr Molecule;
   AjPStr Class;
   AjPStr Division;
+  AjPStr Evidence;
   AjPStr Db;
   AjPStr Setdb;
   AjPStr Setoutdb;
   AjPStr Full;
   AjPSeqDate Date;
+  AjPSeqDesc Fulldesc;
   AjPStr Doc;
   AjBool Rev;
   AjBool Circular;
@@ -117,6 +124,7 @@ typedef struct AjSSeqout {
   AjPList Acclist;
   AjPList Keylist;
   AjPList Taxlist;
+  AjPList Genelist;
   AjPList Reflist;
   AjPList Cmtlist;
   AjPList Xreflist;
