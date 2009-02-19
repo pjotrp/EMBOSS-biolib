@@ -147,7 +147,7 @@ ajint default_name = 1;
 ajint fasta_file = 0;
 ajint cw_file = 0; 
 ajint msf_file = 0;
-char *upg_str;
+char *upg_str = NULL;
 ajint dcount = 0;
 
 
@@ -163,10 +163,10 @@ ajint sim_score[21][21];  /* similarity matrix */
 float av_sim_score_pep ;
 float av_sim_score_nuc ;
 float **glob_sim = NULL;        /* overall similarity between any two sequences */
-float **wgt_prot  ;      /* `weight' of diagonals */
-float **wgt_dna   ;      /* `weight' of diagonals */
-float **wgt_trans ;      /* `weight' of diagonals */
-float **min_weight;      /* `weight' of diagonals */
+float **wgt_prot = NULL ;      /* `weight' of diagonals */
+float **wgt_dna = NULL  ;      /* `weight' of diagonals */
+float **wgt_trans = NULL;      /* `weight' of diagonals */
+float **min_weight = NULL;      /* `weight' of diagonals */
 ajint min_dia = MIN_DIA ;             /* minimum length of diagonals */
 ajint max_dia = MAX_DIA ;  /* maximum length of diagonals */
 ajint iter_cond_prob = 0;
@@ -181,10 +181,10 @@ short **cont_it_p = NULL;
 float score;
 ajint maxlen;              /* maximum length of sequences */
 ajuint seqnum;              /* number of sequences */
-ajint *num_dia_bf;         /* num_dia_bf[ istep ] = number of diagonals from
+ajint *num_dia_bf = NULL;   /* num_dia_bf[ istep ] = number of diagonals from
                             all pairwise alignments BEFORE FILTER
                             PROCEDURE in iteration step `istep' */     
-ajint *num_dia_af;         /* num_dia_af[istep] = number of diagonals from
+ajint *num_dia_af = NULL;   /* num_dia_af[istep] = number of diagonals from
                             all pairwise alignments AFTER FILTER 
                             PROCEDURE in iteration step `it' */     
 ajint num_dia_anc;         /* number of diagonals definde by anchored 
@@ -209,10 +209,10 @@ float pairalignsum;      /* sum of weights in pairwise alignment */
 ajint pairalignlen;        /* sum of aligned residues in pairwise alignment */
 char amino_acid[22];
 ajint istep;  
-struct multi_frag        /* pointer to first diagonal in multiple alignment */
-      *this_it_dia;      /* in current iteration step */  
-struct multi_frag        /* pointer to first diagonal in multiple alignment */
-      *all_it_dia;       /* in all iteration step */
+struct multi_frag         /* pointer to first diagonal in multiple alignment */
+      *this_it_dia;       /* in current iteration step */  
+struct multi_frag         /* pointer to first diagonal in multiple alignment */
+      *all_it_dia = NULL; /* in all iteration step */
 struct multi_frag *end_dia;  
                          /* pointer to last diagonal in multiple alignment */
 
@@ -474,9 +474,12 @@ static void *edialign_reallouer(void *pointeur, size_t taille);
 static void edialign_liberer(void *pointeur);
 static void edialign_liberer_mat(void **pointeur, size_t nb_lig);
 static void edialign_realloc_closure(edialignCLOSURE *clos);
+static void edialign_free_closure(edialignCLOSURE *clos);
+static void edialign_freeAligGraphClosure(edialignCLOSURE *clos);
 static void **edialign_recallouer_mat(void **pointeur, size_t t_elt,
 				      size_t anc_nb_lig, 
 				      size_t nb_lig, size_t nb_col);
+static void edialign_desinit_seq(edialignCLOSURE *clos);
 static void edialign_erreur(const char *message);
 static ajint edialign_word_count(char *str);
 static void edialign_rel_wgt_calc(ajint l1, ajint l2, float **rel_wgt);
@@ -599,6 +602,7 @@ int main(int argc, char **argv)
     AjPSeqout seqout = NULL;
     AjPStr tnstr = NULL;
     
+    struct multi_frag *next_dia;
 
     embInit("edialign", argc, argv);
 
@@ -667,7 +671,7 @@ int main(int argc, char **argv)
     }
 
     seqnum = n;
-
+    
     if(!isprot)
     {
 	if(ajStrMatchC(nucmode,"n"))
@@ -1802,13 +1806,24 @@ int main(int argc, char **argv)
 
     for(i=0;i<seqnum;i++)
     {
+        for(j=0;j<seqnum;j++)
+        {
+            if(gl_exclude_list)
+                AJFREE(gl_exclude_list[i][j]);
+            if(open_pos)
+                AJFREE(open_pos[i][j]);
+        }
+
+        if(gl_exclude_list) AJFREE(gl_exclude_list[i]);
+        if(open_pos) AJFREE(open_pos[i]);
         if(pair_score) AJFREE(pair_score[i]);
         if(cont_it_p) AJFREE(cont_it_p[i]);
         if(glob_sim) AJFREE(glob_sim[i]);
         if(amino) AJFREE(amino[i]);
         if(amino_c) AJFREE(amino_c[i]);
     }
-    
+    AJFREE(gl_exclude_list);
+    AJFREE(open_pos);
     AJFREE(pair_score);
     AJFREE(cont_it_p);
     AJFREE(glob_sim);
@@ -1818,16 +1833,61 @@ int main(int argc, char **argv)
     ajStrDel(&tnstr);
     ajSeqsetDel(&seqset);
     ajSeqoutDel(&seqout);
+    ajStrDel(&nucmode);
+    ajStrDel(&overlapw);
+    ajStrDel(&linkage);
+    ajFileClose(&outfile);
+
     for(ii=1;ii<max_dia+1;ii++)
     {
         if(tp400_prot)AJFREE(tp400_prot[ii]);
         if(tp400_dna)AJFREE(tp400_dna[ii]);
         if(tp400_trans)AJFREE(tp400_trans[ii]);
+        if(wgt_prot)AJFREE(wgt_prot[ii]);
+        if(wgt_dna)AJFREE(wgt_dna[ii]);
+        if(wgt_trans)AJFREE(wgt_trans[ii]);
+        if(min_weight)AJFREE(min_weight[ii]);
     }
     
     AJFREE(tp400_prot);
     AJFREE(tp400_dna);
     AJFREE(tp400_trans);
+    AJFREE(wgt_prot);
+    AJFREE(wgt_dna);
+    AJFREE(wgt_trans);
+    AJFREE(min_weight);
+
+    for(i=0;i<n;i++)
+    {
+        if(seq) AJFREE(seq[i]);
+        if(seq_name) AJFREE(seq_name[i]);
+        if(full_name) AJFREE(full_name[i]);
+    }
+    
+    AJFREE(seq);
+    AJFREE(seq_name);
+    AJFREE(full_name);
+    AJFREE(seqlen);
+
+    if(arguments)
+    {
+        for(i=0;i<argnum;i++)
+            AJFREE(arguments[i]);
+        AJFREE(arguments);
+    }
+
+    AJFREE(par_file);
+    AJFREE(upg_str);
+    AJFREE(num_dia_bf);
+    AJFREE(num_dia_af);
+    while(all_it_dia)
+    {
+        next_dia = all_it_dia->next;
+        AJFREE(all_it_dia);
+        all_it_dia = next_dia;
+    }
+
+    edialign_freeAligGraphClosure(gabiosclos);
 
     embExit();
 
@@ -2187,7 +2247,6 @@ static void edialign_alloc_closure(edialignCLOSURE *clos)
 
 
 
-#if 0
 /* @funcstatic edialign_free_closure ****************************************
 **
 ** edialign_free_closure. Unused.
@@ -2225,7 +2284,6 @@ static void edialign_free_closure(edialignCLOSURE *clos)
 
     return;
 }
-#endif
 
 
 
@@ -2366,7 +2424,6 @@ static void edialign_init_seq(edialignCLOSURE *clos,
 
 
 
-#if 0
 /* @funcstatic edialign_desinit_seq **************************************
 **
 ** edialign_desinit_seq. Unused.
@@ -2382,7 +2439,6 @@ static void edialign_desinit_seq(edialignCLOSURE *clos)
 
     return;
 }
-#endif
 
 
 
@@ -2419,7 +2475,6 @@ static edialignCLOSURE* edialign_newAligGraphClosure(ajint nbreseq,
 
 
 
-#if 0
 /* @funcstatic edialign_freeAligGraphClosure **********************************
 **
 ** edialign_freeAligGraphClosure. Unused.
@@ -2438,7 +2493,6 @@ static void edialign_freeAligGraphClosure(edialignCLOSURE *clos)
 
     return;
 }
-#endif
 
 
 
