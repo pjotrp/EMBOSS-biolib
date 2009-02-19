@@ -46,6 +46,14 @@
 #define CMAP_MODE_I   1
 #define CMAP_MODE_C   2
 
+static   AjPStr cmapStrline       = NULL;   /* Line of text     */
+static   AjPStr cmapStrtemp_id    = NULL;   /* Temp. protein id */
+static   AjPStr cmapStrtemp_domid = NULL;   /* Temp. domain id  */
+static   AjPStr cmapStrtemp_ligid = NULL;   /* Temp. ligand id  */
+static   AjPStr cmapStrdesc       = NULL;   /* Ligand description,  SITES output
+					       only */
+static   AjPStr cmapStrtype       = NULL;   /* Type of contact  */
+static   AjPStr cmapStrtmpstr     = NULL;   /* Housekeeping */
 
 
 
@@ -315,22 +323,17 @@ AjPPdbtosp ajPdbtospReadCNew(AjPFile inf, const char *entry)
 {
     AjPPdbtosp ret = NULL;
 
-    static AjPStr line   = NULL;
-    static AjPStr tentry = NULL;	
-    static AjPStr pdb    = NULL;	
+    AjPStr line   = NULL;
+    AjPStr tentry = NULL;	
+    AjPStr pdb    = NULL;	
     AjBool ok            = ajFalse;
     ajint  n             = 0;
     ajint  i             = 0;
     
 
-    /* Only initialise strings if this is called for the first time */
-    if(!line)
-    {
-	line    = ajStrNew();
-	tentry  = ajStrNew();
-	pdb     = ajStrNew();
-    }
-
+    line    = ajStrNew();
+    tentry  = ajStrNew();
+    pdb     = ajStrNew();
 
     ajStrAssignC(&tentry,entry);
     ajStrFmtUpper(&tentry);
@@ -344,7 +347,12 @@ AjPPdbtosp ajPdbtospReadCNew(AjPFile inf, const char *entry)
 	    break;
     }
     if(!ok)
+    {
+        ajStrDel(&line);
+        ajStrDel(&tentry);
+        ajStrDel(&pdb);
 	return NULL;
+    }
 
     while(ok && !ajStrPrefixC(line,"//"))
     {
@@ -368,7 +376,11 @@ AjPPdbtosp ajPdbtospReadCNew(AjPFile inf, const char *entry)
 	
 	ok = ajReadlineTrim(inf,&line);
     }
-    
+
+    ajStrDel(&line);
+    ajStrDel(&tentry);
+    ajStrDel(&pdb);
+
     return ret;
 }
 
@@ -527,14 +539,6 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	       
 {	
     AjPCmap  ret = NULL;
-    static   AjPStr line       = NULL;   /* Line of text     */
-    static   AjPStr temp_id    = NULL;   /* Temp. protein id */
-    static   AjPStr temp_domid = NULL;   /* Temp. domain id  */
-    static   AjPStr temp_ligid = NULL;   /* Temp. ligand id  */
-    static   AjPStr type       = NULL;   /* Type of contact  */
-    static   AjPStr desc       = NULL;   /* Ligand description,  SITES output
-					    only */
-    static   AjPStr tmpstr     = NULL;   /* Housekeeping */
     const AjPStr   token       = NULL;   /* For parsing      */
         
     ajint    smcon     = 0;      /* No. of SM contacts       */	
@@ -574,22 +578,22 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 
     
     /* Initialise strings */
-    if(!line)
+    if(!cmapStrline)
     {
-	line       = ajStrNew();
-	temp_id    = ajStrNew();
-	temp_domid = ajStrNew();
-	temp_ligid = ajStrNew();
-	desc       = ajStrNew();
-	tmpstr     = ajStrNew();
+	cmapStrline       = ajStrNew();
+	cmapStrtemp_id    = ajStrNew();
+	cmapStrtemp_domid = ajStrNew();
+	cmapStrtemp_ligid = ajStrNew();
+	cmapStrdesc       = ajStrNew();
+	cmapStrtmpstr     = ajStrNew();
     }
     
 
     /* Start of main loop */
-    while((ajReadlineTrim(inf, &line)))
+    while((ajReadlineTrim(inf, &cmapStrline)))
     {
         /* // */
-	if(ajStrPrefixC(line, "//"))
+	if(ajStrPrefixC(cmapStrline, "//"))
 	{
         /* If the delimiter between entries is found and ret is non-NULL, i.e.
            has been allocated, the function should return. */
@@ -600,25 +604,25 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 
 
         /* SI */
-	else if(ajStrPrefixC(line, "SI"))
+	else if(ajStrPrefixC(cmapStrline, "SI"))
 	{ 
-	  token = ajStrParseC(line, ";");
+	  token = ajStrParseC(cmapStrline, ";");
 	  ajFmtScanS(token, "%*s %*s %d", &sn);
 
 	  token = ajStrParseC(NULL, ";");
 	  ajFmtScanS(token, "%*s %d", &ns);
         }
 	/* EN */
-	else if(ajStrPrefixC(line, "EN"))
+	else if(ajStrPrefixC(cmapStrline, "EN"))
 	{
-	    ajFmtScanS(line, "%*s %*c%d", &en);
+	    ajFmtScanS(cmapStrline, "%*s %*c%d", &en);
 	}
 	
 	    
 	/* TY */
-	else if(ajStrPrefixC(line, "TY"))
+	else if(ajStrPrefixC(cmapStrline, "TY"))
 	{
-	    ajFmtScanS(line, "%*s %S", &type);
+	    ajFmtScanS(cmapStrline, "%*s %S", &cmapStrtype);
 	    ajStrSetClear(&seq1);
 	    ajStrSetClear(&seq2);
 	    id1 = '.';
@@ -632,36 +636,36 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	/* EX, NE records are not parsed */
 
 	/* ID */
-	else if(ajStrPrefixC(line, "ID"))
+	else if(ajStrPrefixC(cmapStrline, "ID"))
 	{
-	    token = ajStrParseC(line, ";");
-	    ajFmtScanS(token, "%*s %*s %S", &temp_id);
+	    token = ajStrParseC(cmapStrline, ";");
+	    ajFmtScanS(token, "%*s %*s %S", &cmapStrtemp_id);
 	    token = ajStrParseC(NULL, ";");
-	    ajFmtScanS(token, "%*s %S", &temp_domid);
+	    ajFmtScanS(token, "%*s %S", &cmapStrtemp_domid);
 	    token = ajStrParseC(NULL, ";");
-	    ajFmtScanS(token, "%*s %S", &temp_ligid);
+	    ajFmtScanS(token, "%*s %S", &cmapStrtemp_ligid);
 	}
 
 	/* DE records are not parsed (SITES output) */
-	else if(ajStrPrefixC(line, "DE"))
+	else if(ajStrPrefixC(cmapStrline, "DE"))
 	{
-	  ajStrAssignSubS(&desc, line, 4, -1);
+            ajStrAssignSubS(&cmapStrdesc, cmapStrline, 4, -1);
 	}
 
 	/* CN */
-	else if(ajStrPrefixC(line, "CN"))
+	else if(ajStrPrefixC(cmapStrline, "CN"))
 	{
-	    token = ajStrParseC(line, ";");
+	    token = ajStrParseC(cmapStrline, ";");
 	    /* ajFmtScanS(token, "%*s %*s %d", &md);
             if(md == '.')
 	       md = 0;	
 	       */
 
-	    ajFmtScanS(token, "%*s %*s %S", &tmpstr);
-	    if(ajStrMatchC(tmpstr, "."))
+	    ajFmtScanS(token, "%*s %*s %S", &cmapStrtmpstr);
+	    if(ajStrMatchC(cmapStrtmpstr, "."))
 		md = 0;	
 	    else
-		ajFmtScanS(tmpstr, "%d", &md);
+		ajFmtScanS(cmapStrtmpstr, "%d", &md);
 	    
 	    token = ajStrParseC(NULL, ";");
 	    ajFmtScanS(token, "%*s %d", &cn1);
@@ -680,11 +684,11 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	    if(nres1 == '.')
 	       nres1 = 0; */
 
-	    ajFmtScanS(token, "%*s %S", &tmpstr);
-	    if(ajStrMatchC(tmpstr, "."))
+	    ajFmtScanS(token, "%*s %S", &cmapStrtmpstr);
+	    if(ajStrMatchC(cmapStrtmpstr, "."))
 		nres1 = 0;	
 	    else
-		ajFmtScanS(tmpstr, "%d", &nres1);
+		ajFmtScanS(cmapStrtmpstr, "%d", &nres1);
 
 
 	    token = ajStrParseC(NULL, ";");
@@ -692,34 +696,36 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	       if((char)nres2 == '.')
 	       nres2 = 0; */
 
-	    ajFmtScanS(token, "%*s %S", &tmpstr);
-	    if(ajStrMatchC(tmpstr, "."))
+	    ajFmtScanS(token, "%*s %S", &cmapStrtmpstr);
+	    if(ajStrMatchC(cmapStrtmpstr, "."))
 		nres2 = 0;	
 	    else
-		ajFmtScanS(tmpstr, "%d", &nres2);
+		ajFmtScanS(cmapStrtmpstr, "%d", &nres2);
 
 	}
 
 	/* S1 */
-	else if(ajStrPrefixC(line, "S1"))
+	else if(ajStrPrefixC(cmapStrline, "S1"))
 	{    
-	    while(ajReadlineTrim(inf,&line) && !ajStrPrefixC(line,"XX"))
-		ajStrAppendC(&seq1,ajStrGetPtr(line));
+	    while(ajReadlineTrim(inf,&cmapStrline) &&
+                  !ajStrPrefixC(cmapStrline,"XX"))
+		ajStrAppendC(&seq1,ajStrGetPtr(cmapStrline));
 	    ajStrRemoveWhite(&seq1);
 	}
 
 	/* S2 */
-	else if(ajStrPrefixC(line, "S2"))
+	else if(ajStrPrefixC(cmapStrline, "S2"))
 	{    
-	    while(ajReadlineTrim(inf,&line) && !ajStrPrefixC(line,"XX"))
-		ajStrAppendC(&seq2,ajStrGetPtr(line));
+	    while(ajReadlineTrim(inf,&cmapStrline) &&
+                  !ajStrPrefixC(cmapStrline,"XX"))
+		ajStrAppendC(&seq2,ajStrGetPtr(cmapStrline));
 	    ajStrRemoveWhite(&seq2);
 	}
 	/* NC */	    
-	else if((ajStrPrefixC(line, "NC")) && 
+	else if((ajStrPrefixC(cmapStrline, "NC")) && 
 		((md==mod) || ((chn==0)&&(mod==0)&&(mode==CMAP_MODE_I))))
 	{
-	    token = ajStrParseC(line, ";");
+	    token = ajStrParseC(cmapStrline, ";");
 	    ajFmtScanS(token, "%*s %*s %d", &smcon);
 
 	    token = ajStrParseC(NULL, ";");
@@ -748,7 +754,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 		idok=ajTrue;
 		
 		/* Allocate contact map and write values */
-		if(ajStrMatchC(type, "INTER"))
+		if(ajStrMatchC(cmapStrtype, "INTER"))
 		{
 		    if(nres1>nres2)
 			(ret) = ajCmapNew(nres1);
@@ -758,27 +764,27 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 		else
 		    (ret) = ajCmapNew(nres1);
 
-		ajStrAssignS(&(ret)->Id, temp_id);
-		ajStrAssignS(&(ret)->Domid, temp_domid);
-		ajStrAssignS(&(ret)->Ligid, temp_ligid);
+		ajStrAssignS(&(ret)->Id, cmapStrtemp_id);
+		ajStrAssignS(&(ret)->Domid, cmapStrtemp_domid);
+		ajStrAssignS(&(ret)->Ligid, cmapStrtemp_ligid);
 		
-		if(ajStrMatchC(type, "INTRA"))
+		if(ajStrMatchC(cmapStrtype, "INTRA"))
 		{
 		    ret->Type = ajINTRA;
 		    (ret)->Ncon = smcon;
 		}
-		else if(ajStrMatchC(type, "INTER"))
+		else if(ajStrMatchC(cmapStrtype, "INTER"))
 		{
 		    ret->Type = ajINTER;
 		    (ret)->Ncon = smcon;
 		}
-		else if(ajStrMatchC(type, "LIGAND"))
+		else if(ajStrMatchC(cmapStrtype, "LIGAND"))
 		  {
 		    ret->Type = ajLIGAND;
 		    (ret)->Ncon = licon;
 		    ret->ns = ns;
 		    ret->sn = sn;
-		    ajStrAssignS(&ret->Desc, desc);
+		    ajStrAssignS(&ret->Desc, cmapStrdesc);
 		}
 		else
 		    ajFatal("Unrecognised contact type");
@@ -798,17 +804,17 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	}
 
 	/* SM */
-	else if((ajStrPrefixC(line, "SM")) && 
+	else if((ajStrPrefixC(cmapStrline, "SM")) && 
 		((md==mod) || ((chn==0)&&(mod==0)&&(mode==CMAP_MODE_I)))
 		&& (idok))
 	{
-	    ajFmtScanS(line, "%*s %*s %d %*c %*s %d", &x, &y);
+	    ajFmtScanS(cmapStrline, "%*s %*s %d %*c %*s %d", &x, &y);
 
 	    /* Check residue number is in range */
 	    if((x>(ret)->Dim) || (y>(ret)->Dim))
 		ajFatal("Fatal attempt to write bad data in "
 			"ajCmapReadNew\nFile: %S (%S)\nx: %d y:%d\n",
-			ajFileGetNameS(inf), temp_id, x, y);
+			ajFileGetNameS(inf), cmapStrtemp_id, x, y);
 	    
 	    /* Enter '1' in matrix to indicate contact */
 	    ajUint2dPut(&(ret)->Mat, x-1, y-1, 1);
@@ -816,17 +822,17 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	}
 
 	/* LI */
-	else if((ajStrPrefixC(line, "LI")) && 
+	else if((ajStrPrefixC(cmapStrline, "LI")) && 
 		((md==mod) || ((chn==0)&&(mod==0)&&(mode==CMAP_MODE_I)))
 		&& (idok))
 	{
-	    ajFmtScanS(line, "%*s %*s %d", &x);
+	    ajFmtScanS(cmapStrline, "%*s %*s %d", &x);
 
 	    /* Check residue number is in range */
 	    if((x>(ret)->Dim))
 		ajFatal("Fatal attempt to write bad data in "
 			"ajCmapReadNew\nFile: %S (%S)\nx: %d\n",
-			ajFileGetNameS(inf), temp_id, x);
+			ajFileGetNameS(inf), cmapStrtemp_id, x);
 	    
 	    /* Enter '1' in matrix to indicate contact.  For ligand contacts, 
 	       the first row / column only is used. */
@@ -6603,7 +6609,7 @@ AjBool   ajPdbtospWrite(AjPFile outf, const AjPList list)
 			"IN", tmp->Spr[x], tmp->Acc[x]);
 	ajFmtPrintF(outf, "XX\n//\n");
     }
-
+    ajListIterDel(&iter);
     return ajTrue;
 }
 
@@ -6816,6 +6822,24 @@ AjBool   ajCmapWrite(AjPFile outf, const AjPCmap cmap)
 
 
 
+/* @func ajPdbExit ************************************************************
+**
+** Cleanup of Pdb function internals.
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajPdbExit(void)
+{
+    ajStrDel(&cmapStrline);
+    ajStrDel(&cmapStrtemp_id);
+    ajStrDel(&cmapStrtemp_domid);
+    ajStrDel(&cmapStrtemp_ligid);
+    ajStrDel(&cmapStrtype);
+    ajStrDel(&cmapStrdesc);
+    ajStrDel(&cmapStrtmpstr);
+}
 
 
 
