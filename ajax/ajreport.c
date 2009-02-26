@@ -2186,6 +2186,8 @@ static void reportWriteTable(AjPReport thys,
 **
 ** Writes a report in Tagseq format. Features are marked up below the sequence.
 ** Originally developed for the garnier application, but has general uses.
+** For garnier, it checks for a '*garnier' feature tag and hard codes the
+** standard garnier row names as the tagname.
 **
 ** Format:<br>
 **   Sequence (50 residues)<br>
