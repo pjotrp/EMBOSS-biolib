@@ -668,10 +668,10 @@ static void garnier_report(AjPReport report, AjPFeattable TabRpt,
 
     if(!strHelix)
     {
-	ajStrAssignC(&strHelix, "alpha_helix");
-	ajStrAssignC(&strExtend, "beta_strand");
-	ajStrAssignC(&strTurns, "turn");
-	ajStrAssignC(&strCoil, "coil");
+	ajStrAssignC(&strHelix, "SO:0001117");  /* alpha_helix */
+	ajStrAssignC(&strExtend, "SO:0001111"); /* beta_strand */
+	ajStrAssignC(&strTurns, "SO:0001128");  /* turn */
+	ajStrAssignC(&strCoil, "SO:0100003");   /* intrinsically_unstructured */
     }
     
     idc = Idc;
