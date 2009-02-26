@@ -553,11 +553,11 @@ Lactose operon repressor.
           ----:----|----:----|----:----|----:----|----:----|----:----|
           MKPVTLYDVAEYAGVSYQTVSRVVNQASHVSAKTREKVEAAMAELNYIPNRVAQQLAGKQ
           |===========================================================
-          chain note="Lactose operon repressor" ftid="PRO_0000107963"
+          mature_protein_region note="Lactose operon repressor" ftid="PRO_00001
           |========================================================|
-          domain note="HTH lacI-type"
+          polypeptide_domain note="HTH lacI-type"
                |==================|
-               DNA_bind note="H-T-H motif"
+               polypeptide_domain note="H-T-H motif"
                           |
                           mutagen note="Y->H: Broadening of specificity"
                                |
@@ -567,7 +567,7 @@ Lactose operon repressor.
           ----:----|----:----|----:----|----:----|
           SLLIGVATSSLALHAPSQIVAAIKSRADQLGASVVVSMVE
           ========================================
-          chain note="Lactose operon repressor" ftid="PRO_0000107963"
+          mature_protein_region note="Lactose operon repressor" ftid="PRO_00001
             |=====|                       |====|
             beta_strand                   beta_strand
                        |==============|
@@ -606,7 +606,7 @@ RS24_FUGRU
           esshaharhryhehsreelryleaasaeirlylharyhllrlyelyeyyhhrsaahahlh
           tnprlrlgrgsetrnguungsntllplusoysarlosruegusuastrsrroplleleye
           |===========================================================
-          chain note="40S ribosomal protein S24" ftid="PRO_0000137627"
+          mature_protein_region note="40S ribosomal protein S24" ftid="PRO_0000
 
                    70        80        90        100       110       120
           ----:----|----:----|----:----|----:----|----:----|----:----|
@@ -614,7 +614,7 @@ RS24_FUGRU
           rhlhlllyhhlhleayseesylyyslryirelrilehlyyyherylrylrysreyyarlh
           grneyyysrryeatlrpruprassnuossguagsyueusssrrgsngsugsngtsslgyr
           ============================================================
-          chain note="40S ribosomal protein S24" ftid="PRO_0000137627"
+          mature_protein_region note="40S ribosomal protein S24" ftid="PRO_0000
 
                    130
           ----:----|--
@@ -622,7 +622,7 @@ RS24_FUGRU
           yylealleyyys
           ssarlyarsssp
           ===========|
-          chain note="40S ribosomal protein S24" ftid="PRO_0000137627"
+          mature_protein_region note="40S ribosomal protein S24" ftid="PRO_0000
 
   Output files for usage example 5
 
@@ -666,11 +666,11 @@ Lactose operon repressor.
                           |    |
                           SNP  SNP
           |===========================================================
-          chain note="Lactose operon repressor" ftid="PRO_0000107963"
+          mature_protein_region note="Lactose operon repressor" ftid="PRO_00001
           |========================================================|
-          domain note="HTH lacI-type"
+          polypeptide_domain note="HTH lacI-type"
                |==================|
-               DNA_bind note="H-T-H motif"
+               polypeptide_domain note="H-T-H motif"
                           |
                           mutagen note="Y->H: Broadening of specificity"
                                |
@@ -680,7 +680,7 @@ Lactose operon repressor.
           ----:----|----:----|----:----|----:----|----:----|----:----|
           SLLIGVATSSLALHAPSQIVAAIKSRADQLGASVVVSMVERSGVEACKAAVHNLLAQRVS
           ============================================================
-          chain note="Lactose operon repressor" ftid="PRO_0000107963"
+          mature_protein_region note="Lactose operon repressor" ftid="PRO_00001
             |=====|                       |====|                 |=|
             beta_strand                   beta_strand            turn
                        |==============|           |=|

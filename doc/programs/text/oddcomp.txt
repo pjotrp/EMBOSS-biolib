@@ -42,11 +42,10 @@ Usage
 
 % oddcomp 
 Identify proteins with specified sequence word composition
-Input protein sequence(s): tsw:*
+Input protein sequence(s): tsw:\*
 Program compseq output file: oddcomp.comp
 Window size to consider (e.g. 30 aa) [30]: 
 Output file [edd1_rat.oddcomp]: out.odd
-UNKNOWN token '[Contains:'
 
    Go to the input files for this example
    Go to the output files for this example

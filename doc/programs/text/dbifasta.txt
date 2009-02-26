@@ -31,7 +31,7 @@ Database name: EMROD
                 ncbi : | formats
 ID line format [idacc]: idacc
 Database directory [.]: data
-Wildcard database filename [*.dat]: emrod
+Wildcard database filename [\*.dat]: emrod
 Release number [0.0]: 
 Index date [00/00/00]: 
 General log output file [outfile.dbifasta]: 

@@ -56,7 +56,7 @@ output sequence [x65921.fasta]:
    the tembl database:
 
 
-% extractfeat tembl:*  -type exon -before 5 -after -5 
+% extractfeat tembl:\*  -type exon -before 5 -after -5 
 Extract features from sequence(s)
 output sequence [h45989.fasta]: 
 
@@ -78,10 +78,10 @@ output sequence [x65921.fasta]:
    To write out the 7 residues around all phosphorylated serine residues
 
 
-% extractfeat tsw:*  -type mod_res -value phosphoserine* -before 3 -after -4 
+% extractfeat tsw:\*  -type post_translational_modification -value phosphoserin
+e\* -before 3 -after -4 
 Extract features from sequence(s)
 output sequence [edd1_rat.fasta]: 
-UNKNOWN token '[Contains:'
 
    Go to the input files for this example
    Go to the output files for this example
@@ -657,17 +657,17 @@ cccacctttggcaagaagaagggccccaatgccaactcttaa
 
   File: edd1_rat.fasta
 
->OPSD_HUMAN_334_334 [mod_res] Rhodopsin (Opsin-2).
+>OPSD_HUMAN_334_334 [post_translational_modification] Rhodopsin (Opsin-2).
 DEASATV
->OPSD_HUMAN_338_338 [mod_res] Rhodopsin (Opsin-2).
+>OPSD_HUMAN_338_338 [post_translational_modification] Rhodopsin (Opsin-2).
 ATVSKTE
->OPSD_HUMAN_343_343 [mod_res] Rhodopsin (Opsin-2).
+>OPSD_HUMAN_343_343 [post_translational_modification] Rhodopsin (Opsin-2).
 TETSQVA
->PAXI_HUMAN_106_106 [mod_res] Paxillin.
+>PAXI_HUMAN_106_106 [post_translational_modification] Paxillin.
 SVGSPCS
->PAXI_HUMAN_109_109 [mod_res] Paxillin.
+>PAXI_HUMAN_109_109 [post_translational_modification] Paxillin.
 SPCSRVG
->PAXI_HUMAN_303_303 [mod_res] Paxillin.
+>PAXI_HUMAN_303_303 [post_translational_modification] Paxillin.
 GRSSPGG
 
    The sequences of the specified features are written out.

@@ -91,7 +91,7 @@ To write out the 10 bases around the start of all 'exon' features in the tembl d
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>extractfeat tembl:*  -type exon -before 5 -after -5 </b>
+% <b>extractfeat tembl:\*  -type exon -before 5 -after -5 </b>
 Extract features from sequence(s)
 output sequence [h45989.fasta]: <b></b>
 
@@ -123,10 +123,9 @@ To write out the 7 residues around all phosphorylated serine residues
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>extractfeat tsw:*  -type mod_res -value phosphoserine* -before 3 -after -4 </b>
+% <b>extractfeat tsw:\*  -type post_translational_modification -value phosphoserine\* -before 3 -after -4 </b>
 Extract features from sequence(s)
 output sequence [edd1_rat.fasta]: <b></b>
-UNKNOWN token '[Contains:'
 
 </pre></td></tr></table><p>
 <p>
@@ -825,17 +824,17 @@ cccacctttggcaagaagaagggccccaatgccaactcttaa
 <p><h3>File: edd1_rat.fasta</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-&gt;OPSD_HUMAN_334_334 [mod_res] Rhodopsin (Opsin-2).
+&gt;OPSD_HUMAN_334_334 [post_translational_modification] Rhodopsin (Opsin-2).
 DEASATV
-&gt;OPSD_HUMAN_338_338 [mod_res] Rhodopsin (Opsin-2).
+&gt;OPSD_HUMAN_338_338 [post_translational_modification] Rhodopsin (Opsin-2).
 ATVSKTE
-&gt;OPSD_HUMAN_343_343 [mod_res] Rhodopsin (Opsin-2).
+&gt;OPSD_HUMAN_343_343 [post_translational_modification] Rhodopsin (Opsin-2).
 TETSQVA
-&gt;PAXI_HUMAN_106_106 [mod_res] Paxillin.
+&gt;PAXI_HUMAN_106_106 [post_translational_modification] Paxillin.
 SVGSPCS
-&gt;PAXI_HUMAN_109_109 [mod_res] Paxillin.
+&gt;PAXI_HUMAN_109_109 [post_translational_modification] Paxillin.
 SPCSRVG
-&gt;PAXI_HUMAN_303_303 [mod_res] Paxillin.
+&gt;PAXI_HUMAN_303_303 [post_translational_modification] Paxillin.
 GRSSPGG
 </pre>
 </td></tr></table><p>

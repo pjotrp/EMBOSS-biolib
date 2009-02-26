@@ -30,10 +30,9 @@ Usage
 
 % fuzzpro 
 Search for patterns in protein sequences
-Input protein sequence(s): tsw:*
+Input protein sequence(s): tsw:\*
 Search pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
 Output report [edd1_rat.fuzzpro]: 
-UNKNOWN token '[Contains:'
 
    Go to the input files for this example
    Go to the output files for this example

@@ -30,10 +30,9 @@ Usage
    Search for 'lactose':
 
 
-% textsearch tsw:* 'lactose' 
+% textsearch tsw:\* 'lactose' 
 Search the textual description of sequence(s)
 Output file [edd1_rat.textsearch]: 
-UNKNOWN token '[Contains:'
 
    Go to the input files for this example
    Go to the output files for this example
@@ -43,7 +42,7 @@ UNKNOWN token '[Contains:'
    Search for 'lactose' or 'permease' in E.coli proteins:
 
 
-% textsearch tsw:*_ecoli 'lactose | permease' 
+% textsearch tsw:\*_ecoli 'lactose | permease' 
 Search the textual description of sequence(s)
 Output file [laci_ecoli.textsearch]: 
 
@@ -54,7 +53,7 @@ Output file [laci_ecoli.textsearch]:
    Output a search for 'lacz' formatted with HTML to a file:
 
 
-% textsearch tembl:* 'lacz' -html -outfile embl.lacz.html 
+% textsearch tembl:\* 'lacz' -html -outfile embl.lacz.html 
 Search the textual description of sequence(s)
 
    Go to the input files for this example

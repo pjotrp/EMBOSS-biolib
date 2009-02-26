@@ -8,11 +8,10 @@ To search for entries in swissprot with at least 1 SR AND at least 2 RS:
 
 % <b>oddcomp </b>
 Identify proteins with specified sequence word composition
-Input protein sequence(s): <b>tsw:*</b>
+Input protein sequence(s): <b>tsw:\*</b>
 Program compseq output file: <b>oddcomp.comp</b>
 Window size to consider (e.g. 30 aa) [30]: <b></b>
 Output file [edd1_rat.oddcomp]: <b>out.odd</b>
-UNKNOWN token '[Contains:'
 
 </pre></td></tr></table><p>
 <p>

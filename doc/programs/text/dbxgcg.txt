@@ -28,7 +28,7 @@ Resource name: emblresource
        PIR : NBRF
 Entry format [SWISS]: embl
 Database directory [.]: embl
-Wildcard database filename [*.seq]: 
+Wildcard database filename [\*.seq]: 
         id : ID
        acc : Accession number
         sv : Sequence Version and GI

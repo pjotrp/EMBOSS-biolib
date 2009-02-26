@@ -63,8 +63,8 @@ Usage
 
 % twofeat tembl:x65923 
 Finds neighbouring pairs of features in sequence(s)
-Type of first feature [*]: polyA_signal
-Type of second feature [*]: polyA_site
+Type of first feature [\*]: polyA_signal
+Type of second feature [\*]: polyA_site
 The minimum distance between the features [0]: 10
 The maximum distance between the features [0]: 50
 Output report [x65923.twofeat]: 
@@ -81,8 +81,8 @@ Output report [x65923.twofeat]:
 
 % twofeat -twoout -rformat gff tembl:x65923 
 Finds neighbouring pairs of features in sequence(s)
-Type of first feature [*]: polyA_signal
-Type of second feature [*]: polyA_site
+Type of first feature [\*]: polyA_signal
+Type of second feature [\*]: polyA_site
 The minimum distance between the features [0]: 10
 The maximum distance between the features [0]: 50
 Output report [x65923.twofeat]: 

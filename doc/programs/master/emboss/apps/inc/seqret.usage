@@ -17,13 +17,13 @@ output sequence(s) [x65923.fasta]: <b></b>
 <p>
 <b>Example 2</b>
 <p>
-Read all entries in the database 'tembl' that start with 'ab' and write them to a file. In this example the specification is all done in the command line and to stop Unix getting confused by the '*' character, it has to have a backslash ('\') before it: 
+Read all entries in the database 'tembl' that start with 'ab' and write them to a file. In this example the specification is all done in the command line and to stop Unix getting confused by the '\*' character, it has to have a backslash ('\') before it: 
 <p>
 
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>seqret tembl:ab\*  aball.seq </b>
+% <b>seqret tembl:ab\\*  aball.seq </b>
 Reads and writes (returns) sequences
 
 </pre></td></tr></table><p>
@@ -186,7 +186,7 @@ Read all entries in the database 'tembl' that start with 'h' and write them to a
 
 % <b>seqret </b>
 Reads and writes (returns) sequences
-Input (gapped) sequence(s): <b>tembl:h*</b>
+Input (gapped) sequence(s): <b>tembl:h\*</b>
 output sequence(s) [h45989.fasta]: <b>hall.seq</b>
 
 </pre></td></tr></table><p>

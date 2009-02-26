@@ -34,7 +34,7 @@ Database name: EMBL
        PIR : NBRF
 Entry format [EMBL]: EMBL
 Database directory [.]: embl
-Wildcard database filename [*.seq]: 
+Wildcard database filename [\*.seq]: 
 Release number [0.0]: 
 Index date [00/00/00]: 
 General log output file [outfile.dbigcg]: 

@@ -6,10 +6,9 @@ Search for 'lactose':
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>textsearch tsw:* 'lactose' </b>
+% <b>textsearch tsw:\* 'lactose' </b>
 Search the textual description of sequence(s)
 Output file [edd1_rat.textsearch]: <b></b>
-UNKNOWN token '[Contains:'
 
 </pre></td></tr></table><p>
 <p>
@@ -23,7 +22,7 @@ Search for 'lactose' or 'permease' in E.coli proteins:
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>textsearch tsw:*_ecoli 'lactose | permease' </b>
+% <b>textsearch tsw:\*_ecoli 'lactose | permease' </b>
 Search the textual description of sequence(s)
 Output file [laci_ecoli.textsearch]: <b></b>
 
@@ -39,7 +38,7 @@ Output a search for 'lacz' formatted with HTML to a file:
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>textsearch tembl:* 'lacz' -html -outfile embl.lacz.html </b>
+% <b>textsearch tembl:\* 'lacz' -html -outfile embl.lacz.html </b>
 Search the textual description of sequence(s)
 
 </pre></td></tr></table><p>

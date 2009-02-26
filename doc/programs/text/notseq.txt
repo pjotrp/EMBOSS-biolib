@@ -40,7 +40,7 @@ output sequence(s) [hbb_human.fasta]: mydata.seq
 % notseq -junkout hb.seq 
 Write to file a subset of an input stream of sequences
 Input (gapped) sequence(s): globins.fasta
-Sequence names to exclude: hb*
+Sequence names to exclude: hb\*
 output sequence(s) [hbb_human.fasta]: mydata.seq
 
    Go to the output files for this example

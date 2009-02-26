@@ -27,7 +27,7 @@ Resource name: emblresource
         GB : Genbank, DDBJ
     REFSEQ : Refseq
 Entry format [SWISS]: embl
-Wildcard database filename [*.dat]: rod.dat
+Wildcard database filename [\*.dat]: rod.dat
 Database directory [.]: embl
         id : ID
        acc : Accession number

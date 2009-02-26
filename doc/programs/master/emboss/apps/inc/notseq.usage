@@ -27,7 +27,7 @@ Here is an example where the sequences to be excluded are saved to another file:
 % <b>notseq -junkout hb.seq </b>
 Write to file a subset of an input stream of sequences
 Input (gapped) sequence(s): <b>globins.fasta</b>
-Sequence names to exclude: <b>hb*</b>
+Sequence names to exclude: <b>hb\*</b>
 output sequence(s) [hbb_human.fasta]: <b>mydata.seq</b>
 
 </pre></td></tr></table><p>

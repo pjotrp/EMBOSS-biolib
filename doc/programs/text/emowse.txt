@@ -35,12 +35,11 @@ Usage
 
 % emowse 
 Search protein sequences by digest fragment molecular weight
-Input protein sequence(s): tsw:*
+Input protein sequence(s): tsw:\*
 Peptide molecular weight values file: test.mowse
 Whole sequence molwt [0]: 
 Use monoisotopic weights [N]: 
 Output file [edd1_rat.emowse]: 
-UNKNOWN token '[Contains:'
 
    Go to the input files for this example
    Go to the output files for this example

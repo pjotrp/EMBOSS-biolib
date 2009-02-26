@@ -21,7 +21,7 @@ Usage
 
 % preg 
 Regular expression search of protein sequence(s)
-Input protein sequence(s): tsw:*_rat
+Input protein sequence(s): tsw:\*_rat
 Regular expression pattern: IA[QWF]A
 Output report [edd1_rat.preg]: 
 

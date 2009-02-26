@@ -182,17 +182,17 @@ cccacctttggcaagaagaagggccccaatgccaactcttaa
 <p><h3>File: edd1_rat.fasta</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-&gt;OPSD_HUMAN_334_334 [mod_res] Rhodopsin (Opsin-2).
+&gt;OPSD_HUMAN_334_334 [post_translational_modification] Rhodopsin (Opsin-2).
 DEASATV
-&gt;OPSD_HUMAN_338_338 [mod_res] Rhodopsin (Opsin-2).
+&gt;OPSD_HUMAN_338_338 [post_translational_modification] Rhodopsin (Opsin-2).
 ATVSKTE
-&gt;OPSD_HUMAN_343_343 [mod_res] Rhodopsin (Opsin-2).
+&gt;OPSD_HUMAN_343_343 [post_translational_modification] Rhodopsin (Opsin-2).
 TETSQVA
-&gt;PAXI_HUMAN_106_106 [mod_res] Paxillin.
+&gt;PAXI_HUMAN_106_106 [post_translational_modification] Paxillin.
 SVGSPCS
-&gt;PAXI_HUMAN_109_109 [mod_res] Paxillin.
+&gt;PAXI_HUMAN_109_109 [post_translational_modification] Paxillin.
 SPCSRVG
-&gt;PAXI_HUMAN_303_303 [mod_res] Paxillin.
+&gt;PAXI_HUMAN_303_303 [post_translational_modification] Paxillin.
 GRSSPGG
 </pre>
 </td></tr></table><p>
