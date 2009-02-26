@@ -7338,7 +7338,8 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
                     }
                     else
                     {
-                        ajUser("UNKNOWN token '%S'", token);
+                        ajDebug("Swissprot DE line UNKNOWN token '%S'\n",
+                                token);
                         if(ajStrGetLen(*Pdescstr))
                             ajStrAppendK(Pdescstr, ' ');
                         ajStrAppendS(Pdescstr, token);
