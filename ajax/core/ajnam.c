@@ -99,7 +99,7 @@ static char namPackage[] = "EMBOSS";
 #ifdef VERSION
 static char namVersion[] = VERSION;
 #else
-static char namVersion[] = "1.x";
+static char namVersion[] = "6.x";
 #endif
 
 /* string versions of char* constants set in ajNamInit */
