@@ -912,13 +912,13 @@ static AjBool extractfeat_MatchFeature(const AjPFeature gf,
 
     ajDebug("embMiscMatchPattern(ajFeatGetSource(gf), source) %B\n",
 	    embMiscMatchPattern(ajFeatGetSource(gf), source));
-    ajDebug("embMiscMatchPattern(ajFeatGetType(gf), type) %B\n",
-	    embMiscMatchPattern(ajFeatGetType(gf), type));
+    ajDebug("ajFeatTypeMatch(gf, type) %B\n",
+	    ajFeatTypeMatch(gf, type));
     ajDebug("ajFeatGetStrand(gf) '%x' sense %d\n", ajFeatGetStrand(gf), sense);
     ajDebug("testscore: %B ajFeatGetScore(gf): %f minscore:%f maxscore:%f\n",
 	    testscore, ajFeatGetScore(gf), minscore, maxscore);
     if(!embMiscMatchPattern(ajFeatGetSource(gf), source) ||
-       !embMiscMatchPattern(ajFeatGetType(gf), type) ||
+       !ajFeatTypeMatch(gf, type) ||
        (ajFeatGetStrand(gf) == '+' && sense == -1) ||
        (ajFeatGetStrand(gf) == '-' && sense == +1) ||
        (testscore && ajFeatGetScore(gf) < minscore) ||
