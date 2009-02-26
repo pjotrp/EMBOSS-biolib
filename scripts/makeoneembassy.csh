@@ -29,9 +29,19 @@ cd ../nucleus
 echo "make NUCLEUS"
 make install |& egrep '^[^ =\[]*:'
 cd ../embassy/$pack/s*
+if ($pack == 'vienna') then
+  echo "make libvienna"
+  make libviennarna.la |& egrep '^[^ =\[]*:'
+  make install-libLTLIBRARIES
+endif
 echo "make $app"
 make $app |& egrep '^[^ =\[]*:'
+if ($pack == 'myembossdemo') then
+  echo "copy $app to check/bin"
+  cp $app ~/check/bin/$app
+else
 echo "install $app"
 echo "/bin/sh ../libtool --mode=install /usr/bin/install -c $app $embossinst/$app"
 /bin/sh ../libtool --mode=install /usr/bin/install  -c $app $embossinst/bin/$app
 cp ../emboss_acd/$app.acd $embossinst/share/EMBOSS/acd/
+endif
