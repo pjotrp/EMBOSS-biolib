@@ -1,4 +1,9 @@
 Version 6.1.0
+	Protein sequences in GFF format now use GFF3 by default. For
+	release 6.0 protein sequences were written in GFF2 while the GFF3
+	protein feature definitions were readefined using the Sequence
+	Ontology.
+
 	When a sequence is reversed by revseq the description is tagged
 	with "Reversed: " so that the output and any sequence derived from
 	it has a note of the history.

@@ -1820,8 +1820,10 @@ FI hba_human.fasta
 FC = 4
 FP /^>HBA_HUMAN /
 FI hba_human.gff
-FC = 159
-FP /^##Type Protein HBA_HUMAN\n/
+FC = 161
+FP /^##gff-version 3\n/
+FP /^#!Type Protein\n/
+FP /^##sequence-region HBA_HUMAN 1 141\n/
 //
 
 ID qual-ufo-noid
@@ -1839,11 +1841,13 @@ FI stdout
 FC = 2
 FP /^>HBA_HUMAN/
 FI stdout.gff
-FC = 26
-FP /^##Type Protein HBA_HUMAN\n/
-FP 2 /^HBA_HUMAN\tSWISSPROT\tvariant\t19\t19\t/
-FP 0 /^HBA_HUMAN\tSWISSPROT\tvariant\t20\t20\t/
-FP  /\tSequence "HBA_HUMAN.4" ; note "ACETYLATION" ; comment "IN VARIANT THION/
+FC = 28
+FP /^##gff-version 3\n/
+FP /^#!Type Protein\n/
+FP /^##sequence-region HBA_HUMAN 1 141\n/
+FP 2 /^HBA_HUMAN\tSWISSPROT\tnatural_variant\t19\t19\t/
+FP 0 /^HBA_HUMAN\tSWISSPROT\tnatural_variant\t20\t20\t/
+FP  /\tID="HBA_HUMAN.4";note="ACETYLATION";comment="IN VARIANT THION/
 FP  /THIONVILLE; WHERE THE INITIATOR MET IS NOT CLEAVED"\n/
 //
 
@@ -2077,9 +2081,10 @@ IN tsw:actb1_fugru
 IN
 IN
 FI actb1_fugru.antigenic
-FP /^##Type Protein ACTB1_FUGRU\n/
-FZ > 100
-FC > 5
+FP /^##sequence-region ACTB1_FUGRU 1 375\n/
+FP /^#!Type Protein\n/
+FP /^ACTB1_FUGRU\tantigenic\tpolypeptide_region\t214\t222\t1\.207\t\+\t\.\tID="ACTB1_FUGRU\.1";note="\*pos 218"\n/
+FC = 23
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -2358,7 +2363,7 @@ FZ = 375
 FP /\A>PAAMIR_1_7\n/
 FP /^PPARRRWRRWRVTWQRGRWWSRLTSPASIRPPAGPSSRPAMVSSRRTRPSPPGPRRPTGR\n/
 FI paamir_1.gff
-FC = 4
+FC = 6
 FP /^PAAMIR_1\t\S+\t\S+\t278\t634\t0\.000/
 //
 
@@ -9902,7 +9907,7 @@ ID extractfeat-ex5
 UC To write out the 7 residues around all phosphorylated serine residues
 ## in the tsw database
 AP extractfeat
-CL tsw:*  -type mod_res -value phosphoserine* -before 3 -after -4
+CL tsw:*  -type post_translational_modification -value phosphoserine* -before 3 -after -4
 IN
 FI stderr
 FC = 2
@@ -9910,12 +9915,12 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI edd1_rat.fasta
-FZ = 321
+FZ = 465
 FP 6 /^>/
-FP 6 /\[mod_res\]/
-FP /^>OPSD_HUMAN_343_343 \[mod_res\] Rhodopsin \(Opsin-2\)\.\n/
+FP 6 /\[post_translational_modification\]/
+FP /^>OPSD_HUMAN_343_343 \[post_translational_modification\] Rhodopsin \(Opsin-2\)\.\n/
 FP /^TETSQVA\n/
-FP /^>PAXI_HUMAN_109_109 \[mod_res\] Paxillin\.\n/
+FP /^>PAXI_HUMAN_109_109 \[post_translational_modification\] Paxillin\.\n/
 FP /^SPCSRVG\n/
 //
 
@@ -10281,10 +10286,10 @@ ID feat-pir-togff
 AP seqret
 CL -feat ../../data/featprot.fasta -ufo ../../data/feat.pir gff::test.out -auto
 FI test.out
-FZ = 5136
+FZ = 5169
 ## active site two locations with copied annotation (note and comment)
-FP /^OPSD_HUMAN\tPIR\tactive_site_residue\t38\t38\t0\.000\t\+\t\.\tSequence "OPSD_HUMAN\.11" ; note "Cys, His" ; comment "status experimental"\n/
-FP /^OPSD_HUMAN\tPIR\tactive_site_residue\t90\t90\t0\.000\t\+\t\.\tSequence "OPSD_HUMAN\.11" ; FeatFlags "0x4"\n/
+FP /^OPSD_HUMAN\tPIR\tactive_site_residue\t38\t38\t0\.000\t\+\t\.\tID="OPSD_HUMAN\.11";note="Cys, His";comment="status experimental"\n/
+FP /^OPSD_HUMAN\tPIR\tactive_site_residue\t90\t90\t0\.000\t\+\t\.\tID="OPSD_HUMAN\.11";featflags="0x4"\n/
 //
 
 ID feat-pir-topir
@@ -10309,18 +10314,18 @@ ID feat-swiss-topir
 AP seqret
 CL -feat tsw:laci_ecoli pir::test.out -auto
 FI test.out
-FZ = 1817
-FP /^F;6-25\/Binding site: H-T-H motif, SO:0000417_dna_bind\n/
-FP /^F;74-89\/Region: SO:0001117_helix\n/
+FZ = 1658
+FP /^F;6-25\/Binding site: H-T-H motif, polypeptide_domain\n/
+FP /^F;74-89\/Region: alpha_helix\n/
 //
 
 ID feat-swiss-togff
 AP seqret
 CL -feat tsw:laci_ecoli gff::test.out -auto
 FI test.out
-FZ = 3263
-FP /^LACI_ECOLI\tSWISSPROT\tDNA_bind\t6\t25\t0\.000\t\+\t\.\tSequence "LACI_ECOLI\.3" ; note "H-T-H motif"\n/
-FP /^LACI_ECOLI\tSWISSPROT\thelix\t74\t89\t0\.000\t\+\t\.\tSequence "LACI_ECOLI\.9"\n/
+FZ = 3217
+FP /^LACI_ECOLI\tSWISSPROT\tpolypeptide_domain\t6\t25\t0\.000\t\+\t\.\tID="LACI_ECOLI\.3";note="H-T-H motif"\n/
+FP /^LACI_ECOLI\tSWISSPROT\talpha_helix\t74\t89\t0\.000\t\+\t\.\tID="LACI_ECOLI\.9"\n/
 //
 
 ID garnier-ex
@@ -12061,7 +12066,9 @@ FI polydot.ps
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 FI globins.gff
-FP /HBB_HUMAN\s+wordmatch\s+region\s+88\s+111\s+1\.000\s+[+]\s+\.\s+Sequence "HBB_HUMAN\.1" ; note "HBB_HORSE"\n/
+FC = 63
+FP 7 /^##sequence-region /
+FP /HBB_HUMAN\s+wordmatch\s+polypeptide_region\s+88\s+111\s+1\.000\s+[+]\s+\.\s+ID="HBB_HUMAN\.1";note="HBB_HORSE"\n/
 //
 
 ID preg-ex
@@ -14638,20 +14645,22 @@ ID seqret-outmultiusa-gffprot
 AP seqret
 CL -auto ../../data/prot.m-swiss gff::test.out
 FI test.out
-FZ = 543
-FP 3 /^##Protein SWISSM[1-3]\n/
-FP 1 /^##Protein SWISSM2\n/
-FP 3 /^##Protein /
+FZ = 759
+FP 3 /^#!Type Protein\n/
+FP 3 /^##sequence-region SWISSM[1-3] 1 \d+\n/
+FP 1 /^##sequence-region SWISSM2 1 80\n/
+FP 3 /^#!Type Protein\n/
 //
 
 ID seqret-outmulti-gffprot
 AP seqret
 CL -auto ../../data/prot.m-swiss test.out -osf gff
 FI test.out
-FZ = 543
-FP 3 /^##Protein SWISSM[1-3]\n/
-FP 1 /^##Protein SWISSM2\n/
-FP 3 /^##Protein /
+FZ = 759
+FP 3 /^#!Type Protein\n/
+FP 3 /^##sequence-region SWISSM[1-3] 1 \d+\n/
+FP 1 /^##sequence-region SWISSM2 1 80\n/
+FP 3 /^#!Type Protein\n/
 //
 
 ID seqret-outmultiusa-hennig86
@@ -17092,8 +17101,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI laci_ecoli.showpep 
-FZ = 1246
-FP 1 /^\s+\|=+\|\n\s+domain note="/
+FZ = 1288
+FP 2 /^\s+\|=+\|\n\s+polypeptide_domain note="/
 FP 2 /^\s+\|\n\s+mutagen note="/
 //
 
@@ -17148,7 +17157,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI rs24_fugru.showpep
-FZ = 1270
+FZ = 1297
 FP /^          MAATVT/
 //
 
@@ -17212,7 +17221,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI laci_ecoli.showpep
-FZ = 1666
+FZ = 1708
 FP /binding site/
 FP /^                          SNP  SNP\n/
 //
@@ -18467,11 +18476,11 @@ FP /^ +5 HBA_HUMAN +[+] +59\.\.63 +HBB_HUMAN +[+] +64\.\.68\n/
 FP /^ +4 HBA_HUMAN +[+] +15\.\.18 +HBB_HUMAN +[+] +16\.\.19\n/
 FP /^ +4 HBA_HUMAN +[+] +117\.\.120 +HBB_HUMAN +[+] +122\.\.125\n/
 FI HBA_HUMAN.gff
-FZ = 318
-FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
+FZ = 382
+FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 318
-FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
+FZ = 382
+FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 //
 
 ID wossname-ex
@@ -19976,11 +19985,11 @@ FP 1 /^                     \|\|\|\|\|\n/
 FP 2 /^                     \|\|\|\|\n/
 FP 1 /^HBB_HUMAN         64 HGKKV     68\n/
 FI HBA_HUMAN.gff
-FZ = 318
-FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
+FZ = 382
+FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 318
-FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
+FZ = 382
+FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 //
 
 ID align-wordmatch-srspair
@@ -20002,11 +20011,11 @@ FP 1 /^                     \|\|\|\|\|\n/
 FP 2 /^                     \|\|\|\|\n/
 FP 1 /^HBB_HUMAN         64 HGKKV     68\n/
 FI HBA_HUMAN.gff
-FZ = 318
-FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
+FZ = 382
+FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 318
-FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
+FZ = 382
+FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 //
 
 ID align-wordmatch-markx0
@@ -20028,11 +20037,11 @@ FP 1 /^       :::::\n/
 FP 1 /^HBB_HU HGKKV\n/
 FP 1 /^       60   \n/
 FI HBA_HUMAN.gff
-FZ = 318
-FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
+FZ = 382
+FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 318
-FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
+FZ = 382
+FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 //
 
 ID align-wordmatch-markx1
@@ -20055,11 +20064,11 @@ FP 2 /^           \n/
 FP 1 /^HBB_HU HGKKV\n/
 FP 1 /^       60   \n/
 FI HBA_HUMAN.gff
-FZ = 318
-FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
+FZ = 382
+FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 318
-FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
+FZ = 382
+FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 //
 
 ID align-wordmatch-markx2
@@ -20081,11 +20090,11 @@ FP 1 /^HBA_HU HGKKV\n/
 FP 1 /^HBB_HU -----\n/
 FP 2 /^HBB_HU ----\n/
 FI HBA_HUMAN.gff
-FZ = 318
-FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
+FZ = 382
+FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 318
-FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
+FZ = 382
+FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 //
 
 ID align-wordmatch-markx3
@@ -20105,11 +20114,11 @@ FZ > 608
 FP 1 /^>HBA_HUMAN \.\.\nHGKKV\n/
 FP 1 /^>HBB_HUMAN \.\.\nHGKKV\n/
 FI HBA_HUMAN.gff
-FZ = 318
-FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
+FZ = 382
+FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 318
-FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
+FZ = 382
+FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 //
 
 ID align-wordmatch-markx10
@@ -20138,11 +20147,11 @@ FP 1 /^; al_start: 64\n/
 FP 1 /^; al_stop: 68\n/
 FP 1 /^; al_display_start: 64\n/
 FI HBA_HUMAN.gff
-FZ = 318
-FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
+FZ = 382
+FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 318
-FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
+FZ = 382
+FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 //
 
 ID align-merger-fasta
