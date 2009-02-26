@@ -4746,12 +4746,6 @@ static void seqWriteGff2(AjPSeqout outseq)
 
 static void seqWriteGff3(AjPSeqout outseq)
 {
-    if(ajStrMatchC(outseq->Type, "P"))
-    {
-        seqWriteGff2(outseq);
-        return;
-    }
-    
     if(seqoutUfoLocal(outseq))
     {
 	ajFeattabOutDel(&outseq->Ftquery);
