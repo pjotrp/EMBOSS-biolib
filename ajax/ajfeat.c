@@ -291,6 +291,8 @@ static const AjPStr featTableTypeExternal(const AjPStr type,
 					  const AjPTable table);
 static const AjPStr featTableTypeInternal(const AjPStr type,
 					  const AjPTable table);
+static const AjPStr featTableTypeInternalLimit(const AjPStr type,
+                                               const AjPTable table);
 static AjBool       feattableWriteEmbl(const AjPFeattable Feattab,
 				       AjPFile file,
 				       AjBool IsEmbl);
@@ -354,9 +356,11 @@ static FeatPTagval  featTagvalNew(const AjPFeature thys,
 static FeatPTagval  featTagvalNewDna(const AjPStr tag, const AjPStr value);
 static FeatPTagval  featTagvalNewProt(const AjPStr tag, const AjPStr value);
 static const AjPStr featTypeDna(const AjPStr type);
+static const AjPStr featTypeDnaLimit(const AjPStr type);
 static AjBool       featTypePirIn(AjPStr* type);
 static AjBool       featTypePirOut(AjPStr* type);
 static const AjPStr featTypeProt(const AjPStr type);
+static const AjPStr featTypeProtLimit(const AjPStr type);
 static AjBool       featVocabRead(const char *name,
 				  AjPTable pTypeTable, AjPTable pTagsTable);
 static AjBool       featVocabReadTypes(const AjPStr fname,
@@ -1699,7 +1703,7 @@ static AjPFeature featFeatNew(AjPFeattable thys,
     AjPFeature ret          = NULL;
     static ajint maxexon    = 0;
     
-    /* ajDebug("featFeatNew %d %d '%c'\n", Start, End, strand);*/
+    ajDebug("featFeatNew %d %d '%c' type: '%S'\n", Start, End, strand, type);
 
     if(!featDefSource)
 	ajStrAssignS(&featDefSource, ajAcdGetProgram());
@@ -1743,6 +1747,7 @@ static AjPFeature featFeatNew(AjPFeattable thys,
     else
 	ajStrAssignS(&ret->Type, featTypeDna(type));
     
+    ajDebug("featFeatNew feature type '%S' => '%S'\n", type, ret->Type);
     ret->Score = score;
     
     ret->Flags = flags;
@@ -1814,7 +1819,7 @@ static AjPFeature featFeatNewProt(AjPFeattable thys,
     if(!featDefSource)
 	ajStrAssignS(&featDefSource, ajAcdGetProgram());
     
-    /*ajDebug("\nfeatFeatNewProt '%S' %d .. %d %x\n", type, Start, End, flags);*/
+    ajDebug("\nfeatFeatNewProt '%S' %d .. %d %x\n", type, Start, End, flags);
     
     if(!ajStrGetLen(type))
 	return NULL;
@@ -1842,6 +1847,7 @@ static AjPFeature featFeatNewProt(AjPFeattable thys,
 	ajStrAssignS(&ret->Source, featDefSource);
     
     ajStrAssignS(&ret->Type, featTypeProt(type));
+    ajDebug("featFeatNewProt feature type '%S' => '%S'\n", type, ret->Type);
     
     ret->Score = score;
     
@@ -5185,9 +5191,6 @@ AjBool ajFeattableWriteGff3(AjPFeattabOut ftout, const AjPFeattable Feattab)
     if(!file)
 	return ajFalse;
     
-    if(ajStrMatchC(Feattab->Type, "P")) /* until GFF3 protein works */
-        return ajFeattableWriteGff2(ftout, Feattab);
-    
     /* Print GFF3-specific header first with ## tags */
 
     ajFmtPrintF(file, "##gff-version 3\n") ;
@@ -8220,6 +8223,7 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 		    ajStrDel(&TypeFName);
                     ajStrDel(&firstid);
                     ajStrDel(&savetype);
+                    ajStrDel(&sofaname);
                     return ajFalse;
 		}
 		typecount = ajTableGetLength(pTypeTable);
@@ -8236,6 +8240,7 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 		    ajStrDel(&TypeFName);
                     ajStrDel(&firstid);
                     ajStrDel(&savetype);
+                    ajStrDel(&sofaname);
 		    return ajFalse;
 		}
 		typecount = ajTableGetLength(pTypeTable);
@@ -8251,15 +8256,14 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 		       ajStrGetLen(savetype)) /* save previous type and tags */
 		    {
 			ajDebug("%S %d saved '%S' as '%S'\n",
-			fname, typecount, savetype, typtagstr);
+                                fname, typecount, savetype, typtagstr);
 			ajDebug("+type %S='%S'\n",
-                          savetype, typtagstr);
+                                savetype, typtagstr);
 /*
 			tablestr = ajTablePut(pTypeTable,
 					      savetype, typtagstr);
 */
-			tablestr = ajTableFetch(pTypeTable,
-                                                savetype);
+			tablestr = ajTableFetch(pTypeTable, savetype);
                         if(tablestr)
                         {
                             if(recursion)
@@ -8275,14 +8279,15 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
                             {
                                 ajDebug("found savetype '%S' with value '%S'\n",
                                        savetype, tablestr);
-                                ajStrDel(&typtagstr);
-                                ajStrDel(&savetype);
                             }
+                            ajStrDel(&typtagstr);
+                            ajStrDel(&savetype);
                         }
                         else
                         {
                             ajTablePut(pTypeTable, savetype, typtagstr);
                             typtagstr = NULL;
+                            savetype = NULL;
                         }
 		    }
 
@@ -8293,21 +8298,23 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 			    ajStrAssignClear(&type);
 			ajStrAssignS(&localname, type);
 			ajStrAssignS(&sofaname, intids);
-			tablestr = ajTablePut(pTypeTable,
-					      localname,
-					      sofaname);
+			tablestr = ajTableFetch(pTypeTable, localname);
 			if(tablestr)
 			{
 			    ajDebug("%S duplicate alias type "
 				  "%S='%S' already defined as '%S'\n",
 				  fname, localname,
 				  sofaname, tablestr);
-			    ajStrDel(&tablestr);
 			    ajStrDel(&localname);
 			}
-			localname = NULL;
-			sofaname = NULL;
-			
+                        else
+                        {
+                            ajTablePut(pTypeTable, localname,
+                                       sofaname);
+                            localname = NULL;
+                            sofaname = NULL;
+			}
+
 			Ptyptagstr = ajTablestrFetchmod(pTypeTable, intids);
                         if(!Ptyptagstr)
                             ajWarn("%S undefined internal ID '%S'",
@@ -8318,8 +8325,9 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 			else
 			    ajStrInsertK(Ptyptagstr, 0, ';');
 			ajStrInsertS(Ptyptagstr, 0, type);
+                        ajStrDel(&savetype);
 			savetype  = type;
-                        type = NULL; /* pmr: check if this should be NULL now */
+                        type = NULL;
 			typtagstr = *Ptyptagstr;
                         taginternal = ajTrue;
 		    }
@@ -8337,8 +8345,7 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 			    fname, typecount, type);
 			    ajDebug("+type (default) %S='%S'\n",
 				    defname, typtagstr);
-			    tablestr = ajTablePut(pTypeTable,
-						  defname, typtagstr);
+			    tablestr = ajTableFetch(pTypeTable, defname);
 			    if(tablestr)
                             {
                                 ajDebug("ERROR:%S duplicate type %S='%S' "
@@ -8347,8 +8354,16 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 				ajErr("%S duplicate type %S='%S' "
                                       "already defined as '%S'",
 				      fname, defname, typtagstr, tablestr);
+                                ajStrDel(&typtagstr);
+                                ajStrDel(&defname);
                             }
-			    typtagstr = NULL;
+                            else
+                            {
+                                ajTablePut(pTypeTable, defname, typtagstr);
+                                typtagstr = NULL;
+                                defname = NULL;
+                            }
+                            
 			}
 			ismodtype = ajFalse;		    
 			/*
@@ -8374,10 +8389,10 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 				    ajStrAssignS(&localname, storetype);
 				    ajStrAssignS(&sofaname, firstid);
 				    ajDebug("%S sofaid "
-				    "'%S' = '%S'\n",
-				    fname,localname, sofaname);
+                                            "'%S' = '%S'\n",
+                                            fname,localname, sofaname);
 				    ajDebug("+type (alias) %S='%S'\n",
-                                      localname, sofaname);
+                                            localname, sofaname);
 				    tablestr = ajTableFetch(pTypeTable,
                                                             localname);
 				    if(tablestr)
@@ -8393,12 +8408,13 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
                                                   fname, localname,
                                                   sofaname, tablestr);
                                         }
+                                        ajStrDel(&localname);
+                                        ajStrDel(&sofaname);
                                     }
-
                                     else
                                     {
-                                        ajTablePut(pTypeTable, localname,
-                                                   sofaname);
+                                        ajTablePut(pTypeTable,
+                                                   localname, sofaname);
                                         localname = NULL;
                                         sofaname = NULL;
                                         storetype  = sofaid;
@@ -8409,6 +8425,7 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 			    }
 			    ajStrInsertS(&typtagstr, 0, type);
 			    ajStrAssignClear(&type);
+                            ajStrDel(&savetype);
 			    savetype  = firstid;
 			    firstid = NULL;
 			    sofaid = NULL;
@@ -8416,6 +8433,7 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 			}
 			else
 			{
+                            ajStrDel(&savetype);
 			    savetype  = type;
 			    type      = NULL;
 			    ajStrAssignClear(&intids);
@@ -8468,8 +8486,8 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
     if(filetypecount > 0)		/* save the last feature type */
     {
 	ajDebug("+type (final) %S='%S'\n",
-          savetype, typtagstr);
-	tablestr = ajTablePut(pTypeTable, savetype, typtagstr);
+                savetype, typtagstr);
+	tablestr = ajTableFetch(pTypeTable, savetype);
 	if(tablestr)
         {
             if(recursion)
@@ -8479,11 +8497,16 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
                 ajErr("%S: duplicate type %S='%S' already defined as '%S'",
                       fname, savetype, typtagstr, tablestr);
             }
+            ajStrDel(&typtagstr);
+            ajStrDel(&savetype);
         }
-	typtagstr = NULL;
-	savetype  = NULL;
+        else 
+        {
+            ajTablePut(pTypeTable, savetype, typtagstr);
+            typtagstr = NULL;
+            savetype = NULL;
+        }
     }
-    
     
     ajFileClose(&TypeFile);
    
@@ -10188,6 +10211,48 @@ static const AjPStr featTypeProt(const AjPStr type)
 
 
 
+/* @funcstatic featTypeDnaLimit ***********************************************
+**
+** Given a feature type name,
+** returns the valid feature type for the internal DNA feature table
+** following alternative names until a unique name is found
+**
+** @param [r]   type  [const AjPStr] Type name
+** @return [const AjPStr] Valid feature type
+** @@
+******************************************************************************/
+
+static const AjPStr featTypeDnaLimit(const AjPStr type)
+{
+    featInit();
+
+    return featTableTypeInternalLimit(type, FeatTypeTableDna);
+}
+
+
+
+
+/* @funcstatic featTypeProtLimit **********************************************
+**
+** Given a feature type name,
+** returns the valid feature type for the internal protein feature table
+** following alternative names until a unique name is found
+**
+** @param [r]   type  [const AjPStr] Type name
+** @return [const AjPStr] Valid feature type
+** @@
+******************************************************************************/
+
+static const AjPStr featTypeProtLimit(const AjPStr type)
+{
+    featInit();
+
+    return featTableTypeInternalLimit(type, FeatTypeTableProtein);
+}
+
+
+
+
 /* @funcstatic featTagDna *****************************************************
 **
 ** Given a feature tag name,
@@ -10294,7 +10359,7 @@ static const AjPStr featTableTypeExternal(const AjPStr type,
     }
 
     ret = (AjPStr) ajTableFetch(table, ajStrNew());
-    ajDebug("featTableTypeExternal '%S' not in internal table %x, "
+    ajDebug("featTableTypeExternal '%S' not in external table %x, "
 	    "default to '%S'\n", type, table, ret);
     /* ajTablestrTrace(table); */
 
@@ -10348,6 +10413,68 @@ static const AjPStr featTableTypeInternal(const AjPStr type,
     /* ajTablestrTrace(table); */
 
     /*ajDebug("featTableTypeInternal result '%S'\n",
+	     ret);*/
+    return ret;
+}
+
+
+
+
+/* @funcstatic featTableTypeInternalLimit **************************************
+**
+** Given a feature type name,
+** returns the valid feature type for a feature table
+** following alternative names which are commn in the internal table
+** which is a combination of multiple definitions
+**
+** @param [r]   type  [const AjPStr] Type name
+** @param [r]   table [const AjPTable]  Feature table
+** @return [const AjPStr] Valid feature type
+** @@
+******************************************************************************/
+
+static const AjPStr featTableTypeInternalLimit(const AjPStr type,
+                                               const AjPTable table)
+{
+    static const AjPStr ret = NULL;
+    static const AjPStr retkey = NULL;
+    static const AjPStr tmpstr = NULL;
+    static const AjPStr savekey = NULL;
+    ajuint i = 0;
+
+    retkey = (const AjPStr) ajTableFetchKey(table, type);
+    while(retkey && i < 5)
+    {
+        savekey = retkey;
+	tmpstr = (AjPStr)ajTableFetch(table, retkey);
+	ajDebug("featTableTypeInternalLimit '%S' found in internal table"
+                " as '%S' (%S)\n",type, retkey, tmpstr);
+	if(ajStrGetCharLast(tmpstr) != ';')
+	{
+	    ajDebug("featTableTypeInternalLimit '%S' is an alias for '%S'\n",
+		 retkey, tmpstr);
+	    retkey = (const AjPStr) ajTableFetchKey(table, tmpstr);
+	}
+        else 
+        {
+           tmpstr = (AjPStr)ajTableFetch(table, retkey);
+           retkey = (const AjPStr) ajTableFetchKey(table, tmpstr);
+           if(ajStrMatchS(retkey, savekey))
+               retkey = NULL;
+	}
+	ajDebug("featTableTypeInternalLimit result %u '%S'\n",
+                ++i, savekey);
+    }
+    if(savekey)
+        return savekey;
+
+    ret = (AjPStr) ajTableFetch(table, ajStrNew());
+    ajDebug("featTableTypeInternalLimit '%S' not in internal table %x, "
+	    "default to '%S'\n", type, table, ret);
+
+    /* ajTablestrTrace(table); */
+
+    /*ajDebug("featTableTypeInternalLimit result '%S'\n",
 	     ret);*/
     return ret;
 }
@@ -12698,7 +12825,7 @@ static void featDumpPir(const AjPFeature thys, const AjPStr location,
     AjIList iter  = NULL;
     AjPStr outtyp = NULL;		/* these come from AjPTable */
     const AjPStr outtag = NULL;		/* so please, please */
-    /* don't delete them */
+                                        /* don't delete them */
     AjPStr outcomm = NULL;
     AjPStr outfmt  = NULL;
     FeatPTagval tv        = NULL;
@@ -12717,8 +12844,9 @@ static void featDumpPir(const AjPFeature thys, const AjPStr location,
     /* if changed, we append the original internal type */
     if(typmod)
     {
-	ajDebug("typmod %B append ', %S'\n", typmod, copy->Type);
-	ajFeatSetDescApp(copy, copy->Type);
+	ajDebug("typmod %B append ', %S'\n",
+                typmod, ajFeatTypeProt(copy->Type));
+	ajFeatSetDescApp(copy, ajFeatTypeProt(copy->Type));
     }
 
 /* make sure it's PIR */
@@ -13725,6 +13853,44 @@ AjBool ajFeatTypeIsCds(const AjPFeature gf)
 	return ajTrue;
 
     return ajFalse;
+}
+
+
+
+
+/* @func ajFeatTypeMatch ******************************************************
+**
+** Tests whether the feature type matches a given string
+** including testing for alternative names
+**
+** @param [r] gf       [const AjPFeature]  Feature
+** @param [r] str      [const AjPStr]  Feature type name to test
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+AjBool ajFeatTypeMatch(const AjPFeature gf, const AjPStr str)
+{
+    AjBool ret = ajFalse;
+
+    if(ajStrMatchS(gf->Type, str))
+	return ajTrue;
+
+    if(gf->Protein)
+    {
+	ret =   ajStrMatchS(featTypeProtLimit(gf->Type),featTypeProtLimit(str));
+        ajDebug("ajFeatTypeMatch: %B '%S' prot: '%S' <=> '%S'\n",
+                ret, str, featTypeProtLimit(str), gf->Type);
+    }
+    
+    else
+    {
+	ret =   ajStrMatchS(featTypeDnaLimit(gf->Type),featTypeDnaLimit(str));
+        ajDebug("ajFeatTypeMatch: %B '%S' dna: '%S' <=> '%S'n",
+                ret, str, featTypeDnaLimit(str), gf->Type);
+    }
+
+    return ret;
 }
 
 
