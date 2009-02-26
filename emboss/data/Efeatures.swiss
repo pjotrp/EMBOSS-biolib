@@ -60,7 +60,7 @@
 
 # REGION - Extent of a region of interest in the sequence
 
-REGION  SO:0000839_region
+REGION  SO:0000839
 	/note
 	/comment
 
@@ -121,7 +121,7 @@ CARBOHYD SO:0001089_carbohyd
 # to the nucleotide sequence databases have provided this information
 # for processed proteins.
 
-CHAIN   SO:0000419_chain
+CHAIN   SO:0000419
 	/note
 	/comment
 	/ftid
@@ -129,7 +129,7 @@ CHAIN   SO:0000419_chain
 
 # COILED - Extent of a coiled-coil region
 
-COILED  SO:0001080_coiled
+COILED  SO:0001080
 	/note
 	/comment
 
@@ -142,7 +142,7 @@ COMPBIAS SO:0001066
 # CONFLICT - Different papers report differing sequences.
 # note usually begins MISSING or SEQ -> NEW (description optional)
 
-CONFLICT SO:0001085_conflict
+CONFLICT SO:0001085
 	/note
 	/comment
 
@@ -181,13 +181,13 @@ DNA_BIND SO:0000417_dna_bind
 # The domain type is given in the description field. If there exist
 #   several copies of a domain, the domains are numbered.
 
-DOMAIN  SO:0000417_domain
+DOMAIN  SO:0000417
 	/note
 	/comment
 
 # HELIX -  DSSP secondary structure
 
-HELIX   SO:0001117_helix
+HELIX   SO:0001117
 	/note
 	/comment
 
@@ -287,7 +287,7 @@ MOTIF   SO:0001067_motif
 # MUTAGEN - Site which has been experimentally altered.
 # mutagen note usually SEQ ->NEW: description or "Missing: functional change"
 
-MUTAGEN
+MUTAGEN SO:0001148
 	/note
 	/comment
 
@@ -356,7 +356,7 @@ SIGNAL  SO:0000418
 
 # SIMILAR - Extent of a similarity with another protein sequence.
 
-SIMILAR
+SIMILAR SO:0000857
 	/note
 	/comment
 
@@ -367,13 +367,13 @@ SIMILAR
 # amino acids.
 
 
-SITE    SO:0000839
+SITE    SO:0000839_site
 	/note
 	/comment
 
 # STRAND -  DSSP secondary structure
 
-STRAND  SO:0001111_strand
+STRAND  SO:0001111
 	/note
 	/comment
 
@@ -381,7 +381,7 @@ STRAND  SO:0001111_strand
 # The  'FROM' and 'TO' endpoints represent the two residues which are linked
 # by the thioether bond.
 
-THIOETH
+THIOETH SO:0001087_thioeth
 	/note
 	/comment
 
@@ -389,7 +389,7 @@ THIOETH
 # The  'FROM' and 'TO' endpoints represent the two residues which are linked
 # by the thiolester bond.
 
-THIOLEST
+THIOLEST SO:0001087_thiolest
 	/note
 	/comment
 
@@ -460,6 +460,3 @@ VARSPLIC SO:0001147_varsplic
 ZN_FING  SO:0000409_zn_fing
 	/note
 	/comment
-
-
-
