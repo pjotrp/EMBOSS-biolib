@@ -278,22 +278,14 @@ static void reportWriteTrace(AjPReport thys, const AjPFeattable ftable,
 static void reportWriteEmbl(AjPReport thys,
 			    const AjPFeattable ftable, const AjPSeq seq)
 {
-    static AjPStr ftfmt = NULL;
-
-    if(!ftfmt)
-	ajStrAssignC(&ftfmt, "embl");
-
-   /*  ajFmtPrintF(thys->File, "#EMBL output\n"); */
+    /*  ajFmtPrintF(thys->File, "#EMBL output\n"); */
 
     ajFeattabOutDel(&thys->Ftquery);
-    thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetNameS(seq),
+    thys->Ftquery = ajFeattabOutNewCSF("embl", ajSeqGetNameS(seq),
 				       ajStrGetPtr(thys->Type),
 				       thys->File);
     if(!ajFeatWrite(thys->Ftquery, ftable))
-	ajWarn("ajReportWriteEmbl features output failed format: '%S'",
-	       ftfmt);
-
-    ajStrDel(&ftfmt);
+	ajWarn("ajReportWriteEmbl features output failed format: 'embl'");
 
     return;
 }
@@ -315,23 +307,15 @@ static void reportWriteEmbl(AjPReport thys,
 static void reportWriteGenbank(AjPReport thys,
 			       const AjPFeattable ftable, const AjPSeq seq)
 {
-    static AjPStr ftfmt = NULL;
-
-    if(!ftfmt)
-	ajStrAssignC(&ftfmt, "genbank");
-
     /* ajFmtPrintF(thys->File, "#Genbank output\n"); */
 
     ajFeattabOutDel(&thys->Ftquery);
-    thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetNameS(seq),
+    thys->Ftquery = ajFeattabOutNewCSF("genbank", ajSeqGetNameS(seq),
 				       ajStrGetPtr(thys->Type),
 				       thys->File);
 
     if(!ajFeatWrite(thys->Ftquery, ftable))
-	ajWarn("ajReportWriteGenbank features output failed format: '%S'",
-	       ftfmt);
-
-    ajStrDel(&ftfmt);
+	ajWarn("ajReportWriteGenbank features output failed format: 'genbank'");
 
     return;
 }
@@ -353,21 +337,13 @@ static void reportWriteGenbank(AjPReport thys,
 static void reportWriteGff(AjPReport thys,
 			   const AjPFeattable ftable, const AjPSeq seq)
 {
-    AjPStr ftfmt = NULL;
-
-    if(!ftfmt)
-	ajStrAssignC(&ftfmt, "gff");
-
     ajFeattabOutDel(&thys->Ftquery);
-    thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetNameS(seq),
+    thys->Ftquery = ajFeattabOutNewCSF("gff", ajSeqGetNameS(seq),
 				       ajStrGetPtr(thys->Type),
 				       thys->File);
 
     if(!ajFeatWrite(thys->Ftquery, ftable))
-	ajWarn("ajReportWriteGff features output failed format: '%S'",
-	       ftfmt);
-
-    ajStrDel(&ftfmt);
+	ajWarn("ajReportWriteGff features output failed format: 'gff'");
 
     return;
 }
@@ -389,20 +365,12 @@ static void reportWriteGff(AjPReport thys,
 static void reportWritePir(AjPReport thys,
 			   const AjPFeattable ftable, const AjPSeq seq)
 {
-    static AjPStr ftfmt = NULL;
-
-    if(!ftfmt)
-	ajStrAssignC(&ftfmt, "pir");
-
     ajFeattabOutDel(&thys->Ftquery);
-    thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetNameS(seq),
+    thys->Ftquery = ajFeattabOutNewCSF("pir", ajSeqGetNameS(seq),
 				       ajStrGetPtr(thys->Type),
 				       thys->File);
     if(!ajFeatWrite(thys->Ftquery, ftable))
-	ajWarn("ajReportWritePir features output failed format: '%S'",
-	       ftfmt);
-
-    ajStrDel(&ftfmt);
+	ajWarn("ajReportWritePir features output failed format: 'pir'");
 
     return;
 }
@@ -424,20 +392,12 @@ static void reportWritePir(AjPReport thys,
 static void reportWriteSwiss(AjPReport thys,
 			     const AjPFeattable ftable, const AjPSeq seq)
 {
-    static AjPStr ftfmt = NULL;
-
-    if(!ftfmt)
-	ajStrAssignC(&ftfmt, "swissprot");
-
     ajFeattabOutDel(&thys->Ftquery);
-    thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetNameS(seq),
+    thys->Ftquery = ajFeattabOutNewCSF("swissprot", ajSeqGetNameS(seq),
 				       ajStrGetPtr(thys->Type),
 				       thys->File);
     if(!ajFeatWrite(thys->Ftquery, ftable))
-	ajWarn("ajReportWriteSwiss features output failed format: '%S'",
-	       ftfmt);
-
-    ajStrDel(&ftfmt);
+	ajWarn("ajReportWriteSwiss features output failed format: 'swissprot'");
 
     return;
 }
@@ -459,20 +419,17 @@ static void reportWriteSwiss(AjPReport thys,
 static void reportWriteDasgff(AjPReport thys,
                               const AjPFeattable ftable, const AjPSeq seq)
 {
-    static AjPStr ftfmt = NULL;
-
-    if(!ftfmt)
-	ajStrAssignC(&ftfmt, "dasgff");
-
-    ajFeattabOutDel(&thys->Ftquery);
-    thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetNameS(seq),
-				       ajStrGetPtr(thys->Type),
-				       thys->File);
+    if(!thys->CountSeq)
+    {
+        ajFeattabOutDel(&thys->Ftquery);
+        thys->Ftquery = ajFeattabOutNewCSF("dasgff", ajSeqGetNameS(seq),
+                                           ajStrGetPtr(thys->Type),
+                                           thys->File);
+    }
+    else
+        ajFeattabOutSetSeqname(thys->Ftquery, ajSeqGetNameS(seq));
     if(!ajFeatWrite(thys->Ftquery, ftable))
-	ajWarn("ajReportWriteDasgff features output failed format: '%S'",
-	       ftfmt);
-
-    ajStrDel(&ftfmt);
+	ajWarn("ajReportWriteDasgff features output failed format: 'dasgff'");
 
     return;
 }
