@@ -169,6 +169,7 @@ AjBool        ajFeattabOutOpen (AjPFeattabOut thys, const AjPStr ufo);
 AjBool        ajFeattabOutSet (AjPFeattabOut thys, const AjPStr ufo);
 void          ajFeattabOutSetBasename (AjPFeattabOut thys,
 				       const AjPStr basename);
+AjBool        ajFeattabOutSetSeqname(AjPFeattabOut thys, const AjPStr name);
 AjBool        ajFeattabOutSetType(AjPFeattabOut thys, const AjPStr type);
 AjBool        ajFeattabOutSetTypeC(AjPFeattabOut thys, const char* type);
 AjBool        ajFeatTagAdd (AjPFeature thys,

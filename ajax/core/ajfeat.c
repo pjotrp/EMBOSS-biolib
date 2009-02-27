@@ -1180,6 +1180,28 @@ void ajFeattabOutSetBasename(AjPFeattabOut thys, const AjPStr basename)
 
 
 
+/* @func ajFeattabOutSetSeqname ************************************************
+**
+** Processes the specified UFO, and specifies the resulting output file.
+**
+** @param [u] thys [AjPFeattabOut] Features table output object
+** @param [r] name [const AjPStr] UFO feature output specifier
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+AjBool ajFeattabOutSetSeqname(AjPFeattabOut thys, const AjPStr name)
+{
+   /* ajDebug("ajFeattabOutSet ufo:'%S' dir:'%S' file:'%S'\n",
+	    ufo, thys->Directory, thys->Filename);*/
+    ajStrAssignS(&thys->Seqname, name);
+
+    return ajTrue;
+}
+
+
+
+
 /* @func ajFeattabOutNewCSF ***************************************************
 **
 ** Constructor for an empty feature table output object, using an
@@ -1201,7 +1223,7 @@ AjPFeattabOut ajFeattabOutNewCSF(const char* fmt, const AjPStr name,
     AjPFeattabOut pthis;
     ajint iformat = 0;
 
-    /*ajDebug("ajFeattabOutNewSSF '%S' '%S' '%s' '%F'\n",
+    /*ajDebug("ajFeattabOutNewCSF '%S' '%S' '%s' '%F'\n",
 	    fmt, name, type, file);*/
 
     if(!featFindOutFormatC(fmt, &iformat))
@@ -8176,6 +8198,7 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
     AjPStr sofaname  = NULL;
     AjPStr type      = NULL;
     AjPStr defname   = NULL;
+    AjPStr defid     = NULL;
     AjPStr typtagstr = NULL;
     AjPStr savetype  = NULL;
     AjPStr firstid   = NULL;
@@ -8196,6 +8219,7 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
     AjBool ismodtype = ajFalse;
     AjPStr* Ptyptagstr = NULL;
     AjBool taginternal = ajFalse;
+    AjBool newdefid    = ajFalse;
 
     TypeFile = ajDatafileNewInNameS(fname);
     if(!TypeFile)
@@ -8338,13 +8362,10 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 			if(typecount == 1)  /* type saved as "" default */
 			{
 			    defname   = NULL;
-			    typtagstr = NULL;
+			    defid = NULL;
 			    ajStrAssignClear(&defname);
-			    ajStrAssignS(&typtagstr, type);
-			    ajDebug("%S %d saved '%S'\n",
-			    fname, typecount, type);
-			    ajDebug("+type (default) %S='%S'\n",
-				    defname, typtagstr);
+			    ajStrAssignS(&defid, type);
+                            newdefid = ajTrue;
 			    tablestr = ajTableFetch(pTypeTable, defname);
 			    if(tablestr)
                             {
@@ -8359,8 +8380,7 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
                             }
                             else
                             {
-                                ajTablePut(pTypeTable, defname, typtagstr);
-                                typtagstr = NULL;
+                                ajTablePut(pTypeTable, defname, defid);
                                 defname = NULL;
                             }
                             
@@ -8380,7 +8400,13 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 			    storetype = type;
 			    while(sofaid)
 			    {
-				ajDebug("+type %B storetype:'%S' "
+                                if(newdefid)
+                                {
+                                    ajStrAssignS(&defid, sofaid);
+                                    newdefid = ajFalse;
+                                    defid = NULL;
+                                }
+                                ajDebug("+type %B storetype:'%S' "
 					"firstid:'%S'\n",
 					ajStrMatchCaseS(storetype, firstid),
 					storetype, firstid);
@@ -10313,58 +10339,56 @@ static const AjPStr featTableTypeExternal(const AjPStr type,
 {
     static const AjPStr ret = NULL;
     static const AjPStr retkey = NULL;
-    static AjPStr tmpstr = NULL;
+    AjPStr defaultid = NULL;
+    AjPStr tmpstr = NULL;
     ajint i;
 
     retkey = (const AjPStr) ajTableFetchKey(table, type);
-    if(retkey)
+    if(!retkey)
     {
-	ret = (AjPStr)ajTableFetch(table, retkey);
-	ajDebug("featTableTypeExternal a '%S' found in internal table as"
-		" '%S' = '%S\n", type, retkey, ret);
-	if(ajStrGetCharLast(ret) != ';')
-	{
-	    retkey = ret;
-	    ret = (AjPStr)ajTableFetch(table, retkey);
-	    ajDebug("featTableTypeExternal b '%S' found in internal table"
-		    " as '%S' = '%S\n", type, retkey, ret);
-	}
-	if(ajStrGetCharLast(ret) == ';')
-	{
-	    if(ajStrGetCharFirst(ret) == ';')
-	    {
-		ret = retkey;
-	    }
-	    else
-	    {
-		i = ajStrFindAnyK(ret, ';');
-		ajStrAssignSubS(&tmpstr, ret, 0, i-1);
-		ajDebug("featTableTypeExternal '%S' is an alias for '%S'\n",
-			retkey, tmpstr);
-		ret = (const AjPStr) ajTableFetchKey(table, tmpstr);
-		if(!ret)	  /* oops, back to the previous one */
-		{
-		    featWarn("featTableTypeExternal failed to find"
-			     " '%S' alias '%S",
-			     type, tmpstr);
-		    ret = (AjPStr)ajTableFetch(table, retkey);
-		}
-		ajStrDel(&tmpstr);
-	    }
-	}
-	ajDebug("featTableTypeExternal result '%S'\n",
-		ret);
-
-	return ret;
+        defaultid = ajStrNew();
+        retkey = (AjPStr) ajTableFetch(table, defaultid);
+        ajStrDel(&defaultid);
+        ajDebug("featTableTypeExternal '%S' not in external table %x, "
+                "use default '%S'\n", type, table, retkey);
     }
+    
+    ret = (AjPStr)ajTableFetch(table, retkey);
+    ajDebug("featTableTypeExternal a '%S' found in internal table as"
+            " '%S' = '%S\n", type, retkey, ret);
+    if(ajStrGetCharLast(ret) != ';')
+    {
+        retkey = ret;
+        ret = (AjPStr)ajTableFetch(table, retkey);
+        ajDebug("featTableTypeExternal b '%S' found in internal table"
+                " as '%S' = '%S\n", type, retkey, ret);
+    }
+    if(ajStrGetCharLast(ret) == ';')
+    {
+        if(ajStrGetCharFirst(ret) == ';')
+        {
+            ret = retkey;
+        }
+        else
+        {
+            i = ajStrFindAnyK(ret, ';');
+            ajStrAssignSubS(&tmpstr, ret, 0, i-1);
+            ajDebug("featTableTypeExternal '%S' is an alias for '%S'\n",
+                    retkey, tmpstr);
+            ret = (const AjPStr) ajTableFetchKey(table, tmpstr);
+            if(!ret)	  /* oops, back to the previous one */
+            {
+                featWarn("featTableTypeExternal failed to find"
+                         " '%S' alias '%S",
+                         type, tmpstr);
+                ret = (AjPStr)ajTableFetch(table, retkey);
+            }
+            ajStrDel(&tmpstr);
+        }
+    }
+    ajDebug("featTableTypeExternal result '%S'\n",
+            ret);
 
-    ret = (AjPStr) ajTableFetch(table, ajStrNew());
-    ajDebug("featTableTypeExternal '%S' not in external table %x, "
-	    "default to '%S'\n", type, table, ret);
-    /* ajTablestrTrace(table); */
-
-    ajDebug("featTableTypeExternal result (default) '%S'\n",
-	    ret);
     return ret;
 }
 
@@ -14000,7 +14024,7 @@ AjBool ajFeatIsCompMult(const AjPFeature gf)
 
 /* @func ajFeattabOutClear ****************************************************
 **
-** Resets a feature table output object
+** Clears all data for a feature table output object
 **
 ** @param [d] thys [AjPFeattabOut *] feature format
 ** @return [void] Feature table output object
@@ -14026,7 +14050,6 @@ void ajFeattabOutClear(AjPFeattabOut *thys)
 
     if(pthis->Cleanup)
         pthis->Cleanup(pthis->Handle);
-
     pthis->Cleanup = NULL;
     pthis->Count = 0;
 
