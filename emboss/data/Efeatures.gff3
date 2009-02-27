@@ -577,6 +577,8 @@ primer SO:0000112
 # A transcript which has undergone processing to remove parts such as
 # introns and transcribed_spacer_regions.
 
+primer_binding_site SO:0005850
+
 processed_transcript SO:0000233
 
 # http://www.ebi.ac.uk/embl/Documentation/FT_definitions/feature_table.html#line_types
