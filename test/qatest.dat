@@ -10233,7 +10233,7 @@ ID feat-embl-togff
 AP seqret
 CL -feat ../../data/feat.fasta -ufo ../../data/feat.emft gff::test.out -auto
 FI test.out
-FZ = 58770
+FZ = 58755
 ## Internal quotes
 FP /\tCDS\t1289\t1879\t0\.000\t\+\t0\tID="AB036666\.58";.* of \\"amiE\\" /
 //
@@ -10286,7 +10286,7 @@ ID feat-pir-togff
 AP seqret
 CL -feat ../../data/featprot.fasta -ufo ../../data/feat.pir gff::test.out -auto
 FI test.out
-FZ = 5169
+FZ = 5186
 ## active site two locations with copied annotation (note and comment)
 FP /^OPSD_HUMAN\tPIR\tactive_site_residue\t38\t38\t0\.000\t\+\t\.\tID="OPSD_HUMAN\.11";note="Cys, His";comment="status experimental"\n/
 FP /^OPSD_HUMAN\tPIR\tactive_site_residue\t90\t90\t0\.000\t\+\t\.\tID="OPSD_HUMAN\.11";featflags="0x4"\n/
@@ -10296,7 +10296,7 @@ ID feat-pir-topir
 AP seqret
 CL -feat ../../data/featprot.fasta -ufo ../../data/feat.pir pir::test.out -auto
 FI test.out
-FZ = 1765
+FZ = 1756
 ## active site two locations with copied annotation (note and comment)
 FP /^F;38,90\/Active site: Cys, His #status experimental\n/
 //
@@ -10314,7 +10314,7 @@ ID feat-swiss-topir
 AP seqret
 CL -feat tsw:laci_ecoli pir::test.out -auto
 FI test.out
-FZ = 1658
+FZ = 1662
 FP /^F;6-25\/Binding site: H-T-H motif, polypeptide_domain\n/
 FP /^F;74-89\/Region: alpha_helix\n/
 //
@@ -10323,7 +10323,7 @@ ID feat-swiss-togff
 AP seqret
 CL -feat tsw:laci_ecoli gff::test.out -auto
 FI test.out
-FZ = 3217
+FZ = 3243
 FP /^LACI_ECOLI\tSWISSPROT\tpolypeptide_domain\t6\t25\t0\.000\t\+\t\.\tID="LACI_ECOLI\.3";note="H-T-H motif"\n/
 FP /^LACI_ECOLI\tSWISSPROT\talpha_helix\t74\t89\t0\.000\t\+\t\.\tID="LACI_ECOLI\.9"\n/
 //
@@ -17101,9 +17101,9 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI laci_ecoli.showpep 
-FZ = 1288
+FZ = 1298
 FP 2 /^\s+\|=+\|\n\s+polypeptide_domain note="/
-FP 2 /^\s+\|\n\s+mutagen note="/
+FP 2 /^\s+\|\n\s+mutated_variant_site note="/
 //
 
 ID showpep-ex2
@@ -17221,7 +17221,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI laci_ecoli.showpep
-FZ = 1708
+FZ = 1718
 FP /binding site/
 FP /^                          SNP  SNP\n/
 //
