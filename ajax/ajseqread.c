@@ -7200,6 +7200,8 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
     AjPStr newdescstr = NULL;
     AjPStr genetoken = NULL;
     ajuint refnum;
+    AjBool isnewgene = ajFalse;
+    AjBool isgenetoken = ajFalse;
 
 /*
 ** To be done: 12-Feb-09
@@ -7432,47 +7434,68 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
 	else if(ajStrPrefixC(seqReadLine, "GN   "))
 	{
             if(!seqgene)
+            {
+                isnewgene = ajTrue;
                 seqgene = ajSeqgeneNew();
+            }
 	    ajStrTokenAssignC(&handle, seqReadLine, " ");
 	    ajStrTokenNextParse(&handle, &token); /* 'GN' */
-	    ajStrTokenNextParseC(&handle, " =\n\r", &token);
+	    ajStrTokenNextParseC(&handle, ";=\n\r", &token);
             if(ajStrMatchC(token, "and")) /* test 'and' between genes */
+            {
+                isnewgene = ajTrue;
                 seqgene = ajSeqgeneNew();
+            }
             else
             {
                 while(ajStrGetLen(token))
                 {
+                    isgenetoken = ajTrue;
                     ajStrTrimWhite(&token);
-                    ajStrTokenNextParseC(&handle, ";\n\r", &tmpstr);
-                    if(ajStrGetLen(tmpstr))
+                    if(ajStrMatchC(token, "Name"))
                     {
-                        if(ajStrMatchC(token, "Name"))
-                            ajSeqgeneSetName(seqgene, tmpstr);
-                        else if (ajStrMatchC(token, "Synonyms"))
-                            ajSeqgeneSetSynonyms(seqgene, tmpstr);
-                        else if (ajStrMatchC(token, "OrderedLocusNames"))
-                            ajSeqgeneSetOln(seqgene, tmpstr);
-                        else if (ajStrMatchC(token, "ORFNames"))
-                            ajSeqgeneSetOrf(seqgene, tmpstr);
-                        else
-                        {
-                            ajWarn("Swissnew GN line unexpected %S=%S; (%S)",
-                                   token, tmpstr, genetoken);
-                            if(ajStrMatchC(genetoken, "Name"))
-                                ajSeqgeneAppendName(seqgene, tmpstr);
-                            else if (ajStrMatchC(genetoken, "Synonyms"))
-                                ajSeqgeneAppendSynonyms(seqgene, tmpstr);
-                            else if (ajStrMatchC(genetoken,
-                                                 "OrderedLocusNames"))
-                                ajSeqgeneAppendOln(seqgene, tmpstr);
-                            else if (ajStrMatchC(genetoken, "ORFNames"))
-                                ajSeqgeneAppendOrf(seqgene, tmpstr);
-                        }
-                        ajStrAssignS(&genetoken, token);
+                        ajStrTokenNextParseC(&handle, ";\n\r", &tmpstr);
+                        ajSeqgeneSetName(seqgene, tmpstr);
                     }
-                    ajStrTokenNextParseC(&handle, "=\n\r", &token);
+                    else if (ajStrMatchC(token, "Synonyms"))
+                    {
+                        ajStrTokenNextParseC(&handle, ";\n\r", &tmpstr);
+                        ajSeqgeneSetSynonyms(seqgene, tmpstr);
+                    }
+                    else if (ajStrMatchC(token, "OrderedLocusNames"))
+                    {
+                        ajStrTokenNextParseC(&handle, ";\n\r", &tmpstr);
+                        ajSeqgeneSetOln(seqgene, tmpstr);
+                    }
+                    else if (ajStrMatchC(token, "ORFNames"))
+                    {
+                        ajStrTokenNextParseC(&handle, ";\n\r", &tmpstr);
+                        ajSeqgeneSetOrf(seqgene, tmpstr);
+                    }
+                    else
+                    {
+                        isgenetoken = ajFalse;
+                        ajDebug("Swissnew GN line unexpected '%S' (%S)",
+                               token, genetoken);
+                        if(ajStrMatchC(genetoken, "Name"))
+                            ajSeqgeneAppendName(seqgene, token);
+                        else if (ajStrMatchC(genetoken, "Synonyms"))
+                            ajSeqgeneAppendSynonyms(seqgene, token);
+                        else if (ajStrMatchC(genetoken,
+                                             "OrderedLocusNames"))
+                            ajSeqgeneAppendOln(seqgene, token);
+                        else if (ajStrMatchC(genetoken, "ORFNames"))
+                            ajSeqgeneAppendOrf(seqgene, token);
+                    }
+                    ajStrTokenNextParseC(&handle, "=;\n\r", &token);
+                    if(isgenetoken)
+                        ajStrAssignS(&genetoken, token);
                 }
-                ajListPushAppend(thys->Genelist, seqgene);
+                if(isnewgene)
+                {
+                    isnewgene = ajFalse;
+                    ajListPushAppend(thys->Genelist, seqgene);
+                }
                 /* keep seqgene so we can add to it if the line wraps */
             }
 	}
