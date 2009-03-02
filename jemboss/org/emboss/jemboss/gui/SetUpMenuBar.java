@@ -144,7 +144,9 @@ public class SetUpMenuBar
     {
       public void actionPerformed(ActionEvent e) 
       {
-        exitJemboss();
+    	  f.getWindowListeners()[0].windowClosing(null);
+    	  // listener above, defined in Jemboss class, calls exitJemboss() method here
+    	  
 //      if(ao.isSaveUserHomeSelected())
 //        ao.userHomeSave();
 
