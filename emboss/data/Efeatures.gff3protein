@@ -32,7 +32,11 @@ active_site_residue SO:0001104 SO:0001104_act_site
 # BINDING  -  Binding  site  for any chemical group  (co-enzyme,  prosthetic
 # group, etc.).
 
-binding_site SO:0000409 SO:0000409_np_bind SO:0000409_zn_fing
+binding_site SO:0000409 SO:0100018_np_bind SO:0100020_zn_fing
+	/note
+	/comment
+
+epitope SO:0001018
 	/note
 	/comment
 
@@ -59,9 +63,9 @@ ca_contact_site SO:0001094 SO:0001094_ca_bind
 # FT   CARBOHYD     10     10       O-LINKED (GALNAC...) (BY SIMILARITY).
 # FT   CARBOHYD     34     34       C-LINKED (MAN).
 
-#carbohyd SO:0001089_carbohyd
-#	/note
-#	/comment
+glycosylated_residue MOD:00693
+	/note
+	/comment
 
 # CHAIN - Extent of a polypeptide chain in the mature protein.
 
@@ -76,7 +80,7 @@ mature_protein_region SO:0000419
 # coil: random coiled region of secondary structure e.g. predicted by
 # garnier algorithm
 
-intrinsically_unstructured_region SO:0100003
+coil SO:0100012
 	/note
 	/comment
 
@@ -96,7 +100,7 @@ computationally_biased_region SO:0001066 SO:0001066_compbias
 # CONFLICT - Different papers report differing sequences.
 # note usually begins MISSING or SEQ -> NEW (description optional)
 
-#conflict SO:0001085_conflict
+#conflict SO:0001085
 #	/note
 #	/comment
 
@@ -111,7 +115,7 @@ sequence_conflict SO:0001085
 # identical, the amino acid bond is an interchain one. The name of the
 # linked peptide is indicated in the description field.
  
-#crosslnk SO:0001087_crosslnk
+#crosslnk SO:0001087
 #	/note
 #	/comment
 
@@ -121,15 +125,15 @@ sequence_conflict SO:0001085
 # identical,  the  disulfide bond is an interchain one and  the  description
 # field  indicates  the nature of the cross-link.
 
-disulfide_bond SO:0001088 SO:0001088_disulfid SO:0001088_disulfide
+disulfide_bond SO:0001088 SO:0001088_disulfid SO:0001088_disulfide MOD:00034
 	/note
 	/comment
 
 # DNA_BIND - Extent of a DNA-binding region.
 
-#DNA_bind SO:0000417_dna_bind
-#	/note
-#	/comment
+DNA_contact SO:0100020
+	/note
+	/comment
 
 # DOMAIN - Extent of a domain of interest on the sequence.
 
@@ -157,7 +161,7 @@ alpha_helix SO:0001117
 # 'TO' fields to indicate that the initiator methionine has been cleaved off
 # and is not shown in the sequence:
 
-cleaved_initiator_methionine SO:0000691 SO:0000691_init_met
+cleaved_initiator_methionine SO:0000691
 	/note
 	/comment
 
@@ -183,7 +187,7 @@ cleaved_initiator_methionine SO:0000691 SO:0000691_init_met
 #                   alpha-carboxyl group of the C-terminal residue of the
 #                   mature form of a protein [5,6]
 
-lipid SO:0001090 SO:0001090_lipid
+lipoconjugated_residue MOD:01155
 	/note
 	/comment
 
@@ -211,11 +215,11 @@ metal_binding SO:0001092 SO:0001092_metal
 #                            internal cyclic lactam
 #SULFATATION                 Generally of tyrosine
 
-#mod_res SO:0001089_mod_res
-#	/note
-#	/comment
+protein_modification_categorized_by_chemical_process MOD:01156
+	/note
+	/comment
 
-post_translational_modification SO:0001089 SO:0001089_carbohyd SO:0001089_mod_res
+post_translational_modification SO:0001089
 	/note
 	/comment
 
@@ -259,7 +263,7 @@ non_terminal_residue SO:0001084 SO:0001084_non_ter
 
 # NP_BIND - Extent of a nucleotide phosphate binding region.
 
-#np_bind SO:0000409_np_bind
+#np_bind SO:0100018_np_bind
 #	/note
 #	/comment
 
@@ -283,7 +287,7 @@ polypeptide_repeat SO:0001068 SO:0001068_repeat
 
 # SE_CYS - Selenocysteine
 
-stop_codon_redefined_as_selenocysteine SO:0000885
+stop_codon_redefined_as_selenocysteine SO:0000885 MOD:00031
 	/note
 	/comment
 
@@ -310,17 +314,17 @@ beta_strand SO:0001111
 # The  'FROM' and 'TO' endpoints represent the two residues which are linked
 # by the thioether bond.
 
-#thioeth SO:0001087_thioeth
-#	/note
-#	/comment
+thioether_crosslinked_residues MOD:00687
+	/note
+	/comment
 
 # THIOLEST - Thiolester bond.
 # The  'FROM' and 'TO' endpoints represent the two residues which are linked
 # by the thiolester bond.
 
-#thiolest SO:0001087_thiolest
-#	/note
-#	/comment
+thioester_crosslinked MOD:00395
+	/note
+	/comment
 
 # TOPO_DOM - Topological domain
 # New added 26-May-06
@@ -355,7 +359,7 @@ turn SO:0001128
 # Used  to describe region(s) of a sequence for which the authors are unsure
 # about the sequence assignment.
 
-sequence_uncertainty SO:0001086 SO:0001086_unsure
+sequence_uncertainty SO:0001086
 	/note
 	/comment
 
@@ -400,15 +404,7 @@ propeptide_cleavage_site SO:0001061 SO:0001061_propeptide_cleavage_site
 
 # Swissprot reports MOD_RES
 
-#cross-link SO:0001087_cross-link
-#	/note
-#	/comment
-
-#crosslink SO:0001087_crosslink
-#	/note
-#	/comment
-
-cross_link SO:0001087  SO:0001087_crosslnk  SO:0001087_crosslink SO:0001087_cross-link SO:0001087_thioeth SO:0001087_thiolest
+cross_link SO:0001087
 	/note
 	/comment
 
@@ -422,3 +418,6 @@ cross_link SO:0001087  SO:0001087_crosslnk  SO:0001087_crosslink SO:0001087_cros
 #	/note
 #	/comment
 
+helix_turn_helix SO:0001081
+	/note
+	/comment

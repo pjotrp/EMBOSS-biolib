@@ -16,7 +16,7 @@ Active_site SO:0001104 act_site
 
 ###  17934 in PIR 62
 ### BINDING in EMBOSS
-Binding_site SO:0000409 binding SO:0001094 ca_bind SO:0000417_dna_bind dna_bind SO:0001092 metal SO:0000409_np_bind np_bind SO:0000409_zn_fing zn_fing
+Binding_site SO:0000409 SO:0001094 SO:0100020 SO:0001092
        /note
        /comment
 
@@ -27,19 +27,19 @@ Cleavage_site  SO:0001061
        /comment
 
 ###    387 in PIR 62
-Cross-link SO:0001087 crosslnk SO:0001087_cross-link SO:0001087_crosslink crosslink SO:0001087cross_link cross_link
+Cross-link SO:0001087
        /note
        /comment
 
 ###   3713 in PIR 62
 ### DISULFID in EMBOSS
-Disulfide_bonds SO:0001088 SO:0001088_disulfid disulfid
+Disulfide_bonds SO:0001088 MOD:00034
        /note
        /comment
 
 ###  62550 in PIR 62
 ### DOMAIN in EMBOSS
-Domain SO:0000417 SO:0000417_domain
+Domain SO:0000417 SO:0001081
        /note
        /comment
 
@@ -51,7 +51,7 @@ Inhibitory_site SO:0000839_inhibitory_site
 
 ###   3810 in PIR 62
 ### MOD_RES in EMBOSS
-Modified_site SO:0001089 SO:0001089_mod_res mod_res SO:0001089_carbohyd carbohyd SO:0001090_lipid lipid SO:0000691_init_met init_met se_cys thioleth thiolest
+Modified_site SO:0001089 MOD:00693 MOD:01156 MOD:00395 MOD:00687 SO:0000691  MOD:00031
        /note
        /comment
 

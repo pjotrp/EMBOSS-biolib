@@ -101,7 +101,7 @@ CA_BIND SO:0001094
 # FT   CARBOHYD     10     10       O-LINKED (GALNAC...) (BY SIMILARITY).
 # FT   CARBOHYD     34     34       C-LINKED (MAN).
 
-CARBOHYD SO:0001089_carbohyd
+CARBOHYD MOD:00693
 	/note
 	/comment
 	/ftid
@@ -153,7 +153,7 @@ CONFLICT SO:0001085
 # identical, the amino acid bond is an interchain one. The name of the
 # linked peptide is indicated in the description field.
  
-CROSSLNK SO:0001087 SO:0001087_crosslnk SO:0001087_cross-link SO:0001087_crosslink
+CROSSLNK SO:0001087
 	/note
 	/comment
 
@@ -170,7 +170,7 @@ DISULFID SO:0001088
 # DNA_BIND - Extent of a DNA-binding region.
 # The nature of the DNA-binding region is given in the description field. 
 
-DNA_BIND SO:0000417_dna_bind
+DNA_BIND SO:0100020
 	/note
 	/comment
 
@@ -181,7 +181,7 @@ DNA_BIND SO:0000417_dna_bind
 # The domain type is given in the description field. If there exist
 #   several copies of a domain, the domains are numbered.
 
-DOMAIN  SO:0000417
+DOMAIN  SO:0000417 SO:0001081
 	/note
 	/comment
 
@@ -245,7 +245,7 @@ INIT_MET SO:0000691
 #CHOLESTEROL        Cholesterol group attached through an ester bond
 #                   to the C-terminal glycine of the mature form of a protein
 
-LIPID   SO:0001090
+LIPID   MOD:01155
 	/note
 	/comment
 
@@ -274,7 +274,7 @@ METAL   SO:0001092
 #                            internal cyclic lactam
 #SULFATATION                 Generally of tyrosine
 
-MOD_RES SO:0001089_mod_res
+MOD_RES MOD:01156
 	/note
 	/comment
 
@@ -317,7 +317,7 @@ NON_TER SO:0001084
 # The nature of the nucleotide phosphate is indicated in the
 # description field.
 
-NP_BIND SO:0000409_np_bind
+NP_BIND SO:0100018_np_bind
 	/note
 	/comment
 
@@ -344,7 +344,7 @@ REPEAT  SO:0001068
 # SE_CYS - Selenocysteine
 # This key describes the occurrence of a selenocysteine in the sequence record
 
-SE_CYS  SO:0000885
+SE_CYS  SO:0000885 MOD:00031
 	/note
 	/comment
 
@@ -381,7 +381,7 @@ STRAND  SO:0001111
 # The  'FROM' and 'TO' endpoints represent the two residues which are linked
 # by the thioether bond.
 
-THIOETH SO:0001087_thioeth
+THIOETH MOD:00687
 	/note
 	/comment
 
@@ -389,7 +389,7 @@ THIOETH SO:0001087_thioeth
 # The  'FROM' and 'TO' endpoints represent the two residues which are linked
 # by the thiolester bond.
 
-THIOLEST SO:0001087_thiolest
+THIOLEST MOD:00395
 	/note
 	/comment
 
@@ -457,6 +457,6 @@ VARSPLIC SO:0001147_varsplic
 # ZN_FING - Extent of a zinc finger region.
 # The zinc finger 'category' is indicated in the description field.
 
-ZN_FING  SO:0000409_zn_fing
+ZN_FING  SO:0100020_zn_fing
 	/note
 	/comment
