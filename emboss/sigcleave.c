@@ -120,7 +120,7 @@ int main(int argc, char **argv)
     stmp   = ajStrNew();
     sstr   = ajStrNew();
 
-    ajStrAssignC(&fthit, "hit");
+    ajStrAssignC(&fthit, "SO:0000418");
 
     sigcleave_readSig(&matrix,prokaryote);
 
