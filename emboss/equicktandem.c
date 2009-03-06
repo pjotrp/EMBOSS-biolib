@@ -250,7 +250,7 @@ static void equicktandem_report(AjPFeattable tab, ajint begin)
     AjPStr s = NULL;
 
     if(!rpthit)
-	ajStrAssignC(&rpthit, "repeat_region");
+	ajStrAssignC(&rpthit, "SO:0000705");
 
     /*
        ajFmtPrintF(outf, "%6d %10d %10d %2d %3d\n",

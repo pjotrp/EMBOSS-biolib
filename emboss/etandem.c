@@ -184,7 +184,7 @@ static void etandem_basicReport(AjPFeattable tab, AjPFile outfile,
     n = a->repeat;
 
     if(!rpthit)
-      ajStrAssignC(&rpthit, "repeat_region");
+      ajStrAssignC(&rpthit, "SO:0000705");
 
     copies = (a->ibest - a->start + 1) / n;
     perc = (float)100.0 * (a->bestScore + n * (copies + 1)) /
