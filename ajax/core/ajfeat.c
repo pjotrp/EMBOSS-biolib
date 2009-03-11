@@ -1773,9 +1773,11 @@ static AjPFeature featFeatNew(AjPFeattable thys,
     ret->Score = score;
     
     ret->Flags = flags;
-    
-    ret->Strand = strand ;
-    
+
+    if(strand == '+' || strand == '-')
+        ret->Strand = strand;
+    else ret->Strand = '\0';
+
     ret->Frame  = frame ;
     ret->Start  = Start;
     ret->End    = End;
@@ -6192,8 +6194,8 @@ AjBool ajFeattableWriteDasgff(AjPFeattabOut ftout, const AjPFeattable thys)
 		    gftop = gf; /* this is the parent/only feature */
 	    }
             ajFmtPrintF(file,
-                        "      <FEATURE id=\"%S\">\n",
-                        gf->Source);
+                        "      <FEATURE id=\"%S.%S.%d\">\n",
+                        thys->Seqid, gf->Source, gf->Group);
             ajFmtPrintF(file,
                         "         <TYPE id=\"%S\" category=\"%S\" reference=\"no\" subparts=\"no\">%S</TYPE>\n",
                         gf->Type, ajFeatTypeGetCategory(gf->Type), outtyp);
@@ -6366,11 +6368,13 @@ AjBool ajFeattableWriteDasgff(AjPFeattabOut ftout, const AjPFeattable thys)
                         "         <TARGET id\"%s\" start=\"%d\" stop=\"%d\">%s</TARGET>\n",
                         "target-id", target->start, target->stop,"target-name");
 */
-           ajFmtPrintF(file,
+
+
+/*           ajFmtPrintF(file,
                        "         <GROUP id=\"%S.%d\" label=\"%S.%d\" type=\"%S.%d\">\n",
                        thys->Seqid, gf->Group,
                        thys->Seqid, gf->Group,
-                       thys->Seqid, gf->Group);
+                       thys->Seqid, gf->Group);*/
 /* link to more information */
             /*
             ajFmtPrintF(file,
@@ -6379,13 +6383,16 @@ AjBool ajFeattableWriteDasgff(AjPFeattabOut ftout, const AjPFeattable thys)
 */
 
 /* target in an alignment */
+
+
             /*
             ajFmtPrintF(file,
                         "               <TARGET id\"%s\" start=\"%d\" stop=\"%d\">%s</TARGET>\n",
                         "target-id", target->start, target->stop,"target-name");
-*/
            ajFmtPrintF(file,
                        "         </GROUP>\n");
+            */
+
            ajFmtPrintF(file,
                         "      </FEATURE>\n");
  	}
