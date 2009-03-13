@@ -144,7 +144,7 @@ AjPPatternSeq ajPatternSeqNewList (AjPPatlistSeq plist,
     pthis->Protein  = plist->Protein;
     pthis->Mismatch = mismatch;
 
-    ajPatlistAddSeq (plist,pthis);
+    ajPatlistAddSeq(plist,pthis);
 
     return pthis;
 }
@@ -799,13 +799,12 @@ AjPPatlistRegex ajPatlistRegexRead (const AjPStr patspec,
     }
     else
     {
-	npat++;
 	ajStrAssignS(&pat, patspec);
 	if(lower)
 	    ajStrFmtLower(&pat);
 	if(upper)
 	    ajStrFmtUpper(&pat);
-	ajFmtPrintS(&name, "%S%u", namestr, npat);
+	ajStrAssignS(&name, namestr);
 	ajPatternRegexNewList(patlist,name,pat);
     }
 
