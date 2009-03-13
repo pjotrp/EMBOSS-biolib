@@ -1,4 +1,22 @@
 Version 6.1.0
+	The EMBL/Genbank feature table definitions have been updated to
+	version 8.0 (October 2008). Sequence ontology terms are now
+	available for all feature types except S_region for which no
+	specific SO term exists. S_region is attached to an internal term
+	derived from SO:0000301 as a placeholder.
+
+	Programs searching with regular expressions and patterns reported
+	the pattern name with '1' added to the end. This was to support
+	pattern and regular expression files with multiple patterns. When
+	only one pattern is given on the command line the '1' is no longer
+	added.
+	
+	Programs searching with regular expressions (dreg and preg) missed
+	overlapping matches to the pattern. The algorithm now steps
+	forward one character from the start of the match and searches
+	again. Some regular expressions with wildcards may produce a large
+	number of overlapping matches especially in low-complexity regions.
+
 	Protein sequences in GFF format now use GFF3 by default. For
 	release 6.0 protein sequences were written in GFF2 while the GFF3
 	protein feature definitions were readefined using the Sequence
