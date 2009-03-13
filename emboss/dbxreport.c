@@ -33,6 +33,34 @@
 **
 ** @attr cache [AjPBtcache] Index cache
 ** @attr num [ajuint] Index to list of standard index names
+** @attr nroot [ajuint] Number of root pages
+** @attr nnroot [ajuint] Number of numeric root pages
+** @attr ninternal [ajuint] Number of internal node pages
+** @attr nleaf [ajuint] Number of leaf node pages
+** @attr nbucket [ajuint] Number of bucket pages
+** @attr noverflow [ajuint] Number of overflow pages
+** @attr npribucket [ajuint] Number of primary key bucket pages
+** @attr nsecbucket [ajuint] Number of secondary key bucket pages
+** @attr nnumbucket [ajuint] Number of numbucket pages
+** @attr nunknown [ajuint] Number of unknown type pages
+** @attr nkeys [ajuint] Number of keys
+** @attr nover [ajuint] Number of node overflow pages
+** @attr nbkeys [ajuint] Number of bucket key pages
+** @attr nbdups [ajuint]  Number of bucket duplicate pages
+** @attr nbxtra [ajuint]   Number of bucket extra pages
+** @attr nbover [ajuint] Number of bucket overflow pages
+** @attr npkeys [ajuint]  Number of primary keys
+** @attr npover [ajuint]  Number of primary key overflow pages
+** @attr nskeys [ajuint]  Number of secondary keys
+** @attr nsover [ajuint]  Number of secondary key overflow pages
+** @attr nnkeys [ajuint]  Number of numeric keys
+** @attr nndups [ajuint]  Number of numeric key duplicates
+** @attr nnover [ajuint]  Number of numeric key overflow pages
+** @attr nlkeys [ajuint] Number of leaf keys
+** @attr nlover [ajuint] Number of leaf overflow pages
+** @attr freespace [ajlong] Free space total for all pages
+** @attr pagecount [ajlong] Page count
+** @attr totsize [ajlong] Total index size
 ** @@
 ******************************************************************************/
 
@@ -52,7 +80,6 @@ typedef struct DbxreportSData
     ajuint nunknown;
     ajuint nkeys;
     ajuint nover;
-    ajlong freespace;
     ajuint nbkeys;
     ajuint nbdups;
     ajuint nbxtra;
@@ -66,6 +93,7 @@ typedef struct DbxreportSData
     ajuint nnover;
     ajuint nlkeys;
     ajuint nlover;
+    ajlong freespace;
     ajlong pagecount;
     ajlong totsize;
 } DbxreportOData;
