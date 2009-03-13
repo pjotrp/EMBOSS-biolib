@@ -83,18 +83,19 @@ typedef struct SeqSClass {
 
 static SeqOClass seqClass[] = {
 /*   Name      Embl   DDBJ   Genbank Description */
-    {"STD", "STD", "", "", "Standard (all other entries)"},
+    {"STD", "STD", "",    "",    "Standard (all other entries)"},
+    {"ANN", "ANN", "",    "",    "CON entries with own annotation"},
     {"CON", "CON", "CON", "CON", "Constructed from segment sequences"},
-    {"ANN", "ANN", "", "", "CON entries with own annotation"},
-    {"PAT", "PAT", "PAT", "PAT", "Patent"},
     {"EST", "EST", "EST", "EST", "Expressed Sequence Tag"},
     {"GSS", "GSS", "GSS", "GSS", "Genome Survey Sequence"},
-    {"HTC", "HTC", "HTC", "", "High Thoughput CDNA sequencing"},
+    {"HTC", "HTC", "HTC", "",    "High Thoughput CDNA sequencing"},
     {"HTG", "HTG", "HTG", "HTG", "High Thoughput Genome sequencing"},
-    {"MGA", "MGA", "", "", "Mass Genome Annotation"},
-    {"WGS", "WGS", "", "", "Whole Genome Shotgun"},
-    {"TPA", "TPA", "TPA", "", "Third Party Annotation"},  /* 2 types in DDBJ */
+    {"MGA", "MGA", "",    "",    "Mass Genome Annotation"},
+    {"PAT", "PAT", "PAT", "PAT", "Patent"},
     {"STS", "STS", "STS", "STS", "Sequence Tagged Site"},
+    {"TPA", "TPA", "TPA", "",    "Third Party Annotation"},  /* 2 DDBJ types */
+    {"TSA", "TSA", "TSA", "",    "Transcriptome shotgun assembly"},
+    {"WGS", "WGS", "",    "",    "Whole Genome Shotgun"},
     {"", "", "", "", ""},
     {NULL, NULL, NULL, NULL, NULL}
 };
@@ -127,23 +128,23 @@ typedef struct SeqSDivision {
 static SeqODivision seqDivision[] = {
 /*   Name      Embl   DDBJ   Genbank Description */
     {"default","UNC", "UNA", "UNA",  "Unclassified"},
-    {"UNC",    "UNC", "",    "",     "Unclassified"},
-    {"UNA",    "UNC", "UNA", "UNA",  "Unannotated"},
-    {"PHG",    "PHG", "PHG", "PHG",  "Bacteriophage"},
     {"ENV",    "ENV", "",    "",     "Environmental Sample"},
-    {"PLN",    "PLN", "PLN", "PLN",  "Plant"},
     {"FUN",    "FUN", "",    "PLN",  "Fungal"},
     {"HUM",    "HUM", "HUM", "PRI",  "Human"},
     {"INV",    "INV", "INV", "INV",  "Invertebrate"},
     {"MAM",    "MAM", "MAM", "MAM",  "Other Mammal"},
-    {"VRT",    "VRT", "VRT", "VRT",  "Other Vertebrate"},
+    {"MAMPRI", "MAM", "",    "PRI",  "Primate"},
     {"MUS",    "MUS", "ROD", "ROD",  "Mus musculus"},
+    {"PHG",    "PHG", "PHG", "PHG",  "Bacteriophage"},
+    {"PLN",    "PLN", "PLN", "PLN",  "Plant"},
     {"PRO",    "PRO", "BCT", "BCT",  "Prokaryote"},
     {"ROD",    "ROD", "ROD", "ROD",  "Other Rodent"},
     {"SYN",    "SYN", "SYN", "SYN",  "Synthetic and chimeric"},
     {"TGN",    "TGN", "",    "",     "Transgenic"},
+    {"UNC",    "UNC", "",    "",     "Unclassified"},
     {"VRL",    "VRL", "VRL", "VRL",  "Viral"},
-    {"MAMPRI", "MAM", "",    "PRI",  "Primate"},
+    {"VRT",    "VRT", "VRT", "VRT",  "Other Vertebrate"},
+    {"UNA",    "UNC", "UNA", "UNA",  "Unannotated"},
     {"UNCRNA", "UNC", "",    "RNA",  "Structural RNA"}, /* obsolete ? */
     {"", "", "", "", ""},
     {NULL, NULL, NULL, NULL, NULL}
