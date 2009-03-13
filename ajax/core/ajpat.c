@@ -677,8 +677,7 @@ AjPPatlistSeq ajPatlistSeqRead (const AjPStr patspec,
     }
     else
     {
-	npat++;
-	ajFmtPrintS(&name, "%S%u", namestr, npat);
+        ajStrAssignS(&name, namestr);
 	ajPatternSeqNewList(patlist,name,patstr,mismatches);
     }
 
