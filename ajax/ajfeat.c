@@ -297,6 +297,8 @@ static AjBool       feattableWriteEmbl(const AjPFeattable Feattab,
 				       AjPFile file,
 				       AjBool IsEmbl);
 static AjBool       featTagAllLimit(AjPStr* pval, const AjPStr values);
+static void         featTagDasgffDefault(AjPStr* pout, const AjPStr tag,
+                                         AjPStr* pval);
 static const AjPStr featTagDna(const AjPStr type, AjBool* known);
 static void         featTagEmblDefault(AjPStr* pout,
 				       const AjPStr tag, AjPStr* pval);
@@ -329,6 +331,7 @@ static void         featTagSetDefaultProt(const AjPStr tag,
 					  AjPStr* pdeftag, AjPStr* pdefval);
 static AjBool       featTagSpecial(AjPStr* pval, const AjPStr tag);
 static AjBool       featTagSpecialAllAnticodon(const AjPStr val);
+static AjBool       featTagSpecialAllBiomaterial(const AjPStr val);
 static AjBool       featTagSpecialAllCitation(const AjPStr val);
 static AjBool       featTagSpecialAllCodon(AjPStr* pval);
 static AjBool       featTagSpecialAllCollectiondate(const AjPStr pval);
@@ -338,7 +341,7 @@ static AjBool       featTagSpecialAllLatlon(const AjPStr pval);
 static AjBool       featTagSpecialAllMobile(const AjPStr pval);
 static AjBool       featTagSpecialAllPcrprimers(const AjPStr pval);
 static AjBool       featTagSpecialAllRptunit(const AjPStr val);
-static AjBool       featTagSpecialAllRptunitrange(const AjPStr val);
+static AjBool       featTagSpecialAllRange(const AjPStr val);
 static AjBool       featTagSpecialAllRptunitseq(const AjPStr val);
 static AjBool       featTagSpecialAllTranslexcept(const AjPStr val);
 static AjBool       featTagSpecialAllDbxref(const AjPStr val);
@@ -347,6 +350,7 @@ static AjBool       featTagSpecialAllReplace(AjPStr* pval);
 static AjBool       featTagSpecialAllTranslation(AjPStr* pval);
 static AjBool       featTagSpecialAllEstimatedlength(AjPStr* pval);
 static AjBool       featTagSpecialAllCompare(const AjPStr val);
+static AjBool       featTagSpecialAllNcrnaclass(const AjPStr val);
 static void         featTagSwissWrapC(AjPStr* pval, ajuint margin,
 				      const char* prefix,
 				      AjPStr* retstr);
@@ -657,6 +661,7 @@ static AjPRegexp featTagTrans = NULL;
 static AjPRegexp featRegGroup = NULL;
 
 static AjPRegexp featRegSpecialAnticodon = NULL;
+static AjPRegexp featRegSpecialBiomaterial = NULL;
 static AjPRegexp featRegSpecialCodon = NULL;
 static AjPRegexp featRegSpecialCodonBad = NULL;
 static AjPRegexp featRegSpecialColdate = NULL;
@@ -3926,6 +3931,11 @@ static AjPFeature featEmblProcess(AjPFeattable thys, const AjPStr feature,
 	    if(!ajFeatTagAdd(ret, tag, val))
 		featWarn("%S: Bad value '%S' for tag '/%S'",
 		       thys->Seqid, val, tag) ;
+            if(ajStrMatchC(tag, "codon_start"))
+            {
+                ajStrToInt(val, &Frame);
+                gf->Frame = Frame;
+            }
 	}
 	else if(featEmblTvRest(tags, &featTmpStr))
 	{
@@ -6095,6 +6105,7 @@ AjBool ajFeattableWriteDasgff(AjPFeattabOut ftout, const AjPFeattable thys)
     ** Check standards for id, type etc. for table and features
     */
 
+/*#define MULTINOTE 1*/
     AjPFile file = ftout->Handle;
     AjIList iter     = NULL;
     AjIList tagiter     = NULL;
@@ -6109,6 +6120,9 @@ AjBool ajFeattableWriteDasgff(AjPFeattabOut ftout, const AjPFeattable thys)
     ajuint nfeat = 0;
     char frame;
     AjBool knowntag = ajTrue;
+
+    AjPStr mytagname = NULL;
+    AjPStr mytagval = NULL;
 
     ajuint ntags;
     ajuint itag;
@@ -6197,8 +6211,14 @@ AjBool ajFeattableWriteDasgff(AjPFeattabOut ftout, const AjPFeattable thys)
                         "      <FEATURE id=\"%S.%S.%d\">\n",
                         thys->Seqid, gf->Source, gf->Group);
             ajFmtPrintF(file,
-                        "         <TYPE id=\"%S\" category=\"%S\" reference=\"no\" subparts=\"no\">%S</TYPE>\n",
+                        "         <TYPE id=\"%S\" category=\"%S\" "
+                        "reference=\"no\" subparts=\"no\">%S</TYPE>\n",
                         gf->Type, ajFeatTypeGetCategory(gf->Type), outtyp);
+
+            /*
+            ** METHOD id should be something the server can return
+            ** For application results this is the application name
+            */
             if(ajStrGetLen(gf->Source))
                 ajFmtPrintF(file,
                             "         <METHOD id=\"%S\"></METHOD>\n",
@@ -6207,15 +6227,25 @@ AjBool ajFeattableWriteDasgff(AjPFeattabOut ftout, const AjPFeattable thys)
                 ajFmtPrintF(file,
                         "         <METHOD></METHOD>\n",
                         gf->Source);
+            /*
+            ** START and END are optional in DAS 1.6 but we always have them
+            */
             ajFmtPrintF(file,
                         "         <START>%d</START>\n",
                         gf->Start);
             ajFmtPrintF(file,
                         "         <END>%d</END>\n",
                         gf->End);
+            /*
+            ** SCORE is optional in DAS 1.6
+            */
             ajFmtPrintF(file,
                         "         <SCORE>%.f</SCORE>\n",
                         gf->Score);
+            /*
+            ** ORIENTATION is optional in DAS 1.6
+            ** for proteins or non-transcriptional features
+            */
             if(gf->Strand)
                 ajFmtPrintF(file,
                             "         <ORIENTATION>%c</ORIENTATION>\n",
@@ -6225,6 +6255,10 @@ AjBool ajFeattableWriteDasgff(AjPFeattabOut ftout, const AjPFeattable thys)
                 ajFmtPrintF(file,
                             "         <ORIENTATION>0</ORIENTATION>\n");
 
+            /*
+            ** PHASE is optional in DAS 1.6
+            ** for proteins or non-translational features
+            */
             if(ajFeatTypeIsCds(gf))
                 frame = featFrameNuc(gf->Frame);
             else
@@ -6233,14 +6267,16 @@ AjBool ajFeattableWriteDasgff(AjPFeattabOut ftout, const AjPFeattable thys)
             if(gf->Frame == 0)
                 ajFmtPrintF(file,
                             "         <PHASE>-</PHASE>\n");
-            else if(gf->Frame > 0)
-                ajFmtPrintF(file,
-                            "         <PHASE>%c</PHASE>\n",
-                            frame);
             else
                 ajFmtPrintF(file,
                             "         <PHASE>%c</PHASE>\n",
                             frame);
+
+            /*
+            ** tag-value pairs are written as NOTES
+            ** We write one note for each
+            ** This displays well in various DAS client browsers
+            */
             if(gf->Tags)
             {
                 ntags = ajListGetLength(gf->Tags);
@@ -6258,11 +6294,11 @@ AjBool ajFeattableWriteDasgff(AjPFeattabOut ftout, const AjPFeattable thys)
                     }
                     featTagFmt(outtag, tagstable, &featFmtTmp);
 
+#ifdef MULTINOTE
                     if(ntags == 1)
                     {
                         ajFmtPrintF(file,
-                                        "         <NOTE>",
-                                        "");
+                                        "         <NOTE>");
                     }
                     else 
                     {
@@ -6270,68 +6306,89 @@ AjBool ajFeattableWriteDasgff(AjPFeattabOut ftout, const AjPFeattable thys)
                             ajFmtPrintF(file,
                                         "         <NOTE>\n");
                     }
-                    
+#else
+                    ajFmtPrintF(file,
+                                "         <NOTE>");
+#endif                    
 
                     ajFmtPrintS(&featOutStr, "%S", outtag);
                     ajStrAssignS(&featValTmp, item->Value);
                     cp = ajStrGetPtr(featFmtTmp);
                     switch(CASE2(cp[0], cp[1]))
                     {
-                        case CASE2('L','I') :	/* limited */
+                        case CASE2('L','I') :  /* limited */
                             /*ajDebug("case limited\n");*/
                             featTagLimit(outtag, tagstable, &featLimTmp);
                             featTagAllLimit(&featValTmp, featLimTmp);
-                            ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
+                            ajFmtPrintAppS(&featOutStr, ":%S", featValTmp);
                             break;
-                        case CASE2('Q', 'L') :	/* limited, escape quotes */
+                        case CASE2('Q', 'L') : /* limited, escape quotes */
                             /*ajDebug("case qlimited\n");*/
                             featTagLimit(outtag, tagstable, &featLimTmp);
                             featTagAllLimit(&featValTmp, featLimTmp);
-                            featTagQuoteGff3(&featValTmp);
-                            ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
+                            /*featTagQuoteGff3(&featValTmp);*/
+                            ajFmtPrintAppS(&featOutStr, ":%S", featValTmp);
                             break;
-                        case CASE2('T','E') : /* no space, no quotes, wrap at margin */
+                        case CASE2('T','E') : /* no space/quotes, wrap margin */
                             /*ajDebug("case text\n");*/
                             ajStrRemoveWhite(&featValTmp);
-                            ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
+                            ajFmtPrintAppS(&featOutStr, ":%S", featValTmp);
                             break;
-                        case CASE2('Q','T') :	/* escape quotes, wrap at space */
+                        case CASE2('Q','T') : /* escape quotes, wrap at space */
                             /*ajDebug("case qtext\n");*/
-                            featTagQuoteGff3(&featValTmp);
-                            ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
+                            /*featTagQuoteGff3(&featValTmp);*/
+                            if(ajStrMatchC(outtag, "note") &&
+                               ajStrGetCharFirst(featValTmp) == '*')
+                            {
+                                ajStrCutStart(&featValTmp,1);
+                                ajStrExtractWord(featValTmp, &mytagval,
+                                                 &mytagname);
+                                ajFmtPrintS(&featOutStr, "%S:%S",
+                                            mytagname, mytagval);
+                                ajStrDel(&mytagname);
+                                ajStrDel(&mytagval);
+                            }
+                            else
+                                ajFmtPrintAppS(&featOutStr, ":%S", featValTmp);
                             break;
-                        case CASE2('Q','W') :	/* escape quotes, remove space */
+                        case CASE2('Q','W') : /* escape quotes, remove space */
                             /*ajDebug("case qtext\n");*/
-                            featTagQuoteGff3(&featValTmp);
+                            /*featTagQuoteGff3(&featValTmp);*/
                             ajStrRemoveWhite(&featValTmp);
-                            ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
+                            ajFmtPrintAppS(&featOutStr, ":%S", featValTmp);
                             break;
-                        case CASE2('Q', 'S') :	/* special regexp, quoted */
+                        case CASE2('Q', 'S') : /* special regexp, quoted */
                             /*ajDebug("case qspecial\n");*/
                             if(!featTagGff3Special(&featValTmp, outtag))
-                                featTagGff3Default(&featOutStr, outtag, &featValTmp);
-                            else
+                                featTagDasgffDefault(&featOutStr, outtag,
+                                                     &featValTmp);
+                             else
                             {
-                                featTagQuoteGff3(&featValTmp);
-                                ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
+                                /*featTagQuoteGff3(&featValTmp);*/
+                                ajFmtPrintAppS(&featOutStr, ":%S", featValTmp);
                             }
                             break;
                         case CASE2('S','P') :	/* special regexp */
                             /*ajDebug("case special\n");*/
                             if(!featTagGff3Special(&featValTmp, outtag))
-                                featTagGff3Default(&featOutStr, outtag, &featValTmp);
+                                featTagDasgffDefault(&featOutStr, outtag,
+                                                     &featValTmp);
                             else
-                                ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
+                                ajFmtPrintAppS(&featOutStr, ":%S", featValTmp);
                             
                             break;
                         case CASE2('V','O') :	/* no value, so an error here */
                             /*ajDebug("case void\n");*/
                             break;
                         default:
-                            featWarn("Unknown GFF3 feature tag type '%S' for '%S'",
+                            featWarn("Unknown GFF3 feature tag type '%S' "
+                                     "for '%S'",
                                      featFmtTmp, outtag);
                     }
                     
+/* TESTING: for single NOTE write ';' after each tag-value pair */
+
+#ifdef MULTINOTE
                     if(++itag < ntags)
                         ajFmtPrintAppS(&featOutStr,";");
 
@@ -6349,13 +6406,17 @@ AjBool ajFeattableWriteDasgff(AjPFeattabOut ftout, const AjPFeattable thys)
                                         "         </NOTE>\n");
 
                     }
+#else
+                    ajFmtPrintF(file,
+                                "%S</NOTE>\n",featOutStr);
+#endif
                     
                 }
                 ajListIterDel(&tagiter);
                 
             }
 
-/* link to more information */
+/* link to more information about the feature */
             /*
             ajFmtPrintF(file,
                         "         <LINK href=\"%s\">%s</LINK>\n",
@@ -6365,33 +6426,35 @@ AjBool ajFeattableWriteDasgff(AjPFeattabOut ftout, const AjPFeattable thys)
 /* target in an alignment */
             /*
             ajFmtPrintF(file,
-                        "         <TARGET id\"%s\" start=\"%d\" stop=\"%d\">%s</TARGET>\n",
+                        "         <TARGET id\"%s\" start=\"%d\" "
+                        "stop=\"%d\">%s</TARGET>\n",
                         "target-id", target->start, target->stop,"target-name");
 */
 
 
+/* GROUP is deprecated in DAS 1.6 - replaced by PARENT and PART */
 /*           ajFmtPrintF(file,
-                       "         <GROUP id=\"%S.%d\" label=\"%S.%d\" type=\"%S.%d\">\n",
+                       "         <GROUP id=\"%S.%d\" label=\"%S.%d\" "
+                       "type=\"%S.%d\">\n",
                        thys->Seqid, gf->Group,
                        thys->Seqid, gf->Group,
                        thys->Seqid, gf->Group);*/
-/* link to more information */
-            /*
+/* link to more GROUP information */
+/*
             ajFmtPrintF(file,
                         "               <LINK href=\"%s\">%s</LINK>\n",
                         "url-here", "text-here);
 */
 
-/* target in an alignment */
-
-
-            /*
+/* target in a GROUP alignment */
+/*
             ajFmtPrintF(file,
-                        "               <TARGET id\"%s\" start=\"%d\" stop=\"%d\">%s</TARGET>\n",
+                        "               <TARGET id\"%s\" start=\"%d\" "
+                        "stop=\"%d\">%s</TARGET>\n",
                         "target-id", target->start, target->stop,"target-name");
            ajFmtPrintF(file,
                        "         </GROUP>\n");
-            */
+*/
 
            ajFmtPrintF(file,
                         "      </FEATURE>\n");
@@ -6403,6 +6466,9 @@ AjBool ajFeattableWriteDasgff(AjPFeattabOut ftout, const AjPFeattable thys)
     ** this block can be used if some dummy features is mandatory
     ** but note that any feature will appear in a DASGFF viewer
     ** unless there is some official dummy type available
+    **
+    ** Common practice is to ignore the DTD and wriet an empty SEGMENT
+    ** so this section should not be needed. DAS 1.6 will correct the spec
     */
 
 /*
@@ -6590,6 +6656,7 @@ const AjPStr ajFeattableGetTypeS(const AjPFeattable thys)
 /* @funcstatic featFrame ******************************************************
 **
 ** Converts a frame number in the range 0 to 3 to a GFF frame character
+** or '.' as the general default
 **
 ** @param [r] frame [ajint] Feature frame number
 ** @return [char] character for this frame in GFF
@@ -6613,6 +6680,7 @@ static char featFrame(ajint frame)
 /* @funcstatic featFrameNuc ***************************************************
 **
 ** Converts a frame number in the range 0 to 3 to a GFF frame character
+** or '0' for the nucleotide default
 **
 ** @param [r] frame [ajint] Feature frame number
 ** @return [char] character for this frame in GFF
@@ -10616,6 +10684,51 @@ static const AjPStr featTableTagC(const char* tag, const AjPTable table,
 
 
 
+/* @funcstatic featTagSpecialAllBiomaterial ************************************
+**
+** Tests a string as a valid internal (EMBL) feature /bio_material tag
+**
+** The format is a known type and optional :name
+**
+** @param  [r] val [const AjPStr] parameter value
+** @return [AjBool] ajTrue for a valid value, possibly corrected
+**                  ajFalse if invalid, to be converted to default (note) type
+** @@
+******************************************************************************/
+
+static AjBool featTagSpecialAllBiomaterial(const AjPStr val)
+{
+    AjPStr inststr = NULL;
+    AjPStr collstr = NULL;
+    AjPStr idstr = NULL;
+    AjBool ret = ajFalse;
+
+    if(!featRegSpecialBiomaterial)
+	featRegSpecialBiomaterial = ajRegCompC("^([^:]+)(:([^:]+))?(:(.*))?$");
+
+    if(ajRegExec(featRegSpecialBiomaterial, val))
+    {
+	ajRegSubI(featRegSpecialBiomaterial, 1, &inststr);
+	ajRegSubI(featRegSpecialBiomaterial, 3, &collstr);
+	ajRegSubI(featRegSpecialBiomaterial, 5, &idstr);
+        ret = ajTrue;
+
+    }
+
+    if(!ret)
+    {
+	featWarn("bad /bio_material value '%S'", val);
+    }
+    ajStrDel(&inststr);
+    ajStrDel(&collstr);
+    ajStrDel(&idstr);
+
+    return ret;
+}
+
+
+
+
 /* @funcstatic featTagSpecialAllAnticodon *************************************
 **
 ** Tests a string as a valid internal (EMBL) feature /anticodon tag
@@ -11255,7 +11368,7 @@ static AjBool featTagSpecialAllRptunit(const AjPStr val)
 
 
 
-/* @funcstatic featTagSpecialAllRptunitrange **********************************
+/* @funcstatic featTagSpecialAllRange *****************************************
 **
 ** Tests a string as a valid internal (EMBL) feature /rpt_unit_range tag
 **
@@ -11279,7 +11392,7 @@ static AjBool featTagSpecialAllRptunit(const AjPStr val)
 ** @@
 ******************************************************************************/
 
-static AjBool featTagSpecialAllRptunitrange(const AjPStr val)
+static AjBool featTagSpecialAllRange(const AjPStr val)
 {
      AjBool ret = ajFalse;
     /*
@@ -11892,6 +12005,56 @@ static AjBool featTagSpecialAllMobile(const AjPStr val)
 
 
 
+/* @funcstatic featTagSpecialAllNcrnaclass *************************************
+**
+** Tests a string as a valid internal (EMBL) feature /ncRNA_class tag
+**
+** The format is a known type and optional :name
+**
+** value is a term taken from the INSDC controlled vocabulary for ncRNA classes
+** http://www.insdc.org/page.php?page=rna_vocab
+**
+** @param  [r] val [const AjPStr] parameter value
+** @return [AjBool] ajTrue for a valid value, possibly corrected
+**                  ajFalse if invalid, to be converted to default (note) type
+** @@
+******************************************************************************/
+
+static AjBool featTagSpecialAllNcrnaclass(const AjPStr val)
+{
+    AjPStr typstr = NULL;
+    AjPStr namstr = NULL;
+    AjBool ret = ajFalse;
+    ajuint i;
+
+    const char* classes[] = {
+	"antisense_RNA", "autocatalytically_spliced_intron",
+        "hammerhead_ribozyme", "RNase_P_RNA",
+	"RNase_MRP_RNA", "telomerase_RNA", "guide_RNA", "rasiRNA",
+	"scRNA", "siRNA", "miRNA", "piRNA",
+	"snoRNA", "snRNA", "SRP_RNA", "vault_RNA", "Y_RNA",
+        "other",
+        NULL
+    };
+
+    for(i=0;classes[i];i++)
+        if(ajStrMatchC(typstr, classes[i])) break;
+    if(classes[i])
+        ret = ajTrue;
+    
+    if(!ret)
+    {
+	featWarn("bad /ncRNA_class value '%S'", val);
+    }
+    ajStrDel(&typstr);
+    ajStrDel(&namstr);
+
+    return ret;
+}
+
+
+
+
 /* @funcstatic featTagQuoteEmbl ***********************************************
 **
 ** Internal quotes converted to two double quotes
@@ -12361,7 +12524,7 @@ static AjBool featTagAllLimit(AjPStr* pval, const AjPStr values)
 
 /* @funcstatic featTagEmblDefault *********************************************
 **
-** Give up, and generate a default feature tag
+** Give up, and generate a default EMBL/Genbank feature tag
 **
 ** @param  [w] pout [AjPStr*] Output string
 ** @param  [r] tag [const AjPStr] original tag name
@@ -12384,7 +12547,7 @@ static void featTagEmblDefault(AjPStr* pout, const AjPStr tag, AjPStr* pval)
 
 /* @funcstatic featTagGff2Default **********************************************
 **
-** Give up, and generate a default feature tag
+** Give up, and generate a default GFF feature tag
 **
 ** @param  [w] pout [AjPStr*] Output string
 ** @param  [r] tag [const AjPStr] original tag name
@@ -12408,7 +12571,7 @@ static void featTagGff2Default(AjPStr* pout, const AjPStr tag, AjPStr* pval)
 
 /* @funcstatic featTagGff3Default **********************************************
 **
-** Give up, and generate a default feature tag
+** Give up, and generate a default GFF3 feature tag
 **
 ** @param  [w] pout [AjPStr*] Output string
 ** @param  [r] tag [const AjPStr] original tag name
@@ -12424,6 +12587,33 @@ static void featTagGff3Default(AjPStr* pout, const AjPStr tag, AjPStr* pval)
     featTagQuoteGff3(pval);
     ajFmtPrintS(pout, "note \"%S: %S\"", tag, *pval);
 
+    return;
+}
+
+
+
+
+/* @funcstatic featTagDasgffDefault ********************************************
+**
+** Give up, and generate a default DASGFF feature tag
+**
+** @param  [w] pout [AjPStr*] Output string
+** @param  [r] tag [const AjPStr] original tag name
+** @param  [u] pval [AjPStr*] parameter value
+** @return [void]
+** @@
+******************************************************************************/
+
+static void featTagDasgffDefault(AjPStr* pout, const AjPStr tag, AjPStr* pval)
+{
+
+    /*ajDebug("featTagDasgffDefault '%S' '%S'\n", tag, *pval);*/
+
+
+    featTagQuoteGff3(pval);
+
+        ajFmtPrintS(pout, "%S:%S", tag, *pval);
+    
     return;
 }
 
@@ -12447,59 +12637,68 @@ static AjBool featTagSpecial(AjPStr* pval, const AjPStr tag)
     if(ajStrMatchC(tag, "anticodon"))
 	return featTagSpecialAllAnticodon(*pval);
 
-    if(ajStrMatchC(tag, "citation"))
+    else if(ajStrMatchC(tag, "bio_material") ||
+            ajStrMatchC(tag, "culture_collection") ||
+            ajStrMatchC(tag, "specimen_voucher"))
+	return featTagSpecialAllBiomaterial(*pval);
+
+    else if(ajStrMatchC(tag, "citation"))
 	return featTagSpecialAllCitation(*pval);
 
-    if(ajStrMatchC(tag, "codon"))
+    else if(ajStrMatchC(tag, "codon"))
 	return featTagSpecialAllCodon(pval);
 
-    if(ajStrMatchC(tag, "collection_date"))
+    else if(ajStrMatchC(tag, "collection_date"))
 	return featTagSpecialAllCollectiondate(*pval);
 
-    if(ajStrMatchC(tag, "cons_splice"))
-	return featTagSpecialAllConssplice(pval);
-
-    if(ajStrMatchC(tag, "inference"))
-	return featTagSpecialAllInference(*pval);
-
-    if(ajStrMatchC(tag, "lat_lon"))
-	return featTagSpecialAllLatlon(*pval);
-
-    if(ajStrMatchC(tag, "PCR_primers"))
-	return featTagSpecialAllPcrprimers(*pval);
-
-    if(ajStrMatchC(tag, "rpt_unit"))
-	return featTagSpecialAllRptunit(*pval);
-
-    if(ajStrMatchC(tag, "rpt_unit_range"))
-	return featTagSpecialAllRptunitrange(*pval);
-
-    if(ajStrMatchC(tag, "rpt_unit_seq"))
-	return featTagSpecialAllRptunitseq(*pval);
-
-    if(ajStrMatchC(tag, "transl_except"))
-	return featTagSpecialAllTranslexcept(*pval);
-
-    if(ajStrMatchC(tag, "db_xref"))
-	return featTagSpecialAllDbxref(*pval);
-
-    if(ajStrMatchC(tag, "protein_id"))
-	return featTagSpecialAllProteinid(*pval);
-
-    if(ajStrMatchC(tag, "replace"))
-	return featTagSpecialAllReplace(pval);
-
-    if(ajStrMatchC(tag, "translation"))
-	return featTagSpecialAllTranslation(pval);
-
-    if(ajStrMatchC(tag, "estimated_length"))
-	return featTagSpecialAllEstimatedlength(pval);
-
-    if(ajStrMatchC(tag, "compare"))
+    else if(ajStrMatchC(tag, "compare"))
 	return featTagSpecialAllCompare(*pval);
 
-    if(ajStrMatchC(tag, "mobile_element"))
+    else if(ajStrMatchC(tag, "cons_splice"))
+	return featTagSpecialAllConssplice(pval);
+
+    else if(ajStrMatchC(tag, "db_xref"))
+	return featTagSpecialAllDbxref(*pval);
+
+    else if(ajStrMatchC(tag, "estimated_length"))
+	return featTagSpecialAllEstimatedlength(pval);
+
+    else if(ajStrMatchC(tag, "inference"))
+	return featTagSpecialAllInference(*pval);
+
+    else if(ajStrMatchC(tag, "lat_lon"))
+	return featTagSpecialAllLatlon(*pval);
+
+    else if(ajStrMatchC(tag, "mobile_element"))
 	return featTagSpecialAllMobile(*pval);
+
+    else if(ajStrMatchC(tag, "ncRNA_class"))
+	return featTagSpecialAllNcrnaclass(*pval);
+
+    else if(ajStrMatchC(tag, "PCR_primers"))
+	return featTagSpecialAllPcrprimers(*pval);
+
+    else if(ajStrMatchC(tag, "protein_id"))
+	return featTagSpecialAllProteinid(*pval);
+
+    else if(ajStrMatchC(tag, "replace"))
+	return featTagSpecialAllReplace(pval);
+
+    else if(ajStrMatchC(tag, "rpt_unit"))
+	return featTagSpecialAllRptunit(*pval);
+
+    else if(ajStrMatchC(tag, "rpt_unit_range") ||
+            ajStrMatchC(tag, "tag_peptide"))
+	return featTagSpecialAllRange(*pval);
+
+    else if(ajStrMatchC(tag, "rpt_unit_seq"))
+	return featTagSpecialAllRptunitseq(*pval);
+
+    else if(ajStrMatchC(tag, "transl_except"))
+	return featTagSpecialAllTranslexcept(*pval);
+
+    else if(ajStrMatchC(tag, "translation"))
+	return featTagSpecialAllTranslation(pval);
 
     /*ajDebug("Unrecognised special EMBL feature tag '%S'\n", tag);*/
     featWarn("Unrecognised special EMBL feature tag '%S'",   tag);
@@ -12530,56 +12729,65 @@ static AjBool featTagGffSpecial(AjPStr* pval, const AjPStr tag)
     if(ajStrMatchC(tag, "anticodon"))
 	return featTagSpecialAllAnticodon(*pval);
 
-    if(ajStrMatchC(tag, "citation"))
+    else if(ajStrMatchC(tag, "bio_material") ||
+            ajStrMatchC(tag, "culture_collection") ||
+            ajStrMatchC(tag, "specimen_voucher"))
+	return featTagSpecialAllBiomaterial(*pval);
+
+    else if(ajStrMatchC(tag, "citation"))
 	return featTagSpecialAllCitation(*pval);
 
-    if(ajStrMatchC(tag, "codon"))
+    else if(ajStrMatchC(tag, "codon"))
 	return featTagSpecialAllCodon(pval);
 
-    if(ajStrMatchC(tag, "collection_date"))
+    else if(ajStrMatchC(tag, "collection_date"))
 	return featTagSpecialAllCollectiondate(*pval);
 
-    if(ajStrMatchC(tag, "cons_splice"))
+    else if(ajStrMatchC(tag, "compare"))
+	return featTagSpecialAllCompare(*pval);
+
+    else if(ajStrMatchC(tag, "cons_splice"))
 	return featTagSpecialAllConssplice(pval);
 
-    if(ajStrMatchC(tag, "inference"))
-	return featTagSpecialAllInference(*pval);
-
-    if(ajStrMatchC(tag, "lat_lon"))
-	return featTagSpecialAllLatlon(*pval);
-
-    if(ajStrMatchC(tag, "PCR_primers"))
-	return featTagSpecialAllPcrprimers(*pval);
-
-    if(ajStrMatchC(tag, "rpt_unit"))
-	return featTagSpecialAllRptunit(*pval);
-
-    if(ajStrMatchC(tag, "rpt_unit_range"))
-	return featTagSpecialAllRptunitrange(*pval);
-
-    if(ajStrMatchC(tag, "rpt_unit_seq"))
-	return featTagSpecialAllRptunitseq(*pval);
-
-    if(ajStrMatchC(tag, "transl_except"))
-	return featTagSpecialAllTranslexcept(*pval);
-
-    if(ajStrMatchC(tag, "db_xref"))
+    else if(ajStrMatchC(tag, "db_xref"))
 	return featTagSpecialAllDbxref(*pval);
 
-    if(ajStrMatchC(tag, "protein_id"))
-	return featTagSpecialAllProteinid(*pval);
-
-    if(ajStrMatchC(tag, "replace"))
-	return featTagSpecialAllReplace(pval);
-
-    if(ajStrMatchC(tag, "translation"))
-	return featTagSpecialAllTranslation(pval);
-
-    if(ajStrMatchC(tag, "estimated_length"))
+    else if(ajStrMatchC(tag, "estimated_length"))
 	return featTagSpecialAllEstimatedlength(pval);
 
-    if(ajStrMatchC(tag, "compare"))
-	return featTagSpecialAllCompare(*pval);
+     else if(ajStrMatchC(tag, "inference"))
+	return featTagSpecialAllInference(*pval);
+
+    else if(ajStrMatchC(tag, "lat_lon"))
+	return featTagSpecialAllLatlon(*pval);
+
+    else if(ajStrMatchC(tag, "mobile_element"))
+	return featTagSpecialAllMobile(*pval);
+
+    else if(ajStrMatchC(tag, "PCR_primers"))
+	return featTagSpecialAllPcrprimers(*pval);
+
+    else if(ajStrMatchC(tag, "protein_id"))
+	return featTagSpecialAllProteinid(*pval);
+
+    else if(ajStrMatchC(tag, "replace"))
+	return featTagSpecialAllReplace(pval);
+
+    else if(ajStrMatchC(tag, "rpt_unit"))
+	return featTagSpecialAllRptunit(*pval);
+
+    else if(ajStrMatchC(tag, "rpt_unit_range") ||
+            ajStrMatchC(tag, "tag_peptide"))
+	return featTagSpecialAllRange(*pval);
+
+    else if(ajStrMatchC(tag, "rpt_unit_seq"))
+	return featTagSpecialAllRptunitseq(*pval);
+
+    else if(ajStrMatchC(tag, "transl_except"))
+	return featTagSpecialAllTranslexcept(*pval);
+
+    else if(ajStrMatchC(tag, "translation"))
+	return featTagSpecialAllTranslation(pval);
 
     /*ajDebug("Unrecognised special GFF feature tag '%S'\n", tag);*/
     featWarn("Unrecognised special GFF feature tag '%S'",   tag);
@@ -12610,56 +12818,68 @@ static AjBool featTagGff3Special(AjPStr* pval, const AjPStr tag)
     if(ajStrMatchC(tag, "anticodon"))
 	return featTagSpecialAllAnticodon(*pval);
 
-    if(ajStrMatchC(tag, "citation"))
+    else if(ajStrMatchC(tag, "bio_material") ||
+            ajStrMatchC(tag, "culture_collection") ||
+            ajStrMatchC(tag, "specimen_voucher"))
+	return featTagSpecialAllBiomaterial(*pval);
+
+    else if(ajStrMatchC(tag, "citation"))
 	return featTagSpecialAllCitation(*pval);
 
-    if(ajStrMatchC(tag, "codon"))
+    else if(ajStrMatchC(tag, "codon"))
 	return featTagSpecialAllCodon(pval);
 
-    if(ajStrMatchC(tag, "collection_date"))
+    else if(ajStrMatchC(tag, "collection_date"))
 	return featTagSpecialAllCollectiondate(*pval);
 
-    if(ajStrMatchC(tag, "cons_splice"))
+    else if(ajStrMatchC(tag, "compare"))
+	return featTagSpecialAllCompare(*pval);
+
+    else if(ajStrMatchC(tag, "cons_splice"))
 	return featTagSpecialAllConssplice(pval);
 
-    if(ajStrMatchC(tag, "inference"))
-	return featTagSpecialAllInference(*pval);
-
-    if(ajStrMatchC(tag, "lat_lon"))
-	return featTagSpecialAllLatlon(*pval);
-
-    if(ajStrMatchC(tag, "PCR_primers"))
-	return featTagSpecialAllPcrprimers(*pval);
-
-    if(ajStrMatchC(tag, "rpt_unit"))
-	return featTagSpecialAllRptunit(*pval);
-
-    if(ajStrMatchC(tag, "rpt_unit_range"))
-	return featTagSpecialAllRptunitrange(*pval);
-
-    if(ajStrMatchC(tag, "rpt_unit_seq"))
-	return featTagSpecialAllRptunitseq(*pval);
-
-    if(ajStrMatchC(tag, "transl_except"))
-	return featTagSpecialAllTranslexcept(*pval);
-
-    if(ajStrMatchC(tag, "db_xref"))
+    else if(ajStrMatchC(tag, "db_xref"))
 	return featTagSpecialAllDbxref(*pval);
 
-    if(ajStrMatchC(tag, "protein_id"))
-	return featTagSpecialAllProteinid(*pval);
-
-    if(ajStrMatchC(tag, "replace"))
-	return featTagSpecialAllReplace(pval);
-
-    if(ajStrMatchC(tag, "translation"))
-	return featTagSpecialAllTranslation(pval);
-
-    if(ajStrMatchC(tag, "estimated_length"))
+    else if(ajStrMatchC(tag, "estimated_length"))
 	return featTagSpecialAllEstimatedlength(pval);
 
-    if(ajStrMatchC(tag, "compare"))
-	return featTagSpecialAllCompare(*pval);
+    else if(ajStrMatchC(tag, "inference"))
+	return featTagSpecialAllInference(*pval);
+
+    else if(ajStrMatchC(tag, "lat_lon"))
+	return featTagSpecialAllLatlon(*pval);
+
+    else if(ajStrMatchC(tag, "mobile_element"))
+	return featTagSpecialAllMobile(*pval);
+
+    else if(ajStrMatchC(tag, "ncRNA_class"))
+	return featTagSpecialAllNcrnaclass(*pval);
+
+    else if(ajStrMatchC(tag, "PCR_primers"))
+	return featTagSpecialAllPcrprimers(*pval);
+
+    else if(ajStrMatchC(tag, "protein_id"))
+	return featTagSpecialAllProteinid(*pval);
+
+    else if(ajStrMatchC(tag, "replace"))
+	return featTagSpecialAllReplace(pval);
+
+    else if(ajStrMatchC(tag, "rpt_unit"))
+	return featTagSpecialAllRptunit(*pval);
+
+    else if(ajStrMatchC(tag, "rpt_unit_range") ||
+            ajStrMatchC(tag, "tag_peptide"))
+	return featTagSpecialAllRange(*pval);
+
+    else if(ajStrMatchC(tag, "rpt_unit_seq"))
+	return featTagSpecialAllRptunitseq(*pval);
+
+    else if(ajStrMatchC(tag, "transl_except"))
+	return featTagSpecialAllTranslexcept(*pval);
+
+    else if(ajStrMatchC(tag, "translation"))
+	return featTagSpecialAllTranslation(pval);
 
     /*ajDebug("Unrecognised special GFF feature tag '%S'\n", tag);*/
     featWarn("Unrecognised special GFF feature tag '%S'",   tag);
@@ -13755,6 +13975,7 @@ void ajFeatExit(void)
     ajRegFree(&featRegGroup);
 
     ajRegFree(&featRegSpecialAnticodon);
+    ajRegFree(&featRegSpecialBiomaterial);
     ajRegFree(&featRegSpecialCodon);
     ajRegFree(&featRegSpecialCodonBad);
     ajRegFree(&featRegSpecialColdate);
