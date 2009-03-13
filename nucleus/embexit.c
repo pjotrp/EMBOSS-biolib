@@ -38,6 +38,7 @@ __noreturn void embExit (void)
     embGrpExit();
     embIndexExit();
     embWordExit();
+    embPatlistExit();
 
     ajExit();
 }
