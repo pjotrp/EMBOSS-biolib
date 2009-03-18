@@ -42,5 +42,6 @@ else
   XLIB="-lX11 $X_EXTRA_LIBS"
 fi
   AC_SUBST(XLIB)
+  AC_DEFINE(PLD_xwin)
 ])
 
