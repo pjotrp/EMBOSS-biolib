@@ -42,6 +42,32 @@ else
   XLIB="-lX11 $X_EXTRA_LIBS"
 fi
   AC_SUBST(XLIB)
-  AC_DEFINE(PLD_xwin)
+
+AC_CHECK_HEADER(X11/Xlib.h,
+[
+	AC_DEFINE(PLD_xwin)
+],
+[
+	echo ""
+	echo "X11 graphics have been selected but no X11 header files"
+        echo "have been found."
+        echo ""
+        echo "This error usually happens on Linux/MacOSX distributions"
+	echo "where the optional X11 development files have not been installed."
+        echo "On Linux RPM systems this package is usually called something"
+        echo "like xorg-x11-proto-devel whereas on Debian/Ubuntu it may"
+        echo "be called x-dev. On MacOSX installation DVDs the X11 files"
+        echo "can usually be found as an explicitly named optional"
+        echo "installation."
+        echo ""
+        echo "After installing the X11 development files you should do a"
+        echo "'make clean' and perform the configure stage again."
+        echo ""
+        echo "Alternatively, to install EMBOSS without X11 support, you can add"
+        echo "the --without-x switch to the configure command."
+	echo ""
+        exit $?
+])
+
 ])
 
