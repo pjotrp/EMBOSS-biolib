@@ -152,6 +152,7 @@ const char*   embPropCharToThree (char c);
 
 void    embPropFixF(float matrix[], float missing);
 const char*   embPropIntToThree (ajint c);
+void    embPropNormalF(float matrix[], float missing);
 AjPStr  embPropProtGaps (AjPSeq seq, ajint pad);
 AjPStr  embPropProt1to3 (AjPSeq seq, ajint pad);
 AjPStr  embPropProt1to3Rev (AjPSeq seq, ajint pad);

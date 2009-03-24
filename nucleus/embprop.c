@@ -1269,21 +1269,21 @@ void embPropFixF(float matrix[], float missing)
 	{
 	    switch (i)
 	    {
-	    case 1:			/* B */
+	    case 1:			/* B: D + N */
 		matrix[i] = ((matrix[3] * dayhoff[3]) +
 			     (matrix[13] * dayhoff[13])) /
 				 (dayhoff[3] + dayhoff[13]);
 		ajDebug("Missing %d '%c' %f %f => %f\n",
 			i, dayhoffstr[i], matrix[3], matrix[13], matrix[i]);
 		break;
-	    case 9:			/* J */
+	    case 9:			/* J: I + L */
 		matrix[i] = ((matrix[8] * dayhoff[8]) +
 			     (matrix[11] * dayhoff[11])) /
 				 (dayhoff[8] + dayhoff[11]);
 		ajDebug("Missing %d '%c' %f %f => %f\n",
 			i, dayhoffstr[i], matrix[8], matrix[11], matrix[i]);
 		break;
-	    case 25:			/* Z */
+	    case 25:			/* Z: E + Q */
 		matrix[i] = ((matrix[4] * dayhoff[4]) +
 			     (matrix[16] * dayhoff[16])) /
 				 (dayhoff[4] + dayhoff[16]);
@@ -1308,7 +1308,7 @@ void embPropFixF(float matrix[], float missing)
 
     for(i=0;i<26;i++)
     {
-	if(matrix[i] == missing)
+	if(matrix[i] == missing) /* X:average O,U:X */
 	{
 	    matrix[i] = mtot;
 	    ajDebug("Missing %d '%c' unknown %f\n",
@@ -1321,6 +1321,61 @@ void embPropFixF(float matrix[], float missing)
 }
 
 
+
+
+/* @func embPropNormalF ********************************************************
+**
+** Normalize data values in a float array to have mean 0.0 and
+** standard deviation 1.0
+**
+** Assume the data values represent all values for a population
+** (e.g. values for all standard amino acids) and use
+** new value = (old value - mean) / standard deviation
+**
+** @param [u] matrix [float[]] Matrix
+** @param [r] missing [float] Missing data value
+** @return [void]
+******************************************************************************/
+
+void embPropNormalF(float matrix[], float missing)
+{
+    ajuint i;
+
+    double count = 0.0;
+    double total = 0.0;
+    double sumsq = 0.0;
+    double sigma = 0.0;
+    double mean = 0.0;
+    const char* alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    for(i=0;i<26;i++)
+    {
+	if(matrix[i] != missing)
+	{
+            count += 1.0;
+            total += matrix[i];
+            sumsq += matrix[i] * matrix[i];
+        }
+    }
+
+    if(!count) return;
+
+    sigma = sqrt(count*sumsq - total*total)/count;
+    mean = total/count;
+
+    ajDebug("matrix normalize mean: %.3f sigma: %.3f\n", mean, sigma);
+    for(i=0;i<26;i++)
+    {
+	if(matrix[i] != missing)
+        {
+            ajDebug("matrix[%u] %c %.3f", i, alphabet[i], matrix[i]);
+            matrix[i] = (matrix[i] - mean) / sigma;
+            ajDebug(" => %.3f\n", matrix[i]);
+        }
+    }
+
+    return;
+}
 
 
 /* @func embPropAminoDel ******************************************************
