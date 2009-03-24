@@ -69,11 +69,11 @@ float embAlignPathCalc(const char *a, const char *b,
     ajint i;
     ajint j;
 
-    float match;
-    float mscore;
-    float fnew;
-    float *maxa;
-    float maxb;
+    double match;
+    double mscore;
+    double fnew;
+    double *maxa;
+    double maxb;
 
     static AjPStr outstr = NULL;
     char compasschar;
@@ -84,7 +84,7 @@ float embAlignPathCalc(const char *a, const char *b,
 
     /* Create stores for the maximum values in a row or column */
 
-    maxa = AJALLOC(lena*sizeof(float));
+    maxa = AJALLOC(lena*sizeof(double));
 
 
     /* First initialise the first column and row */
@@ -249,14 +249,14 @@ float embAlignPathCalcSW(const char *a, const char *b, ajint lena, ajint lenb,
     ajint i;
     ajint j;
 
-    float match;
-    float mscore;
-    float result;
-    float fnew;
-    float *maxa;
+    double match;
+    double mscore;
+    double result;
+    double fnew;
+    double *maxa;
 
     static AjPStr outstr = NULL;
-    float bx;
+    double bx;
     char compasschar;
 
     ajDebug("embAlignPathCalcSW\n");
@@ -265,7 +265,7 @@ float embAlignPathCalcSW(const char *a, const char *b, ajint lena, ajint lenb,
 
     /* Create stores for the maximum values in a row or column */
 
-    maxa = AJALLOC(lena*sizeof(float));
+    maxa = AJALLOC(lena*sizeof(double));
 
 
     /* First initialise the first column and row */
@@ -426,10 +426,10 @@ void embAlignWalkSWMatrix(const float *path, const ajint *compass,
     ajint i;
     ajint j;
     ajint k;
-    float pmax;
-    float score;
-    float gapcnt;
-    float bimble;
+    ajint gapcnt;
+    double pmax;
+    double score;
+    double bimble;
 
     ajint ix;
     ajint iy;
@@ -439,13 +439,13 @@ void embAlignWalkSWMatrix(const float *path, const ajint *compass,
     const char *p;
     const char *q;
 
-    float ic;
-    float errbounds;
+    ajint ic;
+    double errbounds;
 
     ajDebug("embAlignWalkSWMatrix\n");
 
-    errbounds = gapextend;
-    errbounds = (float) 0.01;
+    /* errbounds = gapextend; */
+    errbounds = (double) 0.01;
 
     /* Get maximum path score and save position */
     pmax = -FLT_MAX;
@@ -480,7 +480,7 @@ void embAlignWalkSWMatrix(const float *path, const ajint *compass,
 	else if(compass[ypos*lenb+xpos]==1) /* Left, gap(s) in vertical */
 	{
 	    score  = path[ypos*lenb+xpos];
-	    gapcnt = 0.;
+	    gapcnt = 0;
 	    ix     = xpos-1;
 	    while(1)
 	    {
@@ -504,7 +504,7 @@ void embAlignWalkSWMatrix(const float *path, const ajint *compass,
 	else if(compass[ypos*lenb+xpos]==2) /* Down, gap(s) in horizontal */
 	{
 	    score  = path[ypos*lenb+xpos];
-	    gapcnt = 0.;
+	    gapcnt = 0;
 	    iy = ypos-1;
 
 	    while(1)
@@ -575,10 +575,10 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 {
     ajint i;
     ajint j;
-    float pmax;
-    float score;
-    float gapcnt;
-    float bimble;
+    ajint gapcnt;
+    double pmax;
+    double score;
+    double bimble;
 
     ajint ix;
     ajint iy;
@@ -588,16 +588,16 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
     const char *p;
     const char *q;
 
-    float ic;
-    float errbounds;
+    ajint ic;
+    double errbounds;
 
     ajDebug("embAlignWalkNWMatrix\n");
 
-    errbounds=gapextend;
-    errbounds = (float) 0.01;
+    /*errbounds=gapextend;*/
+    errbounds = (double) 0.01;
 
     /* Get maximum path axis score and save position */
-    pmax = (float) (-1*INT_MAX);
+    pmax = (double) (-1*INT_MAX);
     for(i=0;i<lenb;++i)
 	if(path[(lena-1)*lenb+i]>=pmax)
 	{
@@ -631,7 +631,7 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 	else if(compass[ypos*lenb+xpos]==1) /* Left, gap(s) in vertical */
 	{
 	    score  = path[ypos*lenb+xpos];
-	    gapcnt = 0.;
+	    gapcnt = 0;
 	    ix     = xpos-1;
 	    while(1)
 	    {
@@ -652,7 +652,7 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 	else if(compass[ypos*lenb+xpos]==2) /* Down, gap(s) in horizontal */
 	{
 	    score  = path[ypos*lenb+xpos];
-	    gapcnt = 0.;
+	    gapcnt = 0;
 	    iy = ypos-1;
 
 	    while(1)
@@ -1271,11 +1271,11 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
     ajint k;
     ajint ip;                   /* position in path matrix */
 
-    float match;
-    float mscore;
-    float fnew;
-    float maxa;
-    float *maxb;
+    double match;
+    double mscore;
+    double fnew;
+    double maxa;
+    double *maxb;
 
     ajint jlena;
     ajint jlenb;
@@ -1288,7 +1288,7 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
     ajint xmax;                 /* last x position for this row */
     ajint ymax;
 
-    float max;
+    double max;
     static AjPStr outstr = NULL;
 
     char compasschar;
@@ -1347,7 +1347,7 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
 
     /* Create stores for the maximum values in a row or column */
 
-    maxb = AJALLOC(lenb*sizeof(float));
+    maxb = AJALLOC(lenb*sizeof(double));
 
     /* First initialise the first column and row */
     for(i=0;i<lena;++i)
@@ -1379,7 +1379,7 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
 	maxb[j] = path[j]-(gapopen);
 
     for(j=rightwidth;j<lenb;++j)
-	maxb[j] = (float) -999.9;
+	maxb[j] = (double) -999.9;
 
     /* ajDebug("2   %d %d\n",lena,lenb);*/
 
@@ -1540,10 +1540,10 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
     ajint j;
     ajint k;
     ajint ip;                   /* position in path matrix */
-    float pmax;
-    float score;
-    float gapcnt;
-    float bimble;
+    ajint gapcnt;
+    double pmax;
+    double score;
+    double bimble;
 
     ajint ix;
     ajint iy;
@@ -1554,8 +1554,8 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
     const char *p;
     const char *q;
 
-    float ic;
-    float errbounds;
+    ajint ic;
+    double errbounds;
 
     ajint width;
     ajint leftwidth;
@@ -1567,7 +1567,7 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
 
     ajDebug("embAlignWalkSWMatrixFast\n");
 
-    errbounds = (float) 0.01;
+    errbounds = (double) 0.01;
     width = pathwidth;
 
     if(lena < width)
@@ -1633,7 +1633,7 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
 	else if(compass[ip]==1) /* Left, horizontal gap(s): step through xpos */
 	{
 	    score  = path[ip];
-	    gapcnt = 0.;
+	    gapcnt = 0;
 	    ix     = xpos-1;
 	    while(1)
 	    {
@@ -1661,7 +1661,7 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
 	else if(compass[ip]==2) /* Down, vertical gap(s): step through ypos */
 	{
 	    score  = path[ip];
-	    gapcnt = 0.;
+	    gapcnt = 0;
 	    iy = ypos-1;
 
 	    while(1)
@@ -1735,16 +1735,16 @@ float embAlignProfilePathCalc(const char *a, ajint proflen, ajint seqlen,
 
     static AjPStr outstr = NULL;
 
-    float fmscore;
-    float mscore;
-    float fnew;
-    float maxp;
-    float *maxs;
+    double fmscore;
+    double mscore;
+    double fnew;
+    double maxp;
+    double *maxs;
 
     ret = -FLT_MAX;
     ajDebug("embAlignProfilePathCalc\n");
 
-    maxs = AJALLOC(seqlen*sizeof(float));
+    maxs = AJALLOC(seqlen*sizeof(double));
 
     /* First initialise the first column and row */
     for(column=0;column<seqlen;++column)
@@ -1889,11 +1889,11 @@ void embAlignWalkProfileMatrix(const float *path, const ajint *compass,
 			       ajint *start1, ajint *start2)
 {
     ajint i;
-    float pathmax;
-    float score;
-
     ajint gapcnt;
-    float bimble;
+    double pathmax;
+    double score;
+
+    double bimble;
 
     ajint ix;
     ajint iy;
@@ -1909,14 +1909,14 @@ void embAlignWalkProfileMatrix(const float *path, const ajint *compass,
     const char *p;
     const char *q;
 
-    float errbounds;
+    double errbounds;
 
     ajDebug("embAlignWalkProfileMatrix\n");
 
-    errbounds = (float) 0.01;
+    errbounds = (double) 0.01;
 
     /* Get maximum path score and save position */
-    pathmax = -(float) INT_MAX;
+    pathmax = -(double) INT_MAX;
     for(row=0;row<proflen;++row)
 	for(column=0;column<seqlen;++column)
 	    if(path[row*seqlen+column] > pathmax)
