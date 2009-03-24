@@ -1157,7 +1157,7 @@ AP acdc
 PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 ## -send after another qualifier should work on all sequences
-CL testassoc tembl:v00294 tembl:x13776 -ctest "fred" -send -1001
+CL testassoc tembl:v00294 tembl:x13776 -ctest 'fred' -send -1001
 IN
 IN
 FI stderr
@@ -1174,7 +1174,7 @@ AP acdc
 PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 ## Numbered -send for first sequence
-CL testassoc tembl:v00294 tembl:x13776 -ctest "fred" -send1 -1001
+CL testassoc tembl:v00294 tembl:x13776 -ctest 'fred' -send1 -1001
 IN
 IN
 FI stderr
@@ -1191,7 +1191,7 @@ AP acdc
 PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 ## Numbered -send for first sequence
-CL testassoc  -send1 -1001 tembl:v00294 tembl:x13776 -ctest "fred"
+CL testassoc  -send1 -1001 tembl:v00294 tembl:x13776 -ctest 'fred'
 IN
 IN
 FI stderr
@@ -1208,7 +1208,7 @@ AP acdc
 PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 ## Numbered -send for first sequence
-CL testassoc  tembl:v00294 tembl:x13776 -send1 -1001 -ctest "fred"
+CL testassoc  tembl:v00294 tembl:x13776 -send1 -1001 -ctest 'fred'
 IN
 IN
 FI stderr
@@ -1225,7 +1225,7 @@ AP acdc
 PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 ## Numbered -sformat for first sequence makes -send global
-CL testassoc  tembl:v00294 tembl:x13776 -sformat1 embl -send -1001 -ctest "fred"
+CL testassoc  tembl:v00294 tembl:x13776 -sformat1 embl -send -1001 -ctest 'fred'
 IN
 IN
 FI stderr
@@ -3298,7 +3298,7 @@ DL keep
 PP mkdir CODONS
 PP EMBOSS_DATA=./
 PP export EMBOSS_DATA
-CL -species "Aedes *"
+CL -species 'Aedes *'
 IN ../../data
 IN
 FI stderr
@@ -3318,7 +3318,7 @@ DL keep
 PP mkdir CODONS
 PP EMBOSS_DATA=./
 PP export EMBOSS_DATA
-CL -species "Aedes *" -filename EAedes
+CL -species 'Aedes *' -filename EAedes
 IN ../../data
 IN
 FI stderr
@@ -3491,21 +3491,21 @@ FP /^%%Title: PLplot Graph/
 
 ID direct-all
 AP seqret
-CL temblall:* test.out -auto
+CL 'temblall:*' test.out -auto
 FI test.out
 FP 49 /^>/
 //
 
 ID direct-filename
 AP seqret
-CL temblvrt:* test.out -auto
+CL 'temblvrt:*' test.out -auto
 FI test.out
 FP 31 /^>/
 //
 
 ID direct-exclude
 AP seqret
-CL temblrest:* test.out -auto
+CL 'temblrest:*' test.out -auto
 FI test.out
 FP 18 /^>/
 //
@@ -3517,7 +3517,7 @@ FP 18 /^>/
 ID dbiblast-allsys-keep
 DL keep
 AP dbiblast
-CL -fields "acc,sv,des"
+CL -fields 'acc,sv,des'
 IN swnew
 IN ../../data
 IN
@@ -3570,7 +3570,7 @@ FP /Total 1 files 9 entries \(0 duplicates\)\n/
 ID dbiblast-allnosys-keep
 DL keep
 AP dbiblast
-CL -fields "acc,sv,des" -nosystemsort
+CL -fields 'acc,sv,des' -nosystemsort
 IN swnew
 IN ../../data
 IN
@@ -3763,7 +3763,7 @@ FP 1 /^>/
 
 ID dbiblast-all
 AP seqret
-CL qapblast:* test.out -auto
+CL 'qapblast:*' test.out -auto
 FI test.out
 FZ = 4474
 FP 1 /^>TM21_FUGRU Q90515 /
@@ -3772,7 +3772,7 @@ FP 9 /^>/
 
 ID dbiblast-wild
 AP seqret
-CL qapblast:n* test.out -auto
+CL 'qapblast:n*' test.out -auto
 FI test.out
 FZ = 516
 FP 2 /^>N/
@@ -3962,7 +3962,7 @@ FP 1 /^>/
 
 ID dbiblast-split-all
 AP seqret
-CL qapblastsplit:* test.out -auto
+CL 'qapblastsplit:*' test.out -auto
 FI test.out
 FZ = 4474
 FP 1 /^>TM21_FUGRU Q90515 /
@@ -3971,7 +3971,7 @@ FP 9 /^>/
 
 ID dbiblast-split-wild
 AP seqret
-CL qapblastsplit:n* test.out -auto
+CL 'qapblastsplit:n*' test.out -auto
 FI test.out
 FZ = 516
 FP 2 /^>N/
@@ -3989,7 +3989,7 @@ FP 1 /^>/
 
 ID dbiblast-split-testexcall
 AP seqret
-CL qapblastsplitexc:* test.out -auto
+CL 'qapblastsplitexc:*' test.out -auto
 FI test.out
 FZ = 3864
 FP 1 /^>CO9_FUGRU /
@@ -4019,7 +4019,7 @@ FP 1 /^>/
 
 ID dbiblast-split-testincall
 AP seqret
-CL qapblastsplitinc:* test.out -auto
+CL 'qapblastsplitinc:*' test.out -auto
 FI test.out
 FZ = 610
 FP 1 /^>FABP_FUGRU /
@@ -4085,7 +4085,7 @@ FP /^Total 1 files 6 entries \(0 duplicates\)\n/
 ID dbifasta-allsys-keep
 DL keep
 AP dbifasta
-CL -fields "acc,sv,des"
+CL -fields 'acc,sv,des'
 IN EMROD
 IN idacc
 IN ../../data
@@ -4144,7 +4144,7 @@ FP /^Total 1 files 6 entries \(0 duplicates\)\n/
 ID dbifasta-allnosys-keep
 DL keep
 AP dbifasta
-CL -fields "acc,sv,des" -nosystemsort
+CL -fields 'acc,sv,des' -nosystemsort
 IN EMROD
 IN idacc
 IN ../../data
@@ -4238,7 +4238,7 @@ FP 1 /^>/
 
 ID dbifasta-all
 AP seqret
-CL qanfasta:* test.out -auto
+CL 'qanfasta:*' test.out -auto
 FI test.out
 FZ = 5586
 FP 1 /^>U68037 /
@@ -4247,7 +4247,7 @@ FP 6 /^>/
 
 ID dbifasta-wild
 AP seqret
-CL qanfasta:m* test.out -auto
+CL 'qanfasta:m*' test.out -auto
 FI test.out
 FZ = 2225
 FP 1 /^>M11903 /
@@ -4334,7 +4334,7 @@ FP 1 /^>/
 
 ID dbifasta-swiss-all
 AP seqret
-CL qapfasta:* test.out -auto
+CL 'qapfasta:*' test.out -auto
 FI test.out
 FZ = 4654
 FP 1 /^>Q2KT90_FUGRU /
@@ -4343,7 +4343,7 @@ FP 9 /^>/
 
 ID dbifasta-swiss-wild
 AP seqret
-CL qapfasta:q2* test.out -auto
+CL 'qapfasta:q2*' test.out -auto
 FI test.out
 FZ = 960
 FP 1 /^>Q2KT90_FUGRU /
@@ -4430,7 +4430,7 @@ FP 1 /^>/
 
 ID dbifasta-worm-all
 AP seqret
-CL qawfasta:* test.out -auto
+CL 'qawfasta:*' test.out -auto
 FI test.out
 FZ = 33816
 FP 66 /^>/
@@ -4438,7 +4438,7 @@ FP 66 /^>/
 
 ID dbifasta-worm-wild
 AP seqret
-CL qawfasta:a* test.out -auto
+CL 'qawfasta:a*' test.out -auto
 FI test.out
 FZ = 19764
 FP 40 /^>A[^\n]+\n[^>]/
@@ -4447,7 +4447,7 @@ FP 40 /^>/
 
 ID dbifasta-worm-wildz
 AP seqret
-CL qawfasta:z* test.out -auto
+CL 'qawfasta:z*' test.out -auto
 FI test.out
 FZ = 7264
 FP 15 /^>Z[^\n]+\n[^>]/
@@ -4584,7 +4584,7 @@ FP 1 /^>/
 
 ID dbiflat-all
 AP seqret
-CL qanflat:* test.out -auto
+CL 'qanflat:*' test.out -auto
 FI test.out
 FZ = 5586
 FP 1 /^>L48662 /
@@ -4593,7 +4593,7 @@ FP 6 /^>/
 
 ID dbiflat-wild
 AP seqret
-CL qanflat:*7 test.out -auto
+CL 'qanflat:*7' test.out -auto
 FI test.out
 FZ = 2886
 FP 1 /^>Z46957 /
@@ -4602,7 +4602,7 @@ FP 2 /^>/
 
 ID dbiflat-wild2
 AP seqret
-CL qanflat:m119* test.out -auto
+CL 'qanflat:m119*' test.out -auto
 FI test.out
 FZ = 2225
 FP 1 /^>M11904 /
@@ -4656,7 +4656,7 @@ FP 3 /^>/
 
 ID dbiflat-tembl-all
 AP seqret
-CL tembl:* test.out -auto
+CL 'tembl:*' test.out -auto
 FI test.out
 FZ = 2837990
 FP 3 /^>AF/
@@ -4666,7 +4666,7 @@ FP 49 /^>/
 
 ID dbiflat-tembl-wild
 AP seqret
-CL tembl:a* test.out -auto
+CL 'tembl:a*' test.out -auto
 FI test.out
 FZ = 322239
 FP 3 /^>AF/
@@ -4675,7 +4675,7 @@ FP 9 /^>/
 
 ID dbiflat-tembl-keywild
 AP seqret
-CL tembl-key:a* test.out -auto
+CL 'tembl-key:a*' test.out -auto
 FI test.out
 FZ = 90158
 FP 1 />U01317 /
@@ -4728,7 +4728,7 @@ FP 1 /^filename: /
 ID dbiflat-swiss-allsys-keep
 DL keep
 AP dbiflat
-CL -fields "acc,sv,des,key,org"
+CL -fields 'acc,sv,des,key,org'
 IN SWNEW
 IN
 IN ../../swnew
@@ -4795,7 +4795,7 @@ FP 1 /^filename: /
 ID dbiflat-embl-allsys-keep
 DL keep
 AP dbiflat
-CL -fields "acc,sv,des,key,org"
+CL -fields 'acc,sv,des,key,org'
 IN EMBL
 IN
 IN ../../embl
@@ -4866,7 +4866,7 @@ FP 10 /^filename: /
 ID dbiflat-embl-allnosys-keep
 DL keep
 AP dbiflat
-CL -nosystemsort -fields "acc,sv,des,key,org"
+CL -nosystemsort -fields 'acc,sv,des,key,org'
 IN EMBL
 IN
 IN ../../embl
@@ -4945,7 +4945,7 @@ FP 1 /^>/
 
 ID dbiflat-embl-testexcall
 AP seqret
-CL qanflatexc-id:* test.out -auto
+CL 'qanflatexc-id:*' test.out -auto
 FI test.out
 FZ = 2832404
 FP 1 /^>X13776 /
@@ -4975,7 +4975,7 @@ FP 1 /^>/
 
 ID dbiflat-embl-testincall
 AP seqret
-CL qanflatinc-id:* test.out -auto
+CL 'qanflatinc-id:*' test.out -auto
 FI test.out
 FZ = 5586
 FP 1 /^>U68037 /
@@ -4997,7 +4997,7 @@ FP 1 /Died: /
 ID dbiflat-swiss-allnosys-keep
 DL keep
 AP dbiflat
-CL -nosystemsort -fields "acc,sv,des,key,org"
+CL -nosystemsort -fields 'acc,sv,des,key,org'
 IN SWNEW
 IN
 IN ../../swnew
@@ -5099,7 +5099,7 @@ FP 1 /^>/
 
 ID dbiflat-swiss-all
 AP seqret
-CL qapflat:* test.out -auto
+CL 'qapflat:*' test.out -auto
 FI test.out
 FZ = 4654
 FP 1 /^>Q2KT90_FUGRU /
@@ -5108,7 +5108,7 @@ FP 9 /^>/
 
 ID dbiflat-swiss-wild
 AP seqret
-CL qapflat:q2* test.out -auto
+CL 'qapflat:q2*' test.out -auto
 FI test.out
 FZ = 960
 FP 1 /^>Q2KT90_FUGRU /
@@ -5306,7 +5306,7 @@ FP 1 /^>/
 
 ID dbigcg-all
 AP seqret
-CL qangcg:* test.out -auto
+CL 'qangcg:*' test.out -auto
 FI test.out
 FZ = 2145074
 FP 1 /^>L07770 /
@@ -5315,7 +5315,7 @@ FP 40 /^>/
 
 ID dbigcg-wild
 AP seqret
-CL qangcg:a* test.out -auto
+CL 'qangcg:a*' test.out -auto
 FI test.out
 FZ = 1251303
 FP 3 /^>AB/
@@ -5334,7 +5334,7 @@ FP 1 /^>/
 
 ID dbigcg-testexcall
 AP seqret
-CL qangcgexc-id:* test.out -auto
+CL 'qangcgexc-id:*' test.out -auto
 FI test.out
 FZ = 1744803
 FP 1 /^>X65923 /
@@ -5364,7 +5364,7 @@ FP 1 /^>/
 
 ID dbigcg-testincall
 AP seqret
-CL qangcginc-id:* test.out -auto
+CL 'qangcginc-id:*' test.out -auto
 FI test.out
 FZ = 400271
 FP 1 /^>J01636 /
@@ -5391,7 +5391,7 @@ ID dbigcg-allsys-keep
 DL keep
 TI 120
 AP dbigcg
-CL -fields "acc,sv,des,key,org"
+CL -fields 'acc,sv,des,key,org'
 IN EMBL
 IN EMBL
 IN ../../embl
@@ -5555,7 +5555,7 @@ FP 1 /^>/
 
 ID dbigcg-allsys-all
 AP seqret
-CL qangcgall:* test.out -auto
+CL 'qangcgall:*' test.out -auto
 FI test.out
 FZ = 2145074
 FP 1 /^>X13776 /
@@ -5564,7 +5564,7 @@ FP 40 /^>/
 
 ID dbigcg-allsys-wild
 AP seqret
-CL qangcgall:a* test.out -auto
+CL 'qangcgall:a*' test.out -auto
 FI test.out
 FZ = 1251303
 FP 9 /^>A/
@@ -5583,7 +5583,7 @@ FP 1 /^>/
 
 ID dbigcg-allsys-acnumall
 AP seqret
-CL qangcgall-acc:* test.out -auto
+CL 'qangcgall-acc:*' test.out -auto
 FI test.out
 FZ = 2145074
 FP 1 /^>X13776 /
@@ -5592,7 +5592,7 @@ FP 40 /^>/
 
 ID dbigcg-allsys-acnumwild
 AP seqret
-CL qangcgall-acc:x* test.out -auto
+CL 'qangcgall-acc:x*' test.out -auto
 FI test.out
 FZ = 18988
 FP 11 /^>[A-Z0-9]+ X/
@@ -5610,7 +5610,7 @@ FP 1 /^>/
 
 ID dbigcg-allsys-svall
 AP seqret
-CL qangcgall-sv:* test.out -auto
+CL 'qangcgall-sv:*' test.out -auto
 FI test.out
 FZ = 2145074
 FP 1 /^>X65923 /
@@ -5619,7 +5619,7 @@ FP 40 /^>/
 
 ID dbigcg-allsys-svwild
 AP seqret
-CL qangcgall-sv:x* test.out -auto
+CL 'qangcgall-sv:x*' test.out -auto
 FI test.out
 FZ = 5043
 FP 3 /^>X/
@@ -5637,7 +5637,7 @@ FP 1 /^>/
 
 ID dbigcg-allsys-desall
 AP seqret
-CL qangcgall-des:* test.out -auto
+CL 'qangcgall-des:*' test.out -auto
 FI test.out
 FZ = 2145074
 FP 1 /^>X13776 /
@@ -5646,7 +5646,7 @@ FP 40 /^>/
 
 ID dbigcg-allsys-deswild
 AP seqret
-CL qangcgall-des:m* test.out -auto
+CL 'qangcgall-des:m*' test.out -auto
 FI test.out
 FZ = 1543931
 FP 18 /^>.* [Mm]/
@@ -5664,7 +5664,7 @@ FP 3 /^>/
 
 ID dbigcg-allsys-keyall
 AP seqret
-CL qangcgall-key:* test.out -auto
+CL 'qangcgall-key:*' test.out -auto
 FI test.out
 FZ = 2145074
 FP 1 /^>L07770 /
@@ -5673,7 +5673,7 @@ FP 40 /^>/
 
 ID dbigcg-allsys-keywild
 AP seqret
-CL qangcgall-key:m* test.out -auto
+CL 'qangcgall-key:m*' test.out -auto
 FI test.out
 FZ = 9919
 FP 1 /^>AB009602/
@@ -5691,7 +5691,7 @@ FP 1 /^>/
 
 ID dbigcg-allsys-orgall
 AP seqret
-CL qangcgall-org:* test.out -auto
+CL 'qangcgall-org:*' test.out -auto
 FI test.out
 FZ = 2145074
 FP 1 /^>X13776 /
@@ -5700,7 +5700,7 @@ FP 40 /^>/
 
 ID dbigcg-allsys-orgwild
 AP seqret
-CL qangcgall-org:s* test.out -auto
+CL 'qangcgall-org:s*' test.out -auto
 FI test.out
 FZ = 45442
 FP 1 /^>L48662/
@@ -5709,7 +5709,7 @@ FP 5 /^>/
 
 ID dbigcg-allsys-orgwild2
 AP seqret
-CL qangcgall-org:mus* test.out -auto
+CL 'qangcgall-org:mus*' test.out -auto
 FI test.out
 FZ = 4276
 FP 1 /^>L48662/
@@ -5720,7 +5720,7 @@ ID dbigcg-allnosys-keep
 DL keep
 TI 120
 AP dbigcg
-CL -fields "acc,sv,des,key,org" -nosystem
+CL -fields 'acc,sv,des,key,org' -nosystem
 IN EMBL
 IN EMBL
 IN ../../embl
@@ -5882,7 +5882,7 @@ FP 1 /^>/
 
 ID dbigcg-pir-all
 AP seqret
-CL qapir:* test.out -auto
+CL 'qapir:*' test.out -auto
 FI test.out
 FZ = 10467
 FP 1 /^>S11172 /
@@ -5891,7 +5891,7 @@ FP 60 /^>/
 
 ID dbigcg-pir-wild
 AP seqret
-CL qapir:c* test.out -auto
+CL 'qapir:c*' test.out -auto
 FI test.out
 FZ = 7969
 FP 49 /^>C/
@@ -5909,7 +5909,7 @@ FP 1 /^>/
 
 ID dbigcg-pir-testexcall
 AP seqret
-CL qapirexc-id:* test.out -auto
+CL 'qapirexc-id:*' test.out -auto
 FI test.out
 FZ = 2498
 FP 1 /^>S11172 /
@@ -5939,7 +5939,7 @@ FP 1 /^>/
 
 ID dbigcg-pir-testincall
 AP seqret
-CL qapirinc-id:* test.out -auto
+CL 'qapirinc-id:*' test.out -auto
 FI test.out
 FZ = 7969
 FP 1 /^>CCHU /
@@ -5968,7 +5968,7 @@ ID dbigcg-pirall-keep
 DL keep
 TI 120
 AP dbigcg
-CL -fields "acc,des,key,org"
+CL -fields 'acc,des,key,org'
 IN PIR
 IN PIR
 IN ../../pir
@@ -6082,7 +6082,7 @@ FP 1 /^>/
 
 ID dbigcg-pirall-all
 AP seqret
-CL qapirall:* test.out -auto
+CL 'qapirall:*' test.out -auto
 FI test.out
 FZ = 10467
 FP 1 /^>S11172 /
@@ -6091,7 +6091,7 @@ FP 60 /^>/
 
 ID dbigcg-pirall-wild
 AP seqret
-CL qapirall:c* test.out -auto
+CL 'qapirall:c*' test.out -auto
 FI test.out
 FZ = 7969
 FP 49 /^>C/
@@ -6109,7 +6109,7 @@ FP 1 /^>/
 
 ID dbigcg-pirall-acnumall
 AP seqret
-CL qapirall-acc:* test.out -auto
+CL 'qapirall-acc:*' test.out -auto
 FI test.out
 FZ = 10467
 FP 1 /^>CCRT /
@@ -6118,7 +6118,7 @@ FP 60 /^>/
 
 ID dbigcg-pirall-acnumwild
 AP seqret
-CL qapirall-acc:s* test.out -auto
+CL 'qapirall-acc:s*' test.out -auto
 FI test.out
 FZ = 841
 ## CCHO has an S* secondary accession number, rest are primary
@@ -6137,7 +6137,7 @@ FP 54 /^>/
 
 ID dbigcg-pirall-desall
 AP seqret
-CL qapirall-des:* test.out -auto
+CL 'qapirall-des:*' test.out -auto
 FI test.out
 FZ = 10467
 FP 1 /^>CCHU /
@@ -6146,7 +6146,7 @@ FP 60 /^>/
 
 ID dbigcg-pirall-deswild
 AP seqret
-CL qapirall-des:p* test.out -auto
+CL 'qapirall-des:p*' test.out -auto
 FI test.out
 FZ = 2399
 FP 11 /^>.*[ -][Pp]/
@@ -6164,7 +6164,7 @@ FP 1 /^>/
 
 ID dbigcg-pirall-keyall
 AP seqret
-CL qapirall-key:* test.out -auto
+CL 'qapirall-key:*' test.out -auto
 FI test.out
 FZ = 10467
 FP 1 /^>CCHU /
@@ -6174,7 +6174,7 @@ FP 60 /^>/
 # only entries with keywords
 ID dbigcg-pirall-keyall2
 AP seqret
-CL qapirall-key:?* test.out -auto
+CL 'qapirall-key:?*' test.out -auto
 FI test.out
 FZ = 9109
 FP 1 /^>CCHU /
@@ -6183,7 +6183,7 @@ FP 56 /^>/
 
 ID dbigcg-pirall-keywild
 AP seqret
-CL qapirall-key:m* test.out -auto
+CL 'qapirall-key:m*' test.out -auto
 FI test.out
 FZ = 8825
 FP 1 /^>CCHU /
@@ -6201,7 +6201,7 @@ FP 1 /^>/
 
 ID dbigcg-pirall-orgall
 AP seqret
-CL qapirall-org:* test.out -auto
+CL 'qapirall-org:*' test.out -auto
 FI test.out
 FZ = 10467
 FP 1 /^>CCHU /
@@ -6210,7 +6210,7 @@ FP 60 /^>/
 
 ID dbigcg-pirall-orgwild
 AP seqret
-CL qapirall-org:s* test.out -auto
+CL 'qapirall-org:s*' test.out -auto
 FI test.out
 FZ = 2010
 FP 1 /^>CCPG /
@@ -6220,7 +6220,7 @@ FP 12 /^>/
 
 ID dbigcg-pirall-orgwild2
 AP seqret
-CL qapirall-org:mus* test.out -auto
+CL 'qapirall-org:mus*' test.out -auto
 FI test.out
 FZ = 324
 FP 1 /^>CCMS /
@@ -6290,7 +6290,7 @@ FP 1 /u68037/
 ID dbxfasta-allsys-keep
 DL keep
 AP dbxfasta
-CL -fields "id,acc,sv,des"
+CL -fields 'id,acc,sv,des'
 IN emrod
 IN emblresource
 IN idacc
@@ -6410,7 +6410,7 @@ FP 1 /^>/
 
 ID dbxfasta-all
 AP seqret
-CL qanxfasta:* test.out -auto
+CL 'qanxfasta:*' test.out -auto
 FI test.out
 FZ = 5586
 FP 1 /^>U68037 /
@@ -6420,7 +6420,7 @@ FP 6 /^>/
 
 ID dbxfasta-wild
 AP seqret
-CL qanxfasta:m* test.out -auto
+CL 'qanxfasta:m*' test.out -auto
 FI test.out
 FZ = 2225
 FP 1 /^>M11904 /
@@ -6524,7 +6524,7 @@ FP 1 /^>/
 
 ID dbxfasta-swiss-all
 AP seqret
-CL qapxfasta:* test.out -auto
+CL 'qapxfasta:*' test.out -auto
 FI test.out
 FZ = 4654
 FP 1 /^>Q2KT90_FUGRU /
@@ -6533,7 +6533,7 @@ FP 9 /^>/
 
 ID dbxfasta-swiss-wild
 AP seqret
-CL qapxfasta:q2* test.out -auto
+CL 'qapxfasta:q2*' test.out -auto
 FI test.out
 FZ = 960
 FP 1 /^>Q2KT90_FUGRU /
@@ -6638,7 +6638,7 @@ FP 1 /^>/
 
 ID dbxfasta-worm-all
 AP seqret
-CL qawxfasta:* test.out -auto
+CL 'qawxfasta:*' test.out -auto
 FI test.out
 FZ = 33816
 FP 66 /^>/
@@ -6646,7 +6646,7 @@ FP 66 /^>/
 
 ID dbxfasta-worm-wild
 AP seqret
-CL qawxfasta:a* test.out -auto
+CL 'qawxfasta:a*' test.out -auto
 FI test.out
 FZ = 19764
 FP 40 /^>A[^\n]+\n[^>]/
@@ -6655,7 +6655,7 @@ FP 40 /^>/
 
 ID dbxfasta-worm-wildz
 AP seqret
-CL qawxfasta:z* test.out -auto
+CL 'qawxfasta:z*' test.out -auto
 FI test.out
 FZ = 7264
 FP 15 /^>Z[^\n]+\n[^>]/
@@ -6772,7 +6772,7 @@ FP 1 /^>/
 ID dbxflat-all
 AP seqret
 CC Fails to fetch all entries in emboss access method
-CL qanxflat:* test.out -auto
+CL 'qanxflat:*' test.out -auto
 FI test.out
 FZ = 5586
 FP 1 /^>L48662 /
@@ -6781,7 +6781,7 @@ FP 6 /^>/
 
 ID dbxflat-wild
 AP seqret
-CL qanxflat:*7 test.out -auto
+CL 'qanxflat:*7' test.out -auto
 FI test.out
 FZ = 2886
 FP 1 /^>Z46957 /
@@ -6790,7 +6790,7 @@ FP 2 /^>/
 
 ID dbxflat-wild2
 AP seqret
-CL qanxflat:m119* test.out -auto
+CL 'qanxflat:m119*' test.out -auto
 FI test.out
 FZ = 2225
 FP 1 /^>M11904 /
@@ -6804,7 +6804,7 @@ FP 3 /^>/
 ID dbxflat-all-keep
 DL keep
 AP dbxflat
-CL -fields "id,acc,sv,des,key,org"
+CL -fields 'id,acc,sv,des,key,org'
 IN embl
 IN emblresource
 IN embl
@@ -6963,7 +6963,7 @@ FP 1 />/
 ID dbxflatall-all
 AP seqret
 CC Fails to fetch all entries in emboss access method
-CL qanxflatall:* test.out -auto
+CL 'qanxflatall:*' test.out -auto
 FI test.out
 FZ = 2837990
 FP 1 />X13776 /
@@ -6972,7 +6972,7 @@ FP 49 />/
 
 ID dbxflatall-wild
 AP seqret
-CL qanxflatall:a* test.out -auto
+CL 'qanxflatall:a*' test.out -auto
 FI test.out
 FZ = 322239
 FP 3 />AF/
@@ -6991,7 +6991,7 @@ FP 3 /^>/
 
 ID dbxflatall-keywild
 AP seqret
-CL qanxflatall-key:a* test.out -auto
+CL 'qanxflatall-key:a*' test.out -auto
 FI test.out
 FZ = 90158
 FP 1 />U01317 /
@@ -7009,7 +7009,7 @@ FP 1 /^>/
 
 ID dbxflat-embl-testexcall
 AP seqret
-CL qanxflatexc-id:* test.out -auto
+CL 'qanxflatexc-id:*' test.out -auto
 FI test.out
 FZ = 2832404
 FP 1 /^>X13776 /
@@ -7039,7 +7039,7 @@ FP 1 /^>/
 
 ID dbxflat-embl-testincall
 AP seqret
-CL qanxflatinc-id:* test.out -auto
+CL 'qanxflatinc-id:*' test.out -auto
 FI test.out
 FZ = 5586
 FP 1 /^>U68037 /
@@ -7154,7 +7154,7 @@ FP 1 /^>/
 ID dbxflat-swiss-all
 AP seqret
 CC Fails to fetch all entries in emboss access method
-CL qapxflat:* test.out -auto
+CL 'qapxflat:*' test.out -auto
 FI test.out
 FZ = 4654
 FP 1 /^>Q2KT90_FUGRU /
@@ -7163,7 +7163,7 @@ FP 9 /^>/
 
 ID dbxflat-swiss-wild
 AP seqret
-CL qapxflat:q2* test.out -auto
+CL 'qapxflat:q2*' test.out -auto
 FI test.out
 FZ = 960
 FP 1 /^>Q2KT90_FUGRU /
@@ -7333,7 +7333,7 @@ FP 1 /^>/
 
 ID dbxgcg-all
 AP seqret
-CL qanxgcg:* test.out -auto
+CL 'qanxgcg:*' test.out -auto
 FI test.out
 FZ = 2145074
 FP 1 /^>L07770 /
@@ -7342,7 +7342,7 @@ FP 40 /^>/
 
 ID dbxgcg-wild
 AP seqret
-CL qanxgcg:a* test.out -auto
+CL 'qanxgcg:a*' test.out -auto
 FI test.out
 FZ = 1251303
 FP 3 /^>AB/
@@ -7361,7 +7361,7 @@ FP 1 /^>/
 
 ID dbxgcg-testexcall
 AP seqret
-CL qanxgcgexc-id:* test.out -auto
+CL 'qanxgcgexc-id:*' test.out -auto
 FI test.out
 FZ = 1744803
 FP 1 /^>X65923 /
@@ -7391,7 +7391,7 @@ FP 1 /^>/
 
 ID dbxgcg-testincall
 AP seqret
-CL qanxgcginc-id:* test.out -auto
+CL 'qanxgcginc-id:*' test.out -auto
 FI test.out
 FZ = 400271
 FP 1 /^>J01636 /
@@ -7418,7 +7418,7 @@ ID dbxgcg-allsys-keep
 DL keep
 TI 120
 AP dbxgcg
-CL -fields "id,acc,sv,des,key,org"
+CL -fields 'id,acc,sv,des,key,org'
 IN embl
 IN emblresource
 IN embl
@@ -7628,7 +7628,7 @@ FP 1 /^>/
 
 ID dbxgcg-allsys-all
 AP seqret
-CL qanxgcgall:* test.out -auto
+CL 'qanxgcgall:*' test.out -auto
 FI test.out
 FZ = 2145074
 FP 1 /^>X13776 /
@@ -7637,7 +7637,7 @@ FP 40 /^>/
 
 ID dbxgcg-allsys-wild
 AP seqret
-CL qanxgcgall:a* test.out -auto
+CL 'qanxgcgall:a*' test.out -auto
 FI test.out
 FZ = 1251303
 FP 9 /^>A/
@@ -7656,7 +7656,7 @@ FP 1 /^>/
 
 ID dbxgcg-allsys-acnumall
 AP seqret
-CL qanxgcgall-acc:* test.out -auto
+CL 'qanxgcgall-acc:*' test.out -auto
 FI test.out
 FZ = 2145074
 FP 1 /^>X13776 /
@@ -7665,7 +7665,7 @@ FP 40 /^>/
 
 ID dbxgcg-allsys-acnumwild
 AP seqret
-CL qanxgcgall-acc:x* test.out -auto
+CL 'qanxgcgall-acc:x*' test.out -auto
 FI test.out
 FZ = 18988
 FP 11 /^>[A-Z0-9]+ X/
@@ -7683,7 +7683,7 @@ FP 1 /^>/
 
 ID dbxgcg-allsys-svall
 AP seqret
-CL qanxgcgall-sv:* test.out -auto
+CL 'qanxgcgall-sv:*' test.out -auto
 FI test.out
 FZ = 2145074
 FP 1 /^>X65923 /
@@ -7692,7 +7692,7 @@ FP 40 /^>/
 
 ID dbxgcg-allsys-svwild
 AP seqret
-CL qanxgcgall-sv:x* test.out -auto
+CL 'qanxgcgall-sv:x*' test.out -auto
 FI test.out
 FZ = 5043
 FP 3 /^>X/
@@ -7710,7 +7710,7 @@ FP 1 /^>/
 
 ID dbxgcg-allsys-desall
 AP seqret
-CL qanxgcgall-des:* test.out -auto
+CL 'qanxgcgall-des:*' test.out -auto
 FI test.out
 FZ = 2145074
 FP 1 /^>X13776 /
@@ -7719,7 +7719,7 @@ FP 40 /^>/
 
 ID dbxgcg-allsys-deswild
 AP seqret
-CL qanxgcgall-des:m* test.out -auto
+CL 'qanxgcgall-des:m*' test.out -auto
 FI test.out
 FZ = 1543931
 FP 18 /^>.* [Mm]/
@@ -7737,7 +7737,7 @@ FP 3 /^>/
 
 ID dbxgcg-allsys-keyall
 AP seqret
-CL qanxgcgall-key:* test.out -auto
+CL 'qanxgcgall-key:*' test.out -auto
 FI test.out
 FZ = 2145074
 FP 1 /^>L07770 /
@@ -7746,7 +7746,7 @@ FP 40 /^>/
 
 ID dbxgcg-allsys-keywild
 AP seqret
-CL qanxgcgall-key:m* test.out -auto
+CL 'qanxgcgall-key:m*' test.out -auto
 FI test.out
 FZ = 9919
 FP 1 /^>AB009602/
@@ -7764,7 +7764,7 @@ FP 1 /^>/
 
 ID dbxgcg-allsys-orgall
 AP seqret
-CL qanxgcgall-org:* test.out -auto
+CL 'qanxgcgall-org:*' test.out -auto
 FI test.out
 FZ = 2145074
 FP 1 /^>X13776 /
@@ -7773,7 +7773,7 @@ FP 40 /^>/
 
 ID dbxgcg-allsys-orgwild
 AP seqret
-CL qanxgcgall-org:* test.out -auto
+CL 'qanxgcgall-org:*' test.out -auto
 FI test.out
 FZ = 2145074
 FP 1 /^>X13776 /
@@ -7782,7 +7782,7 @@ FP 40 /^>/
 
 ID dbxgcg-allsys-orgwild2
 AP seqret
-CL qanxgcgall-org:mus* test.out -auto
+CL 'qanxgcgall-org:mus*' test.out -auto
 FI test.out
 FZ = 4276
 FP 1 /^>L48662/
@@ -7907,7 +7907,7 @@ FP 1 /^>/
 
 ID dbxgcg-pir-all
 AP seqret
-CL qaxpir:* test.out -auto
+CL 'qaxpir:*' test.out -auto
 FI test.out
 FZ = 10467
 FP 1 /^>S11172 /
@@ -7916,7 +7916,7 @@ FP 60 /^>/
 
 ID dbxgcg-pir-wild
 AP seqret
-CL qaxpir:c* test.out -auto
+CL 'qaxpir:c*' test.out -auto
 FI test.out
 FZ = 7969
 FP 49 /^>C/
@@ -7934,7 +7934,7 @@ FP 1 /^>/
 
 ID dbxgcg-pir-testexcall
 AP seqret
-CL qaxpirexc-id:* test.out -auto
+CL 'qaxpirexc-id:*' test.out -auto
 FI test.out
 FZ = 2498
 FP 1 /^>S11172 /
@@ -7964,7 +7964,7 @@ FP 1 /^>/
 
 ID dbxgcg-pir-testincall
 AP seqret
-CL qaxpirinc-id:* test.out -auto
+CL 'qaxpirinc-id:*' test.out -auto
 FI test.out
 FZ = 7969
 FP 1 /^>CCHU /
@@ -7993,7 +7993,7 @@ ID dbxgcg-pirall-keep
 DL keep
 TI 120
 AP dbxgcg
-CL -fields "id,acc,des,key,org"
+CL -fields 'id,acc,des,key,org'
 IN pir
 IN pirresource
 IN pir
@@ -8149,7 +8149,7 @@ FP 1 /^>/
 
 ID dbxgcg-pirall-all
 AP seqret
-CL qaxpirall:* test.out -auto
+CL 'qaxpirall:*' test.out -auto
 FI test.out
 FZ = 10467
 FP 1 /^>S11172 /
@@ -8158,7 +8158,7 @@ FP 60 /^>/
 
 ID dbxgcg-pirall-wild
 AP seqret
-CL qaxpirall:c* test.out -auto
+CL 'qaxpirall:c*' test.out -auto
 FI test.out
 FZ = 7969
 FP 49 /^>C/
@@ -8176,7 +8176,7 @@ FP 1 /^>/
 
 ID dbxgcg-pirall-acnumall
 AP seqret
-CL qaxpirall-acc:* test.out -auto
+CL 'qaxpirall-acc:*' test.out -auto
 FI test.out
 FZ = 10467
 FP 1 /^>CCRT /
@@ -8185,7 +8185,7 @@ FP 60 /^>/
 
 ID dbxgcg-pirall-acnumwild
 AP seqret
-CL qaxpirall-acc:s* test.out -auto
+CL 'qaxpirall-acc:s*' test.out -auto
 FI test.out
 FZ = 841
 ## CCHO has an S* secondary accession number, rest are primary
@@ -8204,7 +8204,7 @@ FP 54 /^>/
 
 ID dbxgcg-pirall-desall
 AP seqret
-CL qaxpirall-des:* test.out -auto
+CL 'qaxpirall-des:*' test.out -auto
 FI test.out
 FZ = 10467
 FP 1 /^>CCHU /
@@ -8213,7 +8213,7 @@ FP 60 /^>/
 
 ID dbxgcg-pirall-deswild
 AP seqret
-CL qaxpirall-des:p* test.out -auto
+CL 'qaxpirall-des:p*' test.out -auto
 FI test.out
 FZ = 2399
 FP 11 /^>.*[ -][Pp]/
@@ -8231,7 +8231,7 @@ FP 1 /^>/
 
 ID dbxgcg-pirall-keyall
 AP seqret
-CL qaxpirall-key:* test.out -auto
+CL 'qaxpirall-key:*' test.out -auto
 FI test.out
 FZ = 10467
 FP 1 /^>CCHU /
@@ -8241,7 +8241,7 @@ FP 60 /^>/
 # only entries with keywords
 ID dbxgcg-pirall-keyall2
 AP seqret
-CL qaxpirall-key:?* test.out -auto
+CL 'qaxpirall-key:?*' test.out -auto
 FI test.out
 FZ = 9109
 FP 1 /^>CCHU /
@@ -8250,7 +8250,7 @@ FP 56 /^>/
 
 ID dbxgcg-pirall-keywild
 AP seqret
-CL qaxpirall-key:m* test.out -auto
+CL 'qaxpirall-key:m*' test.out -auto
 FI test.out
 FZ = 8825
 FP 1 /^>CCHU /
@@ -8268,7 +8268,7 @@ FP 1 /^>/
 
 ID dbxgcg-pirall-orgall
 AP seqret
-CL qaxpirall-org:* test.out -auto
+CL 'qaxpirall-org:*' test.out -auto
 FI test.out
 FZ = 10467
 FP 1 /^>CCHU /
@@ -8277,7 +8277,7 @@ FP 60 /^>/
 
 ID dbxgcg-pirall-orgwild
 AP seqret
-CL qaxpirall-org:s* test.out -auto
+CL 'qaxpirall-org:s*' test.out -auto
 FI test.out
 FZ = 2010
 FP 1 /^>CCPG /
@@ -8286,7 +8286,7 @@ FP 12 /^>/
 
 ID dbxgcg-pirall-orgwild2
 AP seqret
-CL qaxpirall-org:mus* test.out -auto
+CL 'qaxpirall-org:mus*' test.out -auto
 FI test.out
 FZ = 324
 FP 1 /^>CCMS /
@@ -8314,7 +8314,7 @@ FP /^ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT\n/
 ID descseq-ex
 UC Set the name of a sequence to "myclone23" 
 AP descseq
-CL -seq ../../data/dna.text -out clone23.seq -name "myclone23"
+CL -seq ../../data/dna.text -out clone23.seq -name 'myclone23'
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -8328,7 +8328,7 @@ FP /^>myclone23\n/
 ID descseq-ex2
 UC Set the description of a sequence to "This is my clone number 244" 
 AP descseq
-CL -seq ../../data/dna.text -out xy24.seq -desc "This is my clone number 244"
+CL -seq ../../data/dna.text -out xy24.seq -desc 'This is my clone number 244'
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -8342,7 +8342,7 @@ FP /EMBOSS_001 This is my clone number 244\n/
 ID descseq-ex3
 UC Append some text to the description of a sequence
 AP descseq
-CL -seq ../../data/dna.text -out est4.seq -desc " (submitted)" -append
+CL -seq ../../data/dna.text -out est4.seq -desc ' (submitted)' -append
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -8557,7 +8557,7 @@ FP 0 /Died: /
 
 ID dottup-ex
 AP dottup
-CL tembl:j01636 tembl:v00294 -wordsize=6 -gtitle="v00294 vs j01636" -graph cps
+CL tembl:j01636 tembl:v00294 -wordsize=6 -gtitle='v00294 vs j01636' -graph cps
 FI stdout
 FZ = 18
 FP /^Created dottup\.ps\n/
@@ -8574,7 +8574,7 @@ FP 0 /Died: /
 
 ID dottup-data
 AP dottup
-CL tembl:j01636 tembl:v00294 -wordsize=6 -gtitle="v00294 vs j01636"
+CL tembl:j01636 tembl:v00294 -wordsize=6 -gtitle='v00294 vs j01636'
 CL -graph data
 IN
 FI stdout
@@ -8594,7 +8594,7 @@ FP 0 /Died: /
 
 ID dottup-stretchdata
 AP dottup
-CL tembl:j01636 tembl:v00294 -wordsize=6 -gtitle="v00294 vs j01636"
+CL tembl:j01636 tembl:v00294 -wordsize=6 -gtitle='v00294 vs j01636'
 CL -stretch -xygraph data
 IN
 FI stdout
@@ -8612,7 +8612,7 @@ FP 0 /Died: /
 
 ID dottup-stretch
 AP dottup
-CL tembl:j01636 tembl:v00294 -wordsize=6 -gtitle="v00294 vs j01636" -xygraph ps
+CL tembl:j01636 tembl:v00294 -wordsize=6 -gtitle='v00294 vs j01636' -xygraph ps
 CL -stretch
 IN
 FI stdout
@@ -9875,7 +9875,7 @@ FP /^cctaaggtgagtgaga\n/
 ID extractfeat-ex3
 UC To write out the 10 bases around the start of all 'exon' features in the tembl database: 
 AP extractfeat
-CL tembl:*  -type exon -before 5 -after -5
+CL 'tembl:*'  -type exon -before 5 -after -5
 IN
 FI stderr
 FC = 2
@@ -9907,7 +9907,7 @@ ID extractfeat-ex5
 UC To write out the 7 residues around all phosphorylated serine residues
 ## in the tsw database
 AP extractfeat
-CL tsw:*  -type MOD_RES -value phosphoserine* -before 3 -after -4
+CL 'tsw:*' -type MOD_RES -value 'phosphoserine*' -before 3 -after -4
 IN
 FI stderr
 FC = 2
@@ -9958,7 +9958,7 @@ FP /^tccctctcgatacactcgggacaagttagggc\n/
 ID extractseq-ex3
 UC Extract the regions 782-856, 951-1095, 1557-1612 and 1787-1912:
 AP extractseq
-CL tembl:x65921 -reg "782..856,951..1095,1557..1612,1787..1912" stdout
+CL tembl:x65921 -reg '782..856,951..1095,1557..1612,1787..1912' stdout
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -9974,7 +9974,7 @@ FP /^cccacctttggcaagaagaagggccccaatgccaactcttaa\n/
 ID extractseq-ex4
 UC Extract the regions 782-856, 951-1095, 1557-1612 and 1787-1912 all to separate output sequences:
 AP extractseq
-CL tembl:x65921 -reg "782..856,951..1095,1557..1612,1787..1912" stdout -separate
+CL tembl:x65921 -reg '782..856,951..1095,1557..1612,1787..1912' stdout -separate
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -11915,7 +11915,7 @@ FP 1 /Died: /
 # change example to globins.msf (plural)
 ID pepwindowall-ex
 AP pepwindowall
-CL ../../data/globins.msf -gxtitle="Base Number" -gytitle="hydropathy"
+CL ../../data/globins.msf -gxtitle='Base Number' -gytitle='hydropathy'
 IN cps
 FI stderr
 FC = 2
@@ -12008,7 +12008,7 @@ FP /^%%Pages: 1\n/
 
 ID polydot-ex
 AP polydot
-CL ../../data/globins.fasta -gtitle="Polydot of globins.fasta"
+CL ../../data/globins.fasta -gtitle='Polydot of globins.fasta'
 CL -graph cps
 IN
 FI stderr
@@ -12026,7 +12026,7 @@ FP /^%%Pages: 1\n/
 
 ID polydot-data
 AP polydot
-CL ../../data/globins.fasta -gtitle="Polydot of globins.fasta"
+CL ../../data/globins.fasta -gtitle='Polydot of globins.fasta'
 CL -graph data
 IN
 FI stdout
@@ -12050,7 +12050,7 @@ FP /^Text1 x1 1121\.670044 y1 1023\.659973 colour 0 size 0\.300000   1    146   
 
 ID polydot-feat
 AP polydot
-CL ../../data/globins.fasta -gtitle="Polydot of globins.fasta"
+CL ../../data/globins.fasta -gtitle='Polydot of globins.fasta'
 CL -graph cps -dumpfeat
 IN
 IN
@@ -14785,7 +14785,7 @@ FP 3 /^FASTAM3    [ACGT\-]+\n/
 
 ID seqret-outmulti-msf-noalign
 AP seqret
-CL -auto tembl:M1190\* test.out -osf msf
+CL -auto 'tembl:M1190*' test.out -osf msf
 FI test.out
 FZ = 3884
 FP /^!!NA_MULTIPLE_ALIGNMENT 1\.0\n/
@@ -15221,7 +15221,7 @@ FP 1 /Died: /
 
 ID seqret-query-direct-sv
 AP seqret
-CL -auto -out test.out -osf embl embl::../../embl/rod.dat:SV:L48662*
+CL -auto -out test.out -osf embl 'embl::../../embl/rod.dat:SV:L48662*'
 FI test.out
 FZ = 1452
 FP /^ID   L48662; /
@@ -15251,7 +15251,7 @@ FP 1 /Died: /
 
 ID seqret-query-direct-des
 AP seqret
-CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:*receptor*
+CL -auto -out test.out -osf embl 'embl::../../embl/rod.dat:DES:*receptor*'
 FI test.out
 FZ = 2633
 FP /^ID   U68037; /
@@ -15260,7 +15260,7 @@ FP 1 /^ID/
 
 ID seqret-query-direct-des2
 AP seqret
-CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:*norvegicus*
+CL -auto -out test.out -osf embl 'embl::../../embl/rod.dat:DES:*norvegicus*'
 FI test.out
 FZ = 11311
 FP /^ID   Z46957; /
@@ -15329,7 +15329,7 @@ FP 1 /Died: /
 
 ID seqret-query-direct-org
 AP seqret
-CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ORG:Mus\*
+CL -auto -out test.out -osf embl 'embl::../../embl/rod.dat:ORG:Mus*'
 FI test.out
 FZ = 1452
 FP /^ID   L48662; /
@@ -15338,7 +15338,7 @@ FP 1 /^ID/
 
 ID seqret-query-direct-org2
 AP seqret
-CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ORG:Rattus\*
+CL -auto -out test.out -osf embl 'embl::../../embl/rod.dat:ORG:Rattus*'
 FI test.out
 FZ = 11311
 FP /^ID   Z46957; /
@@ -15688,7 +15688,7 @@ UC In this example the specification is all done in the command line
 UC and to stop Unix getting confused by the '*' character,
 UC it has to have a backslash ('\') before it:
 AP seqret
-CL tembl:ab\*  aball.seq
+CL 'tembl:ab*'  aball.seq
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -16177,7 +16177,7 @@ FP /^V00294     ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
 
 ID seqall-end-fasta
 AP seqret
-CL tembl:v0029\* -send 100 -out test.out -auto
+CL 'tembl:v0029*' -send 100 -out test.out -auto
 FI test.out
 FZ = 517
 FP 3 /^>/
@@ -16187,7 +16187,7 @@ FP /^gagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
 
 ID seqall-begin-fasta
 AP seqret
-CL tembl:v0029* -sbegin 51 -send 100 -out test.out -auto
+CL 'tembl:v0029*' -sbegin 51 -send 100 -out test.out -auto
 FI test.out
 FZ = 364
 FP 3 /^>/
@@ -16197,7 +16197,7 @@ FP /^aaaccctggcgttacccaacttaatcgccttgcagcacatccccctttcg\n/
 
 ID seqall-rev-fasta
 AP seqret
-CL tembl:v0029\* -sbegin 51 -send 100 -srev -out test.out -auto
+CL 'tembl:v0029*' -sbegin 51 -send 100 -srev -out test.out -auto
 FI test.out
 FZ = 364
 FP 3 /^>/
@@ -16207,7 +16207,7 @@ FP /^ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
 
 ID seqall-end-msf
 AP seqret
-CL tembl:v0029\* -send 100 -out test.out -osf msf -auto
+CL 'tembl:v0029*' -send 100 -out test.out -osf msf -auto
 FI test.out
 FZ = 751
 FP 3 / +Name: /
@@ -16219,7 +16219,7 @@ FP /^V00294     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
 
 ID seqall-begin-msf
 AP seqret
-CL tembl:v0029\* -sbegin 51 -send 100 -out test.out -osf msf -auto
+CL 'tembl:v0029*' -sbegin 51 -send 100 -out test.out -osf msf -auto
 FI test.out
 FZ = 498
 FP 3 / +Name: /
@@ -16231,7 +16231,7 @@ FP /^V00295     ataataataaccgggcaggccatgtctgcccgtatttcgcgtaaggaaat\n/
 
 ID seqall-rev-msf
 AP seqret
-CL tembl:v0029\* -sbegin 51 -send 100 -srev -out test.out -osf msf -auto
+CL 'tembl:v0029*' -sbegin 51 -send 100 -srev -out test.out -osf msf -auto
 FI test.out
 FZ = 498
 FP 3 / +Name: /
@@ -16243,7 +16243,7 @@ FP /^V00295     atttccttacgcgaaatacgggcagacatggcctgcccggttattattat\n/
 
 ID seqset-end-fasta
 AQ seqretset
-CL tembl:v0029\* -send 100 -out test.out -auto
+CL 'tembl:v0029*' -send 100 -out test.out -auto
 FI test.out
 FZ = 517
 FP 3 /^>/
@@ -16253,7 +16253,7 @@ FP /^gagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
 
 ID seqset-begin-fasta
 AQ seqretset
-CL tembl:v0029* -sbegin 51 -send 100 -out test.out -auto
+CL 'tembl:v0029*' -sbegin 51 -send 100 -out test.out -auto
 FI test.out
 FZ = 364
 FP 3 /^>/
@@ -16263,7 +16263,7 @@ FP /^aaaccctggcgttacccaacttaatcgccttgcagcacatccccctttcg\n/
 
 ID seqset-rev-fasta
 AQ seqretset
-CL tembl:v0029\* -sbegin 51 -send 100 -srev -out test.out -auto
+CL 'tembl:v0029*' -sbegin 51 -send 100 -srev -out test.out -auto
 FI test.out
 FZ = 364
 FP 3 /^>/
@@ -16273,7 +16273,7 @@ FP /^ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
 
 ID seqset-end-msf
 AQ seqretset
-CL tembl:v0029\* -send 100 -out test.out -osf msf -auto
+CL 'tembl:v0029*' -send 100 -out test.out -osf msf -auto
 FI test.out
 FZ = 751
 FP 3 / +Name: /
@@ -16285,7 +16285,7 @@ FP /^V00294     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
 
 ID seqset-begin-msf
 AQ seqretset
-CL tembl:v0029\* -sbegin 51 -send 100 -out test.out -osf msf -auto
+CL 'tembl:v0029*' -sbegin 51 -send 100 -out test.out -osf msf -auto
 FI test.out
 FZ = 498
 FP 3 / +Name: /
@@ -16297,7 +16297,7 @@ FP /^V00295     ataataataaccgggcaggccatgtctgcccgtatttcgcgtaaggaaat\n/
 
 ID seqset-rev-msf
 AQ seqretset
-CL tembl:v0029\* -sbegin 51 -send 100 -srev -out test.out -osf msf -auto
+CL 'tembl:v0029*' -sbegin 51 -send 100 -srev -out test.out -osf msf -auto
 FI test.out
 FZ = 498
 FP 3 / +Name: /
@@ -17562,7 +17562,7 @@ FP /\AID   HBA_HUMAN               Reviewed;         141 AA.\n/
 
 ID skipredundant-ex
 AP skipredundant
-CL -threshold 80 -redundant ""
+CL -threshold 80 -redundant ''
 IN ../../data/globins.fasta
 IN 
 IN 
@@ -17807,7 +17807,7 @@ FP /^%%Pages: 1\n/
 ID textsearch-ex
 UC Search for 'lactose':
 AP textsearch
-CL tsw:* 'lactose'
+CL 'tsw:*' 'lactose'
 IN
 FI stderr
 FC = 2
@@ -17823,7 +17823,7 @@ FP /^tsw-id:LACY_ECOLI LACY_ECOLI    P02920\s+Lactose permease/
 ID textsearch-ex2
 UC Search for 'lactose' or 'permease' in E.coli proteins:
 AP textsearch
-CL tsw:*_ecoli 'lactose | permease'
+CL 'tsw:*_ecoli' 'lactose | permease'
 IN
 FI stderr
 FC = 2
@@ -17840,7 +17840,7 @@ FP /^tsw-id:LACY_ECOLI LACY_ECOLI    P02920\s+Lactose permease/
 ID textsearch-ex3
 UC Output a search for 'lacz' formatted with HTML to a file:
 AP textsearch
-CL tembl:* 'lacz' -html -outfile embl.lacz.html
+CL 'tembl:*' 'lacz' -html -outfile embl.lacz.html
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -21174,7 +21174,7 @@ FC = 0
 
 ID ajtest-all-check
 AQ ajtest
-CL -nostdout -outfile ""
+CL -nostdout -outfile ''
 CL -outseq outseq
 IN tembl:x13776
 IN ../../data/globins.msf
@@ -21499,7 +21499,7 @@ ID acd-calc-regexp
 AP acdc
 PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
-CL qatestcalcregexp "abc[def] ghi"
+CL qatestcalcregexp 'abc[def] ghi'
 IN
 FI stderr
 FC = 2
@@ -21593,7 +21593,7 @@ ID acd-calc-string
 AP acdc
 PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
-CL qatestcalcstring "abc def"
+CL qatestcalcstring 'abc def'
 IN
 FI stderr
 FC = 2
@@ -24379,7 +24379,7 @@ ID ednaml-ex
 AB phylip
 AA ednaml
 ## may need to play with the input file format for this one
-CL -categories -catnum 2 -catvals "1.0 3.2" -catprob "0.4 0.6"
+CL -categories -catnum 2 -catvals '1.0 3.2' -catprob '0.4 0.6'
 CL -lambda 1.5 -deflambda -printdata -progress
 IN ../../data/evolution/dnaml.dat
 IN
@@ -24415,7 +24415,7 @@ FP 8 /^./
 ID ednamlk-ex
 AB phylip
 AA ednamlk
-CL -categories -catnum 2 -catvals "1.0 3.2" -catprob "0.4 0.6"
+CL -categories -catnum 2 -catvals '1.0 3.2' -catprob '0.4 0.6'
 CL -lambda 1.5
 IN ../../data/evolution/dnaml.dat
 IN
@@ -25041,12 +25041,12 @@ ID fdnaml-ex
 AB phylipnew
 AA fdnaml
 CL -printdata
-CL -ncategories 2 -categories "1111112222222" -rate "1.0 2.0"
+CL -ncategories 2 -categories '1111112222222' -rate '1.0 2.0'
 CL -gamma h
-CL -nhmmcategories 5 -hmmrates "0.264 1.413 3.596 7.086 12.641"
-CL -hmmprobabilities "0.522 0.399 0.076 0.0036 0.000023"
+CL -nhmmcategories 5 -hmmrates '0.264 1.413 3.596 7.086 12.641'
+CL -hmmprobabilities '0.522 0.399 0.076 0.0036 0.000023'
 CL -lambda 1.5
-CL -weight "0111111111110"
+CL -weight '0111111111110'
 IN ../../data/evolution/dnaml.dat
 IN
 IN
@@ -25101,12 +25101,12 @@ ID fdnamlk-ex
 AB phylipnew
 AA fdnamlk
 CL -printdata
-CL -ncategories 2 -categories "1111112222222" -rate "1.0 2.0"
+CL -ncategories 2 -categories '1111112222222' -rate '1.0 2.0'
 CL -gamma h
-CL -nhmmcategories 5 -hmmrates "0.264 1.413 3.596 7.086 12.641"
-CL -hmmprobabilities "0.522 0.399 0.076 0.0036 0.000023"
+CL -nhmmcategories 5 -hmmrates '0.264 1.413 3.596 7.086 12.641'
+CL -hmmprobabilities '0.522 0.399 0.076 0.0036 0.000023'
 CL -lambda 1.5
-CL -weight "0111111111110"
+CL -weight '0111111111110'
 IN ../../data/evolution/dnaml.dat
 IN
 IN
@@ -26259,7 +26259,7 @@ FC = 0
 ID vrnadistance-ex
 AB vienna
 AA vrnadistance
-CL -distance "f,h" -doalignment
+CL -distance 'f,h' -doalignment
 IN ../../data/rna4.fold
 IN
 FI rna4.vrnadistance
