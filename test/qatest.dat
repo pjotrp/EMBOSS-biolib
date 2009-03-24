@@ -11841,7 +11841,7 @@ FP /^Rectangle x1 -0\.025000 y1 0\.431300 x2 0\.025000 y2 0\.481300 colour 9\n/
 
 ID pepwindow-ex
 AP pepwindow
-CL tsw:hba_human
+CL tsw:opsd_human
 IN cps
 FI stderr
 FC = 2
@@ -11852,7 +11852,7 @@ FI stdout
 FZ = 21
 FP /^Created pepwindow\.ps\n/
 FI pepwindow.ps
-FC = 332
+FC = 307
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -11861,7 +11861,7 @@ ID pepwindow-local
 AP pepwindow
 PP EMBOSS_DATA=../aaindexextract-keep/
 PP export EMBOSS_DATA
-CL tsw:hba_human
+CL tsw:opsd_human
 IN ps
 FI stderr
 FC = 2
@@ -11872,7 +11872,7 @@ FI stdout
 FZ = 21
 FP /^Created pepwindow\.ps\n/
 FI pepwindow.ps
-FC = 332
+FC = 307
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -11881,7 +11881,7 @@ ID pepwindow-localdata
 AP pepwindow
 PP EMBOSS_DATA=../aaindexextract-keep/
 PP export EMBOSS_DATA
-CL tsw:hba_human -datafile chop780101
+CL tsw:opsd_human -datafile chop780101
 IN ps
 FI stderr
 FC = 2
@@ -11892,7 +11892,7 @@ FI stdout
 FZ = 21
 FP /^Created pepwindow\.ps\n/
 FI pepwindow.ps
-FC = 301
+FC = 318
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -11902,7 +11902,7 @@ AP pepwindow
 ER 1
 PP EMBOSS_DATA=../aaindexextract-keep/
 PP export EMBOSS_DATA
-CL tsw:hba_human -datafile fail780101
+CL tsw:opsd_human -datafile fail780101
 IN ps
 FI stderr
 FC = 3
@@ -11926,7 +11926,7 @@ FI stdout
 FZ = 24
 FP /^Created pepwindowall\.ps\n/
 FI pepwindowall.ps
-FC = 444
+FC = 425
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
