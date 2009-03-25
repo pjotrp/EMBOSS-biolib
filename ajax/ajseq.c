@@ -9330,7 +9330,7 @@ float ajSeqstrCalcMolwt(const AjPStr seq)
 
     ajDebug("seqMW calculated %.2f\n", mw);
 
-    return mw;
+    return (float) mw;
 }
 
 

@@ -129,7 +129,7 @@ float embAlignPathCalc(const char *a, const char *b,
 
 	    /* Set compass to diagonal value 0 */
 	    compass[ypos*lenb+xpos] = 0;
-	    path[ypos*lenb+xpos] = mscore;
+	    path[ypos*lenb+xpos] = (float) mscore;
 
 	    /* Now parade back along X axis */
 	    if(xpos > 1)
@@ -143,7 +143,7 @@ float embAlignPathCalc(const char *a, const char *b,
 		if( maxa[ypos] > mscore)
 		{
 		    mscore = maxa[ypos];
-		    path[ypos*lenb+xpos] = mscore;
+		    path[ypos*lenb+xpos] = (float) mscore;
 		    compass[ypos*lenb+xpos] = 1; /* Score comes from left */
 		}
 	    }
@@ -160,7 +160,7 @@ float embAlignPathCalc(const char *a, const char *b,
 		if(maxb > mscore)
 		{
 		    mscore = maxb;
-		    path[ypos*lenb+xpos] = mscore;
+		    path[ypos*lenb+xpos] = (float) mscore;
 		    compass[ypos*lenb+xpos] = 2; /* Score comes from bottom */
 		}
 	    }
@@ -272,7 +272,7 @@ float embAlignPathCalcSW(const char *a, const char *b, ajint lena, ajint lenb,
     for(i=0;i<lena;++i)
     {
 	result = sub[ajSeqcvtGetCodeK(cvt,a[i])][ajSeqcvtGetCodeK(cvt,b[0])];
-	path[i*lenb] = (result > 0.) ? result : (float)0.;
+	path[i*lenb] = (result > 0.) ? (float) result : (float) 0.;
 	compass[i*lenb] = 0;
 	maxa[i] = path[i*lenb]-gapopen;
     }
@@ -280,7 +280,7 @@ float embAlignPathCalcSW(const char *a, const char *b, ajint lena, ajint lenb,
     for(j=0;j<lenb;++j)
     {
 	result = sub[ajSeqcvtGetCodeK(cvt,a[0])][ajSeqcvtGetCodeK(cvt,b[j])];
-	path[j] = (result > 0.) ? result : (float)0.;
+	path[j] = (result > 0.) ? (float) result : (float) 0.;
 	compass[j] = 0;
     }
 
@@ -306,7 +306,7 @@ float embAlignPathCalcSW(const char *a, const char *b, ajint lena, ajint lenb,
 
 	    /* Set compass to diagonal value 0 */
 	    compass[ypos*lenb+xpos] = 0;
-	    path[ypos*lenb+xpos] = mscore;
+	    path[ypos*lenb+xpos] = (float) mscore;
 
 
 	    /* Now parade back along X axis */
@@ -323,7 +323,7 @@ float embAlignPathCalcSW(const char *a, const char *b, ajint lena, ajint lenb,
 		if( maxa[ypos] > mscore)
 		{
 		    mscore = maxa[ypos];
-		    path[ypos*lenb+xpos] = mscore;
+		    path[ypos*lenb+xpos] = (float) mscore;
 		    compass[ypos*lenb+xpos] = 1; /* Score comes from left */
                     ajDebug("Xused: fnew:%.2f maxa[%d] %.2f mscore:%.2f\n",
                             fnew, ypos, maxa[ypos],mscore);
@@ -343,13 +343,13 @@ float embAlignPathCalcSW(const char *a, const char *b, ajint lena, ajint lenb,
 		if(bx > mscore)
 		{
 		    mscore = bx;
-		    path[ypos*lenb+xpos] = mscore;
+		    path[ypos*lenb+xpos] = (float) mscore;
 		    compass[ypos*lenb+xpos] = 2; /* Score comes from bottom */
 		}
 	    }
 
             if(mscore > ret)
-                ret = mscore;
+                ret = (float) mscore;
 
 	    result = path[ypos*lenb+xpos];
 	    if(result < 0.)
@@ -1416,7 +1416,7 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
                 mscore = 0.0;
 
 	    /* Set compass to diagonal value 0 */
-	    path[ip] = mscore;
+	    path[ip] = (float) mscore;
 
 	    if(i > 0)
 	    {
@@ -1428,7 +1428,7 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
                 if( maxa > mscore)
                 {
                     mscore = maxa;
-                    path[ip] = mscore;
+                    path[ip] = (float) mscore;
                     compass[ip] = 1; /* Score comes from left */
                 }
             }
@@ -1451,12 +1451,12 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
                 if(maxb[icol] > mscore)
                 {
                     mscore = maxb[icol];
-                    path[ip] = mscore;
+                    path[ip] = (float) mscore;
                     compass[ip] = 2; /* Score comes from bottom */
                 }
             }
             if(mscore > ret)
-                ret = mscore;
+                ret = (float) mscore;
         }
         irow++;
         xmin++;
@@ -1781,7 +1781,7 @@ float embAlignProfilePathCalc(const char *a, ajint proflen, ajint seqlen,
 
 	    /* Initialise compass to diagonal value */
 	    compass[row*seqlen+column] = DIAG;
-	    path[row*seqlen+column]    = mscore;
+	    path[row*seqlen+column]    = (float) mscore;
 
 	    /* Now parade back along X axis */
 	    if(column>1)
@@ -1795,7 +1795,7 @@ float embAlignProfilePathCalc(const char *a, ajint proflen, ajint seqlen,
 		if( maxs[column] > mscore)
 		{
 		    mscore = maxs[column];
-		    path[row*seqlen+column] = mscore;
+		    path[row*seqlen+column] = (float) mscore;
 		    compass[row*seqlen+column] = 1; /* Score from left */
 		}
 
@@ -1813,7 +1813,7 @@ float embAlignProfilePathCalc(const char *a, ajint proflen, ajint seqlen,
 		if(maxp > mscore)
 		{
 		    mscore = maxp;
-		    path[row*seqlen+column] = mscore;
+		    path[row*seqlen+column] = (float) mscore;
 		    compass[row*seqlen+column] = 2; /* Score from bottom */
 		}
 	    }
@@ -1825,7 +1825,7 @@ float embAlignProfilePathCalc(const char *a, ajint proflen, ajint seqlen,
             }
             
             if(mscore > ret)
-                ret = mscore;
+                ret = (float) mscore;
 
             ++column;
 	}

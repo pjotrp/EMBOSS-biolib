@@ -193,7 +193,7 @@ AjBool        ajFeatTrimOffRange (AjPFeature ft, ajuint ioffset,
 				  AjBool dobegin, AjBool doend);
 const AjPStr  ajFeatTypeGetCategory(const AjPStr type);
 AjBool        ajFeatTypeIsCds(const AjPFeature gf);
-    AjBool        ajFeatTypeMatch(const AjPFeature gf, const AjPStr str);
+AjBool        ajFeatTypeMatch(const AjPFeature gf, const AjPStr str);
 const AjPStr  ajFeatTypeNuc(const AjPStr type);
 const AjPStr  ajFeatTypeProt(const AjPStr type);
 AjPFeattable  ajFeatUfoRead (AjPFeattabIn tabin, const AjPStr Ufo);

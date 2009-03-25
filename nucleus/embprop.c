@@ -1369,7 +1369,7 @@ void embPropNormalF(float matrix[], float missing)
 	if(matrix[i] != missing)
         {
             ajDebug("matrix[%u] %c %.3f", i, alphabet[i], matrix[i]);
-            matrix[i] = (matrix[i] - mean) / sigma;
+            matrix[i] = (float) ((matrix[i] - mean) / sigma);
             ajDebug(" => %.3f\n", matrix[i]);
         }
     }
