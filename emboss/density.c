@@ -89,8 +89,7 @@ int main(int argc, char **argv)
     AjPReport report = NULL;
     AjBool dual = ajFalse;
     AjBool quad = ajFalse;
-    AjPGraph qgraph = NULL; 
-    AjPGraph dgraph = NULL;   
+    AjPGraph graph = NULL; 
 
     PNucDensity density = NULL;
 
@@ -123,8 +122,7 @@ int main(int argc, char **argv)
     window    = ajAcdGetInt("window");
     
     report  = ajAcdGetReport("outfile");
-    qgraph  = ajAcdGetGraphxy("qgraph");
-    dgraph  = ajAcdGetGraphxy("dgraph");
+    graph  = ajAcdGetGraphxy("graph");
 
     if(quad && dual)
 	ajFatal("Specifying both -quad and -dual is not allowed");
@@ -140,12 +138,7 @@ int main(int argc, char **argv)
 
     AJNEW0(density);
     
-    if(quad)
-	ajGraphSetTitlePlus(qgraph, ajSeqallGetUsa(seqall));
-
-    if(dual)
-	ajGraphSetTitlePlus(dgraph, ajSeqallGetUsa(seqall));
-
+    ajGraphSetTitlePlus(graph, ajSeqallGetUsa(seqall));
 
     while(ajSeqallNext(seqall, &seq))
     {
@@ -235,31 +228,25 @@ int main(int argc, char **argv)
 	}
 	
 
+        ajGraphxySetOverLap(graph,ajTrue);
+        ajGraphSetXTitleC(graph,"Position");
+        ajGraphSetYTitleC(graph,"Density");
+
 
 	if(quad)
-	{
-	    ajGraphxySetOverLap(qgraph,ajTrue);
-	    ajGraphSetXTitleC(qgraph,"Position");
-	    ajGraphSetYTitleC(qgraph,"Density");
-
-	    density_addquadgraph(qgraph, limit, density, ymin, ymax,
+	    density_addquadgraph(graph, limit, density, ymin, ymax,
 				 window);
-	    if(limit > 1)
-		ajGraphxyDisplay(qgraph,ajFalse);
-	}
+
 
 	if(dual)
-	{
-	    ajGraphxySetOverLap(dgraph,ajTrue);
-	    ajGraphSetXTitleC(dgraph,"Position");
-	    ajGraphSetYTitleC(dgraph,"Density");
-
-	    density_adddualgraph(dgraph, limit, density, ymin, ymax,
+	    density_adddualgraph(graph, limit, density, ymin, ymax,
 				 window);
-	    if(limit > 1)
-		ajGraphxyDisplay(dgraph,ajFalse);
-	}
 
+
+        if(limit > 1)
+            ajGraphxyDisplay(graph,ajFalse);
+
+        
 
 	if(limit>0)
 	{
@@ -274,13 +261,7 @@ int main(int argc, char **argv)
 
 	ajFeattableClear(ftable);
     }
-    if(report)
-    {
-        ajReportSetSeqstats(report, seqall);
-        ajReportClose(report);
-        ajReportDel(&report);
-    }
-    
+
     if(quad || dual)
         ajGraphClose();
 
@@ -289,8 +270,10 @@ int main(int argc, char **argv)
     ajSeqDel(&seq);
     ajSeqallDel(&seqall);
 
-    ajGraphxyDel(&qgraph);
-    ajGraphxyDel(&dgraph);
+    ajGraphxyDel(&graph);
+
+    ajReportClose(report);
+    ajReportDel(&report);
     
     ajFeattableDel(&ftable);
 
