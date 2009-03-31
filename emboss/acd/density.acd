@@ -27,14 +27,8 @@ section: additional [
     information: "Window length"
   ]
 
-endsection: additional
-
-section: output [
-  information: "Output section"
-  type: "page"
-]
-
   list: display [
+    additional: "Y"
     default: "none"
     minimum: "1"
     maximum: "1"
@@ -45,6 +39,14 @@ section: output [
     information: "Select graph type"
     button: "Y"
   ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
 
 variable: isdual "@($(display) == D)"
 
