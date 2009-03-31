@@ -112,20 +112,22 @@ int main(int argc, char **argv)
     char c;
     
     AjPFeattable ftable = NULL;
+    AjPStr display = NULL;
     
 
     ajGraphInit("density", argc, argv);
 
     seqall    = ajAcdGetSeqall("seqall");
-    quad      = ajAcdGetToggle("quad");
-    dual      = ajAcdGetToggle("dual");
+    display   = ajAcdGetListSingle("display");
     window    = ajAcdGetInt("window");
     
     report  = ajAcdGetReport("outfile");
     graph  = ajAcdGetGraphxy("graph");
 
-    if(quad && dual)
-	ajFatal("Specifying both -quad and -dual is not allowed");
+    if(ajStrGetCharFirst(display) == 'D')
+        dual = ajTrue;
+    if(ajStrGetCharFirst(display) == 'Q')
+        quad = ajTrue;
 
     str = ajStrNew();
     hdr = ajStrNew();
@@ -137,8 +139,9 @@ int main(int argc, char **argv)
     }
 
     AJNEW0(density);
-    
-    ajGraphSetTitlePlus(graph, ajSeqallGetUsa(seqall));
+
+    if(graph)
+        ajGraphSetTitlePlus(graph, ajSeqallGetUsa(seqall));
 
     while(ajSeqallNext(seqall, &seq))
     {
@@ -228,11 +231,14 @@ int main(int argc, char **argv)
 	}
 	
 
-        ajGraphxySetOverLap(graph,ajTrue);
-        ajGraphSetXTitleC(graph,"Position");
-        ajGraphSetYTitleC(graph,"Density");
+        if(graph)
+        {
+            ajGraphxySetOverLap(graph,ajTrue);
+            ajGraphSetXTitleC(graph,"Position");
+            ajGraphSetYTitleC(graph,"Density");
+        }
 
-
+        
 	if(quad)
 	    density_addquadgraph(graph, limit, density, ymin, ymax,
 				 window);
@@ -243,8 +249,9 @@ int main(int argc, char **argv)
 				 window);
 
 
-        if(limit > 1)
-            ajGraphxyDisplay(graph,ajFalse);
+        if(graph)
+            if(limit > 1)
+                ajGraphxyDisplay(graph,ajFalse);
 
         
 
@@ -262,7 +269,7 @@ int main(int argc, char **argv)
 	ajFeattableClear(ftable);
     }
 
-    if(quad || dual)
+    if(graph)
         ajGraphClose();
 
     AJFREE(density);
@@ -270,7 +277,8 @@ int main(int argc, char **argv)
     ajSeqDel(&seq);
     ajSeqallDel(&seqall);
 
-    ajGraphxyDel(&graph);
+    if(graph)
+        ajGraphxyDel(&graph);
 
     ajReportClose(report);
     ajReportDel(&report);
@@ -279,6 +287,7 @@ int main(int argc, char **argv)
 
     ajStrDel(&str);
     ajStrDel(&hdr);
+    ajStrDel(&display);
     
     embExit();
 

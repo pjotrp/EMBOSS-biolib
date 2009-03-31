@@ -34,29 +34,35 @@ section: output [
   type: "page"
 ]
 
-  toggle: quad [
-    default: "N"
-    information: "Produce graphic showing individual bases"
+  list: display [
+    default: "none"
+    minimum: "1"
+    maximum: "1"
+    values: "D:Dual - graphic showing individual bases,Q:Quad - AT vs GC graphic,none:none"
+    delimiter: ","
+    codedelimiter: ":"
+    header: "Graph type"
+    information: "Select graph type"
+    button: "Y"
   ]
 
-  toggle: dual [
-    default: "N"
-    information: "Produce AT vs GC graphic"
-  ]
+variable: isdual "@($(display) == D)"
 
   xygraph: graph [
-    standard: "@($(quad) | $(dual))"
-    multiple: "@($(dual)? 2 : 4)"
+    standard: "@($(display) != none)"
+    multiple: "@( $(isdual) ? 2 : 4)"
     information: "Density graph"
+    nullok: "Y"
+    nulldefault: "@($(display) == none)"
   ]
 
   report: outfile [
-    standard: "@(@(!$(quad)) & @(!$(dual)))"
+    standard: "@($(display) == none)"
     taglist: "float:a float:c float:g float:t float:at float:gc"
     rformat: "table"
     knowntype: "density output"
     nullok: "Y"
-    nulldefault: "@($(quad) | $(dual))"
+    nulldefault: "@($(display) != none)"
   ]
 
 endsection: output
