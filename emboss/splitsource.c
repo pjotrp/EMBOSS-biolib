@@ -194,7 +194,6 @@ static void splitsource_ProcessChunk (AjPSeqout seqout, const AjPSeq seq,
   ajuint start;
   ajuint end;
   AjPStr desc = ajStrNew();
-  AjPStr tagname = ajStrNew();
   AjPStr tagval = ajStrNew();
   const char *srctagnames[] = {"organism", "strain", "clone",
                             NULL};
@@ -219,9 +218,8 @@ static void splitsource_ProcessChunk (AjPSeqout seqout, const AjPSeq seq,
 
   for(i=0;srctagnames[i];i++)
   {
-      ajStrAssignC(&tagname,srctagnames[i]);
-      if(ajFeatGetTag(gf, tagname, 1, &tagval))
-          ajFmtPrintAppS(&desc, "%S=\"%S\" ", tagname, tagval);
+      if(ajFeatGetTagC(gf, srctagnames[i], 1, &tagval))
+          ajFmtPrintAppS(&desc, "%s=\"%S\" ", srctagnames[i], tagval);
   }
   ajStrAppendS(&desc, ajSeqGetDescS(seq));
   
@@ -230,7 +228,6 @@ static void splitsource_ProcessChunk (AjPSeqout seqout, const AjPSeq seq,
 
   ajStrDel(&str);
   ajSeqDel(&subseq);
-  ajStrDel(&tagname);
   ajStrDel(&desc);
 
   return;
