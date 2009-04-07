@@ -1,4 +1,78 @@
 Version 6.1.0
+	showfeat has a new option -joinfeatures to display all exons on
+	one line for a join feature location. In previous releases this
+	was one of the -sort options. It is now possible to use
+	-joinfeatures and to select a sort order.
+
+	Installing without X11 (using the --without-x option for
+	./configure) used "x11" as the default graphics device in some
+	applications. These now use "png" (if available) or "ps".
+
+	needle and water with the -nobrief option repeated report header
+	information on the longest and shortest similarity and identities
+	because the previous header content was not cleared. This only
+	affected results where there was more than one sequence as the
+	second input.
+
+	In the EMBL/GenBank feature table the group() and one_of()
+	operators are obsolete. They are automatically converted to
+	order().
+
+	The command line syntax using the master qualifier name as a
+	suffix (for example -sreverse_asequence) ignored the master
+	qualifier name and set values for all matching inputs. This syntax
+	is intended as a way for wrappers to better control the use of
+	associated qualifiers, as it is cleaner than using a numeric
+	suffix (-sreverse1 -sreverse2 etc.)
+
+	Using -sreverse on the command line could reverse protein
+	sequences for inputs that can read more than one sequence (seqall,
+	seqaset, seqsetall). -sreverse is now only set for nucleotide
+	sequence inputs. Single sequence inputs correctly ignored the
+	-sreverse value.
+
+	Multiple sequence sets can be read as input type seqsetall, but
+	when this input was used for a single sequence set input (type
+	seqset) all sequence sets were read. seqset input now stops after
+	the first set (for example a PHYLIP or MSF alignment).
+
+	Genbank test data had incorrect format. The data was extracted
+	from a set of test GCG databases and had spaces in the feature
+	locations.
+
+	extractfeat now uses the new feature fetch functions and can
+	retrieve features that include joins across entries.
+	
+	Feature parsing functions are added to fetch sequences from other
+	entries. These depend on reusing the USA of the original sequence,
+	with the identifier of the external sequence inserted in place
+	of the original. This is known to work for database references and
+	flat files.
+
+	coderet was limited to EMBL/GenBank feature tables. It now
+	processes any valid feature input including GFF files. The
+	previous parsing functions are obsolete and have been removed
+	as coderet was the only application calling them.
+
+	Very large pairwise alignments can fail to back trace through the
+	alignment because of rounding error. The alignment and traceback
+	functions now use double precision to maintain accuracy.
+
+	pepwindow and pepwindowall missed the plot value for the last
+	window in the sequence.
+
+	pepwindow and pepwindowall now process sequence ranges -sbegin and
+	-send.
+
+	pepwindow and pepwindowall now default to a window length of 19,
+	ideal for transmembrane regions. The old default of 7 was short
+	and gave noisy results.
+
+	pepwindow and pepwindowall have an extra option -normalize to
+	convert the amino acid data in the datafile to mean 0.0 and
+	standard deviation 1.0. The default Kyte-Doolittle data is not
+	normalized.
+
 	The EMBL/Genbank feature table definitions have been updated to
 	version 8.0 (October 2008). Sequence ontology terms are now
 	available for all feature types except S_region for which no
@@ -18,9 +92,9 @@ Version 6.1.0
 	number of overlapping matches especially in low-complexity regions.
 
 	Protein sequences in GFF format now use GFF3 by default. For
-	release 6.0 protein sequences were written in GFF2 while the GFF3
-	protein feature definitions were readefined using the Sequence
-	Ontology.
+	release 6.0.0 protein sequences were written in GFF2 while the
+	GFF3 protein feature definitions were redefined using the Sequence
+	Ontology. This process is now completed.
 
 	When a sequence is reversed by revseq the description is tagged
 	with "Reversed: " so that the output and any sequence derived from
@@ -48,7 +122,7 @@ Version 6.1.0
 	output.
 
 	Fitch sequence format was only able to read a single
-	sequence. EMBOSS can nmow read 'fitch' as a multiple sequence
+	sequence. EMBOSS can now read 'fitch' as a multiple sequence
 	format.
 
 	Extractfeat now cleanly processes minscore and maxscore as limits
@@ -77,7 +151,7 @@ Version 6.1.0
 	preserved.
 
 	Corrected display of exon ranges in showseq. Exons now display in
-	their original frame (all were displayed in frame1 in earlier
+	their original frame (all were displayed in frame 1 in earlier
 	versions). Display of 3-letter amino acid names corrected (but we
 	hope nobody is using 3-letter codes any more!)
 
