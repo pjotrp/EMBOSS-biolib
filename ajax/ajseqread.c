@@ -77,6 +77,7 @@ static AjPRegexp seqRegUsaId    = NULL;
 static AjPRegexp seqRegUsaList  = NULL;
 static AjPRegexp seqRegUsaRange = NULL;
 static AjPRegexp seqRegUsaWild  = NULL;
+static AjBool seqRegUsaInitDone = AJFALSE;
 static AjBool seqDoWarnAppend = AJFALSE;
 
 
@@ -583,6 +584,7 @@ static void       seqTaxidSave(AjPSeq thys, const AjPStr tax);
 static void       seqTextSeq(AjPStr* textptr, const AjPStr seq);
 static void       seqUsaListTrace(const AjPList list);
 static AjBool     seqUsaProcess(AjPSeq thys, AjPSeqin seqin);
+static void       seqUsaRegInit(void);
 static void       seqUsaRestore(AjPSeqin seqin, const SeqPListUsa node);
 static void       seqUsaSave(SeqPListUsa node, const AjPSeqin seqin);
 
@@ -1645,7 +1647,7 @@ AjBool ajSeqsetRead(AjPSeqset thys, AjPSeqin seqin)
     ajDebug("ready to start reading format '%S' '%S' %d..%d\n",
 	    seqin->Formatstr, seq->Formatstr, seqin->Begin, seqin->End);
 
-    while(ajSeqRead(seq, seqin))
+    while(!seqin->multidone && ajSeqRead(seq, seqin))
     {
 	if (seqin->List)
 	    ajSeqinClearPos(seqin);
@@ -10945,6 +10947,169 @@ static AjBool seqGcgMsfHeader(const AjPStr line, SeqPMsfItem* pmsfitem)
 
 
 
+/* @funcstatic seqUsaRegInit **************************************************
+**
+** Initialised regular expressions for parsing USAs
+**
+** @return [void]
+******************************************************************************/
+
+static void seqUsaRegInit(void)
+{
+    if(seqRegUsaInitDone)
+        return;
+
+    if(!seqRegUsaFmt)
+	seqRegUsaFmt = ajRegCompC("^([A-Za-z0-9]*)::(.*)$");
+    /* \1 format letters and numbers only */
+    /* \2 remainder (filename, etc.)*/
+
+    if(!seqRegUsaDb)
+	seqRegUsaDb = ajRegCompC("^([A-Za-z][A-Za-z0-9_]+)([-]([A-Za-z]+))?"
+			   "([:{]([^}]*)}?)?$");
+
+    /* \1 dbname (start with a letter, then alphanumeric) */
+    /* \2 -id or -acc etc. */
+    /* \3 qry->Field (id or acc etc.) */
+    /* \4 :qry->QryString */
+    /* \5 qry->QryString */
+
+    if(!seqRegUsaId)		 /* \1 is filename \4 is the qry->QryString */
+#ifndef WIN32
+	seqRegUsaId = ajRegCompC("^([^|]+[|]|[^:{%]+)"
+			   "(([:{%])(([^:}]+):)?([^:}]*)}?)?$");
+#else
+	/* Windows file names can start with e.g.: 'C:\' */
+	/* But allow e.g. 'C:/...', for Staden spin */
+	seqRegUsaId = ajRegCompC ("^(([a-zA-Z]:[\\\\/])?[^:{%]+)"
+				  "(([:{%])(([^:}]+):)?([^:}]*)}?)?$");
+#endif
+
+
+    if(!seqRegUsaList)	 /* \1 is filename \3 is the qry->QryString */
+	seqRegUsaList = ajRegCompC("^(@|[Ll][Ii][Ss][Tt]:+)(.+)$");
+
+    if(!seqRegUsaAsis)	 /* \1 is filename \3 is the qry->QryString */
+	seqRegUsaAsis = ajRegCompC("^[Aa][Ss][Ii][Ss]:+(.+)$");
+
+    if(!seqRegUsaWild)
+	seqRegUsaWild = ajRegCompC("(.*[*].*)");
+    /* \1 wildcard query */
+
+    if(!seqRegUsaRange)    /* \1 is rest of USA \2 start \3 end \5 reverse*/
+	seqRegUsaRange = ajRegCompC("(.*)[[](-?[0-9]*):(-?[0-9]*)(:([Rr])?)?[]]$");
+
+    seqRegUsaInitDone = ajTrue;
+
+    return;
+}
+
+
+
+
+/* @func ajSeqUsaGetBase *******************************************************
+**
+** Extracts the base part from a USA, suitable for use in fetching other
+**sequences from the same source
+**
+** @param [r] usa [const AjPStr] Original USA
+** @param [u] Pbaseusa [AjPStr*] Base part of USA
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+
+AjBool ajSeqUsaGetBase(const AjPStr usa, AjPStr* Pbaseusa)
+{
+    AjPStr tmpstr  = NULL;
+
+    AjBool regstat   = ajFalse;
+#ifdef __CYGWIN__
+    AjPStr usatmp    = NULL;
+#endif
+
+    seqUsaRegInit();
+    
+    ajStrAssignC(Pbaseusa, "");
+
+    ajStrAssignS(&seqUsaTest, usa);
+
+    /* Strip any leading spaces */
+    ajStrTrimC(&seqUsaTest," \t\n");
+
+#ifdef __CYGWIN__
+    if(*(ajStrGetPtr(seqUsaTest)+1)==':')
+    {
+	usatmp = ajStrNew();
+        ajFmtPrintS(&usatmp,"/cygdrive/%c/%s",*ajStrGetPtr(seqUsaTest),
+		    ajStrGetPtr(seqUsaTest)+2);
+        ajStrAssignRef(&seqUsaTest,usatmp);
+        ajStrDel(&usatmp);
+    }
+#endif
+
+    ajDebug("USA to test: '%S'\n\n", seqUsaTest);
+
+    /* trim any range */
+
+    if(ajRegExec(seqRegUsaRange, seqUsaTest))
+    {
+	ajRegPre(seqRegUsaRange, &tmpstr);
+        ajStrAssignS(&seqUsaTest, tmpstr);
+    }
+
+    /* no base for an ASIS:: USA */
+
+    if(ajRegExec(seqRegUsaAsis, seqUsaTest))
+        return ajFalse;
+
+    /* no base for a listfile USA */
+
+    if(ajRegExec(seqRegUsaList, seqUsaTest))
+        return ajFalse;
+
+    if(ajRegExec(seqRegUsaFmt, seqUsaTest))
+    {
+	ajRegSubI(seqRegUsaFmt, 1, &tmpstr);
+        ajStrAppendS(Pbaseusa, tmpstr);
+        ajStrAppendC(Pbaseusa, "::");
+	ajRegSubI(seqRegUsaFmt, 2,&tmpstr);
+        ajStrAssignS(&seqUsaTest, tmpstr);
+    }
+
+    regstat = ajRegExec(seqRegUsaDb, seqUsaTest);
+
+    if(regstat)
+    {
+	ajRegSubI(seqRegUsaDb, 1, &tmpstr);
+	if(!ajNamDatabase(tmpstr))
+            regstat = ajFalse;
+    }
+
+    if(regstat)
+    {
+        ajStrAppendS(Pbaseusa, tmpstr);
+    }
+    else
+    {
+        if(ajRegExec(seqRegUsaId, seqUsaTest))
+	{
+#ifndef WIN32
+	    ajRegSubI(seqRegUsaId, 1, &tmpstr);
+#else
+	    ajRegSubI(seqRegUsaId, 1, &tmpstr);
+#endif
+	    ajDebug("found filename %S\n", tmpstr);
+            ajStrAppendS(Pbaseusa, tmpstr);
+        }
+        
+    }
+    ajStrDel(&tmpstr);
+    if(!ajStrGetLen(*Pbaseusa))
+        return ajFalse;
+        
+    return ajTrue;
+}
+
 /* @funcstatic seqUsaProcess **************************************************
 **
 ** Converts a USA Universal Sequence Address into an open file.
@@ -10998,46 +11163,8 @@ static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
 	    seqin->Usa, seqin->Begin, seqin->End, seqin->Rev,
 	    seqin->Formatstr, seqin->Format);
 
-    if(!seqRegUsaFmt)
-	seqRegUsaFmt = ajRegCompC("^([A-Za-z0-9]*)::(.*)$");
-    /* \1 format letters and numbers only */
-    /* \2 remainder (filename, etc.)*/
-
-    if(!seqRegUsaDb)
-	seqRegUsaDb = ajRegCompC("^([A-Za-z][A-Za-z0-9_]+)([-]([A-Za-z]+))?"
-			   "([:{]([^}]*)}?)?$");
-
-    /* \1 dbname (start with a letter, then alphanumeric) */
-    /* \2 -id or -acc etc. */
-    /* \3 qry->Field (id or acc etc.) */
-    /* \4 :qry->QryString */
-    /* \5 qry->QryString */
-
-    if(!seqRegUsaId)		 /* \1 is filename \4 is the qry->QryString */
-#ifndef WIN32
-	seqRegUsaId = ajRegCompC("^([^|]+[|]|[^:{%]+)"
-			   "(([:{%])(([^:}]+):)?([^:}]*)}?)?$");
-#else
-	/* Windows file names can start with e.g.: 'C:\' */
-	/* But allow e.g. 'C:/...', for Staden spin */
-	seqRegUsaId = ajRegCompC ("^(([a-zA-Z]:[\\\\/])?[^:{%]+)"
-				  "(([:{%])(([^:}]+):)?([^:}]*)}?)?$");
-#endif
-
-
-    if(!seqRegUsaList)	 /* \1 is filename \3 is the qry->QryString */
-	seqRegUsaList = ajRegCompC("^(@|[Ll][Ii][Ss][Tt]:+)(.+)$");
-
-    if(!seqRegUsaAsis)	 /* \1 is filename \3 is the qry->QryString */
-	seqRegUsaAsis = ajRegCompC("^[Aa][Ss][Ii][Ss]:+(.+)$");
-
-    if(!seqRegUsaWild)
-	seqRegUsaWild = ajRegCompC("(.*[*].*)");
-    /* \1 wildcard query */
-
-    if(!seqRegUsaRange)    /* \1 is rest of USA \2 start \3 end \5 reverse*/
-	seqRegUsaRange = ajRegCompC("(.*)[[](-?[0-9]*):(-?[0-9]*)(:([Rr])?)?[]]$");
-
+    seqUsaRegInit();
+    
     ajStrAssignS(&seqUsaTest, seqin->Usa);
     /* Strip any leading spaces */
     ajStrTrimC(&seqUsaTest," \t\n");
@@ -11294,11 +11421,13 @@ static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
 			    return ajFalse;
 			}
 		    }
-		    else
+		    else        /* no specific field */
 		    {
 			ajStrAssignS(&qry->Id, qry->QryString);
-			if(qry->HasAcc)
+			if(qry->HasAcc && ajSeqtestIsAccession(qry->QryString))
 			    ajStrAssignS(&qry->Acc, qry->QryString);
+                        if(ajSeqtestIsSeqversion(qry->QryString))
+                            ajStrAssignS(&qry->Sv, qry->QryString);
 		    }
 		}
 		accstat = ajSeqAccessFile(seqin);
@@ -13104,12 +13233,12 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
 **
 ** @param [r] thys [const AjPStr] USA
 ** @param [r] protein [AjBool] True if protein
-** @param [w] seq [AjPSeq*] sequence
+** @param [u] seq [AjPSeq] sequence
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqGetFromUsa(const AjPStr thys, AjBool protein, AjPSeq *seq)
+AjBool ajSeqGetFromUsa(const AjPStr thys, AjBool protein, AjPSeq seq)
 {
     AjPSeqin seqin;
     AjBool ok;
@@ -13124,7 +13253,7 @@ AjBool ajSeqGetFromUsa(const AjPStr thys, AjBool protein, AjPSeq *seq)
 	ajSeqinSetProt(seqin);
 
     ajSeqinUsa(&seqin, thys);
-    ok = ajSeqRead(*seq, seqin);
+    ok = ajSeqRead(seq, seqin);
     ajSeqinDel(&seqin);
 
     if(!ok)

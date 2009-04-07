@@ -17,7 +17,7 @@ extern "C"
 
 AjPSeqall    ajSeqallFile (const AjPStr usa);
 AjBool       ajSeqAllRead (AjPSeq thys, AjPSeqin seqin);
-AjBool       ajSeqGetFromUsa (const AjPStr thys, AjBool protein, AjPSeq *seq);
+AjBool       ajSeqGetFromUsa (const AjPStr thys, AjBool protein, AjPSeq seq);
 AjBool       ajSeqFormatTest (const AjPStr format);
 void         ajSeqinClear (AjPSeqin thys);
 void         ajSeqinClearPos(AjPSeqin thys);
@@ -50,6 +50,7 @@ ajint        ajSeqsetFromPair (AjPSeqset thys,
 			       const AjPSeq seqa, const AjPSeq seqb);
 AjBool       ajSeqsetallRead (AjPList thys, AjPSeqin seqin);
 AjBool       ajSeqsetRead (AjPSeqset thys, AjPSeqin seqin);
+AjBool       ajSeqUsaGetBase(const AjPStr usa, AjPStr* baseusa);
 
 /*
 ** End of prototype definitions
