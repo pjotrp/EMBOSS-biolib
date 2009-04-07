@@ -44,7 +44,6 @@ ajuint        ajFeatGetEnd (const AjPFeature thys);
 AjBool        ajFeatGetForward (const AjPFeature thys);
 ajint         ajFeatGetFrame (const AjPFeature thys);
 ajuint        ajFeatGetLength(const AjPFeature thys);
-ajuint        ajFeatGetLocs(const AjPStr str, AjPStr **cds, const char *type);
 AjBool        ajFeatGetNote (const AjPFeature thys, const AjPStr name,
 			     AjPStr* val);
 AjBool        ajFeatGetNoteC(const AjPFeature thys, const char* name,
@@ -53,22 +52,27 @@ AjBool        ajFeatGetNoteCI(const AjPFeature thys, const char* name,
 			      ajint count, AjPStr* val);
 AjBool        ajFeatGetNoteI (const AjPFeature thys, const AjPStr name,
 			      ajint count, AjPStr* val);
+AjBool        ajFeatGetRemoteseq(const AjPFeature thys, const AjPStr usa,
+                                 AjPSeq seq);
 float         ajFeatGetScore (const AjPFeature thys);
 const AjPStr  ajFeatGetSource (const AjPFeature thys);
+AjBool        ajFeatGetSeq(const AjPFeature feat, const AjPFeattable table,
+                           const AjPSeq seq, AjPStr* seqstr);
 ajuint        ajFeatGetStart (const AjPFeature thys);
 char          ajFeatGetStrand (const AjPFeature thys);
-AjBool        ajFeatGetTag (const AjPFeature thys, const AjPStr name,
+AjBool        ajFeatGetTagC(const AjPFeature thys, const char* tname,
 			    ajint num, AjPStr* val);
-ajuint        ajFeatGetTrans(const AjPStr str, AjPStr **cds);
+AjBool        ajFeatGetTagS(const AjPFeature thys, const AjPStr name,
+			    ajint num, AjPStr* val);
+AjBool        ajFeatGetTranslation(const AjPFeature feat, AjPStr* seqstr);
 const AjPStr  ajFeatGetType (const AjPFeature thys);
 AjBool        ajFeatIsCompMult (const AjPFeature gf);
 AjBool        ajFeatIsLocal (const AjPFeature gf);
 AjBool        ajFeatIsLocalRange (const AjPFeature gf,
 				  ajuint start, ajuint end);
 AjBool        ajFeatIsMultiple (const AjPFeature gf);
-AjBool        ajFeatLocMark(AjPStr *seq, const AjPStr line);
-AjBool        ajFeatLocToSeq(const AjPStr seq, const AjPStr line, AjPStr *res,
-			     const AjPStr usa);
+AjBool        ajFeatLocMark(const AjPFeature thys, const AjPFeattable table,
+                            AjPStr* Pseqstr);
 AjPFeature    ajFeatNew (AjPFeattable thys,
 			 const AjPStr source, const AjPStr type,
 			 ajint Start, ajint End, float score,
@@ -193,7 +197,8 @@ AjBool        ajFeatTrimOffRange (AjPFeature ft, ajuint ioffset,
 				  AjBool dobegin, AjBool doend);
 const AjPStr  ajFeatTypeGetCategory(const AjPStr type);
 AjBool        ajFeatTypeIsCds(const AjPFeature gf);
-AjBool        ajFeatTypeMatch(const AjPFeature gf, const AjPStr str);
+AjBool        ajFeatTypeMatchC(const AjPFeature gf, const char* txt);
+AjBool        ajFeatTypeMatchS(const AjPFeature gf, const AjPStr str);
 const AjPStr  ajFeatTypeNuc(const AjPStr type);
 const AjPStr  ajFeatTypeProt(const AjPStr type);
 AjPFeattable  ajFeatUfoRead (AjPFeattabIn tabin, const AjPStr Ufo);
