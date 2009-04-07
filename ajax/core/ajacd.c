@@ -8454,7 +8454,15 @@ static void acdSetGraph(AcdPAcd thys)
 	    acdReplyInit(thys, ajStrGetPtr(gdev), &acdReplyDef);
 	else
 #ifndef WIN32
+#ifndef X_DISPLAY_MISSING /* X11 is available */
 	    acdReplyInit(thys, "x11", &acdReplyDef);
+#else
+#ifdef PLD_png          /* if png/gd/zlib libraries available for png driver */
+	    acdReplyInit(thys, "png", &acdReplyDef);
+#else
+	    acdReplyInit(thys, "ps", &acdReplyDef);
+#endif
+#endif
 #else
 	    acdReplyInit(thys, "win3", &acdReplyDef);
 #endif
@@ -8624,7 +8632,15 @@ static void acdSetGraphxy(AcdPAcd thys)
 	    acdReplyInit(thys, ajStrGetPtr(gdev), &acdReplyDef);
 	else
 #ifndef WIN32
+#ifndef X_DISPLAY_MISSING /* X11 is available */
 	    acdReplyInit(thys, "x11", &acdReplyDef);
+#else
+#ifdef PLD_png          /* if png/gd/zlib libraries available for png driver */
+	    acdReplyInit(thys, "png", &acdReplyDef);
+#else
+	    acdReplyInit(thys, "ps", &acdReplyDef);
+#endif
+#endif
 #else
 	    acdReplyInit(thys, "win3", &acdReplyDef);
 #endif
@@ -11682,14 +11698,9 @@ static void acdSetSeq(AcdPAcd thys)
 	val->End = send;
 	acdSetQualDefInt(thys, "send", send);
     }
-    
+
     if(ajSeqIsNuc(val))
     {
-	if(seqin->Rev)
-	{
-	    okrev = ajTrue;
-	}
-
 	for(itry=acdPromptTry; itry && !okrev; itry--)
 	{
 	    ajStrAssignC(&acdReplyPrompt, "N");
@@ -11883,7 +11894,7 @@ static void acdSetSeqall(AcdPAcd thys)
 	okend = acdQualToSeqend(thys, "send", 0,
 				&seqin->End, &acdTmpStr);
 	okrev = acdQualToBool(thys, "sreverse", ajFalse,
-			      &seqin->Rev, &acdTmpStr);
+			      &sreverse, &acdTmpStr);
 
 	if(snuc)
 	    ajSeqinSetNuc(seqin);
@@ -11973,12 +11984,6 @@ static void acdSetSeqall(AcdPAcd thys)
 
     if(ajSeqIsNuc(seq))
     {
-	if(seqin->Rev)
-	{
-	    okrev = ajTrue;
-	    val->Rev = seq->Rev = seqin->Rev;
-	}
-
 	for(itry=acdPromptTry; itry && !okrev; itry--)
 	{
 	    ajStrAssignC(&acdReplyPrompt, "N");
@@ -12003,7 +12008,6 @@ static void acdSetSeqall(AcdPAcd thys)
 	}
     }
 
-    /* no need to reverse - it should happen in ajSeqallNext */
 
     acdLog("sbegin: %d, send: %d, sreverse: %B\n",
 	   sbegin, send, sreverse);
@@ -12156,7 +12160,7 @@ static void acdSetSeqsetall(AcdPAcd thys)
 	okend = acdQualToSeqend(thys, "send", 0,
 				&seqin->End, &acdTmpStr);
 	okrev = acdQualToBool(thys, "sreverse", ajFalse,
-			      &seqin->Rev, &acdTmpStr);
+			      &sreverse, &acdTmpStr);
 	
 	if(snuc)
 	    ajSeqinSetNuc(seqin);
@@ -12254,13 +12258,6 @@ static void acdSetSeqsetall(AcdPAcd thys)
 
     if(ajSeqsetIsNuc(val[0]))
     {
-	if(seqin->Rev)
-	{
-	    okrev = ajTrue;
-	    for(iset=0;iset<nsets;iset++)
-		val[iset]->Rev = seqin->Rev;
-	}
-
 	for(itry=acdPromptTry; itry && !okrev; itry--)
 	{
 	    ajStrAssignC(&acdReplyPrompt, "N");
@@ -13039,7 +13036,7 @@ static void acdSetSeqset(AcdPAcd thys)
 	okend = acdQualToSeqend(thys, "send", 0,
 				&seqin->End, &acdTmpStr);
 	okrev = acdQualToBool(thys, "sreverse", ajFalse,
-			      &seqin->Rev, &acdTmpStr);
+			      &sreverse, &acdTmpStr);
 	
 	if(snuc)
 	    ajSeqinSetNuc(seqin);
@@ -13128,12 +13125,6 @@ static void acdSetSeqset(AcdPAcd thys)
 
     if(ajSeqsetGetSize(val) && ajSeqsetIsNuc(val))
     {
-	if(seqin->Rev)
-	{
-	    okrev = ajTrue;
-	    val->Rev = seqin->Rev;
-	}
-
 	for(itry=acdPromptTry; itry && !okrev; itry--)
 	{
 	    ajStrAssignC(&acdReplyPrompt, "N");
@@ -13164,7 +13155,9 @@ static void acdSetSeqset(AcdPAcd thys)
 	ajSeqsetFill(val);
 
     if(val->Rev)
-	ajSeqsetReverse(val);
+    {
+        ajSeqsetReverse(val);
+    }
     
     ajSeqinDel(&seqin);
     
@@ -15751,19 +15744,26 @@ static void acdHelpExpectRange(const AcdPAcd thys, AjBool table, AjPStr* str)
 
 static void acdHelpExpectGraph(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
+#ifndef WIN32
+#ifndef X_DISPLAY_MISSING /* X11 is available */
+    const char* defdev = "x11";
+#else
+#ifdef PLD_png          /* if png/gd/zlib libraries available for png driver */
+    const char* defdev = "png";
+#else
+    const char* defdev = "ps";
+#endif
+#endif
+#else
+    const char* defdev = "win3";
+#endif
+
     if(!thys) return;
 
-#ifndef WIN32
     if(table)
-	ajStrAppendC(str, "<i>EMBOSS_GRAPHICS</i> value, or x11");
+	ajFmtPrintAppS(str, "<i>EMBOSS_GRAPHICS</i> value, or %s"), defdev;
     else
-	ajStrAppendC(str, "$EMBOSS_GRAPHICS value, or x11");
-#else
-    if(table)
-	ajStrAppendC(str, "<i>EMBOSS_GRAPHICS</i> value, or win3");
-    else
-	ajStrAppendC(str, "$EMBOSS_GRAPHICS value, or win3");
-#endif
+	ajFmtPrintAppS(str, "$EMBOSS_GRAPHICS value, or %s", defdev);
     return;
 }
 
@@ -19786,7 +19786,7 @@ static void acdArgsParse(ajint argc, char * const argv[])
 	    acdLog("number: %d jparam: %d acd->PNum: %d acdNParam: %d\n",
 		   number, jparam, acd->PNum, acdNParam);
 	    
-	    if(!number && !jparam && acd->PNum)
+            if(!ajStrGetLen(master) && !number && !jparam && acd->PNum)
 	    {
 		for(itestparam = acd->PNum+1; itestparam <= acdNParam;
 		    itestparam++)
@@ -20548,13 +20548,16 @@ static AcdPAcd acdFindQualDetail(const AjPStr qual, const AjPStr noqual,
     
     if(ajStrGetLen(master))
     {
+        acdLog("acdFindQualDetail ... call acdFindQualMaster\n",
+	   qual, noqual, PNum, *iparam);
+    
 	*iparam = 0;
 	return acdFindQualMaster(qual, noqual, master, PNum);
     }
     
     ambigList = ajStrNew();
     
-    acdLog("acdFindQualMaster '%S' (%S) PNum: %d iparam: %d\n",
+    acdLog("acdFindQualDetail '%S' (%S) PNum: %d iparam: %d\n",
 	   qual, noqual, PNum, *iparam);
     
     for(pa=acdList; pa; pa=pa->Next)
