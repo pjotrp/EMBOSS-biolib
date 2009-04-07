@@ -31,9 +31,6 @@ static void extractfeat_FeatSeqExtract(const AjPSeq seq, AjPSeqout seqout,
 				       AjBool featinname,
 				       const AjPStr describe);
 
-static void extractfeat_GetFeatseq(const AjPSeq seq, const AjPFeature gf,
-				   AjPStr *gfstr, AjBool sense);
-
 static void extractfeat_WriteOut(AjPSeqout seqout, AjPStr *featstr,
 				 AjBool compall, AjBool sense, ajint firstpos,
 				 ajint lastpos,
@@ -275,7 +272,7 @@ static void extractfeat_FeatSeqExtract(const AjPSeq seq, AjPSeqout seqout,
 	    ** If single or parent, write out any stored previous feature
 	    ** sequence
 	    */	    
-            if(single || parent)
+            if(!child)
 	    {
             	extractfeat_WriteOut(seqout, &featseq, compall, sense,
 				     firstpos, lastpos, before, after, seq,
@@ -293,17 +290,6 @@ static void extractfeat_FeatSeqExtract(const AjPSeq seq, AjPSeqout seqout,
                 firstpos = 0;
                 lastpos = 0;
             }
-
-	    /*
-	    ** Don't process Remote IDs and abort a multiple join if one
-	    ** contains a Remote ID
-	    */
-            if(! ajFeatIsLocal(gf))
-                remote = ajTrue;
-
-	    ajDebug("remote=%B\n", remote);
-            if(remote)
-            	continue;
 
 
 	    /* if parent, note if have Complemented Join */
@@ -345,21 +331,12 @@ static void extractfeat_FeatSeqExtract(const AjPSeq seq, AjPSeqout seqout,
             extractfeat_MatchPatternDescribe(gf, describe, &describeout);
 	    
 	    /* get feature sequence(complement if required) */
-            extractfeat_GetFeatseq(seq, gf, &tmpseq, sense);
-	    ajDebug("extracted feature = %d bases\n", ajStrGetLen(tmpseq));
-	    
-	    /*
-	    ** if child, append to previous sequence, otherwise
-	    ** simply assign
-	    */
-            if(child)
-	    {
-            	ajStrAppendS(&featseq, tmpseq);
-	        ajDebug("joined feature so far = %d bases\n",
-			ajStrGetLen(featseq));
-            }
-	    else
+            if(!child)
+            {
+                ajFeatGetSeq(gf, featab, seq, &tmpseq);
+                ajDebug("extracted feature = %d bases\n", ajStrGetLen(tmpseq));
             	ajStrAssignS(&featseq, tmpseq);
+	    }
 	}
 	ajListIterDel(&iter) ;
 	
@@ -378,47 +355,6 @@ static void extractfeat_FeatSeqExtract(const AjPSeq seq, AjPSeqout seqout,
         ajStrDel(&describeout);
     }
     
-    return;
-}
-
-
-
-
-/* @funcstatic extractfeat_GetFeatseq *****************************************
-**
-** Get the sequence string of a feature (complement if reverse sense)
-**
-** @param [r] seq [const AjPSeq] input sequence
-** @param [r] gf [const AjPFeature] feature
-** @param [w] gfstr [AjPStr *] the resulting feature sequence string
-** @param [r] sense [AjBool] FALSE if reverse sense, so complement the result
-** @return [void]
-** @@
-******************************************************************************/
-
-static void extractfeat_GetFeatseq(const AjPSeq seq, const AjPFeature gf, 
-				   AjPStr *gfstr, AjBool sense)
-{
-    const AjPStr str = NULL;		/* sequence string */
-    AjPStr tmp = NULL;
-
-    str = ajSeqGetSeqS(seq);
-    tmp = ajStrNew();
-
-    ajDebug("about to get sequence from %d-%d, len=%d\n",
-	    ajFeatGetStart(gf), ajFeatGetEnd(gf),
-	    ajFeatGetLength(gf));
-
-    ajStrAssignSubS(&tmp, str, ajFeatGetStart(gf)-1, ajFeatGetEnd(gf)-1);
-
-    /* if feature was in reverse sense, then get reverse complement */
-    if(!sense)
-    	ajSeqstrReverse(&tmp);
-
-    ajStrAssignS(gfstr, tmp);
-
-    ajStrDel(&tmp);
-
     return;
 }
 
@@ -912,13 +848,13 @@ static AjBool extractfeat_MatchFeature(const AjPFeature gf,
 
     ajDebug("embMiscMatchPattern(ajFeatGetSource(gf), source) %B\n",
 	    embMiscMatchPattern(ajFeatGetSource(gf), source));
-    ajDebug("ajFeatTypeMatch(gf, type) %B\n",
-	    ajFeatTypeMatch(gf, type));
+    ajDebug("ajFeatTypeMatchS(gf, type) %B\n",
+	    ajFeatTypeMatchS(gf, type));
     ajDebug("ajFeatGetStrand(gf) '%x' sense %d\n", ajFeatGetStrand(gf), sense);
     ajDebug("testscore: %B ajFeatGetScore(gf): %f minscore:%f maxscore:%f\n",
 	    testscore, ajFeatGetScore(gf), minscore, maxscore);
     if(!embMiscMatchPattern(ajFeatGetSource(gf), source) ||
-       !ajFeatTypeMatch(gf, type) ||
+       !ajFeatTypeMatchS(gf, type) ||
        (ajFeatGetStrand(gf) == '+' && sense == -1) ||
        (ajFeatGetStrand(gf) == '-' && sense == +1) ||
        (testscore && ajFeatGetScore(gf) < minscore) ||
