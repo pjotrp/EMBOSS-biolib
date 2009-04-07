@@ -5597,8 +5597,11 @@ void ajSeqsetReverse(AjPSeqset seq)
 	seq->Begin = -(iend);
 
     for(i=0; i < seq->Size; i++)
+    {
+        seq->Seq[i]->Rev = ajTrue;
 	ajSeqReverseDo(seq->Seq[i]);
-
+    }
+    
     ajDebug("  set result len: %d Begin: %d End: %d\n",
 	    ajSeqsetGetLen(seq), seq->Begin, seq->End);
 
