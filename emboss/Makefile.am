@@ -20,7 +20,7 @@ newcoils \
 patmattest \
 prima primers \
 seqinfo seqretall seqretallfeat \
-seqretset seqretsingle seqrettype \
+seqretset seqretsetall seqretsingle seqrettype \
 testplot treetypedisplay
 
 bin_PROGRAMS = aaindexextract abiview \
@@ -281,6 +281,7 @@ seqinfo_SOURCES = seqinfo.c
 seqretall_SOURCES = seqretall.c
 seqretallfeat_SOURCES = seqretallfeat.c
 seqretset_SOURCES = seqretset.c
+seqretsetall_SOURCES = seqretsetall.c
 seqretsingle_SOURCES = seqretsingle.c
 seqrettype_SOURCES = seqrettype.c
 testplot_SOURCES = testplot.c
