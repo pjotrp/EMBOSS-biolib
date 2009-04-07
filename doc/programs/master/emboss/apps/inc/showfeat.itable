@@ -71,8 +71,15 @@ pax* | 10</td>
 <tr>
 <td>-sort</td>
 <td>Sort features by Type, Start or Source, Nosort (don't sort - use input order) or join coding regions together and leave other features in the input order</td>
-<td><table><tr><td>source</td> <td><i>(Sort by Source)</i></td></tr><tr><td>start</td> <td><i>(Sort by Start position)</i></td></tr><tr><td>type</td> <td><i>(Sort by Type)</i></td></tr><tr><td>nosort</td> <td><i>(No sorting done)</i></td></tr><tr><td>join</td> <td><i>(Join coding regions together)</i></td></tr></table></td>
+<td><table><tr><td>source</td> <td><i>(Sort by Source)</i></td></tr><tr><td>start</td> <td><i>(Sort by Start position)</i></td></tr><tr><td>type</td> <td><i>(Sort by Type)</i></td></tr><tr><td>nosort</td> <td><i>(No sorting done)</i></td></tr></table></td>
 <td>start</td>
+</tr>
+
+<tr>
+<td>-joinfeatures</td>
+<td>Join coding regions together</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
 </tr>
 
 <tr>

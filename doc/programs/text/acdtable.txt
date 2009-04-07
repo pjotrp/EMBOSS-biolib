@@ -46,7 +46,7 @@ Usage
 (Parameter 2)
  Output report file name
  Report output file
- <\*>.antigenic
+ <*>.antigenic
 
 
 

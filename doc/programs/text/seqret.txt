@@ -54,11 +54,11 @@ output sequence(s) [x65923.fasta]:
 
    Read all entries in the database 'tembl' that start with 'ab' and
    write them to a file. In this example the specification is all done in
-   the command line and to stop Unix getting confused by the '\*'
+   the command line and to stop Unix getting confused by the '*'
    character, it has to have a backslash ('\') before it:
 
 
-% seqret tembl:ab\\*  aball.seq 
+% seqret 'tembl:ab*'  aball.seq 
 Reads and writes (returns) sequences
 
    Go to the output files for this example
@@ -180,7 +180,7 @@ output sequence(s) [x65923.fasta]:
 
 % seqret 
 Reads and writes (returns) sequences
-Input (gapped) sequence(s): tembl:h\*
+Input (gapped) sequence(s): tembl:h*
 output sequence(s) [h45989.fasta]: hall.seq
 
    Go to the output files for this example
@@ -1136,6 +1136,7 @@ See also
    sequences
    pasteseq Insert one sequence into another
    revseq Reverse and complement a nucleotide sequence
+   seqretsetall Reads and writes (returns) a set of sequences all at once
    seqretsplit Reads sequences and writes them to individual files
    sizeseq Sort sequences by size
    skipredundant Remove redundant sequences from an input set

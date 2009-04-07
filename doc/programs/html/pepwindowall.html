@@ -51,7 +51,7 @@ size over the input sequences.</p>
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>pepwindowall globins.msf -gxtitle="Base Number" -gytitle="hydropathy" </b>
+% <b>pepwindowall globins.msf -gxtitle='Base Number' -gytitle='hydropathy' </b>
 Draw Kyte-Doolittle hydropathy plot for a protein alignment
 Graph type [x11]: <b>cps</b>
 
@@ -70,11 +70,12 @@ Created pepwindowall.ps
   [-sequences]         seqset     File containing a sequence alignment
   [-graph]             xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
                                   (ps, hpgl, hp7470, hp7580, meta, cps, x11,
-                                  tekt, tek, none, data, xterm, png, gif)
+                                  tekt, tek, none, data, das, xterm, png, gif)
 
    Additional (Optional) qualifiers:
    -datafile           datafile   [Enakai.dat] AAINDEX entry data file
-   -length             integer    [7] Window size (Integer from 1 to 200)
+   -length             integer    [19] Window size (Integer from 1 to 200)
+   -normalize          boolean    [N] Normalize data values
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -142,8 +143,8 @@ Created pepwindowall.ps
 <tr>
 <td>[-graph]<br>(Parameter 2)</td>
 <td>Graph type</td>
-<td>EMBOSS has a list of known devices, including ps, hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data, xterm, png, gif</td>
-<td><i>EMBOSS_GRAPHICS</i> value, or x11</td>
+<td>EMBOSS has a list of known devices, including ps, hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data, das, xterm, png, gif</td>
+<td><i>EMBOSS_GRAPHICS</i> value, or oB</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -163,7 +164,14 @@ Created pepwindowall.ps
 <td>-length</td>
 <td>Window size</td>
 <td>Integer from 1 to 200</td>
-<td>7</td>
+<td>19</td>
+</tr>
+
+<tr>
+<td>-normalize</td>
+<td>Normalize data values</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -459,7 +467,7 @@ None.
 
 <tr>
 <td><a href="pepwindow.html">pepwindow</a></td>
-<td>Draw a Kyte-Doolittle hydropathy plot for a protein sequence</td>
+<td>Draw a hydropathy plot for a protein sequence</td>
 </tr>
 
 <tr>

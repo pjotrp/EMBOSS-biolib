@@ -79,8 +79,8 @@
                                   leave other features in the input order
                                   (Values: source (Sort by Source); start
                                   (Sort by Start position); type (Sort by
-                                  Type); nosort (No sorting done); join (Join
-                                  coding regions together))
+                                  Type); nosort (No sorting done))
+   -joinfeatures       boolean    [N] Join coding regions together
    -annotation         range      [If this is left blank, then no annotation
                                   is added.] Regions to annotate by marking.
                                   If this is left blank, then no annotation is

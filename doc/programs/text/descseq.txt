@@ -20,7 +20,7 @@ Usage
    Set the name of a sequence to "myclone23"
 
 
-% descseq -seq dna.text -out clone23.seq -name "myclone23" 
+% descseq -seq dna.text -out clone23.seq -name 'myclone23' 
 Alter the name or description of a sequence.
 
    Go to the input files for this example
@@ -31,7 +31,7 @@ Alter the name or description of a sequence.
    Set the description of a sequence to "This is my clone number 244"
 
 
-% descseq -seq dna.text -out xy24.seq -desc "This is my clone number 244" 
+% descseq -seq dna.text -out xy24.seq -desc 'This is my clone number 244' 
 Alter the name or description of a sequence.
 
    Go to the output files for this example
@@ -41,7 +41,7 @@ Alter the name or description of a sequence.
    Append some text to the description of a sequence
 
 
-% descseq -seq dna.text -out est4.seq -desc " (submitted)" -append 
+% descseq -seq dna.text -out est4.seq -desc ' (submitted)' -append 
 Alter the name or description of a sequence.
 
    Go to the output files for this example
@@ -225,6 +225,7 @@ See also
    pasteseq Insert one sequence into another
    revseq Reverse and complement a nucleotide sequence
    seqret Reads and writes (returns) sequences
+   seqretsetall Reads and writes (returns) a set of sequences all at once
    seqretsplit Reads sequences and writes them to individual files
    sizeseq Sort sequences by size
    skipredundant Remove redundant sequences from an input set

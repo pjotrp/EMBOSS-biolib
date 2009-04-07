@@ -58,7 +58,7 @@ Display 'joined' features on one line with positions:
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>showfeat -sort join -pos </b>
+% <b>showfeat -joinfeat -pos </b>
 Display features of a sequence in pretty format
 Input sequence(s): <b>tembl:x65921</b>
 Output file [x65921.showfeat]: <b></b>
@@ -171,8 +171,8 @@ Output file [x65921.showfeat]: <b></b>
                                   leave other features in the input order
                                   (Values: source (Sort by Source); start
                                   (Sort by Start position); type (Sort by
-                                  Type); nosort (No sorting done); join (Join
-                                  coding regions together))
+                                  Type); nosort (No sorting done))
+   -joinfeatures       boolean    [N] Join coding regions together
    -annotation         range      [If this is left blank, then no annotation
                                   is added.] Regions to annotate by marking.
                                   If this is left blank, then no annotation is
@@ -381,8 +381,15 @@ pax* | 10</td>
 <tr>
 <td>-sort</td>
 <td>Sort features by Type, Start or Source, Nosort (don't sort - use input order) or join coding regions together and leave other features in the input order</td>
-<td><table><tr><td>source</td> <td><i>(Sort by Source)</i></td></tr><tr><td>start</td> <td><i>(Sort by Start position)</i></td></tr><tr><td>type</td> <td><i>(Sort by Type)</i></td></tr><tr><td>nosort</td> <td><i>(No sorting done)</i></td></tr><tr><td>join</td> <td><i>(Join coding regions together)</i></td></tr></table></td>
+<td><table><tr><td>source</td> <td><i>(Sort by Source)</i></td></tr><tr><td>start</td> <td><i>(Sort by Start position)</i></td></tr><tr><td>type</td> <td><i>(Sort by Type)</i></td></tr><tr><td>nosort</td> <td><i>(No sorting done)</i></td></tr></table></td>
 <td>start</td>
+</tr>
+
+<tr>
+<td>-joinfeatures</td>
+<td>Join coding regions together</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
 </tr>
 
 <tr>
@@ -702,17 +709,17 @@ X65921
 H.sapiens fau 1 gene
 |==========================================================| 2016
 |----------------------------------------------------------&gt; 1-2016 source
-           |--&gt;       |-&gt;  |---&gt;             |&gt;     |--&gt;     408-504,774-856,951-1095,1557-1612,1787-1912 mRNA
            |--&gt;                                              408-504 exon
+           |--&gt;                                              408-504 mRNA
               |-------&gt;                                      505-773 intron
-                      |-&gt;                                    774-856 exon
-                      |-&gt;  |---&gt;             |&gt;     |--&gt;     782-856,951-1095,1557-1612,1787-1912 CDS
-                        |--&gt;                                 857-950 intron
-                           |---&gt;                             951-1095 exon
-                               |-------------&gt;               1096-1556 intron
-                                             |&gt;              1557-1612 exon
-                                               |----&gt;        1613-1786 intron
-                                                    |--&gt;     1787-1912 exon
+                      |-&gt;                                    774-856,774-856 exon
+                      |-&gt;                                    782-856 CDS
+                        |--|---&gt;                             857-950,951-1095 intron
+                           |---&gt;                             951-1095,951-1095 exon
+                               |-------------|&gt;              1096-1556,1557-1612 intron
+                                             |&gt;              1557-1612,1557-1612 exon
+                                               |----|--&gt;     1613-1786,1787-1912 intron
+                                                    |--&gt;     1787-1912,1787-1912 exon
                                                         &gt;    1938-1943 polyA_signal
 
 </pre>

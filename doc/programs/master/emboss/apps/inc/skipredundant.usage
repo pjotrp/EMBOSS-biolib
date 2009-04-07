@@ -4,7 +4,7 @@
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>skipredundant -threshold 80 -redundant "" </b>
+% <b>skipredundant -threshold 80 -redundant '' </b>
 Remove redundant sequences from an input set
 Input sequence set: <b>globins.fasta</b>
 Redundancy removal options

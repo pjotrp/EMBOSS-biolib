@@ -96,7 +96,7 @@ qanflatexc:x65921
 # Trying 'qapir:x65921'
 # Failed 'qapir:x65921'
 # Trying 'tgenbank:x65921'
-tgenbank:x65921
+# Failed 'tgenbank:x65921'
 # Trying 'qanfasta:x65921'
 # Failed 'qanfasta:x65921'
 # Trying 'qanxflat:x65921'

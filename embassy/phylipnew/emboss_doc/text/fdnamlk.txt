@@ -161,10 +161,10 @@ Usage
    Here is a sample session with fdnamlk
 
 
-% fdnamlk -printdata -ncategories 2 -categories "1111112222222" -rate "1.0 2.0"
- -gamma h -nhmmcategories 5 -hmmrates "0.264 1.413 3.596 7.086 12.641" -hmmprob
-abilities "0.522 0.399 0.076 0.0036 0.000023" -lambda 1.5 -weight "011111111111
-0" 
+% fdnamlk -printdata -ncategories 2 -categories '1111112222222' -rate '1.0 2.0'
+ -gamma h -nhmmcategories 5 -hmmrates '0.264 1.413 3.596 7.086 12.641' -hmmprob
+abilities '0.522 0.399 0.076 0.0036 0.000023' -lambda 1.5 -weight '011111111111
+0' 
 Estimates nucleotide phylogeny by maximum likelihood
 Input (aligned) nucleotide sequence set(s): dnaml.dat
 Phylip tree file (optional): 

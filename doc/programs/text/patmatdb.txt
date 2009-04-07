@@ -36,7 +36,7 @@ Usage
 
 % patmatdb 
 Searches protein sequences with a sequence motif
-Input protein sequence(s): tsw:\*
+Input protein sequence(s): tsw:*
 Protein motif to search for: st[ty]s
 Output report [edd1_rat.patmatdb]: 
 

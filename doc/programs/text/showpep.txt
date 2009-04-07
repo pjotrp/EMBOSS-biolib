@@ -557,11 +557,11 @@ Lactose operon repressor.
           |========================================================|
           polypeptide_domain note="HTH lacI-type"
                |==================|
-               polypeptide_domain note="H-T-H motif"
+               DNA_contact note="H-T-H motif"
                           |
-                          mutagen note="Y->H: Broadening of specificity"
+          mutated_variant_site note="Y->H: Broadening of specificity"
                                |
-          mutagen note="R->N: Recognizes an operator variant"
+          mutated_variant_site note="R->N: Recognizes an operator variant"
 
                    70        80        90        100
           ----:----|----:----|----:----|----:----|
@@ -670,11 +670,11 @@ Lactose operon repressor.
           |========================================================|
           polypeptide_domain note="HTH lacI-type"
                |==================|
-               polypeptide_domain note="H-T-H motif"
+               DNA_contact note="H-T-H motif"
                           |
-                          mutagen note="Y->H: Broadening of specificity"
+          mutated_variant_site note="Y->H: Broadening of specificity"
                                |
-          mutagen note="R->N: Recognizes an operator variant"
+          mutated_variant_site note="R->N: Recognizes an operator variant"
 
                    70        80        90        100       110       120
           ----:----|----:----|----:----|----:----|----:----|----:----|

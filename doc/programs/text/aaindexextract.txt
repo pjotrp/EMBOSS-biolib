@@ -68,7 +68,7 @@ Command line arguments
 Input file format
 
    The AAINDEX database file 'aaindex1' can be downloaded from the
-   AAINDEX site: ftp://ftp.genome.ad.jp/pub/db/genomenet/aaindex/
+   AAINDEX site: ftp://ftp.genome.ad.jp/pub/db/community/aaindex/
 
   Input files for usage example
 

@@ -28,19 +28,19 @@ HMMER hmmpfam program output file [7les_drome.ohmmpfam]:
 
                 CS    PSPPRNFSVRVLSPRELEVSWLPPEQLRSESVYYTLHWQQELDGENV
                 RF    PSPPRNFSVRVLSPRELEVSWLPPEQLRSESVYYTLHWQQELDGENV
-                   \*->PsaPpnlsvtevtstsillsWwppdpggggyivyyvysegggdeeee
+                   *->PsaPpnlsvtevtstsillsWwppdpggggyivyyvysegggdeeee
                       Ps+P+n sv   ++  + +sW pp+   ++ ++y +++++++d e++
   7LES_DROME  1799    PSPPRNFSVRVLSPRELEVSWLPPEQLRSESVYYTLHWQQELDGENV 1845
 
                 CS QDRREWEAHERRLETAGTHRLTGIKPGSGYSLWVQAH
                 RF QDRREWEAHERRLETAGTHRLTGIKPGSGYSLWVQAH
-                   ttpstsnttttllllllltytvyvvvvvsasssggsg<-\*
+                   ttpstsnttttllllllltytvyvvvvvsasssggsg<-*
                     ++++ + ++++l + ++   + +   +++s +  +
   7LES_DROME  1846 QDRREWEAHERRLETAGTHRLTGIKPGSGYSLWVQAH    1882
 
                 CS    LKLLRFLGSGAFGEVYEGQLKTEDSEEPQRVAIKSLRKGASEFAELL
                 RF    LKLLRFLGSGAFGEVYEGQLKTEDSEEPQRVAIKSLRKGASEFAELL
-                   \*->yelgekLGeGafGkVykakhkdtgkavaiKvikkekekekeeeteer
+                   *->yelgekLGeGafGkVykakhkdtgkavaiKvikkekekekeeeteer
                       ++l++ LG+GafG+Vy++++k ++ +  + v++k+ +k   e +e +
   7LES_DROME  2209    LKLLRFLGSGAFGEVYEGQLKTEDSEEPQRVAIKSLRKGASEFAELL 2255
 
@@ -70,7 +70,7 @@ HMMER hmmpfam program output file [7les_drome.ohmmpfam]:
 
                 CS LYSLLLLCWRTDPWERPSFRR
                 RF LYSLLLLCWRTDPWERPSFRR
-                   lllplrlnplskllallsplk<-\*
+                   lllplrlnplskllallsplk<-*
                    l   l l ++++++ ++s+++
   7LES_DROME  2456 LYSLLLLCWRTDPWERPSFRR    2476
 

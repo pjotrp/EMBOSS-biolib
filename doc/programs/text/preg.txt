@@ -21,7 +21,7 @@ Usage
 
 % preg 
 Regular expression search of protein sequence(s)
-Input protein sequence(s): tsw:\*_rat
+Input protein sequence(s): tsw:*_rat
 Regular expression pattern: IA[QWF]A
 Output report [edd1_rat.preg]: 
 
@@ -123,7 +123,7 @@ Output file format
 #=======================================
 
   Start     End Pattern_name Sequence
-    421     424 regex1       IAQA
+    421     424 regex        IAQA
 
 #---------------------------------------
 #---------------------------------------

@@ -338,7 +338,7 @@ See also
    octanol Draw a White-Wimley protein hydropathy plot
    pepinfo Plot amino acid properties of a protein sequence in parallel
    pepstats Calculates statistics of protein properties
-   pepwindow Draw a Kyte-Doolittle hydropathy plot for a protein sequence
+   pepwindow Draw a hydropathy plot for a protein sequence
    pepwindowall Draw Kyte-Doolittle hydropathy plot for a protein
    alignment
    plotorf Plot potential open reading frames in a nucleotide sequence

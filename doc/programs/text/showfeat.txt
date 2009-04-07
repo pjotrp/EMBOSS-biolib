@@ -32,7 +32,7 @@ Output file [x65921.showfeat]:
    Display 'joined' features on one line with positions:
 
 
-% showfeat -sort join -pos 
+% showfeat -joinfeat -pos 
 Display features of a sequence in pretty format
 Input sequence(s): tembl:x65921
 Output file [x65921.showfeat]: 
@@ -135,8 +135,8 @@ Command line arguments
                                   leave other features in the input order
                                   (Values: source (Sort by Source); start
                                   (Sort by Start position); type (Sort by
-                                  Type); nosort (No sorting done); join (Join
-                                  coding regions together))
+                                  Type); nosort (No sorting done))
+   -joinfeatures       boolean    [N] Join coding regions together
    -annotation         range      [If this is left blank, then no annotation
                                   is added.] Regions to annotate by marking.
                                   If this is left blank, then no annotation is
@@ -462,19 +462,24 @@ X65921
 H.sapiens fau 1 gene
 |==========================================================| 2016
 |----------------------------------------------------------> 1-2016 source
-           |-->       |->  |--->             |>     |-->     408-504,774-856,95
-1-1095,1557-1612,1787-1912 mRNA
            |-->                                              408-504 exon
+           |-->                                              408-504 mRNA
               |------->                                      505-773 intron
-                      |->                                    774-856 exon
-                      |->  |--->             |>     |-->     782-856,951-1095,1
-557-1612,1787-1912 CDS
-                        |-->                                 857-950 intron
-                           |--->                             951-1095 exon
-                               |------------->               1096-1556 intron
-                                             |>              1557-1612 exon
-                                               |---->        1613-1786 intron
-                                                    |-->     1787-1912 exon
+                      |->                                    774-856,774-856 ex
+on
+                      |->                                    782-856 CDS
+                        |--|--->                             857-950,951-1095 i
+ntron
+                           |--->                             951-1095,951-1095
+exon
+                               |-------------|>              1096-1556,1557-161
+2 intron
+                                             |>              1557-1612,1557-161
+2 exon
+                                               |----|-->     1613-1786,1787-191
+2 intron
+                                                    |-->     1787-1912,1787-191
+2 exon
                                                         >    1938-1943 polyA_si
 gnal
 

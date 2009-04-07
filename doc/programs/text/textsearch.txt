@@ -30,11 +30,10 @@ Usage
    Search for 'lactose':
 
 
-% textsearch tsw:\* 'lactose' 
+% textsearch 'tsw:*' 'lactose' 
 Search the textual description of sequence(s)
 Output file [edd1_rat.textsearch]: 
 
-   Go to the input files for this example
    Go to the output files for this example
 
    Example 2
@@ -42,10 +41,11 @@ Output file [edd1_rat.textsearch]:
    Search for 'lactose' or 'permease' in E.coli proteins:
 
 
-% textsearch tsw:\*_ecoli 'lactose | permease' 
+% textsearch 'tsw:*_ecoli' 'lactose | permease' 
 Search the textual description of sequence(s)
 Output file [laci_ecoli.textsearch]: 
 
+   Go to the input files for this example
    Go to the output files for this example
 
    Example 3
@@ -53,10 +53,9 @@ Output file [laci_ecoli.textsearch]:
    Output a search for 'lacz' formatted with HTML to a file:
 
 
-% textsearch tembl:\* 'lacz' -html -outfile embl.lacz.html 
+% textsearch 'tembl:*' 'lacz' -html -outfile embl.lacz.html 
 Search the textual description of sequence(s)
 
-   Go to the input files for this example
    Go to the output files for this example
 
 Command line arguments
@@ -131,14 +130,9 @@ Input file format
 
    textsearch reads one or more normal sequence USAs.
 
-  Input files for usage example
+  Input files for usage example 2
 
-   'tsw:*' is a sequence entry in the example protein database 'tsw'
-
-  Input files for usage example 3
-
-   'tembl:*' is a sequence entry in the example nucleic acid database
-   'tembl'
+   '|' is a sequence entry in the example protein database '|'
 
 Output file format
 

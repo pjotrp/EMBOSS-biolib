@@ -42,7 +42,7 @@ Command line arguments
                                   accepted)
 *  -graph              xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
                                   (ps, hpgl, hp7470, hp7580, meta, cps, x11,
-                                  tekt, tek, none, data, xterm, png, gif)
+                                  tekt, tek, none, data, das, xterm, png, gif)
 *  -outfile            outfile    [*.freak] Output file name
 
    Additional (Optional) qualifiers:
@@ -367,7 +367,7 @@ See also
    octanol Draw a White-Wimley protein hydropathy plot
    pepinfo Plot amino acid properties of a protein sequence in parallel
    pepstats Calculates statistics of protein properties
-   pepwindow Draw a Kyte-Doolittle hydropathy plot for a protein sequence
+   pepwindow Draw a hydropathy plot for a protein sequence
    pepwindowall Draw Kyte-Doolittle hydropathy plot for a protein
    alignment
    sirna Finds siRNA duplexes in mRNA

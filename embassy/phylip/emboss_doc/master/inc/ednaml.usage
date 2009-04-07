@@ -4,7 +4,7 @@
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ednaml -categories -catnum 2 -catvals "1.0 3.2" -catprob "0.4 0.6" -lambda 1.5 -deflambda -printdata -progress </b>
+% <b>ednaml -categories -catnum 2 -catvals '1.0 3.2' -catprob '0.4 0.6' -lambda 1.5 -deflambda -printdata -progress </b>
 Phylogenies from nucleic acid Maximum Likelihood
 Input (aligned) nucleotide sequence set: <b>dnaml.dat</b>
 Search for best tree [Y]: <b></b>

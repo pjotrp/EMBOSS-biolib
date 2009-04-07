@@ -40,7 +40,7 @@ Usage
    Here is a sample session with dottup
 
 
-% dottup tembl:j01636 tembl:v00294 -wordsize=6 -gtitle="v00294 vs j01636" -grap
+% dottup tembl:j01636 tembl:v00294 -wordsize=6 -gtitle='v00294 vs j01636' -grap
 h cps 
 Displays a wordmatch dotplot of two sequences
 
@@ -59,10 +59,10 @@ Command line arguments
    -wordsize           integer    [10] Word size (Integer 2 or more)
 *  -graph              graph      [$EMBOSS_GRAPHICS value, or x11] Graph type
                                   (ps, hpgl, hp7470, hp7580, meta, cps, x11,
-                                  tekt, tek, none, data, xterm, png, gif)
+                                  tekt, tek, none, data, das, xterm, png, gif)
 *  -xygraph            xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
                                   (ps, hpgl, hp7470, hp7580, meta, cps, x11,
-                                  tekt, tek, none, data, xterm, png, gif)
+                                  tekt, tek, none, data, das, xterm, png, gif)
 
    Additional (Optional) qualifiers (* if not always prompted):
 *  -[no]boxit          boolean    [Y] Draw a box around dotplot

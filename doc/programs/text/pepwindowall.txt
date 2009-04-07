@@ -22,7 +22,7 @@ Usage
    Here is a sample session with pepwindowall
 
 
-% pepwindowall globins.msf -gxtitle="Base Number" -gytitle="hydropathy" 
+% pepwindowall globins.msf -gxtitle='Base Number' -gytitle='hydropathy' 
 Draw Kyte-Doolittle hydropathy plot for a protein alignment
 Graph type [x11]: cps
 
@@ -37,11 +37,12 @@ Command line arguments
   [-sequences]         seqset     File containing a sequence alignment
   [-graph]             xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
                                   (ps, hpgl, hp7470, hp7580, meta, cps, x11,
-                                  tekt, tek, none, data, xterm, png, gif)
+                                  tekt, tek, none, data, das, xterm, png, gif)
 
    Additional (Optional) qualifiers:
    -datafile           datafile   [Enakai.dat] AAINDEX entry data file
-   -length             integer    [7] Window size (Integer from 1 to 200)
+   -length             integer    [19] Window size (Integer from 1 to 200)
+   -normalize          boolean    [N] Normalize data values
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -267,7 +268,7 @@ See also
    octanol Draw a White-Wimley protein hydropathy plot
    pepinfo Plot amino acid properties of a protein sequence in parallel
    pepstats Calculates statistics of protein properties
-   pepwindow Draw a Kyte-Doolittle hydropathy plot for a protein sequence
+   pepwindow Draw a hydropathy plot for a protein sequence
    wordcount Count and extract unique words in DNA sequence(s)
 
 Author(s)

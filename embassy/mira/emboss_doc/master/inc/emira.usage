@@ -411,7 +411,7 @@ Contig id: 1
 Contig length: 2467
 Avg. contig coverage: 2.36
 Consensus contains:	A: 701	C: 457	G: 592	T: 690	N: 0
-			IUPAC: 7	Funny: 0	\*: 20
+			IUPAC: 7	Funny: 0	*: 20
 
 Num reads: 7
 Avg. read length: 833
@@ -446,7 +446,7 @@ Contig id: 2
 Contig length: 40448
 Avg. contig coverage: 8.59
 Consensus contains:	A: 13709	C: 5926	G: 7000	T: 13564	N: 0
-			IUPAC: 25	Funny: 0	\*: 224
+			IUPAC: 25	Funny: 0	*: 224
 
 Num reads: 527
 Avg. read length: 659
@@ -484,7 +484,7 @@ Contig id: 2
 Contig length: 40441
 Avg. contig coverage: 8.55
 Consensus contains:	A: 13709	C: 5926	G: 7010	T: 13564	N: 0
-			IUPAC: 15	Funny: 0	\*: 217
+			IUPAC: 15	Funny: 0	*: 217
 
 Num reads: 525
 Avg. read length: 659
@@ -515,7 +515,7 @@ Contig id: 3
 Contig length: 805
 Avg. contig coverage: 1
 Consensus contains:	A: 303	C: 146	G: 115	T: 241	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 805
@@ -543,7 +543,7 @@ Contig id: 4
 Contig length: 788
 Avg. contig coverage: 1
 Consensus contains:	A: 285	C: 152	G: 124	T: 227	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 788
@@ -571,7 +571,7 @@ Contig id: 5
 Contig length: 788
 Avg. contig coverage: 1
 Consensus contains:	A: 254	C: 118	G: 133	T: 283	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 788
@@ -599,7 +599,7 @@ Contig id: 6
 Contig length: 1273
 Avg. contig coverage: 1.12
 Consensus contains:	A: 462	C: 193	G: 180	T: 431	N: 0
-			IUPAC: 1	Funny: 0	\*: 6
+			IUPAC: 1	Funny: 0	*: 6
 
 Num reads: 2
 Avg. read length: 717
@@ -626,7 +626,7 @@ Contig id: 7
 Contig length: 786
 Avg. contig coverage: 1
 Consensus contains:	A: 281	C: 129	G: 138	T: 238	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 786
@@ -654,7 +654,7 @@ Contig id: 8
 Contig length: 963
 Avg. contig coverage: 1
 Consensus contains:	A: 215	C: 286	G: 205	T: 257	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 963
@@ -682,7 +682,7 @@ Contig id: 9
 Contig length: 1052
 Avg. contig coverage: 1
 Consensus contains:	A: 308	C: 286	G: 166	T: 292	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 1052
@@ -710,7 +710,7 @@ Contig id: 10
 Contig length: 972
 Avg. contig coverage: 1
 Consensus contains:	A: 284	C: 230	G: 123	T: 335	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 972
@@ -738,7 +738,7 @@ Contig id: 11
 Contig length: 478
 Avg. contig coverage: 1
 Consensus contains:	A: 116	C: 160	G: 101	T: 101	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 478
@@ -766,7 +766,7 @@ Contig id: 12
 Contig length: 869
 Avg. contig coverage: 1
 Consensus contains:	A: 286	C: 245	G: 93	T: 245	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 869
@@ -794,7 +794,7 @@ Contig id: 13
 Contig length: 973
 Avg. contig coverage: 1
 Consensus contains:	A: 266	C: 228	G: 254	T: 225	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 973
@@ -895,7 +895,7 @@ Contig id: 1
 Contig length: 2467
 Avg. contig coverage: 2.36
 Consensus contains:	A: 701	C: 457	G: 592	T: 690	N: 0
-			IUPAC: 7	Funny: 0	\*: 20
+			IUPAC: 7	Funny: 0	*: 20
 
 Num reads: 7
 Avg. read length: 833
@@ -930,7 +930,7 @@ Contig id: 2
 Contig length: 40441
 Avg. contig coverage: 8.55
 Consensus contains:	A: 13709	C: 5926	G: 7010	T: 13564	N: 0
-			IUPAC: 15	Funny: 0	\*: 217
+			IUPAC: 15	Funny: 0	*: 217
 
 Num reads: 525
 Avg. read length: 659
@@ -961,7 +961,7 @@ Contig id: 3
 Contig length: 805
 Avg. contig coverage: 1
 Consensus contains:	A: 303	C: 146	G: 115	T: 241	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 805
@@ -989,7 +989,7 @@ Contig id: 4
 Contig length: 788
 Avg. contig coverage: 1
 Consensus contains:	A: 285	C: 152	G: 124	T: 227	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 788
@@ -1017,7 +1017,7 @@ Contig id: 5
 Contig length: 788
 Avg. contig coverage: 1
 Consensus contains:	A: 254	C: 118	G: 133	T: 283	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 788
@@ -1045,7 +1045,7 @@ Contig id: 6
 Contig length: 786
 Avg. contig coverage: 1
 Consensus contains:	A: 281	C: 129	G: 138	T: 238	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 786
@@ -1073,7 +1073,7 @@ Contig id: 7
 Contig length: 1273
 Avg. contig coverage: 1.12
 Consensus contains:	A: 462	C: 193	G: 180	T: 431	N: 0
-			IUPAC: 1	Funny: 0	\*: 6
+			IUPAC: 1	Funny: 0	*: 6
 
 Num reads: 2
 Avg. read length: 717
@@ -1100,7 +1100,7 @@ Contig id: 8
 Contig length: 963
 Avg. contig coverage: 1
 Consensus contains:	A: 215	C: 286	G: 205	T: 257	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 963
@@ -1128,7 +1128,7 @@ Contig id: 9
 Contig length: 1052
 Avg. contig coverage: 1
 Consensus contains:	A: 308	C: 286	G: 166	T: 292	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 1052
@@ -1156,7 +1156,7 @@ Contig id: 10
 Contig length: 972
 Avg. contig coverage: 1
 Consensus contains:	A: 284	C: 230	G: 123	T: 335	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 972
@@ -1184,7 +1184,7 @@ Contig id: 11
 Contig length: 478
 Avg. contig coverage: 1
 Consensus contains:	A: 116	C: 160	G: 101	T: 101	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 478
@@ -1212,7 +1212,7 @@ Contig id: 12
 Contig length: 869
 Avg. contig coverage: 1
 Consensus contains:	A: 286	C: 245	G: 93	T: 245	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 869
@@ -1240,7 +1240,7 @@ Contig id: 13
 Contig length: 973
 Avg. contig coverage: 1
 Consensus contains:	A: 266	C: 228	G: 254	T: 225	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 973
@@ -1341,7 +1341,7 @@ Contig id: 1
 Contig length: 2467
 Avg. contig coverage: 2.36
 Consensus contains:	A: 701	C: 457	G: 592	T: 690	N: 0
-			IUPAC: 7	Funny: 0	\*: 20
+			IUPAC: 7	Funny: 0	*: 20
 
 Num reads: 7
 Avg. read length: 833
@@ -1376,7 +1376,7 @@ Contig id: 2
 Contig length: 40441
 Avg. contig coverage: 8.55
 Consensus contains:	A: 13709	C: 5926	G: 7010	T: 13564	N: 0
-			IUPAC: 15	Funny: 0	\*: 217
+			IUPAC: 15	Funny: 0	*: 217
 
 Num reads: 525
 Avg. read length: 659
@@ -1407,7 +1407,7 @@ Contig id: 3
 Contig length: 805
 Avg. contig coverage: 1
 Consensus contains:	A: 303	C: 146	G: 115	T: 241	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 805
@@ -1435,7 +1435,7 @@ Contig id: 4
 Contig length: 788
 Avg. contig coverage: 1
 Consensus contains:	A: 285	C: 152	G: 124	T: 227	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 788
@@ -1463,7 +1463,7 @@ Contig id: 5
 Contig length: 788
 Avg. contig coverage: 1
 Consensus contains:	A: 254	C: 118	G: 133	T: 283	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 788
@@ -1491,7 +1491,7 @@ Contig id: 6
 Contig length: 786
 Avg. contig coverage: 1
 Consensus contains:	A: 281	C: 129	G: 138	T: 238	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 786
@@ -1519,7 +1519,7 @@ Contig id: 7
 Contig length: 1273
 Avg. contig coverage: 1.12
 Consensus contains:	A: 462	C: 193	G: 180	T: 431	N: 0
-			IUPAC: 1	Funny: 0	\*: 6
+			IUPAC: 1	Funny: 0	*: 6
 
 Num reads: 2
 Avg. read length: 717
@@ -1546,7 +1546,7 @@ Contig id: 8
 Contig length: 963
 Avg. contig coverage: 1
 Consensus contains:	A: 215	C: 286	G: 205	T: 257	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 963
@@ -1574,7 +1574,7 @@ Contig id: 9
 Contig length: 1052
 Avg. contig coverage: 1
 Consensus contains:	A: 308	C: 286	G: 166	T: 292	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 1052
@@ -1602,7 +1602,7 @@ Contig id: 10
 Contig length: 972
 Avg. contig coverage: 1
 Consensus contains:	A: 284	C: 230	G: 123	T: 335	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 972
@@ -1630,7 +1630,7 @@ Contig id: 11
 Contig length: 478
 Avg. contig coverage: 1
 Consensus contains:	A: 116	C: 160	G: 101	T: 101	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 478
@@ -1658,7 +1658,7 @@ Contig id: 12
 Contig length: 869
 Avg. contig coverage: 1
 Consensus contains:	A: 286	C: 245	G: 93	T: 245	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 869
@@ -1686,7 +1686,7 @@ Contig id: 13
 Contig length: 973
 Avg. contig coverage: 1
 Consensus contains:	A: 266	C: 228	G: 254	T: 225	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 973
@@ -1792,7 +1792,7 @@ Contig id: 1
 Contig length: 2467
 Avg. contig coverage: 2.36
 Consensus contains:	A: 701	C: 457	G: 592	T: 690	N: 0
-			IUPAC: 7	Funny: 0	\*: 20
+			IUPAC: 7	Funny: 0	*: 20
 
 Num reads: 7
 Avg. read length: 833
@@ -1827,7 +1827,7 @@ Contig id: 2
 Contig length: 40441
 Avg. contig coverage: 8.55
 Consensus contains:	A: 13709	C: 5926	G: 7010	T: 13564	N: 0
-			IUPAC: 15	Funny: 0	\*: 217
+			IUPAC: 15	Funny: 0	*: 217
 
 Num reads: 525
 Avg. read length: 659
@@ -1858,7 +1858,7 @@ Contig id: 3
 Contig length: 805
 Avg. contig coverage: 1
 Consensus contains:	A: 303	C: 146	G: 115	T: 241	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 805
@@ -1886,7 +1886,7 @@ Contig id: 4
 Contig length: 788
 Avg. contig coverage: 1
 Consensus contains:	A: 285	C: 152	G: 124	T: 227	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 788
@@ -1914,7 +1914,7 @@ Contig id: 5
 Contig length: 788
 Avg. contig coverage: 1
 Consensus contains:	A: 254	C: 118	G: 133	T: 283	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 788
@@ -1942,7 +1942,7 @@ Contig id: 6
 Contig length: 786
 Avg. contig coverage: 1
 Consensus contains:	A: 281	C: 129	G: 138	T: 238	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 786
@@ -1970,7 +1970,7 @@ Contig id: 7
 Contig length: 1273
 Avg. contig coverage: 1.12
 Consensus contains:	A: 462	C: 193	G: 180	T: 431	N: 0
-			IUPAC: 1	Funny: 0	\*: 6
+			IUPAC: 1	Funny: 0	*: 6
 
 Num reads: 2
 Avg. read length: 717
@@ -1997,7 +1997,7 @@ Contig id: 8
 Contig length: 963
 Avg. contig coverage: 1
 Consensus contains:	A: 215	C: 286	G: 205	T: 257	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 963
@@ -2025,7 +2025,7 @@ Contig id: 9
 Contig length: 1052
 Avg. contig coverage: 1
 Consensus contains:	A: 308	C: 286	G: 166	T: 292	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 1052
@@ -2053,7 +2053,7 @@ Contig id: 10
 Contig length: 972
 Avg. contig coverage: 1
 Consensus contains:	A: 284	C: 230	G: 123	T: 335	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 972
@@ -2081,7 +2081,7 @@ Contig id: 11
 Contig length: 478
 Avg. contig coverage: 1
 Consensus contains:	A: 116	C: 160	G: 101	T: 101	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 478
@@ -2109,7 +2109,7 @@ Contig id: 12
 Contig length: 869
 Avg. contig coverage: 1
 Consensus contains:	A: 286	C: 245	G: 93	T: 245	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 869
@@ -2137,7 +2137,7 @@ Contig id: 13
 Contig length: 973
 Avg. contig coverage: 1
 Consensus contains:	A: 266	C: 228	G: 254	T: 225	N: 0
-			IUPAC: 0	Funny: 0	\*: 0
+			IUPAC: 0	Funny: 0	*: 0
 
 Num reads: 1
 Avg. read length: 973

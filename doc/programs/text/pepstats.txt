@@ -350,7 +350,7 @@ See also
    mwfilter Filter noisy data from molecular weights file
    octanol Draw a White-Wimley protein hydropathy plot
    pepinfo Plot amino acid properties of a protein sequence in parallel
-   pepwindow Draw a Kyte-Doolittle hydropathy plot for a protein sequence
+   pepwindow Draw a hydropathy plot for a protein sequence
    pepwindowall Draw Kyte-Doolittle hydropathy plot for a protein
    alignment
    wordcount Count and extract unique words in DNA sequence(s)

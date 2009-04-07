@@ -35,7 +35,7 @@ Usage
 
 % emowse 
 Search protein sequences by digest fragment molecular weight
-Input protein sequence(s): tsw:\*
+Input protein sequence(s): tsw:*
 Peptide molecular weight values file: test.mowse
 Whole sequence molwt [0]: 
 Use monoisotopic weights [N]: 
@@ -762,7 +762,7 @@ See also
    octanol Draw a White-Wimley protein hydropathy plot
    pepinfo Plot amino acid properties of a protein sequence in parallel
    pepstats Calculates statistics of protein properties
-   pepwindow Draw a Kyte-Doolittle hydropathy plot for a protein sequence
+   pepwindow Draw a hydropathy plot for a protein sequence
    pepwindowall Draw Kyte-Doolittle hydropathy plot for a protein
    alignment
    wordcount Count and extract unique words in DNA sequence(s)

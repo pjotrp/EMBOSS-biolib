@@ -91,7 +91,7 @@ To write out the 10 bases around the start of all 'exon' features in the tembl d
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>extractfeat tembl:\*  -type exon -before 5 -after -5 </b>
+% <b>extractfeat 'tembl:*'  -type exon -before 5 -after -5 </b>
 Extract features from sequence(s)
 output sequence [h45989.fasta]: <b></b>
 
@@ -123,13 +123,13 @@ To write out the 7 residues around all phosphorylated serine residues
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>extractfeat tsw:\*  -type post_translational_modification -value phosphoserine\* -before 3 -after -4 </b>
+% <b>extractfeat 'tsw:*' -type MOD_RES -value 'phosphoserine*' -before 3 -after -4 </b>
 Extract features from sequence(s)
 output sequence [edd1_rat.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
-<a href="#input.5">Go to the input files for this example</a><br><a href="#output.5">Go to the output files for this example</a><p><p>
+<a href="#output.5">Go to the output files for this example</a><p><p>
 
 <H2>
     Command line arguments
@@ -629,12 +629,6 @@ SQ   Sequence 2016 BP; 421 A; 562 C; 538 G; 495 T; 0 other;
 </pre>
 </td></tr></table><p>
 
-<a name="input.5"></a>
-<h3>Input files for usage example 5</h3>
-
-'tsw:*' is a sequence entry in the example protein database 'tsw'
-<p>
-
 
 <H2>
     Output file format
@@ -824,17 +818,17 @@ cccacctttggcaagaagaagggccccaatgccaactcttaa
 <p><h3>File: edd1_rat.fasta</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-&gt;OPSD_HUMAN_334_334 [post_translational_modification] Rhodopsin (Opsin-2).
+&gt;OPSD_HUMAN_334_334 [protein_modification_categorized_by_chemical_process] Rhodopsin (Opsin-2).
 DEASATV
-&gt;OPSD_HUMAN_338_338 [post_translational_modification] Rhodopsin (Opsin-2).
+&gt;OPSD_HUMAN_338_338 [protein_modification_categorized_by_chemical_process] Rhodopsin (Opsin-2).
 ATVSKTE
-&gt;OPSD_HUMAN_343_343 [post_translational_modification] Rhodopsin (Opsin-2).
+&gt;OPSD_HUMAN_343_343 [protein_modification_categorized_by_chemical_process] Rhodopsin (Opsin-2).
 TETSQVA
-&gt;PAXI_HUMAN_106_106 [post_translational_modification] Paxillin.
+&gt;PAXI_HUMAN_106_106 [protein_modification_categorized_by_chemical_process] Paxillin.
 SVGSPCS
-&gt;PAXI_HUMAN_109_109 [post_translational_modification] Paxillin.
+&gt;PAXI_HUMAN_109_109 [protein_modification_categorized_by_chemical_process] Paxillin.
 SPCSRVG
-&gt;PAXI_HUMAN_303_303 [post_translational_modification] Paxillin.
+&gt;PAXI_HUMAN_303_303 [protein_modification_categorized_by_chemical_process] Paxillin.
 GRSSPGG
 </pre>
 </td></tr></table><p>
@@ -1140,6 +1134,11 @@ None.
 <tr>
 <td><a href="seqret.html">seqret</a></td>
 <td>Reads and writes (returns) sequences</td>
+</tr>
+
+<tr>
+<td><a href="seqretsetall.html">seqretsetall</a></td>
+<td>Reads and writes (returns) a set of sequences all at once</td>
 </tr>
 
 <tr>

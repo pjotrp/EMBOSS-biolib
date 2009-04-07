@@ -26,7 +26,7 @@ Output report [x13776.density]:
    Example 2
 
 
-% density tembl:x13776 -quad -qgraph cps 
+% density tembl:x13776 -display quad -graph cps 
 Draw a nucleic acid density plot
 
 Created density.ps
@@ -36,7 +36,7 @@ Created density.ps
    Example 3
 
 
-% density tembl:x13776 -dual -dgraph cps 
+% density tembl:x13776 -display dual -graph cps 
 Draw a nucleic acid density plot
 
 Created density.ps
@@ -48,23 +48,19 @@ Command line arguments
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-seqall]            seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-*  -qgraph             xygraph    [$EMBOSS_GRAPHICS value, or x11] Quad
-                                  (A+C+G+T) graph (ps, hpgl, hp7470, hp7580,
-                                  meta, cps, x11, tekt, tek, none, data,
-                                  xterm, png, gif)
-*  -dgraph             xygraph    [$EMBOSS_GRAPHICS value, or x11] Dual
-                                  (AT+GC) graph (ps, hpgl, hp7470, hp7580,
-                                  meta, cps, x11, tekt, tek, none, data,
-                                  xterm, png, gif)
+*  -graph              xygraph    [$EMBOSS_GRAPHICS value, or x11] Density
+                                  graph (ps, hpgl, hp7470, hp7580, meta, cps,
+                                  x11, tekt, tek, none, data, das, xterm, png,
+                                  gif)
 *  -outfile            report     [*.density] Output report file name
 
    Additional (Optional) qualifiers:
    -window             integer    [100] Window length (Integer 1 or more)
+   -display            menu       [none] Select graph type (Values: D (Dual -
+                                  graphic showing individual bases); Q (Quad -
+                                  AT vs GC graphic); none (none))
 
-   Advanced (Unprompted) qualifiers:
-   -quad               toggle     [N] Produce graphic showing individual bases
-   -dual               toggle     [N] Produce AT vs GC graphic
-
+   Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
    "-seqall" associated qualifiers
@@ -83,17 +79,7 @@ Command line arguments
    -fformat1           string     Features format
    -fopenfile1         string     Features file name
 
-   "-qgraph" associated qualifiers
-   -gprompt            boolean    Graph prompting
-   -gdesc              string     Graph description
-   -gtitle             string     Graph title
-   -gsubtitle          string     Graph subtitle
-   -gxtitle            string     Graph x axis title
-   -gytitle            string     Graph y axis title
-   -goutfile           string     Output file for non interactive displays
-   -gdirectory         string     Output directory
-
-   "-dgraph" associated qualifiers
+   "-graph" associated qualifiers
    -gprompt            boolean    Graph prompting
    -gdesc              string     Graph description
    -gtitle             string     Graph title
@@ -352,6 +338,8 @@ Output file format
 
   [Part of this file has been deleted for brevity]
 
+   2026    2026       +   0.000  0.110  0.340  0.330  0.220  0.330  0.670
+   2027    2027       +   0.000  0.110  0.330  0.340  0.220  0.330  0.670
    2028    2028       +   0.000  0.110  0.330  0.340  0.220  0.330  0.670
    2029    2029       +   0.000  0.110  0.330  0.340  0.220  0.330  0.670
    2030    2030       +   0.000  0.110  0.330  0.330  0.230  0.340  0.660
@@ -398,8 +386,6 @@ Output file format
 #---------------------------------------
 
 #---------------------------------------
-# Total_sequences: 1
-# Total_length: 2167
 # Reported_sequences: 1
 # Reported_hitcount: 2068
 #---------------------------------------

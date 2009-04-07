@@ -28,7 +28,7 @@ Usage
 
 % prophet 
 Scan one or more sequences with a Gribskov or Henikoff profile
-Input sequence(s): tsw:h\*
+Input sequence(s): tsw:h*
 Profile or weight matrix file: globins.gribskov
 Gap opening coefficient [1.0]: 
 Gap extension coefficient [1.0]: 

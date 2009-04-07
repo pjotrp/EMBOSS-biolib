@@ -47,7 +47,7 @@ Command line arguments
                                   format, or reference (input USA)
   [-graph]             xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
                                   (ps, hpgl, hp7470, hp7580, meta, cps, x11,
-                                  tekt, tek, none, data, xterm, png, gif)
+                                  tekt, tek, none, data, das, xterm, png, gif)
 
    Additional (Optional) qualifiers:
    -datafile           datafile   [Ewhite-wimley.dat] White-Wimley data file
@@ -347,7 +347,7 @@ See also
    mwfilter Filter noisy data from molecular weights file
    pepinfo Plot amino acid properties of a protein sequence in parallel
    pepstats Calculates statistics of protein properties
-   pepwindow Draw a Kyte-Doolittle hydropathy plot for a protein sequence
+   pepwindow Draw a hydropathy plot for a protein sequence
    pepwindowall Draw Kyte-Doolittle hydropathy plot for a protein
    alignment
    wordcount Count and extract unique words in DNA sequence(s)

@@ -34,7 +34,7 @@ Usage
    Here is a sample session with polydot
 
 
-% polydot globins.fasta -gtitle="Polydot of globins.fasta" -graph cps 
+% polydot globins.fasta -gtitle='Polydot of globins.fasta' -graph cps 
 Draw dotplots for all-against-all comparison of a sequence set
 Word size [6]: 
 
@@ -51,7 +51,7 @@ Command line arguments
 *  -outfeat            featout    [unknown.gff] Output features UFO
    -graph              graph      [$EMBOSS_GRAPHICS value, or x11] Graph type
                                   (ps, hpgl, hp7470, hp7580, meta, cps, x11,
-                                  tekt, tek, none, data, xterm, png, gif)
+                                  tekt, tek, none, data, das, xterm, png, gif)
 
    Additional (Optional) qualifiers:
    -[no]boxit          boolean    [Y] Draw a box around each dotplot

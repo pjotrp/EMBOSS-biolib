@@ -32,7 +32,7 @@ Usage
    Here is a sample session with skipredundant
 
 
-% skipredundant -threshold 80 -redundant "" 
+% skipredundant -threshold 80 -redundant '' 
 Remove redundant sequences from an input set
 Input sequence set: globins.fasta
 Redundancy removal options
@@ -365,6 +365,7 @@ See also
    pasteseq Insert one sequence into another
    revseq Reverse and complement a nucleotide sequence
    seqret Reads and writes (returns) sequences
+   seqretsetall Reads and writes (returns) a set of sequences all at once
    seqretsplit Reads sequences and writes them to individual files
    sizeseq Sort sequences by size
    skipseq Reads and writes (returns) sequences, skipping first few

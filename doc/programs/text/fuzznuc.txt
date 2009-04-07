@@ -373,15 +373,15 @@ Output file format
 # HitCount: 2
 #
 # Pattern_name Mismatch Pattern
-# pattern1            0 AAGCTT
+# pattern             0 AAGCTT
 #
 # Complement: No
 #
 #=======================================
 
   Start     End  Strand Pattern_name Mismatch Sequence
-      1       6       + pattern1            . aagctt
-   1267    1272       + pattern1            . aagctt
+      1       6       + pattern             . aagctt
+   1267    1272       + pattern             . aagctt
 
 #---------------------------------------
 #---------------------------------------

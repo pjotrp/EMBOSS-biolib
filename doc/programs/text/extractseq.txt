@@ -46,7 +46,7 @@ Extract regions from a sequence
    Extract the regions 782-856, 951-1095, 1557-1612 and 1787-1912:
 
 
-% extractseq tembl:x65921 -reg "782..856,951..1095,1557..1612,1787..1912" stdou
+% extractseq tembl:x65921 -reg '782..856,951..1095,1557..1612,1787..1912' stdou
 t 
 Extract regions from a sequence
 
@@ -65,7 +65,7 @@ cccacctttggcaagaagaagggccccaatgccaactcttaa
    separate output sequences:
 
 
-% extractseq tembl:x65921 -reg "782..856,951..1095,1557..1612,1787..1912" stdou
+% extractseq tembl:x65921 -reg '782..856,951..1095,1557..1612,1787..1912' stdou
 t -separate 
 Extract regions from a sequence
 
@@ -533,6 +533,7 @@ See also
    pasteseq Insert one sequence into another
    revseq Reverse and complement a nucleotide sequence
    seqret Reads and writes (returns) sequences
+   seqretsetall Reads and writes (returns) a set of sequences all at once
    seqretsplit Reads sequences and writes them to individual files
    sizeseq Sort sequences by size
    skipredundant Remove redundant sequences from an input set
