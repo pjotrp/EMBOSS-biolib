@@ -41,34 +41,34 @@ COMMENT     On Feb 21, 2004 this sequence version replaced gi:6953.
             It may be shorter because we only sequence overlapping sections
             once, or longer because we arrange for a small overlap between
             neighbouring submissions.
-            The start of this sequence (1. .180) overlaps with the end of
+            The start of this sequence (1..180) overlaps with the end of
             sequence Z22175.
-            The end of this sequence (40696. .40699) overlaps with the start of
+            The end of this sequence (40696..40699) overlaps with the start of
             sequence Z11126.
             [040212 dl] Sequence correction: Substitution A-> @ 39218.
 FEATURES             Location/Qualifiers
-     source          1. .40699
+     source          1..40699
                      /organism="Caenorhabditis elegans"
                      /mol_type="genomic DNA"
                      /strain="Bristol N2"
                      /db_xref="taxon:6239"
                      /chromosome="III"
                      /clone="ZK637"
-     gene            join(complement(1418. .1509),complement(1188. .1374),
-                     complement(787. .870),complement(660. .746),
-                     complement(486. .610),complement(238. .427),
-                     complement(Z22175.1:19292. .19791),
-                     complement(Z22175.1:19006. .19177),
-                     complement(Z22175.1:18763. .18876),
-                     complement(Z22175.1:18703. .18714))
+     gene            join(complement(1418..1509),complement(1188..1374),
+                     complement(787..870),complement(660..746),
+                     complement(486..610),complement(238..427),
+                     complement(Z22175.1:19292..19791),
+                     complement(Z22175.1:19006..19177),
+                     complement(Z22175.1:18763..18876),
+                     complement(Z22175.1:18703..18714))
                      /locus_tag="ZK637.1"
-     CDS             join(complement(1418. .1509),complement(1188. .1374),
-                     complement(787. .870),complement(660. .746),
-                     complement(486. .610),complement(238. .427),
-                     complement(Z22175.1:19292. .19791),
-                     complement(Z22175.1:19006. .19177),
-                     complement(Z22175.1:18763. .18876),
-                     complement(Z22175.1:18703. .18714))
+     CDS             join(complement(1418..1509),complement(1188..1374),
+                     complement(787..870),complement(660..746),
+                     complement(486..610),complement(238..427),
+                     complement(Z22175.1:19292..19791),
+                     complement(Z22175.1:19006..19177),
+                     complement(Z22175.1:18763..18876),
+                     complement(Z22175.1:18703..18714))
                      /locus_tag="ZK637.1"
                      /standard_name="ZK637.1"
                      /note="contains similarity to Pfam domain PF00083 (Sugar
@@ -93,9 +93,9 @@ FEATURES             Location/Qualifiers
                      IEWFGRKKTMALEYAVFAIFTFLLYFCLDRFTVTVLIFVARAFISGAFQCAYVYTPEV
                      YPTTLRAVGLGTCSAMARIGAIVTPFIAQVASEKSLSLPIGIYGTAAILGLIASLSLP
                      IETKGRQMMDSH"
-     gene            join(3794. .3918,4033. .4234,5883. .5987)
+     gene            join(3794..3918,4033..4234,5883..5987)
                      /locus_tag="ZK637.2"
-     CDS             join(3794. .3918,4033. .4234,5883. .5987)
+     CDS             join(3794..3918,4033..4234,5883..5987)
                      /locus_tag="ZK637.2"
                      /standard_name="ZK637.2"
                      /note="contains similarity to Pfam domain PF05811 ()"
@@ -108,9 +108,9 @@ FEATURES             Location/Qualifiers
                      /translation="MSNSTMEATQMKVKLAVDEMIDDLDKTYLRDMQKSMFQCSARCC
                      DNKKTTRDAVENCVESCNDGMKKAQGYLEKELGGLQDQLSRCAMTCYDKLVQQFGPDV
                      NKYSESQKLSFNEKLDSCVSVCADDHIKLIPAIKKRFAKNT"
-     gene            complement(join(4451. .4728,4825. .4974,5021. .5078))
+     gene            complement(join(4451..4728,4825..4974,5021..5078))
                      /locus_tag="ZK637.14"
-     CDS             complement(join(4451. .4728,4825. .4974,5021. .5078))
+     CDS             complement(join(4451..4728,4825..4974,5021..5078))
                      /locus_tag="ZK637.14"
                      /standard_name="ZK637.14"
                      /note="contains similarity to Pfam domain PF00097 (Zinc
@@ -126,12 +126,12 @@ FEATURES             Location/Qualifiers
                      LPIDKKSYKALRLMDRETTDQQKEDATCAICLDNLQNNVDIPEDHVIKEELKIDPTTF
                      GTTVIVMPCKHRFHYFCLTLWLEAQQTCPTCRQKVKTDKEVEEEERQRNLEELHDSMY
                      G"
-     gene            join(6271. .6465,6523. .6642,7346. .7658,7714. .7775,
-                     7824. .8153,8767. .9252,9311. .9472,9779. .9910)
+     gene            join(6271..6465,6523..6642,7346..7658,7714..7775,
+                     7824..8153,8767..9252,9311..9472,9779..9910)
                      /gene="tag-256"
                      /locus_tag="ZK637.3"
-     CDS             join(6271. .6465,6523. .6642,7346. .7658,7714. .7775,
-                     7824. .8153,8767. .9252,9311. .9472,9779. .9910)
+     CDS             join(6271..6465,6523..6642,7346..7658,7714..7775,
+                     7824..8153,8767..9252,9311..9472,9779..9910)
                      /gene="tag-256"
                      /locus_tag="ZK637.3"
                      /standard_name="ZK637.3"
@@ -153,9 +153,9 @@ FEATURES             Location/Qualifiers
                      SMTGACASFSMTDGWGGSTQSVACQVPASSNRALYLPFLLYGLGRSPNFVDELNIAIP
                      KYADRKEDWKHSLKQIVPNSRIIVLPPSDQYPHWTSRLYVTPSALIVQSLAVIALVCC
                      MLLMVVVFLHYREKKEDRYERQQQSHRFHFDAM"
-     gene            join(10248. .10316,10369. .10436,10486. .10539,10595. .10691)
+     gene            join(10248..10316,10369..10436,10486..10539,10595..10691)
                      /locus_tag="ZK637.4"
-     CDS             join(10248. .10316,10369. .10436,10486. .10539,10595. .10691)
+     CDS             join(10248..10316,10369..10436,10486..10539,10595..10691)
                      /locus_tag="ZK637.4"
                      /standard_name="ZK637.4"
                      /note="contains similarity to Synechococcus sp Putative
@@ -168,10 +168,10 @@ FEATURES             Location/Qualifiers
                      /db_xref="UniProtKB/Swiss-Prot:P30637"
                      /translation="MKSNPKYFLMNDVERQSKYSPKYVPNNSLKERILEFLDYYIAPL
                      KLYLLSYPMPDCLWDNRKLRLKASGVQVTPSSEPVHIDDRLIHISQKQPSE"
-     gene            join(11124. .11557,11606. .11864,12073. .12282,12411. .12536)
+     gene            join(11124..11557,11606..11864,12073..12282,12411..12536)
                      /gene="tag-205"
                      /locus_tag="ZK637.5"
-     CDS             join(11124. .11557,11606. .11864,12073. .12282,12411. .12536)
+     CDS             join(11124..11557,11606..11864,12073..12282,12411..12536)
                      /gene="tag-205"
                      /locus_tag="ZK637.5"
                      /standard_name="ZK637.5"
@@ -191,19 +191,19 @@ FEATURES             Location/Qualifiers
                      ESVKKMNAQFKDPNCTTFVCVCIAEFLSLYETERLIQELSKQGIDTHNIIVNQLLFPD
                      TDANGTVSCRKCASRQAIQSKYLTDIDELYEDFHVVKLPLLEAEVRGGPAILQFSERM
                      VDPEANKN"
-     gene            complement(join(16630. .16827,17583. .17732,17779. .17883,
-                     17962. .18372,18848. .19006,19051. .19647,19694. .19826,
-                     19876. .19994,20104. .20160))
+     gene            complement(join(16630..16827,17583..17732,17779..17883,
+                     17962..18372,18848..19006,19051..19647,19694..19826,
+                     19876..19994,20104..20160))
                      /gene="lin-9"
                      /locus_tag="ZK637.7a"
-     gene            complement(join(16630. .16827,17583. .17732,17779. .17883,
-                     17962. .18372,18848. .19006,19051. .19653,19694. .19826,
-                     19876. .19994,20104. .20160))
+     gene            complement(join(16630..16827,17583..17732,17779..17883,
+                     17962..18372,18848..19006,19051..19653,19694..19826,
+                     19876..19994,20104..20160))
                      /gene="lin-9"
                      /locus_tag="ZK637.7b"
-     CDS             complement(join(16630. .16827,17583. .17732,17779. .17883,
-                     17962. .18372,18848. .19006,19051. .19647,19694. .19826,
-                     19876. .19994,20104. .20160))
+     CDS             complement(join(16630..16827,17583..17732,17779..17883,
+                     17962..18372,18848..19006,19051..19647,19694..19826,
+                     19876..19994,20104..20160))
                      /gene="lin-9"
                      /locus_tag="ZK637.7a"
                      /standard_name="ZK637.7a"
@@ -227,9 +227,9 @@ FEATURES             Location/Qualifiers
                      IDINMNGIQDHHMYFSSNDISTSNMKPEAVRQMCSQQAGRFVEHCNQGLNVENVHALT
                      LIQSLTAVLLQVRTMGTQKISAVDLQSLGDAISEIRTAIHPRNVAFFQDYVEVHMKQF
                      HTIMLESGALAGTVSNRK"
-     CDS             complement(join(16630. .16827,17583. .17732,17779. .17883,
-                     17962. .18372,18848. .19006,19051. .19653,19694. .19826,
-                     19876. .19994,20104. .20160))
+     CDS             complement(join(16630..16827,17583..17732,17779..17883,
+                     17962..18372,18848..19006,19051..19653,19694..19826,
+                     19876..19994,20104..20160))
                      /gene="lin-9"
                      /locus_tag="ZK637.7a"
                      /standard_name="ZK637.7b"
@@ -254,39 +254,39 @@ FEATURES             Location/Qualifiers
                      QNIDINMNGIQDHHMYFSSNDISTSNMKPEAVRQMCSQQAGRFVEHCNQGLNVENVHA
                      LTLIQSLTAVLLQVRTMGTQKISAVDLQSLGDAISEIRTAIHPRNVAFFQDYVEVHMK
                      QFHTIMLESGALAGTVSNRK"
-     gene            join(21664. .21816,21898. .22074,22182. .22310,22560. .22714,
-                     23629. .23838,23893. .25147,25269. .25391,26370. .26589,
-                     26754. .26925,27145. .27250)
+     gene            join(21664..21816,21898..22074,22182..22310,22560..22714,
+                     23629..23838,23893..25147,25269..25391,26370..26589,
+                     26754..26925,27145..27250)
                      /gene="unc-32"
                      /locus_tag="ZK637.8d"
-     gene            join(21664. .21816,21898. .22074,22182. .22310,22560. .22714,
-                     23629. .23838,23893. .25147,26117. .26257,26370. .26589,
-                     26754. .26925,27145. .27250)
+     gene            join(21664..21816,21898..22074,22182..22310,22560..22714,
+                     23629..23838,23893..25147,26117..26257,26370..26589,
+                     26754..26925,27145..27250)
                      /gene="unc-32"
                      /locus_tag="ZK637.8a"
-     gene            join(21664. .21816,21898. .22074,22182. .22310,23003. .23109,
-                     23629. .23838,23893. .25147,25269. .25391,26370. .26589,
-                     26754. .26925,27145. .27250)
+     gene            join(21664..21816,21898..22074,22182..22310,23003..23109,
+                     23629..23838,23893..25147,25269..25391,26370..26589,
+                     26754..26925,27145..27250)
                      /gene="unc-32"
                      /locus_tag="ZK637.8b"
-     gene            join(21664. .21816,21898. .22074,22182. .22310,23003. .23109,
-                     23629. .23838,23893. .25147,26117. .26257,26370. .26589,
-                     26754. .26925,27145. .27250)
+     gene            join(21664..21816,21898..22074,22182..22310,23003..23109,
+                     23629..23838,23893..25147,26117..26257,26370..26589,
+                     26754..26925,27145..27250)
                      /gene="unc-32"
                      /locus_tag="ZK637.8f"
-     gene            join(21664. .21816,21898. .22074,22182. .22310,23347. .23468,
-                     23629. .23838,23893. .25147,25269. .25391,26370. .26589,
-                     26754. .26925,27145. .27250)
+     gene            join(21664..21816,21898..22074,22182..22310,23347..23468,
+                     23629..23838,23893..25147,25269..25391,26370..26589,
+                     26754..26925,27145..27250)
                      /gene="unc-32"
                      /locus_tag="ZK637.8e"
-     gene            join(21664. .21816,21898. .22074,22182. .22310,23347. .23468,
-                     23629. .23838,23893. .25147,26117. .26257,26370. .26589,
-                     26754. .26925,27145. .27250)
+     gene            join(21664..21816,21898..22074,22182..22310,23347..23468,
+                     23629..23838,23893..25147,26117..26257,26370..26589,
+                     26754..26925,27145..27250)
                      /gene="unc-32"
                      /locus_tag="ZK637.8c"
-     CDS             join(21664. .21816,21898. .22074,22182. .22310,22560. .22714,
-                     23629. .23838,23893. .25147,25269. .25391,26370. .26589,
-                     26754. .26925,27145. .27250)
+     CDS             join(21664..21816,21898..22074,22182..22310,22560..22714,
+                     23629..23838,23893..25147,25269..25391,26370..26589,
+                     26754..26925,27145..27250)
                      /gene="unc-32"
                      /locus_tag="ZK637.8d"
                      /standard_name="ZK637.8d"
@@ -314,9 +314,9 @@ FEATURES             Location/Qualifiers
                      NQDDAEVVHAPEQTPKPSGHGHGHGDGPLEMGDVMVYQAIHTIEFVLGCVSHTASYLR
                      LWALSLAHAQLSDVLWTMVFRNAFVLDGYTGAIATYILFFIFGSLSVFILVLMEGLSA
                      FLHALRLHWVEFQSKFYGGLGYEFAPFSFEKILAEEREAEENL"
-     CDS             join(21664. .21816,21898. .22074,22182. .22310,22560. .22714,
-                     23629. .23838,23893. .25147,26117. .26257,26370. .26589,
-                     26754. .26925,27145. .27250)
+     CDS             join(21664..21816,21898..22074,22182..22310,22560..22714,
+                     23629..23838,23893..25147,26117..26257,26370..26589,
+                     26754..26925,27145..27250)
                      /gene="unc-32"
                      /locus_tag="ZK637.8d"
                      /standard_name="ZK637.8a"
@@ -346,9 +346,9 @@ FEATURES             Location/Qualifiers
                      SVRADINQDDAEVVHAPEQTPKPSGHGHGHGDGPLEMGDVMVYQAIHTIEFVLGCVSH
                      TASYLRLWALSLAHAQLSDVLWTMVFRNAFVLDGYTGAIATYILFFIFGSLSVFILVL
                      MEGLSAFLHALRLHWVEFQSKFYGGLGYEFAPFSFEKILAEEREAEENL"
-     CDS             join(21664. .21816,21898. .22074,22182. .22310,23003. .23109,
-                     23629. .23838,23893. .25147,25269. .25391,26370. .26589,
-                     26754. .26925,27145. .27250)
+     CDS             join(21664..21816,21898..22074,22182..22310,23003..23109,
+                     23629..23838,23893..25147,25269..25391,26370..26589,
+                     26754..26925,27145..27250)
                      /gene="unc-32"
                      /locus_tag="ZK637.8d"
                      /standard_name="ZK637.8b"
@@ -376,9 +376,9 @@ FEATURES             Location/Qualifiers
                      PSGHGHGHGDGPLEMGDVMVYQAIHTIEFVLGCVSHTASYLRLWALSLAHAQLSDVLW
                      TMVFRNAFVLDGYTGAIATYILFFIFGSLSVFILVLMEGLSAFLHALRLHWVEFQSKF
                      YGGLGYEFAPFSFEKILAEEREAEENL"
-     CDS             join(21664. .21816,21898. .22074,22182. .22310,23003. .23109,
-                     23629. .23838,23893. .25147,26117. .26257,26370. .26589,
-                     26754. .26925,27145. .27250)
+     CDS             join(21664..21816,21898..22074,22182..22310,23003..23109,
+                     23629..23838,23893..25147,26117..26257,26370..26589,
+                     26754..26925,27145..27250)
                      /gene="unc-32"
                      /locus_tag="ZK637.8d"
                      /standard_name="ZK637.8f"
@@ -406,9 +406,9 @@ FEATURES             Location/Qualifiers
                      PEQTPKPSGHGHGHGDGPLEMGDVMVYQAIHTIEFVLGCVSHTASYLRLWALSLAHAQ
                      LSDVLWTMVFRNAFVLDGYTGAIATYILFFIFGSLSVFILVLMEGLSAFLHALRLHWV
                      EFQSKFYGGLGYEFAPFSFEKILAEEREAEENL"
-     CDS             join(21664. .21816,21898. .22074,22182. .22310,23347. .23468,
-                     23629. .23838,23893. .25147,25269. .25391,26370. .26589,
-                     26754. .26925,27145. .27250)
+     CDS             join(21664..21816,21898..22074,22182..22310,23347..23468,
+                     23629..23838,23893..25147,25269..25391,26370..26589,
+                     26754..26925,27145..27250)
                      /gene="unc-32"
                      /locus_tag="ZK637.8d"
                      /standard_name="ZK637.8e"
@@ -436,9 +436,9 @@ FEATURES             Location/Qualifiers
                      EQTPKPSGHGHGHGDGPLEMGDVMVYQAIHTIEFVLGCVSHTASYLRLWALSLAHAQL
                      SDVLWTMVFRNAFVLDGYTGAIATYILFFIFGSLSVFILVLMEGLSAFLHALRLHWVE
                      FQSKFYGGLGYEFAPFSFEKILAEEREAEENL"
-     CDS             join(21664. .21816,21898. .22074,22182. .22310,23347. .23468,
-                     23629. .23838,23893. .25147,26117. .26257,26370. .26589,
-                     26754. .26925,27145. .27250)
+     CDS             join(21664..21816,21898..22074,22182..22310,23347..23468,
+                     23629..23838,23893..25147,26117..26257,26370..26589,
+                     26754..26925,27145..27250)
                      /gene="unc-32"
                      /locus_tag="ZK637.8d"
                      /standard_name="ZK637.8c"
@@ -466,16 +466,16 @@ FEATURES             Location/Qualifiers
                      EVVHAPEQTPKPSGHGHGHGDGPLEMGDVMVYQAIHTIEFVLGCVSHTASYLRLWALS
                      LAHAQLSDVLWTMVFRNAFVLDGYTGAIATYILFFIFGSLSVFILVLMEGLSAFLHAL
                      RLHWVEFQSKFYGGLGYEFAPFSFEKILAEEREAEENL"
-     gene            join(28186. .28352,28407. .28487,28897. .29128,29173. .29284,
-                     29334. .29473)
+     gene            join(28186..28352,28407..28487,28897..29128,29173..29284,
+                     29334..29473)
                      /gene="tpk-1"
                      /locus_tag="ZK637.9b"
-     gene            join(28186. .28352,28407. .28487,28897. .29083,29173. .29284,
-                     29334. .29473)
+     gene            join(28186..28352,28407..28487,28897..29083,29173..29284,
+                     29334..29473)
                      /gene="tpk-1"
                      /locus_tag="ZK637.9a"
-     CDS             join(28186. .28352,28407. .28487,28897. .29128,29173. .29284,
-                     29334. .29473)
+     CDS             join(28186..28352,28407..28487,28897..29128,29173..29284,
+                     29334..29473)
                      /gene="tpk-1"
                      /locus_tag="ZK637.9b"
                      /standard_name="ZK637.9b"
@@ -493,8 +493,8 @@ FEATURES             Location/Qualifiers
                      LEQKTLTSWEFENIVVLGGLNGRFDHTMSTLSSLIRFVDSQTPVIVLDSRNLVLAVPT
                      GDSNLDVNLEMTTKMCGIIPIVQKETIVSSIGLKYEMENLALEFGKLISTSNEVTTSQ
                      VFLKSSSSLIFSIELENWVYKLDSL"
-     CDS             join(28186. .28352,28407. .28487,28897. .29083,29173. .29284,
-                     29334. .29473)
+     CDS             join(28186..28352,28407..28487,28897..29083,29173..29284,
+                     29334..29473)
                      /gene="tpk-1"
                      /locus_tag="ZK637.9a"
                      /standard_name="ZK637.9a"
@@ -511,12 +511,12 @@ FEATURES             Location/Qualifiers
                      LEQKTLTSWEFENIVVLGGLNGRFDHTMSTLSSLIRFVDSQTPGDSNLDVNLEMTTKM
                      CGIIPIVQKETIVSSIGLKYEMENLALEFGKLISTSNEVTTSQVFLKSSSSLIFSIEL
                      ENWVYKLDSL"
-     gene            join(29817. .30077,30126. .30262,30309. .30393,30743. .31279,
-                     31330. .31672,32242. .32390)
+     gene            join(29817..30077,30126..30262,30309..30393,30743..31279,
+                     31330..31672,32242..32390)
                      /gene="trxr-2"
                      /locus_tag="ZK637.10"
-     CDS             join(29817. .30077,30126. .30262,30309. .30393,30743. .31279,
-                     31330. .31672,32242. .32390)
+     CDS             join(29817..30077,30126..30262,30309..30393,30743..31279,
+                     31330..31672,32242..32390)
                      /gene="trxr-2"
                      /locus_tag="ZK637.10"
                      /standard_name="ZK637.10"
@@ -546,10 +546,10 @@ FEATURES             Location/Qualifiers
                      VGDIVQDRQELTPLAIQSGKLLADRLFSNSKQIVRFDGVATTVFTPLELSTVGLTEEE
                      AIQKHGEDSIEVFHSHFTPFEYVVPQNKDSGFCYVKAVCTRDESQKILGLHFVGPNAA
                      EVIQGYAVAFRVGISMSDLQNTIAIHPCSSEEFVKLHITKRSGQDPRTQGCCG"
-     gene            complement(join(32541. .33020,33415. .33784,33832. .33932))
+     gene            complement(join(32541..33020,33415..33784,33832..33932))
                      /gene="cdc-25.3"
                      /locus_tag="ZK637.11"
-     CDS             complement(join(32541. .33020,33415. .33784,33832. .33932))
+     CDS             complement(join(32541..33020,33415..33784,33832..33932))
                      /gene="cdc-25.3"
                      /locus_tag="ZK637.11"
                      /standard_name="ZK637.11"
@@ -569,11 +569,11 @@ FEATURES             Location/Qualifiers
                      SLFNPETAADFFFNKDGSKKINRIPIFYCEYSQKRGPTMANNLREVDRKLNSNIYPRC
                      DYEEIYLLEGGYKNFYAFTRGLEKEQRVQLCEPDNYVIMFDDRYKAELRKHQFHKKNV
                      SKPMKKWSSTTSVISILTTSGTRISTLRQTCDPIHEHDAH"
-     gene            join(36147. .36305,36470. .36667,36719. .36841,36886. .36987,
-                     37038. .37196)
+     gene            join(36147..36305,36470..36667,36719..36841,36886..36987,
+                     37038..37196)
                      /locus_tag="ZK637.15"
-     CDS             join(36147. .36305,36470. .36667,36719. .36841,36886. .36987,
-                     37038. .37196)
+     CDS             join(36147..36305,36470..36667,36719..36841,36886..36987,
+                     37038..37196)
                      /locus_tag="ZK637.15"
                      /standard_name="ZK637.15"
                      /note="contains similarity to Ureaplasma parvum
@@ -588,9 +588,9 @@ FEATURES             Location/Qualifiers
                      RAESIDFDVPSLSYESSEKCAGETSPYTSASVSNSKKATSSSKFTKSEITTITELTTS
                      TFKKSNNSSGGALVLDNHYLINNDDGTVKKLPMKVYVKQRLEDGSLDVQLVFFDENSQ
                      KVMDISMLVNGKKIRNVQFCGKDGKLVN"
-     gene            complement(join(38544. .38829,39128. .39321))
+     gene            complement(join(38544..38829,39128..39321))
                      /locus_tag="ZK637.13"
-     CDS             complement(join(38544. .38829,39128. .39321))
+     CDS             complement(join(38544..38829,39128..39321))
                      /locus_tag="ZK637.13"
                      /standard_name="ZK637.13"
                      /note="contains similarity to Pfam domain PF00042
@@ -608,11 +608,11 @@ FEATURES             Location/Qualifiers
                      /translation="MSMNRQEISDLCVKSLEGRMVGTEAQNIENGNAFYRYFFTNFPD
                      LRVYFKGAEKYTADDVKKSERFDKQGQRILLACHLLANVYTNEEVFKGYVRETINRHR
                      IYKMDPALWMAFFTVFTGYLESVGCLNDQQKAAWMALGKEFNAESQTHLKNSNLPHV"
-     gene            join(40328. .40486,40571. .40699,Z11126.1:5. .73,
-                     Z11126.1:120. .242,Z11126.1:288. .389,Z11126.1:440. .598)
+     gene            join(40328..40486,40571..40699,Z11126.1:5..73,
+                     Z11126.1:120..242,Z11126.1:288..389,Z11126.1:440..598)
                      /locus_tag="ZK637.12"
-     CDS             join(40328. .40486,40571. .40699,Z11126.1:5. .73,
-                     Z11126.1:120. .242,Z11126.1:288. .389,Z11126.1:440. .598)
+     CDS             join(40328..40486,40571..40699,Z11126.1:5..73,
+                     Z11126.1:120..242,Z11126.1:288..389,Z11126.1:440..598)
                      /locus_tag="ZK637.12"
                      /standard_name="ZK637.12"
                      /note="contains similarity to Saccharomyces cerevisiae
@@ -1332,12 +1332,12 @@ REFERENCE   2  (bases 1 to 1675)
   JOURNAL   Submitted (25-OCT-1988)
 COMMENT     Data kindly reviewed (25-OCT-1988) by Abdulaev N.G.
 FEATURES             Location/Qualifiers
-     source          1. .1675
+     source          1..1675
                      /organism="Octopus dofleini"
                      /mol_type="mRNA"
                      /db_xref="taxon:6644"
                      /clone="pORh462"
-     CDS             75. .1442
+     CDS             75..1442
                      /codon_start=1
                      /product="rhodopsin"
                      /protein_id="CAA30644.1"
