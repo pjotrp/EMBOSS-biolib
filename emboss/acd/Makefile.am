@@ -42,8 +42,9 @@ pkgdata2_DATA = needle.acd newcoils.acd newcpgreport.acd newcpgseek.acd \
 	prophecy.acd prophet.acd prosextract.acd pscan.acd psiphi.acd \
 	rebaseextract.acd recoder.acd redata.acd remap.acd restover.acd \
 	restrict.acd revseq.acd seealso.acd seqinfo.acd seqmatchall.acd \
-	seqret.acd seqretall.acd seqretallfeat.acd seqretset.acd \
-	seqretsingle.acd seqretsplit.acd seqrettype.acd showalign.acd \
+	seqret.acd seqretall.acd seqretallfeat.acd \
+	seqretset.acd seqretsetall.acd seqretsingle.acd seqretsplit.acd \
+	seqrettype.acd showalign.acd \
 	showdb.acd showfeat.acd showorf.acd \
 	showpep.acd showseq.acd shuffleseq.acd \
 	sigcleave.acd silent.acd sirna.acd \
