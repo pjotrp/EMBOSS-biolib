@@ -1609,27 +1609,6 @@ AjBool ajNamIsDbname(const AjPStr name)
 
 
 
-/* @func ajNamGetenv **********************************************************
-**
-** Looks for name as an environment variable.
-** the AjPStr for this in "value". If not found returns NULL;
-**
-** @param [r] name [const AjPStr] character string to find in getenv list
-** @param [w] value [AjPStr*] String for the value.
-** @return [AjBool] True if name was defined.
-** @@
-**
-******************************************************************************/
-
-AjBool ajNamGetenv(const AjPStr name,
-		    AjPStr* value)
-{
-    return ajNamGetenvC(ajStrGetPtr(name), value);
-}
-
-
-
-
 /* @func ajNamGetenvC *********************************************************
 **
 ** Looks for name as an environment variable.
@@ -1661,22 +1640,22 @@ AjBool ajNamGetenvC(const char* name,
 
 
 
-/* @func ajNamGetValue ********************************************************
+/* @func ajNamGetenvS **********************************************************
 **
-** Looks for name as an (upper case) environment variable,
-** and then as-is in the hash table and if found returns
+** Looks for name as an environment variable.
 ** the AjPStr for this in "value". If not found returns NULL;
 **
-** @param [r] name [const AjPStr] character string find in hash table.
+** @param [r] name [const AjPStr] character string to find in getenv list
 ** @param [w] value [AjPStr*] String for the value.
 ** @return [AjBool] True if name was defined.
 ** @@
 **
 ******************************************************************************/
 
-AjBool ajNamGetValue(const AjPStr name, AjPStr* value)
+AjBool ajNamGetenvS(const AjPStr name,
+		    AjPStr* value)
 {
-    return ajNamGetValueC(ajStrGetPtr(name), value);
+    return ajNamGetenvC(ajStrGetPtr(name), value);
 }
 
 
@@ -1744,6 +1723,27 @@ AjBool ajNamGetValueC(const char* name, AjPStr* value)
     }
     
     return ajFalse;
+}
+
+
+
+
+/* @func ajNamGetValueS ********************************************************
+**
+** Looks for name as an (upper case) environment variable,
+** and then as-is in the hash table and if found returns
+** the AjPStr for this in "value". If not found returns NULL;
+**
+** @param [r] name [const AjPStr] character string find in hash table.
+** @param [w] value [AjPStr*] String for the value.
+** @return [AjBool] True if name was defined.
+** @@
+**
+******************************************************************************/
+
+AjBool ajNamGetValueS(const AjPStr name, AjPStr* value)
+{
+    return ajNamGetValueC(ajStrGetPtr(name), value);
 }
 
 

@@ -28,10 +28,10 @@ void   ajNamDebugDatabases (void);
 void   ajNamDebugResources (void);
 void   ajNamDebugVariables (void);
 void   ajNamExit (void);
-AjBool ajNamGetenv (const AjPStr name, AjPStr* value);
 AjBool ajNamGetenvC (const char* name, AjPStr* value);
-AjBool ajNamGetValue (const AjPStr name, AjPStr* value);
+AjBool ajNamGetenvS (const AjPStr name, AjPStr* value);
 AjBool ajNamGetValueC (const char *name, AjPStr* value);
+AjBool ajNamGetValueS (const AjPStr name, AjPStr* value);
 void   ajNamInit (const char* prefix);
 AjBool ajNamIsDbname(const AjPStr name);
 void   ajNamListDatabases(void); /* test routine */
