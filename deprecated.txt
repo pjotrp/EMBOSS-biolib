@@ -847,6 +847,7 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #seqretall
 #seqretallfeat
 #seqret
+#seqretsetall
 #seqretset
 #seqretsingle
 #seqretsplit
