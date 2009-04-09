@@ -3451,13 +3451,13 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI x13776.density
-FC = 2097
+FC = 2095
 FP / +1 +1 +[+] +0\.000  0\.180  0\.330  0\.330  0\.160  0\.340  0\.660\n/
 //
 
 ID density-ex2
 AP density
-CL tembl:x13776 -quad -qgraph cps
+CL tembl:x13776 -display quad -graph cps
 FI stdout
 FC = 1
 FP /^Created density\.ps\n/
@@ -3472,7 +3472,7 @@ FP /^%%Title: PLplot Graph/
 
 ID density-ex3
 AP density
-CL tembl:x13776 -dual -dgraph cps
+CL tembl:x13776 -display dual -graph cps
 FI stdout
 FC = 1
 FP /^Created density\.ps\n/
@@ -10213,10 +10213,15 @@ FP /^# Reported_hitcount: 9\n/
 //
 
 ID feat-embl
+TI 120
 AP seqret
 CL -feat ../../data/feat.fasta -ufo ../../data/feat.emft embl::test.out -auto
 FI test.out
-FZ = 78182
+FZ = 78180
+## one_of to order
+FP /^FT   polyA_signal    order\(368\.\.373,459\.\.464\)\n/
+## group to order
+FP /^FT   misc_feature    order\(226\.\.288,688\.\.754\)\n/
 ## Internal quotes
 FP /^FT                   ""amiE"" gene"\n/
 ## Bad features type (CODS) to misc_feature
@@ -10242,7 +10247,7 @@ ID feat-embl-togb
 AP seqret
 CL -feat ../../data/feat.fasta -ufo ../../data/feat.emft gb::test.out -auto
 FI test.out
-FZ = 75530
+FZ = 75528
 ## Internal quotes
 FP /^                     ""amiE"" gene"\n/
 ## Bad features type (CODS) to misc_feature
@@ -10259,7 +10264,7 @@ ID feat-genbank-toembl
 AP seqret
 CL -feat ../../data/feat.fasta -ufo ../../data/feat.gbft em::test.out -auto
 FI test.out
-FZ = 78182
+FZ = 78387
 ## Internal quotes
 FP /^FT                   ""amiE"" gene"\n/
 ## Bad features type (CODS) to misc_feature
@@ -17043,7 +17048,7 @@ FP /-> source\n/
 ID showfeat-ex2
 UC Display 'joined' features on one line with positions:
 AP showfeat
-CL -sort join -pos
+CL -joinfeat -pos
 IN tembl:x65921
 IN
 FI stderr
