@@ -285,6 +285,8 @@ foreach $dotest (@dirs) {
 # ignore qualifiers - words starting with a '-'
         if ($f =~ /^-/) {next;}
 # split on '::' to get files embedded in a format::file USA
+        $f =~ s/^[']//;
+        $f =~ s/[']$//;
         if ($f =~ /\:\:/) {
 	    print "CL line=$f\n";
             @fm = split /\:\:/, $f;
