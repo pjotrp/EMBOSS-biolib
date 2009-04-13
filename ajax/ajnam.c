@@ -1,7 +1,7 @@
 /******************************************************************************
 ** @source AJAX nam functions
 ** Creates a hash table of initial values and allow access to this
-** via the routines ajNamDatabase and ajNamGetValue.
+** via the routines ajNamDatabase and ajNamGetValueS.
 **
 ** @author Copyright (C) 1998 Ian Longden
 ** @version 1.0
@@ -1659,6 +1659,15 @@ AjBool ajNamGetenvS(const AjPStr name,
 }
 
 
+/* @obsolete ajNamGetenv
+** @remove Use ajNamGetenvS
+*/
+__deprecated AjBool ajNamGetenv(const AjPStr name,
+		    AjPStr* value)
+{
+    return ajNamGetenvS(name, value);
+}
+
 
 
 /* @func ajNamGetValueC *******************************************************
@@ -1696,7 +1705,7 @@ AjBool ajNamGetValueC(const char* name, AjPStr* value)
     
     /* first test for an ENV variable */
     
-    ret = ajNamGetenv(namValNameTmp, value);
+    ret = ajNamGetenvS(namValNameTmp, value);
     if(ret)
 	return ajTrue;
 
@@ -1746,8 +1755,14 @@ AjBool ajNamGetValueS(const AjPStr name, AjPStr* value)
     return ajNamGetValueC(ajStrGetPtr(name), value);
 }
 
+/* @obsolete ajNamGetValue
+** @remove Use ajNamGetValusS
+*/
 
-
+__deprecated AjBool ajNamGetValue(const AjPStr name, AjPStr* value)
+{
+    return ajNamGetValueC(ajStrGetPtr(name), value);
+}
 
 /* @func ajNamDatabase ********************************************************
 **
@@ -2012,7 +2027,7 @@ void ajNamInit(const char* prefix)
     ajStrAppendC(&debugStr, "_namdebug");
     ajStrFmtUpper(&debugStr);
     
-    if(ajNamGetenv(debugStr, &debugVal))
+    if(ajNamGetenvS(debugStr, &debugVal))
 	ajStrToBool(debugVal, &namDoDebug);
     
     ajStrAssignC(&debugStr, prefix);
@@ -2020,7 +2035,7 @@ void ajNamInit(const char* prefix)
     ajStrAppendC(&debugStr, "_namvalid");
     ajStrFmtUpper(&debugStr);
     
-    if(ajNamGetenv(debugStr, &debugVal))
+    if(ajNamGetenvS(debugStr, &debugVal))
 	ajStrToBool(debugVal, &namDoValid);
     
     ajStrDel(&debugStr);
@@ -2034,7 +2049,7 @@ void ajNamInit(const char* prefix)
     ajStrAppendC(&prefixCap, prefix);
     ajStrFmtUpper(&prefixCap);
 
-    root_defined = ajNamGetenv(prefixStr, &prefixRootStr);
+    root_defined = ajNamGetenvS(prefixStr, &prefixRootStr);
     if(!root_defined && is_windows)
 	ajDie("EMBOSS_ROOT must be defined for Windows");
 
@@ -2139,7 +2154,7 @@ void ajNamInit(const char* prefix)
     ajStrAppendC(&prefixStr, "_RCHOME");
     ajStrFmtUpper(&prefixStr);
     
-    if(ajNamGetenv(prefixStr, &homercVal))
+    if(ajNamGetenvS(prefixStr, &homercVal))
 	ajStrToBool(homercVal, &namDoHomeRc);
 
     ajStrDel(&homercVal);
@@ -2704,7 +2719,7 @@ static AjBool namVarResolve(AjPStr* var)
     {
 	ajRegSubI(namVarExp, 1, &varname); /* variable name */
 
-	ajNamGetValue(varname, &newvar);
+	ajNamGetValueS(varname, &newvar);
 
 	ajDebug("namVarResolve '%S' = '%S'\n", varname, newvar);
 
@@ -2936,7 +2951,7 @@ AjBool ajNamResolve(AjPStr* name)
 	ajRegSubI(namNameExp, 1, &varname);
 	namUser("variable '%S' found\n", varname);
 	ajRegPost(namNameExp, &restname);
-	ret = ajNamGetValue(varname, &varvalue);
+	ret = ajNamGetValueS(varname, &varvalue);
 	if(ret)
 	{
 	    ajStrAssignS(name, varvalue);

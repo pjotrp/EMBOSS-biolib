@@ -56,6 +56,8 @@ AjBool ajNamRsListValue(const AjPStr name, AjPStr *value);
 AjBool ajNamSetControl (const char* optionName);
 void   ajNamVariables (void); /* "" "" may want to delete later */
 
+__deprecated AjBool ajNamGetenv (const AjPStr name, AjPStr* value);
+__deprecated AjBool ajNamGetValue (const AjPStr name, AjPStr* value);
 __deprecated AjBool ajNamRootInstall (AjPStr* root);
 __deprecated AjBool ajNamRoot (AjPStr* root);
 __deprecated AjBool ajNamRootBase (AjPStr* rootbase);
