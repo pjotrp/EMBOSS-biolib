@@ -3304,7 +3304,7 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 
 	    ajStrAssignS(&acdPackRootName, acdPack);
 	    ajStrAppendC(&acdPackRootName, "acdroot");
-	    if(ajNamGetValue(acdPackRootName, &acdPackRoot))
+	    if(ajNamGetValueS(acdPackRootName, &acdPackRoot))
 	    {
 		ajDirnameFix(&acdPackRoot);
 		ajFmtPrintS(&acdFName, "%S%s.acd", acdPackRoot, pgm);
@@ -23477,7 +23477,7 @@ static AjBool acdSetQualAppl(const AcdPAcd thys, AjBool val)
 	    else			/* look for a variable */
 	    {
 		ajFmtPrintS(&setstr, "%S", thys->Name);
-		if(ajNamGetValue(setstr, &valstr))
+		if(ajNamGetValueS(setstr, &valstr))
 		{
 		    ajStrToBool(valstr, &setval);
 		    acdLog("Appl qualifier variable %S = %b\n",
