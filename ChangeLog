@@ -1,4 +1,8 @@
 Version 6.1.0
+	remap now correctly reports restriction enzymes cutting a
+	greater number of times than an optionally-supplied maximum
+	value. The primary function of the application was unaffected.
+
 	showfeat has a new option -joinfeatures to display all exons on
 	one line for a join feature location. In previous releases this
 	was one of the -sort options. It is now possible to use
