@@ -618,7 +618,7 @@ static void remap_CutList(AjPFile outfile, const AjPTable hittable,
 
 	for(i = 0; keyarray[i]; i++)
 	{
-	    value = (PValue) valarray[i];
+	    value = ajTableFetch(hittable,keyarray[i]);
 	    if(value->count > maxcuts)
 	    ajFmtPrintF(outfile, "%10S\t    %d\t%S\n",
 			    (AjPStr) keyarray[i], value->count,
