@@ -142,15 +142,13 @@ if test "`uname -a | grep Darwin`"; then
   else
     CFLAGS="$CFLAGS -O2"
   fi
+
 else
 CFLAGS="$CFLAGS -O2"
 fi
 
 fi
 dnl End of Optimisation tests
-
-
-
 
 
 dnl Add extensions to Solaris for some reentrant functions
@@ -202,6 +200,16 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_PROG_RANLIB
+
+dnl Intel MacOSX 10.6 puts X11 in a non-standard place
+if test "${with_x}" != "no" ; then
+if test "`uname -a | grep Darwin`"; then
+OSXX=`sw_vers -productVersion | sed 's/\(10\.[[0-9]]*\).*/\1/'`
+if test ${OSXX} '>' '10.4'; then
+CFLAGS="$CFLAGS -I/usr/X11/include -L/usr/X11/lib"
+fi
+fi
+fi
 
 dnl Check for header files
 AC_PATH_XTRA
