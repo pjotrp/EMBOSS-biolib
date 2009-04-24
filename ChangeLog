@@ -1,4 +1,7 @@
 Version 6.1.0
+	Add -methylation option to restrict/restover/remap/showseq
+	to simulate (e.g.) dam/dcm restriction enzyme knockouts.
+
 	remap now correctly reports restriction enzymes cutting a
 	greater number of times than an optionally-supplied maximum
 	value. The primary function of the application was unaffected.
