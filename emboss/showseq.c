@@ -129,8 +129,10 @@ int main(int argc, char **argv)
     AjBool plasmid;
     AjBool commercial;
     AjBool limit;
+    AjBool methyl;
     AjPFile enzfile  = NULL;
     AjPFile equfile  = NULL;
+    AjPFile methfile = NULL;
     AjPTable retable = NULL;
     ajint hits;
     AjPList restrictlist = NULL;
@@ -181,8 +183,10 @@ int main(int argc, char **argv)
     plasmid    = ajAcdGetBoolean("plasmid");
     commercial = ajAcdGetBoolean("commercial");
     limit      = ajAcdGetBoolean("limit");
+    methyl     = ajAcdGetBoolean("methylation");
     enzymes    = ajAcdGetString("enzymes");
-
+    methfile   = ajAcdGetDatafile("mfile");
+    
     /* feature filter criteria */
     matchsource = ajAcdGetString("sourcematch");
     matchtype   = ajAcdGetString("typematch");
@@ -324,10 +328,10 @@ int main(int argc, char **argv)
 
 	    ajFileSeek(enzfile, 0L, 0);
 	    hits = embPatRestrictMatch(seq, 1, ajSeqGetLen(seq),
-				       enzfile, enzymes,
+				       enzfile, methfile, enzymes,
 				       sitelen, plasmid, ambiguity, mincuts,
 				       maxcuts, blunt, sticky, commercial,
-				       restrictlist);
+				       methyl, restrictlist);
 	    if(hits)
 	    {
 		/* this bit is lifted from printHits */
