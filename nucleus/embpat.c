@@ -1164,10 +1164,7 @@ static void patRestrictMethylMod(AjPStr *str, AjPList methlist)
             q = (char *) ajStrGetPtr(md->Replace);
             for(j=0; j<match->len; ++j)
                 p[match->start + j] = q[j];
-/*            
-            ajStrCutRange(str,match->start,match->start + match->len - 1);
-            ajStrInsertS(str,match->start,md->Replace);
-*/
+
             embMatMatchDel(&match);
         }
             
