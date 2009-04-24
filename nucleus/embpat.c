@@ -1121,7 +1121,9 @@ static void patRestrictMethylMod(AjPStr *str, AjPList methlist)
 
     EmbPMatMatch match = NULL;
     
-
+    char *p = NULL;
+    char *q = NULL;
+    
     
     origpat = ajStrNew();
     pattern = ajStrNew();
@@ -1132,7 +1134,8 @@ static void patRestrictMethylMod(AjPStr *str, AjPList methlist)
 
 
     l = ajListNew();
-    
+
+    p = (char *) ajStrGetPtr(*str);
     
     for(i=0; i < listlen; ++i)
     {
@@ -1151,11 +1154,20 @@ static void patRestrictMethylMod(AjPStr *str, AjPList methlist)
 			 plen,mismatch,amino,carboxyl,buf,off,sotable,
 			 solimit,regexp,skipm,&hits,m,&tidy);
 
+
+
+        
+
         while(ajListPop(l,(void **)&match))
         {
+            
+            q = (char *) ajStrGetPtr(md->Replace);
+            for(j=0; j<match->len; ++j)
+                p[match->start + j] = q[j];
+/*            
             ajStrCutRange(str,match->start,match->start + match->len - 1);
             ajStrInsertS(str,match->start,md->Replace);
-
+*/
             embMatMatchDel(&match);
         }
             
