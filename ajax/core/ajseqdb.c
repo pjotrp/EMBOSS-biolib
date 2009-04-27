@@ -2006,7 +2006,10 @@ static AjBool seqEntrezQryNext(AjPSeqQuery qry, AjPSeqin seqin)
 	{
 	    ajStrTrimWhite(&seqline);
 	    if(!ajStrGetLen(seqline))
+            {
+                ajBuffreadLine(seqfile,&seqline);
 		ihead=0;
+            }
 	}
 	else
 	{
