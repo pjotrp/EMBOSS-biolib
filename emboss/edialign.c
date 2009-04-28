@@ -631,6 +631,8 @@ int main(int argc, char **argv)
     ajSeqsetFmtUpper(seqset);
     n = ajSeqsetGetSize(seqset);
 
+    max_dia = lmax;
+    
     AJCNEW0(seq,n);
     AJCNEW0(seq_name,n);
     AJCNEW0(full_name,n);
