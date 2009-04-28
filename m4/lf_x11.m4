@@ -22,7 +22,7 @@ dnl distribution terms that you use for the rest of that program.
  
 #-----------------------------------------------------------------------
 # This macro searches for Xlib and when it finds it it adds the 
-# appropriate flags to CXXFLAGS and export the link sequence to 
+# appropriate flags to CFLAGS and export the link sequence to 
 # the variable XLIB. 
 # In your configure.in file add:
 #   LF_PATH_XLIB
@@ -30,12 +30,12 @@ dnl distribution terms that you use for the rest of that program.
 #   program_LDADD = .... $(XLIB)
 #------------------------------------------------------------------------
 #
-# Just added EMBOSS into LF_PATH_XLIB so that on the sysytems where
-# LF_PATH_XLIB exists we do not get duplication errors!!!!!
+# Just added EMBOSS into LF_PATH_XLIB so that on the systems where
+# LF_PATH_XLIB exists there are no duplication errors.
 
 
 AC_DEFUN([LF_EMBOSS_PATH_XLIB],[
-  CXXFLAGS="$CXXFLAGS $X_CFLAGS"
+  CFLAGS="$CFLAGS $X_CFLAGS"
 if test "`uname`" != "IRIX64" && test "`uname`" != "IRIX" ; then
   XLIB="$X_LIBS -lX11 $X_EXTRA_LIBS"
 else
