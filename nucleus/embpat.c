@@ -85,7 +85,8 @@ static void    patRestrictPushHit(const EmbPPatRestrict enz,
 				 AjPList l, ajuint pos,
 				 ajuint begin, ajuint len,
 				 AjBool forward, AjBool plasmid);
-static void    patRestrictMethylMod(AjPStr *str, AjPList methlist);
+static void    patRestrictMethylMod(AjPStr *str, AjPStr *rstr,
+                                    AjPList methlist);
 static AjPList patRestrictReadMethyl(AjPFile methfile);
 
 
@@ -1021,6 +1022,7 @@ static AjPList patRestrictReadMethyl(AjPFile methfile)
     AjPStr name    = NULL;
     AjPStr site    = NULL;
     AjPStr replace = NULL;
+    AjPStr pattern = NULL;
 
     AjPList ret = NULL;
 
@@ -1028,11 +1030,13 @@ static AjPList patRestrictReadMethyl(AjPFile methfile)
     
     
     const char *p = NULL;
-
+    char  c;
+    
     replace = ajStrNew();
     name    = ajStrNew();
     site    = ajStrNew();
     line    = ajStrNew();
+    pattern = ajStrNew();
     
     ret = ajListNew();
 
@@ -1041,21 +1045,39 @@ static AjPList patRestrictReadMethyl(AjPFile methfile)
         p = ajStrGetPtr(line);
         if(!*p || *p=='#' || *p=='!')
             continue;
-        if(ajFmtScanS(line,"%S%S%S",&name,&site,&replace) != 3)
+        if(ajFmtScanS(line,"%S%S%S",&name,&pattern) != 2)
         {
             ajWarn("Invalid methylation data line: %S",line);
             continue;
         }
-        
-        AJNEW(m);
-        m->Replace = ajStrNewS(replace);
-        m->Name    = ajStrNewS(name);
-        m->Site    = ajStrNewS(site);
 
-        ajStrFmtUpper(&m->Replace);
-        ajStrFmtUpper(&m->Name);
-        ajStrFmtUpper(&m->Site);
+        ajStrFmtUpper(&pattern);
+        p = ajStrGetPtr(pattern);
+
+        AJNEW(m);
+        m->Replace = ajStrNew();
+        m->Name    = ajStrNewS(name);
+        m->Site    = ajStrNew();
+
         
+        while((c=*p))
+        {
+            if(c == 'M')
+            {
+                ajStrAppendK(&m->Replace,'N');
+                ++p;
+                ajStrAppendK(&m->Site,*p);
+            }
+            else
+            {
+                ajStrAppendK(&m->Site,c);
+                ajStrAppendK(&m->Replace,c);
+            }
+
+            ++p;
+        }
+        
+        ajStrFmtUpper(&m->Name);
         ajListPush(ret, (void *)m);
     }
 
@@ -1064,7 +1086,8 @@ static AjPList patRestrictReadMethyl(AjPFile methfile)
     ajStrDel(&name);
     ajStrDel(&site);
     ajStrDel(&replace);
-
+    ajStrDel(&pattern);
+    
     return ret;
 }
 
@@ -1081,13 +1104,14 @@ static AjPList patRestrictReadMethyl(AjPFile methfile)
 ** there are no overlap conflicts. If a methylase is found that
 ** violates the above then this routine should be revisited.
 **
-** @param [w]  [AjPStr*] sequence string
-** @param [r]  [AjPList] methlist
+** @param [w] str [AjPStr*] sequence string
+** @param [w] rstr [AjPStr*] sequence string
+** @param [r] methlist [AjPList] methlist
 **
 ** @return [void]
 ******************************************************************************/
 
-static void patRestrictMethylMod(AjPStr *str, AjPList methlist)
+static void patRestrictMethylMod(AjPStr *str, AjPStr *rstr, AjPList methlist)
 {
     ajuint listlen;
     MethPData md = NULL;
@@ -1099,8 +1123,7 @@ static void patRestrictMethylMod(AjPStr *str, AjPList methlist)
     AjPStr regexp = NULL;
     ajuint **skipm = NULL;
     ajint *buf    = NULL;
-    const void *tidy    = NULL;
-    void *tydy = NULL;
+    void *tidy    = NULL;
     
     ajuint plen = 0;
     ajint type = 0;
@@ -1110,8 +1133,10 @@ static void patRestrictMethylMod(AjPStr *str, AjPList methlist)
     ajuint hits    = 0;
     
     ajuint m       = 0;
-    ajint j;
-    
+    ajuint j;
+
+    ajint fpos = 0;
+    ajint slen = 0;
     
     AjPStr origpat = NULL;
     AjPStr pattern = NULL;
@@ -1120,9 +1145,11 @@ static void patRestrictMethylMod(AjPStr *str, AjPList methlist)
 
 
     EmbPMatMatch match = NULL;
-    
+
     char *p = NULL;
     char *q = NULL;
+
+    char *rp = NULL;
     
     
     origpat = ajStrNew();
@@ -1135,7 +1162,9 @@ static void patRestrictMethylMod(AjPStr *str, AjPList methlist)
 
     l = ajListNew();
 
-    p = (char *) ajStrGetPtr(*str);
+    p = (*str)->Ptr;
+
+    slen = ajStrGetLen(*str);
     
     for(i=0; i < listlen; ++i)
     {
@@ -1152,18 +1181,27 @@ static void patRestrictMethylMod(AjPStr *str, AjPList methlist)
 
 	embPatFuzzSearch(type,0,pattern,seqname,(const AjPStr)*str,l,
 			 plen,mismatch,amino,carboxyl,buf,off,sotable,
-			 solimit,regexp,skipm,&hits,m,&tidy);
+			 solimit,regexp,skipm,&hits,m,(const void **)&tidy);
 
 
-
-        
+        rp = (*rstr)->Ptr;
 
         while(ajListPop(l,(void **)&match))
         {
             
-            q = (char *) ajStrGetPtr(md->Replace);
-            for(j=0; j<match->len; ++j)
-                p[match->start + j] = q[j];
+            q = md->Replace->Ptr;
+
+            for(j=0; j < match->len; ++j)
+            {
+                fpos = match->start + j;
+                p[fpos] = q[j];
+                if(q[j] == 'N') /* Know out base on opposite strand too */
+                {
+                    rp[slen - fpos -1] = 'N';
+                }
+                
+            }
+            
 
             embMatMatchDel(&match);
         }
@@ -1174,11 +1212,7 @@ static void patRestrictMethylMod(AjPStr *str, AjPList methlist)
                 AJFREE(skipm[j]);
 
         if(tidy)
-        {
-            tydy = (void *)tidy;
-            AJFREE(tydy);
-        }
-       
+            AJFREE(tidy);
 
         ajListPushAppend(methlist, (void *)md);
     }
@@ -4029,8 +4063,8 @@ ajuint embPatRestrictMatch(const AjPSeq seq, ajuint begin, ajuint end,
 
     if(methyl)
     {
-        patRestrictMethylMod(&substr,methlist);
-        patRestrictMethylMod(&revstr,methlist);
+        patRestrictMethylMod(&substr,&revstr,methlist);
+        patRestrictMethylMod(&revstr,&substr,methlist);
     }
 
     
