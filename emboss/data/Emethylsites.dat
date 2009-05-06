@@ -1,16 +1,11 @@
 # Methylation data for the restrict application
 # The first column gives the name of the methylase: this is
 # currently unused by the program but must be supplied.
-# The second column gives the recognition site for the methylase
-# The third column gives the recognition site with the methylated bases
-# substituted by 'N' (the restrict application always regards N as a
-# mismatch).
-# If the methylation option is selected then any sequence segments matching
-# a pattern in the second column will be replaced by the pattern in the
-# third column.
+# The second column gives the recognition site for the methylase.
+# Following standard nomenclature any methylated base is preceded by 'm'
 #
-dam          GATC             GNTC
-dcm          CCAGG            NNAGG
-dcm          CCTGG            NNTGG
-MEcoKI       AACNNNNNNGTGC    NNCNNNNNNGTGC
-MEcoKI       GCACNNNNNNGTT    GCNCNNNNNNGTT
+dam          GmATC
+dcm          mCmCAGG
+dcm          mCmCTGG
+MEcoKI       mAmACNNNNNNGTGC
+MEcoKI       GCmACNNNNNNGTT
