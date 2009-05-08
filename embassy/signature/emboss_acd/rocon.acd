@@ -1,6 +1,6 @@
 application: rocon [
   documentation: "Generates a hits file from comparing two
-                  DHF files."
+                  DHF files"
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

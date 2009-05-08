@@ -1,6 +1,5 @@
 application: sigscan [
-  documentation: "Generate hits (DHF file) from a signature
-                  search."
+  documentation: "Generates hits (DHF file) from a signature search"
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"
