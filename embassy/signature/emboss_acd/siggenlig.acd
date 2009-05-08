@@ -1,6 +1,6 @@
 application: siggenlig [
-  documentation: "Generate ligand-binding signatures from a
-                  CON file."
+  documentation: "Generates ligand-binding signatures from a
+                  CON file"
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"
