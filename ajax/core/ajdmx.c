@@ -40,9 +40,6 @@
 #include "ajax.h"
 
 
-
-
-
 /* ======================================================================= */
 /* ============================ private data ============================= */
 /* ======================================================================= */
@@ -143,7 +140,6 @@ AjPScophit ajDmxScophitNew(void)
 
 
 
-
 /* @func ajDmxScopalgNew ****************************************************
 **
 ** Scopalg object constructor. This is normally called by the ajDmxScopalgRead
@@ -177,10 +173,12 @@ AjPScopalg ajDmxScopalgNew(ajint n)
     if(n)
     {
 	AJCNEW0(ret->Codes,n);
+
 	for(i=0;i<n;++i)
 	    ret->Codes[i] = ajStrNew();
 
 	AJCNEW0(ret->Seqs,n);
+
 	for(i=0;i<n;++i)
 	    ret->Seqs[i] = ajStrNew();
     }
@@ -206,21 +204,23 @@ AjPScopalg ajDmxScopalgNew(ajint n)
 
 AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 {
-    AjBool ok             = ajFalse;  /* True if the file contained 'TY' record. */
+    AjBool ok = ajFalse;  /* True if the file contained 'TY' record. */
     
     AjBool done_1st_blk   = ajFalse; /* Flag for whether we've read first
 					block of sequences */
 
-    ajint x     = 0;              /* Loop counter */
-    ajint y     = 0;              /* Loop counter */
-    ajint cnt   = 0;              /* Temp. counter of sequence */
-    ajint nseq  = 0;              /* No. of sequences in alignment */
-    ajint Sunid = 0;              /* SCOP Sunid for family */
-    ajint ntok  = 0;              /* No. string tokens in sequence line from alignment.
-				     Sequence start and end may or may not be present, 
-				     therefore ntok is either 2 or 4:
-				     (2)  (ACC       SEQ    ) or 
-				     (4)  (ACC start SEQ end) */
+    ajint x     = 0;   /* Loop counter */
+    ajint y     = 0;   /* Loop counter */
+    ajint cnt   = 0;   /* Temp. counter of sequence */
+    ajint nseq  = 0;   /* No. of sequences in alignment */
+    ajint Sunid = 0;   /* SCOP Sunid for family */
+    ajint ntok  = 0;   /*
+                       ** No. string tokens in sequence line from alignment.
+		       ** Sequence start and end may or may not be present, 
+		       ** therefore ntok is either 2 or 4:
+		       ** (2)  (ACC       SEQ    ) or 
+		       ** (4)  (ACC start SEQ end)
+                       */
     
     
     AjPList list_seqs  = NULL;     /* List of sequences */
@@ -282,56 +282,71 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 	else if(ajStrPrefixC(dmxStrline,"# FO"))
 	{
 	    ajStrAssignC(&dmxStrfold,ajStrGetPtr(dmxStrline)+5);
+
 	    while((ajReadlineTrim(inf,&dmxStrline)))
 	    {
 		if(ajStrPrefixC(dmxStrline,"# XX"))
 		    break;
+
 		ajStrAppendC(&dmxStrfold,ajStrGetPtr(dmxStrline)+5);
 	    }
+
 	    ajStrRemoveWhiteExcess(&dmxStrfold);
 	}
 	else if(ajStrPrefixC(dmxStrline,"# SF"))
 	{
 	    ajStrAssignC(&dmxStrsuper,ajStrGetPtr(dmxStrline)+5);
+
 	    while((ajReadlineTrim(inf,&dmxStrline)))
 	    {
 		if(ajStrPrefixC(dmxStrline,"# XX"))
 		    break;
+
 		ajStrAppendC(&dmxStrsuper,ajStrGetPtr(dmxStrline)+5);
 	    }
+
 	    ajStrRemoveWhiteExcess(&dmxStrsuper);
 	}
 	else if(ajStrPrefixC(dmxStrline,"# FA"))
 	{
 	    ajStrAssignC(&dmxStrfamily,ajStrGetPtr(dmxStrline)+5);
+
 	    while((ajReadlineTrim(inf,&dmxStrline)))
 	    {
 		if(ajStrPrefixC(dmxStrline,"# XX"))
 		    break;
+
 		ajStrAppendC(&dmxStrfamily,ajStrGetPtr(dmxStrline)+5);
 	    }
+
 	    ajStrRemoveWhiteExcess(&dmxStrfamily);
 	}
 	else if(ajStrPrefixC(dmxStrline,"# AR"))
 	{
 	    ajStrAssignC(&dmxStrarch,ajStrGetPtr(dmxStrline)+5);
+
 	    while((ajReadlineTrim(inf,&dmxStrline)))
 	    {
 		if(ajStrPrefixC(dmxStrline,"# XX"))
 		    break;
+
 		ajStrAppendC(&dmxStrarch,ajStrGetPtr(dmxStrline)+5);
 	    }
+
 	    ajStrRemoveWhiteExcess(&dmxStrarch);
 	}
 	else if(ajStrPrefixC(dmxStrline,"# TP"))
 	{
 	    ajStrAssignC(&dmxStrtopo,ajStrGetPtr(dmxStrline)+5);
+
 	    while((ajReadlineTrim(inf,&dmxStrline)))
 	    {
 		if(ajStrPrefixC(dmxStrline,"# XX"))
 		    break;
+
 		ajStrAppendC(&dmxStrtopo,ajStrGetPtr(dmxStrline)+5);
 	    }
+
 	    ajStrRemoveWhiteExcess(&dmxStrtopo);
 	}
 	else if(ajStrPrefixC(dmxStrline,"# XX"))
@@ -340,6 +355,7 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 	{
 	    /* Parse post_similar line */
 	    ajFmtScanS(dmxStrline, "%*s %*s %S", &dmxStrposttmp);
+
 	    if(done_1st_blk == ajTrue)
 		ajStrAppendS(&dmxStrpostsim, dmxStrposttmp);
 	    else
@@ -351,6 +367,7 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 	{
 	    /* Parse Positions line */
 	    ajFmtScanS(dmxStrline, "%*s %*s %S", &dmxStrpositmp);
+
 	    if(done_1st_blk == ajTrue)
 		ajStrAppendS(&dmxStrposisim, dmxStrpositmp);
 	    else
@@ -365,11 +382,15 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 	/* ajFileReadLine will have trimmed the tailing \n */
 	else if(ajStrGetCharPos(dmxStrline,1)=='\0')
 	{ 
-	    /* The first blank line therefore we've done the first block of sequences*/
+            /*
+            ** The first blank line therefore the first block of sequences
+            ** has been done
+            */
 	    
 	    if(!ok)
 	    {
-		ajWarn("ajDmxScopalgRead but file was not identified as being a domain alignment file");
+		ajWarn("ajDmxScopalgRead but file was not identified as "
+                       "being a domain alignment file");
 		return ajFalse;
 	    }
 
@@ -387,7 +408,8 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 	    /* Line of sequence */
 	    if(!ok)
 	    {
-		ajWarn("ajDmxScopalgRead but file was not identified as being a domain alignment file");
+		ajWarn("ajDmxScopalgRead but file was not identified as "
+                       "being a domain alignment file");
 		return ajFalse;
 	    }
 
@@ -412,6 +434,7 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 		nseq++;
 		seq = ajStrNew();		
 		code = ajStrNew();		
+
 		if(((ntok = ajStrParseCountC(dmxStrline, " ")) == 4))
 		    ajFmtScanS(dmxStrline, "%S %*s %S", &code, &seq);
 		else if(ntok == 2)
@@ -429,7 +452,9 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
     
     if(!ok)
     {
-	ajWarn("ajDmxScopalgRead but file was not identified as being a domain alignment file");
+	ajWarn("ajDmxScopalgRead but file was not identified as being "
+               "a domain alignment file");
+
 	return ajFalse;
     }
 
@@ -515,7 +540,6 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 
 
 
-
 /* ======================================================================= */
 /* =========================== destructors =============================== */
 /* ======================================================================= */
@@ -567,7 +591,6 @@ void ajDmxScophitDel(AjPScophit *pthis)
 
 
 
-
 /* @func ajDmxScophitDelWrap ************************************************
 **
 ** Wrapper to destructor for Scophit object for use with generic functions.
@@ -591,7 +614,6 @@ void ajDmxScophitDelWrap(void  **ptr)
 
 
 
-
 /* @func ajDmxScopalgDel ****************************************************
 **
 ** Destructor for Scopalg object.
@@ -608,6 +630,7 @@ void ajDmxScopalgDel(AjPScopalg *pthis)
 
     if(!pthis)
 	return;
+
     if(!(*pthis))
 	return;
     
@@ -636,7 +659,6 @@ void ajDmxScopalgDel(AjPScopalg *pthis)
     
     return;
 }
-
 
 
 
@@ -707,7 +729,6 @@ AjPList ajDmxScophitListCopy(const AjPList ptr)
 
 
 
-
 /* @func ajDmxScophitCopy ***************************************************
 **
 ** Copies the contents from one Scophit object to another.
@@ -758,7 +779,6 @@ AjBool ajDmxScophitCopy(AjPScophit *to, const AjPScophit from)
 
 
 
-
 /* ======================================================================= */
 /* ============================= Modifiers =============================== */
 /* ======================================================================= */
@@ -797,7 +817,6 @@ AjBool ajDmxScophitTargetLowPriority(AjPScophit *h)
 
 
 
-
 /* @func ajDmxScophitTarget2 ************************************************
 **
 ** Sets the Target2 element of a Scophit object to True.
@@ -825,7 +844,6 @@ AjBool ajDmxScophitTarget2(AjPScophit *h)
 
 
 
-
 /* @func ajDmxScophitTarget *************************************************
 **
 ** Sets the Target element of a Scophit object to True.
@@ -848,7 +866,6 @@ AjBool ajDmxScophitTarget(AjPScophit *h)
 
     return ajTrue;
 }
-
 
 
 
@@ -883,7 +900,6 @@ AjBool ajDmxScophitCheckTarget(const AjPScophit ptr)
 
 
 
-
 /* ======================================================================= */
 /* ============================== Casts ===================================*/
 /* ======================================================================= */
@@ -900,7 +916,6 @@ AjBool ajDmxScophitCheckTarget(const AjPScophit ptr)
 
 
 
-
 /* ======================================================================= */
 /* =========================== Reporters ==================================*/
 /* ======================================================================= */
@@ -911,7 +926,6 @@ AjBool ajDmxScophitCheckTarget(const AjPScophit ptr)
 ** changes.
 **
 ****************************************************************************/
-
 
 
 
@@ -947,7 +961,6 @@ ajint ajDmxScophitCompScore(const void *hit1, const void *hit2)
 
 
 
-
 /* @func ajDmxScophitCompPval ***********************************************
 **
 ** Function to sort AjOScophit objects by Pval record. Usually called by 
@@ -979,7 +992,6 @@ ajint ajDmxScophitCompPval(const void *hit1, const void *hit2)
 
 
 
-
 /* @func ajDmxScophitCompAcc ************************************************
 **
 ** Function to sort Scophit objects by Acc element. 
@@ -1006,7 +1018,6 @@ ajint ajDmxScophitCompAcc(const void *hit1, const void *hit2)
 
     return ajStrCmpS(p->Acc, q->Acc);
 }
-
 
 
 
@@ -1043,7 +1054,6 @@ ajint ajDmxScophitCompSunid(const void *entry1, const void *entry2)
 
 
 
-
 /* @func ajDmxScophitCompSpr ************************************************
 **
 ** Function to sort Scophit object by Spr element. 
@@ -1067,8 +1077,6 @@ ajint ajDmxScophitCompSpr(const void *hit1, const void *hit2)
     
     return ajStrCmpS(p->Spr, q->Spr);
 }
-
-
 
 
 
@@ -1113,7 +1121,6 @@ ajint ajDmxScophitCompEnd(const void *hit1, const void *hit2)
 
 
 
-
 /* @func ajDmxScophitCompStart **********************************************
 **
 ** Function to sort Scophit object by Start element. 
@@ -1149,7 +1156,6 @@ ajint ajDmxScophitCompStart(const void *hit1, const void *hit2)
 
 
 
-
 /* @func ajDmxScophitCompFam ************************************************
 **
 ** Function to sort Scophit object by Family element. 
@@ -1172,7 +1178,6 @@ ajint ajDmxScophitCompFam(const void *hit1, const void *hit2)
     
     return ajStrCmpS(p->Family, q->Family);
 }
-
 
 
 
@@ -1214,6 +1219,7 @@ ajint ajDmxScophitCompSfam(const void *hit1, const void *hit2)
 ** should sort first. 0 if they are identical.
 ** @@
 ****************************************************************************/
+
 ajint ajDmxScophitCompClass(const void *hit1, const void *hit2)
 {
     AjPScophit p = NULL;
@@ -1224,7 +1230,6 @@ ajint ajDmxScophitCompClass(const void *hit1, const void *hit2)
     
     return ajStrCmpS(p->Class, q->Class);
 }
-
 
 
 
@@ -1240,6 +1245,7 @@ ajint ajDmxScophitCompClass(const void *hit1, const void *hit2)
 ** should sort first. 0 if they are identical.
 ** @@
 ****************************************************************************/
+
 ajint ajDmxScophitCompFold(const void *hit1, const void *hit2)
 {
     AjPScophit p = NULL;
@@ -1250,7 +1256,6 @@ ajint ajDmxScophitCompFold(const void *hit1, const void *hit2)
     
     return ajStrCmpS(p->Fold, q->Fold);
 }
-
 
 
 
@@ -1270,6 +1275,7 @@ ajint ajDmxScophitCompFold(const void *hit1, const void *hit2)
 ** @return [ajint] Number of sequences read
 ** @@
 ****************************************************************************/
+
 ajint ajDmxScopalgGetseqs(const AjPScopalg thys, AjPStr **arr)
 {
     ajuint i;
@@ -1437,6 +1443,8 @@ AjBool ajDmxScophitsWrite(AjPFile outf, const AjPList list)
 }
 
 
+
+
 /* @func ajDmxScophitsWriteFasta ********************************************
 **
 ** Write contents of a list of Scophits to an output file in DHF format
@@ -1547,6 +1555,8 @@ AjBool ajDmxScophitsWriteFasta(AjPFile outf, const AjPList list)
 }
 
 
+
+
 /* @func ajDmxScophitReadFasta **********************************************
 **
 ** Read a Scophit object from a file in extended FASTA format 
@@ -1587,6 +1597,7 @@ AjPScophit ajDmxScophitReadFasta(AjPFile inf)
 		ajStrDel(&line);
 		ajStrDel(&subline);
 		ajStrDel(&type);
+
 		return hit;
 	    }	
 	    else
@@ -1594,6 +1605,7 @@ AjPScophit ajDmxScophitReadFasta(AjPFile inf)
 
 	    /* Check line has correct no. of tokens and allocate Hit */
 	    ajStrAssignSubS(&subline, line, 1, -1);
+
 	    if( (ntok=ajStrParseCountC(subline, "^")) != 17)
 	    {
 		ajWarn("Wrong no. (%d) of tokens for a DHF file on line %S\n", ntok, line);
@@ -1608,12 +1620,14 @@ AjPScophit ajDmxScophitReadFasta(AjPFile inf)
 	    token = ajStrParseC(subline, "^");
 	    ajStrAssignS(&hit->Acc, token);
 	    ajStrTrimWhite(&hit->Acc); 
+
 	    if(ajStrMatchC(hit->Acc, "."))
 		ajStrSetClear(&hit->Acc);
 	    	    
 	    /* Spr */
 	    token = ajStrParseC(NULL, "^");
 	    ajStrAssignS(&hit->Spr, token);
+
 	    if(ajStrMatchC(hit->Spr, "."))
 		ajStrSetClear(&hit->Spr);
 
@@ -1628,6 +1642,7 @@ AjPScophit ajDmxScophitReadFasta(AjPFile inf)
 	    /* Type */
 	    token = ajStrParseC(NULL, "^");
 	    ajStrAssignS(&type, token);
+
 	    if(ajStrMatchC(type, "SCOP"))
 		hit->Type = ajSCOP;
 	    else if(ajStrMatchC(type, "CATH"))
@@ -1636,6 +1651,7 @@ AjPScophit ajDmxScophitReadFasta(AjPFile inf)
 	    /* Dom */
 	    token = ajStrParseC(NULL, "^");
 	    ajStrAssignS(&hit->Dom, token);
+
 	    if(ajStrMatchC(hit->Dom, "."))
 		ajStrSetClear(&hit->Dom);
 
@@ -1645,11 +1661,13 @@ AjPScophit ajDmxScophitReadFasta(AjPFile inf)
 
 	    token = ajStrParseC(NULL, "^");
 	    ajStrAssignS(&hit->Class, token);
+
 	    if(ajStrMatchC(hit->Class, "."))
 		ajStrSetClear(&hit->Class);		
 
 	    token = ajStrParseC(NULL, "^");
 	    ajStrAssignS(&hit->Architecture, token);
+
 	    if(ajStrMatchC(hit->Architecture, "."))
 		ajStrSetClear(&hit->Architecture);
 
@@ -1660,21 +1678,25 @@ AjPScophit ajDmxScophitReadFasta(AjPFile inf)
 
 	    token = ajStrParseC(NULL, "^");
 	    ajStrAssignS(&hit->Fold, token);
+
 	    if(ajStrMatchC(hit->Fold, "."))
 		ajStrSetClear(&hit->Fold);
 
 	    token = ajStrParseC(NULL, "^");
 	    ajStrAssignS(&hit->Superfamily, token);
+
 	    if(ajStrMatchC(hit->Superfamily, "."))
 		ajStrSetClear(&hit->Superfamily);
 
 	    token = ajStrParseC(NULL, "^");
 	    ajStrAssignS(&hit->Family, token);
+
 	    if(ajStrMatchC(hit->Family, "."))
 		ajStrSetClear(&hit->Family);
 
 	    token = ajStrParseC(NULL, "^");
 	    ajStrAssignS(&hit->Model, token);
+
 	    if(ajStrMatchC(hit->Model, "."))
 		ajStrSetClear(&hit->Model);
 
@@ -1712,6 +1734,7 @@ AjPScophit ajDmxScophitReadFasta(AjPFile inf)
     ajStrDel(&subline);
     ajStrDel(&type);
     ajDmxScophitDel(&hit);
+
     return NULL;
 }
 
@@ -1774,6 +1797,7 @@ AjBool ajDmxScopalgWrite(const AjPScopalg scop, AjPFile outf)
     AjPInt    idx  = NULL;  /* Index */
     
     idx = ajIntNewL(scop->N); 
+
     for(x=0; x<scop->N; x++)
 	ajIntPut(&idx, scop->N, 1);
 
@@ -1810,7 +1834,8 @@ AjBool ajDmxScopalgWrite(const AjPScopalg scop, AjPFile outf)
 	ajFmtPrintSplit(outf,scop->Superfamily,"# SF   ",75," \t\n\r");
 	ajFmtPrintF(outf, "# XX\n");
 
-	/* ajFmtPrintSplit(outf,scop->Architecture,"\nXX\n# AR   ",75," \t\n\r");
+	/* ajFmtPrintSplit(outf,scop->Architecture,
+                           "\nXX\n# AR   ",75," \t\n\r");
 	ajFmtPrintSplit(outf,scop->Topology,"# XX\n# TP   ",75," \t\n\r");
 	ajFmtPrintSplit(outf,scop->Superfamily,"# XX\n# SF   ",75," \t\n\r");
 	ajFmtPrintF(outf,"# XX\n"); */
@@ -1836,6 +1861,7 @@ AjBool ajDmxScopalgWrite(const AjPScopalg scop, AjPFile outf)
     {
 	start = x*50;
 	end   = start + 49;
+
 	if(end>=scop->width)
 	    end = scop->width - 1;
 	
@@ -1864,8 +1890,6 @@ AjBool ajDmxScopalgWrite(const AjPScopalg scop, AjPFile outf)
     ajIntDel(&idx);    
     return ajTrue;
 }
-
-
 
 
 
@@ -1899,12 +1923,12 @@ AjBool ajDmxScopalgWriteClustal(const AjPScopalg align, AjPFile outf)
 
     for(i=0;i<align->N;++i)
     	ajFmtPrintF(outf,"%S_%d   %S\n",align->Codes[i],i,align->Seqs[i]);
+
     ajFmtPrintF(outf,"\n");
     ajFmtPrintF(outf,"\n"); 
     
     return ajTrue;
 }	
-
 
 
 
@@ -1937,11 +1961,11 @@ AjBool ajDmxScopalgWriteClustal2(const AjPScopalg align, AjPFile outf)
 
     for(i=0;i<align->N;++i)
     	ajFmtPrintF(outf,"%S_%d   %S\n",align->Codes[i],i,align->Seqs[i]);
+
     ajFmtPrintF(outf,"\n");
     
     return ajTrue;
 }	
-
 
 
 
@@ -1957,6 +1981,7 @@ AjBool ajDmxScopalgWriteClustal2(const AjPScopalg align, AjPFile outf)
 ** @return [AjBool] True on success (a file has been written)
 ** @@
 ****************************************************************************/
+
 AjBool ajDmxScopalgWriteFasta(const AjPScopalg align, AjPFile outf)
 {
     ajuint i;
@@ -1974,12 +1999,12 @@ AjBool ajDmxScopalgWriteFasta(const AjPScopalg align, AjPFile outf)
 
     for(i=0;i<align->N;++i)
     	ajFmtPrintF(outf,">%S_%d\n%S\n",align->Codes[i],i,align->Seqs[i]);
+
     ajFmtPrintF(outf,"\n");
     ajFmtPrintF(outf,"\n"); 
     
     return ajTrue;
 }	
-
 
 
 
@@ -2024,6 +2049,7 @@ AjBool ajDmxScopSeqFromSunid(ajint id, AjPStr *seq, const AjPList list)
     }
       
     dim = ajListToarray(list, (void ***) &(arr));
+
     if(!dim)
     {
         ajWarn("Empty list passed to ajDmxScopSeqFromSunid");
@@ -2077,6 +2103,8 @@ void ajDmxExit(void)
 }
 
 
+
+
 /* @func ajDmxDummyFunction ***************************************************
 **
 ** Dummy function to catch all unused functions defined in the ajdmx
@@ -2110,5 +2138,6 @@ static void dmxTraceScophit(const AjPScophit scophit, const char* title)
     ajDebug("Acc: '%S'\n", scophit->Acc);
     ajDebug("Start: %d\n", scophit->Start);
     ajDebug("End: %d\n", scophit->End);
+
     return;
 }
