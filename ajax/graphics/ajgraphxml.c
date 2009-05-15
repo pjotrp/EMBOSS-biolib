@@ -103,8 +103,8 @@ static void 	xml_SetCurrentScene(AjPGraphXml file, AjPXmlNode node);
 static void 	xml_ClearFile(AjPGraphXml *file);
 static void 	xml_UnrefNode(AjPXmlNode *pnode);
 
-static void     xml_clear_nodeTypes(const void **key, void **value, void *cl);
-static void     xml_deltablenode(const void **key, void **value, void *cl);
+static void     xml_clear_nodeTypes(void **key, void **value, void *cl);
+static void     xml_deltablenode(void **key, void **value, void *cl);
 
 
 
@@ -4415,12 +4415,12 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPGraphXml file,
 	{
 	    colourTable = ajTablestrNewLen(1);
     
-	    ajTablePut(file->nodeTypes, (const void *) ajStrNewS(nameReqd),
+	    ajTablePut(file->nodeTypes, (void *) ajStrNewS(nameReqd),
 		       (void *)colourTable);
 	}
 
 	ajTablePut(colourTable, 
-		   (const void *) xml_PresentColourAsString(file),
+		   (void *) xml_PresentColourAsString(file),
 		   (void *)returnNode2);
 
 	return(xml_GetCurrentGraphic(file));
@@ -4539,12 +4539,12 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPGraphXml file,
 	if(colourTable == NULL)
 	{
 	    colourTable = ajTablestrNewLen(1);
-	    ajTablePut(file->nodeTypes, (const void *) ajStrNewS(nameReqd),
+	    ajTablePut(file->nodeTypes, (void *) ajStrNewS(nameReqd),
 		       (void *)colourTable);
 	}
 
 	ajTablePut(colourTable, 
-		   (const void *) xml_PresentColourAsString(file),
+		   (void *) xml_PresentColourAsString(file),
 		   (void *)returnNode2);
 
 	/* listShapes and nodeName unrefed just above */
@@ -4686,7 +4686,7 @@ static int xml_GetLastInt(const AjPStr str)
     int count;
     int i;
     int value;
-    AjPStr token = NULL;
+    const AjPStr token = NULL;
 
     count = ajStrParseCountC(str, " ");
     token = ajStrParseWhite(str);
@@ -4727,7 +4727,7 @@ static double xml_GetLastDouble(const AjPStr str)
     int count;
     int i;
     double value;
-    AjPStr token = NULL;
+    const AjPStr token = NULL;
 
     count = ajStrParseCountC(str, " ");
     token = ajStrParseWhite(str);
@@ -4766,7 +4766,7 @@ static double xml_GetDoubleNo(const AjPStr str, int index)
     int count;
     int i;
     double value;
-    AjPStr token = NULL;
+    const AjPStr token = NULL;
 
     count = ajStrParseCountC(str, " ");
     token = ajStrParseWhite(str);
@@ -5479,7 +5479,7 @@ void xml_Unused()
 ** @@
 *********************************************************************/
 
-static void xml_clear_nodeTypes(const void **key, void **value, void *cl)
+static void xml_clear_nodeTypes(void **key, void **value, void *cl)
 {
     AjPTable table = (AjPTable) *value;
     AjPStr skey = (AjPStr) *key;
@@ -5510,7 +5510,7 @@ static void xml_clear_nodeTypes(const void **key, void **value, void *cl)
 ** @@
 *********************************************************************/
 
-static void xml_deltablenode(const void **key, void **value, void *cl)
+static void xml_deltablenode(void **key, void **value, void *cl)
 {
     AjPXmlNode node;
     AjPStr skey;
