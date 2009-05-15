@@ -233,6 +233,7 @@ AjPList       ajPdbtospReadAllRawNew(AjPFile inf)
 	n++;
 
 	ajStrParseC(token, ",");
+
 	while((subtoken=ajStrParseC(NULL, ",")))
 	{
 	    spr  = ajStrNew();
@@ -306,7 +307,6 @@ AjPPdbtosp  ajPdbtospReadNew(AjPFile inf, const AjPStr entry)
 
 
 
-
 /* @func ajPdbtospReadCNew *************************************************
 **
 ** Read a Pdbtosp object from a file in embl-like format.  Memory for the
@@ -342,15 +342,19 @@ AjPPdbtosp ajPdbtospReadCNew(AjPFile inf, const char *entry)
     {
 	if(!ajStrPrefixC(line,"EN   "))
 	    continue;
+
 	ajFmtScanS(line, "%*S %S", &pdb);
+
 	if(ajStrMatchWildS(pdb,tentry))
 	    break;
     }
+
     if(!ok)
     {
         ajStrDel(&line);
         ajStrDel(&tentry);
         ajStrDel(&pdb);
+
 	return NULL;
     }
 
@@ -383,7 +387,6 @@ AjPPdbtosp ajPdbtospReadCNew(AjPFile inf, const char *entry)
 
     return ret;
 }
-
 
 
 
@@ -424,7 +427,6 @@ AjPList  ajPdbtospReadAllNew(AjPFile inf)
 
 
 
-
 /* @func ajCmapReadINew ****************************************************
 **
 ** Read a Cmap object from a file in CON  format (see 
@@ -455,7 +457,6 @@ AjPList  ajPdbtospReadAllNew(AjPFile inf)
 
 
 
-
 /* @func ajCmapReadCNew ****************************************************
 **
 ** Read a Cmap object from a file in CON format (see 
@@ -481,7 +482,6 @@ AjPCmap ajCmapReadCNew(AjPFile inf, char chn, ajint mod)
 
     return ret;
 }
-
 
 
 
@@ -599,6 +599,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
            has been allocated, the function should return. */
 	  ajStrDel(&seq1);
 	  ajStrDel(&seq2);
+
 	  return ret;	
 	}
 
@@ -662,6 +663,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	       */
 
 	    ajFmtScanS(token, "%*s %*s %S", &cmapStrtmpstr);
+
 	    if(ajStrMatchC(cmapStrtmpstr, "."))
 		md = 0;	
 	    else
@@ -685,6 +687,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	       nres1 = 0; */
 
 	    ajFmtScanS(token, "%*s %S", &cmapStrtmpstr);
+
 	    if(ajStrMatchC(cmapStrtmpstr, "."))
 		nres1 = 0;	
 	    else
@@ -697,6 +700,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	       nres2 = 0; */
 
 	    ajFmtScanS(token, "%*s %S", &cmapStrtmpstr);
+
 	    if(ajStrMatchC(cmapStrtmpstr, "."))
 		nres2 = 0;	
 	    else
@@ -710,6 +714,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	    while(ajReadlineTrim(inf,&cmapStrline) &&
                   !ajStrPrefixC(cmapStrline,"XX"))
 		ajStrAppendC(&seq1,ajStrGetPtr(cmapStrline));
+
 	    ajStrRemoveWhite(&seq1);
 	}
 
@@ -719,6 +724,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	    while(ajReadlineTrim(inf,&cmapStrline) &&
                   !ajStrPrefixC(cmapStrline,"XX"))
 		ajStrAppendC(&seq2,ajStrGetPtr(cmapStrline));
+
 	    ajStrRemoveWhite(&seq2);
 	}
 	/* NC */	    
@@ -961,6 +967,7 @@ AjPHet  ajHetReadNew(AjPFile inf)
     if((!inf))
     {
 	ajWarn("Bad args passed to ajHetReadNew\n");
+
 	return NULL;
     }
 
@@ -1111,6 +1118,8 @@ AjPHet ajHetReadRawNew(AjPFile inf)
 }
 
 
+
+
 /* @func ajPdbReadFirstModelNew ********************************************
 **
 ** Reads a clean coordinate file file (see documentation for DOMAINATRIX 
@@ -1132,6 +1141,7 @@ AjPPdb ajPdbReadFirstModelNew(AjPFile inf)
 
 
 
+
 /* @func ajPdbReadAllModelsNew **********************************************
 **
 ** Reads a clean coordinate file (see documentation for DOMAINATRIX "pdbparse" 
@@ -1148,6 +1158,7 @@ AjPPdb ajPdbReadAllModelsNew(AjPFile inf)
 {
     return( (AjPPdb) ajPdbReadNew(inf, 1));
 }
+
 
 
 
@@ -1238,6 +1249,7 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
 	    ajStrTokenNextParse(&handle, &token);
 	    /* 'DE' */
 	    ajStrTokenNextParseC(&handle, "\n\r", &token);
+
 	    /* desc */
 	    if (ajStrGetLen(destr))
 	    {
@@ -1257,6 +1269,7 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
 	    ajStrTokenNextParse(&handle, &token);
 	    /* 'OS' */
 	    ajStrTokenNextParseC(&handle, "\n\r", &token);
+
 	    /* source */
 	    if (ajStrGetLen(osstr))
 	    {
@@ -1297,6 +1310,7 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
 	    ajStrAssignS(&(ret)->Pdb,idstr);
 	    ajStrAssignS(&(ret)->Compnd,destr);
 	    ajStrAssignS(&(ret)->Source,osstr);
+
 	    if(ajStrMatchC(xstr,"xray"))
 		(ret)->Method = ajXRAY;
 	    else
@@ -1372,6 +1386,7 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
 	{
 	    while(ajReadlineTrim(inf,&line) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&(ret)->Chains[nc-1]->Seq,ajStrGetPtr(line));
+
 	    ajStrRemoveWhite(&(ret)->Chains[nc-1]->Seq);
 	    continue;
 	}
@@ -1389,12 +1404,13 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
 	    /* Model number. 0==Read first model only */
 	    ajStrTokenNextParse(&handle,&token);
 	    ajStrToInt(token,&mod);
+
 	    if((mode == 0) && (mod!=1))
-	      {
+            {
 		/* break; */
 		/* Discard remaining AT lines */
 		while(ajReadlineTrim(inf,&line) && ajStrPrefixC(line,"AT"));
-	      }
+            }
 
 	    /* Chain number */
 	    ajStrTokenNextParse(&handle,&token);
@@ -1492,12 +1508,14 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
 	    /* Model number. 0==Read first model only */
 	    ajStrTokenNextParse(&handle,&token);
 	    ajStrToInt(token,&mod);
+
 	    if((mode == 0) && (mod!=1))
 	      {
 		/* break;*/
 		/* Discard remaining RE lines */
 		while(ajReadlineTrim(inf,&line) && ajStrPrefixC(line,"RE"));
 	      }
+
 	    /* Chain number */
 	    ajStrTokenNextParse(&handle,&token);
 	    ajStrToInt(token,&chn);
@@ -1779,9 +1797,6 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
 
 
 
-
-
-
 /* @func ajPdbReadoldNew ******************************************************
 **
 ** Reads a clean coordinate file (see documentation for DOMAINATRIX "pdbparse" 
@@ -1865,6 +1880,7 @@ AjPPdb ajPdbReadoldNew(AjPFile inf)
 	    ajStrTokenNextParse(&handle, &token);
 	    /* 'DE' */
 	    ajStrTokenNextParseC(&handle, "\n\r", &token);
+
 	    /* desc */
 	    if (ajStrGetLen(destr))
 	    {
@@ -1884,6 +1900,7 @@ AjPPdb ajPdbReadoldNew(AjPFile inf)
 	    ajStrTokenNextParse(&handle, &token);
 	    /* 'OS' */
 	    ajStrTokenNextParseC(&handle, "\n\r", &token);
+
 	    /* source */
 	    if (ajStrGetLen(osstr))
 	    {
@@ -1892,6 +1909,7 @@ AjPPdb ajPdbReadoldNew(AjPFile inf)
 	    }
 	    else
 		ajStrAssignS(&osstr, token);
+
 	    continue;
 	}
 	
@@ -1924,6 +1942,7 @@ AjPPdb ajPdbReadoldNew(AjPFile inf)
 	    ajStrAssignS(&(ret)->Pdb,idstr);
 	    ajStrAssignS(&(ret)->Compnd,destr);
 	    ajStrAssignS(&(ret)->Source,osstr);
+
 	    if(ajStrMatchC(xstr,"xray"))
 		(ret)->Method = ajXRAY;
 	    else
@@ -1977,6 +1996,7 @@ AjPPdb ajPdbReadoldNew(AjPFile inf)
 	    while(ajReadlineTrim(inf,&line) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&(ret)->Chains[nc-1]->Seq,ajStrGetPtr(line));
 	    ajStrRemoveWhite(&(ret)->Chains[nc-1]->Seq);
+
 	    continue;
 	}
 
@@ -2024,6 +2044,7 @@ AjPPdb ajPdbReadoldNew(AjPFile inf)
 		    rn_last = -100000;
 		    mn_last = atom->Mod;
 		}
+
 		/* New residue */
 		if(atom->Idx != rn_last)
 		{
@@ -2157,8 +2178,6 @@ AjPPdb ajPdbReadoldNew(AjPFile inf)
 
 
 
-
-
 /* @func ajPdbReadoldFirstModelNew ********************************************
 **
 ** Reads a clean coordinate file file (see documentation for DOMAINATRIX 
@@ -2242,6 +2261,7 @@ AjPPdb ajPdbReadoldFirstModelNew(AjPFile inf)
 	    ajStrTokenNextParse(&handle, &token);
 	    /* 'DE' */
 	    ajStrTokenNextParseC(&handle, "\n\r", &token);
+
 	    /* desc */
 	    if (ajStrGetLen(destr))
 	    {
@@ -2250,6 +2270,7 @@ AjPPdb ajPdbReadoldFirstModelNew(AjPFile inf)
 	    }
 	    else
 		ajStrAssignS(&destr, token);
+
 	    continue;
 	}
 
@@ -2261,6 +2282,7 @@ AjPPdb ajPdbReadoldFirstModelNew(AjPFile inf)
 	    ajStrTokenNextParse(&handle, &token);
 	    /* 'OS' */
 	    ajStrTokenNextParseC(&handle, "\n\r", &token);
+
 	    /* source */
 	    if (ajStrGetLen(osstr))
 	    {
@@ -2301,6 +2323,7 @@ AjPPdb ajPdbReadoldFirstModelNew(AjPFile inf)
 	    ajStrAssignS(&(ret)->Pdb,idstr);
 	    ajStrAssignS(&(ret)->Compnd,destr);
 	    ajStrAssignS(&(ret)->Source,osstr);
+
 	    if(ajStrMatchC(xstr,"xray"))
 		(ret)->Method = ajXRAY;
 	    else
@@ -2350,6 +2373,7 @@ AjPPdb ajPdbReadoldFirstModelNew(AjPFile inf)
 	    ajStrTokenNextParse(&handle,&token); 
 	    ajStrToInt(token,&(ret)->Chains[nc-1]->numTurns);
 	    */
+
 	    continue;
 	}
   
@@ -2359,6 +2383,7 @@ AjPPdb ajPdbReadoldFirstModelNew(AjPFile inf)
 	{
 	    while(ajReadlineTrim(inf,&line) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&(ret)->Chains[nc-1]->Seq,ajStrGetPtr(line));
+
 	    ajStrRemoveWhite(&(ret)->Chains[nc-1]->Seq);
 	    continue;
 	}
@@ -2410,6 +2435,7 @@ AjPPdb ajPdbReadoldFirstModelNew(AjPFile inf)
 		    rn_last = -100000;
 		    mn_last = atom->Mod;
 		}
+
 		/* New residue */
 		if(atom->Idx != rn_last)
 		{
@@ -2542,8 +2568,6 @@ AjPPdb ajPdbReadoldFirstModelNew(AjPFile inf)
 
 
 
-
-
 /* @func ajAtomNew *******************************************************
 **
 ** Atom object constructor.
@@ -2634,7 +2658,6 @@ AjPChain ajChainNew(void)
 
 
 
-
 /* @func ajPdbNew ***********************************************************
 **
 ** Pdb object constructor. Fore-knowledge of the number of chains 
@@ -2675,6 +2698,8 @@ AjPPdb ajPdbNew(ajint n)
 }
 
 
+
+
 /* @func ajHetentNew ********************************************************
 **
 ** Hetent object constructor. 
@@ -2697,7 +2722,6 @@ AjPHetent ajHetentNew(void)
     
     return ret;
 }
-
 
 
 
@@ -2740,7 +2764,6 @@ AjPHet ajHetNew(ajint n)
 
 
 
-
 /* @func ajVdwallNew ********************************************************
 **
 ** Vdwall object constructor. This is normally called by the ajVdwallReadNew
@@ -2771,7 +2794,6 @@ AjPVdwall ajVdwallNew(ajint n)
 
 
 
-
 /* @func ajVdwresNew ********************************************************
 **
 ** Vdwres object constructor. This is normally called by the ajVdwallReadNew
@@ -2797,6 +2819,7 @@ AjPVdwres  ajVdwresNew(ajint n)
     if(n)
     {
 	AJCNEW0(ret->Atm, n);
+
 	for(x=0;x<n;++x)
 	    ret->Atm[x]=ajStrNew();
 
@@ -2805,7 +2828,6 @@ AjPVdwres  ajVdwresNew(ajint n)
 
     return ret;
 }
-
 
 
 
@@ -2846,6 +2868,7 @@ AjPCmap ajCmapNew(ajint n)
     {
 	/* Create the SQUARE contact map */
 	ret->Mat = ajUint2dNewL((ajint)n);
+
 	for(z=0;z<n;++z)
 	    ajUint2dPut(&ret->Mat, z, n-1, (ajint) 0);
     }
@@ -2855,7 +2878,6 @@ AjPCmap ajCmapNew(ajint n)
 
     return ret;
 }
-
 
 
 
@@ -2887,6 +2909,7 @@ AjPPdbtosp ajPdbtospNew(ajint n)
     {
 	AJCNEW0(ret->Acc,n);
 	AJCNEW0(ret->Spr,n);
+
 	for(i=0; i<n; i++)
 	{
 	    ret->Acc[i]=ajStrNew();
@@ -2898,7 +2921,6 @@ AjPPdbtosp ajPdbtospNew(ajint n)
 
     return ret;
 }
-
 
 
 
@@ -2949,7 +2971,6 @@ void ajAtomDel(AjPAtom *ptr)
 
 
 
-
 /* @func ajResidueDel **********************************************************
 **
 ** Destructor for residue object.
@@ -2979,9 +3000,6 @@ void ajResidueDel(AjPResidue *ptr)
 
     return;
 }
-
-
-
 
 
 
@@ -3027,7 +3045,6 @@ void ajChainDel(AjPChain *ptr)
 
 
 
-
 /* @func ajPdbDel ***********************************************************
 **
 ** Destructor for pdb object.
@@ -3063,14 +3080,17 @@ void ajPdbDel(AjPPdb *ptr)
     
     while(ajListPop(pthis->Water,(void **)&atm))
 	ajAtomDel(&atm);
+
     ajListFree(&pthis->Water);
 
     while(ajListPop(pthis->Groups,(void **)&atm))
 	ajAtomDel(&atm);
+
     ajListFree(&pthis->Groups);
 
     for(i=0;i<nc;++i)
 	ajChainDel(&pthis->Chains[i]);
+
     AJFREE(pthis->Chains);
 
     AJFREE(pthis);
@@ -3078,7 +3098,6 @@ void ajPdbDel(AjPPdb *ptr)
 
     return;
 }
-
 
 
 
@@ -3119,7 +3138,6 @@ void ajHetentDel(AjPHetent *ptr)
 
 
 
-
 /* @func ajHetDel ***********************************************************
 **
 ** Destructor for Het object.
@@ -3149,6 +3167,7 @@ void ajHetDel(AjPHet *ptr)
 	
 	AJFREE((*ptr)->entries);
     }
+
     AJFREE(*ptr);
     *ptr = NULL;
 
@@ -3186,7 +3205,6 @@ void ajVdwallDel(AjPVdwall *ptr)
 
 
 
-
 /* @func ajVdwresDel ********************************************************
 **
 ** Destructor for Vdwres object.
@@ -3218,7 +3236,6 @@ void ajVdwresDel(AjPVdwres *ptr)
 
 
 
-
 /* @func ajCmapDel **********************************************************
 **
 ** Destructor for Cmap object.
@@ -3234,6 +3251,7 @@ void ajCmapDel(AjPCmap *ptr)
 {
     if(!ptr)
 	return;
+
     if(!(*ptr))
 	return;
 
@@ -3269,7 +3287,6 @@ void ajCmapDel(AjPCmap *ptr)
 
 
 
-
 /* @func ajPdbtospDel *******************************************************
 **
 ** Destructor for Pdbtosp object.
@@ -3300,6 +3317,7 @@ void ajPdbtospDel(AjPPdbtosp *ptr)
 	    ajStrDel(&pthis->Acc[i]);
 	    ajStrDel(&pthis->Spr[i]);
 	}
+
 	AJFREE(pthis->Acc);
 	AJFREE(pthis->Spr);
     }
@@ -3309,7 +3327,6 @@ void ajPdbtospDel(AjPPdbtosp *ptr)
 
     return;
 }
-
 
 
 
@@ -3393,6 +3410,7 @@ AjBool ajResidueCopy(AjPResidue *to, const AjPResidue from)
     if(!to)
     {
 	ajWarn("Bad arg (NULL) passed to ajResidueCopy");
+
 	return ajFalse;
     }
 
@@ -3430,8 +3448,6 @@ AjBool ajResidueCopy(AjPResidue *to, const AjPResidue from)
 
     return ajTrue;
 }
-
-
 
 
 
@@ -3482,10 +3498,9 @@ AjBool ajAtomListCopy(AjPList *to, const AjPList from)
 
 
    ajListIterDel(&iter);
+
    return ajTrue; 
 }
-
-
 
 
 
@@ -3542,7 +3557,6 @@ AjBool ajResidueListCopy(AjPList *to, const AjPList from)
 
 
 
-
 /* @func ajPdbCopy **********************************************************
 **
 ** Copies data from one Pdb object to another; the new object is 
@@ -3564,12 +3578,14 @@ AjBool ajPdbCopy(AjPPdb *to, const AjPPdb from)
     if(!from)
     {
 	ajWarn("NULL arg passed to ajPdbCopy");
+
 	return ajFalse;
     }
 
     if((*to))
     {
 	ajWarn("Pointer passed to ajPdbCopy should be NULL but isn't !");
+
 	return ajFalse;
     }	
 
@@ -3614,14 +3630,14 @@ AjBool ajPdbCopy(AjPPdb *to, const AjPPdb from)
 /*	(*to)->Chains[x]->Atoms = ajAtomListCopy(from->Chains[x]->Atoms); */
 	if(!ajAtomListCopy(&(*to)->Chains[x]->Atoms, from->Chains[x]->Atoms))
 	    ajFatal("Error copying Atoms list");	    
-	if(!ajResidueListCopy(&(*to)->Chains[x]->Residues, from->Chains[x]->Residues))
+	if(!ajResidueListCopy(&(*to)->Chains[x]->Residues,
+                              from->Chains[x]->Residues))
 	    ajFatal("Error copying Residues list");	    
     }
     
 
     return ajTrue;
 }
-
 
 
 
@@ -3639,7 +3655,6 @@ AjBool ajPdbCopy(AjPPdb *to, const AjPPdb from)
 
 
 
-
 /* ======================================================================= */
 /* ========================== Operators ===================================*/
 /* ======================================================================= */
@@ -3653,7 +3668,7 @@ AjBool ajPdbCopy(AjPPdb *to, const AjPPdb from)
 
 
 
-/* @func ajResidueSSEnv **********************************************************
+/* @func ajResidueSSEnv *******************************************************
 **
 ** Assigns secondary structure environment of a residue
 **
@@ -3663,6 +3678,7 @@ AjBool ajPdbCopy(AjPPdb *to, const AjPPdb from)
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
+
 AjBool   ajResidueSSEnv(const AjPResidue res, char *SEnv, AjPFile logf)
 {
     *SEnv='\0';
@@ -3680,7 +3696,8 @@ AjBool   ajResidueSSEnv(const AjPResidue res, char *SEnv, AjPFile logf)
 	    res->eStrideType == 'C' ||
 	    res->eStrideType == 'I')
 	*SEnv='C';
-    else if(res->eStrideType == '.')	/*If no stride assignment, get pdb assignment*/
+    /*If no stride assignment, get pdb assignment*/
+    else if(res->eStrideType == '.')
     {
 	if(res->eType == 'H')
 	    *SEnv='H';
@@ -3704,10 +3721,7 @@ AjBool   ajResidueSSEnv(const AjPResidue res, char *SEnv, AjPFile logf)
 
 
 
-
-
-
-/* @func ajResidueEnv1 ***********************************************************
+/* @func ajResidueEnv1 ********************************************************
 **
 ** Assigns environment based only of side chain accessibility and secondary
 ** structure.  Assigns environment of "*" as default.
@@ -3719,11 +3733,13 @@ AjBool   ajResidueSSEnv(const AjPResidue res, char *SEnv, AjPFile logf)
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajResidueEnv1(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+
+ajint ajResidueEnv1(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
     if(SEnv=='\0')
     {
 	ajStrSetClear(OEnv);
+
 	return 0;
     }
   
@@ -3783,10 +3799,7 @@ ajint   ajResidueEnv1(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
 
 
 
-
-
-
-/* @func ajResidueEnv2 ***********************************************************
+/* @func ajResidueEnv2 ********************************************************
 **
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
@@ -3798,7 +3811,7 @@ ajint   ajResidueEnv1(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajResidueEnv2(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint ajResidueEnv2(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
     float BLimit=40; /* Upper limit for the relative solvent
 			accessible area for a buried residue */
@@ -3816,6 +3829,7 @@ ajint   ajResidueEnv2(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
     if(!res)
     {
 	ajWarn("No residue to ajResidueEnv");
+
 	return 0;
     }
   
@@ -3904,6 +3918,7 @@ ajint   ajResidueEnv2(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
 	ajStrSetClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
+
 	return 0;
     }
 
@@ -3916,10 +3931,7 @@ ajint   ajResidueEnv2(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
 
 
 
-
-
-
-/* @func ajResidueEnv3 ***********************************************************
+/* @func ajResidueEnv3 ********************************************************
 **
 ** Assigns environment based on side chain accessibility and secondary
 ** structure.  Assigns environment of "*" as default.
@@ -3931,7 +3943,7 @@ ajint   ajResidueEnv2(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajResidueEnv3(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint ajResidueEnv3(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
@@ -3949,6 +3961,7 @@ ajint   ajResidueEnv3(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
     if(!res)
     {
 	ajWarn("No res to ajResidueEnv");
+
 	return 0;
     }
   
@@ -4058,6 +4071,7 @@ ajint   ajResidueEnv3(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
 
 	ajStrDel(&BEnv);
+
 	return 0;
     }
 
@@ -4067,7 +4081,10 @@ ajint   ajResidueEnv3(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
 
 }
 
-/* @func ajResidueEnv4 ***********************************************************
+
+
+
+/* @func ajResidueEnv4 ********************************************************
 **
 ** Assigns environment based only of side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
@@ -4079,12 +4096,15 @@ ajint   ajResidueEnv3(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajResidueEnv4(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+
+ajint ajResidueEnv4(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
     ajStrSetClear(OEnv);
+
     if(SEnv=='\0')
     {
 	ajStrSetClear(OEnv);
+
 	return 0;
     }
   
@@ -4121,10 +4141,7 @@ ajint   ajResidueEnv4(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
 
 
 
-
-
-
-/* @func ajResidueEnv5 ***********************************************************
+/* @func ajResidueEnv5 ********************************************************
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
 ** @param [r] res [const AjPResidue] Residue object
@@ -4134,7 +4151,8 @@ ajint   ajResidueEnv4(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajResidueEnv5(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+
+ajint ajResidueEnv5(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */ /* */
@@ -4152,6 +4170,7 @@ ajint   ajResidueEnv5(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
     if(!res)
     {
 	ajWarn("No residue to ajResidueEnv");
+
 	return 0;
     }
   
@@ -4207,6 +4226,7 @@ ajint   ajResidueEnv5(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
 
 	ajStrDel(&BEnv);
+
 	return 0;
     }
   
@@ -4271,17 +4291,12 @@ ajint   ajResidueEnv5(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
     ajStrDel(&BEnv);
 
     return 24;
-
 }
 
 
 
 
-
-
-
-
-/* @func ajResidueEnv6 ***********************************************************
+/* @func ajResidueEnv6 ********************************************************
 **
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
@@ -4293,7 +4308,8 @@ ajint   ajResidueEnv5(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajResidueEnv6(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+
+ajint ajResidueEnv6(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
@@ -4311,6 +4327,7 @@ ajint   ajResidueEnv6(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
     if(!res)
     {
 	ajWarn("No residue to ajResidueEnv");
+
 	return 0;
     }
   
@@ -4361,8 +4378,8 @@ ajint   ajResidueEnv6(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
     {
 	ajStrSetClear(OEnv); 
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
-
 	ajStrDel(&BEnv);
+
 	return 0;
     }
   
@@ -4419,26 +4436,20 @@ ajint   ajResidueEnv6(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
     {
 	ajStrSetClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
-
 	ajStrDel(&BEnv);
+
 	return 0;
     }
 
     ajStrDel(&BEnv);
 
     return 24;
-
 }
 
 
 
 
-
-
-
-
-
-/* @func ajResidueEnv7 ***********************************************************
+/* @func ajResidueEnv7 *******************************************************
 **
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
@@ -4450,7 +4461,8 @@ ajint   ajResidueEnv6(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajResidueEnv7(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+
+ajint ajResidueEnv7(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
@@ -4467,6 +4479,7 @@ ajint   ajResidueEnv7(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
     {
 	ajWarn("No residue to ajResidueEnv");
 	ajStrDel(&BEnv);
+
 	return 0;
     }
   
@@ -4512,6 +4525,7 @@ ajint   ajResidueEnv7(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
 
 	ajStrDel(&BEnv);
+
 	return 0;
     }
   
@@ -4568,8 +4582,8 @@ ajint   ajResidueEnv7(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
     {
 	ajStrSetClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
-
 	ajStrDel(&BEnv);
+
 	return 0;
     }
 
@@ -4582,9 +4596,7 @@ ajint   ajResidueEnv7(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
 
 
 
-
-
-/* @func ajResidueEnv8 ***********************************************************
+/* @func ajResidueEnv8 *******************************************************
 **
 ** Assigns environment based only of side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
@@ -4596,12 +4608,14 @@ ajint   ajResidueEnv7(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajResidueEnv8(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint ajResidueEnv8(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
     ajStrSetClear(OEnv);
+
     if(SEnv=='\0')
     {
 	ajStrSetClear(OEnv);
+
 	return 0;
     }
   
@@ -4656,15 +4670,12 @@ ajint   ajResidueEnv8(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
     }
 
     return 21;
-
 }
 
 
 
 
-
-
-/* @func ajResidueEnv9 ***********************************************************
+/* @func ajResidueEnv9 ********************************************************
 **
 ** Assigns environment based only of side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
@@ -4676,12 +4687,15 @@ ajint   ajResidueEnv8(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajResidueEnv9(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+
+ajint ajResidueEnv9(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
 {
     ajStrSetClear(OEnv);
+
     if(SEnv=='\0')
     {
 	ajStrSetClear(OEnv);
+
 	return 0;
     }
   
@@ -4712,15 +4726,12 @@ ajint   ajResidueEnv9(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
     }
 
     return 9;
-
 }
 
 
 
 
-
-
-/* @func ajResidueEnv10 **********************************************************
+/* @func ajResidueEnv10 *******************************************************
 **
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
@@ -4732,7 +4743,9 @@ ajint   ajResidueEnv9(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile log
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajResidueEnv10(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+
+ajint ajResidueEnv10(const AjPResidue res, char SEnv, AjPStr *OEnv,
+                     AjPFile logf)
 {
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
@@ -4749,6 +4762,7 @@ ajint   ajResidueEnv10(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     if(!res)
     {
 	ajWarn("No residue to ajResidueEnv");
+
 	return 0;
     }
   
@@ -4803,6 +4817,7 @@ ajint   ajResidueEnv10(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
 	
 	ajStrDel(&BEnv);
+
 	return 0;
     }
   
@@ -4859,27 +4874,20 @@ ajint   ajResidueEnv10(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     {
  	ajStrSetClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
-
 	ajStrDel(&BEnv);
+
 	return 0;
     }
 
     ajStrDel(&BEnv);
   
     return 24;
-
 }
 
 
 
 
-
-
-
-
-
-
-/* @func ajResidueEnv11 **********************************************************
+/* @func ajResidueEnv11 *******************************************************
 **
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
@@ -4891,7 +4899,9 @@ ajint   ajResidueEnv10(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajResidueEnv11(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+
+ajint ajResidueEnv11(const AjPResidue res, char SEnv, AjPStr *OEnv,
+                     AjPFile logf)
 {
     float BLimit=5; /*Upper limit for the relative solvent accessible
 		      area for a buried residue*/
@@ -4911,6 +4921,7 @@ ajint   ajResidueEnv11(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     if(!res)
     {
 	ajWarn("No residue to ajResidueEnv");
+
 	return 0;
     }
   
@@ -4954,8 +4965,8 @@ ajint   ajResidueEnv11(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     {
 	ajStrSetClear(OEnv); 
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
-
 	ajStrDel(&BEnv);
+
 	return 0;
     }
   
@@ -5020,16 +5031,12 @@ ajint   ajResidueEnv11(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     ajStrDel(&BEnv);
 
     return 24;
-
 } 
 
 
 
 
-
-
-
-/* @func ajResidueEnv12 **********************************************************
+/* @func ajResidueEnv12 *******************************************************
 **
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
@@ -5041,7 +5048,9 @@ ajint   ajResidueEnv11(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajResidueEnv12(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+
+ajint ajResidueEnv12(const AjPResidue res, char SEnv, AjPStr *OEnv,
+                     AjPFile logf)
 {
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
@@ -5060,13 +5069,15 @@ ajint   ajResidueEnv12(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     if(!res)
     {
 	ajWarn("No residue to ajResidueEnv");
+
 	return 0;
     }
   
     ajStrSetClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", res->Id1, res->Idx, res->eType, res->side_rel, res->pol_rel);
+    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", res->Id1, res->Idx,
+                res->eType, res->side_rel, res->pol_rel);
   
     /*Assign the basic classes*/
   
@@ -5107,9 +5118,11 @@ ajint   ajResidueEnv12(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
 	ajStrSetClear(OEnv);
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
+
 	return 0;
     }
-  
+
+    
     /*Assign overall environment class*/
     if((ajStrMatchC(BEnv, "B")) && (SEnv == 'H'))
 	ajStrAssignC(OEnv,"AA");
@@ -5163,26 +5176,20 @@ ajint   ajResidueEnv12(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     {
 	ajStrSetClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
-
 	ajStrDel(&BEnv);
+
 	return 0;
     }
 
     ajStrDel(&BEnv);
 
     return 24;
-
 } 
 
 
 
 
-
-
-
-
-
-/* @func ajResidueEnv13 **********************************************************
+/* @func ajResidueEnv13 *******************************************************
 **
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
@@ -5194,7 +5201,9 @@ ajint   ajResidueEnv12(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajResidueEnv13(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+
+ajint ajResidueEnv13(const AjPResidue res, char SEnv, AjPStr *OEnv,
+                     AjPFile logf)
 {
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
@@ -5212,6 +5221,7 @@ ajint   ajResidueEnv13(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     if(!res)
     {
 	ajWarn("No residue to ajResidueEnv");
+
 	return 0;
     }
   
@@ -5254,11 +5264,12 @@ ajint   ajResidueEnv13(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     {
  	ajStrSetClear(OEnv); 
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
-
 	ajStrDel(&BEnv);
+
 	return 0;
     }
-  
+
+    
     /*Assign overall environment class*/
     if((ajStrMatchC(BEnv, "B")) && (SEnv == 'H'))
 	ajStrAssignC(OEnv,"AA");
@@ -5312,25 +5323,20 @@ ajint   ajResidueEnv13(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     {
 	ajStrSetClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
-
 	ajStrDel(&BEnv);
+
 	return 0;
     }
 
     ajStrDel(&BEnv);
 
     return 24;
-
 } 
 
 
 
 
-
-
-
-
-/* @func ajResidueEnv14 **********************************************************
+/* @func ajResidueEnv14 *******************************************************
 **
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
@@ -5342,7 +5348,9 @@ ajint   ajResidueEnv13(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajResidueEnv14(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+
+ajint ajResidueEnv14(const AjPResidue res, char SEnv, AjPStr *OEnv,
+                     AjPFile logf)
 {
     float PBLimit=25; /* Upper limit for the relative solvent
   			accessible area for a Parially buried residue */
@@ -5360,6 +5368,7 @@ ajint   ajResidueEnv14(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     if(!res)
     {
 	ajWarn("No residue to ajResidueEnv");
+
 	return 0;
     }
   
@@ -5402,8 +5411,8 @@ ajint   ajResidueEnv14(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     {
  	ajStrSetClear(OEnv);
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
-
 	ajStrDel(&BEnv);
+
 	return 0;
     }
 
@@ -5460,23 +5469,20 @@ ajint   ajResidueEnv14(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     {
 	ajStrSetClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
-
 	ajStrDel(&BEnv);
+
 	return 0;
     }
 
     ajStrDel(&BEnv);
-    return 24;
 
+    return 24;
 } 
 
 
 
 
-
-
-
-/* @func ajResidueEnv15 **********************************************************
+/* @func ajResidueEnv15 ******************************************************
 **
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.   Assigns environment of "*" as default.
@@ -5488,7 +5494,9 @@ ajint   ajResidueEnv14(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajResidueEnv15(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+
+ajint ajResidueEnv15(const AjPResidue res, char SEnv, AjPStr *OEnv,
+                     AjPFile logf)
 {
     float PBLimit=25;			/* Upper limit for the
   					   relative solvent accessible
@@ -5508,6 +5516,7 @@ ajint   ajResidueEnv15(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     if(!res)
     {
 	ajWarn("No residue to ajResidueEnv");
+
 	return 0;
     }
   
@@ -5549,8 +5558,8 @@ ajint   ajResidueEnv15(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     {
 	ajStrSetClear(OEnv); 
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
-
 	ajStrDel(&BEnv);
+
 	return 0;
     }
 
@@ -5607,8 +5616,8 @@ ajint   ajResidueEnv15(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     {
 	ajStrSetClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
-
 	ajStrDel(&BEnv);
+
 	return 0;
     }
 
@@ -5620,11 +5629,7 @@ ajint   ajResidueEnv15(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
 
 
 
-
-
-
-
-/* @func ajResidueEnv16 **********************************************************
+/* @func ajResidueEnv16 *******************************************************
 **
 ** Assigns environment based on side chain accessibility and secondary 
 ** structure.  Assigns environment of "*" as default.
@@ -5636,7 +5641,8 @@ ajint   ajResidueEnv15(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint   ajResidueEnv16(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint ajResidueEnv16(const AjPResidue res, char SEnv, AjPStr *OEnv,
+                     AjPFile logf)
 {
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
@@ -5654,6 +5660,7 @@ ajint   ajResidueEnv16(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     if(!res)
     {
 	ajWarn("No residue to ajResidueEnv");
+
 	return 0;
     }
   
@@ -5696,8 +5703,8 @@ ajint   ajResidueEnv16(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     {
 	ajStrSetClear(OEnv); 
 	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
-
 	ajStrDel(&BEnv);
+
 	return 0;
     }
 
@@ -5754,8 +5761,8 @@ ajint   ajResidueEnv16(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     {
 	ajStrSetClear(OEnv); 
 	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
-
 	ajStrDel(&BEnv);
+
 	return 0;
     }
 
@@ -5763,10 +5770,7 @@ ajint   ajResidueEnv16(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile lo
     ajStrDel(&BEnv);
 
     return 24;
-
 } 
-
-
 
 
 
@@ -5799,11 +5803,14 @@ ajint  ajPdbGetEStrideType(const AjPPdb obj, ajint chn, AjPStr *EStrideType)
     if(!obj || !EStrideType || (chn<1))
     {
 	ajWarn("Bad args passed to ajPdbGetEStrideType");
+
 	return -1;
     }
+
     if(chn > obj->Nchn)
     {
 	ajWarn("chn arg in ajPdbGetEStrideType exceeds no. chains");
+
 	return -1;
     }
     else 
@@ -5822,14 +5829,15 @@ ajint  ajPdbGetEStrideType(const AjPPdb obj, ajint chn, AjPStr *EStrideType)
     ajStrAppendCountK(EStrideType, '.', obj->Chains[idx]->Nres);   
 
     iter=ajListIterNewread(obj->Chains[idx]->Residues); 
+
     while((tmp=(AjPResidue)ajListIterGet(iter)))
 	(*EStrideType)->Ptr[tmp->Idx-1] = tmp->eStrideType;
     
 
     ajListIterDel(&iter);
+
     return obj->Chains[idx]->Nres;
 }
-
 
 
 
@@ -5846,7 +5854,6 @@ ajint  ajPdbGetEStrideType(const AjPPdb obj, ajint chn, AjPStr *EStrideType)
 ** but should be used with caution.
 **
 ****************************************************************************/
-
 
 
 
@@ -5883,6 +5890,7 @@ AjBool ajPdbChnidToNum(char id, const AjPPdb pdb, ajint *chn)
 	if(toupper((int)pdb->Chains[a]->Id) == toupper((int)id))
 	{
 	    *chn=a+1;
+
 	    return ajTrue;
 	}
 
@@ -5893,6 +5901,7 @@ AjBool ajPdbChnidToNum(char id, const AjPPdb pdb, ajint *chn)
 	if((id==' ')&&(pdb->Chains[a]->Id=='.'))
 	{
 	    *chn=a+1;
+
 	    return ajTrue;
 	}
     }
@@ -5904,12 +5913,12 @@ AjBool ajPdbChnidToNum(char id, const AjPPdb pdb, ajint *chn)
     if(id=='.')
     {
 	*chn=1;
+
 	return ajTrue;
     }
 	
     return ajFalse;
 }
-
 
 
 
@@ -5939,6 +5948,7 @@ ajint ajPdbtospArrFindPdbid(AjPPdbtosp const *arr, ajint siz, const AjPStr id)
 
     l = 0;
     h = siz-1;
+
     while(l<=h)
     {
         m=(l+h)>>1;
@@ -5953,7 +5963,6 @@ ajint ajPdbtospArrFindPdbid(AjPPdbtosp const *arr, ajint siz, const AjPStr id)
 
     return -1;
 }
-
 
 
 
@@ -6001,6 +6010,7 @@ AjBool ajPdbWriteAll(AjPFile outf, const AjPPdb obj)
     ajFmtPrintF(outf, "XX\n");
 
     ajFmtPrintF(outf, "%-5sMETHOD ", "EX");
+
     if(obj->Method == ajXRAY)
 	ajFmtPrintF(outf, "xray; ");	
     else
@@ -6067,9 +6077,11 @@ AjBool ajPdbWriteAll(AjPFile outf, const AjPPdb obj)
 	for(y=0;y<obj->Nchn;y++)
 	{
 	    iter=ajListIterNewread(obj->Chains[y]->Residues);
+
 	    while(!ajListIterDone(iter))
 	    {
 		tmpr=(AjPResidue)ajListIterGet(iter);
+
 		if(tmpr->Mod>x)
 		    break;
 		else if(tmpr->Mod!=x)
@@ -6090,6 +6102,7 @@ AjBool ajPdbWriteAll(AjPFile outf, const AjPPdb obj)
 			ajFmtPrintF(outf, "%-5d", tmpr->eNum);
 		    else
 			ajFmtPrintF(outf, "%-5c", '.');
+
 		    ajFmtPrintF(outf, "%-5S%-5c", tmpr->eId, tmpr->eType);
 
 		    if(tmpr->eType == 'H')
@@ -6101,6 +6114,7 @@ AjBool ajPdbWriteAll(AjPFile outf, const AjPPdb obj)
 			ajFmtPrintF(outf, "%-5d", tmpr->eStrideNum);
 		    else
 			ajFmtPrintF(outf, "%-5c", '.');
+
 		    ajFmtPrintF(outf, "%-5c", tmpr->eStrideType);
 
 
@@ -6122,6 +6136,7 @@ AjBool ajPdbWriteAll(AjPFile outf, const AjPPdb obj)
 				tmpr->pol_rel);
 		}
 	    }
+
 	    ajListIterDel(&iter);			
 	} 	
     }
@@ -6134,9 +6149,11 @@ AjBool ajPdbWriteAll(AjPFile outf, const AjPPdb obj)
 	{
 	    /* Print out chain-specific coordinates */
 	    iter=ajListIterNewread(obj->Chains[y]->Atoms);
+
 	    while(!ajListIterDone(iter))
 	    {
 		tmp=(AjPAtom)ajListIterGet(iter);
+
 		if(tmp->Mod>x)
 		    break;
 		else if(tmp->Mod!=x)
@@ -6144,7 +6161,8 @@ AjBool ajPdbWriteAll(AjPFile outf, const AjPPdb obj)
 		else	
 		{
 		    if(tmp->Type=='H')
-			ajFmtPrintF(outf, "%-5s%-5d%-5d%-5d%-5c%-6S%-2c%-6S%-2c%-6S"
+			ajFmtPrintF(outf, "%-5s%-5d%-5d%-5d%-5c%-6S%-2c%-6S"
+                                    "%-2c%-6S"
 				    "%9.3f%9.3f%9.3f%8.2f%8.2f\n", 
 				    "AT", 
 				    tmp->Mod, 
@@ -6163,7 +6181,8 @@ AjBool ajPdbWriteAll(AjPFile outf, const AjPPdb obj)
 				    tmp->B);
 		    else
 		    {
-			ajFmtPrintF(outf, "%-5s%-5d%-5d%-5c%-5d%-6S%-2c%-6S%-2c%-6S"
+			ajFmtPrintF(outf, "%-5s%-5d%-5d%-5c%-5d%-6S%-2c%-6S"
+                                    "%-2c%-6S"
 				    "%9.3f%9.3f%9.3f%8.2f%8.2f\n", 
 				    "AT", 
 				    tmp->Mod, 
@@ -6183,14 +6202,17 @@ AjBool ajPdbWriteAll(AjPFile outf, const AjPPdb obj)
 		    }
 		}
 	    }
+
 	    ajListIterDel(&iter);			
 	} 	
 
 	/* Print out group-specific coordinates for this model */
 	iter=ajListIterNewread(obj->Groups);
+
 	while(!ajListIterDone(iter))
 	{
 	    tmp=(AjPAtom)ajListIterGet(iter);
+
 	    if(tmp->Mod>x)
 		break;
 	    else if(tmp->Mod!=x)
@@ -6216,14 +6238,17 @@ AjBool ajPdbWriteAll(AjPFile outf, const AjPPdb obj)
 			    tmp->B);
 	    }
 	}
+
 	ajListIterDel(&iter);			
 
 
 	/* Print out water-specific coordinates for this model */
 	iter=ajListIterNewread(obj->Water);
+
 	while(!ajListIterDone(iter))
 	{
 	    tmp=(AjPAtom)ajListIterGet(iter);
+
 	    if(tmp->Mod>x)
 		break;
 	    else if(tmp->Mod!=x)
@@ -6249,6 +6274,7 @@ AjBool ajPdbWriteAll(AjPFile outf, const AjPPdb obj)
 			    tmp->B);
 	    }
 	}
+
 	ajListIterDel(&iter);			
     }
 
@@ -6257,8 +6283,6 @@ AjBool ajPdbWriteAll(AjPFile outf, const AjPPdb obj)
 
     return ajTrue;
 }
-
-
 
 
 
@@ -6281,6 +6305,7 @@ AjBool ajPdbWriteAll(AjPFile outf, const AjPPdb obj)
 ** @@
 ** 
 ****************************************************************************/
+
 AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment, 
 			  char chnid, const AjPStr domain, AjPFile errf)
 {
@@ -6305,6 +6330,7 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
 		
 	ajFmtPrintF(errf, "//\n%S\nERROR Chain incompatibility "
 		    "error in ajPbdWriteDomain\n", domain);
+
 	return ajFalse;
     }
     else if(pdb->Chains[chn-1]->Nres==0)
@@ -6313,6 +6339,7 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
 	    
 	ajFmtPrintF(errf, "//\n%S\nERROR Chain length zero\n", 
 		    domain);
+
 	return ajFalse;
     }
     
@@ -6322,6 +6349,7 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
 	ajWarn("Domain not found in ajPbdWriteSegment");
 	ajFmtPrintF(errf, "//\n%S\nERROR Domain not found "
 		    "in ajPbdWriteSegment\n", domain);
+
 	return ajFalse;
     }
     else	
@@ -6342,6 +6370,7 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
 		"OS");
     ajFmtPrintF(outf, "XX\n");
     ajFmtPrintF(outf, "%-5sMETHOD ", "EX");
+
     if(pdb->Method == ajXRAY)
 	ajFmtPrintF(outf, "xray; ");	
     else
@@ -6352,6 +6381,7 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
     
 
     id = pdb->Chains[chn-1]->Id;
+
     if(id == ' ')
 	id = '.';
 
@@ -6385,6 +6415,7 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
     {
 	if(res->Mod!=1)
 	    break;
+
 	if(!found_start)
 	{
 	    if(res->Idx == start)
@@ -6392,6 +6423,7 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
 	    else		
 		continue;
 	}	
+
 	if(!found_end)
 	{
 	    if(res->Idx == end)
@@ -6418,6 +6450,7 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
 	    ajFmtPrintF(outf, "%-5d", res->eNum);
 	else
 	    ajFmtPrintF(outf, "%-5c", '.');
+
 	ajFmtPrintF(outf, "%-5S%-5c", res->eId, res->eType);
 	
 	if(res->eType == 'H')
@@ -6429,6 +6462,7 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
 	    ajFmtPrintF(outf, "%-5d", res->eStrideNum);
 	else
 	    ajFmtPrintF(outf, "%-5c", '.');
+
 	ajFmtPrintF(outf, "%-5c", res->eStrideType);
 	
 	
@@ -6463,8 +6497,10 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
     {
 	if(atm->Mod!=1)
 	    break;
+
 	if(atm->Type!='P')
 	    continue;
+
 	if(!found_start)
 	{
 	    if(atm->Idx == start)
@@ -6472,6 +6508,7 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
 	    else		
 		continue;
 	}	
+
 	if(!found_end)
 	{
 	    if(atm->Idx == end)
@@ -6521,9 +6558,6 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
 
 
 
-
-
-
 /* @func ajHetWrite ********************************************************
 **
 ** Writes the contents of a Het object to file. 
@@ -6552,18 +6586,15 @@ AjBool ajHetWrite(AjPFile outf, const AjPHet obj, AjBool dogrep)
 	ajFmtPrintF(outf, "ID   %S\n", obj->entries[i]->abv);
 	ajFmtPrintSplit(outf, obj->entries[i]->ful, "DE   ", 70, " \t\n\r");
 	ajFmtPrintSplit(outf, obj->entries[i]->syn, "SY   ", 70, " \t\n\r");
+
 	if(dogrep)
 	    ajFmtPrintF(outf, "NN   %d\n", obj->entries[i]->cnt);
+
 	ajFmtPrintF(outf, "//\n");
     }
 
     return ajTrue;
 }
-
-
-
-
-
 
 
 
@@ -6594,6 +6625,7 @@ AjBool   ajPdbtospWrite(AjPFile outf, const AjPList list)
     if(!outf || !list)
     {
 	ajWarn("Bad args passed to ajPdbtospWrte");
+
 	return ajFalse;
     }
     
@@ -6607,11 +6639,15 @@ AjBool   ajPdbtospWrite(AjPFile outf, const AjPList list)
 	for(x=0; x<tmp->n; x++)
 	    ajFmtPrintF(outf, "%-5s%S ID; %S ACC;\n", 
 			"IN", tmp->Spr[x], tmp->Acc[x]);
+
 	ajFmtPrintF(outf, "XX\n//\n");
     }
+
     ajListIterDel(&iter);
+
     return ajTrue;
 }
+
 
 
 
@@ -6627,6 +6663,7 @@ AjBool   ajPdbtospWrite(AjPFile outf, const AjPList list)
 ** @category output [AjPCmap] Write Cmap object to file in CON format.
 ** @@
 ****************************************************************************/
+
 AjBool   ajCmapWrite(AjPFile outf, const AjPCmap cmap)
 {
     ajint x = 0;
@@ -6814,10 +6851,9 @@ AjBool   ajCmapWrite(AjPFile outf, const AjPCmap cmap)
     ajStrDel(&Ligid);
     ajStrDel(&res1);
     ajStrDel(&res2);
+
     return ajTrue;
 }
-
-
 
 
 
@@ -6839,7 +6875,10 @@ void ajPdbExit(void)
     ajStrDel(&cmapStrtype);
     ajStrDel(&cmapStrdesc);
     ajStrDel(&cmapStrtmpstr);
+
+    return;
 }
+
 
 
 
@@ -6852,4 +6891,3 @@ void ajPdbExit(void)
 ** categories. 
 **
 ****************************************************************************/
-
