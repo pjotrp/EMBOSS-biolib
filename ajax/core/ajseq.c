@@ -81,7 +81,8 @@ typedef struct SeqSClass {
   const char* Desc;
 } SeqOClass;
 
-static SeqOClass seqClass[] = {
+static SeqOClass seqClass[] =
+{
 /*   Name      Embl   DDBJ   Genbank Description */
     {"STD", "STD", "",    "",    "Standard (all other entries)"},
     {"ANN", "ANN", "",    "",    "CON entries with own annotation"},
@@ -117,7 +118,8 @@ static SeqOClass seqClass[] = {
 ** @attr Desc [const char*] Description
 ******************************************************************************/
 
-typedef struct SeqSDivision {
+typedef struct SeqSDivision
+{
   const char* Name;
   const char* Embl;
   const char* Ddbj;
@@ -125,7 +127,9 @@ typedef struct SeqSDivision {
   const char* Desc;
 } SeqODivision;
 
-static SeqODivision seqDivision[] = {
+
+static SeqODivision seqDivision[] =
+{
 /*   Name      Embl   DDBJ   Genbank Description */
     {"default","UNC", "UNA", "UNA",  "Unclassified"},
     {"ENV",    "ENV", "",    "",     "Environmental Sample"},
@@ -168,7 +172,8 @@ static SeqODivision seqDivision[] = {
 ** @attr Desc [const char*] Description
 ******************************************************************************/
 
-typedef struct SeqSMolecule {
+typedef struct SeqSMolecule
+{
   const char* Name;
   const char* Embl;
   const char* Ddbj;
@@ -176,7 +181,9 @@ typedef struct SeqSMolecule {
   const char* Desc;
 } SeqOMolecule;
 
-static SeqOMolecule seqMolecule[] = {
+
+static SeqOMolecule seqMolecule[] =
+{
 /*   Name      Embl   DDBJ   Genbank Description */
     {"unassigned DNA", "unassigned DNA", "DNA", "DNA", "unassigned DNA"},
     {"genomic DNA", "genomic DNA", "DNA", "DNA", "genomic DNA"},
@@ -326,8 +333,11 @@ AjPSeq ajSeqNewNameC(const char* txt, const char* name)
     pthis->Reflist = ajListNew();
 
     pthis->Fulldesc = ajSeqdescNew();
+
     return pthis;
 }
+
+
 
 
 /* @func ajSeqNewNameS ********************************************************
@@ -397,7 +407,6 @@ AjPSeq ajSeqNewNameS(const AjPStr str, const AjPStr name)
 
 
 
-
 /* @obsolete ajSeqNewC
 ** @rename ajSeqNewNameC
 */
@@ -408,6 +417,8 @@ __deprecated AjPSeq  ajSeqNewC(const char* seq, const char* name)
 }
 
 
+
+
 /* @obsolete ajSeqNewStr
 ** @rename ajSeqNewNameS
 */
@@ -415,8 +426,11 @@ __deprecated AjPSeq  ajSeqNewC(const char* seq, const char* name)
 __deprecated AjPSeq  ajSeqNewStr(const AjPStr seq)
 {
     AjPStr name = ajStrNew();
+
     return ajSeqNewNameS(seq, name);
 }
+
+
 
 
 /* @func ajSeqNewRangeC *******************************************************
@@ -476,6 +490,7 @@ AjPSeq ajSeqNewRangeC(const char* txt,
     pthis->Format = 0;
     pthis->Begin  = 0;
     pthis->End    = 0;
+
     if (rev)
     {
 	pthis->Offset = offend;
@@ -486,6 +501,7 @@ AjPSeq ajSeqNewRangeC(const char* txt,
 	pthis->Offset = offset;
 	pthis->Offend = offend;
     }
+
     pthis->Weight = 1.0;
 
     pthis->Acclist = ajListstrNew();
@@ -544,6 +560,9 @@ __deprecated AjPSeq  ajSeqNewRange(const AjPStr seq,
     return ajSeqNewRangeS(seq, offset, offend, rev);
 }
 
+
+
+
 /* @obsolete ajSeqNewRangeCI
 ** @replace ajSeqNewRangeC (1,2,3,4,5/1,3,4,5)
 */
@@ -552,8 +571,12 @@ __deprecated AjPSeq  ajSeqNewRangeCI(const char* seq, ajint len,
 				    ajint offset, ajint offend, AjBool rev)
 {
     (void)len;
+
     return ajSeqNewRangeC(seq, offset, offend, rev);
 }
+
+
+
 
 /* @func ajSeqNewRes **********************************************************
 **
@@ -590,6 +613,7 @@ AjPSeq ajSeqNewRes(size_t size)
     pthis->Filename  = ajStrNew();
     pthis->Entryname = ajStrNew();
     pthis->TextPtr   = ajStrNew();
+
     if(size)
 	pthis->Seq = ajStrNewRes(size);
     else
@@ -615,8 +639,12 @@ AjPSeq ajSeqNewRes(size_t size)
     pthis->Reflist = ajListNew();
 
     pthis->Fulldesc = ajSeqdescNew();
+
     return pthis;
 }
+
+
+
 
 /* @obsolete ajSeqNewL
 ** @rename ajSeqNewRes
@@ -625,7 +653,6 @@ __deprecated AjPSeq  ajSeqNewL(size_t size)
 {
     return ajSeqNewRes(size);
 }
-
 
 
 
@@ -705,11 +732,14 @@ AjPSeq ajSeqNewSeq(const AjPSeq seq)
     pthis->Fulldesc = ajSeqdescNewDesc(seq->Fulldesc);
 
     ajStrAssignS(&pthis->Seq, seq->Seq);
+
     if (seq->Fttable)
 	pthis->Fttable = ajFeattableCopy(seq->Fttable);
 
     return pthis;
 }
+
+
 
 
 /* @obsolete ajSeqNewS
@@ -764,6 +794,7 @@ void ajSeqDel(AjPSeq* Pseq)
 
     if(!Pseq)
 	return;
+
     if(!*Pseq)
 	return;
 
@@ -804,20 +835,22 @@ void ajSeqDel(AjPSeq* Pseq)
 
     while(ajListPop(seq->Genelist,(void **)&tmpgene))
 	ajSeqgeneDel(&tmpgene);
+
     ajListFree(&seq->Genelist);
 
     while(ajListPop(seq->Reflist,(void **)&tmpref))
 	ajSeqrefDel(&tmpref);
+
     ajListFree(&seq->Reflist);
 
     ajListstrFreeData(&seq->Cmtlist);
-
     ajListstrFreeData(&seq->Xreflist);
 
     ajSeqdateDel(&seq->Date);
     ajSeqdescDel(&seq->Fulldesc);
 
     AJFREE(*Pseq);
+
     return;
 }
 
@@ -852,6 +885,7 @@ void ajSeqDelarray(AjPSeq **PPseq)
 
     return;
 }
+
 
 
 
@@ -948,6 +982,8 @@ void ajSeqAssignAccS(AjPSeq seq, const AjPStr str)
 }
 
 
+
+
 /* @obsolete ajSeqAssAccC
 ** @rename ajSeqAssignAccC
 */
@@ -955,8 +991,12 @@ void ajSeqAssignAccS(AjPSeq seq, const AjPStr str)
 __deprecated void  ajSeqAssAccC(AjPSeq thys, const char* text)
 {
     ajSeqAssignAccC(thys, text);
+
     return;
 }
+
+
+
 
 /* @obsolete ajSeqAssAcc
 ** @rename ajSeqAssignAccS
@@ -965,8 +1005,12 @@ __deprecated void  ajSeqAssAccC(AjPSeq thys, const char* text)
 __deprecated void  ajSeqAssAcc(AjPSeq thys, const AjPStr str)
 {
     ajSeqAssignAccS(thys, str);
+
     return;
 }
+
+
+
 
 /* @func ajSeqAssignDescC *****************************************************
 **
@@ -1006,6 +1050,8 @@ void ajSeqAssignDescS(AjPSeq seq, const AjPStr str)
 }
 
 
+
+
 /* @obsolete ajSeqAssDescC
 ** @rename ajSeqAssignDescC
 */
@@ -1013,8 +1059,11 @@ void ajSeqAssignDescS(AjPSeq seq, const AjPStr str)
 __deprecated void  ajSeqAssDescC(AjPSeq thys, const char* txt)
 {
     ajSeqAssignDescC(thys, txt);
+
     return;
 }
+
+
 
 
 /* @obsolete ajSeqAssDesc
@@ -1024,8 +1073,11 @@ __deprecated void  ajSeqAssDescC(AjPSeq thys, const char* txt)
 __deprecated void  ajSeqAssDesc(AjPSeq thys, const AjPStr str)
 {
     ajSeqAssignDescS(thys, str);
+
     return;
 }
+
+
 
 
 /* @func ajSeqAssignEntryC ****************************************************
@@ -1075,8 +1127,11 @@ void ajSeqAssignEntryS(AjPSeq seq, const AjPStr str)
 __deprecated void  ajSeqAssEntryC(AjPSeq thys, const char* text)
 {
     ajSeqAssignEntryC(thys, text);
+
     return;
 }
+
+
 
 
 /* @obsolete ajSeqAssEntry
@@ -1086,8 +1141,12 @@ __deprecated void  ajSeqAssEntryC(AjPSeq thys, const char* text)
 __deprecated void  ajSeqAssEntry(AjPSeq thys, const AjPStr str)
 {
     ajSeqAssignEntryS(thys, str);
+
     return;
 }
+
+
+
 
 /* @func ajSeqAssignFileC *****************************************************
 **
@@ -1127,6 +1186,8 @@ void ajSeqAssignFileS(AjPSeq seq, const AjPStr str)
 }
 
 
+
+
 /* @obsolete ajSeqAssFileC
 ** @rename ajSeqAssignFileC
 */
@@ -1134,8 +1195,12 @@ void ajSeqAssignFileS(AjPSeq seq, const AjPStr str)
 __deprecated void  ajSeqAssFileC(AjPSeq thys, const char* text)
 {
     ajSeqAssignFileC(thys, text);
+
     return;
 }
+
+
+
 
 /* @obsolete ajSeqAssFile
 ** @rename ajSeqAssignFileS
@@ -1144,8 +1209,10 @@ __deprecated void  ajSeqAssFileC(AjPSeq thys, const char* text)
 __deprecated void  ajSeqAssFile(AjPSeq thys, const AjPStr str)
 {
     ajSeqAssignFileS(thys, str);
+
     return;
 }
+
 
 
 
@@ -1188,6 +1255,7 @@ void ajSeqAssignFullS(AjPSeq seq, const AjPStr str)
 
 
 
+
 /* @obsolete ajSeqAssFullC
 ** @rename ajSeqAssignFullC
 */
@@ -1195,8 +1263,12 @@ void ajSeqAssignFullS(AjPSeq seq, const AjPStr str)
 __deprecated void  ajSeqAssFullC(AjPSeq thys, const char* text)
 {
     ajSeqAssignFullC(thys, text);
+
     return;
 }
+
+
+
 
 /* @obsolete ajSeqAssFull
 ** @rename ajSeqAssignFullS
@@ -1205,6 +1277,7 @@ __deprecated void  ajSeqAssFullC(AjPSeq thys, const char* text)
 __deprecated void  ajSeqAssFull(AjPSeq thys, const AjPStr str)
 {
     ajSeqAssignFullS(thys, str);
+
     return;
 }
 
@@ -1258,8 +1331,12 @@ void ajSeqAssignGiS(AjPSeq seq, const AjPStr str)
 __deprecated void  ajSeqAssGiC(AjPSeq thys, const char* text)
 {
     ajSeqAssignGiC(thys, text);
+
     return;
 }
+
+
+
 
 /* @obsolete ajSeqAssGi
 ** @rename ajSeqAssignGiS
@@ -1268,6 +1345,7 @@ __deprecated void  ajSeqAssGiC(AjPSeq thys, const char* text)
 __deprecated void  ajSeqAssGi(AjPSeq thys, const AjPStr str)
 {
     ajSeqAssignGiS(thys, str);
+
     return;
 }
 
@@ -1292,6 +1370,8 @@ void ajSeqAssignNameC(AjPSeq seq, const char* txt)
 }
 
 
+
+
 /* @func ajSeqAssignNameS *****************************************************
 **
 ** Assigns the sequence name.
@@ -1310,6 +1390,8 @@ void ajSeqAssignNameS(AjPSeq seq, const AjPStr str)
 }
 
 
+
+
 /* @obsolete ajSeqAssName
 ** @rename ajSeqAssignNameS
 */
@@ -1322,6 +1404,8 @@ __deprecated void  ajSeqAssName(AjPSeq thys, const AjPStr str)
 }
 
 
+
+
 /* @obsolete ajSeqAssNameC
 ** @rename ajSeqAssignNameS
 */
@@ -1332,6 +1416,8 @@ __deprecated void  ajSeqAssNameC(AjPSeq thys, const char* str)
 
     return;
 }
+
+
 
 
 /* @func ajSeqAssignSeqC ******************************************************
@@ -1402,14 +1488,19 @@ void ajSeqAssignSeqS(AjPSeq seq, const AjPStr str)
 }
 
 
+
+
 /* @obsolete ajSeqAssSeq
 ** @rename ajSeqAssignSeqS
 */
 __deprecated void  ajSeqAssSeq(AjPSeq seq, const AjPStr str)
 {
     ajSeqAssignSeqS(seq, str);
+
     return;
 }
+
+
 
 
 /* @obsolete ajSeqAssSeqC
@@ -1418,8 +1509,12 @@ __deprecated void  ajSeqAssSeq(AjPSeq seq, const AjPStr str)
 __deprecated void  ajSeqAssSeqC (AjPSeq thys, const char* text)
 {
     ajSeqAssignSeqC(thys, text);
+
     return;
 }
+
+
+
 
 /* @obsolete ajSeqAssSeqCI
 ** @replace ajSeqAssignSeqC (1,2,3/1,2)
@@ -1432,6 +1527,7 @@ __deprecated void  ajSeqAssSeqCI (AjPSeq thys, const char* text, ajint ilen)
 */
     (void) ilen;
     ajSeqAssignSeqC(thys, text);
+
     return;
 }
 
@@ -1484,8 +1580,12 @@ void ajSeqAssignSvS(AjPSeq seq, const AjPStr str)
 __deprecated void  ajSeqAssSvC(AjPSeq thys, const char* text)
 {
     ajSeqAssignSvC(thys, text);
+
     return;
 }
+
+
+
 
 /* @obsolete ajSeqAssSv
 ** @rename ajSeqAssignSvS
@@ -1493,8 +1593,11 @@ __deprecated void  ajSeqAssSvC(AjPSeq thys, const char* text)
 __deprecated void  ajSeqAssSv(AjPSeq thys, const AjPStr str)
 {
     ajSeqAssignSvS(thys, str);
+
     return;
 }
+
+
 
 
 /* @func ajSeqAssignUfoC ******************************************************
@@ -1536,14 +1639,19 @@ void ajSeqAssignUfoS(AjPSeq seq, const AjPStr str)
 
 
 
+
 /* @obsolete ajSeqAssUfoC
 ** @rename ajSeqAssignUfoC
 */
 __deprecated void  ajSeqAssUfoC(AjPSeq thys, const char* text)
 {
     ajSeqAssignUfoC(thys, text);
+
     return;
 }
+
+
+
 
 /* @obsolete ajSeqAssUfo
 ** @rename ajSeqAssignUfoS
@@ -1551,8 +1659,11 @@ __deprecated void  ajSeqAssUfoC(AjPSeq thys, const char* text)
 __deprecated void  ajSeqAssUfo(AjPSeq thys, const AjPStr str)
 {
     ajSeqAssignUfoS(thys, str);
+
     return;
 }
+
+
 
 
 /* @func ajSeqAssignUsaC ******************************************************
@@ -1571,6 +1682,8 @@ void ajSeqAssignUsaC(AjPSeq seq, const char* txt)
 
     return;
 }
+
+
 
 
 /* @func ajSeqAssignUsaS ******************************************************
@@ -1599,8 +1712,12 @@ void ajSeqAssignUsaS(AjPSeq seq, const AjPStr str)
 __deprecated void  ajSeqAssUsaC(AjPSeq thys, const char* text)
 {
     ajSeqAssignUsaC(thys, text);
+
     return;
 }
+
+
+
 
 /* @obsolete ajSeqAssUsa
 ** @rename ajSeqAssignUsaS
@@ -1608,6 +1725,7 @@ __deprecated void  ajSeqAssUsaC(AjPSeq thys, const char* text)
 __deprecated void  ajSeqAssUsa(AjPSeq thys, const AjPStr str)
 {
     ajSeqAssignUsaS(thys, str);
+
     return;
 }
 
@@ -1709,6 +1827,7 @@ void ajSeqSetName(AjPSeq seq, const AjPStr setname)
     if(ajStrGetLen(seq->Name))
     {
 	ajDebug("ajSeqSetName already has a name '%S'\n", seq->Name);
+
 	return;
     }
 
@@ -1725,6 +1844,7 @@ void ajSeqSetName(AjPSeq seq, const AjPStr setname)
 
     return;
 }
+
 
 
 
@@ -1746,6 +1866,7 @@ void ajSeqSetNameMulti(AjPSeq seq, const AjPStr setname)
     if(ajStrGetLen(seq->Name))
     {
 	ajDebug("ajSeqSetNameMulti already has a name '%S'\n", seq->Name);
+
 	return;
     }
 
@@ -1771,6 +1892,7 @@ void ajSeqSetNameMulti(AjPSeq seq, const AjPStr setname)
 
 
 
+
 /* @obsolete ajSeqDefName
 ** @replace ajSeqSetName (1,2,ajFalse/1,2)
 ** @replace ajSeqSetNameMulti (1,2,ajTrue/1,2)
@@ -1782,6 +1904,7 @@ __deprecated void  ajSeqDefName(AjPSeq thys, const AjPStr setname, AjBool multi)
 	ajSeqSetNameMulti(thys, setname);
     else
 	ajSeqSetName(thys, setname);
+
     return;
 }
 
@@ -1911,10 +2034,8 @@ void ajSeqSetRangeRev(AjPSeq seq, ajint pos1, ajint pos2)
 	    seq->Begin, seq->End, seq->Rev, seq->Reversed);
 
     if(seq->Trimmed)
-    {
 	ajWarn("Sequence '%S' already trimmed in ajSeqSetRange",
 	       ajSeqGetNameS(seq));
-    }
 
     if(pos1 && !seq->Begin)
 	seq->Begin = pos1;
@@ -1936,6 +2057,9 @@ void ajSeqSetRangeRev(AjPSeq seq, ajint pos1, ajint pos2)
     return;
 }
 
+
+
+
 /* @obsolete ajSeqSetRangeDir
 ** @replace ajSeqSetRange (1,2,3,ajFalse/1,2,3)
 ** @replace ajSeqSetRangeRev (1,2,3,ajTrue/1,2,3)
@@ -1947,8 +2071,11 @@ __deprecated void  ajSeqSetRangeDir(AjPSeq seq,
 	ajSeqSetRangeRev(seq, ibegin, iend);
     else
 	ajSeqSetRange(seq, ibegin, iend);
+
     return;
 }
+
+
 
 
 /* @func ajSeqSetUnique *******************************************************
@@ -1969,14 +2096,19 @@ void ajSeqSetUnique(AjPSeq seq)
 }
 
 
+
+
 /* @obsolete ajSeqMod
 ** @rename ajSeqSetUnique
 */
 __deprecated void  ajSeqMod(AjPSeq seq)
 {
     ajSeqSetUnique(seq);
+
     return;
 }
+
+
 
 
 /* @func ajSeqTagRev **********************************************************
@@ -1993,6 +2125,7 @@ void ajSeqTagRev(AjPSeq seq)
         ajStrInsertC(&seq->Desc, 0, "Reversed: ");
     else
         ajStrAssignC(&seq->Desc, "Reversed:");
+
     return;
 }
 
@@ -2005,8 +2138,11 @@ void ajSeqTagRev(AjPSeq seq)
 __deprecated void  ajSeqReplace(AjPSeq thys, const AjPStr seq)
 {
     ajSeqAssignSeqS(thys, seq);
+
     return;
 }
+
+
 
 
 /* @obsolete ajSeqReplaceC
@@ -2015,8 +2151,10 @@ __deprecated void  ajSeqReplace(AjPSeq thys, const AjPStr seq)
 __deprecated void  ajSeqReplaceC(AjPSeq thys, const char* seq)
 {
     ajSeqAssignSeqC(thys, seq);
+
     return;
 }
+
 
 
 
@@ -2028,8 +2166,12 @@ __deprecated void  ajSeqMakeUsa(AjPSeq thys, const AjPSeqin seqin)
 {
     (void)seqin;
     seqMakeUsa(thys, &thys->Usa);
+
     return;
 }
+
+
+
 
 /* @obsolete ajSeqMakeUsaS
 ** @remove made static
@@ -2040,8 +2182,12 @@ __deprecated void  ajSeqMakeUsaS(const AjPSeq thys,
 {
     (void)seqin;
     seqMakeUsa(thys, usa);
+
     return;
 }
+
+
+
 
 /* @funcstatic seqMakeUsa ****************************************************
 **
@@ -2073,6 +2219,7 @@ static void seqMakeUsa(const AjPSeq thys, AjPStr* usa)
 	/*ajFmtPrintS(&thys->Usa, "%S::%S (%S)",
 	  thys->Formatstr, thys->Filename, thys->Entryname);*/
 	if(ajStrMatchC(thys->Formatstr, "text"))
+        {
 	    if(thys->Reversed)
 	    {
 		ajStrAssignS(&tmpstr, thys->Seq);
@@ -2082,6 +2229,7 @@ static void seqMakeUsa(const AjPSeq thys, AjPStr* usa)
 	    }
 	    else
 		ajFmtPrintS(usa, "asis::%S", thys->Seq);
+        }
 	else if(ajStrGetLen(thys->Entryname))
 	    ajFmtPrintS(usa, "%S::%S:%S", thys->Formatstr,
 			thys->Filename,thys->Entryname);
@@ -2127,6 +2275,9 @@ static void seqMakeUsa(const AjPSeq thys, AjPStr* usa)
 
     return;
 }
+
+
+
 
 /* @section process *******************************************************
 **
@@ -2175,14 +2326,20 @@ void ajSeqComplement(AjPSeq seq)
     return;
 }
 
+
+
+
 /* @obsolete ajSeqComplementOnly
 ** @rename ajSeqComplement
 */
 __deprecated void  ajSeqComplementOnly(AjPSeq pthis)
 {
     ajSeqComplement(pthis);
+
     return;
 }
+
+
 
 
 /* @obsolete ajSeqCompOnly
@@ -2213,6 +2370,8 @@ void ajSeqFmtLower(AjPSeq seq)
 
     return;
 }
+
+
 
 
 /* @obsolete ajSeqToLower
@@ -2259,6 +2418,8 @@ __deprecated void  ajSeqToUpper(AjPSeq seq)
 }
 
 
+
+
 /* @func ajSeqGapFill *********************************************************
 **
 ** Fills a single sequence with gaps up to a specified length.
@@ -2288,6 +2449,8 @@ void ajSeqGapFill(AjPSeq seq, ajuint len)
 }
 
 
+
+
 /* @obsolete ajSeqFill
 ** @rename ajSeqGapFill
 */
@@ -2296,8 +2459,12 @@ __deprecated ajint  ajSeqFill(AjPSeq seq, ajint len)
     ajint ilen;
     ilen = ajSeqGetLen(seq);
     ajSeqGapFill(seq, len);
+
     return len-ilen;
 }
+
+
+
 
 /* @func ajSeqGapStandard ****************************************************
 **
@@ -2330,6 +2497,7 @@ void ajSeqGapStandard(AjPSeq seq, char gapchar)
 	    /*ajDebug(" ajSeqGapStandardS replaced         '%c'=>'%c' '%S'\n",
 		    *testgap, newgap, thys);*/
 	}
+
 	testgap++;
     }
 
@@ -2392,6 +2560,8 @@ void ajSeqReverseDo(AjPSeq seq)
 }
 
 
+
+
 /* @obsolete ajSeqReverse
 ** @rename ajSeqReverseDo
 */
@@ -2399,9 +2569,13 @@ __deprecated AjBool  ajSeqReverse(AjPSeq seq)
 {
     if(!seq->Rev)
 	return ajFalse;
+
     ajSeqReverseDo(seq);
+
     return ajTrue;
 }
+
+
 
 
 /* @func ajSeqReverseForce ****************************************************
@@ -2460,6 +2634,7 @@ void ajSeqReverseOnly(AjPSeq seq)
 
     if(ibegin)
 	seq->End   = -(ibegin);
+
     if(iend)
 	seq->Begin = -(iend);
 
@@ -2471,6 +2646,9 @@ void ajSeqReverseOnly(AjPSeq seq)
     return;
 }
 
+
+
+
 /* @obsolete ajSeqRevOnly
 ** @rename ajSeqReverseOnly
 */
@@ -2478,6 +2656,7 @@ void ajSeqReverseOnly(AjPSeq seq)
 __deprecated void  ajSeqRevOnly(AjPSeq seq)
 {
     ajSeqReverseOnly(seq);
+
     return;
 }
 
@@ -2513,6 +2692,7 @@ void ajSeqTrim(AjPSeq seq)
     if(seq->Trimmed)
     {
 	ajWarn("Sequence '%S' already trimmed", ajSeqGetNameS(seq));
+
 	return;
     }
 
@@ -2526,9 +2706,12 @@ void ajSeqTrim(AjPSeq seq)
 	    seq->Offset, seq->Offend, seq->Seq->Len, okay);
 
     jbegin = seq->Begin;
+
     if(jbegin > 0)
 	jbegin--;
+
     jend = seq->End;
+
     if(jend > 0)
 	jend--;
 
@@ -2544,6 +2727,7 @@ void ajSeqTrim(AjPSeq seq)
     {
 	if(end < begin)
 	    return;
+
 	seq->Offend = seq->Seq->Len-(end);
 	okay = ajStrCutEnd(&(seq->Seq),seq->Seq->Len-(end));
 	seq->End    = 0;
@@ -2681,6 +2865,8 @@ __deprecated const AjPStr  ajSeqGetAcc(const AjPSeq seq)
 }
 
 
+
+
 /* @func ajSeqGetBegin ********************************************************
 **
 ** Returns the sequence start position within the current stored sequence,
@@ -2712,6 +2898,9 @@ ajuint ajSeqGetBegin(const AjPSeq seq)
     return j;
 }
 
+
+
+
 /* @obsolete ajSeqBegin
 ** @rename ajSeqGetBegin
 */
@@ -2720,6 +2909,8 @@ __deprecated ajint  ajSeqBegin(const AjPSeq seq)
 {
     return ajSeqGetBegin(seq);
 }
+
+
 
 
 /* @func ajSeqGetBeginTrue ****************************************************
@@ -2744,6 +2935,8 @@ ajuint ajSeqGetBeginTrue(const AjPSeq seq)
 }
 
 
+
+
 /* @obsolete ajSeqTrueBegin
 ** @rename ajSeqGetBeginTrue
 */
@@ -2751,6 +2944,9 @@ __deprecated ajint  ajSeqTrueBegin(const AjPSeq seq)
 {
     return ajSeqGetBeginTrue(seq);
 }
+
+
+
 
 /* @func ajSeqGetDbC **********************************************************
 **
@@ -2792,6 +2988,8 @@ const AjPStr ajSeqGetDbS(const AjPSeq seq)
 }
 
 
+
+
 /* @func ajSeqGetDescC ********************************************************
 **
 ** Returns the sequence description.
@@ -2831,6 +3029,9 @@ const AjPStr ajSeqGetDescS(const AjPSeq seq)
     return seq->Desc;
 }
 
+
+
+
 /* @obsolete ajSeqGetDesc
 ** @rename ajSeqGetDescS
 */
@@ -2862,6 +3063,7 @@ ajuint ajSeqGetEnd(const AjPSeq seq)
 	return (ajSeqGetLen(seq));
 
     i = seq->End;
+
     if(seq->End > 0)
 	i--;
 
@@ -2872,6 +3074,7 @@ ajuint ajSeqGetEnd(const AjPSeq seq)
 
 
 
+
 /* @obsolete ajSeqEnd
 ** @rename ajSeqGetEnd
 */
@@ -2879,6 +3082,9 @@ __deprecated ajint  ajSeqEnd(const AjPSeq seq)
 {
     return ajSeqGetEnd(seq);
 }
+
+
+
 
 /* @func ajSeqGetEndTrue ******************************************************
 **
@@ -2899,8 +3105,10 @@ ajuint ajSeqGetEndTrue(const AjPSeq seq)
 	else
 	    return seq->Offset + ajSeqGetLen(seq);
     }
+
     return ajSeqCalcTrueposMin(seq, ajSeqGetBeginTrue(seq), seq->End);
 }
+
 
 
 
@@ -2911,6 +3119,9 @@ __deprecated ajint  ajSeqTrueEnd(const AjPSeq seq)
 {
     return ajSeqGetEndTrue(seq);
 }
+
+
+
 
 /* @func ajSeqGetEntryC *******************************************************
 **
@@ -2930,6 +3141,9 @@ const char* ajSeqGetEntryC(const AjPSeq seq)
     return MAJSTRGETPTR(seq->TextPtr);
 }
 
+
+
+
 /* @func ajSeqGetEntryS *******************************************************
 **
 ** Returns the sequence full text entry.
@@ -2948,6 +3162,9 @@ const AjPStr ajSeqGetEntryS(const AjPSeq seq)
     return seq->TextPtr;
 }
 
+
+
+
 /* @obsolete ajSeqGetEntry
 ** @rename ajSeqGetEntryS
 */
@@ -2955,6 +3172,9 @@ __deprecated const AjPStr  ajSeqGetEntry(const AjPSeq seq)
 {
     return ajSeqGetEntryS(seq);
 }
+
+
+
 
 /* @func ajSeqGetFeat *********************************************************
 **
@@ -2997,6 +3217,8 @@ AjPFeattable ajSeqGetFeatCopy(const AjPSeq seq)
 {
     return ajFeattableCopy(seq->Fttable);
 }
+
+
 
 
 /* @obsolete ajSeqCopyFeat
@@ -3049,6 +3271,9 @@ const AjPStr ajSeqGetGiS(const AjPSeq seq)
     return seq->Gi;
 }
 
+
+
+
 /* @obsolete ajSeqGetGi
 ** @rename ajSeqGetGiS
 */
@@ -3076,6 +3301,7 @@ ajuint ajSeqGetLen(const AjPSeq seq)
 
 
 
+
 /* @obsolete ajSeqLen
 ** @rename ajSeqGetLen
 */
@@ -3083,7 +3309,6 @@ __deprecated ajint  ajSeqLen(const AjPSeq seq)
 {
     return ajStrGetLen(seq->Seq);
 }
-
 
 
 
@@ -3104,6 +3329,7 @@ ajuint ajSeqGetLenTrimmed(const AjPSeq seq)
 
 
 
+
 /* @func ajSeqGetLenTrue ******************************************************
 **
 ** Returns the length of the original sequence, including any gap characters.
@@ -3119,6 +3345,8 @@ ajuint ajSeqGetLenTrue(const AjPSeq seq)
 }
 
 
+
+
 /* @obsolete ajSeqTrueLen
 ** @rename ajSeqGetLenTrue
 */
@@ -3126,6 +3354,7 @@ __deprecated ajint  ajSeqTrueLen(const AjPSeq seq)
 {
     return ajSeqGetLenTrue(seq);
 }
+
 
 
 
@@ -3148,6 +3377,7 @@ ajuint ajSeqGetLenUngapped(const AjPSeq seq)
     cp = ajStrGetPtr(seq->Seq);
     i = strspn(cp, gapchars);
     cp += i;
+
     while (*cp)
     {
         i = strcspn(cp, gapchars);
@@ -3158,6 +3388,7 @@ ajuint ajSeqGetLenUngapped(const AjPSeq seq)
     
     return ret;
 }
+
 
 
 
@@ -3181,6 +3412,7 @@ const char* ajSeqGetNameC(const AjPSeq seq)
 
 
 
+
 /* @func ajSeqGetNameS ********************************************************
 **
 ** Returns the sequence name.
@@ -3198,6 +3430,7 @@ const AjPStr ajSeqGetNameS(const AjPSeq seq)
 {
     return seq->Name;
 }
+
 
 
 
@@ -3249,6 +3482,9 @@ __deprecated ajint  ajSeqOffend(const AjPSeq seq)
     return ajSeqGetOffend(seq);
 }
 
+
+
+
 /* @func ajSeqGetOffset *******************************************************
 **
 ** Returns the sequence offset from -sbegin originally.
@@ -3264,6 +3500,8 @@ ajuint ajSeqGetOffset(const AjPSeq seq)
 }
 
 
+
+
 /* @obsolete ajSeqOffset
 ** @rename ajSeqGetOffset
 */
@@ -3271,6 +3509,9 @@ __deprecated ajint  ajSeqOffset(const AjPSeq seq)
 {
     return ajSeqGetOffset(seq);
 }
+
+
+
 
 /* @func ajSeqGetRange ********************************************************
 **
@@ -3289,10 +3530,12 @@ ajuint ajSeqGetRange(const AjPSeq seq, ajint* begin, ajint* end)
     ajint jend;
 
     jbegin = seq->Begin;
+
     if(seq->Begin > 0)
 	jbegin--;
 
     jend = seq->End;
+
     if(seq->End > 0)
 	jend--;
 
@@ -3308,6 +3551,7 @@ ajuint ajSeqGetRange(const AjPSeq seq, ajint* begin, ajint* end)
 
     return (*end - *begin + 1);
 }
+
 
 
 
@@ -3327,6 +3571,9 @@ AjBool ajSeqGetRev(const AjPSeq seq)
     return seq->Rev;
 }
 
+
+
+
 /* @obsolete ajSeqGetReverse
 ** @rename ajSeqGetRev
 */
@@ -3337,6 +3584,7 @@ __deprecated AjBool  ajSeqGetReverse(const AjPSeq seq)
 
 
 
+
 /* @obsolete ajSeqGetReversed
 ** @rename ajSeqIsReversed
 */
@@ -3344,7 +3592,6 @@ __deprecated AjBool  ajSeqGetReversed(const AjPSeq seq)
 {
     return seq->Reversed;
 }
-
 
 
 
@@ -3370,6 +3617,9 @@ const char* ajSeqGetSeqC(const AjPSeq seq)
     return MAJSTRGETPTR(seq->Seq);
 }
 
+
+
+
 /* @func ajSeqGetSeqS *********************************************************
 **
 ** Returns the sequence in a sequence object as a string.
@@ -3391,6 +3641,9 @@ const AjPStr ajSeqGetSeqS(const AjPSeq seq)
     return seq->Seq;
 }
 
+
+
+
 /* @obsolete ajSeqStr
 ** @rename ajSeqGetSeqS
 */
@@ -3398,6 +3651,9 @@ __deprecated const AjPStr  ajSeqStr(const AjPSeq seq)
 {
     return ajSeqGetSeqS(seq);
 }
+
+
+
 
 /* @obsolete ajSeqChar
 ** @rename ajSeqGetSeqC
@@ -3429,6 +3685,9 @@ char* ajSeqGetSeqCopyC(const AjPSeq seq)
 {
     return ajCharNewS(seq->Seq);
 }
+
+
+
 
 /* @obsolete ajSeqCharCopy
 ** @rename ajSeqGetSeqCopyC
@@ -3471,6 +3730,9 @@ __deprecated AjPStr  ajSeqStrCopy(const AjPSeq seq)
     return ajSeqGetSeqCopyS(seq);
 }
 
+
+
+
 /* @obsolete ajSeqCharCopyL
 ** @replace ajSeqGetSeqCopyC (1,2/1,ajSeqGetLen[2])
 */
@@ -3478,6 +3740,8 @@ __deprecated char*  ajSeqCharCopyL(const AjPSeq seq, size_t size)
 {
     return ajCharNewResS(seq->Seq, size);
 }
+
+
 
 
 /* @func ajSeqGetSvC **********************************************************
@@ -3518,6 +3782,9 @@ const AjPStr ajSeqGetSvS(const AjPSeq seq)
 {
     return seq->Sv;
 }
+
+
+
 
 /* @obsolete ajSeqGetSv
 ** @rename ajSeqGetSvS
@@ -3569,6 +3836,9 @@ const AjPStr ajSeqGetTaxS(const AjPSeq seq)
     return seq->Tax;
 }
 
+
+
+
 /* @obsolete ajSeqGetTax
 ** @rename ajSeqGetTaxS
 */
@@ -3598,6 +3868,9 @@ const char* ajSeqGetUsaC(const AjPSeq seq)
     return MAJSTRGETPTR(ajSeqGetUsaS(seq));
 }
 
+
+
+
 /* @func ajSeqGetUsaS *********************************************************
 **
 ** Returns the sequence name of a sequence stream.
@@ -3619,8 +3892,11 @@ const AjPStr ajSeqGetUsaS(const AjPSeq seq)
 	return seq->Usa;
 
     seqMakeUsa(seq, &seqTempUsa);
+
     return seqTempUsa;
 }
+
+
 
 
 /* @obsolete ajSeqGetUsa
@@ -3630,6 +3906,9 @@ __deprecated const AjPStr  ajSeqGetUsa(const AjPSeq seq)
 {
     return ajSeqGetUsaS(seq);
 }
+
+
+
 
 /* @section testing properties ***********************************************
 **
@@ -3703,11 +3982,14 @@ AjBool ajSeqIsProt(const AjPSeq seq)
     if(ajSeqTypeAnyprotS(seq->Seq))	/* returns char 0 on success */
     {
 	ajDebug ("ajSeqIsProt failed\n", seq->Type);
+
 	return ajFalse;
     }
 
     return ajTrue;
 }
+
+
 
 
 /* @func ajSeqIsReversedTrue **************************************************
@@ -3733,8 +4015,9 @@ AjBool ajSeqIsReversedTrue(const AjPSeq seq)
     }
 
     return seq->Rev;
-
 }
+
+
 
 
 /* @obsolete ajSeqRev
@@ -3744,6 +4027,9 @@ __deprecated AjBool  ajSeqRev(const AjPSeq seq)
 {
     return ajSeqIsReversed(seq);
 }
+
+
+
 
 /* @func ajSeqIsReversed ******************************************************
 **
@@ -3775,6 +4061,7 @@ AjBool ajSeqIsTrimmed(const AjPSeq seq)
 {
     return seq->Trimmed;
 }
+
 
 
 
@@ -3899,10 +4186,14 @@ ajint ajSeqCalcCheckgcg(const AjPSeq seq)
 	if(count == 57)
 	    count = 0;
     }
+
     check %= 10000;
 
     return check;
 }
+
+
+
 
 /* @obsolete ajSeqCheckGcg
 ** @rename ajSeqCalcCheckgcg
@@ -3911,6 +4202,9 @@ __deprecated ajint  ajSeqCheckGcg(const AjPSeq seq)
 {
     return ajSeqCalcCheckgcg(seq);
 }
+
+
+
 
 /* @func ajSeqCalcCount *******************************************************
 **
@@ -3936,26 +4230,26 @@ void ajSeqCalcCount(const AjPSeq seq, ajint* b)
     {
 	switch (*cp)
 	{
-	case 'A':
-	case 'a':
-	    b[0]++;
-	    break;
-	case 'C':
-	case 'c':
-	    b[1]++;
-	    break;
-	case 'G':
-	case 'g':
-	    b[2]++;
-	    break;
-	case 'T':
-	case 't':
-	case 'U':
-	case 'u':
-	    b[3]++;
-	    break;
-	default:
-	    break;
+            case 'A':
+            case 'a':
+                b[0]++;
+                break;
+            case 'C':
+            case 'c':
+                b[1]++;
+                break;
+            case 'G':
+            case 'g':
+                b[2]++;
+                break;
+            case 'T':
+            case 't':
+            case 'U':
+            case 'u':
+                b[3]++;
+                break;
+            default:
+                break;
 	}
 	cp++;
     }
@@ -3966,14 +4260,19 @@ void ajSeqCalcCount(const AjPSeq seq, ajint* b)
 }
 
 
+
+
 /* @obsolete ajSeqCount
 ** @rename ajSeqCalcCount
 */
 __deprecated void  ajSeqCount(const AjPSeq seq, ajint* b)
 {
     ajSeqCalcCount(seq, b);
+
     return;
 }
+
+
 
 
 /* @func ajSeqCalcMolwt *******************************************************
@@ -3989,6 +4288,7 @@ float ajSeqCalcMolwt(const AjPSeq seq)
 {
     return ajSeqstrCalcMolwt(seq->Seq);
 }
+
 
 
 
@@ -4045,6 +4345,9 @@ __deprecated ajint  ajSeqPosII(ajint ilen, ajint imin, ajint ipos)
     return jpos;
 }
 
+
+
+
 /* @func ajSeqCalcTrueposMin **************************************************
 **
 ** Converts a string position into a true position. If ipos is negative,
@@ -4067,10 +4370,12 @@ ajint ajSeqCalcTrueposMin(const AjPSeq seq, ajint imin, ajint ipos)
     ajint jpos;
 
     jmin = imin;
+
     if (imin > 0)
 	jmin--;
 
     jpos = ipos;
+
     if(ipos > 0)
 	jpos--;
 
@@ -4082,6 +4387,9 @@ ajint ajSeqCalcTrueposMin(const AjPSeq seq, ajint imin, ajint ipos)
 			  jmin, jpos);
 }
 
+
+
+
 /* @obsolete ajSeqTruePosI
 ** @rename ajSeqCalcTrueposMin
 */
@@ -4091,6 +4399,9 @@ __deprecated ajint  ajSeqTruePosI(const AjPSeq thys, ajint imin, ajint ipos)
     return ajSeqCalcTrueposMin(thys, imin, ipos);
 }
 
+
+
+
 /* @obsolete ajSeqTruePosII
 ** @rename ajMathPosI
 */
@@ -4098,10 +4409,6 @@ __deprecated ajint  ajSeqTruePosII(ajint ilen, ajint imin, ajint ipos)
 {
     return ajMathPosI(ilen, imin, ipos);
 }
-
-
-
-
 
 
 
@@ -4125,14 +4432,17 @@ ajint ajSeqCalcTruepos(const AjPSeq seq, ajint ipos)
     ajint jpos;
 
     jpos = ipos;
+
     if (ipos > 0)
 	jpos = ipos - 1;
 
     if(ajSeqGetRev(seq))
 	return 1 + seq->Offend + ajMathPosI(ajSeqGetLen(seq), 0, jpos);
-    else
-	return 1 + seq->Offset + ajMathPosI(ajSeqGetLen(seq), 0, jpos);
+
+    return 1 + seq->Offset + ajMathPosI(ajSeqGetLen(seq), 0, jpos);
 }
+
+
 
 
 /* @obsolete ajSeqTruePos
@@ -4142,6 +4452,8 @@ __deprecated ajint  ajSeqTruePos(const AjPSeq thys, ajint ipos)
 {
     return ajSeqCalcTruepos(thys, ipos);
 }
+
+
 
 
 /* @func ajSeqCountGaps *******************************************************
@@ -4171,6 +4483,9 @@ ajuint ajSeqCountGaps(const AjPSeq seq)
     return ret;
 }
 
+
+
+
 /* @obsolete ajSeqGapCount
 * @rename ajSeqCountGaps
 */
@@ -4179,6 +4494,9 @@ __deprecated ajint  ajSeqGapCount(const AjPSeq seq)
 {
     return ajSeqCountGaps(seq);
 }
+
+
+
 
 /* @section exit
 **
@@ -4194,7 +4512,6 @@ __deprecated ajint  ajSeqGapCount(const AjPSeq seq)
 **
 ** @fcategory misc
 */
-
 
 
 
@@ -4241,6 +4558,7 @@ void ajSeqExit(void)
 
 
 
+
 /* @section debug *************************************************************
 **
 ** Reports sequence contents for debugging purposes
@@ -4284,6 +4602,7 @@ void ajSeqTrace(const AjPSeq seq)
     {
 	ajDebug( "  Acclist: (%d) ", ajListGetLength(seq->Acclist));
 	it = ajListIterNewread(seq->Acclist);
+
 	while((cur = (AjPStr) ajListIterGet(it)))
 	    ajDebug(" %S", cur);
 
@@ -4316,6 +4635,7 @@ void ajSeqTrace(const AjPSeq seq)
     {
 	ajDebug( "  Taxlist: (%d)", ajListGetLength(seq->Taxlist));
 	it = ajListIterNewread(seq->Taxlist);
+
 	while((cur = (AjPStr) ajListIterGet(it)))
 	    ajDebug(" '%S'", cur);
 
@@ -4327,6 +4647,7 @@ void ajSeqTrace(const AjPSeq seq)
     {
 	ajDebug( "  Keywordlist: (%d)", ajListGetLength(seq->Keylist));
 	it = ajListIterNewread(seq->Keylist);
+
 	while((cur = (AjPStr) ajListIterGet(it)))
 	    ajDebug(" '%S'", cur);
 
@@ -4336,7 +4657,9 @@ void ajSeqTrace(const AjPSeq seq)
 
     if(ajSeqGetLen(seq))
 	ajDebug( "  Length: %d\n", ajSeqGetLen(seq));
+
     i = ajSeqCountGaps(seq);
+
     if(i)
 	ajDebug( "  Gap count: %d\n", i);
 
@@ -4418,14 +4741,18 @@ void ajSeqTraceTitle(const AjPSeq seq, const char* title)
 }
 
 
+
+
 /* @obsolete ajSeqTraceT
 ** @rename ajSeqTraceTitle
 */
 __deprecated void  ajSeqTraceT(const AjPSeq seq, const char* title)
 {
     ajSeqTraceTitle(seq, title);
+
     return;
 }
+
 
 
 
@@ -4528,7 +4855,6 @@ void ajSeqallDel(AjPSeqall *Pseq)
 
 
 
-
 /* @section modifiers *****************************************
 **
 ** These functions use the contents of a sequence stream object and
@@ -4581,7 +4907,6 @@ void ajSeqallClear(AjPSeqall seq)
 
 
 
-
 /* @func ajSeqallClearStats ****************************************************
 **
 ** Resets all data for a sequence stream object so that it can be reused,
@@ -4601,7 +4926,6 @@ void ajSeqallClearStats(AjPSeqall seq)
  
     return;
 }
-
 
 
 
@@ -4695,9 +5019,9 @@ void ajSeqallSetRangeRev(AjPSeqall seq, ajint pos1, ajint pos2)
     {
 	seq->Rev = ajTrue;
     }
+
     return;
 }
-
 
 
 
@@ -4708,8 +5032,11 @@ void ajSeqallSetRangeRev(AjPSeqall seq, ajint pos1, ajint pos2)
 __deprecated void  ajSeqallToLower(AjPSeqall seqall)
 {
     ajSeqFmtLower(seqall->Seq);
+
     return;
 }
+
+
 
 
 /* @obsolete ajSeqallToUpper
@@ -4718,6 +5045,7 @@ __deprecated void  ajSeqallToLower(AjPSeqall seqall)
 __deprecated void  ajSeqallToUpper(AjPSeqall seqall)
 {
     ajSeqFmtUpper(seqall->Seq);
+
     return;
 }
 
@@ -4781,12 +5109,12 @@ ajlong ajSeqallGetCount(const AjPSeqall seq)
 {
     if(!seq)
 	return 0;
+
     if(!seq->Seqin)
 	return 0;
 
     return seq->Totseqs;
 }
-
 
 
 
@@ -4808,6 +5136,7 @@ const AjPStr ajSeqallGetFilename(const AjPSeqall seq)
 {
     if(!seq)
 	return NULL;
+
     if(!seq->Seqin)
 	return NULL;
 
@@ -4821,7 +5150,6 @@ const AjPStr ajSeqallGetFilename(const AjPSeqall seq)
 
     return NULL;
 }
-
 
 
 
@@ -4869,7 +5197,6 @@ ajlong ajSeqallGetTotlength(const AjPSeqall seq)
 
 
 
-
 /* @func ajSeqallGetUsa *******************************************************
 **
 ** Returns the sequence name of a sequence stream.
@@ -4909,21 +5236,28 @@ ajint ajSeqallGetseqBegin(const AjPSeqall seq)
     if (seq->Begin)
     {
 	jbegin = seq->Begin;
+
 	if(jbegin > 0)
 	    jbegin--;
 
 	return 1 + ajMathPosI(ajSeqGetLen(seq->Seq), 0, jbegin);
     }
+
     if(seq->Seq->Begin)
     {
 	jbegin = seq->Seq->Begin;
+
 	if(jbegin > 0)
 	    jbegin--;
 
 	return 1 + ajMathPosI(ajSeqGetLen(seq->Seq), 0, jbegin);
     }
+
     return 1;
 }
+
+
+
 
 /* @obsolete ajSeqallBegin
 ** @rename ajSeqallGetseqBegin
@@ -4932,6 +5266,8 @@ __deprecated ajint  ajSeqallBegin(const AjPSeqall seq)
 {
     return ajSeqallGetseqBegin(seq);
 }
+
+
 
 
 /* @func ajSeqallGetseqEnd ****************************************************
@@ -4951,8 +5287,10 @@ ajint ajSeqallGetseqEnd(const AjPSeqall seq)
     if (seq->End)
     {
 	jend = seq->End;
+
 	if(jend > 0)
 	    jend--;
+
 	return 1 + ajMathPosI(ajSeqGetLen(seq->Seq),
 			      ajSeqallGetseqBegin(seq)-1, jend);
     }
@@ -4960,13 +5298,18 @@ ajint ajSeqallGetseqEnd(const AjPSeqall seq)
     if(seq->Seq->End)
     {
 	jend = seq->Seq->End;
+
 	if(jend > 0)
 	    jend--;
+
 	return 1 + ajMathPosI(ajSeqGetLen(seq->Seq),
 			      ajSeqallGetseqBegin(seq)-1, jend);
     }
+
     return ajSeqGetLen(seq->Seq);
 }
+
+
 
 
 /* @obsolete ajSeqallEnd
@@ -4976,6 +5319,8 @@ __deprecated ajint  ajSeqallEnd(const AjPSeqall seq)
 {
     return ajSeqallGetseqEnd(seq);
 }
+
+
 
 
 /* @func ajSeqallGetseqLen ****************************************************
@@ -4992,6 +5337,9 @@ ajint ajSeqallGetseqLen(const AjPSeqall seq)
 {
     return ajSeqGetLen(seq->Seq);
 }
+
+
+
 
 /* @obsolete ajSeqallLen
 ** @rename ajSeqallGetseqLen
@@ -5024,6 +5372,9 @@ const AjPStr ajSeqallGetseqName(const AjPSeqall seq)
     return ajSeqGetNameS(seq->Seq);
 }
 
+
+
+
 /* @obsolete ajSeqallGetNameSeq
 ** @rename ajSeqallGetseqName
 */
@@ -5032,6 +5383,8 @@ __deprecated const AjPStr  ajSeqallGetNameSeq(const AjPSeqall seq)
 {
     return ajSeqallGetseqName(seq);
 }
+
+
 
 
 /* @func ajSeqallGetseqRange **************************************************
@@ -5052,6 +5405,9 @@ ajint ajSeqallGetseqRange(const AjPSeqall seq, ajint* begin, ajint* end)
     return ajSeqGetRange(seq->Seq, begin, end);
 }
 
+
+
+
 /* @obsolete ajSeqallGetRange
 ** @rename   ajSeqallGetseqRange
 */
@@ -5061,6 +5417,8 @@ __deprecated ajint  ajSeqallGetRange(const AjPSeqall seq,
 {
     return ajSeqallGetseqRange(seq, begin, end);
 }
+
+
 
 
 /* @datasection [AjPSeqset] Sequence set **************************************
@@ -5088,8 +5446,6 @@ __deprecated ajint  ajSeqallGetRange(const AjPSeqall seq,
 ** @valrule * [AjPSeqset]
 **
 ******************************************************************************/
-
-
 
 
 
@@ -5228,6 +5584,7 @@ void ajSeqsetDelarray(AjPSeqset **PPseq)
 
 
 
+
 /* @section casts *************************************************************
 **
 ** These functions examine the contents of a sequence set object
@@ -5264,6 +5621,7 @@ void ajSeqsetDelarray(AjPSeqset **PPseq)
 
 
 
+
 /* @func ajSeqsetGetFilename **************************************************
 **
 ** Returns the filename of a sequence set.
@@ -5289,7 +5647,6 @@ const AjPStr ajSeqsetGetFilename(const AjPSeqset seq)
 
     return NULL;
 }
-
 
 
 
@@ -5364,10 +5721,12 @@ ajint ajSeqsetGetRange(const AjPSeqset seq, ajint* begin, ajint* end)
     ajint jend;
 
     jbegin = seq->Begin;
+
     if(jbegin > 0)
 	jbegin--;
 
     jend = seq->End;
+
     if(jend > 0)
 	jend--;
 
@@ -5384,6 +5743,7 @@ ajint ajSeqsetGetRange(const AjPSeqset seq, ajint* begin, ajint* end)
 
     return (*end - *begin + 1);
 }
+
 
 
 
@@ -5404,13 +5764,12 @@ ajint ajSeqsetGetTotlength(const AjPSeqset seq)
     ajint ret = 0;
 
     n = seq->Size;
+
     for(i=0; i < n; i++)
         ret += ajSeqGetLenUngapped(seq->Seq[i]);
     
     return ret;
 }
-
-
 
 
 
@@ -5434,8 +5793,6 @@ const AjPStr ajSeqsetGetUsa(const AjPSeqset seq)
 
     return seq->Usa;
 }
-
-
 
 
 
@@ -5488,16 +5845,16 @@ ajint ajSeqsetFill(AjPSeqset seq)
     ajDebug("ajSeqsetFill(len: %d)\n", seq->Len);
 
     for(i=0; i< seq->Size; i++)
-    {
 	if(ajSeqGetLen(seq->Seq[i]) < seq->Len)
 	{
 	    nfix++;
 	    ilen = seq->Len - ajSeqGetLen(seq->Seq[i]);
+
 	    if(ilen > ifix)
 		ifix = ilen;
+
 	    ajStrAppendCountK(&seq->Seq[i]->Seq, '-', ilen);
 	}
-    }
 
     ajDebug("      result: (len: %d added: %u number of seqs fixed: %u\n",
 	    seq->Len, ifix, nfix);
@@ -5528,15 +5885,17 @@ void ajSeqsetFmtLower(AjPSeqset seq)
 }
 
 
+
+
 /* @obsolete ajSeqsetToLower
 ** @rename ajSeqsetFmtLower
 */
 __deprecated void  ajSeqsetToLower(AjPSeqset seqset)
 {
     ajSeqsetFmtLower(seqset);
+
     return;
 }
-
 
 
 
@@ -5561,14 +5920,20 @@ void ajSeqsetFmtUpper(AjPSeqset seq)
 }
 
 
+
+
 /* @obsolete ajSeqsetToUpper
 ** @rename ajSeqsetFmtUpper
 */
 __deprecated void  ajSeqsetToUpper(AjPSeqset seqset)
 {
     ajSeqsetFmtUpper(seqset);
+
     return;
 }
+
+
+
 
 /* @func ajSeqsetReverse ******************************************************
 **
@@ -5593,6 +5958,7 @@ void ajSeqsetReverse(AjPSeqset seq)
 
     if(ibegin)
 	seq->End = -(ibegin);
+
     if(iend)
 	seq->Begin = -(iend);
 
@@ -5607,6 +5973,8 @@ void ajSeqsetReverse(AjPSeqset seq)
 
     return;
 }
+
+
 
 
 /* @func ajSeqsetSortLen ******************************************************
@@ -5629,6 +5997,7 @@ void ajSeqsetSortLen(AjPSeqset seq)
 
     AJCNEW0(lengths,seq->Size);
     AJCNEW0(seqnum,seq->Size);
+
     for(i=0;i<seq->Size;i++)
     {
         lengths[i] = ajSeqGetLenUngapped(seq->Seq[i]);
@@ -5638,14 +6007,17 @@ void ajSeqsetSortLen(AjPSeqset seq)
     ajSortUintIncI(lengths,seqnum,seq->Size);
 
     j = 0;
+
     for(i=0;i<seq->Size;i++)
     {
         tmp = seq->Seq[i];
+
         for(k=i; seqnum[k] != i; k=seqnum[j], seqnum[j]=j)
         {
             j = k;
             seq->Seq[k] = seq->Seq[seqnum[k]];
         }
+
         seq->Seq[k] = tmp;
         seqnum[k] = k;
     }
@@ -5655,6 +6027,8 @@ void ajSeqsetSortLen(AjPSeqset seq)
 
     return;
 }
+
+
 
 
 /* @func ajSeqsetTrim ******************************************************
@@ -5678,18 +6052,23 @@ void ajSeqsetTrim(AjPSeqset seq)
     if(seq->Trimmed)
     {
 	ajWarn("Sequence set '%S' already trimmed", ajSeqsetGetNameS(seq));
+
 	return;
     }
 
     ajDebug("ajSeqsetTrim len: %d begin: %d end: %d\n",
 	    seq->Len, seq->Begin, seq->End);
+
     for(i=0; i < seq->Size; i++)
 	ajSeqTrim(seq->Seq[i]);
 
     jbegin = seq->Begin;
+
     if(jbegin > 0)
 	jbegin--;
+
     jend = seq->End;
+
     if(jend > 0)
 	jend--;
 
@@ -5700,6 +6079,7 @@ void ajSeqsetTrim(AjPSeqset seq)
     {
 	if(end < begin)
 	    return;
+
 	seq->Offend = seq->Len - end;
 	seq->End    = 0;
 	seq->Len = end;
@@ -5843,11 +6223,14 @@ ajuint ajSeqsetGetBegin(const AjPSeqset seq)
 	return 1;
 
     jbegin = seq->Begin;
+
     if(jbegin > 0)
 	jbegin--;
 
     return 1 + ajMathPosI(seq->Len, 0, jbegin);
 }
+
+
 
 
 /* @obsolete ajSeqsetBegin
@@ -5857,6 +6240,8 @@ __deprecated ajint  ajSeqsetBegin(const AjPSeqset seq)
 {
     return ajSeqsetGetBegin(seq);
 }
+
+
 
 
 /* @func ajSeqsetGetEnd *******************************************************
@@ -5877,11 +6262,13 @@ ajuint ajSeqsetGetEnd(const AjPSeqset seq)
 	return (seq->Len);
 
     jend = seq->End;
+
     if(jend > 0)
 	jend--;
 
     return 1 + ajMathPosI(seq->Len, ajSeqsetGetBegin(seq)-1, jend);
 }
+
 
 
 
@@ -5892,6 +6279,9 @@ __deprecated ajint  ajSeqsetEnd(const AjPSeqset seq)
 {
     return ajSeqsetGetEnd(seq);
 }
+
+
+
 
 /* @func ajSeqsetGetLen *******************************************************
 **
@@ -5909,6 +6299,8 @@ ajuint ajSeqsetGetLen(const AjPSeqset seq)
 }
 
 
+
+
 /* @obsolete ajSeqsetLen
 ** @rename ajSeqsetGetLen
 */
@@ -5917,6 +6309,7 @@ __deprecated ajint  ajSeqsetLen(const AjPSeqset seq)
 {
     return ajSeqsetGetLen(seq);
 }
+
 
 
 
@@ -5945,6 +6338,7 @@ const char* ajSeqsetGetNameC(const AjPSeqset seq)
 
 
 
+
 /* @obsolete ajSeqsetGetName
 ** @rename ajSeqsetGetNameS
 */
@@ -5952,6 +6346,9 @@ __deprecated const AjPStr  ajSeqsetGetName(const AjPSeqset thys)
 {
     return ajSeqsetGetNameS(thys);
 }
+
+
+
 
 /* @func ajSeqsetGetNameS *****************************************************
 **
@@ -6001,12 +6398,16 @@ AjPSeq* ajSeqsetGetSeqarray(const AjPSeqset seq)
 
     ajDebug("ajSeqsetGetSeqArray '%S' %d\n", seq->Name, seq->Size);
     AJCNEW0(ret, (seq->Size+1));
+
     for (i=0; i<seq->Size;i++)
     {
 	ret[i] = ajSeqNewSeq(seq->Seq[i]);
     }
+
     return ret;
 }
+
+
 
 
 /* @obsolete ajSeqsetGetSeqArray
@@ -6016,6 +6417,9 @@ __deprecated AjPSeq*  ajSeqsetGetSeqArray(const AjPSeqset thys)
 {
     return ajSeqsetGetSeqarray(thys);
 }
+
+
+
 
 /* @func ajSeqsetGetSize ******************************************************
 **
@@ -6032,13 +6436,19 @@ ajuint ajSeqsetGetSize(const AjPSeqset seq)
 }
 
 
+
+
 /* @obsolete ajSeqsetSize
 ** @rename ajSeqsetGetSize
 */
+
 __deprecated ajint  ajSeqsetSize(const AjPSeqset seq)
 {
     return ajSeqsetGetSize(seq);
 }
+
+
+
 
 /* @func ajSeqsetGetTotweight *************************************************
 **
@@ -6055,12 +6465,12 @@ float ajSeqsetGetTotweight(const AjPSeqset seq)
     float ret = 0.0;
 
     for(i=0; i < seq->Size; i++)
-    {
 	ret += seq->Seq[i]->Weight;
-    }
 
     return ret;
 }
+
+
 
 
 /* @obsolete ajSeqsetTotweight
@@ -6070,6 +6480,9 @@ __deprecated float  ajSeqsetTotweight(const AjPSeqset seq)
 {
     return ajSeqsetGetTotweight(seq);
 }
+
+
+
 
 /* @func ajSeqsetGetseqAccC ***************************************************
 **
@@ -6109,6 +6522,8 @@ const AjPStr ajSeqsetGetseqAccS(const AjPSeqset seq, ajuint i)
 }
 
 
+
+
 /* @obsolete ajSeqsetAcc
 ** @rename ajSeqsetGetseqAccS
 */
@@ -6116,6 +6531,7 @@ __deprecated const AjPStr  ajSeqsetAcc(const AjPSeqset seq, ajint i)
 {
     return ajSeqsetGetseqAccS(seq, i);
 }
+
 
 
 
@@ -6138,6 +6554,8 @@ const char* ajSeqsetGetseqNameC(const AjPSeqset seq, ajuint i)
 }
 
 
+
+
 /* @func ajSeqsetGetseqNameS **************************************************
 **
 ** Returns the name of a sequence in a sequence set
@@ -6157,6 +6575,8 @@ const AjPStr ajSeqsetGetseqNameS(const AjPSeqset seq, ajuint i)
 }
 
 
+
+
 /* @obsolete ajSeqsetName
 ** @rename ajSeqsetGetseqNameS
 */
@@ -6164,6 +6584,9 @@ __deprecated const AjPStr  ajSeqsetName(const AjPSeqset seq, ajint i)
 {
     return ajSeqsetGetseqNameS(seq, i);
 }
+
+
+
 
 /* @func ajSeqsetGetseqSeq ***************************************************
 **
@@ -6232,6 +6655,7 @@ const char* ajSeqsetGetseqSeqC(const AjPSeqset seq, ajuint i)
 const AjPStr ajSeqsetGetseqSeqS(const AjPSeqset seq, ajuint i)
 {
     ajDebug("ajSeqsetGetseqSeq '%S' %d/%d\n", seq->Name, i, seq->Size);
+
     if(i >= seq->Size)
 	return NULL;
 
@@ -6250,6 +6674,8 @@ __deprecated const AjPSeq  ajSeqsetGetSeq(const AjPSeqset thys, ajint i)
 }
 
 
+
+
 /* @obsolete ajSeqsetSeq
 ** @rename ajSeqsetGetseqSeqC
 */
@@ -6257,6 +6683,8 @@ __deprecated const char*   ajSeqsetSeq(const AjPSeqset thys, ajint i)
 {
     return ajSeqsetGetseqSeqC(thys, i);
 }
+
+
 
 
 /* @func ajSeqsetGetseqWeight *************************************************
@@ -6278,6 +6706,8 @@ float ajSeqsetGetseqWeight(const AjPSeqset seq, ajuint i)
 }
 
 
+
+
 /* @obsolete ajSeqsetWeight
 ** @rename ajSeqsetGetseqWeight
 */
@@ -6285,6 +6715,9 @@ __deprecated float  ajSeqsetWeight(const AjPSeqset seq, ajint i)
 {
     return ajSeqsetGetseqWeight(seq, i);
 }
+
+
+
 
 /* @section testing properties ************************************************
 **
@@ -6325,6 +6758,7 @@ AjBool ajSeqsetIsDna(const AjPSeqset seq)
 	return ajFalse;
 
     myseq = seq->Seq[0];
+
     if(ajSeqTypeGapdnaS(myseq->Seq))
     	return ajFalse;
 
@@ -6351,6 +6785,7 @@ AjBool ajSeqsetIsNuc(const AjPSeqset seq)
 	return ajTrue;
 
     myseq = seq->Seq[0];
+
     if(ajSeqTypeGapnucS(myseq->Seq))
     	return ajFalse;
 
@@ -6380,10 +6815,11 @@ AjBool ajSeqsetIsProt(const AjPSeqset seq)
 	return ajFalse;
 
     myseq = seq->Seq[0];
-    return ajSeqIsProt(myseq);
 
-    return ajTrue;
+    return ajSeqIsProt(myseq);
 }
+
+
 
 
 /* @func ajSeqsetIsRna ********************************************************
@@ -6403,11 +6839,13 @@ AjBool ajSeqsetIsRna(const AjPSeqset seq)
 	return ajFalse;
 
     myseq = seq->Seq[0];
+
     if(ajSeqTypeGaprnaS(myseq->Seq))
     	return ajFalse;
 
     return ajTrue;
 }
+
 
 
 
@@ -6474,6 +6912,7 @@ AjBool ajSeqstrConvertNum(const AjPStr seq, const AjPSeqCvt cvt,
 
 
 
+
 /* @obsolete ajSeqNumS
 ** @rename ajSeqstrConvertNum
 */
@@ -6484,6 +6923,7 @@ __deprecated AjBool  ajSeqNumS(const AjPStr seqstr,
 {
     return ajSeqstrConvertNum(seqstr, cvt, numseq);;
 }
+
 
 
 
@@ -6537,14 +6977,19 @@ void ajSeqcvtTrace(const AjPSeqCvt cvt)
 }
 
 
+
+
 /* @obsolete ajSeqCvtTrace
 ** @rename ajSeqcvtTrace
 */
 __deprecated void  ajSeqCvtTrace(const AjPSeqCvt cvt)
 {
     ajSeqcvtTrace(cvt);
+
     return;
 }
+
+
 
 
 /* @section constructors *********************************************
@@ -6613,6 +7058,7 @@ AjPSeqCvt ajSeqcvtNewC(const char* bases)
     ret->missing = 0;
 
     i = 0;
+
     while(*cp)
     {
 	i++;
@@ -6626,6 +7072,7 @@ AjPSeqCvt ajSeqcvtNewC(const char* bases)
 
 
 
+
 /* @obsolete ajSeqCvtNewZero
 ** @rename ajSeqcvtNewC
 */
@@ -6633,6 +7080,8 @@ __deprecated AjPSeqCvt  ajSeqCvtNewZero(const char* bases)
 {
     return ajSeqcvtNewC(bases);
 }
+
+
 
 
 /* @func ajSeqcvtNewEndC ******************************************************
@@ -6670,6 +7119,7 @@ AjPSeqCvt ajSeqcvtNewEndC(const char* bases)
 	ret->table[j] = ajSysCastItoc(imax);
 
     i = 0;
+
     while(*cp)
     {
 	ret->table[toupper((ajint) *cp)] = ajSysCastItoc(i);
@@ -6682,6 +7132,8 @@ AjPSeqCvt ajSeqcvtNewEndC(const char* bases)
 }
 
 
+
+
 /* @obsolete ajSeqCvtNew
 ** @rename ajSeqcvtNewEndC
 */
@@ -6689,6 +7141,9 @@ __deprecated AjPSeqCvt  ajSeqCvtNew(const char* bases)
 {
     return ajSeqcvtNewEndC(bases);
 }
+
+
+
 
 /* @func ajSeqcvtNewNumberC ***************************************************
 **
@@ -6726,6 +7181,7 @@ AjPSeqCvt ajSeqcvtNewNumberC(const char* bases)
 
 
     i = 0;
+
     while(*cp)
     {
 	c = ajSysCastItoc(toupper((ajint)*cp));
@@ -6740,6 +7196,7 @@ AjPSeqCvt ajSeqcvtNewNumberC(const char* bases)
 
 
 
+
 /* @obsolete ajSeqCvtNewText
 ** @rename ajSeqcvtNewNumberC
 */
@@ -6747,6 +7204,9 @@ __deprecated AjPSeqCvt  ajSeqCvtNewText(const char* bases)
 {
     return ajSeqcvtNewNumberC(bases);
 }
+
+
+
 
 /* @func ajSeqcvtNewStr *******************************************************
 **
@@ -6786,8 +7246,10 @@ AjPSeqCvt ajSeqcvtNewStr (const AjPPStr basearray, ajint numbases)
 
 
     AJCNEW0(ret->clabels, numbases);
+
     for(i=0; i<numbases; i++)
 	ret->clabels[i] = ajStrNew();
+
     for(i=0; i<numbases; i++)
 	ajStrAssignS(&ret->clabels[i], basearray[i]);
 
@@ -6805,6 +7267,7 @@ AjPSeqCvt ajSeqcvtNewStr (const AjPPStr basearray, ajint numbases)
 
 
 
+
 /* @obsolete ajSeqCvtNewZeroS
 ** @rename ajSeqcvtNewStr
 */
@@ -6812,6 +7275,8 @@ __deprecated AjPSeqCvt  ajSeqCvtNewZeroS (const AjPPStr bases, ajint n)
 {
     return ajSeqcvtNewStr(bases, n);
 }
+
+
 
 
 /* @func ajSeqcvtNewStrAsym **************************************************
@@ -6852,15 +7317,19 @@ AjPSeqCvt ajSeqcvtNewStrAsym (const AjPPStr basearray, ajint numbases,
 
 
     AJCNEW0(ret->rlabels, nummatch);
+
     for(i=0; i<nummatch; i++)
 	ret->rlabels[i] = ajStrNew();
+
     for(i=0; i<nummatch; i++)
 	ajStrAssignS(&ret->rlabels[i], matchbases[i]);
 
 
     AJCNEW0(ret->clabels, numbases);
+
     for(i=0; i<numbases; i++)
 	ret->clabels[i] = ajStrNew();
+
     for(i=0; i<numbases; i++)
 	ajStrAssignS(&ret->clabels[i], basearray[i]);
 
@@ -6880,6 +7349,7 @@ AjPSeqCvt ajSeqcvtNewStrAsym (const AjPPStr basearray, ajint numbases,
 
 
 
+
 /* @obsolete ajSeqCvtNewZeroSS
 ** @rename ajSeqcvtNewStrAsym
 */
@@ -6888,6 +7358,9 @@ __deprecated AjPSeqCvt  ajSeqCvtNewZeroSS (const AjPPStr bases, int n,
 {
     return ajSeqcvtNewStrAsym (bases, n, rbases, rn);
 }
+
+
+
 
 /* @section Sequence Destructors **********************************************
 **
@@ -6929,6 +7402,7 @@ void ajSeqcvtDel (AjPSeqCvt* Pcvt)
     {
 	for(i=0;i<(*Pcvt)->nrlabels;i++)
 	    ajStrDel(&(*Pcvt)->rlabels[i]);
+
 	AJFREE((*Pcvt)->rlabels);
     }
     
@@ -6936,6 +7410,7 @@ void ajSeqcvtDel (AjPSeqCvt* Pcvt)
     {
 	for(i=0;i<(*Pcvt)->nclabels;i++)
 	    ajStrDel(&(*Pcvt)->clabels[i]);
+
 	AJFREE((*Pcvt)->clabels);
     }
     
@@ -6946,14 +7421,19 @@ void ajSeqcvtDel (AjPSeqCvt* Pcvt)
 
 
 
+
 /* @obsolete ajSeqCvtDel
 ** @rename ajSeqcvtDel
 */
 __deprecated void  ajSeqCvtDel (AjPSeqCvt* Pcvt)
 {
     ajSeqcvtDel(Pcvt);
+
     return;
 }
+
+
+
 
 /* @section element retrieval ********************************************
 **
@@ -6995,6 +7475,8 @@ ajint ajSeqcvtGetCodeK(const AjPSeqCvt cvt, char ch)
 }
 
 
+
+
 /* @obsolete ajSeqCvtK
 ** @rename ajSeqcvtGetCodeK
 */
@@ -7002,6 +7484,8 @@ __deprecated ajint  ajSeqCvtK(const AjPSeqCvt cvt, char ch)
 {
     return ajSeqcvtGetCodeK(cvt, ch);
 }
+
+
 
 
 /* @func ajSeqcvtGetCodeS *****************************************************
@@ -7023,6 +7507,7 @@ ajint ajSeqcvtGetCodeS (const AjPSeqCvt cvt, const AjPStr str)
     for(i=0;i<cvt->nrlabels;i++)
 	if(ajStrMatchS(str, cvt->rlabels[i]))
 	    return i+1;
+
     /* i+1 is returned because the size of a matrix is always 1 bigger than
        the number of labels. This is the "padding" first row/column which 
        has all values of 0. */
@@ -7044,6 +7529,8 @@ __deprecated ajint  ajSeqCvtKS (const AjPSeqCvt cvt, const AjPStr ch)
 }
 
 
+
+
 /* @obsolete ajSeqCvtKSRow
 ** @rename ajSeqcvtGetCodeS
 */
@@ -7051,6 +7538,8 @@ __deprecated ajint  ajSeqCvtKSRow (const AjPSeqCvt cvt, const AjPStr ch)
 {
     return(ajSeqcvtGetCodeS(cvt, ch));
 }
+
+
 
 
 /* @func ajSeqcvtGetCodeAsymS *************************************************
@@ -7072,6 +7561,7 @@ ajint ajSeqcvtGetCodeAsymS (const AjPSeqCvt cvt, const AjPStr str)
     for(i=0;i<cvt->nclabels;i++)
 	if(ajStrMatchS(str, cvt->clabels[i]))
 	    return i+1;
+
     /* i+1 is returned because the size of a matrix is always 1 bigger than
        the number of labels. This is the "padding" first row/column which 
        has all values of 0. */
@@ -7084,7 +7574,6 @@ ajint ajSeqcvtGetCodeAsymS (const AjPSeqCvt cvt, const AjPStr str)
 
 
 
-
 /* @obsolete ajSeqCvtKSColumn
 ** @rename ajSeqcvtGetCodeAsymS
 */
@@ -7092,6 +7581,8 @@ __deprecated ajint  ajSeqCvtKSColumn (const AjPSeqCvt cvt, const AjPStr ch)
 {
     return ajSeqcvtGetCodeAsymS(cvt, ch);
 }
+
+
 
 
 /* @func ajSeqcvtGetLen *******************************************************
@@ -7111,6 +7602,8 @@ ajuint ajSeqcvtGetLen(const AjPSeqCvt cvt)
 }
 
 
+
+
 /* @obsolete ajSeqCvtLen
 ** @rename ajSeqcvtGetLen
 */
@@ -7118,6 +7611,8 @@ __deprecated ajint  ajSeqCvtLen(const AjPSeqCvt cvt)
 {
     return ajSeqcvtGetLen(cvt);
 }
+
+
 
 
 /* @datasection [AjPSeqDate] sequence dates ***********************************
@@ -7153,8 +7648,11 @@ AjPSeqDate ajSeqdateNew(void)
 {
     AjPSeqDate ret;
     AJNEW0(ret);
+
     return ret;
 }
+
+
 
 
 /* @func ajSeqdateNewDate *****************************************************
@@ -7175,26 +7673,35 @@ AjPSeqDate ajSeqdateNewDate(const AjPSeqDate date)
 
     if(date->CreDate)
 	ret->CreDate = ajTimeNewTime(date->CreDate);
+
     if(date->ModDate)
 	ret->ModDate = ajTimeNewTime(date->ModDate);
+
     if(date->SeqDate)
 	ret->SeqDate = ajTimeNewTime(date->SeqDate);
 
     if(date->CreRel)
 	ajStrAssignS(&ret->CreRel, date->CreRel);
+
     if(date->ModRel)
 	ajStrAssignS(&ret->ModRel, date->ModRel);
+
     if(date->SeqRel)
 	ajStrAssignS(&ret->SeqRel, date->SeqRel);
+
     if(date->CreVer)
 	ajStrAssignS(&ret->CreVer, date->CreVer);
+
     if(date->ModVer)
 	ajStrAssignS(&ret->ModVer, date->ModVer);
+
     if(date->SeqVer)
 	ajStrAssignS(&ret->SeqVer, date->SeqVer);
 
     return ret;
 }
+
+
 
 
 /* @section destructors **********************************************
@@ -7228,6 +7735,7 @@ void ajSeqdateDel(AjPSeqDate* Pdate)
 
     if(!Pdate)
 	return;
+
     if(!*Pdate)
 	return;
 
@@ -7248,6 +7756,8 @@ void ajSeqdateDel(AjPSeqDate* Pdate)
 
     return;
 }
+
+
 
 
 /* @section modifiers ************************************************
@@ -7305,6 +7815,9 @@ void ajSeqdateClear(AjPSeqDate date)
     return;
 }
 
+
+
+
 /* @func ajSeqdateSetCreateS **************************************************
 **
 ** Set the sequence creation date
@@ -7323,6 +7836,9 @@ AjBool ajSeqdateSetCreateS(AjPSeqDate date, const AjPStr datestr)
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqdateSetModifyS **************************************************
 **
@@ -7344,6 +7860,8 @@ AjBool ajSeqdateSetModifyS(AjPSeqDate date, const AjPStr datestr)
 }
 
 
+
+
 /* @func ajSeqdateSetModseqS **************************************************
 **
 ** Set the sequence modification date
@@ -7363,6 +7881,9 @@ AjBool ajSeqdateSetModseqS(AjPSeqDate date, const AjPStr datestr)
     return ajTrue;
 }
 
+
+
+
 /* @funcstatic seqDateSet *****************************************************
 **
 ** Sets a sequence date object
@@ -7376,9 +7897,11 @@ static AjBool seqDateSet(AjPTime* date, const AjPStr datestr)
 {
     AjPStrTok handle = NULL;
     AjPStr tmpstr = NULL;
-    const char* months[] = {
+    const char* months[] =
+    {
 	"JAN", "FEB", "MAR", "APR", "MAY", "JUN",
-	"JUL", "AUG", "SEP", "OCT", "NOV", "DEC", NULL};
+	"JUL", "AUG", "SEP", "OCT", "NOV", "DEC", NULL
+    };
     ajint day;
     ajint month;
     ajint year;
@@ -7390,6 +7913,7 @@ static AjBool seqDateSet(AjPTime* date, const AjPStr datestr)
 
     ajStrTokenNextParse(&handle, &tmpstr);
     month = 0;
+
     while(months[month] && !ajStrMatchC(tmpstr, months[month]))
 	month++;
 
@@ -7400,8 +7924,10 @@ static AjBool seqDateSet(AjPTime* date, const AjPStr datestr)
 
     ajStrTokenNextParse(&handle, &tmpstr);
     ajStrToInt(tmpstr, &year);
+
     if(year > 1900)
 	year -= 1900;
+
     *date = ajTimeNewDayFmt("dtline", day, month, year);
 
     ajStrTokenDel(&handle);
@@ -7409,6 +7935,8 @@ static AjBool seqDateSet(AjPTime* date, const AjPStr datestr)
 
     return ajTrue;
 }
+
+
 
 
 /* @datasection [AjPSeqDesc] sequence descriptions *****************************
@@ -7443,6 +7971,7 @@ static AjBool seqDateSet(AjPTime* date, const AjPStr datestr)
 AjPSeqDesc ajSeqdescNew(void)
 {
     AjPSeqDesc ret;
+
     AJNEW0(ret);
 
     ret->Name     = ajStrNew();
@@ -7458,6 +7987,9 @@ AjPSeqDesc ajSeqdescNew(void)
     return ret;
 }
 
+
+
+
 /* @func ajSeqdescNewDesc *****************************************************
 **
 ** Constructor for copy of a description object
@@ -7469,6 +8001,7 @@ AjPSeqDesc ajSeqdescNew(void)
 AjPSeqDesc ajSeqdescNewDesc(const AjPSeqDesc desc)
 {
     AjPSeqDesc ret;
+
     AJNEW0(ret);
 
     if(!desc)
@@ -7492,6 +8025,8 @@ AjPSeqDesc ajSeqdescNewDesc(const AjPSeqDesc desc)
 
     return ret;
 }
+
+
 
 
 /* @section destructors **********************************************
@@ -7530,6 +8065,7 @@ void ajSeqdescDel(AjPSeqDesc* Pdesc)
 
     if(!Pdesc)
 	return;
+
     if(!*Pdesc)
 	return;
 
@@ -7542,16 +8078,22 @@ void ajSeqdescDel(AjPSeqDesc* Pdesc)
 
     while(ajListPop(sdesc->AltNames,(void **)&sub))
 	ajSeqsubdescDel(&sub);
+
     ajListFree(&sdesc->AltNames);
+
     while(ajListPop(sdesc->SubNames,(void **)&sub))
 	ajSeqsubdescDel(&sub);
+
     ajListFree(&sdesc->SubNames);
 
     while(ajListPop(sdesc->Includes,(void **)&desc))
 	ajSeqdescDel(&desc);
+
     ajListFree(&sdesc->Includes);
+
     while(ajListPop(sdesc->Contains,(void **)&desc))
 	ajSeqdescDel(&desc);
+
     ajListFree(&sdesc->Contains);
 
     AJFREE(*Pdesc);
@@ -7598,10 +8140,14 @@ AjBool ajSeqdescAppendName(AjPSeqDesc desc, const AjPStr str)
 {
     if(ajStrGetLen(desc->Name))
 	ajStrAppendK(&desc->Name, ' ');
+
     ajStrAppendS(&desc->Name, str);
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqdescClear ********************************************************
 **
@@ -7622,21 +8168,25 @@ void ajSeqdescClear(AjPSeqDesc desc)
 
     while(ajListstrPop(desc->Short,&ptr))
 	ajStrDel(&ptr);
+
     while(ajListstrPop(desc->EC,&ptr))
 	ajStrDel(&ptr);
 
     while(ajListPop(desc->AltNames,(void **)&sub))
 	ajSeqsubdescDel(&sub);
+
     while(ajListPop(desc->SubNames,(void **)&sub))
 	ajSeqsubdescDel(&sub);
 
     while(ajListPop(desc->Includes,(void **)&sdesc))
 	ajSeqdescDel(&sdesc);
+
     while(ajListPop(desc->Contains,(void **)&sdesc))
 	ajSeqdescDel(&sdesc);
 
     desc->Precursor = ajFalse;
     desc->Fragments = 0;
+
     return;
 }
 
@@ -7658,6 +8208,9 @@ AjBool ajSeqdescSetName(AjPSeqDesc desc, const AjPStr str)
 
     return ajTrue;
 }
+
+
+
 
 /* @datasection [AjPList] Description list operations *************************
 **
@@ -7702,6 +8255,7 @@ AjBool ajSeqdesclistClone(const AjPList src, AjPList dest)
 	return ajFalse;
 
     iter = ajListIterNewread(src);
+
     while ((descin = (AjPSeqDesc) ajListIterGet(iter)))
     {
 	descout = ajSeqdescNewDesc(descin);
@@ -7712,6 +8266,9 @@ AjBool ajSeqdesclistClone(const AjPList src, AjPList dest)
 
     return ajTrue;
 }
+
+
+
 
 /* @datasection [AjPSeqSubdesc] sequence subdescriptions ***********************
 **
@@ -7757,6 +8314,9 @@ AjPSeqSubdesc ajSeqsubdescNew(void)
     return ret;
 }
 
+
+
+
 /* @func ajSeqsubdescNewSubdesc ************************************************
 **
 ** Constructor for copy of a subdescription object
@@ -7783,6 +8343,8 @@ AjPSeqSubdesc ajSeqsubdescNewSubdesc(const AjPSeqSubdesc desc)
 
     return ret;
 }
+
+
 
 
 /* @section destructors **********************************************
@@ -7819,6 +8381,7 @@ void ajSeqsubdescDel(AjPSeqSubdesc* Pdesc)
 
     if(!Pdesc)
 	return;
+
     if(!*Pdesc)
 	return;
 
@@ -7881,6 +8444,9 @@ AjBool ajSeqsubdescAppendName(AjPSeqSubdesc desc, const AjPStr str)
     return ajTrue;
 }
 
+
+
+
 /* @func ajSeqsubdescClear ****************************************************
 **
 ** Resets data for a subdescription object.
@@ -7898,14 +8464,19 @@ void ajSeqsubdescClear(AjPSeqSubdesc desc)
     
     while(ajListstrPop(desc->Short,&ptr))
 	ajStrDel(&ptr);
+
     while(ajListstrPop(desc->EC,&ptr))
 	ajStrDel(&ptr);
+
     while(ajListstrPop(desc->Allergen,&ptr))
 	ajStrDel(&ptr);
+
     while(ajListstrPop(desc->Biotech,&ptr))
 	ajStrDel(&ptr);
+
     while(ajListstrPop(desc->Cdantigen,&ptr))
 	ajStrDel(&ptr);
+
     while(ajListstrPop(desc->Inn,&ptr))
 	ajStrDel(&ptr);
 
@@ -7930,6 +8501,9 @@ AjBool ajSeqsubdescSetName(AjPSeqSubdesc desc, const AjPStr str)
 
     return ajTrue;
 }
+
+
+
 
 /* @datasection [AjPList] Description list operations *************************
 **
@@ -7975,6 +8549,7 @@ AjBool ajSeqsubdesclistClone(const AjPList src, AjPList dest)
 	return ajFalse;
 
     iter = ajListIterNewread(src);
+
     while ((descin = (AjPSeqSubdesc) ajListIterGet(iter)))
     {
 	descout = ajSeqsubdescNewSubdesc(descin);
@@ -7985,6 +8560,9 @@ AjBool ajSeqsubdesclistClone(const AjPList src, AjPList dest)
 
     return ajTrue;
 }
+
+
+
 
 /* @datasection [AjPSeqGene] gene names ***************************************
 **
@@ -8019,8 +8597,12 @@ AjPSeqGene ajSeqgeneNew(void)
 {
     AjPSeqGene ret;
     AJNEW0(ret);
+
     return ret;
 }
+
+
+
 
 /* @func ajSeqgeneNewGene *****************************************************
 **
@@ -8045,6 +8627,8 @@ AjPSeqGene ajSeqgeneNewGene(const AjPSeqGene gene)
 
     return ret;
 }
+
+
 
 
 /* @section destructors **********************************************
@@ -8081,6 +8665,7 @@ void ajSeqgeneDel(AjPSeqGene* Pgene)
 
     if(!Pgene)
 	return;
+
     if(!*Pgene)
 	return;
 
@@ -8140,10 +8725,14 @@ AjBool ajSeqgeneAppendName(AjPSeqGene gene, const AjPStr str)
 {
     if(ajStrGetLen(gene->Name))
 	ajStrAppendK(&gene->Name, ' ');
+
     ajStrAppendS(&gene->Name, str);
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqgeneAppendOln ****************************************************
 **
@@ -8158,10 +8747,14 @@ AjBool ajSeqgeneAppendOln(AjPSeqGene gene, const AjPStr str)
 {
     if(ajStrGetLen(gene->Oln))
 	ajStrAppendK(&gene->Oln, ' ');
+
     ajStrAppendS(&gene->Oln, str);
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqgeneAppendOrf ****************************************************
 **
@@ -8176,10 +8769,14 @@ AjBool ajSeqgeneAppendOrf(AjPSeqGene gene, const AjPStr str)
 {
     if(ajStrGetLen(gene->Orf))
 	ajStrAppendK(&gene->Orf, ' ');
+
     ajStrAppendS(&gene->Orf, str);
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqgeneAppendSynonyms ***********************************************
 **
@@ -8194,10 +8791,14 @@ AjBool ajSeqgeneAppendSynonyms(AjPSeqGene gene, const AjPStr str)
 {
     if(ajStrGetLen(gene->Synonyms))
 	ajStrAppendK(&gene->Synonyms, ' ');
+
     ajStrAppendS(&gene->Synonyms, str);
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqgeneSetName *****************************************************
 **
@@ -8215,6 +8816,9 @@ AjBool ajSeqgeneSetName(AjPSeqGene gene, const AjPStr str)
     return ajTrue;
 }
 
+
+
+
 /* @func ajSeqgeneSetOln *******************************************************
 **
 ** Set the ordered locus names of a gene
@@ -8230,6 +8834,9 @@ AjBool ajSeqgeneSetOln(AjPSeqGene gene, const AjPStr str)
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqgeneSetOrf *******************************************************
 **
@@ -8247,6 +8854,9 @@ AjBool ajSeqgeneSetOrf(AjPSeqGene gene, const AjPStr str)
     return ajTrue;
 }
 
+
+
+
 /* @func ajSeqgeneSetSynonyms **************************************************
 **
 ** Set the name of a gene
@@ -8262,6 +8872,9 @@ AjBool ajSeqgeneSetSynonyms(AjPSeqGene gene, const AjPStr str)
 
     return ajTrue;
 }
+
+
+
 
 /* @datasection [AjPList] Reference list operations ***************************
 **
@@ -8306,6 +8919,7 @@ AjBool ajSeqgenelistClone(const AjPList src, AjPList dest)
 	return ajFalse;
 
     iter = ajListIterNewread(src);
+
     while ((genein = (AjPSeqGene) ajListIterGet(iter)))
     {
 	geneout = ajSeqgeneNewGene(genein);
@@ -8316,6 +8930,9 @@ AjBool ajSeqgenelistClone(const AjPList src, AjPList dest)
 
     return ajTrue;
 }
+
+
+
 
 /* @datasection [AjPSeqRef] sequence citations ********************************
 **
@@ -8350,8 +8967,12 @@ AjPSeqRef ajSeqrefNew(void)
 {
     AjPSeqRef ret;
     AJNEW0(ret);
+
     return ret;
 }
+
+
+
 
 /* @func ajSeqrefNewRef *******************************************************
 **
@@ -8381,6 +9002,8 @@ AjPSeqRef ajSeqrefNewRef(const AjPSeqRef ref)
 
     return ret;
 }
+
+
 
 
 /* @section destructors **********************************************
@@ -8417,6 +9040,7 @@ void ajSeqrefDel(AjPSeqRef* Pref)
 
     if(!Pref)
 	return;
+
     if(!*Pref)
 	return;
 
@@ -8435,6 +9059,9 @@ void ajSeqrefDel(AjPSeqRef* Pref)
 
     return;
 }
+
+
+
 
 /* @section modifiers ************************************************
 **
@@ -8502,10 +9129,14 @@ AjBool ajSeqrefAppendAuthors(AjPSeqRef ref, const AjPStr str)
 {
     if(ajStrGetLen(ref->Authors))
 	ajStrAppendK(&ref->Authors, ' ');
+
     ajStrAppendS(&ref->Authors, str);
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqrefAppendComment ***********************************************
 **
@@ -8520,10 +9151,14 @@ AjBool ajSeqrefAppendComment(AjPSeqRef ref, const AjPStr str)
 {
     if(ajStrGetLen(ref->Comment))
 	ajStrAppendK(&ref->Comment, ' ');
+
     ajStrAppendS(&ref->Comment, str);
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqrefAppendGroupname **********************************************
 **
@@ -8538,10 +9173,14 @@ AjBool ajSeqrefAppendGroupname(AjPSeqRef ref, const AjPStr str)
 {
     if(ajStrGetLen(ref->Groupname))
 	ajStrAppendK(&ref->Groupname, ' ');
+
     ajStrAppendS(&ref->Groupname, str);
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqrefAppendLocation ***********************************************
 **
@@ -8571,6 +9210,9 @@ AjBool ajSeqrefAppendLocation(AjPSeqRef ref, const AjPStr str)
     return ajTrue;
 }
 
+
+
+
 /* @func ajSeqrefAppendPosition ***********************************************
 **
 ** Append to the position string of a citation
@@ -8584,10 +9226,14 @@ AjBool ajSeqrefAppendPosition(AjPSeqRef ref, const AjPStr str)
 {
     if(ajStrGetLen(ref->Position))
 	ajStrAppendK(&ref->Position, ' ');
+
     ajStrAppendS(&ref->Position, str);
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqrefAppendTitle **************************************************
 **
@@ -8607,6 +9253,9 @@ AjBool ajSeqrefAppendTitle(AjPSeqRef ref, const AjPStr str)
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqrefAppendXref ***********************************************
 **
@@ -8633,6 +9282,8 @@ AjBool ajSeqrefAppendXref(AjPSeqRef ref, const AjPStr str)
 }
 
 
+
+
 /* @func ajSeqrefFmtAuthorsEmbl ***********************************************
 **
 ** Return the Authors string of a citation in EMBL format
@@ -8653,6 +9304,9 @@ AjBool ajSeqrefFmtAuthorsEmbl(const AjPSeqRef ref, AjPStr* Pdest)
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqrefFmtAuthorsGb ***********************************************
 **
@@ -8676,21 +9330,29 @@ AjBool ajSeqrefFmtAuthorsGb(const AjPSeqRef ref, AjPStr* Pdest)
 
     ajStrAssignS(Pdest, ref->Authors);
     i = ajStrFindlastC(*Pdest, ","); /* replace , with and */
-    if(i != -1) {
+
+    if(i != -1)
+    {
 	ajStrCutRange(Pdest, i, i);
 	ajStrInsertC(Pdest, i, " and");
     }
+
     cp = ajStrGetuniquePtr(Pdest);
     imax=ajStrGetLen(*Pdest)-2;
+
     for(i=0;i<imax;i++)
     {
 	if(*cp == ' ' && cp[2] == '.' && isalpha((int)cp[1]))
 	    *cp = ',';
+
 	cp++;
     }
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqrefFmtLocationEmbl **********************************************
 **
@@ -8712,6 +9374,9 @@ AjBool ajSeqrefFmtLocationEmbl(const AjPSeqRef ref, AjPStr* Pdest)
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqrefFmtLocationGb ***********************************************
 **
@@ -8739,6 +9404,9 @@ AjBool ajSeqrefFmtLocationGb(const AjPSeqRef ref, AjPStr* Pdest)
     return ajTrue;
 }
 
+
+
+
 /* @func ajSeqrefFmtTitleGb ***********************************************
 **
 ** Return the title string of a citation in Genbank format
@@ -8757,8 +9425,10 @@ AjBool ajSeqrefFmtTitleGb(const AjPSeqRef ref, AjPStr* Pdest)
 	if(ajStrMatchC(ref->Loctype, "submission"))
 	{
 	    ajStrAssignC(Pdest, "Direct Submission");
+
 	    return ajTrue;
 	}
+
 	return ajFalse;
     }
 
@@ -8766,6 +9436,9 @@ AjBool ajSeqrefFmtTitleGb(const AjPSeqRef ref, AjPStr* Pdest)
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqrefSetAuthors **************************************************
 **
@@ -8783,6 +9456,9 @@ AjBool ajSeqrefSetAuthors(AjPSeqRef ref, const AjPStr str)
     return ajTrue;
 }
 
+
+
+
 /* @func ajSeqrefSetComment **************************************************
 **
 ** Set the Comment string of a citation
@@ -8798,6 +9474,9 @@ AjBool ajSeqrefSetComment(AjPSeqRef ref, const AjPStr str)
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqrefSetGroupname *************************************************
 **
@@ -8815,6 +9494,9 @@ AjBool ajSeqrefSetGroupname(AjPSeqRef ref, const AjPStr str)
     return ajTrue;
 }
 
+
+
+
 /* @func ajSeqrefSetLocation **************************************************
 **
 ** Set the location string of a citation
@@ -8831,6 +9513,9 @@ AjBool ajSeqrefSetLocation(AjPSeqRef ref, const AjPStr str)
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqrefSetLoctype ***************************************************
 **
@@ -8861,6 +9546,9 @@ AjBool ajSeqrefSetLoctype(AjPSeqRef ref, const AjPStr str)
     return ajTrue;
 }
 
+
+
+
 /* @func ajSeqrefSetPosition **************************************************
 **
 ** Set the position string of a citation
@@ -8876,6 +9564,9 @@ AjBool ajSeqrefSetPosition(AjPSeqRef ref, const AjPStr str)
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqrefSetTitle *****************************************************
 **
@@ -8893,6 +9584,9 @@ AjBool ajSeqrefSetTitle(AjPSeqRef ref, const AjPStr str)
     return ajTrue;
 }
 
+
+
+
 /* @func ajSeqrefSetXref ******************************************************
 **
 ** Set the cross reference string of a citation
@@ -8909,6 +9603,9 @@ AjBool ajSeqrefSetXref(AjPSeqRef ref, const AjPStr str)
     return ajTrue;
 }
 
+
+
+
 /* @func ajSeqrefSetnumNumber *************************************************
 **
 ** Sets the citation number
@@ -8924,6 +9621,9 @@ AjBool ajSeqrefSetnumNumber(AjPSeqRef ref, ajuint num)
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajSeqrefStandard *****************************************************
 **
@@ -8944,8 +9644,10 @@ AjBool ajSeqrefStandard(AjPSeqRef ref)
 
     if(ajStrGetCharLast(ref->Title) == '.')
 	ajStrTrimEndC(&ref->Title, ".");
+
     if(ajStrGetCharLast(ref->Title) == ';')
 	ajStrTrimEndC(&ref->Title, ";");
+
     ajStrQuoteStrip(&ref->Title);
 
     if(ajStrGetCharLast(ref->Authors) == ';')
@@ -8953,6 +9655,9 @@ AjBool ajSeqrefStandard(AjPSeqRef ref)
 
     return ajTrue;
 }
+
+
+
 
 /* @datasection [AjPList] Reference list operations ***************************8
 **
@@ -8997,6 +9702,7 @@ AjBool ajSeqreflistClone(const AjPList src, AjPList dest)
 	return ajFalse;
 
     iter = ajListIterNewread(src);
+
     while ((refin = (AjPSeqRef) ajListIterGet(iter)))
     {
 	refout = ajSeqrefNewRef(refin);
@@ -9007,6 +9713,9 @@ AjBool ajSeqreflistClone(const AjPList src, AjPList dest)
 
     return ajTrue;
 }
+
+
+
 
 /* @datasection [AjPStr] string tests *****************************************
 **
@@ -9057,6 +9766,7 @@ AjBool ajSeqtestIsAccession(const AjPStr str)
 	return ajFalse;
 
     i = ajStrGetLen(str);
+
     if(i < 6)
 	return ajFalse;
 
@@ -9109,6 +9819,8 @@ AjBool ajSeqtestIsAccession(const AjPStr str)
 }
 
 
+
+
 /* @obsolete ajIsAccession
 ** @rename ajSeqtestIsAccession
 */
@@ -9116,6 +9828,9 @@ __deprecated AjBool  ajIsAccession(const AjPStr accnum)
 {
     return ajSeqtestIsAccession(accnum);
 }
+
+
+
 
 /* @func ajSeqtestIsSeqversion ************************************************
 **
@@ -9143,6 +9858,7 @@ const AjPStr ajSeqtestIsSeqversion(const AjPStr str)
 	return NULL;
 
     i = ajStrGetLen(str);
+
     if(i < 8)
 	return NULL;
 
@@ -9162,6 +9878,7 @@ const AjPStr ajSeqtestIsSeqversion(const AjPStr str)
     {					/* EMBL/GenBank AAnnnnnn */
         ajStrAppendK(&seqVersionAccnum, *cp);
 	cp++;
+
 	if(isalpha((ajint)*cp))
 	{			/* EMBL/GenBank protein_id AAAnnnnnn */
 	    ajStrAppendK(&seqVersionAccnum, *cp);
@@ -9194,6 +9911,7 @@ const AjPStr ajSeqtestIsSeqversion(const AjPStr str)
 	    else
 		return NULL;
 	}
+
 	if(v)
 	    return seqVersionAccnum;
 	else
@@ -9239,6 +9957,7 @@ const AjPStr ajSeqtestIsSeqversion(const AjPStr str)
 	    else
 		return NULL;
 	}
+
 	if(v)
 	    return seqVersionAccnum;
 	else
@@ -9258,6 +9977,8 @@ __deprecated const AjPStr  ajIsSeqversion(const AjPStr sv)
 {
     return ajSeqtestIsSeqversion(sv);
 }
+
+
 
 
 /* @datasection [AjPStr] string sequences *************************************
@@ -9299,7 +10020,8 @@ __deprecated const AjPStr  ajIsSeqversion(const AjPStr sv)
 float ajSeqstrCalcMolwt(const AjPStr seq)
 {
     /* source: www.expasy.org/tools/findmod/findmod_masses.html */
-    static double aa[26] = {
+    static double aa[26] =
+    {
         89.0894,  132.6068,  121.1494,  133.0992, /* A-D */
        147.1261,  165.1872,   75.0625,  155.1517, /* E-H */
        131.1700,  131.1700,  146.1847,  131.1700, /* I-L */
@@ -9317,16 +10039,20 @@ float ajSeqstrCalcMolwt(const AjPStr seq)
     
     while(*cp)
     {
-        if(*cp == '-') {
+        if(*cp == '-')
+        {
             cp++;
             continue;
         }
+
 	i = toupper((ajint) *cp)-'A';
+
 	if(i > 25 || i < 0)
 	{
 	    ajDebug("seqMW bad character '%c' %d\n", *cp, *cp);
 	    i = 'X' - 'A';
 	}
+
 	mw += (double) aa[i] - (double) 18.01057;
 	cp++;
     }
@@ -9338,6 +10064,7 @@ float ajSeqstrCalcMolwt(const AjPStr seq)
 
 
 
+
 /* @obsolete ajSeqMW
 ** @rename ajSeqstrCalcMolwt
 */
@@ -9345,6 +10072,7 @@ __deprecated float  ajSeqMW(const AjPStr seq)
 {
     return ajSeqstrCalcMolwt(seq);
 }
+
 
 
 
@@ -9375,6 +10103,9 @@ ajuint ajSeqstrCountGaps(const AjPStr seq)
     return ret;
 }
 
+
+
+
 /* @obsolete ajSeqGapCountS
 ** @rename ajSeqstrCountGaps
 */
@@ -9382,6 +10113,9 @@ __deprecated ajint  ajSeqGapCountS(const AjPStr str)
 {
     return ajSeqstrCountGaps(str);
 }
+
+
+
 
 /* @section string processing
 **
@@ -9420,6 +10154,9 @@ void ajSeqstrComplement(AjPStr* Pseq)
     return;
 }
 
+
+
+
 /* @obsolete ajSeqstrComplementOnly
 ** @rename ajSeqstrComplement
 */
@@ -9430,14 +10167,19 @@ __deprecated void  ajSeqstrComplementOnly(AjPStr* pthis)
 }
 
 
+
+
 /* @obsolete ajSeqCompOnlyStr
 ** @rename ajSeqstrComplement
 */
 __deprecated void  ajSeqCompOnlyStr(AjPStr* pthis)
 {
     ajSeqstrComplement(pthis);
+
     return;
 }
+
+
 
 
 /* @func ajSeqstrReverse ******************************************************
@@ -9473,14 +10215,20 @@ void ajSeqstrReverse(AjPStr* Pseq)
     return;
 }
 
+
+
+
 /* @obsolete ajSeqReverseStr
 ** @rename ajSeqstrReverse
 */
 __deprecated void  ajSeqReverseStr(AjPStr* pthis)
 {
     ajSeqstrReverse(pthis);
+
     return;
 }
+
+
 
 
 /* @obsolete ajSeqCrc
@@ -9489,8 +10237,11 @@ __deprecated void  ajSeqReverseStr(AjPStr* pthis)
 __deprecated ajuint  ajSeqCrc(const AjPStr seq)
 {
     (void) seq;				/* just so it is used */
+
     return 0;
 }
+
+
 
 
 /* @obsolete ajSeqGapStandardS
@@ -9518,7 +10269,8 @@ __deprecated void  ajSeqGapStandardS(AjPStr thys, char gapch)
 	    /*ajDebug(" ajSeqGapStandardS replaced         '%c'=>'%c' '%S'\n",
 		    *testgap, newgap, thys);*/
 	}
-	testgap++;
+
+        testgap++;
     }
 
     return;
@@ -9533,8 +10285,10 @@ __deprecated void  ajSeqGapStandardS(AjPStr thys, char gapch)
 __deprecated ajuint  ajSeqCalcCrc(const AjPSeq seq)
 {
     (void) seq;				/* just so it is used */
+
     return 0;
 }
+
 
 
 
@@ -9579,12 +10333,14 @@ AjBool ajSeqclsSetEmbl(AjPStr* Pcls, const AjPStr clsembl)
     static AjBool called = AJFALSE;
     const AjPStr clsname = NULL;
 
-    if(!called) {
+    if(!called)
+    {
 	seqclsInit();
 	called = ajTrue;
     }
 
     clsname = ajTableFetch(seqTableClsEmbl, clsembl);
+
     if(!clsname)
 	return ajFalse;
 
@@ -9593,6 +10349,8 @@ AjBool ajSeqclsSetEmbl(AjPStr* Pcls, const AjPStr clsembl)
     return ajTrue;
     
 }
+
+
 
 
 /* @func ajSeqclsSetGb *****************************************************
@@ -9609,12 +10367,14 @@ AjBool ajSeqclsSetGb(AjPStr* Pcls, const AjPStr clsgb)
     static AjBool called = AJFALSE;
     const AjPStr clsname = NULL;
 
-    if(!called) {
+    if(!called)
+    {
 	seqclsInit();
 	called = ajTrue;
     }
 
     clsname = ajTableFetch(seqTableClsGb, clsgb);
+
     if(!clsname)
 	return ajFalse;
 
@@ -9623,6 +10383,8 @@ AjBool ajSeqclsSetGb(AjPStr* Pcls, const AjPStr clsgb)
     return ajTrue;
     
 }
+
+
 
 
 /* @section retrieval ********************************************************
@@ -9680,6 +10442,8 @@ const char* ajSeqclsGetEmbl(const AjPStr cls)
 }
 
 
+
+
 /* @funcstatic seqclsInit *****************************************************
 **
 ** Initialises the tables of molecule types
@@ -9706,6 +10470,7 @@ static void seqclsInit(void)
     for(i=0;seqClass[i].Name;i++)
     {
 	keystr = ajStrNewC(seqClass[i].Name);
+
 	if(ajTableFetch(seqTableCls, keystr))
 	    ajStrDel(&keystr);
 	else
@@ -9714,6 +10479,7 @@ static void seqclsInit(void)
 	if(seqClass[i].Embl[0])
 	{
 	    valstr = ajStrNewC(seqClass[i].Embl);
+
 	    if(ajTableFetch(seqTableClsEmbl, valstr))
 		ajStrDel(&valstr);
 	    else
@@ -9723,6 +10489,7 @@ static void seqclsInit(void)
 	if(seqClass[i].Ddbj[0])
 	{
 	    valstr = ajStrNewC(seqClass[i].Ddbj);
+
 	    if(ajTableFetch(seqTableClsDdbj, valstr))
 		ajStrDel(&valstr);
 	    else
@@ -9732,6 +10499,7 @@ static void seqclsInit(void)
 	if(seqClass[i].Genbank[0])
 	{
 	    valstr = ajStrNewC(seqClass[i].Genbank);
+
 	    if(ajTableFetch(seqTableClsGb, valstr))
 		ajStrDel(&valstr);
 	    else
@@ -9741,6 +10509,9 @@ static void seqclsInit(void)
 
     return;
 }
+
+
+
 
 /* @datasection [AjPStr] Sequence entry divisions *****************************
 **
@@ -9783,12 +10554,14 @@ AjBool ajSeqdivSetEmbl(AjPStr* Pdivi, const AjPStr divembl)
     static AjBool called = AJFALSE;
     const AjPStr divname = NULL;
 
-    if(!called) {
+    if(!called)
+    {
 	seqdivInit();
 	called = ajTrue;
     }
 
     divname = ajTableFetch(seqTableDivEmbl, divembl);
+
     if(!divname)
 	return ajFalse;
 
@@ -9797,6 +10570,8 @@ AjBool ajSeqdivSetEmbl(AjPStr* Pdivi, const AjPStr divembl)
     return ajTrue;
     
 }
+
+
 
 
 /* @func ajSeqdivSetGb ********************************************************
@@ -9813,7 +10588,8 @@ AjBool ajSeqdivSetGb(AjPStr* Pdivi, const AjPStr divgb)
     static AjBool called = AJFALSE;
     const AjPStr divname = NULL;
 
-    if(!called) {
+    if(!called)
+    {
 	seqdivInit();
 	called = ajTrue;
     }
@@ -9831,6 +10607,7 @@ AjBool ajSeqdivSetGb(AjPStr* Pdivi, const AjPStr divgb)
     return ajTrue;
     
 }
+
 
 
 
@@ -9886,7 +10663,9 @@ const char* ajSeqdivGetEmbl(const AjPStr divi)
 
     return divdef->Embl;
     
- }
+}
+
+
 
 
 /* @func ajSeqdivGetGb ********************************************************
@@ -9927,6 +10706,8 @@ const char* ajSeqdivGetGb(const AjPStr divi)
 }
 
 
+
+
 /* @funcstatic seqdivInit *****************************************************
 **
 ** Initialises the tables of sequence database divisions
@@ -9953,6 +10734,7 @@ static void seqdivInit(void)
     for(i=0;seqDivision[i].Name;i++)
     {
 	keystr = ajStrNewC(seqDivision[i].Name);
+
 	if(ajTableFetch(seqTableDiv, keystr))
 	    ajStrDel(&keystr);
 	else
@@ -9961,6 +10743,7 @@ static void seqdivInit(void)
 	if(seqDivision[i].Embl[0])
 	{
 	    valstr = ajStrNewC(seqDivision[i].Embl);
+
 	    if(ajTableFetch(seqTableDivEmbl, valstr))
 		ajStrDel(&valstr);
 	    else
@@ -9970,6 +10753,7 @@ static void seqdivInit(void)
 	if(seqDivision[i].Ddbj[0])
 	{
 	    valstr = ajStrNewC(seqDivision[i].Ddbj);
+
 	    if(ajTableFetch(seqTableDivDdbj, valstr))
 		ajStrDel(&valstr);
 	    else
@@ -9979,6 +10763,7 @@ static void seqdivInit(void)
 	if(seqDivision[i].Genbank[0])
 	{
 	    valstr = ajStrNewC(seqDivision[i].Genbank);
+
 	    if(ajTableFetch(seqTableDivGb, valstr))
 		ajStrDel(&valstr);
 	    else
@@ -9989,6 +10774,8 @@ static void seqdivInit(void)
 
     return;
 }
+
+
 
 
 /* @datasection [AjPStr] Sequence entry molecule types ************************
@@ -10032,20 +10819,23 @@ AjBool ajSeqmolSetEmbl(AjPStr* Pmol, const AjPStr molembl)
     static AjBool called = AJFALSE;
     const AjPStr molname = NULL;
 
-    if(!called) {
+    if(!called)
+    {
 	seqmolInit();
 	called = ajTrue;
     }
 
     molname = ajTableFetch(seqTableMolEmbl, molembl);
+
     if(!molname)
 	return ajFalse;
 
     ajStrAssignS(Pmol, molname);
 
     return ajTrue;
-    
 }
+
+
 
 
 /* @func ajSeqmolSetGb *****************************************************
@@ -10062,20 +10852,23 @@ AjBool ajSeqmolSetGb(AjPStr* Pmol, const AjPStr molgb)
     static AjBool called = AJFALSE;
     const AjPStr molname = NULL;
 
-    if(!called) {
+    if(!called)
+    {
 	seqmolInit();
 	called = ajTrue;
     }
 
     molname = ajTableFetch(seqTableMolGb, molgb);
+
     if(!molname)
 	return ajFalse;
 
     ajStrAssignS(Pmol, molname);
 
     return ajTrue;
-    
 }
+
+
 
 
 /* @section retrieval ********************************************************
@@ -10129,8 +10922,9 @@ const char* ajSeqmolGetEmbl(const AjPStr mol)
 	    mol, moldef->Embl);
 
     return moldef->Embl;
-    
- }
+}
+
+
 
 
 /* @func ajSeqmolGetGb ********************************************************
@@ -10167,7 +10961,6 @@ const char* ajSeqmolGetGb(const AjPStr mol)
 	    mol, moldef->Genbank);
 
     return moldef->Genbank;
-    
 }
 
 
@@ -10199,6 +10992,7 @@ static void seqmolInit(void)
     for(i=0;seqMolecule[i].Name;i++)
     {
 	keystr = ajStrNewC(seqMolecule[i].Name);
+
 	if(ajTableFetch(seqTableMol, keystr))
 	    ajStrDel(&keystr);
 	else
@@ -10207,6 +11001,7 @@ static void seqmolInit(void)
 	if(seqMolecule[i].Embl[0])
 	{
 	    valstr = ajStrNewC(seqMolecule[i].Embl);
+
 	    if(ajTableFetch(seqTableMolEmbl, valstr))
 		ajStrDel(&valstr);
 	    else
@@ -10216,6 +11011,7 @@ static void seqmolInit(void)
 	if(seqMolecule[i].Ddbj[0])
 	{
 	    valstr = ajStrNewC(seqMolecule[i].Ddbj);
+
 	    if(ajTableFetch(seqTableMolDdbj, valstr))
 		ajStrDel(&valstr);
 	    else
@@ -10225,6 +11021,7 @@ static void seqmolInit(void)
 	if(seqMolecule[i].Genbank[0])
 	{
 	    valstr = ajStrNewC(seqMolecule[i].Genbank);
+
 	    if(ajTableFetch(seqTableMolGb, valstr))
 		ajStrDel(&valstr);
 	    else
