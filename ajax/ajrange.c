@@ -125,6 +125,7 @@ AjPRange ajRangeCopy(const AjPRange src)
 	thys->start = AJALLOC0(n*sizeof(ajuint));
 	thys->end   = AJALLOC0(n*sizeof(ajuint));
 	thys->text  = AJALLOC0(n*sizeof(AjPStr *));
+
 	for(i=0; i < n; i++)
 	{
 	    thys->start[i] = src->start[i];
@@ -169,6 +170,7 @@ void ajRangeDel(AjPRange *thys)
     {
 	AJFREE((*thys)->start);
 	AJFREE((*thys)->end);
+
 	for(i=0; i < (*thys)->n; i++)
 	    ajStrDel(&(*thys)->text[i]);
     }
@@ -282,6 +284,7 @@ AjPRange ajRangeGetLimits(const AjPStr str, ajuint imin, ajuint imax,
 	    if(n%2)
 	    {
 		ajWarn("Odd integer(s) in range specification [%d]",n);
+
 		return NULL;
 	    }
 
@@ -291,6 +294,7 @@ AjPRange ajRangeGetLimits(const AjPStr str, ajuint imin, ajuint imax,
 		{
 		    ajWarn("Range specification requires exactly %d pairs",
 			   size);
+
 		    return NULL;
 		}
 	    }
@@ -298,6 +302,7 @@ AjPRange ajRangeGetLimits(const AjPStr str, ajuint imin, ajuint imax,
 	    {
 		ajWarn("Range specification requires at least %d pairs",
 		       minsize);
+
 		return NULL;
 	    }
 	    ret=ajRangeNewI((e=n>>1));
@@ -305,18 +310,22 @@ AjPRange ajRangeGetLimits(const AjPStr str, ajuint imin, ajuint imax,
 	    /* get the pairs of numbers and put them in the AjPRange object */
 	    cp = ajStrGetPtr(c2);
 	    p = ajSysFuncStrtok(cp, nondigit);
+
 	    if(!sscanf(p,"%d",&f))
 	    {
 		ajWarn("Bad range value [%s]",p);
 		ajRangeDel(&ret);
+
 		return NULL;
 	    }
 
 	    p = ajSysFuncStrtok(NULL, nondigit);
+
 	    if(!sscanf(p,"%d",&t))
 	    {
 		ajWarn("Bad range value [%s]",p);
 		ajRangeDel(&ret);
+
 		return NULL;
 	    }
 
@@ -324,6 +333,7 @@ AjPRange ajRangeGetLimits(const AjPStr str, ajuint imin, ajuint imax,
 	    {
 		ajWarn("From range [%d] greater than To range [%d]",f,t);
 		ajRangeDel(&ret);
+
 		return NULL;
 	    }
 
@@ -331,6 +341,7 @@ AjPRange ajRangeGetLimits(const AjPStr str, ajuint imin, ajuint imax,
 	    {
 		ajWarn("From range [%d] less than minimum [%d]",f,imin);
 		ajRangeDel(&ret);
+
 		return NULL;
 	    }
 
@@ -338,6 +349,7 @@ AjPRange ajRangeGetLimits(const AjPStr str, ajuint imin, ajuint imax,
 	    {
 		ajWarn("To range [%d] greater than maximum [%d]",t,imax);
 		ajRangeDel(&ret);
+
 		return NULL;
 	    }
 
@@ -347,18 +359,22 @@ AjPRange ajRangeGetLimits(const AjPStr str, ajuint imin, ajuint imax,
 	    for(i=1;i<e;++i)
 	    {
 		p = ajSysFuncStrtok(NULL, nondigit);
+
 		if(!sscanf(p,"%d",&f))
 		{
 		    ajWarn("Bad range value [%s]",p);
 		    ajRangeDel(&ret);
+
 		    return NULL;
 		}
 
 		p = ajSysFuncStrtok(NULL, nondigit);
+
 		if(!sscanf(p,"%d",&t))
 		{
 		    ajWarn("Bad range value [%s]",p);
 		    ajRangeDel(&ret);
+
 		    return NULL;
 		}
 
@@ -366,14 +382,17 @@ AjPRange ajRangeGetLimits(const AjPStr str, ajuint imin, ajuint imax,
 		{
 		    ajWarn("From range [%d] greater than To range [%d]",f,t);
 		    ajRangeDel(&ret);
+
 		    return NULL;
 		}
+
 		ret->start[i] = f;
 		ret->end[i]   = t;
 	    }
 
 	    /* now get any strings after the pairs of ranges */
 	    cp = ajStrGetPtr(c3);
+
 	    if(!isdigit((ajint)*cp))
 	    {
 		doneone = ajTrue;
@@ -394,6 +413,7 @@ AjPRange ajRangeGetLimits(const AjPStr str, ajuint imin, ajuint imax,
 		/* this must be the text after the pair of numbers */
 		/* get the string after the two numbers */
 		p = ajSysFuncStrtok(NULL, digit);
+
 		if(p)
 		{
 		    ajStrAssignC(&(ret->text[i]), p);
@@ -407,12 +427,14 @@ AjPRange ajRangeGetLimits(const AjPStr str, ajuint imin, ajuint imax,
 	    {
 		ajWarn("Range specification requires exactly %d pairs",
 		       size);
+
 		return NULL;
 	    }
 	    else if (0 < minsize)
 	    {
 		ajWarn("Range specification requires at least %d pairs",
 		       minsize);
+
 		return NULL;
 	    }
 	    ret=ajRangeNewI(0);
@@ -462,6 +484,9 @@ AjPRange ajRangeFile(const AjPStr name)
 {
     return ajRangeFileLimits(name, 1, UINT_MAX, 0, 0);
 }
+
+
+
 
 /* @func ajRangeFileLimits ****************************************************
 **
@@ -531,6 +556,7 @@ AjPRange ajRangeFileLimits(const AjPStr name, ajuint imin, ajuint imax,
 	
 	if(!ajStrFindC(line, "#"))
 	    continue;
+
 	if(!ajStrGetLen(line))
 	    continue;
 	
@@ -550,11 +576,13 @@ AjPRange ajRangeFileLimits(const AjPStr name, ajuint imin, ajuint imax,
 	
 	two = ajStrNew();
 	ajStrTokenNextParse(&tokens, &two);
+
 	if(ajStrGetLen(two))
 	    ajListstrPushAppend(twolist, two);
 	else
 	{
 	    ajWarn("Odd integer(s) in range specification:\n%S\n", line);
+
 	    return NULL;
 	}
 	
@@ -575,6 +603,7 @@ AjPRange ajRangeFileLimits(const AjPStr name, ajuint imin, ajuint imax,
 	{
 	    ajWarn("Range specification requires exactly %d pairs",
 		   size);
+
 	    return NULL;
 	}
     }
@@ -582,8 +611,10 @@ AjPRange ajRangeFileLimits(const AjPStr name, ajuint imin, ajuint imax,
     {
 	ajWarn("Range specification requires at least %d pairs",
 	       minsize);
+
 	return NULL;
     }
+
     ret = ajRangeNewI(n);
 
 
@@ -595,6 +626,7 @@ AjPRange ajRangeFileLimits(const AjPStr name, ajuint imin, ajuint imax,
 	{
 	    ajWarn("Bad range value [%S]",one);
 	    ajRangeDel(&ret);
+
 	    return NULL;
 	}
 	
@@ -603,6 +635,7 @@ AjPRange ajRangeFileLimits(const AjPStr name, ajuint imin, ajuint imax,
 	{
 	    ajWarn("Bad range value [%S]",two);
 	    ajRangeDel(&ret);
+
 	    return NULL;
 	}
 
@@ -614,6 +647,7 @@ AjPRange ajRangeFileLimits(const AjPStr name, ajuint imin, ajuint imax,
 	    ajWarn("From range [%d] greater than To range [%d]",
 		   numone, numtwo);
 	    ajRangeDel(&ret);
+
 	    return NULL;
 	}
 
@@ -622,6 +656,7 @@ AjPRange ajRangeFileLimits(const AjPStr name, ajuint imin, ajuint imax,
 	    ajWarn("From range [%d] less than minimum [%d]",
 		   numone,imin);
 	    ajRangeDel(&ret);
+
 	    return NULL;
 	}
 
@@ -630,6 +665,7 @@ AjPRange ajRangeFileLimits(const AjPStr name, ajuint imin, ajuint imax,
 	    ajWarn("To range [%d] greater than maximum [%d]",
 		   numtwo,imax);
 	    ajRangeDel(&ret);
+
 	    return NULL;
 	}
 
@@ -691,10 +727,13 @@ AjBool ajRangeValues(const AjPRange thys, ajuint element,
 {
     if(element>=thys->n)
 	return ajFalse;
+
     if(thys->start[element] < 1)
 	return ajFalse;
+
     if(thys->end[element] < 1)
 	return ajFalse;
+
     if(thys->start[element] > thys->end[element])
 	return ajFalse;
 
@@ -800,6 +839,7 @@ AjBool ajRangeBegin(AjPRange thys, ajuint begin)
     {
 	if(begin > 1)
 	    result = ajTrue;
+
 	ajRangeValues(thys, i, &st, &en);
 	st -= begin-1;
 	en -= begin-1;
@@ -808,6 +848,7 @@ AjBool ajRangeBegin(AjPRange thys, ajuint begin)
 
     return result;
 }
+
 
 
 
@@ -847,8 +888,10 @@ AjBool ajRangeSeqExtractList(const AjPRange thys,
 	for(i=0; i<nr; i++)
 	{
 	    result = ajTrue;
+
 	    if(!ajRangeValues(thys,i,&st,&en))
 		continue;
+
 	    str = ajStrNew();
 	    ajStrAppendSubS(&str, ajSeqGetSeqS(seq), st-1, en-1);
 	    ajListstrPushAppend(outliststr, str);
@@ -899,8 +942,10 @@ AjBool ajRangeSeqExtract(const AjPRange thys, AjPSeq seq)
 	for(i=0; i<nr; i++)
 	{
 	    result = ajTrue;
+
 	    if(!ajRangeValues(thys,i,&st,&en))
 	       continue;
+
 	    ajStrAppendSubS(&outstr, ajSeqGetSeqS(seq), st-1, en-1);
 	    ajDebug("Range [%d] %d..%d '%S'\n", i, st, en, outstr);
 	}
@@ -910,7 +955,6 @@ AjBool ajRangeSeqExtract(const AjPRange thys, AjPSeq seq)
 
     return result;
 }
-
 
 
 
@@ -954,18 +998,22 @@ AjPSeq ajRangeSeqExtractPep(const AjPRange thys, AjPSeq seq,
 
     if (!nr)
         return NULL;
+
     if(frame > 0)
     {
 	for(i=0; i<nr; i++)
 	{
 	    if(!ajRangeValues(thys,i,&st,&en))
 	       continue;
+
             ajStrAppendSubS(&outstr, ajSeqGetSeqS(seq), st-1, en-1);
 	}
+
 	ajSeqAssignSeqS(seq, outstr);
 	ajStrAssignClear(&outstr);
         pepseq = ajTrnSeqOrig(trntable, seq, 1);
         ajStrAssignS(&pepstr, ajSeqGetSeqS(pepseq));
+
 	for(i=0; i<nr; i++)
 	{
 	    if(!ajRangeValues(thys,i,&st,&en))
@@ -976,16 +1024,19 @@ AjPSeq ajRangeSeqExtractPep(const AjPRange thys, AjPSeq seq,
             rlen = (en-st)+1;
             npos += rlen;
             pos = (npos-1)/3;
+
             if(frame%3 == (((ajint)st-(ajint)shift) % 3))
             {
                 if(pos >= lastpos)
                     ajStrAppendSubS(&outstr, pepstr, lastpos, pos);
             }
+
             if(pos >= lastpos)
                 lastpos = pos+1;
             else
                 lastpos = pos;
 	}
+
 	ajSeqAssignSeqS(pepseq, outstr);
 	ajStrDel(&pepstr);
 	ajStrDel(&outstr);
@@ -996,36 +1047,42 @@ AjPSeq ajRangeSeqExtractPep(const AjPRange thys, AjPSeq seq,
 	{
 	    if(!ajRangeValues(thys,i-1, &st,&en))
 	       continue;
+
             ajStrAppendSubS(&outstr, ajSeqGetSeqS(seq), st-1, en-1);
 	}
+
 	ajSeqAssignSeqS(seq, outstr);
 	ajStrAssignClear(&outstr);
         pepseq = ajTrnSeqOrig(trntable, seq, -1);
         ajStrAssignS(&pepstr, ajSeqGetSeqS(pepseq));
+
 	for(i=0; i<nr; i++)
 	{
 	    if(!ajRangeValues(thys,i, &st,&en))
 	       continue;
+
             rlen = (en-st)+1;
             npos += rlen;
             pos = (npos-1)/3;
+
             if((-frame)%3 == (((ajint)st) % 3))
             {
                 if(pos >= lastpos)
                     ajStrAppendSubS(&outstr, pepstr, lastpos, pos);
             }
+
             if(pos >= lastpos)
                 lastpos = pos+1;
             else
                 lastpos = pos;
 	}
+
 	ajSeqAssignSeqS(pepseq, outstr);
 	ajStrDel(&outstr);
     }
     
     return pepseq;
 }
-
 
 
 
@@ -1068,6 +1125,7 @@ AjBool ajRangeSeqStuff(const AjPRange thys, AjPSeq seq)
 	for(i=0; i<nr; i++)
 	{
 	    result = ajTrue;
+
 	    if(!ajRangeValues(thys,i,&st,&en))
 		continue;
 
@@ -1083,6 +1141,7 @@ AjBool ajRangeSeqStuff(const AjPRange thys, AjPSeq seq)
 	    lastst = lastst+len+1;
 	    lasten = en+1;
 	}
+
 	ajSeqAssignSeqS(seq, outstr);
 	ajStrDel(&outstr);
     }
@@ -1129,6 +1188,7 @@ AjBool ajRangeSeqStuffPep(const AjPRange thys, AjPSeq seq, ajint frame)
     ajint lastframe = 0;
 
     nr = ajRangeNumber(thys);
+
     if(!nr)
         return ajFalse;
 
@@ -1137,6 +1197,7 @@ AjBool ajRangeSeqStuffPep(const AjPRange thys, AjPSeq seq, ajint frame)
 	for(i=0; i<nr; i++)
 	{
 	    result = ajTrue;
+
 	    if(!ajRangeValues(thys,i,&st,&en))
 		continue;
 
@@ -1155,6 +1216,7 @@ AjBool ajRangeSeqStuffPep(const AjPRange thys, AjPSeq seq, ajint frame)
                    lasten, st, shift, frame, lastframe);
 	    for(j=lasten; j<st; j++)
 		ajStrAppendC(&outstr, " ");
+
             if(shift && (frame != lastframe))
                 for(j=3; j>shift; j--)
                     ajStrAppendC(&outstr, " ");
@@ -1164,12 +1226,14 @@ AjBool ajRangeSeqStuffPep(const AjPRange thys, AjPSeq seq, ajint frame)
 	    lasten = en+1;
             lastframe = frame;
 	}
+
 	ajSeqAssignSeqS(seq, outstr);
 	ajStrDel(&outstr);
     }
     else if (frame < 0)
     {
         ajSeqReverseOnly(seq);
+
 	for(i=nr; i>0; i--)
 	{
 	    result = ajTrue;
@@ -1191,6 +1255,7 @@ AjBool ajRangeSeqStuffPep(const AjPRange thys, AjPSeq seq, ajint frame)
 	    lastst = lastst+len+1;
 	    lasten = en+1;
 	}
+
 	ajSeqAssignSeqS(seq, outstr);
 	ajStrDel(&outstr);
     }
@@ -1253,8 +1318,10 @@ AjBool ajRangeSeqMask(const AjPRange thys, const AjPStr maskchar, AjPSeq seq)
     else
     {
 	str = ajStrNew();
+
 	for(jj=0; jj<=ajStrGetLen(str); ++jj)
 	    ajStrInsertS(&str, jj, maskchar);
+
 	ajSeqAssignSeqS(seq, str);
 	ajStrDel(&str);
     }
@@ -1296,6 +1363,7 @@ AjBool ajRangeSeqToLower(const AjPRange thys, AjPSeq seq)
 	substr = ajStrNew();
 	str = ajStrNew();
 	seqstr = ajSeqGetSeqS(seq);
+
 	for(i=0; i<nr; ++i)
 	{
 	    if(!ajRangeValues(thys,i,&st,&en))
@@ -1314,13 +1382,11 @@ AjBool ajRangeSeqToLower(const AjPRange thys, AjPSeq seq)
 	    ajStrInsertS(&str, st, substr);
 	    ajStrSetClear(&substr);        
 	}
+
 	ajStrDel(&substr);
     }
     else
-    {
 	ajSeqFmtLower(seq);
-    }
-
     
     return result;
 }
@@ -1403,7 +1469,6 @@ AjBool ajRangeStrExtract(const AjPRange thys, const AjPStr instr,
     ajDebug("ajRangeStrExtract Number:%d\n", nr);
 
     if (nr)
-    {
 	for(i=0; i<nr; i++)
 	{
 	    result = ajTrue;
@@ -1411,11 +1476,8 @@ AjBool ajRangeStrExtract(const AjPRange thys, const AjPStr instr,
 	    ajStrAppendSubS(outstr, instr, st-1, en-1);
 	    ajDebug("Range [%d] %d..%d '%S'\n", i, st, en, *outstr);
 	}
-    }
     else
-    {
 	ajStrAssignS(outstr, instr);
-    }
 
     return result;
 }
@@ -1604,18 +1666,23 @@ ajuint ajRangeOverlapSingle(ajuint start, ajuint end,
 
     if(end < pos || start > posend)
 	return 0;
+
     /* no overlap 		~~~~ |--------|	*/
     if(start >= pos && end <= posend)
 	return 1;
+
     /* internal overlap	     |-~~~~~--|		*/
     if(start < pos && end > posend)
 	return 2;
+
     /* complete overlap	~~~~~|~~~~~~~~|~~	*/
     if(start < pos && end >= pos )
 	return 3;
+
     /* overlap at left	~~~~~|~~~-----|		*/
     if(start >= pos && end > posend )
 	return 4;
+
     /* overlap at right	     |----~~~~|~~~	*/
 
     ajFatal("ajrangeoverlapsingle error");
@@ -1652,7 +1719,9 @@ ajuint ajRangeOverlaps(const AjPRange thys, ajuint pos, ajuint length)
     for(i=0; i<nr; i++)
     {
 	ajRangeValues(thys,i,&st,&en);
-	if(ajRangeOverlapSingle(st, en, pos, length)) result++;
+
+	if(ajRangeOverlapSingle(st, en, pos, length))
+            result++;
     }
 
     return result;
@@ -1687,8 +1756,10 @@ AjBool ajRangeOrdered(const AjPRange thys)
 	ajRangeValues(thys,i,&st,&en);
 	ajDebug("ajRangeOrdered [%u] st:%u en:%u (last:%u)\n",
 		i, st, en, last);
+
         if(st <= last || en <= st)
 	    return ajFalse;
+
         last = en;
     }
 
@@ -1722,6 +1793,7 @@ AjBool ajRangeDefault(const AjPRange thys, const AjPSeq s)
         ajDebug("ajRangeDefault n:%d begin:%u end:%u\n",
                 thys->n,
                 ajSeqGetBegin(s),ajSeqGetEnd(s));
+
 	return ajTrue;
     }
 
