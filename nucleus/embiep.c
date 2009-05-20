@@ -162,6 +162,7 @@ void embIepPkRead(double *pK)
 
 
     inf = ajDatafileNewInNameC(PKFILE);
+
     if(!inf)
 	ajFatal("%s file not found",PKFILE);
 
@@ -169,9 +170,11 @@ void embIepPkRead(double *pK)
 	pK[i]=0.0;
 
     line = ajStrNew();
+
     while(ajReadline(inf,&line))
     {
 	p = ajStrGetPtr(line);
+
 	if(*p=='#' || *p=='!' || *p=='\n' || *p=='\r')
 	    continue;
 
@@ -235,6 +238,7 @@ void embIepCompC(const char *s, ajint amino, ajint carboxyl,
 	c[i]=0;
 
     p=s;
+
     while(*p)
     {
 	++c[ajBasecodeToInt(ajSysCastItoc(toupper((ajint)*p)))];
@@ -263,6 +267,7 @@ void embIepCompC(const char *s, ajint amino, ajint carboxyl,
 
     c[EMBIEPAMINO]    = amino;
     c[EMBIEPCARBOXYL] = carboxyl;
+
     if (sscount > 0)
     {
 	if(c[EMBIEPCYSTEINE] <  2*sscount)
@@ -276,6 +281,7 @@ void embIepCompC(const char *s, ajint amino, ajint carboxyl,
 	    c[EMBIEPCYSTEINE] -= 2*sscount;
 	}
     }
+
     if (modlysine > 0)
     {
 	if(c[EMBIEPLYSINE] < modlysine)
@@ -292,6 +298,7 @@ void embIepCompC(const char *s, ajint amino, ajint carboxyl,
 
     return;
 }
+
 
 
 
@@ -314,8 +321,10 @@ void embIepCompS(const AjPStr str, ajint amino, ajint carboxyl,
 		 ajint *c)
 {
     embIepCompC(ajStrGetPtr(str), amino, carboxyl, sscount, modlysine, c);
+
     return;
 }
+
 
 
 
@@ -326,8 +335,12 @@ __deprecated void  embIepComp(const char *s, ajint amino, ajint carboxyl,
                               ajint *c)
 {
     embIepCompC(s, amino, carboxyl, 0, 0, c);
+
     return;
 }
+
+
+
 
 /* @func embIepCalcK  *********************************************************
 **
@@ -387,6 +400,7 @@ void embIepGetProto(const double *K, const ajint *c,
 		op[i]=0;
 	    else
 		op[i]=1;
+
 	    pro[i]=(double)c[i] * (H/(H+K[i]));
 	}
 
@@ -458,6 +472,7 @@ double embIepPhConverge(const ajint *c, const double *K,
     H = embIepPhToHconc(bph);
     embIepGetProto(K,c,op,H,pro);
     bot = embIepGetCharge(c,pro,&sum);
+
     if((top>0.0 && bot>0.0) || (top<0.0 && bot<0.0))
 	return 0.0;
 
@@ -467,6 +482,7 @@ double embIepPhConverge(const ajint *c, const double *K,
 	H = embIepPhToHconc(mid);
 	embIepGetProto(K,c,op,H,pro);
 	charge = embIepGetCharge(c,pro,&sum);
+
 	if(charge>0.0)
 	{
 	    tph = mid;
@@ -522,6 +538,7 @@ AjBool embIepIepC(const char *s, ajint amino, ajint carboxyl,
 
 
     embIepCalcK(K,pK);			/* Convert to dissoc consts */
+
     /* Get sequence composition */
     embIepCompC(s,amino,carboxyl,sscount, modlysine,c);
 
@@ -540,6 +557,7 @@ AjBool embIepIepC(const char *s, ajint amino, ajint carboxyl,
 
     return ajTrue;
 }
+
 
 
 
