@@ -2745,7 +2745,7 @@ static void showFillREflat(const EmbPShow thys,
 
     while(ajListstrPop(linelist,&sajb));
 
-    aajListstrFree(&linelist);
+    ajListstrFree(&linelist);
 
     return;
 }
