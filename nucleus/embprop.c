@@ -32,7 +32,9 @@
 #include <ctype.h>
 
 char dayhoffstr[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-float dayhoff[] = {
+
+float dayhoff[] =
+{
     (float) 8.6, (float) 0.0, (float) 2.9, (float) 5.5, (float) 6.0,
     (float) 3.6, (float) 8.4, (float) 2.0, (float) 4.5, (float) 0.0,
     (float) 6.6, (float) 7.4, (float) 1.7, (float) 4.3, (float) 0.0,
@@ -98,6 +100,7 @@ EmbPPropAmino* embPropEaminoRead(AjPFile mfptr)
     firstline = ajTrue;
 
     AJCNEW0(ret,EMBPROPSIZE);
+
     for(i=0; i < EMBPROPSIZE; ++i)
 	AJNEW0(ret[i]);
     
@@ -105,6 +108,7 @@ EmbPPropAmino* embPropEaminoRead(AjPFile mfptr)
     {
 	ajStrRemoveWhiteExcess(&line);
 	p = ajStrGetPtr(line);
+
 	if(*p=='#' || *p=='!' || !*p)
 	    continue;
 
@@ -112,15 +116,19 @@ EmbPPropAmino* embPropEaminoRead(AjPFile mfptr)
 	{
 	    if(!ajStrPrefixC(line,"aa"))
 		ajFatal("Incorrect (old?) format amino data file");
+
 	    firstline = ajFalse;
 	    continue;
 	}
 
 	ajFmtScanS(line,"%S",&token);
 	ajStrFmtUpper(&token);
+
 	if(ajStrGetLen(token) != 1)
 	    ajFatal("Amino file line doesn't begin with a single character");
+
 	i = ajBasecodeToInt((ajint) *ajStrGetPtr(token));
+
 	if(i == 27)
 	    ajFatal("Amino file line doesn't begin with a single A->Z (%S)",
 		    line);
@@ -146,6 +154,9 @@ EmbPPropAmino* embPropEaminoRead(AjPFile mfptr)
     return ret;
 }
 
+
+
+
 /* @func embPropGetProperties **************************************************
 **
 ** Returns a string containing a list of defined properties
@@ -159,18 +170,25 @@ EmbPPropAmino* embPropEaminoRead(AjPFile mfptr)
 AjBool embPropGetProperties(const EmbPPropAmino prop, AjPStr* Pstr)
 {
     ajStrAssignC(Pstr, "");
+
     if(prop->tiny)
         ajStrAppendC(Pstr, "tiny,");
+
     if(prop->sm_all)
         ajStrAppendC(Pstr, "small,");
+
     if(prop->aliphatic)
         ajStrAppendC(Pstr, "aliphatic,");
+
     if(prop->aromatic)
         ajStrAppendC(Pstr, "aromatic,");
+
     if(prop->polar)
         ajStrAppendC(Pstr, "polar,");
+
     if(prop->nonpolar)
         ajStrAppendC(Pstr, "nonpolar,");
+
     ajStrTrimEndC(Pstr, ",");
 
     if(!ajStrGetLen(*Pstr))
@@ -178,6 +196,8 @@ AjBool embPropGetProperties(const EmbPPropAmino prop, AjPStr* Pstr)
 
     return ajTrue;
 }
+
+
 
 
 /* @func embPropEmolwtRead ****************************************************
@@ -208,6 +228,7 @@ EmbPPropMolwt* embPropEmolwtRead(AjPFile mfptr)
     firstline = ajTrue;
 
     AJCNEW0(ret,EMBPROPSIZE+2);
+
     for(i=0; i < EMBPROPSIZE+2; ++i)
 	AJNEW0(ret[i]);
     
@@ -215,6 +236,7 @@ EmbPPropMolwt* embPropEmolwtRead(AjPFile mfptr)
     {
 	ajStrRemoveWhiteExcess(&line);
 	p = ajStrGetPtr(line);
+
 	if(*p=='#' || *p=='!' || !*p)
 	    continue;
 
@@ -222,12 +244,14 @@ EmbPPropMolwt* embPropEmolwtRead(AjPFile mfptr)
 	{
 	    if(!ajStrPrefixC(line,"Mol"))
 		ajFatal("Incorrect format molwt file: '%S'", line);
+
 	    firstline = ajFalse;
 	    continue;
 	}
 
 	ajFmtScanS(line,"%S",&token);
 	ajStrFmtUpper(&token);
+
 	if(ajStrGetLen(token) != 1)
 	{
 	    if(ajStrPrefixC(token,"HYDROGEN"))
@@ -253,11 +277,13 @@ EmbPPropMolwt* embPropEmolwtRead(AjPFile mfptr)
 	    }
 	    else
 		ajFatal("Unknown molwt token %S",token);
+
 	    continue;
 	}
 
 
 	i = ajBasecodeToInt((ajint) *ajStrGetPtr(token));
+
 	if(i == 27)
 	    ajFatal("Molwt file line doesn't begin with a single A->Z (%S)",
 		    line);
@@ -367,7 +393,7 @@ ajint embPropGetAliphatic(const EmbPPropAmino prop)
 
 
 
-/* @func embPropGetAromatic *****************************************************
+/* @func embPropGetAromatic ***************************************************
 **
 ** Return aromatic value
 **
@@ -384,7 +410,7 @@ ajint embPropGetAromatic(const EmbPPropAmino prop)
 
 
 
-/* @func embPropGetNonpolar *****************************************************
+/* @func embPropGetNonpolar ***************************************************
 **
 ** Return nonpolar value
 **
@@ -748,12 +774,15 @@ void embPropCalcFragments(const char *s, ajint n,
 
 
     mark = 0;
+
     for(i=0;i<defcnt;++i)  /* Work out true starts, ends and molwts */
     {
 	bwp = mark;
 	ewp = endsa[i];
+
 	if(strchr(PROPENZAminoCarboxyl[n],'N'))
 	    --ewp;
+
 	molwt=embPropCalcMolwt(s,bwp,ewp,mwdata,mono);
 
 	if(n==PROPENZCNBR)
@@ -785,14 +814,17 @@ void embPropCalcFragments(const char *s, ajint n,
 	{
 	    st = begsa[i];
 	    et = endsa[i];
+
 	    for(it=st+RAG_MINPEPLEN-1; it < et; ++it)
 	    {
 		AJNEW0(fr);
 		fr->start = st;
 		fr->end   = it;
 		fr->molwt = embPropCalcMolwt(s,st,it,mwdata,mono);
+
 		if(n == PROPENZCNBR)
 		    fr->molwt -= (17.045 + 31.095);
+
 		fr->isfrag = ajTrue;
 		ajListPush(*l,(void *)fr);
 	    }
@@ -812,8 +844,10 @@ void embPropCalcFragments(const char *s, ajint n,
 		fr->start = it;
 		fr->end   = et;
 		fr->molwt = embPropCalcMolwt(s,it,et,mwdata,mono);
+
 		if(n == PROPENZCNBR)
 		    fr->molwt -= (17.045 + 31.095);
+
 		fr->isfrag = ajTrue;
 		ajListPush(*l,(void *)fr);
 	    }
@@ -828,6 +862,7 @@ void embPropCalcFragments(const char *s, ajint n,
     *npart = 0;
 
     lim = defcnt -1;
+
     if(overlap && !allpartials)
     {
 	for(i=0;i<lim;++i)
@@ -837,6 +872,7 @@ void embPropCalcFragments(const char *s, ajint n,
 		st = begsa[i];
 		mt = endsa[i];
 		et = endsa[i+1];
+
 		if(cterm)
 		    for(it=mt+1; it < et; ++it)
 		    {
@@ -844,8 +880,10 @@ void embPropCalcFragments(const char *s, ajint n,
 			fr->start = st;
 			fr->end   = it;
 			fr->molwt = embPropCalcMolwt(s,st,it,mwdata,mono);
+
 			if(n == PROPENZCNBR)
 			    fr->molwt -= (17.045 + 31.095);
+
 			fr->isfrag = ajTrue;
 			ajListPush(*l,(void *)fr);
 		    }
@@ -868,8 +906,10 @@ void embPropCalcFragments(const char *s, ajint n,
 		    fr->start = it;
 		    fr->end   = et;
 		    fr->molwt = embPropCalcMolwt(s,it,et,mwdata,mono);
+
 		    if(n == PROPENZCNBR)
 			fr->molwt -= (17.045 + 31.095);
+
 		    fr->isfrag = ajTrue;
 		    ajListPush(*l,(void *)fr);
 		}
@@ -888,14 +928,17 @@ void embPropCalcFragments(const char *s, ajint n,
     if(allpartials)
     {
         lim = defcnt;
+
 	for(i=0;i<lim;++i)
 	    for(j=i+1;j<lim;++j)
 	    {
 		AJNEW0(fr);
 		fr->isfrag = ajTrue;
 		fr->molwt = embPropCalcMolwt(s,begsa[i],endsa[j],mwdata,mono);
+
 		if(n==PROPENZCNBR)
 		    fr->molwt -= (17.045 + 31.095);
+
 		fr->start = begsa[i];
 		fr->end   = endsa[j];
 		ajListPush(*pa,(void *)fr);
@@ -1072,6 +1115,7 @@ AjPStr embPropProt1to3Rev(AjPSeq seq, ajint pad)
 	else
 	{
             p3 = embPropCharToThree(*p);
+
             if(i++)
             {
                 ajStrAppendK(&temp, *(p3+2));
@@ -1082,8 +1126,10 @@ AjPStr embPropProt1to3Rev(AjPSeq seq, ajint pad)
             {
                 if(pad >= 2) 
                     ajStrAppendK(&temp, *(p3+2));
+
                 if(pad >= 1) 
                     ajStrAppendK(&temp, *(p3+1));
+
                 ajStrAppendK(&temp, *p3);
             }            
         }
@@ -1247,6 +1293,9 @@ AjBool embPropTransition(char base1, char base2)
     return (bu1 == bu2);
 }
 
+
+
+
 /* @func embPropFixF *********************************************************
 **
 ** Fix for missing properties data in a float array
@@ -1304,18 +1353,16 @@ void embPropFixF(float matrix[], float missing)
 	    }
 	}
     }
+
     mtot /= dtot;
 
     for(i=0;i<26;i++)
-    {
 	if(matrix[i] == missing) /* X:average O,U:X */
 	{
 	    matrix[i] = mtot;
 	    ajDebug("Missing %d '%c' unknown %f\n",
 		    i, dayhoffstr[i], matrix[i]);
 	}
-    }
-
 
     return;
 }
@@ -1349,30 +1396,28 @@ void embPropNormalF(float matrix[], float missing)
     const char* alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     for(i=0;i<26;i++)
-    {
 	if(matrix[i] != missing)
 	{
             count += 1.0;
             total += matrix[i];
             sumsq += matrix[i] * matrix[i];
         }
-    }
 
-    if(!count) return;
+    if(!count)
+        return;
 
     sigma = sqrt(count*sumsq - total*total)/count;
     mean = total/count;
 
     ajDebug("matrix normalize mean: %.3f sigma: %.3f\n", mean, sigma);
+
     for(i=0;i<26;i++)
-    {
 	if(matrix[i] != missing)
         {
             ajDebug("matrix[%u] %c %.3f", i, alphabet[i], matrix[i]);
             matrix[i] = (float) ((matrix[i] - mean) / sigma);
             ajDebug(" => %.3f\n", matrix[i]);
         }
-    }
 
     return;
 }
@@ -1395,6 +1440,7 @@ void embPropAminoDel(EmbPPropAmino **thys)
 
     for(i=0; i < EMBPROPSIZE; ++i)
 	AJFREE(pthis[i]);
+
     AJFREE(pthis);
 
     *thys = NULL;
@@ -1422,6 +1468,7 @@ void embPropMolwtDel(EmbPPropMolwt **thys)
 
     for(i=0; i < EMBPROPSIZE + 2; ++i)
 	AJFREE(pthis[i]);
+
     AJFREE(pthis);
 
     *thys = NULL;
