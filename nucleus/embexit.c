@@ -43,6 +43,9 @@ __noreturn void embExit (void)
     ajExit();
 }
 
+
+
+
 /* @func embExitBad ***********************************************************
 **
 ** Cleans up as necessary, and calls ajExitBad
