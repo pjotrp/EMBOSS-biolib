@@ -541,6 +541,7 @@ static AjBool     seqReadGff(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadGff3(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadHennig86(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadIg(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadIgstrict(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadJackknifer(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadMase(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadMega(AjPSeq thys, AjPSeqin seqin);
@@ -753,6 +754,9 @@ static SeqOInFormat seqInFormatDef[] =
   {"mega",        "Mega interleaved output format",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadMega, AJFALSE, 0},
+  {"igstrict",    "Intelligenetics sequence format strict parser",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE,  seqReadIgstrict, AJFALSE, 0},
   {"ig",          "Intelligenetics sequence format",
        AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadIg, AJFALSE, 0}, /* can read almost anything */
@@ -4220,6 +4224,85 @@ static AjBool seqReadRaw(AjPSeq thys, AjPSeqin seqin)
 
 
 
+/* @funcstatic seqReadIgstrict *************************************************
+**
+** Given data in a sequence structure, tries to read everything needed
+** using IntelliGenetics format.
+**
+** Requires a trailing number at the end of the sequence
+**
+** @param [w] thys [AjPSeq] Sequence object
+** @param [u] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+static AjBool seqReadIgstrict(AjPSeq thys, AjPSeqin seqin)
+{
+    ajuint bufflines      = 0;
+    AjPFilebuff buff;
+    AjBool endnum = ajFalse;
+    AjBool ok = ajTrue;
+
+    buff = seqin->Filebuff;
+
+    do
+    {
+        if(bufflines){
+            ajStrCutStart(&seqReadLine, 1); /* trim the semi colon */
+            ajStrRemoveWhiteExcess(&seqReadLine);
+            if(ajStrGetLen(thys->Desc))
+                ajStrAppendK(&thys->Desc, ' ');
+            ajStrAppendS(&thys->Desc, seqReadLine);
+        }
+	/* skip comments with ';' prefix */
+	ok = ajBuffreadLineStore(buff, &seqReadLine,
+				seqin->Text, &thys->TextPtr);
+	bufflines++;
+    } while(ok && ajStrPrefixC(seqReadLine, ";"));
+
+    if(!ok)
+    {
+        ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
+	return ajFalse;
+    }
+
+    ajStrAssignS(&thys->Name, seqReadLine);
+    ajStrCutEnd(&thys->Name, 1);
+    bufflines++;
+
+    while(ajBuffreadLineStore(buff, &seqReadLine,
+			     seqin->Text, &thys->TextPtr) &&
+	  !ajStrPrefixC(seqReadLine, ";"))
+    {
+        ajStrRemoveWhiteExcess(&seqReadLine);
+        if(ajStrSuffixC(seqReadLine, "1"))
+            endnum = ajTrue;
+        else if(ajStrSuffixC(seqReadLine, "2"))
+            endnum = ajTrue;
+        else
+            endnum = ajFalse;
+	seqAppend(&thys->Seq, seqReadLine);
+	bufflines++;
+    }
+
+    if(!endnum)
+    {
+        ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
+        return ajFalse;
+    }
+    
+    if(ajStrPrefixC(seqReadLine, ";"))
+        ajFilebuffClear(buff, 1);
+    else
+        ajFilebuffClear(buff, 0);
+
+    return ajTrue;
+}
+
+
+
+
 /* @funcstatic seqReadIg ******************************************************
 **
 ** Given data in a sequence structure, tries to read everything needed
@@ -4241,6 +4324,13 @@ static AjBool seqReadIg(AjPSeq thys, AjPSeqin seqin)
 
     do
     {
+        if(bufflines){
+            ajStrCutStart(&seqReadLine, 1); /* trim the semi colon */
+            ajStrRemoveWhiteExcess(&seqReadLine);
+            if(ajStrGetLen(thys->Desc))
+                ajStrAppendK(&thys->Desc, ' ');
+            ajStrAppendS(&thys->Desc, seqReadLine);
+        }
 	/* skip comments with ';' prefix */
 	ok = ajBuffreadLineStore(buff, &seqReadLine,
 				seqin->Text, &thys->TextPtr);
@@ -4248,7 +4338,10 @@ static AjBool seqReadIg(AjPSeq thys, AjPSeqin seqin)
     } while(ok && ajStrPrefixC(seqReadLine, ";"));
 
     if(!ok)
+    {
+        ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
 	return ajFalse;
+    }
 
     ajStrAssignS(&thys->Name, seqReadLine);
     ajStrCutEnd(&thys->Name, 1);
@@ -4256,13 +4349,16 @@ static AjBool seqReadIg(AjPSeq thys, AjPSeqin seqin)
 
     while(ajBuffreadLineStore(buff, &seqReadLine,
 			     seqin->Text, &thys->TextPtr) &&
-	  !ajStrPrefixC(seqReadLine, "\014"))
+	  !ajStrPrefixC(seqReadLine, ";"))
     {
 	seqAppend(&thys->Seq, seqReadLine);
 	bufflines++;
     }
 
-    ajFilebuffClear(buff, 0);
+    if(ajStrPrefixC(seqReadLine, ";"))
+        ajFilebuffClear(buff, 1);
+    else
+        ajFilebuffClear(buff, 0);
 
     return ajTrue;
 }
@@ -11570,13 +11666,16 @@ static void seqUsaRegInit(void)
     /* \4 :qry->QryString */
     /* \5 qry->QryString */
 
-    if(!seqRegUsaId)		 /* \1 is filename \4 is the qry->QryString */
+    if(!seqRegUsaId)
 #ifndef WIN32
+        /* \1 is filename \5 is the qry->Field \6 is the qry->QryString */
 	seqRegUsaId = ajRegCompC("^([^|]+[|]|[^:{%]+)"
 			   "(([:{%])(([^:}]+):)?([^:}]*)}?)?$");
 #else
 	/* Windows file names can start with e.g.: 'C:\' */
 	/* But allow e.g. 'C:/...', for Staden spin */
+
+        /* \1 is filename \6 is the qry->Field \7 is the qry->QryString */
 	seqRegUsaId = ajRegCompC ("^(([a-zA-Z]:[\\\\/])?[^:{%]+)"
 				  "(([:{%])(([^:}]+):)?([^:}]*)}?)?$");
 #endif
@@ -11865,9 +11964,10 @@ static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
 
     if(regstat)
     {
-	/* clear it if this was really a file */	
 	ajRegSubI(seqRegUsaDb, 3, &qry->Field);
 	ajRegSubI(seqRegUsaDb, 1, &seqQryDb);
+
+	/* clear it if this was really a file */	
 
 	if(!ajNamDatabase(seqQryDb))
 	{
@@ -12239,7 +12339,7 @@ static void seqUsaListTrace(const AjPList list)
 ** expanded into lists of USAs.
 **
 ** Because USAs in a list can have their own begin, end and reverse settings
-** the prior setting are stored with each USA in the list node so that they
+** the prior settings are stored with each USA in the list node so that they
 ** can be restored after.
 **
 ** @param [u] seq [AjPSeq] Sequence
