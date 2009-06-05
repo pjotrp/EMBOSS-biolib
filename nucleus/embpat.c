@@ -1124,9 +1124,9 @@ static AjPList patRestrictReadMethyl(AjPFile methfile)
 
 
 
-/* @funcstatic patRestrictMethylMod *****************************************
+/* @funcstatic patRestrictMethylMod ********************************************
 **
-** Read methylation data as a list of MethPdata structures
+** Search using methylation data as a list of MethPdata structures
 **
 ** Note that this routine does a simple substitution and
 ** relies on substitution strings having the same length
@@ -1134,14 +1134,14 @@ static AjPList patRestrictReadMethyl(AjPFile methfile)
 ** there are no overlap conflicts. If a methylase is found that
 ** violates the above then this routine should be revisited.
 **
-** @param [w] str [AjPStr*] sequence string
-** @param [w] rstr [AjPStr*] sequence string
-** @param [r] methlist [AjPList] methlist
+** @param [w] Pstr [AjPStr*] sequence string
+** @param [w] Prstr [AjPStr*] sequence string
+** @param [u] methlist [AjPList] methlist
 **
 ** @return [void]
 ******************************************************************************/
 
-static void patRestrictMethylMod(AjPStr *str, AjPStr *rstr, AjPList methlist)
+static void patRestrictMethylMod(AjPStr *Pstr, AjPStr *Prstr, AjPList methlist)
 {
     ajuint listlen;
     MethPData md = NULL;
@@ -1153,7 +1153,7 @@ static void patRestrictMethylMod(AjPStr *str, AjPStr *rstr, AjPList methlist)
     AjPStr regexp = NULL;
     ajuint **skipm = NULL;
     ajint *buf    = NULL;
-    void *tidy    = NULL;
+    const void *tidy    = NULL;
     
     ajuint plen = 0;
     ajint type = 0;
@@ -1177,7 +1177,7 @@ static void patRestrictMethylMod(AjPStr *str, AjPStr *rstr, AjPList methlist)
     EmbPMatMatch match = NULL;
 
     char *p = NULL;
-    char *q = NULL;
+    const char *q = NULL;
 
     char *rp = NULL;
     
@@ -1192,9 +1192,9 @@ static void patRestrictMethylMod(AjPStr *str, AjPStr *rstr, AjPList methlist)
 
     l = ajListNew();
 
-    p = (*str)->Ptr;
+    p = ajStrGetuniquePtr(Pstr);
 
-    slen = ajStrGetLen(*str);
+    slen = ajStrGetLen(*Pstr);
     
     for(i=0; i < listlen; ++i)
     {
@@ -1209,17 +1209,17 @@ static void patRestrictMethylMod(AjPStr *str, AjPStr *rstr, AjPList methlist)
         embPatCompile(type,pattern,&plen,&buf,off,&sotable,&solimit,&m,
                       &regexp,&skipm,mismatch);
 
-	embPatFuzzSearch(type,0,pattern,seqname,(const AjPStr)*str,l,
+	embPatFuzzSearch(type,0,pattern,seqname,*Pstr,l,
 			 plen,mismatch,amino,carboxyl,buf,off,sotable,
 			 solimit,regexp,skipm,&hits,m,(const void **)&tidy);
 
 
-        rp = (*rstr)->Ptr;
+        rp = ajStrGetuniquePtr(Prstr);
 
         while(ajListPop(l,(void **)&match))
         {
             
-            q = md->Replace->Ptr;
+            q = ajStrGetPtr(md->Replace);
 
             for(j=0; j < match->len; ++j)
             {
@@ -1230,7 +1230,6 @@ static void patRestrictMethylMod(AjPStr *str, AjPStr *rstr, AjPList methlist)
                     rp[slen - fpos -1] = 'N';
             }
             
-
             embMatMatchDel(&match);
         }
             
@@ -1239,8 +1238,13 @@ static void patRestrictMethylMod(AjPStr *str, AjPStr *rstr, AjPList methlist)
             for(j=0;j<m;++j)
                 AJFREE(skipm[j]);
 
+/*
         if(tidy)
-            AJFREE(tidy);
+        {
+            tydy = (void *)tidy;
+            AJFREE(tydy);
+        }     
+*/
 
         ajListPushAppend(methlist, (void *)md);
     }
