@@ -264,11 +264,14 @@ static void     GraphNewGrout(AjPGraph graph);
 static void     GraphNewPlplot(AjPGraph graph);
 static void     GraphDraw(const AjPGraph thys);
 static void     GraphPrint(const AjPGraph thys);
+static void     GraphOpenDas(AjPGraph thys, const char *ext);
 static void     GraphOpenData(AjPGraph thys, const char *ext);
 static void     GraphOpenFile(AjPGraph thys, const char *ext);
 static void     GraphOpenSimple(AjPGraph thys, const char *ext);
 static void     GraphOpenXml(AjPGraph thys, const char *ext);
+#ifndef X_DISPLAY_MISSING
 static void     GraphOpenXwin(AjPGraph thys, const char *ext);
+#endif
 static void     GraphPen(ajint pen, ajint red, ajint green, ajint blue);
 static void     GraphRegister(void);
 static AjBool   GraphSet2(AjPGraph thys, const AjPStr type,AjBool *res);
@@ -286,6 +289,8 @@ static void     GraphText(float xx1, float yy1, float xx2, float yy2,
 			  float just, const char *text);
 static AjBool   GraphTracearg(const char *name, va_list args);
 static void     GraphWind(float xmin, float xmax, float ymin, float ymax);
+static void     GraphxyDisplayToDas(AjPGraph thys, AjBool closeit,
+				     const char *ext);
 static void     GraphxyDisplayToData(AjPGraph thys, AjBool closeit,
 				     const char *ext);
 static void     GraphxyDisplayToFile(AjPGraph thys, AjBool closeit,
@@ -421,10 +426,15 @@ static GraphOType graphType[] =
   {"text",       "null",    "null",
        AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenSimple,
        "Text file"},
-
+/* data file output */
+  
   {"data",       "data",    ".dat",
        AJTRUE,  AJFALSE, GraphxyDisplayToData, GraphOpenData,
        "Data file for Staden package"},
+
+  {"das",        "das",     ".das",
+       AJTRUE,  AJFALSE, GraphxyDisplayToDas,  GraphOpenDas,
+       "Data file for DAS server"},
 
 #ifndef WIN32
 #ifndef X_DISPLAY_MISSING /* X11 is available */
@@ -897,7 +907,7 @@ static void GraphArrayGaps(ajint numofpoints, float *x, float *y)
 	{
 	    /*ajDebug("=g= pljoin(%.2f, %.2f, %.2f, %.2f) [ xy xy]\n",
 		    *xx1, *yy1, *xx2, *yy2);*/
-	    pljoin(*xx1,*yy1,*xx2,*yy2);
+            pljoin(*xx1,*yy1,*xx2,*yy2);
 	}
 
 	xx1++; yy1++;
@@ -3758,6 +3768,43 @@ static void GraphOpenFile(AjPGraph thys, const char *ext)
 
 
 
+/* @funcstatic GraphOpenDas **************************************************
+**
+** A general routine for setting BaseName and extension in plplot
+** for -graph das output.
+**
+** @param [u] thys [AjPGraph] Multiple graph pointer.
+** @param [r] ext [const char*] file extension
+** @return [void]
+** @@
+******************************************************************************/
+
+static void GraphOpenDas(AjPGraph thys, const char *ext)
+{
+    if (thys->plplot)
+    {
+	ajDebug("GraphOpenDas '%S' '%s\n", thys->plplot->outputfile, ext);
+
+	if(!graphData)
+	{
+	    AJNEW0(graphData);
+	    graphData->List = ajListstrNew();
+	}
+
+	GraphSetName(thys, thys->plplot->outputfile,ext);
+	thys->plplot->isdata = ajTrue;
+
+	ajStrAssignS(&graphData->FName, thys->plplot->outputfile);
+	ajStrAssignC(&graphData->Ext, ext);
+
+	GraphDatafileNext();
+    }
+    return;
+}
+
+
+
+
 /* @funcstatic GraphOpenData **************************************************
 **
 ** A general routine for setting BaseName and extension in plplot
@@ -3820,6 +3867,7 @@ static void GraphOpenSimple(AjPGraph thys, const char *ext )
 
 
 
+#ifndef X_DISPLAY_MISSING
 /* @funcstatic GraphOpenXwin **************************************************
 **
 ** A general routine for drawing graphs to an xwin. Only creates the window.
@@ -3851,6 +3899,7 @@ static void GraphOpenXwin(AjPGraph thys, const char *ext )
 
     return;
 }
+#endif
 
 
 
@@ -3902,6 +3951,155 @@ static void GraphxyDisplayToFile(AjPGraph thys, AjBool closeit,
 	ajGraphxyCheckMaxMin(thys);
 	GraphxyGeneral(thys, closeit);
     }
+
+    return;
+}
+
+
+
+
+/* @funcstatic GraphxyDisplayToDas ********************************************
+**
+** A general routine for drawing graphs to DAS output file as points.
+**
+** @param [u] thys [AjPGraph] Multiple graph pointer.
+** @param [r] closeit [AjBool] Close file if true
+** @param [r] ext [const char*] file extension
+** @return [void]
+** @@
+******************************************************************************/
+
+static void GraphxyDisplayToDas(AjPGraph thys, AjBool closeit,
+                                const char *ext)
+{
+    AjPFile outf    = NULL;
+    AjPGraphPlpData graphdata  = NULL;
+    AjPStr temp;
+    AjPTime ajtime;
+    ajint i,j;
+    float minxa = 64000.;
+    float minya = 64000.;
+    float maxxa = -64000.;
+    float maxya = -64000.;
+    ajint nfeat = 0;
+    ajint istart;
+    ajint iend;
+
+    /*
+    ** Things to do:
+    **
+    ** Test this output
+    ** Check how it handles multiple sequences
+    ** Try to catch the sequnce information
+    **
+    ** Do we want end=start or end=start+1
+    **
+    */
+
+    if (!thys->plplot)
+	return;
+
+    ajDebug("GraphxyDisplayToDas '%S' '%s' %d graphs\n",
+	     thys->plplot->outputfile, ext, thys->plplot->numofgraphs);
+        
+    if(!graphData)
+    {
+	AJNEW0(graphData);
+	graphData->List = ajListstrNew();
+    }
+
+    /* Calculate maxima and minima */
+    for(i=0;i<thys->plplot->numofgraphs;i++)
+    {
+	graphdata = (thys->plplot->graphs)[i];
+	minxa = (minxa<graphdata->minX) ? minxa : graphdata->minX;
+	minya = (minya<graphdata->minY) ? minya : graphdata->minY;
+	maxxa = (maxxa>graphdata->maxX) ? maxxa : graphdata->maxX;
+	maxya = (maxya>graphdata->maxY) ? maxya : graphdata->maxY;
+    }
+    
+    ajFmtPrintF(outf,"<DASGFF>\n");
+    ajFmtPrintF(outf,"  <GFF version=\"1.0\" href=\"url\">\n");
+    ajFmtPrintF(outf,"<!DOCTYPE DASGFF SYSTEM \"http://www.biodas.org/dtd/dasgff.dtd\">\n");
+    ajFmtPrintF(outf,"<DASGFF>\n");
+    ajFmtPrintF(outf,"  <GFF version=\"1.0\" href=\"url\">\n");
+
+    ajFmtPrintF(outf,"<!-- Title %S -->\n", thys->plplot->title);
+    ajFmtPrintF(outf,"<!-- Graphs %d -->\n",thys->plplot->numofgraphs);
+    ajFmtPrintF(outf,"<!-- Number %d -->\n",i+1);
+    ajFmtPrintF(outf,"<!-- Points %d -->\n",graphdata->numofpoints);
+	
+    for(i=0;i<thys->plplot->numofgraphs;i++)
+    {
+	graphdata = (thys->plplot->graphs)[i];
+	
+	/* open a file for dumping the data points */
+	temp = ajFmtStr("%S%d%s",thys->plplot->outputfile,i+1,ext);
+	outf = ajFileNewOutNameS(temp);
+	ajListstrPushAppend(graphData->List, temp);
+	if(!outf)
+	{
+	    ajErr("Could not open graph file %S\n",temp);
+	    return;
+	}
+	else
+	    ajDebug("Writing graph %d data to %S\n",i+1,temp);
+
+	if( ajStrGetLen(thys->plplot->title) <=1)
+	{
+	    ajFmtPrintAppS(&thys->plplot->title,"%S",
+			   ajAcdGetProgram());
+	}
+	if( ajStrGetLen(thys->plplot->subtitle) <=1)
+	{
+	    ajtime = ajTimeNewTodayFmt("report");
+	    ajFmtPrintAppS(&thys->plplot->subtitle,"%D",
+			   ajtime);
+	    ajTimeDel(&ajtime);
+	}
+
+        istart = graphdata->minX;
+        if(istart < 1)
+            istart = 1;
+        iend = graphdata->maxX;
+        if(iend < istart)
+            iend = istart;
+	ajFmtPrintF(outf,"    <SEGMENT id=\"%s\" start=\"%d\" stop=\"%d\"\n",
+                    "graphid",
+                    istart,
+                    iend);
+        ajFmtPrintF(outf,
+                    "                version=\"%s\">\n",
+                    "0.0");
+
+	
+	/* Dump out the data points */
+	for(j=0;j<graphdata->numofpoints;j++)
+        {
+            nfeat++;
+	    ajFmtPrintF(outf,"      <FEATURE id=\"%s.%d\">\n",
+                        "featid", nfeat);
+            ajFmtPrintF(outf,"        <START>%d</START>\n",
+                        (ajint) graphdata->x[j]);
+            ajFmtPrintF(outf,"        <END>%d</END>\n",
+                        (ajint) graphdata->x[j]);
+            ajFmtPrintF(outf,"        <SCORE>%f</SCORE>\n",
+                        graphdata->y[j]);
+	    ajFmtPrintF(outf,"      </FEATURE>\n");
+	}
+        
+	
+	ajFmtPrintF(outf,"    <SEGMENT>\n");
+    }
+    
+    ajFmtPrintF(outf,
+                "  </GFF>\n");
+    ajFmtPrintF(outf,
+                "</DASGFF>\n");
+
+    ajFileClose(&outf);
+    if(closeit)
+	GraphClose();
 
     return;
 }
