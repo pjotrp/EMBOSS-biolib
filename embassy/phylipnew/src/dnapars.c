@@ -1090,7 +1090,7 @@ void globrearrange()
   recompute = true;
   do {
     printf("   ");
-    gotlike = bstlike2 = bestlike;
+    gotlike = bestlike = bstlike2;  /* order matters here ! */
     for (j = 0; j < nonodes; j++) {
       bestyet = -10.0 * spp * chars;
       if (j < spp)
@@ -1198,6 +1198,8 @@ void maketree()
   node *item, *nufork, *dummy;
   pointarray nodep;
   char* treestr;
+
+  numtrees = 0;
 
   if (!usertree) {
     for (i = 1; i <= spp; i++)

@@ -1,22 +1,17 @@
-
-#include "phylip.h"
-#include "cons.h"
-
 /* version 3.6. (c) Copyright 1993-2005 by the University of Washington.
    Written by Dan Fineman, Joseph Felsenstein, Mike Palczewski, Hisashi Horino,
    Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee
    is charged for it and provided that this copyright notice is not removed. */
 
-long output_scheme;
+#include "phylip.h"
+#include "cons.h"
 
-extern long tree_pairing;
-
-/* The following extern's refer to things declared in cons.c */
 
 typedef enum { PHYLIPSYMMETRIC, PHYLIPBSD } distance_type;
 
-distance_type  dtype;
+/* The following extern's refer to things declared in cons.c */
+extern int tree_pairing;
 extern Char intreename[FNMLNGTH], intree2name[FNMLNGTH], outtreename[FNMLNGTH];
 extern node *root;
 
@@ -26,8 +21,7 @@ AjPFile embossoutfile;
 long trees_in_1, trees_in_2;
 
 extern long numopts, outgrno, col;
-extern long setsz;
-extern long maxgrp;               /* max. no. of groups in all trees found  */
+extern long maxgrp;    /* max. no. of groups in all trees found  */
 
 extern boolean trout, firsttree, noroot, outgropt, didreroot, prntsets,
                progress, treeprint, goteof;
@@ -41,46 +35,49 @@ extern long tipy;
 extern double **timesseen, **tmseen2, **times2;
 extern double trweight, ntrees;
 
+static distance_type  dtype;
+static long output_scheme;
+
 AjPPhyloTree* phylotrees = NULL;
 AjPPhyloTree* phylomoretrees = NULL;
 
 #ifndef OLDC
 /* function prototpes */
-void   assign_tree(group_type **, pattern_elm ***, long, long *); 
+void    assign_tree(group_type **, pattern_elm ***, long, long *); 
 boolean group_is_null(group_type **, long);
-void   compute_distances(pattern_elm ***, long, long);
-void   free_patterns(pattern_elm ***, long); 
-void   produce_square_matrix(long, long *);
-void   produce_full_matrix(long, long, long *);
-void   output_submenu(void);
-void   pairing_submenu(void);
+void    compute_distances(pattern_elm ***, long, long);
+void    free_patterns(pattern_elm ***, long); 
+void    produce_square_matrix(long, long *);
+void    produce_full_matrix(long, long, long *);
+void    output_submenu(void);
+void    pairing_submenu(void);
 
-void   read_second_file(pattern_elm ***, double *, long, long, AjPPhyloTree* trees);
-//void   getoptions(void);
-void emboss_getoptions(char *pgm, int argc, char *argv[]);
-void   assign_lengths(double **lengths, pattern_elm ***pattern_array, 
+void    read_second_file(pattern_elm ***, long, long, AjPPhyloTree* trees);
+//void    getoptions(void);
+void    emboss_getoptions(char *pgm, int argc, char *argv[]);
+void    assign_lengths(double **lengths, pattern_elm ***pattern_array, 
              long tree_index);
-void   print_header(long trees_in_1, long trees_in_2);
-void   output_distances(long trees_in_1, long trees_in_2);
-void   output_long_distance(long diffl, long tree1, long tree2,
+void    print_header(long trees_in_1, long trees_in_2);
+void    output_distances(long trees_in_1, long trees_in_2);
+void    output_long_distance(long diffl, long tree1, long tree2,
                              long trees_in_1, long trees_in_2);
-void output_matrix_long(long diffl, long tree1, long tree2, long trees_in_1,
-    long trees_in_2);
-void output_matrix_double(double diffl, long tree1, long tree2, long trees_in_1,
-    long trees_in_2);
-void   output_double_distance(double diffd, long tree1, long tree2,
+void    output_matrix_long(long diffl, long tree1, long tree2, long trees_in_1,
+                long trees_in_2);
+void    output_matrix_double(double diffl, long tree1, long tree2, long trees_in_1,
+                long trees_in_2);
+void    output_double_distance(double diffd, long tree1, long tree2,
     long trees_in_1, long trees_in_2);
-long   symetric_diff(group_type **tree1, group_type **tree2,
+long    symetric_diff(group_type **tree1, group_type **tree2,
                 long ntree1, long ntree2, long patternsz1, long patternsz2);
-double bsd_tree_diff(group_type **tree1, group_type **tree2, long ntree1,
+double  bsd_tree_diff(group_type **tree1, group_type **tree2, long ntree1,
                      long ntree2, double* lengths1, double *lengths2,
                      long patternsz1, long patternsz2);
-void   tree_diff(group_type **tree1, group_type **tree2, double *lengths1,
-               double* lengths2, long patternsz1, long patternsz2, long ntree1,
+void    tree_diff(group_type **tree1, group_type **tree2, double *lengths1,
+                double* lengths2, long patternsz1, long patternsz2, long ntree1,
                 long ntree2, long trees_in_1, long trees_in_2);
-void   print_line_heading(long tree);
-int    get_num_columns(void);
-void   print_matrix_heading(long tree, long maxtree);
+void    print_line_heading(long tree);
+int     get_num_columns(void);
+void    print_matrix_heading(long tree, long maxtree);
 /* function prototpes */
 #endif
 
@@ -97,7 +94,7 @@ void assign_tree(group_type **treeN, pattern_elm ***pattern_array,
 { /* set treeN to be the tree_index-th tree in pattern_elm */
   long i;
 
-  for (i = 0 ; i < setsz ; i++) {
+  for ( i = 0 ; i < setsz ; i++ ) {
     treeN[i] = pattern_array[i][tree_index]->apattern;
   }
   *pattern_size = *pattern_array[0][tree_index]->patternsize;
@@ -110,7 +107,7 @@ boolean group_is_null(group_type **treeN, long index)
      group */
   long i;
 
-  for (i = 0 ; i < setsz ; i++)
+  for ( i = 0 ; i < setsz ; i++ )
     if (treeN[i][index] != (group_type) 0)
       return false;
 
@@ -132,122 +129,124 @@ double bsd_tree_diff(group_type **tree1, group_type **tree2,
   boolean match_found;
   long i;
 
-  if (group_is_null (tree1, 0) || group_is_null (tree2, 0)) {
+  if ( group_is_null(tree1, 0) || group_is_null(tree2, 0) ) {
     printf ("Error computing tree difference between tree %ld and tree %ld\n",
              ntree1, ntree2);
     embExitBad();
   }
 
-  for (index1 = 0; index1 < patternsz1; index1++) {
-    if (!group_is_null (tree1, index1)) {
-      if (lengths1[index1] == -1) {
+  for ( index1 = 0; index1 < patternsz1; index1++ ) {
+    if ( !group_is_null(tree1, index1) ) {
+      if ( lengths1[index1] == -1 ) {
         printf(
-         "Error: tree %ld is missing a length from at least one branch\n",
-         ntree1);
+          "Error: tree %ld is missing a length from at least one branch\n",
+          ntree1);
         embExitBad();
         }
       }
     }
 
-  for (index2 = 0; index2 < patternsz2; index2++) {
-    if (!group_is_null (tree2, index2)) {
-      if (lengths2[index2] == -1) {
+  for ( index2 = 0; index2 < patternsz2; index2++ ) {
+    if ( !group_is_null(tree2, index2) ) {
+      if ( lengths2[index2] == -1 ) {
         printf(
-         "Error: tree %ld is missing a length from at least one branch\n",
-         ntree2);
+          "Error: tree %ld is missing a length from at least one branch\n",
+          ntree2);
         embExitBad();
         }
       }
     }
 
-  for (index1 = 0 ; index1 < patternsz1; index1++) {
+  for ( index1 = 0 ; index1 < patternsz1; index1++ ) {
     /* For every element in the first tree, see if there's
         a match to it in the second tree. */
     match_found = false;
     
-    if (group_is_null (tree1, index1)) {
+    if ( group_is_null(tree1, index1) ) {
       /* When we've gone over all the elements in tree1, greater
           number of elements in tree2 will constitute that much more
           of a difference... */
-      while (! group_is_null (tree2, index1)) {
-        return_value+= pow(lengths1[index1], 2);
+      while ( !group_is_null(tree2, index1) ) {
+        return_value += pow(lengths1[index1], 2);
         index1++;
       }
       break;
     }
 
-    for (index2 = 0 ; index2 < patternsz2 ; index2++) {
+    for ( index2 = 0 ; index2 < patternsz2 ; index2++ ) {
       /* For every element in the second tree, see if any match
           the current element in the first tree. */
-      if (group_is_null (tree2, index2)) {
+      if ( group_is_null(tree2, index2) ) {
         /* When we've gone over all the elements in tree2 */
         match_found = false;
         break;
-      } else {
+      }
+      else {
         /* Tentatively set match_found; will be changed later if
             neccessary. . . */
         match_found = true;  
 
-        for (i = 0 ; i < setsz ; i++) {
+        for ( i = 0 ; i < setsz ; i++ ) {
             /* See if we've got a match, */ 
-            if (tree1[i][index1] != tree2[i][index2])
+            if ( tree1[i][index1] != tree2[i][index2] )
               match_found = false;
         }
 
-        if (match_found == true) {
+        if ( match_found == true ) {
           break;
         }
       }
     }
 
-    if (match_found == false) {
-        return_value+= pow(lengths1[index1], 2);
+    if ( match_found == false ) {
+        return_value += pow(lengths1[index1], 2);
     }
   }
 
-  for (index2 = 0 ; index2 < patternsz2 ; index2++) {
+  for ( index2 = 0 ; index2 < patternsz2 ; index2++ ) {
     /* For every element in the second tree, see if there's
         a match to it in the first tree. */
     match_found = false;
-    if (group_is_null (tree2, index2)) {
+    if ( group_is_null(tree2, index2) ) {
       /* When we've gone over all the elements in tree2, greater
           number of elements in tree1 will constitute that much more
           of a difference... */
 
-      while (! group_is_null (tree1, index2)) {
-        return_value+= pow(lengths2[index2], 2);
+      while ( !group_is_null(tree1, index2) ) {
+        return_value += pow(lengths2[index2], 2);
         index2++;
       }
       break;
     }
 
-    for (index1 = 0 ; index1 < patternsz1 ; index1++) {
+    for ( index1 = 0 ; index1 < patternsz1 ; index1++ ) {
       /* For every element in the first tree, see if any match
           the current element in the second tree. */
-      if (group_is_null (tree1, index1)) {
+      if ( group_is_null(tree1, index1) ) {
         /* When we've gone over all the elements in tree2 */
         match_found = false;
         break;
-      } else {
+      }
+      else {
         /* Tentatively set match_found; will be changed later if
             neccessary. . . */
         match_found = true;  
 
-        for (i = 0 ; i < setsz ; i++) {
+        for ( i = 0 ; i < setsz ; i++ ) {
             /* See if we've got a match, */ 
-            if (tree2[i][index2] != tree1[i][index1])
+            if ( tree1[i][index1] != tree2[i][index2] )
               match_found = false;
         }
 
-        if (match_found == true) {
+        if ( match_found == true ) {
           return_value += pow(lengths1[index1] - lengths2[index2], 2);
           break;
         }
       }
     }
 
-    if (match_found == false) {
-        return_value+= pow(lengths2[index2], 2);
+    if ( match_found == false ) {
+        return_value += pow(lengths2[index2], 2);
     }
   }
   if (return_value > 0.0)
@@ -537,6 +536,7 @@ void compute_distances(pattern_elm ***pattern_array, long trees_in_1,
                 long trees_in_2)
 {
   /* Compute symmetric distances between arrays of trees */
+
   long  tree_index, end_tree, index1, index2, diff_index, index3;
   group_type **treeA, **treeB;
   long patternsz1, patternsz2;
@@ -545,16 +545,21 @@ void compute_distances(pattern_elm ***pattern_array, long trees_in_1,
 
   diff_index = 0;
   index1 = 0;
+
   /* Put together space for treeA and treeB */
   treeA = (group_type **) Malloc (setsz * sizeof (group_type *));
   treeB = (group_type **) Malloc (setsz * sizeof (group_type *));
+
   print_header(trees_in_1, trees_in_2);
+
   switch (tree_pairing) {
-    case ADJACENT_PAIRS: 
-      end_tree = trees_in_1 - 1;
-      for (tree_index = 0 ; tree_index < end_tree ; tree_index += 2) {
+
+      case ADJACENT_PAIRS: 
         /* For every tree, compute the distance between it and the tree
             at the next location; do this in both directions */
+      end_tree = trees_in_1 - 1;
+      for (tree_index = 0 ; tree_index < end_tree ; tree_index += 2) {
+
         assign_tree (treeA, pattern_array, tree_index, &patternsz1);
         assign_tree (treeB, pattern_array, tree_index + 1, &patternsz2);
         assign_lengths(&length1, pattern_array, tree_index);
@@ -567,12 +572,12 @@ void compute_distances(pattern_elm ***pattern_array, long trees_in_1,
       break;
   
     case ALL_IN_FIRST: 
-      end_tree   = trees_in_1;
-      
-      if ( output_scheme != FULL_MATRIX ) {
-        for (index1 = 0 ; index1 < end_tree ; index1++) {
           /* For every tree, compute the distance between it and every
               other tree in that file. */
+      end_tree   = trees_in_1;
+      if ( output_scheme != FULL_MATRIX ) {
+        /* verbose or sparse output */
+        for (index1 = 0 ; index1 < end_tree ; index1++) {
           assign_tree (treeA, pattern_array, index1, &patternsz1);
           assign_lengths(&length1, pattern_array, index1);
   
@@ -583,7 +588,9 @@ void compute_distances(pattern_elm ***pattern_array, long trees_in_1,
                 index1 + 1, index2 + 1, trees_in_1, trees_in_2);
           }
         }
-      } else {
+      }
+      else {
+        /* full matrix output */
         for ( index3 = 0 ; index3 < trees_in_1 ; index3 += num_columns) {
           for ( index1 = 0 ; index1 < trees_in_1 ; index1++) {
           assign_tree (treeA, pattern_array, index1, &patternsz1);
@@ -603,19 +610,25 @@ void compute_distances(pattern_elm ***pattern_array, long trees_in_1,
 
     case CORR_IN_1_AND_2:
       if (trees_in_1 != trees_in_2) {
-        /* Print something out to the outfile and to the terminal. */
-        fprintf (outfile, "\n\n");
-        fprintf (outfile, 
-            "*** Warning: differing number of trees in first and second\n");
-        fprintf (outfile, "*** tree files.  Only computing %ld pairs.\n\n",
-                  trees_in_1 > trees_in_2 ? trees_in_2 : trees_in_1);
-        printf (
-            "\n *** Warning: differing number of trees in first and second\n");
-        printf (" *** tree files.  Only computing %ld pairs.\n\n",
-                  trees_in_1 > trees_in_2 ? trees_in_2 : trees_in_1);
-  
         /* Set end tree to the smaller of the two totals. */
         end_tree = trees_in_1 > trees_in_2 ? trees_in_2 : trees_in_1;
+	
+        /* Print something out to the outfile and to the terminal. */
+        fprintf(outfile,
+            "\n\n"
+            "*** Warning: differing number of trees in first and second\n"
+            "*** tree files.  Only computing %ld pairs.\n"
+            "\n",
+            end_tree
+        );
+        printf(
+            "\n"
+            " *** Warning: differing number of trees in first and second\n"
+            " *** tree files.  Only computing %ld pairs.\n"
+            "\n",
+            end_tree
+        );
+  
       }
       else
         end_tree = trees_in_1;
@@ -693,13 +706,14 @@ void compute_distances(pattern_elm ***pattern_array, long trees_in_1,
 void free_patterns(pattern_elm ***pattern_array, long total_trees) 
 {
   long i, j;
-  long end_pattern = total_trees - 1;
 
   /* Free each pattern array, */
   for (i=0 ; i < setsz ; i++) {
-    for (j = 0 ; j < end_pattern ; j++) {
+    for (j = 0 ; j < total_trees ; j++) {
       free (pattern_array[i][j]->apattern);
       free (pattern_array[i][j]->patternsize);
+      free (pattern_array[i][j]->length);
+      free (pattern_array[i][j]);
     }
     free (pattern_array[i]);
   }
@@ -716,13 +730,16 @@ void print_header(long trees_in_1, long trees_in_2)
       end_tree = trees_in_1 - 1;
 
       if (output_scheme == VERBOSE) {
-        fprintf(outfile, "\nTree distance program, version %s\n\n", VERSION);
+        fprintf(outfile,
+                "\n"
+                "Tree distance program, version %s\n\n", VERSION);
         if (dtype == PHYLIPBSD)
           fprintf (outfile, 
-              "Branch score distances between adjacent pairs of trees:\n\n");
+                   "Branch score distances between adjacent pairs of trees:\n"
+                   "\n");
         else
           fprintf (outfile, 
-              "Symmetric differences between adjacent pairs of trees:\n\n");
+                  "Symmetric differences between adjacent pairs of trees:\n\n");
       }
       else if ( output_scheme != SPARSE)
         printf ("Error -- cannot output adjacent pairs into a full matrix.\n");
@@ -898,7 +915,6 @@ void pairing_submenu()
 
 
 void read_second_file(pattern_elm ***pattern_array,
-		      double *timesseen_changes,
 		      long trees_in_1, long trees_in_2,
 		      AjPPhyloTree* treesource)
 {
@@ -909,7 +925,6 @@ void read_second_file(pattern_elm ***pattern_array,
   char *treestr;
 
   firsttree2 = false;
-  grbg = NULL;
   while (treesource[itree]) {
     goteof = false;
     nextnode = 0;
@@ -935,7 +950,6 @@ void read_second_file(pattern_elm ***pattern_array,
     free(nodep);
 
     store_pattern (pattern_array, 
-                   timesseen_changes,
                    trees_in_1 + trees_read);
     trees_read++;
   }
@@ -1017,8 +1031,9 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 int main(int argc, Char *argv[])
 {  
   pattern_elm  ***pattern_array;
-  double *timesseen_changes=NULL;
-  char *s; /* for getenv */
+  long tip_count = 0;
+  long alt_maxgrp = -1;
+  node * p;
 
 
 #ifdef MAC
@@ -1031,30 +1046,68 @@ int main(int argc, Char *argv[])
   /* Initialize option-based variables, then ask for changes regarding
      their values. */
  
-
   ntrees = 0.0;
-  maxgrp = 10000;
-  /* change maxgrp based on MAXGRP environment variable */
-  s=getenv("MAXGRP");
-  if(s) sscanf(s,"%ld",&maxgrp);
   lasti  = -1;
 
-  /* how many trees do we have? */
+  /* read files to determine size of structures we'll be working with */
+  countcomma(ajStrGetuniquePtr(&phylotrees[0]->Tree),&tip_count);
+  tip_count++; /* countcomma does a raw comma count, tips is one greater */
 
-  if ((tree_pairing == ALL_IN_1_AND_2) ||
-      (tree_pairing == CORR_IN_1_AND_2)){
-    /* If another intree file should exist, */
-    //openfile(&intree2, INTREE2, "input tree file 2", "r", argv[0], intree2name);
-    
-  }
-  if (tree_pairing != NO_PAIRING){
-    timesseen_changes = (double *)Malloc(maxgrp * sizeof(double));
-  }
+
+  /* 
+   * EWFIX.BUG.756
+   * 
+   * inside cons.c there are several arrays which are allocated
+   * to size "maxgrp", the maximum number of groups (sets of
+   * tips more closely connected than the rest of the tree) we
+   * can see as the code executes.
+   *
+   * We have two measures we use to determine how much space to
+   * allot:
+   *  (1) based on the tip count of the trees in the infile
+   *  (2) based on total number of trees in infile, and 
+   *
+   * (1) -- Tip Count Method
+   * Since each group is a subset of the set of tips we must
+   * represent at most pow(2,tips) different groups. (Technically
+   * two fewer since we don't store the empty or complete subsets,
+   * but let's keep this simple.
+   *
+   * (2) -- Total Tree Size Method
+   * Each tree we read results in 
+   *      singleton groups for each tip, plus
+   *      a group for each interior node except the root
+   * Since the singleton tips are identical for each tree, this gives
+   * a bound of #tips + ( #trees * (# tips - 2 ) )
+   *
+   *
+   * Ignoring small terms where expedient, either of the following should
+   * result in an adequate allocation:
+   *       pow(2,#tips)
+   *       (#trees + 1) * #tips 
+   *
+   * Since "maxgrp" is a limit on the number of items we'll need to put
+   * in a hash, we double it to make space for quick hashing
+   */
+  maxgrp = pow(2,tip_count); 
+  alt_maxgrp = (trees_in_1 + trees_in_2 + 1) * tip_count;
+  if(alt_maxgrp < maxgrp) maxgrp = alt_maxgrp;
+  maxgrp *= 2;
+
+  /* EWFIX.BUG.756 -- stealing an initial value from consense.
+   * This should really be defined in a header, and a warning
+   * should be given if the other values are bigger -- presumably
+   * that means that we're likely to run out of space.
+   *
+   * However, since we have the hashing machinery and we don't know
+   * how big the user's system is, this should be fine.
+   */
+  if(maxgrp > 32767) maxgrp = 32767;
 
   /* Read the (first) tree file and put together grouping, order, and
      timesseen */
-  read_groups (&pattern_array, timesseen_changes, trees_in_1,
-                 trees_in_1 + trees_in_2, phylotrees);
+  read_groups (&pattern_array, trees_in_1 + trees_in_2,
+               tip_count, phylotrees);
 
   if ((tree_pairing == ADJACENT_PAIRS) ||
       (tree_pairing == ALL_IN_FIRST)) {
@@ -1064,26 +1117,13 @@ int main(int argc, Char *argv[])
 
     compute_distances (pattern_array, trees_in_1, 0);
 
-    /* Free all the buffers needed to compute the differences. */
-    free (timesseen_changes);
-    /* Patterns need to be freed in a more complex fashion. */
-    /* This removed 'cause it was causing problems */
-    /* free_patterns (pattern_array, trees_in_1 + trees_in_2);*/
-
   } else if ((tree_pairing == CORR_IN_1_AND_2) ||
              (tree_pairing == ALL_IN_1_AND_2)) {
     /* Here, open the other tree file, parse it, and then put
          together the difference array */
-    read_second_file (pattern_array, timesseen_changes, 
-                      trees_in_1, trees_in_2, phylomoretrees);
+    read_second_file (pattern_array, trees_in_1, trees_in_2, phylomoretrees);
 
     compute_distances (pattern_array, trees_in_1, trees_in_2);
-
-    /* Free all the buffers needed to compute the differences. */
-    free (timesseen_changes);
-    /* Patterns need to be freed in a more complex fashion. */
-    /* This removed 'cause it was causing problems */
-    /* free_patterns (pattern_array, trees_in_1 + trees_in_2); */
 
   } else if (tree_pairing == NO_PAIRING) {
     /* Compute the consensus tree. */
@@ -1102,12 +1142,25 @@ int main(int argc, Char *argv[])
       (tree_pairing == CORR_IN_1_AND_2))
     FClose(intree2);
 
-  printf("Done.\n\n");
-
 #ifdef MAC
   fixmacfile(outfilename);
   fixmacfile(outtreename);
 #endif
+
+  free_patterns (pattern_array, trees_in_1 + trees_in_2);
+  clean_up_final();
+  /* clean up grbg */
+  p = grbg;
+  while (p != NULL) {
+     node * r = p;
+     p = p->next;
+     free(r->nodeset);
+     free(r->view);
+     free(r);
+  }
+
+
+  printf("Done.\n\n");
   embExit();
   return 0;
 }  /* main */

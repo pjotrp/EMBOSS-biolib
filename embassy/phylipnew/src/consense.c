@@ -1,7 +1,7 @@
 #include "phylip.h"
 #include "cons.h"
 
-/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2008 by the University of Washington.
    Written by Joseph Felsenstein, Hisashi Horino,
    Akiko Fuseki, Dan Fineman, Sean Lamont, and Andrew Keeffe.
    Permission is granted
@@ -118,6 +118,10 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   fprintf(outfile, "\nConsensus tree");
   fprintf(outfile, " program, version %s\n\n", VERSION);
 
+  ajStrDel(&method);
+
+  return;
+
 }  /* emboss_getoptions */
 
 
@@ -215,10 +219,7 @@ void treeout(node *p)
       } else if (x >= 10.0) {
           fprintf(outtree, ":%4.1f", x); 
           col += 3;
-        } else if (x >= 0.99) {
-            fprintf(outtree, ":%3.1f", x);
-            col += 2;
-          } else {
+        } else if (x >= 1.00) {
             fprintf(outtree, ":%4.2f", x); 
             col += 3;
           }
@@ -231,9 +232,8 @@ int main(int argc, Char *argv[])
 {  
   /* Local variables added by Dan F. */
   pattern_elm  ***pattern_array;
-  double *timesseen_changes = NULL;
-
   long i, j;
+  long tip_count = 0;
   node *p, *q;
 
 #ifdef MAC
@@ -250,8 +250,11 @@ int main(int argc, Char *argv[])
   if (prntsets)
     fprintf(outfile, "Species in order: \n\n");
 
+  countcomma(ajStrGetuniquePtr(&phylotrees[0]->Tree),&tip_count);
+  tip_count++; /* countcomma does a raw comma count, tips is one greater */
+
   /* Read the tree file and put together grouping, order, and timesseen */
-  read_groups (&pattern_array, timesseen_changes, trees_in, trees_in, phylotrees);
+  read_groups (&pattern_array, trees_in, tip_count, phylotrees);
   /* Compute the consensus tree. */
   putc('\n', outfile);
   nodep      = (pointarray)Malloc(2*(1+spp)*sizeof(node *));
@@ -299,6 +302,13 @@ printf("Done.\n\n");
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
+
+  ajPhyloTreeDelarray(&phylotrees);
+  ajFileClose(&embossoutfile);
+  ajFileClose(&embossouttree);
+
+  clean_up_final_consense();
+
   embExit();
   return 0;
 }  /* main */

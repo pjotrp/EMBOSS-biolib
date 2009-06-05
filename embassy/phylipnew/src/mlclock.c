@@ -275,8 +275,11 @@ push_tymes_to_tips(tree *t, node *p, double tyme)
             "%s line %d\n", __FILE__, __LINE__);
         exxit(-1);
       }
-      else 
-        push_tymes_to_tips(t, q->back, p->tyme + MIN_BRANCH_LENGTH);
+      else {
+        if(!( q->back->tip ) ) {
+            push_tymes_to_tips(t, q->back, p->tyme + MIN_BRANCH_LENGTH);
+        }
+      }
     }
   }
 }

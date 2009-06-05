@@ -1757,6 +1757,11 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
   fixmacfile(outtreename);
 #endif
+  printf("Done.\n\n");
+
+#ifdef WIN32
+  phyRestoreConsoleAttributes();
+#endif
   embExit();
   return 0;
 }  /* Protein parsimony by uphill search */

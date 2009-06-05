@@ -1,7 +1,8 @@
+
 #include "phylip.h"
 #include "moves.h"
 
-/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2008 by the University of Washington.
    Written by Joseph Felsenstein and Andrew Keeffe.  Permission is granted to
    copy and use this program provided no fee is charged for it and provided
    that this copyright notice is not removed. */
@@ -782,7 +783,7 @@ void reroot(node *outgroup)
   outgroup->back = root->next;
 
   /* place root equidistant between left child (outgroup) and
-     right child by deviding outgroup's length */
+     right child by dividing outgroup's length */
   if (haslengths) {
     templen = outgroup->length / 2.0;
     outgroup->length = templen;
@@ -1863,8 +1864,12 @@ void midpoint()
       balance = greatlen - (greatlen + lesslen) / 2.0;
     }
     grnode->length -= balance;
+    if (((grnode->length) < 0.0) && (grnode->length > -1.0e-10))
+      grnode->length = 0.0;
     grnode->back->length = grnode->length;
     lsnode->length += balance;
+    if (((lsnode->length) < 0.0) && (lsnode->length > -1.0e-10))
+      lsnode->length = 0.0;
     lsnode->back->length = lsnode->length;
   }
   printree();
@@ -2744,8 +2749,13 @@ void retree_window(adjwindow action)
       break;
 
     case right:
-      if (leftedge < vscreenwidth)
-        leftedge += hscroll;
+        if (leftedge < vscreenwidth+2)
+        {
+            if (hscroll > leftedge - vscreenwidth + 1)
+                leftedge = vscreenwidth;
+            else
+                leftedge += hscroll;
+        }
       break;
   }
   printree();

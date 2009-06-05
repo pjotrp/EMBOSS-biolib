@@ -15,20 +15,20 @@ boolean trout, firsttree, noroot, outgropt, didreroot, prntsets,
 pointarray nodep;
 pointarray treenode;
 group_type **grouping, **grping2, **group2;/* to store groups found  */
-double *lengths;
+double *lengths, *lengths2;
 long **order, **order2, lasti;
 group_type *fullset;
 node *grbg;
 long tipy;
 
 double **timesseen, **tmseen2, **times2 ;
+double *timesseen_changes, *tchange2;
 double trweight, ntrees, mlfrac;
 
 /* prototypes */
 void censor(void);
 boolean compatible(long, long);
 void elimboth(long);
-void enternohash(group_type*, long*);
 void enterpartition (group_type*, long*);
 void reorient(node* n);
 void phylipcompress(long *n);
@@ -756,36 +756,6 @@ void printree()
 }  /* printree */
 
 
-void enternohash(group_type *s, long *n)
-{
-  /* if set s is already there, enter it into groupings in the next slot
-     (without hash-coding).  n is number of sets stored there and is updated */
-  long i, j;
-  boolean found;
-
-  found = false;
-  for (i = 0; i < (*n); i++) {  /* go through looking whether it is there */
-    found = true;
-    for (j = 0; j < setsz; j++) {  /* check both parts of partition */
-      found = found && (grouping[i][j] == s[j]);
-      found = found && (group2[i][j] == (fullset[j] & (~s[j])));
-    }
-    if (found)
-      break;
-  }
-  if (!found) {    /* if not, add it to the slot after the end,
-                      which must be empty */
-    grouping[i] = (group_type *)Malloc(setsz * sizeof(group_type));
-    timesseen[i] = (double *)Malloc(sizeof(double));
-    group2[i] = (group_type *)Malloc(setsz * sizeof(group_type));
-    for (j = 0; j < setsz; j++)
-      grouping[i][j] = s[j];
-    *timesseen[i] = 1;
-    (*n)++;
-  }
-} /* enternohash */
-
-
 void enterpartition (group_type *s1, long *n)
 {
   /* try to put this partition in list of partitions.  If implied by others,
@@ -918,40 +888,92 @@ void consensus(pattern_elm ***pattern_array, long trees_in)
 void rehash()
 {
   group_type *s;
-  long i, j, k;
+  long i, j;
   double temp, ss, smult;
   boolean done;
 
+  long old_maxgrp = maxgrp;
+  long new_maxgrp = maxgrp*2;
+
+  tmseen2 =     (double **)Malloc(new_maxgrp*sizeof(double *));
+  grping2 = (group_type **)Malloc(new_maxgrp*sizeof(group_type *));
+  order2 =        (long **)Malloc(new_maxgrp*sizeof(long *));
+  lengths2 =     (double *)Malloc(new_maxgrp*sizeof(double));
+  tchange2 =     (double *)Malloc(new_maxgrp*sizeof(double));
+
+  for (i = 0; i < new_maxgrp; i++)
+  {
+    tmseen2[i] = NULL;
+    grping2[i] = NULL;
+    order2[i] = NULL;
+    lengths2[i] = 0.0;
+    tchange2[i] = 0.0;
+  }
+
+
   smult = (sqrt(5.0) - 1) / 2;
   s = (group_type *)Malloc(setsz * sizeof(group_type));
-  for (i = 0; i < maxgrp/2; i++) {
-    k = *order[i];
-    memcpy(s, grouping[k], setsz * sizeof(group_type));
+
+  for (i = 0; i < old_maxgrp; i++) {
+    long old_index = *order[i];
+    long new_index = -1;
+    memcpy(s, grouping[old_index], setsz * sizeof(group_type));
     ss = 0.0;
     for (j = 0; j < setsz; j++)
       ss += s[j] /* pow(2, SETBITS*j)*/;
     temp = ss * smult;
-    j = (long)(maxgrp * (temp - floor(temp)));
+    new_index = (long)(new_maxgrp * (temp - floor(temp)));
     done = false;
     while (!done) {
-      if (!grping2[j]) {
-        grping2[j] = (group_type *)Malloc(setsz * sizeof(group_type));
-        order2[i] = (long *)Malloc(sizeof(long));
-        tmseen2[j] = (double *)Malloc(sizeof(double));
-        memcpy(grping2[j], grouping[k], setsz * sizeof(group_type));
-        *tmseen2[j] = *timesseen[k];
-        *order2[i] = j;
-        grouping[k] = NULL;
-        timesseen[k] = NULL;
+      if (!grping2[new_index])
+      {
+
+        grping2[new_index] = (group_type *)Malloc(setsz * sizeof(group_type));
+        memcpy(grping2[new_index], grouping[old_index], setsz * sizeof(group_type));
+
+        *order2[i] = new_index;
+
+        tmseen2[new_index] = (double *)Malloc(sizeof(double));
+        *tmseen2[new_index] = *timesseen[old_index];
+
+        lengths2[new_index] = lengths[old_index];
+
+        tchange2[new_index] = timesseen_changes[old_index];
+
+
+        free(grouping[old_index]);
+        free(timesseen[old_index]);
+        free(order[i]);
+
+        grouping[old_index] = NULL;
+        timesseen[old_index] = NULL;
         order[i] = NULL;
-        done = true;
+
+        done = true; /* successfully found place for this item */
+
       } else {
-        j++;
-        if (j >= maxgrp) j -= maxgrp;
+        new_index++;
+        if (new_index >= new_maxgrp) new_index -= new_maxgrp;
       }
     }
   }
+
+  free(lengths);
+  free(timesseen);
+  free(grouping);
+  free(order);
+  free(timesseen_changes);
+
   free(s);
+
+  timesseen = tmseen2;
+  grouping = grping2;
+  lengths = lengths2;
+  order = order2;
+  timesseen_changes = tchange2;
+
+  maxgrp = new_maxgrp;
+
 }  /* rehash */
 
 void enternodeset(node* r)
@@ -964,6 +986,7 @@ void enternodeset(node* r)
 
   s = r->nodeset;
 
+
   /* do not enter full sets */
   same = true;
   for (i = 0; i < setsz; i++)
@@ -971,6 +994,7 @@ void enternodeset(node* r)
       same = false;
   if (same) 
     return;
+
   times = trweight;
   ss = 0.0;                        /* compute the hashcode for the set */
   n = ((sqrt(5.0) - 1.0) / 2.0);   /* use an irrational multiplier */
@@ -979,6 +1003,7 @@ void enternodeset(node* r)
   i = (long)(maxgrp * (ss - floor(ss))) + 1; /* use fractional part of code */
   start = i;
   done = false;                   /* go through seeing if it is there */
+
   while (!done) {
     if (grouping[i - 1]) {        /* ... i.e. if group is absent, or  */
       same = false;               /* (will be false if timesseen = 0) */
@@ -1009,61 +1034,54 @@ void enternodeset(node* r)
       if (i > maxgrp) i -= maxgrp;
     }
     if (!done && i == start) {  /* if no place to put it, expand hash table */
-      maxgrp = maxgrp*2;
-      tmseen2 = (double **)Malloc(maxgrp*sizeof(double *));
-      for (j = 0; j < maxgrp; j++)
-        tmseen2[j] = NULL;
-      grping2 = (group_type **)Malloc(maxgrp*sizeof(group_type *));
-      for (j = 0; j < maxgrp; j++)
-        grping2[j] = NULL;
-      order2 = (long **)Malloc(maxgrp*sizeof(long *));
-      for (j = 0; j < maxgrp; j++)
-        order2[j] = NULL;
+
       rehash();
-      free(timesseen);
-      free(grouping);
-      free(order);
-      timesseen = tmseen2;
-      grouping = grping2;
-      order = order2;
+
       done = true;
-      lasti = maxgrp/2 - 1;
-      enternodeset(r);
+      enternodeset(r); /* calls this procedure again, but now there
+                          should be space */
     }
   }
 }  /* enternodeset */
 
 
+/* recursively crawls through tree, setting nodeset values to be the
+ * bitwise OR of bits from downstream nodes
+ */
 void accumulate(node *r)
 {
   node *q;
   long i;
 
+  /* zero out nodeset values. since we are re-using tree nodes,
+   * the malloc only happens the first time we encounter a node. */
+  if (!r->nodeset)
+  {
+    r->nodeset = (group_type *)Malloc(setsz * sizeof(group_type));
+  }
+  for (i = 0; i < setsz; i++)
+  {
+    r->nodeset[i] = 0L;
+  }
+
   if (r->tip) {
-    if (!r->nodeset)
-      r->nodeset = (group_type *)Malloc(setsz * sizeof(group_type));
-    for (i = 0; i < setsz; i++)
-      r->nodeset[i] = 0L;
+    /* tip nodes should have a single bit set corresponding to index-1 */
     i = (r->index-1) / (long)SETBITS;
     r->nodeset[i] = 1L << (r->index - 1 - i*SETBITS);
   }
   else {
-    q = r->next;
-    while (q != r) {
+    /* for loop should not visit r->back -- we've likely come from there */
+    for (q = r->next; q != r; q = q->next) {
+
+      /* recursive call to this function */
       accumulate(q->back);
-      q = q->next;
-    }
-    q = r->next;
-    if (!r->nodeset)
-      r->nodeset = (group_type *)Malloc(setsz * sizeof(group_type));
-    for (i = 0; i < setsz; i++)
-      r->nodeset[i] = 0;
-    while (q != r) {
+
+      /* bitwise OR of bits from downstream nodes */
       for (i = 0; i < setsz; i++)
         r->nodeset[i] |= q->back->nodeset[i];
-      q = q->next;
     }
   }
+
   if ((!r->tip && (r->next->next != r)) || r->tip) 
     enternodeset(r);
 }  /* accumulate */
@@ -1097,7 +1115,11 @@ void dupname2(Char *name, node *p, node *this)
 
 void dupname(node *p)
 {
-  /* search for a duplicate name in tree */
+  /* Recursively searches tree, starting at p, to verify that
+   * each tip name occurs only once. When called with root as
+   * its argument, at final recusive exit, all tip names should 
+   * be in the hash "hashp".
+   */
   node *q;
 
   if (p->tip) {
@@ -1164,7 +1186,7 @@ void gdispose(node *p)
     q = q->next;
     chuck(&grbg, r);
   }
-  chuck(&grbg, q);
+  chuck(&grbg, p);
 }  /* gdispose */
 
 
@@ -1281,8 +1303,7 @@ void reorient(node* n) {
 }
 
 
-void store_pattern (pattern_elm ***pattern_array,
-                        double *timesseen_changes, int trees_in_file)
+void store_pattern (pattern_elm ***pattern_array, int trees_in_file)
 { 
   /* put a tree's groups into a pattern array.
      Don't forget that when not Adams, grouping[] is not compressed. . . */
@@ -1318,10 +1339,28 @@ void store_pattern (pattern_elm ***pattern_array,
           pattern_array[k][trees_in_file]->apattern[j] = grouping[i][k] ;  
         pattern_array[0][trees_in_file]->length[j] = lengths[i];
         j++ ;
+
         timesseen_changes[i] = *timesseen[i] ;
+          /* 
+             EWFIX.BUG.756
+
+             updates timesseen_changes to the current value
+             pointed to by timesseen
+
+             treedist uses this to determine if group i has been seen
+             by comparing timesseen_changes[i] (the count now) with 
+             timesseen[i] (the count after reading next tree)
+
+             We could make treedist more efficient by not keeping
+             timesseen (and groupings, etc) around, but doing it
+             this way allows us to share code between treedist and
+             consense.
+             
+          */
       }
     }
   *pattern_array[0][trees_in_file]->patternsize = total_groups;
+
 }  /* store_pattern */
 
 
@@ -1361,9 +1400,8 @@ void reordertips()
 }  /* reordertips */
 
 
-void read_groups (pattern_elm ****pattern_array,double *timesseen_changes,
-		  long trees_in_1, long total_trees,
-		  AjPPhyloTree* treesource)
+void read_groups (pattern_elm ****pattern_array,
+		  long total_trees, long tip_count, AjPPhyloTree* treesource)
 {
   /* read the trees.  Accumulate sets. */
   int i, j, k;
@@ -1372,17 +1410,61 @@ void read_groups (pattern_elm ****pattern_array,double *timesseen_changes,
   int itree=0;
   char *treestr;
 
-  /* set up the groupings array and the timesseen array */
+  /* do allocation first *****************************************/
   grouping  = (group_type **)  Malloc(maxgrp*sizeof(group_type *));
   lengths  = (double *)  Malloc(maxgrp*sizeof(double));
+
+  timesseen_changes = (double*)Malloc(maxgrp*sizeof(double));
+  for (i = 0; i < maxgrp; i++)
+    timesseen_changes[i] = 0.0;
+
   for (i = 0; i < maxgrp; i++)
     grouping[i] = NULL;
+
   order     = (long **) Malloc(maxgrp*sizeof(long *));
   for (i = 0; i < maxgrp; i++)
     order[i] = NULL;
+
   timesseen = (double **)Malloc(maxgrp*sizeof(double *));
   for (i = 0; i < maxgrp; i++)
     timesseen[i] = NULL;
+
+  nayme = (naym *)Malloc(tip_count*sizeof(naym));
+  hashp = (hashtype)Malloc(sizeof(namenode) * NUM_BUCKETS);
+  for (i=0;i<NUM_BUCKETS;i++) {
+      hashp[i] = NULL;
+  }
+  setsz = (long)ceil((double)tip_count/(double)SETBITS);
+  if (tree_pairing != NO_PAIRING)
+    {
+      /* Now that we know setsz, we can malloc pattern_array
+      and pattern_array[n] accordingly. */
+      (*pattern_array) =
+        (pattern_elm ***)Malloc(setsz * sizeof(pattern_elm **));
+
+      ajUser("read_groups %p", (*pattern_array));
+      /* For this assignment, let's assume that there will be no
+         more than maxtrees. */
+      for (j = 0 ; j < setsz ; j++) 
+      {
+          (*pattern_array)[j] = 
+            (pattern_elm **)Malloc(total_trees * sizeof(pattern_elm *));
+        for(k = 0 ; k < total_trees ; k++ )
+        {
+            (*pattern_array)[j][k] = NULL;
+        }
+      }
+    }
+
+  fullset = (group_type *)Malloc(setsz * sizeof(group_type));
+  for (j = 0; j < setsz; j++)
+    fullset[j] = 0L;
+  k = 0;
+  for (j = 1; j <= tip_count; j++) {
+    if (j == ((k+1)*SETBITS+1)) k++;
+    fullset[k] |= 1L << (j - k*SETBITS - 1);
+  }
+  /* end allocation **********************************************/
 
   firsttree = true;
   grbg = NULL;
@@ -1396,8 +1478,7 @@ void read_groups (pattern_elm ****pattern_array,double *timesseen_changes,
     haslengths = true;
     treestr = ajStrGetuniquePtr(&treesource[itree++]->Tree);
     allocate_nodep(&nodep, treestr, &spp);
-    if (firsttree)
-      nayme = (naym *)Malloc(spp*sizeof(naym));
+    assert(spp == tip_count);
     treeread(&treestr, &root, treenode, &goteof, &firsttree, nodep, 
               &nextnode, &haslengths, &grbg, initconsnode,true,-1);
     if (!initial) { 
@@ -1405,35 +1486,8 @@ void read_groups (pattern_elm ****pattern_array,double *timesseen_changes,
       reordertips();
     } else {
       initial = false;
-      hashp = (hashtype)Malloc(sizeof(namenode) * NUM_BUCKETS);
-      for (i=0;i<NUM_BUCKETS;i++) {
-        hashp[i] = NULL;
-      }
       dupname(root);
       initreenode(root);
-      setsz = (long)ceil((double)spp/(double)SETBITS);
-      if (tree_pairing != NO_PAIRING)
-        {
-          /* Now that we know setsz, we can malloc pattern_array
-          and pattern_array[n] accordingly. */
-          (*pattern_array) =
-            (pattern_elm ***)Malloc(setsz * sizeof(pattern_elm **));
-
-          /* For this assignment, let's assume that there will be no
-             more than maxtrees. */
-          for (j = 0 ; j < setsz ; j++)
-              (*pattern_array)[j] = 
-                (pattern_elm **)Malloc(total_trees * sizeof(pattern_elm *));
-        }
-
-      fullset = (group_type *)Malloc(setsz * sizeof(group_type));
-      for (j = 0; j < setsz; j++)
-        fullset[j] = 0L;
-      k = 0;
-      for (j = 1; j <= spp; j++) {
-        if (j == ((k+1)*SETBITS+1)) k++;
-        fullset[k] |= 1L << (j - k*SETBITS - 1);
-      }
     }
     if (goteof)
       continue;
@@ -1451,10 +1505,77 @@ void read_groups (pattern_elm ****pattern_array,double *timesseen_changes,
     if (tree_pairing != NO_PAIRING) {
         /* If we're computing pairing or need separate tree sets, store the
            current pattern as an element of it's trees array. */
-      store_pattern ((*pattern_array), timesseen_changes, trees_read) ;
+      store_pattern ((*pattern_array), trees_read) ;
       trees_read++ ;
     }
   }
+  freegrbg(&grbg);
 } /* read_groups */
 
 
+void clean_up_final(void)
+{
+    long i;
+    for(i=0;i<maxgrp;i++)
+    {
+        if(grouping[i] != NULL) {
+            free(grouping[i]);
+        }
+        if(order[i] != NULL) {
+            free(order[i]);
+        }
+        if(timesseen[i] != NULL) {
+            free(timesseen[i]);
+        }
+    }
+    free(grouping);
+    free(nayme);
+    free(order);
+    free(timesseen);
+    free(timesseen_changes);
+    free(fullset);
+    free(lengths);
+
+    namesClearTable();
+    free(hashp);
+}
+
+
+void clean_up_final_consense(void)
+{
+    long i;
+    for(i=0;i<maxgrp;i++)
+    {
+        if(group2[i] !=NULL) 
+        {
+            free(group2[i]);
+        }
+        if(times2[i] !=NULL) 
+        {
+            free(times2[i]);
+        }
+    }
+
+    free(group2);
+    free(times2);
+    free(timesseen_changes);
+    free(lengths);
+    free(fullset);
+    namesClearTable();
+    free(hashp);
+
+    return;
+}
+void freegrbg(node **grbg)
+{
+  /* used in consense */
+  node *p;
+
+  while (*grbg) {
+    p = *grbg;
+    *grbg = (*grbg)->next;
+    if(p->nodeset)
+        free(p->nodeset);
+    free(p);
+  }
+} /*freegrbg */

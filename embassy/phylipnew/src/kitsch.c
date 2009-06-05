@@ -639,6 +639,8 @@ void dtraverse(node *q)
     } else
       fprintf(outfile, "%4ld      ", q->index - spp);
     fprintf(outfile, "%13.5f", curtree.nodep[q->back->index - 1]->t - q->t);
+    q->v = curtree.nodep[q->back->index - 1]->t - q->t;
+    q->back->v = q->v;
     fprintf(outfile, "%16.5f\n", curtree.root->t - q->t);
   }
   if (!q->tip)
@@ -679,8 +681,7 @@ void describe()
   putc('\n', outfile);
   if (trout) {
     col = 0;
-      treeoutr(curtree.root,&col,&curtree);
-/*    treeout(curtree.root); */
+    treeoutr(curtree.root,&col,&curtree);
   }
 }  /* describe */
 

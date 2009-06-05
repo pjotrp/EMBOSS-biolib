@@ -1650,7 +1650,7 @@ void makedists()
       for (j = 1; j <= k; j++) {
         if (d[i][j-1] < 100.0)
           fprintf(outfile, "%10.6f", d[i][j-1]);
-        else if (d[j][k] < 1000.0)
+        else if (d[i][j-1] < 1000.0)
           fprintf(outfile, " %10.6f", d[i][j-1]);
         else 
           fprintf(outfile, " %11.6f", d[i][j-1]);
@@ -1743,6 +1743,11 @@ int main(int argc, Char *argv[])
   FClose(infile);
 #ifdef MAC
   fixmacfile(outfilename);
+#endif
+  printf("Done.\n\n");
+
+#ifdef WIN32
+  phyRestoreConsoleAttributes();
 #endif
   embExit();
   return 0;

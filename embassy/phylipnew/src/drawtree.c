@@ -1041,10 +1041,10 @@ void coordtrav(node *p, double *xx, double *yy)
   if (!p->tip) {
     pp = p->next;
     while (pp != p) {
-           coordtrav(pp->back, xx, yy);
-           pp = pp->next;
-    if (p == root)
-           coordtrav(p->back, xx, yy);
+      coordtrav(pp->back, xx, yy);
+      pp = pp->next;
+      if (p == root)
+        coordtrav(p->back, xx, yy);
     }
   }
   (*xx) = p->r * cos(p->theta);
@@ -1244,8 +1244,16 @@ void leftrightangle(node *p, double xx, double yy)
     rangle = angleof(rightx, righty);
   while (langle - rangle > 2*pi)
     langle -= 2 * pi;
-  while (rangle > langle)
-    langle += 2 * pi;
+  while (rangle > langle) {
+    if (rangle > 2*pi)
+      rangle -= 2 * pi;
+    else
+      langle += 2 * pi;
+  }
+  while (langle > 2*pi) {
+    rangle -= 2 * pi;
+    langle -= 2 * pi;
+  }
   p->lefttheta = langle;
   p->righttheta = rangle;
 } /* leftrightangle */

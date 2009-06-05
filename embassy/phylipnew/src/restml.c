@@ -2378,6 +2378,9 @@ int main(int argc, Char *argv[])
   fixmacfile(outtreename);
 #endif
   printf("Done.\n\n");
+#ifdef WIN32
+  phyRestoreConsoleAttributes();
+#endif
   embExit();
   return 0;
 }  /* maximum likelihood phylogenies from restriction sites */

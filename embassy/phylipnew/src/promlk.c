@@ -1753,7 +1753,6 @@ void tryrearr(node *p, boolean *success)
   promlk_add(whereto, p, forknode, true);
   like = prot_evaluate(p);
   if (like - oldlike > LIKE_EPSILON || oldlike == UNDEFINED) {
-    printf("Rearrangement success; improvement: %f\n", like - oldlike);
     (*success) = true;
     bestyet = like;
   }
@@ -1977,9 +1976,6 @@ void treevaluate()
     smooth(curtree.root);
     i++;
   } while (mnv_success);
-#ifdef DEBUG
-  fprintf(stderr, "DEBUG: final smoothing: %ld passes.\n", i);
-#endif
   prot_evaluate(curtree.root);
 }  /* treevaluate */
 

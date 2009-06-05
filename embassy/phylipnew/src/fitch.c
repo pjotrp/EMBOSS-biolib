@@ -1,6 +1,7 @@
 
 #include "phylip.h"
 #include "dist.h"
+#include "float.h"
 
 /* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
@@ -962,7 +963,7 @@ void maketree()
       nums = nextsp;
       buildnewtip(enterorder[nextsp - 1], &curtree, nextsp);
       copy_(&curtree, &priortree);
-      bestree.likelihood = -99999.0;
+      bestree.likelihood = -DBL_MAX;
       curtree.start = curtree.nodep[enterorder[0] - 1]->back;
       addtraverse(curtree.nodep[enterorder[nextsp - 1] - 1]->back,
                   curtree.start, true, &numtrees,&succeeded);

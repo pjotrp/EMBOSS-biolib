@@ -48,10 +48,13 @@ void   gdispose(node *);
 void   initreenode(node *);
 void   reroot(node *, long *);
 
-void   store_pattern (pattern_elm ***, double *, int);
+void   store_pattern (pattern_elm ***, int);
 boolean samename(naym, plotstring);
 void   reordertips(void);
-void   read_groups (pattern_elm ****, double *, long , long, AjPPhyloTree *);
+void   read_groups (pattern_elm ****, long , long, AjPPhyloTree *);
+void   clean_up_final(void);
+void   clean_up_final_consense(void);
+void   freegrbg(node **);
 /* function prototypes */
 #endif
 

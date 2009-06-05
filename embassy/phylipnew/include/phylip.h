@@ -7,7 +7,7 @@
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
 
-#define VERSION "3.67"
+#define VERSION "3.68"
 
 /* Debugging options */
 /* Define this to disable assertions */
@@ -319,6 +319,8 @@ MALLOCRETURN    *mymalloc(long);
 #define MAT_HUMAN       MAT_BLOCK
 /* Machine-readable format. */
 #define MAT_MACHINE     (MAT_PCOLS | MAT_NOHEAD | MAT_PADHEAD)
+/* Lower-triangular format. */
+#define MAT_LOWERTRI    (MAT_LOWER | MAT_MACHINE)
 
 typedef long *steptr;
 typedef long longer[6];

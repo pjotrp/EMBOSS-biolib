@@ -31,7 +31,7 @@ AjPFile embossoutfile;
 
 long sites, categs, weightsum, datasets, ith, rcategs;
 boolean freqsfrom, jukes, kimura, logdet, gama, invar, similarity, lower, f84,
-        weights, progress, ctgry, mulsets, justwts, firstset, baddists;
+    weights, progress, ctgry, mulsets, justwts, firstset, baddists, human;
 boolean matrix_flags;       /* Matrix output format */
 node **nodep;
 double xi, xv, ttratio, ttratio0, freqa, freqc, freqg, freqt, freqr, freqy,
@@ -92,6 +92,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   logdet = false;
   f84 = false;
   lower = false;
+  human = false;
   similarity = false;
   ttratio = 2.0;
   ttr = false;
@@ -174,7 +175,10 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
     progress = ajAcdGetBoolean("progress");
     lower = ajAcdGetBoolean("lower");
     if(lower)
-        matrix_flags = MAT_HUMAN | MAT_LOWER;
+        matrix_flags = MAT_LOWER;
+    human = ajAcdGetBoolean("humanreadable");
+    if(human)
+        matrix_flags |= MAT_HUMAN;
 
     if(!freqsfrom) {
       basefreq = ajAcdGetArray("basefreq"); 

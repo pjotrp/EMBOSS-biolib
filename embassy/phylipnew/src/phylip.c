@@ -101,7 +101,7 @@ void getstryng(char *fname)
   char *end;
 
   fflush(stdout);
-  fname = fgets(fname, 100, stdin);
+  fname = fgets(fname, FNMLNGTH, stdin);
   if ( fname == NULL )
     EOF_error();
 
@@ -166,8 +166,8 @@ double randum(longer seed)
 
   mult[0] = 13;   /* these four statements set the multiplier */
   mult[1] = 24;   /* -- they are its "digits" in a base-64    */
-  mult[2] = 22;   /*    notation: 1664525 = 13*64^3+24*64^2   */
-  mult[3] = 6;    /*                         +22*64+6         */
+  mult[2] = 22;   /*    notation: 1664525 = 6*64^3+22*64^2   */
+  mult[3] = 6;    /*                         +24*64+13         */
   for (i = 0; i <= 5; i++)
     newseed[i] = 0;
   for (i = 0; i <= 5; i++) {  /* do the multiplication piecewise */
@@ -423,7 +423,7 @@ double logfac (long n)
     }
 } /* logfac */
 
-                        
+
 double glaguerre(long m, double b, double x)
 { /* Generalized Laguerre polynomial computed recursively.
      For use by initgammacat */
@@ -1324,42 +1324,95 @@ void sgetch(Char *c, long *parens, char **treestr)
     (*parens)--;
 }  /* sgetch */
 
-
 void processlength(double *valyew, double *divisor, Char *ch, 
-        boolean *minusread, char **treestr, long *parens)
+        boolean *lengthIsNegative, char **treestr, long *parens)
 { /* read a branch length from a treestr */
-  long digit, ordzero;
-  boolean pointread;
+  long digit, ordzero, exponent, exponentIsNegative;
+  boolean pointread, hasExponent;
 
   ordzero = '0';
-  *minusread = false;
+  *lengthIsNegative = false;
   pointread = false;
+  hasExponent = false;
+  exponentIsNegative = -1; // 3 states:  -1 = unassigned, 1 = true, 0 = false
+  exponent = 0;
   *valyew = 0.0;
   *divisor = 1.0;
   sgetch(ch, parens, treestr);
+  if ('+' == *ch)
+    sgetch(ch, parens, treestr); // ignore leading '+', because "+1.2345" == "1.2345"
+  else if ('-' == *ch)
+    {
+      *lengthIsNegative = true;
+      sgetch(ch, parens, treestr);
+    }
   digit = (long)(*ch - ordzero);
-  if ( ((digit <= 9) && (digit >= 0)) || *ch == '.' || *ch == '-') ;
-  else {
-    /* fprintf(stdout,"! ? !");   */
-    /* fprintf(outfile,"! ? !");  */
-     }
-  while ( ((digit <= 9) && (digit >= 0)) || *ch == '.' || *ch == '-') {
-    if (*ch == '.' )
-      pointread = true;
-    else if (*ch == '-' )
-      *minusread = true;
+  while ( ((digit <= 9) && (digit >= 0)) || '.' == *ch || '-' == *ch
+	  || '+' == *ch || 'E' == *ch || 'e' == *ch) {
+    if ('.' == *ch )
+      {
+	if (!pointread)
+	  pointread = true;
+	else
+	  {
+	    printf("\n\nERROR: Branch length found with more than one \'.\' in it.\n\n");
+	    exxit(-1);
+	  }
+      }
+
+    else if ('+' == *ch)
+      {
+	if (hasExponent && -1 == exponentIsNegative)
+	  exponentIsNegative = 0; // 3 states:  -1 = unassigned, 1 = true, 0 = false
+	else
+	  {
+	    printf("\n\nERROR: Branch length found with \'+\' in an unexpected place.\n\n");
+	    exxit(-1);
+	  }
+      }
+    else if ('-' == *ch)
+      {
+	if (hasExponent && -1 == exponentIsNegative)
+	  exponentIsNegative = 1; // 3 states:  -1 = unassigned, 1 = true, 0 = false
+	else
+	  {
+	    printf("\n\nERROR: Branch length found with \'-\' in an unexpected place.\n\n");
+	    exxit(-1);
+	  }
+      }
+    else if ('E' == *ch || 'e' == *ch)
+      {
+	if (!hasExponent)
+	  hasExponent = true;
+	else
+	  {
+	    printf("\n\nERROR: Branch length found with more than one \'E\' in it.\n\n");
+	    exxit(-1);
+	  }
+      }
     else {
-      *valyew = *valyew * 10.0 + digit;
-      if (pointread)
-        *divisor *= 10.0;
+      if (!hasExponent)
+	{
+	  *valyew = *valyew * 10.0 + digit;
+	  if (pointread)
+	    *divisor *= 10.0;
+	}
+      else
+	exponent = 10*exponent + digit;
     }
     sgetch(ch, parens, treestr);
     digit = (long)(*ch - ordzero);
   }
-  if (*minusread)
+  if (hasExponent)
+    {
+      if (exponentIsNegative)
+	*divisor *= pow(10.,(double)exponent);
+      else
+	*divisor /= pow(10.,(double)exponent);
+    }
+  if (*lengthIsNegative)
     *valyew = -(*valyew);
 }  /* processlength */
-
 
 void writename(long start, long n, long *enterorder)
 { /* write species name and number in entry order */
@@ -2595,9 +2648,6 @@ void output_matrix_d(FILE *fp, double **matrix,
     
     /* Rows */
     for (row = 0; row < rows; row++) {
-      /* Skip empty rows for lower triangle (incl. first) */
-      if ( lower_triangle && row <= cstart )
-        continue;
       /* Row header, if given */
       if ( row_head != NULL ) {
         /* right-justify for non-machine-readable */
@@ -2644,7 +2694,8 @@ void output_matrix_d(FILE *fp, double **matrix,
       }
       putc('\n', fp);
     } /* End of row */
-    putc('\n', fp); /* blank line */
+    if (col_head != NULL)
+      putc('\n', fp); /* blank line */
     cstart = cend;
   } /* End of block */
   free(colwidth);

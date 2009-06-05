@@ -7,18 +7,12 @@
 #include <float.h>
 #include <stdlib.h>
 
-/* #define DEBUG  */
-
 #include "phylip.h"
 #include "seq.h"
 #include "mlclock.h"
 #include "printree.h"
 
-#ifdef DEBUG
-#include "dnamlk_debug.c"
-#endif
-
-#define over            60
+#define over            60       /* Maximum xcoord of tip nodes */
 
 /* These are redefined from phylip.h */
 /* Fractional accuracy to which node tymes are optimized */
@@ -32,9 +26,6 @@ double epsilon = 1e-3;
 #undef initialv
 #define initialv        0.3
 
-
-/* DEBUG: This does extra consistency checks in nuview() - SLOW! */
-/* #define NUVIEW_DEBUG */
 
 typedef struct valrec {
   double rat, ratxi, ratxv, orig_zz, z1, y1, z1zz, z1yy, xiz1,
@@ -740,11 +731,6 @@ static boolean nuview(node *p)
   if ( p == NULL ) return false;
   if ( p->tip ) return false; /* Tips do not need to be initialized */
 
-#ifdef NUVIEW_DEBUG
-  /* DEBUG: Update nuviews regardless */
-  /* p->initialized = false; */
-#endif
-
   for (q = p->next; q != p; q = q->next) {
     num_sibs++;
     if ( q->back != NULL && !q->tip) {
@@ -1126,11 +1112,6 @@ static void dnamlk_add(node *below, node *newtip, node *newfork)
   assert( all_tymes_valid(curtree.root, 0.98*MIN_BRANCH_LENGTH, false) );
   
   /* Adjust branch lengths throughout */
-#ifdef DEBUG
-  fprintf(stderr, "tree is:\n");
-  mlk_printree(stderr, &curtree);
-  summarize(stderr);
-#endif
   for ( i = 1; i < smoothings; i++ ) {
     success = smooth(newfork);
     success = smooth(newfork->back) || success;
@@ -1178,10 +1159,6 @@ static void dnamlk_re_move(node **item, node **fork, boolean tempadd)
   if (tempadd)
     return;
 
-#ifdef DEBUG
-  fprintf(stderr, "tree is:");
-  mlk_printree(stderr, &curtree);
-#endif
   for ( i = 1; i <= smoothings; i++ ) {
     success = smooth(q);
     if ( smoothit )
@@ -1784,11 +1761,6 @@ static void treevaluate(void)
   long i;
 
   if ( !usertree || (usertree && !lngths) ) {
-#ifdef DEBUG
-    fprintf(stderr, "tree is:");
-    mlk_printree(stderr, &curtree);
-    summarize(stderr);
-#endif
     polishing = true;
     smoothit = true;
     for (i = 0; i < smoothings; ) {
@@ -1796,14 +1768,8 @@ static void treevaluate(void)
         i++;
     }
   }
-
   dnamlk_evaluate(curtree.root);
 
-#ifdef DEBUG
-  fprintf(stderr, "final tree is:");
-  mlk_printree(stderr, &curtree);
-  summarize(stderr);
-#endif
 
 }  /* treevaluate */
 

@@ -1333,7 +1333,7 @@ void addtraverse(node *p, node *q, boolean contin)
   }
   insert_(p, q, smoothit);
   like = evaluate(p, false);
-  if (like > bestyet || bestyet == UNDEFINED) {
+  if (like > bestyet  + LIKE_EPSILON || bestyet == UNDEFINED) {
     bestyet = like;
     if (smoothit) {
       dnamlcopy(&curtree, &bestree, nonodes2, rcategs);

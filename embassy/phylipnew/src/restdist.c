@@ -553,7 +553,11 @@ int main(int argc, Char *argv[])
 #ifdef MAC
   fixmacfile(outfilename);
 #endif
+
   printf("Done.\n\n");
+#ifdef WIN32
+  phyRestoreConsoleAttributes();
+#endif
   embExit();
   return 0;
 }  /* distances from restriction sites or fragments */

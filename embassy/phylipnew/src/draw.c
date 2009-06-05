@@ -2792,7 +2792,7 @@ void drawit(char *fontname, double *xoffset, double *yoffset,
         clipx1 = (double)(i*(paperx -  hpmargin))+(paperx - hpmargin);
         clipy0 = (double)(j*(papery -  vpmargin));
         clipy1 = (double)(j*(papery-hpmargin))+(papery+vpmargin);
-        plottree(root,root);
+        plottree(root, root);
         plotlabels(fontname);
         if (!(i == xpag - 1 && j == ypag - 1))
           plotpb(); /* page break */

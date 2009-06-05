@@ -642,16 +642,16 @@ void dolmove_drawline(long i)
   extra = false;
   if (i == (long)p->ycoord && (p == root || subtree)) {
     c = overt;
-    if (p == root)
-    {
+    if (display) {
+      if (p == root)
+      {
 	if(!dispchar) 
 	    cc = guess[0];
 	else
 	    cc = guess[dispchar - 1];
-    }
-    else
-      cc = p->state;
-    if (display) {
+      }
+      else
+          cc = p->state;
       switch (cc) {
 
       case '1':
