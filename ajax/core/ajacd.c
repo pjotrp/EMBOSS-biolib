@@ -8806,7 +8806,7 @@ static void acdSetGraphxy(AcdPAcd thys)
     AjBool nullok;
     AjBool nulldefault;
     ajint multi;
-    
+
     val = NULL;
 
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
@@ -16211,7 +16211,7 @@ static void acdHelpExpectGraph(const AcdPAcd thys, AjBool table, AjPStr* str)
         return;
 
     if(table)
-	ajFmtPrintAppS(str, "<i>EMBOSS_GRAPHICS</i> value, or %s"), defdev;
+	ajFmtPrintAppS(str, "<i>EMBOSS_GRAPHICS</i> value, or %s", defdev);
     else
 	ajFmtPrintAppS(str, "$EMBOSS_GRAPHICS value, or %s", defdev);
     return;
