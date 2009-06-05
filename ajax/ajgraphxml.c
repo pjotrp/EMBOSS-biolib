@@ -5471,7 +5471,7 @@ void xml_Unused()
 **
 ** Clear primary table allocation for colourtable
 **
-** @param [r] key [const void**] Standard argument, table key.
+** @param [r] key [void**] Standard argument, table key.
 ** @param [r] value [void**] Standard argument, table data item.
 ** @param [r] cl [void*] Standard argument, usually NULL
 **
@@ -5502,7 +5502,7 @@ static void xml_clear_nodeTypes(void **key, void **value, void *cl)
 **
 ** Clear secondary (XmlNode) table allocation for colourtable subtables
 **
-** @param [r] key [const void**] Standard argument, table key.
+** @param [r] key [void**] Standard argument, table key.
 ** @param [r] value [void**] Standard argument, table data item.
 ** @param [r] cl [void*] Standard argument, usually NULL
 **
