@@ -260,6 +260,8 @@ void embWordPrintTableFI(const AjPTable table, ajint mincount, AjPFile outf)
     EmbPWord ajnew;
     ajint i;
 
+    if(!ajTableGetLength(table)) return;
+
     i = ajTableToarray(table, &keyarray, &valarray);
 
     ajDebug("embWordPrintTableFI size %d mincount:%d\n", i, mincount);
