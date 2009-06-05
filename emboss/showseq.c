@@ -249,6 +249,34 @@ int main(int argc, char **argv)
     /* create the translation table */
     trnTable = ajTrnNewI(table);
     
+    /*
+    **  most of this is lifted from the program 'restrict.c' by Alan
+    **  Bleasby
+    */
+    if(ajStrFindC(format, "R") != -1)
+    {
+        if(single)
+            maxcuts = mincuts = 1;
+        retable = ajTablestrNewLen(EQUGUESS);
+        enzfile = ajDatafileNewInNameC(ENZDATA);
+
+        if(!enzfile)
+            ajFatal("Cannot locate enzyme file. Run REBASEEXTRACT");
+
+        if(limit)
+        {
+            equfile = ajDatafileNewInNameC(EQUDATA);
+            if(!equfile)
+                limit = ajFalse;
+            else
+            {
+                showseq_read_equiv(equfile, retable);
+                ajFileClose(&equfile);
+            }
+        }
+    }
+
+
     while(ajSeqallNext(seqall, &seq))
     {
 	begin = ajSeqGetBegin(seq)-1;
@@ -306,26 +334,6 @@ int main(int argc, char **argv)
 	*/
 	if(ajStrFindC(format, "R") != -1)
 	{
-	    if(single)
-		maxcuts = mincuts = 1;
-	    retable = ajTablestrNewLen(EQUGUESS);
-	    enzfile = ajDatafileNewInNameC(ENZDATA);
-
-	    if(!enzfile)
-		ajFatal("Cannot locate enzyme file. Run REBASEEXTRACT");
-
-	    if(limit)
-	    {
-		equfile = ajDatafileNewInNameC(EQUDATA);
-		if(!equfile)
-		    limit = ajFalse;
-		else
-		{
-		    showseq_read_equiv(equfile, retable);
-		    ajFileClose(&equfile);
-		}
-	    }
-
 	    ajFileSeek(enzfile, 0L, 0);
 	    hits = embPatRestrictMatch(seq, 1, ajSeqGetLen(seq),
 				       enzfile, methfile, enzymes,
@@ -341,8 +349,6 @@ int main(int argc, char **argv)
 		    embPatRestrictPreferred(restrictlist,retable);
 	    }
 
-
-	    ajFileClose(&enzfile);
 	}
 
 
@@ -396,6 +402,8 @@ int main(int argc, char **argv)
     ajRangeDel(&uppercase);
     ajRangeDel(&highlight);
     ajRangeDel(&annotation);
+    ajFileClose(&enzfile);
+    ajFileClose(&methfile);
 
     embExit();
 
