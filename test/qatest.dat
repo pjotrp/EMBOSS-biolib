@@ -13173,18 +13173,11 @@ FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
 //
 
 ID seqret-inauto-ig
-##
-## We expect failure - IG is not allowed for automatic detection
-## because it can read almost anything as 'valid'
-##
-ER 1
 AP seqret
 CL -auto ../../data/dna.ig test.out -osf embl
-FI stderr
-FP /Unable to read sequence \S+\/dna\.ig/
-FP 0 /Warning: /
-FP 1 /Error: /
-FP 1 /Died: /
+FI test.out
+FP /^ID   .* 100 BP/
+FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;/
 //
 
 ID seqret-inusa-ig
@@ -24858,8 +24851,8 @@ FP /^  10\. C\n/
 FP /^\.\.\*\.\*\.\.\.\.\.\s+4\.00\n/
 FI consense.treefile
 FC = 2
-FP /^B:9\.0\):9\.0,A:9\.0\);\n/
-FP /\(\(H:9\.0,J:9\.0\):4\.0,D:9\.0\)/
+FP /^E:9\.00\):9\.00,B:9\.00\):9\.00,A:9\.00\);\n/
+FP /\(\(H:9\.00,J:9\.00\):4\.00,D:9\.00\)/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -25003,7 +24996,7 @@ IN ../../data/evolution/dnadist.dat
 IN
 IN
 FI dnadist.fdnadist
-FC = 7
+FC = 6
 FP /    5\n/
 FP /^Alpha      0\.000000 0\.303900 0\.857544 1\.158927 1\.542899\n/
 FI stderr
@@ -25631,8 +25624,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 20
-FP 14 /^./
+FC = 15
+FP 9 /^./
 //
 
 ID fprotdist-ex
@@ -25649,8 +25642,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 10
-FP 7 /^./
+FC = 12
+FP 8 /^./
 //
 
 ID fprotpars-ex
@@ -25675,8 +25668,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 17
-FP 12 /^./
+FC = 19
+FP 13 /^./
 //
 
 ID fprotpars-ex2
@@ -25707,8 +25700,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 41
-FP 30 /^./
+FC = 43
+FP 31 /^./
 //
 
 ID fprotpars-ex3
@@ -25760,8 +25753,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 129
-FP 93 /^./
+FC = 131
+FP 94 /^./
 //
 
 ID fprotpars-ex4
@@ -25817,8 +25810,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 40
-FP 26 /^./
+FC = 42
+FP 27 /^./
 //
 
 ID frestboot-ex
