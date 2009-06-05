@@ -126,6 +126,12 @@ section: additional [
     information: "Output as a lower triangular distance matrix"
   ]
 
+  boolean: humanreadable [
+    additional: "Y"
+    default: "@($(method)==s?Y:N)"
+    information: "Output as a human-readable distance matrix"
+  ]
+
 endsection: additional
 
 section: output [
