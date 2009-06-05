@@ -16540,10 +16540,12 @@ static void acdHelpXsdShow(const AjPList inlist, const AjPList outlist)
             ** may explicitly write their choices
             */
 #if 0
+            /*
             //ajUser("      <xs:choice id=\"%S\" "
             //        "minOccurs=\"0\" maxOccurs=\"1\">",
             //        item->Qual);
             //ajUser("      </xs:choice>");
+            */
 #endif
 
             /*
