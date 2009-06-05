@@ -442,19 +442,16 @@ __deprecated ajint ajTableLength(const AjPTable table)
 
 /* @func ajTableToarray *******************************************************
 **
-** creates a 2N+1 element array that holds the N key-value pairs
-** in table in an unspecified order and returns a pointer to the
-** first element. The keys appear in the even-numbered array
-** elements and the corresponding values appear in the following
-** odd-numbered elements; element 2N is end.
+** creates two N+1 element arrays that holds the N key-value pairs
+** in table in an unspecified order and returns the number of elements.
+** The final element of the array is NULL.
 **
 ** @param [r] table [const AjPTable] Table
 ** @param [w] keyarray [void***] NULL terminated array of keys.
-** @param [w] valarray [void***] NULL terminated array of s.
+** @param [w] valarray [void***] NULL terminated array of values.
 ** @return [ajuint] size of arrays returned
-** @category cast [AjPTable] Creates an array to hold each key
-**                value pair in pairs of array elements. The last
-**                element is null.
+** @category cast [AjPTable] Creates two array to hold each key
+**                value pair. The last element of each array is null.
 ** @@
 ******************************************************************************/
 
