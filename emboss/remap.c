@@ -272,6 +272,7 @@ int main(int argc, char **argv)
 
 
 	ajFileClose(&enzfile);
+	ajFileClose(&methfile);
 
 
 	/*

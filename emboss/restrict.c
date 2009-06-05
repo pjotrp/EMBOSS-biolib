@@ -223,7 +223,8 @@ int main(int argc, char **argv)
     ajListFree(&l);
     ajSeqDel(&seq);
     ajFileClose(&enzfile);
-    ajFileClose(&outf);
+    ajFileClose(&methfile);
+     ajFileClose(&outf);
 
     ajReportClose(report);
     ajReportDel(&report);

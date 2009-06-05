@@ -188,11 +188,11 @@ int main(int argc, char **argv)
 
     ajListFree(&l);
     ajSeqDel(&seq);
-    ajFileClose(&enzfile);
     ajFileClose(&outf);
     ajFileClose(&dfile);
     ajFileClose(&enzfile);
     ajFileClose(&equfile);
+    ajFileClose(&methfile);
 
     ajSeqallDel(&seqall);
     ajStrDel(&seqcmp);
