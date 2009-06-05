@@ -6,7 +6,7 @@ dnl Process this file with autoconf to produce a configure script.
 #CC=cc
 
 AC_INIT(src/dnadist.c)
-AM_INIT_AUTOMAKE(PHYLIPNEW, 3.67)
+AM_INIT_AUTOMAKE(PHYLIPNEW, 3.68)
 
 AC_PROG_AWK
 dnl Make sure CFLAGS is defined to stop AC_PROC_CC adding -g

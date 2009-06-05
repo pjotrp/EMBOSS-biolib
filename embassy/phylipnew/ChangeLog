@@ -1,3 +1,10 @@
+	Updated all code to include the changes in phylip 3.68.
+	fdnadist no longer writes a blank line at the end of the output.
+	fconsense writes trees with 2 decimal places.
+	A bug in fprotdist for scores of 100.0 is fixed.
+	Rearrangement messages are no longer printed by fpromlk.
+	fprotdist and fprotpars now write "Done" when completed.
+
 	Renamed fdrawgram qualifiers to make unambiguous names shorter:
 	xmarginray => xrayshade ymarginray => yrayshade for RayShade
 	output image size in pixels.
