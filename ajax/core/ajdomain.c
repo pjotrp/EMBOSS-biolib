@@ -1409,10 +1409,8 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
 		    
 		/*
                 ** Assign End res no. to Start element in AjPCathDom
-		** error-   ajStrToInt(StrTokPtr, &(CathDomPtr->End[s])); 
-		** ajStrParseWhite(NULL);		/* (n+5)th token is "-"
-                */
-
+		** error-   ajStrToInt(StrTokPtr, &(CathDomPtr->End[s]));*/ 
+		ajStrParseWhite(NULL);		/* (n+5)th token is "-" */
 	    }
 
 	    /*
