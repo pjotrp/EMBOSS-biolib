@@ -789,8 +789,11 @@ public class AlignJFrame extends JFrame
         public void itemStateChanged(ItemEvent e) {
             boolean selected = e.getStateChange() == ItemEvent.SELECTED;
             gsc.setDrawColor(selected);
-            if(!selected)
-                group.clearSelection();
+            if(!selected){
+                ButtonModel m = group.getSelection();
+                if (m!=null)
+                	m.setSelected(false);
+            }
         }
     });
     
