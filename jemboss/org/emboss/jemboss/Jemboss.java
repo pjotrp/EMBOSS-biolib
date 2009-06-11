@@ -100,6 +100,9 @@ public class Jemboss implements ActionListener
   {
     // initialize settings
     JembossParams mysettings = new JembossParams();
+    
+    if (JembossParams.isJembossServer() == false)
+    	withSoap = false;
 
     ClassLoader cl = this.getClass().getClassLoader();
     displayFileManager = new ImageIcon(cl.getResource("images/Forward_arrow_button.gif"));
