@@ -39,7 +39,7 @@ section: required [
     help: "Limits the alignment output to the <n> best scoring
            domains. -A0 shuts off the alignment output and can be used to
            reduce the size of output files."
-    default: 100
+    default: "100"
   ]
 
 endsection: required
