@@ -2007,7 +2007,9 @@ void ajFileClose(AjPFile* Pfile)
 
 static void fileClose(AjPFile thys)
 {
+    int sleepcount = 0;
     int status = 0;
+    int maxsleep = 60;
 #ifndef WIN32
     pid_t retval;
 #endif
@@ -2016,16 +2018,26 @@ static void fileClose(AjPFile thys)
 	return;
 
 #ifndef WIN32
-    if (thys->Pid)
+
+    /*
+    ** Only wait for the PID to close if we have read everything.
+    ** Otherwise ... we will wait for ever as it will not
+    ** go away until its output is read or closed
+    */
+
+    if (thys->Pid && thys->End)
     {
-	ajDebug("fileClose waiting for waitpid for pid  %d\n",
-		thys->Pid);
 	while((retval=waitpid(thys->Pid,&status,WNOHANG))!= thys->Pid)
 	{
+            if(sleepcount > maxsleep)
+                break;
+
+            sleepcount++;
 	    sleep(1);
 
 	    /*ajDebug("fileClose waitpid returns %d status %d\n",
 		    retval, status);*/
+
 	    if(retval == -1)
 		if(errno != EINTR)
 		    break;
