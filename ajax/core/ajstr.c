@@ -3356,7 +3356,9 @@ __deprecated AjBool  ajStrAssSub(AjPStr* pthis, const AjPStr src,
 ** @nam3rule  Paste       Overwrite one string with another. 
 ** @nam4rule  PasteCount  Overwrite with a number of single characters
 ** @nam4rule  PasteMax    Length of overwrite string specified
-** @nam3rule  Mask        Mask a range of characters. 
+** @nam3rule  Mask        Mask characters. 
+** @nam4rule  MaskIdent   Mask matching characters. 
+** @nam4rule  MaskRange   Mask a range of characters. 
 **
 ** @argrule   *        Pstr [AjPStr*] Modifiable string
 ** @argrule   Insert  pos [ajint] Position in string to start inserting,
@@ -3371,14 +3373,17 @@ __deprecated AjBool  ajStrAssSub(AjPStr* pthis, const AjPStr src,
 ** @argrule   Count     num [ajuint] Number of single characters to copy
 ** @argrule   Len     len [ajuint] Number of characters to copy from string
 ** @argrule   Max     len [ajuint] Length of string
-** @argrule   Sub     pos1 [ajint] Start position, negative value counts
-**                                 from end
-** @argrule   Mask     pos1 [ajint] Start position, negative value counts
-**                                 from end
-** @argrule   Sub     pos2 [ajint] End position, negative value counts from end
-** @argrule   Mask    pos2 [ajint] End position, negative value counts from end
+** @argrule   Sub       pos1 [ajint] Start position,
+**                                   negative value counts from end
+** @argrule   MaskRange pos1 [ajint] Start position,
+**                                   negative value counts from end
+** @argrule   Sub       pos2 [ajint] End position,
+**                                   negative value counts from end
+** @argrule   MaskRange pos2 [ajint] End position,
+**                                   negative value counts from end
 ** @argrule   Join    posb [ajint] Position in source string
-**                                negative values count from the end
+**                                 negative values count from the end
+** @argrule   MaskIdent str [const AjPStr] Comparison master string
 ** @argrule   Mask    maskchr [char] Masking character
 ** 
 ** @valrule   * [AjBool] 
@@ -3986,7 +3991,47 @@ AjBool ajStrJoinS(AjPStr* Pstr, ajint pos, const AjPStr str,
 
 
 
-/* @func ajStrMask ************************************************************
+/* @func ajStrMaskIdent ********************************************************
+**
+** Masks out characters from a string that are identical to a second string.
+**
+** @param [w] Pstr [AjPStr*] Target string
+** @param [r] str [const AjPStr] Comparison string
+** @param [r] maskchr [char] masking character
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+AjBool ajStrMaskIdent(AjPStr* Pstr, const AjPStr str, char maskchr)
+{
+    char *cp;
+    const char* cq;
+
+    cp = ajStrGetuniquePtr(Pstr);
+    cq = str->Ptr;
+
+    while(*cq)
+    {
+        if(!*cp)
+            return ajFalse;
+        
+        if(*cp == *cq)
+            *cp = maskchr;
+
+        cp++;
+        cq++;
+    }
+
+    if(*cp)
+        return ajFalse;
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ajStrMaskRange ********************************************************
 **
 ** Masks out characters from a string over a specified range.
 **
@@ -3998,7 +4043,7 @@ AjBool ajStrJoinS(AjPStr* Pstr, ajint pos, const AjPStr str,
 ** @@
 ******************************************************************************/
 
-AjBool ajStrMask(AjPStr* Pstr, ajint pos1, ajint pos2, char maskchr)
+AjBool ajStrMaskRange(AjPStr* Pstr, ajint pos1, ajint pos2, char maskchr)
 {
     AjPStr thys;
     ajuint ibegin;
@@ -4027,6 +4072,19 @@ AjBool ajStrMask(AjPStr* Pstr, ajint pos1, ajint pos2, char maskchr)
 	thys->Ptr[i] = maskchr;
 
     return ajTrue;
+}
+
+
+
+
+/* @obsolete ajStrMask
+** @rename ajStrMaskRange
+*/
+
+__deprecated AjBool ajStrMask(AjPStr* Pstr, ajint pos1, ajint pos2,
+                              char maskchr)
+{
+    return ajStrMaskRange(Pstr, pos1, pos2, maskchr);
 }
 
 
@@ -11393,6 +11451,32 @@ ajint ajStrFindlastC(const AjPStr str, const char* txt2)
 __deprecated ajint  ajStrRFindC(const AjPStr thys, const char* text)
 {
     return ajStrFindlastC(thys, text);
+}
+
+
+
+
+/* @func ajStrFindlastK *******************************************************
+**
+** Finds the last occurrence in a string of a character.
+**
+** @param [r] str [const AjPStr] String to search
+** @param [r] chr [char] Character to look for
+** @return [ajint] Position of the character if found.
+** @error -1 Text not found.
+** @@
+******************************************************************************/
+
+ajint ajStrFindlastK(const AjPStr str, char chr)
+{
+    const char* cp;
+
+    cp = strrchr(str->Ptr, (ajint) chr);
+
+    if(!cp)
+	return -1;
+
+    return(cp - str->Ptr);
 }
 
 
