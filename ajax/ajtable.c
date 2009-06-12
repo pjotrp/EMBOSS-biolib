@@ -829,11 +829,15 @@ void ajTableMapDel(AjPTable table,
     stamp = table->timestamp;
 
     for(i = 0; i < table->size; i++)
+    {
 	for(p = table->buckets[i]; p; p = p->link)
 	{
 	    apply(&p->key, &p->value, cl);
 	    assert(table->timestamp == stamp);
+            table->length--;
 	}
+        table->buckets[i] = NULL;
+    }
 
     return;
 }
