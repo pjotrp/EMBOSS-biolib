@@ -8579,8 +8579,10 @@ AjBool ajSeqsubdesclistClone(const AjPList src, AjPList dest)
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewGene Copy constructor
+** @nam4rule NewName Constructor with given name
 **
 ** @argrule Gene gene [const AjPSeqGene] Source gene object
+** @argrule Name str [const AjPStr] Gene name
 **
 ** @valrule * [AjPSeqGene]
 **
@@ -8624,6 +8626,30 @@ AjPSeqGene ajSeqgeneNewGene(const AjPSeqGene gene)
     ajStrAssignS(&ret->Synonyms, gene->Synonyms);
     ajStrAssignS(&ret->Orf, gene->Orf);
     ajStrAssignS(&ret->Oln, gene->Oln);
+
+    return ret;
+}
+
+
+
+
+/* @func ajSeqgeneNewName *****************************************************
+**
+** Constructor for gene with given name
+**
+** @param [r] str [const AjPStr] Gene name
+** @return [AjPSeqGene] New gene object
+******************************************************************************/
+
+AjPSeqGene ajSeqgeneNewName(const AjPStr str)
+{
+    AjPSeqGene ret;
+    AJNEW0(ret);
+
+    if(!str)
+	return ret;
+
+    ajStrAssignS(&ret->Name, str);
 
     return ret;
 }
