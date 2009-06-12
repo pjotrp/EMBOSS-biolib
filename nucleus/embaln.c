@@ -126,49 +126,44 @@ float embAlignPathCalc(const char *a, const char *b,
 	    /* Get diag score */
 	    mscore = path[(ypos-1)*lenb+xpos-1] + match;
 
-	    /*	  ajDebug("Opt %d %6.2f ",ypos*lenb+xpos,mscore); */
+            /* ajDebug("match %d:%d %c:%c %d %6.2f ",
+               xpos, ypos, a[ypos], b[xpos], ypos*lenb+xpos,mscore); */
 
 	    /* Set compass to diagonal value 0 */
 	    compass[ypos*lenb+xpos] = 0;
 	    path[ypos*lenb+xpos] = (float) mscore;
 
 	    /* Now parade back along X axis */
-	    if(xpos > 1)
-	    {
-                maxa[ypos] -= gapextend;
-		fnew=path[(ypos)*lenb+xpos-1];
-		fnew-=gapopen;
+            maxa[ypos] -= gapextend;
+            fnew=path[(ypos)*lenb+xpos-1];
+            fnew-=gapopen;
 
-		if(fnew > maxa[ypos])
-		    maxa[ypos] = fnew;
+            if(fnew > maxa[ypos])
+                maxa[ypos] = fnew;
 
-		if( maxa[ypos] > mscore)
-		{
-		    mscore = maxa[ypos];
-		    path[ypos*lenb+xpos] = (float) mscore;
-		    compass[ypos*lenb+xpos] = 1; /* Score comes from left */
-		}
-	    }
+            if( maxa[ypos] > mscore)
+            {
+                mscore = maxa[ypos];
+                path[ypos*lenb+xpos] = (float) mscore;
+                compass[ypos*lenb+xpos] = 1; /* Score comes from left */
+            }
 
 	    /* And then bimble down Y axis */
-	    if(ypos>1)
-	    {
-                maxb -= gapextend;
-		fnew = path[(ypos-1)*lenb+xpos];
-		fnew-=gapopen;
+            maxb -= gapextend;
+            fnew = path[(ypos-1)*lenb+xpos];
+            fnew-=gapopen;
 
-		if(fnew > maxb)
-		    maxb = fnew;
+            if(fnew > maxb)
+                maxb = fnew;
 
-		if(maxb > mscore)
-		{
-		    mscore = maxb;
-		    path[ypos*lenb+xpos] = (float) mscore;
-		    compass[ypos*lenb+xpos] = 2; /* Score comes from bottom */
-		}
-	    }
+            if(maxb > mscore)
+            {
+                mscore = maxb;
+                path[ypos*lenb+xpos] = (float) mscore;
+                compass[ypos*lenb+xpos] = 2; /* Score comes from bottom */
+            }
 
-            ajDebug("\n");
+            /*ajDebug("\n");*/
  
 	    ypos++;
 	}
@@ -320,45 +315,39 @@ float embAlignPathCalcSW(const char *a, const char *b, ajint lena, ajint lenb,
 
 
 	    /* Now parade back along X axis */
-	    if(xpos > 1)
-	    {
-                maxa[ypos] -= gapextend;
-		fnew=path[(ypos)*lenb+xpos-1];
-		fnew-=gapopen;
-                ajDebug("Xtest: fnew:%.2f maxa[%d] %.2f\n",
-                        fnew, ypos, maxa[ypos]);
+            maxa[ypos] -= gapextend;
+            fnew=path[(ypos)*lenb+xpos-1];
+            fnew-=gapopen;
+            ajDebug("Xtest: fnew:%.2f maxa[%d] %.2f\n",
+                    fnew, ypos, maxa[ypos]);
 
-		if(fnew > maxa[ypos])
-                    maxa[ypos] = fnew;
+            if(fnew > maxa[ypos])
+                maxa[ypos] = fnew;
 
-		if( maxa[ypos] > mscore)
-		{
-		    mscore = maxa[ypos];
-		    path[ypos*lenb+xpos] = (float) mscore;
-		    compass[ypos*lenb+xpos] = 1; /* Score comes from left */
-                    ajDebug("Xused: fnew:%.2f maxa[%d] %.2f mscore:%.2f\n",
-                            fnew, ypos, maxa[ypos],mscore);
-		}
+            if( maxa[ypos] > mscore)
+            {
+                mscore = maxa[ypos];
+                path[ypos*lenb+xpos] = (float) mscore;
+                compass[ypos*lenb+xpos] = 1; /* Score comes from left */
+                ajDebug("Xused: fnew:%.2f maxa[%d] %.2f mscore:%.2f\n",
+                        fnew, ypos, maxa[ypos],mscore);
+            }
 
-	    }
 
 	    /* And then bimble down Y axis */
-	    if(ypos > 1)
-	    {
-                bx -= gapextend;
-		fnew = path[(ypos-1)*lenb+xpos];
-		fnew-=gapopen;
+            bx -= gapextend;
+            fnew = path[(ypos-1)*lenb+xpos];
+            fnew-=gapopen;
 
-		if(fnew > bx)
-		    bx = fnew;
+            if(fnew > bx)
+                bx = fnew;
 
-		if(bx > mscore)
-		{
-		    mscore = bx;
-		    path[ypos*lenb+xpos] = (float) mscore;
-		    compass[ypos*lenb+xpos] = 2; /* Score comes from bottom */
-		}
-	    }
+            if(bx > mscore)
+            {
+                mscore = bx;
+                path[ypos*lenb+xpos] = (float) mscore;
+                compass[ypos*lenb+xpos] = 2; /* Score comes from bottom */
+            }
 
             if(mscore > ret)
                 ret = (float) mscore;
@@ -1939,41 +1928,35 @@ float embAlignProfilePathCalc(const char *a, ajint proflen, ajint seqlen,
 	    path[row*seqlen+column]    = (float) mscore;
 
 	    /* Now parade back along X axis */
-	    if(column>1)
-	    {
-                maxs[column] -= gapextend*pmatrix[row][GAPE];
-		fnew=path[row*seqlen+column-1];
-		fnew-=gapopen*pmatrix[row][GAPO];
+            maxs[column] -= gapextend*pmatrix[row][GAPE];
+            fnew=path[row*seqlen+column-1];
+            fnew-=gapopen*pmatrix[row][GAPO];
 
-		if(fnew > maxs[column])
-                    maxs[column] = fnew;
+            if(fnew > maxs[column])
+                maxs[column] = fnew;
 
-		if( maxs[column] > mscore)
-		{
-		    mscore = maxs[column];
-		    path[row*seqlen+column] = (float) mscore;
-		    compass[row*seqlen+column] = 1; /* Score from left */
-		}
-
-	    }
+            if( maxs[column] > mscore)
+            {
+                mscore = maxs[column];
+                path[row*seqlen+column] = (float) mscore;
+                compass[row*seqlen+column] = 1; /* Score from left */
+            }
 
 	    /* And then bimble down Y axis */
-	    if(row>1)
-	    {
-                maxp -= gapextend*pmatrix[row-1][GAPE];
-		fnew = path[(row-1)*seqlen+column];
-		fnew-=gapopen*pmatrix[row-1][GAPO];
+            maxp -= gapextend*pmatrix[row-1][GAPE];
+            fnew = path[(row-1)*seqlen+column];
+            fnew-=gapopen*pmatrix[row-1][GAPO];
 
-		if(fnew > maxp)
-		    maxp = fnew;
+            if(fnew > maxp)
+                maxp = fnew;
 
-		if(maxp > mscore)
-		{
-		    mscore = maxp;
-		    path[row*seqlen+column] = (float) mscore;
-		    compass[row*seqlen+column] = 2; /* Score from bottom */
-		}
-	    }
+            if(maxp > mscore)
+            {
+                mscore = maxp;
+                path[row*seqlen+column] = (float) mscore;
+                compass[row*seqlen+column] = 2; /* Score from bottom */
+            }
+
             if(mscore < 0.0)
             {
                 path[row*seqlen+column] = 0.0;
