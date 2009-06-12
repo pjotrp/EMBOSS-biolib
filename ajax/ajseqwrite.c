@@ -184,6 +184,7 @@ static void       seqWriteIg(AjPSeqout outseq);
 static void       seqWriteJackknifer(AjPSeqout outseq);
 static void       seqWriteJackknifernon(AjPSeqout outseq);
 static void       seqWriteListAppend(AjPSeqout outseq, const AjPSeq seq);
+static void       seqWriteListClear(AjPSeqout outseq);
 static void       seqWriteMase(AjPSeqout outseq);
 static void       seqWriteMega(AjPSeqout outseq);
 static void       seqWriteMeganon(AjPSeqout outseq);
@@ -1007,6 +1008,8 @@ AjBool ajSeqoutWriteSet(AjPSeqout outseq, const AjPSeqset seq)
 	seqDeclone(outseq);
     }
     
+    ajSeqoutFlush(outseq);
+
     return ajTrue;
 }
 
@@ -1237,6 +1240,29 @@ static void seqWriteListAppend(AjPSeqout outseq, const AjPSeq seq)
 	seqDeclone(outseq);
     }
     
+    return;
+}
+
+
+
+
+/* @funcstatic seqWriteListClear *********************************************
+**
+** Removes the sequences from the output list. Called after sequences
+** have been written.
+**
+** @param [u] outseq [AjPSeqout] Sequence output
+** @return [void]
+** @@
+******************************************************************************/
+
+static void seqWriteListClear(AjPSeqout outseq)
+{
+    AjPSeq seq;
+
+    while(ajListPop(outseq->Savelist,(void **)&seq))
+	ajSeqDel(&seq);
+
     return;
 }
 
@@ -1748,37 +1774,103 @@ static void seqWriteMega(AjPSeqout outseq)
     ajuint ilen = 0;
     ajuint i    = 0;
     void** seqs = NULL;
-    AjPSeq seq;
+    const AjPSeq seq;
+    const AjPSeq seqfirst;
     AjPSeq* seqarr;
     ajuint itest;
     AjPStr sseq = NULL;
+    AjPStr sseqfirst = NULL;
     ajuint ipos;
     ajuint iend;
     ajuint wid = 50;
-
-    ajDebug("seqWriteMega list size %d\n", ajListGetLength(outseq->Savelist));
+    AjBool onedesc = ajTrue;
+    AjBool onegene = ajTrue;
+    AjPSeqGene gene = NULL;
+    AjPStr genestr = NULL;
 
     isize = ajListGetLength(outseq->Savelist);
 
     if(!isize)
 	return;
 
+/* test for group description only when writing 2+ sequences (a set) */
+    
     itest = ajListToarray(outseq->Savelist, (void***) &seqs);
     ajDebug("ajListToArray listed %u items\n", itest);
     seqarr = (AjPSeq*) seqs;
 
-    for(i=0; i < isize; i++)
+    if(isize == 1)
     {
-	seq = seqarr[i];
+        onegene = ajFalse;
+        onedesc = ajFalse;
+    }
+    else
+    {
+        onegene = ajTrue;
+        onedesc = ajTrue;
+        
+        seqfirst = seqarr[0];
 
-	if(ilen < ajSeqGetLen(seq))
-	    ilen = ajSeqGetLen(seq);
+        ilen = ajSeqGetLen(seqfirst);
+
+        if(!ajStrGetLen(seqfirst->Desc))
+            onedesc = ajFalse;
+
+        if(ajListPeek(seqfirst->Genelist, (void*) &gene))
+            ajStrAssignS(&genestr, gene->Name);
+        else
+            onegene = ajFalse;
+
+        for(i=1; i < isize; i++)
+        {
+            seq = seqarr[i];
+
+            if(ilen < ajSeqGetLen(seq))
+                ilen = ajSeqGetLen(seq);
+            if(onedesc && !ajStrMatchS(seq->Desc, seqfirst->Desc))
+                onedesc = ajFalse;
+            if(onegene && ajListPeek(seq->Genelist, (void*) &gene))
+            {
+                if(!ajStrMatchS(genestr, gene->Name))
+                    onegene = ajFalse;
+            }
+        }
     }
 
     ajFmtPrintF(outseq->File,		/* header text */
 		"#mega\n");
-    ajFmtPrintF(outseq->File,		/* dummy title */
-		"TITLE: Written by EMBOSS %D\n", ajTimeRefToday());
+    if(onedesc)
+        ajFmtPrintF(outseq->File,		/* dummy title */
+                    "!Title: %S;\n", seqfirst->Desc);
+    else
+        ajFmtPrintF(outseq->File,		/* dummy title */
+                    "!Title: Written by EMBOSS %D;\n", ajTimeRefToday());
+
+    seqfirst = seqarr[0];
+
+    ajFmtPrintF(outseq->File,"!Format\n");
+    if(ajSeqIsProt(seqfirst))
+        ajFmtPrintF(outseq->File,
+                    "    DataType=Protein DataFormat=Interleaved\n");
+    else
+        ajFmtPrintF(outseq->File,
+                    "    DataType=Nucleotide DataFormat=Interleaved\n");
+    ajFmtPrintF(outseq->File,
+                "    NSeqs=%u NSites=%u\n", isize, ilen);
+    ajFmtPrintF(outseq->File,
+                "    Identical=. Indel=- Missing=?\n");
+    if(!ajSeqIsProt(seqfirst))
+        ajFmtPrintF(outseq->File,
+                    "    CodeTable=Standard\n");
+    ajFmtPrintF(outseq->File,
+                "    ;\n\n");
+
+    ajFmtPrintF(outseq->File,
+                "\n\n");
+
+    if(onegene)
+        ajFmtPrintF(outseq->File,
+                    "!Gene=%S\n", genestr);
 
     for(ipos=1; ipos <= ilen; ipos += wid)
     {
@@ -1788,19 +1880,31 @@ static void seqWriteMega(AjPSeqout outseq)
 	if(iend > ilen)
 	    iend = ilen;
 
+        ajStrAssignSubS(&sseqfirst, seqfirst->Seq, ipos-1, iend-1);
+        ajSeqGapS(&sseqfirst, '-');
+
 	ajFmtPrintF(outseq->File,	/* blank space for comments */
 		    "\n");
+
 	for(i=0; i < isize; i++)
 	{
 	    /* loop over sequences */
 	    seq = seqarr[i];
 	    ajStrAssignSubS(&sseq, seq->Seq, ipos-1, iend-1);
 	    ajSeqGapS(&sseq, '-');
+            if(i)
+                ajStrMaskIdent(&sseq, sseqfirst, '.');
+            if(!onedesc && ipos == 1 && ajStrGetLen(seq->Desc))
+                ajFmtPrintF(outseq->File, "[%S]\n", seq->Desc);
 	    ajFmtPrintF(outseq->File, "#%-20.20S %S\n", seq->Name, sseq);
 	}
     }
 
+    ajFmtPrintF(outseq->File,
+                "\n");
+
     ajStrDel(&sseq);
+    ajStrDel(&sseqfirst);
     AJFREE(seqs);
 
     return;
@@ -1824,10 +1928,16 @@ static void seqWriteMeganon(AjPSeqout outseq)
     ajuint ilen = 0;
     ajuint i    = 0;
     void** seqs = NULL;
-    AjPSeq seq;
+    const AjPSeq seq;
+    const AjPSeq seqfirst;
     AjPSeq* seqarr;
     ajuint itest;
     AjPStr sseq = NULL;
+    AjPStr sseqfirst = NULL;
+    AjBool onedesc = ajTrue;
+    AjBool onegene = ajTrue;
+    AjPSeqGene gene = NULL;
+    AjPStr genestr = NULL;
 
     ajDebug("seqWriteMeganon list size %d\n",
             ajListGetLength(outseq->Savelist));
@@ -1841,32 +1951,108 @@ static void seqWriteMeganon(AjPSeqout outseq)
     ajDebug("ajListToArray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
 
+    if(isize == 1)
+    {
+        onegene = ajFalse;
+        onedesc = ajFalse;
+    }
+    else
+    {
+        onegene = ajTrue;
+        onedesc = ajTrue;
+        
+        seqfirst = seqarr[0];
+
+        ilen = ajSeqGetLen(seqfirst);
+
+        if(!ajStrGetLen(seqfirst->Desc))
+            onedesc = ajFalse;
+
+        if(ajListPeek(seqfirst->Genelist, (void*) &gene))
+            ajStrAssignS(&genestr, gene->Name);
+        else
+            onegene = ajFalse;
+
+        for(i=1; i < isize; i++)
+        {
+            seq = seqarr[i];
+
+            if(ilen < ajSeqGetLen(seq))
+                ilen = ajSeqGetLen(seq);
+            if(onedesc && !ajStrMatchS(seq->Desc, seqfirst->Desc))
+                onedesc = ajFalse;
+            if(onegene && ajListPeek(seq->Genelist, (void*) &gene))
+            {
+                if(!ajStrMatchS(genestr, gene->Name))
+                    onegene = ajFalse;
+            }
+        }
+    }
+    
+    seqfirst = seqarr[0];
+
     for(i=0; i < isize; i++)
     {
 	seq = seqarr[i];
 
 	if(ilen < ajSeqGetLen(seq))
 	    ilen = ajSeqGetLen(seq);
+        if(!ajStrMatchS(seq->Desc, seqfirst->Desc))
+            onedesc = ajFalse;
     }
 
     ajFmtPrintF(outseq->File,		/* header text */
 		"#mega\n");
-    ajFmtPrintF(outseq->File,		/* dummy title */
-		"TITLE: Written by EMBOSS %D\n", ajTimeRefToday());
-    ajFmtPrintF(outseq->File,		/* blank space for comments */
-		"\n");
+    if(onedesc)
+        ajFmtPrintF(outseq->File,		/* dummy title */
+                    "!Title: %S;\n", seqfirst->Desc);
+    else
+        ajFmtPrintF(outseq->File,		/* dummy title */
+                    "!Title: Written by EMBOSS %D;\n", ajTimeRefToday());
+
+    ajFmtPrintF(outseq->File,"!Format\n");
+    if(ajSeqIsProt(seqfirst))
+        ajFmtPrintF(outseq->File,
+                    "    DataType=Protein\n");
+    else
+        ajFmtPrintF(outseq->File,
+                    "    DataType=Nucleotide\n");
+    ajFmtPrintF(outseq->File,
+                "    NSeqs=%u NSites=%u\n", isize, ilen);
+    ajFmtPrintF(outseq->File,
+                "    Identical=. Indel=- Missing=?\n");
+    if(!ajSeqIsProt(seqfirst))
+        ajFmtPrintF(outseq->File,
+                    "    CodeTable=Standard\n");
+    ajFmtPrintF(outseq->File,
+                "    ;\n\n");
+
+
+    seqfirst = seqarr[0];
+    ajStrAssignS(&sseqfirst, seqfirst->Seq);
+    ajSeqGapS(&sseqfirst, '-');
+
+    if(onegene)
+        ajFmtPrintF(outseq->File,
+                    "!Gene=%S\n", genestr);
 
     for(i=0; i < isize; i++)
     {					/* loop over sequences */
 	seq = seqarr[i];
 	ajStrAssignS(&sseq, seq->Seq);
 	ajSeqGapS(&sseq, '-');
-	ajFmtPrintF(outseq->File,
+        if(i)
+            ajStrMaskIdent(&sseq, sseqfirst, '.');
+        if(!onedesc && ajStrGetLen(seq->Desc))
+           ajFmtPrintF(outseq->File, "[%S]\n", seq->Desc);
+        ajFmtPrintF(outseq->File,
 		    "#%-20.20S\n%S\n",
 		    seq->Name, sseq);
     }
 
+    ajStrDel(&genestr);
     ajStrDel(&sseq);
+    ajStrDel(&sseqfirst);
     AJFREE(seqs);
 
     return;
@@ -6299,8 +6485,10 @@ static AjBool seqoutUsaProcess(AjPSeqout thys)
 ** @nam3rule Clear Reset output object
 ** @nam4rule ClearUsa Reset output object and set new Usa
 ** @nam3rule Close Close output file
+** @nam3rule Flush Flush saved sequences to output file and clear list
 ** @nam3rule Open Open output file
 ** @nam4rule OpenFilename Open named output file
+** @nam3rule Reset Clear ready to accept further sequences
 **
 ** @argrule * seqout [AjPSeqout] Sequence output object
 ** @argrule OpenFilename name [const AjPStr] Output filename
@@ -6490,6 +6678,39 @@ __deprecated void  ajSeqWriteClose(AjPSeqout outseq)
 
 
 
+/* @func ajSeqoutFlush ******************************************************
+**
+** Flush output to a sequence output file. For formats that save everything up
+** and write at the end, call the Write function first.
+**
+** Do not close the file. It can be reused for more output
+**
+** @param [u] seqout [AjPSeqout] Sequence output
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqoutFlush(AjPSeqout seqout)
+{
+
+    ajDebug("ajSeqoutFlush '%F'\n", seqout->File);
+
+    if(seqOutFormat[seqout->Format].Save)
+    {
+	/* Calling funclist seqOutFormat() */
+	seqOutFormat[seqout->Format].Write(seqout);
+    }
+
+    seqWriteListClear(seqout);
+
+    if(seqout->Cleanup)
+        seqout->Cleanup(seqout->File);
+
+    return;
+}
+
+
+
 /* @func ajSeqoutOpen *********************************************************
 **
 ** If the file is not yet open, calls seqoutUsaProcess to convert the USA into
@@ -6589,6 +6810,99 @@ AjBool ajSeqoutOpenFilename(AjPSeqout seqout, const AjPStr name)
 __deprecated AjBool  ajSeqFileNewOut(AjPSeqout seqout, const AjPStr name)
 {
     return ajSeqoutOpenFilename(seqout, name);
+}
+
+
+
+
+/* @func ajSeqoutReset ********************************************************
+**
+** Clears a Sequence output object ready to accept further sequences
+**
+** @param [u] seqout [AjPSeqout] Sequence output object
+** @category modify [AjPSeqout] Resets ready for reuse.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqoutReset(AjPSeqout seqout)
+{
+
+    AjPStr ptr = NULL;
+    AjPSeqRef  tmpref  = NULL;
+    AjPSeqGene tmpgene = NULL;
+
+    ajDebug("ajSeqoutClear called\n");
+
+    ajStrSetClear(&seqout->Name);
+    ajStrSetClear(&seqout->Acc);
+    ajStrSetClear(&seqout->Sv);
+    ajStrSetClear(&seqout->Gi);
+    ajStrSetClear(&seqout->Tax);
+    ajStrSetClear(&seqout->Taxid);
+    ajStrSetClear(&seqout->Organelle);
+    ajStrSetClear(&seqout->Desc);
+    ajStrSetClear(&seqout->Type);
+    ajStrSetClear(&seqout->Outputtype);
+    ajStrSetClear(&seqout->Full);
+    ajStrSetClear(&seqout->Doc);
+    ajStrSetClear(&seqout->Usa);
+    ajStrSetClear(&seqout->Ufo);
+    ajStrSetClear(&seqout->Informatstr);
+    ajStrSetClear(&seqout->Formatstr);
+    ajStrSetClear(&seqout->Filename);
+    ajStrSetClear(&seqout->Directory);
+    ajStrSetClear(&seqout->Entryname);
+    ajStrSetClear(&seqout->Extension);
+    ajStrSetClear(&seqout->Seq);
+    seqout->EType  = 0;
+    seqout->Rev    = ajFalse;
+    seqout->Format = 0;
+
+
+    if(seqout->File)
+    {
+        if(seqout->Cleanup)
+            seqout->Cleanup(seqout->File);
+
+	if(seqout->Knownfile)
+	    seqout->File = NULL;
+	else
+	    ajFileClose(&seqout->File);
+    }
+
+    seqout->Cleanup = NULL;
+
+    seqout->Count    = 0;
+    seqout->Single   = ajFalse;
+    seqout->Features = ajFalse;
+
+    while(ajListstrPop(seqout->Acclist,&ptr))
+	ajStrDel(&ptr);
+
+    while(ajListstrPop(seqout->Keylist,&ptr))
+	ajStrDel(&ptr);
+
+    while(ajListstrPop(seqout->Taxlist,&ptr))
+	ajStrDel(&ptr);
+
+    while(ajListPop(seqout->Genelist,(void **)&tmpgene))
+	ajSeqgeneDel(&tmpgene);
+
+    while(ajListPop(seqout->Reflist,(void **)&tmpref))
+	ajSeqrefDel(&tmpref);
+
+    while(ajListstrPop(seqout->Cmtlist,&ptr))
+	ajStrDel(&ptr);
+
+    while(ajListstrPop(seqout->Xreflist,&ptr))
+	ajStrDel(&ptr);
+
+    ajSeqdescClear(seqout->Fulldesc);
+    ajFeattabOutClear(&seqout->Ftquery);
+    AJFREE(seqout->Accuracy);
+
+    return;
 }
 
 
