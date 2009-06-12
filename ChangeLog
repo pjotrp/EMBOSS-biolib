@@ -1,4 +1,39 @@
 Version 6.1.0
+	A new ACD function replaces an attribute value with an EMBOSS or
+	environment variable. The attribute syntax is (@value:VARNAME).
+
+	Infile datatypes in ACD have a new attribute directory: which
+	defines the default directory to be searched. If the user
+	specifies an explicit path the directory attribute is ignored.
+
+	Applications writing out multiple sets of sequences now correctly
+	reset the sequence output. This only affected one test application
+	in EMBOSS 6.0.1 (input type seqsetall and output type seqoutall).
+
+	Applications that use single letter qualifier names (for example
+	the HMMERNEW wrappers for HMMER applications) can be confused if a
+	single letter qualifier name matches uniquely an associated
+	qualifier for a preceding comand line qualifier. An additional
+	check now ensures that a unique qualifier (for example -o) is
+	correctly recognized.
+
+	Global alignments with needle in rare cases missed the optimal
+	alignment of the first 2 residues. This was a bug introduced in
+	6.0.0.
+
+	When reading data using a launched application, including the SRS
+	access method which launches "getz", closing the input without
+	reading to the end caused the file close function to loop
+	forever. Examples included nthseq and seqret -firstonly both of
+	which stop reading when they have reached the nth or first
+	sequence. File closing now only waits if the input has reached end
+	of file, and has a timeout on the wait to break out of the loop.
+
+	Intelligenetics format sequence files with more than one sequence
+	are now read correctly. Where the sequence ends with a number,
+	intelligenetics format sequences can now be automatically
+	detected.
+
 	Add -methylation option to restrict/restover/remap/showseq
 	to simulate (e.g.) dam/dcm restriction enzyme knockouts.
 
