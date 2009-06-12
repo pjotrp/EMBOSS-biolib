@@ -238,6 +238,7 @@ restdist_output                   file           Phylip restdist program output
 restml_input                      file           Phylip restml program input
 restml_output                     file           Phylip restml program output
 restriction_enzyme_data           file           Restriction enzyme data
+restriction_enzyme_methylation_data file         Restriction enzyme methylation data
 rna_concentration                 file           Vienna RNA concentration data
 rna_constraint                    file           Vienna RNA structure constraints
 rna_parameter                     file           Vienna RNA parameters
