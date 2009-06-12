@@ -136,6 +136,7 @@ section: additional [
   ]
 
   boolean: methylation [
+    additional: "Y"
     default: "N"
     information: "Use methylation data"
     help: "If this is set then RE recognition sites will not match
