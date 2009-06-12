@@ -118,74 +118,74 @@ int main(int argc, char **argv)
     ajStrAssignS(&masktest, maskstr);
     maskbegin=0;
     maskend=0;
-    ajStrMask(&masktest, maskbegin, maskend, '.');
+    ajStrMaskRange(&masktest, maskbegin, maskend, '.');
     ajUser("Mask %d..%d '%S'", maskbegin, maskend, masktest);
 
     ajStrAssignC(&maskstr, "abcdefghijklmnopqrstuvwxyz");
     ajStrAssignS(&masktest, maskstr);
     maskbegin=1;
     maskend=1;
-    ajStrMask(&masktest, maskbegin, maskend, '.');
+    ajStrMaskRange(&masktest, maskbegin, maskend, '.');
     ajUser("Mask %d..%d '%S'", maskbegin, maskend, masktest);
 
     ajStrAssignS(&masktest, maskstr);
     maskbegin=25;
     maskend=25;
-    ajStrMask(&masktest, maskbegin, maskend, '.');
+    ajStrMaskRange(&masktest, maskbegin, maskend, '.');
     ajUser("Mask %d..%d '%S'", maskbegin, maskend, masktest);
 
     ajStrAssignS(&masktest, maskstr);
     maskbegin=24;
     maskend=24;
-    ajStrMask(&masktest, maskbegin, maskend, '.');
+    ajStrMaskRange(&masktest, maskbegin, maskend, '.');
     ajUser("Mask %d..%d '%S'", maskbegin, maskend, masktest);
 
     ajStrAssignS(&masktest, maskstr);
     maskbegin=0;
     maskend=25;
-    ajStrMask(&masktest, maskbegin, maskend, '.');
+    ajStrMaskRange(&masktest, maskbegin, maskend, '.');
     ajUser("Mask %d..%d '%S'", maskbegin, maskend, masktest);
 
     ajStrAssignS(&masktest, maskstr);
     maskbegin=-1;
     maskend=-1;
-    ajStrMask(&masktest, maskbegin, maskend, '.');
+    ajStrMaskRange(&masktest, maskbegin, maskend, '.');
     ajUser("Mask %d..%d '%S'", maskbegin, maskend, masktest);
 
     ajStrAssignS(&masktest, maskstr);
     maskbegin=-2;
     maskend=-2;
-    ajStrMask(&masktest, maskbegin, maskend, '.');
+    ajStrMaskRange(&masktest, maskbegin, maskend, '.');
     ajUser("Mask %d..%d '%S'", maskbegin, maskend, masktest);
 
     ajStrAssignS(&masktest, maskstr);
     maskbegin=26;
     maskend=26;
-    ajStrMask(&masktest, maskbegin, maskend, '.');
+    ajStrMaskRange(&masktest, maskbegin, maskend, '.');
     ajUser("Mask %d..%d '%S'", maskbegin, maskend, masktest);
 
     ajStrAssignS(&masktest, maskstr);
     maskbegin=30;
     maskend=30;
-    ajStrMask(&masktest, maskbegin, maskend, '.');
+    ajStrMaskRange(&masktest, maskbegin, maskend, '.');
     ajUser("Mask %d..%d '%S'", maskbegin, maskend, masktest);
 
     ajStrAssignS(&masktest, maskstr);
     maskbegin=-30;
     maskend=30;
-    ajStrMask(&masktest, maskbegin, maskend, '.');
+    ajStrMaskRange(&masktest, maskbegin, maskend, '.');
     ajUser("Mask %d..%d '%S'", maskbegin, maskend, masktest);
 
     ajStrAssignS(&masktest, maskstr);
     maskbegin=-30;
     maskend=-30;
-    ajStrMask(&masktest, maskbegin, maskend, '.');
+    ajStrMaskRange(&masktest, maskbegin, maskend, '.');
     ajUser("Mask %d..%d '%S'", maskbegin, maskend, masktest);
 
     ajStrAssignS(&masktest, maskstr);
     maskbegin=-25;
     maskend=-2;
-    ajStrMask(&masktest, maskbegin, maskend, '.');
+    ajStrMaskRange(&masktest, maskbegin, maskend, '.');
     ajUser("Mask %d..%d '%S'", maskbegin, maskend, masktest);
 
 
