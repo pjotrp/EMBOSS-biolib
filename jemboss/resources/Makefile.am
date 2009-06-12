@@ -16,9 +16,6 @@ install-exec-hook:
                   rm -f   $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources/resources.jar; \
                   cd $(DESTDIR)$(prefix)/share/$(PACKAGE)/data; \
                   jar cvf $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources/resources.jar EPAM* EBLOSUM* ENUC*; \
-                  rm -f   $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources/Ajax.jar; \
-                  cd $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss; \
-                  jar cvf $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources/Ajax.jar org/emboss/jemboss/parser/Ajax.class; \
 	  else \
 		(if test -f resources.jar ; then \
 	            (if test -d $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources ; then \
