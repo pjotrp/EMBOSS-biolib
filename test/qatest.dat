@@ -14695,7 +14695,7 @@ CL -auto ../../data/dna.m-embl jackknifer::test.out
 FI test.out
 FZ = 590
 FP /^' Written by EMBOSS [0-9\/]+ \n/
-FP 3 /^\(FASTAM3\)            [ACGT\-]+\n/
+FP 3 /^\(FASTAM3\)            [ACGT.\-]+\n/
 //
 
 ID seqret-outmulti-jackknifer
@@ -14704,38 +14704,38 @@ CL -auto ../../data/dna.m-embl test.out -osf jackknifer
 FI test.out
 FZ = 590
 FP /^' Written by EMBOSS [0-9\/]+ \n/
-FP 3 /^\(FASTAM3\)            [ACGT\-]+\n/
+FP 3 /^\(FASTAM3\)            [ACGT.\-]+\n/
 //
 
 ID seqret-outmultiusa-mega
 AP seqret
 CL -auto ../../data/dna.m-embl mega::test.out
 FI test.out
-FZ = 610
+FZ = 862
 FP /^#mega\n/
-FP /^TITLE: Written by EMBOSS [0-9\/]+\n/
-FP 9 /^#FASTAM[1-3]              [ACGT\-]+\n/
-FP 3 /^\n/
+FP /^[!]Title: Written by EMBOSS [0-9\/]+;\n/
+FP 9 /^#FASTAM[1-3]              [ACGT.\-]+\n/
+FP 7 /^\n/
 //
 
 ID seqret-outmulti-mega
 AP seqret
 CL -auto ../../data/dna.m-embl test.out -osf mega
 FI test.out
-FZ = 610
+FZ = 862
 FP /^#mega\n/
-FP /^TITLE: Written by EMBOSS [0-9\/]+\n/
-FP 9 /^#FASTAM[1-3]              [ACGT\-]+\n/
-FP 3 /^\n/
+FP /^[!]Title: Written by EMBOSS [0-9\/]+;\n/
+FP 9 /^#FASTAM[1-3]              [ACGT.\-]+\n/
+FP 7 /^\n/
 //
 
 ID seqret-outmultiusa-meganon
 AP seqret
 CL -auto ../../data/dna.m-embl meganon::test.out
 FI test.out
-FZ = 470
+FZ = 695
 FP /^#mega\n/
-FP /^TITLE: Written by EMBOSS [0-9\/]+\n/
+FP /^[!]Title: Written by EMBOSS [0-9\/]+;\n/
 FP /^#FASTAM2             \n/
 FP 3 /^#FASTAM[1-3]             \n/
 //
@@ -14744,9 +14744,9 @@ ID seqret-outmulti-meganon
 AP seqret
 CL -auto ../../data/dna.m-embl test.out -osf meganon
 FI test.out
-FZ = 470
+FZ = 695
 FP /^#mega\n/
-FP /^TITLE: Written by EMBOSS [0-9\/]+\n/
+FP /^[!]Title: Written by EMBOSS [0-9\/]+;\n/
 FP /^#FASTAM2             \n/
 FP 3 /^#FASTAM[1-3]             \n/
 //
@@ -23229,13 +23229,13 @@ FP 0 /Died: /
 FP /^Create a binary SSI index for an HMM database\.\n/
 FI stdout
 FC = 18
-FP /^hmmindex myhmmso\n/
-FP /^SSI index:      myhmmso\.ssi\n/
+FP /^hmmindex \.\/myhmmso\n/
+FP /^SSI index:      \.\/myhmmso\.ssi\n/
 FP /^# of HMMS:      3\n/
 FI myhmmso.ssi
 FP /pkinase/
 FP /fn3/
-FZ = 176
+FZ = 178
 ## Each file, including those copied in, needs a test.
 ## Use the test for myhmmso from ehmmcalibrate-ex2-keep
 ## Can't use 'QQ rm myhmmso' as both myhmmso & myhmmso.ssi are needed by the next test.
