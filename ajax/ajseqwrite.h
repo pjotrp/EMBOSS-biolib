@@ -175,8 +175,10 @@ void         ajSeqoutTrace (const AjPSeqout seq);
 void         ajSeqoutPrintFormat (AjPFile outf, AjBool full);
 void         ajSeqoutClearUsa (AjPSeqout thys, const AjPStr Usa);
 AjBool       ajSeqoutWriteSet (AjPSeqout seqout, const AjPSeqset seq);
-void         ajSeqoutClose (AjPSeqout outseq);
+void         ajSeqoutClose(AjPSeqout outseq);
+void         ajSeqoutFlush(AjPSeqout seqout);
 void         ajSeqoutExit(void);
+void         ajSeqoutReset(AjPSeqout seqout);
 
 void         ajSeqoutDumpSwisslike(AjPSeqout outseq,const AjPStr seq,
 				   const char *prefix);
