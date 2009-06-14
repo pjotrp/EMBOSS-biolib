@@ -6656,8 +6656,8 @@ static void acdSetArray(AcdPAcd thys)
     AjBool warnrange;
     AjBool sumtest;
     
-    float fmin;
-    float fmax;
+    float vfmin;
+    float vfmax;
     ajint precision;
     ajuint size;
     float sum;
@@ -6669,11 +6669,11 @@ static void acdSetArray(AcdPAcd thys)
     ajuint i;
     float* array;
     
-    acdAttrToFloat(thys, "minimum", -FLT_MAX, &fmin);
-    acdLog("minimum: %e\n", fmin);
+    acdAttrToFloat(thys, "minimum", -FLT_MAX, &vfmin);
+    acdLog("minimum: %e\n", vfmin);
     
-    acdAttrToFloat(thys, "maximum", FLT_MAX, &fmax);
-    acdLog("maximum: %e\n", fmax);
+    acdAttrToFloat(thys, "maximum", FLT_MAX, &vfmax);
+    acdLog("maximum: %e\n", vfmax);
     
     acdAttrToFloat(thys, "sum", (float)1.0, &sum);
     acdLog("sum: %e\n", sum);
@@ -6734,22 +6734,22 @@ static void acdSetArray(AcdPAcd thys)
 
 	for(i=0; i< size; i++)
 	{
-	    if(array[i] < fmin)
+	    if(array[i] < vfmin)
 	    {				/* reset within limits */
 		if(warnrange)
 		    ajWarn("floating point value [%d] out of range %.*f "
 			   "less than (reset to) %.*f",
-			   i+1, precision, array[i], precision, fmin);
-		array[i] = fmin;
+			   i+1, precision, array[i], precision, vfmin);
+		array[i] = vfmin;
 	    }
 
-	    if(array[i] > fmax)
+	    if(array[i] > vfmax)
 	    {
 		if(warnrange)
 		    ajWarn("floating point value [%d] out of range %.*f "
 			   "more than (reset to) %.*f",
-			   i+1, precision, array[i], precision, fmax);
-		array[i] = fmax;
+			   i+1, precision, array[i], precision, vfmax);
+		array[i] = vfmax;
 	    }
 	    ftot += array[i];
 	}
@@ -8411,15 +8411,15 @@ static void acdSetFloat(AcdPAcd thys)
     AjBool warnrange;
     AjBool isdouble;
     
-    double fmin;
-    double fmax;
+    double vfmin;
+    double vfmax;
     ajint precision;
     
-    acdAttrToDouble(thys, "minimum", -FLT_MAX, &fmin);
-    acdLog("minimum: %e\n", fmin);
+    acdAttrToDouble(thys, "minimum", -FLT_MAX, &vfmin);
+    acdLog("minimum: %e\n", vfmin);
     
-    acdAttrToDouble(thys, "maximum", FLT_MAX, &fmax);
-    acdLog("maximum: %e\n", fmax);
+    acdAttrToDouble(thys, "maximum", FLT_MAX, &vfmax);
+    acdLog("maximum: %e\n", vfmax);
     
     acdAttrToInt(thys, "precision", 3, &precision);
     acdLog("precision: %d\n", precision);
@@ -8461,28 +8461,28 @@ static void acdSetFloat(AcdPAcd thys)
     if(!ok)
 	acdBadRetry(thys);
     
-    if(isdouble && fmin == FLT_MIN)
-        fmin = DBL_MIN;
+    if(isdouble && vfmin == FLT_MIN)
+        vfmin = DBL_MIN;
 
-    if(isdouble && fmax == FLT_MAX)
-        fmax = DBL_MAX;
+    if(isdouble && vfmax == FLT_MAX)
+        vfmax = DBL_MAX;
     
-    if(*val < fmin)
+    if(*val < vfmin)
     {					/* reset within limits */
 	if(warnrange)
 	    ajWarn("floating point value out of range %.*f "
 		   "less than (reset to) %.*f",
-		   precision, *val, precision, fmin);
-	*val = fmin;
+		   precision, *val, precision, vfmin);
+	*val = vfmin;
     }
 
-    if(*val > fmax)
+    if(*val > vfmax)
     {
 	if(warnrange)
 	    ajWarn("floating point value out of range %.*f "
 		   "more than (reset to) %.*f",
-		   precision, *val, precision, fmax);
-	*val = fmax;
+		   precision, *val, precision, vfmax);
+	*val = vfmax;
     }
     
     thys->Value = val;
@@ -15250,19 +15250,19 @@ static void acdHelpValidInt(const AcdPAcd thys, AjBool table, AjPStr* str)
 
 static void acdHelpValidFloat(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    float fmin;
-    float fmax;
+    float vfmin;
+    float vfmax;
     ajint iprec;
 
     acdAttrValueStr(thys, "minimum", "$", &acdTmpStr);
 
-    if(!ajStrToFloat(acdTmpStr, &fmin))
-	fmin = -FLT_MAX;
+    if(!ajStrToFloat(acdTmpStr, &vfmin))
+	vfmin = -FLT_MAX;
 
     acdAttrValueStr(thys, "maximum", "$", &acdTmpStr);
 
-    if(!ajStrToFloat(acdTmpStr, &fmax))
-	fmax = FLT_MAX;
+    if(!ajStrToFloat(acdTmpStr, &vfmax))
+	vfmax = FLT_MAX;
 
     acdAttrValueStr(thys, "precision", "$", &acdTmpStr);
 
@@ -15274,18 +15274,18 @@ static void acdHelpValidFloat(const AcdPAcd thys, AjBool table, AjPStr* str)
     else
 	ajStrAppendC(str, " (");
 
-    if(fmax != FLT_MAX)
+    if(vfmax != FLT_MAX)
     {
-	if(fmin != -FLT_MAX)
+	if(vfmin != -FLT_MAX)
 	    ajFmtPrintAppS(str, "Number from %.*f to %.*f",
-			iprec, fmin, iprec, fmax);
+			iprec, vfmin, iprec, vfmax);
 	else
-	    ajFmtPrintAppS(str, "Number up to %.*f", iprec, fmax);
+	    ajFmtPrintAppS(str, "Number up to %.*f", iprec, vfmax);
     }
     else
     {
-	if(fmin != -FLT_MAX)
-	    ajFmtPrintAppS(str, "Number %.*f or more", iprec, fmin);
+	if(vfmin != -FLT_MAX)
+	    ajFmtPrintAppS(str, "Number %.*f or more", iprec, vfmin);
 	else
 	    ajFmtPrintAppS(str, "Any numeric value");
     }

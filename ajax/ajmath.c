@@ -59,13 +59,13 @@ static void spcrc64calctab(unsigned long long *crctab);
 ** Rounds an integer to be a multiple of a given number.
 **
 ** @param [r] i [ajint] Integer to round.
-** @param [r] round [ajint] Rounding multiple.
+** @param [r] vround [ajint] Rounding multiple.
 ** @return [ajint] Result.
 ******************************************************************************/
 
-ajint ajRound(ajint i, ajint round)
+ajint ajRound(ajint i, ajint vround)
 {
-    return round * ((ajint)(i+round-1)/round);
+    return vround * ((ajint)(i+vround-1)/vround);
 }
 
 
