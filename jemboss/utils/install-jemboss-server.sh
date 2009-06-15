@@ -436,20 +436,6 @@ make_jemboss_properties()
 }
 
 
-# this prepares runJemboss.csh script under EMBOSS_INSTALL/bin directory
-make_jemboss_runscript()
-{
-  prefix=$EMBOSS_INSTALL
-  bindir=${prefix}/bin
-  PACKAGE=EMBOSS
-  JEMBOSS_LIB=${prefix}/share/${PACKAGE}/jemboss/lib
-  echo "#!/bin/csh" > ${bindir}/runJemboss.csh;
-  echo "setenv CLASSPATH ${JEMBOSS_LIB}/JembossPrintAlignment.jar:${JEMBOSS_LIB}/mail.jar:${JEMBOSS_LIB}/activation.jar:${JEMBOSS_LIB}/jakarta-regexp-1.2.jar:${JEMBOSS_LIB}/jalview.jar:${JEMBOSS_LIB}/jcert.jar:${JEMBOSS_LIB}/jnet.jar:${JEMBOSS_LIB}/jsse.jar:${JEMBOSS_LIB}/axis/axis-ant.jar:${JEMBOSS_LIB}/axis/axis.jar:${JEMBOSS_LIB}/axis/commons-discovery.jar:${JEMBOSS_LIB}/axis/commons-logging.jar:${JEMBOSS_LIB}/axis/jaxrpc.jar:${JEMBOSS_LIB}/axis/log4j-1.2.4.jar:${JEMBOSS_LIB}/axis/saaj.jar:${JEMBOSS_LIB}/axis/wsdl4j.jar:${JEMBOSS_LIB}/grout.jar:${JEMBOSS_LIB}/client.jar:${prefix}/share/${PACKAGE}/jemboss" >> ${bindir}/runJemboss.csh; \
-  echo "(cd ${prefix}/share/${PACKAGE}/jemboss; java org/emboss/jemboss/Jemboss &)" >> ${bindir}/runJemboss.csh; \
-  chmod 755 ${bindir}/runJemboss.csh;
-}
-
-
 deploy_axis_services()
 {
 
@@ -618,7 +604,7 @@ $DIR/lib64"
     echo "To exit use Control C or press return to continue."
     echo
     echo "--------------------------------------------------------------"
-    read
+    read REPLY
   fi
 
 # test for gd
@@ -657,7 +643,7 @@ $DIR/lib64"
     echo "To exit use Control C or press return to continue."
     echo
     echo "--------------------------------------------------------------"
-    read
+    read REPLY
   fi 
 
 # test for zlib which can be either in /usr/lib or $DIR/lib
@@ -698,7 +684,7 @@ $DIR/lib64
     echo "To exit use Control C or press return to continue."
     echo
     echo "--------------------------------------------------------------"
-    read
+    read REPLY
   fi
 }
 
@@ -1240,11 +1226,16 @@ fi
 echo
 echo "  ******** EMBOSS will be configured with this information  ******** "
 echo 
-echo "./configure --with-java=$JAVA_INCLUDE \\"
-echo "            --with-javaos=$JAVA_INCLUDE_OS \\"
-echo "            --with-thread=$PLATFORM \\"
-echo "            --prefix=$EMBOSS_INSTALL \\"
-echo "           $JEMBOSS_SERVER_AUTH $USER_CONFIG"
+#echo "./configure --with-java=$JAVA_INCLUDE \\"
+#echo "            --with-javaos=$JAVA_INCLUDE_OS \\"
+#echo "            --with-thread=$PLATFORM \\"
+#echo "            --prefix=$EMBOSS_INSTALL \\"
+#echo "           $JEMBOSS_SERVER_AUTH $USER_CONFIG"
+printf "%s\n" "./configure --with-java=$JAVA_INCLUDE \\"
+printf "%s\n" "            --with-javaos=$JAVA_INCLUDE_OS \\"
+printf "%s\n" "            --with-thread=$PLATFORM \\"
+printf "%s\n" "            --prefix=$EMBOSS_INSTALL \\"
+printf "%s\n" "           $JEMBOSS_SERVER_AUTH $USER_CONFIG"
 echo
 
 WORK_DIR=`pwd`
@@ -1420,9 +1411,6 @@ RUNFILE=$JEMBOSS/runJemboss.sh
   rm -f $RUNFILE
   mv $RUNFILE.new $RUNFILE
   
-  # we have an additional run script for client/server installations
-  # prepared by the following function call
-  make_jemboss_runscript  
 
 #
 # Add classes to Tomcat path
