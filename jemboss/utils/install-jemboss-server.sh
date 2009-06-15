@@ -1226,11 +1226,6 @@ fi
 echo
 echo "  ******** EMBOSS will be configured with this information  ******** "
 echo 
-#echo "./configure --with-java=$JAVA_INCLUDE \\"
-#echo "            --with-javaos=$JAVA_INCLUDE_OS \\"
-#echo "            --with-thread=$PLATFORM \\"
-#echo "            --prefix=$EMBOSS_INSTALL \\"
-#echo "           $JEMBOSS_SERVER_AUTH $USER_CONFIG"
 printf "%s\n" "./configure --with-java=$JAVA_INCLUDE \\"
 printf "%s\n" "            --with-javaos=$JAVA_INCLUDE_OS \\"
 printf "%s\n" "            --with-thread=$PLATFORM \\"
