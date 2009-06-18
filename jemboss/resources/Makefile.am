@@ -23,7 +23,7 @@ install-exec-hook:
 		     else \
 			  mkdir $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources; \
 		     fi); \
-		  cp resources.jar $(prefix)/share/$(PACKAGE)/jemboss/resources; \
+		  cp resources.jar $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources; \
 		fi); \
 	fi
 

@@ -11,7 +11,7 @@ install-exec-hook:
 	     else \
 	        mkdir $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/lib; \
 	     fi); \
-	cp client.jar $(prefix)/share/$(PACKAGE)/jemboss/lib; \
+	cp client.jar $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/lib; \
 	fi;
 
 
