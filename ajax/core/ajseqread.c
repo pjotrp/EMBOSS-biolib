@@ -1916,7 +1916,7 @@ ajint ajSeqsetFromList(AjPSeqset thys, const AjPList list)
 	if(ajSeqGetLen(seq) > thys->Len)
 	    thys->Len = ajSeqGetLen(seq);
 
-	ajDebug("seq %d '%x'\n", i, seq);
+	/*	ajDebug("seq %d '%x'\n", i, seq);*/
 	ajDebug("seq '%x' len: %d weight: %.3f\n",
 		seq->Name, ajSeqGetLen(seq), thys->Seq[i]->Weight);
 	i++;
@@ -6643,7 +6643,7 @@ static AjBool seqReadNexus(AjPSeq thys, AjPSeqin seqin)
 
 /* @funcstatic seqReadMega ****************************************************
 **
-** Tries to read input in Mega non-interleaved format.
+** Tries to read input in Mega interleaved or non-interleaved format.
 **
 ** The Molecular Evolutionary Genetic Analysis program by
 ** Kumar, Tamura & Nei is a tree construction program
@@ -6737,7 +6737,7 @@ static AjBool seqReadMega(AjPSeq thys, AjPSeqin seqin)
 
             bufflines++;
 
-            if(!ajStrMatchCaseC(seqReadLine, "#MEGA\n"))
+            if(!ajStrPrefixCaseC(seqReadLine, "#MEGA"))
             {				/* first line test */
                 ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
 
@@ -6776,6 +6776,7 @@ static AjBool seqReadMega(AjPSeq thys, AjPSeqin seqin)
             isformat = ajFalse;
 
             while(ok && !ajStrPrefixC(seqReadLine, "#"))
+
             {				/* skip comments in header */
                 if(iscommand)
                 {
@@ -6841,11 +6842,15 @@ static AjBool seqReadMega(AjPSeq thys, AjPSeqin seqin)
                                 if(ajStrMatchCaseC(formatType, "gene"))
                                 {
                                     ajStrAssignS(&genestr, formatValue);
+				    ajDebug("command: Gene='%S'\n",
+					    formatValue);
                                 }
                     
                                 if(ajStrMatchCaseC(formatType, "domain"))
                                 {
                                     ajStrAssignS(&domainstr, formatValue);
+				    ajDebug("command: Domain='%S'\n",
+					    formatValue);
                                 }
                                 ajRegPost(seqRegMegaCommand, &tmpstr);
                             }
@@ -6991,6 +6996,8 @@ static AjBool seqReadMega(AjPSeq thys, AjPSeqin seqin)
                 }
 
                 seqAppend(&phyitem->Seq, seqReadLine);
+		ajDebug("Append '%S' len %u\n",
+			phyitem->Name, ajStrGetLen(phyitem->Seq));
             }
 
             else
@@ -7006,6 +7013,8 @@ static AjBool seqReadMega(AjPSeq thys, AjPSeqin seqin)
                         if(iseq)
                             resume = ajTrue;
                         ajStrAssignS(&nextgenestr, formatValue);
+			ajDebug("command: Gene='%S'\n",
+				formatValue);
                     }
 
                     if(ajStrMatchCaseC(formatType, "domain"))
@@ -7013,6 +7022,8 @@ static AjBool seqReadMega(AjPSeq thys, AjPSeqin seqin)
                         if(iseq)
                             resume = ajTrue;
                         ajStrAssignS(&nextdomainstr, formatValue);
+			ajDebug("command: Domain='%S'\n",
+				formatValue);
                     }
                     ajRegPost(seqRegMegaCommand, &tmpstr);
                 }
@@ -15122,12 +15133,12 @@ static AjBool seqDefine(AjPSeq thys, AjPSeqin seqin)
     /* if values are missing in the sequence object, we can use defaults
        from seqin or calculate where possible */
 
-    ajDebug("seqDefine: thys->Db '%S', seqin->Db '%S'\n",
-	  thys->Db, seqin->Db);
-    ajDebug("seqDefine: thys->Name '%S' type: %S\n",
-	    thys->Name, thys->Type);
-    ajDebug("seqDefine: thys->Entryname '%S', seqin->Entryname '%S'\n",
-	    thys->Entryname, seqin->Entryname);
+    /*ajDebug("seqDefine: thys->Db '%S', seqin->Db '%S'\n",
+      thys->Db, seqin->Db);*/
+    /*ajDebug("seqDefine: thys->Name '%S' type: %S\n",
+      thys->Name, thys->Type);*/
+    /*ajDebug("seqDefine: thys->Entryname '%S', seqin->Entryname '%S'\n",
+      thys->Entryname, seqin->Entryname);*/
 
     /* assign the dbname and entryname if defined in the seqin object */
     if(ajStrGetLen(seqin->Db))
@@ -15139,8 +15150,8 @@ static AjBool seqDefine(AjPSeq thys, AjPSeqin seqin)
     if(ajStrGetLen(thys->Entryname))
       ajStrAssignS(&thys->Name, thys->Entryname);
 
-    ajDebug("seqDefine: returns thys->Name '%S' type: %S\n",
-	    thys->Name, thys->Type);
+    /*ajDebug("seqDefine: returns thys->Name '%S' type: %S\n",
+      thys->Name, thys->Type);*/
 
     if(!ajStrGetLen(thys->Type))
 	ajSeqType(thys);

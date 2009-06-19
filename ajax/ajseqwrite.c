@@ -1778,6 +1778,7 @@ static void seqWriteMega(AjPSeqout outseq)
     const AjPSeq seqfirst;
     AjPSeq* seqarr;
     ajuint itest;
+    ajuint namewidth;
     AjPStr sseq = NULL;
     AjPStr sseqfirst = NULL;
     ajuint ipos;
@@ -1799,6 +1800,10 @@ static void seqWriteMega(AjPSeqout outseq)
     ajDebug("ajListToArray listed %u items\n", itest);
     seqarr = (AjPSeq*) seqs;
 
+    seqfirst = seqarr[0];
+
+    namewidth = ajStrGetLen(seqfirst->Name);
+
     if(isize == 1)
     {
         onegene = ajFalse;
@@ -1809,8 +1814,6 @@ static void seqWriteMega(AjPSeqout outseq)
         onegene = ajTrue;
         onedesc = ajTrue;
         
-        seqfirst = seqarr[0];
-
         ilen = ajSeqGetLen(seqfirst);
 
         if(!ajStrGetLen(seqfirst->Desc))
@@ -1825,7 +1828,9 @@ static void seqWriteMega(AjPSeqout outseq)
         {
             seq = seqarr[i];
 
-            if(ilen < ajSeqGetLen(seq))
+	    if(ajStrGetLen(seq->Name) > namewidth)
+	      namewidth = ajStrGetLen(seq->Name);
+	    if(ilen < ajSeqGetLen(seq))
                 ilen = ajSeqGetLen(seq);
             if(onedesc && !ajStrMatchS(seq->Desc, seqfirst->Desc))
                 onedesc = ajFalse;
@@ -1837,40 +1842,44 @@ static void seqWriteMega(AjPSeqout outseq)
         }
     }
 
-    ajFmtPrintF(outseq->File,		/* header text */
-		"#mega\n");
-    if(onedesc)
+    if(namewidth > 40)
+      namewidth = 40;
+
+    if(outseq->Count == (ajint) isize)
+    {
+      ajFmtPrintF(outseq->File,		/* header text */
+		  "#mega\n");
+      if(onedesc)
         ajFmtPrintF(outseq->File,		/* dummy title */
                     "!Title: %S;\n", seqfirst->Desc);
-    else
+      else
         ajFmtPrintF(outseq->File,		/* dummy title */
                     "!Title: Written by EMBOSS %D;\n", ajTimeRefToday());
 
-    seqfirst = seqarr[0];
-
-    ajFmtPrintF(outseq->File,"!Format\n");
-    if(ajSeqIsProt(seqfirst))
+      ajFmtPrintF(outseq->File,"!Format\n");
+      if(ajSeqIsProt(seqfirst))
         ajFmtPrintF(outseq->File,
                     "    DataType=Protein DataFormat=Interleaved\n");
-    else
+      else
         ajFmtPrintF(outseq->File,
                     "    DataType=Nucleotide DataFormat=Interleaved\n");
-    ajFmtPrintF(outseq->File,
-                "    NSeqs=%u NSites=%u\n", isize, ilen);
-    ajFmtPrintF(outseq->File,
-                "    Identical=. Indel=- Missing=?\n");
-    if(!ajSeqIsProt(seqfirst))
+      /*ajFmtPrintF(outseq->File,
+	"    NSeqs=%u NSites=%u\n", isize, ilen);*/
+      ajFmtPrintF(outseq->File,
+		  "    Identical=. Indel=- Missing=?\n");
+      if(!ajSeqIsProt(seqfirst))
         ajFmtPrintF(outseq->File,
                     "    CodeTable=Standard\n");
-    ajFmtPrintF(outseq->File,
-                "    ;\n\n");
+      ajFmtPrintF(outseq->File,
+		  "    ;\n\n");
+    }
 
     ajFmtPrintF(outseq->File,
                 "\n\n");
 
     if(onegene)
         ajFmtPrintF(outseq->File,
-                    "!Gene=%S\n", genestr);
+                    "!Gene=%S;\n", genestr);
 
     for(ipos=1; ipos <= ilen; ipos += wid)
     {
@@ -1896,7 +1905,8 @@ static void seqWriteMega(AjPSeqout outseq)
                 ajStrMaskIdent(&sseq, sseqfirst, '.');
             if(!onedesc && ipos == 1 && ajStrGetLen(seq->Desc))
                 ajFmtPrintF(outseq->File, "[%S]\n", seq->Desc);
-	    ajFmtPrintF(outseq->File, "#%-20.20S %S\n", seq->Name, sseq);
+	    ajFmtPrintF(outseq->File, "#%-*.*S %S\n",
+			namewidth, namewidth, seq->Name, sseq);
 	}
     }
 
@@ -1931,7 +1941,8 @@ static void seqWriteMeganon(AjPSeqout outseq)
     const AjPSeq seq;
     const AjPSeq seqfirst;
     AjPSeq* seqarr;
-    ajuint itest;
+    ajuint itest; 
+    ajuint namewidth;
     AjPStr sseq = NULL;
     AjPStr sseqfirst = NULL;
     AjBool onedesc = ajTrue;
@@ -1951,6 +1962,10 @@ static void seqWriteMeganon(AjPSeqout outseq)
     ajDebug("ajListToArray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
 
+    seqfirst = seqarr[0];
+
+    namewidth = ajStrGetLen(seqfirst->Name);
+
     if(isize == 1)
     {
         onegene = ajFalse;
@@ -1961,8 +1976,6 @@ static void seqWriteMeganon(AjPSeqout outseq)
         onegene = ajTrue;
         onedesc = ajTrue;
         
-        seqfirst = seqarr[0];
-
         ilen = ajSeqGetLen(seqfirst);
 
         if(!ajStrGetLen(seqfirst->Desc))
@@ -1977,6 +1990,9 @@ static void seqWriteMeganon(AjPSeqout outseq)
         {
             seq = seqarr[i];
 
+	    if(ajStrGetLen(seq->Name) > namewidth)
+	      namewidth = ajStrGetLen(seq->Name);
+
             if(ilen < ajSeqGetLen(seq))
                 ilen = ajSeqGetLen(seq);
             if(onedesc && !ajStrMatchS(seq->Desc, seqfirst->Desc))
@@ -1989,7 +2005,8 @@ static void seqWriteMeganon(AjPSeqout outseq)
         }
     }
     
-    seqfirst = seqarr[0];
+    if(namewidth > 40)
+      namewidth = 40;
 
     for(i=0; i < isize; i++)
     {
@@ -2001,40 +2018,41 @@ static void seqWriteMeganon(AjPSeqout outseq)
             onedesc = ajFalse;
     }
 
-    ajFmtPrintF(outseq->File,		/* header text */
-		"#mega\n");
-    if(onedesc)
+    if(outseq->Count == (ajint) isize)
+    {
+      ajFmtPrintF(outseq->File,		/* header text */
+		  "#mega\n");
+      if(onedesc)
         ajFmtPrintF(outseq->File,		/* dummy title */
                     "!Title: %S;\n", seqfirst->Desc);
-    else
+      else
         ajFmtPrintF(outseq->File,		/* dummy title */
                     "!Title: Written by EMBOSS %D;\n", ajTimeRefToday());
 
-    ajFmtPrintF(outseq->File,"!Format\n");
-    if(ajSeqIsProt(seqfirst))
+      ajFmtPrintF(outseq->File,"!Format\n");
+      if(ajSeqIsProt(seqfirst))
         ajFmtPrintF(outseq->File,
                     "    DataType=Protein\n");
-    else
+      else
         ajFmtPrintF(outseq->File,
                     "    DataType=Nucleotide\n");
-    ajFmtPrintF(outseq->File,
-                "    NSeqs=%u NSites=%u\n", isize, ilen);
-    ajFmtPrintF(outseq->File,
-                "    Identical=. Indel=- Missing=?\n");
-    if(!ajSeqIsProt(seqfirst))
+      /*ajFmtPrintF(outseq->File,
+	"    NSeqs=%u NSites=%u\n", isize, ilen);*/
+      ajFmtPrintF(outseq->File,
+		  "    Identical=. Indel=- Missing=?\n");
+      if(!ajSeqIsProt(seqfirst))
         ajFmtPrintF(outseq->File,
                     "    CodeTable=Standard\n");
-    ajFmtPrintF(outseq->File,
-                "    ;\n\n");
+      ajFmtPrintF(outseq->File,
+		  "    ;\n\n");
+    }
 
-
-    seqfirst = seqarr[0];
     ajStrAssignS(&sseqfirst, seqfirst->Seq);
     ajSeqGapS(&sseqfirst, '-');
 
     if(onegene)
         ajFmtPrintF(outseq->File,
-                    "!Gene=%S\n", genestr);
+                    "!Gene=%S;\n", genestr);
 
     for(i=0; i < isize; i++)
     {					/* loop over sequences */
@@ -2046,8 +2064,8 @@ static void seqWriteMeganon(AjPSeqout outseq)
         if(!onedesc && ajStrGetLen(seq->Desc))
            ajFmtPrintF(outseq->File, "[%S]\n", seq->Desc);
         ajFmtPrintF(outseq->File,
-		    "#%-20.20S\n%S\n",
-		    seq->Name, sseq);
+		    "#%-*.*S\n%S\n",
+		    namewidth, namewidth, seq->Name, sseq);
     }
 
     ajStrDel(&genestr);
