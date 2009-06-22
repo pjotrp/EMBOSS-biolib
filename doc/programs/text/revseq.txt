@@ -324,7 +324,6 @@ See also
    sequences
    pasteseq Insert one sequence into another
    seqret Reads and writes (returns) sequences
-   seqretsetall Reads and writes (returns) a set of sequences all at once
    seqretsplit Reads sequences and writes them to individual files
    sizeseq Sort sequences by size
    skipredundant Remove redundant sequences from an input set

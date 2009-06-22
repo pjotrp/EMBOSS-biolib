@@ -5,7 +5,7 @@
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>siggenlig </b>
-Generate ligand-binding signatures from a CON file.
+Generates ligand-binding signatures from a CON file
 Structure contacts file: <b>../sites-keep/SITES.con</b>
 Clean protein structure coordinates directory (optional) [.]: <b>../pdbplus-keep</b>
 Clean domain coordinates directory (optional) [.]: <b>../domainer-keep</b>

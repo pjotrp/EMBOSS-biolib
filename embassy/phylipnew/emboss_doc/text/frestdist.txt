@@ -166,7 +166,7 @@ Input file: restdist.dat
 Phylip restdist program output file [restdist.frestdist]: 
 
 
-Restriction site or fragment distances, version 3.67
+Restriction site or fragment distances, version 3.68
 
 Distances calculated for species
     Alpha        ....

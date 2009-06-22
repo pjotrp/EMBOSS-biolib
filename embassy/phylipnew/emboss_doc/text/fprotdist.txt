@@ -212,6 +212,8 @@ Computing distances:
 
 Output written to file "protdist.fprotdist"
 
+Done.
+
 
    Go to the input files for this example
    Go to the output files for this example

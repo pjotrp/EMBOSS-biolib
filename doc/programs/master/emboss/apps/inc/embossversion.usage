@@ -5,7 +5,7 @@
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>embossversion </b>
-Writes the current EMBOSS version number to a file
+Reports the current EMBOSS version number
 
 6.1.0
 

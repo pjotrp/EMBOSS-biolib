@@ -23,8 +23,8 @@ CONTENTS
 1.0 SUMMARY
 
    Generates ligand-binding signatures from a CON file (contacts file) of
-   residue-ligand contacts. Generate ligand-binding signatures from a CON
-   file
+   residue-ligand contacts. Generates ligand-binding signatures from a
+   CON file
 
 2.0 INPUTS & OUTPUTS
 

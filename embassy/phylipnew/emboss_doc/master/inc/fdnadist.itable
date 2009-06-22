@@ -110,6 +110,13 @@
 </tr>
 
 <tr>
+<td>-humanreadable</td>
+<td>Output as a human-readable distance matrix</td>
+<td>Boolean value Yes/No</td>
+<td>@($(method)==s?Y:N)</td>
+</tr>
+
+<tr>
 <td>-printdata</td>
 <td>Print data at start of run</td>
 <td>Boolean value Yes/No</td>

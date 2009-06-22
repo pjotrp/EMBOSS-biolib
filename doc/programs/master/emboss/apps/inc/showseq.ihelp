@@ -226,6 +226,8 @@
                                   value will be displayed.
 
    Advanced (Unprompted) qualifiers:
+   -mfile              datafile   [Emethylsites.dat] Restriction enzyme data
+                                  file (optional)
    -flatreformat       boolean    [N] This changes the output format to one
                                   where the recognition site is indicated by a
                                   row of '===' characters and the cut site is
@@ -264,6 +266,8 @@
                                   for restriction enzyme recognition site and
                                   cut postions that span the end of the
                                   sequence to be considered.
+   -methylation        boolean    [N] If this is set then RE recognition sites
+                                  will not match methylated bases.
    -[no]commercial     boolean    [Y] If this is set, then only those enzymes
                                   with a commercial supplier will be searched
                                   for. This qualifier is ignored if you have

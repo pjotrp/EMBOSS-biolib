@@ -409,7 +409,7 @@ Output file format
   File: contml.fcontml
 
 
-Continuous character Maximum Likelihood method version 3.67
+Continuous character Maximum Likelihood method version 3.68
 
 
    5 Populations,   10 Loci

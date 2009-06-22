@@ -437,7 +437,7 @@ Output file format
   File: proml.fproml
 
 
-Amino acid sequence Maximum Likelihood method, version 3.67
+Amino acid sequence Maximum Likelihood method, version 3.68
 
 Jones-Taylor-Thornton model of amino acid change
 

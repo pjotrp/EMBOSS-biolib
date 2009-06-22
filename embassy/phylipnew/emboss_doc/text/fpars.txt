@@ -331,7 +331,7 @@ Output file format
   File: pars.fpars
 
 
-Discrete character parsimony algorithm, version 3.67
+Discrete character parsimony algorithm, version 3.68
 
 
 One most parsimonious tree found:

@@ -345,6 +345,8 @@ Done.
                                   C G T/U (use blanks to separate)
    -lower              boolean    [N] Output as a lower triangular distance
                                   matrix
+   -humanreadable      boolean    [@($(method)==s?Y:N)] Output as a
+                                  human-readable distance matrix
    -printdata          boolean    [N] Print data at start of run
    -[no]progress       boolean    [Y] Print indications of progress of run
 
@@ -498,6 +500,13 @@ Done.
 <td>Output as a lower triangular distance matrix</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
+</tr>
+
+<tr>
+<td>-humanreadable</td>
+<td>Output as a human-readable distance matrix</td>
+<td>Boolean value Yes/No</td>
+<td>@($(method)==s?Y:N)</td>
 </tr>
 
 <tr>
@@ -691,7 +700,6 @@ Beta       0.303900 0.000000 0.339727 0.913522 0.619671
 Gamma      0.857544 0.339727 0.000000 1.631729 1.293713
 Delta      1.158927 0.913522 1.631729 0.000000 0.165882
 Epsilon    1.542899 0.619671 1.293713 0.165882 0.000000
-
 </pre>
 </td></tr></table><p>
 

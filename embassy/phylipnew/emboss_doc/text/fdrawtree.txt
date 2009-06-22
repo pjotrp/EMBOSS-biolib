@@ -54,7 +54,7 @@ Phylip tree file: drawgram.tree
 Phylip drawtree output file [drawgram.fdrawtree]: 
 Reading tree '(Delta,(Epsilon,(Gamma,(Beta,Alpha))));'
 
-DRAWTREE from PHYLIP version 3.67
+DRAWTREE from PHYLIP version 3.68
 Reading tree ...
 Tree has been read.
 Loading the font ...

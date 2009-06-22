@@ -214,6 +214,13 @@ pax* | 10</td>
 </tr>
 
 <tr>
+<td>-mfile</td>
+<td>Restriction enzyme data file (optional)</td>
+<td>Data file</td>
+<td>Emethylsites.dat</td>
+</tr>
+
+<tr>
 <td>-flatreformat</td>
 <td>This changes the output format to one where the recognition site is indicated by a row of '===' characters and the cut site is pointed to by a '&gt;' character in the forward sense, or a '&lt;' in the reverse sense strand.</td>
 <td>Boolean value Yes/No</td>
@@ -272,6 +279,13 @@ pax* | 10</td>
 <tr>
 <td>-plasmid</td>
 <td>If this is set then this allows searches for restriction enzyme recognition site and cut postions that span the end of the sequence to be considered.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-methylation</td>
+<td>If this is set then RE recognition sites will not match methylated bases.</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>

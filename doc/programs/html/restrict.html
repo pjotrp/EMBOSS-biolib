@@ -137,6 +137,8 @@ Output report [x65923.restrict]: <b></b>
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
    -datafile           datafile   Restriction enzyme data file (optional)
+   -mfile              datafile   [Emethylsites.dat] Restriction enzyme data
+                                  file (optional)
    -min                integer    [1] This sets the minimum number of cuts for
                                   any restriction enzyme that will be
                                   considered. Any enzymes that cut fewer times
@@ -170,6 +172,8 @@ Output report [x65923.restrict]: <b></b>
                                   for restriction enzyme recognition site and
                                   cut postions that span the end of the
                                   sequence to be considered.
+   -methylation        boolean    [N] If this is set then RE recognition sites
+                                  will not match methylated bases.
    -[no]commercial     boolean    [Y] If this is set, then only those enzymes
                                   with a commercial supplier will be searched
                                   for. This qualifier is ignored if you have
@@ -324,6 +328,13 @@ PpiI</td>
 </tr>
 
 <tr>
+<td>-mfile</td>
+<td>Restriction enzyme data file (optional)</td>
+<td>Data file</td>
+<td>Emethylsites.dat</td>
+</tr>
+
+<tr>
 <td>-min</td>
 <td>This sets the minimum number of cuts for any restriction enzyme that will be considered. Any enzymes that cut fewer times than this will be ignored.</td>
 <td>Integer from 1 to 1000</td>
@@ -375,6 +386,13 @@ PpiI</td>
 <tr>
 <td>-plasmid</td>
 <td>If this is set then this allows searches for restriction enzyme recognition site and cut postions that span the end of the sequence to be considered.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-methylation</td>
+<td>If this is set then RE recognition sites will not match methylated bases.</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>

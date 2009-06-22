@@ -205,7 +205,7 @@ Output file format
   File: restml.frestml
 
 
-Restriction site Maximum Likelihood method, version 3.67
+Restriction site Maximum Likelihood method, version 3.68
 
 
   Recognition sequences all 6 bases long

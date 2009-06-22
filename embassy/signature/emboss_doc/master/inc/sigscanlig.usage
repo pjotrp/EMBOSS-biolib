@@ -5,7 +5,7 @@
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>sigscanlig </b>
-Search ligand-signature library & write hits (LHF file).
+Searches ligand-signature library & writes hits (LHF file)
 Domainatrix signature directories [./]: <b>../siggenlig-keep</b>
 Database of query sequences.: <b>swtiny</b>
 Scoring matrix [EBLOSUM62]: <b></b>

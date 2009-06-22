@@ -155,6 +155,8 @@ Command line arguments
                                   for restriction enzyme recognition site and
                                   cut postions that span the end of the
                                   sequence to be considered.
+   -methylation        boolean    [N] If this is set then RE recognition sites
+                                  will not match methylated bases.
    -[no]commercial     boolean    [Y] If this is set, then only those enzymes
                                   with a commercial supplier will be searched
                                   for. This qualifier is ignored if you have
@@ -221,6 +223,8 @@ Command line arguments
                                   them.
 
    Advanced (Unprompted) qualifiers:
+   -mfile              datafile   [Emethylsites.dat] Restriction enzyme data
+                                  file (optional)
    -[no]translation    boolean    [Y] This displays the 6-frame translations
                                   of the sequence in the output.
    -[no]reverse        boolean    [Y] This displays the cut sites and

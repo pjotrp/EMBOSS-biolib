@@ -178,6 +178,8 @@ Output file [j01636.remap]: <b></b>
                                   for restriction enzyme recognition site and
                                   cut postions that span the end of the
                                   sequence to be considered.
+   -methylation        boolean    [N] If this is set then RE recognition sites
+                                  will not match methylated bases.
    -[no]commercial     boolean    [Y] If this is set, then only those enzymes
                                   with a commercial supplier will be searched
                                   for. This qualifier is ignored if you have
@@ -244,6 +246,8 @@ Output file [j01636.remap]: <b></b>
                                   them.
 
    Advanced (Unprompted) qualifiers:
+   -mfile              datafile   [Emethylsites.dat] Restriction enzyme data
+                                  file (optional)
    -[no]translation    boolean    [Y] This displays the 6-frame translations
                                   of the sequence in the output.
    -[no]reverse        boolean    [Y] This displays the cut sites and
@@ -441,6 +445,13 @@ PpiI</td>
 </tr>
 
 <tr>
+<td>-methylation</td>
+<td>If this is set then RE recognition sites will not match methylated bases.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
 <td>-[no]commercial</td>
 <td>If this is set, then only those enzymes with a commercial supplier will be searched for. This qualifier is ignored if you have specified an explicit list of enzymes to search for, rather than searching through 'all' the enzymes in the REBASE database. It is assumed that, if you are asking for an explicit enzyme, then you probably know where to get it from and so all enzymes names that you have asked to be searched for, and which cut, will be reported whether or not they have a commercial supplier.</td>
 <td>Boolean value Yes/No</td>
@@ -486,6 +497,13 @@ PpiI</td>
 <th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-mfile</td>
+<td>Restriction enzyme data file (optional)</td>
+<td>Data file</td>
+<td>Emethylsites.dat</td>
 </tr>
 
 <tr>

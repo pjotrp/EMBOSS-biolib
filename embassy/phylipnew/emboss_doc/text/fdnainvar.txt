@@ -288,7 +288,7 @@ Output file format
   File: dnainvar.fdnainvar
 
 
-Nucleic acid sequence Invariants method, version 3.67
+Nucleic acid sequence Invariants method, version 3.68
 
  4 species,  13  sites
 

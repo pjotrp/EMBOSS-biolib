@@ -155,6 +155,8 @@ Output written to file "protpars.fprotpars"
 
 Trees also written onto file "protpars.treefile"
 
+Done.
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -209,6 +211,8 @@ Doing global rearrangements
 Output written to file "protpars.fprotpars"
 
 Trees also written onto file "protpars.treefile"
+
+Done.
 
 
    Go to the output files for this example
@@ -351,6 +355,8 @@ Output written to file "protpars2.fprotpars"
 
 Trees also written onto file "protpars2.treefile"
 
+Done.
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -421,6 +427,8 @@ Doing global rearrangements
 Output written to file "protpars.fprotpars"
 
 Trees also written onto file "protpars.treefile"
+
+Done.
 
 
    Go to the input files for this example
@@ -587,7 +595,7 @@ Output file format
   File: protpars.fprotpars
 
 
-Protein parsimony algorithm, version 3.67
+Protein parsimony algorithm, version 3.68
 
 
 
@@ -658,7 +666,7 @@ requires a total of     16.000
   File: protpars.fprotpars
 
 
-Protein parsimony algorithm, version 3.67
+Protein parsimony algorithm, version 3.68
 
  5 species,  10  sites
 
@@ -773,7 +781,7 @@ root     1                AN??EFGHIK
   File: protpars2.fprotpars
 
 
-Protein parsimony algorithm, version 3.67
+Protein parsimony algorithm, version 3.68
 
 
 Data set # 1:
@@ -908,7 +916,7 @@ requires a total of     24.000
   File: protpars.fprotpars
 
 
-Protein parsimony algorithm, version 3.67
+Protein parsimony algorithm, version 3.68
 
 
 

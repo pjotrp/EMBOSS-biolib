@@ -175,7 +175,7 @@ Output file format
   File: clique.fclique
 
 
-Largest clique program, version 3.67
+Largest clique program, version 3.68
 
 
 

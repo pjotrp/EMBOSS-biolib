@@ -136,19 +136,19 @@ Output file format
 # Dbname: EMBL
 # Release: 0.0
 # Date: 15/07/08
-# CurrentDirectory: /homes/user/test/qa/dbiflat-ex-keep/
+# CurrentDirectory: /data2/users/pmr/cvsemboss/test/qa/dbiflat-ex-keep/
 # IndexDirectory: ./
-# IndexDirectoryPath: /homes/user/test/qa/dbiflat-ex-keep/
+# IndexDirectoryPath: /data2/users/pmr/cvsemboss/test/qa/dbiflat-ex-keep/
 # Maxindex: 0
 # Fields: 2
 #   Field 1: id
 #   Field 2: acc
-# Directory: /homes/user/test/embl/
-# DirectoryPath: /homes/user/test/embl/
+# Directory: /data2/users/pmr/cvsemboss/test/embl/
+# DirectoryPath: /data2/users/pmr/cvsemboss/test/embl/
 # Filenames: rod.dat
 # Exclude:
 # Files: 1
-#   File 1: /homes/user/test/embl/rod.dat
+#   File 1: /data2/users/pmr/cvsemboss/test/embl/rod.dat
 ########################################
 # Commandline: dbiflat
 #    -dbname EMBL

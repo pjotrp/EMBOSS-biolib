@@ -480,7 +480,6 @@ See also
    pasteseq Insert one sequence into another
    revseq Reverse and complement a nucleotide sequence
    seqret Reads and writes (returns) sequences
-   seqretsetall Reads and writes (returns) a set of sequences all at once
    seqretsplit Reads sequences and writes them to individual files
    showfeat Display features of a sequence in pretty format
    sizeseq Sort sequences by size

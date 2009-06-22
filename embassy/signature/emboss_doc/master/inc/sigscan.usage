@@ -5,7 +5,7 @@
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>sigscan </b>
-Generate hits (DHF file) from a signature search.
+Generates hits (DHF file) from a signature search
 Domainatrix signature file: <b>../siggen-keep/54894.sig</b>
 Name of database to search.: <b>swsmall</b>
 Residue substitution matrix [EBLOSUM62]: <b></b>

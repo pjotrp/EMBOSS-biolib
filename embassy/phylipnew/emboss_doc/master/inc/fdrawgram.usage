@@ -9,7 +9,7 @@ Plots a cladogram- or phenogram-like rooted tree diagram
 Phylip tree file: <b>drawgram.tree</b>
 Phylip drawgram output file [drawgram.fdrawgram]: <b></b>
 
-DRAWGRAM from PHYLIP version 3.67
+DRAWGRAM from PHYLIP version 3.68
 Reading tree ... 
 Tree has been read.
 Loading the font .... 

@@ -351,7 +351,7 @@ Output file format
   File: mix.fmix
 
 
-Mixed parsimony algorithm, version 3.67
+Mixed parsimony algorithm, version 3.68
 
 Wagner parsimony method
 
@@ -448,7 +448,7 @@ requires a total of      9.000
   File: mix.fmix
 
 
-Mixed parsimony algorithm, version 3.67
+Mixed parsimony algorithm, version 3.68
 
 5 species, 6 characters
 

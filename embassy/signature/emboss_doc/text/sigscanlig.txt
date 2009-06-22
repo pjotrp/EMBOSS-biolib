@@ -22,7 +22,7 @@ CONTENTS
 
 1.0 SUMMARY
 
-   Search ligand-signature library & write hits (LHF file)
+   Searches ligand-signature library & writes hits (LHF file)
 
    Generates LHF files (ligand hits file) of hits from scanning sequences
    against a library of ligand-binding signatures.

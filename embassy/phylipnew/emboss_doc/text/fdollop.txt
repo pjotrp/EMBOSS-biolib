@@ -96,7 +96,7 @@ Phylip tree file (optional):
 Phylip dollop program output file [dollop.fdollop]: 
 
 
-Dollo and polymorphism parsimony algorithm, version 3.67
+Dollo and polymorphism parsimony algorithm, version 3.68
 
 Adding species:
    1. Alpha
@@ -343,7 +343,7 @@ Output file format
   File: dollop.fdollop
 
 
-Dollo and polymorphism parsimony algorithm, version 3.67
+Dollo and polymorphism parsimony algorithm, version 3.68
 
 Dollo parsimony method
 

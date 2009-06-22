@@ -266,11 +266,12 @@ XX
 
   File: sites.log
 
-CCF: /homes/user/test/qa/pdbplus-keep/1cs4.ccf HETS:YES NHETS:7 SCOP:YES NDOMS:
- 1
-CCF: /homes/user/test/qa/pdbplus-keep/1ii7.ccf HETS:YES NHETS:5 SCOP:YES NDOMS:
- 1
-CCF: /homes/user/test/qa/pdbplus-keep/2hhb.ccf HETS:YES NHETS:5 SCOP:NO NCHN:4
+CCF: /data2/users/pmr/cvsemboss/test/qa/pdbplus-keep/1cs4.ccf HETS:YES NHETS:7
+SCOP:YES NDOMS: 1
+CCF: /data2/users/pmr/cvsemboss/test/qa/pdbplus-keep/1ii7.ccf HETS:YES NHETS:5
+SCOP:YES NDOMS: 1
+CCF: /data2/users/pmr/cvsemboss/test/qa/pdbplus-keep/2hhb.ccf HETS:YES NHETS:5
+SCOP:NO NCHN:4
 
 5.0 DATA FILES
 

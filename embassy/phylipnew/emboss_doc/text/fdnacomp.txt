@@ -276,7 +276,7 @@ Output file format
   File: dnacomp.fdnacomp
 
 
-DNA compatibility algorithm, version 3.67
+DNA compatibility algorithm, version 3.68
 
  5 species,  13  sites
 
@@ -346,7 +346,7 @@ From    To     Any Steps?    State at upper node
   File: dnacomp.fdnacomp
 
 
-DNA compatibility algorithm, version 3.67
+DNA compatibility algorithm, version 3.68
 
 User-defined tree:
 

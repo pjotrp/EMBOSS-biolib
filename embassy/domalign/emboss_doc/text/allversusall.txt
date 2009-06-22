@@ -73,9 +73,9 @@ CONTENTS
   File: allversusall.log
 
 //
-/homes/user/test/data/structure/allversusall/swtiny1.fasta
+/data2/users/pmr/cvsemboss/test/data/structure/allversusall/swtiny1.fasta
 //
-/homes/user/test/data/structure/allversusall/swtiny2.fasta
+/data2/users/pmr/cvsemboss/test/data/structure/allversusall/swtiny2.fasta
 
 5.0 DATA FILES
 

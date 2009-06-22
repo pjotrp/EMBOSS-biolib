@@ -153,11 +153,6 @@
 </tr>
 
 <tr>
-<td><a href="seqretsetall.html">seqretsetall</a></td>
-<td>Reads and writes (returns) a set of sequences all at once</td>
-</tr>
-
-<tr>
 <td><a href="sizeseq.html">sizeseq</a></td>
 <td>Sort sequences by size</td>
 </tr>

@@ -5,7 +5,7 @@
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>siggen </b>
-Generates a sparse protein signature from an alignment.
+Generates a sparse protein signature from an alignment
 Domain alignment directories [./]: <b>../domainalign-keep/daf</b>
 Specify mode of signature generation
          1 : Use positions specified in alignment file

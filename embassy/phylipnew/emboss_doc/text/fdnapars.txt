@@ -287,7 +287,7 @@ Output file format
   File: dnapars.fdnapars
 
 
-DNA parsimony algorithm, version 3.67
+DNA parsimony algorithm, version 3.68
 
 
 One most parsimonious tree found:

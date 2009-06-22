@@ -8,6 +8,7 @@
 Distances between trees
 Phylip tree file: <b>treedist.dat</b>
 Phylip treedist program output file [treedist.ftreedist]: <b></b>
+read_groups 9a279c0
 
 
 Output written to file "treedist.ftreedist"
@@ -29,6 +30,7 @@ Done.
 Distances between trees
 Phylip tree file: <b>treedist2.dat</b>
 Phylip treedist program output file [treedist2.ftreedist]: <b></b>
+read_groups 83a19c0
 
 
 Output written to file "treedist2.ftreedist"

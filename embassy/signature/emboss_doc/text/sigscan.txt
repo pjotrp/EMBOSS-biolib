@@ -23,8 +23,8 @@ CONTENTS
 1.0 SUMMARY
 
    Generates a DHF (domain hits file) of hits (sequences) from scanning a
-   signature against a sequence database. Generate hits (DHF file) from a
-   signature search
+   signature against a sequence database. Generates hits (DHF file) from
+   a signature search
 
 2.0 INPUTS & OUTPUTS
 

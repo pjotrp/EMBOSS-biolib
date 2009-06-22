@@ -174,7 +174,6 @@ ces
 pasteseq         Insert one sequence into another
 revseq           Reverse and complement a nucleotide sequence
 seqret           Reads and writes (returns) sequences
-seqretsetall     Reads and writes (returns) a set of sequences all at once
 seqretsplit      Reads sequences and writes them to individual files
 sizeseq          Sort sequences by size
 skipredundant    Remove redundant sequences from an input set
@@ -476,9 +475,9 @@ seqsearch        Generate PSI-BLAST hits (DHF file) from a DAF file
 seqsort          Remove ambiguous classified sequences from DHF files
 seqwords         Generates DHF files from keyword search of UniProt
 siggen           Generates a sparse protein signature from an alignment
-siggenlig        Generate ligand-binding signatures from a CON file
-sigscan          Generate hits (DHF file) from a signature search
-sigscanlig       Search ligand-signature library & write hits (LHF file)
+siggenlig        Generates ligand-binding signatures from a CON file
+sigscan          Generates hits (DHF file) from a signature search
+sigscanlig       Searches ligand-signature library & writes hits (LHF file)
 
 PROTEIN COMPOSITION
 backtranambig    Back-translate a protein sequence to ambiguous nucleotide sequ
@@ -580,7 +579,7 @@ dbxgcg           Index a GCG formatted database using b+tree indices
 
 UTILS MISC
 embossdata       Find and retrieve EMBOSS data files
-embossversion    Writes the current EMBOSS version number to a file
+embossversion    Reports the current EMBOSS version number
 
 
    Example 3
@@ -691,7 +690,7 @@ ekitsch          Fitch-Margoliash method with contemporary tips
 elipop           Prediction of lipoproteins
 emast            Motif detection
 embossdata       Find and retrieve EMBOSS data files
-embossversion    Writes the current EMBOSS version number to a file
+embossversion    Reports the current EMBOSS version number
 ememe            Multiple EM for Motif Elicitation
 ememetext        Multiple EM for Motif Elicitation. Text file only
 emira            MIRA fragment assembly program
@@ -879,7 +878,6 @@ seqfraggle       Removes fragment sequences from DHF files
 seqmatchall      All-against-all word comparison of a sequence set
 seqnr            Removes redundancy from DHF files
 seqret           Reads and writes (returns) sequences
-seqretsetall     Reads and writes (returns) a set of sequences all at once
 seqretsplit      Reads sequences and writes them to individual files
 seqsearch        Generate PSI-BLAST hits (DHF file) from a DAF file
 seqsort          Remove ambiguous classified sequences from DHF files
@@ -893,9 +891,9 @@ showseq          Displays sequences with features in pretty format
 shuffleseq       Shuffles a set of sequences maintaining composition
 sigcleave        Reports on signal cleavage sites in a protein sequence
 siggen           Generates a sparse protein signature from an alignment
-siggenlig        Generate ligand-binding signatures from a CON file
-sigscan          Generate hits (DHF file) from a signature search
-sigscanlig       Search ligand-signature library & write hits (LHF file)
+siggenlig        Generates ligand-binding signatures from a CON file
+sigscan          Generates hits (DHF file) from a signature search
+sigscanlig       Searches ligand-signature library & writes hits (LHF file)
 silent           Find restriction sites to insert (mutate) with no translation
 change
 sirna            Finds siRNA duplexes in mRNA
@@ -1186,8 +1184,8 @@ Output file format
    bgcolor="#FFFFF0"> <tr><th>Program name</th> <th>Description</th></tr>
    <tr> <td><a href="embossdata.html">embossdata</a></td> <td>Find and
    retrieve EMBOSS data files</td> </tr> <tr> <td><a
-   href="embossversion.html">embossversion</a></td> <td>Writes the
-   current EMBOSS version number to a file</td> </tr> </table>
+   href="embossversion.html">embossversion</a></td> <td>Reports the
+   current EMBOSS version number</td> </tr> </table>
 
    If the -html, -prelink and -postlink qualifiers are specified, then
    the output will be wrapped in HTML tags, ready for inclusion in a Web

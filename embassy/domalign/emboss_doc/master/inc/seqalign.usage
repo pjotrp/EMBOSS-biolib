@@ -6355,11 +6355,11 @@ Sequence:63     Score:760
 Sequence:78     Score:1067
 Alignment Score 1435630
 CLUSTAL-Alignment file created  [./seqalign-1234567890.1234.out]
-Processing /homes/user/test/qa/domainalign-keep/daf/54894.daf
+Processing /data2/users/pmr/cvsemboss/test/qa/domainalign-keep/daf/54894.daf
 
 clustalw -type=protein -profile1=./seqalign-1234567890.1234.aln -sequences -profile2=./seqalign-1234567890.1234.seqs -MATRIX=BLOSUM -GAPOPEN=10 -GAPEXT=0.5 -outfile=./seqalign-1234567890.1234.out
 
-Processing /homes/user/test/qa/domainalign-keep/daf/55074.daf
+Processing /data2/users/pmr/cvsemboss/test/qa/domainalign-keep/daf/55074.daf
 
 clustalw -type=protein -profile1=./seqalign-1234567890.1234.aln -sequences -profile2=./seqalign-1234567890.1234.seqs -MATRIX=BLOSUM -GAPOPEN=10 -GAPEXT=0.5 -outfile=./seqalign-1234567890.1234.out
 

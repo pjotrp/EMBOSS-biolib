@@ -4,7 +4,7 @@
 <p><h3>File: globin.ohmmcalibrate</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-HMM file:                 globin.hmm
+HMM file:                 ./globin.hmm
 Length distribution mean: 350
 Length distribution s.d.: 350
 Number of samples:        5000
