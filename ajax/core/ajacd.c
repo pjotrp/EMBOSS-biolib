@@ -13452,8 +13452,9 @@ static void acdSetSeqset(AcdPAcd thys)
     if(!ok)
 	acdBadRetry(thys);
     
-    acdInFileSave(acdReply, ajSeqsetGetNameS(val),
-                  ajTrue);      /* save sequence name */
+    if(val)
+        acdInFileSave(acdReply, ajSeqsetGetNameS(val),
+                      ajTrue);      /* save sequence name */
     
     acdQualToBool(thys, "sask", ajFalse, &sprompt, &acdReplyDef);
     
@@ -13526,7 +13527,7 @@ static void acdSetSeqset(AcdPAcd thys)
 	acdSetQualDefInt(thys, "send", send);
     }
 
-    if(ajSeqsetGetSize(val) && ajSeqsetIsNuc(val))
+    if(val && ajSeqsetGetSize(val) && ajSeqsetIsNuc(val))
     {
 	for(itry=acdPromptTry; itry && !okrev; itry--)
 	{
@@ -13557,10 +13558,10 @@ static void acdSetSeqset(AcdPAcd thys)
     acdLog("sbegin: %d, send: %d, sreverse: %B\n",
 	   sbegin, send, sreverse);
     
-    if(aligned)
+    if(val && aligned)
 	ajSeqsetFill(val);
 
-    if(val->Rev)
+    if(val && val->Rev)
         ajSeqsetReverse(val);
     
     ajSeqinDel(&seqin);
@@ -13571,19 +13572,22 @@ static void acdSetSeqset(AcdPAcd thys)
     thys->SetAttr = &acdCalcSeqset[0];
     thys->SetStr = AJCALLOC0(thys->SAttr, sizeof(AjPStr));
     
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_BEGIN], ajSeqsetGetBegin(val));
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_END], ajSeqsetGetEnd(val));
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_LENGTH], ajSeqsetGetLen(val));
-    ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqsetIsProt(val));
-    ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC], ajSeqsetIsNuc(val));
-    ajStrAssignS(&thys->SetStr[ACD_SEQ_NAME], val->Name);
-    ajStrAssignS(&thys->SetStr[ACD_SEQ_USA], ajSeqsetGetUsa(val));
-    ajStrFromFloat(&thys->SetStr[ACD_SEQ_WEIGHT],
-		   ajSeqsetGetTotweight(val), 3);
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_COUNT], ajSeqsetGetSize(val));
+    if(val)
+    {
+        ajStrFromInt(&thys->SetStr[ACD_SEQ_BEGIN], ajSeqsetGetBegin(val));
+        ajStrFromInt(&thys->SetStr[ACD_SEQ_END], ajSeqsetGetEnd(val));
+        ajStrFromInt(&thys->SetStr[ACD_SEQ_LENGTH], ajSeqsetGetLen(val));
+        ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqsetIsProt(val));
+        ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC], ajSeqsetIsNuc(val));
+        ajStrAssignS(&thys->SetStr[ACD_SEQ_NAME], val->Name);
+        ajStrAssignS(&thys->SetStr[ACD_SEQ_USA], ajSeqsetGetUsa(val));
+        ajStrFromFloat(&thys->SetStr[ACD_SEQ_WEIGHT],
+                       ajSeqsetGetTotweight(val), 3);
+        ajStrFromInt(&thys->SetStr[ACD_SEQ_COUNT], ajSeqsetGetSize(val));
     
-    acdInFileSave(acdReply, ajSeqsetGetNameS(val), ajTrue);
-    
+        acdInFileSave(acdReply, ajSeqsetGetNameS(val), ajTrue);
+    }
+
     thys->Value = val;
     ajStrAssignS(&thys->ValStr, acdReply);
     
