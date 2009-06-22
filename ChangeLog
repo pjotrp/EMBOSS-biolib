@@ -1,4 +1,24 @@
 Version 6.1.0
+	FASTQ is now a valid sequence format and can be detected
+	automatically. "fastq" format ignores all quality scores as there
+	is no automatic and safe way to determine whether scores are for
+	Sanger/phred or Illumina/Solexa quality. To read the quality
+	socres we support formats "fastqsanger" and "fastqillumina". We
+	also support "fastqint" to read quality scores as integers. These
+	scores are assumed to be Sanger quality. For Illumina quality
+	scores out of range, a warning message is written once for each
+	sequence. Sanger scores do not have out of range values as they
+	allow the full set of quality characters, although high values
+	(over 40) should only appear for contig consensus seqeunces.
+
+	MEGA format has been rewritten to support the file format used by
+	MEGA 4. Title can be in mixed case. Format and Gene/domain command
+	lines are processed. Multiple gene/domain files are read by EMBOSS
+	as separate alignment sets by seqretsetall. This may change in a
+	future release as MEGA4 processes them as one alignment with
+	annotated gene regions. While EMBOSS has no annotation specific to
+	alignments this is a reasonable compromise.
+
 	embossdata will now always return directory listings alphabetically.
 
 	A new ACD function replaces an attribute value with an EMBOSS or

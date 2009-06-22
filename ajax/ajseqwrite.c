@@ -22,6 +22,7 @@
 ******************************************************************************/
 
 #include "ajax.h"
+#include <math.h>
 
 
 static AjPRegexp seqoutRegFmt = NULL;
@@ -173,6 +174,10 @@ static void       seqWriteEmbl(AjPSeqout outseq);
 static void       seqWriteEmblnew(AjPSeqout outseq);
 static void       seqWriteExperiment(AjPSeqout outseq);
 static void       seqWriteFasta(AjPSeqout outseq);
+static void       seqWriteFastqIllumina(AjPSeqout outseq);
+static void       seqWriteFastqInt(AjPSeqout outseq);
+static void       seqWriteFastqSanger(AjPSeqout outseq);
+static void       seqWriteFastqSolexa(AjPSeqout outseq);
 static void       seqWriteFitch(AjPSeqout outseq);
 static void       seqWriteGcg(AjPSeqout outseq);
 static void       seqWriteGenbank(AjPSeqout outseq);
@@ -402,6 +407,21 @@ static SeqOOutFormat seqOutFormat[] =
     {"das",        "DASSEQUENCE DAS any sequence",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteDasseq},
+    {"fastqsanger", "FASTQ short read format with phred quality",
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
+         AJFALSE, AJFALSE, AJFALSE, seqWriteFastqSanger},
+    {"fastq", "FASTQ short read format with phred quality",
+	 AJTRUE,  AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
+         AJFALSE, AJFALSE, AJFALSE, seqWriteFastqSanger},
+    {"fastqillumina", "FASTQ Illumina 1.3 short read format",
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
+         AJFALSE, AJFALSE, AJFALSE, seqWriteFastqIllumina},
+    {"fastqsolexa", "FASTQ Solexa/Illumina 1.0 short read format",
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
+         AJFALSE, AJFALSE, AJFALSE, seqWriteFastqSolexa},
+    {"fastqint", "FASTQ short read format with integer phred quality",
+         AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
+         AJFALSE, AJFALSE, AJFALSE, seqWriteFastqInt},
     {"debug",      "Debugging trace of full internal data content",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteDebug}, /* trace report */
@@ -1326,6 +1346,432 @@ static void seqWriteFasta(AjPSeqout outseq)
 
 
 
+/* @funcstatic seqWriteFastqSanger ********************************************
+**
+** Writes a sequence in FASTA format with phred scores
+**
+** @param [u] outseq [AjPSeqout] Sequence output object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void seqWriteFastqSanger(AjPSeqout outseq)
+{
+    ajuint i;
+    ajuint j;
+    ajuint ilen;
+    ajuint jlen;
+    AjPStr seq = NULL;
+    ajuint linelen     = 60;
+    ajuint iend;
+    AjPStr db = NULL;
+    char qchar;
+
+    ajStrAssignS(&db, outseq->Setoutdb);
+    /* ajStrAssignEmptyS(&db, outseq->Db);*/
+
+    ajDebug("seqWriteFastqSanger outseq Db '%S' Setdb '%S' Setoutdb '%S'"
+            "Name '%S'\n",
+	    outseq->Db, outseq->Setdb, outseq->Setoutdb, outseq->Name);
+
+    seqDbName(&outseq->Name, db);
+
+    ajFmtPrintF(outseq->File, "@%S", outseq->Name);
+
+    if(ajStrGetLen(outseq->Sv))
+	ajFmtPrintF(outseq->File, " %S", outseq->Sv);
+    else if(ajStrGetLen(outseq->Acc))
+	ajFmtPrintF(outseq->File, " %S", outseq->Acc);
+
+    /* no need to bother with outseq->Gi because we have Sv anyway */
+
+    if(ajStrGetLen(outseq->Desc))
+	ajFmtPrintF(outseq->File, " %S", outseq->Desc);
+
+    ajFmtPrintF(outseq->File, "\n");
+    ilen = ajStrGetLen(outseq->Seq);
+
+    for(i=0; i < ilen; i += linelen)
+    {
+	iend = AJMIN(ilen-1, i+linelen-1);
+	ajStrAssignSubS(&seq, outseq->Seq, i, iend);
+	ajFmtPrintF(outseq->File, "%S\n", seq);
+    }
+
+    ajFmtPrintF(outseq->File, "+%S", outseq->Name);
+
+    if(ajStrGetLen(outseq->Sv))
+	ajFmtPrintF(outseq->File, " %S", outseq->Sv);
+    else if(ajStrGetLen(outseq->Acc))
+	ajFmtPrintF(outseq->File, " %S", outseq->Acc);
+
+    ajFmtPrintF(outseq->File, "\n");
+
+    ilen = ajStrGetLen(outseq->Seq);
+
+    if(outseq->Accuracy)
+    {
+        for(i=0; i < ilen; i += linelen)
+        {
+            iend = AJMIN(ilen-1, i+linelen-1);
+            ajStrAssignClear(&seq);
+            for(j=i;j<=iend;j++)
+            {
+                qchar = 33 + (int) outseq->Accuracy[j];
+                ajStrAppendK(&seq, qchar);
+            }
+            ajFmtPrintF(outseq->File, "%S\n", seq);
+        }
+    }
+
+    else 
+    {
+        /*
+        ** default to a score of 1 (0.75 error : 1 base in 4 is right)
+        */
+
+        for(i=0; i < ilen; i += linelen)
+        {
+            iend = AJMIN(ilen-1, i+linelen-1);
+            jlen = (iend - i + 1);
+            ajStrAssignClear(&seq);
+            ajStrAppendCountK(&seq,'\"', jlen); 
+            ajFmtPrintF(outseq->File, "%S\n", seq);
+        }
+
+    }
+    
+    ajStrDel(&seq);
+    ajStrDel(&db);
+
+    return;
+}
+
+
+
+
+/* @funcstatic seqWriteFastqIllumina *******************************************
+**
+** Writes a sequence in FASTA format with Illumina scores
+**
+** @param [u] outseq [AjPSeqout] Sequence output object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void seqWriteFastqIllumina(AjPSeqout outseq)
+{
+    ajuint i;
+    ajuint j;
+    ajuint ilen;
+    ajuint jlen;
+    AjPStr seq = NULL;
+    ajuint linelen     = 60;
+    ajuint iend;
+    AjPStr db = NULL;
+    char qchar;
+
+    ajStrAssignS(&db, outseq->Setoutdb);
+    /* ajStrAssignEmptyS(&db, outseq->Db);*/
+
+    ajDebug("seqWriteFastqIllumina outseq Db '%S' Setdb '%S' Setoutdb '%S' "
+            "Name '%S'\n",
+	    outseq->Db, outseq->Setdb, outseq->Setoutdb, outseq->Name);
+
+    seqDbName(&outseq->Name, db);
+
+    ajFmtPrintF(outseq->File, "@%S", outseq->Name);
+
+    if(ajStrGetLen(outseq->Sv))
+	ajFmtPrintF(outseq->File, " %S", outseq->Sv);
+    else if(ajStrGetLen(outseq->Acc))
+	ajFmtPrintF(outseq->File, " %S", outseq->Acc);
+
+    /* no need to bother with outseq->Gi because we have Sv anyway */
+
+    if(ajStrGetLen(outseq->Desc))
+	ajFmtPrintF(outseq->File, " %S", outseq->Desc);
+
+    ajFmtPrintF(outseq->File, "\n");
+    ilen = ajStrGetLen(outseq->Seq);
+
+    for(i=0; i < ilen; i += linelen)
+    {
+	iend = AJMIN(ilen-1, i+linelen-1);
+	ajStrAssignSubS(&seq, outseq->Seq, i, iend);
+	ajFmtPrintF(outseq->File, "%S\n", seq);
+    }
+
+    ajFmtPrintF(outseq->File, "+%S", outseq->Name);
+
+    if(ajStrGetLen(outseq->Sv))
+	ajFmtPrintF(outseq->File, " %S", outseq->Sv);
+    else if(ajStrGetLen(outseq->Acc))
+	ajFmtPrintF(outseq->File, " %S", outseq->Acc);
+
+    ajFmtPrintF(outseq->File, "\n");
+
+    ilen = ajStrGetLen(outseq->Seq);
+
+    if(outseq->Accuracy)
+    {
+        for(i=0; i < ilen; i += linelen)
+        {
+            iend = AJMIN(ilen-1, i+linelen-1);
+            ajStrAssignClear(&seq);
+            for(j=i;j<=iend;j++)
+            {
+                qchar = 64 + (int) outseq->Accuracy[j];
+                ajStrAppendK(&seq, qchar);
+            }
+            ajFmtPrintF(outseq->File, "%S\n", seq);
+        }
+    }
+
+    else 
+    {
+        /*
+        ** default to a score of 1 (0.75 error : 1 base in 4 is right)
+        */
+
+        for(i=0; i < ilen; i += linelen)
+        {
+            iend = AJMIN(ilen-1, i+linelen-1);
+            jlen = (iend - i + 1);
+            ajStrAssignClear(&seq);
+            ajStrAppendCountK(&seq,'A', jlen);
+            ajFmtPrintF(outseq->File, "%S\n", seq);
+        }
+
+    }
+    
+    ajStrDel(&seq);
+    ajStrDel(&db);
+
+    return;
+}
+
+
+
+
+/* @funcstatic seqWriteFastqSolexa *******************************************
+**
+** Writes a sequence in FASTA format with Solexa/Illumina scores
+**
+** @param [u] outseq [AjPSeqout] Sequence output object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void seqWriteFastqSolexa(AjPSeqout outseq)
+{
+    ajuint i;
+    ajuint j;
+    ajuint ilen;
+    ajuint jlen;
+    AjPStr seq = NULL;
+    ajuint linelen     = 60;
+    ajuint iend;
+    AjPStr db = NULL;
+    char qchar;
+    double sval;
+    double pval;
+    double qval;
+
+    ajStrAssignS(&db, outseq->Setoutdb);
+    /* ajStrAssignEmptyS(&db, outseq->Db);*/
+
+    ajDebug("seqWriteFastqSolexa outseq Db '%S' Setdb '%S' Setoutdb '%S' "
+            "Name '%S'\n",
+	    outseq->Db, outseq->Setdb, outseq->Setoutdb, outseq->Name);
+
+    seqDbName(&outseq->Name, db);
+
+    ajFmtPrintF(outseq->File, "@%S", outseq->Name);
+
+    if(ajStrGetLen(outseq->Sv))
+	ajFmtPrintF(outseq->File, " %S", outseq->Sv);
+    else if(ajStrGetLen(outseq->Acc))
+	ajFmtPrintF(outseq->File, " %S", outseq->Acc);
+
+    /* no need to bother with outseq->Gi because we have Sv anyway */
+
+    if(ajStrGetLen(outseq->Desc))
+	ajFmtPrintF(outseq->File, " %S", outseq->Desc);
+
+    ajFmtPrintF(outseq->File, "\n");
+    ilen = ajStrGetLen(outseq->Seq);
+
+    for(i=0; i < ilen; i += linelen)
+    {
+	iend = AJMIN(ilen-1, i+linelen-1);
+	ajStrAssignSubS(&seq, outseq->Seq, i, iend);
+	ajFmtPrintF(outseq->File, "%S\n", seq);
+    }
+
+    ajFmtPrintF(outseq->File, "+%S", outseq->Name);
+
+    if(ajStrGetLen(outseq->Sv))
+	ajFmtPrintF(outseq->File, " %S", outseq->Sv);
+    else if(ajStrGetLen(outseq->Acc))
+	ajFmtPrintF(outseq->File, " %S", outseq->Acc);
+
+    ajFmtPrintF(outseq->File, "\n");
+
+    ilen = ajStrGetLen(outseq->Seq);
+
+    if(outseq->Accuracy)
+    {
+        for(i=0; i < ilen; i += linelen)
+        {
+            iend = AJMIN(ilen-1, i+linelen-1);
+            ajStrAssignClear(&seq);
+            for(j=i;j<=iend;j++)
+            {
+                sval = outseq->Accuracy[j];
+                pval = 1.0 / pow(10.0, (sval/10.0));
+                qval = -10.0 * log10(pval/(1.0 - pval));
+                qchar = 64 + (int) qval;
+                ajStrAppendK(&seq, qchar);
+            }
+            ajFmtPrintF(outseq->File, "%S\n", seq);
+        }
+    }
+
+    else 
+    {
+        /*
+        ** default to a score of -5 (0.75 error : 1 base in 4 is right)
+        */
+
+        for(i=0; i < ilen; i += linelen)
+        {
+            iend = AJMIN(ilen-1, i+linelen-1);
+            jlen = (iend - i + 1);
+            ajStrAssignClear(&seq);
+            ajStrAppendCountK(&seq,';', jlen); 
+            ajFmtPrintF(outseq->File, "%S\n", seq);
+        }
+
+    }
+    
+    ajStrDel(&seq);
+    ajStrDel(&db);
+
+    return;
+}
+
+
+
+
+/* @funcstatic seqWriteFastqInt ***********************************************
+**
+** Writes a sequence in FASTA format with Solexa integer scores
+**
+** @param [u] outseq [AjPSeqout] Sequence output object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void seqWriteFastqInt(AjPSeqout outseq)
+{
+    ajuint i;
+    ajuint j;
+    ajuint ilen;
+    ajuint jlen;
+    AjPStr seq = NULL;
+    ajuint linelen     = 60;
+    ajuint numcount = 20;
+    ajuint iend;
+    AjPStr db = NULL;
+    double sval;
+    double pval;
+    double qval;
+
+    ajStrAssignS(&db, outseq->Setoutdb);
+    /* ajStrAssignEmptyS(&db, outseq->Db);*/
+
+    ajDebug("seqWriteFastqInt outseq Db '%S' Setdb '%S' Setoutdb '%S' "
+            "Name '%S'\n",
+	    outseq->Db, outseq->Setdb, outseq->Setoutdb, outseq->Name);
+
+    seqDbName(&outseq->Name, db);
+
+    ajFmtPrintF(outseq->File, "@%S", outseq->Name);
+
+    if(ajStrGetLen(outseq->Sv))
+	ajFmtPrintF(outseq->File, " %S", outseq->Sv);
+    else if(ajStrGetLen(outseq->Acc))
+	ajFmtPrintF(outseq->File, " %S", outseq->Acc);
+
+    /* no need to bother with outseq->Gi because we have Sv anyway */
+
+    if(ajStrGetLen(outseq->Desc))
+	ajFmtPrintF(outseq->File, " %S", outseq->Desc);
+
+    ajFmtPrintF(outseq->File, "\n");
+    ilen = ajStrGetLen(outseq->Seq);
+
+    for(i=0; i < ilen; i += linelen)
+    {
+	iend = AJMIN(ilen-1, i+linelen-1);
+	ajStrAssignSubS(&seq, outseq->Seq, i, iend);
+	ajFmtPrintF(outseq->File, "%S\n", seq);
+    }
+
+    ajFmtPrintF(outseq->File, "+%S", outseq->Name);
+
+    if(ajStrGetLen(outseq->Sv))
+	ajFmtPrintF(outseq->File, " %S", outseq->Sv);
+    else if(ajStrGetLen(outseq->Acc))
+	ajFmtPrintF(outseq->File, " %S", outseq->Acc);
+
+    ajFmtPrintF(outseq->File, "\n");
+
+    ilen = ajStrGetLen(outseq->Seq);
+
+    if(outseq->Accuracy)
+    {
+        for(i=0; i < ilen; i += numcount)
+        {
+            iend = AJMIN(ilen-1, i+numcount-1);
+            ajStrAssignClear(&seq);
+            for(j=i;j<=iend;j++)
+            {
+                sval = outseq->Accuracy[j];
+                pval = 1.0 / pow(10.0, (sval/10.0));
+                qval = -10.0 * log10(pval/(1.0 - pval));
+                if(j==i)
+                    ajFmtPrintAppS(&seq, "%2d", (ajint) qval);
+                else
+                    ajFmtPrintAppS(&seq, " %2d", (ajint) qval);
+            }
+            ajFmtPrintF(outseq->File, "%S\n", seq);
+        }
+    }
+
+    else 
+    {
+        for(i=0; i < ilen; i += linelen)
+        {
+            iend = AJMIN(ilen-1, i+linelen-1);
+            jlen = (iend - i + 1);
+            ajStrAssignClear(&seq);
+            ajStrAppendC(&seq," 0"); 
+            ajFmtPrintF(outseq->File, "%S\n", seq);
+        }
+
+    }
+    
+    ajStrDel(&seq);
+    ajStrDel(&db);
+
+    return;
+}
+
+
+
+
 /* @funcstatic seqNcbiKnowndb *************************************************
 **
 ** Tests whether a database name is valid for use in NCBI ids.
@@ -1863,8 +2309,15 @@ static void seqWriteMega(AjPSeqout outseq)
       else
         ajFmtPrintF(outseq->File,
                     "    DataType=Nucleotide DataFormat=Interleaved\n");
+
+      /*
+      ** this is sensible for one set of sequences,
+      ** but multiple sequence sets cause problems when it appears on later sets
+      */
+    
       /*ajFmtPrintF(outseq->File,
 	"    NSeqs=%u NSites=%u\n", isize, ilen);*/
+
       ajFmtPrintF(outseq->File,
 		  "    Identical=. Indel=- Missing=?\n");
       if(!ajSeqIsProt(seqfirst))
@@ -1913,6 +2366,7 @@ static void seqWriteMega(AjPSeqout outseq)
     ajFmtPrintF(outseq->File,
                 "\n");
 
+    ajStrDel(&genestr);
     ajStrDel(&sseq);
     ajStrDel(&sseqfirst);
     AJFREE(seqs);
@@ -3318,7 +3772,7 @@ static void seqWriteExperiment(AjPSeqout outseq)
 		jend = ilen;
 
 	    for(j=i;j<jend;j++)
-		ajFmtPrintF(outseq->File, " %2d", outseq->Accuracy[j]);
+		ajFmtPrintF(outseq->File, " %2d", (ajint) outseq->Accuracy[j]);
 
 	    ajFmtPrintF(outseq->File, "\n");
 	}
@@ -6097,7 +6551,7 @@ static void seqWriteDebug(AjPSeqout outseq)
 		jend = ilen;
 
 	    for(j=i;j<jend;j++)
-		ajFmtPrintF(outseq->File, " %2d", outseq->Accuracy[j]);
+		ajFmtPrintF(outseq->File, " %2d", (ajint) outseq->Accuracy[j]);
 
 	    ajFmtPrintF(outseq->File, "\n");
 	}
@@ -7590,15 +8044,18 @@ static void seqClone(AjPSeqout outseq, const AjPSeq seq)
 
     ajSeqdescDel(&outseq->Fulldesc);
     outseq->Fulldesc = ajSeqdescNewDesc(seq->Fulldesc);
-    AJFREE(outseq->Accuracy);
 
     if(seq->Accuracy)
     {
 	ilen = ajStrGetLen(seq->Seq);
-	AJCNEW(outseq->Accuracy, ilen);
+	AJCRESIZE(outseq->Accuracy, ilen);
 
 	for(i=0;i<ilen;i++)
 	    outseq->Accuracy[i] = seq->Accuracy[i];
+    }
+    else
+    {
+        AJFREE(outseq->Accuracy);
     }
 
     outseq->Offset = ibegin - 1;
