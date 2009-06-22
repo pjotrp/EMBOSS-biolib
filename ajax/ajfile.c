@@ -7051,8 +7051,13 @@ void ajDirnamePrintRecursiveIgnore(const AjPStr path,
 #endif
     AjPStr s = NULL;
     AjPStr t = NULL;
+
+    AjPStr tstr = NULL;
+    
     AjBool flag;
     AjPStr tpath = NULL;
+    AjPList plist = NULL;
+    
 #ifdef _POSIX_C_SOURCE
     char buf[sizeof(struct dirent)+MAXNAMLEN];
 #endif
@@ -7079,6 +7084,7 @@ void ajDirnamePrintRecursiveIgnore(const AjPStr path,
     
     s = ajStrNew();
     dirs = ajListNew();
+    plist = ajListNew();
     
 #if defined(AJ_IRIXLF)
 #ifdef _POSIX_C_SOURCE
@@ -7149,11 +7155,24 @@ void ajDirnamePrintRecursiveIgnore(const AjPStr path,
 	}
 	else if(ajFilenameExistsRead(s))
 	{
-	  ajFmtPrintF(outfile,"  %s\n",dp->d_name);
+            tstr = ajStrNew();
+            ajStrAssignC(&tstr,dp->d_name);
+            ajListPush(plist, (void *)tstr);
+            
+
 	}
     }
 
     closedir(indir);
+
+    ajListSort(plist,ajStrVcmp);
+    while(ajListPop(plist,(void **)&tstr))
+    {
+        ajFmtPrintF(outfile,"  %S\n",tstr);
+        ajStrDel(&tstr);
+    }
+
+    ajListFree(&plist);
     
     while(ajListPop(dirs,(void **)&t))
       {
