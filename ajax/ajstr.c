@@ -4308,6 +4308,7 @@ __deprecated AjBool  ajStrReplace( AjPStr* pthis, ajint begin,
 ** @nam3rule  Keep             Keep part of a string.
 ** @nam4rule  KeepRange        Keep range of character positions.
 ** @nam4rule  KeepSet          Keep only characters in a set.
+** @nam5rule  KeepSetAscii     Keep a range of ASCII characters.
 ** @nam5rule  KeepSetAlpha     Also remove non-alphabetic.
 ** @nam6rule  KeepSetAlphaRest  Also remove non-alphabetic and report non-space
 ** @nam3rule  Quote            Editing quotes in qtrings
@@ -4353,6 +4354,8 @@ __deprecated AjBool  ajStrReplace( AjPStr* pthis, ajint begin,
 ** @argrule   Range    pos2  [ajint]  End position in string, negative
 **                                    numbers count from end
 ** @argrule   Rest     Prest [AjPStr*] Excluded characters
+** @argrule   Ascii    minchar  [int] Lowest ASCII code to keep
+** @argrule   Ascii    maxchar  [int] Highest ASCII code to keep
 **
 ** @valrule   * [AjBool]
 **
@@ -5108,6 +5111,54 @@ AjBool ajStrKeepSetAlphaRestC(AjPStr* Pstr, const char* txt, AjPStr* Prest)
 AjBool ajStrKeepSetAlphaRestS(AjPStr* Pstr, const AjPStr str, AjPStr* Prest)
 {
     return ajStrKeepSetAlphaRestC(Pstr, str->Ptr, Prest);
+}
+
+
+
+
+/* @func ajStrKeepSetAscii ****************************************************
+**
+** Removes all characters from a string that are not within a range of
+** ASCII character codes.
+**
+** @param [u] Pstr [AjPStr *] String to clean.
+** @param [r] minchar [int] Lowest ASCII code to keep
+** @param [r] maxchar [int] Highest ASCII code to keep
+** @return [AjBool] ajTrue if string is not empty
+** @@
+******************************************************************************/
+
+AjBool ajStrKeepSetAscii(AjPStr* Pstr, int minchar, int maxchar)
+{
+    AjPStr thys;
+    char *p;
+    char *q;
+
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
+
+    thys = *Pstr;
+
+    p = thys->Ptr;
+    q = thys->Ptr;
+
+    while(*p)
+    {
+	if((*p >= minchar) && (*p <= maxchar))
+	    *q++=*p;
+
+	p++;
+    }
+
+    *q='\0';
+    thys->Len = q - thys->Ptr;
+
+    if(!thys->Len)
+        return ajFalse;
+
+    return ajTrue;
 }
 
 
@@ -7655,6 +7706,10 @@ AjBool ajStrWhole(const AjPStr str, ajint pos1, ajint pos2)
 ** @fnote      Each ajXxxGet function should be provided as a macro.
 **
 ** @nam3rule   Get         Retrieve an unmodified element of a string object. 
+** @nam4rule   GetAscii    Retrieve ASCII character code
+** @nam5rule   GetAsciiLow Retrieve lowest ASCII character code
+** @nam5rule   GetAsciiHigh  Retrieve highest ASCII character code
+** @nam5rule   GetAsciiCommon  Retrieve most common ASCII character code
 ** @nam4rule   GetChar     Retrieve first single character
 ** @nam5rule   GetCharFirst     Retrieve first single character
 ** @nam5rule   GetCharLast     Retrieve last single character
@@ -7679,9 +7734,125 @@ AjBool ajStrWhole(const AjPStr str, ajint pos1, ajint pos2)
 ** @valrule GetRoom [ajuint] Remaining space to extend string
 **                           without reallocating
 ** @valrule GetValid [AjBool] True if string is valid
+** @valrule GetAscii [char] ASCII character
 **
 ** @fcategory use
 */
+
+/* @func ajStrGetAsciiCommon ***************************************************
+**
+** Returns the most common ASCII character code in a string.
+**
+** @param [r] str [const AjPStr] String
+** @return [char] Most common character or null character if empty.
+** @@
+******************************************************************************/
+
+char ajStrGetAsciiCommon(const AjPStr str)
+{
+    const char *cp;
+
+    ajuint totals[256];
+    ajuint maxtot = 0;
+    char maxcode = 0;
+    int icode;
+    ajuint i;
+
+    if(!str)
+        return '\0';
+    if(!str->Len)
+        return '\0';
+
+    for(i=0;i<256;i++)
+        totals[i] = 0;
+
+    cp = str->Ptr;
+
+    while (*cp)
+    {
+        icode = (int) *cp;
+        totals[icode]++;
+        if(totals[icode] > maxtot)
+        {
+            maxtot = totals[icode];
+            maxcode = (char) icode;
+        }
+        cp++;
+    }
+
+    return maxcode;
+}
+
+
+
+
+/* @func ajStrGetAsciiHigh ****************************************************
+**
+** Returns the highest ASCII character code in a string.
+**
+** @param [r] str [const AjPStr] String
+** @return [char] Highest character or null character if empty.
+** @@
+******************************************************************************/
+
+char ajStrGetAsciiHigh(const AjPStr str)
+{
+    char ret = CHAR_MIN;
+    const char *cp;
+
+    if(!str)
+        return '\0';
+    if(!str->Len)
+        return '\0';
+
+    cp = str->Ptr;
+
+    while (*cp)
+    {
+        if(*cp > ret)
+            ret = *cp;
+        cp++;
+    }
+
+    return ret;
+}
+
+
+
+
+/* @func ajStrGetAsciiLow *****************************************************
+**
+** Returns the lowest ASCII character code in a string.
+**
+** @param [r] str [const AjPStr] String
+** @return [char] Lowest character or null character if empty.
+** @@
+******************************************************************************/
+
+char ajStrGetAsciiLow(const AjPStr str)
+{
+    char ret = CHAR_MAX;
+    const char *cp;
+
+    if(!str)
+        return '\0';
+    if(!str->Len)
+        return '\0';
+
+    cp = str->Ptr;
+
+    while (*cp)
+    {
+        if(*cp < ret)
+            ret = *cp;
+        cp++;
+    }
+
+    return ret;
+}
+
+
+
 
 /* @func ajStrGetCharFirst ****************************************************
 **

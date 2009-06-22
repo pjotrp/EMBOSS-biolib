@@ -280,6 +280,7 @@ AjBool     ajStrKeepSetAlphaRestC(AjPStr* Pstr, const char* txt,
 				  AjPStr* Prest);
 AjBool     ajStrKeepSetAlphaRestS(AjPStr* Pstr, const AjPStr str,
 				  AjPStr* Prest);
+AjBool     ajStrKeepSetAscii(AjPStr* Pstr, int minchar, int maxchar);
 AjBool     ajStrQuoteStrip(AjPStr *Pstr);
 AjBool     ajStrQuoteStripAll(AjPStr *Pstr);
 AjBool     ajStrRemoveGap(AjPStr* thys);
@@ -348,6 +349,9 @@ AjBool     ajStrWhole (const AjPStr str, ajint pos1, ajint pos2);
 
 /* element retrieval */
 
+char       ajStrGetAsciiCommon(const AjPStr str);
+char       ajStrGetAsciiHigh(const AjPStr str);
+char       ajStrGetAsciiLow(const AjPStr str);
 char       ajStrGetCharFirst(const AjPStr str);
 char       ajStrGetCharLast(const AjPStr str);
 char       ajStrGetCharPos(const AjPStr str, ajint pos);
