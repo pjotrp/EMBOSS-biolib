@@ -49,6 +49,7 @@ static struct binding ** tableFreeSet = NULL;
 
 static void tableStrDel(void** key, void** value, void* cl);
 static void tableStrDelKey(void** key, void** value, void* cl);
+static void tableFreeSetExpand (void);
 
 
 /* @filesection ajtable ********************************************************
@@ -821,7 +822,7 @@ void ajTableMapDel(AjPTable table,
 {
     ajuint i;
     ajuint stamp;
-    struct binding *p;
+    struct binding *p, *q;
 
     if(!table)
 	return;
@@ -830,11 +831,19 @@ void ajTableMapDel(AjPTable table,
 
     for(i = 0; i < table->size; i++)
     {
-	for(p = table->buckets[i]; p; p = p->link)
+	for(p = table->buckets[i]; p; p = q)
 	{
+            q = p->link;
+
 	    apply(&p->key, &p->value, cl);
 	    assert(table->timestamp == stamp);
             table->length--;
+            if(tableFreeNext >= tableFreeMax)
+                tableFreeSetExpand();
+            if(tableFreeNext >= tableFreeMax)
+                AJFREE(p);
+            else
+                tableFreeSet[tableFreeNext++] = p;
 	}
         table->buckets[i] = NULL;
     }
@@ -918,7 +927,8 @@ void ajTableFree(AjPTable* Ptable)
 	struct binding *p, *q;
 
 	for(i = 0; i < (*Ptable)->size; i++)
-	    for(p = (*Ptable)->buckets[i]; p; p = q)
+	{
+            for(p = (*Ptable)->buckets[i]; p; p = q)
 	    {
 		q = p->link;
 
@@ -929,6 +939,8 @@ void ajTableFree(AjPTable* Ptable)
                 else
                     tableFreeSet[tableFreeNext++] = p;
             }
+            (*Ptable)->buckets[i] = NULL;
+        }
     }
 
     AJFREE(*Ptable);
