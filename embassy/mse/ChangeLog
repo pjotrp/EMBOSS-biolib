@@ -1,3 +1,13 @@
+6.1.0
+	Allow missing input sequence set to allow editing from scratch
+
+	Add new qualifier -gcgmode to enable alternative keystrokes
+	(e.g. ctrl-D for the command line) used by the Unix version of the
+	GCG seqed editor.
+
+	Redraw entire screen after display of help pages, or when using
+	the redraw command or shortcut keys (ctrl-R or ctrl-W)
+
 4.0.0
 	Fixed compiler warnings in 3 string manipulation functions that
 	relpace single characters (T/U for DNA and RNA or general

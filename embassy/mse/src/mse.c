@@ -178,6 +178,9 @@ AjPSeqout outseq;
 
 	outseq = ajAcdGetSeqoutset("outseq");
 
+	GcgMode = ajAcdGetBoolean("gcgmode");
+	DefProtein = ajAcdGetBoolean("protein");
+
         envptr = env;
 
 	(void) Initscr();
@@ -193,7 +196,9 @@ AjPSeqout outseq;
 	if ( argc > 1 )
 	  strcpy(&OneLine[0],argv[1]);
 
-	LoadSeqWithseqset(seqset);
+	if(seqset)
+            LoadSeqWithseqset(seqset);
+
 /*
 ** Display one line help message then enter the "Screen" until "CTRL-Z" or
 ** "DO" are pressed then get the command from the user and use an "IF-THEN-
@@ -349,6 +354,7 @@ void DoScreen()
 char OneLine[132];
 int i;
 unsigned int Keystroke;
+unsigned int OldKey;
 static int Gold=0;
 static int Dir=ADVANCE;
 static int Rep=1;
@@ -382,26 +388,38 @@ static char LastChar=EOS;
 /* Move the cursor with the arrow keys */
 
 Parse:
-
+          if(GcgMode) 
+          {
+              OldKey = Keystroke;
+              if(Keystroke == CNTRLD)
+                  Keystroke = CNTRLZ;
+              if(OldKey != Keystroke)
+                  ajDebug("Keymap: GcgMode %02x => %02x\n", OldKey, Keystroke);
+          }
+          
 	  ajDebug("Keystroke: %02x\n", Keystroke);
 	  switch ( Keystroke ) {
 
 	    case EOF:
+              ajDebug("Keymap: %02x EOF\n", Keystroke);
 	      CleanUp();		/* never returns */
 	      break;
 	    case KEY_RIGHT:
+              ajDebug("Keymap: %02x KEY_RIGHT\n", Keystroke);
 	      LinePos += Rep;
 	      ReDoBar[Strand] = 1;
 	      Rep = 1;
 	      break;
 
 	    case KEY_LEFT:
+              ajDebug("Keymap: %02x KEY_LEFT\n", Keystroke);
 	      LinePos -= Rep;
 	      ReDoBar[Strand] = 1;
 	      Rep = 1;
 	      break;
 
             case KEY_UP:
+              ajDebug("Keymap: %02x KEY_UP\n", Keystroke);
 	      ReDoBar[Strand]=1;
 	      Strand = LIMIT(1,Strand+Rep,NOS);
 	      ReDoBar[Strand]=1;
@@ -409,6 +427,7 @@ Parse:
 	      break;
 
 	    case KEY_DOWN:
+              ajDebug("Keymap: %02x KEY_DOWN\n", Keystroke);
 	      ReDoBar[Strand]=1;
 	      Strand = LIMIT(1,Strand-Rep,NOS);
 	      ReDoBar[Strand]=1;
@@ -416,11 +435,13 @@ Parse:
 	      break;
 
 	  case  KEY_F(17):
+              ajDebug("Keymap: %02x KEY_F17\n", Keystroke);
 	      DoAnchor(Strand, LIMIT(1,Strand+(Rep-1),NOS));
 	      Rep = 1;
 	      break;
 
 	    case KEY_F(18):
+              ajDebug("Keymap: %02x KEY_F18\n", Keystroke);
 	      DoNoAnchor(Strand, LIMIT(1,Strand+(Rep-1),NOS));
 	      Rep = 1;
 	      break;
@@ -428,13 +449,16 @@ Parse:
 /* ... or move this strand to the left or right
 */
             case ' ':	/*  */
+              ajDebug("Keymap: %02x SPACE\n", Keystroke);
 	      DoOffset(Seq[Strand].Offset+Rep);
 	      LinePos += Rep;
 	      Rep = 1;
 	      break;
 
             case KEY_F(12):
+     	    case BACKSPACE:
      	    case KEY_BACKSPACE:
+              ajDebug("Keymap: %02x KEY_F12,KEY_BACKSPACE,BACKSPACE\n", Keystroke);
 	      DoOffset(Seq[Strand].Offset-Rep);
 	      LinePos -= Rep;
 	      Rep = 1;
@@ -445,6 +469,7 @@ Parse:
 */
             case KEY_FIND:
      	    case '/':
+              ajDebug("Keymap: %02x KEY_FIND,/\n", Keystroke);
               ShowText("Target Pattern: ");
               getstr(OneLine);
               if ( StrIsBlank(StrCollapse(OneLine)) )
@@ -459,6 +484,7 @@ Parse:
 ** ... or start the Selecting of a region
 */
             case KEY_SELECT:
+              ajDebug("Keymap: %02x KEY_SELECT\n", Keystroke);
 	      if ( OkToEdit[Strand] &&
 	         LinePos>Seq[Strand].Offset &&
 	         LinePos<=(Seq[Strand].Offset+Seq[Strand].Length)  ) {
@@ -473,6 +499,7 @@ Parse:
 */
 
            case KEY_DC:
+             ajDebug("Keymap: %02x KEY_DC\n", Keystroke);
 	     if ( OkToEdit[Strand] &&
 	           LinePos>Seq[Strand].Offset &&
 	           LinePos<=(Seq[Strand].Offset+Seq[Strand].Length+1)  ) {
@@ -487,6 +514,7 @@ Parse:
 */
 
             case KEY_IC:
+              ajDebug("Keymap: %02x KEY_IC\n", Keystroke);
 	      for ( i=1; i<=Rep; i++)
                 DoInsert( LinePos - Seq[Strand].Offset );
 	      Rep = 1;
@@ -497,7 +525,9 @@ Parse:
 ** ... or go to an absolute position with nnn<rtn>
 */
 
-            case KEY_ENTER:
+              case CARRET:
+              case KEY_ENTER:
+              ajDebug("Keymap: %02x KEY_ENTER\n", Keystroke);
               if ( isdigit((int)LastChar) ) LinePos = Seq[Strand].Offset + Rep;
 	      Rep = 1;
 	      break;
@@ -507,6 +537,7 @@ Parse:
 */
 	    case '*':
 	    case CNTRLE:
+              ajDebug("Keymap: %02x CNTLE,*\n", Keystroke);
 	      LinePos = Seq[Strand].Offset + Seq[Strand].Length + 1;
 	      Rep = 1;
 	      break;
@@ -517,6 +548,7 @@ Parse:
 
             case KEY_NPAGE:
 	    case '>':
+              ajDebug("Keymap: %02x KEY_NPAGE,>\n", Keystroke);
 	      LinePos += Rep*__Cols;
 	      ReDoBar[Strand] = 1;
 	      Rep = 1;
@@ -524,6 +556,7 @@ Parse:
 
             case KEY_PPAGE:
 	    case '<':
+              ajDebug("Keymap: %02x KEY_PPAGE,<\n", Keystroke);
 	      LinePos -= Rep*__Cols;
 	      ReDoBar[Strand] = 1;
 	      Rep = 1;
@@ -533,6 +566,7 @@ Parse:
 */
 
 	  case 'H' /*SMG$K_TRM_PF1*/:
+              ajDebug("Keymap: %02x [KEY_PF1],H\n", Keystroke);
 	      Keystroke = getch();
 	      Gold = 1;
 	      goto Parse;
@@ -544,6 +578,7 @@ Parse:
             case KEY_F(1) /*SMG$K_TRM_HELP*/:
 	      /*	    case SMG$K_TRM_PF2:*/
 	    case '?':
+              ajDebug("Keymap: %02x KEY_F1,[KEY_PF2],?\n", Keystroke);
 	      DoHelp( Rep);
 	      Rep = 1;
 	      break;
@@ -553,6 +588,7 @@ Parse:
 */
 
 	  case KEY_F(4) /*SMG$K_TRM_PF4*/:
+              ajDebug("Keymap: %02x KEY_F4\n", Keystroke);
 	      for ( i=1; i<=Rep; i++) {
 	        if ( Gold ) {
 	          if ( Seq[Strand].Locked ) 
@@ -579,6 +615,7 @@ Parse:
 */
 
 	  case KEY_BEG/*SMG$K_TRM_KP0*/:
+              ajDebug("Keymap: %02x KEY_BEG,[KEY_KP0]\n", Keystroke);
 	      ReDoBar[Strand] = 1;
 	      if ( LinePos > Seq[Strand].Offset+1 )
 	        Strand = (Dir == ADVANCE) ?  Strand   : Strand-1  ;
@@ -595,6 +632,7 @@ Parse:
 */
 
 	  case KEY_C1/*SMG$K_TRM_KP1*/:
+              ajDebug("Keymap: %02x KEY_C1, [KEY_KP1]\n", Keystroke);
 	      ReDoBar[Strand] = 1;
 	      LinePos += 10*Rep*Dir;
 	      Rep=1;
@@ -605,6 +643,7 @@ Parse:
 */
 
 	    case '@':
+              ajDebug("Keymap: %02x @,[KEY_KP2]\n", Keystroke);
 	      ReDoBar[Strand] = 1;
 	      if ( LinePos > Seq[Strand].Offset+Seq[Strand].Length+1 )
 	        Strand = (Dir == ADVANCE) ?  Strand   : Strand-1  ;
@@ -621,6 +660,7 @@ Parse:
 */
 
 	  case KEY_C3/*SMG$K_TRM_KP3*/:
+              ajDebug("Keymap: %02x KEY_C3,[KEY_KP3]\n", Keystroke);
 	      ReDoBar[Strand] = 1;
 	      LinePos += 1*Dir;
 	      Rep=1;
@@ -631,6 +671,7 @@ Parse:
 */
 
 	  case '#' /*SMG$K_TRM_KP4*/:
+              ajDebug("Keymap: %02x #,[KEY_KP4]\n", Keystroke);
 	      if ( Gold ) {
 	        for ( Strand=1; OkToEdit[Strand] == 0 && Strand < NOS; )
 	          Strand++;
@@ -645,6 +686,7 @@ Parse:
 */
 
 	    case KEY_B2:
+              ajDebug("Keymap: %02x KEY_B2\n", Keystroke);
 	      if ( Gold ) {
 	        for ( Strand=NOS; OkToEdit[Strand] == 0 && Strand > 1; )
 	          Strand--;
@@ -659,6 +701,7 @@ Parse:
 */
 
 	  case '=' /*SMG$K_TRM_KP6*/:
+              ajDebug("Keymap: %02x =,[KEY_KP6]\n", Keystroke);
 	    if ( Gold )
 	      	Keystroke = KEY_IC;
 	      else
@@ -670,6 +713,7 @@ Parse:
 */
 
 	  case KEY_A1/*SMG$K_TRM_KP7*/:
+              ajDebug("Keymap: %02x KEY_A1,[KEY_KP7]\n", Keystroke);
 	      if ( Gold ) return;
 	      if ( Dir == ADVANCE )
 	        Keystroke = KEY_NPAGE;
@@ -684,6 +728,7 @@ Parse:
 */
 
 	  case '%'/*SMG$K_TRM_KP8*/:
+              ajDebug("Keymap: %02x %,[KEY_KP8]\n", Keystroke);
 	      ReDoBar[Strand] = 1;
 	      Strand = LIMIT(1,Strand+(-1*7*Rep*Dir),NOS);
 	      ReDoBar[Strand] = 1;
@@ -695,6 +740,7 @@ Parse:
 */
 
 	  case KEY_CANCEL /*SMG$K_TRM_PERIOD*/:
+              ajDebug("Keymap: %02x KEY_CANCEL,[KEY_KPDOT]\n", Keystroke);
 	      if ( Gold )
 	        DoCancel();
 	      else {
@@ -710,6 +756,7 @@ Parse:
 */
 	  case CNTRLD:
 	  case ',' /*SMG$K_TRM_COMMA*/:
+              ajDebug("Keymap: %02x CNTRLD,[KEY_KPCOMMA]\n", Keystroke);
 	      if ( Gold )
 	        ShowError("Sorry, no UnDelete Character yet");
 	      else
@@ -725,6 +772,7 @@ Parse:
 */
 
             case '!':
+              ajDebug("Keymap: %02x !\n", Keystroke);
 	      DoSeq();
 	      Rep = 1;
 	      break;
@@ -735,6 +783,7 @@ Parse:
 
 	    case CNTRLW:
 	    case CNTRLR:
+              ajDebug("Keymap: %02x CNTRLR,CNTRLW\n", Keystroke);
 	      /*clear();*/
 	      for(i=0;i<=NROWS;i++){
 		ReDoSeq[i] = 1;
@@ -753,6 +802,7 @@ Parse:
 	      /*case SMG$K_TRM_DO:*/
 	    case ':':
 	    case CNTRLZ:
+              ajDebug("Keymap: %02x :,CNTRLZ\n", Keystroke);
 	      return;
 
 /*
@@ -768,6 +818,7 @@ Parse:
 	    case '7':
 	    case '8':
 	    case '9':
+                ajDebug("Keymap: %02x number:%c\n", Keystroke,Keystroke);
               if ( isdigit((int)LastChar) == 0 ) Rep = 0;
 	      Rep = 10*Rep + (Keystroke - '0');
 	      sprintf(OneLine," %d",Rep);
@@ -784,12 +835,11 @@ Parse:
 */
  
 	      if ( Keystroke > 127 ) break;
-	      ajDebug("before key = %d, after key = ",Keystroke);
+              ajDebug("Keymap: %02x", Keystroke);
 	      Keystroke = CharMap[ Seq[Strand].ReMap ][ Keystroke ];
-	      ajDebug("%d Rep=%d\n",Keystroke,Rep);
-
 
 	      if ( Keystroke < 127 ) {
+                ajDebug(" remap to %02x '%c\n", Keystroke, Keystroke);
 	        for ( i=1; i<=Rep; i++) {
                   if( InsertSymbol(Strand, SeqPos, Keystroke)){
 		    SeqPos++;
@@ -806,7 +856,8 @@ Parse:
 **     extra delete characters, user may over-run
 */
 
-	      } else if ( Keystroke == DEL ) {
+	      } else if ( Keystroke == DEL) {
+                ajDebug(" remap to DEL\n");
 	        if ( Rep > 1 ) {
 	          Rep /= 10;
 	          sprintf(OneLine," %d",Rep);
@@ -822,6 +873,10 @@ Parse:
 	        }
 	        Rep = 1;
 	      }
+              else  {
+                ajDebug(" (ignored)\n");
+              }
+              
 	  }
 	  LastChar = Keystroke;
 	  Gold = 0;
@@ -836,7 +891,7 @@ Parse:
 **	ScrEdge, ScrScaleLen, and ScrBarLen
 **
 *****************************************************************************/
-void UpDate()
+void UpDate(void)
 
 {
 char OneNum[5];
@@ -1042,7 +1097,7 @@ Boolean ReDoSeqs, Scroll;
 ** (9) Display SeqName and SeqTitle of Current strand if it's changed.
 */
 
-	if ( Strand != LastSeq ) {
+	if (Strand != LastSeq ) {
 	  move(0, 9);
 	  /*	  clrtocol(__Cols-5);*/
 	  clrtoeol();
@@ -3270,7 +3325,10 @@ char ErrMsg[256];
 	Seq[Strand].Length = 0;
 	Seq[Strand].Size = 512;
 	Seq[Strand].Strand = Seq[Strand].Mem-1;
-	Seq[Strand].Type = DNA;
+        if(DefProtein)
+            Seq[Strand].Type = PROTEIN;
+        else
+            Seq[Strand].Type = DNA;
 	Seq[Strand].Circular = 0;
 	Seq[Strand].Format = DefFormat;
 	Seq[Strand].Name = CALLOC(1,char);
@@ -4119,8 +4177,8 @@ void DoHelp(int Start)
 "   /string<rtn> - Find \"string\", VT200's also use FIND key",
 "[n]?            - Display help starting at page [n], VT200's also use HELP key",
 "   !            - Display status of current sequence, same as \"SEQ\" command",
-"   Control-W    - Redraw the screen (also Control-R)",
-"   :            - Switch to Command Mode (also Control-Z)",
+"   Control-W    - Redraw the screen (also Control-R or \"REDRAW\" command)",
+"   :            - Use Command Mode (also Control-Z or Control-D in GCG mode)",
 
 "",
 ""
@@ -4433,6 +4491,8 @@ void DoRedraw()
   /*repaint();*/
   /*  redrawwin(Display);*/
   ajDebug("DoRedraw ready to doupdate\n");
+  MakeScreen();
+  UpDate();
   doupdate();
   ajDebug("DoRedraw done doupdate\n");
   refresh();
@@ -4499,6 +4559,14 @@ void MakeScreen(void)
 
 {
 	mvaddstr(0,0,"MSE V3.0");
+        if(OkToEdit[Strand])
+        {
+            mvaddstr(0, (__Cols-strlen(Seq[Strand].Name))/2,
+                     Seq[Strand].Name);
+            mvaddstr(1, (__Cols-strlen(Seq[Strand].Title))/2,
+                     Seq[Strand].Title);
+        }
+        
 	mvaddstr(0,(__Cols-4), "WIBR");
 
 	DrawScale(  MARK1+1, 0, __Cols-1, 10, 4);

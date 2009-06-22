@@ -15,9 +15,27 @@ section: input [
     help: "File containing a sequence alignment"
     type: "gapany"
     aligned: "N"
+    nullok: "Y"
   ]
 
 endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  boolean: gcgmode [
+    information: "Use GCG Unix mode for keyboard shortcuts and commands"
+    default: "N"
+  ]
+  
+  boolean: protein [
+    information: "Sequences are protein"
+    default: "$(acdprotein)"
+  ]
+  
+endsection: additional
 
 section: advanced [
   information: "Advanced section"

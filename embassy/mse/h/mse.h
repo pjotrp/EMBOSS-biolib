@@ -124,6 +124,9 @@ Boolean OkToEdit[NOS+1],  /* Is there a sequence on this line?           */
 Boolean DoPlurality,      /* Show diff/matches from the plurality seq.   */
         unique;         /* Hilight any symbols in line 1 not found elsewhere*/
 
+Boolean GcgMode;    /* Use GCG Unix keyboard shortcuts and commands */
+Boolean DefProtein; /* edit protein sequence by default */
+
 /* Parameters */
 
 #define NOADDR  10000000  /* Used to signal a default condition */
