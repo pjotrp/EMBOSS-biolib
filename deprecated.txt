@@ -232,6 +232,8 @@ ajListstrRemove ajListstrIterRemove
 ajMemCalloc0 ajMemCallocZero
 #ajmess
 #ajnam
+ajNamGetenv -
+ajNamGetValue -
 ajNamRootInstall -
 ajNamRootPack -
 ajNamRootVersion -
@@ -457,6 +459,7 @@ ajStrAppKI ajStrAppendCountK
 ajStrAppCI ajStrAppendLenC
 ajStrAppSub ajStrAppendSubS
 ajStrInsert ajStrInsertS
+ajStrMask ajStrMaskRange
 ajStrReplaceS ajStrPasteS
 ajStrReplaceK ajStrPasteCountK
 ajStrReplaceC ajStrPasteMaxC
