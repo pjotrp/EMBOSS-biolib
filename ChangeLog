@@ -1,4 +1,6 @@
 Version 6.1.0
+	embossdata will now always return directory listings alphabetically.
+
 	A new ACD function replaces an attribute value with an EMBOSS or
 	environment variable. The attribute syntax is (@value:VARNAME).
 
