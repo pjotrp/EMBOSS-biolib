@@ -464,7 +464,7 @@ typedef struct AjSSeqin {
 ** @attr Xreflist [AjPList] Cross reference list
 ** @attr Seq [AjPStr] The sequence
 ** @attr Fttable [AjPFeattable] Feature table
-** @attr Accuracy [ajuint*] Accuracy values (one per base) from base calling
+** @attr Accuracy [float*] Accuracy values (one per base) from base calling
 ** @attr Format [AjEnum] Input format enum
 ** @attr EType [AjEnum] unused, obsolete
 ** @attr Weight [float] Weight from multiple alignment
@@ -517,7 +517,7 @@ typedef struct AjSSeq {
   AjPList Xreflist;
   AjPStr Seq;
   AjPFeattable Fttable;
-  ajuint* Accuracy;
+  float* Accuracy;
   AjEnum Format;
   AjEnum EType;
   float Weight;

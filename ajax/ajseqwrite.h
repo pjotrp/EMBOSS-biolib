@@ -64,7 +64,7 @@ extern "C"
 ** @attr Single [AjBool] If true, single sequence in each file (-ossingle)
 ** @attr Features [AjBool] If true, save features with sequence or in file
 ** @attr Extension [AjPStr] File extension
-** @attr Accuracy [ajint*] Accuracy values (one per base) from base calling
+** @attr Accuracy [float*] Accuracy values (one per base) from base calling
 ** @attr Savelist [AjPList] Previous sequences saved for later output
 **                          (e.g. MSF format)
 ** @attr Count [ajint] Number of sequences
@@ -134,7 +134,7 @@ typedef struct AjSSeqout {
   AjBool Single;
   AjBool Features;
   AjPStr Extension;
-  ajint* Accuracy;
+  float* Accuracy;
   AjPList Savelist;
   ajint Count;
   ajint Offset;
