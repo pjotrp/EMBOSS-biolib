@@ -10958,7 +10958,7 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
     ajuint seqlen = 1024;
     ajint i;
     ajint nfields;
-    ajuint taxid;
+    ajuint taxid = 0;
 
     ajDebug("seqReadGenbank\n");
 
