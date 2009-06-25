@@ -4,7 +4,11 @@
                                   and optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
-   Advanced (Unprompted) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -gcgmode            boolean    [N] Use GCG Unix mode for keyboard shortcuts
+                                  and commands
+   -protein            boolean    [$(acdprotein)] Sequences are protein
+
    Associated qualifiers:
 
    "-sequence" associated qualifiers

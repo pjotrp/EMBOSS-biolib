@@ -36,7 +36,17 @@
 </tr>
 
 <tr>
-<td colspan=4>(none)</td>
+<td>-gcgmode</td>
+<td>Use GCG Unix mode for keyboard shortcuts and commands</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-protein</td>
+<td>Sequences are protein</td>
+<td>Boolean value Yes/No</td>
+<td>$(acdprotein)</td>
 </tr>
 
 </table>

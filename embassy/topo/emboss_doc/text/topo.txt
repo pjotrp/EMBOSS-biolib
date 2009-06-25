@@ -283,9 +283,13 @@ ID   AQP1_HUMAN              Reviewed;         269 AA.
 AC   P29972; Q8TBI5; Q8TDC1;
 DT   01-APR-1993, integrated into UniProtKB/Swiss-Prot.
 DT   23-JAN-2007, sequence version 3.
-DT   20-MAR-2007, entry version 85.
-DE   Aquaporin-1 (AQP-1) (Aquaporin-CHIP) (Water channel protein for red
-DE   blood cells and kidney proximal tubule) (Urine water channel).
+DT   16-JUN-2009, entry version 108.
+DE   RecName: Full=Aquaporin-1;
+DE            Short=AQP-1;
+DE   AltName: Full=Aquaporin-CHIP;
+DE   AltName: Full=Water channel protein for red blood cells and kidney proxima
+l tubule;
+DE   AltName: Full=Urine water channel;
 GN   Name=AQP1; Synonyms=CHIP28;
 OS   Homo sapiens (Human).
 OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
@@ -294,7 +298,7 @@ OC   Catarrhini; Hominidae; Homo.
 OX   NCBI_TaxID=9606;
 RN   [1]
 RP   NUCLEOTIDE SEQUENCE [MRNA], AND PARTIAL PROTEIN SEQUENCE.
-RX   MEDLINE=92107900; PubMed=1722319;
+RX   MEDLINE=92107900; PubMed=1722319; DOI=10.1073/pnas.88.24.11110;
 RA   Preston G.M., Agre P.;
 RT   "Isolation of the cDNA for erythrocyte integral membrane protein of 28
 RT   kilodaltons: member of an ancient channel family.";
@@ -323,20 +327,13 @@ RT   "The water channel gene in human uterus.";
 RL   Biochem. Mol. Biol. Int. 32:371-377(1994).
 RN   [5]
 RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA], AND VARIANTS VAL-45 AND ASP-165.
-RA   Rieder M.J., Johanson E.J., da Ponte S.H., Hastings N.C., Ahearn M.O.,
-RA   Bertucci C.B., Wong M.W., Yi Q., Nickerson D.A.;
-RT   "SeattleSNPs. NHLBI HL66682 program for genomic applications, UW-
-RT   FHCRC, Seattle, WA (URL: http://pga.gs.washington.edu).";
+RG   SeattleSNPs variation discovery resource;
 RL   Submitted (MAR-2005) to the EMBL/GenBank/DDBJ databases.
 RN   [6]
 
 
   [Part of this file has been deleted for brevity]
 
-FT   TRANSMEM     77     84       Helix B.
-FT   TOPO_DOM     85     94       Cytoplasmic.
-FT   TRANSMEM     95    115       Helix 3.
-FT   TOPO_DOM    116    136       Extracellular.
 FT   TRANSMEM    137    155       Helix 4.
 FT   TOPO_DOM    156    166       Cytoplasmic.
 FT   TRANSMEM    167    183       Helix 5.
@@ -353,15 +350,19 @@ FT   SITE         56     56       Substrate discrimination.
 FT   SITE        180    180       Substrate discrimination.
 FT   SITE        189    189       Hg(2+)-sensitive residue.
 FT   SITE        195    195       Substrate discrimination.
+FT   MOD_RES     246    246       Phosphothreonine (By similarity).
+FT   MOD_RES     247    247       Phosphoserine (By similarity).
+FT   MOD_RES     262    262       Phosphoserine.
 FT   CARBOHYD     42     42       N-linked (GlcNAc...).
 FT   CARBOHYD    205    205       N-linked (GlcNAc...) (Potential).
 FT   VARIANT      38     38       P -> L (in Co(A-B-) antigen; non
 FT                                functional AQP1; red cells show low
 FT                                osmotic water permeability).
 FT                                /FTId=VAR_013279.
-FT   VARIANT      45     45       A -> V (in Co(A-B+) antigen).
+FT   VARIANT      45     45       A -> V (in Co(A-B+) antigen;
+FT                                dbSNP:rs28362692).
 FT                                /FTId=VAR_004400.
-FT   VARIANT     165    165       G -> D.
+FT   VARIANT     165    165       G -> D (in dbSNP:rs28362731).
 FT                                /FTId=VAR_022318.
 FT   CONFLICT     45     45       A -> T (in Ref. 7; AAH22486).
 FT   HELIX         8     35

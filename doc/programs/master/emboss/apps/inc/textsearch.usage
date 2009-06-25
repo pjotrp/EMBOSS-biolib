@@ -8,7 +8,7 @@ Search for 'lactose':
 
 % <b>textsearch 'tsw:*' 'lactose' </b>
 Search the textual description of sequence(s)
-Output file [edd1_rat.textsearch]: <b></b>
+Output file [12s1_arath.textsearch]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -24,7 +24,7 @@ Search for 'lactose' or 'permease' in E.coli proteins:
 
 % <b>textsearch 'tsw:*_ecoli' 'lactose | permease' </b>
 Search the textual description of sequence(s)
-Output file [laci_ecoli.textsearch]: <b></b>
+Output file [bgal_ecoli.textsearch]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

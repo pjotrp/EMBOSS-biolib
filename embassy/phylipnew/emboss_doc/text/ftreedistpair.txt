@@ -138,7 +138,7 @@ Distances between two sets of trees
 Phylip tree file: treedist.dat
 Second phylip tree file: treedist.dat
 Phylip treedist program output file [treedist.ftreedistpair]: 
-read_groups 88c8dc0
+read_groups 9d18dc0
 
 Done.
 

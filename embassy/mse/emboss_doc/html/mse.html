@@ -106,7 +106,11 @@ Multiple Sequence Editor
                                   and optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
-   Advanced (Unprompted) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -gcgmode            boolean    [N] Use GCG Unix mode for keyboard shortcuts
+                                  and commands
+   -protein            boolean    [$(acdprotein)] Sequences are protein
+
    Associated qualifiers:
 
    "-sequence" associated qualifiers
@@ -194,7 +198,17 @@ Multiple Sequence Editor
 </tr>
 
 <tr>
-<td colspan=4>(none)</td>
+<td>-gcgmode</td>
+<td>Use GCG Unix mode for keyboard shortcuts and commands</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-protein</td>
+<td>Sequences are protein</td>
+<td>Boolean value Yes/No</td>
+<td>$(acdprotein)</td>
 </tr>
 
 </table>
@@ -280,7 +294,7 @@ outputs a report format file. The default format is ...
 <pre>
 !!NA_MULTIPLE_ALIGNMENT 1.0
 
-  mse.msf MSF: 120 Type: N 19/06/09 CompCheck: 2784 ..
+  mse.msf MSF: 120 Type: N 25/06/09 CompCheck: 2784 ..
 
   Name: MSFM1      Len: 120  Check: 8587 Weight: 1.00
   Name: MSFM2      Len: 120  Check: 5766 Weight: 1.00
