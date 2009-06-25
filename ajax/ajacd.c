@@ -9108,6 +9108,9 @@ static void acdSetInfile(AcdPAcd thys)
     
     thys->Value = val;
     ajStrAssignS(&thys->ValStr, acdReply);
+
+    ajStrDel(&inpath);
+
     return;
 }
 
