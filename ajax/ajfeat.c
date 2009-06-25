@@ -6788,6 +6788,26 @@ const AjPStr ajFeattableGetName(const AjPFeattable thys)
 
 
 
+/* @func ajFeattableGetSize ***************************************************
+**
+** Returns the size of a feature table object.
+**
+** @param [r] thys [const AjPFeattable] Feature table
+** @return [ajuint] Feature table size.
+** @@
+******************************************************************************/
+
+ajuint ajFeattableGetSize(const AjPFeattable thys)
+{
+    if(!thys)
+        return 0;
+
+    return ajListGetLength(thys->Features);
+}
+
+
+
+
 /* @func ajFeatTypeGetCategory ************************************************
 **
 ** returns the category name for a feature type
@@ -6889,6 +6909,83 @@ const char* ajFeattableGetTypeC(const AjPFeattable thys)
 const AjPStr ajFeattableGetTypeS(const AjPFeattable thys)
 {
     return thys->Type;
+}
+
+
+
+
+/* @func ajFeattableGetXrefs ***************************************************
+**
+** Returns all cross-references from a feature table
+**
+** @param [r] thys [const AjPFeattable] Feature table
+** @param [u] xreflist [AjPList] List of sequence cross-reference objects
+** @param [w] Ptaxid [ajuint*] Taxon ID
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+
+AjBool ajFeattableGetXrefs(const AjPFeattable thys, AjPList xreflist,
+                           ajuint *Ptaxid)
+{
+    AjIList iterfeat     = NULL;
+    AjIList itertags     = NULL;
+    FeatPTagval item = NULL;
+    AjPSeqXref  xref = NULL;
+    ajint ipos;
+    ajuint inum = 0;
+    AjPFeature feat  = NULL;
+
+    *Ptaxid = 0;
+    
+    if(thys->Features)
+    {
+	iterfeat = ajListIterNewread(thys->Features);
+
+	while(!ajListIterDone(iterfeat))
+	{
+            feat = (AjPFeature)ajListIterGet(iterfeat);
+            if(feat->Tags)
+            {
+                itertags = ajListIterNewread(feat->Tags);
+
+                while(!ajListIterDone(itertags))
+                {
+                    item = (FeatPTagval)ajListIterGet(itertags);
+
+                    if(ajStrMatchCaseC(item->Tag, "db_xref"))
+                    {
+                        ipos = ajStrFindAnyK(item->Value, ':');
+                        if(ipos > 0) 
+                        {
+                            inum++;
+                            xref = ajSeqxrefNew();
+                            ajStrAssignSubS(&xref->Db, item->Value, 0, ipos-1);
+                            ajStrAssignSubS(&xref->Id, item->Value, ipos+1, -1);
+                            ajListPushAppend(xreflist, xref);
+                            xref->Start = ajFeatGetStart(feat);
+                            xref->End   = ajFeatGetEnd(feat);
+                            xref->Type = XREF_DBXREF;
+                            if(!*Ptaxid && ajStrMatchCaseC(xref->Db, "taxon"))
+                            {
+                                if(!ajStrToUint(xref->Id, Ptaxid))
+                                    *Ptaxid = 0;
+                            }
+                            xref = NULL;
+                        }
+                    }
+                }
+            }
+            ajListIterDel(&itertags);
+        }
+    }
+
+    ajListIterDel(&iterfeat);
+
+    if(!inum)
+        return ajFalse;
+
+    return ajTrue;
 }
 
 
@@ -7246,6 +7343,64 @@ AjBool ajFeatGetRemoteseq(const AjPFeature thys, const AjPStr usa,
             ajFeatGetStart(thys), ajFeatGetEnd(thys), ajSeqGetLen(seq));
 
     ajStrDel(&baseusa);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ajFeatGetXrefs *******************************************************
+**
+** Returns all cross-references from a feature
+**
+** @param [r] thys [const AjPFeature] Feature
+** @param [u] xreflist [AjPList] List of sequence cross-reference objects
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+
+AjBool ajFeatGetXrefs(const AjPFeature thys, AjPList xreflist)
+{
+    AjIList iter     = NULL;
+    FeatPTagval item = NULL;
+    AjPSeqXref  xref = NULL;
+    ajint ipos;
+    ajuint inum = 0;
+
+    if(thys->Tags)
+    {
+	iter = ajListIterNewread(thys->Tags);
+
+	while(!ajListIterDone(iter))
+	{
+	    item = (FeatPTagval)ajListIterGet(iter);
+
+	    if(ajStrMatchCaseC(item->Tag, "db_xref"))
+	    {
+                ipos = ajStrFindAnyK(item->Value, ':');
+                if(ipos > 0) 
+                {
+                    inum++;
+                    xref = ajSeqxrefNew();
+                    ajStrAssignSubS(&xref->Db, item->Value, 0, ipos-1);
+                    ajStrAssignSubS(&xref->Id, item->Value, ipos+1, -1);
+                    xref->Start = ajFeatGetStart(thys)-1;
+                    xref->End   = ajFeatGetEnd(thys)-1;
+                    ajListPushAppend(xreflist, xref);
+                    ajUser("/%S='%S' db: '%S' id: '%S'",
+                           item->Tag, item->Value, xref->Db, xref->Id);
+                    xref->Type = XREF_DBXREF;
+                    xref = NULL;
+                }
+            }
+	}
+    }
+
+    ajListIterDel(&iter);
+
+    if(!inum)
+        return ajFalse;
 
     return ajTrue;
 }
@@ -12089,6 +12244,7 @@ static AjBool featTagSpecialAllMobile(const AjPStr val)
 **
 ** value is a term taken from the INSDC controlled vocabulary for ncRNA classes
 ** http://www.insdc.org/page.php?page=rna_vocab
+** or http://www.ebi.ac.uk/embl/Documentation/ncRNA_class.html
 **
 ** @param  [r] val [const AjPStr] parameter value
 ** @return [AjBool] ajTrue for a valid value, possibly corrected
@@ -12102,7 +12258,7 @@ static AjBool featTagSpecialAllNcrnaclass(const AjPStr val)
     AjPStr namstr = NULL;
     AjBool ret = ajFalse;
     ajuint i;
-
+    
     const char* classes[] =
     {
 	"antisense_RNA", "autocatalytically_spliced_intron",
@@ -12115,7 +12271,7 @@ static AjBool featTagSpecialAllNcrnaclass(const AjPStr val)
     };
 
     for(i=0;classes[i];i++)
-        if(ajStrMatchC(typstr, classes[i])) break;
+        if(ajStrMatchC(val, classes[i])) break;
 
     if(classes[i])
         ret = ajTrue;

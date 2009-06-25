@@ -66,6 +66,7 @@ AjBool        ajFeatGetTagS(const AjPFeature thys, const AjPStr name,
 			    ajint num, AjPStr* val);
 AjBool        ajFeatGetTranslation(const AjPFeature feat, AjPStr* seqstr);
 const AjPStr  ajFeatGetType (const AjPFeature thys);
+AjBool        ajFeatGetXrefs(const AjPFeature thys, AjPList xreflist);
 AjBool        ajFeatIsCompMult (const AjPFeature gf);
 AjBool        ajFeatIsLocal (const AjPFeature gf);
 AjBool        ajFeatIsLocalRange (const AjPFeature gf,
@@ -103,8 +104,11 @@ AjPFeattable  ajFeattableCopyLimit (const AjPFeattable orig, ajint limit);
 void          ajFeattableDel (AjPFeattable *pthis) ;
 ajint         ajFeattableEnd (const AjPFeattable thys);
 const AjPStr  ajFeattableGetName (const AjPFeattable thys);
+ajuint        ajFeattableGetSize(const AjPFeattable thys);
 const char*   ajFeattableGetTypeC (const AjPFeattable thys);
 const AjPStr  ajFeattableGetTypeS (const AjPFeattable thys);
+AjBool        ajFeattableGetXrefs(const AjPFeattable thys, AjPList xreflist,
+                                  ajuint *Ptaxid);
 AjBool        ajFeattableIsNuc (const AjPFeattable thys);
 AjBool        ajFeattableIsProt (const AjPFeattable thys);
 ajint         ajFeattableLen (const AjPFeattable thys);
