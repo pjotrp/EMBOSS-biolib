@@ -618,13 +618,13 @@ ID   LACI_ECOLI              Reviewed;         360 AA.
 AC   P03023; O09196; P71309; Q2MC79; Q47338;
 DT   21-JUL-1986, integrated into UniProtKB/Swiss-Prot.
 DT   19-JUL-2003, sequence version 3.
-DT   20-MAR-2007, entry version 87.
-DE   Lactose operon repressor.
+DT   16-JUN-2009, entry version 105.
+DE   RecName: Full=Lactose operon repressor;
 GN   Name=lacI; OrderedLocusNames=b0345, JW0336;
-OS   Escherichia coli.
+OS   Escherichia coli (strain K12).
 OC   Bacteria; Proteobacteria; Gammaproteobacteria; Enterobacteriales;
 OC   Enterobacteriaceae; Escherichia.
-OX   NCBI_TaxID=562;
+OX   NCBI_TaxID=83333;
 RN   [1]
 RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA].
 RX   MEDLINE=78246991; PubMed=355891; DOI=10.1038/274765a0;
@@ -668,13 +668,6 @@ RT   "Highly accurate genome sequences of Escherichia coli K-12 strains
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-DR   Pfam; PF00532; Peripla_BP_1; 1.
-DR   PRINTS; PR00036; HTHLACI.
-DR   SMART; SM00354; HTH_LACI; 1.
-DR   PROSITE; PS00356; HTH_LACI_1; 1.
-DR   PROSITE; PS50932; HTH_LACI_2; 1.
-KW   3D-structure; Complete proteome; Direct protein sequencing;
-KW   DNA-binding; Repressor; Transcription; Transcription regulation.
 FT   CHAIN         1    360       Lactose operon repressor.
 FT                                /FTId=PRO_0000107963.
 FT   DOMAIN        1     58       HTH lacI-type.
@@ -683,6 +676,11 @@ FT   VARIANT     282    282       Y -&gt; D (in T41 mutant).
 FT   MUTAGEN      17     17       Y-&gt;H: Broadening of specificity.
 FT   MUTAGEN      22     22       R-&gt;N: Recognizes an operator variant.
 FT   CONFLICT    286    286       L -&gt; S (in Ref. 1, 4 and 7).
+FT   HELIX         6     11
+FT   TURN         12     14
+FT   HELIX        17     24
+FT   HELIX        33     45
+FT   HELIX        51     56
 FT   STRAND       63     69
 FT   HELIX        74     89
 FT   STRAND       93     98
@@ -710,6 +708,8 @@ FT   STRAND      287    290
 FT   HELIX       293    308
 FT   STRAND      314    319
 FT   STRAND      322    324
+FT   STRAND      334    338
+FT   HELIX       343    353
 FT   HELIX       354    356
 SQ   SEQUENCE   360 AA;  38590 MW;  347A8DEE92D736CB CRC64;
      MKPVTLYDVA EYAGVSYQTV SRVVNQASHV SAKTREKVEA AMAELNYIPN RVAQQLAGKQ
@@ -731,9 +731,9 @@ ID   RS24_FUGRU              Reviewed;         132 AA.
 AC   O42387;
 DT   15-JUL-1998, integrated into UniProtKB/Swiss-Prot.
 DT   01-JAN-1998, sequence version 1.
-DT   20-MAR-2007, entry version 25.
-DE   40S ribosomal protein S24.
-GN   Name=RPS24;
+DT   16-JUN-2009, entry version 36.
+DE   RecName: Full=40S ribosomal protein S24;
+GN   Name=rps24;
 OS   Fugu rubripes (Japanese pufferfish) (Takifugu rubripes).
 OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
 OC   Actinopterygii; Neopterygii; Teleostei; Euteleostei; Neoteleostei;
@@ -750,13 +750,21 @@ CC   Copyrighted by the UniProt Consortium, see http://www.uniprot.org/terms
 CC   Distributed under the Creative Commons Attribution-NoDerivs License
 CC   -----------------------------------------------------------------------
 DR   EMBL; AJ001398; CAA04728.1; -; Genomic_DNA.
-DR   Ensembl; NEWSINFRUG00000143641; Fugu rubripes.
-DR   LinkHub; O42387; -.
-DR   InterPro; IPR001976; Ribosomal_S24E.
+DR   PRIDE; O42387; -.
+DR   HOVERGEN; O42387; -.
+DR   GO; GO:0005840; C:ribosome; IEA:UniProtKB-KW.
+DR   GO; GO:0000166; F:nucleotide binding; IEA:InterPro.
+DR   GO; GO:0003735; F:structural constituent of ribosome; IEA:InterPro.
+DR   GO; GO:0006412; P:translation; IEA:InterPro.
+DR   InterPro; IPR012677; a_b_plait_nuc_bd.
+DR   InterPro; IPR001976; Ribosomal_S24e.
+DR   InterPro; IPR018098; Ribosomal_S24e_CS.
+DR   Gene3D; G3DSA:3.30.70.330; a_b_plait_nuc_bd; 1.
 DR   PANTHER; PTHR10496; Ribosomal_S24E; 1.
 DR   Pfam; PF01282; Ribosomal_S24e; 1.
 DR   ProDom; PD006052; Ribosomal_S24E; 1.
 DR   PROSITE; PS00529; RIBOSOMAL_S24E; 1.
+PE   3: Inferred from homology;
 KW   Ribonucleoprotein; Ribosomal protein.
 FT   CHAIN         1    132       40S ribosomal protein S24.
 FT                                /FTId=PRO_0000137627.
@@ -891,7 +899,7 @@ An example annotation range file is:
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 LACI_ECOLI
-Lactose operon repressor.
+Lactose operon repressor
 
                    10        20        30        40        50        60        
           ----:----|----:----|----:----|----:----|----:----|----:----|
@@ -900,12 +908,18 @@ Lactose operon repressor.
           mature_protein_region note="Lactose operon repressor" ftid="PRO_00001
           |========================================================|
           polypeptide_domain note="HTH lacI-type"
-               |==================|
-               DNA_contact note="H-T-H motif"
+               |==================|                         |====|
+               DNA_contact note="H-T-H motif"               alpha_helix
                           |
           mutated_variant_site note="Y-&gt;H: Broadening of specificity"
                                |
           mutated_variant_site note="R-&gt;N: Recognizes an operator variant"
+               |====|                     |===========|
+               alpha_helix                alpha_helix
+                     |=|
+                     turn
+                          |======|
+                          alpha_helix
 
                    70        80        90        100       
           ----:----|----:----|----:----|----:----|
@@ -926,7 +940,7 @@ Lactose operon repressor.
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 LACI_ECOLI
-Lactose operon repressor.
+Lactose operon repressor
 
           ----:----|----:----|----:----|----:----|----:----|----:----|
           MKPVTLYDVAEYAGVSYQTVSRVVNQASHVSAKTREKVEAAMAELNYIPNRVAQQLAGKQ
@@ -954,7 +968,7 @@ Lactose operon repressor.
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 RS24_FUGRU
-40S ribosomal protein S24.
+40S ribosomal protein S24
 
                    10        20        30        40        50        60        
           ----:----|----:----|----:----|----:----|----:----|----:----|
@@ -989,7 +1003,7 @@ RS24_FUGRU
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 LACI_ECOLI
-Lactose operon repressor.
+Lactose operon repressor
         1 MKPVTLYDVAEYAGVSYQTVSRVVNQASHVSAKTREKVEAAMAELNYIPNRVAQQLAGKQ 60
        61 SLLIGVATSSLALHAPSQIVAAIKSRADQLGASVVVSMVE 100
 
@@ -1002,7 +1016,7 @@ Lactose operon repressor.
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 LACI_ECOLI
-Lactose operon repressor.
+Lactose operon repressor
       123 MKPVTLYDVAEYAGVSYQTVSRVVNQASHVSAKTREKVEAAMAELNYIPNRVAQQLAGKQ 182
       183 SLLIGVATSSLALHAPSQIVAAIKSRADQLGASVVVSMVE 222
 
@@ -1015,7 +1029,7 @@ Lactose operon repressor.
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 LACI_ECOLI
-Lactose operon repressor.
+Lactose operon repressor
           mkpvtlydvaeyagvsYqtvsRvvnqashvsaktrekveaamaelnyipnrvaqqlagkq
           slligvatsslalhapsqivaaiksradqlgasvvvsmve
 
@@ -1028,7 +1042,7 @@ Lactose operon repressor.
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 LACI_ECOLI
-Lactose operon repressor.
+Lactose operon repressor
 
                    10        20        30        40        50        60        
           ----:----|----:----|----:----|----:----|----:----|----:----|
@@ -1041,12 +1055,18 @@ Lactose operon repressor.
           mature_protein_region note="Lactose operon repressor" ftid="PRO_00001
           |========================================================|
           polypeptide_domain note="HTH lacI-type"
-               |==================|
-               DNA_contact note="H-T-H motif"
+               |==================|                         |====|
+               DNA_contact note="H-T-H motif"               alpha_helix
                           |
           mutated_variant_site note="Y-&gt;H: Broadening of specificity"
                                |
           mutated_variant_site note="R-&gt;N: Recognizes an operator variant"
+               |====|                     |===========|
+               alpha_helix                alpha_helix
+                     |=|
+                     turn
+                          |======|
+                          alpha_helix
 
                    70        80        90        100       110       120       
           ----:----|----:----|----:----|----:----|----:----|----:----|

@@ -5,7 +5,7 @@
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 LACI_ECOLI
-Lactose operon repressor.
+Lactose operon repressor
 
                    10        20        30        40        50        60        
           ----:----|----:----|----:----|----:----|----:----|----:----|
@@ -14,12 +14,18 @@ Lactose operon repressor.
           mature_protein_region note="Lactose operon repressor" ftid="PRO_00001
           |========================================================|
           polypeptide_domain note="HTH lacI-type"
-               |==================|
-               DNA_contact note="H-T-H motif"
+               |==================|                         |====|
+               DNA_contact note="H-T-H motif"               alpha_helix
                           |
           mutated_variant_site note="Y-&gt;H: Broadening of specificity"
                                |
           mutated_variant_site note="R-&gt;N: Recognizes an operator variant"
+               |====|                     |===========|
+               alpha_helix                alpha_helix
+                     |=|
+                     turn
+                          |======|
+                          alpha_helix
 
                    70        80        90        100       
           ----:----|----:----|----:----|----:----|
@@ -40,7 +46,7 @@ Lactose operon repressor.
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 LACI_ECOLI
-Lactose operon repressor.
+Lactose operon repressor
 
           ----:----|----:----|----:----|----:----|----:----|----:----|
           MKPVTLYDVAEYAGVSYQTVSRVVNQASHVSAKTREKVEAAMAELNYIPNRVAQQLAGKQ
@@ -68,7 +74,7 @@ Lactose operon repressor.
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 RS24_FUGRU
-40S ribosomal protein S24.
+40S ribosomal protein S24
 
                    10        20        30        40        50        60        
           ----:----|----:----|----:----|----:----|----:----|----:----|
@@ -103,7 +109,7 @@ RS24_FUGRU
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 LACI_ECOLI
-Lactose operon repressor.
+Lactose operon repressor
         1 MKPVTLYDVAEYAGVSYQTVSRVVNQASHVSAKTREKVEAAMAELNYIPNRVAQQLAGKQ 60
        61 SLLIGVATSSLALHAPSQIVAAIKSRADQLGASVVVSMVE 100
 
@@ -116,7 +122,7 @@ Lactose operon repressor.
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 LACI_ECOLI
-Lactose operon repressor.
+Lactose operon repressor
       123 MKPVTLYDVAEYAGVSYQTVSRVVNQASHVSAKTREKVEAAMAELNYIPNRVAQQLAGKQ 182
       183 SLLIGVATSSLALHAPSQIVAAIKSRADQLGASVVVSMVE 222
 
@@ -129,7 +135,7 @@ Lactose operon repressor.
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 LACI_ECOLI
-Lactose operon repressor.
+Lactose operon repressor
           mkpvtlydvaeyagvsYqtvsRvvnqashvsaktrekveaamaelnyipnrvaqqlagkq
           slligvatsslalhapsqivaaiksradqlgasvvvsmve
 
@@ -142,7 +148,7 @@ Lactose operon repressor.
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 LACI_ECOLI
-Lactose operon repressor.
+Lactose operon repressor
 
                    10        20        30        40        50        60        
           ----:----|----:----|----:----|----:----|----:----|----:----|
@@ -155,12 +161,18 @@ Lactose operon repressor.
           mature_protein_region note="Lactose operon repressor" ftid="PRO_00001
           |========================================================|
           polypeptide_domain note="HTH lacI-type"
-               |==================|
-               DNA_contact note="H-T-H motif"
+               |==================|                         |====|
+               DNA_contact note="H-T-H motif"               alpha_helix
                           |
           mutated_variant_site note="Y-&gt;H: Broadening of specificity"
                                |
           mutated_variant_site note="R-&gt;N: Recognizes an operator variant"
+               |====|                     |===========|
+               alpha_helix                alpha_helix
+                     |=|
+                     turn
+                          |======|
+                          alpha_helix
 
                    70        80        90        100       110       120       
           ----:----|----:----|----:----|----:----|----:----|----:----|

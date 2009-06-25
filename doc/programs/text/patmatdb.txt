@@ -38,7 +38,7 @@ Usage
 Searches protein sequences with a sequence motif
 Input protein sequence(s): tsw:*
 Protein motif to search for: st[ty]s
-Output report [edd1_rat.patmatdb]: 
+Output report [12s1_arath.patmatdb]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -173,7 +173,7 @@ Output file format
 
   Output files for usage example
 
-  File: edd1_rat.patmatdb
+  File: 12s1_arath.patmatdb
 
 ########################################
 # Program: patmatdb
@@ -182,30 +182,9 @@ Output file format
 #    -sequence "tsw:*"
 #    -motif "st[ty]s"
 # Report_format: dbmotif
-# Report_file: edd1_rat.patmatdb
+# Report_file: 12s1_arath.patmatdb
 ########################################
 
-#=======================================
-#
-# Sequence: HD_FUGRU     from: 1   to: 3148
-# HitCount: 1
-#
-# Motif: ST[TY]S
-#
-#=======================================
-
-Length = 4
-Start = position 1038 of sequence
-End = position 1041 of sequence
-
-
-STPASSTTSSAVDP
-     |  |
-  1038  1041
-
-
-#---------------------------------------
-#---------------------------------------
 #=======================================
 #
 # Sequence: GCN4_YEAST     from: 1   to: 281
@@ -223,6 +202,27 @@ End = position 161 of sequence
 SNLEVSTTSFLPTP
      |  |
    158  161
+
+
+#---------------------------------------
+#---------------------------------------
+#=======================================
+#
+# Sequence: HD_FUGRU     from: 1   to: 3148
+# HitCount: 1
+#
+# Motif: ST[TY]S
+#
+#=======================================
+
+Length = 4
+Start = position 1038 of sequence
+End = position 1041 of sequence
+
+
+STPASSTTSSAVDP
+     |  |
+  1038  1041
 
 
 #---------------------------------------
@@ -251,7 +251,7 @@ LADLESTTSHISKR
 
 #---------------------------------------
 # Total_sequences: 100
-# Total_length: 35262
+# Total_length: 35263
 # Reported_sequences: 3
 # Reported_hitcount: 3
 #---------------------------------------

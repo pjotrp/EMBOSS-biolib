@@ -32,7 +32,7 @@ Usage
 Search for patterns in protein sequences
 Input protein sequence(s): tsw:*
 Search pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
-Output report [edd1_rat.fuzzpro]: 
+Output report [12s1_arath.fuzzpro]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -191,7 +191,7 @@ Output file format
 
   Output files for usage example
 
-  File: edd1_rat.fuzzpro
+  File: 12s1_arath.fuzzpro
 
 ########################################
 # Program: fuzzpro
@@ -200,7 +200,7 @@ Output file format
 #    -sequence "tsw:*"
 #    -pattern "[FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G"
 # Report_format: seqtable
-# Report_file: edd1_rat.fuzzpro
+# Report_file: 12s1_arath.fuzzpro
 ########################################
 
 #=======================================
@@ -220,7 +220,7 @@ Output file format
 #---------------------------------------
 #=======================================
 #
-# Sequence: ACTB_OREMO     from: 1   to: 375
+# Sequence: ACTB2_FUGRU     from: 1   to: 375
 # HitCount: 1
 #
 # Pattern_name Mismatch Pattern
@@ -235,7 +235,7 @@ Output file format
 #---------------------------------------
 #=======================================
 #
-# Sequence: ACTB2_FUGRU     from: 1   to: 375
+# Sequence: ACTB3_FUGRU     from: 1   to: 375
 # HitCount: 1
 #
 # Pattern_name Mismatch Pattern
@@ -263,7 +263,7 @@ Output file format
 #---------------------------------------
 #=======================================
 #
-# Sequence: ACTS_OREMO     from: 1   to: 377
+# Sequence: ACTSB_FUGRU     from: 1   to: 377
 # HitCount: 1
 #
 # Pattern_name Mismatch Pattern
@@ -278,7 +278,7 @@ Output file format
 #---------------------------------------
 #=======================================
 #
-# Sequence: ACTSB_FUGRU     from: 1   to: 377
+# Sequence: ACTS_OREMO     from: 1   to: 377
 # HitCount: 1
 #
 # Pattern_name Mismatch Pattern
@@ -294,7 +294,7 @@ Output file format
 
 #---------------------------------------
 # Total_sequences: 100
-# Total_length: 35262
+# Total_length: 35263
 # Reported_sequences: 8
 # Reported_hitcount: 8
 #---------------------------------------
