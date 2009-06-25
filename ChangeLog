@@ -9,8 +9,8 @@ Version 6.1.0
 	a feature table entry.
 
 	When reading a sequence with an identifiable species, attempts are
-	made to define the NCBI taxonomy identifier fir the
-	species. Possioble sources include the OX line in Swiss-Prot, the
+	made to define the NCBI taxonomy identifier for the
+	species. Possible sources include the OX line in Swiss-Prot, the
 	taxon cross-reference in the EMBL/GenBank/DDBJ feature table
 	(available only if the feature table is read) and the species name
 	which can be matched to a set of common species obtained from
