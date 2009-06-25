@@ -1523,8 +1523,9 @@ size_t ajWritebinStr(AjPFile file, const AjPStr str, size_t len)
     ajuint ilen;
     ajuint i;
     ajuint j;
+    ajuint k;
 
-    ilen = ajStrGetRes(str);
+    ilen = 1+ajStrGetLen(str);
 
     if(ilen >= len)
         return fwrite(ajStrGetPtr(str), len, 1, file->fp);
@@ -1533,8 +1534,14 @@ size_t ajWritebinStr(AjPFile file, const AjPStr str, size_t len)
 
     j = len - ilen;
 
-    for(i=0;i<j;i++)
-        fwrite("", 1, 1, file->fp);
+    k = 20;
+
+    for(i=0;i<j;i+=20)
+    {
+        if((j-i) < 20)
+            k = j-i;
+        fwrite("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", k, 1, file->fp);
+    }
 
     return ret;
 }
