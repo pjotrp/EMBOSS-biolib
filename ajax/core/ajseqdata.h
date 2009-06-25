@@ -13,6 +13,17 @@ extern "C"
 
 enum AjEQryType {QRY_UNKNOWN, QRY_ENTRY, QRY_QUERY, QRY_ALL};
 
+enum AjEXrefType {
+    XREF_UNKNOWN,      /* type not defined */
+    XREF_DR,           /* DR line in EMBL, SwissProt */
+    XREF_DBXREF,       /* /db_xref in EMBL/Genbank */
+    XREF_EC,           /* EC= in SwissProt */
+    XREF_DESC,         /* Allergen= and CD_Antigen= in SwissProt DE */
+    XREF_TAX,          /* NCBI_TaxID */
+    XREF_RX,            /* RX line in EMBL or SwissProt */
+    XREF_MAX            /* to test we are within bounds */
+};
+
 typedef struct SeqSAccess SeqSAccess;
 
 /* @data AjPSeqDesc ***********************************************************
@@ -190,6 +201,41 @@ typedef struct AjSSeqRef {
   char Padding[4];
 } AjOSeqRef;
 #define AjPSeqRef AjOSeqRef*
+
+
+    
+/* @data AjPSeqXref ***********************************************************
+**
+** Ajax sequence cross-reference object.
+**
+** Defines the fields needed to support various standard
+** entry cross-reference formats
+**
+** @alias AjSSeqXref
+** @alias AjOSeqXref
+**
+** @attr Db [AjPStr] Database name
+** @attr Id [AjPStr] Primary identifier
+** @attr Secid [AjPStr] Secondary identifier
+** @attr Terid [AjPStr] Tertiary identifier
+** @attr Quatid [AjPStr] Quaternary identifier
+** @attr Type [ajuint] Type of cross-reference
+** @attr Start [ajuint] Start position
+** @attr End [ajuint] End position
+** @@
+******************************************************************************/
+
+typedef struct AjSSeqXref {
+    AjPStr Db;
+    AjPStr Id;
+    AjPStr Secid;
+    AjPStr Terid;
+    AjPStr Quatid;
+    ajuint Type;
+    ajuint Start;
+    ajuint End;
+} AjOSeqXref;
+#define AjPSeqXref AjOSeqXref*
 
 
     

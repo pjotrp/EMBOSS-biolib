@@ -204,6 +204,51 @@ static SeqOMolecule seqMolecule[] =
 };
 
 
+/* @datastatic SeqOTaxon ******************************************************
+**
+** Known major taxons in the sequence databases
+**
+** Reference for this is
+** http://www.ncbi.nlm.nih.gov/Taxonomy/
+**
+** @attr Taxid [ajuint] NCBI taxon id
+** @attr Name [const char*] Common name
+******************************************************************************/
+
+typedef struct SeqSTaxon {
+  ajuint Taxid;
+  const char* Name;
+} SeqOTaxon;
+
+static SeqOTaxon seqTaxon[] =
+{
+    { 3702, "Arabidopsis thaliana"},
+    { 1432, "Bacillus subtilis"},
+    { 9913, "Bos taurus"},
+    { 6239, "Caenorhabditis elegans"},
+    { 3055, "Chlamydomonas reinhardtii"},
+    { 7955, "Danio rario"},
+    {44689, "Dictyostelium discoideum"},
+    { 7227, "Drosophila melanogaster"},
+    {  562, "Escherichia coli"},
+    {11103, "Hepatitis C virus"},
+    { 9606, "Homo sapiens"},
+    { 2104, "Mycoplasma pneumoniae"},
+    {10090, "Mus musculus"},
+    { 4530, "Oryza sativa"},
+    { 5833, "Plasmodium falciparum"},
+    { 4754, "Pneumocystis carinii"},
+    {10116, "Rattus norvegicus"},
+    { 4932, "Saccharomyces cerevisiae"},
+    { 4896, "Schizosaccharomyces pombe"},
+    {31033, "Takifugu rubripes"},
+    { 8355, "Xenopus laevis"},
+    { 4577, "Zea mays"},
+    {    0, NULL}
+    
+};
+
+    
 /* @filesection ajseq ********************************************************
 **
 ** @nam1rule aj Function belongs to the AJAX library.
@@ -329,7 +374,7 @@ AjPSeq ajSeqNewNameC(const char* txt, const char* name)
     pthis->Taxlist = ajListstrNew();
     pthis->Genelist = ajListstrNew();
     pthis->Cmtlist = ajListstrNew();
-    pthis->Xreflist = ajListstrNew();
+    pthis->Xreflist = ajListNew();
     pthis->Reflist = ajListNew();
 
     pthis->Fulldesc = ajSeqdescNew();
@@ -396,7 +441,7 @@ AjPSeq ajSeqNewNameS(const AjPStr str, const AjPStr name)
     pthis->Taxlist = ajListstrNew();
     pthis->Genelist = ajListstrNew();
     pthis->Cmtlist = ajListstrNew();
-    pthis->Xreflist = ajListstrNew();
+    pthis->Xreflist = ajListNew();
     pthis->Reflist = ajListNew();
 
     pthis->Fulldesc = ajSeqdescNew();
@@ -509,7 +554,7 @@ AjPSeq ajSeqNewRangeC(const char* txt,
     pthis->Taxlist = ajListstrNew();
     pthis->Genelist = ajListstrNew();
     pthis->Cmtlist = ajListstrNew();
-    pthis->Xreflist = ajListstrNew();
+    pthis->Xreflist = ajListNew();
     pthis->Reflist = ajListNew();
 
     pthis->Fulldesc = ajSeqdescNew();
@@ -635,7 +680,7 @@ AjPSeq ajSeqNewRes(size_t size)
     pthis->Taxlist = ajListstrNew();
     pthis->Genelist = ajListstrNew();
     pthis->Cmtlist = ajListstrNew();
-    pthis->Xreflist = ajListstrNew();
+    pthis->Xreflist = ajListNew();
     pthis->Reflist = ajListNew();
 
     pthis->Fulldesc = ajSeqdescNew();
@@ -721,12 +766,13 @@ AjPSeq ajSeqNewSeq(const AjPSeq seq)
 
     pthis->Cmtlist = ajListstrNewList(seq->Cmtlist);
 
-    pthis->Xreflist = ajListstrNewList(seq->Xreflist);
+    pthis->Xreflist = ajListNew();
+    ajSeqxreflistClone(seq->Xreflist, pthis->Xreflist);
 
     pthis->Genelist = ajListstrNew();
     ajSeqgenelistClone(seq->Genelist, pthis->Genelist);
 
-    pthis->Reflist = ajListstrNew();
+    pthis->Reflist = ajListNew();
     ajSeqreflistClone(seq->Reflist, pthis->Reflist);
 
     pthis->Fulldesc = ajSeqdescNewDesc(seq->Fulldesc);
@@ -788,6 +834,7 @@ void ajSeqDel(AjPSeq* Pseq)
 {
     AjPSeq seq;
     AjPSeqRef  tmpref  = NULL;
+    AjPSeqXref tmpxref = NULL;
     AjPSeqGene tmpgene = NULL;
 
     seq = Pseq ? *Pseq : 0;
@@ -844,7 +891,11 @@ void ajSeqDel(AjPSeq* Pseq)
     ajListFree(&seq->Reflist);
 
     ajListstrFreeData(&seq->Cmtlist);
-    ajListstrFreeData(&seq->Xreflist);
+
+    while(ajListPop(seq->Xreflist,(void **)&tmpxref))
+	ajSeqxrefDel(&tmpxref);
+
+    ajListFree(&seq->Xreflist);
 
     ajSeqdateDel(&seq->Date);
     ajSeqdescDel(&seq->Fulldesc);
@@ -1745,6 +1796,7 @@ void ajSeqClear(AjPSeq seq)
 {
     AjPStr ptr = NULL;
     AjPSeqRef  tmpref  = NULL;
+    AjPSeqXref tmpxref = NULL;
     AjPSeqGene tmpgene = NULL;
 
     ajStrSetClear(&seq->Name);
@@ -1798,8 +1850,8 @@ void ajSeqClear(AjPSeq seq)
     while(ajListPop(seq->Cmtlist,(void **)&ptr))
 	ajStrDel(&ptr);
 
-    while(ajListPop(seq->Xreflist,(void **)&ptr))
-	ajStrDel(&ptr);
+    while(ajListPop(seq->Xreflist,(void **)&tmpxref))
+	ajSeqxrefDel(&tmpxref);
 
     ajSeqdateClear(seq->Date);
     ajSeqdescClear(seq->Fulldesc);
@@ -2785,6 +2837,7 @@ void ajSeqTrim(AjPSeq seq)
 ** @nam4rule GetSeq Return sequence
 ** @nam4rule GetSv Return sequence version
 ** @nam4rule GetTax Return taxonomy
+** @nam4rule GetTaxid Return taxonomy id
 ** @nam4rule GetUsa Return sequence USA
 **
 ** @suffix S Return a string
@@ -2812,6 +2865,7 @@ void ajSeqTrim(AjPSeq seq)
 ** @valrule *FeatCopy [AjPFeattable] New feature table with original contents
 ** @valrule *SeqCopyC [char*] New sequence with original contents
 ** @valrule *SeqCopyS [AjPStr] New sequence with original contents
+** @valrule Taxid [ajuint] NCBI taxonomy ID
 ******************************************************************************/
 
 /* @func ajSeqGetAccC *********************************************************
@@ -3850,6 +3904,44 @@ __deprecated const AjPStr  ajSeqGetTax(const AjPSeq seq)
 
 
 
+/* @func ajSeqGetTaxid *********************************************************
+**
+** Returns the numeric identifier of the sequence primary taxon (species).
+** This is an identifier from the NCBI taxonomy
+**
+** @param [r] seq [const AjPSeq] Sequence object.
+** @return [ajuint] Taxon ID.
+** @@
+******************************************************************************/
+
+ajuint ajSeqGetTaxid(const AjPSeq seq)
+{
+    ajuint ret = 0;
+    ajuint i = 0;
+
+    if(ajStrGetLen(seq->Taxid))
+    {
+        ajStrToUint(seq->Taxid, &ret);
+
+        return ret;
+    }
+
+    while(seqTaxon[i].Name)
+    {
+        if(ajStrPrefixCaseC(seq->Tax, seqTaxon[i].Name))
+        {
+            return seqTaxon[i].Taxid;
+        }
+        
+        i++;
+    }
+    
+    return 0;
+}
+
+
+
+
 /* @func ajSeqGetUsaC *********************************************************
 **
 ** Returns the sequence name of a sequence stream.
@@ -3919,11 +4011,18 @@ __deprecated const AjPStr  ajSeqGetUsa(const AjPSeq seq)
 ** @nam4rule IsNuc Sequence is nucleotide
 ** @nam4rule IsProt Sequence is protein
 ** @nam4rule IsReversed Sequence is reversed
+** @nam4rule IsSpecies Sequence is annotated as from a particular species
+** @nam5rule IsSpeciesBsubtilis Sequence is from B. subtilis
+** @nam5rule IsSpeciesHuman Sequence is from H. sapiens
+** @nam5rule IsSpeciesMouse Sequence is from M. musculus
+** @nam5rule IsSpeciesYeast Sequence is from S. cerevisiae
+** @nam4rule IsTaxon Sequence is annotated as from a particular taxon id
 ** @nam4rule IsTrimmed Sequence is trimmed to a subsequence
 **
 ** @suffix True Sequence properties relative to the original sequence
 **
 ** @argrule Is seq [const AjPSeq] Sequence
+** @argrule IsTaxon taxid [ajuint] NCBI Taxonomy ID
 **
 ** @valrule * [AjBool] Sequence boolean property
 **
@@ -4043,6 +4142,98 @@ __deprecated AjBool  ajSeqRev(const AjPSeq seq)
 AjBool ajSeqIsReversed(const AjPSeq seq)
 {
     return seq->Reversed;
+}
+
+
+
+
+/* @func ajSeqIsSpeciesBsubtilis ***********************************************
+**
+** Tests whether a sequence is annotated as B. subtilis
+**
+** @param [r] seq [const AjPSeq] Sequence
+** @return [AjBool] ajTrue for a nucleotide sequence.
+** @@
+******************************************************************************/
+
+AjBool ajSeqIsSpeciesBsubtilis(const AjPSeq seq)
+{
+    return ajSeqIsTaxon(seq, 1432);
+}
+
+
+
+
+/* @func ajSeqIsSpeciesHuman ***************************************************
+**
+** Tests whether a sequence is annotated as human
+**
+** @param [r] seq [const AjPSeq] Sequence
+** @return [AjBool] ajTrue for a nucleotide sequence.
+** @@
+******************************************************************************/
+
+AjBool ajSeqIsSpeciesHuman(const AjPSeq seq)
+{
+    return ajSeqIsTaxon(seq, 9606);
+}
+
+
+
+
+/* @func ajSeqIsSpeciesMouse ***************************************************
+**
+** Tests whether a sequence is annotated as mouse
+**
+** @param [r] seq [const AjPSeq] Sequence
+** @return [AjBool] ajTrue for a nucleotide sequence.
+** @@
+******************************************************************************/
+
+AjBool ajSeqIsSpeciesMouse(const AjPSeq seq)
+{
+    return ajSeqIsTaxon(seq, 10090);
+}
+
+
+
+
+/* @func ajSeqIsSpeciesYeast ***************************************************
+**
+** Tests whether a sequence is annotated as yeast (S. cerevisiae)
+**
+** @param [r] seq [const AjPSeq] Sequence
+** @return [AjBool] ajTrue for a nucleotide sequence.
+** @@
+******************************************************************************/
+
+AjBool ajSeqIsSpeciesYeast(const AjPSeq seq)
+{
+    return ajSeqIsTaxon(seq, 4932);
+}
+
+
+
+
+/* @func ajSeqIsTaxon *********************************************************
+**
+** Tests whether a sequence is annotated as from a specific taxon ID.
+**
+** @param [r] seq [const AjPSeq] Sequence
+** @param [r] taxid [ajuint] NCBI Taxonomy ID
+** @return [AjBool] ajTrue for a nucleotide sequence.
+** @@
+******************************************************************************/
+
+AjBool ajSeqIsTaxon(const AjPSeq seq, ajuint taxid)
+{
+    ajuint itax;
+
+    itax = ajSeqGetTaxid(seq);
+    if(itax != taxid)
+        return ajFalse;
+
+    return ajTrue;
 }
 
 
@@ -8960,6 +9151,249 @@ AjBool ajSeqgenelistClone(const AjPList src, AjPList dest)
 
 
 
+/* @datasection [AjPSeqXref] sequence citations ********************************
+**
+** Functions handling sequence cross-references
+**
+** @nam2rule Seqxref
+**
+******************************************************************************/
+
+/* @section sequence cross-reference constructors ******************************
+**
+** @fdata [AjPSeqXref]
+** @fcategory new
+**
+** @nam3rule New Constructor
+** @nam4rule NewDb Constructor with database and id
+** @nam4rule NewRef Copy constructor
+** @suffix C Data provided as char*
+** @suffix S Data provided as AjPStr
+**
+** @argrule Ref xref [const AjPSeqXref] Source sequence cross-reference object
+** @argrule Db id      [const AjPStr] Identifier
+** @argrule C  db      [const char*] Database name
+** @argrule S  db      [const AjPStr] Database name
+** @argrule Db reftype [ajuint] Enumerated reference type
+**
+** @valrule * [AjPSeqXref]
+**
+******************************************************************************/
+
+/* @func ajSeqxrefNew *********************************************************
+**
+** Constructor for empty sequence citation object
+**
+** @return [AjPSeqXref] Empty sequence cross-reference object
+******************************************************************************/
+
+AjPSeqXref ajSeqxrefNew(void)
+{
+    AjPSeqXref ret;
+    AJNEW0(ret);
+
+    return ret;
+}
+
+
+
+
+/* @func ajSeqxrefNewDbC *******************************************************
+**
+** Constructor for copy of a sequence citation object
+**
+** @param [r] id [const AjPStr] Primary identifier
+** @param [r] db [const char *] Database name
+** @param [r] reftype [ajuint] Reference type
+** @return [AjPSeqXref] New sequence cross-reference object
+******************************************************************************/
+
+AjPSeqXref ajSeqxrefNewDbC(const AjPStr id, const char* db, ajuint reftype)
+{
+    AjPSeqXref ret;
+
+    AJNEW0(ret);
+
+    ajStrAssignC(&ret->Db, db);
+    ajStrAssignS(&ret->Id, id);
+    ret->Type = reftype;
+
+    return ret;
+}
+
+
+
+
+/* @func ajSeqxrefNewDbS *******************************************************
+**
+** Constructor for copy of a sequence citation object
+**
+** @param [r] id [const AjPStr] Primary identifier
+** @param [r] db [const AjPStr] Database name
+** @param [r] reftype [ajuint] Reference type
+** @return [AjPSeqXref] New sequence cross-reference object
+******************************************************************************/
+
+AjPSeqXref ajSeqxrefNewDbS(const AjPStr id, const AjPStr db, ajuint reftype)
+{
+    AjPSeqXref ret;
+
+    AJNEW0(ret);
+
+    ajStrAssignS(&ret->Db, db);
+    ajStrAssignS(&ret->Id, id);
+    ret->Type = reftype;
+
+    return ret;
+}
+
+
+
+
+/* @func ajSeqxrefNewRef *******************************************************
+**
+** Constructor for copy of a sequence citation object
+**
+** @param [r] xref [const AjPSeqXref] Sequence cross-reference object
+** @return [AjPSeqXref] Copied sequence cross-reference object
+******************************************************************************/
+
+AjPSeqXref ajSeqxrefNewRef(const AjPSeqXref xref)
+{
+    AjPSeqXref ret;
+    AJNEW0(ret);
+
+    if(!xref)
+	return ret;
+
+    ajStrAssignS(&ret->Db, xref->Db);
+    ajStrAssignS(&ret->Id, xref->Id);
+    ajStrAssignS(&ret->Secid, xref->Secid);
+    ajStrAssignS(&ret->Terid, xref->Terid);
+    ajStrAssignS(&ret->Quatid, xref->Quatid);
+    ret->Type = xref->Type;
+    ret->Start = xref->Start;
+    ret->End = xref->End;
+
+    return ret;
+}
+
+
+
+
+/* @section destructors **********************************************
+**
+** Destruction destroys all internal data structures and frees the
+** memory allocated for the sequence cross-reference
+**
+** @fdata [AjPSeqXref]
+** @fcategory delete
+**
+** @nam3rule Del Destroy (free) a sequence cross-reference object
+**
+** @argrule * Pxref [AjPSeqXref*] Sequence cross-reference object address
+**
+** @valrule * [void]
+**
+******************************************************************************/
+
+
+
+
+/* @func ajSeqxrefDel *********************************************************
+**
+** Deletes a sequence cross-reference object.
+**
+** @param [d] Pxref [AjPSeqXref*] Sequence cross-reference object
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqxrefDel(AjPSeqXref* Pxref)
+{
+    AjPSeqXref xref;
+
+    if(!Pxref)
+	return;
+
+    if(!*Pxref)
+	return;
+
+    xref = *Pxref;
+
+    ajStrDel(&xref->Db);
+    ajStrDel(&xref->Id);
+    ajStrDel(&xref->Secid);
+    ajStrDel(&xref->Terid);
+    ajStrDel(&xref->Quatid);
+
+    AJFREE(*Pxref);
+
+    return;
+}
+
+
+
+
+/* @datasection [AjPList] Cross-reference list operations *********************8
+**
+** Manipulating lists of sequence cross-references
+**
+** @nam2rule Seqxreflist
+**
+******************************************************************************/
+
+/* @section Reference list operations *****************************************
+**
+** Manipulating lists of sequence citations
+**
+** @fdata [AjPList]
+** @fcategory use
+**
+** @nam3rule Clone Clone list of sequence citations
+**
+** @argrule * src [const AjPList] List of sequence cross-reference objects
+** @argrule Clone dest [AjPList] Empty list to hold sequence cross-reference
+**                               objects
+**
+** @valrule * [AjBool] True on success
+**
+******************************************************************************/
+
+/* @func ajSeqxreflistClone ****************************************************
+**
+** Copy a list of ciross-references to another list
+**
+** @param [r] src [const AjPList] Source list of cross-references
+** @param [w] dest [AjPList] Destination list of cross-references
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqxreflistClone(const AjPList src, AjPList dest)
+{
+    AjIList iter;
+    AjPSeqXref refout = NULL;
+    AjPSeqXref refin = NULL;
+
+    if(ajListGetLength(dest))
+	return ajFalse;
+
+    iter = ajListIterNewread(src);
+
+    while ((refin = (AjPSeqXref) ajListIterGet(iter)))
+    {
+	refout = ajSeqxrefNewRef(refin);
+	ajListPushAppend(dest, refout);
+    }
+
+    ajListIterDel(&iter);
+
+    return ajTrue;
+}
+
+
+
+
 /* @datasection [AjPSeqRef] sequence citations ********************************
 **
 ** Functions handling sequence citations
@@ -9004,8 +9438,8 @@ AjPSeqRef ajSeqrefNew(void)
 **
 ** Constructor for copy of a sequence citation object
 **
-** @param [r] ref [const AjPSeqRef] Sequence date object
-** @return [AjPSeqRef] Copied sequence date object
+** @param [r] ref [const AjPSeqRef] Sequence citation object
+** @return [AjPSeqRef] Copied sequence citation object
 ******************************************************************************/
 
 AjPSeqRef ajSeqrefNewRef(const AjPSeqRef ref)
@@ -9741,6 +10175,97 @@ AjBool ajSeqreflistClone(const AjPList src, AjPList dest)
 }
 
 
+
+
+/* @section element retrieval ************************************************
+**
+** These functions return contents of a list of sequence citation objects.
+**
+** @fdata [AjPList]
+** @fcategory use
+**
+** @nam3rule Get return reference attributes
+** @nam4rule GetXrefs Return cross-references
+**
+** @argrule Get  ref [AjPList] List of sequence citation object
+** @argrule Xrefs ref [AjPList] List of cross-reference objects
+**
+** @valrule GetXrefs [ajuint] Number of cross-references returned
+**
+******************************************************************************/
+
+ajuint ajSeqreflistGetXrefs(const AjPList src, AjPList list)
+{
+    AjPStrTok handle = NULL;
+    AjPStr token = NULL;
+    AjPStr dbtoken = NULL;
+    AjIList iter = NULL;
+    ajuint oldnum = 0;
+    AjPSeqRef tmpref = NULL;
+    AjPSeqXref xref = NULL;
+
+    oldnum = ajListGetLength(list);
+    iter = ajListIterNewread(src);
+    while(!ajListIterDone(iter))
+    {
+        tmpref = ajListIterGet(iter);
+        if(!ajStrGetLen(tmpref->Xref))
+            continue;
+
+        ajStrTokenAssignC(&handle, tmpref->Xref, " =;\r\n");
+
+        while (ajStrTokenNextParseC(&handle, " =;\r\n", &dbtoken))
+        {
+            ajStrTokenNextParseC(&handle, " ;\r\n", &token);
+
+            if(ajStrGetCharLast(token) == '.')
+                ajStrCutEnd(&token, 1);
+
+            if(!ajStrGetLen(dbtoken))
+                continue;
+            if(!ajStrGetLen(token))
+                continue;
+
+            if(ajStrMatchCaseC(dbtoken, "MEDLINE"))
+            {
+                xref = ajSeqxrefNewDbC(token, "MEDLINE", XREF_RX);
+                ajListPushAppend(list, xref);
+                xref = NULL;
+            }
+            else if(ajStrMatchCaseC(dbtoken, "PubMed"))
+            {
+                xref = ajSeqxrefNewDbC(token, "PubMed", XREF_RX);
+                ajListPushAppend(list, xref);
+                xref = NULL;
+            }
+            else if(ajStrMatchCaseC(dbtoken, "DOI"))
+            {
+                xref = ajSeqxrefNewDbC(token, "DOI", XREF_RX);
+                ajListPushAppend(list, xref);
+                xref = NULL;
+            }
+            else if(ajStrMatchCaseC(dbtoken, "AGRICOLA"))
+            {
+                xref = ajSeqxrefNewDbC(token, "AGRICOLA", XREF_RX);
+                ajListPushAppend(list, xref);
+                xref = NULL;
+            }
+            else
+            {
+                xref = ajSeqxrefNewDbS(token, dbtoken, XREF_RX);
+                ajListPushAppend(list, xref);
+                xref = NULL;
+            }
+        }
+    }
+    ajListIterDel(&iter);
+    
+    ajStrTokenDel(&handle);
+    ajStrDel(&dbtoken);
+    ajStrDel(&token);
+
+    return ajListGetLength(list) - oldnum;
+}
 
 
 /* @datasection [AjPStr] string tests *****************************************

@@ -608,7 +608,8 @@ static void       seqSetNameNospace(AjPStr* name, const AjPStr str);
 static void       seqStockholmCopy(AjPSeq *thys, SeqPStockholm stock, ajint n);
 static void       seqSvSave(AjPSeq thys, const AjPStr sv);
 static void       seqTaxSave(AjPSeq thys, const AjPStr tax, ajuint level);
-static void       seqTaxidSave(AjPSeq thys, const AjPStr tax);
+static void       seqTaxidSaveI(AjPSeq thys, ajuint tax);
+static void       seqTaxidSaveS(AjPSeq thys, const AjPStr tax);
 static void       seqTextSeq(AjPStr* textptr, const AjPStr seq);
 static void       seqUsaListTrace(const AjPList list);
 static AjBool     seqUsaProcess(AjPSeq thys, AjPSeqin seqin);
@@ -2169,6 +2170,8 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
     ajuint istat;
 
     AjPFilebuff buff = seqin->Filebuff;
+    ajuint bufflines = 0;
+    AjBool ok;
 
     ajSeqClear(thys);
     ajDebug("seqRead: cleared\n");
@@ -2203,6 +2206,20 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 
     if(!seqin->Filebuff)
 	return ajFalse;
+
+    ok = ajFilebuffIsBuffered(seqin->Filebuff);
+    
+    while(ok)
+    {				/* skip blank lines */
+        ok = ajBuffreadLine(seqin->Filebuff, &seqReadLine);
+        bufflines++;
+
+        if(!ajStrIsWhite(seqReadLine))
+        {
+            ajFilebuffClear(seqin->Filebuff,1);
+            break;
+        }
+    }
 
     if(!seqin->Format)
     {			   /* no format specified, try all defaults */
@@ -8923,9 +8940,9 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
     AjPStr relstr = NULL;
     AjPStr taxstr = NULL;
     AjPStr cmtstr = NULL;		/* stored in AjPSeq - do not delete */
-    AjPStr xrefstr = NULL;		/* stored in AjPSeq - do not delete */
     ajuint icount = 0;
     AjPSeqRef  seqref  = NULL;
+    AjPSeqXref xref    = NULL;
     AjPSeqGene seqgene = NULL;
     AjPSeqDesc desctop = NULL;
     AjPSeqDesc descmaster = NULL;
@@ -8939,6 +8956,10 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
     ajuint refnum;
     AjBool isnewgene = ajFalse;
     AjBool isgenetoken = ajFalse;
+    ajuint taxid;
+    AjIList iter;
+    AjIList itb;
+    AjIList itc;
 
 /*
 ** To be done: 12-Feb-09
@@ -9040,7 +9061,7 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
 	    ajStrTokenAssignC(&handle, seqReadLine, " ");
 	    ajStrTokenNextParse(&handle, &token); /* 'DE' */
 
-	    while(ajStrTokenNextParseC(&handle, " \n\r", &token))
+	    while(ajStrTokenNextParseC(&handle, " ;\n\r", &token))
             {
                 if(ajStrGetCharLast(token) == ':')
                 {
@@ -9126,6 +9147,9 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
                         ajListstrPushAppend(subdesc->EC, newdescstr);
 
                     ajStrAssignSubS(Pdescstr, token, 3, -1);
+                    xref = ajSeqxrefNewDbC(*Pdescstr, "ENZYME", XREF_EC);
+                    ajListPushAppend(thys->Xreflist, xref);
+                    xref = NULL;
                 }
                 else if(ajStrPrefixC(token, "Allergen="))
                 {
@@ -9133,6 +9157,9 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
                     Pdescstr = &newdescstr;
                     ajListstrPushAppend(subdesc->Allergen, newdescstr);
                     ajStrAssignSubS(Pdescstr, token, 9, -1);
+                    xref = ajSeqxrefNewDbC(*Pdescstr, "Allergen", XREF_DESC);
+                    ajListPushAppend(thys->Xreflist, xref);
+                    xref = NULL;
                 }
                 else if(ajStrPrefixC(token, "Biotech="))
                 {
@@ -9147,6 +9174,9 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
                     Pdescstr = &newdescstr;
                     ajListstrPushAppend(subdesc->Cdantigen, newdescstr);
                     ajStrAssignSubS(Pdescstr, token, 11, -1);
+                    xref = ajSeqxrefNewDbC(*Pdescstr, "CD_Antigen", XREF_DESC);
+                    ajListPushAppend(thys->Xreflist, xref);
+                    xref = NULL;
                 }
                 else if(ajStrPrefixC(token, "INN="))
                 {
@@ -9159,14 +9189,15 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
                 {
                     if(isdescflag)
                     {
-                        if(ajStrMatchC(token,"Precursor;"))
+                        if(ajStrMatchC(token,"Precursor"))
                             thys->Fulldesc->Precursor = ajTrue;
-                        else if(ajStrMatchC(token,"Fragments;"))
+                        else if(ajStrMatchC(token,"Fragments"))
                             thys->Fulldesc->Fragments = 2;
-                        else if(ajStrMatchC(token,"Fragment;"))
+                        else if(ajStrMatchC(token,"Fragment"))
                             thys->Fulldesc->Fragments = 1;
                         else
-                            ajUser("flag text '%S'", token);
+                            ajDebug("unknown description flag text '%S'\n",
+                                    token);
                     }
                     else 
                     {
@@ -9341,7 +9372,10 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
             if(ajStrMatchC(token, "NCBI_TaxID"))
             {
                 ajStrTokenNextParse(&handle, &token);
-		seqTaxidSave(thys, token);
+		seqTaxidSaveS(thys, token);
+                xref = ajSeqxrefNewDbC(token, "taxon", XREF_TAX);
+                ajListPushAppend(thys->Xreflist, xref);
+                xref = NULL;
 	    }
 	}
 
@@ -9367,12 +9401,61 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
 
 	else if(ajStrPrefixC(seqReadLine, "DR   "))
 	{
-	    ajStrTokenAssignC(&handle, seqReadLine, " ");
+            AJNEW0(xref);
+	    ajStrTokenAssignC(&handle, seqReadLine, " ;\n\r");
 	    ajStrTokenNextParse(&handle, &token); /* 'DR' */
-	    ajStrTokenNextParseC(&handle, "\n\r", &token); /* xref */
-	    ajStrAssignS(&xrefstr, token);
-	    ajListPushAppend(thys->Xreflist, xrefstr);
-	    xrefstr = NULL;
+	    ajStrTokenNextParseC(&handle, ";\n\r", &token); /* dbname */
+	    ajStrAssignS(&xref->Db, token);
+            ajStrTrimWhite(&token);
+	    ajStrTokenNextParse(&handle, &token); /* primary */
+            ajStrTrimWhite(&token);
+	    ajStrAssignS(&xref->Id, token);
+	    ajStrTokenNextParse(&handle, &token); /* secondary*/
+
+            if(!ajStrGetLen(token))
+            {
+                if(ajStrGetCharLast(xref->Id) == '.')
+                    ajStrCutEnd(&xref->Id, 1);
+            }
+            else
+            {
+                if(ajStrGetCharLast(token) == '.')
+                    ajStrCutEnd(&token, 1);
+                ajStrTrimWhite(&token);
+                ajStrAssignS(&xref->Secid, token);
+
+                ajStrTokenNextParse(&handle, &token); /* secondary*/
+
+                if(!ajStrGetLen(token))
+                {
+                    if(ajStrGetCharLast(xref->Secid) == '.')
+                        ajStrCutEnd(&xref->Secid, 1);
+                }
+                else
+                {
+                    if(ajStrGetCharLast(token) == '.')
+                        ajStrCutEnd(&token, 1);
+                    ajStrTrimWhite(&token);
+                    ajStrAssignS(&xref->Terid, token);
+
+                    ajStrTokenNextParse(&handle, &token); /* secondary*/
+
+                    if(!ajStrGetLen(token))
+                    {
+                        if(ajStrGetCharLast(xref->Terid) == '.')
+                            ajStrCutEnd(&xref->Terid, 1);
+                    }
+                    else
+                    {
+                        if(ajStrGetCharLast(token) == '.')
+                            ajStrCutEnd(&token, 1);
+                        ajStrTrimWhite(&token);
+                        ajStrAssignS(&xref->Quatid, token);
+                    }
+                }
+            }
+            xref->Type = XREF_DR;
+	    ajListPushAppend(thys->Xreflist, xref);
 	}
 
 	else if(ajStrPrefixC(seqReadLine, "RN   "))
@@ -9592,9 +9675,331 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
 				    &thys->TextPtr);
 	}
     }
+    ajStrDel(&tmpstr);    
 
-    ajStrAssignEmptyS(&thys->Desc, thys->Fulldesc->Name);
+    if(!ajStrGetLen(thys->Desc))
+    {
+        ajStrAssignS(&thys->Desc, thys->Fulldesc->Name);
+
+        iter = ajListIterNewread(thys->Fulldesc->Short);
+
+        while((tmpstr = (AjPStr) ajListIterGet(iter)))
+        {
+            if(ajStrGetLen(tmpstr))
+                ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+        }
+        
+        ajListIterDel(&iter);
+
+        iter = ajListIterNewread(thys->Fulldesc->EC);
+
+        while((tmpstr = (AjPStr) ajListIterGet(iter)))
+        {
+            if(ajStrGetLen(tmpstr))
+                ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+        }
+        
+        ajListIterDel(&iter);
+
+        iter = ajListIterNewread(thys->Fulldesc->AltNames);
+
+        while((subdesc = (AjPSeqSubdesc) ajListIterGet(iter)))
+        {
+            if(ajStrGetLen(subdesc->Name))
+            {
+                ajFmtPrintAppS(&thys->Desc, " (%S)", subdesc->Name);
+            }
+
+            itb = ajListIterNewread(subdesc->Inn);
+            while((tmpstr = (AjPStr) ajListIterGet(itb)))
+            {
+                ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+            }
+            
+            ajListIterDel(&itb);
+
+            itb = ajListIterNewread(subdesc->Short);
+
+            while((tmpstr = (AjPStr) ajListIterGet(itb)))
+                ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+            ajListIterDel(&itb);
+
+            itb = ajListIterNewread(subdesc->EC);
+
+            while((tmpstr = (AjPStr) ajListIterGet(itb)))
+                ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+            ajListIterDel(&itb);
+
+            itb = ajListIterNewread(subdesc->Allergen);
+
+            while((tmpstr = (AjPStr) ajListIterGet(itb)))
+                ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+            ajListIterDel(&itb);
+
+            itb = ajListIterNewread(subdesc->Biotech);
+
+            while((tmpstr = (AjPStr) ajListIterGet(itb)))
+                ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+            ajListIterDel(&itb);
+
+            itb = ajListIterNewread(subdesc->Cdantigen);
+
+            while((tmpstr = (AjPStr) ajListIterGet(itb)))
+                ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+            ajListIterDel(&itb);
+        }
+        
+        ajListIterDel(&iter);
+
+        iter = ajListIterNewread(thys->Fulldesc->SubNames);
+
+        while((subdesc = (AjPSeqSubdesc) ajListIterGet(iter)))
+        {
+            ajFmtPrintAppS(&thys->Desc, " (%S)", subdesc->Name);
+
+            itb = ajListIterNewread(subdesc->Short);
+
+            while((tmpstr = (AjPStr) ajListIterGet(itb)))
+                ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+            ajListIterDel(&itb);
+
+            itb = ajListIterNewread(subdesc->EC);
+
+            while((tmpstr = (AjPStr) ajListIterGet(itb)))
+                ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+            ajListIterDel(&itb);
+        }
+
+        ajListIterDel(&iter);
+
+        iter = ajListIterNewread(thys->Fulldesc->Includes);
+
+        while((desctop = (AjPSeqDesc) ajListIterGet(iter)))
+        {
+            ajFmtPrintAppS(&thys->Desc, " (%S)", desctop->Name);
+            itb = ajListIterNewread(desctop->Short);
+
+            while((tmpstr = (AjPStr) ajListIterGet(itb)))
+                ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+            ajListIterDel(&itb);
+
+            itb = ajListIterNewread(desctop->EC);
+
+            while((tmpstr = (AjPStr) ajListIterGet(itb)))
+                ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+            ajListIterDel(&itb);
+
+            itb = ajListIterNewread(desctop->AltNames);
+
+            while((subdesc = (AjPSeqSubdesc) ajListIterGet(itb)))
+            {
+                if(ajStrGetLen(subdesc->Name))
+                    ajFmtPrintAppS(&thys->Desc, " (%S)", subdesc->Name);
+
+                itc = ajListIterNewread(subdesc->Inn);
+
+                while((tmpstr = (AjPStr) ajListIterGet(itc)))
+                    ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+                ajListIterDel(&itc);
+
+                itc = ajListIterNewread(subdesc->Short);
+
+                while((tmpstr = (AjPStr) ajListIterGet(itc)))
+                    ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+                ajListIterDel(&itc);
+
+                itc = ajListIterNewread(subdesc->EC);
+
+                while((tmpstr = (AjPStr) ajListIterGet(itc)))
+                    ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+                ajListIterDel(&itc);
+
+                itc = ajListIterNewread(subdesc->Allergen);
+
+                while((tmpstr = (AjPStr) ajListIterGet(itc)))
+                    ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+                ajListIterDel(&itc);
+
+                itc = ajListIterNewread(subdesc->Biotech);
+
+                while((tmpstr = (AjPStr) ajListIterGet(itc)))
+                    ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+                ajListIterDel(&itc);
+
+                itc = ajListIterNewread(subdesc->Cdantigen);
+
+                while((tmpstr = (AjPStr) ajListIterGet(itc)))
+                    ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+                ajListIterDel(&itc);
+            }
+
+            ajListIterDel(&itb);
+        
+            itb = ajListIterNewread(desctop->SubNames);
+
+            while((subdesc = (AjPSeqSubdesc) ajListIterGet(itb)))
+            {
+                ajFmtPrintAppS(&thys->Desc, " (%S)", subdesc->Name);
+
+                itc = ajListIterNewread(subdesc->Short);
+
+                while((tmpstr = (AjPStr) ajListIterGet(itc)))
+                    ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+                ajListIterDel(&itc);
+
+                itc = ajListIterNewread(subdesc->EC);
+
+                while((tmpstr = (AjPStr) ajListIterGet(itc)))
+                    ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+                ajListIterDel(&itc);
+
+            }
+
+            ajListIterDel(&itb);
+
+        }
+
+        ajListIterDel(&iter);
+
+        iter = ajListIterNewread(thys->Fulldesc->Contains);
+
+        while((desctop = (AjPSeqDesc) ajListIterGet(iter)))
+        {
+            ajFmtPrintAppS(&thys->Desc, " (%S)", desctop->Name);
+
+            itb = ajListIterNewread(desctop->Short);
+
+            while((tmpstr = (AjPStr) ajListIterGet(itb)))
+                ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+            ajListIterDel(&itb);
+
+            itb = ajListIterNewread(desctop->EC);
+
+            while((tmpstr = (AjPStr) ajListIterGet(itb)))
+                ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+            ajListIterDel(&itb);
+
+            itb = ajListIterNewread(desctop->AltNames);
+
+            while((subdesc = (AjPSeqSubdesc) ajListIterGet(itb)))
+            {
+                if(ajStrGetLen(subdesc->Name))
+                    ajFmtPrintAppS(&thys->Desc, " (%S)", subdesc->Name);
+
+                itc = ajListIterNewread(subdesc->Inn);
+
+                while((tmpstr = (AjPStr) ajListIterGet(itc)))
+                    ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+                ajListIterDel(&itc);
+
+                itc = ajListIterNewread(subdesc->Short);
+
+                while((tmpstr = (AjPStr) ajListIterGet(itc)))
+                    ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+                ajListIterDel(&itc);
+
+                itc = ajListIterNewread(subdesc->EC);
+
+                while((tmpstr = (AjPStr) ajListIterGet(itc)))
+                    ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+                ajListIterDel(&itc);
+
+                itc = ajListIterNewread(subdesc->Allergen);
+
+                while((tmpstr = (AjPStr) ajListIterGet(itc)))
+                    ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+                ajListIterDel(&itc);
+
+                itc = ajListIterNewread(subdesc->Biotech);
+
+                while((tmpstr = (AjPStr) ajListIterGet(itc)))
+                    ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+                ajListIterDel(&itc);
+
+                itc = ajListIterNewread(subdesc->Cdantigen);
+
+                while((tmpstr = (AjPStr) ajListIterGet(itc)))
+                    ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+                ajListIterDel(&itc);
+
+            }
+
+            ajListIterDel(&itb);
+        
+            itb = ajListIterNewread(desctop->SubNames);
+
+            while((subdesc = (AjPSeqSubdesc) ajListIterGet(itb)))
+            {
+                ajFmtPrintAppS(&thys->Desc, " (%S)", subdesc->Name);
+                itc = ajListIterNewread(subdesc->Short);
+
+                itc = ajListIterNewread(subdesc->Cdantigen);
+
+                while((tmpstr = (AjPStr) ajListIterGet(itc)))
+                    ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+                ajListIterDel(&itc);
+
+                itc = ajListIterNewread(subdesc->EC);
+
+                itc = ajListIterNewread(subdesc->Cdantigen);
+
+                while((tmpstr = (AjPStr) ajListIterGet(itc)))
+                    ajFmtPrintAppS(&thys->Desc, " (%S)", tmpstr);
+
+                ajListIterDel(&itc);
+
+                }
+
+            ajListIterDel(&itb);
+        }
+
+        ajListIterDel(&iter);
+
+        if(thys->Fulldesc->Fragments || thys->Fulldesc->Precursor)
+        {
+            if(thys->Fulldesc->Fragments == 1)
+                ajFmtPrintAppS(&thys->Desc, " (Fragment)");
+
+            if(thys->Fulldesc->Fragments == 2)
+                ajFmtPrintAppS(&thys->Desc, " (Fragments)");
+
+            if(thys->Fulldesc->Precursor)
+                ajFmtPrintAppS(&thys->Desc, " (Precursor)");
+        }
+        if(ajStrGetCharFirst(thys->Desc) == ' ')
+            ajStrCutStart(&thys->Desc, 1);
+
+        tmpstr = NULL;
+    }
+
     ajSeqSetProt(thys);
+
+    ajSeqreflistGetXrefs(thys->Reflist, thys->Xreflist);
+
+    taxid = ajSeqGetTaxid(thys);
 
     ajFilebuffClear(buff, 0);
     ajStrDel(&token);
@@ -9638,14 +10043,15 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
     AjPStr datestr = NULL;
     AjPStr relstr = NULL;
     AjPStr cmtstr = NULL;		/* stored in AjPSeq - do not delete */
-    AjPStr xrefstr = NULL;		/* stored in AjPSeq - do not delete */
     ajuint icount;
     AjPSeqRef seqref = NULL;
+    AjPSeqXref xref  = NULL;
     ajuint refnum;
     ajuint seqlen=1024;
     ajuint tmplen;
     ajuint itmp;
     ajuint i;
+    ajuint taxid = 0;
 
     buff = seqin->Filebuff;
 
@@ -9899,12 +10305,61 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 
 	else if(ajStrPrefixC(seqReadLine, "DR   "))
 	{
-	    ajStrTokenAssignC(&handle, seqReadLine, " ");
+            AJNEW0(xref);
+	    ajStrTokenAssignC(&handle, seqReadLine, " ;\n\r");
 	    ajStrTokenNextParse(&handle, &token); /* 'DR' */
-	    ajStrTokenNextParseC(&handle, "\n\r", &token); /* xref */
-	    ajStrAssignS(&xrefstr, token);
-	    ajListPushAppend(thys->Xreflist, xrefstr);
-	    xrefstr = NULL;
+	    ajStrTokenNextParseC(&handle, ";\n\r", &token); /* dbname */
+	    ajStrAssignS(&xref->Db, token);
+            ajStrTrimWhite(&token);
+	    ajStrTokenNextParse(&handle, &token); /* primary */
+            ajStrTrimWhite(&token);
+	    ajStrAssignS(&xref->Id, token);
+	    ajStrTokenNextParse(&handle, &token); /* secondary*/
+
+            if(!ajStrGetLen(token))
+            {
+                if(ajStrGetCharLast(xref->Id) == '.')
+                    ajStrCutEnd(&xref->Id, 1);
+            }
+            else
+            {
+                if(ajStrGetCharLast(token) == '.')
+                    ajStrCutEnd(&token, 1);
+                ajStrTrimWhite(&token);
+                ajStrAssignS(&xref->Secid, token);
+
+                ajStrTokenNextParse(&handle, &token); /* secondary*/
+
+                if(!ajStrGetLen(token))
+                {
+                    if(ajStrGetCharLast(xref->Secid) == '.')
+                        ajStrCutEnd(&xref->Secid, 1);
+                }
+                else
+                {
+                    if(ajStrGetCharLast(token) == '.')
+                        ajStrCutEnd(&token, 1);
+                    ajStrTrimWhite(&token);
+                    ajStrAssignS(&xref->Terid, token);
+
+                    ajStrTokenNextParse(&handle, &token); /* secondary*/
+
+                    if(!ajStrGetLen(token))
+                    {
+                        if(ajStrGetCharLast(xref->Terid) == '.')
+                            ajStrCutEnd(&xref->Terid, 1);
+                    }
+                    else
+                    {
+                        if(ajStrGetCharLast(token) == '.')
+                            ajStrCutEnd(&token, 1);
+                        ajStrTrimWhite(&token);
+                        ajStrAssignS(&xref->Quatid, token);
+                    }
+                }
+            }
+            xref->Type = XREF_DR;
+	    ajListPushAppend(thys->Xreflist, xref);
 	}
 
 	else if(ajStrPrefixC(seqReadLine, "RN   "))
@@ -10161,6 +10616,18 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
     }
     
     ajSeqSetNuc(thys);
+
+    if(ajFeattableGetSize(thys->Fttable))
+    {
+        ajFeattableGetXrefs(thys->Fttable, thys->Xreflist, &taxid);
+        if(taxid)
+            seqTaxidSaveI(thys, taxid);
+    }
+    
+    ajSeqreflistGetXrefs(thys->Reflist, thys->Xreflist);
+
+    if(!taxid)
+        taxid = ajSeqGetTaxid(thys);
 
     ajFilebuffClear(buff, 0);
 
@@ -10491,6 +10958,7 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
     ajuint seqlen = 1024;
     ajint i;
     ajint nfields;
+    ajuint taxid;
 
     ajDebug("seqReadGenbank\n");
 
@@ -10908,6 +11376,16 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 	    ok = ajBuffreadLineStore(buff,&seqReadLine,
 				    seqin->Text, &thys->TextPtr);
 
+
+    if(ajFeattableGetSize(thys->Fttable))
+    {
+        ajFeattableGetXrefs(thys->Fttable, thys->Xreflist, &taxid);
+        if(taxid)
+            seqTaxidSaveI(thys, taxid);
+    }
+    
+    if(!taxid)
+        taxid = ajSeqGetTaxid(thys);
 
     ajFilebuffClear(buff, 0);
 
@@ -14029,7 +14507,28 @@ static void seqTaxSave(AjPSeq thys, const AjPStr tax, ajuint level)
 
 
 
-/* @funcstatic seqTaxidSave ***************************************************
+/* @funcstatic seqTaxidSaveI ***************************************************
+**
+** Adds an organism NCBI taxonomy id to the stored list for a sequence.
+**
+** @param [u] thys [AjPSeq] Sequence object
+** @param [r] tax [ajuint] Organism NCBI taxonomy id
+** @return [void]
+** @@
+******************************************************************************/
+
+static void seqTaxidSaveI(AjPSeq thys, ajuint tax)
+{
+    if(tax && !ajStrGetLen(thys->Taxid))
+        ajStrFromUint(&thys->Taxid, tax);
+
+    return;
+}
+
+
+
+
+/* @funcstatic seqTaxidSaveS ***************************************************
 **
 ** Adds an organism NCBI taxonomy id to the stored list for a sequence.
 **
@@ -14039,7 +14538,7 @@ static void seqTaxSave(AjPSeq thys, const AjPStr tax, ajuint level)
 ** @@
 ******************************************************************************/
 
-static void seqTaxidSave(AjPSeq thys, const AjPStr tax)
+static void seqTaxidSaveS(AjPSeq thys, const AjPStr tax)
 {
     if(!ajStrGetLen(thys->Taxid))
         ajStrAssignS(&thys->Taxid, tax);
