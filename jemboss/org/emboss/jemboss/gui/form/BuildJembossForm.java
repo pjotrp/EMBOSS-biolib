@@ -41,7 +41,6 @@ import org.emboss.jemboss.parser.ParseAcd;
 import org.emboss.jemboss.programs.*;
 import org.emboss.jemboss.*;
 import org.emboss.jemboss.gui.*;
-import org.emboss.jemboss.gui.SwingWorker;
 import org.emboss.jemboss.soap.*;
 import org.emboss.jemboss.gui.sequenceChooser.*;
 import org.emboss.jemboss.graphics.Graph2DPlot;
@@ -109,6 +108,9 @@ public class BuildJembossForm implements ActionListener
   
   final static String fs = System.getProperty("file.separator");
 
+  // flag for "don't show this dialog again" message for asynchronous job submissions
+  protected static boolean showjobsubmittedmsg = true;
+  
   
   public BuildJembossForm(String appDescription, String db[],
         final String applName, String[] envp, String cwd, 
@@ -154,12 +156,7 @@ public class BuildJembossForm implements ActionListener
         if (!withSoap) {
             String dochome;
             String acddir = mysettings.getAcdDirToParse();
-            if (System.getProperty("os.name").startsWith("Windows"))
-                dochome = ".." + fs + "doc" + fs + "programs" + fs
-                + "html";
-            else
-                dochome = ".." + fs + "doc" + fs + "html" + fs
-                + "emboss" + fs + "apps";
+            dochome = ".." + fs + "doc" + fs + "programs" + fs + "html";
             url = acddir + fs + dochome + fs + applName + ".html";
             try {
                 File f = new File(url);
@@ -457,18 +454,9 @@ public class BuildJembossForm implements ActionListener
     else if ( ae.getActionCommand().startsWith("GO"))
     {
       boolean batchStart = false;
-//      String jobSubmittedMsg = null;
       f.setCursor(cbusy);
       if (mysettings.getCurrentMode().equals("batch")){
           batchStart = true;
-//          jobSubmittedMsg = "<html><font color=green size=-1>Your <i>"+applName+
-//          "</i> job has been " +
-//          (withSoap ?
-//               "sent to your Jemboss server":
-//               "started in a new background process")+
-//          "</font><br>" +
-//          "<font size=-2>You can get its results using the <i>Batch Job Manager</i> " +
-//          "(see its activation button below)</font></html>";          
       }
       try{
       if(!withSoap)
@@ -483,7 +471,41 @@ public class BuildJembossForm implements ActionListener
             BatchSoapProcess bsp = new BatchSoapProcess(embossCommand,filesToMove,mysettings);
             bsp.setWithSoap(false);
             bsp.start();
-//            jobSubmittedMessage.setText(jobSubmittedMsg);
+            if (showjobsubmittedmsg){
+            	final JPanel p = new JPanel(new BorderLayout(1,10));
+            	JLabel jobSubmitted = new JLabel("Your job has been submmitted");
+            	p.add(jobSubmitted, BorderLayout.PAGE_START);
+            	JLabel checkResults = new JLabel("Use Batch Job Manager");
+            	checkResults.setHorizontalTextPosition(SwingConstants.LEFT);
+            	checkResults.setFont(new java.awt.Font("Dialog", 0, 13));
+            	checkResults.setForeground(new java.awt.Color(91, 53, 53));
+            	ClassLoader cl = this.getClass().getClassLoader();
+            	ImageIcon jobIcon = new ImageIcon(cl.getResource("images/Job_manager_button.gif"));
+            	checkResults.setIcon(jobIcon);
+            	p.add(checkResults, BorderLayout.CENTER);
+            	JLabel checkResults_ = new JLabel(" to check its results");
+            	checkResults_.setFont(new java.awt.Font("Dialog", 0, 13));
+            	checkResults_.setForeground(new java.awt.Color(91, 53, 53));
+            	p.add(checkResults_, BorderLayout.AFTER_LINE_ENDS);
+            	
+            	JCheckBox dontShowAgain = new JCheckBox("don't show this dialog again");
+
+            	dontShowAgain.addItemListener(new ItemListener(){
+            	public void itemStateChanged(ItemEvent e) {
+            	    if (e.getStateChange() == ItemEvent.SELECTED) {
+            	    	showjobsubmittedmsg = false;
+            	    } else {
+            	    	showjobsubmittedmsg = true;
+            	    }
+            	}
+            	});
+
+            	dontShowAgain.setFont(new java.awt.Font("Dialog", 0, 10));
+            	p.add(dontShowAgain, BorderLayout.PAGE_END);
+            	JOptionPane.showMessageDialog(null,
+            			p, "Job submitted",
+            			JOptionPane.INFORMATION_MESSAGE);
+            }
           }
           else
           {
@@ -519,7 +541,6 @@ public class BuildJembossForm implements ActionListener
             {
               BatchSoapProcess bsp = new BatchSoapProcess(embossCommand,filesToMove,mysettings);
               bsp.start();
-//              jobSubmittedMessage.setText(jobSubmittedMsg);
             }
             else
             {
@@ -1247,29 +1268,12 @@ public class BuildJembossForm implements ActionListener
     {
       try
       {
-        JFrame fsend = new JFrame("Batch");
-        final int max = 20;
-        final JProgressBar progressBar = new JProgressBar(0,max);
+        JFrame fsend = new JFrame("job submission");
+        final JProgressBar progressBar = new JProgressBar();
         progressBar.setStringPainted(true);
-        progressBar.setString("Sending batch process now!");
+        progressBar.setString("Starting your job in asynchronous mode...");
         progressBar.setBackground(Color.white);
-
-        SwingWorker batchWorker = new SwingWorker()
-        {
-          public Object construct()
-          {
-            try
-            {
-              for(int i=0; i<max; i++)
-              {
-                sleep(500);
-                progressBar.setValue(i);
-              }
-            }
-            catch(InterruptedException intr){}
-            return null;
-          }
-        };
+        progressBar.setIndeterminate(true);
 
         fsend.getContentPane().add(progressBar);
         fsend.pack();
@@ -1277,7 +1281,6 @@ public class BuildJembossForm implements ActionListener
         fsend.setLocation( (int)(d.getWidth()-fsend.getWidth())/2,
                            (int)(d.getHeight()-fsend.getHeight())/2 );
         fsend.setVisible(true);
-        batchWorker.start();
 
         final JembossProcess er;
         if(withSoap)
