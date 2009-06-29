@@ -33,6 +33,7 @@ import java.util.Hashtable;
 import java.util.Vector;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.prefs.Preferences;
 
 import java.awt.event.*;
 import java.io.*;
@@ -108,8 +109,9 @@ public class BuildJembossForm implements ActionListener
   
   final static String fs = System.getProperty("file.separator");
 
+  static Preferences prfs = Preferences.userNodeForPackage(BuildJembossForm.class);
   // flag for "don't show this dialog again" message for asynchronous job submissions
-  protected static boolean showjobsubmittedmsg = true;
+  protected static final String DISPLAY_JOB_SUBMITTED_MSG = "DISPLAY_JOB_SUBMITTED_MSG";
   
   
   public BuildJembossForm(String appDescription, String db[],
@@ -471,7 +473,7 @@ public class BuildJembossForm implements ActionListener
             BatchSoapProcess bsp = new BatchSoapProcess(embossCommand,filesToMove,mysettings);
             bsp.setWithSoap(false);
             bsp.start();
-            if (showjobsubmittedmsg){
+            if (prfs.getBoolean(DISPLAY_JOB_SUBMITTED_MSG, true)){
             	final JPanel p = new JPanel(new BorderLayout(1,10));
             	JLabel jobSubmitted = new JLabel("Your job has been submmitted");
             	p.add(jobSubmitted, BorderLayout.PAGE_START);
@@ -493,9 +495,9 @@ public class BuildJembossForm implements ActionListener
             	dontShowAgain.addItemListener(new ItemListener(){
             	public void itemStateChanged(ItemEvent e) {
             	    if (e.getStateChange() == ItemEvent.SELECTED) {
-            	    	showjobsubmittedmsg = false;
+            	    	prfs.putBoolean(DISPLAY_JOB_SUBMITTED_MSG, false);
             	    } else {
-            	    	showjobsubmittedmsg = true;
+            	    	prfs.putBoolean(DISPLAY_JOB_SUBMITTED_MSG, true);
             	    }
             	}
             	});
