@@ -444,7 +444,6 @@ deploy_axis_services()
   CLASSPATH=$AXIS/axis.jar::$AXIS/jaxrpc.jar:$AXIS/saaj.jar:$AXIS/commons-logging.jar:
   CLASSPATH=${CLASSPATH}:$AXIS/commons-discovery.jar:$AXIS/wsdl4j.jar:$AXIS/servlet.jar
 #  CLASSPATH=${CLASSPATH}:$JEMBOSS_LIB/jnet.jar:$JEMBOSS_LIB/jsse.jar:$JEMBOSS_LIB/jcert.jar
-  CLASSPATH=${CLASSPATH}:$JEMBOSS_LIB/xerces.jar
 
   PROXY_OFF="-DproxySet=false -DproxyHost= -DproxyPort= -Dhttp.proxyHost= -Dhttp.proxyPort= -Dhttps.proxyHost= -Dhttps.proxyPort= "
   SERVICE=$2
@@ -476,7 +475,7 @@ deploy_auth_services()
 {
 
   JEMBOSS_LIB=$1
-  CLASSPATH=$JEMBOSS_LIB/soap.jar:$JEMBOSS_LIB/activation.jar:$JEMBOSS_LIB/xerces.jar:$JEMBOSS_LIB/mail.jar
+  CLASSPATH=$JEMBOSS_LIB/soap.jar:$JEMBOSS_LIB/activation.jar:$JEMBOSS_LIB/mail.jar
 #  CLASSPATH=${CLASSPATH}:$JEMBOSS_LIB/jnet.jar:$JEMBOSS_LIB/jsse.jar:$JEMBOSS_LIB/jcert.jar
 
   SERVICE=$2
