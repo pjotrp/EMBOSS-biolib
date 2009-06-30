@@ -25,7 +25,7 @@ export CLASSPATH
 #
 #For csh: 
 #setenv CLASSPATH $LIB/JembossPrintAlignment.jar:$LIB/jakarta-regexp-1.2.jar
-#setenv CLASSPATH ${CLASSPATH}:$LIB/jnet.jar:$LIB/jcert.jar:$LIB/jsse.jar:$LIB/xerces.jar
+#setenv CLASSPATH ${CLASSPATH}:$LIB/jnet.jar:$LIB/jcert.jar:$LIB/jsse.jar
 #setenv CLASSPATH ${CLASSPATH}:$LIB/axis/axis.jar:$LIB/axis/jaxrpc.jar:$LIB/axis/saaj.jar
 #setenv CLASSPATH ${CLASSPATH}:$LIB/axis/commons-logging.jar:$LIB/axis/commons-discovery.jar
 #setenv CLASSPATH ${CLASSPATH}:$LIB/grout.jar:$LIB/client.jar:$LIB/jalview.jar:.
