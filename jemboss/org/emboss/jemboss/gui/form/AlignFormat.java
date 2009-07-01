@@ -23,7 +23,6 @@ package org.emboss.jemboss.gui.form;
 
 import org.emboss.jemboss.parser.ParseAcd;
 import java.awt.Dimension;
-import javax.swing.JCheckBox;
 
 /**
 *
