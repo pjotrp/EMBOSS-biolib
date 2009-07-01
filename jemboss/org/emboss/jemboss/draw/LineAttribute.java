@@ -72,8 +72,11 @@ public class LineAttribute extends JPanel
       }
     });
     group.add(jline);
-    jcirc.setSelected(true);
-    lineAttr.put("circular",new Boolean(true));
+    if (draw.isCircular())
+        jcirc.setSelected(true);
+    else
+        jline.setSelected(true);
+    lineAttr.put("circular",new Boolean(draw.isCircular()));
     bacross.add(jcirc); 
     bacross.add(jline);
     bacross.add(Box.createHorizontalGlue());
