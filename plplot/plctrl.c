@@ -1,4 +1,4 @@
-/* $Id: plctrl.c,v 1.12 2009/01/26 14:28:59 rice Exp $
+/* $Id: plctrl.c,v 1.13 2009/07/01 14:24:17 ajb Exp $
 
 	Misc. control routines, like begin, end, exit, change graphics/text
 	mode, change color.  Includes some spillage from plcore.c.  If you
@@ -1832,7 +1832,7 @@ plGetInt(char *s)
     char line[256];
 
     while (i++ < 10) {
-	fprintf(stdout, s);
+	fprintf(stdout, "%s", s);
 	plio_fgets(line, sizeof(line), stdin);
 
 #ifdef MSDOS
@@ -1863,7 +1863,7 @@ plGetFlt(char *s)
     char line[256];
 
     while (i++ < 10) {
-	fprintf(stdout, s);
+	fprintf(stdout, "%s", s);
 	plio_fgets(line, sizeof(line), stdin);
 
 #ifdef MSDOS
