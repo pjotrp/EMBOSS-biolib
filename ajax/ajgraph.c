@@ -204,7 +204,7 @@ static int plfileinfo (char* tmp)
     }
     
     /* simple filenames */
-    sprintf(tmp, plsc->FileName);
+    sprintf(tmp, "%s", plsc->FileName);
 
     return -1;
 }

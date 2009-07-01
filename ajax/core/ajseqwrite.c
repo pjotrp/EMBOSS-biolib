@@ -6769,7 +6769,7 @@ static void seqWriteSeq(AjPSeqout outseq, const SeqPSeqFormat sf)
 	    }
 
 	    if(*(sf->leftstr))
-		fprintf(outf, sf->leftstr); /* string at line start */
+		fprintf(outf, "%s", sf->leftstr); /* string at line start */
 
 	    if(sf->nameleft)
 		fprintf(outf, nameform, idword);
