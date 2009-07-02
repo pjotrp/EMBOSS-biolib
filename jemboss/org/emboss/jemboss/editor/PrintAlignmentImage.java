@@ -179,7 +179,7 @@ public class PrintAlignmentImage extends ScrollPanel
                     double topMargin, double btmMargin)
   {
     this.nResPerLine = nResPerLine;
-    PrinterJob printerJob = PrinterJob.getPrinterJob();
+    //PrinterJob printerJob = PrinterJob.getPrinterJob();
     format = new PageFormat();
     if(landscape)
       format.setOrientation(PageFormat.LANDSCAPE);
@@ -242,7 +242,7 @@ public class PrintAlignmentImage extends ScrollPanel
                     double topMargin, double btmMargin)
   {
     this.nResPerLine = nResPerLine;
-    PrinterJob printerJob = PrinterJob.getPrinterJob();
+    //PrinterJob printerJob = PrinterJob.getPrinterJob();
     format = new PageFormat();
 
     Dimension d = gsc.getImageableSize(nResPerLine);
@@ -572,6 +572,9 @@ public class PrintAlignmentImage extends ScrollPanel
     filemenu.add(printMenu);
 
     JMenuItem print = new JMenuItem("Print Postscript...");
+    print.setToolTipText("Print using available printers in your computer\n" +
+    		"or export alignment image to a postscript file (if you have " +
+    		" installed postscript printers)");
     print.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
