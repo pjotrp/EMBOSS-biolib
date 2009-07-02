@@ -21,6 +21,7 @@
 package org.emboss.jemboss.editor;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -216,6 +217,9 @@ public class AlignJFrame extends JFrame
     fileMenu.add(printMenu);
 
     JMenuItem print = new JMenuItem("Print Postscript...");
+    print.setToolTipText("Print using available printers in your computer\n" +
+    		"or export alignment image to a postscript file (if you have " +
+    		" installed postscript printers)");
     print.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -783,6 +787,10 @@ public class AlignJFrame extends JFrame
   private void colourMenus(JMenu viewMenu)
   {
     final ButtonGroup group = new ButtonGroup();
+    // an invisble radio button to workaround earlier versions of java
+    // which is selected only when user deselect "Colour boxes" option
+    final JRadioButton invisibleb = new JRadioButton();
+    group.add(invisibleb);
     drawColorBox = new JCheckBoxMenuItem("Colour boxes",true);
     drawColorBox.addItemListener(new ItemListener()
     {
@@ -790,9 +798,9 @@ public class AlignJFrame extends JFrame
             boolean selected = e.getStateChange() == ItemEvent.SELECTED;
             gsc.setDrawColor(selected);
             if(!selected){
-                ButtonModel m = group.getSelection();
-                if (m!=null)
-                	m.setSelected(false);
+            	//java6 has a group.clearSelection(); method that in the future
+            	//can replace the invisible button workaround 
+            	invisibleb.setSelected(true);
             }
         }
     });
