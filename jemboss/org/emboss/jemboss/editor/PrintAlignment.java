@@ -46,7 +46,6 @@ public class PrintAlignment
     int nresPerPage=  showOptions(gsc,format);
     gsc.setNumberOfResiduesPerLine(nresPerPage);
 
-//  System.out.println(format.getImageableY());
     book.append(gsc,format, 
                 gsc.getNumberPages(format,nresPerPage));
     printerJob.setPageable(book);
