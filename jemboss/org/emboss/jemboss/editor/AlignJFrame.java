@@ -794,13 +794,17 @@ public class AlignJFrame extends JFrame
     drawColorBox = new JCheckBoxMenuItem("Colour boxes",true);
     drawColorBox.addItemListener(new ItemListener()
     {
+        ButtonModel lastSelection;
         public void itemStateChanged(ItemEvent e) {
             boolean selected = e.getStateChange() == ItemEvent.SELECTED;
             gsc.setDrawColor(selected);
             if(!selected){
+            	lastSelection = group.getSelection();
             	//java6 has a group.clearSelection(); method that in the future
             	//can replace the invisible button workaround 
             	invisibleb.setSelected(true);
+            } else{
+            	lastSelection.setSelected(true);
             }
         }
     });
