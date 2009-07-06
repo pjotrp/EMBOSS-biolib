@@ -778,9 +778,6 @@ public class SectionPanel
                 "that are dependent on the sequence attributes.");
 
         upload.setForeground(Color.red);
-        Dimension d = upload.getPreferredSize();
-        upload.setPreferredSize(new Dimension(maxSectionWidth, 
-                                         (int)d.getHeight()));
         left.add(upload);
         left.add(Box.createHorizontalGlue());
         section.add(left);
@@ -976,9 +973,9 @@ public class SectionPanel
   */
   private boolean getSeqAttr(String fc, String[] envp, String att) throws Exception
   {
-    String command = mysettings.getEmbossBin().concat(
-     "infoseq -only -type -length -nohead -auto "+fc);
-    RunEmbossApplication2 rea = new RunEmbossApplication2(command,envp,null);
+    String infoseqcmd = mysettings.getEmbossBin()+"infoseq";
+    String[] infoseqcmdA  = {infoseqcmd, "-only", "-type", "-length", "-nohead", "-auto", fc};
+    RunEmbossApplication2 rea = new RunEmbossApplication2(infoseqcmdA,envp,null);
     if (rea.getStatus().equals("1")){
         String error = rea.getInitialIOError();
         if (error==null)
@@ -1002,9 +999,9 @@ public class SectionPanel
 
     if(att.startsWith("seqset"))
     {
-      command = mysettings.getEmbossBin().concat(
-                 "infoalign -only -weight  -nohead -out stdout -auto "+fc);
-      rea = new RunEmbossApplication2(command,envp,null);
+      String infoaligncmd = mysettings.getEmbossBin()+"infoalign";
+      String[] infoaligncmdA = {infoaligncmd, "-only", "-weight", "-nohead", "-out", "stdout", "-auto", fc};
+      rea = new RunEmbossApplication2(infoaligncmdA,envp,null);
       rea.waitFor();
       stok = new StringTokenizer(rea.getProcessStdout(),"\n");
       ajaxWeight = 0.f;
