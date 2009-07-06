@@ -94,7 +94,7 @@ int main(int argc, char **argv)
 
     /* feature filter criteria */
     AjPStr source = NULL;
-    AjPStr type   = NULL;
+    AjPStr feattype   = NULL;
     ajint sense;
     float minscore;
     float maxscore;
@@ -114,7 +114,7 @@ int main(int argc, char **argv)
     
     /* feature filter criteria */
     source   = ajAcdGetString("source");
-    type     = ajAcdGetString("type");
+    feattype = ajAcdGetString("type");
     sense    = ajAcdGetInt("sense");
     minscore = ajAcdGetFloat("minscore");
     maxscore = ajAcdGetFloat("maxscore");
@@ -135,7 +135,7 @@ int main(int argc, char **argv)
 	featab = ajSeqGetFeatCopy(seq);
 
         /* delete features in the table that don't match our criteria */
-        extractfeat_FeatureFilter(featab, source, type, sense,
+        extractfeat_FeatureFilter(featab, source, feattype, sense,
 				  testscore, minscore, maxscore, tag, value);
 
         /* extract the features */
@@ -154,7 +154,7 @@ int main(int argc, char **argv)
 
     ajStrDel(&describe);
     ajStrDel(&source);
-    ajStrDel(&type);
+    ajStrDel(&feattype);
     ajStrDel(&tag);
     ajStrDel(&value);
 
@@ -853,18 +853,22 @@ static AjBool extractfeat_MatchFeature(const AjPFeature gf,
     ajDebug("ajFeatGetStrand(gf) '%x' sense %d\n", ajFeatGetStrand(gf), sense);
     ajDebug("testscore: %B ajFeatGetScore(gf): %f minscore:%f maxscore:%f\n",
 	    testscore, ajFeatGetScore(gf), minscore, maxscore);
-    if(!embMiscMatchPattern(ajFeatGetSource(gf), source) ||
-       !ajFeatTypeMatchS(gf, type) ||
-       (ajFeatGetStrand(gf) == '+' && sense == -1) ||
-       (ajFeatGetStrand(gf) == '-' && sense == +1) ||
-       (testscore && ajFeatGetScore(gf) < minscore) ||
-       (testscore && ajFeatGetScore(gf) > maxscore) ||
-       !*tagsmatch)
-    {
-	ajDebug("return ajFalse\n");
-	return ajFalse;
-    }
-    ajDebug("return ajTrue\n");
+    if(!embMiscMatchPattern(ajFeatGetSource(gf), source))
+        return ajFalse;
+    if(ajStrGetLen(type) && !ajFeatTypeMatchS(gf, type))
+        return ajFalse;
+    if(ajFeatGetStrand(gf) == '+' && sense == -1)
+        return ajFalse;
+    if(ajFeatGetStrand(gf) == '-' && sense == +1)
+        return ajFalse;
+    if(testscore && ajFeatGetScore(gf) < minscore)
+        return ajFalse;
+    if(testscore && ajFeatGetScore(gf) > maxscore)
+       return ajFalse;
+    if(!*tagsmatch)
+        return ajFalse;
+
+    ajDebug("All tests passed, return ajTrue\n");
 
     return ajTrue;
 }
