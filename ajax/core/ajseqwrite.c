@@ -175,7 +175,7 @@ static void       seqWriteEmblnew(AjPSeqout outseq);
 static void       seqWriteExperiment(AjPSeqout outseq);
 static void       seqWriteFasta(AjPSeqout outseq);
 static void       seqWriteFastqIllumina(AjPSeqout outseq);
-static void       seqWriteFastqInt(AjPSeqout outseq);
+/*static void       seqWriteFastqInt(AjPSeqout outseq);*/
 static void       seqWriteFastqSanger(AjPSeqout outseq);
 static void       seqWriteFastqSolexa(AjPSeqout outseq);
 static void       seqWriteFitch(AjPSeqout outseq);
@@ -407,21 +407,23 @@ static SeqOOutFormat seqOutFormat[] =
     {"das",        "DASSEQUENCE DAS any sequence",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteDasseq},
-    {"fastqsanger", "FASTQ short read format with phred quality",
+    {"fastq-sanger", "FASTQ short read format with phred quality",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
          AJFALSE, AJFALSE, AJFALSE, seqWriteFastqSanger},
     {"fastq", "FASTQ short read format with phred quality",
 	 AJTRUE,  AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
          AJFALSE, AJFALSE, AJFALSE, seqWriteFastqSanger},
-    {"fastqillumina", "FASTQ Illumina 1.3 short read format",
+    {"fastq-illumina", "FASTQ Illumina 1.3 short read format",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
          AJFALSE, AJFALSE, AJFALSE, seqWriteFastqIllumina},
-    {"fastqsolexa", "FASTQ Solexa/Illumina 1.0 short read format",
+    {"fastq-solexa", "FASTQ Solexa/Illumina 1.0 short read format",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
          AJFALSE, AJFALSE, AJFALSE, seqWriteFastqSolexa},
-    {"fastqint", "FASTQ short read format with integer phred quality",
-         AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
-         AJFALSE, AJFALSE, AJFALSE, seqWriteFastqInt},
+/*
+**     {"fastq-int", "FASTQ short read format with integer phred quality",
+**         AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
+**         AJFALSE, AJFALSE, AJFALSE, seqWriteFastqInt},
+*/
     {"debug",      "Debugging trace of full internal data content",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteDebug}, /* trace report */
@@ -1636,9 +1638,11 @@ static void seqWriteFastqSolexa(AjPSeqout outseq)
                 if(pval == 1.0)
                     pval = 0.75;
 
-                qval = -10.0 * log10(pval/(1.0 - pval));
+                qval = 0.5 + -10.0 * log10(pval/(1.0 - pval));
                 qchar = 64 + (int) qval;
                 ajStrAppendK(&seq, qchar);
+                ajDebug("[%d] aval:%.4f qval:%.4f %d '%c'\n",
+                        j, sval, qval, (int)qval, qchar);
             }
             ajFmtPrintF(outseq->File, "%S\n", seq);
         }
@@ -1670,15 +1674,16 @@ static void seqWriteFastqSolexa(AjPSeqout outseq)
 
 
 
-/* @funcstatic seqWriteFastqInt ***********************************************
+/* #funcstatic seqWriteFastqInt ***********************************************
 **
 ** Writes a sequence in FASTA format with Solexa integer scores
 **
-** @param [u] outseq [AjPSeqout] Sequence output object.
-** @return [void]
-** @@
+** #param [u] outseq [AjPSeqout] Sequence output object.
+** #return [void]
+** ##
 ******************************************************************************/
 
+/*
 static void seqWriteFastqInt(AjPSeqout outseq)
 {
     ajuint i;
@@ -1695,7 +1700,6 @@ static void seqWriteFastqInt(AjPSeqout outseq)
     double qval;
 
     ajStrAssignS(&db, outseq->Setoutdb);
-    /* ajStrAssignEmptyS(&db, outseq->Db);*/
 
     ajDebug("seqWriteFastqInt outseq Db '%S' Setdb '%S' Setoutdb '%S' "
             "Name '%S'\n",
@@ -1709,8 +1713,6 @@ static void seqWriteFastqInt(AjPSeqout outseq)
 	ajFmtPrintF(outseq->File, " %S", outseq->Sv);
     else if(ajStrGetLen(outseq->Acc))
 	ajFmtPrintF(outseq->File, " %S", outseq->Acc);
-
-    /* no need to bother with outseq->Gi because we have Sv anyway */
 
     if(ajStrGetLen(outseq->Desc))
 	ajFmtPrintF(outseq->File, " %S", outseq->Desc);
@@ -1774,7 +1776,7 @@ static void seqWriteFastqInt(AjPSeqout outseq)
 
     return;
 }
-
+*/
 
 
 

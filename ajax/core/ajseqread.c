@@ -554,7 +554,7 @@ static AjBool     seqReadExperiment(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadFasta(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadFastq(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadFastqIllumina(AjPSeq thys, AjPSeqin seqin);
-static AjBool     seqReadFastqInt(AjPSeq thys, AjPSeqin seqin);
+/*static AjBool     seqReadFastqInt(AjPSeq thys, AjPSeqin seqin);*/
 static AjBool     seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadFastqSolexa(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadFitch(AjPSeq thys, AjPSeqin seqin);
@@ -722,18 +722,20 @@ static SeqOInFormat seqInFormatDef[] =
   {"fastq",       "FASTQ short read format ignoring quality scores",
        AJFALSE, AJTRUE,  AJTRUE,  AJFALSE,
        AJFALSE, AJFALSE, seqReadFastq, AJFALSE, 0},
-  {"fastqsanger",  "FASTQ short read format with phred quality",
+  {"fastq-sanger", "FASTQ short read format with phred quality",
        AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
        AJFALSE, AJFALSE, seqReadFastqSanger, AJFALSE, 0},
-  {"fastqillumina","FASTQ Illumina 1.3 short read format",
+  {"fastq-illumina","FASTQ Illumina 1.3 short read format",
        AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
        AJFALSE, AJFALSE, seqReadFastqIllumina, AJFALSE, 0},
-  {"fastqsolexa",  "FASTQ Solexa/Illumina 1.0 short read format",
+  {"fastq-solexa",  "FASTQ Solexa/Illumina 1.0 short read format",
        AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
        AJFALSE, AJFALSE, seqReadFastqSolexa, AJFALSE, 0},
-  {"fastqint",  "FASTQ short read format with integer Solexa scores",
-       AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
-       AJFALSE, AJFALSE, seqReadFastqInt, AJFALSE, 0},
+/*
+**  {"fastq-int",  "FASTQ short read format with integer Solexa scores",
+**       AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
+**       AJFALSE, AJFALSE, seqReadFastqInt, AJFALSE, 0},
+*/
   {"genbank",     "Genbank entry format",
        AJFALSE, AJTRUE,  AJTRUE,  AJFALSE,
        AJTRUE,  AJTRUE,  seqReadGenbank, AJFALSE, 0},
@@ -2860,17 +2862,18 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
 
 
 
-/* @funcstatic seqReadFastqInt ************************************************
+/* #funcstatic seqReadFastqInt ************************************************
 **
 ** Given data in a sequence structure, tries to read everything needed
 ** using the FASTQ numeric format, and interprets integer Solexa scores.
 **
-** @param [w] thys [AjPSeq] Sequence object
-** @param [u] seqin [AjPSeqin] Sequence input object
-** @return [AjBool] ajTrue on success
-** @@
+** #param [w] thys [AjPSeq] Sequence object
+** #param [u] seqin [AjPSeqin] Sequence input object
+** #return [AjBool] ajTrue on success
+** ##
 ******************************************************************************/
 
+/*
 static AjBool seqReadFastqInt(AjPSeq thys, AjPSeqin seqin)
 {
     AjPFilebuff buff;
@@ -2899,8 +2902,6 @@ static AjBool seqReadFastqInt(AjPSeq thys, AjPSeqin seqin)
     ajDebug("seqReadFastq\n");
 
     buff = seqin->Filebuff;
-
-    /* ajFilebuffTrace(buff); */
 
     ok = ajBuffreadLinePosStore(buff, &seqReadLine, &fpos,
 			     seqin->Text, &thys->TextPtr);
@@ -3036,7 +3037,7 @@ static AjBool seqReadFastqInt(AjPSeq thys, AjPSeqin seqin)
 
     return ajTrue;
 }
-
+*/
 
 
 
@@ -3417,9 +3418,10 @@ static AjBool seqReadFastqSolexa(AjPSeq thys, AjPSeqin seqin)
     while (*cp)
     {
         sval = amin + (double) *cp - qmin;
-        pval = pow(10.0, (sval/-10.0));
-        qval = pval / (1.0 + pval);
+        pval = pow(10.0, (sval/10.0));
+        qval = 1.0 / (1.0 + pval);
         thys->Accuracy[i++] = -10.0 * log10(qval);
+        ajDebug("[%d] sval:%.1f Qp:%.4f\n", (i-1), sval, thys->Accuracy[i-1]);
         cp++;
     }
 
