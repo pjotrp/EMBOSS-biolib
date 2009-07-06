@@ -1774,6 +1774,7 @@ static AjBool seqAccessEntrez(AjPSeqin seqin)
 	   gives an error with valgrind */
 	ajStrAssignC(&host, "www.ncbi.nlm.nih.gov");
 	iport = 80;
+
 	ajStrAssignC(&urlsearch, "/entrez/eutils/esearch.fcgi");
 
 	seqHttpVersion(qry, &httpver);
@@ -2042,9 +2043,9 @@ static AjBool seqEntrezQryNext(AjPSeqQuery qry, AjPSeqin seqin)
     ajStrAppendC(&get, "tool=emboss&email=pmr@ebi.ac.uk&retmax=1000");
 
     if(ajStrPrefixCaseC(qry->DbType, "N"))
-	ajStrAppendC(&get, "&db=nucleotide&rettype=gb");
+	ajStrAppendC(&get, "&db=nucleotide&retmode=text&rettype=gb");
     else
-	ajStrAppendC(&get, "&db=protein&rettype=gp");
+	ajStrAppendC(&get, "&db=protein&retmode=text&rettype=gp");
 
     ajFmtPrintAppS(&get, "&id=%S", gistr);
     ajFmtPrintAppS(&get, " HTTP/%S\n", httpver);
@@ -2081,7 +2082,7 @@ static AjBool seqEntrezQryNext(AjPSeqQuery qry, AjPSeqin seqin)
 	    ajStrTrimWhite(&seqline);
 	    if(!ajStrGetLen(seqline))
             {
-                ajBuffreadLine(seqfile,&seqline);
+                /*ajBuffreadLine(seqfile,&seqline);*/
 		ihead=0;
             }
 	}
