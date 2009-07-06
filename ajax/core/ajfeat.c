@@ -10670,9 +10670,9 @@ static const AjPStr featTableTypeExternal(const AjPStr type,
 static const AjPStr featTableTypeInternal(const AjPStr type,
 					  const AjPTable table)
 {
-    static const AjPStr ret = NULL;
-    static const AjPStr retkey = NULL;
-    static const AjPStr tmpstr = NULL;
+    const AjPStr ret = NULL;
+    const AjPStr retkey = NULL;
+    const AjPStr tmpstr = NULL;
 
     retkey = (const AjPStr) ajTableFetchKey(table, type);
 
@@ -10712,22 +10712,21 @@ static const AjPStr featTableTypeInternal(const AjPStr type,
 **
 ** Given a feature type name,
 ** returns the valid feature type for a feature table
-** following alternative names which are commn in the internal table
+** following alternative names which are common in the internal table
 ** which is a combination of multiple definitions
 **
 ** @param [r]   type  [const AjPStr] Type name
 ** @param [r]   table [const AjPTable]  Feature table
-** @return [const AjPStr] Valid feature type
+** @return [const AjPStr] Valid feature type or NULL if not found
 ** @@
 ******************************************************************************/
 
 static const AjPStr featTableTypeInternalLimit(const AjPStr type,
                                                const AjPTable table)
 {
-    static const AjPStr ret = NULL;
-    static const AjPStr retkey = NULL;
-    static const AjPStr tmpstr = NULL;
-    static const AjPStr savekey = NULL;
+    const AjPStr retkey = NULL;
+    const AjPStr tmpstr = NULL;
+    const AjPStr savekey = NULL;
     ajuint i = 0;
 
     retkey = (const AjPStr) ajTableFetchKey(table, type);
@@ -10759,15 +10758,14 @@ static const AjPStr featTableTypeInternalLimit(const AjPStr type,
     if(savekey)
         return savekey;
 
-    ret = (AjPStr) ajTableFetch(table, ajStrNew());
     ajDebug("featTableTypeInternalLimit '%S' not in internal table %x, "
-	    "default to '%S'\n", type, table, ret);
+	    "default to NULL\n", type, table);
 
     /* ajTablestrTrace(table); */
 
     /*ajDebug("featTableTypeInternalLimit result '%S'\n",
 	     ret);*/
-    return ret;
+    return NULL;
 }
 
 
@@ -14398,6 +14396,7 @@ AjBool ajFeatTypeMatchC(const AjPFeature gf, const char* txt)
 {
     AjBool ret = ajFalse;
     AjPStr tmpstr;
+    const AjPStr tmptype = NULL;
 
     if(ajStrMatchC(gf->Type, txt))
 	return ajTrue;
@@ -14406,18 +14405,22 @@ AjBool ajFeatTypeMatchC(const AjPFeature gf, const char* txt)
 
     if(gf->Protein)
     {
-	ret =   ajStrMatchS(featTypeProtLimit(gf->Type),
-                            featTypeProtLimit(tmpstr));
+        tmptype = featTypeProtLimit(tmpstr);
+        if(tmptype)
+            ret = ajStrMatchS(featTypeProtLimit(gf->Type),
+                              tmptype);
         ajDebug("ajFeatTypeMatch: %B '%S' prot: '%S' <=> '%S'\n",
-                ret, tmpstr, featTypeProtLimit(tmpstr), gf->Type);
+                ret, tmpstr, tmptype, gf->Type);
     }
     
     else
     {
-	ret =   ajStrMatchS(featTypeDnaLimit(gf->Type),
-                            featTypeDnaLimit(tmpstr));
+	tmptype = featTypeDnaLimit(tmpstr);
+        if(tmptype)
+            ret = ajStrMatchS(featTypeDnaLimit(gf->Type),
+                              tmptype);
         ajDebug("ajFeatTypeMatch: %B '%S' dna: '%S' <=> '%S'\n",
-                ret, tmpstr, featTypeDnaLimit(tmpstr), gf->Type);
+                ret, tmpstr, tmptype, gf->Type);
     }
 
     ajStrDel(&tmpstr);
@@ -14449,15 +14452,17 @@ AjBool ajFeatTypeMatchS(const AjPFeature gf, const AjPStr str)
     if(gf->Protein)
     {
 	ret =   ajStrMatchS(featTypeProtLimit(gf->Type),featTypeProtLimit(str));
-        ajDebug("ajFeatTypeMatch: %B '%S' prot: '%S' <=> '%S'\n",
-                ret, str, featTypeProtLimit(str), gf->Type);
+        ajDebug("ajFeatTypeMatch: %B '%S' '%S' prot: '%S' <=> '%S'\n",
+                ret, str, gf->Type,
+                featTypeProtLimit(str), featTypeProtLimit(gf->Type));
     }
     
     else
     {
 	ret =   ajStrMatchS(featTypeDnaLimit(gf->Type),featTypeDnaLimit(str));
-        ajDebug("ajFeatTypeMatch: %B '%S' dna: '%S' <=> '%S'\n",
-                ret, str, featTypeDnaLimit(str), gf->Type);
+        ajDebug("ajFeatTypeMatch: %B '%S' '%S' dna: '%S' <=> '%S'\n",
+                ret, str, gf->Type,
+                featTypeDnaLimit(str), featTypeDnaLimit(gf->Type));
     }
 
     return ret;
