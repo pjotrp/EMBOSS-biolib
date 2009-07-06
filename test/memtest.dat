@@ -164,9 +164,9 @@ prettyplot = prettyplot ../../data/globins.msf -graph ps -auto
 prettyseq = prettyseq tembl:x65923 -auto
 prima =test= prima tembl:x65923 -auto
 primersearch = primersearch 'tembl:*' ../../data/primers -auto
-profit = profit ../../data/globins.prophecy tsw:edd1_rat -auto
+profit = profit ../../data/globins.prophecy tsw:hba_human -auto
 prophecy = prophecy ../../data/globins.msf -type g -auto
-prophet = prophet tsw:edd1_rat ../../data/prophecy.gribskov -auto
+prophet = prophet tsw:hba_human ../../data/prophecy.gribskov -auto
 recoder = recoder tembl:x65923 -sbeg 31 -send 50 -auto
 remap = remap -notran -sbeg 1 -send 60 tembl:j01636 -enzymes 'taqi,bsu6i,acii,bsski' -auto
 remap-tran = remap -sbeg 1 -send 60 tembl:j01636 -enzymes 'taqi,bsu6i,acii,bsski' -auto
