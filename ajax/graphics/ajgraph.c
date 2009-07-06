@@ -4058,10 +4058,10 @@ static void GraphxyDisplayToDas(AjPGraph thys, AjBool closeit,
 	    ajTimeDel(&ajtime);
 	}
 
-        istart = graphdata->minX;
+        istart = (ajint) graphdata->minX;
         if(istart < 1)
             istart = 1;
-        iend = graphdata->maxX;
+        iend = (ajint) graphdata->maxX;
         if(iend < istart)
             iend = istart;
 	ajFmtPrintF(outf,"    <SEGMENT id=\"%s\" start=\"%d\" stop=\"%d\"\n",
