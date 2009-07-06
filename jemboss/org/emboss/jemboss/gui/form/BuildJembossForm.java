@@ -29,10 +29,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import org.apache.regexp.*;
 
-import java.util.Hashtable;
-import java.util.Vector;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
+import java.util.List;
 import java.util.prefs.Preferences;
 
 import java.awt.event.*;
@@ -461,10 +459,11 @@ public class BuildJembossForm implements ActionListener
           batchStart = true;
       }
       try{
+          List commandA = new ArrayList();
       if(!withSoap)
       {
         Hashtable filesToMove = new Hashtable();
-        final String embossCommand = getCommand(filesToMove);
+        final String embossCommand = getCommand(filesToMove, commandA);
 
         if(!embossCommand.equals("NOT OK"))
         {
@@ -512,6 +511,7 @@ public class BuildJembossForm implements ActionListener
           else
           {
               JembossServer js = new JembossServer(mysettings.getResultsHome());
+              js.setEmbossCommandA((String[])commandA.toArray(new String[commandA.size()]));
               Vector result = js.run_prog(embossCommand, 
                       mysettings.getCurrentMode(), filesToMove);
               Hashtable r = convert(result,false);
@@ -529,7 +529,7 @@ public class BuildJembossForm implements ActionListener
       else
       {
         Hashtable filesToMove = new Hashtable();
-        String embossCommand = getCommand(filesToMove);
+        String embossCommand = getCommand(filesToMove, commandA);
 
         if(!embossCommand.equals("NOT OK"))
         {
@@ -799,10 +799,9 @@ public class BuildJembossForm implements ActionListener
   }
 
   private String checkParameters(ParseAcd parseAcd, int numofFields, 
-                                 Hashtable filesToMove)
+                                 Hashtable filesToMove, List optionsA)
   {
     String options = "";
-    String fn = "";
     String sfn;
  
     seqoutResult   = "";
@@ -820,10 +819,17 @@ public class BuildJembossForm implements ActionListener
         if(graphics == null)
           System.out.println("graphics is NULL");
 
-        if(((String)graphics.getSelectedItem()).equals("PNG") ) 
+        optionsA.add("-" + val);
+
+        if(((String)graphics.getSelectedItem()).equals("PNG") )
+        { 
           options = options.concat(" -" + val + " png");
-        else
+          optionsA.add("png");          
+        }
+        else {
           options = options.concat(" -" + val + " data");
+          optionsA.add("data");                    
+        }
       }
       if ( att.startsWith("dirlist") || att.startsWith("featout") ||
            att.startsWith("string")  || att.startsWith("seqout")  ||
@@ -834,6 +840,8 @@ public class BuildJembossForm implements ActionListener
                                             && textf[h].isEnabled()) 
         {
           options = options.concat(" -" + val + " " + textf[h].getText());
+          optionsA.add("-" + val);
+          optionsA.add(textf[h].getText());
 
           if(att.startsWith("seqout"))
             seqoutResult = textf[h].getText();
@@ -842,35 +850,55 @@ public class BuildJembossForm implements ActionListener
         }
         else if(!withSoap && applName.equals("emma") && att.startsWith("seqoutset"))
         {
-          options = options.concat(" -" + val + " emma.aln "); 
+          options = options.concat(" -" + val + " emma.aln ");
+          optionsA.add("-" + val);
+          optionsA.add("emma.aln");
           seqoutResult = "emma.aln";
         }
 
-        if(att.startsWith("seqout"))
+        if(att.startsWith("seqout") && outSeqAttr.getOuputSeqAttr().length()>0)
+        {
           options = options.concat(outSeqAttr.getOuputSeqAttr());
-
+          optionsA.add(outSeqAttr.getOuputSeqAttr());
+        }
       }
       else if ( att.startsWith("pattern") )
       {
         JTextField textFields[] = multiTextField[h].getJTextField();
         
         if(textFields[0].getText() != null && !textFields[0].getText().trim().equals(""))
+        {
           options = options.concat(" -" + val + " " + textFields[0].getText());
+          optionsA.add("-" + val);
+          optionsA.add(textFields[0].getText());
+        }
         
         if(textFields[1].getText() != null && !textFields[1].getText().trim().equals(""))
+        {
           options = options.concat(" -pmismatch " + textFields[1].getText());
+          optionsA.add("-pmismatch");
+          optionsA.add(textFields[1].getText());
+        }
       }
       else if ( att.startsWith("int") )
       {
         if( (textInt[h].getText() != null) && textInt[h].isVisible()
                                            && textInt[h].isEnabled())
+        {
           options = options.concat(" -" + val + " " + textInt[h].getValue());
+          optionsA.add("-"+val);
+          optionsA.add(Integer.toString(textInt[h].getValue())); 
+        }
       }
       else if ( att.startsWith("float") )
       {
         if( (textFloat[h].getText() != null) && textFloat[h].isVisible()
                                              && textFloat[h].isEnabled())
+        {
           options = options.concat(" -" + val + " " + textFloat[h].getValue());
+          optionsA.add("-"+val);
+          optionsA.add(Double.toString(textFloat[h].getValue()));           
+        }
       }
       else if ( att.startsWith("select") )   
       {
@@ -883,16 +911,27 @@ public class BuildJembossForm implements ActionListener
         {
           int sel[] = multiOption[h].getSelectedIndices();
           options = options.concat(" -" + val + " ");
+          optionsA.add("-"+val);
+          String l ="";
           for(int i=0;i<sel.length;i++)
           {
             options = options.concat(Integer.toString(sel[i]+1));
+            l+=Integer.toString(sel[i]+1);
             if(i<sel.length-1)
+            {
               options = options.concat(",");
+              l += ",";
+            }
           }
+          optionsA.add(l);
         }
         else if (fieldOption[h].isVisible() && fieldOption[h].isEnabled())
+        {
           options = options.concat(" -" + val + " " +        //single selection
                     (fieldOption[h].getSelectedIndex()+1));
+          optionsA.add("-"+val);
+          optionsA.add(Integer.toString(fieldOption[h].getSelectedIndex()+1));
+        }
       }
       else if ( att.startsWith("list") )    
       {
@@ -905,12 +944,19 @@ public class BuildJembossForm implements ActionListener
         {
           int sel[] = multiOption[h].getSelectedIndices();
           options = options.concat(" -" + val + " ");
+          optionsA.add("-"+val);
+          String lval ="";
           for(int i=0;i<sel.length;i++)
           {
             options = options.concat(parseAcd.getListLabel(j,sel[i]));
+            lval += parseAcd.getListLabel(j,sel[i]);
             if(i<sel.length-1)
+            {
               options = options.concat(",");
+              lval += ",";
+            }
           }
+          optionsA.add(lval);
         }
         else if (fieldOption[h].isVisible() 
               && fieldOption[h].isEnabled())
@@ -918,23 +964,33 @@ public class BuildJembossForm implements ActionListener
           int index = fieldOption[h].getSelectedIndex();     //single selection
           options = options.concat(" -" + val + " " +
                        parseAcd.getListLabel(j,index));
+          optionsA.add("-"+val);
+          optionsA.add(parseAcd.getListLabel(j,index));
         }
       }
       else if ( att.startsWith("report") )
       {
         options = options.concat(rf.getReportFormat());
+        optionsA.addAll(rf.getReportFormatA());
       }
       else if ( att.startsWith("align") )
       {
         options = options.concat(af.getAlignFormat());
+        optionsA.add(af.getAlignFormat());
       }
       else if ( att.startsWith("bool") && checkBox[h].isVisible()
                                        && checkBox[h].isEnabled())
       {
         if( checkBox[h].isSelected() )
+        {
           options = options.concat(" -" + val + " ");
+          optionsA.add("-" + val);
+        }
         else
+        {
           options = options.concat(" -no" + val + " ");
+          optionsA.add("-no" + val);
+        }
 
       }
       else if( att.startsWith("range") && rangeField[h].isVisible()
@@ -955,6 +1011,8 @@ public class BuildJembossForm implements ActionListener
           }
           options = options.concat(" -" + val + " " + 
                          rangeText + " ");
+          optionsA.add("-" + val);
+          optionsA.add(rangeText);
         } 
       }
       else if ( att.startsWith("infile") || att.startsWith("datafile") ||
@@ -966,7 +1024,11 @@ public class BuildJembossForm implements ActionListener
           if(withSoap)
             options = filesForSoap(textf[h].getText(),options,val,filesToMove);
           else
+          {
             options = options.concat(" -" + val + " " +  textf[h].getText());
+            optionsA.add("-"+val);
+            optionsA.add(textf[h].getText());
+          }
         }
 
       }
@@ -986,6 +1048,8 @@ public class BuildJembossForm implements ActionListener
           for(int i=1;i<fl.length;i++)
             flist = flist.concat(","+fl[i]);
           options = options.concat(" -" + val + " " + flist);
+          optionsA.add("-"+val);
+          optionsA.add(flist);
         }
       }
       else if ( att.startsWith("seqset") || att.startsWith("seqall") ||
@@ -994,7 +1058,7 @@ public class BuildJembossForm implements ActionListener
         int seq = h+1;
         if(inSeq[h].isFileName())                     // file or database
         {
-          fn = new String(inSeq[h].getFileChosen());
+          String fn = new String(inSeq[h].getFileChosen());
           
           fn = fn.trim();
           if((fn.indexOf(":")>-1) && (fn.indexOf(":\\") < 0))  //remove spaces
@@ -1003,12 +1067,15 @@ public class BuildJembossForm implements ActionListener
             while((n = fn.indexOf(" ")) > -1)
               fn = new String(fn.substring(0,n) + fn.substring(n+1));
           }
+          optionsA.add("-" + val);
+          optionsA.add(fn);
           fn = addQuote(fn);
           
           if(withSoap)
             options = filesForSoap(fn,options,val,filesToMove);
-          else
+          else {
             options = options.concat(" -" + val + " " +  fn);
+          }
 
           if(fn.endsWith(":") || fn.endsWith(":*"))
           {
@@ -1042,12 +1109,14 @@ public class BuildJembossForm implements ActionListener
 
             /*boolean ok = */inSeq[h].writeListFile(fna);
             options = options.concat(" -" + val + " list::" +  fna);
+            optionsA.add("-"+val);
+            optionsA.add("list::" +  fna);
           }
         } 
         else                                               // cut 'n paste
         {
           String cp = inSeq[h].getCutNPasteText();
-          fn = new String(applName + (new Integer(h)).toString());
+          String fn = new String(applName + (new Integer(h)).toString());
 
           if(withSoap)
           {
@@ -1094,6 +1163,8 @@ public class BuildJembossForm implements ActionListener
                        "Problem creating a temporary file!", JOptionPane.ERROR_MESSAGE);
             }
             options = options.concat(" -" + val + " " + fn );
+            optionsA.add("-"+val);
+            optionsA.add(fn);
           }
         }
 
@@ -1217,18 +1288,21 @@ public class BuildJembossForm implements ActionListener
 * @return String command line to use
 *
 */
-  private String getCommand(Hashtable filesToMove)
+  private String getCommand(Hashtable filesToMove, List commandA)
   {
 
     String command = applName;
+    commandA.add(applName);
     int numofFields = parseAcd.getNumofFields();
 
-    String options = checkParameters(parseAcd, numofFields, filesToMove);
+    String options = checkParameters(parseAcd, numofFields, filesToMove, commandA);
 
     if(options.equals("NOT OK"))
       command = "NOT OK";
-    else
+    else {
       command = command.concat(options + " -auto");
+      commandA.add("-auto");
+    }
 
     return command;
   }
