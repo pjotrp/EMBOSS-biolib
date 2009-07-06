@@ -2843,7 +2843,7 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
 
     while (*cp)
     {
-        thys->Accuracy[i++] = amin + (ajint) *cp - qmin;
+        thys->Accuracy[i++] = (float) (amin + (ajint) *cp - qmin);
         cp++;
     }
 
@@ -3217,7 +3217,7 @@ static AjBool seqReadFastqIllumina(AjPSeq thys, AjPSeqin seqin)
 
     while (*cp)
     {
-        thys->Accuracy[i++] = amin + (ajint) *cp - qmin;
+        thys->Accuracy[i++] = (float) (amin + (ajint) *cp - qmin);
         cp++;
     }
 
@@ -3420,7 +3420,7 @@ static AjBool seqReadFastqSolexa(AjPSeq thys, AjPSeqin seqin)
         sval = amin + (double) *cp - qmin;
         pval = pow(10.0, (sval/10.0));
         qval = 1.0 / (1.0 + pval);
-        thys->Accuracy[i++] = -10.0 * log10(qval);
+        thys->Accuracy[i++] = (float) ((double) -10.0 * log10(qval));
         ajDebug("[%d] sval:%.1f Qp:%.4f\n", (i-1), sval, thys->Accuracy[i-1]);
         cp++;
     }
@@ -10897,7 +10897,7 @@ static AjBool seqReadExperiment(AjPSeq thys, AjPSeqin seqin)
 		if(ajStrToInt(token2, &ja))
 		{
 		    if(ja > thys->Accuracy[i])
-			thys->Accuracy[i] = ja;
+			thys->Accuracy[i] = (float) ja;
 		}
 		else
 		{
