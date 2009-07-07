@@ -5,7 +5,7 @@ dnl Process this file with autoconf to produce a configure script.
 ## then uncomment the following line.
 #CC=cc
 
-AC_INIT(source/emnu.c)
+AC_INIT(src/emnu.c)
 AM_INIT_AUTOMAKE(EMNU, 1.05)
 
 AC_PROG_AWK
@@ -477,5 +477,5 @@ dnl check and set compilation flags for Jemboss auth server code
 CHECK_THREADS
 
 
-AC_OUTPUT(Makefile source/Makefile emboss_acd/Makefile
+AC_OUTPUT(Makefile src/Makefile emboss_acd/Makefile
 emboss_doc/Makefile emboss_doc/html/Makefile emboss_doc/text/Makefile)
