@@ -285,35 +285,9 @@ public class BuildProgramMenu
 
           Database d = new Database(showdbOut);
           db = d.getDB();
-
-          // get the available matrices
-          String dataFile[] = (new File(mysettings.getEmbossData())).list(new FilenameFilter()
-          {
-            public boolean accept(File dir, String name)
-            {
-              File fileName = new File(dir, name);
-              return !fileName.isDirectory();
-            };
-          });
-
-          matrices = new Vector();
-          for(int i=0;i<dataFile.length;i++)
-            matrices.add(dataFile[i]);
           
-          // get the available codon usage tables
-          dataFile = (new File(mysettings.getEmbossData()+
-                                  "/CODONS")).list(new FilenameFilter()
-          {
-            public boolean accept(File dir, String name)
-            {
-              File fileName = new File(dir, name);
-              return !fileName.isDirectory();
-            };
-          });
-
-          codons = new Vector();
-          for(int i=0;i<dataFile.length;i++)
-            codons.add(dataFile[i]);        
+          setMatrices(mysettings);
+          setCoddonUsage(mysettings);     
       }
 
       public void finished() 
@@ -650,6 +624,47 @@ public class BuildProgramMenu
     return matrices;
   }
 
+  private static Set matrixIndicies(String filename){
+	  Set s = new HashSet();
+	  try {
+		  BufferedReader in = new BufferedReader(new FileReader(filename));
+		  String line = in.readLine();
+		  while(line != null){
+			  if (!line.startsWith("#") && line.length()>0){
+				  String m = line.split(" ")[0];
+				  s.add(m);
+			  }
+			  line = in.readLine();
+		  }
+	  } catch (FileNotFoundException e) {
+		  e.printStackTrace();
+	  } catch (IOException e) {
+		  e.printStackTrace();
+	  }
+	  return s;
+  }
+
+  public static void setMatrices(JembossParams mysettings){
+	  final Set s = matrixIndicies(mysettings.getEmbossData()+File.separator+"Matrices.protein");
+	  s.addAll(matrixIndicies(mysettings.getEmbossData()+File.separator+"Matrices.nucleotide"));
+	  s.addAll(matrixIndicies(mysettings.getEmbossData()+File.separator+"Matrices.proteinstructure"));
+	  String[] dataFile = (new File(mysettings.getEmbossData())).list(new FilenameFilter()
+	  {
+		  public boolean accept(File dir, String name)
+		  {        	
+			  if (s.contains(name)){
+				  s.remove(name);
+				  return true;
+			  }        	
+			  return false;
+		  };
+	  });
+	  System.err.println("matrixes not resolved to any file: "+s.size());
+	  matrices = new Vector();
+	  Arrays.sort(dataFile);
+	  for(int i=0;i<dataFile.length;i++)
+		  matrices.add(dataFile[i]);
+  }
   /**
   *
   * Contains all codon usage tables
@@ -660,6 +675,22 @@ public class BuildProgramMenu
     return codons;
   }
 
+  public static void setCoddonUsage(JembossParams mysettings){
+	  // get the available codon usage tables
+	  String[] dataFile = (new File(mysettings.getEmbossData()+
+			  File.separator + "CODONS")).list(new FilenameFilter()
+	  {
+		  public boolean accept(File dir, String name)
+		  {
+			  File fileName = new File(dir, name);
+			  return !fileName.isDirectory();
+		  };
+	  });
+
+	  codons = new Vector();
+	  for(int i=0;i<dataFile.length;i++)
+		  codons.add(dataFile[i]);   
+  }
   /**
   *
   * Get the contents of an ACD file in the form of a String
