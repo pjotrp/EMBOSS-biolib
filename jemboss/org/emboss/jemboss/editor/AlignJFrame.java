@@ -803,7 +803,7 @@ public class AlignJFrame extends JFrame
             	//java6 has a group.clearSelection(); method that in the future
             	//can replace the invisible button workaround 
             	invisibleb.setSelected(true);
-            } else{
+            } else if (invisibleb.isSelected()){
             	lastSelection.setSelected(true);
             }
         }
