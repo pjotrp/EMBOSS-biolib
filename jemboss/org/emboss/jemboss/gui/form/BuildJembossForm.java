@@ -859,7 +859,7 @@ public class BuildJembossForm implements ActionListener
         if(att.startsWith("seqout") && outSeqAttr.getOuputSeqAttr().length()>0)
         {
           options = options.concat(outSeqAttr.getOuputSeqAttr());
-          optionsA.add(outSeqAttr.getOuputSeqAttr());
+          optionsA.addAll(outSeqAttr.getOuputSeqAttrA());
         }
       }
       else if ( att.startsWith("pattern") )
@@ -882,8 +882,9 @@ public class BuildJembossForm implements ActionListener
       }
       else if ( att.startsWith("int") )
       {
-        if( (textInt[h].getText() != null) && textInt[h].isVisible()
-                                           && textInt[h].isEnabled())
+        if( textInt[h].getText() != null &&
+        		textInt[h].getText().length()>0	&&
+        		textInt[h].isVisible() && textInt[h].isEnabled())
         {
           options = options.concat(" -" + val + " " + textInt[h].getValue());
           optionsA.add("-"+val);
@@ -976,7 +977,7 @@ public class BuildJembossForm implements ActionListener
       else if ( att.startsWith("align") )
       {
         options = options.concat(af.getAlignFormat());
-        optionsA.add(af.getAlignFormat());
+        optionsA.addAll(af.getAlignFormatA());
       }
       else if ( att.startsWith("bool") && checkBox[h].isVisible()
                                        && checkBox[h].isEnabled())
