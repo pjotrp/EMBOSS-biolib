@@ -1,6 +1,6 @@
 #
 
-SUBDIRS = ckit source h emboss_acd emboss_doc
+SUBDIRS = ckit src h emboss_acd emboss_doc
 
 EXTRA_DIST = LICENSE depcomp ltmain.sh install-sh config.sub config.guess
 

@@ -5,7 +5,7 @@ dnl Process this file with autoconf to produce a configure script.
 ## then uncomment the following line.
 #CC=cc
 
-AC_INIT(source/sim4.h)
+AC_INIT(src/sim4.h)
 AM_INIT_AUTOMAKE(ESIM4, 1.0.0)
 
 AC_PROG_AWK
@@ -464,5 +464,5 @@ CHECK_THREADS
 dnl esim4 only for choosing ACD or original command line handling
 CFLAGS="$CFLAGS -DEMBASSY"
 
-AC_OUTPUT(Makefile source/Makefile emboss_acd/Makefile
+AC_OUTPUT(Makefile src/Makefile emboss_acd/Makefile
 emboss_doc/Makefile emboss_doc/html/Makefile emboss_doc/text/Makefile)
