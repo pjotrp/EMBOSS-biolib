@@ -57,7 +57,7 @@ pkgdata2_DATA = libscan.html lindna.html listor.html \
 	merger.html msbar.html mwcontam.html mwfilter.html \
 	needle.html newcpgreport.html newcpgseek.html newseq.html \
 	nohtml.html noreturn.html nospace.html notab.html \
-	notseq.html nthseq.html \
+	notseq.html nthseq.html nthseqset.html \
 	nucleic_2d_structure_group.html \
 	nucleic_codon_usage_group.html \
 	nucleic_codon_usage_nucleic_gene_finding_group.html \
@@ -91,7 +91,8 @@ pkgdata2_DATA = libscan.html lindna.html listor.html \
 	protein_sequence_alignment_group.html pscan.html psiphi.html \
 	rebaseextract.html recoder.html redata.html remap.html \
 	restover.html restrict.html revseq.html \
-	seealso.html seqmatchall.html seqret.html seqretsplit.html \
+	seealso.html seqmatchall.html \
+	seqret.html seqretsetall.html seqretsplit.html \
 	showalign.html showdb.html showfeat.html showorf.html \
 	showpep.html showseq.html shuffleseq.html sigcleave.html silent.html \
 	sirna.html sixpack.html sizeseq.html skipredundant.html \

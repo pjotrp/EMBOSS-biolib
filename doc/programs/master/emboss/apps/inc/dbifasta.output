@@ -18,19 +18,19 @@
 # Dbname: EMROD
 # Release: 0.0
 # Date: 15/07/08
-# CurrentDirectory: /data2/users/pmr/cvsemboss/test/qa/dbifasta-ex-keep/
+# CurrentDirectory: /homes/user/test/qa/dbifasta-ex-keep/
 # IndexDirectory: ./
-# IndexDirectoryPath: /data2/users/pmr/cvsemboss/test/qa/dbifasta-ex-keep/
+# IndexDirectoryPath: /homes/user/test/qa/dbifasta-ex-keep/
 # Maxindex: 0
 # Fields: 2
 #   Field 1: id
 #   Field 2: acc
-# Directory: /data2/users/pmr/cvsemboss/test/data/
-# DirectoryPath: /data2/users/pmr/cvsemboss/test/data/
+# Directory: /homes/user/test/data/
+# DirectoryPath: /homes/user/test/data/
 # Filenames: emrod
 # Exclude: 
 # Files: 1
-#   File 1: /data2/users/pmr/cvsemboss/test/data/emrod
+#   File 1: /homes/user/test/data/emrod
 ########################################
 # Commandline: dbifasta
 #    -dbname EMROD
