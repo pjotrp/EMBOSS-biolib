@@ -659,7 +659,8 @@ public class BuildProgramMenu
 			  return false;
 		  };
 	  });
-	  System.err.println("matrixes not resolved to any file: "+s.size());
+	  if (s.size()>0)
+		  System.err.println("matrices not resolved to any file: "+s.size());
 	  matrices = new Vector();
 	  Arrays.sort(dataFile);
 	  for(int i=0;i<dataFile.length;i++)
