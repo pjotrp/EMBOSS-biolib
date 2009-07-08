@@ -1,7 +1,7 @@
 The EMBOSS Frequently Asked Questions list
 ==========================================
 
-Last modified: 7th May 2009
+Last modified: 8th July 2009
 
 
 SECTION A - Help and Support
@@ -505,14 +505,14 @@ Q) Plotters and pen colours.
     
 A) The hp drivers presume the pens are loaded as:-
 
-    SP1     black
-    SP2     white
-    SP3     red
-    SP4     green
-    SP5     blue
-    SP6     cyan
-    SP7     magenta
-    SP8     yellow
+    SP1 Red
+    SP2 Yellow
+    SP3 Green
+    SP4 Blue
+    SP5 Magenta
+    SP6 White/Off
+    SP7 Black
+    SP8 Cyan
 
     Otherwise your output will have different colours.
 
