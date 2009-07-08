@@ -1,6 +1,6 @@
 application: seqretsetall [
-  documentation: "Reads and writes (returns) a set of
-                  sequences all at once"
+  documentation: "Reads and writes (returns) many sets of
+                  sequences"
   groups: "Edit"
 ]
 
