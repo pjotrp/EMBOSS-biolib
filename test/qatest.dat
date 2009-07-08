@@ -11484,6 +11484,23 @@ FZ = 1942
 FP /^>X51872 X51872\.1 Escherichia coli lacA gene/
 //
 
+ID nthseqset-ex
+AP nthseqset
+CL -osf phylip
+IN ../../data/globins-all.phy
+IN 2
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI globins-all.phylip
+FZ = 1578
+FP 1 /^ 7 167\n/
+FP /^          FFESFGDLST PDAVMGNPKV KAHGKKVLGA FSDGLAHLDN -----LKGTF\n/
+//
+
 ID octanol-ex
 AP octanol
 IN tsw:opsd_human
@@ -16696,9 +16713,27 @@ FP /^J01636\tEMBL\tCDS\t1\t22\t0\.000\t[-]\t0\tID=\S+;featflags="0x1";.*gene="la
 FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[-]\t0\tID=\S+;featflags="0x3"/
 //
 
-###########################################################
-# seqret (sequence and feature input) associated qualifiers
-###########################################################
+##################################################################
+# end of seqret (sequence and feature input) associated qualifiers
+##################################################################
+
+ID seqretsetall-ex
+AP seqretsetall
+CL -osf phylip
+IN ../../data/globins-all.phy
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI globins-all.phylip
+FZ = 3135
+FP 1 /^ 7 164\n/
+FP 1 /^ 7 167\n/
+FP /^          FFESFGDLST PDAVMGNPKV KAHGKKVLGA FSDGLAHLDN LKGTFATLSE\n/
+FP /^          FFESFGDLST PDAVMGNPKV KAHGKKVLGA FSDGLAHLDN -----LKGTF\n/
+//
 
 ID showalign-ex
 AP showalign

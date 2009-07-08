@@ -20,7 +20,7 @@ newcoils \
 patmattest \
 prima primers \
 seqinfo seqretall seqretallfeat \
-seqretset seqretsetall seqretsingle seqrettype \
+seqretset seqretsingle seqrettype \
 testplot treetypedisplay
 
 bin_PROGRAMS = aaindexextract abiview \
@@ -48,7 +48,7 @@ maskambignuc maskambigprot maskfeat maskseq \
 matcher megamerger merger msbar \
 mwcontam mwfilter \
 needle newcpgreport newcpgseek newseq \
-nohtml noreturn nospace notab notseq nthseq \
+nohtml noreturn nospace notab notseq nthseq nthseqset \
 octanol oddcomp \
 palindrome pasteseq patmatdb patmatmotifs \
 pepcoil pepinfo pepnet pepstats \
@@ -59,7 +59,7 @@ profit prophecy prophet \
 prosextract pscan psiphi \
 rebaseextract recoder redata remap  \
 restover restrict revseq \
-seealso seqmatchall seqret seqretsplit \
+seealso seqmatchall seqret seqretsetall seqretsplit \
 showalign showdb showfeat showorf showpep showseq \
 shuffleseq sigcleave silent sirna sixpack sizeseq \
 skipredundant skipseq splitsource splitter stretcher \
@@ -183,6 +183,7 @@ nospace_SOURCES = nospace.c
 notab_SOURCES = notab.c
 notseq_SOURCES = notseq.c
 nthseq_SOURCES = nthseq.c
+nthseqset_SOURCES = nthseqset.c
 octanol_SOURCES = octanol.c
 oddcomp_SOURCES = oddcomp.c
 palindrome_SOURCES = palindrome.c
@@ -220,6 +221,7 @@ revseq_SOURCES = revseq.c
 seealso_SOURCES = seealso.c
 seqmatchall_SOURCES = seqmatchall.c
 seqret_SOURCES = seqret.c
+seqretsetall_SOURCES = seqretsetall.c
 seqretsplit_SOURCES = seqretsplit.c
 showalign_SOURCES = showalign.c
 showdb_SOURCES = showdb.c
@@ -281,7 +283,6 @@ seqinfo_SOURCES = seqinfo.c
 seqretall_SOURCES = seqretall.c
 seqretallfeat_SOURCES = seqretallfeat.c
 seqretset_SOURCES = seqretset.c
-seqretsetall_SOURCES = seqretsetall.c
 seqretsingle_SOURCES = seqretsingle.c
 seqrettype_SOURCES = seqrettype.c
 testplot_SOURCES = testplot.c
