@@ -1468,11 +1468,10 @@ void embGrpOutputGroupsList(AjPFile outfile, const AjPList groupslist,
     AjIList giter;			/* 'groupslist' iterator */
 
     /* output the programs for each group */
-    giter = ajListIterNewread(groupslist);
-
     if(!showprogs && html)
 	ajFmtPrintF(outfile,"<ul>\n");
 
+    giter = ajListIterNewread(groupslist);
     while((gl = ajListIterGet(giter)) != NULL)
     {
 	if(html)
@@ -1533,8 +1532,22 @@ void embGrpOutputProgsList(AjPFile outfile, const AjPList progslist,
     EmbPGroupProg pl;
     AjIList piter;			/* 'progslist' iterator */
     AjPStr keystr = NULL;
+    ajint maxwidth = 6;
 
     /* output the programs for each group */
+    if(!html)
+    {
+        piter = ajListIterNewread(progslist);
+
+        while((pl = ajListIterGet(piter)) != NULL)
+        {
+            if(ajStrGetLen(pl->name) > (ajuint) maxwidth)
+                maxwidth = ajStrGetLen(pl->name);
+        }
+
+        ajListIterDel(&piter);
+    }
+
     piter = ajListIterNewread(progslist);
 
     if(html) ajFmtPrintF(outfile,
@@ -1576,7 +1589,8 @@ void embGrpOutputProgsList(AjPFile outfile, const AjPList progslist,
 			pl->doc, keystr);
 	}
 	else
-	    ajFmtPrintF(outfile, "%-16S %S%S\n", pl->name, pl->doc, keystr);
+	    ajFmtPrintF(outfile, "%-*S %S%S\n",
+                        maxwidth, pl->name, pl->doc, keystr);
     }
 
     ajListIterDel(&piter);
