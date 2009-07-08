@@ -1992,8 +1992,6 @@ static AjBool seqEntrezQryNext(AjPSeqQuery qry, AjPSeqin seqin)
     FILE *sfp;
     AjPStr gistr = NULL;
     AjPStr tmpstr=NULL;
-    AjPFilebuff seqfile = NULL;
-    ajint ihead=0;
     AjPStr seqline=NULL;
 
     if (!seqRegGi)
@@ -2062,10 +2060,9 @@ static AjBool seqEntrezQryNext(AjPSeqQuery qry, AjPSeqin seqin)
 	return ajFalse;
 
     ajFilebuffDel(&seqin->Filebuff);
-    seqin->Filebuff = ajFilebuffNewNofile();
-    seqfile = ajFilebuffNewFromCfile(sfp);
+    seqin->Filebuff = ajFilebuffNewFromCfile(sfp);
 
-    if(!seqfile)
+    if(!seqin->Filebuff)
     {
 	ajDebug("socket buffer attach failed\n");
 	ajErr("socket buffer attach failed for database '%S'",
@@ -2073,30 +2070,8 @@ static AjBool seqEntrezQryNext(AjPSeqQuery qry, AjPSeqin seqin)
 	return ajFalse;
     }
 
-    ihead=1;
-
-    while(ajBuffreadLine(seqfile, &seqline))
-    {
-	if(ihead)
-	{
-	    ajStrTrimWhite(&seqline);
-	    if(!ajStrGetLen(seqline))
-            {
-                /*ajBuffreadLine(seqfile,&seqline);*/
-		ihead=0;
-            }
-	}
-	else
-	{
-	    ajDebug("Processing %S\n", seqline);
-	    ajFilebuffLoadS(seqin->Filebuff, seqline);
-
-	    if(ajStrPrefixC(seqline, "//"))
-		break;
-	}
-    }
-
-    ajFilebuffDel(&seqfile);
+    ajFilebuffLoadAll(seqin->Filebuff);
+    ajFilebuffHtmlStrip(seqin->Filebuff);
 
 #ifndef WIN32
     alarm(0);
