@@ -67,9 +67,9 @@ CONTENTS
   File: seqnr.log
 
 //
-/data2/users/pmr/cvsemboss/test/qa/seqfraggle-keep/54894.dhf
+/homes/user/test/qa/seqfraggle-keep/54894.dhf
 //
-/data2/users/pmr/cvsemboss/test/qa/seqfraggle-keep/55074.dhf
+/homes/user/test/qa/seqfraggle-keep/55074.dhf
 
   Directory: hitsnr
 

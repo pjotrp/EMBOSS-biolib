@@ -10,8 +10,8 @@ Sequence directories [./]: <b>allversusall/</b>
 Location of sequence similarity data files (output) [./]: <b></b>
 Domainatrix log output file [allversusall.log]: <b></b>
 
-Processing /data2/users/pmr/cvsemboss/test/data/structure/allversusall/swtiny1.fasta
-Processing /data2/users/pmr/cvsemboss/test/data/structure/allversusall/swtiny2.fasta
+Processing /homes/user/test/data/structure/allversusall/swtiny1.fasta
+Processing /homes/user/test/data/structure/allversusall/swtiny2.fasta
 
 </pre></td></tr></table><p>
 <p>

@@ -125,7 +125,7 @@ Output file format
 
 !!NA_MULTIPLE_ALIGNMENT 1.0
 
-  mse.msf MSF: 120 Type: N 25/06/09 CompCheck: 2784 ..
+  mse.msf MSF: 120 Type: N 07/07/09 CompCheck: 2784 ..
 
   Name: MSFM1      Len: 120  Check: 8587 Weight: 1.00
   Name: MSFM2      Len: 120  Check: 5766 Weight: 1.00
@@ -178,16 +178,16 @@ Known bugs
 
 See also
 
-   Program name Description
-   edialign Local multiple alignment of sequences
-   emma Multiple sequence alignment (ClustalW wrapper)
-   infoalign Display basic information about a multiple sequence
-   alignment
-   plotcon Plot conservation of a sequence alignment
-   prettyplot Draw a sequence alignment with pretty formatting
-   showalign Display a multiple sequence alignment in pretty format
-   tranalign Generate an alignment of nucleic coding regions from aligned
-   proteins
+   Program name     Description
+   edialign         Local multiple alignment of sequences
+   emma             Multiple sequence alignment (ClustalW wrapper)
+   infoalign        Display basic information about a multiple sequence
+                    alignment
+   plotcon          Plot conservation of a sequence alignment
+   prettyplot       Draw a sequence alignment with pretty formatting
+   showalign        Display a multiple sequence alignment in pretty format
+   tranalign        Generate an alignment of nucleic coding regions from aligned
+                    proteins
 
 Author(s)
 

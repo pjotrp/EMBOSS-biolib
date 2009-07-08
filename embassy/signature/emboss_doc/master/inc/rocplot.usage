@@ -25,8 +25,8 @@ Base name of ROC plot file(s) (output). [_rocplot]: <b></b>
 Rocplot summary output file [_summary]: <b></b>
 Base name of classification plot file(s) (output). [_classplot]: <b></b>
 
-/data2/users/pmr/cvsemboss/test/data/structure/rocplot/hitsin/data1.hits
-/data2/users/pmr/cvsemboss/test/data/structure/rocplot/hitsin/data2.hits
+/homes/user/test/data/structure/rocplot/hitsin/data1.hits
+/homes/user/test/data/structure/rocplot/hitsin/data2.hits
 Processing data1.hits
 Processing data2.hits
 Please wait ... done!

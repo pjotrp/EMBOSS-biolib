@@ -1719,7 +1719,7 @@ GTGA[TC][CG][TC][ATG][GT][TC]TCACA
 
 
 
-Time  1.14 secs.
+Time  1.12 secs.
 
 *******************************************************************************
 *
@@ -2123,7 +2123,7 @@ TTCACATG[CG][CA][AGC][CA][CA][CT][CT]
 
 
 
-Time 23.71 secs.
+Time 23.66 secs.
 
 *******************************************************************************
 *
@@ -2313,7 +2313,7 @@ Q][YCH][LMNSY][CEI]
 
 
 
-Time  0.27 secs.
+Time  0.26 secs.
 
 *******************************************************************************
 *
@@ -2515,7 +2515,7 @@ Qx[EP][DE]GG[FL]G[GD]RP[GN]K[EL][VA][DH][GV]C[YH][TS]
 
 
 
-Time  3.74 secs.
+Time  3.75 secs.
 
 *******************************************************************************
 *
@@ -3340,38 +3340,38 @@ Known bugs
 
 See also
 
-   Program name Description
-   antigenic Finds antigenic sites in proteins
-   digest Reports on protein proteolytic enzyme or reagent cleavage sites
-   echlorop Reports presence of chloroplast transit peptides
-   eiprscan Motif detection
-   elipop Prediction of lipoproteins
-   emast Motif detection
-   ememe Multiple EM for Motif Elicitation
-   enetnglyc Reports N-glycosylation sites in human proteins
-   enetoglyc Reports mucin type GalNAc O-glycosylation sites in mammalian
-   proteins
-   enetphos Reports ser, thr and tyr phosphorylation sites in eukaryotic
-   proteins
-   epestfind Finds PEST motifs as potential proteolytic cleavage sites
-   eprop Reports propeptide cleavage sites in proteins
-   esignalp Reports protein signal cleavage sites
-   etmhmm Reports transmembrane helices
-   eyinoyang Reports O-(beta)-GlcNAc attachment sites
-   fuzzpro Search for patterns in protein sequences
-   fuzztran Search for patterns in protein sequences (translated)
-   helixturnhelix Identify nucleic acid-binding motifs in protein
-   sequences
-   oddcomp Identify proteins with specified sequence word composition
-   omeme Motif detection
-   patmatdb Searches protein sequences with a sequence motif
-   patmatmotifs Scan a protein sequence with motifs from the PROSITE
-   database
-   pepcoil Predicts coiled coil regions in protein sequences
-   preg Regular expression search of protein sequence(s)
-   pscan Scans protein sequence(s) with fingerprints from the PRINTS
-   database
-   sigcleave Reports on signal cleavage sites in a protein sequence
+   Program name     Description
+   antigenic        Finds antigenic sites in proteins
+   digest           Reports on protein proteolytic enzyme or reagent cleavage sites
+   echlorop         Reports presence of chloroplast transit peptides
+   eiprscan         Motif detection
+   elipop           Prediction of lipoproteins
+   emast            Motif detection
+   ememe            Multiple EM for Motif Elicitation
+   enetnglyc        Reports N-glycosylation sites in human proteins
+   enetoglyc        Reports mucin type GalNAc O-glycosylation sites in mammalian
+                    proteins
+   enetphos         Reports ser, thr and tyr phosphorylation sites in eukaryotic
+                    proteins
+   epestfind        Finds PEST motifs as potential proteolytic cleavage sites
+   eprop            Reports propeptide cleavage sites in proteins
+   esignalp         Reports protein signal cleavage sites
+   etmhmm           Reports transmembrane helices
+   eyinoyang        Reports O-(beta)-GlcNAc attachment sites
+   fuzzpro          Search for patterns in protein sequences
+   fuzztran         Search for patterns in protein sequences (translated)
+   helixturnhelix   Identify nucleic acid-binding motifs in protein
+                    sequences
+   oddcomp          Identify proteins with specified sequence word composition
+   omeme            Motif detection
+   patmatdb         Searches protein sequences with a sequence motif
+   patmatmotifs     Scan a protein sequence with motifs from the PROSITE
+                    database
+   pepcoil          Predicts coiled coil regions in protein sequences
+   preg             Regular expression search of protein sequence(s)
+   pscan            Scans protein sequence(s) with fingerprints from the PRINTS
+                    database
+   sigcleave        Reports on signal cleavage sites in a protein sequence
 
 Author(s)
 

@@ -137,7 +137,7 @@ Usage
 Distances between trees
 Phylip tree file: treedist.dat
 Phylip treedist program output file [treedist.ftreedist]: 
-read_groups 92b99c0
+read_groups 91839c0
 
 
 Output written to file "treedist.ftreedist"
@@ -155,7 +155,7 @@ Done.
 Distances between trees
 Phylip tree file: treedist2.dat
 Phylip treedist program output file [treedist2.ftreedist]: 
-read_groups 9b5d9c0
+read_groups 9a2a9c0
 
 
 Output written to file "treedist2.ftreedist"
@@ -409,31 +409,31 @@ Known bugs
 
 See also
 
-   Program name                Description
-   econsense     Majority-rule and strict consensus tree
-   fconsense     Majority-rule and strict consensus tree
-   ftreedistpair Distances between two sets of trees
+                    Program name                Description
+                    econsense     Majority-rule and strict consensus tree
+                    fconsense     Majority-rule and strict consensus tree
+   ftreedistpair    Distances between two sets of trees
 
 Author(s)
 
-   This program is an EMBOSS conversion of a program written by Joe
-   Felsenstein as part of his PHYLIP package.
+                    This program is an EMBOSS conversion of a program written by Joe
+                    Felsenstein as part of his PHYLIP package.
 
-   Although we take every care to ensure that the results of the EMBOSS
-   version are identical to those from the original package, we recommend
-   that you check your inputs give the same results in both versions
-   before publication.
+                    Although we take every care to ensure that the results of the EMBOSS
+                    version are identical to those from the original package, we recommend
+                    that you check your inputs give the same results in both versions
+                    before publication.
 
-   Please report all bugs in the EMBOSS version to the EMBOSS bug team,
-   not to the original author.
+                    Please report all bugs in the EMBOSS version to the EMBOSS bug team,
+                    not to the original author.
 
 History
 
-   Written (2004) - Joe Felsenstein, University of Washington.
+                    Written (2004) - Joe Felsenstein, University of Washington.
 
-   Converted (August 2004) to an EMBASSY program by the EMBOSS team.
+                    Converted (August 2004) to an EMBASSY program by the EMBOSS team.
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
