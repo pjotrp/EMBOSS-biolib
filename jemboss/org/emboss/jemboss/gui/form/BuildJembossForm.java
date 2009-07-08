@@ -459,10 +459,10 @@ public class BuildJembossForm implements ActionListener
           batchStart = true;
       }
       try{
-          List commandA = new ArrayList();
       if(!withSoap)
       {
         Hashtable filesToMove = new Hashtable();
+        List commandA = new ArrayList();
         final String embossCommand = getCommand(filesToMove, commandA);
 
         if(!embossCommand.equals("NOT OK"))
@@ -529,7 +529,7 @@ public class BuildJembossForm implements ActionListener
       else
       {
         Hashtable filesToMove = new Hashtable();
-        String embossCommand = getCommand(filesToMove, commandA);
+        String embossCommand = getCommand(filesToMove);
 
         if(!embossCommand.equals("NOT OK"))
         {
@@ -1265,21 +1265,24 @@ public class BuildJembossForm implements ActionListener
 * @return String command line to use
 *
 */
-/*  private String getCommand()
+  private String getCommand(Hashtable filesToMove, List commandA)
   {
+	  String embossBin = mysettings.getEmbossBin();
+	  String command = embossBin +(embossBin.endsWith(File.separator)?"":File.separator)+applName;
+	  commandA.add(command);
+	  int numofFields = parseAcd.getNumofFields();
 
-    String command = embossBin.concat(applName);
-    int numofFields = parseAcd.getNumofFields();
+	  String options = checkParameters(parseAcd, numofFields, filesToMove, commandA);
 
-    String options = checkParameters(parseAcd, numofFields, new Hashtable());
-         
-    if(options.equals("NOT OK"))
-      command = "NOT OK";
-    else
-      command = command.concat(options + " -stdout -auto");
+	  if(options.equals("NOT OK"))
+		  command = "NOT OK";
+	  else {
+		  command = command.concat(options + " -auto");
+		  commandA.add("-auto");
+	  }
 
-    return command;
-  }*/
+	  return command;
+  }
 
 
 /**
@@ -1289,23 +1292,20 @@ public class BuildJembossForm implements ActionListener
 * @return String command line to use
 *
 */
-  private String getCommand(Hashtable filesToMove, List commandA)
+  private String getCommand(Hashtable filesToMove)
   {
+	  String command = applName;
+	  int numofFields = parseAcd.getNumofFields();
 
-    String command = applName;
-    commandA.add(applName);
-    int numofFields = parseAcd.getNumofFields();
+	  String options = checkParameters(parseAcd, numofFields, filesToMove, new ArrayList());
 
-    String options = checkParameters(parseAcd, numofFields, filesToMove, commandA);
+	  if(options.equals("NOT OK"))
+		  command = "NOT OK";
+	  else {
+		  command = command.concat(options + " -auto");
+	  }
 
-    if(options.equals("NOT OK"))
-      command = "NOT OK";
-    else {
-      command = command.concat(options + " -auto");
-      commandA.add("-auto");
-    }
-
-    return command;
+	  return command;
   }
 
 
