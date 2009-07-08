@@ -95,9 +95,10 @@ while (<>) {
     if ($file =~ /^embassy\/[^\/]+\/src\/([^\/]+)$/) {
 	if(defined($progs{$base})) {next}
     }
-    if ($file =~ /^embassy\/[^\/]+\/source\/([^\/]+)$/) {
-	if(defined($progs{$base})) {next}
-    }
+#    if ($file =~ /^embassy\/[^\/]+\/source\/([^\/]+)$/) {
+#	if(defined($progs{$base})) {next}
+#    }
+
 #    print "$file '$base'\n";
     if (-d "$basedir/$file") {
 	print "d $file\n";

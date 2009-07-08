@@ -306,7 +306,7 @@ sub runtest ($) {
       $testpath = "../../emboss/"; #  up from the test/qa directory
     }
     else {
-      $testpath = "../../embassy/$packa/source/"; #  up from the test/qa directory
+      $testpath = "../../embassy/$packa/src/"; #  up from the test/qa directory
     }
     if (! (-e "$testpath$testapp")) {$skipcheck++; print "not found '$testpath$testapp'\n";return 0} # make check not run
     if ($testappname && defined($acdname{$testapp}) && $acdname{$testapp}) {
