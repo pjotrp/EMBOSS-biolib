@@ -1268,8 +1268,8 @@ public class BuildJembossForm implements ActionListener
   private String getCommand(Hashtable filesToMove, List commandA)
   {
 	  String embossBin = mysettings.getEmbossBin();
-	  String command = embossBin +(embossBin.endsWith(File.separator)?"":File.separator)+applName;
-	  commandA.add(command);
+	  String command = applName;
+	  commandA.add(embossBin +(embossBin.endsWith(File.separator)?"":File.separator)+command);
 	  int numofFields = parseAcd.getNumofFields();
 
 	  String options = checkParameters(parseAcd, numofFields, filesToMove, commandA);
