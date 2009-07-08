@@ -32,7 +32,7 @@ pkgdata_DATA = aaindexextract.acd abiview.acd acdc.acd acdlog.acd \
 
 pkgdata2_DATA = needle.acd newcoils.acd newcpgreport.acd newcpgseek.acd \
 	newseq.acd nohtml.acd noreturn.acd nospace.acd notab.acd \
-	notseq.acd nthseq.acd \
+	notseq.acd nthseq.acd nthseqset.acd \
 	octanol.acd oddcomp.acd origsplitter.acd origunion.acd \
 	palindrome.acd pasteseq.acd patmatdb.acd patmatmotifs.acd \
 	patmattest.acd pepcoil.acd pepinfo.acd pepnet.acd pepstats.acd \
