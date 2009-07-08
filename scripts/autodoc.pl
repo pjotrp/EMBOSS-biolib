@@ -233,6 +233,7 @@ sub htmlsource ( $$ ) {
 # 
 # Description: 
 #	removes unwanted acdtable output from text documentation
+#	makes sure seealso output is reasonably spaced
 # 
 # Args: 
 # 	$afile - first filename
@@ -243,12 +244,19 @@ sub htmlsource ( $$ ) {
 # 
 ######################################################################
 sub cleantext ( $ ) {
+    my $seealso = 0;
     my ($afile) = @_;
     if(-e $afile) {
 	open (X, $afile);
 	open (Z, ">z.z");
 	my $acdtable = 0;
 	while (<X>) {
+	    if(/^See also$/) {
+		    $seealso = 1;
+		}
+	    if(/^Author[\(s\)]$/) {
+		    $seealso = 0;
+		}
 	    if($acdtable) {
 		if(/^Input file format$/) {
 		    $acdtable = 0;
@@ -267,6 +275,23 @@ sub cleantext ( $ ) {
 		    $acdtable = 1;
 		}
 	    }
+	    if($seealso) {
+		if(/   Program name Description/) {
+		    $seealso = 2;
+		    s/Program name Description/Program name     Description/;
+		}
+		else {
+		    if(/^(\s+)(\S+) ([A-Z])/) {
+			$name = sprintf "%-16s", $2;
+			s/^(\s+)(\S+) ([A-Z])/$1$name $3/;
+		    }
+		    else {
+			s/^  /                   /;
+		    }
+		}
+		if(/^$/ && $seealso == 2) {$seealso = 0}
+	    }
+	
 	    if(!$acdtable) { print Z }
 	}
     }
