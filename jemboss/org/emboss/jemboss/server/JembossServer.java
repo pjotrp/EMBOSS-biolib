@@ -642,9 +642,13 @@ public class JembossServer
         String stderr = "";
         try
         {
+          if (rea.getProcess() != null){
           rea.getProcess().waitFor();
           stdout = rea.getProcessStdout();
           stderr = rea.getProcessStderr();
+          }
+          else
+              System.err.println(rea.getInitialIOError());
         }
         catch(InterruptedException iexp){}    
         if(!stdout.equals(""))
