@@ -192,6 +192,20 @@ sub htmlsource ( $$ ) {
 	die "Cannot open HTML template file '$edir/$tfile'";
 
     while (<H>) {
+	if(/^\s*Function\s*$/) {
+	    print X "Wiki\n";
+	    print X "</H2>\n";
+	    print X "\n";
+	    print X "The master copies of EMBOSS documentation are available\n";
+	    print X "at <a href=\"http://emboss.open-bio.org/wiki/Appdocs\">\n";
+	    print X "http://emboss.open-bio.org/wiki/Appdocs</a>\n";
+	    print X "on the EMBOSS Wiki.\n";
+	    print X "\n";
+	    print X "<p>\n";
+	    print X "Please help by correcting and extending the Wiki pages.\n";
+	    print X "\n";
+	    print X "<H2>\n";
+	}
 	if (/[<][\!][-][-][\#]include file=\"([^\"]+)\" +[-][-][>]/) {
 	    $ifile = $1;
 	    if(-e "$edir/$ifile") {
