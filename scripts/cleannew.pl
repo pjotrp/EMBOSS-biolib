@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-@validfile = ("acdvalid.txt", "acdvalidreport.txt",
+@validfile = ("000todo.txt", "acdvalid.txt", "acdvalidreport.txt",
 	      "myall.csh", "myalltest.csh",
 	      "myconfig.csh", "mydoc.csh", "myembassyall.csh",
 	      "myembassyconfig.csh", "myefunc.csh", "myacdvalid.csh",
@@ -52,6 +52,25 @@ while (<CHECK>) {
 }
 close CHECK;
 
+$check = 0;
+open (CHECK, "$basedir/embassy/myembossdemo/src/Makefile.am") ||
+    die "Cannot open embassy/myembossdemo/src/Makefile.am";
+while (<CHECK>) {
+    if (/^check_PROGRAMS/) {$check = 1;}
+    if ($check) {
+	if (!/\S/) {$check = 0;}
+    }
+    if (!$check) {next}
+    foreach $x (split) {
+	if ($x eq "check_PROGRAMS") {next}
+	if ($x eq "=") {next}
+	if ($x eq "\\") {next}
+#	print "x: $x\n";
+	$progs{$x} = "check";
+    }
+}
+close CHECK;
+
 # Process the input file (cvs update output)
 # Look for lines that start with '?'
 # check for files that could reasonably be there
@@ -71,10 +90,12 @@ while (<>) {
     }
     if ($base =~ /^Makefile$/) {next}
     if ($base =~ /^Makefile[.]in$/) {next}
+    if ($base =~ /^000notes$/) {next}
+    if ($base =~ /^emboss\/data\/000notes$/) {next}
     if ($base =~ /^[.]deps$/) {next}
     if ($base =~ /^[.]libs$/) {next}
-    if($base =~ /[.]lo$/) {next}
-    if($base =~ /[.]la$/) {next}
+    if ($base =~ /[.]lo$/) {next}
+    if ($base =~ /[.]la$/) {next}
     if ($file =~ /^test\/memtest\/output\/([^\/]+)$/) {next}
     if ($file =~ /^test\/memtest\/valgrind\/([^\/]+)$/) {next}
     if ($file =~ /^test\/memtest\/valgrind.err/) {next}
