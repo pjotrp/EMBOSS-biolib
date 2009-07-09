@@ -3,6 +3,7 @@
 # there is already a resources.jar in the directory (from
 # an 'ant' build of a standalone setup) and, if so, copy it.
 #
+EMLOCDATA = $(CURDIR)/../../emboss/data
 install-exec-hook:
 	  @if test "${JAVA_OK}" = "yes" ; then \
 	          (if test -d $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources; then \
@@ -14,8 +15,8 @@ install-exec-hook:
 		  cd $(EMBOSS_TOP)/emboss/acd; \
 		  jar cvf $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources/acdstore.jar *.acd; \
                   rm -f   $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources/resources.jar; \
-                  cd $(DESTDIR)$(prefix)/share/$(PACKAGE)/data; \
-                  jar cvf $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources/resources.jar EPAM* EBLOSUM* ENUC*; \
+		  [ -d $(DESTDIR)$(prefix)/share/$(PACKAGE)/data ] || mkdir -p $(DESTDIR)$(prefix)/share/$(PACKAGE)/data; \
+                  jar cvf $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources/resources.jar $(EMLOCDATA)/EPAM* $(EMLOCDATA)/EBLOSUM* $(EMLOCDATA)/ENUC*; \
 	  else \
 		(if test -f resources.jar ; then \
 	            (if test -d $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources ; then \
