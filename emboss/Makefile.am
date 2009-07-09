@@ -12,7 +12,7 @@ endif
 endif
 
 
-check_PROGRAMS = acdlog ajtest \
+check_PROGRAMS = acdlog acdxsd ajtest \
 complex corbatest \
 entrails giep histogramtest intconv \
 origsplitter origunion \
@@ -24,7 +24,7 @@ seqretset seqretsingle seqrettype \
 testplot treetypedisplay
 
 bin_PROGRAMS = aaindexextract abiview \
-acdc acdpretty acdtable acdtrace acdvalid acdxsd \
+acdc acdpretty acdtable acdtrace acdvalid \
 aligncopy aligncopypair antigenic \
 backtranambig backtranseq banana biosed btwisted \
 cai chaos charge checktrans chips \
