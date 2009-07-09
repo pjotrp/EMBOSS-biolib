@@ -2678,11 +2678,11 @@ void* ajListIterGetBack(AjIList iter)
     if(!p->Prev)
       return NULL;
 
-    if(!iter->Back)
+    if(!iter->Back && p->Prev->Prev)
     {
-	ret = p->Prev->Prev->Item;
-	iter->Here = p->Prev->Prev;
-	iter->Back = ajTrue;
+        ret = p->Prev->Prev->Item;
+        iter->Here = p->Prev->Prev;
+        iter->Back = ajTrue;
     }
     else
     {
