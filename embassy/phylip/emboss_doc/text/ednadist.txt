@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Conversion of PHYLIP's dnadist
@@ -119,14 +126,14 @@ See also
 
 Author(s)
 
-   (c) Copyright 1986-1993 by Joseph Felsenstein and by the University of
-   Washington. Written by Joseph Felsenstein. Permission is granted to
-   copy this document provided that no fee is charged for it and that
-   this copyright notice is not removed.
+   (c)              Copyright 1986-1993 by Joseph Felsenstein and by the University of
+   Washington.      Written by Joseph Felsenstein. Permission is granted to
+                    copy this document provided that no fee is charged for it and that
+                    this copyright notice is not removed.
 
-   This application was modified for inclusion in EMBOSS by Ian Longden
+                    This application was modified for inclusion in EMBOSS by Ian Longden
    (il@sanger.ac.uk) Informatics Division, The Sanger Centre, Wellcome
-   Trust Genome Campus, Hinxton, Cambridge, CB10 1SA, UK.
+   Trust            Genome Campus, Hinxton, Cambridge, CB10 1SA, UK.
 
 Priority
 

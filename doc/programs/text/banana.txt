@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Plot bending and curvature data for B-DNA
@@ -1536,33 +1543,33 @@ Known bugs
 
 See also
 
-   Program name                           Description
-   btwisted     Calculate the twisting in a B-DNA sequence
-   chaos        Draw a chaos game representation plot for a nucleotide sequence
-   compseq      Calculate the composition of unique words in sequences
-   dan          Calculates nucleic acid melting temperature
-   density      Draw a nucleic acid density plot
-   freak        Generate residue/base frequency table or plot
-   isochore     Plots isochores in DNA sequences
-   sirna        Finds siRNA duplexes in mRNA
-   wordcount    Count and extract unique words in DNA sequence(s)
+                    Program name                           Description
+                    btwisted     Calculate the twisting in a B-DNA sequence
+                    chaos        Draw a chaos game representation plot for a nucleotide sequence
+                    compseq      Calculate the composition of unique words in sequences
+                    dan          Calculates nucleic acid melting temperature
+                    density      Draw a nucleic acid density plot
+                    freak        Generate residue/base frequency table or plot
+                    isochore     Plots isochores in DNA sequences
+                    sirna        Finds siRNA duplexes in mRNA
+                    wordcount    Count and extract unique words in DNA sequence(s)
 
 Author(s)
 
-   Ian Longden (il © sanger.ac.uk)
-   Sanger Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge,
-   CB10 1SA, UK.
+   Ian              Longden (il © sanger.ac.uk)
+   Sanger           Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge,
+                    CB10 1SA, UK.
 
 History
 
-   The original program ('BEND') is described in the Goodsell & Dickerson
-   paper. Created 1999/06/09.
+                    The original program ('BEND') is described in the Goodsell & Dickerson
+   paper.           Created 1999/06/09.
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
 
 Comments
 
-   None
+                    None

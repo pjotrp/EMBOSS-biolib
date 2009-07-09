@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Regular expression search of nucleotide sequence(s)
@@ -948,11 +955,11 @@ Known bugs
 
 See also
 
-   Program name Description
-   fuzznuc Search for patterns in nucleotide sequences
-   fuzztran Search for patterns in protein sequences (translated)
-   marscan Finds matrix/scaffold recognition (MRS) signatures in DNA
-   sequences
+   Program name     Description
+   fuzznuc          Search for patterns in nucleotide sequences
+   fuzztran         Search for patterns in protein sequences (translated)
+   marscan          Finds matrix/scaffold recognition (MRS) signatures in DNA
+                    sequences
 
    Other EMBOSS programs allow you to search for simple patterns and may
    be easier for the user who has never used regular expressions before:

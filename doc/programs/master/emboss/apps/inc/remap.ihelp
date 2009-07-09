@@ -166,7 +166,7 @@
                                   24-45 blue 56-78 orange
                                   1-100 green 120-156 red
                                   A file of ranges to colour (one range per
-                                  line) can be specifed as '@filename'.
+                                  line) can be specified as '@filename'.
    -threeletter        boolean    [N] Display protein sequences in
                                   three-letter code
    -number             boolean    [N] Number the sequences

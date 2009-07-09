@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Identify CpG islands in nucleotide sequence(s)
@@ -344,13 +351,13 @@ Known bugs
 
 See also
 
-   Program name Description
-   cpgplot Identify and plot CpG islands in nucleotide sequence(s)
-   cpgreport Identify and report CpG-rich regions in nucleotide
-   sequence(s)
-   geecee Calculate fractional GC content of nucleic acid sequences
-   newcpgseek Identify and report CpG-rich regions in nucleotide
-   sequence(s)
+   Program name     Description
+   cpgplot          Identify and plot CpG islands in nucleotide sequence(s)
+   cpgreport        Identify and report CpG-rich regions in nucleotide
+                    sequence(s)
+   geecee           Calculate fractional GC content of nucleic acid sequences
+   newcpgseek       Identify and report CpG-rich regions in nucleotide
+                    sequence(s)
 
 Author(s)
 

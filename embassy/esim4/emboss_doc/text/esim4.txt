@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Align an mRNA to a genomic DNA sequence
@@ -530,27 +537,27 @@ Known bugs
 
 See also
 
-   Program name                       Description
-   est2genome   Align EST sequences to genomic DNA sequence
-   needle       Needleman-Wunsch global alignment of two sequences
-   stretcher    Needleman-Wunsch rapid global alignment of two sequences
+                    Program name                       Description
+                    est2genome   Align EST sequences to genomic DNA sequence
+                    needle       Needleman-Wunsch global alignment of two sequences
+                    stretcher    Needleman-Wunsch rapid global alignment of two sequences
 
 Author(s)
 
-   This program is an EMBOSS conversion of a program written by Liliana
-   Florea as part of the SIM4 package.
+                    This program is an EMBOSS conversion of a program written by Liliana
+                    Florea as part of the SIM4 package.
 
-   Although we take every care to ensure that the results of the EMBOSS
-   version are identical to those from the original package, we recommend
-   that you check your inputs give the same results in both versions
-   before publication.
+                    Although we take every care to ensure that the results of the EMBOSS
+                    version are identical to those from the original package, we recommend
+                    that you check your inputs give the same results in both versions
+                    before publication.
 
-   Please report all bugs in the EMBOSS version to the EMBOSS bug team,
-   not to the original author.
+                    Please report all bugs in the EMBOSS version to the EMBOSS bug team,
+                    not to the original author.
 
 History
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.

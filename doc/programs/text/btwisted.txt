@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Calculate the twisting in a B-DNA sequence
@@ -358,36 +365,36 @@ Known bugs
 
 See also
 
-   Program name                           Description
-   banana       Plot bending and curvature data for B-DNA
-   chaos        Draw a chaos game representation plot for a nucleotide sequence
-   compseq      Calculate the composition of unique words in sequences
-   dan          Calculates nucleic acid melting temperature
-   density      Draw a nucleic acid density plot
-   freak        Generate residue/base frequency table or plot
-   isochore     Plots isochores in DNA sequences
-   sirna        Finds siRNA duplexes in mRNA
-   wordcount    Count and extract unique words in DNA sequence(s)
+                    Program name                           Description
+                    banana       Plot bending and curvature data for B-DNA
+                    chaos        Draw a chaos game representation plot for a nucleotide sequence
+                    compseq      Calculate the composition of unique words in sequences
+                    dan          Calculates nucleic acid melting temperature
+                    density      Draw a nucleic acid density plot
+                    freak        Generate residue/base frequency table or plot
+                    isochore     Plots isochores in DNA sequences
+                    sirna        Finds siRNA duplexes in mRNA
+                    wordcount    Count and extract unique words in DNA sequence(s)
 
 Author(s)
 
-   David Martin (dmartin © rfcgr.mrc.ac.uk)
-   and Alan Bleasby (ajb © ebi.ac.uk)
-   European Bioinformatics Institute, Wellcome Trust Genome Campus,
-   Hinxton, Cambridge CB10 1SD, UK
+   David            Martin (dmartin © rfcgr.mrc.ac.uk)
+   and              Alan Bleasby (ajb © ebi.ac.uk)
+   European         Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton,         Cambridge CB10 1SD, UK
 
-   This application was written during the first Scandinavian EMBOSS
-   Workshop.
+                    This application was written during the first Scandinavian EMBOSS
+                    Workshop.
 
 History
 
-   Written (Sept 2000) - David Martin & Alan Bleasby.
+                    Written (Sept 2000) - David Martin & Alan Bleasby.
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
 
 Comments
 
-   None
+                    None

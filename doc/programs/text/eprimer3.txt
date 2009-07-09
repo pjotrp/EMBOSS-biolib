@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Picks PCR primers and hybridization oligos
@@ -978,41 +985,41 @@ Known bugs
 
 See also
 
-   Program name                         Description
-   primersearch Search DNA sequences for matches with primer pairs
-   stssearch    Search a DNA database for matches with a set of STS primers
+                    Program name                         Description
+   primersearch     Search DNA sequences for matches with primer pairs
+                    stssearch    Search a DNA database for matches with a set of STS primers
 
 History
 
 Author(s)
 
-   Gary Williams (gwilliam © rfcgr.mrc.ac.uk)
-   MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
-   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+   Gary             Williams (gwilliam © rfcgr.mrc.ac.uk)
+   MRC              Rosalind Franklin Centre for Genomics Research Wellcome Trust
+   Genome           Campus, Hinxton, Cambridge, CB10 1SB, UK
 
 History
 
-   Written (Dec 2001) - Gary Williams
+                    Written (Dec 2001) - Gary Williams
 
-   Changed name (version 2.3.0) - Gary Williams
+                    Changed name (version 2.3.0) - Gary Williams
 
-   When I wrote the EMBOSS wrapper for the Whitehead's primer3 version
-   3.0.9 program, I called it 'primer3'. This did not conflict with the
-   Whitehead program becuase although the package is called 'primer3' the
-   program itself is called primer3_core.
+   When             I wrote the EMBOSS wrapper for the Whitehead's primer3 version
+                    3.0.9 program, I called it 'primer3'. This did not conflict with the
+                    Whitehead program becuase although the package is called 'primer3' the
+                    program itself is called primer3_core.
 
-   I wasn't aware that the Whitehead's primer3 version 3.0.6 program was
-   itself called 'primer3'. This caused a name conflict in those sites
-   with version 3.0.6 installed.
+                    I wasn't aware that the Whitehead's primer3 version 3.0.6 program was
+                    itself called 'primer3'. This caused a name conflict in those sites
+                    with version 3.0.6 installed.
 
-   To avoid the conflict, the EMBOSS program was renamed 'eprimer3'.
-   eprimer3 was released in version 2.3.0 of EMBOSS
+                    To avoid the conflict, the EMBOSS program was renamed 'eprimer3'.
+                    eprimer3 was released in version 2.3.0 of EMBOSS
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
 
 Comments
 
-   None
+                    None

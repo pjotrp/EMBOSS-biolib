@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Finds inverted repeats in nucleotide sequence(s)
@@ -385,30 +392,30 @@ Known bugs
 
 See also
 
-   Program name                  Description
-   einverted    Finds inverted repeats in nucleotide sequences
-   equicktandem Finds tandem repeats in nucleotide sequences
-   etandem      Finds tandem repeats in a nucleotide sequence
+                    Program name                  Description
+                    einverted    Finds inverted repeats in nucleotide sequences
+   equicktandem     Finds tandem repeats in nucleotide sequences
+                    etandem      Finds tandem repeats in a nucleotide sequence
 
-   einverted also looks for inverted repeats but is much slower and more
-   sensitive, as it finds low-quality (very mismatched) repeats and
-   repeats with gaps.
+                    einverted also looks for inverted repeats but is much slower and more
+                    sensitive, as it finds low-quality (very mismatched) repeats and
+                    repeats with gaps.
 
 Author(s)
 
-   Mark Faller (current e-mail address unknown)
-   while he was with:
-   HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
+   Mark             Faller (current e-mail address unknown)
+                    while he was with:
+   HGMP-RC,         Genome Campus, Hinxton, Cambridge CB10 1SB, UK
 
 History
 
-   Written (1999) - Mark Faller.
+                    Written (1999) - Mark Faller.
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
 
 Comments
 
-   None
+                    None

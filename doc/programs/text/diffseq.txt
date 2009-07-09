@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Compare and report features of two similar sequences
@@ -539,7 +546,7 @@ Known bugs
 
 See also
 
-   Program name Description
+   Program name     Description
 
 Author(s)
 

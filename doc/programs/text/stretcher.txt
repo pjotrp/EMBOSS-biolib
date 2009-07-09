@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Needleman-Wunsch rapid global alignment of two sequences
@@ -493,29 +500,29 @@ Known bugs
 
 See also
 
-   Program name                    Description
-   est2genome   Align EST sequences to genomic DNA sequence
-   needle       Needleman-Wunsch global alignment of two sequences
+                    Program name                    Description
+                    est2genome   Align EST sequences to genomic DNA sequence
+                    needle       Needleman-Wunsch global alignment of two sequences
 
 Author(s)
 
-   The original program was written by Gene Myers and Webb Miller in
-   1989.
+                    The original program was written by Gene Myers and Webb Miller in
+                    1989.
 
-   This application was modified for inclusion in EMBOSS by Ian Longden
-   (il © sanger.ac.uk)
-   Sanger Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge,
-   CB10 1SA, UK.
+                    This application was modified for inclusion in EMBOSS by Ian Longden
+                    (il © sanger.ac.uk)
+   Sanger           Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge,
+                    CB10 1SA, UK.
 
 History
 
-   Completed 13th May 1999.
+                    Completed 13th May 1999.
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
 
 Comments
 
-   None
+                    None

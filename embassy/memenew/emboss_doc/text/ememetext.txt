@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Multiple EM for Motif Elicitation. Text file only
@@ -1719,7 +1726,7 @@ GTGA[TC][CG][TC][ATG][GT][TC]TCACA
 
 
 
-Time  1.12 secs.
+Time  1.15 secs.
 
 *******************************************************************************
 *
@@ -1863,7 +1870,7 @@ problem with the MEME software.
 
 
 
-Time  0.16 secs.
+Time  0.17 secs.
 
 *******************************************************************************
 *
@@ -2123,7 +2130,7 @@ TTCACATG[CG][CA][AGC][CA][CA][CT][CT]
 
 
 
-Time 23.66 secs.
+Time 25.84 secs.
 
 *******************************************************************************
 *
@@ -2313,7 +2320,7 @@ Q][YCH][LMNSY][CEI]
 
 
 
-Time  0.26 secs.
+Time  0.33 secs.
 
 *******************************************************************************
 *
@@ -2515,7 +2522,7 @@ Qx[EP][DE]GG[FL]G[GD]RP[GN]K[EL][VA][DH][GV]C[YH][TS]
 
 
 
-Time  3.75 secs.
+Time  3.90 secs.
 
 *******************************************************************************
 *
@@ -2678,7 +2685,7 @@ width:  minw=           10    maxw=           10    minic=        0.00
 
 
 
-Time  1.12 secs.
+Time  1.17 secs.
 
 *******************************************************************************
 *
@@ -2849,7 +2856,7 @@ INVEK[LV][IL][EQ][YF][ILV]LS
 
 
 
-Time  1.34 secs.
+Time  1.44 secs.
 
 *******************************************************************************
 *

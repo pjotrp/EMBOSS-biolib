@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Finds regions of identity (exact matches) of two sequences
@@ -11,8 +18,8 @@ Description
 
    wordmatch finds all regions of identity (exact matches) of a specified
    minimum size of two input sequences. These regions are reported in a
-   standard EMBOSS alignment file and (optionally) in standard EMBOSS
-   sequence feature files.
+   standard EMBOSS alignment file and in standard EMBOSS sequence feature
+   files.
 
 Usage
 
@@ -462,13 +469,13 @@ Known bugs
 
 See also
 
-   Program name Description
-   matcher Waterman-Eggert local alignment of two sequences
-   seqmatchall All-against-all word comparison of a sequence set
-   supermatcher Calculate approximate local pair-wise alignments of
-   larger sequences
-   water Smith-Waterman local alignment of sequences
-   wordfinder Match large sequences against one or more other sequences
+   Program name     Description
+   matcher          Waterman-Eggert local alignment of two sequences
+   seqmatchall      All-against-all word comparison of a sequence set
+   supermatcher     Calculate approximate local pair-wise alignments of
+                    larger sequences
+   water            Smith-Waterman local alignment of sequences
+   wordfinder       Match large sequences against one or more other sequences
 
 Author(s)
 

@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Bootstrapped sequences algorithm
@@ -481,59 +488,59 @@ Known bugs
 
 See also
 
-   Program name                         Description
-   distmat      Create a distance matrix from a multiple sequence alignment
-   ednacomp     DNA compatibility algorithm
-   ednadist     Nucleic acid sequence Distance Matrix program
-   ednainvar    Nucleic acid sequence Invariants method
-   ednaml       Phylogenies from nucleic acid Maximum Likelihood
-   ednamlk      Phylogenies from nucleic acid Maximum Likelihood with clock
-   ednapars     DNA parsimony algorithm
-   ednapenny    Penny algorithm for DNA
-   eprotdist    Protein distance algorithm
-   eprotpars    Protein parsimony algorithm
-   erestml      Restriction site Maximum Likelihood method
-   eseqboot     Bootstrapped sequences algorithm
-   fdiscboot    Bootstrapped discrete sites algorithm
-   fdnacomp     DNA compatibility algorithm
-   fdnadist     Nucleic acid sequence Distance Matrix program
-   fdnainvar    Nucleic acid sequence Invariants method
-   fdnaml       Estimates nucleotide phylogeny by maximum likelihood
-   fdnamlk      Estimates nucleotide phylogeny by maximum likelihood
-   fdnamove     Interactive DNA parsimony
-   fdnapars     DNA parsimony algorithm
-   fdnapenny    Penny algorithm for DNA
-   fdolmove     Interactive Dollo or Polymorphism Parsimony
-   ffreqboot    Bootstrapped genetic frequencies algorithm
-   fproml       Protein phylogeny by maximum likelihood
-   fpromlk      Protein phylogeny by maximum likelihood
-   fprotdist    Protein distance algorithm
-   fprotpars    Protein parsimony algorithm
-   frestboot    Bootstrapped restriction sites algorithm
-   frestdist    Distance matrix from restriction sites or fragments
-   frestml      Restriction site maximum Likelihood method
-   fseqbootall  Bootstrapped sequences algorithm
+                    Program name                         Description
+                    distmat      Create a distance matrix from a multiple sequence alignment
+                    ednacomp     DNA compatibility algorithm
+                    ednadist     Nucleic acid sequence Distance Matrix program
+                    ednainvar    Nucleic acid sequence Invariants method
+                    ednaml       Phylogenies from nucleic acid Maximum Likelihood
+                    ednamlk      Phylogenies from nucleic acid Maximum Likelihood with clock
+                    ednapars     DNA parsimony algorithm
+                    ednapenny    Penny algorithm for DNA
+                    eprotdist    Protein distance algorithm
+                    eprotpars    Protein parsimony algorithm
+                    erestml      Restriction site Maximum Likelihood method
+                    eseqboot     Bootstrapped sequences algorithm
+                    fdiscboot    Bootstrapped discrete sites algorithm
+                    fdnacomp     DNA compatibility algorithm
+                    fdnadist     Nucleic acid sequence Distance Matrix program
+                    fdnainvar    Nucleic acid sequence Invariants method
+                    fdnaml       Estimates nucleotide phylogeny by maximum likelihood
+                    fdnamlk      Estimates nucleotide phylogeny by maximum likelihood
+                    fdnamove     Interactive DNA parsimony
+                    fdnapars     DNA parsimony algorithm
+                    fdnapenny    Penny algorithm for DNA
+                    fdolmove     Interactive Dollo or Polymorphism Parsimony
+                    ffreqboot    Bootstrapped genetic frequencies algorithm
+                    fproml       Protein phylogeny by maximum likelihood
+                    fpromlk      Protein phylogeny by maximum likelihood
+                    fprotdist    Protein distance algorithm
+                    fprotpars    Protein parsimony algorithm
+                    frestboot    Bootstrapped restriction sites algorithm
+                    frestdist    Distance matrix from restriction sites or fragments
+                    frestml      Restriction site maximum Likelihood method
+                    fseqbootall  Bootstrapped sequences algorithm
 
 Author(s)
 
-   This program is an EMBOSS conversion of a program written by Joe
-   Felsenstein as part of his PHYLIP package.
+                    This program is an EMBOSS conversion of a program written by Joe
+                    Felsenstein as part of his PHYLIP package.
 
-   Although we take every care to ensure that the results of the EMBOSS
-   version are identical to those from the original package, we recommend
-   that you check your inputs give the same results in both versions
-   before publication.
+                    Although we take every care to ensure that the results of the EMBOSS
+                    version are identical to those from the original package, we recommend
+                    that you check your inputs give the same results in both versions
+                    before publication.
 
-   Please report all bugs in the EMBOSS version to the EMBOSS bug team,
-   not to the original author.
+                    Please report all bugs in the EMBOSS version to the EMBOSS bug team,
+                    not to the original author.
 
 History
 
-   Written (2004) - Joe Felsenstein, University of Washington.
+                    Written (2004) - Joe Felsenstein, University of Washington.
 
-   Converted (August 2004) to an EMBASSY program by the EMBOSS team.
+                    Converted (August 2004) to an EMBASSY program by the EMBOSS team.
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.

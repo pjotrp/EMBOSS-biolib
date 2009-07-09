@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Align EST sequences to genomic DNA sequence
@@ -681,36 +688,36 @@ Known bugs
 
 See also
 
-   Program name                       Description
-   needle       Needleman-Wunsch global alignment of two sequences
-   stretcher    Needleman-Wunsch rapid global alignment of two sequences
+                    Program name                       Description
+                    needle       Needleman-Wunsch global alignment of two sequences
+                    stretcher    Needleman-Wunsch rapid global alignment of two sequences
 
 Author(s)
 
-   This application was modified for inclusion in EMBOSS by Peter Rice
-   (pmr © ebi.ac.uk)
-   European Bioinformatics Institute, Wellcome Trust Genome Campus,
-   Hinxton, Cambridge CB10 1SD, UK
+                    This application was modified for inclusion in EMBOSS by Peter Rice
+                    (pmr © ebi.ac.uk)
+   European         Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton,         Cambridge CB10 1SD, UK
 
-   The original program was est_genome, written by Richard Mott at the
-   Sanger Centre. The original version is available from
-   ftp://ftp.sanger.ac.uk/pub/pmr/est_genome.4.tar.Z
+                    The original program was est_genome, written by Richard Mott at the
+   Sanger           Centre. The original version is available from
+                    ftp://ftp.sanger.ac.uk/pub/pmr/est_genome.4.tar.Z
 
 History
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
 
 Comments
 
-  Thu, 29 Mar 2001
+                   Thu, 29 Mar 2001
 
-   I found est2genome having problems finding very short exons with the
-   default parameters.
+                    I found est2genome having problems finding very short exons with the
+                    default parameters.
 
-   With the folowing changes it detects also a 14bp exon correctly:
+                    With the folowing changes it detects also a 14bp exon correctly:
 
 mismatch 1 -> 3
 intronpenalty 40 -> 20

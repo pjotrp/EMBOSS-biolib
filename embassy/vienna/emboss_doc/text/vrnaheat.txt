@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    RNA melting
@@ -251,44 +258,44 @@ Known bugs
 
 See also
 
-    Program name                       Description
-   einverted      Finds inverted repeats in nucleotide sequences
-   vrnaalifold    RNA alignment folding
-   vrnaalifoldpf  RNA alignment folding with partition
-   vrnacofold     RNA cofolding
-   vrnacofoldconc RNA cofolding with concentrations
-   vrnacofoldpf   RNA cofolding with partitioning
-   vrnadistance   RNA distances
-   vrnaduplex     RNA duplex calculation
-   vrnaeval       RNA eval
-   vrnaevalpair   RNA eval with cofold
-   vrnafold       Calculate secondary structures of RNAs
-   vrnafoldpf     Secondary structures of RNAs with partition
-   vrnainverse    RNA sequences matching a structure
-   vrnalfold      Calculate locally stable secondary structures of RNAs
-   vrnaplot       Plot vrnafold output
-   vrnasubopt     Calculate RNA suboptimals
+                     Program name                       Description
+                    einverted      Finds inverted repeats in nucleotide sequences
+                    vrnaalifold    RNA alignment folding
+                    vrnaalifoldpf  RNA alignment folding with partition
+                    vrnacofold     RNA cofolding
+   vrnacofoldconc   RNA cofolding with concentrations
+                    vrnacofoldpf   RNA cofolding with partitioning
+                    vrnadistance   RNA distances
+                    vrnaduplex     RNA duplex calculation
+                    vrnaeval       RNA eval
+                    vrnaevalpair   RNA eval with cofold
+                    vrnafold       Calculate secondary structures of RNAs
+                    vrnafoldpf     Secondary structures of RNAs with partition
+                    vrnainverse    RNA sequences matching a structure
+                    vrnalfold      Calculate locally stable secondary structures of RNAs
+                    vrnaplot       Plot vrnafold output
+                    vrnasubopt     Calculate RNA suboptimals
 
 Author(s)
 
-   This program is an EMBOSS conversion of a program written by Ivo
-   Hofacker as part of his VIENNA package.
+                    This program is an EMBOSS conversion of a program written by Ivo
+                    Hofacker as part of his VIENNA package.
 
-   Although we take every care to ensure that the results of the EMBOSS
-   version are identical to those from the original package, we recommend
-   that you check your inputs give the same results in both versions
-   before publication.
+                    Although we take every care to ensure that the results of the EMBOSS
+                    version are identical to those from the original package, we recommend
+                    that you check your inputs give the same results in both versions
+                    before publication.
 
-   Please report all bugs in the EMBOSS version to the EMBOSS bug team,
-   not to the original author.
+                    Please report all bugs in the EMBOSS version to the EMBOSS bug team,
+                    not to the original author.
 
 History
 
-   Converted (October 2005) by Alan Bleasby
+                    Converted (October 2005) by Alan Bleasby
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
 
 Comments

@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Predicts coiled coil regions in protein sequences
@@ -292,27 +299,27 @@ Known bugs
 
 See also
 
-   Program name Description
-   antigenic Finds antigenic sites in proteins
-   digest Reports on protein proteolytic enzyme or reagent cleavage sites
-   epestfind Finds PEST motifs as potential proteolytic cleavage sites
-   fuzzpro Search for patterns in protein sequences
-   fuzztran Search for patterns in protein sequences (translated)
-   garnier Predicts protein secondary structure using GOR method
-   helixturnhelix Identify nucleic acid-binding motifs in protein
-   sequences
-   hmoment Calculate and plot hydrophobic moment for protein sequence(s)
-   oddcomp Identify proteins with specified sequence word composition
-   patmatdb Searches protein sequences with a sequence motif
-   patmatmotifs Scan a protein sequence with motifs from the PROSITE
-   database
-   pepnet Draw a helical net for a protein sequence
-   pepwheel Draw a helical wheel diagram for a protein sequence
-   preg Regular expression search of protein sequence(s)
-   pscan Scans protein sequence(s) with fingerprints from the PRINTS
-   database
-   sigcleave Reports on signal cleavage sites in a protein sequence
-   tmap Predict and plot transmembrane segments in protein sequences
+   Program name     Description
+   antigenic        Finds antigenic sites in proteins
+   digest           Reports on protein proteolytic enzyme or reagent cleavage sites
+   epestfind        Finds PEST motifs as potential proteolytic cleavage sites
+   fuzzpro          Search for patterns in protein sequences
+   fuzztran         Search for patterns in protein sequences (translated)
+   garnier          Predicts protein secondary structure using GOR method
+   helixturnhelix   Identify nucleic acid-binding motifs in protein
+                    sequences
+   hmoment          Calculate and plot hydrophobic moment for protein sequence(s)
+   oddcomp          Identify proteins with specified sequence word composition
+   patmatdb         Searches protein sequences with a sequence motif
+   patmatmotifs     Scan a protein sequence with motifs from the PROSITE
+                    database
+   pepnet           Draw a helical net for a protein sequence
+   pepwheel         Draw a helical wheel diagram for a protein sequence
+   preg             Regular expression search of protein sequence(s)
+   pscan            Scans protein sequence(s) with fingerprints from the PRINTS
+                    database
+   sigcleave        Reports on signal cleavage sites in a protein sequence
+   tmap             Predict and plot transmembrane segments in protein sequences
 
 Author(s)
 

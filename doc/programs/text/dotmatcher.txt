@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Draw a threshold dotplot of two sequences
@@ -442,30 +449,30 @@ Known bugs
 
 See also
 
-   Program name                          Description
-   dotpath      Draw a non-overlapping wordmatch dotplot of two sequences
-   dottup       Displays a wordmatch dotplot of two sequences
-   polydot      Draw dotplots for all-against-all comparison of a sequence set
+                    Program name                          Description
+                    dotpath      Draw a non-overlapping wordmatch dotplot of two sequences
+                    dottup       Displays a wordmatch dotplot of two sequences
+                    polydot      Draw dotplots for all-against-all comparison of a sequence set
 
-   dottup, by comparison, has no threshold, using a wordmatch-style
-   method. dottup is less sensitive, but substantially faster than
-   dotmatcher.
+                    dottup, by comparison, has no threshold, using a wordmatch-style
+                    method. dottup is less sensitive, but substantially faster than
+                    dotmatcher.
 
 Author(s)
 
-   Ian Longden (il © sanger.ac.uk)
-   Sanger Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge,
-   CB10 1SA, UK.
+   Ian              Longden (il © sanger.ac.uk)
+   Sanger           Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge,
+                    CB10 1SA, UK.
 
 History
 
-   Completed 1st June 1999.
+                    Completed 1st June 1999.
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
 
 Comments
 
-   None
+                    None

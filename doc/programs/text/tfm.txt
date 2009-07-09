@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Displays full documentation for an application
@@ -26,6 +33,11 @@ Displays full documentation for an application
                                  wossname
 
 
+
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
 
 Function
 
@@ -181,7 +193,7 @@ nthseqset     Reads and writes (returns) one set of sequences from many
 pasteseq      Insert one sequence into another
 revseq        Reverse and complement a nucleotide sequence
 seqret        Reads and writes (returns) sequences
-seqretsetall  Reads and writes (returns) a set of sequences all at once
+seqretsetall  Reads and writes (returns) many sets of sequences
 seqretsplit   Reads sequences and writes them to individual files
 sizeseq       Sort sequences by size
 skipredundant Remove redundant sequences from an input set
@@ -871,7 +883,7 @@ seqfraggle     Removes fragment sequences from DHF files
 seqmatchall    All-against-all word comparison of a sequence set
 seqnr          Removes redundancy from DHF files
 seqret         Reads and writes (returns) sequences
-seqretsetall   Reads and writes (returns) a set of sequences all at once
+seqretsetall   Reads and writes (returns) many sets of sequences
 seqretsplit    Reads sequences and writes them to individual files
 seqsearch      Generate PSI-BLAST hits (DHF file) from a DAF file
 seqsort        Remove ambiguous classified sequences from DHF files

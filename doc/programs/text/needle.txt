@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Needleman-Wunsch global alignment of two sequences
@@ -557,38 +564,38 @@ Known bugs
 
 See also
 
-   Program name                       Description
-   est2genome   Align EST sequences to genomic DNA sequence
-   stretcher    Needleman-Wunsch rapid global alignment of two sequences
+                    Program name                       Description
+                    est2genome   Align EST sequences to genomic DNA sequence
+                    stretcher    Needleman-Wunsch rapid global alignment of two sequences
 
-   When you want an alignment that covers the whole length of both
-   sequences, use needle. 
+                    When you want an alignment that covers the whole length of both
+                    sequences, use needle. 
 
-   When you are trying to find the best region of similarity between two
-   sequences, use water.
+                    When you are trying to find the best region of similarity between two
+                    sequences, use water.
 
-   stretcher is a more suitable program to use to find global alignments
-   of very long sequences.
+                    stretcher is a more suitable program to use to find global alignments
+                    of very long sequences.
 
 Author(s)
 
-   Alan Bleasby (ajb © ebi.ac.uk)
-   European Bioinformatics Institute, Wellcome Trust Genome Campus,
-   Hinxton, Cambridge CB10 1SD, UK
+   Alan             Bleasby (ajb © ebi.ac.uk)
+   European         Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton,         Cambridge CB10 1SD, UK
 
 History
 
-   Completed 8th July 1999.
+                    Completed 8th July 1999.
 
-   Modified 26th July 1999 - scoring tweaked.
+                    Modified 26th July 1999 - scoring tweaked.
 
-   Modified 22 Oct 2000 - %ID and %Similarity scores added.
+                    Modified 22 Oct 2000 - %ID and %Similarity scores added.
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
 
 Comments
 
-   None
+                    None

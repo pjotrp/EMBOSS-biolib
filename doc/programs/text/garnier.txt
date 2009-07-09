@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Predicts protein secondary structure using GOR method
@@ -411,14 +418,14 @@ Known bugs
 
 See also
 
-   Program name Description
-   helixturnhelix Identify nucleic acid-binding motifs in protein
-   sequences
-   hmoment Calculate and plot hydrophobic moment for protein sequence(s)
-   pepcoil Predicts coiled coil regions in protein sequences
-   pepnet Draw a helical net for a protein sequence
-   pepwheel Draw a helical wheel diagram for a protein sequence
-   tmap Predict and plot transmembrane segments in protein sequences
+   Program name     Description
+   helixturnhelix   Identify nucleic acid-binding motifs in protein
+                    sequences
+   hmoment          Calculate and plot hydrophobic moment for protein sequence(s)
+   pepcoil          Predicts coiled coil regions in protein sequences
+   pepnet           Draw a helical net for a protein sequence
+   pepwheel         Draw a helical wheel diagram for a protein sequence
+   tmap             Predict and plot transmembrane segments in protein sequences
 
 Author(s)
 

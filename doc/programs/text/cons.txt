@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Create a consensus sequence from a multiple alignment
@@ -245,11 +252,11 @@ Known bugs
 
 See also
 
-   Program name Description
-   consambig Create an ambiguous consensus sequence from a multiple
-   alignment
-   megamerger Merge two large overlapping DNA sequences
-   merger Merge two overlapping sequences
+   Program name     Description
+   consambig        Create an ambiguous consensus sequence from a multiple
+                    alignment
+   megamerger       Merge two large overlapping DNA sequences
+   merger           Merge two overlapping sequences
 
 Author(s)
 

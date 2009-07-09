@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Find and retrieve EMBOSS data files
@@ -201,6 +208,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   Matrices.nucleotide
   Matrices.protein
   Matrices.proteinstructure
+  SSSUB
   edialignmat
   embossre.equ
   tffungi
@@ -1712,22 +1720,22 @@ Known bugs
 
 See also
 
-   Program name                 Description
-   embossversion Reports the current EMBOSS version number
+                    Program name                 Description
+   embossversion    Reports the current EMBOSS version number
 
 Author(s)
 
-   Gary Williams (gwilliam © rfcgr.mrc.ac.uk)
-   MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
-   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+   Gary             Williams (gwilliam © rfcgr.mrc.ac.uk)
+   MRC              Rosalind Franklin Centre for Genomics Research Wellcome Trust
+   Genome           Campus, Hinxton, Cambridge, CB10 1SB, UK
 
 History
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
 
 Comments
 
-   It should be possible to format the output for html.
+                    It should be possible to format the output for html.

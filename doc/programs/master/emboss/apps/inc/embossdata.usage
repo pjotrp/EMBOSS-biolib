@@ -189,6 +189,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   Matrices.nucleotide
   Matrices.protein
   Matrices.proteinstructure
+  SSSUB
   edialignmat
   embossre.equ
   tffungi

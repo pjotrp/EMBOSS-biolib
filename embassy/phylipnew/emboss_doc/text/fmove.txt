@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Interactive mixed method parsimony
@@ -221,41 +228,41 @@ Known bugs
 
 See also
 
-   Program name                Description
-   eclique      Largest clique program
-   edollop      Dollo and polymorphism parsimony algorithm
-   edolpenny    Penny algorithm Dollo or polymorphism
-   efactor      Multistate to binary recoding program
-   emix         Mixed parsimony algorithm
-   epenny       Penny algorithm, branch-and-bound
-   fclique      Largest clique program
-   fdollop      Dollo and polymorphism parsimony algorithm
-   fdolpenny    Penny algorithm Dollo or polymorphism
-   ffactor      Multistate to binary recoding program
-   fmix         Mixed parsimony algorithm
-   fpars        Discrete character parsimony
-   fpenny       Penny algorithm, branch-and-bound
+                    Program name                Description
+                    eclique      Largest clique program
+                    edollop      Dollo and polymorphism parsimony algorithm
+                    edolpenny    Penny algorithm Dollo or polymorphism
+                    efactor      Multistate to binary recoding program
+                    emix         Mixed parsimony algorithm
+                    epenny       Penny algorithm, branch-and-bound
+                    fclique      Largest clique program
+                    fdollop      Dollo and polymorphism parsimony algorithm
+                    fdolpenny    Penny algorithm Dollo or polymorphism
+                    ffactor      Multistate to binary recoding program
+                    fmix         Mixed parsimony algorithm
+                    fpars        Discrete character parsimony
+                    fpenny       Penny algorithm, branch-and-bound
 
 Author(s)
 
-   This program is an EMBOSS conversion of a program written by Joe
-   Felsenstein as part of his PHYLIP package.
+                    This program is an EMBOSS conversion of a program written by Joe
+                    Felsenstein as part of his PHYLIP package.
 
-   Although we take every care to ensure that the results of the EMBOSS
-   version are identical to those from the original package, we recommend
-   that you check your inputs give the same results in both versions
-   before publication.
+                    Although we take every care to ensure that the results of the EMBOSS
+                    version are identical to those from the original package, we recommend
+                    that you check your inputs give the same results in both versions
+                    before publication.
 
-   Please report all bugs in the EMBOSS version to the EMBOSS bug team,
-   not to the original author.
+                    Please report all bugs in the EMBOSS version to the EMBOSS bug team,
+                    not to the original author.
 
 History
 
-   Written (2004) - Joe Felsenstein, University of Washington.
+                    Written (2004) - Joe Felsenstein, University of Washington.
 
-   Converted (August 2004) to an EMBASSY program by the EMBOSS team.
+                    Converted (August 2004) to an EMBASSY program by the EMBOSS team.
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.

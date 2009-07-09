@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Mutate a sequence
@@ -530,24 +537,24 @@ Known bugs
 
 See also
 
-   Program name                     Description
-   shuffleseq   Shuffles a set of sequences maintaining composition
+                    Program name                     Description
+                    shuffleseq   Shuffles a set of sequences maintaining composition
 
 Author(s)
 
-   Gary Williams (gwilliam © rfcgr.mrc.ac.uk)
-   MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
-   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+   Gary             Williams (gwilliam © rfcgr.mrc.ac.uk)
+   MRC              Rosalind Franklin Centre for Genomics Research Wellcome Trust
+   Genome           Campus, Hinxton, Cambridge, CB10 1SB, UK
 
 History
 
-   Written (1999) - Gary Williams
+                    Written (1999) - Gary Williams
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
 
 Comments
 
-   None
+                    None

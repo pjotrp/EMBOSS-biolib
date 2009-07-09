@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Distances between two sets of trees
@@ -138,7 +145,7 @@ Distances between two sets of trees
 Phylip tree file: treedist.dat
 Second phylip tree file: treedist.dat
 Phylip treedist program output file [treedist.ftreedistpair]: 
-read_groups 9612dc0
+read_groups 9b1cdc0
 
 Done.
 

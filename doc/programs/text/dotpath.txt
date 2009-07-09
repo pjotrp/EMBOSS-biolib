@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Draw a non-overlapping wordmatch dotplot of two sequences
@@ -500,34 +507,34 @@ Known bugs
 
 See also
 
-   Program name                          Description
-   dotmatcher   Draw a threshold dotplot of two sequences
-   dottup       Displays a wordmatch dotplot of two sequences
-   polydot      Draw dotplots for all-against-all comparison of a sequence set
+                    Program name                          Description
+                    dotmatcher   Draw a threshold dotplot of two sequences
+                    dottup       Displays a wordmatch dotplot of two sequences
+                    polydot      Draw dotplots for all-against-all comparison of a sequence set
 
-   This program is closely based on dottup with the addition of by
-   default displaying only the minimal set of non-overlapping matches.
+                    This program is closely based on dottup with the addition of by
+                    default displaying only the minimal set of non-overlapping matches.
 
-   This program uses the same algorithm as diffseq for finding a minimal
-   set of very good matches between two sequences. diffseq may be more
-   convenient if you are looking at the differences between two nearly
-   identical sequences.
+                    This program uses the same algorithm as diffseq for finding a minimal
+                    set of very good matches between two sequences. diffseq may be more
+                    convenient if you are looking at the differences between two nearly
+                    identical sequences.
 
 Author(s)
 
-   Gary Williams (gwilliam © rfcgr.mrc.ac.uk)
-   MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
-   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+   Gary             Williams (gwilliam © rfcgr.mrc.ac.uk)
+   MRC              Rosalind Franklin Centre for Genomics Research Wellcome Trust
+   Genome           Campus, Hinxton, Cambridge, CB10 1SB, UK
 
 History
 
-   Written 14 Aug 2000.
+                    Written 14 Aug 2000.
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
 
 Comments
 
-   None
+                    None

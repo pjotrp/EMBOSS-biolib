@@ -3,6 +3,13 @@
 
 
 
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
 Function
 
    Distances between trees
@@ -137,7 +144,7 @@ Usage
 Distances between trees
 Phylip tree file: treedist.dat
 Phylip treedist program output file [treedist.ftreedist]: 
-read_groups 91839c0
+read_groups 96969c0
 
 
 Output written to file "treedist.ftreedist"
@@ -155,7 +162,7 @@ Done.
 Distances between trees
 Phylip tree file: treedist2.dat
 Phylip treedist program output file [treedist2.ftreedist]: 
-read_groups 9a2a9c0
+read_groups 82969c0
 
 
 Output written to file "treedist2.ftreedist"
