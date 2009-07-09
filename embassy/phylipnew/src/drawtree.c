@@ -2559,7 +2559,6 @@ void setup_environment(int argc, Char *argv[])
   printf("Reading tree ... \n");
   firsttree = true;
   treestr = ajStrGetuniquePtr(&phylotrees[0]->Tree); 
-  ajUser("Reading tree '%s'", treestr);
   allocate_nodep(&nodep, treestr, &spp);
   treeread (&treestr, &root, treenode, &goteof, &firsttree,
             nodep, &nextnode, &haslengths,

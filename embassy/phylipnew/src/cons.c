@@ -1442,7 +1442,6 @@ void read_groups (pattern_elm ****pattern_array,
       (*pattern_array) =
         (pattern_elm ***)Malloc(setsz * sizeof(pattern_elm **));
 
-      ajUser("read_groups %p", (*pattern_array));
       /* For this assignment, let's assume that there will be no
          more than maxtrees. */
       for (j = 0 ; j < setsz ; j++) 
