@@ -18,6 +18,10 @@
 
 use File::Basename;
 
+%rotations = ("density" => "90<",
+	      "dotmatcher" => "90<",
+	      "pepwheel" => "90>",
+    );
 
 open (LOG,">>makeexample.log") || die "Cannot append to makeexample.log";
 
@@ -592,11 +596,18 @@ test $dotest hasn't used ", $#answers+1, " answers\n";
 # convert .ps file to gif
 	    $giffile = "";
 	    $origfile = $file;
-	    if ($file =~ /\.ps$/) {
+	    if ($file =~ /([a-z0-9_]+)\.ps$/) {
+		$pname = $1;
 		$giffile = $file;
 		$giffile =~ s/\.[a-z]*ps2?/.gif/;
+		$rotate = "-90<";
+		if(defined($rotations{$pname})){
+		    $rotate = $rotations{$pname};
+		    print STDERR "rotate '$rotate'\n";
+		}
 # add -delay to see the first page of an animated gif for 10 mins
-		system("2>&1 convert -delay 65535 -rotate '-90<' $path $giffile >/dev/null");
+		# add -delay to see the first page of an animated gif for 10 mins
+		system("2>&1 convert -delay 65535 -rotate '$rotate' $path $giffile >/dev/null");
 		$file = $giffile;
 		$path = $giffile;
 	    }
@@ -604,7 +615,6 @@ test $dotest hasn't used ", $#answers+1, " answers\n";
 	    elsif ($file =~ /\.([a-z]+)ps$/) {
 		$giffile = $file;
 		$giffile =~ s/\.([a-z]+)ps/.$1.gif/;
-# add -delay to see the first page of an animated gif for 10 mins
 		system("2>&1 convert -delay 65535 -rotate '-90<' $path $giffile >/dev/null");
 		$file = $giffile;
 		$path = $giffile;
