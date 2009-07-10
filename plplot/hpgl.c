@@ -1,4 +1,4 @@
-/* $Id: hpgl.c,v 1.4 2009/07/08 09:11:25 ajb Exp $
+/* $Id: hpgl.c,v 1.5 2009/07/10 13:02:25 ajb Exp $
  *
  *  File:	hpgl.c
  *
