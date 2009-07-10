@@ -867,7 +867,7 @@ void samenumspfreq(AjPPhyloFreq freq, long *chars, long ith)
   /* check if spp is same as the first set in other data sets */
 
   if (freq->Size != spp) {
-    ajErr("\ERROR: Inconsistent number of species in data set %ld", ith);
+    ajErr("\nERROR: Inconsistent number of species in data set %ld", ith);
     exxit(-1);
   }
   *chars = freq->Loci;
@@ -878,7 +878,7 @@ void samenumspstate(AjPPhyloState state, long *chars, long ith)
   /* check if spp is same as the first set in other data sets */
 
   if (state->Size != spp) {
-    ajErr("\ERROR: Inconsistent number of species in data set %ld", ith);
+    ajErr("\nERROR: Inconsistent number of species in data set %ld", ith);
     exxit(-1);
   }
   *chars = state->Len;
@@ -890,7 +890,7 @@ void samenumspseq(AjPSeqset set, long *chars, long ith)
   /* check if spp is same as the first set in other data sets */
 
   if (set->Size != spp) {
-    ajErr("\ERROR: Inconsistent number of species in data set %ld", ith);
+    ajErr("\nERROR: Inconsistent number of species in data set %ld", ith);
     exxit(-1);
   }
   *chars = set->Len;
@@ -901,7 +901,7 @@ void samenumspseq2(AjPPhyloDist set, long ith)
   /* check if spp is same as the first set in other data sets */
 
   if (set->Size != spp) {
-    ajErr("\ERROR: Inconsistent number of species in data set %ld", ith);
+    ajErr("\nERROR: Inconsistent number of species in data set %ld", ith);
     exxit(-1);
   }
 } /* samenumspphylodist */
