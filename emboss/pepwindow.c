@@ -62,7 +62,6 @@ int main(int argc, char **argv)
     float fstart;
     float fend;
     ajuint ilen;
-    ajuint tui;
     ajuint istart;
     ajuint iend;
 
@@ -70,7 +69,6 @@ int main(int argc, char **argv)
 
     seq  = ajAcdGetSeq("sequence");
     ilen = ajSeqGetLen(seq);
-    tui  = ajSeqGetLen(seq);
     
     mult     = ajAcdGetGraphxy("graph");
     datafile = ajAcdGetDatafile("datafile");

@@ -17535,10 +17535,8 @@ static AjBool btreeDeleteHybIdTwo(AjPBtcache cache, const AjPBtHybrid hyb,
     unsigned char *rbuf = NULL;
     unsigned char *buf  = NULL;
 
-    ajint dups     = 0;
     ajint nkeys    = 0;
     ajint nentries = 0;
-    ajint dirtysave;
     
     ajint i;
 
@@ -17551,13 +17549,11 @@ static AjBool btreeDeleteHybIdTwo(AjPBtcache cache, const AjPBtHybrid hyb,
     
     rpage = ajBtreeCacheWrite(cache,cache->secrootblock);
 
-    dirtysave = rpage->dirty;
     rpage->dirty = BT_LOCK;
     rbuf = rpage->buf;
     GBT_RIGHT(rbuf,&sval);
     cache->slevel = (ajint) sval;
 
-    dups = did->dups;
     key  = hyb->offset;
 
     page = ajBtreeNumFindInsert(cache,key);
@@ -19140,7 +19136,6 @@ AjBool ajBtreeDeletePriId(AjPBtcache cache, const AjPBtPri pri)
     ajlong blockno  = 0L;
 
     ajint nkeys = 0;
-    ajint sorder = 0;
     ajlong slevel = 0L;
 
     ajint nentries = 0;
@@ -19195,8 +19190,6 @@ AjBool ajBtreeDeletePriId(AjPBtcache cache, const AjPBtPri pri)
     secrootpage = exists->treeblock;
     cache->secrootblock = exists->treeblock;
     
-    sorder = cache->sorder;
-
     arrays = btreeAllocSecArray(cache);
     karray = arrays->karray;
     parray = arrays->parray;

@@ -54,7 +54,6 @@ int main(int argc, char **argv)
     ajint len;
     ajint pos;
     AjBool addover;
-    AjBool source;
     AjBool feature;
     AjPStr outseq_name = ajStrNew();
 
@@ -69,10 +68,6 @@ int main(int argc, char **argv)
     overlap = ajAcdGetInt("overlap");
     addover = ajAcdGetBoolean("addoverlap");
     feature = ajAcdGetBoolean("feature");
-
-    if (!feature) {
-      source = AJFALSE;
-    }
 
     while(ajSeqallNext(seqall, &seq))
     {
