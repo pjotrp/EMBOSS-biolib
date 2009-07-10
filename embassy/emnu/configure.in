@@ -23,7 +23,6 @@ dnl Test whether --with-sgiabi given for IRIX (n32m3 n32m4 64m3 64m4)
 if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64" ; then
 if test "$CC" != "gcc"; then
   CC=cc
-  CFLAGS="$CFLAGS -woff 1048"
   CHECK_SGI
 fi
 fi
@@ -437,14 +436,21 @@ fi
 fi          
 
 dnl test for cygwin to set AM_LDFLAGS in library & apps Makefile.ams
-AJOSNAME=`uname`
-iscyg=no
-if test `expr substr $AJOSNAME 1 6` = "CYGWIN"; then
-   iscyg=yes
-fi
-AM_CONDITIONAL(ISCYGWIN, test "$iscyg" = "yes")
+dnl Replaces original version which used 'expr' and so wasn't entirely
+dnl portable.
+platform_cygwin='no'
+AC_MSG_CHECKING([for cygwin])
+case "$host" in
+  *-*-mingw*|*-*-cygwin*)
+    platform_cygwin='yes'
+    ;;
+  *)
+    platform_cygwin='no'
+    ;;
+esac
+AC_MSG_RESULT([$platform_cygwin])
+AM_CONDITIONAL(ISCYGWIN, test "$platform_cygwin" = "yes")
 AC_SUBST(ISCYGWIN)
-
 
 dnl Tests for AIX
 dnl If shared needs -Wl,-G in plplot,ajax,nucleus, -lX11 in plplot,
