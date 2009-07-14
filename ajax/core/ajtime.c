@@ -661,6 +661,7 @@ AjBool ajTimeSetLocal(AjPTime thys, const time_t timer)
     thys->time.tm_sec = result->tm_sec;
     thys->time.tm_min = result->tm_min;
     thys->time.tm_mday = result->tm_mday;
+    thys->time.tm_wday = result->tm_wday;
     thys->time.tm_hour = result->tm_hour;
     thys->time.tm_mon  = result->tm_mon;
     thys->time.tm_year = result->tm_year;
