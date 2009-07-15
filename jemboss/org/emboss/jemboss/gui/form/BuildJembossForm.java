@@ -1170,6 +1170,7 @@ public class BuildJembossForm implements ActionListener
         }
 
         options = options.concat(inSeqAttr[h].getInputSeqAttr(seq));
+        optionsA.addAll(inSeqAttr[h].getInputSeqAttrA(seq));
 
       } 
     }

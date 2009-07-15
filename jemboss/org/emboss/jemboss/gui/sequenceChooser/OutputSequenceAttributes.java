@@ -358,7 +358,7 @@ public class OutputSequenceAttributes
     }
      
     if(osextension.isEnabled() && !isExtensionDefault()){
-    	options.add("-osextension ");
+    	options.add("-osextension");
     	options.add(osextension.getText());
     }
 
