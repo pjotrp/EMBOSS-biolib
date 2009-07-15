@@ -173,9 +173,9 @@ public class BuildJembossForm implements ActionListener
           String urlEmbassyPrefix = parseAcd.getUrlPrefix();
           url = mysettings.getembURL();
           if(urlEmbassyPrefix != null)
-            url = url + "apps/release/6.0/embassy/" +applName+ "/" ;
+            url = url + "apps/release/6.1/embassy/" +applName+ "/" ;
           else
-            url = url + "apps/release/6.0/emboss/apps/";
+            url = url + "apps/release/6.1/emboss/apps/";
 
           url = url+applName+".html";
         }
@@ -893,8 +893,9 @@ public class BuildJembossForm implements ActionListener
       }
       else if ( att.startsWith("float") )
       {
-        if( (textFloat[h].getText() != null) && textFloat[h].isVisible()
-                                             && textFloat[h].isEnabled())
+        if( textFloat[h].getText() != null &&
+        		textFloat[h].getText().length()>0 &&
+        		textFloat[h].isVisible() && textFloat[h].isEnabled())
         {
           options = options.concat(" -" + val + " " + textFloat[h].getValue());
           optionsA.add("-"+val);
