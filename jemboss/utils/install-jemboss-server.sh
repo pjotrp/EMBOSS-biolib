@@ -729,7 +729,7 @@ if [ $INSTALL_TYPE = "1" ]; then
 fi
   
 echo
-echo "Has the above been downloaded (y/n)? "
+echo "Have the above been downloaded (y/n)? "
 read DOWNLOADED
 
 if (test "$DOWNLOADED" != "y") && (test "$DOWNLOADED" != "Y"); then
