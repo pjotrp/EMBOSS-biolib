@@ -376,11 +376,11 @@ public class JembossAuthServer
     {
 //    System.out.println("STATUS OK");
       vans.add("length");
-      vans.add(new Integer(aj.length));
+      vans.add(new Integer(Ajax.length));
       vans.add("protein");
-      vans.add(new Boolean(aj.protein));
+      vans.add(new Boolean(Ajax.protein));
       vans.add("weight");
-      vans.add(new Float(aj.weight));
+      vans.add(new Float(Ajax.weight));
       vans.add("status");
       vans.add("0");
     }
@@ -673,7 +673,7 @@ public class JembossAuthServer
     {
 
 // COMMENT THIS LINE TO USE QUEUEING SOFTWARE
-      boolean lforkB = aj.forkBatch(userName,passwd,environ,
+      /*boolean lforkB = */aj.forkBatch(userName,passwd,environ,
                                     embossCommand,project);
 
 // UNCOMMENT ONE OF THESE LINE TO USE QUEUEING SOFTWARE
@@ -1070,7 +1070,7 @@ public class JembossAuthServer
     lsr.add("OK");
 
     aj.setErrStd();
-    boolean lsd = aj.listDirs(userName,passwd,environ,tmproot);
+    /*boolean lsd =*/ aj.listDirs(userName,passwd,environ,tmproot);
     
     String outStd = aj.getOutStd();
 
