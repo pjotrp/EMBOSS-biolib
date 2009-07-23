@@ -673,8 +673,7 @@ public class JembossAuthServer
     {
 
 // COMMENT THIS LINE TO USE QUEUEING SOFTWARE
-      /*boolean lforkB = */aj.forkBatch(userName,passwd,environ,
-                                    embossCommand,project);
+      aj.forkBatch(userName, passwd, environ, embossCommand, project);
 
 // UNCOMMENT ONE OF THESE LINE TO USE QUEUEING SOFTWARE
 //    runAsBatch(aj,userName,passwd,project,quoteMe(embossCommand));
