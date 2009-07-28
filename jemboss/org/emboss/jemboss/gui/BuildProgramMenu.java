@@ -144,12 +144,15 @@ public class BuildProgramMenu
       private synchronized void  updateConnectionSettings(){      
 		  splashing.doneSomething("Cannot connect!");
 		  ServerSetup ss = new ServerSetup(mysettings);
+		  splashThread.setInterval(100000);
 		  int sso = JOptionPane.showConfirmDialog(f,ss,
 				  "Check Settings",
 				  JOptionPane.OK_CANCEL_OPTION,
 				  JOptionPane.ERROR_MESSAGE,null);
-		  if(sso == JOptionPane.OK_OPTION)
+		  if(sso == JOptionPane.OK_OPTION){
 			  ss.setNewSettings();
+			  splashThread.setInterval(80);
+		  }
 		  else
 			  System.exit(0);
 	  }
