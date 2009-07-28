@@ -141,6 +141,19 @@ public class BuildProgramMenu
           return woss;
       }
 
+      private synchronized void  updateConnectionSettings(){      
+		  splashing.doneSomething("Cannot connect!");
+		  ServerSetup ss = new ServerSetup(mysettings);
+		  int sso = JOptionPane.showConfirmDialog(f,ss,
+				  "Check Settings",
+				  JOptionPane.OK_CANCEL_OPTION,
+				  JOptionPane.ERROR_MESSAGE,null);
+		  if(sso == JOptionPane.OK_OPTION)
+			  ss.setNewSettings();
+		  else
+			  System.exit(0);
+	  }
+
       private void constructWithSoap(){
 
           mainMenu.setEnableFileManagers(false);
@@ -157,93 +170,65 @@ public class BuildProgramMenu
             mysettings.updateJembossPropStrings(settings);
           }
 
-          SwingWorker databaseworker = new SwingWorker()
-          {
-            public Object construct()
-            {
-              ShowDB showdb = null;
-              try
-              {
-                showdb  = new ShowDB(mysettings);
-              }
-              catch (Exception ex)
-              {
-                splashing.doneSomething("Cannot connect!");
-                ServerSetup ss = new ServerSetup(mysettings);
-                int sso = JOptionPane.showConfirmDialog(f,ss,
-                           "Check Settings",
-                           JOptionPane.OK_CANCEL_OPTION,
-                           JOptionPane.ERROR_MESSAGE,null);
-                if(sso == JOptionPane.OK_OPTION)
-                  ss.setNewSettings();
-                else
-                  System.exit(0);
-
-                try
-                {
-                  showdb  = new ShowDB(mysettings);
-                }
-                catch (Exception exp)
-                {
-                  exp.printStackTrace();
-                }
-              }
-              String showdbOut = showdb.getDBText();
-
-              Database d = new Database(showdbOut);
-              db = d.getDB();
-              mainMenu.setEnableFileManagers(true);
-              mainMenu.setEnableShowResults(true);
-              splashing.doneSomething("");
-              splashThread.setInterval(0);
-
-              matrices = showdb.getMatrices();  // get the available matrices
-              codons   = showdb.getCodonUsage();
-
-              /*JLabel jl = */new JLabel("<html>"); // not used but speeds first
-                                                // ACD form loading which
-                                                // uses html
-              return null;
-            }
-          };
-          databaseworker.start();
-          
-          splashing.doneSomething("");
-
           try
           {
-            try
-            {
-              Hashtable hwoss = (new JembossJarUtil("resources/wossname.jar")).getHash();
-              if(hwoss.containsKey("wossname.out"))
-                woss = new String((byte[])hwoss.get("wossname.out"));
-            }
-            catch (Exception ex){}
-
-            if(woss.equals(""))
-            {
-              GetWossname ewoss = new GetWossname(mysettings);
-              woss = ewoss.getWossnameText(); 
-              mainMenu.setEnableFileManagers(true);
-              mainMenu.setEnableShowResults(true);
-            }
-            
-            splashing.doneSomething("");
-          } 
-          catch(Exception e)
+        	  Hashtable hwoss = (new JembossJarUtil("resources/wossname.jar")).getHash();
+        	  if(hwoss.containsKey("wossname.out"))
+        		  woss = new String((byte[])hwoss.get("wossname.out"));
+          }
+          catch (Exception ex){}
+          if(woss.equals(""))
           {
-            splashing.doneSomething("Cannot connect!");
-            ServerSetup ss = new ServerSetup(mysettings);
-            int sso = JOptionPane.showConfirmDialog(f,ss,
-                           "Check Settings",
-                           JOptionPane.OK_CANCEL_OPTION,
-                           JOptionPane.ERROR_MESSAGE,null);
-            if(sso == JOptionPane.OK_OPTION)
-              ss.setNewSettings();
-            else
-              System.exit(0);
-          }        
+        	  boolean connectionmade = false;
+        	  while (!connectionmade){
+        		  try
+        		  {
+        			  GetWossname ewoss = new GetWossname(mysettings);
+        			  woss = ewoss.getWossnameText(); 
+        			  mainMenu.setEnableFileManagers(true);
+        			  mainMenu.setEnableShowResults(true);
+        		  }
+        		  catch (JembossSoapException ex){
+        			  updateConnectionSettings();
+        			  continue;
+        		  }
+        		  connectionmade = true;
+        	  }
+          }
+
+          SwingWorker databaseworker = new SwingWorker()
+          {
+
+        	  public Object construct() {
+        		  boolean connectionmade = false;
+        		  while (!connectionmade) {
+        			  ShowDB showdb = null;
+        			  try {
+        				  showdb = new ShowDB(mysettings);
+        				  String showdbOut = showdb.getDBText();
+
+        				  Database d = new Database(showdbOut);
+        				  db = d.getDB();
+        				  mainMenu.setEnableFileManagers(true);
+        				  mainMenu.setEnableShowResults(true);
+        				  splashing.doneSomething("");
+        				  splashThread.setInterval(0);
+
+        				  matrices = showdb.getMatrices();
+        				  codons = showdb.getCodonUsage();
+        			  } catch (JembossSoapException ex) {
+        				  updateConnectionSettings();
+        				  continue;
+        			  }
+        			  connectionmade = true;
+        		  }
+        		  return null;
+        	  }
+          };
+          databaseworker.start();
+          splashing.doneSomething("");
       }
+      
             
       private void constructWithoutSoap(){
 
