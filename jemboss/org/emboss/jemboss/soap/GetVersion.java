@@ -76,7 +76,7 @@ public class GetVersion {
 	 */
 	public static String getVersion(JembossParams mysettings){
 		getVersionComplete(mysettings);
-		return version.substring(0,version.lastIndexOf('.'));        
+		return version.split("\\.")[0]+"."+version.split("\\.")[1];        
 	}
 
 }
