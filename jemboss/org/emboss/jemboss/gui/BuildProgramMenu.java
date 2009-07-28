@@ -295,7 +295,7 @@ public class BuildProgramMenu
         progs = new ProgList(woss,menuBar);
 
         if(withSoap)
-          splashing.doneSomething("");
+          splashing.doneEverything("");
 
         int npG = progs.getNumPrimaryGroups();
         menuBar.setLayout(new GridLayout(npG,1));
