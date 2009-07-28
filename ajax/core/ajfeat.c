@@ -9517,7 +9517,7 @@ AjPFeattable ajFeatUfoRead(AjPFeattabIn featin,
     ajint i;
     
     if(!featRegUfoFmt)
-	featRegUfoFmt = ajRegCompC("^([A-Za-z0-9]+):+(.*)$");
+	featRegUfoFmt = ajRegCompC("^([A-Za-z0-9][A-Za-z0-9]+):+(.*)$");
     /* \1 format */
     /* \2 remainder */
     
