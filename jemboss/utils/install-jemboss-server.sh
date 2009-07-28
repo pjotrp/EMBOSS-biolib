@@ -694,25 +694,16 @@ echo "--------------------------------------------------------------"
 echo "         EMBOSS and Jemboss Server installation script"
 echo "--------------------------------------------------------------"
 echo " "
-echo "Note: any default values are given in square brackets []. "
+echo "Note: any default values are given in square brackets []."
 echo " "
-echo "There are two types of installation see details at: "
-echo "http://emboss.sourceforge.net/Jemboss/install/setup.html"
-echo " "
-echo "(1) CLIENT-SERVER"
-echo "(2) STANDALONE"
-echo "Enter type of installation [1] :"
-read INSTALL_TYPE
-
-if (test "$INSTALL_TYPE" != "1") && (test "$INSTALL_TYPE" != "2"); then
-  INSTALL_TYPE="1"
-fi
-clear
-
+echo "This script installs EMBOSS as well as Jemboss."
+echo "Jemboss is deployed as a Java web application in your tomcat server."
+echo "A script is prepared to run Jemboss client that by default uses the"
+echo "above Jemboss web application."
 echo
-echo "--------------------------------------------------------------"
-echo "         EMBOSS and Jemboss Server installation script"
-echo "--------------------------------------------------------------"
+echo "For detailed information on installing Jemboss see: "
+echo "http://emboss.sourceforge.net/Jemboss/install/setup.html"
+echo
 echo
 echo "*** This script needs to be run with permissions to be able"
 echo "*** to install EMBOSS in the required directories. This may"
@@ -721,12 +712,8 @@ echo
 echo "Before running this script you should download the latest:"
 echo
 echo "(1) EMBOSS release (contains Jemboss) ftp://emboss.open-bio.org/pub/EMBOSS/"
-
-
-if [ $INSTALL_TYPE = "1" ]; then
-  echo "(2) Tomcat release http://jakarta.apache.org/site/binindex.html"
-  echo "(3) Apache AXIS (SOAP) release   http://xml.apache.org/axis/"
-fi
+echo "(2) Tomcat 5.5 series release http://tomcat.apache.org/"
+echo "(3) Apache AXIS (SOAP) release 1.4   http://ws.apache.org/axis/"
   
 echo
 echo "Have the above been downloaded (y/n)? "
@@ -831,6 +818,9 @@ else
 fi
 
 SSL="y"
+
+# keep the following variable for now so we have cvs compare for a while
+INSTALL_TYPE="1";
 if [ $INSTALL_TYPE = "1" ]; then
 #
 # localhost name
@@ -1271,17 +1261,6 @@ getPrimerPath
 #cd $EMBOSS_INSTALL/share/EMBOSS/jemboss
 JEMBOSS=$EMBOSS_INSTALL/share/EMBOSS/jemboss
 
-#---------------------------------------------------------------------------------
-# Exit for standalone installations
-#---------------------------------------------------------------------------------
-if [ $INSTALL_TYPE = "2" ]; then
-  echo
-  echo "To run Jemboss:"
-  echo "cd $JEMBOSS"
-  echo "./runJemboss.sh"
-  echo
-  exit 0
-fi
 
 
 #
