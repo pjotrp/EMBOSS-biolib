@@ -68,6 +68,7 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.emboss.jemboss.Jemboss;
 import org.emboss.jemboss.JembossParams;
 import org.emboss.jemboss.server.JembossServer;
 import org.emboss.jemboss.soap.GetVersion;
@@ -182,7 +183,7 @@ public class Browser extends JFrame
       URL pageURL = new URL(initialURL);
       setURL(pageURL,initialURL);
     }
-    if (JembossParams.isJembossServer()){
+    if (Jemboss.withSoap){
     	embossVersion = GetVersion.getVersion(mysettings);
     }
   }
