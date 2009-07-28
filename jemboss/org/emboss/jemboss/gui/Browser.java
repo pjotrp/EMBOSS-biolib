@@ -722,7 +722,7 @@ public class Browser extends JFrame
           else if(selectedValue.equals("Apps") && category.equals("EMBOSS")){
         	if (!JembossParams.isJembossServer()){
         	  	embossVersion = new JembossServer().version();
-        	  	embossVersion = embossVersion.substring(0, embossVersion.lastIndexOf('.'));
+        	  	embossVersion = embossVersion.split("\\.")[0]+"."+embossVersion.split("\\.")[1];
         	}
             loc = "http://emboss.sourceforge.net/apps/release/"+embossVersion+"/emboss/apps/";
           }
