@@ -69,6 +69,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.emboss.jemboss.JembossParams;
+import org.emboss.jemboss.server.JembossServer;
+import org.emboss.jemboss.soap.GetVersion;
 
 
 /**
@@ -110,6 +112,8 @@ public class Browser extends JFrame
   private JMenuItem fwdMenu;
   /** Forward button option */
   private JButton fwdBt;
+  /** version of EMBOSS programs */
+  String embossVersion = "6.1";
 
   /**
   *
@@ -178,8 +182,11 @@ public class Browser extends JFrame
       URL pageURL = new URL(initialURL);
       setURL(pageURL,initialURL);
     }
+    if (JembossParams.isJembossServer()){
+    	embossVersion = GetVersion.getVersion(mysettings);
+    }
   }
-
+  
 
   /**
   *
@@ -712,8 +719,13 @@ public class Browser extends JFrame
             loc = "http://emboss.sourceforge.net/Jemboss/";
           else if(selectedValue.equals("Home") && category.equals("EMBOSS"))
             loc = "http://emboss.sourceforge.net/";
-          else if(selectedValue.equals("Apps") && category.equals("EMBOSS"))
-            loc = "http://emboss.sourceforge.net/apps/release/6.1/emboss/apps/";
+          else if(selectedValue.equals("Apps") && category.equals("EMBOSS")){
+        	if (!JembossParams.isJembossServer()){
+        	  	embossVersion = new JembossServer().version();
+        	  	embossVersion = embossVersion.substring(0, embossVersion.lastIndexOf('.'));
+        	}
+            loc = "http://emboss.sourceforge.net/apps/release/"+embossVersion+"/emboss/apps/";
+          }
 
           if(loc != null) 
           {
