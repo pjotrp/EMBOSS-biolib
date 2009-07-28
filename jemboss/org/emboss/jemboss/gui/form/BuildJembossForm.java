@@ -172,10 +172,12 @@ public class BuildJembossForm implements ActionListener
         {
           String urlEmbassyPrefix = parseAcd.getUrlPrefix();
           url = mysettings.getembURL();
+          String version = GetVersion.getVersion(mysettings);
           if(urlEmbassyPrefix != null)
-            url = url + "apps/release/6.1/embassy/" +applName+ "/" ;
+        	 // get the version from server
+            url = url + "apps/release/"+version+"/embassy/"+urlEmbassyPrefix+"/" ;
           else
-            url = url + "apps/release/6.1/emboss/apps/";
+            url = url + "apps/release/"+version+"/emboss/apps/";
 
           url = url+applName+".html";
         }
