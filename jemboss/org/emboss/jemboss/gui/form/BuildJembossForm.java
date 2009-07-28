@@ -100,8 +100,7 @@ public class BuildJembossForm implements ActionListener
   private boolean withSoap;
   private JFrame f;
   private JPanel p2;
-  private String embossBin;
-
+  
   private int numofFields;
   private JembossParams mysettings;
   
@@ -125,7 +124,6 @@ public class BuildJembossForm implements ActionListener
     this.mysettings = mysettings;
     this.withSoap = withSoap;
 
-    embossBin  = mysettings.getEmbossBin();
     this.envp = envp;
     this.applName = applName;
 
