@@ -16,7 +16,7 @@ pkgdata_DATA =  aaindexextract.txt abiview.txt acdc.txt acdlog.txt \
 	equicktandem.txt est2genome.txt etandem.txt extractalign.txt \
 	extractfeat.txt extractseq.txt \
 	featcopy.txt featreport.txt \
-	findkm.txt freak.txt frestdist.txt fuzznuc.txt fuzzpro.txt \
+	findkm.txt freak.txt fuzznuc.txt fuzzpro.txt \
 	fuzztran.txt \
 	garnier.txt geecee.txt getorf.txt \
 	helixturnhelix.txt hmoment.txt \
