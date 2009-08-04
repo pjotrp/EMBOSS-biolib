@@ -94,11 +94,11 @@ typedef ajint AjInt4;		/* 4 bytes integer */
 **
 ** Array of integers
 **
-** @attr typedef [int*] Value
+** @attr typedef [ajint*] Value
 ** @@
 ******************************************************************************/
 
-typedef int* AjIntArray;
+typedef ajint* AjIntArray;
 
 /* @datatype AjFloatArray *****************************************************
 **
