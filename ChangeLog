@@ -43,7 +43,7 @@ Version 6.1.0
 	scores out of range, a warning message is written once for each
 	sequence. Sanger scores do not have out of range values as they
 	allow the full set of quality characters, although high values
-	(over 40) should only appear for contig consensus seqeunces.
+	(over 40) should only appear for contig consensus sequences.
 
 	MEGA format has been rewritten to support the file format used by
 	MEGA 4. Title can be in mixed case. Format and Gene/domain command
@@ -69,7 +69,7 @@ Version 6.1.0
 	Applications that use single letter qualifier names (for example
 	the HMMERNEW wrappers for HMMER applications) can be confused if a
 	single letter qualifier name matches uniquely an associated
-	qualifier for a preceding comand line qualifier. An additional
+	qualifier for a preceding command line qualifier. An additional
 	check now ensures that a unique qualifier (for example -o) is
 	correctly recognized.
 
@@ -207,7 +207,7 @@ Version 6.1.0
 	when read and rewritten. All feature types are preserved and
 	feature lines wrap according to the widths in UniProt 14.8. Date
 	lines are stored and written. Comments are stored in blocks.
-	Database cross-references ar stored in a list. The description
+	Database cross-references are stored in a list. The description
 	lines are saved in the new SwissProt structure. Tests on a set of
 	complex entries confirm that EMBOSS is able to read and write an
 	exact copy of this sample set.
@@ -245,7 +245,7 @@ Version 6.1.0
 	alternative way to set the default output filename for EMBOSS
 	applications. If set to true, the filename is used rather than the
 	current behaviour of using the first sequence name as the default
-	filenaame. When the filename is used the case of the name is
+	filename. When the filename is used the case of the name is
 	preserved.
 
 	Corrected display of exon ranges in showseq. Exons now display in
@@ -678,7 +678,7 @@ Version 6.0.0
 	EMBOSS data area subdirectories.
 	
 	Alignment format "trace" used to display internal data content, is
-	renamed to "debug" to be consisten with other formats. A "debug"
+	renamed to "debug" to be consistent with other formats. A "debug"
 	format is added for feature output.
 
 	Application documentation has been updated to remove obsolete
@@ -709,7 +709,7 @@ Version 6.0.0
 	The following programs have changed default report output, with
 	the strand included for nucleotide sequences: equicktandem,
 	etandem, fuzznuc, fuzztran, recoder, restrict, silent, tcode,
-	twofeat. The strand column can be removed with the new commandline
+	twofeat. The strand column can be removed with the new command line
 	associated qualifier -norstrandshow.
 
 	Reports for nucleotide sequences have confusing ways to represent
@@ -921,7 +921,7 @@ Version 4.1.0
 	in front of the sequence ID. This is now fixed.
 
 	Pattern files and regular expression files now use the -pformat
-	and -pname associated qualifiers which weere ignored when they
+	and -pname associated qualifiers which were ignored when they
 	first appeared in 4.0.0. Pattern file formats are "fasta" for the
 	original format in 4.0.0 with FASTA style identifiers, and
 	"simple" for files with a single pattern on each line. The format
