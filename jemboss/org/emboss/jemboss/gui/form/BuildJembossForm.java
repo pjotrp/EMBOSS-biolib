@@ -474,7 +474,7 @@ public class BuildJembossForm implements ActionListener
             bsp.start();
             if (prfs.getBoolean(DISPLAY_JOB_SUBMITTED_MSG, true)){
             	final JPanel p = new JPanel(new BorderLayout(1,10));
-            	JLabel jobSubmitted = new JLabel("Your job has been submmitted");
+            	JLabel jobSubmitted = new JLabel("Your job has been submitted");
             	p.add(jobSubmitted, BorderLayout.PAGE_START);
             	JLabel checkResults = new JLabel("Use Batch Job Manager");
             	checkResults.setHorizontalTextPosition(SwingConstants.LEFT);
