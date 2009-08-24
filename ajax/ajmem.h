@@ -71,7 +71,7 @@ __deprecated void *ajMemCalloc0(size_t count, size_t nbytes,
 #define AJFREE(ptr) ((void)(ajMemFree(ptr), (ptr) = 0))
 #define AJRESIZE(ptr, nbytes) 	((ptr) = ajMemResize((ptr), \
 	(nbytes), __FILE__, __LINE__, AJFALSE))
-#define AJRESIZE0(ptr, oldbytes, nbytes)  (ptr) = ajMemResizeZero((ptr), \
+#define AJRESIZE0(ptr, oldbytes, nbytes)  ((ptr) = ajMemResizeZero((ptr), \
 	(oldbytes), (nbytes), __FILE__, __LINE__, AJFALSE))
 #define AJCRESIZE(ptr, nbytes) 	((ptr) = ajMemResize((ptr), \
 	(nbytes)*sizeof *(ptr), __FILE__, __LINE__, AJFALSE))
