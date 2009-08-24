@@ -14,6 +14,8 @@ extern "C"
 */
 
 AjBool embMiscMatchPattern (const AjPStr str, const AjPStr pattern);
+AjBool embMiscMatchPatternDelimC (const AjPStr str, const AjPStr pattern,
+                                  const char* delim);
 
 /*
 ** End of prototype definitions
