@@ -112,13 +112,13 @@ typedef struct AlignSData
 **
 ** @attr Name [const char*] format name
 ** @attr Desc [const char*] Format description
-** @attr Write [(void*)] Function to write alignment
 ** @attr Alias [AjBool] Name is an alias for an identical definition
-** @attr Nuc [AjBool] ajTrue if format can work with nucleotide sequences
-** @attr Prot [AjBool] ajTrue if format can work with protein sequences
+** @attr Nucleotide [AjBool] ajTrue if format can work with nucleotide sequences
+** @attr Protein [AjBool] ajTrue if format can work with protein sequences
+** @attr Showheader [AjBool] ajTrue if header appears in output
 ** @attr Minseq [ajint] Minimum number of sequences, 2 for pairwise
 ** @attr Maxseq [ajint] Maximum number of sequences, 2 for pairwise
-** @attr Padding [ajint] Padding to alignment boundary
+** @attr Write [(void*)] Function to write alignment
 ** @@
 ******************************************************************************/
 
@@ -126,13 +126,13 @@ typedef struct AlignSFormat
 {
     const char *Name;
     const char *Desc;
-    void (*Write) (AjPAlign thys);
     AjBool Alias;
-    AjBool Nuc;
-    AjBool Prot;
-    ajint Minseq;
-    ajint Maxseq;
-    ajint  Padding;
+    AjBool Nucleotide;
+    AjBool Protein;
+    AjBool Showheader;
+    ajint  Minseq;
+    ajint  Maxseq;
+    void (*Write) (AjPAlign thys);
 } AlignOFormat;
 
 #define AlignPFormat AlignOFormat*
@@ -206,71 +206,70 @@ static void       alignWriteHeaderNum(AjPAlign thys, ajint iali);
 static AlignOFormat alignFormat[] =
 {
   /* name       description       function */
-  /*   Alias    dna      protein min max zero */
+  /*   Alias    nucleic  protein  header min max zero */
   /* standard sequence formats */
-  {"unknown",   "Unknown format", alignWriteSimple,
-       AJFALSE, AJFALSE, AJFALSE, 0, 0, 0},
-  {"fasta",     "Fasta format sequence", alignWriteFasta,
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
-  {"a2m",     "A2M (fasta) format sequence", alignWriteFasta,
-       AJTRUE,  AJTRUE,  AJTRUE,  0, 0, 0}, /* same as fasta */
-  {"msf",       "MSF format sequence", alignWriteMsf,
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
-  {"clustal",   "clustalw format sequence", alignWriteClustal,
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
-  {"mega",       "Mega format sequence", alignWriteMega,
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
-  {"meganon",       "Mega non-interleaved format sequence", alignWriteMeganon,
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
-  {"nexus",   "nexus/paup format sequence", alignWriteNexus,
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
-  {"paup",    "nexus/paup format sequence (alias)", alignWriteNexus,
-       AJTRUE,  AJTRUE,  AJTRUE,  0, 0, 0},
+  {"unknown",   "Unknown format",
+       AJFALSE, AJFALSE, AJFALSE, AJTRUE,  0, 0, alignWriteSimple},
+  {"fasta",     "Fasta format sequence",
+       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteFasta},
+  {"a2m",     "A2M (fasta) format sequence", /* same as fasta */
+       AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteFasta},
+  {"msf",       "MSF format sequence",
+       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteMsf},
+  {"clustal",   "clustalw format sequence",
+       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteClustal},
+  {"mega",       "Mega format sequence",
+       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteMega},
+  {"meganon",       "Mega non-interleaved format sequence",
+       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteMeganon},
+  {"nexus",   "nexus/paup format sequence",
+       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteNexus},
+  {"paup",    "nexus/paup format sequence (alias)",
+       AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteNexus},
   {"nexusnon",   "nexus/paup non-interleaved format sequence",
-                                        alignWriteNexusnon,
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
+       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteNexusnon},
   {"paupnon",    "nexus/paup non-interleaved format sequence (alias)",
-                                        alignWriteNexusnon,
-       AJTRUE,  AJTRUE,  AJTRUE,  0, 0, 0},
-  {"phylip",   "phylip format sequence", alignWritePhylip,
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
-  {"phylipnon", "phylip non-interleaved format sequence", alignWritePhylipnon,
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
-  {"selex",       "SELEX format sequence", alignWriteSelex,
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
-  {"treecon",       "Treecon format sequence", alignWriteTreecon,
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
+       AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteNexusnon},
+  {"phylip",   "phylip format sequence",
+       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWritePhylip},
+  {"phylipnon", "phylip non-interleaved format sequence",
+       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWritePhylipnon},
+  {"selex",       "SELEX format sequence",
+       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteSelex},
+  {"treecon",       "Treecon format sequence",
+       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteTreecon},
   /* trace  for debug */
-  {"debug", "Debugging trace of full internal data content", alignWriteTrace,
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
+  {"debug", "Debugging trace of full internal data content",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  0, 0, alignWriteTrace},
   /* alignment formats */
-  {"markx0",    "Pearson MARKX0 format", alignWriteMarkX0,
-       AJFALSE, AJTRUE,  AJTRUE,  2, 2, 0},
-  {"markx1",    "Pearson MARKX1 format", alignWriteMarkX1,
-       AJFALSE, AJTRUE,  AJTRUE,  2, 2, 0},
-  {"markx2",    "Pearson MARKX2 format", alignWriteMarkX2,
-       AJFALSE, AJTRUE,  AJTRUE,  2, 2, 0},
-  {"markx3",    "Pearson MARKX3 format", alignWriteMarkX3,
-       AJFALSE, AJTRUE,  AJTRUE,  2, 2, 0},
-  {"markx10",   "Pearson MARKX10 format", alignWriteMarkX10,
-       AJFALSE, AJTRUE,  AJTRUE,  2, 2, 0},
-  {"match","Start and end of matches between sequence pairs",alignWriteMatch,
-       AJFALSE, AJTRUE,  AJTRUE,  2, 2, 0},
-  {"multiple",  "Simple multiple alignment", alignWriteSimple,
-       AJTRUE,  AJTRUE,  AJTRUE,  0, 0, 0},
-  {"pair",      "Simple pairwise alignment", alignWriteSimple,
-       AJFALSE, AJTRUE,  AJTRUE,  2, 2, 0},
-  {"simple",    "Simple multiple alignment", alignWriteSimple,
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
-  {"score",     "Score values for pairs of sequences", alignWriteScore,
-       AJFALSE, AJTRUE,  AJTRUE,  2, 2, 0},
-  {"srs",       "Simple multiple sequence format for SRS", alignWriteSrs,
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
-  {"srspair",   "Simple pairwise sequence format for SRS", alignWriteSrsPair,
-       AJFALSE, AJTRUE,  AJTRUE,  2, 2, 0},
-  {"tcoffee",   "TCOFFEE program format", alignWriteTCoffee,
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
-  {NULL, NULL, NULL, AJFALSE, AJFALSE, AJFALSE, 0, 0, 0}
+  {"markx0",    "Pearson MARKX0 format",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  2, 2, alignWriteMarkX0},
+  {"markx1",    "Pearson MARKX1 format",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  2, 2, alignWriteMarkX1},
+  {"markx2",    "Pearson MARKX2 format",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  2, 2, alignWriteMarkX2},
+  {"markx3",    "Pearson MARKX3 format",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  2, 2, alignWriteMarkX3},
+  {"markx10",   "Pearson MARKX10 format",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE , 2, 2, alignWriteMarkX10},
+  {"match","Start and end of matches between sequence pairs",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  2, 2, alignWriteMatch},
+  {"multiple",  "Simple multiple alignment",
+       AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,  0, 0, alignWriteSimple},
+  {"pair",      "Simple pairwise alignment",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  2, 2, alignWriteSimple},
+  {"simple",    "Simple multiple alignment",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  0, 0, alignWriteSimple},
+  {"score",     "Score values for pairs of sequences",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  2, 2, alignWriteScore},
+  {"srs",       "Simple multiple sequence format for SRS",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  0, 0, alignWriteSrs},
+  {"srspair",   "Simple pairwise sequence format for SRS",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  2, 2, alignWriteSrsPair},
+  {"tcoffee",   "TCOFFEE program format",
+       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteTCoffee},
+  {NULL, NULL,
+       AJFALSE, AJFALSE, AJFALSE, AJFALSE, 0, 0, NULL}
 };
 
 static char alignDefformat[] = "simple";
@@ -2597,6 +2596,9 @@ static void alignWriteHeaderNum(AjPAlign thys, ajint iali)
     AjBool doSingle;
     ajint i;
 
+    if(!alignFormat[thys->Format].Showheader)
+        return;
+
     outf     = thys->File;
     doSingle = ajFalse;	/* turned off for now - always multi format */    
 
@@ -2712,6 +2714,9 @@ void ajAlignWriteTail(AjPAlign thys)
     AjPFile outf;
     AjPStr tmpstr = NULL;
     AjBool doSingle;
+
+    if(!alignFormat[thys->Format].Showheader)
+        return;
 
     outf     = thys->File;
     doSingle = ajFalse; /* turned off for now - always multi format */
@@ -4894,6 +4899,7 @@ void ajAlignPrintFormat(AjPFile outf, AjBool full)
     ajFmtPrintF(outf, "# Maxseq  Minimum number of sequences\n");
     ajFmtPrintF(outf, "# Nuc     Valid for nucleotide sequences\n");
     ajFmtPrintF(outf, "# Pro     Valid for protein sequences\n");
+    ajFmtPrintF(outf, "# Header  Include standard header/footer blocks\n");
     ajFmtPrintF(outf, "# Desc    Format description\n");
     ajFmtPrintF(outf, "# Name         Alias Nuc Nuc Pro Minseq Maxseq "
 		"Description\n");
@@ -4903,17 +4909,167 @@ void ajAlignPrintFormat(AjPFile outf, AjBool full)
     for(i=0; alignFormat[i].Name; i++)
     {
 	if(full || !alignFormat[i].Alias)
-	    ajFmtPrintF(outf, "  %-12s %5B %3B %3B %6d %6d \"%s\"\n",
+	    ajFmtPrintF(outf, "  %-12s %5B %3B %3B %3B  %6d %6d \"%s\"\n",
 			alignFormat[i].Name,
 			alignFormat[i].Alias,
-			alignFormat[i].Nuc,
-			alignFormat[i].Prot,
+			alignFormat[i].Nucleotide,
+			alignFormat[i].Protein,
+			alignFormat[i].Showheader,
 			alignFormat[i].Minseq,
 			alignFormat[i].Maxseq,
 			alignFormat[i].Desc);
     }
 
     ajFmtPrintF(outf, "}\n\n");
+
+    return;
+}
+
+
+
+
+/* @func ajAlignPrintbookFormat ************************************************
+**
+** Reports the alignment format internals as Docbook text
+**
+** @param [u] outf [AjPFile] Output file
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajAlignPrintbookFormat(AjPFile outf)
+{
+    ajint i = 0;
+    ajint j = 0;
+    AjPStr namestr = NULL;
+    AjPList fmtlist;
+    AjPStr* names;
+
+    fmtlist = ajListstrNew();
+
+    ajFmtPrintF(outf, "<table frame=\"box\" rules=\"cols\">\n");
+    ajFmtPrintF(outf, "  <caption>Alignment formats</caption>\n");
+    ajFmtPrintF(outf, "  <thead>\n");
+    ajFmtPrintF(outf, "    <tr align=\"center\">\n");
+    ajFmtPrintF(outf, "      <th>Output Format</th>\n");
+    ajFmtPrintF(outf, "      <th>Nuc</th>\n");
+    ajFmtPrintF(outf, "      <th>Pro</th>\n");
+    ajFmtPrintF(outf, "      <th>Header</th>\n");
+    ajFmtPrintF(outf, "      <th>Minseq</th>\n");
+    ajFmtPrintF(outf, "      <th>Maxseq</th>\n");
+    ajFmtPrintF(outf, "      <th>Description</th>\n");
+    ajFmtPrintF(outf, "    </tr>\n");
+    ajFmtPrintF(outf, "  </thead>\n");
+    ajFmtPrintF(outf, "  <tbody>\n");
+
+    for(i=1; alignFormat[i].Name; i++)
+    {
+	if(!alignFormat[i].Alias)
+        {
+            namestr = ajStrNewC(alignFormat[i].Name);
+            ajListPush(fmtlist, namestr);
+            namestr = NULL;
+        }
+    }
+
+    ajListSort(fmtlist, ajStrVcmp);
+    ajListstrToarray(fmtlist, &names);
+
+    for(i=0; names[i]; i++)
+    {
+        for(j=0; alignFormat[j].Name; j++)
+        {
+            if(ajStrMatchC(names[i],alignFormat[j].Name))
+            {
+                ajFmtPrintF(outf, "    <tr>\n");
+                ajFmtPrintF(outf, "      <td>%s</td>\n",
+                            alignFormat[j].Name);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            alignFormat[j].Nucleotide);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            alignFormat[j].Protein);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            alignFormat[j].Showheader);
+                ajFmtPrintF(outf, "      <td>%d</td>\n",
+                            alignFormat[j].Minseq);
+                ajFmtPrintF(outf, "      <td>%d</td>\n",
+                            alignFormat[j].Maxseq);
+                ajFmtPrintF(outf, "      <td>%s</td>\n",
+                            alignFormat[j].Desc);
+                ajFmtPrintF(outf, "    </tr>\n");
+            }
+        }
+    }
+
+    ajFmtPrintF(outf, "  </tbody>\n");
+    ajFmtPrintF(outf, "</table>\n");
+    ajStrDel(&namestr);
+
+    names = NULL;
+    ajListstrFreeData(&fmtlist);
+
+    return;
+}
+
+
+
+
+/* @func ajAlignPrintwikiFormat ************************************************
+**
+** Reports the alignment format internals as wikitext
+**
+** @param [u] outf [AjPFile] Output file
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajAlignPrintwikiFormat(AjPFile outf)
+{
+    ajint i = 0;
+    ajint j = 0;
+    AjPStr namestr = NULL;
+
+    ajFmtPrintF(outf, "{| class=\"wikitable sortable\" border=\"2\"\n");
+    ajFmtPrintF(outf, "|-\n");
+    ajFmtPrintF(outf, "!Format!!Nuc!!Pro!!Header!!Min||Max!!"
+                "class=\"unsortable\"|Description\n");
+
+    for(i=1; alignFormat[i].Name; i++)
+    {
+        if(!alignFormat[i].Alias)
+        {
+            ajFmtPrintF(outf, "|-\n");
+            ajStrAssignC(&namestr, alignFormat[i].Name);
+
+
+            for(j=i+1; alignFormat[j].Name; j++)
+            {
+                if(alignFormat[j].Write == alignFormat[i].Write)
+                {
+                    ajFmtPrintAppS(&namestr, "<br>%s", alignFormat[j].Name);
+                    if(!alignFormat[j].Alias) 
+                    {
+                        ajWarn("Align output format '%s' same as '%s' "
+                               "but not alias",
+                               alignFormat[j].Name,
+                               alignFormat[i].Name);
+                    }
+                }
+            }
+            ajFmtPrintF(outf, "|%S||%B||%B||%B||%d||%d||%s\n",
+			namestr,
+			alignFormat[i].Nucleotide,
+			alignFormat[i].Protein,
+			alignFormat[i].Showheader,
+			alignFormat[i].Minseq,
+			alignFormat[i].Maxseq,
+			alignFormat[i].Desc);
+        }
+    }
+
+    ajFmtPrintF(outf, "|}\n");
+
+    ajStrDel(&namestr);
 
     return;
 }

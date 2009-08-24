@@ -12,6 +12,9 @@ extern "C"
 **
 ** Holds definition of feature align output.
 **
+** @alias AjSAlign
+** @alias AjOAlign
+**
 ** @new ajAlignNew Default constructor
 ** @delete ajAlignDel Default destructor
 ** @modify ajAlignReset Resets ready for reuse.
@@ -119,6 +122,8 @@ const AjPStr ajAlignGetFormat(const AjPAlign thys);
 AjPAlign     ajAlignNew (void);
 AjBool       ajAlignOpen (AjPAlign thys, const AjPStr name);
 void         ajAlignPrintFormat (AjPFile outf, AjBool full);
+void         ajAlignPrintbookFormat (AjPFile outf);
+void         ajAlignPrintwikiFormat (AjPFile outf);
 void         ajAlignReset (AjPAlign thys);
 void         ajAlignSetExternal (AjPAlign thys, AjBool external);
 void         ajAlignSetHeader (AjPAlign thys, const AjPStr header);
