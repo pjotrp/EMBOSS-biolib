@@ -48,7 +48,48 @@
 ** FT6.2 todo /frequency value check 0.0 to 1.0
 ** FT6.2 todo QWORD values with no spaces /translation /locus_tag
 **            /old_locus_tag
-** FT6.2 todo vocab for mod_base
+** FT6.2 todo vocab for mod_base ... rel_std*.dat Aug-09 has
+**     794 OTHER
+**    1475 p
+**     971 d
+**     331 m5c
+**     300 m1a
+**     260 t
+**     242 m7g
+**     241 m2g
+**     215 gm
+**     202 m1g
+**     186 m22g
+**     153 cm
+**     102 um
+**      93 t6a
+**      55 s4u
+**      52 i
+**      52 ac4c
+**      49 m1f
+**      48 m1i
+**      41 x
+**      41 i6a
+**      33 m3c
+**      31 ms2i6a
+**      31 m6a
+**      27 q
+**      22 m2a
+**      17 tm
+**      11 mt6a
+**      11 mcm5s2u
+**       8 yw
+**       6 s2t
+**       6 osyw
+**       6 fm
+**       6 cmnm5u
+**       5 s2c
+**       5 mam5s2u
+**       4 mo5u
+**       4 mcm5u
+**       3 o5u
+**       3 ms2t6a
+**
 ** FT6.2 todo *qualifier for non-standard qualifiers (for Artemis)
 ******************************************************************************/
 
@@ -373,6 +414,11 @@ static AjBool       featVocabReadTags(const AjPStr fname,
 				      AjPTable pTagsTable,
 				       AjBool recursion);
 static void         featWarn(const char* fmt, ...);
+static AjBool featTypeTestDnaWild(const AjPStr type, const AjPStr str);
+static AjBool featTypeTestProtWild(const AjPStr type, const AjPStr str);
+static AjBool featTableTypeTestWild(const AjPStr type,
+                                    const AjPTable table,
+                                    const AjPStr str);
 
 
 
@@ -556,7 +602,7 @@ static FeatOOutFormat featOutFormatDef[] =
 	 NULL,               ajFeattableWriteGff3,
 	 "unknown format", AJFALSE, 0},
     {"gff",       AJTRUE,    AJTRUE,
-	 featVocabInitGff3,   ajFeattableWriteGff3,
+	 featVocabInitGff3,  ajFeattableWriteGff3,
 	 "GFF version 3", AJFALSE, 0},
     {"gff2",       AJTRUE,    AJTRUE,
 	 featVocabInitGff,   ajFeattableWriteGff2,
@@ -567,6 +613,9 @@ static FeatOOutFormat featOutFormatDef[] =
     {"embl",      AJTRUE,    AJFALSE,
 	 featVocabInitEmbl,  ajFeattableWriteEmbl,
 	 "embl format", AJFALSE, 0},
+    {"em",      AJTRUE,    AJFALSE,
+	 featVocabInitEmbl,  ajFeattableWriteEmbl,
+	 "embl format", AJTRUE,  0},
     {"genbank",   AJTRUE,    AJFALSE,
 	 featVocabInitEmbl,  ajFeattableWriteGenbank,
 	 "genbank format", AJFALSE, 0},
@@ -582,6 +631,9 @@ static FeatOOutFormat featOutFormatDef[] =
     {"pir",       AJFALSE,   AJTRUE,
 	 featVocabInitPir,   ajFeattableWritePir,
 	 "PIR format", AJFALSE, 0},
+    {"nbrf",       AJFALSE,   AJTRUE,
+	 featVocabInitPir,   ajFeattableWritePir,
+	 "PIR format", AJTRUE,  0},
     {"swiss",     AJFALSE,   AJTRUE,
 	 featVocabInitSwiss, ajFeattableWriteSwiss,
 	 "SwissProt format", AJFALSE, 0},
@@ -590,7 +642,7 @@ static FeatOOutFormat featOutFormatDef[] =
 	 "SwissProt format", AJTRUE, 0},
     {"swissprot", AJFALSE,   AJTRUE,
 	 featVocabInitSwiss, ajFeattableWriteSwiss,
-	 "SwissProt format", AJFALSE, 0},
+	 "SwissProt format", AJTRUE, 0},
     {"dasgff",        AJTRUE,   AJTRUE,
 	 featVocabInitGff3, ajFeattableWriteDasgff,
 	 "DAS GFF format", AJFALSE, 0},
@@ -1284,79 +1336,6 @@ AjPFeattabOut ajFeattabOutNewSSF(const AjPStr fmt, const AjPStr name,
     /*ajDebug("ajFeatTabOutNewSSF %x\n", pthis);*/
 
     return pthis;
-}
-
-
-
-
-/* @func ajFeatRead ***********************************************************
-**
-** Generic interface function for reading in features from a file
-** given the file handle, class of map, data format of input
-** and possibly other associated data.
-**
-** @param  [u] ftin   [AjPFeattabIn]  Specifies the external source (file)
-**                                     of the features to be read in
-** @return [AjPFeattable] Pointer to a new feature table containing
-**                        the features read in
-** @category new [AjPFeattable] Reads in a feature set in a specified format
-** @@
-******************************************************************************/
-
-AjPFeattable ajFeatRead(AjPFeattabIn  ftin)
-{
-    AjPFilebuff  file ;
-    ajint format ;
-
-    AjPFeattable features = NULL ;
-    AjBool result         = ajFalse ;
-
-    if(!ftin)
-	return NULL;
-
-    file = ftin->Handle ;
-
-    if(!file)
-	return NULL;
-
-    format = ftin->Format ;
-
-    if(!format)
-	return NULL;
-
-    ajDebug("ajFeatRead format %d '%s' file %x type: '%S'\n",
-	    format, featInFormat[format].Name, file, ftin->Type);
-
-    if(!featInFormat[format].Used)
-    {
-	/* Calling funclist featInFormatDef() */
-	if(!featInFormat[format].InitReg())
-	{
-	    ajDebug("Initialisation failed for %s\n",
-		    featInFormat[format].Name);
-	    ajErr("Initialisation failed for feature format %s",
-		  featInFormat[format].Name);
-	}
-
-	featInFormat[format].Used = ajTrue;
-    }
-
-    features = ajFeattableNew(ftin->Seqname);
-
-    /* Calling funclist featInFormatDef() */
-    result = featInFormat[format].Read(features, file);
-
-    if(result)
-    {
-	/* ajFeattableTrace(features); */
-	ajDebug("ajFeatRead read %d features\n", ajFeattableSize(features));
-
-	return features ;
-    }
-    else
-	ajFeattableDel(&(features)) ;
-
-    return NULL;
 }
 
 
@@ -2142,50 +2121,40 @@ static AjBool featFormatSet(AjPFeattabIn featin)
 
 
 
-/* @func ajFeatUfoWrite *******************************************************
+/* @func ajFeattableWriteUfo **************************************************
 **
 ** Parses a UFO, opens an output file, and writes a feature table to it.
 **
-** @param [r] thys [const AjPFeattable] Feature table to be written
-** @param [u] featout [AjPFeattabOut] Feature output object
+** @param [u] thys [AjPFeattabOut] Feature output object
+** @param [r] ftable [const AjPFeattable] Feature table to be written
 ** @param [r] ufo [const AjPStr] UFO feature spec (ignored if already open)
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajFeatUfoWrite(const AjPFeattable thys, AjPFeattabOut featout,
+AjBool ajFeattableWriteUfo(AjPFeattabOut thys, const AjPFeattable ftable,
 		      const AjPStr ufo)
 {
-    if(!ajFeattabOutIsOpen(featout))
-       ajFeattabOutOpen(featout, ufo);
+    if(!ajFeattabOutIsOpen(thys))
+       ajFeattabOutOpen(thys, ufo);
 
-    return ajFeatWrite(featout, thys);
+    return ajFeattableWrite(thys, ftable);
 }
 
 
 
 
-/* @func ajFeattableWrite *****************************************************
-**
-** Parses a UFO, opens an output file, and writes a feature table to it.
-**
-** @param [w] thys [AjPFeattable] Feature table created
-** @param [r] ufo [const AjPStr] UFO feature spec
-** @return [AjBool] ajTrue on success.
-** @@
-******************************************************************************/
+/* @obsolete ajFeatUfoWrite
+** @replace ajFeattableWriteUfo (1,2,3/2,1,3)
+*/
 
-AjBool ajFeattableWrite(AjPFeattable thys, const AjPStr ufo)
+__deprecated AjBool ajFeatUfoWrite(const AjPFeattable thys,
+                                   AjPFeattabOut featout,
+                                   const AjPStr ufo)
 {
-    AjPFeattabOut tabout = NULL;
-
-    /*ajDebug("ajFeattableWrite ufo:'%S' (new AjPFeattabOut)\n", ufo);*/
-
-    tabout= ajFeattabOutNew();
-    featoutUfoProcess(tabout, ufo);
-
-    return ajFeatWrite(tabout, thys);
+    return ajFeattableWriteUfo(featout, thys, ufo);
 }
+
 
 
 
@@ -2648,7 +2617,7 @@ AjBool ajFeatOutFormatDefault(AjPStr* pformat)
 
 
 
-/* @func ajFeatWrite **********************************************************
+/* @func ajFeattableWrite *****************************************************
 **
 ** Generic interface function for writing features from a file
 ** given the file handle, class of map, data format of input
@@ -2661,7 +2630,7 @@ AjBool ajFeatOutFormatDefault(AjPStr* pformat)
 ** @@
 ******************************************************************************/
 
-AjBool ajFeatWrite(AjPFeattabOut ftout, const AjPFeattable features)
+AjBool ajFeattableWrite(AjPFeattabOut ftout, const AjPFeattable features)
 {
     AjBool result = ajFalse;
 
@@ -2706,7 +2675,7 @@ AjBool ajFeatWrite(AjPFeattabOut ftout, const AjPFeattable features)
 	    return ajFalse;
 	}
 
-	/*ajDebug("ajFeatWrite Validating arguments\n");*/
+	/*ajDebug("ajFeattableWrite Validating arguments\n");*/
 
 	file = ftout->Handle;
 
@@ -2715,7 +2684,7 @@ AjBool ajFeatWrite(AjPFeattabOut ftout, const AjPFeattable features)
 
 	format  = ftout->Format;
 
-	/*ajDebug("ajFeatWrite format is %d OK\n",ftout->Format);*/
+	/*ajDebug("ajFeattableWrite format is %d OK\n",ftout->Format);*/
 
 	featOutFormat[format].VocInit();
 	result = featOutFormat[format].Write(ftout, features);
@@ -2727,6 +2696,20 @@ AjBool ajFeatWrite(AjPFeattabOut ftout, const AjPFeattable features)
    /* ajDebug(" NO Features to output\n");*/
     return AJTRUE;
 }
+
+
+
+
+/* @obsolete ajFeatWrite
+** @rename ajFeattableWrite
+*/
+
+__deprecated AjBool ajFeatWrite(AjPFeattabOut ftout,
+                                const AjPFeattable features)
+{
+    return ajFeattableWrite(ftout, features);
+}
+
 
 
 
@@ -5375,7 +5358,7 @@ AjBool ajFeattableWriteGff2(AjPFeattabOut ftout, const AjPFeattable Feattab)
     AjPFile file = ftout->Handle;
 
     /* Check arguments */
-    /* ajDebug("ajFeattableWriteGff Checking arguments\n"); */
+    /* ajDebug("ajFeattableWriteGff2 Checking arguments\n"); */
     if(!file)
 	return ajFalse;
     
@@ -5434,7 +5417,7 @@ AjBool ajFeattableWriteGff3(AjPFeattabOut ftout, const AjPFeattable Feattab)
     AjPFile file = ftout->Handle;
 
     /* Check arguments */
-    /* ajDebug("ajFeattableWriteGff Checking arguments\n"); */
+    /* ajDebug("ajFeattableWriteGff3 Checking arguments\n"); */
     if(!file)
 	return ajFalse;
     
@@ -5443,8 +5426,8 @@ AjBool ajFeattableWriteGff3(AjPFeattabOut ftout, const AjPFeattable Feattab)
     ajFmtPrintF(file, "##gff-version 3\n") ;
     
     ajFmtPrintF(file, "##sequence-region %S %u %u\n",
-		Feattab->Seqid, ajFeattableBegin(Feattab),
-		ajFeattableEnd(Feattab));
+		Feattab->Seqid, ajFeattableGetBegin(Feattab),
+		ajFeattableGetEnd(Feattab));
 
     /* EMBOSS specific header with #! tags */
 
@@ -6769,45 +6752,6 @@ static void featCleanDasgff(AjPFile file)
 
 
 
-/* @func ajFeattableGetName ***************************************************
-**
-** Returns the name of a feature table object. This is a copy of the
-** pointer to the name, and is still owned by the feature table
-** and is not to be destroyed.
-**
-** @param [r] thys [const AjPFeattable] Feature table
-** @return [const AjPStr] Feature table name.
-** @@
-******************************************************************************/
-
-const AjPStr ajFeattableGetName(const AjPFeattable thys)
-{
-    return thys->Seqid;
-}
-
-
-
-
-/* @func ajFeattableGetSize ***************************************************
-**
-** Returns the size of a feature table object.
-**
-** @param [r] thys [const AjPFeattable] Feature table
-** @return [ajuint] Feature table size.
-** @@
-******************************************************************************/
-
-ajuint ajFeattableGetSize(const AjPFeattable thys)
-{
-    if(!thys)
-        return 0;
-
-    return ajListGetLength(thys->Features);
-}
-
-
-
-
 /* @func ajFeatTypeGetCategory ************************************************
 **
 ** returns the category name for a feature type
@@ -7108,7 +7052,7 @@ AjBool ajFeattableIsProt(const AjPFeattable thys)
 
 
 
-/* @func ajFeattableBegin *****************************************************
+/* @func ajFeattableGetBegin ***************************************************
 **
 ** Returns the feature table start position, or 1 if no start has been set.
 **
@@ -7117,7 +7061,7 @@ AjBool ajFeattableIsProt(const AjPFeattable thys)
 ** @@
 ******************************************************************************/
 
-ajint ajFeattableBegin(const AjPFeattable thys)
+ajint ajFeattableGetBegin(const AjPFeattable thys)
 {
     if(!thys->Start)
 	return 1;
@@ -7128,7 +7072,18 @@ ajint ajFeattableBegin(const AjPFeattable thys)
 
 
 
-/* @func ajFeattableEnd *******************************************************
+/* @obsolete ajFeattableBegin
+** @rename ajFeattableGetBegin
+*/
+
+__deprecated ajint ajFeattableBegin(const AjPFeattable thys)
+{
+    return ajFeattableGetBegin(thys);
+}
+
+
+
+/* @func ajFeattableGetEnd *****************************************************
 **
 ** Returns the features table end position, or the feature table length if
 ** no end has been set.
@@ -7138,18 +7093,29 @@ ajint ajFeattableBegin(const AjPFeattable thys)
 ** @@
 ******************************************************************************/
 
-ajint ajFeattableEnd(const AjPFeattable thys)
+ajint ajFeattableGetEnd(const AjPFeattable thys)
 {
     if(!thys->End)
-	return (ajFeattableLen(thys));
+	return (ajFeattableGetLen(thys));
 
-    return ajFeattablePosI(thys, ajFeattableBegin(thys), thys->End);
+    return ajFeattablePosI(thys, ajFeattableGetBegin(thys), thys->End);
 }
 
 
 
 
-/* @func ajFeattableLen *******************************************************
+/* @obsolete ajFeattableEnd
+** @rename ajFeattableGetEnd
+*/
+
+__deprecated ajint ajFeattableEnd(const AjPFeattable thys)
+{
+    return ajFeattableGetEnd(thys);
+}
+
+
+
+/* @func ajFeattableGetLen *****************************************************
 **
 ** Returns the sequence length of a feature table
 **
@@ -7158,7 +7124,7 @@ ajint ajFeattableEnd(const AjPFeattable thys)
 ** @@
 ******************************************************************************/
 
-ajint ajFeattableLen(const AjPFeattable thys)
+ajint ajFeattableGetLen(const AjPFeattable thys)
 {
     if(!thys)
 	return 0;
@@ -7169,23 +7135,65 @@ ajint ajFeattableLen(const AjPFeattable thys)
 
 
 
-/* @func ajFeattableSize ******************************************************
+/* @obsolete ajFeattableLen
+** @rename ajFeattableGetLen
+*/
+
+__deprecated ajint ajFeattableLen(const AjPFeattable thys)
+{
+    return ajFeattableGetLen(thys);
+}
+
+
+
+
+/* @func ajFeattableGetName ***************************************************
 **
-** Returns the number of features in a feature table
+** Returns the name of a feature table object. This is a copy of the
+** pointer to the name, and is still owned by the feature table
+** and is not to be destroyed.
 **
 ** @param [r] thys [const AjPFeattable] Feature table
-** @return [ajint] Number of features
+** @return [const AjPStr] Feature table name.
 ** @@
 ******************************************************************************/
 
-ajint ajFeattableSize(const AjPFeattable thys)
+const AjPStr ajFeattableGetName(const AjPFeattable thys)
+{
+    return thys->Seqid;
+}
+
+
+
+
+/* @func ajFeattableGetSize ***************************************************
+**
+** Returns the size of a feature table object.
+**
+** @param [r] thys [const AjPFeattable] Feature table
+** @return [ajuint] Feature table size.
+** @@
+******************************************************************************/
+
+ajuint ajFeattableGetSize(const AjPFeattable thys)
 {
     if(!thys)
-	return 0;
+        return 0;
 
     return ajListGetLength(thys->Features);
 }
 
+
+
+
+/* @obsolete ajFeattableSize
+** @rename ajFeattableGetSize
+*/
+
+__deprecated ajint ajFeattableSize(const AjPFeattable thys)
+{
+    return ajFeattableGetSize(thys);
+}
 
 
 
@@ -7251,7 +7259,7 @@ AjBool ajFeatGetSeq(const AjPFeature thys, const AjPFeattable table,
     isjoin = ajFeatIsMultiple(thys);
 
     ajDebug("ajFeatGetSeq nfeat:%u usa:%S\n",
-            ajFeattableSize(table), ajSeqGetUsaS(seq));
+            ajFeattableGetSize(table), ajSeqGetUsaS(seq));
     iter = ajListIterNewread(table->Features);
 
     while(!ajListIterDone(iter))
@@ -7452,26 +7460,6 @@ AjBool ajFeatLocMark(const AjPFeature thys, const AjPFeattable table,
 
 
 
-/* @func ajFeatGetNote ********************************************************
-**
-** Finds a named note tag (with a * prefix)
-**
-** @param [r] thys [const AjPFeature] Feature object
-** @param [r] name [const AjPStr] Tag name
-** @param [w] val [AjPStr*] Tag value (if found)
-**
-** @return [AjBool] ajTrue on success (feature tag found)
-** @@
-******************************************************************************/
-
-AjBool ajFeatGetNote(const AjPFeature thys, const AjPStr name, AjPStr* val)
-{
-    return ajFeatGetNoteI(thys, name, 0, val);
-}
-
-
-
-
 /* @func ajFeatGetNoteC *******************************************************
 **
 ** Finds a named note tag (with a * prefix)
@@ -7583,6 +7571,39 @@ AjBool ajFeatGetNoteI(const AjPFeature thys, const AjPStr name, ajint count,
 		      AjPStr* val)
 {
     return ajFeatGetNoteCI(thys, ajStrGetPtr(name), count, val);
+}
+
+
+
+
+/* @func ajFeatGetNoteS ********************************************************
+**
+** Finds a named note tag (with a * prefix)
+**
+** @param [r] thys [const AjPFeature] Feature object
+** @param [r] name [const AjPStr] Tag name
+** @param [w] val [AjPStr*] Tag value (if found)
+**
+** @return [AjBool] ajTrue on success (feature tag found)
+** @@
+******************************************************************************/
+
+AjBool ajFeatGetNoteS(const AjPFeature thys, const AjPStr name, AjPStr* val)
+{
+    return ajFeatGetNoteI(thys, name, 0, val);
+}
+
+
+
+
+/* @obsolete ajFeatGetNote
+** @rename ajFeatGetNoteS
+*/
+
+__deprecated AjBool ajFeatGetNote(const AjPFeature thys, const AjPStr name,
+                                  AjPStr* val)
+{
+    return ajFeatGetNoteS(thys, name, val);
 }
 
 
@@ -9495,7 +9516,93 @@ AjPFeattable ajFeattableNew(const AjPStr name )
 
 
 
-/* @func ajFeatUfoRead ********************************************************
+/* @func ajFeattableNewRead ****************************************************
+**
+** Generic interface function for reading in features from a file
+** given the file handle, class of map, data format of input
+** and possibly other associated data.
+**
+** @param  [u] ftin   [AjPFeattabIn]  Specifies the external source (file)
+**                                     of the features to be read in
+** @return [AjPFeattable] Pointer to a new feature table containing
+**                        the features read in
+** @category new [AjPFeattable] Reads in a feature set in a specified format
+** @@
+******************************************************************************/
+
+AjPFeattable ajFeattableNewRead(AjPFeattabIn  ftin)
+{
+    AjPFilebuff  file ;
+    ajint format ;
+
+    AjPFeattable features = NULL ;
+    AjBool result         = ajFalse ;
+
+    if(!ftin)
+	return NULL;
+
+    file = ftin->Handle ;
+
+    if(!file)
+	return NULL;
+
+    format = ftin->Format ;
+
+    if(!format)
+	return NULL;
+
+    ajDebug("ajFeatRead format %d '%s' file %x type: '%S'\n",
+	    format, featInFormat[format].Name, file, ftin->Type);
+
+    if(!featInFormat[format].Used)
+    {
+	/* Calling funclist featInFormatDef() */
+	if(!featInFormat[format].InitReg())
+	{
+	    ajDebug("Initialisation failed for %s\n",
+		    featInFormat[format].Name);
+	    ajErr("Initialisation failed for feature format %s",
+		  featInFormat[format].Name);
+	}
+
+	featInFormat[format].Used = ajTrue;
+    }
+
+    features = ajFeattableNew(ftin->Seqname);
+
+    /* Calling funclist featInFormatDef() */
+    result = featInFormat[format].Read(features, file);
+
+    if(result)
+    {
+	/* ajFeattableTrace(features); */
+	ajDebug("ajFeatRead read %d features\n", ajFeattableGetSize(features));
+
+	return features ;
+    }
+    else
+	ajFeattableDel(&(features)) ;
+
+    return NULL;
+}
+
+
+
+
+
+/* @obsolete ajFeatRead
+** @rename ajFeattableNewRead
+*/
+
+__deprecated AjPFeattable ajFeatRead(AjPFeattabIn  ftin)
+{
+    return ajFeattableNewRead(ftin);
+}
+
+
+
+
+/* @func ajFeattableNewReadUfo *************************************************
 **
 ** Parses a UFO, opens an input file, and reads a feature table
 **
@@ -9507,8 +9614,8 @@ AjPFeattable ajFeattableNew(const AjPStr name )
 ** @@
 ******************************************************************************/
 
-AjPFeattable ajFeatUfoRead(AjPFeattabIn featin,
-		     const AjPStr ufo)
+AjPFeattable ajFeattableNewReadUfo(AjPFeattabIn featin,
+                                   const AjPStr ufo)
 {
     AjPFeattable ret = NULL;
     
@@ -9524,7 +9631,7 @@ AjPFeattable ajFeatUfoRead(AjPFeattabIn featin,
     if(!featRegUfoFile)
 	featRegUfoFile = ajRegCompC("^(([A-Za-z]:)?[^:]+)$");
     
-    /*ajDebug("ajFeatUfoRead UFO '%S'\n", ufo);*/
+    /*ajDebug("ajFeattableNewReadUfo UFO '%S'\n", ufo);*/
     
     ajStrAssignS(&featUfoTest, ufo);
     
@@ -9588,14 +9695,14 @@ AjPFeattable ajFeatUfoRead(AjPFeattabIn featin,
     
     /* OKAY if we have a format specified try this and this ONLY */
     if(featin->Format)
-	ret = ajFeatRead(featin);
+	ret = ajFeattableNewRead(featin);
     /* else loop through all types and try to read features */
     else
 	for(i=1;featInFormat[i].Name;i++)
 	{
 	    featin->Format = i;
 
-	    ret = ajFeatRead(featin);
+	    ret = ajFeattableNewRead(featin);
 
 	    if(ret)
 		break;
@@ -9610,6 +9717,59 @@ AjPFeattable ajFeatUfoRead(AjPFeattabIn featin,
     return ret;
 }
 
+
+
+
+/* @obsolete ajFeatUfoRead
+** @rename ajFeattableNewReadUfo
+*/
+
+__deprecated AjPFeattable ajFeatUfoRead(AjPFeattabIn featin,
+		     const AjPStr ufo)
+{
+
+    return ajFeattableNewReadUfo (featin, ufo);
+}
+
+
+
+/* @func ajFeattableSetDefname *************************************************
+**
+** Provides a unique (for this program run) name for a feature table.
+**
+** @param [w] thys [AjPFeattable] Feature table
+** @param [r] setname [const AjPStr] Name set by caller
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajFeattableSetDefname(AjPFeattable thys, const AjPStr setname)
+{
+    if(ajStrGetLen(thys->Seqid))
+    {
+	ajDebug("ajFeattableSetDefname already has a name '%S'\n", thys->Seqid);
+	return;
+    }
+
+    if(ajStrGetLen(setname))
+	ajStrAssignS(&thys->Seqid, setname);
+
+    ajDebug("ajFeattableSetDefname set to  '%S'\n", setname);
+
+    return;
+}
+
+
+
+
+/* @obsolete ajFeatDefName
+** @rename ajFeattableSetDefname
+*/
+
+__deprecated void ajFeatDefName(AjPFeattable thys, const AjPStr setname)
+{
+    return ajFeattableSetDefname(thys, setname);
+}
 
 
 
@@ -9655,7 +9815,6 @@ void ajFeattableSetNuc(AjPFeattable thys)
 
 
 
-
 /* @func ajFeattableSetProt ***************************************************
 **
 ** Sets the type of a feature table as Protein
@@ -9669,6 +9828,27 @@ void ajFeattableSetNuc(AjPFeattable thys)
 void ajFeattableSetProt(AjPFeattable thys)
 {
     ajStrAssignEmptyC(&thys->Type, "P");
+
+    return;
+}
+
+
+
+
+/* @func ajFeattableSetRange **************************************************
+**
+** Set the begin and end range for a feature table
+**
+** @param [u] thys [AjPFeattable] Feature table object
+** @param [r] fbegin [ajint] Begin position
+** @param [r] fend   [ajint] End position
+** @return [void]
+******************************************************************************/
+
+void ajFeattableSetRange(AjPFeattable thys, ajint fbegin, ajint fend)
+{
+    thys->Start = ajFeattablePosI(thys, 1, fbegin);
+    thys->End   = ajFeattablePosII(thys->Len, thys->Start, fend);
 
     return;
 }
@@ -9803,27 +9983,6 @@ void ajFeatReverse(AjPFeature  thys, ajint ilen)
 	    thys->Start, thys->End, thys->Start2, thys->End2);*/
 
     return;    
-}
-
-
-
-
-/* @func ajFeattableSetRange **************************************************
-**
-** Set the begin and end range for a feature table
-**
-** @param [u] thys [AjPFeattable] Feature table object
-** @param [r] fbegin [ajint] Begin position
-** @param [r] fend   [ajint] End position
-** @return [void]
-******************************************************************************/
-
-void ajFeattableSetRange(AjPFeattable thys, ajint fbegin, ajint fend)
-{
-    thys->Start = ajFeattablePosI(thys, 1, fbegin);
-    thys->End   = ajFeattablePosII(thys->Len, thys->Start, fend);
-
-    return;
 }
 
 
@@ -10054,7 +10213,7 @@ static FeatPTagval featTagval(const AjPFeature thys, const AjPStr tag)
 
 
 
-/* @func ajFeattableCopy ******************************************************
+/* @func ajFeattableNewFtable **************************************************
 **
 ** Makes a copy of a feature table.
 **
@@ -10065,7 +10224,7 @@ static FeatPTagval featTagval(const AjPFeature thys, const AjPStr tag)
 ** @@
 ******************************************************************************/
 
-AjPFeattable ajFeattableCopy(const AjPFeattable orig)
+AjPFeattable ajFeattableNewFtable(const AjPFeattable orig)
 {
     AjPFeattable ret = NULL;
     AjIList iter;
@@ -10090,7 +10249,7 @@ AjPFeattable ajFeattableCopy(const AjPFeattable orig)
     while(!ajListIterDone(iter))
     {
 	featorig = ajListIterGet(iter);
-	feat = ajFeatCopy(featorig);
+	feat = ajFeatNewFeat(featorig);
 	ajFeattableAdd(ret, feat);
     }
 
@@ -10101,8 +10260,19 @@ AjPFeattable ajFeattableCopy(const AjPFeattable orig)
 
 
 
+/* @obsolete ajFeattableCopy
+** @rename ajFeattableNewFtable
+*/
 
-/* @func ajFeattableCopyLimit *************************************************
+__deprecated AjPFeattable ajFeattableCopy(const AjPFeattable orig)
+{
+    return ajFeattableNewFtable(orig);
+}
+
+
+
+
+/* @func ajFeattableNewFtableLimit *********************************************
 **
 ** Makes a copy of a feature table using only a limited number of features.
 **
@@ -10114,7 +10284,7 @@ AjPFeattable ajFeattableCopy(const AjPFeattable orig)
 ** @@
 ******************************************************************************/
 
-AjPFeattable ajFeattableCopyLimit(const AjPFeattable orig, ajint limit)
+AjPFeattable ajFeattableNewFtableLimit(const AjPFeattable orig, ajint limit)
 {
     AjPFeattable ret = NULL;
     AjIList iter;
@@ -10140,7 +10310,7 @@ AjPFeattable ajFeattableCopyLimit(const AjPFeattable orig, ajint limit)
     while(!ajListIterDone(iter) && (ift++ < limit))
     {
 	featorig = ajListIterGet(iter);
-	feat = ajFeatCopy(featorig);
+	feat = ajFeatNewFeat(featorig);
 	ajFeattableAdd(ret, feat);
     }
 
@@ -10151,8 +10321,19 @@ AjPFeattable ajFeattableCopyLimit(const AjPFeattable orig, ajint limit)
 
 
 
+/* @obsolete ajFeattableCopyLimit
+** @rename ajFeattableNewFtableLimit
+*/
 
-/* @func ajFeatCopy ***********************************************************
+__deprecated AjPFeattable ajFeattableCopyLimit(const AjPFeattable orig, ajint limit)
+{
+    return ajFeattableNewFtableLimit(orig, limit);
+}
+
+
+
+
+/* @func ajFeatNewFeat *********************************************************
 **
 ** Makes a copy of a feature.
 **
@@ -10164,7 +10345,7 @@ AjPFeattable ajFeattableCopyLimit(const AjPFeattable orig, ajint limit)
 ** @@
 ******************************************************************************/
 
-AjPFeature ajFeatCopy(const AjPFeature orig)
+AjPFeature ajFeatNewFeat(const AjPFeature orig)
 {
     AjPFeature ret;
     AjIList iter;
@@ -10200,6 +10381,17 @@ AjPFeature ajFeatCopy(const AjPFeature orig)
     ajListIterDel(&iter);
 
     return ret;
+}
+
+
+
+/* @obsolete ajFeatCopy
+** @rename ajFeatNewFeat
+*/
+
+__deprecated AjPFeature ajFeatCopy(const AjPFeature orig)
+{
+    return ajFeatNewFeat(orig);
 }
 
 
@@ -10534,6 +10726,51 @@ static const AjPStr featTypeProtLimit(const AjPStr type)
 
 
 
+/* @funcstatic featTypeTestDnaWild *********************************************
+**
+** Given a feature type name,
+** returns the valid feature type for the internal DNA feature table
+** following alternative names until a matching wildcard name is found
+**
+** @param [r]   type  [const AjPStr] Type name
+** @param [r]   str   [const AjPStr] Wildcard name
+** @return [AjBool] True if a match is found
+** @@
+******************************************************************************/
+
+static AjBool featTypeTestDnaWild(const AjPStr type, const AjPStr str)
+{
+    featInit();
+
+    return featTableTypeTestWild(type, FeatTypeTableDna, str);
+}
+
+
+
+
+/* @funcstatic featTypeTestProtWild ********************************************
+**
+** Given a feature type name,
+** returns the valid feature type for the internal protein feature table
+** following alternative names until a unique name is found
+**
+** @param [r]   type  [const AjPStr] Type name
+** @param [r]   str   [const AjPStr] Wildcard name
+** @return [AjBool] True if a match is found
+** @@
+******************************************************************************/
+
+static AjBool featTypeTestProtWild(const AjPStr type, const AjPStr str)
+{
+    featInit();
+
+    return featTableTypeTestWild(type, FeatTypeTableProtein, str);
+}
+
+
+
+
+
 /* @funcstatic featTagDna *****************************************************
 **
 ** Given a feature tag name,
@@ -10766,6 +11003,101 @@ static const AjPStr featTableTypeInternalLimit(const AjPStr type,
     /*ajDebug("featTableTypeInternalLimit result '%S'\n",
 	     ret);*/
     return NULL;
+}
+
+
+
+
+/* @funcstatic featTableTypeTestWild *******************************************
+**
+** Given a feature type name,
+** returns the valid feature type for a feature table
+** following alternative names which are common in the internal table
+** which is a combination of multiple definitions
+**
+** @param [r]   type  [const AjPStr] Type name
+** @param [r]   table [const AjPTable]  Feature table
+** @param [r]   str   [const AjPStr] Wildcard name
+** @return [AjBool] True if a match is found
+** @@
+******************************************************************************/
+
+static AjBool featTableTypeTestWild(const AjPStr type,
+                                    const AjPTable table,
+                                    const AjPStr str)
+{
+    const AjPStr retkey = NULL;
+    const AjPStr tmpstr = NULL;
+    AjPStr tmpkey = NULL;
+    ajuint i = 0;
+    ajuint nkeys;
+    void **keys = NULL;
+    void **values = NULL;
+    AjPStr key = NULL;
+
+    if(ajStrMatchWildS(type, str))
+        return ajTrue;
+
+    retkey = (const AjPStr) ajTableFetchKey(table, type);
+
+    while(retkey && i < 5)
+    {
+	tmpstr = (AjPStr)ajTableFetch(table, retkey);
+	ajDebug("featTableTypeTestWild '%S' found in internal table"
+                " as '%S' (%S)\n",type, retkey, tmpstr);
+
+	if(ajStrGetCharLast(tmpstr) != ';')
+	{
+            if(ajStrMatchWildS(tmpstr, str))
+                return ajTrue;
+
+            tmpstr = (AjPStr)ajTableFetch(table, retkey);
+	    retkey = (const AjPStr) ajTableFetchKey(table, tmpstr);
+	}
+        else 
+        {
+            ajStrAssignSubS(&tmpkey, tmpstr, 0, ajStrFindAnyK(tmpstr, ';')-1);
+
+            if(ajStrMatchWildS(tmpkey, str))
+            {
+                ajStrDel(&tmpkey);
+                return ajTrue;
+            }
+
+            ajStrDel(&tmpkey);
+
+	    ajDebug("featTableTypeTestWild '%S' is an alias for '%S'\n",
+		 retkey, tmpstr);
+
+            retkey = (const AjPStr) ajTableFetchKey(table, tmpstr);
+
+	}
+
+	ajDebug("featTableTypeTestWild result %u '%S'\n",
+                ++i, retkey);
+    }
+
+    nkeys = ajTableToarray(table, &keys, &values);
+    AJFREE(values);
+    for (i=0; i<nkeys; i++) 
+    {
+        key = (AjPStr) keys[i];
+        if(ajStrMatchWildS(key, str))
+        {
+            if(ajStrMatchS(featTableTypeInternalLimit(key,table),
+                           featTableTypeInternalLimit(type,table)))
+            {
+                AJFREE(keys);
+                return ajTrue;
+            }
+        }
+    }
+
+    AJFREE(keys);
+    ajDebug("featTableTypeTestWild '%S' not in internal table %x, "
+	    "default to NULL\n", type, table);
+
+    return ajFalse;
 }
 
 
@@ -13335,7 +13667,7 @@ static void featDumpPir(const AjPFeature thys, const AjPStr location,
     AjBool typmod;
     AjPFeature copy = NULL;
 
-    copy = ajFeatCopy(thys);
+    copy = ajFeatNewFeat(thys);
 
     ajStrAssignClear(&outcomm);
     
@@ -14471,6 +14803,64 @@ AjBool ajFeatTypeMatchS(const AjPFeature gf, const AjPStr str)
 
 
 
+/* @func ajFeatTypeMatchWildS **************************************************
+**
+** Tests whether the feature type matches a given wildcard string
+** including testing for alternative names
+**
+** @param [r] gf       [const AjPFeature]  Feature
+** @param [r] str      [const AjPStr]  Feature type name to test
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+AjBool ajFeatTypeMatchWildS(const AjPFeature gf, const AjPStr str)
+{
+    AjBool ret = ajFalse;
+    AjPStr mystr = NULL;
+
+    mystr = ajStrNewS(str);
+    ajStrFmtLower(&mystr);
+    
+    if(gf->Protein)
+    {
+	ret =  featTypeTestProtWild(gf->Type, mystr);
+
+        if(!ret)
+        {
+            if(ajStrIsWild(mystr))
+                ajStrTrimEndC(&mystr, "*");
+            ret = ajFeatTypeMatchS(gf, mystr);
+        }
+    
+        ajDebug("ajFeatTypeMatchWildS: %B '%S' '%S' prot:'%S'\n",
+                ret, mystr, gf->Type,
+                featTypeProtLimit(gf->Type));
+    }
+    
+    else
+    {
+	ret =  featTypeTestDnaWild(gf->Type, mystr);
+
+        if(!ret)
+        {
+            if(ajStrIsWild(mystr))
+                ajStrTrimEndC(&mystr, "*");
+            ret = ajFeatTypeMatchS(gf, mystr);
+        }
+
+        ajDebug("ajFeatTypeMatchWildS: %B '%S' '%S' dna: '%S'\n",
+                ret, mystr, gf->Type,
+                featTypeDnaLimit(gf->Type));
+    }
+    ajStrDel(&mystr);
+
+    return ret;
+}
+
+
+
+
 /* @func ajFeatIsLocal ********************************************************
 **
 ** Tests whether the feature is local to the sequence.
@@ -14680,7 +15070,7 @@ void ajFeattabOutDel(AjPFeattabOut *thys)
 
 ajuint ajFeattablePos(const AjPFeattable thys, ajint ipos)
 {
-    return ajFeattablePosII(ajFeattableLen(thys), 1, ipos);
+    return ajFeattablePosII(ajFeattableGetLen(thys), 1, ipos);
 }
 
 
@@ -14704,7 +15094,7 @@ ajuint ajFeattablePos(const AjPFeattable thys, ajint ipos)
 
 ajuint ajFeattablePosI(const AjPFeattable thys, ajuint imin, ajint ipos)
 {
-    return ajFeattablePosII(ajFeattableLen(thys), imin, ipos);
+    return ajFeattablePosII(ajFeattableGetLen(thys), imin, ipos);
 }
 
 
@@ -14838,12 +15228,12 @@ AjBool ajFeattableTrimOff(AjPFeattable thys, ajuint ioffset, ajuint ilen)
 ** Trim a feature table using the Begin and Ends.
 **
 ** Called where a sequence has been trimmed, so we have to allow for
-** missing sequence positions at the start (ioffset) or at the end (ilen).
+** missing sequence positions at the start (ioffset)
 **
 ** @param [u] ft [AjPFeature] Target feature
 ** @param [r] ioffset [ajuint] Offset from start of sequence
 ** @param [r] begin [ajuint] Range start of sequence
-** @param [r] end [ajuint] range end of sequence
+** @param [r] end [ajuint] Range end of sequence
 ** @param [r] dobegin [AjBool] Reset begin
 ** @param [r] doend [AjBool] Reset end
 ** @return [AjBool] AjTrue returned if successful.
@@ -14958,35 +15348,6 @@ static void featWarn(const char* fmt, ...)
 
     ajWarn("%S", errstr);
     ajStrDel(&errstr);
-
-    return;
-}
-
-
-
-
-/* @func ajFeatDefName ********************************************************
-**
-** Provides a unique (for this program run) name for a feature table.
-**
-** @param [w] thys [AjPFeattable] Feature table
-** @param [r] setname [const AjPStr] Name set by caller
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajFeatDefName(AjPFeattable thys, const AjPStr setname)
-{
-    if(ajStrGetLen(thys->Seqid))
-    {
-	ajDebug("ajFeatDefName already has a name '%S'\n", thys->Seqid);
-	return;
-    }
-
-    if(ajStrGetLen(setname))
-	ajStrAssignS(&thys->Seqid, setname);
-
-    ajDebug("ajFeatDefName set to  '%S'\n", setname);
 
     return;
 }
@@ -15191,6 +15552,281 @@ void ajFeatPrintFormat(AjPFile outf, AjBool full)
     }
 
     ajFmtPrintF(outf, "}\n\n");
+
+    return;
+}
+
+
+
+
+/* @func ajFeatPrintbookFormat ************************************************
+**
+** Reports the input feature format internals in wikitext format
+**
+** @param [u] outf [AjPFile] Output file
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajFeatPrintbookFormat(AjPFile outf)
+{
+    ajint i = 0;
+    ajint j = 0;
+    AjPStr namestr = NULL;
+
+    AjPList fmtlist;
+    AjPStr* names;
+
+    fmtlist = ajListstrNew();
+
+    ajFmtPrintF(outf, "<table frame=\"box\" rules=\"cols\">\n");
+    ajFmtPrintF(outf, "  <caption>Input feature formats</caption>\n");
+    ajFmtPrintF(outf, "  <thead>\n");
+    ajFmtPrintF(outf, "    <tr align=\"center\">\n");
+    ajFmtPrintF(outf, "      <th>Output Format</th>\n");
+    ajFmtPrintF(outf, "      <th>Nuc</th>\n");
+    ajFmtPrintF(outf, "      <th>Pro</th>\n");
+    ajFmtPrintF(outf, "      <th>Description</th>\n");
+    ajFmtPrintF(outf, "    </tr>\n");
+    ajFmtPrintF(outf, "  </thead>\n");
+    ajFmtPrintF(outf, "  <tbody>\n");
+
+    for(i=1; featInFormatDef[i].Name; i++)
+    {
+	if(!featInFormatDef[i].Alias)
+        {
+            namestr = ajStrNewC(featInFormatDef[i].Name);
+            ajListPush(fmtlist, namestr);
+            namestr = NULL;
+        }
+    }
+
+    ajListSort(fmtlist, ajStrVcmp);
+    ajListstrToarray(fmtlist, &names);
+
+    for(i=0; names[i]; i++)
+    {
+        for(j=0; featInFormatDef[j].Name; j++)
+        {
+            if(ajStrMatchC(names[i],featInFormatDef[j].Name))
+            {
+                ajFmtPrintF(outf, "    <tr>\n");
+                ajFmtPrintF(outf, "      <td>%s</td>\n",
+                            featInFormatDef[j].Name);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            featInFormatDef[j].Nucleotide);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            featInFormatDef[j].Protein);
+                ajFmtPrintF(outf, "      <td>%s</td>\n",
+                            featInFormatDef[j].Desc);
+                ajFmtPrintF(outf, "    </tr>\n");
+            }
+        }
+    }
+
+    ajFmtPrintF(outf, "  </tbody>\n");
+    ajFmtPrintF(outf, "</table>\n");
+    ajStrDel(&namestr);
+
+    names = NULL;
+    ajListstrFreeData(&fmtlist);
+
+    return;
+}
+
+
+
+
+/* @func ajFeatPrintwikiFormat ************************************************
+**
+** Reports the input feature format internals in wikitext format
+**
+** @param [u] outf [AjPFile] Output file
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajFeatPrintwikiFormat(AjPFile outf)
+{
+    ajint i = 0;
+    ajint j = 0;
+    AjPStr namestr = NULL;
+
+    ajFmtPrintF(outf, "{| class=\"wikitable sortable\" border=\"2\"\n");
+    ajFmtPrintF(outf, "|-\n");
+    ajFmtPrintF(outf, "!Format!!Nuc!!Pro!!"
+                "class=\"unsortable\"|Description\n");
+
+    for(i=1; featInFormatDef[i].Name; i++)
+    {
+        if(!featInFormatDef[i].Alias)
+        {
+            ajFmtPrintF(outf, "|-\n");
+            ajStrAssignC(&namestr, featInFormatDef[i].Name);
+
+
+            for(j=i+1; featInFormatDef[j].Name; j++)
+            {
+                if(featInFormatDef[j].Read == featInFormatDef[i].Read)
+                {
+                    ajFmtPrintAppS(&namestr, "<br>%s", featInFormatDef[j].Name);
+                    if(!featInFormatDef[j].Alias) 
+                    {
+                        ajWarn("Feature input format '%s' same as '%s' "
+                               "but not alias",
+                               featInFormatDef[j].Name,
+                               featInFormatDef[i].Name);
+                    }
+                }
+            }
+            ajFmtPrintF(outf, "|%S||%B||%B||%s\n",
+			namestr,
+			featInFormatDef[i].Nucleotide,
+			featInFormatDef[i].Protein,
+			featInFormatDef[i].Desc);
+        }
+    }
+
+    ajFmtPrintF(outf, "|}\n\n");
+
+    ajStrDel(&namestr);
+
+    return;
+}
+
+
+
+
+/* @func ajFeatoutPrintbookFormat *********************************************
+**
+** Reports the output feature format internals in docbook format
+**
+** @param [u] outf [AjPFile] Output file
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajFeatoutPrintbookFormat(AjPFile outf)
+{
+    ajint i = 0;
+    ajint j = 0;
+    AjPStr namestr = NULL;
+    AjPList fmtlist;
+    AjPStr* names;
+
+    fmtlist = ajListstrNew();
+
+    ajFmtPrintF(outf, "<table frame=\"box\" rules=\"cols\">\n");
+    ajFmtPrintF(outf, "  <caption>Output feature formats</caption>\n");
+    ajFmtPrintF(outf, "  <thead>\n");
+    ajFmtPrintF(outf, "    <tr align=\"center\">\n");
+    ajFmtPrintF(outf, "      <th>Output Format</th>\n");
+    ajFmtPrintF(outf, "      <th>Nuc</th>\n");
+    ajFmtPrintF(outf, "      <th>Pro</th>\n");
+    ajFmtPrintF(outf, "      <th>Description</th>\n");
+    ajFmtPrintF(outf, "    </tr>\n");
+    ajFmtPrintF(outf, "  </thead>\n");
+    ajFmtPrintF(outf, "  <tbody>\n");
+
+    for(i=1; featOutFormatDef[i].Name; i++)
+    {
+	if(!featOutFormatDef[i].Alias)
+        {
+            namestr = ajStrNewC(featOutFormatDef[i].Name);
+            ajListPush(fmtlist, namestr);
+            namestr = NULL;
+        }
+    }
+
+    ajListSort(fmtlist, ajStrVcmp);
+    ajListstrToarray(fmtlist, &names);
+
+    for(i=0; names[i]; i++)
+    {
+        for(j=0; featOutFormatDef[j].Name; j++)
+        {
+            if(ajStrMatchC(names[i],featOutFormatDef[j].Name))
+            {
+                ajFmtPrintF(outf, "    <tr>\n");
+                ajFmtPrintF(outf, "      <td>%s</td>\n",
+                            featOutFormatDef[j].Name);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            featOutFormatDef[j].Nucleotide);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            featOutFormatDef[j].Protein);
+                ajFmtPrintF(outf, "      <td>%s</td>\n",
+                            featOutFormatDef[j].Desc);
+                ajFmtPrintF(outf, "    </tr>\n");
+            }
+        }
+    }
+
+    ajFmtPrintF(outf, "  </tbody>\n");
+    ajFmtPrintF(outf, "</table>\n");
+    ajStrDel(&namestr);
+
+    names = NULL;
+    ajListstrFreeData(&fmtlist);
+
+    return;
+}
+
+
+
+
+/* @func ajFeatoutPrintwikiFormat *********************************************
+**
+** Reports the output feature format internals in wikitext format
+**
+** @param [u] outf [AjPFile] Output file
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajFeatoutPrintwikiFormat(AjPFile outf)
+{
+    ajint i = 0;
+    ajint j = 0;
+    AjPStr namestr = NULL;
+
+    ajFmtPrintF(outf, "{| class=\"wikitable sortable\" border=\"2\"\n");
+    ajFmtPrintF(outf, "|-\n");
+    ajFmtPrintF(outf, "!Format!!Nuc!!Pro!!"
+                "class=\"unsortable\"|Description\n");
+
+    for(i=1; featOutFormatDef[i].Name; i++)
+    {
+        if(!featOutFormatDef[i].Alias)
+        {
+            ajFmtPrintF(outf, "|-\n");
+            ajStrAssignC(&namestr, featOutFormatDef[i].Name);
+
+
+            for(j=i+1; featOutFormatDef[j].Name; j++)
+            {
+                if(featOutFormatDef[j].Write == featOutFormatDef[i].Write)
+                {
+                    ajFmtPrintAppS(&namestr, " %s", featOutFormatDef[j].Name);
+                    if(!featOutFormatDef[j].Alias) 
+                    {
+                        ajWarn("Feature output format '%s' same as '%s' "
+                               "but not alias",
+                               featOutFormatDef[j].Name,
+                               featOutFormatDef[i].Name);
+                    }
+                }
+            }
+            ajFmtPrintF(outf, "|%S||%B||%B||%s\n",
+			namestr,
+			featOutFormatDef[i].Nucleotide,
+			featOutFormatDef[i].Protein,
+			featOutFormatDef[i].Desc);
+        }
+    }
+
+    ajFmtPrintF(outf, "|}\n\n");
+
+    ajStrDel(&namestr);
 
     return;
 }

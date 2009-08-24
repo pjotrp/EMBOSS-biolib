@@ -36,22 +36,21 @@ extern "C"
 */
 
 AjBool        ajFeatIsChild (const AjPFeature gf);
-AjPFeature    ajFeatCopy (const AjPFeature orig);
-void          ajFeatDefName(AjPFeattable thys, const AjPStr setname);
+AjPFeature    ajFeatNewFeat (const AjPFeature orig);
 void          ajFeatDel(AjPFeature *pthis) ;
 void          ajFeatExit (void);
 ajuint        ajFeatGetEnd (const AjPFeature thys);
 AjBool        ajFeatGetForward (const AjPFeature thys);
 ajint         ajFeatGetFrame (const AjPFeature thys);
 ajuint        ajFeatGetLength(const AjPFeature thys);
-AjBool        ajFeatGetNote (const AjPFeature thys, const AjPStr name,
-			     AjPStr* val);
 AjBool        ajFeatGetNoteC(const AjPFeature thys, const char* name,
 			     AjPStr* val);
 AjBool        ajFeatGetNoteCI(const AjPFeature thys, const char* name,
 			      ajint count, AjPStr* val);
 AjBool        ajFeatGetNoteI (const AjPFeature thys, const AjPStr name,
 			      ajint count, AjPStr* val);
+AjBool        ajFeatGetNoteS (const AjPFeature thys, const AjPStr name,
+			     AjPStr* val);
 AjBool        ajFeatGetRemoteseq(const AjPFeature thys, const AjPStr usa,
                                  AjPSeq seq);
 float         ajFeatGetScore (const AjPFeature thys);
@@ -87,7 +86,10 @@ AjPFeature    ajFeatNewProt (AjPFeattable thys,
 			     ajint Start, ajint End, float score);
 AjBool        ajFeatOutFormatDefault (AjPStr* pformat);
 void          ajFeatPrintFormat(AjPFile outf, AjBool full);
-AjPFeattable  ajFeatRead  (AjPFeattabIn ftin) ;
+void          ajFeatPrintbookFormat(AjPFile outf);
+void          ajFeatoutPrintbookFormat(AjPFile outf);
+void          ajFeatPrintwikiFormat(AjPFile outf);
+void          ajFeatoutPrintwikiFormat(AjPFile outf);
 void          ajFeatReverse  (AjPFeature thys, ajint ilen) ;
 void          ajFeatSetDesc (AjPFeature thys, const AjPStr desc);
 void          ajFeatSetDescApp (AjPFeature thys, const AjPStr desc);
@@ -97,12 +99,11 @@ void          ajFeatSortByEnd (AjPFeattable Feattab);
 void          ajFeatSortByStart (AjPFeattable Feattab);
 void          ajFeatSortByType (AjPFeattable Feattab);
 void          ajFeattableAdd (AjPFeattable thys, AjPFeature feature) ;
-ajint         ajFeattableBegin (const AjPFeattable thys);
 void          ajFeattableClear (AjPFeattable thys);
-AjPFeattable  ajFeattableCopy (const AjPFeattable orig);
-AjPFeattable  ajFeattableCopyLimit (const AjPFeattable orig, ajint limit);
 void          ajFeattableDel (AjPFeattable *pthis) ;
-ajint         ajFeattableEnd (const AjPFeattable thys);
+ajint         ajFeattableGetBegin (const AjPFeattable thys);
+ajint         ajFeattableGetEnd (const AjPFeattable thys);
+ajint         ajFeattableGetLen (const AjPFeattable thys);
 const AjPStr  ajFeattableGetName (const AjPFeattable thys);
 ajuint        ajFeattableGetSize(const AjPFeattable thys);
 const char*   ajFeattableGetTypeC (const AjPFeattable thys);
@@ -111,10 +112,13 @@ AjBool        ajFeattableGetXrefs(const AjPFeattable thys, AjPList xreflist,
                                   ajuint *Ptaxid);
 AjBool        ajFeattableIsNuc (const AjPFeattable thys);
 AjBool        ajFeattableIsProt (const AjPFeattable thys);
-ajint         ajFeattableLen (const AjPFeattable thys);
 AjPFeattable  ajFeattableNew (const AjPStr name);
 AjPFeattable  ajFeattableNewDna (const AjPStr name);
+AjPFeattable  ajFeattableNewFtable (const AjPFeattable orig);
+AjPFeattable  ajFeattableNewFtableLimit (const AjPFeattable orig, ajint limit);
 AjPFeattable  ajFeattableNewProt (const AjPStr name);
+AjPFeattable  ajFeattableNewRead  (AjPFeattabIn ftin);
+AjPFeattable  ajFeattableNewReadUfo (AjPFeattabIn tabin, const AjPStr Ufo);
 AjPFeattable  ajFeattableNewSeq (const AjPSeq seq);
 ajuint        ajFeattablePos (const AjPFeattable thys, ajint ipos);
 ajuint        ajFeattablePosI (const AjPFeattable thys,
@@ -125,16 +129,15 @@ AjBool        ajFeattableWriteDebug(AjPFeattabOut ftout,
 AjBool        ajFeattablePrint(const AjPFeattable ftable,
                                AjPFile file);
 void          ajFeattableReverse  (AjPFeattable  thys) ;
+void          ajFeattableSetDefname(AjPFeattable thys, const AjPStr setname);
 void          ajFeattableSetLength(AjPFeattable thys, ajuint len);
 void          ajFeattableSetNuc (AjPFeattable thys);
 void          ajFeattableSetProt (AjPFeattable thys);
 void          ajFeattableSetRange  (AjPFeattable thys,
 				     ajint fbegin, ajint fend) ;
-ajint         ajFeattableSize (const AjPFeattable thys);
 void          ajFeattableTrace (const AjPFeattable thys);
 AjBool        ajFeattableTrimOff (AjPFeattable thys,
 				  ajuint ioffset, ajuint ilen);
-AjBool        ajFeattableWrite(AjPFeattable thys, const AjPStr ufo);
 AjBool        ajFeattableWriteDasgff(AjPFeattabOut ftout,
                                     const AjPFeattable features);
 AjBool        ajFeattableWriteDdbj (AjPFeattabOut ftout,
@@ -203,15 +206,35 @@ const AjPStr  ajFeatTypeGetCategory(const AjPStr type);
 AjBool        ajFeatTypeIsCds(const AjPFeature gf);
 AjBool        ajFeatTypeMatchC(const AjPFeature gf, const char* txt);
 AjBool        ajFeatTypeMatchS(const AjPFeature gf, const AjPStr str);
+    AjBool        ajFeatTypeMatchWildS(const AjPFeature gf, const AjPStr str);
 const AjPStr  ajFeatTypeNuc(const AjPStr type);
 const AjPStr  ajFeatTypeProt(const AjPStr type);
-AjPFeattable  ajFeatUfoRead (AjPFeattabIn tabin, const AjPStr Ufo);
-AjBool        ajFeatUfoWrite (const AjPFeattable thys,
-			      AjPFeattabOut tabout, const AjPStr Ufo);
-AjBool        ajFeatWrite (AjPFeattabOut ftout, const AjPFeattable ft) ;
+AjBool        ajFeattableWriteUfo (AjPFeattabOut ftout, const AjPFeattable ft,
+			      const AjPStr Ufo);
+AjBool        ajFeattableWrite (AjPFeattabOut ftout, const AjPFeattable ft) ;
 AjBool        ajFeattagIsNote(const AjPStr tag);
 
 void          ajFeatUnused(void);
+
+__deprecated AjPFeature    ajFeatCopy (const AjPFeature orig);
+__deprecated AjPFeattable  ajFeattableCopy (const AjPFeattable orig);
+__deprecated AjPFeattable  ajFeattableCopyLimit (const AjPFeattable orig,
+                                                 ajint limit);
+__deprecated AjPFeattable  ajFeatUfoRead (AjPFeattabIn tabin, const AjPStr Ufo);
+__deprecated AjBool        ajFeatUfoWrite (const AjPFeattable thys,
+                                           AjPFeattabOut tabout,
+                                           const AjPStr Ufo);
+__deprecated AjBool        ajFeatWrite (AjPFeattabOut ftout,
+                                        const AjPFeattable ft) ;
+__deprecated AjPFeattable  ajFeatRead  (AjPFeattabIn ftin) ;
+__deprecated ajint         ajFeattableBegin (const AjPFeattable thys);
+__deprecated ajint         ajFeattableEnd (const AjPFeattable thys);
+__deprecated ajint         ajFeattableLen (const AjPFeattable thys);
+__deprecated ajint         ajFeattableSize (const AjPFeattable thys);
+__deprecated void          ajFeatDefName(AjPFeattable thys,
+                                         const AjPStr setname);
+__deprecated AjBool        ajFeatGetNote (const AjPFeature thys,
+                                          const AjPStr name, AjPStr* val);
 
 /*
 ** End of prototype definitions
