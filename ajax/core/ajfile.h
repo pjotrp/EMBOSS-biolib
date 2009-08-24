@@ -66,6 +66,9 @@ typedef struct AjSFile {
 **
 ** This is a substructure of the AjPFilebuff object.
 **
+** @alias AjSFilebufflist
+** @alias AjSOilebufflist
+**
 ** @attr Line [AjPStr] String : this line
 ** @attr Next [struct AjSFilebufflist*] Next line in the list, NULL for last
 ** @attr Fpos [ajlong] File offset for start of this line
@@ -300,9 +303,10 @@ AjBool         ajFileIsAppend(const AjPFile thys);
 const AjPStr   ajFileGetName(const AjPFile thys);
 AjBool         ajFilenameHasPath(const AjPStr name);
 ajlong         ajFilenameGetSize(const AjPStr fname);
-AjBool         ajFilenameTrimPathExt(AjPStr* Pfilename);
-AjBool         ajFilenameTrimPath(AjPStr* Pfilename);
+AjBool         ajFilenameTrimAll(AjPStr *fname);
 AjBool         ajFilenameTrimExt(AjPStr* Pfilename);
+AjBool         ajFilenameTrimPath(AjPStr* Pfilename);
+AjBool         ajFilenameTrimPathExt(AjPStr* Pfilename);
 const char*    ajFileGetNameC(const AjPFile thys);
 const AjPStr   ajFileGetNameS(const AjPFile thys);
 AjBool         ajFilenameReplacePathS(AjPStr* filename, const AjPStr dir);
@@ -310,7 +314,6 @@ AjBool         ajFilenameReplacePathC(AjPStr* filename, const char* dir);
 AjBool         ajFilenameReplaceExtS(AjPStr* filename,
                                      const AjPStr extension);
 AjBool         ajFilenameReplaceExtC(AjPStr* filename, const char* extension);
-AjBool         ajFilenameTrimAll(AjPStr *fname);
 AjPFile        ajFileNewOutappendNameS(const AjPStr name);
 AjPFile        ajFileNewListinList(AjPList list);
 AjPFile        ajFileNewListinDirPre(const AjPDir dir, const AjPStr prefix);
@@ -322,7 +325,7 @@ AjPFile        ajFileNewListinPathWildExclude(const AjPStr path,
                                               const AjPStr exclude);
 
 AjPFile        ajFileNewFromCfile(FILE* file);
-AjPFile        ajFileNewInC(const char *name);
+AjPFile        ajFileNewInNameC(const char *name);
 AjPFile        ajFileNewInNameS(const AjPStr name);
 AjPFile        ajFileNewInBlockS(const AjPStr name, ajuint blocksize);
 AjPFile        ajFileNewInPipe(const AjPStr name);
@@ -509,6 +512,7 @@ __deprecated AjPFile      ajFileNewDirF(const AjPDir dir,
                                         const AjPStr filename);
 
 __deprecated void         ajFileUnbuffer (AjPFile thys);
+__deprecated AjPFile        ajFileNewInC(const char *name);
 
 /*
 ** End of prototype definitions

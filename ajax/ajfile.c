@@ -482,7 +482,7 @@ AjPDirout ajDiroutNewPath(const AjPStr path)
 
 
 /* @obsolete ajDirOutNew
-** @remove Use ajDiroutNew
+** @remove Use ajDiroutNewPath
 */
 __deprecated AjPDir ajDirOutNew(const AjPStr name)
 {
@@ -873,28 +873,6 @@ __deprecated AjPFile ajFileNewF(FILE* file)
 
 
 
-/* @func ajFileNewInC *********************************************************
-**
-** Creates a new file object to read a named file.
-**
-** If the filename begins with a pipe character then a pipe is opened
-** using ajFileNewInPipe.
-**
-** @param [r] name [const char*] File name.
-** @return [AjPFile] New file object.
-** @@
-******************************************************************************/
-
-AjPFile ajFileNewInC(const char *name)
-{
-    ajStrAssignC(&fileNameStrTmp, name);
-
-    return ajFileNewInNameS(fileNameStrTmp);
-}
-
-
-
-
 /* @funcstatic fileNew ********************************************************
 **
 ** Creates a new file object.
@@ -974,6 +952,38 @@ AjPFile ajFileNewInBlockS(const AjPStr name, ajuint blocksize)
 }
 
 
+
+
+/* @func ajFileNewInNameC ******************************************************
+**
+** Creates a new file object to read a named file.
+**
+** If the filename begins with a pipe character then a pipe is opened
+** using ajFileNewInPipe.
+**
+** @param [r] name [const char*] File name.
+** @return [AjPFile] New file object.
+** @@
+******************************************************************************/
+
+AjPFile ajFileNewInNameC(const char *name)
+{
+    ajStrAssignC(&fileNameStrTmp, name);
+
+    return ajFileNewInNameS(fileNameStrTmp);
+}
+
+
+
+
+/* @obsolete ajFileNewInC
+** @rename ajFileNewInNameC
+*/
+
+__deprecated AjPFile ajFileNewInC(const char *name)
+{
+    return ajFileNewInNameC(name);
+}
 
 
 /* @func ajFileNewInNameS *****************************************************
@@ -1316,7 +1326,7 @@ AjPFile ajFileNewListinDirPre(const AjPDir dir, const AjPStr prefix)
 
 /* @func ajFileNewListinList **************************************************
 **
-** Creates a new file object with a list of input files.
+** Creates a new file object with a list of input file names.
 **
 ** @param [u] list [AjPList] List of input filenames as strings.
 ** @return [AjPFile] New file object.
@@ -5826,6 +5836,8 @@ __deprecated AjBool ajFileHasDir(const AjPStr name)
 ** Tests a filename against wildcard
 ** lists of file names to be included and excluded.
 **
+** The path (if any) is removed before checking.
+**
 ** By default files are excluded. The inclusion list is used to select
 ** files, and the exclusion list is then used to exclude selected
 ** files again.
@@ -5884,8 +5896,10 @@ AjBool ajFilenameTestExclude(const AjPStr filename,
 
 /* @func ajFilenameTestExcludePath ********************************************
 **
-** Tests a filename against wildcard
+** Tests a full path filename against wildcard
 ** lists of file names to be included and excluded.
+**
+** The full path is retained and included in the tests.
 **
 ** By default files are excluded. The inclusion list is used to select
 ** files, and the exclusion list is then used to exclude selected
@@ -7805,7 +7819,7 @@ static void fileListRecurs(const AjPStr srcfile, AjPList list, ajint *recurs)
     }
     else if(c=='@')
     {
-	if((inf=ajFileNewInC(ajStrGetPtr(file)+1)))
+	if((inf=ajFileNewInNameC(ajStrGetPtr(file)+1)))
 	    while(ajReadlineTrim(inf,&line))
 		fileListRecurs(line,list,recurs);
 	if(inf)
@@ -7813,7 +7827,7 @@ static void fileListRecurs(const AjPStr srcfile, AjPList list, ajint *recurs)
     }
     else if(ajStrPrefixC(file,"list::"))
     {
-	if((inf=ajFileNewInC(ajStrGetPtr(file)+6)))
+	if((inf=ajFileNewInNameC(ajStrGetPtr(file)+6)))
 	    while(ajReadlineTrim(inf,&line))
 		fileListRecurs(line,list,recurs);
 	if(inf)
