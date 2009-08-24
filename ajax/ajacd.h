@@ -84,9 +84,9 @@ AjPPhyloTree  ajAcdGetTreeSingle (const char *token);
 const AjPStr  ajAcdGetValue (const char* token);
 const AjPStr  ajAcdGetValueDefault (const char* token);
 
-void          ajAcdInit (const char *pgm, ajint argc, char * const argv[]);
-void          ajAcdInitP (const char *pgm, ajint argc, char * const argv[],
-			  const char *package);
+void          ajAcdInit(const char *pgm, ajint argc, char * const argv[]);
+void          ajAcdInitPV(const char *pgm, ajint argc, char * const argv[],
+			  const char *package, const char *packversion);
 AjBool        ajAcdIsUserdefined(const char* token);
 void          ajAcdPrintAppl(AjPFile outf, AjBool full);
 void          ajAcdPrintQual(AjPFile outf, AjBool full);
