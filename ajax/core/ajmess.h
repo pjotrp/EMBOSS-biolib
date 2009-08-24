@@ -24,6 +24,9 @@ extern AjPStr acdProgram;
 **
 ** Ajax error message levels object
 **
+** @alias AjSError
+** @alias AjOError
+**
 ** @attr warning [AjBool] Display ajWarn messages 
 ** @attr error [AjBool] Display ajErr messages 
 ** @attr fatal [AjBool] Display ajFatal messages 
@@ -106,7 +109,7 @@ void              ajMessExitmsg(const char *format, ...) ;  /* error message,
 							       write to log
 							       file & exit */
 void              ajDebug (const char *fmt, ...);
-FILE*             ajDebugFile (void);
+FILE*             ajMessGetDebugfile (void);
 void              ajDie (const char *format, ...);
 void              ajErr (const char *format, ...) ; /* error message and
 						       write to
@@ -135,17 +138,17 @@ void              ajWarn (const char *format, ...); /* warning message */
 
 /* ask for data satisfying format get results via freecard() */
 
-char*             ajMessSysErrorText (void) ;
+const char*       ajMessGetSysmessageC (void) ;
 /* wrapped system error message for use in ajMesserror/crash() */
 
-ajint             ajMessErrorCount (void);
+ajint             ajMessGetCountError (void);
 /* return numbers of error so far */
 
 /**** routines to catch crashes if necessary, e.g. when dumping ****/
 
 
 
-char*             ajMessCaughtMessage (void) ;
+const char*       ajMessGetMessageC (void) ;
 
 void              ajMessInvokeDebugger(void);
 
@@ -156,6 +159,11 @@ void              ajMessInvokeDebugger(void);
 ** ajMessCaughtMessage() can be called from the jumped-to routine to get
 ** the error message that would have been printed.
 */
+
+__deprecated ajint             ajMessErrorCount (void);
+__deprecated char*             ajMessCaughtMessage (void) ;
+__deprecated char*             ajMessSysErrorText (void) ;
+__deprecated FILE*             ajDebugFile (void);
 
 /*
 ** End of prototype definitions

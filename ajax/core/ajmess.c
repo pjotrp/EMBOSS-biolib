@@ -602,7 +602,7 @@ static void messDump(const char *message)
 
 
 
-/* @func ajMessErrorCount *****************************************************
+/* @func ajMessGetCountError ***************************************************
 **
 ** Returns the number of times the error routines have been called.
 **
@@ -610,7 +610,19 @@ static void messDump(const char *message)
 ** @@
 ******************************************************************************/
 
-ajint ajMessErrorCount(void)
+ajint ajMessGetCountError(void)
+{
+    return errorCount;
+}
+
+
+
+
+/* @obsolete ajMessErrorCount
+** @rename ajMessGetCountError
+*/
+
+__deprecated ajint ajMessErrorCount(void)
 {
     return errorCount;
 }
@@ -1008,15 +1020,26 @@ __noreturn void  ajMessVCrashFL(const char *format, va_list args)
 
 
 
-/* @func ajMessCaughtMessage **************************************************
+/* @func ajMessGetMessageC **************************************************
 **
 ** Returns the current message text.
 **
-** @return [char*] Message text
+** @return [const char*] Message text
 ** @@
 ******************************************************************************/
 
-char* ajMessCaughtMessage(void)
+const char* ajMessGetMessageC(void)
+{
+    return messbuf;
+}
+
+
+
+/* @obsolete ajMessCaughtMessage
+** @rename ajMessGetMessageC
+*/
+
+__deprecated char* ajMessCaughtMessage(void)
 {
     return messbuf;
 }
@@ -1024,16 +1047,16 @@ char* ajMessCaughtMessage(void)
 
 
 
-/* @func ajMessSysErrorText ***************************************************
+/* @func ajMessGetSysmessageC **************************************************
 **
 ** Returns the system message text from 'strerror' from the standard C
 ** library.
 **
-** @return [char*] System error message.
+** @return [const char*] System error message.
 ** @@
 ******************************************************************************/
 
-char* ajMessSysErrorText(void)
+const char* ajMessGetSysmessageC(void)
 {
     char *mess;
 
@@ -1052,7 +1075,27 @@ char* ajMessSysErrorText(void)
 }
 
 
+/* @obsolete ajMessSysErrorText
+** @rename ajMessGetSysmessageC
+*/
 
+__deprecated char* ajMessSysErrorText(void)
+{
+    char *mess;
+
+    if(errno)
+	mess = ajFmtString(SYSERR_FORMAT, errno, strerror(errno));
+    else
+	mess = ajFmtString(SYSERR_OK, errno, strerror(errno));
+      
+    /* must make copy - will be used when mess* calls itself */
+    AJFREE(messErrMess);
+    messErrMess = ajSysFuncStrdup(mess);
+
+    AJFREE(mess);
+
+    return messErrMess;
+}
 
 /************************* message formatting ********************************/
 /* This routine does the formatting of the message string using vsprintf,    */
@@ -1147,7 +1190,7 @@ static char* messFormat(va_list args, const char *format, const char *prefix)
     */
 
     if(num_bytes < 0)
-	ajMessCrash("vsprintf failed: %s", ajMessSysErrorText());
+	ajMessCrash("vsprintf failed: %s", ajMessGetSysmessageC());
     else if(num_bytes > BUFSIZE)
 	ajMessCrash("messubs internal buffer size (%d) exceeded, "
 		    "a total of %d bytes were written",
@@ -1673,7 +1716,7 @@ void ajDebug(const char* fmt, ...)
 
 
 
-/* @func ajDebugFile **********************************************************
+/* @func ajMessGetDebugfile ****************************************************
 **
 ** Returns the file used for debug output, or NULL if no debug file is open.
 **
@@ -1681,7 +1724,7 @@ void ajDebug(const char* fmt, ...)
 ** @@
 ******************************************************************************/
 
-FILE* ajDebugFile(void)
+FILE* ajMessGetDebugfile(void)
 {
     if(!fileDebugFile)
 	return NULL;
@@ -1689,6 +1732,16 @@ FILE* ajDebugFile(void)
     return ajFileGetFileptr(fileDebugFile);
 }
 
+
+
+/* @obsolete ajDebugFile
+** @rename ajMessGetDebugfile
+*/
+
+__deprecated FILE* ajDebugFile(void)
+{
+    return ajMessGetDebugfile();
+}
 
 
 
