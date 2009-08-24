@@ -1736,7 +1736,7 @@ AjBool ajNamGetenvS(const AjPStr name,
 
 
 /* @obsolete ajNamGetenv
-** @remove Use ajNamGetenvS
+** @rename ajNamGetenvS
 */
 __deprecated AjBool ajNamGetenv(const AjPStr name,
 		    AjPStr* value)
@@ -1840,7 +1840,7 @@ AjBool ajNamGetValueS(const AjPStr name, AjPStr* value)
 
 
 /* @obsolete ajNamGetValue
-** @remove Use ajNamGetValusS
+** @rename ajNamGetValusS
 */
 
 __deprecated AjBool ajNamGetValue(const AjPStr name, AjPStr* value)
