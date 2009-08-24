@@ -780,7 +780,7 @@ AjPSeq ajSeqNewSeq(const AjPSeq seq)
     ajStrAssignS(&pthis->Seq, seq->Seq);
 
     if (seq->Fttable)
-	pthis->Fttable = ajFeattableCopy(seq->Fttable);
+	pthis->Fttable = ajFeattableNewFtable(seq->Fttable);
 
     return pthis;
 }
@@ -3269,7 +3269,7 @@ const AjPFeattable ajSeqGetFeat(const AjPSeq seq)
 
 AjPFeattable ajSeqGetFeatCopy(const AjPSeq seq)
 {
-    return ajFeattableCopy(seq->Fttable);
+    return ajFeattableNewFtable(seq->Fttable);
 }
 
 
@@ -3280,7 +3280,7 @@ AjPFeattable ajSeqGetFeatCopy(const AjPSeq seq)
 */
 __deprecated AjPFeattable  ajSeqCopyFeat(const AjPSeq seq)
 {
-    return ajFeattableCopy(seq->Fttable);
+    return ajFeattableNewFtable(seq->Fttable);
 }
 
 
