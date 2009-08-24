@@ -54,6 +54,81 @@ static PLFLT plgchrW(PLFLT dx, PLFLT dy);
 static void plxswin(const char* window);
 static int plfileinfo(char* tmp);
 
+static void     GraphArray(ajint numofpoints,
+			   float *x, float *y);
+static void     GraphArrayGaps(ajint numofpoints,
+			       float *x, float *y);
+static void     GraphArrayGapsI(ajint numofpoints, ajint *x, ajint *y);
+static void     GraphCharScale(float size);
+static void     GraphCheckFlags(ajint flags);
+static void     GraphCheckPoints(ajint n, const PLFLT *x, const PLFLT *y);
+static void     GraphClose(void);
+static void     GraphDatafileNext(void);
+static void     GraphDataDraw(const AjPGraphPlpData graphdata);
+static void     GraphDataPrint(const AjPGraphPlpData graphdata);
+static void     GraphDefCharSize(float size);
+static void     GraphFill(ajint numofpoints, float *x, float *y);
+static void     GraphFillPat(ajint pat);
+static void     GraphInit(AjPGraph thys);
+static void     GraphLabelTitle(const char *title, const char *subtitle);
+static void     GraphLineStyle(ajint style);
+static void     GraphListDevicesarg(const char* name, va_list args);
+static void     GraphNewGrout(AjPGraph graph);
+static void     GraphNewPlplot(AjPGraph graph);
+static void     GraphDraw(const AjPGraph thys);
+static void     GraphPrint(const AjPGraph thys);
+static void     GraphOpenDas(AjPGraph thys, const char *ext);
+static void     GraphOpenData(AjPGraph thys, const char *ext);
+static void     GraphOpenFile(AjPGraph thys, const char *ext);
+static void     GraphOpenSimple(AjPGraph thys, const char *ext);
+static void     GraphOpenXml(AjPGraph thys, const char *ext);
+#ifndef X_DISPLAY_MISSING
+static void     GraphOpenXwin(AjPGraph thys, const char *ext);
+#endif
+static void     GraphPen(ajint pen, ajint red, ajint green, ajint blue);
+static void     GraphRegister(void);
+static AjBool   GraphSet2(AjPGraph thys, const AjPStr type,AjBool *res);
+static AjBool   GraphSetarg(const char *name, va_list args);
+static void     GraphSetName(const AjPGraph thys,
+			     const AjPStr txt, const char *ext);
+static void     GraphSetNumSubPage(ajint numofsubpages);
+static void     GraphSetPen(ajint colour);
+static void     GraphSetWin(float xmin, float xmax, float ymin, float ymax);
+static void     GraphSetWin2(float xmin, float xmax, float ymin, float ymax);
+static void     GraphSubPage(ajint page);
+static void     GraphSymbols(float *xx1, float *yy1, ajint numofdots,
+			     ajint symbol);
+static void     GraphText(float xx1, float yy1, float xx2, float yy2,
+			  float just, const char *text);
+static AjBool   GraphTracearg(const char *name, va_list args);
+static void     GraphWind(float xmin, float xmax, float ymin, float ymax);
+static void     GraphxyDisplayToDas(AjPGraph thys, AjBool closeit,
+				     const char *ext);
+static void     GraphxyDisplayToData(AjPGraph thys, AjBool closeit,
+				     const char *ext);
+static void     GraphxyDisplayToFile(AjPGraph thys, AjBool closeit,
+				     const char *ext);
+static void     GraphxyDisplayXwin(AjPGraph thys, AjBool closeit,
+				   const char *ext);
+static void     GraphxyGeneral(AjPGraph thys, AjBool closeit);
+static void     GraphPlpDataInit(AjPGraphPlpData graphdata);
+static void     GraphxyNewGrout(AjPGraph thys);
+static AjPGraph GraphxyNewIarg(const char *name, va_list args);
+static void     GraphxyNewPlplot(AjPGraph thys);
+static AjBool   GraphxySet2(AjPGraph thys, const AjPStr type,AjBool *res);
+static AjBool   GraphxySetarg(const char *name, va_list args);
+static AjBool   GraphSetDirarg(const char *name, va_list args);
+static AjBool   GraphSetOutarg(const char *name, va_list args);
+static AjBool   GraphDescarg(const char *name, va_list args);
+static AjBool   GraphSubTitlearg(const char *name, va_list args);
+static AjBool   GraphTitlearg(const char *name, va_list args);
+static AjBool   GraphXTitlearg(const char *name, va_list args);
+static AjBool   GraphYTitlearg(const char *name, va_list args);
+static void GraphDrawTextOnCurve(PLFLT xcentre, PLFLT ycentre,
+				 PLFLT Radius, PLFLT Angle, PLFLT pos,
+				 const char *Text, PLFLT just);
+
+
 
 /* @funcstatic plstrlW ********************************************************
 **
@@ -239,78 +314,6 @@ struct graphSData
 } *graphData=NULL;
 
 
-
-
-static void     GraphArray(ajint numofpoints,
-			   float *x, float *y);
-static void     GraphArrayGaps(ajint numofpoints,
-			       float *x, float *y);
-static void     GraphArrayGapsI(ajint numofpoints, ajint *x, ajint *y);
-static void     GraphCharScale(float size);
-static void     GraphCheckFlags(ajint flags);
-static void     GraphCheckPoints(ajint n, const PLFLT *x, const PLFLT *y);
-static void     GraphClose(void);
-static void     GraphDatafileNext(void);
-static void     GraphDataDraw(const AjPGraphPlpData graphdata);
-static void     GraphDataPrint(const AjPGraphPlpData graphdata);
-static void     GraphDefCharSize(float size);
-static void     GraphFill(ajint numofpoints, float *x, float *y);
-static void     GraphFillPat(ajint pat);
-static void     GraphInit(AjPGraph thys);
-static void     GraphLabelTitle(const char *title, const char *subtitle);
-static void     GraphLineStyle(ajint style);
-static void     GraphListDevicesarg(const char* name, va_list args);
-static void     GraphNewGrout(AjPGraph graph);
-static void     GraphNewPlplot(AjPGraph graph);
-static void     GraphDraw(const AjPGraph thys);
-static void     GraphPrint(const AjPGraph thys);
-static void     GraphOpenDas(AjPGraph thys, const char *ext);
-static void     GraphOpenData(AjPGraph thys, const char *ext);
-static void     GraphOpenFile(AjPGraph thys, const char *ext);
-static void     GraphOpenSimple(AjPGraph thys, const char *ext);
-static void     GraphOpenXml(AjPGraph thys, const char *ext);
-#ifndef X_DISPLAY_MISSING
-static void     GraphOpenXwin(AjPGraph thys, const char *ext);
-#endif
-static void     GraphPen(ajint pen, ajint red, ajint green, ajint blue);
-static void     GraphRegister(void);
-static AjBool   GraphSet2(AjPGraph thys, const AjPStr type,AjBool *res);
-static AjBool   GraphSetarg(const char *name, va_list args);
-static void     GraphSetName(const AjPGraph thys,
-			     const AjPStr txt, const char *ext);
-static void     GraphSetNumSubPage(ajint numofsubpages);
-static void     GraphSetPen(ajint colour);
-static void     GraphSetWin(float xmin, float xmax, float ymin, float ymax);
-static void     GraphSetWin2(float xmin, float xmax, float ymin, float ymax);
-static void     GraphSubPage(ajint page);
-static void     GraphSymbols(float *xx1, float *yy1, ajint numofdots,
-			     ajint symbol);
-static void     GraphText(float xx1, float yy1, float xx2, float yy2,
-			  float just, const char *text);
-static AjBool   GraphTracearg(const char *name, va_list args);
-static void     GraphWind(float xmin, float xmax, float ymin, float ymax);
-static void     GraphxyDisplayToDas(AjPGraph thys, AjBool closeit,
-				     const char *ext);
-static void     GraphxyDisplayToData(AjPGraph thys, AjBool closeit,
-				     const char *ext);
-static void     GraphxyDisplayToFile(AjPGraph thys, AjBool closeit,
-				     const char *ext);
-static void     GraphxyDisplayXwin(AjPGraph thys, AjBool closeit,
-				   const char *ext);
-static void     GraphxyGeneral(AjPGraph thys, AjBool closeit);
-static void     GraphPlpDataInit(AjPGraphPlpData graphdata);
-static void     GraphxyNewGrout(AjPGraph thys);
-static AjPGraph GraphxyNewIarg(const char *name, va_list args);
-static void     GraphxyNewPlplot(AjPGraph thys);
-static AjBool   GraphxySet2(AjPGraph thys, const AjPStr type,AjBool *res);
-static AjBool   GraphxySetarg(const char *name, va_list args);
-static AjBool   GraphSetDirarg(const char *name, va_list args);
-static AjBool   GraphSetOutarg(const char *name, va_list args);
-static AjBool   GraphDescarg(const char *name, va_list args);
-static AjBool   GraphSubTitlearg(const char *name, va_list args);
-static AjBool   GraphTitlearg(const char *name, va_list args);
-static AjBool   GraphXTitlearg(const char *name, va_list args);
-static AjBool   GraphYTitlearg(const char *name, va_list args);
 
 
 
@@ -862,7 +865,7 @@ static void GraphArray(ajint numofpoints, float *x, float *y)
 
 	for(i=1; i<numofpoints; i++)
 	{
-	    ajGraphLine(xlast, ylast, x[i], y[i]);
+	    ajGraphDrawLine(xlast, ylast, x[i], y[i]);
 	    xlast = x[i];
 	    ylast = y[i];
 	}
@@ -2003,7 +2006,198 @@ void ajGraphPlpDataTrace(const AjPGraphPlpData thys)
 
 
 
-/* @func ajGraphCircle ********************************************************
+/* @func ajGraphDrawBarsHoriz **************************************************
+**
+** Draw Horizontal Error Bars.
+**
+** @param [r] numofpoints [ajint] number of error bars to be drawn.
+** @param [r] y [CONST PLFLT*] y positions to draw at.
+** @param [r] xmin [CONST PLFLT*] x positions to start at.
+** @param [r] xmax [CONST PLFLT*] x positions to end at.
+** @return [void]
+**
+** @@
+******************************************************************************/
+void ajGraphDrawBarsHoriz(ajint numofpoints, PLFLT *y, PLFLT *xmin, PLFLT *xmax)
+{
+    if(numofpoints)
+	ajDebug("=g= plerrx(%d %.2f..%.2f, %.2f, %.2f) "
+		 "[num,y..y,xmin,xmax]\n",
+		 numofpoints, y[0], y[numofpoints-1], xmin, xmax);
+    else
+	ajDebug("=g= plerrx(%d <>..<>, %.2f, %.2f) [num,y..y,xmin,xmax]\n",
+		 numofpoints, xmin, xmax);
+
+    plerrx(numofpoints,y,xmin,xmax);
+
+    return;
+}
+
+
+/* @obsolete ajGraphHoriBars
+** @rename ajGraphDrawBarsHoriz
+*/
+
+__deprecated void ajGraphHoriBars(ajint numofpoints,
+                                  PLFLT *y, PLFLT *xmin, PLFLT *xmax)
+{
+    ajGraphDrawBarsHoriz(numofpoints,y, xmin, xmax);
+    return;
+}
+
+
+
+/* @func ajGraphDrawBarsVert ***************************************************
+**
+** Draw vertical Error Bars.
+**
+** @param [r] numofpoints [ajint] number of error bars to be drawn.
+** @param [r] x [CONST PLFLT*] x positions to draw at.
+** @param [r] ymin [CONST PLFLT*] y positions to start at.
+** @param [r] ymax [CONST PLFLT*] y positions to end at.
+** @return [void]
+**
+** @@
+******************************************************************************/
+
+void ajGraphDrawBarsVert(ajint numofpoints, PLFLT *x, PLFLT *ymin, PLFLT *ymax)
+{
+    if(numofpoints)
+	ajDebug("=g= plerry(%d %.2f..%.2f, %.2f, %.2f) "
+		 "[num,x..x,ymin,ymax]\n",
+		 numofpoints, x[0], x[numofpoints-1], ymin, ymax);
+    else
+	ajDebug("=g= plerry(%d <>..<>, %.2f, %.2f) [num,x..x,ymin,ymax]\n",
+		 numofpoints, ymin, ymax);
+
+    plerry(numofpoints,x,ymin,ymax);
+
+    return;
+}
+
+
+
+/* @obsolete ajGraphVertBars
+** @rename ajGraphDrawBarsVert
+*/
+
+__deprecated void ajGraphVertBars(ajint numofpoints,
+                                  PLFLT *x, PLFLT *ymin, PLFLT *ymax)
+{
+    ajGraphDrawBarsVert(numofpoints, x, ymin, ymax);
+    return;
+}
+
+
+/* @func ajGraphDrawBox ********************************************************
+**
+** Draw a box to the plotter device at point xx0,yy0 size big.
+**
+** @param [r] xx0 [PLFLT] x position to draw the box.
+** @param [r] yy0 [PLFLT] y position to draw the box.
+** @param [r] size [PLFLT]  how big to draw the box.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphDrawBox(PLFLT xx0, PLFLT yy0,PLFLT size)
+{
+    PLFLT x[5];
+    PLFLT y[5];
+
+    if(graphData)
+    {
+	ajFmtPrintF(graphData->File,"Rectangle x1 %f y1 %f x2 %f"
+		    " y2 %f colour %d\n",
+		    xx0, yy0, xx0+size, yy0+size, currentfgcolour);
+	graphData->Lines++;
+    }
+    else
+    {
+	x[0] = xx0;
+	y[0] = yy0;
+	x[1] = xx0;
+	y[1] = yy0 + size;
+	x[2] = xx0 + size;
+	y[2] = yy0 + size;
+	x[3] = xx0 + size;
+	y[3] = yy0;
+	x[4] = x[0];
+	y[4] = y[0];
+	GraphArray(5, x, y);
+    }
+
+    return;
+}
+
+
+/* @obsolete ajGraphBox
+** @rename ajGraphDrawBox
+*/
+
+__deprecated void ajGraphBox(PLFLT xx0, PLFLT yy0,PLFLT size)
+{
+    ajGraphDrawBox(xx0, yy0, size);
+    return;
+}
+
+
+/* @func ajGraphDrawBoxFill ****************************************************
+**
+** Draw a box to the plotter device at point xx0,yy0 size big and
+** fill it in.
+**
+** @param [r] xx0 [PLFLT] x position to draw the box.
+** @param [r] yy0 [PLFLT] y position to draw the box.
+** @param [r] size [PLFLT]  how big to draw the box.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphDrawBoxFill(PLFLT xx0, PLFLT yy0, PLFLT size)
+{
+    PLFLT x[4];
+    PLFLT y[4];
+
+    if(graphData)
+    {
+	ajFmtPrintF(graphData->File,"Shaded Rectangle x1 %f y1 %f x2 %f"
+		    " y2 %f colour %d\n",
+		    xx0, yy0, xx0+size, yy0+size, currentfgcolour);
+	graphData->Lines++;
+    }
+    else
+    {
+	x[0] = xx0;
+	y[0] = yy0;
+	x[1] = xx0;
+	y[1] = yy0 + size;
+	x[2] = xx0 + size;
+	y[2] = yy0 + size;
+	x[3] = xx0 + size;
+	y[3] = yy0;
+	GraphFill(4, x, y);
+    }
+
+    return;
+}
+
+
+
+/* @obsolete ajGraphBoxFill
+** @rename ajGraphDrawBoxFill
+*/
+
+__deprecated void ajGraphBoxFill(PLFLT xx0, PLFLT yy0, PLFLT size)
+{
+    ajGraphDrawBoxFill(xx0, yy0, size);
+    return;
+}
+
+
+
+
+/* @func ajGraphDrawCircle ****************************************************
 **
 ** Draw a circle.
 **
@@ -2018,7 +2212,7 @@ void ajGraphPlpDataTrace(const AjPGraphPlpData thys)
 **       is slow and not quite right.
 ******************************************************************************/
 
-void ajGraphCircle(PLFLT xcentre, PLFLT ycentre, float radius)
+void ajGraphDrawCircle(PLFLT xcentre, PLFLT ycentre, float radius)
 {
     PLFLT x[361];
     PLFLT y[361];
@@ -2043,151 +2237,18 @@ void ajGraphCircle(PLFLT xcentre, PLFLT ycentre, float radius)
 
 
 
+/* @obsolete ajGraphCircle
+** @rename ajGraphDrawCircle
+*/
 
-/* @func ajGraphPolyFill ******************************************************
-**
-** Draw a polygon and fill it in.
-**
-** @param [r] n [ajint] number of points
-** @param [r] x [CONST PLFLT *] x coord of points
-** @param [r] y [CONST PLFLT *] y coord of points
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphPolyFill(ajint n, PLFLT *x, PLFLT *y)
+__deprecated void ajGraphCircle(PLFLT xcentre, PLFLT ycentre, float radius)
 {
-    GraphFill(n, x, y);
-
+    ajGraphDrawCircle(xcentre, ycentre, radius);
     return;
 }
 
 
-
-
-/* @func ajGraphPoly **********************************************************
-**
-** Draw a polygon.
-**
-** @param [r] n [ajint] number of points
-** @param [r] x [CONST PLFLT *] x coord of points
-** @param [r] y [CONST PLFLT *] y coord of points
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphPoly(ajint n, PLFLT *x, PLFLT *y)
-{
-    /* graphData : uses GraphArray */
-
-    GraphArray(n, x, y);
-
-    return;
-}
-
-
-
-
-/* @func ajGraphTriFill *******************************************************
-**
-** Draw a Triangle and fill it in.
-**
-** @param [r] xx1 [PLFLT] xx1 coord of point 1.
-** @param [r] yy1 [PLFLT] yy1 coord of point 1.
-** @param [r] xx2 [PLFLT] xx2 coord of point 2.
-** @param [r] yy2 [PLFLT] yy2 coord of point 2.
-** @param [r] x3 [PLFLT] x3 coord of point 3.
-** @param [r] y3 [PLFLT] y3 coord of point 3.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphTriFill(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
-		    PLFLT x3, PLFLT y3)
-{
-    PLFLT x[3];
-    PLFLT y[3];
-    
-    x[0]=xx1; x[1]=xx2; x[2]=x3;
-    y[0]=yy1; y[1]=yy2; y[2]=y3;
-
-    ajGraphPolyFill(3, x, y);
-
-    return;
-}
-
-
-
-
-/* @func ajGraphTri ***********************************************************
-**
-** Draw a Triangle.
-**
-** @param [r] xx1 [PLFLT] xx1 coord of point 1.
-** @param [r] yy1 [PLFLT] yy1 coord of point 1.
-** @param [r] xx2 [PLFLT] xx2 coord of point 2.
-** @param [r] yy2 [PLFLT] yy2 coord of point 2.
-** @param [r] x3 [PLFLT] x3 coord of point 3.
-** @param [r] y3 [PLFLT] y3 coord of point 3.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphTri(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
-		PLFLT x3, PLFLT y3)
-{
-    PLFLT x[4];
-    PLFLT y[4];
-    
-    x[0]=xx1; x[1]=xx2; x[2]=x3; x[3]=xx1;
-    y[0]=yy1; y[1]=yy2; y[2]=y3; y[3]=yy1;
-
-    ajGraphPoly(4, x, y);
-
-    return;
-}
-
-
-
-
-/* @func ajGraphDiaFill *******************************************************
-**
-** Draw a diamond to the plotter device at point xx0,yy0 size big and
-** fill it in.
-**
-** @param [r] xx0 [PLFLT] x position to draw the diamond.
-** @param [r] yy0 [PLFLT] y position to draw the diamond.
-** @param [r] size [PLFLT]  how big to draw the diamond.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphDiaFill(PLFLT xx0, PLFLT yy0, PLFLT size)
-{
-    PLFLT x[4];
-    PLFLT y[4];
-    PLFLT incr;
-
-    incr = size*(float)0.5;
-
-    x[0] = xx0;
-    y[0] = yy0 + incr;
-    x[1] = xx0 + incr;
-    y[1] = yy0 + size;
-    x[2] = xx0 + size;
-    y[2] = yy0 + incr;
-    x[3] = xx0 + incr;
-    y[3] = yy0;
-
-    GraphFill(4, x, y);
-
-    return;
-}
-
-
-
-
-/* @func ajGraphDia ***********************************************************
+/* @func ajGraphDrawDia ********************************************************
 **
 ** Draw a diamond to the plotter device at point xx0,yy0 size big.
 **
@@ -2198,7 +2259,7 @@ void ajGraphDiaFill(PLFLT xx0, PLFLT yy0, PLFLT size)
 ** @@
 ******************************************************************************/
 
-void ajGraphDia(PLFLT xx0, PLFLT yy0, PLFLT size)
+void ajGraphDrawDia(PLFLT xx0, PLFLT yy0, PLFLT size)
 {
     PLFLT x[5];
     PLFLT y[5];
@@ -2225,130 +2286,169 @@ void ajGraphDia(PLFLT xx0, PLFLT yy0, PLFLT size)
 
 
 
+/* @obsolete ajGraphDia
+** @rename ajGraphDrawDia
+*/
 
-/* @func ajGraphBoxFill *******************************************************
+__deprecated void ajGraphDia(PLFLT xx0, PLFLT yy0, PLFLT size)
+{
+    ajGraphDrawDia(xx0, yy0, size);
+    return;
+}
+
+
+/* @func ajGraphDrawDiaFill ****************************************************
 **
-** Draw a box to the plotter device at point xx0,yy0 size big and
+** Draw a diamond to the plotter device at point xx0,yy0 size big and
 ** fill it in.
 **
-** @param [r] xx0 [PLFLT] x position to draw the box.
-** @param [r] yy0 [PLFLT] y position to draw the box.
-** @param [r] size [PLFLT]  how big to draw the box.
+** @param [r] xx0 [PLFLT] x position to draw the diamond.
+** @param [r] yy0 [PLFLT] y position to draw the diamond.
+** @param [r] size [PLFLT]  how big to draw the diamond.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphBoxFill(PLFLT xx0, PLFLT yy0, PLFLT size)
+void ajGraphDrawDiaFill(PLFLT xx0, PLFLT yy0, PLFLT size)
 {
     PLFLT x[4];
     PLFLT y[4];
+    PLFLT incr;
 
-    if(graphData)
-    {
-	ajFmtPrintF(graphData->File,"Shaded Rectangle x1 %f y1 %f x2 %f"
-		    " y2 %f colour %d\n",
-		    xx0, yy0, xx0+size, yy0+size, currentfgcolour);
-	graphData->Lines++;
-    }
-    else
-    {
-	x[0] = xx0;
-	y[0] = yy0;
-	x[1] = xx0;
-	y[1] = yy0 + size;
-	x[2] = xx0 + size;
-	y[2] = yy0 + size;
-	x[3] = xx0 + size;
-	y[3] = yy0;
-	GraphFill(4, x, y);
-    }
+    incr = size*(float)0.5;
+
+    x[0] = xx0;
+    y[0] = yy0 + incr;
+    x[1] = xx0 + incr;
+    y[1] = yy0 + size;
+    x[2] = xx0 + size;
+    y[2] = yy0 + incr;
+    x[3] = xx0 + incr;
+    y[3] = yy0;
+
+    GraphFill(4, x, y);
 
     return;
 }
 
 
+/* @obsolete ajGraphDiaFill
+** @rename ajGraphDrawDiaFill
+*/
 
-
-/* @func ajGraphBox ***********************************************************
-**
-** Draw a box to the plotter device at point xx0,yy0 size big.
-**
-** @param [r] xx0 [PLFLT] x position to draw the box.
-** @param [r] yy0 [PLFLT] y position to draw the box.
-** @param [r] size [PLFLT]  how big to draw the box.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphBox(PLFLT xx0, PLFLT yy0,PLFLT size)
+__deprecated void ajGraphDiaFill(PLFLT xx0, PLFLT yy0, PLFLT size)
 {
-    PLFLT x[5];
-    PLFLT y[5];
-
-    if(graphData)
-    {
-	ajFmtPrintF(graphData->File,"Rectangle x1 %f y1 %f x2 %f"
-		    " y2 %f colour %d\n",
-		    xx0, yy0, xx0+size, yy0+size, currentfgcolour);
-	graphData->Lines++;
-    }
-    else
-    {
-	x[0] = xx0;
-	y[0] = yy0;
-	x[1] = xx0;
-	y[1] = yy0 + size;
-	x[2] = xx0 + size;
-	y[2] = yy0 + size;
-	x[3] = xx0 + size;
-	y[3] = yy0;
-	x[4] = x[0];
-	y[4] = y[0];
-	GraphArray(5, x, y);
-    }
-
+    ajGraphDrawDiaFill(xx0, yy0, size);
     return;
 }
 
 
-
-
-/* @func ajGraphRectFill ******************************************************
+/* @func ajGraphDrawDots *******************************************************
 **
-** Draw a rectangle and fill it with the current pen colour/style.
+** Draw a set of dots.
 **
-** @param [r] xx0 [PLFLT] xx0 coor.
-** @param [r] yy0 [PLFLT] yy0 coor.
-** @param [r] xx1 [PLFLT] xx1 coor.
-** @param [r] yy1 [PLFLT] yy1 coor.
+** @param [r] xx1 [CONST PLFLT*] xx1 coord.
+** @param [r] yy1 [CONST PLFLT*] yy1 coord.
+** @param [r] numofdots [ajint] The number of dots to be drawn.
 ** @return [void]
 **
 ** @@
 ******************************************************************************/
 
-void ajGraphRectFill(PLFLT xx0, PLFLT yy0, PLFLT xx1, PLFLT yy1)
+void ajGraphDrawDots(PLFLT *xx1,PLFLT *yy1, ajint numofdots)
 {
-    PLFLT x[4];
-    PLFLT y[4];
+    GraphSymbols(xx1, yy1, numofdots, 17);
 
+    /* see xx06c in examples for codes e.g. 17 is a dot*/
+    return;
+}
+
+
+
+
+
+/* @obsolete ajGraphDots
+** @rename ajGraphDrawDots
+*/
+
+__deprecated void ajGraphDots(PLFLT *xx1,PLFLT *yy1, ajint numofdots)
+{
+    ajGraphDrawDots(xx1,yy1,numofdots);
+    return;
+}
+
+
+
+/* @func ajGraphDrawLine *******************************************************
+**
+** Draw line between 2 points.
+**
+** @param [r] xx1 [PLFLT]  x start position.
+** @param [r] yy1 [PLFLT]  y start position.
+** @param [r] xx2 [PLFLT]  x end position.
+** @param [r] yy2 [PLFLT]  y end position.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphDrawLine(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2)
+{
     if(graphData)
     {
-	ajFmtPrintF(graphData->File,"Shaded Rectangle x1 %f y1 %f x2 %f"
-		    " y2 %f colour %d\n",
-		    xx0, yy0, xx1, yy1, currentfgcolour);
+	ajFmtPrintF(graphData->File,
+		    "Line x1 %f y1 %f x2 %f y2 %f colour %d\n",
+		    xx1, yy1, xx2, yy2, currentfgcolour);
 	graphData->Lines++;
     }
     else
     {
-	x[0] = xx0;
-	y[0] = yy0;
-	x[1] = xx0;
-	y[1] = yy1;
-	x[2] = xx1;
-	y[2] = yy1;
-	x[3] = xx1;
-	y[3] = yy0;
-	GraphFill(4, x, y);
+	/*ajDebug("=g= pljoin(%.2f, %.2f, %.2f, %.2f) [xy xy]\n",
+		 xx1, yy1, xx2, yy2);*/
+	pljoin(xx1,yy1,xx2,yy2);
+    }
+
+    return;
+}
+
+
+
+/* @obsolete ajGraphLine
+** @rename ajGraphDrawLine
+*/
+
+__deprecated void ajGraphLine(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2)
+{
+    ajGraphDrawLine(xx1, yy1, xx2, yy2);
+    return;
+}
+
+
+/* @funcstatic GraphDrawLines *************************************************
+**
+** Draw a number of lines. The points are stored in two array.
+**
+** @param [r] numoflines [ajint] number of line to plot.
+** @param [r] xx1         [CONST PLFLT*] pointer to x coordinates.
+** @param [r] yy1         [CONST PLFLT*] pointer to y coordinates.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void GraphDrawLines( ajint numoflines,PLFLT *xx1, PLFLT *yy1)
+{
+    ajint i;
+    PLFLT xx0;
+    PLFLT yy0;
+
+    /* graphdata : calls ajGraphLine */
+
+    for(i=0;i<numoflines-1;i++)
+    {
+	xx0 = *xx1;
+	yy0 = *yy1;
+	xx1++;
+	yy1++;
+	ajGraphDrawLine(xx0,yy0,*xx1,*yy1);
     }
 
     return;
@@ -2357,7 +2457,117 @@ void ajGraphRectFill(PLFLT xx0, PLFLT yy0, PLFLT xx1, PLFLT yy1)
 
 
 
-/* @func ajGraphRect **********************************************************
+/* @func ajGraphDrawLines ******************************************************
+**
+** Draw a set of lines.
+**
+** @param [u] xx1 [PLFLT*] xx1 coord.
+** @param [u] yy1 [PLFLT*] yy1 coord.
+** @param [u] xx2 [PLFLT*] xx2 coord.
+** @param [u] yy2 [PLFLT*] yy2 coord.
+** @param [r] numoflines [ajint] The number of lines to be drawn.
+** @return [void]
+**
+** @@
+******************************************************************************/
+
+void ajGraphDrawLines(PLFLT *xx1, PLFLT *yy1, PLFLT *xx2, PLFLT *yy2,
+		  ajint numoflines)
+{
+    ajint i = 0;
+
+    /* graphdata : calls ajGraphLine */
+
+    ajDebug("=g= ajGraphLines(... %d) [xx1,xx2,yy1,yy2,numoflines]\n",
+	    numoflines);
+
+    for(i=0;i<numoflines;i++)
+    {
+	ajGraphDrawLine(*xx1,*yy1,*xx2,*yy2);
+	xx1++; yy1++; xx2++; yy2++;
+    }
+
+    return;
+}
+
+
+/* @obsolete ajGraphLines
+** @rename ajGraphDrawLines
+*/
+
+__deprecated void ajGraphLines(PLFLT *xx1, PLFLT *yy1, PLFLT *xx2, PLFLT *yy2,
+                               ajint numoflines)
+
+{
+    ajGraphDrawLines(xx1, yy1, xx2, yy2, numoflines);
+    return;
+}
+
+
+/* @func ajGraphDrawPoly *******************************************************
+**
+** Draw a polygon.
+**
+** @param [r] n [ajint] number of points
+** @param [r] x [CONST PLFLT *] x coord of points
+** @param [r] y [CONST PLFLT *] y coord of points
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphDrawPoly(ajint n, PLFLT *x, PLFLT *y)
+{
+    /* graphData : uses GraphArray */
+
+    GraphArray(n, x, y);
+
+    return;
+}
+
+
+/* @obsolete ajGraphPoly
+** @rename ajGraphDrawPoly
+*/
+
+__deprecated void ajGraphPoly(ajint n, PLFLT *x, PLFLT *y)
+{
+    ajGraphDrawPoly(n, x, y);
+    return;
+}
+
+
+/* @func ajGraphDrawPolyFill ***************************************************
+**
+** Draw a polygon and fill it in.
+**
+** @param [r] n [ajint] number of points
+** @param [r] x [CONST PLFLT *] x coord of points
+** @param [r] y [CONST PLFLT *] y coord of points
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphDrawPolyFill(ajint n, PLFLT *x, PLFLT *y)
+{
+    GraphFill(n, x, y);
+
+    return;
+}
+
+
+
+/* @obsolete ajGraphPolyFill
+** @rename ajGraphDrawPolyFill
+*/
+
+__deprecated void ajGraphPolyFill(ajint n, PLFLT *x, PLFLT *y)
+{
+    ajGraphDrawPolyFill(n, x, y);
+    return;
+}
+
+
+/* @func ajGraphDrawRect *******************************************************
 **
 ** Draw a rectangle with the current pen colour/style.
 **
@@ -2370,7 +2580,7 @@ void ajGraphRectFill(PLFLT xx0, PLFLT yy0, PLFLT xx1, PLFLT yy1)
 ** @@
 ******************************************************************************/
 
-void ajGraphRect(PLFLT xx0, PLFLT yy0,PLFLT xx1, PLFLT yy1)
+void ajGraphDrawRect(PLFLT xx0, PLFLT yy0,PLFLT xx1, PLFLT yy1)
 {
     PLFLT x[5];
     PLFLT y[5];
@@ -2400,6 +2610,497 @@ void ajGraphRect(PLFLT xx0, PLFLT yy0,PLFLT xx1, PLFLT yy1)
     return;
 }
 
+
+
+/* @obsolete ajGraphRect
+** @rename ajGraphDrawRect
+*/
+
+__deprecated void ajGraphRect(PLFLT xx0, PLFLT yy0,PLFLT xx1, PLFLT yy1)
+{
+    ajGraphDrawRect(xx0, yy0, xx1, yy1);
+    return;
+}
+
+
+
+
+/* @func ajGraphRectangleOnCurve **********************************************
+**
+** Draw a rectangle along a curve with the current pen colour/style.
+**
+** @param  [r] xcentre [PLFLT] x coor for centre.
+** @param  [r] ycentre [PLFLT] y coor for centre.
+** @param  [r] Radius  [PLFLT] radius of the circle.
+** @param  [r] BoxHeight [PLFLT] Height of the rectangle in user coordinates.
+** @param  [r] StartAngle [PLFLT] angle of the start of the rectangle.
+** @param  [r] EndAngle [PLFLT] angle of the end of the rectangle.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphRectangleOnCurve(PLFLT xcentre, PLFLT ycentre, PLFLT Radius,
+			     PLFLT BoxHeight, PLFLT StartAngle, PLFLT EndAngle)
+{
+    PLFLT *xyy1;
+    PLFLT *xyy2;
+    PLFLT r1Blocks;
+    PLFLT r2Blocks;
+
+    r1Blocks = Radius;
+    r2Blocks = r1Blocks+BoxHeight;
+
+    ajGraphPartCircle(xcentre, ycentre, r1Blocks, StartAngle, EndAngle);
+    ajGraphPartCircle(xcentre, ycentre, r2Blocks, StartAngle, EndAngle);
+
+    xyy1 = ajComputeCoord(xcentre, ycentre, r1Blocks, StartAngle);
+    xyy2 = ajComputeCoord(xcentre, ycentre, r2Blocks, StartAngle);
+    ajGraphDrawLine( xyy1[0], xyy1[1], xyy2[0], xyy2[1] );
+    AJFREE(xyy1);
+    AJFREE(xyy2);
+    xyy1 = ajComputeCoord(xcentre, ycentre, r1Blocks, EndAngle);
+    xyy2 = ajComputeCoord(xcentre, ycentre, r2Blocks, EndAngle);
+    ajGraphDrawLine( xyy1[0], xyy1[1], xyy2[0], xyy2[1] );
+    AJFREE(xyy1);
+    AJFREE(xyy2);
+
+    return;
+}
+
+
+
+
+/* @func ajGraphDrawSymbols ****************************************************
+**
+** Draw a set of dots.
+**
+** @param [r] numofdots [ajint] Number of coordinates in xx1 and xx2.
+** @param [r] xx1 [CONST PLFLT*] xx1 coord.
+** @param [r] yy1 [CONST PLFLT*] yy1 coord.
+** @param [r] symbol [ajint] Symbol code.
+** @return [void]
+**
+** @@
+******************************************************************************/
+
+void ajGraphDrawSymbols( ajint numofdots, PLFLT *xx1,PLFLT *yy1, ajint symbol)
+{
+    GraphSymbols(xx1, yy1, numofdots, symbol);
+
+    /* see xx06c in examples for codes e.g. 17 is a dot*/
+    return;
+}
+
+
+
+
+/* @obsolete ajGraphSymbols
+** @rename ajGraphDrawSymbols
+*/
+
+__deprecated void ajGraphSymbols( ajint numofdots, PLFLT *xx1,PLFLT *yy1,
+                                  ajint symbol)
+{
+    ajGraphDrawSymbols(numofdots,xx1,yy1,symbol);
+    return;
+}
+
+
+
+/* @func ajGraphDrawText *******************************************************
+**
+** Draw text, positioning with respect to (xx1,yy1) by justified as
+** defined by just.
+**
+** @param [r] xx1 [PLFLT] xx1 coor.
+** @param [r] yy1 [PLFLT] yy1 coor.
+** @param [r] text [const char*] The text to be displayed.
+** @param [r] just [PLFLT] justification of the string.
+**                         (0=left,1=right,0.5=middle etc)
+** @return [void]
+**
+** @@
+******************************************************************************/
+
+void ajGraphDrawText(PLFLT xx1, PLFLT yy1, const char *text, PLFLT just)
+{
+    if(graphData)
+    {
+	ajFmtPrintF(graphData->File,
+		    "Text1 x1 %f y1 %f colour %d size %f %s\n",
+		    xx1,yy1,currentfgcolour, currentcharscale,text);
+	graphData->Lines++;
+    }
+    else
+	GraphText(xx1,yy1,1.0,0.0,just, text);
+
+    return;
+}
+
+
+/* @obsolete ajGraphText
+** @rename ajGraphDrawText
+*/
+
+__deprecated void ajGraphText(PLFLT xx1, PLFLT yy1,
+                              const char *text, PLFLT just)
+{
+    ajGraphDrawText(xx1,yy1,text,just);
+    return;
+}
+
+
+/* @func ajGraphDrawTextAtEnd **************************************************
+**
+** Draw text ending at position (xx1,yy1)
+**
+** @param [r] xx1 [PLFLT] xx1 coor.
+** @param [r] yy1 [PLFLT] yy1 coor.
+** @param [r] text [const char*] The text to be displayed.
+** @return [void]
+**
+** @@
+******************************************************************************/
+
+void ajGraphDrawTextAtEnd(PLFLT xx1, PLFLT yy1, const char *text)
+{
+    if(graphData)
+    {
+	ajFmtPrintF(graphData->File,
+		    "Text3 x1 %f y1 %f colour %d size %f %s\n",
+		    xx1,yy1,
+		    currentfgcolour, currentcharscale,text);
+	graphData->Lines++;
+    }
+    else
+	GraphText(xx1,yy1,1.0,0.0,1.0, text);
+
+    return;
+}
+
+
+/* @obsolete ajGraphTextEnd
+** @rename ajGraphDrawTextAtEnd
+*/
+
+__deprecated void ajGraphTextEnd(PLFLT xx1, PLFLT yy1, const char *text)
+{
+    ajGraphDrawTextAtEnd(xx1,yy1,text);
+    return;
+}
+
+
+/* @func ajGraphDrawTextAtMid **************************************************
+**
+** Draw text with Mid point of text at (xx1,yy1).
+**
+** For graph data type, writes directly.
+**
+** @param [r] xx1 [PLFLT] xx1 coor.
+** @param [r] yy1 [PLFLT] yy1 coor.
+** @param [r] text [const char*] The text to be displayed.
+** @return [void]
+**
+** @@
+******************************************************************************/
+
+void ajGraphDrawTextAtMid(PLFLT xx1, PLFLT yy1, const char *text)
+{
+    if(graphData)
+    {
+	ajFmtPrintF(graphData->File,
+		    "Text2 x1 %f y1 %f colour %d size %f %s\n",
+		    xx1, yy1,
+		    currentfgcolour, currentcharscale, text);
+	graphData->Lines++;
+    }
+    else
+	GraphText(xx1,yy1,1.0,0.0,0.5, text);
+
+    return;
+}
+
+
+/* @obsolete ajGraphTextMid
+** @rename ajGraphDrawTextAtMid
+*/
+
+__deprecated void ajGraphTextMid(PLFLT xx1, PLFLT yy1, const char *text)
+{
+    ajGraphDrawTextAtMid(xx1,yy1,text);
+    return;
+}
+
+
+/* @func ajGraphDrawTextAtStart ************************************************
+**
+** Draw text starting at position (xx1,yy1)
+**
+** @param [r] xx1 [PLFLT] xx1 coordinate
+** @param [r] yy1 [PLFLT] yy1 coordinate
+** @param [r] text [const char*] The text to be displayed.
+** @return [void]
+**
+** @@
+******************************************************************************/
+
+void ajGraphDrawTextAtStart(PLFLT xx1, PLFLT yy1, const char *text)
+{
+    if(graphData)
+    {
+	ajFmtPrintF(graphData->File,
+		    "Text1 x1 %f y1 %f colour %d size %f %s\n",
+		    xx1,yy1,
+		    currentfgcolour, currentcharscale,text);
+	graphData->Lines++;
+    }
+    else
+	GraphText(xx1,yy1,1.0,0.0,0.0, text);
+
+    return;
+}
+
+
+
+/* @obsolete ajGraphTextStart
+** @rename ajGraphDrawTextAtStart
+*/
+
+__deprecated void ajGraphTextStart(PLFLT xx1, PLFLT yy1, const char *text)
+{
+    ajGraphDrawTextAtStart(xx1,yy1,text);
+    return;
+}
+
+
+/* @func ajGraphDrawTextOnCurve ***********************************************
+**
+** Draw text along a curve (i.e., an arc of a circle).  The text is
+** written character by character, forwards or backwards depending o n
+** the angle.
+**
+** @param  [r] xcentre [PLFLT] x coor for centre.
+** @param  [r] ycentre [PLFLT] y coor for centre.
+** @param  [r] Radius  [PLFLT] radius of the circle.
+** @param  [r] StartAngle [PLFLT] angle of the start of the arc (in deg).
+** @param  [r] EndAngle [PLFLT] angle of the end of the arc (in deg).
+** @param  [r] Text [const char*] The text to be displayed.
+** @param  [r] just [PLFLT] justification of the string.
+**                          (0=left,1=right,0.5=middle etc)
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphDrawTextOnCurve(PLFLT xcentre, PLFLT ycentre, PLFLT Radius,
+			    PLFLT StartAngle,
+			    PLFLT EndAngle, const char *Text, PLFLT just)
+{
+    ajint numchar;
+    PLFLT pos;
+
+    numchar = strlen(Text);
+    pos = (EndAngle-StartAngle)/numchar;
+
+    if( ((StartAngle>180.0 && StartAngle<=360.0) &&
+	 (EndAngle>180.0 && EndAngle<=360.0)) ||
+       ((StartAngle>540.0 && StartAngle<=720.0)
+	&& (EndAngle>540.0 && EndAngle<=720.0)) )
+	GraphDrawTextOnCurve(xcentre, ycentre, Radius, StartAngle,
+			     +1*pos, Text, just);
+    else GraphDrawTextOnCurve(xcentre, ycentre, Radius, EndAngle,
+			      -1*pos, Text, just);
+
+    return;
+}
+
+
+
+
+/* @func ajGraphDrawTextOnLine *************************************************
+**
+** Draw text along a line.
+**
+** @param [r] xx1 [PLFLT] xx1 coor.
+** @param [r] yy1 [PLFLT] yy1 coor.
+** @param [r] xx2 [PLFLT] xx2 coor.
+** @param [r] yy2 [PLFLT] yy2 coor.
+** @param [r] text [const char*] The text to be displayed.
+** @param [r] just [PLFLT] justification of the string.
+**                         (0=left,1=right,0.5=middle etc)
+** @return [void]
+**
+** @@
+******************************************************************************/
+
+void ajGraphDrawTextOnLine(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
+		     const char *text, PLFLT just)
+{
+    if(graphData)
+    {
+	ajFmtPrintF(graphData->File,
+		    "Textline x1 %f y1 %f x2 %f y2 %f colour %d size %f %s\n",
+		    xx1,yy1,xx2, yy2,
+		    currentfgcolour, currentcharscale,text);
+	graphData->Lines++;
+    }
+    else
+	GraphText(xx1,yy1,xx2-xx1,yy2-yy1,just, text);
+
+    return;
+}
+
+
+
+/* @obsolete ajGraphTextLine
+** @rename ajGraphDrawTextOnLine
+*/
+
+__deprecated void ajGraphTextLine(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
+		     const char *text, PLFLT just)
+{
+    ajGraphDrawTextOnLine(xx1, yy1, xx2, yy2, text, just);
+    return;
+}
+
+
+/* @func ajGraphDrawTri ********************************************************
+**
+** Draw a Triangle.
+**
+** @param [r] xx1 [PLFLT] xx1 coord of point 1.
+** @param [r] yy1 [PLFLT] yy1 coord of point 1.
+** @param [r] xx2 [PLFLT] xx2 coord of point 2.
+** @param [r] yy2 [PLFLT] yy2 coord of point 2.
+** @param [r] x3 [PLFLT] x3 coord of point 3.
+** @param [r] y3 [PLFLT] y3 coord of point 3.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphDrawTri(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
+                    PLFLT x3, PLFLT y3)
+{
+    PLFLT x[4];
+    PLFLT y[4];
+    
+    x[0]=xx1; x[1]=xx2; x[2]=x3; x[3]=xx1;
+    y[0]=yy1; y[1]=yy2; y[2]=y3; y[3]=yy1;
+
+    ajGraphDrawPoly(4, x, y);
+
+    return;
+}
+
+
+
+/* @obsolete ajGraphTri
+** @rename ajGraphDrawTri
+*/
+
+__deprecated void ajGraphTri(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
+		PLFLT x3, PLFLT y3)
+{
+    ajGraphDrawTri(xx1,yy1,xx2,yy2,x3,y3);
+    return;
+}
+
+
+
+/* @func ajGraphDrawTriFill ****************************************************
+**
+** Draw a Triangle and fill it in.
+**
+** @param [r] xx1 [PLFLT] xx1 coord of point 1.
+** @param [r] yy1 [PLFLT] yy1 coord of point 1.
+** @param [r] xx2 [PLFLT] xx2 coord of point 2.
+** @param [r] yy2 [PLFLT] yy2 coord of point 2.
+** @param [r] x3 [PLFLT] x3 coord of point 3.
+** @param [r] y3 [PLFLT] y3 coord of point 3.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphDrawTriFill(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
+                        PLFLT x3, PLFLT y3)
+{
+    PLFLT x[3];
+    PLFLT y[3];
+    
+    x[0]=xx1; x[1]=xx2; x[2]=x3;
+    y[0]=yy1; y[1]=yy2; y[2]=y3;
+
+    ajGraphDrawPolyFill(3, x, y);
+
+    return;
+}
+
+
+
+
+
+/* @obsolete ajGraphTriFill
+** @rename ajGraphDrawTriFill
+*/
+
+__deprecated void ajGraphTriFill(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
+                                 PLFLT x3, PLFLT y3)
+{
+    ajGraphDrawTriFill(xx1,yy1,xx2,yy2,x3,y3);
+    return;
+}
+
+/* @func ajGraphDrawRectFill ***************************************************
+**
+** Draw a rectangle and fill it with the current pen colour/style.
+**
+** @param [r] xx0 [PLFLT] xx0 coor.
+** @param [r] yy0 [PLFLT] yy0 coor.
+** @param [r] xx1 [PLFLT] xx1 coor.
+** @param [r] yy1 [PLFLT] yy1 coor.
+** @return [void]
+**
+** @@
+******************************************************************************/
+
+void ajGraphDrawRectFill(PLFLT xx0, PLFLT yy0, PLFLT xx1, PLFLT yy1)
+{
+    PLFLT x[4];
+    PLFLT y[4];
+
+    if(graphData)
+    {
+	ajFmtPrintF(graphData->File,"Shaded Rectangle x1 %f y1 %f x2 %f"
+		    " y2 %f colour %d\n",
+		    xx0, yy0, xx1, yy1, currentfgcolour);
+	graphData->Lines++;
+    }
+    else
+    {
+	x[0] = xx0;
+	y[0] = yy0;
+	x[1] = xx0;
+	y[1] = yy1;
+	x[2] = xx1;
+	y[2] = yy1;
+	x[3] = xx1;
+	y[3] = yy0;
+	GraphFill(4, x, y);
+    }
+
+    return;
+}
+
+
+
+/* @obsolete ajGraphRectFill
+** @rename ajGraphDrawRectFill
+*/
+
+__deprecated void ajGraphRectFill(PLFLT xx0, PLFLT yy0, PLFLT xx1, PLFLT yy1)
+{
+    ajGraphDrawRectFill(xx0, yy0, xx1, yy1);
+    return;
+}
 
 
 
@@ -3334,381 +4035,6 @@ static void GraphCheckPoints(ajint n, const PLFLT *x, const PLFLT *y)
 
     for(i=0;i<n;i++)
 	ajFmtPrint("%d %f %f\n",i,x[i],y[i]);
-
-    return;
-}
-
-
-
-
-/* @func ajGraphLine **********************************************************
-**
-** Draw line between 2 points.
-**
-** @param [r] xx1 [PLFLT]  x start position.
-** @param [r] yy1 [PLFLT]  y start position.
-** @param [r] xx2 [PLFLT]  x end position.
-** @param [r] yy2 [PLFLT]  y end position.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphLine(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2)
-{
-    if(graphData)
-    {
-	ajFmtPrintF(graphData->File,
-		    "Line x1 %f y1 %f x2 %f y2 %f colour %d\n",
-		    xx1, yy1, xx2, yy2, currentfgcolour);
-	graphData->Lines++;
-    }
-    else
-    {
-	/*ajDebug("=g= pljoin(%.2f, %.2f, %.2f, %.2f) [xy xy]\n",
-		 xx1, yy1, xx2, yy2);*/
-	pljoin(xx1,yy1,xx2,yy2);
-    }
-
-    return;
-}
-
-
-
-
-/* @funcstatic GraphDrawLines *************************************************
-**
-** Draw a number of lines. The points are stored in two array.
-**
-** @param [r] numoflines [ajint] number of line to plot.
-** @param [r] xx1         [CONST PLFLT*] pointer to x coordinates.
-** @param [r] yy1         [CONST PLFLT*] pointer to y coordinates.
-** @return [void]
-** @@
-******************************************************************************/
-
-static void GraphDrawLines( ajint numoflines,PLFLT *xx1, PLFLT *yy1)
-{
-    ajint i;
-    PLFLT xx0;
-    PLFLT yy0;
-
-    /* graphdata : calls ajGraphLine */
-
-    for(i=0;i<numoflines-1;i++)
-    {
-	xx0 = *xx1;
-	yy0 = *yy1;
-	xx1++;
-	yy1++;
-	ajGraphLine(xx0,yy0,*xx1,*yy1);
-    }
-
-    return;
-}
-
-
-
-
-/* @func ajGraphLines *********************************************************
-**
-** Draw a set of lines.
-**
-** @param [u] xx1 [PLFLT*] xx1 coord.
-** @param [u] yy1 [PLFLT*] yy1 coord.
-** @param [u] xx2 [PLFLT*] xx2 coord.
-** @param [u] yy2 [PLFLT*] yy2 coord.
-** @param [r] numoflines [ajint] The number of lines to be drawn.
-** @return [void]
-**
-** @@
-******************************************************************************/
-
-void ajGraphLines(PLFLT *xx1, PLFLT *yy1, PLFLT *xx2, PLFLT *yy2,
-		  ajint numoflines)
-{
-    ajint i = 0;
-
-    /* graphdata : calls ajGraphLine */
-
-    ajDebug("=g= ajGraphLines(... %d) [xx1,xx2,yy1,yy2,numoflines]\n",
-	    numoflines);
-
-    for(i=0;i<numoflines;i++)
-    {
-	ajGraphLine(*xx1,*yy1,*xx2,*yy2);
-	xx1++; yy1++; xx2++; yy2++;
-    }
-
-    return;
-}
-
-
-
-
-/* @func ajGraphDots **********************************************************
-**
-** Draw a set of dots.
-**
-** @param [r] xx1 [CONST PLFLT*] xx1 coord.
-** @param [r] yy1 [CONST PLFLT*] yy1 coord.
-** @param [r] numofdots [ajint] The number of dots to be drawn.
-** @return [void]
-**
-** @@
-******************************************************************************/
-
-void ajGraphDots(PLFLT *xx1,PLFLT *yy1, ajint numofdots)
-{
-    GraphSymbols(xx1, yy1, numofdots, 17);
-
-    /* see xx06c in examples for codes e.g. 17 is a dot*/
-    return;
-}
-
-
-
-
-/* @func ajGraphSymbols *******************************************************
-**
-** Draw a set of dots.
-**
-** @param [r] numofdots [ajint] Number of coordinates in xx1 and xx2.
-** @param [r] xx1 [CONST PLFLT*] xx1 coord.
-** @param [r] yy1 [CONST PLFLT*] yy1 coord.
-** @param [r] symbol [ajint] Symbol code.
-** @return [void]
-**
-** @@
-******************************************************************************/
-
-void ajGraphSymbols( ajint numofdots, PLFLT *xx1,PLFLT *yy1, ajint symbol)
-{
-    GraphSymbols(xx1, yy1, numofdots, symbol);
-
-    /* see xx06c in examples for codes e.g. 17 is a dot*/
-    return;
-}
-
-
-
-
-/* @func ajGraphTextLine ******************************************************
-**
-** Draw text along a line.
-**
-** @param [r] xx1 [PLFLT] xx1 coor.
-** @param [r] yy1 [PLFLT] yy1 coor.
-** @param [r] xx2 [PLFLT] xx2 coor.
-** @param [r] yy2 [PLFLT] yy2 coor.
-** @param [r] text [const char*] The text to be displayed.
-** @param [r] just [PLFLT] justification of the string.
-**                         (0=left,1=right,0.5=middle etc)
-** @return [void]
-**
-** @@
-******************************************************************************/
-
-void ajGraphTextLine(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
-		     const char *text, PLFLT just)
-{
-    if(graphData)
-    {
-	ajFmtPrintF(graphData->File,
-		    "Textline x1 %f y1 %f x2 %f y2 %f colour %d size %f %s\n",
-		    xx1,yy1,xx2, yy2,
-		    currentfgcolour, currentcharscale,text);
-	graphData->Lines++;
-    }
-    else
-	GraphText(xx1,yy1,xx2-xx1,yy2-yy1,just, text);
-
-    return;
-}
-
-
-
-
-/* @func ajGraphText **********************************************************
-**
-** Draw text, positioning with respect to (xx1,yy1) by just.
-**
-** @param [r] xx1 [PLFLT] xx1 coor.
-** @param [r] yy1 [PLFLT] yy1 coor.
-** @param [r] text [const char*] The text to be displayed.
-** @param [r] just [PLFLT] justification of the string.
-**                         (0=left,1=right,0.5=middle etc)
-** @return [void]
-**
-** @@
-******************************************************************************/
-
-void ajGraphText(PLFLT xx1, PLFLT yy1, const char *text, PLFLT just)
-{
-    if(graphData)
-    {
-	ajFmtPrintF(graphData->File,
-		    "Text1 x1 %f y1 %f colour %d size %f %s\n",
-		    xx1,yy1,currentfgcolour, currentcharscale,text);
-	graphData->Lines++;
-    }
-    else
-	GraphText(xx1,yy1,1.0,0.0,just, text);
-
-    return;
-}
-
-
-
-
-/* @func ajGraphTextStart *****************************************************
-**
-** Draw text starting at position (xx1,yy1)
-**
-** @param [r] xx1 [PLFLT] xx1 coordinate
-** @param [r] yy1 [PLFLT] yy1 coordinate
-** @param [r] text [const char*] The text to be displayed.
-** @return [void]
-**
-** @@
-******************************************************************************/
-
-void ajGraphTextStart(PLFLT xx1, PLFLT yy1, const char *text)
-{
-    if(graphData)
-    {
-	ajFmtPrintF(graphData->File,
-		    "Text1 x1 %f y1 %f colour %d size %f %s\n",
-		    xx1,yy1,
-		    currentfgcolour, currentcharscale,text);
-	graphData->Lines++;
-    }
-    else
-	GraphText(xx1,yy1,1.0,0.0,0.0, text);
-
-    return;
-}
-
-
-
-
-/* @func ajGraphTextEnd *******************************************************
-**
-** Draw text ending at position (xx1,yy1)
-**
-** @param [r] xx1 [PLFLT] xx1 coor.
-** @param [r] yy1 [PLFLT] yy1 coor.
-** @param [r] text [const char*] The text to be displayed.
-** @return [void]
-**
-** @@
-******************************************************************************/
-
-void ajGraphTextEnd(PLFLT xx1, PLFLT yy1, const char *text)
-{
-    if(graphData)
-    {
-	ajFmtPrintF(graphData->File,
-		    "Text3 x1 %f y1 %f colour %d size %f %s\n",
-		    xx1,yy1,
-		    currentfgcolour, currentcharscale,text);
-	graphData->Lines++;
-    }
-    else
-	GraphText(xx1,yy1,1.0,0.0,1.0, text);
-
-    return;
-}
-
-
-
-
-/* @func ajGraphTextMid *******************************************************
-**
-** Draw text with Mid point of text at (xx1,yy1).
-**
-** For graph data type, writes directly.
-**
-** @param [r] xx1 [PLFLT] xx1 coor.
-** @param [r] yy1 [PLFLT] yy1 coor.
-** @param [r] text [const char*] The text to be displayed.
-** @return [void]
-**
-** @@
-******************************************************************************/
-
-void ajGraphTextMid(PLFLT xx1, PLFLT yy1, const char *text)
-{
-    if(graphData)
-    {
-	ajFmtPrintF(graphData->File,
-		    "Text2 x1 %f y1 %f colour %d size %f %s\n",
-		    xx1, yy1,
-		    currentfgcolour, currentcharscale, text);
-	graphData->Lines++;
-    }
-    else
-	GraphText(xx1,yy1,1.0,0.0,0.5, text);
-
-    return;
-}
-
-
-
-
-/* @func ajGraphVertBars ******************************************************
-**
-** Draw vertical Error Bars.
-**
-** @param [r] numofpoints [ajint] number of error bars to be drawn.
-** @param [r] x [CONST PLFLT*] x positions to draw at.
-** @param [r] ymin [CONST PLFLT*] y positions to start at.
-** @param [r] ymax [CONST PLFLT*] y positions to end at.
-** @return [void]
-**
-** @@
-******************************************************************************/
-
-void ajGraphVertBars(ajint numofpoints, PLFLT *x, PLFLT *ymin, PLFLT *ymax)
-{
-    if(numofpoints)
-	ajDebug("=g= plerry(%d %.2f..%.2f, %.2f, %.2f) "
-		 "[num,x..x,ymin,ymax]\n",
-		 numofpoints, x[0], x[numofpoints-1], ymin, ymax);
-    else
-	ajDebug("=g= plerry(%d <>..<>, %.2f, %.2f) [num,x..x,ymin,ymax]\n",
-		 numofpoints, ymin, ymax);
-
-    plerry(numofpoints,x,ymin,ymax);
-
-    return;
-}
-
-
-
-
-/* @func ajGraphHoriBars ******************************************************
-**
-** Draw Horizontal Error Bars.
-**
-** @param [r] numofpoints [ajint] number of error bars to be drawn.
-** @param [r] y [CONST PLFLT*] y positions to draw at.
-** @param [r] xmin [CONST PLFLT*] x positions to start at.
-** @param [r] xmax [CONST PLFLT*] x positions to end at.
-** @return [void]
-**
-** @@
-******************************************************************************/
-void ajGraphHoriBars(ajint numofpoints, PLFLT *y, PLFLT *xmin, PLFLT *xmax)
-{
-    if(numofpoints)
-	ajDebug("=g= plerrx(%d %.2f..%.2f, %.2f, %.2f) "
-		 "[num,y..y,xmin,xmax]\n",
-		 numofpoints, y[0], y[numofpoints-1], xmin, xmax);
-    else
-	ajDebug("=g= plerrx(%d <>..<>, %.2f, %.2f) [num,y..y,xmin,xmax]\n",
-		 numofpoints, xmin, xmax);
-
-    plerrx(numofpoints,y,xmin,xmax);
 
     return;
 }
@@ -6281,8 +6607,8 @@ static void GraphxyGeneral(AjPGraph thys, AjBool closeit)
 	    old = ajGraphSetFore(graphdata->colour);
 
 	    if(thys->plplot->flags & AJGRAPH_CIRCLEPOINTS)
-		ajGraphSymbols(graphdata->numofpoints,
-			       (graphdata->x), (graphdata->y), 9);
+		ajGraphDrawSymbols(graphdata->numofpoints,
+                                   (graphdata->x), (graphdata->y), 9);
 
 	    old2 = ajGraphSetLineStyle(graphdata->lineType);
 
@@ -6349,8 +6675,8 @@ static void GraphxyGeneral(AjPGraph thys, AjBool closeit)
 	    old = ajGraphSetFore(graphdata->colour);
 
 	    if(thys->plplot->flags & AJGRAPH_CIRCLEPOINTS)
-		ajGraphSymbols(graphdata->numofpoints,
-			       (graphdata->x), (graphdata->y), 9);
+		ajGraphDrawSymbols(graphdata->numofpoints,
+                                   (graphdata->x), (graphdata->y), 9);
 	    
 	    /* Draw the line through the data */
 	    /*    old = ajGraphSetFore(i+2);*/
@@ -6822,14 +7148,14 @@ static void GraphDraw(const AjPGraph thys)
 	    if(Obj->type == RECTANGLE)
 	    {
 		temp = ajGraphSetFore(Obj->colour);
-		ajGraphRect(Obj->xx1, Obj->yy1,Obj->xx2,
+		ajGraphDrawRect(Obj->xx1, Obj->yy1,Obj->xx2,
 			    Obj->yy2);
 		ajGraphSetFore(temp);
 	    }
 	    else if(Obj->type == RECTANGLEFILL)
 	    {
 		temp = ajGraphSetFore(Obj->colour);
-		ajGraphRectFill(Obj->xx1, Obj->yy1,Obj->xx2,
+		ajGraphDrawRectFill(Obj->xx1, Obj->yy1,Obj->xx2,
 				Obj->yy2);
 		ajGraphSetFore(temp);
 	    }
@@ -6838,7 +7164,7 @@ static void GraphDraw(const AjPGraph thys)
 		if(Obj->scale)
 		    cold = ajGraphSetCharScale(Obj->scale);
 		temp = ajGraphSetFore(Obj->colour);
-		ajGraphTextStart(Obj->xx1, Obj->yy1,
+		ajGraphDrawTextAtStart(Obj->xx1, Obj->yy1,
 				 ajStrGetPtr(Obj->text));
 		ajGraphSetFore(temp);
 		if(Obj->scale)
@@ -6847,7 +7173,7 @@ static void GraphDraw(const AjPGraph thys)
 	    else if(Obj->type == LINE)
 	    {
 		temp = ajGraphSetFore(Obj->colour);
-		ajGraphLine(Obj->xx1, Obj->yy1,Obj->xx2,
+		ajGraphDrawLine(Obj->xx1, Obj->yy1,Obj->xx2,
 			    Obj->yy2);
 		ajGraphSetFore(temp);
 	    }
@@ -7213,28 +7539,28 @@ static void GraphDataDraw(const AjPGraphPlpData graphdata)
 	    if(Obj->type == RECTANGLE)
 	    {
 		temp = ajGraphSetFore(Obj->colour);
-		ajGraphRect(Obj->xx1, Obj->yy1,
-			    Obj->xx2,Obj->yy2);
+		ajGraphDrawRect(Obj->xx1, Obj->yy1,
+                                Obj->xx2,Obj->yy2);
 		ajGraphSetFore(temp);
 	    }
 	    else if(Obj->type == RECTANGLEFILL)
 	    {
 		temp = ajGraphSetFore(Obj->colour);
-		ajGraphRectFill(Obj->xx1, Obj->yy1,
+		ajGraphDrawRectFill(Obj->xx1, Obj->yy1,
 				Obj->xx2,Obj->yy2);
 		ajGraphSetFore(temp);
 	    }
 	    else if(Obj->type == TEXT )
 	    {
 		temp = ajGraphSetFore(Obj->colour);
-		ajGraphTextStart(Obj->xx1, Obj->yy1,
+		ajGraphDrawTextAtStart(Obj->xx1, Obj->yy1,
 				 ajStrGetPtr(Obj->text));
 		ajGraphSetFore(temp);
 	    }
 	    else if(Obj->type == LINE)
 	    {
 		temp = ajGraphSetFore(Obj->colour);
-		ajGraphLine(Obj->xx1, Obj->yy1,
+		ajGraphDrawLine(Obj->xx1, Obj->yy1,
 			    Obj->xx2,Obj->yy2);
 		ajGraphSetFore(temp);
 	    }
@@ -7681,7 +8007,7 @@ void ajGraphInit(const char *pgm, ajint argc, char * const argv[])
 
 
 
-/* @func ajGraphInitP *********************************************************
+/* @func ajGraphInitPV *********************************************************
 **
 ** Initialises the graphics then everything else. Reads an ACD
 ** (AJAX Command Definition) file,
@@ -7695,12 +8021,13 @@ void ajGraphInit(const char *pgm, ajint argc, char * const argv[])
 **        usually passsed as-is by the calling application.
 ** @param [r] argv [char* const[]] Actual arguments as an array of text.
 ** @param [r] package [const char*] Package name, used to find the ACD file
+** @param [r] packversion [const char*] Package version
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphInitP(const char *pgm, ajint argc, char *const argv[],
-		      const char *package)
+void ajGraphInitPV(const char *pgm, ajint argc, char *const argv[],
+                  const char *package,const char *packversion)
 {
     ajNamInit("emboss");
 
@@ -7709,7 +8036,7 @@ void ajGraphInitP(const char *pgm, ajint argc, char *const argv[],
     ajDebug("=g= plxswin('%s') [argv[0]]\n", argv[0]);
     plxswin(argv[0]);
 
-    ajAcdInitP(pgm, argc, argv, package);
+    ajAcdInitPV(pgm, argc, argv, package, packversion);
 
     return;
 }
@@ -8236,94 +8563,6 @@ static void GraphDrawTextOnCurve(PLFLT xcentre, PLFLT ycentre,
 
 
 
-/* @func ajGraphDrawTextOnCurve ***********************************************
-**
-** Draw text along a curve (i.e., an arc of a circle).  The text is
-** written character by character, forwards or backwards depending o n
-** the angle.
-**
-** @param  [r] xcentre [PLFLT] x coor for centre.
-** @param  [r] ycentre [PLFLT] y coor for centre.
-** @param  [r] Radius  [PLFLT] radius of the circle.
-** @param  [r] StartAngle [PLFLT] angle of the start of the arc (in deg).
-** @param  [r] EndAngle [PLFLT] angle of the end of the arc (in deg).
-** @param  [r] Text [const char*] The text to be displayed.
-** @param  [r] just [PLFLT] justification of the string.
-**                          (0=left,1=right,0.5=middle etc)
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphDrawTextOnCurve(PLFLT xcentre, PLFLT ycentre, PLFLT Radius,
-			    PLFLT StartAngle,
-			    PLFLT EndAngle, const char *Text, PLFLT just)
-{
-    ajint numchar;
-    PLFLT pos;
-
-    numchar = strlen(Text);
-    pos = (EndAngle-StartAngle)/numchar;
-
-    if( ((StartAngle>180.0 && StartAngle<=360.0) &&
-	 (EndAngle>180.0 && EndAngle<=360.0)) ||
-       ((StartAngle>540.0 && StartAngle<=720.0)
-	&& (EndAngle>540.0 && EndAngle<=720.0)) )
-	GraphDrawTextOnCurve(xcentre, ycentre, Radius, StartAngle,
-			     +1*pos, Text, just);
-    else GraphDrawTextOnCurve(xcentre, ycentre, Radius, EndAngle,
-			      -1*pos, Text, just);
-
-    return;
-}
-
-
-
-
-/* @func ajGraphRectangleOnCurve **********************************************
-**
-** Draw a rectangle along a curve with the current pen colour/style.
-**
-** @param  [r] xcentre [PLFLT] x coor for centre.
-** @param  [r] ycentre [PLFLT] y coor for centre.
-** @param  [r] Radius  [PLFLT] radius of the circle.
-** @param  [r] BoxHeight [PLFLT] Height of the rectangle in user coordinates.
-** @param  [r] StartAngle [PLFLT] angle of the start of the rectangle.
-** @param  [r] EndAngle [PLFLT] angle of the end of the rectangle.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphRectangleOnCurve(PLFLT xcentre, PLFLT ycentre, PLFLT Radius,
-			     PLFLT BoxHeight, PLFLT StartAngle, PLFLT EndAngle)
-{
-    PLFLT *xyy1;
-    PLFLT *xyy2;
-    PLFLT r1Blocks;
-    PLFLT r2Blocks;
-
-    r1Blocks = Radius;
-    r2Blocks = r1Blocks+BoxHeight;
-
-    ajGraphPartCircle(xcentre, ycentre, r1Blocks, StartAngle, EndAngle);
-    ajGraphPartCircle(xcentre, ycentre, r2Blocks, StartAngle, EndAngle);
-
-    xyy1 = ajComputeCoord(xcentre, ycentre, r1Blocks, StartAngle);
-    xyy2 = ajComputeCoord(xcentre, ycentre, r2Blocks, StartAngle);
-    ajGraphDrawLine( xyy1[0], xyy1[1], xyy2[0], xyy2[1] );
-    AJFREE(xyy1);
-    AJFREE(xyy2);
-    xyy1 = ajComputeCoord(xcentre, ycentre, r1Blocks, EndAngle);
-    xyy2 = ajComputeCoord(xcentre, ycentre, r2Blocks, EndAngle);
-    ajGraphDrawLine( xyy1[0], xyy1[1], xyy2[0], xyy2[1] );
-    AJFREE(xyy1);
-    AJFREE(xyy2);
-
-    return;
-}
-
-
-
-
 /* @func ajGraphInfo **********************************************************
 **
 ** Information on files created for graph output
@@ -8468,7 +8707,7 @@ void ajGraphFillRectangleOnCurve(PLFLT xcentre, PLFLT ycentre, PLFLT Radius,
 	x[3]=xcentre + ( r1Blocks*(float)cos(ajDegToRad(angle+1)) );
 	y[3]=ycentre + ( r1Blocks*(float)sin(ajDegToRad(angle+1)) );
 	numofpoints = 4;
-	ajGraphPolyFill(numofpoints, x, y);
+	ajGraphDrawPolyFill(numofpoints, x, y);
     }
 
     return;

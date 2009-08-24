@@ -34,8 +34,6 @@ extern "C"
 #include <stdio.h>
 #include <string.h>
 
-#define ajGraphDrawLine ajGraphLine
-#define ajGraphDrawTextOnLine ajGraphTextLine
 
 #define GRAPH_XGAP      60
 #define GRAPH_YGAP      60
@@ -78,10 +76,7 @@ extern "C"
 ** Prototype definitions
 */
 
-void          ajGraphBox (PLFLT xx0, PLFLT yy0,PLFLT size);
-void          ajGraphBoxFill (PLFLT xx0, PLFLT yy0, PLFLT size);
 ajint         ajGraphCheckColour (const AjPStr colour);
-void          ajGraphCircle (PLFLT xcentre, PLFLT ycentre, float radius);
 void          ajGraphClose (void);
 void          ajGraphCloseWin (void);
 void          ajGraphColourBack (void);
@@ -112,9 +107,35 @@ void          ajGraphPlpDataSetTypeC(AjPGraphPlpData graphdata,
 
 void          ajGraphPlpDataTrace (const AjPGraphPlpData thys);
 void          ajGraphClear(AjPGraph thys);
-void          ajGraphDia (PLFLT xx0, PLFLT yy0, PLFLT size);
-void          ajGraphDiaFill (PLFLT xx0, PLFLT yy0, PLFLT size);
-void          ajGraphDots (PLFLT *xx1,PLFLT *yy1, ajint numofdots);
+void          ajGraphDrawBarsHoriz (ajint numofpoints, PLFLT *y,
+                                    PLFLT *xmin, PLFLT *xmax);
+void          ajGraphDrawBarsVert (ajint numofpoints, PLFLT *x,
+                                   PLFLT *ymin, PLFLT *ymax);
+void          ajGraphDrawBox (PLFLT xx0, PLFLT yy0,PLFLT size);
+void          ajGraphDrawBoxFill (PLFLT xx0, PLFLT yy0, PLFLT size);
+void          ajGraphDrawCircle (PLFLT xcentre, PLFLT ycentre, float radius);
+void          ajGraphDrawDia (PLFLT xx0, PLFLT yy0, PLFLT size);
+void          ajGraphDrawDiaFill (PLFLT xx0, PLFLT yy0, PLFLT size);
+void          ajGraphDrawDots (PLFLT *xx1,PLFLT *yy1, ajint numofdots);
+void          ajGraphDrawLine (PLFLT xx1,PLFLT yy1,PLFLT xx2,PLFLT yy2);
+void          ajGraphDrawLines (PLFLT *xx1,PLFLT *yy1,PLFLT *xx2,PLFLT *yy2,
+                                ajint numoflines);
+void          ajGraphDrawPoly (ajint n, PLFLT *x, PLFLT *y);
+void          ajGraphDrawPolyFill (ajint n, PLFLT *x, PLFLT *y);
+void          ajGraphDrawRect (PLFLT xx0, PLFLT yy0,PLFLT xx1, PLFLT yy1) ;
+void          ajGraphDrawRectFill (PLFLT xx0, PLFLT yy0, PLFLT xx1, PLFLT yy1) ;
+void          ajGraphDrawSymbols( ajint numofdots, PLFLT *xx1,PLFLT *yy1,
+                                  ajint symbol);
+void          ajGraphDrawText (PLFLT xx1, PLFLT yy1, const char *text, PLFLT just);
+void          ajGraphDrawTextAtEnd (PLFLT xx1, PLFLT yy1, const char *text);
+void          ajGraphDrawTextAtMid (PLFLT xx1, PLFLT yy1, const char *text);
+void          ajGraphDrawTextAtStart (PLFLT xx1, PLFLT yy1, const char *text);
+void          ajGraphDrawTextOnLine (PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
+                                     const char *text, PLFLT just);
+void          ajGraphDrawTri (PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
+                              PLFLT x3, PLFLT y3);
+void          ajGraphDrawTriFill (PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
+                                  PLFLT x3, PLFLT y3);
 void          ajGraphDumpDevices (void);
 ajint*        ajGraphGetBaseColour (void);
 ajint*        ajGraphGetBaseColourNuc(const AjPStr codes);
@@ -132,20 +153,15 @@ const char*   ajGraphGetXTitleC(const AjPGraph thys);
 const AjPStr  ajGraphGetYTitle(const AjPGraph thys);
 const char*   ajGraphGetYTitleC(const AjPGraph thys);
 
-void          ajGraphHoriBars (ajint numofpoints, PLFLT *y,
-				   PLFLT *xmin, PLFLT *xmax);
 ajint         ajGraphInfo(AjPList* files);
 void          ajGraphInit (const char *pgm, ajint argc, char * const argv[]);
-void          ajGraphInitP (const char *pgm, ajint argc,char * const argv[],
-			    const char *package);
+void          ajGraphInitPV(const char *pgm, ajint argc,char * const argv[],
+			    const char *package, const char *packversion);
 void          ajGraphInitSeq (AjPGraph thys, const AjPSeq seq);
 AjBool        ajGraphIsData(const AjPGraph thys);
 void          ajGraphLabel (const char *x, const char *y,
 			    const char *title, const char *subtitle);
 void          ajGraphLabelYRight (const char *text);
-void          ajGraphLine (PLFLT xx1,PLFLT yy1,PLFLT xx2,PLFLT yy2);
-void          ajGraphLines (PLFLT *xx1,PLFLT *yy1,PLFLT *xx2,PLFLT *yy2,
-			       ajint numoflines);
 AjPGraph      ajGraphNew (void);
 void          ajGraphNewPage (AjPGraph thys, AjBool resetdefaults);
 void          ajGraphAddLine (AjPGraph thys, float xx1, float yy1,
@@ -166,11 +182,7 @@ void          ajGraphOpenWin  (AjPGraph thys, float xmin, float xmax,
 			       float ymin, float ymax);
 void          ajGraphPlenv (float xmin, float xmax, float ymin, float ymax,
 			    ajint flags);
-void          ajGraphPoly (ajint n, PLFLT *x, PLFLT *y);
-void          ajGraphPolyFill (ajint n, PLFLT *x, PLFLT *y);
 void          ajGraphPrintType(AjPFile outf, AjBool full);
-void          ajGraphRect (PLFLT xx0, PLFLT yy0,PLFLT xx1, PLFLT yy1) ;
-void          ajGraphRectFill (PLFLT xx0, PLFLT yy0, PLFLT xx1, PLFLT yy1) ;
 AjBool        ajGraphSet (AjPGraph thys, const AjPStr type);
 void          ajGraphSetBackBlack (void);
 void          ajGraphSetBackWhite (void);
@@ -186,22 +198,8 @@ void          ajGraphSetMulti (AjPGraph thys, ajint numsets);
 void          ajGraphSetName (const AjPGraph thys);
 void          ajGraphSetOri(ajint ori);
 void          ajGraphSetPenWidth(float width);
-void          ajGraphSymbols( ajint numofdots, PLFLT *xx1,PLFLT *yy1,
-			      ajint symbol);
-void          ajGraphText (PLFLT xx1, PLFLT yy1, const char *text, PLFLT just);
-void          ajGraphTextEnd (PLFLT xx1, PLFLT yy1, const char *text);
-void          ajGraphTextMid (PLFLT xx1, PLFLT yy1, const char *text);
-void          ajGraphTextLine (PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
-			       const char *text, PLFLT just);
-void          ajGraphTextStart (PLFLT xx1, PLFLT yy1, const char *text);
 void          ajGraphTrace (const AjPGraph thys);
-void          ajGraphTri (PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
-			  PLFLT x3, PLFLT y3);
-void          ajGraphTriFill (PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
-			      PLFLT x3, PLFLT y3);
 void          ajGraphUnused(void);
-void          ajGraphVertBars (ajint numofpoints, PLFLT *x,
-			       PLFLT *ymin, PLFLT *ymax);
 void          ajGraphPlpDataCalcXY (AjPGraphPlpData graphdata,
 				    ajint numofpoints,
 				    float start, float incr,
@@ -313,6 +311,49 @@ void          ajGraphFillRectangleOnCurve(PLFLT xcentre, PLFLT ycentre,
 **  go into the block above, otherwise the VC compilation will fail 
 */
 void          ajGraphTraceInt (FILE* outf);
+
+__deprecated void          ajGraphBox (PLFLT xx0, PLFLT yy0,PLFLT size);
+__deprecated void          ajGraphBoxFill (PLFLT xx0, PLFLT yy0, PLFLT size);
+__deprecated void          ajGraphRectFill (PLFLT xx0, PLFLT yy0,
+                                            PLFLT xx1, PLFLT yy1) ;
+__deprecated void          ajGraphRect (PLFLT xx0, PLFLT yy0,
+                                        PLFLT xx1, PLFLT yy1) ;
+__deprecated void          ajGraphLine (PLFLT xx1,PLFLT yy1,
+                                        PLFLT xx2,PLFLT yy2);
+__deprecated void          ajGraphCircle (PLFLT xcentre, PLFLT ycentre,
+                                          float radius);
+__deprecated void          ajGraphDia (PLFLT xx0, PLFLT yy0, PLFLT size);
+__deprecated void          ajGraphDiaFill (PLFLT xx0, PLFLT yy0, PLFLT size);
+__deprecated void          ajGraphPoly (ajint n, PLFLT *x, PLFLT *y);
+__deprecated void          ajGraphPolyFill (ajint n, PLFLT *x, PLFLT *y);
+__deprecated void          ajGraphLines (PLFLT *xx1,PLFLT *yy1,
+                                         PLFLT *xx2,PLFLT *yy2,
+                                         ajint numoflines);
+__deprecated void          ajGraphTextLine (PLFLT xx1, PLFLT yy1,
+                                            PLFLT xx2, PLFLT yy2,
+                                            const char *text, PLFLT just);
+__deprecated void          ajGraphTri (PLFLT xx1, PLFLT yy1,
+                                       PLFLT xx2, PLFLT yy2,
+                                       PLFLT x3, PLFLT y3);
+__deprecated void          ajGraphTriFill (PLFLT xx1, PLFLT yy1,
+                                           PLFLT xx2, PLFLT yy2,
+                                           PLFLT x3, PLFLT y3);
+__deprecated void          ajGraphDots (PLFLT *xx1,PLFLT *yy1, ajint numofdots);
+__deprecated void          ajGraphSymbols( ajint numofdots,
+                                           PLFLT *xx1,PLFLT *yy1,
+                                           ajint symbol);
+__deprecated void          ajGraphText (PLFLT xx1, PLFLT yy1,
+                                        const char *text, PLFLT just);
+__deprecated void          ajGraphTextEnd (PLFLT xx1, PLFLT yy1,
+                                           const char *text);
+__deprecated void          ajGraphTextMid (PLFLT xx1, PLFLT yy1,
+                                           const char *text);
+__deprecated void          ajGraphTextStart (PLFLT xx1, PLFLT yy1,
+                                             const char *text);
+void          ajGraphHoriBars (ajint numofpoints, PLFLT *y,
+				   PLFLT *xmin, PLFLT *xmax);
+void          ajGraphVertBars (ajint numofpoints, PLFLT *x,
+			       PLFLT *ymin, PLFLT *ymax);
 
 /* End of prototypes without C code */
 
