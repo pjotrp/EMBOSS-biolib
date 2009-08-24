@@ -2,6 +2,7 @@ application: nthseq [
   documentation: "Write to file a single sequence from an input stream
                   of sequences"
   groups: "Edit"
+  relation: "EDAM: File handling"
 ]
 
 section: input [

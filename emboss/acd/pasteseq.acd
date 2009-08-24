@@ -1,6 +1,7 @@
 application: pasteseq [
   documentation: "Insert one sequence into another"
   groups: "Edit"
+  relation: "EDAM: Sequence merging"
 ]
 
 section: input [

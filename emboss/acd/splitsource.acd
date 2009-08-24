@@ -1,6 +1,7 @@
 application: splitsource [
   documentation: "Split sequence(s) into original source sequences"
   groups: "Edit"
+  relation: "EDAM: Sequence cutting"
 ]
 
 section: input [

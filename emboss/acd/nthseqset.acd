@@ -2,6 +2,7 @@ application: nthseqset [
   documentation: "Reads and writes (returns) one set of
                   sequences from many"
   groups: "Edit"
+  relation: "EDAM: File handling"
 ]
 
 section: input [

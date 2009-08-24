@@ -1,6 +1,7 @@
 application: extractseq [
   documentation: "Extract regions from a sequence"
   groups: "Edit"
+  relation: "EDAM: Sequence extraction and generation"
 ]
 
 section: input [

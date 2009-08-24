@@ -2,6 +2,7 @@ application: listor [
   documentation: "Write a list file of the logical OR of two
                   sets of sequences"
   groups: "Edit"
+  relation: "EDAM: File handling"
 ]
 
 section: input [

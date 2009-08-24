@@ -1,6 +1,7 @@
 application: degapseq [
   documentation: "Removes non-alphabetic (e.g. gap) characters from sequences"
   groups: "Edit"
+  relation: "EDAM: Sequence cutting"
 ]
 
 section: input [

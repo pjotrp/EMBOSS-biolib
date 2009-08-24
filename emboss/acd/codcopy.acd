@@ -1,6 +1,7 @@
 application: codcopy [
   documentation: "Copy and reformat a codon usage table"
   groups: "Edit"
+  relation: "EDAM: "Codon usage table handling"
 ]
 
 section: input [

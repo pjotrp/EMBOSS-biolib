@@ -5,6 +5,8 @@ application: aligncopypair
   gui: "yes"
   batch: "yes"
   cpu: "low"
+  relation: "EDAM: File handling"
+  relation: "EDAM: Sequence extraction and generation"
 ]
 
 

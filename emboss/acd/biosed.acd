@@ -1,6 +1,8 @@
 application: biosed [
   documentation: "Replace or delete sequence sections"
   groups: "Edit"
+  relation: "EDAM: Sequence cutting"
+  relation: "EDAM: Sequence merging"
 ]
 
 section: input [

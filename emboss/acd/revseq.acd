@@ -1,6 +1,7 @@
 application: revseq [
   documentation: "Reverse and complement a nucleotide sequence"
   groups: "Edit"
+  relation: "EDAM: Sequence reverse and complement"
 ]
 
 section: input [

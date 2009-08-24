@@ -2,6 +2,7 @@ application: origunion [
   documentation: "Reads sequence fragments and builds one
                   sequence"
   groups: "Edit"
+  relation: "EDAM: Sequence merging"
 ]
 
 section: input [

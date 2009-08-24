@@ -1,6 +1,7 @@
 application: maskseq [
   documentation: "Write a sequence with masked regions"
   groups: "Edit"
+  relation: "EDAM: Sequence masking"
 ]
 
 section: input [

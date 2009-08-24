@@ -5,6 +5,9 @@ application: skipredundant
   gui: "yes"
   batch: "yes"
   cpu: "low"
+  relation: "EDAM: File handling"
+  relation: "EDAM: Sequence redundancy"
+  relation: "EDAM: Pairwise sequence alignment"
 ]
 
 

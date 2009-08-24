@@ -5,6 +5,7 @@ application: trimspace
   gui: "yes"
   batch: "yes"
   cpu: "low"
+  relation: "EDAM: File handling"
 ]
 
 

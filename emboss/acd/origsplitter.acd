@@ -2,6 +2,7 @@ application: origsplitter [
   documentation: "Split a sequence into (overlapping) smaller
                   sequences"
   groups: "Edit"
+  relation: "EDAM: Sequence cutting"
 ]
 
 section: input [

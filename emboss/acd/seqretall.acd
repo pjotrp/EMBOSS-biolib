@@ -2,6 +2,7 @@ application: seqretall [
   documentation: "Reads and writes (returns) a set of
                   sequences one at a time"
   groups: "Edit"
+  relation: "EDAM: File handling"
 ]
 
 section: input [

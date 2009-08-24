@@ -2,6 +2,7 @@
 application: featreport [
   documentation: "Reads and writes a feature table"
   groups: "Edit"
+  relation: "EDAM: File handling"
 ]
 
 section: input [

@@ -1,6 +1,7 @@
 application: extractalign [
   documentation: "Extract regions from a sequence alignment"
   groups: "Edit"
+  relation: "EDAM: Sequence extraction and generation"
 ]
 
 section: input [

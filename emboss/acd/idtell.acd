@@ -1,16 +1,11 @@
-application: nospace
+application: idtell
 [
-  documentation: "Remove all whitespace from an ASCII text file"
-  groups: "Edit"
+  documentation: "Identify the type of a data identifier / query term"
+  groups: "Information"
   gui: "yes"
   batch: "yes"
   cpu: "low"
-  relation: "EDAM: File handling"
 ]
-
-
-
-
 
 section: input 
 [
@@ -18,15 +13,23 @@ section: input
   type: "page"
 ]
 
-infile: infile 
-[
-    parameter: "Y"
-    knowntype: "ascii text"
-    information: "ASCII text file"
-]
+  string: identifier
+  [
+      default: ""
+      additional: "Y"
+      information: "Identifier to identify."
+      knowntype: "database category name"
+  ]
+
+  datafile: dbref
+  [
+      information: "Database information datafile"
+      help: "File of database information including identifier, description, type, URL etc."
+      default: "dbref.dat"
+      knowntype: "database info"
+  ]
 
 endsection: input
-
 
 
 
@@ -36,7 +39,10 @@ section: required
   information: "Required section"
   type: "page"
 ]
+
 endsection: required
+
+
 
 
 
@@ -64,17 +70,15 @@ endsection: advanced
 
 
 
+
+
+
+
 section: output 
 [
   information: "Output section"
   type: "page"
 ]
 
-outfile: outfile 
-[
-    parameter: "Y"
-    knowntype: "ascii text"
-    information: "ASCII text output file"
-]
-
 endsection: output
+

@@ -1,6 +1,8 @@
 application: makenucseq [
   documentation: "Create random nucleotide sequences"
   groups: "Edit"
+  relation: "EDAM: Sequence mutation and randomisation"
+  relation: "EDAM: Sequence extraction and generation"
 ]
 
 section: input [

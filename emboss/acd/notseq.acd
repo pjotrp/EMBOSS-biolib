@@ -1,6 +1,7 @@
 application: notseq [
   documentation: "Write to file a subset of an input stream of sequences"
   groups: "Edit"
+  relation: "EDAM: File handling"
 ]
 
 section: input [

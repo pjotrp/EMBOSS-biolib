@@ -1,6 +1,9 @@
 application: trimest [
   documentation: "Remove poly-A tails from nucleotide sequences"
   groups: "Edit"
+  relation: "PolyA signal identification"
+  relation: "EDAM: Sequence cutting"
+  relation: "EDAM: Sequence reverse and complement"
 ]
 
 section: input [

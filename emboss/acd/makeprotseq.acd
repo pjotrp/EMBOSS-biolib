@@ -1,6 +1,8 @@
 application: makeprotseq [
   documentation: "Create random protein sequences"
   groups: "Edit"
+  relation: "EDAM: Sequence mutation and randomisation"
+  relation: "EDAM: Sequence extraction and generation"
 ]
 
 section: input [
