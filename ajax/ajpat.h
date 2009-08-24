@@ -81,8 +81,8 @@ typedef struct AjSPatComp
 ** Holds definition of feature pattern. Regular expression patterns ignore
 ** mismatch value.
 **
-** @alias AjSPattern
-** @alias AjOPattern
+** @alias AjSPatternSeq
+** @alias AjOPatternSeq
 **
 ** @attr Name [AjPStr] Name.
 ** @attr Pattern [AjPStr] Pattern in string format.
@@ -117,8 +117,8 @@ typedef struct AjSPatternSeq {
 ** Holds definition of feature pattern. Regular expression patterns ignore
 ** mismatch value.
 **
-** @alias AjSPattern
-** @alias AjOPattern
+** @alias AjSPatternRegex
+** @alias AjOPatternRegex
 **
 ** @attr Name [AjPStr] Name.
 ** @attr Pattern [AjPStr] Pattern in string format.
@@ -158,8 +158,8 @@ typedef struct AjSPatternRegex {
 **
 ** Holds list of feature patterns and general information of them.
 **
-** @alias AjSPatlist
-** @alias AjOPatlist
+** @alias AjSPatlistSeq
+** @alias AjOPatlistSeq
 **
 ** @attr Patlist [AjPList] List for patterns.
 ** @attr Iter [AjIList] List iterator.
@@ -192,8 +192,8 @@ typedef struct AjSPatlistSeq {
 **
 ** Holds list of feature patterns and general information of them.
 **
-** @alias AjSPatlist
-** @alias AjOPatlist
+** @alias AjSPatlistRegex
+** @alias AjOPatlistRegex
 **
 ** @attr Patlist [AjPList] List for patterns.
 ** @attr Iter [AjIList] List iterator.

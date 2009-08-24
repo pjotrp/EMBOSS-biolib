@@ -131,8 +131,8 @@ typedef struct AjSPhyloFreq
 ** We can, in fact, convert any input string into this format for factors
 ** but probably we can leave them unchanged.
 **
-** @alias AjSPhyloProperty
-** @alias AjOPhyloProperty
+** @alias AjSPhyloProp
+** @alias AjOPhyloProp
 **
 ** @attr Len [ajint] string length
 ** @attr Size [ajint] number of strings
