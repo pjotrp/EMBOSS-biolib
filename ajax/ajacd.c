@@ -1344,6 +1344,9 @@ AcdOAttr acdAttrAppl[] =
 	 "Commandline template for SoapLab's ACD files"},
     {"comment", VT_STR, 0, "",
 	 "Comment for SoapLab's ACD files"},
+    {"relations", VT_STR, 0, "",
+	 "Relationships between this ACD item and others, "
+	     "defined as specially formatted text"},
     {NULL, VT_NULL, 0, NULL,
 	 NULL}
 };
