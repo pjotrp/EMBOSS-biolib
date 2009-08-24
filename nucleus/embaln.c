@@ -2091,6 +2091,8 @@ void embAlignWalkProfileMatrix(const float *path, const ajint *compass,
 	    ajStrAppendK(m,p[row--]);
 	    ajStrAppendK(n,q[column--]);
 
+            if(row < 0 || column < 0)
+                break;
 	    if(path[(row)*seqlen+(column)]<=0.)
 		break;
 
