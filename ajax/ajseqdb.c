@@ -6637,7 +6637,7 @@ static AjBool seqAccessDbfetch(AjPSeqin seqin)
     }
 
     ajDebug("Ready to read errno %d msg '%s'\n",
-	    errno, ajMessSysErrorText());
+	    errno, ajMessGetSysmessageC());
 
 #ifndef WIN32
     signal(SIGALRM, seqSocketTimeout);
@@ -6765,7 +6765,7 @@ static AjBool seqAccessMrs(AjPSeqin seqin)
     }
 
     ajDebug("Ready to read errno %d msg '%s'\n",
-	    errno, ajMessSysErrorText());
+	    errno, ajMessGetSysmessageC());
 
 #ifndef WIN32
     signal(SIGALRM, seqSocketTimeout);
@@ -6889,7 +6889,7 @@ static AjBool seqAccessMrs3(AjPSeqin seqin)
     }
 
     ajDebug("Ready to read errno %d msg '%s'\n",
-	    errno, ajMessSysErrorText());
+	    errno, ajMessGetSysmessageC());
 
 #ifndef WIN32
     signal(SIGALRM, seqSocketTimeout);
@@ -6989,7 +6989,7 @@ static AjBool seqAccessUrl(AjPSeqin seqin)
     }
 
     ajDebug("Ready to read errno %d msg '%s'\n",
-	    errno, ajMessSysErrorText());
+	    errno, ajMessGetSysmessageC());
 
 #ifndef WIN32
     signal(SIGALRM, seqSocketTimeout);
@@ -7392,7 +7392,7 @@ static FILE* seqHttpSocket(const AjPSeqQuery qry,
     }
 
     ajDebug("connect status %d errno %d msg '%s'\n",
-	    istatus, errno, ajMessSysErrorText());
+	    istatus, errno, ajMessGetSysmessageC());
     ajDebug("inet_ntoa '%s'\n", inet_ntoa(sin.sin_addr));
     
 
@@ -7400,10 +7400,10 @@ static FILE* seqHttpSocket(const AjPSeqQuery qry,
 
     if(isendlen != ajStrGetLen(get))
 	ajErr("send failure, expected %d bytes returned %d : %s\n",
-	      ajStrGetLen(get), istatus, ajMessSysErrorText());
+	      ajStrGetLen(get), istatus, ajMessGetSysmessageC());
     ajDebug("sending: '%S' status: %d\n", get, istatus);
     ajDebug("send for GET errno %d msg '%s'\n",
-	    errno, ajMessSysErrorText());
+	    errno, ajMessGetSysmessageC());
 
     /*
        ajFmtPrintS(&gethead, "Accept: \n");
@@ -7417,7 +7417,7 @@ static FILE* seqHttpSocket(const AjPSeqQuery qry,
 
     if(isendlen != ajStrGetLen(gethead))
 	ajErr("send failure, expected %d bytes returned %d : %s\n",
-	      ajStrGetLen(gethead), istatus, ajMessSysErrorText());
+	      ajStrGetLen(gethead), istatus, ajMessGetSysmessageC());
     ajDebug("sending: '%S' status: %d\n", gethead, istatus);
 
     ajFmtPrintS(&gethead, "Host: %S:%d\n", host, iport);
@@ -7425,20 +7425,20 @@ static FILE* seqHttpSocket(const AjPSeqQuery qry,
 
     if(isendlen != ajStrGetLen(gethead))
 	ajErr("send failure, expected %d bytes returned %d : %s\n",
-	      ajStrGetLen(gethead), istatus, ajMessSysErrorText());
+	      ajStrGetLen(gethead), istatus, ajMessGetSysmessageC());
     ajDebug("sending: '%S' status: %d\n", gethead, istatus);
     ajDebug("send for host errno %d msg '%s'\n",
-	    errno, ajMessSysErrorText());
+	    errno, ajMessGetSysmessageC());
 
     ajFmtPrintS(&gethead, "\n");
     isendlen =  send(sock, ajStrGetPtr(gethead), ajStrGetLen(gethead), 0);
 
     if(isendlen != ajStrGetLen(gethead))
 	ajErr("send failure, expected %d bytes returned %d : %s\n",
-	      ajStrGetLen(gethead), istatus, ajMessSysErrorText());
+	      ajStrGetLen(gethead), istatus, ajMessGetSysmessageC());
     ajDebug("sending: '%S' status: %d\n", gethead, istatus);
     ajDebug("send for blankline errno %d msg '%s'\n",
-	    errno, ajMessSysErrorText());
+	    errno, ajMessGetSysmessageC());
 
     ajStrDel(&gethead);
 
@@ -7452,7 +7452,7 @@ static FILE* seqHttpSocket(const AjPSeqQuery qry,
 #endif
 
     ajDebug("fdopen errno %d msg '%s'\n",
-            errno, ajMessSysErrorText());
+            errno, ajMessGetSysmessageC());
 
     if(!fp)
     {
