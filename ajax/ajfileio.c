@@ -70,7 +70,7 @@ static void   filebuffLineAdd(AjPFilebuff thys, const AjPStr line);
 
 /* @func ajReadline ***********************************************************
 **
-** Reads a line from a file and returns the initial file position.
+** Read a line from a file.
 **
 ** @param [u] file [AjPFile] Input file.
 ** @param [w] Pdest [AjPStr*] Buffer to hold the current line.
