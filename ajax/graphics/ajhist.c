@@ -257,15 +257,16 @@ void ajHistDisplay(const AjPHist hist)
 			old = ajGraphSetFillPat(hist->hists[i]->pattern);
 		    else
 			old = ajGraphSetFore(hist->hists[i]->colour);
-		    ajGraphRectFill(start+offset,0.0,
-				    start+offset+bar_width,tot);
+		    ajGraphDrawRectFill(start+offset,0.0,
+                                        start+offset+bar_width,tot);
 
 		    if(hist->BaW)
 			ajGraphSetFillPat(old);
 		    else
 			ajGraphSetFore(old);
 
-		    ajGraphRect(start+offset,0.0,start+offset+bar_width,tot);
+		    ajGraphDrawRect(start+offset,0.0,
+                                    start+offset+bar_width,tot);
 		    num = 0;
 		    tot = 0;
 		    start +=bin_range;
@@ -313,15 +314,16 @@ void ajHistDisplay(const AjPHist hist)
 		    else
 			old = ajGraphSetFore(hist->hists[i]->colour);
 
-		    ajGraphRectFill(start+offset,0.0,
-				    start+offset+bar_width,tot);
+		    ajGraphDrawRectFill(start+offset,0.0,
+                                        start+offset+bar_width,tot);
 
 		    if(hist->BaW)
 			ajGraphSetFillPat(old);
 		    else
 			ajGraphSetFore(old);
 
-		    ajGraphRect(start+offset,0.0,start+offset+bar_width,tot);
+		    ajGraphDrawRect(start+offset,0.0,
+                                    start+offset+bar_width,tot);
 		    num = 0;
 		    tot = 0;
 		    start +=bin_range;
@@ -355,15 +357,15 @@ void ajHistDisplay(const AjPHist hist)
 		    else
 			old = ajGraphSetFore(hist->hists[i]->colour);
 
-		    ajGraphRectFill(start,totals[j],
-				    start+bin_range,tot+totals[j]);
+		    ajGraphDrawRectFill(start,totals[j],
+                                        start+bin_range,tot+totals[j]);
 		    if(hist->BaW)
 			ajGraphSetFillPat(old);
 		    else
 			ajGraphSetFore(old);
 
-		    ajGraphRect(start,totals[j],
-				start+bin_range,tot+totals[j]);
+		    ajGraphDrawRect(start,totals[j],
+                                    start+bin_range,tot+totals[j]);
 		    totals[j] += tot;
 		    tot = 0;
 		    /*	  ajDebug("num = %d",num);*/
