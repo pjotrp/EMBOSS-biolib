@@ -274,7 +274,7 @@ int main(int argc, char **argv)
 	mattab = jaspscan_ReadCoreList(jaspdir);
 
     ajFmtPrintS(&head,"Database scanned: %S  Threshold: %.3f",jaspdir,thresh);
-    ajReportSetHeader(report,head);
+    ajReportSetHeaderS(report,head);
     
     while(ajSeqallNext(seqall, &seq))
     {

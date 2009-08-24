@@ -765,15 +765,15 @@ static void eprimer3_send_range(FILE * stream, const char * tag,
 
     str = ajStrNew();
 
-    if(ajRangeNumber(value))
+    if(ajRangeGetSize(value))
     {
         ajFmtPrintS(&str, "%s=", tag);
         eprimer3_write(str, stream);
         ajStrSetClear(&str);
 
-        for(n=0; n < ajRangeNumber(value); n++)
+        for(n=0; n < ajRangeGetSize(value); n++)
         {
-            ajRangeValues(value, n, &start, &end);
+            ajRangeElementGetValues(value, n, &start, &end);
             start -= begin;
             end   -= begin;
             ajFmtPrintS(&str, "%d,%d ", start, end-start+1);
@@ -814,15 +814,15 @@ static void eprimer3_send_range2(FILE * stream, const char * tag,
 
     str=ajStrNew();
 
-    if(ajRangeNumber(value))
+    if(ajRangeGetSize(value))
     {
         ajFmtPrintS(&str, "%s=", tag);
         eprimer3_write(str, stream);
         ajStrSetClear(&str);
 
-        for(n=0; n < ajRangeNumber(value); n++)
+        for(n=0; n < ajRangeGetSize(value); n++)
         {
-            ajRangeValues(value, n, &start, &end);
+            ajRangeElementGetValues(value, n, &start, &end);
             ajFmtPrintS(&str, "%d-%d ", start, end);
             eprimer3_write(str, stream);
             ajStrSetClear(&str);

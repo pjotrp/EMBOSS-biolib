@@ -16,7 +16,7 @@ section: input [
 
   datafile: mfile [
     default: "Emethylsites.dat"
-    information: "Restriction enzyme data file (optional)"
+    information: "Restriction enzyme methylation data file (optional)"
     knowntype: "restriction enzyme methylation data"
   ]
 

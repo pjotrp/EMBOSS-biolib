@@ -458,7 +458,7 @@ int main(int argc, char **argv)
     if(ajStrGetLen(options))
     {
 	fold = ajGraphSetCharScale(1.0);
-	ajGraphTextMid(xmid,1.0,
+	ajGraphDrawTextAtMid(xmid,1.0,
 		       ajStrGetPtr(options));
 	ajGraphSetCharScale(fold);
     }
@@ -1140,7 +1140,7 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 	    for(j=seqstart,l=0;j<seqend;j++,l++)
 		if(seqboxptr[j][k] & BOXCOLOURED)
 		{
-		    ajGraphRectFill((float)(count+gapcount-(float)1)+
+		    ajGraphDrawRectFill((float)(count+gapcount-(float)1)+
 				    (float)1.0,
 				    y-(yincr*((float)l+(float)0.5)),
 				    (float)(count+gapcount-(float)1),
@@ -1162,11 +1162,11 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
     if(shownames)
     {
 	for(i=seqstart,l=0;i<seqend;i++,l++)
-	    ajGraphTextStart((float)-charlen,y-(yincr*l),
+	    ajGraphDrawTextAtStart((float)-charlen,y-(yincr*l),
 			     ajStrGetPtr(seqnames[i]));
 
 	if(consensus && (numseq==seqend))
-	    ajGraphTextStart((float)-charlen,y-(yincr*((seqend-seqstart)+
+	    ajGraphDrawTextAtStart((float)-charlen,y-(yincr*((seqend-seqstart)+
 					   (float)1)),ajStrGetPtr(strcon));
 
     }
@@ -1186,14 +1186,14 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 		for(j=seqstart,l=0;j<seqend;j++,l++)
 		{
 		    sprintf(numberstring,"%d",seqcount[j]);
-		    ajGraphTextStart((float)(count+numgaps)+(float)5.0,
+		    ajGraphDrawTextAtStart((float)(count+numgaps)+(float)5.0,
 				      y-(yincr*(float)l),numberstring);
 		}
 
 		if(consensus && (numseq==seqend))
 		{
 		    sprintf(numberstring,"%d",k);
-		    ajGraphTextStart((float)(count+numgaps)+(float)5.0,
+		    ajGraphDrawTextAtStart((float)(count+numgaps)+(float)5.0,
 				      y-(yincr*((float)l+(float)1)),
 				      numberstring);
 		}
@@ -1211,11 +1211,11 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 	    if(shownames)
 	    {
 		for(i=seqstart,l=0;i<seqend;i++,l++)
-		    ajGraphTextStart((float)-charlen,y-(yincr*l),
+		    ajGraphDrawTextAtStart((float)-charlen,y-(yincr*l),
 				     ajStrGetPtr(seqnames[i]));
 
 		if(consensus &&(numseq==seqend))
-		    ajGraphTextStart((float)-charlen,
+		    ajGraphDrawTextAtStart((float)-charlen,
 				      y-(yincr*((seqend-seqstart)+1)),
 				      ajStrGetPtr(strcon));
 	    }
@@ -1230,25 +1230,25 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 		if(ajSeqcvtGetCodeK(cvt, seqcharptr[j][k]))
 		    seqcount[j]++;
 		if(seqboxptr[j][k] & BOXLEF)
-		    ajGraphLine((float)(count+gapcount),y-
+		    ajGraphDrawLine((float)(count+gapcount),y-
 				(yincr*((float)l+(float)0.5)),
 				(float)(count+gapcount),
 				y-(yincr*((float)l-(float)0.5)));
 
 		if(seqboxptr[j][k] & BOXTOP)
-		    ajGraphLine((float)(count+gapcount),y-
+		    ajGraphDrawLine((float)(count+gapcount),y-
 				(yincr*((float)l-(float)0.5)),
 				(float)(count+gapcount)+(float)1.0,
 				y-(yincr*((float)l-(float)0.5)));
 
 		if(seqboxptr[j][k] & BOXBOT)
-		    ajGraphLine((float)(count+gapcount),y-
+		    ajGraphDrawLine((float)(count+gapcount),y-
 				(yincr*((float)l+(float)0.5)),
 				(float)(count+gapcount)+(float)1.0,
 				y-(yincr*((float)l+(float)0.5)));
 
 		if(seqboxptr[j][k] & BOXRIG)
-		    ajGraphLine((float)(count+gapcount)+(float)1.0,y-
+		    ajGraphDrawLine((float)(count+gapcount)+(float)1.0,y-
 				(yincr*((float)l+(float)0.5)),
 				(float)(count+gapcount)+(float)1.0,
 				y-(yincr*((float)l-(float)0.5)));
@@ -1265,7 +1265,7 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 	if(consensus && (numseq==seqend))
 	{
 	    res[0] = constr[k];
-	    ajGraphTextStart((float)(count+gapcount),
+	    ajGraphDrawTextAtStart((float)(count+gapcount),
 			      y-(yincr*((seqend-seqstart)+1)),res);
 	}
     }
@@ -1275,14 +1275,14 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 	for(j=seqstart,l=0;j<seqend;j++,l++)
 	{
 	    sprintf(numberstring,"%d",seqcount[j]);
-	    ajGraphTextStart((float)(count+numgaps)+(float)5.0,y-(yincr*l),
+	    ajGraphDrawTextAtStart((float)(count+numgaps)+(float)5.0,y-(yincr*l),
 			      numberstring);
 	}
 
 	if(consensus && (numseq==seqend))
 	{
 	    sprintf(numberstring,"%d",k);
-	    ajGraphTextStart((float)(count+numgaps)+(float)5.0,
+	    ajGraphDrawTextAtStart((float)(count+numgaps)+(float)5.0,
 			     y-(yincr*(l+(float)1)),
 			     numberstring);
 	}
@@ -1336,7 +1336,7 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 			    res[0] = seqcharptr[j][k];
 			else
 			    res[0] = '-';
-			ajGraphTextStart((float)(count+gapcount),
+			ajGraphDrawTextAtStart((float)(count+gapcount),
 					 y-(yincr*l),res);
 		    }
 		}

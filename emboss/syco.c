@@ -104,7 +104,7 @@ int main(int argc, char **argv)
     }
     
     
-    cdup = ajCodDup(codon);
+    cdup = ajCodNewCod(codon);
     
     substr = ajStrNew();
     tmp    = ajStrNew();

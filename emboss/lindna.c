@@ -850,17 +850,17 @@ static void lindna_DrawBlocks(float xDraw, float yDraw, float BlockHeight,
 
     if(ajCharCmpCase(ajStrGetPtr(BlockType), "Open")==0)
     {
-	ajGraphRect(x1Blocks, y1Blocks, x2Blocks, y2Blocks);
+	ajGraphDrawRect(x1Blocks, y1Blocks, x2Blocks, y2Blocks);
     }
     else if(ajCharCmpCase(ajStrGetPtr(BlockType), "Filled")==0)
     {
-	ajGraphRectFill(x1Blocks, y1Blocks, x2Blocks, y2Blocks);
+	ajGraphDrawRectFill(x1Blocks, y1Blocks, x2Blocks, y2Blocks);
     }
     else
     {
-	ajGraphRectFill(x1Blocks, y1Blocks, x2Blocks, y2Blocks);
+	ajGraphDrawRectFill(x1Blocks, y1Blocks, x2Blocks, y2Blocks);
 	ajGraphSetFore(0);
-	ajGraphRect(x1Blocks, y1Blocks, x2Blocks, y2Blocks);
+	ajGraphDrawRect(x1Blocks, y1Blocks, x2Blocks, y2Blocks);
 	ajGraphSetFore(Colour);
     }
 

@@ -103,7 +103,7 @@ section: output [
     information: "Display 'GI' column"
   ]
 
-  boolean: version [
+  boolean: seqversion [
     default: "N"
     information: "Display 'version' column"
   ]

@@ -208,7 +208,7 @@ static void extractfeat_FeatSeqExtract(const AjPSeq seq, AjPSeqout seqout,
 
 
     /* For all features... */
-    if(featab && ajFeattableSize(featab))
+    if(featab && ajFeattableGetSize(featab))
     {
 	/* initialise details of a feature */
         featseq = ajStrNew();
@@ -819,11 +819,14 @@ static AjBool extractfeat_MatchFeature(const AjPFeature gf,
 				       float maxscore, const AjPStr tag,
 				       const AjPStr value, AjBool *tagsmatch)
 {
+    AjPStrTok tokens = NULL;
+    AjPStr key = NULL;
+    AjBool val = ajFalse;
 
-     /*
-     ** is this a child of a join() ?
-     ** if it is a child, then we use the previous result of MatchPatternTags
-     */
+    /*
+    ** is this a child of a join() ?
+    ** if it is a child, then we use the previous result of MatchPatternTags
+    */
     if(!ajFeatIsMultiple(gf) || !ajFeatIsChild(gf))
         *tagsmatch = extractfeat_MatchPatternTags(gf, tag, value);
 
@@ -846,17 +849,36 @@ static AjBool extractfeat_MatchFeature(const AjPFeature gf,
 
     ajDebug("extractfeat_MatchFeature\n");
 
-    ajDebug("embMiscMatchPattern(ajFeatGetSource(gf), source) %B\n",
-	    embMiscMatchPattern(ajFeatGetSource(gf), source));
+    ajDebug("embMiscMatchPatternDelim(ajFeatGetSource(gf), source) %B\n",
+	    embMiscMatchPatternDelimC(ajFeatGetSource(gf), source, ",;|"));
     ajDebug("ajFeatTypeMatchS(gf, type) %B\n",
-	    ajFeatTypeMatchS(gf, type));
+      ajFeatTypeMatchWildS(gf, type));
     ajDebug("ajFeatGetStrand(gf) '%x' sense %d\n", ajFeatGetStrand(gf), sense);
     ajDebug("testscore: %B ajFeatGetScore(gf): %f minscore:%f maxscore:%f\n",
 	    testscore, ajFeatGetScore(gf), minscore, maxscore);
-    if(!embMiscMatchPattern(ajFeatGetSource(gf), source))
+    if(!embMiscMatchPatternDelimC(ajFeatGetSource(gf), source, ",;|"))
         return ajFalse;
-    if(ajStrGetLen(type) && !ajFeatTypeMatchS(gf, type))
-        return ajFalse;
+
+
+    if(ajStrGetLen(type))
+    {
+        val = ajFalse;
+        tokens = ajStrTokenNewC(type, " \t\n\r,;|");
+
+        while (ajStrTokenNextParse( &tokens, &key))
+        {
+            if (ajFeatTypeMatchWildS(gf, key))
+            {
+                val = ajTrue;
+                break;
+            }
+        }
+
+        ajStrTokenDel( &tokens);
+        ajStrDel(&key);
+        if(!val)
+            return ajFalse;
+    }
     if(ajFeatGetStrand(gf) == '+' && sense == -1)
         return ajFalse;
     if(ajFeatGetStrand(gf) == '-' && sense == +1)
@@ -914,7 +936,7 @@ static AjBool extractfeat_MatchPatternTags(const AjPFeature feat,
 
     while(ajFeatTagval(titer, &tagnam, &tagval))
     {
-        tval = embMiscMatchPattern(tagnam, tpattern);
+        tval = embMiscMatchPatternDelimC(tagnam, tpattern, ",;|");
 
         /*
         ** If tag has no value then
@@ -929,7 +951,7 @@ static AjBool extractfeat_MatchPatternTags(const AjPFeature feat,
 		vval = ajFalse;
         }
 	else
-            vval = embMiscMatchPattern(tagval, vpattern);
+            vval = embMiscMatchPatternDelimC(tagval, vpattern, ",;|");
 
         if(tval && vval)
 	{
@@ -978,7 +1000,7 @@ static AjBool extractfeat_MatchPatternDescribe(const AjPFeature feat,
 
     while(ajFeatTagval(titer, &tagnam, &tagval))
     {
-        if(embMiscMatchPattern(tagnam, describe))
+        if(embMiscMatchPatternDelimC(tagnam, describe, ",;|"))
 	{
             /* There's a match, so write to strout in a pretty format */
             if(!val)

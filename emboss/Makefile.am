@@ -14,7 +14,7 @@ endif
 
 check_PROGRAMS = acdlog acdxsd ajtest \
 complex corbatest \
-entrails giep histogramtest intconv \
+entrails entrailsbook entrailshtml entrailswiki giep histogramtest intconv \
 origsplitter origunion \
 newcoils \
 patmattest \
@@ -271,6 +271,9 @@ ajtest_SOURCES = ajtest.c
 complex_SOURCES = complex.c
 corbatest_SOURCES = corbatest.c
 entrails_SOURCES = entrails.c
+entrailsbook_SOURCES = entrailsbook.c
+entrailshtml_SOURCES = entrailshtml.c
+entrailswiki_SOURCES = entrailswiki.c
 histogramtest_SOURCES = histogramtest.c
 intconv_SOURCES = intconv.c
 origsplitter_SOURCES = origsplitter.c

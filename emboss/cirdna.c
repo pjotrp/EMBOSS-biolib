@@ -860,7 +860,7 @@ static void cirdna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 
     ajGraphSetFore(Colour);
 
-    ajGraphCircle( xDraw, yDraw, Radius );
+    ajGraphDrawCircle( xDraw, yDraw, Radius );
 
     ajStrAssignEmptyC(&posticks, "Out");
 
@@ -2217,7 +2217,7 @@ static void cirdna_DrawGroup(float xDraw, float yDraw, float posblock,
 				 postext, PosTicks, NumNames[i],
 				 Adjust[i], Colour[i]);
 		if(InterTicks)
-		    ajGraphCircle(xDraw, yDraw, Radius);
+		    ajGraphDrawCircle(xDraw, yDraw, Radius);
 	    }
 	    else
 		cirdna_DrawTicks(xDraw, yDraw, RealLength, RadiusMax,

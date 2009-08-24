@@ -724,7 +724,7 @@ static void cpgplot_dumpfeatout(AjPFeattabOut featout, const AjBool *thresh,
 			    score, strand, frame);
     }
     ajFeatSortByStart(feattable);
-    ajFeatWrite (featout, feattable);
+    ajFeattableWrite (featout, feattable);
     ajFeattableDel(&feattable);
 
     ajStrDel(&source);

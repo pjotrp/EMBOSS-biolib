@@ -170,7 +170,7 @@ int main(int argc, char **argv)
 		    {
 			ajPolToRec(wradius-wheelgap,oldangle,&xx1,&yy1);
 			ajPolToRec(wradius,angle,&xx2,&yy2);
-			ajGraphLine(xx1,yy1,xx2,yy2);
+			ajGraphDrawLine(xx1,yy1,xx2,yy2);
 		    }
 		    startloop=ajFalse;
 		}
@@ -179,7 +179,7 @@ int main(int argc, char **argv)
 		    {
 			ajPolToRec(wradius,oldangle,&xx1,&yy1);
 			ajPolToRec(wradius,angle,&xx2,&yy2);
-			ajGraphLine(xx1,yy1,xx2,yy2);
+			ajGraphDrawLine(xx1,yy1,xx2,yy2);
 		    }
 	    }
 	    pepwheel_plotresidue(*(ajStrGetPtr(substr)+lc),radius+resgap,angle,
@@ -242,7 +242,7 @@ static void pepwheel_drawocta(float x, float y, float size)
 
 
     for(i=0;i<8;++i)
-	ajGraphLine(x+polyx[i]*size,y+polyy[i]*size,x+polyx[i+1]*size,
+	ajGraphDrawLine(x+polyx[i]*size,y+polyy[i]*size,x+polyx[i+1]*size,
 			y+polyy[i+1]*size);
 
     return;
@@ -292,7 +292,7 @@ static void pepwheel_plotresidue(char c, float r, float a, const char *squares,
     if(strstr(squares,cs))
     {
 	ajGraphSetFore(AJB_BLUE);
-	ajGraphBox(x-(float)0.025,y-(float)0.022,(float)0.05);
+	ajGraphDrawBox(x-(float)0.025,y-(float)0.022,(float)0.05);
     }
 
     if(strstr(octags,cs))
@@ -304,10 +304,10 @@ static void pepwheel_plotresidue(char c, float r, float a, const char *squares,
     if(strstr(diamonds,cs))
     {
 	ajGraphSetFore(AJB_RED);
-	ajGraphDia(x-(float)0.042,y-(float)0.04,(float)0.085);
+	ajGraphDrawDia(x-(float)0.042,y-(float)0.04,(float)0.085);
     }
 
-    ajGraphText(x,y,cs,0.5);
+    ajGraphDrawText(x,y,cs,0.5);
     ajGraphSetFore(AJB_BLACK);
  
     return;

@@ -353,13 +353,13 @@ int main(int argc, char **argv)
 	    }
 	    residue[0] = *ptr;
 
-	    ajGraphTextEnd((float)(count)+(float)2.0,yy1,residue);
+	    ajGraphDrawTextAtEnd((float)(count)+(float)2.0,yy1,residue);
 
 	    if(ii>1 && ii < ajStrGetLen(sstr))
 	    {
 		yp1 = yy1+yincr + (bend[ii]*bendfactor);
 		yp2 = yy1+yincr + (bend[ii+1]*bendfactor);
-		ajGraphLine((float)count+(float)1.5,yp1,
+		ajGraphDrawLine((float)count+(float)1.5,yp1,
 			    (float)(count)+(float)2.5,yp2);
 	    }
 
@@ -371,11 +371,11 @@ int main(int argc, char **argv)
 	    {
 		yp1 = yy1+yincr + (curve[ii]*curvefactor);
 		yp2 = yy1+yincr + (curve[ii+1]*curvefactor);
-		ajGraphLine((float)count+(float)1.7,yp1,
+		ajGraphDrawLine((float)count+(float)1.7,yp1,
 			    (float)(count)+(float)2.3,yp2);
 	    }
 
-	    ajGraphLine((float)count+(float)1.5,yy1+yincr,
+	    ajGraphDrawLine((float)count+(float)1.5,yy1+yincr,
 			(float)(count)+(float)2.5,yy1+yincr);
 
 	    count++;

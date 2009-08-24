@@ -135,7 +135,7 @@ int main(int argc, char **argv)
     if(report)
     {
 	ajFmtPrintS(&hdr, "Window size = %d\n",window);
-	ajReportSetHeader(report,hdr);
+	ajReportSetHeaderS(report,hdr);
     }
 
     AJNEW0(density);

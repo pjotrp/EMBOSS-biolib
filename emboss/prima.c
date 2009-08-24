@@ -264,7 +264,7 @@ int main(int argc, char **argv)
     AJCNEW0(energy, seqlen);
 
     /* Initialise Tm calculation arrays */
-    ajTm2(ajStrGetPtr(substr),0,seqlen,saltconc,dnaconc,1,
+    ajMeltTempSave(ajStrGetPtr(substr),0,seqlen,saltconc,dnaconc,1,
 	  &entropy, &enthalpy, &energy);
 
 
@@ -323,7 +323,7 @@ int main(int argc, char **argv)
 	ajStrAssignSubC(&p1,ajStrGetPtr(substr),targetstart-begin,targetend-begin);
 
 	prodGC = ajMeltGC(substr,seqlen);
-	prodTm = ajProdTm(prodGC,saltconc,seqlen);
+	prodTm = ajMeltTempProd(prodGC,saltconc,seqlen);
 
 	if(prodGC<minprodGCcont || prodGC>maxprodGCcont)
 	{
@@ -365,7 +365,7 @@ int main(int argc, char **argv)
 	    v1 = endpos-startpos+1;
 	    ajStrAssignSubC(&p1,ajStrGetPtr(substr),startpos,endpos);
 	    prodGC = ajMeltGC(p1,v1);
-	    prodTm = ajProdTm(prodGC,saltconc,v1);
+	    prodTm = ajMeltTempProd(prodGC,saltconc,v1);
 
 	    if(prodGC<minprodGCcont || prodGC>maxprodGCcont)
 		continue;
@@ -707,9 +707,9 @@ static void prima_testproduct(const AjPStr seqstr,
 	ajStrAssignSubC(&substr,ajStrGetPtr(seqstr),forpstart,forpend);
 	thisplen = minprimerlen + i;
 
-	primerTm = ajTm2("",forpstart,thisplen, saltconc,
-			 dnaconc, isDNA,
-			 &entropy, &enthalpy, &energy);
+	primerTm = ajMeltTempSave("",forpstart,thisplen, saltconc,
+                                  dnaconc, isDNA,
+                                  &entropy, &enthalpy, &energy);
 
 	/* If temp out of range ignore rest of loop iteration */
 	if(primerTm<minprimerTm || primerTm>maxprimerTm)
@@ -756,9 +756,9 @@ static void prima_testproduct(const AjPStr seqstr,
 
 	thisplen = minprimerlen + i;
 
-	primerTm = ajTm2("",revpstart,thisplen, saltconc,
-			 dnaconc, isDNA,
-			 &entropy, &enthalpy, &energy);
+	primerTm = ajMeltTempSave("",revpstart,thisplen, saltconc,
+                                  dnaconc, isDNA,
+                                  &entropy, &enthalpy, &energy);
 	/* If temp out of range ignore rest of loop iteration */
 	if(primerTm<minprimerTm || primerTm>maxprimerTm)
 	    continue;
@@ -1210,8 +1210,9 @@ static void prima_testtarget(const AjPStr seqstr, const AjPStr revstr,
 	    ajStrAssignSubC(&fstr, ajStrGetPtr(seqstr), forstart, forend);
 
 	    thisplen = ajStrGetLen(fstr);
-	    primerTm =ajTm2("",forstart,thisplen, saltconc, dnaconc, isDNA,
-			    &entropy, &enthalpy, &energy);
+	    primerTm = ajMeltTempSave("",forstart,thisplen,
+                                      saltconc, dnaconc, isDNA,
+                                      &entropy, &enthalpy, &energy);
 
 	    if(primerTm <minprimerTm || primerTm>maxprimerTm)
 		continue;
@@ -1281,8 +1282,9 @@ static void prima_testtarget(const AjPStr seqstr, const AjPStr revstr,
 		ajSeqstrReverse(&rstr);
 
 		thisplen = ajStrGetLen(rstr);
-		primerTm = ajTm2("", revstart, thisplen, saltconc, dnaconc, 1,
-				 &entropy, &enthalpy, &energy);
+		primerTm = ajMeltTempSave("", revstart, thisplen,
+                                          saltconc, dnaconc, 1,
+                                          &entropy, &enthalpy, &energy);
 
 		if(primerTm <minprimerTm || primerTm>maxprimerTm)
 		    continue;
@@ -1361,7 +1363,7 @@ static void prima_testtarget(const AjPStr seqstr, const AjPStr revstr,
     f->primGCcont = fgc;
     f->score      = fsc;
     f->prodGC     = prodgc;
-    f->prodTm     = ajProdTm(prodgc,saltconc,revstart-(forstart+flen));
+    f->prodTm     = ajMeltTempProd(prodgc,saltconc,revstart-(forstart+flen));
 
 
     AJNEW0(r);

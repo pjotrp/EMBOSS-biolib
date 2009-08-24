@@ -140,7 +140,7 @@ int main(int argc, char **argv)
     ajStrAssignC(&ftmiss, "region");
 
     ajFmtPrintS(&tmpstr,"Window size: %d residues\n",window);
-    ajReportSetHeader(report, tmpstr);
+    ajReportSetHeaderS(report, tmpstr);
     framelist = ajListstrNew();
     
     while(ajSeqallNext(seqall, &seq))
@@ -220,7 +220,7 @@ int main(int argc, char **argv)
 	    /*
 	    ajFmtPrintS(&tmpstr,"Prediction starts at %d\n",
 			startcoil + begin);
-	    ajReportAppendSubHeader(report, tmpstr);
+	    ajReportAppendSubheaderS(report, tmpstr);
 	    */
 	}
 
@@ -297,7 +297,7 @@ int main(int argc, char **argv)
 			/*
 			ajFmtPrintS(&tmpstr,"Prediction starts at %d\n",
 				    startcoil + begin);
-			ajReportAppendSubHeader(report, tmpstr);
+			ajReportAppendSubheaderS(report, tmpstr);
 			ajFmtPrintF(outf,"\nPrediction starts at %d\n",
 			startcoil+begin);
 			*/

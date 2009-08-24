@@ -154,7 +154,7 @@ int main(int argc, char **argv)
 	    ajFmtPrintS(&txt,"%d",i+1);
 
 	    ajGraphSetFore(RED);
-	    ajGraphText(x-xinc,y-yinc-1,ajStrGetPtr(txt),0.5);
+	    ajGraphDrawText(x-xinc,y-yinc-1,ajStrGetPtr(txt),0.5);
 
 	    for(j=0;j<4;++j)
 	    {
@@ -231,7 +231,7 @@ static void pepnet_drawocta(float x, float y, float size)
     ajint i;
 
     for(i=0;i<8;++i)
-	ajGraphLine(x+polyx[i]*size,y+polyy[i]*size,x+polyx[i+1]*size,
+	ajGraphDrawLine(x+polyx[i]*size,y+polyy[i]*size,x+polyx[i+1]*size,
 			y+polyy[i+1]*size);
 
     return;
@@ -267,7 +267,7 @@ static void pepnet_plotresidue(char c, float x, float y, const char *squares,
     if(strstr(squares,cs))
     {
 	ajGraphSetFore(BLUE);
-	ajGraphBox(x-(float)1.5,y-(float)1.32,(float)3.0);
+	ajGraphDrawBox(x-(float)1.5,y-(float)1.32,(float)3.0);
     }
 
     if(strstr(octags,cs))
@@ -279,10 +279,10 @@ static void pepnet_plotresidue(char c, float x, float y, const char *squares,
     if(strstr(diamonds,cs))
     {
 	ajGraphSetFore(RED);
-	ajGraphDia(x-(float)2.5,y-(float)2.25,(float)5.0);
+	ajGraphDrawDia(x-(float)2.5,y-(float)2.25,(float)5.0);
     }
 
-    ajGraphText(x,y,cs,0.5);
+    ajGraphDrawText(x,y,cs,0.5);
     ajGraphSetFore(GREEN);
 
     return;

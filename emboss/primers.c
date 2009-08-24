@@ -611,12 +611,12 @@ static void primers_send_range(FILE * stream,
   ajuint n;
   ajuint start, end;
 
-  if (ajRangeNumber(value)) {
+  if (ajRangeGetSize(value)) {
       (void) ajFmtPrintS(&str, "%s=", tag);
       primers_write(str, stream);
       ajStrSetClear(&str);
-      for (n=0; n < ajRangeNumber(value); n++) {
-          ajRangeValues(value, n, &start, &end);
+      for (n=0; n < ajRangeGetSize(value); n++) {
+          ajRangeElementGetValues(value, n, &start, &end);
           (void) ajFmtPrintS(&str, "%u,%u ", start, end-start+1);
           primers_write(str, stream);
 	  ajStrSetClear(&str);
@@ -648,12 +648,12 @@ static void primers_send_range(FILE * stream,
 //  ajint n;
 //  ajint start, end;
 //
-//  if (ajRangeNumber(value)) {
+//  if (ajRangeGetSize(value)) {
 //      (void) ajFmtPrintS(&str, "%s=", tag);
 //      primers_write(str, stream);
 //      ajStrSetClear(&str);
-//      for (n=0; n < ajRangeNumber(value); n++) {
-//          ajRangeValues(value, n, &start, &end);
+//      for (n=0; n < ajRangeGetSize(value); n++) {
+//          ajRangeElementGetValues(value, n, &start, &end);
 //          (void) ajFmtPrintS(&str, "%d-%d ", start, end);
 //          primers_write(str, stream);
 //	  ajStrSetClear(&str);

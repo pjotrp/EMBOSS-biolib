@@ -114,8 +114,8 @@ int main(int argc, char **argv)
 	embWordMatchListDelete(&matchlist); /* free the match structures */
     }
     ajAlignWrite(align);
-    ajFeatWrite(seq1out, Tab1);
-    ajFeatWrite(seq2out, Tab2);
+    ajFeattableWrite(seq1out, Tab1);
+    ajFeattableWrite(seq2out, Tab2);
 
     ajAlignClose(align);
     ajAlignDel(&align);

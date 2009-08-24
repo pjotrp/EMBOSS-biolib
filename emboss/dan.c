@@ -289,7 +289,7 @@ static void dan_findgc(const AjPStr strand, ajint begin, ajint end,
 	ajStrAssignSubC(&substr, ajStrGetPtr(strand), ibegin, iend);
 
 	xa[*np]  = (float)(i+1);
-	ta[*np]  = ajTm(substr, (iend-ibegin)+1, shift, salt, dna, isDNA);
+	ta[*np]  = ajMeltTemp(substr, (iend-ibegin)+1, shift, salt, dna, isDNA);
 	cga[*np] = (float)100.0 * ajMeltGC(substr, window);
 
 	if(dothermo)
@@ -425,7 +425,7 @@ static void dan_reportgc(const AjPSeq seq, AjPFeattable TabRpt,
 	ajStrAssignSubS(&substr, ajSeqGetSeqS(seq), ibegin, iend);
 
 	xa[*np]  = (float)(i+1);
-	ta[*np]  = ajTm(substr, (iend-ibegin)+1, shift, salt, dna, isDNA);
+	ta[*np]  = ajMeltTemp(substr, (iend-ibegin)+1, shift, salt, dna, isDNA);
 	cga[*np] = (float) 100.0 * ajMeltGC(substr, window);
 
 	if(dothermo)

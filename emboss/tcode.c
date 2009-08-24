@@ -706,7 +706,7 @@ static void tcode_report(AjPReport report, const AjPInt from, const AjPInt to,
     source = ajStrNew();
     
     ajFmtPrintS(&tmpstr,"Fickett TESTCODE statistic");
-    ajReportSetHeader(report,tmpstr);
+    ajReportSetHeaderS(report,tmpstr);
 
 
     for(i=0;i<npoints;++i)

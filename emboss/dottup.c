@@ -154,7 +154,7 @@ int main(int argc, char **argv)
 
 	if(boxit)
 	{
-	    ajGraphRect(fbegin1, fbegin2, fend1, fend2);
+	    ajGraphDrawRect(fbegin1, fbegin2, fend1, fend2);
 	    i = 0;
 	    while(acceptableticksx[i]*numbofticks < len1)
 		i++;
@@ -166,28 +166,28 @@ int main(int argc, char **argv)
 
 	    ticklen = xmargin*0.1;
 	    onefifth  = xmargin*0.2;
-	    ajGraphTextMid(fbegin1+flen1*0.5,fbegin1-(onefifth*3.0),
+	    ajGraphDrawTextAtMid(fbegin1+flen1*0.5,fbegin1-(onefifth*3.0),
 			   ajGraphGetYTitleC(graph));
 
 	    if(len2/len1 > 10 )
 	    {
 		/* a lot smaller then just label start and end */
-		ajGraphLine(fbegin1,fbegin2,fbegin1,
+		ajGraphDrawLine(fbegin1,fbegin2,fbegin1,
 			    fbegin2-ticklen);
 		sprintf(ptr,"%d",ajSeqGetOffset(seq1));
-		ajGraphTextMid(fbegin1,fbegin2-(onefifth),ptr);
+		ajGraphDrawTextAtMid(fbegin1,fbegin2-(onefifth),ptr);
 		
-		ajGraphLine(fend1,fbegin2,
+		ajGraphDrawLine(fend1,fbegin2,
 			    fend1,fbegin2-ticklen);
 		sprintf(ptr,"%d",end1);
-		ajGraphTextMid(fend1,fbegin2-(onefifth),ptr);
+		ajGraphDrawTextAtMid(fend1,fbegin2-(onefifth),ptr);
 	    }
 	    else
 		for(k=fbegin1;k<fend1;k+=tickgap)
 		{
-		    ajGraphLine(k,fbegin2,k,fbegin2-ticklen);
+		    ajGraphDrawLine(k,fbegin2,k,fbegin2-ticklen);
 		    sprintf(ptr,"%d",(ajint)k);
-		    ajGraphTextMid( k,fbegin2-(onefifth),ptr);
+		    ajGraphDrawTextAtMid( k,fbegin2-(onefifth),ptr);
 		}
 
 	    i = 0;
@@ -197,7 +197,7 @@ int main(int argc, char **argv)
 	    tickgap   = (float) acceptableticks[i];
 	    ticklen   = ymargin*(float)0.1;
 	    onefifth  = ymargin*(float)0.2;
-	    ajGraphTextLine(fbegin1-(onefifth*(float)4.),
+	    ajGraphDrawTextOnLine(fbegin1-(onefifth*(float)4.),
 			    fbegin2+flen2*(float)0.5,
 			    fbegin2-(onefifth*(float)4.),
 			    fbegin2+flen2,
@@ -206,22 +206,22 @@ int main(int argc, char **argv)
 	    if(len1/len2 > 10 )
 	    {
 		/* a lot smaller then just label start and end */
-		ajGraphLine(fbegin1,fbegin2,fbegin1-ticklen,
+		ajGraphDrawLine(fbegin1,fbegin2,fbegin1-ticklen,
 			    fbegin2);
 		sprintf(ptr,"%d",ajSeqGetOffset(seq2));
-		ajGraphTextEnd(fbegin1-(onefifth),fbegin2,ptr);
+		ajGraphDrawTextAtEnd(fbegin1-(onefifth),fbegin2,ptr);
 
-		ajGraphLine(fbegin1,fend2,fbegin1-ticklen,
+		ajGraphDrawLine(fbegin1,fend2,fbegin1-ticklen,
 			    fend2);
 		sprintf(ptr,"%d",end2);
-		ajGraphTextEnd(fbegin2-(onefifth),fend2,ptr);
+		ajGraphDrawTextAtEnd(fbegin2-(onefifth),fend2,ptr);
 	    }
 	    else
 		for(k=fbegin2;k<fend2;k+=tickgap)
 		{
-		    ajGraphLine(fbegin1,k,fbegin1-ticklen,k);
+		    ajGraphDrawLine(fbegin1,k,fbegin1-ticklen,k);
 		    sprintf(ptr,"%d",(ajint)k);
-		    ajGraphTextEnd(fbegin1-(onefifth),k,ptr);
+		    ajGraphDrawTextAtEnd(fbegin1-(onefifth),k,ptr);
 		}
 	}
     }
@@ -275,7 +275,7 @@ static void dottup_drawPlotlines(void *x, void *cl)
     x2 += (PLFLT)p->length -1.0;
     y2 += (PLFLT)p->length -1.0;
 
-    ajGraphLine(x1, y1, x2, y2);
+    ajGraphDrawLine(x1, y1, x2, y2);
 
     return;
 }
