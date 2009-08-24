@@ -31,13 +31,14 @@
 #define RNAMELTFILE "Erna.melt"
 #define MAXMELTSAVE 10000
 
-static AjMelt meltTable[256];
+static AjOMelt meltTable[256];
 static AjBool meltInitDone = AJFALSE;
 
 static ajint aj_melt_savesize   = 0;
 static AjBool aj_melt_saveinit  = 0;
 static AjBool aj_melt_saveshift = 1;
 
+static float meltProbScore(const AjPStr seq1, const AjPStr seq2, ajint len);
 
 /* @func ajMeltInit **********************************************************
 **
@@ -201,7 +202,7 @@ void ajMeltInit(AjBool isdna, ajint savesize)
 
 
 
-/* @func ajProbScore **********************************************************
+/* @funcstatic meltProbScore ***************************************************
 **
 ** Gives a score for the probability of two sequences being the same.
 ** The sequences are the same length.
@@ -215,7 +216,7 @@ void ajMeltInit(AjBool isdna, ajint savesize)
 ** @return [float] Match probability
 ******************************************************************************/
 
-float ajProbScore(const AjPStr seq1, const AjPStr seq2, ajint len)
+static float meltProbScore(const AjPStr seq1, const AjPStr seq2, ajint len)
 {
     ajint mlen;
     float score;
@@ -350,7 +351,7 @@ float ajMeltEnergy(const AjPStr strand, ajint len, ajint shift, AjBool isDNA,
 	for(j=0;j<16;++j)
 	{
 	    ajStrAssignSubC(&line,p+ipos,0,1);
-	    ident = ajProbScore(meltTable[j].pair, line, 2);
+	    ident = meltProbScore(meltTable[j].pair, line, 2);
 
 	    if(ident>0.9)
 	    {
@@ -387,7 +388,7 @@ float ajMeltEnergy(const AjPStr strand, ajint len, ajint shift, AjBool isDNA,
 
 
 
-/* @func ajTm *****************************************************************
+/* @func ajMeltTemp ************************************************************
 **
 ** Calculates melt temperature of DNA or RNA
 ** An optional shift is given for stepping along the sequence and loading
@@ -403,8 +404,8 @@ float ajMeltEnergy(const AjPStr strand, ajint len, ajint shift, AjBool isDNA,
 ** @return [float] Melt temperature
 ******************************************************************************/
 
-float ajTm(const AjPStr strand, ajint len, ajint shift, float saltconc,
-	      float DNAconc, AjBool isDNA)
+float ajMeltTemp(const AjPStr strand, ajint len, ajint shift, float saltconc,
+                 float DNAconc, AjBool isDNA)
 {
     double entropy;
     double enthalpy;
@@ -434,6 +435,20 @@ float ajTm(const AjPStr strand, ajint len, ajint shift, float saltconc,
     Tm  = (float) dTm;
 
     return Tm;
+}
+
+
+
+/* @obsolete ajTm
+** @rename ajMeltTemp
+*/
+
+__deprecated float ajTm(const AjPStr strand, ajint len,
+                        ajint shift, float saltconc,
+                        float DNAconc, AjBool isDNA)
+{
+
+    return ajMeltTemp(strand, len, shift, saltconc, DNAconc, isDNA);
 }
 
 
@@ -529,7 +544,7 @@ float ajMeltEnergy2(const char *strand, ajint pos, ajint len, AjBool isDNA,
 
 	for(j=0;j<16;++j)
 	{
-	    ident = ajProbScore(meltTable[j].pair,line,2);
+	    ident = meltProbScore(meltTable[j].pair,line,2);
 
 	    if(ident>.9)
 	    {
@@ -557,7 +572,7 @@ float ajMeltEnergy2(const char *strand, ajint pos, ajint len, AjBool isDNA,
 
 
 
-/* @func ajTm2 ****************************************************************
+/* @func ajMeltTempSave ********************************************************
 **
 ** Calculates melt temperature of DNA or RNA
 **
@@ -574,9 +589,9 @@ float ajMeltEnergy2(const char *strand, ajint pos, ajint len, AjBool isDNA,
 ** @return [float] Melt temperature
 ******************************************************************************/
 
-float ajTm2(const char *strand, ajint pos, ajint len, float saltconc,
-	    float DNAconc, AjBool isDNA,
-	    float **saveentr, float **saveenth, float **saveener)
+float ajMeltTempSave(const char *strand, ajint pos, ajint len, float saltconc,
+                     float DNAconc, AjBool isDNA,
+                     float **saveentr, float **saveenth, float **saveener)
 {
     double entropy;
     double enthalpy;
@@ -617,7 +632,25 @@ float ajTm2(const char *strand, ajint pos, ajint len, float saltconc,
 
 
 
-/* @func ajProdTm *************************************************************
+/* @obsolete ajTm2
+** @rename ajMeltTempSave
+*/
+
+__deprecated float ajTm2(const char *strand, ajint pos,
+                         ajint len, float saltconc,
+	    float DNAconc, AjBool isDNA,
+	    float **saveentr, float **saveenth, float **saveener)
+{
+
+    return ajMeltTempSave(strand, pos, len, saltconc, DNAconc, isDNA,
+                          saveentr, saveenth, saveener);
+}
+
+
+
+
+
+/* @func ajMeltTempProd ********************************************************
 **
 ** Calculates product melt temperature of DNA
 **
@@ -628,7 +661,7 @@ float ajTm2(const char *strand, ajint pos, ajint len, float saltconc,
 ** @return [float] Melt temperature
 ******************************************************************************/
 
-float ajProdTm(float gc, float saltconc, ajint len)
+float ajMeltTempProd(float gc, float saltconc, ajint len)
 {
     float ptm;
     float LogSalt;
@@ -639,6 +672,17 @@ float ajProdTm(float gc, float saltconc, ajint len)
     ptm = (float)81.5 - (float)(675/len) + LogSalt + ((float)0.41 * gc);
 
     return ptm;
+}
+
+
+
+/* @obsolete ajProdTm
+** @rename ajMeltTempProd
+*/
+
+__deprecated float ajProdTm(float gc, float saltconc, ajint len)
+{
+    return ajMeltTempProd(gc, saltconc, len);
 }
 
 

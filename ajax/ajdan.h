@@ -8,16 +8,31 @@ extern "C"
 
 #include "ajax.h"
 
-typedef struct AjMelt AjMelt;
-struct AjMelt
+/* @data AjPMelt **************************************************************
+**
+** Melting values for dinucleotides
+**
+** @alias AjSMelt
+** @alias AjOMelt
+**
+** @attr pair [AjPStr] Dinucleotide
+** @attr enthalpy [float] Enthalpy
+** @attr entropy [float] Entropy
+** @attr energy [float] Free energy
+** @attr Padding [char[4]] Padding
+**
+*/
+
+typedef struct AjSMelt
 {
     AjPStr pair;
     float enthalpy;
     float entropy;
     float energy;
     char Padding[4];
-};
+} AjOMelt;
 
+#define AjPMelt AjOMelt*
 
 
 
@@ -27,7 +42,6 @@ struct AjMelt
 
 void  ajMeltExit(void);
 void  ajMeltInit(AjBool isdna, ajint savesize);
-float ajProbScore(const AjPStr seq1, const AjPStr seq2, ajint len);
 float ajMeltEnergy(const AjPStr strand, ajint len,
 		   ajint shift, AjBool isDNA,
 		   AjBool maySave, float *enthalpy, float *entropy);
@@ -35,14 +49,23 @@ float ajMeltEnergy2(const char *strand, ajint pos, ajint len,
 		    AjBool isDNA,
 		    float *enthalpy, float *entropy,
 		    float **saveentr, float **saveenth, float **saveener);
-float ajTm(const AjPStr strand, ajint len, ajint shift, float saltconc,
+float ajMeltTemp(const AjPStr strand, ajint len, ajint shift, float saltconc,
 	   float DNAconc, AjBool isDNA);
-float ajTm2(const char *strand, ajint pos, ajint len, float saltconc,
+float ajMeltTempSave(const char *strand, ajint pos, ajint len, float saltconc,
 	    float DNAconc, AjBool isDNA,
 	    float **saveentr, float **saveenth, float **saveener);
 float ajMeltGC(const AjPStr strand, ajint len);
-float ajProdTm(float gc, float saltconc, ajint len);
+float ajMeltTempProd(float gc, float saltconc, ajint len);
 float ajAnneal(float tmprimer, float tmproduct);
+
+__deprecated float ajTm(const AjPStr strand, ajint len,
+                        ajint shift, float saltconc,
+                        float DNAconc, AjBool isDNA);
+__deprecated float ajTm2(const char *strand, ajint pos,
+                         ajint len, float saltconc,
+                         float DNAconc, AjBool isDNA,
+                         float **saveentr, float **saveenth, float **saveener);
+__deprecated float ajProdTm(float gc, float saltconc, ajint len);
 
 /*
 ** End of prototype definitions
