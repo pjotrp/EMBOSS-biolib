@@ -112,38 +112,37 @@ void         ajReportClose (AjPReport pthys);
 void         ajReportDel (AjPReport* pthys);
 void         ajReportDummyFunction(void);
 void         ajReportExit(void);
-void         ajReportFileAdd (AjPReport thys,
-			      AjPFile file, const AjPStr type);
+void         ajReportAddFileF (AjPReport thys,
+                               AjPFile file, const AjPStr type);
 AjBool       ajReportFindFormat (const AjPStr format, ajint* iformat);
 AjBool       ajReportFormatDefault (AjPStr* pformat);
-ajint        ajReportLists (const AjPReport thys,
-			    AjPStr** types, AjPStr** names,
-			    AjPStr** prints, ajuint** tagsizes);
 AjPReport    ajReportNew (void);
 AjBool       ajReportOpen (AjPReport thys, const AjPStr name);
 void         ajReportPrintFormat (AjPFile outf, AjBool full);
-const AjPStr ajReportSeqName (const AjPReport thys, const AjPSeq seq);
-void         ajReportAppendHeader (AjPReport thys, const AjPStr header);
+void         ajReportPrintbookFormat (AjPFile outf);
+void         ajReportPrintwikiFormat (AjPFile outf);
+const AjPStr ajReportGetSeqnameSeq (const AjPReport thys, const AjPSeq seq);
+void         ajReportAppendHeaderS (AjPReport thys, const AjPStr header);
 void         ajReportAppendHeaderC (AjPReport thys, const char* header);
-void         ajReportSetHeader (AjPReport thys, const AjPStr header);
+void         ajReportSetHeaderS (AjPReport thys, const AjPStr header);
 void         ajReportSetHeaderC (AjPReport thys, const char* header);
-void         ajReportAppendSubHeader (AjPReport thys, const AjPStr header);
-void         ajReportAppendSubHeaderC (AjPReport thys, const char* header);
-void         ajReportSetSubHeader (AjPReport thys, const AjPStr header);
-void         ajReportSetSubHeaderC (AjPReport thys, const char* header);
+void         ajReportAppendSubheaderS (AjPReport thys, const AjPStr header);
+void         ajReportAppendSubheaderC (AjPReport thys, const char* header);
+void         ajReportSetSubheaderS (AjPReport thys, const AjPStr header);
+void         ajReportSetSubheaderC (AjPReport thys, const char* header);
 void         ajReportSetSeqstats(AjPReport thys, const AjPSeqall seqall);
 void         ajReportSetSeqsetstats(AjPReport thys, const AjPSeqset seqset);
 void         ajReportSetStatistics(AjPReport thys, ajlong totseqs,
                                    ajlong totlength);
-AjBool       ajReportSetTags (AjPReport thys, const AjPStr taglist);
-void         ajReportAppendTail (AjPReport thys, const AjPStr tail);
+AjBool       ajReportSetTagsS (AjPReport thys, const AjPStr taglist);
+void         ajReportAppendTailS (AjPReport thys, const AjPStr tail);
 void         ajReportAppendTailC (AjPReport thys, const char* tail);
-void         ajReportSetTail (AjPReport thys, const AjPStr tail);
+void         ajReportSetTailS (AjPReport thys, const AjPStr tail);
 void         ajReportSetTailC (AjPReport thys, const char* tail);
-void         ajReportAppendSubTail (AjPReport thys, const AjPStr tail);
-void         ajReportAppendSubTailC (AjPReport thys, const char* tail);
-void         ajReportSetSubTail (AjPReport thys, const AjPStr tail);
-void         ajReportSetSubTailC (AjPReport thys, const char* tail);
+void         ajReportAppendSubtailS (AjPReport thys, const AjPStr tail);
+void         ajReportAppendSubtailC (AjPReport thys, const char* tail);
+void         ajReportSetSubtailS (AjPReport thys, const AjPStr tail);
+void         ajReportSetSubtailC (AjPReport thys, const char* tail);
 void         ajReportSetType (AjPReport thys,
 			      const AjPFeattable ftable, const AjPSeq seq);
 AjBool       ajReportValid (AjPReport thys);
@@ -154,6 +153,33 @@ void         ajReportWriteHeader (AjPReport thys,
 void         ajReportWriteTail (AjPReport thys,
 				const AjPFeattable ftable, const AjPSeq seq);
 
+__deprecated void     ajReportFileAdd (AjPReport thys,
+                                       AjPFile file, const AjPStr type);
+__deprecated void     ajReportAppendSubHeader (AjPReport thys,
+                                               const AjPStr header);
+__deprecated void     ajReportAppendSubHeaderC (AjPReport thys,
+                                                const char* header);
+__deprecated void     ajReportSetSubHeader (AjPReport thys,
+                                            const AjPStr header);
+__deprecated void     ajReportSetSubHeaderC (AjPReport thys,
+                                             const char* header);
+__deprecated AjBool   ajReportSetTags (AjPReport thys,
+                                       const AjPStr taglist);
+__deprecated void     ajReportAppendTail (AjPReport thys, const AjPStr tail);
+__deprecated void     ajReportSetTail (AjPReport thys, const AjPStr tail);
+__deprecated void     ajReportAppendHeader (AjPReport thys,
+                                            const AjPStr header);
+__deprecated void     ajReportSetHeader (AjPReport thys, const AjPStr header);
+__deprecated void     ajReportAppendSubTail(AjPReport thys, const AjPStr tail);
+__deprecated void     ajReportAppendSubTailC (AjPReport thys, const char* tail);
+__deprecated void     ajReportSetSubTail (AjPReport thys, const AjPStr tail);
+__deprecated void     ajReportSetSubTailC (AjPReport thys, const char* tail);
+__deprecated const AjPStr ajReportSeqName (const AjPReport thys,
+                                           const AjPSeq seq);
+__deprecated ajint    ajReportLists (const AjPReport thys,
+                                     AjPStr** types, AjPStr** names,
+                                     AjPStr** prints, ajuint** tagsizes);
+    
 /*
 ** End of prototype definitions
 */
