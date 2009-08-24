@@ -348,6 +348,9 @@ typedef struct AjSSeqQuery {
 ** Also holds information on a selected sequence range and other
 ** options.
 **
+** @alias AjSSeqin
+** @alias AjOSeqin
+**
 ** @new ajSeqinNew Default constructor
 ** @delete ajSeqinDel Default destructor
 ** @modify ajSeqinUsa Resets using a new USA
@@ -466,6 +469,9 @@ typedef struct AjSSeqin {
 **
 ** Sequence features can also be stored, but for efficiency reasons
 ** features are turned off by default.
+**
+** @alias AjOSeq
+** @alias AjSSeq
 **
 ** @attr Name [AjPStr] Name (ID)
 ** @attr Acc [AjPStr] Accession number (primary only)
@@ -667,6 +673,9 @@ typedef struct AjSSeqset {
 **
 ** Inherits an AjPSeq but allows more sequences to be read from the
 ** same input by also inheriting the AjPSeqin input object.
+**
+** @alias AjSSeqall
+** @alias AjOSeqall
 **
 ** @new ajSeqallNew Default constructor
 ** @delete ajSeqallDel Default destructor

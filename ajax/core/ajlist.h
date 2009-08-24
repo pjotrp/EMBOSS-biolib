@@ -14,6 +14,9 @@ enum AjEListType {ajEListAny, ajEListStr};
 **
 ** Substructure of AjPList
 **
+** @alias AjSListNode
+** @alias AjOListNode
+**
 ** @attr Next [struct AjSListNode*] next item
 ** @attr Prev [struct AjSListNode*] previous item
 ** @attr Item [void*] data value
@@ -37,6 +40,9 @@ typedef struct AjSListNode {
 ** of AjPStr values. In general, these functions are the same. Many are
 ** provided for ease of use to save remembering which calls need special cases.
 **
+** @alias AjSList
+** @alias AjOList
+**
 ** @attr First [AjPListNode] first node
 ** @attr Last [AjPListNode] dummy last node
 ** @attr Count [ajuint] Number of nodes
@@ -57,6 +63,8 @@ typedef struct AjSList {
 **
 ** AJAX list iterator data structure
 **
+** @alias AjSIList
+** @alias AjOIList
 **
 ** @attr Head [AjPList] Head of modifiable list
 ** @attr ReadHead [const AjPList] Head of read-only list
