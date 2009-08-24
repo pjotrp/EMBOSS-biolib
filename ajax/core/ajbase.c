@@ -28,24 +28,35 @@
 #define IUBFILE "Ebases.iub"
 #define IUBPFILE "Eresidues.iub"
 
-typedef struct AjIUB AjIUB;
+/* @datastatic BasePIub *******************************************************
+**
+** Base codes
+**
+** @alias BaseSIub
+** @alias BaseOIub
+**
+** @attr code [AjPStr] Code
+** @attr list [AjPStr] List
+** @attr mnemonic [AjPStr] Mnemonic
+** @@
+******************************************************************************/
 
-struct AjIUB
+typedef struct BaseSIub
 {
     AjPStr code;
     AjPStr list;
     AjPStr mnemonic;
-};
+} BaseOIub;
 
+#define BasePIub BaseOIub*
 
+BaseOIub aj_base_iubS[256];	  /* Base letters and their alternatives */
+ajint    aj_base_table[256];	  /* Base letter numerical codes         */
+float    aj_base_prob[32][32];    /* Asym base probability matches       */
 
-AjIUB aj_base_iubS[256];	/* Base letters and their alternatives */
-ajint aj_base_table[256];	/* Base letter numerical codes         */
-float aj_base_prob[32][32];     /* Asym base probability matches       */
-
-AjIUB aj_residue_iubS[256];	/* Residues and their alternatives     */
-ajint aj_residue_table[256];	/* Residue numerical codes             */
-float aj_residue_prob[32][32];  /* Asym base probability matches       */
+BaseOIub aj_residue_iubS[256];	  /* Residues and their alternatives     */
+ajint    aj_residue_table[256];	  /* Residue numerical codes             */
+float    aj_residue_prob[32][32]; /* Asym base probability matches       */
 
 const char* iubbases = "XACMGRSVTWYHKDBN";
 
@@ -151,7 +162,9 @@ float  ajBaseAlphaCompare(ajint base, ajint base2)
 }
 
 
-
+/* @obsolete ajBaseProb
+** @rename ajBaseAlphaCompare
+*/
 
 __deprecated float  ajBaseProb(ajint base1, ajint base2)
 {
