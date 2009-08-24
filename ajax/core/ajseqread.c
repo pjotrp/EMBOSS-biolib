@@ -689,7 +689,7 @@ static SeqOInFormat seqInFormatDef[] =
        AJTRUE,  AJTRUE,  seqReadSwiss, AJFALSE, 0},
   {"nbrf",        "NBRF/PIR entry format",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
-       AJFALSE, AJTRUE,  seqReadNbrf, AJFALSE, 0},	/* test before NCBI */
+       AJTRUE,  AJTRUE,  seqReadNbrf, AJFALSE, 0},	/* test before NCBI */
   {"pir",         "NBRF/PIR entry format (alias)",
        AJTRUE,  AJFALSE, AJTRUE,  AJTRUE,
        AJTRUE,  AJTRUE,  seqReadNbrf, AJFALSE, 0},	/* alias for nbrf */
@@ -712,7 +712,7 @@ static SeqOInFormat seqInFormatDef[] =
   {"ncbi",        "FASTA format including NCBI-style IDs (alias)",
        AJTRUE,  AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadNcbi, AJFALSE, 0}, /* test before pearson */
-  {"gifasta",     "FASTA format including NCBI-style IDs (alias)",
+  {"gifasta",     "FASTA format including NCBI-style GIs (alias)",
        AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadGifasta, AJFALSE, 0}, /* NCBI with GI as ID*/
   {"pearson",     "Plain old fasta format with IDs not parsed further",
@@ -749,11 +749,11 @@ static SeqOInFormat seqInFormatDef[] =
        AJTRUE,  AJFALSE, AJTRUE,  AJFALSE,
        AJTRUE,  AJTRUE,  seqReadRefseq, AJFALSE, 0}, /* alias for genbank */
   {"refseqp",     "Refseq protein entry format",
-       AJFALSE, AJFALSE, AJFALSE, AJTRUE,       /* genbank forwards proteins */
+       AJFALSE, AJFALSE, AJFALSE, AJTRUE,       /* genbank format proteins */
        AJTRUE,  AJTRUE,  seqReadRefseqp, AJFALSE, 0},
   {"genpept",     "Refseq protein entry format (alias)",
-       AJTRUE,  AJFALSE, AJFALSE, AJTRUE,
-       AJTRUE,  AJTRUE,  seqReadGenpept, AJFALSE, 0}, /* alias for refseqp*/
+       AJFALSE, AJFALSE, AJFALSE, AJTRUE,
+       AJTRUE,  AJTRUE,  seqReadGenpept, AJFALSE, 0},
   {"codata",      "Codata entry format",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJTRUE,  AJTRUE,  seqReadCodata, AJFALSE, 0},
@@ -785,7 +785,7 @@ static SeqOInFormat seqInFormatDef[] =
   {"hennig86",    "Hennig86 output format",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadHennig86, AJFALSE, 0},
-  {"jackknifer",  "Jackknifer output interleaved format",
+  {"jackknifer",  "Jackknifer interleaved and non-interleaved formats",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadJackknifer, AJFALSE, 0},
   {"nexus",       "Nexus/paup interleaved format",
@@ -797,7 +797,7 @@ static SeqOInFormat seqInFormatDef[] =
   {"treecon",     "Treecon output format",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadTreecon, AJFALSE, 0},
-  {"mega",        "Mega interleaved output format",
+  {"mega",        "Mega interleaved and non-interleaved formats",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadMega, AJFALSE, 0},
   {"igstrict",    "Intelligenetics sequence format strict parser",
@@ -813,7 +813,7 @@ static SeqOInFormat seqInFormatDef[] =
        AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadText, AJFALSE, 0},/* can read almost anything */
   {"plain",       "Plain text (alias)",
-       AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+       AJTRUE,  AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadText, AJFALSE, 0},	/* alias for text */
   {"gff2",         "GFF feature file with sequence in the header",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
@@ -822,17 +822,17 @@ static SeqOInFormat seqInFormatDef[] =
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJTRUE,  AJTRUE,  seqReadGff3, AJFALSE, 0},
   {"gff",         "GFF3 feature file with sequence",
-       AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,
+       AJTRUE,  AJFALSE,  AJTRUE,  AJTRUE,
        AJTRUE,  AJTRUE,  seqReadGff3, AJFALSE, 0},
   {"stockholm",   "Stockholm (pfam) format",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadStockholm, AJFALSE, 0},
-  {"selex",       "Selex format",                /* can read almost anything */
-       AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
-       AJFALSE, AJTRUE,  seqReadSelex, AJFALSE, 0},
   {"pfam",        "Stockholm (pfam) format (alias)",
        AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadStockholm, AJFALSE, 0},
+  {"selex",       "Selex format",                /* can read almost anything */
+       AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE,  seqReadSelex, AJFALSE, 0},
   {"fitch",       "Fitch program format",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadFitch, AJFALSE, 0},
@@ -2079,8 +2079,8 @@ static ajuint seqReadFmt(AjPSeq thys, AjPSeqin seqin,
 	    if(seqin->Features && !thys->Fttable)
 	    {
 		ajStrAssignEmptyS(&seqin->Ftquery->Seqname, thys->Entryname);
-		seqin->Fttable = ajFeatUfoRead(seqin->Ftquery,
-				  seqin->Ufo);
+		seqin->Fttable = ajFeattableNewReadUfo(seqin->Ftquery,
+                                                       seqin->Ufo);
 		if (!seqin->Fttable)
 		{
 		    ajDebug("seqReadFmt features input failed UFO: '%S'\n",
@@ -2627,8 +2627,8 @@ static AjBool seqReadFastq(AjPSeq thys, AjPSeqin seqin)
 				 seqin->Text, &thys->TextPtr);
 
     while(ok &&
-          (ajStrGetLen(qualstr) < seqlen) &&
-          (!ajStrPrefixC(seqReadLine, "@")))
+          ((ajStrGetLen(qualstr) < seqlen) ||
+           ajStrGetCharFirst(seqReadLine) != '@'))
     {
         seqqualAppendWarn(&qualstr, seqReadLine);
 
@@ -2790,8 +2790,8 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
 				 seqin->Text, &thys->TextPtr);
 
     while(ok &&
-          (ajStrGetLen(qualstr) < seqlen) &&
-          (!ajStrPrefixC(seqReadLine, "@")))
+          ((ajStrGetLen(qualstr) < seqlen) ||
+           ajStrGetCharFirst(seqReadLine) != '@'))
     {
         seqqualAppendWarn(&qualstr, seqReadLine);
 
@@ -3157,8 +3157,8 @@ static AjBool seqReadFastqIllumina(AjPSeq thys, AjPSeqin seqin)
 				 seqin->Text, &thys->TextPtr);
 
     while(ok &&
-          (ajStrGetLen(qualstr) < seqlen) &&
-          (!ajStrPrefixC(seqReadLine, "@")))
+          ((ajStrGetLen(qualstr) < seqlen) ||
+           ajStrGetCharFirst(seqReadLine) != '@'))
     {
         seqqualAppendWarn(&qualstr, seqReadLine);
 
@@ -3352,8 +3352,8 @@ static AjBool seqReadFastqSolexa(AjPSeq thys, AjPSeqin seqin)
 				 seqin->Text, &thys->TextPtr);
 
     while(ok &&
-          (ajStrGetLen(qualstr) < seqlen) &&
-          (!ajStrPrefixC(seqReadLine, "@")))
+          ((ajStrGetLen(qualstr) < seqlen) ||
+           ajStrGetCharFirst(seqReadLine) != '@'))
     {
         seqqualAppendWarn(&qualstr, seqReadLine);
 
@@ -3760,7 +3760,7 @@ static AjBool seqReadNbrf(AjPSeq thys, AjPSeqin seqin)
 	ajDebug("seqin->Ftquery Handle %x\n",
 		seqin->Ftquery->Handle);
 	ajFeattableDel(&seqin->Fttable);
-	thys->Fttable = ajFeatRead(seqin->Ftquery);
+	thys->Fttable = ajFeattableNewRead(seqin->Ftquery);
 	/* ajFeattableTrace(thys->Fttable); */
 	ajFeattabInClear(seqin->Ftquery);
     }
@@ -5254,8 +5254,7 @@ static AjBool seqReadIgstrict(AjPSeq thys, AjPSeqin seqin)
 	return ajFalse;
     }
 
-    ajStrAssignS(&thys->Name, seqReadLine);
-    ajStrCutEnd(&thys->Name, 1);
+    seqSetName(&thys->Name, seqReadLine);
     bufflines++;
 
     while(ajBuffreadLineStore(buff, &seqReadLine,
@@ -5330,8 +5329,7 @@ static AjBool seqReadIg(AjPSeq thys, AjPSeqin seqin)
 	return ajFalse;
     }
 
-    ajStrAssignS(&thys->Name, seqReadLine);
-    ajStrCutEnd(&thys->Name, 1);
+    seqSetName(&thys->Name, seqReadLine);
     bufflines++;
 
     while(ajBuffreadLineStore(buff, &seqReadLine,
@@ -6651,6 +6649,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	    if(ajStrIsWhite(phyitem->Name) ||
 	       ajTableFetch(phytable, phyitem->Name))
 	    {
+                ajFilebuffSetBuffered(buff);
 		ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
 		ajDebug("phytable repeated name '%S'\n",
 			phyitem->Name);
@@ -6745,6 +6744,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 			    ajDebug("phylip format length mismatch at %d "
 				    "(length %d)\n",
 				    maxlen, ilen);
+                            ajFilebuffSetBuffered(buff);
 			    ajFilebuffResetStore(buff,
 						 seqin->Text, &thys->TextPtr);
 			    seqMsfDataDel((SeqPMsfData*) &seqin->Data);
@@ -6771,6 +6771,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	    if(!done)
 	    {
 		ajDebug("seqReadPhylip read failed, try seqReadPhylipnon\n");
+                ajFilebuffSetBuffered(buff);
 		ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
 		seqMsfDataDel((SeqPMsfData*) &seqin->Data);
 
@@ -6781,6 +6782,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	    {
 		ajDebug("Phylip format %d sequences partly read at end\n",
 			iseq-jseq);
+                ajFilebuffSetBuffered(buff);
 		ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
 		seqMsfDataDel((SeqPMsfData*) &seqin->Data);
 
@@ -9120,9 +9122,13 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
                 else if(ajStrPrefixC(token, "Full="))
                 {
                     if(descistop)
+                    {
                         Pdescstr = &descmaster->Name;
+                    }
                     else
+                    {
                         Pdescstr = &subdesc->Name;
+                    }
 
                     ajStrAssignSubS(Pdescstr, token, 5, -1);
                 }
@@ -9208,7 +9214,6 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
 
                         ajStrAppendS(Pdescstr, token);
                     }
-                    
                 }
             }
         }
@@ -9647,7 +9652,7 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
     {
  	ajDebug("EMBL FEAT TabIn %x\n", seqin->Ftquery);
 	ajFeattableDel(&thys->Fttable);
-	thys->Fttable = ajFeatRead(seqin->Ftquery);
+	thys->Fttable = ajFeattableNewRead(seqin->Ftquery);
 	/* ajFeattableTrace(thys->Fttable); */
 	ajFeattabInClear(seqin->Ftquery);
     }
@@ -10573,7 +10578,7 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
     {
 	/* ajDebug("EMBL FEAT TabIn %x\n", seqin->Ftquery); */
 	ajFeattableDel(&thys->Fttable);
-	thys->Fttable = ajFeatRead(seqin->Ftquery);
+	thys->Fttable = ajFeattableNewRead(seqin->Ftquery);
 	/* ajFeattableTrace(thys->Fttable); */
 	ajFeattabInClear(seqin->Ftquery);
     }
@@ -10867,7 +10872,7 @@ static AjBool seqReadExperiment(AjPSeq thys, AjPSeqin seqin)
     {
 	/* ajDebug("EMBL FEAT TabIn %x\n", seqin->Ftquery); */
 	ajFeattableDel(&thys->Fttable);
-	thys->Fttable = ajFeatRead(seqin->Ftquery);
+	thys->Fttable = ajFeattableNewRead(seqin->Ftquery);
 	/* ajFeattableTrace(thys->Fttable); */
 	ajFeattabInClear(seqin->Ftquery);
     }
@@ -10973,6 +10978,8 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
     if(!ajBuffreadLine(buff, &seqReadLine))
 	return ajFalse;
 
+    ajDebug("++seqReadGenbank first line '%S'\n", seqReadLine);
+
     bufflines++;
 
     ok = ajTrue;
@@ -11030,6 +11037,7 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 
     if(nfields == 9) 
     {
+        ajFilebuffSetBuffered(buff);
         ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
 
         return seqReadGenpept(thys,seqin);
@@ -11053,10 +11061,13 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 	case 4:
 	    if(ajStrMatchC(token, "aa"))
             {
+                ajFilebuffSetBuffered(buff);
                 ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
                 ajStrDel(&token);
                 ajStrTokenDel(&handle);
 
+                ajDebug("first line %d aa pass to refseqp '%S'\n",
+                        buff->Pos, seqReadLine);
                 return seqReadRefseqp(thys,seqin);
             }
 	    if(!ajStrMatchC(token, "bp"))
@@ -11323,7 +11334,7 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
     {
 	ajDebug("GENBANK FEAT TabIn %x\n", seqin->Ftquery);
 	ajFeattableDel(&thys->Fttable);
-	thys->Fttable = ajFeatRead(seqin->Ftquery);
+	thys->Fttable = ajFeattableNewRead(seqin->Ftquery);
 	/* ajFeattableTrace(thys->Fttable); */
 	ajFeattabInClear(seqin->Ftquery);
     }
@@ -11521,6 +11532,7 @@ static AjBool seqReadGenpept(AjPSeq thys, AjPSeqin seqin)
 
     if(nfields == 8) 
     {
+        ajFilebuffSetBuffered(buff);
         ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
 
         return seqReadRefseqp(thys,seqin);
@@ -11808,7 +11820,7 @@ static AjBool seqReadGenpept(AjPSeq thys, AjPSeqin seqin)
     {
 	ajDebug("GENPEPT FEAT TabIn %x\n", seqin->Ftquery);
 	ajFeattableDel(&thys->Fttable);
-	thys->Fttable = ajFeatRead(seqin->Ftquery);
+	thys->Fttable = ajFeattableNewRead(seqin->Ftquery);
 	/* ajFeattableTrace(thys->Fttable); */
 	ajFeattabInClear(seqin->Ftquery);
     }
@@ -11915,6 +11927,8 @@ static AjBool seqReadRefseqp(AjPSeq thys, AjPSeqin seqin)
 
     if(!ajBuffreadLine(buff, &seqReadLine))
 	return ajFalse;
+
+    ajDebug("++seqReadRefseqp  %d first line '%S'\n", buff->Pos, seqReadLine);
 
     bufflines++;
 
@@ -12248,7 +12262,7 @@ static AjBool seqReadRefseqp(AjPSeq thys, AjPSeqin seqin)
     {
 	ajDebug("GENBANK FEAT TabIn %x\n", seqin->Ftquery);
 	ajFeattableDel(&thys->Fttable);
-	thys->Fttable = ajFeatRead(seqin->Ftquery);
+	thys->Fttable = ajFeattableNewRead(seqin->Ftquery);
 	/* ajFeattableTrace(thys->Fttable); */
 	ajFeattabInClear(seqin->Ftquery);
     }
@@ -12303,8 +12317,8 @@ static AjBool seqReadRefseqp(AjPSeq thys, AjPSeqin seqin)
 	    ok = ajBuffreadLineStore(buff,&seqReadLine,
 				    seqin->Text, &thys->TextPtr);
 
-
     ajFilebuffClear(buff, 0);
+    ajDebug("++last line %d '%S'\n", buff->Pos, seqReadLine);
 
     ajStrTokenDel(&handle);
     ajStrDel(&token);
@@ -12431,7 +12445,7 @@ static AjBool seqReadGff(AjPSeq thys, AjPSeqin seqin)
                 seqin->Ftquery, seqin->Type);
 	ftfile = NULL;		  /* now copied to seqin->FeattabIn */
 	ajFeattableDel(&seqin->Fttable);
-	seqin->Fttable = ajFeatRead(seqin->Ftquery);
+	seqin->Fttable = ajFeattableNewRead(seqin->Ftquery);
 	/* ajFeattableTrace(seqin->Fttable); */
 	ajFeattableDel(&thys->Fttable);
 	thys->Fttable = seqin->Fttable;
@@ -12622,7 +12636,7 @@ static AjBool seqReadGff3(AjPSeq thys, AjPSeqin seqin)
 	ajDebug("GFF FEAT TabIn %x\n", seqin->Ftquery);
 	ftfile = NULL;		  /* now copied to seqin->FeattabIn */
 	ajFeattableDel(&seqin->Fttable);
-	seqin->Fttable = ajFeatRead(seqin->Ftquery);
+	seqin->Fttable = ajFeattableNewRead(seqin->Ftquery);
 	/* ajFeattableTrace(seqin->Fttable); */
 	ajFeattableDel(&thys->Fttable);
 	thys->Fttable = seqin->Fttable;
@@ -12788,6 +12802,224 @@ void ajSeqPrintInFormat(AjPFile outf, AjBool full)
 			seqInFormatDef[i].Desc);
 
     ajFmtPrintF(outf, "}\n\n");
+
+    return;
+}
+
+
+
+
+/* @func ajSeqPrintbookInFormat ************************************************
+**
+** Reports the internal data structures as a Docbook table
+**
+** @param [u] outf [AjPFile] Output file
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqPrintbookInFormat(AjPFile outf)
+{
+    ajuint i = 0;
+    ajuint j = 0;
+    AjPStr namestr = NULL;
+    AjPList fmtlist;
+    AjPStr* names;
+
+    fmtlist = ajListstrNew();
+
+    ajFmtPrintF(outf, "<table frame=\"box\" rules=\"cols\">\n");
+    ajFmtPrintF(outf, "  <caption>Input sequence formats</caption>\n");
+    ajFmtPrintF(outf, "  <thead>\n");
+    ajFmtPrintF(outf, "    <tr align=\"center\">\n");
+    ajFmtPrintF(outf, "      <th>Input Format</th>\n");
+    ajFmtPrintF(outf, "      <th>Auto</th>\n");
+    ajFmtPrintF(outf, "      <th>Nuc</th>\n");
+    ajFmtPrintF(outf, "      <th>Pro</th>\n");
+    ajFmtPrintF(outf, "      <th>Feat</th>\n");
+    ajFmtPrintF(outf, "      <th>Gap</th>\n");
+    ajFmtPrintF(outf, "      <th>Multi</th>\n");
+    ajFmtPrintF(outf, "      <th>Description</th>\n");
+    ajFmtPrintF(outf, "    </tr>\n");
+    ajFmtPrintF(outf, "  </thead>\n");
+    ajFmtPrintF(outf, "  <tbody>\n");
+
+    for(i=1; seqInFormatDef[i].Name; i++)
+    {
+	if(!seqInFormatDef[i].Alias)
+        {
+            namestr = ajStrNewC(seqInFormatDef[i].Name);
+            ajListPush(fmtlist, namestr);
+            namestr = NULL;
+        }
+    }
+
+    ajListSort(fmtlist, ajStrVcmp);
+    ajListstrToarray(fmtlist, &names);
+
+    for(i=0; names[i]; i++)
+    {
+        for(j=0; seqInFormatDef[j].Name; j++)
+        {
+            if(ajStrMatchC(names[i],seqInFormatDef[j].Name))
+            {
+                ajFmtPrintF(outf, "    <tr>\n");
+                ajFmtPrintF(outf, "      <td>%s</td>\n",
+                            seqInFormatDef[j].Name);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            seqInFormatDef[j].Try);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            seqInFormatDef[j].Nucleotide);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            seqInFormatDef[j].Protein);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            seqInFormatDef[j].Feature);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            seqInFormatDef[j].Gap);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            seqInFormatDef[j].Multiset);
+                ajFmtPrintF(outf, "      <td>%s</td>\n",
+                            seqInFormatDef[j].Desc);
+                ajFmtPrintF(outf, "    </tr>\n");
+            }
+        }
+    }
+        
+
+    ajFmtPrintF(outf, "  </tbody>\n");
+    ajFmtPrintF(outf, "</table>\n");
+    ajStrDel(&namestr);
+
+    names = NULL;
+    ajListstrFreeData(&fmtlist);
+
+    return;
+}
+
+
+
+
+/* @func ajSeqPrinthtmlInFormat ************************************************
+**
+** Reports the internal data structures as an HTML table
+**
+** @param [u] outf [AjPFile] Output file
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqPrinthtmlInFormat(AjPFile outf)
+{
+    ajuint i = 0;
+    ajuint j = 0;
+
+    AjPStr namestr = NULL;
+
+    ajFmtPrintF(outf, "<table border=3>");
+    ajFmtPrintF(outf, "<tr><th>Input Format</th><th>Auto</th>\n");
+    ajFmtPrintF(outf, "<th>Nuc</th><th>Pro</th><th>Feat</th><th>Gap</th>\n");
+    ajFmtPrintF(outf, "<th>Multi</th><th>Description</th></tr>\n");
+
+    for(i=1; seqInFormatDef[i].Name; i++)
+    {
+        ajStrAssignC(&namestr, seqInFormatDef[i].Name);
+
+	if(!seqInFormatDef[i].Alias)
+        {
+            for(j=i+1; seqInFormatDef[j].Name; j++)
+            {
+                if(seqInFormatDef[j].Read == seqInFormatDef[i].Read)
+                {
+                    ajFmtPrintAppS(&namestr, " %s", seqInFormatDef[j].Name);
+                    if(!seqInFormatDef[j].Alias) 
+                    {
+                        ajWarn("Input format '%s' same as '%s' but not alias",
+                               seqInFormatDef[j].Name, seqInFormatDef[i].Name);
+                    }
+                }
+            }
+
+	    ajFmtPrintF(outf, "<tr><td>\n%S\n</td><td>%B</td>\n",
+                        namestr,
+			seqInFormatDef[i].Try);
+            ajFmtPrintF(outf, "<td>%B</td><td>%B</td><td>%B</td><td>%B</td>\n",
+                        seqInFormatDef[i].Nucleotide,
+			seqInFormatDef[i].Protein,
+			seqInFormatDef[i].Feature,
+                        seqInFormatDef[i].Gap);
+            ajFmtPrintF(outf, "<td>%B</td><td>\n%s\n</td></tr>\n",
+			seqInFormatDef[i].Multiset,
+			seqInFormatDef[i].Desc);
+        }
+
+    }
+
+    ajFmtPrintF(outf, "</table>\n");
+    ajStrDel(&namestr);
+
+    return;
+}
+
+
+
+
+/* @func ajSeqPrintwikiInFormat ************************************************
+**
+** Reports the internal data structures as a wiki table
+**
+** @param [u] outf [AjPFile] Output file
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqPrintwikiInFormat(AjPFile outf)
+{
+    ajuint i = 0;
+    ajuint j = 0;
+
+    AjPStr namestr = NULL;
+
+    ajFmtPrintF(outf, "{| class=\"wikitable sortable\" border=\"2\"\n");
+    ajFmtPrintF(outf, "|-\n");
+    ajFmtPrintF(outf, "!Format!!Try!!Nuc!!Pro!!Feat!!Gap!!MSet!!"
+                "class=\"unsortable\"|Description\n");
+
+    for(i=1; seqInFormatDef[i].Name; i++)
+    {
+        ajStrAssignC(&namestr, seqInFormatDef[i].Name);
+
+	if(!seqInFormatDef[i].Alias)
+        {
+            for(j=i+1; seqInFormatDef[j].Name; j++)
+            {
+                if(seqInFormatDef[j].Read == seqInFormatDef[i].Read)
+                {
+                    ajFmtPrintAppS(&namestr, "<br>%s", seqInFormatDef[j].Name);
+                    if(!seqInFormatDef[j].Alias) 
+                    {
+                        ajWarn("Input format '%s' same as '%s' but not alias",
+                               seqInFormatDef[j].Name, seqInFormatDef[i].Name);
+                    }
+                }
+            }
+
+            ajFmtPrintF(outf, "|-\n");
+	    ajFmtPrintF(outf,
+			"|%S||%B||%B||%B||%B||%B||%B||%s\n",
+			namestr,
+			seqInFormatDef[i].Try,
+			seqInFormatDef[i].Nucleotide,
+			seqInFormatDef[i].Protein,
+			seqInFormatDef[i].Feature,
+			seqInFormatDef[i].Gap,
+			seqInFormatDef[i].Multiset,
+			seqInFormatDef[i].Desc);
+        }
+
+    }
+
+    ajFmtPrintF(outf, "|}\n\n");
+    ajStrDel(&namestr);
 
     return;
 }
