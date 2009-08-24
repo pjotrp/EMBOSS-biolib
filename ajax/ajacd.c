@@ -70,6 +70,7 @@ static AjBool acdDoTable = AJFALSE;
 static AjBool acdDoTrace = AJFALSE;
 static AjBool acdDoValid = AJFALSE;
 static AjBool acdDoXsd = AJFALSE;
+static AjBool acdDoVersion = AJFALSE;
 static AjBool acdVerbose = AJFALSE;
 static AjBool acdCommandLine = AJTRUE;
 static AjBool acdAuto = AJFALSE;
@@ -94,6 +95,9 @@ static AjPStr acdTmpStr2 = NULL;
 
 static AjPStr acdPrefName = NULL;
 static AjPStr acdPrefToken = NULL;
+
+static AjPStr acdPackName = NULL;
+static AjPStr acdPackVersion = NULL;
 
 static AjPStr acdArgSave = NULL;
 static AjPStr acdInputSave = NULL;
@@ -281,6 +285,7 @@ static const char* acdValNames[] =
 **
 ** @nam2rule Acd ACD processing
 ** @suffix    P  [char*]     Package name provided
+** @suffix    V  [char*]     Package version provided
 */
 
 /* @section data definitions **************************************************
@@ -388,18 +393,22 @@ typedef struct AcdSQual
 ** @alias AcdOTableItem
 **
 ** @attr Qual [AjPStr] Qualifier name
+** @attr Type [AjPStr] Qualifier type
 ** @attr Help [AjPStr] Help text
 ** @attr Valid [AjPStr] Valid input
 ** @attr Expect [AjPStr] Expected value(s)
+** @attr Title [AjPStr] Section title
 ** @@
 ******************************************************************************/
 
 typedef struct AcdSTableItem
 {
     AjPStr Qual;
+    AjPStr Type;
     AjPStr Help;
     AjPStr Valid;
     AjPStr Expect;
+    AjPStr Title;
 } AcdOTableItem;
 #define AcdPTableItem AcdOTableItem*
 
@@ -648,6 +657,7 @@ typedef struct AcdSType
 static AjBool* acdParamSet;
 
 static AcdPAcd acdNewCurr = NULL;
+static AcdPAcd acdApplAcd = NULL;
 static AcdPAcd acdMasterQual = NULL;
 
 /*
@@ -1324,7 +1334,7 @@ AcdOAttr acdAttrAppl[] =
 	 "Estimated maximum CPU usage"},
     {"supplier", VT_STR, 0, "",
 	 "Supplier name"},
-    {"version", VT_STR, 0, "",
+    {"versionnumber", VT_STR, 0, "",
 	 "Version number"},
     {"nonemboss", VT_STR, 0, "",
 	 "Non-emboss application name for SoapLab"},
@@ -2545,7 +2555,7 @@ AcdOQual acdQualAppl[] =	  /* careful: index numbers used in */
 
     /* end of deprecated set */
     {"verbose",    "N", "boolean", "Report some/full command line options"},
-    {"help",       "N", "boolean", "Report command line options. "
+    {"help",       "N", "boolean", "Report command line options and exit. "
 	                           "More information on associated and "
 				   "general qualifiers "
 				   "can be found with -help -verbose"},
@@ -2553,6 +2563,7 @@ AcdOQual acdQualAppl[] =	  /* careful: index numbers used in */
     {"error",      "Y", "boolean", "Report errors"},
     {"fatal",      "Y", "boolean", "Report fatal errors"},
     {"die",        "Y", "boolean", "Report dying program messages"},
+    {"version",    "N", "boolean", "Report version number and exit"},
     {NULL, NULL, NULL, NULL}
 };
 
@@ -3296,6 +3307,7 @@ static const char* acdResource[] =
 ** @argrule   Init    argc [ajint] Number of command line arguments
 ** @argrule   Init    argv [char* const[]] Command line arguments
 ** @argrule   P    package [const char*] Package name (empty for default name)
+** @argrule   V    packversion [const char*] Package version (empty for default)
 **
 ** @valrule   *  [void]
 ** @fcategory misc
@@ -3325,14 +3337,14 @@ static const char* acdResource[] =
 
 void ajAcdInit(const char *pgm, ajint argc, char * const argv[])
 {
-    ajAcdInitP(pgm, argc, argv, "");
+    ajAcdInitPV(pgm, argc, argv, "", "");
     return;
 }
 
 
 
 
-/* @func ajAcdInitP ***********************************************************
+/* @func ajAcdInitPV ***********************************************************
 **
 ** Initialises everything. Reads an ACD (AJAX Command Definition) file
 ** prompts the user for any missing information, reads all sequences
@@ -3344,12 +3356,13 @@ void ajAcdInit(const char *pgm, ajint argc, char * const argv[])
 **        usually passsed as-is by the calling application.
 ** @param [r] argv [char* const[]] Actual arguments as an array of text.
 ** @param [r] package [const char*] Package name, used to find the ACD file
+** @param [r] packversion [const char*] Package version
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
-                const char *package)
+void ajAcdInitPV(const char *pgm, ajint argc, char * const argv[],
+                 const char *package, const char *packversion)
 {    
     static AjPFile acdFile = NULL;
     static AjPStr acdLine = NULL;
@@ -3359,6 +3372,8 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     static AjPStr acdPackRoot = NULL;
     static AjPStr acdPackRootName = NULL;
     static AjPStr acdUtilRoot = NULL;
+    AjPStr applversion = NULL;
+    AjPStr versionstr = NULL;
     AjPStr comment = NULL;
     AjPStrTok tokenhandle = NULL;
     char white[] = " \t\n\r";
@@ -3395,10 +3410,13 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     
     acdArgsScan(argc, argv);
     
-    ajDebug("ajAcdInitP pgm '%s' package '%s'\n", pgm, package);
+    ajDebug("ajAcdInitPV pgm '%s' package '%s'\n", pgm, package);
 
     /* open the command definition file */
     
+    ajStrAssignC(&acdPackName, package);
+    ajStrAssignC(&acdPackVersion, packversion);
+
     ajStrAssignS(&acdPack, ajNamValuePackage());
     ajStrAssignS(&acdRootInst, ajNamValueInstalldir());
     ajDirnameFix(&acdRootInst);
@@ -3422,7 +3440,7 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 	if(!acdFile)
 	{
 	    acdLog("acdfile '%S' not opened\n", acdFName);
-	    ajStrAssignC(&acdPack, package); /* package name for acdInitP */
+	    ajStrAssignC(&acdPack, package); /* package name for acdInitPV */
 	    ajStrFmtLower(&acdPack);
 
 	    ajStrAssignS(&acdPackRootName, acdPack);
@@ -3455,8 +3473,7 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 	if(!acdFile)
 	{
 	    acdLog("acdfile '%S' not opened\n", acdFName);
-	    ajStrAssignC(&acdPack, package); /* package name for acdInitP */
-	    ajStrFmtLower(&acdPack);
+	    ajStrAssignC(&acdPack, "emboss");
 
 	    if(ajNamGetValueC("acdutilroot", &acdUtilRoot))
 	    {
@@ -3550,6 +3567,26 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     ajListstrFreeData(&acdListWords);
     ajListFreeData(&acdListCount);
     
+    if(acdDoVersion)
+    {
+        ajFmtPrintS(&versionstr, "EMBOSS:%s", VERSION);
+
+        if(ajStrGetLen(acdPackVersion))
+            ajFmtPrintAppS(&versionstr, " %S:%S", acdPackName, acdPackVersion);
+
+        acdAttrResolve(acdApplAcd, "versionnumber", &applversion);
+
+        if(ajStrGetLen(applversion))
+        {
+            ajFmtPrintAppS(&versionstr, " %s:%S", pgm, applversion);
+            ajStrDel(&applversion);
+        }
+
+        ajUserDumpS(versionstr);
+        ajStrDel(&versionstr);
+        ajExit();
+    }
+
     if(acdDoPretty || acdDoValid)
 	ajExit();
     
@@ -3776,6 +3813,7 @@ static void acdParse(AjPList listwords, AjPList listcount)
 			 acdStrName, acdProgram);
 	    
 	    acdNewCurr = acdNewAppl(acdStrName);
+            acdApplAcd = acdNewCurr;
 	    
 	    acdWordNum++;		/* add one for '[' */
 
@@ -7452,7 +7490,6 @@ static void acdSetDirlist(AcdPAcd thys)
     }    
 
     ajFilelistAddPathWild(val, acdReply, t);
-    /* ajFileScan(acdReply,t,&val,ajFalse,ajFalse,NULL,NULL,ajFalse,NULL); */
 
     /* Sort list so that list of files is system-independent */
     ajListSort(val, ajStrVcmp);
@@ -8136,7 +8173,7 @@ static void acdSetFeatures(AcdPAcd thys)
 	acdGetValueAssoc(thys, "fformat", &tabin->Formatstr);
 	acdGetValueAssoc(thys, "fopenfile", &tabin->Filename);
 
-	val = ajFeatUfoRead(tabin, acdReply);
+	val = ajFeattableNewReadUfo(tabin, acdReply);
 
 	if(!val)
         {
@@ -8172,7 +8209,8 @@ static void acdSetFeatures(AcdPAcd thys)
     if(!ok)
 	acdBadRetry(thys);
     
-    ok = acdQualToInt(thys, "fend", ajFeattableLen(val), &fend, &acdReplyDef);
+    ok = acdQualToInt(thys, "fend", ajFeattableGetLen(val), &fend,
+                      &acdReplyDef);
 
     for(itry=acdPromptTry; itry && !ok; itry--)
     {
@@ -8227,13 +8265,13 @@ static void acdSetFeatures(AcdPAcd thys)
     thys->SetStr = AJCALLOC0(thys->SAttr, sizeof(AjPStr));
     
     iattr = 0;
-    ajStrFromInt(&thys->SetStr[iattr++], ajFeattableBegin(val));
-    ajStrFromInt(&thys->SetStr[iattr++], ajFeattableEnd(val));
-    ajStrFromInt(&thys->SetStr[iattr++], ajFeattableLen(val));
+    ajStrFromInt(&thys->SetStr[iattr++], ajFeattableGetBegin(val));
+    ajStrFromInt(&thys->SetStr[iattr++], ajFeattableGetEnd(val));
+    ajStrFromInt(&thys->SetStr[iattr++], ajFeattableGetLen(val));
     ajStrFromBool(&thys->SetStr[iattr++], ajFeattableIsProt(val));
     ajStrFromBool(&thys->SetStr[iattr++], ajFeattableIsNuc(val));
     ajStrAssignS(&thys->SetStr[iattr++], ajFeattableGetName(val));
-    ajStrFromInt(&thys->SetStr[iattr++], ajFeattableSize(val));
+    ajStrFromInt(&thys->SetStr[iattr++], ajFeattableGetSize(val));
     
     thys->Value = val;
     ajStrAssignS(&thys->ValStr, acdReply);
@@ -11161,7 +11199,7 @@ static void acdSetRange(AcdPAcd thys)
 	if(required)
 	    acdUserGet(thys, &acdReply);
 
-	val = ajRangeGetLimits(acdReply, imin, imax, iminsize, isize);
+	val = ajRangeNewStringLimits(acdReply, imin, imax, iminsize, isize);
 
 	if(!val)
 	{
@@ -11517,7 +11555,7 @@ static void acdSetReport(AcdPAcd thys)
 			  &val->MaxHitSeq, &acdReplyDef);
     
 	    /* test acdc-reportbadtaglist */
-	    if(!ajReportSetTags(val, taglist))
+	    if(!ajReportSetTagsS(val, taglist))
 		acdErrorAcd(thys, "Bad tag list for report");
 
 	    /* test acdc-reportbadtags */
@@ -14668,6 +14706,8 @@ static void acdHelp(void)
     ajint iattr = 0;
     ajint igrp = 0;
     AjPStr groupname = NULL;
+    AjPStr tmpstr = NULL;
+    AjPStr applversion = NULL;
 
     AjBool flagReq = ajFalse;
     AjBool flagOpt = ajFalse;
@@ -14843,6 +14883,37 @@ static void acdHelp(void)
 
     if(!acdDoXsd)
     {
+        /*
+        ** report 1-line documentation
+        ** report version (s)
+         */
+
+        acdAttrResolve(acdApplAcd, "documentation", &tmpstr);
+
+        if(!acdAuto && ajStrGetLen(tmpstr))
+        {
+            ajStrFmtWrap(&tmpstr, 75);
+            ajUserDumpS(tmpstr);
+        }
+        
+        ajFmtPrintS(&tmpstr, "EMBOSS:%s", VERSION);
+
+        if(ajStrGetLen(acdPackVersion))
+            ajFmtPrintAppS(&tmpstr, " %S:%S", acdPackName, acdPackVersion);
+
+        acdAttrResolve(acdApplAcd, "versionnumber", &applversion);
+
+        if(ajStrGetLen(applversion))
+        {
+            ajFmtPrintAppS(&tmpstr, " %S:%S", acdApplAcd->Name, applversion);
+            ajStrDel(&applversion);
+        }
+
+        if(!acdDoTable)
+            ajUser("Version: %S\n", tmpstr);
+        ajStrDel(&tmpstr);
+        ajStrDel(&applversion);
+
         if(flagReq)
             acdHelpShow(helpReq,
                         "Standard (Mandatory) qualifiers "
@@ -14850,6 +14921,7 @@ static void acdHelp(void)
         else
             acdHelpShow(helpReq, "Standard (Mandatory) qualifiers");
 
+        acdHelpTableShow(NULL, "");
         acdHelpTableShow(reqlist, "Standard (Mandatory) qualifiers");
 
         if(flagOpt)
@@ -15567,24 +15639,22 @@ static void acdHelpValidString(const AcdPAcd thys, AjBool table, AjPStr* str)
 	ajStrAppendC(str, " (");
 
     if(word)
-	ajFmtPrintAppS(str, "Any string without whitespace ");
+	ajFmtPrintAppS(str, "Any word");
     else
-    	ajFmtPrintAppS(str, "Any string ");
+    	ajFmtPrintAppS(str, "Any string");
 
     if(maxlen > 0)
     {
 	if(minlen > 0)
-	    ajFmtPrintAppS(str, "from %d to %d characters",
+	    ajFmtPrintAppS(str, " from %d to %d characters",
 			   minlen, maxlen);
 	else
-	    ajFmtPrintAppS(str, "up to %d characters", maxlen);
+	    ajFmtPrintAppS(str, " up to %d characters", maxlen);
     }
     else
     {
 	if(minlen > 0)
-	    ajFmtPrintAppS(str, "of at least %d characters", minlen);
-	else
-	    ajFmtPrintAppS(str, "is accepted");
+	    ajFmtPrintAppS(str, " of at least %d characters", minlen);
     }
     
 
@@ -16352,7 +16422,7 @@ static void acdHelpExpectString(const AcdPAcd thys, AjBool table, AjPStr* str)
     else
     {
 	if(table)
-	    ajStrAppendC(str, "<i>An empty string is accepted</i>");
+	    ajStrAppendC(str, "&nbsp;");
     }
 
     return;
@@ -16522,35 +16592,57 @@ static void acdHelpTableShow(const AjPList tablist, const char* title)
 {
     AcdPTableItem item;
     AjIList iter = NULL;
+    ajuint nitem = 0;
 
     if(!acdDoTable)
 	return;
 
-    ajUserDumpC("<tr bgcolor=\"#FFFFCC\">"); /* was #FFFFD0 */
-    ajUser("<th align=\"left\" colspan=2>%s</th>", title);
-    ajUserDumpC("<th align=\"left\">Allowed values</th>");
-    ajUserDumpC("<th align=\"left\">Default</th>");
-    ajUserDumpC("</tr>\n");
-
-    if(!ajListGetLength(tablist))
+    if(!tablist)
     {
-	ajUserDumpC("<tr>");
-	ajUserDumpC("<td colspan=4>(none)</td>");
-	ajUserDumpC("</tr>\n");
+        ajUserDumpC("<tr bgcolor=\"#FFFFCC\">"); /* was #FFFFD0 */
+        ajUserDumpC("<th align=\"left\">Qualifier</th>");
+        ajUserDumpC("<th align=\"left\">Type</th>");
+        ajUserDumpC("<th align=\"left\">Description</th>");
+        ajUserDumpC("<th align=\"left\">Allowed values</th>");
+        ajUserDumpC("<th align=\"left\">Default</th>");
+        ajUserDumpC("</tr>\n");
+        return;
     }
-    else
+
+    /* new section */
+    
+    if(title){
+        ajUserDumpC("<tr bgcolor=\"#FFFFCC\">"); /* was #FFFFD0 */
+        ajUser("<th align=\"left\" colspan=5>%s</th>", title);
+        ajUserDumpC("</tr>\n");
+    }
+
+    iter = ajListIterNewread(tablist);
+    while((item = ajListIterGet(iter)))
     {
-	iter = ajListIterNewread(tablist);
-	while((item = ajListIterGet(iter)))
-	{
-	    acdTextTrim(&item->Help);
-	    ajUserDumpC("<tr>");
-	    ajUser("<td>%S</td>", item->Qual);
-	    ajUser("<td>%S</td>", item->Help);
-	    ajUser("<td>%S</td>", item->Valid);
-	    ajUser("<td>%S</td>", item->Expect);
-	    ajUserDumpC("</tr>\n");
-	}
+        ajUserDumpC("<tr bgcolor=\"#FFFFCC\">");
+        if(ajStrGetLen(item->Title))
+        {
+            ajUser("<th align=\"left\" colspan=5>%S</td>", item->Title);
+        }
+        else
+        {
+            nitem++;
+            acdTextTrim(&item->Help);
+            ajUser("<td>%S</td>", item->Qual);
+            ajUser("<td>%S</td>", item->Type);
+            ajUser("<td>%S</td>", item->Help);
+            ajUser("<td>%S</td>", item->Valid);
+            ajUser("<td>%S</td>", item->Expect);
+        }
+        ajUserDumpC("</tr>\n");
+    }
+
+    if(!nitem || !ajListGetLength(tablist))
+    {
+        ajUserDumpC("<tr>");
+        ajUserDumpC("<td colspan=5>(none)</td>");
+        ajUserDumpC("</tr>\n");
     }
 
     ajListIterDel(&iter);
@@ -16719,9 +16811,6 @@ static void acdHelpAssocTable(const AcdPAcd thys, AjPList tablist)
 {
     AcdPTableItem item;
 
-    static AjPStr line  = NULL;
-    static AjPStr qname = NULL;
-    static AjPStr qtype = NULL;
     AcdPQual quals;
     ajint i;
     AcdPAcd pa;
@@ -16729,37 +16818,45 @@ static void acdHelpAssocTable(const AcdPAcd thys, AjPList tablist)
    if(!acdDoTable)
 	return;
 
-    acdLog("++ acdHelpAssoc %S\n", thys->Name);
+    acdLog("++ acdHelpAssocTable %S\n", thys->Name);
 
     if(thys->Level == ACD_APPL)
-	quals = acdQualAppl;
+    {
+        quals = acdQualAppl;
+    }
     else
     {
-	ajFmtPrintS(&line, "  \"-%S\" related qualifiers\n",
-		    thys->Name);
+        AJNEW0(item);
+        ajFmtPrintS(&item->Title, "\"-%S\" associated %s qualifiers\n",
+		    thys->Name,acdType[thys->Type].Name);
+        ajListPushAppend(tablist, item);
 	quals = acdType[thys->Type].Quals;
     }
 
     acdLog("++ type %d quals %x\n", thys->Type, quals);
 
-    i=0;
-
-    for(pa=thys->AssocQuals; pa && pa->Assoc; pa=pa->Next)
+    if(quals)
     {
-	acdLog("++ assoc[%d].Name %S\n", i, pa->Name);
-	AJNEW0(item);
+        i=0;
+        for(pa=thys->AssocQuals; pa && pa->Assoc; pa=pa->Next)
+	{
+            acdLog("++ assoc[%d].Name %s\n", i, quals[i].Name);
+            AJNEW0(item);
 
-	if(thys->PNum)
-	    ajFmtPrintS(&item->Qual, " -%S%d", pa->Name, pa->PNum);
-	else
-	    ajFmtPrintS(&item->Qual, " -%S", pa->Name);
+            if(thys->PNum)
+                ajFmtPrintS(&item->Qual, " -%s%d<br>-%s_%S",
+                            quals[i].Name, pa->PNum,
+                            quals[i].Name, thys->Name);
+            else
+                ajFmtPrintS(&item->Qual, " -%s", quals[i].Name);
 
-	ajFmtPrintS(&line, "  %-20S %-10S ",
-		    qname,  qtype);
-	acdHelpText(pa, &item->Help);
-	acdHelpValid(pa, ajTrue, &item->Valid);
-	acdHelpExpect(pa, ajTrue, &item->Expect);
-	ajListPushAppend(tablist, item);
+            ajStrAssignC(&item->Type, quals[i].Type);
+            ajStrAssignC(&item->Help, quals[i].Help);
+            acdHelpValid(pa, ajTrue, &item->Valid);
+            acdHelpExpect(pa, ajTrue, &item->Expect);
+            ajListPushAppend(tablist, item);
+            i++;
+        }
     }
 
     return;
@@ -16836,6 +16933,7 @@ static void acdHelpTable(const AcdPAcd thys, AjPList tablist)
      **  read in the data and things like calculated attributes do not exist
      */
     
+    ajStrAssignC(&item->Type, acdType[thys->Type].Name);
     acdHelpValid(thys, ajTrue, &item->Valid);
     acdHelpText(thys, &item->Help);
     
@@ -20373,6 +20471,9 @@ static void acdArgsScan(ajint argc, char * const argv[])
 
 	if(!strcmp(cp, "verbose"))
 	    acdVerbose = ajTrue;
+
+	if(!strcmp(cp, "version"))
+	    acdDoVersion = ajTrue;
 
 	if(!strcmp(cp, "help"))
 	    acdDoHelp = ajTrue;
@@ -26902,6 +27003,9 @@ static void acdReset(void)
 	acdDel(&pa);
     }
 
+    ajStrDel(&acdPackName);
+    ajStrDel(&acdPackVersion);
+
     ajTablestrFree(&acdKnowntypeTypeTable);
     ajTablestrFree(&acdKnowntypeDescTable);
     ajTablestrFree(&acdCodeTable);
@@ -27499,8 +27603,8 @@ static void acdValidQual(AcdPAcd thys)
 	    if(ajStrGetLen(tmpinfo))
 	    {
 		if(!ajStrMatchS(tmpinfo, tmpstandard))
-		    acdWarn("Information string for '%S' not standard '%S'",
-			    thys->Name, tmpstandard);
+		    acdWarn("Information string for '%S' '%S' not standard '%S'",
+			    thys->Name, tmpinfo, tmpstandard);
 	    }
 	    else
 	    {
