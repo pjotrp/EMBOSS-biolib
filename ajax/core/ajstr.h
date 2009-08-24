@@ -65,6 +65,9 @@ typedef AjPStr* AjPPStr;
 **
 ** String iterator, used to test iterator functionality.
 **
+** @alias AjSStrIter
+** @alias AjOStrIter
+**
 ** @new ajStrIter Creates and initializes an iterator for a string
 **
 ** @delete ajStrIterFree Destructor for a string iterator
@@ -192,6 +195,7 @@ AjPStr     ajCharParseC (const char* txt, const char* delim);
 
 AjPStr     ajStrNew (void);
 AjPStr     ajStrNewC (const char *txt);
+AjPStr     ajStrNewK (char ch);
 AjPStr     ajStrNewS (const AjPStr str);
 AjPStr     ajStrNewRef(AjPStr str);
 AjPStr     ajStrNewRes(ajuint size);
@@ -296,6 +300,7 @@ AjBool     ajStrTrimEndC (AjPStr* Pstr, const char* txt);
 AjBool     ajStrTrimStartC (AjPStr* Pstr, const char* txt);
 AjBool     ajStrTrimWhite(AjPStr* Pstr);
 AjBool     ajStrTrimWhiteEnd(AjPStr* Pstr);
+AjBool     ajStrTrimWhiteStart(AjPStr* Pstr);
 AjBool     ajStrTruncateLen(AjPStr* Pstr, ajuint len);
 AjBool     ajStrTruncatePos(AjPStr* Pstr, ajint pos);
 

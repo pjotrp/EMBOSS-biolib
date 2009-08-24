@@ -3,11 +3,11 @@
 **
 ** AjPStr objects are reference counted strings
 ** Any change will need a new string object if the use count
-** is greater than 1, so the original ajStr provided so that it can
-** be reallocated in any routine where string modification is possible.
+** is greater than 1, so the original AjPStr is provided as a pointer
+** so that it can be reallocated in any routine where string modification
+** may be needed.
 **
-** In many cases
-** the text is always a copy, even of a constant original, so
+** In many cases the text is always a copy, even of a constant original, so
 ** that it can be simply freed.
 **
 ** @author Copyright (C) 1998 Peter Rice
@@ -2042,6 +2042,7 @@ __deprecated const AjPStr  ajStrTokCC (const char* txt, const char* delim)
 ** @nam4rule  NewRes   Construct with reserved size.
 **
 ** @argrule   C       txt [const char*] Text string
+** @argrule   K       ch [char] Single character
 ** @argrule   S       str [const AjPStr] Text string
 ** @argrule   NewRes  size [ajuint] Reserved size
 ** @argrule   NewRef  refstr [AjPStr] Text string to be duplicated
@@ -2092,6 +2093,33 @@ AjPStr ajStrNewC(const char* txt)
     j = ajRound(i + 1, STRSIZE);
 
     thys = ajStrNewResLenC(txt, j, i);
+
+    return thys;
+}
+
+
+
+
+/* @func ajStrNewK ************************************************************
+**
+** String constructor which allocates memory for a string and initialises it
+** with the single character provided. 
+** 
+** The string size is set just large enough to hold the supplied text.
+**
+** @param [r] ch [char] Null-terminated character string to initialise
+**                      the new string.
+** @return [AjPStr] Pointer to a string containing the supplied text
+** @@
+******************************************************************************/
+
+AjPStr ajStrNewK(char ch)
+{
+    char txt[2] = " ";
+    AjPStr thys;
+
+    txt[0] = ch;
+    thys = ajStrNewResLenC(txt, 2, 1);
 
     return thys;
 }
@@ -6106,6 +6134,24 @@ __deprecated AjBool  ajStrChompEnd(AjPStr* pthis)
 
 
 
+/* @func ajStrTrimWhiteStart **************************************************
+**
+** Removes regions composed of white space characters only from the start of a 
+** string.
+**
+** @param [u] Pstr [AjPStr*] String
+** @return [AjBool] ajTrue if string was reallocated
+** @@
+******************************************************************************/
+
+AjBool ajStrTrimWhiteStart(AjPStr* Pstr)
+{
+    return ajStrTrimStartC(Pstr, "\t \n\r");
+}
+
+
+
+
 /* @func ajStrTruncateLen *****************************************************
 **
 ** Removes the end from a string reducing it to a defined length.
@@ -8512,9 +8558,17 @@ AjBool ajStrSetRes(AjPStr* Pstr, ajuint size)
 
     thys = *Pstr;
 
-    if((thys->Use > 1) || (thys->Res < savesize))
+    if(thys->Use > 1)
     {
 	strCloneL(Pstr, savesize);
+
+	return ajTrue;
+    }
+
+    if(thys->Res < savesize)
+    {
+	AJRESIZE(thys->Ptr, savesize);
+	thys->Res = savesize;
 
 	return ajTrue;
     }
@@ -8565,6 +8619,13 @@ AjBool ajStrSetResRound(AjPStr* Pstr, ajuint size)
 
     thys = *Pstr;
 
+    if(thys->Use > 1)
+    {
+	strCloneL(Pstr, size);
+
+	return ajTrue;
+    }
+
     if(thys->Res < size)
     {
 	if(size >= LONGSTR)
@@ -8579,14 +8640,8 @@ AjBool ajStrSetResRound(AjPStr* Pstr, ajuint size)
 	else
 	  roundsize = ajRound(size, STRSIZE);
 
-	strCloneL(Pstr, roundsize);
-
-	return ajTrue;
-    }
-
-    if(thys->Use > 1)
-    {
-	strCloneL(Pstr, size);
+        AJRESIZE(thys->Ptr, roundsize);
+        thys->Res = roundsize;
 
 	return ajTrue;
     }
