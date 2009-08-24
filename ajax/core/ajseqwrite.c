@@ -231,7 +231,7 @@ static SeqOOutFormat seqOutFormat[] =
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteGcg},
     {"gcg8",       "GCG old (version 8) sequence format",
-	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJTRUE,  AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteGcg}, /* alias for gcg */
     {"embl",       "EMBL entry format",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE, AJFALSE,
@@ -240,7 +240,7 @@ static SeqOOutFormat seqOutFormat[] =
 	 AJTRUE,  AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
 	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteEmbl},
     {"emblold",    "EMBL entry format (alias)",
-	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
+	 AJTRUE,  AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
 	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteEmbl}, /* embl pre-87 format*/
     {"em",         "EMBL entry format (alias)",
 	 AJTRUE,  AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
@@ -255,7 +255,7 @@ static SeqOOutFormat seqOutFormat[] =
 	 AJTRUE,  AJFALSE, AJFALSE, AJFALSE, AJTRUE,
 	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteSwiss},
     {"swissold",   "Swissprot entry format", /* format before 2006 release */
-	 AJFALSE, AJFALSE, AJFALSE, AJFALSE, AJTRUE,
+	 AJTRUE,  AJFALSE, AJFALSE, AJFALSE, AJTRUE,
 	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteSwiss},
     {"swissprotold","Swissprot entry format",
 	 AJTRUE,  AJFALSE, AJFALSE, AJFALSE, AJTRUE,
@@ -347,7 +347,7 @@ static SeqOOutFormat seqOutFormat[] =
     {"msf",        "GCG MSF (mutiple sequence file) file format",
 	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteMsf},
-    {"clustal",    "Clustalw output format",
+    {"clustal",    "Clustalw multiple alignment format",
 	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteClustal},
     {"aln",        "Clustalw output format (alias)",
@@ -857,7 +857,7 @@ AjBool ajSeqoutWriteSeq(AjPSeqout outseq, const AjPSeq seq)
     ajSeqoutSetNameDefaultS(outseq, !outseq->Single, outseq->Entryname);
 
     if(outseq->Fttable)
-	ajFeatDefName(outseq->Fttable, outseq->Name);
+	ajFeattableSetDefname(outseq->Fttable, outseq->Name);
 
     if(outseq->Single)
 	seqFileReopen(outseq);
@@ -896,7 +896,7 @@ AjBool ajSeqoutWriteSeq(AjPSeqout outseq, const AjPSeq seq)
 	}
 
 	/* ajFeattableTrace(outseq->Fttable); */
-	if(!ajFeatUfoWrite(outseq->Fttable, outseq->Ftquery,
+	if(!ajFeattableWriteUfo(outseq->Ftquery, outseq->Fttable,
 			   outseq->Ufo))
 	{
 	    ajWarn("ajSeqWriteSeq features output failed UFO: '%S'",
@@ -980,7 +980,7 @@ AjBool ajSeqoutWriteSet(AjPSeqout outseq, const AjPSeqset seq)
 	ajSeqoutSetNameDefaultS(outseq, !outseq->Single, outseq->Entryname);
 
 	if(outseq->Fttable)
-	    ajFeatDefName(outseq->Fttable, outseq->Name);
+	    ajFeattableSetDefname(outseq->Fttable, outseq->Name);
 
 	if(outseq->Single)
 	    seqFileReopen(outseq);
@@ -1018,8 +1018,8 @@ AjBool ajSeqoutWriteSet(AjPSeqout outseq, const AjPSeqset seq)
 
 	    /* ajFeattableTrace(outseq->Fttable); */
 
-	    if(!ajFeatUfoWrite(outseq->Fttable,
-			       outseq->Ftquery, outseq->Ufo))
+	    if(!ajFeattableWriteUfo(outseq->Ftquery, outseq->Fttable,
+                                    outseq->Ufo))
 	    {
 		ajWarn("ajSeqoutWriteSet features output failed UFO: '%S'",
 		       outseq->Ufo);
@@ -1203,7 +1203,7 @@ static void seqWriteListAppend(AjPSeqout outseq, const AjPSeq seq)
 	ajSeqSetNameMulti(listseq, outseq->Entryname);
 
     if(listseq->Fttable)
-	ajFeatDefName(listseq->Fttable, listseq->Name);
+	ajFeattableSetDefname(listseq->Fttable, listseq->Name);
 
     ajListPushAppend(outseq->Savelist, listseq);
 
@@ -1213,7 +1213,7 @@ static void seqWriteListAppend(AjPSeqout outseq, const AjPSeq seq)
 	ajSeqoutSetNameDefaultS(outseq, !outseq->Single, outseq->Entryname);
 
 	if(outseq->Fttable)
-	    ajFeatDefName(outseq->Fttable, outseq->Name);
+	    ajFeattableSetDefname(outseq->Fttable, outseq->Name);
 
 	/* Calling funclist seqOutFormat() */
 	seqOutFormat[outseq->Format].Write(outseq);
@@ -1221,14 +1221,14 @@ static void seqWriteListAppend(AjPSeqout outseq, const AjPSeq seq)
 
     ajDebug("seqWriteListAppend Features: %B IsLocal: %B Count: %d\n",
 	    outseq->Features, ajFeattabOutIsLocal(outseq->Ftquery),
-	    ajFeattableSize(outseq->Fttable));
+	    ajFeattableGetSize(outseq->Fttable));
 
     if(outseq->Features &&
        !ajFeattabOutIsLocal(outseq->Ftquery))
     {
 /*	seqClone(outseq, seq);	*/    /* already cloned feature table */
 	ajDebug("seqWriteListAppend after seqClone Count: %d\n",
-		ajFeattableSize(outseq->Fttable));
+		ajFeattableGetSize(outseq->Fttable));
 
 	if(!ajFeattabOutIsOpen(outseq->Ftquery))
 	{
@@ -1249,10 +1249,10 @@ static void seqWriteListAppend(AjPSeqout outseq, const AjPSeq seq)
 	}
 
 	ajDebug("seqWriteListAppend after ajFeattabOutOpen Count: %d\n",
-		ajFeattableSize(outseq->Fttable));
+		ajFeattableGetSize(outseq->Fttable));
 	ajFeattableTrace(outseq->Fttable);
 
-	if(!ajFeatUfoWrite(outseq->Fttable, outseq->Ftquery, outseq->Ufo))
+	if(!ajFeattableWriteUfo(outseq->Ftquery, outseq->Fttable, outseq->Ufo))
 	{
 	    ajWarn("seqWriteListAppend features output failed UFO: '%S'",
 		   outseq->Ufo);
@@ -1360,15 +1360,11 @@ static void seqWriteFasta(AjPSeqout outseq)
 
 static void seqWriteFastqSanger(AjPSeqout outseq)
 {
-    ajuint i;
     ajuint j;
     ajuint ilen;
-    ajuint jlen;
     AjPStr seq = NULL;
-    ajuint linelen     = 60;
-    ajuint iend;
     AjPStr db = NULL;
-    char qchar;
+    ajint qchar;
 
     ajStrAssignS(&db, outseq->Setoutdb);
     /* ajStrAssignEmptyS(&db, outseq->Db);*/
@@ -1394,37 +1390,27 @@ static void seqWriteFastqSanger(AjPSeqout outseq)
     ajFmtPrintF(outseq->File, "\n");
     ilen = ajStrGetLen(outseq->Seq);
 
-    for(i=0; i < ilen; i += linelen)
-    {
-	iend = AJMIN(ilen-1, i+linelen-1);
-	ajStrAssignSubS(&seq, outseq->Seq, i, iend);
-	ajFmtPrintF(outseq->File, "%S\n", seq);
-    }
+    ajFmtPrintF(outseq->File, "%S\n", outseq->Seq);
 
-    ajFmtPrintF(outseq->File, "+%S", outseq->Name);
-
-    if(ajStrGetLen(outseq->Sv))
-	ajFmtPrintF(outseq->File, " %S", outseq->Sv);
-    else if(ajStrGetLen(outseq->Acc))
-	ajFmtPrintF(outseq->File, " %S", outseq->Acc);
-
-    ajFmtPrintF(outseq->File, "\n");
+    ajFmtPrintF(outseq->File, "+\n");
 
     ilen = ajStrGetLen(outseq->Seq);
 
     if(outseq->Accuracy)
     {
-        for(i=0; i < ilen; i += linelen)
+        ajStrAssignClear(&seq);
+
+        for(j=0;j<ilen;j++)
         {
-            iend = AJMIN(ilen-1, i+linelen-1);
-            ajStrAssignClear(&seq);
-            for(j=i;j<=iend;j++)
-            {
-                qchar = 33 + (int) outseq->Accuracy[j];
-                ajStrAppendK(&seq, qchar);
-            }
-            ajFmtPrintF(outseq->File, "%S\n", seq);
+            qchar = 33 + (int) (0.5 + outseq->Accuracy[j]);
+            if(qchar > 126)
+                qchar = 126;
+            if(qchar < 33)
+                qchar = 33;
+            ajStrAppendK(&seq, (char) qchar);
         }
+
+        ajFmtPrintF(outseq->File, "%S\n", seq);
     }
 
     else 
@@ -1433,15 +1419,11 @@ static void seqWriteFastqSanger(AjPSeqout outseq)
         ** default to a score of 1 (0.75 error : 1 base in 4 is right)
         */
 
-        for(i=0; i < ilen; i += linelen)
-        {
-            iend = AJMIN(ilen-1, i+linelen-1);
-            jlen = (iend - i + 1);
-            ajStrAssignClear(&seq);
-            ajStrAppendCountK(&seq,'\"', jlen); 
-            ajFmtPrintF(outseq->File, "%S\n", seq);
-        }
+        ajStrAssignClear(&seq);
 
+        ajStrAppendCountK(&seq,'\"', ilen); 
+
+        ajFmtPrintF(outseq->File, "%S\n", seq);
     }
     
     ajStrDel(&seq);
@@ -1464,15 +1446,11 @@ static void seqWriteFastqSanger(AjPSeqout outseq)
 
 static void seqWriteFastqIllumina(AjPSeqout outseq)
 {
-    ajuint i;
     ajuint j;
     ajuint ilen;
-    ajuint jlen;
     AjPStr seq = NULL;
-    ajuint linelen     = 60;
-    ajuint iend;
     AjPStr db = NULL;
-    char qchar;
+    ajint  qchar;
 
     ajStrAssignS(&db, outseq->Setoutdb);
     /* ajStrAssignEmptyS(&db, outseq->Db);*/
@@ -1498,37 +1476,26 @@ static void seqWriteFastqIllumina(AjPSeqout outseq)
     ajFmtPrintF(outseq->File, "\n");
     ilen = ajStrGetLen(outseq->Seq);
 
-    for(i=0; i < ilen; i += linelen)
-    {
-	iend = AJMIN(ilen-1, i+linelen-1);
-	ajStrAssignSubS(&seq, outseq->Seq, i, iend);
-	ajFmtPrintF(outseq->File, "%S\n", seq);
-    }
-
-    ajFmtPrintF(outseq->File, "+%S", outseq->Name);
-
-    if(ajStrGetLen(outseq->Sv))
-	ajFmtPrintF(outseq->File, " %S", outseq->Sv);
-    else if(ajStrGetLen(outseq->Acc))
-	ajFmtPrintF(outseq->File, " %S", outseq->Acc);
-
-    ajFmtPrintF(outseq->File, "\n");
+    ajFmtPrintF(outseq->File, "%S\n", outseq->Seq);
+    ajFmtPrintF(outseq->File, "+\n");
 
     ilen = ajStrGetLen(outseq->Seq);
 
     if(outseq->Accuracy)
     {
-        for(i=0; i < ilen; i += linelen)
+        ajStrAssignClear(&seq);
+
+        for(j=0;j<ilen;j++)
         {
-            iend = AJMIN(ilen-1, i+linelen-1);
-            ajStrAssignClear(&seq);
-            for(j=i;j<=iend;j++)
-            {
-                qchar = 64 + (int) outseq->Accuracy[j];
-                ajStrAppendK(&seq, qchar);
-            }
-            ajFmtPrintF(outseq->File, "%S\n", seq);
+            qchar = 64 + (int) (0.5 + outseq->Accuracy[j]);
+            if(qchar > 126)
+                qchar = 126;
+            else if(qchar < 33)
+                qchar = 33;
+            ajStrAppendK(&seq, (char) qchar);
         }
+
+        ajFmtPrintF(outseq->File, "%S\n", seq);
     }
 
     else 
@@ -1537,15 +1504,11 @@ static void seqWriteFastqIllumina(AjPSeqout outseq)
         ** default to a score of 1 (0.75 error : 1 base in 4 is right)
         */
 
-        for(i=0; i < ilen; i += linelen)
-        {
-            iend = AJMIN(ilen-1, i+linelen-1);
-            jlen = (iend - i + 1);
-            ajStrAssignClear(&seq);
-            ajStrAppendCountK(&seq,'A', jlen);
-            ajFmtPrintF(outseq->File, "%S\n", seq);
-        }
+        ajStrAssignClear(&seq);
 
+        ajStrAppendCountK(&seq,'A', ilen);
+
+        ajFmtPrintF(outseq->File, "%S\n", seq);
     }
     
     ajStrDel(&seq);
@@ -1568,15 +1531,11 @@ static void seqWriteFastqIllumina(AjPSeqout outseq)
 
 static void seqWriteFastqSolexa(AjPSeqout outseq)
 {
-    ajuint i;
     ajuint j;
     ajuint ilen;
-    ajuint jlen;
     AjPStr seq = NULL;
-    ajuint linelen     = 60;
-    ajuint iend;
     AjPStr db = NULL;
-    char qchar;
+    ajint qchar;
     double sval;
     double pval;
     double qval;
@@ -1605,47 +1564,39 @@ static void seqWriteFastqSolexa(AjPSeqout outseq)
     ajFmtPrintF(outseq->File, "\n");
     ilen = ajStrGetLen(outseq->Seq);
 
-    for(i=0; i < ilen; i += linelen)
-    {
-	iend = AJMIN(ilen-1, i+linelen-1);
-	ajStrAssignSubS(&seq, outseq->Seq, i, iend);
-	ajFmtPrintF(outseq->File, "%S\n", seq);
-    }
+    ajFmtPrintF(outseq->File, "%S\n", outseq->Seq);
 
-    ajFmtPrintF(outseq->File, "+%S", outseq->Name);
-
-    if(ajStrGetLen(outseq->Sv))
-	ajFmtPrintF(outseq->File, " %S", outseq->Sv);
-    else if(ajStrGetLen(outseq->Acc))
-	ajFmtPrintF(outseq->File, " %S", outseq->Acc);
-
-    ajFmtPrintF(outseq->File, "\n");
+    ajFmtPrintF(outseq->File, "+\n");
 
     ilen = ajStrGetLen(outseq->Seq);
 
     if(outseq->Accuracy)
     {
-        for(i=0; i < ilen; i += linelen)
+        ajStrAssignClear(&seq);
+
+        for(j=0;j<ilen;j++)
         {
-            iend = AJMIN(ilen-1, i+linelen-1);
-            ajStrAssignClear(&seq);
-            for(j=i;j<=iend;j++)
-            {
-                sval = outseq->Accuracy[j];
-                pval = 1.0 / pow(10.0, (sval/10.0));
+            sval = outseq->Accuracy[j];
+            pval = 1.0 / pow(10.0, (sval/10.0));
 
-                /*adjust zero phred score to 0.75 error rate */
-                if(pval == 1.0)
-                    pval = 0.75;
+            /*adjust low phred score to maximum 0.75 error rate = random */
+            if(pval > 0.75)
+                pval = 0.75;
 
-                qval = 0.5 + -10.0 * log10(pval/(1.0 - pval));
-                qchar = 64 + (int) qval;
-                ajStrAppendK(&seq, qchar);
-                ajDebug("[%d] aval:%.4f qval:%.4f %d '%c'\n",
-                        j, sval, qval, (int)qval, qchar);
-            }
-            ajFmtPrintF(outseq->File, "%S\n", seq);
+            qval = -10.0 * log10(pval/(1.0 - pval));
+            if(qval >= 0.0)
+                qchar = 64 + (int) (qval + 0.5);
+            else
+                qchar = 64 + (int) (qval - 0.5);
+            if(qchar > 126)
+                qchar = 126;
+            else if(qchar < 33)
+                qchar = 33;
+            ajStrAppendK(&seq, (char) qchar);
+            ajDebug("[%d] aval:%.4f pval: %.4f qval:%.4f %d '%c'\n",
+                    j, sval, pval, qval, (int)qval, qchar);
         }
+        ajFmtPrintF(outseq->File, "%S\n", seq);
     }
 
     else 
@@ -1654,15 +1605,11 @@ static void seqWriteFastqSolexa(AjPSeqout outseq)
         ** default to a score of -5 (0.75 error : 1 base in 4 is right)
         */
 
-        for(i=0; i < ilen; i += linelen)
-        {
-            iend = AJMIN(ilen-1, i+linelen-1);
-            jlen = (iend - i + 1);
-            ajStrAssignClear(&seq);
-            ajStrAppendCountK(&seq,';', jlen); 
-            ajFmtPrintF(outseq->File, "%S\n", seq);
-        }
+        ajStrAssignClear(&seq);
+        
+        ajStrAppendCountK(&seq,';', ilen); 
 
+        ajFmtPrintF(outseq->File, "%S\n", seq);
     }
     
     ajStrDel(&seq);
@@ -3599,7 +3546,7 @@ static void seqWriteNbrf(AjPSeqout outseq)
 					     ajStrGetPtr(outseq->Type),
 					     outseq->File);
 
-	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
+	if(!ajFeattableWrite(outseq->Ftquery, outseq->Fttable))
 	    ajWarn("seqWriteNbrf features output failed UFO: '%S'",
 		   outseq->Ufo);
     }
@@ -3761,7 +3708,7 @@ static void seqWriteExperiment(AjPSeqout outseq)
         outseq->Ftquery = ajFeattabOutNewCSF("embl", outseq->Name,
 					     ajStrGetPtr(outseq->Type),
 					     outseq->File);
-	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
+	if(!ajFeattableWrite(outseq->Ftquery, outseq->Fttable))
 	    ajWarn("seqWriteEmbl features output failed UFO: '%S'",
 		   outseq->Ufo);
     }
@@ -3963,7 +3910,7 @@ static void seqWriteEmbl(AjPSeqout outseq)
         outseq->Ftquery = ajFeattabOutNewCSF("embl", outseq->Name,
 					     ajStrGetPtr(outseq->Type),
 					     outseq->File);
-	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
+	if(!ajFeattableWrite(outseq->Ftquery, outseq->Fttable))
 	    ajWarn("seqWriteEmbl features output failed UFO: '%S'",
 		   outseq->Ufo);
     }
@@ -4393,7 +4340,7 @@ static void seqWriteEmblnew(AjPSeqout outseq)
         outseq->Ftquery = ajFeattabOutNewCSF("embl", outseq->Name,
 					     ajStrGetPtr(outseq->Type),
 					     outseq->File);
-	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
+	if(!ajFeattableWrite(outseq->Ftquery, outseq->Fttable))
 	    ajWarn("seqWriteEmbl features output failed UFO: '%S'",
 		   outseq->Ufo);
 	ajFmtPrintF(outseq->File, "XX\n");
@@ -4562,7 +4509,7 @@ static void seqWriteSwiss(AjPSeqout outseq)
 	outseq->Ftquery = ajFeattabOutNewCSF("swiss", outseq->Name,
 					     ajStrGetPtr(outseq->Type),
 					     outseq->File);
-	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
+	if(!ajFeattableWrite(outseq->Ftquery, outseq->Fttable))
 	    ajWarn("seqWriteSwiss features output failed UFO: '%S'",
 		   outseq->Ufo);
     }
@@ -5317,7 +5264,7 @@ static void seqWriteSwissnew(AjPSeqout outseq)
 	outseq->Ftquery = ajFeattabOutNewCSF("swiss", outseq->Name,
 					     ajStrGetPtr(outseq->Type),
 					     outseq->File);
-	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
+	if(!ajFeattableWrite(outseq->Ftquery, outseq->Fttable))
 	    ajWarn("seqWriteSwiss features output failed UFO: '%S'",
 		   outseq->Ufo);
     }
@@ -5633,7 +5580,7 @@ static void seqWriteGenbank(AjPSeqout outseq)
         outseq->Ftquery = ajFeattabOutNewSSF(ftfmt, outseq->Name,
 					     ajStrGetPtr(outseq->Type),
 					     outseq->File);
-	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
+	if(!ajFeattableWrite(outseq->Ftquery, outseq->Fttable))
 	    ajWarn("seqWriteGenbank features output failed UFO: '%S'",
 		   outseq->Ufo);
     }
@@ -5731,7 +5678,7 @@ static void seqWriteGff2(AjPSeqout outseq)
 	else
 	    ajFeattableSetNuc(outseq->Fttable);
 	
-	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
+	if(!ajFeattableWrite(outseq->Ftquery, outseq->Fttable))
 	    ajWarn("seqWriteGff2 features output failed UFO: '%S'",
 		   outseq->Ufo);
 
@@ -5765,7 +5712,7 @@ static void seqWriteGff3(AjPSeqout outseq)
 	else
 	    ajFeattableSetNuc(outseq->Fttable);
 	
-	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
+	if(!ajFeattableWrite(outseq->Ftquery, outseq->Fttable))
 	    ajWarn("seqWriteGff3 features output failed UFO: '%S'",
 		   outseq->Ufo);
 
@@ -6612,7 +6559,7 @@ static void seqWriteDebug(AjPSeqout outseq)
     ajFmtPrintF(outseq->File, "  Features format: '%S'\n",
 		outseq->FtFormat);
     ajFmtPrintF(outseq->File, "  Feature table size: '%u'\n",
-		ajFeattableSize(outseq->Fttable));
+		ajFeattableGetSize(outseq->Fttable));
 
     if(outseq->Accuracy)
     {
@@ -7717,9 +7664,15 @@ static void seqDbName(AjPStr* name, const AjPStr db)
 ** Print internal details for use by entrails
 **
 ** @nam3rule Print Print internal details
-** @nam4rule PrintFormat Print details of sequence output formats
+** @nam3rule Printbook Print internal details as docbook
+** @nam3rule Printhtml Print internal details as html
+** @nam3rule Printwiki Print internal details as wikitext
+** @nam4rule Format Print details of sequence output formats
 **
 ** @argrule Print outf [AjPFile] Output file
+** @argrule Printbook outf [AjPFile] Output file
+** @argrule Printhtml outf [AjPFile] Output file
+** @argrule Printwiki outf [AjPFile] Output file
 ** @argrule Print full [AjBool] Print full details
 **
 ** @valrule * [void]
@@ -7791,6 +7744,228 @@ void ajSeqoutPrintFormat(AjPFile outf, AjBool full)
 __deprecated void ajSeqPrintOutFormat(AjPFile outf, AjBool full)
 {
     ajSeqoutPrintFormat(outf, full);
+
+    return;
+}
+
+
+
+
+/* @func ajSeqoutPrintbookFormat **********************************************
+**
+** Reports the internal data structures as EMBOSS book format
+**
+** @param [u] outf [AjPFile] Output file
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqoutPrintbookFormat(AjPFile outf)
+{
+
+    ajint i = 0;
+    ajint j = 0;
+    AjPStr namestr = NULL;
+    AjPList fmtlist;
+    AjPStr* names;
+
+    fmtlist = ajListstrNew();
+
+    ajFmtPrintF(outf, "<table frame=\"box\" rules=\"cols\">\n");
+    ajFmtPrintF(outf, "  <caption>Output sequence formats</caption>\n");
+    ajFmtPrintF(outf, "  <thead>\n");
+    ajFmtPrintF(outf, "    <tr align=\"center\">\n");
+    ajFmtPrintF(outf, "      <th>Input Format</th>\n");
+    ajFmtPrintF(outf, "      <th>Sngl</th>\n");
+    ajFmtPrintF(outf, "      <th>Save</th>\n");
+    ajFmtPrintF(outf, "      <th>Nuc</th>\n");
+    ajFmtPrintF(outf, "      <th>Pro</th>\n");
+    ajFmtPrintF(outf, "      <th>Feat</th>\n");
+    ajFmtPrintF(outf, "      <th>Gap</th>\n");
+    ajFmtPrintF(outf, "      <th>Multi</th>\n");
+    ajFmtPrintF(outf, "      <th>Description</th>\n");
+    ajFmtPrintF(outf, "    </tr>\n");
+    ajFmtPrintF(outf, "  </thead>\n");
+    ajFmtPrintF(outf, "  <tbody>\n");
+
+    for(i=1; seqOutFormat[i].Name; i++)
+    {
+	if(!seqOutFormat[i].Alias)
+        {
+            namestr = ajStrNewC(seqOutFormat[i].Name);
+            ajListPush(fmtlist, namestr);
+            namestr = NULL;
+        }
+    }
+
+    ajListSort(fmtlist, ajStrVcmp);
+    ajListstrToarray(fmtlist, &names);
+
+    for(i=0; names[i]; i++)
+    {
+        for(j=0; seqOutFormat[j].Name; j++)
+        {
+	    if(ajStrMatchC(names[i],seqOutFormat[j].Name))
+            {
+                ajFmtPrintF(outf, "    <tr>\n");
+                ajFmtPrintF(outf, "      <td>%s</td>\n",
+                            seqOutFormat[j].Name);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            seqOutFormat[j].Single);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            seqOutFormat[j].Save);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            seqOutFormat[j].Nucleotide);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            seqOutFormat[j].Protein);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            seqOutFormat[j].Feature);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            seqOutFormat[j].Gap);
+                ajFmtPrintF(outf, "      <td>%B</td>\n",
+                            seqOutFormat[j].Multiset);
+                ajFmtPrintF(outf, "      <td>%s</td>\n",
+			seqOutFormat[j].Desc);
+                ajFmtPrintF(outf, "    </tr>\n");
+            }
+        }
+    }
+
+    ajFmtPrintF(outf, "  </tbody>\n");
+    ajFmtPrintF(outf, "</table>\n");
+    ajStrDel(&namestr);
+
+    return;
+}
+
+
+
+
+/* @func ajSeqoutPrinthtmlFormat **********************************************
+**
+** Reports the internal data structures as wikitext
+**
+** @param [u] outf [AjPFile] Output file
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqoutPrinthtmlFormat(AjPFile outf)
+{
+
+    ajint i = 0;
+    ajint j = 0;
+    AjPStr namestr = NULL;
+
+    ajFmtPrintF(outf, "<table border=3>");
+    ajFmtPrintF(outf, "<tr><th>Output Format</th>\n");
+    ajFmtPrintF(outf, "<th>Single</th><th>Save</th>\n");
+    ajFmtPrintF(outf, "<th>Nuc</th><th>Pro</th><th>Feat</th><th>Gap</th>\n");
+    ajFmtPrintF(outf, "<th>Multi</th><th>Description</th></tr>\n");
+
+    for(i=1; seqOutFormat[i].Name; i++)
+    {
+        if(!seqOutFormat[i].Alias)
+        {
+            ajStrAssignC(&namestr, seqOutFormat[i].Name);
+
+            for(j=i+1; seqOutFormat[j].Name; j++)
+            {
+                if(seqOutFormat[j].Write == seqOutFormat[i].Write)
+                {
+                    ajFmtPrintAppS(&namestr, "<br>%s", seqOutFormat[j].Name);
+                    if(!seqOutFormat[j].Alias) 
+                    {
+                        ajWarn("Output format '%s' same as '%s' but not alias",
+                               seqOutFormat[j].Name, seqOutFormat[i].Name);
+                    }
+                }
+            }
+
+	    ajFmtPrintF(outf, "<tr><td>\n%S\n</td><td>%B</td><td>%B</td>\n",
+                        namestr,
+			seqOutFormat[i].Single,
+                        seqOutFormat[i].Save);
+            ajFmtPrintF(outf, "<td>%B</td><td>%B</td><td>%B</td><td>%B</td>\n",
+                        seqOutFormat[i].Nucleotide,
+			seqOutFormat[i].Protein,
+			seqOutFormat[i].Feature,
+                        seqOutFormat[i].Gap);
+            ajFmtPrintF(outf, "<td>%B</td><td>\n%s\n</td></tr>\n",
+			seqOutFormat[i].Multiset,
+			seqOutFormat[i].Desc);
+        }
+    }
+    
+
+    ajFmtPrintF(outf, "</table>\n");
+    ajStrDel(&namestr);
+
+    return;
+}
+
+
+
+
+/* @func ajSeqoutPrintwikiFormat **********************************************
+**
+** Reports the internal data structures as wikitext
+**
+** @param [u] outf [AjPFile] Output file
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqoutPrintwikiFormat(AjPFile outf)
+{
+
+    ajint i = 0;
+    ajint j = 0;
+    AjPStr namestr = NULL;
+
+    ajFmtPrintF(outf, "{| class=\"wikitable sortable\" border=\"2\"\n");
+    ajFmtPrintF(outf, "|-\n");
+    ajFmtPrintF(outf, "!Format!!Sngl!!Save!!Nuc!!Pro!!Feat!!Gap!!MSet!!"
+                "class=\"unsortable\"|Description\n");
+
+    for(i=1; seqOutFormat[i].Name; i++)
+    {
+        if(!seqOutFormat[i].Alias)
+        {
+            ajStrAssignC(&namestr, seqOutFormat[i].Name);
+
+            for(j=i+1; seqOutFormat[j].Name; j++)
+            {
+                if(seqOutFormat[j].Write == seqOutFormat[i].Write)
+                {
+                    ajFmtPrintAppS(&namestr, "<br>%s", seqOutFormat[j].Name);
+                    if(!seqOutFormat[j].Alias) 
+                    {
+                        ajWarn("Sequence output format '%s' same as '%s' "
+                               "but not alias",
+                               seqOutFormat[j].Name, seqOutFormat[i].Name);
+                    }
+                }
+            }
+
+            ajFmtPrintF(outf, "|-\n");
+	    ajFmtPrintF(outf,
+			"|%S||%B||%B||%B||%B||%B||%B||%B||%s\n",
+			namestr,
+			seqOutFormat[i].Single,
+			seqOutFormat[i].Save,
+			seqOutFormat[i].Nucleotide,
+			seqOutFormat[i].Protein,
+			seqOutFormat[i].Feature,
+			seqOutFormat[i].Gap,
+			seqOutFormat[i].Multiset,
+			seqOutFormat[i].Desc);
+         }
+    }
+    
+
+    ajFmtPrintF(outf, "|}\n\n");
+    ajStrDel(&namestr);
 
     return;
 }

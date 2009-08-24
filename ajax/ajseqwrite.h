@@ -15,6 +15,9 @@ extern "C"
 **
 ** Holds definition of sequence output.
 **
+** @alias AjSSeqout
+** @alias AjOSeqout
+**
 ** @attr Name [AjPStr] Name (ID)
 ** @attr Acc [AjPStr] Accession number (primary only)
 ** @attr Sv [AjPStr] SeqVersion number
@@ -173,6 +176,9 @@ AjBool       ajSeqoutSetFormatC (AjPSeqout thys, const char* format);
 AjBool       ajSeqoutSetFormatS (AjPSeqout thys, const AjPStr format);
 void         ajSeqoutTrace (const AjPSeqout seq);
 void         ajSeqoutPrintFormat (AjPFile outf, AjBool full);
+void         ajSeqoutPrintbookFormat (AjPFile outf);
+void         ajSeqoutPrinthtmlFormat (AjPFile outf);
+void         ajSeqoutPrintwikiFormat (AjPFile outf);
 void         ajSeqoutClearUsa (AjPSeqout thys, const AjPStr Usa);
 AjBool       ajSeqoutWriteSet (AjPSeqout seqout, const AjPSeqset seq);
 void         ajSeqoutClose(AjPSeqout outseq);
