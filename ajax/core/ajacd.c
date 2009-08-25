@@ -14893,7 +14893,7 @@ static void acdHelp(void)
 
         acdAttrResolve(acdApplAcd, "documentation", &tmpstr);
 
-        if(!acdAuto && ajStrGetLen(tmpstr))
+        if(!acdAuto && !acdDoTable && ajStrGetLen(tmpstr))
         {
             ajStrFmtWrap(&tmpstr, 75);
             ajUserDumpS(tmpstr);
