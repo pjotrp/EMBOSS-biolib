@@ -1,6 +1,7 @@
 application: matcher [
   documentation: "Waterman-Eggert local alignment of two sequences"
   groups: "Alignment:Local"
+  relation: "EDAM: Local sequence alignment"
 ]
 
 section: input [

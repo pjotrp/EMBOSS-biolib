@@ -1,6 +1,7 @@
 application: dotmatcher [
   documentation: "Draw a threshold dotplot of two sequences"
   groups: "Alignment:Dot plots"
+  relation: "EDAM: Dotplot generation"
 ]
 
 section: input [

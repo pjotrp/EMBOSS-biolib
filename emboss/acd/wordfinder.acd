@@ -5,6 +5,8 @@ application: wordfinder [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
+  relation: "EDAM: Sequence word comparison"
+  relation: "EDAM: Local sequence alignment"
 ]
 
 section: input [

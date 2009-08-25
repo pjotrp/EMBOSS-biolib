@@ -1,6 +1,8 @@
 application: edialign [
   documentation: "Local multiple alignment of sequences"
   groups: "Alignment:Multiple"
+  relation: "EDAM: Local sequence alignment"
+  relation: "EDAM: Multiple sequence alignment"
 ]
 
 section: input [

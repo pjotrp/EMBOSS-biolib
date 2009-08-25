@@ -2,6 +2,8 @@ application: tranalign [
   documentation: "Generate an alignment of nucleic coding regions
                   from aligned proteins"
   groups: "Alignment:Multiple"
+  relation: "EDAM: Sequence alignment conversion"
+  relation: "EDAM: DNA back-translation"
 ]
 
 section: input [

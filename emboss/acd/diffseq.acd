@@ -4,6 +4,7 @@ application: diffseq [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
+  relation: "EDAM: Sequence feature comparison"
 ]
 
 section: input [

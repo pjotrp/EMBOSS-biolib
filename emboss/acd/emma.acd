@@ -5,6 +5,8 @@ application: emma [
   batch: "yes"
   cpu: "medium"
   external: "clustalw"
+  relation: "EDAM: Phylogenetic tree-based multiple sequence alignment"
+  relation: "EDAM: Multiple sequence alignment"
 ]
 
 section: input [

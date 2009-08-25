@@ -1,6 +1,7 @@
 application: seqmatchall [
   documentation: "All-against-all word comparison of a sequence set"
   groups: "Alignment:Local"
+  relation: "EDAM: Sequence word comparison"
 ]
 
 section: input [

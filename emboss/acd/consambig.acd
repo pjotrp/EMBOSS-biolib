@@ -2,6 +2,7 @@ application: consambig [
   documentation: "Create an ambiguous consensus sequence from a
                   multiple alignment"
   groups: "Alignment:Consensus"
+  relation: "EDAM: Sequence alignment conservation analysis"
 ]
 
 section: input [

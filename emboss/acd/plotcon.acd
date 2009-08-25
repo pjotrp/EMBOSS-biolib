@@ -1,6 +1,7 @@
 application: plotcon [
   documentation: "Plot conservation of a sequence alignment"
   groups: "Alignment:Multiple"
+  relation: "EDAM: "Sequence alignment conservation analysis"
 ]
 
 section: input [

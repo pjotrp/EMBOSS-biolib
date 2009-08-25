@@ -5,6 +5,7 @@ application: supermatcher [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
+  relation: "EDAM: Local sequence alignment"
 ]
 
 section: input [

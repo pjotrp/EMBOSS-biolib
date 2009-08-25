@@ -4,6 +4,8 @@ application: megamerger [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
+  relation: "EDAM: Sequence word comparison"
+  relation: "EDAM: Sequence merging"
 ]
 
 section: input [

@@ -4,6 +4,7 @@ application: est2genome [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
+  relation: "EDAM: Hybrid sequence alignment"
 ]
 
 section: input [

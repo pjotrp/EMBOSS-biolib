@@ -2,6 +2,7 @@ application: dottup [
   documentation: "Displays a wordmatch dotplot of two
                   sequences"
   groups: "Alignment:Dot plots"
+  relation: "EDAM: Dotplot generation"
 ]
 
 section: input [
