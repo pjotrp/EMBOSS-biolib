@@ -138,6 +138,9 @@ Command line arguments
    type but this would have been inconsistent with the original meme,
    which has two separate options.
 
+Motif detection
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-mfile]             infile     If -d  is not given, MAST looks
                                   for database specified inside of .
@@ -208,10 +211,8 @@ Command line arguments
    -norc               boolean    [N] Do not score reverse complement DNA
                                   strand
    -w                  boolean    [N] Show weak matches (mt as motif file name.
- (Any string
-                                  is accepted)
-   -df                 string     Print  as database name. (Any string is
-                                  accepted)
+ (Any string)
+   -df                 string     Print  as database name. (Any string)
    -minseqs            integer    [-1] Lower bound on number of sequences in
                                   db (Any integer value)
    -mev                float      [-1] Use only motifs with E-values less than
@@ -219,7 +220,7 @@ Command line arguments
    -m                  integer    [-1] Overrides value set by using -mev. (Any
                                   integer value)
    -diag               string     See on-line documentation for a valid
-                                  example. (Any string is accepted)
+                                  example. (Any string)
 
    Associated qualifiers:
 
@@ -234,13 +235,14 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 Input file format
 

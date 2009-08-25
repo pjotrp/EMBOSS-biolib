@@ -763,6 +763,9 @@ YEVE
 
   6.1 COMMAND LINE ARGUMENTS
 
+Generate PSI-BLAST hits (DHF file) from a DAF file.
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
    -mode               menu       [1] This option specifies the mode of
                                   SEQSEARCH operation. SEQSEARCH takes as
@@ -791,7 +794,7 @@ YEVE
                                   relatives (of unknown structure) by using
                                   SEQALIGN.
   [-database]          string     [swissprot] Name of BLAST-indexed database
-                                  to search. (Any string is accepted)
+                                  to search. (Any string)
    -niter              integer    [1] This option specifies the number of
                                   PSIBLAST iterations. This option specifies
                                   the number of PSIBLAST iterations that are
@@ -836,11 +839,12 @@ YEVE
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 

@@ -95,6 +95,9 @@ Vienna RNAfold output file [rna1.vrnaplot]: <b></b>
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
+Plot vrnafold output
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-structuresfile]    infile     Vienna RNAfold output file
   [-outfile]           outfile    [*.vrnaplot] Vienna RNAfold output file
@@ -106,8 +109,8 @@ Vienna RNAfold output file [rna1.vrnaplot]: <b></b>
    -optype             menu       [ps] Type (Values: ps (postscript); gml
                                   (graph meta language); svg (scaleable vector
                                   graphics); xrna (XRNA save file))
-   -pre                string     Pre-annotation (Any string is accepted)
-   -post               string     Post-annotation (Any string is accepted)
+   -pre                string     Pre-annotation (Any string)
+   -post               string     Post-annotation (Any string)
 
    Associated qualifiers:
 
@@ -122,80 +125,207 @@ Vienna RNAfold output file [rna1.vrnaplot]: <b></b>
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 </pre>
 </td></tr></table>
 <P>
 <table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+Plot vrnafold output
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Qualifier</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Standard (Mandatory) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
 <td>[-structuresfile]<br>(Parameter 1)</td>
+<td>infile</td>
 <td>Vienna RNAfold output file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>[-outfile]<br>(Parameter 2)</td>
+<td>outfile</td>
 <td>Vienna RNAfold output file</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.vrnaplot</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Additional (Optional) qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
+<th align="left" colspan=5>Additional (Optional) qualifiers</th>
 </tr>
 
 <tr>
-<td colspan=4>(none)</td>
+<td colspan=5>(none)</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
+<th align="left" colspan=5>Advanced (Unprompted) qualifiers</th>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-layout</td>
+<td>list</td>
 <td>Layout</td>
 <td><table><tr><td>radial</td> <td><i>(Simple radial)</i></td></tr><tr><td>naview</td> <td><i>(naview)</i></td></tr></table></td>
 <td>naview</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-optype</td>
+<td>list</td>
 <td>Type</td>
 <td><table><tr><td>ps</td> <td><i>(postscript)</i></td></tr><tr><td>gml</td> <td><i>(graph meta language)</i></td></tr><tr><td>svg</td> <td><i>(scaleable vector graphics)</i></td></tr><tr><td>xrna</td> <td><i>(XRNA save file)</i></td></tr></table></td>
 <td>ps</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-pre</td>
+<td>string</td>
 <td>Pre-annotation</td>
-<td>Any string is accepted</td>
-<td><i>An empty string is accepted</i></td>
+<td>Any string</td>
+<td>&nbsp;</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-post</td>
+<td>string</td>
 <td>Post-annotation</td>
-<td>Any string is accepted</td>
-<td><i>An empty string is accepted</i></td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Associated qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-outfile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory2<br>-odirectory_outfile</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>General qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -auto</td>
+<td>boolean</td>
+<td>Turn off prompts</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -stdout</td>
+<td>boolean</td>
+<td>Write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -filter</td>
+<td>boolean</td>
+<td>Read first file from standard input, write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -options</td>
+<td>boolean</td>
+<td>Prompt for standard and additional values</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -debug</td>
+<td>boolean</td>
+<td>Write debug output to program.dbg</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -verbose</td>
+<td>boolean</td>
+<td>Report some/full command line options</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -help</td>
+<td>boolean</td>
+<td>Report command line options and exit. More information on associated and general qualifiers can be found with -help -verbose</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -warning</td>
+<td>boolean</td>
+<td>Report warnings</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -error</td>
+<td>boolean</td>
+<td>Report errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fatal</td>
+<td>boolean</td>
+<td>Report fatal errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -die</td>
+<td>boolean</td>
+<td>Report dying program messages</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -version</td>
+<td>boolean</td>
+<td>Report version number and exit</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
 </tr>
 
 </table>

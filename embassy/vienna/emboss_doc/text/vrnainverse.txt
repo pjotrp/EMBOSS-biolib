@@ -48,6 +48,9 @@ Vienna RNAfold output file [rna3.vrnainverse]:
 
 Command line arguments
 
+RNA sequences matching a structure
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-structuresfile]    infile     Vienna RNA structures file
   [-outfile]           outfile    [*.vrnainverse] Vienna RNAfold output file
@@ -62,7 +65,7 @@ Command line arguments
    -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
    -[no]lp             boolean    [Y] Allow lonely pairs
    -[no]convert        boolean    [Y] Convert T to U
-   -nsbases            string     Non-standard bases (Any string is accepted)
+   -nsbases            string     Non-standard bases (Any string)
    -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
    -energy             menu       [0] Rarely used option to fold sequences
                                   from the ABCD... alphabet (Values: 0 (BP); 1
@@ -74,7 +77,7 @@ Command line arguments
    -folding            menu       [m] Method (Values: m (Minimum energy); pv
                                   (Partition function); mp (Both))
    -alphabet           string     [AUGC] Find sequences using only these bases
-                                  (Any string is accepted)
+                                  (Any string)
    -final              float      [0.0] Stopping value (Any numeric value)
    -repeats            integer    [0] Number of times to search for the same
                                   structure (Integer 0 or more)
@@ -112,14 +115,16 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
+   RNA sequences matching a structure
 Input file format
 
    vrnainverse reads any normal sequence USAs.
@@ -139,23 +144,23 @@ Output file format
 
   File: rna3.vrnainverse
 
-AGCAUUAGAGCGGACUGAAAACUGCCCGGCUGUACUAAGGCCGUACCCCUGGUGUAUUGAACUAGUGAUGCUUUGU
-26
-GUGACUCACGAUCUGCGCAAUGGUCUAGCUGGAACUGAUAGCUUCUAAGAAUGAAUACGCCAUUCGGGUUAUCCCG
-25
-UGUAGUUACACCCCCGGAGUGGGGUUACGGGACGGAGUCUUGUUCGCAGUCGAUGUCACUUCGACGAUUACACCCG
-34   d = 3.000000
+UGUUUUAUUGGUCUCGUCGCUGACCUGGGUGUAUCGAUCAUCUUGUACGGGCUCCAAGCGGGUUCUAGGACACACU
+28   d = 1.000000
+UCCUUUAUCGCAGAUACAGCCCUGCCCAUGUUAGCCACACAUGCGAUUCACCAUUCCGACUGGUGUAGAGGGUGCG
+27
+GUUAUUUAUGCGGCAGGACCACCGCGGAGUAGUUCUUAUAUUCACACACUGGUAUUUGCGACCGGGAGUAGCGGCC
+19
 
   Output files for usage example 2
 
   File: rna3.vrnainverse
 
-AGCAUUAGAGCGGACUGAAAACUGCCCGGCUGUACUAAGGCCGUACCCCUGGUGUAUUGAACUAGUGAUGCUUUGU
-26
-GUGACUCACGAUCUGCGCAAUGGUCUAGCUGGAACUGAUAGCUUCUAAGAAUGAAUACGCCAUUCGGGUUAUCCCG
+UAUGUGUGUCUGCUUUAACCCGCAGCAACCGGGAUCGACGGUUAUAUGUUUGAUUAACGUUCAAAGCACAUGGUGA
 25
-GCUAUUAAACAGCUUAAGUCCGUUGCACUGCAAUAUUGGCAGUACCGCACCUAAUUCUAAUGGGUUAAUAGCAAUC
-19
+GUUGUGAAAGCACAACCUAACGUGCCCUGUGAUCGAUACAUAGUAGUAUGCAAACCACCCUUGUAUCGCGACCUGC
+31
+GUGAAUUGAGGCGACGAGGUAUGCUAGGGGCCCAACAAGCCCCAACUCCCGCGGCCCUUACGUGGAGUUCAUAUUA
+21
 
 Data files
 

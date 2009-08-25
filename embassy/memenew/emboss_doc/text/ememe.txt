@@ -554,6 +554,9 @@ Command line arguments
    command-line in order to be prompted for a value for "additional"
    options but "advanced" options will never be prompted for.
 
+Multiple EM for Motif Elicitation
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-dataset]           seqset     User must provide the full filename of a set
                                   of sequences, not an indirect reference,
@@ -825,7 +828,7 @@ Command line arguments
                                   occurrence of a motif is known and can be
                                   used as the starting point for finding the
                                   motif. See the application documentation for
-                                  more information. (Any string is accepted)
+                                  more information. (Any string)
    -maxsize            integer    [-1] Maximum dataset size in characters (-1
                                   = use meme default). (Any integer value)
    -p                  integer    [0] Only values of >0 will be applied. The
@@ -839,7 +842,7 @@ Command line arguments
    -time               integer    [0] Only values of more than 0 will be
                                   applied. (Any integer value)
    -sf                 string     Print  as name of sequence file (Any
-                                  string is accepted)
+                                  string)
    -heapsize           integer    [64] The search for good EM starting points
                                   can be improved by using a branching search.
                                   A branching search begins with a fixed-size
@@ -909,13 +912,14 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 Input file format
 
@@ -1244,7 +1248,7 @@ TGTGA[ACT][CAG][GT][AGT][GC][TAC]TCAC
 
 
 
-Time  0.69 secs.
+Time  0.66 secs.
 
 *******************************************************************************
 *

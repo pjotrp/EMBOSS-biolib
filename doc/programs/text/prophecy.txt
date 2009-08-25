@@ -71,6 +71,9 @@ Output file [globins.prophecy]:
 
 Command line arguments
 
+Create frequency matrix or profile from a multiple alignment
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqset     (Aligned) sequence set filename and optional
                                   format, or reference (input USA)
@@ -79,7 +82,7 @@ Command line arguments
 *  -datafile           matrixf    ['Epprofile' for Gribskov type, or
                                   EBLOSUM62] Scoring matrix
    -name               string     [mymatrix] Enter a name for the profile (Any
-                                  string is accepted)
+                                  string)
 *  -threshold          integer    [75] Enter threshold reporting percentage
                                   (Integer from 1 to 100)
 *  -open               float      [3.0] Gap opening penalty (Any numeric
@@ -119,13 +122,14 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 Input file format
 

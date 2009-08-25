@@ -516,13 +516,14 @@ ssematch       Search a DCF file for secondary structure matches
 tfextract      Process TRANSFAC transcription factor database for use by tfscan
 
 UTILS DATABASE INDEXING
-dbiblast Index a BLAST database
-dbifasta Index a fasta file database
-dbiflat  Index a flat file database
-dbigcg   Index a GCG formatted database
-dbxfasta Index a fasta file database using b+tree indices
-dbxflat  Index a flat file database using b+tree indices
-dbxgcg   Index a GCG formatted database using b+tree indices
+dbiblast  Index a BLAST database
+dbifasta  Index a fasta file database
+dbiflat   Index a flat file database
+dbigcg    Index a GCG formatted database
+dbxfasta  Index a fasta file database using b+tree indices
+dbxflat   Index a flat file database using b+tree indices
+dbxgcg    Index a GCG formatted database using b+tree indices
+dbxreport Validate index and report internals for dbx databases
 
 UTILS MISC
 embossdata    Find and retrieve EMBOSS data files
@@ -589,6 +590,7 @@ dbigcg         Index a GCG formatted database
 dbxfasta       Index a fasta file database using b+tree indices
 dbxflat        Index a flat file database using b+tree indices
 dbxgcg         Index a GCG formatted database using b+tree indices
+dbxreport      Validate index and report internals for dbx databases
 degapseq       Removes non-alphabetic (e.g. gap) characters from sequences
 density        Draw a nucleic acid density plot
 descseq        Alter the name or description of a sequence

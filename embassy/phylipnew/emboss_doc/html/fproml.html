@@ -222,6 +222,9 @@ Done.
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
+Protein phylogeny by maximum likelihood
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-sequence]          seqsetall  File containing one or more sequence
                                   alignments
@@ -310,255 +313,537 @@ Done.
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 </pre>
 </td></tr></table>
 <P>
 <table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+Protein phylogeny by maximum likelihood
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Qualifier</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Standard (Mandatory) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
 <td>[-sequence]<br>(Parameter 1)</td>
+<td>seqsetall</td>
 <td>File containing one or more sequence alignments</td>
 <td>Readable sets of sequences</td>
 <td><b>Required</b></td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>[-intreefile]<br>(Parameter 2)</td>
+<td>tree</td>
 <td>Phylip tree file (optional)</td>
 <td>Phylogenetic tree</td>
 <td>&nbsp;</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>[-outfile]<br>(Parameter 3)</td>
+<td>outfile</td>
 <td>Phylip proml program output file</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.fproml</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Additional (Optional) qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
+<th align="left" colspan=5>Additional (Optional) qualifiers</th>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-ncategories</td>
+<td>integer</td>
 <td>Number of substitution rate categories</td>
 <td>Integer from 1 to 9</td>
 <td>1</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-rate</td>
+<td>array</td>
 <td>Rate for each category</td>
 <td>List of floating point numbers</td>
 <td>&nbsp;</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-categories</td>
+<td>properties</td>
 <td>File of substitution rate categories</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-weights</td>
+<td>properties</td>
 <td>Weights file</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-lengths</td>
+<td>boolean</td>
 <td>Use branch lengths from user trees</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-model</td>
+<td>list</td>
 <td>Probability model for amino acid change</td>
 <td><table><tr><td>j</td> <td><i>(Jones-Taylor-Thornton)</i></td></tr><tr><td>h</td> <td><i>(Henikoff/Tillier PMBs)</i></td></tr><tr><td>d</td> <td><i>(Dayhoff PAM)</i></td></tr></table></td>
 <td>Jones-Taylor-Thornton</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-gamma</td>
+<td>list</td>
 <td>Rate variation among sites</td>
 <td><table><tr><td>g</td> <td><i>(Gamma distributed rates)</i></td></tr><tr><td>i</td> <td><i>(Gamma+invariant sites)</i></td></tr><tr><td>h</td> <td><i>(User defined HMM of rates)</i></td></tr><tr><td>n</td> <td><i>(Constant rate)</i></td></tr></table></td>
 <td>Constant rate</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-gammacoefficient</td>
+<td>float</td>
 <td>Coefficient of variation of substitution rate among sites</td>
 <td>Number 0.001 or more</td>
 <td>1</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-ngammacat</td>
+<td>integer</td>
 <td>Number of categories (1-9)</td>
 <td>Integer from 1 to 9</td>
 <td>1</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-invarcoefficient</td>
+<td>float</td>
 <td>Coefficient of variation of substitution rate among sites</td>
 <td>Number 0.001 or more</td>
 <td>1</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-ninvarcat</td>
+<td>integer</td>
 <td>Number of categories (1-9) including one for invariant sites</td>
 <td>Integer from 1 to 9</td>
 <td>1</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-invarfrac</td>
+<td>float</td>
 <td>Fraction of invariant sites</td>
 <td>Number from 0.000 to 1.000</td>
 <td>0.0</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-nhmmcategories</td>
+<td>integer</td>
 <td>Number of HMM rate categories</td>
 <td>Integer from 1 to 9</td>
 <td>1</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-hmmrates</td>
+<td>array</td>
 <td>HMM category rates</td>
 <td>List of floating point numbers</td>
 <td>1.0</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-hmmprobabilities</td>
+<td>array</td>
 <td>Probability for each HMM category</td>
 <td>List of floating point numbers</td>
 <td>1.0</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-adjsite</td>
+<td>boolean</td>
 <td>Rates at adjacent sites correlated</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-lambda</td>
+<td>float</td>
 <td>Mean block length of sites having the same rate</td>
 <td>Number 1.000 or more</td>
 <td>1.0</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-njumble</td>
+<td>integer</td>
 <td>Number of times to randomise, choose 0 if you don't want to randomise</td>
 <td>Integer 0 or more</td>
 <td>0</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-seed</td>
+<td>integer</td>
 <td>Random number seed between 1 and 32767 (must be odd)</td>
 <td>Integer from 1 to 32767</td>
 <td>1</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-global</td>
+<td>boolean</td>
 <td>Global rearrangements</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-outgrno</td>
+<td>integer</td>
 <td>Species number to use as outgroup</td>
 <td>Integer 0 or more</td>
 <td>0</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-[no]rough</td>
+<td>boolean</td>
 <td>Speedier but rougher analysis</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-[no]trout</td>
+<td>toggle</td>
 <td>Write out trees to tree file</td>
 <td>Toggle value Yes/No</td>
 <td>Yes</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-outtreefile</td>
+<td>outfile</td>
 <td>Phylip tree output file (optional)</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.fproml</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-printdata</td>
+<td>boolean</td>
 <td>Print data at start of run</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-[no]progress</td>
+<td>boolean</td>
 <td>Print indications of progress of run</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-[no]treeprint</td>
+<td>boolean</td>
 <td>Print out tree</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-hypstate</td>
+<td>boolean</td>
 <td>Reconstruct hypothetical sequence</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
+<th align="left" colspan=5>Advanced (Unprompted) qualifiers</th>
 </tr>
 
 <tr>
-<td colspan=4>(none)</td>
+<td colspan=5>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Associated qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-sequence" associated seqsetall qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sbegin1<br>-sbegin_sequence</td>
+<td>integer</td>
+<td>Start of each sequence to be used</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -send1<br>-send_sequence</td>
+<td>integer</td>
+<td>End of each sequence to be used</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sreverse1<br>-sreverse_sequence</td>
+<td>boolean</td>
+<td>Reverse (if DNA)</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sask1<br>-sask_sequence</td>
+<td>boolean</td>
+<td>Ask for begin/end/reverse</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -snucleotide1<br>-snucleotide_sequence</td>
+<td>boolean</td>
+<td>Sequence is nucleotide</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sprotein1<br>-sprotein_sequence</td>
+<td>boolean</td>
+<td>Sequence is protein</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -slower1<br>-slower_sequence</td>
+<td>boolean</td>
+<td>Make lower case</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -supper1<br>-supper_sequence</td>
+<td>boolean</td>
+<td>Make upper case</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sformat1<br>-sformat_sequence</td>
+<td>string</td>
+<td>Input sequence format</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sdbname1<br>-sdbname_sequence</td>
+<td>string</td>
+<td>Database name</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sid1<br>-sid_sequence</td>
+<td>string</td>
+<td>Entryname</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -ufo1<br>-ufo_sequence</td>
+<td>string</td>
+<td>UFO features</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fformat1<br>-fformat_sequence</td>
+<td>string</td>
+<td>Features format</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fopenfile1<br>-fopenfile_sequence</td>
+<td>string</td>
+<td>Features file name</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-outfile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory3<br>-odirectory_outfile</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-outtreefile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>General qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -auto</td>
+<td>boolean</td>
+<td>Turn off prompts</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -stdout</td>
+<td>boolean</td>
+<td>Write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -filter</td>
+<td>boolean</td>
+<td>Read first file from standard input, write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -options</td>
+<td>boolean</td>
+<td>Prompt for standard and additional values</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -debug</td>
+<td>boolean</td>
+<td>Write debug output to program.dbg</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -verbose</td>
+<td>boolean</td>
+<td>Report some/full command line options</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -help</td>
+<td>boolean</td>
+<td>Report command line options and exit. More information on associated and general qualifiers can be found with -help -verbose</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -warning</td>
+<td>boolean</td>
+<td>Report warnings</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -error</td>
+<td>boolean</td>
+<td>Report errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fatal</td>
+<td>boolean</td>
+<td>Report fatal errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -die</td>
+<td>boolean</td>
+<td>Report dying program messages</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -version</td>
+<td>boolean</td>
+<td>Report version number and exit</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
 </tr>
 
 </table>

@@ -145,6 +145,9 @@ Output file [laci_ecoli.showpep]:
 
 Command line arguments
 
+Displays protein sequences with features in pretty format
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqall     (Gapped) protein sequence(s) filename and
                                   optional format, or reference (input USA)
@@ -218,7 +221,7 @@ Command line arguments
                                   If you wish to show more than one source,
                                   separate their names with the character '|',
                                   eg:
-                                  gene* | embl (Any string is accepted)
+                                  gene* | embl (Any string)
    -typematch          string     [*] By default any feature type in the
                                   feature table is shown. You can set this to
                                   match any feature type you wish to show.
@@ -231,7 +234,7 @@ Command line arguments
                                   If you wish to show more than one type,
                                   separate their names with the character '|',
                                   eg:
-                                  *UTR | intron (Any string is accepted)
+                                  *UTR | intron (Any string)
    -minscore           float      [0.0] Minimum score of feature to display
                                   (see also maxscore) (Any numeric value)
    -maxscore           float      [0.0] Maximum score of feature to display.
@@ -247,7 +250,7 @@ Command line arguments
                                   If you wish to show more than one tag,
                                   separate their names with the character '|',
                                   eg:
-                                  gene | label (Any string is accepted)
+                                  gene | label (Any string)
    -valuematch         string     [*] Tag values are the values associated
                                   with a feature tag. Tags are the types of
                                   extra values that a feature may have. By
@@ -259,7 +262,7 @@ Command line arguments
                                   If you wish to show more than one tag value,
                                   separate their names with the character
                                   '|', eg:
-                                  pax* | 10 (Any string is accepted)
+                                  pax* | 10 (Any string)
    -stricttags         boolean    [N] By default if any tag/value pair in a
                                   feature matches the specified tag and value,
                                   then all the tags/value pairs of that
@@ -315,13 +318,14 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 Input file format
 

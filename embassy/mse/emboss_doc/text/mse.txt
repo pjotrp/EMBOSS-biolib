@@ -34,6 +34,9 @@ Multiple Sequence Editor
 
 Command line arguments
 
+Multiple Sequence Editor
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-sequence]          seqset     File containing a sequence alignment
   [-outseq]            seqoutset  [.] Sequence set filename
@@ -83,14 +86,16 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
+   Multiple Sequence Editor
 Input file format
 
    mse reads any normal sequence USAs.
@@ -132,7 +137,7 @@ Output file format
 
 !!NA_MULTIPLE_ALIGNMENT 1.0
 
-  mse.msf MSF: 120 Type: N 08/07/09 CompCheck: 2784 ..
+  mse.msf MSF: 120 Type: N 24/08/09 CompCheck: 2784 ..
 
   Name: MSFM1      Len: 120  Check: 8587 Weight: 1.00
   Name: MSFM2      Len: 120  Check: 5766 Weight: 1.00

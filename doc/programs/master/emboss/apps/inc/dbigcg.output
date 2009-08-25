@@ -18,27 +18,27 @@
 # Dbname: EMBL
 # Release: 0.0
 # Date: 15/07/08
-# CurrentDirectory: /homes/user/test/qa/dbigcg-ex-keep/
+# CurrentDirectory: /data/pmr/profemboss/test/qa/dbigcg-ex-keep/
 # IndexDirectory: ./
-# IndexDirectoryPath: /homes/user/test/qa/dbigcg-ex-keep/
+# IndexDirectoryPath: /data/pmr/profemboss/test/qa/dbigcg-ex-keep/
 # Maxindex: 0
 # Fields: 2
 #   Field 1: id
 #   Field 2: acc
-# Directory: /homes/user/test/embl/
-# DirectoryPath: /homes/user/test/embl/
+# Directory: /data/pmr/profemboss/test/embl/
+# DirectoryPath: /data/pmr/profemboss/test/embl/
 # Filenames: *.seq
 # Exclude: 
 # Files: 9
-#   File 1: /homes/user/test/embl/eem_ba1.seq
-#   File 2: /homes/user/test/embl/eem_est.seq
-#   File 3: /homes/user/test/embl/eem_fun.seq
-#   File 4: /homes/user/test/embl/eem_htginv1.seq
-#   File 5: /homes/user/test/embl/eem_hum1.seq
-#   File 6: /homes/user/test/embl/eem_in.seq
-#   File 7: /homes/user/test/embl/eem_ov.seq
-#   File 8: /homes/user/test/embl/eem_ro.seq
-#   File 9: /homes/user/test/embl/eem_vi.seq
+#   File 1: /data/pmr/profemboss/test/embl/eem_ba1.seq
+#   File 2: /data/pmr/profemboss/test/embl/eem_est.seq
+#   File 3: /data/pmr/profemboss/test/embl/eem_fun.seq
+#   File 4: /data/pmr/profemboss/test/embl/eem_htginv1.seq
+#   File 5: /data/pmr/profemboss/test/embl/eem_hum1.seq
+#   File 6: /data/pmr/profemboss/test/embl/eem_in.seq
+#   File 7: /data/pmr/profemboss/test/embl/eem_ov.seq
+#   File 8: /data/pmr/profemboss/test/embl/eem_ro.seq
+#   File 9: /data/pmr/profemboss/test/embl/eem_vi.seq
 ########################################
 # Commandline: dbigcg
 #    -dbname EMBL
@@ -46,31 +46,31 @@
 #    -directory ../../embl
 ########################################
 
-filename: '/homes/user/test/embl/eem_ba1.seq'
+filename: '/data/pmr/profemboss/test/embl/eem_ba1.seq'
     id: 10
    acc: 14
-filename: '/homes/user/test/embl/eem_est.seq'
+filename: '/data/pmr/profemboss/test/embl/eem_est.seq'
     id: 1
    acc: 1
-filename: '/homes/user/test/embl/eem_fun.seq'
+filename: '/data/pmr/profemboss/test/embl/eem_fun.seq'
     id: 1
    acc: 1
-filename: '/homes/user/test/embl/eem_htginv1.seq'
+filename: '/data/pmr/profemboss/test/embl/eem_htginv1.seq'
     id: 5
    acc: 5
-filename: '/homes/user/test/embl/eem_hum1.seq'
+filename: '/data/pmr/profemboss/test/embl/eem_hum1.seq'
     id: 15
    acc: 18
-filename: '/homes/user/test/embl/eem_in.seq'
+filename: '/data/pmr/profemboss/test/embl/eem_in.seq'
     id: 2
    acc: 2
-filename: '/homes/user/test/embl/eem_ov.seq'
+filename: '/data/pmr/profemboss/test/embl/eem_ov.seq'
     id: 2
    acc: 2
-filename: '/homes/user/test/embl/eem_ro.seq'
+filename: '/data/pmr/profemboss/test/embl/eem_ro.seq'
     id: 3
    acc: 3
-filename: '/homes/user/test/embl/eem_vi.seq'
+filename: '/data/pmr/profemboss/test/embl/eem_vi.seq'
     id: 1
    acc: 2
 

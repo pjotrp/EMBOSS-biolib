@@ -299,6 +299,9 @@ Done.
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
+Bootstrapped discrete sites algorithm
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-infile]            discretestates (no help text) discretestates value
   [-outfile]           outfile    [*.fdiscboot] Phylip seqboot_disc program
@@ -359,178 +362,358 @@ Done.
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 </pre>
 </td></tr></table>
 <P>
 <table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+Bootstrapped discrete sites algorithm
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Qualifier</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Standard (Mandatory) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
 <td>[-infile]<br>(Parameter 1)</td>
+<td>discretestates</td>
 <td>(no help text) discretestates value</td>
 <td>Discrete states file</td>
 <td>&nbsp;</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>[-outfile]<br>(Parameter 2)</td>
+<td>outfile</td>
 <td>Phylip seqboot_disc program output file</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.fdiscboot</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>[-outancfile]<br>(Parameter 3)</td>
+<td>outfile</td>
 <td>Phylip ancestor data output file (optional)</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.fdiscboot</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>[-outmixfile]<br>(Parameter 4)</td>
+<td>outfile</td>
 <td>Phylip mix data output file (optional)</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.fdiscboot</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>[-outfactfile]<br>(Parameter 5)</td>
+<td>outfile</td>
 <td>Phylip factor data output file (optional)</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.fdiscboot</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Additional (Optional) qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
+<th align="left" colspan=5>Additional (Optional) qualifiers</th>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-mixfile</td>
+<td>properties</td>
 <td>File of mixtures</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-ancfile</td>
+<td>properties</td>
 <td>File of ancestors</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-weights</td>
+<td>properties</td>
 <td>Weights file</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-factorfile</td>
+<td>properties</td>
 <td>Factors file</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-test</td>
+<td>list</td>
 <td>Choose test</td>
 <td><table><tr><td>b</td> <td><i>(Bootstrap)</i></td></tr><tr><td>j</td> <td><i>(Jackknife)</i></td></tr><tr><td>c</td> <td><i>(Permute species for each character)</i></td></tr><tr><td>o</td> <td><i>(Permute character order)</i></td></tr><tr><td>s</td> <td><i>(Permute within species)</i></td></tr><tr><td>r</td> <td><i>(Rewrite data)</i></td></tr></table></td>
 <td>b</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-regular</td>
+<td>toggle</td>
 <td>Altered sampling fraction</td>
 <td>Toggle value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-fracsample</td>
+<td>float</td>
 <td>Samples as percentage of sites</td>
 <td>Number from 0.100 to 100.000</td>
 <td>100.0</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-morphseqtype</td>
+<td>list</td>
 <td>Output format</td>
 <td><table><tr><td>p</td> <td><i>(PHYLIP)</i></td></tr><tr><td>n</td> <td><i>(NEXUS)</i></td></tr></table></td>
 <td>p</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-blocksize</td>
+<td>integer</td>
 <td>Block size for bootstraping</td>
 <td>Integer 1 or more</td>
 <td>1</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-reps</td>
+<td>integer</td>
 <td>How many replicates</td>
 <td>Integer 1 or more</td>
 <td>100</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-justweights</td>
+<td>list</td>
 <td>Write out datasets or just weights</td>
 <td><table><tr><td>d</td> <td><i>(Datasets)</i></td></tr><tr><td>w</td> <td><i>(Weights)</i></td></tr></table></td>
 <td>d</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-seed</td>
+<td>integer</td>
 <td>Random number seed between 1 and 32767 (must be odd)</td>
 <td>Integer from 1 to 32767</td>
 <td>1</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-printdata</td>
+<td>boolean</td>
 <td>Print out the data at start of run</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-[no]dotdiff</td>
+<td>boolean</td>
 <td>Use dot-differencing</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-[no]progress</td>
+<td>boolean</td>
 <td>Print indications of progress of run</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
+<th align="left" colspan=5>Advanced (Unprompted) qualifiers</th>
 </tr>
 
 <tr>
-<td colspan=4>(none)</td>
+<td colspan=5>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Associated qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-outfile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory2<br>-odirectory_outfile</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-outancfile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory3<br>-odirectory_outancfile</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-outmixfile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory4<br>-odirectory_outmixfile</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-outfactfile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory5<br>-odirectory_outfactfile</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>General qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -auto</td>
+<td>boolean</td>
+<td>Turn off prompts</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -stdout</td>
+<td>boolean</td>
+<td>Write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -filter</td>
+<td>boolean</td>
+<td>Read first file from standard input, write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -options</td>
+<td>boolean</td>
+<td>Prompt for standard and additional values</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -debug</td>
+<td>boolean</td>
+<td>Write debug output to program.dbg</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -verbose</td>
+<td>boolean</td>
+<td>Report some/full command line options</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -help</td>
+<td>boolean</td>
+<td>Report command line options and exit. More information on associated and general qualifiers can be found with -help -verbose</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -warning</td>
+<td>boolean</td>
+<td>Report warnings</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -error</td>
+<td>boolean</td>
+<td>Report errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fatal</td>
+<td>boolean</td>
+<td>Report fatal errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -die</td>
+<td>boolean</td>
+<td>Report dying program messages</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -version</td>
+<td>boolean</td>
+<td>Report version number and exit</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
 </tr>
 
 </table>

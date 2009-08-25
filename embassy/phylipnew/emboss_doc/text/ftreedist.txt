@@ -144,7 +144,6 @@ Usage
 Distances between trees
 Phylip tree file: treedist.dat
 Phylip treedist program output file [treedist.ftreedist]: 
-read_groups 96969c0
 
 
 Output written to file "treedist.ftreedist"
@@ -162,7 +161,6 @@ Done.
 Distances between trees
 Phylip tree file: treedist2.dat
 Phylip treedist program output file [treedist2.ftreedist]: 
-read_groups 82969c0
 
 
 Output written to file "treedist2.ftreedist"
@@ -174,6 +172,9 @@ Done.
    Go to the output files for this example
 
 Command line arguments
+
+Distances between trees
+Version: EMBOSS:6.1.0
 
    Standard (Mandatory) qualifiers:
   [-intreefile]        tree       Phylip tree file
@@ -209,14 +210,16 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
+   Distances between trees
 Input file format
 
    ftreedist reads one input tree file. If the number of trees is given,

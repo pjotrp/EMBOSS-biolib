@@ -472,6 +472,9 @@ TRUE         Q9YBD5    95    135
 
 6.0 USAGE
 
+Generates a hits file from comparing two DHF files
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-hitsinfile]        infile     This option specifies the location of the
                                   DHF file (domain hits file) (input). A
@@ -553,13 +556,15 @@ TRUE         Q9YBD5    95    135
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
   6.1 COMMAND LINE ARGUMENTS
 
+   Generates a hits file from comparing two DHF files

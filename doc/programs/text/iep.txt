@@ -22,6 +22,9 @@ Description
    curve with respect to pH and write an output file of the data, where
    for each pH point the number of bound electrons and charge is given.
 
+   For peptide fragments it is possible to exclude the charges of the
+   amino and carboxy terminal residues.
+
 Usage
 
    Here is a sample session with iep
@@ -45,6 +48,9 @@ Output file [ifna2_human.iep]:
    Go to the output files for this example
 
 Command line arguments
+
+Calculate the isoelectric point of proteins
+Version: EMBOSS:6.1.0
 
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqall     Protein sequence(s) filename and optional
@@ -108,13 +114,14 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 Input file format
 
@@ -475,6 +482,10 @@ Notes
    of lowest solubility, presumably because it is the point at which
    there are fewest intermolecular repulsions, so that the molecules tend
    to form aggregates.
+
+   Modified lysines and disulphide bridges affect the contributions of
+   those residues to the protein charge. A set number of each residue can
+   be excluded.
 
 References
 

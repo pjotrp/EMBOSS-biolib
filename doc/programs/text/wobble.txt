@@ -20,10 +20,9 @@ Description
    nucleotide sequence as an indicator of potential coding regions. For
    each of the six possible translation frames, it plots a graph showing
    the percentage of G and C bases in the third position of codons in the
-   frame within a window that is moved over the sequence. The mean of the
-   third base percentage value is drawn as a horizontal line across the
-   plots. Optionally, bases other than G and C can be chosen. Optionally,
-   the same data can be written to an output file.
+   frame within a window that is moved over the sequence. The mean value
+   of the third base percentage value is drawn as a horizontal line
+   across the plots.
 
 Usage
 
@@ -47,6 +46,9 @@ Created wobble.ps
 
 Command line arguments
 
+Plot third base position variability in a nucleotide sequence
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
@@ -60,7 +62,7 @@ Command line arguments
                                   more)
 
    Advanced (Unprompted) qualifiers:
-   -bases              string     [GC] Bases used (Any string is accepted)
+   -bases              string     [GC] Bases used (Any string)
 
    Associated qualifiers:
 
@@ -101,13 +103,14 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 Input file format
 

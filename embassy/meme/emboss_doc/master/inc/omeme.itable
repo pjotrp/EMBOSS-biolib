@@ -1,339 +1,620 @@
 <table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Qualifier</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Standard (Mandatory) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
 <td>[-sequence]<br>(Parameter 1)</td>
+<td>seqall</td>
 <td>Sequence(s) filename and optional format, or reference (input USA)</td>
 <td>Readable sequence(s)</td>
 <td><b>Required</b></td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-model</td>
+<td>list</td>
 <td>Model to use</td>
 <td><table><tr><td>oops</td> <td><i>(Oops Distribution)</i></td></tr><tr><td>zoops</td> <td><i>(Zoops Distribution)</i></td></tr><tr><td>tcm</td> <td><i>(TCM Distribution)</i></td></tr></table></td>
 <td>zoops</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-nmotifs</td>
+<td>integer</td>
 <td>Maximum number of motifs to find</td>
 <td>Any integer value</td>
 <td>1</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>[-outfile]<br>(Parameter 2)</td>
+<td>outfile</td>
 <td>MEME program output file</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.omeme</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Additional (Optional) qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
+<th align="left" colspan=5>Additional (Optional) qualifiers</th>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-ntype</td>
+<td>list</td>
 <td>Method to use</td>
 <td><table><tr><td>pair</td> <td><i>(Pairwise method)</i></td></tr><tr><td>blend</td> <td><i>(Blending method)</i></td></tr></table></td>
 <td>pair</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-protein</td>
+<td>boolean</td>
 <td>Assume sequences are proteins</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-nucleic</td>
+<td>boolean</td>
 <td>Assume sequences are DNA</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-palindromes</td>
+<td>boolean</td>
 <td>Allow palindromes</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-ponly</td>
+<td>boolean</td>
 <td>Force palindromes</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-[no]shorten</td>
+<td>boolean</td>
 <td>Allow motifs shorter than MINW</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-nsites</td>
+<td>float</td>
 <td>Expected number of sites for each motif</td>
 <td>Any numeric value</td>
 <td>0.</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-minsites</td>
+<td>float</td>
 <td>Minimum number of sites for each motif</td>
 <td>Any numeric value</td>
 <td>0.</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-maxsites</td>
+<td>float</td>
 <td>Maximum number of sites for each motif</td>
 <td>Any numeric value</td>
 <td>0.</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-w</td>
+<td>integer</td>
 <td>Starting motif width to try</td>
 <td>Any integer value</td>
 <td>0</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-minw</td>
+<td>integer</td>
 <td>Minimum starting motif width to try</td>
 <td>Any integer value</td>
 <td>8</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-maxw</td>
+<td>integer</td>
 <td>Maximum starting motif width to try</td>
 <td>Any integer value</td>
 <td>57</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-prior</td>
+<td>list</td>
 <td>Prior to use</td>
 <td><table><tr><td>dirichlet</td> <td><i>(Dirichlet prior)</i></td></tr><tr><td>dmix</td> <td><i>(dmix prior)</i></td></tr><tr><td>mega</td> <td><i>(mega prior)</i></td></tr><tr><td>megap</td> <td><i>(megap prior)</i></td></tr><tr><td>addone</td> <td><i>(addone prior)</i></td></tr></table></td>
 <td>dirichlet</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-[no]brief</td>
+<td>boolean</td>
 <td>Don't print documentation</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-b</td>
+<td>float</td>
 <td>Strength of the prior</td>
 <td>Any numeric value</td>
 <td>-1.0</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-spmap</td>
+<td>list</td>
 <td>Mapping start</td>
 <td><table><tr><td>uni</td> <td><i>(uni map type)</i></td></tr><tr><td>pam</td> <td><i>(pam map type)</i></td></tr></table></td>
 <td>uni</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-spfuzz</td>
+<td>float</td>
 <td>Fuzziness of sequence to theta mapping</td>
 <td>Any numeric value</td>
 <td>-1.0</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-maxiter</td>
+<td>integer</td>
 <td>Maximum EM iterations to run</td>
 <td>Any integer value</td>
 <td>50</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-distance</td>
+<td>float</td>
 <td>EM convergence criterion</td>
 <td>Any numeric value</td>
 <td>1e-3</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-cons</td>
+<td>string</td>
 <td>Consensus sequence to start EM from</td>
-<td>Any string is accepted</td>
-<td><i>An empty string is accepted</i></td>
+<td>Any string</td>
+<td>&nbsp;</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-chi</td>
+<td>float</td>
 <td>Cutoff for p-value</td>
 <td>Any numeric value</td>
 <td>1.0</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-adj</td>
+<td>list</td>
 <td>Type</td>
 <td><table><tr><td>none</td> <td><i>(no LRT)</i></td></tr><tr><td>bon</td> <td><i>(bon LRT)</i></td></tr><tr><td>root</td> <td><i>(root LRT)</i></td></tr></table></td>
 <td>root</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-maxsize</td>
+<td>integer</td>
 <td>Maximum dataset size in characters</td>
 <td>Any integer value</td>
 <td>100000</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-page</td>
+<td>integer</td>
 <td>Width of page</td>
 <td>Any integer value</td>
 <td>80</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-status</td>
+<td>boolean</td>
 <td>Print progress reports</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-v</td>
+<td>boolean</td>
 <td>Verbose mode</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-cfive</td>
+<td>boolean</td>
 <td>Use 5' to 3' complementary strand as well</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-cthree</td>
+<td>boolean</td>
 <td>Use 3' to 5' complementary strand as well</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-wthree</td>
+<td>boolean</td>
 <td>Use 3' to 5' main strand as well</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-prob</td>
+<td>float</td>
 <td>Starting point confidence level</td>
 <td>Any numeric value</td>
 <td>1.0</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-seed</td>
+<td>integer</td>
 <td>Seed for random numbers in sampling</td>
 <td>Any integer value</td>
 <td>0</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-seqfrac</td>
+<td>float</td>
 <td>Fraction of sequences to use</td>
 <td>Any numeric value</td>
 <td>1.0</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-[no]align</td>
+<td>boolean</td>
 <td>Print aligned motif occurrences</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-trace</td>
+<td>boolean</td>
 <td>Trace starting points</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-allprint</td>
+<td>boolean</td>
 <td>Print all debugging information</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-wprint</td>
+<td>boolean</td>
 <td>Print erasure matrix</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-zprint</td>
+<td>boolean</td>
 <td>Print missing information matrix</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-llprint</td>
+<td>boolean</td>
 <td>Print log likelihood during EM</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-startsprint</td>
+<td>boolean</td>
 <td>Print starting points</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-fastaprint</td>
+<td>boolean</td>
 <td>Print sites in FASTA format</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
-<tr>
+<tr bgcolor="#FFFFCC">
 <td>-timer</td>
+<td>integer</td>
 <td>Timer type</td>
 <td>Any integer value</td>
 <td>0</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
-<th align="left">Allowed values</th>
-<th align="left">Default</th>
+<th align="left" colspan=5>Advanced (Unprompted) qualifiers</th>
 </tr>
 
 <tr>
-<td colspan=4>(none)</td>
+<td colspan=5>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Associated qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-sequence" associated seqall qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sbegin1<br>-sbegin_sequence</td>
+<td>integer</td>
+<td>Start of each sequence to be used</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -send1<br>-send_sequence</td>
+<td>integer</td>
+<td>End of each sequence to be used</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sreverse1<br>-sreverse_sequence</td>
+<td>boolean</td>
+<td>Reverse (if DNA)</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sask1<br>-sask_sequence</td>
+<td>boolean</td>
+<td>Ask for begin/end/reverse</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -snucleotide1<br>-snucleotide_sequence</td>
+<td>boolean</td>
+<td>Sequence is nucleotide</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sprotein1<br>-sprotein_sequence</td>
+<td>boolean</td>
+<td>Sequence is protein</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -slower1<br>-slower_sequence</td>
+<td>boolean</td>
+<td>Make lower case</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -supper1<br>-supper_sequence</td>
+<td>boolean</td>
+<td>Make upper case</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sformat1<br>-sformat_sequence</td>
+<td>string</td>
+<td>Input sequence format</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sdbname1<br>-sdbname_sequence</td>
+<td>string</td>
+<td>Database name</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sid1<br>-sid_sequence</td>
+<td>string</td>
+<td>Entryname</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -ufo1<br>-ufo_sequence</td>
+<td>string</td>
+<td>UFO features</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fformat1<br>-fformat_sequence</td>
+<td>string</td>
+<td>Features format</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fopenfile1<br>-fopenfile_sequence</td>
+<td>string</td>
+<td>Features file name</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-outfile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory2<br>-odirectory_outfile</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>General qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -auto</td>
+<td>boolean</td>
+<td>Turn off prompts</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -stdout</td>
+<td>boolean</td>
+<td>Write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -filter</td>
+<td>boolean</td>
+<td>Read first file from standard input, write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -options</td>
+<td>boolean</td>
+<td>Prompt for standard and additional values</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -debug</td>
+<td>boolean</td>
+<td>Write debug output to program.dbg</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -verbose</td>
+<td>boolean</td>
+<td>Report some/full command line options</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -help</td>
+<td>boolean</td>
+<td>Report command line options and exit. More information on associated and general qualifiers can be found with -help -verbose</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -warning</td>
+<td>boolean</td>
+<td>Report warnings</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -error</td>
+<td>boolean</td>
+<td>Report errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fatal</td>
+<td>boolean</td>
+<td>Report fatal errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -die</td>
+<td>boolean</td>
+<td>Report dying program messages</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -version</td>
+<td>boolean</td>
+<td>Report version number and exit</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
 </tr>
 
 </table>

@@ -1,3 +1,6 @@
+Performs ROC analysis on hits files
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-hitsfilespath]     dirlist    [rocplot] This option specifies the
                                   directory of hits files (input). A 'hits
@@ -120,8 +123,7 @@
                                   aid in interpreting the ROC plot and value,
                                   are also generated and, depending upon the
                                   mode rocplot is run in, a plot of the
-                                  distribution of ROC values. (Any string is
-                                  accepted)
+                                  distribution of ROC values. (Any string)
    -outfile            outfile    [_summary] This option specifies the name of
                                   the summary file (output). A text file
                                   summarising the analysis.
@@ -132,7 +134,7 @@
                                   generated when multiple input files (lists
                                   of hits) are provided and the user has
                                   specified 'Do not combine data (multiple ROC
-                                  curves). (Any string is accepted)
+                                  curves). (Any string)
    -classbasename      string     [_classplot] This option specifies the base
                                   name of classification plot file(s)
                                   (output). Classification plots are a
@@ -145,7 +147,7 @@
                                   generated where multiple input files are
                                   provided and the user has specified 'Do not
                                   combine data (multiple ROC curves)' mode.
-                                  (Any string is accepted)
+                                  (Any string)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
@@ -174,11 +176,12 @@
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 

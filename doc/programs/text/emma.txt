@@ -93,6 +93,9 @@ GCG-Alignment file created      [12345678A]
 
 Command line arguments
 
+Multiple sequence alignment (ClustalW wrapper)
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     (Gapped) sequence(s) filename and optional
                                   format, or reference (input USA)
@@ -280,7 +283,7 @@ Command line arguments
 *  -hgapres            string     [GPSNDQEKR] This is a set of the residues
                                   'considered' to be hydrophilic. It is used
                                   when introducing Hydrophilic gap penalties.
-                                  (Any string is accepted)
+                                  (Any string)
 *  -nohgap             boolean    [N] Hydrophilic gap penalties: used to
                                   increase the chances of a gap within a run
                                   (5 or more residues) of hydrophilic amino
@@ -340,13 +343,14 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 Input file format
 

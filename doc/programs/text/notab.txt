@@ -33,6 +33,9 @@ ASCII text output file [tabfile.notab]:
 
 Command line arguments
 
+Replace tabs with spaces in an ASCII text file
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-infile]            infile     ASCII text file
   [-outfile]           outfile    [*.notab] ASCII text output file
@@ -52,23 +55,14 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-                 Standard (Mandatory) qualifiers    Allowed values Default
-   [-infile]
-   (Parameter 1) ASCII text file        Input file  Required
-   [-outfile]
-   (Parameter 2) ASCII text output file Output file <*>.notab
-                 Additional (Optional) qualifiers   Allowed values Default
-                 (none)
-                 Advanced (Unprompted) qualifiers   Allowed values Default
-                 (none)
+   -version            boolean    Report version number and exit
 
 Input file format
 

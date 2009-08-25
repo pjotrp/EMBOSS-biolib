@@ -40,6 +40,9 @@ Created pepwindowall.ps
 
 Command line arguments
 
+Draw Kyte-Doolittle hydropathy plot for a protein alignment
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-sequences]         seqset     File containing a sequence alignment
   [-graph]             xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
@@ -88,13 +91,14 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 Input file format
 

@@ -1,3 +1,6 @@
+Motif detection
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-sequence]          seqset     Sequence set filename and optional format,
                                   or reference (input USA)
@@ -16,8 +19,7 @@
   [-outfile]           outfile    [*.eiprscan] EIPRSCAN program output file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -email              string     Submitter email address (Any string is
-                                  accepted)
+   -email              string     Submitter email address (Any string)
    -trtable            menu       [0] Genetic codes used for translation
                                   (Values: 0 (Standard); 1 (Standard (with
                                   alternative initiation codons)); 2
@@ -74,11 +76,12 @@
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 

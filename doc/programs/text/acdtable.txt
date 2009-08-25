@@ -27,15 +27,23 @@ Usage
 
 % acdtable antigenic 
 
+Finds antigenic sites in proteins
 
- Standard (Mandatory) qualifiers
+ Qualifier
+ Type
+ Description
  Allowed values
  Default
 
 
 
+ Standard (Mandatory) qualifiers
+
+
+
  [-sequence]
 (Parameter 1)
+ seqall
  Protein sequence(s) filename and optional format, or reference (input USA)
  Readable sequence(s)
  Required
@@ -43,6 +51,7 @@ Usage
 
 
  -minlen
+ integer
  Minimum length of antigenic region
  Integer from 1 to 50
  6
@@ -51,6 +60,7 @@ Usage
 
  [-outfile]
 (Parameter 2)
+ report
  Output report file name
  Report output file
  <*>.antigenic
@@ -58,8 +68,6 @@ Usage
 
 
  Additional (Optional) qualifiers
- Allowed values
- Default
 
 
 
@@ -68,8 +76,6 @@ Usage
 
 
  Advanced (Unprompted) qualifiers
- Allowed values
- Default
 
 
 

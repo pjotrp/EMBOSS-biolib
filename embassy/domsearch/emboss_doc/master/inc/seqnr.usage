@@ -20,8 +20,8 @@ Retain redundant sequences. [N]: <b>Y</b>
 Domain hits file redundant output directory [./]: <b>hitsred</b>
 Domainatrix log output file [seqnr.log]: <b></b>
 
-Processing /homes/user/test/qa/seqfraggle-keep/54894.dhf
-Processing /homes/user/test/qa/seqfraggle-keep/55074.dhf
+Processing /data/pmr/profemboss/test/qa/seqfraggle-keep/54894.dhf
+Processing /data/pmr/profemboss/test/qa/seqfraggle-keep/55074.dhf
 
 </pre></td></tr></table><p>
 <p>

@@ -43,6 +43,9 @@ Sim4 program output file [h45989.esim4]:
 
 Command line arguments
 
+Align an mRNA to a genomic DNA sequence
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-asequence]         sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
@@ -145,7 +148,7 @@ Command line arguments
                                   sequence. When the second file is an mRNA
                                   database, the command line specification for
                                   the CDS will apply to the first sequence in
-                                  the file only. (Any string is accepted)
+                                  the file only. (Any string)
    -aoffset            integer    [0] Undocumented (f) - some sort of offset
                                   in first sequence. (Any integer value)
    -boffset            integer    [0] Undocumented (F) - some sort of offset
@@ -201,13 +204,14 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 Input file format
 

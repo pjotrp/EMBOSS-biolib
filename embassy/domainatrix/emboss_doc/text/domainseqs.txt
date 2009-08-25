@@ -263,6 +263,9 @@ NO_ACCESSION_NUMBER
 
   6.1 COMMAND LINE ARGUMENTS
 
+Adds sequence records to a DCF file.
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-dcfinfile]         infile     This option specifies the name of DCF file
                                   (domain classification file) (input). A
@@ -344,11 +347,12 @@ NO_ACCESSION_NUMBER
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 

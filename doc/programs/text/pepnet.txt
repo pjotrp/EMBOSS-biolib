@@ -43,6 +43,9 @@ Created pepnet.ps
 
 Command line arguments
 
+Draw a helical net for a protein sequence
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Protein sequence filename and optional
                                   format, or reference (input USA)
@@ -52,14 +55,12 @@ Command line arguments
 
    Additional (Optional) qualifiers (* if not always prompted):
 *  -squares            string     [ILVM] By default the aliphatic residues
-                                  ILVM are marked with squares. (Any string is
-                                  accepted)
+                                  ILVM are marked with squares. (Any string)
 *  -diamonds           string     [DENQST] By default the residues DENQST are
-                                  marked with diamonds. (Any string is
-                                  accepted)
+                                  marked with diamonds. (Any string)
 *  -octags             string     [HKR] By default the positively charged
                                   residues HKR are marked with octagons. (Any
-                                  string is accepted)
+                                  string)
 
    Advanced (Unprompted) qualifiers:
    -amphipathic        toggle     If this is true then the residues ACFGILMVWY
@@ -105,13 +106,14 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 Input file format
 

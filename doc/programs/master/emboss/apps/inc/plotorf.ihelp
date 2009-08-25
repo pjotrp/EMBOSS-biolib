@@ -1,3 +1,6 @@
+Plot potential open reading frames in a nucleotide sequence
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
@@ -7,9 +10,8 @@
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -start              string     [ATG] Start codons (Any string is accepted)
-   -stop               string     [TAA,TAG,TGA] Stop codons (Any string is
-                                  accepted)
+   -start              string     [ATG] Start codons (Any string)
+   -stop               string     [TAA,TAG,TGA] Stop codons (Any string)
 
    Associated qualifiers:
 
@@ -47,11 +49,12 @@
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 

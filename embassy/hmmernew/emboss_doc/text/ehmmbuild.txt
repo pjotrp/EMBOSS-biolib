@@ -256,6 +256,9 @@ Command line arguments
    specified on the command-line in order to be prompted for a value for
    them).
 
+Build a profile HMM from an alignment.
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-alignfile]         seqset     (Aligned) protein sequence set filename and
                                   optional format, or reference (input USA)
@@ -264,8 +267,7 @@ Command line arguments
                                   one 'word'). There is no length limit (at
                                   least not one imposed by HMMER; your shell
                                   will complain about command line lengths
-                                  frst). (Any string without whitespace is
-                                  accepted)
+                                  frst). (Any word)
    -strategy           menu       [D] All alignments are local with respect to
                                   the sequence and are configured to be local
                                   (fragmentary) or global with respect to the
@@ -533,13 +535,14 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 Input file format
 

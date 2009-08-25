@@ -54,6 +54,9 @@ Remove poly-A tails from nucleotide sequences
 
 Command line arguments
 
+Remove poly-A tails from nucleotide sequences
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
@@ -145,13 +148,14 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 Input file format
 
@@ -288,7 +292,7 @@ Data files
 Notes
 
    EST and mRNA sequences often have poly-A tails at their 3' end. Where
-   an EST sequences is the reverse complement of a corresponding mRNA's
+   an EST sequence is the reverse complement of a corresponding mRNA's
    forward sense it may have a poly-T tail at its 5' end.
 
    trimest is not infallible. There are often repeats of A (or T) in a
@@ -304,9 +308,7 @@ References
 
 Warnings
 
-   trimest can make no guarantee that the tails removed have biologic
-   significance or not. They may in fact be part of the transcribed
-   sequence.
+   None.
 
 Diagnostic Error Messages
 

@@ -286,6 +286,9 @@ CCF: /homes/user/test/qa/pdbplus-keep/2hhb.ccf HETS:YES NHETS:5 SCOP:NO NCHN:4
 
   6.1 COMMAND LINE ARGUMENTS
 
+Generate residue-ligand CON files from CCF files.
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-protpath]          dirlist    [./] This option specifies the location of
                                   the protein CCF files (clean coordinate
@@ -360,11 +363,13 @@ CCF: /homes/user/test/qa/pdbplus-keep/2hhb.ccf HETS:YES NHETS:5 SCOP:NO NCHN:4
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
+   Generate residue-ligand CON files from CCF files.

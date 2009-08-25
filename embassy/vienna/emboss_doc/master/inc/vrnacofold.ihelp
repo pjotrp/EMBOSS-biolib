@@ -1,3 +1,6 @@
+RNA cofolding
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-asequence]         sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
@@ -17,7 +20,7 @@
    -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
    -[no]lp             boolean    [Y] Allow lonely pairs
    -[no]convert        boolean    [Y] Convert T to U
-   -nsbases            string     Non-standard bases (Any string is accepted)
+   -nsbases            string     Non-standard bases (Any string)
    -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
    -energy             menu       [0] Rarely used option to fold sequences
                                   from the ABCD... alphabet (Values: 0 (BP); 1
@@ -79,11 +82,12 @@
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 

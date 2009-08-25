@@ -2329,6 +2329,9 @@ End of assembly process, thank you for using MIRA.
 
 Command line arguments
 
+MIRA fragment assembly program
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
    -project            string     [mira] Default is mira. Defines the project
                                   name for this assembly. The project name
@@ -2339,8 +2342,7 @@ Command line arguments
                                   be mira_out.fasta and mira_out.fasta.qual.
                                   Setting the project name to 'MyProject'
                                   would generate MyProject_out.fasta and
-                                  MyProject_out.fasta.qual. (Any string is
-                                  accepted)
+                                  MyProject_out.fasta.qual. (Any string)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
@@ -2586,8 +2588,7 @@ Command line arguments
                                   set sbuib to 1 lower than nop (example - nop
                                   4 and sbuip 3). (Integer 1 or more)
    -bsn                string     Defines the name of the strain that the
-                                  backbone sequences have. (Any string is
-                                  accepted)
+                                  backbone sequences have. (Any string)
    -bft                menu       [fasta] Defines the filetype of the backbone
                                   file given. Currently (2.8.1 ) only FASTA,
                                   CAF and GBF files are supported. When GBF
@@ -2993,8 +2994,7 @@ Command line arguments
                                   percent applied to 'long' gaps. (Integer
                                   from 1 to 100)
    -np                 string     [mira] Contigs will have this string
-                                  prepended to their names. (Any string is
-                                  accepted)
+                                  prepended to their names. (Any string)
    -an                 menu       [signal] When adding reads to a contig,
                                   dangerous regions can get an extra integrity
                                   check. none = no extra check. text = check
@@ -3158,16 +3158,14 @@ Command line arguments
                                   of an assembly ready to import into the
                                   Staden package (GAP4) in Direct Assembly
                                   format. The name of the directory will then
-                                  be _. (Any string is
-                                  accepted)
+                                  be _. (Any string)
    -log                string     [miralog] Defines the directory where mira
                                   will write some log files to. Note that the
                                   name of the actual project will be
-                                  prepended. (Any string is accepted)
+                                  prepended. (Any string)
    -co                 string     [mira_out.caf] Defines the file in CAF
                                   format to save an assembled project to.
-                                  Filename must end with '.caf'. (Any string
-                                  is accepted)
+                                  Filename must end with '.caf'. (Any string)
 
    Associated qualifiers: (none)
    General qualifiers:
@@ -3178,14 +3176,16 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
+   MIRA fragment assembly program
 Input file format
 
    emira reads any normal sequence USAs.

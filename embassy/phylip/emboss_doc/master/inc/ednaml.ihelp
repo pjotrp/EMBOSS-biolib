@@ -1,3 +1,6 @@
+Phylogenies from nucleic acid Maximum Likelihood
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqset     File containing a sequence alignment
    -[no]besttree       toggle     [Y] Search for best tree
@@ -21,10 +24,9 @@
                                   rates
 *  -catnum             integer    [2] Number of categories of substitution
                                   rates (Integer from 2 to 9)
-*  -catvals            string     Space separated category values (Any string
-                                  is accepted)
+*  -catvals            string     Space separated category values (Any string)
 *  -catprob            string     Space separated probability values (Any
-                                  string is accepted)
+                                  string)
 *  -deflambda          toggle     [N] Use default mean block length of sites
 *  -lambda             float      [1.0] Mean block length of sites having the
                                   same rate (greater than 1) (Number 1.000 or
@@ -77,11 +79,12 @@
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 

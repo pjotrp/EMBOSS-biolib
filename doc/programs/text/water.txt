@@ -77,6 +77,9 @@ Output alignment [hba_human.water]:
 
 Command line arguments
 
+Smith-Waterman local alignment of sequences
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-asequence]         sequence   Sequence filename and optional format, or
                                   reference (input USA)
@@ -172,13 +175,14 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 Input file format
 
@@ -430,7 +434,7 @@ Output file format
 
 ########################################
 # Program: water
-# Rundate: Tue 15 Jul 2008 12:00:00
+# Rundate: Wed 15 Jul 2009 12:00:00
 # Commandline: water
 #    [-asequence] tsw:hba_human
 #    [-bsequence] tsw:hbb_human

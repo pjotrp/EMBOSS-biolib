@@ -1065,6 +1065,9 @@ FOK       1         1         -1000000.00
 
 6.0 USAGE
 
+Searches ligand-signature library & writes hits (LHF file)
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-siginfilesdir]     dirlist    [./] This option specifies the directory of
                                   signature files (input). A 'signature file'
@@ -1184,13 +1187,15 @@ FOK       1         1         -1000000.00
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
   6.1 COMMAND LINE ARGUMENTS
 
+   Searches ligand-signature library & writes hits (LHF file)

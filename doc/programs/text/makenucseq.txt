@@ -57,6 +57,9 @@ nucleotide output sequence(s) [makeseq.fasta]:
 
 Command line arguments
 
+Create random nucleotide sequences
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers (* if not always prompted):
    -codonfile          codon      Optional codon usage file. Nucleotide
                                   sequences will be created as triplets
@@ -68,7 +71,7 @@ Command line arguments
    -length             integer    [100] Length of each sequence (Integer 1 or
                                   more)
 *  -insert             string     String that is inserted into sequence (Any
-                                  string is accepted)
+                                  string)
 *  -start              integer    [1] Start point of inserted sequence
                                   (Integer 1 or more)
   [-outseq]            seqoutall  [.] Nucleotide sequence
@@ -104,13 +107,14 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 Input file format
 

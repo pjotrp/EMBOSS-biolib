@@ -38,6 +38,9 @@ Vienna RNAfold output file [rna1.vrnasubopt]:
 
 Command line arguments
 
+Calculate RNA suboptimals
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
@@ -55,7 +58,7 @@ Command line arguments
    -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
    -[no]lp             boolean    [Y] Allow lonely pairs
    -[no]convert        boolean    [Y] Convert T to U
-   -nsbases            string     Non-standard bases (Any string is accepted)
+   -nsbases            string     Non-standard bases (Any string)
    -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
    -erange             float      [1.0] Calculate suboptimal structures within
                                   erange of the mfe (Any numeric value)
@@ -100,14 +103,16 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
+   Calculate RNA suboptimals
 Input file format
 
    vrnasubopt reads any normal sequence USAs.

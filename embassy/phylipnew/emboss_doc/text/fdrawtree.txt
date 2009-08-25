@@ -59,7 +59,6 @@ Usage
 Plots an unrooted tree diagram
 Phylip tree file: drawgram.tree
 Phylip drawtree output file [drawgram.fdrawtree]: 
-Reading tree '(Delta,(Epsilon,(Gamma,(Beta,Alpha))));'
 
 DRAWTREE from PHYLIP version 3.68
 Reading tree ...
@@ -78,6 +77,9 @@ Done.
    Go to the output files for this example
 
 Command line arguments
+
+Plots an unrooted tree diagram
+Version: EMBOSS:6.1.0
 
    Standard (Mandatory) qualifiers:
   [-intreefile]        tree       Phylip tree file
@@ -155,8 +157,7 @@ Command line arguments
                                   0.001 or more)
 
    Advanced (Unprompted) qualifiers:
-   -fontfile           string     [font1] Fontfile name (Any string is
-                                  accepted)
+   -fontfile           string     [font1] Fontfile name (Any string)
 
    Associated qualifiers:
 
@@ -171,14 +172,16 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
+   Plots an unrooted tree diagram
 Input file format
 
    fdrawtree input ...

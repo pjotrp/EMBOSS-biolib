@@ -68,6 +68,9 @@ Created cpgplot.ps
 
 Command line arguments
 
+Identify and plot CpG islands in nucleotide sequence(s)
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
@@ -159,13 +162,14 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 Input file format
 
@@ -312,7 +316,7 @@ U68037 from 1 to 1218
 
 ##gff-version 3
 ##sequence-region U68037 1 924
-#!Date 2008-07-15
+#!Date 2009-07-15
 #!Type DNA
 #!Source-version EMBOSS 6.1.0
 U68037  cpgplot sequence_feature        104     509     0.000   +       .

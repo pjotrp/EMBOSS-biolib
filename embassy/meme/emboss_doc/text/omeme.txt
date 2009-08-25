@@ -44,6 +44,9 @@ MEME program output file [carp_rhich.omeme]:
 
 Command line arguments
 
+Motif detection
+Version: EMBOSS:6.1.0
+
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Sequence(s) filename and optional format, or
                                   reference (input USA)
@@ -90,7 +93,7 @@ Command line arguments
    -distance           float      [1e-3] EM convergence criterion (Any numeric
                                   value)
    -cons               string     Consensus sequence to start EM from (Any
-                                  string is accepted)
+                                  string)
    -chi                float      [1.0] Cutoff for p-value (Any numeric value)
    -adj                menu       [root] Type (Values: none (no LRT); bon (bon
                                   LRT); root (root LRT))
@@ -150,13 +153,14 @@ Command line arguments
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
-   -help               boolean    Report command line options. More
+   -help               boolean    Report command line options and exit. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
 
 Input file format
 
