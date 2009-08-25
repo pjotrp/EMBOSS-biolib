@@ -1,6 +1,7 @@
 application: banana [
   documentation: "Plot bending and curvature data for B-DNA"
   groups: "Nucleic:Composition"
+  relation: "EDAM: Nucleic acid conformational parameter calculation"
 ]
 
 section: input [

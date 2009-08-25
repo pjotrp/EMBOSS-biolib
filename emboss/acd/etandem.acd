@@ -1,6 +1,7 @@
 application: etandem [
   documentation: "Finds tandem repeats in a nucleotide sequence"
   groups: "Nucleic:Repeats"
+  relation: "EDAM: Repeat sequence finding"
 ]
 
 section: input [

@@ -1,6 +1,7 @@
 application: equicktandem [
   documentation: "Finds tandem repeats in nucleotide sequences"
   groups: "Nucleic:Repeats"
+  relation: "EDAM: Repeat sequence finding"
 ]
 
 section: input [

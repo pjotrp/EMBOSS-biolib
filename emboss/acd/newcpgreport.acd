@@ -1,6 +1,7 @@
 application: newcpgreport [
   documentation: "Identify CpG islands in nucleotide sequence(s)"
   groups: "Nucleic:CpG Islands"
+  relation: "EDAM: CpG island and isochores identification"
 ]
 
 section: input [

@@ -1,6 +1,7 @@
 application: transeq [
   documentation: "Translate nucleic acid sequences"
   groups: "Nucleic:Translation"
+  relation: "EDAM: DNA translation"
 ]
 
 section: input [

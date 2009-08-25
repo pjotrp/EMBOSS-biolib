@@ -2,6 +2,7 @@ application: complex [
   documentation: "Find the linguistic complexity in
                   nucleotide sequences"
   groups: "Nucleic:Composition"
+  relation: "EDAM: Nucleotide sequence complexity calculation"
 ]
 
 section: input [

@@ -1,6 +1,7 @@
 application: density [
   documentation: "Draw a nucleic acid density plot"
   groups: "Nucleic:Composition"
+  relation: "EDAM: Nucleic acid base composition analysis"
 ]
 
 section: input [
