@@ -1,9 +1,9 @@
-Installing SIGNALP.
+Installing CBSTOOLS.
 
 a) from the anonymous cvs code.
     
        1) Go to the package directory
-       cd embassy/signalp
+       cd embassy/cbstools
 
        2) make the configuration file
        aclocal -I m4
@@ -34,11 +34,11 @@ b) From the FTP server
     and followed this with a 'make install' (highly recommended) then:
 
        1) gunzip and untar the file anywhere (e.g.)
-       gunzip SIGNALP-3.0.0.tar.gz
-       tar xvf SIGNALP-3.0.0.tar
+       gunzip CBSTOOLS-1.0.0.tar.gz
+       tar xvf CBSTOOLS-1.0.0.tar
 
-       2) go into the signalp directory
-       cd SIGNALP-1.0.0
+       2) go into the cbstools directory
+       cd CBSTOOLS-1.0.0
 
        3) Configuration should be done using the same options you used
        for the main package. So, if you used:
@@ -73,11 +73,11 @@ b) From the FTP server
        cd embassy
 
        4) gunzip and untar the file
-       gunzip SIGNALP-3.0.0.tar.gz
-       tar xvf SIGNALP-3.0.0.tar
+       gunzip CBSTOOLS-1.0.0.tar.gz
+       tar xvf CBSTOOLS-1.0.0.tar
 
-       5) go into the signalp directory
-       cd SIGNALP-3.0.0
+       5) go into the cbstools directory
+       cd CBSTOOLS-1.0.0
 
        6) configure and compile
        Configuration should be done using the same options you used for the
