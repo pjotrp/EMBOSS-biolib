@@ -1,3 +1,62 @@
+Version 6.2.0
+	Application documentation has a new format HTML table for the
+	command line options. This is excluded from the text
+	documentation, where the format of the help output is improved.
+	
+	Function names standardised for ajcod.c ajrange.c ajtranslate.c
+	ajgraph.c ajhist.c and a few other functions renamed. The old
+	names continue to work as "deprecated" functions although these
+	will generate warning messages with the gcc compiler.
+
+	Infoseq option -version is renamed -seqversion to avoid a clash
+	with the new global -version qualifier.
+
+	Three new "make check" applications entrailshtml, entrailsbook and
+	entrailswiki generate tables of internal data in HTML, DocBook or
+	WikiText formats. These are intended to update the website, books
+	and Wiki with the latest internal details. The -tables qualifier
+	specifies one or more tables to be printed. By default, all tables
+	are produced. The book tables are sorted in format name order.
+
+	Alignment output included headers only for EMBOSS-specific
+	formats. The headers have been dropped from the FASTA MARKX0
+	through MARKX10 formats to allow standard FASTA suite parsers to
+	use the EMBOSS versions of these outputs.
+
+	Fastq-solexa sequence formats converted phred scores of 1 to
+	Solexa scores of -6. They now convert to the limit of -5.
+
+	Fastq-sanger sequence format incorrectly stopped when the quality
+	scores started with a '@' (phred quality 31).
+
+	Intelligenetics sequence format now correctly ignores additional
+	carriage control characters.
+
+	Genbank-like protein formats (genpept and refseqp) failed when
+	reading more than one sequence. The input is now buffered when
+	the format is automatically reassigned to a related parser.
+
+	The -help output now includes the one-line documentation string
+	from the ACD file and the version number information reported by
+	--version.
+
+	All applications have a -version (or --version) qualifier which
+	will report the EMBOSS version number. For EMBASSY applications it
+	will also report the EMBASSY package version number as
+	"PACKAGE:version". All EMBASSY applications need to call embInitP
+	with an additional parameter of VERSION which will be defined
+	automatically by the configure.in template. If the "versionnumber"
+	attribute is defined in the ACD file this will also be reported as
+	the application version "progamname:version"
+
+	The ACD application attribute "version:" is renamed
+	"versionnnumber:" to avoid a name clash with the new -version
+	qualifier. We need to use the qualifier name "-version" for
+	compatibility with other systems and applications, so the renaming
+	of the attribute is unavoidable. We believe it was only used (as
+	originally intended) for the definition of external applications
+	by SoapLab.
+
 Version 6.1.0
 	A new data structure AjPSeqXref holds details of cross-references
 	between a sequence object and any other data resource. The
@@ -37,8 +96,8 @@ Version 6.1.0
 	automatically. "fastq" format ignores all quality scores as there
 	is no automatic and safe way to determine whether scores are for
 	Sanger/phred or Illumina/Solexa quality. To read the quality
-	socres we support formats "fastqsanger" and "fastqillumina". We
-	also support "fastqint" to read quality scores as integers. These
+	socres we support formats "fast-qsanger" and "fastq-illumina". We
+	also support "fastq-int" to read quality scores as integers. These
 	scores are assumed to be Sanger quality. For Illumina quality
 	scores out of range, a warning message is written once for each
 	sequence. Sanger scores do not have out of range values as they
