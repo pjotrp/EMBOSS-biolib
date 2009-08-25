@@ -1,5 +1,5 @@
 application: wordcount [
-  documentation: "Count and extract unique words in DNA sequence(s)"
+  documentation: "Count and extract unique words in molecular sequence(s)"
   groups: "Nucleic:Composition,Protein:Composition"
 ]
 
