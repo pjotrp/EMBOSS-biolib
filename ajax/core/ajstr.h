@@ -203,6 +203,9 @@ AjPStr     ajStrNewResC (const char *txt, ajuint size);
 AjPStr     ajStrNewResS (const AjPStr str, ajuint size);
 AjPStr     ajStrNewResLenC (const char *txt, ajuint size, ajuint len);
 
+const AjPStr ajStrConstEmpty(void);
+const AjPStr ajStrConstS(const AjPStr);
+
 /* destructors */
 
 void       ajStrDel (AjPStr* Pstr);
@@ -287,6 +290,7 @@ AjBool     ajStrKeepSetAlphaRestS(AjPStr* Pstr, const AjPStr str,
 AjBool     ajStrKeepSetAscii(AjPStr* Pstr, int minchar, int maxchar);
 AjBool     ajStrQuoteStrip(AjPStr *Pstr);
 AjBool     ajStrQuoteStripAll(AjPStr *Pstr);
+AjBool     ajStrRemoveDupchar(AjPStr* Pstr);
 AjBool     ajStrRemoveGap(AjPStr* thys);
 AjBool     ajStrRemoveHtml(AjPStr* pthis);
 AjBool     ajStrRemoveLastNewline(AjPStr* Pstr);
