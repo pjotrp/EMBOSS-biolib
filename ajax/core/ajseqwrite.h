@@ -70,6 +70,7 @@ extern "C"
 ** @attr Accuracy [float*] Accuracy values (one per base) from base calling
 ** @attr Savelist [AjPList] Previous sequences saved for later output
 **                          (e.g. MSF format)
+** @attr Qualsize [ajuint] Size of Accuracy array
 ** @attr Count [ajint] Number of sequences
 ** @attr Offset [ajint] offset from start
 **
@@ -139,6 +140,7 @@ typedef struct AjSSeqout {
   AjPStr Extension;
   float* Accuracy;
   AjPList Savelist;
+  ajuint Qualsize;
   ajint Count;
   ajint Offset;
   void (*Cleanup) (AjPFile filethys);
