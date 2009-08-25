@@ -711,7 +711,7 @@ __deprecated AjBool  ajStrMatchWildCC(const char* str, const char* text)
 
 AjBool ajCharMatchWildS(const char* txt, const AjPStr str)
 {
-    return ajCharMatchWildC(txt, str->Ptr);
+    return ajCharMatchWildC(txt, MAJSTRGETPTR(str));
 }
 
 
@@ -761,7 +761,7 @@ AjBool ajCharMatchWildCaseC(const char* txt, const char* txt2)
 
 AjBool ajCharMatchWildCaseS(const char* txt, const AjPStr str)
 {
-    return ajCharMatchWildCaseC(txt, str->Ptr);
+    return ajCharMatchWildCaseC(txt, MAJSTRGETPTR(str));
 }
 
 
@@ -1255,7 +1255,8 @@ AjBool ajCharPrefixS(const char* txt, const AjPStr str)
     if(str->Len > strlen(txt))	/* pref longer */
 	return ajFalse;
 
-    if(strncmp(txt, str->Ptr, str->Len)) /* +1 or -1 for a failed match */
+    if(strncmp(txt, MAJSTRGETPTR(str), str->Len)) /* +1 or -1 for
+                                                     a failed match */
 	return ajFalse;
 
     return ajTrue;
@@ -1352,7 +1353,7 @@ AjBool ajCharPrefixCaseS(const char* txt, const AjPStr str)
     if(!str)
 	return ajFalse;
 
-    return ajCharPrefixCaseC(txt, str->Ptr);
+    return ajCharPrefixCaseC(txt, MAJSTRGETPTR(str));
 }
 
 
@@ -1449,7 +1450,7 @@ AjBool ajCharSuffixS(const char* txt, const AjPStr str)
     if(str->Len > jlen)		/* suff longer */
 	return ajFalse;
 
-    if(strncmp(&txt[jstart], str->Ptr, str->Len)) /* +1 or -1 for a
+    if(strncmp(&txt[jstart], MAJSTRGETPTR(str), str->Len)) /* +1 or -1 for a
 							failed match */
 	return ajFalse;
 
@@ -1551,7 +1552,7 @@ AjBool ajCharSuffixCaseS(const char* txt, const AjPStr str)
 	return ajFalse;
 
     cp = &txt[jstart];
-    cq = str->Ptr;
+    cq = MAJSTRGETPTR(str);
 
     while (cp)
     {
@@ -2448,6 +2449,57 @@ static AjPStr strNew(ajuint size)
 
 
 
+/* @section constant constructors **********************************************
+**
+** Functions for constructing string objects, possibly with a starting string. 
+**
+** @fdata      [const AjPStr]
+** @fnote     Same namrule as "String constructor functions:
+**            C-type (char*) strings"
+** @nam3rule  Const    Construct a constant string.
+** @nam4rule  ConstEmpty Construct with an empty string.
+**
+** @argrule   S   str [const AjPStr] Text string
+**
+** @valrule   *     [const AjPStr] New string
+** @fcategory new
+*/
+
+/* @func ajStrConstEmpty *******************************************************
+**
+** Returns an unmodifiable empty string.
+** 
+** @return [const AjPStr] Pointer to an empty string
+** @@
+******************************************************************************/
+
+const AjPStr ajStrConstEmpty(void)
+{
+    return strPNULL;
+}
+
+
+
+
+/* @func ajStrConstEmpty *******************************************************
+**
+** Returns an unmodifiable empty string.
+**
+** @param [r] str [const AjPStr] String
+** @return [const AjPStr] Pointer to an empty string
+** @@
+******************************************************************************/
+
+const AjPStr ajStrConstS(const AjPStr str)
+{
+    if(!str)
+        return strPNULL;
+    return str;
+}
+
+
+
+
 /* @section destructors *******************************************************
 **
 ** Functions for destruction of string objects.
@@ -3088,9 +3140,9 @@ AjBool ajStrAssignRef(AjPStr* Pstr, AjPStr refstr)
     }
 
     if(!refstr)
-	ajFatal("ajStrAssignRef source string NULL");
-
-    *Pstr = ajStrNewRef(refstr);
+	*Pstr = ajStrNewRef(strPNULL);
+    else
+        *Pstr = ajStrNewRef(refstr);
 
     return ret;
 }
@@ -3599,8 +3651,7 @@ AjBool ajStrAppendCountK(AjPStr* Pstr, char chr, ajuint num)
 
     for(i=0; i<num; i++)
     {
-	*cp = chr;
-	cp++;
+	*cp++ = chr;
     }
 
     *cp = '\0';
@@ -4959,13 +5010,14 @@ AjBool ajStrKeepSetAlphaC(AjPStr* Pstr, const char* txt)
     thys = *Pstr;
 
     p = thys->Ptr;
-    q = thys->Ptr;
+
+    while(*p && (isalpha((ajint)*p) || strchr(txt, (ajint)*p)))
+        p++;
+    q = p;
 
     while(*p)
     {
-	if(isalpha((ajint)*p))
-	    *q++=*p;
-	else if(strchr(txt, *p))
+	if(isalpha((ajint)*p) || strchr(txt, (ajint)*p))
 	    *q++=*p;
 
 	p++;
@@ -5170,7 +5222,12 @@ AjBool ajStrKeepSetAscii(AjPStr* Pstr, int minchar, int maxchar)
     thys = *Pstr;
 
     p = thys->Ptr;
-    q = thys->Ptr;
+
+    while(*p && (*p >= minchar) && (*p <= maxchar))
+    {
+        p++;
+    }
+    q = p;
 
     while(*p)
     {
@@ -5282,6 +5339,52 @@ AjBool ajStrQuoteStripAll(AjPStr* Pstr)
 }
 
 
+
+
+/* @func ajStrRemoveDupchar ****************************************************
+**
+** Removes duplicate characters from a string
+**
+** @param [w] Pstr [AjPStr*] String
+** @return [AjBool] True if string is not empty
+** @@
+******************************************************************************/
+
+AjBool ajStrRemoveDupchar(AjPStr* Pstr)
+{
+    char filter[256] = {'\0'};		/* should make all zero */
+    char *cp;
+    char *cq;
+    AjPStr thys;
+
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
+
+    thys = *Pstr;
+
+    cp = thys->Ptr;
+    while(*cp && !filter[(ajint)*cp])
+        filter[(ajint)*cp++] = 1;
+    cq = cp;
+
+    while(*cp)
+    {
+        if(!filter[(ajint)*cp])
+        {
+            filter[(ajint)*cp] = 1;
+            *cq++ = *cp;
+        }
+        cp++;
+    }
+    *cq = '\0';
+
+    if(!thys->Len)
+        return ajFalse;
+
+    return ajTrue;
+}
 
 
 /* @func ajStrRemoveGap *******************************************************
@@ -6555,14 +6658,13 @@ AjBool ajStrExchangeSetCC(AjPStr* Pstr, const char* txt, const char* txtnew)
 {
     char filter[256] = {'\0'};		/* should make all zero */
     ajuint i;
+    ajuint ilen;
 
-    const char *co;
+    const char *co = NULL;
     const char *cn;
     char* cp;
     AjPStr thys;
 
-    co = txt;
-    cn = txtnew;
 
     if(!*Pstr)
         *Pstr = ajStrNewResLenC("", 1, 0);
@@ -6577,18 +6679,35 @@ AjBool ajStrExchangeSetCC(AjPStr* Pstr, const char* txt, const char* txtnew)
 	ajErr("ajStrExchangeSetCC new char set '%s' shorter than old '%s'",
 	       txt, txtnew);
 
-    while(*co)
+
+    cp = thys->Ptr;
+    ilen = thys->Len;
+    i = strcspn(cp, txt);
+    while(i < ilen)
     {
-	if(!*cn)			/* oops, too short, use first */
-	    filter[(ajint)*co++] = *txtnew;
-	else
-	    filter[(ajint)*co++] = *cn++;
+        if(!co)
+        {
+            co = txt;
+            cn = txtnew;
+            while(*co)
+            {
+                if(!*cn)			/* oops, too short, use first */
+                    filter[(ajint)*co++] = *txtnew;
+                else
+                    filter[(ajint)*co++] = *cn++;
+            }
+        }
+        cp += i++;
+        *cp = filter[(ajint)*cp];
+        ilen -= i;
+        i = strcspn(++cp, txt);
     }
 
-    for(cp = thys->Ptr; *cp; cp++)
+/*
+  for(cp = thys->Ptr; *cp; cp++)
 	if(filter[(ajint)*cp])
 	    *cp = filter[(ajint)*cp];
-
+            */
     return ajTrue;
 }
 
@@ -7197,10 +7316,12 @@ AjBool ajStrIsCharsetC(const AjPStr str, const char* txt)
 
 AjBool ajStrIsCharsetS(const AjPStr str, const AjPStr str2)
 {
-    char filter[256] = {'\0'};		/* should make all zero */
+
+    /*
+    char filter[256] = {'\0'};
     const char* cp;
     const char* cq;
-
+    */
     if(!str)
 	return ajFalse;
 
@@ -7210,6 +7331,7 @@ AjBool ajStrIsCharsetS(const AjPStr str, const AjPStr str2)
     if(!str2)
       return ajFalse;
 
+/*
     cq = str2->Ptr;
 
     while (*cq)
@@ -7220,6 +7342,10 @@ AjBool ajStrIsCharsetS(const AjPStr str, const AjPStr str2)
     while(*cp)
       if(!filter[(int)*cp++])
 	    return ajFalse;
+    */
+
+    if(strspn(str->Ptr, str2->Ptr) != str->Len)
+        return ajFalse;
 
     return ajTrue;
 }
@@ -7251,12 +7377,15 @@ AjBool ajStrIsCharsetCaseC(const AjPStr str, const char* txt)
 	return ajFalse;
 
     while (*cq)
-      filter[toupper((int)*cq++)] = 1;
+    {
+        filter[tolower((int)*cq)] = 1;
+        filter[toupper((int)*cq++)] = 1;
+    }
 
     cp = str->Ptr;
 
     while(*cp)
-      if(!filter[toupper((int)*cp++)])
+      if(!filter[(int)*cp++])
 	    return ajFalse;
 
     return ajTrue;
@@ -7296,12 +7425,15 @@ AjBool ajStrIsCharsetCaseS(const AjPStr str, const AjPStr str2)
     cq = str2->Ptr;
 
     while (*cq)
-      filter[(int)*cq++] = 1;
+    {
+        filter[tolower((int)*cq)] = 1;
+        filter[toupper((int)*cq++)] = 1;
+    }
 
     cp = str->Ptr;
 
     while(*cp)
-      if(!filter[toupper((int)*cp++)])
+      if(!filter[(int)*cp++])
 	    return ajFalse;
 
     return ajTrue;
@@ -10311,7 +10443,7 @@ __deprecated AjBool  ajStrMatchCase(const AjPStr str, const AjPStr str2)
 
 AjBool ajStrMatchWildC(const AjPStr str, const char* txt2)
 {
-    return ajCharMatchWildC(str->Ptr, txt2);
+    return ajCharMatchWildC(MAJSTRGETPTR(str), txt2);
 }
 
 
@@ -10330,7 +10462,7 @@ AjBool ajStrMatchWildC(const AjPStr str, const char* txt2)
 
 AjBool ajStrMatchWildS(const AjPStr str, const AjPStr str2)
 {
-    return ajCharMatchWildC(str->Ptr, str2->Ptr);
+    return ajCharMatchWildC(MAJSTRGETPTR(str), MAJSTRGETPTR(str2));
 }
 
 
@@ -10361,7 +10493,7 @@ __deprecated AjBool  ajStrMatchWild(const AjPStr str, const AjPStr str2)
 
 AjBool ajStrMatchWildCaseC(const AjPStr str, const char* txt2)
 {
-    return ajCharMatchWildCaseC(str->Ptr, txt2);
+    return ajCharMatchWildCaseC(MAJSTRGETPTR(str), txt2);
 }
 
 
@@ -10380,7 +10512,7 @@ AjBool ajStrMatchWildCaseC(const AjPStr str, const char* txt2)
 
 AjBool ajStrMatchWildCaseS(const AjPStr str, const AjPStr str2)
 {
-    return ajCharMatchWildCaseC(str->Ptr, str2->Ptr);
+    return ajCharMatchWildCaseC(MAJSTRGETPTR(str), MAJSTRGETPTR(str2));
 }
 
 
@@ -10404,7 +10536,7 @@ AjBool ajStrMatchWildCaseS(const AjPStr str, const AjPStr str2)
 
 AjBool ajStrMatchWildWordC(const AjPStr str, const char* txt2)
 {
-    return ajCharMatchWildWordC(str->Ptr, txt2);
+    return ajCharMatchWildWordC(MAJSTRGETPTR(str), txt2);
 }
 
 
@@ -10428,7 +10560,7 @@ AjBool ajStrMatchWildWordC(const AjPStr str, const char* txt2)
 
 AjBool ajStrMatchWildWordS(const AjPStr str, const AjPStr str2)
 {
-    return ajCharMatchWildWordC(str->Ptr, str2->Ptr);
+    return ajCharMatchWildWordC(MAJSTRGETPTR(str), MAJSTRGETPTR(str2));
 }
 
 
@@ -10452,7 +10584,7 @@ AjBool ajStrMatchWildWordS(const AjPStr str, const AjPStr str2)
 
 AjBool ajStrMatchWildWordCaseC(const AjPStr str, const char* txt2)
 {
-    return ajCharMatchWildWordCaseC(str->Ptr, txt2);
+    return ajCharMatchWildWordCaseC(MAJSTRGETPTR(str), txt2);
 }
 
 
@@ -10476,7 +10608,7 @@ AjBool ajStrMatchWildWordCaseC(const AjPStr str, const char* txt2)
 
 AjBool ajStrMatchWildWordCaseS(const AjPStr str, const AjPStr str2)
 {
-    return ajCharMatchWildWordCaseC(str->Ptr, str2->Ptr);
+    return ajCharMatchWildWordCaseC(MAJSTRGETPTR(str), MAJSTRGETPTR(str2));
 }
 
 
@@ -10593,7 +10725,7 @@ AjBool ajStrPrefixC(const AjPStr str, const char* txt2)
     if(ilen > MAJSTRGETLEN(str))		/* pref longer */
 	return ajFalse;
 
-    if(strncmp(str->Ptr, txt2, ilen))	/* +1 or -1 for a failed match */
+    if(strncmp(MAJSTRGETPTR(str), txt2, ilen)) /* +1 or -1 for a failed match */
 	return ajFalse;
 
     return ajTrue;
@@ -10626,8 +10758,9 @@ AjBool ajStrPrefixS(const AjPStr str, const AjPStr str2)
     if(str2->Len > MAJSTRGETLEN(str))	/* pref longer */
 	return ajFalse;
 
-    if(strncmp(str->Ptr, str2->Ptr, str2->Len)) /* +1 or -1 for a
-						     failed match */
+    if(strncmp(MAJSTRGETPTR(str),
+               MAJSTRGETPTR(str2), MAJSTRGETLEN(str2))) /* +1 or -1 for a
+                                                           failed match */
 	return ajFalse;
 
     return ajTrue;
@@ -10661,7 +10794,7 @@ __deprecated AjBool  ajStrPrefix(const AjPStr str, const AjPStr str2)
 
 AjBool ajStrPrefixCaseC(const AjPStr str, const char* txt2)
 {
-    return ajCharPrefixCaseC(str->Ptr, txt2);
+    return ajCharPrefixCaseC(MAJSTRGETPTR(str), txt2);
 }
 
 
@@ -10680,7 +10813,8 @@ AjBool ajStrPrefixCaseC(const AjPStr str, const char* txt2)
 
 AjBool ajStrPrefixCaseS(const AjPStr str, const AjPStr str2)
 {
-    return ajCharPrefixCaseC(str->Ptr, str2->Ptr);
+    return ajCharPrefixCaseC(MAJSTRGETPTR(str),
+                             MAJSTRGETPTR(str2));
 }
 
 
@@ -10789,7 +10923,7 @@ __deprecated AjBool  ajStrSuffix(const AjPStr str, const AjPStr str2)
 
 AjBool ajStrSuffixCaseC(const AjPStr str, const char* txt2)
 {
-    return ajCharSuffixCaseC(str->Ptr, txt2);
+    return ajCharSuffixCaseC(MAJSTRGETPTR(str), txt2);
 }
 
 
@@ -10808,7 +10942,8 @@ AjBool ajStrSuffixCaseC(const AjPStr str, const char* txt2)
 
 AjBool ajStrSuffixCaseS(const AjPStr str, const AjPStr str2)
 {
-    return ajCharSuffixCaseC(str->Ptr, str2->Ptr);
+    return ajCharSuffixCaseC(MAJSTRGETPTR(str),
+                             MAJSTRGETPTR(str2));
 }
 
 
@@ -10872,7 +11007,7 @@ AjBool ajStrSuffixCaseS(const AjPStr str, const AjPStr str2)
 
 int ajStrCmpC(const AjPStr str, const char* txt2)
 {
-    return strcmp(str->Ptr, txt2);
+    return strcmp(MAJSTRGETPTR(str), txt2);
 }
 
 
@@ -10894,7 +11029,7 @@ int ajStrCmpC(const AjPStr str, const char* txt2)
 
 int ajStrCmpLenC(const AjPStr str, const char* txt2, ajuint len)
 {
-    return strncmp(str->Ptr, txt2, len);
+    return strncmp(MAJSTRGETPTR(str), txt2, len);
 }
 
 
@@ -10940,7 +11075,8 @@ __deprecated int  ajStrNCmpC(const AjPStr str, const char* txt, ajint len)
 
 int ajStrCmpS(const AjPStr str, const AjPStr str2)
 {
-    return strcmp(str->Ptr, str2->Ptr);
+    return strcmp(MAJSTRGETPTR(str),
+                  MAJSTRGETPTR(str2));
 }
 
 
@@ -10975,7 +11111,8 @@ int ajStrCmpCaseS(const AjPStr str, const AjPStr str2)
     const char* cp;
     const char* cq;
 
-    for(cp = str->Ptr, cq = str2->Ptr; *cp && *cq; cp++, cq++)
+    for(cp = MAJSTRGETPTR(str), cq = MAJSTRGETPTR(str2);
+        *cp && *cq; cp++, cq++)
 	if(toupper((ajint) *cp) != toupper((ajint) *cq))
 	{
 	    if(toupper((ajint) *cp) > toupper((ajint) *cq))
@@ -11026,7 +11163,7 @@ __deprecated int  ajStrCmpCase(const AjPStr str, const AjPStr str2)
 
 int ajStrCmpLenS(const AjPStr str, const AjPStr str2, ajuint len)
 {
-    return strncmp(str->Ptr, str2->Ptr, len);
+    return strncmp(MAJSTRGETPTR(str), MAJSTRGETPTR(str2), len);
 }
 
 
@@ -11059,7 +11196,7 @@ __deprecated int  ajStrNCmpO(const AjPStr str, const AjPStr str2, ajint len)
 
 int ajStrCmpWildC(const AjPStr str, const char* txt2)
 {
-    return ajCharCmpWild(str->Ptr, txt2);
+    return ajCharCmpWild(MAJSTRGETPTR(str), txt2);
 }
 
 
@@ -11080,7 +11217,7 @@ int ajStrCmpWildC(const AjPStr str, const char* txt2)
 
 int ajStrCmpWildS(const AjPStr str, const AjPStr str2)
 {
-    return ajCharCmpWild(str->Ptr, str2->Ptr);
+    return ajCharCmpWild(MAJSTRGETPTR(str), MAJSTRGETPTR(str2));
 }
 
 
@@ -11101,7 +11238,7 @@ int ajStrCmpWildS(const AjPStr str, const AjPStr str2)
 
 int ajStrCmpWildCaseC(const AjPStr str, const char* txt2)
 {
-    return ajCharCmpWildCase(str->Ptr, txt2);
+    return ajCharCmpWildCase(MAJSTRGETPTR(str), txt2);
 }
 
 
@@ -11122,7 +11259,7 @@ int ajStrCmpWildCaseC(const AjPStr str, const char* txt2)
 
 int ajStrCmpWildCaseS(const AjPStr str, const AjPStr str2)
 {
-    return ajCharCmpWildCase(str->Ptr, str2->Ptr);
+    return ajCharCmpWildCase(MAJSTRGETPTR(str), MAJSTRGETPTR(str2));
 }
 
 
@@ -11221,7 +11358,7 @@ ajint ajStrFindC(const AjPStr str, const char* txt2)
 {
     const char* cp;
 
-    cp = strstr(str->Ptr, txt2);
+    cp = strstr(MAJSTRGETPTR(str), txt2);
 
     if(!cp)
 	return -1;
@@ -11247,7 +11384,7 @@ ajint ajStrFindS(const AjPStr str, const AjPStr str2)
 {
     const char* cp;
 
-    cp = strstr(str->Ptr, str2->Ptr);
+    cp = strstr(MAJSTRGETPTR(str), MAJSTRGETPTR(str2));
 
     if(!cp)
 	return -1;
@@ -11286,7 +11423,7 @@ ajint ajStrFindAnyC(const AjPStr str, const char* txt2)
 {
     ajuint i;
 
-    i = strcspn(str->Ptr, txt2);
+    i = strcspn(MAJSTRGETPTR(str), txt2);
 
     if(i == str->Len)
 	return -1;
@@ -11312,7 +11449,7 @@ ajint ajStrFindAnyK(const AjPStr str, char chr)
 {
     const char* cp;
 
-    cp = strchr(str->Ptr, (ajint) chr);
+    cp = strchr(MAJSTRGETPTR(str), (ajint) chr);
 
     if(!cp)
 	return -1;
@@ -11351,7 +11488,7 @@ ajint ajStrFindAnyS(const AjPStr str, const AjPStr str2)
 {
     ajuint i;
 
-    i = strcspn(str->Ptr, str2->Ptr);
+    i = strcspn(MAJSTRGETPTR(str), MAJSTRGETPTR(str2));
 
     if(i == str->Len)
 	return -1;
@@ -11380,7 +11517,7 @@ ajint ajStrFindCaseC(const AjPStr str, const char *txt2)
     AjPStr t2;
     ajint v;
 
-    t1 = ajStrNewC(str->Ptr);
+    t1 = ajStrNewC(MAJSTRGETPTR(str));
     t2 = ajStrNewC(txt2);
     ajStrFmtUpper(&t1);
     ajStrFmtUpper(&t2);
@@ -11409,7 +11546,7 @@ ajint ajStrFindCaseC(const AjPStr str, const char *txt2)
 
 ajint ajStrFindCaseS(const AjPStr str, const AjPStr str2)
 {
-    return ajStrFindCaseC(str,str2->Ptr);
+    return ajStrFindCaseC(str,MAJSTRGETPTR(str2));
 }
 
 
@@ -11535,9 +11672,9 @@ ajint ajStrFindRestC(const AjPStr str, const char* txt2)
 {
     ajuint i;
 
-    i = strspn(str->Ptr, txt2);
+    i = strspn(MAJSTRGETPTR(str), txt2);
 
-    if(i == str->Len)
+    if(i == MAJSTRGETLEN(str))
 	return -1;
 
     return i;
@@ -11560,7 +11697,7 @@ ajint ajStrFindRestC(const AjPStr str, const char* txt2)
 
 ajint ajStrFindRestS(const AjPStr str, const AjPStr str2)
 {
-  return ajStrFindRestC(str, str2->Ptr);
+    return ajStrFindRestC(str, MAJSTRGETPTR(str2));
 }
 
 
@@ -11614,7 +11751,7 @@ ajint ajStrFindRestCaseC(const AjPStr str, const char* txt2)
 
 ajint ajStrFindRestCaseS(const AjPStr str, const AjPStr str2)
 {
-  return ajStrFindRestCaseC(str, str2->Ptr);
+    return ajStrFindRestCaseC(str, MAJSTRGETPTR(str2));
 }
 
 
@@ -11697,7 +11834,7 @@ ajint ajStrFindlastK(const AjPStr str, char chr)
 {
     const char* cp;
 
-    cp = strrchr(str->Ptr, (ajint) chr);
+    cp = strrchr(MAJSTRGETPTR(str), (ajint) chr);
 
     if(!cp)
 	return -1;
