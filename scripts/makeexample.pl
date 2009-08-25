@@ -603,7 +603,7 @@ test $dotest hasn't used ", $#answers+1, " answers\n";
 		$rotate = "-90<";
 		if(defined($rotations{$pname})){
 		    $rotate = $rotations{$pname};
-		    print STDERR "rotate '$rotate'\n";
+#		    print STDERR "rotate '$rotate'\n";
 		}
 # add -delay to see the first page of an animated gif for 10 mins
 		# add -delay to see the first page of an animated gif for 10 mins
