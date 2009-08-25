@@ -147,14 +147,18 @@ void* ajMemCalloc(size_t count, size_t nbytes,
 		  const char* file, ajint line, AjBool nofail)
 {
     void *ptr;
+    size_t ibytes = nbytes;
+    size_t icount = count;
 
     if(count <= 0)
         ajUtilCatch();
 
-    assert(count > 0);
-    assert(nbytes > 0);
+    if(!count)
+       icount = 1;
+    if(!nbytes)
+        ibytes = 1;
 
-    ptr = calloc(count, nbytes);
+    ptr = calloc(icount, ibytes);
 
     if(ptr == NULL)
     {
@@ -172,7 +176,7 @@ void* ajMemCalloc(size_t count, size_t nbytes,
     }
 
 #ifdef AJ_SAVESTATS
-    memAlloc += (count*nbytes);
+    memAlloc += (icount*ibytes);
     memCount++;
     memTotal++;
 #endif
@@ -209,12 +213,18 @@ void* ajMemCallocZero(size_t count, size_t nbytes,
 		      const char* file, ajint line, AjBool nofail)
 {
     void *ptr;
+    size_t ibytes = nbytes;
+    size_t icount = count;
 
-    if(count <= 0) ajUtilCatch();
-    assert(count > 0);
-    assert(nbytes > 0);
+    if(count <= 0)
+        ajUtilCatch();
 
-    ptr = calloc(count, nbytes);
+    if(!count)
+       icount = 1;
+    if(!nbytes)
+        ibytes = 1;
+
+    ptr = calloc(icount, ibytes);
 
     if(ptr == NULL)
     {
@@ -231,13 +241,13 @@ void* ajMemCallocZero(size_t count, size_t nbytes,
 #endif
     }
 
-    memset(ptr, 0, count*nbytes);
+    memset(ptr, 0, icount*ibytes);
 
 #ifdef AJ_SAVESTATS
-    memAlloc += (count*nbytes);
+    memAlloc += (icount*ibytes);
     memCount++;
     memTotal++;
-    memZero += (count*nbytes);
+    memZero += (icount*ibytes);
 #endif
 
     return ptr;
@@ -274,6 +284,12 @@ void ajMemSetZero(void* ptr, size_t count, size_t nbytes)
 {
     if (ptr == NULL)
 	return;
+
+    if(!nbytes)
+        return;
+
+    if(!count)
+        return;
 
     memset(ptr, 0, count*nbytes);
 
@@ -342,16 +358,19 @@ void ajMemFree(void* ptr)
 void* ajMemResize(void* ptr, size_t nbytes,
 		  const char* file, ajint line, AjBool nofail)
 {
-    assert(nbytes > 0);
+    size_t ibytes = nbytes;
+
+    if(!nbytes)
+        ibytes = 1;
 
     if(ptr == NULL)
     {
-	ptr = ajMemCallocZero(nbytes, 1, file, line, nofail);
+	ptr = ajMemCallocZero(ibytes, 1, file, line, nofail);
 
 	return ptr;
     }
 
-    ptr = realloc(ptr, nbytes);
+    ptr = realloc(ptr, ibytes);
 
     if(ptr == NULL)
     {
@@ -369,7 +388,7 @@ void* ajMemResize(void* ptr, size_t nbytes,
     }
   
 #ifdef AJ_SAVESTATS
-    memResize += nbytes;
+    memResize += ibytes;
     memResizeCount++;
 #endif
     
@@ -410,16 +429,19 @@ void* ajMemResize(void* ptr, size_t nbytes,
 void* ajMemResizeZero(void* ptr, size_t oldbytes, size_t nbytes,
 		      const char* file, ajint line, AjBool nofail)
 {
-    assert(nbytes > 0);
+    size_t ibytes = nbytes;
+
+    if(!nbytes)
+        ibytes = 1;
 
     if(ptr == NULL)
     {
-	ptr = ajMemCallocZero(nbytes, 1, file, line, nofail);
+	ptr = ajMemCallocZero(ibytes, 1, file, line, nofail);
 
 	return ptr;
     }
 
-    ptr = realloc(ptr, nbytes);
+    ptr = realloc(ptr, ibytes);
 
     if(ptr == NULL)
     {
@@ -436,12 +458,12 @@ void* ajMemResizeZero(void* ptr, size_t oldbytes, size_t nbytes,
 #endif
     }
   
-    if(nbytes > oldbytes)
+    if(ibytes > oldbytes)
 	memset(((char*)ptr)+oldbytes, 0, (nbytes-oldbytes));
 
 #ifdef AJ_SAVESTATS
     memResizeOld += oldbytes;
-    memResize += nbytes;
+    memResize += ibytes;
     memResizeCount++;
 #endif
 
