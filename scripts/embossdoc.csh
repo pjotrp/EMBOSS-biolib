@@ -1,12 +1,13 @@
 #!/bin/csh -f
 
-if ($#argv != 2) then
+if ($#argv != 3) then
   echo "usage:"
-  echo "embossdoc.csh srctop wwwtop"
+  echo "embossdoc.csh srctop wwwtop booktop"
 endif
 
 set edir = $argv[1]
 set wdir = $argv[2]
+set bdir = $argv[3]
 
 
 \rm -rf x/
@@ -38,6 +39,15 @@ foreach x ($edir/ajax/*.c)
 end
 cat *.srs >! ../efunc.dat
 \cp *html $wdir/ajax/
+
+foreach x (*.book)
+  if(-s $x) then
+    \cp $x $bdir/ajax/
+  else
+    echo "$x empty"
+    \rm $x
+  endif
+end
 
 \rm *html
 \rm *.srs
