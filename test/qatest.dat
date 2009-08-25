@@ -296,7 +296,8 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest -help
 FI stderr
-FZ = 1437
+FZ = 1389
+FP /^Version: EMBOSS:6.\d+\.\d+\n/
 FP 3 / qualifiers:\n/
 FP 4 / qualifiers:/
 FP 1 /^ +\[-asequence\] +sequence +Sequence filename and optional format, or\n/
@@ -314,8 +315,9 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest -help -verbose
 FI stderr
-FZ = 4477
-FP 26 /   boolean /
+FZ = 4494
+FP /^Version: EMBOSS:6.\d+\.\d+\n/
+FP 27 /   boolean /
 FP  7 /   integer /
 FP 26 /   string /
 FP /   [-]testalen           string     asequence length \.\.\./
@@ -373,8 +375,8 @@ IN
 FI actb1_fugru.antigenic
 FZ = 0
 FI antigenic.acdlog
-FC = 5504
-FP 50 /^acdProcess/
+FC = 5620
+FP 51 /^acdProcess/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -401,8 +403,8 @@ ID acdtable-ex
 AP acdtable
 CL antigenic
 FI stderr
-FC = 49
-FP 8 /[<]tr/
+FC = 55
+FP 9 /[<]tr/
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -2320,7 +2322,7 @@ FP 0 /Died: /
 FI chaos1.dat
 FC = 7495
 FP /^##Maintitle Chaos game representation of tembl-id:J01636\n/
-FP /^##Subtitle Tue 15 Jul 2008 12:00:00\n/
+FP /^##Subtitle Wed 15 Jul 2009 12:00:00\n/
 FP /^##Screen x1 -0\.100000 y1 -0\.100000 x2 1\.400000 y2 1\.100000\n/
 FP /^Line x1 0\.090456 y1 0\.242971 x2 0\.090556 y2 0\.242971 colour 0\n/
 FP /^Text3 x1 0\.000000 y1 0\.000000 colour 0 size 1\.000000 A\n/
@@ -8468,7 +8470,7 @@ FP /Created dotmatcher1\.dat\n/
 FI dotmatcher1.dat
 FC = 30
 FP /^##Maintitle Dotmatcher: tsw-id:HBA_HUMAN vs tsw-id:HBB_HUMAN\n/
-FP /^##Subtitle \(windowsize = 10, threshold = 23.00  15\/07\/08\)\n/
+FP /^##Subtitle \(windowsize = 10, threshold = 23.00  15\/07\/[0-9][0-9]\)\n/
 FP /^Text2 x1 71\.000000 y1 -11\.025001 colour 0 size 1\.000000 HBA_HUMAN\n/
 //
 
@@ -8543,7 +8545,7 @@ CL tembl:AF129756 tembl:BA000025 -word 20 -graph data
 FI dotpath1.dat
 FC = 254
 FP /^##Maintitle Dotpath: tembl-id:AF129756 vs tembl-id:BA000025\n/
-FP /^##Subtitle Tue 15 Jul 2008 12:00:00\n/
+FP /^##Subtitle Wed 15 Jul 2009 12:00:00\n/
 FP /^Line x1 1\.000000 y1 193957\.000000 x2 153\.000000 y2 194109\.000000 colour 0\n/
 FI stdout
 FC = 1
@@ -8583,7 +8585,7 @@ FP /^Created dottup1\.dat\n/
 FI dottup1.dat
 FC = 2284
 FP /^##Maintitle v00294 vs j01636\n/
-FP /^##Subtitle Tue 15 Jul 2008 12:00:00\n/
+FP /^##Subtitle Wed 15 Jul 2009 12:00:00\n/
 FP /^Line x1 5288\.000000 y1 625\.000000 x2 5298\.000000 y2 635\.000000 colour 0\n/
 FI stderr
 FC = 1
@@ -10964,23 +10966,6 @@ FP 100 /^>EMBOSS_[0-9][0-9][0-9]/
 FP /\A>EMBOSS_001\nnrvlhpepnprt.*lmmydsqfwcdfe\nwadcc.*gkkvd\n>/
 //
 
-ID makeprotseq-ex2
-AP makeprotseq
-IN ../pepstats-keep/laci_ecoli.pepstats
-IN
-IN
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI makeseq.fasta
-FC = 300
-FP 100 /^>EMBOSS_[0-9][0-9][0-9]/
-FP /\A>EMBOSS_001\neqngievef.*avpdkallvv\nnllvla.*kssnv\n>/
-//
-
 ID marscan-ex
 AP marscan
 IN tembl:u01317
@@ -11642,29 +11627,6 @@ FP /^# Reported_sequences: 3\n/
 FP /^# Reported_hitcount: 3\n/
 //
 
-# change the example (was an arabidopsis entry)
-ID patmatmotifs-ex
-AP patmatmotifs
-PP EMBOSS_DATA=../prosextract-keep/
-PP export EMBOSS_DATA
-CL -full
-IN tsw:opsd_human
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI opsd_human.patmatmotifs
-FP /^# HitCount: 2\n/
-FP /^# Motif: OPSIN\n# Count: 1\n/
-FP /^Start = position 123 of sequence\n/
-FP /^End = position 139 of sequence\n/
-FP /^Length = 17\n/
-FP /^Motif = G_PROTEIN_RECEP_F1_1\n/
-FP /^TLGGEIALWSLVVLAIERYVVVCKPMS\n/
-//
-
 ID pepcoil-ex
 AP pepcoil
 IN tsw:gcn4_yeast
@@ -11797,7 +11759,7 @@ FP 0 /Died: /
 FI pepnet1.dat
 FC = 105
 FP /^##Maintitle Helical net of tsw-id:GCN4_YEAST\[253:274\]\n/
-FP /^##Subtitle Tue 15 Jul 2008 12:00:00\n/
+FP /^##Subtitle Wed 15 Jul 2009 12:00:00\n/
 FP /^Text1 x1 139\.599991 y1 93\.500000 colour 1 size 0\.750000 D\n/
 FP /^Rectangle x1 134\.499985 y1 85\.430000 x2 137\.499985 y2 88\.430000 colour 9\n/
 //
@@ -11822,6 +11784,23 @@ FP /^A280 Extinction Coefficient 1mg/ml = 0\.56\s+\n/
 FP /^Improbability of expression in inclusion bodies = 0\.660\n/
 FP /^A = Ala\s+44\s+12\.222\s+1\.421\s+\n/
 FP /^Tiny\s+\(A\+C\+G\+S\+T\)\s+120\s+33\.333\n/
+//
+
+ID makeprotseq-ex2
+AP makeprotseq
+IN ../pepstats-keep/laci_ecoli.pepstats
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI makeseq.fasta
+FC = 300
+FP 100 /^>EMBOSS_[0-9][0-9][0-9]/
+FP /\A>EMBOSS_001\neqngievef.*avpdkallvv\nnllvla.*kssnv\n>/
 //
 
 ID pepwheel-ex
@@ -11856,7 +11835,7 @@ FP 0 /Died: /
 FI pepwheel1.dat
 FC = 132
 FP /^##Maintitle Helical wheel of tsw-id:HBB_HUMAN\[:30\]\n/
-FP /^##Subtitle Tue 15 Jul 2008 12:00:00\n/
+FP /^##Subtitle Wed 15 Jul 2009 12:00:00\n/
 FP /^Text1 x1 0\.446413 y1 -0\.078715 colour 9 size 1\.000000 V\n/
 FP /^Rectangle x1 -0\.025000 y1 0\.431300 x2 0\.025000 y2 0\.481300 colour 9\n/
 //
@@ -12062,7 +12041,7 @@ FP 0 /Died: /
 FI polydot1.dat
 FC = 202
 FP /^##Maintitle Polydot of globins.fasta\n/
-FP /^##Subtitle Tue 15 Jul 2008 12:00:00\n/
+FP /^##Subtitle Wed 15 Jul 2009 12:00:00\n/
 FP /^##Screen x1 -163\.350006 y1 -163\.350006 x2 1690\.672485 y2 1252\.349976\n/
 FP /^Textline x1 -98\.010010 y1 73\.000000 x2 -98\.010010 y2 146\.000000 colour 0 size 0\.300000 HBB_HUMAN\n/
 FP /^Rectangle x1 0\.000000 y1 156\.000000 x2 146\.000000 y2 302\.000000 colour 0\n/
@@ -12162,7 +12141,7 @@ FP 0 /Died: /
 FI prettyplot1.dat
 FC = 603
 FP /^##Maintitle Pretty plot of ..\/..\/data\/globins.msf\n/
-FP /^##Subtitle Tue 15 Jul 2008 12:00:00\n/
+FP /^##Subtitle Wed 15 Jul 2009 12:00:00\n/
 FP /^Text1 x1 -10\.000000 y1 49\.[12][09][09][09][09][71] colour 0 size 8\.000000 LGB2_LUPLU\n/
 FP /^Text1 x1 -10\.000000 y1 42\.599998 colour 0 size 8\.000000 Consensus\n/
 FP /^Text1 x1 59\.000000 y1 52\.500000 colour 0 size 8\.000000 50\n/
@@ -12365,6 +12344,28 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 DI PROSITE
+//
+
+ID patmatmotifs-ex
+AP patmatmotifs
+PP EMBOSS_DATA=../prosextract-keep/
+PP export EMBOSS_DATA
+CL -full
+IN tsw:opsd_human
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI opsd_human.patmatmotifs
+FP /^# HitCount: 2\n/
+FP /^# Motif: OPSIN\n# Count: 1\n/
+FP /^Start = position 123 of sequence\n/
+FP /^End = position 139 of sequence\n/
+FP /^Length = 17\n/
+FP /^Motif = G_PROTEIN_RECEP_F1_1\n/
+FP /^TLGGEIALWSLVVLAIERYVVVCKPMS\n/
 //
 
 ID pscan-ex
@@ -17928,7 +17929,7 @@ FP 0 /Died: /
 FI stdout
 FZ > 43000
 FP 1 /^ +Finds programs by keywords in their short description\n/
-FP 1 /^ +-explode/
+FP 2 /^ +-explode/
 //
 
 ID tfscan-ex
@@ -22941,7 +22942,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FK stdout
 FC > 3
-FP /^emnu version: 1\.0\.5\n/
+FP /^emnu version: 1\.05\n/
 FP /^EMBOSS Simple Menu\n/
 FP /ALPHABETIC LISTING OF ALL PROGRAMS/
 FP /ALIGNMENT GLOBAL/
@@ -23816,7 +23817,7 @@ FI logo1.eps
 FZ = 13332
 FP /^%%Pages: 0\n/
 FI logo1.png
-FZ > 11790
+FZ > 11786
 FP /PNG/
 FI logo_ssc1.eps
 FZ = 13310
@@ -23891,6 +23892,7 @@ ID ememetext-ex3
 AB memenew
 RQ meme
 AA ememetext
+TI 300
 CL ../../data/memenew/INO_up800.s -mod anr -revcomp
 CL -bfile ../../data/memenew/yeast.nc.6.freq ex3.text
 IN
@@ -24005,7 +24007,7 @@ ID ememetext-ex8
 AB memenew
 RQ meme
 AA ememetext
-TI 200
+TI 300
 CL ../../data/memenew/adh.s -mod zoops -nmotifs 20 -evt 0.01
 CL ex8.text
 IN
@@ -26521,7 +26523,7 @@ IN
 FI rna3.vrnainverse
 FC = 3
 FP 3 /^[ACGU]{76}   [0-9][0-9](   d = [0-9\.]+)?\n/
-FP  /^UGUAGUUACACCCCCGGA.*GACGAUUACACCCG   34   d \= 3\.000000\n/
+FP  /^UGUUUUAUUGGUCUCGUCGCUGA.*GCGGGUUCUAGGACACACU   28   d \= 1\.000000\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -26542,9 +26544,9 @@ IN
 FI rna3.vrnainverse
 FC = 3
 FP 3 /^[ACGU]{76}   [0-9][0-9]\n/
-FP  /^AGCAUUAGAGCGGACUGAA.*AUGCUUUGU   26\n/
-FP  /^GUGACUCACGAUCUGCGCA.*GUUAUCCCG   25\n/
-FP  /^GCUAUUAAACAGCUUAAGU.*AUAGCAAUC   19\n/
+FP  /^UAUGUGUGUCUGCUUUAAC.*ACAUGGUGA   25\n/
+FP  /^GUUGUGAAAGCACAACCUA.*GCGACCUGC   31\n/
+FP  /^GUGAAUUGAGGCGACGAGG.*UUCAUAUUA   21\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -26623,6 +26625,7 @@ FC = 0
 ID emira-ex
 AB mira
 AA emira
+TI 300
 PP ln -f -s /homes/pmr/src/mira-2.8.3/minidemo/data/bbdataset1/cjejuni_demo* .
 CL -setparam fasta -project cjejuni_demo -genome accurate
 CL -mxti -rns tigr -orh
