@@ -648,6 +648,7 @@ else {
     while (<>) {$source .= $_}
 }
 
+open (BOOK, ">$pubout.book");
 open (OBS, ">>deprecated.new");
 print OBS "#$pubout\n";
 open (HTML, ">$pubout.html");
@@ -672,6 +673,7 @@ $mainprog = 0;
 $functot = 0;
 $datanum=0;
 $secnum=0;
+$bookstr = "$pubout\.c\n";
 $datastr = " ";
 $datastrstatic = " ";
 $sectstr = " ";
@@ -729,7 +731,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
     $errtext = "See source code";
     $dependtext = "See source code";
     $othertext = "See other functions in this section";
-    $availtext = "In release 5.0.0";
+    $availtext = "In release 6.1.0";
     $ctype = "";
 
     while ($cc =~ m/\s@((\S+)\s+([^@]*[^@\s]))/gos) {
@@ -774,6 +776,8 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    $srest =~ s/{([^\}]+)}/<a href="#$1">$1<\/a>/gos;
 	    print "\nSection $sect\n";
 	    print "-----------------------------\n";
+
+	    $bookstr .= "\n  section: $sect\n";
 
 	    push (@{$datasect{$datatitle}}, $sect);
 	    $datasub = "$datatitle - $sect";
@@ -854,6 +858,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    $datastr = "<p><b>Sections:</b> ";
 	    $datastrstatic = "<p><b>Sections:</b> ";
 
+	    $bookstr .= "  $dataname\n $datadesc\n";
 	    splice(@namrules, 1+$namrulesfilecount);
 	    splice(@namdescs, 1+$namrulesfilecount);
 	    splice(@sufname, 1+$suffixfilecount);
@@ -1061,6 +1066,13 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 #           }
 #           print "\n";
 #           print "-----------------------------\n";
+	    $bookstr .= sprintf "%-15s %s (", $ftype, $fname;
+	    $ia = 0;
+	    foreach $f (split(/,/,$fargs)) {
+		if($ia++) {$bookstr .= ", "}
+		$bookstr .= $f;
+	    }
+	    $bookstr .= ");\n";
 	}
 
 	elsif ($token eq "funcstatic")  {
@@ -1166,6 +1178,8 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    $shortdesc = $mrest;
 	    $longdesc = $mrest;
 
+	    $bookmacro = $fname;
+	    @bookmacroparams = ();
 	    print SRS "ID $name\n";
 	    print SRS "TY macro\n";
 	    print SRS "MO $pubout\n";
@@ -1288,6 +1302,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 
 	    testvar($var);
 	    if ($ismacro) {               # No code to test for macros
+		push (@bookmacroparams, "$cast $var");
 	    }
 	    else {
 		$curarg = $largs[$acnt];
@@ -1509,6 +1524,16 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    else {
 		$returnargs = "<tr><td><b>$rtype:</b></td><td>$rrest</td></tr>";
 	    }
+	    if($ismacro) {
+		$bookstr .= sprintf "%-15s %s (", $rtype, $bookmacro;
+		$ia = 0;
+		foreach $f (@bookmacroparams) {
+		    if($ia++) {$bookstr .= ", "}
+		    $bookstr .= $f;
+		}
+		$bookstr .= ");\n";
+	    }
+
 	    $rrest =~ s/>/\&gt;/gos;
 	    $rrest =~ s/</\&lt;/gos;
 	    $ftable .= "<tr><td>$rtype</td><td>\&nbsp;</td><td>RETURN</td><td>$rrest</td></tr>\n";
@@ -2252,6 +2277,9 @@ print HTML "$out";
 print HTMLB "$outstatic";
 close HTML;
 close HTMLB;
+
+print BOOK "$bookstr\n";
+close BOOK;
 
 exit ();
 
