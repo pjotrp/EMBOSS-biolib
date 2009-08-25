@@ -55,7 +55,7 @@ int main (int argc, char **argv)
     if(sortbystart)
 	ajFeatSortByStart(feattable);
 
-    ajFeatWrite(output, feattable);
+    ajFeattableWrite(output, feattable);
 
     ajStrDel(&source);
     ajStrDel(&name);

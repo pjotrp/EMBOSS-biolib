@@ -46,7 +46,7 @@ int main(int argc, char **argv)
     AjPFile outf = NULL;
     
     
-    embInitP("eyinoyang", argc, argv, "CBSTOOLS");
+    embInitPV("eyinoyang", argc, argv, "CBSTOOLS",VERSION);
 
 
     seqset  = ajAcdGetSeqset("sequence");
@@ -55,12 +55,12 @@ int main(int argc, char **argv)
     netphos = ajAcdGetBoolean("netphos");
     thresh  = ajAcdGetFloat("threshold");
     format  = ajAcdGetListSingle("format");
-    
-    
+
+
     cl   = ajStrNewC("yinOyang ");
     fn   = ajStrNew();
     stmp = ajStrNew();
-    
+
 
 
     ajFilenameSetTempname(&fn);

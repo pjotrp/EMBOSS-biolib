@@ -51,7 +51,7 @@ int main(int argc, char **argv)
     AjPFile outf = NULL;
     
     
-    embInitP("esignalp", argc, argv, "CBSTOOLS");
+    embInitPV("esignalp", argc, argv, "CBSTOOLS", VERSION);
 
 
     seqset  = ajAcdGetSeqset("sequence");

@@ -49,7 +49,7 @@ int main(int argc, char **argv)
     ajint maxtime=15;
     float fcost;
 
-    embInitP ("crystalball", argc, argv, "APPENDIXD");
+    embInitPV("crystalball", argc, argv, "APPENDIXD", VERSION);
 
     seq = ajAcdGetSeq ("sequence");
     outf = ajAcdGetOutfile("outfile");

@@ -172,7 +172,7 @@ AjPSeqout outseq;
 
         ajStrAssignC(&DEFAULTFORMATSTR, "fasta");
 
-	embInitP("mse", argc, argv, "MSE");
+	embInitPV("mse", argc, argv, "MSE", VERSION);
 
 	seqset = ajAcdGetSeqset("sequence");
 

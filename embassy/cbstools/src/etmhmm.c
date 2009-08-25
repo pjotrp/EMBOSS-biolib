@@ -45,7 +45,7 @@ int main(int argc, char **argv)
     AjPFile outf = NULL;
     
     
-    embInitP("etmhmm", argc, argv, "CBSTOOLS");
+    embInitPV("etmhmm", argc, argv, "CBSTOOLS", VERSION);
 
 
     seqset  = ajAcdGetSeqset("sequence");

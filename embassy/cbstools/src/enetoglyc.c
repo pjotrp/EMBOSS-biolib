@@ -43,7 +43,7 @@ int main(int argc, char **argv)
     AjPFile outf = NULL;
     
     
-    embInitP("enetoglyc", argc, argv, "CBSTOOLS");
+    embInitPV("enetoglyc", argc, argv, "CBSTOOLS", VERSION);
 
 
     seqset  = ajAcdGetSeqset("sequence");

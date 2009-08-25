@@ -254,7 +254,7 @@ void topoMoveTo(const float x, float y)
 
 void topoDraw(const float x, float y)
 {  
-    ajGraphLine(tempxpos,tempypos,x,y);
+    ajGraphDrawLine(tempxpos,tempypos,x,y);
     tempxpos=x;
     tempypos=y;
 }
@@ -267,12 +267,12 @@ void topoCentre(const float x, float y)
 
 void topoCurve(float rad, float junk, float junk2)
 {
-    ajGraphCircle(circle1,circle2,rad);
+    ajGraphDrawCircle(circle1,circle2,rad);
 }
 
 void topoPlotText(char *text)
 {
-    ajGraphTextStart(tempxpos-0.4,tempypos,text);
+    ajGraphDrawTextAtStart(tempxpos-0.4,tempypos,text);
 }
 
 void topoNewColour(int col)
@@ -343,7 +343,7 @@ int main(int argc, char * argv[])
     AjBool doend = ajTrue;
     ajuint isigstart, isigend;
 
-    ajGraphInitP ("topo", argc, argv, "TOPO");
+    ajGraphInitPV("topo", argc, argv, "TOPO", VERSION);
   
     sequence = ajAcdGetSeq("sequence");
     graph  = ajAcdGetGraph("graph");
@@ -383,13 +383,14 @@ int main(int argc, char * argv[])
     nsece=0 ;
 
     regions = ajAcdGetRange ("sections");
-    tmcount = ajRangeNumber(regions);
+    tmcount = ajRangeGetSize(regions);
     istart = (ajuint *) AJALLOC((tmcount+1)*sizeof(ajuint)); 
     iend = (ajuint *) AJALLOC((tmcount+1)*sizeof(ajuint));  
-    ajRangeValues(regions,tmcount,&istart[0],&iend[0]); /* again offset by 1*/
+    ajRangeElementGetValues(regions,tmcount,
+                            &istart[0],&iend[0]); /* again offset by 1*/
     for(i=0;i<=tmcount;i++){
-	ajRangeValues(regions,i,
-		      &istart[i+1],&iend[i+1]); /* again offset by 1 */
+	ajRangeElementGetValues(regions,i,
+                                &istart[i+1],&iend[i+1]); /* ... offset by 1 */
     }
   
     outstart = ajAcdGetBoolean("membrane");
@@ -474,11 +475,11 @@ int main(int argc, char * argv[])
     if(ajspnum){
 	/* num num code sets */
 	sigregions = ajAcdGetRange ("sigrange");
-	ii = ajRangeNumber(sigregions);
+	ii = ajRangeGetSize(sigregions);
 	for(i=0;i<ii;i++){
 	    AjPStr val = NULL;
-	    ajRangeValues(sigregions,i,&isigstart,&isigend);
-	    if(ajRangeText(sigregions,i,&val)){
+	    ajRangeElementGetValues(sigregions,i,&isigstart,&isigend);
+	    if(ajRangeElementGetText(sigregions,i,&val)){
 		symsign = getValFromStr(val);
 	    }
 	    else{
@@ -1898,7 +1899,7 @@ void  topoSymbol(const float x,float y,char stran,int sym)
 	xhex[5] = x+1.4; yhex[5]=y+0.7;
 	xhex[6] = x; yhex[6]=y+1.4;
 
-	ajGraphPoly(7,xhex,yhex);
+	ajGraphDrawPoly(7,xhex,yhex);
 	topoMoveTo(x,y) ;
 	str[0]=stran ;
 	topoPlotText(str) ;
@@ -1912,7 +1913,7 @@ void  topoSymbol(const float x,float y,char stran,int sym)
 	xhex[2]=x; yhex[2]=y+1.4;
 	xhex[3]=x-1.4; yhex[3]=y-1.05;
 	xhex[4]=x; yhex[4]=y-1.4;
-	ajGraphPoly(5,xhex,yhex);
+	ajGraphDrawPoly(5,xhex,yhex);
 
 	topoMoveTo(x,y-.45) ;
 	str[0]=stran ;
@@ -1928,7 +1929,7 @@ void  topoSymbol(const float x,float y,char stran,int sym)
 	xhex[3]=x+1.4; yhex[3]=y+1.05;
 	xhex[4]=x; yhex[4]=y+1.4;
 
-	ajGraphPoly(5,xhex,yhex);
+	ajGraphDrawPoly(5,xhex,yhex);
 
 	topoMoveTo(x,y+.45) ;
 	str[0]=stran ;
@@ -1996,7 +1997,7 @@ void  topoSymbol(const float x,float y,char stran,int sym)
 	/*c unknown color square */ 
 	if(sym == 21)topoNewColour(8) ;
 
-	ajGraphBoxFill(x-1.4,y-1.4,2.8);
+	ajGraphDrawBoxFill(x-1.4,y-1.4,2.8);
 
 	topoNewColour(1) ;
 	topoMoveTo(x,y) ;
@@ -2032,7 +2033,7 @@ void  topoSymbol(const float x,float y,char stran,int sym)
 	xhex[6] = x; yhex[6]=y+1.4;
 
 
-	ajGraphPolyFill(7,xhex,yhex);
+	ajGraphDrawPolyFill(7,xhex,yhex);
 
 	topoNewColour(1) ;
 	topoMoveTo(x,y) ;
@@ -2065,7 +2066,7 @@ void  topoSymbol(const float x,float y,char stran,int sym)
 	xhex[2]=x; yhex[2]=y+1.4;
 	xhex[3]=x-1.4; yhex[3]=y-1.05;
 	xhex[4]=x; yhex[4]=y-1.4;
-	ajGraphPolyFill(5,xhex,yhex);
+	ajGraphDrawPolyFill(5,xhex,yhex);
 
 	topoNewColour(1) ;
 	topoMoveTo(x,y-.45) ;
@@ -2098,7 +2099,7 @@ void  topoSymbol(const float x,float y,char stran,int sym)
 	xhex[3]=x+1.4; yhex[3]=y+1.05;
 	xhex[4]=x; yhex[4]=y+1.4;
 
-	ajGraphPolyFill(5,xhex,yhex);
+	ajGraphDrawPolyFill(5,xhex,yhex);
 
 	topoNewColour(1) ;
 	topoMoveTo(x,y+.45) ;

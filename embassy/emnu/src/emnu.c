@@ -62,9 +62,6 @@ embGrpGetProgGroups
 /* the name of this program */
 #define PROGRAM_NAME "emnu"
 
-/* the version of this program */
-#define PROGRAM_VERSION "1.0.5"
-
 
 #include "emboss.h"
 
@@ -3063,11 +3060,11 @@ int main (int argc, char * argv[], char **env) {
     start_time = time(NULL)-600;
 
 /* read in the EMBOSS acd files to build the programs groups data structure */
-    embInitP("emnu",argc,argv,"EMNU");
+    embInitPV("emnu",argc,argv,"EMNU", VERSION);
 
 /* display name and version */
     printf("%s version: %s\nEMBOSS Simple Menu\n\nStarting...", 
-  	PROGRAM_NAME, PROGRAM_VERSION);
+  	PROGRAM_NAME, VERSION);
 
 /* get the args */
     WANTMORE = (int)ajAcdGetBoolean("morefiles");

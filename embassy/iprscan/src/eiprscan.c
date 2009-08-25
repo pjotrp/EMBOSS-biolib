@@ -61,7 +61,7 @@ int main(int argc, char **argv)
     AjPFile outf = NULL;
     
     
-    embInitP("eiprscan", argc, argv, "IPRSCAN");
+    embInitPV("eiprscan", argc, argv, "IPRSCAN", VERSION);
 
 
     seqset  = ajAcdGetSeqset("sequence");
