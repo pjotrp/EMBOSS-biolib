@@ -500,6 +500,7 @@ typedef struct AjSSeqin {
 ** @attr End [ajint] end position (processed on reading)
 ** @attr Offset [ajuint] offset from start
 ** @attr Offend [ajuint] offset from end 
+** @attr Qualsize [ajuint] Size of Accuracy array
 ** @attr Fpos [ajlong] File position (fseek) for USA
 ** @attr Usa [AjPStr] USA for re-reading
 ** @attr Ufo [AjPStr] UFO for re-reading
@@ -553,6 +554,7 @@ typedef struct AjSSeq {
   ajint End;
   ajuint Offset;
   ajuint Offend;
+  ajuint Qualsize;
   ajlong Fpos;
   AjPStr Usa;
   AjPStr Ufo;
