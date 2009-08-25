@@ -71,6 +71,7 @@ static AjPStr seqQryDb        = NULL;
 static AjPStr seqQryList      = NULL;
 static AjPStr seqReadLine     = NULL;
 static AjPStr seqAppendRestStr = NULL;
+static AjPStr seqQualStr      = NULL;
 
 static AjPRegexp seqRegUsaAsis  = NULL;
 static AjPRegexp seqRegUsaDb    = NULL;
@@ -81,6 +82,59 @@ static AjPRegexp seqRegUsaRange = NULL;
 static AjPRegexp seqRegUsaWild  = NULL;
 static AjBool seqRegUsaInitDone = AJFALSE;
 static AjBool seqDoWarnAppend = AJFALSE;
+
+static float seqQualPhred[] = { 0.0,
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 1-8 */
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 9-16 */
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 17-24 */
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 25-32 */
+  0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0,  8.0, 9.0, /* 33-42 */
+  10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0,  18.0, 19.0, /* 43-52 */
+  20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0,  28.0, 29.0, /* 53-62 */
+  30.0, 31.0, 32.0, 33.0, 34.0, 35.0, 36.0, 37.0,  38.0, 39.0, /* 63-72 */
+  40.0, 41.0, 42.0, 43.0, 44.0, 45.0, 46.0, 47.0,  48.0, 49.0, /* 73-82 */
+  50.0, 51.0, 52.0, 53.0, 54.0, 55.0, 56.0, 57.0,  58.0, 59.0, /* 83-92 */
+  60.0, 61.0, 62.0, 63.0, 64.0, 65.0, 66.0, 67.0,  68.0, 69.0, /* 93-102 */
+  70.0, 71.0, 72.0, 73.0, 74.0, 75.0, 76.0, 77.0,  78.0, 79.0, /* 103-112 */
+  80.0, 81.0, 82.0, 83.0, 84.0, 85.0, 86.0, 87.0,  88.0, 89.0, /* 113-122 */
+  90.0, 91.0, 92.0, 93.0};	/* 123-126 */
+
+static float seqQualSolexa[] = { 0.0,
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 1-8 */
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 9-16 */
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 17-24 */
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 25-32 */
+  0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0,  8.0, 9.0, /* 33-42 */
+  10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0,  18.0, 19.0, /* 43-52 */
+  20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0,  28.0, 29.0, /* 53-62 */
+  30.0, 31.0, 32.0, 33.0, 34.0, 35.0, 36.0, 37.0,  38.0, 39.0, /* 63-72 */
+  40.0, 41.0, 42.0, 43.0, 44.0, 45.0, 46.0, 47.0,  48.0, 49.0, /* 73-82 */
+  50.0, 51.0, 52.0, 53.0, 54.0, 55.0, 56.0, 57.0,  58.0, 59.0, /* 83-92 */
+  60.0, 61.0, 62.0, 63.0, 64.0, 65.0, 66.0, 67.0,  68.0, 69.0, /* 93-102 */
+  70.0, 71.0, 72.0, 73.0, 74.0, 75.0, 76.0, 77.0,  78.0, 79.0, /* 103-112 */
+  80.0, 81.0, 82.0, 83.0, 84.0, 85.0, 86.0, 87.0,  88.0, 89.0, /* 113-122 */
+  90.0, 91.0, 92.0, 93.0};	/* 123-127 */
+
+static float seqQualIllumina[] = {
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 0-7 */
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 8-15 */
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 16-23 */
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 24-31 */
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 32-39 */
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 40-47 */
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 48-55 */
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 56-63 */
+  0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0,  8.0, 9.0, /* 64-73 */
+  10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0,  18.0, 19.0, /* 74-83 */
+  20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0,  28.0, 29.0, /* 84-93 */
+  30.0, 31.0, 32.0, 33.0, 34.0, 35.0, 36.0, 37.0,  38.0, 39.0, /* 94-103 */
+  40.0, 41.0, 42.0, 43.0, 44.0, 45.0, 46.0, 47.0,  48.0, 49.0, /* 104-113 */
+  50.0, 51.0, 52.0, 53.0, 54.0, 55.0, 56.0, 57.0,  58.0, 59.0, /* 114-123 */
+  60.0, 61.0, 62.0, 63.0, 64.0, 65.0, 66.0, 67.0,  68.0, 69.0, /* 93-102 */
+  70.0, 71.0, 72.0, 73.0, 74.0, 75.0, 76.0, 77.0,  78.0, 79.0, /* 103-112 */
+  80.0, 81.0, 82.0, 83.0, 84.0, 85.0, 86.0, 87.0,  88.0, 89.0, /* 113-122 */
+  90.0, 91.0, 92.0, 93.0};	/* 123-127 */
+
 
 
 /* @datastatic SeqPInFormat ***************************************************
@@ -2536,7 +2590,7 @@ static AjBool seqReadFastq(AjPSeq thys, AjPSeqin seqin)
     AjPStr desc = NULL;
 
     ajuint seqlen = 0;
-    AjPStr qualstr = NULL;
+    /*AjPStr qualstr = NULL;*/
     char minqual;
     char maxqual;
     char comqual;
@@ -2573,7 +2627,7 @@ static AjBool seqReadFastq(AjPSeq thys, AjPSeqin seqin)
 	return ajFalse;
     }
 
-    if(!ajSeqParseFastq(seqReadLine, &id, &acc, &sv, &desc))
+    if(!ajSeqParseFastq(seqReadLine, &id, &desc))
     {
 	ajDebug("first line did not parse as FASTQ\n");
 	ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
@@ -2626,28 +2680,30 @@ static AjBool seqReadFastq(AjPSeq thys, AjPSeqin seqin)
     ok = ajBuffreadLinePosStore(buff, &seqReadLine, &fposb,
 				 seqin->Text, &thys->TextPtr);
 
+    ajStrAssignClear(&seqQualStr);
+
     while(ok &&
-          ((ajStrGetLen(qualstr) < seqlen) ||
-           ajStrGetCharFirst(seqReadLine) != '@'))
+          ((ajStrGetLen(seqQualStr) < seqlen) ||
+           ajStrGetCharFirst(seqReadLine) !=  '@'))
     {
-        seqqualAppendWarn(&qualstr, seqReadLine);
+        seqqualAppendWarn(&seqQualStr, seqReadLine);
 
         bufflines++;
         ajDebug("++fastq append qualities '%S'\n", seqReadLine);
         ok = ajBuffreadLinePosStore(buff, &seqReadLine, &fposb,
                                     seqin->Text, &thys->TextPtr);
         ajDebug("++fastq qualities %3u '%S'\n",
-                ajStrGetLen(qualstr), qualstr);
+                ajStrGetLen(seqQualStr), seqQualStr);
     }
 
-    minqual = ajStrGetAsciiLow(qualstr);
-    maxqual = ajStrGetAsciiHigh(qualstr);
-    comqual = ajStrGetAsciiCommon(qualstr);
+    minqual = ajStrGetAsciiLow(seqQualStr);
+    maxqual = ajStrGetAsciiHigh(seqQualStr);
+    comqual = ajStrGetAsciiCommon(seqQualStr);
 
-    if(ajStrGetLen(qualstr) != seqlen)
+    if(ajStrGetLen(seqQualStr) != seqlen)
     {
 	ajDebug("length mismatch seq: %u quality: %u\n",
-                seqlen, ajStrGetLen(qualstr));
+                seqlen, ajStrGetLen(seqQualStr));
 	ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
 
 	return ajFalse;
@@ -2666,8 +2722,6 @@ static AjBool seqReadFastq(AjPSeq thys, AjPSeqin seqin)
     ajDebug("quality characters %d..%d (%d) '%c' '%c' (%c)\n",
             (int) minqual, (int) maxqual, (int) comqual,
             minqual, maxqual, comqual);
-
-    ajStrDel(&qualstr);
 
     return ajTrue;
 }
@@ -2695,23 +2749,27 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
     AjPStr desc = NULL;
 
     ajuint seqlen = 0;
-    AjPStr qualstr = NULL;
-    char minqual;
-    char maxqual;
-    char comqual;
+
+/*
+//    char minqual;
+//    char maxqual;
+//    char comqual;
+*/
 
     const char *cp;
+    ajint iqual;
     ajuint bufflines = 0;
     ajlong fpos     = 0;
     ajlong fposb    = 0;
     AjBool ok       = ajTrue;
     const AjPStr badstr = NULL;
 
-    ajint amin = 0;
+    /*    ajint amin = 0; */
     ajint qmin = 33;
+    ajint qmax = 126;
     ajuint i;
 
-    ajDebug("seqReadFastq\n");
+    /* ajDebug("seqReadFastqSanger\n"); */
 
     buff = seqin->Filebuff;
 
@@ -2724,21 +2782,21 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
 
     bufflines++;
 
-    ajDebug("First line: %S\n", seqReadLine);
+    /* ajDebug("First line: %S\n", seqReadLine); */
 
-    cp = ajStrGetPtr(seqReadLine);
+    cp = MAJSTRGETPTR(seqReadLine);
 
     if(*cp != '@')
     {
-	ajDebug("first line is not FASTQ\n");
+        /* ajDebug("first line is not FASTQ\n"); */
 	ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
 
 	return ajFalse;
     }
 
-    if(!ajSeqParseFastq(seqReadLine, &id, &acc, &sv, &desc))
+    if(!ajSeqParseFastq(seqReadLine, &id, &desc))
     {
-	ajDebug("first line did not parse as FASTQ\n");
+        /* ajDebug("first line did not parse as FASTQ\n"); */
 	ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
 
 	return ajFalse;
@@ -2746,10 +2804,10 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
 
     seqSetNameNospace(&thys->Name, id);
 
-    if(ajStrGetLen(sv))
+    if(MAJSTRGETLEN(sv))
 	seqSvSave(thys, sv);
 
-    if(ajStrGetLen(acc))
+    if(MAJSTRGETLEN(acc))
 	seqAccSave(thys, acc);
 
     ajStrAssignS(&thys->Desc, desc);
@@ -2761,7 +2819,7 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
     ok = ajBuffreadLinePosStore(buff, &seqReadLine, &fposb,
 				 seqin->Text, &thys->TextPtr);
     while(ok &&
-          !ajStrPrefixC(seqReadLine, "+"))
+          ajStrGetCharFirst(seqReadLine) != '+')
     {
         badstr = seqAppendWarn(&thys->Seq, seqReadLine);
 
@@ -2769,49 +2827,54 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
             ajWarn("Sequence '%S' has bad character(s) '%S'",
                    thys->Name, badstr);
         bufflines++;
-        ajDebug("++fastq append line '%S'\n", seqReadLine);
+        /* ajDebug("++fastq append line '%S'\n", seqReadLine); */
         ok = ajBuffreadLinePosStore(buff, &seqReadLine, &fposb,
                                     seqin->Text, &thys->TextPtr);
-        ajDebug("++fastq sequence %4u '%S'\n",
-                ajStrGetLen(thys->Seq), thys->Seq);
+        /* ajDebug("++fastq sequence %4u '%S'\n",
+	           ajStrGetLen(thys->Seq), thys->Seq); */
     }
 
     if(!ok)
     {
-	ajDebug("failed to find quality scores\n");
+        /* ajDebug("failed to find quality scores\n"); */
 	ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
 
 	return ajFalse;
     }
 
-    seqlen = ajStrGetLen(thys->Seq);
+    seqlen = MAJSTRGETLEN(thys->Seq);
 
     ok = ajBuffreadLinePosStore(buff, &seqReadLine, &fposb,
 				 seqin->Text, &thys->TextPtr);
 
+    ajStrAssignClear(&seqQualStr);
+
     while(ok &&
-          ((ajStrGetLen(qualstr) < seqlen) ||
+          ((ajStrGetLen(seqQualStr) < seqlen) ||
            ajStrGetCharFirst(seqReadLine) != '@'))
     {
-        seqqualAppendWarn(&qualstr, seqReadLine);
+        seqqualAppendWarn(&seqQualStr, seqReadLine);
 
         bufflines++;
-        ajDebug("++fastq append qualities '%S'\n", seqReadLine);
+        /* ajDebug("++fastq append qualities '%S'\n", seqReadLine); */
         ok = ajBuffreadLinePosStore(buff, &seqReadLine, &fposb,
                                     seqin->Text, &thys->TextPtr);
-        ajDebug("++fastq qualities %3u '%S'\n",
-                ajStrGetLen(qualstr), qualstr);
+        /* ajDebug("++fastq qualities %3u '%S'\n",
+	           ajStrGetLen(seqQualStr), seqQualStr); */
     }
 
-    minqual = ajStrGetAsciiLow(qualstr);
-    maxqual = ajStrGetAsciiHigh(qualstr);
-    comqual = ajStrGetAsciiCommon(qualstr);
+/*
+//    minqual = ajStrGetAsciiLow(seqQualStr);
+//    maxqual = ajStrGetAsciiHigh(seqQualStr);
+//    comqual = ajStrGetAsciiCommon(seqQualStr);
+*/
 
-    if(ajStrGetLen(qualstr) != seqlen)
+    if(MAJSTRGETLEN(seqQualStr) != seqlen)
     {
-	ajDebug("length mismatch seq: %u quality: %u\n",
-                seqlen, ajStrGetLen(qualstr));
-	ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
+      	ajWarn("FASTQ quality length mismatch '%F' '%S' seq: %u quality: %u",
+	       ajFilebuffGetFile(buff), thys->Name,
+	       seqlen, ajStrGetLen(seqQualStr));
+ 	ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
 
 	return ajFalse;
     }
@@ -2824,14 +2887,18 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
 
     thys->Fpos = fpos;
 
-    ajDebug("started at fpos %Ld ok: %B fposb: %Ld\n", fpos, ok, fposb);
+    /* ajDebug("started at fpos %Ld ok: %B fposb: %Ld\n", fpos, ok, fposb); */
 
-    ajDebug("Sanger: %d..%d (%d)\n",
-           (ajint) minqual, (ajint) maxqual, (ajint) comqual);
+    /* ajDebug("Sanger: %d..%d (%d)\n",
+               (ajint) minqual, (ajint) maxqual, (ajint) comqual); */
     
-    cp = ajStrGetPtr(qualstr);
+    cp = MAJSTRGETPTR(seqQualStr);
     i=0;
-    AJCNEW0(thys->Accuracy,seqlen);
+    if(seqlen > thys->Qualsize)
+    {
+        AJCRESIZE(thys->Accuracy, seqlen);
+        thys->Qualsize = seqlen;
+    }
 
     /*
     ** Sanger uses Phred quality calculated from error probability p
@@ -2843,18 +2910,35 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
 
     while (*cp)
     {
-        thys->Accuracy[i++] = (float) (amin + (ajint) *cp - qmin);
-        cp++;
+        iqual = *cp++;
+        if(iqual < qmin)
+	{
+            ajWarn("FASTQ-SANGER quality value too low '%F' '%S' '%c'",
+                   ajFilebuffGetFile(buff), thys->Name,
+                   (char) iqual);
+            iqual = qmin;
+	}
+        if(iqual > qmax)
+	{
+	    ajWarn("FASTQ-SANGER quality value too high '%F' '%S' '%c'",
+                   ajFilebuffGetFile(buff), thys->Name,
+                   (char) iqual);
+	    iqual = qmax;
+        }
+        thys->Accuracy[i++] = seqQualPhred[iqual];
     }
 
-    ajDebug("quality characters %d..%d (%d) '%c' '%c' (%c) "
-            "scores %d..%d (%d)\n",
-            (int) minqual, (int) maxqual, (int) comqual,
-            minqual, maxqual, comqual,
-            (amin + minqual - qmin), (amin + maxqual - qmin),
-            (amin + comqual - qmin));
 
-    ajStrDel(&qualstr);
+/*
+//    ajDebug("quality characters %d..%d (%d) '%c' '%c' (%c) "
+//            "scores %d..%d (%d)\n",
+//            (int) minqual, (int) maxqual, (int) comqual,
+//            minqual, maxqual, comqual,
+//            (amin + minqual - qmin), (amin + maxqual - qmin),
+//            (amin + comqual - qmin));
+*/
+
+    ajStrAssignClear(&seqQualStr);
 
     return ajTrue;
 }
@@ -2891,6 +2975,7 @@ static AjBool seqReadFastqInt(AjPSeq thys, AjPSeqin seqin)
     ajlong fpos     = 0;
     ajlong fposb    = 0;
     AjBool ok       = ajTrue;
+
     const AjPStr badstr = NULL;
 
     ajuint i;
@@ -2899,7 +2984,7 @@ static AjBool seqReadFastqInt(AjPSeq thys, AjPSeqin seqin)
     double pval;
     double qval;
 
-    ajDebug("seqReadFastq\n");
+    ajDebug("seqReadFastqInt\n");
 
     buff = seqin->Filebuff;
 
@@ -2922,7 +3007,7 @@ static AjBool seqReadFastqInt(AjPSeq thys, AjPSeqin seqin)
 	return ajFalse;
     }
 
-    if(!ajSeqParseFastq(seqReadLine, &id, &acc, &sv, &desc))
+    if(!ajSeqParseFastq(seqReadLine, &id, &desc))
     {
 	ajDebug("first line did not parse as FASTQ\n");
 	ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
@@ -2976,13 +3061,18 @@ static AjBool seqReadFastqInt(AjPSeq thys, AjPSeqin seqin)
 				 seqin->Text, &thys->TextPtr);
 
     i=0;
-    AJCNEW0(thys->Accuracy,seqlen);
+    if(seqlen > thys->Qualsize)
+    {
+        AJCRESIZE(thys->Accuracy, seqlen);
+        thys->Qualsize = seqlen;
+    }
 
+    ajStrAssignClear(&seqQualStr);
     while(ok &&
           (!ajStrPrefixC(seqReadLine, "@")))
     {
 	ajStrTokenAssignC(&handle, seqReadLine, " ,\n\r\t");
-        while(ajStrTokenNextParse(&handle, &qualstr))
+        while(ajStrTokenNextParse(&handle, &seqQualStr))
         {
             if(i >= seqlen){
                 if(!badwarn)
@@ -2991,7 +3081,7 @@ static AjBool seqReadFastqInt(AjPSeq thys, AjPSeqin seqin)
                        qualstr, i);
                 badwarn = ajTrue;
             }
-            else if(!ajStrToDouble(qualstr, &sval))
+            else if(!ajStrToDouble(seqQualStr, &sval))
             {
                 if(!badwarn)
                     ajWarn("Bad quality '%S' for base %d "
@@ -3032,7 +3122,6 @@ static AjBool seqReadFastqInt(AjPSeq thys, AjPSeqin seqin)
 
     ajDebug("started at fpos %Ld ok: %B fposb: %Ld\n", fpos, ok, fposb);
 
-    ajStrDel(&qualstr);
     ajStrTokenDel(&handle);
 
     return ajTrue;
@@ -3062,23 +3151,27 @@ static AjBool seqReadFastqIllumina(AjPSeq thys, AjPSeqin seqin)
     AjPStr desc = NULL;
 
     ajuint seqlen = 0;
-    AjPStr qualstr = NULL;
-    char minqual;
-    char maxqual;
-    char comqual;
+    /*AjPStr qualstr = NULL;*/
+/*
+//    char minqual;
+//    char maxqual;
+//    char comqual;
+*/
 
     const char *cp;
+    ajint iqual;
     ajuint bufflines = 0;
     ajlong fpos     = 0;
     ajlong fposb    = 0;
     AjBool ok       = ajTrue;
     const AjPStr badstr = NULL;
 
-    ajint amin = 0;
+    /*ajint amin = 0;*/
     ajint qmin = 64;
+    ajint qmax = 104;
     ajuint i;
 
-    ajDebug("seqReadFastq\n");
+    ajDebug("seqReadFastqIllumina\n");
 
     buff = seqin->Filebuff;
 
@@ -3103,7 +3196,7 @@ static AjBool seqReadFastqIllumina(AjPSeq thys, AjPSeqin seqin)
 	return ajFalse;
     }
 
-    if(!ajSeqParseFastq(seqReadLine, &id, &acc, &sv, &desc))
+    if(!ajSeqParseFastq(seqReadLine, &id, &desc))
     {
 	ajDebug("first line did not parse as FASTQ\n");
 	ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
@@ -3156,28 +3249,32 @@ static AjBool seqReadFastqIllumina(AjPSeq thys, AjPSeqin seqin)
     ok = ajBuffreadLinePosStore(buff, &seqReadLine, &fposb,
 				 seqin->Text, &thys->TextPtr);
 
+    ajStrAssignClear(&seqQualStr);
+
     while(ok &&
-          ((ajStrGetLen(qualstr) < seqlen) ||
+          ((ajStrGetLen(seqQualStr) < seqlen) ||
            ajStrGetCharFirst(seqReadLine) != '@'))
     {
-        seqqualAppendWarn(&qualstr, seqReadLine);
+        seqqualAppendWarn(&seqQualStr, seqReadLine);
 
         bufflines++;
         ajDebug("++fastq append qualities '%S'\n", seqReadLine);
         ok = ajBuffreadLinePosStore(buff, &seqReadLine, &fposb,
                                     seqin->Text, &thys->TextPtr);
         ajDebug("++fastq qualities %3u '%S'\n",
-                ajStrGetLen(qualstr), qualstr);
+                ajStrGetLen(seqQualStr), seqQualStr);
     }
 
-    minqual = ajStrGetAsciiLow(qualstr);
-    maxqual = ajStrGetAsciiHigh(qualstr);
-    comqual = ajStrGetAsciiCommon(qualstr);
+/*
+//    minqual = ajStrGetAsciiLow(seqQualStr);
+//    maxqual = ajStrGetAsciiHigh(seqQualStr);
+//    comqual = ajStrGetAsciiCommon(seqQualStr);
+*/
 
-    if(ajStrGetLen(qualstr) != seqlen)
+    if(ajStrGetLen(seqQualStr) != seqlen)
     {
 	ajDebug("length mismatch seq: %u quality: %u\n",
-                seqlen, ajStrGetLen(qualstr));
+                seqlen, ajStrGetLen(seqQualStr));
 	ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
 
 	return ajFalse;
@@ -3191,21 +3288,18 @@ static AjBool seqReadFastqIllumina(AjPSeq thys, AjPSeqin seqin)
 
     thys->Fpos = fpos;
 
-    ajDebug("started at fpos %Ld ok: %B fposb: %Ld\n", fpos, ok, fposb);
+    /*ajDebug("started at fpos %Ld ok: %B fposb: %Ld\n", fpos, ok, fposb);*/
 
-    ajDebug("Illumina: %d..%d (%d)\n",
-           (ajint) minqual, (ajint) maxqual, (ajint) comqual);
+    /*ajDebug("Illumina: %d..%d (%d)\n",
+      (ajint) minqual, (ajint) maxqual, (ajint) comqual);*/
     
-    if((int) minqual < 59)
-        ajWarn("Unexpected quality character '%c' ASCII %d for sequence '%S'",
-               (ajint) minqual, minqual, thys->Name);
-    else if((int) minqual > 104)
-        ajWarn("Unexpected quality character '%c' ASCII %d for sequence '%S'",
-               (ajint) maxqual, maxqual, thys->Name);
-
-    cp = ajStrGetPtr(qualstr);
+    cp = ajStrGetPtr(seqQualStr);
     i=0;
-    AJCNEW0(thys->Accuracy,seqlen);
+    if(seqlen > thys->Qualsize)
+    {
+        AJCRESIZE(thys->Accuracy, seqlen);
+        thys->Qualsize = seqlen;
+    }
 
     /*
     ** Illumina uses Phred quality calculated from error probability p
@@ -3217,19 +3311,36 @@ static AjBool seqReadFastqIllumina(AjPSeq thys, AjPSeqin seqin)
 
     while (*cp)
     {
-        thys->Accuracy[i++] = (float) (amin + (ajint) *cp - qmin);
-        cp++;
+        iqual = *cp++;
+        if(iqual < qmin)
+	{
+            ajWarn("FASTQ-ILLUMINA quality value too low '%F' '%S' '%c'",
+                   ajFilebuffGetFile(buff), thys->Name,
+                   (char) iqual);
+            iqual = qmin;
+	}
+        if(iqual > qmax)
+	{
+	    ajWarn("FASTQ-ILLUMINA quality value too high '%F' '%S' '%c'",
+                   ajFilebuffGetFile(buff), thys->Name,
+                   (char) iqual);
+	    iqual = qmax;
+        }
+        thys->Accuracy[i++] = seqQualIllumina[iqual];
     }
 
-    ajDebug("quality characters %d..%d (%d) '%c' '%c' (%c) "
-            "scores %d..%d (%d)\n",
-            (int) minqual, (int) maxqual, (int) comqual,
-            minqual, maxqual, comqual,
-            (amin + minqual - qmin), (amin + maxqual - qmin),
-            (amin + comqual - qmin));
+/*
+//    ajDebug("quality characters %d..%d (%d) '%c' '%c' (%c) "
+//            "scores %d..%d (%d)\n",
+//            (int) minqual, (int) maxqual, (int) comqual,
+//            minqual, maxqual, comqual,
+//            (amin + minqual - qmin), (amin + maxqual - qmin),
+//            (amin + comqual - qmin));
+*/
 
     return ajTrue;
 }
+
 
 
 
@@ -3254,26 +3365,33 @@ static AjBool seqReadFastqSolexa(AjPSeq thys, AjPSeqin seqin)
     AjPStr desc = NULL;
 
     ajuint seqlen = 0;
-    AjPStr qualstr = NULL;
-    char minqual;
-    char maxqual;
-    char comqual;
+    /*AjPStr qualstr = NULL;*/
+
+/*
+//    char minqual;
+//    char maxqual;
+//    char comqual;
+*/
 
     const char *cp;
+    ajint iqual;
     ajuint bufflines = 0;
     ajlong fpos     = 0;
     ajlong fposb    = 0;
     AjBool ok       = ajTrue;
     const AjPStr badstr = NULL;
 
-    ajint amin = 0;
-    ajint qmin = 64;
+    /*ajint amin = 0;*/
+    ajint qmin = 59;
+    ajint qmax = 104;
     ajuint i;
-    double sval;
-    double pval;
-    double qval;
+/*
+//    double sval;
+//    double pval;
+//    double qval;
+*/
 
-    ajDebug("seqReadFastq\n");
+    /*ajDebug("seqReadFastqSolexa\n");*/
 
     buff = seqin->Filebuff;
 
@@ -3286,7 +3404,7 @@ static AjBool seqReadFastqSolexa(AjPSeq thys, AjPSeqin seqin)
 
     bufflines++;
 
-    ajDebug("First line: %S\n", seqReadLine);
+    /*ajDebug("First line: %S\n", seqReadLine);*/
 
     cp = ajStrGetPtr(seqReadLine);
 
@@ -3298,7 +3416,7 @@ static AjBool seqReadFastqSolexa(AjPSeq thys, AjPSeqin seqin)
 	return ajFalse;
     }
 
-    if(!ajSeqParseFastq(seqReadLine, &id, &acc, &sv, &desc))
+    if(!ajSeqParseFastq(seqReadLine, &id, &desc))
     {
 	ajDebug("first line did not parse as FASTQ\n");
 	ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
@@ -3351,28 +3469,32 @@ static AjBool seqReadFastqSolexa(AjPSeq thys, AjPSeqin seqin)
     ok = ajBuffreadLinePosStore(buff, &seqReadLine, &fposb,
 				 seqin->Text, &thys->TextPtr);
 
+    ajStrAssignClear(&seqQualStr);
+
     while(ok &&
-          ((ajStrGetLen(qualstr) < seqlen) ||
+          ((ajStrGetLen(seqQualStr) < seqlen) ||
            ajStrGetCharFirst(seqReadLine) != '@'))
     {
-        seqqualAppendWarn(&qualstr, seqReadLine);
+        seqqualAppendWarn(&seqQualStr, seqReadLine);
 
         bufflines++;
         ajDebug("++fastq append qualities '%S'\n", seqReadLine);
         ok = ajBuffreadLinePosStore(buff, &seqReadLine, &fposb,
                                     seqin->Text, &thys->TextPtr);
         ajDebug("++fastq qualities %3u '%S'\n",
-                ajStrGetLen(qualstr), qualstr);
+                ajStrGetLen(seqQualStr), seqQualStr);
     }
 
-    minqual = ajStrGetAsciiLow(qualstr);
-    maxqual = ajStrGetAsciiHigh(qualstr);
-    comqual = ajStrGetAsciiCommon(qualstr);
+/*
+//    minqual = ajStrGetAsciiLow(seqQualStr);
+//    maxqual = ajStrGetAsciiHigh(seqQualStr);
+//    comqual = ajStrGetAsciiCommon(seqQualStr);
+*/
 
-    if(ajStrGetLen(qualstr) != seqlen)
+    if(ajStrGetLen(seqQualStr) != seqlen)
     {
 	ajDebug("length mismatch seq: %u quality: %u\n",
-                seqlen, ajStrGetLen(qualstr));
+                seqlen, ajStrGetLen(seqQualStr));
 	ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
 
 	return ajFalse;
@@ -3386,21 +3508,18 @@ static AjBool seqReadFastqSolexa(AjPSeq thys, AjPSeqin seqin)
 
     thys->Fpos = fpos;
 
-    ajDebug("started at fpos %Ld ok: %B fposb: %Ld\n", fpos, ok, fposb);
+    /*ajDebug("started at fpos %Ld ok: %B fposb: %Ld\n", fpos, ok, fposb);*/
 
-    ajDebug("Solexa: %d..%d (%d)\n",
-           (ajint) minqual, (ajint) maxqual, (ajint) comqual);
+    /*ajDebug("Solexa: %d..%d (%d)\n",
+      (ajint) minqual, (ajint) maxqual, (ajint) comqual);*/
     
-    if((int) minqual < 59)
-        ajWarn("Unexpected quality character '%c' ASCII %d for sequence '%S'",
-               (ajint) minqual, minqual, thys->Name);
-    else if((int) minqual > 104)
-        ajWarn("Unexpected quality character '%c' ASCII %d for sequence '%S'",
-               (ajint) maxqual, maxqual, thys->Name);
-
-    cp = ajStrGetPtr(qualstr);
+    cp = ajStrGetPtr(seqQualStr);
     i=0;
-    AJCNEW0(thys->Accuracy,seqlen);
+    if(seqlen > thys->Qualsize)
+    {
+        AJCRESIZE(thys->Accuracy, seqlen);
+        thys->Qualsize = seqlen;
+    }
 
     /*
     ** Sanger uses Phred quality calculated from error probability p
@@ -3417,20 +3536,31 @@ static AjBool seqReadFastqSolexa(AjPSeq thys, AjPSeqin seqin)
 
     while (*cp)
     {
-        sval = amin + (double) *cp - qmin;
-        pval = pow(10.0, (sval/10.0));
-        qval = 1.0 / (1.0 + pval);
-        thys->Accuracy[i++] = (float) ((double) -10.0 * log10(qval));
-        ajDebug("[%d] sval:%.1f Qp:%.4f\n", (i-1), sval, thys->Accuracy[i-1]);
-        cp++;
+        iqual = *cp++;
+        if(iqual < qmin)
+	{
+            ajWarn("FASTQ-SOLEXA quality value too low '%F' '%S' '%c'",
+                   ajFilebuffGetFile(buff), thys->Name,
+                   (char) iqual);
+            iqual = qmin;
+	}
+        if(iqual > qmax)
+	{
+	    ajWarn("FASTQ-SOLEXA quality value too high '%F' '%S' '%c'",
+                   ajFilebuffGetFile(buff), thys->Name,
+                   (char) iqual);
+	    iqual = qmax;
+        }
+        thys->Accuracy[i++] = seqQualSolexa[iqual];
     }
-
-    ajDebug("quality characters %d..%d (%d) '%c' '%c' (%c) "
-            "scores %d..%d (%d)\n",
-            (int) minqual, (int) maxqual, (int) comqual,
-            minqual, maxqual, comqual,
-            (amin + minqual - qmin), (amin + maxqual - qmin),
-            (amin + comqual - qmin));
+/*
+//    ajDebug("quality characters %d..%d (%d) '%c' '%c' (%c) "
+//            "scores %d..%d (%d)\n",
+//            (int) minqual, (int) maxqual, (int) comqual,
+//            minqual, maxqual, comqual,
+//            (amin + minqual - qmin), (amin + maxqual - qmin),
+//            (amin + comqual - qmin));
+*/
 
     return ajTrue;
 }
@@ -8070,7 +8200,7 @@ static AjBool seqReadMega(AjPSeq thys, AjPSeqin seqin)
     if(ajStrGetLen(phydata->Gene))
     {
         seqgene = ajSeqgeneNewName(phydata->Gene);
-        ajListPushAppend(thys->Genelist, seqgene);
+        ajSeqAddGene(thys, seqgene);
         seqgene = NULL;
     }
 
@@ -9028,6 +9158,9 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
 
     ok = ajBuffreadLineStore(buff, &seqReadLine, seqin->Text, &thys->TextPtr);
 
+    if(!thys->Fulldesc)
+        thys->Fulldesc = ajSeqdescNew();
+
     while(ok && !ajStrPrefixC(seqReadLine, "SQ   "))
     {
 	bufflines++;
@@ -9156,7 +9289,7 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
 
                     ajStrAssignSubS(Pdescstr, token, 3, -1);
                     xref = ajSeqxrefNewDbC(*Pdescstr, "ENZYME", XREF_EC);
-                    ajListPushAppend(thys->Xreflist, xref);
+                    ajSeqAddXref(thys, xref);
                     xref = NULL;
                 }
                 else if(ajStrPrefixC(token, "Allergen="))
@@ -9166,7 +9299,7 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
                     ajListstrPushAppend(subdesc->Allergen, newdescstr);
                     ajStrAssignSubS(Pdescstr, token, 9, -1);
                     xref = ajSeqxrefNewDbC(*Pdescstr, "Allergen", XREF_DESC);
-                    ajListPushAppend(thys->Xreflist, xref);
+                    ajSeqAddXref(thys, xref);
                     xref = NULL;
                 }
                 else if(ajStrPrefixC(token, "Biotech="))
@@ -9183,7 +9316,7 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
                     ajListstrPushAppend(subdesc->Cdantigen, newdescstr);
                     ajStrAssignSubS(Pdescstr, token, 11, -1);
                     xref = ajSeqxrefNewDbC(*Pdescstr, "CD_Antigen", XREF_DESC);
-                    ajListPushAppend(thys->Xreflist, xref);
+                    ajSeqAddXref(thys, xref);
                     xref = NULL;
                 }
                 else if(ajStrPrefixC(token, "INN="))
@@ -9292,7 +9425,7 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
                 if(isnewgene)
                 {
                     isnewgene = ajFalse;
-                    ajListPushAppend(thys->Genelist, seqgene);
+                    ajSeqAddGene(thys, seqgene);
                 }
                 /* keep seqgene so we can add to it if the line wraps */
             }
@@ -9318,7 +9451,7 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
 	    {
 		liststr = ajStrNewS(token);
 		ajStrTrimWhite(&liststr);
-		ajListstrPushAppend(thys->Keylist, liststr);
+		ajSeqAddKey(thys, liststr);
 	    }
 	}
 
@@ -9381,7 +9514,7 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
                 ajStrTokenNextParse(&handle, &token);
 		seqTaxidSaveS(thys, token);
                 xref = ajSeqxrefNewDbC(token, "taxon", XREF_TAX);
-                ajListPushAppend(thys->Xreflist, xref);
+                ajSeqAddXref(thys, xref);
                 xref = NULL;
 	    }
 	}
@@ -9398,7 +9531,7 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
                    (ajStrPrefixC(token, "--------") &&
                     ajStrPrefixC(cmtstr, "-!- ")))
                 {
-                    ajListPushAppend(thys->Cmtlist, cmtstr);
+                    ajSeqAddCmt(thys, cmtstr);
                     cmtstr = NULL;
                 }
             }
@@ -9462,7 +9595,7 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
                 }
             }
             xref->Type = XREF_DR;
-	    ajListPushAppend(thys->Xreflist, xref);
+	    ajSeqAddXref(thys, xref);
 	}
 
 	else if(ajStrPrefixC(seqReadLine, "RN   "))
@@ -9470,7 +9603,7 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
             if(seqref)
             {
                 ajSeqrefStandard(seqref);
-                ajListPushAppend(thys->Reflist, seqref);
+                ajSeqAddRef(thys, seqref);
             }
 
 	    seqref = ajSeqrefNew();
@@ -9638,13 +9771,13 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
     if(seqref)                  /* clean up the last reference */
     {
         ajSeqrefStandard(seqref);
-        ajListPushAppend(thys->Reflist, seqref);
+        ajSeqAddRef(thys, seqref);
         seqref = NULL;
     }
 
     if(ajStrGetLen(cmtstr))
     {
-        ajListPushAppend(thys->Cmtlist, cmtstr);
+        ajSeqAddCmt(thys, cmtstr);
         cmtstr = NULL;
     }
 
@@ -10004,7 +10137,7 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
 
     ajSeqSetProt(thys);
 
-    ajSeqreflistGetXrefs(thys->Reflist, thys->Xreflist);
+    ajSeqreflistGetXrefs(thys->Reflist, &thys->Xreflist);
 
     taxid = ajSeqGetTaxid(thys);
 
@@ -10219,11 +10352,11 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 	    ajStrTokenAssignC(&handle, seqReadLine, " \n\r");
 	    ajStrTokenNextParse(&handle, &token); /* 'KW' */
 
-	    while(ajStrTokenNextParseC(&handle, ".;\n\r", &token))
+            while(ajStrTokenNextParseC(&handle, ".;\n\r", &token))
 	    {
 		liststr = ajStrNewS(token);
 		ajStrTrimWhite(&liststr);
-		ajListstrPushAppend(thys->Keylist, liststr);
+		ajSeqAddKey(thys, liststr);
 	    }
 	}
 
@@ -10366,7 +10499,7 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
                 }
             }
             xref->Type = XREF_DR;
-	    ajListPushAppend(thys->Xreflist, xref);
+	    ajSeqAddXref(thys, xref);
 	}
 
 	else if(ajStrPrefixC(seqReadLine, "RN   "))
@@ -10516,13 +10649,13 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 	{
 	    if(seqref)
 	    {
-		ajSeqrefStandard(seqref);
-		ajListPushAppend(thys->Reflist, seqref);
+                ajSeqrefStandard(seqref);
+		ajSeqAddRef(thys, seqref);
 		seqref = NULL;
 	    }
 	    if(ajStrGetLen(cmtstr))
 	    {
-		ajListPushAppend(thys->Cmtlist, cmtstr);
+                ajSeqAddCmt(thys, cmtstr);
 		cmtstr = NULL;
 	    }
 
@@ -10626,12 +10759,12 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 
     if(ajFeattableGetSize(thys->Fttable))
     {
-        ajFeattableGetXrefs(thys->Fttable, thys->Xreflist, &taxid);
+        ajFeattableGetXrefs(thys->Fttable, &thys->Xreflist, &taxid);
         if(taxid)
             seqTaxidSaveI(thys, taxid);
     }
     
-    ajSeqreflistGetXrefs(thys->Reflist, thys->Xreflist);
+    ajSeqreflistGetXrefs(thys->Reflist, &thys->Xreflist);
 
     if(!taxid)
         taxid = ajSeqGetTaxid(thys);
@@ -10785,14 +10918,14 @@ static AjBool seqReadExperiment(AjPSeq thys, AjPSeqin seqin)
 
 	if(ajStrPrefixC(seqReadLine, "KW   "))
 	{
-	    ajStrTokenAssignC(&handle, seqReadLine, " \n\r");
+            ajStrTokenAssignC(&handle, seqReadLine, " \n\r");
 	    ajStrTokenNextParse(&handle, &token); /* 'KW' */
 
 	    while(ajStrTokenNextParseC(&handle, ".;\n\r", &token))
 	    {
 		liststr = ajStrNewS(token);
 		ajStrTrimWhite(&liststr);
-		ajListstrPushAppend(thys->Keylist, liststr);
+		ajSeqAddKey(thys, liststr);
 	    }
 	}
 
@@ -10880,7 +11013,12 @@ static AjBool seqReadExperiment(AjPSeq thys, AjPSeqin seqin)
     if(ajStrGetLen(accvalstr))
     {
 	ilen = ajStrGetLen(thys->Seq);
-	AJCNEW0(thys->Accuracy,ilen);
+        if(ilen > thys->Qualsize)
+        {
+            AJCRESIZE(thys->Accuracy, ilen);
+            thys->Qualsize = ilen;
+        }
+
 	ajStrTokenAssignC(&handle, accvalstr, " ");
 	avok = ajTrue;
 
@@ -10915,9 +11053,6 @@ static AjBool seqReadExperiment(AjPSeq thys, AjPSeqin seqin)
 	    }
 	    ajDebug("Accval[%d] %3d '%S'\n", i+1, thys->Accuracy[i], token);
 	}
-
-	if(!avok)
-	    AJFREE(thys->Accuracy);
     }
 
     ajStrDel(&token);
@@ -11211,7 +11346,7 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 
 	else if(ajStrPrefixC(seqReadLine, "REFERENCE"))
 	{
-	    ajDebug("reference found\n");
+            ajDebug("reference found\n");
 	    seqref = ajSeqrefNew();
 	    ajStrTokenAssignC(&handle, seqReadLine, " \n\r");
 	    ajStrTokenNextParse(&handle, &token); /* 'REFERENCE' */
@@ -11253,13 +11388,13 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 	    }
 
 	    ajSeqrefStandard(seqref);
-	    ajListPushAppend(thys->Reflist, seqref);
+	    ajSeqAddRef(thys, seqref);
 	    seqref = NULL;
 	}
 
 	else if(ajStrPrefixC(seqReadLine, "KEYWORDS"))
 	{
-	    ajDebug("keywords found\n");
+            ajDebug("keywords found\n");
 	    ajStrTokenAssignC(&handle, seqReadLine, " ");
 	    ajStrTokenNextParse(&handle, &token); /* 'KEYWORDS' */
 
@@ -11267,7 +11402,7 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 	    {
 		liststr = ajStrNewS(token);
 		ajStrTrimWhite(&liststr);
-		ajListstrPushAppend(thys->Keylist, liststr);
+		ajSeqAddKey(thys, liststr);
 	    }
 
 	    ok = ajBuffreadLineStore(buff, &seqReadLine, seqin->Text,
@@ -11283,7 +11418,7 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 		{
 		    liststr = ajStrNewS(token);
 		    ajStrTrimWhite(&liststr);
-		    ajListstrPushAppend(thys->Keylist, liststr);
+		    ajSeqAddKey(thys, liststr);
 		}
 
 		ok = ajBuffreadLineStore(buff, &seqReadLine, seqin->Text,
@@ -11392,7 +11527,7 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 
     if(ajFeattableGetSize(thys->Fttable))
     {
-        ajFeattableGetXrefs(thys->Fttable, thys->Xreflist, &taxid);
+        ajFeattableGetXrefs(thys->Fttable, &thys->Xreflist, &taxid);
         if(taxid)
             seqTaxidSaveI(thys, taxid);
     }
@@ -11697,7 +11832,7 @@ static AjBool seqReadGenpept(AjPSeq thys, AjPSeqin seqin)
 
 	else if(ajStrPrefixC(seqReadLine, "REFERENCE"))
 	{
-	    ajDebug("reference found\n");
+            ajDebug("reference found\n");
 	    seqref = ajSeqrefNew();
 	    ajStrTokenAssignC(&handle, seqReadLine, " \n\r");
 	    ajStrTokenNextParse(&handle, &token); /* 'REFERENCE' */
@@ -11739,13 +11874,13 @@ static AjBool seqReadGenpept(AjPSeq thys, AjPSeqin seqin)
 	    }
 
 	    ajSeqrefStandard(seqref);
-	    ajListPushAppend(thys->Reflist, seqref);
+	    ajSeqAddRef(thys, seqref);
 	    seqref = NULL;
 	}
 
 	else if(ajStrPrefixC(seqReadLine, "KEYWORDS"))
 	{
-	    ajDebug("keywords found\n");
+            ajDebug("keywords found\n");
 	    ajStrTokenAssignC(&handle, seqReadLine, " ");
 	    ajStrTokenNextParse(&handle, &token); /* 'KEYWORDS' */
 
@@ -11753,7 +11888,7 @@ static AjBool seqReadGenpept(AjPSeq thys, AjPSeqin seqin)
 	    {
 		liststr = ajStrNewS(token);
 		ajStrTrimWhite(&liststr);
-		ajListstrPushAppend(thys->Keylist, liststr);
+		ajSeqAddKey(thys, liststr);
 	    }
 
 	    ok = ajBuffreadLineStore(buff, &seqReadLine, seqin->Text,
@@ -11769,7 +11904,7 @@ static AjBool seqReadGenpept(AjPSeq thys, AjPSeqin seqin)
 		{
 		    liststr = ajStrNewS(token);
 		    ajStrTrimWhite(&liststr);
-		    ajListstrPushAppend(thys->Keylist, liststr);
+		    ajSeqAddKey(thys, liststr);
 		}
 
 		ok = ajBuffreadLineStore(buff, &seqReadLine, seqin->Text,
@@ -12181,7 +12316,7 @@ static AjBool seqReadRefseqp(AjPSeq thys, AjPSeqin seqin)
 	    }
 
 	    ajSeqrefStandard(seqref);
-	    ajListPushAppend(thys->Reflist, seqref);
+	    ajSeqAddRef(thys, seqref);
 	    seqref = NULL;
 	}
 
@@ -12195,7 +12330,7 @@ static AjBool seqReadRefseqp(AjPSeq thys, AjPSeqin seqin)
 	    {
 		liststr = ajStrNewS(token);
 		ajStrTrimWhite(&liststr);
-		ajListstrPushAppend(thys->Keylist, liststr);
+		ajSeqAddKey(thys, liststr);
 	    }
 
 	    ok = ajBuffreadLineStore(buff, &seqReadLine, seqin->Text,
@@ -12211,7 +12346,7 @@ static AjBool seqReadRefseqp(AjPSeq thys, AjPSeqin seqin)
 		{
 		    liststr = ajStrNewS(token);
 		    ajStrTrimWhite(&liststr);
-		    ajListstrPushAppend(thys->Keylist, liststr);
+		    ajSeqAddKey(thys, liststr);
 		}
 
 		ok = ajBuffreadLineStore(buff, &seqReadLine, seqin->Text,
@@ -13317,8 +13452,11 @@ static const AjPStr seqAppendWarn(AjPStr* pseq, const AjPStr line)
     AjPStr tmpstr = NULL;
 
     if(!seqAppendRestStr)
+    {
 	if(ajNamGetValueC("seqwarn", &tmpstr))
 	    ajStrToBool(tmpstr, &seqDoWarnAppend);
+        seqAppendRestStr = ajStrNew();
+    }
 
     ajStrAssignS(&tmpstr, line);
 
@@ -14692,6 +14830,9 @@ static void seqSetNameFile(AjPStr* name, const AjPSeqin seqin)
 
 static void seqAccSave(AjPSeq thys, const AjPStr acc)
 {
+    if(!thys->Acclist)
+        thys->Acclist = ajListstrNew();
+
     ajListstrPushAppend(thys->Acclist, ajStrNewS(acc));
 
     if(!ajStrGetLen(thys->Acc))
@@ -14730,6 +14871,8 @@ static void seqTaxSave(AjPSeq thys, const AjPStr tax, ajuint level)
                 ajStrAssignS(&thys->Organelle, tax);
             break;
         default:
+            if(!thys->Taxlist)
+                thys->Taxlist = ajListstrNew();
             newstr = ajStrNewS(tax);
             ajListstrPushAppend(thys->Taxlist, newstr);
             break;
@@ -16082,67 +16225,25 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
 **
 ** @param [r] instr [const AjPStr]   fastq line.
 ** @param [w] id [AjPStr*]   id.
-** @param [w] acc [AjPStr*]  accession number.
-** @param [w] sv [AjPStr*]  sequence version number.
 ** @param [w] desc [AjPStr*] description.
 ** @return [AjBool] ajTrue if fastq format
 ** @@
 ******************************************************************************/
 
-AjBool ajSeqParseFastq(const AjPStr instr, AjPStr* id, AjPStr* acc,
-		       AjPStr* sv, AjPStr* desc)
+AjBool ajSeqParseFastq(const AjPStr instr, AjPStr* id, AjPStr* desc)
 {
-    AjPStrTok handle = NULL;
-    AjPStr token     = NULL;
-    AjPStr token2    = NULL;
     AjPStr str       = NULL;
-    AjBool ok = ajFalse;
 
-    ajDebug("ajSeqParseFastq '%S'\n", instr);
+    /*ajDebug("ajSeqParseFastq '%S'\n", instr);*/
 
     if(!ajStrPrefixC(instr, "@"))
 	return ajFalse;
 
-    ajStrAssignS(&str, instr);
+    ajStrExtractWord(instr, desc, &str);
+    ajStrTrimC(desc, "\n");
+    ajStrAssignSubS(id, str, 1, -1);
 
-    ajStrTokenAssignC(&handle, str, "@ ");
-    ajStrTokenNextParseC(&handle, " \t\n\r", id);
-
-    ok = ajStrTokenNextParse(&handle, &token);
-    ajStrAssignS(&token2, token);
-    ajStrRemoveSetC(&token2, "()");
-
-    if(ok && ajSeqtestIsSeqversion(token2))
-    {
-        ajStrAssignS(acc, ajSeqtestIsSeqversion(token2));
-	ajStrAssignS(sv, token2);
-	ajStrTokenNextParseC(&handle, "\n\r", desc);
-    }
-    else if(ok && ajSeqtestIsAccession(token2))
-    {
-	ajStrAssignS(acc, token2);
-        ajStrAssignClear(sv);
-	ajStrTokenNextParseC(&handle, "\n\r", desc);
-    }
-    else if(ok)
-    {
-        ajStrAssignClear(acc);
-        ajStrAssignClear(sv);
-	ajStrAssignS(desc, token);
-
-	if(ajStrTokenNextParseC(&handle, "\n\r", &token))
-	{
-	    ajStrAppendC(desc, " ");
-	    ajStrAppendS(desc, token);
-	}
-    }
-
-    ajStrDel(&token); /* duplicate of accession or description */
-    ajStrDel(&token2);
-    ajStrTokenDel(&handle);
     ajStrDel(&str);
-    ajDebug("result id: '%S' acc: '%S' desc: '%S'\n", *id, *acc, *desc);
-
     return ajTrue;
 }
 
@@ -16326,6 +16427,7 @@ void ajSeqReadExit(void)
     ajStrDel(&seqQryDb);
     ajStrDel(&seqQryList);
     ajStrDel(&seqAppendRestStr);
+    ajStrDel(&seqQualStr);
 
     ajStrDel(&seqReadLine);
 
@@ -16911,7 +17013,7 @@ static void selexDel(SeqPSelex *Pseq)
 /* @funcstatic seqDefine ******************************************************
 **
 ** Make sure all sequence object attributes are defined
-** using valued from the sequence input object if needed
+** using values from the sequence input object if needed
 **
 ** @param [w] thys [AjPSeq] Sequence returned.
 ** @param [u] seqin [AjPSeqin] Sequence input definitions
@@ -16945,6 +17047,20 @@ static AjBool seqDefine(AjPSeq thys, AjPSeqin seqin)
     /*ajDebug("seqDefine: returns thys->Name '%S' type: %S\n",
       thys->Name, thys->Type);*/
 
+    if(!ajStrGetLen(thys->Type))
+    {
+        if(thys->Format) 
+        {
+            if(seqInFormatDef[thys->Format].Nucleotide &&
+               !seqInFormatDef[thys->Format].Protein)
+                ajSeqSetNuc(thys);
+
+            if(!seqInFormatDef[thys->Format].Nucleotide &&
+               seqInFormatDef[thys->Format].Protein)
+                ajSeqSetProt(thys);
+        }
+    }
+    
     if(!ajStrGetLen(thys->Type))
 	ajSeqType(thys);
     

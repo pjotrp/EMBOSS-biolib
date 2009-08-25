@@ -31,8 +31,7 @@ void         ajSeqinTrace (const AjPSeqin thys);
 
 AjBool       ajSeqParseFasta(const AjPStr str, AjPStr* id, AjPStr* acc,
 			     AjPStr* sv, AjPStr* desc);
-AjBool       ajSeqParseFastq(const AjPStr str, AjPStr* id, AjPStr* acc,
-			     AjPStr* sv, AjPStr* desc);
+AjBool       ajSeqParseFastq(const AjPStr str, AjPStr* id, AjPStr* desc);
 AjBool       ajSeqParseNcbi(const AjPStr str, AjPStr* id, AjPStr* acc,
 			    AjPStr* sv, AjPStr* gi, AjPStr* db, AjPStr* desc);
 void         ajSeqQueryClear (AjPSeqQuery thys);
