@@ -51,6 +51,8 @@ size_t         ajWritebinInt4(AjPFile thys, ajint i);
 size_t         ajWritebinInt8(AjPFile thys, ajlong i);
 size_t         ajWritebinStr(AjPFile thys, const AjPStr str, size_t len);
 AjBool         ajWriteline(AjPFile file, const AjPStr line);
+AjBool         ajWritelineNewline(AjPFile file, const AjPStr line);
+AjBool         ajWritelineSpace(AjPFile file, const AjPStr line);
 
 AjBool         ajReadline(AjPFile file, AjPStr *Pdest);
 AjBool         ajReadlinePos(AjPFile file, AjPStr *Pdest, ajlong* Ppos);

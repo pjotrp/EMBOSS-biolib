@@ -1564,11 +1564,13 @@ __deprecated ajint ajFileWriteStr(AjPFile thys, const AjPStr str, ajuint len)
 **
 ** @fdata [AjPFile]
 **
-** These functions read data directly from a file using system functions.
+** These functions write data directly to a file using system functions.
 ** Integer data is by default assumed to be stored as little-endian
 ** so that binary files with integers are portable across systems
 **
-** @nam2rule Writeline
+** @nam2rule Writeline Write a string to a file
+** @nam3rule Space   Write a string to a file with a leading space
+** @suffix Newline   Write a string to a file with a trailing newline
 **
 ** @argrule * file [AjPFile] Output file
 ** @argrule * line [const AjPStr] Output line with trailing newline
@@ -1590,10 +1592,55 @@ __deprecated ajint ajFileWriteStr(AjPFile thys, const AjPStr str, ajuint len)
 
 AjBool ajWriteline(AjPFile file, const AjPStr line)
 {
-    if(ajWritebinStr(file, line, ajStrGetLen(line)))
-       return ajTrue;
+    if(!fwrite(MAJSTRGETPTR(line), MAJSTRGETLEN(line), 1, file->fp))
+        return ajFalse;
 
-    return ajFalse;
+    return ajTrue;
+}
+
+
+
+
+/* @func ajWritelineNewline ****************************************************
+**
+** Writes a string to a file, including any newline characters
+**
+** @param [u] file [AjPFile] Output file
+** @param [r] line [const AjPStr] String to be written
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajWritelineNewline(AjPFile file, const AjPStr line)
+{
+    if(!fwrite(MAJSTRGETPTR(line), MAJSTRGETLEN(line), 1, file->fp))
+        return ajFalse;
+    if(!fwrite("\n", 1, 1, file->fp))
+        return ajFalse;
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ajWritelineSpace ****************************************************
+**
+** Writes a string to a file, with a leading space
+**
+** @param [u] file [AjPFile] Output file
+** @param [r] line [const AjPStr] String to be written
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajWritelineSpace(AjPFile file, const AjPStr line)
+{
+    if(!fwrite(" ", 1, 1, file->fp))
+        return ajFalse;
+
+    if(!fwrite(MAJSTRGETPTR(line), MAJSTRGETLEN(line), 1, file->fp))
+        return ajFalse;
+
+    return ajTrue;
 }
 
 
