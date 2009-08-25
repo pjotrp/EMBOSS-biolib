@@ -1841,12 +1841,15 @@ static AjPRegexp seqTypeCharProtStopGap(void)
 static AjPStr seqTypeStrAny(void)
 {
     if(!seqtypeCharsetAny)
-	ajFmtPrintS(&seqtypeCharsetAny, "%s%s%s%s%s",
+    {
+        ajFmtPrintS(&seqtypeCharsetAny, "%s%s%s%s%s",
 		    seqCharProtPure,
 		    seqCharProtAmbig,
 		    seqCharProtStop,
 		    seqCharNucPure,
 		    seqCharNucAmbig);
+        ajStrRemoveDupchar(&seqtypeCharsetAny);
+    }
 
     return seqtypeCharsetAny;
 }
@@ -1864,6 +1867,7 @@ static AjPStr seqTypeStrAny(void)
 static AjPStr seqTypeStrAnyGap(void)
 {
     if(!seqtypeCharsetAnyGap)
+    {
 	ajFmtPrintS(&seqtypeCharsetAnyGap, "%s%s%s%s%s%s",
 		    seqCharProtPure,
 		    seqCharProtAmbig,
@@ -1871,6 +1875,8 @@ static AjPStr seqTypeStrAnyGap(void)
 		    seqCharNucPure,
 		    seqCharNucAmbig,
 		    seqCharGap);
+        ajStrRemoveDupchar(&seqtypeCharsetAnyGap);
+    }    
 
     return seqtypeCharsetAnyGap;
 }
@@ -1888,10 +1894,13 @@ static AjPStr seqTypeStrAnyGap(void)
 static AjPStr seqTypeStrDnaGap(void)
 {
     if(!seqtypeCharsetDnaGap)
+    {
 	ajFmtPrintS(&seqtypeCharsetDnaGap, "%s%s%s",
 		    seqCharNucPure,
 		    seqCharNucAmbig,
 		    seqCharGap);
+        ajStrRemoveDupchar(&seqtypeCharsetDnaGap);
+    }
 
     return seqtypeCharsetDnaGap;
 }
@@ -1909,9 +1918,12 @@ static AjPStr seqTypeStrDnaGap(void)
 static AjPStr seqTypeStrNuc(void)
 {
     if(!seqtypeCharsetNuc)
+    {
 	ajFmtPrintS(&seqtypeCharsetNuc, "%s%s",
 		    seqCharNucPure,
 		    seqCharNucAmbig);
+        ajStrRemoveDupchar(&seqtypeCharsetNuc);
+    }
 
     return seqtypeCharsetNuc;
 }
@@ -1929,10 +1941,13 @@ static AjPStr seqTypeStrNuc(void)
 static AjPStr seqTypeStrNucGap(void)
 {
     if(!seqtypeCharsetNucGap)
+    {
 	ajFmtPrintS(&seqtypeCharsetNucGap, "%s%s%s",
 		    seqCharNucPure,
 		    seqCharNucAmbig,
 		    seqCharGap);
+        ajStrRemoveDupchar(&seqtypeCharsetNucGap);
+    }
 
     return seqtypeCharsetNucGap;
 }
@@ -1950,11 +1965,14 @@ static AjPStr seqTypeStrNucGap(void)
 static AjPStr seqTypeStrNucGapPhylo(void)
 {
     if(!seqtypeCharsetNucGapPhylo)
+    {
 	ajFmtPrintS(&seqtypeCharsetNucGapPhylo, "%s%s%s%s",
 		    seqCharNucPure,
 		    seqCharNucAmbig,
 		    seqCharPhylo,
 		    seqCharGap);
+        ajStrRemoveDupchar(&seqtypeCharsetNucGapPhylo);
+    }
 
     return seqtypeCharsetNucGapPhylo;
 }
@@ -1972,8 +1990,11 @@ static AjPStr seqTypeStrNucGapPhylo(void)
 static AjPStr seqTypeStrNucPure(void)
 {
     if(!seqtypeCharsetNucPure)
+    {
 	ajFmtPrintS(&seqtypeCharsetNucPure, "%s",
 		    seqCharNucPure);
+        ajStrRemoveDupchar(&seqtypeCharsetNucPure);
+    }
 
     return seqtypeCharsetNucPure;
 }
@@ -1991,9 +2012,12 @@ static AjPStr seqTypeStrNucPure(void)
 static AjPStr seqTypeStrProt(void)
 {
     if(!seqtypeCharsetProt)
+    {
 	ajFmtPrintS(&seqtypeCharsetProt, "%s%s",
 		    seqCharProtPure,
 		    seqCharProtAmbig);
+        ajStrRemoveDupchar(&seqtypeCharsetProt);
+    }
 
     return seqtypeCharsetProt;
 }
@@ -2011,12 +2035,15 @@ static AjPStr seqTypeStrProt(void)
 static AjPStr seqTypeStrProtAny(void)
 {
     if(!seqtypeCharsetProtAny)
+    {
 	ajFmtPrintS(&seqtypeCharsetProtAny, "%s%s%s%s%s",
 		    seqCharProtPure,
 		    seqCharProtAmbig,
 		    seqCharProtStop,
 		    seqCharPhylo,
 		    seqCharGap);
+        ajStrRemoveDupchar(&seqtypeCharsetProtAny);
+    }
 
     return seqtypeCharsetProtAny;
 }
@@ -2034,10 +2061,13 @@ static AjPStr seqTypeStrProtAny(void)
 static AjPStr seqTypeStrProtGap(void)
 {
     if(!seqtypeCharsetProtGap)
+    {
 	ajFmtPrintS(&seqtypeCharsetProtGap, "%s%s%s",
 		    seqCharProtPure,
 		    seqCharProtAmbig,
 		    seqCharGap);
+        ajStrRemoveDupchar(&seqtypeCharsetProtGap);
+    }
 
     return seqtypeCharsetProtGap;
 }
@@ -2055,12 +2085,15 @@ static AjPStr seqTypeStrProtGap(void)
 static AjPStr seqTypeStrProtGapPhylo(void)
 {
     if(!seqtypeCharsetProtGapPhylo)
-	ajFmtPrintS(&seqtypeCharsetProtGapPhylo, "%s%s%s%s%s",
+    {
+        ajFmtPrintS(&seqtypeCharsetProtGapPhylo, "%s%s%s%s%s",
 		    seqCharProtPure,
 		    seqCharProtAmbig,
 		    seqCharProtStop,
 		    seqCharPhylo,
 		    seqCharGap);
+        ajStrRemoveDupchar(&seqtypeCharsetProtGapPhylo);
+    }
 
     return seqtypeCharsetProtGapPhylo;
 }
@@ -2078,8 +2111,11 @@ static AjPStr seqTypeStrProtGapPhylo(void)
 static AjPStr seqTypeStrProtPure(void)
 {
     if(!seqtypeCharsetProtPure)
-	ajFmtPrintS(&seqtypeCharsetProtPure, "%s",
+    {
+        ajFmtPrintS(&seqtypeCharsetProtPure, "%s",
 		    seqCharProtPure);
+        ajStrRemoveDupchar(&seqtypeCharsetProtPure);
+    }
 
     return seqtypeCharsetProtPure;
 }
@@ -2097,10 +2133,13 @@ static AjPStr seqTypeStrProtPure(void)
 static AjPStr seqTypeStrProtStop(void)
 {
     if(!seqtypeCharsetProtStop)
-	ajFmtPrintS(&seqtypeCharsetProtStop, "%s%s%s",
+    {
+        ajFmtPrintS(&seqtypeCharsetProtStop, "%s%s%s",
 		    seqCharProtPure,
 		    seqCharProtAmbig,
 		    seqCharProtStop);
+        ajStrRemoveDupchar(&seqtypeCharsetProtStop);
+    }
 
     return seqtypeCharsetProtStop;
 }
@@ -2118,11 +2157,14 @@ static AjPStr seqTypeStrProtStop(void)
 static AjPStr seqTypeStrProtStopGap(void)
 {
     if(!seqtypeCharsetProtStopGap)
-	ajFmtPrintS(&seqtypeCharsetProtStopGap, "%s%s%s%s",
+    {
+        ajFmtPrintS(&seqtypeCharsetProtStopGap, "%s%s%s%s",
 		    seqCharProtPure,
 		    seqCharProtAmbig,
 		    seqCharProtStop,
 		    seqCharGap);
+        ajStrRemoveDupchar(&seqtypeCharsetProtStopGap);
+    }
 
     return seqtypeCharsetProtStopGap;
 }
@@ -2140,9 +2182,12 @@ static AjPStr seqTypeStrProtStopGap(void)
 static AjPStr seqTypeStrRnaGap(void)
 {
     if(!seqtypeCharsetRnaGap)
-	ajFmtPrintS(&seqtypeCharsetRnaGap, "%s%s",
+    {
+        ajFmtPrintS(&seqtypeCharsetRnaGap, "%s%s",
 		    seqCharNucRna,
 		    seqCharGap);
+        ajStrRemoveDupchar(&seqtypeCharsetRnaGap);
+    }
 
     return seqtypeCharsetRnaGap;
 }
