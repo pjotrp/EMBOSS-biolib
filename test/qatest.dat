@@ -375,7 +375,7 @@ IN
 FI actb1_fugru.antigenic
 FZ = 0
 FI antigenic.acdlog
-FC = 5620
+FC = 5623
 FP 51 /^acdProcess/
 FI stderr
 FC = 2
@@ -403,7 +403,7 @@ ID acdtable-ex
 AP acdtable
 CL antigenic
 FI stderr
-FC = 55
+FC = 54
 FP 9 /[<]tr/
 FP 0 /Warning: /
 FP 0 /Error: /
@@ -17929,7 +17929,7 @@ FP 0 /Died: /
 FI stdout
 FZ > 43000
 FP 1 /^ +Finds programs by keywords in their short description\n/
-FP 2 /^ +-explode/
+FP 1 /^ +-explode/
 //
 
 ID tfscan-ex
