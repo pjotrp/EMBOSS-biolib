@@ -6863,13 +6863,13 @@ const AjPStr ajFeattableGetTypeS(const AjPFeattable thys)
 ** Returns all cross-references from a feature table
 **
 ** @param [r] thys [const AjPFeattable] Feature table
-** @param [u] xreflist [AjPList] List of sequence cross-reference objects
+** @param [u] Pxreflist [AjPList*] List of sequence cross-reference objects
 ** @param [w] Ptaxid [ajuint*] Taxon ID
 ** @return [AjBool] True on success
 ** @@
 ******************************************************************************/
 
-AjBool ajFeattableGetXrefs(const AjPFeattable thys, AjPList xreflist,
+AjBool ajFeattableGetXrefs(const AjPFeattable thys, AjPList *Pxreflist,
                            ajuint *Ptaxid)
 {
     AjIList iterfeat     = NULL;
@@ -6879,6 +6879,11 @@ AjBool ajFeattableGetXrefs(const AjPFeattable thys, AjPList xreflist,
     ajint ipos;
     ajuint inum = 0;
     AjPFeature feat  = NULL;
+    AjPList xreflist;
+
+    if(!*Pxreflist)
+        *Pxreflist = ajListNew();
+    xreflist = *Pxreflist;
 
     *Ptaxid = 0;
     
@@ -7363,18 +7368,23 @@ AjBool ajFeatGetRemoteseq(const AjPFeature thys, const AjPStr usa,
 ** Returns all cross-references from a feature
 **
 ** @param [r] thys [const AjPFeature] Feature
-** @param [u] xreflist [AjPList] List of sequence cross-reference objects
+** @param [u] Pxreflist [AjPList(] List of sequence cross-reference objects
 ** @return [AjBool] True on success
 ** @@
 ******************************************************************************/
 
-AjBool ajFeatGetXrefs(const AjPFeature thys, AjPList xreflist)
+AjBool ajFeatGetXrefs(const AjPFeature thys, AjPList *Pxreflist)
 {
     AjIList iter     = NULL;
     FeatPTagval item = NULL;
     AjPSeqXref  xref = NULL;
     ajint ipos;
     ajuint inum = 0;
+    AjPList xreflist;
+
+    if(!*Pxreflist)
+        *Pxreflist = ajListNew();
+    xreflist = *Pxreflist;
 
     if(thys->Tags)
     {
