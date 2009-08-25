@@ -22,6 +22,7 @@ ajAcdProgram -
 #ajarr
 #ajassert
 #ajbase
+ajBaseProb ajBaseAlphaCompare
 ajAZToBin ajBaseAlphaToBin
 ajAZToBinC ajBaseAlphacharToBin
 ajBaseComp ajBaseAlphacharComp
@@ -35,12 +36,46 @@ ajIntToAZ ajBasecodeFromInt
 ajAZToInt ajBasecodeToInt
 #ajcall
 #ajcod
+ajCodNewCode ajCodNewCodenum
+ajCodDup ajCodNewCod
+ajCodCountTriplets ajCodSetTripletsS
+ajCodCalcCai ajCodCalcCaiSeq
+ajCodCalculateUsage ajCodCalcUsage
+ajCodAssCode ajCodSetCodenum
+ajCodAssDescC ajCodSetDescC
+ajCodAssDesc ajCodSetDescS
+ajCodAssDivisionC ajCodSetDivisionC
+ajCodAssDivision ajCodSetDivisionS
+ajCodAssNameC ajCodSetNameC
+ajCodAssName ajCodSetNameS
+ajCodAssNumcds ajCodSetNumcds
+ajCodAssNumcodon ajCodSetNumcodons
+ajCodAssReleaseC ajCodSetReleaseC
+ajCodAssRelease ajCodSetReleaseS
+ajCodAssSpeciesC ajCodSetSpeciesC
+ajCodAssSpecies ajCodSetSpeciesS
 #ajdan
+ajTm ajMeltTemp
+ajTm2 ajMeltTempSave
+ajProdTm ajMeltTempProd
 #ajdmx
 #ajdomain
 #ajdom
 #ajexcept
 #ajfeat
+ajFeatUfoWrite =ajFeattableWriteUfo 1,2,3 2,1,3
+ajFeatWrite ajFeattableWrite
+ajFeattableBegin ajFeattableGetBegin
+ajFeattableEnd ajFeattableGetEnd
+ajFeattableLen ajFeattableGetLen
+ajFeattableSize ajFeattableGetSize
+ajFeatGetNote ajFeatGetNoteS
+ajFeatRead ajFeattableNewRead
+ajFeatUfoRead ajFeattableNewReadUfo
+ajFeatDefName ajFeattableSetDefname
+ajFeattableCopy ajFeattableNewFtable
+ajFeattableCopyLimit ajFeattableNewFtableLimit
+ajFeatCopy ajFeatNewFeat
 #ajfile
 ajDirNew ajDirNewPath
 ajDirNewS ajDirNewPathExt
@@ -52,6 +87,7 @@ ajDirOutNewS -
 ajDirOutNewSS -
 ajFileNewF ajFileNewFromCfile
 ajFileNew -
+ajFileNewInC ajFileNewInNameC
 ajFileNewIn ajFileNewInNameS
 ajFileNewDC -
 ajFileNewDF =ajFileNewInNamePathS 1,2 2,1
@@ -174,6 +210,28 @@ ajFileBuffGetStore ajBuffreadLineStore
 ajFileBuffGetTrim ajBuffreadLineTrim
 #ajfmt
 #ajgraph
+ajGraphHoriBars ajGraphDrawBarsHoriz
+ajGraphVertBars ajGraphDrawBarsVert
+ajGraphBox ajGraphDrawBox
+ajGraphBoxFill ajGraphDrawBoxFill
+ajGraphCircle ajGraphDrawCircle
+ajGraphDia ajGraphDrawDia
+ajGraphDiaFill ajGraphDrawDiaFill
+ajGraphDots ajGraphDrawDots
+ajGraphLine ajGraphDrawLine
+ajGraphLines ajGraphDrawLines
+ajGraphPoly ajGraphDrawPoly
+ajGraphPolyFill ajGraphDrawPolyFill
+ajGraphRect ajGraphDrawRect
+ajGraphSymbols ajGraphDrawSymbols
+ajGraphText ajGraphDrawText
+ajGraphTextEnd ajGraphDrawTextAtEnd
+ajGraphTextMid ajGraphDrawTextAtMid
+ajGraphTextStart ajGraphDrawTextAtStart
+ajGraphTextLine ajGraphDrawTextOnLine
+ajGraphTri ajGraphDrawTri
+ajGraphTriFill ajGraphDrawTriFill
+ajGraphRectFill ajGraphDrawRectFill
 #ajgraphxml
 #ajhist
 #ajindex
@@ -231,9 +289,13 @@ ajListstrRemove ajListstrIterRemove
 #ajmem
 ajMemCalloc0 ajMemCallocZero
 #ajmess
+ajMessErrorCount ajMessGetCountError
+ajMessCaughtMessage ajMessGetMessageC
+ajMessSysErrorText ajMessGetSysmessageC
+ajDebugFile ajMessGetDebugfile
 #ajnam
-ajNamGetenv -
-ajNamGetValue -
+ajNamGetenv ajNamGetenvS
+ajNamGetValue ajNamGetValusS
 ajNamRootInstall -
 ajNamRootPack -
 ajNamRootVersion -
@@ -245,8 +307,34 @@ ajNamRootBase -
 #ajpdbio
 #ajphylo
 #ajrange
+ajRangeFile ajRangeNewFilename
+ajRangeFileLimits ajRangeNewFilenameLimits
+ajRangeCopy ajRangeNewRange
+ajRangeGet ajRangeNewString
+ajRangeGetLimits ajRangeNewStringLimits
+ajRangeNumber ajRangeGetSize
+ajRangeBegin ajRangeSetOffset
+ajRangeOverlapSingle -
+ajRangeOverlaps ajRangeCountOverlaps
+ajRangeOrdered ajRangeIsOrdered
+ajRangeDefault ajRangeIsWhole
 #ajreg
 #ajreport
+ajReportSetTags ajReportSetTagsS
+ajReportLists -
+ajReportSetHeader ajReportSetHeaderS
+ajReportAppendHeader ajReportAppendHeaderS
+ajReportSetSubHeader ajReportSetSubheaderS
+ajReportAppendSubHeaderC ajReportAppendSubheaderC
+ajReportAppendSubHeader ajReportAppendSubheaderS
+ajReportSetTail ajReportSetTailS
+ajReportAppendTail ajReportAppendTailS
+ajReportSetSubTailC ajReportSetSubtailC
+ajReportSetSubTail ajReportSetSubtailS
+ajReportAppendSubTailC ajReportAppendSubtailC
+ajReportAppendSubTail ajReportAppendSubtailS
+ajReportSeqName ajReportGetSeqnameSeq
+ajReportFileAdd ajReportAddFile
 #ajseqabi
 #ajseq
 ajSeqNewC ajSeqNewNameC
@@ -636,6 +724,21 @@ ajTimeTodayRefF ajTimeRefTodayFmt
 ajTimeLocal =ajTimeSetLocal 1,2 2,1
 ajTimeLocal @ajTimeSetLocal
 #ajtranslate
+ajTrnCodon -
+ajTrnRevCodon -
+ajTrnC ajTrnSeqC
+ajTrnRevC ajTrnSeqRevC
+ajTrnAltRevC ajTrnSeqAltRevC
+ajTrnStr ajTrnSeqS
+ajTrnAltRevStr ajTrnSeqAltRevStr
+ajTrnSeq ajTrnSeqSeq
+ajTrnRevSeq ajTrnSeqRevSeq
+ajTrnAltRevSeq ajTrnSeqAltRevSeq
+ajTrnCFrame ajTrnSeqFrameC
+ajTrnStrFrame ajTrnSeqFrameS
+ajTrnSeqFrame ajTrnSeqFrameSeq
+ajTrnCDangle ajTrnSeqDangleC
+ajTrnStrDangle ajTrnDangleS
 #ajtree
 #ajutil
 ajUtilRevInt ajByteRevInt
@@ -745,7 +848,10 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #embossversion
 #emma
 #emowse
+#entrailsbook
 #entrails
+#entrailshtml
+#entrailswiki
 #entret
 #epestfind
 #eprimer3
