@@ -2414,7 +2414,7 @@ static void strCloneL(AjPStr* Pstr, ajuint size)
 /* @funcstatic strNew ******************************************************
 **
 ** Internal constructor for modifiable AJAX strings. Used by all the string
-** parameterized contructors to allocate the space for the text string.
+** parameterized constructors to allocate the space for the text string.
 ** The only exception is ajStrNew which returns a clone of the null string.
 **
 ** @param [rE] size [ajuint] size of the reserved space, including the
