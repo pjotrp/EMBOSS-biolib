@@ -1,6 +1,7 @@
 application: iep [
   documentation: "Calculate the isoelectric point of proteins"
   groups: "Protein:Composition"
+  relation: "EDAM: Protein isoelectric point calculation"
 ]
 
 section: input [

@@ -2,6 +2,7 @@ application: entrails [
   documentation: "Reports the internal data from the EMBOSS
                   code"
   groups: "Utils:Misc"
+  relation: "EDAM: File handling"
 ]
 
 section: additional [

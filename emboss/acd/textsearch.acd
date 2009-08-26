@@ -1,6 +1,7 @@
 application: textsearch [
   documentation: "Search the textual description of sequence(s)"
   groups: "Display, Information"
+  relation: "EDAM: Sequence database search by keyword"
 ]
 
 section: input [

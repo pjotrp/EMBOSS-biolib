@@ -2,6 +2,7 @@ application: seqretallfeat [
   documentation: "Reads and writes (returns) one or more
                   sequences"
   groups: "Test"
+  relation: "EDAM: File handling"
 ]
 
 section: input [

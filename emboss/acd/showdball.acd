@@ -2,6 +2,7 @@ application: showdball
 [
   documentation: "Display information on biological databases"
   groups: "Display, Information"
+  relation: "EDAM: Database retrieval"
 ]
 
 

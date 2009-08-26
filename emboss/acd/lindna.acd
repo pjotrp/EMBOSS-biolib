@@ -1,6 +1,7 @@
 application: lindna [
   documentation: "Draws linear maps of DNA constructs"
   groups: "Display"
+  relation: "EDAM: DNA map drawing"
 ]
 
 section: input [

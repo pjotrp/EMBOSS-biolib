@@ -2,6 +2,7 @@ application: seqretsingle [
   documentation: "Reads and writes (returns) a single
                   sequence"
   groups: "Test"
+  relation: "EDAM: File handling"
 ]
 
 section: input [

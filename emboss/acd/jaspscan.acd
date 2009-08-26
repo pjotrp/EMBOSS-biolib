@@ -2,6 +2,7 @@ application: jaspscan [
   documentation: "Scans DNA sequences for transcription
                   factors"
   groups: "Nucleic:Transcription"
+  relation: "EDAM: Transcription factor binding site prediction"
 ]
 
 section: input [

@@ -5,6 +5,7 @@ application: inforesidue
   gui: "yes"
   batch: "yes"
   cpu: "low"
+  relation: "EDAM: Sequence description"
 ]
 
 

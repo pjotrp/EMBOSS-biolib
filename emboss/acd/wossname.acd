@@ -1,6 +1,7 @@
 application: wossname [
   documentation: "Finds programs by keywords in their short description"
   groups: "Information"
+  relation: "EDAM: Application retrieval"
 ]
 
 section: input [

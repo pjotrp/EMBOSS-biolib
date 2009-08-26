@@ -1,6 +1,7 @@
 application: pepstats [
   documentation: "Calculates statistics of protein properties"
   groups: "Protein:Composition"
+  relation: "EDAM: General protein properties calculation"
 ]
 
 section: input [

@@ -1,6 +1,7 @@
 application: findkm [
   documentation: "Calculate and plot enzyme reaction data"
   groups: "Enzyme Kinetics"
+  relation: "EDAM: Km and Vmax calculation"
 ]
 
 section: input [

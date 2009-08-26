@@ -1,6 +1,7 @@
 application: octanol [
   documentation: "Draw a White-Wimley protein hydropathy plot"
   groups: "Protein:Composition"
+  relation: "EDAM: Protein sequence hydropathy calculation"
 ]
 
 section: input [

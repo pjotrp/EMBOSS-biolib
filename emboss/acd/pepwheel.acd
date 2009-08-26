@@ -1,6 +1,7 @@
 application: pepwheel [
   documentation: "Draw a helical wheel diagram for a protein sequence"
   groups: "Display, Protein:2D Structure"
+  relation: "EDAM: Protein secondary structure visualisation"
 ]
 
 section: input [

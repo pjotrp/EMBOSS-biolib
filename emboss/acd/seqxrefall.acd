@@ -5,6 +5,7 @@ application: seqxrefall
   gui: "yes"
   batch: "yes"
   cpu: "low"
+  relation: "EDAM: Generic database search"
 ]
 
 

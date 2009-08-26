@@ -1,6 +1,7 @@
 application: tmap [
   documentation: "Predict and plot transmembrane segments in protein sequences"
   groups: "Protein:2D Structure"
+  relation: "EDAM: Transmembrane protein prediction"
 ]
 
 section: input [

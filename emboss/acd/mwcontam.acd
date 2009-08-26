@@ -1,6 +1,7 @@
 application: mwcontam [
   documentation: "Find weights common to multiple molecular weights files"
   groups: "Protein:Composition"
+  relation: "EDAM: Protein molecular weight calculation"
 ]
 
 section: input [

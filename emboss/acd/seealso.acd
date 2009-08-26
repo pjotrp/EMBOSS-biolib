@@ -1,6 +1,7 @@
 application: seealso [
   documentation: "Finds programs with similar function to a specified program"
   groups: "Display, Information"
+  relation: "EDAM: Application retrieval"
 ]
 
 section: input [

@@ -2,6 +2,7 @@ application: finddb
 [
   documentation: "Search for a database by keyword"
   groups: "Display, Information"
+  relation: "EDAM: Database retrieval"
 ]
 
 section: input 
