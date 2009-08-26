@@ -1,6 +1,8 @@
 application: preg [
   documentation: "Regular expression search of protein sequence(s)"
   groups: "Protein:Motifs"
+  relation: "EDAM: Protein motif searching"
+  relation: "EDAM: Sequence database search by motif or pattern"
 ]
 
 section: input [

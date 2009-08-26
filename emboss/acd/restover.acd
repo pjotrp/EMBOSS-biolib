@@ -1,6 +1,7 @@
 application: restover [
   documentation: "Find restriction enzymes producing a specific overhang"
   groups: "Nucleic:Restriction"
+  relation: "EDAM: Restriction site identification"
 ]
 
 section: input [

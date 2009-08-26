@@ -4,6 +4,9 @@ application: fuzztran [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
+  relation: "EDAM: Motif searching"
+  relation: "EDAM: Sequence database search by motif or pattern"
+  relation: "EDAM: DNA translation"
 ]
 
 section: input [

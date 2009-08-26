@@ -1,6 +1,7 @@
 application: oddcomp [
   documentation: "Identify proteins with specified sequence word composition"
   groups: "Protein:Motifs"
+  relation: "EDAM: Protein amino acid composition analysis"
 ]
 
 section: input [

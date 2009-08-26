@@ -2,6 +2,7 @@ application: tcode [
   documentation: "Identify protein-coding regions using
                   Fickett TESTCODE statistic"
   groups: "Nucleic:Gene finding"
+  relation: "EDAM: Coding region prediction"
 ]
 
 section: input [

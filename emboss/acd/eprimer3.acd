@@ -2,6 +2,8 @@ application: eprimer3 [
   documentation: "Picks PCR primers and hybridization oligos"
   groups: "Nucleic:Primers"
   external: "primer3_core"
+  relation: "EDAM: PCR primer design"
+  relation: "EDAM: Microarray probe design"
 ]
 
 section: input [

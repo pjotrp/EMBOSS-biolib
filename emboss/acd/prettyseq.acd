@@ -1,6 +1,8 @@
 application: prettyseq [
   documentation: "Write a nucleotide sequence and its translation to file"
   groups: "Display, Nucleic:Translation"
+  relation: "EDAM: DNA translation"
+  relation: "EDAM: Pretty sequence drawing"
 ]
 
 section: input [

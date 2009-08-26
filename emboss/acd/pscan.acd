@@ -2,6 +2,10 @@ application: pscan [
   documentation: "Scans protein sequence(s) with fingerprints from
                   the PRINTS database"
   groups: "Protein:Motifs"
+
+  relation: "EDAM: Protein motif searching"
+  relation: "EDAM: Sequence database search by motif or pattern"
+  relation: "EDAM: Protein secondary database search"
 ]
 
 section: input [

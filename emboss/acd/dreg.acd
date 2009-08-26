@@ -1,6 +1,8 @@
 application: dreg [
   documentation: "Regular expression search of nucleotide sequence(s)"
   groups: "Nucleic:Motifs"
+  relation: "EDAM: Nucleotide motif searching"
+  relation: "EDAM: Sequence database search by motif or pattern"
 ]
 
 section: input [

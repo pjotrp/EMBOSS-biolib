@@ -2,6 +2,7 @@ application: marscan [
   documentation: "Finds matrix/scaffold recognition (MRS) signatures
                   in DNA sequences"
   groups: "Nucleic:Gene finding, Nucleic:Motifs"
+  relation: "EDAM: Matrix/scaffold attachment site prediction"
 ]
 
 section: input [

@@ -3,6 +3,7 @@ application: primers [
                   primers"
   groups: "Nucleic:Primers"
   external: "primer3_core"
+  relation: "EDAM: Sequence database search by primer"
 ]
 
 section: input [

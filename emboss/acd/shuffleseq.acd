@@ -2,6 +2,7 @@ application: shuffleseq [
   documentation: "Shuffles a set of sequences maintaining
                   composition"
   groups: "Nucleic:Mutation, Protein:Mutation"
+  relation: "EDAM: Sequence mutation and randomisation"
 ]
 
 section: input [

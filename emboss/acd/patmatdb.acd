@@ -1,6 +1,8 @@
 application: patmatdb [
   documentation: "Searches protein sequences with a sequence motif"
   groups: "Protein:Motifs"
+  relation: "EDAM: Protein motif searching"
+  relation: "EDAM: Sequence database search by motif or pattern"
 ]
 
 section: input [

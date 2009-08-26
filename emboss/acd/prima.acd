@@ -2,6 +2,7 @@ application: prima [
   documentation: "Selects primers for PCR and DNA
                   amplification."
   groups: "Nucleic:Primers"
+  relation: "EDAM: PCR primer design"
 ]
 
 section: input [

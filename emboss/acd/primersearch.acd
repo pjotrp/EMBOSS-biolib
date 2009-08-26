@@ -1,6 +1,7 @@
 application: primersearch [
   documentation: "Search DNA sequences for matches with primer pairs"
   groups: "Nucleic:Primers"
+  relation: "EDAM: Sequence database search by primer"
 ]
 
 section: input [

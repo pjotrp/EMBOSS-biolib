@@ -1,6 +1,7 @@
 application: tfscan [
   documentation: "Identify transcription factor binding sites in DNA sequences"
   groups: "Nucleic:Transcription"
+  relation: "EDAM: Transcription factor binding site prediction"
 ]
 
 section: input [

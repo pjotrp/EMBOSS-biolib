@@ -2,6 +2,8 @@ application: getorf [
   documentation: "Finds and extracts open reading frames
                   (ORFs)"
   groups: "Nucleic:Gene finding"
+  relation: "EDAM: Coding region prediction"
+  relation: "EDAM: DNA translation"
 ]
 
 section: input [
