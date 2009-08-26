@@ -1,5 +1,5 @@
 application: syco [
-  documentation: "Draw synonymous codon usage statictic plot for a
+  documentation: "Draw synonymous codon usage statistic plot for a
                   nucleotide sequence"
   groups: "Nucleic:Codon usage, Nucleic:Gene finding"
   relation: "EDAM: Coding region prediction"
