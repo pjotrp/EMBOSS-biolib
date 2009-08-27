@@ -1612,7 +1612,7 @@ AjBool ajWriteline(AjPFile file, const AjPStr line)
 
 AjBool ajWritelineNewline(AjPFile file, const AjPStr line)
 {
-    if(!fwrite(MAJSTRGETPTR(line), MAJSTRGETLEN(line), 1, file->fp))
+    if(!fwrite(MAJSTRGETPTR(line), 1, MAJSTRGETLEN(line), file->fp))
         return ajFalse;
     if(!fwrite("\n", 1, 1, file->fp))
         return ajFalse;
