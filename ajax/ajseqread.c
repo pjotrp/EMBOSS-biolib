@@ -70,6 +70,8 @@ static AjPStr seqQryChr       = NULL;
 static AjPStr seqQryDb        = NULL;
 static AjPStr seqQryList      = NULL;
 static AjPStr seqReadLine     = NULL;
+static AjPStr seqSaveLine     = NULL;
+static AjPStr seqSaveLine2    = NULL;
 static AjPStr seqAppendRestStr = NULL;
 static AjPStr seqQualStr      = NULL;
 
@@ -2380,13 +2382,13 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 
     /* failed - probably entry/accession query failed. Can we try again? */
 
-    ajDebug("seqRead failed - try again with format %d '%s'\n",
-	    seqin->Format, seqInFormatDef[seqin->Format].Name);
+    ajDebug("seqRead failed - try again with format %d '%s' code %d\n",
+	    seqin->Format, seqInFormatDef[seqin->Format].Name, istat);
 
     ajDebug("Search:%B Data:%x ajFileBuffEmpty:%B\n",
 	    seqin->Search, seqin->Data, ajFilebuffIsEmpty(buff));
 
-    /* while(seqin->Search) */ /* need to check end-of-file to avoid repeats */
+    /* need to check end-of-file to avoid repeats */
     while(seqin->Search && (seqin->Data ||!ajFilebuffIsEmpty(buff)))
     {
 	istat = seqReadFmt(thys, seqin, seqin->Format);
@@ -2768,6 +2770,9 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
     ajint qmin = 33;
     ajint qmax = 126;
     ajuint i;
+    ajuint cntseq = 0;
+    ajuint cntqual = 0;
+    ajuint cntnewline = 0;
 
     /* ajDebug("seqReadFastqSanger\n"); */
 
@@ -2775,16 +2780,16 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
 
     /* ajFilebuffTrace(buff); */
 
-    ok = ajBuffreadLinePosStore(buff, &seqReadLine, &fpos,
+    ok = ajBuffreadLinePosStore(buff, &seqSaveLine, &fpos,
 			     seqin->Text, &thys->TextPtr);
     if(!ok)
 	return ajFalse;
 
     bufflines++;
 
-    /* ajDebug("First line: %S\n", seqReadLine); */
+    /* ajDebug("First line: %S\n", seqSaveLine); */
 
-    cp = MAJSTRGETPTR(seqReadLine);
+    cp = MAJSTRGETPTR(seqSaveLine);
 
     if(*cp != '@')
     {
@@ -2794,7 +2799,7 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
 	return ajFalse;
     }
 
-    if(!ajSeqParseFastq(seqReadLine, &id, &desc))
+    if(!ajSeqParseFastq(seqSaveLine, &id, &desc))
     {
         /* ajDebug("first line did not parse as FASTQ\n"); */
 	ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
@@ -2816,11 +2821,20 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
     ajStrDel(&sv);
     ajStrDel(&desc);
 
+    i = MAJSTRGETLEN(seqSaveLine) - 1;
+    while(ajStrGetCharPos(seqSaveLine, i) == '\n' ||
+          ajStrGetCharPos(seqSaveLine, i) == '\r')
+    {
+        cntnewline++;
+        i--;
+    }
+    
     ok = ajBuffreadLinePosStore(buff, &seqReadLine, &fposb,
 				 seqin->Text, &thys->TextPtr);
     while(ok &&
           ajStrGetCharFirst(seqReadLine) != '+')
     {
+        cntseq += MAJSTRGETLEN(seqReadLine) - cntnewline;
         badstr = seqAppendWarn(&thys->Seq, seqReadLine);
 
         if(badstr)
@@ -2841,18 +2855,43 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
 
 	return ajFalse;
     }
-
+    if(MAJSTRGETLEN(seqReadLine) > 1)
+    {
+        ajStrPasteCountK(&seqReadLine, 0,'@', 1);
+        if(!ajStrMatchS(seqReadLine, seqSaveLine))
+        {
+            ajStrPasteCountK(&seqReadLine, 0,'+', 1);
+            ajWarn("Mismatch in file '%F' + line "
+                   "does not match first line '%.*S' '%.*S'",
+                   ajFilebuffGetFile(buff),
+                   MAJSTRGETLEN(seqSaveLine) - cntnewline, seqSaveLine,
+                   MAJSTRGETLEN(seqReadLine) - cntnewline,  seqReadLine);
+        }        
+    }
+    
     seqlen = MAJSTRGETLEN(thys->Seq);
 
+    if(seqlen < cntseq)
+    {
+        ajWarn("FASTQ format '%F' sequence '%S' "
+               "sequence skipped %u character(s)",
+               ajFilebuffGetFile(buff), thys->Name, cntseq - seqlen);
+    }
     ok = ajBuffreadLinePosStore(buff, &seqReadLine, &fposb,
 				 seqin->Text, &thys->TextPtr);
 
     ajStrAssignClear(&seqQualStr);
+    ajStrAssignClear(&seqSaveLine2);
 
     while(ok &&
-          ((ajStrGetLen(seqQualStr) < seqlen) ||
+          ((MAJSTRGETLEN(seqQualStr) < seqlen) ||
            ajStrGetCharFirst(seqReadLine) != '@'))
     {
+        if((ajStrGetCharFirst(seqReadLine) == '@') &&
+           !MAJSTRGETLEN(seqSaveLine2))
+            ajStrAssignS(&seqSaveLine2, seqReadLine);
+        
+        cntqual += MAJSTRGETLEN(seqReadLine) - cntnewline;
         seqqualAppendWarn(&seqQualStr, seqReadLine);
 
         bufflines++;
@@ -2871,13 +2910,26 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
 
     if(MAJSTRGETLEN(seqQualStr) != seqlen)
     {
-      	ajWarn("FASTQ quality length mismatch '%F' '%S' seq: %u quality: %u",
+      	ajWarn("FASTQ quality length mismatch '%F' '%S' "
+               "expected: %u found: %u",
 	       ajFilebuffGetFile(buff), thys->Name,
 	       seqlen, ajStrGetLen(seqQualStr));
- 	ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
-
-	return ajFalse;
+        if((MAJSTRGETLEN(seqQualStr) > seqlen) &&
+           MAJSTRGETLEN(seqSaveLine2))
+        {
+            ajStrTrimEndC(&seqSaveLine2, "\n\r");
+            ajWarn("(Possible short quality record before '%S')",
+                   seqSaveLine2);
+        }
     }
+    if(MAJSTRGETLEN(seqQualStr) < cntqual)
+    {
+        ajWarn("FASTQ format '%F' sequence '%S' "
+               "quality skipped %u character(s)",
+               ajFilebuffGetFile(buff), thys->Name,
+               cntqual - MAJSTRGETLEN(seqQualStr));
+    }
+    
 
     if(ok)
         ajFilebuffClearStore(buff, 1,
@@ -2900,6 +2952,12 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
         thys->Qualsize = seqlen;
     }
 
+    if(MAJSTRGETLEN(seqQualStr) > thys->Qualsize)
+    {
+        AJCRESIZE(thys->Accuracy, MAJSTRGETLEN(seqQualStr));
+        thys->Qualsize = seqlen;
+    }
+
     /*
     ** Sanger uses Phred quality calculated from error probability p
     ** Qp = -10 log (p)
@@ -2913,14 +2971,16 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
         iqual = *cp++;
         if(iqual < qmin)
 	{
-            ajWarn("FASTQ-SANGER quality value too low '%F' '%S' '%c'",
+            ajWarn("FASTQ-SANGER '%F' sequence '%S' "
+                   "quality value '%c' too low",
                    ajFilebuffGetFile(buff), thys->Name,
                    (char) iqual);
             iqual = qmin;
 	}
         if(iqual > qmax)
 	{
-	    ajWarn("FASTQ-SANGER quality value too high '%F' '%S' '%c'",
+	    ajWarn("FASTQ-SANGER '%F' sequence '%S' "
+                   "quality value '%c' too high",
                    ajFilebuffGetFile(buff), thys->Name,
                    (char) iqual);
 	    iqual = qmax;
@@ -3168,7 +3228,7 @@ static AjBool seqReadFastqIllumina(AjPSeq thys, AjPSeqin seqin)
 
     /*ajint amin = 0;*/
     ajint qmin = 64;
-    ajint qmax = 104;
+    ajint qmax = 126;
     ajuint i;
 
     ajDebug("seqReadFastqIllumina\n");
@@ -3383,7 +3443,7 @@ static AjBool seqReadFastqSolexa(AjPSeq thys, AjPSeqin seqin)
 
     /*ajint amin = 0;*/
     ajint qmin = 59;
-    ajint qmax = 104;
+    ajint qmax = 126;
     ajuint i;
 /*
 //    double sval;
@@ -16430,6 +16490,8 @@ void ajSeqReadExit(void)
     ajStrDel(&seqQualStr);
 
     ajStrDel(&seqReadLine);
+    ajStrDel(&seqSaveLine);
+    ajStrDel(&seqSaveLine2);
 
     return;
 }
