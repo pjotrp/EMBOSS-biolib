@@ -1,8 +1,8 @@
 application: btwisted [
   documentation: "Calculate the twisting in a B-DNA sequence"
   groups: "Nucleic:Composition"
-  relation: "EDAM: Nucleic acid conformational parameter calculation"
-  relation: "EDAM: Nucleic acid thermal property calculation"
+  relations: "EDAM: Nucleic acid conformational parameter calculation"
+  relations: "EDAM: Nucleic acid thermal property calculation"
 ]
 
 section: input [

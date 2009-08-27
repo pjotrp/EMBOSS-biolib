@@ -1,6 +1,7 @@
 application: demolist [
   documentation: "Demonstration of the list functions"
   groups: "Test"
+  relations: "EDAM: File debugging"
 ]
 
 section: input [

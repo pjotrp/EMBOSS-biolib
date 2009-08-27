@@ -1,7 +1,7 @@
 application: union [
   documentation: "Concatenate multiple sequences into a single sequence"
   groups: "Edit"
-  relation: "EDAM: File handling"
+  relations: "EDAM: Sequence file handling"
 ]
 
 section: input [

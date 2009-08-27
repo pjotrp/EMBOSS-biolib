@@ -1,6 +1,7 @@
 application: abiview [
   documentation: "Display the trace in an ABI sequencer file"
   groups: "Display"
+  relations: "EDAM: Sequence visualisation"
 ]
 
 section: input [

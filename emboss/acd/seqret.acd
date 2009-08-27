@@ -2,7 +2,7 @@
 application: seqret [
   documentation: "Reads and writes (returns) sequences"
   groups: "Edit"
-  relation: "EDAM: File handling"
+  relations: "EDAM: Sequence file handling"  
 ]
 
 section: input [

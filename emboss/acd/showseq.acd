@@ -1,9 +1,9 @@
 application: showseq [
   documentation: "Displays sequences with features in pretty format"
   groups: "Display, Nucleic:Translation, Nucleic:Restriction"
-  relation: "EDAM: DNA translation"
-  relation: "EDAM: Restriction site visualisation"
-  relation: "EDAM: Pretty sequence drawing"
+  relations: "EDAM: DNA translation"
+  relations: "EDAM: Restriction site visualisation"
+  relations: "EDAM: Pretty sequence drawing"
 ]
 
 section: input [

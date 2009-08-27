@@ -3,9 +3,9 @@ application: pscan [
                   the PRINTS database"
   groups: "Protein:Motifs"
 
-  relation: "EDAM: Protein motif searching"
-  relation: "EDAM: Sequence database search by motif or pattern"
-  relation: "EDAM: Protein secondary database search"
+  relations: "EDAM: Protein motif searching"
+  relations: "EDAM: Sequence database search by motif or pattern"
+  relations: "EDAM: Protein secondary database search"
 ]
 
 section: input [

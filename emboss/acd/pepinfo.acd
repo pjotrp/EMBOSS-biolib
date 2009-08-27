@@ -1,8 +1,8 @@
 application: pepinfo [
   documentation: "Plot amino acid properties of a protein sequence in parallel."
   groups: "Protein:Composition"
-  relation: "EDAM: Pretty sequence drawing"
-  relation: "EDAM: General protein properties calculation"
+  relations: "EDAM: Pretty sequence drawing"
+  relations: "EDAM: General protein properties calculation"
 ]
 
 section: input [

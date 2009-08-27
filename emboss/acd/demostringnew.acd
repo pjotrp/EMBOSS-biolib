@@ -2,6 +2,7 @@ application: demostringnew [
   documentation: "Illustrates use of the AJAX string
                   library."
   groups: "Test"
+  relations: "EDAM: File debugging"
 ]
 
 section: input [

@@ -2,9 +2,9 @@ application: sixpack [
   documentation: "Display a DNA sequence with 6-frame
                   translation and ORFs"
   groups: "Display, Nucleic:Gene finding, Nucleic:Translation"
-  relation: "EDAM: DNA translation"
-  relation: "EDAM: Pretty sequence drawing"
-  relation: "EDAM: Coding region prediction"
+  relations: "EDAM: DNA translation"
+  relations: "EDAM: Pretty sequence drawing"
+  relations: "EDAM: Coding region prediction"
 ]
 
 section: input [

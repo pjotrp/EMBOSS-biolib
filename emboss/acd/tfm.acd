@@ -1,7 +1,7 @@
 application: tfm [
   documentation: "Displays full documentation for an application"
   groups: "Information"
-  relation: "EDAM: Application retrieval"
+  relations: "EDAM: Application information"
 ]
 
 section: input [

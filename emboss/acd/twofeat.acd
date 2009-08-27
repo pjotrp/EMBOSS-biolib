@@ -1,7 +1,7 @@
 application: twofeat [
   documentation: "Finds neighbouring pairs of features in sequence(s)"
   groups: "Feature tables"
-  relation: "EDAM: Sequence feature query"
+  relations: "EDAM: Sequence feature query"
 ]
 
 section: input [

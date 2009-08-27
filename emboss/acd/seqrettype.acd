@@ -1,7 +1,8 @@
 application: seqrettype [
   documentation: "Reads and writes (returns) sequences"
   groups: "Edit"
-  relation: "EDAM: File handling"
+  relations: "EDAM: Sequence extraction and generation"
+  relations: "EDAM: Sequence file handling"
 ]
 
 section: input [

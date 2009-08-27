@@ -1,6 +1,7 @@
 application: demosequence [
   documentation: "Demonstration of the sequence functions"
   groups: "Test"
+  relations: "EDAM: File debugging"
 ]
 
 section: input [

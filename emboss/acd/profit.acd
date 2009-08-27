@@ -1,7 +1,7 @@
 application: profit [
   documentation: "Scan one or more sequences with a simple frequency matrix"
   groups: "Nucleic:Profiles, Protein:Profiles"
-  relation: "EDAM: Sequence-profile alignment"
+  relations: "EDAM: Sequence-profile alignment"
 ]
 
 section: input [

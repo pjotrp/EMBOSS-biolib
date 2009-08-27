@@ -2,7 +2,7 @@ application: restrict [
   documentation: "Report restriction enzyme cleavage sites in
                   a nucleotide sequence"
   groups: "Nucleic:Restriction"
-  relation: "EDAM: Restriction site identification"
+  relations: "EDAM: Restriction site identification"
 ]
 
 section: input [

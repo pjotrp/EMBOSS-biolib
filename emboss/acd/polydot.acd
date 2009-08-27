@@ -2,7 +2,7 @@ application: polydot [
   documentation: "Draw dotplots for all-against-all comparison of a
                   sequence set"
   groups: "Alignment:Dot plots"
-  relation: "EDAM: "Dotplot generation"
+  relations: "EDAM: "Dotplot generation"
 ]
 
 section: input [

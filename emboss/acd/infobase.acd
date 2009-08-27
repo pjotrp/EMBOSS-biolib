@@ -5,7 +5,7 @@ application: infobase
   gui: "yes"
   batch: "yes"
   cpu: "low"
-  relation: "EDAM: Sequence description"
+  relations: "EDAM: Sequence description"
 ]
 
 

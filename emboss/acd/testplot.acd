@@ -1,6 +1,7 @@
 application: testplot [
   documentation: "Test plot"
   groups: "Test"
+  relations: "EDAM: File debugging"
 ]
 
 section: required [

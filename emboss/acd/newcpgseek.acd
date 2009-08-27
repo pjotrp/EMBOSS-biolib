@@ -2,7 +2,7 @@ application: newcpgseek [
   documentation: "Identify and report CpG-rich regions in
                   nucleotide sequence(s)"
   groups: "Nucleic:CpG Islands"
-  relation: "EDAM: CpG island and isochores identification"
+  relations: "EDAM: CpG island and isochores identification"
 ]
 
 section: input [

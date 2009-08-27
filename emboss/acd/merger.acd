@@ -1,8 +1,8 @@
 application: merger [
   documentation: "Merge two overlapping sequences"
   groups: "Alignment:Consensus"
-  relation: "EDAM: Global sequence alignment"
-  relation: "EDAM: Sequence merging"
+  relations: "EDAM: Global sequence alignment"
+  relations: "EDAM: Sequence merging"
 ]
 
 section: input [

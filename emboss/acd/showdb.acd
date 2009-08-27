@@ -1,7 +1,7 @@
 application: showdb [
   documentation: "Displays information on configured databases"
   groups: "Display, Information"
-  relation: "EDAM: Database retrieval"
+  relations: "EDAM: Database information"
 ]
 
 section: input [

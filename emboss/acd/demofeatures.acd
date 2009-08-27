@@ -1,6 +1,7 @@
 application: demofeatures [
   documentation: "Demonstration of the feature functions"
   groups: "Test"
+  relations: "EDAM: File debugging"
 ]
 
 section: advanced [

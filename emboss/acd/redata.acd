@@ -1,7 +1,7 @@
 application: redata [
   documentation: "Retrieve information from REBASE restriction enzyme database"
   groups: "Nucleic:Restriction"
-  relation: "EDAM: Restriction site information"
+  relations: "EDAM: Restriction site information"
 ]
 
 section: input [

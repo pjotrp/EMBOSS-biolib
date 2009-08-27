@@ -1,7 +1,7 @@
 application: pepcoil [
   documentation: "Predicts coiled coil regions in protein sequences"
   groups: "Protein:2D Structure, Protein:Motifs"
-  relation: "EDAM: Protein super-secondary structure prediction"
+  relations: "EDAM: Protein super-secondary structure prediction"
 ]
 
 section: input [

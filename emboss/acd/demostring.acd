@@ -1,6 +1,7 @@
 application: demostring [
   documentation: "Demonstration of the string functions"
   groups: "Test"
+  relations: "EDAM: File debugging"
 ]
 
 section: input [

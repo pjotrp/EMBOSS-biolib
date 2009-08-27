@@ -1,6 +1,8 @@
 application: embossdata [
   documentation: "Find and retrieve EMBOSS data files"
   groups: "Utils:Misc"
+  relations: "EDAM: Database information"
+  relations: "EDAM: Database processing"
 ]
 
 section: input [

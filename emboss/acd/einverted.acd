@@ -4,8 +4,8 @@ application: einverted [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
-  relation: "EDAM: Repeat sequence finding"
-  relation: "EDAM: RNA secondary structure prediction"
+  relations: "EDAM: Repeat sequence finding"
+  relations: "EDAM: RNA secondary structure prediction"
 ]
 
 section: input [

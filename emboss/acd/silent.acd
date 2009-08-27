@@ -2,7 +2,7 @@ application: silent [
   documentation: "Find restriction sites to insert (mutate)
                   with no translation change"
   groups: "Nucleic:Restriction"
-  relation: "EDAM: Restriction site creation and digest"
+  relations: "EDAM: Restriction site creation and digest"
 ]
 
 section: input [

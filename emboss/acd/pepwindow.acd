@@ -1,7 +1,7 @@
 application: pepwindow [
   documentation: "Draw a hydropathy plot for a protein sequence"
   groups: "Protein:Composition"
-  relation: "EDAM: Protein sequence hydropathy calculation"
+  relations: "EDAM: Protein sequence hydropathy calculation"
 ]
 
 section: input [

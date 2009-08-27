@@ -4,7 +4,7 @@ application: dotpath [
   gui: "yes"
   batch: "yes"
   cpu: "high"
-  relation: "EDAM: Dotplot generation"
+  relations: "EDAM: Dotplot generation"
 ]
 
 section: input [

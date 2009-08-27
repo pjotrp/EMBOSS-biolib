@@ -1,6 +1,7 @@
 application: charge [
   documentation: "Draw a protein charge plot"
   groups: "Protein:Composition"
+  relations: "EDAM: Protein sequence hydropathy calculation"
 ]
 
 section: input [

@@ -1,7 +1,7 @@
 application: wordcount [
   documentation: "Count and extract unique words in molecular sequence(s)"
   groups: "Nucleic:Composition,Protein:Composition"
-  relation: "EDAM: Sequence character or word composition analysis"
+  relations: "EDAM: Sequence character or word composition analysis"
 ]
 
 section: input [

@@ -1,7 +1,8 @@
 application: seqretsplit [
   documentation: "Reads sequences and writes them to individual files"
   groups: "Edit"
-  relation: "EDAM: File handling"
+  relations: "EDAM: Sequence extraction and generation"
+  relations: "EDAM: Sequence file handling"  
 ]
 
 section: input [

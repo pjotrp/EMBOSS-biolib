@@ -1,7 +1,7 @@
 application: msbar [
   documentation: "Mutate a sequence"
   groups: "Nucleic:Mutation, Protein:Mutation"
-  relation: "EDAM: Sequence mutation and randomisation"
+  relations: "EDAM: Sequence mutation and randomisation"
 ]
 
 section: input [

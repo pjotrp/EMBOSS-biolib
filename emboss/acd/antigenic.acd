@@ -1,7 +1,7 @@
 application: antigenic [
   documentation: "Finds antigenic sites in proteins"
   groups: "Protein:Motifs"
-  relation: "EDAM: Epitope mapping"
+  relations: "EDAM: Epitope mapping"
 ]
 
 section: input [

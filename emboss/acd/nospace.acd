@@ -5,7 +5,7 @@ application: nospace
   gui: "yes"
   batch: "yes"
   cpu: "low"
-  relation: "EDAM: File handling"
+  relations: "EDAM: Text file handling"
 ]
 
 

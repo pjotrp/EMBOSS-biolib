@@ -1,7 +1,7 @@
 application: seqinfo [
   documentation: "Returns sequence information"
   groups: "Test"
-  relation: "EDAM: Sequence description"
+  relations: "EDAM: Sequence description"
 ]
 
 section: input [

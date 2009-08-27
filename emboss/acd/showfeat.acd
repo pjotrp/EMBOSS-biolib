@@ -1,7 +1,7 @@
 application: showfeat [
   documentation: "Display features of a sequence in pretty format"
   groups: "Display, Feature tables"
-  relation: "EDAM: Pretty sequence drawing"
+  relations: "EDAM: Pretty sequence drawing"
 ]
 
 section: input [

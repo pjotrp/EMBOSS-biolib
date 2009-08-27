@@ -2,7 +2,7 @@ application: digest [
   documentation: "Reports on protein proteolytic enzyme or
                   reagent cleavage sites"
   groups: "Protein:Motifs"
-  relation: "EDAM: Protein cleavage site prediction"
+  relations: "EDAM: Protein cleavage site prediction"
 ]
 
 section: input [

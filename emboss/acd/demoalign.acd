@@ -2,6 +2,7 @@ application: demoalign [
   documentation: "Reads a sequence set, writes an alignment
                   file"
   groups: "Test"
+  relations: "EDAM: File debugging"
 ]
 
 section: input [

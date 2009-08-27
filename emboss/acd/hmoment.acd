@@ -1,7 +1,7 @@
 application: hmoment [
   documentation: "Calculate and plot hydrophobic moment for protein sequence(s)"
   groups: "Protein:2D Structure"
-  relation: "EDAM: Protein hydrophobic moment calculation"
+  relations: "EDAM: Protein hydrophobic moment calculation"
 ]
 
 section: input [

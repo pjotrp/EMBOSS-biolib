@@ -1,6 +1,8 @@
 application: extractfeat [
   documentation: "Extract features from sequence(s)"
   groups: "Edit, Feature tables"
+  relations: "EDAM: Sequence feature extraction and generation"
+  relations: "EDAM: Sequence file handling"
 ]
 
 section: input [

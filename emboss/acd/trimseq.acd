@@ -1,8 +1,8 @@
 application: trimseq [
   documentation: "Remove unwanted characters from start and end of sequence(s)"
   groups: "Edit"
-  relation: "EDAM: Sequence cutting"
-  relation: "EDAM: Sequence ambiguity calculation"
+  relations: "EDAM: Sequence cutting"
+  relations: "EDAM: Sequence ambiguity calculation"
 ]
 
 section: input [

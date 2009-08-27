@@ -1,8 +1,8 @@
 application: helixturnhelix [
   documentation: "Identify nucleic acid-binding motifs in protein sequences"
   groups: "Protein:2D Structure, Protein:Motifs"
-  relation: "EDAM: Protein super-secondary structure prediction"
-  relation: "EDAM: Protein-nucleic acid binding prediction"
+  relations: "EDAM: Protein super-secondary structure prediction"
+  relations: "EDAM: Protein-nucleic acid binding prediction"
 ]
 
 section: input [

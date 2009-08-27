@@ -1,8 +1,8 @@
 application: maskfeat [
   documentation: "Write a sequence with masked features"
   groups: "Edit, Feature tables"
-  relation: "EDAM: File handling"
-  relation: "EDAM: Sequence masking"
+  relations: "EDAM: Sequence file handling"
+  relations: "EDAM: Sequence masking"
 ]
 
 section: input [

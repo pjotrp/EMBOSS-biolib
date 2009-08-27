@@ -2,7 +2,7 @@
 application: maskambigprot [
   documentation: "Masks all ambiguity characters in protein sequences with X"
   groups: "Edit"
-  relation: "EDAM: Sequence masking"
+  relations: "EDAM: Sequence masking"
 ]
 
 section: input [

@@ -2,7 +2,8 @@ application: seqretall [
   documentation: "Reads and writes (returns) a set of
                   sequences one at a time"
   groups: "Edit"
-  relation: "EDAM: File handling"
+  relations: "EDAM: Sequence extraction and generation"
+  relations: "EDAM: Sequence file handling"  
 ]
 
 section: input [

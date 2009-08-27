@@ -2,7 +2,7 @@
 application: maskambignuc [
   documentation: "Masks all ambiguity characters in nucleotide sequences with N"
   groups: "Edit"
-  relation: "EDAM: Sequence masking"
+  relations: "EDAM: Sequence masking"
 ]
 
 section: input [

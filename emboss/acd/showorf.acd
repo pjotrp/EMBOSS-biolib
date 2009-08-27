@@ -2,9 +2,9 @@ application: showorf [
   documentation: "Display a nucleotide sequence and translation in
                   pretty format"
   groups: "Nucleic:Gene finding, Nucleic:Translation"
-  relation: "EDAM: DNA translation"
-  relation: "EDAM: Pretty sequence drawing"
-  relation: "EDAM: Coding region prediction"
+  relations: "EDAM: DNA translation"
+  relations: "EDAM: Pretty sequence drawing"
+  relations: "EDAM: Coding region prediction"
 ]
 
 section: input [

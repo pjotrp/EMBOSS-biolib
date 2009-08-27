@@ -2,6 +2,7 @@ application: ajfeatest [
   documentation: "Reads and writes (returns) a sequence and
                   its features"
   groups: "Test"
+  relations: "EDAM: File debugging"
 ]
 
 section: input [

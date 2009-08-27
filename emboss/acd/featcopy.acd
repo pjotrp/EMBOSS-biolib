@@ -2,7 +2,7 @@
 application: featcopy [
   documentation: "Reads and writes a feature table"
   groups: "Edit"
-  relation: "EDAM: File handling"
+  relations: "EDAM: Sequence file handling"
 ]
 
 section: input [

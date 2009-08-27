@@ -1,8 +1,8 @@
 application: palindrome [
   documentation: "Finds inverted repeats in nucleotide sequence(s)"
   groups: "Nucleic:Repeats"
-  relation: "EDAM: Repeat sequence finding"
-  relation: "EDAM: RNA secondary structure prediction"
+  relations: "EDAM: Repeat sequence finding"
+  relations: "EDAM: RNA secondary structure prediction"
 ]
 
 section: input [

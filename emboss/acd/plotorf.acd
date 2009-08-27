@@ -1,7 +1,7 @@
 application: plotorf [
   documentation: "Plot potential open reading frames in a nucleotide sequence"
   groups: "Nucleic:Gene finding, Nucleic:Translation"
-  relation: "EDAM: Coding region prediction"
+  relations: "EDAM: Coding region prediction"
 ]
 
 section: input [

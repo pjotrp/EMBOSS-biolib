@@ -1,7 +1,7 @@
 application: dan [
   documentation: "Calculates nucleic acid melting temperature"
   groups: "Nucleic:Composition"
-  relation: "EDAM: Nucleic acid thermal property calculation"
+  relations: "EDAM: Nucleic acid thermal property calculation"
 ]
 
 section: input [

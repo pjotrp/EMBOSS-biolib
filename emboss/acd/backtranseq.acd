@@ -1,7 +1,7 @@
 application: backtranseq [
   documentation: "Back-translate a protein sequence to a nucleotide sequence"
   groups: "Nucleic:Translation, Protein:Composition"
-  relation: "EDAM: DNA back-translation"
+  relations: "EDAM: DNA back-translation"
 ]
 
 section: input [

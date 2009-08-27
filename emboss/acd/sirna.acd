@@ -1,7 +1,7 @@
 application: sirna [
   documentation: "Finds siRNA duplexes in mRNA"
   groups: "Nucleic:Composition"
-  relation: "EDAM: siRNA duplex identification"
+  relations: "EDAM: siRNA duplex identification"
 ]
 
 section: input [

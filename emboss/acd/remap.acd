@@ -2,8 +2,8 @@ application: remap [
   documentation: "Display restriction enzyme binding sites in a
                   nucleotide sequence"
   groups: "Display, Nucleic:Restriction, Nucleic:Translation"
-  relation: "EDAM: Restriction site identification"
-  relation: "EDAM: Restriction site visualisation"
+  relations: "EDAM: Restriction site identification"
+  relations: "EDAM: Restriction site visualisation"
 ]
 
 section: input [

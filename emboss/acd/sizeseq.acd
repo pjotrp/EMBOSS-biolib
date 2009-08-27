@@ -5,7 +5,7 @@ application: sizeseq
   gui: "yes"
   batch: "yes"
   cpu: "low"
-  relation: "EDAM: File handling"
+  relations: "EDAM: Sequence file handling"
 ]
 
 

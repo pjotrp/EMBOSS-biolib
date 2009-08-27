@@ -2,7 +2,7 @@ application: yank [
   documentation: "Add a sequence reference (a full USA) to a list file
 "
   groups: "Edit"
-  relation: "EDAM: File handling"
+  relations: "EDAM: Sequence file handling"
 ]
 
 section: input [

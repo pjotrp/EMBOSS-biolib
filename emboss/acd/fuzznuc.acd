@@ -4,8 +4,8 @@ application: fuzznuc [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
-  relation: "EDAM: Nucleotide motif searching"
-  relation: "EDAM: Sequence database search by motif or pattern"
+  relations: "EDAM: Nucleotide motif searching"
+  relations: "EDAM: Sequence database search by motif or pattern"
 ]
 
 section: input [

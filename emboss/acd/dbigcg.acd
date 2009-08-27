@@ -4,6 +4,7 @@ application: dbigcg [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
+  relations: "EDAM: Database indexing"
 ]
 
 section: input [

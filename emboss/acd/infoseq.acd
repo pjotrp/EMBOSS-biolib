@@ -1,7 +1,7 @@
 application: infoseq [
   documentation: "Display basic information about sequences"
   groups: "Information"
-  relation: "EDAM: Sequence description"
+  relations: "EDAM: Sequence description"
 ]
 
 section: input [

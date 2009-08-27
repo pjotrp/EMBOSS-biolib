@@ -2,7 +2,7 @@ application: stssearch [
   documentation: "Search a DNA database for matches with a
                   set of STS primers"
   groups: "Nucleic:Primers"
-  relation: "EDAM: Sequence database search by primer"
+  relations: "EDAM: Sequence database search by primer"
 ]
 
 section: input [

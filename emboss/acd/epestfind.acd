@@ -2,7 +2,7 @@ application: epestfind [
   documentation: "Finds PEST motifs as potential proteolytic
                   cleavage sites"
   groups: "Protein:Motifs"
-  relation: "EDAM: Protein cleavage site prediction"
+  relations: "EDAM: Protein cleavage site prediction"
 ]
 
 section: input [

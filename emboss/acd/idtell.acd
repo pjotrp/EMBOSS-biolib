@@ -5,7 +5,7 @@ application: idtell
   gui: "yes"
   batch: "yes"
   cpu: "low"
-  relation: "EDAM: Database retrieval"
+  relations: "EDAM: Database information"
 ]
 
 section: input 

@@ -1,8 +1,8 @@
 application: skipseq [
   documentation: "Reads and writes (returns) sequences,
                   skipping first few"
-  relation: "EDAM: File handling"
   groups: "Edit"
+  relations: "EDAM: Sequence file handling"
 ]
 
 section: input [

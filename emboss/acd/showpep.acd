@@ -1,7 +1,7 @@
 application: showpep [
   documentation: "Displays protein sequences with features in pretty format"
   groups: "Display"
-  relation: "EDAM: Pretty sequence drawing"
+  relations: "EDAM: Pretty sequence drawing"
 ]
 
 section: input [

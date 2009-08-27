@@ -1,7 +1,7 @@
 application: garnier [
   documentation: "Predicts protein secondary structure using GOR method"
   groups: "Protein:2D Structure"
-  relation: "EDAM: Protein secondary structure prediction"
+  relations: "EDAM: Protein secondary structure prediction"
 ]
 
 section: input [

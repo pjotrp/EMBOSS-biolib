@@ -1,6 +1,7 @@
 application: patmattest [
   documentation: "Test of pattern matching"
   groups: "Test"
+  relations: "EDAM: File debugging"
 ]
 
 section: input [

@@ -4,7 +4,7 @@ application: whichdb [
   gui: "yes"
   batch: "yes"
   cpu: "low"
-  relation: "EDAM: Sequence database search by code"
+  relations: "EDAM: Sequence database search by code"
 ]
 
 section: input [

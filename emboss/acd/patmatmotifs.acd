@@ -1,8 +1,8 @@
 application: patmatmotifs [
   documentation: "Scan a protein sequence with motifs from the PROSITE database"
   groups: "Protein:Motifs"
-  relation: "EDAM: Protein motif searching"
-  relation: "EDAM: Protein secondary database search"
+  relations: "EDAM: Protein motif searching"
+  relations: "EDAM: Protein secondary database search"
 ]
 
 section: input [

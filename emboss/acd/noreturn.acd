@@ -1,7 +1,7 @@
 application: noreturn [
   documentation: "Remove carriage return from ASCII files"
   groups: "Edit"
-  relation: "EDAM: File handling"
+  relations: "EDAM: Text file handling"
 ]
 
 section: input [

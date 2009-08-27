@@ -1,6 +1,7 @@
 application: treetypedisplay [
   documentation: "Test of graphics"
   groups: "Test"
+  relations: "EDAM: File debugging"
 ]
 
 section: output [

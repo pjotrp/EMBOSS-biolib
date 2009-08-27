@@ -1,6 +1,7 @@
 application: cirdna [
   documentation: "Draws circular maps of DNA constructs"
   groups: "Display"
+  relations: "EDAM: DNA map drawing"
 ]
 
 section: input [

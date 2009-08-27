@@ -1,7 +1,7 @@
 application: wordmatch [
   documentation: "Finds regions of identity (exact matches) of two sequences"
   groups: "Alignment:Local"
-  relation: "EDAM: Sequence word comparison"
+  relations: "EDAM: Sequence word comparison"
 ]
 
 section: input [

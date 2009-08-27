@@ -2,8 +2,8 @@ application: syco [
   documentation: "Draw synonymous codon usage statistic plot for a
                   nucleotide sequence"
   groups: "Nucleic:Codon usage, Nucleic:Gene finding"
-  relation: "EDAM: Coding region prediction"
-  relation: "EDAM: Codon usage analysis"
+  relations: "EDAM: Coding region prediction"
+  relations: "EDAM: Codon usage analysis"
 ]
 
 section: input [

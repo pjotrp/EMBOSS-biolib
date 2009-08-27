@@ -4,6 +4,7 @@ application: dbxreport [
   gui: "yes"
   batch: "no"
   cpu: "medium"
+  relations: "EDAM: Database index analysis"
 ]
 
 section: input [

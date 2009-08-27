@@ -1,7 +1,7 @@
 application: newseq [
   documentation: "Create a sequence file from a typed-in sequence"
   groups: "Edit"
-  relation: "EDAM: Sequence extraction and generation"
+  relations: "EDAM: Sequence extraction and generation"
 ]
 
 section: input [

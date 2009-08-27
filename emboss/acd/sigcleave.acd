@@ -1,7 +1,7 @@
 application: sigcleave [
   documentation: "Reports on signal cleavage sites in a protein sequence"
   groups: "Protein:Motifs"
-  relation: "EDAM: Protein signal peptide identification"
+  relations: "EDAM: Protein signal peptide identification"
 ]
 
 section: input [

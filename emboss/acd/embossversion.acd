@@ -1,6 +1,7 @@
 application: embossversion [
   documentation: "Reports the current EMBOSS version number"
   groups: "Utils:Misc"
+  relations: "EDAM: Application information"
 ]
 
 section: additional [

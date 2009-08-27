@@ -2,6 +2,7 @@ application: demoreport [
   documentation: "Reads a sequence and feature table, writes
                   a report"
   groups: "Test"
+  relations: "EDAM: File debugging"
 ]
 
 section: input [

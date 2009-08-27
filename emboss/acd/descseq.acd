@@ -2,7 +2,7 @@ application: descseq [
   documentation: "Alter the name or description of a
                   sequence."
   groups: "Edit"
-  relation: "EDAM: Sequence annotation"
+  relations: "EDAM: Sequence annotation"
 ]
 
 section: input [

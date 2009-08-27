@@ -2,9 +2,9 @@ application: coderet [
   documentation: "Extract CDS, mRNA and translations from
                   feature tables"
   groups: "Feature tables, Nucleic:Translation"
-  relation: "EDAM: Coding region prediction"
-  relation: "EDAM: DNA translation"
-  relation: "EDAM: DNA transcription"
+  relations: "EDAM: Coding region prediction"
+  relations: "EDAM: DNA translation"
+  relations: "EDAM: DNA transcription"
 ]
 
 section: input [

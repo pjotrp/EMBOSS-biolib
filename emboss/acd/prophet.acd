@@ -5,7 +5,7 @@ application: prophet [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
-  relation: "EDAM: Sequence-profile alignment"
+  relations: "EDAM: Sequence-profile alignment"
 ]
 
 section: input [

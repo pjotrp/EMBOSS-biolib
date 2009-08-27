@@ -1,7 +1,7 @@
 application: infoalign [
   documentation: "Display basic information about a multiple sequence alignment"
   groups: "Alignment:Multiple, Information"
-  relation: "EDAM: "Sequence alignment description"
+  relations: "EDAM: "Sequence alignment description"
 ]
 
 section: input [

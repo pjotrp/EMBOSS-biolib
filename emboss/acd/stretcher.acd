@@ -1,7 +1,7 @@
 application: stretcher [
   documentation: "Needleman-Wunsch rapid global alignment of two sequences"
   groups: "Alignment:Global"
-  relation: "EDAM: Global sequence alignment"
+  relations: "EDAM: Global sequence alignment"
 ]
 
 section: input [

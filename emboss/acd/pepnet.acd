@@ -1,8 +1,8 @@
 application: pepnet [
   documentation: "Draw a helical net for a protein sequence"
   groups: "Display, Protein:2D Structure"
-  relation: "EDAM: Protein secondary structure visualisation"
-  relation: "EDAM: Protein sequence hydropathy calculation"
+  relations: "EDAM: Protein secondary structure visualisation"
+  relations: "EDAM: Protein sequence hydropathy calculation"
 ]
 
 section: input [

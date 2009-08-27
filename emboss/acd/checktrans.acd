@@ -2,6 +2,7 @@ application: checktrans [
   documentation: "Reports STOP codons and ORF statistics of a
                   protein"
   groups: "Protein:Composition"
+  relations: "EDAM: Coding region prediction"
 ]
 
 section: input [

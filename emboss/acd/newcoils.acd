@@ -1,7 +1,7 @@
 application: newcoils [
   documentation: "Predicts coils protein secondary structure"
   groups: "Protein:2D Structure"
-  relation: "EDAM: Protein secondary structure prediction (coils)"
+  relations: "EDAM: Protein secondary structure prediction (coils)"
 ]
 
 section: input [

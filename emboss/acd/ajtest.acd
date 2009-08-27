@@ -1,6 +1,7 @@
 application: ajtest [
   documentation: "Test file for ACD parsing"
   groups: "Test"
+  relations: "EDAM: File debugging"
 ]
 
 section: input [

@@ -1,6 +1,7 @@
 application: distmat [
   documentation: "Create a distance matrix from a multiple sequence alignment"
   groups: "Phylogeny:Molecular sequence"
+  relations: "EDAM: Phylogenetic distance matrix generation"
 ]
 
 section: input [

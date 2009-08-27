@@ -1,7 +1,7 @@
 application: isochore [
   documentation: "Plots isochores in DNA sequences"
   groups: "Nucleic:Composition"
-  relation: "EDAM: CpG island and isochores identification"
+  relations: "EDAM: CpG island and isochores identification"
 ]
 
 section: input [

@@ -2,7 +2,7 @@ application: giep [
   documentation: "Calculates the isoelectric point of a
                   protein"
   groups: "Protein:Composition"
-  relation: "EDAM: Protein isoelectric point calculation"
+  relations: "EDAM: Protein isoelectric point calculation"
 ]
 
 section: input [

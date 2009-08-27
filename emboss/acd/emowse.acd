@@ -1,6 +1,7 @@
 application: emowse [
   documentation: "Search protein sequences by digest fragment molecular weight"
   groups: "Protein:Composition"
+  relations: "EDAM: Sequence database search by isoelectric point"
 ]
 
 section: input [
