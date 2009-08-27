@@ -403,7 +403,7 @@ typedef struct AjSSeqQuery {
 ** @attr Query [AjPSeqQuery] Query data - see AjPSeqQuery
 ** @attr Data [void*] Format data for reuse, e.g. multiple sequence input
 ** @attr Format [AjEnum] Sequence input format enum
-** @attr Padding [char[4]] Padding to alignment boundary
+** @attr Records [ajuint] Records processed
 ** @@
 ******************************************************************************/
 
@@ -449,7 +449,7 @@ typedef struct AjSSeqin {
   AjPSeqQuery Query;
   void *Data;
   AjEnum Format;
-  char Padding[4];
+  ajuint Records;
 } AjOSeqin;
 
 #define AjPSeqin AjOSeqin*
