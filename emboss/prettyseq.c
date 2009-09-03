@@ -322,7 +322,7 @@ static void prettyseq_calcProteinPos(ajint *ppos, const AjPStr pro, ajint len)
 	{
 	    ppos[pos] = 0;
 	    ++pos;
-	    while(p[pos]==' ')
+	    while(pos<len && p[pos]==' ')
 	    {
 		ppos[pos] = 0;
 		++pos;
