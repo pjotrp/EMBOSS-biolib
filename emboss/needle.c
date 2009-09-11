@@ -58,12 +58,15 @@ int main(int argc, char **argv)
 
     float gapopen;
     float gapextend;
+    float endgapopen;
+    float endgapextend;
     ajulong maxarr = 1000; 	/* arbitrary. realloc'd if needed */
     ajulong len;			
 
     float score;
 
     AjBool dobrief = ajTrue;
+    AjBool endweight = ajFalse; /* whether end gap penalties should be applied */
 
     float id   = 0.;
     float sim  = 0.;
@@ -82,7 +85,10 @@ int main(int argc, char **argv)
     seqall    = ajAcdGetSeqall("bsequence");
     gapopen   = ajAcdGetFloat("gapopen");
     gapextend = ajAcdGetFloat("gapextend");
+    endgapopen   = ajAcdGetFloat("endopen");
+    endgapextend = ajAcdGetFloat("endextend");
     dobrief   = ajAcdGetBoolean("brief");
+    endweight   = ajAcdGetBoolean("endweight");
 
     align     = ajAcdGetAlign("outfile");
 
@@ -130,17 +136,25 @@ int main(int argc, char **argv)
 	ajStrAssignC(&m,"");
 	ajStrAssignC(&n,"");
 
-	score = embAlignPathCalc(p,q,lena,lenb,gapopen,gapextend,path,sub,cvt,
-			compass,ajFalse);
+	score= embAlignPathCalcUsingEndGapPenalties(p,q,lena,lenb,gapopen,gapextend,
+			endgapopen, endgapextend, path,sub,cvt,	compass,ajFalse, endweight);
 
 	/*score = embAlignScoreNWMatrix(path,compass,gapopen,gapextend,
                                       a,b,lena,lenb,sub,cvt,
 				      &start1,&start2);*/
 
 
-	embAlignWalkNWMatrix(path,a,b,&m,&n,lena,lenb,&start1,&start2,gapopen,
+	if (endweight)
+	{
+	    embAlignWalkNWMatrixEndGaps(path,a,b,&m,&n,lena,lenb,&start1,&start2,
+	            compass);
+	}
+	else
+	{
+	    embAlignWalkNWMatrix(path,a,b,&m,&n,lena,lenb,&start1,&start2,gapopen,
 			    gapextend,compass);
-
+	}
+		
 	embAlignReportGlobal(align, a, b ,m, n,
 			     start1, start2,
 			     gapopen, gapextend,
