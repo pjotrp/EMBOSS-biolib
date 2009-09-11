@@ -20815,6 +20815,44 @@ FP /^BFULL  +7 -----cccgtt      2\n/
 FC = 44
 //
 
+ID align-needle-noendweight
+AP needle
+CL -gapopen=8 -gapextend=8 -stdout -datafile=EBLOSUM50 -endweight=no
+IN asis::PAWHEAE
+IN asis::HEAGAWGHEE
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +4\/11 \(36\.4%\)/
+FP /^# Score: +25\.0\n/
+FP /^asis               1 ---PAW-HEAE      7\n/
+FP /^asis               1 HEAGAWGHEE-     10\n/
+FC = 40
+//
+
+ID align-needle-withendweight
+AP needle
+CL -gapopen=8 -gapextend=8 -endopen=8 -endextend=8 -stdout -datafile=EBLOSUM50 -endweight
+IN asis::PAWHEAE
+IN asis::HEAGAWGHEE
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +5\/11 \(45\.5%\)/
+FP /^# Score: +1\.0\n/
+FP /^asis               1 --P-AW-HEAE      7\n/
+FP /^asis               1 HEAGAWGHE-E     10\n/
+FC = 42
+//
+
 ID align-water-full
 AP water
 CL -gapopen 5 -gapext 1 -stdout
