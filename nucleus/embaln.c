@@ -217,6 +217,246 @@ float embAlignPathCalc(const char *a, const char *b,
 }
 
 
+/* @func embAlignPathCalcUsingEndGapPenalties *****************************************************
+**
+** Create path matrix for Needleman-Wunsch, using end gap penalties.
+** Nucleotides or proteins as needed.
+**
+** @param [r] a [const char *] first sequence
+** @param [r] b [const char *] second sequence
+** @param [r] lena [ajint] length of first sequence
+** @param [r] lenb [ajint] length of second sequence
+** @param [r] gapopen [float] gap opening penalty
+** @param [r] gapextend [float] gap extension penalty
+** @param [r] endgapopen [float] end gap opening penalty
+** @param [r] endgapextend [float] end gap extension penalty
+** @param [w] path [float *] path matrix
+** @param [r] sub [float * const *] substitution matrix from AjPMatrixf
+** @param [r] cvt [const AjPSeqCvt] Conversion array for AjPMatrixf
+** @param [w] compass [ajint *] Path direction pointer array
+** @param [r] show [AjBool] Display path matrix
+**
+** @return [float] Maximum score
+** @@
+**
+******************************************************************************/
+
+float embAlignPathCalcUsingEndGapPenalties(const char *a, const char *b,
+                       ajint lena, ajint lenb, float gapopen,
+                       float gapextend, float endgapopen, float endgapextend,
+                       float *path, float * const *sub, const AjPSeqCvt cvt,
+                       ajint *compass, AjBool show, AjBool endweight)
+{
+    ajint xpos;
+    ajint ypos;
+    ajint i;
+    ajint j;
+
+    double match;
+    double mscore;
+    double fnew;
+    double *maxa;
+    double maxb;
+
+    static AjPStr outstr = NULL;
+    char compasschar;
+
+    float ret = -FLT_MAX;
+
+    ajDebug("embAlignPathCalcUsingEndGapPenaltiesOriginalAlg\n");
+
+    /* Create stores for the maximum values in a row or column */
+
+    maxa = AJALLOC(lena*sizeof(double));
+
+    match = sub[ajSeqcvtGetCodeK(cvt, a[0])][ajSeqcvtGetCodeK(cvt, b[0])];
+    compass[0] = 0;
+    path[0] = match;
+    if (endweight && -endgapopen > match)
+    {
+        path[0] = endgapopen;
+    }
+
+    maxa[0] = path[0];
+
+    /* First initialise the first column and row */
+    for (i = 1; i < lena; ++i)
+    {
+        match = sub[ajSeqcvtGetCodeK(cvt, a[i])][ajSeqcvtGetCodeK(cvt, b[0])];
+        if (!endweight)
+        {
+            path[i * lenb] = match;
+            compass[i * lenb] = 0;
+            maxa[i] = path[i * lenb] - (gapopen);
+        }
+        else
+        {
+            match = match - (endgapopen + (i - 1) * endgapextend);
+            double matchup = path[(i - 1) * lenb] - endgapopen; 
+            double matchleft = -(endgapopen + (i + 1) * endgapextend);
+            
+            if (match >= matchup && match >= matchleft)
+            {
+                path[i * lenb] = match;
+                compass[i * lenb] = 0;
+                maxa[i] = path[i * lenb];
+            }
+            else if (matchup >= matchleft)
+            {
+                path[i * lenb] = matchup;
+                compass[i * lenb] = 2;
+                maxa[i] = path[i * lenb];
+            }
+            else
+            {
+                path[i * lenb] = matchleft;
+                compass[i * lenb] = 1;
+                maxa[i] = path[i * lenb] - (gapopen);
+            }
+            maxa[i] = path[i * lenb];
+        }
+    }
+
+    for (j = 1; j < lenb; ++j)
+    {
+        match = sub[ajSeqcvtGetCodeK(cvt, a[0])][ajSeqcvtGetCodeK(cvt, b[j])];
+        if (!endweight)
+        {
+            path[j] = match;
+            compass[j] = 0;
+        }
+        else
+        {
+            match = match - (endgapopen + (j - 1) * endgapextend);
+            double matchleft = path[(j - 1)] - endgapopen; 
+            double matchup = -(endgapopen + (j + 1) * endgapextend);
+            
+            if (match >= matchup && match >= matchleft)
+            {
+                path[j] = match;
+                compass[j] = 0;
+            }
+            else if (matchup >= matchleft)
+            {
+                path[j] = matchup;
+                compass[j] = 2;
+            }
+            else
+            {
+                path[j] = matchleft;
+                compass[j] = 1;
+            }
+        }
+    }
+
+    /* xpos and ypos are the diagonal steps so start at 1 */
+    xpos = 1;
+
+    while (xpos != lenb)
+    {
+        ypos = 1;
+        maxb = path[xpos] - (gapopen);
+
+        while (ypos < lena)
+        {
+            /* get match for current xpos/ypos */
+            match = sub[ajSeqcvtGetCodeK(cvt, a[ypos])][ajSeqcvtGetCodeK(cvt,
+                    b[xpos])];
+
+            /* Get diag score */
+            mscore = path[(ypos - 1) * lenb + xpos - 1] + match;
+
+            /* ajDebug("match %d:%d %c:%c %d %6.2f ",
+             xpos, ypos, a[ypos], b[xpos], ypos*lenb+xpos,mscore); */
+
+            /* coordinate of the current cell being calculated; [xpos,ypos] */
+            ajint cursor = ypos * lenb + xpos;
+
+            /* Set compass to diagonal value 0 */
+            compass[cursor] = 0;
+            path[cursor] = (float) mscore;
+
+            /* Now parade back along X axis */
+            maxa[ypos] -= gapextend;
+            fnew = path[ypos * lenb + xpos - 1];
+            fnew -= gapopen;
+
+            if (fnew > maxa[ypos])
+                maxa[ypos] = fnew;
+
+            if (maxa[ypos] > mscore)
+            {
+                mscore = maxa[ypos];
+                path[cursor] = (float) mscore;
+                compass[cursor] = 1; /* Score comes from left */
+            }
+
+            /* And then bimble down Y axis */
+            maxb -= gapextend;
+            fnew = path[(ypos - 1) * lenb + xpos];
+            fnew -= gapopen;
+
+            if (fnew > maxb)
+                maxb = fnew;
+
+            if (maxb > mscore)
+            {
+                mscore = maxb;
+                path[cursor] = (float) mscore;
+                compass[cursor] = 2; /* Score comes from bottom */
+            }
+
+            /*ajDebug("\n");*/
+            ypos++;
+        }
+        ++xpos;
+
+    }
+
+    for (i = 0; i < lenb; ++i)
+        if (path[(lena - 1) * lenb + i] > ret)
+            ret = path[(lena - 1) * lenb + i];
+
+    for (j = 0; j < lena; ++j)
+        if (path[j * lenb + lenb - 1] > ret)
+            ret = path[j * lenb + lenb - 1];
+
+    if (show)
+    {
+        ajDebug("path matrix:\n%S\n", outstr);
+        for (i = 0; i < lena; i++)
+        {
+            ajFmtPrintS(&outstr, "%6d ", i);
+            for (j = 0; j < lenb; j++)
+            {
+                if (compass[i * lenb + j] == 1)
+                    compasschar = '<';
+                else if (compass[i * lenb + j] == 2)
+                    compasschar = 'v';
+                else
+                    compasschar = ' ';
+                ajFmtPrintAppS(&outstr, "%6.2f%c ", path[i * lenb + j],
+                        compasschar);
+            }
+            ajDebug("%S\n", outstr);
+        }
+        ajFmtPrintS(&outstr, "       ");
+
+        for (j = 0; j < lenb; ++j)
+            ajFmtPrintAppS(&outstr, "%6d  ", j);
+    }
+
+    AJFREE(maxa);
+
+    ajStrDelStatic(&outstr);
+
+    if (endweight)
+        ret = path[lena * lenb - 1];
+
+    return ret;
+}
+
+
 
 
 /* @func embAlignPathCalcSW ***************************************************
@@ -710,6 +950,78 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
     return;
 }
 
+
+/* @func embAlignWalkNWMatrixEndGaps *************************************************
+**
+** Walk down a matrix for Needleman Wunsch which was constructed using end gap penalties.
+** Form aligned strings. Nucleotides or proteins as needed.
+**
+** @param [r] path [const float*] path matrix
+** @param [r] a [const AjPSeq] first sequence
+** @param [r] b [const AjPSeq] second sequence
+** @param [w] m [AjPStr *] alignment for first sequence
+** @param [w] n [AjPStr *] alignment for second sequence
+** @param [r] lena [ajint] length of first sequence
+** @param [r] lenb [ajint] length of second sequence
+** @param [w] start1 [ajint *] start of alignment in first sequence
+** @param [w] start2 [ajint *] start of alignment in second sequence
+** @param [r] compass [const ajint*] Path direction pointer array
+**
+** @return [void]
+******************************************************************************/
+
+void embAlignWalkNWMatrixEndGaps(const float *path, const AjPSeq a, const AjPSeq b,
+			  AjPStr *m, AjPStr *n,
+			  ajint lena, ajint lenb,
+			  ajint *start1, ajint *start2,
+			  const ajint *compass)
+{
+	ajint xpos = 0;
+	ajint ypos = 0;
+	const char *p;
+	const char *q;
+
+	ajDebug("embAlignSimpleWalkNWMatrixEndGaps\n");
+
+	ajStrAssignClear(m);
+	ajStrAssignClear(n);
+
+	p = ajSeqGetSeqC(a);
+	q = ajSeqGetSeqC(b);
+	xpos = lenb - 1;
+	ypos = lena - 1;
+	while (xpos >= 0 && ypos >= 0)
+	{
+		if (!compass[ypos * lenb + xpos]) /* diagonal */
+		{
+			ajStrAppendK(m, p[ypos--]);
+			ajStrAppendK(n, q[xpos--]);
+			continue;
+		}
+		else if (compass[ypos * lenb + xpos] == 1) /* Left, gap(s) in vertical */
+		{
+			ajStrAppendK(m, '.');
+			ajStrAppendK(n, q[xpos--]);
+			continue;
+		}
+		else if (compass[ypos * lenb + xpos] == 2) /* Down, gap(s) in horizontal */
+		{
+			ajStrAppendK(m, p[ypos--]);
+			ajStrAppendK(n, '.');
+
+			continue;
+		} else
+			ajFatal("Walk Error in NW");
+	}
+
+	*start2 = xpos+1;
+	*start1 = ypos+1;
+
+	ajStrReverse(m); /* written with append, need to reverse */
+	ajStrReverse(n);
+
+	return;
+}
 
 
 
