@@ -1,4 +1,10 @@
 Version 6.2.0
+    Needle was updated with end-gap penalties support allowing
+    complete global pairwise alignments. Three new options added are
+    endopen, endextend, and endweight. endopen and endextend options
+    are used to specify gap opening and extension penalties for end gaps.
+    The endweight option turns on weighting of end gaps. 
+    
 	Application documentation has a new format HTML table for the
 	command line options. This is excluded from the text
 	documentation, where the format of the help output is improved.
@@ -50,7 +56,7 @@ Version 6.2.0
 	the application version "progamname:version"
 
 	The ACD application attribute "version:" is renamed
-	"versionnnumber:" to avoid a name clash with the new -version
+	"versionnumber:" to avoid a name clash with the new -version
 	qualifier. We need to use the qualifier name "-version" for
 	compatibility with other systems and applications, so the renaming
 	of the attribute is unavoidable. We believe it was only used (as
