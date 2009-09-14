@@ -31,7 +31,7 @@ complex_temporary_output            | file           |                          
 compseq_output                      | file           |  Sequence composition report                    | Program compseq output
 consense_output                     | file           |  Phylogenetic consensus tree                    | Phylip consense program output
 contact                             | file           |  Amino acid contact map                         | Structure contacts
-continuous_character                | frequencies    |  Continuous quantitative characters file        | Continuous character frequency
+continuous_character                | frequencies    |  PHYLIP continuous quantitative characters file | Continuous character frequency
 continuous_character_frequency      | file           |  PHYLIP phylogenetic character frequencies file | Phylip continuous character frequency
 contml_input                        | file           |  PHYLIP phylogenetic character frequencies file | Phylip contml program input
 contml_output                       | file           |  Phylip phylogenetic tree raw data              | Phylip contml program output
