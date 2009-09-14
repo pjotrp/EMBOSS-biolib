@@ -217,7 +217,7 @@ float embAlignPathCalc(const char *a, const char *b,
 }
 
 
-/* @func embAlignPathCalcUsingEndGapPenalties *****************************************************
+/* @func embAlignPathCalcUsingEndGapPenalties *********************************
 **
 ** Create path matrix for Needleman-Wunsch, using end gap penalties.
 ** Nucleotides or proteins as needed.
@@ -263,7 +263,7 @@ float embAlignPathCalcUsingEndGapPenalties(const char *a, const char *b,
 
     float ret = -FLT_MAX;
 
-    ajDebug("embAlignPathCalcUsingEndGapPenaltiesOriginalAlg\n");
+    ajDebug("embAlignPathCalcUsingEndGapPenalties\n");
 
     /* Create stores for the maximum values in a row or column */
 
@@ -413,13 +413,22 @@ float embAlignPathCalcUsingEndGapPenalties(const char *a, const char *b,
 
     }
 
-    for (i = 0; i < lenb; ++i)
-        if (path[(lena - 1) * lenb + i] > ret)
-            ret = path[(lena - 1) * lenb + i];
+    if (endweight)
+    {
+        /* when using end gap penalties the score of the best global alignment
+         * is stored in the final cell of the path matrix */
+        ret = path[lena * lenb - 1];
+    }
+    else
+    {
+        for (i = 0; i < lenb; ++i)
+            if (path[(lena - 1) * lenb + i] > ret)
+                ret = path[(lena - 1) * lenb + i];
 
-    for (j = 0; j < lena; ++j)
-        if (path[j * lenb + lenb - 1] > ret)
-            ret = path[j * lenb + lenb - 1];
+        for (j = 0; j < lena; ++j)
+            if (path[j * lenb + lenb - 1] > ret)
+                ret = path[j * lenb + lenb - 1];
+    }
 
     if (show)
     {
@@ -449,9 +458,6 @@ float embAlignPathCalcUsingEndGapPenalties(const char *a, const char *b,
     AJFREE(maxa);
 
     ajStrDelStatic(&outstr);
-
-    if (endweight)
-        ret = path[lena * lenb - 1];
 
     return ret;
 }
@@ -951,10 +957,10 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 }
 
 
-/* @func embAlignWalkNWMatrixEndGaps *************************************************
+/* @func embAlignWalkNWMatrixEndGaps ******************************************
 **
-** Walk down a matrix for Needleman Wunsch which was constructed using end gap penalties.
-** Form aligned strings. Nucleotides or proteins as needed.
+** Walk down a matrix for Needleman Wunsch which was constructed using end gap
+** penalties. Form aligned strings. Nucleotides or proteins as needed.
 **
 ** @param [r] path [const float*] path matrix
 ** @param [r] a [const AjPSeq] first sequence
