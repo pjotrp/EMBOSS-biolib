@@ -105,7 +105,7 @@ int main(int argc, char **argv)
     AjPFeattabOut featout = NULL;
 
 
-    ajGraphInit("cpgplot",argc,argv);
+    ajGraphicsInit("cpgplot",argc,argv);
 
     seqall    = ajAcdGetSeqall("sequence");
     window    = ajAcdGetInt("window");
@@ -555,13 +555,13 @@ static void cpgplot_plotit(const char *seq,
 			       0.0,max);
 	ajGraphPlpDataSetTypeC(tmGraph2,"Multi 2D Plot");
 
-	ajGraphxySetXStart(graphs,(float)begin);
-	ajGraphxySetXEnd(graphs,(float)(begin+len-1));
+	ajGraphxySetXstartF(graphs,(float)begin);
+	ajGraphxySetXendF(graphs,(float)(begin+len-1));
 
-	ajGraphxySetYStart(graphs,0.0);
-	ajGraphxySetYEnd(graphs,obsexpmax);
-	ajGraphxySetXRangeII(graphs,begin,begin+len-1);
-	ajGraphxySetYRangeII(graphs,0,(ajint)(obsexpmax+1.0));
+	ajGraphxySetYstartF(graphs,0.0);
+	ajGraphxySetYendF(graphs,obsexpmax);
+	ajGraphxySetXrangeII(graphs,begin,begin+len-1);
+	ajGraphxySetYrangeII(graphs,0,(ajint)(obsexpmax+1.0));
 
 	ajGraphPlpDataCalcXY(tmGraph2,len,(float)begin,1.0,obsexp);
 	ajGraphDataReplaceI(graphs,tmGraph2,igraph++);
@@ -589,12 +589,12 @@ static void cpgplot_plotit(const char *seq,
 			      0.0,max);
 	ajGraphPlpDataSetTypeC(tmGraph3,"Multi 2D Plot");
 
-	ajGraphxySetXStart(graphs,(float)begin);
-	ajGraphxySetXEnd(graphs,(float)(begin+len-1));
-	ajGraphxySetYStart(graphs,0);
-	ajGraphxySetYEnd(graphs,100);
-	ajGraphxySetXRangeII(graphs,begin,begin+len-1);
-	ajGraphxySetYRangeII(graphs,0,100);
+	ajGraphxySetXstartF(graphs,(float)begin);
+	ajGraphxySetXendF(graphs,(float)(begin+len-1));
+	ajGraphxySetYstartF(graphs,0);
+	ajGraphxySetYendF(graphs,100);
+	ajGraphxySetXrangeII(graphs,begin,begin+len-1);
+	ajGraphxySetYrangeII(graphs,0,100);
 
 	ajGraphPlpDataCalcXY(tmGraph3,len,(float)begin,1.0,xypc);
 	ajGraphDataReplaceI(graphs,tmGraph3,igraph++);
@@ -622,12 +622,12 @@ static void cpgplot_plotit(const char *seq,
 	ajGraphPlpDataSetTypeC(tmGraph,"Multi 2D Plot");
 
 
-	ajGraphxySetXStart(graphs,(float)begin);
-	ajGraphxySetXEnd(graphs,(float)(begin+len-1));
-	ajGraphxySetYStart(graphs,0);
-	ajGraphxySetYEnd(graphs,2);
-	ajGraphxySetXRangeII(graphs,begin,begin+len-1);
-	ajGraphxySetYRangeII(graphs,0,2);
+	ajGraphxySetXstartF(graphs,(float)begin);
+	ajGraphxySetXendF(graphs,(float)(begin+len-1));
+	ajGraphxySetYstartF(graphs,0);
+	ajGraphxySetYendF(graphs,2);
+	ajGraphxySetXrangeII(graphs,begin,begin+len-1);
+	ajGraphxySetYrangeII(graphs,0,2);
 	ajGraphPlpDataSetMaxMin(tmGraph,(float)begin,(float)(begin+len-1),
 			       (float) 0.0, (float) 1.2);
 	ajGraphPlpDataSetMaxima(tmGraph,(float)begin,(float)(begin+len-1),

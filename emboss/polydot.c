@@ -78,7 +78,7 @@ int main(int argc, char **argv)
     float flen2;
     ajuint tui;
     
-    ajGraphInit("polydot", argc, argv);
+    ajGraphicsInit("polydot", argc, argv);
 
     wordlen  = ajAcdGetInt("wordsize");
     seqset   = ajAcdGetSeqset("sequences");
@@ -124,7 +124,7 @@ int main(int argc, char **argv)
     ajGraphOpenWin(graph, (float)0.0-xmargin,(total+xmargin)*(float)1.35,
 		   (float)0.0-ymargin,
 		   total+ymargin);
-    ajGraphSetCharScale((float)0.3);
+    ajGraphicsSetCharscale((float)0.3);
     
     
     for(i=0;i<ajSeqsetGetSize(seqset);i++)
@@ -142,7 +142,7 @@ int main(int argc, char **argv)
 		flen2 = (float) tui;
 
 		if(boxit)
-		    ajGraphDrawRect(xstart,ystart,
+		    ajGraphicsDrawRect(xstart,ystart,
 				xstart+flen1,
 				ystart+flen2);
 
@@ -163,13 +163,13 @@ int main(int argc, char **argv)
 		{
 		    for(k=0.0;k<ajSeqGetLen(seq1);k+=tickgap)
 		    {
-			ajGraphDrawLine(xstart+k,ystart,xstart+k,
+			ajGraphicsDrawLine(xstart+k,ystart,xstart+k,
 				    ystart-ticklen);
 
 			sprintf(ptr,"%d",(ajint)k);
-			ajGraphDrawTextAtMid(xstart+k,ystart-(onefifth),ptr);
+			ajGraphicsDrawTextAtmid(xstart+k,ystart-(onefifth),ptr);
 		    }
-		    ajGraphDrawTextAtMid(xstart+(flen1/(float)2.0),
+		    ajGraphicsDrawTextAtmid(xstart+(flen1/(float)2.0),
 				   ystart-(3*onefifth),
 				   ajStrGetPtr(ajSeqsetGetseqNameS(seqset, i)));
 		}
@@ -178,13 +178,13 @@ int main(int argc, char **argv)
 		{
 		    for(k=0.0;k<ajSeqGetLen(seq2);k+=tickgap)
 		    {
-			ajGraphDrawLine(xstart,ystart+k,xstart-ticklen,
+			ajGraphicsDrawLine(xstart,ystart+k,xstart-ticklen,
 				    ystart+k);
 
 			sprintf(ptr,"%d",(ajint)k);
-			ajGraphDrawTextAtEnd(xstart-(onefifth),ystart+k,ptr);
+			ajGraphicsDrawTextAtend(xstart-(onefifth),ystart+k,ptr);
 		    }
-		    ajGraphDrawTextOnLine(xstart-(3*onefifth),
+		    ajGraphicsDrawTextAtline(xstart-(3*onefifth),
 				    ystart+(flen2/(float)2.0),
 				    xstart-(3*onefifth),ystart+flen2,
 				    ajStrGetPtr(ajSeqsetGetseqNameS(seqset, j)),0.5);
@@ -198,7 +198,7 @@ int main(int argc, char **argv)
 	ystart = 0.0;
     }
     
-    ajGraphDrawTextAtStart(total+onefifth,total-(onefifth),
+    ajGraphicsDrawTextAtstart(total+onefifth,total-(onefifth),
 		     "No. Length  Lines  Points Sequence");
     
     for(i=0;i<ajSeqsetGetSize(seqset);i++)
@@ -208,7 +208,7 @@ int main(int argc, char **argv)
 		    ajSeqGetLen(seq1),lines[i],
 		    pts[i],ajSeqGetNameC(seq1));
 
-	ajGraphDrawTextAtStart(total+onefifth,total-(onefifth*(i+2)),
+	ajGraphicsDrawTextAtstart(total+onefifth,total-(onefifth*(i+2)),
 			 ajStrGetPtr(sajb));
     }
     
@@ -269,7 +269,7 @@ static void polydot_drawPlotlines(void *x, void *cl)
     x2 += p->length;
     y2 += (PLFLT)p->length;
 
-    ajGraphDrawLine(x1, y1, x2, y2);
+    ajGraphicsDrawLine(x1, y1, x2, y2);
 
     return;
 }

@@ -81,7 +81,7 @@ int main(int argc, char **argv)
 
 
 #ifndef GROUT
-    (void) ajGraphInit("giep", argc, argv);
+    (void) ajGraphicsInit("giep", argc, argv);
 #else
     (void) embInit("giep", argc, argv); 
 #endif 
@@ -187,18 +187,18 @@ int main(int argc, char **argv)
 #ifndef GROUT
 	    phGraph=ajGraphPlpDataNewI(npoints);
 	    ajGraphSetTitleC(graph,ajStrGetPtr(title));
-	    ajGraphSetXTitleC(graph,"pH");
-	    ajGraphSetYTitleC(graph,"Charge");
+	    ajGraphSetXlabelC(graph,"pH");
+	    ajGraphSetYlabelC(graph,"Charge");
 
 	    ajGraphPlpDataSetTypeC(phGraph,"2D Plot Float");
 	    ajGraphPlpDataSetMaxMin(phGraph,1.0,14.0,minchg,maxchg);
 	    ajGraphPlpDataSetMaxima(phGraph,1.0,14.0,minchg,maxchg);
-	    ajGraphxySetXStart(graph,1.0);
-	    ajGraphxySetXEnd(graph,14.0);
-	    ajGraphxySetYStart(graph,minchg);
-	    ajGraphxySetYEnd(graph,maxchg);
-	    ajGraphxySetXRangeII(graph,1,14);
-	    ajGraphxySetYRangeII(graph,(ajint)minchg,(ajint)maxchg);
+	    ajGraphxySetXstartF(graph,1.0);
+	    ajGraphxySetXendF(graph,14.0);
+	    ajGraphxySetYstartF(graph,minchg);
+	    ajGraphxySetYendF(graph,maxchg);
+	    ajGraphxySetXrangeII(graph,1,14);
+	    ajGraphxySetYrangeII(graph,(ajint)minchg,(ajint)maxchg);
 
 	    ajGraphPlpDataSetXY(phGraph,xa,ya);
 	    ajGraphDataReplace(graph,phGraph);

@@ -105,13 +105,13 @@ static void lindna_InterBlocks(float xDraw, float yDraw, float BlockHeight,
 			       float From, float To, const AjPStr InterSymbol,
 			       ajint Colour);
 
-static void lindna_DrawArrowHeadsOnLine(float xDraw, float yDraw, float Height,
+static void lindna_DrawArrowHeadsOnline(float xDraw, float yDraw, float Height,
 					float Length, ajint Way);
 
-static void lindna_DrawBracketsOnLine(float xDraw, float yDraw, float Height,
+static void lindna_DrawBracketsOnline(float xDraw, float yDraw, float Height,
 				      float Length, ajint Way);
 
-static void lindna_DrawBarsOnLine(float xDraw, float yDraw, float Height);
+static void lindna_DrawBarsOnline(float xDraw, float yDraw, float Height);
 
 static void lindna_HorTextPile(float x, float y, const AjPStr Name,
 			       float postext,
@@ -217,7 +217,7 @@ int main(int argc, char **argv)
     ajint maxlabels;
 
     /* read the ACD file for graphical programs */
-    ajGraphInit("lindna", argc, argv);
+    ajGraphicsInit("lindna", argc, argv);
 
     /* array size limits */
     maxgroups = ajAcdGetInt("maxgroups");
@@ -402,7 +402,7 @@ int main(int argc, char **argv)
 	if(charsize<minsize)
 	    minsize = charsize;
     }
-    ajGraphSetDefCharSize(minsize);
+    ajGraphicsSetDefcharsize(minsize);
 
 
     /* find whether horizontal text strings overlap within a group */
@@ -462,7 +462,7 @@ int main(int argc, char **argv)
 	if(charsize<minsize)
 	    minsize = charsize;
     }
-    ajGraphSetDefCharSize(minsize);
+    ajGraphicsSetDefcharsize(minsize);
 
 
     /* the ruler having been resized, recompute its height */
@@ -584,10 +584,10 @@ static float lindna_TextRuler(float Start, float End, ajint GapSize,
 
     ajStrFromInt(&string, (ajint)Start);
     if(TextOri=='H')
-	charsize = ajGraphFitTextOnLine(0, 0, TextLength, 0,
+	charsize = ajGraphFitTextAtline(0, 0, TextLength, 0,
 					ajStrGetPtr(string), TextHeight);
     else
-	charsize = ajGraphFitTextOnLine(0, 0, 0, TextLength,
+	charsize = ajGraphFitTextAtline(0, 0, 0, TextLength,
 					ajStrGetPtr(string), TextHeight);
     if(charsize < minsize)
 	minsize = charsize;
@@ -598,10 +598,10 @@ static float lindna_TextRuler(float Start, float End, ajint GapSize,
 	{
 	    ajStrFromInt(&string, i);
 	    if(TextOri=='H')
-		charsize = ajGraphFitTextOnLine(0, 0, TextLength, 0,
+		charsize = ajGraphFitTextAtline(0, 0, TextLength, 0,
 						ajStrGetPtr(string), TextHeight);
 	    else
-		charsize = ajGraphFitTextOnLine(0, 0, 0, TextLength,
+		charsize = ajGraphFitTextAtline(0, 0, 0, TextLength,
 						ajStrGetPtr(string), TextHeight);
 	    if(charsize < minsize)
 		minsize = charsize;
@@ -610,10 +610,10 @@ static float lindna_TextRuler(float Start, float End, ajint GapSize,
 
     ajStrFromInt(&string, (ajint)End);
     if(TextOri=='H')
-	charsize = ajGraphFitTextOnLine(0, 0, TextLength, 0,
+	charsize = ajGraphFitTextAtline(0, 0, TextLength, 0,
 					ajStrGetPtr(string), TextHeight);
     else
-	charsize = ajGraphFitTextOnLine(0, 0, 0, TextLength,
+	charsize = ajGraphFitTextAtline(0, 0, 0, TextLength,
 					ajStrGetPtr(string), TextHeight);
     if(charsize < minsize)
 	minsize = charsize;
@@ -716,14 +716,14 @@ static void lindna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 
     string = ajStrNew();
 
-    ajGraphSetFore(Colour);
+    ajGraphicsSetColourFore(Colour);
 
-    ajGraphDrawLine(xDraw, yDraw, xDraw+DrawLength, yDraw);
+    ajGraphicsDrawLine(xDraw, yDraw, xDraw+DrawLength, yDraw);
 
     /* set the molecule's start */
     ajStrFromInt(&string, (ajint)Start);
     if(TickLines)
-	ajGraphDrawLine(xDraw, Border, xDraw, yDraw);
+	ajGraphicsDrawLine(xDraw, Border, xDraw, yDraw);
     lindna_DrawTicks(xDraw, yDraw, TickHeight, 0.0, string,
 		     postext, TextOri, 1, 0, Colour);
 
@@ -734,7 +734,7 @@ static void lindna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 	{
 	    ajStrFromInt(&string, i);
 	    if(TickLines)
-		ajGraphDrawLine(xDraw+(float)1.0*(i-Start)/ReduceCoef,
+		ajGraphicsDrawLine(xDraw+(float)1.0*(i-Start)/ReduceCoef,
 				Border, xDraw+(float)1.0*(i-Start)/ReduceCoef,
 				yDraw);
 	    lindna_DrawTicks(xDraw, yDraw, TickHeight,
@@ -746,7 +746,7 @@ static void lindna_DrawRuler(float xDraw, float yDraw, float Start, float End,
     /* set the molecule's end */
     ajStrFromInt(&string, (ajint)End);
     if(TickLines)
-	ajGraphDrawLine(xDraw+(float)1.0*RealLength/ReduceCoef, Border,
+	ajGraphicsDrawLine(xDraw+(float)1.0*RealLength/ReduceCoef, Border,
 			xDraw+(float)1.0*RealLength/ReduceCoef, yDraw);
     lindna_DrawTicks(xDraw, yDraw, TickHeight,(float)1.0*RealLength/ReduceCoef,
 		     string, postext, TextOri, 1, 0,
@@ -792,9 +792,9 @@ static void lindna_DrawTicks(float xDraw, float yDraw, float TickHeight,
     x2Ticks = x1Ticks;
     y2Ticks = y1Ticks+TickHeight;
 
-    ajGraphSetFore(Colour);
+    ajGraphicsSetColourFore(Colour);
 
-    ajGraphDrawLine(x1Ticks, y1Ticks, x2Ticks, y2Ticks);
+    ajGraphicsDrawLine(x1Ticks, y1Ticks, x2Ticks, y2Ticks);
     if(NumNames!=0)
     {
 	if(TextOri=='H')
@@ -846,25 +846,25 @@ static void lindna_DrawBlocks(float xDraw, float yDraw, float BlockHeight,
     x2Blocks = xDraw+To;
     y2Blocks = y1Blocks-BlockHeight;
 
-    ajGraphSetFore(Colour);
+    ajGraphicsSetColourFore(Colour);
 
     if(ajCharCmpCase(ajStrGetPtr(BlockType), "Open")==0)
     {
-	ajGraphDrawRect(x1Blocks, y1Blocks, x2Blocks, y2Blocks);
+	ajGraphicsDrawRect(x1Blocks, y1Blocks, x2Blocks, y2Blocks);
     }
     else if(ajCharCmpCase(ajStrGetPtr(BlockType), "Filled")==0)
     {
-	ajGraphDrawRectFill(x1Blocks, y1Blocks, x2Blocks, y2Blocks);
+	ajGraphicsDrawRectFill(x1Blocks, y1Blocks, x2Blocks, y2Blocks);
     }
     else
     {
-	ajGraphDrawRectFill(x1Blocks, y1Blocks, x2Blocks, y2Blocks);
-	ajGraphSetFore(0);
-	ajGraphDrawRect(x1Blocks, y1Blocks, x2Blocks, y2Blocks);
-	ajGraphSetFore(Colour);
+	ajGraphicsDrawRectFill(x1Blocks, y1Blocks, x2Blocks, y2Blocks);
+	ajGraphicsSetColourFore(0);
+	ajGraphicsDrawRect(x1Blocks, y1Blocks, x2Blocks, y2Blocks);
+	ajGraphicsSetColourFore(Colour);
     }
 
-    /* ajGraphSetFore(0); */
+    /* ajGraphicsSetColourFore(0); */
     if(NumNames!=0)
     {
 	if(TextOri=='H')
@@ -922,9 +922,9 @@ static void lindna_DrawRanges(float xDraw, float yDraw, float RangeHeight,
     y2Ranges = y1Ranges;
     yupper   = yDraw+((float)1.0*RangeHeight/(float)2.);
 
-    ajGraphSetFore(Colour);
+    ajGraphicsSetColourFore(Colour);
 
-    ajGraphDrawLine(x1Ranges, y1Ranges, x2Ranges, y2Ranges);
+    ajGraphicsDrawLine(x1Ranges, y1Ranges, x2Ranges, y2Ranges);
     if(NumNames!=0)
     {
 	if(TextOri=='H')
@@ -943,34 +943,34 @@ static void lindna_DrawRanges(float xDraw, float yDraw, float RangeHeight,
 	BoundaryLength = RangeHeight;
 
     if(FromSymbol=='<')
-	lindna_DrawArrowHeadsOnLine(x1Ranges, y1Ranges, RangeHeight,
+	lindna_DrawArrowHeadsOnline(x1Ranges, y1Ranges, RangeHeight,
 				    BoundaryLength, +1);
     if(FromSymbol=='>')
-	lindna_DrawArrowHeadsOnLine(x1Ranges, y1Ranges, RangeHeight,
+	lindna_DrawArrowHeadsOnline(x1Ranges, y1Ranges, RangeHeight,
 				    BoundaryLength, -1);
     if(FromSymbol=='[')
-	lindna_DrawBracketsOnLine(x1Ranges, y1Ranges, RangeHeight,
+	lindna_DrawBracketsOnline(x1Ranges, y1Ranges, RangeHeight,
 				  BoundaryLength, +1);
     if(FromSymbol==']')
-	lindna_DrawBracketsOnLine(x1Ranges, y1Ranges, RangeHeight,
+	lindna_DrawBracketsOnline(x1Ranges, y1Ranges, RangeHeight,
 				  BoundaryLength, -1);
     if(FromSymbol=='|')
-	lindna_DrawBarsOnLine(x1Ranges, y1Ranges, RangeHeight);
+	lindna_DrawBarsOnline(x1Ranges, y1Ranges, RangeHeight);
 
     if(ToSymbol=='<')
-	lindna_DrawArrowHeadsOnLine(x2Ranges, y2Ranges, RangeHeight,
+	lindna_DrawArrowHeadsOnline(x2Ranges, y2Ranges, RangeHeight,
 				    BoundaryLength, +1);
     if(ToSymbol=='>')
-	lindna_DrawArrowHeadsOnLine(x2Ranges, y2Ranges, RangeHeight,
+	lindna_DrawArrowHeadsOnline(x2Ranges, y2Ranges, RangeHeight,
 				    BoundaryLength, -1);
     if(ToSymbol=='[')
-	lindna_DrawBracketsOnLine(x2Ranges, y2Ranges, RangeHeight,
+	lindna_DrawBracketsOnline(x2Ranges, y2Ranges, RangeHeight,
 				  BoundaryLength, +1);
     if(ToSymbol==']')
-	lindna_DrawBracketsOnLine(x2Ranges, y2Ranges, RangeHeight,
+	lindna_DrawBracketsOnline(x2Ranges, y2Ranges, RangeHeight,
 				  BoundaryLength, -1);
     if(ToSymbol=='|')
-	lindna_DrawBarsOnLine(x2Ranges, y2Ranges, RangeHeight);
+	lindna_DrawBarsOnline(x2Ranges, y2Ranges, RangeHeight);
 
     return;
 }
@@ -1006,22 +1006,22 @@ static void lindna_InterBlocks(float xDraw, float yDraw, float BlockHeight,
     x2Inter = xDraw+To;
     y2Inter = y1Inter-BlockHeight;
 
-    ajGraphSetFore(Colour);
+    ajGraphicsSetColourFore(Colour);
 
     if(ajCharCmpCase(ajStrGetPtr(InterSymbol), "Down")==0)
     {
-	ajGraphDrawLine(x1Inter, y1Inter, (x1Inter+x2Inter)/2, y2Inter);
-	ajGraphDrawLine((x1Inter+x2Inter)/2, y2Inter, x2Inter, y1Inter);
+	ajGraphicsDrawLine(x1Inter, y1Inter, (x1Inter+x2Inter)/2, y2Inter);
+	ajGraphicsDrawLine((x1Inter+x2Inter)/2, y2Inter, x2Inter, y1Inter);
     }
 
     if(ajCharCmpCase(ajStrGetPtr(InterSymbol), "Up")==0)
     {
-	ajGraphDrawLine(x1Inter, y2Inter, (x1Inter+x2Inter)/2, y1Inter);
-	ajGraphDrawLine((x1Inter+x2Inter)/2, y1Inter, x2Inter, y2Inter);
+	ajGraphicsDrawLine(x1Inter, y2Inter, (x1Inter+x2Inter)/2, y1Inter);
+	ajGraphicsDrawLine((x1Inter+x2Inter)/2, y1Inter, x2Inter, y2Inter);
     }
 
     if(ajCharCmpCase(ajStrGetPtr(InterSymbol), "Straight")==0)
-	ajGraphDrawLine(x1Inter, (y1Inter+y2Inter)/2, x2Inter,
+	ajGraphicsDrawLine(x1Inter, (y1Inter+y2Inter)/2, x2Inter,
 			(y1Inter+y2Inter)/2);
 
     return;
@@ -1030,7 +1030,7 @@ static void lindna_InterBlocks(float xDraw, float yDraw, float BlockHeight,
 
 
 
-/* @funcstatic lindna_DrawArrowHeadsOnLine ************************************
+/* @funcstatic lindna_DrawArrowHeadsOnline ************************************
 **
 ** draw arrowheads on a line
 **
@@ -1042,7 +1042,7 @@ static void lindna_InterBlocks(float xDraw, float yDraw, float BlockHeight,
 ** @@
 ******************************************************************************/
 
-static void lindna_DrawArrowHeadsOnLine(float xDraw, float yDraw, float Height,
+static void lindna_DrawArrowHeadsOnline(float xDraw, float yDraw, float Height,
 					float Length, ajint Way)
 {
     float middle;
@@ -1051,14 +1051,14 @@ static void lindna_DrawArrowHeadsOnLine(float xDraw, float yDraw, float Height,
 
     if(Way==1)
     {
-	ajGraphDrawLine(xDraw, yDraw, xDraw+Length, yDraw+middle);
-	ajGraphDrawLine(xDraw, yDraw, xDraw+Length, yDraw-middle);
+	ajGraphicsDrawLine(xDraw, yDraw, xDraw+Length, yDraw+middle);
+	ajGraphicsDrawLine(xDraw, yDraw, xDraw+Length, yDraw-middle);
     }
 
     if(Way==-1)
     {
-	ajGraphDrawLine(xDraw, yDraw, xDraw-Length, yDraw+middle);
-	ajGraphDrawLine(xDraw, yDraw, xDraw-Length, yDraw-middle);
+	ajGraphicsDrawLine(xDraw, yDraw, xDraw-Length, yDraw+middle);
+	ajGraphicsDrawLine(xDraw, yDraw, xDraw-Length, yDraw-middle);
     }
 
     return;
@@ -1067,7 +1067,7 @@ static void lindna_DrawArrowHeadsOnLine(float xDraw, float yDraw, float Height,
 
 
 
-/* @funcstatic lindna_DrawBracketsOnLine **************************************
+/* @funcstatic lindna_DrawBracketsOnline **************************************
 **
 ** draw brackets on a line
 **
@@ -1079,7 +1079,7 @@ static void lindna_DrawArrowHeadsOnLine(float xDraw, float yDraw, float Height,
 ** @@
 ******************************************************************************/
 
-static void lindna_DrawBracketsOnLine(float xDraw, float yDraw, float Height,
+static void lindna_DrawBracketsOnline(float xDraw, float yDraw, float Height,
 				      float Length, ajint Way)
 {
     float middle;
@@ -1088,16 +1088,16 @@ static void lindna_DrawBracketsOnLine(float xDraw, float yDraw, float Height,
 
     if(Way==1)
     {
-	ajGraphDrawLine(xDraw, yDraw-middle, xDraw, yDraw+middle);
-	ajGraphDrawLine(xDraw, yDraw+middle, xDraw+Length, yDraw+middle);
-	ajGraphDrawLine(xDraw, yDraw-middle, xDraw+Length, yDraw-middle);
+	ajGraphicsDrawLine(xDraw, yDraw-middle, xDraw, yDraw+middle);
+	ajGraphicsDrawLine(xDraw, yDraw+middle, xDraw+Length, yDraw+middle);
+	ajGraphicsDrawLine(xDraw, yDraw-middle, xDraw+Length, yDraw-middle);
     }
 
     if(Way==-1)
     {
-	ajGraphDrawLine(xDraw, yDraw-middle, xDraw, yDraw+middle);
-	ajGraphDrawLine(xDraw, yDraw+middle, xDraw-Length, yDraw+middle);
-	ajGraphDrawLine(xDraw, yDraw-middle, xDraw-Length, yDraw-middle);
+	ajGraphicsDrawLine(xDraw, yDraw-middle, xDraw, yDraw+middle);
+	ajGraphicsDrawLine(xDraw, yDraw+middle, xDraw-Length, yDraw+middle);
+	ajGraphicsDrawLine(xDraw, yDraw-middle, xDraw-Length, yDraw-middle);
     }
 
     return;
@@ -1106,7 +1106,7 @@ static void lindna_DrawBracketsOnLine(float xDraw, float yDraw, float Height,
 
 
 
-/* @funcstatic lindna_DrawBarsOnLine ******************************************
+/* @funcstatic lindna_DrawBarsOnline ******************************************
 **
 ** draw bars on a line
 **
@@ -1116,13 +1116,13 @@ static void lindna_DrawBracketsOnLine(float xDraw, float yDraw, float Height,
 ** @@
 ******************************************************************************/
 
-static void lindna_DrawBarsOnLine(float xDraw, float yDraw, float Height)
+static void lindna_DrawBarsOnline(float xDraw, float yDraw, float Height)
 {
     float middle;
 
     middle = (float)1.0*Height/(float)2.;
 
-    ajGraphDrawLine(xDraw, yDraw-middle, xDraw, yDraw+middle);
+    ajGraphicsDrawLine(xDraw, yDraw-middle, xDraw, yDraw+middle);
 
     return;
 }
@@ -1163,7 +1163,7 @@ static void lindna_HorTextPile(float x, float y, const AjPStr Name,
 	stringLength = ajGraphTextLength(0, 0, 1, 0, ajStrGetPtr(token));
 	stringHeight = ajGraphTextHeight(0, 0, 1, 0);
 	yupper = totalHeight+stringHeight;
-	ajGraphDrawTextOnLine(x, (totalHeight+yupper)/2, x+stringLength,
+	ajGraphicsDrawTextAtline(x, (totalHeight+yupper)/2, x+stringLength,
 			      (totalHeight+yupper)/2, ajStrGetPtr(token), 0.5);
 	totalHeight+=(stringHeight+postext);
     }
@@ -1233,7 +1233,7 @@ static void lindna_VerTextPile(float x, float y, const AjPStr Name,
 	else
 	    token = ajStrParseC(NULL, ";");
 	stringLength = ajGraphTextLength(0, 0, 0, 1, ajStrGetPtr(token));
-	ajGraphDrawTextOnLine(x, y+totalLength, x,
+	ajGraphicsDrawTextAtline(x, y+totalLength, x,
 			      y+stringLength+totalLength, ajStrGetPtr(token),
 			      0.0);
 	totalLength+=(stringLength+postext);
@@ -1308,7 +1308,7 @@ static void lindna_VerTextSeq(float x, float y, const AjPStr Name,
 	    token = ajStrParseC(Name, ";");
 	else
 	    token = ajStrParseC(NULL, ";");
-	ajGraphDrawTextOnLine(x-(float)1.0*NumNames*stringHeight/(float)2.+
+	ajGraphicsDrawTextAtline(x-(float)1.0*NumNames*stringHeight/(float)2.+
 			      (float)1.0*
 			      stringHeight/(float)2.+(float)1.0*i*stringHeight,
 			      y+postext, x-(float)1.0*NumNames*
@@ -1566,7 +1566,7 @@ static float lindna_TextGroup(float Margin, float TextHeight, float TextLength,
     float minsize = 100.0;
     const AjPStr token;
 
-    charsize = ajGraphFitTextOnLine(0, 0, Margin-10, 0, ajStrGetPtr(GroupName),
+    charsize = ajGraphFitTextAtline(0, 0, Margin-10, 0, ajStrGetPtr(GroupName),
 				    TextHeight);
     if(charsize < minsize)
 	minsize = charsize;
@@ -1581,10 +1581,10 @@ static float lindna_TextGroup(float Margin, float TextHeight, float TextLength,
 		token = ajStrParseC(NULL, ";");
 
 	    if(TextOri[i]=='H')
-		charsize = ajGraphFitTextOnLine(0, 0, TextLength, 0,
+		charsize = ajGraphFitTextAtline(0, 0, TextLength, 0,
 						ajStrGetPtr(token), TextHeight);
 	    else
-		charsize = ajGraphFitTextOnLine(0, 0, 0, TextLength,
+		charsize = ajGraphFitTextAtline(0, 0, 0, TextLength,
 						ajStrGetPtr(token), TextHeight);
 	    if(charsize < minsize)
 		minsize = charsize;
@@ -1898,9 +1898,8 @@ static void lindna_DrawGroup(float xDraw, float yDraw, float Border,
 	AJCRESIZE(lindnaInter, lindnaMaxinter);
     }
 
-    /*ajGraphSetBackgroundWhite();*/
-    ajGraphSetFore(1);
-    ajGraphDrawTextOnLine(10, yDraw, xDraw-Border, yDraw,
+    ajGraphicsSetColourFore(1);
+    ajGraphicsDrawTextAtline(10, yDraw, xDraw-Border, yDraw,
 			  ajStrGetPtr(GroupName), 0.0);
 
     /* draw all labels */
@@ -1912,7 +1911,7 @@ static void lindna_DrawGroup(float xDraw, float yDraw, float Border,
 			     postext, TextOri[i],
 			     NumNames[i], Adjust[i], Colour[i]);
 	    if(InterTicks)
-		ajGraphDrawLine(xDraw, yDraw, xDraw+DrawLength, yDraw);
+		ajGraphicsDrawLine(xDraw, yDraw, xDraw+DrawLength, yDraw);
 	}
 
 	if(ajStrMatchCaseC(Style[i], "Block"))

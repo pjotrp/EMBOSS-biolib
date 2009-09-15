@@ -65,18 +65,18 @@ int main(int argc, char **argv)
     float ymax = 5.0;
     AjPGraph graph;
 
-    ajGraphInit("treetypedisplay", argc, argv);
+    ajGraphicsInit("treetypedisplay", argc, argv);
     graph = ajAcdGetGraph("graph");
 
     ajGraphOpenWin(graph, xmin,xmax,ymin,ymax);
-    ajGraphDrawLines(x1,y1,x2,y2,8);
-    ajGraphDrawDots(pt1,pt2,9);
+    ajGraphicsDrawLines(x1,y1,x2,y2,8);
+    ajGraphicsDrawDots(pt1,pt2,9);
     i = 0;
 
     for(i=0;i<8;i++)
     {
 	sprintf(temp,"line %d",i);
-	ajGraphDrawTextOnLine(x1[i], y1[i], x2[i], y2[i], temp, 1.0);
+	ajGraphicsDrawTextAtline(x1[i], y1[i], x2[i], y2[i], temp, 1.0);
     }
 
     ajGraphCloseWin();

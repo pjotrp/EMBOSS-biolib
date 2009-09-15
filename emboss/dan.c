@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     ajint ti;
     
 
-    ajGraphInit("dan", argc, argv);
+    ajGraphicsInit("dan", argc, argv);
 
     seqall    = ajAcdGetSeqall("sequence");
     report    = ajAcdGetReport("outfile");
@@ -542,20 +542,20 @@ static void dan_plotit(const AjPSeq seq, const float *xa, const float *ta,
     }
 
     tmGraph = ajGraphPlpDataNewI(npoints);
-    ajGraphSetTitleDo(graphs,ajTrue);
-    ajGraphxySetXLabel(graphs,ajTrue);
-    ajGraphxySetYLabel(graphs,ajTrue);
+    ajGraphSetShowTitle(graphs,ajTrue);
+    ajGraphxySetShowXlabel(graphs,ajTrue);
+    ajGraphxySetShowYlabel(graphs,ajTrue);
 
     ajGraphSetTitlePlus(graphs, ajSeqGetUsaS(seq));
-    ajGraphSetXTitleC(graphs,"Base number");
-    ajGraphSetYTitleC(graphs,"Melt temp (C)");
+    ajGraphSetXlabelC(graphs,"Base number");
+    ajGraphSetYlabelC(graphs,"Melt temp (C)");
 
-    ajGraphxySetXStart(graphs,(float)ibegin);
-    ajGraphxySetXEnd(graphs,(float)iend);
-    ajGraphxySetYStart(graphs,0.0);
-    ajGraphxySetYEnd(graphs,100.0);
-    ajGraphxySetXRangeII(graphs,ibegin,iend);
-    ajGraphxySetYRangeII(graphs,(ajint)mintemp,100);
+    ajGraphxySetXstartF(graphs,(float)ibegin);
+    ajGraphxySetXendF(graphs,(float)iend);
+    ajGraphxySetYstartF(graphs,0.0);
+    ajGraphxySetYendF(graphs,100.0);
+    ajGraphxySetXrangeII(graphs,ibegin,iend);
+    ajGraphxySetYrangeII(graphs,(ajint)mintemp,100);
 
     ajGraphPlpDataSetTypeC(tmGraph,"2D Plot");
     ajGraphPlpDataSetMaxMin(tmGraph,(float)ibegin,(float)iend,min,max);

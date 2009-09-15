@@ -126,7 +126,7 @@ int main(int argc, char **argv)
     float amin = 0.;
     float amax = 0.;
 
-    ajGraphInit("isochore", argc, argv);
+    ajGraphicsInit("isochore", argc, argv);
 
     seq  = ajAcdGetSeq("sequence");
     out  = ajAcdGetOutfile("outfile");
@@ -205,8 +205,8 @@ int main(int argc, char **argv)
 
 
     /* display the region 0 -> 1 for the y axis */
-    ajGraphxySetYStart(plot,0.0);
-    ajGraphxySetYEnd(plot,1.0);
+    ajGraphxySetYstartF(plot,0.0);
+    ajGraphxySetYendF(plot,1.0);
 
     /* draw the graph */
     ajGraphxyDisplay(plot,AJTRUE);

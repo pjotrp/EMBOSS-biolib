@@ -50,7 +50,7 @@ int main(int argc, char **argv)
     ajint   end;
     ajint   len;
 
-    ajGraphInit("chaos", argc, argv);
+    ajGraphicsInit("chaos", argc, argv);
 
     sequence = ajAcdGetSeq("sequence");
     graph = ajAcdGetGraph("graph");
@@ -105,44 +105,44 @@ int main(int argc, char **argv)
 	    n++;
 	}
 	x2 = x + (float) 0.0001;
-	ajGraphDrawLines(&x,&y,&x2,&y,1);
+	ajGraphicsDrawLines(&x,&y,&x2,&y,1);
 	ptr++;
     }
 
-    ajGraphDrawTextAtEnd(0.0,0.0,"A");
-    ajGraphDrawTextAtEnd(0.0,1.0,"C");
-    ajGraphDrawTextAtStart(1.0,0.0,"T");
-    ajGraphDrawTextAtStart(1.0,1.0,"G");
+    ajGraphicsDrawTextAtend(0.0,0.0,"A");
+    ajGraphicsDrawTextAtend(0.0,1.0,"C");
+    ajGraphicsDrawTextAtstart(1.0,0.0,"T");
+    ajGraphicsDrawTextAtstart(1.0,1.0,"G");
 
 
-    ajGraphSetCharScale(0.5);
+    ajGraphicsSetCharscale(0.5);
     sprintf(line,"A %d",a);
-    ajGraphDrawTextAtStart((float)1.1,(float)0.75,line);
+    ajGraphicsDrawTextAtstart((float)1.1,(float)0.75,line);
     sprintf(line,"C %d",c);
-    ajGraphDrawTextAtStart((float)1.1,(float)0.70,line);
+    ajGraphicsDrawTextAtstart((float)1.1,(float)0.70,line);
     sprintf(line,"T %d",t);
-    ajGraphDrawTextAtStart((float)1.1,(float)0.65,line);
+    ajGraphicsDrawTextAtstart((float)1.1,(float)0.65,line);
     sprintf(line,"G %d",t);
-    ajGraphDrawTextAtStart((float)1.1,(float)0.60,line);
+    ajGraphicsDrawTextAtstart((float)1.1,(float)0.60,line);
     sprintf(line,"N %d",n);
-    ajGraphDrawTextAtStart((float)1.1,(float)0.55,line);
+    ajGraphicsDrawTextAtstart((float)1.1,(float)0.55,line);
 
 
     sprintf(line,"%cA %3.2f",'%',((float)a/(float)len)*
 	    100.0);
-    ajGraphDrawTextAtStart((float)1.1,(float)0.45,line);
+    ajGraphicsDrawTextAtstart((float)1.1,(float)0.45,line);
     sprintf(line,"%cC %3.2f",'%',((float)c/(float)len)*
 	    100.0);
-    ajGraphDrawTextAtStart((float)1.1,(float)0.40,line);
+    ajGraphicsDrawTextAtstart((float)1.1,(float)0.40,line);
     sprintf(line,"%cT %3.2f",'%',((float)t/(float)len)*
 	    100.0);
-    ajGraphDrawTextAtStart((float)1.1,(float)0.35,line);
+    ajGraphicsDrawTextAtstart((float)1.1,(float)0.35,line);
     sprintf(line,"%cG %3.2f",'%',((float)g/(float)len)*
 	    100.0);
-    ajGraphDrawTextAtStart((float)1.1,(float)0.30,line);
+    ajGraphicsDrawTextAtstart((float)1.1,(float)0.30,line);
     sprintf(line,"%cN %3.2f",'%',((float)n/(float)len)*
 	    100.0);
-    ajGraphDrawTextAtStart((float)1.1,(float)0.25,line);
+    ajGraphicsDrawTextAtstart((float)1.1,(float)0.25,line);
 
 
     ajGraphCloseWin();

@@ -126,7 +126,7 @@ int main(int argc, char **argv)
     float ymax = 0.;
     
     
-    ajGraphInit("tcode", argc, argv);
+    ajGraphicsInit("tcode", argc, argv);
 
     report   = ajAcdGetReport("outfile");
     seqall   = ajAcdGetSeqall("sequence");
@@ -203,7 +203,7 @@ int main(int argc, char **argv)
 
 
 
-	    ajGraphSetTitleDo(graph, ajTrue);
+	    ajGraphSetShowTitle(graph, ajTrue);
 	    ajGraphPlpDataSetYTitleC(this,"TESTCODE value");
 	    ajGraphPlpDataSetXTitleC(this,"Sequence mid position");
 	    ajGraphSetTitlePlus(graph, ajSeqGetUsaS(seq));

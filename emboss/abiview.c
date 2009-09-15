@@ -115,7 +115,7 @@ int main(int argc, char **argv)
 
     float scale = 1.0;
 
-    ajGraphInit("abiview", argc, argv);
+    ajGraphicsInit("abiview", argc, argv);
 
     fp         = ajAcdGetInfile("infile");
     graphs     = ajAcdGetGraphxy("graph");
@@ -205,16 +205,16 @@ int main(int argc, char **argv)
     nstop  = window+1+nstart;
 
     ajGraphSetTitlePlus(graphs,fname);
-    ajGraphSetYTitleC(graphs,"Signal");
+    ajGraphSetYlabelC(graphs,"Signal");
     if(yticks)
     {
-	ajGraphxySetYTick(graphs,ajTrue);
-	ajGraphxySetYInvTicks(graphs,ajTrue);
+	ajGraphxySetShowYtick(graphs,ajTrue);
+	ajGraphxySetYinvert(graphs,ajTrue);
     }
     else
-	ajGraphxySetYTick(graphs,ajFalse);
+	ajGraphxySetShowYtick(graphs,ajFalse);
 
-    ajGraphxySetXInvTicks(graphs,ajTrue);
+    ajGraphxySetXinvert(graphs,ajTrue);
 
     ntrace = 0;
     strace = 0;

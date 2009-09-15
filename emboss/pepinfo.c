@@ -119,7 +119,7 @@ int main(int argc, char **argv)
 	"Consensus parameters (Eisenberg et al)"
     };
 
-    ajGraphInit("pepinfo", argc, argv);
+    ajGraphicsInit("pepinfo", argc, argv);
     ajGraphSetPage(960, 960);
 
     aj_hist_mark=NOY;
@@ -360,7 +360,7 @@ int main(int argc, char **argv)
 	if(do_general || do_seq)
 	    ajGraphNewPage(graphs, ajFalse);
 
-	ajGraphSetCharScale(0.50);
+	ajGraphicsSetCharscale(0.50);
 	ajGraphSetTitleC(graphs,"Pepinfo");
 
 	ajGraphxyDisplay(graphs,AJTRUE);

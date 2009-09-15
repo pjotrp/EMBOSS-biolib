@@ -115,7 +115,7 @@ int main(int argc, char **argv)
     AjPStr display = NULL;
     
 
-    ajGraphInit("density", argc, argv);
+    ajGraphicsInit("density", argc, argv);
 
     seqall    = ajAcdGetSeqall("seqall");
     display   = ajAcdGetListSingle("display");
@@ -234,8 +234,8 @@ int main(int argc, char **argv)
         if(graph)
         {
             ajGraphxySetOverLap(graph,ajTrue);
-            ajGraphSetXTitleC(graph,"Position");
-            ajGraphSetYTitleC(graph,"Density");
+            ajGraphSetXlabelC(graph,"Position");
+            ajGraphSetYlabelC(graph,"Density");
         }
 
         
@@ -326,7 +326,7 @@ static void density_addquadgraph(AjPGraph qgraph, ajint limit,
     st = ajStrNew();
 
     ajFmtPrintS(&st,"Window = %d. A=Black C=Red G=Green T=Blue",window);
-    ajGraphSetSubTitle(qgraph,st);
+    ajGraphSetSubtitleS(qgraph,st);
     
     data = ajGraphPlpDataNewI(limit);
 
@@ -444,7 +444,7 @@ static void density_adddualgraph(AjPGraph dgraph, ajint limit,
     st = ajStrNew();
 
     ajFmtPrintS(&st,"Window = %d. AT=Green GC=Blue",window);
-    ajGraphSetSubTitle(dgraph,st);
+    ajGraphSetSubtitleS(dgraph,st);
 
     data = ajGraphPlpDataNewI(limit);
 

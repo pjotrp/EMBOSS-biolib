@@ -43,7 +43,7 @@ int main(int argc, char **argv)
     AjPGraph mult;
     AjBool overlap;
 
-    ajGraphInit("testplot", argc, argv);
+    ajGraphicsInit("testplot", argc, argv);
 
     mult    = ajAcdGetGraphxy("graph");
     ipoints = ajAcdGetInt("points");
@@ -128,12 +128,12 @@ int main(int argc, char **argv)
 	ajGraphPlpDataAddText(graphdata,17.0,8.75,BLUE,"Tangent");
     }
 
-    ajGraphSetYTitleC(mult,"sin,cos,tan");
-    ajGraphSetXTitleC(mult,"degrees");
+    ajGraphSetYlabelC(mult,"sin,cos,tan");
+    ajGraphSetXlabelC(mult,"degrees");
     ajGraphSetTitleC(mult,"Trig functions");
 
-    ajGraphxySetYStart(mult,0.0);
-    ajGraphxySetYEnd(mult,2.0);
+    ajGraphxySetYstartF(mult,0.0);
+    ajGraphxySetYendF(mult,2.0);
 
     if(overlap)
     {

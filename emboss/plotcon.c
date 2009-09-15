@@ -123,7 +123,7 @@ int main(int argc, char **argv)
     ajuint tui;
     void *freeptr;
     
-    ajGraphInit("plotcon", argc, argv);
+    ajGraphicsInit("plotcon", argc, argv);
 
     seqset = ajAcdGetSeqset("sequences");
 
@@ -216,7 +216,7 @@ int main(int argc, char **argv)
 
     /*************** End of Loop ***************/
 
-    ajGraphSetCharScale(0.50);
+    ajGraphicsSetCharscale(0.50);
     gdata = ajGraphPlpDataNewI(lenseq);
 
 
@@ -238,9 +238,9 @@ int main(int argc, char **argv)
     
     ajGraphPlpDataSetTypeC(gdata,"2D Plot");
     ajGraphDataAdd(graphs,gdata);
-    ajGraphxySetYTick(graphs, ajTrue);
+    ajGraphxySetShowYtick(graphs, ajTrue);
     ajGraphSetTitleC(graphs,"Similarity Plot of Aligned Sequences");
-    ajGraphSetYTitleC(graphs,"Similarity");
+    ajGraphSetYlabelC(graphs,"Similarity");
     
     ajGraphxyDisplay(graphs,ajTrue);
     

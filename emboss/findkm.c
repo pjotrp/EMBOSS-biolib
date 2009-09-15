@@ -90,7 +90,7 @@ int main(int argc, char **argv)
     float bmax = 0.;
 
 
-    ajGraphInit("findkm", argc, argv);
+    ajGraphicsInit("findkm", argc, argv);
 
     infile  = ajAcdGetInfile("infile");
     outfile = ajAcdGetOutfile ("outfile");
@@ -231,12 +231,12 @@ int main(int argc, char **argv)
 	ajGraphPlpDataSetXTitleC(xygraph, "[S]");
 	ajGraphPlpDataSetYTitleC(xygraph, "V");
 
-	ajGraphxySetXStart(graphLB, 0.0);
-	ajGraphxySetXEnd(graphLB, xmax2);
-	ajGraphxySetYStart(graphLB, 0.0);
-	ajGraphxySetYEnd(graphLB, ymax2);
-	ajGraphxySetXRangeII(graphLB, (ajint)0.0, (ajint)xmax2);
-	ajGraphxySetYRangeII(graphLB, (ajint)0.0, (ajint)ymax2);
+	ajGraphxySetXstartF(graphLB, 0.0);
+	ajGraphxySetXendF(graphLB, xmax2);
+	ajGraphxySetYstartF(graphLB, 0.0);
+	ajGraphxySetYendF(graphLB, ymax2);
+	ajGraphxySetXrangeII(graphLB, (ajint)0.0, (ajint)xmax2);
+	ajGraphxySetYrangeII(graphLB, (ajint)0.0, (ajint)ymax2);
 	ajGraphPlpDataAddLine(xygraph, 0.0, 0.0, S[0], V[0], (ajint)BLACK);
 	ajGraphxySetCirclePoints(graphLB, ajTrue);
 	ajGraphPlpDataSetMaxMin(xygraph,0.0,xmax2,0.0,ymax2);
@@ -255,12 +255,12 @@ int main(int argc, char **argv)
 	ajGraphPlpDataSetXTitleC(xygraph2, "[S]");
 	ajGraphPlpDataSetYTitleC(xygraph2, "[S]/V");
 
-	ajGraphxySetXStart(graphLB, cutx);
-	ajGraphxySetXEnd(graphLB, upperXlimit);
-	ajGraphxySetYStart(graphLB, 0.0);
-	ajGraphxySetYEnd(graphLB, upperYlimit);
-	ajGraphxySetXRangeII(graphLB, (ajint)cutx, (ajint)upperXlimit);
-	ajGraphxySetYRangeII(graphLB, (ajint)0.0, (ajint)upperYlimit);
+	ajGraphxySetXstartF(graphLB, cutx);
+	ajGraphxySetXendF(graphLB, upperXlimit);
+	ajGraphxySetYstartF(graphLB, 0.0);
+	ajGraphxySetYendF(graphLB, upperYlimit);
+	ajGraphxySetXrangeII(graphLB, (ajint)cutx, (ajint)upperXlimit);
+	ajGraphxySetYrangeII(graphLB, (ajint)0.0, (ajint)upperYlimit);
 
 	ajGraphxySetCirclePoints(graphLB, ajTrue);
 	ajGraphPlpDataSetMaxMin(xygraph2, cutx,upperXlimit,0.0,upperYlimit);

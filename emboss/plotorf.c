@@ -72,7 +72,7 @@ int main(int argc, char **argv)
     };
 
 
-    ajGraphInit("plotorf", argc, argv);
+    ajGraphicsInit("plotorf", argc, argv);
     ajGraphSetPage(960, 960);
 
     seq       = ajAcdGetSeq("sequence");
@@ -108,7 +108,7 @@ int main(int argc, char **argv)
 
 	ajGraphDataAdd(graph,data);
 	ajGraphxySetOverLap(graph,ajFalse);
-	ajGraphxySetYTick(graph, ajFalse);
+	ajGraphxySetShowYtick(graph, ajFalse);
 	ajGraphPlpDataSetMaxima(data,(float)beg,(float)end,0.0,1.0);
 	ajGraphPlpDataSetTypeC(data,"Multi 2D Plot Small");
 	ajGraphPlpDataSetYTitleC(data,"Orf");
@@ -121,11 +121,11 @@ int main(int argc, char **argv)
     }
 
 
-    ajGraphSetTitleDo(graph, ajTrue);
+    ajGraphSetShowTitle(graph, ajTrue);
     ajGraphxySetMaxMin(graph,(float)beg,(float)end,0.0,1.0);
 
-    ajGraphxySetYStart(graph,0.0);
-    ajGraphxySetYEnd(graph,2.0);
+    ajGraphxySetYstartF(graph,0.0);
+    ajGraphxySetYendF(graph,2.0);
     ajGraphSetTitleC(graph,"Potential codons (rectangles)");
     ajGraphxyDisplay(graph,ajTrue);
     ajGraphxyDel(&graph);

@@ -81,7 +81,7 @@ int main(int argc, char **argv)
     ajuint ilen;
     ajuint tui;
     
-    ajGraphInit("octanol", argc, argv);
+    ajGraphicsInit("octanol", argc, argv);
 
     seq = ajAcdGetSeq("sequence");
     ilen = ajSeqGetLen(seq);

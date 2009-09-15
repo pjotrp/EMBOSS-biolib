@@ -81,7 +81,7 @@ int main(int argc, char **argv)
     float y;
 
 
-    ajGraphInit("pepnet", argc, argv);
+    ajGraphicsInit("pepnet", argc, argv);
 
 
     seq         = ajAcdGetSeq("sequence");
@@ -120,8 +120,6 @@ int main(int argc, char **argv)
 
     ajGraphSetTitlePlus(graph, ajSeqGetUsaS(seq));
 
-    ajGraphSetBackWhite();
-
     ajGraphOpenWin(graph, xmin,xmax,ymin,ymax);
 
     for(count=begin-1,r=0;count<end;count+=231)
@@ -131,7 +129,7 @@ int main(int argc, char **argv)
 	pstart=count;
 	pstop = AJMIN(end-1, count+230);
 
-	ajGraphSetCharScale(0.75);
+	ajGraphicsSetCharscale(0.75);
 
 	xstart = 145.0;
 	ystart =  80.0;
@@ -153,8 +151,8 @@ int main(int argc, char **argv)
 
 	    ajFmtPrintS(&txt,"%d",i+1);
 
-	    ajGraphSetFore(RED);
-	    ajGraphDrawText(x-xinc,y-yinc-1,ajStrGetPtr(txt),0.5);
+	    ajGraphicsSetColourFore(RED);
+	    ajGraphicsDrawText(x-xinc,y-yinc-1,ajStrGetPtr(txt),0.5);
 
 	    for(j=0;j<4;++j)
 	    {
@@ -231,7 +229,7 @@ static void pepnet_drawocta(float x, float y, float size)
     ajint i;
 
     for(i=0;i<8;++i)
-	ajGraphDrawLine(x+polyx[i]*size,y+polyy[i]*size,x+polyx[i+1]*size,
+	ajGraphicsDrawLine(x+polyx[i]*size,y+polyy[i]*size,x+polyx[i+1]*size,
 			y+polyy[i+1]*size);
 
     return;
@@ -262,28 +260,28 @@ static void pepnet_plotresidue(char c, float x, float y, const char *squares,
     *cs=c;
 
 
-    ajGraphSetFore(GREEN);
+    ajGraphicsSetColourFore(GREEN);
 
     if(strstr(squares,cs))
     {
-	ajGraphSetFore(BLUE);
-	ajGraphDrawBox(x-(float)1.5,y-(float)1.32,(float)3.0);
+	ajGraphicsSetColourFore(BLUE);
+	ajGraphicsDrawBox(x-(float)1.5,y-(float)1.32,(float)3.0);
     }
 
     if(strstr(octags,cs))
     {
-	ajGraphSetFore(BLUEVIOLET);
+	ajGraphicsSetColourFore(BLUEVIOLET);
 	pepnet_drawocta(x,y+(float)0.225,(float)20.0);
     }
 
     if(strstr(diamonds,cs))
     {
-	ajGraphSetFore(RED);
-	ajGraphDrawDia(x-(float)2.5,y-(float)2.25,(float)5.0);
+	ajGraphicsSetColourFore(RED);
+	ajGraphicsDrawDia(x-(float)2.5,y-(float)2.25,(float)5.0);
     }
 
-    ajGraphDrawText(x,y,cs,0.5);
-    ajGraphSetFore(GREEN);
+    ajGraphicsDrawText(x,y,cs,0.5);
+    ajGraphicsSetColourFore(GREEN);
 
     return;
 }

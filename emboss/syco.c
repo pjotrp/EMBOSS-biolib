@@ -85,7 +85,7 @@ int main(int argc, char **argv)
     ajint end;
     ajint window;
 
-    ajGraphInit("syco", argc, argv);
+    ajGraphicsInit("syco", argc, argv);
 
     ajGraphSetPage(960, 960);
 
@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     
     if(plot)
     {
-	ajGraphSetCharScale((float)0.60);
+	ajGraphicsSetCharscale((float)0.60);
     }
     
     
@@ -226,10 +226,10 @@ int main(int argc, char **argv)
     
     if(plot)
     {
-	ajGraphSetTitleDo(graph, ajTrue);
+	ajGraphSetShowTitle(graph, ajTrue);
 	ajGraphxySetMaxMin(graph,(float)beg,(float)end,miny,maxy);
-	ajGraphxySetYStart(graph,0.0);
-	ajGraphxySetYEnd(graph,2.0);
+	ajGraphxySetYstartF(graph,0.0);
+	ajGraphxySetYendF(graph,2.0);
 	/* ajGraphSetTitleC(graph,"Gribskov Codon Plot"); */
 	ajGraphSetTitlePlus(graph, ajSeqGetUsaS(a));
 	ajGraphxyDisplay(graph,ajTrue);

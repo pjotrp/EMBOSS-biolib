@@ -83,7 +83,7 @@ int main(int argc, char **argv)
 
 
 
-    ajGraphInit("wobble", argc, argv);
+    ajGraphicsInit("wobble", argc, argv);
     ajGraphSetPage(960, 960);
 
     seq    = ajAcdGetSeq("sequence");
@@ -139,7 +139,7 @@ int main(int argc, char **argv)
 	ajGraphPlpDataSetTypeC(data,"2D Plot");
 	ajGraphDataAdd(graph,data);
 
-	ajGraphxySetYTick(graph, ajTrue);
+	ajGraphxySetShowYtick(graph, ajTrue);
 
 	ajGraphPlpDataSetYTitleC(data,ajStrGetPtr(gc));
 	ajGraphPlpDataSetXTitleC(data,"Sequence");
@@ -148,14 +148,14 @@ int main(int argc, char **argv)
     }
     
     
-    ajGraphSetTitleDo(graph, ajTrue);
+    ajGraphSetShowTitle(graph, ajTrue);
     ajGraphxySetMaxMin(graph,(float)beg,(float)end,0.0,100.0);
     
-    ajGraphxySetYStart(graph,0.0);
-    ajGraphxySetYEnd(graph,100.0);
+    ajGraphxySetYstartF(graph,0.0);
+    ajGraphxySetYendF(graph,100.0);
     ajGraphSetTitleC(graph,"Wobble bases");
     
-    ajGraphSetCharScale((float)0.7);
+    ajGraphicsSetCharscale((float)0.7);
     
     ajGraphxyDisplay(graph,ajTrue);
     

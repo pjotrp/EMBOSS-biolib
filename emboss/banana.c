@@ -105,7 +105,7 @@ int main(int argc, char **argv)
     float yp2;
     double td;
 
-    ajGraphInit("banana", argc, argv);
+    ajGraphicsInit("banana", argc, argv);
     seq    = ajAcdGetSeq("sequence");
     file   = ajAcdGetDatafile("anglesfile");
     outf   = ajAcdGetOutfile("outfile");
@@ -287,7 +287,7 @@ int main(int argc, char **argv)
 	ajGraphOpenWin(graph,(float)-1.0, (float)numres+(float)10.0,
 		       (float)0.0, ystart+(float)5.0);
 
-	ajGraphGetOut(&fxp,&fyp,&ixlen,&iylen,&ixoff,&iyoff);
+	ajGraphicsGetParamsPage(&fxp,&fyp,&ixlen,&iylen,&ixoff,&iyoff);
 
 	if(ixlen == 0)
 	{
@@ -304,7 +304,7 @@ int main(int argc, char **argv)
 	    }
 	}
 
-	ajGraphGetCharSize(&defheight,&currentheight);
+	ajGraphicsGetCharsize(&defheight,&currentheight);
 	if(!currentheight)
 	{
 	    defheight = currentheight = (float) 4.440072;
@@ -312,10 +312,10 @@ int main(int argc, char **argv)
 		((float)ixlen/ ((float)(numres)*(currentheight+(float)1.0)))
 		    /currentheight;
 	}
-	ajGraphSetCharScale(((float)ixlen/((float)(numres)*
+	ajGraphicsSetCharscale(((float)ixlen/((float)(numres)*
 					  (currentheight+(float)1.0)))/
 			    currentheight);
-	ajGraphGetCharSize(&defheight,&currentheight);
+	ajGraphicsGetCharsize(&defheight,&currentheight);
 
 	yincr = (currentheight + (float)3.0)*(float)0.3;
 
@@ -353,13 +353,13 @@ int main(int argc, char **argv)
 	    }
 	    residue[0] = *ptr;
 
-	    ajGraphDrawTextAtEnd((float)(count)+(float)2.0,yy1,residue);
+	    ajGraphicsDrawTextAtend((float)(count)+(float)2.0,yy1,residue);
 
 	    if(ii>1 && ii < ajStrGetLen(sstr))
 	    {
 		yp1 = yy1+yincr + (bend[ii]*bendfactor);
 		yp2 = yy1+yincr + (bend[ii+1]*bendfactor);
-		ajGraphDrawLine((float)count+(float)1.5,yp1,
+		ajGraphicsDrawLine((float)count+(float)1.5,yp1,
 			    (float)(count)+(float)2.5,yp2);
 	    }
 
@@ -371,11 +371,11 @@ int main(int argc, char **argv)
 	    {
 		yp1 = yy1+yincr + (curve[ii]*curvefactor);
 		yp2 = yy1+yincr + (curve[ii+1]*curvefactor);
-		ajGraphDrawLine((float)count+(float)1.7,yp1,
+		ajGraphicsDrawLine((float)count+(float)1.7,yp1,
 			    (float)(count)+(float)2.3,yp2);
 	    }
 
-	    ajGraphDrawLine((float)count+(float)1.5,yy1+yincr,
+	    ajGraphicsDrawLine((float)count+(float)1.5,yy1+yincr,
 			(float)(count)+(float)2.5,yy1+yincr);
 
 	    count++;

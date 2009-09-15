@@ -81,7 +81,7 @@ int main(int argc, char **argv)
     float flen2;
     ajuint tui;
     
-    ajGraphInit("dotpath", argc, argv);
+    ajGraphicsInit("dotpath", argc, argv);
     
     wordlen  = ajAcdGetInt("wordsize");
     seq1     = ajAcdGetSeq("asequence");
@@ -116,14 +116,14 @@ int main(int argc, char **argv)
     ajGraphOpenWin(graph, (float)0.0-ymargin,(max*(float)1.35)+ymargin,
 		   (float)0.0-xmargin,(float)max+xmargin);
     
-    ajGraphSetCharScale(0.5);
+    ajGraphicsSetCharscale(0.5);
     
     /* display the overlapping matches in red */
     if(overlaps && ajListGetLength(matchlist))
     {
-	oldcolour = ajGraphSetFore(RED);
+	oldcolour = ajGraphicsSetColourFore(RED);
 	dotpath_plotMatches(matchlist);
-	ajGraphSetFore(oldcolour);  /* restore colour we were using */
+	ajGraphicsSetColourFore(oldcolour);  /* restore colour we were using */
     }
     
     /* get the minimal set of overlapping matches */
@@ -137,7 +137,7 @@ int main(int argc, char **argv)
     
     if(boxit)
     {
-	ajGraphDrawRect( 0.0,0.0,flen1,flen2);
+	ajGraphicsDrawRect( 0.0,0.0,flen1,flen2);
 	i = 0;
 	while(acceptableticksx[i]*numbofticks < flen1)
 	    i++;
@@ -149,27 +149,27 @@ int main(int argc, char **argv)
 
 	ticklen = xmargin*(float)0.1;
 	onefifth  = xmargin*(float)0.2;
-	ajGraphDrawTextAtMid(flen1*(float)0.5,(float)0.0-(onefifth*(float)3.),
+	ajGraphicsDrawTextAtmid(flen1*(float)0.5,(float)0.0-(onefifth*(float)3.),
 		       ajGraphGetYTitleC(graph));
 
 	if(len2/len1 > 10 )
 	{
 	    /* a lot smaller then just label start and end */
-	    ajGraphDrawLine((float)0.0,(float)0.0,(float)0.0,(float)0.0-ticklen);
+	    ajGraphicsDrawLine((float)0.0,(float)0.0,(float)0.0,(float)0.0-ticklen);
 	    sprintf(ptr,"%d",ajSeqGetOffset(seq1));
-	    ajGraphDrawTextAtMid((float)0.0,(float)0.0-(onefifth),ptr);
+	    ajGraphicsDrawTextAtmid((float)0.0,(float)0.0-(onefifth),ptr);
 
-	    ajGraphDrawLine(flen1,(float)0.0,
+	    ajGraphicsDrawLine(flen1,(float)0.0,
 			flen1,(float)0.0-ticklen);
 	    sprintf(ptr,"%d",len1+ajSeqGetOffset(seq1));
-	    ajGraphDrawTextAtMid(flen1,(float)0.0-(onefifth),ptr);
+	    ajGraphicsDrawTextAtmid(flen1,(float)0.0-(onefifth),ptr);
 	}
 	else
 	    for(k=0.0;k<len1;k+=tickgap)
 	    {
-		ajGraphDrawLine(k,(float)0.0,k,(float)0.0-ticklen);
+		ajGraphicsDrawLine(k,(float)0.0,k,(float)0.0-ticklen);
 		sprintf(ptr,"%d",(ajint)k+ajSeqGetOffset(seq1));
-		ajGraphDrawTextAtMid( k,(float)0.0-(onefifth),ptr);
+		ajGraphicsDrawTextAtmid( k,(float)0.0-(onefifth),ptr);
 	    }
 
 	i = 0;
@@ -179,28 +179,28 @@ int main(int argc, char **argv)
 	tickgap   = (float) acceptableticks[i];
 	ticklen   = ymargin*(float)0.1;
 	onefifth  = ymargin*(float)0.2;
-	ajGraphDrawTextOnLine((float)0.0-(onefifth*(float)4.),flen2*(float)0.5,
+	ajGraphicsDrawTextAtline((float)0.0-(onefifth*(float)4.),flen2*(float)0.5,
 			(float)0.0-(onefifth*(float)4.),flen2,
 			ajGraphGetXTitleC(graph),(float)0.5);
 
 	if(len1/len2 > 10 )
 	{
 	    /* a lot smaller then just label start and end */
-	    ajGraphDrawLine((float)0.0,(float)0.0,(float)0.0-ticklen,(float)0.0);
+	    ajGraphicsDrawLine((float)0.0,(float)0.0,(float)0.0-ticklen,(float)0.0);
 	    sprintf(ptr,"%d",ajSeqGetOffset(seq2));
-	    ajGraphDrawTextAtEnd( (float)0.0-(onefifth),(float)0.0,ptr);
+	    ajGraphicsDrawTextAtend( (float)0.0-(onefifth),(float)0.0,ptr);
 
-	    ajGraphDrawLine((float)0.0,flen2,
+	    ajGraphicsDrawLine((float)0.0,flen2,
 			(float)0.0-ticklen,flen2);
 	    sprintf(ptr,"%d",len2+ajSeqGetOffset(seq2));
-	    ajGraphDrawTextAtEnd((float)0.0-(onefifth),flen2,ptr);
+	    ajGraphicsDrawTextAtend((float)0.0-(onefifth),flen2,ptr);
 	}
 	else
 	    for(k=0.0;k<len2;k+=tickgap)
 	    {
-		ajGraphDrawLine((float)0.0,k,(float)0.0-ticklen,k);
+		ajGraphicsDrawLine((float)0.0,k,(float)0.0-ticklen,k);
 		sprintf(ptr,"%d",(ajint)k+ajSeqGetOffset(seq2));
-		ajGraphDrawTextAtEnd( (float)0.0-(onefifth),k,ptr);
+		ajGraphicsDrawTextAtend( (float)0.0-(onefifth),k,ptr);
 	    }
     }
 
@@ -253,7 +253,7 @@ static void dotpath_drawPlotlines(void *x, void *cl)
     x2 += p->length;
     y2 += (PLFLT)p->length;
 
-    ajGraphDrawLine(x1, y1, x2, y2);
+    ajGraphicsDrawLine(x1, y1, x2, y2);
 
     return;
 }

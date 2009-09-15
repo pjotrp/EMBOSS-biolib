@@ -79,7 +79,7 @@ int main(int argc, char **argv)
     EmbPPropAmino *adata = NULL;
     
 
-    ajGraphInit("charge", argc, argv);
+    ajGraphicsInit("charge", argc, argv);
 
     seqall    = ajAcdGetSeqall("seqall");
     plot      = ajAcdGetToggle("plot");
@@ -154,8 +154,8 @@ int main(int argc, char **argv)
 	{
 	    ajGraphSetMulti(graph,1);
 	    ajGraphxySetOverLap(graph,ajFalse);
-	    ajGraphSetXTitleC(graph,"Position");
-	    ajGraphSetYTitleC(graph,"Charge");
+	    ajGraphSetXlabelC(graph,"Position");
+	    ajGraphSetYlabelC(graph,"Charge");
 	    charge_addgraph(graph,limit,x,y,ymax,ymin,window);
 	    if(limit > 1)
 		ajGraphxyDisplay(graph,ajFalse);

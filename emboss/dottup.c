@@ -91,7 +91,7 @@ int main(int argc, char **argv)
     float flen2;
     AjBool stretch;
     
-    ajGraphInit("dottup", argc, argv);
+    ajGraphicsInit("dottup", argc, argv);
 
     wordlen = ajAcdGetInt("wordsize");
     seq1    = ajAcdGetSeq("asequence");
@@ -147,14 +147,14 @@ int main(int argc, char **argv)
 	ajGraphOpenWin(graph, fbegin1-ymargin,fend1+ymargin,
 		       fbegin2-xmargin,(float)fend2+xmargin);
 
-	ajGraphSetCharScale(0.5);
+	ajGraphicsSetCharscale(0.5);
 
 	if(matchlist)
 	    dottup_plotMatches(matchlist);
 
 	if(boxit)
 	{
-	    ajGraphDrawRect(fbegin1, fbegin2, fend1, fend2);
+	    ajGraphicsDrawRect(fbegin1, fbegin2, fend1, fend2);
 	    i = 0;
 	    while(acceptableticksx[i]*numbofticks < len1)
 		i++;
@@ -166,28 +166,28 @@ int main(int argc, char **argv)
 
 	    ticklen = xmargin*0.1;
 	    onefifth  = xmargin*0.2;
-	    ajGraphDrawTextAtMid(fbegin1+flen1*0.5,fbegin1-(onefifth*3.0),
+	    ajGraphicsDrawTextAtmid(fbegin1+flen1*0.5,fbegin1-(onefifth*3.0),
 			   ajGraphGetYTitleC(graph));
 
 	    if(len2/len1 > 10 )
 	    {
 		/* a lot smaller then just label start and end */
-		ajGraphDrawLine(fbegin1,fbegin2,fbegin1,
+		ajGraphicsDrawLine(fbegin1,fbegin2,fbegin1,
 			    fbegin2-ticklen);
 		sprintf(ptr,"%d",ajSeqGetOffset(seq1));
-		ajGraphDrawTextAtMid(fbegin1,fbegin2-(onefifth),ptr);
+		ajGraphicsDrawTextAtmid(fbegin1,fbegin2-(onefifth),ptr);
 		
-		ajGraphDrawLine(fend1,fbegin2,
+		ajGraphicsDrawLine(fend1,fbegin2,
 			    fend1,fbegin2-ticklen);
 		sprintf(ptr,"%d",end1);
-		ajGraphDrawTextAtMid(fend1,fbegin2-(onefifth),ptr);
+		ajGraphicsDrawTextAtmid(fend1,fbegin2-(onefifth),ptr);
 	    }
 	    else
 		for(k=fbegin1;k<fend1;k+=tickgap)
 		{
-		    ajGraphDrawLine(k,fbegin2,k,fbegin2-ticklen);
+		    ajGraphicsDrawLine(k,fbegin2,k,fbegin2-ticklen);
 		    sprintf(ptr,"%d",(ajint)k);
-		    ajGraphDrawTextAtMid( k,fbegin2-(onefifth),ptr);
+		    ajGraphicsDrawTextAtmid( k,fbegin2-(onefifth),ptr);
 		}
 
 	    i = 0;
@@ -197,7 +197,7 @@ int main(int argc, char **argv)
 	    tickgap   = (float) acceptableticks[i];
 	    ticklen   = ymargin*(float)0.1;
 	    onefifth  = ymargin*(float)0.2;
-	    ajGraphDrawTextOnLine(fbegin1-(onefifth*(float)4.),
+	    ajGraphicsDrawTextAtline(fbegin1-(onefifth*(float)4.),
 			    fbegin2+flen2*(float)0.5,
 			    fbegin2-(onefifth*(float)4.),
 			    fbegin2+flen2,
@@ -206,22 +206,22 @@ int main(int argc, char **argv)
 	    if(len1/len2 > 10 )
 	    {
 		/* a lot smaller then just label start and end */
-		ajGraphDrawLine(fbegin1,fbegin2,fbegin1-ticklen,
+		ajGraphicsDrawLine(fbegin1,fbegin2,fbegin1-ticklen,
 			    fbegin2);
 		sprintf(ptr,"%d",ajSeqGetOffset(seq2));
-		ajGraphDrawTextAtEnd(fbegin1-(onefifth),fbegin2,ptr);
+		ajGraphicsDrawTextAtend(fbegin1-(onefifth),fbegin2,ptr);
 
-		ajGraphDrawLine(fbegin1,fend2,fbegin1-ticklen,
+		ajGraphicsDrawLine(fbegin1,fend2,fbegin1-ticklen,
 			    fend2);
 		sprintf(ptr,"%d",end2);
-		ajGraphDrawTextAtEnd(fbegin2-(onefifth),fend2,ptr);
+		ajGraphicsDrawTextAtend(fbegin2-(onefifth),fend2,ptr);
 	    }
 	    else
 		for(k=fbegin2;k<fend2;k+=tickgap)
 		{
-		    ajGraphDrawLine(fbegin1,k,fbegin1-ticklen,k);
+		    ajGraphicsDrawLine(fbegin1,k,fbegin1-ticklen,k);
 		    sprintf(ptr,"%d",(ajint)k);
-		    ajGraphDrawTextAtEnd(fbegin1-(onefifth),k,ptr);
+		    ajGraphicsDrawTextAtend(fbegin1-(onefifth),k,ptr);
 		}
 	}
     }
@@ -275,7 +275,7 @@ static void dottup_drawPlotlines(void *x, void *cl)
     x2 += (PLFLT)p->length -1.0;
     y2 += (PLFLT)p->length -1.0;
 
-    ajGraphDrawLine(x1, y1, x2, y2);
+    ajGraphicsDrawLine(x1, y1, x2, y2);
 
     return;
 }
@@ -346,21 +346,21 @@ static void dottup_stretchplot(AjPGraph graph, const AjPList matchlist,
 
     ajGraphSetTitleC(graph,ajStrGetPtr(tit));
 
-    ajGraphSetXTitleC(graph,ajSeqGetNameC(seq1));
-    ajGraphSetYTitleC(graph,ajSeqGetNameC(seq2));
+    ajGraphSetXlabelC(graph,ajSeqGetNameC(seq1));
+    ajGraphSetYlabelC(graph,ajSeqGetNameC(seq2));
 
     ajGraphPlpDataSetTypeC(gdata,"2D Plot Float");
     ajGraphPlpDataSetMaxMin(gdata,(float)begin1,(float)end1,(float)begin2,
 			   (float)end2);
     ajGraphPlpDataSetMaxima(gdata,(float)begin1,(float)end1,(float)begin2,
 			   (float)end2);
-    ajGraphxySetXStart(graph,(float)begin1);
-    ajGraphxySetXEnd(graph,(float)end1);
-    ajGraphxySetYStart(graph,(float)begin2);
-    ajGraphxySetYEnd(graph,(float)end2);
+    ajGraphxySetXstartF(graph,(float)begin1);
+    ajGraphxySetXendF(graph,(float)end1);
+    ajGraphxySetYstartF(graph,(float)begin2);
+    ajGraphxySetYendF(graph,(float)end2);
 
-    ajGraphxySetXRangeII(graph,begin1,end1);
-    ajGraphxySetYRangeII(graph,begin2,end2);
+    ajGraphxySetXrangeII(graph,begin1,end1);
+    ajGraphxySetYrangeII(graph,begin2,end2);
 
 
     if(matchlist)

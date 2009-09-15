@@ -345,7 +345,7 @@ int main(int argc, char **argv)
     AjBool mono;
     double dtmp = 0.;
     
-    ajGraphInit("epestfind", argc, argv);
+    ajGraphicsInit("epestfind", argc, argv);
 
     ajGraphSetPage(960, 960);
 
@@ -764,7 +764,7 @@ int main(int argc, char **argv)
     ajListIterDel(&itrlst);
 
     ajGraphDataAdd(graph, plot);
-    ajGraphSetCharScale(0.50);
+    ajGraphicsSetCharscale(0.50);
     ajGraphSetTitleC(graph, "PEST-find");
     ajGraphxyDisplay(graph, AJTRUE);
     ajGraphCloseWin();
