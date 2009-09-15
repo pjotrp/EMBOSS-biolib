@@ -21,21 +21,21 @@ cd $embosshome
 
 cd plplot
 echo "make PLPLOT"
-make install |& egrep '^[^ =\[]*:'
+make install |& egrep '^[^ =\[]*:' |& grep -v '^libtool: '
 cd ../ajax 
 echo "make AJAX"
-make install |& egrep '^[^ =\[]*:'
+make install |& egrep '^[^ =\[]*:' |& grep -v '^libtool: '
 cd ../nucleus
 echo "make NUCLEUS"
-make install |& egrep '^[^ =\[]*:'
-cd ../embassy/$pack/s*
+make install |& egrep '^[^ =\[]*:' |& grep -v '^libtool: '
+cd ../embassy/$pack/src
 if ($pack == 'vienna') then
   echo "make libvienna"
-  make libviennarna.la |& egrep '^[^ =\[]*:'
+  make libviennarna.la |& egrep '^[^ =\[]*:' |& grep -v '^libtool: '
   make install-libLTLIBRARIES
 endif
 echo "make $app"
-make $app |& egrep '^[^ =\[]*:'
+make $app |& egrep '^[^ =\[]*:' |& grep -v '^libtool: '
 if ($pack == 'myembossdemo') then
   echo "copy $app to check/bin"
   cp $app ~/check/bin/$app
