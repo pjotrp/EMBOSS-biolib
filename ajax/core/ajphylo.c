@@ -436,7 +436,7 @@ AjPPhyloDist* ajPhyloDistRead(const AjPStr filename, ajint size,
     
     if(!phyloRegDistFloat)
 	phyloRegDistFloat =
-	    ajRegCompC("^\\s*([0-9]+[.]?[0-9]*)\\s+(([0-9]+)[^0-9.])?");
+	    ajRegCompC("^\\s*(-?[0-9]+[.]?[0-9]*)\\s+(([0-9]+)[^0-9.])?");
 
     distlist = ajListNew();
     distfile = ajFileNewInNameS(filename);
@@ -607,6 +607,7 @@ AjPPhyloDist* ajPhyloDistRead(const AjPStr filename, ajint size,
 
 			return NULL;
 		    }
+
 		    dist->HasMissing = ajTrue;
 		}
 		/*ajDebug("DistRead row %2d [%d] %.3f %d\n",
@@ -618,6 +619,23 @@ AjPPhyloDist* ajPhyloDistRead(const AjPStr filename, ajint size,
 		/*ajDebug("DistRead row %2d [%d] %.3f .\n",
 			irow, i, dval);*/
 	    }
+            if(dval < 0.0)
+            {
+                if(!missing)
+                {
+                    ajErr("Distances file %S: line %u "
+                          "negative (%f) value for %S",
+                          filename, linenum, dval, dist->Names[irow]);
+
+                    return NULL;
+                }
+
+                dist->HasMissing = ajTrue;
+
+                ival = 0;
+                dval = 0.0;
+            }
+
 	    ipos = irow*count + i;
 	    dist->Data[ipos] = dval;
 	    dist->Replicates[ipos] = ival;
