@@ -235,6 +235,7 @@ float embAlignPathCalc(const char *a, const char *b,
 ** @param [r] cvt [const AjPSeqCvt] Conversion array for AjPMatrixf
 ** @param [w] compass [ajint *] Path direction pointer array
 ** @param [r] show [AjBool] Display path matrix
+** @param [r] endweight [AjBool] Use end gap weights
 **
 ** @return [float] Maximum score
 ** @@
@@ -257,6 +258,9 @@ float embAlignPathCalcUsingEndGapPenalties(const char *a, const char *b,
     double fnew;
     double *maxa;
     double maxb;
+    double matchup;
+    double matchleft;
+    ajint cursor;
 
     static AjPStr outstr = NULL;
     char compasschar;
@@ -292,8 +296,8 @@ float embAlignPathCalcUsingEndGapPenalties(const char *a, const char *b,
         else
         {
             match = match - (endgapopen + (i - 1) * endgapextend);
-            double matchup = path[(i - 1) * lenb] - endgapopen; 
-            double matchleft = -(endgapopen + (i + 1) * endgapextend);
+            matchup = path[(i - 1) * lenb] - endgapopen; 
+            matchleft = -(endgapopen + (i + 1) * endgapextend);
             
             if (match >= matchup && match >= matchleft)
             {
@@ -328,8 +332,8 @@ float embAlignPathCalcUsingEndGapPenalties(const char *a, const char *b,
         else
         {
             match = match - (endgapopen + (j - 1) * endgapextend);
-            double matchleft = path[(j - 1)] - endgapopen; 
-            double matchup = -(endgapopen + (j + 1) * endgapextend);
+            matchleft = path[(j - 1)] - endgapopen; 
+            matchup = -(endgapopen + (j + 1) * endgapextend);
             
             if (match >= matchup && match >= matchleft)
             {
@@ -370,7 +374,7 @@ float embAlignPathCalcUsingEndGapPenalties(const char *a, const char *b,
              xpos, ypos, a[ypos], b[xpos], ypos*lenb+xpos,mscore); */
 
             /* coordinate of the current cell being calculated; [xpos,ypos] */
-            ajint cursor = ypos * lenb + xpos;
+            cursor = ypos * lenb + xpos;
 
             /* Set compass to diagonal value 0 */
             compass[cursor] = 0;
@@ -976,57 +980,60 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 ** @return [void]
 ******************************************************************************/
 
-void embAlignWalkNWMatrixEndGaps(const float *path, const AjPSeq a, const AjPSeq b,
-			  AjPStr *m, AjPStr *n,
-			  ajint lena, ajint lenb,
-			  ajint *start1, ajint *start2,
-			  const ajint *compass)
+void embAlignWalkNWMatrixEndGaps(const float *path,
+                                 const AjPSeq a, const AjPSeq b,
+                                 AjPStr *m, AjPStr *n,
+                                 ajint lena, ajint lenb,
+                                 ajint *start1, ajint *start2,
+                                 const ajint *compass)
 {
-	ajint xpos = 0;
-	ajint ypos = 0;
-	const char *p;
-	const char *q;
+    ajint xpos = 0;
+    ajint ypos = 0;
+    const char *p;
+    const char *q;
 
-	ajDebug("embAlignSimpleWalkNWMatrixEndGaps\n");
+    ajDebug("embAlignSimpleWalkNWMatrixEndGaps\n");
 
-	ajStrAssignClear(m);
-	ajStrAssignClear(n);
+    (void) path;
 
-	p = ajSeqGetSeqC(a);
-	q = ajSeqGetSeqC(b);
-	xpos = lenb - 1;
-	ypos = lena - 1;
-	while (xpos >= 0 && ypos >= 0)
-	{
-		if (!compass[ypos * lenb + xpos]) /* diagonal */
-		{
-			ajStrAppendK(m, p[ypos--]);
-			ajStrAppendK(n, q[xpos--]);
-			continue;
-		}
-		else if (compass[ypos * lenb + xpos] == 1) /* Left, gap(s) in vertical */
-		{
-			ajStrAppendK(m, '.');
-			ajStrAppendK(n, q[xpos--]);
-			continue;
-		}
-		else if (compass[ypos * lenb + xpos] == 2) /* Down, gap(s) in horizontal */
-		{
-			ajStrAppendK(m, p[ypos--]);
-			ajStrAppendK(n, '.');
+    ajStrAssignClear(m);
+    ajStrAssignClear(n);
 
-			continue;
-		} else
-			ajFatal("Walk Error in NW");
-	}
+    p = ajSeqGetSeqC(a);
+    q = ajSeqGetSeqC(b);
+    xpos = lenb - 1;
+    ypos = lena - 1;
+    while (xpos >= 0 && ypos >= 0)
+    {
+        if (!compass[ypos * lenb + xpos]) /* diagonal */
+        {
+            ajStrAppendK(m, p[ypos--]);
+            ajStrAppendK(n, q[xpos--]);
+            continue;
+        }
+        else if (compass[ypos * lenb + xpos] == 1) /* Left, gap(s) in vertical */
+        {
+            ajStrAppendK(m, '.');
+            ajStrAppendK(n, q[xpos--]);
+            continue;
+        }
+        else if (compass[ypos * lenb + xpos] == 2) /* Down, gap(s) in horizontal */
+        {
+            ajStrAppendK(m, p[ypos--]);
+            ajStrAppendK(n, '.');
 
-	*start2 = xpos+1;
-	*start1 = ypos+1;
+            continue;
+        } else
+            ajFatal("Walk Error in NW");
+    }
 
-	ajStrReverse(m); /* written with append, need to reverse */
-	ajStrReverse(n);
+    *start2 = xpos+1;
+    *start1 = ypos+1;
 
-	return;
+    ajStrReverse(m); /* written with append, need to reverse */
+    ajStrReverse(n);
+
+    return;
 }
 
 
