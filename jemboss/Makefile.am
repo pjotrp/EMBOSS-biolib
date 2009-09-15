@@ -7,7 +7,15 @@ SUBDIRS = api images lib org resources utils
 # files with nonstandard names in this directory
 EXTRA_DIST = LICENSE
 
+clean: clean-recursive
+if EHAVEANT
+	ant clean;
+endif
+
 all-local:
+if EHAVEANT
+	ant package -Demboss.data=../emboss/data -Dname=client -Djar.dir=lib -Dnotformemboss=yes;
+endif
 if ISCYGWIN
 	@if test "${JAVA_OK}" != "yes" ; then \
 	  echo "Not compiling Jemboss"; \
@@ -78,7 +86,3 @@ pkgdatadir=$(prefix)/share/$(PACKAGE)/jemboss
 
 dist-hook:
 	tar cBf - api | ( cd $(distdir); tar xBf - ; rm -rf api/CVS );
-if EHAVEANT
-	ant package -Demboss.data=../emboss/data -Dname=client -Djar.dir=lib -Dnotformemboss=yes
-	ant clean
-endif
