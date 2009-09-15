@@ -12,6 +12,7 @@ section: additional [
   boolean: full [
     additional: "Y"
     information: "Show all EMBOSS version information fields"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional
@@ -25,6 +26,7 @@ section: output [
     additional: "Y"
     default: "stdout"
     knowntype: "embossversion output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

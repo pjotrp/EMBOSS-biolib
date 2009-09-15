@@ -12,6 +12,7 @@ section: input [
   seqall: seqall [
     parameter: "Y"
     type: "protein"
+    relations: "EDAM: Protein sequence record"                             
   ]
 
   datafile: aadata [
@@ -19,6 +20,7 @@ section: input [
     information: "Amino acids properties and molecular weight
                   data file"
     knowntype: "amino acid properties"
+    relations:  "EDAM: Amino acid chemical classes data"               
   ]
 
 endsection: input
@@ -33,6 +35,7 @@ section: additional [
     minimum: "1"
     default: "5"
     information: "Window length"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: additional
@@ -45,10 +48,12 @@ section: output [
   toggle: plot [
     default: "N"
     information: "Produce graphic"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   xygraph: graph [
     standard: "$(plot)"
+    relations: "EDAM: EMBOSS graph file"                                   
   ]
 
   outfile: outfile [
@@ -56,6 +61,7 @@ section: output [
     knowntype: "charge output"
     nullok: "Y"
     nulldefault: "$(plot)"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

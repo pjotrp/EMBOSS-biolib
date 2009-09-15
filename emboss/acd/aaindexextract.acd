@@ -16,6 +16,7 @@ section: input [
     information: "AAINDEX database file"
     parameter: "Y"
     knowntype: "aaindex database"
+    relations:  "EDAM: AAindex database"                               
   ]
 
 endsection: input

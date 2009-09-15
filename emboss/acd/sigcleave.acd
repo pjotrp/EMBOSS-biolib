@@ -12,6 +12,7 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "PureProtein"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -29,6 +30,7 @@ section: required [
     information: "Minimum weight"
     help: "Minimum scoring weight value for the predicted cleavage
            site"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: required
@@ -43,6 +45,7 @@ section: additional [
     help: "Specifies the sequence is prokaryotic and changes the
            default scoring data file name"
     information: "Use prokaryotic cleavage data"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional
@@ -58,6 +61,7 @@ section: output [
     rformat: "motif"
     multiple: "Y"
     taglist: "str:mature_peptide"
+    relations: "EDAM: EMBOSS report"                                       
   ]
 
 endsection: output

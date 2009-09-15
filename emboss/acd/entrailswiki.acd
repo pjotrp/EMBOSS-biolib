@@ -20,6 +20,7 @@ section: required [
            report: Output report formats;
            align: Output alignment formats"
     information: "Tables to be written"
+    relations: "EDAM: Generic string array"                                
   ]
 
 endsection: required
@@ -32,6 +33,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "wikitext"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

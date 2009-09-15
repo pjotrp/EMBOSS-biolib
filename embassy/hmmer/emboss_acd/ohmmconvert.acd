@@ -13,6 +13,7 @@ section: input [
     parameter: "Y"
     information: "HMMER hidden markov model file"
     knowntype: "hmm"
+    relations:  "EDAM: HMMER hidden Markov model"                      
   ]
 
 endsection: input
@@ -32,16 +33,19 @@ section: advanced [
     header: "HMM format"
     information: "Select format"
     button: "Y"
+    relations: "EDAM: Generic string array"                                
   ]
 
   boolean: append [
     default: "N"
     information: "Append to file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: force [
     default: "N"
     information: "Force overwriting"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: advanced
@@ -55,6 +59,7 @@ section: output [
     parameter: "Y"
     knowntype: "hmm"
     information: "HMMER hidden markov model output file"
+    relations:  "EDAM: HMMER hidden Markov model"                      
   ]
 
 endsection: output

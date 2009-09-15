@@ -15,6 +15,7 @@ section: input [
     parameter: "Y"
     features: "Y"
     type: "gapany"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -27,6 +28,7 @@ section: output [
   seqoutall: outseq [
     parameter: "Y"
     features: "Y"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: output

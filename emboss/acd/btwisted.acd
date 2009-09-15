@@ -13,18 +13,21 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "PureDNA"
+    relations: "EDAM: Sequence"                                            
   ]
 
   datafile: angledata [
     default: "Eangles.dat"
     information: "DNA base pair twist angle data file"
     knowntype: "base pair twist angles"
+    relations:  "EDAM: DNA base pair twist angle data"                 
   ]
 
   datafile: energydata [
     default: "Eenergy.dat"
     information: "DNA base pair stacking energies data file"
     knowntype: "base pair stacking energies"
+    relations:  "EDAM: DNA base pair stacking energies data"           
   ]
 
 endsection: input
@@ -37,6 +40,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "btwisted output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

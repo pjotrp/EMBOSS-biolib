@@ -14,6 +14,7 @@ section: input [
     information: "Enter an EMBL ID or ACCNO"
     default: "hsfau"
     knowntype: "sequence id input"
+    relations:  "EDAM: Sequence unique identifier"                     
   ]
 
 endsection: input
@@ -26,6 +27,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "corbatest output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

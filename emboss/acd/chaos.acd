@@ -13,6 +13,7 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "dna"
+    relations: "EDAM: Pure DNA sequence"                                   
   ]
 
 endsection: input
@@ -25,6 +26,7 @@ section: output [
   graph: graph [
     standard: "Y"
     gdesc: "Chaos game representation"
+    relations: "EDAM: EMBOSS graph file"                                   
   ]
 
 endsection: output

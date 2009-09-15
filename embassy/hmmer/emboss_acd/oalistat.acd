@@ -16,6 +16,7 @@ section: input [
     parameter: "Y"
     knowntype: "alistat input"
     information: "HMMER alistat program input file"
+    relations:  "EDAM: Multiple sequence alignment record"             
   ]
 
 endsection: input
@@ -28,11 +29,13 @@ section: advanced [
   boolean: additional [
     default: "N"
     information: "Show additional information"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: fast [
     default: "N"
     information: "Use sampling method"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: advanced
@@ -46,6 +49,7 @@ section: output [
     parameter: "Y"
     knowntype: "alistat output"
     information: "HMMER alistat program output file"
+    relations:  "EDAM: Sequence alignment-derived data"                
   ]
 
 endsection: output

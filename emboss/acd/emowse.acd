@@ -12,24 +12,28 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "protein"
+    relations: "EDAM: Protein sequence record"                             
   ]
 
   infile: infile [
     parameter: "Y"
     information: "Peptide molecular weight values file"
     knowntype: "peptide molweights"
+    relations:  "EDAM: Peptide molecular weight data"                  
   ]
 
   datafile: mwdata [
     information: "Molecular weights data file"
     default: "Emolwt.dat"
     knowntype: "molecular weights"
+    relations:  "EDAM: Amino acid molecular weight data"               
   ]
 
   datafile: frequencies [
     default: "Efreqs.dat"
     information: "Amino acid frequencies data file"
     knowntype: "amino acid frequencies"
+    relations:  "EDAM: Peptide fragment molecular weight frequencies"  
   ]
 
 endsection: input
@@ -43,12 +47,14 @@ section: required [
     standard: "Y"
     default: "0"
     information: "Whole sequence molwt"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: mono [
     standard: "Y"
     default: "N"
     information: "Use monoisotopic weights"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: required
@@ -68,6 +74,7 @@ section: advanced [
     delimiter: ","
     codedelimiter: ":"
     information: "Enzyme or reagent"
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: pcrange [
@@ -75,6 +82,7 @@ section: advanced [
     minimum: "0"
     maximum: "75"
     information: "Allowed whole sequence weight variability"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   float: tolerance [
@@ -82,6 +90,7 @@ section: advanced [
     minimum: "0.1"
     maximum: "1.0"
     information: "Tolerance"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: partials [
@@ -89,6 +98,7 @@ section: advanced [
     minimum: "0.1"
     maximum: "1.0"
     information: "Partials factor"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: advanced
@@ -101,6 +111,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "emowse output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

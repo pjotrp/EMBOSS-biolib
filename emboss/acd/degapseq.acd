@@ -12,6 +12,7 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "gapany"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -23,6 +24,7 @@ section: output [
 
   seqoutall: outseq [
     parameter: "Y"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: output

@@ -13,6 +13,7 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "gapany"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -27,6 +28,7 @@ section: required [
     minimum: "1"
     default: "1"
     information: "The number of the sequence to output"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: required
@@ -38,6 +40,7 @@ section: output [
 
   seqout: outseq [
     parameter: "Y"
+    relations: "EDAM: Sequence"                                            
   ]
 
 endsection: output

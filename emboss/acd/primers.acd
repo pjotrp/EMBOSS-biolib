@@ -16,6 +16,7 @@ section: input [
     type: "dna"
     help: "The sequence from which to choose primers. The sequence
            must be presented 5' -> 3'"
+    relations: "EDAM: DNA sequence record"                                 
   ]
 
 endsection: input
@@ -39,6 +40,7 @@ section: additional [
            and <end> is the last \
            E.g. 50,51 requires primers to surround the 2 bases at positions
            50 and 51."
+    relations: "EDAM: Generic integer range"                               
   ]
 
   integer: minsize [
@@ -48,6 +50,7 @@ section: additional [
     information: "Primer minimum size"
     help: "Minimum acceptable length of a primer. Must be greater than
            0 and less than or equal to MAX-SIZE."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: maxsize [
@@ -60,6 +63,7 @@ section: additional [
            this parameter cannot be larger than 35. This limit is governed
            by the maximum oligo size for which Primer3's melting-temperature
            is valid."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   float: maxdifftm [
@@ -68,6 +72,7 @@ section: additional [
     information: "Maximum difference in Tm of primers"
     help: "Maximum acceptable (unsigned) difference between the
            melting temperatures of the forward and reverse primers."
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: additional
@@ -85,6 +90,7 @@ section: output [
            RIGHT-EXPLAIN, output, which are intended to provide information
            on the number of primer pairs that Primer3 examined, and
            statistics on the number discarded for various reasons."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: numreturn [
@@ -97,12 +103,14 @@ section: output [
            value of the objective function (where a lower number indicates a
            better primer pair). Caution: setting this parameter to a large
            value will increase running time."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   outfile: outfile [
     parameter: "Y"
     knowntype: "primer3 output"
     information: "Whitehead primer3_core program output file"
+    relations:  "EDAM: Primer3 report"                                 
   ]
 
 endsection: output

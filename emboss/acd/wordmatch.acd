@@ -12,11 +12,13 @@ section: input [
   sequence: asequence [
     parameter: "Y"
     type: "any"
+    relations: "EDAM: Sequence"                                            
   ]
 
   sequence: bsequence [
     parameter: "Y"
     type: "@($(acdprotein) ? stopprotein : nucleotide)"
+    relations: "EDAM: Sequence"                                            
   ]
 
 endsection: input
@@ -31,6 +33,7 @@ section: required [
     default: "4"
     minimum: "2"
     information: "Word size"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: required
@@ -45,18 +48,21 @@ section: output [
     aformat: "match"
     minseqs: "2"
     maxseqs: "2"
+    relations: "EDAM: Pairwise sequence alignment data"                    
   ]
 
   featout: aoutfeat [
     parameter: "Y"
     ofname: "$(asequence.name)"
     offormat: "gff"
+    relations: "EDAM: Sequence feature table"                              
   ]
 
   featout: boutfeat [
     parameter: "Y"
     ofname: "$(bsequence.name)"
     offormat: "gff"
+    relations: "EDAM: Sequence feature table"                              
   ]
 
 endsection: output

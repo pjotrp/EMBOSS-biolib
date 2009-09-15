@@ -16,6 +16,7 @@ section: input [
     parameter: "Y"
     type: "any"
     aligned: "Y"
+    relations: "EDAM: Sequence record"                                     
   ]
 
   infile: priorfile [
@@ -23,6 +24,7 @@ section: input [
     information: "HMMER dirichlet prior file (optional)"
     knowntype: "dirichlet prior hmmer"
     nullok: "Y"
+    relations:  "EDAM: HMMER Dirichlet prior record"                   
   ]
 
   infile: nullfile [
@@ -30,6 +32,7 @@ section: input [
     information: "HMMER null model file (optional)"
     knowntype: "hmmer null model"
     nullok: "Y"
+    relations:  "EDAM: HMMER NULL hidden Markov model"                 
   ]
 
   infile: pamfile [
@@ -37,6 +40,7 @@ section: input [
     information: "HMMER matrix file (optional)"
     knowntype: "hmmer matrix"
     nullok: "Y"
+    relations:  "EDAM: Amino acid comparison matrix"                   
   ]
 
 endsection: input
@@ -56,31 +60,37 @@ section: advanced [
     header: "Local/Global preference"
     information: "Select preference"
     button: "Y"
+    relations: "EDAM: Generic string array"                                
   ]
 
   boolean: append [
     default: "N"
     information: "Append to file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: amino [
     default: "N"
     information: "Treat as protein"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: nucleic [
     default: "N"
     information: "Treat as dna"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: archpri [
     default: "0.85"
     information: "Architecture prior"
+    relations: "EDAM: Generic float"                                       
   ]
 
   boolean: binary [
     default: "N"
     information: "Write HMM as binary"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   list: cstrategy [
@@ -93,51 +103,61 @@ section: advanced [
     header: "Fast or by hand"
     information: "Select strategy"
     button: "Y"
+    relations: "EDAM: Generic string array"                                
   ]
 
   boolean: fast [
     default: "N"
     information: "Work in fast mode"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: gapmax [
     default: "0.5"
     information: "Fast mode control"
+    relations: "EDAM: Generic float"                                       
   ]
 
   boolean: hand [
     default: "N"
     information: "Specify model by hand"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: idlevel [
     default: "0.62"
     information: "Cutoff ID threhold"
+    relations: "EDAM: Generic float"                                       
   ]
 
   boolean: efficiency [
     default: "Y"
     information: "Be efficient"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: pamweight [
     default: "20.0"
     information: "Weighting for PAM"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: swentry [
     default: "0.5"
     information: "Probability control for local entries"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: swexit [
     default: "0.5"
     information: "Probability control for exits"
+    relations: "EDAM: Generic float"                                       
   ]
 
   boolean: more [
     default: "N"
     information: "Verbosity"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   list: weighting [
@@ -151,6 +171,7 @@ section: advanced [
     header: "Weighting method"
     information: "Select weighting"
     button: "Y"
+    relations: "EDAM: Generic string array"                                
   ]
 
 endsection: advanced
@@ -164,6 +185,7 @@ section: output [
     parameter: "Y"
     knowntype: "hmm"
     information: "HMMER hidden markov model output file"
+    relations:  "EDAM: HMMER hidden Markov model"                      
   ]
 
   outfile: resavefile [
@@ -171,6 +193,7 @@ section: output [
     information: "Selex alignment output file (optional)"
     knowntype: "selex"
     nullok: "Y"
+    relations:  "EDAM: Multiple sequence alignment record"             
   ]
 
   outfile: cfile [
@@ -179,6 +202,7 @@ section: output [
                   file (optional)"
     knowntype: "hmmer count"
     nullok: "Y"
+    relations:  "EDAM: HMMER emission and transition count report"     
   ]
 
 endsection: output

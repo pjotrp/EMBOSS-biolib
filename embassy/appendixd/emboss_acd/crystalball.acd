@@ -13,6 +13,7 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "any"
+    relations: "EDAM: Sequence"                                            
   ]
 
 endsection: input
@@ -25,47 +26,55 @@ section: additional [
   boolean: competition [
     additional: "Y"
     information: "Who else is working with this target?"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: rdtime [
     additional: "Y"
     information: "Total research and development time to bring
                   a drug for this target to market."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: rdcost [
     additional: "Y"
     information: "Total cost of our research and development
                   effort."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: animalstudies [
     additional: "Y"
     information: "What will we learn from the animal studies?"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: clinicaltrials [
     additional: "Y"
     information: "Detail all of the surprises we'll get from
                   the clinical trials."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: fdaproblems [
     additional: "Y"
     information: "List all of the issues the FDA will raise
                   with our paperwork."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: fdatime [
     additional: "Y"
     information: "How long will the FDA take to render a
                   decision?"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: profit [
     additional: "Y"
     information: "How much will we make after the drug gets to
                   market?"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional
@@ -78,6 +87,7 @@ section: advanced [
   boolean: everythingelse [
     information: "Tell us everything else we'd really like to
                   know now rather than later"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: advanced
@@ -90,6 +100,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "crystalball output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

@@ -16,12 +16,14 @@ section: input [
     parameter: "Y"
     information: "HMMER hidden markov model file"
     knowntype: "hmm"
+    relations:  "EDAM: HMMER hidden Markov model"                      
   ]
 
   seqset: sequences [
     parameter: "Y"
     type: "gapany"
     aligned: "Y"
+    relations: "EDAM: Sequence record"                                     
   ]
 
   infile: mapalifile [
@@ -29,6 +31,7 @@ section: input [
     information: "HMMER alignment file (optional)"
     knowntype: "hmmer alignment"
     nullok: "Y"
+    relations:  "EDAM: HMMER sequence alignment file"                  
   ]
 
   infile: withalifile [
@@ -36,6 +39,7 @@ section: input [
     information: "HMMER heuristic alignment file (optional)"
     knowntype: "hmmer alignment"
     nullok: "Y"
+    relations:  "EDAM: HMMER sequence alignment file"                  
   ]
 
 endsection: input
@@ -48,6 +52,7 @@ section: advanced [
   boolean: matchonly [
     default: "N"
     information: "Only show match state alignment symbols"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: advanced
@@ -61,6 +66,7 @@ section: output [
     parameter: "Y"
     knowntype: "hmmalign output"
     information: "HMMER hmmalign program output file"
+    relations:  "EDAM: HMMER hidden Markov model"                      
   ]
 
 endsection: output

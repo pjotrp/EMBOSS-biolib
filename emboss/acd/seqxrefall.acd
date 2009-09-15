@@ -23,6 +23,7 @@ sequence: sequence
     parameter: "Y"
     type: "any"
     help: "The sequence for which cross-references will be retrieved."
+    relations: "EDAM: Sequence"                                            
 ]
 
 datafile: dbref
@@ -31,6 +32,7 @@ datafile: dbref
     help: "File of database information including identifier, description, type, URL etc."
     default: "dbref.dat"
     knowntype: "database info"
+    relations:  "EDAM: Database bibliographic information"             
 ]
 
 endsection: input
@@ -56,6 +58,7 @@ selection: format
     information: "Select format"
     help: "This specifies the format of the output file"
     button: "Y"
+    relations: "EDAM: Generic string array"                                
 ]
 
 endsection: required
@@ -97,6 +100,7 @@ outfile: outfile
     parameter: "Y"
     knowntype: "database cross-reference list"
     help: "Output file containing list of cross-references"
+    relations:  "EDAM: EMBOSS sequence database cross-references"      
 ]
 
 endsection: output

@@ -13,6 +13,7 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "nucleotide"
+    relations: "EDAM: Nucleotide sequence record"                          
   ]
 
 endsection: input
@@ -28,6 +29,7 @@ section: required [
     minimum: "1"
     maximum: "@($(sequence.length)/2)"
     information: "Enter minimum length of palindrome"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: maxpallen [
@@ -36,6 +38,7 @@ section: required [
     minimum: "$(minpalLen)"
     maximum: "@($(sequence.length)/2)"
     information: "Enter maximum length of palindrome"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: gaplimit [
@@ -44,6 +47,7 @@ section: required [
     minimum: "0"
     maximum: "$(sequence.length)"
     information: "Enter maximum gap between repeated regions"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: nummismatches [
@@ -52,6 +56,7 @@ section: required [
     minimum: "0"
     information: "Number of mismatches allowed"
     valid: "Positive integer"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: required
@@ -65,12 +70,14 @@ section: output [
     parameter: "Y"
     extension: "pal"
     knowntype: "palindrome output"
+    relations: "EDAM: Free text file"                                      
   ]
 
   boolean: overlap [
     standard: "Y"
     information: "Report overlapping matches"
     default: "Y"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

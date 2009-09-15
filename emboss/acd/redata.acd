@@ -18,6 +18,7 @@ section: input [
            capital 'i', not a '1' or an 'l'. The names are case-independent
            ('AaeI' is the same as 'aaei')"
     knowntype: "enzyme name"
+    relations:  "EDAM: Restriction enzyme name"                        
   ]
 
 endsection: input
@@ -31,21 +32,25 @@ section: output [
     default: "Y"
     information: "Show isoschizomers"
     help: "Show other enzymes with this specificity. (Isoschizomers)"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: references [
     default: "Y"
     information: "Show references"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: suppliers [
     default: "Y"
     information: "Show suppliers"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: outfile [
     parameter: "Y"
     knowntype: "redata output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

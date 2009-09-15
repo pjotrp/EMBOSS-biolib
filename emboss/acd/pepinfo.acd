@@ -13,6 +13,7 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "protein"
+    relations: "EDAM: Pure protein sequence"                               
   ]
 
   datafile: aaproperties [
@@ -20,6 +21,7 @@ section: input [
     default: "Eaa_properties.dat"
     information: "Amino acid chemical classes data file"
     knowntype: "amino acid classification"
+    relations:  "EDAM: Amino acid chemical classes data"               
   ]
 
   datafile: aahydropathy [
@@ -27,6 +29,7 @@ section: input [
     default: "Eaa_hydropathy.dat"
     information: "Amino acid hydropathy values data file"
     knowntype: "amino acid hydropathy"
+    relations:  "EDAM: Amino acid hydropathy data"                     
   ]
 
 endsection: input
@@ -42,6 +45,7 @@ section: additional [
     minimum: "1"
     maximum: "$(sequence.length)"
     information: "Window size for hydropathy averaging"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: additional
@@ -54,21 +58,25 @@ section: output [
   xygraph: graph [
     standard: "Y"
     multiple: "3"
+    relations: "EDAM: EMBOSS graph file"                                   
   ]
 
   outfile: outfile [
     parameter: "Y"
     knowntype: "pepinfo output"
+    relations: "EDAM: Free text file"                                      
   ]
 
   boolean: generalplot [
     default: "Y"
     information: "Plot histogram of general properties"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: hydropathyplot [
     default: "Y"
     information: "Plot graphs of hydropathy"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

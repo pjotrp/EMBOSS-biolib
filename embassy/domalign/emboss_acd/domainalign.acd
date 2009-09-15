@@ -23,6 +23,7 @@ section: input [
            SCOPPARSE and CATHPARSE. Domain sequence information can be added
            to the file by using DOMAINSEQS."
     knowntype: "Domain classification"
+    relations: "EDAM: Free text file"                                      
   ]
 
   directory: pdbdir [
@@ -35,6 +36,7 @@ section: input [
     default: "./"
     extension: "ent"
     knowntype: "domain pdb"
+    relations:  "EDAM: Protein tertiary structure"                     
   ]
 
 endsection: input
@@ -61,6 +63,7 @@ section: required [
     codedelimiter: ":"
     header: "Node at which to remove redundancy"
     information: "Select number."
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: mode [
@@ -74,6 +77,7 @@ section: required [
     codedelimiter: ":"
     header: "Alignment algorithm option"
     information: "Select number."
+    relations: "EDAM: Generic string array"                                
   ]
 
   toggle: keepsinglets [
@@ -83,6 +87,7 @@ section: required [
            families to file. If you specify this option, the sequence for
            each singlet family are written to file (output)."
     default: "Y"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: required
@@ -107,6 +112,7 @@ section: output [
     default: "./"
     extension: "daf"
     knowntype: "domain alignment"
+    relations:  "EDAM: EMBASSY domain alignment file"                  
   ]
 
   outdir: singletsoutdir [
@@ -120,6 +126,7 @@ section: output [
     default: "./"
     extension: "dhf"
     knowntype: "domain hits"
+    relations:  "EDAM: EMBASSY domain hits report"                     
   ]
 
   outdir: superoutdir [
@@ -132,6 +139,7 @@ section: output [
     default: "./"
     extension: "ent"
     knowntype: "pdb"
+    relations:  "EDAM: PDB record"                                     
   ]
 
   outfile: logfile [
@@ -142,6 +150,7 @@ section: output [
            domainalign ran."
     default: "domainalign.log"
     knowntype: "domainatrix log"
+    relations:  "EDAM: Domainatrix log file"                           
   ]
 
 endsection: output

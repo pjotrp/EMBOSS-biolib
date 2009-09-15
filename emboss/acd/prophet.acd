@@ -16,12 +16,14 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "any"
+    relations: "EDAM: Sequence record"                                     
   ]
 
   infile: infile [
     parameter: "Y"
     information: "Profile or weight matrix file"
     knowntype: "profile or matrix"
+    relations:  "EDAM: Sequence profile"                               
   ]
 
 endsection: input
@@ -37,6 +39,7 @@ section: required [
     minimum: "0.0"
     maximum: "100.0"
     information: "Gap opening coefficient"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: gapextend [
@@ -45,6 +48,7 @@ section: required [
     minimum: "0.0"
     maximum: "100.0"
     information: "Gap extension coefficient"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: required
@@ -57,6 +61,7 @@ section: output [
   align: outfile [
     parameter: "Y"
     aformat: "simple"
+    relations: "EDAM: Sequence alignment data"                             
   ]
 
 endsection: output

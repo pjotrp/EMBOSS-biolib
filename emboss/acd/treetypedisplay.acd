@@ -11,6 +11,7 @@ section: output [
 
   graph: graph [
     standard: "Y"
+    relations: "EDAM: EMBOSS graph file"                                   
   ]
 
 endsection: output

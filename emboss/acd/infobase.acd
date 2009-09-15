@@ -25,6 +25,7 @@ section: input
     help: "Enter IUPAC nucleotide base codes, e.g. A, C, G, T, R, Y etc."
     knowntype: "nucleotide codes"
     default: "ABCDGHKMNRSTUVWXY"
+    relations:  "EDAM: Nucleotide code string"                         
   ]
 
 endsection: input
@@ -76,6 +77,7 @@ section: output
   [
     parameter: "Y"
     knowntype: "infobase output"
+    relations: "EDAM: Free text file"                                      
   ]
   
 

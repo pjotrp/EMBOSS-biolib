@@ -13,6 +13,7 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "gapany"
+    relations: "EDAM: Sequence"                                            
   ]
 
 endsection: input
@@ -27,6 +28,7 @@ section: additional [
     default: ""
     information: "Name of the sequence"
     knowntype: "sequence id output"
+    relations:  "EDAM: Sequence unique identifier"                     
   ]
 
   string: description [
@@ -34,6 +36,7 @@ section: additional [
     default: ""
     information: "Description of the sequence"
     knowntype: "string"
+    relations:  "EDAM: Generic string"                                 
   ]
 
 endsection: additional
@@ -49,6 +52,7 @@ section: advanced [
     help: "This allows you to append the name or description you have
            given on to the end of the existing name or description of the
            sequence."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: advanced
@@ -60,6 +64,7 @@ section: output [
 
   seqout: outseq [
     parameter: "Y"
+    relations: "EDAM: Sequence"                                            
   ]
 
 endsection: output

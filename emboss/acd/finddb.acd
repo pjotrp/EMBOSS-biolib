@@ -17,6 +17,7 @@ section: input
       additional: "Y"
       information: "Keyword(s) to search for in database information"
       knowntype: "emboss database name"
+    relations:  "EDAM: Generic database name"                          
   ]
 
 endsection: input
@@ -36,6 +37,7 @@ section: additional
     additional: "Y"
     default: "N"
     information: "Search all available sections of information"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: name 
@@ -43,6 +45,7 @@ section: additional
     additional: "Y"
     default: "Y"
     information: "Search the database names only"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: server  
@@ -50,6 +53,7 @@ section: additional
     additional: "Y"
     default: "Y"
     information: "Search the database server URL only"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: desc 
@@ -57,6 +61,7 @@ section: additional
     additional: "Y"
     default: "Y"
     information: "Search the database descriptions only"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional
@@ -89,6 +94,7 @@ section: output
     additional: "Y"
     default: "stdout"
     knowntype: "finddb output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

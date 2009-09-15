@@ -13,6 +13,7 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "gapany"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -27,11 +28,13 @@ section: required [
     information: "Sequence section to match"
     default: "N"
     knowntype: "sequence"
+    relations:  "EDAM: Sequence"                                       
   ]
 
   toggle: delete [
     information: "Delete the target sequence sections"
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   string: replace [
@@ -39,6 +42,7 @@ section: required [
     information: "Replacement sequence section"
     default: "A"
     knowntype: "sequence"
+    relations:  "EDAM: Sequence"                                       
   ]
 
 endsection: required
@@ -54,6 +58,7 @@ section: additional [
     default: "0"
     minimum: "0"
     maximum: "$(sequence.len)"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: additional
@@ -65,6 +70,7 @@ section: output [
 
   seqout: outseq [
     parameter: "Y"
+    relations: "EDAM: Sequence"                                            
   ]
 
 endsection: output

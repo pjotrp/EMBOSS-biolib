@@ -11,6 +11,7 @@ section: input [
 
   codon: infile [
     parameter: "Y"
+    relations: "EDAM: Codon usage table"                                   
   ]
 
 endsection: input
@@ -29,6 +30,7 @@ section: output [
 
   outcodon: outfile [
     parameter: "Y"
+    relations: "EDAM: Codon usage table"                                   
   ]
 
 endsection: output

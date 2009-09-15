@@ -22,6 +22,7 @@ section: input
       information: "Name(s) of one or more databases or database categories to display information on"
       help: "Standard names of databases are given in the EMBOSS datafile 'dbref.dat'.
       knowntype: "emboss database name"
+    relations:  "EDAM: Generic database name"                          
   ]
 
   datafile: dbref
@@ -30,6 +31,7 @@ section: input
     help: "File of database information including identifier, description, type, URL etc."
     default: "dbref.dat"
     knowntype: "database info"
+    relations:  "EDAM: Database bibliographic information"             
   ]
 
 endsection: input
@@ -55,6 +57,7 @@ section: required
     information: "Select one or more categories"
     help:        "This specifies the SwissProt categories of database to display in the output file"
     button:      "Y"
+    relations: "EDAM: Generic string array"                                
   ]
 
   selection: edam
@@ -68,6 +71,7 @@ section: required
     information: "Select one or more categories"
     help:        "This specifies the SwissProt categories of database to display in the output file"
     button:      "Y"
+    relations: "EDAM: Generic string array"                                
   ]
 
 
@@ -87,6 +91,7 @@ section: required
     information: "Select one or more categories"
     help: "This specifies the SwissProt categories of database to display in the output file"
     button: "Y"
+    relations: "EDAM: Generic string array"                                
   ]
 
   selection: display
@@ -96,6 +101,7 @@ section: required
     values: "database;category;edam;all"
     information: "Output display option"
     help: "The output can include named database(s) only ('database' option), databases in one or more categories from SwissProt ('category') or the EDAM ontology ('edam'), or all known databases ('all')."
+    relations: "EDAM: Generic string array"                                
   ]
 
 endsection: required
@@ -116,6 +122,7 @@ section: additional
     default: "N"
     information: "Format output as an HTML table"
     outputmodifier: "Y"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 
@@ -125,6 +132,7 @@ section: additional
       additional: "Y"
       information: "Category of database to give information on"
       knowntype: "database category name"
+    relations: "EDAM: Generic string"                                      
   ]
 
 #
@@ -137,6 +145,7 @@ section: additional
     default: "N"
     information: "Display all columns"
     help: "This will display all available columns.  It can be combined with -noCOLNMAE to display all but the named columns e.g. '-full -nodesc'."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: name 
@@ -145,6 +154,7 @@ section: additional
     default: "Y"
     information: "Display 'name' column"
     help: "This displays the column of database names"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: server  
@@ -153,6 +163,7 @@ section: additional
     default: "Y"
     information: "Display 'server' column"
     help: "This displays the column of URLs of database servers"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: desc 
@@ -161,6 +172,7 @@ section: additional
     default: "Y"
     information: "Display 'description' column"
     help: "This displays the column of database short descriptions"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional
@@ -179,12 +191,14 @@ section: advanced
   [
     default: "$(full)"
     information: "Display column of database type (parent node) from EDAM ontology"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: type 
   [
     default: "$(full)"
     information: "Display column of database type (from SwissProt or EMBL definition)"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 #
@@ -208,6 +222,7 @@ section: output
     additional: "Y"
     default: "stdout"
     knowntype: "showdball output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

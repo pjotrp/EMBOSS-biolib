@@ -12,6 +12,7 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "dna"
+    relations: "EDAM: Pure DNA sequence"                                   
   ]
 
 endsection: input
@@ -25,12 +26,14 @@ section: required [
     standard: "Y"
     default: "600"
     information: "Maximum repeat size"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: threshold [
     standard: "Y"
     default: "20"
     information: "Threshold score"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: required
@@ -46,6 +49,7 @@ section: output [
     taglist: "int:rpt_size=Size int:rpt_count=Count"
     rextension: "qtan"
     precision: "0"
+    relations: "EDAM: EMBOSS report"                                       
   ]
 
   outfile: origfile [
@@ -54,6 +58,7 @@ section: output [
     knowntype: "quicktandem output"
     information: "Sanger Centre program quicktandem output file
                   (optional)"
+    relations:  "EDAM: quicktandem repeat sequence map report"         
   ]
 
 endsection: output

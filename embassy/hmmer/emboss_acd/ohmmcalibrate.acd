@@ -16,6 +16,7 @@ section: input [
     parameter: "Y"
     information: "HMMER hidden markov model file"
     knowntype: "hmm"
+    relations:  "EDAM: HMMER hidden Markov model"                      
   ]
 
 endsection: input
@@ -28,38 +29,45 @@ section: advanced [
   integer: cpu [
     default: "0"
     information: "Number of CPUs"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: fixed [
     default: "0"
     minimum: "0"
     information: "Length fix for random sequences"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   float: mean [
     default: "350."
     information: "Mean length of synthetic sequences"
+    relations: "EDAM: Generic float"                                       
   ]
 
   integer: num [
     default: "5000"
     information: "Number of synthetic sequences"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: pvm [
     default: "N"
     information: "Run on parallel virtual machines"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: sd [
     default: "350."
     information: "Standard deviation of syntheic sequences"
+    relations: "EDAM: Generic float"                                       
   ]
 
   integer: seed [
     default: "0"
     minimum: "0"
     information: "Random seed"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: advanced
@@ -73,6 +81,7 @@ section: output [
     parameter: "Y"
     knowntype: "hmmcalibrate output"
     information: "HMMER hmmcalibrate program output file"
+    relations:  "EDAM: HMMER hidden Markov model"                      
   ]
 
   outfile: histogramfile [
@@ -80,6 +89,7 @@ section: output [
     information: "HMMER histogram output file (optional)"
     knowntype: "hmmer histogram"
     nullok: "Y"
+    relations:  "EDAM: Histogram graph data"                           
   ]
 
 endsection: output

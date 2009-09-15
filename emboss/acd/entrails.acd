@@ -15,6 +15,7 @@ section: additional [
     default: "N"
     information: "Full report"
     help: "By default, only the essential details are reported"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional
@@ -27,6 +28,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "entrails output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

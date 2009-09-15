@@ -23,6 +23,7 @@ infile: infile
     parameter: "Y"
     knowntype: "ascii text"
     information: "ASCII text file"
+    relations:  "EDAM: Free text file"                                 
 ]
 
 endsection: input
@@ -75,6 +76,7 @@ outfile: outfile
     parameter: "Y"
     knowntype: "ascii text"
     information: "ASCII text output file"
+    relations:  "EDAM: Free text file"                                 
 ]
 
 endsection: output

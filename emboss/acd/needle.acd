@@ -15,11 +15,13 @@ section: input [
   sequence: asequence [
     parameter: "Y"
     type: "any"
+    relations: "EDAM: Sequence"                                            
   ]
 
   seqall: bsequence [
     parameter: "Y"
     type: "@($(acdprotein) ? stopprotein : nucleotide)"
+    relations: "EDAM: Sequence record"                                     
   ]
 
   matrixf: datafile [
@@ -30,6 +32,7 @@ section: input [
            sequences. By default it is the file 'EBLOSUM62' (for proteins) or
            the file 'EDNAFULL' (for nucleic sequences). These files are
            found in the 'data' directory of the EMBOSS installation."
+    relations: "EDAM: Float comparison matrix"                             
   ]
 
 endsection: input
@@ -52,6 +55,7 @@ section: required [
            matrix. The default value assumes you are using the EBLOSUM62
            matrix for protein sequences, and the EDNAFULL matrix for
            nucleotide sequences."
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: gapextend [
@@ -71,12 +75,14 @@ section: required [
            you would expect many single base gaps. You can get this result by
            setting the gap open penalty to zero (or very low) and using the
            gap extension penalty to control gap scoring."
+    relations: "EDAM: Generic float"                                       
   ]
 
   boolean: endweight [
     additional: "Y"
     default: "N"
     information: "Apply end gap penalties."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: endopen [
@@ -92,6 +98,7 @@ section: required [
            matrix. The default value assumes you are using the EBLOSUM62
            matrix for protein sequences, and the EDNAFULL matrix for
            nucleotide sequences."
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: endextend [
@@ -105,6 +112,7 @@ section: required [
     help: "The end gap extension, penalty is added to the end gap
            penalty for each base or residue in the end gap. This is how long end gaps
            are penalized."
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: required
@@ -118,6 +126,7 @@ section: output [
     default: "Y"
     information: "Brief identity and similarity"
     help: "Brief identity and similarity"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   align: outfile [
@@ -126,6 +135,7 @@ section: output [
     minseqs: "2"
     maxseqs: "2"
     aglobal: "Y"
+    relations: "EDAM: Pairwise sequence alignment data"                    
   ]
 
 endsection: output

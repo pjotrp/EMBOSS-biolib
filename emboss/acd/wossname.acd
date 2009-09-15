@@ -19,6 +19,7 @@ section: input [
            keywords of all of the EMBOSS programs. If no keyword is
            specified, all programs will be listed."
     knowntype: "emboss keyword"
+    relations:  "EDAM: EMBOSS application name"                        
   ]
 
 endsection: input
@@ -40,6 +41,7 @@ section: additional [
            many combinations of the names as: 'NAME1', 'NAME2', 'NAME1
            NAME2', NAME2 NAME1'. The non-expanded names are simply like:
            'NAME1 NAME2'."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: allmatch [
@@ -49,6 +51,7 @@ section: additional [
     help: "By default, all words in the search string must match. This
            option searches for a match to any word in a list of
            possibilities"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: showkeywords [
@@ -56,6 +59,7 @@ section: additional [
     default: "N"
     information: "Show keywords with program documentation"
     outputmodifier: "Y"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional
@@ -75,6 +79,7 @@ section: advanced [
            the same code libraries and share the same look and feel, but are
            generally developed by people who wish the programs to be outside
            of the GNU Public Licence scheme"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: embassy [
@@ -87,6 +92,7 @@ section: advanced [
            same code libraries and share the same look and feel, but are
            generally developed by people who wish the programs to be outside
            of the GNU Public Licence scheme"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   string: showembassy [
@@ -98,6 +104,7 @@ section: advanced [
            look and feel, but are generally developed by people who wish the
            programs to be outside of the GNU Public Licence scheme"
     knowntype: "embassy package"
+    relations:  "EDAM: EMBASSY package name"                           
   ]
 
   boolean: colon [
@@ -113,6 +120,7 @@ section: advanced [
            group name if this option is true. Note: This does not apply if
            the group names have been exploded with the 'explode' option."
     outputmodifier: "Y"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: gui [
@@ -124,6 +132,7 @@ section: advanced [
            programs are inappropriate for running in a GUI, these include
            other menu programs and interactive editors. This option allows
            you to only report those programs that can be run from a GUI"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: advanced
@@ -137,6 +146,7 @@ section: output [
     additional: "Y"
     default: "stdout"
     knowntype: "wossname output"
+    relations: "EDAM: Free text file"                                      
   ]
 
   section: htmlsection [
@@ -151,6 +161,7 @@ section: output [
       help: "If you are sending the output to a file, this will format
              it for displaying as a table in a WWW document."
       outputmodifier: "Y"
+    relations: "EDAM: Generic boolean"                                     
     ]
 
   endsection: htmlsection
@@ -162,6 +173,7 @@ section: output [
     help: "If you use this option, then only the group names will
            output to the file"
     outputmodifier: "Y"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: alphabetic [
@@ -172,6 +184,7 @@ section: output [
            the program names and descriptions instead of the programs being
            listed in their functional groups."
     outputmodifier: "Y"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

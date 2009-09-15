@@ -12,11 +12,13 @@ section: input [
   sequence: asequence [
     parameter: "Y"
     type: "any"
+    relations: "EDAM: Sequence"                                            
   ]
 
   sequence: bsequence [
     parameter: "Y"
     type: "@($(acdprotein) ? stopprotein : nucleotide)"
+    relations: "EDAM: Sequence"                                            
   ]
 
   matrix: datafile [
@@ -27,6 +29,7 @@ section: input [
            sequences. By default it is the file 'EBLOSUM62' (for proteins) or
            the file 'EDNAFULL' (for nucleic sequences). These files are
            found in the 'data' directory of the EMBOSS installation."
+    relations: "EDAM: Integer comparison matrix"                           
   ]
 
 endsection: input
@@ -43,6 +46,7 @@ section: additional [
     minimum: "0"
     valid: "Positive integer"
     expected: "12 for protein, 16 for nucleic"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: gapextend [
@@ -52,6 +56,7 @@ section: additional [
     minimum: "0"
     valid: "Positive integer"
     expected: "2 for protein, 4 for nucleic"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: additional
@@ -67,6 +72,7 @@ section: output [
     minseqs: "2"
     maxseqs: "2"
     aglobal: "Y"
+    relations: "EDAM: Pairwise sequence alignment data"                    
   ]
 
 endsection: output

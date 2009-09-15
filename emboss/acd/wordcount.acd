@@ -12,6 +12,7 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "any"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -26,6 +27,7 @@ section: required [
     default: "@($(acdprotein)? 2 : 4)"
     minimum: "1"
     information: "Word size"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: required
@@ -40,6 +42,7 @@ section: additional [
     default: "1"
     minimum: "1"
     information: "Minimum word count to report"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: additional
@@ -52,6 +55,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "wordcount output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

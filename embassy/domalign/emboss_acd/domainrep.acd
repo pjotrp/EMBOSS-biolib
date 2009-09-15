@@ -23,6 +23,7 @@ section: input [
            SCOPPARSE and CATHPARSE. Domain sequence information can be added
            to the file by using DOMAINSEQS."
     knowntype: "Domain classification"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: input
@@ -49,6 +50,7 @@ section: required [
     codedelimiter: ":"
     header: "Node at which to reorder"
     information: "Select number."
+    relations: "EDAM: Generic string array"                                
   ]
 
 endsection: required
@@ -69,6 +71,7 @@ section: output [
            to the file by using DOMAINSEQS."
     default: "test.scop"
     knowntype: "domain classification"
+    relations:  "EDAM: EMBASSY domain classification record"           
   ]
 
 endsection: output

@@ -16,6 +16,7 @@ section: input [
     parameter: "Y"
     information: "HMMER hidden markov model file"
     knowntype: "hmm"
+    relations:  "EDAM: HMMER hidden Markov model"                      
   ]
 
 endsection: input
@@ -29,6 +30,7 @@ section: advanced [
     default: "0"
     minimum: "0"
     information: "Random seed"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: advanced
@@ -41,22 +43,26 @@ section: output [
   boolean: selex [
     default: "N"
     information: "Output in selex format"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: consensus [
     default: "N"
     information: "Output consensus sequence"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: number [
     default: "10"
     information: "Number of sequences to produce"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   outfile: outfile [
     parameter: "Y"
     knowntype: "hmmemit output"
     information: "HMMER hmmemit program output file"
+    relations:  "EDAM: HMMER synthetic sequences record"               
   ]
 
 endsection: output

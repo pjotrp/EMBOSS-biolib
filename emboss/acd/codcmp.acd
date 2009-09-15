@@ -12,11 +12,13 @@ section: input [
   codon: first [
     parameter: "Y"
     help: "First codon usage file"
+    relations: "EDAM: Codon usage table"                                   
   ]
 
   codon: second [
     parameter: "Y"
     help: "Second codon usage file for comparison"
+    relations: "EDAM: Codon usage table"                                   
   ]
 
 endsection: input
@@ -29,6 +31,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "codcmp output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

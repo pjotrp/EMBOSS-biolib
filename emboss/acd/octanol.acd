@@ -12,6 +12,7 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "protein"
+    relations: "EDAM: Pure protein sequence"                               
   ]
 
   datafile: datafile [
@@ -19,6 +20,7 @@ section: input [
     default: "Ewhite-wimley.dat"
     information: "White-Wimley data file"
     knowntype: "white wimley datafile"
+    relations:  "EDAM: Amino acid White-Wimley data"                   
   ]
 
 endsection: input
@@ -34,6 +36,7 @@ section: additional [
     default: "19"
     minimum: "1"
     maximum: "200"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: additional
@@ -49,24 +52,28 @@ section: output [
     gxtitle: "$(sequence.name)"
     gytitle: "Total Free Energy (Kcal/mol)"
     gtitle: "White-Wimley Plot"
+    relations: "EDAM: EMBOSS graph file"                                   
   ]
 
   boolean: plotoctanol [
     additional: "Y"
     default: "N"
     information: "Display the octanol plot"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: plotinterface [
     additional: "Y"
     default: "N"
     information: "Display the interface plot"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: plotdifference [
     additional: "Y"
     default: "Y"
     information: "Display the difference plot"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

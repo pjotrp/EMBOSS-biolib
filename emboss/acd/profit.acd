@@ -13,11 +13,13 @@ section: input [
     parameter: "Y"
     information: "Profile or weight matrix file"
     knowntype: "profile or matrix"
+    relations:  "EDAM: Sequence profile"                               
   ]
 
   seqall: sequence [
     parameter: "Y"
     type: "any"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -30,6 +32,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "profit output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

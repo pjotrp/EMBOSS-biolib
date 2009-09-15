@@ -12,6 +12,7 @@ section: input [
   seqall: seqall [
     parameter: "Y"
     type: "dna"
+    relations: "EDAM: DNA sequence record"                                 
   ]
 
 endsection: input
@@ -26,6 +27,7 @@ section: additional [
     minimum: "1"
     default: "100"
     information: "Window length"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   list: display [
@@ -39,6 +41,7 @@ section: additional [
     header: "Graph type"
     information: "Select graph type"
     button: "Y"
+    relations: "EDAM: Generic string array"                                
   ]
 
 endsection: additional
@@ -57,6 +60,7 @@ variable: isdual "@($(display) == D)"
     information: "Density graph"
     nullok: "Y"
     nulldefault: "@($(display) == none)"
+    relations: "EDAM: EMBOSS graph file"                                   
   ]
 
   report: outfile [
@@ -66,6 +70,7 @@ variable: isdual "@($(display) == D)"
     knowntype: "density output"
     nullok: "Y"
     nulldefault: "@($(display) != none)"
+    relations: "EDAM: EMBOSS report"                                       
   ]
 
 endsection: output

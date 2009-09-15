@@ -16,12 +16,14 @@ section: input [
     parameter: "Y"
     information: "Database name"
     knowntype: "hmm database name"
+    relations:  "EDAM: Sequence profile database name"                 
   ]
 
   string: name [
     parameter: "Y"
     information: "Entry name"
     knowntype: "hmm entry name"
+    relations:  "EDAM: HMMER hidden Markov model identifier"           
   ]
 
 endsection: input
@@ -35,6 +37,7 @@ section: output [
     parameter: "Y"
     knowntype: "hmm"
     information: "HMMER hidden markov model output file"
+    relations:  "EDAM: HMMER hidden Markov model"                      
   ]
 
 endsection: output

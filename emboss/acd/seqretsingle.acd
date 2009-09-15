@@ -13,12 +13,14 @@ section: input [
 
   boolean: feature [
     information: "Use feature information"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   sequence: sequence [
     parameter: "Y"
     features: "$(feature)"
     type: "gapany"
+    relations: "EDAM: Sequence"                                            
   ]
 
 endsection: input
@@ -31,6 +33,7 @@ section: output [
   seqout: outseq [
     parameter: "Y"
     features: "$(feature)"
+    relations: "EDAM: Sequence"                                            
   ]
 
 endsection: output

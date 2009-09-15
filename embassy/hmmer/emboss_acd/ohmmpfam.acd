@@ -15,12 +15,14 @@ section: input [
   seqall: seqall [
     parameter: "Y"
     type: "any"
+    relations: "EDAM: Sequence record"                                     
   ]
 
   infile: hmmfile [
     parameter: "Y"
     information: "HMMER hidden markov model file"
     knowntype: "hmm"
+    relations:  "EDAM: HMMER hidden Markov model"                      
   ]
 
 endsection: input
@@ -33,61 +35,73 @@ section: advanced [
   boolean: nucleic [
     default: "N"
     information: "Force nucleic comparison"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: nalign [
     default: "100"
     information: "Number of alignments"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   float: evalue [
     default: "10."
     information: "E-value cutoff"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: hitcut [
     default: "-1000000."
     information: "Hit score cutoff"
+    relations: "EDAM: Generic float"                                       
   ]
 
   integer: dbsize [
     default: "59021"
     information: "Calc E-value for DB size n"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: cpu [
     default: "0"
     information: "Number of CPUs"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   float: dome [
     default: "1000000."
     information: "E-value domain cutoff"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: domt [
     default: "-1000000."
     information: "Hit score domain cutoff"
+    relations: "EDAM: Generic float"                                       
   ]
 
   boolean: forward [
     default: "N"
     information: "Use forward algorithm"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: nulltwo [
     default: "N"
     information: "Turn off second null model"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: pvm [
     default: "N"
     information: "Use parallel virtual machine"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: xnu [
     default: "N"
     information: "Use XNU filtering"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: advanced
@@ -101,6 +115,7 @@ section: output [
     parameter: "Y"
     knowntype: "hmmpfam output"
     information: "HMMER hmmpfam program output file"
+    relations:  "EDAM: HMMER alignment report (sequences versus HMMs)" 
   ]
 
 endsection: output

@@ -14,6 +14,7 @@ section: input [
     parameter: "Y"
     information: "Clean protein structure coordinates file"
     knowntype: "protein clean coordinates"
+    relations:  "EDAM: Protein tertiary structure"                     
   ]
 
 endsection: input
@@ -29,6 +30,7 @@ section: required [
                   should be calculated"
     default: "1"
     minimum: "1"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: startresiduenumber [
@@ -37,6 +39,7 @@ section: required [
                   angles should be calculated"
     default: "1"
     minimum: "1"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: finishresiduenumber [
@@ -44,6 +47,7 @@ section: required [
     information: "Last residue in chain for which torsion
                   angles should be calculated (1 = last residue)"
     default: "1"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: required
@@ -66,6 +70,7 @@ section: output [
     multiple: "N"
     precision: "1"
     taglist: "float:phi float:psi"
+    relations: "EDAM: EMBOSS report"                                       
   ]
 
 endsection: output

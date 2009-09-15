@@ -12,6 +12,7 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "DNA"
+    relations: "EDAM: Sequence record"                                     
   ]
 
   list: menu [
@@ -25,6 +26,7 @@ section: input [
     header: "Transcription Factor Class"
     information: "Select class"
     button: "Y"
+    relations: "EDAM: Generic string array"                                
   ]
 
   datafile: custom [
@@ -33,6 +35,7 @@ section: input [
     nullok: "@($(menu)!=C)"
     knowntype: "transfac data"
     default: ""
+    relations:  "EDAM: TRANSFAC database"                              
   ]
 
 endsection: input
@@ -47,6 +50,7 @@ section: required [
     default: "0"
     minimum: "0"
     information: "Number of mismatches"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: required
@@ -62,6 +66,7 @@ section: additional [
     minimum: "1"
     information: "Display matches equal to or above this
                   length"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: additional
@@ -74,6 +79,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "tfscan output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

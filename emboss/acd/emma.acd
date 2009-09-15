@@ -17,18 +17,21 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "gapany"
+    relations: "EDAM: Sequence record"                                     
   ]
 
   toggle: onlydend [
     additional: "Y"
     default: "N"
     information: "Only produce dendrogram file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: dend [
     additional: "@(!$(onlydend))"
     default: "N"
     information: "Do alignment using an old dendrogram"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   infile: dendfile [
@@ -38,6 +41,7 @@ section: input [
     knowntype: "dendrogram"
     information: "Dendrogram (tree file) from clustalw file
                   (optional)"
+    relations:  "EDAM: clustalw tree report"                           
   ]
 
   section: protalignsection [
@@ -82,6 +86,7 @@ section: input [
              We also supply an identity matrix which gives a score of 1.0 to
              two identical amino acids and a score of zero otherwise. This
              matrix is not very useful."
+    relations: "EDAM: Generic string array"                                
     ]
 
     list: pwdnamatrix [
@@ -97,6 +102,7 @@ section: input [
       button: "Y"
       help: "The scoring table which describes the scores assigned to
              matches and mismatches (including IUB ambiguity codes)."
+    relations: "EDAM: Generic string array"                                
     ]
 
     variable: usermatrix "@($(pwmatrix) == o)"
@@ -107,6 +113,7 @@ section: input [
       nullok: "@(!$(usermatrix))"
       information: "Comparison matrix file (optional)"
       knowntype: "comparison matrix"
+    relations:  "EDAM: Comparison matrix file"                         
     ]
 
   endsection: protalignsection
@@ -157,6 +164,7 @@ section: input [
              two identical amino acids and a score of zero otherwise. This
              matrix is not very useful. Alternatively, you can read in your
              own (just one matrix, not a series)."
+    relations: "EDAM: Generic string array"                                
     ]
 
     variable: usermamatrix "@($(matrix) == o)"
@@ -174,6 +182,7 @@ section: input [
       button: "Y"
       help: "This gives a menu where a single matrix (not a series)
              can be selected."
+    relations: "EDAM: Generic string array"                                
     ]
 
     variable: umamatrix "@($(dnamatrix) == own)"
@@ -184,6 +193,7 @@ section: input [
       nullok: "@($(usermamatrix)?@(!$(umamatrix)):True)"
       information: "Comparison matrix file (optional)'"
       knowntype: "comparison matrix"
+    relations:  "EDAM: Comparison matrix file"                         
     ]
 
   endsection: matrixsection
@@ -214,6 +224,7 @@ section: additional [
              The slow-accurate method is fine for short sequences but will be
              VERY SLOW for many (e.g. >100) long (e.g. >1000 residue)
              sequences."
+    relations: "EDAM: Generic boolean"                                     
     ]
 
     float: pwgapopen [
@@ -224,6 +235,7 @@ section: additional [
                     penalty"
       help: "The penalty for opening a gap in the pairwise
              alignments."
+    relations: "EDAM: Generic float"                                       
     ]
 
     float: pwgapextend [
@@ -234,6 +246,7 @@ section: additional [
                     penalty"
       help: "The penalty for extending a gap by 1 residue in the
              pairwise alignments."
+    relations: "EDAM: Generic float"                                       
     ]
 
   endsection: slowalignsection
@@ -256,6 +269,7 @@ section: additional [
              used. INCREASE for speed (max= 2 for proteins; 4 for DNA),
              DECREASE for sensitivity. For longer sequences (e.g. >1000
              residues) you may need to increase the default."
+    relations: "EDAM: Generic integer"                                     
     ]
 
     integer: gapw [
@@ -269,6 +283,7 @@ section: additional [
       help: "This is a penalty for each gap in the fast alignments. It
              has little affect on the speed or sensitivity except for
              extreme values."
+    relations: "EDAM: Generic integer"                                     
     ]
 
     integer: topdiags [
@@ -284,6 +299,7 @@ section: additional [
              (with most matches) are used in the alignment. This parameter
              specifies how many. Decrease for speed; increase for
              sensitivity."
+    relations: "EDAM: Generic integer"                                     
     ]
 
     integer: window [
@@ -297,6 +313,7 @@ section: additional [
       help: "This is the number of diagonals around each of the 'best'
              diagonals that will be used. Decrease for speed; increase for
              sensitivity."
+    relations: "EDAM: Generic integer"                                     
     ]
 
     boolean: nopercent [
@@ -304,6 +321,7 @@ section: additional [
       default: "N"
       information: "Fast pairwise alignment: similarity scores:
                     suppresses percentage score"
+    relations: "EDAM: Generic boolean"                                     
     ]
 
   endsection: fastalignsection
@@ -322,6 +340,7 @@ section: additional [
       help: "The penalty for opening a gap in the alignment.
              Increasing the gap opening penalty will make gaps less
              frequent."
+    relations: "EDAM: Generic float"                                       
     ]
 
     float: gapextend [
@@ -333,6 +352,7 @@ section: additional [
       help: "The penalty for extending a gap by 1 residue. Increasing
              the gap extension penalty will make gaps shorter. Terminal gaps
              are not penalised."
+    relations: "EDAM: Generic float"                                       
     ]
 
     boolean: endgaps [
@@ -345,6 +365,7 @@ section: additional [
              will be ignored for this purpose. This is useful when you wish
              to align fragments where the end gaps are not biologically
              meaningful."
+    relations: "EDAM: Generic boolean"                                     
     ]
 
     integer: gapdist [
@@ -358,6 +379,7 @@ section: additional [
              this distance apart are penalised more than other gaps. This
              does not prevent close gaps; it makes them less frequent,
              promoting a block-like appearance of the alignment."
+    relations: "EDAM: Generic integer"                                     
     ]
 
     boolean: norgap [
@@ -369,6 +391,7 @@ section: additional [
              each position in the alignment or sequence. As an example,
              positions that are rich in glycine are more likely to have an
              adjacent gap than positions that are rich in valine."
+    relations: "EDAM: Generic boolean"                                     
     ]
 
     string: hgapres [
@@ -379,6 +402,7 @@ section: additional [
              hydrophilic. It is used when introducing Hydrophilic gap
              penalties."
       knowntype: "protein codes"
+    relations:  "EDAM: Amino acid code string"                         
     ]
 
     boolean: nohgap [
@@ -390,6 +414,7 @@ section: additional [
              acids; these are likely to be loop or random coil regions where
              gaps are more common. The residues that are 'considered' to be
              hydrophilic are set by '-hgapres'."
+    relations: "EDAM: Generic boolean"                                     
     ]
 
   endsection: gapoptions
@@ -408,6 +433,7 @@ section: additional [
            required to delay the addition of a sequence; sequences that are
            less identical than this level to any other sequences will be
            aligned later."
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: additional
@@ -421,6 +447,7 @@ section: output [
     parameter: "Y"
     extension: "aln"
     aligned: "Y"
+    relations: "EDAM: Sequence record"                                     
   ]
 
   outfile: dendoutfile [
@@ -429,6 +456,7 @@ section: output [
     information: "Dendrogram (tree file) from clustalw output
                   file"
     knowntype: "dendrogram"
+    relations:  "EDAM: clustalw tree report"                           
   ]
 
 endsection: output

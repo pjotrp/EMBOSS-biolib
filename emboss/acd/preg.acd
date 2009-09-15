@@ -13,12 +13,14 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "protein"
+    relations: "EDAM: Protein sequence record"                             
   ]
 
   regexp: pattern [
     parameter: "Y"
     upper: "Y"
     information: "Regular expression pattern"
+    relations: "EDAM: Regular expression"                                  
   ]
 
 endsection: input
@@ -32,6 +34,7 @@ section: output [
     parameter: "Y"
     taglist: "str:pat=Pattern_name"
     rformat: "seqtable"
+    relations: "EDAM: EMBOSS report"                                       
   ]
 
 endsection: output

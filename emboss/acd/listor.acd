@@ -14,12 +14,14 @@ section: input [
     parameter: "Y"
     type: "gapany"
     aligned: "N"
+    relations: "EDAM: Sequence record"                                     
   ]
 
   seqset: secondsequences [
     parameter: "Y"
     type: "gapany"
     aligned: "N"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -50,6 +52,7 @@ section: additional [
            not in both \
            NOT - gives those which occur in the first set except for those
            that also occur in the second"
+    relations: "EDAM: Generic string array"                                
   ]
 
 endsection: additional
@@ -66,6 +69,7 @@ section: output [
     help: "The list of sequence names will be written to this list
            file"
     information: "List of USAs output file"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

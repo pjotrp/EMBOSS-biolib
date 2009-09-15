@@ -21,6 +21,7 @@ section: additional [
            will be put into the comamnd line ready for you to quickly view
            those new files. If you do not wish this to happen, set this to be
            false."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: explode [
@@ -35,6 +36,7 @@ section: additional [
            many combinations of the names as: 'NAME1', 'NAME2', 'NAME1
            NAME2', NAME2 NAME1'. The non-expanded names are simply like:
            'NAME1 NAME2'."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional

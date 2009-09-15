@@ -13,6 +13,7 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "DNA"
+    relations: "EDAM: Sequence"                                            
   ]
 
 endsection: input
@@ -27,6 +28,7 @@ section: required [
     default: "all"
     information: "Comma separated enzyme list"
     knowntype: "enzyme list"
+    relations:  "EDAM: Restriction enzyme name"                        
   ]
 
 endsection: required
@@ -39,11 +41,13 @@ section: output [
   boolean: sshow [
     default: "N"
     information: "Display untranslated sequence"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: tshow [
     default: "N"
     information: "Display translated sequence"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   report: outfile [
@@ -53,6 +57,7 @@ section: output [
               str:rspattern=RS-Pattern int:baseposn=Base-Posn rstr:aa=AAs
               rstr:mutation=Mutation"
     rscoreshow: "N"
+    relations: "EDAM: EMBOSS report"                                       
   ]
 
 endsection: output

@@ -13,6 +13,7 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "pureprotein"
+    relations: "EDAM: Protein sequence record"                             
   ]
 
 endsection: input
@@ -27,16 +28,19 @@ section: advanced [
     minimum: ".01"
     maximum: "1."
     default: ".5"
+    relations: "EDAM: Generic float"                                       
   ]
 
   integer: amino [
     information: "Number of N-termini"
     default: "1"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: termini [
     default: "Y"
     information: "Include charge at N and C terminus"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: advanced
@@ -49,21 +53,25 @@ section: output [
   toggle: plot [
     default: "N"
     information: "Plot charge vs pH"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: report [
     default: "Y"
     information: "Write results to a file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   xygraph: graph [
     standard: "$(plot)"
+    relations: "EDAM: EMBOSS graph file"                                   
   ]
 
   outfile: outfile [
     standard: "$(report)"
     knowntype: "giep output"
     nullok: "@(!$(report))"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

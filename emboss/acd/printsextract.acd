@@ -16,6 +16,7 @@ section: input [
     parameter: "Y"
     information: "PRINTS database file"
     knowntype: "prints database"
+    relations:  "EDAM: PRINTS database"                                
   ]
 
 endsection: input
