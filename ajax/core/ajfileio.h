@@ -49,6 +49,7 @@ size_t         ajWritebinChar(AjPFile thys, const char* txt, size_t len);
 size_t         ajWritebinInt2(AjPFile thys, ajshort i);
 size_t         ajWritebinInt4(AjPFile thys, ajint i);
 size_t         ajWritebinInt8(AjPFile thys, ajlong i);
+size_t         ajWritebinNewline(AjPFile thys);
 size_t         ajWritebinStr(AjPFile thys, const AjPStr str, size_t len);
 AjBool         ajWriteline(AjPFile file, const AjPStr line);
 AjBool         ajWritelineNewline(AjPFile file, const AjPStr line);

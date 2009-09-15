@@ -1265,6 +1265,7 @@ size_t ajReadbinUint8Local(AjPFile file, ajulong *Pu8)
 ** @nam3rule Int2 Binary read of a 2 byte integer
 ** @nam3rule Int4 Binary read of a 4 byte integer
 ** @nam3rule Int8 Binary read of an 8 byte integer
+** @nam3rule Newline Write newline character(s)
 ** @nam3rule Str Write a string object
 **
 ** @argrule Writebin file [AjPFile] Output file object
@@ -1506,6 +1507,29 @@ size_t ajWritebinInt8(AjPFile file, ajlong i8)
 
 
 
+/* @func ajWritebinNewline ****************************************************
+**
+** Writes newline character(s) to a file
+**
+** @param [u] file [AjPFile] Output file
+** @return [size_t] Return value from fwrite
+******************************************************************************/
+
+size_t ajWritebinNewline(AjPFile file)
+{
+    size_t ret;
+
+#ifdef WIN32
+    ret = fwrite("\r\n", 1, 2, file->fp);
+#else
+    ret = fwrite("\n", 1, 1, file->fp);
+#endif
+
+    return ret;
+}
+
+
+
 /* @func ajWritebinStr *******************************************************
 **
 ** Writes a string to a binary file
@@ -1614,8 +1638,14 @@ AjBool ajWritelineNewline(AjPFile file, const AjPStr line)
 {
     if(!fwrite(MAJSTRGETPTR(line), 1, MAJSTRGETLEN(line), file->fp))
         return ajFalse;
+
+#ifdef WIN32
+    if(!fwrite("\r\n", 1, 2, file->fp))
+        return ajFalse;
+#else
     if(!fwrite("\n", 1, 1, file->fp))
         return ajFalse;
+#endif
 
     return ajTrue;
 }
