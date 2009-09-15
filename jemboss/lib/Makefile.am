@@ -1,7 +1,7 @@
 SUBDIRS = axis
 
 # The install-exec-hook is for the case where a client.jar has
-# been created by the 'ant' packaging for a standalone Jemboss.
+# been created by the 'ant' packaging for Jemboss.
 # In that case it needs to be copied to the install dir.
 
 install-exec-hook:
