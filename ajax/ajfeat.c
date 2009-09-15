@@ -7368,7 +7368,7 @@ AjBool ajFeatGetRemoteseq(const AjPFeature thys, const AjPStr usa,
 ** Returns all cross-references from a feature
 **
 ** @param [r] thys [const AjPFeature] Feature
-** @param [u] Pxreflist [AjPList(] List of sequence cross-reference objects
+** @param [u] Pxreflist [AjPList*] List of sequence cross-reference objects
 ** @return [AjBool] True on success
 ** @@
 ******************************************************************************/
