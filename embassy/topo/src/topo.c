@@ -254,7 +254,7 @@ void topoMoveTo(const float x, float y)
 
 void topoDraw(const float x, float y)
 {  
-    ajGraphDrawLine(tempxpos,tempypos,x,y);
+    ajGraphicsDrawLine(tempxpos,tempypos,x,y);
     tempxpos=x;
     tempypos=y;
 }
@@ -267,12 +267,12 @@ void topoCentre(const float x, float y)
 
 void topoCurve(float rad, float junk, float junk2)
 {
-    ajGraphDrawCircle(circle1,circle2,rad);
+    ajGraphicsDrawCircle(circle1,circle2,rad);
 }
 
 void topoPlotText(char *text)
 {
-    ajGraphDrawTextAtStart(tempxpos-0.4,tempypos,text);
+    ajGraphicsDrawTextAtstart(tempxpos-0.4,tempypos,text);
 }
 
 void topoNewColour(int col)
@@ -293,7 +293,7 @@ void topoNewColour(int col)
     else if (col == 7)   /* yellow */
 	col = 2;
 
-    old = ajGraphSetFore(col);
+    old = ajGraphicsSetColourFore(col);
 }
 
 int main(int argc, char * argv[])
@@ -343,7 +343,7 @@ int main(int argc, char * argv[])
     AjBool doend = ajTrue;
     ajuint isigstart, isigend;
 
-    ajGraphInitPV("topo", argc, argv, "TOPO", VERSION);
+    ajGraphicsInitPV("topo", argc, argv, "TOPO", VERSION);
   
     sequence = ajAcdGetSeq("sequence");
     graph  = ajAcdGetGraph("graph");
@@ -351,7 +351,7 @@ int main(int argc, char * argv[])
     ajGraphSetTitlePlus(graph, ajSeqGetUsaS(sequence));
 
     ajGraphOpenWin(graph,0.0,150.0,0.0,100.0);
-    ajGraphSetCharScale(0.5);
+    ajGraphicsSetCharscale(0.5);
 
     sq.seq[0] = ' '; /* hopefully sort out the fortran to c offset worrys :) */
 
@@ -1899,7 +1899,7 @@ void  topoSymbol(const float x,float y,char stran,int sym)
 	xhex[5] = x+1.4; yhex[5]=y+0.7;
 	xhex[6] = x; yhex[6]=y+1.4;
 
-	ajGraphDrawPoly(7,xhex,yhex);
+	ajGraphicsDrawPoly(7,xhex,yhex);
 	topoMoveTo(x,y) ;
 	str[0]=stran ;
 	topoPlotText(str) ;
@@ -1913,7 +1913,7 @@ void  topoSymbol(const float x,float y,char stran,int sym)
 	xhex[2]=x; yhex[2]=y+1.4;
 	xhex[3]=x-1.4; yhex[3]=y-1.05;
 	xhex[4]=x; yhex[4]=y-1.4;
-	ajGraphDrawPoly(5,xhex,yhex);
+	ajGraphicsDrawPoly(5,xhex,yhex);
 
 	topoMoveTo(x,y-.45) ;
 	str[0]=stran ;
@@ -1929,7 +1929,7 @@ void  topoSymbol(const float x,float y,char stran,int sym)
 	xhex[3]=x+1.4; yhex[3]=y+1.05;
 	xhex[4]=x; yhex[4]=y+1.4;
 
-	ajGraphDrawPoly(5,xhex,yhex);
+	ajGraphicsDrawPoly(5,xhex,yhex);
 
 	topoMoveTo(x,y+.45) ;
 	str[0]=stran ;
@@ -1997,7 +1997,7 @@ void  topoSymbol(const float x,float y,char stran,int sym)
 	/*c unknown color square */ 
 	if(sym == 21)topoNewColour(8) ;
 
-	ajGraphDrawBoxFill(x-1.4,y-1.4,2.8);
+	ajGraphicsDrawBoxFill(x-1.4,y-1.4,2.8);
 
 	topoNewColour(1) ;
 	topoMoveTo(x,y) ;
@@ -2033,7 +2033,7 @@ void  topoSymbol(const float x,float y,char stran,int sym)
 	xhex[6] = x; yhex[6]=y+1.4;
 
 
-	ajGraphDrawPolyFill(7,xhex,yhex);
+	ajGraphicsDrawPolyFill(7,xhex,yhex);
 
 	topoNewColour(1) ;
 	topoMoveTo(x,y) ;
@@ -2066,7 +2066,7 @@ void  topoSymbol(const float x,float y,char stran,int sym)
 	xhex[2]=x; yhex[2]=y+1.4;
 	xhex[3]=x-1.4; yhex[3]=y-1.05;
 	xhex[4]=x; yhex[4]=y-1.4;
-	ajGraphDrawPolyFill(5,xhex,yhex);
+	ajGraphicsDrawPolyFill(5,xhex,yhex);
 
 	topoNewColour(1) ;
 	topoMoveTo(x,y-.45) ;
@@ -2099,7 +2099,7 @@ void  topoSymbol(const float x,float y,char stran,int sym)
 	xhex[3]=x+1.4; yhex[3]=y+1.05;
 	xhex[4]=x; yhex[4]=y+1.4;
 
-	ajGraphDrawPolyFill(5,xhex,yhex);
+	ajGraphicsDrawPolyFill(5,xhex,yhex);
 
 	topoNewColour(1) ;
 	topoMoveTo(x,y+.45) ;
@@ -9410,7 +9410,7 @@ void  conupbig2(const int is,int *ie,char *strand,int *syms)
 	topoSymbol(x,y,stran,sym) ;
     }  /*end for*/
  
-    ajGraphSetCharScale(0.5) ;
+    ajGraphicsSetCharscale(0.5) ;
     topoMoveTo(105.0,5.0) ;
 /*c	call topoPlotText(title)    */ 
 /*!	call closef(fn) */ 
@@ -9918,7 +9918,7 @@ void  condownbig2(const int is,int *ie,char *strand,int *syms)
 	topoSymbol(x,y,stran,sym) ;
     }  /*end for*/
  
-    ajGraphSetCharScale(0.5) ;
+    ajGraphicsSetCharscale(0.5) ;
     topoMoveTo(105.0,5.0) ;
 /*c        call topoPlotText(title) */ 
 /*!       call closef(fn) */ 
@@ -10420,7 +10420,7 @@ void  condownbig3(const int is,int *ie,char *strand,int *syms)
 	topoSymbol(x,y,stran,sym) ;
     }  /*end for*/
  
-    ajGraphSetCharScale(0.5) ;
+    ajGraphicsSetCharscale(0.5) ;
     topoMoveTo(105.0,5.0) ;
 /*c        call topoPlotText(title) */ 
 /*!       call closef(fn) */ 
