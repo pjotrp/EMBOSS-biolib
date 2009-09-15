@@ -2449,57 +2449,6 @@ static AjPStr strNew(ajuint size)
 
 
 
-/* @section constant constructors **********************************************
-**
-** Functions for constructing string objects, possibly with a starting string. 
-**
-** @fdata      [const AjPStr]
-** @fnote     Same namrule as "String constructor functions:
-**            C-type (char*) strings"
-** @nam3rule  Const    Construct a constant string.
-** @nam4rule  ConstEmpty Construct with an empty string.
-**
-** @argrule   S   str [const AjPStr] Text string
-**
-** @valrule   *     [const AjPStr] New string
-** @fcategory new
-*/
-
-/* @func ajStrConstEmpty *******************************************************
-**
-** Returns an unmodifiable empty string.
-** 
-** @return [const AjPStr] Pointer to an empty string
-** @@
-******************************************************************************/
-
-const AjPStr ajStrConstEmpty(void)
-{
-    return strPNULL;
-}
-
-
-
-
-/* @func ajStrConstEmpty *******************************************************
-**
-** Returns an unmodifiable empty string.
-**
-** @param [r] str [const AjPStr] String
-** @return [const AjPStr] Pointer to an empty string
-** @@
-******************************************************************************/
-
-const AjPStr ajStrConstS(const AjPStr str)
-{
-    if(!str)
-        return strPNULL;
-    return str;
-}
-
-
-
-
 /* @section destructors *******************************************************
 **
 ** Functions for destruction of string objects.
@@ -4400,6 +4349,7 @@ __deprecated AjBool  ajStrReplace( AjPStr* pthis, ajint begin,
 ** @nam5rule  RemoveLastNewline   Remove last character if a newline only.
 ** @nam4rule  RemoveNonseq     Remove non-sequence characters
 **                               (all chars except alphabetic & '*')
+** @nam4rule  RemoveDupchar    Remove duplicated characters.
 ** @nam4rule  RemoveSet        Remove a set of characters.
 ** @nam4rule  RemoveWhite      Remove all whitespace characters.
 ** @nam5rule  RemoveWhiteExcess  Remove excess whitespace only.
@@ -12713,6 +12663,67 @@ __deprecated ajint  ajStrPosII(ajint ilen, ajint imin, ajint ipos)
 __deprecated ajint  ajCharPos(const char* thys, ajint ipos)
 {
     return ajMathPos(strlen(thys), ipos);
+}
+
+
+
+
+/* @datasection [const AjPStr] String constant *********************************
+**
+** Functions for manipulating AJAX (AjPStr) string constants
+**
+** @nam2rule Str    Function is for manipulating strings
+**
+*/
+
+
+
+/* @section string constant constructors ***************************************
+**
+** Functions for constructing string constant objects 
+**
+** @fdata      [const AjPStr]
+** @fnote     Same namrule as "String constructor functions:
+**            C-type (char*) strings"
+** @nam3rule  Const    Construct a constant string.
+** @nam4rule  ConstEmpty Construct with an empty string.
+**
+** @argrule   S   str [const AjPStr] Text string
+**
+** @valrule   *     [const AjPStr] New string
+** @fcategory new
+*/
+
+/* @func ajStrConstS *******************************************************
+**
+** Returns an unmodifiable empty string.
+**
+** @param [r] str [const AjPStr] String
+** @return [const AjPStr] Pointer to an empty string
+** @@
+******************************************************************************/
+
+const AjPStr ajStrConstS(const AjPStr str)
+{
+    if(!str)
+        return strPNULL;
+    return str;
+}
+
+
+
+
+/* @func ajStrConstEmpty *******************************************************
+**
+** Returns an unmodifiable empty string.
+** 
+** @return [const AjPStr] Pointer to an empty string
+** @@
+******************************************************************************/
+
+const AjPStr ajStrConstEmpty(void)
+{
+    return strPNULL;
 }
 
 
