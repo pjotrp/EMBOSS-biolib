@@ -18,7 +18,6 @@ AC_PROG_AWK
 AC_PROG_CC
 AC_PROG_CPP
 
-
 dnl Test whether --with-sgiabi given for IRIX (n32m3 n32m4 64m3 64m4)
 if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64" ; then
 if test "$CC" != "gcc"; then
@@ -193,6 +192,9 @@ AC_SUBST(AJAX_FIXED_ROOT)
 AJAX_FIXED_ROOT="\\\"`pwd`/emboss\\\""
 AC_SUBST(EMBOSS_TOP)
 EMBOSS_TOP=`pwd`
+AC_SUBST(AJAX_SYSTEM)
+AJAX_SYSTEM="\\\"`uname`\\\""
+
 
 dnl Program checks
 AC_PROG_INSTALL
