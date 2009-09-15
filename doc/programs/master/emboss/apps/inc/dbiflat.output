@@ -14,23 +14,23 @@
 <pre>
 ########################################
 # Program: dbiflat
-# Rundate: Tue 15 Jul 2008 12:00:00
+# Rundate: Wed 15 Jul 2009 12:00:00
 # Dbname: EMBL
 # Release: 0.0
-# Date: 15/07/08
-# CurrentDirectory: /data/pmr/profemboss/test/qa/dbiflat-ex-keep/
+# Date: 15/07/09
+# CurrentDirectory: /homes/user/test/qa/dbiflat-ex-keep/
 # IndexDirectory: ./
-# IndexDirectoryPath: /data/pmr/profemboss/test/qa/dbiflat-ex-keep/
+# IndexDirectoryPath: /homes/user/test/qa/dbiflat-ex-keep/
 # Maxindex: 0
 # Fields: 2
 #   Field 1: id
 #   Field 2: acc
-# Directory: /data/pmr/profemboss/test/embl/
-# DirectoryPath: /data/pmr/profemboss/test/embl/
+# Directory: /homes/user/test/embl/
+# DirectoryPath: /homes/user/test/embl/
 # Filenames: rod.dat
 # Exclude: 
 # Files: 1
-#   File 1: /data/pmr/profemboss/test/embl/rod.dat
+#   File 1: /homes/user/test/embl/rod.dat
 ########################################
 # Commandline: dbiflat
 #    -dbname EMBL

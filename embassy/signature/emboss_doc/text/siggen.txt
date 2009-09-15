@@ -450,4 +450,3 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Generates a sparse protein signature from an alignment

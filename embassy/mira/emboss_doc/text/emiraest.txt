@@ -124396,7 +124396,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   MIRAest fragment assembly program
 Input file format
 
    emiraest reads any normal sequence USAs.

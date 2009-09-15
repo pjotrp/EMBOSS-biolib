@@ -772,7 +772,7 @@ See also
    pepwindowall     Draw Kyte-Doolittle hydropathy plot for a protein
                     alignment
    sirna            Finds siRNA duplexes in mRNA
-   wordcount        Count and extract unique words in DNA sequence(s)
+   wordcount        Count and extract unique words in molecular sequence(s)
 
 Author(s)
 

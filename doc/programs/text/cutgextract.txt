@@ -12,7 +12,7 @@ Wiki
 
 Function
 
-   Extract codon usage tables from from CUTG database
+   Extract codon usage tables from CUTG database
 
 Description
 
@@ -39,7 +39,7 @@ Usage
 
 
 % cutgextract 
-Extract codon usage tables from from CUTG database
+Extract codon usage tables from CUTG database
 Codon usage directories [.]: data
 General log output file [outfile.cutgextract]: 
 
@@ -47,7 +47,7 @@ General log output file [outfile.cutgextract]:
 
 Command line arguments
 
-Extract codon usage tables from from CUTG database
+Extract codon usage tables from CUTG database
 Version: EMBOSS:6.1.0
 
    Standard (Mandatory) qualifiers:

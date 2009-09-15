@@ -1556,7 +1556,7 @@ See also
                     freak        Generate residue/base frequency table or plot
                     isochore     Plots isochores in DNA sequences
                     sirna        Finds siRNA duplexes in mRNA
-                    wordcount    Count and extract unique words in DNA sequence(s)
+                    wordcount    Count and extract unique words in molecular sequence(s)
 
 Author(s)
 

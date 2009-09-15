@@ -1000,7 +1000,7 @@ See also
                     density      Draw a nucleic acid density plot
                     freak        Generate residue/base frequency table or plot
                     isochore     Plots isochores in DNA sequences
-                    wordcount    Count and extract unique words in DNA sequence(s)
+                    wordcount    Count and extract unique words in molecular sequence(s)
 
 Author(s)
 

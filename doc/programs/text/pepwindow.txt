@@ -350,7 +350,7 @@ See also
    pepstats         Calculates statistics of protein properties
    pepwindowall     Draw Kyte-Doolittle hydropathy plot for a protein
                     alignment
-   wordcount        Count and extract unique words in DNA sequence(s)
+   wordcount        Count and extract unique words in molecular sequence(s)
 
    pepwindow can use any of the "Nakai et al." database of amino acid
    parameters - these are in a database called "AAINDEX". The program

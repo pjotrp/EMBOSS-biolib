@@ -124,7 +124,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   RNA sequences matching a structure
 Input file format
 
    vrnainverse reads any normal sequence USAs.

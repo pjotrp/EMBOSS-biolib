@@ -4,7 +4,7 @@
 <p><h3>File: outfile.dbxgcg</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-Processing directory: /data/pmr/profemboss/test/embl/
+Processing directory: /homes/user/test/embl/
 Processing file: eem_ba1.seq entries: 10 (10) time: 0.0s (0.0s)
 Processing file: eem_est.seq entries: 11 (1) time: 0.0s (0.0s)
 Processing file: eem_fun.seq entries: 12 (1) time: 0.0s (0.0s)
@@ -38,30 +38,28 @@ eem_vi.seq eem_vi.ref
 <p><h3>File: embl.pxac</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-Order     16
-Fill      11
-Pagesize  512
+Order     71
+Fill      46
+Pagesize  2048
 Level     0
 Cachesize 100
-Order2    22
-Fill2     24
-Count     48
-Fullcount 48
+Order2    99
+Fill2     101
+Count     47
 Kwlimit   15
 </pre>
 </td></tr></table><p>
 <p><h3>File: embl.pxid</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-Order     16
-Fill      11
-Pagesize  512
+Order     71
+Fill      46
+Pagesize  2048
 Level     0
 Cachesize 100
-Order2    22
-Fill2     24
-Count     40
-Fullcount 40
+Order2    99
+Fill2     101
+Count     39
 Kwlimit   15
 </pre>
 </td></tr></table><p>

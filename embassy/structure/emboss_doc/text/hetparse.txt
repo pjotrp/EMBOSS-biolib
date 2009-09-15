@@ -263,4 +263,3 @@ Version: EMBOSS:6.1.0
 
   6.1 COMMAND LINE ARGUMENTS
 
-   Converts heterogen group dictionary to EMBL-like format.

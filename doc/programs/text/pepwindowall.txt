@@ -280,7 +280,7 @@ See also
    pepinfo          Plot amino acid properties of a protein sequence in parallel
    pepstats         Calculates statistics of protein properties
    pepwindow        Draw a hydropathy plot for a protein sequence
-   wordcount        Count and extract unique words in DNA sequence(s)
+   wordcount        Count and extract unique words in molecular sequence(s)
 
 Author(s)
 

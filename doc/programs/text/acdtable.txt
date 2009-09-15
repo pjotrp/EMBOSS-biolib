@@ -27,7 +27,6 @@ Usage
 
 % acdtable antigenic 
 
-Finds antigenic sites in proteins
 
  Qualifier
  Type

@@ -50,7 +50,7 @@
 <tr bgcolor="#FFFFCC">
 <td>-datafile</td>
 <td>datafile</td>
-<td>Restriction enzyme methylation data file (optional)</td>
+<td>Restriction enzyme data file (optional)</td>
 <td>Data file</td>
 <td><i>File in the data file path</i></td>
 </tr>
@@ -58,7 +58,7 @@
 <tr bgcolor="#FFFFCC">
 <td>-mfile</td>
 <td>datafile</td>
-<td>Restriction enzyme data file (optional)</td>
+<td>Restriction enzyme methylation data file</td>
 <td>Data file</td>
 <td>Emethylsites.dat</td>
 </tr>

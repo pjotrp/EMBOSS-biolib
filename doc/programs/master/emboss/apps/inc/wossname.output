@@ -58,6 +58,11 @@
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
 &lt;tr&gt;
+&lt;td&gt;&lt;a href="dbiblast.html"&gt;dbiblast&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Index a BLAST database&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
 &lt;td&gt;&lt;a href="dbifasta.html"&gt;dbifasta&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Index a fasta file database&lt;/td&gt;
 &lt;/tr&gt;
@@ -85,11 +90,6 @@
 &lt;tr&gt;
 &lt;td&gt;&lt;a href="dbxgcg.html"&gt;dbxgcg&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Index a GCG formatted database using b+tree indices&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;&lt;a href="dbxreport.html"&gt;dbxreport&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;Validate index and report internals for dbx databases&lt;/td&gt;
 &lt;/tr&gt;
 
 &lt;/table&gt;

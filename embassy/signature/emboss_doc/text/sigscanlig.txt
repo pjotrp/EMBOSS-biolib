@@ -1198,4 +1198,3 @@ Version: EMBOSS:6.1.0
 
   6.1 COMMAND LINE ARGUMENTS
 
-   Searches ligand-signature library & writes hits (LHF file)

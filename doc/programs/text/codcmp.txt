@@ -245,7 +245,7 @@ See also
    cai              Calculate codon adaptation index
    chips            Calculates Nc codon usage statistic
    cusp             Create a codon usage table from nucleotide sequence(s)
-   syco             Draw synonymous codon usage statictic plot for a nucleotide
+   syco             Draw synonymous codon usage statistic plot for a nucleotide
                     sequence
 
 Author(s)

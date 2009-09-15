@@ -3185,7 +3185,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   MIRA fragment assembly program
 Input file format
 
    emira reads any normal sequence USAs.

@@ -205,4 +205,3 @@ t
 
   6.1 COMMAND LINE ARGUMENTS
 
-   Convert swissprot:PDB codes file to EMBL-like format.

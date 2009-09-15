@@ -744,7 +744,7 @@ See also
    showorf          Display a nucleotide sequence and translation in pretty format
    showpep          Displays protein sequences with features in pretty format
    showseq          Displays sequences with features in pretty format
-   syco             Draw synonymous codon usage statictic plot for a nucleotide
+   syco             Draw synonymous codon usage statistic plot for a nucleotide
                     sequence
    tcode            Identify protein-coding regions using Fickett TESTCODE statistic
    textsearch       Search the textual description of sequence(s)

@@ -403,7 +403,7 @@ See also
    cai              Calculate codon adaptation index
    chips            Calculates Nc codon usage statistic
    codcmp           Codon usage table comparison
-   syco             Draw synonymous codon usage statictic plot for a nucleotide
+   syco             Draw synonymous codon usage statistic plot for a nucleotide
                     sequence
 
 Author(s)

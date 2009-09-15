@@ -1072,4 +1072,3 @@ Version: EMBOSS:6.1.0
 
   6.1 COMMAND-LINE ARGUMENTS
 
-   Generates ligand-binding signatures from a CON file

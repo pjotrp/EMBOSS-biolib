@@ -116,7 +116,7 @@ We also supply an identity matrix which gives a score of 1.0 to two identical am
 <tr bgcolor="#FFFFCC">
 <td>-mamatrixfile</td>
 <td>infile</td>
-<td>Comparison matrix file (optional)'</td>
+<td>Comparison matrix file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>

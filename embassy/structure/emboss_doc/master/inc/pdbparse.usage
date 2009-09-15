@@ -13,9 +13,9 @@ Mask amino acid residues in protein chains with a single atom only. [N]: <b></b>
 Clean protein structure coordinates file output directory [./]: <b></b>
 Domainatrix log output file [pdbparse.log]: <b></b>
 
-Processing /data/pmr/profemboss/test/data/structure/1cs4.ent
-Processing /data/pmr/profemboss/test/data/structure/1ii7.ent
-Processing /data/pmr/profemboss/test/data/structure/2hhb.ent
+Processing /homes/user/test/data/structure/1cs4.ent
+Processing /homes/user/test/data/structure/1ii7.ent
+Processing /homes/user/test/data/structure/2hhb.ent
 
 </pre></td></tr></table><p>
 <p>

@@ -22,7 +22,7 @@ U68037                 1183   1193    26          2  72.7   2.00
 <pre>
 ##gff-version 3
 ##sequence-region U68037 1 1193
-#!Date 2008-07-15
+#!Date 2009-07-15
 #!Type DNA
 #!Source-version EMBOSS 6.1.0
 U68037	cpgreport	sequence_feature	12	13	17.000	+	.	ID="U68037.1"

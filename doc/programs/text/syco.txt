@@ -12,7 +12,7 @@ Wiki
 
 Function
 
-   Draw synonymous codon usage statictic plot for a nucleotide sequence
+   Draw synonymous codon usage statistic plot for a nucleotide sequence
 
 Description
 
@@ -37,7 +37,7 @@ Usage
 
 
 % syco -plot -cfile Epseae.cut 
-Draw synonymous codon usage statictic plot for a nucleotide sequence
+Draw synonymous codon usage statistic plot for a nucleotide sequence
 Input nucleotide sequence: tembl:x13776
 Graph type [x11]: ps
 
@@ -48,7 +48,7 @@ Created syco.ps
 
 Command line arguments
 
-Draw synonymous codon usage statictic plot for a nucleotide sequence
+Draw synonymous codon usage statistic plot for a nucleotide sequence
 Version: EMBOSS:6.1.0
 
    Standard (Mandatory) qualifiers (* if not always prompted):

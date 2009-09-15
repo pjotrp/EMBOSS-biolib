@@ -20,7 +20,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td>-target</td>
+<td>-targetregion</td>
 <td>string</td>
 <td>Sequence section to match</td>
 <td>Any string</td>

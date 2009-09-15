@@ -83,7 +83,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   RNA distances
 Input file format
 
    vrnadistance reads any normal sequence USAs.

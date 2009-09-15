@@ -12,7 +12,7 @@ Wiki
 
 Function
 
-   Count and extract unique words in DNA sequence(s)
+   Count and extract unique words in molecular sequence(s)
 
 Description
 
@@ -28,7 +28,7 @@ Usage
 
 
 % wordcount tembl:u68037 -wordsize=3 
-Count and extract unique words in DNA sequence(s)
+Count and extract unique words in molecular sequence(s)
 Output file [u68037.wordcount]: 
 
    Go to the input files for this example
@@ -36,7 +36,7 @@ Output file [u68037.wordcount]:
 
 Command line arguments
 
-Count and extract unique words in DNA sequence(s)
+Count and extract unique words in molecular sequence(s)
 Version: EMBOSS:6.1.0
 
    Standard (Mandatory) qualifiers:

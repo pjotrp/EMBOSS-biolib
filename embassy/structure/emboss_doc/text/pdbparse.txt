@@ -881,4 +881,3 @@ Version: EMBOSS:6.1.0
 
   6.1 COMMAND LINE ARGUMENTS
 
-   Parses PDB files and writes protein CCF files.

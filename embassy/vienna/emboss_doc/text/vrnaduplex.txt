@@ -121,7 +121,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   RNA duplex calculation
 Input file format
 
    vrnaduplex reads any normal sequence USAs.

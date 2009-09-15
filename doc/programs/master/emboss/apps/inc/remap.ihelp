@@ -130,7 +130,7 @@ Version: EMBOSS:6.1.0
 
    Advanced (Unprompted) qualifiers:
    -mfile              datafile   [Emethylsites.dat] Restriction enzyme
-                                  methylation data file (optional)
+                                  methylation data file
    -[no]translation    boolean    [Y] This displays the 6-frame translations
                                   of the sequence in the output.
    -[no]reverse        boolean    [Y] This displays the cut sites and

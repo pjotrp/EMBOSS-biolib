@@ -77,7 +77,7 @@ Version: EMBOSS:6.1.0
                                   where (start) is the index of the first base
                                   to consider, and (end) is the last in the
                                   primer-picking region.
-   -target             range      [(full sequence)] If one or more Targets is
+   -targetregion       range      [(full sequence)] If one or more Targets is
                                   specified then a legal primer pair must
                                   flank at least one of them. A Target might
                                   be a simple sequence repeat site (for

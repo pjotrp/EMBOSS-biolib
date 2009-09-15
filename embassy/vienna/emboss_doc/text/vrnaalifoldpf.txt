@@ -134,7 +134,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   RNA alignment folding with partition
 Input file format
 
    vrnaalifoldpf reads any normal sequence USAs.

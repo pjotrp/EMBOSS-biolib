@@ -125,7 +125,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Secondary structures of RNAs with partition
 Input file format
 
    vrnafoldpf reads any normal sequence USAs.
