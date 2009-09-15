@@ -1,9 +1,35 @@
 Version 6.2.0
-    Needle was updated with end-gap penalties support allowing
-    complete global pairwise alignments. Three new options added are
-    endopen, endextend, and endweight. endopen and endextend options
-    are used to specify gap opening and extension penalties for end gaps.
-    The endweight option turns on weighting of end gaps. 
+	ACD files include relations attributes with text taken from terms
+	in the EMBRACE EDAM ontology. These terms are also described in
+	the knowntypes.standard file and are matched to the known types
+	when validating ACD files.
+	
+	EMBOSS now uses a more complete User-Agent string when
+	communicating with HTTP servers.
+	
+	FASTQ short read sequence formats now read and write faster using
+	lookup tables to avoid calculations in the conversion of quality
+	scores.
+	
+	FASTQ short read formats have additinal warning messages for bad
+	or incomplete data.
+
+	All sequence input formats now recognize invalid partial entries
+	at the end of the input data and report an error message. A
+	notable exception is FASTA format where a partial entry is still a
+	valid ID line - these will give errors for zero length sequence
+	unless empty sequneces are allowed.
+
+	Common output formats now write faster, using lightweight output
+	functions to ciopy strings to the output file.
+	
+	SwissProt output formats now wrap long OS lines.
+
+	Needle was updated with end-gap penalties support allowing
+	complete global pairwise alignments. Three new options added are
+	endopen, endextend, and endweight. endopen and endextend options
+	are used to specify gap opening and extension penalties for end
+	gaps.  The endweight option turns on weighting of end gaps.
     
 	Application documentation has a new format HTML table for the
 	command line options. This is excluded from the text
