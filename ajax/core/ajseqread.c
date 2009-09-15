@@ -86,11 +86,11 @@ static AjBool seqRegUsaInitDone = AJFALSE;
 static AjBool seqDoWarnAppend = AJFALSE;
 
 static float seqQualPhred[] = { 0.0,
-  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 1-8 */
-  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 9-16 */
-  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 17-24 */
-  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 25-32 */
-  0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0,  8.0, 9.0, /* 33-42 */
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 1-8 */
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 9-16 */
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 17-24 */
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 25-32 */
+   0.0,  1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,   8.0,  9.0, /* 33-42 */
   10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0,  18.0, 19.0, /* 43-52 */
   20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0,  28.0, 29.0, /* 53-62 */
   30.0, 31.0, 32.0, 33.0, 34.0, 35.0, 36.0, 37.0,  38.0, 39.0, /* 63-72 */
@@ -101,41 +101,48 @@ static float seqQualPhred[] = { 0.0,
   80.0, 81.0, 82.0, 83.0, 84.0, 85.0, 86.0, 87.0,  88.0, 89.0, /* 113-122 */
   90.0, 91.0, 92.0, 93.0};	/* 123-126 */
 
-static float seqQualSolexa[] = { 0.0,
-  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 1-8 */
-  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 9-16 */
-  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 17-24 */
-  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 25-32 */
-  0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0,  8.0, 9.0, /* 33-42 */
-  10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0,  18.0, 19.0, /* 43-52 */
-  20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0,  28.0, 29.0, /* 53-62 */
-  30.0, 31.0, 32.0, 33.0, 34.0, 35.0, 36.0, 37.0,  38.0, 39.0, /* 63-72 */
-  40.0, 41.0, 42.0, 43.0, 44.0, 45.0, 46.0, 47.0,  48.0, 49.0, /* 73-82 */
-  50.0, 51.0, 52.0, 53.0, 54.0, 55.0, 56.0, 57.0,  58.0, 59.0, /* 83-92 */
-  60.0, 61.0, 62.0, 63.0, 64.0, 65.0, 66.0, 67.0,  68.0, 69.0, /* 93-102 */
-  70.0, 71.0, 72.0, 73.0, 74.0, 75.0, 76.0, 77.0,  78.0, 79.0, /* 103-112 */
-  80.0, 81.0, 82.0, 83.0, 84.0, 85.0, 86.0, 87.0,  88.0, 89.0, /* 113-122 */
-  90.0, 91.0, 92.0, 93.0};	/* 123-127 */
+static float seqQualSolexa[] = {
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 0-7 */
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 8-15 */
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 16-23 */
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 24-31 */
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 32-39 */
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 40-47 */
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 48-55 */
+   0.0,  0.0,  0.0, 1.193310,                     /* 56-59 */
+  1.455405,  1.764349,  2.124426,  2.539019,  3.010300, /* 60-64 */
+  3.539019,  4.124426,  4.764349,  5.455405,  6.193310, /* 65-69 */
+  6.973228,  7.790097,  8.638920,  9.514969, 10.413927, /* 70-74 */
+ 11.331956, 12.265724, 13.212384, 14.169543, 15.135209, /* 75-79 */
+ 16.107742, 17.085800, 18.068291, 19.054333, 20.043214, /* 80-84 */
+ 21.034361, 22.027316, 23.021712, 24.017255, 25.013712, /* 85-89 */
+ 26.010895, 27.008657, 28.006878, 29.005464, 30.004341, /* 90-94 */
+ 31.003448, 32.002739, 33.002176, 34.001729, 35.001373, /* 95-99 */
+ 36.001091, 37.000866, 38.000688, 39.000547, 40.000434, /* 100-104 */
+ 41.000345, 42.000274, 43.000218, 44.000173, 45.000137, /* 105-109 */
+ 46.000109, 47.000087, 48.000069, 49.000055, 50.000043, /* 110-114 */
+ 51.000034, 52.000027, 53.000022, 54.000017, 55.000014, /* 115-119 */
+ 56.000011, 57.000009, 58.000007, 59.000005, 60.000004, /* 120-124 */
+ 61.000003, 62.000003};	/* 125-126 */
 
+
+    
 static float seqQualIllumina[] = {
-  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 0-7 */
-  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 8-15 */
-  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 16-23 */
-  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 24-31 */
-  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 32-39 */
-  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 40-47 */
-  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 48-55 */
-  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, /* 56-63 */
-  0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0,  8.0, 9.0, /* 64-73 */
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 0-7 */
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 8-15 */
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 16-23 */
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 24-31 */
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 32-39 */
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 40-47 */
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 48-55 */
+   0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, /* 56-63 */
+   0.0,  1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,   8.0,  9.0, /* 64-73 */
   10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0,  18.0, 19.0, /* 74-83 */
   20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0,  28.0, 29.0, /* 84-93 */
   30.0, 31.0, 32.0, 33.0, 34.0, 35.0, 36.0, 37.0,  38.0, 39.0, /* 94-103 */
   40.0, 41.0, 42.0, 43.0, 44.0, 45.0, 46.0, 47.0,  48.0, 49.0, /* 104-113 */
   50.0, 51.0, 52.0, 53.0, 54.0, 55.0, 56.0, 57.0,  58.0, 59.0, /* 114-123 */
-  60.0, 61.0, 62.0, 63.0, 64.0, 65.0, 66.0, 67.0,  68.0, 69.0, /* 93-102 */
-  70.0, 71.0, 72.0, 73.0, 74.0, 75.0, 76.0, 77.0,  78.0, 79.0, /* 103-112 */
-  80.0, 81.0, 82.0, 83.0, 84.0, 85.0, 86.0, 87.0,  88.0, 89.0, /* 113-122 */
-  90.0, 91.0, 92.0, 93.0};	/* 123-127 */
+  60.0, 61.0, 62.0};	/* 124-126 */
 
 
 
@@ -2370,9 +2377,11 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 	    ajDebug("seqRead: (d2) seqReadFmt stat == EOF *try again*\n");
             if(seqin->Records)
                 ajErr("Error reading file '%F' with format '%s': "
-                      "end-of-file before end of data",
+                      "end-of-file before end of data "
+                      "(read %u records)",
                       ajFilebuffGetFile(seqin->Filebuff),
-                      seqInFormatDef[seqin->Format].Name);
+                      seqInFormatDef[seqin->Format].Name,
+                      seqin->Records);
 	    break;		     /* simply end-of-file */
 	case FMT_EMPTY:
 	    ajWarn("Sequence '%S' has zero length, ignored",
@@ -3991,12 +4000,15 @@ static AjBool seqReadGcg(AjPSeq thys, AjPSeqin seqin)
 
     ok = ajBuffreadLineStore(buff, &seqReadLine,
 			    seqin->Text, &thys->TextPtr);
+    while (ok && ajStrIsWhite(seqReadLine))
+        ok = ajBuffreadLineStore(buff, &seqReadLine,
+                                 seqin->Text, &thys->TextPtr);
     if(!ok)
 	return ajFalse;
 
     seqin->Records++;
 
-    ajDebug("seqReadGcg first line ok: %B\n", ok);
+    ajDebug("seqReadGcg first line ok: %B\n'%S'\n", ok, seqReadLine);
 
     /* test GCG 9.x file types if available */
     /* any type on the .. line will override this */
@@ -5427,7 +5439,8 @@ static AjBool seqReadIgstrict(AjPSeq thys, AjPSeqin seqin)
 	/* skip comments with ';' prefix */
 	ok = ajBuffreadLineStore(buff, &seqReadLine,
 				seqin->Text, &thys->TextPtr);
-	seqin->Records++;
+	if(ok)
+            seqin->Records++;
     } while(ok && ajStrPrefixC(seqReadLine, ";"));
 
     if(!ok)
@@ -5501,7 +5514,8 @@ static AjBool seqReadIg(AjPSeq thys, AjPSeqin seqin)
 	/* skip comments with ';' prefix */
 	ok = ajBuffreadLineStore(buff, &seqReadLine,
 				seqin->Text, &thys->TextPtr);
-	seqin->Records++;
+	if(ok)
+            seqin->Records++;
     } while(ok && ajStrPrefixC(seqReadLine, ";"));
 
     if(!ok)
@@ -8417,7 +8431,8 @@ static AjBool seqReadAcedb(AjPSeq thys, AjPSeqin seqin)
     {
 	ok = ajBuffreadLineStore(buff, &seqReadLine,
 				seqin->Text, &thys->TextPtr);
-	seqin->Records++;
+	if(ok)
+            seqin->Records++;
     } while(ok &&
 	    (ajStrPrefixC(seqReadLine, "//") ||
              ajStrPrefixC(seqReadLine, "\n")));
@@ -8673,15 +8688,18 @@ static AjBool seqReadStrider(AjPSeq thys, AjPSeqin seqin)
 	ok = ajBuffreadLineStore(buff, &seqReadLine,
 				seqin->Text, &thys->TextPtr);
 
-	if(ajStrPrefixC(seqReadLine, "; DNA sequence"))
-	{
-	    ajStrTokenAssignC(&handle, seqReadLine, " ;\t,\n");
-	    ajStrTokenNextParse(&handle, &token); /* 'DNA' */
-	    ajStrTokenNextParse(&handle, &token); /* sequence */
-	    ajStrTokenNextParse(&handle, &token); /* entry name */
-	}
-
-	seqin->Records++;
+	if(ok)
+        {
+            seqin->Records++;
+            if(ajStrPrefixC(seqReadLine, "; DNA sequence"))
+            {
+                ajStrTokenAssignC(&handle, seqReadLine, " ;\t,\n");
+                ajStrTokenNextParse(&handle, &token); /* 'DNA' */
+                ajStrTokenNextParse(&handle, &token); /* sequence */
+                ajStrTokenNextParse(&handle, &token); /* entry name */
+            }
+        }
+        
     } while(ok && ajStrPrefixC(seqReadLine, ";"));
 
     ajStrTokenDel(&handle);
@@ -10235,8 +10253,6 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 			   seqin->Text, &thys->TextPtr))
 	return ajFalse;
 
-    seqin->Records++;
-
     /* for GCG formatted databases */
 
     while(ajStrPrefixC(seqReadLine, "WP "))
@@ -10244,8 +10260,7 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 	if(!ajBuffreadLineStore(buff, &seqReadLine,
 			       seqin->Text, &thys->TextPtr))
 	    return ajFalse;
-
-	seqin->Records++;
+        seqin->Records++;
     }
 
     /* extra blank lines */
@@ -10255,8 +10270,6 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 	if(!ajBuffreadLineStore(buff, &seqReadLine,
 			       seqin->Text, &thys->TextPtr))
 	    return ajFalse;
-
-	seqin->Records++;
     }
 
     ajDebug("seqReadEmbl first line '%S'\n", seqReadLine);
@@ -10267,6 +10280,7 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 
 	return ajFalse;
     }
+    seqin->Records++;
 
     if(seqin->Text)
 	ajStrAssignC(&thys->TextPtr,ajStrGetPtr(seqReadLine));
@@ -11146,8 +11160,6 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 
     ajDebug("++seqReadGenbank first line '%S'\n", seqReadLine);
 
-    seqin->Records++;
-
     ok = ajTrue;
 
     /* extra blank lines */
@@ -11157,8 +11169,6 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 	if(!ajBuffreadLineStore(buff, &seqReadLine,
 			       seqin->Text, &thys->TextPtr))
 	    return ajFalse;
-
-	seqin->Records++;
     }
 
     /* for GCG formatted databases */
@@ -11198,6 +11208,7 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 
 	return ajFalse;
     }
+    seqin->Records++;
 
     nfields = ajStrParseCountC(seqReadLine, " \n\r");
 
