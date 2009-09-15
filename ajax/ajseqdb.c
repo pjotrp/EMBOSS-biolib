@@ -7412,7 +7412,8 @@ static FILE* seqHttpSocket(const AjPSeqQuery qry,
        
     */
 
-    ajFmtPrintS(&gethead, "User-Agent: EMBOSS/%S\n", ajNamValueVersion());
+    ajFmtPrintS(&gethead, "User-Agent: EMBOSS/%S (%S)\n",
+                ajNamValueVersion(), ajNamValueSystem());
     isendlen = send(sock, ajStrGetPtr(gethead), ajStrGetLen(gethead), 0);
 
     if(isendlen != ajStrGetLen(gethead))
