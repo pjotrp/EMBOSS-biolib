@@ -1,4 +1,4 @@
-6.1.0
+3.0.0	EMBOSS 6.1.0
 	Allow missing input sequence set to allow editing from scratch
 
 	Add new qualifier -gcgmode to enable alternative keystrokes
@@ -8,7 +8,7 @@
 	Redraw entire screen after display of help pages, or when using
 	the redraw command or shortcut keys (ctrl-R or ctrl-W)
 
-4.0.0
+1.0.0	EMBOSS 4.0.0
 	Fixed compiler warnings in 3 string manipulation functions that
 	relpace single characters (T/U for DNA and RNA or general
 	replacements)

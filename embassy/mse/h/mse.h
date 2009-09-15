@@ -149,6 +149,7 @@ enum keydef {
 #define CNTRLD    '\004'   /* Control-D, delete        */
 #define CNTRLE    '\005'   /* Control-E, go to EOL     */
 #define CNTRLR    '\022'   /* Control-R, repaint       */
+#define CNTRLU    '\025'   /* Control-U, undo=Gold     */
 #define CNTRLW    '\027'   /* Control-W, repaint       */
 #define CNTRLZ    '\032'   /* Control-Z, command mode  */
 #define SPACE     '\040'   /* Space character          */

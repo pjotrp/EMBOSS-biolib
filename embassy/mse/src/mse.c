@@ -455,10 +455,26 @@ Parse:
 	      Rep = 1;
 	      break;
 
+     	    case KEY_BACKSPACE:
+              ajDebug("Keymap: %02x [KEY_BACKSPACE]\n", Keystroke);
+	      if ( Gold )
+	        ShowError("Sorry, no UnDelete Character yet");
+	      else
+              {
+                  for ( i=1; i<=Rep; i++)
+                      if ( SeqPos > 1)
+                      {
+                        DeleteSymbol(Strand, --SeqPos);
+                        LinePos--;
+                      }
+              }
+
+	      Rep = 1;
+	      break;
+
             case KEY_F(12):
      	    case BACKSPACE:
-     	    case KEY_BACKSPACE:
-              ajDebug("Keymap: %02x KEY_F12,KEY_BACKSPACE,BACKSPACE\n", Keystroke);
+              ajDebug("Keymap: %02x KEY_F12,BACKSPACE\n", Keystroke);
 	      DoOffset(Seq[Strand].Offset-Rep);
 	      LinePos -= Rep;
 	      Rep = 1;
@@ -488,15 +504,12 @@ Parse:
 	      if ( OkToEdit[Strand] &&
 	         LinePos>Seq[Strand].Offset &&
 	         LinePos<=(Seq[Strand].Offset+Seq[Strand].Length)  ) {
-	        SeqPos = LinePos - Seq[Strand].Offset;
+                 SeqPos = LinePos - Seq[Strand].Offset;
 	         DoSelect(SeqPos,SeqPos);
 	      }
 	      Rep = 1;
 	      break;
 
-/*
-** ... or remove a selected region
-*/
 
            case KEY_DC:
              ajDebug("Keymap: %02x KEY_DC\n", Keystroke);
@@ -504,8 +517,26 @@ Parse:
 	           LinePos>Seq[Strand].Offset &&
 	           LinePos<=(Seq[Strand].Offset+Seq[Strand].Length+1)  ) {
 	       SeqPos = LinePos - Seq[Strand].Offset;
-               DoRemove();
+               if(Select)
+                   DoRemove();
+               else
+                   DeleteSymbol(Strand, SeqPos);
 	      }
+	      Rep = 1;
+	      break;
+
+/*
+** ... or remove a selected region
+*/
+           case KEY_SDC:
+             ajDebug("Keymap: %02x KEY_SDC\n", Keystroke);
+	     if ( OkToEdit[Strand] &&
+	           LinePos>Seq[Strand].Offset &&
+	           LinePos<=(Seq[Strand].Offset+Seq[Strand].Length+1)  ) {
+	       SeqPos = LinePos - Seq[Strand].Offset;
+               if(Select)
+                   DoRemove();
+               }
 	      Rep = 1;
 	      break;
 
@@ -513,8 +544,9 @@ Parse:
 ** ... or insert a removed section at the current position
 */
 
+            case KEY_SIC:
             case KEY_IC:
-              ajDebug("Keymap: %02x KEY_IC\n", Keystroke);
+              ajDebug("Keymap: %02x [KEY_IC KEY_SIC]\n", Keystroke);
 	      for ( i=1; i<=Rep; i++)
                 DoInsert( LinePos - Seq[Strand].Offset );
 	      Rep = 1;
@@ -562,11 +594,11 @@ Parse:
 	      Rep = 1;
 	      break;
 /*
-** ... PF1, the EDT gold key
+** ... PF1, the EDT gold key, not available so use Cntrl-U for 'undo'
 */
 
-	  case 'H' /*SMG$K_TRM_PF1*/:
-              ajDebug("Keymap: %02x [KEY_PF1],H\n", Keystroke);
+	  case CNTRLU /*SMG$K_TRM_PF1*/:
+              ajDebug("Keymap: %02x [CNTRLU Gold]\n", Keystroke);
 	      Keystroke = getch();
 	      Gold = 1;
 	      goto Parse;
@@ -4163,10 +4195,10 @@ void DoHelp(int Start)
 "             ([n] is an optional numeric (keyboard) parameter)",
 "",
 "[n]s            - Inserts symbol \"s\" [n] times",
-"[n]<delete>     - Delete [n] sequence character(s)",
+"[n]<delete>     - Delete [n] sequence character(s) also Control-D or comma",
+"[n]<backspace>  - Delete [n] sequence characters to the left",
 "[n]<space bar>  - Move the sequence(s) to the right [n] spaces",
-"[n]<backspace>  - Move the sequence(s) to the left [n] spaces, VT200's",
-"                   use F12 key or Control-H",
+"[n]Control-H    - Move the sequence(s) to the left [n] spaces, VT200's use F12",
 "",
 "[n]<arrow>      - Go forward, backward, up or down [n] positions or lines",
 "[n]<return>     - Go to position [n], also use keypad ENTER key",
