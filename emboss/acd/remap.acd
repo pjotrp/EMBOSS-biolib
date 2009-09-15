@@ -19,7 +19,7 @@ section: input [
 
   datafile: mfile [
     default: "Emethylsites.dat"
-    information: "Restriction enzyme methylation data file (optional)"
+    information: "Restriction enzyme methylation data file"
     knowntype: "restriction enzyme methylation data"
     relations:  "EDAM: EMBOSS restrict recognition site report"        
   ]
