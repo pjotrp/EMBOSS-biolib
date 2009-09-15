@@ -183,7 +183,7 @@ AjBool 	ajXmlAddDiamondResidue(AjPGraphXml file, char residue, double radius,
 			       double angle);
 AjBool 	ajXmlAddNakedResidue(AjPGraphXml file, char residue, double radius,
 			     double angle);
-float 	ajXmlFitTextOnLine(float x1, float y1, float x2, float y2,
+float 	ajXmlFitTextAtline(float x1, float y1, float x2, float y2,
 			   const AjPStr text);
 void 	ajXmlGetColour(const AjPGraphXml file,
 		       double *r, double *g, double *b);

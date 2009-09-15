@@ -63,6 +63,7 @@ __declspec(dllimport) ajint aj_hist_mark;
 ** @attr deletedata [AjBool] if true, delete data
 ** @attr colour [ajint] colour code
 ** @attr title [AjPStr] graph title
+** @attr subtitle [AjPStr] graph subtitle
 ** @attr xaxis [AjPStr] x axis title
 ** @attr yaxis [AjPStr] y axis title
 ** @attr pattern [ajint] pattern code
@@ -75,6 +76,7 @@ typedef struct AjSHistData {
   AjBool deletedata;
   ajint colour;
   AjPStr title;
+  AjPStr subtitle;
   AjPStr xaxis;
   AjPStr yaxis;
   ajint pattern;
@@ -96,6 +98,7 @@ typedef struct AjSHistData {
 ** @attr bins [ajint] Number of histogram bins
 ** @attr BaW [AjBool] Black and white rendering if ajTrue
 ** @attr title [AjPStr] Plot title
+** @attr subtitle [AjPStr] Plot subtitle
 ** @attr xaxis [AjPStr] x axis title
 ** @attr yaxisleft [AjPStr] y axis title
 ** @attr yaxisright [AjPStr] second y axis title for right side
@@ -114,6 +117,7 @@ typedef struct AjSHist {
   ajint bins;
   AjBool BaW;
   AjPStr title;
+  AjPStr subtitle;
   AjPStr xaxis;
   AjPStr yaxisleft;
   AjPStr yaxisright;

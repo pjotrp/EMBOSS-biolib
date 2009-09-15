@@ -2402,7 +2402,7 @@ AjBool ajXmlAddNakedResidue(AjPGraphXml file, char residue,
 
 
 
-/* @func ajXmlFitTextOnLine ******************************************
+/* @func ajXmlFitTextAtline ******************************************
 **
 ** Computes the character size (in vrml terms) needed to write a text 
 ** string with specified length (in world meters).  The length 
@@ -2418,7 +2418,7 @@ AjBool ajXmlAddNakedResidue(AjPGraphXml file, char residue,
 ** @@
 *********************************************************************/
 
-float ajXmlFitTextOnLine(float x1, float y1, float x2, float y2, 
+float ajXmlFitTextAtline(float x1, float y1, float x2, float y2, 
 			 const AjPStr text)
 {
     float lineLength;
