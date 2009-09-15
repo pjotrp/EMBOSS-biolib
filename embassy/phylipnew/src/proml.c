@@ -20,8 +20,6 @@ ajint numseqs;
 ajint numwts;
 
 
-/* #define DEBUG 1 */
-
 #ifndef OLDC
 /* function prototypes */
 void   init_protmats(void);
@@ -81,101 +79,6 @@ void   freelrsaves(void);
 void   resetlrsaves(void);
 /* function prototypes */
 #endif
-
-#ifdef DEBUG
-void   debugtree (tree *, FILE *);
-void debugtree2(pointarray np, long maxnodes, FILE *f);
-
-void debugtree(tree* t,FILE *f)
-{
-   int i,j,k;
-   node *p,*q;
-   fprintf(f,"debugtree:\n");
-   fprintf(f,"spp=%ld\n",spp);
-   fprintf(f,"nonodes2=%ld\n",nonodes2);
-   fprintf(f,"\n");
-//   fprintf(f,"t->score=%f\n",t->score);
-   if(t->root) fprintf(f,"t->root=%p (%ld)\n",t->root,t->root->index);
-//   fprintf(f,"t->spp=%ld\n",t->spp);
-//   fprintf(f,"t->nonodes2=%ld\n",t->nonodes2);
-   fprintf(f,"\n");
-   fprintf(f,"\n-------------------------------------\n");
-   for(i=0;i<nonodes2;i++) {
-      p=t->nodep[i];
-      if(!p) continue;
-      fprintf(f,"nodep[%d]->index=%ld\n",i,p->index);
-      if(i<spp && nayme && nayme[i]) fprintf(f,"nayme[%d]=%10.10s\n",i,nayme[i]);
-      fprintf(f,"t->nodep[%d]=%p\n",i,p);
-      if(p->nayme && p->nayme[0]) fprintf(f,"nodep[%d]->nayme=%s\n",i,p->nayme);
-      if(p->back) fprintf(f,"nodep[%d]->back=%p (%ld)\n",i,p->back,p->back->index);
-      q=p;
-
-      if(p->next) fprintf(f,"nodep[%d]->next=%p (%ld)\n",i,p->next,p->next->index);
-      if(p->next && p->next->back) {
-         fprintf(f,"nodep[%d]->next->back=%p (%ld)\n",i,p->next->back,p->next->back->index);
-         }
-      if(q) q=q->next;
-      if(q) q=q->next;
-      if(q) for(j=2; q && q!=p && j<20; q=q->next,j++) {
-         fprintf(f,"nodep[%d]",i);
-         for(k=0;k<j;k++) fprintf(f,"->next");
-         fprintf(f,"=%p (%ld)\n",q,q->index);
-         if(!q->back) continue;
-         fprintf(f,"nodep[%d]",i);
-         for(k=0;k<j;k++) fprintf(f,"->next");
-         fprintf(f,"->back=%p (%ld)\n",q->back,q->back->index);
-      }
-
-      fprintf(f,"nodep[%d]->tip=%d\n",i,p->tip);
-      fprintf(f,"\n-------------------------------------\n");
-      }
-   }
-
-
-void debugtree2(pointarray np, long maxnodes, FILE *f) {
-   int i,j,k;
-   node *p,*q;
-   fprintf(f,"debugtree2:\n");
-   fprintf(f,"spp=%ld\n",spp);
-   fprintf(f,"maxnodes=%ld\n",maxnodes);
-   fprintf(f,"\n");
-//   fprintf(f,"t->score=%f\n",t->score);
-//   if(t->root) fprintf(f,"t->root=%p (%ld)\n",t->root,t->root->index);
-//   fprintf(f,"t->spp=%ld\n",t->spp);
-//   fprintf(f,"t->nonodes2=%ld\n",t->nonodes2);
-   fprintf(f,"\n");
-   fprintf(f,"\n-------------------------------------\n");
-   for(i=0;i<maxnodes;i++) {
-      p=np[i];
-      if(!p) continue;
-      fprintf(f,"nodep[%d]->index=%ld\n",i,p->index);
-      if(i<spp && nayme && nayme[i]) fprintf(f,"nayme[%d]=%10.10s\n",i,nayme[i]);
-      fprintf(f,"nodep[%d]=%p\n",i,p);
-      if(p->nayme && p->nayme[0]) fprintf(f,"nodep[%d]->nayme=%s\n",i,p->nayme);
-      if(p->back) fprintf(f,"nodep[%d]->back=%p (%ld)\n",i,p->back,p->back->index);
-      q=p;
-
-      if(p->next) fprintf(f,"nodep[%d]->next=%p (%ld)\n",i,p->next,p->next->index);
-      if(p->next && p->next->back) {
-         fprintf(f,"nodep[%d]->next->back=%p (%ld)\n",i,p->next->back,p->next->back->index);
-         }
-      if(q) q=q->next;
-      if(q) q=q->next;
-      for(j=2; q && q!=p && j<20; q=q->next,j++) {
-         fprintf(f,"nodep[%d]",i);
-         for(k=0;k<j;k++) fprintf(f,"->next");
-         fprintf(f,"=%p (%ld)\n",q,q->index);
-         if(!q->back) continue;
-         fprintf(f,"nodep[%d]",i);
-         for(k=0;k<j;k++) fprintf(f,"->next");
-         fprintf(f,"->back=%p (%ld)\n",q->back,q->back->index);
-      }
-      if(p) fprintf(f,"nodep[%d]->tip=%d\n",i,p->tip);
-      fprintf(f,"\n-------------------------------------\n");
-      }
-   }
-
-#endif /* DEBUG */
 
 extern sequence y;
 
@@ -1298,9 +1201,6 @@ void getinput(void)
     inputoptions();
   if (!justwts || firstset)
     input_protdata(seqsets[ith-1], sites);
-#ifdef DEBUG
-  debugtree(&curtree,outtree);
-#endif
   if ( !firstset ) freelrsaves();
   makeweights();
   alloclrsaves();
@@ -2858,9 +2758,6 @@ void maketree(void)
       treeread(&treestr, &root, dummy_treenode, &goteof, &dummy_first, 
                curtree.nodep, &nextnode, &haslengths, &grbg, 
                initpromlnode,false,nonodes2);
-#ifdef DEBUG
-      debugtree(&curtree,outtree);
-#endif
       proml_unroot(root,curtree.nodep,nonodes2);
       if (goteof && (which <= numtrees)) {
         /* if we hit the end of the file prematurely */
@@ -3029,10 +2926,9 @@ void maketree(void)
       free_all_protx(nonodes2, bestree2.nodep);
   }
   if (progress) {
-    printf("\n\nOutput written to file \"%s\"\n\n", outfilename);
+    printf("\nOutput written to file \"%s\"\n", outfilename);
     if (trout)
-      printf("Tree also written onto file \"%s\"\n", outtreename);
-    putchar('\n');
+      printf("\nTree also written onto file \"%s\"\n", outtreename);
   }
 }  /* maketree */
 
@@ -3106,14 +3002,10 @@ int main(int argc, Char *argv[])
   }
 
   clean_up();
-  printf("Done.\n\n");
+  printf("\nDone.\n\n");
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
   embExit();
   return 0;
 }  /* Protein Maximum Likelihood */
-
-
-
-

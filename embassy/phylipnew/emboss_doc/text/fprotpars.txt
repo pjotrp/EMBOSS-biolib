@@ -275,7 +275,6 @@ Doing global rearrangements
 Output written to file "protpars2.fprotpars"
 
 Trees also written onto file "protpars2.treefile"
-
 Data set # 2:
 
 
@@ -318,7 +317,6 @@ Doing global rearrangements
 Output written to file "protpars2.fprotpars"
 
 Trees also written onto file "protpars2.treefile"
-
 Data set # 3:
 
 
@@ -414,7 +412,6 @@ Doing global rearrangements
 Output written to file "protpars.fprotpars"
 
 Trees also written onto file "protpars.treefile"
-
 
 Weights set # 2:
 
@@ -519,7 +516,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Protein parsimony algorithm
 Input file format
 
    fprotpars reads any normal sequence USAs.
@@ -607,7 +603,7 @@ Output file format
   File: protpars.fprotpars
 
 
-Protein parsimony algorithm, version 3.68
+Protein parsimony algorithm, version 3.69
 
 
 
@@ -678,7 +674,7 @@ requires a total of     16.000
   File: protpars.fprotpars
 
 
-Protein parsimony algorithm, version 3.68
+Protein parsimony algorithm, version 3.69
 
  5 species,  10  sites
 
@@ -793,7 +789,7 @@ root     1                AN??EFGHIK
   File: protpars2.fprotpars
 
 
-Protein parsimony algorithm, version 3.68
+Protein parsimony algorithm, version 3.69
 
 
 Data set # 1:
@@ -928,7 +924,7 @@ requires a total of     24.000
   File: protpars.fprotpars
 
 
-Protein parsimony algorithm, version 3.68
+Protein parsimony algorithm, version 3.69
 
 
 

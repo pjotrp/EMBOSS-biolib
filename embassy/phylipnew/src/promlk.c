@@ -497,17 +497,20 @@ void init_protmats(void)
         eigmat[l] = pameigmat[l];       /** changed from pameigmat*100. **/
       } 
   probmat = (double **) Malloc (20 * sizeof(double *));
-  for (l = 0; l < 20; l++)
-    probmat[l] = (double *) Malloc (20 * sizeof(double));
   for (l = 0; l <= 19; l++)
+  {
     if (usejtt)
-      probmat[l] = jttprobmat[l];
-    else {
+    {
+        probmat[l] = jttprobmat[l];
+    }
+    else
+    {
       if (usepmb)
         probmat[l] = pmbprobmat[l];
       else
         probmat[l] = pamprobmat[l];
-      }  
+    }
+  }
 }  /* init_protmats */
 
 
@@ -2624,10 +2627,9 @@ void maketree()
       free_all_protx(nonodes2, bestree2.nodep);
   }
   if (progress) {
-    printf("\n\nOutput written to file \"%s\"\n\n", outfilename);
+    printf("\nOutput written to file \"%s\"\n", outfilename);
     if (trout)
-      printf("Tree also written onto file \"%s\"\n", outtreename);
-    putchar('\n');
+      printf("\nTree also written onto file \"%s\"\n", outtreename);
   }
 
   free(root);
@@ -2657,9 +2659,17 @@ void clean_up()
   free (aliasweight);
   free (probmat);
   free (eigmat);
-  /* FIXME jumble should never be enabled with usertree */
+  /* FIXME jumble should never be enabled with usertree
+   *
+   * also -- freetree2 was making memory leak. Since that's
+   * broken and we're currently not bothering to free our
+   * other trees, it makes more sense to me to not free
+   * bestree2. We should fix all of them properly. Doing
+   * that will require a freetree variant that specifically
+   * handles nodes made with prot_allocx
   if (!usertree && njumble > 1)
     freetree2(bestree2.nodep, nonodes2);
+  */
   FClose(infile);
   FClose(outfile);
   FClose(outtree);
@@ -2713,7 +2723,7 @@ int main(int argc, Char *argv[])
   }     
 
   clean_up();
-  printf("Done.\n\n");
+  printf("\nDone.\n\n");
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif

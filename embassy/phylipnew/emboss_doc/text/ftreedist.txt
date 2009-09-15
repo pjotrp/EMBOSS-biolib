@@ -219,7 +219,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Distances between trees
 Input file format
 
    ftreedist reads one input tree file. If the number of trees is given,
@@ -362,7 +361,7 @@ Trees 11 and 12:    10
   File: treedist.ftreedist
 
 
-Tree distance program, version 3.68
+Tree distance program, version 3.69
 
 Branch score distances between adjacent pairs of trees:
 
@@ -378,7 +377,7 @@ Trees 11 and 12:    3.162278e-01
   File: treedist2.ftreedist
 
 
-Tree distance program, version 3.68
+Tree distance program, version 3.69
 
 Symmetric differences between adjacent pairs of trees:
 

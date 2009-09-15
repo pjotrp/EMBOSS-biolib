@@ -1,0 +1,16 @@
+This is an EMBOSS port of the PHYLIP 3.69 package from Joe Felsenstein
+at the University of Washington.
+
+The original version of PHYLIP os available from
+http://evolution.gs.washington.edu/phylip/software.html
+
+The EMBOSS port involves replacing the user interface with an EMBOSS
+ACD file and using EMBOSS to parse the input data. Once data has been
+loaded, all the algorithms and outputs use the original PHYLIP code.
+
+In a future release we may add EMBOSS output code so that the user has
+a choice of output formats.
+
+The EMBOSS versions of the programs all have 'f' added to the start of
+the name so you can run native PHYLIP on the same system to check your
+results.

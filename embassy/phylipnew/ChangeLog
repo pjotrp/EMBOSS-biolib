@@ -1,3 +1,9 @@
+Release 3.69
+
+	Updated all code to include the changes in phylip 3.69.
+
+Release 3.68
+
 	Updated all code to include the changes in phylip 3.68.
 	fdnadist no longer writes a blank line at the end of the output.
 	fconsense writes trees with 2 decimal places.
@@ -15,6 +21,8 @@
 	Renamed fdrawtree qualifiers to make unambiguous names shorter:
 	xmarginray => xrayshade; ymarginray => yrayshade for RayShade
 	output image size in pixels.
+
+Release 3.67
 
 	Updated all code to phylip 3.67. The output of several programs has
 	changed - see the phylip release notes for details. Programs with

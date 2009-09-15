@@ -60,7 +60,7 @@ Plots an unrooted tree diagram
 Phylip tree file: drawgram.tree
 Phylip drawtree output file [drawgram.fdrawtree]: 
 
-DRAWTREE from PHYLIP version 3.68
+DRAWTREE from PHYLIP version 3.69
 Reading tree ...
 Tree has been read.
 Loading the font ...
@@ -181,7 +181,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Plots an unrooted tree diagram
 Input file format
 
    fdrawtree input ...

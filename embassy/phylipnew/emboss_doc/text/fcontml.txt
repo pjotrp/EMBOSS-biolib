@@ -114,10 +114,10 @@ Adding species:
    4. American
    5. Australian
 
-
 Output written to file "contml.fcontml"
 
 Tree also written onto file "contml.treefile"
+
 
 Done.
 
@@ -182,7 +182,6 @@ Version: EMBOSS:6.1.0
 
 acdDelPhyloFreq '0'
 
-   Gene frequency and continuous character Maximum Likelihood
 Input file format
 
    fcontml reads continuous character data.
@@ -421,7 +420,7 @@ Output file format
   File: contml.fcontml
 
 
-Continuous character Maximum Likelihood method version 3.68
+Continuous character Maximum Likelihood method version 3.69
 
 
    5 Populations,   10 Loci

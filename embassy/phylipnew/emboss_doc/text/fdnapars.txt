@@ -197,7 +197,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   DNA parsimony algorithm
 Input file format
 
    fdnapars reads any normal sequence USAs.
@@ -299,7 +298,7 @@ Output file format
   File: dnapars.fdnapars
 
 
-DNA parsimony algorithm, version 3.68
+DNA parsimony algorithm, version 3.69
 
 
 One most parsimonious tree found:

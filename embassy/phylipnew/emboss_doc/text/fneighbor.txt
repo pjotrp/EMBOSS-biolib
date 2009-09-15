@@ -195,7 +195,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Phylogenies from distance matrix by N-J or UPGMA method
 Input file format
 
    fneighbor reads any normal sequence USAs.
@@ -233,7 +232,7 @@ Output file format
   File: neighbor.fneighbor
 
 
-Neighbor-Joining/UPGMA method version 3.68
+Neighbor-Joining/UPGMA method version 3.69
 
 
    7 Populations

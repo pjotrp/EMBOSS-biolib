@@ -814,7 +814,7 @@ void standev3(long chars, long numtrees, long maxwhich, double maxsteps,
         if (f[j] > sum)
           sum = f[j];
       for (j = 0; j < numtrees; j++)          /* accumulate P's */
-        if (sum2-nsteps[j] < sum-f[j])
+        if (sum2-nsteps[j] <= sum-f[j])
           P[j] += 1.0/SAMPLES;
     }
     fprintf(outfile, "Tree   Compatible  Difference   P value");
@@ -1028,9 +1028,10 @@ void maketree()
   }
   if (jumb == njumble) {
     if (progress) {
-      printf("Output written to file \"%s\"\n\n", outfilename);
+      printf("Output written to file \"%s\"\n", outfilename);
       if (trout)
-        printf("Trees also written onto file \"%s\"\n\n", outtreename);
+        printf("\nTrees also written onto file \"%s\"\n", outtreename);
+      putchar('\n');
     }
   }
 }  /* maketree */

@@ -2661,11 +2661,11 @@ int main(int argc, Char *argv[])
     finishplotter();
     wasplotted = true;
     FClose(plotfile);
-    printf("\nPlot written to file \"%s\"\n\n", pltfilename);
+    printf("\nPlot written to file \"%s\"\n", pltfilename);
   }
 
   FClose(intree);
-  printf("Done.\n\n");
+  printf("\nDone.\n\n");
 #ifdef MAC
   if (plotter == pict && wasplotted){
 #ifdef OSX_CARBON

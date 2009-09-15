@@ -34,11 +34,11 @@ b) From the FTP server
     and followed this with a 'make install' (highly recommended) then:
 
        1) gunzip and untar the file anywhere (e.g.)
-       gunzip PHYLIPNEW-3.6b.tar.gz
-       tar xvf PHYLIPNEW-3.6b.tar
+       gunzip PHYLIPNEW-3.69.tar.gz
+       tar xvf PHYLIPNEW-3.69.tar
 
        2) go into the PHYLIPNEW directory
-       cd PHYLIPNEW-1.0.0
+       cd PHYLIPNEW-3.69
 
        3) Configuration should be done using the same options you used
        for the main package. So, if you used:
@@ -64,7 +64,7 @@ b) From the FTP server
     then:
 
        1) Go to the emboss directory 
-       cd EMBOSS-4.0.0
+       cd EMBOSS-6.1.0
 
        2) make new directory embassy if it does not exist already.
        mkdir embassy
@@ -73,11 +73,11 @@ b) From the FTP server
        cd embassy
 
        4) gunzip and untar the file
-       gunzip PHYLIPNEW-3.6b.tar.gz
-       tar xvf PHYLIPNEW-3.6b.tar
+       gunzip PHYLIPNEW-3.69.tar.gz
+       tar xvf PHYLIPNEW-3.69.tar
 
        5) go into the PHYLIPNEW directory
-       cd PHYLIPNEW-3.6b
+       cd PHYLIPNEW-3.69
 
        6) configure and compile
        Configuration should be done using the same options you used for the

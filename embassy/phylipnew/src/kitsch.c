@@ -869,10 +869,9 @@ void maketree()
     free(names);
   }
   if (jumb == njumble && progress) {
-    printf("\nOutput written to file \"%s\"\n\n", outfilename);
+    printf("\nOutput written to file \"%s\"\n", outfilename);
     if (trout)
-      printf("Tree also written onto file \"%s\"\n", outtreename);
-    putchar('\n');
+      printf("\nTree also written onto file \"%s\"\n", outtreename);
   }
 }  /* maketree */
 
@@ -916,7 +915,7 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
-  printf("Done.\n\n");
+  printf("\nDone.\n\n");
   embExit();
   return 0;
 }  /* Fitch-Margoliash criterion with contemporary tips */

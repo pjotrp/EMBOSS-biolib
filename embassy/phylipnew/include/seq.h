@@ -72,11 +72,9 @@ void   alloctree(pointarray *, long, boolean);
 void   allocx(long, long, pointarray, boolean);
 
 void   prot_allocx(long, long, pointarray, boolean);
-void   allocx2(long, long, long, pointarray, boolean);
 void   setuptree(pointarray, long, boolean);
 void   setuptree2(tree *);
 void   alloctip(node *, long *);
-void   freetrans(transptr *, long ,long );
 void   getbasefreqs(double, double, double, double, double *, double *,
                         double *, double *, double *, double *, double *,
             double *xi, double *, double *, boolean, boolean);
@@ -196,7 +194,6 @@ void   freetree(long, pointarray);
 
 void   freex(long, pointarray);
 void   freex_notip(long, pointarray);
-void   freex2(long, pointarray);
 void   prot_freex_notip(long nonodes, pointarray treenode);
 void   prot_freex(long nonodes, pointarray treenode);
 void   freegarbage(gbases **);

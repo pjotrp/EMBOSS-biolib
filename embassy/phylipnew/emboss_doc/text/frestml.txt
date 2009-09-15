@@ -150,7 +150,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Restriction site maximum Likelihood method
 Input file format
 
    frestml input is fairly standard, with one addition. As usual the
@@ -217,7 +216,7 @@ Output file format
   File: restml.frestml
 
 
-Restriction site Maximum Likelihood method, version 3.68
+Restriction site Maximum Likelihood method, version 3.69
 
 
   Recognition sequences all 6 bases long

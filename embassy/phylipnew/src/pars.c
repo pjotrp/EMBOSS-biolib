@@ -1147,6 +1147,7 @@ void globrearrange()
   } while (bestlike > gotlike);
 } /* globrearrange */
 
+
 void load_tree(long treei)
 { /* restores a tree from bestrees */
   long j, nextnode;
@@ -1171,7 +1172,8 @@ void load_tree(long treei)
             treenode[j - 1], NULL, &root, recompute, treenode, &grbg,
             zeros, zeros2);
   }
-}
+} /* load_tree */
+
 
 void grandrearr()
 {
@@ -1385,12 +1387,12 @@ void maketree()
   }
   if (jumb == njumble) {
     if (progress) {
-      printf("\nOutput written to file \"%s\"\n\n", outfilename);
+      printf("\nOutput written to file \"%s\"\n", outfilename);
       if (trout) {
-        printf("Tree");
+        printf("\nTree");
         if ((usertree && numtrees > 1) || (!usertree && nextree != 2))
           printf("s");
-        printf(" also written onto file \"%s\"\n\n", outtreename);
+        printf(" also written onto file \"%s\"\n", outtreename);
       }
     }
   }
@@ -1470,7 +1472,7 @@ int main(int argc, Char *argv[])
   fixmacfile(outtreename);
 #endif
   if (progress)
-    printf("Done.\n\n");
+    printf("\nDone.\n\n");
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif

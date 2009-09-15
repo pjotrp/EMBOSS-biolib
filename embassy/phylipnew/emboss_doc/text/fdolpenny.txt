@@ -357,7 +357,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Penny algorithm Dollo or polymorphism
 Input file format
 
    fdolpenny reads discrete character data with "?", "P", "B" states
@@ -492,7 +491,7 @@ Output file format
   File: dolpenny.fdolpenny
 
 
-Penny algorithm for Dollo or polymorphism parsimony, version 3.68
+Penny algorithm for Dollo or polymorphism parsimony, version 3.69
  branch-and-bound to find all most parsimonious trees
 
 

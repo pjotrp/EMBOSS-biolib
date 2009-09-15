@@ -268,6 +268,7 @@ void allocrest(void)
   guess = (Char *)Malloc(chars*sizeof(Char));
   zeroanc = (bitptr)Malloc(words*sizeof(long));
   oneanc = (bitptr)Malloc(words*sizeof(long));
+  steps = (bitptr)Malloc(words*sizeof(long));
 }  /* allocrest */
 
 
@@ -368,6 +369,7 @@ void dollop_count(node *p, steptr numsone, steptr numszero)
       j++;
     }
     if (((1L << l) & steps[j - 1]) != 0) {
+      assert(j <= words);   /* checking array indexing */
       if (((1L << l) & zeroanc[j - 1]) != 0)
         numszero[i] += weight[i];
       else
@@ -693,7 +695,6 @@ void maketree()
   node *item, *nufork, *dummy, *p;
   char *treestr;
 
-  steps = (bitptr)Malloc(words*sizeof(long));
   fullset = (1L << (bits + 1)) - (1L << 1);
   if (!usertree) {
     for (i = 1; i <= (spp); i++)
@@ -860,7 +861,6 @@ void maketree()
       if (trout)
         printf("Trees also written onto file \"%s\"\n\n", outtreename);
     }
-    free(steps);
     if (ancseq)
       freegarbage(&garbage);
   }
@@ -914,6 +914,9 @@ int main(int argc, Char *argv[])
     for (jumb = 1; jumb <= njumble; jumb++)
       maketree();
   }
+  /* this would be an appropriate place to deallocate memory, including these items:
+  */
+  free(steps);
   FClose(infile);
   FClose(outfile);
   FClose(outtree);

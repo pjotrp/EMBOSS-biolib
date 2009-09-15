@@ -5,7 +5,7 @@
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 
-Nucleic acid sequence Maximum Likelihood method, version 3.68
+Nucleic acid sequence Maximum Likelihood method, version 3.69
 
  5 species,  13  sites
 
@@ -36,6 +36,7 @@ Empirical Base Frequencies:
    C       0.29091
    G       0.25455
   T(U)     0.21818
+
 
 Transition/transversion ratio =   2.000000
 
@@ -110,7 +111,7 @@ Gamma:0.95677,Alpha:0.26766);
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 
-Nucleic acid sequence Maximum Likelihood method, version 3.68
+Nucleic acid sequence Maximum Likelihood method, version 3.69
 
  5 species,  13  sites
 
@@ -131,6 +132,7 @@ Empirical Base Frequencies:
    C       0.29231
    G       0.24615
   T(U)     0.21538
+
 
 Transition/transversion ratio =   2.000000
 

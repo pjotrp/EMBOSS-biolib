@@ -220,6 +220,7 @@ void contwithin()
         ssqcont[i][k] = 1.0;   /* if a within contrast */
     }
   }
+  free(sumphen);
   contno = 1;
 }  /* contwithin */
 

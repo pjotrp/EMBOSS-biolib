@@ -145,7 +145,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Discrete character parsimony
 Input file format
 
    fpars reads discrete characters input, except that multiple states (up
@@ -343,7 +342,7 @@ Output file format
   File: pars.fpars
 
 
-Discrete character parsimony algorithm, version 3.68
+Discrete character parsimony algorithm, version 3.69
 
 
 One most parsimonious tree found:

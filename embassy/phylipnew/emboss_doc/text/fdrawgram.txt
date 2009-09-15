@@ -62,7 +62,7 @@ Plots a cladogram- or phenogram-like rooted tree diagram
 Phylip tree file: drawgram.tree
 Phylip drawgram output file [drawgram.fdrawgram]: 
 
-DRAWGRAM from PHYLIP version 3.68
+DRAWGRAM from PHYLIP version 3.69
 Reading tree ...
 Tree has been read.
 Loading the font ....
@@ -192,7 +192,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Plots a cladogram- or phenogram-like rooted tree diagram
 Input file format
 
    fdrawgram reads ...

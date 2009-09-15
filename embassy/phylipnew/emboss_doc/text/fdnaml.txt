@@ -217,7 +217,6 @@ Adding species:
    4. Delta
    5. Epsilon
 
-
 Output written to file "dnaml.fdnaml"
 
 Tree also written onto file "dnaml.treefile"
@@ -297,7 +296,6 @@ Adding species:
    3. Gamma
    4. Delta
    5. Beta
-
 
 Output written to file "dnaml.fdnaml"
 
@@ -411,7 +409,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Estimates nucleotide phylogeny by maximum likelihood
 Input file format
 
    fdnaml reads any normal sequence USAs.
@@ -631,7 +628,7 @@ Output file format
   File: dnaml.fdnaml
 
 
-Nucleic acid sequence Maximum Likelihood method, version 3.68
+Nucleic acid sequence Maximum Likelihood method, version 3.69
 
  5 species,  13  sites
 
@@ -662,6 +659,7 @@ Empirical Base Frequencies:
    C       0.29091
    G       0.25455
   T(U)     0.21818
+
 
 Transition/transversion ratio =   2.000000
 
@@ -730,7 +728,7 @@ Gamma:0.95677,Alpha:0.26766);
   File: dnaml.fdnaml
 
 
-Nucleic acid sequence Maximum Likelihood method, version 3.68
+Nucleic acid sequence Maximum Likelihood method, version 3.69
 
  5 species,  13  sites
 
@@ -751,6 +749,7 @@ Empirical Base Frequencies:
    C       0.29231
    G       0.24615
   T(U)     0.21538
+
 
 Transition/transversion ratio =   2.000000
 

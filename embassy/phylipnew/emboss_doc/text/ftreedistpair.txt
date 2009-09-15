@@ -201,7 +201,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Distances between two sets of trees
 Input file format
 
    ftreedistpair reads two input tree files. The tree files may either

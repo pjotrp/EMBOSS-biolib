@@ -1686,6 +1686,8 @@ void maketree()
     }
   } else {
 
+    if (numtrees > 2)
+      emboss_initseed(inseed, &inseed0, seed);
     if (treeprint) {
       fprintf(outfile, "User-defined tree");
       if (numtrees > 1)
@@ -1711,9 +1713,9 @@ void maketree()
       standev(chars, numtrees, minwhich, minsteps, nsteps, fsteps, seed);
   }
   if (jumb == njumble && progress) {
-    printf("Output written to file \"%s\"\n\n", outfilename);
+    printf("Output written to file \"%s\"\n", outfilename);
     if (trout)
-      printf("Trees also written onto file \"%s\"\n\n", outtreename);
+      printf("\nTrees also written onto file \"%s\"\n", outtreename);
   }
 }  /* maketree */
 
@@ -1757,7 +1759,7 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
   fixmacfile(outtreename);
 #endif
-  printf("Done.\n\n");
+  printf("\nDone.\n\n");
 
 #ifdef WIN32
   phyRestoreConsoleAttributes();

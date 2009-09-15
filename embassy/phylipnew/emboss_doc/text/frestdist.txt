@@ -173,7 +173,7 @@ Input file: restdist.dat
 Phylip restdist program output file [restdist.frestdist]: 
 
 
-Restriction site or fragment distances, version 3.68
+Restriction site or fragment distances, version 3.69
 
 Distances calculated for species
     Alpha        ....
@@ -239,7 +239,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Distance matrix from restriction sites or fragments
 Input file format
 
    frestdist input is fairly standard, with one addition. As usual the

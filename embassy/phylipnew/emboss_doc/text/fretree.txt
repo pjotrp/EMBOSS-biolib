@@ -155,7 +155,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Interactive tree rearrangement
 Input file format
 
    fretree reads any normal sequence USAs.

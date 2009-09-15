@@ -1792,14 +1792,6 @@ void hookup(node *p, node *q)
 
   assert(p != NULL);
   assert(q != NULL);
-#ifdef DEBUG
-  if (p->back != NULL || q->back != NULL)
-    printf("warning: attempt to hookup already-connected nodes\n");
-#else
-  assert(p->back == NULL);
-  assert(q->back == NULL);
-#endif
-  
   p->back = q;
   q->back = p;
 }  /* hookup */
@@ -2045,9 +2037,6 @@ void treeread (char** treestr, node **root, pointarray treenode,
   long parens = 0;
   long ntips = 0;
   
-#ifdef DEBUG
-  debugtree2(nodep, maxnodes, outtree);
-#endif
   (*goteof) = false;
   (*nextnode) = spp;
 
@@ -2537,7 +2526,7 @@ void output_matrix_d(FILE *fp, double **matrix,
   unsigned long i;
   unsigned long cstart, cend;
   unsigned long textwidth = OUTPUT_TEXTWIDTH;
-  const int     gutter = 1;
+  const unsigned int     gutter = 1;
   boolean       do_block;
   boolean       lower_triangle;
   boolean       border;

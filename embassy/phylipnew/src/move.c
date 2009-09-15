@@ -1270,7 +1270,7 @@ void clade()
 
   printf("Select subtree rooted at which node (0 for whole tree)? ");
   inpnum(&i, &ok);
-  ok = (ok && (unsigned)i <= nonodes);
+  ok = (ok && (unsigned)(i <= nonodes));
   if (ok) {
     subtree = (i > 0);
     if (subtree)

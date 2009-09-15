@@ -1,10 +1,10 @@
-This is the EMBOSS integrated version of PHYLIP 3.6
+This is the EMBOSS integrated version of PHYLIP 3.69
 
-If you require the original PHYLIP 3.6 ditstribution, you should
+If you require the original PHYLIP 3.69 distribution, you should
 obtain it from the author, Joe Felsenstein, at
 http://evolution.gs.washington.edu/phylip/software.html
 
-This file records the steps involved in making PHYLIP 3.6 compatible
+This file records the steps involved in making PHYLIP 3.69 compatible
 with EMBOSS as an EMBASSY package. The procedure is relatively simple,
 compared to other packages, as PHYLIP has a nicely isolated user
 interface and our main task is to write the ACD interface.
@@ -20,7 +20,7 @@ interface and our main task is to write the ACD interface.
 
 5. In src/Makefile.am use a prefix 'f' for every program. In this way
    the original PHYLIP package can co-exist with the EMBASSY version,
-   and so can the EMBASSY PHYLIP 3.5 package, which uses an 'e'
+   and so can the EMBASSY PHYLIP 3.5 package, which used an 'e'
    prefix. We can claim that the 'f' stands for 'PHYLIP' although
    being the letter after 'e' is also a significant factor.
 
@@ -28,14 +28,14 @@ interface and our main task is to write the ACD interface.
    embassy package) with the 'f' prefix.
 
 7. In include/phylip.h rename VERSION to ORIGINALVERSION as our new
-   ./configure will define it. Put the same version (3.6a3) into
+   ./configure will define it. Put the same version (3.69) into
    ./configure
 
-8. Looks like PHYLIP 3.6 has new library source code - these functions
+8. Looks like PHYLIP 3.69 has new library source code - these functions
    were generally in the main program *.c files before. We add these as extra
    sources in Makefile.am
 
-9. PHYLIP 3.6 has programs we did not build in PHYLIP 3.5. This time,
+9. PHYLIP 3.69 has programs we did not build in PHYLIP 3.5. This time,
    we build them all (for now).
 
 10. Put the ACD interface into each program:
@@ -60,11 +60,11 @@ interface and our main task is to write the ACD interface.
     these to the ACD files from PHYLIP 3.5 and update accordingly.
 
 14. Make test cases using the test data from the phylip doc/*.html
-    examples. Use these to test both phylip 3.6 and phylip 3.5 and
+    examples. Use these to test both phylip 3.69 and phylip 3.5 and
     note any differences.
 
 15. Some programs allow multiple input datasets. This means a
-    seqsetall ACD type which we don;t have yet. Set the maximum to 1
+    seqsetall ACD type which we don't have yet. Set the maximum to 1
     for these, but allow unlimited datasets where the same option
     -datasets refers to a weight file which is a simple infile that we
     let PHYLIP read.

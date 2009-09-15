@@ -176,7 +176,6 @@ Version: EMBOSS:6.1.0
 
 acdDelPhyloFreq '0'
 
-   Continuous character Contrasts
 Input file format
 
    fcontrast reads continuous character data.

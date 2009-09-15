@@ -134,7 +134,6 @@ Adding species:
    4. Delta
    5. Epsilon
 
-
 Output written to file "promlk.fpromlk"
 
 Tree also written onto file "promlk.treefile"
@@ -246,7 +245,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Protein phylogeny by maximum likelihood
 Input file format
 
    fpromlk reads any normal sequence USAs.
@@ -440,7 +438,7 @@ Output file format
 
 
 Amino acid sequence
-   Maximum Likelihood method with molecular clock, version 3.68
+   Maximum Likelihood method with molecular clock, version 3.69
 
 Jones-Taylor-Thornton model of amino acid change
 

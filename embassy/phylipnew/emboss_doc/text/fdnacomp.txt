@@ -238,7 +238,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   DNA compatibility algorithm
 Input file format
 
    fdnacomp reads any normal sequence USAs.
@@ -288,7 +287,7 @@ Output file format
   File: dnacomp.fdnacomp
 
 
-DNA compatibility algorithm, version 3.68
+DNA compatibility algorithm, version 3.69
 
  5 species,  13  sites
 
@@ -358,7 +357,7 @@ From    To     Any Steps?    State at upper node
   File: dnacomp.fdnacomp
 
 
-DNA compatibility algorithm, version 3.68
+DNA compatibility algorithm, version 3.69
 
 User-defined tree:
 

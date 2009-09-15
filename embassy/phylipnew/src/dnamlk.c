@@ -2000,9 +2000,9 @@ static void maketree(void)
   
   if (jumb == njumble) {
     if (progress) {
-      printf("\nOutput written to file \"%s\"\n\n", outfilename);
+      printf("\nOutput written to file \"%s\"\n", outfilename);
       if (trout)
-        printf("Tree also written onto file \"%s\"\n\n", outtreename);
+        printf("\nTree also written onto file \"%s\"\n", outtreename);
     }
     free(contribution);
     freex(nonodes, curtree.nodep);
@@ -2067,7 +2067,7 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
   fixmacfile(outtreename);
 #endif
-  printf("Done.\n\n");
+  printf("\nDone.\n\n");
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif

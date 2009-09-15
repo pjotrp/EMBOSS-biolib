@@ -1,14 +1,14 @@
 #include "phylip.h"
 #include "seq.h"
 
-/* version 3.6. (c) Copyright 1993-2002 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2009 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
 
 #define maxtrees        100   /* maximum number of trees to be printed out   */
-#define often           100   /* how often to notify how many trees examined */
-#define many            1000  /* how many multiples of howoften before stop  */
+#define often           1000  /* how often to notify how many trees examined */
+#define many            10000 /* how many multiples of howoften before stop  */
 
 typedef node **pointptr;
 typedef long *treenumbers;
@@ -326,33 +326,32 @@ void supplement(node *r)
 {
   /* determine minimum number of steps more which will
      be added when rest of species are put in tree */
-  long i, j, k, sum, sumall=0, sumadded=0;
-  boolean doneadded, allhave, addedhave, has;
-  long supps;
+  long i, j, k, has, sum;
+  boolean addedmayhave, nonaddedhave;
 
   for (i = 0; i < endsite; i++) {
-    sum = 3;
-    j = 1;
-    doneadded = false;
-    do {
-      allhave = true;
-      addedhave = true;
-      supps = suppset[j-1];
-      for (k = 0; k < spp; k++) {
-        has = ((treenode[k]->base[i] & supps) != 0);
-        if (added[k] && !doneadded)
-          addedhave = (addedhave && has);
-        allhave = (allhave && has);
+    nonaddedhave = 0;;
+    addedmayhave = 0;
+    for (k = 0; k < spp; k++) {
+      has = treenode[k]->base[i];
+      if (has != 31) {
+        if (added[k])
+          addedmayhave |= has;
+        else {
+          if ((has == 1) || (has == 2) || (has == 4)
+              || (has == 8) || (has == 16))
+            nonaddedhave |= has;
+        }
       }
-      if (allhave)
-        sumall = suppno[j - 1];
-      if (addedhave)
-        sumadded = suppno[j - 1];
-      doneadded = (doneadded || addedhave);
-      j++;
-    } while (!(j > 31 || (allhave && doneadded)));
-    if (addedhave && allhave)
-      sum = sumall - sumadded;
+    }
+    sum = 0;
+    j = 1;
+    for (k = 1; k <= 5; k++) {
+      if ((j & nonaddedhave) != 0)
+        if ((j & addedmayhave) == 0)
+          sum++;
+      j += j;
+    }
     r->numsteps[i] += sum * weight[i];
   }
 }  /* supplement */

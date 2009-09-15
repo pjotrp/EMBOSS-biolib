@@ -256,7 +256,10 @@ at so far      Length of        How many           percentage
 (multiples     shortest tree    trees this short   searched
 of  100):      found so far     found so far       so far
 ----------     ------------     ------------       ------------
-      1             8.0                3                0.95
+      1             9.0                2                0.11
+      2             8.0                3                6.67
+      3             8.0                9               20.00
+      4             8.0                9               86.67
 
 Output written to file "dnapenny.fdnapenny"
 
@@ -339,7 +342,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Penny algorithm for DNA
 Input file format
 
    fdnapenny reads any normal sequence USAs
@@ -386,7 +388,7 @@ Output file format
   File: dnapenny.fdnapenny
 
 
-Penny algorithm for DNA, version 3.68
+Penny algorithm for DNA, version 3.69
  branch-and-bound to find all most parsimonious trees
 
 
@@ -399,19 +401,19 @@ requires a total of              8.000
 
   +--------------------Alpha1
   !
-  !                 +--Delta
-  !              +--3
-  !           +--7  +--Epsilon
-  1           !  !
-  !     +-----6  +-----Gamma2
-  !     !     !
-  !  +--4     +--------Gamma1
-  !  !  !
-  !  !  !           +--Beta2
-  +--2  +-----------5
-     !              +--Beta1
+  !        +-----------Alpha2
+  !        !
+  1  +-----4        +--Epsilon
+  !  !     !  +-----6
+  !  !     !  !     +--Delta
+  !  !     +--5
+  +--2        !     +--Gamma2
+     !        +-----7
+     !              +--Gamma1
      !
-     +-----------------Alpha2
+     !              +--Beta2
+     +--------------3
+                    +--Beta1
 
   remember: this is an unrooted tree!
 
@@ -421,27 +423,27 @@ requires a total of              8.000
 
   +--------------------Alpha1
   !
-  !                 +--Delta
-  !           +-----3
-  !           !     +--Epsilon
-  1     +-----6
-  !     !     !     +--Gamma2
-  !     !     +-----7
-  !  +--4           +--Gamma1
-  !  !  !
-  !  !  !           +--Beta2
-  +--2  +-----------5
-     !              +--Beta1
+  !        +-----------Alpha2
+  !        !
+  1  +-----4  +--------Gamma2
+  !  !     !  !
+  !  !     +--7     +--Epsilon
+  !  !        !  +--6
+  +--2        +--5  +--Delta
+     !           !
+     !           +-----Gamma1
      !
-     +-----------------Alpha2
+     !              +--Beta2
+     +--------------3
+                    +--Beta1
 
 
 
   [Part of this file has been deleted for brevity]
 
-     !              +--Beta2
-     +--------------5
-                    +--Beta1
+              +--5  +--Delta
+                 !
+                 +-----Gamma1
 
   remember: this is an unrooted tree!
 
@@ -451,19 +453,19 @@ requires a total of              8.000
 
   +--------------------Alpha1
   !
-  !                 +--Delta
-  !           +-----3
-  !           !     +--Epsilon
-  1        +--6
-  !        !  !     +--Gamma2
-  !  +-----2  +-----7
-  !  !     !        +--Gamma1
-  !  !     !
-  +--4     +-----------Alpha2
-     !
-     !              +--Beta2
-     +--------------5
-                    +--Beta1
+  !              +-----Alpha2
+  1  +-----------2
+  !  !           !  +--Beta2
+  !  !           +--3
+  !  !              +--Beta1
+  +--4
+     !           +-----Gamma2
+     !        +--7
+     !        !  !  +--Epsilon
+     +--------5  +--6
+              !     +--Delta
+              !
+              +--------Gamma1
 
   remember: this is an unrooted tree!
 
@@ -473,34 +475,34 @@ requires a total of              8.000
 
   +--------------------Alpha1
   !
-  !                 +--Delta
-  !              +--3
-  !           +--6  +--Epsilon
-  1           !  !
-  !        +--7  +-----Gamma1
-  !        !  !
-  !  +-----2  +--------Gamma2
-  !  !     !
-  +--4     +-----------Alpha2
-     !
-     !              +--Beta2
-     +--------------5
-                    +--Beta1
+  !              +-----Alpha2
+  1  +-----------2
+  !  !           !  +--Beta2
+  !  !           +--3
+  !  !              +--Beta1
+  +--4
+     !              +--Epsilon
+     !        +-----6
+     !        !     +--Delta
+     +--------5
+              !     +--Gamma2
+              +-----7
+                    +--Gamma1
 
   remember: this is an unrooted tree!
 
 
   File: dnapenny.treefile
 
-(Alpha1,(((((Delta,Epsilon),Gamma2),Gamma1),(Beta2,Beta1)),Alpha2))[0.1111];
-(Alpha1,((((Delta,Epsilon),(Gamma2,Gamma1)),(Beta2,Beta1)),Alpha2))[0.1111];
-(Alpha1,(((((Delta,Epsilon),Gamma1),Gamma2),(Beta2,Beta1)),Alpha2))[0.1111];
-(Alpha1,((((Delta,Epsilon),Gamma2),Gamma1),((Beta2,Beta1),Alpha2)))[0.1111];
-(Alpha1,(((Delta,Epsilon),(Gamma2,Gamma1)),((Beta2,Beta1),Alpha2)))[0.1111];
-(Alpha1,((((Delta,Epsilon),Gamma1),Gamma2),((Beta2,Beta1),Alpha2)))[0.1111];
-(Alpha1,(((((Delta,Epsilon),Gamma2),Gamma1),Alpha2),(Beta2,Beta1)))[0.1111];
-(Alpha1,((((Delta,Epsilon),(Gamma2,Gamma1)),Alpha2),(Beta2,Beta1)))[0.1111];
-(Alpha1,(((((Delta,Epsilon),Gamma1),Gamma2),Alpha2),(Beta2,Beta1)))[0.1111];
+(Alpha1,((Alpha2,((Epsilon,Delta),(Gamma2,Gamma1))),(Beta2,Beta1)))[0.1111];
+(Alpha1,((Alpha2,(Gamma2,((Epsilon,Delta),Gamma1))),(Beta2,Beta1)))[0.1111];
+(Alpha1,((Alpha2,((Gamma2,(Epsilon,Delta)),Gamma1)),(Beta2,Beta1)))[0.1111];
+(Alpha1,(Alpha2,((Gamma2,((Epsilon,Delta),Gamma1)),(Beta2,Beta1))))[0.1111];
+(Alpha1,(Alpha2,(((Epsilon,Delta),(Gamma2,Gamma1)),(Beta2,Beta1))))[0.1111];
+(Alpha1,(Alpha2,(((Gamma2,(Epsilon,Delta)),Gamma1),(Beta2,Beta1))))[0.1111];
+(Alpha1,((Alpha2,(Beta2,Beta1)),(Gamma2,((Epsilon,Delta),Gamma1))))[0.1111];
+(Alpha1,((Alpha2,(Beta2,Beta1)),((Gamma2,(Epsilon,Delta)),Gamma1)))[0.1111];
+(Alpha1,((Alpha2,(Beta2,Beta1)),((Epsilon,Delta),(Gamma2,Gamma1))))[0.1111];
 
 Data files
 

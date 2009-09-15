@@ -1,5 +1,5 @@
 
-#define OVER              7
+#define OVER              8
 #define ADJACENT_PAIRS    1
 #define CORR_IN_1_AND_2   2
 #define ALL_IN_1_AND_2    3

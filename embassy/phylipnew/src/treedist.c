@@ -535,13 +535,12 @@ void compute_distances(pattern_elm ***pattern_array, long trees_in_1,
 {
   /* Compute symmetric distances between arrays of trees */
 
-  long  tree_index, end_tree, index1, index2, diff_index, index3;
+  long  tree_index, end_tree, index1, index2, index3;
   group_type **treeA, **treeB;
   long patternsz1, patternsz2;
   double *length1 = NULL, *length2 = NULL; 
   int num_columns = get_num_columns();
 
-  diff_index = 0;
   index1 = 0;
 
   /* Put together space for treeA and treeB */
@@ -983,7 +982,9 @@ int main(int argc, Char *argv[])
 {  
   pattern_elm  ***pattern_array;
   long tip_count = 0;
-  long alt_maxgrp = -1;
+  double ln_maxgrp;
+  double ln_maxgrp1;
+  double ln_maxgrp2;
   node * p;
 
 #ifdef MAC
@@ -1006,7 +1007,8 @@ int main(int argc, Char *argv[])
 
 
   /* 
-   * EWFIX.BUG.756
+   * EWFIX.BUG.756 -- this section may be killed if a good solution
+   * to bug 756 is found
    * 
    * inside cons.c there are several arrays which are allocated
    * to size "maxgrp", the maximum number of groups (sets of
@@ -1039,26 +1041,38 @@ int main(int argc, Char *argv[])
    *
    * Since "maxgrp" is a limit on the number of items we'll need to put
    * in a hash, we double it to make space for quick hashing
-   */
-  maxgrp = pow(2,tip_count); 
-  alt_maxgrp = (trees_in_1 + trees_in_2 + 1) * tip_count;
-  if(alt_maxgrp < maxgrp) maxgrp = alt_maxgrp;
-  maxgrp *= 2;
-
-  /* EWFIX.BUG.756 -- stealing an initial value from consense.
-   * This should really be defined in a header, and a warning
-   * should be given if the other values are bigger -- presumably
-   * that means that we're likely to run out of space.
    *
-   * However, since we have the hashing machinery and we don't know
-   * how big the user's system is, this should be fine.
+   * BUT -- all of this has the possibility for overflow, so -- let's
+   * make the initial calculations with doubles and then convert
+   *
    */
-  if(maxgrp > 32767) maxgrp = 32767;
+
+  /* limit chosen to make hash arithmetic work */
+  maxgrp = LONG_MAX / 2;
+  ln_maxgrp = log((double)maxgrp);
+
+  /* 2 * (#trees + 1) * #tips */
+  ln_maxgrp1  = log(2.0 * (double)tip_count * 
+                            ((double)trees_in_1 + (double)trees_in_2));
+
+  /* ln only for 2 * pow(2,#tips) */
+  ln_maxgrp2 = (double)(1 + tip_count) * log(2.0);
+
+  /* now -- find the smallest of the three */
+  if(ln_maxgrp1 < ln_maxgrp)
+  {
+    maxgrp = 2 * (trees_in_1 + trees_in_2 + 1) * tip_count;
+    ln_maxgrp = ln_maxgrp1;
+  }
+  if(ln_maxgrp2 < ln_maxgrp)
+  {
+    maxgrp = pow(2,tip_count+1);
+  }
+   
 
   /* Read the (first) tree file and put together grouping, order, and
      timesseen */
-  read_groups (&pattern_array, trees_in_1 + trees_in_2,
-               tip_count, phylotrees);
+  read_groups (&pattern_array, trees_in_1 + trees_in_2, tip_count, phylotrees);
 
   if ((tree_pairing == ADJACENT_PAIRS) ||
       (tree_pairing == ALL_IN_FIRST)) {

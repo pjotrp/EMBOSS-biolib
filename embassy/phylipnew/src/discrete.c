@@ -2751,7 +2751,7 @@ void standev(long chars, long numtrees, long minwhich, double minsteps,
         if (f[j] < sum)
           sum = f[j];
       for (j = 0; j < numtrees; j++)          /* accumulate P's */
-        if (nsteps[j]/10.0-sum2 < f[j] - sum)
+        if (nsteps[j]/10.0-sum2 <= f[j] - sum)
           P[j] += 1.0/SAMPLES;
     }
     fprintf(outfile, "Tree    Steps   Diff Steps   P value");

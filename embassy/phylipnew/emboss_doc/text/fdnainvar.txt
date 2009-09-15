@@ -241,7 +241,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Nucleic acid sequence Invariants method
 Input file format
 
    fdnainvar reads any normal sequence USAs.
@@ -300,7 +299,7 @@ Output file format
   File: dnainvar.fdnainvar
 
 
-Nucleic acid sequence Invariants method, version 3.68
+Nucleic acid sequence Invariants method, version 3.69
 
  4 species,  13  sites
 

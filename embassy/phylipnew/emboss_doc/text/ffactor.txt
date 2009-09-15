@@ -112,7 +112,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Multistate to binary recoding program
 Input file format
 
    ffactor reads character state tree data.

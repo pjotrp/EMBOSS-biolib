@@ -218,7 +218,6 @@ Version: EMBOSS:6.1.0
 
 acdDelPhyloFreq '0'
 
-   Compute genetic distances from gene frequencies
 Input file format
 
    fgendist reads continuous character data

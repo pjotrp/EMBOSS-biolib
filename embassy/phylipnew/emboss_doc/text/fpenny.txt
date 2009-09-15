@@ -335,7 +335,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Penny algorithm, branch-and-bound
 Input file format
 
    fpenny reads discrste character data.
@@ -474,7 +473,7 @@ Output file format
   File: penny.fpenny
 
 
-Penny algorithm, version 3.68
+Penny algorithm, version 3.69
  branch-and-bound to find all most parsimonious trees
 
 Wagner parsimony method

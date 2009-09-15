@@ -13,10 +13,6 @@
 
 #define over            60   /* maximum width of a tree on screen */
 
-/* Define this to print messages when free_trans() is misused.
- * See FIXME note in free_trans() */
-/* #define TRANS_DEBUG */
-
 extern sequence y;
 
 AjPPhyloProp phyloweights = NULL;
@@ -65,7 +61,9 @@ void   fdescribe(FILE *, node *);
 void   summarize(void);
 void   restml_treeout(node *);
 static phenotype2 restml_pheno_new(long endsite, long sitelength);
-/*static void restml_pheno_delete(phenotype2 x2);*/ /* unused */
+/*
+static void restml_pheno_delete(phenotype2 x2);
+*/
 void initrestmlnode(node **p, node **grbg, node *q, long len, long nodei,
     long *ntips, long *parens, initops whichinit, pointarray treenode,
     pointarray nodep, Char *str, Char *ch, char **treestr);
@@ -90,6 +88,9 @@ void   alloclrsaves(void);
 void   freelrsaves(void);
 void   resetlrsaves(void);
 void   cleanup(void);
+void   allocx2(long nonodes, long sitelength, pointarray, boolean usertree);
+void   freex2(long nonodes, pointarray treenode);
+void   freetrans(tree * t, long nonodes,long sitelength);
 /* function prototypes */
 #endif
 
@@ -155,33 +156,6 @@ boolean goteof;
 double trweight;
 node *grbg = NULL;
 
-#ifdef DEBUG
-void checknode(node *p) {
-  assert(p != NULL);
-  assert(p->back != NULL);
-  assert(p->back->back == p);
-  //assert(p->v == p->back->v);
-  //assert(p->branchnum > 0);
-  //assert(p->branchnum == p->back->branchnum);
-}
-
-void checktree_r(node *p) {
-  node *q;
-
-  checknode(p);
-  if (!p->tip) {
-    for (q = p->next; q != p; q = q->next) {
-      checktree_r(q->back);
-    }
-  }
-}
-
-void checktree() {
-  checktree_r(curtree.start);
-  checktree_r(curtree.start->back);
-}
-#endif /* DEBUG */
-
 
 static void
 set_branchnum(node *p, long branchnum)
@@ -192,9 +166,67 @@ set_branchnum(node *p, long branchnum)
 }
   
 
+void allocx2(long nonodes, long sitelength, pointarray treenode,
+   boolean usertree)
+{
+  /* its complement is freex2(nonodes,treenode) */
+  long i, j, k, l;
+  node *p;
+
+  for (i = 0; i < spp; i++) {
+    treenode[i]->x2 = (phenotype2)Malloc((endsite+1)*sizeof(sitelike2));
+    for ( j = 0 ; j < endsite + 1 ; j++ )
+      treenode[i]->x2[j] = (double *)Malloc((sitelength + 1) * sizeof(double));
+  }
+  if (!usertree) {
+    for (i = spp; i < nonodes; i++) {
+      p = treenode[i];
+      for (j = 1; j <= 3; j++) {
+        p->x2 = (phenotype2)Malloc((endsite+1)*sizeof(sitelike2));
+        for (k = 0; k < endsite + 1; k++) {
+          p->x2[k] = (double *)Malloc((sitelength + 1) * sizeof(double));
+          for (l = 0; l < sitelength; l++)
+             p->x2[k][l] = 1.0;
+        }
+        p = p->next;
+      }
+    }
+  }
+}  /* allocx2 */
+
+void freex2(long nonodes, pointarray treenode)
+{
+  long i, j, k;
+  node *p;
+
+  for (i = 0; i < spp; i++) {
+    for (j = 0; j < endsite + 1; j++) {
+      free(treenode[i]->x2[j]);
+    }
+    free(treenode[i]->x2);
+    treenode[i]->x2 = NULL;
+  }
+  for (i = spp; i < nonodes; i++) {
+    p = treenode[i];
+    if (p != NULL) {
+      for (j = 1; j <= 3; j++) {
+        for (k = 0; k < endsite + 1; k++) {
+          free(p->x2[k]);
+        }
+        free(p->x2);
+        p->x2 = NULL;
+        p = p->next;
+      }
+    }
+  }
+}  /* freex2 */
+
+
+  
+
 void alloctrans(tree *t, long nonodes, long sitelength)
 {
-  /* used by restml */
+  /* it's complement is freetrans(tree*,nonodes, sitelength) */
   long i, j;
 
   t->trans = (transptr)Malloc(nonodes*sizeof(transmatrix));
@@ -209,6 +241,20 @@ void alloctrans(tree *t, long nonodes, long sitelength)
     t->freetrans[i] = i+1;
   t->transindex = nonodes - 1;
 }  /* alloctrans */
+
+
+void freetrans(tree * t, long nonodes,long sitelength)
+{
+  long i ,j;
+  for ( i = 0 ; i < nonodes ; i++ ) {
+    for ( j = 0 ; j < sitelength + 1; j++) {
+      free ((t->trans)[i][j]);
+    }
+    free ((t->trans)[i]);
+  }
+  free(t->trans);
+  free(t->freetrans);
+}
 
 
 long get_trans(tree* t)
@@ -230,9 +276,6 @@ void free_trans(tree* t, long trans)
    * already freed nodes, causing the freetrans array to overrun other data. */
   for ( i = 0 ; i < t->transindex; i++ ) {
     if ( t->freetrans[i] == trans ) {
-#ifdef TRANS_DEBUG
-      printf("ERROR: trans %ld has already been freed!!\n", trans);
-#endif
       return;
     }
   }
@@ -417,7 +460,7 @@ void freelrsaves()
 {
   long i,j;
   for ( i = 0 ; i < NLRSAVES ; i++ ) {
-    for (j = 0; j < endsite; j++)
+    for (j = 0; j < endsite + 1; j++) 
       free(lrsaves[i]->x2[j]);
     free(lrsaves[i]->x2);
     free(lrsaves[i]->underflows);
@@ -441,7 +484,7 @@ void alloclrsaves()
   for ( i = 0 ; i < NLRSAVES ; i++ ) {
     lrsaves[i] = Malloc(sizeof(node));
     lrsaves[i]->x2 = Malloc((endsite + 1)*sizeof(sitelike2));
-    for ( j = 0 ; j <= endsite ; j++ ) {
+    for ( j = 0 ; j < endsite + 1 ; j++ ) {
       lrsaves[i]->x2[j] = Malloc((sitelength + 1) * sizeof(double));
     }
   }
@@ -524,6 +567,8 @@ void cleanup() {
   tempslope = NULL;
   free(tempcurve);
   tempcurve = NULL;
+
+  freelrsaves();
 }
 
 
@@ -809,12 +854,12 @@ void getinput()
     if (njumble > 1) 
       setuptree2(&bestree2);
   }
-  allocx2(nonodes2, endsite+1, sitelength, curtree.nodep, usertree);
+  allocx2(nonodes2, sitelength, curtree.nodep, usertree);
   if (!usertree) {
-    allocx2(nonodes2, endsite+1, sitelength, priortree.nodep, 0);
-    allocx2(nonodes2, endsite+1, sitelength, bestree.nodep, 0);
+    allocx2(nonodes2, sitelength, priortree.nodep, 0);
+    allocx2(nonodes2, sitelength, bestree.nodep, 0);
     if (njumble > 1)
-      allocx2(nonodes2, endsite+1, sitelength, bestree2.nodep, 0);
+      allocx2(nonodes2, sitelength, bestree2.nodep, 0);
   }
   restml_makevalues();
 }  /* getinput */
@@ -974,15 +1019,9 @@ boolean nuview(node *p)
   long i, j, k, lowlim;
   double sumq;
   node *q, *s;
-  sitelike2 xq, xr, xp;
-  double **tempq = NULL;
-  double *tq     = NULL;
 
   if (p->tip)
     return false;
-  xq = init_sitelike(sitelength);
-  xr = init_sitelike(sitelength);
-  xp = init_sitelike(sitelength);
   for (s = p->next; s != p; s = s->next) {
     if ( nuview(s->back) )
       p->initialized = false;
@@ -993,20 +1032,17 @@ boolean nuview(node *p)
 
   lowlim = trunc8 ? 0 : 1;
 
+  /* recalculates p->x2[*][*] in place */
   for (i = lowlim; i <= endsite; i++) {
-    xp = p->x2[i];
     for (j = 0; j <= sitelength; j++)
-      xp[j] = 1.0;
+      p->x2[i][j] = 1.0;
     for (s = p->next; s != p; s = s->next) {
       q = s->back;
-      tempq = curtree.trans[q->branchnum - 1];
-      xq = q->x2[i];
       for (j = 0; j <= sitelength; j++) {
         sumq = 0.0;
-        tq = tempq[j];
         for (k = 0; k <= sitelength; k++)
-          sumq += tq[k] * xq[k];
-        xp[j] *= sumq;
+          sumq += curtree.trans[q->branchnum-1][j][k] * q->x2[i][k];
+        p->x2[i][j] *= sumq;
       }
     }
   }
@@ -1378,10 +1414,6 @@ void addtraverse(node *p, node *q, boolean contin)
     free_trans(&curtree,q->back->branchnum);
     set_branchnum(q->back, q->branchnum);
     copymatrix (curtree.trans[q->branchnum - 1], tempmatrix[1]);
-#ifdef DEBUG
-    evaluate(&curtree, curtree.start);
-    assert( close(bestyet, curtree.likelihood) );
-#endif
     /* curtree.likelihood = bestyet; */
     evaluate(&curtree, curtree.start);
   }
@@ -1413,8 +1445,8 @@ void globrearrange(void)
   alloctrans(&oldtree, nonodes2, sitelength);
   setuptree2(&globtree);
   setuptree2(&oldtree);
-  allocx2(nonodes2, endsite + 1, sitelength,globtree.nodep, 0);
-  allocx2(nonodes2, endsite + 1, sitelength,oldtree.nodep, 0);
+  allocx2(nonodes2, sitelength,globtree.nodep, 0);
+  allocx2(nonodes2, sitelength,oldtree.nodep, 0);
   restml_copy_(&curtree,&globtree);
   restml_copy_(&curtree,&oldtree);
   bestyet = curtree.likelihood;
@@ -1475,8 +1507,10 @@ void globrearrange(void)
     succeeded = false;
   }
   bestyet = globtree.likelihood;
-  freetrans(&globtree.trans, nonodes2, sitelength);
-  freetrans(&oldtree.trans, nonodes2, sitelength);
+  freex2(nonodes2,globtree.nodep);
+  freex2(nonodes2,oldtree.nodep);
+  freetrans(&globtree, nonodes2, sitelength);
+  freetrans(&oldtree, nonodes2, sitelength);
   freetree2(globtree.nodep,nonodes2);
   freetree2(oldtree.nodep,nonodes2);
 }
@@ -2333,10 +2367,9 @@ void maketree()
    }
   if (jumb == njumble) {
     if (progress) {
-      printf("\nOutput written to file \"%s\"\n\n", outfilename);
+      printf("\nOutput written to file \"%s\"\n", outfilename);
       if (trout)
-        printf("Tree also written onto file \"%s\"\n", outtreename);
-      putchar('\n');
+        printf("\nTree also written onto file \"%s\"\n", outtreename);
     }
   }
 }  /* maketree */
@@ -2377,7 +2410,7 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
   fixmacfile(outtreename);
 #endif
-  printf("Done.\n\n");
+  printf("\nDone.\n\n");
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif

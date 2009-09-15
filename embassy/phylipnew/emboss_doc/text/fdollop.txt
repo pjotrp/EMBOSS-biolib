@@ -103,7 +103,7 @@ Phylip tree file (optional):
 Phylip dollop program output file [dollop.fdollop]: 
 
 
-Dollo and polymorphism parsimony algorithm, version 3.68
+Dollo and polymorphism parsimony algorithm, version 3.69
 
 Adding species:
    1. Alpha
@@ -182,7 +182,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Dollo and polymorphism parsimony algorithm
 Input file format
 
    fdollop reads discrete character data with "?", "P", "B" states
@@ -355,7 +354,7 @@ Output file format
   File: dollop.fdollop
 
 
-Dollo and polymorphism parsimony algorithm, version 3.68
+Dollo and polymorphism parsimony algorithm, version 3.69
 
 Dollo parsimony method
 

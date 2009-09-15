@@ -268,7 +268,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Fitch-Margoliash method with contemporary tips
 Input file format
 
    fkitsch requires a bifurcating tree, unlike FITCH, which requires an
@@ -321,7 +320,7 @@ Output file format
 
    7 Populations
 
-Fitch-Margoliash method with contemporary tips, version 3.68
+Fitch-Margoliash method with contemporary tips, version 3.69
 
                   __ __             2
                   \  \   (Obs - Exp)

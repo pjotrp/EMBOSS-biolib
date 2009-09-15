@@ -3336,7 +3336,7 @@ boolean plotpreview(char *fn, double *xo, double *yo, double *scale,
 
 
 #ifdef WIN32
-winplotpreviewcore(int windowwidth, int windowheight)
+void winplotpreviewcore(int windowwidth, int windowheight)
 {
   winheight = windowheight;
   winwidth = windowwidth;

@@ -154,7 +154,6 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-   Largest clique program
 Input file format
 
    Input to the algorithm is standard, but the "?", "P", and "B" states
@@ -187,7 +186,7 @@ Output file format
   File: clique.fclique
 
 
-Largest clique program, version 3.68
+Largest clique program, version 3.69
 
 
 

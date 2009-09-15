@@ -35,18 +35,21 @@ void alloctree(pointptr *treenode, long nonodes)
 
 void freetree(pointptr *treenode, long nonodes)
 {
-  long i, j;
+  long i;
   node *p, *q;
 
   for (i = 0; i < spp; i++)
     free((*treenode)[i]);
   for (i = spp; i < nonodes; i++) {
     p = (*treenode)[i];
-    for (j = 1; j <= 3; j++) {
-      q = p;
-      p = p->next;
-      free(q);
+    q = p->next;
+    while(q != p)
+    {
+        node * r = q;
+        q = q->next;
+        free(r);
     }
+    free(p);
   }
   free(*treenode);
 } /* freetree */

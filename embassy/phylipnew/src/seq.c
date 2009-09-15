@@ -274,36 +274,6 @@ void prot_allocx(long nonodes, long rcategs, pointarray treenode,
 }  /* prot_allocx */
 
 
-void allocx2(long nonodes, long endsite, long sitelength, pointarray treenode,
-   boolean usertree)
-{
-  /* allocate x2 dynamically */
-  /* used in restml */
-  long i, j, k, l;
-  node *p;
-
-  for (i = 0; i < spp; i++) {
-    treenode[i]->x2 = (phenotype2)Malloc(endsite*sizeof(sitelike2));
-    for ( j = 0 ; j < endsite ; j++ )
-      treenode[i]->x2[j] = (double *)Malloc((sitelength + 1) * sizeof(double));
-  }
-  if (!usertree) {
-    for (i = spp; i < nonodes; i++) {
-      p = treenode[i];
-      for (j = 1; j <= 3; j++) {
-        p->x2 = (phenotype2)Malloc(endsite*sizeof(sitelike2));
-        for (k = 0; k < endsite; k++) {
-          p->x2[k] = (double *)Malloc((sitelength + 1) * sizeof(double));
-          for (l = 0; l < sitelength; l++)
-             p->x2[k][l] = 1.0;
-        }
-        p = p->next;
-      }
-    }
-  }
-}  /* allocx2 */
-
-
 void setuptree(pointarray treenode, long nonodes, boolean usertree)
 {
   /* initialize treenodes */
@@ -365,19 +335,6 @@ void alloctip(node *p, long *zeros)
 }  /* alloctip */
 
 
-void freetrans(transptr *trans, long nonodes,long sitelength)
-{
-  long i ,j;
-  for ( i = 0 ; i < nonodes ; i++ ) {
-    for ( j = 0 ; j < sitelength + 1; j++) {
-      free ((*trans)[i][j]);
-    }
-    free ((*trans)[i]);
-  }
-  free(*trans);
-}
-
-
 void getbasefreqs(double freqa, double freqc, double freqg, double freqt,
             double *freqr, double *freqy, double *freqar, double *freqcy,
             double *freqgr, double *freqty, double *ttratio, double *xi,
@@ -396,6 +353,7 @@ void getbasefreqs(double freqa, double freqc, double freqg, double freqt,
     fprintf(outfile, "   C    %10.5f\n", freqc);
     fprintf(outfile, "   G    %10.5f\n", freqg);
     fprintf(outfile, "  T(U)  %10.5f\n", freqt);
+    fprintf(outfile, "\n");
   }
   *freqr = freqa + freqg;
   *freqy = freqc + freqt;
@@ -3896,6 +3854,8 @@ void prot_freex_notip(long nonodes, pointarray treenode)
         free(p->protx[j]);
         p->protx[j] = NULL;
       }
+      free(p->underflows);
+      p->underflows = NULL;
       free(p->protx);
       p->protx = NULL;
       p = p->next;
@@ -3914,6 +3874,7 @@ void prot_freex(long nonodes, pointarray treenode)
     for (j = 0; j < endsite; j++)
       free(treenode[i]->protx[j]);
     free(treenode[i]->protx);
+    free(treenode[i]->underflows);
   }
   for (i = spp; i < nonodes; i++) {
     p = treenode[i];
@@ -3921,6 +3882,7 @@ void prot_freex(long nonodes, pointarray treenode)
       for (j = 0; j < endsite; j++)
         free(p->protx[j]);
       free(p->protx);
+      free(p->underflows);
       p = p->next;
     } while (p != treenode[i]);
   }
@@ -3938,6 +3900,7 @@ void freex_notip(long nonodes, pointarray treenode)
     do {
       for (j = 0; j < endsite; j++)
         free(p->x[j]);
+      free(p->underflows);
       free(p->x);
       p = p->next;
     } while (p != treenode[i]);
@@ -3955,6 +3918,7 @@ void freex(long nonodes, pointarray treenode)
     for (j = 0; j < endsite; j++)
       free(treenode[i]->x[j]);
     free(treenode[i]->x);
+    free(treenode[i]->underflows);
   }
   for (i = spp; i < nonodes; i++) {
     if(treenode[i]){
@@ -3963,34 +3927,12 @@ void freex(long nonodes, pointarray treenode)
         for (j = 0; j < endsite; j++)
           free(p->x[j]);
         free(p->x);
+        free(p->underflows);
         p = p->next;
       } while (p != treenode[i]);
     }
   }
 }  /* freex */
-
-
-void freex2(long nonodes, pointarray treenode)
-{
-  /* used in restml */
-  long i, j;
-  node *p;
-
-  for (i = 0; i < spp; i++) {
-    free(treenode[i]->x2);
-    treenode[i]->x2 = NULL;
-  }
-  for (i = spp; i < nonodes; i++) {
-    p = treenode[i];
-    if (p != NULL) {
-      for (j = 1; j <= 3; j++) {
-        free(p->x2);
-        p->x2 = NULL;
-        p = p->next;
-      }
-    }
-  }
-}  /* freex2 */
 
 
 void freegarbage(gbases **garbage)

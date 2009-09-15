@@ -26,6 +26,7 @@ void summarize(void);
 void nodelabel(boolean);
 void jointree(void);
 void maketree(void);
+void freerest(void);
 /* function prototypes */
 #endif
 
@@ -136,6 +137,22 @@ void allocrest()
 }  /* allocrest */
 
 
+void freerest()
+{
+  long i;
+
+  for (i = 0; i < spp; i++)
+    free(x[i]);
+  free(x);
+  for (i = 0; i < spp; i++)
+    free(reps[i]);
+  free(reps);
+  free(nayme);
+  free(enterorder);
+  free(cluster);
+}  /* freerest */
+
+
 void doinit()
 {
   /* initializes variables */
@@ -144,8 +161,9 @@ void doinit()
   inputnumbers2seq(phylodists[0], &spp, &nonodes2, 2);
   nonodes2 += (njoin ? 0 : 1);
   alloctree(&curtree.nodep, nonodes2+1);
-  p = curtree.nodep[nonodes2]->next->next;
+  p = curtree.nodep[nonodes2]->next;
   curtree.nodep[nonodes2]->next = curtree.nodep[nonodes2];
+  free(p->next);
   free(p);
   allocrest();
 }  /* doinit */
@@ -501,6 +519,8 @@ int main(int argc, Char *argv[])
   FClose(infile);
   FClose(outfile);
   FClose(outtree);
+  freerest();
+  freetree(&curtree.nodep, nonodes2+1);
 #ifdef MAC
   fixmacfile(outfilename);
   fixmacfile(outtreename);
