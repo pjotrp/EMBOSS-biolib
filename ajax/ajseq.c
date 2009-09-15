@@ -913,6 +913,11 @@ void ajSeqDelarray(AjPSeq **PPseq)
 ** @argrule Range pos1 [ajint] Start position
 ** @argrule Range pos2 [ajint] End  position
 ** @argrule SetName setname [const AjPStr] User-defined sequence name
+** @argrule Cmt str [AjPStr] Comment added to internal list
+** @argrule Gene gene [AjPSeqGene] Gene object added to internal list
+** @argrule Key str [AjPStr] Keyword added to internal list
+** @argrule Ref ref [AjPSeqRef] Citation object added to internal list
+** @argrule Xref xref [AjPSeqXref] Cross-reference object added to internal list
 **
 ** @valrule * [void]
 **
@@ -925,18 +930,18 @@ void ajSeqDelarray(AjPSeq **PPseq)
 **
 ** Adds a comment to a sequence object
 **
-** @param [u] thys [AjPSeq] Sequence object.
-** @param [r] str [AjPStr] Comment.
+** @param [u] seq [AjPSeq] Sequence object.
+** @param [u] str [AjPStr] Comment.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSeqAddCmt(AjPSeq thys, AjPStr str)
+void ajSeqAddCmt(AjPSeq seq,  AjPStr str)
 {
-    if(!thys->Cmtlist)
-        thys->Cmtlist = ajListstrNew();
+    if(!seq->Cmtlist)
+        seq->Cmtlist = ajListstrNew();
 
-    ajListstrPushAppend(thys->Cmtlist, str);
+    ajListstrPushAppend(seq->Cmtlist, str);
 
     return;
 }
@@ -948,18 +953,18 @@ void ajSeqAddCmt(AjPSeq thys, AjPStr str)
 **
 ** Adds a gene to a sequence object
 **
-** @param [u] thys [AjPSeq] Sequence object.
-** @param [r] gene [AjPSeqGene] Gene object
+** @param [u] seq [AjPSeq] Sequence object.
+** @param [u] gene [AjPSeqGene] Gene object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSeqAddGene(AjPSeq thys, AjPSeqGene gene)
+void ajSeqAddGene(AjPSeq seq, AjPSeqGene gene)
 {
-    if(!thys->Genelist)
-        thys->Genelist = ajListNew();
+    if(!seq->Genelist)
+        seq->Genelist = ajListNew();
 
-    ajListPushAppend(thys->Genelist, gene);
+    ajListPushAppend(seq->Genelist, gene);
 
     return;
 }
@@ -971,18 +976,18 @@ void ajSeqAddGene(AjPSeq thys, AjPSeqGene gene)
 **
 ** Adds a keyword to a sequence object
 **
-** @param [u] thys [AjPSeq] Sequence object.
-** @param [r] str [AjPStr] Comment.
+** @param [u] seq [AjPSeq] Sequence object.
+** @param [u] str [AjPStr] Comment.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSeqAddKey(AjPSeq thys, AjPStr str)
+void ajSeqAddKey(AjPSeq seq, AjPStr str)
 {
-    if(!thys->Keylist)
-        thys->Keylist = ajListstrNew();
+    if(!seq->Keylist)
+        seq->Keylist = ajListstrNew();
 
-    ajListstrPushAppend(thys->Keylist, str);
+    ajListstrPushAppend(seq->Keylist, str);
 
     return;
 }
@@ -994,18 +999,18 @@ void ajSeqAddKey(AjPSeq thys, AjPStr str)
 **
 ** Adds a literature reference to a sequence object
 **
-** @param [u] thys [AjPSeq] Sequence object.
-** @param [r] ref [AjPSeqRef] Literature reference.
+** @param [u] seq [AjPSeq] Sequence object.
+** @param [u] ref [AjPSeqRef] Literature reference.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSeqAddRef(AjPSeq thys, AjPSeqRef ref)
+void ajSeqAddRef(AjPSeq seq, AjPSeqRef ref)
 {
-    if(!thys->Reflist)
-        thys->Reflist = ajListNew();
+    if(!seq->Reflist)
+        seq->Reflist = ajListNew();
 
-    ajListPushAppend(thys->Reflist, ref);
+    ajListPushAppend(seq->Reflist, ref);
 
     return;
 }
@@ -1017,18 +1022,18 @@ void ajSeqAddRef(AjPSeq thys, AjPSeqRef ref)
 **
 ** Adds a cross-reference to a sequence object
 **
-** @param [u] thys [AjPSeq] Sequence object.
-** @param [r] xref [AjPSeqXref] Comment.
+** @param [u] seq [AjPSeq] Sequence object.
+** @param [u] xref [AjPSeqXref] Comment.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSeqAddXref(AjPSeq thys, AjPSeqXref xref)
+void ajSeqAddXref(AjPSeq seq, AjPSeqXref xref)
 {
-    if(!thys->Xreflist)
-        thys->Xreflist = ajListNew();
+    if(!seq->Xreflist)
+        seq->Xreflist = ajListNew();
 
-    ajListPushAppend(thys->Xreflist, xref);
+    ajListPushAppend(seq->Xreflist, xref);
 
     return;
 }
@@ -3546,6 +3551,9 @@ ajuint ajSeqGetLenUngapped(const AjPSeq seq)
 
 const char* ajSeqGetNameC(const AjPSeq seq)
 {
+    if(!seq)
+        return "";
+
     return MAJSTRGETPTR(seq->Name);
 }
 
@@ -3567,8 +3575,12 @@ const char* ajSeqGetNameC(const AjPSeq seq)
 
 const AjPStr ajSeqGetNameS(const AjPSeq seq)
 {
+    if(!seq)
+        return ajStrConstEmpty();
+
     if(seq->Name)
         return seq->Name;
+
     return ajStrConstEmpty();
 }
 
@@ -5650,6 +5662,9 @@ __deprecated ajint  ajSeqallLen(const AjPSeqall seqall)
 
 const AjPStr ajSeqallGetseqName(const AjPSeqall seq)
 {
+    if(!seq)
+        return ajStrConstEmpty();
+    
     ajDebug("ajSeqallGetseqName '%S'\n", seq->Seq->Name);
 
     return ajSeqGetNameS(seq->Seq);
@@ -5828,7 +5843,7 @@ void ajSeqsetDel(AjPSeqset *Pseq)
     AJFREE(seq->Seq);
     AJFREE(seq->Seqweight);
 
-    AJFREE(seq);
+    AJFREE(*Pseq);
 
     return;
 }
@@ -6648,7 +6663,10 @@ __deprecated const AjPStr  ajSeqsetGetName(const AjPSeqset thys)
 
 const AjPStr ajSeqsetGetNameS(const AjPSeqset seq)
 {
-    ajDebug("ajSeqsetGetName '%S' usa: '%S'\n", seq->Name, seq->Usa);
+    if(!seq)
+        return ajStrConstEmpty();
+
+    ajDebug("ajSeqsetGetNameS '%S' usa: '%S'\n", seq->Name, seq->Usa);
 
     if(ajStrGetLen(seq->Name))
       return seq->Name;
@@ -6832,10 +6850,16 @@ __deprecated const AjPStr  ajSeqsetAcc(const AjPSeqset seq, ajint i)
 
 const char* ajSeqsetGetseqNameC(const AjPSeqset seq, ajuint i)
 {
-    if(i >= seq->Size)
-	return NULL;
+    if(!seq)
+        return "";
 
-    return MAJSTRGETPTR(seq->Seq[i]->Name);
+    if(i >= seq->Size)
+	return "";
+
+    if(seq->Seq[i]->Name)
+        return MAJSTRGETPTR(seq->Seq[i]->Name);
+
+    return "";
 }
 
 
@@ -6853,11 +6877,15 @@ const char* ajSeqsetGetseqNameC(const AjPSeqset seq, ajuint i)
 
 const AjPStr ajSeqsetGetseqNameS(const AjPSeqset seq, ajuint i)
 {
+    if(!seq)
+        return ajStrConstEmpty();
+
     if(i >= seq->Size)
-	return NULL;
+	return ajStrConstEmpty();
 
     if(seq->Seq[i]->Name)
         return seq->Seq[i]->Name;
+
     return ajStrConstEmpty();
 }
 
@@ -10287,8 +10315,8 @@ AjBool ajSeqreflistClone(const AjPList src, AjPList dest)
 ** @nam3rule Get return reference attributes
 ** @nam4rule GetXrefs Return cross-references
 **
-** @argrule Get  ref [AjPList] List of sequence citation object
-** @argrule Xrefs ref [AjPList] List of cross-reference objects
+** @argrule Get   src   [const AjPList] List of sequence citation object
+** @argrule Xrefs Plist [AjPList*]      List of cross-reference objects
 **
 ** @valrule GetXrefs [ajuint] Number of cross-references returned
 **
