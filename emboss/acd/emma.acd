@@ -191,7 +191,7 @@ section: input [
       additional: "@($(usermamatrix)?True:$(umamatrix))"
       default: ""
       nullok: "@($(usermamatrix)?@(!$(umamatrix)):True)"
-      information: "Comparison matrix file (optional)'"
+      information: "Comparison matrix file (optional)"
       knowntype: "comparison matrix"
     relations:  "EDAM: Comparison matrix file"                         
     ]
