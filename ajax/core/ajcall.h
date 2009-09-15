@@ -17,6 +17,7 @@ typedef void* (*CallFunc)(const char *name, va_list args);
 */
 
 void  ajCallRegister(const char *name, CallFunc func);
+void  ajCallRegisterOld(const char *name, CallFunc func);
 
 void* ajCall(const char *name, ...);
 void  ajCallExit(void);

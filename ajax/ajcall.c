@@ -14,10 +14,13 @@
 */
 
 static AjPTable callTable = NULL;
+static AjPTable oldcallTable = NULL;
+static AjPTable oldcallCount = NULL;
 
 static ajint callCmpStr(const void *x, const void *y);
 static unsigned callStrHash(const void *key, unsigned hashsize);
 static void callItemDel(void** key, void** value, void* cl);
+static void callCountDel(void** key, void** value, void* cl);
 
 
 
@@ -103,6 +106,45 @@ void ajCallRegister(const char *name, CallFunc func)
 
 
 
+/* @func ajCallRegisterOld *****************************************************
+**
+** Create hash value pair using an obsolete name and function.
+**
+** @param [r] name [const char*] name which is used later.
+** @param [f] func [CallFunc] function to be called on name being called.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajCallRegisterOld(const char *name, CallFunc func)
+{
+    void *rec;
+    char* keyname = NULL;
+    ajuint *i;
+ 
+    if(!oldcallTable)
+    {
+	oldcallTable = ajTableNewFunctionLen(50, callCmpStr,callStrHash);
+	oldcallCount = ajTableNewFunctionLen(50, callCmpStr,callStrHash);
+    }
+    
+    rec = ajTableFetch(oldcallTable, name);	/* does it exist already */
+
+    if(!rec)
+    {
+	keyname = ajCharNewC(name);
+	ajTablePut(oldcallTable, keyname, (void *) func);
+	keyname = ajCharNewC(name);
+        AJNEW0(i);
+	ajTablePut(oldcallCount, keyname, i);
+    }
+
+    return;
+}
+
+
+
+
 /* @func ajCall ***************************************************************
 **
 ** Call a function by its name. If it does not exist then give
@@ -117,7 +159,9 @@ void* ajCall(const char *name, ...)
 {
     va_list args;
     CallFunc rec;
+    CallFunc recold;
     void *retval = NULL;
+    ajuint *icount;
 
     if(!callTable)
     {
@@ -127,6 +171,7 @@ void* ajCall(const char *name, ...)
     }
 
     rec = (CallFunc) ajTableFetch(callTable, name);
+    recold = (CallFunc) ajTableFetch(oldcallTable, name);
 
     if(rec)
     {
@@ -134,9 +179,20 @@ void* ajCall(const char *name, ...)
 	retval = (*(rec))(name, args);
 	va_end(args);
     }
+    else if(recold)
+    {
+        icount = (ajuint*) ajTableFetch(oldcallCount, name);
+        if(!(*icount)++)
+            ajUser("Obsolete graphics call '%s' called via ajCall", name);
+	va_start(args, name);
+	retval = (*(recold))(name, args);
+	va_end(args);
+    }
     else
+    {
 	ajMessCrash("Graphics call %s not found. "
 		    "Use ajGraphInit in main function first",name);
+    }
 
     return retval;
 }
@@ -148,8 +204,8 @@ void* ajCall(const char *name, ...)
 **
 ** Delete an entry in the call table.
 **
-** @param [d] key [void**] Standard argument. Table key.
-** @param [d] value [void**] Standard argument. Table item.
+** @param [d] key [void**] Standard argument. Table key (character string)
+** @param [d] value [void**] Standard argument. Table item (function reference)
 ** @param [u] cl [void*] Standard argument. Usually NULL.
 ** @return [void]
 ** @@
@@ -175,6 +231,38 @@ static void callItemDel(void** key, void** value, void* cl)
 
 
 
+/* @funcstatic callCountDel ***************************************************
+**
+** Delete an entry in the call table.
+**
+** @param [d] key [void**] Standard argument. Table key (character string)
+** @param [d] value [void**] Standard argument. Table item (unsigned integer)
+** @param [u] cl [void*] Standard argument. Usually NULL.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void callCountDel(void** key, void** value, void* cl)
+{
+    char *p;
+    ajuint *cnt;
+
+    (void) cl;
+
+    p = (char*) *key;
+    cnt = (ajuint*) *value;
+
+    AJFREE(p);
+    AJFREE(cnt);
+ 
+    *key = NULL;
+
+    return;
+}
+
+
+
+
 /* @func ajCallExit ***********************************************************
 **
 ** Cleans up calls register internal memory
@@ -186,8 +274,12 @@ static void callItemDel(void** key, void** value, void* cl)
 void ajCallExit(void)
 {
     ajTableMapDel(callTable, callItemDel, NULL);
+    ajTableMapDel(oldcallTable, callItemDel, NULL);
+    ajTableMapDel(oldcallCount, callCountDel, NULL);
 
     ajTableFree(&callTable);
+    ajTableFree(&oldcallTable);
+    ajTableFree(&oldcallCount);
 
     return;
 }
