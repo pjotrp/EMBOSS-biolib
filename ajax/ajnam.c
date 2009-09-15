@@ -102,11 +102,18 @@ static char namVersion[] = VERSION;
 static char namVersion[] = "6.x";
 #endif
 
+#ifdef AJAX_SYSTEM
+static char namSystem[] = AJAX_SYSTEM;
+#else
+static char namSystem[] = "unknown";
+#endif
+
 /* string versions of char* constants set in ajNamInit */
 static AjPStr namFixedBaseStr     = NULL;
 static AjPStr namFixedRootStr     = NULL;
 static AjPStr namFixedInstallStr  = NULL;
 static AjPStr namFixedPackageStr  = NULL;
+static AjPStr namFixedSystemStr  = NULL;
 static AjPStr namFixedVersionStr  = NULL;
 static AjPStr namPrefixStr        = NULL;
 static AjPStr namFileOrig         = NULL;
@@ -2164,6 +2171,7 @@ void ajNamInit(const char* prefix)
     ajDirnameUp(&namFixedBaseStr);
     
     ajStrAssignC(&namFixedPackageStr, namPackage);
+    ajStrAssignC(&namFixedSystemStr, namSystem);
     ajStrAssignC(&namFixedVersionStr, namVersion);
     ajStrAssignC(&namFixedInstallStr, namInstallRoot);
 
@@ -2286,6 +2294,9 @@ void ajNamInit(const char* prefix)
     ajStrDel(&prefixStr);
     ajStrDel(&prefixCap);
 
+    if(!namFixedSystemStr)
+        namFixedSystemStr = ajStrNewC(namSystem);
+    
     if(!namFixedVersionStr)
         namFixedVersionStr = ajStrNewC(namVersion);
     
@@ -2445,11 +2456,11 @@ void ajNamExit(void)
     ajStrDel(&namFixedRootStr);    /* allocated in ajNamInit */
     ajStrDel(&namFixedInstallStr); /* allocated in ajNamInit */
     ajStrDel(&namFixedPackageStr); /* allocated in ajNamInit */
+    ajStrDel(&namFixedSystemStr);  /* allocated in ajNamInit */
     ajStrDel(&namFixedVersionStr); /* allocated in ajNamInit */
     ajStrDel(&namPrefixStr);       /* allocated in ajNamInit */
     ajStrDel(&namFileOrig);        /* allocated in ajNamInit */
     ajStrDel(&namRootStr);         /* allocated in ajNamInit */
-    ajStrDel(&namFixedVersionStr); /* allocated in ajNamInit */
     
     ajStrDel(&namFileName);		/* allocated in ajNamProcessFile */
     ajStrDel(&namValNameTmp);
@@ -2954,6 +2965,22 @@ __deprecated AjBool ajNamRootPack(AjPStr* root)
         return ajFalse;
 
     return ajTrue;
+}
+
+
+
+
+/* @func ajNamValueSystem *****************************************************
+**
+** Returns the system information for the library
+**
+** @return [const AjPStr] Version number
+** @@
+******************************************************************************/
+
+const AjPStr ajNamValueSystem(void)
+{
+    return namFixedSystemStr;
 }
 
 

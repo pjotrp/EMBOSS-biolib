@@ -46,6 +46,7 @@ const AjPStr ajNamValueRootdir(void);
 const AjPStr ajNamValueBasedir(void);
 const AjPStr ajNamValueInstalldir(void);
 const AjPStr ajNamValuePackage(void);
+const AjPStr ajNamValueSystem(void);
 const AjPStr ajNamValueVersion(void);
 
 AjBool ajNamRsAttrValue(const AjPStr name, const AjPStr attribute,
