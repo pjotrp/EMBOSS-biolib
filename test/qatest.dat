@@ -1,4 +1,4 @@
-##########################################################################
+###########################################################################
 # Things to do
 #
 #
@@ -375,7 +375,7 @@ IN
 FI actb1_fugru.antigenic
 FZ = 0
 FI antigenic.acdlog
-FC = 5623
+FC = 5626
 FP 51 /^acdProcess/
 FI stderr
 FC = 2
@@ -11665,7 +11665,7 @@ FP 3 /^\s+4\s+T\s+1\n/
 FP 6 /^\s+4\s+T\s+0\n/
 FP 3 /^\s+4\s+T\s+0\.000\n/
 FI pepinfo.ps
-FC = 23290
+FC = 23209
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 2\n/
 //
@@ -11690,7 +11690,7 @@ FP 3 /^\s+4\s+T\s+1\n/
 FP 6 /^\s+4\s+T\s+0\n/
 FP 0 /^\s+4\s+T\s+0\.000\n/
 FI pepinfo.ps
-FC = 22675
+FC = 22594
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -25124,7 +25124,7 @@ IN ../../data/evolution/dnaml.dat
 IN
 IN
 FI dnaml.fdnaml
-FC = 90
+FC = 91
 FP /^        1           0\.264            0\.522\n/
 FP /^        2           2\.000\n/
 FP /^Ln Likelihood =   -57\.87892\n/
@@ -25140,7 +25140,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 54
+FC = 53
 FP 45 /^./
 //
 
@@ -25153,7 +25153,7 @@ IN ../../data/evolution/dnaml.dat
 IN
 IN
 FI dnaml.fdnaml
-FC = 56
+FC = 57
 FP /^   A       0\.24615\n/
 FP /^Ln Likelihood =   -72\.25088\n/
 FP /^     1          Epsilon           0\.00006     \(     zero,     0\.34299\)\n/
@@ -25163,7 +25163,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 68
+FC = 67
 FP 57 /^./
 FI dnaml.treefile
 FC = 2
@@ -25185,7 +25185,7 @@ IN
 IN
 CC likelihood value differs on Linux.
 FI dnaml.fdnamlk
-FC = 89
+FC = 90
 FP /^        1           0\.264            0\.522\n/
 FP /^        2           2\.000\n/
 FP /^Ln Likelihood =   -57\.98242\n/
@@ -25257,20 +25257,20 @@ IN
 FI dnapenny.fdnapenny
 FC = 207
 FP /^     9 trees in all found\n/
-FP /^  \!     \+-----6  \+-----Gamma2    \n/
+FP /^  1  \+-----4        \+--Epsilon   \n/
 FI dnapenny.treefile
 FC = 9
-FP /^\(Alpha1,\(\(\(\(\(Delta,Epsilon\),Gamma2\),Gamma1\),\(Beta2,Beta1\)\),Alpha2\)\)\[0\.1111\];\n/
+FP /^\(Alpha1,\(\(Alpha2,\(\(Epsilon,Delta\),\(Gamma2,Gamma1\)\)\),\(Beta2,Beta1\)\)\)\[0\.1111\];\n/
 FP 3 /\(Gamma2,Gamma1\)/
-FP 9 /\(Delta,Epsilon\),/
+FP 6 /\(Epsilon,Delta\),/
 FI stderr
 FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 15
-FP 11 /^./
+FC = 18
+FP 14 /^./
 //
 
 ID fdollop-ex
@@ -25673,7 +25673,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 15
+FC = 14
 FP 9 /^./
 //
 
@@ -25699,7 +25699,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 15
+FC = 14
 FP 9 /^./
 //
 
@@ -25828,7 +25828,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 131
+FC = 129
 FP 94 /^./
 //
 
@@ -25885,7 +25885,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 42
+FC = 41
 FP 27 /^./
 //
 
