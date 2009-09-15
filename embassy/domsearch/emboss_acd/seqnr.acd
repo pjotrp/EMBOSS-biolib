@@ -25,6 +25,7 @@ section: input [
     default: "./"
     extension: "dhf"
     knowntype: "domain hits"
+    relations:  "EDAM: EMBASSY domain hits report"                     
   ]
 
   toggle: dosing [
@@ -36,6 +37,7 @@ section: input [
            (e.g. DHF files) to filter input. Optionally, up to two further
            directories of sequences may be read: these are considered in the
            redundancy calculation but never appear in the output files."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   directory: singletsdir [
@@ -51,6 +53,7 @@ section: input [
     default: "./"
     extension: "dhf"
     knowntype: "domain hits filter"
+    relations:  "EDAM: EMBASSY domain hits report"                     
   ]
 
   toggle: dosets [
@@ -62,6 +65,7 @@ section: input [
            (e.g. DHF files) to filter input. Optionally, up to two further
            directories of sequences may be read: these are considered in the
            redundancy calculation but never appear in the output files."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   directory: insetsdir [
@@ -78,6 +82,7 @@ section: input [
     default: "./"
     extension: "daf"
     knowntype: "domain alignment"
+    relations:  "EDAM: EMBASSY domain alignment file"                  
   ]
 
   matrixf: matrix [
@@ -86,6 +91,7 @@ section: input [
     help: "This option specifies the residue substitution matrix that
            is used for sequence comparison."
     default: "EBLOSUM62"
+    relations: "EDAM: Float comparison matrix"                             
   ]
 
 endsection: input
@@ -120,6 +126,7 @@ section: required [
     codedelimiter: ":"
     header: "Redundancy removal options"
     information: "Select number."
+    relations: "EDAM: Generic string array"                                
   ]
 
   float: thresh [
@@ -131,6 +138,7 @@ section: required [
            the redundancy calculation. If a pair of proteins achieve greater
            than this threshold the shortest sequence is discarded."
     default: "95.0"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: threshlow [
@@ -143,6 +151,7 @@ section: required [
            proteins have a percentage sequence similarity that lies outside
            an acceptable range the shortest sequence is discarded."
     default: "30.0"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: threshup [
@@ -155,6 +164,7 @@ section: required [
            proteins have a percentage sequence similarity that lies outside
            an acceptable range the shortest sequence is discarded."
     default: "90.0"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: required
@@ -178,6 +188,7 @@ section: additional [
            default value assumes you are using the EBLOSUM62 matrix for
            protein sequences, and the EDNAFULL matrix for nucleotide
            sequences."
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: gapextend [
@@ -194,6 +205,7 @@ section: additional [
            Usually you will expect a few long gaps rather than many short
            gaps, so the gap extension penalty should be lower than the gap
            penalty."
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: additional
@@ -216,6 +228,7 @@ section: output [
     default: "./"
     extension: "dhf"
     knowntype: "domain hits"
+    relations:  "EDAM: EMBASSY domain hits report"                     
   ]
 
   toggle: dored [
@@ -225,6 +238,7 @@ section: output [
            sequences. If this option is set a DHF file (domain hits file) of
            redundant sequences is written."
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outdir: redoutdir [
@@ -240,6 +254,7 @@ section: output [
     default: "./"
     knowntype: "domain hits"
     extension: "dhf"
+    relations:  "EDAM: EMBASSY domain hits report"                     
   ]
 
   outfile: logfile [
@@ -250,6 +265,7 @@ section: output [
            The log file contains messages about any errors arising while
            SEQNR ran."
     knowntype: "domainatrix log"
+    relations:  "EDAM: Domainatrix log file"                           
   ]
 
 endsection: output

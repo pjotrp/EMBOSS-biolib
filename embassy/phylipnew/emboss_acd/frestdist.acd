@@ -14,6 +14,7 @@ section: input [
     characters: "01+-?"
     parameter: "Y"
     help: "File containing one or more sets of restriction data"
+    relations: "EDAM: PHYLIP discrete states file"                         
   ]
 
 endsection: input
@@ -28,6 +29,7 @@ section: additional [
     information: "Restriction sites (put N if you want
                   restriction fragments)"
     default: "Y"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: neili [
@@ -35,12 +37,14 @@ section: additional [
     information: "Use original Nei/Li model (default uses
                   modified Nei/Li model)"
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: gamma [
     additional: "@(!$(neili))"
     information: "Gama distributed rates among sites"
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: gammacoefficient [
@@ -49,6 +53,7 @@ section: additional [
                   among sites"
     minimum: "0.001"
     default: "1"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: ttratio [
@@ -56,6 +61,7 @@ section: additional [
     default: "2.0"
     minimum: "0.001"
     information: "Transition/transversion ratio"
+    relations: "EDAM: Generic float"                                       
   ]
 
   integer: sitelength [
@@ -63,12 +69,14 @@ section: additional [
     default: "6"
     information: "Site length"
     minimum: "1"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: lower [
     additional: "Y"
     default: "N"
     information: "Lower triangular distance matrix"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional
@@ -82,18 +90,21 @@ section: output [
     parameter: "Y"
     knowntype: "restdist output"
     information: "Phylip restdist program output file"
+    relations:  "EDAM: PHYLIP phylogenetic distance matrix file"       
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "Y"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

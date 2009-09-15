@@ -13,6 +13,7 @@ section: input [
     parameter: "Y"
     type: "gapany"
     aligned: "N"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -37,6 +38,7 @@ section: required [
     delimiter: ","
     codedelimiter: ":"
     information: "Application(s) to use"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: format [
@@ -49,6 +51,7 @@ section: required [
     delimiter: ","
     codedelimiter: ":"
     information: "Format to use"
+    relations: "EDAM: Generic string array"                                
   ]
 
 endsection: required
@@ -63,6 +66,7 @@ section: additional [
     default: ""
     information: "Submitter email address"
     knowntype: "email address"
+    relations:  "EDAM: Email address"                                  
   ]
 
  
@@ -86,6 +90,7 @@ section: additional [
     codedelimiter: ":"
     information: "Code to use"
     help: "Genetic codes used for translation"
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: trlen [
@@ -95,30 +100,35 @@ section: additional [
     information: "Minimum size of ORFs"
     help: "Minimum size of Open Reading Frames (ORFs) in
            the translations."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: iprlookup [
     additional: "Y"
     default: "N"
     information: "Turn on InterPro lookup for results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: goterms [
     additional: "$(iprlookup)"
     default: "N"
     information: "Show GO terms in InterPro lookup"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: crc [
     additional: "Y"
     default: "Y"
     information: "Perform CRC64 check"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: altjobs [
     additional: "Y"
     default: "N"
     information: "Launch jobs alternately (chunk after chunk)"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 
@@ -133,6 +143,7 @@ section: output [
     parameter: "Y"
     information: "EIPRSCAN program output file"
     knowntype: "eiprscan output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

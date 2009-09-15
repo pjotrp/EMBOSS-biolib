@@ -21,6 +21,7 @@ section: input [
            ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4)."
     default: "caths.list.v2.4"
     knowntype: "Raw cath list"
+    relations: "EDAM: Free text file"                                      
   ]
 
   infile: domfile [
@@ -32,6 +33,7 @@ section: input [
            ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4)."
     default: "domlist.v2.4"
     knowntype: "Raw cath domlist"
+    relations: "EDAM: Free text file"                                      
   ]
 
   infile: namesfile [
@@ -43,6 +45,7 @@ section: input [
            ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4)."
     default: "CAT.names.all.v2.4"
     knowntype: "Raw cath names"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: input
@@ -63,6 +66,7 @@ section: output [
            to the file by using DOMAINSEQS."
     default: "Ecath.dat"
     knowntype: "domain classification"
+    relations:  "EDAM: EMBASSY domain classification record"           
   ]
 
   outfile: logfile [
@@ -71,6 +75,7 @@ section: output [
     help: "This option specifies the name of the CATHPARSE log file."
     default: "cathparse.log"
     knowntype: "domainatrix log"
+    relations:  "EDAM: Domainatrix log file"                           
   ]
 
 endsection: output

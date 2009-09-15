@@ -20,6 +20,7 @@ section: input [
            available at URL http://www.expasy.ch/cgi-bin/lists?pdbtosp.txt"
     parameter: "Y"
     knowntype: "swissprot pdb equivalence table"
+    relations:  "EDAM: SwissProt to PDB mapping"                       
   ]
 
 endsection: input
@@ -36,6 +37,7 @@ section: output [
     default: "Epdbtosp.dat"
     parameter: "Y"
     knowntype: "swissprot pdb equivalence"
+    relations:  "EDAM: SwissProt to PDB mapping"                       
   ]
 
 endsection: output

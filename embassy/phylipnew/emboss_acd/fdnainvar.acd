@@ -14,6 +14,7 @@ section: input [
     type: "gapdnaphylo"
     aligned: "Y"
     help: "File containing one or more sequence alignments"
+    relations: "EDAM: DNA sequence record"                                 
   ]
 
   properties: weights [
@@ -22,6 +23,7 @@ section: input [
     nullok: "Y"
     knowntype: "weights"
     information: "Phylip weights file (optional)"
+    relations:  "EDAM: PHYLIP discrete states file"                    
   ]
 
 endsection: input
@@ -35,36 +37,42 @@ section: output [
     parameter: "Y"
     knowntype: "dnainvar output"
     information: "Phylip dnainvar program output file"
+    relations:  "EDAM: Phylogenetic invariants data"                   
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: dotdiff [
     additional: "$(printdata)"
     default: "Y"
     information: "Use dot-differencing to display results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: printpattern [
     additional: "Y"
     default: "Y"
     information: "Print counts of patterns"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: printinvariant [
     additional: "Y"
     default: "Y"
     information: "Print invariants"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "Y"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

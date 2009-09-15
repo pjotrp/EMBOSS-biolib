@@ -15,6 +15,7 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "dna"
+    relations: "EDAM: Pure DNA sequence"                                   
   ]
 
   infile: constraintfile [
@@ -23,6 +24,7 @@ section: input [
     information: "Vienna RNA structure constraints file
                   (optional)"
     knowntype: "rna constraint"
+    relations:  "EDAM: Vienna RNA structure constraints"               
   ]
 
   infile: paramfile [
@@ -30,6 +32,7 @@ section: input [
     default: ""
     information: "Vienna RNA parameters file (optional)"
     knowntype: "rna parameter"
+    relations:  "EDAM: Vienna RNA parameters"                          
   ]
 
 endsection: input
@@ -42,69 +45,82 @@ section: advanced [
   float: temperature [
     default: "37.0"
     information: "Temperature"
+    relations: "EDAM: Generic float"                                       
   ]
 
   boolean: circular [
     default: "N"
     information: "Allow circular RNA"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
  boolean: dos [
     default: "N"
     information: "DOS special corrections"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: gu [
     default: "Y"
     information: "Allow GU pairs"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: closegu [
     default: "Y"
     information: "Allow GU pairs at end of helices"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: lp [
     default: "Y"
     information: "Allow lonely pairs"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: convert [
     default: "Y"
     information: "Convert T to U"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   string: nsbases [
     default: ""
     information: "Non-standard bases"
     knowntype: "nucleotide codes"
+    relations:  "EDAM: Nucleotide code string"                         
   ]
 
   boolean: tetraloop [
     default: "Y"
     information: "Stabilizing energies for tetra-loops"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: erange [
     default: "1.0"
     information: "Calculate suboptimal structures within erange
                   of the mfe"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: prange [
     default: "0.0"
     information: "Only print structures with energy within
                   prange of the mfe"
+    relations: "EDAM: Generic float"                                       
   ]
 
   boolean: sort [
     default: "N"
     information: "Sort structures by energy"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: logml [
     default: "N"
     information: "Logarithmic energy function for multi-loops"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   list: dangles [
@@ -118,11 +134,13 @@ section: advanced [
     delimiter: ","
     codedelimiter: ":"
     information: "Method"
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: nrandom [
     default: "0"
     information: "Number of random suboptimal structures"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: advanced
@@ -136,6 +154,7 @@ section: output [
     parameter: "Y"
     knowntype: "rnafold output"
     information: "Vienna RNAfold output file"
+    relations:  "EDAM: Vienna RNA secondary structure record"          
   ]
 
 endsection: output

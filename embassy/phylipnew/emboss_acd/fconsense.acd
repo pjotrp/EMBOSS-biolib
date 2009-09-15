@@ -13,6 +13,7 @@ section: input [
     parameter: "Y"
     knowntype: "newick"
     information: "Phylip tree file"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
 endsection: input
@@ -30,6 +31,7 @@ section: additional [
     values: "s:strict consensus tree; mr:Majority Rule; mre:Majority
              Rule (extended); ml:Minimum fraction (0.5 to 1.0)"
     default: "mre"
+    relations: "EDAM: Generic string array"                                
   ]
 
   float: mlfrac [
@@ -38,12 +40,14 @@ section: additional [
     maximum: "1.0"
     default: "0.5"
     information: "Fraction (l) of times a branch must appear"
+    relations: "EDAM: Generic float"                                       
   ]
 
   toggle: root [
     additional: "Y"
     default: "N"
     information: "Trees to be treated as Rooted"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: outgrno [
@@ -51,6 +55,7 @@ section: additional [
     minimum: "0"
     default: "0"
     information: "Species number to use as outgroup"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: additional
@@ -64,12 +69,14 @@ section: output [
     parameter: "Y"
     knowntype: "consense output"
     information: "Phylip consense program output file"
+    relations:  "EDAM: Phylogenetic consensus tree"                    
   ]
 
   toggle: trout [
     additional: "Y"
     default: "Y"
     information: "Write out trees to tree file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: outtreefile [
@@ -78,24 +85,28 @@ section: output [
     information: "Phylip tree output file (optional)"
     knowntype: "newick tree"
     nullok: "Y"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
   boolean: progress [
     additional: "Y"
     default: "Y"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: treeprint [
     additional: "Y"
     default: "Y"
     information: "Print out tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: prntsets [
     additional: "Y"
     default: "Y"
     information: "Print out the sets of species"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

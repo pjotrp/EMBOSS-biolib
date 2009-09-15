@@ -29,6 +29,7 @@ section: input [
     default: "./"
     extension: "ccf"
     knowntype: "protein clean coordinates"
+    relations:  "EDAM: Protein tertiary structure"                     
   ]
 
   directory: pdbindir [
@@ -41,6 +42,7 @@ section: input [
     default: "./"
     extension: "ent"
     knowntype: "pdb"
+    relations:  "EDAM: PDB record"                                     
   ]
 
 endsection: input
@@ -57,6 +59,7 @@ section: required [
            any)"
     knowntype: "pdb prefix"
     default: ""
+    relations:  "EDAM: PDB identifier"                                 
   ]
 
   list: mode [
@@ -71,6 +74,7 @@ section: required [
     header: "Mode of operation"
     information: "Select mode"
     help: "This option specifies the mode of operation."
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: thresholdsize [
@@ -80,6 +84,7 @@ section: required [
     help: "This option specifies the threshold size for SSEs
            (secondary structure elements)"
     default: "4"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: required
@@ -105,6 +110,7 @@ section: output [
     default: "./"
     extension: "ccf"
     knowntype: "protein clean coordinates"
+    relations:  "EDAM: Protein tertiary structure"                     
   ]
 
   outfile: logfile [
@@ -113,6 +119,7 @@ section: output [
     help: "This option specifies the name of the log file for PDBPLUS"
     default: "pdbplus.log"
     knowntype: "domainatrix log"
+    relations:  "EDAM: Domainatrix log file"                           
   ]
 
   outfile: slogfile [
@@ -121,6 +128,7 @@ section: output [
     help: "This option specifies the name of the log file for STRIDE"
     default: "stride.log"
     knowntype: "stride log"
+    relations:  "EDAM: STRIDE log file"                                
   ]
 
   outfile: nlogfile [
@@ -129,6 +137,7 @@ section: output [
     help: "This option specifies the name of the log file for NACCESS"
     default: "naccess.log"
     knowntype: "naccess log"
+    relations:  "EDAM: NACCESS log file"                               
   ]
 
 endsection: output

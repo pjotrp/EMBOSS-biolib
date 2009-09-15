@@ -23,6 +23,7 @@ section: input [
     default: "./"
     extension: "ent"
     knowntype: "pdb"
+    relations:  "EDAM: PDB record"                                     
   ]
 
 endsection: input
@@ -41,6 +42,7 @@ section: required [
            masked, the group will not appear in either the CO or SQ records
            of the clean coordinate file."
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: camaska [
@@ -52,6 +54,7 @@ section: required [
            amino acid will not appear in the CO record but will still be
            present in the SQ record of the clean coordinate file."
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: atommask [
@@ -63,6 +66,7 @@ section: required [
            acid will appear not appear in the CO record but will still be
            present in the SQ record of the clean coordinate file."
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: required
@@ -80,6 +84,7 @@ section: additional [
            is used to name the file. Otherwise, the output files have the
            same names as the input files."
     default: "Y"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: chnsiz [
@@ -87,6 +92,7 @@ section: additional [
     information: "Minimum number of amino acid residues in a
                   chain for it to be parsed."
     default: "5"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: maxmis [
@@ -94,6 +100,7 @@ section: additional [
     information: "Maximum number of permissible mismatches
                   between the ATOM and SEQRES sequences."
     default: "3"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: maxtrim [
@@ -101,6 +108,7 @@ section: additional [
     information: "Max. no. residues to trim when checking for
                   missing C-terminal SEQRES sequences."
     default: "10"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: additional
@@ -131,6 +139,7 @@ section: output [
     default: "./"
     extension: "ccf"
     knowntype: "protein clean coordinates"
+    relations:  "EDAM: Protein tertiary structure"                     
   ]
 
   outfile: logfile [
@@ -141,6 +150,7 @@ section: output [
            in the PDB files that were parsed."
     knowntype: "domainatrix log"
     default: "pdbparse.log"
+    relations:  "EDAM: Domainatrix log file"                           
   ]
 
 endsection: output

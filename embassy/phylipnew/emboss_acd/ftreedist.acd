@@ -13,6 +13,7 @@ section: input [
     parameter: "Y"
     knowntype: "newick"
     information: "Phylip tree file"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
 endsection: input
@@ -27,6 +28,7 @@ section: additional [
     information: "Distance type"
     values: "s:Symmetric difference; b:Branch score distance"
     default: "b"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: pairing [
@@ -35,6 +37,7 @@ section: additional [
     values: "a:Distances between adjacent pairs in tree file;
              p:Distances between all possible pairs in tree file"
     default: "a"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: style [
@@ -43,12 +46,14 @@ section: additional [
     values: "f:Full matrix; v:One pair per line, verbose; s:One pair
              per line, sparse"
     default: "v"
+    relations: "EDAM: Generic string array"                                
   ]
 
   boolean: noroot [
     additional: "Y"
     default: "N"
     information: "Trees to be treated as rooted"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: outgrno [
@@ -56,6 +61,7 @@ section: additional [
     minimum: "0"
     default: "0"
     information: "Species number to use as outgroup"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: additional
@@ -69,12 +75,14 @@ section: output [
     parameter: "Y"
     knowntype: "treedist output"
     information: "Phylip treedist program output file"
+    relations:  "EDAM: Phylip phylogenetic tree distance data"         
   ]
 
   boolean: progress [
     additional: "Y"
     default: "Y"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

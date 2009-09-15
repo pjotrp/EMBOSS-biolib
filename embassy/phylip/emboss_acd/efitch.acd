@@ -17,35 +17,41 @@ section: input [
     parameter: "Y"
     information: "Phylip fitch program input file"
     knowntype: "fitch input"
+    relations:  "EDAM: PHYLIP phylogenetic distance matrix file"       
   ]
 
   boolean: lt [
     additional: "Y"
     default: "N"
     information: "Lower-triangular data matrix"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: ut [
     additional: "Y"
     default: "N"
     information: "Upper-triangular data matrix"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: replicates [
     additional: "Y"
     default: "N"
     information: "Subreplicates"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: multsets [
     additional: "Y"
     default: "N"
     information: "Analyze multiple data sets"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: datasets [
     standard: "$(multsets)"
     information: "How many data sets"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: input
@@ -59,28 +65,33 @@ section: required [
     additional: "Y"
     default: "Y"
     information: "Search for best tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: random [
     additional: "$(besttree)"
     default: "N"
     information: "Randomize input order of species"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: randseed [
     standard: "$(random)"
     information: "Random number seed (must be odd)"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: randtimes [
     standard: "$(random)"
     information: "Number of times to jumble"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   toggle: og [
     standard: "Y"
     information: "Outgroup root"
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: outgnum [
@@ -88,6 +99,7 @@ section: required [
     minimum: "1"
     default: "1"
     information: "Number of the outgroup"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: required
@@ -101,24 +113,28 @@ section: additional [
     additional: "@(!$(besttree))"
     default: "N"
     information: "Use lengths from user trees"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: power [
     additional: "Y"
     default: "3.0"
     information: "Power"
+    relations: "EDAM: Generic float"                                       
   ]
 
   boolean: negbranch [
     additional: "Y"
     default: "N"
     information: "Negative branch lengths allowed"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: global [
     additional: "$(besttree)"
     default: "N"
     information: "Global rearrangements"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional
@@ -133,30 +149,35 @@ section: output [
     default: "efitch.outfile"
     knowntype: "fitch output"
     information: "Phylip fitch program output file"
+    relations:  "EDAM: Phylip phylogenetic tree raw data"              
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print out the data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "N"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: trout [
     parameter: "Y"
     default: "Y"
     information: "Create a tree file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: drawtree [
     additional: "Y"
     default: "Y"
     information: "Draw tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: treefile [
@@ -164,6 +185,7 @@ section: output [
     extension: "treefile"
     information: "Phylip tree output file"
     knowntype: "newick tree"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
 endsection: output

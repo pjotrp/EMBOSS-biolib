@@ -15,6 +15,7 @@ section: input [
     type: "gapdnaphylo"
     aligned: "Y"
     help: "File containing one or more sequence alignments"
+    relations: "EDAM: DNA sequence record"                                 
   ]
 
   list: method [
@@ -26,6 +27,7 @@ section: input [
              j:Jukes-Cantor distance; l:LogDet distance; s:Similarity table"
     information: "Choose the method to use"
     default: "F84 distance model"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: gamma [
@@ -37,6 +39,7 @@ section: input [
              n:No distribution parameters used"
     information: "Gamma distribution"
     default: "No distribution parameters used"
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: ncategories [
@@ -46,6 +49,7 @@ section: input [
     minimum: "1"
     maximum: "9"
     information: "Number of substitution rate categories"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   array: rate [
@@ -55,6 +59,7 @@ section: input [
     minimum: "0.0"
     size: "$(ncategories)"
     sumtest: "N"
+    relations: "EDAM: Generic float array"                                 
   ]
 
   properties: categories [
@@ -62,6 +67,7 @@ section: input [
     characters: "1-$(ncategories)"
     help: "File of substitution rate categories"
     nullok: "Y"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
   properties: weights [
@@ -70,6 +76,7 @@ section: input [
     information: "Weights file"
     length: "$(sequence.length)"
     nullok: "Y"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
 endsection: input
@@ -85,6 +92,7 @@ section: additional [
                   among sites"
     minimum: "0.001"
     default: "1"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: invarfrac [
@@ -93,6 +101,7 @@ section: additional [
     default: "0.0"
     minimum: "0.0"
     maximum: "0.9999"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: ttratio [
@@ -100,6 +109,7 @@ section: additional [
     information: "Transition/transversion ratio"
     default: "2.0"
     minimum: "0.001"
+    relations: "EDAM: Generic float"                                       
   ]
 
   toggle: freqsfrom [
@@ -107,6 +117,7 @@ section: additional [
     default: "Y"
     information: "Use empirical base frequencies from seqeunce
                   input"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   array: basefreq [
@@ -118,18 +129,21 @@ section: additional [
     information: "Base frequencies for A C G T/U (use blanks to
                   separate)"
     sum: "1.0"
+    relations: "EDAM: Generic float array"                                 
   ]
 
   boolean: lower [
     additional: "Y"
     default: "N"
     information: "Output as a lower triangular distance matrix"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: humanreadable [
     additional: "Y"
     default: "@($(method)==s?Y:N)"
     information: "Output as a human-readable distance matrix"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional
@@ -143,18 +157,21 @@ section: output [
     parameter: "Y"
     knowntype: "distance matrix"
     information: "Phylip distance matrix output file"
+    relations:  "EDAM: PHYLIP phylogenetic distance matrix file"       
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "Y"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

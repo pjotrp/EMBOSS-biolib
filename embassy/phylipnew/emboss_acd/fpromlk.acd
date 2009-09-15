@@ -14,6 +14,7 @@ section: input [
     type: "gapproteinphylo"
     aligned: "Y"
     help: "File containing one or more sequence alignments"
+    relations: "EDAM: Protein sequence record"                             
   ]
 
   tree: intreefile [
@@ -21,6 +22,7 @@ section: input [
     nullok: "Y"
     knowntype: "newick"
     information: "Phylip tree file (optional)"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
   integer: ncategories [
@@ -29,6 +31,7 @@ section: input [
     minimum: "1"
     maximum: "9"
     information: "Number of substitution rate categories"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   array: rate [
@@ -36,6 +39,7 @@ section: input [
     information: "Rate for each category"
     size: "$(ncategories)"
     sumtest: "N"
+    relations: "EDAM: Generic float array"                                 
   ]
 
   properties: categories [
@@ -45,6 +49,7 @@ section: input [
     nullok: "@($(ncategories) == 1)"
     size: "1"
     length: "$(sequence.length)"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
   properties: weights [
@@ -54,6 +59,7 @@ section: input [
     length: "$(sequence.length)"
     size: "@(@($(sequence.multicount)>1) ? 1:0)"
     nullok: "Y"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
 endsection: input
@@ -67,6 +73,7 @@ section: additional [
     additional: "$(intreefile.isdefined)"
     default: "N"
     information: "Use branch lengths from user trees"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   list: model [
@@ -78,6 +85,7 @@ section: additional [
              d:Dayhoff PAM"
     information: "Probability model for amino acid change"
     default: "Jones-Taylor-Thornton"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: gamma [
@@ -89,6 +97,7 @@ section: additional [
              h:User defined HMM of rates; n:Constant rate"
     information: "Rate variation among sites"
     default: "n"
+    relations: "EDAM: Generic string array"                                
   ]
 
   float: gammacoefficient [
@@ -97,6 +106,7 @@ section: additional [
                   among sites"
     minimum: "0.001"
     default: "1"
+    relations: "EDAM: Generic float"                                       
   ]
 
   integer: ngammacat [
@@ -105,6 +115,7 @@ section: additional [
     maximum: "9"
     default: "1"
     information: "Number of categories (1-9)"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   float: invarcoefficient [
@@ -113,6 +124,7 @@ section: additional [
                   among sites"
     minimum: "0.001"
     default: "1"
+    relations: "EDAM: Generic float"                                       
   ]
 
   integer: ninvarcat [
@@ -122,6 +134,7 @@ section: additional [
     default: "1"
     information: "Number of categories (1-9) including one for
                   invariant sites"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   float: invarfrac [
@@ -130,6 +143,7 @@ section: additional [
     default: "0.0"
     minimum: "0.0"
     maximum: "0.9999"
+    relations: "EDAM: Generic float"                                       
   ]
 
   integer: nhmmcategories [
@@ -138,6 +152,7 @@ section: additional [
     minimum: "1"
     maximum: "9"
     information: "Number of HMM rate categories"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   array: hmmrates [
@@ -147,6 +162,7 @@ section: additional [
     minimum: "0.0"
     size: "$(nhmmcategories)"
     sumtest: "N"
+    relations: "EDAM: Generic float array"                                 
   ]
 
   array: hmmprobabilities [
@@ -157,12 +173,14 @@ section: additional [
     maximum: "1.0"
     size: "$(nhmmcategories)"
     sum: "1.0"
+    relations: "EDAM: Generic float array"                                 
   ]
 
   boolean: adjsite [
     additional: "@($(gamma)!=n)"
     default: "N"
     information: "Rates at adjacent sites correlated"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: lambda [
@@ -171,6 +189,7 @@ section: additional [
     information: "Mean block length of sites having the same
                   rate"
     minimum: "1.0"
+    relations: "EDAM: Generic float"                                       
   ]
 
   integer: njumble [
@@ -178,6 +197,7 @@ section: additional [
     default: "0"
     minimum: "0"
     information: "Number of times to randomise"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: seed [
@@ -187,12 +207,14 @@ section: additional [
     minimum: "1"
     maximum: "32767"
     default: "1"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: global [
     additional: "@(!$(intreefile.isdefined))"
     default: "N"
     information: "Global rearrangements"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: outgrno [
@@ -201,6 +223,7 @@ section: additional [
     maximum: "$(sequence.count)"
     default: "0"
     information: "Species number to use as outgroup"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: additional
@@ -214,12 +237,14 @@ section: output [
     parameter: "Y"
     knowntype: "promlk output"
     information: "Phylip promlk program output file"
+    relations:  "EDAM: Phylip phylogenetic tree raw data"              
   ]
 
   toggle: trout [
     additional: "Y"
     default: "Y"
     information: "Write out trees to tree file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: outtreefile [
@@ -228,30 +253,35 @@ section: output [
     information: "Phylip tree output file (optional)"
     knowntype: "newick tree"
     nullok: "Y"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "Y"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: treeprint [
     additional: "Y"
     default: "Y"
     information: "Print out tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: hypstate [
     additional: "Y"
     default: "N"
     information: "Reconstruct hypothetical sequence"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

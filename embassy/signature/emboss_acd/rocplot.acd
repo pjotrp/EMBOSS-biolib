@@ -26,6 +26,7 @@ section: input [
            (ROC) analysis on the hits."
     default: "rocplot"
     knowntype: "hits"
+    relations:  "EDAM: EMBASSY domain hits report"                     
   ]
 
 endsection: input
@@ -65,6 +66,7 @@ section: required [
            highest scoring / most significant hit being given in the highest
            rank (1); i.e. on the second line of the file. Other hits should
            then be given in order of decreasing score / significance."
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: multimode [
@@ -95,6 +97,7 @@ section: required [
            true relatives for the different searches or (2) there is a
            different list of known true relatives for each different search
            (see the ACD option called 'datamode' for more information)"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: datamode [
@@ -114,6 +117,7 @@ section: required [
            calculated in cases where there are multiple input files (lists of
            hits) and the user has specified the data are to be combined. See
            rocplot.c for more information."
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: thresh [
@@ -136,6 +140,7 @@ section: required [
            are considered to be the same hit if the overlap threshold is 10
            or less."
     default: "10"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: required
@@ -154,6 +159,7 @@ section: advanced [
            have different accession numbers (no requirement for overlapping
            ranges)."
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: advanced
@@ -170,6 +176,7 @@ section: output [
     default: "./"
     knowntype: "output general"
     information: "General output file output directory"
+    relations:  "EDAM: Generic file"                                   
   ]
 
   string: rocbasename [
@@ -188,6 +195,7 @@ section: output [
            distribution of ROC values."
     default: "_rocplot"
     knowntype: "filename prefix"
+    relations:  "EDAM: File name"                                      
   ]
 
   outfile: outfile [
@@ -197,6 +205,7 @@ section: output [
            (output). A text file summarising the analysis."
     default: "_summary"
     knowntype: "rocplot summary"
+    relations:  "EDAM: Receiver operating characteristic (ROC) data"   
   ]
 
   string: barbasename [
@@ -210,6 +219,7 @@ section: output [
            data (multiple ROC curves)."
     default: "_barchart"
     knowntype: "filename prefix"
+    relations:  "EDAM: File name"                                      
   ]
 
   string: classbasename [
@@ -226,12 +236,14 @@ section: output [
            not combine data (multiple ROC curves)' mode."
     default: "_classplot"
     knowntype: "filename prefix"
+    relations:  "EDAM: File name"                                      
   ]
 
   outfile: logfile [
     default: "rocplot.log"
     information: "Domainatrix log output file"
     knowntype: "domainatrix log"
+    relations:  "EDAM: Domainatrix log file"                           
   ]
 
 endsection: output

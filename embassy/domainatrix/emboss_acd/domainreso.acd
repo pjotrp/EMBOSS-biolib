@@ -27,6 +27,7 @@ section: input [
     default: "./"
     extension: "ccf"
     knowntype: "domain clean coordinates"
+    relations:  "EDAM: Protein tertiary structure"                     
   ]
 
   infile: dcfinfile [
@@ -39,6 +40,7 @@ section: input [
            SCOPPARSE and CATHPARSE. Domain sequence information can be added
            to the file by using DOMAINSEQS."
     knowntype: "domain classification"
+    relations:  "EDAM: EMBASSY domain classification record"           
   ]
 
 endsection: input
@@ -55,6 +57,7 @@ section: required [
            (Angstroms). Domains exceeding the threshold for inclusion
            (Angstroms) will not be given in the output file."
     default: "2.8"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: required
@@ -75,6 +78,7 @@ section: output [
            to the file by using DOMAINSEQS."
     default: "test.scop"
     knowntype: "domain classification"
+    relations:  "EDAM: EMBASSY domain classification record"           
   ]
 
 endsection: output

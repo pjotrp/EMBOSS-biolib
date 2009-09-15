@@ -13,6 +13,7 @@ section: input [
     parameter: "Y"
     type: "gapany"
     aligned: "Y"
+    relations: "EDAM: Sequence record"                                     
   ]
 
   properties: categories [
@@ -22,6 +23,7 @@ section: input [
     nullok: "Y"
     size: "1"
     length: "$(infile.length)"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
   properties: mixfile [
@@ -31,6 +33,7 @@ section: input [
     nullok: "Y"
     size: "1"
     length: "$(infile.length)"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
   properties: ancfile [
@@ -40,6 +43,7 @@ section: input [
     nullok: "Y"
     size: "1"
     length: "$(infile.length)"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
   properties: weights [
@@ -49,6 +53,7 @@ section: input [
     help: "Weights file"
     length: "$(infile.length)"
     nullok: "Y"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
   properties: factorfile [
@@ -57,6 +62,7 @@ section: input [
     nullok: "Y"
     length: "$(infile.length)"
     size: "1"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
 endsection: input
@@ -75,6 +81,7 @@ section: additional [
              r:Restriction Sites; g:Gene Frequencies"
     information: "Choose the datatype"
     default: "s"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: test [
@@ -87,12 +94,14 @@ section: additional [
              r:Rewrite data"
     information: "Choose test"
     default: "b"
+    relations: "EDAM: Generic string array"                                
   ]
 
   toggle: regular [
     additional: "@( $(test) == { b | j } )"
     information: "Altered sampling fraction"
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: fracsample [
@@ -101,6 +110,7 @@ section: additional [
     default: "100.0"
     minimum: "0.1"
     maximum: "100.0"
+    relations: "EDAM: Generic float"                                       
   ]
 
   list: rewriteformat [
@@ -111,6 +121,7 @@ section: additional [
     values: "p:PHYLIP; n:NEXUS; x:XML"
     information: "Output format"
     default: "p"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: seqtype [
@@ -122,6 +133,7 @@ section: additional [
     values: "d:dna; p:protein; r:rna"
     information: "Output format"
     default: "d"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: morphseqtype [
@@ -132,6 +144,7 @@ section: additional [
     values: "p:PHYLIP; n:NEXUS"
     information: "Output format"
     default: "p"
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: blocksize [
@@ -139,6 +152,7 @@ section: additional [
     additional: "@($(test) == b)"
     default: "1"
     minimum: "1"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: reps [
@@ -146,6 +160,7 @@ section: additional [
     information: "How many replicates"
     minimum: "1"
     default: "100"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   list: justweights [
@@ -156,6 +171,7 @@ section: additional [
     values: "d:Datasets; w:Weights"
     information: "Write out datasets or just weights"
     default: "d"
+    relations: "EDAM: Generic string array"                                
   ]
 
   boolean: enzymes [
@@ -163,12 +179,14 @@ section: additional [
     information: "Is the number of enzymes present in input
                   file"
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: all [
     additional: "@($(datatype) == g)"
     information: "All alleles present at each locus"
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: seed [
@@ -178,6 +196,7 @@ section: additional [
     minimum: "1"
     maximum: "32767"
     default: "1"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: additional
@@ -191,24 +210,28 @@ section: output [
     parameter: "Y"
     knowntype: "seqboot output"
     information: "Phylip seqboot program output file"
+    relations:  "EDAM: Phylip bootstrapped sequence data"              
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print out the data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: dotdiff [
     additional: "$(printdata)"
     default: "Y"
     information: "Use dot-differencing"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "Y"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

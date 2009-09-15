@@ -16,6 +16,7 @@ section: input [
     parameter: "Y"
     information: "Vienna RNAfold output file"
     knowntype: "rnafold output"
+    relations:  "EDAM: Vienna RNA secondary structure record"          
   ]
 
 endsection: input
@@ -34,6 +35,7 @@ section: advanced [
     delimiter: ","
     codedelimiter: ":"
     information: "Layout"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: optype [
@@ -46,18 +48,21 @@ section: advanced [
     delimiter: ","
     codedelimiter: ":"
     information: "Type"
+    relations: "EDAM: Generic string array"                                
   ]
 
   string: pre [
     information: "Pre-annotation"
     default: ""
     knowntype: "string"
+    relations:  "EDAM: Generic string"                                 
   ]
 
   string: post [
     information: "Post-annotation"
     default: ""
     knowntype: "string"
+    relations:  "EDAM: Generic string"                                 
   ]
 
 endsection: advanced
@@ -71,6 +76,7 @@ section: output [
     parameter: "Y"
     knowntype: "rnafold output"
     information: "Vienna RNAfold output file"
+    relations:  "EDAM: Vienna RNA secondary structure record"          
   ]
 
 endsection: output

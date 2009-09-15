@@ -22,6 +22,7 @@ section: input [
            SCOPPARSE and CATHPARSE. Domain sequence information can be added
            to the file by using DOMAINSEQS."
     knowntype: "Domain classification"
+    relations: "EDAM: Free text file"                                      
   ]
 
   matrixf: datafile [
@@ -30,6 +31,7 @@ section: input [
     help: "This option specifies the residue substitution matrix. This
            is used for sequence comparison."
     default: "EBLOSUM62"
+    relations: "EDAM: Float comparison matrix"                             
   ]
 
   toggle: retain [
@@ -39,6 +41,7 @@ section: input [
            a separate file. If this option is selected, redundant domains
            are written to a separate output file."
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: input
@@ -65,6 +68,7 @@ section: required [
     codedelimiter: ":"
     header: "Node at which to remove redundancy"
     information: "Select number."
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: mode [
@@ -91,6 +95,7 @@ section: required [
     codedelimiter: ":"
     header: "Redundancy removal options"
     information: "Select number."
+    relations: "EDAM: Generic string array"                                
   ]
 
   float: threshold [
@@ -102,6 +107,7 @@ section: required [
            of proteins achieve greater than this threshold the shortest
            sequence is discarded."
     default: "95.0"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: threshlow [
@@ -113,6 +119,7 @@ section: required [
            of proteins have a percentage sequence similarity that lies
            outside an acceptable range the shortest sequence is discarded."
     default: "30.0"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: threshup [
@@ -124,6 +131,7 @@ section: required [
            of proteins have a percentage sequence similarity that lies
            outside an acceptable range the shortest sequence is discarded."
     default: "90.0"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: required
@@ -146,6 +154,7 @@ section: additional [
            on the choice of comparison matrix. The default value assumes you
            are using the EBLOSUM62 matrix for protein sequences, and the
            EDNAFULL matrix for nucleotide sequences."
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: gapextend [
@@ -161,6 +170,7 @@ section: additional [
            gap. This is how long gaps are penalized. Usually you will expect
            a few long gaps rather than many short gaps, so the gap extension
            penalty should be lower than the gap penalty."
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: additional
@@ -188,6 +198,7 @@ section: output [
            added to the file by using DOMAINSEQS."
     default: "test.scop"
     knowntype: "Domain classification"
+    relations: "EDAM: Free text file"                                      
   ]
 
   outfile: redoutfile [
@@ -204,6 +215,7 @@ section: output [
     nulldefault: "Y"
     extension: "scop"
     knowntype: "Domain classification"
+    relations: "EDAM: Free text file"                                      
   ]
 
   outfile: logfile [
@@ -214,6 +226,7 @@ section: output [
            domainnr ran."
     default: "domainnr.log"
     knowntype: "domainatrix log"
+    relations:  "EDAM: Domainatrix log file"                           
   ]
 
 endsection: output

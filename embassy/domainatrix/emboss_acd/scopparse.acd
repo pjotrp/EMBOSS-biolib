@@ -20,6 +20,7 @@ section: input [
            http://scop.mrc-lmb.cam.ac.uk/scop/parse/dir.cla.scop.txt_1.57."
     knowntype: "Raw scop classification"
     parameter: "Y"
+    relations: "EDAM: Free text file"                                      
   ]
 
   infile: desinfile [
@@ -30,6 +31,7 @@ section: input [
            http://scop.mrc-lmb.cam.ac.uk/scop/parse/dir.des.scop.txt_1.57."
     knowntype: "raw scop description"
     parameter: "Y"
+    relations:  "EDAM: Raw SCOP classification (description) file"     
   ]
 
 endsection: input
@@ -47,6 +49,7 @@ section: required [
            more than one segment. This is necessary if a continuous residue
            sequence is required."
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: nomultichain [
@@ -57,6 +60,7 @@ section: required [
            segments from more than one chain. This is necessary if a
            continuous residue sequence is required."
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: required
@@ -78,6 +82,7 @@ section: additional [
            beta proteins (a+b)'). This is necessary or appropriate for many
            analyses."
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional
@@ -98,6 +103,7 @@ section: output [
     default: "test.scop"
     knowntype: "domain classification"
     parameter: "Y"
+    relations:  "EDAM: EMBASSY domain classification record"           
   ]
 
 endsection: output

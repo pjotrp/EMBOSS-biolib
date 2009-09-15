@@ -13,23 +13,27 @@ section: input [
     parameter: "Y"
     information: "Phylip gendist program input file"
     knowntype: "gendist input"
+    relations:  "EDAM: PHYLIP phylogenetic character frequencies file" 
   ]
 
   boolean: lowertriangle [
     additional: "Y"
     default: "N"
     information: "Lower-triangular (else Square)"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: multsets [
     additional: "Y"
     default: "N"
     information: "Analyze multiple data sets"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: datasets [
     standard: "$(multsets)"
     information: "How many data sets"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: input
@@ -48,6 +52,7 @@ section: required [
              measure; Rey:Reynolds genetic distance;"
     information: "Choose the method to use"
     default: "Nei"
+    relations: "EDAM: Generic string array"                                
   ]
 
 endsection: required
@@ -62,6 +67,7 @@ section: additional [
     default: "N"
     information: "Input file contains all alleles at each locus
                   (else one)"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional
@@ -76,12 +82,14 @@ section: output [
     default: "egendist.outfile"
     knowntype: "gendist output"
     information: "Phylip gendist program output file"
+    relations:  "EDAM: PHYLIP phylogenetic distance matrix file"       
   ]
 
   boolean: progress [
     additional: "Y"
     default: "N"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

@@ -20,6 +20,7 @@ section: input [
            dictionary of heterogen groups) to parse, which should be of the
            format specified at http://pdb.rutgers.edu/het_dictionary.txt"
     knowntype: "Raw dictionary of heterogen groups"
+    relations: "EDAM: Free text file"                                      
   ]
 
   toggle: dogrep [
@@ -31,6 +32,7 @@ section: input [
            search the directory and will count the number of files that each
            heterogen appears in."
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   dirlist: dirlistpath [
@@ -41,6 +43,7 @@ section: input [
     default: "./"
     extension: "ent"
     knowntype: "pdb"
+    relations:  "EDAM: PDB record"                                     
   ]
 
 endsection: input
@@ -64,6 +67,7 @@ section: output [
     help: "This option specifies the name of EMBL-like format
            dictionary of heterogen groups."
     knowntype: "Dictionary of heterogen groups"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

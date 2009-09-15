@@ -13,6 +13,7 @@ section: input [
     characters: "01+-?"
     parameter: "Y"
     help: "File containing one or more sets of restriction data"
+    relations: "EDAM: PHYLIP discrete states file"                         
   ]
 
   properties: weights [
@@ -23,6 +24,7 @@ section: input [
     length: "$(data.length)"
     size: "1"
     nullok: "Y"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
   tree: intreefile [
@@ -30,6 +32,7 @@ section: input [
     nullok: "Y"
     knowntype: "newick"
     information: "Phylip tree file (optional)"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
 endsection: input
@@ -44,6 +47,7 @@ section: additional [
     default: "0"
     minimum: "0"
     information: "Number of times to randomise"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: seed [
@@ -53,6 +57,7 @@ section: additional [
     minimum: "1"
     maximum: "32767"
     default: "1"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: outgrno [
@@ -61,18 +66,21 @@ section: additional [
     maximum: "$(data.size)"
     default: "0"
     information: "Species number to use as outgroup"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: allsites [
     additional: "Y"
     default: "Y"
     information: "All sites detected"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: lengths [
     additional: "$(intreefile.isdefined)"
     default: "N"
     information: "Use lengths from user trees"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: sitelength [
@@ -81,18 +89,21 @@ section: additional [
     minimum: "1"
     maximum: "8"
     information: "Site length"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: global [
     additional: "@(!$(intreefile.isdefined))"
     default: "N"
     information: "Global rearrangements"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: rough [
     additional: "@(!$(intreefile.isdefined))"
     default: "Y"
     information: "Speedier but rougher analysis"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional
@@ -106,12 +117,14 @@ section: output [
     parameter: "Y"
     knowntype: "restml output"
     information: "Phylip restml program output file"
+    relations:  "EDAM: Phylip phylogenetic tree raw data"              
   ]
 
   toggle: trout [
     additional: "Y"
     default: "Y"
     information: "Write out trees to tree file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: outtreefile [
@@ -119,24 +132,28 @@ section: output [
     extension: "treefile"
     information: "Phylip tree output file"
     knowntype: "newick tree"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "Y"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: treeprint [
     additional: "Y"
     default: "Y"
     information: "Print out tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

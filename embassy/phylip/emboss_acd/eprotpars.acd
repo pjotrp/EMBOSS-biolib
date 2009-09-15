@@ -14,6 +14,7 @@ section: input [
     type: "gapany"
     aligned: "Y"
     help: "File containing a sequence alignment"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -27,30 +28,35 @@ section: required [
     additional: "Y"
     default: "Y"
     information: "Search for best tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: random [
     standard: "$(besttree)"
     default: "N"
     information: "Randomize input order of species"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: randseed [
     standard: "$(random)"
     default: "3"
     information: "Random number seed (must be odd)"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: randtimes [
     standard: "$(random)"
     default: "3"
     information: "How many times to randomise"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   toggle: og [
     additional: "Y"
     information: "Outgroup root"
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: outgnum [
@@ -58,11 +64,13 @@ section: required [
     minimum: "1"
     default: "1"
     information: "Number of the outgroup"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   toggle: thresh [
     default: "N"
     information: "Use Threshold parsimony"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: valthresh [
@@ -70,6 +78,7 @@ section: required [
     minimum: "1.0"
     default: "1.0"
     information: "Threshold value"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: required
@@ -84,42 +93,49 @@ section: output [
     default: "eprotpars.outfile"
     knowntype: "protpars output"
     information: "Phylip protpars program output file"
+    relations:  "EDAM: Phylip phylogenetic tree raw data"              
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print out the data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "N"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: steps [
     additional: "Y"
     default: "N"
     information: "Print out steps in each site"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: seqatnodes [
     additional: "Y"
     default: "N"
     information: "Print sequences at all nodes of tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: drawtree [
     additional: "Y"
     default: "Y"
     information: "Draw tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: trout [
     parameter: "Y"
     default: "Y"
     information: "Create a tree file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: treefile [
@@ -127,6 +143,7 @@ section: output [
     default: "eprotpars.treefile"
     information: "Phylip tree output file"
     knowntype: "newick tree"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
 endsection: output

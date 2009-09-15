@@ -13,6 +13,7 @@ section: input [
     parameter: "Y"
     type: "any"
     aligned: "Y"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -32,11 +33,13 @@ section: advanced [
   boolean: plot [
     default: "N"
     information: "Produce graphics"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: signalp [
     default: "N"
     information: "Run signalp on the sequences"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 
@@ -50,6 +53,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "enetoglyc output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

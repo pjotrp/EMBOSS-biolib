@@ -26,6 +26,7 @@ section: input [
     extension: "dhf"
     default: "./"
     knowntype: "domain hits"
+    relations:  "EDAM: EMBASSY domain hits report"                     
   ]
 
 endsection: input
@@ -46,6 +47,7 @@ section: required [
            median length. The remaining sequences are written to the output
            file."
     default: "50"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: required
@@ -69,6 +71,7 @@ section: output [
     default: "./"
     extension: "dhf"
     knowntype: "domain hits"
+    relations:  "EDAM: EMBASSY domain hits report"                     
   ]
 
 endsection: output

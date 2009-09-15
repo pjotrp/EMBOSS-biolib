@@ -15,11 +15,13 @@ section: input [
   sequence: asequence [
     parameter: "Y"
     type: "dna"
+    relations: "EDAM: Pure DNA sequence"                                   
   ]
 
   sequence: bsequence [
     parameter: "Y"
     type: "dna"
+    relations: "EDAM: Pure DNA sequence"                                   
   ]
 
   infile: paramfile [
@@ -27,6 +29,7 @@ section: input [
     default: ""
     information: "Vienna RNA parameters file (optional)"
     knowntype: "rna parameter"
+    relations:  "EDAM: Vienna RNA parameters"                          
   ]
 
 endsection: input
@@ -39,47 +42,56 @@ section: advanced [
   float: temperature [
     default: "37.0"
     information: "Temperature"
+    relations: "EDAM: Generic float"                                       
   ]
 
   boolean: gu [
     default: "Y"
     information: "Allow GU pairs"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: closegu [
     default: "Y"
     information: "Allow GU pairs at end of helices"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: lp [
     default: "Y"
     information: "Allow lonely pairs"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: convert [
     default: "Y"
     information: "Convert T to U"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   string: nsbases [
     default: ""
     information: "Non-standard bases"
     knowntype: "nucleotide codes"
+    relations:  "EDAM: Nucleotide code string"                         
   ]
 
   boolean: tetraloop [
     default: "Y"
     information: "Stabilizing energies for tetra-loops"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: delta [
     default: "-1.0"
     information: "Energy range for suboptimal structures"
+    relations: "EDAM: Generic float"                                       
   ]
 
   boolean: sort [
     default: "N"
     information: "Sort suboptimal structures"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   list: dangles [
@@ -93,6 +105,7 @@ section: advanced [
     delimiter: ","
     codedelimiter: ":"
     information: "Method"
+    relations: "EDAM: Generic string array"                                
   ]
 
 endsection: advanced
@@ -106,6 +119,7 @@ section: output [
     parameter: "Y"
     knowntype: "rnafold output"
     information: "Vienna RNAfold output file"
+    relations:  "EDAM: Vienna RNA secondary structure record"          
   ]
 
 endsection: output

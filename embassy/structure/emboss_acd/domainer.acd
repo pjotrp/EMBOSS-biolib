@@ -23,6 +23,7 @@ section: input [
            file by using DOMAINSEQS."
     knowntype: "domain classification"
     information: "Domain classification file"
+    relations:  "EDAM: EMBASSY domain classification record"           
   ]
 
   directory: ccfpdir [
@@ -41,6 +42,7 @@ section: input [
     knowntype: "protein clean coordinates"
     information: "Clean protein structure coordinates
                   directory"
+    relations:  "EDAM: Protein tertiary structure"                     
   ]
 
 endsection: input
@@ -62,6 +64,7 @@ section: output [
     knowntype: "domain clean coordinates"
     information: "Clean domain coordinates file output
                   directory"
+    relations:  "EDAM: Protein tertiary structure"                     
   ]
 
   outdir: pdboutdir [
@@ -74,6 +77,7 @@ section: output [
     extension: "ent"
     knowntype: "domain pdb"
     information: "Domain pdb file output directory"
+    relations:  "EDAM: Protein tertiary structure"                     
   ]
 
   list: mode [
@@ -91,6 +95,7 @@ section: output [
     help: "This option specifies the operational mode of DOMAINER.
            This determines which sort of residue number is written to the PDB
            file."
+    relations: "EDAM: Generic string array"                                
   ]
 
   outfile: cpdblogfile [
@@ -101,6 +106,7 @@ section: output [
            files"
     default: "domainer_embl.log"
     knowntype: "domainatrix log"
+    relations:  "EDAM: Domainatrix log file"                           
   ]
 
   outfile: pdblogfile [
@@ -111,6 +117,7 @@ section: output [
            format files"
     default: "domainer_pdb.log"
     knowntype: "domainatrix log"
+    relations:  "EDAM: Domainatrix log file"                           
   ]
 
 endsection: output

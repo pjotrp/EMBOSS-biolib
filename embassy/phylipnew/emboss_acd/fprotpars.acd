@@ -14,6 +14,7 @@ section: input [
     type: "gapproteinphylo"
     aligned: "Y"
     help: "File containing one or more sequence alignments"
+    relations: "EDAM: Protein sequence record"                             
   ]
 
   tree: intreefile [
@@ -21,6 +22,7 @@ section: input [
     nullok: "Y"
     knowntype: "newick"
     information: "Phylip tree file (optional)"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
   properties: weights [
@@ -30,6 +32,7 @@ section: input [
     nullok: "Y"
     length: "$(sequence.length)"
     size: "@(@($(sequence.multicount)>1) ? 1:0)"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
 endsection: input
@@ -44,6 +47,7 @@ section: additional [
     default: "0"
     minimum: "0"
     information: "Number of times to randomise"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: seed [
@@ -53,6 +57,7 @@ section: additional [
     minimum: "1"
     maximum: "32767"
     default: "1"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: outgrno [
@@ -61,12 +66,14 @@ section: additional [
     maximum: "$(sequence.count)"
     default: "0"
     information: "Species number to use as outgroup"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   toggle: thresh [
     additional: "Y"
     default: "N"
     information: "Use threshold parsimony"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: threshold [
@@ -74,6 +81,7 @@ section: additional [
     minimum: "1"
     information: "Threshold value"
     default: "1"
+    relations: "EDAM: Generic float"                                       
   ]
 
   list: whichcode [
@@ -87,6 +95,7 @@ section: additional [
     delimiter: ","
     codedelimiter: ":"
     information: "Use which genetic code"
+    relations: "EDAM: Generic string array"                                
   ]
 
 endsection: additional
@@ -100,12 +109,14 @@ section: output [
     parameter: "Y"
     knowntype: "protpars output"
     information: "Phylip protpars program output file"
+    relations:  "EDAM: Phylip phylogenetic tree raw data"              
   ]
 
   toggle: trout [
     additional: "Y"
     default: "Y"
     information: "Write out trees to tree file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: outtreefile [
@@ -114,42 +125,49 @@ section: output [
     information: "Phylip tree output file (optional)"
     knowntype: "newick tree"
     nullok: "Y"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "Y"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: treeprint [
     additional: "Y"
     default: "Y"
     information: "Print out tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: stepbox [
     additional: "Y"
     default: "N"
     information: "Print steps at each site"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: ancseq [
     additional: "Y"
     default: "N"
     information: "Print sequences at all nodes of tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: dotdiff [
     additional: "@($(printdata) | $(ancseq))"
     default: "Y"
     information: "Use dot differencing to display results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

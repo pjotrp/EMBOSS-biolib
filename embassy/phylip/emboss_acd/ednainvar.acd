@@ -14,6 +14,7 @@ section: input [
     type: "gapdna"
     aligned: "Y"
     help: "File containing sequences"
+    relations: "EDAM: DNA sequence record"                                 
   ]
 
 endsection: input
@@ -28,18 +29,21 @@ section: output [
     default: "ednainvar.outfile"
     knowntype: "dnainvar output"
     information: "Phylip dnainvar program output file"
+    relations:  "EDAM: Phylogenetic invariants data"                   
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print out the data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "N"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

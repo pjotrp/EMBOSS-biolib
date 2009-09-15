@@ -16,11 +16,13 @@ section: input [
     parameter: "Y"
     information: "Vienna RNA structures file"
     knowntype: "rna structures"
+    relations:  "EDAM: Vienna RNA secondary structure record"          
   ]
 
   sequence: sequence [
     nullok: "Y"
     type: "rna"
+    relations: "EDAM: Pure RNA sequence"                                   
   ]
 
   infile: paramfile [
@@ -28,6 +30,7 @@ section: input [
     default: ""
     information: "Vienna RNA parameters file (optional)"
     knowntype: "rna parameter"
+    relations:  "EDAM: Vienna RNA parameters"                          
   ]
 
 endsection: input
@@ -40,37 +43,44 @@ section: advanced [
   float: temperature [
     default: "37.0"
     information: "Temperature"
+    relations: "EDAM: Generic float"                                       
   ]
 
   boolean: gu [
     default: "Y"
     information: "Allow GU pairs"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: closegu [
     default: "Y"
     information: "Allow GU pairs at end of helices"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: lp [
     default: "Y"
     information: "Allow lonely pairs"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: convert [
     default: "Y"
     information: "Convert T to U"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   string: nsbases [
     default: ""
     information: "Non-standard bases"
     knowntype: "nucleotide codes"
+    relations:  "EDAM: Nucleotide code string"                         
   ]
 
   boolean: tetraloop [
     default: "Y"
     information: "Stabilizing energies for tetra-loops"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   list: energy [
@@ -84,6 +94,7 @@ section: advanced [
     information: "Method"
     help: "Rarely used option to fold sequences from the ABCD...
            alphabet"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: dangles [
@@ -97,6 +108,7 @@ section: advanced [
     delimiter: ","
     codedelimiter: ":"
     information: "Method"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: folding [
@@ -108,17 +120,20 @@ section: advanced [
     delimiter: ","
     codedelimiter: ":"
     information: "Method"
+    relations: "EDAM: Generic string array"                                
   ]
 
   string: alphabet [
     information: "Find sequences using only these bases"
     default: "AUGC"
     knowntype: "nucleotide codes"
+    relations:  "EDAM: Nucleotide code string"                         
   ]
 
   float: final [
     information: "Stopping value"
     default: "0.0"
+    relations: "EDAM: Generic float"                                       
   ]
 
   integer: repeats [
@@ -126,17 +141,20 @@ section: advanced [
                   structure"
     default: "0"
     minimum: "0"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: succeed [
     information: "Continue until a match is found"
     help: "The original RNAinverse uses a negative repeat for this"
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: showfails [
     information: "Show information for unsuccessful searches"
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: advanced
@@ -150,6 +168,7 @@ section: output [
     parameter: "Y"
     knowntype: "rnafold output"
     information: "Vienna RNAfold output file"
+    relations:  "EDAM: Vienna RNA secondary structure record"          
   ]
 
 endsection: output

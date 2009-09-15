@@ -18,6 +18,7 @@ section: input [
     type: "gapany"
     aligned: "Y"
     help: "File containing a sequence alignment"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -31,42 +32,49 @@ section: required [
     standard: "Y"
     default: "Y"
     information: "Search for best tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: lengths [
     standard: "@(!$(besttree))"
     default: "N"
     information: "Use lengths from user trees"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: global [
     standard: "$(besttree)"
     default: "N"
     information: "Global rearrangements"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: random [
     standard: "$(besttree)"
     default: "N"
     information: "Randomize input order of species"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: randseed [
     standard: "$(random)"
     default: "3"
     information: "Random number seed (must be odd)"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: randtimes [
     standard: "$(random)"
     default: "3"
     information: "How many times to randomise"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   toggle: basefrequency [
     standard: "Y"
     default: "Y"
     information: "Use empirical base frequencies"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: freqa [
@@ -75,6 +83,7 @@ section: required [
     maximum: "1.0"
     default: "0.25"
     information: "Frequency for A"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: freqc [
@@ -83,6 +92,7 @@ section: required [
     maximum: "1.0"
     default: "0.25"
     information: "Frequency for C"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: freqg [
@@ -91,6 +101,7 @@ section: required [
     maximum: "1.0"
     default: "0.25"
     information: "Frequency for G"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: freqt [
@@ -99,12 +110,14 @@ section: required [
     maximum: "1.0"
     default: "0.25"
     information: "Frequency for T/U"
+    relations: "EDAM: Generic float"                                       
   ]
 
   toggle: categories [
     standard: "Y"
     default: "N"
     information: "More than one category of substitution rates"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: catnum [
@@ -113,24 +126,28 @@ section: required [
     maximum: "9"
     default: "2"
     information: "Number of categories of substitution rates"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   string: catvals [
     standard: "$(categories)"
     information: "Space separated category values"
     knowntype: "phylip category values"
+    relations:                                                 
   ]
 
   string: catprob [
     standard: "$(categories)"
     information: "Space separated probability values"
     knowntype: "phylip probability values"
+    relations:                                                 
   ]
 
   toggle: autog [
     standard: "$(categories)"
     default: "N"
     information: "Use Default Mean block length of sites"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: lambda [
@@ -139,6 +156,7 @@ section: required [
     default: "1.0"
     information: "Mean block length of sites having the same
                   rate (greater than 1)"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: required
@@ -152,6 +170,7 @@ section: additional [
     additional: "Y"
     default: "2.0"
     information: "Transition/transversion ratio"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: additional
@@ -166,30 +185,35 @@ section: output [
     default: "ednamlk.outfile"
     knowntype: "dnamlk output"
     information: "Phylip dnamlk program output file"
+    relations:  "EDAM: Phylip phylogenetic tree raw data"              
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print out the data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "N"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: drawtree [
     additional: "Y"
     default: "Y"
     information: "Draw tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: trout [
     parameter: "Y"
     default: "Y"
     information: "Create a tree file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: treefile [
@@ -197,6 +221,7 @@ section: output [
     default: "ednamlk.treefile"
     information: "Phylip tree output file"
     knowntype: "newick tree"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
 endsection: output

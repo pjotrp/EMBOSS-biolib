@@ -22,6 +22,7 @@ section: input [
            SCOPPARSE and CATHPARSE. Domain sequence information can be added
            to the file by using DOMAINSEQS."
     knowntype: "domain classification"
+    relations:  "EDAM: EMBASSY domain classification record"           
   ]
 
   directory: dpdbdir [
@@ -38,12 +39,14 @@ section: input [
     default: "./"
     extension: "ccf"
     knowntype: "domain clean coordinates"
+    relations:  "EDAM: Protein tertiary structure"                     
   ]
 
   toggle: getswiss [
     standard: "Y"
     information: "Retrieve swissprot sequence."
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   infile: pdbtospfile [
@@ -55,6 +58,7 @@ section: input [
            PDBTOSP"
     knowntype: "swissprot pdb equivalence table"
     nullok: "Y"
+    relations:  "EDAM: SwissProt to PDB mapping"                       
   ]
 
   matrixf: datafile [
@@ -63,6 +67,7 @@ section: input [
     help: "This option specifies the residue substitution matrix,
            which is used for sequence comparison."
     default: "EBLOSUM62"
+    relations: "EDAM: Float comparison matrix"                             
   ]
 
 endsection: input
@@ -92,6 +97,7 @@ section: additional [
            on the choice of comparison matrix. The default value assumes you
            are using the EBLOSUM62 matrix for protein sequences, and the
            EDNAFULL matrix for nucleotide sequences."
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: gapextend [
@@ -107,6 +113,7 @@ section: additional [
            gap. This is how long gaps are penalized. Usually you will expect
            a few long gaps rather than many short gaps, so the gap extension
            penalty should be lower than the gap penalty."
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: additional
@@ -127,6 +134,7 @@ section: output [
            to the file by using DOMAINSEQS."
     default: "domainseqs.out"
     knowntype: "domain classification"
+    relations:  "EDAM: EMBASSY domain classification record"           
   ]
 
   outfile: logfile [
@@ -137,6 +145,7 @@ section: output [
            domainseqs ran."
     default: "domainseqs.log"
     knowntype: "domainatrix log"
+    relations:  "EDAM: Domainatrix log file"                           
   ]
 
 endsection: output

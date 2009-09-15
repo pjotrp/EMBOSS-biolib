@@ -13,6 +13,7 @@ section: input [
     parameter: "Y"
     type: "any"
     aligned: "Y"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -32,16 +33,19 @@ section: advanced [
   boolean: plot [
     default: "N"
     information: "Produce graphics"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: pcprediction [
     default: "N"
     information: "Perform proprotein convertase prediction"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: signalp [
     default: "N"
     information: "Include signal peptide cleavage site prediction"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: advanced
@@ -54,6 +58,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "eprop output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

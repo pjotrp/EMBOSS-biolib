@@ -17,6 +17,7 @@ section: input [
     information: "HMMER hidden markov model file"
     knowntype: "hmm"
     help: "File containing an HMM."
+    relations:  "EDAM: HMMER hidden Markov model"                      
   ]
 
 endsection: input
@@ -34,6 +35,7 @@ section: advanced [
            on. The default is to use all CPUs in the machine. Overrides the
            HMMER NCPU environment variable. Only affects threaded versions of
            HMMER (the default on most systems)."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: fixed [
@@ -44,6 +46,7 @@ section: advanced [
            a positive (and reasonably sized) integer. The default is instead
            to generate sequences with a variety of different lengths,
            controlled by a Gaussian (normal) distribution."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   float: mean [
@@ -51,6 +54,7 @@ section: advanced [
     information: "Mean length of synthetic sequences"
     help: "Set the mean length of the synthetic sequences to <x>,
            where <x> is a positive real number. The default is 350."
+    relations: "EDAM: Generic float"                                       
   ]
 
   integer: num [
@@ -62,6 +66,7 @@ section: advanced [
            EVD may fail. Higher numbers of <n> will give better determined
            EVD parameters. The default is 5000; it was empirically chosen as
            a tradeoff between accuracy and computation time."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: pvm [
@@ -71,6 +76,7 @@ section: advanced [
            already be running. The client program hmmcalibrate-pvm must be
            installed on all the PVM nodes. Optional PVM support must have
            been compiled into HMMER."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: sd [
@@ -81,6 +87,7 @@ section: advanced [
            distribution to <x>, where <x> is a positive real number. The
            default is 350. Note that the Gaussian is left-truncated so that
            no sequences have lengths <= 0."
+    relations: "EDAM: Generic float"                                       
   ]
 
   integer: seed [
@@ -93,6 +100,7 @@ section: advanced [
            on the same HMM will give slightly different results. You can use
            this option to generate reproducible results for different
            hmmcalibrate runs on the same HMM."
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: advanced
@@ -107,6 +115,7 @@ section: output [
     information: "HMMER hmmcalibrate program output file"
     knowntype: "hmmcalibrate output"
     help: "File containing an HMM with EVD parameters."
+    relations:  "EDAM: HMMER hidden Markov model"                      
   ]
 
   outfile: histfile [
@@ -116,6 +125,7 @@ section: output [
     knowntype: "hmmer histogram"
     help: "Save a histogram of the scores and the fitted theoretical
            curve to file."
+    relations:  "EDAM: Histogram graph data"                           
   ]
 
 endsection: output

@@ -13,23 +13,27 @@ section: input [
     parameter: "Y"
     information: "Phylip mix program input file"
     knowntype: "mix input"
+    relations:                                                 
   ]
 
   boolean: ancestral [
     additional: "Y"
     default: "N"
     information: "Use ancestral states in input file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: multsets [
     additional: "Y"
     default: "N"
     information: "Analyze multiple data sets"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: datasets [
     standard: "$(multsets)"
     information: "How many data sets"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: input
@@ -47,34 +51,40 @@ section: required [
     values: "Wag:Wagner; Cam:Camin-Sokal; Mix:Mixed"
     information: "Choose the method to use"
     default: "Wag"
+    relations: "EDAM: Generic string array"                                
   ]
 
   toggle: besttree [
     additional: "Y"
     default: "Y"
     information: "Search for best tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: random [
     additional: "$(besttree)"
     default: "N"
     information: "Randomize input order of species"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: randseed [
     standard: "$(random)"
     information: "Random number seed (must be odd)"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: randtimes [
     standard: "$(random)"
     information: "Number of times to jumble"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   toggle: og [
     standard: "Y"
     information: "Outgroup root"
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: outgnum [
@@ -82,11 +92,13 @@ section: required [
     minimum: "1"
     default: "1"
     information: "Number of the outgroup"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   toggle: thresh [
     default: "N"
     information: "Use Threshold parsimony"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: valthresh [
@@ -94,6 +106,7 @@ section: required [
     minimum: "1.0"
     default: "1.0"
     information: "Threshold value"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: required
@@ -108,42 +121,49 @@ section: output [
     default: "emix.outfile"
     knowntype: "mix output"
     information: "Phylip mix program output file"
+    relations:  "EDAM: PHYLIP discrete states file"                    
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print out the data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "N"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: statesatnodes [
     additional: "Y"
     default: "N"
     information: "Print states at all nodes of tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: steps [
     additional: "Y"
     default: "N"
     information: "Print out steps in each character"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: trout [
     parameter: "Y"
     default: "Y"
     information: "Create a tree file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: drawtree [
     additional: "Y"
     default: "Y"
     information: "Draw tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: treefile [
@@ -151,6 +171,7 @@ section: output [
     default: "emix.treefile"
     information: "Phylip tree output file"
     knowntype: "newick tree"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
 endsection: output

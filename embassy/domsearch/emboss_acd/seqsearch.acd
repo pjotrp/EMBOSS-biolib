@@ -30,6 +30,7 @@ section: input [
            sequences, ii. set of sequences (unaligned or aligned, but
            typically aligned sequences within a domain alignment file)). The
            user has to specify which."
+    relations: "EDAM: Generic string array"                                
   ]
 
   dirlist: inseqspath [
@@ -49,6 +50,7 @@ section: input [
     default: "./"
     extension: "daf"
     knowntype: "domain alignment"
+    relations:  "EDAM: EMBASSY domain alignment file"                  
   ]
 
   string: database [
@@ -56,6 +58,7 @@ section: input [
     information: "Name of BLAST-indexed database to search."
     default: "swissprot"
     knowntype: "blast protein dbname"
+    relations:  "EDAM: BLAST database name"                            
   ]
 
 endsection: input
@@ -72,6 +75,7 @@ section: required [
            This option specifies the number of PSIBLAST iterations that are
            performed in a search."
     default: "1"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   float: evalue [
@@ -81,6 +85,7 @@ section: required [
            in family. This option specifies the threshold E-value for a
            PSIBLAST hit to be retained."
     default: "0.001"
+    relations: "EDAM: Generic float"                                       
   ]
 
   integer: maxhits [
@@ -91,6 +96,7 @@ section: required [
            retained. It should normally be set high so that nothing is
            discarded."
     default: "1000"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: required
@@ -112,6 +118,7 @@ section: output [
     default: "./"
     extension: "dhf"
     knowntype: "domain hits"
+    relations:  "EDAM: EMBASSY domain hits report"                     
   ]
 
   outfile: logfile [
@@ -122,6 +129,7 @@ section: output [
            The log file contains messages about any errors arising while
            SEQSEARCH ran."
     knowntype: "domainatrix log"
+    relations:  "EDAM: Domainatrix log file"                           
   ]
 
 endsection: output

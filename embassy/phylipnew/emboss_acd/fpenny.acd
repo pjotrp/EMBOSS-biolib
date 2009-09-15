@@ -15,6 +15,7 @@ section: input [
     help: "File containing one or more data sets"
     knowntype: "discrete characters"
     information: "Phylip character discrete states file"
+    relations:  "EDAM: PHYLIP discrete states file"                    
   ]
 
   properties: weights [
@@ -24,6 +25,7 @@ section: input [
     nullok: "Y"
     length: "$(infile.discretelength)"
     size: "1"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
   properties: ancfile [
@@ -33,6 +35,7 @@ section: input [
     nullok: "Y"
     length: "$(infile.discretelength)"
     size: "1"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
   properties: mixfile [
@@ -42,6 +45,7 @@ section: input [
     nullok: "Y"
     length: "$(infile.discretelength)"
     size: "1"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
 endsection: input
@@ -59,6 +63,7 @@ section: additional [
     values: "Wag:Wagner; Cam:Camin-Sokal; Mix:Mixed;"
     information: "Choose the method to use"
     default: "Wagner"
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: outgrno [
@@ -67,23 +72,27 @@ section: additional [
     maximum: "$(infile.discretesize)"
     default: "0"
     information: "Species number to use as outgroup"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: howmany [
     additional: "Y"
     information: "How many groups of trees"
     default: "1000"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: howoften [
     additional: "Y"
     information: "How often to report, in trees"
     default: "100"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: simple [
     additional: "Y"
     information: "Branch and bound is simple"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: threshold [
@@ -91,6 +100,7 @@ section: additional [
     minimum: "1.0"
     default: "$(infile.discretesize)"
     information: "Threshold value"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: additional
@@ -104,12 +114,14 @@ section: output [
     parameter: "Y"
     knowntype: "penny output"
     information: "Phylip penny program output file"
+    relations:  "EDAM: Phylip phylogenetic tree raw data"              
   ]
 
   toggle: trout [
     additional: "Y"
     default: "Y"
     information: "Write out trees to tree file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: outtreefile [
@@ -118,36 +130,42 @@ section: output [
     information: "Phylip tree output file (optional)"
     knowntype: "newick tree"
     nullok: "Y"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "Y"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: treeprint [
     additional: "Y"
     default: "Y"
     information: "Print out tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: stepbox [
     additional: "Y"
     default: "N"
     information: "Print out steps in each site"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: ancseq [
     additional: "Y"
     default: "N"
     information: "Print states at all nodes of tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

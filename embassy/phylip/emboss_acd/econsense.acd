@@ -13,6 +13,7 @@ section: input [
     parameter: "Y"
     information: "Phylip tree file"
     knowntype: "Newick tree"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: input
@@ -26,12 +27,14 @@ section: required [
     additional: "Y"
     default: "N"
     information: "Trees to be treated as rooted"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: og [
     standard: "$(root)"
     information: "Outgroup root"
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: outgnum [
@@ -39,6 +42,7 @@ section: required [
     minimum: "1"
     default: "1"
     information: "Number of the outgroup"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: required
@@ -53,18 +57,21 @@ section: output [
     default: "econsense.outfile"
     knowntype: "consense output"
     information: "Phylip consense program output file"
+    relations:  "EDAM: Phylogenetic consensus tree"                    
   ]
 
   boolean: trout [
     parameter: "Y"
     default: "Y"
     information: "Create a tree file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: drawtree [
     additional: "Y"
     default: "Y"
     information: "Draw tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: treefile [
@@ -72,18 +79,21 @@ section: output [
     extension: "treefile"
     information: "Phylip tree output file"
     knowntype: "Newick tree"
+    relations: "EDAM: Free text file"                                      
   ]
 
   boolean: progress [
     additional: "Y"
     default: "N"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: printsets [
     additional: "Y"
     default: "Y"
     information: "Print out the sets of species"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

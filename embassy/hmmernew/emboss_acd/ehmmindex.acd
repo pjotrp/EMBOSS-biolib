@@ -18,6 +18,7 @@ section: input [
     information: "HMMER hmm database file"
     knowntype: "hmm database"
     help: "HMM database."
+    relations:  "EDAM: HMMER hidden Markov model database"             
   ]
 
 endsection: input

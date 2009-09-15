@@ -19,6 +19,7 @@ section: input [
     help: "This option specifies the name of the file of secondary
            structure (input)."
     knowntype: "Secondary structure"
+    relations: "EDAM: Free text file"                                      
   ]
 
   infile: dcfinfile [
@@ -31,6 +32,7 @@ section: input [
            SCOPPARSE and CATHPARSE. Domain sequence information can be added
            to the file by using DOMAINSEQS."
     knowntype: "Domain classification"
+    relations: "EDAM: Free text file"                                      
   ]
 
   matrixf: datafile [
@@ -39,6 +41,7 @@ section: input [
     help: "This option specifies the secondary structure substitution
            matrix."
     default: "SSSUB"
+    relations: "EDAM: Float comparison matrix"                             
   ]
 
 endsection: input
@@ -54,6 +57,7 @@ section: required [
     help: "This option specifies the number of top-scoring matches to
            report."
     default: "5"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: required
@@ -78,6 +82,7 @@ section: additional [
            choice of comparison matrix. The default value assumes you are
            using the EBLOSUM62 matrix for protein sequences, and the EDNAFULL
            matrix for nucleotide sequences."
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: rgapextend [
@@ -95,6 +100,7 @@ section: additional [
            is how long gaps are penalized. Usually you will expect a few
            long gaps rather than many short gaps, so the gap extension
            penalty should be lower than the gap penalty."
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: egapopen [
@@ -112,6 +118,7 @@ section: additional [
            choice of comparison matrix. The default value assumes you are
            using the EBLOSUM62 matrix for protein sequences, and the EDNAFULL
            matrix for nucleotide sequences."
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: egapextend [
@@ -129,6 +136,7 @@ section: additional [
            residue in the gap. This is how long gaps are penalized. Usually
            you will expect a few long gaps rather than many short gaps, so
            the gap extension penalty should be lower than the gap penalty."
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: additional
@@ -147,6 +155,7 @@ section: output [
            classification file' contains classification and other data for
            domains from SCOP or CATH, in DCF format (EMBL-like)."
     knowntype: "domain classification"
+    relations:  "EDAM: EMBASSY domain classification record"           
   ]
 
   outfile: outsefile [
@@ -159,6 +168,7 @@ section: output [
            classification and other data for domains from SCOP or CATH, in
            DCF format (EMBL-like)."
     knowntype: "domain classification"
+    relations:  "EDAM: EMBASSY domain classification record"           
   ]
 
   outfile: logfile [
@@ -168,6 +178,7 @@ section: output [
            (output)."
     default: "ssematch.log"
     knowntype: "domainatrix log"
+    relations:  "EDAM: Domainatrix log file"                           
   ]
 
 endsection: output

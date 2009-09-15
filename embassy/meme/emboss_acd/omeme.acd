@@ -12,6 +12,7 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "any"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -32,12 +33,14 @@ section: required [
     delimiter: ","
     codedelimiter: ":"
     information: "Model to use"
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: nmotifs [
     standard: "Y"
     default: "1"
     information: "Maximum number of motifs to find"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: required
@@ -57,72 +60,84 @@ section: additional [
     delimiter: ","
     codedelimiter: ":"
     information: "Method to use"
+    relations: "EDAM: Generic string array"                                
   ]
 
   boolean: protein [
     additional: "Y"
     default: "N"
     information: "Assume sequences are proteins"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: nucleic [
     additional: "Y"
     default: "N"
     information: "Assume sequences are DNA"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: palindromes [
     additional: "Y"
     default: "N"
     information: "Allow palindromes"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: ponly [
     additional: "Y"
     default: "N"
     information: "Force palindromes"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: shorten [
     additional: "Y"
     default: "Y"
     information: "Allow motifs shorter than MINW"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: nsites [
     additional: "Y"
     default: "0."
     information: "Expected number of sites for each motif"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: minsites [
     additional: "Y"
     default: "0."
     information: "Minimum number of sites for each motif"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: maxsites [
     additional: "Y"
     default: "0."
     information: "Maximum number of sites for each motif"
+    relations: "EDAM: Generic float"                                       
   ]
 
   integer: w [
     additional: "Y"
     default: "0"
     information: "Starting motif width to try"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: minw [
     additional: "Y"
     default: "8"
     information: "Minimum starting motif width to try"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: maxw [
     additional: "Y"
     default: "57"
     information: "Maximum starting motif width to try"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   list: prior [
@@ -136,18 +151,21 @@ section: additional [
     delimiter: ","
     codedelimiter: ":"
     information: "Prior to use"
+    relations: "EDAM: Generic string array"                                
   ]
 
   boolean: brief [
     additional: "Y"
     default: "Y"
     information: "Don't print documentation"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: b [
     additional: "Y"
     default: "-1.0"
     information: "Strength of the prior"
+    relations: "EDAM: Generic float"                                       
   ]
 
   list: spmap [
@@ -160,24 +178,28 @@ section: additional [
     delimiter: ","
     codedelimiter: ":"
     information: "Mapping start"
+    relations: "EDAM: Generic string array"                                
   ]
 
   float: spfuzz [
     additional: "Y"
     default: "-1.0"
     information: "Fuzziness of sequence to theta mapping"
+    relations: "EDAM: Generic float"                                       
   ]
 
   integer: maxiter [
     additional: "Y"
     default: "50"
     information: "Maximum EM iterations to run"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   float: distance [
     additional: "Y"
     default: "1e-3"
     information: "EM convergence criterion"
+    relations: "EDAM: Generic float"                                       
   ]
 
   string: cons [
@@ -185,12 +207,14 @@ section: additional [
     default: ""
     information: "Consensus sequence to start EM from"
     knowntype: "sequence id input"
+    relations:  "EDAM: Sequence unique identifier"                     
   ]
 
   float: chi [
     additional: "Y"
     default: "1.0"
     information: "Cutoff for p-value"
+    relations: "EDAM: Generic float"                                       
   ]
 
   list: adj [
@@ -203,120 +227,140 @@ section: additional [
     delimiter: ","
     codedelimiter: ":"
     information: "Type"
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: maxsize [
     additional: "Y"
     default: "100000"
     information: "Maximum dataset size in characters"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: page [
     additional: "Y"
     default: "80"
     information: "Width of page"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: status [
     additional: "Y"
     default: "N"
     information: "Print progress reports"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: v [
     additional: "Y"
     default: "N"
     information: "Verbose mode"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: cfive [
     additional: "Y"
     default: "N"
     information: "Use 5' to 3' complementary strand as well"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: cthree [
     additional: "Y"
     default: "N"
     information: "Use 3' to 5' complementary strand as well"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: wthree [
     additional: "Y"
     default: "N"
     information: "Use 3' to 5' main strand as well"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: prob [
     additional: "Y"
     default: "1.0"
     information: "Starting point confidence level"
+    relations: "EDAM: Generic float"                                       
   ]
 
   integer: seed [
     additional: "Y"
     default: "0"
     information: "Seed for random numbers in sampling"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   float: seqfrac [
     additional: "Y"
     default: "1.0"
     information: "Fraction of sequences to use"
+    relations: "EDAM: Generic float"                                       
   ]
 
   boolean: align [
     additional: "Y"
     default: "Y"
     information: "Print aligned motif occurrences"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: trace [
     additional: "Y"
     default: "N"
     information: "Trace starting points"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: allprint [
     additional: "Y"
     default: "N"
     information: "Print all debugging information"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: wprint [
     additional: "Y"
     default: "N"
     information: "Print erasure matrix"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: zprint [
     additional: "Y"
     default: "N"
     information: "Print missing information matrix"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: llprint [
     additional: "Y"
     default: "N"
     information: "Print log likelihood during EM"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: startsprint [
     additional: "Y"
     default: "N"
     information: "Print starting points"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: fastaprint [
     additional: "Y"
     default: "N"
     information: "Print sites in FASTA format"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: timer [
     additional: "Y"
     default: "0"
     information: "Timer type"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: additional
@@ -330,6 +374,7 @@ section: output [
     parameter: "Y"
     information: "MEME program output file"
     knowntype: "meme output"
+    relations:  "EDAM: MEME sequence motif record"                     
   ]
 
 endsection: output

@@ -13,6 +13,7 @@ section: input [
     parameter: "Y"
     type: "any"
     aligned: "Y"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -32,6 +33,7 @@ section: advanced [
   boolean: plot [
     default: "N"
     information: "Produce graphics"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   list: format [
@@ -43,11 +45,13 @@ section: advanced [
     delimiter: ","
     codedelimiter: ":"
     information: "Format"
+    relations: "EDAM: Generic string array"                                
   ]
 
   boolean: netphos [
     default: "N"
     information: "Run netphos and predict Yin-Yang sites"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: threshold [
@@ -55,6 +59,7 @@ section: advanced [
     minimum: "0.0"
     maximum: "1.0"
     information: "Report netphos only scores above this value"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: advanced
@@ -67,6 +72,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "eyinoyang output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

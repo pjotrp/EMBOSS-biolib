@@ -14,6 +14,7 @@ section: input [
     type: "gapdnaphylo"
     aligned: "Y"
     help: "File containing one or more sequence alignments"
+    relations: "EDAM: DNA sequence record"                                 
   ]
 
   properties: weights [
@@ -22,6 +23,7 @@ section: input [
     length: "$(sequence.length)"
     size: "1"
     nullok: "Y"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
 endsection: input
@@ -35,18 +37,21 @@ section: additional [
     additional: "Y"
     information: "How often to report, in trees"
     default: "100"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: howmany [
     additional: "Y"
     information: "How many groups of trees"
     default: "1000"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: simple [
     additional: "Y"
     information: "Branch and bound is simple"
     default: "Y"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: outgrno [
@@ -55,12 +60,14 @@ section: additional [
     maximum: "$(sequence.count)"
     default: "0"
     information: "Species number to use as outgroup"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   toggle: thresh [
     additional: "Y"
     default: "N"
     information: "Use threshold parsimony"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: threshold [
@@ -68,6 +75,7 @@ section: additional [
     minimum: "1.0"
     default: "1.0"
     information: "Threshold value"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: additional
@@ -81,12 +89,14 @@ section: output [
     parameter: "Y"
     knowntype: "dnapenny output"
     information: "Phylip dnapenny program output file"
+    relations:  "EDAM: Phylip phylogenetic tree raw data"              
   ]
 
   toggle: trout [
     additional: "Y"
     default: "Y"
     information: "Write out trees to tree file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: outtreefile [
@@ -95,36 +105,42 @@ section: output [
     information: "Phylip tree output file (optional)"
     knowntype: "newick tree"
     nullok: "Y"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "Y"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: treeprint [
     additional: "Y"
     default: "Y"
     information: "Print out tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: stepbox [
     additional: "Y"
     default: "N"
     information: "Print out steps in each site"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: ancseq [
     additional: "Y"
     default: "N"
     information: "Print sequences at all nodes of tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

@@ -23,6 +23,7 @@ section: input [
            SCOPPARSE and CATHPARSE. Domain sequence information can be added
            to the file by using DOMAINSEQS."
     knowntype: "domain classification"
+    relations:  "EDAM: EMBASSY domain classification record"           
   ]
 
   directory: dccfdir [
@@ -40,6 +41,7 @@ section: input [
     default: "./"
     extension: "ccf"
     knowntype: "domain clean coordinates"
+    relations:  "EDAM: Protein tertiary structure"                     
   ]
 
 endsection: input
@@ -74,6 +76,7 @@ section: output [
            DOMAINSEQS."
     knowntype: "domain classification"
     information: "Domain classification output file"
+    relations:  "EDAM: EMBASSY domain classification record"           
   ]
 
   outfile: logfile [
@@ -82,6 +85,7 @@ section: output [
     default: "domainsse.log"
     knowntype: "domainatrix log"
     information: "Domainatrix log output file"
+    relations:  "EDAM: Domainatrix log file"                           
   ]
 
 endsection: output

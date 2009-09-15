@@ -15,6 +15,7 @@ section: input [
     help: "File containing one or more sets of data"
     knowntype: "gendist input"
     information: "Phylip gendist program input file"
+    relations:  "EDAM: PHYLIP phylogenetic character frequencies file" 
   ]
 
 endsection: input
@@ -33,6 +34,7 @@ section: additional [
              r:Reynolds genetic distance"
     information: "Which method to use"
     default: "n"
+    relations: "EDAM: Generic string array"                                
   ]
 
 endsection: additional
@@ -46,18 +48,21 @@ section: output [
     parameter: "Y"
     knowntype: "gendist output"
     information: "Phylip gendist program output file"
+    relations:  "EDAM: PHYLIP phylogenetic distance matrix file"       
   ]
 
   boolean: progress [
     additional: "Y"
     default: "Y"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: lower [
     additional: "Y"
     default: "N"
     information: "Lower triangular distance matrix"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

@@ -14,6 +14,7 @@ section: input [
     type: "gapany"
     aligned: "Y"
     help: "File containing sequences"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -32,6 +33,7 @@ section: required [
              Cat:Categories model"
     information: "Choose the method to use"
     default: "Pam"
+    relations: "EDAM: Generic string array"                                
   ]
 
 endsection: required
@@ -53,6 +55,7 @@ section: additional [
              Thr), (Pro)"
     information: "Choose the category to use"
     default: "G"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: gencode [
@@ -64,6 +67,7 @@ section: additional [
              mitochondrial; F:Fly mitochondrial; Y:Yeast mitochondrial"
     information: "Which genetic code"
     default: "U"
+    relations: "EDAM: Generic string array"                                
   ]
 
   float: prob [
@@ -72,6 +76,7 @@ section: additional [
     maximum: "1.0"
     default: "0.457"
     information: "Prob change category (1.0=easy)"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: tranrate [
@@ -79,12 +84,14 @@ section: additional [
     minimum: "0.0"
     default: "2.0"
     information: "Transition/transversion ratio"
+    relations: "EDAM: Generic float"                                       
   ]
 
   toggle: basefrequency [
     additional: "@($(method) == Cat)"
     default: "Y"
     information: "Use empirical base frequencies"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: freqa [
@@ -93,6 +100,7 @@ section: additional [
     maximum: "1.0"
     default: "0.25"
     information: "Frequency for A"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: freqc [
@@ -101,6 +109,7 @@ section: additional [
     maximum: "1.0"
     default: "0.25"
     information: "Frequency for C"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: freqg [
@@ -109,6 +118,7 @@ section: additional [
     maximum: "1.0"
     default: "0.25"
     information: "Frequency for G"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: freqt [
@@ -117,6 +127,7 @@ section: additional [
     maximum: "1.0"
     default: "0.25"
     information: "Frequency for T/U"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: additional
@@ -131,18 +142,21 @@ section: output [
     default: "eprotdist.outfile"
     knowntype: "protdist output"
     information: "Phylip protdist program output file"
+    relations:  "EDAM: PHYLIP phylogenetic distance matrix file"       
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print out the data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "N"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

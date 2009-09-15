@@ -16,6 +16,7 @@ section: input [
     help: "File containing data set"
     knowntype: "discrete characters"
     information: "Phylip character discrete states file"
+    relations:  "EDAM: PHYLIP discrete states file"                    
   ]
 
   tree: intreefile [
@@ -23,6 +24,7 @@ section: input [
     nullok: "Y"
     knowntype: "newick"
     information: "Phylip tree file (optional)"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
   properties: weights [
@@ -33,6 +35,7 @@ section: input [
     length: "$(infile.discretelength)"
     size: "1"
     nullok: "Y"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
   properties: ancfile [
@@ -42,6 +45,7 @@ section: input [
     nullok: "Y"
     length: "$(infile.discretelength)"
     size: "1"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
   properties: factorfile [
@@ -50,6 +54,7 @@ section: input [
     nullok: "Y"
     length: "$(infile.discretelength)"
     size: "1"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
 endsection: input
@@ -67,6 +72,7 @@ section: additional [
     values: "w:Wagner; c:Camin-Sokal; m:Mixed;"
     information: "Choose the method to use"
     default: "Wagner"
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: outgrno [
@@ -75,6 +81,7 @@ section: additional [
     maximum: "$(infile.discretesize)"
     default: "0"
     information: "Species number to use as outgroup"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   float: threshold [
@@ -82,6 +89,7 @@ section: additional [
     minimum: "0"
     information: "Threshold value"
     default: "$(infile.discretesize)"
+    relations: "EDAM: Generic float"                                       
   ]
 
   list: initialtree [
@@ -92,18 +100,21 @@ section: additional [
     values: "a:Arbitary; u:User; s:Specify"
     information: "Initial tree"
     default: "Arbitary"
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: screenwidth [
     additional: "Y"
     default: "80"
     information: "Width of terminal screen in characters"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: screenlines [
     additional: "Y"
     default: "24"
     information: "Number of lines on screen"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: additional
@@ -119,6 +130,7 @@ section: output [
     knowntype: "newick tree"
     nullok: "Y"
     information: "Phylip tree output file (optional)"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
 endsection: output

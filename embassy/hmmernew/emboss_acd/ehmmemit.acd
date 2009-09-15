@@ -17,6 +17,7 @@ section: input [
     knowntype: "hmm"
     information: "HMMER hidden markov model file"
     help: "File containing one or more HMMs."
+    relations:  "EDAM: HMMER hidden Markov model"                      
   ]
 
 endsection: input
@@ -35,6 +36,7 @@ section: advanced [
            for each run, which means that two different runs of hmmemit on
            the same HMM will give slightly different results. You can use
            this option to generate reproducible results."
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: advanced
@@ -50,6 +52,7 @@ section: output [
     information: "Output in selex format"
     help: "Write the generated sequences in an aligned format (SELEX)
            rather than FASTA."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: c [
@@ -63,6 +66,7 @@ section: output [
            insert states may become part of the majority rule consensus,
            because they are used in >= 50% of generated sequences; when this
            happens, insert-generated residues are simply shown as 'x'."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: nseq [
@@ -70,6 +74,7 @@ section: output [
     default: "10"
     information: "Number of sequences to produce"
     help: "Generate <n> sequences. Default is 10."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: q [
@@ -78,6 +83,7 @@ section: output [
     information: "Suppress output except sequences."
     help: "Quiet; suppress all output except for the sequences
            themselves. Useful for piping or directing the output."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: o [
@@ -85,6 +91,7 @@ section: output [
     knowntype: "hmmemit output"
     information: "HMMER hmmemit program output file"
     help: "File of synthetic sequences."
+    relations:  "EDAM: HMMER synthetic sequences record"               
   ]
 
 endsection: output

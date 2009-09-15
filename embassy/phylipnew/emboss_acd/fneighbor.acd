@@ -17,6 +17,7 @@ section: input [
     parameter: "Y"
     knowntype: "distance matrix"
     information: "Phylip distance matrix file"
+    relations:  "EDAM: PHYLIP phylogenetic distance matrix file"       
   ]
 
 endsection: input
@@ -34,6 +35,7 @@ section: additional [
     values: "s:Square; u:Upper triangular; l:Lower triangular"
     information: "Type of data matrix"
     default: "s"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: treetype [
@@ -44,6 +46,7 @@ section: additional [
     values: "n:Neighbor-joining; u:UPGMA"
     information: "Neighbor-joining or UPGMA tree"
     default: "n"
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: outgrno [
@@ -52,12 +55,14 @@ section: additional [
     maximum: "$(datafile.distancesize)"
     default: "0"
     information: "Species number to use as outgroup"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   toggle: jumble [
     additional: "Y"
     default: "N"
     information: "Randomise input order of species"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: seed [
@@ -67,12 +72,14 @@ section: additional [
     minimum: "1"
     maximum: "32767"
     default: "1"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: replicates [
     additional: "Y"
     default: "N"
     information: "Subreplicates"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional
@@ -86,12 +93,14 @@ section: output [
     parameter: "Y"
     knowntype: "neighbor output"
     information: "Phylip neighbor program output file"
+    relations:  "EDAM: Phylip phylogenetic tree raw data"              
   ]
 
   toggle: trout [
     additional: "Y"
     default: "Y"
     information: "Write out trees to tree file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: outtreefile [
@@ -100,24 +109,28 @@ section: output [
     information: "Phylip tree output file (optional)"
     knowntype: "newick tree"
     nullok: "Y"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "Y"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: treeprint [
     additional: "Y"
     default: "Y"
     information: "Print out tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

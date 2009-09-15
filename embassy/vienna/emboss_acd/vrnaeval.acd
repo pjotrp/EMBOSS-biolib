@@ -15,12 +15,14 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "dna"
+    relations: "EDAM: Pure DNA sequence"                                   
   ]
 
   infile: constraintfile [
     parameter: "Y"
     information: "Vienna RNA structure constraints file"
     knowntype: "rna constraint"
+    relations:  "EDAM: Vienna RNA structure constraints"               
   ]
 
   infile: paramfile [
@@ -28,6 +30,7 @@ section: input [
     default: ""
     information: "Vienna RNA parameters file (optional)"
     knowntype: "rna parameter"
+    relations:  "EDAM: Vienna RNA parameters"                          
   ]
 
 endsection: input
@@ -40,21 +43,25 @@ section: advanced [
   float: temperature [
     default: "37.0"
     information: "Temperature"
+    relations: "EDAM: Generic float"                                       
   ]
 
   boolean: convert [
     default: "Y"
     information: "Convert T to U"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: tetraloop [
     default: "Y"
     information: "Stabilising energies for tetra-loops"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: circular [
     default: "N"
     information: "Circular RNA"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   list: energy [
@@ -68,6 +75,7 @@ section: advanced [
     information: "Method"
     help: "Rarely used option to fold sequences from the ABCD...
            alphabet"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: dangles [
@@ -82,11 +90,13 @@ section: advanced [
     delimiter: ","
     codedelimiter: ":"
     information: "Method"
+    relations: "EDAM: Generic string array"                                
   ]
 
   boolean: logml [
     default: "N"
     information: "Use log scale for multiloop energies"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: advanced
@@ -100,6 +110,7 @@ section: output [
     parameter: "Y"
     knowntype: "rnaeval output"
     information: "Vienna RNAeval output file"
+    relations:  "EDAM: Vienna RNA calculated energy"                   
   ]
 
 endsection: output

@@ -12,12 +12,14 @@ section: input [
   integer: spp [
     information: "Number of species"
     parameter: "Y"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   tree: intreefile [
     parameter: "Y"
     knowntype: "newick"
     information: "Phylip tree file"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
 endsection: input
@@ -35,6 +37,7 @@ section: additional [
     values: "a:Arbitary; u:User; s:Specify"
     information: "Initial tree"
     default: "Arbitary"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: format [
@@ -45,24 +48,28 @@ section: additional [
     values: "p:PHYLIP; n:NEXUS; x:XML"
     information: "Format to write trees"
     default: "p"
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: screenwidth [
     additional: "Y"
     default: "80"
     information: "Width of terminal screen in characters"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: vscreenwidth [
     additional: "Y"
     default: "80"
     information: "Width of plotting area in characters"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: screenlines [
     additional: "Y"
     default: "24"
     information: "Number of lines on screen"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: additional
@@ -77,6 +84,7 @@ section: output [
     extension: "treefile"
     knowntype: "newick tree"
     information: "Phylip tree output file"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
 endsection: output

@@ -14,6 +14,7 @@ section: input [
     type: "gapany"
     aligned: "Y"
     help: "File containing a sequence"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -27,6 +28,7 @@ section: required [
     standard: "Y"
     information: "Outgroup root"
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: outgnum [
@@ -34,11 +36,13 @@ section: required [
     minimum: "1"
     default: "1"
     information: "Number of the outgroup"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   toggle: thresh [
     default: "N"
     information: "Use Threshold parsimony"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: valthresh [
@@ -46,6 +50,7 @@ section: required [
     minimum: "1.0"
     default: "1.0"
     information: "Threshold value"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: required
@@ -59,17 +64,20 @@ section: additional [
     additional: "Y"
     information: "How many groups of 100 trees"
     default: "1000"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: howoften [
     additional: "Y"
     information: "How often to report, in trees"
     default: "100"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: simple [
     additional: "Y"
     information: "Branch and bound is simple"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional
@@ -84,42 +92,49 @@ section: output [
     default: "ednapenny.outfile"
     knowntype: "dnapenny output"
     information: "Phylip dnapenny program output file"
+    relations:  "EDAM: Phylip phylogenetic tree raw data"              
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print out the data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "N"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: steps [
     additional: "Y"
     default: "N"
     information: "Print out steps in each site"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: seqatnodes [
     additional: "Y"
     default: "N"
     information: "Print sequences at all nodes of tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: drawtree [
     additional: "Y"
     default: "Y"
     information: "Draw tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: trout [
     parameter: "Y"
     default: "Y"
     information: "Create a tree file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: treefile [
@@ -127,6 +142,7 @@ section: output [
     default: "ednapenny.treefile"
     information: "Phylip tree output file"
     knowntype: "newick tree"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
 endsection: output

@@ -28,6 +28,7 @@ section: input [
     default: "./"
     extension: "daf"
     knowntype: "domain alignment"
+    relations:  "EDAM: EMBASSY domain alignment file"                  
   ]
 
   matrixf: matrixfile [
@@ -37,6 +38,7 @@ section: input [
     help: "This option specifies the residue substitution matrix.
            Epprofile for Gribskov profiles or EBLOSUM62 otherwise."
     expected: "Epprofile for Gribskov type, or EBLOSUM62"
+    relations: "EDAM: Float comparison matrix"                             
   ]
 
 endsection: input
@@ -65,6 +67,7 @@ section: required [
            package), hidden Markov models (SAM-T2K package) and
            position-specific scoring matrices."
     button: "Y"
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: threshold [
@@ -76,6 +79,7 @@ section: required [
     help: "This option specifies the threshold reporting percentage.
            The threshold reporting percentage is used in the construction of
            the simple frequency matrix."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   float: gapopen [
@@ -88,6 +92,7 @@ section: required [
            default value assumes you are using the EBLOSUM62 matrix for
            protein sequences, and the EDNAFULL matrix for nucleotide
            sequences."
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: gapextend [
@@ -100,6 +105,7 @@ section: required [
            Usually you will expect a few long gaps rather than many short
            gaps, so the gap extension penalty should be lower than the gap
            penalty."
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: required
@@ -121,6 +127,7 @@ section: output [
            Markov models (SAM-T2K package) and position-specific scoring
            matrices."
     knowntype: "discriminator"
+    relations:  "EDAM: Protein secondary database record"              
   ]
 
 endsection: output

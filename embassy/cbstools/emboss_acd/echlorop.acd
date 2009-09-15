@@ -13,6 +13,7 @@ section: input [
     parameter: "Y"
     type: "any"
     aligned: "Y"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -25,6 +26,7 @@ section: advanced [
   boolean: full [
     default: "N"
     information: "Show full output"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: advanced
@@ -37,6 +39,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "echlorop output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

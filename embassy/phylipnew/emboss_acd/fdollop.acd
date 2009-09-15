@@ -15,6 +15,7 @@ section: input [
     help: "File containing one or more data sets"
     knowntype: "discrete characters"
     information: "Phylip character discrete states file"
+    relations:  "EDAM: PHYLIP discrete states file"                    
   ]
 
   tree: intreefile [
@@ -22,6 +23,7 @@ section: input [
     nullok: "Y"
     knowntype: "newick"
     information: "Phylip tree file (optional)"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
   properties: weights [
@@ -31,6 +33,7 @@ section: input [
     nullok: "Y"
     length: "$(infile.discretelength)"
     size: "1"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
   properties: ancfile [
@@ -40,6 +43,7 @@ section: input [
     nullok: "Y"
     length: "$(infile.discretelength)"
     size: "1"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
   ]
 
 endsection: input
@@ -57,6 +61,7 @@ section: additional [
     values: "d:Dollo; p:Polymorphism"
     information: "Parsimony method"
     default: "d"
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: njumble [
@@ -64,6 +69,7 @@ section: additional [
     default: "0"
     minimum: "0"
     information: "Number of times to randomise"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: seed [
@@ -73,6 +79,7 @@ section: additional [
     maximum: "32767"
     minimum: "1"
     default: "1"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   float: threshold [
@@ -80,6 +87,7 @@ section: additional [
     minimum: "0"
     information: "Threshold value"
     default: "$(infile.discretesize)"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: additional
@@ -93,12 +101,14 @@ section: output [
     parameter: "Y"
     knowntype: "dollop output"
     information: "Phylip dollop program output file"
+    relations:  "EDAM: Phylip phylogenetic tree raw data"              
   ]
 
   toggle: trout [
     additional: "Y"
     default: "Y"
     information: "Write out trees to tree file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: outtreefile [
@@ -107,36 +117,42 @@ section: output [
     information: "Phylip tree output file (optional)"
     knowntype: "newick tree"
     nullok: "Y"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "Y"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: treeprint [
     additional: "Y"
     default: "Y"
     information: "Print out tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: ancseq [
     additional: "Y"
     default: "N"
     information: "Print states at all nodes of tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: stepbox [
     additional: "Y"
     default: "N"
     information: "Print out steps in each character"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

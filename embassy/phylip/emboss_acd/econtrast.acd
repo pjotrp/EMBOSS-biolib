@@ -13,18 +13,21 @@ section: input [
     parameter: "Y"
     knowntype: "continuous character frequency"
     information: "Phylip continuous character frequency file"
+    relations:  "EDAM: PHYLIP phylogenetic character frequencies file" 
   ]
 
   infile: treefile [
     parameter: "Y"
     knowntype: "newick tree"
     information: "Phylip tree file"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
   toggle: multsets [
     standard: "Y"
     default: "N"
     information: "Analyze multiple data sets"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: datasets [
@@ -32,6 +35,7 @@ section: input [
     minimum: "1"
     default: "1"
     information: "How many data sets"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: input
@@ -46,24 +50,28 @@ section: output [
     default: "econtrast.outfile"
     knowntype: "contrast output"
     information: "Phylip contrast program output file"
+    relations:  "EDAM: Phylogenetic character contrast data"           
   ]
 
   boolean: corplusreg [
     additional: "Y"
     default: "Y"
     information: "Print out correlations and regressions"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print out the data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "N"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

@@ -16,6 +16,7 @@ section: input [
     type: "gapany"
     aligned: "N"
     nullok: "Y"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -28,11 +29,13 @@ section: additional [
   boolean: gcgmode [
     information: "Use GCG Unix mode for keyboard shortcuts and commands"
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
   
   boolean: protein [
     information: "Sequences are protein"
     default: "$(acdprotein)"
+    relations: "EDAM: Generic boolean"                                     
   ]
   
 endsection: additional
@@ -51,6 +54,7 @@ section: output [
 
   seqoutset: outseq [
     parameter: "Y"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: output

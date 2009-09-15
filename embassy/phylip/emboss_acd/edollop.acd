@@ -13,12 +13,14 @@ section: input [
     parameter: "Y"
     information: "Phylip dollop program input file"
     knowntype: "dollop input"
+    relations:  "EDAM: PHYLIP discrete states file"                    
   ]
 
   toggle: multsets [
     additional: "Y"
     default: "N"
     information: "Analyze multiple data sets"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: datasets [
@@ -26,12 +28,14 @@ section: input [
     minimum: "2"
     default: "2"
     information: "Number of sets"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: ancest [
     additional: "Y"
     default: "N"
     information: "Use ancestral states in input file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: input
@@ -45,29 +49,34 @@ section: required [
     additional: "Y"
     default: "Y"
     information: "Search for best tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: random [
     additional: "$(besttree)"
     default: "N"
     information: "Randomize input order of species"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: randseed [
     standard: "$(random)"
     default: "3"
     information: "Random number seed (must be odd)"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: randtimes [
     standard: "$(random)"
     default: "3"
     information: "How many times to randomise"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   toggle: thresh [
     default: "N"
     information: "Use Threshold parsimony"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: valthresh [
@@ -75,6 +84,7 @@ section: required [
     minimum: "1.0"
     default: "1.0"
     information: "Threshold value"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: required
@@ -88,6 +98,7 @@ section: additional [
     additional: "Y"
     default: "Y"
     information: "Do Dollo (else Polymorphism)"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional
@@ -102,42 +113,49 @@ section: output [
     default: "edollop.outfile"
     knowntype: "dollop output"
     information: "Phylip dollop program output file"
+    relations:  "EDAM: Phylip phylogenetic tree raw data"              
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print out the data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "N"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: steps [
     additional: "Y"
     default: "N"
     information: "Print out steps in each site"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: statesatnodes [
     additional: "Y"
     default: "N"
     information: "Print states at all nodes of tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: drawtree [
     additional: "Y"
     default: "Y"
     information: "Draw tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: trout [
     parameter: "Y"
     default: "Y"
     information: "Create a tree file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: treefile [
@@ -145,6 +163,7 @@ section: output [
     default: "edollop.treefile"
     information: "Phylip tree output file"
     knowntype: "newick tree"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
 endsection: output

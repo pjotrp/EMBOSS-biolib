@@ -17,6 +17,7 @@ section: input [
     parameter: "Y"
     information: "Phylip contml program input file"
     knowntype: "contml input"
+    relations:  "EDAM: PHYLIP phylogenetic character frequencies file" 
   ]
 
   toggle: continuous [
@@ -24,12 +25,14 @@ section: input [
     default: "N"
     information: "Continuous characters (else Gene
                   frequencies)"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: all [
     standard: "@(!$(continuous))"
     default: "N"
     information: "Input file has all alleles at each locus"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: input
@@ -43,36 +46,42 @@ section: required [
     standard: "Y"
     default: "Y"
     information: "Search for best tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: lengths [
     standard: "@(!$(besttree))"
     default: "N"
     information: "Use lengths from user trees"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: global [
     standard: "$(besttree)"
     default: "N"
     information: "Global rearrangements"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: random [
     standard: "$(besttree)"
     default: "N"
     information: "Randomize input order of species"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: randseed [
     standard: "$(random)"
     default: "3"
     information: "Random number seed (must be odd)"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   toggle: og [
     standard: "Y"
     information: "Outgroup root"
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: outgnum [
@@ -80,12 +89,14 @@ section: required [
     minimum: "1"
     default: "1"
     information: "Number of the outgroup"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   toggle: multsets [
     standard: "Y"
     default: "N"
     information: "Analyze multiple data sets"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: datasets [
@@ -93,6 +104,7 @@ section: required [
     minimum: "1"
     default: "1"
     information: "How many data sets"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: required
@@ -114,30 +126,35 @@ section: output [
     default: "econtml.outfile"
     knowntype: "contml output"
     information: "Phylip contml program output file"
+    relations:  "EDAM: Phylip phylogenetic tree raw data"              
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print out the data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "N"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: drawtree [
     additional: "Y"
     default: "Y"
     information: "Draw tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: trout [
     parameter: "Y"
     default: "Y"
     information: "Create a tree file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: treefile [
@@ -145,6 +162,7 @@ section: output [
     default: "econtml.treefile"
     information: "Phylip tree output file"
     knowntype: "Newick tree"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

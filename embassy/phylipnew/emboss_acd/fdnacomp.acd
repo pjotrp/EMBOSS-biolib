@@ -14,6 +14,7 @@ section: input [
     type: "gapdnaphylo"
     aligned: "Y"
     help: "File containing one or more sequence alignments"
+    relations: "EDAM: DNA sequence record"                                 
   ]
 
   tree: intreefile [
@@ -21,6 +22,7 @@ section: input [
     nullok: "Y"
     knowntype: "newick"
     information: "Phylip tree file (optional)"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
   properties: weights [
@@ -29,6 +31,7 @@ section: input [
     length: "$(sequence.length)"
     nullok: "Y"
     knowntype: "weights"
+    relations:  "EDAM: PHYLIP discrete states file"                    
   ]
 
 endsection: input
@@ -44,6 +47,7 @@ section: additional [
     default: "0"
     maximum: "$(sequence.count)"
     information: "Species number to use as outgroup"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: njumble [
@@ -51,6 +55,7 @@ section: additional [
     information: "Number of times to randomise"
     minimum: "0"
     default: "0"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: seed [
@@ -60,6 +65,7 @@ section: additional [
     minimum: "1"
     maximum: "32767"
     default: "1"
+    relations: "EDAM: Generic integer"                                     
   ]
 
 endsection: additional
@@ -73,12 +79,14 @@ section: output [
     parameter: "Y"
     knowntype: "dnacomp output"
     information: "Phylip dnacomp program output file"
+    relations:  "EDAM: Phylip phylogenetic tree raw data"              
   ]
 
   toggle: trout [
     additional: "Y"
     default: "Y"
     information: "Write out trees to tree file"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   outfile: outtreefile [
@@ -87,36 +95,42 @@ section: output [
     information: "Phylip tree output file (optional)"
     knowntype: "newick tree"
     nullok: "Y"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "Y"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: treeprint [
     additional: "Y"
     default: "Y"
     information: "Print out tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: stepbox [
     additional: "Y"
     default: "N"
     information: "Print steps & compatibility at sites"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: ancseq [
     additional: "Y"
     default: "N"
     information: "Print sequences at all nodes of tree"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

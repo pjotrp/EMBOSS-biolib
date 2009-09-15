@@ -13,6 +13,7 @@ section: input [
     parameter: "Y"
     type: "any"
     aligned: "Y"
+    relations: "EDAM: Sequence record"                                     
   ]
 
 endsection: input
@@ -33,6 +34,7 @@ section: additional [
     additional: "Y"
     default: "0.0"
     information: "Report only scores above this value"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: additional
@@ -45,16 +47,19 @@ section: advanced [
   boolean: plot [
     default: "N"
     information: "Produce graphics"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: two [
     default: "N"
     information: "Run generic predictions only"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: kinase [
     default: "N"
     information: "Run kinase-specific only"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   list: residue [
@@ -66,21 +71,25 @@ section: advanced [
     delimiter: ","
     codedelimiter: ":"
     information: "Residues to predict with"
+    relations: "EDAM: Generic string array"                                
   ]
 
   boolean: gff [
     default: "N"
     information: "Produce gff output"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: best [
     default: "N"
     information: "Report only the highest score for each residue"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: addseq [
     default: "N"
     information: "Add sequence to gff output"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: advanced
@@ -93,6 +102,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "enetphos output"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: output

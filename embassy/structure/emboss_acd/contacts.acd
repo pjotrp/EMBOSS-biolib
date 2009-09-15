@@ -29,6 +29,7 @@ section: input [
     default: "./"
     extension: "ccf"
     knowntype: "protein clean coordinates"
+    relations:  "EDAM: Protein tertiary structure"                     
   ]
 
   datafile: vdwfile [
@@ -38,6 +39,7 @@ section: input [
            der Waals radii of atoms for different amino acid residues."
     default: "Evdw.dat"
     knowntype: "van der waals radii"
+    relations:  "EDAM: Amino acid van der Waals data"                  
   ]
 
 endsection: input
@@ -56,6 +58,7 @@ section: required [
            atom of the second residue. The threshold contact distance is a
            user-defined distance with a default value of 1 Angstrom."
     default: "1.0"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: required
@@ -73,6 +76,7 @@ section: additional [
            is used to name the file. Otherwise, the output files have the
            same names as the input files."
     default: "Y"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: skip [
@@ -80,6 +84,7 @@ section: additional [
     information: "Whether to calculate contacts between residue
                   adjacent in sequence."
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   float: ignore [
@@ -90,6 +95,7 @@ section: additional [
            checked for for that residue pair . This speeds the calculation up
            considerably."
     default: "20.0"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: additional
@@ -111,6 +117,7 @@ section: output [
     default: "./"
     extension: "con"
     knowntype: "contact"
+    relations:  "EDAM: Amino acid contact map"                         
   ]
 
   outfile: conlogfile [
@@ -120,6 +127,7 @@ section: output [
     help: "The log file contains messages about any errors arising
            while contacts ran."
     knowntype: "domainatrix log"
+    relations:  "EDAM: Domainatrix log file"                           
   ]
 
 endsection: output

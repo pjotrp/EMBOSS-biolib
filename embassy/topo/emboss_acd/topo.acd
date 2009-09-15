@@ -12,6 +12,7 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "protein"
+    relations: "EDAM: Pure protein sequence"                               
   ]
 
 endsection: input
@@ -31,18 +32,21 @@ section: required [
            24-45, 56-78 \
            1:45, 67=99;765..888 \
            1,5,8,10,23,45,57,99"
+    relations: "EDAM: Generic integer range"                               
   ]
 
   boolean: membrane [
     standard: "Y"
     information: "First membrane from the outside"
     default: "Y"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: signature [
     standard: "Y"
     default: "N"
     information: "Are there any signature areas to be marked"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   range: sigrange [
@@ -53,6 +57,7 @@ section: required [
     help: "Examples of ranges specifications are: \
            10-10 CF, 56-78 SY\ 1:45 SR, 67=99 HY;765..888 SF \
            1,5,HG,8,10,HY,23,45,SR,57,99,UG"
+    relations: "EDAM: Generic integer range"                               
   ]
 
 endsection: required
@@ -87,6 +92,7 @@ section: additional [
     help: "Code representing shape and colour for cys \
            i.e. SR square red, HY hexagon yellow \
            CF circle NOfill, UG up arrow green"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: glysymbol [
@@ -115,6 +121,7 @@ section: additional [
                   outside of membrane"
     help: "Symbol to display N-glycosylation sites outside of membrane
            see cyssymbol for examples"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: acidicaa [
@@ -139,6 +146,7 @@ section: additional [
     delimiter: ","
     codedelimiter: ":"
     information: "Symbol to display acidic amino acids"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: basicaa [
@@ -163,6 +171,7 @@ section: additional [
     delimiter: ","
     codedelimiter: ":"
     information: "Symbol to display basic amino acids"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: amineaa [
@@ -187,6 +196,7 @@ section: additional [
     delimiter: ","
     codedelimiter: ":"
     information: "Symbol to display amine amino acids"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: ohaa [
@@ -211,6 +221,7 @@ section: additional [
     delimiter: ","
     codedelimiter: ":"
     information: "Symbol to display OH- amino acids"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: araa [
@@ -235,6 +246,7 @@ section: additional [
     delimiter: ","
     codedelimiter: ":"
     information: "Symbol to display aromatic amino acids"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: proline [
@@ -259,12 +271,14 @@ section: additional [
     delimiter: ","
     codedelimiter: ":"
     information: "Symbol to display prolines"
+    relations: "EDAM: Generic string array"                                
   ]
 
   boolean: draft [
     additional: "Y"
     default: "N"
     information: "Is this a draft plot"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional
@@ -277,6 +291,7 @@ section: output [
   graph: graph [
     standard: "Y"
     gdesc: "Membrane topology"
+    relations: "EDAM: EMBOSS graph file"                                   
   ]
 
 endsection: output

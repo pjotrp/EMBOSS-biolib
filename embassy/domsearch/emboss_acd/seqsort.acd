@@ -26,6 +26,7 @@ section: input [
     default: "./"
     extension: "dhf"
     knowntype: "domain hits"
+    relations:  "EDAM: EMBASSY domain hits report"                     
   ]
 
 endsection: input
@@ -46,6 +47,7 @@ section: required [
            replaced by a hit that is produced from merging the two
            overlapping hits."
     default: "10"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   toggle: dofamilies [
@@ -54,6 +56,7 @@ section: required [
     help: "This option specifies to write a domain families file. If
            this option is set a domain families file is written."
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   toggle: doambiguities [
@@ -63,6 +66,7 @@ section: required [
            file. If this option is set a domain ambiguities file is
            written."
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: required
@@ -85,6 +89,7 @@ section: output [
     default: "./"
     extension: "dhf"
     knowntype: "domain hits"
+    relations:  "EDAM: EMBASSY domain hits report"                     
   ]
 
   outfile: hitsfile [
@@ -104,6 +109,7 @@ section: output [
     knowntype: "Domain hits"
     default: "fam.dhf"
     nullok: "Y"
+    relations: "EDAM: Free text file"                                      
   ]
 
   outfile: ambigfile [
@@ -123,6 +129,7 @@ section: output [
     knowntype: "domain ambiguities"
     default: "oth.dhf"
     nullok: "Y"
+    relations:  "EDAM: EMBASSY domain hits report"                     
   ]
 
 endsection: output

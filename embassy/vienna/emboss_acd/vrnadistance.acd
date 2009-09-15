@@ -16,6 +16,7 @@ section: input [
     parameter: "Y"
     information: "Vienna RNA structures file"
     knowntype: "rna structures"
+    relations:  "EDAM: Vienna RNA secondary structure record"          
   ]
 
 endsection: input
@@ -38,6 +39,7 @@ section: advanced [
     codedelimiter: ":"
     information: "Distance"
     help: "Distance types to calculate"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: compare [
@@ -52,17 +54,20 @@ section: advanced [
     codedelimiter: ":"
     information: "Comparison method"
     help: "Distance types to calculate"
+    relations: "EDAM: Generic string array"                                
   ]
 
   boolean: schapiro [
     default: "N"
     information: "Use cost matrix for comparing coarse
                   structures"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: doalignment [
     default: "N"
     information: "Alignment showing matching substructures"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: advanced
@@ -76,6 +81,7 @@ section: output [
     parameter: "Y"
     knowntype: "rnafold output"
     information: "Vienna RNAfold output file"
+    relations:  "EDAM: Vienna RNA secondary structure record"          
   ]
 
 endsection: output

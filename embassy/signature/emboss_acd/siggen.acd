@@ -28,6 +28,7 @@ section: input [
     default: "./"
     extension: "daf"
     knowntype: "domain alignment"
+    relations:  "EDAM: EMBASSY domain alignment file"                  
   ]
 
   list: mode [
@@ -53,6 +54,7 @@ section: input [
            randomised signature. A signature of a specified sparsity is
            sampled at random from the alignment."
     information: "Select number"
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: conoption [
@@ -70,6 +72,7 @@ section: input [
     help: "This option specifies the structure-based scoring scheme.
            SIGGEN provides 2 structure-based scoring schemes (plus a
            combination method) that are used to score the input alignment."
+    relations: "EDAM: Generic string array"                                
   ]
 
   directory: conpath [
@@ -84,6 +87,7 @@ section: input [
     default: "./"
     extension: "con"
     knowntype: "contact"
+    relations:  "EDAM: Amino acid contact map"                         
   ]
 
   directory: cpdbpath [
@@ -101,6 +105,7 @@ section: input [
     default: "./"
     extension: "ccf"
     knowntype: "domain clean coordinates"
+    relations:  "EDAM: Protein tertiary structure"                     
   ]
 
   list: seqoption [
@@ -116,6 +121,7 @@ section: input [
     help: "This option specifies the sequence-based scoring scheme.
            SIGGEN provides 2 sequence-based scoring schemes that are used to
            score the input alignment."
+    relations: "EDAM: Generic string array"                                
   ]
 
   matrixf: datafile [
@@ -125,6 +131,7 @@ section: input [
            substitution matrix is used by the sequence-based scoring
            schemes."
     default: "EBLOSUM62"
+    relations: "EDAM: Float comparison matrix"                             
   ]
 
 endsection: input
@@ -145,6 +152,7 @@ section: required [
            will contain 25 key residues or signature positions, that
            correspond to the top 25% highest scoring alignment positions."
     default: "10"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: wsiz [
@@ -160,6 +168,7 @@ section: required [
            (window size is identified by the WSIZ record in the signature
            output file)."
     default: "0"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   toggle: filtercon [
@@ -170,6 +179,7 @@ section: required [
            forming few contacts only during the selection of signature
            positions."
     default: "N"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: conthresh [
@@ -179,6 +189,7 @@ section: required [
            controls the selection of key positions for the structure-based
            scoring scheme (number of contacts)."
     default: "10"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: filterpsim [
@@ -188,6 +199,7 @@ section: required [
     help: "This option specifies whether to disregard alignment sites
            that were not aligned satisfactorily (STAMP alignments only)."
     default: "Y"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: required
@@ -207,6 +219,7 @@ section: output [
     extension: "sig"
     knowntype: "domainatrix signature"
     information: "Domainatrix signature file output directory"
+    relations:  "EDAM: Domainatrix signature record"                   
   ]
 
 endsection: output

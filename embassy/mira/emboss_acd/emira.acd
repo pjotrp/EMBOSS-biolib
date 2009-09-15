@@ -21,6 +21,7 @@ section: input [
     knowntype: "mira parameters"
     nullok: "Y"
     trydefault: "Y"
+    relations:                                                 
   ]
 
 
@@ -37,6 +38,7 @@ section: input [
            PHD or CAF files. The default is not to specify the
            type of input file."
 
+    relations: "EDAM: Generic string array"                                
   ]
 
   directory: expdir [
@@ -45,6 +47,7 @@ section: input [
     help: "Defines the directory where mira should search for experiment
            files (EXP)."
     knowntype: "exp file"
+    relations:  "EDAM: EXP assembly project file"                      
   ]
 
   directory: scfdir [
@@ -53,6 +56,7 @@ section: input [
     help: "Defines the directory where mira should search for SCF
            files"
     knowntype: "scf file"
+    relations:  "EDAM: SCF assembly project file"                      
   ]
 
   
@@ -66,6 +70,7 @@ section: input [
     nullok: "Y"
     trydefault: "Y"
     knowntype: "exp file of filenames"
+    relations:  "EDAM: List of file names"                             
   ]
 
   infile: fpifile [
@@ -76,6 +81,7 @@ section: input [
     nullok: "Y"
     trydefault: "Y"
     knowntype: "phd file of filenames"
+    relations:  "EDAM: List of file names"                             
   ]
 
   infile: pifile [
@@ -85,6 +91,7 @@ section: input [
     nullok: "Y"
     trydefault: "Y"
     knowntype: "phd sequences"
+    relations:  "EDAM: PHD assembly project file"                      
   ]
 
   infile: faifile [
@@ -94,6 +101,7 @@ section: input [
     nullok: "Y"
     trydefault: "Y"
     knowntype: "dna fasta set"
+    relations:  "EDAM: Nucleotide FASTA record"                        
   ]
 
   infile: fqifile [
@@ -106,6 +114,7 @@ section: input [
     nullok: "Y"
     trydefault: "Y"
     knowntype: "sequence read quality"
+    relations:  "EDAM: Sequence read quality scores"                   
   ]
 
   infile: cifile [
@@ -116,6 +125,7 @@ section: input [
     nullok: "Y"
     trydefault: "Y"
     knowntype: "CAF project"
+    relations: "EDAM: Free text file"                                      
   ]
 
   infile: sdifile [
@@ -126,6 +136,7 @@ section: input [
     nullok: "Y"
     trydefault: "Y"
     knowntype: "mira strain data"
+    relations:  "EDAM: MIRA strain data file"                          
   ]
 
   infile: xtiifile [
@@ -137,6 +148,7 @@ section: input [
     nullok: "Y"
     trydefault: "Y"
     knowntype: "sequence trace information"
+    relations:  "EDAM: MIRA sequence trace information file"           
   ]
 
 endsection: input
@@ -159,6 +171,7 @@ section: required [
           would generate MyProject_out.fasta and
           MyProject_out.fasta.qual."
     knowntype: "file basename"
+    relations:  "EDAM: File name"                                      
   ]
 
 
@@ -188,6 +201,7 @@ section: advanced [
            extension and vector remnant clipping. Accurate is still slower
            than the normal mode but should be used for genomes that pose a
            problem to the normal mode."
+    relations: "EDAM: Generic string array"                                
   ]
 
 
@@ -203,6 +217,7 @@ section: advanced [
     help: "Work like the -genome switches except they are to be used
            when performing mapping assemblies against given backbone
            sequences."
+    relations: "EDAM: Generic string array"                                
   ]
 
 
@@ -226,6 +241,7 @@ section: advanced [
            are more optimised to cope with the last remnants of wrongly
            preprocessed sequences than with sequences having had no
            pre-processing at all."
+    relations: "EDAM: Generic string array"                                
   ]
 
   boolean: highlyrepetitive [
@@ -234,6 +250,7 @@ section: advanced [
     help: "A modifier switch for genome data that is deemed to be highly
            repetitive. The assemblies will run slower due to more iterative
            cycles that give mira a chance to resolve nasty repeats."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: highqualitydata [
@@ -243,6 +260,7 @@ section: advanced [
            exceptional quality. mira will then bump up a few quality parameters
            which should lead to less false positives in the repeat and SNP
            detection routines."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: estmode [
@@ -251,6 +269,7 @@ section: advanced [
     help: "Switches mira to a good initial preset for assembling EST data.
            Note that this is not needed (and even counterproductive) when
            used with miraEST."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: horrid [
@@ -266,6 +285,7 @@ section: advanced [
            2.000 reads that all seem to align partly to each other but have
            different repetitive structures or (b) EST clusters with a few
            thousand almost similar reads."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: borg [
@@ -276,6 +296,7 @@ section: advanced [
            as possible. Will probably slow down the assembly process and use
            more memory. 'We are MIRA of borg. You will be assembled,
            resistance is futile!'"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 # General switches
@@ -300,6 +321,7 @@ section: advanced [
            from a phd file ('mira_in.phd') or to load a project from a CAF
            file ('mira_in.caf') and assemble or eventually reassemble it.
            N.B. fofnphd is not currently available."
+    relations: "EDAM: Generic string array"                                
   ]
 
   boolean: fo [
@@ -309,6 +331,7 @@ section: advanced [
            and no assembly output files will be produced. Instead, the project
            files will only be loaded. This switch is useful for checking
            consistency of input files."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: mxti [
@@ -323,6 +346,7 @@ section: advanced [
            Please note, quality clippings given here will override quality
            clippings loaded earlier or performed by mira. Minimum clippings
            will still be made by the program, though."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   list: rns [
@@ -343,6 +367,7 @@ section: advanced [
            'somename.[pqsfrw][12][bckdeflmnpt][a|b|c|...'
            (e.g. U13a08f10.p1ca), TIGR scheme is
            'somenameTF*|TR*|TA*' (e.g. GCPBN02TF or GCPDL68TABRPT103A58B)."
+    relations: "EDAM: Generic string array"                                
   ]
 
   list: eq [
@@ -359,6 +384,7 @@ section: advanced [
            sources. Normally takes effect only when these are not present
            in the format of the load_job project (EXP and FASTA can have
            them, CAF and PHD must have them)."
+    relations: "EDAM: Generic string array"                                
   ]
 
   boolean: eqo [
@@ -370,6 +396,7 @@ section: advanced [
            in case some post-processing software fiddles around with the
            quality values of the input file but one wants to have the
            original ones."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: droeqe [
@@ -382,6 +409,7 @@ section: advanced [
 	   the qualities it had before trying to load the external
 	   qualities (either default qualities or the ones loaded from the
 	   original source)."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: uti [
@@ -394,6 +422,7 @@ section: advanced [
            Information on insert sizes can be given via the SI tag in EXP
            files (for each read pair individually), or for the whole project
            using dismin and dismax"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: ess [
@@ -409,6 +438,7 @@ section: advanced [
            with different setting for subsequent steps by reusing the results
            of the previous steps and directly starting with step two or
            three."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: ps [
@@ -417,6 +447,7 @@ section: advanced [
     help: "Controls whether date and time are printed out during the assembly.
            Suppressing it isn't useful in normal operation, only when
            debugging or benchmarking."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 
@@ -429,6 +460,7 @@ section: advanced [
            of the read, then the strain name of the organism the read comes
            from. It is used by the program to differentiate different types
            of SNPs appearing in organisms and classifying them."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: lb [
@@ -441,6 +473,7 @@ section: advanced [
     already possibly edited) assembly iterations, or to make a comparative
     assembly of two very closely related organisms. Please read 'very closely
     related' as in 'only SNP mutations or short indels present'."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 
@@ -458,6 +491,7 @@ section: advanced [
           the same strain as the reads to assemble, set to 1. If
           backbones are a different strain, then set sbuib to 1 lower
           than nop (example - nop 4 and sbuip 3)."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   string: bsn [
@@ -465,6 +499,7 @@ section: advanced [
     information: "Backbone strain name"
     help: "Defines the name of the strain that the backbone sequences have."
     knowntype: "strain name"
+    relations:  "EDAM: Strain name"                                    
   ]
 
   list: bft [
@@ -483,6 +518,7 @@ section: advanced [
            files, also named .gbk) files are loaded, the features within
            these files are automatically transformed into Staden-compatible
            tags and get passed through the assembly."
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: brl [
@@ -494,6 +530,7 @@ section: advanced [
            Extremely repetitive sequences may require reducing the
            default value, but the default value should work well in 99.9%
            of all cases."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: bbq [
@@ -506,6 +543,7 @@ section: advanced [
            format or when FASTA is used without .qual files). A value of
            -1 causes mira to use the same default quality for backbones as
            for reads."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: abnc [
@@ -516,6 +554,7 @@ section: advanced [
            this option is set to 'N', the reads that cannot be assembled
            into existing contigs are put as singlets into the assembly,
            not forming new contigs."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 # Assembly
@@ -528,6 +567,7 @@ section: advanced [
            assembly. Shorter sequences will be filtered out at the
            beginning of the process and won't be present in the final
            project."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: nop [
@@ -544,6 +584,7 @@ section: advanced [
            useful for projects containing many repetitive elements. See also
            -rbl and -mr for parameters that affect the assembly and
            disentanglement of possible repeats."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: sep [
@@ -556,6 +597,7 @@ section: advanced [
            (-ure) or when possible vector leftovers are to be clipped (-pvc).
            Setting this option to 'Y' is highly recommended, setting it to
            'N' is only for quick and dirty assemblies."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: rbl [
@@ -565,6 +607,7 @@ section: advanced [
     help: "Defines the maximum number of times a contig can be rebuilt
            during main assembly passes (-nop) if misassemblies, due to
            possible repeats, are found."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: sd [
@@ -580,6 +623,7 @@ section: advanced [
            recommended for assemblies of ESTs as one might lose splice
            variants with that. A minimum number of two assembly passes
            (-nop) must be run for this option to take effect."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: sdlpo [
@@ -588,6 +632,7 @@ section: advanced [
     help: "Defines whether the spoiler detection algorithms are run only for
     the last pass or for all passes (-nop). Takes effect only if spoiler
     detection (-sd) is on."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: bdq [
@@ -596,6 +641,7 @@ section: advanced [
     default: "10"
     help: "Defines the default base quality of reads that have no quality
            read from a file."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: ugpf [
@@ -616,6 +662,7 @@ section: advanced [
            cases), while the EST algorithm does not work so well on genomes.
            If in doubt, leaveas 'Y' for genome projects and set to 'N' for
            EST projects."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 
@@ -627,6 +674,7 @@ section: advanced [
            hundreds or thousands of reads. This switch lets MIRA save a lot
            of computational time when aligning those extremely high coverage
            areas (but only there), at the expense of some accuracy."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: esspd [
@@ -635,6 +683,7 @@ section: advanced [
     default: "500"
     help: "Defines the number of potential partners a read must have for
            MIRA switching into emergency search stop mode for that read."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: umcbt [
@@ -644,6 +693,7 @@ section: advanced [
            build one contig. Set this to 'Y' in EST assemblies where you
            think that extremely high coverages occur. Less useful for
            assembly of genomic sequences."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: bts [
@@ -652,6 +702,7 @@ section: advanced [
     default: "10000"
     help: "Depending on -umcbt above, this number defines the time in seconds
            alloted to building one contig."
+    relations: "EDAM: Generic integer"                                     
   ]
 
 # Data Processing
@@ -663,6 +714,7 @@ section: advanced [
            build one contig. Set this to 'Y' in EST assemblies where you
            think that extremely high coverages occur. Less useful for
            assembly of genomic sequences."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: rewl [
@@ -672,6 +724,7 @@ section: advanced [
     help: "Only takes effect when -ure is set to 'Y'. The read extension
            routines use a sliding window approach on Smith-Waterman
            alignments. This parameter defines the window length."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: rewme [
@@ -682,6 +735,7 @@ section: advanced [
            routines use a sliding window approach on Smith-Waterman alignments.
            This parameter defines the number maximum number of errors
            (disagreements) between two alignments in the given window."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: feip [
@@ -694,6 +748,7 @@ section: advanced [
            in which the read extension routines are called. The default of
            0 tells mira to extend the reads the first time before the
            first assembly pass."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: leip [
@@ -705,6 +760,7 @@ section: advanced [
            pass (see -nop). This parameter defines the last pass in which the
            read extension routines are called. The default of 0 tells mira
            to extend the reads the last time before the first assembly pass."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: tpae [
@@ -716,6 +772,7 @@ section: advanced [
            The assembler will not use these stretches for critical
            operations. Additionally, the tags do provide a good visual
            anchor when looking at the assembly with different programs."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: pbwl [
@@ -726,6 +783,7 @@ section: advanced [
            length within which all bases (except the maximum number of
            errors allowed) must be either A or T to be considered a
            polybase stretch."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: pbwme [
@@ -736,6 +794,7 @@ section: advanced [
            number of errors allowed in a given window length such that a
            stretch is considered to be a polybase stretch. The distribution
            of these errors is not important."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: pbwgd [
@@ -746,6 +805,7 @@ section: advanced [
            of bases from the end of a sequence (if masked, from the end of
            the masked area) within which a polybase stretch is looked for
            without finding one."
+    relations: "EDAM: Generic integer"                                     
   ]
 
 # Clipping
@@ -761,6 +821,7 @@ section: advanced [
            know (or think) that your data contains a lot of repeats and
            the option below to fine tune the clipping behaviour does not
            give the expected results."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: pvcmla [
@@ -779,6 +840,7 @@ section: advanced [
            threshold then the clip is NOT performed.
            Setting the value to 0 turns off the threshold i.e. clips are then
 	   always performed if a potential vector is found."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: qc [
@@ -793,6 +855,7 @@ section: advanced [
 	   bases as useful sequence. Note that the bases clipped away here
 	   can still be used afterwards if there is enough evidence
 	   supporting their correctness when the option -ure is turned on."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: qcmq [
@@ -804,6 +867,7 @@ section: advanced [
            to be accepted. Please be cautious and don't use extreme
 	   values here, because then the clipping will be too lax or too
 	   harsh. Values below 15 and higher than 35 are disallowed."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: qcwl [
@@ -811,6 +875,7 @@ section: advanced [
     minimum: "10"
     default: "30"
     help: "This is the length of a window in bases for the quality clip."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: mbc [
@@ -826,6 +891,7 @@ section: advanced [
 	   to handle this too. mira will look at the start and end of each
 	   sequence to see whether there are masked bases that should be
 	   'clipped'."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: mbcgs [
@@ -835,6 +901,7 @@ section: advanced [
     help: "While performing the clip of masked bases, mira will look if it
            can merge larger chunks of masked bases that are a maximum of
 	   -mbcgs apart."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: mbcmfg [
@@ -844,6 +911,7 @@ section: advanced [
     help: "While performing the clip of masked bases at the start of a
            sequence, mira will allow up to this number of unmasked bases
 	   in front of a masked stretch."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: mbcmeg [
@@ -853,6 +921,7 @@ section: advanced [
     help: "While performing the clip of masked bases at the end of a
            sequence, mira will allow up to this number of unmasked bases
 	   behind a masked stretch."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: emlc [
@@ -861,6 +930,7 @@ section: advanced [
     help: "If on, ensures a minimum left clip on each read according to the
     parameters in -mlcr & -smlc"
 
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: mlcr [
@@ -869,6 +939,7 @@ section: advanced [
     default: "25"
     help: "If -emlc is 'Y', checks whether there is a left clip whose
            length is at least the size specified here."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: smlc [
@@ -878,6 +949,7 @@ section: advanced [
     help: "If -emlc is 'Y' and the actual left clip is < -mlcr, then set
            the left clip of read to the value given here."
 
+    relations: "EDAM: Generic integer"                                     
   ]
 
 # Skim
@@ -891,6 +963,7 @@ section: advanced [
 	   The higher the value the faster the search. The lower the value
 	   the more weak matches are found. Values below 10 are not
 	   recommended."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: hss [
@@ -903,6 +976,7 @@ section: advanced [
 	   equal bases instead of the SSAHA 2n. The higher the value the
 	   faster the search. The lower the value the more weak matches
 	   are found."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: pr [
@@ -916,6 +990,7 @@ section: advanced [
 	   checked by Smith-Waterman later on in the assembly, but it
 	   might also lead to the rejection of weaker overlaps (i.e.
 	   overlaps that contain a higher number of mismatches)."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: mhpr [
@@ -934,6 +1009,7 @@ section: advanced [
 	   different combinations of possible hits will be checked, always
 	   the probably best ones first. So the accuracy of the assembly
 	   should only suffer when lowering this number too much."
+    relations: "EDAM: Generic integer"                                     
   ]
 
 
@@ -954,6 +1030,7 @@ section: advanced [
 	   also increase SW runtime between linear and ^2, decreasing will
            work the other way round (it might miss a few bad alignments but gain
 	   speed)."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: bmin [
@@ -961,6 +1038,7 @@ section: advanced [
     minimum: "1"
     default: "25"
     help: "Minimum bandwidth in bases to each side."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: bmax [
@@ -968,6 +1046,7 @@ section: advanced [
     minimum: "1"
     default: "50"
     help: "Maximum bandwidth in bases to each side."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: mo [
@@ -976,6 +1055,7 @@ section: advanced [
     default: "15"
     help: "Minimum number of overlapping bases needed in an alignment
            of two sequences to be accepted."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: ms [
@@ -989,6 +1069,7 @@ section: advanced [
 	   to weed out a number of chance matches, a lower score to perhaps
 	   find the single (short) alignment that might join two contigs
 	   together (at the expense of computing time and memory)."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: mrs [
@@ -1001,6 +1082,7 @@ section: advanced [
 	   memory but one might lose possible alignments.  A maximum of 80 is
            probably sensible here. Decreasing below 55 will probably make
 	   memory and time consumption explode."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: egp [
@@ -1017,6 +1099,7 @@ section: advanced [
 	   assembly, set it to 'N' for assembly of closely related strains
 	   (assembly against a backbone). When set to 'N', it is recommended
 	   to have -amgb and -amgbemc both set to 'Y'."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   list: egpl [
@@ -1039,6 +1122,7 @@ section: advanced [
 	   if your base caller does not frequently miss more than one base.
            For some stages of the EST assembly process, a special value 'est'
 	   is used."
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: megpp [
@@ -1048,6 +1132,7 @@ section: advanced [
     default: "100"
     help: "Has no effect if extra_gap_penalty is off. Defines the maximum
            extra penalty in percent applied to 'long' gaps."
+    relations: "EDAM: Generic integer"                                     
   ]
 
 # Contig
@@ -1057,6 +1142,7 @@ section: advanced [
     information: "Name prefix"
     help: "Contigs will have this string prepended to their names."
     knowntype: "name prefix"
+    relations:  "EDAM: Generic string"                                 
   ]
 
   list: an [
@@ -1078,6 +1164,7 @@ section: advanced [
             	    fallback is 'text'.
            For the time being, only regions tagged as ALUS or REPT in the
 	   experiment file are considered dangerous."
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: rodirs [
@@ -1090,6 +1177,7 @@ section: advanced [
 	   values mean stricter checking. This value is doubled should a
 	   read be entered that has a template partner (a read pair) at
 	   the right distance."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: dmer [
@@ -1102,6 +1190,7 @@ section: advanced [
 	   values mean stricter checking in these danger zones. For the time
 	   being, only regions tagged as ALUS or REPT in the experiment file
 	   are considered dangerous."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: mr [
@@ -1113,6 +1202,7 @@ section: advanced [
     Marker Base, weak or strong). This switch is also needed when MIRA is
     run in EST mode to identify possible inter-, intra- and
     intra-and-interorganism SNPs."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: asir [
@@ -1127,6 +1217,7 @@ section: advanced [
 	   is set to 'Y',= then conflicts within a strain are also marked
 	   as SNP. This switch is mainly used in assemblies of ESTs; it
 	   should not be set for genomic assembly."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: mrpg [
@@ -1144,6 +1235,7 @@ section: advanced [
 	   sensitivity, but might produce a few false positives, resulting
 	   in reads being thrown out of contigs because of falsely identified
 	   possible repeat markers (or wrongly recognised as SNP)."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: mgqrt [
@@ -1159,6 +1251,7 @@ section: advanced [
 	   coverage of your project the better, and the higher you can set
 	   this number. A value of 35 will probably remove all false
 	   positives, a value of 40 will probably never show false positives."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: emea [
@@ -1172,6 +1265,7 @@ section: advanced [
 	   stretches for detecting possible repeats, so one can define an
 	   exclusion area where the bases are not used when determining
 	   whether a mismatch is due to repeats or not."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   boolean: amgb [
@@ -1179,6 +1273,7 @@ section: advanced [
     information: "Also mark gap bases"
     help: "Determines whether columns containing gap bases (indels) are
     also tagged."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: amgbemc [
@@ -1186,6 +1281,7 @@ section: advanced [
     information: "Also mark gap bases, even multi-column"
     help: "Only takes effect when -amgb is set to 'Y'. Determines whether
            multiple columns containing gap bases (indels) are also tagged."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: amgbnbs [
@@ -1195,6 +1291,7 @@ section: advanced [
            for both tagging columns containing gap bases, both strands need
 	   to have a gap. Setting this to 'N' is not recommended except when
 	   working in desperately low coverage situations."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: dismin [
@@ -1204,6 +1301,7 @@ section: advanced [
     help: "The minimum distance that read pairs may be apart. There is an
            additional error margin of 10% subtracted from this value during
 	   internal computations."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: dismax [
@@ -1213,6 +1311,7 @@ section: advanced [
     help: "The maximum distance that read pairs may be apart. There is an
            additional error margin of 10% added to this value during internal
 	   computations."
+    relations: "EDAM: Generic integer"                                     
   ]
 
 # Edit
@@ -1227,6 +1326,7 @@ section: advanced [
 	   but especially in conjunction with -nop and -ure.
 	   Notice: the current development version has a memory leak in the
 	   editor, therefore the option is not automatically turned on."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: sem [
@@ -1235,6 +1335,7 @@ section: advanced [
     help: "If set to 'Y' the automatic editor will not take error hypotheses
            with a low probability into account, even if all the requirements
 	   to make an edit are fulfilled."
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: ct [
@@ -1245,6 +1346,7 @@ section: advanced [
     help: "The higher this value, the more strict the automatic editor
            will apply its internal rule set. Going below 40 is not
 	   recommended."
+    relations: "EDAM: Generic integer"                                     
   ]
 
 # Output
@@ -1252,101 +1354,121 @@ section: advanced [
   boolean: orc [
     default: "Y"
     information: "Output CAF results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: org [
     default: "Y"
     information: "Output GAP4 results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: orf [
     default: "Y"
     information: "Output FASTA results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: ora [
     default: "N"
     information: "Output ACE results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: ort [
     default: "Y"
     information: "Output TXT results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: ors [
     default: "Y"
     information: "Output TCS results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: orh [
     default: "N"
     information: "Output HTML results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: otc [
     default: "N"
     information: "Output temporary CAF results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: otg [
     default: "N"
     information: "Output temporary GAP4 results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: otf [
     default: "N"
     information: "Output temporary FASTA results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: ota [
     default: "N"
     information: "Output temporary ACE results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: ott [
     default: "N"
     information: "Output temporary TXT results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: ots [
     default: "N"
     information: "Output temporary TCS results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: oth [
     default: "N"
     information: "Output temporary HTML results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: oetc [
     default: "N"
     information: "Output extra temporary CAF results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: oetg [
     default: "N"
     information: "Output extra temporary GAP4 results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: oetf [
     default: "N"
     information: "Output extra temporary FASTA results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: oeta [
     default: "N"
     information: "Output extra temporary ACE results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: oett [
     default: "N"
     information: "Output extra temporary TXT results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: oeth [
     default: "N"
     information: "Output extra temporary HTML results"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   integer: tcpl [
@@ -1356,6 +1478,7 @@ section: advanced [
     help: "When producing an output in text format (-ort|ott|oett), this
            parameter defines how many bases each line of an alignment
 	   should contain."
+    relations: "EDAM: Generic integer"                                     
   ]
 
   integer: hcpl [
@@ -1365,6 +1488,7 @@ section: advanced [
     help: "When producing an output in text format (-orh|oth|oeth), this
            parameter defines how many bases each line of an alignment
 	   should contain."
+    relations: "EDAM: Generic integer"                                     
   ]
 
 
@@ -1402,6 +1526,7 @@ section: output [
 	   in Direct Assembly format. The name of the directory will then
 	   be <projectname>_.<extension>"
     knowntype: "name suffix"
+    relations:  "EDAM: Generic string"                                 
   ]
 
   string: log [
@@ -1410,6 +1535,7 @@ section: output [
     help: "Defines the directory where mira will write some log files to.
            Note that the name of the actual project will be prepended."
     knowntype: "name suffix"
+    relations:  "EDAM: Generic string"                                 
   ]
 
 
@@ -1419,6 +1545,7 @@ section: output [
     help: "Defines the file in CAF format to save an assembled project to.
            Filename must end with '.caf'."
     knowntype: "output filename"
+    relations:  "EDAM: File name"                                      
   ]
 
 endsection: output

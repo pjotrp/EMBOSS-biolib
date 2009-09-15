@@ -29,6 +29,7 @@ section: input [
            error-corrected. Records for residue solvent accessibility and
            secondary structure are added to the file by using PDBPLUS."
     knowntype: "protein clean coordinates"
+    relations:  "EDAM: Protein tertiary structure"                     
   ]
 
   directory: domaindir [
@@ -46,6 +47,7 @@ section: input [
     default: "./"
     extension: "ccf"
     knowntype: "domain clean coordinates"
+    relations:  "EDAM: Protein tertiary structure"                     
   ]
 
   datafile: dicfile [
@@ -55,6 +57,7 @@ section: input [
            EMBOSS distribution."
     default: "Ehet.dat"
     knowntype: "dictionary of heterogen groups"
+    relations:  "EDAM: HET group dictionary"                           
   ]
 
   infile: dcffile [
@@ -67,6 +70,7 @@ section: input [
            SCOPPARSE and CATHPARSE. Domain sequence information can be added
            to the file by using DOMAINSEQS."
     knowntype: "domain classification"
+    relations:  "EDAM: EMBASSY domain classification record"           
   ]
 
   datafile: vdwfile [
@@ -76,6 +80,7 @@ section: input [
            part of the EMBOSS distribution."
     default: "Evdw.dat"
     knowntype: "van der waals radii"
+    relations:  "EDAM: Amino acid van der Waals data"                  
   ]
 
 endsection: input
@@ -90,6 +95,7 @@ section: required [
     help: "This option specifies the threshold contact distance."
     standard: "Y"
     default: "1.0"
+    relations: "EDAM: Generic float"                                       
   ]
 
 endsection: required
@@ -105,6 +111,7 @@ section: output [
     help: "This option specifies the name of the output file."
     knowntype: "contact"
     information: "Structure contacts output file"
+    relations:  "EDAM: Amino acid contact map"                         
   ]
 
   outfile: logfile [
@@ -113,6 +120,7 @@ section: output [
     help: "This option specifies the name of the log file."
     default: "sites.log"
     knowntype: "domainatrix log"
+    relations:  "EDAM: Domainatrix log file"                           
   ]
 
 endsection: output

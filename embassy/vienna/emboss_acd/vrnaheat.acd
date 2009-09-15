@@ -15,6 +15,7 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "dna"
+    relations: "EDAM: Pure DNA sequence"                                   
   ]
 
   infile: paramfile [
@@ -22,6 +23,7 @@ section: input [
     default: ""
     information: "Vienna RNA parameters file (optional)"
     knowntype: "rna parameter"
+    relations:  "EDAM: Vienna RNA parameters"                          
   ]
 
 endsection: input
@@ -34,42 +36,50 @@ section: advanced [
   float: mintemp [
     default: "0.0"
     information: "Temperature"
+    relations: "EDAM: Generic float"                                       
   ]
 
   float: maxtemp [
     default: "100.0"
     information: "Temperature"
+    relations: "EDAM: Generic float"                                       
   ]
 
   boolean: gu [
     default: "Y"
     information: "Allow GU pairs"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: closegu [
     default: "Y"
     information: "Allow GU pairs at end of helices"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: lp [
     default: "Y"
     information: "Allow lonely pairs"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: convert [
     default: "Y"
     information: "Convert T to U"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   string: nsbases [
     default: ""
     information: "Non-standard bases"
     knowntype: "nucleotide codes"
+    relations:  "EDAM: Nucleotide code string"                         
   ]
 
   boolean: tetraloop [
     default: "Y"
     information: "Stabilizing energies for tetra-loops"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   list: energy [
@@ -83,11 +93,13 @@ section: advanced [
     information: "Method"
     help: "Rarely used option to fold sequences from the ABCD...
            alphabet"
+    relations: "EDAM: Generic string array"                                
   ]
 
   integer: smoothing [
     default: "2"
     information: "Parabola fitting value"
+    relations: "EDAM: Generic integer"                                     
   ]
 
   float: step [
@@ -95,6 +107,7 @@ section: advanced [
     information: "Step size in degrees C"
     minimum: "0.01"
     maximum: "1000.0"
+    relations: "EDAM: Generic float"                                       
   ]
 
   list: dangles [
@@ -106,6 +119,7 @@ section: advanced [
     delimiter: ","
     codedelimiter: ":"
     information: "Method"
+    relations: "EDAM: Generic string array"                                
   ]
 
 endsection: advanced
@@ -119,6 +133,7 @@ section: output [
     parameter: "Y"
     knowntype: "rnafold output"
     information: "Vienna RNAfold output file"
+    relations:  "EDAM: Vienna RNA secondary structure record"          
   ]
 
 endsection: output

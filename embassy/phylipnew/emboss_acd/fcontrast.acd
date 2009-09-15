@@ -12,6 +12,7 @@ section: input [
   frequencies: infile [
     parameter: "Y"
     help: "File containing one or more sets of data"
+    relations: "EDAM: PHYLIP phylogenetic character frequency values file" 
   ]
 
   tree: intreefile [
@@ -19,6 +20,7 @@ section: input [
     knowntype: "newick"
     information: "Phylip tree file (optional)"
     nullok: "N"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
   ]
 
 endsection: input
@@ -32,18 +34,21 @@ section: additional [
     additional: "Y"
     default: "N"
     information: "Within-population variation in data"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: reg [
     additional: "@(!$(varywithin))"
     default: "Y"
     information: "Print out correlations and regressions"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: writecont [
     additional: "@(!$(varywithin))"
     default: "N"
     information: "Print out contrasts"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: nophylo [
@@ -51,6 +56,7 @@ section: additional [
     default: "Y"
     information: "LRT test of no phylogenetic component, with
                   and without VarA"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: additional
@@ -64,18 +70,21 @@ section: output [
     parameter: "Y"
     knowntype: "contrast output"
     information: "Phylip contrast program output file"
+    relations:  "EDAM: Phylogenetic character contrast data"           
   ]
 
   boolean: printdata [
     additional: "Y"
     default: "N"
     information: "Print data at start of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
   boolean: progress [
     additional: "Y"
     default: "Y"
     information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
   ]
 
 endsection: output

@@ -21,6 +21,7 @@ section: input [
            CATH families and superfamilies used by SEQWORDS to search a
            sequence database."
     knowntype: "keywords"
+    relations:  "EDAM: Keywords"                                       
   ]
 
   infile: spfile [
@@ -29,6 +30,7 @@ section: input [
     help: "This option specifies the name of the sequence database
            (input) to search."
     knowntype: "Swissprot database"
+    relations: "EDAM: Free text file"                                      
   ]
 
 endsection: input
@@ -52,6 +54,7 @@ section: output [
            various types of HMM and profile by using LIBSCAN."
     default: "test.hits"
     knowntype: "domain hits"
+    relations:  "EDAM: EMBASSY domain hits report"                     
   ]
 
 endsection: output
