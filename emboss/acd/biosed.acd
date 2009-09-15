@@ -23,7 +23,7 @@ section: required [
   type: "page"
 ]
 
-  string: target [
+  string: targetregion [
     standard: "Y"
     information: "Sequence section to match"
     default: "N"

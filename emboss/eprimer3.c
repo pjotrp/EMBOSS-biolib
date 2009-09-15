@@ -209,7 +209,7 @@ int main(int argc, char **argv)
     /* "Sequence" Input Tags */
     sequence        = ajAcdGetSeqall("sequence");
     included_region = ajAcdGetRange("includedregion");
-    target          = ajAcdGetRange("target");
+    target          = ajAcdGetRange("targetregion");
     excluded_region = ajAcdGetRange("excludedregion");
     left_input      = ajAcdGetString("forwardinput");
     right_input     = ajAcdGetString("reverseinput");

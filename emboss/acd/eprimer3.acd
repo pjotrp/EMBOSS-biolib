@@ -172,7 +172,7 @@ section: additional [
     relations: "EDAM: Generic integer range"                               
     ]
 
-    range: target [
+    range: targetregion [
       additional: "Y"
       default: ""
       information: "Target region(s)"

@@ -26,7 +26,7 @@ section: additional [
   type: "page"
 ]
 
-  range: target [
+  range: targetregion [
     additional: "Y"
     default: ""
     information: "Target region(s)"

@@ -223,7 +223,7 @@ int main(int argc, char **argv)
 /*
  *   included_region     = ajAcdGetRange("includedregion");
  */
-  target              = ajAcdGetRange("target");
+  target              = ajAcdGetRange("targetregion");
 /*
  *   excluded_region     = ajAcdGetRange("excludedregion");
  *   left_input          = ajAcdGetString("forwardinput");
