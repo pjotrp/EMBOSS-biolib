@@ -2655,8 +2655,11 @@ void ajSeqReverseDo(AjPSeq seq)
     ajint ibegin;
     ajint iend;
     ajint itemp;
+    ajuint i;
+    ajuint j;
+    float atemp;
 
-    ajDebug("ajSeqReverse len: %d Begin: %d End: %d Rev: %B Reversed: %B\n",
+    ajDebug("ajSeqReverseDo len: %d Begin: %d End: %d Rev: %B Reversed: %B\n",
 	    ajSeqGetLen(seq), seq->Begin, seq->End,
 	    seq->Rev, seq->Reversed);
 
@@ -2688,6 +2691,18 @@ void ajSeqReverseDo(AjPSeq seq)
     if(seq->Fttable)
 	ajFeattableReverse(seq->Fttable);
 
+    if(seq->Accuracy)
+    {
+        j = seq->Qualsize;
+        for(i=0;i<seq->Qualsize;i++)
+        {
+            if(--j <= i) break;
+            atemp = seq->Accuracy[j];
+            seq->Accuracy[j] = seq->Accuracy[i];
+            seq->Accuracy[i] = atemp;
+        }
+    }
+    
     return;
 }
 
