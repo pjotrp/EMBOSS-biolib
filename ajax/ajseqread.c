@@ -13852,7 +13852,7 @@ static void seqUsaRegInit(void)
         return;
 
     if(!seqRegUsaFmt)
-	seqRegUsaFmt = ajRegCompC("^([A-Za-z0-9]*)::(.*)$");
+	seqRegUsaFmt = ajRegCompC("^([A-Za-z0-9-]*)::(.*)$");
     /* \1 format letters and numbers only */
     /* \2 remainder (filename, etc.)*/
 

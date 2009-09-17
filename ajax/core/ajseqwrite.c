@@ -1430,7 +1430,6 @@ static void seqWriteFastqSanger(AjPSeqout outseq)
     /*ajuint linelen     = 60;*/
     /*ajuint iend;*/
     /*char qchar;*/
-    char *cp;
 
     ajDebug("seqWriteFastqSanger Name '%S'\n",
 	    outseq->Name);
@@ -1458,15 +1457,13 @@ static void seqWriteFastqSanger(AjPSeqout outseq)
 
     ilen = ajStrGetLen(outseq->Seq);
     seq = ajStrNewRes(ilen+1);
-    cp = ajStrGetuniquePtr(&seq);
 
     if(outseq->Accuracy)
     {
         for(i=0;i<ilen;i++)
 	{
-	    *cp++ = 33 + (int) outseq->Accuracy[i];
+	    ajStrAppendK(&seq, 33 + (int) outseq->Accuracy[i]);
 	}
-        *cp = '\0';
 	ajWritelineNewline(outseq->File, seq);
     }
 
@@ -6953,13 +6950,13 @@ static AjBool seqoutUsaProcess(AjPSeqout thys)
     ajDebug("seqoutUsaProcess\n");
     if(!seqoutRegFmt)
 #ifndef WIN32
-	seqoutRegFmt = ajRegCompC("^([A-Za-z0-9]*)::?(.*)$");
+	seqoutRegFmt = ajRegCompC("^([A-Za-z0-9-]*)::?(.*)$");
     /* \1 format */
     /* \2 remainder */
 #else
     /* Windows file names can start with e.g.: 'C:\' */
     /* -> Require that format names have at least 2 letters */
-    seqoutRegFmt = ajRegCompC("^([A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]*)::?(.*)$");
+    seqoutRegFmt = ajRegCompC("^([A-Za-z0-9][A-Za-z0-9][A-Za-z0-9-]*)::?(.*)$");
     /* \1 format */
     /* \2 remainder */
 #endif
