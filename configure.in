@@ -257,11 +257,11 @@ CHECK_GROUT
 CHECK_AMD64
 
 dnl Check for 'ant' for packaging Jemboss and export result
+
+AC_CHECK_PROG(javac_in_path,javac,true,false)
 AC_CHECK_PROG(ant_in_path,ant,true,false)
-AM_CONDITIONAL(EHAVEANT, test "$ant_in_path" = "true")
+AM_CONDITIONAL(EHAVEANT, test "$ant_in_path" = "true" && "$javac_in_path" = "true")
 AC_SUBST(EHAVEANT)
-
-
 
 dnl "Export" these variables for PCRE
 
