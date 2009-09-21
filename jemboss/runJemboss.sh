@@ -20,6 +20,7 @@ CLASSPATH=${CLASSPATH}:$LIB/axis/commons-discovery.jar
 CLASSPATH=${CLASSPATH}:$LIB/axis/wsdl4j.jar
 CLASSPATH=${CLASSPATH}:$LIB/grout.jar
 CLASSPATH=${CLASSPATH}:$LIB/client.jar
+CLASSPATH=${CLASSPATH}:$LIB/jemboss.jar
 export CLASSPATH
 
 #
