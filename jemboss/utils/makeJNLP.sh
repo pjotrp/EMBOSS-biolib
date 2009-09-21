@@ -134,11 +134,10 @@ fi
 # Create Jemboss jar file
 
 cd $CWPWD
-jar cf Jemboss.jar images/* org/emboss/jemboss/*class resources/*.jar \
+
+jar cf Jemboss.jar images/* resources/*.jar \
         resources/version resources/jemboss.properties \
         resources/*html 
-jar uf Jemboss.jar org/emboss/jemboss/*/*class 
-jar uf Jemboss.jar org/emboss/jemboss/*/*/*class 
 
 mv Jemboss.jar jnlp
 cp lib/*jar jnlp
