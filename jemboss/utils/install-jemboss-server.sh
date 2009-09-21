@@ -1404,14 +1404,14 @@ RUNFILE=$JEMBOSS/runJemboss.sh
   cd $JEMBOSS;
   mkdir tmp;
   cd tmp;
-  jar -xvf ../lib/client.jar org/emboss/jemboss/parser/Ajax.class org/emboss/jemboss/parser/AjaxUtil.class
+  jar -xvf ../lib/jemboss.jar org/emboss/jemboss/parser/Ajax.class org/emboss/jemboss/parser/AjaxUtil.class
   jar -cvf ../lib/ajax.jar org
-  jar -xvf ../lib/client.jar
+  jar -xvf ../lib/jemboss.jar
   rm org/emboss/jemboss/parser/Ajax.class org/emboss/jemboss/parser/AjaxUtil.class
-  jar -cvf ../lib/jemboss.jar .
+  jar -cvf jemboss.jar .
+  cp jemboss.jar $TOMCAT_ROOT/webapps/axis/WEB-INF/lib/
   cd ..;
   rm -rf tmp;
-  cp lib/jemboss.jar $TOMCAT_ROOT/webapps/axis/WEB-INF/lib/
 
   if [ -d "$TOMCAT_ROOT/shared/lib" ]; then
   #tomcat 4.1.x and 5.5.x

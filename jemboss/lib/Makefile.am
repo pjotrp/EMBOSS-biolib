@@ -1,17 +1,17 @@
 SUBDIRS = axis
 
-# The install-exec-hook is for the case where a client.jar has
+# The install-exec-hook is for the case where a jemboss.jar has
 # been created by the 'ant' packaging for Jemboss.
 # In that case it needs to be copied to the install dir.
 
 install-exec-hook:
-	if test -f client.jar ; then \
+	if test -f jemboss.jar ; then \
 	    (if test -d $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/lib ; then \
 	        echo "jemboss/lib exists"; \
 	     else \
 	        mkdir $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/lib; \
 	     fi); \
-	cp client.jar $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/lib; \
+	cp jemboss.jar $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/lib; \
 	fi;
 
 
