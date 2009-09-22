@@ -701,6 +701,12 @@ AjPSeq ajSeqNewSeq(const AjPSeq seq)
     if (seq->Fttable)
 	pthis->Fttable = ajFeattableNewFtable(seq->Fttable);
 
+    if (seq->Accuracy)
+    {
+    	AJCNEW0(pthis->Accuracy,seq->Seq->Len);
+    	memmove(pthis->Accuracy,seq->Accuracy,seq->Seq->Len*sizeof(float));
+    }
+
     return pthis;
 }
 
