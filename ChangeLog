@@ -11,17 +11,17 @@ Version 6.2.0
 	lookup tables to avoid calculations in the conversion of quality
 	scores.
 	
-	FASTQ short read formats have additinal warning messages for bad
+	FASTQ short read formats have additional warning messages for bad
 	or incomplete data.
 
 	All sequence input formats now recognize invalid partial entries
 	at the end of the input data and report an error message. A
 	notable exception is FASTA format where a partial entry is still a
 	valid ID line - these will give errors for zero length sequence
-	unless empty sequneces are allowed.
+	unless empty sequences are allowed.
 
 	Common output formats now write faster, using lightweight output
-	functions to ciopy strings to the output file.
+	functions to copy strings to the output file.
 	
 	SwissProt output formats now wrap long OS lines.
 
@@ -322,7 +322,7 @@ Version 6.1.0
 
 	New feature XML output format DASGFF. Feature output functions
 	have a changed interface to pass the AjPFeattabOut object so that
-	additional processing can handle the opening and cloing of an XML
+	additional processing can handle the opening and closing of an XML
 	output file.
 
 	New sequence output formats "dasdna" and "das" write DASDNA and
