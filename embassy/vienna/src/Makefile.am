@@ -2,14 +2,21 @@
 
 lib_LTLIBRARIES = libviennarna.la
 
+if ISCYGWIN
+CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import
+endif
+
 bin_PROGRAMS = vrnaalifold vrnacofoldpf vrnaevalpair vrnainverse \
 	vrnaalifoldpf vrnadistance vrnafold vrnalfold \
 	vrnacofold vrnaduplex vrnafoldpf vrnaplot \
 	vrnacofoldconc vrnaeval vrnaheat vrnasubopt
 
-
 if LOCALLINK
-INCLUDES = -I../H -I../../../ajax -I../../../nucleus -I../../../plplot
+INCLUDES = -I../H -I../../../nucleus -I../../../ajax/pcre \
+	-I../../../ajax/core -I../../../ajax/graphics \
+	-I../../../ajax/ensembl \
+	-I../../../ajax/ajaxseq -I../../../ajax/acd \
+	-I../../../plplot
 else
 INCLUDES = -I../H -I${embprefix}/include -I${embprefix}/include/eplplot
 endif
@@ -17,9 +24,15 @@ endif
 if ISSHARED
 if ISAIXIA64
 if LOCALLINK
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs -L../../../ajax/.libs -L../../../nucleus/.libs -lnucleus -lajax -leplplot
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs \
+-L../../../ajax/pcre/.libs -L../../../ajax/core/.libs \
+-L../../../ajax/graphics/.libs -L../../../ajax/ensembl/.libs \
+-L../../../ajax/ajaxseq/.libs -L../../../ajax/acd/.libs \
+-L../../../nucleus/.libs \
+-lnucleus -lacd -lajaxseq -lensembl -lajaxg -lajax -lepcre -leplplot
 else
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lnucleus -lajax -leplplot
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lnucleus -lacd \
+-lajaxseq -lensembl -lajaxg -lajax -lepcre -leplplot
 endif
 else
 AM_CFLAGS =
@@ -40,7 +53,15 @@ EXTRA_DIST = alicircfold.inc circfold.inc config.h
 
 libviennarna_la_SOURCES = $(VIENNALIBSRC)
 
-libviennarna_la_LDFLAGS = -version-info 1:6:1
+VERS_INF = -version-info 1:7:2
+
+if ISCYGWIN
+LINKFLAGS = $(VERS_INF) $(CYGWIN_LDFLAGS)
+else
+LINKFLAGS = $(VERS_INF)
+endif
+
+libviennarna_la_LDFLAGS = $(LINKFLAGS)
 
 vrnaalifold_SOURCES = vrnaalifold.c
 vrnaalifoldpf_SOURCES = vrnaalifoldpf.c
@@ -59,8 +80,16 @@ vrnalfold_SOURCES = vrnalfold.c
 vrnaplot_SOURCES = vrnaplot.c
 vrnasubopt_SOURCES = vrnasubopt.c
 
+
 if LOCALLINK
-LDADD = libviennarna.la ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libeplplot.la $(XLIB)
+LDADD = libviennarna.la \
+	../../../nucleus/libnucleus.la ../../../ajax/acd/libacd.la \
+	../../../ajax/ajaxseq/libajaxseq.la \
+	../../../ajax/ensembl/libensembl.la \
+	../../../ajax/graphics/libajaxg.la \
+	../../../ajax/core/libajax.la ../../../ajax/pcre/libepcre.la \
+	../../../plplot/libeplplot.la $(XLIB)
 else
-LDADD = libviennarna.la -L${embprefix}/lib -lnucleus -lajax -leplplot $(XLIB)
+LDADD = libviennarna.la -L${embprefix}/lib -lnucleus -lacd -lajaxseq \
+	-lensembl -lajaxg -lajax -lepcre -leplplot $(XLIB)
 endif

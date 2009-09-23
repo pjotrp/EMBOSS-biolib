@@ -2,27 +2,40 @@
 
 lib_LTLIBRARIES = libhmmer.la
 
+if ISCYGWIN
+CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import
+endif
+
 bin_PROGRAMS = ohmmcalibrate ohmmconvert ohmmemit ohmmfetch ohmmindex \
 	ohmmbuild ohmmalign ohmmpfam ohmmsearch oalistat
 
 if LOCALLINK
-INCLUDES = -IINCLUDE -I../../../ajax
+INCLUDES = -I../../../nucleus -I../../../ajax/pcre \
+	-I../../../ajax/core -I../../../ajax/graphics \
+	-I../../../ajax/ensembl \
+	-I../../../ajax/ajaxseq -I../../../ajax/acd \
+	-I../../../plplot
 else
-INCLUDES = -IINCLUDE -I${embprefix}/include -I${embprefix}/include/eplplot
+INCLUDES = -I${embprefix}/include -I${embprefix}/include/eplplot
 endif
 
 if ISSHARED
 if ISAIXIA64
 if LOCALLINK
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../ajax/.libs -lajax
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs \
+-L../../../ajax/pcre/.libs -L../../../ajax/core/.libs \
+-L../../../ajax/graphics/.libs -L../../../ajax/ensembl/.libs \
+-L../../../ajax/ajaxseq/.libs -L../../../ajax/acd/.libs \
+-L../../../nucleus/.libs \
+-lnucleus -lacd -lajaxseq -lensembl -lajaxg -lajax -lepcre -leplplot
 else
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lajax
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lnucleus -lacd \
+-lajaxseq -lensembl -lajaxg -lajax -lepcre -leplplot
 endif
 else
 AM_CFLAGS =
 endif
 endif
-
 
 HMMERSRC = alphabet.c core_algorithms.c debug.c emit.c emulation.c \
 	   histogram.c hmmio.c mathsupport.c masks.c misc.c \
@@ -37,7 +50,15 @@ noinst_HEADERS = config.h funcs.h globals.h gnuregex.h sqfuncs.h \
 
 libhmmer_la_SOURCES = $(HMMERSRC)
 
-libhmmer_la_LDFLAGS = -version-info 2:1:1
+VERS_INF = -version-info 2:1:1
+
+if ISCYGWIN
+LINKFLAGS = $(VERS_INF) $(CYGWIN_LDFLAGS)
+else
+LINKFLAGS = $(VERS_INF)
+endif
+
+libhmmer_la_LDFLAGS = $(LINKFLAGS)
 
 ohmmcalibrate_SOURCES = ohmmcalibrate.c
 ohmmconvert_SOURCES   = ohmmconvert.c
@@ -50,8 +71,16 @@ ohmmpfam_SOURCES      = ohmmpfam.c
 ohmmsearch_SOURCES    = ohmmsearch.c
 oalistat_SOURCES      = oalistat.c
 
+
 if LOCALLINK
-LDADD = libhmmer.la ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libeplplot.la $(XLIB)
+LDADD = libhmmer.la \
+	../../../nucleus/libnucleus.la ../../../ajax/acd/libacd.la \
+	../../../ajax/ajaxseq/libajaxseq.la \
+	../../../ajax/ensembl/libensembl.la \
+	../../../ajax/graphics/libajaxg.la \
+	../../../ajax/core/libajax.la ../../../ajax/pcre/libepcre.la \
+	../../../plplot/libeplplot.la $(XLIB)
 else
-LDADD = libhmmer.la -L${embprefix}/lib -lnucleus -lajax -leplplot $(XLIB)
+LDADD = libhmmer.la -L${embprefix}/lib -lnucleus -lacd -lajaxseq \
+	-lensembl -lajaxg -lajax -lepcre -leplplot $(XLIB)
 endif

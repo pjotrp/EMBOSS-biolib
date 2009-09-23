@@ -1,11 +1,13 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS =
-
 bin_PROGRAMS = eiprscan
 
 if LOCALLINK
-INCLUDES = -I../../../ajax -I../../../nucleus -I../../../plplot
+INCLUDES = -I../../../nucleus -I../../../ajax/pcre \
+	-I../../../ajax/core -I../../../ajax/graphics \
+	-I../../../ajax/ensembl \
+	-I../../../ajax/ajaxseq -I../../../ajax/acd \
+	-I../../../plplot
 else
 INCLUDES = -I${embprefix}/include -I${embprefix}/include/eplplot
 endif
@@ -13,9 +15,15 @@ endif
 if ISSHARED
 if ISAIXIA64
 if LOCALLINK
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../ajax/.libs -lajax
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs \
+-L../../../ajax/pcre/.libs -L../../../ajax/core/.libs \
+-L../../../ajax/graphics/.libs -L../../../ajax/ensembl/.libs \
+-L../../../ajax/ajaxseq/.libs -L../../../ajax/acd/.libs \
+-L../../../nucleus/.libs \
+-lnucleus -lacd -lajaxseq -lensembl -lajaxg -lajax -lepcre -leplplot
 else
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../ajax/.libs -lajax
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lnucleus -lacd \
+-lajaxseq -lensembl -lajaxg -lajax -lepcre -leplplot
 endif
 else
 AM_CFLAGS =
@@ -25,7 +33,13 @@ endif
 eiprscan_SOURCES = eiprscan.c
 
 if LOCALLINK
-LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libeplplot.la $(XLIB)
+LDADD = ../../../nucleus/libnucleus.la ../../../ajax/acd/libacd.la \
+	../../../ajax/ajaxseq/libajaxseq.la \
+	../../../ajax/ensembl/libensembl.la \
+	../../../ajax/graphics/libajaxg.la \
+	../../../ajax/core/libajax.la ../../../ajax/pcre/libepcre.la \
+	../../../plplot/libeplplot.la $(XLIB)
 else
-LDADD = -L${embprefix}/lib -lnucleus -lajax -leplplot $(XLIB)
+LDADD = -L${embprefix}/lib -lnucleus -lacd -lajaxseq -lensembl -lajaxg \
+        -lajax -lepcre -leplplot $(XLIB)
 endif

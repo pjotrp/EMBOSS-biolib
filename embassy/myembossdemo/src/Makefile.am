@@ -11,24 +11,32 @@ demosequence demostring demostringnew demotable \
 myseq mytest
 
 if LOCALLINK
-INCLUDES = -I../include -I../../../nucleus -I../../../ajax -I../../../plplot
+INCLUDES = -I../../../nucleus -I../../../ajax/pcre \
+	-I../../../ajax/core -I../../../ajax/graphics \
+	-I../../../ajax/ensembl \
+	-I../../../ajax/ajaxseq -I../../../ajax/acd \
+	-I../../../plplot
 else
-INCLUDES = -I../include -I${embprefix}/include -I${embprefix}/include/eplplot
+INCLUDES = -I${embprefix}/include -I${embprefix}/include/eplplot
 endif
-
 
 if ISSHARED
 if ISAIXIA64
 if LOCALLINK
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs -L../../../ajax/.libs -L../../../nucleus/.libs -lnucleus -lajax -leplplot
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs \
+-L../../../ajax/pcre/.libs -L../../../ajax/core/.libs \
+-L../../../ajax/graphics/.libs -L../../../ajax/ensembl/.libs \
+-L../../../ajax/ajaxseq/.libs -L../../../ajax/acd/.libs \
+-L../../../nucleus/.libs \
+-lnucleus -lacd -lajaxseq -lensembl -lajaxg -lajax -lepcre -leplplot
 else
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lnucleus -lajax -leplplot
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lnucleus -lacd \
+-lajaxseq -lensembl -lajaxg -lajax -lepcre -leplplot
 endif
 else
 AM_CFLAGS =
 endif
 endif
-
 
 demoalign_SOURCES = demoalign.c
 demofeatures_SOURCES = demofeatures.c
@@ -41,10 +49,14 @@ demotable_SOURCES = demotable.c
 myseq_SOURCES = myseq.c
 mytest_SOURCES = mytest.c
 
-
-
 if LOCALLINK
-LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajaxg.la ../../../ajax/libajax.la ../../../plplot/libeplplot.la $(XLIB)
+LDADD = ../../../nucleus/libnucleus.la ../../../ajax/acd/libacd.la \
+	../../../ajax/ajaxseq/libajaxseq.la \
+	../../../ajax/ensembl/libensembl.la \
+	../../../ajax/graphics/libajaxg.la \
+	../../../ajax/core/libajax.la ../../../ajax/pcre/libepcre.la \
+	../../../plplot/libeplplot.la $(XLIB)
 else
-LDADD = -L${embprefix}/lib -lnucleus -lajaxg -lajax -leplplot $(XLIB)
+LDADD = -L${embprefix}/lib -lnucleus -lacd -lajaxseq -lensembl -lajaxg \
+        -lajax -lepcre -leplplot $(XLIB)
 endif
