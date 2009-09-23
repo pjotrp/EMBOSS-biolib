@@ -5,9 +5,10 @@ EXTRA_DIST = emboss.default.template
 
 if ISSHARED
 if ISAIXIA64
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../ajax/.libs -lajax
-else
-AM_CFLAGS =
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../ajax/pcre/.libs \
+-L../ajax/core/.libs -L../ajax/graphics/.libs -L../ajax/ensembl/.libs \
+-L../ajax/ajaxseq/.libs -L../ajax/acd/.libs \
+ -lacd -lajaxseq -lensembl -lajaxg -lajax -lepcre
 endif
 endif
 
@@ -72,7 +73,12 @@ water whichdb wobble \
 wordcount wordfinder wordmatch wossname \
 yank
 
-INCLUDES = -I$(top_srcdir)/nucleus -I$(top_srcdir)/ajax -I$(top_srcdir)/plplot
+
+INCLUDES = -I$(top_srcdir)/nucleus -I$(top_srcdir)/ajax/pcre \
+	-I$(top_srcdir)/ajax/core -I$(top_srcdir)/ajax/graphics \
+	-I$(top_srcdir)/ajax/ajaxseq -I$(top_srcdir)/ajax/acd \
+	-I$(top_srcdir)/plplot
+
 
 aaindexextract_SOURCES = aaindexextract.c
 abiview_SOURCES = abiview.c
@@ -291,12 +297,10 @@ seqrettype_SOURCES = seqrettype.c
 testplot_SOURCES = testplot.c
 treetypedisplay_SOURCES = treetypedisplay.c
 
-# Uncomment to use dual libraries
-if ISCYGWIN
-LDADD = ../nucleus/libnucleus.la ../ajax/libajax.la ../plplot/libeplplot.la $(XLIB)
-else
-LDADD = ../nucleus/libnucleus.la ../ajax/libajaxg.la ../ajax/libajax.la ../plplot/libeplplot.la $(XLIB)
-endif
+LDADD = ../nucleus/libnucleus.la ../ajax/acd/libacd.la \
+	../ajax/ajaxseq/libajaxseq.la ../ajax/ensembl/libensembl.la \
+	../ajax/graphics/libajaxg.la ../ajax/core/libajax.la \
+	../ajax/pcre/libepcre.la ../plplot/libeplplot.la $(XLIB)
 
 pkgdata_DATA = emboss.default.template
 pkgdatadir=$(prefix)/share/$(PACKAGE)
@@ -306,5 +310,3 @@ pkgdatadir=$(prefix)/share/$(PACKAGE)
 #else
 #
 #endif
-
-

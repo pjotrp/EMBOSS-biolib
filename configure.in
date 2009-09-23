@@ -5,7 +5,7 @@ dnl Process this file with autoconf to produce a configure script.
 ## then uncomment the following line.
 #CC=cc
 
-AC_INIT(ajax/ajacd.c)
+AC_INIT(ajax/core/ajmath.c)
 AM_INIT_AUTOMAKE(EMBOSS, 6.1.0)
 
 dnl Make sure CFLAGS is defined to stop LT_INIT adding -g
@@ -255,6 +255,16 @@ CHECK_PNGDRIVER
 CHECK_AUTH
 CHECK_GROUT
 CHECK_AMD64
+
+AX_LIB_MYSQL
+AX_LIB_POSTGRESQL
+
+CFLAGS="$CFLAGS $MYSQL_CFLAGS"
+LDFLAGS="$LDFLAGS $MYSQL_LDFLAGS"
+
+CFLAGS="$CFLAGS $POSTGRESQL_CFLAGS"
+LDFLAGS="$LDFLAGS $POSTGRESQL_LDFLAGS"
+
 
 dnl Check for 'ant' for packaging Jemboss and export result
 
@@ -563,6 +573,8 @@ CHECK_THREADS
 
 
 AC_OUTPUT(plplot/Makefile plplot/lib/Makefile nucleus/Makefile ajax/Makefile
+ajax/pcre/Makefile ajax/core/Makefile ajax/graphics/Makefile
+ajax/ensembl/Makefile ajax/ajaxseq/Makefile ajax/acd/Makefile
 emboss/Makefile emboss/acd/Makefile test/Makefile test/data/Makefile
 test/embl/Makefile test/genbank/Makefile
 test/pir/Makefile test/swiss/Makefile
