@@ -78,7 +78,8 @@ extern "C"
 #include "ajgraphxml.h"
 #include "ajvector.h"
 #include "ajdom.h"
-
+#include "ajsql.h"
+    
 #endif
 
 #ifdef __cplusplus
