@@ -53,7 +53,7 @@ EXTRA_DIST = alicircfold.inc circfold.inc config.h
 
 libviennarna_la_SOURCES = $(VIENNALIBSRC)
 
-VERS_INF = -version-info 1:7:2
+VERS_INF = -version-info 1:7:0
 
 if ISCYGWIN
 LINKFLAGS = $(VERS_INF) $(CYGWIN_LDFLAGS)
