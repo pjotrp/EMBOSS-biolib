@@ -721,8 +721,7 @@ AjBool ensDNAAlignFeatureAdaptorFetchAllIdentifiers(
 EnsPProteinAlignFeatureAdaptor ensProteinAlignFeatureAdaptorNew(
     EnsPDatabaseAdaptor dba);
 
-void
-ensProteinAlignFeatureAdaptorDel(EnsPProteinAlignFeatureAdaptor *Padaptor);
+void ensProteinAlignFeatureAdaptorDel(EnsPProteinAlignFeatureAdaptor *Padaptor);
 
 AjBool ensProteinAlignFeatureAdaptorFetchByIdentifier(
     EnsPProteinAlignFeatureAdaptor adaptor,

@@ -145,9 +145,9 @@ AjBool ensTranscriptTranslateStr(EnsPTranscript transcript, AjPStr *Psequence);
 AjBool ensTranscriptFetchSequenceStr(EnsPTranscript transcript,
                                      AjPStr *Psequence);
 
-AjBool
-ensTranscriptFetchTranslatableSequence(EnsPTranscript transcript,
-				       AjPStr* Psequence);
+AjBool ensTranscriptFetchTranslatableSequence(
+    EnsPTranscript transcript,
+    AjPStr* Psequence);
 
 EnsPTranslation ensTranscriptFetchTranslation(EnsPTranscript transcript);
 

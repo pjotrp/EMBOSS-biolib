@@ -312,9 +312,6 @@ EnsPMapperPair ensMapperPairNew(EnsPMapperUnit source,
                                 ajint ori,
                                 AjBool indel);
 
-#define MENSMAPPERINDELPAIRNEW(source, target, ori) \
-ensMapperPairNew(source, target, ori, AJTRUE);
-
 EnsPMapperPair ensMapperPairNewC(ajuint srcoid,
                                  ajint srcstart,
                                  ajint srcend,
@@ -329,9 +326,6 @@ EnsPMapperPair ensMapperPairNewObj(const EnsPMapperPair object);
 EnsPMapperPair ensMapperPairNewRef(EnsPMapperPair mp);
 
 void ensMapperPairDel(EnsPMapperPair* Pmp);
-
-#define MENSMAPPERINDELPAIRDEL(Pmp) \
-ensMapperPairDel(Pmp);
 
 EnsPMapperUnit ensMapperPairGetSource(const EnsPMapperPair mp);
 
@@ -357,17 +351,6 @@ EnsPMapperResult ensMapperResultNew(AjEnum type,
                                     EnsPCoordSystem cs,
                                     ajint gapstart,
                                     ajint gapend);
-
-#define MENSMAPPERCOORDINATENEW(oid, start, end, strand, cs) \
-ensMapperResultNew(ensEMapperResultCoordinate, oid, start, end, strand, cs, \
-		   0, 0)
-
-#define MENSMAPPERGAPNEW(start, end) \
-ensMapperResultNew(ensEMapperResultGap, 0, 0, 0, 0, NULL, start, end)
-
-#define MENSMAPPERINDELNEW(oid, start, end, strand, cs, gstart, gend) \
-ensMapperResultNew(ensEMapperResultInDel, oid, start, end, strand, cs, \
-		   gstart, gend)
 
 EnsPMapperResult ensMapperResultNewObj(const EnsPMapperResult object);
 
@@ -530,6 +513,22 @@ AjBool ensMapperTrace(const EnsPMapper mapper, ajuint level);
 */
 
 
+#define MENSMAPPERINDELPAIRNEW(source, target, ori) \
+ensMapperPairNew(source, target, ori, AJTRUE);
+
+#define MENSMAPPERINDELPAIRDEL(Pmp) \
+ensMapperPairDel(Pmp);
+
+#define MENSMAPPERCOORDINATENEW(oid, start, end, strand, cs) \
+ensMapperResultNew(ensEMapperResultCoordinate, oid, start, end, strand, cs, \
+		   0, 0)
+
+#define MENSMAPPERGAPNEW(start, end) \
+ensMapperResultNew(ensEMapperResultGap, 0, 0, 0, 0, NULL, start, end)
+
+#define MENSMAPPERINDELNEW(oid, start, end, strand, cs, gstart, gend) \
+ensMapperResultNew(ensEMapperResultInDel, oid, start, end, strand, cs, \
+		   gstart, gend)
 
 
 #endif

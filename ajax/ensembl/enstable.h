@@ -19,12 +19,12 @@ ajint ensTableCmpUInt(const void *x, const void *y);
 
 ajuint ensTableHashUInt(const void *key, ajuint hashsize);
 
-#define MENSTABLEUINTNEW(size) \
-ajTableNewFunctionLen(size, ensTableCmpUInt, ensTableHashUInt)
-
 /*
 ** End of prototype definitions
 */
+
+#define MENSTABLEUINTNEW(size) \
+ajTableNewFunctionLen(size, ensTableCmpUInt, ensTableHashUInt)
 
 #endif
 

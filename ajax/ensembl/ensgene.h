@@ -134,11 +134,11 @@ EnsPGeneAdaptor ensGeneAdaptorNew(EnsPDatabaseAdaptor dba);
 
 void ensGeneAdaptorDel(EnsPGeneAdaptor *Padaptor);
 
-EnsPFeatureAdaptor
-ensGeneAdaptorGetFeatureAdaptor(const EnsPGeneAdaptor adaptor);
+EnsPFeatureAdaptor ensGeneAdaptorGetFeatureAdaptor(
+    const EnsPGeneAdaptor adaptor);
 
-EnsPDatabaseAdaptor
-ensGeneAdaptorGetDatabaseAdaptor(const EnsPGeneAdaptor adaptor);
+EnsPDatabaseAdaptor ensGeneAdaptorGetDatabaseAdaptor(
+    const EnsPGeneAdaptor adaptor);
 
 AjBool ensGeneAdaptorFetchAll(EnsPGeneAdaptor adaptor, AjPList genes);
 
