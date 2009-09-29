@@ -8444,9 +8444,7 @@ static void seqClone(AjPSeqout outseq, const AjPSeq seq)
 	ilen = MAJSTRGETLEN(seq->Seq);
 	AJCRESIZE(outseq->Accuracy, ilen);
         outseq->Qualsize = ilen;
-
-	for(i=0;i<ilen;i++)
-	    outseq->Accuracy[i] = seq->Accuracy[i];
+        memmove(outseq->Accuracy,seq->Accuracy+ibegin-1,ilen*sizeof(float));
     }
     else
     {
