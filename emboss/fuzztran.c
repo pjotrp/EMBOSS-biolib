@@ -22,7 +22,7 @@
 ******************************************************************************/
 
 #include "emboss.h"
-#include "stdlib.h"
+#include <stdlib.h>
 
 
 static void fuzztran_SourceFeature(const AjPFeattable thys, const AjPSeq pseq,

@@ -32,7 +32,7 @@
 
 
 #include "emboss.h"
-#include "math.h"
+#include <math.h>
 
 
 
