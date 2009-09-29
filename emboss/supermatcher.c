@@ -231,7 +231,7 @@ int main(int argc, char **argv)
 
 	    if(end1-start1 > oldmax)
 	    {
-		oldmax = ((end1-start1)+1)+width;
+		oldmax = ((end1-start1)+1);
 		AJRESIZE(path,oldmax*width*sizeof(float));
 		AJRESIZE(compass,oldmax*width*sizeof(ajint));
 		ajDebug("++ resize to oldmax: %d\n", oldmax);
