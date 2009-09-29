@@ -28,8 +28,8 @@
 #include "ajax.h"
 #include "ajgraph.h"
 #include "ajhist.h"
-#include "limits.h"
-#include "float.h"
+#include <limits.h>
+#include <float.h>
 
 
 ajint aj_hist_mark=GRAPH_HIST;

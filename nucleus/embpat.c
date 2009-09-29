@@ -21,8 +21,8 @@
 #include "ajax.h"
 #include "embpat.h"
 #include "embmat.h"
-#include "stdlib.h"
-#include "limits.h"
+#include <stdlib.h>
+#include <limits.h>
 
 
 /* @datastatic PatPTypes ***************************************************

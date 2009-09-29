@@ -37,7 +37,7 @@ restrictions:
 
 #include "pcre_internal.h"
 #include "pcreposix.h"
-#include "stdlib.h"
+#include <stdlib.h>
 
 
 

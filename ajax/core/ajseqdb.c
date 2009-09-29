@@ -28,7 +28,7 @@
 
 #include "ajax.h"
 
-#include "limits.h"
+#include <limits.h>
 #include <stdarg.h>
 #include <sys/types.h>
 #ifndef WIN32

@@ -18,7 +18,7 @@
 ******************************************************************************/
 
 #include "emboss.h"
-#include "math.h"
+#include <math.h>
 
 /*
 ** current wordlength - this is an easily accessible copy of the value
