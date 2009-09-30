@@ -138,8 +138,8 @@ hmmsearch_output                    | file           |  "EDAM: HMMER alignment r
 input_directory                     | directory      |  "EDAM: Directory name"                                 | Input directory
 integer_gap_extension               | integer        |  "EDAM: Integer gap extension penalty"                  | Affine gap extension penalty
 integer_gap_penalty                 | integer        |  "EDAM: Integer gap opening penalty"                    | Affine gap penalty
-integer_long_data                   | file           |                                                 | Standard format information on int and long data
-iinverted_output                    | file           |  "EDAM: inverted repeat sequence map report"            | Sanger Centre program inverted output
+integer_long_data                   | file           |                                                         | Standard format information on int and long data
+einverted_output                    | file           |  "EDAM: Sanger inverted repeat sequence map report"     | Sanger Centre program inverted output
 jaspar_database                     | file           |  "EDAM: JASPAR database"                                | JASPAR database
 jaspar_matrix_id		    | string	     |  "EDAM: JASPAR profile identifier"                      | JASPAR matrix identifier
 keywords                            | file           |  "EDAM: Keywords"                                       | Keywords file
@@ -202,7 +202,7 @@ plot_shading                        | string         |  "EDAM: Generic enumerate
 postscript                          | file           |                                                 | Postscript
 primer3_mishybridizing              | file           |  "EDAM: Primer3 internal oligo mishybridizing library"  | Primer3 internal oligo mishybridizing library
 primer3_mispriming                  | file           |  "EDAM: Primer3 mispriming library file"                | Primer3 mispriming library
-primer3_output                      | file           |  "EDAM: Primer3 report"                                 | Whitehead primer3_core program output
+primer3_output                      | file           |  "EDAM: Primer3 primer report"                                 | Whitehead primer3_core program output
 primer_pairs                        | file           |  "EDAM: Primer pairs sequence record"                   | Primer pairs
 prints_database                     | file           |  "EDAM: PRINTS database"                                | PRINTS database
 profile                             | file           |  "EDAM: Sequence profile"                               | Profile data
