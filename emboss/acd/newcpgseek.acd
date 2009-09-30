@@ -42,7 +42,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "newcpgseek output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:CpG island and isochore report"                      
   ]
 
 endsection: output

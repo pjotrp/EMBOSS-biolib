@@ -15,7 +15,7 @@ section: input [
     knowntype: "integer long data"
     information: "Standard format information on int and long
                   data file"
-    relations:                                                 
+    relations:                                                         
   ]
 
 endsection: input

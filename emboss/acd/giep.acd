@@ -71,7 +71,7 @@ section: output [
     standard: "$(report)"
     knowntype: "giep output"
     nullok: "@(!$(report))"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Protein isoelectric point report"                    
   ]
 
 endsection: output

@@ -85,7 +85,7 @@ section: output [
     knowntype: "hmoment output"
     nullok: "$(plot)"
     nulldefault: "$(plot)"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Peptide hydrophobic moment report"                   
   ]
 
 endsection: output

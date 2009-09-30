@@ -38,7 +38,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "chips output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Nc statistic"                                        
   ]
 
 endsection: output

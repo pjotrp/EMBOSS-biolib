@@ -223,7 +223,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "remap output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Restriction map report"                              
   ]
 
   boolean: cutlist [

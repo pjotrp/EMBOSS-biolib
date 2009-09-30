@@ -61,7 +61,7 @@ section: output [
     knowntype: "charge output"
     nullok: "Y"
     nulldefault: "$(plot)"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Protein charge plot"                                 
   ]
 
 endsection: output

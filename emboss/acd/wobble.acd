@@ -60,7 +60,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "wobble output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Base position variability report"                    
   ]
 
 endsection: output

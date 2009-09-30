@@ -25,7 +25,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "cusp output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Codon usage table file"                              
   ]
 
 endsection: output

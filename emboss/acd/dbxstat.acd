@@ -81,7 +81,7 @@ section: output [
   outfile: outfile [
     standard: "y"
     knowntype: "dbxstat output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Database index"                                      
   ]
 
 endsection: output

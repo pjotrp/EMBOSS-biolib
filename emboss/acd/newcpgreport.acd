@@ -77,7 +77,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "newcpgreport output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:CpG island and isochore report"                      
   ]
 
 endsection: output

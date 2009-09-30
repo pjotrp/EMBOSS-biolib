@@ -107,7 +107,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "textsearch output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Sequence information report"                         
   ]
 
 endsection: output

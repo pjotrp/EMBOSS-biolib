@@ -79,7 +79,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "tfscan output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Transcription factor binding site report"            
   ]
 
 endsection: output

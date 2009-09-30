@@ -84,7 +84,7 @@ section: output [
     extension: "oddcomp"
     help: "This is the results file."
     knowntype: "oddcomp output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:List of sequence accession numbers"                  
   ]
 
 endsection: output

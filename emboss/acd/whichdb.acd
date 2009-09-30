@@ -43,7 +43,7 @@ section: output [
     nullok: "$(get)"
     nulldefault: "$(get)"
     knowntype: "whichdb output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Database information report"                         
   ]
 
 endsection: output

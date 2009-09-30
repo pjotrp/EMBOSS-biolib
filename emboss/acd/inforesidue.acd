@@ -93,7 +93,7 @@ section: output
   [
     parameter: "Y"
     knowntype: "inforesidue output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Amino acid information report"                       
   ]
   
 

@@ -82,7 +82,7 @@ section: output [
            input sequence name, CpG island parameters and the output details
            of any CpG islands that are found."
     knowntype: "cpgplot output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:CpG island and isochore report"                      
   ]
 
   toggle: plot [

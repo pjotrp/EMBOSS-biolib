@@ -160,7 +160,7 @@ section: output [
   outfile: outfile [
     parameter: "y"
     knowntype: "est2genome output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Coding region report"                                
   ]
 
   boolean: align [

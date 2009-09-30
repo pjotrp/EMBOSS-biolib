@@ -222,7 +222,7 @@ section: output
     additional: "Y"
     default: "stdout"
     knowntype: "showdball output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Database information report"                         
   ]
 
 endsection: output

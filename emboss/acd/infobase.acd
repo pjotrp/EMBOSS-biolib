@@ -77,7 +77,7 @@ section: output
   [
     parameter: "Y"
     knowntype: "infobase output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Nucleotide base information report"                  
   ]
   
 

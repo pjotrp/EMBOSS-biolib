@@ -105,7 +105,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "prettyseq output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Nucleotide sequence translation report"              
   ]
 
 endsection: output

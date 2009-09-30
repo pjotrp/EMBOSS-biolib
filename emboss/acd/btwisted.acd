@@ -40,7 +40,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "btwisted output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Nucleic acid conformation report"                    
   ]
 
 endsection: output

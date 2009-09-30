@@ -64,7 +64,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "pepinfo output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Protein sequence properties report"                  
   ]
 
   boolean: generalplot [

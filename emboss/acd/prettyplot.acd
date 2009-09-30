@@ -13,7 +13,7 @@ section: input [
     parameter: "Y"
     type: "gapany"
     aligned: "Y"
-    relations: "EDAM: Sequence record"                                     
+    relations: "EDAM: Sequence alignment data"                             
   ]
 
   matrix: matrixfile [

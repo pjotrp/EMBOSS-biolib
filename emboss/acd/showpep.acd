@@ -309,7 +309,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "showpep output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Protein sequence features report"                    
   ]
 
 endsection: output

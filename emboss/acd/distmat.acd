@@ -15,7 +15,7 @@ section: input [
     aligned: "Y"
     minseqs: "2"
     help: "File containing a sequence alignment."
-    relations: "EDAM: Sequence record"                                     
+    relations: "EDAM: Sequence alignment data"                             
   ]
 
 endsection: input

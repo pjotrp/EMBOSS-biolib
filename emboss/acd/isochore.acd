@@ -51,7 +51,7 @@ section: output [
     parameter: "Y"
     extension: "iso"
     knowntype: "isochore output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:CpG island and isochore report"                      
   ]
 
   xygraph: graph [

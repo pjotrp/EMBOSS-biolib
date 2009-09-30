@@ -33,7 +33,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "stssearch output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Primer match report"                                 
   ]
 
 endsection: output

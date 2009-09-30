@@ -153,7 +153,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "restover output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:EMBOSS restover recognition site report"             
   ]
 
 endsection: output

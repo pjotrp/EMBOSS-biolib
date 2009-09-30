@@ -14,7 +14,7 @@ section: input [
     type: "gapany"
     aligned: "Y"
     help: "The sequence alignment to be displayed."
-    relations: "EDAM: Sequence record"                                     
+    relations: "EDAM: Sequence alignment data"                             
   ]
 
   matrix: matrix [
@@ -253,7 +253,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "showalign output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Multiple sequence alignment record"                  
   ]
 
 endsection: output

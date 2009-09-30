@@ -50,7 +50,7 @@ section: output [
     default: "banana.profile"
     knowntype: "banana output"
     nullok: "Y"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Nucleic acid conformation report"                    
   ]
 
 endsection: output

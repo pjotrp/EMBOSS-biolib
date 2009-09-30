@@ -75,7 +75,7 @@ section: output [
     knowntype: "syco output"
     nullok: "$(plot)"
     nulldefault: "$(plot)"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Synonymous codon usage statictic plot"               
   ]
 
 endsection: output

@@ -102,7 +102,7 @@ section: output [
     additional: "Y"
     default: "stdout"
     knowntype: "seealso output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Application information report"                      
   ]
 
   section: htmlsection [

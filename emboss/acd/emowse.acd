@@ -111,7 +111,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "emowse output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Peptide molecular weight hits report"                
   ]
 
 endsection: output

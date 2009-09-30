@@ -205,7 +205,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "prima output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Primer report"                                       
   ]
 
 endsection: output

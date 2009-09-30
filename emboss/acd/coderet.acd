@@ -30,7 +30,7 @@ section: output [
     parameter: "Y"
     extension: "coderet"
     knowntype: "coderet output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Sequence record"                                     
   ]
 
   seqoutall: cdsoutseq [

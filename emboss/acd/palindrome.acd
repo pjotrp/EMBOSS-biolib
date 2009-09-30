@@ -70,7 +70,7 @@ section: output [
     parameter: "Y"
     extension: "pal"
     knowntype: "palindrome output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Repeat sequence map report"                          
   ]
 
   boolean: overlap [

@@ -25,7 +25,7 @@ seqset: sequences
     type: "gapany"
     aligned: "Y"
     help: "File containing a sequence alignment."
-    relations: "EDAM: Sequence record"                                     
+    relations: "EDAM: Sequence alignment data"                             
 ]
 
 endsection: input

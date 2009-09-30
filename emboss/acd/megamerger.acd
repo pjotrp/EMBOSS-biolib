@@ -79,7 +79,7 @@ section: output [
     parameter: "Y"
     extension: "megamerger"
     knowntype: "megamerger output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:EMBOSS megamerger log file"                          
   ]
 
 endsection: output

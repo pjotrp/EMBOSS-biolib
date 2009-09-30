@@ -105,7 +105,7 @@ section: output [
     knowntype: "iep output"
     nullok: "@(!$(report))"
     nulldefault: "@(!$(report))"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Protein isoelectric point report"                    
   ]
 
 endsection: output

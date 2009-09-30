@@ -14,7 +14,7 @@ section: input [
     help: "File containing a sequence alignment"
     type: "gapprotein"
     aligned: "Y"
-    relations: "EDAM: Protein sequence record"                             
+    relations: "EDAM: Protein sequence alignment data"                     
   ]
 
   datafile: datafile [

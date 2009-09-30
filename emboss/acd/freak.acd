@@ -74,7 +74,7 @@ section: output [
     knowntype: "freak output"
     nullok: "$(plot)"
     nulldefault: "$(plot)"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Sequence composition report"                         
   ]
 
 endsection: output

@@ -47,7 +47,7 @@ section: output [
     parameter: "Y"
     knowntype: "primer3 output"
     information: "Whitehead primer3_core program output file"
-    relations:  "EDAM: Primer3 report"                                 
+    relations:  "EDAM: Primer3 primer report"                                 
   ]
 
 endsection: output

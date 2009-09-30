@@ -84,7 +84,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "sixpack output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Nucleotide sequence translation report"              
   ]
 
   seqoutall: outseq [

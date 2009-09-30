@@ -31,7 +31,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "codcmp output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Codon usage fraction difference"                     
   ]
 
 endsection: output

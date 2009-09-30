@@ -146,7 +146,7 @@ section: output [
     additional: "Y"
     default: "stdout"
     knowntype: "wossname output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Application information report"                      
   ]
 
   section: htmlsection [

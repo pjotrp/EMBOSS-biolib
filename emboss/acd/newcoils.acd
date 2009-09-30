@@ -91,7 +91,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "newcoils output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Protein secondary structure record"                  
   ]
 
 endsection: output

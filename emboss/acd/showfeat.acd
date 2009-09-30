@@ -324,7 +324,7 @@ section: output [
     parameter: "Y"
     extension: "showfeat"
     knowntype: "showfeat output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:General sequence features report"                    
   ]
 
 endsection: output

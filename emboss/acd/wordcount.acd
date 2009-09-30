@@ -55,7 +55,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "wordcount output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Sequence composition report"                         
   ]
 
 endsection: output
