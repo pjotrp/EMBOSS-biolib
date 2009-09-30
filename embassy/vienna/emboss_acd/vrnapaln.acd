@@ -16,7 +16,7 @@ section: input [
     parameter: "Y"
     type: "dna"
     aligned: "Y"
-    relations: "EDAM: DNA sequence record"                                 
+    relations: "EDAM: Nucleotide sequence alignment data"                  
   ]
 
   infile: paramfile [

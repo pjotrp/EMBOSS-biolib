@@ -143,7 +143,7 @@ section: output [
     parameter: "Y"
     information: "EIPRSCAN program output file"
     knowntype: "eiprscan output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Motif map report"                                    
   ]
 
 endsection: output

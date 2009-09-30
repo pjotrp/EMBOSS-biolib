@@ -14,7 +14,7 @@ section: input [
     type: "gapdna"
     aligned: "Y"
     help: "File containing sequences"
-    relations: "EDAM: DNA sequence record"                                 
+    relations: "EDAM: Nucleotide sequence alignment data"                  
   ]
 
 endsection: input

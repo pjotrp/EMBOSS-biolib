@@ -18,7 +18,7 @@ section: input [
     type: "gapnucleotide"
     aligned: "Y"
     help: "File containing a sequence alignment"
-    relations: "EDAM: Nucleotide sequence record"                          
+    relations: "EDAM: Nucleotide sequence alignment data"                  
   ]
 
 endsection: input

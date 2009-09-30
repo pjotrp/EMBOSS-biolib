@@ -100,7 +100,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "crystalball output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Free text file"                                      
   ]
 
 endsection: output

@@ -16,7 +16,7 @@ section: input [
     parameter: "Y"
     type: "any"
     aligned: "Y"
-    relations: "EDAM: Sequence record"                                     
+    relations: "EDAM: Sequence alignment data"                             
   ]
 
   infile: priorfile [

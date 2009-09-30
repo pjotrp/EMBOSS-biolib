@@ -13,7 +13,7 @@ section: input [
     parameter: "Y"
     type: "any"
     aligned: "Y"
-    relations: "EDAM: Sequence record"                                     
+    relations: "EDAM: Sequence alignment data"                             
   ]
 
 endsection: input
@@ -102,7 +102,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "enetphos output"
-    relations: "EDAM: Free text file"                                      
+    relations:  "EDAM:Protein post-translation modification site report"   
   ]
 
 endsection: output
