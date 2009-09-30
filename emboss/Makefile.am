@@ -13,7 +13,7 @@ endif
 endif
 
 
-check_PROGRAMS = acdlog acdxsd ajtest \
+check_PROGRAMS = acdlog acdrelations acdxsd ajtest \
 complex corbatest \
 entrails entrailsbook entrailshtml entrailswiki giep histogramtest intconv \
 origsplitter origunion \
@@ -87,6 +87,7 @@ acdpretty_SOURCES = acdpretty.c
 acdtable_SOURCES = acdtable.c
 acdtrace_SOURCES = acdtrace.c
 acdvalid_SOURCES = acdvalid.c
+acdrelations_SOURCES = acdrelations.c
 acdxsd_SOURCES = acdxsd.c
 aligncopy_SOURCES = aligncopy.c
 aligncopypair_SOURCES = aligncopypair.c
