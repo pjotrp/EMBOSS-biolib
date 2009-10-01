@@ -149,7 +149,7 @@ ajint         ajTrnSeqDangleC (const AjPTrn trnObj, const char *seq, ajint len,
 ajint         ajTrnSeqDangleS (const AjPTrn trnObj, const AjPStr seq,
 			      ajint frame, AjPStr *pep);
 AjPStr        ajTrnGetTitle (const AjPTrn thys);
-AjPStr        ajTrnGetFilename (const AjPTrn thys);
+AjPStr        ajTrnGetFileName (const AjPTrn thys);
 ajint         ajTrnStartStop (const AjPTrn trnObj,
 			      const AjPStr codon, char *aa);
 ajint         ajTrnStartStopC (const AjPTrn trnObj,

@@ -129,7 +129,7 @@ void         ajReportSetHeaderC (AjPReport thys, const char* header);
 void         ajReportAppendSubheaderS (AjPReport thys, const AjPStr header);
 void         ajReportAppendSubheaderC (AjPReport thys, const char* header);
 void         ajReportSetSubheaderS (AjPReport thys, const AjPStr header);
-void         ajReportSetSubheaderC (AjPReport thys, const char* header);
+void         ajReportSetSubHeaderC (AjPReport thys, const char* header);
 void         ajReportSetSeqstats(AjPReport thys, const AjPSeqall seqall);
 void         ajReportSetSeqsetstats(AjPReport thys, const AjPSeqset seqset);
 void         ajReportSetStatistics(AjPReport thys, ajlong totseqs,
