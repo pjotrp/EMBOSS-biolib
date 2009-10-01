@@ -28,6 +28,9 @@
 #include "ajax.h"
 
 #ifdef HAVE_MYSQL
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include "mysql.h"
 #endif
 
