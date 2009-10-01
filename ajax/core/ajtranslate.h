@@ -129,8 +129,6 @@ void          ajTrnSeqAltRevC (const AjPTrn trnObj, const char *str, ajint len,
                               AjPStr *pep);
 void          ajTrnSeqS (const AjPTrn trnObj, const AjPStr str,
                          AjPStr *pep);
-void          ajTrnSeqRevS (const AjPTrn trnObj, const AjPStr str,
-			   AjPStr *pep);
 void          ajTrnSeqAltRevS (const AjPTrn trnObj, const AjPStr str,
 			      AjPStr *pep);
 void          ajTrnSeqSeq (const AjPTrn trnObj, const AjPSeq seq,
@@ -146,8 +144,6 @@ void          ajTrnSeqFrameS (const AjPTrn trnObj, const AjPStr seq,
                               ajint frame, AjPStr *pep);
 void          ajTrnSeqFrameSeq (const AjPTrn trnObj, const AjPSeq seq,
                                 ajint frame, AjPStr *pep);
-AjPSeq        ajTrnSeqFrameSeqTopep (const AjPTrn trnObj, const AjPSeq seq,
-                                     ajint frame);
 ajint         ajTrnSeqDangleC (const AjPTrn trnObj, const char *seq, ajint len,
 			    ajint frame, AjPStr *pep);
 ajint         ajTrnSeqDangleS (const AjPTrn trnObj, const AjPStr seq,
@@ -194,7 +190,6 @@ __deprecated ajint   ajTrnCDangle (const AjPTrn trnObj, const char *seq,
                                    ajint len, ajint frame, AjPStr *pep);
 __deprecated ajint   ajTrnStrDangle (const AjPTrn trnObj, const AjPStr seq,
                                      ajint frame, AjPStr *pep);
-__deprecated AjPStr  ajTrnGetFileName (const AjPTrn thys);
 
 /*
 ** End of prototype definitions

@@ -161,8 +161,6 @@ __deprecated void     ajReportAppendSubHeaderC (AjPReport thys,
                                                 const char* header);
 __deprecated void     ajReportSetSubHeader (AjPReport thys,
                                             const AjPStr header);
-__deprecated void     ajReportSetSubHeaderC (AjPReport thys,
-                                             const char* header);
 __deprecated AjBool   ajReportSetTags (AjPReport thys,
                                        const AjPStr taglist);
 __deprecated void     ajReportAppendTail (AjPReport thys, const AjPStr tail);
