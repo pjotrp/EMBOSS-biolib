@@ -58,7 +58,7 @@ if (!defined $application || $application eq "") {
 }
 
 # where the web pages and include files live
-$doctop = "$ENV{HOME}/cvsemboss";
+$doctop = "$ENV{HOME}/devemboss";
 if ($embassy eq "") {
     $docdir = "$doctop/doc/programs/master/emboss/apps";
     $incdir = "$docdir/inc";
@@ -798,7 +798,7 @@ sub writeUsage {
 
     my $out = "$incdir/$application.usage";
     open (OUT, "> $out") || die "Can't open $out";
-    $usage =~ s/\/homes\/pmr\/cvsemboss/\/homes\/user/go;
+    $usage =~ s/\/homes\/pmr\/devemboss/\/homes\/user/go;
     $usage =~ s/(Guide tree +file created: +)\[[A-Z0-9]+\]/$1\[12345678A]/go;
     $usage =~ s/(GCG-Alignment file created +)\[[A-Z0-9]+\]/$1\[12345678A]/go;
     $usage =~ s/domainalign\-[0-9]+[.][0-9]+/domainalign-1234567890.1234/go;
@@ -844,7 +844,7 @@ sub writeOutput {
 
     my $out = "$incdir/$application.output";
     open (OUT, "> $out") || die "Can't open $out";
-    $output =~ s/\/homes\/pmr\/cvsemboss/\/homes\/user/go;
+    $output =~ s/\/homes\/pmr\/devemboss/\/homes\/user/go;
     $output =~ s/DATE  [A-Z][a-z][a-z] [A-Z][a-z][a-z] +[0-9]+ [0-9:]+ 200[5-9]/DATE  Tue Jul 15 12:00:00 2008/go;
     $output =~ s/CreationDate: ... ... +\d+ [0-9:]+ 2[0-9][0-9][0-9]$/CreationDate: Tue Jul 15 12:00:00 2008/gom;
     $output =~ s/Rundate: ... ... +\d+ 2[0-9][0-9][0-9] [0-9:]+$/Rundate: Tue Jul 15 2008 12:00:00/gom;

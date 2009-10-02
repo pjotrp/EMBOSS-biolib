@@ -4,9 +4,6 @@
 set pack = $argv[1]
 set app = $argv[2]
 
-#set embosshome = ~/cvsemboss
-#set embossinst = ~/local
-
 foreach embosshome (`embossversion -full -auto| grep '^BaseDirectory'`)
 #  echo "$embosshome"
 end
