@@ -3,7 +3,16 @@
 lib_LTLIBRARIES = libviennarna.la
 
 if ISCYGWIN
-CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import
+CYGWIN_LDFLAGS = -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import
+if LOCALLINK
+CYGWIN_LDVIENNA = -L../../../plplot -L../../../ajax/pcre -L../../../ajax/core \
+-L../../../ajax/graphics -L../../../ajax/ensembl -L../../../ajax/ajaxseq \
+-L../../../ajax/acd -L../../../nucleus \
+-lnucleus -lacd -lajaxseq -lensembl -lajaxg -lajax -leplplot -lepcre
+else
+CYGWIN_LDVIENNA = -L${embprefix}/lib -lnucleus -lacd -lajaxseq -lensembl \
+                -lajaxg -lajax -leplplot -lepcre
+endif
 endif
 
 bin_PROGRAMS = vrnaalifold vrnacofoldpf vrnaevalpair vrnainverse \
@@ -56,7 +65,7 @@ libviennarna_la_SOURCES = $(VIENNALIBSRC)
 VERS_INF = -version-info 1:7:0
 
 if ISCYGWIN
-LINKFLAGS = $(VERS_INF) $(CYGWIN_LDFLAGS)
+LINKFLAGS = $(VERS_INF) $(CYGWIN_LDFLAGS) $(CYGWIN_LDVIENNA)
 else
 LINKFLAGS = $(VERS_INF)
 endif

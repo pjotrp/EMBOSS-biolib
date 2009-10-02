@@ -5,7 +5,16 @@ SUBDIRS = INCLUDE
 lib_LTLIBRARIES = libmeme.la
 
 if ISCYGWIN
-CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols  -Wl,--enable-auto-import
+CYGWIN_LDFLAGS = -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import
+if LOCALLINK
+CYGWIN_LDMEME = -L../../../plplot -L../../../ajax/pcre -L../../../ajax/core \
+-L../../../ajax/graphics -L../../../ajax/ensembl -L../../../ajax/ajaxseq \
+-L../../../ajax/acd -L../../../nucleus \
+-lnucleus -lacd -lajaxseq -lensembl -lajaxg -lajax -leplplot -lepcre
+else
+CYGWIN_LDMEME = -L${embprefix}/lib -lnucleus -lacd -lajaxseq -lensembl \
+                -lajaxg -lajax -leplplot -lepcre
+endif
 endif
 
 bin_PROGRAMS = omeme
@@ -53,7 +62,7 @@ libmeme_la_SOURCES = $(MEMESRC)
 VERS_INF = -version-info 2:1:1
 
 if ISCYGWIN
-LINKFLAGS = $(VERS_INF) $(CYGWIN_LDFLAGS)
+LINKFLAGS = $(VERS_INF) $(CYGWIN_LDFLAGS) $(CYGWIN_LDMEME)
 else
 LINKFLAGS = $(VERS_INF)
 endif
