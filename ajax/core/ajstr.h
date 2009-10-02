@@ -583,6 +583,7 @@ AjBool     ajStrTokenNextParseC(AjPStrTok* Ptoken, const char* txtdelim,
 				AjPStr* Pstr);
 AjBool     ajStrTokenNextParseS(AjPStrTok* Ptoken, const AjPStr strdelim,
 				AjPStr* Pstr);
+AjBool     ajStrTokenNextParseNoskip(AjPStrTok* Ptoken, AjPStr* Pstr);
 AjBool     ajStrTokenRestParse(AjPStrTok* Ptoken, AjPStr* Pstr);
 
 

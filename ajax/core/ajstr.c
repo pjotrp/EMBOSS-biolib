@@ -13529,6 +13529,7 @@ void ajStrTokenTrace(const AjPStrTok token)
 ** @nam4rule Next Return next token
 ** @nam5rule NextFind Use delimiter as a set of characters
 ** @nam5rule NextParse Use delimiter as a string
+** @nam6rule NextParseNoskip Use delimiter as a string, stop at first delimiter
 ** @nam4rule Rest Return remainder of string
 ** @nam5rule RestParse Return remainder of string
 **
@@ -13801,6 +13802,67 @@ AjBool ajStrTokenNextParseS(AjPStrTok* Ptoken, const AjPStr strdelim,
     ajStrAssignS(&(*Ptoken)->Delim, strdelim);
 
     return ajStrTokenNextParse(Ptoken, Pstr);
+}
+
+
+
+
+/* @func ajStrTokenNextParseNoskip *********************************************
+**
+** Parses tokens from a string using a string token parser.  Treats the 
+** delimiter as a string. Stops after first delimiter character.
+**
+** The test uses the C function 'strcspn'.
+**
+** @param [u] Ptoken [AjPStrTok*] String token parsing object.
+** @param [w] Pstr [AjPStr*] Next token returned, may be empty if the
+**                           delimiter has changed or if next character
+**                           was also a delimiter
+** @return [AjBool] True if successfully parsed.
+**                  False (and string set to empty) if there is nothing
+**                  more to parse.
+** @@
+******************************************************************************/
+
+AjBool ajStrTokenNextParseNoskip(AjPStrTok* Ptoken, AjPStr* Pstr)
+{
+    ajuint ilen;
+    AjPStrTok token;
+    char* cp;
+
+    token = *Ptoken;
+
+    if(!*Ptoken)
+    {					/* token already cleared */
+	ajStrAssignClear(Pstr);
+
+	return ajFalse;
+    }
+
+    if(token->Pos >= token->String->Len)
+    {					/* all done */
+	ajStrAssignClear(Pstr);
+	ajStrTokenDel(Ptoken);
+
+	return ajFalse;
+    }
+
+    cp = &token->String->Ptr[token->Pos];
+    ilen = strcspn(cp, token->Delim->Ptr);
+
+    if(ilen)
+    {
+	ajStrAssignSubS(Pstr, token->String,
+		       token->Pos, token->Pos + ilen - 1);
+    }
+    else
+    {
+	ajStrAssignClear(Pstr);
+    }
+
+    token->Pos += ilen + 1;
+
+    return ajTrue;
 }
 
 
