@@ -3400,7 +3400,7 @@ __deprecated void ajReportAppendHeader(AjPReport thys, const AjPStr header)
 
 
 
-/* @func ajReportSetSubHeaderC ************************************************
+/* @func ajReportSetSubheaderC ************************************************
 **
 ** Appends to a feature report subheader
 **
@@ -3410,7 +3410,7 @@ __deprecated void ajReportAppendHeader(AjPReport thys, const AjPStr header)
 ** @@
 ******************************************************************************/
 
-void ajReportSetSubHeaderC(AjPReport thys, const char* header)
+void ajReportSetSubheaderC(AjPReport thys, const char* header)
 {
     if(!thys)
         return;
