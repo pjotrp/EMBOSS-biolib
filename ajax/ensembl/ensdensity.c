@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -3170,8 +3170,7 @@ AjBool ensDensityFeatureAdaptorFetchAllBySlice(
      ** divided by the number of requested blocks.
      */
     
-    bsize = (ajint) ceil((double) (ajint) ensSliceGetLength(slice) /
-			 (double) (ajint) blocks);
+    bsize = ceil( ensSliceGetLength(slice) / (double) blocks);
     
     dtrs = ajListNew();
     
@@ -3187,13 +3186,13 @@ AjBool ensDensityFeatureAdaptorFetchAllBySlice(
 	    ** the Features are stored on. Please use sensibly or find a
 	    ** better implementation.
 	    */
-	    
+
 	    ratio = (double) bsize /
-	    ((double) (ajint) ensSliceGetSeqRegionLength(slice) /
-	     (double) (ajint) ensDensityTypeGetRegionFeatures(dt));
+                (ensSliceGetSeqRegionLength(slice) /
+                 (double) (ajint) ensDensityTypeGetRegionFeatures(dt));
 	}
 	
-	/*
+        /*
 	** We prefer to use a block size that is smaller than the
 	** required one, which gives better results on interpolation.
 	** Give larger bits a disadvantage and make them comparable.
