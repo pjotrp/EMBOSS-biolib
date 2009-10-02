@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -3170,7 +3170,7 @@ AjBool ensDensityFeatureAdaptorFetchAllBySlice(
      ** divided by the number of requested blocks.
      */
     
-    bsize = ceil( ensSliceGetLength(slice) / (double) blocks);
+    bsize = (ajint) (ceil( ensSliceGetLength(slice) / (double) blocks));
     
     dtrs = ajListNew();
     
@@ -3205,7 +3205,7 @@ AjBool ensDensityFeatureAdaptorFetchAllBySlice(
 	
 	dtr->DensityType = dt;
 	
-	dtr->Ratio = ratio;
+	dtr->Ratio = (float) ratio;
 	
 	ajListPushAppend(dtrs, (void *) dtr);
     }
@@ -3366,7 +3366,8 @@ AjBool ensDensityFeatureAdaptorFetchAllBySlice(
 		    ** how much of the Ensembl Density Feature was overlapped.
 		    */
 		    
-		    value += portion * ensDensityFeatureGetDensityValue(df);
+		    value += (float) (portion *
+                                      ensDensityFeatureGetDensityValue(df));
 		    
 		    break;
 		    
