@@ -3,7 +3,16 @@
 lib_LTLIBRARIES = libhmmer.la
 
 if ISCYGWIN
-CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import
+CYGWIN_LDFLAGS = -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import
+if LOCALLINK
+CYGWIN_LDHMMER = -L../../../plplot -L../../../ajax/pcre -L../../../ajax/core \
+-L../../../ajax/graphics -L../../../ajax/ensembl -L../../../ajax/ajaxseq \
+-L../../../ajax/acd -L../../../nucleus \
+-lnucleus -lacd -lajaxseq -lensembl -lajaxg -lajax -leplplot -lepcre
+else
+CYGWIN_LDHMMER = -L${embprefix}/lib -lnucleus -lacd -lajaxseq -lensembl \
+                -lajaxg -lajax -leplplot -lepcre
+endif
 endif
 
 bin_PROGRAMS = ohmmcalibrate ohmmconvert ohmmemit ohmmfetch ohmmindex \
@@ -53,7 +62,7 @@ libhmmer_la_SOURCES = $(HMMERSRC)
 VERS_INF = -version-info 2:1:1
 
 if ISCYGWIN
-LINKFLAGS = $(VERS_INF) $(CYGWIN_LDFLAGS)
+LINKFLAGS = $(VERS_INF) $(CYGWIN_LDFLAGS) $(CYGWIN_LDHMMER)
 else
 LINKFLAGS = $(VERS_INF)
 endif
