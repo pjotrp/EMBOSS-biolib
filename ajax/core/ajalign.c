@@ -164,6 +164,7 @@ static void       alignSim(AjPStr* pmark, const char idch, const char simch,
 static float      alignTotweight(const AjPAlign thys, ajint iali);
 static void       alignTraceData(const AjPAlign thys);
 
+static void       alignWriteBam(AjPAlign thys);
 static void       alignWriteClustal(AjPAlign thys);
 static void       alignWriteFasta(AjPAlign thys);
 static void       alignWriteMark(AjPAlign thys, ajint iali, ajint markx);
@@ -180,6 +181,7 @@ static void       alignWriteNexus(AjPAlign thys);
 static void       alignWriteNexusnon(AjPAlign thys);
 static void       alignWritePhylip(AjPAlign thys);
 static void       alignWritePhylipnon(AjPAlign thys);
+static void       alignWriteSam(AjPAlign thys);
 static void       alignWriteScore(AjPAlign thys);
 static void       alignWriteSelex(AjPAlign thys);
 static void       alignWriteSeqformat(AjPAlign thys, ajint iali,
@@ -260,6 +262,10 @@ static AlignOFormat alignFormat[] =
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  2, 2, alignWriteSimple},
   {"simple",    "Simple multiple alignment",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  0, 0, alignWriteSimple},
+  {"sam",       "Sequence alignent/map (SAM) format",
+       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE,  2, 2, alignWriteSam},
+  {"bam",       "Binary sequence alignent/map (BAM) format",
+       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE,  2, 2, alignWriteBam},
   {"score",     "Score values for pairs of sequences",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  2, 2, alignWriteScore},
   {"srs",       "Simple multiple sequence format for SRS",
@@ -1545,6 +1551,74 @@ static void alignWriteScore(AjPAlign thys)
 			alignSeqName(thys, 0, iali),
                         alignSeqName(thys, 1, iali),
 			data->LenAli);
+    }
+
+    AJFREE(pdata);
+
+    return;
+}
+
+
+
+
+/* @funcstatic alignWriteSam ***************************************************
+**
+** Writes an alignment in sequence alignment/map (SAM) format
+**
+** @param [u] thys [AjPAlign] Alignment object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void alignWriteSam(AjPAlign thys)
+{
+    AjPFile outf;
+    ajint nali;
+    ajint iali;
+    AlignPData* pdata = NULL;
+    AlignPData data = NULL;
+
+
+    outf = thys->File;
+    nali = ajListToarray(thys->Data, (void***) &pdata);
+
+    for(iali=0; iali<nali; iali++)
+    {
+	data = pdata[iali];
+    }
+
+    AJFREE(pdata);
+
+    return;
+}
+
+
+
+
+/* @funcstatic alignWriteBam ***************************************************
+**
+** Writes an alignment in binary sequence alignment/map (BAM) format
+**
+** @param [u] thys [AjPAlign] Alignment object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void alignWriteBam(AjPAlign thys)
+{
+    AjPFile outf;
+    ajint nali;
+    ajint iali;
+    AlignPData* pdata = NULL;
+    AlignPData data = NULL;
+
+
+    outf = thys->File;
+    nali = ajListToarray(thys->Data, (void***) &pdata);
+
+    for(iali=0; iali<nali; iali++)
+    {
+	data = pdata[iali];
     }
 
     AJFREE(pdata);
@@ -4032,8 +4106,8 @@ static const AjPStr alignSeqName(const AjPAlign thys, ajint iseq, ajint iali)
 
     seq = alignSeq(thys, iseq, iali);
 
-    /*ajDebug("alignSeqName acc '%S' des '%S'\n",
-      ajSeqGetAccS(seq), ajSeqGetDescS(seq));*/
+    /* ajDebug("alignSeqName acc '%S' des '%S'\n",
+       ajSeqGetAccS(seq), ajSeqGetDescS(seq)); */
 
     if(thys->Showusa)
 	return ajSeqGetUsaS(seq);
