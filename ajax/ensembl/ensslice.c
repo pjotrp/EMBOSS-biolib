@@ -7,7 +7,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1811,8 +1811,8 @@ AjBool ensSliceFetchExpandedSlice(const EnsPSlice slice,
 		
                 sshift = slice->Start - srstart;
             }
-	    
-            if(srstart > srend)
+
+            else
             {
                 /*
 		** If the Slice still has a negative length,
@@ -3706,31 +3706,31 @@ AjBool ensSliceAdaptorFetchNormalisedSliceProjection(EnsPSliceAdaptor adaptor,
 	
 	return ajFalse;
     }
-    
+
     aea = ensRegistryGetAssemblyExceptionAdaptor(adaptor->Adaptor);
-    
+
     srid = ensSliceGetSeqRegionIdentifier(slice);
-    
+
     haps = ajListNew();
-    
+
     pars = ajListNew();
-    
+
     regions = ajListNew();
-    
+
     ensAssemblyExceptionAdaptorFetchAllBySeqRegionIdentifier(aea, srid,
                                                              regions);
-    
+
     while(ajListPop(regions, (void **) &ae))
     {
 	/*
 	** We need all overlapping pseudo-autosomal regions (PARs) and all
 	** haplotype regions (HAPs) if any.
 	*/
-	
+
 	if(ensAssemblyExceptionGetType(ae) == ensEAssemblyExceptionTypePAR)
 	{
-	    if((ensAssemblyExceptionGetSeqRegionStart(ae) <= slice->End) &&
-		(ensAssemblyExceptionGetSeqRegionEnd(ae) >= slice->Start))
+	    if(((ajint) ensAssemblyExceptionGetSeqRegionStart(ae) <= slice->End) &&
+               ((ajint) ensAssemblyExceptionGetSeqRegionEnd(ae) >= slice->Start))
 		ajListPushAppend(pars, (void *) ae);
 	    else
 		ensAssemblyExceptionDel(&ae);
@@ -4833,7 +4833,7 @@ AjBool ensRepeatMaskedSliceFetchSequenceStr(EnsPRepeatMaskedSlice rmslice,
 	if(start < 1)
 	    start = 1;
 	
-	if(end > ensSliceGetLength(rmslice->Slice))
+	if(end > (ajint) ensSliceGetLength(rmslice->Slice))
 	    end = ensSliceGetLength(rmslice->Slice);
 	
 	rc = ensRepeatFeatureGetRepeatConsensus(rf);
