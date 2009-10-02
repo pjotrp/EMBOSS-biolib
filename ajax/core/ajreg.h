@@ -16,6 +16,7 @@ extern "C"
 #define ajreg_h
 
 #include "ajax.h"
+#include "pcre_config.h"
 #include "pcre_internal.h"
 #include "pcreposix.h"
 
