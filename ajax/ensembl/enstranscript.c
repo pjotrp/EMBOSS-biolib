@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -3752,7 +3752,7 @@ AjBool ensTranscriptTranslateStr(EnsPTranscript transcript, AjPStr* Psequence)
     
     atranslation = ensTranslationCacheGetTranslation(codontable);
     
-    ajTrnStr(atranslation, cdna, Psequence);
+    ajTrnSeqS(atranslation, cdna, Psequence);
     
     ajStrDel(&cdna);
     
@@ -4714,7 +4714,7 @@ AjBool ensTranscriptAdaptorFetchAllByGene(EnsPTranscriptAdaptor adaptor,
     }
     
     if((ensFeatureGetStart(gfeature) < 1) ||
-	(ensFeatureGetEnd(gfeature) > ensSliceGetLength(gslice)))
+       (ensFeatureGetEnd(gfeature) > (ajint) ensSliceGetLength(gslice)))
     {
 	sa = ensRegistryGetSliceAdaptor(dba);
 	
@@ -5692,9 +5692,9 @@ AjBool ensTranscriptMapperSlice2CDS(EnsPTranscript transcript,
 	{
 	    if((ensMapperResultGetStrand(gcmr) < 0) ||
 		(ensMapperResultGetEnd(gcmr) <
-		 transcript->TranscriptCodingStart) ||
+		 (ajint) transcript->TranscriptCodingStart) ||
 		(ensMapperResultGetStart(gcmr) >
-		 transcript->TranscriptCodingEnd))
+		 (ajint) transcript->TranscriptCodingEnd))
 	    {
 		/* All gap - does not map to peptide. */
 		
