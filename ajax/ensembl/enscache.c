@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** Bio::EnsEMBL::Utils::Cache CVS Revision: 1.2
@@ -467,13 +467,13 @@ EnsPCache ensCacheNew(AjEnum type,
     ** and a function calculating the size of value data are required.
     */
     
-    if(!Freference)
+    if(!(void*)Freference)
 	ajFatal("ensCacheNew requires a referencing function.");
     
-    if(!Fdelete)
+    if(!(void*)Fdelete)
 	ajFatal("ensCacheNew requires a deletion function.");
     
-    if(maxsize && (!Fsize))
+    if(maxsize && (!(void*)Fsize))
 	ajFatal("ensCacheNew requires a memory sizing function "
 		"when a maximum size limit has been defined.");
     
