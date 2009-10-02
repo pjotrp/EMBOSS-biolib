@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1777,33 +1777,33 @@ AjBool ensQCAlignmentCalculateProteinToProteinQueryCoverage(
     
     /* Test for completeness of the C-terminus. */
     
-    if(qend == qlength)
+    if(qend == (ajint) qlength)
     {
 	/* Perfect C-terminus (1*2**11=2048) */
-	if(tend == tlength)
+	if(tend == (ajint) tlength)
 	    qca->Coverage += 2048;
 	/* Added stop codon (1*2**9=512) */
-	else if(tend == (tlength - 1))
+	else if(tend == (ajint) (tlength - 1))
 	    qca->Coverage += 512;
 	/* Longer C-terminus (1*2**3=8) */
-	else if(tend < (tlength - 1))
+	else if(tend < (ajint) (tlength - 1))
 	    qca->Coverage += 8;
 	else
 	    ajWarn("Error in C-terminus coverage scoring schema. "
 		   "ID: %u QE: %d QL: %u TE: %d TL: %u",
 		   qca->Identifier, qend, qlength, tend, tlength);
     }
-    else if(qend == (qlength - 1))
+    else if(qend == (ajint) (qlength - 1))
     {
 	
 	/* Missing stop codon (1*2**7=128) */
-	if(tend == tlength)
+	if(tend == (ajint) tlength)
 	    qca->Coverage += 128;
 	/* Non-matching stop codon (1*2**5=32) */
-	else if(tend == (tlength - 1))
+	else if(tend == (ajint) (tlength - 1))
 	    qca->Coverage += 32;
 	/* Non-matching C-terminus (0*2**2=0) */
-	else if(tend < (tlength - 1))
+	else if(tend < (ajint) (tlength - 1))
 	    qca->Coverage += 0;
 	else
 	    ajWarn("Error in C-terminus coverage scoring schema. "
@@ -1811,13 +1811,13 @@ AjBool ensQCAlignmentCalculateProteinToProteinQueryCoverage(
 		   qca->Identifier, qend, qlength, tend, tlength);
 	
     }
-    else if(qend < (qlength - 1))
+    else if(qend < (ajint) (qlength - 1))
     {
 	/* Shorter C-terminus (1*2**1=2) */
-	if(tend == tlength)
+	if(tend == (ajint) tlength)
 	    qca->Coverage += 2;
 	/* Non-matching C-terminus (0*2**2=0) */
-	else if(tend < tlength)
+	else if(tend < (ajint) tlength)
 	    qca->Coverage += 0;
 	else
 	    ajWarn("Error in C-terminus coverage scoring schema. "
@@ -1957,10 +1957,10 @@ AjBool ensQCAlignmentCalculateProteinToGenomeQueryCoverage(EnsPQCAlignment qca,
     if(qstart == 0)
 	qca->Coverage += 64;
     /* Edge threshold (1*2**4=16) */
-    else if(qstart <= edge)
+    else if(qstart <= (ajint) edge)
 	qca->Coverage += 16;
     /* Shorter N-terminus (1*2**2=4) */
-    else if(qstart > edge)
+    else if(qstart > (ajint) edge)
 	qca->Coverage += 4;
     else
 	ajWarn("Error in N-terminus query coverage scoring schema. "
@@ -1969,13 +1969,13 @@ AjBool ensQCAlignmentCalculateProteinToGenomeQueryCoverage(EnsPQCAlignment qca,
     /* Test for completeness of the C-terminus. */
     
     /* Perfect C-terminus (1*2**5=32) */
-    if(qend == qlength)
+    if(qend == (ajint) qlength)
 	qca->Coverage += 32;
     /* Edge threshold (1*2**3=8) */
-    else if(qend >= (qlength - edge))
+    else if(qend >= (ajint) (qlength - edge))
 	qca->Coverage += 8;
     /* Shorter C-terminus (1*2**1=2) */
-    else if(qend < (qlength - edge))
+    else if(qend < (ajint) (qlength - edge))
 	qca->Coverage += 2;
     else
 	ajWarn("Error in C-terminus coverage scoring schema. "
@@ -2142,31 +2142,31 @@ AjBool ensQCAlignmentCalculateDNAToDNAQueryCoverage(EnsPQCAlignment qca,
 	if(tstart == 0)
 	    qca->Coverage += 4096;
 	/* Longer 5'-edge (1*2**10=1024) */
-	else if(tstart <= edge)
+	else if(tstart <= (ajint) edge)
 	    qca->Coverage += 1024;
 	/* Longer 5'-region (1*2**4=16) */
-	else if(tstart > edge)
+	else if(tstart > (ajint) edge)
 	    qca->Coverage += 16;
 	else
 	    ajWarn("Error in 5'-terminus query coverage scoring schema. "
 		   "ID: %u QS: %d TS: %d", qca->Identifier, qstart, tstart);
     }
-    else if(qstart <= edge)
+    else if(qstart <= (ajint) edge)
     {
 	/* Shorter 5'-edge (1*2**8=256) */
 	if(tstart == 0)
 	    qca->Coverage += 256;
 	/* Non-matching 5'-edge (1*2**6=64) */
-	else if(tstart <= edge)
+	else if(tstart <= (ajint) edge)
 	    qca->Coverage += 64;
 	/* Non-matching 5'-region (0*2**0=0) */
-	else if(tstart > edge)
+	else if(tstart > (ajint) edge)
 	    qca->Coverage += 0;
 	else
 	    ajWarn("Error in 5'-terminus query coverage scoring schema. "
 		   "ID: %u QS: %d TS: %d", qca->Identifier, qstart, tstart);
     }
-    else if(qstart > edge)
+    else if(qstart > (ajint) edge)
     {
 	/* Shorter 5'-region (1*2**2=4) */
 	if(tstart == 0)
@@ -2196,35 +2196,35 @@ AjBool ensQCAlignmentCalculateDNAToDNAQueryCoverage(EnsPQCAlignment qca,
     ** FIXME???
     */
     
-    if(qend >= qlength)
+    if(qend >= (ajint) qlength)
     {
 	/*
 	** Perfect 3'-terminus, including over-estimated Poly A tails.
 	** (1*2**11=2048)
         */
-	if(tend >= tlength)
+	if(tend >= (ajint) tlength)
 	    qca->Coverage += 2048;
 	/* Longer 3'-edge (1*2**9=512) */
-	else if(tend >= (tlength - edge))
+	else if(tend >= (ajint) (tlength - edge))
 	    qca->Coverage += 512;
 	/* Longer 3'-region (1*2**3=8) */
-	else if(tend < (tlength - edge))
+	else if(tend < (ajint) (tlength - edge))
 	    qca->Coverage += 8;
 	else
 	    ajWarn("Error in 3'-terminus query coverage scoring schema. "
 		   "ID: %u QE: %d QL: %u TE: %d TL: %u",
 		   qca->Identifier, qend, qlength, tend, tlength);
     }
-    else if(qend >= (qlength - edge))
+    else if(qend >= (ajint) (qlength - edge))
     {
 	/* Added 3'-edge, including over-estimated Poly A tails. (1*2**7=128) */
-	if(tend >= tlength)
+	if(tend >= (ajint) tlength)
 	    qca->Coverage += 128;
 	/* Non-matching 3'-edge (1*2**5=32) */
-	else if(tend >= (tlength - edge))
+	else if(tend >= (ajint) (tlength - edge))
 	    qca->Coverage += 32;
 	/* Non-matching 3-'terminus (0*2**2=0) */
-	else if(tend < (tlength - edge))
+	else if(tend < (ajint) (tlength - edge))
 	    qca->Coverage += 0;
 	else
 	    ajWarn("Error in 3'-terminus query coverage scoring schema. "
@@ -2232,13 +2232,13 @@ AjBool ensQCAlignmentCalculateDNAToDNAQueryCoverage(EnsPQCAlignment qca,
 		   qca->Identifier, qend, qlength, tend, tlength);
 	
     }
-    else if(qend < (qlength - edge))
+    else if(qend < (ajint) (qlength - edge))
     {
 	/* Shorter 3'-terminus (1*2**1=2) */
-	if(tend >= tlength)
+	if(tend >= (ajint) tlength)
 	    qca->Coverage += 2;
 	/* Non-matching 3'-terminus (0*2**0=0) */
-	else if(tend < tlength)
+	else if(tend < (ajint) tlength)
 	    qca->Coverage += 0;
 	else
 	    ajWarn("Error in 3'-terminus query coverage scoring schema. "
@@ -2382,10 +2382,10 @@ AjBool ensQCAlignmentCalculateDNAToGenomeQueryCoverage(EnsPQCAlignment qca,
     if(qstart == 0)
 	qca->Coverage += 64;
     /* Edge threshold (1*2**4=16) */
-    else if(qstart <= edge)
+    else if(qstart <= (ajint) edge)
 	qca->Coverage += 16;
     /* Shorter 5' terminus (1*2**2=4) */
-    else if(qstart > edge)
+    else if(qstart > (ajint) edge)
 	qca->Coverage += 4;
     else
 	ajWarn("Error in 5'-terminus query coverage scoring schema. "
@@ -2398,13 +2398,13 @@ AjBool ensQCAlignmentCalculateDNAToGenomeQueryCoverage(EnsPQCAlignment qca,
     */
     
     /* Perfect 3' terminus (1*2**5=32) */
-    if(qend >= qlength)
+    if(qend >= (ajint) qlength)
 	qca->Coverage += 32;
     /* Edge threshold (1*2**3=8) */
-    else if(qend >= (qlength - edge))
+    else if(qend >= (ajint) (qlength - edge))
 	qca->Coverage += 8;
     /* 3' terminus shorter (1*2**1=2) */
-    else if(qend < (qlength - edge))
+    else if(qend < (ajint) (qlength - edge))
 	qca->Coverage += 2;
     else
 	ajWarn("Error in 3'-terminus coverage scoring schema. "
@@ -3792,3 +3792,27 @@ AjBool ensQCAlignmentAdaptorDelete(EnsPQCAlignmentAdaptor qcaa,
     
     return value;
 }
+
+/* @func ensQCAlignmentDummyFunction ******************************************
+**
+** Dummy function to catch all unused functions defined in the
+** ensqcalignment source file.
+**
+** @return [void]
+**
+******************************************************************************/
+
+void endQCAlignmenttDummyFunction(void)
+{
+    (void) qcAlignmentProteinToProteinQueryCoverageProperties[0];
+    (void) qcAlignmentProteinToGenomeQueryCoverageProperties[0];
+    (void) qcAlignmentDNAToDNAQueryCoverageProperties[0];
+    (void) qcAlignmentDNAToGenomeQueryCoverageProperties[0];
+    (void) qcAlignmentQueryToQueryCoverageProperties[0];
+
+    return;
+}
+
+
+
+
