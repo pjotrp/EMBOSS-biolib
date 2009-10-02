@@ -235,6 +235,17 @@ AjPSqlConnection ajSqlConnectionNew(const AjEnum client,
     if(client == ajESqlClientMySQL)
     {
 
+#ifndef HAVE_MYSQL
+#ifndef HAVE_POSTGRESQL
+        (void) user;
+        (void) password;
+        (void) host;
+        (void) port;
+        (void) socket;
+        (void) database;
+#endif
+#endif
+
 #ifdef HAVE_MYSQL
 	
 	Pmysql = mysql_init((MYSQL *) NULL);
