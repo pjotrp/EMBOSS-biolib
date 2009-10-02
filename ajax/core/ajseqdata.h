@@ -222,6 +222,7 @@ typedef struct AjSSeqRef {
 ** @attr Type [ajuint] Type of cross-reference
 ** @attr Start [ajuint] Start position
 ** @attr End [ajuint] End position
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -234,6 +235,7 @@ typedef struct AjSSeqXref {
     ajuint Type;
     ajuint Start;
     ajuint End;
+    char Padding[4];
 } AjOSeqXref;
 #define AjPSeqXref AjOSeqXref*
 
@@ -492,16 +494,6 @@ typedef struct AjSSeqin {
 ** @attr Desc [AjPStr] One-line description
 ** @attr Fulldesc [AjPSeqDesc] Detailed description
 ** @attr Doc [AjPStr] Obsolete - see TextPtr
-** @attr Rev [AjBool] true: to be reverse-complemented
-** @attr Reversed [AjBool] true: has been reverse-complemented
-** @attr Trimmed [AjBool] true: has been trimmed
-** @attr Circular [AjBool] true: circular nucleotide molecule
-** @attr Begin [ajint] start position (processed on reading)
-** @attr End [ajint] end position (processed on reading)
-** @attr Offset [ajuint] offset from start
-** @attr Offend [ajuint] offset from end 
-** @attr Qualsize [ajuint] Size of Accuracy array
-** @attr Fpos [ajlong] File position (fseek) for USA
 ** @attr Usa [AjPStr] USA for re-reading
 ** @attr Ufo [AjPStr] UFO for re-reading
 ** @attr Formatstr [AjPStr] Input format name
@@ -518,10 +510,19 @@ typedef struct AjSSeqin {
 ** @attr Seq [AjPStr] The sequence
 ** @attr Fttable [AjPFeattable] Feature table
 ** @attr Accuracy [float*] Accuracy values (one per base) from base calling
+** @attr Fpos [ajlong] File position (fseek) for USA
+** @attr Rev [AjBool] true: to be reverse-complemented
+** @attr Reversed [AjBool] true: has been reverse-complemented
+** @attr Trimmed [AjBool] true: has been trimmed
+** @attr Circular [AjBool] true: circular nucleotide molecule
+** @attr Begin [ajint] start position (processed on reading)
+** @attr End [ajint] end position (processed on reading)
+** @attr Offset [ajuint] offset from start
+** @attr Offend [ajuint] offset from end 
+** @attr Qualsize [ajuint] Size of Accuracy array
+** @attr Weight [float] Weight from multiple alignment
 ** @attr Format [AjEnum] Input format enum
 ** @attr EType [AjEnum] unused, obsolete
-** @attr Weight [float] Weight from multiple alignment
-** @attr Padding [char[4]] Padding to alignment boundary
 **
 ** @@
 ******************************************************************************/
@@ -546,16 +547,6 @@ typedef struct AjSSeq {
   AjPStr Desc;
   AjPSeqDesc Fulldesc;
   AjPStr Doc;
-  AjBool Rev;
-  AjBool Reversed;
-  AjBool Trimmed;
-  AjBool Circular;
-  ajint Begin;
-  ajint End;
-  ajuint Offset;
-  ajuint Offend;
-  ajuint Qualsize;
-  ajlong Fpos;
   AjPStr Usa;
   AjPStr Ufo;
   AjPStr Formatstr;
@@ -572,10 +563,19 @@ typedef struct AjSSeq {
   AjPStr Seq;
   AjPFeattable Fttable;
   float* Accuracy;
+  ajlong Fpos;
+  AjBool Rev;
+  AjBool Reversed;
+  AjBool Trimmed;
+  AjBool Circular;
+  ajint Begin;
+  ajint End;
+  ajuint Offset;
+  ajuint Offend;
+  ajuint Qualsize;
+  float Weight;
   AjEnum Format;
   AjEnum EType;
-  float Weight;
-  char Padding[4];
 } AjOSeq;
 
 #define AjPSeq AjOSeq*
