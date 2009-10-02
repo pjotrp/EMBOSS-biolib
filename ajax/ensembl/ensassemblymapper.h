@@ -108,17 +108,11 @@ EnsPAssemblyMapperAdaptor ensChainedAssemblyMapperGetAdaptor(
 const EnsPCoordSystem ensChainedAssemblyMapperGetSourceCoordSystem(
     const EnsPChainedAssemblyMapper cam);
 
-#define MENSCHAINEDASSEMBLYMAPPERADAPTORGETASSEMBLEDCOORDSYSTEM(cam) \
-ensChainedAssemblyMapperGetSourceCoordSystem(cam)
-
 const EnsPCoordSystem ensChainedAssemblyMapperGetMiddleCoordSystem(
     const EnsPChainedAssemblyMapper cam);
 
 const EnsPCoordSystem ensChainedAssemblyMapperGetTargetCoordSystem(
     const EnsPChainedAssemblyMapper cam);
-
-#define MENSCHAINEDASSEMBLYMAPPERADAPTORGETCOMPONENTCOORDSYSTEM(cam) \
-ensChainedAssemblyMapperGetTargetCoordSystem(cam)
 
 EnsPMapper ensChainedAssemblyMapperGetSourceMiddleMapper(
     const EnsPChainedAssemblyMapper cam);
@@ -128,9 +122,6 @@ EnsPMapper ensChainedAssemblyMapperGetTargetMiddleMapper(
 
 EnsPMapper ensChainedAssemblyMapperGetSourceTargetMapper(
     const EnsPChainedAssemblyMapper cam);
-
-#define MENSCHAINEDASSEMBLYMAPPERGETMAPPER(cam) \
-ensChainedAssemblyMapperGetSourceTargetMapper(cam)
 
 EnsPMapperRangeRegistry ensChainedAssemblyMapperGetSourceRegistry(
     const EnsPChainedAssemblyMapper cam);
@@ -293,8 +284,14 @@ AjBool ensAssemblyMapperAdaptorRegisterAllChained(
 ** End of prototype definitions
 */
 
+#define MENSCHAINEDASSEMBLYMAPPERADAPTORGETASSEMBLEDCOORDSYSTEM(cam) \
+ensChainedAssemblyMapperGetSourceCoordSystem(cam)
 
+#define MENSCHAINEDASSEMBLYMAPPERADAPTORGETCOMPONENTCOORDSYSTEM(cam) \
+ensChainedAssemblyMapperGetTargetCoordSystem(cam)
 
+#define MENSCHAINEDASSEMBLYMAPPERGETMAPPER(cam) \
+ensChainedAssemblyMapperGetSourceTargetMapper(cam)
 
 #endif
 
