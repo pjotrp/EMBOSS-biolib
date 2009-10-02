@@ -212,39 +212,41 @@ static SeqOMolecule seqMolecule[] =
 ** http://www.ncbi.nlm.nih.gov/Taxonomy/
 **
 ** @attr Taxid [ajuint] NCBI taxon id
+** @attr Standard [AjBool] Standard known taxon
 ** @attr Name [const char*] Common name
 ******************************************************************************/
 
 typedef struct SeqSTaxon {
   ajuint Taxid;
+  AjBool Standard;  
   const char* Name;
 } SeqOTaxon;
 
 static SeqOTaxon seqTaxon[] =
 {
-    { 3702, "Arabidopsis thaliana"},
-    { 1432, "Bacillus subtilis"},
-    { 9913, "Bos taurus"},
-    { 6239, "Caenorhabditis elegans"},
-    { 3055, "Chlamydomonas reinhardtii"},
-    { 7955, "Danio rario"},
-    {44689, "Dictyostelium discoideum"},
-    { 7227, "Drosophila melanogaster"},
-    {  562, "Escherichia coli"},
-    {11103, "Hepatitis C virus"},
-    { 9606, "Homo sapiens"},
-    { 2104, "Mycoplasma pneumoniae"},
-    {10090, "Mus musculus"},
-    { 4530, "Oryza sativa"},
-    { 5833, "Plasmodium falciparum"},
-    { 4754, "Pneumocystis carinii"},
-    {10116, "Rattus norvegicus"},
-    { 4932, "Saccharomyces cerevisiae"},
-    { 4896, "Schizosaccharomyces pombe"},
-    {31033, "Takifugu rubripes"},
-    { 8355, "Xenopus laevis"},
-    { 4577, "Zea mays"},
-    {    0, NULL}
+    { 3702, AJTRUE, "Arabidopsis thaliana"},
+    { 1432, AJTRUE, "Bacillus subtilis"},
+    { 9913, AJTRUE, "Bos taurus"},
+    { 6239, AJTRUE, "Caenorhabditis elegans"},
+    { 3055, AJTRUE, "Chlamydomonas reinhardtii"},
+    { 7955, AJTRUE, "Danio rario"},
+    {44689, AJTRUE, "Dictyostelium discoideum"},
+    { 7227, AJTRUE, "Drosophila melanogaster"},
+    {  562, AJTRUE, "Escherichia coli"},
+    {11103, AJTRUE, "Hepatitis C virus"},
+    { 9606, AJTRUE, "Homo sapiens"},
+    { 2104, AJTRUE, "Mycoplasma pneumoniae"},
+    {10090, AJTRUE, "Mus musculus"},
+    { 4530, AJTRUE, "Oryza sativa"},
+    { 5833, AJTRUE, "Plasmodium falciparum"},
+    { 4754, AJTRUE, "Pneumocystis carinii"},
+    {10116, AJTRUE, "Rattus norvegicus"},
+    { 4932, AJTRUE, "Saccharomyces cerevisiae"},
+    { 4896, AJTRUE, "Schizosaccharomyces pombe"},
+    {31033, AJTRUE, "Takifugu rubripes"},
+    { 8355, AJTRUE, "Xenopus laevis"},
+    { 4577, AJTRUE, "Zea mays"},
+    {    0, AJFALSE, NULL}
     
 };
 
