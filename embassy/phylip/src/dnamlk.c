@@ -639,7 +639,7 @@ void getoptions(void)
 	    } while (categs < 1 || categs > maxcategs);
 	    if (probcat){
 	      free(probcat);
-	      free(rate);
+	      /*free(rate);*/ /* locally defined */
 	    }
 	    probcat = (double *)Malloc(categs * sizeof(double));
 	    for (;;){

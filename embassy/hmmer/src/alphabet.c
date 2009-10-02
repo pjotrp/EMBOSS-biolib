@@ -10,7 +10,7 @@
 
 /* alphabet.c
  * Configuration of the global symbol alphabet information.
- * RCS $Id: alphabet.c,v 1.3 2007/02/14 16:33:03 rice Exp $
+ * RCS $Id: alphabet.c,v 1.4 2009/10/02 11:19:35 rice Exp $
  */
 
 #include <stdlib.h>
@@ -249,7 +249,7 @@ DigitizeAlignment(char **aseqs, AINFO *ainfo, char ***ret_dsqs)
     }
     dsq[idx][dpos] = (char) Alphabet_iupac; /* sentinel byte at end */
 
-    if (! ainfo->sqinfo[idx].flags & SQINFO_LEN) {
+    if (! (ainfo->sqinfo[idx].flags & SQINFO_LEN)) {
       ainfo->sqinfo[idx].len = dpos - 1;
       ainfo->sqinfo[idx].flags |= SQINFO_LEN;
     }

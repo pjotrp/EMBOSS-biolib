@@ -476,7 +476,7 @@ extern void init_meme(
   }
 
   /* convert the alphabet to upper case */
-  for (i=0; alphabet && (cc = alphabet[i]) != (int)NULL; i++)
+  for (i=0; alphabet && (cc = alphabet[i]) != 0; i++)
     if (islower(cc)) alphabet[i]=toupper(cc);
 
   /* setup hashing function for encoding strings as integers */
@@ -754,7 +754,7 @@ extern void init_meme(
     }
     p_point->e_cons0[i] = e_cons;
     /* convert the consensus sequence to upper case and encode as integer */
-    for (j=0; (cc = spcons[i][j]) != (int)NULL; j++) {
+    for (j=0; (cc = spcons[i][j]) != 0; j++) {
       char uc = (islower(cc) ? toupper(cc) : cc); 
       e_cons[j] = (uc == 'X') ? alength : hash(uc);
       if (e_cons[j] > alength) {
@@ -883,4 +883,4 @@ extern void init_meme(
   *debug_file_p = debug_file;
 }
 
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/init.c,v 1.8 2008/06/26 08:40:56 rice Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/init.c,v 1.9 2009/10/02 11:20:10 rice Exp $ */
