@@ -45,6 +45,7 @@ static float* energy = NULL;
 ** @attr prodTm [float]  Undocumented
 ** @attr prodGC [float]  Undocumented
 ** @attr score [ajint]  Undocumented
+** @attr Padding [ajint]  Padding to alignment boundary
 ******************************************************************************/
 
 typedef struct AjSPrimer
@@ -56,7 +57,8 @@ typedef struct AjSPrimer
     float primGCcont;
     float prodTm;
     float prodGC;
-    ajint   score;
+    ajint score;
+    ajint Padding;
 } AjOPrimer;
 #define AjPPrimer AjOPrimer*
 
