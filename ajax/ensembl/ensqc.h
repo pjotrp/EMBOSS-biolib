@@ -229,6 +229,7 @@ enum EnsEQCVariationState
 ** @attr Class [AjEnum] Class
 ** @attr Type [AjEnum] Type
 ** @attr State [AjEnum] State
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -250,6 +251,7 @@ typedef struct EnsSQCVariation
     AjEnum Class;
     AjEnum Type;
     AjEnum State;
+    char Padding[4];
 } EnsOQCVariation;
 
 #define EnsPQCVariation EnsOQCVariation*

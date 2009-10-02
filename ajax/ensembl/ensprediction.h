@@ -39,9 +39,10 @@ extern "C"
 ** @attr Feature [EnsPFeature] Ensembl Feature
 ** @cc Bio::EnsEMBL::PredictionExon
 ** @cc 'prediction_exon' SQL table
-** @attr StartPhase [ajint] Start phase
 ** @attr Score [double] Score
 ** @attr Pvalue [double] P-value
+** @attr StartPhase [ajint] Start phase
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -51,9 +52,10 @@ typedef struct EnsSPredictionExon
     ajuint Identifier;
     EnsPPredictionExonAdaptor Adaptor;
     EnsPFeature Feature;
-    ajint StartPhase;
     double Score;
     double Pvalue;
+    ajint StartPhase;
+    char Padding [4];
 } EnsOPredictionExon;
 
 #define EnsPPredictionExon EnsOPredictionExon*
@@ -155,6 +157,8 @@ AjBool ensPredictionExonSetScore(EnsPPredictionExon pe, double score);
 AjBool ensPredictionExonSetPvalue(EnsPPredictionExon pe, double pvalue);
 
 AjBool ensPredictionExonTrace(const EnsPPredictionExon pe, ajuint level);
+
+ajint ensPredictionExonGetEndPhase(const EnsPPredictionExon pe);
 
 ajuint ensPredictionExonGetMemSize(const EnsPPredictionExon pe);
 

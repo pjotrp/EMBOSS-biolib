@@ -41,8 +41,7 @@ extern "C"
 ** @attr Analysis [EnsPAnalysis] Ensembl Analysis
 ** @attr QuerySequence [EnsPQCSequence] Query Ensembl QC Sequence
 ** @attr TargetSequence [EnsPQCSequence] Target Ensembl QC Sequence
-** @attr VULGAR [AjPStr] VULGAR line
-** @attr QueryStart [ajuint] Query start
+** @attr VULGAR [AjPStr] VULGAR line QueryStart [ajuint] Query start
 ** @attr QueryEnd [ajuint] Query end
 ** @attr QueryStrand [ajint] Query strand
 ** @attr TargetStart [ajuint] Target start
@@ -52,6 +51,7 @@ extern "C"
 ** @attr Coverage [ajuint] Coverage score
 ** @attr Score [double] Score
 ** @attr Identity [float] Identity
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -74,6 +74,7 @@ typedef struct EnsSQCAlignment
     ajuint Coverage;
     double Score;
     float Identity;
+    char Padding[4];
 } EnsOQCAlignment;
 
 #define EnsPQCAlignment EnsOQCAlignment*
@@ -270,6 +271,8 @@ AjBool ensQCAlignmentAdaptorUpdate(EnsPQCAlignmentAdaptor qcaa,
 
 AjBool ensQCAlignmentAdaptorDelete(EnsPQCAlignmentAdaptor qcaa,
                                    const EnsPQCAlignment qca);
+
+void   endQCAlignmenttDummyFunction(void);
 
 /*
 ** End of prototype definitions
