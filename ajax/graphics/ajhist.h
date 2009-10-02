@@ -45,7 +45,7 @@ AJGRAPH_X_TICK + AJGRAPH_X_LABEL + AJGRAPH_Y_LABEL + AJGRAPH_TITLE )
 #ifndef WIN32
 extern ajint aj_hist_mark;
 #else
-#ifdef AJAXDLL_EXPORTS
+#ifdef AJAXGDLL_EXPORTS
 __declspec(dllexport) ajint aj_hist_mark;
 #else
 __declspec(dllimport) ajint aj_hist_mark;
