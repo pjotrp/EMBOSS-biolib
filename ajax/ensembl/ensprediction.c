@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -592,13 +592,15 @@ AjBool ensPredictionExonSetIdentifier(EnsPPredictionExon pe, ajuint identifier)
 
 AjBool ensPredictionExonSetFeature(EnsPPredictionExon pe, EnsPFeature feature)
 {
+#if AJFALSE
     AjIList iter = NULL;
     
     EnsPBaseAlignFeature baf  = NULL;
     EnsPBaseAlignFeature nbaf = NULL;
     
     EnsPSlice eslice = NULL;
-    
+#endif
+
     /*
      ajDebug("ensPredictionExonSetFeature\n"
 	     "  pe %p\n"
@@ -1054,7 +1056,7 @@ static AjBool predictionExonAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
     double pvalue = 0.0;
     
     ajint sphase = 0;
-    ajint ephase = 0;
+    /* ajint ephase = 0; */ /* unused */
     
     ajuint identifier = 0;
     
@@ -1646,7 +1648,7 @@ AjBool ensPredictionExonAdaptorFetchAllByPredictionTranscript(
     
     constraint =
 	ajFmtStr("prediction_exon.prediction_transcript_id = %u",
-		 ensTranscriptGetIdentifier(pt));
+		 ensPredictionTranscriptGetIdentifier(pt));
     
     ensFeatureAdaptorFetchAllBySliceConstraint(pea,
 					       eslice,
