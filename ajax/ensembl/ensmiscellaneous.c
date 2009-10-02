@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** Bio::EnsEMBL::MiscSet CVS Revision: 1.5
@@ -72,9 +72,11 @@ static AjBool miscellaneousSetAdaptorCacheInsert(
     EnsPMiscellaneousSetAdaptor msa,
     EnsPMiscellaneousSet *Pms);
 
+#if AJFALSE
 static AjBool miscellaneousSetAdaptorCacheRemove(
     EnsPMiscellaneousSetAdaptor msa,
     EnsPMiscellaneousSet ms);
+#endif
 
 static AjBool miscellaneousSetAdaptorCacheInit(EnsPMiscellaneousSetAdaptor msa);
 
