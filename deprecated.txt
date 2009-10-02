@@ -209,86 +209,6 @@ ajFileBuffGetStoreL ajBuffreadLinePosStore
 ajFileBuffGetStore ajBuffreadLineStore
 ajFileBuffGetTrim ajBuffreadLineTrim
 #ajfmt
-#ajgraph
-ajGraphInit ajGraphicsInit
-ajGraphInitPV ajGraphicsInitPV
-ajGraphSetBackBlack ajGraphicsSetBgcolourBlack
-ajGraphColourFore ajGraphicsSetColourReset
-ajGraphSetBackWhite ajGraphicsSetBgcolourkWhite
-ajGraphSetFore ajGraphicsSetColourFore
-ajGraphSetCharScale ajGraphicsSetCharscale
-ajGraphSetCharSize ajGraphicsSetCharsize
-ajGraphSetDefCharSize ajGraphicsSetDefcharsize
-ajGraphSetOri ajGraphicsSetPortrait
-ajGraphSetDesc ajGraphSetDescS
-ajGraphSetDir ajGraphSetOutputDirS
-ajGraphSetSubTitleDo ajGraphSetShowSubtitle
-ajGraphSetTitleDo ajGraphSetShowTitle
-ajGraphSetSubTitleC ajGraphSetSubtitleC
-ajGraphSetSubTitle ajGraphSetSubtitleS
-ajGraphSetTitle ajGraphSetTitleS
-ajGraphSetXTitleC ajGraphSetXlabelC
-ajGraphSetXTitle ajGraphSetXlabelS
-ajGraphSetYTitleC ajGraphSetYlabelC
-ajGraphSetYTitle ajGraphSetYlabelS
-ajGraphxySetXBottom ajGraphxySetShowXaxis
-ajGraphxySetXGrid ajGraphxySetXgrid
-ajGraphxySetXLabel ajGraphxySetShowXlabel
-ajGraphxySetXInvTicks ajGraphxySetXinvert
-ajGraphxySetXLabelTop ajGraphxySetShowUnum
-ajGraphxySetXRangeII ajGraphxySetXrangeII
-ajGraphxySetXTick ajGraphxySetShowXtick
-ajGraphxySetXTop ajGraphxySetShowTaxis
-ajGraphxySetYGrid ajGraphxySetYgrid
-ajGraphxySetYInvTicks ajGraphxySetYinvert
-ajGraphxySetYLabel ajGraphxySetShowYlabel
-ajGraphxySetYLabelLeft ajGraphxySetShowYnum
-ajGraphxySetYRangeII ajGraphxySetYrangeII
-ajGraphxySetYRight ajGraphxySetShowRaxis
-ajGraphxySetYTick ajGrapxyhSetShowYtick
-ajGraphxySetXEnd ajGraphxySetXendF
-ajGraphxySetXStart ajGraphxySetXstartF
-ajGraphxySetYEnd ajGraphxySetYendF
-ajGraphxySetYStart ajGraphxySetYstartF
-ajGraphLabel ajGraphicsSetLabelsC
-ajGraphPartCircle ajGraphicsDrawArc
-ajGraphHoriBars ajGraphicsDrawBarsHoriz
-ajGraphVertBars ajGraphicsDrawBarsVert
-ajGraphBox ajGraphicsDrawBox
-ajGraphBoxFill ajGraphicsDrawBoxFill
-ajGraphCircle ajGraphicsDrawCircle
-ajGraphDia ajGraphicsDrawDia
-ajGraphDiaFill ajGraphicsDrawDiaFill
-ajGraphDots ajGraphicsDrawDots
-ajGraphLine ajGraphicsDrawLine
-ajGraphLines ajGraphicsDrawLines
-ajGraphPoly ajGraphicsDrawPoly
-ajGraphPolyFill ajGraphicsDrawPolyFill
-ajGraphRect ajGraphicsDrawRect
-ajGraphRectFill ajGraphicsDrawRectFill
-ajGraphRectangleOnCurve ajGraphicsDrawRectOncurve
-ajGraphFillRectangleOnCurve ajGraphicsDrawRectOncurveFill
-ajGraphLabelYRight ajGraphicsDrawRlabelC
-ajGraphSymbols ajGraphicsDrawSymbols
-ajGraphText ajGraphicsDrawText
-ajGraphTextEnd ajGraphicsDrawTextAtend
-ajGraphTextMid ajGraphicsDrawTextAtmid
-ajGraphTextStart ajGraphicsDrawTextAtstart
-ajGraphDrawTextOnCurve ajGraphicsDrawTextOncurve
-ajGraphTextLine ajGraphicsDrawTextAtline
-ajGraphTri ajGraphicsDrawTri
-ajGraphTriFill ajGraphicsDrawTriFill
-ajGraphCheckColour ajGraphicsCheckColourS
-ajGraphGetBaseColour -
-ajGraphGetBaseColourProt ajGraphicsBasecolourNewProt
-ajGraphGetBaseColourNuc ajGraphicsBasecolourNewNuc
-ajGraphGetCharSize ajGraphicsGetCharsize
-ajGraphGetOut ajGraphicsGetParamsPage
-ajGraphGetColour ajGraphicsGetColourFore
-ajGraphInfo ajGraphicsGetOutfiles
-ajGraphColourBack ajGraphicsSetBgcolourReset
-#ajgraphxml
-#ajhist
 #ajindex
 #ajjava
 #ajlist
@@ -552,6 +472,7 @@ ajSeqOutFormatDefault ajSeqoutstrGetFormatDefault
 ajSeqFindOutFormat seqoutFindOutFormat
 ajSeqOutFormatSingle ajSeqoutstrIsFormatSingle
 #ajsort
+#ajsql
 #ajstr
 ajCharNew ajCharNewS
 ajCharNewL ajCharNewRes
@@ -807,12 +728,130 @@ ajUtilBigendian ajUtilGetBigendian
 ajUtilUid ajUtilGetUid
 ajLogInfo ajUtilLoginfo
 #ajvector
-#pcre
-#pcre_chartables
-#pcre_get
-#pcreposix
-#pcre_printint
-#pcre_study
+#ajgraph
+ajGraphInit ajGraphicsInit
+ajGraphInitPV ajGraphicsInitPV
+ajGraphSetBackBlack ajGraphicsSetBgcolourBlack
+ajGraphColourFore ajGraphicsSetColourReset
+ajGraphSetBackWhite ajGraphicsSetBgcolourkWhite
+ajGraphSetFore ajGraphicsSetColourFore
+ajGraphSetCharScale ajGraphicsSetCharscale
+ajGraphSetCharSize ajGraphicsSetCharsize
+ajGraphSetDefCharSize ajGraphicsSetDefcharsize
+ajGraphSetOri ajGraphicsSetPortrait
+ajGraphSetDesc ajGraphSetDescS
+ajGraphSetDir ajGraphSetOutputDirS
+ajGraphSetSubTitleDo ajGraphSetShowSubtitle
+ajGraphSetTitleDo ajGraphSetShowTitle
+ajGraphSetSubTitleC ajGraphSetSubtitleC
+ajGraphSetSubTitle ajGraphSetSubtitleS
+ajGraphSetTitle ajGraphSetTitleS
+ajGraphSetXTitleC ajGraphSetXlabelC
+ajGraphSetXTitle ajGraphSetXlabelS
+ajGraphSetYTitleC ajGraphSetYlabelC
+ajGraphSetYTitle ajGraphSetYlabelS
+ajGraphxySetXBottom ajGraphxySetShowXaxis
+ajGraphxySetXGrid ajGraphxySetXgrid
+ajGraphxySetXLabel ajGraphxySetShowXlabel
+ajGraphxySetXInvTicks ajGraphxySetXinvert
+ajGraphxySetXLabelTop ajGraphxySetShowUnum
+ajGraphxySetXRangeII ajGraphxySetXrangeII
+ajGraphxySetXTick ajGraphxySetShowXtick
+ajGraphxySetXTop ajGraphxySetShowTaxis
+ajGraphxySetYGrid ajGraphxySetYgrid
+ajGraphxySetYInvTicks ajGraphxySetYinvert
+ajGraphxySetYLabel ajGraphxySetShowYlabel
+ajGraphxySetYLabelLeft ajGraphxySetShowYnum
+ajGraphxySetYRangeII ajGraphxySetYrangeII
+ajGraphxySetYRight ajGraphxySetShowRaxis
+ajGraphxySetYTick ajGrapxyhSetShowYtick
+ajGraphxySetXEnd ajGraphxySetXendF
+ajGraphxySetXStart ajGraphxySetXstartF
+ajGraphxySetYEnd ajGraphxySetYendF
+ajGraphxySetYStart ajGraphxySetYstartF
+ajGraphLabel ajGraphicsSetLabelsC
+ajGraphPartCircle ajGraphicsDrawArc
+ajGraphHoriBars ajGraphicsDrawBarsHoriz
+ajGraphVertBars ajGraphicsDrawBarsVert
+ajGraphBox ajGraphicsDrawBox
+ajGraphBoxFill ajGraphicsDrawBoxFill
+ajGraphCircle ajGraphicsDrawCircle
+ajGraphDia ajGraphicsDrawDia
+ajGraphDiaFill ajGraphicsDrawDiaFill
+ajGraphDots ajGraphicsDrawDots
+ajGraphLine ajGraphicsDrawLine
+ajGraphLines ajGraphicsDrawLines
+ajGraphPoly ajGraphicsDrawPoly
+ajGraphPolyFill ajGraphicsDrawPolyFill
+ajGraphRect ajGraphicsDrawRect
+ajGraphRectFill ajGraphicsDrawRectFill
+ajGraphRectangleOnCurve ajGraphicsDrawRectOncurve
+ajGraphFillRectangleOnCurve ajGraphicsDrawRectOncurveFill
+ajGraphLabelYRight ajGraphicsDrawRlabelC
+ajGraphSymbols ajGraphicsDrawSymbols
+ajGraphText ajGraphicsDrawText
+ajGraphTextEnd ajGraphicsDrawTextAtend
+ajGraphTextMid ajGraphicsDrawTextAtmid
+ajGraphTextStart ajGraphicsDrawTextAtstart
+ajGraphDrawTextOnCurve ajGraphicsDrawTextOncurve
+ajGraphTextLine ajGraphicsDrawTextAtline
+ajGraphTri ajGraphicsDrawTri
+ajGraphTriFill ajGraphicsDrawTriFill
+ajGraphCheckColour ajGraphicsCheckColourS
+ajGraphGetBaseColour -
+ajGraphGetBaseColourProt ajGraphicsBasecolourNewProt
+ajGraphGetBaseColourNuc ajGraphicsBasecolourNewNuc
+ajGraphGetCharSize ajGraphicsGetCharsize
+ajGraphGetOut ajGraphicsGetParamsPage
+ajGraphGetColour ajGraphicsGetColourFore
+ajGraphInfo ajGraphicsGetOutfiles
+ajGraphColourBack ajGraphicsSetBgcolourReset
+#ajgraphxml
+#ajhist
+#ajdummyseq
+#ajdummyacd
+#ensanalysis
+#ensassembly
+#ensassemblyexception
+#ensassemblymapper
+#ensattribute
+#ensbaseadaptor
+#enscache
+#enscoordsystem
+#ensdatabaseadaptor
+#ensdatabaseconnection
+#ensdatabaseentry
+#ensdensity
+#ensditag
+#ensexon
+#ensexternaldatabase
+#ensfeature
+#ensgene
+#ensintron
+#enskaryotype
+#ensmapper
+#ensmarker
+#ensmetacoordinate
+#ensmetainformation
+#ensmiscellaneous
+#ensprediction
+#ensprojectionsegment
+#ensqcalignment
+#ensqc
+#ensqcdatabase
+#ensqcsequence
+#ensregistry
+#ensrepeat
+#ensseqregion
+#enssequence
+#enssequenceedit
+#ensslice
+#ensstorable
+#enstable
+#enstranscript
+#enstranslation
+#ensutility
+#ensvariation
 #embaln
 #embcom
 #embcons
@@ -845,6 +884,7 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #acdc
 #acdlog
 #acdpretty
+#acdrelations
 #acdtable
 #acdtrace
 #acdvalid
