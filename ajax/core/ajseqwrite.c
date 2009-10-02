@@ -192,6 +192,7 @@ static void       seqCleanDasseq(AjPFile file);
 static void       seqSeqFormat(ajint seqlen, SeqPSeqFormat* psf);
 static void       seqWriteAcedb(AjPSeqout outseq);
 static void       seqWriteAsn1(AjPSeqout outseq);
+static void       seqWriteBam(AjPSeqout outseq);
 static void       seqWriteClustal(AjPSeqout outseq);
 static void       seqWriteCodata(AjPSeqout outseq);
 static void       seqWriteDasdna(AjPSeqout outseq);
@@ -227,6 +228,7 @@ static void       seqWriteNexus(AjPSeqout outseq);
 static void       seqWriteNexusnon(AjPSeqout outseq);
 static void       seqWritePhylip(AjPSeqout outseq);
 static void       seqWritePhylipnon(AjPSeqout outseq);
+static void       seqWriteSam(AjPSeqout outseq);
 static void       seqWriteSelex(AjPSeqout outseq);
 static void       seqWriteSeq(AjPSeqout outseq, const SeqPSeqFormat sf);
 static void       seqWriteStaden(AjPSeqout outseq);
@@ -451,6 +453,12 @@ static SeqOOutFormat seqOutFormat[] =
 **         AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
 **         AJFALSE, AJFALSE, AJFALSE, seqWriteFastqInt},
 */
+    {"sam",        "Sequence alignment/map (SAM) format",
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+         AJFALSE, AJFALSE, AJFALSE, seqWriteSam},
+    {"bam",        "Binary sequence alignment/map (BAM) format",
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+         AJFALSE, AJFALSE, AJFALSE, seqWriteBam},
     {"debug",      "Debugging trace of full internal data content",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteDebug}, /* trace report */
@@ -5816,6 +5824,69 @@ static void seqWriteGff3(AjPSeqout outseq)
 
 
 
+/* @funcstatic seqWriteBam ************************************************
+**
+** Writes a sequence in binary sequence alignment/map (BAM) format.
+**
+** The sort order is "unsorted". Samtools can re-sort the file.
+**
+** @param [u] outseq [AjPSeqout] Sequence output object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void seqWriteBam(AjPSeqout outseq)
+{
+    (void) outseq;
+    return;
+}
+
+
+
+
+/* @funcstatic seqWriteSam ************************************************
+**
+** Writes a sequence in sequence alignment/map (SAM) format.
+**
+** The sort order is "unsorted". Samtools can re-sort the file.
+**
+** @param [u] outseq [AjPSeqout] Sequence output object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void seqWriteSam(AjPSeqout outseq)
+{
+    AjPStr argstr = NULL;
+
+    ajFmtPrintF(outseq->File, "@HD\tVN:1.0\tSO:unsorted\tGO:none\n");
+
+    ajFmtPrintF(outseq->File, "@SQ\tSN:%S\tLN:%d",
+                outseq->Name, ajStrGetLen(outseq->Seq));
+    /* AS assembly identifier */
+    /* M5 checksum */
+    /* UR URI */
+    /* SP species */
+    ajFmtPrintF(outseq->File, "\n");
+
+    /* Read group */
+
+    /* Program record */
+    argstr = ajStrNewS(ajAcdGetCmdline());
+    ajStrExchangeKK(&argstr, '\n', ' ');
+    ajFmtPrintF(outseq->File, "@PG\t%S\t%S\t%S\n",
+                ajAcdGetProgram(), ajNamValueVersion(), argstr);
+    ajStrDel(&argstr);
+
+    /* Comment */
+    /*ajFmtPrintF(outseq->File, "@CO\t%S\n", cmtstr);*/
+
+    return;
+}
+
+
+
+
 /* @funcstatic seqWriteStrider ************************************************
 **
 ** Writes a sequence in DNA STRIDER format.
@@ -8299,7 +8370,6 @@ static void seqClone(AjPSeqout outseq, const AjPSeq seq)
     ajint ibegin = 1;
     ajint iend;
     ajint ilen;
-    ajint i;
     AjPSeqRef  tmpref  = NULL;
     AjPSeqXref tmpxref = NULL;
     
