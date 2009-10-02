@@ -1,0 +1,4 @@
+Verion 6.2.0
+	In seqsearch, added -t 1 to blastpgp -B command line as the -t
+	default has changed and blastpgp now issues a warning message if
+	the default is used with -B

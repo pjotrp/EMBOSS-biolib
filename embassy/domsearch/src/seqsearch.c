@@ -515,7 +515,7 @@ static AjPFile seqsearch_psialigned(AjPStr seqname,
     
     /* Run PSI-BLAST. */
     ajFmtPrintS(&temp,
-		"blastpgp -i %S -B %S -j %d -e %f -b %d -v %d -d %S > %S\n",
+		"blastpgp -t 1 -i %S -B %S -j %d -e %f -b %d -v %d -d %S > %S\n",
                 seq_in, seqs_in, niter,evalue, maxhits, maxhits, database,
 		*psiname);
     ajFmtPrint("%S\n", temp);
@@ -643,7 +643,8 @@ static AjPFile seqsearch_psisingle(AjPStr seqname,
     ajFileClose(&seqinf);
 
     /* Run PSI-BLAST. */
-    ajFmtPrintS(&temp,"blastpgp -i %S -j %d -e %f -b %d -v %d -d %S > %S\n",
+    ajFmtPrintS(&temp,
+                "blastpgp -i %S -j %d -e %f -b %d -v %d -d %S > %S\n",
                 seq_in, niter,evalue, maxhits, maxhits, database, *psiname);
     ajFmtPrint("%S\n", temp);
     system(ajStrGetPtr(temp));
