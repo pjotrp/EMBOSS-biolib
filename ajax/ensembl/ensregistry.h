@@ -80,10 +80,13 @@ AjBool ensRegistryGetAllDatabaseAdaptors(AjEnum group,
 EnsPDatabaseAdaptor ensRegistryGetDatabaseAdaptor(AjEnum group,
                                                   const AjPStr alias);
 
+
+
+/* Excluded in C file */
+/* EnsPDatabaseAdaptor ensRegistryGetDnaAdaptor(EnsPDatabaseAdaptor dba); */
+
 /* Ensembl Core-style Adaptors */
-
-EnsPDatabaseAdaptor ensRegistryGetDnaAdaptor(EnsPDatabaseAdaptor dba);
-
+    
 EnsPAnalysisAdaptor ensRegistryGetAnalysisAdaptor(EnsPDatabaseAdaptor dba);
 
 EnsPAssemblyExceptionAdaptor ensRegistryGetAssemblyExceptionAdaptor(
