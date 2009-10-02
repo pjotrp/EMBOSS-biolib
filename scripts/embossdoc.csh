@@ -33,7 +33,8 @@ foreach x ($wdir/ajax/*html $wdir/nucleus/*html \
 end
 
 #echo "Ajax functions"
-foreach x ($edir/ajax/*.c)
+# ... skip pcre
+foreach x ($edir/ajax/core/*.c $edir/ajax/graphics/*.c $edir/ajax/ajaxseq/*.c  $edir/ajax/acd/*.c $edir/ajax/ensembl/*.c)
   embossdoccheck.pl $x >> ../efunc.check
   embossdoc.pl $x >> ../efunc.out
 end
@@ -53,7 +54,7 @@ end
 \rm *.srs
 
 #echo "Ajax static datatypes"
-foreach x ($edir/ajax/*.c)
+foreach x ($edir/ajax/core/*.c $edir/ajax/graphics/*.c $edir/ajax/ajaxseq/*.c  $edir/ajax/acd/*.c $edir/ajax/ensembl/*.c)
   embossdatacheck.pl $x >> ../edata.check
   embossdatadoc.pl $x >> ../edata.out
 end
@@ -127,7 +128,7 @@ end
 \rm *.srsdata
 
 #echo "Ajax datatypes"
-foreach x ($edir/ajax/*.h)
+foreach x ($edir/ajax/core/*.h $edir/ajax/graphics/*.h $edir/ajax/ajaxseq/*.h  $edir/ajax/acd/*.h $edir/ajax/ensembl/*.h)
   embossdatacheck.pl $x >> ../edata.check
   embossdatadoc.pl $x >> ../edata.out
 end
@@ -180,7 +181,7 @@ cat *.srsdata >> ../edata.dat
 \rm *.srsdata
 \rm *.empty
 
-cp deprecated.new ~/cvsemboss/deprecated.txt
+cp deprecated.new ~/devemboss/deprecated.txt
 cd ..
 \rm -rf x/
 
