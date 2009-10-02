@@ -16,7 +16,7 @@ PCREPOSIXLIBVERSION = @PCRE_POSIXLIB_VERSION@
 INCLUDES = $(POSIX_MALLOC_THRESHOLD) 
 
 PCRESRC = pcre_chartables.c pcre_compile.c pcre_exec.c \
-pcre_get.c pcre_globals.c pcre_newline.c pcreposix.c \
+pcre_fullinfo.c pcre_get.c pcre_globals.c pcre_newline.c pcreposix.c \
 pcre_study.c pcre_tables.c pcre_try_flipped.c
 
 include_HEADERS = pcre.h pcre_config.h \
