@@ -22460,7 +22460,7 @@ FZ = 13751
 FP 40 /^>/
 FI 55074.dhf
 FC = 200
-FZ = 37365
+FZ = 37208
 FP 100 /^>/
 FI seqsearch.log
 FC = 4
@@ -22490,9 +22490,9 @@ FZ = 13471
 FC = 80
 FP 40 /^>/
 FI 55074.dhf
-FZ = 35123
-FC = 188
-FP 94 /^>/
+FZ = 34703
+FC = 186
+FP 93 /^>/
 //
 
 ID seqnr-keep
@@ -22628,7 +22628,7 @@ FP 2 /d4at1b1_0/
 FP 2 /d4at1d1_1/
 FI 55074.daf
 FC = 527
-FZ = 42660
+FZ = 42762
 FP 5 /d1cs4a__0/
 FP 5 /d1fx2a__1/
 FI seqalign.log
@@ -23864,7 +23864,7 @@ FI logo_ssc1.png
 FZ > 12600
 FP /PNG/
 FI meme.html
-FC = 1401
+FC = 1416
 FP /^ce1cg 1\.74e-03 1 105 [+]1 63 1\.91e-05 \n/
 FP /^ce1cg  \( 63\) TTTGATCGTTTTCAC 1 \n/
 FI meme.fasta
@@ -23878,8 +23878,8 @@ FC = 860
 FP /^<contributing_site sequence_id="sequence_ce1cg" position="63" strand="plus" pvalue="1.91e-05" >\n/
 FP /^<scanned_sites sequence_id="sequence_ce1cg" pvalue="1.74e-03" num_sites="1"><scanned_site motif_id="motif_1" strand="plus" position="63" pvalue="1.91e-05"/>\n/
 FI meme.xsl
-FC = 1608
-FP 472 /<xsl:/
+FC = 1652
+FP 486 /<xsl:/
 //
 
 ID ememetext-ex
