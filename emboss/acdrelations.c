@@ -108,6 +108,7 @@
 **                         e.g. "EDAM: Multiple sequence alignment data"
 **                         if all relations in acdattr are defined for acdtype.
 ** @attr n       [ajint]   Size of acdattr array
+** @attr Padding [ajint] Padding to alignment boundaty
 ******************************************************************************/
 typedef struct SEdamdat
 {
@@ -115,6 +116,7 @@ typedef struct SEdamdat
   AjPStr* acdattr;
   AjPStr  edam;   
   ajint   n;       
+  ajint Padding;
 } OEdamdat;
 #define PEdamdat OEdamdat*
 
@@ -130,11 +132,13 @@ typedef struct SEdamdat
 **
 ** @attr dat    [PEdamdat*] Array of PEdamdat objects 
 ** @attr n      [ajint]     Size of dat array
+** @attr Padding [ajint] Padding to alignment boundaty
 ******************************************************************************/
 typedef struct SEdam
 {
   PEdamdat *dat; 
   ajint  n;      
+  ajint Padding;
 } OEdam;
 #define PEdam OEdam*
 
@@ -174,11 +178,13 @@ typedef struct SKtypedat
 **
 ** @attr dat [PKtypedat*]  Array of PKtypedat objects  
 ** @attr n   [ajint]       Size of dat array
+** @attr Padding [ajint] Padding to alignment boundaty
 ******************************************************************************/ 
 typedef struct SKtype
 {
   PKtypedat *dat;   
-  ajint  n;         
+  ajint n;         
+  ajint Padding;
 } OKtype;
 #define PKtype OKtype*
 
