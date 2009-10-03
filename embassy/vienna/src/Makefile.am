@@ -3,7 +3,7 @@
 lib_LTLIBRARIES = libviennarna.la
 
 if ISCYGWIN
-CYGWIN_LDFLAGS = -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import
+CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import
 if LOCALLINK
 CYGWIN_LDVIENNA = -L../../../plplot -L../../../ajax/pcre -L../../../ajax/core \
 -L../../../ajax/graphics -L../../../ajax/ensembl -L../../../ajax/ajaxseq \
