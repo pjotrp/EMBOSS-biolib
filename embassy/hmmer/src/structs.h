@@ -13,7 +13,7 @@
  * Data structures used in HMMER.
  * Also, a few miscellaneous macros and global variable declarations.
  * 
- * RCS $Id: structs.h,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: structs.h,v 1.2 2009/10/03 08:36:35 ajb Exp $
  */
 
 #ifndef STRUCTSH_INCLUDED
@@ -49,12 +49,24 @@
  * 
  * MAXCODE and MAXABET constants are defined in config.h
  */   
+
+#ifndef __CYGWIN__
 extern char  Alphabet[MAXCODE]; /* "ACDEFGHIKLMNPQRSTVWYBZX" for example */
 extern int   Alphabet_type;     /* hmmNUCLEIC or hmmAMINO                */
 extern int   Alphabet_size;     /* uniq alphabet size: 4 or 20           */
 extern int   Alphabet_iupac;    /* total size of alphabet + IUPAC degen. */
 extern char  Degenerate[MAXCODE][MAXABET];
 extern int   DegenCount[MAXCODE];
+#else
+__declspec(dllexport) char  Alphabet[MAXCODE];
+__declspec(dllexport) int   Alphabet_type;
+__declspec(dllexport) int   Alphabet_size;
+__declspec(dllexport) int   Alphabet_iupac;
+__declspec(dllexport) char  Degenerate[MAXCODE][MAXABET];
+__declspec(dllexport) int   DegenCount[MAXCODE];
+#endif
+
+
 #define hmmNOTSETYET 0
 #define hmmNUCLEIC   2		/* compatibility with squid's kRNA   */
 #define hmmAMINO     3		/* compatibility with squid's kAmino */
