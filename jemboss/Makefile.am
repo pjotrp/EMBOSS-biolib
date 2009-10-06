@@ -13,9 +13,6 @@ if EHAVEANT
 endif
 
 all-local:
-if EHAVEANT
-	ant package -Demboss.data=../emboss/data -Dname=jemboss -Djar.dir=lib -Dnotformemboss=yes;
-endif
 if ISCYGWIN
 	@if test "${JAVA_OK}" != "yes" ; then \
 	  echo "Not compiling Jemboss"; \
@@ -85,4 +82,7 @@ pkgdatadir=$(prefix)/share/$(PACKAGE)/jemboss
 # then remove any CVS subdirectories
 
 dist-hook:
+if EHAVEANT
+	ant clean;
+endif
 	tar cBf - api | ( cd $(distdir); tar xBf - ; rm -rf api/CVS );
