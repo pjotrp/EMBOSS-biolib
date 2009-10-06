@@ -275,7 +275,7 @@ float embAlignPathCalcUsingEndGapPenalties(const char *a, const char *b,
 
     match = sub[ajSeqcvtGetCodeK(cvt, a[0])][ajSeqcvtGetCodeK(cvt, b[0])];
     compass[0] = 0;
-    path[0] = match;
+    path[0] = (float) match;
     if (endweight && -endgapopen > match)
     {
         path[0] = endgapopen;
@@ -289,7 +289,7 @@ float embAlignPathCalcUsingEndGapPenalties(const char *a, const char *b,
         match = sub[ajSeqcvtGetCodeK(cvt, a[i])][ajSeqcvtGetCodeK(cvt, b[0])];
         if (!endweight)
         {
-            path[i * lenb] = match;
+            path[i * lenb] = (float) match;
             compass[i * lenb] = 0;
             maxa[i] = path[i * lenb] - (gapopen);
         }
@@ -301,19 +301,19 @@ float embAlignPathCalcUsingEndGapPenalties(const char *a, const char *b,
             
             if (match >= matchup && match >= matchleft)
             {
-                path[i * lenb] = match;
+                path[i * lenb] = (float) match;
                 compass[i * lenb] = 0;
                 maxa[i] = path[i * lenb];
             }
             else if (matchup >= matchleft)
             {
-                path[i * lenb] = matchup;
+                path[i * lenb] = (float) matchup;
                 compass[i * lenb] = 2;
                 maxa[i] = path[i * lenb];
             }
             else
             {
-                path[i * lenb] = matchleft;
+                path[i * lenb] = (float) matchleft;
                 compass[i * lenb] = 1;
                 maxa[i] = path[i * lenb] - (gapopen);
             }
@@ -326,7 +326,7 @@ float embAlignPathCalcUsingEndGapPenalties(const char *a, const char *b,
         match = sub[ajSeqcvtGetCodeK(cvt, a[0])][ajSeqcvtGetCodeK(cvt, b[j])];
         if (!endweight)
         {
-            path[j] = match;
+            path[j] = (float) match;
             compass[j] = 0;
         }
         else
@@ -337,17 +337,17 @@ float embAlignPathCalcUsingEndGapPenalties(const char *a, const char *b,
             
             if (match >= matchup && match >= matchleft)
             {
-                path[j] = match;
+                path[j] = (float) match;
                 compass[j] = 0;
             }
             else if (matchup >= matchleft)
             {
-                path[j] = matchup;
+                path[j] = (float) matchup;
                 compass[j] = 2;
             }
             else
             {
-                path[j] = matchleft;
+                path[j] = (float) matchleft;
                 compass[j] = 1;
             }
         }
