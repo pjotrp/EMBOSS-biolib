@@ -49,7 +49,7 @@ int main(int argc, char **argv)
     ajint   end;
     ajint   len;
 
-    ajGraphicsInit("chaos", argc, argv);
+    embInit("chaos", argc, argv);
 
     sequence = ajAcdGetSeq("sequence");
     graph = ajAcdGetGraph("graph");

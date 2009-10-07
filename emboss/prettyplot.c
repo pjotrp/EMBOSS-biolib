@@ -202,7 +202,7 @@ int main(int argc, char **argv)
     ajint newILstart;
     void *freeptr;
     
-    ajGraphicsInit("prettyplot", argc, argv);
+    embInit("prettyplot", argc, argv);
 
     seqset   = ajAcdGetSeqset("sequences");
     numres   = ajAcdGetInt("residuesperline");

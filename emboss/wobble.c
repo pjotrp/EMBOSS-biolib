@@ -83,7 +83,7 @@ int main(int argc, char **argv)
 
 
 
-    ajGraphicsInit("wobble", argc, argv);
+    embInit("wobble", argc, argv);
     ajGraphSetPage(960, 960);
 
     seq    = ajAcdGetSeq("sequence");

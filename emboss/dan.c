@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     ajint ti;
     
 
-    ajGraphicsInit("dan", argc, argv);
+    embInit("dan", argc, argv);
 
     seqall    = ajAcdGetSeqall("sequence");
     report    = ajAcdGetReport("outfile");

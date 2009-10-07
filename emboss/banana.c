@@ -105,7 +105,7 @@ int main(int argc, char **argv)
     float yp2;
     double td;
 
-    ajGraphicsInit("banana", argc, argv);
+    embInit("banana", argc, argv);
     seq    = ajAcdGetSeq("sequence");
     file   = ajAcdGetDatafile("anglesfile");
     outf   = ajAcdGetOutfile("outfile");

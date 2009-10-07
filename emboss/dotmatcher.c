@@ -142,7 +142,7 @@ int main(int argc, char **argv)
     se1 = ajStrNew();
     se2 = ajStrNew();
 
-    ajGraphicsInit("dotmatcher", argc, argv);
+    embInit("dotmatcher", argc, argv);
     
     seq        = ajAcdGetSeq("asequence");
     seq2       = ajAcdGetSeq("bsequence");

@@ -81,7 +81,7 @@ int main(int argc, char **argv)
     float y;
 
 
-    ajGraphicsInit("pepnet", argc, argv);
+    embInit("pepnet", argc, argv);
 
 
     seq         = ajAcdGetSeq("sequence");

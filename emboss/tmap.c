@@ -231,7 +231,7 @@ int main(int argc, char **argv)
     float ml_limit;
     float e_limit;
 
-    ajGraphicsInit("tmap", argc, argv);
+    embInit("tmap", argc, argv);
 
     seqset = ajAcdGetSeqset("sequences");
     mult   = ajAcdGetGraphxy("graph");

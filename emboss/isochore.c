@@ -126,7 +126,7 @@ int main(int argc, char **argv)
     float amin = 0.;
     float amax = 0.;
 
-    ajGraphicsInit("isochore", argc, argv);
+    embInit("isochore", argc, argv);
 
     seq  = ajAcdGetSeq("sequence");
     out  = ajAcdGetOutfile("outfile");

@@ -78,7 +78,7 @@ int main(int argc, char **argv)
     ajint en;
     ajint i;
 
-    ajGraphicsInit("iep", argc, argv);
+    embInit("iep", argc, argv);
 
     all       = ajAcdGetSeqall("sequence");
     doplot    = ajAcdGetToggle("plot");

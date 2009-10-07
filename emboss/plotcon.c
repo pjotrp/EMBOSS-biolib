@@ -123,7 +123,7 @@ int main(int argc, char **argv)
     ajuint tui;
     void *freeptr;
     
-    ajGraphicsInit("plotcon", argc, argv);
+    embInit("plotcon", argc, argv);
 
     seqset = ajAcdGetSeqset("sequences");
 

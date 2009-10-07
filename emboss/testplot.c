@@ -43,7 +43,7 @@ int main(int argc, char **argv)
     AjPGraph mult;
     AjBool overlap;
 
-    ajGraphicsInit("testplot", argc, argv);
+    embInit("testplot", argc, argv);
 
     mult    = ajAcdGetGraphxy("graph");
     ipoints = ajAcdGetInt("points");

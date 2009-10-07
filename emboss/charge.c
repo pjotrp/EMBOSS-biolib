@@ -79,7 +79,7 @@ int main(int argc, char **argv)
     EmbPPropAmino *adata = NULL;
     
 
-    ajGraphicsInit("charge", argc, argv);
+    embInit("charge", argc, argv);
 
     seqall    = ajAcdGetSeqall("seqall");
     plot      = ajAcdGetToggle("plot");

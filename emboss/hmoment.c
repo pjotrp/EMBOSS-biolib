@@ -74,7 +74,7 @@ int main(int argc, char **argv)
     const char *sname;
 
 
-    ajGraphicsInit("hmoment", argc, argv);
+    embInit("hmoment", argc, argv);
 
     seqall    = ajAcdGetSeqall("seqall");
     plot      = ajAcdGetToggle("plot");

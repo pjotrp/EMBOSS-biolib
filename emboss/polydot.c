@@ -78,7 +78,7 @@ int main(int argc, char **argv)
     float flen2;
     ajuint tui;
     
-    ajGraphicsInit("polydot", argc, argv);
+    embInit("polydot", argc, argv);
 
     wordlen  = ajAcdGetInt("wordsize");
     seqset   = ajAcdGetSeqset("sequences");

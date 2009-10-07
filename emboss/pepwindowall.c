@@ -74,7 +74,7 @@ int main(int argc, char **argv)
     ajuint istart;
     ajuint iend;
     
-    ajGraphicsInit("pepwindowall", argc, argv);
+    embInit("pepwindowall", argc, argv);
 
     seqset   = ajAcdGetSeqset("sequences");
     mult     = ajAcdGetGraphxy("graph");

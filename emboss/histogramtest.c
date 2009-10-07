@@ -48,7 +48,7 @@ int main(int argc, char **argv)
     ajint xstart;
     ajint xend;
 
-    ajGraphicsInit("histogramtest", argc, argv);
+    embInit("histogramtest", argc, argv);
 
     graph  = ajAcdGetGraphxy("graph");
     sets   = ajAcdGetInt("sets");

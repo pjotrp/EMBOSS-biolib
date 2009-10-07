@@ -72,7 +72,7 @@ int main(int argc, char **argv)
     };
 
 
-    ajGraphicsInit("plotorf", argc, argv);
+    embInit("plotorf", argc, argv);
     ajGraphSetPage(960, 960);
 
     seq       = ajAcdGetSeq("sequence");

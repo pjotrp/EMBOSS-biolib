@@ -237,7 +237,7 @@ int main(int argc, char **argv)
     ajint maxlabels;
 
     /* read the ACD file for graphical programs */
-    ajGraphicsInit("cirdna", argc, argv);
+    embInit("cirdna", argc, argv);
 
     /* array size limits */
     maxgroups = ajAcdGetInt("maxgroups");

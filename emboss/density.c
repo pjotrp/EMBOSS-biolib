@@ -115,7 +115,7 @@ int main(int argc, char **argv)
     AjPStr display = NULL;
     
 
-    ajGraphicsInit("density", argc, argv);
+    embInit("density", argc, argv);
 
     seqall    = ajAcdGetSeqall("seqall");
     display   = ajAcdGetListSingle("display");

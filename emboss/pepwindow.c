@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     ajuint istart;
     ajuint iend;
 
-    ajGraphicsInit("pepwindow", argc, argv);
+    embInit("pepwindow", argc, argv);
 
     seq  = ajAcdGetSeq("sequence");
     ilen = ajSeqGetLen(seq);

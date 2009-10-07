@@ -345,7 +345,7 @@ int main(int argc, char **argv)
     AjBool mono;
     double dtmp = 0.;
     
-    ajGraphicsInit("epestfind", argc, argv);
+    embInit("epestfind", argc, argv);
 
     ajGraphSetPage(960, 960);
 

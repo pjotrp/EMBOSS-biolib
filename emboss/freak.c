@@ -64,7 +64,7 @@ int main(int argc, char **argv)
     float min = 0.;
 
 
-    ajGraphicsInit("freak", argc, argv);
+    embInit("freak", argc, argv);
 
     seqall = ajAcdGetSeqall("seqall");
     plot   = ajAcdGetToggle("plot");

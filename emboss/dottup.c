@@ -91,7 +91,7 @@ int main(int argc, char **argv)
     float flen2;
     AjBool stretch;
     
-    ajGraphicsInit("dottup", argc, argv);
+    embInit("dottup", argc, argv);
 
     wordlen = ajAcdGetInt("wordsize");
     seq1    = ajAcdGetSeq("asequence");

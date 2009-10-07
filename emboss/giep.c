@@ -81,7 +81,7 @@ int main(int argc, char **argv)
 
 
 #ifndef GROUT
-    (void) ajGraphicsInit("giep", argc, argv);
+    (void) embInit("giep", argc, argv);
 #else
     (void) embInit("giep", argc, argv); 
 #endif 

@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     float yy2;
 
 
-    ajGraphicsInit("pepwheel", argc, argv);
+    embInit("pepwheel", argc, argv);
 
 
     seq         = ajAcdGetSeq("sequence");

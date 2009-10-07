@@ -90,7 +90,7 @@ int main(int argc, char **argv)
     float bmax = 0.;
 
 
-    ajGraphicsInit("findkm", argc, argv);
+    embInit("findkm", argc, argv);
 
     infile  = ajAcdGetInfile("infile");
     outfile = ajAcdGetOutfile ("outfile");

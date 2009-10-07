@@ -115,7 +115,7 @@ int main(int argc, char **argv)
 
     float scale = 1.0;
 
-    ajGraphicsInit("abiview", argc, argv);
+    embInit("abiview", argc, argv);
 
     fp         = ajAcdGetInfile("infile");
     graphs     = ajAcdGetGraphxy("graph");

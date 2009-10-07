@@ -126,7 +126,7 @@ int main(int argc, char **argv)
     float ymax = 0.;
     
     
-    ajGraphicsInit("tcode", argc, argv);
+    embInit("tcode", argc, argv);
 
     report   = ajAcdGetReport("outfile");
     seqall   = ajAcdGetSeqall("sequence");

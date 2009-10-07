@@ -119,10 +119,10 @@ int main(int argc, char **argv)
 	"Consensus parameters (Eisenberg et al)"
     };
 
-    ajGraphicsInit("pepinfo", argc, argv);
+    embInit("pepinfo", argc, argv);
     ajGraphSetPage(960, 960);
 
-    aj_hist_mark=NOY;
+    ajHistSetMark(NOY);
 
     /* Get parameters */
     inseq         = ajAcdGetSeq("sequence");

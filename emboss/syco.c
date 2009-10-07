@@ -85,7 +85,7 @@ int main(int argc, char **argv)
     ajint end;
     ajint window;
 
-    ajGraphicsInit("syco", argc, argv);
+    embInit("syco", argc, argv);
 
     ajGraphSetPage(960, 960);
 

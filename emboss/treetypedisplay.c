@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     float ymax = 5.0;
     AjPGraph graph;
 
-    ajGraphicsInit("treetypedisplay", argc, argv);
+    embInit("treetypedisplay", argc, argv);
     graph = ajAcdGetGraph("graph");
 
     ajGraphOpenWin(graph, xmin,xmax,ymin,ymax);

@@ -105,7 +105,7 @@ int main(int argc, char **argv)
     AjPFeattabOut featout = NULL;
 
 
-    ajGraphicsInit("cpgplot",argc,argv);
+    embInit("cpgplot",argc,argv);
 
     seqall    = ajAcdGetSeqall("sequence");
     window    = ajAcdGetInt("window");

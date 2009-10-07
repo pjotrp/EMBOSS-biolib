@@ -81,7 +81,7 @@ int main(int argc, char **argv)
     float flen2;
     ajuint tui;
     
-    ajGraphicsInit("dotpath", argc, argv);
+    embInit("dotpath", argc, argv);
     
     wordlen  = ajAcdGetInt("wordsize");
     seq1     = ajAcdGetSeq("asequence");
