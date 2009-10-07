@@ -17,7 +17,7 @@ extern "C"
 
 /* Ensembl External Database */
 
-EnsPExternalDatabase ensExternalDatabaseNew(EnsPExternalDatabaseAdaptor adaptor,
+EnsPExternalDatabase ensExternalDatabaseNew(EnsPExternalDatabaseadaptor adaptor,
                                             ajuint identifier,
                                             AjPStr name,
                                             AjPStr release,
@@ -38,7 +38,7 @@ EnsPExternalDatabase ensExternalDatabaseNewRef(EnsPExternalDatabase edb);
 
 void ensExternalDatabaseDel(EnsPExternalDatabase *Pedb);
 
-const EnsPExternalDatabaseAdaptor ensExternalDatabaseGetAdaptor(
+const EnsPExternalDatabaseadaptor ensExternalDatabaseGetadaptor(
     const EnsPExternalDatabase edb);
 
 ajuint ensExternalDatabaseGetIdentifier(const EnsPExternalDatabase edb);
@@ -65,8 +65,8 @@ AjEnum ensExternalDatabaseGetType(const EnsPExternalDatabase edb);
 
 ajint ensExternalDatabaseGetPriority(const EnsPExternalDatabase edb);
 
-AjBool ensExternalDatabaseSetAdaptor(EnsPExternalDatabase edb,
-                                     EnsPExternalDatabaseAdaptor adaptor);
+AjBool ensExternalDatabaseSetadaptor(EnsPExternalDatabase edb,
+                                     EnsPExternalDatabaseadaptor adaptor);
 
 AjBool ensExternalDatabaseSetIdentifier(EnsPExternalDatabase edb,
                                         ajuint identifier);
@@ -110,13 +110,13 @@ ajuint ensExternalDatabaseGetMemSize(const EnsPExternalDatabase edb);
 
 /* Ensembl External Database Adaptor */
 
-EnsPExternalDatabaseAdaptor ensExternalDatabaseAdaptorNew(
-    EnsPDatabaseAdaptor dba);
+EnsPExternalDatabaseadaptor ensExternalDatabaseadaptorNew(
+    EnsPDatabaseadaptor dba);
 
-void ensExternalDatabaseAdaptorDel(EnsPExternalDatabaseAdaptor* Pedba);
+void ensExternalDatabaseadaptorDel(EnsPExternalDatabaseadaptor* Pedba);
 
-AjBool ensExternalDatabaseAdaptorFetchByIdentifier(
-    EnsPExternalDatabaseAdaptor edba,
+AjBool ensExternalDatabaseadaptorFetchByIdentifier(
+    EnsPExternalDatabaseadaptor edba,
     ajuint identifier,
     EnsPExternalDatabase *Pedb);
 

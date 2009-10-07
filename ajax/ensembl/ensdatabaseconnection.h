@@ -20,7 +20,7 @@ extern "C"
 ** @alias EnsSDatabaseConnection
 ** @alias EnsODatabaseConnection
 **
-** @attr SqlConnection [AjPSqlConnection] AJAX SQL Connection
+** @attr Sqlconnection [AjPSqlconnection] AJAX SQL Connection
 ** @attr UserName [AjPStr] SQL user name
 ** @attr Password [AjPStr] SQL password
 ** @attr HostName [AjPStr] SQL host name
@@ -35,7 +35,7 @@ extern "C"
 
 typedef struct EnsSDatabaseConnection
 {
-    AjPSqlConnection SqlConnection;
+    AjPSqlconnection Sqlconnection;
     AjPStr UserName;
     AjPStr Password;
     AjPStr HostName;
@@ -70,7 +70,7 @@ EnsPDatabaseConnection ensDatabaseConnectionNewRef(EnsPDatabaseConnection dbc);
 
 void ensDatabaseConnectionDel(EnsPDatabaseConnection* Pdbc);
 
-AjPSqlConnection ensDatabaseConnectionGetSqlConnection(
+AjPSqlconnection ensDatabaseConnectionGetSqlconnection(
     const EnsPDatabaseConnection dbc);
 
 AjPStr ensDatabaseConnectionGetUserName(const EnsPDatabaseConnection dbc);
@@ -96,14 +96,14 @@ void ensDatabaseConnectionDisconnect(EnsPDatabaseConnection dbc);
 
 AjBool ensDatabaseConnectionIsConnected(const EnsPDatabaseConnection dbc);
 
-AjPSqlStatement ensDatabaseConnectionSqlStatementNew(EnsPDatabaseConnection dbc,
+AjPSqlstatement ensDatabaseConnectionSqlstatementNew(EnsPDatabaseConnection dbc,
                                                      const AjPStr statement);
 
-AjBool ensDatabaseConnectionEscapeCS(EnsPDatabaseConnection dbc,
+AjBool ensDatabaseConnectionEscapeC(EnsPDatabaseConnection dbc,
                                      char **Ptxt,
                                      const AjPStr str);
 
-AjBool ensDatabaseConnectionEscapeSS(EnsPDatabaseConnection dbc,
+AjBool ensDatabaseConnectionEscapeS(EnsPDatabaseConnection dbc,
                                      AjPStr *Pstr,
                                      const AjPStr str);
 

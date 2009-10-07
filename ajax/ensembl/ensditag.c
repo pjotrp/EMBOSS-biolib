@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -52,35 +52,35 @@ static const char *diTagFeatureSide[] =
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-extern EnsPAnalysisAdaptor
-ensRegistryGetAnalysisAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPAnalysisadaptor
+ensRegistryGetAnalysisadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPAssemblyMapperAdaptor
-ensRegistryGetAssemblyMapperAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPAssemblyMapperadaptor
+ensRegistryGetAssemblyMapperadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPDiTagFeatureAdaptor
-ensRegistryGetDiTagFeatureAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPDiTagFeatureadaptor
+ensRegistryGetDiTagFeatureadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPSliceAdaptor
-ensRegistryGetSliceAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPSliceadaptor
+ensRegistryGetSliceadaptor(EnsPDatabaseadaptor dba);
 
-static AjBool diTagAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
+static AjBool diTagadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                         const AjPStr statement,
                                         AjPList list);
 
-static AjBool diTagFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
+static AjBool diTagFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
                                                EnsPAssemblyMapper am,
                                                EnsPSlice slice,
                                                AjPList dtfs);
 
-static void *diTagFeatureAdaptorCacheReference(void *value);
+static void *diTagFeatureadaptorCacheReference(void *value);
 
-static void diTagFeatureAdaptorCacheDelete(void **value);
+static void diTagFeatureadaptorCacheDelete(void **value);
 
-static ajuint diTagFeatureAdaptorCacheSize(const void *value);
+static ajuint diTagFeatureadaptorCacheSize(const void *value);
 
-static EnsPFeature diTagFeatureAdaptorGetFeature(const void *value);
+static EnsPFeature diTagFeatureadaptorGetFeature(const void *value);
 
 
 
@@ -137,7 +137,7 @@ static EnsPFeature diTagFeatureAdaptorGetFeature(const void *value);
 ** Default constructor for an Ensembl DiTag.
 **
 ** @cc Bio::EnsEMBL::Storable
-** @param [r] adaptor [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @param [r] adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::Map::Ditag::new
 ** @param [u] name [AjPStr] Name
@@ -149,7 +149,7 @@ static EnsPFeature diTagFeatureAdaptorGetFeature(const void *value);
 ** @@
 ******************************************************************************/
 
-EnsPDiTag ensDiTagNew(EnsPDatabaseAdaptor adaptor,
+EnsPDiTag ensDiTagNew(EnsPDatabaseadaptor adaptor,
                       ajuint identifier,
                       AjPStr name,
                       AjPStr type,
@@ -323,7 +323,7 @@ void ensDiTagDel(EnsPDiTag *Pdt)
 ** @fnote None
 **
 ** @nam3rule Get Return DiTag attribute(s)
-** @nam4rule GetAdaptor Return the Ensembl Database Adaptor
+** @nam4rule Getadaptor Return the Ensembl Database Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetName Return the name
 ** @nam4rule GetType Return the type
@@ -332,7 +332,7 @@ void ensDiTagDel(EnsPDiTag *Pdt)
 **
 ** @argrule * dt [const EnsPDiTag] DiTag
 **
-** @valrule Adaptor [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @valrule Adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule Name [AjPStr] Name
 ** @valrule Type [AjPStr] Type
@@ -345,18 +345,18 @@ void ensDiTagDel(EnsPDiTag *Pdt)
 
 
 
-/* @func ensDiTagGetAdaptor ***************************************************
+/* @func ensDiTagGetadaptor ***************************************************
 **
 ** Get the Ensembl Database Adaptor element of an Ensembl DiTag.
 **
 ** @cc Bio::EnsEMBL::Storable::adaptor
 ** @param [r] dt [const EnsPDiTag] Ensembl DiTag
 **
-** @return [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @return [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPDatabaseAdaptor ensDiTagGetAdaptor(const EnsPDiTag dt)
+EnsPDatabaseadaptor ensDiTagGetadaptor(const EnsPDiTag dt)
 {
     if(!dt)
         return NULL;
@@ -485,7 +485,7 @@ ajuint ensDiTagGetCount(const EnsPDiTag dt)
 ** @fnote None
 **
 ** @nam3rule Set Set one element of an Ensembl DiTag
-** @nam4rule SetAdaptor Set the Ensembl Database Adaptor
+** @nam4rule Setadaptor Set the Ensembl Database Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetName Set the name
 ** @nam4rule SetType Set the type
@@ -502,19 +502,19 @@ ajuint ensDiTagGetCount(const EnsPDiTag dt)
 
 
 
-/* @func ensDiTagSetAdaptor ***************************************************
+/* @func ensDiTagSetadaptor ***************************************************
 **
 ** Set the Ensembl Database Adaptor element of an Ensembl DiTag.
 **
 ** @cc Bio::EnsEMBL::Storable::adaptor
 ** @param [u] dt [EnsPDiTag] Ensembl DiTag
-** @param [r] adaptor [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @param [r] adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensDiTagSetAdaptor(EnsPDiTag dt, EnsPDatabaseAdaptor adaptor)
+AjBool ensDiTagSetadaptor(EnsPDiTag dt, EnsPDatabaseadaptor adaptor)
 {
     if(!dt)
         return ajFalse;
@@ -770,25 +770,25 @@ ajuint ensDiTagGetMemSize(const EnsPDiTag dt)
 
 
 
-/* @datasection [EnsPDatabaseAdaptor] Ensembl Database Adaptor ****************
+/* @datasection [EnsPDatabaseadaptor] Ensembl Database Adaptor ****************
 **
 ** Functions for manipulating Ensembl DiTag Adaptor objects
 **
-** @cc Bio::EnsEMBL::Map::DBSQL::DitagAdaptor CVS Revision: 1.6
+** @cc Bio::EnsEMBL::Map::DBSQL::Ditagadaptor CVS Revision: 1.6
 **
-** @nam2rule DiTagAdaptor
+** @nam2rule DiTagadaptor
 **
 ******************************************************************************/
 
 
 
-/* @funcstatic diTagAdaptorFetchAllBySQL **************************************
+/* @funcstatic diTagadaptorFetchAllBySQL **************************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl DiTag objects.
 **
-** @cc Bio::EnsEMBL::Map::DBSQL::DitagAdaptor::_fetch
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @cc Bio::EnsEMBL::Map::DBSQL::Ditagadaptor::_fetch
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
 ** @param [u] list [AjPList] AJAX List of Ensembl DiTags
 **
@@ -796,16 +796,16 @@ ajuint ensDiTagGetMemSize(const EnsPDiTag dt)
 ** @@
 ******************************************************************************/
 
-static AjBool diTagAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
+static AjBool diTagadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                         const AjPStr statement,
                                         AjPList list)
 {
     ajuint identifier = 0;
     ajuint count      = 0;
     
-    AjPSqlStatement sqls = NULL;
-    AjISqlRow sqli       = NULL;
-    AjPSqlRow sqlr       = NULL;
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
     
     AjPStr name     = NULL;
     AjPStr type     = NULL;
@@ -822,11 +822,11 @@ static AjBool diTagAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
     if(!list)
 	return ajFalse;
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    sqli = ajSqlRowIterNew(sqls);
+    sqli = ajSqlrowiterNew(sqls);
     
-    while(!ajSqlRowIterDone(sqli))
+    while(!ajSqlrowiterDone(sqli))
     {
 	identifier = 0;
 	name       = ajStrNew();
@@ -834,13 +834,13 @@ static AjBool diTagAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	sequence   = ajStrNew();
 	count      = 0;
 	
-        sqlr = ajSqlRowIterGet(sqli);
+        sqlr = ajSqlrowiterGet(sqli);
 	
-        ajSqlColumnToUint(sqlr, &identifier);
-	ajSqlColumnToStr(sqlr, &name);
-	ajSqlColumnToStr(sqlr, &type);
-	ajSqlColumnToStr(sqlr, &sequence);
-        ajSqlColumnToUint(sqlr, &count);
+        ajSqlcolumnToUint(sqlr, &identifier);
+	ajSqlcolumnToStr(sqlr, &name);
+	ajSqlcolumnToStr(sqlr, &type);
+	ajSqlcolumnToStr(sqlr, &sequence);
+        ajSqlcolumnToUint(sqlr, &count);
 	
 	dt = ensDiTagNew(dba, identifier, name, type, sequence, count);
 	
@@ -851,9 +851,9 @@ static AjBool diTagAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	ajStrDel(&sequence);
     }
     
-    ajSqlRowIterDel(&sqli);
+    ajSqlrowiterDel(&sqli);
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     return ajTrue;
 }
@@ -866,7 +866,7 @@ static AjBool diTagAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 ** Functions for retrieving Ensembl DiTag objects from an
 ** Ensembl Core database.
 **
-** @fdata [EnsPDatabaseAdaptor]
+** @fdata [EnsPDatabaseadaptor]
 ** @fnote None
 **
 ** @nam3rule Fetch Retrieve Ensembl DiTag object(s)
@@ -876,7 +876,7 @@ static AjBool diTagAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 ** @nam4rule FetchBy Retrieve one Ensembl DiTag object
 **                   matching a criterion
 **
-** @argrule * adaptor [const EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @argrule * adaptor [const EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @argrule FetchAll [AjPList] AJAX List of Ensembl DiTag objects
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -887,14 +887,14 @@ static AjBool diTagAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 
 
 
-/* @func ensDiTagAdaptorFetchByIdentifier *************************************
+/* @func ensDiTagadaptorFetchByIdentifier *************************************
 **
 ** Fetch an Ensembl DiTag via its SQL database-internal identifier.
 **
 ** The caller is responsible for deleting the Ensembl DiTag.
 **
-** @cc Bio::EnsEMBL::Map::DBSQL::DitagAdaptor::fetch_by_dbID
-** @param [r] dba [const EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @cc Bio::EnsEMBL::Map::DBSQL::Ditagadaptor::fetch_by_dbID
+** @param [r] dba [const EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @param [wP] Pdt [EnsPDiTag*] Ensembl DiTag address
 **
@@ -902,7 +902,7 @@ static AjBool diTagAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 ** @@
 ******************************************************************************/
 
-AjBool ensDiTagAdaptorFetchByIdentifier(EnsPDatabaseAdaptor dba,
+AjBool ensDiTagadaptorFetchByIdentifier(EnsPDatabaseadaptor dba,
                                         ajuint identifier,
                                         EnsPDiTag *Pdt)
 {
@@ -939,14 +939,14 @@ AjBool ensDiTagAdaptorFetchByIdentifier(EnsPDatabaseAdaptor dba,
     
     dts = ajListNew();
     
-    value = diTagAdaptorFetchAllBySQL(dba, statement, dts);
+    value = diTagadaptorFetchAllBySQL(dba, statement, dts);
     
     if(ajListGetLength(dts) == 0)
-	ajDebug("ensDiTagAdaptorFetchByIdentifier got no Ensembl DiTag "
+	ajDebug("ensDiTagadaptorFetchByIdentifier got no Ensembl DiTag "
 		"for identifier %u.\n", identifier);
     
     if(ajListGetLength(dts) > 1)
-	ajWarn("ensDiTagAdaptorFetchByIdentifier got more than one "
+	ajWarn("ensDiTagadaptorFetchByIdentifier got more than one "
 	       "Ensembl DiTag for identifier %u.\n", identifier);
     
     ajListPop(dts, (void **) Pdt);
@@ -964,17 +964,17 @@ AjBool ensDiTagAdaptorFetchByIdentifier(EnsPDatabaseAdaptor dba,
 
 
 
-/* @func ensDiTagAdaptorFetchAll **********************************************
+/* @func ensDiTagadaptorFetchAll **********************************************
 **
 ** Fetch all Ensembl DiTag objects by name or type.
 **
 ** The caller is responsible for deleting the Ensembl DiTags before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::Map::DBSQL::DitagAdaptor::fetch_all
-** @cc Bio::EnsEMBL::Map::DBSQL::DitagAdaptor::fetch_all_by_name
-** @cc Bio::EnsEMBL::Map::DBSQL::DitagAdaptor::fetch_all_by_type
-** @param [r] dba [const EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @cc Bio::EnsEMBL::Map::DBSQL::Ditagadaptor::fetch_all
+** @cc Bio::EnsEMBL::Map::DBSQL::Ditagadaptor::fetch_all_by_name
+** @cc Bio::EnsEMBL::Map::DBSQL::Ditagadaptor::fetch_all_by_type
+** @param [r] dba [const EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [rN] name [const AjPStr] Name
 ** @param [rN] type [const AjPStr] Type
 ** @param [u] dts [AjPList] AJAX List of Ensembl DiTags
@@ -983,7 +983,7 @@ AjBool ensDiTagAdaptorFetchByIdentifier(EnsPDatabaseAdaptor dba,
 ** @@
 ******************************************************************************/
 
-AjBool ensDiTagAdaptorFetchAll(EnsPDatabaseAdaptor dba,
+AjBool ensDiTagadaptorFetchAll(EnsPDatabaseadaptor dba,
                                const AjPStr name,
                                const AjPStr type,
                                AjPList dts)
@@ -1002,10 +1002,10 @@ AjBool ensDiTagAdaptorFetchAll(EnsPDatabaseAdaptor dba,
 	return ajFalse;
     
     if(name && ajStrGetLen(name))
-	ensDatabaseAdaptorEscapeCS(dba, &txtname, name);
+	ensDatabaseadaptorEscapeC(dba, &txtname, name);
     
     if(type && ajStrGetLen(type))
-	ensDatabaseAdaptorEscapeCS(dba, &txttype, type);
+	ensDatabaseadaptorEscapeC(dba, &txttype, type);
     
     statement = ajStrNewC("SELECT "
 			  "ditag.ditag_id, "
@@ -1034,7 +1034,7 @@ AjBool ensDiTagAdaptorFetchAll(EnsPDatabaseAdaptor dba,
     
     ajCharDel(&txttype);
     
-    value = diTagAdaptorFetchAllBySQL(dba, statement, dts);
+    value = diTagadaptorFetchAllBySQL(dba, statement, dts);
     
     ajStrDel(&statement);
     
@@ -1044,15 +1044,15 @@ AjBool ensDiTagAdaptorFetchAll(EnsPDatabaseAdaptor dba,
 
 
 
-/* @func ensDiTagAdaptorFetchAllByName ****************************************
+/* @func ensDiTagadaptorFetchAllByName ****************************************
 **
 ** Fetch all Ensembl DiTag objects by name.
 **
 ** The caller is responsible for deleting the Ensembl DiTags before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::Map::DBSQL::DitagAdaptor::fetch_all_by_name
-** @param [r] dba [const EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @cc Bio::EnsEMBL::Map::DBSQL::Ditagadaptor::fetch_all_by_name
+** @param [r] dba [const EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] name [const AjPStr] Name
 ** @param [u] dts [AjPList] AJAX List of Ensembl DiTags
 **
@@ -1060,7 +1060,7 @@ AjBool ensDiTagAdaptorFetchAll(EnsPDatabaseAdaptor dba,
 ** @@
 ******************************************************************************/
 
-AjBool ensDiTagAdaptorFetchAllByName(EnsPDatabaseAdaptor dba,
+AjBool ensDiTagadaptorFetchAllByName(EnsPDatabaseadaptor dba,
                                      const AjPStr name,
                                      AjPList dts)
 {
@@ -1079,7 +1079,7 @@ AjBool ensDiTagAdaptorFetchAllByName(EnsPDatabaseAdaptor dba,
     if(!dts)
 	return ajFalse;
     
-    ensDatabaseAdaptorEscapeCS(dba, &txtname, name);
+    ensDatabaseadaptorEscapeC(dba, &txtname, name);
     
     statement = ajFmtStr("SELECT "
 			 "ditag.ditag_id, "
@@ -1095,7 +1095,7 @@ AjBool ensDiTagAdaptorFetchAllByName(EnsPDatabaseAdaptor dba,
     
     ajCharDel(&txtname);
     
-    value = diTagAdaptorFetchAllBySQL(dba, statement, dts);
+    value = diTagadaptorFetchAllBySQL(dba, statement, dts);
     
     ajStrDel(&statement);
     
@@ -1105,15 +1105,15 @@ AjBool ensDiTagAdaptorFetchAllByName(EnsPDatabaseAdaptor dba,
 
 
 
-/* @func ensDiTagAdaptorFetchAllByType ****************************************
+/* @func ensDiTagadaptorFetchAllByType ****************************************
 **
 ** Fetch all Ensembl DiTag objects by type.
 **
 ** The caller is responsible for deleting the Ensembl DiTags before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::Map::DBSQL::DitagAdaptor::fetch_all_by_type
-** @param [r] dba [const EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @cc Bio::EnsEMBL::Map::DBSQL::Ditagadaptor::fetch_all_by_type
+** @param [r] dba [const EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] type [const AjPStr] Type
 ** @param [u] dts [AjPList] AJAX List of Ensembl DiTags
 **
@@ -1121,7 +1121,7 @@ AjBool ensDiTagAdaptorFetchAllByName(EnsPDatabaseAdaptor dba,
 ** @@
 ******************************************************************************/
 
-AjBool ensDiTagAdaptorFetchAllByType(EnsPDatabaseAdaptor dba,
+AjBool ensDiTagadaptorFetchAllByType(EnsPDatabaseadaptor dba,
                                      const AjPStr type,
                                      AjPList dts)
 {
@@ -1140,7 +1140,7 @@ AjBool ensDiTagAdaptorFetchAllByType(EnsPDatabaseAdaptor dba,
     if(!dts)
 	return ajFalse;
     
-    ensDatabaseAdaptorEscapeCS(dba, &txttype, type);
+    ensDatabaseadaptorEscapeC(dba, &txttype, type);
     
     statement = ajFmtStr("SELECT "
 			 "ditag.ditag_id, "
@@ -1156,7 +1156,7 @@ AjBool ensDiTagAdaptorFetchAllByType(EnsPDatabaseAdaptor dba,
     
     ajCharDel(&txttype);
     
-    value = diTagAdaptorFetchAllBySQL(dba, statement, dts);
+    value = diTagadaptorFetchAllBySQL(dba, statement, dts);
     
     ajStrDel(&statement);
     
@@ -1209,7 +1209,7 @@ AjBool ensDiTagAdaptorFetchAllByType(EnsPDatabaseAdaptor dba,
 ** Default constructor for an Ensembl DiTag Feature.
 **
 ** @cc Bio::EnsEMBL::Storable
-** @param [r] adaptor [EnsPDiTagFeatureAdaptor] Ensembl DiTag Feature Adaptor
+** @param [r] adaptor [EnsPDiTagFeatureadaptor] Ensembl DiTag Feature Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::Feature::new
 ** @param [u] feature [EnsPFeature] Ensembl Feature
@@ -1226,7 +1226,7 @@ AjBool ensDiTagAdaptorFetchAllByType(EnsPDatabaseAdaptor dba,
 ** @@
 ******************************************************************************/
 
-EnsPDiTagFeature ensDiTagFeatureNew(EnsPDiTagFeatureAdaptor adaptor,
+EnsPDiTagFeature ensDiTagFeatureNew(EnsPDiTagFeatureadaptor adaptor,
                                     ajuint identifier,
                                     EnsPFeature feature,
                                     EnsPDiTag dt,
@@ -1419,7 +1419,7 @@ void ensDiTagFeatureDel(EnsPDiTagFeature *Pdtf)
 ** @fnote None
 **
 ** @nam3rule Get Return DiTag Feature attribute(s)
-** @nam4rule GetAdaptor Return the Ensembl DiTag Feature Adaptor
+** @nam4rule Getadaptor Return the Ensembl DiTag Feature Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetFeature Return the Ensembl Feature
 ** @nam4rule GetDiTag Return the Ensembl DiTag
@@ -1432,7 +1432,7 @@ void ensDiTagFeatureDel(EnsPDiTagFeature *Pdtf)
 **
 ** @argrule * dtf [const EnsPDiTagFeature] DiTag Feature
 **
-** @valrule Adaptor [EnsPDiTagFeatureAdaptor] Ensembl DiTag Feature Adaptor
+** @valrule Adaptor [EnsPDiTagFeatureadaptor] Ensembl DiTag Feature Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule Feature [EnsPFeature] Ensembl Feature
 ** @valrule DiTag [EnsPDiTag] Ensembl DiTag
@@ -1449,18 +1449,18 @@ void ensDiTagFeatureDel(EnsPDiTagFeature *Pdtf)
 
 
 
-/* @func ensDiTagFeatureGetAdaptor ********************************************
+/* @func ensDiTagFeatureGetadaptor ********************************************
 **
 ** Get the Ensembl DiTag Feature Adaptor element of an Ensembl DiTag Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::adaptor
 ** @param [r] dtf [const EnsPDiTagFeature] Ensembl DiTag Feature
 **
-** @return [EnsPDiTagFeatureAdaptor] Ensembl DiTag Feature Adaptor
+** @return [EnsPDiTagFeatureadaptor] Ensembl DiTag Feature Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPDiTagFeatureAdaptor ensDiTagFeatureGetAdaptor(const EnsPDiTagFeature dtf)
+EnsPDiTagFeatureadaptor ensDiTagFeatureGetadaptor(const EnsPDiTagFeature dtf)
 {
     if(!dtf)
         return NULL;
@@ -1677,7 +1677,7 @@ ajuint ensDiTagFeatureGetPairIdentifier(const EnsPDiTagFeature dtf)
 ** @fnote None
 **
 ** @nam3rule Set Set one element of an Ensembl DiTag Feature
-** @nam4rule SetAdaptor Set the Ensembl DiTag Feature Adaptor
+** @nam4rule Setadaptor Set the Ensembl DiTag Feature Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetFeature Set the Ensembl Feature
 ** @nam4rule SetDiTag Set the Ensembl DiTag
@@ -1697,20 +1697,20 @@ ajuint ensDiTagFeatureGetPairIdentifier(const EnsPDiTagFeature dtf)
 
 
 
-/* @func ensDiTagFeatureSetAdaptor ********************************************
+/* @func ensDiTagFeatureSetadaptor ********************************************
 **
 ** Set the Ensembl DiTag Feature Adaptor element of an Ensembl DiTag Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::adaptor
 ** @param [u] dtf [EnsPDiTagFeature] Ensembl DiTag Feature
-** @param [r] adaptor [EnsPDiTagFeatureAdaptor] Ensembl DiTag Feature Adaptor
+** @param [r] adaptor [EnsPDiTagFeatureadaptor] Ensembl DiTag Feature Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensDiTagFeatureSetAdaptor(EnsPDiTagFeature dtf,
-                                 EnsPDiTagFeatureAdaptor adaptor)
+AjBool ensDiTagFeatureSetadaptor(EnsPDiTagFeature dtf,
+                                 EnsPDiTagFeatureadaptor adaptor)
 {
     if(!dtf)
         return ajFalse;
@@ -2127,13 +2127,13 @@ const char* ensDiTagFeatureSideToChar(const AjEnum side)
 
 
 
-/* @datasection [EnsPDiTagFeatureAdaptor] DiTag Feature Adaptor ***************
+/* @datasection [EnsPDiTagFeatureadaptor] DiTag Feature Adaptor ***************
 **
 ** Functions for manipulating Ensembl DiTag Feature Adaptor objects
 **
-** @cc Bio::EnsEMBL::Map::DBSQL::DiTagFeatureAdaptor CVS Revision: 1.16
+** @cc Bio::EnsEMBL::Map::DBSQL::DiTagFeatureadaptor CVS Revision: 1.16
 **
-** @nam2rule DiTagFeatureAdaptor
+** @nam2rule DiTagFeatureadaptor
 **
 ******************************************************************************/
 
@@ -2142,14 +2142,14 @@ const char* ensDiTagFeatureSideToChar(const AjEnum side)
 ** allow for selection of Ditag Features on the basis of a Ditag type.
 */
 
-static const char *diTagFeatureAdaptorTables[] =
+static const char *diTagFeatureadaptorTables[] =
 {
     "ditag_feature",
     "ditag",
     (const char *) NULL
 };
 
-static const char *diTagFeatureAdaptorColumns[] =
+static const char *diTagFeatureadaptorColumns[] =
 {
     "ditag_feature.ditag_feature_id",
     "ditag_feature.seq_region_id",
@@ -2167,26 +2167,26 @@ static const char *diTagFeatureAdaptorColumns[] =
     (const char *) NULL
 };
 
-static EnsOBaseAdaptorLeftJoin diTagFeatureAdaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin diTagFeatureadaptorLeftJoin[] =
 {
     {(const char *) NULL, (const char *) NULL}
 };
 
-static const char *diTagFeatureAdaptorDefaultCondition =
+static const char *diTagFeatureadaptorDefaultCondition =
 "ditag_feature.ditag_id = ditag.ditag_id";
 
-static const char *diTagFeatureAdaptorFinalCondition = NULL;
+static const char *diTagFeatureadaptorFinalCondition = NULL;
 
 /*
 ** TODO: Remove this?
- static const char *diTagFeatureDiTagAdaptorTables[] =
+ static const char *diTagFeatureDiTagadaptorTables[] =
  {
      "ditag_feature",
      "ditag",
      (const char *) NULL
  };
  
- static const char *diTagFeatureDiTagAdaptorColumns[] =
+ static const char *diTagFeatureDiTagadaptorColumns[] =
  {
      "ditag_feature.ditag_feature_id",
      "ditag_feature.seq_region_id",
@@ -2209,22 +2209,22 @@ static const char *diTagFeatureAdaptorFinalCondition = NULL;
      (const char *) NULL
  };
  
- static const char *diTagFeatureDiTagAdaptorDefaultCondition =
+ static const char *diTagFeatureDiTagadaptorDefaultCondition =
  "ditag_feature.ditag_id = ditag.ditag_id";
  
- static const char *diTagFeatureDiTagAdaptorFinalCondition =
+ static const char *diTagFeatureDiTagadaptorFinalCondition =
  "ORDER BY ditag_feature.ditag_id, ditag_feature.ditag_pair_id";
  */
 
 
 
 
-/* @funcstatic diTagFeatureAdaptorFetchAllBySQL *******************************
+/* @funcstatic diTagFeatureadaptorFetchAllBySQL *******************************
 **
 ** Fetch all Ensembl DiTag Feature objects via an SQL statement.
 **
-** @cc Bio::EnsEMBL::Map::DBSQL::DiTagFeatureAdaptor::_fetch
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @cc Bio::EnsEMBL::Map::DBSQL::DiTagFeatureadaptor::_fetch
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
 ** @param [u] am [EnsPAssemblyMapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
@@ -2234,7 +2234,7 @@ static const char *diTagFeatureAdaptorFinalCondition = NULL;
 ** @@
 ******************************************************************************/
 
-static AjBool diTagFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
+static AjBool diTagFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
                                                EnsPAssemblyMapper am,
                                                EnsPSlice slice,
@@ -2261,29 +2261,29 @@ static AjBool diTagFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
     
     AjPList mrs = NULL;
     
-    AjPSqlStatement sqls = NULL;
-    AjISqlRow sqli       = NULL;
-    AjPSqlRow sqlr       = NULL;
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
     
     AjPStr cigar = NULL;
     AjPStr side  = NULL;
     
     EnsPAnalysis analysis  = NULL;
-    EnsPAnalysisAdaptor aa = NULL;
+    EnsPAnalysisadaptor aa = NULL;
     
-    EnsPAssemblyMapperAdaptor ama = NULL;
+    EnsPAssemblyMapperadaptor ama = NULL;
     
     EnsPDiTag dt = NULL;
     
     EnsPDiTagFeature dtf         = NULL;
-    EnsPDiTagFeatureAdaptor dtfa = NULL;
+    EnsPDiTagFeatureadaptor dtfa = NULL;
     
     EnsPFeature feature = NULL;
     
     EnsPMapperResult mr = NULL;
     
     EnsPSlice srslice   = NULL;
-    EnsPSliceAdaptor sa = NULL;
+    EnsPSliceadaptor sa = NULL;
     
     if(!dba)
 	return ajFalse;
@@ -2298,22 +2298,22 @@ static AjBool diTagFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
     if(!dtfs)
 	return ajFalse;
     
-    aa = ensRegistryGetAnalysisAdaptor(dba);
+    aa = ensRegistryGetAnalysisadaptor(dba);
     
-    dtfa = ensRegistryGetDiTagFeatureAdaptor(dba);
+    dtfa = ensRegistryGetDiTagFeatureadaptor(dba);
     
-    sa = ensRegistryGetSliceAdaptor(dba);
+    sa = ensRegistryGetSliceadaptor(dba);
     
     if(slice)
-	ama = ensRegistryGetAssemblyMapperAdaptor(dba);
+	ama = ensRegistryGetAssemblyMapperadaptor(dba);
     
     mrs = ajListNew();
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    sqli = ajSqlRowIterNew(sqls);
+    sqli = ajSqlrowiterNew(sqls);
     
-    while(!ajSqlRowIterDone(sqli))
+    while(!ajSqlrowiterDone(sqli))
     {
 	identifier = 0;
 	srid = 0;
@@ -2329,21 +2329,21 @@ static AjBool diTagFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	side = ajStrNew();
 	dtpairid = 0;
 	
-	sqlr = ajSqlRowIterGet(sqli);
+	sqlr = ajSqlrowiterGet(sqli);
 	
-	ajSqlColumnToUint(sqlr, &identifier);
-	ajSqlColumnToUint(sqlr, &srid);
-	ajSqlColumnToUint(sqlr, &srstart);
-	ajSqlColumnToUint(sqlr, &srend);
-	ajSqlColumnToInt(sqlr, &srstrand);
-	ajSqlColumnToUint(sqlr, &analysisid);
-	ajSqlColumnToUint(sqlr, &dtid);
-	ajSqlColumnToUint(sqlr, &dtstart);
-	ajSqlColumnToUint(sqlr, &dtend);
-	ajSqlColumnToInt(sqlr, &dtstrand);
-	ajSqlColumnToStr(sqlr, &cigar);
-	ajSqlColumnToStr(sqlr, &side);
-	ajSqlColumnToUint(sqlr, &dtpairid);
+	ajSqlcolumnToUint(sqlr, &identifier);
+	ajSqlcolumnToUint(sqlr, &srid);
+	ajSqlcolumnToUint(sqlr, &srstart);
+	ajSqlcolumnToUint(sqlr, &srend);
+	ajSqlcolumnToInt(sqlr, &srstrand);
+	ajSqlcolumnToUint(sqlr, &analysisid);
+	ajSqlcolumnToUint(sqlr, &dtid);
+	ajSqlcolumnToUint(sqlr, &dtstart);
+	ajSqlcolumnToUint(sqlr, &dtend);
+	ajSqlcolumnToInt(sqlr, &dtstrand);
+	ajSqlcolumnToStr(sqlr, &cigar);
+	ajSqlcolumnToStr(sqlr, &side);
+	ajSqlcolumnToUint(sqlr, &dtpairid);
 	
 	/*
 	** Since the Ensembl SQL schema defines Sequence Region start and end
@@ -2354,7 +2354,7 @@ static AjBool diTagFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	if(srstart <= INT_MAX)
 	    slstart = (ajint) srstart;
 	else
-	    ajFatal("diTagFeatureAdaptorFetchAllBySQL got a "
+	    ajFatal("diTagFeatureadaptorFetchAllBySQL got a "
 		    "Sequence Region start coordinate (%u) outside the "
 		    "maximum integer limit (%d).",
 		    srstart, INT_MAX);
@@ -2362,7 +2362,7 @@ static AjBool diTagFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	if(srend <= INT_MAX)
 	    slend = (ajint) srend;
 	else
-	    ajFatal("diTagFeatureAdaptorFetchAllBySQL got a "
+	    ajFatal("diTagFeatureadaptorFetchAllBySQL got a "
 		    "Sequence Region end coordinate (%u) outside the "
 		    "maximum integer limit (%d).",
 		    srend, INT_MAX);
@@ -2371,7 +2371,7 @@ static AjBool diTagFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	
 	/* Fetch a Slice spanning the entire Sequence Region. */
 	
-	ensSliceAdaptorFetchBySeqRegionIdentifier(sa, srid, 0, 0, 0, &srslice);
+	ensSliceadaptorFetchBySeqRegionIdentifier(sa, srid, 0, 0, 0, &srslice);
 	
 	/*
 	** Increase the reference counter of the Ensembl Assembly Mapper if
@@ -2391,7 +2391,7 @@ static AjBool diTagFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
            slice &&
            (! ensCoordSystemMatch(ensSliceGetCoordSystem(slice),
                                   ensSliceGetCoordSystem(srslice))))
-	    am = ensAssemblyMapperAdaptorFetchByCoordSystems(
+	    am = ensAssemblyMapperadaptorFetchByCoordSystems(
                 ama,
                 ensSliceGetCoordSystem(slice),
                 ensSliceGetCoordSystem(srslice));
@@ -2454,7 +2454,7 @@ static AjBool diTagFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	    
 	    ensSliceDel(&srslice);
 	    
-	    ensSliceAdaptorFetchBySeqRegionIdentifier(
+	    ensSliceadaptorFetchBySeqRegionIdentifier(
                 sa,
                 srid,
                 0,
@@ -2477,7 +2477,7 @@ static AjBool diTagFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	    if(ensSliceGetLength(slice) <= INT_MAX)
 		sllength = (ajint) ensSliceGetLength(slice);
 	    else
-		ajFatal("diTagFeatureAdaptorFetchAllBySQL got a Slice, "
+		ajFatal("diTagFeatureadaptorFetchAllBySQL got a Slice, "
 			"which length (%u) exceeds the "
 			"maximum integer limit (%d).",
 			ensSliceGetLength(slice), INT_MAX);
@@ -2534,11 +2534,11 @@ static AjBool diTagFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	    srslice = ensSliceNewRef(slice);
 	}
 	
-	ensAnalysisAdaptorFetchByIdentifier(aa, analysisid, &analysis);
+	ensAnalysisadaptorFetchByIdentifier(aa, analysisid, &analysis);
 	
 	feature = ensFeatureNewS(analysis, srslice, slstart, slend, slstrand);
 	
-	ensDiTagAdaptorFetchByIdentifier(dba, dtid, &dt);
+	ensDiTagadaptorFetchByIdentifier(dba, dtid, &dt);
 	
 	eside = ensDiTagFeatureSideFromStr(side);
 	
@@ -2569,9 +2569,9 @@ static AjBool diTagFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	ensAssemblyMapperDel(&am);
     }
     
-    ajSqlRowIterDel(&sqli);
+    ajSqlrowiterDel(&sqli);
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     ajListFree(&mrs);
     
@@ -2581,7 +2581,7 @@ static AjBool diTagFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 
 
 
-/* @funcstatic diTagFeatureAdaptorCacheReference ******************************
+/* @funcstatic diTagFeatureadaptorCacheReference ******************************
 **
 ** Wrapper function to reference an Ensembl DiTag Feature
 ** from an Ensembl Cache.
@@ -2592,7 +2592,7 @@ static AjBool diTagFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 ** @@
 ******************************************************************************/
 
-static void *diTagFeatureAdaptorCacheReference(void *value)
+static void *diTagFeatureadaptorCacheReference(void *value)
 {
     if(!value)
 	return NULL;
@@ -2603,18 +2603,18 @@ static void *diTagFeatureAdaptorCacheReference(void *value)
 
 
 
-/* @funcstatic diTagFeatureAdaptorCacheDelete *********************************
+/* @funcstatic diTagFeatureadaptorCacheDelete *********************************
 **
 ** Wrapper function to delete an Ensembl DiTag Feature
 ** from an Ensembl Cache.
 **
-** @param [r] value [void **] Ensembl DiTag Feature address
+** @param [r] value [void**] Ensembl DiTag Feature address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void diTagFeatureAdaptorCacheDelete(void **value)
+static void diTagFeatureadaptorCacheDelete(void **value)
 {
     if(!value)
 	return;
@@ -2627,7 +2627,7 @@ static void diTagFeatureAdaptorCacheDelete(void **value)
 
 
 
-/* @funcstatic DiTagFeatureAdaptorCacheSize ***********************************
+/* @funcstatic DiTagFeatureadaptorCacheSize ***********************************
 **
 ** Wrapper function to determine the memory size of an Ensembl DiTag Feature
 ** via an Ensembl Cache.
@@ -2638,7 +2638,7 @@ static void diTagFeatureAdaptorCacheDelete(void **value)
 ** @@
 ******************************************************************************/
 
-static ajuint diTagFeatureAdaptorCacheSize(const void *value)
+static ajuint diTagFeatureadaptorCacheSize(const void *value)
 {
     if(!value)
 	return 0;
@@ -2649,7 +2649,7 @@ static ajuint diTagFeatureAdaptorCacheSize(const void *value)
 
 
 
-/* @funcstatic diTagFeatureAdaptorGetFeature **********************************
+/* @funcstatic diTagFeatureadaptorGetFeature **********************************
 **
 ** Wrapper function to get the Ensembl Feature of an
 ** Ensembl DiTag Feature from an Ensembl Feature Adaptor.
@@ -2660,7 +2660,7 @@ static ajuint diTagFeatureAdaptorCacheSize(const void *value)
 ** @@
 ******************************************************************************/
 
-static EnsPFeature diTagFeatureAdaptorGetFeature(const void *value)
+static EnsPFeature diTagFeatureadaptorGetFeature(const void *value)
 {
     if(!value)
 	return NULL;
@@ -2678,18 +2678,18 @@ static EnsPFeature diTagFeatureAdaptorGetFeature(const void *value)
 ** DiTag Feature Adaptor. The target pointer does not need to be initialised
 ** to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPDiTagFeatureAdaptor]
+** @fdata [EnsPDiTagFeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule New dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPDiTagFeatureAdaptor] Ensembl DiTag Feature Adaptor
-** @argrule Ref object [EnsPDiTagFeatureAdaptor] Ensembl DiTag Feature Adaptor
+** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+** @argrule Obj object [EnsPDiTagFeatureadaptor] Ensembl DiTag Feature Adaptor
+** @argrule Ref object [EnsPDiTagFeatureadaptor] Ensembl DiTag Feature Adaptor
 **
-** @valrule * [EnsPDiTagFeatureAdaptor] Ensembl DiTag Feature Adaptor
+** @valrule * [EnsPDiTagFeatureadaptor] Ensembl DiTag Feature Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -2697,20 +2697,20 @@ static EnsPFeature diTagFeatureAdaptorGetFeature(const void *value)
 
 
 
-/* @func ensDiTagFeatureAdaptorNew ********************************************
+/* @func ensDiTagFeatureadaptorNew ********************************************
 **
 ** Default Ensembl DiTag Feature Adaptor constructor.
 **
-** @cc Bio::EnsEMBL::Map::DBSQL::DiTagFeatureAdaptor::new
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @cc Bio::EnsEMBL::Map::DBSQL::DiTagFeatureadaptor::new
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPDiTagFeatureAdaptor] Ensembl DiTag Feature Adaptor or NULL
+** @return [EnsPDiTagFeatureadaptor] Ensembl DiTag Feature Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPDiTagFeatureAdaptor ensDiTagFeatureAdaptorNew(EnsPDatabaseAdaptor dba)
+EnsPDiTagFeatureadaptor ensDiTagFeatureadaptorNew(EnsPDatabaseadaptor dba)
 {
-    EnsPDiTagFeatureAdaptor adaptor = NULL;
+    EnsPDiTagFeatureadaptor adaptor = NULL;
     
     if(!dba)
 	return NULL;
@@ -2718,19 +2718,19 @@ EnsPDiTagFeatureAdaptor ensDiTagFeatureAdaptorNew(EnsPDatabaseAdaptor dba)
     AJNEW0(adaptor);
     
     adaptor->Adaptor =
-	ensFeatureAdaptorNew(dba,
-			     diTagFeatureAdaptorTables,
-			     diTagFeatureAdaptorColumns,
-			     diTagFeatureAdaptorLeftJoin,
-			     diTagFeatureAdaptorDefaultCondition,
-			     diTagFeatureAdaptorFinalCondition,
-			     diTagFeatureAdaptorFetchAllBySQL,
+	ensFeatureadaptorNew(dba,
+			     diTagFeatureadaptorTables,
+			     diTagFeatureadaptorColumns,
+			     diTagFeatureadaptorLeftJoin,
+			     diTagFeatureadaptorDefaultCondition,
+			     diTagFeatureadaptorFinalCondition,
+			     diTagFeatureadaptorFetchAllBySQL,
 			     (void* (*)(const void* key)) NULL, /* Fread */
-			     diTagFeatureAdaptorCacheReference,
+			     diTagFeatureadaptorCacheReference,
 			     (AjBool (*)(const void* value)) NULL, /* Fwrite */
-			     diTagFeatureAdaptorCacheDelete,
-			     diTagFeatureAdaptorCacheSize,
-			     diTagFeatureAdaptorGetFeature,
+			     diTagFeatureadaptorCacheDelete,
+			     diTagFeatureadaptorCacheSize,
+			     diTagFeatureadaptorGetFeature,
 			     "DiTag Feature");
     
     return adaptor;
@@ -2744,12 +2744,12 @@ EnsPDiTagFeatureAdaptor ensDiTagFeatureAdaptorNew(EnsPDatabaseAdaptor dba)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl DiTag Feature Adaptor.
 **
-** @fdata [EnsPDiTagFeatureAdaptor]
+** @fdata [EnsPDiTagFeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) an Ensembl DiTag Feature Adaptor object.
 **
-** @argrule * Padaptor [EnsPDiTagFeatureAdaptor*] Ensembl DiTag Feature
+** @argrule * Padaptor [EnsPDiTagFeatureadaptor*] Ensembl DiTag Feature
 **                                                Adaptor object address
 **
 ** @valrule * [void]
@@ -2760,20 +2760,20 @@ EnsPDiTagFeatureAdaptor ensDiTagFeatureAdaptorNew(EnsPDatabaseAdaptor dba)
 
 
 
-/* @func ensDiTagFeatureAdaptorDel ********************************************
+/* @func ensDiTagFeatureadaptorDel ********************************************
 **
 ** Default destructor for an Ensembl DiTag Feature Adaptor.
 **
-** @param [d] Padaptor [EnsPDiTagFeatureAdaptor*] Ensembl DiTag Feature
+** @param [d] Padaptor [EnsPDiTagFeatureadaptor*] Ensembl DiTag Feature
 **                                                Adaptor address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensDiTagFeatureAdaptorDel(EnsPDiTagFeatureAdaptor *Padaptor)
+void ensDiTagFeatureadaptorDel(EnsPDiTagFeatureadaptor *Padaptor)
 {
-    EnsPDiTagFeatureAdaptor pthis = NULL;
+    EnsPDiTagFeatureadaptor pthis = NULL;
     
     if(!Padaptor)
 	return;
@@ -2783,7 +2783,7 @@ void ensDiTagFeatureAdaptorDel(EnsPDiTagFeatureAdaptor *Padaptor)
 
     pthis = *Padaptor;
     
-    ensFeatureAdaptorDel(&pthis->Adaptor);
+    ensFeatureadaptorDel(&pthis->Adaptor);
     
     AJFREE(pthis);
 
@@ -2795,14 +2795,14 @@ void ensDiTagFeatureAdaptorDel(EnsPDiTagFeatureAdaptor *Padaptor)
 
 
 
-/* @func ensDiTagFeatureAdaptorFetchByIdentifier ******************************
+/* @func ensDiTagFeatureadaptorFetchByIdentifier ******************************
 **
 ** Fetch an Ensembl DiTag Feature via its SQL database-internal identifier.
 **
 ** The caller is responsible for deleting the Ensembl DiTag Feature.
 **
-** @cc Bio::EnsEMBL::Map::DBSQL::DiTagFeatureAdaptor::fetch_by_dbID
-** @param [r] adaptor [EnsPDiTagFeatureAdaptor] Ensembl DiTag Feature Adaptor
+** @cc Bio::EnsEMBL::Map::DBSQL::DiTagFeatureadaptor::fetch_by_dbID
+** @param [r] adaptor [EnsPDiTagFeatureadaptor] Ensembl DiTag Feature Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @param [wP] Pdtf [EnsPDiTagFeature*] Ensembl DiTag Feature address
 **
@@ -2810,11 +2810,11 @@ void ensDiTagFeatureAdaptorDel(EnsPDiTagFeatureAdaptor *Padaptor)
 ** @@
 ******************************************************************************/
 
-AjBool ensDiTagAdaptorFetchAllByIdentifier(EnsPDiTagFeatureAdaptor adaptor,
+AjBool ensDiTagadaptorFetchAllByIdentifier(EnsPDiTagFeatureadaptor adaptor,
                                            ajuint identifier,
                                            EnsPDiTagFeature *Pdtf)
 {
-    EnsPBaseAdaptor ba = NULL;
+    EnsPBaseadaptor ba = NULL;
     
     if(!adaptor)
 	return ajFalse;
@@ -2825,9 +2825,9 @@ AjBool ensDiTagAdaptorFetchAllByIdentifier(EnsPDiTagFeatureAdaptor adaptor,
     if(!Pdtf)
 	return ajFalse;
     
-    ba = ensFeatureAdaptorGetBaseAdaptor(adaptor->Adaptor);
+    ba = ensFeatureadaptorGetBaseadaptor(adaptor->Adaptor);
     
-    *Pdtf = (EnsPDiTagFeature) ensBaseAdaptorFetchByIdentifier(ba, identifier);
+    *Pdtf = (EnsPDiTagFeature) ensBaseadaptorFetchByIdentifier(ba, identifier);
     
     return ajTrue;
 }
@@ -2835,15 +2835,15 @@ AjBool ensDiTagAdaptorFetchAllByIdentifier(EnsPDiTagFeatureAdaptor adaptor,
 
 
 
-/* @func ensDiTagFeatureAdaptorFetchAllByDiTag ********************************
+/* @func ensDiTagFeatureadaptorFetchAllByDiTag ********************************
 **
 ** Fetch all Ensembl DiTag Features by an Ensembl DiTag.
 **
 ** The caller is responsible for deleting the Ensembl DiTag Features before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::Map::DBSQL::DiTagFeatureAdaptor::fetch_all_by_ditagID
-** @param [r] adaptor [const EnsPDiTagFeatureAdaptor] Ensembl DiTag
+** @cc Bio::EnsEMBL::Map::DBSQL::DiTagFeatureadaptor::fetch_all_by_ditagID
+** @param [r] adaptor [const EnsPDiTagFeatureadaptor] Ensembl DiTag
 **                                                    Feature Adaptor
 ** @param [r] ditag [const EnsPDiTag] Ensembl DiTag
 ** @param [u] dtfs [AjPList] AJAX List of Ensembl DiTag Features
@@ -2852,7 +2852,7 @@ AjBool ensDiTagAdaptorFetchAllByIdentifier(EnsPDiTagFeatureAdaptor adaptor,
 ** @@
 ******************************************************************************/
 
-AjBool ensDiTagFeatureAdaptorFetchAllByDiTag(EnsPDiTagFeatureAdaptor adaptor,
+AjBool ensDiTagFeatureadaptorFetchAllByDiTag(EnsPDiTagFeatureadaptor adaptor,
                                              const EnsPDiTag dt,
                                              AjPList dtfs)
 {
@@ -2860,7 +2860,7 @@ AjBool ensDiTagFeatureAdaptorFetchAllByDiTag(EnsPDiTagFeatureAdaptor adaptor,
     
     AjPStr constraint = NULL;
     
-    EnsPBaseAdaptor ba = NULL;
+    EnsPBaseadaptor ba = NULL;
     
     if(!adaptor)
 	return ajFalse;
@@ -2871,11 +2871,11 @@ AjBool ensDiTagFeatureAdaptorFetchAllByDiTag(EnsPDiTagFeatureAdaptor adaptor,
     if(!dtfs)
 	return ajFalse;
     
-    ba = ensFeatureAdaptorGetBaseAdaptor(adaptor->Adaptor);
+    ba = ensFeatureadaptorGetBaseadaptor(adaptor->Adaptor);
     
     constraint = ajFmtStr("ditag_feature.ditag_id = %u", dt->Identifier);
     
-    value = ensBaseAdaptorGenericFetch(ba,
+    value = ensBaseadaptorGenericFetch(ba,
 				       constraint,
 				       (EnsPAssemblyMapper) NULL,
 				       (EnsPSlice) NULL,
@@ -2889,16 +2889,16 @@ AjBool ensDiTagFeatureAdaptorFetchAllByDiTag(EnsPDiTagFeatureAdaptor adaptor,
 
 
 
-/* @func ensDiTagFeatureAdaptorFetchAllByType *********************************
+/* @func ensDiTagFeatureadaptorFetchAllByType *********************************
 **
 ** Fetch all Ensembl DiTag Features by an Ensembl DiTag type.
 **
 ** The caller is responsible for deleting the Ensembl DiTag Features before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::Map::DBSQL::DiTagFeatureAdaptor::fetch_all
-** @cc Bio::EnsEMBL::Map::DBSQL::DiTagFeatureAdaptor::fetch_all_by_type
-** @param [r] adaptor [const EnsPDiTagFeatureAdaptor] Ensembl DiTag
+** @cc Bio::EnsEMBL::Map::DBSQL::DiTagFeatureadaptor::fetch_all
+** @cc Bio::EnsEMBL::Map::DBSQL::DiTagFeatureadaptor::fetch_all_by_type
+** @param [r] adaptor [const EnsPDiTagFeatureadaptor] Ensembl DiTag
 **                                                    Feature Adaptor
 ** @param [rN] type [const AjPStr] Ensembl DiTag type
 ** @param [u] dtfs [AjPList] AJAX List of Ensembl DiTag Features
@@ -2907,7 +2907,7 @@ AjBool ensDiTagFeatureAdaptorFetchAllByDiTag(EnsPDiTagFeatureAdaptor adaptor,
 ** @@
 ******************************************************************************/
 
-AjBool ensDiTagFeatureAdaptorFetchAllByType(EnsPDiTagFeatureAdaptor adaptor,
+AjBool ensDiTagFeatureadaptorFetchAllByType(EnsPDiTagFeatureadaptor adaptor,
                                             const AjPStr type,
                                             AjPList dtfs)
 {
@@ -2917,7 +2917,7 @@ AjBool ensDiTagFeatureAdaptorFetchAllByType(EnsPDiTagFeatureAdaptor adaptor,
     
     AjPStr constraint = NULL;
     
-    EnsPBaseAdaptor ba = NULL;
+    EnsPBaseadaptor ba = NULL;
     
     if(!adaptor)
 	return ajFalse;
@@ -2928,9 +2928,9 @@ AjBool ensDiTagFeatureAdaptorFetchAllByType(EnsPDiTagFeatureAdaptor adaptor,
     if(!dtfs)
 	return ajFalse;
     
-    ba = ensFeatureAdaptorGetBaseAdaptor(adaptor->Adaptor);
+    ba = ensFeatureadaptorGetBaseadaptor(adaptor->Adaptor);
     
-    ensBaseAdaptorEscapeCS(ba, &txttype, type);
+    ensBaseadaptorEscapeC(ba, &txttype, type);
     
     /*
     ** NOTE: For this query the ditag_feature and the ditag tables need to be
@@ -2941,7 +2941,7 @@ AjBool ensDiTagFeatureAdaptorFetchAllByType(EnsPDiTagFeatureAdaptor adaptor,
     
     ajCharDel(&txttype);
     
-    value = ensBaseAdaptorGenericFetch(ba,
+    value = ensBaseadaptorGenericFetch(ba,
 				       constraint,
 				       (EnsPAssemblyMapper) NULL,
 				       (EnsPSlice) NULL,
@@ -2955,15 +2955,15 @@ AjBool ensDiTagFeatureAdaptorFetchAllByType(EnsPDiTagFeatureAdaptor adaptor,
 
 
 
-/* @func ensDiTagFeatureAdaptorFetchAllBySlice ********************************
+/* @func ensDiTagFeatureadaptorFetchAllBySlice ********************************
 **
 ** Fetch all Ensembl DiTag Features by an Ensembl Slice.
 **
 ** The caller is responsible for deleting the Ensembl DiTag Features before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::Map::DBSQL::DiTagFeatureAdaptor::fetch_all_by_Slice
-** @param [r] adaptor [const EnsPDiTagFeatureAdaptor] Ensembl DiTag
+** @cc Bio::EnsEMBL::Map::DBSQL::DiTagFeatureadaptor::fetch_all_by_Slice
+** @param [r] adaptor [const EnsPDiTagFeatureadaptor] Ensembl DiTag
 **                                                    Feature Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [rN] type [const AjPStr] Ensembl DiTag type
@@ -2974,7 +2974,7 @@ AjBool ensDiTagFeatureAdaptorFetchAllByType(EnsPDiTagFeatureAdaptor adaptor,
 ** @@
 ******************************************************************************/
 
-AjBool ensDiTagFeatureAdaptorFetchAllBySlice(EnsPDiTagFeatureAdaptor adaptor,
+AjBool ensDiTagFeatureadaptorFetchAllBySlice(EnsPDiTagFeatureadaptor adaptor,
                                              EnsPSlice slice,
                                              const AjPStr type,
                                              const AjPStr anname,
@@ -2997,14 +2997,14 @@ AjBool ensDiTagFeatureAdaptorFetchAllBySlice(EnsPDiTagFeatureAdaptor adaptor,
     
     if(type && ajStrGetLen(type))
     {
-	ensFeatureAdaptorEscapeCS(adaptor->Adaptor, &txttype, type);
+	ensFeatureadaptorEscapeC(adaptor->Adaptor, &txttype, type);
 	
 	constraint = ajFmtStr("ditag.type = '%s'", txttype);
 	
 	ajCharDel(&txttype);
     }
     
-    value = ensFeatureAdaptorFetchAllBySliceConstraint(adaptor->Adaptor,
+    value = ensFeatureadaptorFetchAllBySliceConstraint(adaptor->Adaptor,
 						       slice,
 						       constraint,
 						       anname,
@@ -3020,7 +3020,7 @@ AjBool ensDiTagFeatureAdaptorFetchAllBySlice(EnsPDiTagFeatureAdaptor adaptor,
 
 #if AJFALSE
 
-AjBool ensDitagFeatureAdaptorFetchPairsBySlice(EnsPDiTagFeatureAdaptor adaptor,
+AjBool ensDitagFeatureadaptorFetchPairsBySlice(EnsPDiTagFeatureadaptor adaptor,
                                                EnsPSlice slice,
                                                const AjPStr type,
                                                const AjPStr anname,
@@ -3043,7 +3043,7 @@ AjBool ensDitagFeatureAdaptorFetchPairsBySlice(EnsPDiTagFeatureAdaptor adaptor,
     
     if(type && ajStrGetLen(type))
     {
-	ensFeatureAdaptorEscapeCS(adaptor->Adaptor, &txttype, type);
+	ensFeatureadaptorEscapeC(adaptor->Adaptor, &txttype, type);
 	
 	constraint = ajFmtStr("ditag.type = '%s'", txttype);
 	
@@ -3052,11 +3052,11 @@ AjBool ensDitagFeatureAdaptorFetchPairsBySlice(EnsPDiTagFeatureAdaptor adaptor,
     
     /*
     ** FIXME: This would be problematic in multi-threaded environments.
-    **  ensFeatureAdaptorSetFinalCondition(adaptor->Adaptor,
+    **  ensFeatureadaptorSetFinalCondition(adaptor->Adaptor,
     **  <#const char * final#>)
     */
     
-    value = ensFeatureAdaptorFetchAllBySliceConstraint(adaptor->Adaptor,
+    value = ensFeatureadaptorFetchAllBySliceConstraint(adaptor->Adaptor,
 						       slice,
 						       constraint,
 						       anname,
@@ -3069,11 +3069,11 @@ AjBool ensDitagFeatureAdaptorFetchPairsBySlice(EnsPDiTagFeatureAdaptor adaptor,
     ** GROUP BY df.ditag_id, df.ditag_pair_id condition, the results would
     ** need to be calculated by means of Lists and Tables here.
     ** It would be possible to append the condition via
-    ** ensFeatureAdaptorSetFinalCondition(adaptor->Adaptor,
+    ** ensFeatureadaptorSetFinalCondition(adaptor->Adaptor,
     ** <#const char * final#>),
     ** but this would be problematic in a multi-threaded environment.
-    ** Could a separate EnsPDitagFeaturePairAdaptor be the solution?
-    ** A similr prolem exists for the EnsPExonAdaptor and the
+    ** Could a separate EnsPDitagFeaturePairadaptor be the solution?
+    ** A similr prolem exists for the EnsPExonadaptor and the
     ** ExonTranscript Adaptor ...
     */
     

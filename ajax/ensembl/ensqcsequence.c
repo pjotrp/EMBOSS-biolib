@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -43,13 +43,13 @@
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-extern EnsPQCDatabaseAdaptor
-ensRegistryGetQCDatabaseAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPQCDatabaseadaptor
+ensRegistryGetQCDatabaseadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPQCSequenceAdaptor
-ensRegistryGetQCSequenceAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPQCSequenceadaptor
+ensRegistryGetQCSequenceadaptor(EnsPDatabaseadaptor dba);
 
-static AjBool qcSequenceAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
+static AjBool qcSequenceadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                              const AjPStr statement,
                                              EnsPAssemblyMapper am,
                                              EnsPSlice slice,
@@ -110,7 +110,7 @@ static AjBool qcSequenceAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 ** Default constructor for an Ensembl QC Sequence.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] adaptor [EnsPQCSequenceAdaptor] Ensembl QC Sequence Adaptor
+** @param [r] adaptor [EnsPQCSequenceadaptor] Ensembl QC Sequence Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::QC::Sequence::new
 ** @param [u] qcdb [EnsPQCDatabase] Ensembl QC Database
@@ -129,7 +129,7 @@ static AjBool qcSequenceAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 ** @@
 ******************************************************************************/
 
-EnsPQCSequence ensQCSequenceNew(EnsPQCSequenceAdaptor adaptor,
+EnsPQCSequence ensQCSequenceNew(EnsPQCSequenceadaptor adaptor,
                                 ajuint identifier,
                                 EnsPQCDatabase qcdb,
                                 AjPStr name,
@@ -359,12 +359,12 @@ void ensQCSequenceDel(EnsPQCSequence *Pqcs)
 ** @fnote None
 **
 ** @nam3rule Get Return QC Sequence attribute(s)
-** @nam4rule GetAdaptor Return the Ensembl QC Sequence Adaptor
+** @nam4rule Getadaptor Return the Ensembl QC Sequence Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 **
 ** @argrule * qcs [const EnsPQCSequence] QC Sequence
 **
-** @valrule Adaptor [EnsPQCSequenceAdaptor] Ensembl QC Sequence Adaptor
+** @valrule Adaptor [EnsPQCSequenceadaptor] Ensembl QC Sequence Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule QCDatabase [EnsPQCDatabase] Ensembl QC Database
 ** @valrule Name [AjPStr] Name
@@ -384,17 +384,17 @@ void ensQCSequenceDel(EnsPQCSequence *Pqcs)
 
 
 
-/* @func ensQCSequenceGetAdaptor **********************************************
+/* @func ensQCSequenceGetadaptor **********************************************
 **
 ** Get the Ensembl QC Sequence Adaptor element of an Ensembl QC Sequence.
 **
 ** @param [r] qcs [const EnsPQCSequence] Ensembl QC Sequence
 **
-** @return [EnsPQCSequenceAdaptor] Ensembl QC Sequence Adaptor
+** @return [EnsPQCSequenceadaptor] Ensembl QC Sequence Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPQCSequenceAdaptor ensQCSequenceGetAdaptor(const EnsPQCSequence qcs)
+EnsPQCSequenceadaptor ensQCSequenceGetadaptor(const EnsPQCSequence qcs)
 {
     if(!qcs)
 	return NULL;
@@ -665,7 +665,7 @@ AjPStr ensQCSequenceGetDescription(const EnsPQCSequence qcs)
 ** @fnote None
 **
 ** @nam3rule Set Set one element of a QC Sequence
-** @nam4rule SetAdaptor Set the Ensembl QC Sequence Adaptor
+** @nam4rule Setadaptor Set the Ensembl QC Sequence Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetQCDatabase Set the Ensembl QC Database
 ** @nam4rule SetName Set the name
@@ -689,18 +689,18 @@ AjPStr ensQCSequenceGetDescription(const EnsPQCSequence qcs)
 
 
 
-/* @func ensQCSequenceSetAdaptor **********************************************
+/* @func ensQCSequenceSetadaptor **********************************************
 **
 ** Set the Ensembl QC Sequence Adaptor element of an Ensembl QC Sequence.
 **
 ** @param [u] qcs [EnsPQCSequence] Ensembl QC Sequence
-** @param [r] qcsa [EnsPQCSequenceAdaptor] Ensembl QC Sequence Adaptor
+** @param [r] qcsa [EnsPQCSequenceadaptor] Ensembl QC Sequence Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSequenceSetAdaptor(EnsPQCSequence qcs, EnsPQCSequenceAdaptor qcsa)
+AjBool ensQCSequenceSetadaptor(EnsPQCSequence qcs, EnsPQCSequenceadaptor qcsa)
 {
     if(!qcs)
 	return ajFalse;
@@ -1529,17 +1529,17 @@ AjBool ensQCSequenceFetchInternalAnchor(EnsPQCSequence qcs, AjPStr *Pstr)
 
 
 
-/* @datasection [EnsPQCSequenceAdaptor] QC Sequence Adaptor *******************
+/* @datasection [EnsPQCSequenceadaptor] QC Sequence Adaptor *******************
 **
 ** Functions for manipulating Ensembl QC Sequence Adaptor objects
 **
-** Bio::EnsEMBL::QC::DBSQL::SequenceAdaptor CVS Revision:
+** Bio::EnsEMBL::QC::DBSQL::Sequenceadaptor CVS Revision:
 **
-** @nam2rule QCSequenceAdaptor
+** @nam2rule QCSequenceadaptor
 **
 ******************************************************************************/
 
-static const char *qcSequenceAdaptorTables[] =
+static const char *qcSequenceadaptorTables[] =
 {
     "sequence",
     (const char *) NULL
@@ -1548,7 +1548,7 @@ static const char *qcSequenceAdaptorTables[] =
 
 
 
-static const char *qcSequenceAdaptorColumns[] =
+static const char *qcSequenceadaptorColumns[] =
 {
     "sequence.sequence_id",
     "sequence.sequence_db_id",
@@ -1568,7 +1568,7 @@ static const char *qcSequenceAdaptorColumns[] =
 
 
 
-static EnsOBaseAdaptorLeftJoin qcSequenceAdaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin qcSequenceadaptorLeftJoin[] =
 {
     {(const char*) NULL, (const char*) NULL}
 };
@@ -1576,24 +1576,24 @@ static EnsOBaseAdaptorLeftJoin qcSequenceAdaptorLeftJoin[] =
 
 
 
-static const char *qcSequenceAdaptorDefaultCondition =
+static const char *qcSequenceadaptorDefaultCondition =
 (const char*) NULL;
 
 
 
 
-static const char *qcSequenceAdaptorFinalCondition =
+static const char *qcSequenceadaptorFinalCondition =
 (const char *) NULL;
 
 
 
 
-/* @funcstatic qcSequenceAdaptorFetchAllBySQL *********************************
+/* @funcstatic qcSequenceadaptorFetchAllBySQL *********************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl QC Sequence objects.
 **
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
 ** @param [u] am [EnsPAssemblyMapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
@@ -1603,7 +1603,7 @@ static const char *qcSequenceAdaptorFinalCondition =
 ** @@
 ******************************************************************************/
 
-static AjBool qcSequenceAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
+static AjBool qcSequenceadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                              const AjPStr statement,
                                              EnsPAssemblyMapper am,
                                              EnsPSlice slice,
@@ -1618,9 +1618,9 @@ static AjBool qcSequenceAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
     ajint cdsstrand   = 0;
     ajuint polya      = 0;
     
-    AjPSqlStatement sqls = NULL;
-    AjISqlRow sqli       = NULL;
-    AjPSqlRow sqlr       = NULL;
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
     
     AjPStr name        = NULL;
     AjPStr accession   = NULL;
@@ -1628,10 +1628,10 @@ static AjBool qcSequenceAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
     AjPStr description = NULL;
     
     EnsPQCSequence qcs         = NULL;
-    EnsPQCSequenceAdaptor qcsa = NULL;
+    EnsPQCSequenceadaptor qcsa = NULL;
     
     EnsPQCDatabase qcdb         = NULL;
-    EnsPQCDatabaseAdaptor qcdba = NULL;
+    EnsPQCDatabaseadaptor qcdba = NULL;
     
     if(!dba)
 	return ajFalse;
@@ -1646,15 +1646,15 @@ static AjBool qcSequenceAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
     if(!qcss)
 	return ajFalse;
     
-    qcdba = ensRegistryGetQCDatabaseAdaptor(dba);
+    qcdba = ensRegistryGetQCDatabaseadaptor(dba);
     
-    qcsa  = ensRegistryGetQCSequenceAdaptor(dba);
+    qcsa  = ensRegistryGetQCSequenceadaptor(dba);
     
-    sqls  = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls  = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    sqli  = ajSqlRowIterNew(sqls);
+    sqli  = ajSqlrowiterNew(sqls);
     
-    while(!ajSqlRowIterDone(sqli))
+    while(!ajSqlrowiterDone(sqli))
     {
 	identifier  = 0;
 	databaseid  = 0;
@@ -1669,22 +1669,22 @@ static AjBool qcSequenceAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	polya       = 0;
 	description = ajStrNew();
 	
-        sqlr = ajSqlRowIterGet(sqli);
+        sqlr = ajSqlrowiterGet(sqli);
 	
-        ajSqlColumnToUint(sqlr, &identifier);
-        ajSqlColumnToUint(sqlr, &databaseid);
-        ajSqlColumnToStr(sqlr, &name);
-        ajSqlColumnToStr(sqlr, &accession);
-        ajSqlColumnToUint(sqlr, &version);
-        ajSqlColumnToStr(sqlr, &type);
-        ajSqlColumnToUint(sqlr, &length);
-        ajSqlColumnToUint(sqlr, &cdsstart);
-        ajSqlColumnToUint(sqlr, &cdsend);
-        ajSqlColumnToInt(sqlr, &cdsstrand);
-        ajSqlColumnToUint(sqlr, &polya);
-        ajSqlColumnToStr(sqlr, &description);
+        ajSqlcolumnToUint(sqlr, &identifier);
+        ajSqlcolumnToUint(sqlr, &databaseid);
+        ajSqlcolumnToStr(sqlr, &name);
+        ajSqlcolumnToStr(sqlr, &accession);
+        ajSqlcolumnToUint(sqlr, &version);
+        ajSqlcolumnToStr(sqlr, &type);
+        ajSqlcolumnToUint(sqlr, &length);
+        ajSqlcolumnToUint(sqlr, &cdsstart);
+        ajSqlcolumnToUint(sqlr, &cdsend);
+        ajSqlcolumnToInt(sqlr, &cdsstrand);
+        ajSqlcolumnToUint(sqlr, &polya);
+        ajSqlcolumnToStr(sqlr, &description);
 	
-	ensQCDatabaseAdaptorFetchByIdentifier(qcdba,
+	ensQCDatabaseadaptorFetchByIdentifier(qcdba,
 					      databaseid,
 					      &qcdb);
 	
@@ -1712,9 +1712,9 @@ static AjBool qcSequenceAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	ajStrDel(&description);
     }
     
-    ajSqlRowIterDel(&sqli);
+    ajSqlrowiterDel(&sqli);
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     return ajTrue;
 }
@@ -1729,18 +1729,18 @@ static AjBool qcSequenceAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 ** QC Sequence Adaptor. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPQCSequenceAdaptor]
+** @fdata [EnsPQCSequenceadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule New dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPQCSequenceAdaptor] Ensembl QC Sequence Adaptor
-** @argrule Ref object [EnsPQCSequenceAdaptor] Ensembl QC Sequence Adaptor
+** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+** @argrule Obj object [EnsPQCSequenceadaptor] Ensembl QC Sequence Adaptor
+** @argrule Ref object [EnsPQCSequenceadaptor] Ensembl QC Sequence Adaptor
 **
-** @valrule * [EnsPQCSequenceAdaptor] Ensembl QC Sequence Adaptor
+** @valrule * [EnsPQCSequenceadaptor] Ensembl QC Sequence Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -1748,19 +1748,19 @@ static AjBool qcSequenceAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 
 
 
-/* @func ensQCSequenceAdaptorNew **********************************************
+/* @func ensQCSequenceadaptorNew **********************************************
 **
 ** Default constructor for an Ensembl QC Sequence Adaptor.
 **
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPQCSequenceAdaptor] Ensembl QC Sequence Adaptor or NULL
+** @return [EnsPQCSequenceadaptor] Ensembl QC Sequence Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCSequenceAdaptor ensQCSequenceAdaptorNew(EnsPDatabaseAdaptor dba)
+EnsPQCSequenceadaptor ensQCSequenceadaptorNew(EnsPDatabaseadaptor dba)
 {
-    EnsPQCSequenceAdaptor qcsa = NULL;
+    EnsPQCSequenceadaptor qcsa = NULL;
     
     if(!dba)
 	return NULL;
@@ -1768,13 +1768,13 @@ EnsPQCSequenceAdaptor ensQCSequenceAdaptorNew(EnsPDatabaseAdaptor dba)
     AJNEW0(qcsa);
     
     qcsa->Adaptor =
-	ensBaseAdaptorNew(dba,
-			  qcSequenceAdaptorTables,
-			  qcSequenceAdaptorColumns,
-			  qcSequenceAdaptorLeftJoin,
-			  qcSequenceAdaptorDefaultCondition,
-			  qcSequenceAdaptorFinalCondition,
-			  qcSequenceAdaptorFetchAllBySQL);
+	ensBaseadaptorNew(dba,
+			  qcSequenceadaptorTables,
+			  qcSequenceadaptorColumns,
+			  qcSequenceadaptorLeftJoin,
+			  qcSequenceadaptorDefaultCondition,
+			  qcSequenceadaptorFinalCondition,
+			  qcSequenceadaptorFetchAllBySQL);
     
     return qcsa;
 }
@@ -1787,12 +1787,12 @@ EnsPQCSequenceAdaptor ensQCSequenceAdaptorNew(EnsPDatabaseAdaptor dba)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl QC Sequence Adaptor.
 **
-** @fdata [EnsPQCSequenceAdaptor]
+** @fdata [EnsPQCSequenceadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a QC Sequence Adaptor object
 **
-** @argrule * Pqcsa [EnsPQCSequenceAdaptor*] QC Sequence Adaptor object address
+** @argrule * Pqcsa [EnsPQCSequenceadaptor*] QC Sequence Adaptor object address
 **
 ** @valrule * [void]
 **
@@ -1802,23 +1802,23 @@ EnsPQCSequenceAdaptor ensQCSequenceAdaptorNew(EnsPDatabaseAdaptor dba)
 
 
 
-/* @func ensQCSequenceAdaptorDel **********************************************
+/* @func ensQCSequenceadaptorDel **********************************************
 **
 ** Default destructor for an Ensembl QC Sequence Adaptor.
 **
-** @param [d] Pqcsa [EnsPQCSequenceAdaptor*] Ensembl QC Sequence Adaptor
+** @param [d] Pqcsa [EnsPQCSequenceadaptor*] Ensembl QC Sequence Adaptor
 **                                           address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensQCSequenceAdaptorDel(EnsPQCSequenceAdaptor *Pqcsa)
+void ensQCSequenceadaptorDel(EnsPQCSequenceadaptor *Pqcsa)
 {
-    EnsPQCSequenceAdaptor pthis = NULL;
+    EnsPQCSequenceadaptor pthis = NULL;
     
     /*
-     ajDebug("ensQCSequenceAdaptorDel\n"
+     ajDebug("ensQCSequenceadaptorDel\n"
 	     "  *Pqcsa %p\n",
 	     *Pqcsa);
      */
@@ -1831,7 +1831,7 @@ void ensQCSequenceAdaptorDel(EnsPQCSequenceAdaptor *Pqcsa)
 
     pthis = *Pqcsa;
     
-    ensBaseAdaptorDel(&pthis->Adaptor);
+    ensBaseadaptorDel(&pthis->Adaptor);
     
     AJFREE(pthis);
 
@@ -1843,12 +1843,12 @@ void ensQCSequenceAdaptorDel(EnsPQCSequenceAdaptor *Pqcsa)
 
 
 
-/* @func ensQCSequenceAdaptorFetchByIdentifier ********************************
+/* @func ensQCSequenceadaptorFetchByIdentifier ********************************
 **
 ** Fetch an Ensembl QC Sequence via its SQL database-internal identifier.
 ** The caller is responsible for deleting the Ensembl QC Sequence.
 **
-** @param [r] adaptor [EnsPQCSequenceAdaptor] Ensembl QC Sequence Adaptor
+** @param [r] adaptor [EnsPQCSequenceadaptor] Ensembl QC Sequence Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal QC Sequence identifier
 ** @param [wP] Pqcs [EnsPQCSequence*] Ensembl QC Sequence address
 **
@@ -1856,7 +1856,7 @@ void ensQCSequenceAdaptorDel(EnsPQCSequenceAdaptor *Pqcsa)
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSequenceAdaptorFetchByIdentifier(EnsPQCSequenceAdaptor adaptor,
+AjBool ensQCSequenceadaptorFetchByIdentifier(EnsPQCSequenceadaptor adaptor,
                                              ajuint identifier,
                                              EnsPQCSequence *Pqcs)
 {
@@ -1870,7 +1870,7 @@ AjBool ensQCSequenceAdaptorFetchByIdentifier(EnsPQCSequenceAdaptor adaptor,
 	return ajFalse;
     
     *Pqcs = (EnsPQCSequence)
-	ensBaseAdaptorFetchByIdentifier(adaptor->Adaptor, identifier);
+	ensBaseadaptorFetchByIdentifier(adaptor->Adaptor, identifier);
     
     return ajTrue;
 }
@@ -1878,12 +1878,12 @@ AjBool ensQCSequenceAdaptorFetchByIdentifier(EnsPQCSequenceAdaptor adaptor,
 
 
 
-/* @func ensQCSequenceAdaptorFetchByAccession *********************************
+/* @func ensQCSequenceadaptorFetchByAccession *********************************
 **
 ** Fetch an Ensembl QC Sequence by its accession number.
 ** The caller is responsible for deleting the Ensembl QC Sequence.
 **
-** @param [r] qcsa [EnsPQCSequenceAdaptor] Ensembl QC Sequence Adaptor
+** @param [r] qcsa [EnsPQCSequenceadaptor] Ensembl QC Sequence Adaptor
 ** @param [r] qcdbid [ajuint] Ensembl QC Database identifier
 ** @param [r] accession [const AjPStr] Ensembl QC Sequence accession number
 ** @param [wP] Pqcs [EnsPQCSequence*] Ensembl QC Sequence address
@@ -1892,7 +1892,7 @@ AjBool ensQCSequenceAdaptorFetchByIdentifier(EnsPQCSequenceAdaptor adaptor,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSequenceAdaptorFetchByAccession(EnsPQCSequenceAdaptor qcsa,
+AjBool ensQCSequenceadaptorFetchByAccession(EnsPQCSequenceadaptor qcsa,
                                             ajuint qcdbid,
                                             const AjPStr accession,
                                             EnsPQCSequence *Pqcs)
@@ -1914,7 +1914,7 @@ AjBool ensQCSequenceAdaptorFetchByAccession(EnsPQCSequenceAdaptor qcsa,
     if(!Pqcs)
 	return ajFalse;
     
-    ensBaseAdaptorEscapeCS(qcsa->Adaptor, &txtaccession, accession);
+    ensBaseadaptorEscapeC(qcsa->Adaptor, &txtaccession, accession);
     
     constraint = ajFmtStr("sequence.sequence_db_id = %u "
 			  "AND "
@@ -1926,14 +1926,14 @@ AjBool ensQCSequenceAdaptorFetchByAccession(EnsPQCSequenceAdaptor qcsa,
     
     qcss = ajListNew();
     
-    ensBaseAdaptorGenericFetch(qcsa->Adaptor,
+    ensBaseadaptorGenericFetch(qcsa->Adaptor,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcss);
     
     if(ajListGetLength(qcss) > 1)
-	ajWarn("ensQCSequenceAdaptorFetchByAccession got more than "
+	ajWarn("ensQCSequenceadaptorFetchByAccession got more than "
 	       "one Ensembl QC Sequence for accession '%S' "
 	       "and QC Database identifier %u.\n",
 	       accession, qcdbid);
@@ -1942,14 +1942,14 @@ AjBool ensQCSequenceAdaptorFetchByAccession(EnsPQCSequenceAdaptor qcsa,
     
     /*
     ** TODO: To implement?
-    ** qcSequenceAdaptorCacheInsert(qcsa, Pqcs);
+    ** qcSequenceadaptorCacheInsert(qcsa, Pqcs);
     */
     
     while(ajListPop(qcss, (void **) &qcs))
     {
 	/*
 	** TODO: To implement?
-	** qcSequenceAdaptorCacheInsert(qcsa, &qcs);
+	** qcSequenceadaptorCacheInsert(qcsa, &qcs);
 	*/
 	
 	ensQCSequenceDel(&qcs);
@@ -1965,12 +1965,12 @@ AjBool ensQCSequenceAdaptorFetchByAccession(EnsPQCSequenceAdaptor qcsa,
 
 
 
-/* @func ensQCSequenceAdaptorFetchByAccessionVersion **************************
+/* @func ensQCSequenceadaptorFetchByAccessionVersion **************************
 **
 ** Fetch an Ensembl QC Sequence by its accession number and sequence version.
 ** The caller is responsible for deleting the Ensembl QC Sequence.
 **
-** @param [r] qcsa [EnsPQCSequenceAdaptor] Ensembl QC Sequence Adaptor
+** @param [r] qcsa [EnsPQCSequenceadaptor] Ensembl QC Sequence Adaptor
 ** @param [r] qcdbid [ajuint] Ensembl QC Database identifier
 ** @param [r] accession [const AjPStr] Ensembl QC Sequence accession number
 ** @param [r] version [ajuint] Ensembl QC Sequence version
@@ -1980,7 +1980,7 @@ AjBool ensQCSequenceAdaptorFetchByAccession(EnsPQCSequenceAdaptor qcsa,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSequenceAdaptorFetchByAccessionVersion(EnsPQCSequenceAdaptor qcsa,
+AjBool ensQCSequenceadaptorFetchByAccessionVersion(EnsPQCSequenceadaptor qcsa,
                                                    ajuint qcdbid,
                                                    const AjPStr accession,
                                                    ajuint version,
@@ -2003,7 +2003,7 @@ AjBool ensQCSequenceAdaptorFetchByAccessionVersion(EnsPQCSequenceAdaptor qcsa,
     if(!Pqcs)
 	return ajFalse;
     
-    ensBaseAdaptorEscapeCS(qcsa->Adaptor, &txtaccession, accession);
+    ensBaseadaptorEscapeC(qcsa->Adaptor, &txtaccession, accession);
     
     constraint = ajFmtStr("sequence.sequence_db_id = %u "
 			  "AND "
@@ -2018,14 +2018,14 @@ AjBool ensQCSequenceAdaptorFetchByAccessionVersion(EnsPQCSequenceAdaptor qcsa,
     
     qcss = ajListNew();
     
-    ensBaseAdaptorGenericFetch(qcsa->Adaptor,
+    ensBaseadaptorGenericFetch(qcsa->Adaptor,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcss);
     
     if(ajListGetLength(qcss) > 1)
-	ajWarn("ensQCSequenceAdaptorFetchByAccession got more than "
+	ajWarn("ensQCSequenceadaptorFetchByAccession got more than "
 	       "one Ensembl QC Sequence for accession '%S' "
 	       "and QC Database identifier %u.\n",
 	       accession, qcdbid);
@@ -2034,7 +2034,7 @@ AjBool ensQCSequenceAdaptorFetchByAccessionVersion(EnsPQCSequenceAdaptor qcsa,
     
     /*
     ** TODO: To implement?
-    ** qcSequenceAdaptorCacheInsert(qcsa, Pqcs);
+    ** qcSequenceadaptorCacheInsert(qcsa, Pqcs);
     */
     
     while(ajListPop(qcss, (void **) &qcs))
@@ -2042,7 +2042,7 @@ AjBool ensQCSequenceAdaptorFetchByAccessionVersion(EnsPQCSequenceAdaptor qcsa,
 	
 	/*
 	** TODO: To implement?
-	** qcSequenceAdaptorCacheInsert(qcsa, &qcs);
+	** qcSequenceadaptorCacheInsert(qcsa, &qcs);
         */
 	
 	ensQCSequenceDel(&qcs);
@@ -2058,12 +2058,12 @@ AjBool ensQCSequenceAdaptorFetchByAccessionVersion(EnsPQCSequenceAdaptor qcsa,
 
 
 
-/* @func ensQCSequenceAdaptorFetchByName **************************************
+/* @func ensQCSequenceadaptorFetchByName **************************************
 **
 ** Fetch an Ensembl QC Sequence by its name.
 ** The caller is responsible for deleting the Ensembl QC Sequence.
 **
-** @param [r] qcsa [EnsPQCSequenceAdaptor] Ensembl QC Sequence Adaptor
+** @param [r] qcsa [EnsPQCSequenceadaptor] Ensembl QC Sequence Adaptor
 ** @param [r] qcdbid [ajuint] Ensembl QC Database identifier
 ** @param [r] name [const AjPStr] Ensembl QC Sequence name
 ** @param [wP] Pqcs [EnsPQCSequence*] Ensembl QC Sequence address
@@ -2072,7 +2072,7 @@ AjBool ensQCSequenceAdaptorFetchByAccessionVersion(EnsPQCSequenceAdaptor qcsa,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSequenceAdaptorFetchByName(EnsPQCSequenceAdaptor qcsa,
+AjBool ensQCSequenceadaptorFetchByName(EnsPQCSequenceadaptor qcsa,
                                        ajuint qcdbid,
                                        const AjPStr name,
                                        EnsPQCSequence *Pqcs)
@@ -2094,7 +2094,7 @@ AjBool ensQCSequenceAdaptorFetchByName(EnsPQCSequenceAdaptor qcsa,
     if(!Pqcs)
 	return ajFalse;
     
-    ensBaseAdaptorEscapeCS(qcsa->Adaptor, &txtname, name);
+    ensBaseadaptorEscapeC(qcsa->Adaptor, &txtname, name);
     
     constraint = ajFmtStr("sequence.sequence_db_id = %u "
 			  "AND "
@@ -2106,14 +2106,14 @@ AjBool ensQCSequenceAdaptorFetchByName(EnsPQCSequenceAdaptor qcsa,
     
     qcss = ajListNew();
     
-    ensBaseAdaptorGenericFetch(qcsa->Adaptor,
+    ensBaseadaptorGenericFetch(qcsa->Adaptor,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcss);
     
     if(ajListGetLength(qcss) > 1)
-	ajWarn("ensQCSequenceAdaptorFetchByName got more than "
+	ajWarn("ensQCSequenceadaptorFetchByName got more than "
 	       "one Ensembl QC Sequence for(UNIQUE) name '%S' "
 	       "and QC Database identifier %u.\n",
 	       name, qcdbid);
@@ -2122,14 +2122,14 @@ AjBool ensQCSequenceAdaptorFetchByName(EnsPQCSequenceAdaptor qcsa,
     
     /*
     ** TODO: To implement?
-    ** qcSequenceAdaptorCacheInsert(qcsa, Pqcs);
+    ** qcSequenceadaptorCacheInsert(qcsa, Pqcs);
     */
     
     while(ajListPop(qcss, (void **) &qcs))
     {
 	/*
 	** TODO: To implement?
-	** qcSequenceAdaptorCacheInsert(qcsa, &qcs);
+	** qcSequenceadaptorCacheInsert(qcsa, &qcs);
 	*/
 	
 	ensQCSequenceDel(&qcs);
@@ -2145,13 +2145,13 @@ AjBool ensQCSequenceAdaptorFetchByName(EnsPQCSequenceAdaptor qcsa,
 
 
 
-/* @func ensQCSequenceAdaptorFetchAllByQCDatabase *****************************
+/* @func ensQCSequenceadaptorFetchAllByQCDatabase *****************************
 **
 ** Fetch all Ensembl QC Sequences via an Ensembl QC Database.
 ** The caller is responsible for deleting the Ensembl QC Sequences
 ** before deleting the AJAX List.
 **
-** @param [r] qcsa [EnsPQCSequenceAdaptor] Ensembl QC Sequence Adaptor
+** @param [r] qcsa [EnsPQCSequenceadaptor] Ensembl QC Sequence Adaptor
 ** @param [r] qcdb [EnsPQCDatabase] Ensembl QC Database
 ** @param [u] qcss [AjPList] AJAX List of Ensembl QC Sequences
 **
@@ -2159,7 +2159,7 @@ AjBool ensQCSequenceAdaptorFetchByName(EnsPQCSequenceAdaptor qcsa,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSequenceAdaptorFetchAllByQCDatabase(EnsPQCSequenceAdaptor qcsa,
+AjBool ensQCSequenceadaptorFetchAllByQCDatabase(EnsPQCSequenceadaptor qcsa,
                                                 EnsPQCDatabase qcdb,
                                                 AjPList qcss)
 {
@@ -2177,7 +2177,7 @@ AjBool ensQCSequenceAdaptorFetchAllByQCDatabase(EnsPQCSequenceAdaptor qcsa,
     constraint = ajFmtStr("sequence.sequence_db_id = %u",
 			  ensQCDatabaseGetIdentifier(qcdb));
     
-    ensBaseAdaptorGenericFetch(qcsa->Adaptor,
+    ensBaseadaptorGenericFetch(qcsa->Adaptor,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -2191,18 +2191,18 @@ AjBool ensQCSequenceAdaptorFetchAllByQCDatabase(EnsPQCSequenceAdaptor qcsa,
 
 
 
-/* @func ensQCSequenceAdaptorStore ********************************************
+/* @func ensQCSequenceadaptorStore ********************************************
 **
 ** Store an Ensembl QC Sequence.
 **
-** @param [r] qcsa [EnsPQCSequenceAdaptor] Ensembl QC Sequence Adaptor
+** @param [r] qcsa [EnsPQCSequenceadaptor] Ensembl QC Sequence Adaptor
 ** @param [u] qcs [EnsPQCSequence] Ensembl QC Seqeunce
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSequenceAdaptorStore(EnsPQCSequenceAdaptor qcsa, EnsPQCSequence qcs)
+AjBool ensQCSequenceadaptorStore(EnsPQCSequenceadaptor qcsa, EnsPQCSequence qcs)
 {
     char *txtname        = NULL;
     char *txtaccession   = NULL;
@@ -2211,11 +2211,11 @@ AjBool ensQCSequenceAdaptorStore(EnsPQCSequenceAdaptor qcsa, EnsPQCSequence qcs)
     
     AjBool value = ajFalse;
     
-    AjPSqlStatement sqls = NULL;
+    AjPSqlstatement sqls = NULL;
     
     AjPStr statement = NULL;
     
-    EnsPDatabaseAdaptor dba = NULL;
+    EnsPDatabaseadaptor dba = NULL;
     
     if(!qcsa)
 	return ajFalse;
@@ -2223,16 +2223,16 @@ AjBool ensQCSequenceAdaptorStore(EnsPQCSequenceAdaptor qcsa, EnsPQCSequence qcs)
     if(!qcs)
 	return ajFalse;
     
-    if(ensQCSequenceGetAdaptor(qcs) &&
+    if(ensQCSequenceGetadaptor(qcs) &&
 	ensQCSequenceGetIdentifier(qcs))
 	return ajFalse;
     
-    dba = ensBaseAdaptorGetDatabaseAdaptor(qcsa->Adaptor);
+    dba = ensBaseadaptorGetDatabaseadaptor(qcsa->Adaptor);
     
-    ensDatabaseAdaptorEscapeCS(dba, &txtname, qcs->Name);
-    ensDatabaseAdaptorEscapeCS(dba, &txtaccession, qcs->Accession);
-    ensDatabaseAdaptorEscapeCS(dba, &txtdescription, qcs->Description);
-    ensDatabaseAdaptorEscapeCS(dba, &txttype, qcs->Type);
+    ensDatabaseadaptorEscapeC(dba, &txtname, qcs->Name);
+    ensDatabaseadaptorEscapeC(dba, &txtaccession, qcs->Accession);
+    ensDatabaseadaptorEscapeC(dba, &txtdescription, qcs->Description);
+    ensDatabaseadaptorEscapeC(dba, &txttype, qcs->Type);
     
     statement = ajFmtStr("INSERT IGNORE INTO "
 			 "sequence "
@@ -2265,18 +2265,18 @@ AjBool ensQCSequenceAdaptorStore(EnsPQCSequenceAdaptor qcsa, EnsPQCSequence qcs)
     ajCharDel(&txtdescription);
     ajCharDel(&txttype);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    if(ajSqlStatementGetAffectedRows(sqls))
+    if(ajSqlstatementGetAffectedrows(sqls))
     {
-	ensQCSequenceSetIdentifier(qcs, ajSqlStatementGetIdentifier(sqls));
+	ensQCSequenceSetIdentifier(qcs, ajSqlstatementGetIdentifier(sqls));
 	
-	ensQCSequenceSetAdaptor(qcs, qcsa);
+	ensQCSequenceSetadaptor(qcs, qcsa);
 	
 	value = ajTrue;
     }
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     ajStrDel(&statement);
     
@@ -2286,18 +2286,18 @@ AjBool ensQCSequenceAdaptorStore(EnsPQCSequenceAdaptor qcsa, EnsPQCSequence qcs)
 
 
 
-/* @func ensQCSequenceAdaptorUpdate *******************************************
+/* @func ensQCSequenceadaptorUpdate *******************************************
 **
 ** Update an Ensembl QC Sequence.
 **
-** @param [r] qcsa [EnsPQCSequenceAdaptor] Ensembl QC Sequence Adaptor
+** @param [r] qcsa [EnsPQCSequenceadaptor] Ensembl QC Sequence Adaptor
 ** @param [r] qcs [const EnsPQCSequence] Ensembl QC Sequence
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSequenceAdaptorUpdate(EnsPQCSequenceAdaptor qcsa,
+AjBool ensQCSequenceadaptorUpdate(EnsPQCSequenceadaptor qcsa,
                                   const EnsPQCSequence qcs)
 {
     char *txtname        = NULL;
@@ -2307,11 +2307,11 @@ AjBool ensQCSequenceAdaptorUpdate(EnsPQCSequenceAdaptor qcsa,
     
     AjBool value = ajFalse;
     
-    AjPSqlStatement sqls = NULL;
+    AjPSqlstatement sqls = NULL;
     
     AjPStr statement = NULL;
     
-    EnsPDatabaseAdaptor dba = NULL;
+    EnsPDatabaseadaptor dba = NULL;
     
     if(!qcsa)
 	return ajFalse;
@@ -2322,12 +2322,12 @@ AjBool ensQCSequenceAdaptorUpdate(EnsPQCSequenceAdaptor qcsa,
     if(!ensQCSequenceGetIdentifier(qcs))
 	return ajFalse;
     
-    dba = ensBaseAdaptorGetDatabaseAdaptor(qcsa->Adaptor);
+    dba = ensBaseadaptorGetDatabaseadaptor(qcsa->Adaptor);
     
-    ensDatabaseAdaptorEscapeCS(dba, &txtname, qcs->Name);
-    ensDatabaseAdaptorEscapeCS(dba, &txtaccession, qcs->Accession);
-    ensDatabaseAdaptorEscapeCS(dba, &txtdescription, qcs->Description);
-    ensDatabaseAdaptorEscapeCS(dba, &txttype, qcs->Type);
+    ensDatabaseadaptorEscapeC(dba, &txtname, qcs->Name);
+    ensDatabaseadaptorEscapeC(dba, &txtaccession, qcs->Accession);
+    ensDatabaseadaptorEscapeC(dba, &txtdescription, qcs->Description);
+    ensDatabaseadaptorEscapeC(dba, &txttype, qcs->Type);
     
     statement = ajFmtStr("UPDATE IGNORE "
 			 "sequence "
@@ -2363,12 +2363,12 @@ AjBool ensQCSequenceAdaptorUpdate(EnsPQCSequenceAdaptor qcsa,
     ajCharDel(&txtdescription);
     ajCharDel(&txttype);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    if(ajSqlStatementGetAffectedRows(sqls))
+    if(ajSqlstatementGetAffectedrows(sqls))
 	value = ajTrue;
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     ajStrDel(&statement);
     
@@ -2378,27 +2378,27 @@ AjBool ensQCSequenceAdaptorUpdate(EnsPQCSequenceAdaptor qcsa,
 
 
 
-/* @func ensQCSequenceAdaptorDelete *******************************************
+/* @func ensQCSequenceadaptorDelete *******************************************
 **
 ** Delete an Ensembl QC Sequence.
 **
-** @param [r] qcsa [EnsPQCSequenceAdaptor] Ensembl QC Sequence Adaptor
+** @param [r] qcsa [EnsPQCSequenceadaptor] Ensembl QC Sequence Adaptor
 ** @param [r] qcs [const EnsPQCSequence] Ensembl QC Sequence
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSequenceAdaptorDelete(EnsPQCSequenceAdaptor qcsa,
+AjBool ensQCSequenceadaptorDelete(EnsPQCSequenceadaptor qcsa,
                                   const EnsPQCSequence qcs)
 {
     AjBool value = ajFalse;
     
-    AjPSqlStatement sqls = NULL;
+    AjPSqlstatement sqls = NULL;
     
     AjPStr statement = NULL;
     
-    EnsPDatabaseAdaptor dba = NULL;
+    EnsPDatabaseadaptor dba = NULL;
     
     if(!qcsa)
 	return ajFalse;
@@ -2409,7 +2409,7 @@ AjBool ensQCSequenceAdaptorDelete(EnsPQCSequenceAdaptor qcsa,
     if(!ensQCSequenceGetIdentifier(qcs))
 	return ajFalse;
     
-    dba = ensBaseAdaptorGetDatabaseAdaptor(qcsa->Adaptor);
+    dba = ensBaseadaptorGetDatabaseadaptor(qcsa->Adaptor);
     
     statement = ajFmtStr("DELETE FROM "
 			 "sequence "
@@ -2417,12 +2417,12 @@ AjBool ensQCSequenceAdaptorDelete(EnsPQCSequenceAdaptor qcsa,
 			 "sequence.sequence_id = %u",
 			 qcs->Identifier);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    if(ajSqlStatementGetAffectedRows(sqls))
+    if(ajSqlstatementGetAffectedrows(sqls))
 	value = ajTrue;
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     ajStrDel(&statement);
     

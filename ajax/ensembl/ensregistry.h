@@ -64,143 +64,143 @@ AjBool ensRegistryTraceEntries(ajint level);
 
 /* Ensembl Database Adaptors */
 
-AjBool ensRegistryAddDatabaseAdaptor(EnsPDatabaseConnection dbc,
+AjBool ensRegistryAddDatabaseadaptor(EnsPDatabaseConnection dbc,
                                      AjPStr database,
                                      AjPStr alias,
                                      AjEnum group,
                                      AjBool multi,
                                      ajuint identifier);
 
-AjBool ensRegistryRemoveDatabaseAdaptor(EnsPDatabaseAdaptor *Pdba);
+AjBool ensRegistryRemoveDatabaseadaptor(EnsPDatabaseadaptor *Pdba);
 
-AjBool ensRegistryGetAllDatabaseAdaptors(AjEnum group,
+AjBool ensRegistryGetAllDatabaseadaptors(AjEnum group,
                                          const AjPStr alias,
                                          AjPList list);
 
-EnsPDatabaseAdaptor ensRegistryGetDatabaseAdaptor(AjEnum group,
+EnsPDatabaseadaptor ensRegistryGetDatabaseadaptor(AjEnum group,
                                                   const AjPStr alias);
 
 
 
 /* Excluded in C file */
-/* EnsPDatabaseAdaptor ensRegistryGetDnaAdaptor(EnsPDatabaseAdaptor dba); */
+/* EnsPDatabaseadaptor ensRegistryGetDnaadaptor(EnsPDatabaseadaptor dba); */
 
 /* Ensembl Core-style Adaptors */
     
-EnsPAnalysisAdaptor ensRegistryGetAnalysisAdaptor(EnsPDatabaseAdaptor dba);
+EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(EnsPDatabaseadaptor dba);
 
-EnsPAssemblyExceptionAdaptor ensRegistryGetAssemblyExceptionAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPAssemblyExceptionadaptor ensRegistryGetAssemblyExceptionadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPAssemblyExceptionFeatureAdaptor ensRegistryGetAssemblyExceptionFeatureAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPAssemblyExceptionFeatureadaptor ensRegistryGetAssemblyExceptionFeatureadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPAssemblyMapperAdaptor ensRegistryGetAssemblyMapperAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPAssemblyMapperadaptor ensRegistryGetAssemblyMapperadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPCoordSystemAdaptor ensRegistryGetCoordSystemAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPCoordSystemadaptor ensRegistryGetCoordSystemadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPDatabaseEntryAdaptor ensRegistryGetDatabaseEntryAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPDatabaseEntryadaptor ensRegistryGetDatabaseEntryadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPDensityFeatureAdaptor ensRegistryGetDensityFeatureAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPDensityFeatureadaptor ensRegistryGetDensityFeatureadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPDensityTypeAdaptor ensRegistryGetDensityTypeAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPDensityTypeadaptor ensRegistryGetDensityTypeadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPDiTagFeatureAdaptor ensRegistryGetDiTagFeatureAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPDiTagFeatureadaptor ensRegistryGetDiTagFeatureadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPDNAAlignFeatureAdaptor ensRegistryGetDNAAlignFeatureAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPDNAAlignFeatureadaptor ensRegistryGetDNAAlignFeatureadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPExonAdaptor ensRegistryGetExonAdaptor(EnsPDatabaseAdaptor dba);
+EnsPExonadaptor ensRegistryGetExonadaptor(EnsPDatabaseadaptor dba);
 
-EnsPExternalDatabaseAdaptor ensRegistryGetExternalDatabaseAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPExternalDatabaseadaptor ensRegistryGetExternalDatabaseadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPGeneAdaptor ensRegistryGetGeneAdaptor(EnsPDatabaseAdaptor dba);
+EnsPGeneadaptor ensRegistryGetGeneadaptor(EnsPDatabaseadaptor dba);
 
-EnsPKaryotypeBandAdaptor ensRegistryGetKaryotypeBandAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPKaryotypeBandadaptor ensRegistryGetKaryotypeBandadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPMarkerAdaptor ensRegistryGetMarkerAdaptor(EnsPDatabaseAdaptor dba);
+EnsPMarkeradaptor ensRegistryGetMarkeradaptor(EnsPDatabaseadaptor dba);
 
-EnsPMarkerFeatureAdaptor ensRegistryGetMarkerFeatureAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPMarkerFeatureadaptor ensRegistryGetMarkerFeatureadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPMetaInformationAdaptor ensRegistryGetMetaInformationAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPMetaInformationadaptor ensRegistryGetMetaInformationadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPMetaCoordinateAdaptor ensRegistryGetMetaCoordinateAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPMetaCoordinateadaptor ensRegistryGetMetaCoordinateadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPMiscellaneousFeatureAdaptor ensRegistryGetMiscellaneousFeatureAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPMiscellaneousFeatureadaptor ensRegistryGetMiscellaneousFeatureadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPMiscellaneousSetAdaptor ensRegistryGetMiscellaneousSetAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPMiscellaneousSetadaptor ensRegistryGetMiscellaneousSetadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPPredictionExonAdaptor ensRegistryGetPredictionExonAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPPredictionExonadaptor ensRegistryGetPredictionExonadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPPredictionTranscriptAdaptor ensRegistryGetPredictionTranscriptAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPPredictionTranscriptadaptor ensRegistryGetPredictionTranscriptadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPProteinAlignFeatureAdaptor ensRegistryGetProteinAlignFeatureAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPProteinAlignFeatureadaptor ensRegistryGetProteinAlignFeatureadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPProteinFeatureAdaptor ensRegistryGetProteinFeatureAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPProteinFeatureadaptor ensRegistryGetProteinFeatureadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPRepeatFeatureAdaptor ensRegistryGetRepeatFeatureAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPRepeatFeatureadaptor ensRegistryGetRepeatFeatureadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPSeqRegionAdaptor ensRegistryGetSeqRegionAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPSeqRegionadaptor ensRegistryGetSeqRegionadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPSequenceAdaptor ensRegistryGetSequenceAdaptor(EnsPDatabaseAdaptor dba);
+EnsPSequenceadaptor ensRegistryGetSequenceadaptor(EnsPDatabaseadaptor dba);
 
-EnsPSimpleFeatureAdaptor ensRegistryGetSimpleFeatureAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPSimpleFeatureadaptor ensRegistryGetSimpleFeatureadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPSliceAdaptor ensRegistryGetSliceAdaptor(EnsPDatabaseAdaptor dba);
+EnsPSliceadaptor ensRegistryGetSliceadaptor(EnsPDatabaseadaptor dba);
 
-EnsPTranscriptAdaptor ensRegistryGetTranscriptAdaptor(EnsPDatabaseAdaptor dba);
+EnsPTranscriptadaptor ensRegistryGetTranscriptadaptor(EnsPDatabaseadaptor dba);
 
-EnsPTranslationAdaptor ensRegistryGetTranslationAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPTranslationadaptor ensRegistryGetTranslationadaptor(
+    EnsPDatabaseadaptor dba);
 
 /* Ensembl Quality Check Adaptors */
 
-EnsPQCDatabaseAdaptor ensRegistryGetQCDatabaseAdaptor(EnsPDatabaseAdaptor dba);
+EnsPQCDatabaseadaptor ensRegistryGetQCDatabaseadaptor(EnsPDatabaseadaptor dba);
 
-EnsPQCSequenceAdaptor ensRegistryGetQCSequenceAdaptor(EnsPDatabaseAdaptor dba);
+EnsPQCSequenceadaptor ensRegistryGetQCSequenceadaptor(EnsPDatabaseadaptor dba);
 
-EnsPQCAlignmentAdaptor ensRegistryGetQCAlignmentAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPQCAlignmentadaptor ensRegistryGetQCAlignmentadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPQCDASFeatureAdaptor ensRegistryGetQCDASFeatureAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPQCDASFeatureadaptor ensRegistryGetQCDASFeatureadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPQCVariationAdaptor ensRegistryGetQCVariationAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPQCVariationadaptor ensRegistryGetQCVariationadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPQCSubmissionAdaptor ensRegistryGetQCSubmissionAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPQCSubmissionadaptor ensRegistryGetQCSubmissionadaptor(
+    EnsPDatabaseadaptor dba);
 
 /* Ensembl Genetic Variation Adaptors */
 
-EnsPGVIndividualAdaptor ensRegistryGetGVIndividualAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPGVIndividualadaptor ensRegistryGetGVIndividualadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPGVPopulationAdaptor ensRegistryGetGVPopulationAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPGVPopulationadaptor ensRegistryGetGVPopulationadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPGVVariationAdaptor ensRegistryGetGVVariationAdaptor(
-    EnsPDatabaseAdaptor dba);
+EnsPGVVariationadaptor ensRegistryGetGVVariationadaptor(
+    EnsPDatabaseadaptor dba);
 
 AjBool ensRegistryLoadFromServer(EnsPDatabaseConnection dbc);
 

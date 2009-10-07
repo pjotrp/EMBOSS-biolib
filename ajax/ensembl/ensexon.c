@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -80,23 +80,23 @@ typedef struct ExonSCoordinates
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-extern EnsPAssemblyMapperAdaptor
-ensRegistryGetAssemblyMapperAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPAssemblyMapperadaptor
+ensRegistryGetAssemblyMapperadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPDNAAlignFeatureAdaptor
-ensRegistryGetDNAAlignFeatureAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPDNAAlignFeatureadaptor
+ensRegistryGetDNAAlignFeatureadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPCoordSystemAdaptor
-ensRegistryGetCoordSystemAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPCoordSystemadaptor
+ensRegistryGetCoordSystemadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPExonAdaptor
-ensRegistryGetExonAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPExonadaptor
+ensRegistryGetExonadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPProteinAlignFeatureAdaptor
-ensRegistryGetProteinAlignFeatureAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPProteinAlignFeatureadaptor
+ensRegistryGetProteinAlignFeatureadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPSliceAdaptor
-ensRegistryGetSliceAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPSliceadaptor
+ensRegistryGetSliceadaptor(EnsPDatabaseadaptor dba);
 
 static ExonPCoordinates exonCoordinatesNew(void);
 
@@ -107,7 +107,7 @@ static AjBool exonCoordinatesClear(EnsPExon exon);
 static ExonPCoordinates exonGetExonCoodinates(EnsPExon exon,
                                               EnsPTranscript transcript);
 
-static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
+static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                        const AjPStr statement,
                                        EnsPAssemblyMapper am,
                                        EnsPSlice slice,
@@ -224,7 +224,7 @@ static void exonCoordinatesDel(ExonPCoordinates* Pec)
 ** Default Ensembl Exon constructor.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] adaptor [EnsPExonAdaptor] Ensembl Exon Adaptor
+** @param [r] adaptor [EnsPExonadaptor] Ensembl Exon Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::Feature::new
 ** @param [u] feature [EnsPFeature] Ensembl Feature
@@ -242,7 +242,7 @@ static void exonCoordinatesDel(ExonPCoordinates* Pec)
 ** @@
 ******************************************************************************/
 
-EnsPExon ensExonNew(EnsPExonAdaptor adaptor,
+EnsPExon ensExonNew(EnsPExonadaptor adaptor,
                     ajuint identifier,
                     EnsPFeature feature,
                     ajint sphase,
@@ -584,7 +584,7 @@ void ensExonDel(EnsPExon *Pexon)
 ** @fnote None
 **
 ** @nam3rule Get Return Exon attribute(s)
-** @nam4rule GetAdaptor Return the Ensembl Exon Adaptor
+** @nam4rule Getadaptor Return the Ensembl Exon Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetFeature Return the Ensembl Feature
 ** @nam4rule GetStartPhase Return the start phase
@@ -600,7 +600,7 @@ void ensExonDel(EnsPExon *Pexon)
 **
 ** @argrule * exon [const EnsPExon] Exon
 **
-** @valrule Adaptor [EnsPExonAdaptor] Ensembl Exon Adaptor
+** @valrule Adaptor [EnsPExonadaptor] Ensembl Exon Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule Feature [EnsPFeature] Ensembl Feature
 ** @valrule StartPhase [ajint] Start phase
@@ -620,18 +620,18 @@ void ensExonDel(EnsPExon *Pexon)
 
 
 
-/* @func ensExonGetAdaptor ****************************************************
+/* @func ensExonGetadaptor ****************************************************
 **
 ** Get the Ensembl Exon Adaptor element of an Ensembl Exon.
 **
 ** @cc Bio::EnsEMBL::Storable::adaptor
 ** @param [r] exon [const EnsPExon] Ensembl Exon
 **
-** @return [EnsPExonAdaptor] Ensembl Exon Adaptor or NULL
+** @return [EnsPExonadaptor] Ensembl Exon Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPExonAdaptor ensExonGetAdaptor(const EnsPExon exon)
+EnsPExonadaptor ensExonGetadaptor(const EnsPExon exon)
 {
     if(!exon)
 	return NULL;
@@ -901,7 +901,7 @@ AjPStr ensExonGetModificationDate(const EnsPExon exon)
 
 const AjPList ensExonGetSupportingFeatures(EnsPExon exon)
 {
-    EnsPDatabaseAdaptor dba = NULL;
+    EnsPDatabaseadaptor dba = NULL;
     
     if(!exon)
 	return NULL;
@@ -918,11 +918,11 @@ const AjPList ensExonGetSupportingFeatures(EnsPExon exon)
 	return NULL;
     }
     
-    dba = ensExonAdaptorGetDatabaseAdaptor(exon->Adaptor);
+    dba = ensExonadaptorGetDatabaseadaptor(exon->Adaptor);
     
     exon->SupportingFeatures = ajListNew();
     
-    ensSupportingFeatureAdaptorFetchAllByExon(dba,
+    ensSupportingFeatureadaptorFetchAllByExon(dba,
 					      exon,
 					      exon->SupportingFeatures);
     
@@ -940,7 +940,7 @@ const AjPList ensExonGetSupportingFeatures(EnsPExon exon)
 ** @fnote None
 **
 ** @nam3rule Set Set one element of an Exon
-** @nam4rule SetAdaptor Set the Ensembl Exon Adaptor
+** @nam4rule Setadaptor Set the Ensembl Exon Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetFeature Set the Ensembl Feature
 ** @nam4rule SetStartPhase Set the start phase
@@ -962,19 +962,19 @@ const AjPList ensExonGetSupportingFeatures(EnsPExon exon)
 
 
 
-/* @func ensExonSetAdaptor ****************************************************
+/* @func ensExonSetadaptor ****************************************************
 **
 ** Set the Ensembl Exon Adaptor element of an Ensembl Exon.
 **
 ** @cc Bio::EnsEMBL::Storable::adaptor
 ** @param [u] exon [EnsPExon] Ensembl Exon
-** @param [r] adaptor [EnsPExonAdaptor] Ensembl Exon Adaptor
+** @param [r] adaptor [EnsPExonadaptor] Ensembl Exon Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensExonSetAdaptor(EnsPExon exon, EnsPExonAdaptor adaptor)
+AjBool ensExonSetadaptor(EnsPExon exon, EnsPExonadaptor adaptor)
 {
     if(!exon)
         return ajFalse;
@@ -1972,7 +1972,7 @@ static ExonPCoordinates exonGetExonCoodinates(EnsPExon exon,
 	
 	/*
 	** FIXME: This would also be evident via transcript->Translation???
-	** Check in TranscriptAdaptor first!
+	** Check in Transcriptadaptor first!
 	*/
 	
 	ec->TranscriptCodingStart = 0;
@@ -2355,13 +2355,13 @@ ajuint ensExonGetSliceCodingEnd(EnsPExon exon, EnsPTranscript transcript)
 
 
 
-/* @datasection [EnsPExonAdaptor] Exon Adaptor ********************************
+/* @datasection [EnsPExonadaptor] Exon Adaptor ********************************
 **
 ** Functions for manipulating Ensembl Exon Adaptor objects
 **
-** @cc Bio::EnsEMBL::DBSQL::ExonAdaptor CVS Revision: 1.101
+** @cc Bio::EnsEMBL::DBSQL::Exonadaptor CVS Revision: 1.101
 **
-** @nam2rule ExonAdaptor
+** @nam2rule Exonadaptor
 **
 ******************************************************************************/
 
@@ -2372,7 +2372,7 @@ static const char *exonAdaptorTables[] =
     NULL
 };
 
-static const char *exonTranscriptAdaptorTables[] =
+static const char *exonTranscriptadaptorTables[] =
 {
     "exon",
     "exon_stable_id",
@@ -2398,7 +2398,7 @@ static const char *exonAdaptorColumns[] =
     NULL
 };
 
-static EnsOBaseAdaptorLeftJoin exonAdaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin exonAdaptorLeftJoin[] =
 {
     {"exon_stable_id", "exon_stable_id.exon_id = exon.exon_id"},
     {NULL, NULL}
@@ -2408,7 +2408,7 @@ static const char *exonAdaptorDefaultCondition = NULL;
 
 static const char *exonAdaptorFinalCondition = NULL;
 
-static const char *exonTranscriptAdaptorFinalCondition =
+static const char *exonTranscriptadaptorFinalCondition =
 "ORDER BY "
 "exon_transcript.transcript_id, "
 "exon_transcript.rank";
@@ -2420,7 +2420,7 @@ static const char *exonTranscriptAdaptorFinalCondition =
 **
 ** Fetch all Ensembl Exon objects via an SQL statement.
 **
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
 ** @param [u] am [EnsPAssemblyMapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
@@ -2430,7 +2430,7 @@ static const char *exonTranscriptAdaptorFinalCondition =
 ** @@
 ******************************************************************************/
 
-static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
+static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                        const AjPStr statement,
                                        EnsPAssemblyMapper am,
                                        EnsPSlice slice,
@@ -2457,26 +2457,26 @@ static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
     
     AjPList mrs = NULL;
     
-    AjPSqlStatement sqls = NULL;
-    AjISqlRow sqli       = NULL;
-    AjPSqlRow sqlr       = NULL;
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
     
     AjPStr stableid = NULL;
     AjPStr cdate    = NULL;
     AjPStr mdate    = NULL;
     
-    EnsPAssemblyMapperAdaptor ama = NULL;
+    EnsPAssemblyMapperadaptor ama = NULL;
     
-    EnsPCoordSystemAdaptor csa = NULL;
+    EnsPCoordSystemadaptor csa = NULL;
     
     EnsPExon exon      = NULL;
-    EnsPExonAdaptor ea = NULL;
+    EnsPExonadaptor ea = NULL;
     
     EnsPFeature feature = NULL;
     EnsPMapperResult mr = NULL;
     
     EnsPSlice srslice   = NULL;
-    EnsPSliceAdaptor sa = NULL;
+    EnsPSliceadaptor sa = NULL;
     
     /*
      ajDebug("exonAdaptorFetchAllBySQL\n"
@@ -2501,22 +2501,22 @@ static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
     if(!exons)
 	return ajFalse;
     
-    csa = ensRegistryGetCoordSystemAdaptor(dba);
+    csa = ensRegistryGetCoordSystemadaptor(dba);
     
-    ea = ensRegistryGetExonAdaptor(dba);
+    ea = ensRegistryGetExonadaptor(dba);
     
-    sa = ensRegistryGetSliceAdaptor(dba);
+    sa = ensRegistryGetSliceadaptor(dba);
     
     if(slice)
-	ama = ensRegistryGetAssemblyMapperAdaptor(dba);
+	ama = ensRegistryGetAssemblyMapperadaptor(dba);
     
     mrs = ajListNew();
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    sqli = ajSqlRowIterNew(sqls);
+    sqli = ajSqlrowiterNew(sqls);
     
-    while(!ajSqlRowIterDone(sqli))
+    while(!ajSqlrowiterDone(sqli))
     {
 	identifier   = 0;
 	srid         = 0;
@@ -2532,25 +2532,25 @@ static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	cdate        = ajStrNew();
 	mdate        = ajStrNew();
 	
-	sqlr = ajSqlRowIterGet(sqli);
+	sqlr = ajSqlrowiterGet(sqli);
 	
-	ajSqlColumnToUint(sqlr, &identifier);
-	ajSqlColumnToUint(sqlr, &srid);
-	ajSqlColumnToUint(sqlr, &srstart);
-	ajSqlColumnToUint(sqlr, &srend);
-	ajSqlColumnToInt(sqlr, &srstrand);
-	ajSqlColumnToInt(sqlr, &sphase);
-	ajSqlColumnToInt(sqlr, &ephase);
-        ajSqlColumnToBool(sqlr, &current);
-        ajSqlColumnToBool(sqlr, &constitutive);
-        ajSqlColumnToStr(sqlr, &stableid);
-	ajSqlColumnToUint(sqlr, &version);
-        ajSqlColumnToStr(sqlr, &cdate);
-        ajSqlColumnToStr(sqlr, &mdate);
+	ajSqlcolumnToUint(sqlr, &identifier);
+	ajSqlcolumnToUint(sqlr, &srid);
+	ajSqlcolumnToUint(sqlr, &srstart);
+	ajSqlcolumnToUint(sqlr, &srend);
+	ajSqlcolumnToInt(sqlr, &srstrand);
+	ajSqlcolumnToInt(sqlr, &sphase);
+	ajSqlcolumnToInt(sqlr, &ephase);
+        ajSqlcolumnToBool(sqlr, &current);
+        ajSqlcolumnToBool(sqlr, &constitutive);
+        ajSqlcolumnToStr(sqlr, &stableid);
+	ajSqlcolumnToUint(sqlr, &version);
+        ajSqlcolumnToStr(sqlr, &cdate);
+        ajSqlcolumnToStr(sqlr, &mdate);
 	
 	/* Need to get the internal Ensembl Sequence Region identifier. */
 	
-	srid = ensCoordSystemAdaptorGetInternalSeqRegionIdentifier(csa, srid);
+	srid = ensCoordSystemadaptorGetInternalSeqRegionIdentifier(csa, srid);
 	
 	/*
 	** Since the Ensembl SQL schema defines Sequence Region start and end
@@ -2578,7 +2578,7 @@ static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	
 	/* Fetch a Slice spanning the entire Sequence Region. */
 	
-	ensSliceAdaptorFetchBySeqRegionIdentifier(sa, srid, 0, 0, 0, &srslice);
+	ensSliceadaptorFetchBySeqRegionIdentifier(sa, srid, 0, 0, 0, &srslice);
 	
 	/*
 	 ** Increase the reference counter of the Ensembl Assembly Mapper if
@@ -2593,13 +2593,13 @@ static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	    slice &&
 	    (!ensCoordSystemMatch(ensSliceGetCoordSystem(slice),
                                   ensSliceGetCoordSystem(srslice))))
-	    am = ensAssemblyMapperAdaptorFetchByCoordSystems(
+	    am = ensAssemblyMapperadaptorFetchByCoordSystems(
                 ama,
                 ensSliceGetCoordSystem(slice),
                 ensSliceGetCoordSystem(srslice));
 	
 	/*
-        ** FIXME: Should we have an ensAsemblyMapperAdaptorFetchBySlices
+        ** FIXME: Should we have an ensAsemblyMapperadaptorFetchBySlices
         ** function?
         */
 	
@@ -2661,7 +2661,7 @@ static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	    
 	    ensSliceDel(&srslice);
 	    
-	    ensSliceAdaptorFetchBySeqRegionIdentifier(sa,
+	    ensSliceadaptorFetchBySeqRegionIdentifier(sa,
 						      srid,
 						      0,
 						      0,
@@ -2774,9 +2774,9 @@ static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	ajStrDel(&mdate);
     }
     
-    ajSqlRowIterDel(&sqli);
+    ajSqlrowiterDel(&sqli);
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     ajListFree(&mrs);
     
@@ -2811,7 +2811,7 @@ static void *exonAdaptorCacheReference(void *value)
 **
 ** Wrapper function to delete an Ensembl Exon from an Ensembl Cache.
 **
-** @param [r] value [void **] Ensembl Exon address
+** @param [r] value [void**] Ensembl Exon address
 **
 ** @return [void]
 ** @@
@@ -2881,18 +2881,18 @@ static EnsPFeature exonAdaptorGetFeature(const void *value)
 ** Exon Adaptor. The target pointer does not need to be initialised to
 ** NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPExonAdaptor]
+** @fdata [EnsPExonadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule New dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPExonAdaptor] Ensembl Exon Adaptor
-** @argrule Ref object [EnsPExonAdaptor] Ensembl Exon Adaptor
+** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+** @argrule Obj object [EnsPExonadaptor] Ensembl Exon Adaptor
+** @argrule Ref object [EnsPExonadaptor] Ensembl Exon Adaptor
 **
-** @valrule * [EnsPExonAdaptor] Ensembl Exon Adaptor
+** @valrule * [EnsPExonadaptor] Ensembl Exon Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -2900,26 +2900,26 @@ static EnsPFeature exonAdaptorGetFeature(const void *value)
 
 
 
-/* @func ensExonAdaptorNew ****************************************************
+/* @func ensExonadaptorNew ****************************************************
 **
 ** Default Ensembl Exon Adaptor constructor.
 **
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPExonAdaptor] Ensembl Exon Adaptor or NULL
+** @return [EnsPExonadaptor] Ensembl Exon Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPExonAdaptor ensExonAdaptorNew(EnsPDatabaseAdaptor dba)
+EnsPExonadaptor ensExonadaptorNew(EnsPDatabaseadaptor dba)
 {
-    EnsPExonAdaptor ea = NULL;
+    EnsPExonadaptor ea = NULL;
     
     if(!dba)
 	return NULL;
     
     AJNEW0(ea);
     
-    ea->Adaptor = ensFeatureAdaptorNew(dba,
+    ea->Adaptor = ensFeatureadaptorNew(dba,
 				       exonAdaptorTables,
 				       exonAdaptorColumns,
 				       exonAdaptorLeftJoin,
@@ -2947,12 +2947,12 @@ EnsPExonAdaptor ensExonAdaptorNew(EnsPDatabaseAdaptor dba)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Exon Adaptor.
 **
-** @fdata [EnsPExonAdaptor]
+** @fdata [EnsPExonadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) an Ensembl Prediction Exon Adaptor object
 **
-** @argrule * Padaptor [EnsPExonAdaptor*] Ensembl Exon Adaptor object address
+** @argrule * Padaptor [EnsPExonadaptor*] Ensembl Exon Adaptor object address
 **
 ** @valrule * [void]
 **
@@ -2962,19 +2962,19 @@ EnsPExonAdaptor ensExonAdaptorNew(EnsPDatabaseAdaptor dba)
 
 
 
-/* @func ensExonAdaptorDel ****************************************************
+/* @func ensExonadaptorDel ****************************************************
 **
 ** Default destructor for an Ensembl Exon Adaptor.
 **
-** @param [d] Padaptor [EnsPExonAdaptor*] Ensembl Exon Adaptor address
+** @param [d] Padaptor [EnsPExonadaptor*] Ensembl Exon Adaptor address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensExonAdaptorDel(EnsPExonAdaptor *Padaptor)
+void ensExonadaptorDel(EnsPExonadaptor *Padaptor)
 {
-    EnsPExonAdaptor pthis = NULL;
+    EnsPExonadaptor pthis = NULL;
     
     if(!Padaptor)
 	return;
@@ -2984,7 +2984,7 @@ void ensExonAdaptorDel(EnsPExonAdaptor *Padaptor)
 
     pthis = *Padaptor;
     
-    ensFeatureAdaptorDel(&pthis->Adaptor);
+    ensFeatureadaptorDel(&pthis->Adaptor);
     
     AJFREE(pthis);
 
@@ -3000,17 +3000,17 @@ void ensExonAdaptorDel(EnsPExonAdaptor *Padaptor)
 **
 ** Functions for returning elements of an Ensembl Exon Adaptor object.
 **
-** @fdata [EnsPExonAdaptor]
+** @fdata [EnsPExonadaptor]
 ** @fnote None
 **
 ** @nam3rule Get Return Ensembl Exon Adaptor attribute(s)
-** @nam3rule GetFeatureAdaptor Return the Ensembl Feature Adaptor
-** @nam4rule GetDatabaseAdaptor Return the Ensembl Database Adaptor
+** @nam3rule GetFeatureadaptor Return the Ensembl Feature Adaptor
+** @nam4rule GetDatabaseadaptor Return the Ensembl Database Adaptor
 **
-** @argrule * adaptor [const EnsPExonAdaptor] Ensembl Exon Adaptor
+** @argrule * adaptor [const EnsPExonadaptor] Ensembl Exon Adaptor
 **
-** @valrule FeatureAdaptor [EnsPFeatureAdaptor] Ensembl Feature Adaptor
-** @valrule DatabaseAdaptor [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @valrule Featureadaptor [EnsPFeatureadaptor] Ensembl Feature Adaptor
+** @valrule Databaseadaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
 ** @fcategory use
 ******************************************************************************/
@@ -3018,18 +3018,18 @@ void ensExonAdaptorDel(EnsPExonAdaptor *Padaptor)
 
 
 
-/* @func ensExonAdaptorGetFeatureAdaptor **************************************
+/* @func ensExonadaptorGetFeatureadaptor **************************************
 **
 ** Get the Ensembl Feature Adaptor element of an Ensembl Exon Adaptor.
 **
-** @param [r] adaptor [const EnsPExonAdaptor] Ensembl Exon Adaptor
+** @param [r] adaptor [const EnsPExonadaptor] Ensembl Exon Adaptor
 **
-** @return [EnsPFeatureAdaptor] Ensembl Feature Adaptor
+** @return [EnsPFeatureadaptor] Ensembl Feature Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPFeatureAdaptor ensExonAdaptorGetFeatureAdaptor(
-    const EnsPExonAdaptor adaptor)
+EnsPFeatureadaptor ensExonadaptorGetFeatureadaptor(
+    const EnsPExonadaptor adaptor)
 {
     if(!adaptor)
 	return NULL;
@@ -3040,24 +3040,24 @@ EnsPFeatureAdaptor ensExonAdaptorGetFeatureAdaptor(
 
 
 
-/* @func ensExonAdaptorGetDatabaseAdaptor *************************************
+/* @func ensExonadaptorGetDatabaseadaptor *************************************
 **
 ** Get the Ensembl Database Adaptor element of the
 ** Ensembl Feature Adaptor element of an Ensembl Exon Adaptor.
 **
-** @param [r] adaptor [const EnsPExonAdaptor] Ensembl Exon Adaptor
+** @param [r] adaptor [const EnsPExonadaptor] Ensembl Exon Adaptor
 **
-** @return [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @return [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPDatabaseAdaptor ensExonAdaptorGetDatabaseAdaptor(
-    const EnsPExonAdaptor adaptor)
+EnsPDatabaseadaptor ensExonadaptorGetDatabaseadaptor(
+    const EnsPExonadaptor adaptor)
 {
     if(!adaptor)
 	return NULL;
     
-    return ensFeatureAdaptorGetDatabaseAdaptor(adaptor->Adaptor);
+    return ensFeatureadaptorGetDatabaseadaptor(adaptor->Adaptor);
 }
 
 
@@ -3068,7 +3068,7 @@ EnsPDatabaseAdaptor ensExonAdaptorGetDatabaseAdaptor(
 ** Functions for retrieving Ensembl Exon objects from an
 ** Ensembl Core database.
 **
-** @fdata [EnsPExonAdaptor]
+** @fdata [EnsPExonadaptor]
 ** @fnote None
 **
 ** @nam3rule Fetch Retrieve Ensembl Exon object(s)
@@ -3078,7 +3078,7 @@ EnsPDatabaseAdaptor ensExonAdaptorGetDatabaseAdaptor(
 ** @nam4rule FetchBy Retrieve one Ensembl Exon object
 **                   matching a criterion
 **
-** @argrule * adaptor [const EnsPExonAdaptor] Ensembl Exon Adaptor
+** @argrule * adaptor [const EnsPExonadaptor] Ensembl Exon Adaptor
 ** @argrule FetchAll [AjPList] AJAX List of Ensembl Exon objects
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -3089,23 +3089,23 @@ EnsPDatabaseAdaptor ensExonAdaptorGetDatabaseAdaptor(
 
 
 
-/* @func ensExonAdaptorFetchAll ***********************************************
+/* @func ensExonadaptorFetchAll ***********************************************
 **
 ** Fetch all Ensembl Exons.
 **
 ** The caller is responsible for deleting the Ensembl Exons before
 ** deleting the AJAX List.
 **
-** @param [r] ea [const EnsPExonAdaptor] Ensembl Exon Adaptor
+** @param [r] ea [const EnsPExonadaptor] Ensembl Exon Adaptor
 ** @param [u] exons [AjPList] AJAX List of Ensembl Exons
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensExonAdaptorFetchAll(EnsPExonAdaptor ea, AjPList exons)
+AjBool ensExonadaptorFetchAll(EnsPExonadaptor ea, AjPList exons)
 {
-    EnsPBaseAdaptor ba = NULL;
+    EnsPBaseadaptor ba = NULL;
     
     if(!ea)
 	return ajFalse;
@@ -3113,22 +3113,22 @@ AjBool ensExonAdaptorFetchAll(EnsPExonAdaptor ea, AjPList exons)
     if(!exons)
 	return ajFalse;
     
-    ba = ensFeatureAdaptorGetBaseAdaptor(ea->Adaptor);
+    ba = ensFeatureadaptorGetBaseadaptor(ea->Adaptor);
     
-    return ensBaseAdaptorFetchAll(ba, exons);
+    return ensBaseadaptorFetchAll(ba, exons);
 }
 
 
 
 
-/* @func ensExonAdaptorFetchAllBySlice ****************************************
+/* @func ensExonadaptorFetchAllBySlice ****************************************
 **
 ** Fetch all Ensembl Exons on an Ensembl Slice.
 **
 ** The caller is responsible for deleting the Ensembl Exons before
 ** deleting the AJAX List.
 **
-** @param [r] ea [const EnsPExonAdaptor] Ensembl Exon Adaptor
+** @param [r] ea [const EnsPExonadaptor] Ensembl Exon Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [u] exons [AjPList] AJAX List of Ensembl Exons
 **
@@ -3136,18 +3136,18 @@ AjBool ensExonAdaptorFetchAll(EnsPExonAdaptor ea, AjPList exons)
 ** @@
 ******************************************************************************/
 
-AjBool ensExonAdaptorFetchAllBySlice(EnsPExonAdaptor ea,
+AjBool ensExonadaptorFetchAllBySlice(EnsPExonadaptor ea,
                                      EnsPSlice slice,
                                      AjPList exons)
 {
-    EnsPFeatureAdaptor fa = NULL;
+    EnsPFeatureadaptor fa = NULL;
     
     if(!ea)
 	return ajFalse;
     
-    fa = ensExonAdaptorGetFeatureAdaptor(ea);
+    fa = ensExonadaptorGetFeatureadaptor(ea);
     
-    ensFeatureAdaptorFetchAllBySlice(fa, slice, (AjPStr) NULL, exons);
+    ensFeatureadaptorFetchAllBySlice(fa, slice, (AjPStr) NULL, exons);
     
     return ajTrue;
 }
@@ -3155,13 +3155,13 @@ AjBool ensExonAdaptorFetchAllBySlice(EnsPExonAdaptor ea,
 
 
 
-/* @func ensExonAdaptorFetchByIdentifier **************************************
+/* @func ensExonadaptorFetchByIdentifier **************************************
 **
 ** Fetch an Ensembl Exon via its SQL database-internal identifier.
 **
 ** The caller is responsible for deleting the Ensembl Exon.
 **
-** @param [r] adaptor [EnsPExonAdaptor] Ensembl Exon Adaptor
+** @param [r] adaptor [EnsPExonadaptor] Ensembl Exon Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal Exon identifier
 ** @param [wP] Pexon [EnsPExon*] Ensembl Exon address
 **
@@ -3169,11 +3169,11 @@ AjBool ensExonAdaptorFetchAllBySlice(EnsPExonAdaptor ea,
 ** @@
 ******************************************************************************/
 
-AjBool ensExonAdaptorFetchByIdentifier(EnsPExonAdaptor adaptor,
+AjBool ensExonadaptorFetchByIdentifier(EnsPExonadaptor adaptor,
                                        ajuint identifier,
                                        EnsPExon *Pexon)
 {
-    EnsPBaseAdaptor ba = NULL;
+    EnsPBaseadaptor ba = NULL;
     
     if(!adaptor)
 	return ajFalse;
@@ -3184,9 +3184,9 @@ AjBool ensExonAdaptorFetchByIdentifier(EnsPExonAdaptor adaptor,
     if(!Pexon)
 	return ajFalse;
     
-    ba = ensFeatureAdaptorGetBaseAdaptor(adaptor->Adaptor);
+    ba = ensFeatureadaptorGetBaseadaptor(adaptor->Adaptor);
     
-    *Pexon = (EnsPExon) ensBaseAdaptorFetchByIdentifier(ba, identifier);
+    *Pexon = (EnsPExon) ensBaseadaptorFetchByIdentifier(ba, identifier);
     
     return ajTrue;
 }
@@ -3194,13 +3194,13 @@ AjBool ensExonAdaptorFetchByIdentifier(EnsPExonAdaptor adaptor,
 
 
 
-/* @func ensExonAdaptorFetchByStableIdentifier ********************************
+/* @func ensExonadaptorFetchByStableIdentifier ********************************
 **
 ** Fetch an Ensembl Exon via its stable identifier and version.
 ** In case a particular version is not specified,
 ** the current Exon will be returned.
 **
-** @param [r] ea [const EnsPExonAdaptor] Ensembl Exon Adaptor
+** @param [r] ea [const EnsPExonadaptor] Ensembl Exon Adaptor
 ** @param [r] stableid [const AjPStr] Stable identifier
 ** @param [r] version [ajuint] Version
 ** @param [wP] Pexon [EnsPExon*] Ensembl Exon address
@@ -3209,7 +3209,7 @@ AjBool ensExonAdaptorFetchByIdentifier(EnsPExonAdaptor adaptor,
 ** @@
 ******************************************************************************/
 
-AjBool ensExonAdaptorFetchByStableIdentifier(EnsPExonAdaptor ea,
+AjBool ensExonadaptorFetchByStableIdentifier(EnsPExonadaptor ea,
                                              const AjPStr stableid,
                                              ajuint version,
                                              EnsPExon *Pexon)
@@ -3220,7 +3220,7 @@ AjBool ensExonAdaptorFetchByStableIdentifier(EnsPExonAdaptor ea,
     
     AjPStr constraint = NULL;
     
-    EnsPBaseAdaptor ba = NULL;
+    EnsPBaseadaptor ba = NULL;
     
     EnsPExon exon = NULL;
     
@@ -3230,9 +3230,9 @@ AjBool ensExonAdaptorFetchByStableIdentifier(EnsPExonAdaptor ea,
     if(!stableid)
 	return ajFalse;
     
-    ba = ensFeatureAdaptorGetBaseAdaptor(ea->Adaptor);
+    ba = ensFeatureadaptorGetBaseadaptor(ea->Adaptor);
     
-    ensBaseAdaptorEscapeCS(ba, &txtstableid, stableid);
+    ensBaseadaptorEscapeC(ba, &txtstableid, stableid);
     
     if(version)
 	constraint =
@@ -3252,14 +3252,14 @@ AjBool ensExonAdaptorFetchByStableIdentifier(EnsPExonAdaptor ea,
     
     exons = ajListNew();
     
-    ensBaseAdaptorGenericFetch(ba,
+    ensBaseadaptorGenericFetch(ba,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
 			       exons);
     
     if(ajListGetLength(exons) > 1)
-	ajDebug("ensExonAdaptorFetchByStableId got more than one "
+	ajDebug("ensExonadaptorFetchByStableId got more than one "
 		"Exon for stable identifier '%S' and version %u.\n",
 		stableid, version);
     
@@ -3278,14 +3278,14 @@ AjBool ensExonAdaptorFetchByStableIdentifier(EnsPExonAdaptor ea,
 
 
 
-/* @func ensExonAdaptorFetchAllVersionsByStableId *****************************
+/* @func ensExonadaptorFetchAllVersionsByStableId *****************************
 **
 ** Fetch all Ensembl Exon versions via its stable identifier.
 **
 ** The caller is responsible for deleting the Ensembl Exons before
 ** deleting the AJAX List.
 **
-** @param [r] ea [const EnsPExonAdaptor] Ensembl Exon Adaptor
+** @param [r] ea [const EnsPExonadaptor] Ensembl Exon Adaptor
 ** @param [r] stableid [const AjPStr] Stable identifier
 ** @param [u] exons [AjPList] AJAX List of Ensembl Exons
 **
@@ -3293,7 +3293,7 @@ AjBool ensExonAdaptorFetchByStableIdentifier(EnsPExonAdaptor ea,
 ** @@
 ******************************************************************************/
 
-AjBool ensExonAdaptorFetchAllVersionsByStableId(EnsPExonAdaptor ea,
+AjBool ensExonadaptorFetchAllVersionsByStableId(EnsPExonadaptor ea,
                                                 const AjPStr stableid,
                                                 AjPList exons)
 {
@@ -3301,7 +3301,7 @@ AjBool ensExonAdaptorFetchAllVersionsByStableId(EnsPExonAdaptor ea,
     
     AjPStr constraint = NULL;
     
-    EnsPBaseAdaptor ba = NULL;
+    EnsPBaseadaptor ba = NULL;
     
     if(!ea)
 	return ajFalse;
@@ -3309,9 +3309,9 @@ AjBool ensExonAdaptorFetchAllVersionsByStableId(EnsPExonAdaptor ea,
     if(!stableid)
 	return ajFalse;
     
-    ba = ensFeatureAdaptorGetBaseAdaptor(ea->Adaptor);
+    ba = ensFeatureadaptorGetBaseadaptor(ea->Adaptor);
     
-    ensBaseAdaptorEscapeCS(ba, &txtstableid, stableid);
+    ensBaseadaptorEscapeC(ba, &txtstableid, stableid);
     
     constraint = ajFmtStr("exon_stable_id.stable_id = '%s'", txtstableid);
     
@@ -3319,7 +3319,7 @@ AjBool ensExonAdaptorFetchAllVersionsByStableId(EnsPExonAdaptor ea,
     
     exons = ajListNew();
     
-    ensBaseAdaptorGenericFetch(ba,
+    ensBaseadaptorGenericFetch(ba,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -3333,14 +3333,14 @@ AjBool ensExonAdaptorFetchAllVersionsByStableId(EnsPExonAdaptor ea,
 
 
 
-/* @func ensExonAdaptorFetchAllByTranscript ***********************************
+/* @func ensExonadaptorFetchAllByTranscript ***********************************
 **
 ** Fetch all Ensembl Exons via an Ensembl Transcript.
 **
 ** The caller is responsible for deleting the Ensembl Exons before
 ** deleting the AJAX List.
 **
-** @param [r] ea [const EnsPExonAdaptor] Ensembl Exon Adaptor
+** @param [r] ea [const EnsPExonadaptor] Ensembl Exon Adaptor
 ** @param [r] transcript [const EnsPTranscript] Ensembl Transcript
 ** @param [u] exons [AjPList] AJAX List of Ensembl Exons
 **
@@ -3348,7 +3348,7 @@ AjBool ensExonAdaptorFetchAllVersionsByStableId(EnsPExonAdaptor ea,
 ** @@
 ******************************************************************************/
 
-AjBool ensExonAdaptorFetchAllByTranscript(EnsPExonAdaptor ea,
+AjBool ensExonadaptorFetchAllByTranscript(EnsPExonadaptor ea,
                                           const EnsPTranscript transcript,
                                           AjPList exons)
 {
@@ -3356,7 +3356,7 @@ AjBool ensExonAdaptorFetchAllByTranscript(EnsPExonAdaptor ea,
     
     AjPStr constraint = NULL;
     
-    EnsPDatabaseAdaptor dba = NULL;
+    EnsPDatabaseadaptor dba = NULL;
     
     EnsPExon exon = NULL;
     
@@ -3365,10 +3365,10 @@ AjBool ensExonAdaptorFetchAllByTranscript(EnsPExonAdaptor ea,
     
     EnsPSlice eslice    = NULL;
     EnsPSlice tslice    = NULL;
-    EnsPSliceAdaptor sa = NULL;
+    EnsPSliceadaptor sa = NULL;
     
     /*
-     ajDebug("ensExonAdaptorFetchAllByTranscript\n"
+     ajDebug("ensExonadaptorFetchAllByTranscript\n"
 	     "  ea %p\n"
 	     "  transcript %p\n"
 	     "  exons %p\n",
@@ -3394,19 +3394,19 @@ AjBool ensExonAdaptorFetchAllByTranscript(EnsPExonAdaptor ea,
     
     if(!tslice)
     {
-	ajDebug("ensExonAdaptorFetchAllByTranscript cannot fetch Exons "
+	ajDebug("ensExonadaptorFetchAllByTranscript cannot fetch Exons "
 		"for Transcript without Slice.\n");
 	
 	return ajFalse;
     }
     
-    dba = ensFeatureAdaptorGetDatabaseAdaptor(ea->Adaptor);
+    dba = ensFeatureadaptorGetDatabaseadaptor(ea->Adaptor);
     
-    sa = ensRegistryGetSliceAdaptor(dba);
+    sa = ensRegistryGetSliceadaptor(dba);
     
     /* Get a Slice that spans just this Transcript to place Exons on them. */
     
-    ensSliceAdaptorFetchByFeature(sa, tfeature, 0, &eslice);
+    ensSliceadaptorFetchByFeature(sa, tfeature, 0, &eslice);
     
     /*
     ** Override the table and final condition element of the
@@ -3415,10 +3415,10 @@ AjBool ensExonAdaptorFetchAllByTranscript(EnsPExonAdaptor ea,
     ** Create a separate Ensembl Exon Transcript Adaptor?
     */
     
-    ensFeatureAdaptorSetTables(ea->Adaptor, exonTranscriptAdaptorTables);
+    ensFeatureadaptorSetTables(ea->Adaptor, exonTranscriptadaptorTables);
     
-    ensFeatureAdaptorSetFinalCondition(ea->Adaptor,
-				       exonTranscriptAdaptorFinalCondition);
+    ensFeatureadaptorSetFinalCondition(ea->Adaptor,
+				       exonTranscriptadaptorFinalCondition);
     
     constraint =
 	ajFmtStr("exon_transcript.transcript_id = %u "
@@ -3426,7 +3426,7 @@ AjBool ensExonAdaptorFetchAllByTranscript(EnsPExonAdaptor ea,
 		 "exon.exon_id = exon_transcript.exon_id",
 		 ensTranscriptGetIdentifier(transcript));
     
-    ensFeatureAdaptorFetchAllBySliceConstraint(ea->Adaptor,
+    ensFeatureadaptorFetchAllBySliceConstraint(ea->Adaptor,
 					       eslice,
 					       constraint,
 					       (const AjPStr) NULL,
@@ -3437,9 +3437,9 @@ AjBool ensExonAdaptorFetchAllByTranscript(EnsPExonAdaptor ea,
     ** Ensembl Feature Adaptor this Exon Adaptor is based upon.
     */
     
-    ensFeatureAdaptorSetTables(ea->Adaptor, exonAdaptorTables);
+    ensFeatureadaptorSetTables(ea->Adaptor, exonAdaptorTables);
     
-    ensFeatureAdaptorSetFinalCondition(ea->Adaptor,
+    ensFeatureadaptorSetFinalCondition(ea->Adaptor,
 				       exonAdaptorFinalCondition);
     
     /* Remap Exon coordinates if neccessary. */
@@ -3478,27 +3478,27 @@ AjBool ensExonAdaptorFetchAllByTranscript(EnsPExonAdaptor ea,
 
 
 
-/* @func ensExonAdaptorFetchAllIdentifiers ************************************
+/* @func ensExonadaptorFetchAllIdentifiers ************************************
 **
 ** Fetch all SQL database-internal identifiers of Ensembl Exons.
 **
 ** The caller is responsible for deleting the AJAX unsigned integers before
 ** deleting the AJAX List.
 **
-** @param [u] ea [EnsPExonAdaptor] Ensembl Exon Adaptor
+** @param [u] ea [EnsPExonadaptor] Ensembl Exon Adaptor
 ** @param [u] idlist [AjPList] AJAX List of AJAX unsigned integers
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensExonAdaptorFetchAllIdentifiers(EnsPExonAdaptor ea, AjPList idlist)
+AjBool ensExonadaptorFetchAllIdentifiers(EnsPExonadaptor ea, AjPList idlist)
 {
     AjBool value = AJFALSE;
     
     AjPStr table = NULL;
     
-    EnsPBaseAdaptor ba = NULL;
+    EnsPBaseadaptor ba = NULL;
     
     if(!ea)
 	return ajFalse;
@@ -3506,11 +3506,11 @@ AjBool ensExonAdaptorFetchAllIdentifiers(EnsPExonAdaptor ea, AjPList idlist)
     if(!idlist)
 	return ajFalse;
     
-    ba = ensFeatureAdaptorGetBaseAdaptor(ea->Adaptor);
+    ba = ensFeatureadaptorGetBaseadaptor(ea->Adaptor);
     
     table = ajStrNewC("exon");
     
-    value = ensBaseAdaptorFetchAllIdentifiers(ba,
+    value = ensBaseadaptorFetchAllIdentifiers(ba,
 					      table,
 					      (AjPStr) NULL,
 					      idlist);
@@ -3523,21 +3523,21 @@ AjBool ensExonAdaptorFetchAllIdentifiers(EnsPExonAdaptor ea, AjPList idlist)
 
 
 
-/* @func ensExonAdaptorFetchAllStableIdentifiers ******************************
+/* @func ensExonadaptorFetchAllStableIdentifiers ******************************
 **
 ** Fetch all stable identifiers of Ensembl Exons.
 **
 ** The caller is responsible for deleting the AJAX Strings before
 ** deleting the AJAX List.
 **
-** @param [u] ea [EnsPExonAdaptor] Ensembl Exon Adaptor
+** @param [u] ea [EnsPExonadaptor] Ensembl Exon Adaptor
 ** @param [u] idlist [AjPList] AJAX List of AJAX Strings
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensExonAdaptorFetchAllStableIdentifiers(EnsPExonAdaptor ea,
+AjBool ensExonadaptorFetchAllStableIdentifiers(EnsPExonadaptor ea,
                                                AjPList idlist)
 {
     AjBool value = AJFALSE;
@@ -3545,7 +3545,7 @@ AjBool ensExonAdaptorFetchAllStableIdentifiers(EnsPExonAdaptor ea,
     AjPStr table  = NULL;
     AjPStr prikey = NULL;
     
-    EnsPBaseAdaptor ba = NULL;
+    EnsPBaseadaptor ba = NULL;
     
     if(!ea)
 	return ajFalse;
@@ -3553,18 +3553,18 @@ AjBool ensExonAdaptorFetchAllStableIdentifiers(EnsPExonAdaptor ea,
     if(!idlist)
 	return ajFalse;
     
-    ba = ensFeatureAdaptorGetBaseAdaptor(ea->Adaptor);
+    ba = ensFeatureadaptorGetBaseadaptor(ea->Adaptor);
     
     table  = ajStrNewC("exon_stable_id");
     prikey = ajStrNewC("stable_id");
     
     /*
-    ** FIXME: ensBaseAdaptorFetchAllIdentifiers is not up to the job
+    ** FIXME: ensBaseadaptorFetchAllIdentifiers is not up to the job
     ** to fetch Strings! We need another function or another parameter
     ** to select the data type of the SQL column.
     */
     
-    value = ensBaseAdaptorFetchAllIdentifiers(ba, table, prikey, idlist);
+    value = ensBaseadaptorFetchAllIdentifiers(ba, table, prikey, idlist);
     
     ajStrDel(&table);
     ajStrDel(&prikey);
@@ -3575,11 +3575,11 @@ AjBool ensExonAdaptorFetchAllStableIdentifiers(EnsPExonAdaptor ea,
 
 
 
-/* @datasection [EnsPSupportingFeatureAdaptor] Supporting Feature Adaptor *****
+/* @datasection [EnsPSupportingFeatureadaptor] Supporting Feature Adaptor *****
 **
 ** Functions for manipulating Ensembl Supporting Feature Adaptor objects
 **
-** @nam2rule SupportingFeatureAdaptor
+** @nam2rule SupportingFeatureadaptor
 **
 ******************************************************************************/
 
@@ -3591,7 +3591,7 @@ AjBool ensExonAdaptorFetchAllStableIdentifiers(EnsPExonAdaptor ea,
 ** Functions for retrieving Ensembl Base Align Feature objects from an
 ** Ensembl Core database.
 **
-** @fdata [EnsPDatabaseAdaptor]
+** @fdata [EnsPDatabaseadaptor]
 ** @fnote None
 **
 ** @nam3rule Fetch Retrieve Ensembl Base Align Feature object(s)
@@ -3601,7 +3601,7 @@ AjBool ensExonAdaptorFetchAllStableIdentifiers(EnsPExonAdaptor ea,
 ** @nam4rule FetchBy Retrieve one Ensembl Base Align Feature object
 **                   matching a criterion
 **
-** @argrule * adaptor [const EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @argrule * adaptor [const EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @argrule FetchAll [AjPList] AJAX List of Ensembl Base Align Feature objects
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -3612,11 +3612,11 @@ AjBool ensExonAdaptorFetchAllStableIdentifiers(EnsPExonAdaptor ea,
 
 
 
-/* @func ensSupportingFeatureAdaptorFetchAllByExon ****************************
+/* @func ensSupportingFeatureadaptorFetchAllByExon ****************************
 **
 ** Fetch Ensembl Supporting Features via an Ensembl Exon.
 **
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] exon [EnsPExon] Ensembl Exon
 ** @param [u] bafs [AjPList] AJAX List of Ensembl Base Align Features
 **
@@ -3624,15 +3624,15 @@ AjBool ensExonAdaptorFetchAllStableIdentifiers(EnsPExonAdaptor ea,
 ** @@
 ******************************************************************************/
 
-AjBool ensSupportingFeatureAdaptorFetchAllByExon(EnsPDatabaseAdaptor dba,
+AjBool ensSupportingFeatureadaptorFetchAllByExon(EnsPDatabaseadaptor dba,
                                                  EnsPExon exon,
                                                  AjPList bafs)
 {
     ajuint identifier = 0;
     
-    AjPSqlStatement sqls = NULL;
-    AjISqlRow sqli       = NULL;
-    AjPSqlRow sqlr       = NULL;
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
     
     AjPStr statement = NULL;
     AjPStr type      = NULL;
@@ -3645,9 +3645,9 @@ AjBool ensSupportingFeatureAdaptorFetchAllByExon(EnsPDatabaseAdaptor dba,
     
     EnsPBaseAlignFeature baf = NULL;
     
-    EnsPDNAAlignFeatureAdaptor dafa = NULL;
+    EnsPDNAAlignFeatureadaptor dafa = NULL;
     
-    EnsPProteinAlignFeatureAdaptor pafa = NULL;
+    EnsPProteinAlignFeatureadaptor pafa = NULL;
     
     if(!dba)
 	return ajFalse;
@@ -3660,7 +3660,7 @@ AjBool ensSupportingFeatureAdaptorFetchAllByExon(EnsPDatabaseAdaptor dba,
     
     if(ensExonGetIdentifier(exon) == 0)
     {
-	ajDebug("ensSupportingFeatureAdaptorFetchAllByExon cannot get "
+	ajDebug("ensSupportingFeatureadaptorFetchAllByExon cannot get "
 		"Supporting Features for an Exon without an identifier.\n");
 	
 	return ajFalse;
@@ -3670,9 +3670,9 @@ AjBool ensSupportingFeatureAdaptorFetchAllByExon(EnsPDatabaseAdaptor dba,
     
     eslice = ensFeatureGetSlice(efeature);
     
-    dafa = ensRegistryGetDNAAlignFeatureAdaptor(dba);
+    dafa = ensRegistryGetDNAAlignFeatureadaptor(dba);
     
-    pafa = ensRegistryGetProteinAlignFeatureAdaptor(dba);
+    pafa = ensRegistryGetProteinAlignFeatureadaptor(dba);
     
     statement = ajFmtStr("SELECT "
 			 "supporting_feature.feature_type, "
@@ -3683,30 +3683,30 @@ AjBool ensSupportingFeatureAdaptorFetchAllByExon(EnsPDatabaseAdaptor dba,
 			 "supporting_feature.exon_id = %u",
 			 ensExonGetIdentifier(exon));
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    sqli = ajSqlRowIterNew(sqls);
+    sqli = ajSqlrowiterNew(sqls);
     
-    while(!ajSqlRowIterDone(sqli))
+    while(!ajSqlrowiterDone(sqli))
     {
 	type = ajStrNew();
 	identifier = 0;
 	
-	sqlr = ajSqlRowIterGet(sqli);
+	sqlr = ajSqlrowiterGet(sqli);
 	
-	ajSqlColumnToStr(sqlr, &type);
-	ajSqlColumnToUint(sqlr, &identifier);
+	ajSqlcolumnToStr(sqlr, &type);
+	ajSqlcolumnToUint(sqlr, &identifier);
 	
 	if(ajStrMatchC(type, "dna_align_feature"))
-	    ensDNAAlignFeatureAdaptorFetchByIdentifier(dafa,
+	    ensDNAAlignFeatureadaptorFetchByIdentifier(dafa,
 						       identifier,
 						       &baf);
 	else if(ajStrMatchC(type, "protein_align_feature"))
-	    ensProteinAlignFeatureAdaptorFetchByIdentifier(pafa,
+	    ensProteinAlignFeatureadaptorFetchByIdentifier(pafa,
 							   identifier,
 							   &baf);
 	else
-	    ajWarn("ensSupportingFeatureAdaptorFetchAllByExon got "
+	    ajWarn("ensSupportingFeatureadaptorFetchAllByExon got "
 		   "unexpected value in supporting_feature.feature_type "
 		   "'%S'.\n", type);
 	
@@ -3723,16 +3723,16 @@ AjBool ensSupportingFeatureAdaptorFetchAllByExon(EnsPDatabaseAdaptor dba,
 	    ajListPushAppend(bafs, (void *) baf);
 	}
 	else
-	    ajDebug("ensSupportingFeatureAdaptorFetchAllByExon could not "
+	    ajDebug("ensSupportingFeatureadaptorFetchAllByExon could not "
 		    "retrieve Supporting feature of type '%S' and "
 		    "identifier %u from database.\n", type, identifier);
 	
 	ajStrDel(&type);
     }
     
-    ajSqlRowIterDel(&sqli);
+    ajSqlrowiterDel(&sqli);
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     ajStrDel(&statement);
     

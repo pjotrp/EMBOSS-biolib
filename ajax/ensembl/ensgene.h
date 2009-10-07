@@ -18,7 +18,7 @@
 
 /* Ensembl Gene */
 
-EnsPGene ensGeneNew(EnsPGeneAdaptor adaptor,
+EnsPGene ensGeneNew(EnsPGeneadaptor adaptor,
                     ajuint identifier,
                     EnsPFeature feature,
                     EnsPDatabaseEntry displaydbe,
@@ -39,7 +39,7 @@ EnsPGene ensGeneNewRef(EnsPGene gene);
 
 void ensGeneDel(EnsPGene* Pgene);
 
-EnsPGeneAdaptor ensGeneGetAdaptor(const EnsPGene gene);
+EnsPGeneadaptor ensGeneGetadaptor(const EnsPGene gene);
 
 ajuint ensGeneGetIdentifier(const EnsPGene gene);
 
@@ -71,7 +71,7 @@ const AjPList ensGeneGetDatabaseEntries(EnsPGene gene);
 
 const AjPList ensGeneGetTranscripts(EnsPGene gene);
 
-AjBool ensGeneSetAdaptor(EnsPGene gene, EnsPGeneAdaptor adaptor);
+AjBool ensGeneSetadaptor(EnsPGene gene, EnsPGeneadaptor adaptor);
 
 AjBool ensGeneSetIdentifier(EnsPGene gene, ajuint identifier);
 
@@ -130,23 +130,23 @@ EnsPGene ensGeneTransfer(EnsPGene gene, EnsPSlice slice);
 
 /* Ensembl Gene Adaptor */
 
-EnsPGeneAdaptor ensGeneAdaptorNew(EnsPDatabaseAdaptor dba);
+EnsPGeneadaptor ensGeneadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensGeneAdaptorDel(EnsPGeneAdaptor *Padaptor);
+void ensGeneadaptorDel(EnsPGeneadaptor *Padaptor);
 
-EnsPFeatureAdaptor ensGeneAdaptorGetFeatureAdaptor(
-    const EnsPGeneAdaptor adaptor);
+EnsPFeatureadaptor ensGeneadaptorGetFeatureadaptor(
+    const EnsPGeneadaptor adaptor);
 
-EnsPDatabaseAdaptor ensGeneAdaptorGetDatabaseAdaptor(
-    const EnsPGeneAdaptor adaptor);
+EnsPDatabaseadaptor ensGeneadaptorGetDatabaseadaptor(
+    const EnsPGeneadaptor adaptor);
 
-AjBool ensGeneAdaptorFetchAll(EnsPGeneAdaptor adaptor, AjPList genes);
+AjBool ensGeneadaptorFetchAll(EnsPGeneadaptor adaptor, AjPList genes);
 
-AjBool ensGeneAdaptorFetchByIdentifier(EnsPGeneAdaptor adaptor,
+AjBool ensGeneadaptorFetchByIdentifier(EnsPGeneadaptor adaptor,
                                        ajuint identifier,
                                        EnsPGene *Pgene);
 
-AjBool ensGeneAdaptorFetchByStableIdentifier(EnsPGeneAdaptor adaptor,
+AjBool ensGeneadaptorFetchByStableIdentifier(EnsPGeneadaptor adaptor,
                                              const AjPStr stableid,
                                              ajuint version,
                                              EnsPGene *Pgene);

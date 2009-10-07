@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -58,43 +58,43 @@ static const char *externalReferenceInfoType[] =
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-extern EnsPAnalysisAdaptor
-ensRegistryGetAnalysisAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPAnalysisadaptor
+ensRegistryGetAnalysisadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPExternalDatabaseAdaptor
-ensRegistryGetExternalDatabaseAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPExternalDatabaseadaptor
+ensRegistryGetExternalDatabaseadaptor(EnsPDatabaseadaptor dba);
 
-static AjBool databaseEntryAdaptorHasLinkage(AjPTable linkages,
+static AjBool databaseEntryadaptorHasLinkage(AjPTable linkages,
                                              ajuint xrefid,
                                              AjPStr linkage);
 
-static AjBool databaseEntryAdaptorHasSynonym(AjPTable synonyms,
+static AjBool databaseEntryadaptorHasSynonym(AjPTable synonyms,
                                              ajuint xrefid,
                                              AjPStr synonym);
 
-static AjBool databaseEntryAdaptorCacheClear(AjPTable table);
+static AjBool databaseEntryadaptorCacheClear(AjPTable table);
 
-static AjBool databaseEntryAdaptorTempClear(AjPTable table);
+static AjBool databaseEntryadaptorTempClear(AjPTable table);
 
-static AjBool databaseEntryAdaptorFetchAllBySQL(EnsPDatabaseEntryAdaptor dbea,
+static AjBool databaseEntryadaptorFetchAllBySQL(EnsPDatabaseEntryadaptor dbea,
                                                 const AjPStr statement,
                                                 AjPList dbes);
 
-static int databaseEntryAdaptorCompareIdentifier(const void *P1,
+static int databaseEntryadaptorCompareIdentifier(const void *P1,
                                                  const void *P2);
 
-static void databaseEntryAdaptorDeleteIdentifier(void **PP1, void *cl);
+static void databaseEntryadaptorDeleteIdentifier(void **PP1, void *cl);
 
-static AjBool databaseEntryAdaptorFetchAllIdentifiersByExternalName(
-    EnsPDatabaseEntryAdaptor dbea,
+static AjBool databaseEntryadaptorFetchAllIdentifiersByExternalName(
+    EnsPDatabaseEntryadaptor dbea,
     AjPStr name,
     AjPStr ensembltype,
     AjPStr extratype,
     AjPStr dbname,
     AjPList idlist);
 
-static AjBool databaseEntryAdaptorFetchAllIdentifiersByExternalDatabaseName(
-    EnsPDatabaseEntryAdaptor dbea,
+static AjBool databaseEntryadaptorFetchAllIdentifiersByExternalDatabaseName(
+    EnsPDatabaseEntryadaptor dbea,
     AjPStr dbname,
     AjPStr ensembltype,
     AjPStr extratype,
@@ -414,7 +414,7 @@ void ensExternalReferenceDel(EnsPExternalReference *Per)
 ** @fnote None
 **
 ** @nam3rule Get Return External Reference attribute(s)
-** @nam4rule GetAdaptor Return the Ensembl External Reference Adaptor
+** @nam4rule Getadaptor Return the Ensembl External Reference Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetAnalysis Return the Ensembl Analysis
 ** @nam4rule GetExternalDatabase Return the Ensembl External Database
@@ -428,7 +428,7 @@ void ensExternalReferenceDel(EnsPExternalReference *Per)
 **
 ** @argrule * er [const EnsPExternalReference] External Reference
 **
-** @valrule Adaptor [EnsPExternalReferenceAdaptor] Ensembl External
+** @valrule Adaptor [EnsPExternalReferenceadaptor] Ensembl External
 **                                                 Reference Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule Analysis [EnsPAnalysis] Ensembl Analysis
@@ -447,21 +447,21 @@ void ensExternalReferenceDel(EnsPExternalReference *Per)
 
 
 
-/* @func ensExternalReferenceGetAdaptor ***************************************
+/* @func ensExternalReferenceGetadaptor ***************************************
 **
 ** Get the Ensembl External Reference Adaptor element of an
 ** Ensembl External Reference.
 **
 ** @param [r] er [const EnsPExternalReference] Ensembl External Reference
 **
-** @return [const EnsPExternalReferenceAdaptor] Ensembl External Reference
+** @return [const EnsPExternalReferenceadaptor] Ensembl External Reference
 **                                              Adaptor
 ** @@
 ******************************************************************************/
 
 #if AJFALSE
 
-const EnsPExternalReferenceAdaptor ensExternalReferenceGetAdaptor(
+const EnsPExternalReferenceadaptor ensExternalReferenceGetadaptor(
     const EnsPExternalReference er)
 {
     if(!er)
@@ -696,7 +696,7 @@ AjEnum ensExternalReferenceGetInfoType(const EnsPExternalReference er)
 ** @fnote None
 **
 ** @nam3rule Set Set one element of an Ensembl External Reference
-** @nam4rule SetAdaptor Set the Ensembl External Database Adaptor
+** @nam4rule Setadaptor Set the Ensembl External Database Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetAnalysis Set the Ensembl Analysis
 ** @nam4rule SetExternalDatabase Set the Ensembl External Database
@@ -719,13 +719,13 @@ AjEnum ensExternalReferenceGetInfoType(const EnsPExternalReference er)
 
 
 
-/* @func ensExternalReferenceSetAdaptor ***************************************
+/* @func ensExternalReferenceSetadaptor ***************************************
 **
 ** Set the Ensembl External Reference Adaptor element of an
 ** Ensembl External Reference.
 **
 ** @param [u] er [EnsPExternalReference] Ensembl External Reference
-** @param [r] adaptor [EnsPExternalReferenceAdaptor] Ensembl External
+** @param [r] adaptor [EnsPExternalReferenceadaptor] Ensembl External
 **                                                   Reference Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -734,8 +734,8 @@ AjEnum ensExternalReferenceGetInfoType(const EnsPExternalReference er)
 
 #if AJFALSE
 
-AjBool ensExternalReferenceSetAdaptor(EnsPExternalReference er,
-                                      EnsPExternalReferenceAdaptor adaptor)
+AjBool ensExternalReferenceSetadaptor(EnsPExternalReference er,
+                                      EnsPExternalReferenceadaptor adaptor)
 {
     if(!er)
         return ajFalse;
@@ -2248,7 +2248,7 @@ void ensGeneOntologyLinkageDel(EnsPGeneOntologyLinkage *Pgol)
 ** Default constructor for an Ensembl Database Entry.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] adaptor [const EnsPDatabaseEntryAdaptor] Ensembl Database
+** @param [r] adaptor [const EnsPDatabaseEntryadaptor] Ensembl Database
 **                                                     Entry Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::DBEntry::new
@@ -2266,7 +2266,7 @@ void ensGeneOntologyLinkageDel(EnsPGeneOntologyLinkage *Pgol)
 ** @@
 ******************************************************************************/
 
-EnsPDatabaseEntry ensDatabaseEntryNew(EnsPDatabaseEntryAdaptor adaptor,
+EnsPDatabaseEntry ensDatabaseEntryNew(EnsPDatabaseEntryadaptor adaptor,
                                       ajuint identifier,
                                       EnsPAnalysis analysis,
                                       EnsPExternalDatabase edb,
@@ -2535,7 +2535,7 @@ void ensDatabaseEntryDel(EnsPDatabaseEntry *Pdbe)
 ** @fnote None
 **
 ** @nam3rule Get Return Database Entry attribute(s)
-** @nam4rule GetAdaptor Return the Ensembl Database Entry Adaptor
+** @nam4rule Getadaptor Return the Ensembl Database Entry Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetPrimaryIdentifier Return the primary identifier
 ** @nam4rule GetDisplayIdentifier Return the display identifier
@@ -2549,7 +2549,7 @@ void ensDatabaseEntryDel(EnsPDatabaseEntry *Pdbe)
 **
 ** @argrule * edb [const EnsPExternalDatabase] External Database
 **
-** @valrule Adaptor [EnsPExternalDatabaseAdaptor] Ensembl External
+** @valrule Adaptor [EnsPExternalDatabaseadaptor] Ensembl External
 **                                                Database Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule Name [AjPStr] Name
@@ -2568,18 +2568,18 @@ void ensDatabaseEntryDel(EnsPDatabaseEntry *Pdbe)
 
 
 
-/* @func ensDatabaseEntryGetAdaptor *******************************************
+/* @func ensDatabaseEntryGetadaptor *******************************************
 **
 ** Get the Ensembl Database Entry Adaptor element of an
 ** Ensembl Database Entry.
 **
 ** @param [r] dbe [const EnsPDatabaseEntry] Ensembl Database Entry
 **
-** @return [const EnsPDatabaseEntryAdaptor] Ensembl Database Entry Adaptor
+** @return [const EnsPDatabaseEntryadaptor] Ensembl Database Entry Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPDatabaseEntryAdaptor ensDatabaseEntryGetAdaptor(const EnsPDatabaseEntry dbe)
+EnsPDatabaseEntryadaptor ensDatabaseEntryGetadaptor(const EnsPDatabaseEntry dbe)
 {
     if(!dbe)
 	return NULL;
@@ -3344,18 +3344,18 @@ AjBool EnsDatabaseEntryClearGeneOntologyLinkageTypes(EnsPDatabaseEntry dbe)
 
 
 
-/* @datasection [EnsPDatabaseEntryAdaptor] Database Entry Adaptor *************
+/* @datasection [EnsPDatabaseEntryadaptor] Database Entry Adaptor *************
 **
 ** Functions for manipulating Ensembl Database Entry Adaptor objects
 **
-** @cc Bio::EnsEMBL::DBSQL::DBEntryAdaptor CVS Revision: 1.124
+** @cc Bio::EnsEMBL::DBSQL::DBEntryadaptor CVS Revision: 1.124
 **
-** @nam2rule DatabaseEntryAdaptor
+** @nam2rule DatabaseEntryadaptor
 **
 ******************************************************************************/
 
 /*
- static const char *databaseEntryAdaptorTables[] =
+ static const char *databaseEntryadaptorTables[] =
  {
      "xref",
      "external_db",
@@ -3364,7 +3364,7 @@ AjBool EnsDatabaseEntryClearGeneOntologyLinkageTypes(EnsPDatabaseEntry dbe)
      NULL
  };
  
- static const char *databaseEntryAdaptorColumns[] =
+ static const char *databaseEntryadaptorColumns[] =
  {
      "xref.xref_id",
      "xref.dbprimary_acc",
@@ -3388,7 +3388,7 @@ AjBool EnsDatabaseEntryClearGeneOntologyLinkageTypes(EnsPDatabaseEntry dbe)
      NULL
  };
  
- static EnsOBaseAdaptorLeftJoin databaseEntryAdaptorLeftJoin[] =
+ static EnsOBaseadaptorLeftJoin databaseEntryadaptorLeftJoin[] =
  {
  {
      "external_db",
@@ -3401,16 +3401,16 @@ AjBool EnsDatabaseEntryClearGeneOntologyLinkageTypes(EnsPDatabaseEntry dbe)
  {NULL, NULL}
  };
  
- static const char *databaseEntryAdaptorDefaultCondition = NULL;
+ static const char *databaseEntryadaptorDefaultCondition = NULL;
  
- static const char *databaseEntryAdaptorFinalCondition = NULL;
+ static const char *databaseEntryadaptorFinalCondition = NULL;
  
  */
 
 
 
 
-/* @funcstatic databaseEntryAdaptorHasLinkage *********************************
+/* @funcstatic databaseEntryadaptorHasLinkage *********************************
 **
 ** Check whether a linkage String has already been indexed for a particular
 ** Ensembl External Reference identifier.
@@ -3430,7 +3430,7 @@ AjBool EnsDatabaseEntryClearGeneOntologyLinkageTypes(EnsPDatabaseEntry dbe)
 ** value data.
 ******************************************************************************/
 
-static AjBool databaseEntryAdaptorHasLinkage(AjPTable linkages,
+static AjBool databaseEntryadaptorHasLinkage(AjPTable linkages,
                                              ajuint xrefid,
                                              AjPStr linkage)
 {
@@ -3489,7 +3489,7 @@ static AjBool databaseEntryAdaptorHasLinkage(AjPTable linkages,
 
 
 
-/* @funcstatic databaseEntryAdaptorHasSynonym *********************************
+/* @funcstatic databaseEntryadaptorHasSynonym *********************************
 **
 ** Check whether a synonym String has already been indexed for a particular
 ** Ensembl External Reference identifier.
@@ -3509,7 +3509,7 @@ static AjBool databaseEntryAdaptorHasLinkage(AjPTable linkages,
 ** value data.
 ******************************************************************************/
 
-static AjBool databaseEntryAdaptorHasSynonym(AjPTable synonyms,
+static AjBool databaseEntryadaptorHasSynonym(AjPTable synonyms,
                                              ajuint xrefid,
                                              AjPStr synonym)
 {
@@ -3568,7 +3568,7 @@ static AjBool databaseEntryAdaptorHasSynonym(AjPTable synonyms,
 
 
 
-/* @funcstatic databaseEntryAdaptorCacheClear *********************************
+/* @funcstatic databaseEntryadaptorCacheClear *********************************
 **
 ** Clear an Ensembl Database Entry Adaptor-internal cache.
 **
@@ -3582,7 +3582,7 @@ static AjBool databaseEntryAdaptorHasSynonym(AjPTable synonyms,
 ** @@
 ******************************************************************************/
 
-static AjBool databaseEntryAdaptorCacheClear(AjPTable table)
+static AjBool databaseEntryadaptorCacheClear(AjPTable table)
 {
     void **keyarray1 = NULL;
     void **valarray1 = NULL;
@@ -3641,7 +3641,7 @@ static AjBool databaseEntryAdaptorCacheClear(AjPTable table)
 
 
 
-/* @funcstatic databaseEntryAdaptorTempClear **********************************
+/* @funcstatic databaseEntryadaptorTempClear **********************************
 **
 ** Clear an Ensembl Database Entry Adaptor-internal cache.
 **
@@ -3654,7 +3654,7 @@ static AjBool databaseEntryAdaptorCacheClear(AjPTable table)
 ** @@
 ******************************************************************************/
 
-static AjBool databaseEntryAdaptorTempClear(AjPTable table)
+static AjBool databaseEntryadaptorTempClear(AjPTable table)
 {
     void **keyarray = NULL;
     void **valarray = NULL;
@@ -3688,12 +3688,12 @@ static AjBool databaseEntryAdaptorTempClear(AjPTable table)
 
 
 
-/* @funcstatic databaseEntryAdaptorFetchAllBySQL ******************************
+/* @funcstatic databaseEntryadaptorFetchAllBySQL ******************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl Database Entry objects.
 **
-** @param [r] dbea [EnsPDatabaseEntryAdaptor] Ensembl Database Entry Adaptor
+** @param [r] dbea [EnsPDatabaseEntryadaptor] Ensembl Database Entry Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
 ** @param [u] dbes [AjPList] AJAX List of Ensembl Database Entries
 **
@@ -3701,7 +3701,7 @@ static AjBool databaseEntryAdaptorTempClear(AjPTable table)
 ** @@
 ******************************************************************************/
 
-static AjBool databaseEntryAdaptorFetchAllBySQL(EnsPDatabaseEntryAdaptor dbea,
+static AjBool databaseEntryadaptorFetchAllBySQL(EnsPDatabaseEntryadaptor dbea,
                                                 const AjPStr statement,
                                                 AjPList dbes)
 {
@@ -3729,9 +3729,9 @@ static AjBool databaseEntryAdaptorFetchAllBySQL(EnsPDatabaseEntryAdaptor dbea,
     AjPTable linkages = NULL;
     AjPTable synonyms = NULL;
     
-    AjPSqlStatement sqls = NULL;
-    AjISqlRow sqli       = NULL;
-    AjPSqlRow sqlr       = NULL;
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
     
     AjPStr primaryid         = NULL;
     AjPStr displayid         = NULL;
@@ -3747,13 +3747,13 @@ static AjBool databaseEntryAdaptorFetchAllBySQL(EnsPDatabaseEntryAdaptor dbea,
     AjPStr golinkage = NULL;
     
     EnsPAnalysis analysis  = NULL;
-    EnsPAnalysisAdaptor aa = NULL;
+    EnsPAnalysisadaptor aa = NULL;
     
     EnsPDatabaseEntry dbe       = NULL;
     EnsPDatabaseEntry sourcedbe = NULL;
     
     EnsPExternalDatabase edb         = NULL;
-    EnsPExternalDatabaseAdaptor edba = NULL;
+    EnsPExternalDatabaseadaptor edba = NULL;
     
     if(!dbea)
 	return ajFalse;
@@ -3764,19 +3764,19 @@ static AjBool databaseEntryAdaptorFetchAllBySQL(EnsPDatabaseEntryAdaptor dbea,
     if(!dbes)
 	return ajFalse;
     
-    aa = ensRegistryGetAnalysisAdaptor(dbea->Adaptor);
+    aa = ensRegistryGetAnalysisadaptor(dbea->Adaptor);
     
-    edba = ensRegistryGetExternalDatabaseAdaptor(dbea->Adaptor);
+    edba = ensRegistryGetExternalDatabaseadaptor(dbea->Adaptor);
     
     detable  = MENSTABLEUINTNEW(0);
     linkages = MENSTABLEUINTNEW(0);
     synonyms = MENSTABLEUINTNEW(0);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dbea->Adaptor, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dbea->Adaptor, statement);
     
-    sqli = ajSqlRowIterNew(sqls);
+    sqli = ajSqlrowiterNew(sqls);
     
-    while(!ajSqlRowIterDone(sqli))
+    while(!ajSqlrowiterDone(sqli))
     {
 	/* 'xref' table */
 	xrefid = 0;
@@ -3792,7 +3792,7 @@ static AjBool databaseEntryAdaptorFetchAllBySQL(EnsPDatabaseEntryAdaptor dbea,
 	/* 'external_synonym' table */
 	synonym     = ajStrNew();
 	
-	if(ajSqlRowGetColumns(sqlr) > 10)
+	if(ajSqlrowGetColumns(sqlr) > 10)
 	{
 	    /* 'object_xref' table */
 	    objxrfid = 0;
@@ -3813,39 +3813,39 @@ static AjBool databaseEntryAdaptorFetchAllBySQL(EnsPDatabaseEntryAdaptor dbea,
 	    sourceid  = 0;
 	}
 	
-	sqlr = ajSqlRowIterGet(sqli);
+	sqlr = ajSqlrowiterGet(sqli);
 	
 	/* 'xref' table */
-	ajSqlColumnToUint(sqlr, &xrefid);
-	ajSqlColumnToUint(sqlr, &edbid);
-	ajSqlColumnToStr(sqlr, &primaryid);
-	ajSqlColumnToStr(sqlr, &displayid);
-	ajSqlColumnToStr(sqlr, &version);
-	ajSqlColumnToStr(sqlr, &description);
-	ajSqlColumnToStr(sqlr, &infotype);
-	ajSqlColumnToStr(sqlr, &infotext);
+	ajSqlcolumnToUint(sqlr, &xrefid);
+	ajSqlcolumnToUint(sqlr, &edbid);
+	ajSqlcolumnToStr(sqlr, &primaryid);
+	ajSqlcolumnToStr(sqlr, &displayid);
+	ajSqlcolumnToStr(sqlr, &version);
+	ajSqlcolumnToStr(sqlr, &description);
+	ajSqlcolumnToStr(sqlr, &infotype);
+	ajSqlcolumnToStr(sqlr, &infotext);
 	/* 'external_synonym' table */
-	ajSqlColumnToStr(sqlr, &synonym);
+	ajSqlcolumnToStr(sqlr, &synonym);
 	
-	if(ajSqlRowGetColumns(sqlr) > 10)
+	if(ajSqlrowGetColumns(sqlr) > 10)
 	{
 	    /* 'object_xref' table */
-	    ajSqlColumnToUint(sqlr, &objxrfid);
-	    ajSqlColumnToStr(sqlr, &linkageannotation);
-	    ajSqlColumnToUint(sqlr, &analysisid);
+	    ajSqlcolumnToUint(sqlr, &objxrfid);
+	    ajSqlcolumnToStr(sqlr, &linkageannotation);
+	    ajSqlcolumnToUint(sqlr, &analysisid);
 	    /* 'identity_xref' table */
-	    ajSqlColumnToInt(sqlr, &ierqryidt);
-	    ajSqlColumnToInt(sqlr, &iertrgidt);
-	    ajSqlColumnToInt(sqlr, &ierqrysrt);
-	    ajSqlColumnToInt(sqlr, &ierqryend);
-	    ajSqlColumnToInt(sqlr, &iertrgsrt);
-	    ajSqlColumnToInt(sqlr, &iertrgend);
-	    ajSqlColumnToStr(sqlr, &cigar);
-	    ajSqlColumnToDouble(sqlr, &score);
-	    ajSqlColumnToDouble(sqlr, &evalue);
+	    ajSqlcolumnToInt(sqlr, &ierqryidt);
+	    ajSqlcolumnToInt(sqlr, &iertrgidt);
+	    ajSqlcolumnToInt(sqlr, &ierqrysrt);
+	    ajSqlcolumnToInt(sqlr, &ierqryend);
+	    ajSqlcolumnToInt(sqlr, &iertrgsrt);
+	    ajSqlcolumnToInt(sqlr, &iertrgend);
+	    ajSqlcolumnToStr(sqlr, &cigar);
+	    ajSqlcolumnToDouble(sqlr, &score);
+	    ajSqlcolumnToDouble(sqlr, &evalue);
 	    /* 'go_xref' table */
-	    ajSqlColumnToStr(sqlr, &golinkage);
-	    ajSqlColumnToUint(sqlr, &sourceid);
+	    ajSqlcolumnToStr(sqlr, &golinkage);
+	    ajSqlcolumnToUint(sqlr, &sourceid);
 	}
 	
 	dbe = (EnsPDatabaseEntry)
@@ -3856,13 +3856,13 @@ static AjBool databaseEntryAdaptorFetchAllBySQL(EnsPDatabaseEntryAdaptor dbea,
 	    einfotype = ensExternalReferenceInfoTypeFromStr(infotype);
 	    
 	    if(!einfotype)
-		ajFatal("databaseEntryAdaptorFetchAllBySQL encountered "
+		ajFatal("databaseEntryadaptorFetchAllBySQL encountered "
 			"unexpected string '%S' in the "
 			"'xref.infotype' field.\n", infotype);
 	    
-	    ensAnalysisAdaptorFetchByIdentifier(aa, analysisid, &analysis);
+	    ensAnalysisadaptorFetchByIdentifier(aa, analysisid, &analysis);
 	    
-	    ensExternalDatabaseAdaptorFetchByIdentifier(edba, edbid, &edb);
+	    ensExternalDatabaseadaptorFetchByIdentifier(edba, edbid, &edb);
 	    
 	    dbe = ensDatabaseEntryNew(dbea,
 				      xrefid,
@@ -3904,14 +3904,14 @@ static AjBool databaseEntryAdaptorFetchAllBySQL(EnsPDatabaseEntryAdaptor dbea,
 	}
 	
 	if(synonym && ajStrGetLen(synonym) &&
-           (! databaseEntryAdaptorHasSynonym(synonyms, xrefid, synonym)))
+           (! databaseEntryadaptorHasSynonym(synonyms, xrefid, synonym)))
             ajListPushAppend(dbe->Synonyms,
                              (void *) ajStrNewRef(synonym));
 	
 	if(golinkage && ajStrGetLen(golinkage) &&
-           (! databaseEntryAdaptorHasLinkage(linkages, xrefid, golinkage)))
+           (! databaseEntryadaptorHasLinkage(linkages, xrefid, golinkage)))
 	{
-	    ensDatabaseEntryAdaptorFetchByIdentifier(dbea,
+	    ensDatabaseEntryadaptorFetchByIdentifier(dbea,
 						     sourceid,
 						     &sourcedbe);
 	    
@@ -3929,22 +3929,22 @@ static AjBool databaseEntryAdaptorFetchAllBySQL(EnsPDatabaseEntryAdaptor dbea,
 	ajStrDel(&infotext);
 	ajStrDel(&synonym);
 	
-	if(ajSqlRowGetColumns(sqlr) > 10)
+	if(ajSqlrowGetColumns(sqlr) > 10)
 	{
 	    ajStrDel(&cigar);
 	    ajStrDel(&golinkage);
 	}
     }
     
-    ajSqlRowIterDel(&sqli);
+    ajSqlrowiterDel(&sqli);
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
-    databaseEntryAdaptorCacheClear(linkages);
+    databaseEntryadaptorCacheClear(linkages);
     
-    databaseEntryAdaptorCacheClear(synonyms);
+    databaseEntryadaptorCacheClear(synonyms);
     
-    databaseEntryAdaptorTempClear(detable);
+    databaseEntryadaptorTempClear(detable);
     
     ajTableFree(&linkages);
     
@@ -3965,20 +3965,20 @@ static AjBool databaseEntryAdaptorFetchAllBySQL(EnsPDatabaseEntryAdaptor dbea,
 ** Database Entry Adaptor. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPDatabaseEntryAdaptor]
+** @fdata [EnsPDatabaseEntryadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule New dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPDatabaseEntryAdaptor] Ensembl Database
+** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+** @argrule Obj object [EnsPDatabaseEntryadaptor] Ensembl Database
 **                                                Entry Adaptor
-** @argrule Ref object [EnsPDatabaseEntryAdaptor] Ensembl Database
+** @argrule Ref object [EnsPDatabaseEntryadaptor] Ensembl Database
 **                                                Entry Adaptor
 **
-** @valrule * [EnsPDatabaseEntryAdaptor] Ensembl Database Entry Adaptor
+** @valrule * [EnsPDatabaseEntryadaptor] Ensembl Database Entry Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -3986,20 +3986,20 @@ static AjBool databaseEntryAdaptorFetchAllBySQL(EnsPDatabaseEntryAdaptor dbea,
 
 
 
-/* @func ensDatabaseEntryAdaptorNew *******************************************
+/* @func ensDatabaseEntryadaptorNew *******************************************
 **
 ** Default Ensembl Database Entry Adaptor constructor.
 **
-** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::new
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @cc Bio::EnsEMBL::DBSQL::Baseadaptor::new
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPDatabaseEntryAdaptor] Ensembl Database Entry Adaptor or NULL
+** @return [EnsPDatabaseEntryadaptor] Ensembl Database Entry Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPDatabaseEntryAdaptor ensDatabaseEntryAdaptorNew(EnsPDatabaseAdaptor dba)
+EnsPDatabaseEntryadaptor ensDatabaseEntryadaptorNew(EnsPDatabaseadaptor dba)
 {
-    EnsPDatabaseEntryAdaptor dbea = NULL;
+    EnsPDatabaseEntryadaptor dbea = NULL;
     
     if(!dba)
 	return NULL;
@@ -4019,12 +4019,12 @@ EnsPDatabaseEntryAdaptor ensDatabaseEntryAdaptorNew(EnsPDatabaseAdaptor dba)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Database Entry Adaptor.
 **
-** @fdata [EnsPDatabaseEntryAdaptor]
+** @fdata [EnsPDatabaseEntryadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) an Ensembl Database Entry Adaptor object
 **
-** @argrule * Pdbea [EnsPDatabaseEntryAdaptor*] Ensembl Database Entry
+** @argrule * Pdbea [EnsPDatabaseEntryadaptor*] Ensembl Database Entry
 **                                              Adaptor object address
 **
 ** @valrule * [void]
@@ -4035,18 +4035,18 @@ EnsPDatabaseEntryAdaptor ensDatabaseEntryAdaptorNew(EnsPDatabaseAdaptor dba)
 
 
 
-/* @func ensDatabaseEntryAdaptorDel *******************************************
+/* @func ensDatabaseEntryadaptorDel *******************************************
 **
 ** Default destructor for an Ensembl Database Entry Adaptor.
 **
-** @param [d] Pdbea [EnsPDatabaseEntryAdaptor*] Ensembl Database Entry Adaptor
+** @param [d] Pdbea [EnsPDatabaseEntryadaptor*] Ensembl Database Entry Adaptor
 **                                              address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensDatabaseEntryAdaptorDel(EnsPDatabaseEntryAdaptor *Pdbea)
+void ensDatabaseEntryadaptorDel(EnsPDatabaseEntryadaptor *Pdbea)
 {
     if(!Pdbea)
 	return;
@@ -4069,16 +4069,16 @@ void ensDatabaseEntryAdaptorDel(EnsPDatabaseEntryAdaptor *Pdbea)
 ** Functions for returning elements of an Ensembl Database Entry Adaptor
 ** object.
 **
-** @fdata [EnsPDatabaseEntryAdaptor]
+** @fdata [EnsPDatabaseEntryadaptor]
 ** @fnote None
 **
 ** @nam3rule Get Return Ensembl Database Entry Adaptor attribute(s)
-** @nam4rule GetAdaptor Return the Ensembl Database Adaptor
+** @nam4rule Getadaptor Return the Ensembl Database Adaptor
 **
-** @argrule * adaptor [const EnsPDatabaseEntryAdaptor] Ensembl Database
+** @argrule * adaptor [const EnsPDatabaseEntryadaptor] Ensembl Database
 **                                                     Entry Adaptor
 **
-** @valrule Adaptor [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @valrule Adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
 ** @fcategory use
 ******************************************************************************/
@@ -4086,20 +4086,20 @@ void ensDatabaseEntryAdaptorDel(EnsPDatabaseEntryAdaptor *Pdbea)
 
 
 
-/* @func ensDatabaseEntryAdaptorGetDatabaseAdaptor ****************************
+/* @func ensDatabaseEntryadaptorGetDatabaseadaptor ****************************
 **
 ** Get the Ensembl Database Adaptor element of an
 ** Ensembl Database Entry Adaptor.
 **
-** @param [r] dbea [const EnsPDatabaseEntryAdaptor] Ensembl Database
+** @param [r] dbea [const EnsPDatabaseEntryadaptor] Ensembl Database
 **                                                  Entry Adaptor
 **
-** @return [EnsPDatabaseAdaptor] Ensembl Database Adaptor or NULL
+** @return [EnsPDatabaseadaptor] Ensembl Database Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPDatabaseAdaptor ensDatabaseEntryAdaptorGetDatabaseAdaptor(
-    const EnsPDatabaseEntryAdaptor dbea)
+EnsPDatabaseadaptor ensDatabaseEntryadaptorGetDatabaseadaptor(
+    const EnsPDatabaseEntryadaptor dbea)
 {
     if(!dbea)
 	return NULL;
@@ -4115,7 +4115,7 @@ EnsPDatabaseAdaptor ensDatabaseEntryAdaptorGetDatabaseAdaptor(
 ** Functions for retrieving Ensembl Database Entry objects from an
 ** Ensembl Core database.
 **
-** @fdata [EnsPDatabaseEntryAdaptor]
+** @fdata [EnsPDatabaseEntryadaptor]
 ** @fnote None
 **
 ** @nam3rule Fetch Retrieve Ensembl Database Entry object(s)
@@ -4125,7 +4125,7 @@ EnsPDatabaseAdaptor ensDatabaseEntryAdaptorGetDatabaseAdaptor(
 ** @nam4rule FetchBy Retrieve one Ensembl Database Entry object
 **                   matching a criterion
 **
-** @argrule * adaptor [const EnsPDatabaseEntryAdaptor] Ensembl Database
+** @argrule * adaptor [const EnsPDatabaseEntryadaptor] Ensembl Database
 **                                                     Entry Adaptor
 ** @argrule FetchAll [AjPList] AJAX List of Ensembl Database Entry objects
 **
@@ -4137,12 +4137,12 @@ EnsPDatabaseAdaptor ensDatabaseEntryAdaptorGetDatabaseAdaptor(
 
 
 
-/* @func ensDatabaseEntryAdaptorFetchByIdentifier *****************************
+/* @func ensDatabaseEntryadaptorFetchByIdentifier *****************************
 **
 ** Fetch an Ensembl Database Entry via its internal SQL database identifier.
 **
-** @cc Bio::EnsEMBL::DBSQL DBEntryAdaptor::fetch_by_dbID
-** @param [r] dbea [EnsPDatabaseEntryAdaptor] Ensembl Database Entry Adaptor
+** @cc Bio::EnsEMBL::DBSQL DBEntryadaptor::fetch_by_dbID
+** @param [r] dbea [EnsPDatabaseEntryadaptor] Ensembl Database Entry Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @param [wP] Pdbe [EnsPDatabaseEntry*] Ensembl Database Entry address
 **
@@ -4150,7 +4150,7 @@ EnsPDatabaseAdaptor ensDatabaseEntryAdaptorGetDatabaseAdaptor(
 ** @@
 ******************************************************************************/
 
-AjBool ensDatabaseEntryAdaptorFetchByIdentifier(EnsPDatabaseEntryAdaptor dbea,
+AjBool ensDatabaseEntryadaptorFetchByIdentifier(EnsPDatabaseEntryadaptor dbea,
                                                 ajuint identifier,
                                                 EnsPDatabaseEntry *Pdbe)
 {
@@ -4190,17 +4190,17 @@ AjBool ensDatabaseEntryAdaptorFetchByIdentifier(EnsPDatabaseEntryAdaptor dbea,
     
     dbes = ajListNew();
     
-    databaseEntryAdaptorFetchAllBySQL(dbea, statement, dbes);
+    databaseEntryadaptorFetchAllBySQL(dbea, statement, dbes);
     
     ajStrDel(&statement);
     
     if(!ajListGetLength(dbes))
-	ajDebug("ensDatabaseEntryAdaptorFetchById did not get an "
+	ajDebug("ensDatabaseEntryadaptorFetchById did not get an "
 		"Ensembl Database Entry for identifier %u.\n",
 		identifier);
     
     if(ajListGetLength(dbes) > 1)
-	ajDebug("ensDatabaseEntryAdaptorFetchById got more than one (%u) "
+	ajDebug("ensDatabaseEntryadaptorFetchById got more than one (%u) "
 		"Ensembl Database Entry for identifier %u.\n",
 		ajListGetLength(dbes), identifier);
     
@@ -4217,12 +4217,12 @@ AjBool ensDatabaseEntryAdaptorFetchByIdentifier(EnsPDatabaseEntryAdaptor dbea,
 
 
 
-/* @func ensDatabaseEntryAdaptorFetchByDbNameAccession ************************
+/* @func ensDatabaseEntryadaptorFetchByDbNameAccession ************************
 **
 ** Fetch an Ensembl Database Entry via its database name and accession number.
 **
-** @cc Bio::EnsEMBL::DBSQL::DBEntryAdaptor::fetch_by_db_accession
-** @param [r] dbea [EnsPDatabaseEntryAdaptor] Ensembl Database Entry Adaptor
+** @cc Bio::EnsEMBL::DBSQL::DBEntryadaptor::fetch_by_db_accession
+** @param [r] dbea [EnsPDatabaseEntryadaptor] Ensembl Database Entry Adaptor
 ** @param [r] dbname [AjPStr] Ensembl Exernal Database name
 ** @param [r] accession [AjPStr] Ensembl External Reference primary identifier
 ** @param [wP] Pdbe [EnsPDatabaseEntry*] Ensembl Database Entry address
@@ -4231,8 +4231,8 @@ AjBool ensDatabaseEntryAdaptorFetchByIdentifier(EnsPDatabaseEntryAdaptor dbea,
 ** @@
 ******************************************************************************/
 
-AjBool ensDatabaseEntryAdaptorFetchByDbNameAccession(
-    EnsPDatabaseEntryAdaptor dbea,
+AjBool ensDatabaseEntryadaptorFetchByDbNameAccession(
+    EnsPDatabaseEntryadaptor dbea,
     const AjPStr dbname,
     const AjPStr accession,
     EnsPDatabaseEntry *Pdbe)
@@ -4258,9 +4258,9 @@ AjBool ensDatabaseEntryAdaptorFetchByDbNameAccession(
     if(!Pdbe)
 	return ajFalse;
     
-    ensDatabaseAdaptorEscapeCS(dbea->Adaptor, &txtdbname, dbname);
+    ensDatabaseadaptorEscapeC(dbea->Adaptor, &txtdbname, dbname);
     
-    ensDatabaseAdaptorEscapeCS(dbea->Adaptor, &txtaccession, accession);
+    ensDatabaseadaptorEscapeC(dbea->Adaptor, &txtaccession, accession);
     
     statement = ajFmtStr("SELECT "
 			 "xref.xref_id, "
@@ -4286,13 +4286,13 @@ AjBool ensDatabaseEntryAdaptorFetchByDbNameAccession(
     
     dbes = ajListNew();
     
-    databaseEntryAdaptorFetchAllBySQL(dbea, statement, dbes);
+    databaseEntryadaptorFetchAllBySQL(dbea, statement, dbes);
     
     ajStrDel(&statement);
     
     if(!ajListGetLength(dbes))
     {
-	ajDebug("ensDatabaseEntryAdaptorFetchByDbNameAccession did not get an "
+	ajDebug("ensDatabaseEntryadaptorFetchByDbNameAccession did not get an "
 		"Ensembl Database Entry for database name '%S' and "
 		"accession '%S'.\n", dbname, accession);
 	
@@ -4322,14 +4322,14 @@ AjBool ensDatabaseEntryAdaptorFetchByDbNameAccession(
 		     "interpro.accession = '%s'",
 		     txtaccession);
 	    
-	    databaseEntryAdaptorFetchAllBySQL(dbea, statement, dbes);
+	    databaseEntryadaptorFetchAllBySQL(dbea, statement, dbes);
 	    
 	    ajStrDel(&statement);
 	}
     }
     
     if(ajListGetLength(dbes) > 1)
-	ajDebug("ensDatabaseEntryAdaptorFetchByDbNameAccession got more than "
+	ajDebug("ensDatabaseEntryadaptorFetchByDbNameAccession got more than "
 		"one Ensembl Database Entry for database name '%S' and "
 		"accession '%S'.\n", dbname, accession);
     
@@ -4364,12 +4364,12 @@ AjBool ensDatabaseEntryAdaptorFetchByDbNameAccession(
 
 
 
-/* @func ensDatabaseEntryAdaptorFetchByObjectType *****************************
+/* @func ensDatabaseEntryadaptorFetchByObjectType *****************************
 **
 ** Fetch all Ensembl Database Entries by an Ensembl Object type.
 **
-** @cc Bio::EnsEMBL::DBSQL DBEntryAdaptor::_fetch_by_object_type
-** @param [r] dbea [EnsPDatabaseEntryAdaptor] Ensembl Database Entry Adaptor
+** @cc Bio::EnsEMBL::DBSQL DBEntryadaptor::_fetch_by_object_type
+** @param [r] dbea [EnsPDatabaseEntryadaptor] Ensembl Database Entry Adaptor
 ** @param [r] objid [ajuint] Ensembl Object identifier
 ** @param [r] objtype [AjPStr] Ensembl Object type
 ** @param [rN] dbname [AjPStr] Ensembl External Database name
@@ -4387,8 +4387,8 @@ AjBool ensDatabaseEntryAdaptorFetchByDbNameAccession(
 ** only in XrefMapper code.
 */
 
-AjBool ensDatabaseEntryAdaptorFetchAllByObjectType(
-    EnsPDatabaseEntryAdaptor dbea,
+AjBool ensDatabaseEntryadaptorFetchAllByObjectType(
+    EnsPDatabaseEntryadaptor dbea,
     ajuint objid,
     AjPStr objtype,
     AjPStr dbname,
@@ -4417,7 +4417,7 @@ AjBool ensDatabaseEntryAdaptorFetchAllByObjectType(
      return ajFalse;
      */
     
-    ensDatabaseAdaptorEscapeCS(dbea->Adaptor, &txtobjtype, objtype);
+    ensDatabaseadaptorEscapeC(dbea->Adaptor, &txtobjtype, objtype);
     
     statement = ajFmtStr("SELECT "
 			 "xref.xref_id, "
@@ -4482,7 +4482,7 @@ AjBool ensDatabaseEntryAdaptorFetchAllByObjectType(
     
     if(dbname && ajStrGetLen(dbname))
     {
-	ensDatabaseAdaptorEscapeCS(dbea->Adaptor, &txtdbname, dbname);
+	ensDatabaseadaptorEscapeC(dbea->Adaptor, &txtdbname, dbname);
 	
 	ajFmtPrintAppS(&statement,
 		       " AND external_db.db_name like '%s'",
@@ -4496,7 +4496,7 @@ AjBool ensDatabaseEntryAdaptorFetchAllByObjectType(
 		       " AND external_db.type = '%s'",
 		       ensExternalDatabaseTypeToChar(dbtype));
     
-    databaseEntryAdaptorFetchAllBySQL(dbea, statement, dbes);
+    databaseEntryadaptorFetchAllBySQL(dbea, statement, dbes);
     
     ajStrDel(&statement);
     
@@ -4506,7 +4506,7 @@ AjBool ensDatabaseEntryAdaptorFetchAllByObjectType(
 
 
 
-/* @funcstatic databaseEntryAdaptorCompareIdentifier **************************
+/* @funcstatic databaseEntryadaptorCompareIdentifier **************************
 **
 ** Comparison function to sort unsigned integer (SQL) identifiers in
 ** ascending order.
@@ -4521,7 +4521,7 @@ AjBool ensDatabaseEntryAdaptorFetchAllByObjectType(
 ** @@
 ******************************************************************************/
 
-static int databaseEntryAdaptorCompareIdentifier(const void *P1, const void *P2)
+static int databaseEntryadaptorCompareIdentifier(const void *P1, const void *P2)
 {
     int value = 0;
     
@@ -4538,7 +4538,7 @@ static int databaseEntryAdaptorCompareIdentifier(const void *P1, const void *P2)
     
     Pidentifier2 = *(ajuint * const *) P2;
     
-    ajDebug("databaseEntryAdaptorCompareIdentifier\n"
+    ajDebug("databaseEntryadaptorCompareIdentifier\n"
 	    "  identifier1 %u\n"
 	    "  identifier2 %u\n",
 	    *Pidentifier1,
@@ -4559,7 +4559,7 @@ static int databaseEntryAdaptorCompareIdentifier(const void *P1, const void *P2)
 
 
 
-/* @funcstatic databaseEntryAdaptorDeleteIdentifier ***************************
+/* @funcstatic databaseEntryadaptorDeleteIdentifier ***************************
 **
 ** ajListSortUnique nodedelete function to delete unsigned integer SQL
 ** identifiers that are redundant.
@@ -4571,7 +4571,7 @@ static int databaseEntryAdaptorCompareIdentifier(const void *P1, const void *P2)
 ** @@
 ******************************************************************************/
 
-static void databaseEntryAdaptorDeleteIdentifier(void **PP1, void *cl)
+static void databaseEntryadaptorDeleteIdentifier(void **PP1, void *cl)
 {
     if(!PP1)
 	return;
@@ -4586,14 +4586,14 @@ static void databaseEntryAdaptorDeleteIdentifier(void **PP1, void *cl)
 
 
 
-/* @funcstatic databaseEntryAdaptorFetchAllIdentifiersByExternalName **********
+/* @funcstatic databaseEntryadaptorFetchAllIdentifiersByExternalName **********
 **
 ** Fetch SQL database-internal Ensembl identifiers via an external name.
 ** The caller is responsible for deleting the AJAX unsigned integers before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::DBSQL::DBEntryAdaptor::_type_by_external_id
-** @param [r] dbea [EnsPDatabaseEntryAdaptor] Ensembl Database Entry Adaptor
+** @cc Bio::EnsEMBL::DBSQL::DBEntryadaptor::_type_by_external_id
+** @param [r] dbea [EnsPDatabaseEntryadaptor] Ensembl Database Entry Adaptor
 ** @param [r] name [AjPStr] External name
 ** @param [r] ensembltype [AjPStr] Ensembl Object type
 ** @param [rN] extratype [AjPStr] Additional Ensembl Object type
@@ -4604,8 +4604,8 @@ static void databaseEntryAdaptorDeleteIdentifier(void **PP1, void *cl)
 ** @@
 ******************************************************************************/
 
-static AjBool databaseEntryAdaptorFetchAllIdentifiersByExternalName(
-    EnsPDatabaseEntryAdaptor dbea,
+static AjBool databaseEntryadaptorFetchAllIdentifiersByExternalName(
+    EnsPDatabaseEntryadaptor dbea,
     AjPStr name,
     AjPStr ensembltype,
     AjPStr extratype,
@@ -4619,9 +4619,9 @@ static AjBool databaseEntryAdaptorFetchAllIdentifiersByExternalName(
     
     AjPList sqlformats = NULL;
     
-    AjPSqlStatement sqls = NULL;
-    AjISqlRow sqli       = NULL;
-    AjPSqlRow sqlr       = NULL;
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
     
     AjPStr statement = NULL;
     AjPStr sqlformat = NULL;
@@ -4744,7 +4744,7 @@ static AjBool databaseEntryAdaptorFetchAllIdentifiersByExternalName(
 	
 	ajStrAppendC(&sqlfrom, "external_db, ");
 	
-        ensDatabaseAdaptorEscapeCS(dbea->Adaptor, &txtdbname, dbname);
+        ensDatabaseadaptorEscapeC(dbea->Adaptor, &txtdbname, dbname);
 	
 	ajFmtPrintAppS(&sqlwhere,
 		       "external_db.db_name LIKE %s%% "
@@ -4864,30 +4864,30 @@ static AjBool databaseEntryAdaptorFetchAllIdentifiersByExternalName(
     ** index useless because MySQL can't use any fields in it.
     */
     
-    ensDatabaseAdaptorEscapeCS(dbea->Adaptor, &txtname, name);
+    ensDatabaseadaptorEscapeC(dbea->Adaptor, &txtname, name);
     
     while(ajListPop(sqlformats, (void **) &sqlformat))
     {
 	statement = ajFmtStr(ajStrGetPtr(sqlformat), txtname, ensembltype);
 	
-	sqls = ensDatabaseAdaptorSqlStatementNew(dbea->Adaptor, statement);
+	sqls = ensDatabaseadaptorSqlstatementNew(dbea->Adaptor, statement);
 	
-	sqli = ajSqlRowIterNew(sqls);
+	sqli = ajSqlrowiterNew(sqls);
 	
-	while(!ajSqlRowIterDone(sqli))
+	while(!ajSqlrowiterDone(sqli))
 	{
 	    AJNEW0(Pidentifier);
 	    
-	    sqlr = ajSqlRowIterGet(sqli);
+	    sqlr = ajSqlrowiterGet(sqli);
 	    
-	    ajSqlColumnToUint(sqlr, Pidentifier);
+	    ajSqlcolumnToUint(sqlr, Pidentifier);
 	    
 	    ajListPushAppend(idlist, (void *) Pidentifier);
 	}
 	
-	ajSqlRowIterDel(&sqli);
+	ajSqlrowiterDel(&sqli);
 	
-	ajSqlStatementDel(&sqls);
+	ajSqlstatementDel(&sqls);
 	
 	ajStrDel(&statement);
 	
@@ -4905,8 +4905,8 @@ static AjBool databaseEntryAdaptorFetchAllIdentifiersByExternalName(
     ajStrDel(&sqlwhere);
     
     ajListSortUnique(idlist,
-		     databaseEntryAdaptorCompareIdentifier,
-		     databaseEntryAdaptorDeleteIdentifier);
+		     databaseEntryadaptorCompareIdentifier,
+		     databaseEntryadaptorDeleteIdentifier);
     
     return ajTrue;
 }
@@ -4914,15 +4914,15 @@ static AjBool databaseEntryAdaptorFetchAllIdentifiersByExternalName(
 
 
 
-/* @funcstatic databaseEntryAdaptorFetchAllIdentifiersByExternalDatabaseName **
+/* @funcstatic databaseEntryadaptorFetchAllIdentifiersByExternalDatabaseName **
 **
 ** Fetch SQL database-internal Ensembl identifiers via an external database
 ** name.
 ** The caller is responsible for deleting the AJAX unsigned integers before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::DBSQL::DBEntryAdaptor::_type_by_external_db_id
-** @param [r] dbea [EnsPDatabaseEntryAdaptor] Ensembl Database Entry Adaptor
+** @cc Bio::EnsEMBL::DBSQL::DBEntryadaptor::_type_by_external_db_id
+** @param [r] dbea [EnsPDatabaseEntryadaptor] Ensembl Database Entry Adaptor
 ** @param [r] dbname [AjPStr] External Database name
 ** @param [r] ensembltype [AjPStr] Ensembl Object type
 ** @param [rN] extratype [AjPStr] Additional Ensembl Object type
@@ -4937,8 +4937,8 @@ static AjBool databaseEntryAdaptorFetchAllIdentifiersByExternalName(
 ** _type_by_external_type instead of _type_by_external_db_id
 */
 
-static AjBool databaseEntryAdaptorFetchAllIdentifiersByExternalDatabaseName(
-    EnsPDatabaseEntryAdaptor dbea,
+static AjBool databaseEntryadaptorFetchAllIdentifiersByExternalDatabaseName(
+    EnsPDatabaseEntryadaptor dbea,
     AjPStr dbname,
     AjPStr ensembltype,
     AjPStr extratype,
@@ -4948,9 +4948,9 @@ static AjBool databaseEntryAdaptorFetchAllIdentifiersByExternalDatabaseName(
     
     ajuint *Pidentifier = NULL;
     
-    AjPSqlStatement sqls = NULL;
-    AjISqlRow sqli       = NULL;
-    AjPSqlRow sqlr       = NULL;
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
     
     AjPStr statement = NULL;
     AjPStr sqlformat = NULL;
@@ -5087,29 +5087,29 @@ static AjBool databaseEntryAdaptorFetchAllIdentifiersByExternalDatabaseName(
     ** because MySQL can't use any fields in the index.
     */
     
-    ensDatabaseAdaptorEscapeCS(dbea->Adaptor, &txtdbname, dbname);
+    ensDatabaseadaptorEscapeC(dbea->Adaptor, &txtdbname, dbname);
     
     statement = ajFmtStr(ajStrGetPtr(sqlformat), txtdbname, ensembltype);
     
     ajCharDel(&txtdbname);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dbea->Adaptor, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dbea->Adaptor, statement);
     
-    sqli = ajSqlRowIterNew(sqls);
+    sqli = ajSqlrowiterNew(sqls);
     
-    while(!ajSqlRowIterDone(sqli))
+    while(!ajSqlrowiterDone(sqli))
     {
 	AJNEW0(Pidentifier);
 	
-	sqlr = ajSqlRowIterGet(sqli);
+	sqlr = ajSqlrowiterGet(sqli);
 	
-	ajSqlColumnToUint(sqlr, Pidentifier);
+	ajSqlcolumnToUint(sqlr, Pidentifier);
 	
 	ajListPushAppend(idlist, (void *) Pidentifier);
     }
     
-    ajSqlRowIterDel(&sqli);
-    ajSqlStatementDel(&sqls);
+    ajSqlrowiterDel(&sqli);
+    ajSqlstatementDel(&sqls);
     ajStrDel(&statement);
     ajStrDel(&sqlformat);
     ajStrDel(&sqlselect);
@@ -5117,8 +5117,8 @@ static AjBool databaseEntryAdaptorFetchAllIdentifiersByExternalDatabaseName(
     ajStrDel(&sqlwhere);
     
     ajListSortUnique(idlist,
-		     databaseEntryAdaptorCompareIdentifier,
-		     databaseEntryAdaptorDeleteIdentifier);
+		     databaseEntryadaptorCompareIdentifier,
+		     databaseEntryadaptorDeleteIdentifier);
     
     return ajTrue;	
 }
@@ -5126,15 +5126,15 @@ static AjBool databaseEntryAdaptorFetchAllIdentifiersByExternalDatabaseName(
 
 
 
-/* @func ensDatabaseEntryAdaptorFetchAllGeneIdentifiersByExternalName *********
+/* @func ensDatabaseEntryadaptorFetchAllGeneIdentifiersByExternalName *********
 **
 ** Fetch SQL database-internal Ensembl Gene identifiers via an
 ** external name.
 ** The caller is responsible for deleting the AJAX unsigned integers before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::DBSQL DBEntryAdaptor::list_gene_ids_by_extids
-** @param [r] dbea [EnsPDatabaseEntryAdaptor] Ensembl Database Entry Adaptor
+** @cc Bio::EnsEMBL::DBSQL DBEntryadaptor::list_gene_ids_by_extids
+** @param [r] dbea [EnsPDatabaseEntryadaptor] Ensembl Database Entry Adaptor
 ** @param [r] name [AjPStr] External name
 ** @param [r] dbname [AjPStr] External Database name
 ** @param [u] idlist [AjPList] AJAX List of AJAX unsigned integers
@@ -5143,8 +5143,8 @@ static AjBool databaseEntryAdaptorFetchAllIdentifiersByExternalDatabaseName(
 ** @@
 ******************************************************************************/
 
-AjBool ensDatabaseEntryAdaptorFetchAllGeneIdentifiersByExternalName(
-    EnsPDatabaseEntryAdaptor dbea,
+AjBool ensDatabaseEntryadaptorFetchAllGeneIdentifiersByExternalName(
+    EnsPDatabaseEntryadaptor dbea,
     AjPStr name,
     AjPStr dbname,
     AjPList idlist)
@@ -5170,7 +5170,7 @@ AjBool ensDatabaseEntryAdaptorFetchAllGeneIdentifiersByExternalName(
     
     extratype = ajStrNewC("gene");
     
-    value = databaseEntryAdaptorFetchAllIdentifiersByExternalName(dbea,
+    value = databaseEntryadaptorFetchAllIdentifiersByExternalName(dbea,
 								  name,
 								  ensembltype,
 								  extratype,
@@ -5179,7 +5179,7 @@ AjBool ensDatabaseEntryAdaptorFetchAllGeneIdentifiersByExternalName(
     
     ajStrAssignC(&ensembltype, "Transcript");
     
-    value = databaseEntryAdaptorFetchAllIdentifiersByExternalName(dbea,
+    value = databaseEntryadaptorFetchAllIdentifiersByExternalName(dbea,
 								  name,
 								  ensembltype,
 								  extratype,
@@ -5188,7 +5188,7 @@ AjBool ensDatabaseEntryAdaptorFetchAllGeneIdentifiersByExternalName(
     
     ajStrAssignC(&ensembltype, "Gene");
     
-    value = databaseEntryAdaptorFetchAllIdentifiersByExternalName(dbea,
+    value = databaseEntryadaptorFetchAllIdentifiersByExternalName(dbea,
 								  name,
 								  ensembltype,
 								  (AjPStr) NULL,
@@ -5202,8 +5202,8 @@ AjBool ensDatabaseEntryAdaptorFetchAllGeneIdentifiersByExternalName(
     ajStrDel(&extratype);
     
     ajListSortUnique(idlist,
-		     databaseEntryAdaptorCompareIdentifier,
-		     databaseEntryAdaptorDeleteIdentifier);
+		     databaseEntryadaptorCompareIdentifier,
+		     databaseEntryadaptorDeleteIdentifier);
     
     return ajTrue;
 }
@@ -5211,15 +5211,15 @@ AjBool ensDatabaseEntryAdaptorFetchAllGeneIdentifiersByExternalName(
 
 
 
-/* @func ensDatabaseEntryAdaptorFetchAllTranscriptIdentifiersByExternalName ***
+/* @func ensDatabaseEntryadaptorFetchAllTranscriptIdentifiersByExternalName ***
 **
 ** Fetch SQL database-internal Ensembl Transcript identifiers via an
 ** external name.
 ** The caller is responsible for deleting the AJAX unsigned integers before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::DBSQL DBEntryAdaptor::list_transcript_ids_by_extids
-** @param [r] dbea [EnsPDatabaseEntryAdaptor] Ensembl Database Entry Adaptor
+** @cc Bio::EnsEMBL::DBSQL DBEntryadaptor::list_transcript_ids_by_extids
+** @param [r] dbea [EnsPDatabaseEntryadaptor] Ensembl Database Entry Adaptor
 ** @param [r] name [AjPStr] External name
 ** @param [r] dbname [AjPStr] External Database name
 ** @param [u] idlist [AjPList] AJAX List of AJAX unsigned integers
@@ -5228,8 +5228,8 @@ AjBool ensDatabaseEntryAdaptorFetchAllGeneIdentifiersByExternalName(
 ** @@
 ******************************************************************************/
 
-AjBool ensDatabaseEntryAdaptorFetchAllTranscriptIdentifiersByExternalName(
-    EnsPDatabaseEntryAdaptor dbea,
+AjBool ensDatabaseEntryadaptorFetchAllTranscriptIdentifiersByExternalName(
+    EnsPDatabaseEntryadaptor dbea,
     AjPStr name,
     AjPStr dbname,
     AjPList idlist)
@@ -5255,7 +5255,7 @@ AjBool ensDatabaseEntryAdaptorFetchAllTranscriptIdentifiersByExternalName(
     
     extratype = ajStrNewC("transcript");
     
-    value = databaseEntryAdaptorFetchAllIdentifiersByExternalName(dbea,
+    value = databaseEntryadaptorFetchAllIdentifiersByExternalName(dbea,
 								  name,
 								  ensembltype,
 								  extratype,
@@ -5264,7 +5264,7 @@ AjBool ensDatabaseEntryAdaptorFetchAllTranscriptIdentifiersByExternalName(
     
     ajStrAssignC(&ensembltype, "Transcript");
     
-    value = databaseEntryAdaptorFetchAllIdentifiersByExternalName(dbea,
+    value = databaseEntryadaptorFetchAllIdentifiersByExternalName(dbea,
 								  name,
 								  ensembltype,
 								  (AjPStr) NULL,
@@ -5278,8 +5278,8 @@ AjBool ensDatabaseEntryAdaptorFetchAllTranscriptIdentifiersByExternalName(
     ajStrDel(&extratype);
     
     ajListSortUnique(idlist,
-		     databaseEntryAdaptorCompareIdentifier,
-		     databaseEntryAdaptorDeleteIdentifier);
+		     databaseEntryadaptorCompareIdentifier,
+		     databaseEntryadaptorDeleteIdentifier);
     
     return ajTrue;
 }
@@ -5287,15 +5287,15 @@ AjBool ensDatabaseEntryAdaptorFetchAllTranscriptIdentifiersByExternalName(
 
 
 
-/* @func ensDatabaseEntryAdaptorFetchAllTranslationIdentifiersByExternalName **
+/* @func ensDatabaseEntryadaptorFetchAllTranslationIdentifiersByExternalName **
 **
 ** Fetch SQL database-internal Ensembl Translation identifiers via an
 ** external name.
 ** The caller is responsible for deleting the AJAX unsigned integers before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::DBSQL::DBEntryAdaptor::list_translation_ids_by_extids
-** @param [r] dbea [EnsPDatabaseEntryAdaptor] Ensembl Database Entry Adaptor
+** @cc Bio::EnsEMBL::DBSQL::DBEntryadaptor::list_translation_ids_by_extids
+** @param [r] dbea [EnsPDatabaseEntryadaptor] Ensembl Database Entry Adaptor
 ** @param [r] name [AjPStr] External name
 ** @param [r] dbname [AjPStr] External Database name
 ** @param [u] idlist [AjPList] AJAX List of AJAX unsigned integers
@@ -5304,8 +5304,8 @@ AjBool ensDatabaseEntryAdaptorFetchAllTranscriptIdentifiersByExternalName(
 ** @@
 ******************************************************************************/
 
-AjBool ensDatabaseEntryAdaptorFetchAllTranslationIdentifiersByExternalName(
-    EnsPDatabaseEntryAdaptor dbea,
+AjBool ensDatabaseEntryadaptorFetchAllTranslationIdentifiersByExternalName(
+    EnsPDatabaseEntryadaptor dbea,
     AjPStr name,
     AjPStr dbname,
     AjPList idlist)
@@ -5328,7 +5328,7 @@ AjBool ensDatabaseEntryAdaptorFetchAllTranslationIdentifiersByExternalName(
     
     ensembltype = ajStrNewC("Translation");
     
-    value = databaseEntryAdaptorFetchAllIdentifiersByExternalName(dbea,
+    value = databaseEntryadaptorFetchAllIdentifiersByExternalName(dbea,
 								  name,
 								  ensembltype,
 								  (AjPStr) NULL,
@@ -5343,15 +5343,15 @@ AjBool ensDatabaseEntryAdaptorFetchAllTranslationIdentifiersByExternalName(
 
 
 
-/* @func ensDatabaseEntryAdaptorFetchAllGeneIdentifiersByExternalDatabaseName *
+/* @func ensDatabaseEntryadaptorFetchAllGeneIdentifiersByExternalDatabaseName *
 **
 ** Fetch SQL database-internal Ensembl Gene identifiers via an
 ** External Database name.
 ** The caller is responsible for deleting the AJAX unsigned integers before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::DBSQL::DBEntryAdaptor::list_gene_ids_by_external_db_id
-** @param [r] dbea [EnsPDatabaseEntryAdaptor] Ensembl Database Entry Adaptor
+** @cc Bio::EnsEMBL::DBSQL::DBEntryadaptor::list_gene_ids_by_external_db_id
+** @param [r] dbea [EnsPDatabaseEntryadaptor] Ensembl Database Entry Adaptor
 ** @param [r] dbname [AjPStr] External Database name
 ** @param [u] idlist [AjPList] AJAX List of AJAX unsigned integers
 **
@@ -5367,8 +5367,8 @@ AjBool ensDatabaseEntryAdaptorFetchAllTranslationIdentifiersByExternalName(
 ** Arg [1]    : string $external_id <---- it is a db_id!
 */
 
-AjBool ensDatabaseEntryAdaptorFetchAllGeneIdentifiersByExternalDatabaseName(
-    EnsPDatabaseEntryAdaptor dbea,
+AjBool ensDatabaseEntryadaptorFetchAllGeneIdentifiersByExternalDatabaseName(
+    EnsPDatabaseEntryadaptor dbea,
     AjPStr dbname,
     AjPList idlist)
 {
@@ -5390,7 +5390,7 @@ AjBool ensDatabaseEntryAdaptorFetchAllGeneIdentifiersByExternalDatabaseName(
     
     extratype = ajStrNewC("gene");
     
-    value = databaseEntryAdaptorFetchAllIdentifiersByExternalDatabaseName(
+    value = databaseEntryadaptorFetchAllIdentifiersByExternalDatabaseName(
         dbea,
         dbname,
         ensembltype,
@@ -5399,7 +5399,7 @@ AjBool ensDatabaseEntryAdaptorFetchAllGeneIdentifiersByExternalDatabaseName(
     
     ajStrAssignC(&ensembltype, "Transcript");
     
-    value = databaseEntryAdaptorFetchAllIdentifiersByExternalDatabaseName(
+    value = databaseEntryadaptorFetchAllIdentifiersByExternalDatabaseName(
         dbea,
         dbname,
         ensembltype,
@@ -5408,7 +5408,7 @@ AjBool ensDatabaseEntryAdaptorFetchAllGeneIdentifiersByExternalDatabaseName(
     
     ajStrAssignC(&ensembltype, "Gene");
     
-    value = databaseEntryAdaptorFetchAllIdentifiersByExternalDatabaseName(
+    value = databaseEntryadaptorFetchAllIdentifiersByExternalDatabaseName(
         dbea,
         dbname,
         ensembltype,
@@ -5422,8 +5422,8 @@ AjBool ensDatabaseEntryAdaptorFetchAllGeneIdentifiersByExternalDatabaseName(
     ajStrDel(&extratype);
     
     ajListSortUnique(idlist,
-		     databaseEntryAdaptorCompareIdentifier,
-		     databaseEntryAdaptorDeleteIdentifier);
+		     databaseEntryadaptorCompareIdentifier,
+		     databaseEntryadaptorDeleteIdentifier);
     
     return ajTrue;
 }

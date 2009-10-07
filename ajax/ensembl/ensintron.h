@@ -17,7 +17,7 @@
 
 /* Ensembl Intron */
 
-EnsPIntron ensIntronNew(EnsPExon exon1, EnsPExon exon2);
+EnsPIntron ensIntronNewExons(EnsPExon exon1, EnsPExon exon2);
 
 EnsPIntron ensIntronNewObj(const EnsPIntron object);
     
@@ -27,9 +27,9 @@ void ensIntronDel(EnsPIntron* Pintron);
 
 EnsPFeature ensIntronGetFeature(const EnsPIntron intron);
 
-EnsPExon ensIntronGetPreviousExon(const EnsPIntron intron);
+EnsPExon ensIntronGetPreviousexon(const EnsPIntron intron);
 
-EnsPExon ensIntronGetNextExon(const EnsPIntron intron);
+EnsPExon ensIntronGetNextexon(const EnsPIntron intron);
 
 AjBool ensIntronTrace(const EnsPIntron intron, ajuint level);
 

@@ -12,12 +12,10 @@ extern "C"
 
 
 
-/* @datatype EnsECacheType ****************************************************
+/*******************************************************************************
 **
 ** Ensembl Cache Type enumeration.
 **
-** @attr enum [EnsECacheType] Value
-** @@
 ******************************************************************************/
 
 enum EnsECacheType
@@ -40,10 +38,10 @@ enum EnsECacheType
 ** @attr List [AjPList] AJAX List implementing LRU functionality
 ** @attr Table [AjPTable] AJAX Table implementing lookup functionality
 ** @attr Label [AjPStr] Cache label for statistics output
-** @attr Reference [(void*)] Object-specific referencing function
-** @attr Delete [(void)] Object-specific deletion function
+** @attr Reference [(void**)] Object-specific referencing function
+** @attr Delete [(void*)] Object-specific deletion function
 ** @attr Size [(ajuint*)] Object-specific memory sizing function
-** @attr Read [(void*)] Object-specific reading function
+** @attr Read [(void**)] Object-specific reading function
 ** @attr Write [(AjBool*)] Object-specific writing function
 ** @attr Type [AjEnum] Ensembl Cache type (EnsECacheNumeric, ...)
 ** @attr Syncron [AjBool] ajTrue: Immediately write-back value data

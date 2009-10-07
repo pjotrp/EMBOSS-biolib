@@ -40,28 +40,28 @@ AjBool ensAttributeTrace(const EnsPAttribute attribute, ajuint level);
 
 /* Ensembl Attribute Adaptor */
 
-AjBool ensAttributeAdaptorFetchAllByGene(EnsPDatabaseAdaptor adaptor,
+AjBool ensAttributeadaptorFetchAllByGene(EnsPDatabaseadaptor adaptor,
                                          const EnsPGene gene,
                                          const AjPStr code,
                                          AjPList attributes);
 
-AjBool ensAttributeAdaptorFetchAllBySeqRegion(EnsPDatabaseAdaptor adaptor,
+AjBool ensAttributeadaptorFetchAllBySeqRegion(EnsPDatabaseadaptor adaptor,
                                               const EnsPSeqRegion sr,
                                               const AjPStr code,
                                               AjPList attributes);
 
-AjBool ensAttributeAdaptorFetchAllBySlice(EnsPDatabaseAdaptor adaptor,
+AjBool ensAttributeadaptorFetchAllBySlice(EnsPDatabaseadaptor adaptor,
                                           const EnsPSlice slice,
                                           const AjPStr code,
                                           AjPList attributes);
 
-AjBool ensAttributeAdaptorFetchAllByTranscript(EnsPDatabaseAdaptor adaptor,
+AjBool ensAttributeadaptorFetchAllByTranscript(EnsPDatabaseadaptor adaptor,
                                                const EnsPTranscript transcript,
                                                const AjPStr code,
                                                AjPList attributes);
 
-AjBool ensAttributeAdaptorFetchAllByTranslation(
-    EnsPDatabaseAdaptor adaptor,
+AjBool ensAttributeadaptorFetchAllByTranslation(
+    EnsPDatabaseadaptor adaptor,
     const EnsPTranslation translation,
     const AjPStr code,
     AjPList attributes);

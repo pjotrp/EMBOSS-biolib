@@ -170,7 +170,7 @@ void ensGeneOntologyLinkageDel(EnsPGeneOntologyLinkage *Pgol);
 
 /* Ensembl Database Entry */
 
-EnsPDatabaseEntry ensDatabaseEntryNew(EnsPDatabaseEntryAdaptor adaptor,
+EnsPDatabaseEntry ensDatabaseEntryNew(EnsPDatabaseEntryadaptor adaptor,
                                       ajuint identifier,
                                       EnsPAnalysis analysis,
                                       EnsPExternalDatabase edb,
@@ -188,7 +188,7 @@ EnsPDatabaseEntry ensDatabaseEntryNewRef(EnsPDatabaseEntry dbe);
 
 void ensDatabaseEntryDel(EnsPDatabaseEntry *Pdbe);
 
-EnsPDatabaseEntryAdaptor ensDatabaseEntryGetAdaptor(
+EnsPDatabaseEntryadaptor ensDatabaseEntryGetadaptor(
     const EnsPDatabaseEntry dbe);
 
 ajuint ensDatabaseEntryGetIdentifier(const EnsPDatabaseEntry dbe);
@@ -239,51 +239,51 @@ AjBool EnsDatabaseEntryClearGeneOntologyLinkageTypes(EnsPDatabaseEntry dbe);
 
 /* Ensembl Database Entry Adaptor */
 
-EnsPDatabaseEntryAdaptor ensDatabaseEntryAdaptorNew(EnsPDatabaseAdaptor dba);
+EnsPDatabaseEntryadaptor ensDatabaseEntryadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensDatabaseEntryAdaptorDel(EnsPDatabaseEntryAdaptor *Pdbea);
+void ensDatabaseEntryadaptorDel(EnsPDatabaseEntryadaptor *Pdbea);
 
-EnsPDatabaseAdaptor ensDatabaseEntryAdaptorGetDatabaseAdaptor(
-    const EnsPDatabaseEntryAdaptor dbea);
+EnsPDatabaseadaptor ensDatabaseEntryadaptorGetDatabaseadaptor(
+    const EnsPDatabaseEntryadaptor dbea);
 
-AjBool ensDatabaseEntryAdaptorFetchByIdentifier(EnsPDatabaseEntryAdaptor dbea,
+AjBool ensDatabaseEntryadaptorFetchByIdentifier(EnsPDatabaseEntryadaptor dbea,
                                                 ajuint identifier,
                                                 EnsPDatabaseEntry *Pdbe);
 
-AjBool ensDatabaseEntryAdaptorFetchByDbNameAccession(
-    EnsPDatabaseEntryAdaptor dbea,
+AjBool ensDatabaseEntryadaptorFetchByDbNameAccession(
+    EnsPDatabaseEntryadaptor dbea,
     const AjPStr dbname,
     const AjPStr accession,
     EnsPDatabaseEntry *Pdbe);
 
-AjBool ensDatabaseEntryAdaptorFetchAllByObjectType(
-    EnsPDatabaseEntryAdaptor dbea,
+AjBool ensDatabaseEntryadaptorFetchAllByObjectType(
+    EnsPDatabaseEntryadaptor dbea,
     ajuint objid,
     AjPStr objtype,
     AjPStr dbname,
     AjEnum dbtype,
     AjPList dbes);
 
-AjBool ensDatabaseEntryAdaptorFetchAllGeneIdentifiersByExternalName(
-    EnsPDatabaseEntryAdaptor dbea,
+AjBool ensDatabaseEntryadaptorFetchAllGeneIdentifiersByExternalName(
+    EnsPDatabaseEntryadaptor dbea,
     AjPStr name,
     AjPStr dbname,
     AjPList idlist);
 
-AjBool ensDatabaseEntryAdaptorFetchAllTranscriptIdentifiersByExternalName(
-    EnsPDatabaseEntryAdaptor dbea,
+AjBool ensDatabaseEntryadaptorFetchAllTranscriptIdentifiersByExternalName(
+    EnsPDatabaseEntryadaptor dbea,
     AjPStr name,
     AjPStr dbname,
     AjPList idlist);
 
-AjBool ensDatabaseEntryAdaptorFetchAllTranslationIdentifiersByExternalName(
-    EnsPDatabaseEntryAdaptor dbea,
+AjBool ensDatabaseEntryadaptorFetchAllTranslationIdentifiersByExternalName(
+    EnsPDatabaseEntryadaptor dbea,
     AjPStr name,
     AjPStr dbname,
     AjPList idlist);
 
-AjBool ensDatabaseEntryAdaptorFetchAllGeneIdentifiersByExternalDatabaseName(
-    EnsPDatabaseEntryAdaptor dbea,
+AjBool ensDatabaseEntryadaptorFetchAllGeneIdentifiersByExternalDatabaseName(
+    EnsPDatabaseEntryadaptor dbea,
     AjPStr dbname,
     AjPList idlist);
 

@@ -60,14 +60,14 @@ typedef struct EnsSRepeatMaskedSlice
 
 /* Ensembl Slice */
 
-EnsPSlice ensSliceNewS(EnsPSliceAdaptor adaptor,
+EnsPSlice ensSliceNewS(EnsPSliceadaptor adaptor,
                        EnsPSeqRegion sr,
                        ajint start,
                        ajint end,
                        ajint strand,
                        AjPStr sequence);
 	     
-EnsPSlice ensSliceNew(EnsPSliceAdaptor adaptor,
+EnsPSlice ensSliceNew(EnsPSliceadaptor adaptor,
                       EnsPSeqRegion sr,
                       ajint start,
                       ajint end,
@@ -79,7 +79,7 @@ EnsPSlice ensSliceNewRef(EnsPSlice slice);
 
 void ensSliceDel(EnsPSlice* Pslice);
 
-EnsPSliceAdaptor ensSliceGetAdaptor(const EnsPSlice slice);
+EnsPSliceadaptor ensSliceGetadaptor(const EnsPSlice slice);
 
 EnsPSeqRegion ensSliceGetSeqRegion(const EnsPSlice slice);
 
@@ -91,7 +91,7 @@ ajint ensSliceGetEnd(const EnsPSlice slice);
 
 ajint ensSliceGetStrand(const EnsPSlice slice);
 
-AjBool ensSliceSetAdaptor(EnsPSlice slice, EnsPSliceAdaptor adaptor);
+AjBool ensSliceSetadaptor(EnsPSlice slice, EnsPSliceadaptor adaptor);
 
 AjBool ensSliceSetSequence(EnsPSlice slice, AjPStr sequence);
 
@@ -175,23 +175,23 @@ AjBool ensSliceFetchAllRepeatFeatures(EnsPSlice slice,
 
 /* Ensembl Slice Adaptor */
 
-EnsPSliceAdaptor ensSliceAdaptorNew(EnsPDatabaseAdaptor dba);
+EnsPSliceadaptor ensSliceadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensSliceAdaptorDel(EnsPSliceAdaptor* Padaptor);
+void ensSliceadaptorDel(EnsPSliceadaptor* Padaptor);
 
-EnsPDatabaseAdaptor ensSliceAdaptorGetDatabaseAdaptor(
-    const EnsPSliceAdaptor adaptor);
+EnsPDatabaseadaptor ensSliceadaptorGetDatabaseadaptor(
+    const EnsPSliceadaptor adaptor);
 
-AjBool ensSliceAdaptorCacheInsert(EnsPSliceAdaptor adaptor, EnsPSlice* Pslice);
+AjBool ensSliceadaptorCacheInsert(EnsPSliceadaptor adaptor, EnsPSlice* Pslice);
 
-AjBool ensSliceAdaptorFetchBySeqRegionIdentifier(EnsPSliceAdaptor adaptor,
+AjBool ensSliceadaptorFetchBySeqRegionIdentifier(EnsPSliceadaptor adaptor,
                                                  ajuint srid,
                                                  ajint srstart,
                                                  ajint srend,
                                                  ajint srstrand,
                                                  EnsPSlice *Pslice);
 
-AjBool ensSliceAdaptorFetchByRegion(EnsPSliceAdaptor adaptor,
+AjBool ensSliceadaptorFetchByRegion(EnsPSliceadaptor adaptor,
                                     const AjPStr csname,
                                     const AjPStr csversion,
                                     const AjPStr srname,
@@ -200,27 +200,27 @@ AjBool ensSliceAdaptorFetchByRegion(EnsPSliceAdaptor adaptor,
                                     ajint srstrand,
                                     EnsPSlice *Pslice);
 
-AjBool ensSliceAdaptorFetchByName(EnsPSliceAdaptor adaptor,
+AjBool ensSliceadaptorFetchByName(EnsPSliceadaptor adaptor,
                                   const AjPStr name,
                                   EnsPSlice *Pslice);
 
-AjBool ensSliceAdaptorFetchBySlice(EnsPSliceAdaptor adaptor,
+AjBool ensSliceadaptorFetchBySlice(EnsPSliceadaptor adaptor,
                                    EnsPSlice slice,
                                    ajint start,
                                    ajint end,
                                    ajint strand,
                                    EnsPSlice *Pslice);
 
-AjBool ensSliceAdaptorFetchByFeature(EnsPSliceAdaptor adaptor,
+AjBool ensSliceadaptorFetchByFeature(EnsPSliceadaptor adaptor,
                                      const EnsPFeature feature,
                                      ajint flank,
                                      EnsPSlice *Pslice);
 
-AjBool ensSliceAdaptorFetchNormalisedSliceProjection(EnsPSliceAdaptor adaptor,
+AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
                                                      EnsPSlice slice,
                                                      AjPList pslist);
 
-AjBool ensSliceAdaptorFetchAll(EnsPSliceAdaptor adaptor,
+AjBool ensSliceadaptorFetchAll(EnsPSliceadaptor adaptor,
                                const AjPStr csname,
                                const AjPStr csversion,
                                AjBool nonref,

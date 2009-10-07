@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** Bio::EnsEMBL::Intron CVS Revision: 1.10
@@ -80,11 +80,14 @@
 ** @fnote None
 **
 ** @nam3rule New Constructor
+** @nam4rule NewExons Constructor with two flanking exons
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the use counter
 **
-** @argrule Obj object [EnsPIntron] Ensembl Intron
-** @argrule Ref object [EnsPIntron] Ensembl Intron
+** @argrule Obj object [const EnsPIntron] Ensembl Intron
+** @argrule Ref intron [EnsPIntron] Ensembl Intron
+** @argrule Exons exon1 [EnsPExon] Undocumented
+** @argrule Exons exon2 [EnsPExon] Undocumented
 **
 ** @valrule * [EnsPIntron] Ensembl Intron
 **
@@ -94,19 +97,19 @@
 
 
 
-/* @func ensIntronNew *********************************************************
+/* @func ensIntronNewExons ****************************************************
 **
 ** Default constructor for an Ensembl Intron.
 **
 ** @cc Bio::EnsEMBL::Intron::new
-** @param [r] exon1 [EnsPExon] Ensembl Exon 1.
-** @param [r] exon2 [EnsPExon] Ensembl Exon 2.
+** @param [u] exon1 [EnsPExon] Ensembl Exon 1.
+** @param [u] exon2 [EnsPExon] Ensembl Exon 2.
 **
 ** @return [EnsPIntron] Ensembl Intron.
 ** @@
 ******************************************************************************/
 
-EnsPIntron ensIntronNew(EnsPExon exon1, EnsPExon exon2)
+EnsPIntron ensIntronNewExons(EnsPExon exon1, EnsPExon exon2)
 {
     ajint strand = 0;
     
@@ -156,26 +159,26 @@ EnsPIntron ensIntronNew(EnsPExon exon1, EnsPExon exon2)
     
     if(slice1 && slice2 && (!ensSliceMatch(slice1, slice2)))
     {
-	ajDebug("ensIntronNew got Exons on different Slices.\n");
+	ajDebug("ensIntronNewExons got Exons on different Slices.\n");
 	
 	return NULL;
     }
     else if(seqname1 && seqname2 && (!ajStrMatchCaseS(seqname1, seqname2)))
     {
-	ajDebug("ensIntronNew got Exons on different sequence names.\n");
+	ajDebug("ensIntronNewExons got Exons on different sequence names.\n");
 	
 	return NULL;
     }
     else
     {
-	ajDebug("ensIntronNew got Exons on Slice and sequence names.\n");
+	ajDebug("ensIntronNewExons got Exons on Slice and sequence names.\n");
 	
 	return NULL;
     }
     
     if(ensFeatureGetStrand(feature1) != ensFeatureGetStrand(feature2))
     {
-	ajDebug("ensIntronNew got Exons on different strands.\n");
+	ajDebug("ensIntronNewExons got Exons on different strands.\n");
 	
 	return NULL;
     }
@@ -195,8 +198,8 @@ EnsPIntron ensIntronNew(EnsPExon exon1, EnsPExon exon2)
     
     if(start > (end + 1))
     {
-	ajDebug("ensIntronNew requires that the start coordinate %u is less "
-		"than the end coordinate %u + 1 ", start, end);
+	ajDebug("ensIntronNewExons requires that the start coordinate %u "
+		"is less than the end coordinate %u + 1 ", start, end);
 	
 	return NULL;
     }
@@ -230,7 +233,7 @@ EnsPIntron ensIntronNew(EnsPExon exon1, EnsPExon exon2)
 	intron->Use = 1;	
     }
     else
-	ajDebug("ensIntronNew could not create an Ensembl Feature.\n");
+	ajDebug("ensIntronNewExons could not create an Ensembl Feature.\n");
     
     return intron;
 }
@@ -379,12 +382,14 @@ void ensIntronDel(EnsPIntron *Pintron)
 **
 ** @nam3rule Get Return Intron attribute(s)
 ** @nam4rule GetFeature Return the Ensembl Feature
-** @nam4rule GetPreviousExon Return the previous Ensembl Exon
-** @nam4rule GetNextExon Return the next Ensembl Exon
+** @nam4rule GetPreviousexon Return the previous Ensembl Exon
+** @nam4rule GetNextexon Return the next Ensembl Exon
 **
 ** @argrule * intron [const EnsPIntron] Intron
 **
-** @valrule Adaptor [EnsPAnalysisAdaptor] Ensembl Analysis Adaptor
+** @valrule Feature [EnsPFeature] Ensembl Feature
+** @valrule Nextexon [EnsPExon] Ensembl Exon
+** @valrule Previousexon [EnsPExon] Ensembl Exon
 **
 ** @fcategory use
 ******************************************************************************/
@@ -413,28 +418,7 @@ EnsPFeature ensIntronGetFeature(const EnsPIntron intron)
 
 
 
-/* @func ensIntronGetPreviousExon *********************************************
-**
-** Get the previous Ensembl Exon element of an Ensembl Intron.
-**
-** @param [r] intron [const EnsPIntron] Ensembl Intron.
-**
-** @return [EnsPExon] Ensembl Exon.
-** @@
-******************************************************************************/
-
-EnsPExon ensIntronGetPreviousExon(const EnsPIntron intron)
-{
-    if(!intron)
-	return NULL;
-    
-    return intron->PreviousExon;
-}
-
-
-
-
-/* @func ensIntronGetNextExon *************************************************
+/* @func ensIntronGetNextexon *************************************************
 **
 ** Get the next Ensembl Exon element of an Ensembl Intron.
 **
@@ -444,12 +428,33 @@ EnsPExon ensIntronGetPreviousExon(const EnsPIntron intron)
 ** @@
 ******************************************************************************/
 
-EnsPExon ensIntronGetNextExon(const EnsPIntron intron)
+EnsPExon ensIntronGetNextexon(const EnsPIntron intron)
 {
     if(!intron)
 	return NULL;
     
     return intron->NextExon;
+}
+
+
+
+
+/* @func ensIntronGetPreviousexon *********************************************
+**
+** Get the previous Ensembl Exon element of an Ensembl Intron.
+**
+** @param [r] intron [const EnsPIntron] Ensembl Intron.
+**
+** @return [EnsPExon] Ensembl Exon.
+** @@
+******************************************************************************/
+
+EnsPExon ensIntronGetPreviousexon(const EnsPIntron intron)
+{
+    if(!intron)
+	return NULL;
+    
+    return intron->PreviousExon;
 }
 
 

@@ -4,14 +4,15 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** The Ensembl Assembly Exception object has been split out of the
-** Bio::EnsEMBL::DBSQL::SliceAdaptor Perl object.
+** Bio::EnsEMBL::DBSQL::Slice
+adaptor Perl object.
 **
 ** Bio::EnsEMBL::Slice CVS Revision: 1.219
-** Bio::EnsEMBL::DBSQL::SliceAdaptor CVS Revision: 1.102
+** Bio::EnsEMBL::DBSQL::Sliceadaptor CVS Revision: 1.102
 **
 ** This library is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU Library General Public
@@ -59,22 +60,22 @@ static const char *assemblyExceptionType[] =
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-static AjBool assemblyExceptionAdaptorFetchAllBySQL(
-    EnsPAssemblyExceptionAdaptor adaptor,
+static AjBool assemblyExceptionadaptorFetchAllBySQL(
+    EnsPAssemblyExceptionadaptor adaptor,
     const AjPStr statement,
     AjPList aes);
 
-static AjBool assemblyExceptionAdaptorCacheInit(
-    EnsPAssemblyExceptionAdaptor adaptor);
+static AjBool assemblyExceptionadaptorCacheInit(
+    EnsPAssemblyExceptionadaptor adaptor);
 
-static void assemblyExceptionAdaptorClearIdentifierCache(void **key,
+static void assemblyExceptionadaptorClearIdentifierCache(void **key,
                                                          void **value,
                                                          void *cl);
 
-static AjBool assemblyExceptionAdaptorCacheExit(
-    EnsPAssemblyExceptionAdaptor adaptor);
+static AjBool assemblyExceptionadaptorCacheExit(
+    EnsPAssemblyExceptionadaptor adaptor);
 
-static void assemblyExceptionAdaptorFetchAll(const void *key, void **value,
+static void assemblyExceptionadaptorFetchAll(const void *key, void **value,
                                              void *cl);
 
 
@@ -129,7 +130,7 @@ static void assemblyExceptionAdaptorFetchAll(const void *key, void **value,
 **
 ** Default constructor for an Ensembl Assembly Exception.
 **
-** @param [r] adaptor [EnsPAssemblyExceptionAdaptor] Ensembl Assembly
+** @param [r] adaptor [EnsPAssemblyExceptionadaptor] Ensembl Assembly
 **                                                   Exception Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @param [r] srid [ajuint] Reference Ensembl Sequence Region identifier
@@ -146,7 +147,7 @@ static void assemblyExceptionAdaptorFetchAll(const void *key, void **value,
 ******************************************************************************/
 
 EnsPAssemblyException ensAssemblyExceptionNew(
-    EnsPAssemblyExceptionAdaptor adaptor,
+    EnsPAssemblyExceptionadaptor adaptor,
     ajuint identifier,
     ajuint srid,
     ajuint srstart,
@@ -317,7 +318,7 @@ void ensAssemblyExceptionDel(EnsPAssemblyException* Pae)
 ** @fnote None
 **
 ** @nam3rule Get Return Assembly Exception attribute(s)
-** @nam4rule GetAdaptor Return the Ensembl Assembly Excepton Adaptor
+** @nam4rule Getadaptor Return the Ensembl Assembly Excepton Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetSeqRegion Return reference Ensembl Sequence Region attribute(s)
 ** @nam5rule GetSeqRegionIdentfier Return the identifier
@@ -332,7 +333,7 @@ void ensAssemblyExceptionDel(EnsPAssemblyException* Pae)
 **
 ** @argrule * ae [const EnsPAssemblyException] Ensembl Assembly Exception
 **
-** @valrule Adaptor [EnsPAssemblyExceptionAdaptor] Ensembl Assembly Exception
+** @valrule Adaptor [EnsPAssemblyExceptionadaptor] Ensembl Assembly Exception
 **                                                 Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule SeqRegionIdentfier [ajuint] Reference Sequence Region identifier
@@ -350,18 +351,18 @@ void ensAssemblyExceptionDel(EnsPAssemblyException* Pae)
 
 
 
-/* @func ensAssemblyExceptionGetAdaptor ***************************************
+/* @func ensAssemblyExceptionGetadaptor ***************************************
 **
 ** Get the Ensembl Assembly Exception Adaptor element of an
 ** Ensembl Assembly Exception.
 **
 ** @param [r] ae [const EnsPAssemblyException] Ensembl Assembly Exception
 **
-** @return [EnsPAssemblyExceptionAdaptor] Ensembl Assembly Exception Adaptor
+** @return [EnsPAssemblyExceptionadaptor] Ensembl Assembly Exception Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPAssemblyExceptionAdaptor ensAssemblyExceptionGetAdaptor(
+EnsPAssemblyExceptionadaptor ensAssemblyExceptionGetadaptor(
     const EnsPAssemblyException ae)
 {
     if(!ae)
@@ -579,7 +580,7 @@ AjEnum ensAssemblyExceptionGetType(const EnsPAssemblyException ae)
 ** @fnote None
 **
 ** @nam3rule Set Set one element of an Assembly Exception
-** @nam4rule SetAdaptor Set the Ensembl Assembly Excepton Adaptor
+** @nam4rule Setadaptor Set the Ensembl Assembly Excepton Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetSeqRegion Set reference Ensembl Sequence Region attribute(s)
 ** @nam5rule SetSeqRegionIdentfier Set the identifier
@@ -602,21 +603,21 @@ AjEnum ensAssemblyExceptionGetType(const EnsPAssemblyException ae)
 
 
 
-/* @func ensAssemblyExceptionSetAdaptor ***************************************
+/* @func ensAssemblyExceptionSetadaptor ***************************************
 **
 ** Set the Ensembl Assembly Exception Adaptor element of an
 ** Ensembl Assembly Exception.
 **
 ** @param [u] ae [EnsPAssemblyException] Ensembl Assembly Exception
-** @param [r] adaptor [EnsPAssemblyExceptionAdaptor] Ensembl Assembly
+** @param [r] adaptor [EnsPAssemblyExceptionadaptor] Ensembl Assembly
 **                                                   Exception Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionSetAdaptor(EnsPAssemblyException ae,
-                                      EnsPAssemblyExceptionAdaptor adaptor)
+AjBool ensAssemblyExceptionSetadaptor(EnsPAssemblyException ae,
+                                      EnsPAssemblyExceptionadaptor adaptor)
 {
     if(!ae)
         return ajFalse;
@@ -1016,13 +1017,13 @@ const char* ensAssemblyExceptionTypeToChar(const AjEnum type)
 
 
 
-/* @datasection [EnsPAssemblyExceptionAdaptor] Assembly Exception Adaptor *****
+/* @datasection [EnsPAssemblyExceptionadaptor] Assembly Exception Adaptor *****
 **
 ** Functions for manipulating Ensembl Assembly Exception Adaptor objects
 **
-** @cc Bio::EsnSEMBL::DBSQL::SliceAdaptor CVS Revision: 1.104
+** @cc Bio::EsnSEMBL::DBSQL::Sliceadaptor CVS Revision: 1.104
 **
-** @nam2rule AssemblyExceptionAdaptor
+** @nam2rule AssemblyExceptionadaptor
 **
 ******************************************************************************/
 
@@ -1035,20 +1036,20 @@ const char* ensAssemblyExceptionTypeToChar(const AjEnum type)
 ** Assembly Exception Adaptor. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPAssemblyExceptionAdaptor]
+** @fdata [EnsPAssemblyExceptionadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule New dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPAssemblyExceptionAdaptor] Ensembl Assembly
+** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+** @argrule Obj object [EnsPAssemblyExceptionadaptor] Ensembl Assembly
 **                                                    Exception Adaptor
-** @argrule Ref object [EnsPAssemblyExceptionAdaptor] Ensembl Assembly
+** @argrule Ref object [EnsPAssemblyExceptionadaptor] Ensembl Assembly
 **                                                    Exception Adaptor
 **
-** @valrule * [EnsPAssemblyExceptionAdaptor] Ensembl Assembly Exception Adaptor
+** @valrule * [EnsPAssemblyExceptionadaptor] Ensembl Assembly Exception Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -1056,13 +1057,13 @@ const char* ensAssemblyExceptionTypeToChar(const AjEnum type)
 
 
 
-/* @funcstatic assemblyExceptionAdaptorFetchAllBySQL **************************
+/* @funcstatic assemblyExceptionadaptorFetchAllBySQL **************************
 **
 ** Run a SQL statement against an Ensembl Assembly Exception Adaptor and
 ** consolidate the results into an AJAX List of Ensembl Assembly Exception
 ** objects.
 **
-** @param [r] adaptor [EnsPAssemblyExceptionAdaptor] Ensembl Assembly
+** @param [r] adaptor [EnsPAssemblyExceptionadaptor] Ensembl Assembly
 **                                                   Exception Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
 ** @param [u] aes [AjPList] AJAX List of Ensembl Assembly Exceptions
@@ -1071,8 +1072,8 @@ const char* ensAssemblyExceptionTypeToChar(const AjEnum type)
 ** @@
 ******************************************************************************/
 
-static AjBool assemblyExceptionAdaptorFetchAllBySQL(
-    EnsPAssemblyExceptionAdaptor adaptor,
+static AjBool assemblyExceptionadaptorFetchAllBySQL(
+    EnsPAssemblyExceptionadaptor adaptor,
     const AjPStr statement,
     AjPList aes)
 {
@@ -1088,9 +1089,9 @@ static AjBool assemblyExceptionAdaptorFetchAllBySQL(
     
     AjEnum type = ensEAssemblyExceptionTypeNULL;
     
-    AjPSqlStatement sqls = NULL;
-    AjISqlRow sqli       = NULL;
-    AjPSqlRow sqlr       = NULL;
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
     
     AjPStr typestr = NULL;
     
@@ -1105,11 +1106,11 @@ static AjBool assemblyExceptionAdaptorFetchAllBySQL(
     if(!aes)
         return ajFalse;
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(adaptor->Adaptor, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(adaptor->Adaptor, statement);
     
-    sqli = ajSqlRowIterNew(sqls);
+    sqli = ajSqlrowiterNew(sqls);
     
-    while(!ajSqlRowIterDone(sqli))
+    while(!ajSqlrowiterDone(sqli))
     {
 	identifier = 0;
 	srid       = 0;
@@ -1123,24 +1124,24 @@ static AjBool assemblyExceptionAdaptorFetchAllBySQL(
 	
 	type = ensEAssemblyExceptionTypeNULL;
 	
-        sqlr = ajSqlRowIterGet(sqli);
+        sqlr = ajSqlrowiterGet(sqli);
 	
-        ajSqlColumnToUint(sqlr, &identifier);
-        ajSqlColumnToUint(sqlr, &srid);
-        ajSqlColumnToUint(sqlr, &srstart);
-        ajSqlColumnToUint(sqlr, &srend);
-        ajSqlColumnToStr(sqlr, &typestr);
-        ajSqlColumnToUint(sqlr, &erid);
-        ajSqlColumnToUint(sqlr, &erstart);
-        ajSqlColumnToUint(sqlr, &erend);
-        ajSqlColumnToInt(sqlr, &ori);
+        ajSqlcolumnToUint(sqlr, &identifier);
+        ajSqlcolumnToUint(sqlr, &srid);
+        ajSqlcolumnToUint(sqlr, &srstart);
+        ajSqlcolumnToUint(sqlr, &srend);
+        ajSqlcolumnToStr(sqlr, &typestr);
+        ajSqlcolumnToUint(sqlr, &erid);
+        ajSqlcolumnToUint(sqlr, &erstart);
+        ajSqlcolumnToUint(sqlr, &erend);
+        ajSqlcolumnToInt(sqlr, &ori);
 	
 	/* Set the Assembly Exception type. */
 	
 	type = ensAssemblyExceptionTypeFromStr(typestr);
 	
 	if(!type)
-	    ajFatal("assemblyExceptionAdaptorFetchAllBySQL "
+	    ajFatal("assemblyExceptionadaptorFetchAllBySQL "
 		    "got unexpected Assembly Exception type '%S' "
 		    "from database.\n",
 		    typestr);
@@ -1161,9 +1162,9 @@ static AjBool assemblyExceptionAdaptorFetchAllBySQL(
 	ajStrDel(&typestr);
     }
     
-    ajSqlRowIterDel(&sqli);
+    ajSqlrowiterDel(&sqli);
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     return ajTrue;
 }
@@ -1171,20 +1172,20 @@ static AjBool assemblyExceptionAdaptorFetchAllBySQL(
 
 
 
-/* @funcstatic assemblyExceptionAdaptorCacheInit ******************************
+/* @funcstatic assemblyExceptionadaptorCacheInit ******************************
 **
 ** Initialise the Ensembl Assembly Exception cache in the
 ** Assembly Exception Adaptor.
 **
-** @param [u] adaptor [EnsPAssemblyExceptionAdaptor] Ensembl Assembly
+** @param [u] adaptor [EnsPAssemblyExceptionadaptor] Ensembl Assembly
 **                                                   Exception Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-static AjBool assemblyExceptionAdaptorCacheInit(
-    EnsPAssemblyExceptionAdaptor adaptor)
+static AjBool assemblyExceptionadaptorCacheInit(
+    EnsPAssemblyExceptionadaptor adaptor)
 {
     ajuint *Pidentifier = NULL;
     
@@ -1227,11 +1228,11 @@ static AjBool assemblyExceptionAdaptorCacheInit(
 			 "coord_system.coord_system_id "
 			 "AND "
 			 "coord_system.species_id = %u",
-			 ensDatabaseAdaptorGetIdentifier(adaptor->Adaptor));
+			 ensDatabaseadaptorGetIdentifier(adaptor->Adaptor));
     
     aes = ajListNew();
     
-    assemblyExceptionAdaptorFetchAllBySQL(adaptor, statement, aes);
+    assemblyExceptionadaptorFetchAllBySQL(adaptor, statement, aes);
     
     ajStrDel(&statement);
     
@@ -1265,21 +1266,21 @@ static AjBool assemblyExceptionAdaptorCacheInit(
 
 
 
-/* @func ensAssemblyExceptionAdaptorNew ***************************************
+/* @func ensAssemblyExceptionadaptorNew ***************************************
 **
 ** Default constructor for an Ensembl Assembly Exception Adaptor.
 **
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPAssemblyExceptionAdaptor] Ensembl Assembly Exception Adaptor
+** @return [EnsPAssemblyExceptionadaptor] Ensembl Assembly Exception Adaptor
 **                                        or NULL
 ** @@
 ******************************************************************************/
 
-EnsPAssemblyExceptionAdaptor ensAssemblyExceptionAdaptorNew(
-    EnsPDatabaseAdaptor dba)
+EnsPAssemblyExceptionadaptor ensAssemblyExceptionadaptorNew(
+    EnsPDatabaseadaptor dba)
 {
-    EnsPAssemblyExceptionAdaptor adaptor = NULL;
+    EnsPAssemblyExceptionadaptor adaptor = NULL;
     
     if(!dba)
 	return NULL;
@@ -1288,7 +1289,7 @@ EnsPAssemblyExceptionAdaptor ensAssemblyExceptionAdaptorNew(
     
     adaptor->Adaptor = dba;
     
-    assemblyExceptionAdaptorCacheInit(adaptor);
+    assemblyExceptionadaptorCacheInit(adaptor);
     
     return adaptor;
 }
@@ -1301,12 +1302,12 @@ EnsPAssemblyExceptionAdaptor ensAssemblyExceptionAdaptorNew(
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Assembly Exception Adaptor.
 **
-** @fdata [EnsPAssemblyExceptionAdaptor]
+** @fdata [EnsPAssemblyExceptionadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) an Ensembl Assembly Exception Adaptor object
 **
-** @argrule * Padaptor [EnsPAnalysisAdaptor*] Assembly Exception Adaptor
+** @argrule * Padaptor [EnsPAnalysisadaptor*] Assembly Exception Adaptor
 **                                            object address
 **
 ** @valrule * [void]
@@ -1317,15 +1318,15 @@ EnsPAssemblyExceptionAdaptor ensAssemblyExceptionAdaptorNew(
 
 
 
-/* @funcstatic assemblyExceptionAdaptorClearIdentifierCache *******************
+/* @funcstatic assemblyExceptionadaptorClearIdentifierCache *******************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Assembly Exception
 ** Adaptor-internal Ensembl Assembly Exception cache. This function clears the
 ** unsigned integer key data and the AJAX List value data, as well as the
 ** Ensembl Assembly Exceptions from the AJAX List.
 **
-** @param [u] key [void **] AJAX unsigned integer key data address
-** @param [u] value [void **] AJAX List value data address
+** @param [u] key [void**] AJAX unsigned integer key data address
+** @param [u] value [void**] AJAX List value data address
 ** @param [u] cl [void*] Standard, passed in from ajTableMapDel
 ** @see ajTableMapDel
 **
@@ -1333,7 +1334,7 @@ EnsPAssemblyExceptionAdaptor ensAssemblyExceptionAdaptorNew(
 ** @@
 ******************************************************************************/
 
-static void assemblyExceptionAdaptorClearIdentifierCache(void **key,
+static void assemblyExceptionadaptorClearIdentifierCache(void **key,
                                                          void **value,
                                                          void *cl)
 {
@@ -1366,20 +1367,20 @@ static void assemblyExceptionAdaptorClearIdentifierCache(void **key,
 
 
 
-/* @funcstatic assemblyExceptionAdaptorCacheExit ******************************
+/* @funcstatic assemblyExceptionadaptorCacheExit ******************************
 **
 ** Clears the Ensembl Assembly Exception cache in the
 ** Ensembl Assembly Exception Adaptor.
 **
-** @param [u] adaptor [EnsPAssemblyExceptionAdaptor] Ensembl Assembly
+** @param [u] adaptor [EnsPAssemblyExceptionadaptor] Ensembl Assembly
 **                                                   Exception Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-static AjBool assemblyExceptionAdaptorCacheExit(
-    EnsPAssemblyExceptionAdaptor adaptor)
+static AjBool assemblyExceptionadaptorCacheExit(
+    EnsPAssemblyExceptionadaptor adaptor)
 {
     if(!adaptor)
         return ajFalse;
@@ -1388,7 +1389,7 @@ static AjBool assemblyExceptionAdaptorCacheExit(
 	return ajTrue;
     
     ajTableMapDel(adaptor->CacheBySeqRegionIdentifier,
-		  assemblyExceptionAdaptorClearIdentifierCache,
+		  assemblyExceptionadaptorClearIdentifierCache,
 		  NULL);
     
     ajTableFree(&(adaptor->CacheBySeqRegionIdentifier));
@@ -1399,12 +1400,12 @@ static AjBool assemblyExceptionAdaptorCacheExit(
 
 
 
-/* @func ensAssemblyExceptionAdaptorDel ***************************************
+/* @func ensAssemblyExceptionadaptorDel ***************************************
 **
 ** Default destructor for an Ensembl Assembly Exception Adaptor.
 ** This function also clears the internal Assembly Exception cache.
 **
-** @param [r] Padaptor [EnsPAssemblyExceptionAdaptor*] Ensembl Assembly
+** @param [r] Padaptor [EnsPAssemblyExceptionadaptor*] Ensembl Assembly
 **                                                     Exception Adaptor
 **                                                     address
 **
@@ -1412,7 +1413,7 @@ static AjBool assemblyExceptionAdaptorCacheExit(
 ** @@
 ******************************************************************************/
 
-void ensAssemblyExceptionAdaptorDel(EnsPAssemblyExceptionAdaptor* Padaptor)
+void ensAssemblyExceptionadaptorDel(EnsPAssemblyExceptionadaptor* Padaptor)
 {
     if(!Padaptor)
 	return;
@@ -1420,7 +1421,7 @@ void ensAssemblyExceptionAdaptorDel(EnsPAssemblyExceptionAdaptor* Padaptor)
     if(!*Padaptor)
 	return;
     
-    assemblyExceptionAdaptorCacheExit(*Padaptor);
+    assemblyExceptionadaptorCacheExit(*Padaptor);
     
     AJFREE(*Padaptor);
     
@@ -1435,7 +1436,7 @@ void ensAssemblyExceptionAdaptorDel(EnsPAssemblyExceptionAdaptor* Padaptor)
 ** Functions for retrieving Ensembl Assembly Exception objects from an
 ** Ensembl Core database.
 **
-** @fdata [EnsPAssemblyExceptionAdaptor]
+** @fdata [EnsPAssemblyExceptionadaptor]
 ** @fnote None
 **
 ** @nam3rule Fetch Retrieve Ensembl Assembly Exception object(s)
@@ -1445,7 +1446,7 @@ void ensAssemblyExceptionAdaptorDel(EnsPAssemblyExceptionAdaptor* Padaptor)
 ** @nam4rule FetchBy Retrieve one Ensembl Assembly Exception object
 **                   matching a criterion
 **
-** @argrule * adaptor [const EnsPAssemblyExceptionAdaptor] Ensembl Assembly
+** @argrule * adaptor [const EnsPAssemblyExceptionadaptor] Ensembl Assembly
 **                                                         Exception Adaptor
 ** @argrule FetchAll [AjPList] AJAX List of Ensembl Assembly Exception objects
 **
@@ -1457,13 +1458,13 @@ void ensAssemblyExceptionAdaptorDel(EnsPAssemblyExceptionAdaptor* Padaptor)
 
 
 
-/* @funcstatic assemblyExceptionAdaptorFetchAll *******************************
+/* @funcstatic assemblyExceptionadaptorFetchAll *******************************
 **
 ** An ajTableMap 'apply' function to return all Ensembl Assembly Exceptions
 ** from the Ensembl Assembly Exception Adaptor-internal cache.
 **
 ** @param [u] key [const void *] AJAX unsigned integer key data address
-** @param [u] value [void **] Ensembl Assembly Exception value data address
+** @param [u] value [void**] Ensembl Assembly Exception value data address
 ** @param [u] cl [void *] AJAX List of Ensembl Assembly Exception objects,
 **                        passed in via ajTableMap
 ** @see ajTableMap
@@ -1472,7 +1473,7 @@ void ensAssemblyExceptionAdaptorDel(EnsPAssemblyExceptionAdaptor* Padaptor)
 ** @@
 ******************************************************************************/
 
-static void assemblyExceptionAdaptorFetchAll(const void *key, void **value,
+static void assemblyExceptionadaptorFetchAll(const void *key, void **value,
                                              void *cl)
 {
     AjIList iter = NULL;
@@ -1509,14 +1510,14 @@ static void assemblyExceptionAdaptorFetchAll(const void *key, void **value,
 
 
 
-/* @func ensAssemblyExceptionAdaptorFetchAll **********************************
+/* @func ensAssemblyExceptionadaptorFetchAll **********************************
 **
 ** Fetch all Ensembl Assembly Exceptions.
 **
 ** The caller is responsible for deleting the Ensembl Assembly Exception
 ** objects before deleting the AJAX List.
 **
-** @param [r] adaptor [const EnsPAssemblyExceptionAdaptor] Ensembl Assembly
+** @param [r] adaptor [const EnsPAssemblyExceptionadaptor] Ensembl Assembly
 **                                                         Exception Adaptor
 ** @param [u] aes [AjPList] AJAX List of Ensembl Assembly Exceptions
 **
@@ -1524,8 +1525,8 @@ static void assemblyExceptionAdaptorFetchAll(const void *key, void **value,
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionAdaptorFetchAll(
-    const EnsPAssemblyExceptionAdaptor adaptor,
+AjBool ensAssemblyExceptionadaptorFetchAll(
+    const EnsPAssemblyExceptionadaptor adaptor,
     AjPList aes)
 {
     if(!adaptor)
@@ -1535,7 +1536,7 @@ AjBool ensAssemblyExceptionAdaptorFetchAll(
         return ajFalse;
     
     ajTableMap(adaptor->CacheBySeqRegionIdentifier,
-	       assemblyExceptionAdaptorFetchAll,
+	       assemblyExceptionadaptorFetchAll,
 	       (void *) aes);
     
     return ajTrue;
@@ -1544,14 +1545,14 @@ AjBool ensAssemblyExceptionAdaptorFetchAll(
 
 
 
-/* @func ensAssemblyExceptionAdaptorFetchAllBySeqRegionIdentifier *************
+/* @func ensAssemblyExceptionadaptorFetchAllBySeqRegionIdentifier *************
 **
 ** Fetch all Ensembl Assembly Exceptions by a Sequence Region identifier.
 **
 ** The caller is responsible for deleting the Ensembl Assembly Exception
 ** objects before deleting the AJAX List.
 **
-** @param [r] adaptor [const EnsPAssemblyExceptionAdaptor] Ensembl Assembly
+** @param [r] adaptor [const EnsPAssemblyExceptionadaptor] Ensembl Assembly
 **                                                         Exception Adaptor
 ** @param [r] srid [ajuint] Ensembl Sequence Region identifier
 ** @param [u] aes [AjPList] AJAX List of Ensembl Assembly Exceptions
@@ -1560,8 +1561,8 @@ AjBool ensAssemblyExceptionAdaptorFetchAll(
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionAdaptorFetchAllBySeqRegionIdentifier(
-    EnsPAssemblyExceptionAdaptor adaptor,
+AjBool ensAssemblyExceptionadaptorFetchAllBySeqRegionIdentifier(
+    EnsPAssemblyExceptionadaptor adaptor,
     ajuint srid,
     AjPList aes)
 {
@@ -1571,7 +1572,7 @@ AjBool ensAssemblyExceptionAdaptorFetchAllBySeqRegionIdentifier(
     EnsPAssemblyException ae = NULL;
     
     /*
-     ajDebug("ensAssemblyExceptionAdaptorFetchAllBySeqRegionIdentifier\n"
+     ajDebug("ensAssemblyExceptionadaptorFetchAllBySeqRegionIdentifier\n"
 	     "  adaptor %p\n"
 	     "  srid %u\n"
 	     "  aes %p\n",

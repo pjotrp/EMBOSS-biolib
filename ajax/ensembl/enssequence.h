@@ -12,26 +12,25 @@ extern "C"
 
 
 
-/* @data EnsPSequenceAdaptor **************************************************
+/* @data EnsPSequenceadaptor **************************************************
 **
 ** Ensembl Sequence Adaptor.
 **
-** @alias EnsSSequenceAdaptor
-** @alias EnsOSequenceAdaptor
+** @alias EnsSSequenceadaptor
+** @alias EnsOSequenceadaptor
 **
-** @attr Adaptor [EnsPDatabaseAdaptor] Ensembl Database Adaptor.
+** @attr Adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor.
 ** @attr Cache [EnsPCache] Ensembl LRU Cache.
-** @attr CacheByName [AjPTable] Name cache.
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSSequenceAdaptor
+typedef struct EnsSSequenceadaptor
 {
-    EnsPDatabaseAdaptor Adaptor;
+    EnsPDatabaseadaptor Adaptor;
     EnsPCache Cache;
-} EnsOSequenceAdaptor;
+} EnsOSequenceadaptor;
 
-#define EnsPSequenceAdaptor EnsOSequenceAdaptor*
+#define EnsPSequenceadaptor EnsOSequenceadaptor*
 
 
 
@@ -42,49 +41,49 @@ typedef struct EnsSSequenceAdaptor
 
 /* Ensembl Sequence Adaptor */
 
-EnsPSequenceAdaptor ensSequenceAdaptorNew(EnsPDatabaseAdaptor dba);
+EnsPSequenceadaptor ensSequenceadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensSequenceAdaptorDel(EnsPSequenceAdaptor* Psa);
+void ensSequenceadaptorDel(EnsPSequenceadaptor* Psa);
 
-AjBool ensSequenceAdaptorFetchSubStrBySeqRegion(EnsPSequenceAdaptor sa,
+AjBool ensSequenceadaptorFetchSubStrBySeqRegion(EnsPSequenceadaptor sa,
                                                 EnsPSeqRegion sr,
                                                 ajuint start,
                                                 ajuint length,
                                                 AjPStr *Psequence);
 
-AjBool ensSequenceAdaptorFetchStrBySeqRegion(EnsPSequenceAdaptor sa,
+AjBool ensSequenceadaptorFetchStrBySeqRegion(EnsPSequenceadaptor sa,
                                              EnsPSeqRegion sr,
                                              AjPStr *Psequence);
 
-AjBool ensSequenceAdaptorFetchSubSeqBySeqRegion(EnsPSequenceAdaptor sa,
+AjBool ensSequenceadaptorFetchSubSeqBySeqRegion(EnsPSequenceadaptor sa,
                                                 EnsPSeqRegion sr,
                                                 ajuint start,
                                                 ajuint length,
                                                 AjPSeq *Psequence);
 
-AjBool ensSequenceAdaptorFetchSeqBySeqRegion(EnsPSequenceAdaptor sa,
+AjBool ensSequenceadaptorFetchSeqBySeqRegion(EnsPSequenceadaptor sa,
                                              EnsPSeqRegion sr,
                                              AjPSeq *Psequence);
 
-AjBool ensSequenceAdaptorFetchSubStrBySlice(EnsPSequenceAdaptor sa,
+AjBool ensSequenceadaptorFetchSubStrBySlice(EnsPSequenceadaptor sa,
                                             EnsPSlice slice,
                                             ajint start,
                                             ajint end,
                                             ajint strand,
                                             AjPStr *Psequence);
 
-AjBool ensSequenceAdaptorFetchStrBySlice(EnsPSequenceAdaptor sa,
+AjBool ensSequenceadaptorFetchStrBySlice(EnsPSequenceadaptor sa,
                                          EnsPSlice slice,
                                          AjPStr *Psequence);
 
-AjBool ensSequenceAdaptorFetchSubSeqBySlice(EnsPSequenceAdaptor sa,
+AjBool ensSequenceadaptorFetchSubSeqBySlice(EnsPSequenceadaptor sa,
                                             EnsPSlice slice,
                                             ajint start,
                                             ajint end,
                                             ajint strand,
                                             AjPSeq *Psequence);
 
-AjBool ensSequenceAdaptorFetchSeqBySlice(EnsPSequenceAdaptor sa,
+AjBool ensSequenceadaptorFetchSeqBySlice(EnsPSequenceadaptor sa,
                                          EnsPSlice slice,
                                          AjPSeq *Psequence);
 

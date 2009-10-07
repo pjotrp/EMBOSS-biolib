@@ -11,37 +11,35 @@ extern "C"
 
 
 
-/* @data EnsPQCDatabaseAdaptor ************************************************
+/* @data EnsPQCDatabaseadaptor ************************************************
 **
 ** Ensembl QC Database Adaptor
 **
-** @alias EnsSQCDatabaseAdaptor
-** @alias EnsOQCDatabaseAdaptor
+** @alias EnsSQCDatabaseadaptor
+** @alias EnsOQCDatabaseadaptor
 **
-** @attr Adaptor [EnsPBaseAdaptor] Ensembl Base Adaptor
+** @attr Adaptor [EnsPBaseadaptor] Ensembl Base Adaptor
 ** @attr CacheByIdentifier [AjPTable] Identifier cache
 ** @attr CacheByName [AjPTable] Name cache
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSQCDatabaseAdaptor
+typedef struct EnsSQCDatabaseadaptor
 {
-    EnsPBaseAdaptor Adaptor;
+    EnsPBaseadaptor Adaptor;
     AjPTable CacheByIdentifier;
     AjPTable CacheByName;
-} EnsOQCDatabaseAdaptor;
+} EnsOQCDatabaseadaptor;
 
-#define EnsPQCDatabaseAdaptor EnsOQCDatabaseAdaptor*
-
-
+#define EnsPQCDatabaseadaptor EnsOQCDatabaseadaptor*
 
 
-/* @datatype EnsEQCDatabaseClass **********************************************
+
+
+/******************************************************************************
 **
 ** Ensembl QC Database Class enumeration
 **
-** @attr enum [EnsEQCDatabaseClass] Value
-** @@
 ******************************************************************************/
 
 enum EnsEQCDatabaseClass
@@ -57,12 +55,10 @@ enum EnsEQCDatabaseClass
 
 
 
-/* @datatype EnsEQCDatabaseType ***********************************************
+/******************************************************************************
 **
 ** Ensembl QC Database Type enumeration
 **
-** @attr enum [EnsEQCDatabaseType] Value
-** @@
 ******************************************************************************/
 
 enum EnsEQCDatabaseType
@@ -86,7 +82,7 @@ enum EnsEQCDatabaseType
 ** @attr Use [ajuint] Use counter
 ** @cc Bio::EnsEMBL::Storable
 ** @attr Identifier [ajuint] SQL database-internal identifier
-** @attr Adaptor [EnsPQCDatabaseAdaptor] Ensembl Database Adaptor
+** @attr Adaptor [EnsPQCDatabaseadaptor] Ensembl Database Adaptor
 ** @cc Bio::EnsEMBL::QC::SequenceDB
 ** @cc 'sequence_db' SQL table
 ** @attr Analysis [EnsPAnalysis] Ensembl Analysis
@@ -111,7 +107,7 @@ typedef struct EnsSQCDatabase
 {
     ajuint Use;
     ajuint Identifier;
-    EnsPQCDatabaseAdaptor Adaptor;
+    EnsPQCDatabaseadaptor Adaptor;
     EnsPAnalysis Analysis;
     AjPStr Name;
     AjPStr Release;
@@ -140,7 +136,7 @@ typedef struct EnsSQCDatabase
 
 /* Ensembl Quality Check Database */
 
-EnsPQCDatabase ensQCDatabaseNew(EnsPQCDatabaseAdaptor adaptor,
+EnsPQCDatabase ensQCDatabaseNew(EnsPQCDatabaseadaptor adaptor,
                                 ajuint identifier,
                                 EnsPAnalysis analysis,
                                 AjPStr name,
@@ -162,7 +158,7 @@ EnsPQCDatabase ensQCDatabaseNewRef(EnsPQCDatabase qcdb);
 
 void ensQCDatabaseDel(EnsPQCDatabase* Pqcdb);
 
-EnsPQCDatabaseAdaptor ensQCDatabaseGetAdaptor(const EnsPQCDatabase qcdb);
+EnsPQCDatabaseadaptor ensQCDatabaseGetadaptor(const EnsPQCDatabase qcdb);
 
 ajuint ensQCDatabaseGetIdentifier(const EnsPQCDatabase qcdb);
 
@@ -194,8 +190,8 @@ AjPStr ensQCDatabaseGetExternalURL(const EnsPQCDatabase qcdb);
 
 AjPStr ensQCDatabaseGetInternalURL(const EnsPQCDatabase qcdb);
 
-AjBool ensQCDatabaseSetAdaptor(EnsPQCDatabase qcdb,
-                               EnsPQCDatabaseAdaptor qcdba);
+AjBool ensQCDatabaseSetadaptor(EnsPQCDatabase qcdb,
+                               EnsPQCDatabaseadaptor qcdba);
 
 AjBool ensQCDatabaseSetIdentifier(EnsPQCDatabase qcdb, ajuint identifier);
 
@@ -244,31 +240,31 @@ AjBool ensQCDatabaseMatch(const EnsPQCDatabase qcdb1,
 
 /* Ensembl Quality Check Database Adaptor */
 
-EnsPQCDatabaseAdaptor ensQCDatabaseAdaptorNew(EnsPDatabaseAdaptor dba);
+EnsPQCDatabaseadaptor ensQCDatabaseadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensQCDatabaseAdaptorDel(EnsPQCDatabaseAdaptor* Pqcdba);
+void ensQCDatabaseadaptorDel(EnsPQCDatabaseadaptor* Pqcdba);
 
-AjBool ensQCDatabaseAdaptorFetchByIdentifier(EnsPQCDatabaseAdaptor qcdba,
+AjBool ensQCDatabaseadaptorFetchByIdentifier(EnsPQCDatabaseadaptor qcdba,
                                              ajuint identifier,
                                              EnsPQCDatabase *Pqcdb);
 
-AjBool ensQCDatabaseAdaptorFetchByName(EnsPQCDatabaseAdaptor qcdba,
+AjBool ensQCDatabaseadaptorFetchByName(EnsPQCDatabaseadaptor qcdba,
                                        const AjPStr name,
                                        const AjPStr release,
                                        EnsPQCDatabase *Pqcdb);
 
-AjBool ensQCDatabaseAdaptorFetchAllByClassType(EnsPQCDatabaseAdaptor qcdba,
+AjBool ensQCDatabaseadaptorFetchAllByClassType(EnsPQCDatabaseadaptor qcdba,
                                                AjEnum class,
                                                AjEnum type,
                                                AjPList qcdbs);
 
-AjBool ensQCDatabaseAdaptorStore(EnsPQCDatabaseAdaptor qcdba,
+AjBool ensQCDatabaseadaptorStore(EnsPQCDatabaseadaptor qcdba,
                                  EnsPQCDatabase qcdb);
 
-AjBool ensQCDatabaseAdaptorUpdate(EnsPQCDatabaseAdaptor qcdba,
+AjBool ensQCDatabaseadaptorUpdate(EnsPQCDatabaseadaptor qcdba,
                                   const EnsPQCDatabase qcdb);
 
-AjBool ensQCDatabaseAdaptorDelete(EnsPQCDatabaseAdaptor qcdba,
+AjBool ensQCDatabaseadaptorDelete(EnsPQCDatabaseadaptor qcdba,
                                   const EnsPQCDatabase qcdb);
 
 

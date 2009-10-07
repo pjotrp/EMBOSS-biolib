@@ -12,14 +12,14 @@ extern "C"
 
 
 
-/* @data EnsPCoordSystemAdaptor ***********************************************
+/* @data EnsPCoordSystemadaptor ***********************************************
 **
 ** Ensembl Coordinate System Adaptor
 **
-** @alias EnsSCoordSystemAdaptor
-** @alias EnsOCoordSystemAdaptor
+** @alias EnsSCoordSystemadaptor
+** @alias EnsOCoordSystemadaptor
 **
-** @attr Adaptor [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @attr Adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @attr CacheByIdentifier [AjPTable] Database identifier cache
 ** @attr CacheByName [AjPTable] Name cache
 ** @attr CacheByRank [AjPTable] Rank cache
@@ -27,14 +27,14 @@ extern "C"
 ** @attr MappingPaths [AjPTable] Mapping paths between coordinate systems
 ** @attr ExternalToInternal [AjPTable] External to internal Sequence Regions
 ** @attr InternalToExternal [AjPTable] Internal to external Sequence Regions
-** @attr SeqLevel [void *] Sequence-level Ensembl Coordinate System
-** @attr TopLevel [void *] Top-level Ensembl Coordinate System
+** @attr SeqLevel [void*] Sequence-level Ensembl Coordinate System
+** @attr TopLevel [void*] Top-level Ensembl Coordinate System
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSCoordSystemAdaptor
+typedef struct EnsSCoordSystemadaptor
 {
-    EnsPDatabaseAdaptor Adaptor;
+    EnsPDatabaseadaptor Adaptor;
     AjPTable CacheByIdentifier;
     AjPTable CacheByName;
     AjPTable CacheByRank;
@@ -44,9 +44,9 @@ typedef struct EnsSCoordSystemAdaptor
     AjPTable InternalToExternal;
     void *SeqLevel;
     void *TopLevel;
-} EnsOCoordSystemAdaptor;
+} EnsOCoordSystemadaptor;
 
-#define EnsPCoordSystemAdaptor EnsOCoordSystemAdaptor*
+#define EnsPCoordSystemadaptor EnsOCoordSystemadaptor*
 
 
 
@@ -60,8 +60,8 @@ typedef struct EnsSCoordSystemAdaptor
 **
 ** @attr Use [ajuint] Use counter
 ** @cc Bio::EnsEMBL::Storable
-** @attr Adaptor [EnsPCoordSystemAdaptor] Ensembl Coordinate System Adaptor
 ** @attr Identifier [ajuint] Internal SQL database identifier (primary key)
+** @attr Adaptor [EnsPCoordSystemadaptor] Ensembl Coordinate System Adaptor
 ** @cc Bio::EnsEMBL::CoordSystem
 ** @attr Name [AjPStr] Coordinate System name
 ** @attr Version [AjPStr] Coordinate System version
@@ -76,7 +76,7 @@ typedef struct EnsSCoordSystem
 {
     ajuint Use;
     ajuint Identifier;
-    EnsPCoordSystemAdaptor Adaptor;
+    EnsPCoordSystemadaptor Adaptor;
     AjPStr Name;
     AjPStr Version;
     AjBool Default;
@@ -96,7 +96,7 @@ typedef struct EnsSCoordSystem
 
 /* Ensembl Coordinate System */
 
-EnsPCoordSystem ensCoordSystemNew(EnsPCoordSystemAdaptor adaptor,
+EnsPCoordSystem ensCoordSystemNew(EnsPCoordSystemadaptor adaptor,
                                   ajuint identifier,
                                   AjPStr name,
                                   AjPStr version,
@@ -111,7 +111,7 @@ EnsPCoordSystem ensCoordSystemNewRef(EnsPCoordSystem cs);
 
 void ensCoordSystemDel(EnsPCoordSystem* Pcs);
 
-EnsPCoordSystemAdaptor ensCoordSystemGetAdaptor(const EnsPCoordSystem cs);
+EnsPCoordSystemadaptor ensCoordSystemGetadaptor(const EnsPCoordSystem cs);
 
 ajuint ensCoordSystemGetIdentifier(const EnsPCoordSystem cs);
 
@@ -133,7 +133,7 @@ AjBool ensCoordSystemGetTopLevel(const EnsPCoordSystem cs);
 
 ajuint ensCoordSystemGetRank(const EnsPCoordSystem cs);
 
-AjBool ensCoordSystemSetAdaptor(EnsPCoordSystem cs, EnsPCoordSystemAdaptor csa);
+AjBool ensCoordSystemSetadaptor(EnsPCoordSystem cs, EnsPCoordSystemadaptor csa);
 
 AjBool ensCoordSystemSetIdentifier(EnsPCoordSystem cs, ajuint identifier);
 
@@ -148,51 +148,51 @@ AjPStr ensCoordSystemGetSpecies(EnsPCoordSystem cs);
 
 /* Ensembl Coordinate System Adaptor */
 
-EnsPCoordSystemAdaptor ensCoordSystemAdaptorNew(EnsPDatabaseAdaptor dba);
+EnsPCoordSystemadaptor ensCoordSystemadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensCoordSystemAdaptorDel(EnsPCoordSystemAdaptor* Pcsa);
+void ensCoordSystemadaptorDel(EnsPCoordSystemadaptor* Pcsa);
 
-EnsPDatabaseAdaptor ensCoordSystemAdaptorGetDatabaseAdaptor(
-    const EnsPCoordSystemAdaptor adaptor);
+EnsPDatabaseadaptor ensCoordSystemadaptorGetDatabaseadaptor(
+    const EnsPCoordSystemadaptor adaptor);
 
-AjBool ensCoordSystemAdaptorFetchAll(const EnsPCoordSystemAdaptor adaptor,
+AjBool ensCoordSystemadaptorFetchAll(const EnsPCoordSystemadaptor adaptor,
                                      AjPList cslist);
 
-AjBool ensCoordSystemAdaptorFetchAllByName(const EnsPCoordSystemAdaptor adaptor,
+AjBool ensCoordSystemadaptorFetchAllByName(const EnsPCoordSystemadaptor adaptor,
                                            const AjPStr name,
                                            AjPList cslist);
 
-AjBool ensCoordSystemAdaptorFetchByIdentifier(
-    const EnsPCoordSystemAdaptor adaptor,
+AjBool ensCoordSystemadaptorFetchByIdentifier(
+    const EnsPCoordSystemadaptor adaptor,
     ajuint identifier,
     EnsPCoordSystem *Pcs);
 
-AjBool ensCoordSystemAdaptorFetchByName(const EnsPCoordSystemAdaptor adaptor,
+AjBool ensCoordSystemadaptorFetchByName(const EnsPCoordSystemadaptor adaptor,
                                         const AjPStr name,
                                         const AjPStr version,
                                         EnsPCoordSystem *Pcs);
 
-AjBool ensCoordSystemAdaptorFetchByRank(const EnsPCoordSystemAdaptor adaptor,
+AjBool ensCoordSystemadaptorFetchByRank(const EnsPCoordSystemadaptor adaptor,
                                         ajuint rank,
                                         EnsPCoordSystem *Pcs);
 
-AjBool ensCoordSystemAdaptorFetchSeqLevel(const EnsPCoordSystemAdaptor adaptor,
+AjBool ensCoordSystemadaptorFetchSeqLevel(const EnsPCoordSystemadaptor adaptor,
                                           EnsPCoordSystem *Pcs);
 
-AjBool ensCoordSystemAdaptorFetchTopLevel(const EnsPCoordSystemAdaptor adaptor,
+AjBool ensCoordSystemadaptorFetchTopLevel(const EnsPCoordSystemadaptor adaptor,
                                           EnsPCoordSystem *Pcs);
 
-const AjPList ensCoordSystemAdaptorGetMappingPath(
-    const EnsPCoordSystemAdaptor adaptor,
+const AjPList ensCoordSystemadaptorGetMappingPath(
+    const EnsPCoordSystemadaptor adaptor,
     EnsPCoordSystem cs1,
     EnsPCoordSystem cs2);
 
-ajuint ensCoordSystemAdaptorGetExternalSeqRegionIdentifier(
-    const EnsPCoordSystemAdaptor adaptor,
+ajuint ensCoordSystemadaptorGetExternalSeqRegionIdentifier(
+    const EnsPCoordSystemadaptor adaptor,
     ajuint srid);
 
-ajuint ensCoordSystemAdaptorGetInternalSeqRegionIdentifier(
-    const EnsPCoordSystemAdaptor adaptor,
+ajuint ensCoordSystemadaptorGetInternalSeqRegionIdentifier(
+    const EnsPCoordSystemadaptor adaptor,
     ajuint srid);
 
 /*

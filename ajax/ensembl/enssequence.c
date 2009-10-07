@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -43,14 +43,14 @@
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-extern EnsPSliceAdaptor
-ensRegistryGetSliceAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPSliceadaptor
+ensRegistryGetSliceadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPCoordSystemAdaptor
-ensRegistryGetCoordSystemAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPCoordSystemadaptor
+ensRegistryGetCoordSystemadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPSeqRegionAdaptor
-ensRegistryGetSeqRegionAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPSeqRegionadaptor
+ensRegistryGetSeqRegionadaptor(EnsPDatabaseadaptor dba);
 
 static void* sequenceAdaptorCacheReference(void *value);
 
@@ -70,13 +70,13 @@ static ajuint sequenceAdaptorCacheSize(const void *value);
 
 
 
-/* @datasection [EnsPSequenceAdaptor] Sequence Adaptor ************************
+/* @datasection [EnsPSequenceadaptor] Sequence Adaptor ************************
 **
 ** Functions for manipulating Ensembl Sequence Adaptor objects
 **
-** @cc Bio::EnsEMBL::DBSQL::SequenceAdaptor CVS Revision: 1.35
+** @cc Bio::EnsEMBL::DBSQL::Sequenceadaptor CVS Revision: 1.35
 **
-** @nam2rule SequenceAdaptor
+** @nam2rule Sequenceadaptor
 **
 ******************************************************************************/
 
@@ -190,16 +190,16 @@ static ajuint sequenceAdaptorCacheSize(const void *value)
 ** Sequence Adaptor. The target pointer does not need to be initialised to
 ** NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPSequenceAdaptor]
+** @fdata [EnsPSequenceadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 **
-** @argrule New dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPSequenceAdaptor] Ensembl Sequence Adaptor
-** @argrule Ref object [EnsPSequenceAdaptor] Ensembl Sequence Adaptor
+** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+** @argrule Obj object [EnsPSequenceadaptor] Ensembl Sequence Adaptor
+** @argrule Ref object [EnsPSequenceadaptor] Ensembl Sequence Adaptor
 **
-** @valrule * [EnsPSequenceAdaptor] Ensembl Sequence Adaptor
+** @valrule * [EnsPSequenceadaptor] Ensembl Sequence Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -207,26 +207,26 @@ static ajuint sequenceAdaptorCacheSize(const void *value)
 
 
 
-/* @func ensSequenceAdaptorNew ************************************************
+/* @func ensSequenceadaptorNew ************************************************
 **
 ** Default constructor for an Ensembl Sequence Adaptor.
 **
-** @cc Bio::EnsEMBL::DBSQL::SequenceAdaptor::new
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @cc Bio::EnsEMBL::DBSQL::Sequenceadaptor::new
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPSequenceAdaptor] Ensembl Sequence Adaptor or NULL
+** @return [EnsPSequenceadaptor] Ensembl Sequence Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPSequenceAdaptor ensSequenceAdaptorNew(EnsPDatabaseAdaptor dba)
+EnsPSequenceadaptor ensSequenceadaptorNew(EnsPDatabaseadaptor dba)
 {
-    EnsPSequenceAdaptor sa = NULL;
+    EnsPSequenceadaptor sa = NULL;
     
     if(!dba)
         return NULL;
     
     /*
-     ajDebug("ensSequenceAdaptorNew\n"
+     ajDebug("ensSequenceadaptorNew\n"
 	     "  dba %p\n",
 	     dba);
      */
@@ -258,12 +258,12 @@ EnsPSequenceAdaptor ensSequenceAdaptorNew(EnsPDatabaseAdaptor dba)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Sequence Adaptor.
 **
-** @fdata [EnsPSequenceAdaptor]
+** @fdata [EnsPSequenceadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a Sequence Adaptor object
 **
-** @argrule * Psa [EnsPSequenceAdaptor*] Sequence Adaptor object address
+** @argrule * Psa [EnsPSequenceadaptor*] Sequence Adaptor object address
 **
 ** @valrule * [void]
 **
@@ -273,19 +273,19 @@ EnsPSequenceAdaptor ensSequenceAdaptorNew(EnsPDatabaseAdaptor dba)
 
 
 
-/* @func ensSequenceAdaptorDel ************************************************
+/* @func ensSequenceadaptorDel ************************************************
 **
 ** Default destructor for an Ensembl Sequence Adaptor.
 **
-** @param [d] Psa [EnsPSequenceAdaptor] Ensembl Sequence Adaptor address
+** @param [d] Psa [EnsPSequenceadaptor] Ensembl Sequence Adaptor address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensSequenceAdaptorDel(EnsPSequenceAdaptor *Psa)
+void ensSequenceadaptorDel(EnsPSequenceadaptor *Psa)
 {
-    EnsPSequenceAdaptor pthis = NULL;
+    EnsPSequenceadaptor pthis = NULL;
     
     if(!Psa)
 	return;
@@ -296,7 +296,7 @@ void ensSequenceAdaptorDel(EnsPSequenceAdaptor *Psa)
     pthis = *Psa;
     
     /*
-     ajDebug("ensSequenceAdaptorDel\n"
+     ajDebug("ensSequenceadaptorDel\n"
 	     "  *Psa %p\n",
 	     *Psa);
      */
@@ -318,7 +318,7 @@ void ensSequenceAdaptorDel(EnsPSequenceAdaptor *Psa)
 **
 ** Functions for retrieving Sequence objects from an Ensembl Core database.
 **
-** @fdata [EnsPSequenceAdaptor]
+** @fdata [EnsPSequenceadaptor]
 ** @fnote None
 **
 ** @nam3rule Fetch Retrieve Sequence object(s)
@@ -327,7 +327,7 @@ void ensSequenceAdaptorDel(EnsPSequenceAdaptor *Psa)
 ** @nam5rule BySeqRegion Fetch Sequence via an Ensembl Sequence Region
 ** @nam5rule BySlice Fetch Sequence via an Ensembl Slice
 **
-** @argrule * sa [const EnsPSequenceAdaptor] Ensembl Sequence Adaptor
+** @argrule * sa [const EnsPSequenceadaptor] Ensembl Sequence Adaptor
 ** @argrule BySeqRegion sr [EnsPSeqRegion] Ensembl Sequence Region
 ** @argrule BySlice slice [EnsPSlice] Ensembl Slice
 **
@@ -340,12 +340,12 @@ void ensSequenceAdaptorDel(EnsPSequenceAdaptor *Psa)
 
 
 
-/* @func ensSequenceAdaptorFetchSubStrBySeqRegion *****************************
+/* @func ensSequenceadaptorFetchSubStrBySeqRegion *****************************
 **
 ** Fetch a sub-sequence of an Ensembl Sequence Region as an AJAX String.
 **
-** @cc Bio::EnsEMBL::DBSQL::SequenceAdaptor::_fetch_seq
-** @param [r] sa [EnsPSequenceAdaptor] Ensembl Sequence Adaptor
+** @cc Bio::EnsEMBL::DBSQL::Sequenceadaptor::_fetch_seq
+** @param [r] sa [EnsPSequenceadaptor] Ensembl Sequence Adaptor
 ** @param [r] sr [EnsPSeqRegion] Ensembl Sequence Region
 ** @param [r] start [ajuint] Start coordinate
 ** @param [r] length [ajuint] Sequence length
@@ -358,11 +358,11 @@ void ensSequenceAdaptorDel(EnsPSequenceAdaptor *Psa)
 ** other Sequence Regions do not have sequence attached so that their sequence
 ** can only be fetched in the context of an Ensembl Slice, which is
 ** subsequently mapped to the sequence-level Coordinate System. See the
-** description of the ensSequenceAdaptorFetchStrBySlice function for
+** description of the ensSequenceadaptorFetchStrBySlice function for
 ** further details.
 ******************************************************************************/
 
-AjBool ensSequenceAdaptorFetchSubStrBySeqRegion(EnsPSequenceAdaptor sa,
+AjBool ensSequenceadaptorFetchSubStrBySeqRegion(EnsPSequenceadaptor sa,
                                                 EnsPSeqRegion sr,
                                                 ajuint start,
                                                 ajuint length,
@@ -375,9 +375,9 @@ AjBool ensSequenceAdaptorFetchSubStrBySeqRegion(EnsPSequenceAdaptor sa,
     ajuint posmin = 0;
     ajuint posmax = 0;
     
-    AjPSqlStatement sqls = NULL;
-    AjISqlRow sqli       = NULL;
-    AjPSqlRow sqlr       = NULL;
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
     
     AjPStr chkstr    = NULL;
     AjPStr tmpstr    = NULL;
@@ -385,7 +385,7 @@ AjBool ensSequenceAdaptorFetchSubStrBySeqRegion(EnsPSequenceAdaptor sa,
     AjPStr statement = NULL;
     
     /*
-     ajDebug("ensSequenceAdaptorFetchSubStrBySeqRegion\n"
+     ajDebug("ensSequenceadaptorFetchSubStrBySeqRegion\n"
 	     "  sa %p\n"
 	     "  sr %p\n"
 	     "  start %d\n"
@@ -418,7 +418,7 @@ AjBool ensSequenceAdaptorFetchSubStrBySeqRegion(EnsPSequenceAdaptor sa,
     
     if(length > (ajuint) ensSeqRegionGetLength(sr))
     {
-	ajWarn("ensSequenceAdaptorFetchStrBySubSeqRegion got length %u "
+	ajWarn("ensSequenceadaptorFetchStrBySubSeqRegion got length %u "
 	       "exceeding Sequence Region length %d.\n",
 	       length, ensSeqRegionGetLength(sr));
 	
@@ -484,14 +484,14 @@ AjBool ensSequenceAdaptorFetchSubStrBySeqRegion(EnsPSequenceAdaptor sa,
 				     1 << sequenceChunkPower,
 				     ensSeqRegionGetIdentifier(sr));
 		
-		sqls = ensDatabaseAdaptorSqlStatementNew(sa->Adaptor,
+		sqls = ensDatabaseadaptorSqlstatementNew(sa->Adaptor,
 							 statement);
 		
-		sqli = ajSqlRowIterNew(sqls);
+		sqli = ajSqlrowiterNew(sqls);
 		
-		while(!ajSqlRowIterDone(sqli))
+		while(!ajSqlrowiterDone(sqli))
 		{
-		    sqlr = ajSqlRowIterGet(sqli);
+		    sqlr = ajSqlrowiterGet(sqli);
 		    
 		    /*
 		    ** Allocate an AJAX String and reserve space for the
@@ -501,7 +501,7 @@ AjBool ensSequenceAdaptorFetchSubStrBySeqRegion(EnsPSequenceAdaptor sa,
 		    
 		    chkstr = ajStrNewRes((1 << sequenceChunkPower) + 1);
 		    
-		    ajSqlColumnToStr(sqlr, &chkstr);
+		    ajSqlcolumnToStr(sqlr, &chkstr);
 		    
 		    /*
 		    ** Always store upper case sequence
@@ -517,9 +517,9 @@ AjBool ensSequenceAdaptorFetchSubStrBySeqRegion(EnsPSequenceAdaptor sa,
 		    ajStrDel(&chkstr);
 		}
 		
-		ajSqlRowIterDel(&sqli);
+		ajSqlrowiterDel(&sqli);
 		
-		ajSqlStatementDel(&sqls);
+		ajSqlstatementDel(&sqls);
 		
 		ajStrDel(&statement);
 	    }
@@ -553,13 +553,13 @@ AjBool ensSequenceAdaptorFetchSubStrBySeqRegion(EnsPSequenceAdaptor sa,
 			     length,
 			     ensSeqRegionGetIdentifier(sr));
 	
-	sqls = ensDatabaseAdaptorSqlStatementNew(sa->Adaptor, statement);
+	sqls = ensDatabaseadaptorSqlstatementNew(sa->Adaptor, statement);
 	
-	sqli = ajSqlRowIterNew(sqls);
+	sqli = ajSqlrowiterNew(sqls);
 	
-	while(!ajSqlRowIterDone(sqli))
+	while(!ajSqlrowiterDone(sqli))
 	{
-	    sqlr = ajSqlRowIterGet(sqli);
+	    sqlr = ajSqlrowiterGet(sqli);
 	    
 	    /*
 	    ** Allocate an AJAX String and reserve space of the length plus
@@ -568,7 +568,7 @@ AjBool ensSequenceAdaptorFetchSubStrBySeqRegion(EnsPSequenceAdaptor sa,
 	    
 	    chkstr = ajStrNewRes((length + 1));
 	    
-	    ajSqlColumnToStr(sqlr, &chkstr);
+	    ajSqlcolumnToStr(sqlr, &chkstr);
 	    
 	    /*
 	    ** Always return upper case sequence
@@ -582,9 +582,9 @@ AjBool ensSequenceAdaptorFetchSubStrBySeqRegion(EnsPSequenceAdaptor sa,
 	    ajStrDel(&chkstr);
 	}
 	
-	ajSqlRowIterDel(&sqli);
+	ajSqlrowiterDel(&sqli);
 	
-	ajSqlStatementDel(&sqls);
+	ajSqlstatementDel(&sqls);
 	
 	ajStrDel(&statement);
     }
@@ -595,12 +595,12 @@ AjBool ensSequenceAdaptorFetchSubStrBySeqRegion(EnsPSequenceAdaptor sa,
 
 
 
-/* @func ensSequenceAdaptorFetchStrBySeqRegion ********************************
+/* @func ensSequenceadaptorFetchStrBySeqRegion ********************************
 **
 ** Fetch the sequence of an Ensembl Sequence Region as an AJAX String.
 **
-** @cc Bio::EnsEMBL::DBSQL::SequenceAdaptor::_fetch_seq
-** @param [r] sa [EnsPSequenceAdaptor] Ensembl Sequence Adaptor
+** @cc Bio::EnsEMBL::DBSQL::Sequenceadaptor::_fetch_seq
+** @param [r] sa [EnsPSequenceadaptor] Ensembl Sequence Adaptor
 ** @param [r] sr [EnsPSeqRegion] Ensembl Sequence Region
 ** @param [r] start [ajuint] Start coordinate
 ** @param [r] length [ajuint] Sequence length
@@ -613,11 +613,11 @@ AjBool ensSequenceAdaptorFetchSubStrBySeqRegion(EnsPSequenceAdaptor sa,
 ** other Sequence Regions do not have sequence attached so that their sequence
 ** can only be fetched in the context of an Ensembl Slice, which is
 ** subsequently mapped to the sequence-level Coordinate System. See the
-** description of the ensSequenceAdaptorFetchStrBySlice function for
+** description of the ensSequenceadaptorFetchStrBySlice function for
 ** further details.
 ******************************************************************************/
 
-AjBool ensSequenceAdaptorFetchStrBySeqRegion(EnsPSequenceAdaptor sa,
+AjBool ensSequenceadaptorFetchStrBySeqRegion(EnsPSequenceadaptor sa,
                                              EnsPSeqRegion sr,
                                              AjPStr *Psequence)
 {
@@ -630,7 +630,7 @@ AjBool ensSequenceAdaptorFetchStrBySeqRegion(EnsPSequenceAdaptor sa,
     if(!Psequence)
 	return ajFalse;
     
-    return ensSequenceAdaptorFetchSubStrBySeqRegion(
+    return ensSequenceadaptorFetchSubStrBySeqRegion(
         sa,
         sr,
         1,
@@ -641,11 +641,11 @@ AjBool ensSequenceAdaptorFetchStrBySeqRegion(EnsPSequenceAdaptor sa,
 
 
 
-/* @func ensSequenceAdaptorFetchSubSeqBySeqRegion *****************************
+/* @func ensSequenceadaptorFetchSubSeqBySeqRegion *****************************
 **
 ** Fetch a sub-sequence of an Ensembl Sequence Region as an AJAX Sequence.
 **
-** @param [r] sa [EnsPSequenceAdaptor] Ensembl Sequence Adaptor
+** @param [r] sa [EnsPSequenceadaptor] Ensembl Sequence Adaptor
 ** @param [r] sr [EnsPSeqRegion] Ensembl Sequence Region
 ** @param [r] start [ajuint] Start coordinate
 ** @param [r] length [ajuint] Sequence length
@@ -658,11 +658,11 @@ AjBool ensSequenceAdaptorFetchStrBySeqRegion(EnsPSequenceAdaptor sa,
 ** other Sequence Regions do not have sequence attached so that their sequence
 ** can only be fetched in the context of an Ensembl Slices, which is
 ** subsequently mapped to the sequence-level Coordinate System. See the
-** description of the ensSequenceAdaptorFetchSeqBySlice function for
+** description of the ensSequenceadaptorFetchSeqBySlice function for
 ** further details.
 ******************************************************************************/
 
-AjBool ensSequenceAdaptorFetchSubSeqBySeqRegion(EnsPSequenceAdaptor sa,
+AjBool ensSequenceadaptorFetchSubSeqBySeqRegion(EnsPSequenceadaptor sa,
                                                 EnsPSeqRegion sr,
                                                 ajuint start,
                                                 ajuint length,
@@ -672,7 +672,7 @@ AjBool ensSequenceAdaptorFetchSubSeqBySeqRegion(EnsPSequenceAdaptor sa,
     AjPStr sequence = NULL;
     
     /*
-     ajDebug("ensSequenceAdaptorFetchSubSeqBySeqRegion\n"
+     ajDebug("ensSequenceadaptorFetchSubSeqBySeqRegion\n"
 	     "  sa %p\n"
 	     "  sr %p\n"
 	     "  start %u\n"
@@ -714,7 +714,7 @@ AjBool ensSequenceAdaptorFetchSubSeqBySeqRegion(EnsPSequenceAdaptor sa,
 		    start,
 		    start + length - 1);
     
-    ensSequenceAdaptorFetchSubStrBySeqRegion(sa, sr, start, length, &sequence);
+    ensSequenceadaptorFetchSubStrBySeqRegion(sa, sr, start, length, &sequence);
     
     *Psequence = ajSeqNewNameS(sequence, name);
     
@@ -727,11 +727,11 @@ AjBool ensSequenceAdaptorFetchSubSeqBySeqRegion(EnsPSequenceAdaptor sa,
 
 
 
-/* @func ensSequenceAdaptorFetchSeqBySeqRegion ********************************
+/* @func ensSequenceadaptorFetchSeqBySeqRegion ********************************
 **
 ** Fetch the sequence of an Ensembl Sequence Region as an AJAX Sequence.
 **
-** @param [r] sa [EnsPSequenceAdaptor] Ensembl Sequence Adaptor
+** @param [r] sa [EnsPSequenceadaptor] Ensembl Sequence Adaptor
 ** @param [r] sr [EnsPSeqRegion] Ensembl Sequence Region
 ** @param [wP] Psequence [AjPSeq*] AJAX Sequence address
 **
@@ -742,11 +742,11 @@ AjBool ensSequenceAdaptorFetchSubSeqBySeqRegion(EnsPSequenceAdaptor sa,
 ** other Sequence Regions do not have sequence attached so that their sequence
 ** can only be fetched in the context of an Ensembl Slices, which is
 ** subsequently mapped to the sequence-level Coordinate System. See the
-** description of the ensSequenceAdaptorFetchSeqBySlice function for
+** description of the ensSequenceadaptorFetchSeqBySlice function for
 ** further details.
 ******************************************************************************/
 
-AjBool ensSequenceAdaptorFetchSeqBySeqRegion(EnsPSequenceAdaptor sa,
+AjBool ensSequenceadaptorFetchSeqBySeqRegion(EnsPSequenceadaptor sa,
                                              EnsPSeqRegion sr,
                                              AjPSeq *Psequence)
 {
@@ -759,7 +759,7 @@ AjBool ensSequenceAdaptorFetchSeqBySeqRegion(EnsPSequenceAdaptor sa,
     if(!Psequence)
 	return ajFalse;
     
-    return ensSequenceAdaptorFetchSubSeqBySeqRegion(
+    return ensSequenceadaptorFetchSubSeqBySeqRegion(
         sa,
         sr,
         1,
@@ -770,13 +770,13 @@ AjBool ensSequenceAdaptorFetchSeqBySeqRegion(EnsPSequenceAdaptor sa,
 
 
 
-/* @func ensSequenceAdaptorFetchSubStrBySlice *********************************
+/* @func ensSequenceadaptorFetchSubStrBySlice *********************************
 **
 ** Fetch a sub-sequence of an Ensembl Slice as an AJAX String
 ** in relative coordinates.
 **
-** @cc Bio::EnsEMBL::DBSQL::SequenceAdaptor::fetch_by_Slice_start_end_strand
-** @param [r] sa [EnsPSequenceAdaptor] Ensembl Sequence Adaptor
+** @cc Bio::EnsEMBL::DBSQL::Sequenceadaptor::fetch_by_Slice_start_end_strand
+** @param [r] sa [EnsPSequenceadaptor] Ensembl Sequence Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [r] start [ajint] Start coordinate
 ** @param [r] end [ajint] End coordinate
@@ -787,7 +787,7 @@ AjBool ensSequenceAdaptorFetchSeqBySeqRegion(EnsPSequenceAdaptor sa,
 ** @@
 ******************************************************************************/
 
-AjBool ensSequenceAdaptorFetchSubStrBySlice(EnsPSequenceAdaptor sa,
+AjBool ensSequenceadaptorFetchSubStrBySlice(EnsPSequenceadaptor sa,
                                             EnsPSlice slice,
                                             ajint start,
                                             ajint end,
@@ -811,7 +811,7 @@ AjBool ensSequenceAdaptorFetchSubStrBySlice(EnsPSequenceAdaptor sa,
     AjPStr tmpstr = NULL;
     
     EnsPCoordSystem seqlvlcs   = NULL;
-    EnsPCoordSystemAdaptor csa = NULL;
+    EnsPCoordSystemadaptor csa = NULL;
     
     EnsPProjectionSegment ps = NULL;
     
@@ -820,10 +820,10 @@ AjBool ensSequenceAdaptorFetchSubStrBySlice(EnsPSequenceAdaptor sa,
     EnsPSlice eslice       = NULL;
     EnsPSlice nslice       = NULL;
     const EnsPSlice sslice = NULL;
-    EnsPSliceAdaptor sla   = NULL;
+    EnsPSliceadaptor sla   = NULL;
     
     /*
-     ajDebug("ensSequenceAdaptorFetchSubStrBySlice\n"
+     ajDebug("ensSequenceadaptorFetchSubStrBySlice\n"
 	     "  sa %p\n"
 	     "  slice %p\n"
 	     "  start %d\n"
@@ -862,7 +862,7 @@ AjBool ensSequenceAdaptorFetchSubStrBySlice(EnsPSequenceAdaptor sa,
     
     if(start > end)
     {
-    	ajDebug("ensSequenceAdaptorFetchSubStrBySlice requires the start %d "
+    	ajDebug("ensSequenceadaptorFetchSubStrBySlice requires the start %d "
 		"to be less than or equal to the end %d coordinate.\n",
 		start, end);
 	
@@ -913,14 +913,14 @@ AjBool ensSequenceAdaptorFetchSubStrBySlice(EnsPSequenceAdaptor sa,
     ** haplotypes (HAPs) and pseudo-autosomal regions (PARs).
     */
     
-    sla = ensRegistryGetSliceAdaptor(sa->Adaptor);
+    sla = ensRegistryGetSliceadaptor(sa->Adaptor);
     
     pslist = ajListNew();
     
-    ensSliceAdaptorFetchNormalisedSliceProjection(sla, eslice, pslist);
+    ensSliceadaptorFetchNormalisedSliceProjection(sla, eslice, pslist);
     
     if(!ajListGetLength(pslist))
-	ajFatal("ensSequenceAdaptorFetchSubStrBySlice could not "
+	ajFatal("ensSequenceadaptorFetchSubStrBySlice could not "
 		"retrieve normalised Slices. Database contains incorrect "
 		"information in the 'assembly_exception' table.\n");
     
@@ -942,7 +942,7 @@ AjBool ensSequenceAdaptorFetchSubStrBySlice(EnsPSequenceAdaptor sa,
 	{
 	    nslice = ensProjectionSegmentGetTrgSlice(ps);
 	    
-	    ensSequenceAdaptorFetchStrBySlice(sa, nslice, &tmpstr);
+	    ensSequenceadaptorFetchStrBySlice(sa, nslice, &tmpstr);
 	    
 	    ajStrAppendS(Psequence, tmpstr);
 	    
@@ -976,9 +976,9 @@ AjBool ensSequenceAdaptorFetchSubStrBySlice(EnsPSequenceAdaptor sa,
     ** the Sequence Region.
     */
     
-    csa = ensRegistryGetCoordSystemAdaptor(sa->Adaptor);
+    csa = ensRegistryGetCoordSystemadaptor(sa->Adaptor);
     
-    ensCoordSystemAdaptorFetchSeqLevel(csa, &seqlvlcs);
+    ensCoordSystemadaptorFetchSeqLevel(csa, &seqlvlcs);
     
     ensSliceProject(slice,
 		    ensCoordSystemGetName(seqlvlcs),
@@ -1005,7 +1005,7 @@ AjBool ensSequenceAdaptorFetchSubStrBySlice(EnsPSequenceAdaptor sa,
 	    ajStrAppendCountK(Psequence, 'N', padding);
 	    
 	    /*
-	     ajDebug("ensSequenceAdaptorFetchStrBySubSlice got total %u and "
+	     ajDebug("ensSequenceadaptorFetchStrBySubSlice got total %u and "
 		     "Projection Segment source start %u, "
 		     "therefore added %u N padding between.\n",
 		     total, ensProjectionSegmentGetSrcStart(ps), padding);
@@ -1020,7 +1020,7 @@ AjBool ensSequenceAdaptorFetchSubStrBySlice(EnsPSequenceAdaptor sa,
 	
 	srlength = ensSliceGetLength(sslice);
 	
-	ensSequenceAdaptorFetchSubStrBySeqRegion(sa,
+	ensSequenceadaptorFetchSubStrBySeqRegion(sa,
 						 sr,
 						 srstart,
 						 srlength,
@@ -1048,7 +1048,7 @@ AjBool ensSequenceAdaptorFetchSubStrBySlice(EnsPSequenceAdaptor sa,
     {
 	ajStrAppendCountK(Psequence, 'N', padding);
 	
-	ajDebug("ensSequenceAdaptorFetchSubStrBySlice got total %u and "
+	ajDebug("ensSequenceadaptorFetchSubStrBySlice got total %u and "
 		"Ensembl Slice length %u, therefore added %u N padding.\n",
 		total, ensSliceGetLength(slice), padding);
     }
@@ -1065,7 +1065,7 @@ AjBool ensSequenceAdaptorFetchSubStrBySlice(EnsPSequenceAdaptor sa,
     {
 	ajStrAppendCountK(Psequence, 'N', padding);
 	
-	ajDebug("ensSequenceAdaptorFetchSubStrBySlice got sequence length %u, "
+	ajDebug("ensSequenceadaptorFetchSubStrBySlice got sequence length %u, "
 		"but Slice length %u, therefore added %u N final padding.\n",
 		ajStrGetLen(*Psequence), ensSliceGetLength(slice), padding);
     }
@@ -1081,11 +1081,11 @@ AjBool ensSequenceAdaptorFetchSubStrBySlice(EnsPSequenceAdaptor sa,
 
 
 
-/* @func ensSequenceAdaptorFetchStrBySlice ************************************
+/* @func ensSequenceadaptorFetchStrBySlice ************************************
 **
 ** Fetch the sequence of an Ensembl Slice as an AJAX String.
 **
-** @param [r] sa [EnsPSequenceAdaptor] Ensembl Sequence Adaptor
+** @param [r] sa [EnsPSequenceadaptor] Ensembl Sequence Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [u] Psequence [AjPStr*] Sequence address
 **
@@ -1093,7 +1093,7 @@ AjBool ensSequenceAdaptorFetchSubStrBySlice(EnsPSequenceAdaptor sa,
 ** @@
 ******************************************************************************/
 
-AjBool ensSequenceAdaptorFetchStrBySlice(EnsPSequenceAdaptor sa,
+AjBool ensSequenceadaptorFetchStrBySlice(EnsPSequenceadaptor sa,
                                          EnsPSlice slice,
                                          AjPStr *Psequence)
 {
@@ -1106,7 +1106,7 @@ AjBool ensSequenceAdaptorFetchStrBySlice(EnsPSequenceAdaptor sa,
     if(!Psequence)
 	return ajFalse;
     
-    return ensSequenceAdaptorFetchSubStrBySlice(
+    return ensSequenceadaptorFetchSubStrBySlice(
         sa,
         slice,
         1,
@@ -1118,12 +1118,12 @@ AjBool ensSequenceAdaptorFetchStrBySlice(EnsPSequenceAdaptor sa,
 
 
 
-/* @func ensSequenceAdaptorFetchSubSeqBySlice *********************************
+/* @func ensSequenceadaptorFetchSubSeqBySlice *********************************
 **
 ** Fetch a sub-sequence of an Ensembl Slice as an AJAX Sequence
 ** in releative coordinates.
 **
-** @param [r] sa [EnsPSequenceAdaptor] Ensembl Sequence Adaptor
+** @param [r] sa [EnsPSequenceadaptor] Ensembl Sequence Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [r] start [ajint] Start coordinate
 ** @param [r] end [ajint] End coordinate
@@ -1134,7 +1134,7 @@ AjBool ensSequenceAdaptorFetchStrBySlice(EnsPSequenceAdaptor sa,
 ** @@
 ******************************************************************************/
 
-AjBool ensSequenceAdaptorFetchSubSeqBySlice(EnsPSequenceAdaptor sa,
+AjBool ensSequenceadaptorFetchSubSeqBySlice(EnsPSequenceadaptor sa,
                                             EnsPSlice slice,
                                             ajint start,
                                             ajint end,
@@ -1187,7 +1187,7 @@ AjBool ensSequenceAdaptorFetchSubSeqBySlice(EnsPSequenceAdaptor sa,
 		    srend,
 		    srstrand);
     
-    ensSequenceAdaptorFetchSubStrBySlice(sa,
+    ensSequenceadaptorFetchSubStrBySlice(sa,
 					 slice,
 					 start,
 					 end,
@@ -1205,11 +1205,11 @@ AjBool ensSequenceAdaptorFetchSubSeqBySlice(EnsPSequenceAdaptor sa,
 
 
 
-/* @func ensSequenceAdaptorFetchSeqBySlice ************************************
+/* @func ensSequenceadaptorFetchSeqBySlice ************************************
 **
 ** Fetch the sequence of an Ensembl Slice as an AJAX Sequence.
 **
-** @param [r] sa [EnsPSequenceAdaptor] Ensembl Sequence Adaptor
+** @param [r] sa [EnsPSequenceadaptor] Ensembl Sequence Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [wP] Psequence [AjPSeq*] AJAX Sequence address
 **
@@ -1217,7 +1217,7 @@ AjBool ensSequenceAdaptorFetchSubSeqBySlice(EnsPSequenceAdaptor sa,
 ** @@
 ******************************************************************************/
 
-AjBool ensSequenceAdaptorFetchSeqBySlice(EnsPSequenceAdaptor sa,
+AjBool ensSequenceadaptorFetchSeqBySlice(EnsPSequenceadaptor sa,
                                          EnsPSlice slice,
                                          AjPSeq *Psequence)
 {
@@ -1230,7 +1230,7 @@ AjBool ensSequenceAdaptorFetchSeqBySlice(EnsPSequenceAdaptor sa,
     if(!Psequence)
 	return ajFalse;
     
-    return ensSequenceAdaptorFetchSubSeqBySlice(
+    return ensSequenceadaptorFetchSubSeqBySlice(
         sa,
         slice,
         1,

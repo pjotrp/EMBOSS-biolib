@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** Bio::EnsEMBL::Utils::Cache CVS Revision: 1.2
@@ -226,7 +226,7 @@ static void cacheNodeDel(const EnsPCache cache, CachePNode* Pnode)
 ** Insert an Ensembl Cache Node into an Ensembl Cache.
 **
 ** @param [u] cache [EnsPCache] Ensembl Cache
-** @param [r] node [CachePNode] Ensembl Cache Node
+** @param [u] node [CachePNode] Ensembl Cache Node
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
@@ -366,11 +366,11 @@ static AjBool cacheNodeRemove(EnsPCache cache, const CachePNode node)
 ** @param [r] maxbytes [ajuint] Maximum number of bytes held in the cache
 ** @param [r] maxcount [ajuint] Maximum number of objects to be cached
 ** @param [r] maxsize [ajuint] Maximum size of an object to be cached
-** @param [f] Freference [(void*)] Object-specific referencing function
-** @param [f] Fdelete [(void)] Object-specific deletion function
-** @param [f] Fsize [(ajuint)] Object-specific memory sizing function
-** @param [f] Fread [(void*)] Object-specific reading function
-** @param [f] Fwrite [(AjBool)] Object-specific writing function
+** @param [f] Freference [void* function] Object-specific referencing function
+** @param [f] Fdelete [void function] Object-specific deletion function
+** @param [f] Fsize [ajuint function] Object-specific memory sizing function
+** @param [f] Fread [void* function] Object-specific reading function
+** @param [f] Fwrite [AjBool function] Object-specific writing function
 ** @param [r] syncron [AjBool] ajTrue: Immediately write-back value data
 **                             ajFalse: Write-back value data later
 ** @param [r] label [const char*] Cache label for statistics output

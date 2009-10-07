@@ -21,7 +21,7 @@ extern "C"
 ** @attr Use [ajuint] Use counter
 ** @cc Bio::EnsEMBL::Storable
 ** @attr Identifier [ajuint] Internal SQL database identifier (primary key)
-** @attr Adaptor [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @attr Adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @cc Bio::EnsEMBL::Map::Ditag
 ** @attr Name [AjPStr] Name
 ** @attr Type [AjPStr] Source
@@ -35,7 +35,7 @@ typedef struct EnsSDiTag
 {
     ajuint Use;
     ajuint Identifier;
-    EnsPDatabaseAdaptor Adaptor;
+    EnsPDatabaseadaptor Adaptor;
     AjPStr Name;
     AjPStr Type;
     AjPStr Sequence;
@@ -48,34 +48,32 @@ typedef struct EnsSDiTag
 
 
 
-/* @data EnsPDiTagFeatureAdaptor **********************************************
+/* @data EnsPDiTagFeatureadaptor **********************************************
 **
 ** Ensembl DiTag Feature Adaptor.
 **
-** @alias EnsSDiTagFeatureAdaptor
-** @alias EnsODiTagFeatureAdaptor
+** @alias EnsSDiTagFeatureadaptor
+** @alias EnsODiTagFeatureadaptor
 **
-** @cc Bio::EnsEMBL::Map::DBSQL::DiTagFeatureAdaptor
-** @attr Adaptor [EnsPFeatureAdaptor] Ensembl Feature Adaptor
+** @cc Bio::EnsEMBL::Map::DBSQL::DiTagFeatureadaptor
+** @attr Adaptor [EnsPFeatureadaptor] Ensembl Feature Adaptor
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSDiTagFeatureAdaptor
+typedef struct EnsSDiTagFeatureadaptor
 {
-    EnsPFeatureAdaptor Adaptor;
-} EnsODiTagFeatureAdaptor;
+    EnsPFeatureadaptor Adaptor;
+} EnsODiTagFeatureadaptor;
 
-#define EnsPDiTagFeatureAdaptor EnsODiTagFeatureAdaptor*
-
-
+#define EnsPDiTagFeatureadaptor EnsODiTagFeatureadaptor*
 
 
-/* @datatype EnsEDiTagFeatureSide *********************************************
+
+
+/******************************************************************************
 **
 ** Ensembl DiTag Feature Side enumeration.
 **
-** @attr enum [EnsEDiTagFeatureSide] Value
-** @@
 ******************************************************************************/
 
 enum EnsEDiTagFeatureSide
@@ -99,7 +97,7 @@ enum EnsEDiTagFeatureSide
 ** @attr Use [ajuint] Use counter
 ** @cc Bio::EnsEMBL::Storable
 ** @attr Identifier [ajuint] Internal SQL database identifier (primary key)
-** @attr Adaptor [EnsPDiTagFeatureAdaptor] Ensembl DiTag Feature Adaptor
+** @attr Adaptor [EnsPDiTagFeatureadaptor] Ensembl DiTag Feature Adaptor
 ** @cc Bio::EnsEMBL::Feature
 ** @attr Feature [EnsPFeature] Ensembl Feature
 ** @cc Bio::EnsEMBL::Map::DitagFeature
@@ -118,7 +116,7 @@ typedef struct EnsSDiTagFeature
 {
     ajuint Use;
     ajuint Identifier;
-    EnsPDiTagFeatureAdaptor Adaptor;
+    EnsPDiTagFeatureadaptor Adaptor;
     EnsPFeature Feature;
     EnsPDiTag DiTag;
     AjPStr Cigar;
@@ -141,7 +139,7 @@ typedef struct EnsSDiTagFeature
 
 /* Ensembl DiTag */
 
-EnsPDiTag ensDiTagNew(EnsPDatabaseAdaptor adaptor,
+EnsPDiTag ensDiTagNew(EnsPDatabaseadaptor adaptor,
                       ajuint identifier,
                       AjPStr name,
                       AjPStr type,
@@ -154,7 +152,7 @@ EnsPDiTag ensDiTagNewRef(EnsPDiTag dt);
 
 void ensDiTagDel(EnsPDiTag* Pdt);
 
-EnsPDatabaseAdaptor ensDiTagGetAdaptor(const EnsPDiTag dt);
+EnsPDatabaseadaptor ensDiTagGetadaptor(const EnsPDiTag dt);
 
 ajuint ensDiTagGetIdentifier(const EnsPDiTag dt);
 
@@ -166,7 +164,7 @@ AjPStr ensDiTagGetSequence(const EnsPDiTag dt);
 
 ajuint ensDiTagGetCount(const EnsPDiTag dt);
 
-AjBool ensDiTagSetAdaptor(EnsPDiTag dt, EnsPDatabaseAdaptor adaptor);
+AjBool ensDiTagSetadaptor(EnsPDiTag dt, EnsPDatabaseadaptor adaptor);
 
 AjBool ensDiTagSetIdentifier(EnsPDiTag dt, ajuint identifier);
 
@@ -184,26 +182,26 @@ ajuint ensDiTagGetMemSize(const EnsPDiTag dt);
 
 /* Ensembl DiTag Adaptor */
 
-AjBool ensDiTagAdaptorFetchByIdentifier(EnsPDatabaseAdaptor dba,
+AjBool ensDiTagadaptorFetchByIdentifier(EnsPDatabaseadaptor dba,
                                         ajuint identifier,
                                         EnsPDiTag *Pdt);
 
-AjBool ensDiTagAdaptorFetchAll(EnsPDatabaseAdaptor dba,
+AjBool ensDiTagadaptorFetchAll(EnsPDatabaseadaptor dba,
                                const AjPStr name,
                                const AjPStr type,
                                AjPList dts);
 
-AjBool ensDiTagAdaptorFetchAllByName(EnsPDatabaseAdaptor dba,
+AjBool ensDiTagadaptorFetchAllByName(EnsPDatabaseadaptor dba,
                                      const AjPStr name,
                                      AjPList dts);
 
-AjBool ensDiTagAdaptorFetchAllByType(EnsPDatabaseAdaptor dba,
+AjBool ensDiTagadaptorFetchAllByType(EnsPDatabaseadaptor dba,
                                      const AjPStr type,
                                      AjPList dts);
 
 /* Ensembl DiTag Feature */
 
-EnsPDiTagFeature ensDiTagFeatureNew(EnsPDiTagFeatureAdaptor adaptor,
+EnsPDiTagFeature ensDiTagFeatureNew(EnsPDiTagFeatureadaptor adaptor,
                                     ajuint identifier,
                                     EnsPFeature feature,
                                     EnsPDiTag dt,
@@ -220,7 +218,7 @@ EnsPDiTagFeature ensDiTagFeatureNewRef(EnsPDiTagFeature dtf);
 
 void ensDiTagFeatureDel(EnsPDiTagFeature* Pdtf);
 
-EnsPDiTagFeatureAdaptor ensDiTagFeatureGetAdaptor(const EnsPDiTagFeature dtf);
+EnsPDiTagFeatureadaptor ensDiTagFeatureGetadaptor(const EnsPDiTagFeature dtf);
 
 ajuint ensDiTagFeatureGetIdentifier(const EnsPDiTagFeature dtf);
 
@@ -240,8 +238,8 @@ ajint ensDiTagFeatureGetTargetStrand(const EnsPDiTagFeature dtf);
 
 ajuint ensDiTagFeatureGetPairIdentifier(const EnsPDiTagFeature dtf);
 
-AjBool ensDiTagFeatureSetAdaptor(EnsPDiTagFeature dtf,
-                                 EnsPDiTagFeatureAdaptor adaptor);
+AjBool ensDiTagFeatureSetadaptor(EnsPDiTagFeature dtf,
+                                 EnsPDiTagFeatureadaptor adaptor);
 
 AjBool ensDiTagFeatureSetIdentifier(EnsPDiTagFeature dtf, ajuint identifier);
 
@@ -271,23 +269,23 @@ const char *ensDiTagFeatureSideToChar(const AjEnum side);
 
 /* Ensembl DiTag Feature Adaptor */
 
-EnsPDiTagFeatureAdaptor ensDiTagFeatureAdaptorNew(EnsPDatabaseAdaptor dba);
+EnsPDiTagFeatureadaptor ensDiTagFeatureadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensDiTagFeatureAdaptorDel(EnsPDiTagFeatureAdaptor *Padaptor);
+void ensDiTagFeatureadaptorDel(EnsPDiTagFeatureadaptor *Padaptor);
 
-AjBool ensDiTagAdaptorFetchAllByIdentifier(EnsPDiTagFeatureAdaptor adaptor,
+AjBool ensDiTagadaptorFetchAllByIdentifier(EnsPDiTagFeatureadaptor adaptor,
                                            ajuint identifier,
                                            EnsPDiTagFeature *Pdtf);
 
-AjBool ensDiTagFeatureAdaptorFetchAllByDiTag(EnsPDiTagFeatureAdaptor adaptor,
+AjBool ensDiTagFeatureadaptorFetchAllByDiTag(EnsPDiTagFeatureadaptor adaptor,
                                              const EnsPDiTag dt,
                                              AjPList dtfs);
 
-AjBool ensDiTagFeatureAdaptorFetchAllByType(EnsPDiTagFeatureAdaptor adaptor,
+AjBool ensDiTagFeatureadaptorFetchAllByType(EnsPDiTagFeatureadaptor adaptor,
                                             const AjPStr type,
                                             AjPList dtfs);
 
-AjBool ensDiTagFeatureAdaptorFetchAllBySlice(EnsPDiTagFeatureAdaptor adaptor,
+AjBool ensDiTagFeatureadaptorFetchAllBySlice(EnsPDiTagFeatureadaptor adaptor,
                                              EnsPSlice slice,
                                              const AjPStr type,
                                              const AjPStr anname,

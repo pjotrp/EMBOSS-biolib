@@ -12,27 +12,27 @@ extern "C"
 
 
 
-/* @data EnsPMiscellaneousSetAdaptor ******************************************
+/* @data EnsPMiscellaneousSetadaptor ******************************************
 **
 ** Ensembl Miscellaneous Set Adaptor.
 **
-** @alias EnsSMiscellaneousSetAdaptor
-** @alias EnsOMiscellaneousSetAdaptor
+** @alias EnsSMiscellaneousSetadaptor
+** @alias EnsOMiscellaneousSetadaptor
 **
-** @attr Adaptor [EnsPDatabaseAdaptor] Ensembl Database Adaptor.
+** @attr Adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor.
 ** @attr CacheByIdentifier [AjPTable] Identifier cache.
 ** @attr CacheByCode [AjPTable] Code cache.
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSMiscellaneousSetAdaptor
+typedef struct EnsSMiscellaneousSetadaptor
 {
-    EnsPDatabaseAdaptor Adaptor;
+    EnsPDatabaseadaptor Adaptor;
     AjPTable CacheByIdentifier;
     AjPTable CacheByCode;
-} EnsOMiscellaneousSetAdaptor;
+} EnsOMiscellaneousSetadaptor;
 
-#define EnsPMiscellaneousSetAdaptor EnsOMiscellaneousSetAdaptor*
+#define EnsPMiscellaneousSetadaptor EnsOMiscellaneousSetadaptor*
 
 
 
@@ -47,7 +47,7 @@ typedef struct EnsSMiscellaneousSetAdaptor
 ** @attr Use [ajuint] Use counter.
 ** @cc Bio::EnsEMBL::Storable
 ** @attr Identifier [ajuint] SQL database-internal identifier.
-** @attr Adaptor [EnsPMiscellaneousSetAdaptor] Ensembl Miscellaneous
+** @attr Adaptor [EnsPMiscellaneousSetadaptor] Ensembl Miscellaneous
 **                                             Set Adaptor.
 ** @cc Bio::EnsEMBL::MiscSet
 ** @cc 'misc_set' SQL table
@@ -63,7 +63,7 @@ typedef struct EnsSMiscellaneousSet
 {
     ajuint Use;
     ajuint Identifier;
-    EnsPMiscellaneousSetAdaptor Adaptor;
+    EnsPMiscellaneousSetadaptor Adaptor;
     AjPStr Code;
     AjPStr Name;
     AjPStr Description;
@@ -76,23 +76,23 @@ typedef struct EnsSMiscellaneousSet
 
 
 
-/* @data EnsPMiscellaneousFeatureAdaptor **************************************
+/* @data EnsPMiscellaneousFeatureadaptor **************************************
 **
 ** Ensembl Miscellaneous Feature Adaptor.
 **
-** @alias EnsSMiscellaneousFeatureAdaptor
-** @alias EnsOMiscellaneousFeatureAdaptor
+** @alias EnsSMiscellaneousFeatureadaptor
+** @alias EnsOMiscellaneousFeatureadaptor
 **
-** @attr Adaptor [EnsPFeatureAdaptor] Ensembl Feature Adaptor.
+** @attr Adaptor [EnsPFeatureadaptor] Ensembl Feature Adaptor.
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSMiscellaneousFeatureAdaptor
+typedef struct EnsSMiscellaneousFeatureadaptor
 {
-    EnsPFeatureAdaptor Adaptor;
-} EnsOMiscellaneousFeatureAdaptor;
+    EnsPFeatureadaptor Adaptor;
+} EnsOMiscellaneousFeatureadaptor;
 
-#define EnsPMiscellaneousFeatureAdaptor EnsOMiscellaneousFeatureAdaptor*
+#define EnsPMiscellaneousFeatureadaptor EnsOMiscellaneousFeatureadaptor*
 
 
 
@@ -107,7 +107,7 @@ typedef struct EnsSMiscellaneousFeatureAdaptor
 ** @attr Use [ajuint] Use counter.
 ** @cc Bio::EnsEMBL::Storable
 ** @attr Identifier [ajuint] SQL database-internal identifier.
-** @attr Adaptor [EnsPMiscellaneousFeatureAdaptor] Ensembl Miscellaneous
+** @attr Adaptor [EnsPMiscellaneousFeatureadaptor] Ensembl Miscellaneous
 **                                                 Feature Adaptor.
 ** @cc Bio::EnsEMBL::Feature
 ** @cc 'misc_feature' SQL table
@@ -122,7 +122,7 @@ typedef struct EnsSMiscellaneousFeature
 {
     ajuint Use;
     ajuint Identifier;
-    EnsPMiscellaneousFeatureAdaptor Adaptor;
+    EnsPMiscellaneousFeatureadaptor Adaptor;
     EnsPFeature Feature;
     AjPList Attributes;
     AjPList MiscellaneousSets;
@@ -139,7 +139,7 @@ typedef struct EnsSMiscellaneousFeature
 
 /* Ensembl Miscellaneous Set */
 
-EnsPMiscellaneousSet ensMiscellaneousSetNew(EnsPMiscellaneousSetAdaptor adaptor,
+EnsPMiscellaneousSet ensMiscellaneousSetNew(EnsPMiscellaneousSetadaptor adaptor,
                                             ajuint identifier,
                                             AjPStr code,
                                             AjPStr name,
@@ -153,7 +153,7 @@ EnsPMiscellaneousSet ensMiscellaneousSetNewRef(EnsPMiscellaneousSet ms);
 
 void ensMiscellaneousSetDel(EnsPMiscellaneousSet* Pms);
 
-EnsPMiscellaneousSetAdaptor ensMiscellaneousSetGetAdaptor(
+EnsPMiscellaneousSetadaptor ensMiscellaneousSetGetadaptor(
     const EnsPMiscellaneousSet ms);
 
 ajuint ensMiscellaneousSetGetIdentifier(const EnsPMiscellaneousSet ms);
@@ -166,8 +166,8 @@ AjPStr ensMiscellaneousSetGetDescription(const EnsPMiscellaneousSet ms);
 
 ajuint ensMiscellaneousSetGetMaximumLength(const EnsPMiscellaneousSet ms);
 
-AjBool ensMiscellaneousSetSetAdaptor(EnsPMiscellaneousSet ms,
-			      EnsPMiscellaneousSetAdaptor adaptor);
+AjBool ensMiscellaneousSetSetadaptor(EnsPMiscellaneousSet ms,
+			      EnsPMiscellaneousSetadaptor adaptor);
 
 AjBool ensMiscellaneousSetSetIdentifier(EnsPMiscellaneousSet ms,
                                         ajuint identifier);
@@ -188,32 +188,32 @@ AjBool ensMiscellaneousSetTrace(const EnsPMiscellaneousSet ms, ajuint level);
 
 /* Ensembl Miscellaneous Set Adaptor */
 
-EnsPMiscellaneousSetAdaptor ensMiscellaneousSetAdaptorNew(
-    EnsPDatabaseAdaptor dba);
+EnsPMiscellaneousSetadaptor ensMiscellaneousSetadaptorNew(
+    EnsPDatabaseadaptor dba);
 
-void ensMiscellaneousSetAdaptorDel(EnsPMiscellaneousSetAdaptor* Padaptor);
+void ensMiscellaneousSetadaptorDel(EnsPMiscellaneousSetadaptor* Padaptor);
 
-const EnsPDatabaseAdaptor ensMiscellaneousSetAdaptorGetDatabaseAdaptor(
-    const EnsPMiscellaneousSetAdaptor adaptor);
+const EnsPDatabaseadaptor ensMiscellaneousSetadaptorGetDatabaseadaptor(
+    const EnsPMiscellaneousSetadaptor adaptor);
 
-AjBool ensMiscellaneousSetAdaptorFetchAll(
-    const EnsPMiscellaneousSetAdaptor adaptor,
+AjBool ensMiscellaneousSetadaptorFetchAll(
+    const EnsPMiscellaneousSetadaptor adaptor,
 				   AjPList mslist);
 
-AjBool ensMiscellaneousSetAdaptorFetchByIdentifier(
-    EnsPMiscellaneousSetAdaptor adaptor,
+AjBool ensMiscellaneousSetadaptorFetchByIdentifier(
+    EnsPMiscellaneousSetadaptor adaptor,
     ajuint identifier,
     EnsPMiscellaneousSet *Pms);
 
-AjBool ensMiscellaneousSetAdaptorFetchByCode(
-    EnsPMiscellaneousSetAdaptor adaptor,
+AjBool ensMiscellaneousSetadaptorFetchByCode(
+    EnsPMiscellaneousSetadaptor adaptor,
     const AjPStr code,
     EnsPMiscellaneousSet *Pms);
 
 /* Ensembl Miscellaneous Feature */
 
 EnsPMiscellaneousFeature ensMiscellaneousFeatureNew(
-    EnsPMiscellaneousFeatureAdaptor adaptor,
+    EnsPMiscellaneousFeatureadaptor adaptor,
     ajuint identifier,
     EnsPFeature feature);
 
@@ -225,7 +225,7 @@ EnsPMiscellaneousFeature ensMiscellaneousFeatureNewRef(
 
 void ensMiscellaneousFeatureDel(EnsPMiscellaneousFeature* Pmf);
 
-EnsPMiscellaneousFeatureAdaptor ensMiscellaneousFeatureGetAdaptor(
+EnsPMiscellaneousFeatureadaptor ensMiscellaneousFeatureGetadaptor(
     const EnsPMiscellaneousFeature mf);
 
 ajuint ensMiscellaneousFeatureGetIdentifier(const EnsPMiscellaneousFeature mf);
@@ -239,9 +239,9 @@ const AjPList ensMiscellaneousFeatureGetAttributes(
 const AjPList ensMiscellaneousFeatureGetMiscellaneousSets(
     const EnsPMiscellaneousFeature mf);
 
-AjBool ensMiscellaneousFeatureSetAdaptor(
+AjBool ensMiscellaneousFeatureSetadaptor(
     EnsPMiscellaneousFeature mf,
-    EnsPMiscellaneousFeatureAdaptor adaptor);
+    EnsPMiscellaneousFeatureadaptor adaptor);
 
 AjBool ensMiscellaneousFeatureSetIdentifier(EnsPMiscellaneousFeature mf,
                                             ajuint identifier);
@@ -271,19 +271,19 @@ AjBool ensMiscellaneousFeatureFetchAllMiscellaneousSets(
 
 /* Ensembl Miscellaneous Feature Adaptor */
 
-EnsPMiscellaneousFeatureAdaptor ensMiscellaneousFeatureAdaptorNew(
-    EnsPDatabaseAdaptor dba);
+EnsPMiscellaneousFeatureadaptor ensMiscellaneousFeatureadaptorNew(
+    EnsPDatabaseadaptor dba);
 
-void ensMiscellaneousFeatureAdaptorDel(EnsPMiscellaneousFeatureAdaptor *Pmfa);
+void ensMiscellaneousFeatureadaptorDel(EnsPMiscellaneousFeatureadaptor *Pmfa);
 
-AjBool ensMiscellaneousFeatureAdaptorFetchAllBySliceAndSetCode(
-    EnsPMiscellaneousFeatureAdaptor adaptor,
+AjBool ensMiscellaneousFeatureadaptorFetchAllBySliceAndSetCode(
+    EnsPMiscellaneousFeatureadaptor adaptor,
     EnsPSlice slice,
     const AjPList codes,
     AjPList mflist);
 
-AjBool ensMiscellaneousFeatureAdaptorFetchAllByAttributeCodeValue(
-    EnsPMiscellaneousFeatureAdaptor adaptor,
+AjBool ensMiscellaneousFeatureadaptorFetchAllByAttributeCodeValue(
+    EnsPMiscellaneousFeatureadaptor adaptor,
     const AjPStr code,
     const AjPStr value,
     AjPList mflist);

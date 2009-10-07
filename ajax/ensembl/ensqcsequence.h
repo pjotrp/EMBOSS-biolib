@@ -11,30 +11,30 @@ extern "C"
 
 
 
-/* @data EnsPQCSequenceAdaptor ************************************************
+/* @data EnsPQCSequenceadaptor ************************************************
 **
 ** Ensembl QC Sequence Adaptor
 **
-** @alias EnsSQCSequenceAdaptor
-** @alias EnsOQCSequenceAdaptor
+** @alias EnsSQCSequenceadaptor
+** @alias EnsOQCSequenceadaptor
 **
-** @attr Adaptor [EnsPBaseAdaptor] Ensembl Base Adaptor
+** @attr Adaptor [EnsPBaseadaptor] Ensembl Base Adaptor
 ** @attr CacheByIdentifier [AjPTable] Identifier cache
 ** @attr CacheByName [AjPTable] Name cache
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSQCSequenceAdaptor
+typedef struct EnsSQCSequenceadaptor
 {
-    EnsPBaseAdaptor Adaptor;
+    EnsPBaseadaptor Adaptor;
     AjPTable CacheByIdentifier;
     AjPTable CacheByName;
     /*
     ** FIXME: Should this also have a CacheByAccessionVersion???
     */
-} EnsOQCSequenceAdaptor;
+} EnsOQCSequenceadaptor;
 
-#define EnsPQCSequenceAdaptor EnsOQCSequenceAdaptor*
+#define EnsPQCSequenceadaptor EnsOQCSequenceadaptor*
 
 
 
@@ -49,7 +49,7 @@ typedef struct EnsSQCSequenceAdaptor
 ** @attr Use [ajuint] Use counter
 ** @cc Bio::EnsEMBL::Storable
 ** @attr Identifier [ajuint] SQL database-internal identifier
-** @attr Adaptor [EnsPQCSequenceAdaptor] Ensembl Sequence Adaptor
+** @attr Adaptor [EnsPQCSequenceadaptor] Ensembl Sequence Adaptor
 ** @cc Bio::EnsEMBL::QC::Sequence
 ** @cc 'sequence' SQL table
 ** @attr QCDatabase [EnsPQCDatabase] Ensembl QC Database
@@ -70,7 +70,7 @@ typedef struct EnsSQCSequence
 {
     ajuint Use;
     ajuint Identifier;
-    EnsPQCSequenceAdaptor Adaptor;
+    EnsPQCSequenceadaptor Adaptor;
     EnsPQCDatabase QCDatabase;
     AjPStr Name;
     AjPStr Accession;
@@ -95,7 +95,7 @@ typedef struct EnsSQCSequence
 
 /* Ensembl Quality Check Sequence */
 
-EnsPQCSequence ensQCSequenceNew(EnsPQCSequenceAdaptor adaptor,
+EnsPQCSequence ensQCSequenceNew(EnsPQCSequenceadaptor adaptor,
                                 ajuint identifier,
                                 EnsPQCDatabase qcdb,
                                 AjPStr name,
@@ -115,7 +115,7 @@ EnsPQCSequence ensQCSequenceNewRef(EnsPQCSequence qcs);
 
 void ensQCSequenceDel(EnsPQCSequence* Pqcs);
 
-EnsPQCSequenceAdaptor ensQCSequenceGetAdaptor(const EnsPQCSequence qcs);
+EnsPQCSequenceadaptor ensQCSequenceGetadaptor(const EnsPQCSequence qcs);
 
 ajuint ensQCSequenceGetIdentifier(const EnsPQCSequence qcs);
 
@@ -141,7 +141,7 @@ ajuint ensQCSequenceGetPolyA(const EnsPQCSequence qcs);
 
 AjPStr ensQCSequenceGetDescription(const EnsPQCSequence qcs);
 
-AjBool ensQCSequenceSetAdaptor(EnsPQCSequence qcs, EnsPQCSequenceAdaptor qcsa);
+AjBool ensQCSequenceSetadaptor(EnsPQCSequence qcs, EnsPQCSequenceadaptor qcsa);
 
 AjBool ensQCSequenceSetIdentifier(EnsPQCSequence qcs, ajuint identifier);
 
@@ -191,41 +191,41 @@ AjBool ensQCSequenceFetchInternalAnchor(EnsPQCSequence qcs, AjPStr *Pstr);
 
 /* Ensembl Quality Check Sequence Adaptor */
 
-EnsPQCSequenceAdaptor ensQCSequenceAdaptorNew(EnsPDatabaseAdaptor dba);
+EnsPQCSequenceadaptor ensQCSequenceadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensQCSequenceAdaptorDel(EnsPQCSequenceAdaptor* Pqcsa);
+void ensQCSequenceadaptorDel(EnsPQCSequenceadaptor* Pqcsa);
 
-AjBool ensQCSequenceAdaptorFetchByIdentifier(EnsPQCSequenceAdaptor adaptor,
+AjBool ensQCSequenceadaptorFetchByIdentifier(EnsPQCSequenceadaptor adaptor,
                                              ajuint identifier,
                                              EnsPQCSequence *Pqcs);
 
-AjBool ensQCSequenceAdaptorFetchByAccession(EnsPQCSequenceAdaptor qcsa,
+AjBool ensQCSequenceadaptorFetchByAccession(EnsPQCSequenceadaptor qcsa,
                                             ajuint qcdbid,
                                             const AjPStr accession,
                                             EnsPQCSequence *Pqcs);
 
-AjBool ensQCSequenceAdaptorFetchByAccessionVersion(EnsPQCSequenceAdaptor qcsa,
+AjBool ensQCSequenceadaptorFetchByAccessionVersion(EnsPQCSequenceadaptor qcsa,
                                                    ajuint qcdbid,
                                                    const AjPStr accession,
                                                    ajuint version,
                                                    EnsPQCSequence *Pqcs);
 
-AjBool ensQCSequenceAdaptorFetchByName(EnsPQCSequenceAdaptor qcsa,
+AjBool ensQCSequenceadaptorFetchByName(EnsPQCSequenceadaptor qcsa,
                                        ajuint qcdbid,
                                        const AjPStr name,
                                        EnsPQCSequence *Pqcs);
 
-AjBool ensQCSequenceAdaptorFetchAllByQCDatabase(EnsPQCSequenceAdaptor qcsa,
+AjBool ensQCSequenceadaptorFetchAllByQCDatabase(EnsPQCSequenceadaptor qcsa,
                                                 EnsPQCDatabase qcdb,
                                                 AjPList qcss);
 
-AjBool ensQCSequenceAdaptorStore(EnsPQCSequenceAdaptor qcsa,
+AjBool ensQCSequenceadaptorStore(EnsPQCSequenceadaptor qcsa,
                                  EnsPQCSequence qcs);
 
-AjBool ensQCSequenceAdaptorUpdate(EnsPQCSequenceAdaptor qcsa,
+AjBool ensQCSequenceadaptorUpdate(EnsPQCSequenceadaptor qcsa,
                                   const EnsPQCSequence qcs);
 
-AjBool ensQCSequenceAdaptorDelete(EnsPQCSequenceAdaptor qcsa,
+AjBool ensQCSequenceadaptorDelete(EnsPQCSequenceadaptor qcsa,
                                   const EnsPQCSequence qcs);
 
 

@@ -17,7 +17,7 @@ extern "C"
 
 /* Ensembl Analysis */
 
-EnsPAnalysis ensAnalysisNew(EnsPAnalysisAdaptor adaptor,
+EnsPAnalysis ensAnalysisNew(EnsPAnalysisadaptor adaptor,
                             ajuint identifier,
                             AjPStr cdate,
                             AjPStr name,
@@ -43,7 +43,7 @@ EnsPAnalysis ensAnalysisNewRef(EnsPAnalysis analysis);
 
 void ensAnalysisDel(EnsPAnalysis* Panalysis);
 
-EnsPAnalysisAdaptor ensAnalysisGetAdaptor(const EnsPAnalysis analysis);
+EnsPAnalysisadaptor ensAnalysisGetadaptor(const EnsPAnalysis analysis);
 
 ajuint ensAnalysisGetIdentifier(const EnsPAnalysis analysis);
 
@@ -81,8 +81,8 @@ extern const AjPStr ensAnalysisGetWebData(const EnsPAnalysis analysis);
 
 AjBool ensAnalysisGetDisplayable(const EnsPAnalysis analysis);
 
-AjBool ensAnalysisSetAdaptor(EnsPAnalysis analysis,
-                             EnsPAnalysisAdaptor adaptor);
+AjBool ensAnalysisSetadaptor(EnsPAnalysis analysis,
+                             EnsPAnalysisadaptor adaptor);
 
 AjBool ensAnalysisSetIdentifier(EnsPAnalysis analysis, ajuint identifier);
 
@@ -133,28 +133,28 @@ ajuint ensAnalysisGetMemSize(const EnsPAnalysis analysis);
 
 /* Ensembl Analysis Adaptor */
 
-EnsPAnalysisAdaptor ensAnalysisAdaptorNew(EnsPDatabaseAdaptor dba);
+EnsPAnalysisadaptor ensAnalysisadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensAnalysisAdaptorDel(EnsPAnalysisAdaptor* Padaptor);
+void ensAnalysisadaptorDel(EnsPAnalysisadaptor* Padaptor);
 
-EnsPBaseAdaptor ensAnalysisAdaptorGetBaseAdaptor(
-    const EnsPAnalysisAdaptor adaptor);
+EnsPBaseadaptor ensAnalysisadaptorGetBaseadaptor(
+    const EnsPAnalysisadaptor adaptor);
 
-EnsPDatabaseAdaptor ensAnalysisAdaptorGetDatabaseAdaptor(
-    const EnsPAnalysisAdaptor adaptor);
+EnsPDatabaseadaptor ensAnalysisadaptorGetDatabaseadaptor(
+    const EnsPAnalysisadaptor adaptor);
 
-AjBool ensAnalysisAdaptorFetchAll(EnsPAnalysisAdaptor adaptor,
+AjBool ensAnalysisadaptorFetchAll(EnsPAnalysisadaptor adaptor,
                                   AjPList analyses);
 
-AjBool ensAnalysisAdaptorFetchByIdentifier(EnsPAnalysisAdaptor adaptor,
+AjBool ensAnalysisadaptorFetchByIdentifier(EnsPAnalysisadaptor adaptor,
                                            ajuint identifier,
                                            EnsPAnalysis *Panalysis);
 
-AjBool ensAnalysisAdaptorFetchByName(EnsPAnalysisAdaptor adaptor,
+AjBool ensAnalysisadaptorFetchByName(EnsPAnalysisadaptor adaptor,
                                      const AjPStr name,
                                      EnsPAnalysis *Panalysis);
 
-AjBool ensAnalysisAdaptorFetchAllByFeatureClass(EnsPAnalysisAdaptor adaptor,
+AjBool ensAnalysisadaptorFetchAllByFeatureClass(EnsPAnalysisadaptor adaptor,
                                                 const AjPStr class,
                                                 AjPList analyses);
 

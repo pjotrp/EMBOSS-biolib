@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -46,7 +46,7 @@
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-static AjBool attributeAdaptorFetchAllBySQL(EnsPDatabaseAdaptor adaptor,
+static AjBool attributeAdaptorFetchAllBySQL(EnsPDatabaseadaptor adaptor,
                                             const AjPStr statement,
                                             AjPList attributes);
 
@@ -498,13 +498,13 @@ AjBool ensAttributeTrace(const EnsPAttribute attribute, ajuint level)
 
 
 
-/* @datasection [EnsPAttributeAdaptor] Attribute Adaptor **********************
+/* @datasection [EnsPAttributeadaptor] Attribute Adaptor **********************
 **
 ** Functions for manipulating Ensembl Attribute Adaptor objects
 **
-** @cc Bio::EnsEMBL::DBSQL::AttributeAdaptor CVS Revision: 1.23
+** @cc Bio::EnsEMBL::DBSQL::Attributeadaptor CVS Revision: 1.23
 **
-** @nam2rule AttributeAdaptor
+** @nam2rule Attributeadaptor
 **
 ******************************************************************************/
 
@@ -519,7 +519,7 @@ AjBool ensAttributeTrace(const EnsPAttribute attribute, ajuint level)
 ** The caller is responsible for deleting the Ensembl Attributes before
 ** deleting the AJAX List.
 **
-** @param [r] adaptor [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @param [r] adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
 ** @param [u] attributes [AjPList] AJAX List of Ensembl Attributes
 **
@@ -527,13 +527,13 @@ AjBool ensAttributeTrace(const EnsPAttribute attribute, ajuint level)
 ** @@
 ******************************************************************************/
 
-static AjBool attributeAdaptorFetchAllBySQL(EnsPDatabaseAdaptor adaptor,
+static AjBool attributeAdaptorFetchAllBySQL(EnsPDatabaseadaptor adaptor,
                                             const AjPStr statement,
                                             AjPList attributes)
 {
-    AjPSqlStatement sqls = NULL;
-    AjISqlRow sqli       = NULL;
-    AjPSqlRow sqlr       = NULL;
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
     
     AjPStr code        = NULL;
     AjPStr name        = NULL;
@@ -551,23 +551,23 @@ static AjBool attributeAdaptorFetchAllBySQL(EnsPDatabaseAdaptor adaptor,
     if(!attributes)
 	return ajFalse;
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(adaptor, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(adaptor, statement);
     
-    sqli = ajSqlRowIterNew(sqls);
+    sqli = ajSqlrowiterNew(sqls);
     
-    while(!ajSqlRowIterDone(sqli))
+    while(!ajSqlrowiterDone(sqli))
     {
 	code        = ajStrNew();
 	name        = ajStrNew();
 	description = ajStrNew();
 	value       = ajStrNew();
 	
-        sqlr = ajSqlRowIterGet(sqli);
+        sqlr = ajSqlrowiterGet(sqli);
 	
-        ajSqlColumnToStr(sqlr, &code);
-        ajSqlColumnToStr(sqlr, &name);
-	ajSqlColumnToStr(sqlr, &description);
-	ajSqlColumnToStr(sqlr, &value);
+        ajSqlcolumnToStr(sqlr, &code);
+        ajSqlcolumnToStr(sqlr, &name);
+	ajSqlcolumnToStr(sqlr, &description);
+	ajSqlcolumnToStr(sqlr, &value);
 	
 	attribute = ensAttributeNew(code, name, description, value);
 	
@@ -579,9 +579,9 @@ static AjBool attributeAdaptorFetchAllBySQL(EnsPDatabaseAdaptor adaptor,
 	ajStrDel(&value);
     }
     
-    ajSqlRowIterDel(&sqli);
+    ajSqlrowiterDel(&sqli);
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     return ajTrue;
 }
@@ -594,7 +594,7 @@ static AjBool attributeAdaptorFetchAllBySQL(EnsPDatabaseAdaptor adaptor,
 ** Functions for retrieving Ensembl Attribute objects from an
 ** Ensembl Core database.
 **
-** @fdata [EnsPAttributeAdaptor]
+** @fdata [EnsPAttributeadaptor]
 ** @fnote None
 **
 ** @nam3rule Fetch Retrieve Ensembl Attribute object(s)
@@ -604,7 +604,7 @@ static AjBool attributeAdaptorFetchAllBySQL(EnsPDatabaseAdaptor adaptor,
 ** @nam4rule FetchBy Retrieve one Ensembl Attribute object
 **                   matching a criterion
 **
-** @argrule * adaptor [const EnsPAttributeAdaptor] Ensembl Attribute Adaptor
+** @argrule * adaptor [const EnsPAttributeadaptor] Ensembl Attribute Adaptor
 ** @argrule FetchAll attributes [AjPList] AJAX List of Ensembl Attribute
 **                                        objects
 **
@@ -616,16 +616,16 @@ static AjBool attributeAdaptorFetchAllBySQL(EnsPDatabaseAdaptor adaptor,
 
 
 
-/* @func ensAttributeAdaptorFetchAllByGene ************************************
+/* @func ensAttributeadaptorFetchAllByGene ************************************
 **
 ** Fetch all Ensembl Attributes via an Ensembl Gene.
 **
 ** The caller is responsible for deleting the Ensembl Attributes before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::DBSQL::AttributeAdaptor::AUTOLOAD
-** @cc Bio::EnsEMBL::DBSQL::AttributeAdaptor::fetch_all_by_
-** @param [r] adaptor [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @cc Bio::EnsEMBL::DBSQL::Attributeadaptor::AUTOLOAD
+** @cc Bio::EnsEMBL::DBSQL::Attributeadaptor::fetch_all_by_
+** @param [r] adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] gene [const EnsPGene] Ensembl Gene
 ** @param [r] code [const AjPStr] Ensembl Attribute code
 ** @param [u] attributes [AjPList] AJAX List of Ensembl Attributes
@@ -643,7 +643,7 @@ static AjBool attributeAdaptorFetchAllBySQL(EnsPDatabaseAdaptor adaptor,
 ** Perl API.
 */
 
-AjBool ensAttributeAdaptorFetchAllByGene(EnsPDatabaseAdaptor adaptor,
+AjBool ensAttributeadaptorFetchAllByGene(EnsPDatabaseadaptor adaptor,
                                          const EnsPGene gene,
                                          const AjPStr code,
                                          AjPList attributes)
@@ -678,7 +678,7 @@ AjBool ensAttributeAdaptorFetchAllByGene(EnsPDatabaseAdaptor adaptor,
     
     if(code && ajStrGetLen(code))
     {
-	ensDatabaseAdaptorEscapeCS(adaptor, &txtcode, code);
+	ensDatabaseadaptorEscapeC(adaptor, &txtcode, code);
 	
 	ajFmtPrintAppS(&statement, " AND attrib_type.code = '%s'", txtcode);
 	
@@ -695,16 +695,16 @@ AjBool ensAttributeAdaptorFetchAllByGene(EnsPDatabaseAdaptor adaptor,
 
 
 
-/* @func ensAttributeAdaptorFetchAllBySeqRegion *******************************
+/* @func ensAttributeadaptorFetchAllBySeqRegion *******************************
 **
 ** Fetch all Ensembl Attributes via an Ensembl Sequence Region.
 **
 ** The caller is responsible for deleting the Ensembl Attributes before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::DBSQL::AttributeAdaptor::AUTOLOAD
-** @cc Bio::EnsEMBL::DBSQL::AttributeAdaptor::fetch_all_by_
-** @param [r] adaptor [EnsPDatabaseAdaptor] Ensembl Database Adaptor.
+** @cc Bio::EnsEMBL::DBSQL::Attributeadaptor::AUTOLOAD
+** @cc Bio::EnsEMBL::DBSQL::Attributeadaptor::fetch_all_by_
+** @param [r] adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor.
 ** @param [r] sr [const EnsPSeqRegion] Ensembl Sequence Region.
 ** @param [r] code [const AjPStr] Ensembl Attribute code.
 ** @param [u] attributes [AjPList] AJAX List of Ensembl Attributes.
@@ -713,7 +713,7 @@ AjBool ensAttributeAdaptorFetchAllByGene(EnsPDatabaseAdaptor adaptor,
 ** @@
 ******************************************************************************/
 
-AjBool ensAttributeAdaptorFetchAllBySeqRegion(EnsPDatabaseAdaptor adaptor,
+AjBool ensAttributeadaptorFetchAllBySeqRegion(EnsPDatabaseadaptor adaptor,
                                               const EnsPSeqRegion sr,
                                               const AjPStr code,
                                               AjPList attributes)
@@ -748,7 +748,7 @@ AjBool ensAttributeAdaptorFetchAllBySeqRegion(EnsPDatabaseAdaptor adaptor,
     
     if(code && ajStrGetLen(code))
     {
-	ensDatabaseAdaptorEscapeCS(adaptor, &txtcode, code);
+	ensDatabaseadaptorEscapeC(adaptor, &txtcode, code);
 	
 	ajFmtPrintAppS(&statement, " AND attrib_type.code = '%s'", txtcode);
 	
@@ -765,16 +765,16 @@ AjBool ensAttributeAdaptorFetchAllBySeqRegion(EnsPDatabaseAdaptor adaptor,
 
 
 
-/* @func ensAttributeAdaptorFetchAllBySlice ***********************************
+/* @func ensAttributeadaptorFetchAllBySlice ***********************************
 **
 ** Fetch all Ensembl Attributes via an Ensembl Slice.
 **
 ** The caller is responsible for deleting the Ensembl Attributes before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::DBSQL::AttributeAdaptor::AUTOLOAD
-** @cc Bio::EnsEMBL::DBSQL::AttributeAdaptor::fetch_all_by_
-** @param [r] adaptor [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @cc Bio::EnsEMBL::DBSQL::Attributeadaptor::AUTOLOAD
+** @cc Bio::EnsEMBL::DBSQL::Attributeadaptor::fetch_all_by_
+** @param [r] adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] slice [const EnsPSlice] Ensembl Slice
 ** @param [r] code [const AjPStr] Ensembl Attribute code
 ** @param [u] attributes [AjPList] AJAX List of Ensembl Attributes
@@ -792,7 +792,7 @@ AjBool ensAttributeAdaptorFetchAllBySeqRegion(EnsPDatabaseAdaptor adaptor,
 ** Perl API.
 */
 
-AjBool ensAttributeAdaptorFetchAllBySlice(EnsPDatabaseAdaptor adaptor,
+AjBool ensAttributeadaptorFetchAllBySlice(EnsPDatabaseadaptor adaptor,
                                           const EnsPSlice slice,
                                           const AjPStr code,
                                           AjPList attributes)
@@ -812,13 +812,13 @@ AjBool ensAttributeAdaptorFetchAllBySlice(EnsPDatabaseAdaptor adaptor,
     
     if(!sr)
     {
-	ajDebug("ensAttributeAdaptorFetchAllBySlice cannot get Attributes "
+	ajDebug("ensAttributeadaptorFetchAllBySlice cannot get Attributes "
 		"for a Slice without a Sequence Region.\n");
 	
 	return ajFalse;
     }
     
-    return ensAttributeAdaptorFetchAllBySeqRegion(adaptor,
+    return ensAttributeadaptorFetchAllBySeqRegion(adaptor,
 						  sr,
 						  code,
 						  attributes);
@@ -827,16 +827,16 @@ AjBool ensAttributeAdaptorFetchAllBySlice(EnsPDatabaseAdaptor adaptor,
 
 
 
-/* @func ensAttributeAdaptorFetchAllByTranscript ******************************
+/* @func ensAttributeadaptorFetchAllByTranscript ******************************
 **
 ** Fetch all Ensembl Attributes via an Ensembl Transcript.
 **
 ** The caller is responsible for deleting the Ensembl Attributes before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::DBSQL::AttributeAdaptor::AUTOLOAD
-** @cc Bio::EnsEMBL::DBSQL::AttributeAdaptor::fetch_all_by_
-** @param [r] adaptor [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @cc Bio::EnsEMBL::DBSQL::Attributeadaptor::AUTOLOAD
+** @cc Bio::EnsEMBL::DBSQL::Attributeadaptor::fetch_all_by_
+** @param [r] adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] transcript [const EnsPTranscript] Ensembl Transcript
 ** @param [r] code [const AjPStr] Ensembl Attribute code
 ** @param [u] attributes [AjPList] AJAX List of Ensembl Attributes
@@ -845,7 +845,7 @@ AjBool ensAttributeAdaptorFetchAllBySlice(EnsPDatabaseAdaptor adaptor,
 ** @@
 ******************************************************************************/
 
-AjBool ensAttributeAdaptorFetchAllByTranscript(EnsPDatabaseAdaptor adaptor,
+AjBool ensAttributeadaptorFetchAllByTranscript(EnsPDatabaseadaptor adaptor,
                                                const EnsPTranscript transcript,
                                                const AjPStr code,
                                                AjPList attributes)
@@ -880,7 +880,7 @@ AjBool ensAttributeAdaptorFetchAllByTranscript(EnsPDatabaseAdaptor adaptor,
     
     if(code && ajStrGetLen(code))
     {
-	ensDatabaseAdaptorEscapeCS(adaptor, &txtcode, code);
+	ensDatabaseadaptorEscapeC(adaptor, &txtcode, code);
 	
 	ajFmtPrintAppS(&statement, " AND attrib_type.code = '%s'", txtcode);
 	
@@ -897,16 +897,16 @@ AjBool ensAttributeAdaptorFetchAllByTranscript(EnsPDatabaseAdaptor adaptor,
 
 
 
-/* @func ensAttributeAdaptorFetchAllByTranslation *****************************
+/* @func ensAttributeadaptorFetchAllByTranslation *****************************
 **
 ** Fetch all Ensembl Attributes via an Ensembl Translation.
 **
 ** The caller is responsible for deleting the Ensembl Attributes before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::DBSQL::AttributeAdaptor::AUTOLOAD
-** @cc Bio::EnsEMBL::DBSQL::AttributeAdaptor::fetch_all_by_
-** @param [r] adaptor [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @cc Bio::EnsEMBL::DBSQL::Attributeadaptor::AUTOLOAD
+** @cc Bio::EnsEMBL::DBSQL::Attributeadaptor::fetch_all_by_
+** @param [r] adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] translation [const EnsPTranslation] Ensembl Translation
 ** @param [r] code [const AjPStr] Ensembl Attribute code
 ** @param [u] attributes [AjPList] AJAX List of Ensembl Attributes
@@ -915,8 +915,8 @@ AjBool ensAttributeAdaptorFetchAllByTranscript(EnsPDatabaseAdaptor adaptor,
 ** @@
 ******************************************************************************/
 
-AjBool ensAttributeAdaptorFetchAllByTranslation(
-    EnsPDatabaseAdaptor adaptor,
+AjBool ensAttributeadaptorFetchAllByTranslation(
+    EnsPDatabaseadaptor adaptor,
     const EnsPTranslation translation,
     const AjPStr code,
     AjPList attributes)
@@ -951,7 +951,7 @@ AjBool ensAttributeAdaptorFetchAllByTranslation(
     
     if(code && ajStrGetLen(code))
     {
-	ensDatabaseAdaptorEscapeCS(adaptor, &txtcode, code);
+	ensDatabaseadaptorEscapeC(adaptor, &txtcode, code);
 	
 	ajFmtPrintAppS(&statement, " AND attrib_type.code = '%s'", txtcode);
 	

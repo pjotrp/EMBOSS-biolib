@@ -12,15 +12,13 @@ extern "C"
 
 
 
-/* @data EnsPQCAlignmentAdaptor ***********************************************
+/******************************************************************************
 **
 ** Ensembl QC Alignment Adaptor
 **
-** @alias EnsPBaseAdaptor
-** @@
 ******************************************************************************/
 
-#define EnsPQCAlignmentAdaptor EnsPBaseAdaptor
+#define EnsPQCAlignmentadaptor EnsPBaseadaptor
 
 
 
@@ -35,13 +33,14 @@ extern "C"
 ** @attr Use [ajuint] Use counter
 ** @cc Bio::EnsEMBL::Storable
 ** @attr Identifier [ajuint] SQL database-internal identifier
-** @attr Adaptor [EnsPQCAlignmentAdaptor] Ensembl Alignment Adaptor
+** @attr Adaptor [EnsPQCAlignmentadaptor] Ensembl Alignment Adaptor
 ** @cc Bio::EnsEMBL::QC::Alignment
 ** @cc 'alignment' SQL table
 ** @attr Analysis [EnsPAnalysis] Ensembl Analysis
 ** @attr QuerySequence [EnsPQCSequence] Query Ensembl QC Sequence
 ** @attr TargetSequence [EnsPQCSequence] Target Ensembl QC Sequence
-** @attr VULGAR [AjPStr] VULGAR line QueryStart [ajuint] Query start
+** @attr VULGAR [AjPStr] VULGAR line
+** @attr QueryStart [ajuint] Query start
 ** @attr QueryEnd [ajuint] Query end
 ** @attr QueryStrand [ajint] Query strand
 ** @attr TargetStart [ajuint] Target start
@@ -59,7 +58,7 @@ typedef struct EnsSQCAlignment
 {
     ajuint Use;
     ajuint Identifier;
-    EnsPQCAlignmentAdaptor Adaptor;
+    EnsPQCAlignmentadaptor Adaptor;
     EnsPAnalysis Analysis;
     EnsPQCSequence QuerySequence;
     EnsPQCSequence TargetSequence;
@@ -88,7 +87,7 @@ typedef struct EnsSQCAlignment
 
 /* Ensembl Quality Check Alignment */
 
-EnsPQCAlignment ensQCAlignmentNew(EnsPQCAlignmentAdaptor adaptor,
+EnsPQCAlignment ensQCAlignmentNew(EnsPQCAlignmentadaptor adaptor,
                                   ajuint identifier,
                                   EnsPAnalysis analysis,
                                   EnsPQCSequence qsequence,
@@ -111,7 +110,7 @@ EnsPQCAlignment ensQCAlignmentNewRef(EnsPQCAlignment qca);
 
 void ensQCAlignmentDel(EnsPQCAlignment* Pqca);
 
-EnsPQCAlignmentAdaptor ensQCAlignmentGetAdaptor(const EnsPQCAlignment qca);
+EnsPQCAlignmentadaptor ensQCAlignmentGetadaptor(const EnsPQCAlignment qca);
 
 ajuint ensQCAlignmentGetIdentifier(const EnsPQCAlignment qca);
 
@@ -143,8 +142,8 @@ float ensQCAlignmentGetIdentity(const EnsPQCAlignment qca);
 
 AjPStr ensQCAlignmentGetVULGAR(const EnsPQCAlignment qca);
 
-AjBool ensQCAlignmentSetAdaptor(EnsPQCAlignment qca,
-                                EnsPQCAlignmentAdaptor qcaa);
+AjBool ensQCAlignmentSetadaptor(EnsPQCAlignment qca,
+                                EnsPQCAlignmentadaptor qcaa);
 
 AjBool ensQCAlignmentSetIdentifier(EnsPQCAlignment qca, ajuint identifier);
 
@@ -224,52 +223,52 @@ AjBool ensQCAlignmentReport(const EnsPQCAlignment qca,
 
 /* Ensembl Quality Check Alignment Adaptor */
 
-EnsPQCAlignmentAdaptor ensQCAlignmentAdaptorNew(EnsPDatabaseAdaptor dba);
+EnsPQCAlignmentadaptor ensQCAlignmentadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensQCAlignmentAdaptorDel(EnsPQCAlignmentAdaptor* Pqcaa);
+void ensQCAlignmentadaptorDel(EnsPQCAlignmentadaptor* Pqcaa);
 
-AjBool ensQCAlignmentAdaptorFetchByIdentifier(EnsPQCAlignmentAdaptor adaptor,
+AjBool ensQCAlignmentadaptorFetchByIdentifier(EnsPQCAlignmentadaptor adaptor,
                                               ajuint identifier,
                                               EnsPQCAlignment *Pqca);
 
-AjBool ensQCAlignmentAdaptorFetchAllByAnalysisQueryTarget(
-    EnsPQCAlignmentAdaptor qcaa,
+AjBool ensQCAlignmentadaptorFetchAllByAnalysisQueryTarget(
+    EnsPQCAlignmentadaptor qcaa,
     const EnsPAnalysis analysis,
     const EnsPQCDatabase qdb,
     const EnsPQCDatabase tdb,
     AjPList qcas);
 
 
-AjBool ensQCAlignmentAdaptorFetchAllByQuery(EnsPQCAlignmentAdaptor qcaa,
+AjBool ensQCAlignmentadaptorFetchAllByQuery(EnsPQCAlignmentadaptor qcaa,
                                             const EnsPAnalysis analysis,
                                             const EnsPQCDatabase qdb,
                                             AjPList qcas);
 
-AjBool ensQCAlignmentAdaptorFetchAllByTarget(EnsPQCAlignmentAdaptor qcaa,
+AjBool ensQCAlignmentadaptorFetchAllByTarget(EnsPQCAlignmentadaptor qcaa,
                                              const EnsPAnalysis analysis,
                                              const EnsPQCDatabase tdb,
                                              AjPList qcas);
 
-AjBool ensQCAlignmentAdaptorFetchAllByCoverage(EnsPQCAlignmentAdaptor qcaa,
+AjBool ensQCAlignmentadaptorFetchAllByCoverage(EnsPQCAlignmentadaptor qcaa,
                                                ajuint lower,
                                                ajuint upper,
                                                AjPList qcas);
 
-AjBool ensQCAlignmentAdaptorFetchAllByTargetLocation(
-    EnsPQCAlignmentAdaptor qcaa,
+AjBool ensQCAlignmentadaptorFetchAllByTargetLocation(
+    EnsPQCAlignmentadaptor qcaa,
     const EnsPAnalysis analysis,
     const EnsPQCSequence tsequence,
     ajuint tstart,
     ajuint tend,
     AjPList qcas);
 
-AjBool ensQCAlignmentAdaptorStore(EnsPQCAlignmentAdaptor qcaa,
+AjBool ensQCAlignmentadaptorStore(EnsPQCAlignmentadaptor qcaa,
                                   EnsPQCAlignment qca);
 
-AjBool ensQCAlignmentAdaptorUpdate(EnsPQCAlignmentAdaptor qcaa,
+AjBool ensQCAlignmentadaptorUpdate(EnsPQCAlignmentadaptor qcaa,
                                    const EnsPQCAlignment qca);
 
-AjBool ensQCAlignmentAdaptorDelete(EnsPQCAlignmentAdaptor qcaa,
+AjBool ensQCAlignmentadaptorDelete(EnsPQCAlignmentadaptor qcaa,
                                    const EnsPQCAlignment qca);
 
 void   endQCAlignmenttDummyFunction(void);

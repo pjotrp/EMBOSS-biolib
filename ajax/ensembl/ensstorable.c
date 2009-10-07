@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** Bio::EnsEMBL::Storable CVS Revision: 1.8
@@ -182,17 +182,17 @@ AjEnum ensStorableGetType(const EnsPStorable storable)
 
 
 
-/* @func ensStorableGetAdaptor ************************************************
+/* @func ensStorableGetadaptor ************************************************
 **
 ** Get the Ensembl Object Adaptor element of an Ensembl Storable.
 **
 ** @param [r] storable [const EnsPStorable] Ensembl Storable
 **
-** @return [void *] Ensembl Object Adaptor
+** @return [void*] Ensembl Object Adaptor
 ** @@
 ******************************************************************************/
 
-void *ensStorableGetAdaptor(const EnsPStorable storable)
+void* ensStorableGetadaptor(const EnsPStorable storable)
 {
     if(!storable)
         return NULL;
@@ -224,7 +224,7 @@ ajuint ensStorableGetIdentifier(const EnsPStorable storable)
 
 
 
-/* @func ensStorableSetAdaptor ************************************************
+/* @func ensStorableSetadaptor ************************************************
 **
 ** Set the Ensembl Object Adaptor element of an Ensembl Storable.
 **
@@ -235,7 +235,7 @@ ajuint ensStorableGetIdentifier(const EnsPStorable storable)
 ** @@
 ******************************************************************************/
 
-AjBool ensStorableSetAdaptor(EnsPStorable storable, void* adaptor)
+AjBool ensStorableSetadaptor(EnsPStorable storable, void* adaptor)
 {
     if(!storable)
         return ajFalse;
@@ -313,7 +313,7 @@ AjBool ensStorableIsStored(const EnsPStorable storable,
     ** How to get at the Database Connection?
     ** We would need a type-specific GetDatabaseConnection function for each
     ** object adaptor, or we use direct object access.
-    ** ObjectAdaptor->DatabaseAdaptor->DatabaseConnection
+    ** Objectadaptor->Databaseadaptor->DatabaseConnection
     */
     
     return ajFalse;

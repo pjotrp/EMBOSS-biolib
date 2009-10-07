@@ -12,12 +12,10 @@ extern "C"
 
 
 
-/* @datatype EnsEStorableType *************************************************
+/******************************************************************************
 **
 ** Ensembl Storable Type enumeration.
 **
-** @attr enum [EnsEStorableType] Value
-** @@
 ******************************************************************************/
 
 enum EnsEStorableType
@@ -80,13 +78,13 @@ void ensStorableDel(EnsPStorable* Pstorable);
 
 AjEnum ensStorableGetType(const EnsPStorable storable);
 
-void *ensStorableGetAdaptor(const EnsPStorable storable);
+void *ensStorableGetadaptor(const EnsPStorable storable);
 
 ajuint ensStorableGetIdentifier(const EnsPStorable storable);
 
 AjBool ensStorableSetIdentifier(EnsPStorable storable, ajuint identifier);
 
-AjBool ensStorableSetAdaptor(EnsPStorable storable, void* adaptor);
+AjBool ensStorableSetadaptor(EnsPStorable storable, void* adaptor);
 
 AjBool ensStorableIsStored(const EnsPStorable storable,
                            const EnsPDatabaseConnection dbc);

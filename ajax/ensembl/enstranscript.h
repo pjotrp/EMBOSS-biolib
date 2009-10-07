@@ -17,7 +17,7 @@ extern "C"
 
 /* Ensembl Transcript */
 
-EnsPTranscript ensTranscriptNew(EnsPTranscriptAdaptor adaptor,
+EnsPTranscript ensTranscriptNew(EnsPTranscriptadaptor adaptor,
                                 ajuint identifier,
                                 EnsPFeature feature,
                                 EnsPDatabaseEntry displaydbe,
@@ -37,7 +37,7 @@ EnsPTranscript ensTranscriptNewRef(EnsPTranscript transcript);
 
 void ensTranscriptDel(EnsPTranscript* Ptranscript);
 
-EnsPTranscriptAdaptor ensTranscriptGetAdaptor(const EnsPTranscript transcript);
+EnsPTranscriptadaptor ensTranscriptGetadaptor(const EnsPTranscript transcript);
 
 ajuint ensTranscriptGetIdentifier(const EnsPTranscript transcript);
 
@@ -86,8 +86,8 @@ ajuint ensTranscriptGetLength(EnsPTranscript transcript);
 
 ajuint ensTranscriptGetMemSize(const EnsPTranscript transcript);
 
-AjBool ensTranscriptSetAdaptor(EnsPTranscript transcript,
-                               EnsPTranscriptAdaptor ta);
+AjBool ensTranscriptSetadaptor(EnsPTranscript transcript,
+                               EnsPTranscriptadaptor ta);
 
 AjBool ensTranscriptSetIdentifier(EnsPTranscript transcript, ajuint identifier);
 
@@ -153,40 +153,40 @@ EnsPTranslation ensTranscriptFetchTranslation(EnsPTranscript transcript);
 
 /* Ensembl Transcript Adaptor */
 
-EnsPTranscriptAdaptor ensTranscriptAdaptorNew(EnsPDatabaseAdaptor dba);
+EnsPTranscriptadaptor ensTranscriptadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensTranscriptAdaptorDel(EnsPTranscriptAdaptor *Padaptor);
+void ensTranscriptadaptorDel(EnsPTranscriptadaptor *Padaptor);
 
-EnsPFeatureAdaptor ensTranscriptAdaptorGetFeatureAdaptor(
-    const EnsPTranscriptAdaptor adaptor);
+EnsPFeatureadaptor ensTranscriptadaptorGetFeatureadaptor(
+    const EnsPTranscriptadaptor adaptor);
 
-EnsPDatabaseAdaptor ensTranscriptAdaptorGetDatabaseAdaptor(
-    const EnsPTranscriptAdaptor adaptor);
+EnsPDatabaseadaptor ensTranscriptadaptorGetDatabaseadaptor(
+    const EnsPTranscriptadaptor adaptor);
 
-AjBool ensTranscriptAdaptorFetchAll(EnsPTranscriptAdaptor adaptor,
+AjBool ensTranscriptadaptorFetchAll(EnsPTranscriptadaptor adaptor,
                                     AjPList transcripts);
 
-AjBool ensTranscriptAdaptorFetchAllByGene(EnsPTranscriptAdaptor adaptor,
+AjBool ensTranscriptadaptorFetchAllByGene(EnsPTranscriptadaptor adaptor,
                                           EnsPGene gene,
                                           AjPList transcripts);
 
-AjBool ensTranscriptAdaptorFetchByIdentifier(EnsPTranscriptAdaptor adaptor,
+AjBool ensTranscriptadaptorFetchByIdentifier(EnsPTranscriptadaptor adaptor,
                                              ajuint identifier,
                                              EnsPTranscript *Ptranscript);
 
-AjBool ensTranscriptAdaptorFetchByStableIdentifier(
-    EnsPTranscriptAdaptor adaptor,
+AjBool ensTranscriptadaptorFetchByStableIdentifier(
+    EnsPTranscriptadaptor adaptor,
     const AjPStr stableid,
     ajuint version,
     EnsPTranscript *Ptranscript);
 
-AjBool ensTranscriptAdaptorFetchByTranslationIdentifier(
-    EnsPTranscriptAdaptor adaptor,
+AjBool ensTranscriptadaptorFetchByTranslationIdentifier(
+    EnsPTranscriptadaptor adaptor,
     ajuint identifier,
     EnsPTranscript* Ptranscript);
 
-AjBool ensTranscriptAdaptorFetchByTranslationStableIdentifier(
-    EnsPTranscriptAdaptor adaptor,
+AjBool ensTranscriptadaptorFetchByTranslationStableIdentifier(
+    EnsPTranscriptadaptor adaptor,
     const AjPStr stableid,
     EnsPTranscript* Ptranscript);
 
@@ -224,8 +224,8 @@ AjBool ensTranscriptMapperSlice2Translation(EnsPTranscript transcript,
 
 /* Ensembl Supporting Feature Adaptor */
 
-AjBool ensSupportingFeatureAdaptorFetchAllByTranscript(
-    EnsPDatabaseAdaptor dba,
+AjBool ensSupportingFeatureadaptorFetchAllByTranscript(
+    EnsPDatabaseadaptor dba,
     EnsPTranscript transcript,
     AjPList bafs);
 

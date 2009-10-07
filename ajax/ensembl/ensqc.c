@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -117,37 +117,37 @@ static const char *qcVariationState[] =
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-extern EnsPAnalysisAdaptor
-ensRegistryGetAnalysisAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPAnalysisadaptor
+ensRegistryGetAnalysisadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPQCAlignmentAdaptor
-ensRegistryGetQCAlignmentAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPQCAlignmentadaptor
+ensRegistryGetQCAlignmentadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPQCDASFeatureAdaptor
-ensRegistryGetQCDASFeatureAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPQCDASFeatureadaptor
+ensRegistryGetQCDASFeatureadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPQCSequenceAdaptor
-ensRegistryGetQCSequenceAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPQCSequenceadaptor
+ensRegistryGetQCSequenceadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPQCSubmissionAdaptor
-ensRegistryGetQCSubmissionAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPQCSubmissionadaptor
+ensRegistryGetQCSubmissionadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPQCVariationAdaptor
-ensRegistryGetQCVariationAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPQCVariationadaptor
+ensRegistryGetQCVariationadaptor(EnsPDatabaseadaptor dba);
 
-static AjBool qcDASFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
+static AjBool qcDASFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
                                                EnsPAssemblyMapper am,
                                                EnsPSlice slice,
                                                AjPList qcdasfs);
 
-static AjBool qcVariationAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
+static AjBool qcVariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
                                               EnsPAssemblyMapper am,
                                               EnsPSlice slice,
                                               AjPList qcvs);
 
-static AjBool qcSubmissionAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
+static AjBool qcSubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
                                                EnsPAssemblyMapper am,
                                                EnsPSlice slice,
@@ -208,7 +208,7 @@ static AjBool qcSubmissionAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 ** Default constructor for an Ensembl QC DAS Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] adaptor [EnsPQCDASFeatureAdaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] adaptor [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::QC::DASFeature::new
 ** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
@@ -228,7 +228,7 @@ static AjBool qcSubmissionAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 ** @@
 ******************************************************************************/
 
-EnsPQCDASFeature ensQCDASFeatureNew(EnsPQCDASFeatureAdaptor adaptor,
+EnsPQCDASFeature ensQCDASFeatureNew(EnsPQCDASFeatureadaptor adaptor,
                                     ajuint identifier,
                                     EnsPQCAlignment qca,
                                     EnsPAnalysis analysis,
@@ -463,7 +463,7 @@ void ensQCDASFeatureDel(EnsPQCDASFeature *Pqcdasf)
 ** @fnote None
 **
 ** @nam3rule Get Return QC DAS Feature attribute(s)
-** @nam4rule GetAdaptor Return the Ensembl DAS Feature Adaptor
+** @nam4rule Getadaptor Return the Ensembl DAS Feature Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetQCAlignment Return the Ensembl QC Alignment
 ** @nam4rule GetAnalysis Return the Ensembl Analysis
@@ -480,7 +480,7 @@ void ensQCDASFeatureDel(EnsPQCDASFeature *Pqcdasf)
 **
 ** @argrule * qcdasf [const EnsPQCDASFeature] QC DAS Feature
 **
-** @valrule Adaptor [EnsPQCDASFeatureAdaptor] Ensembl QC DAS Feature Adaptor
+** @valrule Adaptor [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule QCAlignment [EnsPQCAlignment] Ensembl QC Alignment
 ** @valrule Analysis [EnsPAnalysis] Ensembl Analysis
@@ -501,17 +501,17 @@ void ensQCDASFeatureDel(EnsPQCDASFeature *Pqcdasf)
 
 
 
-/* @func ensQCDASFeatureGetAdaptor ********************************************
+/* @func ensQCDASFeatureGetadaptor ********************************************
 **
 ** Get the Ensembl DAS Feature Adaptor element of an Ensembl DAS Feature.
 **
 ** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
 **
-** @return [EnsPQCDASFeatureAdaptor] Ensembl QC DAS Feature Adaptor
+** @return [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPQCDASFeatureAdaptor ensQCDASFeatureGetAdaptor(const EnsPQCDASFeature qcdasf)
+EnsPQCDASFeatureadaptor ensQCDASFeatureGetadaptor(const EnsPQCDASFeature qcdasf)
 {
     if(!qcdasf)
         return NULL;
@@ -804,7 +804,7 @@ AjEnum ensQCDASFeatureGetType(const EnsPQCDASFeature qcdasf)
 ** @fnote None
 **
 ** @nam3rule Set Set one element of a QC DAS Feature
-** @nam4rule SetAdaptor Set the Ensembl QC DAS Feature Adaptor
+** @nam4rule Setadaptor Set the Ensembl QC DAS Feature Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetQCAlignment Set the Ensembl QC Alignment
 ** @nam4rule SetAnalysis Set the Ensembl Analysis
@@ -829,19 +829,19 @@ AjEnum ensQCDASFeatureGetType(const EnsPQCDASFeature qcdasf)
 
 
 
-/* @func ensQCDASFeatureSetAdaptor ********************************************
+/* @func ensQCDASFeatureSetadaptor ********************************************
 **
 ** Set the Ensembl QC DAS Feature Adaptor element of an Ensembl QC DAS Feature.
 **
 ** @param [u] qcdasf [EnsPQCDASFeature] Ensembl QC DAS Feature
-** @param [r] adaptor [EnsPQCDASFeatureAdaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] adaptor [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureSetAdaptor(EnsPQCDASFeature qcdasf,
-                                 EnsPQCDASFeatureAdaptor adaptor)
+AjBool ensQCDASFeatureSetadaptor(EnsPQCDASFeature qcdasf,
+                                 EnsPQCDASFeatureadaptor adaptor)
 {
     if(!qcdasf)
 	return ajFalse;
@@ -1426,17 +1426,17 @@ const char *ensQCDASFeatureTypeToChar(const AjEnum type)
 
 
 
-/* @datasection [EnsPQCDASFeatureAdaptor] QC DAS Feature Adaptor **************
+/* @datasection [EnsPQCDASFeatureadaptor] QC DAS Feature Adaptor **************
 **
 ** Functions for manipulating Ensembl QC DAS Feature Adaptor objects
 **
-** Bio::EnsEMBL::QC::DBSQL::DASFeatureAdaptor CVS Revision:
+** Bio::EnsEMBL::QC::DBSQL::DASFeatureadaptor CVS Revision:
 **
-** @nam2rule QCDASFeatureAdaptor
+** @nam2rule QCDASFeatureadaptor
 **
 ******************************************************************************/
 
-static const char *qcDASFeatureAdaptorTables[] =
+static const char *qcDASFeatureadaptorTables[] =
 {
     "das_feature",
     (const char *) NULL
@@ -1445,7 +1445,7 @@ static const char *qcDASFeatureAdaptorTables[] =
 
 
 
-static const char *qcDASFeatureAdaptorColumns[] =
+static const char *qcDASFeatureadaptorColumns[] =
 {
     "das_feature.das_feature_id",
     "das_feature.analysis_id",
@@ -1466,7 +1466,7 @@ static const char *qcDASFeatureAdaptorColumns[] =
 
 
 
-static EnsOBaseAdaptorLeftJoin qcDASFeatureAdaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin qcDASFeatureadaptorLeftJoin[] =
 {
     {(const char*) NULL, (const char*) NULL}
 };
@@ -1474,24 +1474,24 @@ static EnsOBaseAdaptorLeftJoin qcDASFeatureAdaptorLeftJoin[] =
 
 
 
-static const char *qcDASFeatureAdaptorDefaultCondition =
+static const char *qcDASFeatureadaptorDefaultCondition =
 (const char*) NULL;
 
 
 
 
-static const char *qcDASFeatureAdaptorFinalCondition =
+static const char *qcDASFeatureadaptorFinalCondition =
 (const char *) NULL;
 
 
 
 
-/* @funcstatic qcDASFeatureAdaptorFetchAllBySQL *******************************
+/* @funcstatic qcDASFeatureadaptorFetchAllBySQL *******************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl QC DAS Feature objects.
 **
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
 ** @param [u] am [EnsPAssemblyMapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
@@ -1501,7 +1501,7 @@ static const char *qcDASFeatureAdaptorFinalCondition =
 ** @@
 ******************************************************************************/
 
-static AjBool qcDASFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
+static AjBool qcDASFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
                                                EnsPAssemblyMapper am,
                                                EnsPSlice slice,
@@ -1523,25 +1523,25 @@ static AjBool qcDASFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
     AjEnum ecategory = ensEQCDASFeatureCategoryNULL;
     AjEnum etype     = ensEQCDASFeatureTypeNULL;
     
-    AjPSqlStatement sqls = NULL;
-    AjISqlRow sqli       = NULL;
-    AjPSqlRow sqlr       = NULL;
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
     
     AjPStr category = NULL;
     AjPStr type     = NULL;
     
     EnsPAnalysis analysis  = NULL;
-    EnsPAnalysisAdaptor aa = NULL;
+    EnsPAnalysisadaptor aa = NULL;
     
     EnsPQCAlignment qca         = NULL;
-    EnsPQCAlignmentAdaptor qcaa = NULL;
+    EnsPQCAlignmentadaptor qcaa = NULL;
     
     EnsPQCDASFeature qcdasf         = NULL;
-    EnsPQCDASFeatureAdaptor qcdasfa = NULL;
+    EnsPQCDASFeatureadaptor qcdasfa = NULL;
     
     EnsPQCSequence qsequence   = NULL;
     EnsPQCSequence tsequence   = NULL;
-    EnsPQCSequenceAdaptor qcsa = NULL;
+    EnsPQCSequenceadaptor qcsa = NULL;
     
     if(!dba)
 	return ajFalse;
@@ -1556,19 +1556,19 @@ static AjBool qcDASFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
     if(!qcdasfs)
 	return ajFalse;
     
-    aa = ensRegistryGetAnalysisAdaptor(dba);
+    aa = ensRegistryGetAnalysisadaptor(dba);
     
-    qcaa = ensRegistryGetQCAlignmentAdaptor(dba);
+    qcaa = ensRegistryGetQCAlignmentadaptor(dba);
     
-    qcdasfa = ensRegistryGetQCDASFeatureAdaptor(dba);
+    qcdasfa = ensRegistryGetQCDASFeatureadaptor(dba);
     
-    qcsa = ensRegistryGetQCSequenceAdaptor(dba);
+    qcsa = ensRegistryGetQCSequenceadaptor(dba);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    sqli = ajSqlRowIterNew(sqls);
+    sqli = ajSqlrowiterNew(sqls);
     
-    while(!ajSqlRowIterDone(sqli))
+    while(!ajSqlrowiterDone(sqli))
     {
 	identifier  = 0;
 	analysisid  = 0;
@@ -1586,29 +1586,29 @@ static AjBool qcDASFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	ecategory   = ensEQCDASFeatureCategoryNULL;
 	etype       = ensEQCDASFeatureTypeNULL;
 	
-        sqlr = ajSqlRowIterGet(sqli);
+        sqlr = ajSqlrowiterGet(sqli);
 	
-        ajSqlColumnToUint(sqlr, &identifier);
-        ajSqlColumnToUint(sqlr, &analysisid);
-	ajSqlColumnToUint(sqlr, &alignmentid);
-	ajSqlColumnToUint(sqlr, &qsid);
-	ajSqlColumnToUint(sqlr, &qstart);
-	ajSqlColumnToUint(sqlr, &qend);
-	ajSqlColumnToUint(sqlr, &tsid);
-	ajSqlColumnToUint(sqlr, &tstart);
-	ajSqlColumnToUint(sqlr, &tend);
-	ajSqlColumnToInt(sqlr, &tstrand);
-	ajSqlColumnToInt(sqlr, &phase);
-	ajSqlColumnToStr(sqlr, &category);
-	ajSqlColumnToStr(sqlr, &type);
+        ajSqlcolumnToUint(sqlr, &identifier);
+        ajSqlcolumnToUint(sqlr, &analysisid);
+	ajSqlcolumnToUint(sqlr, &alignmentid);
+	ajSqlcolumnToUint(sqlr, &qsid);
+	ajSqlcolumnToUint(sqlr, &qstart);
+	ajSqlcolumnToUint(sqlr, &qend);
+	ajSqlcolumnToUint(sqlr, &tsid);
+	ajSqlcolumnToUint(sqlr, &tstart);
+	ajSqlcolumnToUint(sqlr, &tend);
+	ajSqlcolumnToInt(sqlr, &tstrand);
+	ajSqlcolumnToInt(sqlr, &phase);
+	ajSqlcolumnToStr(sqlr, &category);
+	ajSqlcolumnToStr(sqlr, &type);
 	
-	ensAnalysisAdaptorFetchByIdentifier(aa, analysisid, &analysis);
+	ensAnalysisadaptorFetchByIdentifier(aa, analysisid, &analysis);
 	
-	ensQCAlignmentAdaptorFetchByIdentifier(qcaa, alignmentid, &qca);
+	ensQCAlignmentadaptorFetchByIdentifier(qcaa, alignmentid, &qca);
 	
-	ensQCSequenceAdaptorFetchByIdentifier(qcsa, qsid, &qsequence);
+	ensQCSequenceadaptorFetchByIdentifier(qcsa, qsid, &qsequence);
 	
-	ensQCSequenceAdaptorFetchByIdentifier(qcsa, tsid, &tsequence);
+	ensQCSequenceadaptorFetchByIdentifier(qcsa, tsid, &tsequence);
 	
 	ecategory = ensQCDASFeatureCategoryFromStr(category);
 	
@@ -1642,9 +1642,9 @@ static AjBool qcDASFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	ajStrDel(&type);
     }
     
-    ajSqlRowIterDel(&sqli);
+    ajSqlrowiterDel(&sqli);
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     return ajTrue;
 }
@@ -1659,18 +1659,18 @@ static AjBool qcDASFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 ** QC DAS Feature Adaptor. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPQCDASFeatureAdaptor]
+** @fdata [EnsPQCDASFeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule New dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPQCDASFeatureAdaptor] Ensembl QC DAS Feature Adaptor
-** @argrule Ref object [EnsPQCDASFeatureAdaptor] Ensembl QC DAS Feature Adaptor
+** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+** @argrule Obj object [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @argrule Ref object [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
 **
-** @valrule * [EnsPQCDASFeatureAdaptor] Ensembl QC DAS Feature Adaptor
+** @valrule * [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -1678,28 +1678,28 @@ static AjBool qcDASFeatureAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 
 
 
-/* @func ensQCDASFeatureAdaptorNew ********************************************
+/* @func ensQCDASFeatureadaptorNew ********************************************
 **
 ** Default constructor for an Ensembl QC DAS Feature Adaptor.
 **
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPQCDASFeatureAdaptor] Ensembl QC DAS Feature Adaptor or NULL
+** @return [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCDASFeatureAdaptor ensQCDASFeatureAdaptorNew(EnsPDatabaseAdaptor dba)
+EnsPQCDASFeatureadaptor ensQCDASFeatureadaptorNew(EnsPDatabaseadaptor dba)
 {
     if(!dba)
 	return NULL;
     
-    return ensBaseAdaptorNew(dba,
-			     qcDASFeatureAdaptorTables,
-			     qcDASFeatureAdaptorColumns,
-			     qcDASFeatureAdaptorLeftJoin,
-			     qcDASFeatureAdaptorDefaultCondition,
-			     qcDASFeatureAdaptorFinalCondition,
-			     qcDASFeatureAdaptorFetchAllBySQL);
+    return ensBaseadaptorNew(dba,
+			     qcDASFeatureadaptorTables,
+			     qcDASFeatureadaptorColumns,
+			     qcDASFeatureadaptorLeftJoin,
+			     qcDASFeatureadaptorDefaultCondition,
+			     qcDASFeatureadaptorFinalCondition,
+			     qcDASFeatureadaptorFetchAllBySQL);
 }
 
 
@@ -1710,12 +1710,12 @@ EnsPQCDASFeatureAdaptor ensQCDASFeatureAdaptorNew(EnsPDatabaseAdaptor dba)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl QC DAS Feature Adaptor.
 **
-** @fdata [EnsPQCDASFeatureAdaptor]
+** @fdata [EnsPQCDASFeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a QC DAS Feature Adaptor object
 **
-** @argrule * Pqcdasfa [EnsPQCDASFeatureAdaptor*] QC DAS Feature Adaptor
+** @argrule * Pqcdasfa [EnsPQCDASFeatureadaptor*] QC DAS Feature Adaptor
 **                                                object address
 **
 ** @valrule * [void]
@@ -1726,21 +1726,21 @@ EnsPQCDASFeatureAdaptor ensQCDASFeatureAdaptorNew(EnsPDatabaseAdaptor dba)
 
 
 
-/* @func ensQCDASFeatureAdaptorDel ********************************************
+/* @func ensQCDASFeatureadaptorDel ********************************************
 **
 ** Default destructor for an Ensembl QC DAS Feature Adaptor.
 **
-** @param [d] Pqcfasfa [EnsPQCDASFeatureAdaptor*] Ensembl QC DAS Feature
+** @param [d] Pqcfasfa [EnsPQCDASFeatureadaptor*] Ensembl QC DAS Feature
 **                                                Adaptor address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensQCDASFeatureAdaptorDel(EnsPQCDASFeatureAdaptor *Pqcdasfa)
+void ensQCDASFeatureadaptorDel(EnsPQCDASFeatureadaptor *Pqcdasfa)
 {
     /*
-     ajDebug("ensQCDASFeatureAdaptorDel\n"
+     ajDebug("ensQCDASFeatureadaptorDel\n"
 	     "  *Pqcdasfa %p\n",
 	     *Pqcdasfa);
      */
@@ -1751,7 +1751,7 @@ void ensQCDASFeatureAdaptorDel(EnsPQCDASFeatureAdaptor *Pqcdasfa)
     if(!*Pqcdasfa)
 	return;
     
-    ensBaseAdaptorDel(Pqcdasfa);
+    ensBaseadaptorDel(Pqcdasfa);
 
     return;
 }
@@ -1759,12 +1759,12 @@ void ensQCDASFeatureAdaptorDel(EnsPQCDASFeatureAdaptor *Pqcdasfa)
 
 
 
-/* @func ensQCDASFeatureAdaptorFetchByIdentifier ******************************
+/* @func ensQCDASFeatureadaptorFetchByIdentifier ******************************
 **
 ** Fetch an Ensembl QC DAS Feature via its SQL database-internal identifier.
 ** The caller is responsible for deleting the Ensembl QC DAS Feature.
 **
-** @param [r] adaptor [EnsPQCDASFeatureAdaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] adaptor [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal QC DAS Feature
 **                                identifier
 ** @param [wP] Pqcdasf [EnsPQCDASFeature*] Ensembl QC DAS Feature address
@@ -1773,7 +1773,7 @@ void ensQCDASFeatureAdaptorDel(EnsPQCDASFeatureAdaptor *Pqcdasfa)
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureAdaptorFetchByIdentifier(EnsPQCDASFeatureAdaptor adaptor,
+AjBool ensQCDASFeatureadaptorFetchByIdentifier(EnsPQCDASFeatureadaptor adaptor,
                                                ajuint identifier,
                                                EnsPQCDASFeature *Pqcdasf)
 {
@@ -1787,7 +1787,7 @@ AjBool ensQCDASFeatureAdaptorFetchByIdentifier(EnsPQCDASFeatureAdaptor adaptor,
 	return ajFalse;
     
     *Pqcdasf = (EnsPQCDASFeature)
-	ensBaseAdaptorFetchByIdentifier(adaptor, identifier);
+	ensBaseadaptorFetchByIdentifier(adaptor, identifier);
     
     return ajTrue;
 }
@@ -1795,13 +1795,13 @@ AjBool ensQCDASFeatureAdaptorFetchByIdentifier(EnsPQCDASFeatureAdaptor adaptor,
 
 
 
-/* @func ensQCDASFeatureAdaptorFetchAllByQCAlignment **************************
+/* @func ensQCDASFeatureadaptorFetchAllByQCAlignment **************************
 **
 ** Fetch all Ensembl QC DAS Features by an Ensembl QC Alignment.
 ** The caller is responsible for deleting the Ensembl QC DAS Features
 ** before deleting the AJAX List.
 **
-** @param [r] qcdasfa [EnsPQCDASFeatureAdaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] qcdasfa [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
 ** @param [w] qcdasfs [AjPList] AJAX List of Ensembl QC DAS Features
 **
@@ -1809,8 +1809,8 @@ AjBool ensQCDASFeatureAdaptorFetchByIdentifier(EnsPQCDASFeatureAdaptor adaptor,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureAdaptorFetchAllByQCAlignment(
-    EnsPQCDASFeatureAdaptor qcdasfa,
+AjBool ensQCDASFeatureadaptorFetchAllByQCAlignment(
+    EnsPQCDASFeatureadaptor qcdasfa,
     const EnsPQCAlignment qca,
     AjPList qcdasfs)
 {
@@ -1828,7 +1828,7 @@ AjBool ensQCDASFeatureAdaptorFetchAllByQCAlignment(
     constraint = ajFmtStr("das_feature.alignment_id = %u",
 			  ensQCAlignmentGetIdentifier(qca));
     
-    ensBaseAdaptorGenericFetch(qcdasfa,
+    ensBaseadaptorGenericFetch(qcdasfa,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -1842,14 +1842,14 @@ AjBool ensQCDASFeatureAdaptorFetchAllByQCAlignment(
 
 
 
-/* @func ensQCDASFeatureAdaptorFetchAllByFeature ******************************
+/* @func ensQCDASFeatureadaptorFetchAllByFeature ******************************
 **
 ** Fetch all Ensembl QC DAS Features by an Ensembl QC Sequence representing an
 ** Ensembl QC DAS Feature feature.
 ** The caller is responsible for deleting the Ensembl QC DAS Features
 ** before deleting the AJAX List.
 **
-** @param [r] qcdasfa [EnsPQCDASFeatureAdaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] qcdasfa [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @param [rN] analysis [const EnsPAnalysis] Ensembl Analysis
 ** @param [r] feature [const EnsPQCSequence] Feature Ensembl QC Sequence
 ** @param [w] qcdasfs [AjPList] AJAX List of Ensembl QC DAS Features
@@ -1858,7 +1858,7 @@ AjBool ensQCDASFeatureAdaptorFetchAllByQCAlignment(
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureAdaptorFetchAllByFeature(EnsPQCDASFeatureAdaptor qcdasfa,
+AjBool ensQCDASFeatureadaptorFetchAllByFeature(EnsPQCDASFeatureadaptor qcdasfa,
                                                const EnsPAnalysis analysis,
                                                const EnsPQCSequence feature,
                                                AjPList qcdasfs)
@@ -1882,7 +1882,7 @@ AjBool ensQCDASFeatureAdaptorFetchAllByFeature(EnsPQCDASFeatureAdaptor qcdasfa,
 		       " AND das_feature.analysis_id = %u",
 		       ensAnalysisGetIdentifier(analysis));
     
-    ensBaseAdaptorGenericFetch(qcdasfa,
+    ensBaseadaptorGenericFetch(qcdasfa,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -1896,14 +1896,14 @@ AjBool ensQCDASFeatureAdaptorFetchAllByFeature(EnsPQCDASFeatureAdaptor qcdasfa,
 
 
 
-/* @func ensQCDASFeatureAdaptorFetchAllBySegment ******************************
+/* @func ensQCDASFeatureadaptorFetchAllBySegment ******************************
 **
 ** Fetch all Ensembl QC DAS Features by an Ensembl QC Sequence representing an
 ** Ensembl QC DAS Feature segment.
 ** The caller is responsible for deleting the Ensembl QC DAS Features
 ** before deleting the AJAX List.
 **
-** @param [r] qcdasfa [EnsPQCDASFeatureAdaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] qcdasfa [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @param [rN] analysis [const EnsPAnalysis] Ensembl Analysis
 ** @param [r] segment [const EnsPQCSequence] Segment Ensembl QC Sequence
 ** @param [w] qcdasfs [AjPList] AJAX List of Ensembl QC DAS Features
@@ -1912,7 +1912,7 @@ AjBool ensQCDASFeatureAdaptorFetchAllByFeature(EnsPQCDASFeatureAdaptor qcdasfa,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureAdaptorFetchAllBySegment( EnsPQCDASFeatureAdaptor qcdasfa,
+AjBool ensQCDASFeatureadaptorFetchAllBySegment( EnsPQCDASFeatureadaptor qcdasfa,
                                                 const EnsPAnalysis analysis,
                                                 const EnsPQCSequence segment,
                                                 AjPList qcdasfs)
@@ -1936,7 +1936,7 @@ AjBool ensQCDASFeatureAdaptorFetchAllBySegment( EnsPQCDASFeatureAdaptor qcdasfa,
 		       " AND das_feature.analysis_id = %u",
 		       ensAnalysisGetIdentifier(analysis));
     
-    ensBaseAdaptorGenericFetch(qcdasfa,
+    ensBaseadaptorGenericFetch(qcdasfa,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -1950,7 +1950,7 @@ AjBool ensQCDASFeatureAdaptorFetchAllBySegment( EnsPQCDASFeatureAdaptor qcdasfa,
 
 
 
-/* @func ensQCDASFeatureAdaptorFetchAllByAFS **********************************
+/* @func ensQCDASFeatureadaptorFetchAllByAFS **********************************
 **
 ** Fetch all Ensembl QC DAS Features by an Ensembl Analysis and
 ** Ensembl QC Sequences representing Ensembl QC DAS Feature feature and
@@ -1958,7 +1958,7 @@ AjBool ensQCDASFeatureAdaptorFetchAllBySegment( EnsPQCDASFeatureAdaptor qcdasfa,
 ** The caller is responsible for deleting the Ensembl QC DAS Features
 ** before deleting the AJAX List.
 **
-** @param [r] qcdasfa [EnsPQCDASFeatureAdaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] qcdasfa [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 ** @param [r] feature [const EnsPQCSequence] Feature Ensembl QC Sequence
 ** @param [r] segment [const EnsPQCSequence] Segment Ensembl QC Sequence
@@ -1968,7 +1968,7 @@ AjBool ensQCDASFeatureAdaptorFetchAllBySegment( EnsPQCDASFeatureAdaptor qcdasfa,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureAdaptorFetchAllByAFS(EnsPQCDASFeatureAdaptor qcdasfa,
+AjBool ensQCDASFeatureadaptorFetchAllByAFS(EnsPQCDASFeatureadaptor qcdasfa,
                                            const EnsPAnalysis analysis,
                                            const EnsPQCSequence feature,
                                            const EnsPQCSequence segment,
@@ -1997,7 +1997,7 @@ AjBool ensQCDASFeatureAdaptorFetchAllByAFS(EnsPQCDASFeatureAdaptor qcdasfa,
 			  ensQCSequenceGetIdentifier(feature),
 			  ensQCSequenceGetIdentifier(segment));
     
-    ensBaseAdaptorGenericFetch(qcdasfa,
+    ensBaseadaptorGenericFetch(qcdasfa,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -2011,13 +2011,13 @@ AjBool ensQCDASFeatureAdaptorFetchAllByAFS(EnsPQCDASFeatureAdaptor qcdasfa,
 
 
 
-/* @func ensQCDASFeatureAdaptorFetchAllByRegion *******************************
+/* @func ensQCDASFeatureadaptorFetchAllByRegion *******************************
 **
 ** Fetch all Ensembl QC DAS Features that fall into a region on the segment.
 ** The caller is responsible for deleting the Ensembl QC DAS Features
 ** before deleting the AJAX List.
 **
-** @param [r] qcdasfa [EnsPQCDASFeatureAdaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] qcdasfa [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 ** @param [r] segment [const EnsPQCSequence] Segment Ensembl QC Sequence
 ** @param [r] start [ajuint] Start
@@ -2028,7 +2028,7 @@ AjBool ensQCDASFeatureAdaptorFetchAllByAFS(EnsPQCDASFeatureAdaptor qcdasfa,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureAdaptorFetchAllByRegion(EnsPQCDASFeatureAdaptor qcdasfa,
+AjBool ensQCDASFeatureadaptorFetchAllByRegion(EnsPQCDASFeatureadaptor qcdasfa,
                                               const EnsPAnalysis analysis,
                                               const EnsPQCSequence segment,
                                               ajuint start,
@@ -2066,7 +2066,7 @@ AjBool ensQCDASFeatureAdaptorFetchAllByRegion(EnsPQCDASFeatureAdaptor qcdasfa,
 			  start,
 			  end);
     
-    ensBaseAdaptorGenericFetch(qcdasfa,
+    ensBaseadaptorGenericFetch(qcdasfa,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -2080,27 +2080,27 @@ AjBool ensQCDASFeatureAdaptorFetchAllByRegion(EnsPQCDASFeatureAdaptor qcdasfa,
 
 
 
-/* @func ensQCDASFeatureAdaptorStore ******************************************
+/* @func ensQCDASFeatureadaptorStore ******************************************
 **
 ** Store an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasfa [EnsPQCDASFeatureAdaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] qcdasfa [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @param [u] qcdasf [EnsPQCDASFeature] Ensembl QC DAS Feature
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureAdaptorStore(EnsPQCDASFeatureAdaptor qcdasfa,
+AjBool ensQCDASFeatureadaptorStore(EnsPQCDASFeatureadaptor qcdasfa,
                                    EnsPQCDASFeature qcdasf)
 {
     AjBool value = ajFalse;
     
-    AjPSqlStatement sqls = NULL;
+    AjPSqlstatement sqls = NULL;
     
     AjPStr statement = NULL;
     
-    EnsPDatabaseAdaptor dba = NULL;
+    EnsPDatabaseadaptor dba = NULL;
     
     if(!qcdasfa)
 	return ajFalse;
@@ -2108,11 +2108,11 @@ AjBool ensQCDASFeatureAdaptorStore(EnsPQCDASFeatureAdaptor qcdasfa,
     if(!qcdasf)
 	return ajFalse;
     
-    if(ensQCDASFeatureGetAdaptor(qcdasf) &&
+    if(ensQCDASFeatureGetadaptor(qcdasf) &&
 	ensQCDASFeatureGetIdentifier(qcdasf))
 	return ajFalse;
     
-    dba = ensBaseAdaptorGetDatabaseAdaptor(qcdasfa);
+    dba = ensBaseadaptorGetDatabaseadaptor(qcdasfa);
     
     statement = ajFmtStr("INSERT IGNORE INTO "
 			 "das_feature "
@@ -2142,19 +2142,19 @@ AjBool ensQCDASFeatureAdaptorStore(EnsPQCDASFeatureAdaptor qcdasfa,
 			 ensQCDASFeatureCategoryToChar(qcdasf->Category),
 			 ensQCDASFeatureTypeToChar(qcdasf->Type));
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    if(ajSqlStatementGetAffectedRows(sqls))
+    if(ajSqlstatementGetAffectedrows(sqls))
     {
 	ensQCDASFeatureSetIdentifier(qcdasf,
-				     ajSqlStatementGetIdentifier(sqls));
+				     ajSqlstatementGetIdentifier(sqls));
 	
-	ensQCDASFeatureSetAdaptor(qcdasf, qcdasfa);
+	ensQCDASFeatureSetadaptor(qcdasf, qcdasfa);
 	
 	value = ajTrue;
     }
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     ajStrDel(&statement);
     
@@ -2164,27 +2164,27 @@ AjBool ensQCDASFeatureAdaptorStore(EnsPQCDASFeatureAdaptor qcdasfa,
 
 
 
-/* @func ensQCDASFeatureAdaptorUpdate *****************************************
+/* @func ensQCDASFeatureadaptorUpdate *****************************************
 **
 ** Update an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasfa [EnsPQCDASFeatureAdaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] qcdasfa [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureAdaptorUpdate(EnsPQCDASFeatureAdaptor qcdasfa,
+AjBool ensQCDASFeatureadaptorUpdate(EnsPQCDASFeatureadaptor qcdasfa,
                                     const EnsPQCDASFeature qcdasf)
 {
     AjBool value = ajFalse;
     
-    AjPSqlStatement sqls = NULL;
+    AjPSqlstatement sqls = NULL;
     
     AjPStr statement = NULL;
     
-    EnsPDatabaseAdaptor dba = NULL;
+    EnsPDatabaseadaptor dba = NULL;
     
     if(!qcdasfa)
 	return ajFalse;
@@ -2195,7 +2195,7 @@ AjBool ensQCDASFeatureAdaptorUpdate(EnsPQCDASFeatureAdaptor qcdasfa,
     if(!ensQCDASFeatureGetIdentifier(qcdasf))
 	return ajFalse;
     
-    dba = ensBaseAdaptorGetDatabaseAdaptor(qcdasfa);
+    dba = ensBaseadaptorGetDatabaseadaptor(qcdasfa);
     
     statement = ajFmtStr("UPDATE IGNORE "
 			 "das_feature "
@@ -2228,12 +2228,12 @@ AjBool ensQCDASFeatureAdaptorUpdate(EnsPQCDASFeatureAdaptor qcdasfa,
 			 ensQCDASFeatureTypeToChar(qcdasf->Type),
 			 ensQCDASFeatureGetIdentifier(qcdasf));
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    if(ajSqlStatementGetAffectedRows(sqls))
+    if(ajSqlstatementGetAffectedrows(sqls))
 	value = ajTrue;
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     ajStrDel(&statement);
     
@@ -2243,27 +2243,27 @@ AjBool ensQCDASFeatureAdaptorUpdate(EnsPQCDASFeatureAdaptor qcdasfa,
 
 
 
-/* @func ensQCDASFeatureAdaptorDelete *****************************************
+/* @func ensQCDASFeatureadaptorDelete *****************************************
 **
 ** Delete an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasfa [EnsPQCDASFeatureAdaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] qcdasfa [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureAdaptorDelete(EnsPQCDASFeatureAdaptor qcdasfa,
+AjBool ensQCDASFeatureadaptorDelete(EnsPQCDASFeatureadaptor qcdasfa,
                                     const EnsPQCDASFeature qcdasf)
 {
     AjBool value = ajFalse;
     
-    AjPSqlStatement sqls = NULL;
+    AjPSqlstatement sqls = NULL;
     
     AjPStr statement = NULL;
     
-    EnsPDatabaseAdaptor dba = NULL;
+    EnsPDatabaseadaptor dba = NULL;
     
     if(!qcdasfa)
 	return ajFalse;
@@ -2274,7 +2274,7 @@ AjBool ensQCDASFeatureAdaptorDelete(EnsPQCDASFeatureAdaptor qcdasfa,
     if(!ensQCDASFeatureGetIdentifier(qcdasf))
 	return ajFalse;
     
-    dba = ensBaseAdaptorGetDatabaseAdaptor(qcdasfa);
+    dba = ensBaseadaptorGetDatabaseadaptor(qcdasfa);
     
     statement = ajFmtStr("DELETE FROM "
 			 "das_feature "
@@ -2282,12 +2282,12 @@ AjBool ensQCDASFeatureAdaptorDelete(EnsPQCDASFeatureAdaptor qcdasfa,
 			 "das_feature.das_feature_id = %u",
 			 qcdasf->Identifier);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    if(ajSqlStatementGetAffectedRows(sqls))
+    if(ajSqlstatementGetAffectedrows(sqls))
 	value = ajTrue;
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     ajStrDel(&statement);
     
@@ -2340,7 +2340,7 @@ AjBool ensQCDASFeatureAdaptorDelete(EnsPQCDASFeatureAdaptor qcdasfa,
 ** Default constructor for an Ensembl QC Variation.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] adaptor [EnsPQCVariationAdaptor] Ensembl QC Variation Adaptor
+** @param [r] adaptor [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::QC::Variation::new
 ** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
@@ -2361,7 +2361,7 @@ AjBool ensQCDASFeatureAdaptorDelete(EnsPQCDASFeatureAdaptor qcdasfa,
 ** @@
 ******************************************************************************/
 
-EnsPQCVariation ensQCVariationNew(EnsPQCVariationAdaptor adaptor,
+EnsPQCVariation ensQCVariationNew(EnsPQCVariationadaptor adaptor,
                                   ajuint identifier,
                                   EnsPQCAlignment qca,
                                   EnsPAnalysis analysis,
@@ -2604,7 +2604,7 @@ void ensQCVariationDel(EnsPQCVariation *Pqcv)
 ** @fnote None
 **
 ** @nam3rule Get Return QC Variation attribute(s)
-** @nam4rule GetAdaptor Return the Ensembl QC Variation Adaptor
+** @nam4rule Getadaptor Return the Ensembl QC Variation Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetQCAlignment Return the Ensembl QC Alignment
 ** @nam4rule GetAnalysis Return the Ensembl Analysis
@@ -2622,7 +2622,7 @@ void ensQCVariationDel(EnsPQCVariation *Pqcv)
 **
 ** @argrule * qcv [const EnsPQCVariation] QC Variation
 **
-** @valrule Adaptor [EnsPQCVariationAdaptor] Ensembl QC Variation Adaptor
+** @valrule Adaptor [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule QCAlignment [EnsPQCAlignment] Ensembl QC Alignment
 ** @valrule Analysis [EnsPAnalysis] Ensembl Analysis
@@ -2644,17 +2644,17 @@ void ensQCVariationDel(EnsPQCVariation *Pqcv)
 
 
 
-/* @func ensQCVariationGetAdaptor *********************************************
+/* @func ensQCVariationGetadaptor *********************************************
 **
 ** Get the Ensembl QC Variation Adaptor element of an Ensembl QC Variation.
 **
 ** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
 **
-** @return [EnsPQCVariationAdaptor] Ensembl QC Variation Adaptor
+** @return [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPQCVariationAdaptor ensQCVariationGetAdaptor(const EnsPQCVariation qcv)
+EnsPQCVariationadaptor ensQCVariationGetadaptor(const EnsPQCVariation qcv)
 {
     if(!qcv)
 	return NULL;
@@ -2968,7 +2968,7 @@ AjEnum ensQCVariationGetState(const EnsPQCVariation qcv)
 ** @fnote None
 **
 ** @nam3rule Set Set one element of a QC Variation
-** @nam4rule SetAdaptor Set the Ensembl QC Variation Adaptor
+** @nam4rule Setadaptor Set the Ensembl QC Variation Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetQCAlignment Set the Ensembl QC Alignment
 ** @nam4rule SetAnalysis Set the Ensembl Analysis
@@ -2994,19 +2994,19 @@ AjEnum ensQCVariationGetState(const EnsPQCVariation qcv)
 
 
 
-/* @func ensQCVariationSetAdaptor *********************************************
+/* @func ensQCVariationSetadaptor *********************************************
 **
 ** Set the Ensembl Database Adaptor element of an Ensembl QC Variation.
 **
 ** @param [u] qcv [EnsPQCVariation] Ensembl QC Variation
-** @param [r] qcva [EnsPQCVariationAdaptor] Ensembl QC Variation Adaptor
+** @param [r] qcva [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationSetAdaptor(EnsPQCVariation qcv,
-                                EnsPQCVariationAdaptor qcva)
+AjBool ensQCVariationSetadaptor(EnsPQCVariation qcv,
+                                EnsPQCVariationadaptor qcva)
 {
     if(!qcv)
 	return ajFalse;
@@ -3689,17 +3689,17 @@ const char *ensQCVariationStateToChar(const AjEnum state)
 
 
 
-/* @datasection [EnsPQCVariationAdaptor] QC Variation Adaptor *****************
+/* @datasection [EnsPQCVariationadaptor] QC Variation Adaptor *****************
 **
 ** Functions for manipulating Ensembl QC Variation Adaptor objects
 **
-** Bio::EnsEMBL::QC::DBSQL::VariationAdaptor CVS Revision:
+** Bio::EnsEMBL::QC::DBSQL::Variationadaptor CVS Revision:
 **
-** @nam2rule QCVariationAdaptor
+** @nam2rule QCVariationadaptor
 **
 ******************************************************************************/
 
-static const char *qcVariationAdaptorTables[] =
+static const char *qcVariationadaptorTables[] =
 {
     "variation",
     (const char *) NULL
@@ -3708,7 +3708,7 @@ static const char *qcVariationAdaptorTables[] =
 
 
 
-static const char *qcVariationAdaptorColumns[] =
+static const char *qcVariationadaptorColumns[] =
 {
     "variation.variation_id",
     "variation.analysis_id",
@@ -3732,7 +3732,7 @@ static const char *qcVariationAdaptorColumns[] =
 
 
 
-static EnsOBaseAdaptorLeftJoin qcVariationAdaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin qcVariationadaptorLeftJoin[] =
 {
     {(const char*) NULL, (const char*) NULL}
 };
@@ -3740,24 +3740,24 @@ static EnsOBaseAdaptorLeftJoin qcVariationAdaptorLeftJoin[] =
 
 
 
-static const char *qcVariationAdaptorDefaultCondition =
+static const char *qcVariationadaptorDefaultCondition =
 (const char*) NULL;
 
 
 
 
-static const char *qcVariationAdaptorFinalCondition =
+static const char *qcVariationadaptorFinalCondition =
 (const char *) NULL;
 
 
 
 
-/* @funcstatic qcVariationAdaptorFetchAllBySQL ********************************
+/* @funcstatic qcVariationadaptorFetchAllBySQL ********************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl QC Variation objects.
 **
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
 ** @param [u] am [EnsPAssemblyMapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
@@ -3767,7 +3767,7 @@ static const char *qcVariationAdaptorFinalCondition =
 ** @@
 ******************************************************************************/
 
-static AjBool qcVariationAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
+static AjBool qcVariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
                                               EnsPAssemblyMapper am,
                                               EnsPSlice slice,
@@ -3790,9 +3790,9 @@ static AjBool qcVariationAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
     AjEnum etype  = ensEQCVariationTypeNULL;
     AjEnum estate = ensEQCVariationStateNULL;
     
-    AjPSqlStatement sqls = NULL;
-    AjISqlRow sqli       = NULL;
-    AjPSqlRow sqlr       = NULL;
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
     
     AjPStr qstring = NULL;
     AjPStr tstring = NULL;
@@ -3801,17 +3801,17 @@ static AjBool qcVariationAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
     AjPStr state   = NULL;
     
     EnsPAnalysis analysis  = NULL;
-    EnsPAnalysisAdaptor aa = NULL;
+    EnsPAnalysisadaptor aa = NULL;
     
     EnsPQCAlignment qca         = NULL;
-    EnsPQCAlignmentAdaptor qcaa = NULL;
+    EnsPQCAlignmentadaptor qcaa = NULL;
     
     EnsPQCSequence qsequence   = NULL;
     EnsPQCSequence tsequence   = NULL;
-    EnsPQCSequenceAdaptor qcsa = NULL;
+    EnsPQCSequenceadaptor qcsa = NULL;
     
     EnsPQCVariation qcv         = NULL;
-    EnsPQCVariationAdaptor qcva = NULL;
+    EnsPQCVariationadaptor qcva = NULL;
     
     if(!dba)
 	return ajFalse;
@@ -3826,19 +3826,19 @@ static AjBool qcVariationAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
     if(!qcvs)
 	return ajFalse;
     
-    aa = ensRegistryGetAnalysisAdaptor(dba);
+    aa = ensRegistryGetAnalysisadaptor(dba);
     
-    qcaa = ensRegistryGetQCAlignmentAdaptor(dba);
+    qcaa = ensRegistryGetQCAlignmentadaptor(dba);
     
-    qcva = ensRegistryGetQCVariationAdaptor(dba);
+    qcva = ensRegistryGetQCVariationadaptor(dba);
     
-    qcsa = ensRegistryGetQCSequenceAdaptor(dba);
+    qcsa = ensRegistryGetQCSequenceadaptor(dba);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    sqli = ajSqlRowIterNew(sqls);
+    sqli = ajSqlrowiterNew(sqls);
     
-    while(!ajSqlRowIterDone(sqli))
+    while(!ajSqlrowiterDone(sqli))
     {
 	identifier  = 0;
 	analysisid  = 0;
@@ -3857,32 +3857,32 @@ static AjBool qcVariationAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	type        = ajStrNew();
 	state       = ajStrNew();
 	
-        sqlr = ajSqlRowIterGet(sqli);
+        sqlr = ajSqlrowiterGet(sqli);
 	
-        ajSqlColumnToUint(sqlr, &identifier);
-        ajSqlColumnToUint(sqlr, &analysisid);
-	ajSqlColumnToUint(sqlr, &alignmentid);
-	ajSqlColumnToUint(sqlr, &qdbid);
-	ajSqlColumnToUint(sqlr, &qsid);
-	ajSqlColumnToUint(sqlr, &qstart);
-	ajSqlColumnToUint(sqlr, &qend);
-	ajSqlColumnToStr(sqlr, &qstring);
-	ajSqlColumnToUint(sqlr, &tdbid);
-	ajSqlColumnToUint(sqlr, &tsid);
-	ajSqlColumnToUint(sqlr, &tstart);
-	ajSqlColumnToUint(sqlr, &tend);
-	ajSqlColumnToStr(sqlr, &tstring);
-	ajSqlColumnToStr(sqlr, &class);
-	ajSqlColumnToStr(sqlr, &type);
-	ajSqlColumnToStr(sqlr, &state);
+        ajSqlcolumnToUint(sqlr, &identifier);
+        ajSqlcolumnToUint(sqlr, &analysisid);
+	ajSqlcolumnToUint(sqlr, &alignmentid);
+	ajSqlcolumnToUint(sqlr, &qdbid);
+	ajSqlcolumnToUint(sqlr, &qsid);
+	ajSqlcolumnToUint(sqlr, &qstart);
+	ajSqlcolumnToUint(sqlr, &qend);
+	ajSqlcolumnToStr(sqlr, &qstring);
+	ajSqlcolumnToUint(sqlr, &tdbid);
+	ajSqlcolumnToUint(sqlr, &tsid);
+	ajSqlcolumnToUint(sqlr, &tstart);
+	ajSqlcolumnToUint(sqlr, &tend);
+	ajSqlcolumnToStr(sqlr, &tstring);
+	ajSqlcolumnToStr(sqlr, &class);
+	ajSqlcolumnToStr(sqlr, &type);
+	ajSqlcolumnToStr(sqlr, &state);
 	
-	ensQCAlignmentAdaptorFetchByIdentifier(qcaa, alignmentid, &qca);
+	ensQCAlignmentadaptorFetchByIdentifier(qcaa, alignmentid, &qca);
 	
-	ensAnalysisAdaptorFetchByIdentifier(aa, analysisid, &analysis);
+	ensAnalysisadaptorFetchByIdentifier(aa, analysisid, &analysis);
 	
-	ensQCSequenceAdaptorFetchByIdentifier(qcsa, qsid, &qsequence);
+	ensQCSequenceadaptorFetchByIdentifier(qcsa, qsid, &qsequence);
 	
-	ensQCSequenceAdaptorFetchByIdentifier(qcsa, tsid, &tsequence);
+	ensQCSequenceadaptorFetchByIdentifier(qcsa, tsid, &tsequence);
 	
 	eclass = ensQCVariationClassFromStr(class);
 	
@@ -3922,9 +3922,9 @@ static AjBool qcVariationAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	ajStrDel(&state);
     }
     
-    ajSqlRowIterDel(&sqli);
+    ajSqlrowiterDel(&sqli);
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     return ajTrue;
 }
@@ -3939,18 +3939,18 @@ static AjBool qcVariationAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 ** QC Variation Adaptor. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPQCVariationAdaptor]
+** @fdata [EnsPQCVariationadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule New dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPQCVariationAdaptor] Ensembl QC Variation Adaptor
-** @argrule Ref object [EnsPQCVariationAdaptor] Ensembl QC Variation Adaptor
+** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+** @argrule Obj object [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
+** @argrule Ref object [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
 **
-** @valrule * [EnsPQCVariationAdaptor] Ensembl QC Variation Adaptor
+** @valrule * [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -3958,28 +3958,28 @@ static AjBool qcVariationAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 
 
 
-/* @func ensQCVariationAdaptorNew *********************************************
+/* @func ensQCVariationadaptorNew *********************************************
 **
 ** Default constructor for an Ensembl QC Variation Adaptor.
 **
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPQCVariationAdaptor] Ensembl QC Variation Adaptor or NULL
+** @return [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCVariationAdaptor ensQCVariationAdaptorNew(EnsPDatabaseAdaptor dba)
+EnsPQCVariationadaptor ensQCVariationadaptorNew(EnsPDatabaseadaptor dba)
 {
     if(!dba)
 	return NULL;
     
-    return ensBaseAdaptorNew(dba,
-			     qcVariationAdaptorTables,
-			     qcVariationAdaptorColumns,
-			     qcVariationAdaptorLeftJoin,
-			     qcVariationAdaptorDefaultCondition,
-			     qcVariationAdaptorFinalCondition,
-			     qcVariationAdaptorFetchAllBySQL);
+    return ensBaseadaptorNew(dba,
+			     qcVariationadaptorTables,
+			     qcVariationadaptorColumns,
+			     qcVariationadaptorLeftJoin,
+			     qcVariationadaptorDefaultCondition,
+			     qcVariationadaptorFinalCondition,
+			     qcVariationadaptorFetchAllBySQL);
 }
 
 
@@ -3990,12 +3990,12 @@ EnsPQCVariationAdaptor ensQCVariationAdaptorNew(EnsPDatabaseAdaptor dba)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl QC Variation Adaptor.
 **
-** @fdata [EnsPQCVariationAdaptor]
+** @fdata [EnsPQCVariationadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a QC Variation Adaptor object
 **
-** @argrule * Pqcva [EnsPQCVariationAdaptor*] QC Variation Adaptor
+** @argrule * Pqcva [EnsPQCVariationadaptor*] QC Variation Adaptor
 **                                            object address
 **
 ** @valrule * [void]
@@ -4006,21 +4006,21 @@ EnsPQCVariationAdaptor ensQCVariationAdaptorNew(EnsPDatabaseAdaptor dba)
 
 
 
-/* @func ensQCVariationAdaptorDel *********************************************
+/* @func ensQCVariationadaptorDel *********************************************
 **
 ** Default destructor for an Ensembl QC Variation Adaptor.
 **
-** @param [d] Pqcva [EnsPQCVariationAdaptor*] Ensembl QC Variation Adaptor
+** @param [d] Pqcva [EnsPQCVariationadaptor*] Ensembl QC Variation Adaptor
 **                                            address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensQCVariationAdaptorDel(EnsPQCVariationAdaptor* Pqcva)
+void ensQCVariationadaptorDel(EnsPQCVariationadaptor* Pqcva)
 {
     /*
-     ajDebug("ensQCVariationAdaptorDel\n"
+     ajDebug("ensQCVariationadaptorDel\n"
 	     "  *Pqcva %p\n",
 	     *Pqcva);
      */
@@ -4031,7 +4031,7 @@ void ensQCVariationAdaptorDel(EnsPQCVariationAdaptor* Pqcva)
     if(!*Pqcva)
 	return;
     
-    ensBaseAdaptorDel(Pqcva);
+    ensBaseadaptorDel(Pqcva);
     
     return;
 }
@@ -4039,12 +4039,12 @@ void ensQCVariationAdaptorDel(EnsPQCVariationAdaptor* Pqcva)
 
 
 
-/* @func ensQCVariationAdaptorFetchByIdentifier *******************************
+/* @func ensQCVariationadaptorFetchByIdentifier *******************************
 **
 ** Fetch an Ensembl QC Variation via its SQL database-internal identifier.
 ** The caller is responsible for deleting the Ensembl QC Variation.
 **
-** @param [r] adaptor [EnsPQCVariationAdaptor] Ensembl QC Variation Adaptor
+** @param [r] adaptor [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal QC Variation identifier
 ** @param [wP] Pqcv [EnsPQCVariation*] Ensembl QC Variation address
 **
@@ -4052,7 +4052,7 @@ void ensQCVariationAdaptorDel(EnsPQCVariationAdaptor* Pqcva)
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationAdaptorFetchByIdentifier(EnsPQCVariationAdaptor adaptor,
+AjBool ensQCVariationadaptorFetchByIdentifier(EnsPQCVariationadaptor adaptor,
                                               ajuint identifier,
                                               EnsPQCVariation *Pqcv)
 {
@@ -4066,7 +4066,7 @@ AjBool ensQCVariationAdaptorFetchByIdentifier(EnsPQCVariationAdaptor adaptor,
 	return ajFalse;
     
     *Pqcv = (EnsPQCVariation)
-	ensBaseAdaptorFetchByIdentifier(adaptor, identifier);
+	ensBaseadaptorFetchByIdentifier(adaptor, identifier);
     
     return ajTrue;
 }
@@ -4074,13 +4074,13 @@ AjBool ensQCVariationAdaptorFetchByIdentifier(EnsPQCVariationAdaptor adaptor,
 
 
 
-/* @func ensQCVariationAdaptorFetchAllByQCAlignment ***************************
+/* @func ensQCVariationadaptorFetchAllByQCAlignment ***************************
 **
 ** Fetch all Ensembl QC Variations by an Ensembl QC Alignment.
 ** The caller is responsible for deleting the Ensembl QC Variations
 ** before deleting the AJAX List.
 **
-** @param [r] qcva [EnsPQCVariationAdaptor] Ensembl QC Variation Adaptor
+** @param [r] qcva [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
 ** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
 ** @param [w] qcvs [AjPList] AJAX List of Ensembl QC Variations
 **
@@ -4088,7 +4088,7 @@ AjBool ensQCVariationAdaptorFetchByIdentifier(EnsPQCVariationAdaptor adaptor,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationAdaptorFetchAllByQCAlignment(EnsPQCVariationAdaptor qcva,
+AjBool ensQCVariationadaptorFetchAllByQCAlignment(EnsPQCVariationadaptor qcva,
                                                   const EnsPQCAlignment qca,
                                                   AjPList qcvs)
 {
@@ -4106,7 +4106,7 @@ AjBool ensQCVariationAdaptorFetchAllByQCAlignment(EnsPQCVariationAdaptor qcva,
     constraint = ajFmtStr("variation.alignment_id = %u",
 			  ensQCAlignmentGetIdentifier(qca));
     
-    ensBaseAdaptorGenericFetch(qcva,
+    ensBaseadaptorGenericFetch(qcva,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -4120,14 +4120,14 @@ AjBool ensQCVariationAdaptorFetchAllByQCAlignment(EnsPQCVariationAdaptor qcva,
 
 
 
-/* @func ensQCVariationAdaptorFetchAllByAnalysisQueryTarget *******************
+/* @func ensQCVariationadaptorFetchAllByAnalysisQueryTarget *******************
 **
 ** Fetch all Ensembl QC Variations by Ensembl an Analysis, as well as
 ** Query and Target Ensembl Sequences.
 ** The caller is responsible for deleting the Ensembl QC Variations
 ** before deleting the AJAX List.
 **
-** @param [r] qcva [EnsPQCVariationAdaptor] Ensembl QC Variation Adaptor
+** @param [r] qcva [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 ** @param [r] qdb [const EnsPQCDatabase] Query Ensembl QC Database
 ** @param [r] tdb [const EnsPQCDatabase] Target Ensembl QC Database
@@ -4137,8 +4137,8 @@ AjBool ensQCVariationAdaptorFetchAllByQCAlignment(EnsPQCVariationAdaptor qcva,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationAdaptorFetchAllByAnalysisQueryTarget(
-    EnsPQCVariationAdaptor qcva,
+AjBool ensQCVariationadaptorFetchAllByAnalysisQueryTarget(
+    EnsPQCVariationadaptor qcva,
     const EnsPAnalysis analysis,
     const EnsPQCDatabase qdb,
     const EnsPQCDatabase tdb,
@@ -4170,7 +4170,7 @@ AjBool ensQCVariationAdaptorFetchAllByAnalysisQueryTarget(
 			  ensQCDatabaseGetIdentifier(qdb),
 			  ensQCDatabaseGetIdentifier(tdb));
     
-    ensBaseAdaptorGenericFetch(qcva,
+    ensBaseadaptorGenericFetch(qcva,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -4184,13 +4184,13 @@ AjBool ensQCVariationAdaptorFetchAllByAnalysisQueryTarget(
 
 
 
-/* @func ensQCVariationAdaptorFetchAllByQuery *********************************
+/* @func ensQCVariationadaptorFetchAllByQuery *********************************
 **
 ** Fetch all Ensembl QC Variations by a Query Ensembl QC Sequence.
 ** The caller is responsible for deleting the Ensembl QC Variations
 ** before deleting the AJAX List.
 **
-** @param [r] qcva [EnsPQCVariationAdaptor] Ensembl QC Variation Adaptor
+** @param [r] qcva [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
 ** @param [rN] analysis [const EnsPAnalysis] Ensembl Analysis
 ** @param [r] qdb [const EnsPQCDatabase] Query Ensembl QC Database
 ** @param [w] qcvs [AjPList] AJAX List of Ensembl QC Variations
@@ -4199,7 +4199,7 @@ AjBool ensQCVariationAdaptorFetchAllByAnalysisQueryTarget(
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationAdaptorFetchAllByQuery(EnsPQCVariationAdaptor qcva,
+AjBool ensQCVariationadaptorFetchAllByQuery(EnsPQCVariationadaptor qcva,
                                             const EnsPAnalysis analysis,
                                             const EnsPQCDatabase qdb,
                                             AjPList qcvs)
@@ -4223,7 +4223,7 @@ AjBool ensQCVariationAdaptorFetchAllByQuery(EnsPQCVariationAdaptor qcva,
 		       " AND variation.analysis_id = %u",
 		       ensAnalysisGetIdentifier(analysis));
     
-    ensBaseAdaptorGenericFetch(qcva,
+    ensBaseadaptorGenericFetch(qcva,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -4237,13 +4237,13 @@ AjBool ensQCVariationAdaptorFetchAllByQuery(EnsPQCVariationAdaptor qcva,
 
 
 
-/* @func ensQCVariationAdaptorFetchAllByTarget ********************************
+/* @func ensQCVariationadaptorFetchAllByTarget ********************************
 **
 ** Fetch all Ensembl QC Variations by a Target Ensembl QC Sequence.
 ** The caller is responsible for deleting the Ensembl QC Variations
 ** before deleting the AJAX List.
 **
-** @param [r] qcva [EnsPQCVariationAdaptor] Ensembl QC Variation Adaptor
+** @param [r] qcva [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
 ** @param [rN] analysis [const EnsPAnalysis] Ensembl Analysis
 ** @param [r] tdb [const EnsPQCDatabase] Target Ensembl QC Database
 ** @param [w] qcvs [AjPList] AJAX List of Ensembl QC Variations
@@ -4252,7 +4252,7 @@ AjBool ensQCVariationAdaptorFetchAllByQuery(EnsPQCVariationAdaptor qcva,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationAdaptorFetchAllByTarget(EnsPQCVariationAdaptor qcva,
+AjBool ensQCVariationadaptorFetchAllByTarget(EnsPQCVariationadaptor qcva,
                                              const EnsPAnalysis analysis,
                                              const EnsPQCDatabase tdb,
                                              AjPList qcvs)
@@ -4276,7 +4276,7 @@ AjBool ensQCVariationAdaptorFetchAllByTarget(EnsPQCVariationAdaptor qcva,
 		       " AND variation.analysis_id = %u",
 		       ensAnalysisGetIdentifier(analysis));
     
-    ensBaseAdaptorGenericFetch(qcva,
+    ensBaseadaptorGenericFetch(qcva,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -4290,18 +4290,18 @@ AjBool ensQCVariationAdaptorFetchAllByTarget(EnsPQCVariationAdaptor qcva,
 
 
 
-/* @func ensQCVariationAdaptorStore *******************************************
+/* @func ensQCVariationadaptorStore *******************************************
 **
 ** Store an Ensembl QC Variation.
 **
-** @param [r] qcva [EnsPQCVariationAdaptor] Ensembl QC Variation Adaptor
+** @param [r] qcva [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
 ** @param [u] qcv [EnsPQCVariation] Ensembl QC Variation
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationAdaptorStore(EnsPQCVariationAdaptor qcva,
+AjBool ensQCVariationadaptorStore(EnsPQCVariationadaptor qcva,
                                   EnsPQCVariation qcv)
 {
     char *txtqstr = NULL;
@@ -4309,11 +4309,11 @@ AjBool ensQCVariationAdaptorStore(EnsPQCVariationAdaptor qcva,
     
     AjBool value = ajFalse;
     
-    AjPSqlStatement sqls = NULL;
+    AjPSqlstatement sqls = NULL;
     
     AjPStr statement = NULL;
     
-    EnsPDatabaseAdaptor dba = NULL;
+    EnsPDatabaseadaptor dba = NULL;
     
     if(!qcva)
 	return ajFalse;
@@ -4321,14 +4321,14 @@ AjBool ensQCVariationAdaptorStore(EnsPQCVariationAdaptor qcva,
     if(!qcv)
 	return ajFalse;
     
-    if(ensQCVariationGetAdaptor(qcv) && ensQCVariationGetIdentifier(qcv))
+    if(ensQCVariationGetadaptor(qcv) && ensQCVariationGetIdentifier(qcv))
 	return ajFalse;
     
-    dba = ensBaseAdaptorGetDatabaseAdaptor(qcva);
+    dba = ensBaseadaptorGetDatabaseadaptor(qcva);
     
-    ensDatabaseAdaptorEscapeCS(dba, &txtqstr, qcv->QueryString);
+    ensDatabaseadaptorEscapeC(dba, &txtqstr, qcv->QueryString);
     
-    ensDatabaseAdaptorEscapeCS(dba, &txttstr, qcv->TargetString);
+    ensDatabaseadaptorEscapeC(dba, &txttstr, qcv->TargetString);
     
     statement = ajFmtStr("INSERT IGNORE INTO "
 			 "variation "
@@ -4369,18 +4369,18 @@ AjBool ensQCVariationAdaptorStore(EnsPQCVariationAdaptor qcva,
     ajCharDel(&txtqstr);
     ajCharDel(&txttstr);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    if(ajSqlStatementGetAffectedRows(sqls))
+    if(ajSqlstatementGetAffectedrows(sqls))
     {
-	ensQCVariationSetIdentifier(qcv, ajSqlStatementGetIdentifier(sqls));
+	ensQCVariationSetIdentifier(qcv, ajSqlstatementGetIdentifier(sqls));
 	
-	ensQCVariationSetAdaptor(qcv, qcva);
+	ensQCVariationSetadaptor(qcv, qcva);
 	
 	value = ajTrue;
     }
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     ajStrDel(&statement);
     
@@ -4390,18 +4390,18 @@ AjBool ensQCVariationAdaptorStore(EnsPQCVariationAdaptor qcva,
 
 
 
-/* @func ensQCVariationAdaptorUpdate ******************************************
+/* @func ensQCVariationadaptorUpdate ******************************************
 **
 ** Update an Ensembl QC Variation.
 **
-** @param [r] qcva [EnsPQCVariationAdaptor] Ensembl QC Variation Adaptor
+** @param [r] qcva [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
 ** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationAdaptorUpdate(EnsPQCVariationAdaptor qcva,
+AjBool ensQCVariationadaptorUpdate(EnsPQCVariationadaptor qcva,
                                    const EnsPQCVariation qcv)
 {
     char *txtqstr = NULL;
@@ -4409,11 +4409,11 @@ AjBool ensQCVariationAdaptorUpdate(EnsPQCVariationAdaptor qcva,
     
     AjBool value = ajFalse;
     
-    AjPSqlStatement sqls = NULL;
+    AjPSqlstatement sqls = NULL;
     
     AjPStr statement = NULL;
     
-    EnsPDatabaseAdaptor dba = NULL;
+    EnsPDatabaseadaptor dba = NULL;
     
     if(!qcva)
 	return ajFalse;
@@ -4424,11 +4424,11 @@ AjBool ensQCVariationAdaptorUpdate(EnsPQCVariationAdaptor qcva,
     if(!ensQCVariationGetIdentifier(qcv))
 	return ajFalse;
     
-    dba = ensBaseAdaptorGetDatabaseAdaptor(qcva);
+    dba = ensBaseadaptorGetDatabaseadaptor(qcva);
     
-    ensDatabaseAdaptorEscapeCS(dba, &txtqstr, qcv->QueryString);
+    ensDatabaseadaptorEscapeC(dba, &txtqstr, qcv->QueryString);
     
-    ensDatabaseAdaptorEscapeCS(dba, &txttstr, qcv->TargetString);
+    ensDatabaseadaptorEscapeC(dba, &txttstr, qcv->TargetString);
     
     statement = ajFmtStr("UPDATE IGNORE "
 			 "variation "
@@ -4472,12 +4472,12 @@ AjBool ensQCVariationAdaptorUpdate(EnsPQCVariationAdaptor qcva,
     ajCharDel(&txtqstr);
     ajCharDel(&txttstr);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    if(ajSqlStatementGetAffectedRows(sqls))
+    if(ajSqlstatementGetAffectedrows(sqls))
 	value = ajTrue;
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     ajStrDel(&statement);
     
@@ -4487,27 +4487,27 @@ AjBool ensQCVariationAdaptorUpdate(EnsPQCVariationAdaptor qcva,
 
 
 
-/* @func ensQCVariationAdaptorDelete ******************************************
+/* @func ensQCVariationadaptorDelete ******************************************
 **
 ** Delete an Ensembl QC Variation.
 **
-** @param [r] qcva [EnsPQCVariationAdaptor] Ensembl QC Variation Adaptor
+** @param [r] qcva [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
 ** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationAdaptorDelete(EnsPQCVariationAdaptor qcva,
+AjBool ensQCVariationadaptorDelete(EnsPQCVariationadaptor qcva,
                                    const EnsPQCVariation qcv)
 {
     AjBool value = ajFalse;
     
-    AjPSqlStatement sqls = NULL;
+    AjPSqlstatement sqls = NULL;
     
     AjPStr statement = NULL;
     
-    EnsPDatabaseAdaptor dba = NULL;
+    EnsPDatabaseadaptor dba = NULL;
     
     if(!qcva)
 	return ajFalse;
@@ -4518,7 +4518,7 @@ AjBool ensQCVariationAdaptorDelete(EnsPQCVariationAdaptor qcva,
     if(!ensQCVariationGetIdentifier(qcv))
 	return ajFalse;
     
-    dba = ensBaseAdaptorGetDatabaseAdaptor(qcva);
+    dba = ensBaseadaptorGetDatabaseadaptor(qcva);
     
     statement = ajFmtStr("DELETE FROM "
 			 "variation "
@@ -4526,12 +4526,12 @@ AjBool ensQCVariationAdaptorDelete(EnsPQCVariationAdaptor qcva,
 			 "variation.variation_id = %u",
 			 qcv->Identifier);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    if(ajSqlStatementGetAffectedRows(sqls))
+    if(ajSqlstatementGetAffectedrows(sqls))
 	value = ajTrue;
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     ajStrDel(&statement);
     
@@ -4584,7 +4584,7 @@ AjBool ensQCVariationAdaptorDelete(EnsPQCVariationAdaptor qcva,
 ** Default constructor for an Ensembl QC Submission.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] adaptor [EnsPQCSubmissionAdaptor] Ensembl QC Submission Adaptor
+** @param [r] adaptor [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::QC::Submission::new
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
@@ -4599,7 +4599,7 @@ AjBool ensQCVariationAdaptorDelete(EnsPQCVariationAdaptor qcva,
 ** @@
 ******************************************************************************/
 
-EnsPQCSubmission ensQCSubmissionNew(EnsPQCSubmissionAdaptor adaptor,
+EnsPQCSubmission ensQCSubmissionNew(EnsPQCSubmissionadaptor adaptor,
                                     ajuint identifier,
                                     EnsPAnalysis analysis,
                                     EnsPQCSequence qsequence,
@@ -4799,7 +4799,7 @@ void ensQCSubmissionDel(EnsPQCSubmission *Pqcs)
 ** @fnote None
 **
 ** @nam3rule Get Return QC Submission attribute(s)
-** @nam4rule GetAdaptor Return the Ensembl QC Submission Adaptor
+** @nam4rule Getadaptor Return the Ensembl QC Submission Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetAnalysis Return the Ensembl Analysis
 ** @nam4rule GetQuerySequence Return the query Ensembl QC Sequence
@@ -4814,7 +4814,7 @@ void ensQCSubmissionDel(EnsPQCSubmission *Pqcs)
 **
 ** @argrule * qcs [const EnsPQCSubmission] QC Submission
 **
-** @valrule Adaptor [EnsPQCSubmissionAdaptor] Ensembl QC Submission Adaptor
+** @valrule Adaptor [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule Analysis [EnsPAnalysis] Ensembl Analysis
 ** @valrule QuerySequence [AjPStr] Query Ensembl QC Sequence
@@ -4833,17 +4833,17 @@ void ensQCSubmissionDel(EnsPQCSubmission *Pqcs)
 
 
 
-/* @func ensQCSubmissionGetAdaptor ********************************************
+/* @func ensQCSubmissionGetadaptor ********************************************
 **
 ** Get the Ensembl QC Submission Adaptor element of an Ensembl QC Submission.
 **
 ** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Submission
 **
-** @return [EnsPQCSubmissionAdaptor] Ensembl QC Submission Adaptor
+** @return [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPQCSubmissionAdaptor ensQCSubmissionGetAdaptor(const EnsPQCSubmission qcs)
+EnsPQCSubmissionadaptor ensQCSubmissionGetadaptor(const EnsPQCSubmission qcs)
 {
     if(!qcs)
 	return NULL;
@@ -5094,7 +5094,7 @@ ajuint ensQCSubmissionGetAnalysisJobIdentifier(const EnsPQCSubmission qcs)
 ** @fnote None
 **
 ** @nam3rule Set Set one element of a QC Submission
-** @nam4rule SetAdaptor Set the Ensembl QC Submission Adaptor
+** @nam4rule Setadaptor Set the Ensembl QC Submission Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetQuerySequence Set the query Ensembl QC Sequence
 ** @nam4rule SetQueryStart Set the query start
@@ -5116,19 +5116,19 @@ ajuint ensQCSubmissionGetAnalysisJobIdentifier(const EnsPQCSubmission qcs)
 
 
 
-/* @func ensQCSubmissionSetAdaptor ********************************************
+/* @func ensQCSubmissionSetadaptor ********************************************
 **
 ** Set the Ensembl Database Adaptor element of an QC Submission.
 **
 ** @param [u] qcs [EnsPQCSubmission] Ensembl QC Submission
-** @param [r] qcsa [EnsPQCSubmissionAdaptor] Ensembl QC Submission Adaptor
+** @param [r] qcsa [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionSetAdaptor(EnsPQCSubmission qcs,
-                                 EnsPQCSubmissionAdaptor qcsa)
+AjBool ensQCSubmissionSetadaptor(EnsPQCSubmission qcs,
+                                 EnsPQCSubmissionadaptor qcsa)
 {
     if(!qcs)
 	return ajFalse;
@@ -5531,17 +5531,17 @@ AjBool ensQCSubmissionTrace(const EnsPQCSubmission qcs, ajuint level)
 
 
 
-/* @datasection [EnsPQCSubmissionAdaptor] QC Submission Adaptor ***************
+/* @datasection [EnsPQCSubmissionadaptor] QC Submission Adaptor ***************
 **
 ** Functions for manipulating Ensembl QC Submission Adaptor objects
 **
-** Bio::EnsEMBL::QC::DBSQL::SubmissionAdaptor CVS Revision:
+** Bio::EnsEMBL::QC::DBSQL::Submissionadaptor CVS Revision:
 **
-** @nam2rule QCSubmissionAdaptor
+** @nam2rule QCSubmissionadaptor
 **
 ******************************************************************************/
 
-static const char *qcSubmissionAdaptorTables[] =
+static const char *qcSubmissionadaptorTables[] =
 {
     "submission",
     (const char *) NULL
@@ -5550,7 +5550,7 @@ static const char *qcSubmissionAdaptorTables[] =
 
 
 
-static const char *qcSubmissionAdaptorColumns[] =
+static const char *qcSubmissionadaptorColumns[] =
 {
     "submission.submission_id",
     "submission.analysis_id",
@@ -5568,7 +5568,7 @@ static const char *qcSubmissionAdaptorColumns[] =
 
 
 
-static EnsOBaseAdaptorLeftJoin qcSubmissionAdaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin qcSubmissionadaptorLeftJoin[] =
 {
     {(const char*) NULL, (const char*) NULL}
 };
@@ -5576,24 +5576,24 @@ static EnsOBaseAdaptorLeftJoin qcSubmissionAdaptorLeftJoin[] =
 
 
 
-static const char *qcSubmissionAdaptorDefaultCondition =
+static const char *qcSubmissionadaptorDefaultCondition =
 (const char*) NULL;
 
 
 
 
-static const char *qcSubmissionAdaptorFinalCondition =
+static const char *qcSubmissionadaptorFinalCondition =
 (const char *) NULL;
 
 
 
 
-/* @funcstatic qcSubmissionAdaptorFetchAllBySQL *******************************
+/* @funcstatic qcSubmissionadaptorFetchAllBySQL *******************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl QC Submission objects.
 **
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
 ** @param [u] am [EnsPAssemblyMapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
@@ -5603,7 +5603,7 @@ static const char *qcSubmissionAdaptorFinalCondition =
 ** @@
 ******************************************************************************/
 
-static AjBool qcSubmissionAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
+static AjBool qcSubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
                                                EnsPAssemblyMapper am,
                                                EnsPSlice slice,
@@ -5622,19 +5622,19 @@ static AjBool qcSubmissionAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 
     ajuint analysisjobid = 0;
     
-    AjPSqlStatement sqls = NULL;
-    AjISqlRow sqli       = NULL;
-    AjPSqlRow sqlr       = NULL;
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
     
     EnsPAnalysis analysis  = NULL;
-    EnsPAnalysisAdaptor aa = NULL;
+    EnsPAnalysisadaptor aa = NULL;
     
     EnsPQCSequence qsequence   = NULL;
     EnsPQCSequence tsequence   = NULL;
-    EnsPQCSequenceAdaptor qcsa = NULL;
+    EnsPQCSequenceadaptor qcsa = NULL;
     
     EnsPQCSubmission qcb         = NULL;
-    EnsPQCSubmissionAdaptor qcba = NULL;
+    EnsPQCSubmissionadaptor qcba = NULL;
     
     if(!dba)
 	return ajFalse;
@@ -5649,17 +5649,17 @@ static AjBool qcSubmissionAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
     if(!qcss)
 	return ajFalse;
     
-    aa = ensRegistryGetAnalysisAdaptor(dba);
+    aa = ensRegistryGetAnalysisadaptor(dba);
     
-    qcsa = ensRegistryGetQCSequenceAdaptor(dba);
+    qcsa = ensRegistryGetQCSequenceadaptor(dba);
     
-    qcba = ensRegistryGetQCSubmissionAdaptor(dba);
+    qcba = ensRegistryGetQCSubmissionadaptor(dba);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    sqli = ajSqlRowIterNew(sqls);
+    sqli = ajSqlrowiterNew(sqls);
     
-    while(!ajSqlRowIterDone(sqli))
+    while(!ajSqlrowiterDone(sqli))
     {
 	identifier    = 0;
 	analysisid    = 0;
@@ -5672,24 +5672,24 @@ static AjBool qcSubmissionAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	tstrand       = 0;
 	analysisjobid = 0;
 	
-        sqlr = ajSqlRowIterGet(sqli);
+        sqlr = ajSqlrowiterGet(sqli);
 	
-        ajSqlColumnToUint(sqlr, &identifier);
-        ajSqlColumnToUint(sqlr, &analysisid);
-	ajSqlColumnToUint(sqlr, &qdbid);
-	ajSqlColumnToUint(sqlr, &qsid);
-	ajSqlColumnToUint(sqlr, &tdbid);
-	ajSqlColumnToUint(sqlr, &tsid);
-	ajSqlColumnToUint(sqlr, &tstart);
-	ajSqlColumnToUint(sqlr, &tend);
-	ajSqlColumnToInt(sqlr, &tstrand);
-	ajSqlColumnToUint(sqlr, &analysisjobid);
+        ajSqlcolumnToUint(sqlr, &identifier);
+        ajSqlcolumnToUint(sqlr, &analysisid);
+	ajSqlcolumnToUint(sqlr, &qdbid);
+	ajSqlcolumnToUint(sqlr, &qsid);
+	ajSqlcolumnToUint(sqlr, &tdbid);
+	ajSqlcolumnToUint(sqlr, &tsid);
+	ajSqlcolumnToUint(sqlr, &tstart);
+	ajSqlcolumnToUint(sqlr, &tend);
+	ajSqlcolumnToInt(sqlr, &tstrand);
+	ajSqlcolumnToUint(sqlr, &analysisjobid);
 	
-	ensAnalysisAdaptorFetchByIdentifier(aa, analysisid, &analysis);
+	ensAnalysisadaptorFetchByIdentifier(aa, analysisid, &analysis);
 	
-	ensQCSequenceAdaptorFetchByIdentifier(qcsa, qsid, &qsequence);
+	ensQCSequenceadaptorFetchByIdentifier(qcsa, qsid, &qsequence);
 	
-	ensQCSequenceAdaptorFetchByIdentifier(qcsa, tsid, &tsequence);
+	ensQCSequenceadaptorFetchByIdentifier(qcsa, tsid, &tsequence);
 	
 	qcb = ensQCSubmissionNew(qcba,
 				 identifier,
@@ -5709,9 +5709,9 @@ static AjBool qcSubmissionAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	ensQCSequenceDel(&tsequence);
     }
     
-    ajSqlRowIterDel(&sqli);
+    ajSqlrowiterDel(&sqli);
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     return ajTrue;
 }
@@ -5726,18 +5726,18 @@ static AjBool qcSubmissionAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 ** QC Submission Adaptor. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPQCSubmissionAdaptor]
+** @fdata [EnsPQCSubmissionadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule New dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPQCSubmissionAdaptor] Ensembl QC Submission Adaptor
-** @argrule Ref object [EnsPQCSubmissionAdaptor] Ensembl QC Submission Adaptor
+** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+** @argrule Obj object [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
+** @argrule Ref object [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
 **
-** @valrule * [EnsPQCSubmissionAdaptor] Ensembl QC Submission Adaptor
+** @valrule * [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -5745,28 +5745,28 @@ static AjBool qcSubmissionAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 
 
 
-/* @func ensQCSubmissionAdaptorNew ********************************************
+/* @func ensQCSubmissionadaptorNew ********************************************
 **
 ** Default constructor for an Ensembl QC Submission Adaptor.
 **
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPQCSubmissionAdaptor] Ensembl QC Submission Adaptor or NULL
+** @return [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCSubmissionAdaptor ensQCSubmissionAdaptorNew(EnsPDatabaseAdaptor dba)
+EnsPQCSubmissionadaptor ensQCSubmissionadaptorNew(EnsPDatabaseadaptor dba)
 {
     if(!dba)
 	return NULL;
     
-    return ensBaseAdaptorNew(dba,
-			     qcSubmissionAdaptorTables,
-			     qcSubmissionAdaptorColumns,
-			     qcSubmissionAdaptorLeftJoin,
-			     qcSubmissionAdaptorDefaultCondition,
-			     qcSubmissionAdaptorFinalCondition,
-			     qcSubmissionAdaptorFetchAllBySQL);
+    return ensBaseadaptorNew(dba,
+			     qcSubmissionadaptorTables,
+			     qcSubmissionadaptorColumns,
+			     qcSubmissionadaptorLeftJoin,
+			     qcSubmissionadaptorDefaultCondition,
+			     qcSubmissionadaptorFinalCondition,
+			     qcSubmissionadaptorFetchAllBySQL);
 }
 
 
@@ -5777,12 +5777,12 @@ EnsPQCSubmissionAdaptor ensQCSubmissionAdaptorNew(EnsPDatabaseAdaptor dba)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl QC Submission Adaptor.
 **
-** @fdata [EnsPQCSubmissionAdaptor]
+** @fdata [EnsPQCSubmissionadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a QC Submission Adaptor object
 **
-** @argrule * Pqcsa [EnsPQCSubmissionAdaptor*] QC Submission Adaptor
+** @argrule * Pqcsa [EnsPQCSubmissionadaptor*] QC Submission Adaptor
 **                                             object address
 **
 ** @valrule * [void]
@@ -5793,21 +5793,21 @@ EnsPQCSubmissionAdaptor ensQCSubmissionAdaptorNew(EnsPDatabaseAdaptor dba)
 
 
 
-/* @func ensQCSubmissionAdaptorDel ********************************************
+/* @func ensQCSubmissionadaptorDel ********************************************
 **
 ** Default destructor for an Ensembl QC Submission Adaptor.
 **
-** @param [d] Pqcsa [EnsPQCSubmissionAdaptor*] Ensembl QC Submission Adaptor
+** @param [d] Pqcsa [EnsPQCSubmissionadaptor*] Ensembl QC Submission Adaptor
 **                                             address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensQCSubmissionAdaptorDel(EnsPQCSubmissionAdaptor* Pqcsa)
+void ensQCSubmissionadaptorDel(EnsPQCSubmissionadaptor* Pqcsa)
 {
     /*
-     ajDebug("ensQCSubmissionAdaptorDel\n"
+     ajDebug("ensQCSubmissionadaptorDel\n"
 	     "  *Pqcsa %p\n",
 	     *Pqcsa);
      */
@@ -5818,7 +5818,7 @@ void ensQCSubmissionAdaptorDel(EnsPQCSubmissionAdaptor* Pqcsa)
     if(!*Pqcsa)
 	return;
     
-    ensBaseAdaptorDel(Pqcsa);
+    ensBaseadaptorDel(Pqcsa);
     
     return;
 }
@@ -5826,12 +5826,12 @@ void ensQCSubmissionAdaptorDel(EnsPQCSubmissionAdaptor* Pqcsa)
 
 
 
-/* @func ensQCSubmissionAdaptorFetchByIdentifier ******************************
+/* @func ensQCSubmissionadaptorFetchByIdentifier ******************************
 **
 ** Fetch an Ensembl QC Submission via its SQL database-internal identifier.
 ** The caller is responsible for deleting the Ensembl QC Submission.
 **
-** @param [r] adaptor [EnsPQCSubmissionAdaptor] Ensembl QC Submission Adaptor
+** @param [r] adaptor [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal QC Submission
 **                                identifier
 ** @param [wP] Pqcs [EnsPQCSubmission*] Ensembl QC Submission address
@@ -5840,7 +5840,7 @@ void ensQCSubmissionAdaptorDel(EnsPQCSubmissionAdaptor* Pqcsa)
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionAdaptorFetchByIdentifier(EnsPQCSubmissionAdaptor adaptor,
+AjBool ensQCSubmissionadaptorFetchByIdentifier(EnsPQCSubmissionadaptor adaptor,
                                                ajuint identifier,
                                                EnsPQCSubmission *Pqcs)
 {
@@ -5854,7 +5854,7 @@ AjBool ensQCSubmissionAdaptorFetchByIdentifier(EnsPQCSubmissionAdaptor adaptor,
 	return ajFalse;
     
     *Pqcs = (EnsPQCSubmission)
-	ensBaseAdaptorFetchByIdentifier(adaptor, identifier);
+	ensBaseadaptorFetchByIdentifier(adaptor, identifier);
     
     return ajTrue;
 }
@@ -5862,14 +5862,14 @@ AjBool ensQCSubmissionAdaptorFetchByIdentifier(EnsPQCSubmissionAdaptor adaptor,
 
 
 
-/* @func ensQCSubmissionAdaptorFetchAllByAnalysisQueryTarget ******************
+/* @func ensQCSubmissionadaptorFetchAllByAnalysisQueryTarget ******************
 **
 ** Fetch all Ensembl QC Submissions by an Ensembl Analysis, as well as
 ** Query and Target Ensembl Sequences.
 ** The caller is responsible for deleting the Ensembl QC Submissions
 ** before deleting the AJAX List.
 **
-** @param [r] qcsa [EnsPQCSubmissionAdaptor] Ensembl QC Submission Adaptor
+** @param [r] qcsa [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 ** @param [r] qdb [const EnsPQCDatabase] Query Ensembl QC Database
 ** @param [r] tdb [const EnsPQCDatabase] Target Ensembl QC Database
@@ -5879,8 +5879,8 @@ AjBool ensQCSubmissionAdaptorFetchByIdentifier(EnsPQCSubmissionAdaptor adaptor,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionAdaptorFetchAllByAnalysisQueryTarget(
-    EnsPQCSubmissionAdaptor qcsa,
+AjBool ensQCSubmissionadaptorFetchAllByAnalysisQueryTarget(
+    EnsPQCSubmissionadaptor qcsa,
     const EnsPAnalysis analysis,
     const EnsPQCDatabase qdb,
     const EnsPQCDatabase tdb,
@@ -5912,7 +5912,7 @@ AjBool ensQCSubmissionAdaptorFetchAllByAnalysisQueryTarget(
 			  ensQCDatabaseGetIdentifier(qdb),
 			  ensQCDatabaseGetIdentifier(tdb));
     
-    ensBaseAdaptorGenericFetch(qcsa,
+    ensBaseadaptorGenericFetch(qcsa,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -5926,14 +5926,14 @@ AjBool ensQCSubmissionAdaptorFetchAllByAnalysisQueryTarget(
 
 
 
-/* @func ensQCSubmissionAdaptorFetchAllByANQIDTDB *****************************
+/* @func ensQCSubmissionadaptorFetchAllByANQIDTDB *****************************
 **
 ** Fetch all Ensembl QC Submissions by an Ensembl Analysis, as well as
 ** Query and Target Ensembl Sequences.
 ** The caller is responsible for deleting the Ensembl QC Submissions
 ** before deleting the AJAX List.
 **
-** @param [r] qcsa [EnsPQCSubmissionAdaptor] Ensembl QC Submission Adaptor
+** @param [r] qcsa [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 ** @param [r] qsequence [const EnsPQCSequence] Query Ensembl QC Sequence
 ** @param [r] tdb [const EnsPQCDatabase] Target Ensembl QC Database
@@ -5947,7 +5947,7 @@ AjBool ensQCSubmissionAdaptorFetchAllByAnalysisQueryTarget(
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionAdaptorFetchAllByANQIDTDB(EnsPQCSubmissionAdaptor qcsa,
+AjBool ensQCSubmissionadaptorFetchAllByANQIDTDB(EnsPQCSubmissionadaptor qcsa,
                                                 const EnsPAnalysis analysis,
                                                 const EnsPQCSequence qsequence,
                                                 const EnsPQCDatabase tdb,
@@ -6003,7 +6003,7 @@ AjBool ensQCSubmissionAdaptorFetchAllByANQIDTDB(EnsPQCSubmissionAdaptor qcsa,
 		       tend,
 		       tstrand);
     
-    ensBaseAdaptorGenericFetch(qcsa,
+    ensBaseadaptorGenericFetch(qcsa,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -6017,13 +6017,13 @@ AjBool ensQCSubmissionAdaptorFetchAllByANQIDTDB(EnsPQCSubmissionAdaptor qcsa,
 
 
 
-/* @func ensQCSubmissionAdaptorFetchAllByQuery ********************************
+/* @func ensQCSubmissionadaptorFetchAllByQuery ********************************
 **
 ** Fetch all Ensembl QC Submissions by a Query Ensembl QC Sequence.
 ** The caller is responsible for deleting the Ensembl QC Submissions
 ** before deleting the AJAX List.
 **
-** @param [r] qcsa [EnsPQCSubmissionAdaptor] Ensembl QC Submission Adaptor
+** @param [r] qcsa [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
 ** @param [rN] analysis [const EnsPAnalysis] Ensembl Analysis
 ** @param [r] qdb [const EnsPQCDatabase] Query Ensembl QC Database
 ** @param [w] qcss [AjPList] AJAX List of Ensembl QC Submissions
@@ -6032,7 +6032,7 @@ AjBool ensQCSubmissionAdaptorFetchAllByANQIDTDB(EnsPQCSubmissionAdaptor qcsa,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionAdaptorFetchAllByQuery(EnsPQCSubmissionAdaptor qcsa,
+AjBool ensQCSubmissionadaptorFetchAllByQuery(EnsPQCSubmissionadaptor qcsa,
                                              const EnsPAnalysis analysis,
                                              const EnsPQCDatabase qdb,
                                              AjPList qcss)
@@ -6056,7 +6056,7 @@ AjBool ensQCSubmissionAdaptorFetchAllByQuery(EnsPQCSubmissionAdaptor qcsa,
 		       " AND submission.analysis_id = %u",
 		       ensAnalysisGetIdentifier(analysis));
     
-    ensBaseAdaptorGenericFetch(qcsa,
+    ensBaseadaptorGenericFetch(qcsa,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -6070,13 +6070,13 @@ AjBool ensQCSubmissionAdaptorFetchAllByQuery(EnsPQCSubmissionAdaptor qcsa,
 
 
 
-/* @func ensQCSubmissionAdaptorFetchAllByTarget *******************************
+/* @func ensQCSubmissionadaptorFetchAllByTarget *******************************
 **
 ** Fetch all Ensembl QC Submissions by a Target Ensembl QC Sequence.
 ** The caller is responsible for deleting the Ensembl QC Submissions
 ** before deleting the AJAX List.
 **
-** @param [r] qcsa [EnsPQCSubmissionAdaptor] Ensembl QC Submission Adaptor
+** @param [r] qcsa [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
 ** @param [rN] analysis [const EnsPAnalysis] Ensembl Analysis
 ** @param [r] tdb [const EnsPQCDatabase] Target Ensembl QC Database
 ** @param [w] qcss [AjPList] AJAX List of Ensembl QC Submissions
@@ -6085,7 +6085,7 @@ AjBool ensQCSubmissionAdaptorFetchAllByQuery(EnsPQCSubmissionAdaptor qcsa,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionAdaptorFetchAllByTarget(EnsPQCSubmissionAdaptor qcsa,
+AjBool ensQCSubmissionadaptorFetchAllByTarget(EnsPQCSubmissionadaptor qcsa,
                                               const EnsPAnalysis analysis,
                                               const EnsPQCDatabase tdb,
                                               AjPList qcss)
@@ -6109,7 +6109,7 @@ AjBool ensQCSubmissionAdaptorFetchAllByTarget(EnsPQCSubmissionAdaptor qcsa,
 		       " AND submission.analysis_id = %u",
 		       ensAnalysisGetIdentifier(analysis));
     
-    ensBaseAdaptorGenericFetch(qcsa,
+    ensBaseadaptorGenericFetch(qcsa,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -6123,27 +6123,27 @@ AjBool ensQCSubmissionAdaptorFetchAllByTarget(EnsPQCSubmissionAdaptor qcsa,
 
 
 
-/* @func ensQCSubmissionAdaptorStore ******************************************
+/* @func ensQCSubmissionadaptorStore ******************************************
 **
 ** Store an Ensembl QC Submission.
 **
-** @param [r] qcsa [EnsPQCSubmissionAdaptor] Ensembl QC Submission Adaptor
+** @param [r] qcsa [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
 ** @param [u] qcs [EnsPQCSubmission] Ensembl QC Submission
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionAdaptorStore(EnsPQCSubmissionAdaptor qcsa,
+AjBool ensQCSubmissionadaptorStore(EnsPQCSubmissionadaptor qcsa,
                                    EnsPQCSubmission qcs)
 {
     AjBool value = ajFalse;
     
-    AjPSqlStatement sqls = NULL;
+    AjPSqlstatement sqls = NULL;
     
     AjPStr statement = NULL;
     
-    EnsPDatabaseAdaptor dba = NULL;
+    EnsPDatabaseadaptor dba = NULL;
     
     if(!qcsa)
 	return ajFalse;
@@ -6151,10 +6151,10 @@ AjBool ensQCSubmissionAdaptorStore(EnsPQCSubmissionAdaptor qcsa,
     if(!qcs)
 	return ajFalse;
     
-    if(ensQCSubmissionGetAdaptor(qcs) && ensQCSubmissionGetIdentifier(qcs))
+    if(ensQCSubmissionGetadaptor(qcs) && ensQCSubmissionGetIdentifier(qcs))
 	return ajFalse;
     
-    dba = ensBaseAdaptorGetDatabaseAdaptor(qcsa);
+    dba = ensBaseadaptorGetDatabaseadaptor(qcsa);
     
     statement = ajFmtStr("INSERT IGNORE INTO "
 			 "submission "
@@ -6180,18 +6180,18 @@ AjBool ensQCSubmissionAdaptorStore(EnsPQCSubmissionAdaptor qcsa,
 			 qcs->TargetStrand,
 			 qcs->AnalysisJobIdentifier);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    if(ajSqlStatementGetAffectedRows(sqls))
+    if(ajSqlstatementGetAffectedrows(sqls))
     {
-	ensQCSubmissionSetIdentifier(qcs, ajSqlStatementGetIdentifier(sqls));
+	ensQCSubmissionSetIdentifier(qcs, ajSqlstatementGetIdentifier(sqls));
 	
-	ensQCSubmissionSetAdaptor(qcs, qcsa);
+	ensQCSubmissionSetadaptor(qcs, qcsa);
 	
 	value = ajTrue;
     }
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     ajStrDel(&statement);
     
@@ -6201,27 +6201,27 @@ AjBool ensQCSubmissionAdaptorStore(EnsPQCSubmissionAdaptor qcsa,
 
 
 
-/* @func ensQCSubmissionAdaptorUpdate *****************************************
+/* @func ensQCSubmissionadaptorUpdate *****************************************
 **
 ** Update an Ensembl QC Submission.
 **
-** @param [r] qcsa [EnsPQCSubmissionAdaptor] Ensembl QC Submission Adaptor
+** @param [r] qcsa [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
 ** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Submission
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionAdaptorUpdate(EnsPQCSubmissionAdaptor qcsa,
+AjBool ensQCSubmissionadaptorUpdate(EnsPQCSubmissionadaptor qcsa,
                                     const EnsPQCSubmission qcs)
 {
     AjBool value = ajFalse;
     
-    AjPSqlStatement sqls = NULL;
+    AjPSqlstatement sqls = NULL;
     
     AjPStr statement = NULL;
     
-    EnsPDatabaseAdaptor dba = NULL;
+    EnsPDatabaseadaptor dba = NULL;
     
     if(!qcsa)
 	return ajFalse;
@@ -6232,7 +6232,7 @@ AjBool ensQCSubmissionAdaptorUpdate(EnsPQCSubmissionAdaptor qcsa,
     if(!ensQCSubmissionGetIdentifier(qcs))
 	return ajFalse;
     
-    dba = ensBaseAdaptorGetDatabaseAdaptor(qcsa);
+    dba = ensBaseadaptorGetDatabaseadaptor(qcsa);
     
     statement = ajFmtStr("UPDATE IGNORE "
 			 "submission "
@@ -6260,12 +6260,12 @@ AjBool ensQCSubmissionAdaptorUpdate(EnsPQCSubmissionAdaptor qcsa,
 			 qcs->TargetStrand,
 			 qcs->AnalysisJobIdentifier);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    if(ajSqlStatementGetAffectedRows(sqls))
+    if(ajSqlstatementGetAffectedrows(sqls))
 	value = ajTrue;
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     ajStrDel(&statement);
     
@@ -6275,27 +6275,27 @@ AjBool ensQCSubmissionAdaptorUpdate(EnsPQCSubmissionAdaptor qcsa,
 
 
 
-/* @func ensQCSubmissionAdaptorDelete *****************************************
+/* @func ensQCSubmissionadaptorDelete *****************************************
 **
 ** Delete an Ensembl QC Submission.
 **
-** @param [r] qcsa [EnsPQCSubmissionAdaptor] Ensembl QC Submission Adaptor
+** @param [r] qcsa [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
 ** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Submission
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionAdaptorDelete(EnsPQCSubmissionAdaptor qcsa,
+AjBool ensQCSubmissionadaptorDelete(EnsPQCSubmissionadaptor qcsa,
                                     const EnsPQCSubmission qcs)
 {
     AjBool value = ajFalse;
     
-    AjPSqlStatement sqls = NULL;
+    AjPSqlstatement sqls = NULL;
     
     AjPStr statement = NULL;
     
-    EnsPDatabaseAdaptor dba = NULL;
+    EnsPDatabaseadaptor dba = NULL;
     
     if(!qcsa)
 	return ajFalse;
@@ -6306,7 +6306,7 @@ AjBool ensQCSubmissionAdaptorDelete(EnsPQCSubmissionAdaptor qcsa,
     if(!ensQCSubmissionGetIdentifier(qcs))
 	return ajFalse;
     
-    dba = ensBaseAdaptorGetDatabaseAdaptor(qcsa);
+    dba = ensBaseadaptorGetDatabaseadaptor(qcsa);
     
     statement = ajFmtStr("DELETE FROM "
 			 "submission "
@@ -6314,12 +6314,12 @@ AjBool ensQCSubmissionAdaptorDelete(EnsPQCSubmissionAdaptor qcsa,
 			 "submission.submission_id = %u",
 			 qcs->Identifier);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    if(ajSqlStatementGetAffectedRows(sqls))
+    if(ajSqlstatementGetAffectedrows(sqls))
 	value = ajTrue;
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     ajStrDel(&statement);
     

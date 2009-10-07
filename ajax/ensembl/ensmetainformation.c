@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -43,19 +43,19 @@
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-static AjBool metaInformationAdaptorFetchAllBySQL(
-    EnsPMetaInformationAdaptor adaptor,
+static AjBool metaInformationadaptorFetchAllBySQL(
+    EnsPMetaInformationadaptor adaptor,
     const AjPStr statement,
     AjPList mis);
 
-static AjBool metaInformationAdaptorCacheInit(
-    EnsPMetaInformationAdaptor adaptor);
+static AjBool metaInformationadaptorCacheInit(
+    EnsPMetaInformationadaptor adaptor);
 
-static void metaInformationAdaptorClearIdentifierCache(void **key,
+static void metaInformationadaptorClearIdentifierCache(void **key,
                                                        void **value,
                                                        void *cl);
 
-static void metaInformationAdaptorClearKeyCache(void **key, void **value,
+static void metaInformationadaptorClearKeyCache(void **key, void **value,
                                                 void *cl);
 
 
@@ -111,7 +111,7 @@ static void metaInformationAdaptorClearKeyCache(void **key, void **value,
 ** Default constructor for an Ensembl Meta-Information object.
 **
 ** @cc Bio::EnsEMBL::Storable
-** @param [r] adaptor [EnsPMetaInformationAdaptor] Ensembl Meta-Information
+** @param [r] adaptor [EnsPMetaInformationadaptor] Ensembl Meta-Information
 **                                                 Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::MetaContainer
@@ -123,7 +123,7 @@ static void metaInformationAdaptorClearKeyCache(void **key, void **value,
 ** @@
 ******************************************************************************/
 
-EnsPMetaInformation ensMetaInformationNew(EnsPMetaInformationAdaptor adaptor,
+EnsPMetaInformation ensMetaInformationNew(EnsPMetaInformationadaptor adaptor,
                                           ajuint identifier,
                                           ajuint species,
                                           AjPStr key,
@@ -289,7 +289,7 @@ void ensMetaInformationDel(EnsPMetaInformation *Pmi)
 ** @fnote None
 **
 ** @nam3rule Get Return Meta-Information attribute(s)
-** @nam4rule GetAdaptor Return the Ensembl Meta-Information Adaptor
+** @nam4rule Getadaptor Return the Ensembl Meta-Information Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetKey Return the key
 ** @nam4rule GetValue Return the value
@@ -297,7 +297,7 @@ void ensMetaInformationDel(EnsPMetaInformation *Pmi)
 **
 ** @argrule * mi [const EnsPMetaInformation] Ensembl Meta-Information
 **
-** @valrule Adaptor [EnsPMetaInformationAdaptor] Ensembl Meta-Information
+** @valrule Adaptor [EnsPMetaInformationadaptor] Ensembl Meta-Information
 **                                               Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule Key [AjPStr] Key
@@ -310,19 +310,19 @@ void ensMetaInformationDel(EnsPMetaInformation *Pmi)
 
 
 
-/* @func ensMetaInformationGetAdaptor *****************************************
+/* @func ensMetaInformationGetadaptor *****************************************
 **
 ** Get the Ensembl Meta-Information Adaptor element of an
 ** Ensembl Meta-Information.
 **
 ** @param [r] mi [const EnsPMetaInformation] Ensembl Meta-Information
 **
-** @return [EnsPMetaInformationAdaptor] Ensembl Meta-Information Adaptor
+** @return [EnsPMetaInformationadaptor] Ensembl Meta-Information Adaptor
 **                                      or NULL
 ** @@
 ******************************************************************************/
 
-EnsPMetaInformationAdaptor ensMetaInformationGetAdaptor(
+EnsPMetaInformationadaptor ensMetaInformationGetadaptor(
     const EnsPMetaInformation mi)
 {
     if(!mi)
@@ -427,7 +427,7 @@ ajuint ensMetaInformationGetSpecies(const EnsPMetaInformation mi)
 ** @fnote None
 **
 ** @nam3rule Set Set one element of a Meta-Information
-** @nam4rule SetAdaptor Set the Ensembl Meta-Information Adaptor
+** @nam4rule Setadaptor Set the Ensembl Meta-Information Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetKey Set the key
 ** @nam4rule SetValue Set the value
@@ -443,21 +443,21 @@ ajuint ensMetaInformationGetSpecies(const EnsPMetaInformation mi)
 
 
 
-/* @func ensMetaInformationSetAdaptor *****************************************
+/* @func ensMetaInformationSetadaptor *****************************************
 **
 ** Set the Ensembl Meta-Information Adaptor element of an
 ** Ensembl Meta-Information.
 **
 ** @param [u] mi [EnsPMetaInformation] Ensembl Meta-Information
-** @param [r] adaptor [EnsPMetaInformationAdaptor] Ensembl Meta-Information
+** @param [r] adaptor [EnsPMetaInformationadaptor] Ensembl Meta-Information
 **                                                 Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMetaInformationSetAdaptor(EnsPMetaInformation mi,
-                                    EnsPMetaInformationAdaptor adaptor)
+AjBool ensMetaInformationSetadaptor(EnsPMetaInformation mi,
+                                    EnsPMetaInformationadaptor adaptor)
 {
     if(!mi)
         return ajFalse;
@@ -676,26 +676,26 @@ ajuint ensMetaInformationGetMemSize(const EnsPMetaInformation mi)
 
 
 
-/* @datasection [EnsPMetaInformationAdaptor] Meta-Information Adaptor *********
+/* @datasection [EnsPMetaInformationadaptor] Meta-Information Adaptor *********
 **
 ** Functions for manipulating Ensembl Meta-Information Adaptor objects
 **
 ** @cc Bio::EnsEMBL::DBSQL::BaseMetaContainer CVS Revision: 1.4
 ** @cc Bio::EnsEMBL::DBSQL::MetaContainer CVS Revision: 1.28
 **
-** @nam2rule MetaInformationAdaptor
+** @nam2rule MetaInformationadaptor
 **
 ******************************************************************************/
 
 
 
 
-/* @funcstatic metaInformationAdaptorFetchAllBySQL ****************************
+/* @funcstatic metaInformationadaptorFetchAllBySQL ****************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl Meta-Information objects.
 **
-** @param [r] adaptor [EnsPMetaInformationAdaptor] Ensembl Meta-Information
+** @param [r] adaptor [EnsPMetaInformationadaptor] Ensembl Meta-Information
 **                                                 Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
 ** @param [u] mis [AjPList] AJAX List of Ensembl Meta-Informations
@@ -704,17 +704,17 @@ ajuint ensMetaInformationGetMemSize(const EnsPMetaInformation mi)
 ** @@
 ******************************************************************************/
 
-static AjBool metaInformationAdaptorFetchAllBySQL(
-    EnsPMetaInformationAdaptor adaptor,
+static AjBool metaInformationadaptorFetchAllBySQL(
+    EnsPMetaInformationadaptor adaptor,
     const AjPStr statement,
     AjPList mis)
 {
     ajuint identifier = 0;
     ajuint species    = 0;
     
-    AjPSqlStatement sqls = NULL;
-    AjISqlRow sqli       = NULL;
-    AjPSqlRow sqlr       = NULL;
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
     
     AjPStr key   = NULL;
     AjPStr value = NULL;
@@ -722,7 +722,7 @@ static AjBool metaInformationAdaptorFetchAllBySQL(
     EnsPMetaInformation mi = NULL;
     
     /*
-     ajDebug("metaInformationAdaptorFetchAllByQuery\n"
+     ajDebug("metaInformationadaptorFetchAllByQuery\n"
 	     "  adaptor %p\n"
 	     "  statement %p\n"
 	     "  mis %p\n",
@@ -740,11 +740,11 @@ static AjBool metaInformationAdaptorFetchAllBySQL(
     if(!mis)
         return ajFalse;
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(adaptor->Adaptor, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(adaptor->Adaptor, statement);
     
-    sqli = ajSqlRowIterNew(sqls);
+    sqli = ajSqlrowiterNew(sqls);
     
-    while(!ajSqlRowIterDone(sqli))
+    while(!ajSqlrowiterDone(sqli))
     {
 	identifier = 0;
 	species    = 0;
@@ -752,12 +752,12 @@ static AjBool metaInformationAdaptorFetchAllBySQL(
 	key   = ajStrNew();
 	value = ajStrNew();
 	
-        sqlr = ajSqlRowIterGet(sqli);
+        sqlr = ajSqlrowiterGet(sqli);
 	
-        ajSqlColumnToUint(sqlr, &identifier);
-        ajSqlColumnToUint(sqlr, &species);
-        ajSqlColumnToStr(sqlr, &key);
-        ajSqlColumnToStr(sqlr, &value);
+        ajSqlcolumnToUint(sqlr, &identifier);
+        ajSqlcolumnToUint(sqlr, &species);
+        ajSqlcolumnToStr(sqlr, &key);
+        ajSqlcolumnToStr(sqlr, &value);
 	
         mi = ensMetaInformationNew(adaptor, identifier, species, key, value);
 	
@@ -767,9 +767,9 @@ static AjBool metaInformationAdaptorFetchAllBySQL(
 	ajStrDel(&value);
     }
     
-    ajSqlRowIterDel(&sqli);
+    ajSqlrowiterDel(&sqli);
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     return ajTrue;
 }
@@ -777,20 +777,20 @@ static AjBool metaInformationAdaptorFetchAllBySQL(
 
 
 
-/* @funcstatic metaInformationAdaptorCacheInit ********************************
+/* @funcstatic metaInformationadaptorCacheInit ********************************
 **
 ** Initialise the internal Meta-Information cache of an
 ** Ensembl Meta-Information Adaptor.
 **
-** @param [u] adaptor [EnsPMetaInformationAdaptor] Ensembl Meta-Information
+** @param [u] adaptor [EnsPMetaInformationadaptor] Ensembl Meta-Information
 **                                                 Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-static AjBool metaInformationAdaptorCacheInit(
-    EnsPMetaInformationAdaptor adaptor)
+static AjBool metaInformationadaptorCacheInit(
+    EnsPMetaInformationadaptor adaptor)
 {
     ajuint *Pidentifier = NULL;
     
@@ -802,7 +802,7 @@ static AjBool metaInformationAdaptorCacheInit(
     EnsPMetaInformation temp = NULL;
     
     /*
-     ajDebug("metaInformationAdaptorCacheInit\n"
+     ajDebug("metaInformationadaptorCacheInit\n"
 	     "  adaptor %p\n",
 	     adaptor);
      */
@@ -820,7 +820,7 @@ static AjBool metaInformationAdaptorCacheInit(
     
     mis = ajListNew();
     
-    metaInformationAdaptorFetchAllBySQL(adaptor, statement, mis);
+    metaInformationadaptorFetchAllBySQL(adaptor, statement, mis);
     
     while(ajListPop(mis, (void **) &mi))
     {
@@ -877,20 +877,20 @@ static AjBool metaInformationAdaptorCacheInit(
 ** Meta-Information Adaptor. The target pointer does not need to be initialised
 ** to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPMetaInformationAdaptor]
+** @fdata [EnsPMetaInformationadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule New dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPMetaInformationAdaptor] Ensembl Meta-Information
+** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+** @argrule Obj object [EnsPMetaInformationadaptor] Ensembl Meta-Information
 **                                                  Adaptor
-** @argrule Ref object [EnsPMetaInformationAdaptor] Ensembl Meta-Information
+** @argrule Ref object [EnsPMetaInformationadaptor] Ensembl Meta-Information
 **                                                  Adaptor
 **
-** @valrule * [EnsPMetaInformationAdaptor] Ensembl Meta-Information Adaptor
+** @valrule * [EnsPMetaInformationadaptor] Ensembl Meta-Information Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -898,23 +898,23 @@ static AjBool metaInformationAdaptorCacheInit(
 
 
 
-/* @func ensMetaInformationAdaptorNew *****************************************
+/* @func ensMetaInformationadaptorNew *****************************************
 **
 ** Default constructor for an Ensembl Meta-Information Adaptor.
 **
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPMetaInformationAdaptor] Ensembl Meta-Information Adaptor
+** @return [EnsPMetaInformationadaptor] Ensembl Meta-Information Adaptor
 **                                      or NULL
 ** @@
 ******************************************************************************/
 
-EnsPMetaInformationAdaptor ensMetaInformationAdaptorNew(EnsPDatabaseAdaptor dba)
+EnsPMetaInformationadaptor ensMetaInformationadaptorNew(EnsPDatabaseadaptor dba)
 {
-    EnsPMetaInformationAdaptor mia = NULL;
+    EnsPMetaInformationadaptor mia = NULL;
     
     /*
-     ajDebug("ensMetaInformationAdaptorNew\n"
+     ajDebug("ensMetaInformationadaptorNew\n"
 	     "  dba %p\n",
 	     dba);
      */
@@ -930,7 +930,7 @@ EnsPMetaInformationAdaptor ensMetaInformationAdaptorNew(EnsPDatabaseAdaptor dba)
     
     mia->CacheByKey = ajTablestrNewLen(0);
     
-    metaInformationAdaptorCacheInit(mia);
+    metaInformationadaptorCacheInit(mia);
     
     return mia;
 }
@@ -938,14 +938,14 @@ EnsPMetaInformationAdaptor ensMetaInformationAdaptorNew(EnsPDatabaseAdaptor dba)
 
 
 
-/* @funcstatic metaInformationAdaptorClearIdentifierCache *********************
+/* @funcstatic metaInformationadaptorClearIdentifierCache *********************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Meta-Information
 ** Adaptor-internal Ensembl Meta-Information cache. This function deletes the
 ** unsigned integer identifier key and the Ensembl Meta-Information value data.
 **
-** @param [u] key [void **] AJAX unsigned integer key data address
-** @param [u] value [void **] Ensembl Meta-Information value data address
+** @param [u] key [void**] AJAX unsigned integer key data address
+** @param [u] value [void**] Ensembl Meta-Information value data address
 ** @param [r] cl [void*] Standard, passed in from ajTableMapDel
 ** @see ajTableMapDel
 **
@@ -953,7 +953,7 @@ EnsPMetaInformationAdaptor ensMetaInformationAdaptorNew(EnsPDatabaseAdaptor dba)
 ** @@
 ******************************************************************************/
 
-static void metaInformationAdaptorClearIdentifierCache(void **key,
+static void metaInformationadaptorClearIdentifierCache(void **key,
                                                        void **value,
                                                        void *cl)
 {
@@ -981,15 +981,15 @@ static void metaInformationAdaptorClearIdentifierCache(void **key,
 
 
 
-/* @funcstatic metaInformationAdaptorClearKeyCache ****************************
+/* @funcstatic metaInformationadaptorClearKeyCache ****************************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Meta-Information
 ** Adaptor-internal Ensembl Meta-Information cache. This function deletes the
 ** AJAX String Meta-Information key data and the AJAX List value data, as well
 ** as the Ensembl Meta-Information data from the AJAX List.
 **
-** @param [u] key [void **] AJAX String key data address
-** @param [u] value [void **] AJAX List value data address
+** @param [u] key [void**] AJAX String key data address
+** @param [u] value [void**] AJAX List value data address
 ** @param [r] cl [void*] Standard, passed in from ajTableMapDel
 ** @see ajTableMapDel
 **
@@ -997,7 +997,7 @@ static void metaInformationAdaptorClearIdentifierCache(void **key,
 ** @@
 ******************************************************************************/
 
-static void metaInformationAdaptorClearKeyCache(void **key, void **value,
+static void metaInformationadaptorClearKeyCache(void **key, void **value,
                                                 void *cl)
 {
     EnsPMetaInformation mi = NULL;
@@ -1034,12 +1034,12 @@ static void metaInformationAdaptorClearKeyCache(void **key, void **value,
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Meta-Information Adaptor.
 **
-** @fdata [EnsPMetaInformationAdaptor]
+** @fdata [EnsPMetaInformationadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a Meta-Information Adaptor object
 **
-** @argrule * Padaptor [EnsPMetaInformationAdaptor*] Meta-Information Adaptor
+** @argrule * Padaptor [EnsPMetaInformationadaptor*] Meta-Information Adaptor
 **                                                   object address
 **
 ** @valrule * [void]
@@ -1050,21 +1050,21 @@ static void metaInformationAdaptorClearKeyCache(void **key, void **value,
 
 
 
-/* @func ensMetaInformationAdaptorDel *****************************************
+/* @func ensMetaInformationadaptorDel *****************************************
 **
 ** Default destructor for an Ensembl Meta-Information Adaptor.
 ** This function also clears the internal caches.
 **
-** @param [d] Padaptor [EnsPMetaInformationAdaptor*] Ensembl Meta-Information
+** @param [d] Padaptor [EnsPMetaInformationadaptor*] Ensembl Meta-Information
 **                                                   Adaptor address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensMetaInformationAdaptorDel(EnsPMetaInformationAdaptor *Padaptor)
+void ensMetaInformationadaptorDel(EnsPMetaInformationadaptor *Padaptor)
 {
-    EnsPMetaInformationAdaptor pthis = NULL;
+    EnsPMetaInformationadaptor pthis = NULL;
     
     if(!Padaptor)
 	return;
@@ -1077,7 +1077,7 @@ void ensMetaInformationAdaptorDel(EnsPMetaInformationAdaptor *Padaptor)
     /* Clear and delete the identifier cache. */
     
     ajTableMapDel(pthis->CacheByIdentifier,
-		  metaInformationAdaptorClearIdentifierCache,
+		  metaInformationadaptorClearIdentifierCache,
 		  NULL);
     
     ajTableFree(&((*Padaptor)->CacheByIdentifier));
@@ -1085,7 +1085,7 @@ void ensMetaInformationAdaptorDel(EnsPMetaInformationAdaptor *Padaptor)
     /* Clear and delete the key cache. */
     
     ajTableMapDel(pthis->CacheByKey,
-		  metaInformationAdaptorClearKeyCache,
+		  metaInformationadaptorClearKeyCache,
 		  NULL);
     
     ajTableFree(&pthis->CacheByKey);
@@ -1100,11 +1100,11 @@ void ensMetaInformationAdaptorDel(EnsPMetaInformationAdaptor *Padaptor)
 
 
 
-/* @func ensMetaInformationAdaptorFetchAllByKey *******************************
+/* @func ensMetaInformationadaptorFetchAllByKey *******************************
 **
 ** Fetch Ensembl Meta-Information objects by a key.
 **
-** @param [r] adaptor [const EnsPMetaInformationAdaptor] Ensembl
+** @param [r] adaptor [const EnsPMetaInformationadaptor] Ensembl
 **                                                       Meta-Information
 **                                                       Adaptor
 ** @param [r] key [const AjPStr] Key
@@ -1114,8 +1114,8 @@ void ensMetaInformationAdaptorDel(EnsPMetaInformationAdaptor *Padaptor)
 ** @@
 ******************************************************************************/
 
-AjBool ensMetaInformationAdaptorFetchAllByKey(
-    const EnsPMetaInformationAdaptor adaptor,
+AjBool ensMetaInformationadaptorFetchAllByKey(
+    const EnsPMetaInformationadaptor adaptor,
     const AjPStr key,
     AjPList mis)
 {
@@ -1152,14 +1152,14 @@ AjBool ensMetaInformationAdaptorFetchAllByKey(
 
 
 
-/* @func ensMetaInformationAdaptorGetValueByKey *******************************
+/* @func ensMetaInformationadaptorGetValueByKey *******************************
 **
 ** Get a single Meta-Information value by a key.
 ** The function warns in case there is more than one Meta-Information value to
 ** a particular key and will return the first value returned by the database
 ** engine.
 **
-** @param [r] adaptor [const EnsPMetaInformationAdaptor] Ensembl
+** @param [r] adaptor [const EnsPMetaInformationadaptor] Ensembl
 **                                                       Meta-Information
 **                                                       Adaptor
 ** @param [r] key [const AjPStr] Key
@@ -1169,8 +1169,8 @@ AjBool ensMetaInformationAdaptorFetchAllByKey(
 ** @@
 ******************************************************************************/
 
-AjBool ensMetaInformationAdaptorGetValueByKey(
-    const EnsPMetaInformationAdaptor adaptor,
+AjBool ensMetaInformationadaptorGetValueByKey(
+    const EnsPMetaInformationadaptor adaptor,
     const AjPStr key,
     AjPStr* Pvalue)
 {
@@ -1201,7 +1201,7 @@ AjBool ensMetaInformationAdaptorGetValueByKey(
     {
         errors++;
 	
-        ajDebug("ensMetaInformationAdaptorGetValueByKey No 'meta.meta_value' "
+        ajDebug("ensMetaInformationadaptorGetValueByKey No 'meta.meta_value' "
 	        "matched for 'meta.meta_key' '%S'.\n", key);
     }
     else
@@ -1210,7 +1210,7 @@ AjBool ensMetaInformationAdaptorGetValueByKey(
 	{
 	    errors++;
 	    
-	    ajDebug("ensMetaInformationAdaptorGetValueByKey matched %d "
+	    ajDebug("ensMetaInformationadaptorGetValueByKey matched %d "
 		    "'meta.meta_value' by 'meta.meta_key' '%S', "
 		    "but only the first value was returned.\n",
 		    length, key);
@@ -1230,11 +1230,11 @@ AjBool ensMetaInformationAdaptorGetValueByKey(
 
 
 
-/* @func ensMetaInformationAdaptorGetGenebuildVersion *************************
+/* @func ensMetaInformationadaptorGetGenebuildVersion *************************
 **
 ** Get the Ensembl Genebuild Version.
 **
-** @param [r] adaptor [const EnsPMetaInformationAdaptor] Ensembl
+** @param [r] adaptor [const EnsPMetaInformationadaptor] Ensembl
 **                                                       Meta-Information
 *                                                        Adaptor
 ** @param [wP] Pvalue [AjPStr*] Value String address
@@ -1243,8 +1243,8 @@ AjBool ensMetaInformationAdaptorGetValueByKey(
 ** @@
 ******************************************************************************/
 
-AjBool ensMetaInformationAdaptorGetGenebuildVersion(
-    const EnsPMetaInformationAdaptor adaptor,
+AjBool ensMetaInformationadaptorGetGenebuildVersion(
+    const EnsPMetaInformationadaptor adaptor,
     AjPStr *Pvalue)
 {
     ajint errors = 0;
@@ -1262,7 +1262,7 @@ AjBool ensMetaInformationAdaptorGetGenebuildVersion(
     
     key = ajStrNewC("genebuild.version");
     
-    if(!ensMetaInformationAdaptorGetValueByKey(adaptor, key, Pvalue))
+    if(!ensMetaInformationadaptorGetValueByKey(adaptor, key, Pvalue))
         errors++;
     
     ajStrDel(&key);
@@ -1276,11 +1276,11 @@ AjBool ensMetaInformationAdaptorGetGenebuildVersion(
 
 
 
-/* @func ensMetaInformationAdaptorGetSchemaVersion ****************************
+/* @func ensMetaInformationadaptorGetSchemaVersion ****************************
 **
 ** Get the Ensembl Database Schema Version.
 **
-** @param [r] adaptor [const EnsPMetaInformationAdaptor] Ensembl
+** @param [r] adaptor [const EnsPMetaInformationadaptor] Ensembl
 **                                                       Meta-Information
 **                                                       Adaptor
 ** @param [wP] Pvalue [AjPStr*] Value String address
@@ -1289,8 +1289,8 @@ AjBool ensMetaInformationAdaptorGetGenebuildVersion(
 ** @@
 ******************************************************************************/
 
-AjBool ensMetaInformationAdaptorGetSchemaVersion(
-    const EnsPMetaInformationAdaptor adaptor,
+AjBool ensMetaInformationadaptorGetSchemaVersion(
+    const EnsPMetaInformationadaptor adaptor,
     AjPStr *Pvalue)
 {
     ajint errors = 0;
@@ -1308,7 +1308,7 @@ AjBool ensMetaInformationAdaptorGetSchemaVersion(
     
     key = ajStrNewC("schema_version");
     
-    if(!ensMetaInformationAdaptorGetValueByKey(adaptor, key, Pvalue))
+    if(!ensMetaInformationadaptorGetValueByKey(adaptor, key, Pvalue))
         errors++;
     
     ajStrDel(&key);
@@ -1322,11 +1322,11 @@ AjBool ensMetaInformationAdaptorGetSchemaVersion(
 
 
 
-/* @func ensMetaInformationAdaptorGetTaxonomyIdentifier ***********************
+/* @func ensMetaInformationadaptorGetTaxonomyIdentifier ***********************
 **
 ** Fetch the NCBI Taxonomy database identifier.
 **
-** @param [r] adaptor [const EnsPMetaInformationAdaptor] Ensembl
+** @param [r] adaptor [const EnsPMetaInformationadaptor] Ensembl
 **                                                       Meta-Information
 **                                                       Adaptor
 ** @param [wP] Pvalue [AjPStr*] Value String address
@@ -1335,8 +1335,8 @@ AjBool ensMetaInformationAdaptorGetSchemaVersion(
 ** @@
 ******************************************************************************/
 
-AjBool ensMetaInformationAdaptorGetTaxonomyIdentifier(
-    const EnsPMetaInformationAdaptor adaptor,
+AjBool ensMetaInformationadaptorGetTaxonomyIdentifier(
+    const EnsPMetaInformationadaptor adaptor,
     AjPStr *Pvalue)
 {
     ajint errors = 0;
@@ -1354,7 +1354,7 @@ AjBool ensMetaInformationAdaptorGetTaxonomyIdentifier(
     
     key = ajStrNewC("species.taxonomy_id");
     
-    if(!ensMetaInformationAdaptorGetValueByKey(adaptor, key, Pvalue))
+    if(!ensMetaInformationadaptorGetValueByKey(adaptor, key, Pvalue))
         errors++;
     
     ajStrDel(&key);
@@ -1368,12 +1368,12 @@ AjBool ensMetaInformationAdaptorGetTaxonomyIdentifier(
 
 
 
-/* @func ensMetaInformationAdaptorKeyValueExists ******************************
+/* @func ensMetaInformationadaptorKeyValueExists ******************************
 **
 ** Test whether an Ensembl Meta-Information objects with a particular
 ** key and value exists.
 **
-** @param [r] adaptor [const EnsPMetaInformationAdaptor] Ensembl
+** @param [r] adaptor [const EnsPMetaInformationadaptor] Ensembl
 **                                                       Meta-Information
 **                                                       Adaptor
 ** @param [r] key [const AjPStr] Key
@@ -1383,8 +1383,8 @@ AjBool ensMetaInformationAdaptorGetTaxonomyIdentifier(
 ** @@
 ******************************************************************************/
 
-AjBool ensMetaInformationAdaptorKeyValueExists(
-    const EnsPMetaInformationAdaptor adaptor,
+AjBool ensMetaInformationadaptorKeyValueExists(
+    const EnsPMetaInformationadaptor adaptor,
     const AjPStr key,
     const AjPStr value)
 {

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -43,17 +43,17 @@
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-extern EnsPAnalysisAdaptor
-ensRegistryGetAnalysisAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPAnalysisadaptor
+ensRegistryGetAnalysisadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPQCAlignmentAdaptor
-ensRegistryGetQCAlignmentAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPQCAlignmentadaptor
+ensRegistryGetQCAlignmentadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPQCSequenceAdaptor
-ensRegistryGetQCSequenceAdaptor(EnsPDatabaseAdaptor dba);
+extern EnsPQCSequenceadaptor
+ensRegistryGetQCSequenceadaptor(EnsPDatabaseadaptor dba);
 
 
-static AjBool qcAlignmentAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
+static AjBool qcAlignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
                                               EnsPAssemblyMapper am,
                                               EnsPSlice slice,
@@ -114,7 +114,7 @@ static AjBool qcAlignmentAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 ** Default constructor for an Ensembl QC Alignment.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] adaptor [EnsPQCAlignmentAdaptor] Ensembl QC Alignment Adaptor
+** @param [r] adaptor [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::QC::Alignment::new
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
@@ -136,7 +136,7 @@ static AjBool qcAlignmentAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 ** @@
 ******************************************************************************/
 
-EnsPQCAlignment ensQCAlignmentNew(EnsPQCAlignmentAdaptor adaptor,
+EnsPQCAlignment ensQCAlignmentNew(EnsPQCAlignmentadaptor adaptor,
                                   ajuint identifier,
                                   EnsPAnalysis analysis,
                                   EnsPQCSequence qsequence,
@@ -375,12 +375,12 @@ void ensQCAlignmentDel(EnsPQCAlignment *Pqca)
 ** @fnote None
 **
 ** @nam3rule Get Return QC Alignment attribute(s)
-** @nam4rule GetAdaptor Return the Ensembl QC Alignment Adaptor
+** @nam4rule Getadaptor Return the Ensembl QC Alignment Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 **
 ** @argrule * qca [const EnsPQCAlignment] QC Alignment
 **
-** @valrule Adaptor [EnsPQCAlignmentAdaptor] Ensembl QC Alignment Adaptor
+** @valrule Adaptor [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule Analysis [EnsPAnalysis] Ensembl Analysis
 ** @valrule QuerySequence [AjPStr] Query Ensembl QC Sequence
@@ -403,17 +403,17 @@ void ensQCAlignmentDel(EnsPQCAlignment *Pqca)
 
 
 
-/* @func ensQCAlignmentGetAdaptor *********************************************
+/* @func ensQCAlignmentGetadaptor *********************************************
 **
 ** Get the Ensembl QC Alignment Adaptor element of an Ensembl QC Alignment.
 **
 ** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
 **
-** @return [EnsPQCAlignmentAdaptor] Ensembl QC Alignment Adaptor
+** @return [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPQCAlignmentAdaptor ensQCAlignmentGetAdaptor(const EnsPQCAlignment qca)
+EnsPQCAlignmentadaptor ensQCAlignmentGetadaptor(const EnsPQCAlignment qca)
 {
     if(!qca)
 	return NULL;
@@ -748,7 +748,7 @@ AjPStr ensQCAlignmentGetVULGAR(const EnsPQCAlignment qca)
 ** @fnote None
 **
 ** @nam3rule Set Set one element of a QC Alignment
-** @nam4rule SetAdaptor Set the Ensembl QC Alignment Adaptor
+** @nam4rule Setadaptor Set the Ensembl QC Alignment Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetQuerySequence Set the query Ensembl QC Sequence
 ** @nam4rule SetQueryStart Set the query start
@@ -774,19 +774,19 @@ AjPStr ensQCAlignmentGetVULGAR(const EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentSetAdaptor *********************************************
+/* @func ensQCAlignmentSetadaptor *********************************************
 **
 ** Set the Ensembl QC Alignment Adaptor element of an QC Alignment.
 **
 ** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
-** @param [r] qcaa [EnsPQCAlignmentAdaptor] Ensembl QC Alignment Adaptor
+** @param [r] qcaa [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentSetAdaptor(EnsPQCAlignment qca,
-                                EnsPQCAlignmentAdaptor qcaa)
+AjBool ensQCAlignmentSetadaptor(EnsPQCAlignment qca,
+                                EnsPQCAlignmentadaptor qcaa)
 {
     if(!qca)
 	return ajFalse;
@@ -2838,17 +2838,17 @@ AjBool ensQCAlignmentReport(const EnsPQCAlignment qca,
 
 
 
-/* @datasection [EnsPQCAlignmentAdaptor] QC Alignment Adaptor *****************
+/* @datasection [EnsPQCAlignmentadaptor] QC Alignment Adaptor *****************
 **
 ** Functions for manipulating Ensembl QC Alignment Adaptor objects
 **
-** Bio::EnsEMBL::QC::DBSQL::AlignmentAdaptor CVS Revision:
+** Bio::EnsEMBL::QC::DBSQL::Alignmentadaptor CVS Revision:
 **
-** @nam2rule QCAlignmentAdaptor
+** @nam2rule QCAlignmentadaptor
 **
 ******************************************************************************/
 
-static const char *qcAlignmentAdaptorTables[] =
+static const char *qcAlignmentadaptorTables[] =
 {
     "alignment",
     (const char *) NULL
@@ -2857,7 +2857,7 @@ static const char *qcAlignmentAdaptorTables[] =
 
 
 
-static const char *qcAlignmentAdaptorColumns[] =
+static const char *qcAlignmentadaptorColumns[] =
 {
     "alignment.alignment_id",
     "alignment.analysis_id",
@@ -2882,7 +2882,7 @@ static const char *qcAlignmentAdaptorColumns[] =
 
 
 
-static EnsOBaseAdaptorLeftJoin qcAlignmentAdaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin qcAlignmentadaptorLeftJoin[] =
 {
     {(const char*) NULL, (const char*) NULL}
 };
@@ -2890,21 +2890,21 @@ static EnsOBaseAdaptorLeftJoin qcAlignmentAdaptorLeftJoin[] =
 
 
 
-static const char *qcAlignmentAdaptorDefaultCondition =
+static const char *qcAlignmentadaptorDefaultCondition =
 (const char*) NULL;
 
-static const char *qcAlignmentAdaptorFinalCondition =
+static const char *qcAlignmentadaptorFinalCondition =
 (const char *) NULL;
 
 
 
 
-/* @funcstatic qcAlignmentAdaptorFetchAllBySQL ********************************
+/* @funcstatic qcAlignmentadaptorFetchAllBySQL ********************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl QC Alignment objects.
 **
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
 ** @param [u] am [EnsPAssemblyMapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
@@ -2914,7 +2914,7 @@ static const char *qcAlignmentAdaptorFinalCondition =
 ** @@
 ******************************************************************************/
 
-static AjBool qcAlignmentAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
+static AjBool qcAlignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
                                               EnsPAssemblyMapper am,
                                               EnsPSlice slice,
@@ -2940,21 +2940,21 @@ static AjBool qcAlignmentAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
     ajuint tend   = 0;
 
     
-    AjPSqlStatement sqls = NULL;
-    AjISqlRow sqli       = NULL;
-    AjPSqlRow sqlr       = NULL;
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
     
     AjPStr vulgar = NULL;
     
     EnsPAnalysis analysis  = NULL;
-    EnsPAnalysisAdaptor aa = NULL;
+    EnsPAnalysisadaptor aa = NULL;
     
     EnsPQCAlignment qca         = NULL;
-    EnsPQCAlignmentAdaptor qcaa = NULL;
+    EnsPQCAlignmentadaptor qcaa = NULL;
     
     EnsPQCSequence qsequence   = NULL;
     EnsPQCSequence tsequence   = NULL;
-    EnsPQCSequenceAdaptor qcsa = NULL;
+    EnsPQCSequenceadaptor qcsa = NULL;
     
     if(!dba)
 	return ajFalse;
@@ -2969,17 +2969,17 @@ static AjBool qcAlignmentAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
     if(!qcas)
 	return ajFalse;
     
-    aa = ensRegistryGetAnalysisAdaptor(dba);
+    aa = ensRegistryGetAnalysisadaptor(dba);
     
-    qcaa = ensRegistryGetQCAlignmentAdaptor(dba);
+    qcaa = ensRegistryGetQCAlignmentadaptor(dba);
     
-    qcsa = ensRegistryGetQCSequenceAdaptor(dba);
+    qcsa = ensRegistryGetQCSequenceadaptor(dba);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    sqli = ajSqlRowIterNew(sqls);
+    sqli = ajSqlrowiterNew(sqls);
     
-    while(!ajSqlRowIterDone(sqli))
+    while(!ajSqlrowiterDone(sqli))
     {
 	identifier = 0;
 	analysisid = 0;
@@ -2999,31 +2999,31 @@ static AjBool qcAlignmentAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	vulgar     = ajStrNew();
 	coverage   = 0;
 	
-        sqlr = ajSqlRowIterGet(sqli);
+        sqlr = ajSqlrowiterGet(sqli);
 	
-        ajSqlColumnToUint(sqlr, &identifier);
-        ajSqlColumnToUint(sqlr, &analysisid);
-	ajSqlColumnToUint(sqlr, &qdbid);
-	ajSqlColumnToUint(sqlr, &qsid);
-	ajSqlColumnToUint(sqlr, &qstart);
-	ajSqlColumnToUint(sqlr, &qend);
-	ajSqlColumnToInt(sqlr, &qstrand);
-	ajSqlColumnToUint(sqlr, &tdbid);
-	ajSqlColumnToUint(sqlr, &tsid);
-	ajSqlColumnToUint(sqlr, &tstart);
-	ajSqlColumnToUint(sqlr, &tend);
-	ajSqlColumnToInt(sqlr, &tstrand);
-	ajSqlColumnToInt(sqlr, &sstrand);
-	ajSqlColumnToDouble(sqlr, &score);
-	ajSqlColumnToFloat(sqlr, &identity);
-	ajSqlColumnToStr(sqlr, &vulgar);
-	ajSqlColumnToUint(sqlr, &coverage);
+        ajSqlcolumnToUint(sqlr, &identifier);
+        ajSqlcolumnToUint(sqlr, &analysisid);
+	ajSqlcolumnToUint(sqlr, &qdbid);
+	ajSqlcolumnToUint(sqlr, &qsid);
+	ajSqlcolumnToUint(sqlr, &qstart);
+	ajSqlcolumnToUint(sqlr, &qend);
+	ajSqlcolumnToInt(sqlr, &qstrand);
+	ajSqlcolumnToUint(sqlr, &tdbid);
+	ajSqlcolumnToUint(sqlr, &tsid);
+	ajSqlcolumnToUint(sqlr, &tstart);
+	ajSqlcolumnToUint(sqlr, &tend);
+	ajSqlcolumnToInt(sqlr, &tstrand);
+	ajSqlcolumnToInt(sqlr, &sstrand);
+	ajSqlcolumnToDouble(sqlr, &score);
+	ajSqlcolumnToFloat(sqlr, &identity);
+	ajSqlcolumnToStr(sqlr, &vulgar);
+	ajSqlcolumnToUint(sqlr, &coverage);
 	
-	ensAnalysisAdaptorFetchByIdentifier(aa, analysisid, &analysis);
+	ensAnalysisadaptorFetchByIdentifier(aa, analysisid, &analysis);
 	
-	ensQCSequenceAdaptorFetchByIdentifier(qcsa, qsid, &qsequence);
+	ensQCSequenceadaptorFetchByIdentifier(qcsa, qsid, &qsequence);
 	
-	ensQCSequenceAdaptorFetchByIdentifier(qcsa, tsid, &tsequence);
+	ensQCSequenceadaptorFetchByIdentifier(qcsa, tsid, &tsequence);
 	
 	qca = ensQCAlignmentNew(qcaa,
 				identifier,
@@ -3053,9 +3053,9 @@ static AjBool qcAlignmentAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 	ajStrDel(&vulgar);
     }
     
-    ajSqlRowIterDel(&sqli);
+    ajSqlrowiterDel(&sqli);
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     return ajTrue;
 }
@@ -3070,18 +3070,18 @@ static AjBool qcAlignmentAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 ** QC Alignment Adaptor. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPQCAlignmentAdaptor]
+** @fdata [EnsPQCAlignmentadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule New dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPQCAlignmentAdaptor] Ensembl QC Alignment Adaptor
-** @argrule Ref object [EnsPQCAlignmentAdaptor] Ensembl QC Alignment Adaptor
+** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+** @argrule Obj object [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
+** @argrule Ref object [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
 **
-** @valrule * [EnsPQCAlignmentAdaptor] Ensembl QC Alignment Adaptor
+** @valrule * [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -3089,28 +3089,28 @@ static AjBool qcAlignmentAdaptorFetchAllBySQL(EnsPDatabaseAdaptor dba,
 
 
 
-/* @func ensQCAlignmentAdaptorNew *********************************************
+/* @func ensQCAlignmentadaptorNew *********************************************
 **
 ** Default constructor for an Ensembl QC Alignment Adaptor.
 **
-** @param [r] dba [EnsPDatabaseAdaptor] Ensembl Database Adaptor
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPQCAlignmentAdaptor] Ensembl QC Alignment Adaptor or NULL
+** @return [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCAlignmentAdaptor ensQCAlignmentAdaptorNew(EnsPDatabaseAdaptor dba)
+EnsPQCAlignmentadaptor ensQCAlignmentadaptorNew(EnsPDatabaseadaptor dba)
 {
     if(!dba)
 	return NULL;
     
-    return ensBaseAdaptorNew(dba,
-			     qcAlignmentAdaptorTables,
-			     qcAlignmentAdaptorColumns,
-			     qcAlignmentAdaptorLeftJoin,
-			     qcAlignmentAdaptorDefaultCondition,
-			     qcAlignmentAdaptorFinalCondition,
-			     qcAlignmentAdaptorFetchAllBySQL);
+    return ensBaseadaptorNew(dba,
+			     qcAlignmentadaptorTables,
+			     qcAlignmentadaptorColumns,
+			     qcAlignmentadaptorLeftJoin,
+			     qcAlignmentadaptorDefaultCondition,
+			     qcAlignmentadaptorFinalCondition,
+			     qcAlignmentadaptorFetchAllBySQL);
 }
 
 
@@ -3121,12 +3121,12 @@ EnsPQCAlignmentAdaptor ensQCAlignmentAdaptorNew(EnsPDatabaseAdaptor dba)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl QC Alignment Adaptor.
 **
-** @fdata [EnsPQCAlignmentAdaptor]
+** @fdata [EnsPQCAlignmentadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a QC Alignment Adaptor object
 **
-** @argrule * Pqcaa [EnsPQCAlignmentAdaptor*] QC Alignment Adaptor
+** @argrule * Pqcaa [EnsPQCAlignmentadaptor*] QC Alignment Adaptor
 **                                            object address
 **
 ** @valrule * [void]
@@ -3137,21 +3137,21 @@ EnsPQCAlignmentAdaptor ensQCAlignmentAdaptorNew(EnsPDatabaseAdaptor dba)
 
 
 
-/* @func ensQCAlignmentAdaptorDel *********************************************
+/* @func ensQCAlignmentadaptorDel *********************************************
 **
 ** Default destructor for an Ensembl QC Alignment Adaptor.
 **
-** @param [d] Pqcaa [EnsPQCAlignmentAdaptor*] Ensembl QC Alignment Adaptor
+** @param [d] Pqcaa [EnsPQCAlignmentadaptor*] Ensembl QC Alignment Adaptor
 **                                            address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensQCAlignmentAdaptorDel(EnsPQCAlignmentAdaptor *Pqcaa)
+void ensQCAlignmentadaptorDel(EnsPQCAlignmentadaptor *Pqcaa)
 {
     /*
-     ajDebug("ensQCAlignmentAdaptorDel\n"
+     ajDebug("ensQCAlignmentadaptorDel\n"
 	     "  *Pqcaa %p\n",
 	     *Pqcaa);
      */
@@ -3162,7 +3162,7 @@ void ensQCAlignmentAdaptorDel(EnsPQCAlignmentAdaptor *Pqcaa)
     if(!*Pqcaa)
 	return;
     
-    ensBaseAdaptorDel(Pqcaa);
+    ensBaseadaptorDel(Pqcaa);
     
     return;
 }
@@ -3170,12 +3170,12 @@ void ensQCAlignmentAdaptorDel(EnsPQCAlignmentAdaptor *Pqcaa)
 
 
 
-/* @func ensQCAlignmentAdaptorFetchByIdentifier *******************************
+/* @func ensQCAlignmentadaptorFetchByIdentifier *******************************
 **
 ** Fetch an Ensembl QC Alignment via its SQL database-internal identifier.
 ** The caller is responsible for deleting the Ensembl QC Alignment.
 **
-** @param [r] adaptor [EnsPQCAlignmentAdaptor] Ensembl QC Alignment Adaptor
+** @param [r] adaptor [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal QC Alignment identifier
 ** @param [wP] Pqca [EnsPQCAlignment*] Ensembl QC Alignment address
 **
@@ -3183,7 +3183,7 @@ void ensQCAlignmentAdaptorDel(EnsPQCAlignmentAdaptor *Pqcaa)
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentAdaptorFetchByIdentifier(EnsPQCAlignmentAdaptor adaptor,
+AjBool ensQCAlignmentadaptorFetchByIdentifier(EnsPQCAlignmentadaptor adaptor,
                                               ajuint identifier,
                                               EnsPQCAlignment *Pqca)
 {
@@ -3197,7 +3197,7 @@ AjBool ensQCAlignmentAdaptorFetchByIdentifier(EnsPQCAlignmentAdaptor adaptor,
 	return ajFalse;
     
     *Pqca = (EnsPQCAlignment)
-	ensBaseAdaptorFetchByIdentifier(adaptor, identifier);
+	ensBaseadaptorFetchByIdentifier(adaptor, identifier);
     
     return ajTrue;
 }
@@ -3205,14 +3205,14 @@ AjBool ensQCAlignmentAdaptorFetchByIdentifier(EnsPQCAlignmentAdaptor adaptor,
 
 
 
-/* @func ensQCAlignmentAdaptorFetchAllByAnalysisQueryTarget *******************
+/* @func ensQCAlignmentadaptorFetchAllByAnalysisQueryTarget *******************
 **
 ** Fetch all Ensembl QC Alignments by Ensembl an Analysis, as well as
 ** Query and Target Ensembl Sequences.
 ** The caller is responsible for deleting the Ensembl QC Alignments
 ** before deleting the AJAX List.
 **
-** @param [r] qcaa [EnsPQCAlignmentAdaptor] Ensembl QC Alignment Adaptor
+** @param [r] qcaa [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 ** @param [r] qdb [const EnsPQCDatabase] Query Ensembl QC Database
 ** @param [r] tdb [const EnsPQCDatabase] Target Ensembl QC Database
@@ -3222,8 +3222,8 @@ AjBool ensQCAlignmentAdaptorFetchByIdentifier(EnsPQCAlignmentAdaptor adaptor,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentAdaptorFetchAllByAnalysisQueryTarget(
-    EnsPQCAlignmentAdaptor qcaa,
+AjBool ensQCAlignmentadaptorFetchAllByAnalysisQueryTarget(
+    EnsPQCAlignmentadaptor qcaa,
     const EnsPAnalysis analysis,
     const EnsPQCDatabase qdb,
     const EnsPQCDatabase tdb,
@@ -3255,7 +3255,7 @@ AjBool ensQCAlignmentAdaptorFetchAllByAnalysisQueryTarget(
 			  ensQCDatabaseGetIdentifier(qdb),
 			  ensQCDatabaseGetIdentifier(tdb));
     
-    ensBaseAdaptorGenericFetch(qcaa,
+    ensBaseadaptorGenericFetch(qcaa,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -3269,13 +3269,13 @@ AjBool ensQCAlignmentAdaptorFetchAllByAnalysisQueryTarget(
 
 
 
-/* @func ensQCAlignmentAdaptorFetchAllByQuery *********************************
+/* @func ensQCAlignmentadaptorFetchAllByQuery *********************************
 **
 ** Fetch all Ensembl QC Alignments by a Query Ensembl QC Sequence.
 ** The caller is responsible for deleting the Ensembl QC Alignments
 ** before deleting the AJAX List.
 **
-** @param [r] qcaa [EnsPQCAlignmentAdaptor] Ensembl QC Alignment Adaptor
+** @param [r] qcaa [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
 ** @param [rN] analysis [const EnsPAnalysis] Ensembl Analysis
 ** @param [r] qdb [const EnsPQCDatabase] Query Ensembl QC Database
 ** @param [w] qcas [AjPList] AJAX List of Ensembl QC Alignments
@@ -3284,7 +3284,7 @@ AjBool ensQCAlignmentAdaptorFetchAllByAnalysisQueryTarget(
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentAdaptorFetchAllByQuery(EnsPQCAlignmentAdaptor qcaa,
+AjBool ensQCAlignmentadaptorFetchAllByQuery(EnsPQCAlignmentadaptor qcaa,
                                             const EnsPAnalysis analysis,
                                             const EnsPQCDatabase qdb,
                                             AjPList qcas)
@@ -3308,7 +3308,7 @@ AjBool ensQCAlignmentAdaptorFetchAllByQuery(EnsPQCAlignmentAdaptor qcaa,
 		       " AND alignment.analysis_id = %u",
 		       ensAnalysisGetIdentifier(analysis));
     
-    ensBaseAdaptorGenericFetch(qcaa,
+    ensBaseadaptorGenericFetch(qcaa,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -3322,13 +3322,13 @@ AjBool ensQCAlignmentAdaptorFetchAllByQuery(EnsPQCAlignmentAdaptor qcaa,
 
 
 
-/* @func ensQCAlignmentAdaptorFetchAllByTarget ********************************
+/* @func ensQCAlignmentadaptorFetchAllByTarget ********************************
 **
 ** Fetch all Ensembl QC Alignments by a Target Ensembl QC Sequence.
 ** The caller is responsible for deleting the Ensembl QC Alignments
 ** before deleting the AJAX List.
 **
-** @param [r] qcaa [EnsPQCAlignmentAdaptor] Ensembl QC Alignment Adaptor
+** @param [r] qcaa [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
 ** @param [rN] analysis [const EnsPAnalysis] Ensembl Analysis
 ** @param [r] tdb [const EnsPQCDatabase] Target Ensembl QC Database
 ** @param [w] qcas [AjPList] AJAX List of Ensembl QC Alignments
@@ -3337,7 +3337,7 @@ AjBool ensQCAlignmentAdaptorFetchAllByQuery(EnsPQCAlignmentAdaptor qcaa,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentAdaptorFetchAllByTarget(EnsPQCAlignmentAdaptor qcaa,
+AjBool ensQCAlignmentadaptorFetchAllByTarget(EnsPQCAlignmentadaptor qcaa,
                                              const EnsPAnalysis analysis,
                                              const EnsPQCDatabase tdb,
                                              AjPList qcas)
@@ -3361,7 +3361,7 @@ AjBool ensQCAlignmentAdaptorFetchAllByTarget(EnsPQCAlignmentAdaptor qcaa,
 		       " AND alignment.analysis_id = %u",
 		       ensAnalysisGetIdentifier(analysis));
     
-    ensBaseAdaptorGenericFetch(qcaa,
+    ensBaseadaptorGenericFetch(qcaa,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -3375,13 +3375,13 @@ AjBool ensQCAlignmentAdaptorFetchAllByTarget(EnsPQCAlignmentAdaptor qcaa,
 
 
 
-/* @func ensQCAlignmentAdaptorFetchAllByCoverage ******************************
+/* @func ensQCAlignmentadaptorFetchAllByCoverage ******************************
 **
 ** Fetch all Ensembl QC Alignments by a coverage score range.
 ** The caller is responsible for deleting the Ensembl QC Alignments
 ** before deleting the AJAX List.
 **
-** @param [r] qcaa [EnsPQCAlignmentAdaptor] Ensembl QC Alignment Adaptor
+** @param [r] qcaa [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
 ** @param [r] lower [ajuint] Lower coverage score
 ** @param [r] upper [ajuint] Upper coverage score
 ** @param [w] qcas [AjPList] AJAX List of Ensembl QC Alignments
@@ -3390,7 +3390,7 @@ AjBool ensQCAlignmentAdaptorFetchAllByTarget(EnsPQCAlignmentAdaptor qcaa,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentAdaptorFetchAllByCoverage(EnsPQCAlignmentAdaptor qcaa,
+AjBool ensQCAlignmentadaptorFetchAllByCoverage(EnsPQCAlignmentadaptor qcaa,
                                                ajuint lower,
                                                ajuint upper,
                                                AjPList qcas)
@@ -3408,7 +3408,7 @@ AjBool ensQCAlignmentAdaptorFetchAllByCoverage(EnsPQCAlignmentAdaptor qcaa,
 			  "alignment.coverage <= %u",
 			  lower, upper);
     
-    ensBaseAdaptorGenericFetch(qcaa,
+    ensBaseadaptorGenericFetch(qcaa,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -3422,13 +3422,13 @@ AjBool ensQCAlignmentAdaptorFetchAllByCoverage(EnsPQCAlignmentAdaptor qcaa,
 
 
 
-/* @func ensQCAlignmentAdaptorFetchAllByTargetLocation ************************
+/* @func ensQCAlignmentadaptorFetchAllByTargetLocation ************************
 **
 ** Fetch all Ensembl QC Alignments by a target location.
 ** The caller is responsible for deleting the Ensembl QC Alignments
 ** before deleting the AJAX List.
 **
-** @param [r] qcaa [EnsPQCAlignmentAdaptor] Ensembl QC Alignment Adaptor
+** @param [r] qcaa [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
 ** @param [rN] analysis [const EnsPAnalysis] Ensembl Analysis
 ** @param [r] tsequence [const EnsPQCSequence] Target Ensembl QC Sequence
 ** @param [r] tstart [ajuint] Target start
@@ -3439,8 +3439,8 @@ AjBool ensQCAlignmentAdaptorFetchAllByCoverage(EnsPQCAlignmentAdaptor qcaa,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentAdaptorFetchAllByTargetLocation(
-    EnsPQCAlignmentAdaptor qcaa,
+AjBool ensQCAlignmentadaptorFetchAllByTargetLocation(
+    EnsPQCAlignmentadaptor qcaa,
     const EnsPAnalysis analysis,
     const EnsPQCSequence tsequence,
     ajuint tstart,
@@ -3508,7 +3508,7 @@ AjBool ensQCAlignmentAdaptorFetchAllByTargetLocation(
 			  tstart,
 			  tend);
     
-    ensBaseAdaptorGenericFetch(qcaa,
+    ensBaseadaptorGenericFetch(qcaa,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -3534,7 +3534,7 @@ AjBool ensQCAlignmentAdaptorFetchAllByTargetLocation(
 			  tstart,
 			  tend);
     
-    ensBaseAdaptorGenericFetch(qcaa,
+    ensBaseadaptorGenericFetch(qcaa,
 			       constraint,
 			       (EnsPAssemblyMapper) NULL,
 			       (EnsPSlice) NULL,
@@ -3548,29 +3548,29 @@ AjBool ensQCAlignmentAdaptorFetchAllByTargetLocation(
 
 
 
-/* @func ensQCAlignmentAdaptorStore *******************************************
+/* @func ensQCAlignmentadaptorStore *******************************************
 **
 ** Store an Ensembl QC Alignment.
 **
-** @param [r] qcaa [EnsPQCAlignmentAdaptor] Ensembl QC Alignment Adaptor
+** @param [r] qcaa [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
 ** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentAdaptorStore(EnsPQCAlignmentAdaptor qcaa,
+AjBool ensQCAlignmentadaptorStore(EnsPQCAlignmentadaptor qcaa,
                                   EnsPQCAlignment qca)
 {
     char *txtvulgar = NULL;
     
     AjBool value = ajFalse;
     
-    AjPSqlStatement sqls = NULL;
+    AjPSqlstatement sqls = NULL;
     
     AjPStr statement = NULL;
     
-    EnsPDatabaseAdaptor dba = NULL;
+    EnsPDatabaseadaptor dba = NULL;
     
     if(!qcaa)
 	return ajFalse;
@@ -3578,13 +3578,13 @@ AjBool ensQCAlignmentAdaptorStore(EnsPQCAlignmentAdaptor qcaa,
     if(!qca)
 	return ajFalse;
     
-    if(ensQCAlignmentGetAdaptor(qca) &&
+    if(ensQCAlignmentGetadaptor(qca) &&
 	ensQCAlignmentGetIdentifier(qca))
 	return ajFalse;
     
-    dba = ensBaseAdaptorGetDatabaseAdaptor(qcaa);
+    dba = ensBaseadaptorGetDatabaseadaptor(qcaa);
     
-    ensDatabaseAdaptorEscapeCS(dba, &txtvulgar, qca->VULGAR);
+    ensDatabaseadaptorEscapeC(dba, &txtvulgar, qca->VULGAR);
     
     statement = ajFmtStr("INSERT IGNORE INTO "
 			 "alignment "
@@ -3626,18 +3626,18 @@ AjBool ensQCAlignmentAdaptorStore(EnsPQCAlignmentAdaptor qcaa,
     
     ajCharDel(&txtvulgar);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    if(ajSqlStatementGetAffectedRows(sqls))
+    if(ajSqlstatementGetAffectedrows(sqls))
     {
-	ensQCAlignmentSetIdentifier(qca, ajSqlStatementGetIdentifier(sqls));
+	ensQCAlignmentSetIdentifier(qca, ajSqlstatementGetIdentifier(sqls));
 	
-	ensQCAlignmentSetAdaptor(qca, qcaa);
+	ensQCAlignmentSetadaptor(qca, qcaa);
 	
 	value = ajTrue;
     }
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     ajStrDel(&statement);
     
@@ -3647,29 +3647,29 @@ AjBool ensQCAlignmentAdaptorStore(EnsPQCAlignmentAdaptor qcaa,
 
 
 
-/* @func ensQCAlignmentAdaptorUpdate ******************************************
+/* @func ensQCAlignmentadaptorUpdate ******************************************
 **
 ** Update an Ensembl QC Alignment.
 **
-** @param [r] qcaa [EnsPQCAlignmentAdaptor] Ensembl QC Alignment Adaptor
+** @param [r] qcaa [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
 ** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentAdaptorUpdate(EnsPQCAlignmentAdaptor qcaa,
+AjBool ensQCAlignmentadaptorUpdate(EnsPQCAlignmentadaptor qcaa,
                                    const EnsPQCAlignment qca)
 {
     char *txtvulgar = NULL;
     
     AjBool value = ajFalse;
     
-    AjPSqlStatement sqls = NULL;
+    AjPSqlstatement sqls = NULL;
     
     AjPStr statement = NULL;
     
-    EnsPDatabaseAdaptor dba = NULL;
+    EnsPDatabaseadaptor dba = NULL;
     
     if(!qcaa)
 	return ajFalse;
@@ -3680,9 +3680,9 @@ AjBool ensQCAlignmentAdaptorUpdate(EnsPQCAlignmentAdaptor qcaa,
     if(!ensQCAlignmentGetIdentifier(qca))
 	return ajFalse;
     
-    dba = ensBaseAdaptorGetDatabaseAdaptor(qcaa);
+    dba = ensBaseadaptorGetDatabaseadaptor(qcaa);
     
-    ensDatabaseAdaptorEscapeCS(dba, &txtvulgar, qca->VULGAR);
+    ensDatabaseadaptorEscapeC(dba, &txtvulgar, qca->VULGAR);
     
     statement = ajFmtStr("UPDATE IGNORE "
 			 "alignment "
@@ -3727,12 +3727,12 @@ AjBool ensQCAlignmentAdaptorUpdate(EnsPQCAlignmentAdaptor qcaa,
     
     ajCharDel(&txtvulgar);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    if(ajSqlStatementGetAffectedRows(sqls))
+    if(ajSqlstatementGetAffectedrows(sqls))
 	value = ajTrue;
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     ajStrDel(&statement);
     
@@ -3742,27 +3742,27 @@ AjBool ensQCAlignmentAdaptorUpdate(EnsPQCAlignmentAdaptor qcaa,
 
 
 
-/* @func ensQCAlignmentAdaptorDelete ******************************************
+/* @func ensQCAlignmentadaptorDelete ******************************************
 **
 ** Delete an Ensembl QC Alignment.
 **
-** @param [r] qcaa [EnsPQCAlignmentAdaptor] Ensembl QC Alignment Adaptor
+** @param [r] qcaa [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
 ** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentAdaptorDelete(EnsPQCAlignmentAdaptor qcaa,
+AjBool ensQCAlignmentadaptorDelete(EnsPQCAlignmentadaptor qcaa,
                                    const EnsPQCAlignment qca)
 {
     AjBool value = ajFalse;
     
-    AjPSqlStatement sqls = NULL;
+    AjPSqlstatement sqls = NULL;
     
     AjPStr statement = NULL;
     
-    EnsPDatabaseAdaptor dba = NULL;
+    EnsPDatabaseadaptor dba = NULL;
     
     if(!qcaa)
 	return ajFalse;
@@ -3773,7 +3773,7 @@ AjBool ensQCAlignmentAdaptorDelete(EnsPQCAlignmentAdaptor qcaa,
     if(!ensQCAlignmentGetIdentifier(qca))
 	return ajFalse;
     
-    dba = ensBaseAdaptorGetDatabaseAdaptor(qcaa);
+    dba = ensBaseadaptorGetDatabaseadaptor(qcaa);
     
     statement = ajFmtStr("DELETE FROM "
 			 "alignment "
@@ -3781,12 +3781,12 @@ AjBool ensQCAlignmentAdaptorDelete(EnsPQCAlignmentAdaptor qcaa,
 			 "alignment.alignment_id = %u",
 			 qca->Identifier);
     
-    sqls = ensDatabaseAdaptorSqlStatementNew(dba, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
-    if(ajSqlStatementGetAffectedRows(sqls))
+    if(ajSqlstatementGetAffectedrows(sqls))
 	value = ajTrue;
     
-    ajSqlStatementDel(&sqls);
+    ajSqlstatementDel(&sqls);
     
     ajStrDel(&statement);
     

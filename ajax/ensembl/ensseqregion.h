@@ -19,7 +19,7 @@ extern "C"
 
 /* Ensembl Sequence Region */
 
-EnsPSeqRegion ensSeqRegionNew(EnsPSeqRegionAdaptor adaptor,
+EnsPSeqRegion ensSeqRegionNew(EnsPSeqRegionadaptor adaptor,
                               ajuint identifier,
                               EnsPCoordSystem cs,
                               AjPStr name,
@@ -31,7 +31,7 @@ EnsPSeqRegion ensSeqRegionNewRef(EnsPSeqRegion sr);
 
 void ensSeqRegionDel(EnsPSeqRegion *Psr);
 
-const EnsPSeqRegionAdaptor ensSeqRegionGetAdaptor(const EnsPSeqRegion sr);
+const EnsPSeqRegionadaptor ensSeqRegionGetadaptor(const EnsPSeqRegion sr);
 
 ajuint ensSeqRegionGetIdentifier(const EnsPSeqRegion sr);
 
@@ -43,7 +43,7 @@ ajint ensSeqRegionGetLength(const EnsPSeqRegion sr);
 
 const AjPList ensSeqRegionGetAttributes(EnsPSeqRegion sr);
 
-AjBool ensSeqRegionSetAdaptor(EnsPSeqRegion sr, EnsPSeqRegionAdaptor adaptor);
+AjBool ensSeqRegionSetadaptor(EnsPSeqRegion sr, EnsPSeqRegionadaptor adaptor);
 
 AjBool ensSeqRegionSetIdentifier(EnsPSeqRegion sr, ajuint identifier);
 
@@ -69,34 +69,34 @@ AjBool ensSeqRegionIsTopLevel(EnsPSeqRegion sr);
 
 /* Ensembl Sequence Region Adaptor */
 
-EnsPSeqRegionAdaptor ensSeqRegionAdaptorNew(EnsPDatabaseAdaptor dba);
+EnsPSeqRegionadaptor ensSeqRegionadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensSeqRegionAdaptorDel(EnsPSeqRegionAdaptor *Padaptor);
+void ensSeqRegionadaptorDel(EnsPSeqRegionadaptor *Padaptor);
 
-EnsPDatabaseAdaptor ensSeqRegionAdaptorGetDatabaseAdaptor(
-    EnsPSeqRegionAdaptor adaptor);
+EnsPDatabaseadaptor ensSeqRegionadaptorGetDatabaseadaptor(
+    EnsPSeqRegionadaptor adaptor);
 
-AjBool ensSeqRegionAdaptorCacheInsert(EnsPSeqRegionAdaptor adaptor,
+AjBool ensSeqRegionadaptorCacheInsert(EnsPSeqRegionadaptor adaptor,
                                       EnsPSeqRegion *Psr);
 
-AjBool ensSeqRegionAdaptorCacheRemove(EnsPSeqRegionAdaptor adaptor,
+AjBool ensSeqRegionadaptorCacheRemove(EnsPSeqRegionadaptor adaptor,
                                       const EnsPSeqRegion sr);
 
-AjBool ensSeqRegionAdaptorFetchByIdentifier(EnsPSeqRegionAdaptor adaptor,
+AjBool ensSeqRegionadaptorFetchByIdentifier(EnsPSeqRegionadaptor adaptor,
                                             ajuint identifier,
                                             EnsPSeqRegion *Psr);
 
-AjBool ensSeqRegionAdaptorFetchByName(EnsPSeqRegionAdaptor adaptor,
+AjBool ensSeqRegionadaptorFetchByName(EnsPSeqRegionadaptor adaptor,
                                       const EnsPCoordSystem cs,
                                       const AjPStr name,
                                       EnsPSeqRegion *Psr);
 
-AjBool ensSeqRegionAdaptorFetchByNameFuzzy(EnsPSeqRegionAdaptor adaptor,
+AjBool ensSeqRegionadaptorFetchByNameFuzzy(EnsPSeqRegionadaptor adaptor,
                                            const EnsPCoordSystem cs,
                                            const AjPStr name,
                                            EnsPSeqRegion *Psr);
 
-AjBool ensSeqRegionAdaptorFetchAllByCoordSystem(EnsPSeqRegionAdaptor adaptor,
+AjBool ensSeqRegionadaptorFetchAllByCoordSystem(EnsPSeqRegionadaptor adaptor,
                                                 const EnsPCoordSystem cs,
                                                 AjPList srlist);
 

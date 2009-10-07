@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -52,7 +52,23 @@
 **
 ******************************************************************************/
 
+/* @datasection [none] Internals **********************************************
+**
+** Functions contorl ensembl internals
+**
+******************************************************************************/
 
+/* @section Initialise ********************************************************
+**
+** @fdata [none]
+**
+** @nam2rule Init Initialise ensembl internals
+**
+** @valrule * [void]
+**
+** @fcategory internals
+**
+******************************************************************************/
 
 
 /* @func ensInit **************************************************************
@@ -73,6 +89,19 @@ void ensInit(void)
 }
 
 
+
+
+/* @section Exit **************************************************************
+**
+** @fdata [none]
+**
+** @nam2rule Exit Clear ensembl internals
+**
+** @valrule * [void]
+**
+** @fcategory internals
+**
+******************************************************************************/
 
 
 /* @func ensExit **************************************************************

@@ -3,8 +3,8 @@
 **
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
-** @modified $Date: 2009/09/18 10:26:32 $ by $Author: ajb $
-** @version $Revision: 1.1 $
+** @modified $Date: 2009/10/07 19:21:41 $ by $Author: rice $
+** @version $Revision: 1.2 $
 **
 ** This library is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU Library General Public
@@ -317,7 +317,7 @@ void ensDatabaseConnectionDel(EnsPDatabaseConnection* Pdbc)
 	return;
     }
     
-    ajSqlConnectionDel(&pthis->SqlConnection);
+    ajSqlconnectionDel(&pthis->Sqlconnection);
     
     ajStrDel(&pthis->UserName);
     
@@ -349,7 +349,7 @@ void ensDatabaseConnectionDel(EnsPDatabaseConnection* Pdbc)
 ** @fnote None
 **
 ** @nam3rule Get Return Database Connection attribute(s)
-** @nam4rule GetSqlConnection Return the AJAX SQL Connection
+** @nam4rule GetSqlconnection Return the AJAX SQL Connection
 ** @nam4rule GetUserName Return the user name
 ** @nam4rule GetPassword Return the password
 ** @nam4rule GetHostName Return the host name
@@ -360,7 +360,7 @@ void ensDatabaseConnectionDel(EnsPDatabaseConnection* Pdbc)
 **
 ** @argrule * dbc [const EnsPDatabaseConnection] Ensembl Database Connection
 **
-** @valrule SqlConnection [AjPSqlConnection] AJAX SQL Connection
+** @valrule Sqlconnection [AjPSqlconnection] AJAX SQL Connection
 ** @valrule UserName [AjPStr] User name
 ** @valrule Password [AjPStr] Password
 ** @valrule HostName [AjPStr] Host name
@@ -375,23 +375,23 @@ void ensDatabaseConnectionDel(EnsPDatabaseConnection* Pdbc)
 
 
 
-/* @func ensDatabaseConnectionGetSqlConnection ********************************
+/* @func ensDatabaseConnectionGetSqlconnection ********************************
 **
 ** Get the AJAX SQL Connection element of an Ensembl Database Connection.
 **
 ** @param [r] dbc [const EnsPDatabaseConnection] Ensembl Database Connection
 **
-** @return [AjPSqlConnection] AJAX SQL Connection
+** @return [AjPSqlconnection] AJAX SQL Connection
 ** @@
 ******************************************************************************/
 
-AjPSqlConnection ensDatabaseConnectionGetSqlConnection(
+AjPSqlconnection ensDatabaseConnectionGetSqlconnection(
     const EnsPDatabaseConnection dbc)
 {
     if(!dbc)
         return NULL;
     
-    return dbc->SqlConnection;
+    return dbc->Sqlconnection;
 }
 
 
@@ -617,7 +617,7 @@ AjBool ensDatabaseConnectionConnect(EnsPDatabaseConnection dbc)
     if(!dbc)
         return ajFalse;
     
-    if(dbc->SqlConnection)
+    if(dbc->Sqlconnection)
         return ajTrue;
     
     /*
@@ -626,15 +626,15 @@ AjBool ensDatabaseConnectionConnect(EnsPDatabaseConnection dbc)
 	     dbc);
      */
     
-    dbc->SqlConnection = ajSqlConnectionNew(dbc->SqlClientType,
-					    dbc->UserName,
-					    dbc->Password,
-					    dbc->HostName,
-					    dbc->HostPort,
-					    dbc->Socket,
-					    dbc->DatabaseName);
+    dbc->Sqlconnection = ajSqlconnectionNewData(dbc->SqlClientType,
+                                                dbc->UserName,
+                                                dbc->Password,
+                                                dbc->HostName,
+                                                dbc->HostPort,
+                                                dbc->Socket,
+                                                dbc->DatabaseName);
     
-    if(!dbc->SqlConnection)
+    if(!dbc->Sqlconnection)
     {
         ajWarn("Could not establish an SQL connection for user '%S' "
                "to host '%S' at port '%S' for database '%S'.\n",
@@ -675,7 +675,7 @@ void ensDatabaseConnectionDisconnect(EnsPDatabaseConnection dbc)
      ensDatabaseConnectionDebug(dbc, 1);
      */
     
-    ajSqlConnectionDel(&(dbc->SqlConnection));
+    ajSqlconnectionDel(&(dbc->Sqlconnection));
     
     return;
 }
@@ -700,7 +700,7 @@ AjBool ensDatabaseConnectionIsConnected(const EnsPDatabaseConnection dbc)
     if(!dbc)
         return ajFalse;
     
-    if(dbc->SqlConnection)
+    if(dbc->Sqlconnection)
         return ajTrue;
     
     return ajFalse;
@@ -709,18 +709,18 @@ AjBool ensDatabaseConnectionIsConnected(const EnsPDatabaseConnection dbc)
 
 
 
-/* @func ensDatabaseConnectionSqlStatementNew *********************************
+/* @func ensDatabaseConnectionSqlstatementNew *********************************
 **
 ** Run an SQL statement against an Ensembl Database Connection.
 **
 ** @param [u] dbc [EnsPDatabaseConnection] Ensembl Database Connection
 ** @param [r] statement [const AjPStr] SQL statement
 **
-** @return [AjPSqlStatement] AJAX SQL Statement
+** @return [AjPSqlstatement] AJAX SQL Statement
 ** @@
 ******************************************************************************/
 
-AjPSqlStatement ensDatabaseConnectionSqlStatementNew(
+AjPSqlstatement ensDatabaseConnectionSqlstatementNew(
     EnsPDatabaseConnection dbc,
     const AjPStr statement)
 {
@@ -728,7 +728,7 @@ AjPSqlStatement ensDatabaseConnectionSqlStatementNew(
         return NULL;
     
     /*
-     ajDebug("ensDatabaseConnectionSqlStatementNew\n"
+     ajDebug("ensDatabaseConnectionSqlstatementNew\n"
 	     "  dbc %p\n"
 	     "  statement '%S'\n",
 	     dbc,
@@ -741,27 +741,27 @@ AjPSqlStatement ensDatabaseConnectionSqlStatementNew(
         if(!ensDatabaseConnectionConnect(dbc))
             return NULL;
     
-    return ajSqlStatementNew(dbc->SqlConnection, statement);
+    return ajSqlstatementNewRun(dbc->Sqlconnection, statement);
 }
 
 
 
 
-/* @func ensDatabaseConnectionEscapeCS ****************************************
+/* @func ensDatabaseConnectionEscapeC ****************************************
 **
 ** Escape an AJAX String based on an AJAX SQL Connection.
 ** The caller is responsible for deleting the char string at the returned
 ** address.
 **
 ** @param [u] dbc [EnsPDatabaseConnection] Ensembl Database Connection
-** @param [wP] Ptxt [char **] Address of the (new) SQL-escaped C string
+** @param [wP] Ptxt [char**] Address of the (new) SQL-escaped C string
 ** @param [r] str [const AjPStr] AJAX String to be escaped
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensDatabaseConnectionEscapeCS(EnsPDatabaseConnection dbc,
+AjBool ensDatabaseConnectionEscapeC(EnsPDatabaseConnection dbc,
                                      char **Ptxt,
                                      const AjPStr str)
 {
@@ -772,7 +772,7 @@ AjBool ensDatabaseConnectionEscapeCS(EnsPDatabaseConnection dbc,
 	return ajFalse;
     
     /*
-     ajDebug("ensDatabaseConnectionEscapeCS\n"
+     ajDebug("ensDatabaseConnectionEscapeC\n"
 	     "  dbc %p\n"
 	     "  Ptxt %p\n"
 	     "  str '%S'\n",
@@ -787,13 +787,13 @@ AjBool ensDatabaseConnectionEscapeCS(EnsPDatabaseConnection dbc,
         if(!ensDatabaseConnectionConnect(dbc))
             return ajFalse;
     
-    return ajSqlConnectionEscapeCS(dbc->SqlConnection, Ptxt, str);
+    return ajSqlconnectionEscapeC(dbc->Sqlconnection, Ptxt, str);
 }
 
 
 
 
-/* @func ensDatabaseConnectionEscapeSS ****************************************
+/* @func ensDatabaseConnectionEscapeS ****************************************
 **
 ** Escape an AJAX String based on an AJAX SQL Connection.
 ** The caller is responsible for deleting the AJAX String at the returned
@@ -807,9 +807,9 @@ AjBool ensDatabaseConnectionEscapeCS(EnsPDatabaseConnection dbc,
 ** @@
 ******************************************************************************/
 
-AjBool ensDatabaseConnectionEscapeSS(EnsPDatabaseConnection dbc,
-                                     AjPStr *Pstr,
-                                     const AjPStr str)
+AjBool ensDatabaseConnectionEscapeS(EnsPDatabaseConnection dbc,
+                                    AjPStr *Pstr,
+                                    const AjPStr str)
 {
     if(!dbc)
         return ajFalse;
@@ -818,7 +818,7 @@ AjBool ensDatabaseConnectionEscapeSS(EnsPDatabaseConnection dbc,
 	return ajFalse;
     
     /*
-     ajDebug("ensDatabaseConnectionEscapeSS\n"
+     ajDebug("ensDatabaseConnectionEscapeS\n"
 	     "  dbc %p\n"
 	     "  Pstr %p\n"
 	     "  str '%S'\n",
@@ -833,7 +833,7 @@ AjBool ensDatabaseConnectionEscapeSS(EnsPDatabaseConnection dbc,
         if(!ensDatabaseConnectionConnect(dbc))
             return ajFalse;
     
-    return ajSqlConnectionEscapeSS(dbc->SqlConnection, Pstr, str);
+    return ajSqlconnectionEscapeS(dbc->Sqlconnection, Pstr, str);
 }
 
 
@@ -882,7 +882,7 @@ AjBool ensDatabaseConnectionTrace(const EnsPDatabaseConnection dbc,
     ajStrAppendCountK(&indent, ' ', level * 2);
     
     ajDebug("%SensDatabaseConnectionTrace %p\n"
-	    "%S  SqlConnection %p\n"
+	    "%S  Sqlconnection %p\n"
 	    "%S  SqlClientType %d\n"
 	    "%S  UserName '%S'\n"
 	    "%S  Password '***'\n"
@@ -892,7 +892,7 @@ AjBool ensDatabaseConnectionTrace(const EnsPDatabaseConnection dbc,
 	    "%S  DatabaseName '%S'\n"
 	    "%S  Use %u\n",
 	    indent, dbc,
-	    indent, dbc->SqlConnection,
+	    indent, dbc->Sqlconnection,
 	    indent, dbc->SqlClientType,
 	    indent, dbc->UserName,
 	    indent,
@@ -902,7 +902,7 @@ AjBool ensDatabaseConnectionTrace(const EnsPDatabaseConnection dbc,
 	    indent, dbc->DatabaseName,
 	    indent, dbc->Use);
     
-    ajSqlConnectionTrace(dbc->SqlConnection, level + 1);
+    ajSqlconnectionTrace(dbc->Sqlconnection, level + 1);
     
     ajStrDel(&indent);
     

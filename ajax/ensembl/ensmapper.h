@@ -42,12 +42,10 @@ typedef struct EnsSMapperUnit
 
 
 
-/* @datatype EnsEMapperUnitType ***********************************************
+/******************************************************************************
 **
 ** Ensembl Mapper Unit Type enumeration.
 **
-** @attr enum [EnsEMapperUnitType] Value
-** @@
 ******************************************************************************/
 
 enum EnsEMapperUnitType
@@ -95,12 +93,10 @@ typedef struct EnsSMapperPair
 
 
 
-/* @datatype EnsEMapperResultType *********************************************
+/******************************************************************************
 **
 ** Ensembl Mapper Result Type enumeration.
 **
-** @attr enum [EnsEMapperResultType] Value
-** @@
 ******************************************************************************/
 
 enum EnsEMapperResultType
@@ -125,6 +121,7 @@ enum EnsEMapperResultType
 ** @alias EnsSMapperResult
 ** @alias EnsOMapperResult
 **
+** @attr CoordSystem [EnsPCoordSystem] Ensembl Coordinate System
 ** @attr Type [AjEnum] Result type (ensEMapperResultCoordinate, ...)
 ** @cc Bio::EnsEMBL::Mapper::Coordinate
 ** @cc Bio::EnsEMBL::Mapper::IndelCoordinate
@@ -132,7 +129,6 @@ enum EnsEMapperResultType
 ** @attr Start [ajint] Start coordinate
 ** @attr End [ajint] End coordinate
 ** @attr Strand [ajint] Strand information
-** @attr CoordSystem [EnsPCoordSystem] Ensembl Coordinate System
 ** @cc Bio::EnsEMBL::Mapper::Gap
 ** @cc Bio::EnsEMBL::Mapper::IndelCoordinate
 ** @attr GapStart [ajint] Start coordinate of a gap
