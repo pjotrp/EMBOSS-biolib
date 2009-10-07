@@ -27,6 +27,7 @@
 ******************************************************************************/
 
 #include "ajax.h"
+#include "ajseqdb.h"
 
 #include <limits.h>
 #include <stdarg.h>

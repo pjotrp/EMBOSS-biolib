@@ -40,6 +40,8 @@
 
 #include "ajax.h"
 #include "ajgraph.h"
+#include "ajacd.h"
+#include "ajseqdb.h"
 
 #define DEFDLIST  "."
 #define DEFBLOSUM "EBLOSUM62"
@@ -30167,7 +30169,9 @@ void ajAcdUnused(void)
 
 void ajAcdGraphicsInit(const char *pgm, ajint argc, char * const argv[])
 {
+    ajSeqdbInit();
     ajNamInit("emboss");
+    ajAcdInit(pgm, argc, argv);
 
     return;
 }
@@ -30216,7 +30220,9 @@ __deprecated void ajGraphInit(const char *pgm, ajint argc, char * const argv[])
 void ajAcdGraphicsInitPV(const char *pgm, ajint argc, char *const argv[],
 			 const char *package,const char *packversion)
 {
-    ajNamInit("emboss");
+    ajSeqdbInit();
+
+    ajAcdInitPV(pgm, argc, argv,package, packversion);
 
     return;
 }
