@@ -45,7 +45,9 @@ them both to 0; an emulation function will be used. */
 #define HAVE_BZLIB_H 1
 
 /* Define to 1 if you have the <dirent.h> header file. */
+#ifndef WIN32
 #define HAVE_DIRENT_H 1
+#endif
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #define HAVE_DLFCN_H 1
@@ -72,7 +74,9 @@ them both to 0; an emulation function will be used. */
 #define HAVE_READLINE_READLINE_H 1
 
 /* Define to 1 if you have the <stdint.h> header file. */
+#ifndef WIN32
 #define HAVE_STDINT_H 1
+#endif
 
 /* Define to 1 if you have the <stdlib.h> header file. */
 #define HAVE_STDLIB_H 1
