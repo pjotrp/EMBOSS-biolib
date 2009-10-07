@@ -3,6 +3,10 @@
 
 #include "ajax.h"
 #include "ajgraph.h"
+#include "ajgraphstruct.h"
+#include "ajgraphxml.h"
+#include "ajseqdb.h"
+#include "ajacd.h"
 #include "embaln.h"
 #include "embcom.h"
 #include "embcons.h"
