@@ -59,10 +59,30 @@ static AjBool arrVoidResize(AjPVoid *thys, ajuint size);
 /* @filesection ajsql *********************************************************
 **
 ** @nam1rule aj Function belongs to the AJAX library
+** @nam2rule Sql SQL interface to MySQL or Postgres
+**
+******************************************************************************/
+
+/* @datasection [none] Internals **********************************************
+**
+** Function is for setup or control of internals
+**
 **
 ******************************************************************************/
 
 
+
+
+/* @section initialization ****************************************************
+**
+** @fdata [none]
+** @fcategory internals
+**
+** @nam3rule Init Initialize SQL internals
+**
+** @valrule * [AjBool] True on success
+**
+******************************************************************************/
 
 
 /* @func ajSqlInit ************************************************************
@@ -110,6 +130,18 @@ AjBool ajSqlInit(void)
 
 
 
+/* @section exiting ****************************************************
+**
+** @fdata [none]
+** @fcategory internals
+**
+** @nam3rule Exit Initialize SQL internals
+**
+** @valrule * [void]
+**
+******************************************************************************/
+
+
 /* @func ajSqlExit ************************************************************
 **
 ** Finalises implementation-specific SQL client libraries.
@@ -142,11 +174,11 @@ void ajSqlExit(void)
 
 
 
-/* @datasection [AjPSqlConnection] SQL Connection *****************************
+/* @datasection [AjPSqlconnection] SQL Connection *****************************
 **
 ** Functions for manipulating AJAX SQL Connections.
 **
-** @nam2rule SqlConnection Functions for manipulating AJAX SQL Connections.
+** @nam2rule Sqlconnection Functions for manipulating AJAX SQL Connections.
 **
 ******************************************************************************/
 
@@ -157,12 +189,22 @@ void ajSqlExit(void)
 **
 ** Functions for constructing AJAX SQL Connection objects.
 **
-** @fdata [AjPSqlConnection]
+** @fdata [AjPSqlconnection]
 **
 ** @nam3rule New Construct a new AJAX SQL Connection
-** @nam3rule NewRef Constructor by incrementing the reference counter
+** @nam4rule NewData Constructor with set of initial values
+** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @valrule * [AjPSqlConnection] AJAX SQL Connection
+** @argrule NewData client [const AjEnum] Undocumented
+** @argrule NewData user [const AjPStr] Undocumented
+** @argrule NewData password [const AjPStr] Undocumented
+** @argrule NewData host [const AjPStr] Undocumented
+** @argrule NewData port [const AjPStr] Undocumented
+** @argrule NewData socket [const AjPStr] Undocumented
+** @argrule NewData database [const AjPStr] Undocumented
+** @argrule NewRef  sqlc [AjPSqlconnection] Undocumented
+**
+** @valrule * [AjPSqlconnection] AJAX SQL Connection
 **
 ** @fcategory new
 ******************************************************************************/
@@ -170,7 +212,7 @@ void ajSqlExit(void)
 
 
 
-/* @func ajSqlConnectionNew ***************************************************
+/* @func ajSqlconnectionNewData ***********************************************
 **
 ** Default AJAX SQL Connection constructor, which also allocates a client
 ** library-specific connection object.
@@ -190,17 +232,17 @@ void ajSqlExit(void)
 **                     file pgsql/src/include/libpq/pqcomm.h
 ** @param [r] database [const AjPStr] SQL database name
 **
-** @return [AjPSqlConnection] AJAX SQL Connection or NULL
+** @return [AjPSqlconnection] AJAX SQL Connection or NULL
 ** @@
 ******************************************************************************/
 
-AjPSqlConnection ajSqlConnectionNew(const AjEnum client,
-                                    const AjPStr user,
-                                    const AjPStr password,
-                                    const AjPStr host,
-                                    const AjPStr port,
-                                    const AjPStr socket,
-                                    const AjPStr database)
+AjPSqlconnection ajSqlconnectionNewData(const AjEnum client,
+                                        const AjPStr user,
+                                        const AjPStr password,
+                                        const AjPStr host,
+                                        const AjPStr port,
+                                        const AjPStr socket,
+                                        const AjPStr database)
 {
     
 #ifdef HAVE_MYSQL
@@ -219,7 +261,7 @@ AjPSqlConnection ajSqlConnectionNew(const AjEnum client,
     
 #if defined(HAVE_MYSQL) || defined(HAVE_POSTGRESQL)
     
-    AjPSqlConnection sqlc = NULL;
+    AjPSqlconnection sqlc = NULL;
     
 #endif
     
@@ -252,7 +294,7 @@ AjPSqlConnection ajSqlConnectionNew(const AjEnum client,
 	
         if(Pmysql == NULL)
         {
-            ajDebug("ajSqlConnectionNew MySQL connection object "
+            ajDebug("ajSqlconnectionNewData MySQL connection object "
                     "initialisation via mysql_init failed.\n");
 	    
             return NULL;
@@ -287,7 +329,7 @@ AjPSqlConnection ajSqlConnectionNew(const AjEnum client,
 	    
 	    sqlc->Use = 1;
 	    
-            ajDebug("ajSqlConnectionNew established a MySQL connection "
+            ajDebug("ajSqlconnectionNewData established a MySQL connection "
                     "to server '%S' on port '%S' (%d) as user '%S' "
                     "for database '%S'.\n",
 		    host, port, number, user, database);
@@ -300,12 +342,12 @@ AjPSqlConnection ajSqlConnectionNew(const AjEnum client,
         {
             /* The connection was not successful. */
 	    
-	    ajDebug("ajSqlConnectionNew could not establish a "
+	    ajDebug("ajSqlconnectionNewData could not establish a "
 		    "MySQL connection to server '%S' on port '%S' (%d) "
                     "as user '%S' for database '%S'.\n",
 		    host, port, number, user, database);
 	    
-            ajDebug("ajSqlConnectionNew MySQL error: %s\n",
+            ajDebug("ajSqlconnectionNewData MySQL error: %s\n",
 		    mysql_error(Pmysql));
 	    
 	    mysql_close(Pmysql);
@@ -314,7 +356,7 @@ AjPSqlConnection ajSqlConnectionNew(const AjEnum client,
         }
 	
 #else
-        ajDebug("ajSqlConnectionNew EMBOSS AJAX library built without "
+        ajDebug("ajSqlconnectionNewData EMBOSS AJAX library built without "
                 "MySQL client support.\n");
 	
         return NULL;
@@ -402,7 +444,7 @@ AjPSqlConnection ajSqlConnectionNew(const AjEnum client,
 	
         if(Ppgconn == NULL)
         {
-            ajDebug("ajSqlConnectionNew PostgreSQL connection object "
+            ajDebug("ajSqlconnectionNewData PostgreSQL connection object "
                     "initialisation via PQconnectdb failed.\n");
 	    
             return NULL;
@@ -420,7 +462,7 @@ AjPSqlConnection ajSqlConnectionNew(const AjEnum client,
 	    
 	    sqlc->Use = 1;
 	    
-            ajDebug("ajSqlConnectionNew established a PostgreSQL connection "
+            ajDebug("ajSqlconnectionNewData established a PostgreSQL connection "
                     "to server '%S' on port '%S' as user '%S' "
 		    "for database '%S'\n",
 		    host, port, user, database);
@@ -433,12 +475,12 @@ AjPSqlConnection ajSqlConnectionNew(const AjEnum client,
         {
 	    /* CONNECTION_BAD */
 	    
-            ajDebug("ajSqlConnectionNew could not establish a "
+            ajDebug("ajSqlconnectionNewData could not establish a "
                     "PostgreSQL connection to server '%S' on port '%S' "
                     "as user '%S' for database '%S'.\n",
 		    host, port, user, database);
 	    
-            ajDebug("ajSqlConnectionNew PostgreSQL error: %s\n",
+            ajDebug("ajSqlconnectionNewData PostgreSQL error: %s\n",
                     PQerrorMessage(Ppgconn));
 	    
             PQfinish(Ppgconn);
@@ -448,7 +490,7 @@ AjPSqlConnection ajSqlConnectionNew(const AjEnum client,
 	
 #else
 	
-        ajDebug("ajSqlConnectionNew EMBOSS AJAX library built without "
+        ajDebug("ajSqlconnectionNewData EMBOSS AJAX library built without "
                 "PostgreSQL client support.\n");
 	
         return NULL;
@@ -457,7 +499,7 @@ AjPSqlConnection ajSqlConnectionNew(const AjEnum client,
 	
     }
     
-    ajDebug("ajSqlConnectionNew SQL client identifier %d not supported.\n",
+    ajDebug("ajSqlconnectionNewData SQL client identifier %d not supported.\n",
 	    client);
     
     return NULL;
@@ -466,18 +508,18 @@ AjPSqlConnection ajSqlConnectionNew(const AjEnum client,
 
 
 
-/* @func ajSqlConnectionNewRef ************************************************
+/* @func ajSqlconnectionNewRef ************************************************
 **
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] sqlc [AjPSqlConnection] AJAX SQL Connection
+** @param [u] sqlc [AjPSqlconnection] AJAX SQL Connection
 **
-** @return [AjPSqlConnection] AJAX SQL Connection or NULL
+** @return [AjPSqlconnection] AJAX SQL Connection or NULL
 ** @@
 ******************************************************************************/
 
-AjPSqlConnection ajSqlConnectionNewRef(AjPSqlConnection sqlc)
+AjPSqlconnection ajSqlconnectionNewRef(AjPSqlconnection sqlc)
 {
     if(!sqlc)
 	return NULL;
@@ -494,11 +536,11 @@ AjPSqlConnection ajSqlConnectionNewRef(AjPSqlConnection sqlc)
 **
 ** Functions for destruction of AJAX SQL Connection objects.
 **
-** @fdata [AjPSqlConnection]
+** @fdata [AjPSqlconnection]
 **
 ** @nam3rule Del Destroy (free) an existing AJAX SQL Connection
 **
-** @argrule Del Psqlc [AjPSqlConnection *] AJAX SQL Connection address
+** @argrule Del Psqlc [AjPSqlconnection*] AJAX SQL Connection address
 **
 ** @valrule * [void]
 **
@@ -508,21 +550,21 @@ AjPSqlConnection ajSqlConnectionNewRef(AjPSqlConnection sqlc)
 
 
 
-/* @func ajSqlConnectionDel ***************************************************
+/* @func ajSqlconnectionDel ***************************************************
 **
 ** Default AJAX SQL Connection destructor, which disconnects from the
 ** SQL server first, frees the client library-specific connection object and
 ** finally the AJAX SQL Connection object.
 **
-** @param [d] Psqlc [AjPSqlConnection *] AJAX SQL Connection address
+** @param [d] Psqlc [AjPSqlconnection*] AJAX SQL Connection address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSqlConnectionDel(AjPSqlConnection *Psqlc)
+void ajSqlconnectionDel(AjPSqlconnection *Psqlc)
 {
-    AjPSqlConnection pthis = NULL;
+    AjPSqlconnection pthis = NULL;
     
     if(!Psqlc)
         return;
@@ -548,11 +590,11 @@ void ajSqlConnectionDel(AjPSqlConnection *Psqlc)
 	
         mysql_close((MYSQL *) pthis->Pconnection);
 	
-        ajDebug("ajSqlConnectionDel MySQL connection deleted.\n");
+        ajDebug("ajSqlconnectionDel MySQL connection deleted.\n");
 	
 #else
 	
-        ajDebug("ajSqlConnectionDel MySQL client support not built, "
+        ajDebug("ajSqlconnectionDel MySQL client support not built, "
                 "but object claims MySQL connection.\n");
 	
 #endif
@@ -566,11 +608,11 @@ void ajSqlConnectionDel(AjPSqlConnection *Psqlc)
 	
         PQfinish((PGconn *) pthis->Pconnection);
 	
-        ajDebug("ajSqlConnectionDel PostgreSQL connection deleted.\n");
+        ajDebug("ajSqlconnectionDel PostgreSQL connection deleted.\n");
 	
 #else
 	
-        ajDebug("ajSqlConnectionDel PostgreSQL client support not built, "
+        ajDebug("ajSqlconnectionDel PostgreSQL client support not built, "
                 "but object claims PostgreSQL connection.\n");
 	
 #endif
@@ -589,101 +631,46 @@ void ajSqlConnectionDel(AjPSqlConnection *Psqlc)
 
 
 
-/* @func ajSqlConnectionGetClient *********************************************
+/* @section Cast *********************************************************
 **
-** Get the client element of an AJAX SQL Connection.
+** Functions for returning elements of an AJAX SQL Connection object.
 **
-** @param [r] sqlc [const AjPSqlConnection] AJAX SQL Connection
+** @fdata [AjPSqlconnection]
 **
-** @return [AjEnum] SQL client enumerator
-** @@
+** @nam3rule Get Return AJAX SQL Connection elements
+** @nam4rule Client Return client element
+** @nam3rule Escape Escape an AJAX String based on an AJAX SQL Connection
+** @suffix C Return a char* escaped string
+** @suffix S Return an AjPStr escaped string
+**
+** @argrule * sqlc [const AjPSqlconnection] AJAX SQL Connection
+** @argrule C Ptxt [char**] Address of the (new) SQL-escaped C-type string
+** @argrule S Pstr [AjPStr*] Address of the (new) SQL-escaped AJAX String
+** @argrule Escape str [const AjPStr] AJAX String to be escaped
+**
+** @valrule Client [AjEnum] Client enumeration
+** @valrule Escape [AjBool] True on success
+**
+** @fcategory cast
 ******************************************************************************/
 
-AjEnum ajSqlConnectionGetClient(const AjPSqlConnection sqlc)
-{
-    if(!sqlc)
-        return ajESqlClientNULL;
-    
-    return sqlc->Client;
-}
-
-
-
-
-/* @section debugging *********************************************************
-**
-** Functions for reporting of an AJAX SQL Connection object.
-**
-** @fdata [AjPSqlConnection]
-** @nam3rule Trace Report AJAX SQL Connection elements to debug file 
-**
-** @argrule Trace sqlc [const AjPSqlConnection] AJAX SQL Connection
-** @argrule Trace level [ajuint] Indentation level
-**
-** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
-**
-** @fcategory misc
-******************************************************************************/
-
-
-
-
-/* @func ajSqlConnectionTrace *************************************************
-**
-** Trace an AJAX SQL Connection.
-**
-** @param [r] sqlc [const AjPSqlConnection] AJAX SQL Connection
-** @param [r] level [ajuint] Indentation level
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ajSqlConnectionTrace(const AjPSqlConnection sqlc, ajuint level)
-{
-    AjPStr indent = NULL;
-    
-    if(!sqlc)
-	return ajFalse;
-    
-    indent = ajStrNew();
-    
-    ajStrAppendCountK(&indent, ' ', level * 2);
-    
-    ajDebug("%SajSqlConnectionTrace %p\n"
-	    "%S  Pconnection %p\n"
-	    "%S  Client %d\n"
-	    "%S  Use %u\n",
-	    indent, sqlc,
-	    indent, sqlc->Pconnection,
-	    indent, sqlc->Client,
-	    indent, sqlc->Use);
-    
-    ajStrDel(&indent);
-    
-    return ajTrue;
-}
-
-
-
-
-/* @func ajSqlConnectionEscapeCS **********************************************
+/* @func ajSqlconnectionEscapeC **********************************************
 **
 ** Escape an AJAX String based on an AJAX SQL Connection.
 ** The caller is responsible for deleting the C-type char string at the
 ** returned address. 
 **
-** @param [r] sqlc [const AjPSqlConnection] AJAX SQL Connection
-** @param [w] Ptxt [char **] Address of the (new) SQL-escaped C-type string
+** @param [r] sqlc [const AjPSqlconnection] AJAX SQL Connection
+** @param [w] Ptxt [char**] Address of the (new) SQL-escaped C-type string
 ** @param [r] str [const AjPStr] AJAX String to be escaped
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSqlConnectionEscapeCS(const AjPSqlConnection sqlc,
-                               char **Ptxt,
-                               const AjPStr str)
+AjBool ajSqlconnectionEscapeC(const AjPSqlconnection sqlc,
+                              char **Ptxt,
+                              const AjPStr str)
 {
     
 #ifdef HAVE_POSTGRESQL
@@ -731,7 +718,7 @@ AjBool ajSqlConnectionEscapeCS(const AjPSqlConnection sqlc,
 	
 #else
 	
-        ajDebug("ajSqlConnectionEscapeCS MySQL client support not built, "
+        ajDebug("ajSqlconnectionEscapeC MySQL client support not built, "
                 "but object claims MySQL connection.\n");
 	
 #endif
@@ -762,12 +749,12 @@ AjBool ajSqlConnectionEscapeCS(const AjPSqlConnection sqlc,
 			       &error);
 	
 	if(error)
-	    ajDebug("ajSqlConnectionEscapeCS PostgreSQL client encountered an "
+	    ajDebug("ajSqlconnectionEscapeC PostgreSQL client encountered an "
 		    "error during string escaping.\n");
 	
 #else
 	
-        ajDebug("ajSqlConnectionEscapeCS PostgreSQL client support not built, "
+        ajDebug("ajSqlconnectionEscapeC PostgreSQL client support not built, "
                 "but object claims PostgreSQL connection.\n");
 	
 #endif
@@ -780,23 +767,23 @@ AjBool ajSqlConnectionEscapeCS(const AjPSqlConnection sqlc,
 
 
 
-/* @func ajSqlConnectionEscapeSS **********************************************
+/* @func ajSqlconnectionEscapeS **********************************************
 **
 ** Escape an AJAX String based on an AJAX SQL Connection.
 ** The caller is responsible for deleting the AJAX String at the returned
 ** address. 
 **
-** @param [r] sqlc [const AjPSqlConnection] AJAX SQL Connection
-** @param [w] Pstr [AjPStr *] Address of the (new) SQL-escaped AJAX String
+** @param [r] sqlc [const AjPSqlconnection] AJAX SQL Connection
+** @param [w] Pstr [AjPStr*] Address of the (new) SQL-escaped AJAX String
 ** @param [r] str [const AjPStr] AJAX String to be escaped
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSqlConnectionEscapeSS(const AjPSqlConnection sqlc,
-                               AjPStr *Pstr,
-                               const AjPStr str)
+AjBool ajSqlconnectionEscapeS(const AjPSqlconnection sqlc,
+                              AjPStr *Pstr,
+                              const AjPStr str)
 {
     char **Ptxt = NULL;
     
@@ -806,7 +793,7 @@ AjBool ajSqlConnectionEscapeSS(const AjPSqlConnection sqlc,
     if(!str)
 	return ajFalse;
     
-    ajSqlConnectionEscapeCS(sqlc, Ptxt, str);
+    ajSqlconnectionEscapeC(sqlc, Ptxt, str);
     
     ajStrAssignC(Pstr, *Ptxt);
     
@@ -818,11 +805,89 @@ AjBool ajSqlConnectionEscapeSS(const AjPSqlConnection sqlc,
 
 
 
-/* @datasection [AjPSqlStatement] AJAX SQL Statement **************************
+/* @func ajSqlconnectionGetClient *********************************************
+**
+** Get the client element of an AJAX SQL Connection.
+**
+** @param [r] sqlc [const AjPSqlconnection] AJAX SQL Connection
+**
+** @return [AjEnum] SQL client enumerator
+** @@
+******************************************************************************/
+
+AjEnum ajSqlconnectionGetClient(const AjPSqlconnection sqlc)
+{
+    if(!sqlc)
+        return ajESqlClientNULL;
+    
+    return sqlc->Client;
+}
+
+
+
+
+/* @section debugging *********************************************************
+**
+** Functions for reporting of an AJAX SQL Connection object.
+**
+** @fdata [AjPSqlconnection]
+** @nam3rule Trace Report AJAX SQL Connection elements to debug file 
+**
+** @argrule Trace sqlc [const AjPSqlconnection] AJAX SQL Connection
+** @argrule Trace level [ajuint] Indentation level
+**
+** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
+**
+** @fcategory misc
+******************************************************************************/
+
+
+
+
+/* @func ajSqlconnectionTrace *************************************************
+**
+** Trace an AJAX SQL Connection.
+**
+** @param [r] sqlc [const AjPSqlconnection] AJAX SQL Connection
+** @param [r] level [ajuint] Indentation level
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ajSqlconnectionTrace(const AjPSqlconnection sqlc, ajuint level)
+{
+    AjPStr indent = NULL;
+    
+    if(!sqlc)
+	return ajFalse;
+    
+    indent = ajStrNew();
+    
+    ajStrAppendCountK(&indent, ' ', level * 2);
+    
+    ajDebug("%SajSqlconnectionTrace %p\n"
+	    "%S  Pconnection %p\n"
+	    "%S  Client %d\n"
+	    "%S  Use %u\n",
+	    indent, sqlc,
+	    indent, sqlc->Pconnection,
+	    indent, sqlc->Client,
+	    indent, sqlc->Use);
+    
+    ajStrDel(&indent);
+    
+    return ajTrue;
+}
+
+
+
+
+/* @datasection [AjPSqlstatement] AJAX SQL Statement **************************
 **
 ** Functions for manipulating AJAX SQL Statements.
 **
-** @nam2rule SqlStatement Functions for manipulating AJAX SQL Statements.
+** @nam2rule Sqlstatement Functions for manipulating AJAX SQL Statements.
 **
 ******************************************************************************/
 
@@ -833,12 +898,17 @@ AjBool ajSqlConnectionEscapeSS(const AjPSqlConnection sqlc,
 **
 ** Functions for constructing AJAX SQL Statement objects.
 **
-** @fdata [AjPSqlStatement]
+** @fdata [AjPSqlstatement]
 **
 ** @nam3rule New Construct a new AJAX SQL Statement
-** @nam3rule NewRef Constructor by incrementing the reference counter
+** @nam4rule Ref Constructor by incrementing the reference counter
+** @nam4rule Run Constructor by running a SQL statement
 **
-** @valrule * [AjPSqlStatement] AJAX SQL Statement
+** @argrule Ref sqls [AjPSqlstatement] Undocumented
+** @argrule Run sqlc [AjPSqlconnection] Undocumented
+** @argrule Run statement [const AjPStr] Undocumented
+**
+** @valrule * [AjPSqlstatement] AJAX SQL Statement
 **
 ** @fcategory new
 ******************************************************************************/
@@ -846,20 +916,44 @@ AjBool ajSqlConnectionEscapeSS(const AjPSqlConnection sqlc,
 
 
 
-/* @func ajSqlStatementNew ****************************************************
+/* @func ajSqlstatementNewRef *************************************************
+**
+** Ensembl Object referencing function, which returns a pointer to the
+** Ensembl Object passed in and increases its reference count.
+**
+** @param [u] sqls [AjPSqlstatement] AJAX SQL Statement
+**
+** @return [AjPSqlstatement] AJAX SQL Statement or NULL
+** @@
+******************************************************************************/
+
+AjPSqlstatement ajSqlstatementNewRef(AjPSqlstatement sqls)
+{
+    if(!sqls)
+	return NULL;
+    
+    sqls->Use++;
+    
+    return sqls;
+}
+
+
+
+/* @func ajSqlstatementNewRun *************************************************
 **
 ** Default AJAX SQL Statement constructor. Upon construction the SQL Statement
 ** is run against the SQL server specified in the AJAX SQL Connection.
 ** Eventual results of the SQL Statement are then stored inside this object.
 **
-** @param [r] sqlc [AjPSqlConnection] AJAX SQL Connection
+** @param [u] sqlc [AjPSqlconnection] AJAX SQL Connection
 ** @param [r] statement [const AjPStr] SQL statement
 **
-** @return [AjPSqlStatement] AJAX SQL Statement or NULL
+** @return [AjPSqlstatement] AJAX SQL Statement or NULL
 ** @@
 ******************************************************************************/
 
-AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
+AjPSqlstatement ajSqlstatementNewRun(AjPSqlconnection sqlc,
+                                     const AjPStr statement)
 {
     
 #ifdef HAVE_MYSQL
@@ -880,7 +974,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
     
 #if defined(HAVE_MYSQL) || defined(HAVE_POSTGRESQL)
     
-    AjPSqlStatement sqls = NULL;
+    AjPSqlstatement sqls = NULL;
     
 #endif
     
@@ -890,7 +984,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
     if(!statement)
         return NULL;
     
-    ajDebug("ajSqlStatementNew %S\n", statement);
+    ajDebug("ajSqlstatementNewRun %S\n", statement);
     
     if(sqlc->Client == ajESqlClientMySQL)
     {
@@ -900,7 +994,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
 	Pmysql = (MYSQL *) sqlc->Pconnection;
 	
 	if(!Pmysql)
-	    ajFatal("ajSqlStatementNew got AJAX SQL Connection without "
+	    ajFatal("ajSqlstatementNewRun got AJAX SQL Connection without "
 		    "MYSQL client library-specific connection object.");
 	
         if(mysql_real_query(Pmysql,
@@ -910,7 +1004,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
         {
             /* An error occured. */
 	    
-	    ajDebug("ajSqlStatementNew MySQL error: %s\n",
+	    ajDebug("ajSqlstatementNewRun MySQL error: %s\n",
 		    mysql_error(Pmysql));
 	    
             return NULL;
@@ -935,7 +1029,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
 		
 		AJNEW0(sqls);
 		
-		sqls->SqlConnection = ajSqlConnectionNewRef(sqlc);
+		sqls->Sqlconnection = ajSqlconnectionNewRef(sqlc);
 		
 		sqls->Presult = (void *) Pmysqlres;
 		
@@ -947,7 +1041,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
                 
 		sqls->Use = 1;
 		
-                ajDebug("ajSqlStatementNew MySQL selected rows %Lu "
+                ajDebug("ajSqlstatementNewRun MySQL selected rows %Lu "
 			"columns %u\n",
                         sqls->SelectedRows,
 			sqls->Columns);
@@ -967,7 +1061,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
                 {
                     /* The statement should have returned rows. */
 		    
-                    ajDebug("ajSqlStatementNew MySQL error: %s\n",
+                    ajDebug("ajSqlstatementNewRun MySQL error: %s\n",
                             mysql_error(Pmysql));
 		    
                     return NULL;
@@ -978,7 +1072,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
 		    
 		    AJNEW0(sqls);
 		    
-		    sqls->SqlConnection = ajSqlConnectionNewRef(sqlc);
+		    sqls->Sqlconnection = ajSqlconnectionNewRef(sqlc);
 		    
 		    sqls->Presult = NULL;
 		    
@@ -990,7 +1084,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
 		    
 		    sqls->Use = 1;
 		    
-                    ajDebug("ajSqlStatementNew MySQL affected rows %Lu\n",
+                    ajDebug("ajSqlstatementNewRun MySQL affected rows %Lu\n",
                             sqls->AffectedRows);
 		    
                     sqlStatementTotalCount++;
@@ -1002,7 +1096,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
 	
 #else
 	
-        ajDebug("ajSqlStatementNew EMBOSS AJAX library built without "
+        ajDebug("ajSqlstatementNewRun EMBOSS AJAX library built without "
                 "MySQL client library support.\n");
 	
         return NULL;
@@ -1019,7 +1113,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
 	Ppgconn = (PGconn *) sqlc->Pconnection;
 	
 	if(!Ppgconn)
-	    ajFatal("ajSqlStatementNew got AJAX SQL Connection without "
+	    ajFatal("ajSqlstatementNewRun got AJAX SQL Connection without "
 		    "PostgreSQL client library-specific connection object.");
 	
 	Ppgresult = PQexec(Ppgconn, ajStrGetPtr(statement));
@@ -1030,7 +1124,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
             {
 		case PGRES_EMPTY_QUERY:
 		    
-		    ajDebug("ajSqlStatementNew PostgreSQL reported empty "
+		    ajDebug("ajSqlstatementNewRun PostgreSQL reported empty "
 			    "statement string.\n");
 		    
 		    PQclear(Ppgresult);
@@ -1050,7 +1144,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
 		    
 		    AJNEW0(sqls);
 		    
-		    sqls->SqlConnection = ajSqlConnectionNewRef(sqlc);
+		    sqls->Sqlconnection = ajSqlconnectionNewRef(sqlc);
 		    
 		    sqls->Presult = NULL;
 		    
@@ -1062,7 +1156,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
 		    
 		    sqls->Use = 1;
 		    
-		    ajDebug("ajSqlStatementNew PostgreSQL affected rows %Lu\n",
+		    ajDebug("ajSqlstatementNewRun PostgreSQL affected rows %Lu\n",
 			    sqls->AffectedRows);
 		    
 		    ajStrDel(&affected);
@@ -1079,7 +1173,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
 		    
 		    AJNEW0(sqls);
 		    
-		    sqls->SqlConnection = ajSqlConnectionNewRef(sqlc);
+		    sqls->Sqlconnection = ajSqlconnectionNewRef(sqlc);
 		    
 		    sqls->Presult = (void *) Ppgresult;
 		    
@@ -1091,7 +1185,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
 		    
 		    sqls->Use = 1;
 		    
-		    ajDebug("ajSqlStatementNew PostgreSQL selected rows %Lu "
+		    ajDebug("ajSqlstatementNewRun PostgreSQL selected rows %Lu "
 			    "columns %u\n",
 			    sqls->SelectedRows,
 			    sqls->Columns);
@@ -1104,7 +1198,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
 		    
 		case PGRES_FATAL_ERROR:
 		    
-		    ajDebug("ajSqlStatementNew PostgreSQL fatal error: %s\n",
+		    ajDebug("ajSqlstatementNewRun PostgreSQL fatal error: %s\n",
 			    PQresultErrorMessage(Ppgresult));
 		    
 		    PQclear(Ppgresult);
@@ -1115,7 +1209,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
 		    
 		default:
 		    
-		    ajDebug("ajSqlStatementNew PostgreSQL returned an "
+		    ajDebug("ajSqlstatementNewRun PostgreSQL returned an "
 			    "unexpected status: %s\n",
 			    PQresStatus(PQresultStatus(Ppgresult)));
 		    
@@ -1126,7 +1220,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
         }
 	else
 	{
-	    ajDebug("ajSqlStatementNew PostgreSQL error: %s\n",
+	    ajDebug("ajSqlstatementNewRun PostgreSQL error: %s\n",
 		    PQerrorMessage(Ppgconn));
 	    
 	    return NULL;
@@ -1134,7 +1228,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
 	
 #else
 	
-	ajDebug("ajSqlStatementNew EMBOSS AJAX library built without "
+	ajDebug("ajSqlstatementNewRun EMBOSS AJAX library built without "
 		"PostgreSQL client library support.\n");
 	
 	return NULL;
@@ -1143,7 +1237,7 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
 	
     }
     
-    ajDebug("ajSqlStatementNew AJAX SQL Connection client identifier %d "
+    ajDebug("ajSqlstatementNewRun AJAX SQL Connection client identifier %d "
 	    "not supported.\n", sqlc->Client);
     
     return NULL;
@@ -1152,39 +1246,16 @@ AjPSqlStatement ajSqlStatementNew(AjPSqlConnection sqlc, const AjPStr statement)
 
 
 
-/* @func ajSqlStatementNewRef *************************************************
-**
-** Ensembl Object referencing function, which returns a pointer to the
-** Ensembl Object passed in and increases its reference count.
-**
-** @param [u] sqls [AjPSqlStatement] AJAX SQL Statement
-**
-** @return [AjPSqlStatement] AJAX SQL Statement or NULL
-** @@
-******************************************************************************/
-
-AjPSqlStatement ajSqlStatementNewRef(AjPSqlStatement sqls)
-{
-    if(!sqls)
-	return NULL;
-    
-    sqls->Use++;
-    
-    return sqls;
-}
-
-
-
 
 /* @section destructors *******************************************************
 **
 ** Functions for destruction of AJAX SQL Statement objects.
 **
-** @fdata [AjPSqlStatement]
+** @fdata [AjPSqlstatement]
 **
 ** @nam3rule Del Destroy (free) an existing AJAX SQL Statement
 **
-** @argrule Del Psqls [AjPSqlStatement *] AJAX SQL Statement address
+** @argrule Del Psqls [AjPSqlstatement*] AJAX SQL Statement address
 **
 ** @valrule * [void]
 **
@@ -1194,20 +1265,20 @@ AjPSqlStatement ajSqlStatementNewRef(AjPSqlStatement sqls)
 
 
 
-/* @func ajSqlStatementDel ****************************************************
+/* @func ajSqlstatementDel ****************************************************
 **
 ** Default AJAX SQL Statement destructor, which also destroys the SQL client
 ** library-specific result object.
 **
-** @param [d] Psqls [AjPSqlStatement *] AJAX SQL Statement address
+** @param [d] Psqls [AjPSqlstatement*] AJAX SQL Statement address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSqlStatementDel(AjPSqlStatement *Psqls)
+void ajSqlstatementDel(AjPSqlstatement *Psqls)
 {
-    AjPSqlStatement pthis = NULL;
+    AjPSqlstatement pthis = NULL;
     
     if(!Psqls)
         return;
@@ -1226,7 +1297,7 @@ void ajSqlStatementDel(AjPSqlStatement *Psqls)
 	return;
     }
     
-    if(pthis->SqlConnection->Client == ajESqlClientMySQL)
+    if(pthis->Sqlconnection->Client == ajESqlClientMySQL)
     {
 	
 #ifdef HAVE_MYSQL
@@ -1234,19 +1305,19 @@ void ajSqlStatementDel(AjPSqlStatement *Psqls)
         mysql_free_result((MYSQL_RES *) pthis->Presult);
 	
 	/*
-	 ajDebug("ajSqlStatementDel MySQL Statement deleted.\n");
+	 ajDebug("ajSqlstatementDel MySQL Statement deleted.\n");
 	 */
 	
 #else
 	
-        ajDebug("ajSqlStatementDel MySQL client library support not built, "
+        ajDebug("ajSqlstatementDel MySQL client library support not built, "
                 "but object claims MySQL connection?\n");
 	
 #endif
 	
     }
     
-    if(pthis->SqlConnection->Client == ajESqlClientPostgreSQL)
+    if(pthis->Sqlconnection->Client == ajESqlClientPostgreSQL)
     {
 	
 #ifdef HAVE_POSTGRESQL
@@ -1254,19 +1325,19 @@ void ajSqlStatementDel(AjPSqlStatement *Psqls)
         PQclear((PGresult *) pthis->Presult);
 	
 	/*
-	 ajDebug("ajSqlStatementDel PostgreSQL Statement deleted.\n");
+	 ajDebug("ajSqlstatementDel PostgreSQL Statement deleted.\n");
 	 */
 	
 #else
 	
-        ajDebug("ajSqlStatementDel PostgreSQL client library support not "
+        ajDebug("ajSqlstatementDel PostgreSQL client library support not "
                 "built, but object claims PostgreSQL connection?\n");
 	
 #endif
 	
     }
     
-    ajSqlConnectionDel(&pthis->SqlConnection);
+    ajSqlconnectionDel(&pthis->Sqlconnection);
     
     AJFREE(pthis);
 
@@ -1280,17 +1351,40 @@ void ajSqlStatementDel(AjPSqlStatement *Psqls)
 
 
 
-/* @func ajSqlStatementGetAffectedRows ****************************************
+
+/* @section cast **************************************************************
+**
+** @fdata [AjPSqlstatement]
+**
+** @nam3rule Get return elements of a SQL statement
+** @nam4rule Affectedrows return number of rows affected
+** @nam4rule Columns return number of columns returned
+** @nam4rule Identifier return identifier of a row inserted
+** @nam4rule Selectedrows return number of rows selected
+**
+** @argrule Get sqls [const AjPSqlstatement] Undocumented
+**
+** @valrule Affectedrows [ajulong] Number of affected rows
+** @valrule Columns [ajuint] Number of columns returned
+** @valrule Identifier [ajuint] Identifier of a row inserted
+** @valrule Selectedrows [ajulong] Number of selected rows
+**
+** @fcategory cast
+**
+******************************************************************************/
+
+
+/* @func ajSqlstatementGetAffectedrows ****************************************
 **
 ** Get the number of rows affected by a non-SELECT SQL statement.
 **
-** @param [r] sqls [AjPSqlStatement] AJAX SQL Statement
+** @param [r] sqls [const AjPSqlstatement] AJAX SQL Statement
 **
 ** @return [ajulong] Number of affected rows
 ** @@
 ******************************************************************************/
 
-ajulong ajSqlStatementGetAffectedRows(const AjPSqlStatement sqls)
+ajulong ajSqlstatementGetAffectedrows(const AjPSqlstatement sqls)
 {
     if(!sqls)
         return 0;
@@ -1301,38 +1395,17 @@ ajulong ajSqlStatementGetAffectedRows(const AjPSqlStatement sqls)
 
 
 
-/* @func ajSqlStatementGetSelectedRows ****************************************
-**
-** Get the number of rows selected by a SELECT-like SQL statement.
-**
-** @param [r] sqls [const AjPSqlStatement] AJAX SQL Statement
-**
-** @return [ajulong] Number of selected rows
-** @@
-******************************************************************************/
-
-ajulong ajSqlStatementGetSelectedRows(const AjPSqlStatement sqls)
-{
-    if(!sqls)
-        return 0;
-    
-    return sqls->SelectedRows;
-}
-
-
-
-
-/* @func ajSqlStatementGetColumns *********************************************
+/* @func ajSqlstatementGetColumns *********************************************
 **
 ** Get the number of columns returned by a SELECT-like SQL statement.
 **
-** @param [r] sqls [const AjPSqlStatement] AJAX SQL Statement
+** @param [r] sqls [const AjPSqlstatement] AJAX SQL Statement
 **
 ** @return [ajuint] Number of selected columns
 ** @@
 ******************************************************************************/
 
-ajuint ajSqlStatementGetColumns(const AjPSqlStatement sqls)
+ajuint ajSqlstatementGetColumns(const AjPSqlstatement sqls)
 {
     if(!sqls)
         return 0;
@@ -1343,17 +1416,17 @@ ajuint ajSqlStatementGetColumns(const AjPSqlStatement sqls)
 
 
 
-/* @func ajSqlStatementGetIdentifier ******************************************
+/* @func ajSqlstatementGetIdentifier ******************************************
 **
 ** Get the identifier of a row inserted by the last INSERT-like SQL statement.
 **
-** @param [r] sqls [const AjPSqlStatement] AJAX SQL Statement
+** @param [r] sqls [const AjPSqlstatement] AJAX SQL Statement
 **
 ** @return [ajuint] Identifier of last inserted row
 ** @@
 ******************************************************************************/
 
-ajuint ajSqlStatementGetIdentifier(const AjPSqlStatement sqls)
+ajuint ajSqlstatementGetIdentifier(const AjPSqlstatement sqls)
 {
     ajuint identifier = 0;
     
@@ -1372,25 +1445,25 @@ ajuint ajSqlStatementGetIdentifier(const AjPSqlStatement sqls)
     if(!sqls)
 	return 0;
     
-    if(sqls->SqlConnection->Client == ajESqlClientMySQL)
+    if(sqls->Sqlconnection->Client == ajESqlClientMySQL)
     {
 	
 #ifdef HAVE_MYSQL
 	
-	Pmysql = (MYSQL *) sqls->SqlConnection->Pconnection;
+	Pmysql = (MYSQL *) sqls->Sqlconnection->Pconnection;
 	
 	identifier = (ajuint) mysql_insert_id(Pmysql);
 	
 #else
 	
-        ajDebug("ajSqlStatementDel MySQL client library support not built, "
+        ajDebug("ajSqlstatementDel MySQL client library support not built, "
                 "but object claims MySQL connection?\n");
 	
 #endif
 	
     }
     
-    if(sqls->SqlConnection->Client == ajESqlClientPostgreSQL)
+    if(sqls->Sqlconnection->Client == ajESqlClientPostgreSQL)
     {
 	
 #ifdef HAVE_POSTGRESQL
@@ -1401,7 +1474,7 @@ ajuint ajSqlStatementGetIdentifier(const AjPSqlStatement sqls)
 	
 #else
 	
-        ajDebug("ajSqlStatementDel PostgreSQL client library support not "
+        ajDebug("ajSqlstatementDel PostgreSQL client library support not "
                 "built, but object claims PostgreSQL connection?\n");
 	
 #endif
@@ -1414,11 +1487,32 @@ ajuint ajSqlStatementGetIdentifier(const AjPSqlStatement sqls)
 
 
 
-/* @datasection [AjISqlRow] AJAX SQL Row Iterator *****************************
+/* @func ajSqlstatementGetSelectedrows ****************************************
+**
+** Get the number of rows selected by a SELECT-like SQL statement.
+**
+** @param [r] sqls [const AjPSqlstatement] AJAX SQL Statement
+**
+** @return [ajulong] Number of selected rows
+** @@
+******************************************************************************/
+
+ajulong ajSqlstatementGetSelectedrows(const AjPSqlstatement sqls)
+{
+    if(!sqls)
+        return 0;
+    
+    return sqls->SelectedRows;
+}
+
+
+
+
+/* @datasection [AjISqlrow] AJAX SQL Row Iterator *****************************
 **
 ** Functions for manipulating AJAX SQL Row Iterators.
 **
-** @nam2rule SqlRowIter Functions for manipulating AJAX SQL Row Iterators.
+** @nam2rule Sqlrowiter Functions for manipulating AJAX SQL Row Iterators.
 **
 ******************************************************************************/
 
@@ -1429,12 +1523,13 @@ ajuint ajSqlStatementGetIdentifier(const AjPSqlStatement sqls)
 **
 ** Functions for constructing AJAX SQL Row Iterator objects.
 **
-** @fdata [AjISqlRow]
+** @fdata [AjISqlrow]
 **
 ** @nam3rule New Construct a new AJAX SQL Row Iterator
-** @nam3rule NewRef Constructor by incrementing the reference counter
 **
-** @valrule * [AjISqlRow] AJAX SQL Row Iterator
+** @argrule New sqls [AjPSqlstatement] Undocumented
+**
+** @valrule * [AjISqlrow] AJAX SQL Row Iterator
 **
 ** @fcategory new
 ******************************************************************************/
@@ -1442,20 +1537,20 @@ ajuint ajSqlStatementGetIdentifier(const AjPSqlStatement sqls)
 
 
 
-/* @func ajSqlRowIterNew ******************************************************
+/* @func ajSqlrowiterNew ******************************************************
 **
 ** Default AJAX SQL Row Iterator constructor.
 **
-** @param [r] sqls [AjPSqlStatement] AJAX SQL Statement
+** @param [u] sqls [AjPSqlstatement] AJAX SQL Statement
 **
-** @return [AjISqlRow] AJAX SQL Row Iterator or NULL if the
+** @return [AjISqlrow] AJAX SQL Row Iterator or NULL if the
 **                     AJAX SQL Statement did not return rows and columns
 ** @@
 ******************************************************************************/
 
-AjISqlRow ajSqlRowIterNew(AjPSqlStatement sqls)
+AjISqlrow ajSqlrowiterNew(AjPSqlstatement sqls)
 {
-    AjISqlRow sqli = NULL;
+    AjISqlrow sqli = NULL;
     
     if(!sqls)
         return NULL;
@@ -1468,9 +1563,9 @@ AjISqlRow ajSqlRowIterNew(AjPSqlStatement sqls)
     
     AJNEW0(sqli);
     
-    sqli->SqlStatement = ajSqlStatementNewRef(sqls);
+    sqli->Sqlstatement = ajSqlstatementNewRef(sqls);
     
-    sqli->SqlRow = ajSqlRowNew(sqls->Columns);
+    sqli->Sqlrow = ajSqlrowNew(sqls->Columns);
     
     sqli->Current = 0;
     
@@ -1484,11 +1579,11 @@ AjISqlRow ajSqlRowIterNew(AjPSqlStatement sqls)
 **
 ** Functions for destruction of AJAX SQL Row Iterator objects.
 **
-** @fdata [AjISqlRow]
+** @fdata [AjISqlrow]
 **
 ** @nam3rule Del Destroy (free) an existing AJAX SQL Row Iterator
 **
-** @argrule Del Psqli [AjISqlRow *] AJAX SQL Row Iterator address
+** @argrule Del Psqli [AjISqlrow*] AJAX SQL Row Iterator address
 **
 ** @valrule * [void]
 **
@@ -1498,19 +1593,19 @@ AjISqlRow ajSqlRowIterNew(AjPSqlStatement sqls)
 
 
 
-/* @func ajSqlRowIterDel ******************************************************
+/* @func ajSqlrowiterDel ******************************************************
 **
 ** Default AJAX SQL Row Iterator destructor.
 **
-** @param [d] Psqli [AjISqlRow *] AJAX SQL Row Iterator address
+** @param [d] Psqli [AjISqlrow*] AJAX SQL Row Iterator address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSqlRowIterDel(AjISqlRow *Psqli)
+void ajSqlrowiterDel(AjISqlrow *Psqli)
 {
-    AjISqlRow pthis = NULL;
+    AjISqlrow pthis = NULL;
     
     if(!Psqli)
         return;
@@ -1520,9 +1615,9 @@ void ajSqlRowIterDel(AjISqlRow *Psqli)
 
     pthis = *Psqli;
     
-    ajSqlStatementDel(&pthis->SqlStatement);
+    ajSqlstatementDel(&pthis->Sqlstatement);
     
-    ajSqlRowDel(&pthis->SqlRow);
+    ajSqlrowDel(&pthis->Sqlrow);
     
     AJFREE(pthis);
 
@@ -1536,11 +1631,11 @@ void ajSqlRowIterDel(AjISqlRow *Psqli)
 
 /* @section tests *************************************************************
 **
-** @fdata [AjISqlRow]
+** @fdata [AjISqlrow]
 **
-** @nam4rule Done Check whether iteration has ended (no more AJAX SQL Rows).
+** @nam3rule Done Check whether iteration has ended (no more AJAX SQL Rows).
 **
-** @argrule Done sqli [const AjISqlRow] AJAX SQL Row Iterator
+** @argrule Done sqli [const AjISqlrow] AJAX SQL Row Iterator
 **
 ** @valrule * [AjBool] Result of test
 **
@@ -1550,22 +1645,22 @@ void ajSqlRowIterDel(AjISqlRow *Psqli)
 
 
 
-/* @func ajSqlRowIterDone *****************************************************
+/* @func ajSqlrowiterDone *****************************************************
 **
 ** Tests whether an AJAX SQL Row Iterator has completed yet.
 **
-** @param [r] sqli [AjISqlRow] AJAX SQL Row Iterator
+** @param [r] sqli [const AjISqlrow] AJAX SQL Row Iterator
 **
 ** @return [AjBool] ajTrue if the iterator is exhausted
 ** @@
 ******************************************************************************/
 
-AjBool ajSqlRowIterDone(const AjISqlRow sqli)
+AjBool ajSqlrowiterDone(const AjISqlrow sqli)
 {
     if(!sqli)
         return ajTrue;
     
-    if(sqli->Current < sqli->SqlStatement->SelectedRows)
+    if(sqli->Current < sqli->Sqlstatement->SelectedRows)
 	return ajFalse;
     
 
@@ -1577,13 +1672,13 @@ AjBool ajSqlRowIterDone(const AjISqlRow sqli)
 
 /* @section stepping **********************************************************
 **
-** @fdata [AjISqlRow]
+** @fdata [AjISqlrow]
 **
-** @nam4rule Get Next AJAX SQL Row.
+** @nam3rule Get Next AJAX SQL Row.
 **
-** @argrule * sqli [AjISqlRow] AJAX SQL Row Iterator
+** @argrule * sqli [AjISqlrow] AJAX SQL Row Iterator
 **
-** @valrule * [AjPSqlRow] AJAX SQL Row
+** @valrule * [AjPSqlrow] AJAX SQL Row
 **
 ** @fcategory modify
 ******************************************************************************/
@@ -1591,17 +1686,17 @@ AjBool ajSqlRowIterDone(const AjISqlRow sqli)
 
 
 
-/* @func ajSqlRowIterGet ******************************************************
+/* @func ajSqlrowiterGet ******************************************************
 **
 ** Returns the next AJAX SQL Row using the iterator, or steps off the end.
 **
-** @param [u] sqli [AjISqlRow] AJAX SQL Row Iterator
+** @param [u] sqli [AjISqlrow] AJAX SQL Row Iterator
 **
-** @return [AjPSqlRow] AJAX SQL Row or NULL
+** @return [AjPSqlrow] AJAX SQL Row or NULL
 ** @@
 ******************************************************************************/
 
-AjPSqlRow ajSqlRowIterGet(AjISqlRow sqli)
+AjPSqlrow ajSqlrowiterGet(AjISqlrow sqli)
 {
     
 #if defined(HAVE_MYSQL) || defined(HAVE_POSTGRESQL)
@@ -1623,14 +1718,14 @@ AjPSqlRow ajSqlRowIterGet(AjISqlRow sqli)
         return NULL;
     
     /*
-     ajDebug("ajSqlRowIterGet current row %Lu\n", iter->Current);
+     ajDebug("ajSqlrowiterGet current row %Lu\n", iter->Current);
      */
     
     /* Check that the Iterator is within a valid range. */
     
-    if(sqli->Current >= sqli->SqlStatement->SelectedRows)
+    if(sqli->Current >= sqli->Sqlstatement->SelectedRows)
     {
-	ajDebug("ajSqlRowIterGet No more AJAX SQL Rows to fetch.\n");
+	ajDebug("ajSqlrowiterGet No more AJAX SQL Rows to fetch.\n");
 	
 	return NULL;
     }
@@ -1641,49 +1736,49 @@ AjPSqlRow ajSqlRowIterGet(AjISqlRow sqli)
     ** construct a new SQL Row with the correct number of columns.
     */
     
-    if(sqli->SqlRow)
-	sqli->SqlRow->Current = 0;
+    if(sqli->Sqlrow)
+	sqli->Sqlrow->Current = 0;
     else
-	sqli->SqlRow = ajSqlRowNew(sqli->SqlStatement->Columns);
+	sqli->Sqlrow = ajSqlrowNew(sqli->Sqlstatement->Columns);
     
-    if(sqli->SqlStatement->SqlConnection->Client == ajESqlClientMySQL)
+    if(sqli->Sqlstatement->Sqlconnection->Client == ajESqlClientMySQL)
     {
 	
 #ifdef HAVE_MYSQL
 	
-        mysqlrow = mysql_fetch_row((MYSQL_RES *) sqli->SqlStatement->Presult);
+        mysqlrow = mysql_fetch_row((MYSQL_RES *) sqli->Sqlstatement->Presult);
 	
         if(mysqlrow)
         {
             lengths =
-	    mysql_fetch_lengths((MYSQL_RES *) sqli->SqlStatement->Presult);
+	    mysql_fetch_lengths((MYSQL_RES *) sqli->Sqlstatement->Presult);
 	    
-            for(i = 0; i < sqli->SqlStatement->Columns; i++)
+            for(i = 0; i < sqli->Sqlstatement->Columns; i++)
             {
-                ajVoidPut(&(sqli->SqlRow->Values), i, (void *) mysqlrow[i]);
+                ajVoidPut(&(sqli->Sqlrow->Values), i, (void *) mysqlrow[i]);
 		
-                ajLongPut(&(sqli->SqlRow->Lengths), i, (ajlong) lengths[i]);
+                ajLongPut(&(sqli->Sqlrow->Lengths), i, (ajlong) lengths[i]);
             }
 	    
             sqli->Current++;
 	    
-            return sqli->SqlRow;
+            return sqli->Sqlrow;
         }
         else
         {
-	    Pmysql = (MYSQL *) sqli->SqlStatement->SqlConnection->Pconnection;
+	    Pmysql = (MYSQL *) sqli->Sqlstatement->Sqlconnection->Pconnection;
 	    
 	    if(mysql_errno(Pmysql))
-		ajDebug("ajSqlRowIterGet MySQL error %s", mysql_error(Pmysql));
+		ajDebug("ajSqlrowiterGet MySQL error %s", mysql_error(Pmysql));
 	    else
-		ajDebug("ajSqlRowIterGet No more MySQL rows to fetch?\n");
+		ajDebug("ajSqlrowiterGet No more MySQL rows to fetch?\n");
 	    
             return NULL;
         }
 	
 #else
 	
-        ajDebug("ajSqlRowIterGet EMBOSS AJAX library built without "
+        ajDebug("ajSqlrowiterGet EMBOSS AJAX library built without "
                 "MySQL client library support.\n");
 	
         return NULL;
@@ -1692,33 +1787,33 @@ AjPSqlRow ajSqlRowIterGet(AjISqlRow sqli)
 	
     }
     
-    if(sqli->SqlStatement->SqlConnection->Client == ajESqlClientPostgreSQL)
+    if(sqli->Sqlstatement->Sqlconnection->Client == ajESqlClientPostgreSQL)
     {
 	
 #ifdef HAVE_POSTGRESQL
 	
-	for(i = 0; i < sqli->SqlStatement->Columns; i++)
+	for(i = 0; i < sqli->Sqlstatement->Columns; i++)
 	{
-	    ajVoidPut(&(sqli->SqlRow->Values), i,
+	    ajVoidPut(&(sqli->Sqlrow->Values), i,
 		      (void *) PQgetvalue((PGresult *)
-					  sqli->SqlStatement->Presult,
+					  sqli->Sqlstatement->Presult,
 					  (int) sqli->Current,
 					  (int) i));
 	    
-	    ajLongPut(&(sqli->SqlRow->Lengths), i,
+	    ajLongPut(&(sqli->Sqlrow->Lengths), i,
 		      (ajlong) PQgetlength((PGresult *)
-					   sqli->SqlStatement->Presult,
+					   sqli->Sqlstatement->Presult,
 					   (int) sqli->Current,
 					   (int) i));
 	}
 	
 	sqli->Current++;
 	
-	return sqli->SqlRow;
+	return sqli->Sqlrow;
 	
 #else
 	
-        ajDebug("ajSqlRowIterGet EMBOSS AJAX library built without "
+        ajDebug("ajSqlrowiterGet EMBOSS AJAX library built without "
                 "PostgreSQL client library support.\n");
 	
         return NULL;
@@ -1735,13 +1830,13 @@ AjPSqlRow ajSqlRowIterGet(AjISqlRow sqli)
 
 /* @section modifiers *********************************************************
 **
-** @fdata [AjISqlRow]
+** @fdata [AjISqlrow]
 **
-** @nam4rule Rewind Rewind to start
+** @nam3rule Rewind Rewind to start
 **
-** @argrule * sqli [AjISqlRow] SQL Row Iterator
+** @argrule * sqli [AjISqlrow] SQL Row Iterator
 **
-** @valrule * [void]
+** @valrule * [AjBool] True on success
 **
 ** @fcategory modify
 ******************************************************************************/
@@ -1749,23 +1844,23 @@ AjPSqlRow ajSqlRowIterGet(AjISqlRow sqli)
 
 
 
-/* @func ajSqlRowIterRewind ***************************************************
+/* @func ajSqlrowiterRewind ***************************************************
 **
 ** Rewind an AJAX SQL Row Iterator to the start position.
 **
-** @param [u] sqli [AjISqlRow] AJAX SQL Row Iterator
+** @param [u] sqli [AjISqlrow] AJAX SQL Row Iterator
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSqlRowIterRewind(AjISqlRow sqli)
+AjBool ajSqlrowiterRewind(AjISqlrow sqli)
 {
     if(!sqli)
 	return ajFalse;
     
     
-    if(sqli->SqlStatement->SqlConnection->Client == ajESqlClientMySQL)
+    if(sqli->Sqlstatement->Sqlconnection->Client == ajESqlClientMySQL)
     {
 	
 #ifdef HAVE_MYSQL
@@ -1774,13 +1869,13 @@ AjBool ajSqlRowIterRewind(AjISqlRow sqli)
 	
 	sqli->Current = 0;
 	
-	mysql_data_seek((MYSQL_RES *) sqli->SqlStatement->Presult, 0);
+	mysql_data_seek((MYSQL_RES *) sqli->Sqlstatement->Presult, 0);
 	
 	return ajTrue;
 	
 #else
 	
-        ajDebug("ajSqlRowIterGet EMBOSS AJAX library built without "
+        ajDebug("ajSqlrowiterGet EMBOSS AJAX library built without "
                 "MySQL client library support.\n");
 	
         return ajFalse;
@@ -1789,7 +1884,7 @@ AjBool ajSqlRowIterRewind(AjISqlRow sqli)
 	
     }
     
-    if(sqli->SqlStatement->SqlConnection->Client == ajESqlClientPostgreSQL)
+    if(sqli->Sqlstatement->Sqlconnection->Client == ajESqlClientPostgreSQL)
     {
 	
 #ifdef HAVE_POSTGRESQL
@@ -1802,7 +1897,7 @@ AjBool ajSqlRowIterRewind(AjISqlRow sqli)
 	
 #else
 	
-        ajDebug("ajSqlRowIterGet EMBOSS AJAX library built without "
+        ajDebug("ajSqlrowiterGet EMBOSS AJAX library built without "
                 "PostgreSQL client library support.\n");
 	
         return ajFalse;
@@ -1817,11 +1912,11 @@ AjBool ajSqlRowIterRewind(AjISqlRow sqli)
 
 
 
-/* @datasection [AjPSqlRow] AJAX SQL Row **************************************
+/* @datasection [AjPSqlrow] AJAX SQL Row **************************************
 **
 ** Functions for manipulating AJAX SQL Rows.
 **
-** @nam2rule SqlRow Functions for manipulating AJAX SQL Rows.
+** @nam2rule Sqlrow Functions for manipulating AJAX SQL Rows.
 **
 ******************************************************************************/
 
@@ -1832,12 +1927,14 @@ AjBool ajSqlRowIterRewind(AjISqlRow sqli)
 **
 ** Functions for constructing AJAX SQL Row objects.
 **
-** @fdata [AjPSqlRow]
+** @fdata [AjPSqlrow]
 **
 ** @nam3rule New Construct a new AJAX SQL Row
 ** @nam3rule NewRef Constructor by incrementing the reference counter
 **
-** @valrule * [AjPSqlRow] AJAX SQL Row
+** @argrule New columns [ajuint] Number of columns per AJAX SQL Row
+**
+** @valrule * [AjPSqlrow] AJAX SQL Row
 **
 ** @fcategory new
 ******************************************************************************/
@@ -1845,19 +1942,19 @@ AjBool ajSqlRowIterRewind(AjISqlRow sqli)
 
 
 
-/* @func ajSqlRowNew **********************************************************
+/* @func ajSqlrowNew **********************************************************
 **
 ** Default AJAX SQL Row constructor.
 **
-** @param [u] columns [ajuint] Number of columns per AJAX SQL Row
+** @param [r] columns [ajuint] Number of columns per AJAX SQL Row
 **
-** @return [AjPSqlRow] AJAX SQL Row
+** @return [AjPSqlrow] AJAX SQL Row
 ** @@
 ******************************************************************************/
 
-AjPSqlRow ajSqlRowNew(ajuint columns)
+AjPSqlrow ajSqlrowNew(ajuint columns)
 {
-    AjPSqlRow sqlr = NULL;
+    AjPSqlrow sqlr = NULL;
     
     AJNEW0(sqlr);
     
@@ -1879,11 +1976,11 @@ AjPSqlRow ajSqlRowNew(ajuint columns)
 **
 ** Functions for destruction of AJAX SQL Row objects.
 **
-** @fdata [AjPSqlRow]
+** @fdata [AjPSqlrow]
 **
 ** @nam3rule Del Destroy (free) an existing AJAX SQL Row
 **
-** @argrule Del Psqlr [AjPSqlRow *] AJAX SQL Row address
+** @argrule Del Psqlr [AjPSqlrow*] AJAX SQL Row address
 **
 ** @valrule * [void]
 **
@@ -1893,19 +1990,19 @@ AjPSqlRow ajSqlRowNew(ajuint columns)
 
 
 
-/* @func ajSqlRowDel **********************************************************
+/* @func ajSqlrowDel **********************************************************
 **
 ** Default AJAX SQL Row destructor.
 **
-** @param [d] Psqlr [AjPSqlRow *] AJAX SQL Row address
+** @param [d] Psqlr [AjPSqlrow*] AJAX SQL Row address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSqlRowDel(AjPSqlRow *Psqlr)
+void ajSqlrowDel(AjPSqlrow *Psqlr)
 {
-    AjPSqlRow pthis = NULL;
+    AjPSqlrow pthis = NULL;
     
     if(!Psqlr)
         return;
@@ -1933,18 +2030,21 @@ void ajSqlRowDel(AjPSqlRow *Psqlr)
 **
 ** Functions for returning elements of an AJAX SQL Row object.
 **
-** @fdata [AjPSqlRow]
+** @fdata [AjPSqlrow]
 ** @fnote None
 **
 ** @nam3rule Get Return SQL Row attribute(s)
-** @nam4rule GetValues Return the AJAX Void Pointer Array of column values
-** @nam4rule GetLength Return the AJAX Long Array of column value lengths
-** @nam4rule GetColumns Return the number of columns
-** @nam4rule GetCurrent Return the number of the current column in iteration
+** @nam4rule Lengths Return the AJAX Long Array of column value lengths
+** @nam4rule Columns Return the number of columns
+** @nam4rule Current Return the number of the current column in iteration
+** @nam4rule Values Return the AJAX Void Pointer Array of column values
 **
-** @argrule * sqlr [const AjPSqlRow] SQL Row
+** @argrule * sqlr [const AjPSqlrow] SQL Row
 **
 ** @valrule Columns [ajuint] Number of columns
+** @valrule Current [ajuint] Current column
+** @valrule Lengths [AjPLong] Column value lengths
+** @valrule Values [AjPVoid] Column values
 **
 ** @fcategory use
 ******************************************************************************/
@@ -1952,38 +2052,60 @@ void ajSqlRowDel(AjPSqlRow *Psqlr)
 
 
 
-/* @func ajSqlRowGetValues ****************************************************
+/* @func ajSqlrowGetColumns ***************************************************
 **
-** Get the AJAX Void Pointer Array of column values in an AJAX SQL Row.
+** Get the number of columns in an AJAX SQL Row.
 **
-** @param [r] sqlr [const AjPSqlRow] AJAX SQL Row
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
 **
-** @return [AjPVoid] AJAX Void Pointer Array
+** @return [ajuint] Number of columns in an AJAX SQL Row
 ** @@
 ******************************************************************************/
 
-AjPVoid ajSqlRowGetValues(const AjPSqlRow sqlr)
+ajuint ajSqlrowGetColumns(const AjPSqlrow sqlr)
 {
     if(!sqlr)
-        return NULL;
+        return 0;
     
-    return sqlr->Values;
+    return sqlr->Columns;
 }
 
 
 
 
-/* @func ajSqlRowGetLengths ***************************************************
+/* @func ajSqlrowGetCurrent ***************************************************
+**
+** Get the number of the current column in column iterations of an
+** AJAX SQL Row.
+**
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
+**
+** @return [ajuint] Number of current column of an AJAX SQL Row
+** @@
+******************************************************************************/
+
+ajuint ajSqlrowGetCurrent(const AjPSqlrow sqlr)
+{
+    if(!sqlr)
+        return 0;
+    
+    return sqlr->Columns;
+}
+
+
+
+
+/* @func ajSqlrowGetLengths ***************************************************
 **
 ** Get the AJAX Long Integer Array of column value lengths in an AJAX SQL Row.
 **
-** @param [r] sqlr [const AjPSqlRow] AJAX SQL Row
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
 **
 ** @return [AjPLong] AJAX Long Integer Array
 ** @@
 ******************************************************************************/
 
-AjPLong ajSqlRowGetLengths(const AjPSqlRow sqlr)
+AjPLong ajSqlrowGetLengths(const AjPSqlrow sqlr)
 {
     if(!sqlr)
         return NULL;
@@ -1994,59 +2116,45 @@ AjPLong ajSqlRowGetLengths(const AjPSqlRow sqlr)
 
 
 
-/* @func ajSqlRowGetColumns ***************************************************
+/* @func ajSqlrowGetValues ****************************************************
 **
-** Get the number of columns in an AJAX SQL Row.
+** Get the AJAX Void Pointer Array of column values in an AJAX SQL Row.
 **
-** @param [r] sqlr [const AjPSqlRow] AJAX SQL Row
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
 **
-** @return [ajuint] Number of columns in an AJAX SQL Row
+** @return [AjPVoid] AJAX Void Pointer Array
 ** @@
 ******************************************************************************/
 
-ajuint ajSqlRowGetColumns(const AjPSqlRow sqlr)
+AjPVoid ajSqlrowGetValues(const AjPSqlrow sqlr)
 {
     if(!sqlr)
-        return 0;
+        return NULL;
     
-    return sqlr->Columns;
+    return sqlr->Values;
 }
 
 
 
 
-/* @func ajSqlRowGetCurrent ***************************************************
+/* @datasection [AjPSqlrow] AJAX SQL Column *****************************
 **
-** Get the number of the current column in column iterations of an
-** AJAX SQL Row.
+** Functions for manipulating AJAX SQL Row Columns
 **
-** @param [r] sqlr [const AjPSqlRow] AJAX SQL Row
+** @nam2rule Sqlcolumn Functions for manipulating AJAX SQL Row COlumns
 **
-** @return [ajuint] Number of current column of an AJAX SQL Row
-** @@
 ******************************************************************************/
 
-ajuint ajSqlRowGetCurrent(const AjPSqlRow sqlr)
-{
-    if(!sqlr)
-        return 0;
-    
-    return sqlr->Columns;
-}
 
 
 
-
-/* @section column retrieval **************************************************
+/* @section column modifiers **************************************************
 **
-** @fdata [AjPSqlRow]
+** @fdata [AjPSqlrow]
 **
-** @nam3rule Column Select the next column of an AJAX SQL Row
-** @nam4rule ColumnGetValue Get the value of the next column
+** @nam3rule Rewind Rewind an AJAX SQL Column Iterator
 **
-** @argrule * sqlr [const AjPSqlRow] AJAX SQL Row
-** @argrule * Pvalue [void **] Value address
-** @argrule * Plength [ajulong*] Value length address
+** @argrule Rewind sqlr [AjPSqlrow] AJAX SQL Row
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
@@ -2056,12 +2164,54 @@ ajuint ajSqlRowGetCurrent(const AjPSqlRow sqlr)
 
 
 
-/* @func ajSqlColumnGetValue **************************************************
+/* @func ajSqlcolumnRewind ****************************************************
+**
+** Rewind an AJAX SQL Column Iterator to the start position.
+**
+** @param [u] sqlr [AjPSqlrow] AJAX SQL Row
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ajSqlcolumnRewind(AjPSqlrow sqlr)
+{
+    if(!sqlr)
+        return ajFalse;
+    
+    sqlr->Current = 0;
+    
+    return ajTrue;
+}
+
+
+
+
+/* @section column retrieval **************************************************
+**
+** @fdata [AjPSqlrow]
+**
+** @nam3rule Get column element
+** @nam4rule Value Get the value of the next column
+**
+** @argrule Get sqlr [AjPSqlrow] AJAX SQL Row
+** @argrule Value Pvalue [void**] Value address
+** @argrule Value Plength [ajulong*] Value length address
+**
+** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
+**
+** @fcategory use
+******************************************************************************/
+
+
+
+
+/* @func ajSqlcolumnGetValue **************************************************
 **
 ** Get the value of the next column of an AJAX SQL Row.
 ** Calling this function also advances the column iterator.
 **
-** @param [u] sqlr [AjPSqlRow] AJAX SQL Row
+** @param [u] sqlr [AjPSqlrow] AJAX SQL Row
 ** @param [u] Pvalue [void**] Value address
 ** @param [u] Plength [ajulong*] Value length address
 **
@@ -2069,7 +2219,8 @@ ajuint ajSqlRowGetCurrent(const AjPSqlRow sqlr)
 ** @@
 ******************************************************************************/
 
-AjBool ajSqlColumnGetValue(AjPSqlRow sqlr, void **Pvalue, ajulong *Plength)
+AjBool ajSqlcolumnGetValue( AjPSqlrow sqlr,
+                           void **Pvalue, ajulong *Plength)
 {
     if(!sqlr)
         return ajFalse;
@@ -2099,32 +2250,30 @@ AjBool ajSqlColumnGetValue(AjPSqlRow sqlr, void **Pvalue, ajulong *Plength)
 **
 ** Functions for converting SQL Column values to other datatypes.
 **
-** @fdata [AjPSqlRow]
+** @fdata [AjPSqlrow]
 ** @fnote None
 **
-** @nam3rule Column Convert the next column of an AJAX SQL Row to a
-**                  differnt datatype
-** @nam4rule ColumnToStr Convert to AJAX String
-** @nam4rule ColumnToInt Convert to AJAX Signed Integer
-** @nam4rule ColumnToUint Convert ot AJAX Unsigned Integer
-** @nam4rule ColumnToLong Convert to AJAX Signed Long Integer
-** @nam4rule ColumnToUlong Convert to AJAX Unsigned Long Integer
-** @nam4rule ColumnToFloat Convert to C-type float
-** @nam4rule ColumnToDouble Convert to C-type double
-** @nam4rule ColumnToBool Convert to AJAX Boolean
-** @nam4rule ColumnToTime Conver to AJAX Time
+** @nam3rule To Convert to another type
+** @nam4rule ToStr Convert to AJAX String
+** @nam4rule ToInt Convert to AJAX Signed Integer
+** @nam4rule ToUint Convert ot AJAX Unsigned Integer
+** @nam4rule ToLong Convert to AJAX Signed Long Integer
+** @nam4rule ToUlong Convert to AJAX Unsigned Long Integer
+** @nam4rule ToFloat Convert to C-type float
+** @nam4rule ToDouble Convert to C-type double
+** @nam4rule ToBool Convert to AJAX Boolean
+** @nam4rule ToTime Conver to AJAX Time
 **
-** @argrule * sqlr [const AjPSqlRow] SQL Row
-** @argrule * column [ajuint] Column number
-** @argrule ColumnToStr [AjPStr*] AJAX String address
-** @argrule ColumnToInt [ajint*] AJAX Signed Integer address
-** @argrule ColumnToUint [ajuint*] AJAX Unsigned Integer address
-** @argrule ColumnToLong [ajlong*] AJAX Signed Long Integer address
-** @argrule ColumnToUlong [ajulong*] AJAX Unsigned Long Integer address
-** @argrule ColumnToFloat [float*] C-type float address
-** @argrule ColumnToDouble [double*] C-type double address
-** @argrule ColumnToBool [AjPBool*] AJAX Bool address
-** @argrule ColumnToTime [AjPTime*] AJAX Time address
+** @argrule * sqlr [AjPSqlrow] SQL Row
+** @argrule ToStr Pvalue [AjPStr*] AJAX String address
+** @argrule ToInt Pvalue [ajint*] AJAX Signed Integer address
+** @argrule ToUint Pvalue [ajuint*] AJAX Unsigned Integer address
+** @argrule ToLong Pvalue [ajlong*] AJAX Signed Long Integer address
+** @argrule ToUlong Pvalue [ajulong*] AJAX Unsigned Long Integer address
+** @argrule ToFloat Pvalue [float*] C-type float address
+** @argrule ToDouble Pvalue [double*] C-type double address
+** @argrule ToBool Pvalue [AjPBool*] AJAX Bool address
+** @argrule ToTime Pvalue [AjPTime*] AJAX Time address
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
@@ -2134,19 +2283,241 @@ AjBool ajSqlColumnGetValue(AjPSqlRow sqlr, void **Pvalue, ajulong *Plength)
 
 
 
-/* @func ajSqlColumnToStr *****************************************************
+/* @func ajSqlcolumnToBool ****************************************************
 **
-** Converts the value of the next column of an AJAX SQL Row into an
-** AJAX String value.
+** Converts the value in the next column of an AJAX SQL Row into an
+** AJAX Boolean value.
+** This function uses ajStrToBool to convert the AJAX String representing the
+** column value into an AJAX boolean value. The function converts 'yes' and
+** 'true', as well as 'no' and 'false' into its corresponding AJAX Bool values.
+** It also assumes any numeric value as true and 0 as false.
 **
-** @param [u] sqlr [AjPSqlRow] AJAX SQL Row
-** @param [w] Pvalue [AjPStr *] AJAX String address
+** @param [u] sqlr [AjPSqlrow] AJAX SQL Row
+** @param [w] Pvalue [AjBool*] AJAX Boolean address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSqlColumnToStr(AjPSqlRow sqlr, AjPStr *Pvalue)
+AjBool ajSqlcolumnToBool(AjPSqlrow sqlr, AjBool *Pvalue)
+{
+    AjBool bool = ajFalse;
+    
+    AjPStr str = NULL;
+    
+    if(!sqlr)
+        return ajFalse;
+    
+    if(!Pvalue)
+	return ajFalse;
+    
+    if(sqlr->Current >= sqlr->Columns)
+        return ajFalse;
+    
+    str = ajStrNew();
+    
+    bool = ajSqlcolumnToStr(sqlr, &str);
+    
+    if(bool)
+	ajStrToBool(str, Pvalue);
+    
+    ajStrDel(&str);
+    
+    return bool;
+}
+
+
+
+
+/* @func ajSqlcolumnToDouble **************************************************
+**
+** Converts the value in the next column of an AJAX SQL Row into a
+** C-type double value.
+**
+** @param [u] sqlr [AjPSqlrow] AJAX SQL Row
+** @param [w] Pvalue [double*] C-type double address
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ajSqlcolumnToDouble(AjPSqlrow sqlr, double *Pvalue)
+{
+    AjBool bool = ajFalse;
+    
+    AjPStr str = NULL;
+    
+    if(!sqlr)
+        return ajFalse;
+    
+    if(!Pvalue)
+	return ajFalse;
+    
+    if(sqlr->Current >= sqlr->Columns)
+        return ajFalse;
+    
+    str = ajStrNew();
+    
+    bool = ajSqlcolumnToStr(sqlr, &str);
+    
+    if(bool)
+	ajStrToDouble(str, Pvalue);
+    
+    ajStrDel(&str);
+    
+    return bool;
+}
+
+
+
+
+/* @func ajSqlcolumnToFloat ***************************************************
+**
+** Converts the value in the next column of an AJAX SQL Row into a
+** C-type float value.
+**
+** @param [u] sqlr [AjPSqlrow] AJAX SQL Row
+** @param [w] Pvalue [float*] C-type float address
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ajSqlcolumnToFloat(AjPSqlrow sqlr, float *Pvalue)
+{
+    AjBool bool = ajFalse;
+    
+    AjPStr str = NULL;
+    
+    if(!sqlr)
+        return ajFalse;
+    
+    if(!Pvalue)
+	return ajFalse;
+    
+    if(sqlr->Current >= sqlr->Columns)
+        return ajFalse;
+    
+    str = ajStrNew();
+    
+    bool = ajSqlcolumnToStr(sqlr, &str);
+    
+    if(bool)
+	ajStrToFloat(str, Pvalue);
+    
+    ajStrDel(&str);
+    
+    return bool;
+}
+
+
+
+
+/* @func ajSqlcolumnToInt *****************************************************
+**
+** Converts the value in the next column of an AJAX SQL Row into an
+** AJAX Integer value.
+**
+** @param [u] sqlr [AjPSqlrow] AJAX SQL Row
+** @param [w] Pvalue [ajint*] AJAX Integer address
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ajSqlcolumnToInt(AjPSqlrow sqlr, ajint *Pvalue)
+{
+    AjBool bool = ajFalse;
+    
+    AjPStr str = NULL;
+    
+    if(!sqlr)
+        return ajFalse;
+    
+    if(!Pvalue)
+	return ajFalse;
+    
+    if(sqlr->Current >= sqlr->Columns)
+        return ajFalse;
+    
+    str = ajStrNew();
+    
+    bool = ajSqlcolumnToStr(sqlr, &str);
+    
+    if(bool)
+	ajStrToInt(str, Pvalue);
+    
+    ajStrDel(&str);
+    
+    return bool;
+}
+
+
+
+
+/* @func ajSqlcolumnToLong ****************************************************
+**
+** Converts the value in the next column of an AJAX SQL Row into an
+** AJAX Long Integer value.
+**
+** @param [u] sqlr [AjPSqlrow] AJAX SQL Row
+** @param [w] Pvalue [ajlong*] AJAX Long Integer address
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ajSqlcolumnToLong(AjPSqlrow sqlr, ajlong *Pvalue)
+{
+    AjBool bool = ajFalse;
+    
+    AjPStr str = NULL;
+    
+    if(!sqlr)
+        return ajFalse;
+    
+    if(!Pvalue)
+	return ajFalse;
+    
+    if(sqlr->Current >= sqlr->Columns)
+        return ajFalse;
+    
+    str = ajStrNew();
+    
+    bool = ajSqlcolumnToStr(sqlr, &str);
+    
+    if(bool)
+	ajStrToLong(str, Pvalue);
+    
+    ajStrDel(&str);
+    
+    return bool;
+}
+
+
+
+
+/*
+** TODO: ajSqlcolumnToUlong is missing but there is also no ajStrToUlong
+** function in the AJAX library.
+*/
+
+
+
+
+/* @func ajSqlcolumnToStr *****************************************************
+**
+** Converts the value of the next column of an AJAX SQL Row into an
+** AJAX String value.
+**
+** @param [u] sqlr [AjPSqlrow] AJAX SQL Row
+** @param [w] Pvalue [AjPStr*] AJAX String address
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ajSqlcolumnToStr(AjPSqlrow sqlr, AjPStr *Pvalue)
 {
     void *value = NULL;
     
@@ -2163,7 +2534,7 @@ AjBool ajSqlColumnToStr(AjPSqlRow sqlr, AjPStr *Pvalue)
     
     ajStrAssignClear(Pvalue);
     
-    if(ajSqlColumnGetValue(sqlr, &value, &length))
+    if(ajSqlcolumnGetValue(sqlr, &value, &length))
     {
 	if(value == NULL)
 	    return ajFalse;
@@ -2182,283 +2553,19 @@ AjBool ajSqlColumnToStr(AjPSqlRow sqlr, AjPStr *Pvalue)
 
 
 
-/* @func ajSqlColumnToInt *****************************************************
-**
-** Converts the value in the next column of an AJAX SQL Row into an
-** AJAX Integer value.
-**
-** @param [u] sqlr [const AjPSqlRow] AJAX SQL Row
-** @param [w] Pvalue [ajint *] AJAX Integer address
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ajSqlColumnToInt(AjPSqlRow sqlr, ajint *Pvalue)
-{
-    AjBool bool = ajFalse;
-    
-    AjPStr str = NULL;
-    
-    if(!sqlr)
-        return ajFalse;
-    
-    if(!Pvalue)
-	return ajFalse;
-    
-    if(sqlr->Current >= sqlr->Columns)
-        return ajFalse;
-    
-    str = ajStrNew();
-    
-    bool = ajSqlColumnToStr(sqlr, &str);
-    
-    if(bool)
-	ajStrToInt(str, Pvalue);
-    
-    ajStrDel(&str);
-    
-    return bool;
-}
-
-
-
-
-/* @func ajSqlColumnToUint ****************************************************
-**
-** Converts the value in the next column of an AJAX SQL Row into an
-** AJAX Unsigned Integer value.
-**
-** @param [u] sqlr [const AjPSqlRow] AJAX SQL Row
-** @param [w] Pvalue [ajuint *] AJAX Unsigned Integer address
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ajSqlColumnToUint(AjPSqlRow sqlr, ajuint *Pvalue)
-{
-    AjBool bool = ajFalse;
-    
-    AjPStr str = NULL;
-    
-    if(!sqlr)
-        return ajFalse;
-    
-    if(!Pvalue)
-	return ajFalse;
-    
-    if(sqlr->Current >= sqlr->Columns)
-        return ajFalse;
-    
-    str = ajStrNew();
-    
-    bool = ajSqlColumnToStr(sqlr, &str);
-    
-    if(bool)
-	ajStrToUint(str, Pvalue);
-    
-    ajStrDel(&str);
-    
-    return bool;
-}
-
-
-
-
-/* @func ajSqlColumnToLong ****************************************************
-**
-** Converts the value in the next column of an AJAX SQL Row into an
-** AJAX Long Integer value.
-**
-** @param [u] sqlr [const AjPSqlRow] AJAX SQL Row
-** @param [w] Pvalue [ajlong *] AJAX Long Integer address
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ajSqlColumnToLong(AjPSqlRow sqlr, ajlong *Pvalue)
-{
-    AjBool bool = ajFalse;
-    
-    AjPStr str = NULL;
-    
-    if(!sqlr)
-        return ajFalse;
-    
-    if(!Pvalue)
-	return ajFalse;
-    
-    if(sqlr->Current >= sqlr->Columns)
-        return ajFalse;
-    
-    str = ajStrNew();
-    
-    bool = ajSqlColumnToStr(sqlr, &str);
-    
-    if(bool)
-	ajStrToLong(str, Pvalue);
-    
-    ajStrDel(&str);
-    
-    return bool;
-}
-
-
-
-
-/*
-** TODO: ajSqlColumnToUlong is missing but there is also no ajStrToUlong
-** function in the AJAX library.
-*/
-
-
-
-
-/* @func ajSqlColumnToFloat ***************************************************
-**
-** Converts the value in the next column of an AJAX SQL Row into a
-** C-type float value.
-**
-** @param [u] sqlr [const AjPSqlRow] AJAX SQL Row
-** @param [w] Pvalue [float *] C-type float address
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ajSqlColumnToFloat(AjPSqlRow sqlr, float *Pvalue)
-{
-    AjBool bool = ajFalse;
-    
-    AjPStr str = NULL;
-    
-    if(!sqlr)
-        return ajFalse;
-    
-    if(!Pvalue)
-	return ajFalse;
-    
-    if(sqlr->Current >= sqlr->Columns)
-        return ajFalse;
-    
-    str = ajStrNew();
-    
-    bool = ajSqlColumnToStr(sqlr, &str);
-    
-    if(bool)
-	ajStrToFloat(str, Pvalue);
-    
-    ajStrDel(&str);
-    
-    return bool;
-}
-
-
-
-
-/* @func ajSqlColumnToDouble **************************************************
-**
-** Converts the value in the next column of an AJAX SQL Row into a
-** C-type double value.
-**
-** @param [u] sqlr [const AjPSqlRow] AJAX SQL Row
-** @param [w] Pvalue [double *] C-type double address
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ajSqlColumnToDouble(AjPSqlRow sqlr, double *Pvalue)
-{
-    AjBool bool = ajFalse;
-    
-    AjPStr str = NULL;
-    
-    if(!sqlr)
-        return ajFalse;
-    
-    if(!Pvalue)
-	return ajFalse;
-    
-    if(sqlr->Current >= sqlr->Columns)
-        return ajFalse;
-    
-    str = ajStrNew();
-    
-    bool = ajSqlColumnToStr(sqlr, &str);
-    
-    if(bool)
-	ajStrToDouble(str, Pvalue);
-    
-    ajStrDel(&str);
-    
-    return bool;
-}
-
-
-
-
-/* @func ajSqlColumnToBool ****************************************************
-**
-** Converts the value in the next column of an AJAX SQL Row into an
-** AJAX Boolean value.
-** This function uses ajStrToBool to convert the AJAX String representing the
-** column value into an AJAX boolean value. The function converts 'yes' and
-** 'true', as well as 'no' and 'false' into its corresponding AJAX Bool values.
-** It also assumes any numeric value as true and 0 as false.
-**
-** @param [u] sqlr [const AjPSqlRow] AJAX SQL Row
-** @param [w] Pvalue [AjBool *] AJAX Boolean address
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ajSqlColumnToBool(AjPSqlRow sqlr, AjBool *Pvalue)
-{
-    AjBool bool = ajFalse;
-    
-    AjPStr str = NULL;
-    
-    if(!sqlr)
-        return ajFalse;
-    
-    if(!Pvalue)
-	return ajFalse;
-    
-    if(sqlr->Current >= sqlr->Columns)
-        return ajFalse;
-    
-    str = ajStrNew();
-    
-    bool = ajSqlColumnToStr(sqlr, &str);
-    
-    if(bool)
-	ajStrToBool(str, Pvalue);
-    
-    ajStrDel(&str);
-    
-    return bool;
-}
-
-
-
-
-/* @func ajSqlColumnToTime ****************************************************
+/* @func ajSqlcolumnToTime ****************************************************
 **
 ** Converts the value in the next column of an AJAX SQL Row into an
 ** AJAX Time value.
 **
-** @param [u] sqlr [const AjPSqlRow] AJAX SQL Row
-** @param [w] Pvalue [AjPTime *] AJAX Time address
+** @param [u] sqlr [AjPSqlrow] AJAX SQL Row
+** @param [w] Pvalue [AjPTime*] AJAX Time address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSqlColumnToTime(AjPSqlRow sqlr, AjPTime *Pvalue)
+AjBool ajSqlcolumnToTime(AjPSqlrow sqlr, AjPTime *Pvalue)
 {
     AjBool bool = ajFalse;
     
@@ -2478,7 +2585,7 @@ AjBool ajSqlColumnToTime(AjPSqlRow sqlr, AjPTime *Pvalue)
     
     str = ajStrNew();
     
-    bool = ajSqlColumnToStr(sqlr, &str);
+    bool = ajSqlcolumnToStr(sqlr, &str);
     
     if(bool)
 	ajTimeSetS(*Pvalue, str);
@@ -2491,24 +2598,43 @@ AjBool ajSqlColumnToTime(AjPSqlRow sqlr, AjPTime *Pvalue)
 
 
 
-/* @func ajSqlColumnRewind ****************************************************
+/* @func ajSqlcolumnToUint ****************************************************
 **
-** Rewind an AJAX SQL Column Iterator to the start position.
+** Converts the value in the next column of an AJAX SQL Row into an
+** AJAX Unsigned Integer value.
 **
-** @param [u] sqlr [AjPSqlRow] AJAX SQL Row
+** @param [u] sqlr [AjPSqlrow] AJAX SQL Row
+** @param [w] Pvalue [ajuint*] AJAX Unsigned Integer address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSqlColumnRewind(AjPSqlRow sqlr)
+AjBool ajSqlcolumnToUint(AjPSqlrow sqlr, ajuint *Pvalue)
 {
+    AjBool bool = ajFalse;
+    
+    AjPStr str = NULL;
+    
     if(!sqlr)
         return ajFalse;
     
-    sqlr->Current = 0;
+    if(!Pvalue)
+	return ajFalse;
     
-    return ajTrue;
+    if(sqlr->Current >= sqlr->Columns)
+        return ajFalse;
+    
+    str = ajStrNew();
+    
+    bool = ajSqlcolumnToStr(sqlr, &str);
+    
+    if(bool)
+	ajStrToUint(str, Pvalue);
+    
+    ajStrDel(&str);
+    
+    return bool;
 }
 
 
@@ -2516,16 +2642,19 @@ AjBool ajSqlColumnRewind(AjPSqlRow sqlr)
 
 /* @section column retrieval **************************************************
 **
-** @fdata [AjPSqlRow]
+** @fdata [AjPSqlrow]
 **
-** @nam3rule ColumnNumber Select a particular column of an AJAX SQL Row.
-** @nam4rule ColumnNumberGetValue Get the value of a particular column
+** @nam3rule Number Select a particular column of an AJAX SQL Row.
+** @nam4rule Get Get an element
+** @nam5rule Value Get the value of a particular column
 **
-** @argrule * sqlr [const AjPSqlRow] AJAX SQL Row
+** @argrule * sqlr [const AjPSqlrow] AJAX SQL Row
 ** @argrule * column [ajuint] Column number
 **
-** @argrule ColumnNumberGetValue Pvalue [void**] Value address
-** @argrule ColumnNumberGetValue Plength [ajulong*] Value length address
+** @argrule GetValue Pvalue [void**] Value address
+** @argrule GetValue Plength [ajulong*] Value length address
+**
+** @valrule * [AjBool] True on success
 **
 ** @fcategory use
 ******************************************************************************/
@@ -2533,20 +2662,20 @@ AjBool ajSqlColumnRewind(AjPSqlRow sqlr)
 
 
 
-/* @func ajSqlColumnNumberGetValue ********************************************
+/* @func ajSqlcolumnNumberGetValue ********************************************
 **
 ** Get the value of a particular column of an AJAX SQL Row.
 **
-** @param [r] sqlr [const AjPSqlRow] AJAX SQL Row
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
 ** @param [r] column [ajuint] Column number
-** @param [u] Pvalue [void **] Value address
+** @param [u] Pvalue [void**] Value address
 ** @param [u] Plength [ajulong*] Value length address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSqlColumnNumberGetValue(const AjPSqlRow sqlr,
+AjBool ajSqlcolumnNumberGetValue(const AjPSqlrow sqlr,
                                  ajuint column,
                                  void **Pvalue,
                                  ajulong *Plength)
@@ -2577,31 +2706,32 @@ AjBool ajSqlColumnNumberGetValue(const AjPSqlRow sqlr,
 **
 ** Functions for converting SQL Column values to other datatypes.
 **
-** @fdata [AjPSqlRow]
+** @fdata [AjPSqlrow]
 ** @fnote None
 **
-** @nam3rule ColumnNumber Convert a particular column to a differnt datatype
-** @nam4rule ColumnNumberToStr Convert to AJAX String
-** @nam4rule ColumnNumberToInt Convert to AJAX Signed Integer
-** @nam4rule ColumnNumberToUint Convert ot AJAX Unsigned Integer
-** @nam4rule ColumnNumberToLong Convert to AJAX Signed Long Integer
-** @nam4rule ColumnNumberToUlong Convert to AJAX Unsigned Long Integer
-** @nam4rule ColumnNumberToFloat Convert to C-type float
-** @nam4rule ColumnNumberToDouble Convert to C-type double
-** @nam4rule ColumnNumberToBool Convert to AJAX Boolean
-** @nam4rule ColumnNumberToTime Conver to AJAX Time
+** @nam3rule Number Convert a particular column to a differnt datatype
+** @nam4rule To Convert to another type
+** @nam5rule ToStr Convert to AJAX String
+** @nam5rule ToInt Convert to AJAX Signed Integer
+** @nam5rule ToUint Convert ot AJAX Unsigned Integer
+** @nam5rule ToLong Convert to AJAX Signed Long Integer
+** @nam5rule ToUlong Convert to AJAX Unsigned Long Integer
+** @nam5rule ToFloat Convert to C-type float
+** @nam5rule ToDouble Convert to C-type double
+** @nam5rule ToBool Convert to AJAX Boolean
+** @nam5rule ToTime Conver to AJAX Time
 **
-** @argrule * sqlr [const AjPSqlRow] SQL Row
+** @argrule * sqlr [const AjPSqlrow] SQL Row
 ** @argrule * column [ajuint] Column number
-** @argrule ColumnNumberToStr [AjPStr*] AJAX String address
-** @argrule ColumnNumberToInt [ajint*] AJAX Signed Integer address
-** @argrule ColumnNumberToUint [ajuint*] AJAX Unsigned Integer address
-** @argrule ColumnNumberToLong [ajlong*] AJAX Signed Long Integer address
-** @argrule ColumnNumberToUlong [ajulong*] AJAX Unsigned Long Integer address
-** @argrule ColumnNumberToFloat [float*] C-type float address
-** @argrule ColumnNumberToDouble [double*] C-type double address
-** @argrule ColumnNumberToBool [AjPBool*] AJAX Bool address
-** @argrule ColumnNumberToTime [AjPTime*] AJAX Time address
+** @argrule ToStr [AjPStr*] AJAX String address
+** @argrule ToInt [ajint*] AJAX Signed Integer address
+** @argrule ToUint [ajuint*] AJAX Unsigned Integer address
+** @argrule ToLong [ajlong*] AJAX Signed Long Integer address
+** @argrule ToUlong [ajulong*] AJAX Unsigned Long Integer address
+** @argrule ToFloat [float*] C-type float address
+** @argrule ToDouble [double*] C-type double address
+** @argrule ToBool [AjPBool*] AJAX Bool address
+** @argrule ToTime [AjPTime*] AJAX Time address
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
@@ -2611,20 +2741,20 @@ AjBool ajSqlColumnNumberGetValue(const AjPSqlRow sqlr,
 
 
 
-/* @func ajSqlColumnNumberToStr ***********************************************
+/* @func ajSqlcolumnNumberToStr ***********************************************
 **
 ** Converts the value in a particular column of an AJAX SQL Row into an
 ** AJAX String value.
 **
-** @param [r] sqlr [const AjPSqlRow] AJAX SQL Row
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
 ** @param [r] column [ajuint] Column number
-** @param [w] Pvalue [AjPStr *] AJAX String address
+** @param [w] Pvalue [AjPStr*] AJAX String address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSqlColumnNumberToStr(const AjPSqlRow sqlr, ajuint column,
+AjBool ajSqlcolumnNumberToStr(const AjPSqlrow sqlr, ajuint column,
                               AjPStr *Pvalue)
 {
     void *value = NULL;
@@ -2642,7 +2772,7 @@ AjBool ajSqlColumnNumberToStr(const AjPSqlRow sqlr, ajuint column,
     
     ajStrAssignClear(Pvalue);
     
-    if(ajSqlColumnNumberGetValue(sqlr, column, &value, &length))
+    if(ajSqlcolumnNumberGetValue(sqlr, column, &value, &length))
     {
 	
 	if(value == NULL)
@@ -2662,20 +2792,20 @@ AjBool ajSqlColumnNumberToStr(const AjPSqlRow sqlr, ajuint column,
 
 
 
-/* @func ajSqlColumnNumberToInt ***********************************************
+/* @func ajSqlcolumnNumberToInt ***********************************************
 **
 ** Converts the value in a particular column of an AJAX SQL Row into an
 ** AJAX Integer value.
 **
-** @param [r] sqlr [const AjPSqlRow] AJAX SQL Row
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
 ** @param [r] column [ajuint] Column number
-** @param [w] Pvalue [ajint *] AJAX Integer address
+** @param [w] Pvalue [ajint*] AJAX Integer address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSqlColumnNumberToInt(const AjPSqlRow sqlr, ajuint column,
+AjBool ajSqlcolumnNumberToInt(const AjPSqlrow sqlr, ajuint column,
                               ajint *Pvalue)
 {
     AjBool bool = ajFalse;
@@ -2693,7 +2823,7 @@ AjBool ajSqlColumnNumberToInt(const AjPSqlRow sqlr, ajuint column,
     
     str = ajStrNew();
     
-    bool = ajSqlColumnNumberToStr(sqlr, column, &str);
+    bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
     
     if(bool)
 	ajStrToInt(str, Pvalue);
@@ -2706,20 +2836,20 @@ AjBool ajSqlColumnNumberToInt(const AjPSqlRow sqlr, ajuint column,
 
 
 
-/* @func ajSqlColumnNumberToUint **********************************************
+/* @func ajSqlcolumnNumberToUint **********************************************
 **
 ** Converts the value in a particular column of an AJAX SQL Row into an
 ** AJAX Unsigned Integer value.
 **
-** @param [r] sqlr [const AjPSqlRow] AJAX SQL Row
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
 ** @param [r] column [const ajuint] Column number
-** @param [w] Pvalue [ajuint *] AJAX Unsigned Integer address
+** @param [w] Pvalue [ajuint*] AJAX Unsigned Integer address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSqlColumnNumberToUint(const AjPSqlRow sqlr, ajuint column,
+AjBool ajSqlcolumnNumberToUint(const AjPSqlrow sqlr, ajuint column,
                                ajuint *Pvalue)
 {
     AjBool bool = ajFalse;
@@ -2737,7 +2867,7 @@ AjBool ajSqlColumnNumberToUint(const AjPSqlRow sqlr, ajuint column,
     
     str = ajStrNew();
     
-    bool = ajSqlColumnNumberToStr(sqlr, column, &str);
+    bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
     
     if(bool)
 	ajStrToUint(str, Pvalue);
@@ -2750,20 +2880,20 @@ AjBool ajSqlColumnNumberToUint(const AjPSqlRow sqlr, ajuint column,
 
 
 
-/* @func ajSqlColumnNumberToLong **********************************************
+/* @func ajSqlcolumnNumberToLong **********************************************
 **
 ** Converts the value in a particular column of an AJAX SQL Row into an
 ** AJAX Long Integer value.
 **
-** @param [r] sqlr [const AjPSqlRow] AJAX SQL Row
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
 ** @param [r] column [ajuint] Column number
-** @param [w] Pvalue [ajlong *] AJAX Long Integer address
+** @param [w] Pvalue [ajlong*] AJAX Long Integer address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSqlColumnNumberToLong(const AjPSqlRow sqlr, ajuint column,
+AjBool ajSqlcolumnNumberToLong(const AjPSqlrow sqlr, ajuint column,
                                ajlong *Pvalue)
 {
     AjBool bool = ajFalse;
@@ -2781,7 +2911,7 @@ AjBool ajSqlColumnNumberToLong(const AjPSqlRow sqlr, ajuint column,
     
     str = ajStrNew();
     
-    bool = ajSqlColumnNumberToStr(sqlr, column, &str);
+    bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
     
     if(bool)
 	ajStrToLong(str, Pvalue);
@@ -2795,27 +2925,27 @@ AjBool ajSqlColumnNumberToLong(const AjPSqlRow sqlr, ajuint column,
 
 
 /*
-** TODO: ajSqlColumnNumberToUlong is missing but there is also no ajStrToUlong
+** TODO: ajSqlcolumnNumberToUlong is missing but there is also no ajStrToUlong
 ** function in the AJAX library.
 */
 
 
 
 
-/* @func ajSqlColumnNumberToFloat *********************************************
+/* @func ajSqlcolumnNumberToFloat *********************************************
 **
 ** Converts the value in a particular column of an AJAX SQL Row into a
 ** C-type float value.
 **
-** @param [r] sqlr [const AjPSqlRow] AJAX SQL Row
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
 ** @param [r] column [ajuint] Column number
-** @param [w] Pvalue [float *] C-type float address
+** @param [w] Pvalue [float*] C-type float address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSqlColumnNumberToFloat(const AjPSqlRow sqlr, ajuint column,
+AjBool ajSqlcolumnNumberToFloat(const AjPSqlrow sqlr, ajuint column,
                                 float *Pvalue)
 {
     AjBool bool = ajFalse;
@@ -2833,7 +2963,7 @@ AjBool ajSqlColumnNumberToFloat(const AjPSqlRow sqlr, ajuint column,
     
     str = ajStrNew();
     
-    bool = ajSqlColumnNumberToStr(sqlr, column, &str);
+    bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
     
     if(bool)
 	ajStrToFloat(str, Pvalue);
@@ -2846,20 +2976,20 @@ AjBool ajSqlColumnNumberToFloat(const AjPSqlRow sqlr, ajuint column,
 
 
 
-/* @func ajSqlColumnNumberToDouble ********************************************
+/* @func ajSqlcolumnNumberToDouble ********************************************
 **
 ** Converts the value in a particular column of an AJAX SQL Row into a
 ** C-type double value.
 **
-** @param [r] sqlr [const AjPSqlRow] AJAX SQL Row
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
 ** @param [r] column [ajuint] Column number
-** @param [w] Pvalue [double *] C-type double address
+** @param [w] Pvalue [double*] C-type double address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSqlColumnNumberToDouble(const AjPSqlRow sqlr, ajuint column,
+AjBool ajSqlcolumnNumberToDouble(const AjPSqlrow sqlr, ajuint column,
                                  double *Pvalue)
 {
     AjBool bool = ajFalse;
@@ -2877,7 +3007,7 @@ AjBool ajSqlColumnNumberToDouble(const AjPSqlRow sqlr, ajuint column,
     
     str = ajStrNew();
     
-    bool = ajSqlColumnNumberToStr(sqlr, column, &str);
+    bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
     
     if(bool)
 	ajStrToDouble(str, Pvalue);
@@ -2889,20 +3019,6 @@ AjBool ajSqlColumnNumberToDouble(const AjPSqlRow sqlr, ajuint column,
 
 
 
-
-/* @func ajSqlColumnNumberToBool **********************************************
-**
-** Converts the value in a particular column of an AJAX SQL Row into an
-** AJAX Boolean value.
-**
-** @param [r] sqlr [const AjPSqlRow] AJAX SQL Row
-** @param [r] column [ajuint] Column number
-** @param [w] Pvalue [AjBool *] AJAX Boolean address
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
 /*
 ** FIXME: This function uses ajStrToBool to set the value. It is necessary
 ** to test what the AJAX function expects for the string representation. If
@@ -2910,7 +3026,21 @@ AjBool ajSqlColumnNumberToDouble(const AjPSqlRow sqlr, ajuint column,
 ** library functions, as the database stores Boolean values as TINYINT values.
 */
 
-AjBool ajSqlColumnNumberToBool(const AjPSqlRow sqlr, ajuint column,
+
+/* @func ajSqlcolumnNumberToBool **********************************************
+**
+** Converts the value in a particular column of an AJAX SQL Row into an
+** AJAX Boolean value.
+**
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
+** @param [r] column [ajuint] Column number
+** @param [w] Pvalue [AjBool*] AJAX Boolean address
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ajSqlcolumnNumberToBool(const AjPSqlrow sqlr, ajuint column,
                                AjBool *Pvalue)
 {
     AjBool bool = ajFalse;
@@ -2928,7 +3058,7 @@ AjBool ajSqlColumnNumberToBool(const AjPSqlRow sqlr, ajuint column,
     
     str = ajStrNew();
     
-    bool = ajSqlColumnNumberToStr(sqlr, column, &str);
+    bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
     
     if(bool)
 	ajStrToBool(str, Pvalue);
@@ -2941,20 +3071,20 @@ AjBool ajSqlColumnNumberToBool(const AjPSqlRow sqlr, ajuint column,
 
 
 
-/* @func ajSqlColumnNumberToTime **********************************************
+/* @func ajSqlcolumnNumberToTime **********************************************
 **
 ** Converts the value in a particular column of an AJAX SQL Row into an
 ** AJAX Time value.
 **
-** @param [r] sqlr [const AjPSqlRow] AJAX SQL Row
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
 ** @param [r] column [ajuint] Column number
-** @param [w] Pvalue [AjPTime *] AJAX Time address
+** @param [w] Pvalue [AjPTime*] AJAX Time address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSqlColumnNumberToTime(const AjPSqlRow sqlr, ajuint column,
+AjBool ajSqlcolumnNumberToTime(const AjPSqlrow sqlr, ajuint column,
                                AjPTime *Pvalue)
 {
     AjBool bool = ajFalse;
@@ -2975,7 +3105,7 @@ AjBool ajSqlColumnNumberToTime(const AjPSqlRow sqlr, ajuint column,
     
     str = ajStrNew();
     
-    bool = ajSqlColumnNumberToStr(sqlr, column, &str);
+    bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
     
     if(bool)
 	ajTimeSetS(*Pvalue, str);
@@ -2990,12 +3120,12 @@ AjBool ajSqlColumnNumberToTime(const AjPSqlRow sqlr, ajuint column,
 
 /* @section tests *************************************************************
 **
-** @fdata [AjPSqlRow]
+** @fdata [AjPSqlrow]
 **
 ** @nam4rule ColumnNumberIsDefined Test if the value in a particular column of
 **                                 an AJAX SQL Row is defined.
 **
-** @argrule ColumnNumberIsDefined sqlr [const AjPSqlRow] AJAX SQL Row
+** @argrule ColumnNumberIsDefined sqlr [const AjPSqlrow] AJAX SQL Row
 ** @argrule ColumnNumberIsDefined column [ajuint] Column number
 **
 ** @valrule ColumnNumberIsDefined [AjBool] Result of test
@@ -3006,11 +3136,11 @@ AjBool ajSqlColumnNumberToTime(const AjPSqlRow sqlr, ajuint column,
 
 
 
-/* @func ajSqlColumnNumberIsDefined *******************************************
+/* @func ajSqlcolumnNumberIsDefined *******************************************
 **
 ** Test if the value in a particular column of an AJAX SQL Row is defined.
 **
-** @param [r] sqlr [const AjPSqlRow] AJAX SQL Row
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
 ** @param [r] column [ajuint] Column number
 **
 ** @return [AjBool] ajTrue if the value is defined,
@@ -3018,7 +3148,7 @@ AjBool ajSqlColumnNumberToTime(const AjPSqlRow sqlr, ajuint column,
 ** @@
 ******************************************************************************/
 
-AjBool ajSqlColumnNumberIsDefined(const AjPSqlRow sqlr, ajuint column)
+AjBool ajSqlcolumnNumberIsDefined(const AjPSqlrow sqlr, ajuint column)
 {
     if(!sqlr)
         return ajFalse;
@@ -3158,7 +3288,7 @@ void ajVoidDel(AjPVoid *thys)
 ** @param  [r] thys [const AjPVoid] Pointer to the Pointer array
 ** @param  [r] elem [ajuint] array element
 **
-** @return [void *] contents of array element
+** @return [void*] contents of array element
 ** @category cast [AjPVoid] Retrieve an address from an array
 ** @@
 ******************************************************************************/
@@ -3243,7 +3373,7 @@ static AjBool arrVoidResize(AjPVoid *thys, ajuint size)
 **
 ** @param  [w] thys [AjPVoid*] Pointer to the void pointer array
 ** @param  [r] elem [ajuint] array element
-** @param  [r] v [void *] value to load
+** @param  [r] v [void*] value to load
 **
 ** @return [AjBool] true if the array was extended
 ** @category modify [AjPChar] Load a character array element
