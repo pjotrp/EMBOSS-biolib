@@ -108,8 +108,6 @@ __deprecated AjPStr         ajAcdGetListI (const char *token, ajint num);
 __deprecated AjPStr         ajAcdGetSelectI (const char *token, ajint num);
 __deprecated AjPSeqset      ajAcdGetSeqsetallI (const char *token, ajint num);
 __deprecated AjPPhyloTree   ajAcdGetTreeI (const char *token, ajint num);
-__deprecated const char*    ajAcdProgram (void);
-__deprecated void           ajAcdProgramS (AjPStr* pgm);
 __deprecated const AjPStr   ajAcdValue (const char* token);
 __deprecated AjBool         ajAcdStdout (void);
 

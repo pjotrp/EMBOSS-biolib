@@ -39,6 +39,8 @@ const AjPStr  ajUtilGetInputs (void);
 ** End of prototype definitions
 */
 
+__deprecated void  ajAcdProgramS(AjPStr* pgm);
+__deprecated const char*  ajAcdProgram(void);
 __deprecated const AjPStr  ajAcdGetProgram (void);
 __deprecated const AjPStr  ajAcdGetCmdline (void);
 __deprecated const AjPStr  ajAcdGetInputs (void);
