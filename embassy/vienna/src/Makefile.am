@@ -6,11 +6,11 @@ if ISCYGWIN
 CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import
 if LOCALLINK
 CYGWIN_LDVIENNA = -L../../../plplot -L../../../ajax/pcre -L../../../ajax/core \
--L../../../ajax/graphics -L../../../ajax/ensembl -L../../../ajax/ajaxseq \
+-L../../../ajax/graphics -L../../../ajax/ensembl -L../../../ajax/ajaxdb \
 -L../../../ajax/acd -L../../../nucleus \
--lnucleus -lacd -lajaxseq -lensembl -lajaxg -lajax -leplplot -lepcre
+-lnucleus -lacd -lajaxdb -lensembl -lajaxg -lajax -leplplot -lepcre
 else
-CYGWIN_LDVIENNA = -L${embprefix}/lib -lnucleus -lacd -lajaxseq -lensembl \
+CYGWIN_LDVIENNA = -L${embprefix}/lib -lnucleus -lacd -lajaxdb -lensembl \
                 -lajaxg -lajax -leplplot -lepcre
 endif
 endif
@@ -24,7 +24,7 @@ if LOCALLINK
 INCLUDES = -I../H -I../../../nucleus -I../../../ajax/pcre \
 	-I../../../ajax/core -I../../../ajax/graphics \
 	-I../../../ajax/ensembl \
-	-I../../../ajax/ajaxseq -I../../../ajax/acd \
+	-I../../../ajax/ajaxdb -I../../../ajax/acd \
 	-I../../../plplot
 else
 INCLUDES = -I../H -I${embprefix}/include -I${embprefix}/include/eplplot
@@ -36,12 +36,12 @@ if LOCALLINK
 AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs \
 -L../../../ajax/pcre/.libs -L../../../ajax/core/.libs \
 -L../../../ajax/graphics/.libs -L../../../ajax/ensembl/.libs \
--L../../../ajax/ajaxseq/.libs -L../../../ajax/acd/.libs \
+-L../../../ajax/ajaxdb/.libs -L../../../ajax/acd/.libs \
 -L../../../nucleus/.libs \
--lnucleus -lacd -lajaxseq -lensembl -lajaxg -lajax -lepcre -leplplot
+-lnucleus -lacd -lajaxdb -lensembl -lajaxg -lajax -lepcre -leplplot
 else
 AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lnucleus -lacd \
--lajaxseq -lensembl -lajaxg -lajax -lepcre -leplplot
+-lajaxdb -lensembl -lajaxg -lajax -lepcre -leplplot
 endif
 else
 AM_CFLAGS =
@@ -93,12 +93,12 @@ vrnasubopt_SOURCES = vrnasubopt.c
 if LOCALLINK
 LDADD = libviennarna.la \
 	../../../nucleus/libnucleus.la ../../../ajax/acd/libacd.la \
-	../../../ajax/ajaxseq/libajaxseq.la \
+	../../../ajax/ajaxdb/libajaxdb.la \
 	../../../ajax/ensembl/libensembl.la \
 	../../../ajax/graphics/libajaxg.la \
 	../../../ajax/core/libajax.la ../../../ajax/pcre/libepcre.la \
 	../../../plplot/libeplplot.la $(XLIB)
 else
-LDADD = libviennarna.la -L${embprefix}/lib -lnucleus -lacd -lajaxseq \
+LDADD = libviennarna.la -L${embprefix}/lib -lnucleus -lacd -lajaxdb \
 	-lensembl -lajaxg -lajax -lepcre -leplplot $(XLIB)
 endif
