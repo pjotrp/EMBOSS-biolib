@@ -30221,7 +30221,7 @@ void ajAcdGraphicsInitPV(const char *pgm, ajint argc, char *const argv[],
 			 const char *package,const char *packversion)
 {
     ajSeqdbInit();
-
+    ajNamInit("emboss");
     ajAcdInitPV(pgm, argc, argv,package, packversion);
 
     return;
