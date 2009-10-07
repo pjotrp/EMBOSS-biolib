@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="POSIX_MALLOC_THRESHOLD=10;HAVE_MEMMOVE;_POSIX_;WIN32;_DEBUG;_WINDOWS;_USRDLL;PCRE_EXPORTS;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="HAVE_CONFIG_H;_POSIX_;WIN32;_WIN32;_DEBUG;_WINDOWS;_USRDLL;PCRE_EXPORTS;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
@@ -124,7 +124,7 @@
 				Optimization="4"
 				EnableIntrinsicFunctions="false"
 				WholeProgramOptimization="false"
-				PreprocessorDefinitions="POSIX_MALLOC_THRESHOLD=10;HAVE_MEMMOVE;_POSIX_;WIN32;NDEBUG;_WINDOWS;_USRDLL;PCRE_EXPORTS;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="HAVE_CONFIG_H;_POSIX_;WIN32;_WIN32;NDEBUG;_WINDOWS;_USRDLL;PCRE_EXPORTS;_CRT_SECURE_NO_DEPRECATE"
 				ExceptionHandling="0"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -190,7 +190,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\..\ajax\pcre\pcre.c"
+				RelativePath="..\..\..\ajax\pcre\pcre_chartables.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\pcre\pcre_compile.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\pcre\pcre_exec.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\pcre\pcre_fullinfo.c"
 				>
 			</File>
 			<File
@@ -198,7 +210,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\ajax\pcre\pcre_globals.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\pcre\pcre_info.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\pcre\pcre_newline.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\ajax\pcre\pcre_study.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\pcre\pcre_tables.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\pcre\pcre_try_flipped.c"
 				>
 			</File>
 			<File
@@ -225,6 +257,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\ajax\pcre\pcreposix.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\pcre\ucp.h"
 				>
 			</File>
 		</Filter>
