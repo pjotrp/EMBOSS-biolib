@@ -33,6 +33,7 @@
 
 __noreturn void embExit (void)
 {
+    ajUtilLoginfo();
     embSigExit();
     embDbiExit();
     embGrpExit();
@@ -40,6 +41,8 @@ __noreturn void embExit (void)
     embWordExit();
     embPatlistExit();
 
+    ajSeqDbExit();
+    ajAcdExit(ajFalse);
     ajExit();
 }
 

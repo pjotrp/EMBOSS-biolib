@@ -76,10 +76,7 @@ extern "C"
 ** Prototype definitions
 */
 
-void          ajGraphicsInit(const char *pgm, ajint argc, char * const argv[]);
-void          ajGraphicsInitPV(const char *pgm, ajint argc,char * const argv[],
-                               const char *package, const char *packversion);
-
+void          ajGraphListDevices (AjPList list);
 ajint*        ajGraphicsBasecolourNewNuc(const AjPStr codes);
 ajint*        ajGraphicsBasecolourNewProt(const AjPStr codes);
 ajint         ajGraphicsCheckColourC(const char* text);

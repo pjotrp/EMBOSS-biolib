@@ -3051,10 +3051,10 @@ void ajReportWriteHeader(AjPReport thys,
     if(!thys->CountSeq)
     {
 	ajFmtPrintF(outf, "########################################\n");
-	ajFmtPrintF(outf, "# Program: %S\n", ajAcdGetProgram());
+	ajFmtPrintF(outf, "# Program: %S\n", ajUtilGetProgram());
 	ajFmtPrintF(outf, "# Rundate: %D\n", today);
-	ajFmtPrintF(outf, "# Commandline: %S\n", ajAcdGetProgram());
-	ajStrAssignS(&tmpstr, ajAcdGetCmdline());
+	ajFmtPrintF(outf, "# Commandline: %S\n", ajUtilGetProgram());
+	ajStrAssignS(&tmpstr, ajUtilGetCmdline());
 
 	if(ajStrGetLen(tmpstr))
 	{
@@ -3063,7 +3063,7 @@ void ajReportWriteHeader(AjPReport thys,
 	    ajFmtPrintF(outf, "#    %S\n", tmpstr);
 	}
 
-	ajStrAssignS(&tmpstr, ajAcdGetInputs());
+	ajStrAssignS(&tmpstr, ajUtilGetInputs());
 
 	if(ajStrGetLen(tmpstr))
 	{

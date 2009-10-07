@@ -16,11 +16,16 @@ typedef void* (*CallFunc)(const char *name, va_list args);
 ** Prototype definitions
 */
 
-void  ajCallRegister(const char *name, CallFunc func);
-void  ajCallRegisterOld(const char *name, CallFunc func);
+void     ajCallRegister(const char *name, CallFunc func);
+void     ajCallRegisterOld(const char *name, CallFunc func);
+void     ajCallTableRegister(AjPTable table, const char *name, void* func);
 
-void* ajCall(const char *name, ...);
-void  ajCallExit(void);
+AjPTable ajCallTableNew(void);
+void*    ajCall(const char *name, ...);
+void*    ajCallTableGetC(const AjPTable table, const char *name);
+void*    ajCallTableGetS(const AjPTable table, const AjPStr namestr);
+void     ajCallTableDel(AjPTable* Ptable);
+void     ajCallExit(void);
 
 /*
 ** End of prototype definitions

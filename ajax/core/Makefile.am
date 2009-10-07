@@ -10,7 +10,7 @@ endif
 
 INCLUDES = -DAJAX_FIXED_ROOT=$(AJAX_FIXED_ROOT) -DAJAX_SYSTEM="$(AJAX_SYSTEM)" -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/pcre
 
-AJAXSRC = ajacd.c ajalign.c ajarr.c ajassert.c \
+AJAXSRC = ajalign.c ajarr.c ajassert.c \
 ajbase.c ajcall.c ajcod.c \
 ajdan.c ajdmx.c ajdom.c ajdomain.c \
 ajexcept.c \
@@ -20,22 +20,21 @@ ajmath.c ajmatrices.c ajmem.c ajmess.c ajnam.c \
 ajnexus.c \
 ajpat.c ajpdb.c ajpdbio.c ajphylo.c \
 ajrange.c ajreg.c ajreport.c \
-ajseq.c ajseqabi.c ajseqdb.c ajseqread.c ajseqtype.c ajseqwrite.c \
+ajseq.c ajseqabi.c ajseqread.c ajseqtype.c ajseqwrite.c \
 ajsort.c ajsql.c ajstr.c ajsys.c \
 ajtable.c ajtime.c ajtranslate.c ajtree.c \
 ajutil.c ajvector.c
 
 include_HEADERS = ajax.h ajarch.h ajdefine.h \
-ajacd.h ajalign.h ajarr.h ajassert.h \
+ajalign.h ajarr.h ajassert.h \
 ajbase.h ajcall.h ajcod.h \
 ajdan.h ajdmx.h ajdom.h ajdomain.h ajexcept.h \
 ajfeat.h ajfeatdata.h ajfile.h ajfiledata.h ajfileio.h ajfmt.h \
-ajgraphstruct.h ajgraphxml.h \
 ajindex.h ajjava.h ajlist.h \
 ajmath.h ajmatrices.h ajmem.h ajmess.h ajnam.h ajnexus.h \
 ajpat.h ajpdb.h ajpdbio.h ajphylo.h \
 ajrange.h ajreg.h ajreport.h \
-ajseq.h ajseqabi.h ajseqdata.h ajseqdb.h ajseqread.h ajseqtype.h ajseqwrite.h \
+ajseq.h ajseqabi.h ajseqdata.h ajseqread.h ajseqtype.h ajseqwrite.h \
 ajsort.h ajsql.h ajstr.h ajsys.h \
 ajtable.h ajtime.h ajtranslate.h ajtree.h ajutil.h ajvector.h
 

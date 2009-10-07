@@ -71,7 +71,6 @@ static void     GraphFillPat(ajint pat);
 static void     GraphInit(AjPGraph thys);
 static void     GraphLabelTitle(const char *title, const char *subtitle);
 static void     GraphLineStyle(ajint style);
-static void     GraphListDevicesarg(const char* name, va_list args);
 static void     GraphNewGrout(AjPGraph graph);
 static void     GraphNewPlplot(AjPGraph graph);
 static void     GraphDraw(const AjPGraph thys);
@@ -85,7 +84,6 @@ static void     GraphOpenXml(AjPGraph thys, const char *ext);
 static void     GraphOpenXwin(AjPGraph thys, const char *ext);
 #endif
 static void     GraphPen(ajint pen, ajint red, ajint green, ajint blue);
-static void     GraphRegister(void);
 static AjBool   GraphSet2(AjPGraph thys, const AjPStr type,AjBool *res);
 static AjBool   GraphSetarg(const char *name, va_list args);
 static void     GraphSetName(const AjPGraph thys,
@@ -99,7 +97,6 @@ static void     GraphSymbols(float *xx1, float *yy1, ajint numofdots,
 			     ajint symbol);
 static void     GraphText(float xx1, float yy1, float xx2, float yy2,
 			  float just, const char *text);
-static AjBool   GraphTracearg(const char *name, va_list args);
 static void     GraphWind(float xmin, float xmax, float ymin, float ymax);
 static void     GraphxyDisplayToDas(AjPGraph thys, AjBool closeit,
 				     const char *ext);
@@ -510,95 +507,6 @@ PLPLOT CALLS *START*
 ******************************************************************************/
 
 
-
-
-/* @func ajGraphicsInit ********************************************************
-**
-** Initialises the graphics then everything else. Reads an ACD
-** (AJAX Command Definition) file,
-** prompts the user for any missing information, reads all sequences
-** and other input into local structures which applications can request.
-** Must be called in each EMBOSS program first.
-**
-** @param [r] pgm [const char*] Application name, used as the name of the
-**                              ACD file
-** @param [r] argc [ajint] Number of arguments provided on the command line,
-**        usually passsed as-is by the calling application.
-** @param [r] argv [char* const[]] Actual arguments as an array of text.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphicsInit(const char *pgm, ajint argc, char * const argv[])
-{
-    ajNamInit("emboss");
-
-    GraphRegister();
-
-    ajAcdInit(pgm, argc, argv);
-
-    return;
-}
-
-
-
-
-/* @obsolete ajGraphInit
-** @rename ajGraphicsInit
-*/
-
-__deprecated void ajGraphInit(const char *pgm, ajint argc, char * const argv[])
-{
-    ajGraphicsInit(pgm, argc, argv);
-    return;
-}
-
-
-/* @func ajGraphicsInitPV ******************************************************
-**
-** Initialises the graphics then everything else. Reads an ACD
-** (AJAX Command Definition) file,
-** prompts the user for any missing information, reads all sequences
-** and other input into local structures which applications can request.
-** Must be called in each EMBOSS program first.
-**
-** @param [r] pgm [const char*] Application name, used as the name of
-**                              the ACD file
-** @param [r] argc [ajint] Number of arguments provided on the command line,
-**        usually passsed as-is by the calling application.
-** @param [r] argv [char* const[]] Actual arguments as an array of text.
-** @param [r] package [const char*] Package name, used to find the ACD file
-** @param [r] packversion [const char*] Package version
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphicsInitPV(const char *pgm, ajint argc, char *const argv[],
-                      const char *package,const char *packversion)
-{
-    ajNamInit("emboss");
-
-    GraphRegister();
-
-    ajDebug("=g= plxswin('%s') [argv[0]]\n", argv[0]);
-    plxswin(argv[0]);
-
-    ajAcdInitPV(pgm, argc, argv, package, packversion);
-
-    return;
-}
-
-
-/* @obsolete ajGraphInitPV
-** @rename ajGraphicsInitPV
-*/
-
-__deprecated void ajGraphInitPV(const char *pgm, ajint argc, char *const argv[],
-                                const char *package,const char *packversion)
-{
-    ajGraphicsInitPV(pgm, argc, argv, package, packversion);
-    return;
-}
 
 
 /* @func ajGraphicsSetBgcolourBlack ********************************************
@@ -1720,7 +1628,7 @@ void ajGraphSetTitlePlus(AjPGraph thys, const AjPStr title)
 		       thys->plplot->desc, title);
     else
 	ajFmtPrintS(&thys->plplot->title, "%S of %S",
-		       ajAcdGetProgram(), title);
+		       ajUtilGetProgram(), title);
 
     return;
 }
@@ -3523,7 +3431,7 @@ void ajGraphOpenWin(AjPGraph thys, float xmin, float xmax,
 	if(!ajStrGetLen(thys->plplot->title))
 	{
 	    ajFmtPrintAppS(&thys->plplot->title,"%S",
-			   ajAcdGetProgram());
+			   ajUtilGetProgram());
 	}
 
 	if(!ajStrGetLen(thys->plplot->subtitle))
@@ -3683,7 +3591,7 @@ void ajGraphOpen(AjPGraph thys, PLFLT xmin, PLFLT xmax,
 	{
 	    ajtime = ajTimeNewToday();
 	    ajStrAppendC(&thys->plplot->title,
-		      ajFmtString("%S (%D)",ajAcdGetProgram(),ajtime));
+		      ajFmtString("%S (%D)",ajUtilGetProgram(),ajtime));
 	    ajTimeDel(&ajtime);
 	}
 
@@ -3790,27 +3698,19 @@ void ajGraphDumpDevices(void)
 
 
 
-/* @funcstatic GraphListDevicesarg ********************************************
+/* @func ajGraphListDevices ***************************************************
 **
 ** Store device names for a graph object in a list
 **
-** @param [r] name [const char*] Function name (always needed for
-**                               these callbacks)
-** @param [v] args [va_list] Arguments, in actual use this must
-**                           be an AjPList object
+** @param [w] list [AjPList] List to write device names to.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void GraphListDevicesarg (const char* name, va_list args)
+void ajGraphListDevices (AjPList list)
 {
-    AjPList list;
     ajint i;
     AjPStr devname;
-
-    (void) name;			/* make it used */
-
-    list = va_arg(args, AjPList);
 
     for(i=0;graphType[i].Name;i++)
 	if(!graphType[i].Alias)
@@ -5973,7 +5873,7 @@ void ajGraphInitSeq(AjPGraph thys, const AjPSeq seq)
     if (thys->plplot)
 	if(!ajStrGetLen(thys->plplot->title))
 	    ajFmtPrintS(&thys->plplot->title, "%S of %S",
-			ajAcdGetProgram(), ajSeqGetNameS(seq));
+			ajUtilGetProgram(), ajSeqGetNameS(seq));
 
     ajGraphxySetXrangeII(thys, 1, ajSeqGetLen(seq));
 
@@ -6125,8 +6025,8 @@ static void GraphOpenXwin(AjPGraph thys, const char *ext )
     (void) thys;			/* make it used */
     (void) ext;				/* make it used */
 
-    programname = ajStrGetPtr(ajAcdGetProgram());
-    ajDebug("=g= plxswin('%s') ajAcdGetProgram\n", programname);
+    programname = ajStrGetPtr(ajUtilGetProgram());
+    ajDebug("=g= plxswin('%s') ajUtilGetProgram\n", programname);
     plxswin(programname);
 
 /*
@@ -6288,7 +6188,7 @@ static void GraphxyDisplayToDas(AjPGraph thys, AjBool closeit,
 	if( ajStrGetLen(thys->plplot->title) <=1)
 	{
 	    ajFmtPrintAppS(&thys->plplot->title,"%S",
-			   ajAcdGetProgram());
+			   ajUtilGetProgram());
 	}
 	if( ajStrGetLen(thys->plplot->subtitle) <=1)
 	{
@@ -6416,7 +6316,7 @@ static void GraphxyDisplayToData(AjPGraph thys, AjBool closeit,
 	if( ajStrGetLen(thys->plplot->title) <=1)
 	{
 	    ajFmtPrintAppS(&thys->plplot->title,"%S",
-			   ajAcdGetProgram());
+			   ajUtilGetProgram());
 	}
 
 	if( ajStrGetLen(thys->plplot->subtitle) <=1)
@@ -6964,7 +6864,7 @@ static void GraphNewPlplot(AjPGraph graph)
     graph->plplot->numofgraphsmax = 1;
     graph->plplot->flags          = GRAPH_XY;
     graph->plplot->minmaxcalc     = 0;
-    ajFmtPrintS(&graph->plplot->outputfile,"%S", ajAcdGetProgram());
+    ajFmtPrintS(&graph->plplot->outputfile,"%S", ajUtilGetProgram());
 
     return;
 }
@@ -7046,7 +6946,7 @@ static void GraphxyNewPlplot(AjPGraph thys)
     thys->plplot->xstart = thys->plplot->xend = 0;
     thys->plplot->ystart = thys->plplot->yend = 0;
     thys->plplot->Obj                 = 0;
-    ajFmtPrintS(&thys->plplot->outputfile,"%S", ajAcdGetProgram());
+    ajFmtPrintS(&thys->plplot->outputfile,"%S", ajUtilGetProgram());
 
     return;
 }
@@ -7351,7 +7251,7 @@ static void GraphxyGeneral(AjPGraph thys, AjBool closeit)
 	    ajtime = ajTimeNewToday();
 	    ajStrAppendC(&thys->plplot->title,
 			     ajFmtString("%S (%D)",
-					 ajAcdGetProgram(),
+					 ajUtilGetProgram(),
 					 ajtime));
 	    ajTimeDel(&ajtime);
 	}
@@ -7410,7 +7310,7 @@ static void GraphxyGeneral(AjPGraph thys, AjBool closeit)
 	    ajtime = ajTimeNewToday();
 	    ajStrAppendC(&thys->plplot->title,
 			     ajFmtString("%S (%D)",
-					 ajAcdGetProgram(),
+					 ajUtilGetProgram(),
 					 ajtime));
 	    ajTimeDel(&ajtime);
 	}
@@ -8708,74 +8608,6 @@ static AjPGraph GraphxyNewIarg(const char *name, va_list args)
     retval = ajGraphxyNewI(temp);
 
     return retval;
-}
-
-
-
-
-/* @funcstatic GraphTracearg **************************************************
-**
-** Passes argument list to ajGraphTrace. Note that the ajCallRegister
-** method prevents any prototype checking on the call.
-**
-** @param [r] name [const char*] Function name, required by ajCallRegister
-**                               but ignored.
-** @param [v] args [va_list] Argument list, really must be (AjPGraph)
-** @return [AjBool] always ajTrue.
-** @@
-******************************************************************************/
-
-static AjBool GraphTracearg(const char *name, va_list args)
-{
-    AjPGraph temp = NULL;
-    AjBool retval = AJTRUE;
-
-    (void) name;	   /* only for ajCallRegister, make it used */
-
-    temp = va_arg(args, AjPGraph);
-
-    ajGraphTrace(temp);
-
-    return retval;
-}
-
-
-
-
-/* @funcstatic GraphRegister **************************************************
-**
-** Register the graphics calls
-**
-** @return [void]
-** @@
-******************************************************************************/
-
-static void GraphRegister(void)
-{
-    ajCallRegister("ajGraphNew",(CallFunc)ajGraphNew);
-    ajCallRegister("ajGraphSet",(CallFunc)GraphSetarg);
-
-    ajCallRegister("ajGraphxyNewI",(CallFunc)GraphxyNewIarg);
-    ajCallRegister("ajGraphxySet",(CallFunc)GraphxySetarg);
-
-    ajCallRegister("ajGraphDumpDevices",(CallFunc)ajGraphDumpDevices);
-    ajCallRegister("ajGraphListDevices",(CallFunc)GraphListDevicesarg);
-    ajCallRegister("ajGraphSetDescS",(CallFunc)GraphDescarg);
-    ajCallRegister("ajGraphSetTitleS",(CallFunc)GraphTitlearg);
-    ajCallRegister("ajGraphSetSubtitleS",(CallFunc)GraphSubTitlearg);
-    ajCallRegister("ajGraphSetXlabelS",(CallFunc)GraphXTitlearg);
-    ajCallRegister("ajGraphSetYlabelS",(CallFunc)GraphYTitlearg);
-    ajCallRegister("ajGraphTrace",(CallFunc)GraphTracearg);
-    ajCallRegister("ajGraphSetOutputFile",(CallFunc)GraphSetOutarg);
-    ajCallRegister("ajGraphSetOutputDir",(CallFunc)GraphSetDirarg);
-
-    /* obsolete names */
-    ajCallRegisterOld("ajGraphDesc",(CallFunc)GraphDescarg);
-    ajCallRegisterOld("ajGraphTitle",(CallFunc)GraphTitlearg);
-    ajCallRegisterOld("ajGraphSubTitle",(CallFunc)GraphSubTitlearg);
-    ajCallRegisterOld("ajGraphXTitle",(CallFunc)GraphXTitlearg);
-    ajCallRegisterOld("ajGraphYTitle",(CallFunc)GraphYTitlearg);
-    return;
 }
 
 

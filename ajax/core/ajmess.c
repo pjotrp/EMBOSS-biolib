@@ -33,12 +33,15 @@
 #endif
 
 
-/* next three moved from acd for library splitting */
+/* next six moved from acd for library splitting */
 
 AjBool acdDebugSet    = 0;
 AjBool acdDebugBuffer = 0;
 AjBool acdDebug       = 0;
 AjPStr acdProgram     = NULL;
+AjPStr acdArgSave     = NULL;
+AjPStr acdInputSave   = NULL;
+
 
 
 AjOError AjErrorLevel =

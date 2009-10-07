@@ -1716,7 +1716,7 @@ static AjPFeature featFeatNew(AjPFeattable thys,
     ajDebug("featFeatNew %d %d '%c' type: '%S'\n", Start, End, strand, type);
 
     if(!featDefSource)
-	ajStrAssignS(&featDefSource, ajAcdGetProgram());
+	ajStrAssignS(&featDefSource, ajUtilGetProgram());
     
     /* ajDebug("\nfeatFeatNew '%S' %d .. %d %x\n",
        type, Start, End, flags); */
@@ -1830,7 +1830,7 @@ static AjPFeature featFeatNewProt(AjPFeattable thys,
     static ajint maxexon    = 0;
     
     if(!featDefSource)
-	ajStrAssignS(&featDefSource, ajAcdGetProgram());
+	ajStrAssignS(&featDefSource, ajUtilGetProgram());
     
     ajDebug("\nfeatFeatNewProt '%S' %d .. %d %x\n", type, Start, End, flags);
     
@@ -9778,7 +9778,8 @@ void ajFeattableSetDefname(AjPFeattable thys, const AjPStr setname)
 
 __deprecated void ajFeatDefName(AjPFeattable thys, const AjPStr setname)
 {
-    return ajFeattableSetDefname(thys, setname);
+    ajFeattableSetDefname(thys, setname);
+    return;
 }
 
 

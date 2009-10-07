@@ -6359,7 +6359,7 @@ AjBool ajFilenameSetTempname(AjPStr* Pfilename)
     ajDirnameFix(&fileDirectory);
 
     ajFmtPrintS(&fileTempFilename,
-		"%S%S-%d.%d",fileDirectory,ajAcdGetProgram(),time(0),
+		"%S%S-%d.%d",fileDirectory,ajUtilGetProgram(),time(0),
 		ajRandomNumber());
     
     retry = 5;
@@ -6372,7 +6372,7 @@ AjBool ajFilenameSetTempname(AjPStr* Pfilename)
 #endif
 	{
 	    ajFmtPrintS(&fileTempFilename,
-			"%S%S-%d.%d",fileDirectory,ajAcdGetProgram(),time(0),
+			"%S%S-%d.%d",fileDirectory,ajUtilGetProgram(),time(0),
 			ajRandomNumber());
 	    --retry;
 	}
@@ -6435,7 +6435,7 @@ AjBool ajFilenameSetTempnamePathC(AjPStr* Pfilename, const char* txt)
     ajDirnameFix(&fileDirectory);
 
     ajFmtPrintS(&fileTempFilename,
-		"%S%S-%d.%d",fileDirectory,ajAcdGetProgram(),time(0),
+		"%S%S-%d.%d",fileDirectory,ajUtilGetProgram(),time(0),
 		ajRandomNumber());
     
     retry = 5;
@@ -6448,7 +6448,7 @@ AjBool ajFilenameSetTempnamePathC(AjPStr* Pfilename, const char* txt)
 #endif
 	{
 	    ajFmtPrintS(&fileTempFilename,
-			"%S%S-%d.%d",fileDirectory,ajAcdGetProgram(),time(0),
+			"%S%S-%d.%d",fileDirectory,ajUtilGetProgram(),time(0),
 			ajRandomNumber());
 	    --retry;
 	}
@@ -6511,7 +6511,7 @@ AjBool ajFilenameSetTempnamePathC(AjPStr* Pfilename, const char* txt)
     ajDirnameFix(&fileDirectory);
 
     ajFmtPrintS(&fileTempFilename,
-		"%S%S-%d.%d",fileDirectory,ajAcdGetProgram(),time(0),
+		"%S%S-%d.%d",fileDirectory,ajUtilGetProgram(),time(0),
 		ajRandomNumber());
     
     retry = 5;
@@ -6524,7 +6524,7 @@ AjBool ajFilenameSetTempnamePathC(AjPStr* Pfilename, const char* txt)
 #endif
 	{
 	    ajFmtPrintS(&fileTempFilename,
-			"%S%S-%d.%d",fileDirectory,ajAcdGetProgram(),time(0),
+			"%S%S-%d.%d",fileDirectory,ajUtilGetProgram(),time(0),
 			ajRandomNumber());
 	    --retry;
 	}

@@ -19,6 +19,8 @@ extern AjBool acdDebugSet;
 extern AjBool acdDebugBuffer;
 extern AjBool acdDebug;
 extern AjPStr acdProgram;
+extern AjPStr acdArgSave;
+extern AjPStr acdInputSave;
 
 /* @data AjPError *************************************************************
 **

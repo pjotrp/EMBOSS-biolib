@@ -153,6 +153,7 @@ void    ajHistSetTitleC (AjPHist hist, const char* strng);
 void    ajHistSetXAxisC (AjPHist hist, const char* strng);
 void    ajHistSetYAxisLeftC (AjPHist hist,const  char* strng);
 void    ajHistSetYAxisRightC (AjPHist hist, const char* strng);
+void    ajHistSetMark(ajint mark);
 
 /*
 ** End of prototype definitions

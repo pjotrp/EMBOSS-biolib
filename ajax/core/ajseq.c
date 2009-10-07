@@ -4846,7 +4846,6 @@ void ajSeqExit(void)
 {
     ajSeqReadExit();
     ajSeqoutExit();
-    ajSeqDbExit();
     ajSeqTypeExit();
 
     ajStrDel(&seqVersionAccnum);

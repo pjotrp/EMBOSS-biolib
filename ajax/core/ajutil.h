@@ -17,25 +17,31 @@ __noreturn void   ajExit (void);
 __noreturn void   ajExitAbort (void);
 __noreturn void   ajExitBad (void);
 
-void   ajByteRevLen2 (short* i);
-void   ajByteRevLen4 (ajint* i);
-void   ajByteRevLen8 (ajlong* i);
-void   ajByteRevInt(ajint* sval);
-void   ajByteRevShort(short* ival);
-void   ajByteRevLong(ajlong* lval);
-void   ajByteRevUint(ajuint* ival);
+void          ajByteRevLen2 (short* i);
+void          ajByteRevLen4 (ajint* i);
+void          ajByteRevLen8 (ajlong* i);
+void          ajByteRevInt(ajint* sval);
+void          ajByteRevShort(short* ival);
+void          ajByteRevLong(ajlong* lval);
+void          ajByteRevUint(ajuint* ival);
 
-void   ajReset(void);
+void          ajReset(void);
 
-void   ajUtilCatch (void);
-AjBool ajUtilGetBigendian (void);
-AjBool ajUtilGetUid (AjPStr* Puid);
-void   ajUtilLoginfo (void);
+void          ajUtilCatch (void);
+AjBool        ajUtilGetBigendian (void);
+AjBool        ajUtilGetUid (AjPStr* Puid);
+void          ajUtilLoginfo (void);
+const AjPStr  ajUtilGetProgram (void);
+const AjPStr  ajUtilGetCmdline (void);
+const AjPStr  ajUtilGetInputs (void);
 
 /*
 ** End of prototype definitions
 */
 
+__deprecated const AjPStr  ajAcdGetProgram (void);
+__deprecated const AjPStr  ajAcdGetCmdline (void);
+__deprecated const AjPStr  ajAcdGetInputs (void);
 __deprecated void   ajLogInfo (void);
 __deprecated void   ajUtilRev2 (short* i);
 __deprecated void   ajUtilRev4 (ajint* i);

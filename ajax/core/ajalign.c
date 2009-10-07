@@ -1021,7 +1021,7 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 
 	ajFmtPrintF(outf,"; mp_name: EMBOSS\n");
 	ajFmtPrintF(outf,"; mp_ver: %S\n", ajNamValueVersion());
-	ajFmtPrintF(outf,"; pg_name: %S\n", ajAcdGetProgram());
+	ajFmtPrintF(outf,"; pg_name: %S\n", ajUtilGetProgram());
 	ajFmtPrintF(outf,"; pg_ver: %S\n", ajNamValueVersion());
 	ajFmtPrintF(outf,"; pg_matrix: %S\n", thys->Matrix);
 	ajFmtPrintF(outf,"; pg_gap-pen: -%S -%S\n",
@@ -2679,10 +2679,10 @@ static void alignWriteHeaderNum(AjPAlign thys, ajint iali)
     if(!thys->Count)
     {
 	ajFmtPrintF(outf, "########################################\n");
-	ajFmtPrintF(outf, "# Program: %S\n", ajAcdGetProgram());
+	ajFmtPrintF(outf, "# Program: %S\n", ajUtilGetProgram());
 	ajFmtPrintF(outf, "# Rundate: %D\n", ajTimeRefTodayFmt("report"));
-	ajFmtPrintF(outf, "# Commandline: %S\n", ajAcdGetProgram());
-	ajStrAssignS(&tmpstr, ajAcdGetCmdline());
+	ajFmtPrintF(outf, "# Commandline: %S\n", ajUtilGetProgram());
+	ajStrAssignS(&tmpstr, ajUtilGetCmdline());
 
 	if(ajStrGetLen(tmpstr))
 	{
@@ -2691,7 +2691,7 @@ static void alignWriteHeaderNum(AjPAlign thys, ajint iali)
 	    ajFmtPrintF(outf, "#    %S\n", tmpstr);
 	}
 
-	ajStrAssignS(&tmpstr, ajAcdGetInputs());
+	ajStrAssignS(&tmpstr, ajUtilGetInputs());
 
 	if(ajStrGetLen(tmpstr))
 	{

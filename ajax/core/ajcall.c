@@ -3,14 +3,15 @@
 #include <string.h>
 #include <stdarg.h>
 
-/* ajCall Routines are used to allow access to different graphics packages.
-** Okay so at the moment only plplot is used. Also if you want a light weight
-** version of EMBOSS no graphics can be stated.
-** So in ajgraph.c you will see the register calls which list all the calls
-** needed by ajacd.c.
-** At the start of ajgraph.c all the calls that call plplot are done first.
-** These are the ones that will need to be replaced if the graphics
-** are changed.
+/* ajCall Routines are used to allow access to different library levels.
+** Originally set up for plplot graphics to be optional.
+** So in ajgraph.c you used to see the register calls which list all the calls
+** needed by ajacd.c. this is now a higher level library to these are obsolete
+**
+** ajCall routines are now used for sequence database access methods which
+** search for data and package it as files and buffers.
+** These methods may in turn need to call relational databases,
+** web services and other ways to get data into the system.
 */
 
 static AjPTable callTable = NULL;
@@ -68,6 +69,57 @@ static unsigned callStrHash(const void *key, unsigned hashsize)
 	hashval = *s + 31 *hashval;
 
     return hashval % hashsize;
+}
+
+
+
+
+/* @func ajCallTableNew *******************************************************
+**
+** Create new function hash table
+**
+** @return [AjPTable]
+** @@
+******************************************************************************/
+
+AjPTable ajCallTableNew(void)
+{
+    return ajTableNewFunctionLen(50, callCmpStr,callStrHash);
+}
+
+/* @func ajCallTableRegister **************************************************
+**
+** Create hash value pair using the name and function.
+**
+** @param [w] table [AjPTable] name which is used later.
+** @param [r] name [const char*] name which is used later.
+** @param [f] func [void*] function to be called on name being called.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajCallTableRegister(AjPTable table, const char *name, void *func)
+{
+    void *rec;
+    char* keyname = NULL;
+ 
+    if(!table)
+      ajFatal("ajCallTableRegister called for undefined table with name '%s'",
+	      name);
+
+    rec = ajTableFetch(table, name);	/* does it exist already */
+
+    if(!rec)
+    {
+	keyname = ajCharNewC(name);
+	ajTablePut(table, keyname, (void *) func);
+    }
+    else
+    {
+        ajWarn("ajCallTableRegister duplicate name '%s'", name);
+    }
+
+    return;
 }
 
 
@@ -183,7 +235,7 @@ void* ajCall(const char *name, ...)
     {
         icount = (ajuint*) ajTableFetch(oldcallCount, name);
         if(!(*icount)++)
-            ajUser("Obsolete graphics call '%s' called via ajCall", name);
+            ajWarn("Obsolete graphics call '%s' called via ajCall", name);
 	va_start(args, name);
 	retval = (*(recold))(name, args);
 	va_end(args);
@@ -195,6 +247,56 @@ void* ajCall(const char *name, ...)
     }
 
     return retval;
+}
+
+
+
+
+/* @func ajCallTableGetC ******************************************************
+**
+** Returns a named function by its name. If it does not exist then give
+** an error message saying so.
+**
+** @param [r] table [const AjPTable] 
+** @param [r] name [const char*] name of the function
+** @return [void*] NULL if function call not found.
+** @@
+******************************************************************************/
+void* ajCallTableGetC(const AjPTable table, const char *name)
+{
+    void *rec;
+
+    if(!table)
+    {
+        ajMessCrash("ajCallTableGet no call table for '%S'",
+		    name);
+	return NULL;
+    }
+
+    rec = ajTableFetch(table, name);
+
+    if(!rec)
+	ajMessCrash("ajCallTableGet function %s not found. "
+		    "Use ajCallTableRegister first",name);
+    return rec;
+}
+
+
+
+
+/* @func ajCallTableGetS ******************************************************
+**
+** Returns a named function by its name. If it does not exist then give
+** an error message saying so.
+**
+** @param [r] table [const AjPTable] 
+** @param [r] namestr [const AjPStr] name of the function
+** @return [void*] NULL if function call not found.
+** @@
+******************************************************************************/
+void* ajCallTableGetS(const AjPTable table, const AjPStr namestr)
+{
+    return ajCallTableGetC(table, MAJSTRGETPTR(namestr));
 }
 
 
@@ -233,7 +335,7 @@ static void callItemDel(void** key, void** value, void* cl)
 
 /* @funcstatic callCountDel ***************************************************
 **
-** Delete an entry in the call table.
+** Delete an entry in the call count table.
 **
 ** @param [d] key [void**] Standard argument. Table key (character string)
 ** @param [d] value [void**] Standard argument. Table item (unsigned integer)
@@ -260,7 +362,20 @@ static void callCountDel(void** key, void** value, void* cl)
     return;
 }
 
+/* @func ajCallTableDel *******************************************************
+**
+** @param [d] Ptable [AjPTable*] Table to be freed
+** @return [vod]
+******************************************************************************/
 
+void ajCallTableDel(AjPTable* Ptable)
+{
+    if(!*Ptable) return;
+
+    ajTableMapDel(*Ptable, callItemDel, NULL);
+
+    return;
+}
 
 
 /* @func ajCallExit ***********************************************************

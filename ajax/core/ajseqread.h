@@ -7,7 +7,7 @@ extern "C"
 #define ajseqread_h
 
 
-
+extern AjPTable seqDbMethods;
 
 
 
@@ -15,6 +15,11 @@ extern "C"
 ** Prototype definitions
 */
 
+AjPTable     ajSeqtableGetDb(void);
+AjBool       ajSeqMethodTest (const AjPStr method);
+AjBool       ajSeqAccessAsis (AjPSeqin seqin);
+AjBool       ajSeqAccessFile (AjPSeqin seqin);
+AjBool       ajSeqAccessOffset (AjPSeqin seqin);
 AjPSeqall    ajSeqallFile (const AjPStr usa);
 AjBool       ajSeqAllRead (AjPSeq thys, AjPSeqin seqin);
 AjBool       ajSeqGetFromUsa (const AjPStr thys, AjBool protein, AjPSeq seq);

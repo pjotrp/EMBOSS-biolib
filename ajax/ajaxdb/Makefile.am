@@ -12,10 +12,10 @@ endif
 INCLUDES = -I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/pcre \
 -I$(top_srcdir)/ajax/core -I$(top_srcdir)/ajax/ensembl
 
-AJAXSEQSRC = ajdummyseq.c
+AJAXSEQSRC = ajseqdb.c
 
 # Uncomment and amend when there are some real headers
-# include_HEADERS = ajdummyseq.h
+include_HEADERS = ajseqdb.h
 
 libajaxseq_la_SOURCES = $(AJAXSEQSRC)
 

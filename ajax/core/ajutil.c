@@ -39,8 +39,6 @@ static AjBool utilBigendian;
 static ajint utilBigendCalled = 0;
 
 
-
-
 /* @filesection ajutil *******************************************************
 **
 ** @nam1rule aj Function belongs to the AJAX library.
@@ -167,7 +165,6 @@ void ajReset(void)
     WSACleanup();
 #endif
     ajDebug("\nFinal Summary\n=============\n\n");
-    ajUtilLoginfo();
     /*    ajBtreeExit(); */
     ajTreeExit();
     ajPdbExit();
@@ -178,7 +175,6 @@ void ajReset(void)
     ajPhyloExit();
     ajAlignExit();
     ajReportExit();
-    ajAcdExit(ajFalse);
     ajNamExit();
     ajSysExit();
     ajCallExit();
@@ -838,7 +834,7 @@ void ajUtilLoginfo(void)
 
 	ajUtilGetUid(&uids),
 	ajFmtPrintF(logf, "%S\t%S\t%D\t%.1f\t%.1f\n",
-		    ajAcdGetProgram(),
+		    ajUtilGetProgram(),
 		    uids,
 		    today,
                     cputime, walltime);
@@ -866,3 +862,116 @@ __deprecated void ajLogInfo(void)
 
     return;
 }
+
+
+/* @section provenance *******************************************************
+**
+** Functions providing information about the run-time environment
+**
+** @fdata [none]
+**
+** @nam3rule Get Return data as a string
+** @nam4rule GetCmdline Return the full commandline equivalent
+** @nam4rule GetInputs Return the full commandline equivalent
+** @nam4rule GetProgram Return the program name
+**
+** @valrule * [const AjPStr]
+** @fcategory misc
+**
+******************************************************************************/
+
+
+
+/* @func ajUtilGetCmdline *****************************************************
+**
+** Returns the original command line as qualifiers and values with newline
+** delimiters
+**
+** @return [const AjPStr] Commandline with newlines between qualifiers
+** and parameters
+******************************************************************************/
+
+const AjPStr ajUtilGetCmdline (void)
+{
+    return acdArgSave;
+}
+
+/* @obsolete ajAcdGetCmdline
+** @replace ajUtilGetCmdline
+*/
+__deprecated const AjPStr ajAcdGetCmdline (void)
+{
+  return ajUtilGetCmdline();
+}
+
+
+/* @func ajUtilGetInputs ******************************************************
+**
+** Returns the user non-default inputs in commandline form
+**
+** @return [const AjPStr] Commandline with newlines between qualifiers
+** and parameters
+******************************************************************************/
+
+const AjPStr ajUtilGetInputs (void)
+{
+    return acdInputSave;
+}
+
+
+/* @obsolete ajAcdGetInput
+** @replace ajUtilGetInputs
+*/
+
+__deprecated const AjPStr ajAcdGetInputs (void)
+{
+  return ajUtilGetInputs();
+}
+
+/* @obsolete ajAcdProgramS
+** @remove Use ajAcdGetProgram
+*/
+
+__deprecated void  ajAcdProgramS(AjPStr* pgm)
+{
+    ajStrAssignS(pgm, acdProgram);
+    return;
+}
+
+
+
+
+/* @func ajUtilGetProgram *****************************************************
+**
+** Returns the application (program) name from the ACD definition.
+**
+** @return [const AjPStr] Program name
+** @@
+******************************************************************************/
+
+const AjPStr ajUtilGetProgram(void)
+{
+    return acdProgram;
+}
+
+
+/* @obsolete ajAcdGetProgram
+** @replace ajUtilGetProgram
+*/
+__deprecated const AjPStr ajAcdGetProgram(void)
+{
+  return ajUtilGetProgram();
+}
+
+/* @obsolete ajAcdProgram
+** @remove Use ajAcdGetProgram
+*/
+
+__deprecated const char*  ajAcdProgram(void)
+{
+    return ajStrGetPtr(acdProgram);
+}
+
+
+
+

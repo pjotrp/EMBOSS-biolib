@@ -41,7 +41,7 @@ static ajuint seqQualPhredToIndex[] = { 0, /* 0 */
   66, 67, 68                              /* 61-63 */
 };
 
-static float seqQualIndexToSolexa[] = {       -FLT_MAX, /* 0 -5 */
+static double seqQualIndexToSolexa[] = {       -FLT_MAX, /* 0 -5 */
   1.318795,  1.603736,  1.937759,  2.324741,  2.767492, /* 1-5 -4-0 */
   3.267492,  3.824741,  4.437759,  5.103736,  5.818795, /* 76-10 1-5 */
   6.578332,  7.377360,  8.210819,  9.073822,  9.961836, /* 11-15 6-10 */
@@ -638,7 +638,7 @@ AjPSeqout ajSeqoutNewFormatC(const char* txt)
 
 
 
-/* @func ajSeqoutNewFormatS ****************************************************
+/* @func ajSeqoutNewFormatS ***************************************************
 **
 ** Creates a new sequence output object with a specified format.
 **
@@ -5872,10 +5872,10 @@ static void seqWriteSam(AjPSeqout outseq)
     /* Read group */
 
     /* Program record */
-    argstr = ajStrNewS(ajAcdGetCmdline());
+    argstr = ajStrNewS(ajUtilGetCmdline());
     ajStrExchangeKK(&argstr, '\n', ' ');
     ajFmtPrintF(outseq->File, "@PG\t%S\t%S\t%S\n",
-                ajAcdGetProgram(), ajNamValueVersion(), argstr);
+                ajUtilGetProgram(), ajNamValueVersion(), argstr);
     ajStrDel(&argstr);
 
     /* Comment */
@@ -7613,7 +7613,7 @@ __deprecated AjBool ajSeqOutSetFormatC(AjPSeqout thys, const char* txt)
 
 
 
-/* @func ajSeqoutSetFormatS ****************************************************
+/* @func ajSeqoutSetFormatS ***************************************************
 **
 ** Sets the output format. Currently hard coded but will be replaced
 ** in future by a variable.
@@ -7628,7 +7628,7 @@ AjBool ajSeqoutSetFormatS(AjPSeqout seqout, const AjPStr str)
 {
     AjPStr fmt = NULL;
 
-    ajDebug("ajSeqoutSetFormat '%S'\n", str);
+    ajDebug("ajSeqoutSetFormatS '%S'\n", str);
     ajStrAssignS(&fmt, str);
     ajSeqoutstrGetFormatDefault(&fmt);
 

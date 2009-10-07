@@ -536,7 +536,6 @@ static void       seqSocketTimeout(int sig);
 
 
 
-
 /* @funclist seqAccess ********************************************************
 **
 ** Functions to access each database or sequence access method
@@ -622,28 +621,28 @@ static char aa_btoa2[27]= {"-ABCDEFGHIKLMNPQRSTVWXYZ*"};
 
 
 
-/* @func ajSeqMethodTest ******************************************************
+/* @func ajSeqdbInit **********************************************************
 **
-** Tests for a named method for sequence reading.
+** Initialise sequence database interbals
 **
-** @param [r] method [const AjPStr] Method required.
-** @return [AjBool] ajTrue on success.
-** @@
+** @return [void]
 ******************************************************************************/
 
-AjBool ajSeqMethodTest(const AjPStr method)
+void ajSeqdbInit(void)
 {
-    ajint i;
+    AjPTable table;
+    ajuint i = 0;
 
-    for(i=0; seqAccess[i].Name; i++)
-	if(ajStrMatchCaseC(method, seqAccess[i].Name))
-	    return ajTrue;
+    table = ajSeqtableGetDb();
 
-    return ajFalse;
+    while(seqAccess[i].Name)
+    {
+        ajCallTableRegister(table, seqAccess[i].Name, (void*) &seqAccess[i]);
+	i++;
+    }
+
+    return;
 }
-
-
-
 
 /* @func ajSeqMethod **********************************************************
 **
@@ -658,20 +657,7 @@ AjBool ajSeqMethodTest(const AjPStr method)
 
 SeqPAccess ajSeqMethod(const AjPStr method)
 {
-    ajint i = 0;
-
-    while(seqAccess[i].Name)
-    {
-	if(ajStrMatchCaseC(method, seqAccess[i].Name))
-	{
-	    ajDebug("Matched seqAccess[%d] '%s'\n", i, seqAccess[i].Name);
-	    return &seqAccess[i];
-	}
-
-	i++;
-    }
-
-    return NULL;
+    return ajCallTableGetS(ajSeqtableGetDb(),method);
 }
 
 
@@ -7560,156 +7546,6 @@ static AjBool seqAccessApp(AjPSeqin seqin)
 
 
 
-/* @section ASIS Sequence Access **********************************************
-**
-** These functions manage the ASIS sequence access methods.
-**
-******************************************************************************/
-
-
-
-
-/* @func ajSeqAccessAsis ******************************************************
-**
-** Reads a sequence using the 'filename' as the sequence data.
-**
-** @param [u] seqin [AjPSeqin] Sequence input.
-** @return [AjBool] ajTrue on success.
-** @@
-******************************************************************************/
-
-AjBool ajSeqAccessAsis(AjPSeqin seqin)
-{
-    AjPSeqQuery qry;
-
-    qry = seqin->Query;
-
-    if(!ajStrGetLen(qry->Filename))
-    {
-	ajErr("ASIS access: no sequence");
-
-	return ajFalse;
-    }
-
-    ajDebug("ajSeqAccessAsis %S\n", qry->Filename);
-
-    ajFilebuffDel(&seqin->Filebuff);
-    seqin->Filebuff = ajFilebuffNewLine(qry->Filename);
-
-    if(!seqin->Filebuff)
-    {
-	ajDebug("Asis access: unable to use sequence '%S'\n", qry->Filename);
-
-	return ajFalse;
-    }
-
-    ajStrAssignC(&seqin->Filename, "asis");
-    /*ajFilebuffTrace(seqin->Filebuff);*/
-
-    return ajTrue;
-}
-
-
-
-
-/* @section File Access *******************************************************
-**
-** These functions manage the sequence file access methods.
-**
-******************************************************************************/
-
-/* @func ajSeqAccessFile ******************************************************
-**
-** Reads a sequence from a named file.
-**
-** @param [u] seqin [AjPSeqin] Sequence input.
-** @return [AjBool] ajTrue on success.
-** @@
-******************************************************************************/
-
-AjBool ajSeqAccessFile(AjPSeqin seqin)
-{
-    AjPSeqQuery qry;
-
-    qry = seqin->Query;
-
-    if(!ajStrGetLen(qry->Filename))
-    {
-	ajErr("FILE access: no filename");
-
-	return ajFalse;
-    }
-
-    ajDebug("ajSeqAccessFile %S\n", qry->Filename);
-
-    /* ajStrTraceT(qry->Filename, "qry->Filename (before):"); */
-
-    ajFilebuffDel(&seqin->Filebuff);
-    seqin->Filebuff = ajFilebuffNewNameS(qry->Filename);
-
-    if(!seqin->Filebuff)
-    {
-	ajDebug("FILE access: unable to open file '%S'\n", qry->Filename);
-
-	return ajFalse;
-    }
-
-    /* ajStrTraceT(seqin->Filename, "seqin->Filename:"); */
-    /* ajStrTraceT(qry->Filename, "qry->Filename (after):"); */
-
-    ajStrAssignS(&seqin->Filename, qry->Filename);
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ajSeqAccessOffset ****************************************************
-**
-** Reads a sequence from a named file, at a given offset within the file.
-**
-** @param [u] seqin [AjPSeqin] Sequence input.
-** @return [AjBool] ajTrue on success.
-** @@
-******************************************************************************/
-
-AjBool ajSeqAccessOffset(AjPSeqin seqin)
-{
-    AjPSeqQuery qry;
-
-    qry = seqin->Query;
-
-    if(!ajStrGetLen(qry->Filename))
-    {
-	ajErr("FILE access: no filename");
-
-	return ajFalse;
-    }
-
-    ajDebug("ajSeqAccessOffset %S %Ld\n", qry->Filename, qry->Fpos);
-
-    /* ajStrTraceT(qry->Filename, "qry->Filename (before):"); */
-
-    ajFilebuffDel(&seqin->Filebuff);
-    seqin->Filebuff = ajFilebuffNewNameS(qry->Filename);
-
-    if(!seqin->Filebuff)
-    {
-	ajDebug("OFFSET access: unable to open file '%S'\n", qry->Filename);
-
-	return ajFalse;
-    }
-
-    ajFileSeek(ajFilebuffGetFile(seqin->Filebuff), qry->Fpos, 0);
-    /* ajStrTraceT(seqin->Filename, "seqin->Filename:"); */
-    /* ajStrTraceT(qry->Filename, "qry->Filename (after):"); */
-    ajStrAssignS(&seqin->Filename, qry->Filename);
-
-    return ajTrue;
-}
-
-
 
 
 /* @section File Direct Access ************************************************
@@ -8660,6 +8496,8 @@ static void seqCdTrgDel(SeqPCdTrg* pthys)
 
 void ajSeqDbExit(void)
 {
+    AjPTable table = NULL;
+
     ajRegFree(&seqCdDivExp);
     ajRegFree(&seqBlastDivExp);
     ajRegFree(&seqRegHttpProxy);
@@ -8674,6 +8512,9 @@ void ajSeqDbExit(void)
     ajRegFree(&seqRegGcgRefId);
 
     ajRegFree(&seqRegGi);
+
+    table = ajSeqtableGetDb();
+    ajCallTableDel(&table);
 
     return;
 }

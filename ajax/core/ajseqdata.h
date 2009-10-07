@@ -285,7 +285,7 @@ typedef struct AjSSeqXref {
 ** @attr Fpos [ajlong] File position from fseek
 ** @attr Type [enum AjEQryType] Enumerated query type
 ** @attr QryDone [AjBool] Has the query been done yet
-** @attr Access [SeqSAccess*] Access function : see ajseqread.h
+** @attr Access [SeqSAccess*] Access function : see ajseqdb.h
 ** @attr QryData [void*] Private data for access function
 ** @attr Wild [AjBool] True if query contains '*' or '?'
 ** @attr Padding [char[4]] Padding to alignment boundary

@@ -34,7 +34,18 @@
 
 ajint aj_hist_mark=GRAPH_HIST;
 
-
+/* @func ajHistSetMark ********************************************************
+**
+** Set the histogram mark internal value
+**
+** @param [r] mark [ajint] Mark value
+** @return [void]
+******************************************************************************/
+void ajHistSetMark(ajint mark)
+{
+  aj_hist_mark = mark;
+  return;
+}
 
 
 /* @func ajHistDisplay ********************************************************
