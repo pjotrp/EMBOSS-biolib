@@ -206,7 +206,7 @@ const AjPStr  ajFeatTypeGetCategory(const AjPStr type);
 AjBool        ajFeatTypeIsCds(const AjPFeature gf);
 AjBool        ajFeatTypeMatchC(const AjPFeature gf, const char* txt);
 AjBool        ajFeatTypeMatchS(const AjPFeature gf, const AjPStr str);
-    AjBool        ajFeatTypeMatchWildS(const AjPFeature gf, const AjPStr str);
+AjBool        ajFeatTypeMatchWildS(const AjPFeature gf, const AjPStr str);
 const AjPStr  ajFeatTypeNuc(const AjPStr type);
 const AjPStr  ajFeatTypeProt(const AjPStr type);
 AjBool        ajFeattableWriteUfo (AjPFeattabOut ftout, const AjPFeattable ft,
