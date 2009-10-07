@@ -343,7 +343,7 @@ int main(int argc, char * argv[])
     AjBool doend = ajTrue;
     ajuint isigstart, isigend;
 
-    ajGraphicsInitPV("topo", argc, argv, "TOPO", VERSION);
+    embInitPV("topo", argc, argv, "TOPO", VERSION);
   
     sequence = ajAcdGetSeq("sequence");
     graph  = ajAcdGetGraph("graph");
