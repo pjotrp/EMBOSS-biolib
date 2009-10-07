@@ -17605,8 +17605,6 @@ AjPTable ajSeqtableGetDb(void)
 
 AjBool ajSeqMethodTest(const AjPStr method)
 {
-    ajint i;
-
     if(ajCallTableGetS(seqDbMethods, method))
       return ajTrue;
 
