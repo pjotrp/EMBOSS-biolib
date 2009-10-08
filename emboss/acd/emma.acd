@@ -44,8 +44,25 @@ section: input [
     relations:  "EDAM: clustalw tree report"                           
   ]
 
-  section: protalignsection [
-    information: "Protein align options"
+  toggle: slow [
+    additional: "Y"
+    default: "Y"
+    information: "Do you want to carry out slow pairwise
+                  alignment"
+    help: "A distance is calculated between every pair of sequences
+           and these are used to construct the dendrogram which guides the
+           final multiple alignment. The scores are calculated from
+           separate pairwise alignments. These can be calculated using 2
+           methods: dynamic programming (slow but accurate) or by the
+           method of Wilbur and Lipman (extremely fast but approximate). \
+           The slow-accurate method is fine for short sequences but will be
+           VERY SLOW for many (e.g. >100) long (e.g. >1000 residue)
+           sequences."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  section: pairwisealignsection [
+    information: "Pairwise align options"
     type: "frame"
   ]
 
@@ -116,7 +133,7 @@ section: input [
     relations:  "EDAM: Comparison matrix file"                         
     ]
 
-  endsection: protalignsection
+  endsection: pairwisealignsection
 
   section: matrixsection [
     information: "Matrix options"
@@ -209,23 +226,6 @@ section: additional [
     information: "Slow align options"
     type: "frame"
   ]
-
-    toggle: slow [
-      additional: "Y"
-      default: "Y"
-      information: "Do you want to carry out slow pairwise
-                    alignment"
-      help: "A distance is calculated between every pair of sequences
-             and these are used to construct the dendrogram which guides the
-             final multiple alignment. The scores are calculated from
-             separate pairwise alignments. These can be calculated using 2
-             methods: dynamic programming (slow but accurate) or by the
-             method of Wilbur and Lipman (extremely fast but approximate). \
-             The slow-accurate method is fine for short sequences but will be
-             VERY SLOW for many (e.g. >100) long (e.g. >1000 residue)
-             sequences."
-    relations: "EDAM: Generic boolean"                                     
-    ]
 
     float: pwgapopen [
       additional: "$(slow)"
