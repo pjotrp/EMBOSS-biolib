@@ -1,7 +1,7 @@
 application: prettyplot [
   documentation: "Draw a sequence alignment with pretty formatting"
   groups: "Alignment:Multiple, Display"
-  relations: "EDAM: "Sequence alignment reformatting"
+  relations: "EDAM: Sequence alignment reformatting"
 ]
 
 section: input [

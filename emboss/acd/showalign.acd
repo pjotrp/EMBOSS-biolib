@@ -1,7 +1,7 @@
 application: showalign [
   documentation: "Display a multiple sequence alignment in pretty format"
   groups: "Alignment:Multiple, Display"
-  relations: "EDAM: "Sequence alignment reformatting"
+  relations: "EDAM: Sequence alignment reformatting"
 ]
 
 section: input [
