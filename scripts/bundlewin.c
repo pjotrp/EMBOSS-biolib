@@ -44,7 +44,12 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define AJAXDEF "ajaxdll.def"
+#define COREDEF "ajaxdll.def"
+#define PCREDEF "epcredll.def"
+#define GRAPHICSDEF "ajaxgdll.def"
+#define ENSEMBLDEF "ensembldll.def"
+#define AJAXDBDEF "ajaxdbdll.def"
+#define ACDDEF "acddll.def"
 #define NUCLEUSDEF "nucleusdll.def"
 
 #define TMPFILE  "/tmp/hfuncts_1"
@@ -98,12 +103,18 @@ static void copy_data(char *basedir);
 static void copy_doc(char *basedir);
 static void copy_test(char *basedir);
 static void copy_jemboss(char *basedir);
+static void copy_mysql(char *basedir);
 static void copy_redist(char *basedir);
     
 static void create_directories(char *basedir);
 static int header_exports(char *dir, FILE *fp);
 static void extract_funcnames(char *filename, FILE *fout);
-static void write_ajaxexports(char *fn, char *basedir);
+static void write_coreexports(char *fn, char *basedir);
+static void write_pcreexports(char *fn, char *basedir);
+static void write_graphicsexports(char *fn, char *basedir);
+static void write_ensemblexports(char *fn, char *basedir);
+static void write_ajaxdbexports(char *fn, char *basedir);
+static void write_acdexports(char *fn, char *basedir);
 static void write_nucleusexports(char *fn,char *basedir);
 static void read_make_check(char *basedir, listnode **head);
 static void add_node(listnode **head, char *progname);
@@ -121,6 +132,7 @@ int main(int argc, char **argv)
 {
     char basedir[MAXNAMLEN];
     char ajaxdir[MAXNAMLEN];
+    char defsdir[MAXNAMLEN];
     char nucleusdir[MAXNAMLEN];
     listnode *head = NULL;
     listnode *ptr;
@@ -144,7 +156,7 @@ int main(int argc, char **argv)
 	    basedir[len-1] = '\0';
     }
 
-    sprintf(ajaxdir,"%s/emboss/ajax",basedir);
+
 
 
     /* Create Windows build directories as a 'win32' subdir of basedir */
@@ -163,10 +175,15 @@ int main(int argc, char **argv)
     copy_doc(basedir);
     copy_test(basedir);
     copy_jemboss(basedir);
+    copy_mysql(basedir);
     copy_redist(basedir);
 
 
+
+    
     /* Construct exports file (ajaxdll.def) */
+
+    sprintf(defsdir,"%s/emboss/ajax/core",basedir);
     
     if(!(fp=fopen(TMPFILE,"w")))
     {
@@ -175,15 +192,130 @@ int main(int argc, char **argv)
     }
     
 
-    if(header_exports(ajaxdir,fp) < 0)
+    if(header_exports(defsdir,fp) < 0)
     {
-	fprintf(stderr,"Cannot open directory %s/ajax",basedir);
+	fprintf(stderr,"Cannot open directory %s/emboss/ajax/core",basedir);
 	exit(-1);
     }
     fclose(fp);
     
-    write_ajaxexports(TMPFILE,basedir);
+    write_coreexports(TMPFILE,basedir);
 
+
+
+    /* Construct exports file (epcredll.def) */
+
+    sprintf(defsdir,"%s/emboss/ajax/pcre",basedir);
+    
+    if(!(fp=fopen(TMPFILE,"w")))
+    {
+	fprintf(stderr,"Cannot open temporary file %s\n",TMPFILE);
+	exit(-1);
+    }
+    
+
+    if(header_exports(defsdir,fp) < 0)
+    {
+	fprintf(stderr,"Cannot open directory %s/emboss/ajax/pcre",basedir);
+	exit(-1);
+    }
+    fclose(fp);
+    
+    write_pcreexports(TMPFILE,basedir);
+
+
+
+    /* Construct exports file (ajaxgdll.def) */
+
+    sprintf(defsdir,"%s/emboss/ajax/graphics",basedir);
+    
+    if(!(fp=fopen(TMPFILE,"w")))
+    {
+	fprintf(stderr,"Cannot open temporary file %s\n",TMPFILE);
+	exit(-1);
+    }
+    
+
+    if(header_exports(defsdir,fp) < 0)
+    {
+	fprintf(stderr,"Cannot open directory %s/emboss/ajax/graphics",basedir);
+	exit(-1);
+    }
+    fclose(fp);
+    
+    write_graphicsexports(TMPFILE,basedir);
+
+
+
+
+    /* Construct exports file (ensembldll.def) */
+
+    sprintf(defsdir,"%s/emboss/ajax/ensembl",basedir);
+    
+    if(!(fp=fopen(TMPFILE,"w")))
+    {
+	fprintf(stderr,"Cannot open temporary file %s\n",TMPFILE);
+	exit(-1);
+    }
+    
+
+    if(header_exports(defsdir,fp) < 0)
+    {
+	fprintf(stderr,"Cannot open directory %s/emboss/ajax/ensembl",basedir);
+	exit(-1);
+    }
+    fclose(fp);
+    
+    write_ensemblexports(TMPFILE,basedir);
+
+
+
+
+    /* Construct exports file (ajaxdbdll.def) */
+
+    sprintf(defsdir,"%s/emboss/ajax/ajaxdb",basedir);
+    
+    if(!(fp=fopen(TMPFILE,"w")))
+    {
+	fprintf(stderr,"Cannot open temporary file %s\n",TMPFILE);
+	exit(-1);
+    }
+    
+
+    if(header_exports(defsdir,fp) < 0)
+    {
+	fprintf(stderr,"Cannot open directory %s/emboss/ajax/ajaxdb",basedir);
+	exit(-1);
+    }
+    fclose(fp);
+    
+    write_ajaxdbexports(TMPFILE,basedir);
+
+
+
+
+    /* Construct exports file (acddll.def) */
+
+    sprintf(defsdir,"%s/emboss/ajax/acd",basedir);
+    
+    if(!(fp=fopen(TMPFILE,"w")))
+    {
+	fprintf(stderr,"Cannot open temporary file %s\n",TMPFILE);
+	exit(-1);
+    }
+    
+
+    if(header_exports(defsdir,fp) < 0)
+    {
+	fprintf(stderr,"Cannot open directory %s/emboss/ajax/acd",basedir);
+	exit(-1);
+    }
+    fclose(fp);
+    
+    write_acdexports(TMPFILE,basedir);
+
+
+    
 
     /* Construct exports file (nucleusdll.def) */
 
@@ -265,7 +397,7 @@ static void copy_ajax(char *basedir)
 
     /* First copy ajax .h & .c files */
 
-    sprintf(command,"cp -f %s/emboss/ajax/*.h %s/win32/ajax",basedir,
+    sprintf(command,"cp -f %s/emboss/ajax/pcre/*.h %s/win32/ajax/pcre",basedir,
 	    basedir);
     if(system(command))
     {
@@ -273,7 +405,7 @@ static void copy_ajax(char *basedir)
 	exit(-1);
     }
 
-    sprintf(command,"cp -f %s/emboss/ajax/*.c %s/win32/ajax",basedir,
+    sprintf(command,"cp -f %s/emboss/ajax/pcre/*.c %s/win32/ajax/pcre",basedir,
 	    basedir);
     if(system(command))
     {
@@ -282,8 +414,94 @@ static void copy_ajax(char *basedir)
     }
 
 
+    sprintf(command,"cp -f %s/emboss/ajax/core/*.h %s/win32/ajax/core",basedir,
+	    basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -f %s/emboss/ajax/core/*.c %s/win32/ajax/core",basedir,
+	    basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+
+    sprintf(command,"cp -f %s/emboss/ajax/graphics/*.h %s/win32/ajax/graphics",
+            basedir, basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -f %s/emboss/ajax/graphics/*.c %s/win32/ajax/graphics",
+            basedir, basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+
+    sprintf(command,"cp -f %s/emboss/ajax/ensembl/*.h %s/win32/ajax/ensembl",
+            basedir, basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -f %s/emboss/ajax/ensembl/*.c %s/win32/ajax/ensembl",
+            basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+
+    sprintf(command,"cp -f %s/emboss/ajax/ajaxdb/*.h %s/win32/ajax/ajaxdb",
+            basedir, basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -f %s/emboss/ajax/ajaxdb/*.c %s/win32/ajax/ajaxdb",
+            basedir, basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+
+    sprintf(command,"cp -f %s/emboss/ajax/acd/*.h %s/win32/ajax/acd",basedir,
+	    basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -f %s/emboss/ajax/acd/*.c %s/win32/ajax/acd",basedir,
+	    basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    
+    
     /* Copy extra files required by win32 */
-    sprintf(command,"cp -fR %s/emboss/win32/ajax/* %s/win32/ajax",basedir,
+    sprintf(command,"cp -fR %s/emboss/win32/ajax/* %s/win32/ajax/core",basedir,
 	    basedir);
     if(system(command))
     {
@@ -401,7 +619,53 @@ static void copy_DLLs(char *basedir)
 
     /* Copy ajax project files */
 
-    sprintf(command,"cp -fR %s/emboss/win32/DLLs/ajax/* %s/win32/DLLs/ajax",
+    sprintf(command,"cp -fR %s/emboss/win32/DLLs/ajax/acd.vcproj "
+            "%s/win32/DLLs/ajax/acd",
+	    basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -fR %s/emboss/win32/DLLs/ajax/ajaxdb.vcproj "
+            "%s/win32/DLLs/ajax/ajaxdb",
+	    basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -fR %s/emboss/win32/DLLs/ajax/ajaxg.vcproj "
+            "%s/win32/DLLs/ajax/graphics",
+	    basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -fR %s/emboss/win32/DLLs/ajax/core.vcproj "
+            "%s/win32/DLLs/ajax/core",
+	    basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -fR %s/emboss/win32/DLLs/ajax/ensembl.vcproj "
+            "%s/win32/DLLs/ajax/ensembl",
+	    basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -fR %s/emboss/win32/DLLs/ajax/pcre.vcproj "
+            "%s/win32/DLLs/ajax/pcre",
 	    basedir,basedir);
     if(system(command))
     {
@@ -522,6 +786,100 @@ static void copy_test(char *basedir)
 
 
 
+static void copy_mysql(char *basedir)
+{
+    char command[MAXNAMLEN];
+
+    sprintf(command,"cp %s/emboss/win32/mysql/Debug/*.dll "
+            "%s/win32/mysql/Debug",basedir,
+	    basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp %s/emboss/win32/mysql/Debug/*.lib "
+            "%s/win32/mysql/Debug",basedir,
+	    basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp %s/emboss/win32/mysql/Debug/*.pdb "
+            "%s/win32/mysql/Debug",basedir,
+	    basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp %s/emboss/win32/mysql/Release/*.dll "
+            "%s/win32/mysql/Release",basedir,
+	    basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+
+    sprintf(command,"cp %s/emboss/win32/mysql/Release/*.lib "
+            "%s/win32/mysql/Release",basedir,
+	    basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+
+    sprintf(command,"cp %s/emboss/win32/mysql/Release/*.pdb "
+            "%s/win32/mysql/Release",basedir,
+	    basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+
+    sprintf(command,"cp %s/emboss/win32/mysql/include/*.h "
+            "%s/win32/mysql/include",basedir,
+	    basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp %s/emboss/win32/mysql/include/*.def "
+            "%s/win32/mysql/include",basedir,
+	    basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp %s/emboss/win32/mysql/include/mysql/*.h "
+            "%s/win32/mysql/include/mysql",basedir,
+	    basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    return;
+}
+
+
+
+
 static void copy_redist(char *basedir)
 {
     char command[MAXNAMLEN];
@@ -610,6 +968,12 @@ static void create_directories(char *basedir)
     {
 	"win32",
 	"win32/ajax",
+        "win32/ajax/pcre",
+        "win32/ajax/core",
+        "win32/ajax/graphics",
+        "win32/ajax/ensembl",
+        "win32/ajax/ajaxdb",
+        "win32/ajax/acd",
 	"win32/nucleus",
 	"win32/emboss",
 	"win32/apps",
@@ -623,8 +987,24 @@ static void create_directories(char *basedir)
 	"win32/plplot-inc/lib/Debug",
 	"win32/plplot-inc/lib/Release",
 	"win32/DLLs/ajax",
-	"win32/DLLs/ajax/Debug",
-	"win32/DLLs/ajax/Release",
+	"win32/DLLs/ajax/pcre",
+	"win32/DLLs/ajax/core",
+	"win32/DLLs/ajax/graphics",
+	"win32/DLLs/ajax/ensembl",
+	"win32/DLLs/ajax/ajaxdb",
+	"win32/DLLs/ajax/acd",
+	"win32/DLLs/ajax/core/Debug",
+	"win32/DLLs/ajax/core/Release",
+	"win32/DLLs/ajax/pcre/Debug",
+	"win32/DLLs/ajax/pcre/Release",
+	"win32/DLLs/ajax/graphics/Debug",
+	"win32/DLLs/ajax/graphics/Release",
+	"win32/DLLs/ajax/ensembl/Debug",
+	"win32/DLLs/ajax/ensembl/Release",
+	"win32/DLLs/ajax/ajaxdb/Debug",
+	"win32/DLLs/ajax/ajaxdb/Release",
+	"win32/DLLs/ajax/acd/Debug",
+	"win32/DLLs/ajax/acd/Release",
 	"win32/DLLs/nucleus",
 	"win32/DLLs/nucleus/Debug",
 	"win32/DLLs/nucleus/Release",
@@ -635,6 +1015,11 @@ static void create_directories(char *basedir)
 	"win32/apps/release",
 	"win32/apps/emboss",
 	"win32/apps/_UpgradeReport_Files",
+	"win32/mysql",
+	"win32/mysql/include",
+ 	"win32/mysql/include/mysql",
+	"win32/mysql/Debug",
+	"win32/mysql/Release",
 	NULL
     };
     int i;
@@ -791,7 +1176,7 @@ static void extract_funcnames(char *filename, FILE *fout)
 
 
 
-static void write_ajaxexports(char *fn,char *basedir)
+static void write_coreexports(char *fn,char *basedir)
 {
     FILE *outf;
     FILE *inf;
@@ -804,7 +1189,7 @@ static void write_ajaxexports(char *fn,char *basedir)
     system(command);
     unlink(fn);
 
-    sprintf(filename,"%s/win32/DLLs/ajax/%s",basedir,AJAXDEF);
+    sprintf(filename,"%s/win32/DLLs/ajax/core/%s",basedir,COREDEF);
     if(!(outf=fopen(filename,"w")))
     {
 	fprintf(stderr,"Cannot open AJAX definitions file %s\n",filename);
@@ -817,6 +1202,221 @@ static void write_ajaxexports(char *fn,char *basedir)
     fprintf(outf,"\tAssert_Failed\n");
     fprintf(outf,";dirent_w32\n");
     fprintf(outf,"\tclosedir\n\topendir\n\treaddir\n;others\n");
+
+    if(!(inf=fopen(TMPFILE2,"r")))
+    {
+	fprintf(stderr,"Cannot open sorted function file %s\n",TMPFILE2);
+	exit(-1);
+    }
+    
+    while(fgets(line,MAXNAMLEN,inf))
+	fprintf(outf,"\t%s",line);
+	
+    fclose(inf);
+    fclose(outf);
+
+    unlink(TMPFILE2);
+
+    return;
+}
+
+
+
+
+static void write_pcreexports(char *fn,char *basedir)
+{
+    FILE *outf;
+    FILE *inf;
+    
+    char command[MAXNAMLEN];
+    char line[MAXNAMLEN];
+    char filename[MAXNAMLEN];
+    
+    sprintf(command,"sort %s > %s",fn, TMPFILE2);
+    system(command);
+    unlink(fn);
+
+    sprintf(filename,"%s/win32/DLLs/ajax/pcre/%s",basedir,PCREDEF);
+    if(!(outf=fopen(filename,"w")))
+    {
+	fprintf(stderr,"Cannot open PCRE definitions file %s\n",filename);
+	exit(-1);
+    }
+
+    fprintf(outf,"LIBRARY \t""epcre.dll""\n\n");
+    fprintf(outf,"EXPORTS\n");
+
+    if(!(inf=fopen(TMPFILE2,"r")))
+    {
+	fprintf(stderr,"Cannot open sorted function file %s\n",TMPFILE2);
+	exit(-1);
+    }
+    
+    while(fgets(line,MAXNAMLEN,inf))
+	fprintf(outf,"\t%s",line);
+	
+    fclose(inf);
+    fclose(outf);
+
+    unlink(TMPFILE2);
+
+    return;
+}
+
+
+
+
+static void write_graphicsexports(char *fn,char *basedir)
+{
+    FILE *outf;
+    FILE *inf;
+    
+    char command[MAXNAMLEN];
+    char line[MAXNAMLEN];
+    char filename[MAXNAMLEN];
+    
+    sprintf(command,"sort %s > %s",fn, TMPFILE2);
+    system(command);
+    unlink(fn);
+
+    sprintf(filename,"%s/win32/DLLs/ajax/graphics/%s",basedir,GRAPHICSDEF);
+    if(!(outf=fopen(filename,"w")))
+    {
+	fprintf(stderr,"Cannot open GRAPHICS definitions file %s\n",filename);
+	exit(-1);
+    }
+
+    fprintf(outf,"LIBRARY \t""ajaxg.dll""\n\n");
+    fprintf(outf,"EXPORTS\n");
+
+    if(!(inf=fopen(TMPFILE2,"r")))
+    {
+	fprintf(stderr,"Cannot open sorted function file %s\n",TMPFILE2);
+	exit(-1);
+    }
+    
+    while(fgets(line,MAXNAMLEN,inf))
+	fprintf(outf,"\t%s",line);
+	
+    fclose(inf);
+    fclose(outf);
+
+    unlink(TMPFILE2);
+
+    return;
+}
+
+
+
+
+static void write_ensemblexports(char *fn,char *basedir)
+{
+    FILE *outf;
+    FILE *inf;
+    
+    char command[MAXNAMLEN];
+    char line[MAXNAMLEN];
+    char filename[MAXNAMLEN];
+    
+    sprintf(command,"sort %s > %s",fn, TMPFILE2);
+    system(command);
+    unlink(fn);
+
+    sprintf(filename,"%s/win32/DLLs/ajax/ensembl/%s",basedir,ENSEMBLDEF);
+    if(!(outf=fopen(filename,"w")))
+    {
+	fprintf(stderr,"Cannot open ENSEMBL definitions file %s\n",filename);
+	exit(-1);
+    }
+
+    fprintf(outf,"LIBRARY \t""ensembl.dll""\n\n");
+    fprintf(outf,"EXPORTS\n");
+
+    if(!(inf=fopen(TMPFILE2,"r")))
+    {
+	fprintf(stderr,"Cannot open sorted function file %s\n",TMPFILE2);
+	exit(-1);
+    }
+    
+    while(fgets(line,MAXNAMLEN,inf))
+	fprintf(outf,"\t%s",line);
+	
+    fclose(inf);
+    fclose(outf);
+
+    unlink(TMPFILE2);
+
+    return;
+}
+
+
+
+
+static void write_ajaxdbexports(char *fn,char *basedir)
+{
+    FILE *outf;
+    FILE *inf;
+    
+    char command[MAXNAMLEN];
+    char line[MAXNAMLEN];
+    char filename[MAXNAMLEN];
+    
+    sprintf(command,"sort %s > %s",fn, TMPFILE2);
+    system(command);
+    unlink(fn);
+
+    sprintf(filename,"%s/win32/DLLs/ajax/ajaxdb/%s",basedir,AJAXDBDEF);
+    if(!(outf=fopen(filename,"w")))
+    {
+	fprintf(stderr,"Cannot open AJAXDB definitions file %s\n",filename);
+	exit(-1);
+    }
+
+    fprintf(outf,"LIBRARY \t""ajaxdb.dll""\n\n");
+    fprintf(outf,"EXPORTS\n");
+
+    if(!(inf=fopen(TMPFILE2,"r")))
+    {
+	fprintf(stderr,"Cannot open sorted function file %s\n",TMPFILE2);
+	exit(-1);
+    }
+    
+    while(fgets(line,MAXNAMLEN,inf))
+	fprintf(outf,"\t%s",line);
+	
+    fclose(inf);
+    fclose(outf);
+
+    unlink(TMPFILE2);
+
+    return;
+}
+
+
+
+
+static void write_acdexports(char *fn,char *basedir)
+{
+    FILE *outf;
+    FILE *inf;
+    
+    char command[MAXNAMLEN];
+    char line[MAXNAMLEN];
+    char filename[MAXNAMLEN];
+    
+    sprintf(command,"sort %s > %s",fn, TMPFILE2);
+    system(command);
+    unlink(fn);
+
+    sprintf(filename,"%s/win32/DLLs/ajax/acd/%s",basedir,ACDDEF);
+    if(!(outf=fopen(filename,"w")))
+    {
+	fprintf(stderr,"Cannot open ACD definitions file %s\n",filename);
+	exit(-1);
+    }
+
+    fprintf(outf,"LIBRARY \t""acd.dll""\n\n");
+    fprintf(outf,"EXPORTS\n");
 
     if(!(inf=fopen(TMPFILE2,"r")))
     {
