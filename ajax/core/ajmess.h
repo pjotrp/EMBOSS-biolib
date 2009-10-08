@@ -15,13 +15,32 @@ extern "C"
 #include <stdarg.h>
 #include <setjmp.h>
 
+#ifndef WIN32
 extern AjBool acdDebugSet;
 extern AjBool acdDebugBuffer;
 extern AjBool acdDebug;
 extern AjPStr acdProgram;
 extern AjPStr acdArgSave;
 extern AjPStr acdInputSave;
+#else
+#ifdef AJAXDLL_EXPORTS
+__declspec(dllexport) AjBool acdDebugSet;
+__declspec(dllexport) AjBool acdDebugBuffer;
+__declspec(dllexport) AjBool acdDebug;
+__declspec(dllexport) AjPStr acdProgram;
+__declspec(dllexport) AjPStr acdArgSave;
+__declspec(dllexport) AjPStr acdInputSave;
+#else
+__declspec(dllimport) AjBool acdDebugSet;
+__declspec(dllimport) AjBool acdDebugBuffer;
+__declspec(dllimport) AjBool acdDebug;
+__declspec(dllimport) AjPStr acdProgram;
+__declspec(dllimport) AjPStr acdArgSave;
+__declspec(dllimport) AjPStr acdInputSave;
+#endif
+#endif
 
+    
 /* @data AjPError *************************************************************
 **
 ** Ajax error message levels object
@@ -45,7 +64,15 @@ typedef struct AjSError
 
 #define AjPError AjOError*
 
+#ifndef WIN32
 extern AjOError AjErrorLevel;
+#else
+#ifdef AJAXDLL_EXPORTS
+ __declspec(dllexport) AjOError AjErrorLevel;
+#else
+ __declspec(dllimport) AjOError AjErrorLevel;
+#endif
+#endif
 
 #define SUBDIR_DELIMITER_STR "\\"
 
