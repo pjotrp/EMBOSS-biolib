@@ -32,6 +32,10 @@
 ** Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
+#ifdef WIN32
+#include "win32.h"
+#endif
+
 #include <stddef.h>
 #include <stdarg.h>
 #include <float.h>
