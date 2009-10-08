@@ -30236,7 +30236,8 @@ __deprecated void ajGraphicsInitPV(const char *pgm,
 				   const char *package,
 				   const char *packversion)
 {
-    return ajAcdGraphicsInitPV(pgm, argc, argv, package, packversion);
+    ajAcdGraphicsInitPV(pgm, argc, argv, package, packversion);
+    return;
 }
 
 /* @obsolete ajGraphInitPV
