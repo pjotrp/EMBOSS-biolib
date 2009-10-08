@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -3170,7 +3170,8 @@ AjBool ensDensityFeatureadaptorFetchAllBySlice(
      ** divided by the number of requested blocks.
      */
     
-    bsize = (ceil( ensSliceGetLength(slice) / (double) blocks));
+    bsize = (ajint)
+        (ceil( (double) ensSliceGetLength(slice) / (double) blocks));
     
     dtrs = ajListNew();
     
