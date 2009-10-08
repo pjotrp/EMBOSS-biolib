@@ -2162,9 +2162,9 @@ static ajuint seqReadFmt(AjPSeq thys, AjPSeqin seqin,
 		    ajDebug("seqReadFmt features input failed UFO: '%S'\n",
 			    seqin->Ufo);
 		    /*
-		     **  GWW 21 Aug 2000 - don't warn about missing feature
-		     **  tables
-		     **/
+		    **  GWW 21 Aug 2000 - don't warn about missing feature
+		    **  tables
+		    **/
 		}
 		else
 		{
@@ -2257,12 +2257,12 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
     if(seqin->Single && seqin->Count)
     {
 	/*
-	 ** we read one sequence at a time.
-	 ** the first sequence was read by ACD
-	 ** for the following ones we need to reset the AjPSeqin
-	 **
-	 ** Single is set by the access method
-	 */
+	** One sequence at a time is read.
+	** The first sequence was read by ACD
+	** for the following ones we need to reset the AjPSeqin
+	**
+	** Single is set by the access method
+	*/
 
 	ajDebug("seqRead: single access - count %d - call access"
 		" routine again\n",
@@ -2778,9 +2778,9 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
     ajuint seqlen = 0;
 
 /*
-//    char minqual;
-//    char maxqual;
-//    char comqual;
+**    char minqual;
+**    char maxqual;
+**    char comqual;
 */
 
     const char *cp;
@@ -2927,9 +2927,9 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
     }
 
 /*
-//    minqual = ajStrGetAsciiLow(seqQualStr);
-//    maxqual = ajStrGetAsciiHigh(seqQualStr);
-//    comqual = ajStrGetAsciiCommon(seqQualStr);
+**    minqual = ajStrGetAsciiLow(seqQualStr);
+**    maxqual = ajStrGetAsciiHigh(seqQualStr);
+**    comqual = ajStrGetAsciiCommon(seqQualStr);
 */
 
     if(MAJSTRGETLEN(seqQualStr) != seqlen)
@@ -3014,12 +3014,12 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
 
 
 /*
-//    ajDebug("quality characters %d..%d (%d) '%c' '%c' (%c) "
-//            "scores %d..%d (%d)\n",
-//            (int) minqual, (int) maxqual, (int) comqual,
-//            minqual, maxqual, comqual,
-//            (amin + minqual - qmin), (amin + maxqual - qmin),
-//            (amin + comqual - qmin));
+**    ajDebug("quality characters %d..%d (%d) '%c' '%c' (%c) "
+**            "scores %d..%d (%d)\n",
+**            (int) minqual, (int) maxqual, (int) comqual,
+**            minqual, maxqual, comqual,
+**            (amin + minqual - qmin), (amin + maxqual - qmin),
+**            (amin + comqual - qmin));
 */
 
     ajStrAssignClear(&seqQualStr);
@@ -3236,9 +3236,9 @@ static AjBool seqReadFastqIllumina(AjPSeq thys, AjPSeqin seqin)
     ajuint seqlen = 0;
     /*AjPStr qualstr = NULL;*/
 /*
-//    char minqual;
-//    char maxqual;
-//    char comqual;
+**    char minqual;
+**    char maxqual;
+**    char comqual;
 */
 
     const char *cp;
@@ -3348,9 +3348,9 @@ static AjBool seqReadFastqIllumina(AjPSeq thys, AjPSeqin seqin)
     }
 
 /*
-//    minqual = ajStrGetAsciiLow(seqQualStr);
-//    maxqual = ajStrGetAsciiHigh(seqQualStr);
-//    comqual = ajStrGetAsciiCommon(seqQualStr);
+**    minqual = ajStrGetAsciiLow(seqQualStr);
+**    maxqual = ajStrGetAsciiHigh(seqQualStr);
+**    comqual = ajStrGetAsciiCommon(seqQualStr);
 */
 
     if(ajStrGetLen(seqQualStr) != seqlen)
@@ -3412,12 +3412,12 @@ static AjBool seqReadFastqIllumina(AjPSeq thys, AjPSeqin seqin)
     }
 
 /*
-//    ajDebug("quality characters %d..%d (%d) '%c' '%c' (%c) "
-//            "scores %d..%d (%d)\n",
-//            (int) minqual, (int) maxqual, (int) comqual,
-//            minqual, maxqual, comqual,
-//            (amin + minqual - qmin), (amin + maxqual - qmin),
-//            (amin + comqual - qmin));
+**    ajDebug("quality characters %d..%d (%d) '%c' '%c' (%c) "
+**            "scores %d..%d (%d)\n",
+**            (int) minqual, (int) maxqual, (int) comqual,
+**            minqual, maxqual, comqual,
+**            (amin + minqual - qmin), (amin + maxqual - qmin),
+**            (amin + comqual - qmin));
 */
 
     return ajTrue;
@@ -3450,9 +3450,9 @@ static AjBool seqReadFastqSolexa(AjPSeq thys, AjPSeqin seqin)
     /*AjPStr qualstr = NULL;*/
 
 /*
-//    char minqual;
-//    char maxqual;
-//    char comqual;
+**    char minqual;
+**    char maxqual;
+**    char comqual;
 */
 
     const char *cp;
@@ -3467,9 +3467,9 @@ static AjBool seqReadFastqSolexa(AjPSeq thys, AjPSeqin seqin)
     ajint qmax = 126;
     ajuint i;
 /*
-//    double sval;
-//    double pval;
-//    double qval;
+**    double sval;
+**    double pval;
+**    double qval;
 */
 
     /*ajDebug("seqReadFastqSolexa\n");*/
@@ -3567,9 +3567,9 @@ static AjBool seqReadFastqSolexa(AjPSeq thys, AjPSeqin seqin)
     }
 
 /*
-//    minqual = ajStrGetAsciiLow(seqQualStr);
-//    maxqual = ajStrGetAsciiHigh(seqQualStr);
-//    comqual = ajStrGetAsciiCommon(seqQualStr);
+**    minqual = ajStrGetAsciiLow(seqQualStr);
+**    maxqual = ajStrGetAsciiHigh(seqQualStr);
+**    comqual = ajStrGetAsciiCommon(seqQualStr);
 */
 
     if(ajStrGetLen(seqQualStr) != seqlen)
@@ -3632,15 +3632,15 @@ static AjBool seqReadFastqSolexa(AjPSeq thys, AjPSeqin seqin)
                    (char) iqual);
 	    iqual = qmax;
         }
-        thys->Accuracy[i++] = seqQualSolexa[iqual];
+        thys->Accuracy[i++] = (float) seqQualSolexa[iqual];
     }
 /*
-//    ajDebug("quality characters %d..%d (%d) '%c' '%c' (%c) "
-//            "scores %d..%d (%d)\n",
-//            (int) minqual, (int) maxqual, (int) comqual,
-//            minqual, maxqual, comqual,
-//            (amin + minqual - qmin), (amin + maxqual - qmin),
-//            (amin + comqual - qmin));
+**    ajDebug("quality characters %d..%d (%d) '%c' '%c' (%c) "
+**            "scores %d..%d (%d)\n",
+**            (int) minqual, (int) maxqual, (int) comqual,
+**            minqual, maxqual, comqual,
+**            (amin + minqual - qmin), (amin + maxqual - qmin),
+**            (amin + comqual - qmin));
 */
 
     return ajTrue;
