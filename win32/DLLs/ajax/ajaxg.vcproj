@@ -217,6 +217,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\ajax\graphics\ajgraphstruct.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\graphics\ajgraphxml.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\ajax\graphics\ajhist.h"
 				>
 			</File>

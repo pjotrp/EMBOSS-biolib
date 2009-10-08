@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\mysql\include\mysql;..\..\..\mysql\include;..\..\..\ajax\pcre"
-				PreprocessorDefinitions="VERSION=\&quot;6.0.1\&quot;;WIN32;_POSIX_;_DEBUG;_WINDOWS;_USRDLL;AJAXDLL_EXPORTS;PLD_png;HAVE_MEMMOVE;HAVE_MYSQL;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="WIN32;_POSIX_;_DEBUG;_WINDOWS;_USRDLL;AJAXDLL_EXPORTS;PLD_png;HAVE_MEMMOVE;HAVE_MYSQL;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
@@ -127,7 +127,7 @@
 				EnableIntrinsicFunctions="false"
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="..\..\..\mysql\include\mysql;..\..\..\mysql\include;..\..\..\ajax\pcre"
-				PreprocessorDefinitions="VERSION=\&quot;6.0.1\&quot;;WIN32;_POSIX_;NDEBUG;_WINDOWS;_USRDLL;AJAXDLL_EXPORTS;PLD_png;HAVE_MEMMOVE;HAVE_MYSQL;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="WIN32;_POSIX_;NDEBUG;_WINDOWS;_USRDLL;AJAXDLL_EXPORTS;PLD_png;HAVE_MEMMOVE;HAVE_MYSQL;_CRT_SECURE_NO_DEPRECATE"
 				ExceptionHandling="0"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="false"
@@ -193,10 +193,6 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-			<File
-				RelativePath="..\..\..\ajax\core\ajacd.c"
-				>
-			</File>
 			<File
 				RelativePath="..\..\..\ajax\core\ajalign.c"
 				>
@@ -334,10 +330,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\ajax\core\ajseqdb.c"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\ajax\core\ajseqread.c"
 				>
 			</File>
@@ -399,10 +391,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath="..\..\..\ajax\core\ajacd.h"
-				>
-			</File>
 			<File
 				RelativePath="..\..\..\ajax\core\ajalign.h"
 				>
@@ -484,14 +472,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\ajax\core\ajgraphstruct.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\ajax\core\ajgraphxml.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\ajax\core\ajindex.h"
 				>
 			</File>
@@ -565,10 +545,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\ajax\core\ajseqdata.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\ajax\core\ajseqdb.h"
 				>
 			</File>
 			<File

@@ -41,8 +41,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\ajax\core;..\..\..\ajax\pcre"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;ACD_EXPORTS;_POSIX_;_CRT_SECURE_NO_DEPRECATE"
+				AdditionalIncludeDirectories="..\..\..\ajax\core;..\..\..\ajax\pcre;..\..\..\ajax\graphics;..\..\..\ajax\ajaxdb;&quot;..\..\..\plplot-inc\include\plplot&quot;"
+				PreprocessorDefinitions="VERSION=\&quot;6.1.0.2\&quot;;WIN32;_DEBUG;_WINDOWS;_USRDLL;ACD_EXPORTS;_POSIX_;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
@@ -62,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ajaxdb.lib ajax.lib WS2_32.lib"
+				AdditionalDependencies="ajaxdb.lib ajaxg.lib ajax.lib WS2_32.lib"
 				OutputFile="$(OutDir)\acd.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\Debug"
@@ -126,8 +126,8 @@
 				Optimization="4"
 				EnableIntrinsicFunctions="false"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="..\..\..\ajax\core;..\..\..\ajax\pcre"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;ACD_EXPORTS;_POSIX_;_CRT_SECURE_NO_DEPRECATE"
+				AdditionalIncludeDirectories="..\..\..\ajax\core;..\..\..\ajax\pcre;..\..\..\ajax\graphics;..\..\..\ajax\ajaxdb;&quot;..\..\..\plplot-inc\include\plplot&quot;"
+				PreprocessorDefinitions="VERSION=\&quot;6.1.0.2\&quot;;WIN32;NDEBUG;_WINDOWS;_USRDLL;ACD_EXPORTS;_POSIX_;_CRT_SECURE_NO_DEPRECATE"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="2"
@@ -147,7 +147,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ajaxdb.lib ajax.lib WS2_32.lib"
+				AdditionalDependencies="ajaxdb.lib ajaxg.lib ajax.lib WS2_32.lib"
 				OutputFile="$(OutDir)\acd.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\Release"
@@ -195,7 +195,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\..\ajax\acd\ajdummyacd.c"
+				RelativePath="..\..\..\ajax\acd\ajacd.c"
 				>
 			</File>
 		</Filter>
@@ -205,7 +205,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\..\ajax\acd\ajdummyacd.h"
+				RelativePath="..\..\..\ajax\acd\ajacd.h"
 				>
 			</File>
 		</Filter>

@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\ajax\core;..\..\ajax\pcre;../../ajax/graphics;&quot;../../plplot-inc/include&quot;;&quot;../../plplot-inc/include/plplot&quot;"
+				AdditionalIncludeDirectories="..\..\ajax\core;..\..\ajax\pcre;..\..\ajax\graphics;..\..\ajax\ajaxdb;..\..\ajax\acd;&quot;..\..\plplot-inc\include\plplot&quot;"
 				PreprocessorDefinitions="HAVE_MEMMOVE;WIN32;_DEBUG;_WINDOWS;_USRDLL;NUCLEUS_EXPORTS;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
@@ -63,7 +63,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="plplot.lib ajax.lib WS2_32.lib"
+				AdditionalDependencies="plplot.lib ajaxdb.lib ajax.lib WS2_32.lib"
 				OutputFile="$(OutDir)/nucleus.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\Debug;&quot;../../plplot-inc/lib/Debug&quot;"
@@ -124,7 +124,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\ajax\core;..\..\ajax\pcre;../../ajax/graphics;&quot;../../plplot-inc/include&quot;;&quot;../../plplot-inc/include/plplot&quot;"
+				AdditionalIncludeDirectories="..\..\ajax\core;..\..\ajax\pcre;..\..\ajax\graphics;..\..\ajax\ajaxdb;..\..\ajax\acd;&quot;..\..\plplot-inc\include\plplot&quot;"
 				PreprocessorDefinitions="HAVE_MEMMOVE;WIN32;NDEBUG;_WINDOWS;_USRDLL;NUCLEUS_EXPORTS;_CRT_SECURE_NO_DEPRECATE"
 				ExceptionHandling="0"
 				RuntimeLibrary="2"
@@ -144,7 +144,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="plplot.lib ajax.lib WS2_32.lib"
+				AdditionalDependencies="plplot.lib ajaxdb.lib ajax.lib WS2_32.lib"
 				OutputFile="$(OutDir)/nucleus.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\Release;&quot;../../plplot-inc/lib/Release&quot;"
