@@ -30154,6 +30154,29 @@ void ajAcdUnused(void)
 }
 
 
+
+
+
+
+/* @section deprecated ********************************************************
+**
+** @fdata [none]
+** @fcategory misc
+**
+** @nam3rule Graphics Graphics application
+** @nam4rule Init Initialise internals
+** @suffix P Package name given
+** @suffix V Package version given
+**
+** @argrule Graphics pgm [const char*] Program name
+** @argrule Graphics argc [ajint] Number of arguments
+** @argrule Graphics argv [char* const[]] Command line arguments
+** @argrule P package [const char*] Package name
+** @argrule V packversion [const char*] Package version
+**
+** @valrule * [void]
+******************************************************************************/
+
 /* @func ajAcdGraphicsInit ****************************************************
 **
 ** Initialises the graphics then everything else. Reads an ACD

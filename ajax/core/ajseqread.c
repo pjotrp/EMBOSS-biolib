@@ -17580,11 +17580,15 @@ AjBool ajSeqAccessOffset(AjPSeqin seqin)
 }
 
 
+
+
+
 /* @func ajSeqtableGetDb ******************************************************
 **
 ** returns the table in which sequence database access details are registered
 **
-** @return [AjPTable]
+** @return [AjPTable] Access functions hash table
+** @@
 ******************************************************************************/
 
 AjPTable ajSeqtableGetDb(void)
@@ -17593,6 +17597,10 @@ AjPTable ajSeqtableGetDb(void)
         seqDbMethods = ajCallTableNew();
     return seqDbMethods;
 }
+
+
+
+
 
 /* @func ajSeqMethodTest ******************************************************
 **

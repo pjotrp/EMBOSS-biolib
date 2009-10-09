@@ -531,7 +531,6 @@ AjPSqlconnection ajSqlconnectionNewRef(AjPSqlconnection sqlc)
 
 
 
-
 /* @section destructors *******************************************************
 **
 ** Functions for destruction of AJAX SQL Connection objects.
@@ -2272,7 +2271,7 @@ AjBool ajSqlcolumnGetValue( AjPSqlrow sqlr,
 ** @argrule ToUlong Pvalue [ajulong*] AJAX Unsigned Long Integer address
 ** @argrule ToFloat Pvalue [float*] C-type float address
 ** @argrule ToDouble Pvalue [double*] C-type double address
-** @argrule ToBool Pvalue [AjPBool*] AJAX Bool address
+** @argrule ToBool Pvalue [AjBool*] AJAX Bool address
 ** @argrule ToTime Pvalue [AjPTime*] AJAX Time address
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -2723,299 +2722,21 @@ AjBool ajSqlcolumnNumberGetValue(const AjPSqlrow sqlr,
 **
 ** @argrule * sqlr [const AjPSqlrow] SQL Row
 ** @argrule * column [ajuint] Column number
-** @argrule ToStr [AjPStr*] AJAX String address
-** @argrule ToInt [ajint*] AJAX Signed Integer address
-** @argrule ToUint [ajuint*] AJAX Unsigned Integer address
-** @argrule ToLong [ajlong*] AJAX Signed Long Integer address
-** @argrule ToUlong [ajulong*] AJAX Unsigned Long Integer address
-** @argrule ToFloat [float*] C-type float address
-** @argrule ToDouble [double*] C-type double address
-** @argrule ToBool [AjPBool*] AJAX Bool address
-** @argrule ToTime [AjPTime*] AJAX Time address
+** @argrule ToStr     Pvalue [AjPStr*] AJAX String address
+** @argrule ToInt     Pvalue [ajint*] AJAX Signed Integer address
+** @argrule ToUint    Pvalue [ajuint*] AJAX Unsigned Integer address
+** @argrule ToLong    Pvalue [ajlong*] AJAX Signed Long Integer address
+** @argrule ToUlong   Pvalue [ajulong*] AJAX Unsigned Long Integer address
+** @argrule ToFloat   Pvalue [float*] C-type float address
+** @argrule ToDouble  Pvalue [double*] C-type double address
+** @argrule ToBool    Pvalue [AjBool*] AJAX Bool address
+** @argrule ToTime    Pvalue [AjPTime*] AJAX Time address
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
 ** @fcategory use
 ******************************************************************************/
 
-
-
-
-/* @func ajSqlcolumnNumberToStr ***********************************************
-**
-** Converts the value in a particular column of an AJAX SQL Row into an
-** AJAX String value.
-**
-** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
-** @param [r] column [ajuint] Column number
-** @param [w] Pvalue [AjPStr*] AJAX String address
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ajSqlcolumnNumberToStr(const AjPSqlrow sqlr, ajuint column,
-                              AjPStr *Pvalue)
-{
-    void *value = NULL;
-    
-    ajulong length = 0;
-    
-    if(!sqlr)
-        return ajFalse;
-    
-    if(!Pvalue)
-	return ajFalse;
-    
-    if(column >= sqlr->Columns)
-        return ajFalse;
-    
-    ajStrAssignClear(Pvalue);
-    
-    if(ajSqlcolumnNumberGetValue(sqlr, column, &value, &length))
-    {
-	
-	if(value == NULL)
-	    return ajFalse;
-	
-	if(length > UINT_MAX)
-	    return ajFalse;
-	
-	ajStrAssignLenC(Pvalue, (char *) value, (ajuint) length);
-	
-	return ajTrue;
-    }
-    
-    return ajFalse;
-}
-
-
-
-
-/* @func ajSqlcolumnNumberToInt ***********************************************
-**
-** Converts the value in a particular column of an AJAX SQL Row into an
-** AJAX Integer value.
-**
-** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
-** @param [r] column [ajuint] Column number
-** @param [w] Pvalue [ajint*] AJAX Integer address
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ajSqlcolumnNumberToInt(const AjPSqlrow sqlr, ajuint column,
-                              ajint *Pvalue)
-{
-    AjBool bool = ajFalse;
-    
-    AjPStr str = NULL;
-    
-    if(!sqlr)
-        return ajFalse;
-    
-    if(!Pvalue)
-	return ajFalse;
-    
-    if(column >= sqlr->Columns)
-        return ajFalse;
-    
-    str = ajStrNew();
-    
-    bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
-    
-    if(bool)
-	ajStrToInt(str, Pvalue);
-    
-    ajStrDel(&str);
-    
-    return bool;
-}
-
-
-
-
-/* @func ajSqlcolumnNumberToUint **********************************************
-**
-** Converts the value in a particular column of an AJAX SQL Row into an
-** AJAX Unsigned Integer value.
-**
-** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
-** @param [r] column [const ajuint] Column number
-** @param [w] Pvalue [ajuint*] AJAX Unsigned Integer address
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ajSqlcolumnNumberToUint(const AjPSqlrow sqlr, ajuint column,
-                               ajuint *Pvalue)
-{
-    AjBool bool = ajFalse;
-    
-    AjPStr str = NULL;
-    
-    if(!sqlr)
-        return ajFalse;
-    
-    if(!Pvalue)
-	return ajFalse;
-    
-    if(column >= sqlr->Columns)
-        return ajFalse;
-    
-    str = ajStrNew();
-    
-    bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
-    
-    if(bool)
-	ajStrToUint(str, Pvalue);
-    
-    ajStrDel(&str);
-    
-    return bool;
-}
-
-
-
-
-/* @func ajSqlcolumnNumberToLong **********************************************
-**
-** Converts the value in a particular column of an AJAX SQL Row into an
-** AJAX Long Integer value.
-**
-** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
-** @param [r] column [ajuint] Column number
-** @param [w] Pvalue [ajlong*] AJAX Long Integer address
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ajSqlcolumnNumberToLong(const AjPSqlrow sqlr, ajuint column,
-                               ajlong *Pvalue)
-{
-    AjBool bool = ajFalse;
-    
-    AjPStr str = NULL;
-    
-    if(!sqlr)
-        return ajFalse;
-    
-    if(!Pvalue)
-	return ajFalse;
-    
-    if(column >= sqlr->Columns)
-        return ajFalse;
-    
-    str = ajStrNew();
-    
-    bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
-    
-    if(bool)
-	ajStrToLong(str, Pvalue);
-    
-    ajStrDel(&str);
-    
-    return bool;
-}
-
-
-
-
-/*
-** TODO: ajSqlcolumnNumberToUlong is missing but there is also no ajStrToUlong
-** function in the AJAX library.
-*/
-
-
-
-
-/* @func ajSqlcolumnNumberToFloat *********************************************
-**
-** Converts the value in a particular column of an AJAX SQL Row into a
-** C-type float value.
-**
-** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
-** @param [r] column [ajuint] Column number
-** @param [w] Pvalue [float*] C-type float address
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ajSqlcolumnNumberToFloat(const AjPSqlrow sqlr, ajuint column,
-                                float *Pvalue)
-{
-    AjBool bool = ajFalse;
-    
-    AjPStr str = NULL;
-    
-    if(!sqlr)
-        return ajFalse;
-    
-    if(!Pvalue)
-	return ajFalse;
-    
-    if(column >= sqlr->Columns)
-        return ajFalse;
-    
-    str = ajStrNew();
-    
-    bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
-    
-    if(bool)
-	ajStrToFloat(str, Pvalue);
-    
-    ajStrDel(&str);
-    
-    return bool;
-}
-
-
-
-
-/* @func ajSqlcolumnNumberToDouble ********************************************
-**
-** Converts the value in a particular column of an AJAX SQL Row into a
-** C-type double value.
-**
-** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
-** @param [r] column [ajuint] Column number
-** @param [w] Pvalue [double*] C-type double address
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ajSqlcolumnNumberToDouble(const AjPSqlrow sqlr, ajuint column,
-                                 double *Pvalue)
-{
-    AjBool bool = ajFalse;
-    
-    AjPStr str = NULL;
-    
-    if(!sqlr)
-        return ajFalse;
-    
-    if(!Pvalue)
-	return ajFalse;
-    
-    if(column >= sqlr->Columns)
-        return ajFalse;
-    
-    str = ajStrNew();
-    
-    bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
-    
-    if(bool)
-	ajStrToDouble(str, Pvalue);
-    
-    ajStrDel(&str);
-    
-    return bool;
-}
 
 
 
@@ -3071,6 +2792,232 @@ AjBool ajSqlcolumnNumberToBool(const AjPSqlrow sqlr, ajuint column,
 
 
 
+/* @func ajSqlcolumnNumberToDouble ********************************************
+**
+** Converts the value in a particular column of an AJAX SQL Row into a
+** C-type double value.
+**
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
+** @param [r] column [ajuint] Column number
+** @param [w] Pvalue [double*] C-type double address
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ajSqlcolumnNumberToDouble(const AjPSqlrow sqlr, ajuint column,
+                                 double *Pvalue)
+{
+    AjBool bool = ajFalse;
+    
+    AjPStr str = NULL;
+    
+    if(!sqlr)
+        return ajFalse;
+    
+    if(!Pvalue)
+	return ajFalse;
+    
+    if(column >= sqlr->Columns)
+        return ajFalse;
+    
+    str = ajStrNew();
+    
+    bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
+    
+    if(bool)
+	ajStrToDouble(str, Pvalue);
+    
+    ajStrDel(&str);
+    
+    return bool;
+}
+
+
+
+/* @func ajSqlcolumnNumberToFloat *********************************************
+**
+** Converts the value in a particular column of an AJAX SQL Row into a
+** C-type float value.
+**
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
+** @param [r] column [ajuint] Column number
+** @param [w] Pvalue [float*] C-type float address
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ajSqlcolumnNumberToFloat(const AjPSqlrow sqlr, ajuint column,
+                                float *Pvalue)
+{
+    AjBool bool = ajFalse;
+    
+    AjPStr str = NULL;
+    
+    if(!sqlr)
+        return ajFalse;
+    
+    if(!Pvalue)
+	return ajFalse;
+    
+    if(column >= sqlr->Columns)
+        return ajFalse;
+    
+    str = ajStrNew();
+    
+    bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
+    
+    if(bool)
+	ajStrToFloat(str, Pvalue);
+    
+    ajStrDel(&str);
+    
+    return bool;
+}
+
+
+
+
+/* @func ajSqlcolumnNumberToInt ***********************************************
+**
+** Converts the value in a particular column of an AJAX SQL Row into an
+** AJAX Integer value.
+**
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
+** @param [r] column [ajuint] Column number
+** @param [w] Pvalue [ajint*] AJAX Integer address
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ajSqlcolumnNumberToInt(const AjPSqlrow sqlr, ajuint column,
+                              ajint *Pvalue)
+{
+    AjBool bool = ajFalse;
+    
+    AjPStr str = NULL;
+    
+    if(!sqlr)
+        return ajFalse;
+    
+    if(!Pvalue)
+	return ajFalse;
+    
+    if(column >= sqlr->Columns)
+        return ajFalse;
+    
+    str = ajStrNew();
+    
+    bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
+    
+    if(bool)
+	ajStrToInt(str, Pvalue);
+    
+    ajStrDel(&str);
+    
+    return bool;
+}
+
+
+
+
+/* @func ajSqlcolumnNumberToLong **********************************************
+**
+** Converts the value in a particular column of an AJAX SQL Row into an
+** AJAX Long Integer value.
+**
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
+** @param [r] column [ajuint] Column number
+** @param [w] Pvalue [ajlong*] AJAX Long Integer address
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ajSqlcolumnNumberToLong(const AjPSqlrow sqlr, ajuint column,
+                               ajlong *Pvalue)
+{
+    AjBool bool = ajFalse;
+    
+    AjPStr str = NULL;
+    
+    if(!sqlr)
+        return ajFalse;
+    
+    if(!Pvalue)
+	return ajFalse;
+    
+    if(column >= sqlr->Columns)
+        return ajFalse;
+    
+    str = ajStrNew();
+    
+    bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
+    
+    if(bool)
+	ajStrToLong(str, Pvalue);
+    
+    ajStrDel(&str);
+    
+    return bool;
+}
+
+
+
+
+/* @func ajSqlcolumnNumberToStr ***********************************************
+**
+** Converts the value in a particular column of an AJAX SQL Row into an
+** AJAX String value.
+**
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
+** @param [r] column [ajuint] Column number
+** @param [w] Pvalue [AjPStr*] AJAX String address
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ajSqlcolumnNumberToStr(const AjPSqlrow sqlr, ajuint column,
+                              AjPStr *Pvalue)
+{
+    void *value = NULL;
+    
+    ajulong length = 0;
+    
+    if(!sqlr)
+        return ajFalse;
+    
+    if(!Pvalue)
+	return ajFalse;
+    
+    if(column >= sqlr->Columns)
+        return ajFalse;
+    
+    ajStrAssignClear(Pvalue);
+    
+    if(ajSqlcolumnNumberGetValue(sqlr, column, &value, &length))
+    {
+	
+	if(value == NULL)
+	    return ajFalse;
+	
+	if(length > UINT_MAX)
+	    return ajFalse;
+	
+	ajStrAssignLenC(Pvalue, (char *) value, (ajuint) length);
+	
+	return ajTrue;
+    }
+    
+    return ajFalse;
+}
+
+
+
+
 /* @func ajSqlcolumnNumberToTime **********************************************
 **
 ** Converts the value in a particular column of an AJAX SQL Row into an
@@ -3118,17 +3065,71 @@ AjBool ajSqlcolumnNumberToTime(const AjPSqlrow sqlr, ajuint column,
 
 
 
+/* @func ajSqlcolumnNumberToUint **********************************************
+**
+** Converts the value in a particular column of an AJAX SQL Row into an
+** AJAX Unsigned Integer value.
+**
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
+** @param [r] column [ajuint] Column number
+** @param [w] Pvalue [ajuint*] AJAX Unsigned Integer address
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ajSqlcolumnNumberToUint(const AjPSqlrow sqlr, ajuint column,
+                               ajuint *Pvalue)
+{
+    AjBool bool = ajFalse;
+    
+    AjPStr str = NULL;
+    
+    if(!sqlr)
+        return ajFalse;
+    
+    if(!Pvalue)
+	return ajFalse;
+    
+    if(column >= sqlr->Columns)
+        return ajFalse;
+    
+    str = ajStrNew();
+    
+    bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
+    
+    if(bool)
+	ajStrToUint(str, Pvalue);
+    
+    ajStrDel(&str);
+    
+    return bool;
+}
+
+
+
+
+/*
+** TODO: ajSqlcolumnNumberToUlong is missing but there is also no ajStrToUlong
+** function in the AJAX library.
+*/
+
+
+
+
 /* @section tests *************************************************************
 **
 ** @fdata [AjPSqlrow]
 **
-** @nam4rule ColumnNumberIsDefined Test if the value in a particular column of
+** @nam3rule Number Column number
+** @nam4rule Is Property of culumn
+** @nam5rule IsDefined Test if the value in a particular column of
 **                                 an AJAX SQL Row is defined.
 **
-** @argrule ColumnNumberIsDefined sqlr [const AjPSqlrow] AJAX SQL Row
-** @argrule ColumnNumberIsDefined column [ajuint] Column number
+** @argrule IsDefined sqlr [const AjPSqlrow] AJAX SQL Row
+** @argrule IsDefined column [ajuint] Column number
 **
-** @valrule ColumnNumberIsDefined [AjBool] Result of test
+** @valrule IsDefined [AjBool] Result of test
 **
 ** @fcategory use
 ******************************************************************************/
@@ -3175,6 +3176,28 @@ AjBool ajSqlcolumnNumberIsDefined(const AjPSqlrow sqlr, ajuint column)
 */
 
 #define RESERVED_SIZE 32
+
+/* @datasection [AjPVoid] Void pointer *****************************************
+**
+** Functions for void pointer arrays
+**
+** @nam2rule Void Void pointer array function
+**
+******************************************************************************/
+
+/* @section constructors *******************************************************
+**
+** @fdata [AjPVoid]
+** @fcategory new
+**
+** @nam3rule New Constructor
+** @suffix L length specified
+**
+** @argrule L size [ajuint] Size of array
+**
+** @valrule * [AjPVoid] void pointer array
+**
+******************************************************************************/
 
 /* @func ajVoidNew ************************************************************
 **
@@ -3242,6 +3265,24 @@ AjPVoid ajVoidNewL(ajuint size)
 
 
 
+/* @section destructors *******************************************************
+**
+** Functions for destruction of void pointer arrays.
+**
+** @fdata [AjPVoid]
+**
+** @nam3rule Del Destroy (free) an existing AjPVoid
+**
+** @argrule Del thys [AjPVoid*] Void pointer array
+**
+** @valrule * [void]
+**
+** @fcategory delete
+******************************************************************************/
+
+
+
+
 /* @func ajVoidDel *********************************************************
 **
 ** Default destructor for AJAX Pointer arrays.
@@ -3279,6 +3320,22 @@ void ajVoidDel(AjPVoid *thys)
 
 
 
+/* @section Cast *********************************************************
+**
+** Functions for returning elements of an AJAX SQL Connection object.
+**
+** @fdata [AjPVoid]
+**
+** @nam3rule Get Return AJAX SQL Connection elements
+*
+** @argrule * thys [const AjPVoid] AJAX void pointer array
+** @argrule Get elem [ajuint] Element number
+**
+** @valrule * [void*] Void array
+**
+** @fcategory cast
+******************************************************************************/
+
 /* @func ajVoidGet ************************************************************
 **
 ** Retrieve an element from an AJAX Pointer Array.
@@ -3293,13 +3350,75 @@ void ajVoidDel(AjPVoid *thys)
 ** @@
 ******************************************************************************/
 
-void *ajVoidGet(const AjPVoid thys, ajuint elem)
+void* ajVoidGet(const AjPVoid thys, ajuint elem)
 {
     if(!thys || elem >= thys->Len)
 	ajErr("Attempt to access bad Pointer array index %d\n", elem);
     
     return thys->Ptr[elem];
 }
+
+
+
+/* @section modifiers *********************************************************
+**
+** @fdata [AjPVoid]
+**
+** @nam3rule Put Put a value in an array
+** @nam3rule Resize Resize array
+**
+** @argrule * thys [AjPVoid*] Void pointer array
+** @argrule Resize size [ajuint] New size of array
+** @argrule Put elem [ajuint] Element number
+** @argrule Put v [void*] Value to load
+**
+** @valrule * [AjBool] True on success
+**
+** @fcategory modify
+******************************************************************************/
+
+
+
+
+/* @func ajVoidPut ************************************************************
+**
+** Load a void pointer array element.
+**
+** If the given array is a NULL pointer an error is generated.
+** If the array is of insufficient size then the array is extended.
+** Negative indices generate an error.
+**
+** @param  [w] thys [AjPVoid*] Pointer to the void pointer array
+** @param  [r] elem [ajuint] array element
+** @param  [r] v [void*] value to load
+**
+** @return [AjBool] true if the array was extended
+** @category modify [AjPChar] Load a character array element
+** @@
+******************************************************************************/
+
+AjBool ajVoidPut(AjPVoid *thys, ajuint elem, void *v)
+{
+    if(!thys || !*thys)
+	ajErr("Attempt to write to illegal array value %d\n", elem);
+    
+    if(elem < (*thys)->Res)
+    {
+	if(elem >= (*thys)->Len)
+	    (*thys)->Len = elem + 1;
+	
+	(*thys)->Ptr[elem] = v;
+
+	return ajFalse;
+    }
+    
+    arrVoidResize(thys, elem);
+    
+    (*thys)->Ptr[elem] = v;
+    
+    return ajTrue;
+}
+
 
 
 
@@ -3356,48 +3475,6 @@ static AjBool arrVoidResize(AjPVoid *thys, ajuint size)
     ** FIXME: This works only in ajarr.c
     arrResize++;
     */
-    
-    return ajTrue;
-}
-
-
-
-
-/* @func ajVoidPut ************************************************************
-**
-** Load a void pointer array element.
-**
-** If the given array is a NULL pointer an error is generated.
-** If the array is of insufficient size then the array is extended.
-** Negative indices generate an error.
-**
-** @param  [w] thys [AjPVoid*] Pointer to the void pointer array
-** @param  [r] elem [ajuint] array element
-** @param  [r] v [void*] value to load
-**
-** @return [AjBool] true if the array was extended
-** @category modify [AjPChar] Load a character array element
-** @@
-******************************************************************************/
-
-AjBool ajVoidPut(AjPVoid *thys, ajuint elem, void *v)
-{
-    if(!thys || !*thys)
-	ajErr("Attempt to write to illegal array value %d\n", elem);
-    
-    if(elem < (*thys)->Res)
-    {
-	if(elem >= (*thys)->Len)
-	    (*thys)->Len = elem + 1;
-	
-	(*thys)->Ptr[elem] = v;
-
-	return ajFalse;
-    }
-    
-    arrVoidResize(thys, elem);
-    
-    (*thys)->Ptr[elem] = v;
     
     return ajTrue;
 }

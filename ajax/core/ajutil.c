@@ -897,7 +897,7 @@ const AjPStr ajUtilGetCmdline (void)
 }
 
 /* @obsolete ajAcdGetCmdline
-** @replace ajUtilGetCmdline
+** @rename ajUtilGetCmdline
 */
 __deprecated const AjPStr ajAcdGetCmdline (void)
 {
@@ -919,8 +919,8 @@ const AjPStr ajUtilGetInputs (void)
 }
 
 
-/* @obsolete ajAcdGetInput
-** @replace ajUtilGetInputs
+/* @obsolete ajAcdGetInputs
+** @rename ajUtilGetInputs
 */
 
 __deprecated const AjPStr ajAcdGetInputs (void)
@@ -956,7 +956,7 @@ const AjPStr ajUtilGetProgram(void)
 
 
 /* @obsolete ajAcdGetProgram
-** @replace ajUtilGetProgram
+** @rename ajUtilGetProgram
 */
 __deprecated const AjPStr ajAcdGetProgram(void)
 {
