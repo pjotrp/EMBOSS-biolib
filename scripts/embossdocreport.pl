@@ -84,6 +84,11 @@ while (<>) {
 	$errcount++;
 	print LOG "    ".$_;
     }
+
+    elsif (/^[*][*] [@]/) {
+	print LOG $_;
+    }
+
     elsif (/^[.][.] File \/\S+\/([^\/]+)\/([^\/.]+)[.]([^\/.]+)$/) {
 	$newfileline = $_;
 	$newfilename = $2;
