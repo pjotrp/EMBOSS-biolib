@@ -27,6 +27,7 @@
 #include <io.h>
 #include <fcntl.h>
 #include <windows.h>
+#define fdopen _fdopen
 #endif
 
 
@@ -369,11 +370,13 @@ int main(int argc, char **argv)
 
 #else	// WIN32
 	    {
-		HANDLE hChildStdinRd, hChildStdinWr, hChildStdinWrDup, 
-		hChildStdoutRd, hChildStdoutWr, hChildStdoutRdDup, 
+		HANDLE hChildStdinRd, hChildStdinWr, 
+		hChildStdoutRd, hChildStdoutWr, 
 		hSaveStdin, hSaveStdout;
 		BOOL fSuccess;
 		SECURITY_ATTRIBUTES saAttr;
+		HANDLE hChildStdinWrDup, hChildStdoutRdDup;
+
 		saAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
 		saAttr.bInheritHandle = TRUE;
 		saAttr.lpSecurityDescriptor = NULL;
@@ -465,8 +468,10 @@ int main(int argc, char **argv)
 		  ajFatal("Re-redirecting Stdout failed\n");
 
 	      CloseHandle(hChildStdoutWr);
-	      pipeto[1] = _open_osfhandle(hChildStdinWrDup, _O_APPEND);
-	      pipefrom[0] = _open_osfhandle(hChildStdoutRdDup, _O_RDONLY);
+	      pipeto[1] = _open_osfhandle((intptr_t) hChildStdinWrDup,
+					  _O_APPEND);
+	      pipefrom[0] = _open_osfhandle((intptr_t) hChildStdoutRdDup,
+					    _O_RDONLY);
 #endif	// WIN32
 
             stream = eprimer3_start_write(pipeto[1]);
@@ -605,9 +610,9 @@ int main(int argc, char **argv)
 
             /* send flags to turn on using optimal product size */
             eprimer3_send_float(stream, "PRIMER_PAIR_WT_PRODUCT_SIZE_GT",
-                                0.05);
+                                (float)0.05);
             eprimer3_send_float(stream, "PRIMER_PAIR_WT_PRODUCT_SIZE_LT",
-                                0.05);
+                                (float)0.05);
 
             /* send primer3 Primer "Sequence" parameters */
             eprimer3_send_string(stream, "SEQUENCE", substr);
