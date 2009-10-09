@@ -601,7 +601,7 @@ $lastfname = "";
 
 %categs = ("new" => 1, "delete" => 1, "assign" => 1, "modify" => 1,
 	   "cast" => 1, "derive" => 1, "use" => 1, "iterate" => 1,
-	   "input" => 1, "output" => 1, "misc" => 1);
+	   "input" => 1, "output" => 1, "misc" => 1, "internals" => 1);
 %ctot = ();
 if ($ARGV[0]) {$infile = $ARGV[0];}
 if ($ARGV[1]) {$lib = $ARGV[1];}
@@ -1566,7 +1566,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    $ctot{$ctype}++;
 	    secttest($sect,$ctype);
 	    if (!defined($categs{$ctype})) {
-		print "bad \@fcategory $ctype - unknown type\n";
+		print "bad \@fcategory $ctype - unknown category type\n";
 	    }
 	}
 
@@ -1940,6 +1940,13 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 #			print LOG "calling isnamrule i: $i rules $#{$namrules[$i]} names $#nameparts\n";
 			if(!isnamrule($i, @{$namrules[$i]}, @nameparts)) {
 			    print "bad name $fname: '$f' not found\n";
+			    print "** \@nam$i";
+			    if($j == $#nameparts) {
+				print "rule $f $frest";
+                            }
+                            else{
+                                print "rule $f Undocumented\n";
+			    }
 			    last;
 			}
 		    }
@@ -2024,6 +2031,9 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    $igen=$#genargname + 1;
 	    if($igen < $isave) {
 		print "bad argrule: $igen/$isave params defined\n";
+		for($i=$igen;$i <$isave;$i++) {
+		    print "** \@argrule $fname $savevar[$i] \[$savecast[$i]\] Undocumented\n";
+		}
 	    }
 	    elsif($igen > $isave) {
 		print "bad argrule: expected $isave params, found $igen\n";
