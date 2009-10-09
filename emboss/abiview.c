@@ -256,7 +256,7 @@ int main(int argc, char **argv)
 	/* Sequence text display */
 	if(dseq)
 	{
-	    scale = (40.0 / (float) window);
+	    scale = (float) 40.0 / (float) window;
 	    if(!overlay)
 		gd5 = abiview_graphTextDisplay(graphs,nstart,nstop,
 					       basePositions,nseq,

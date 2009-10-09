@@ -835,7 +835,7 @@ int main(int argc, char **argv)
 			/* draw horiline at bottom */
 			seqboxptr[j][k] |= BOXBOT;
 
-		    previous[j] = part;
+		    previous[j] = (ajint) part;
 		}
 		else
 		{

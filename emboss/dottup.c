@@ -164,9 +164,10 @@ int main(int argc, char **argv)
 	    else
 		tickgap = (float) acceptableticksx[10];
 
-	    ticklen = xmargin*0.1;
-	    onefifth  = xmargin*0.2;
-	    ajGraphicsDrawTextAtmid(fbegin1+flen1*0.5,fbegin1-(onefifth*3.0),
+	    ticklen = xmargin * (float) 0.1;
+	    onefifth  = xmargin * (float)0.2;
+	    ajGraphicsDrawTextAtmid(fbegin1+flen1*(float)0.5,
+                                    fbegin1-(onefifth*(float)3.0),
 			   ajGraphGetYTitleC(graph));
 
 	    if(len2/len1 > 10 )
@@ -272,8 +273,8 @@ static void dottup_drawPlotlines(void *x, void *cl)
     x1 = x2 = offset1 + (PLFLT)(p->seq1start);
     y1 = y2 = offset2 + (PLFLT)(p->seq2start);
 
-    x2 += (PLFLT)p->length -1.0;
-    y2 += (PLFLT)p->length -1.0;
+    x2 += (PLFLT)p->length - (PLFLT)1.0;
+    y2 += (PLFLT)p->length - (PLFLT)1.0;
 
     ajGraphicsDrawLine(x1, y1, x2, y2);
 

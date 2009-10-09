@@ -210,10 +210,10 @@ int main(int argc, char **argv)
 
 	    ajGraphPlpDataAddLine(this,this->x[0],(float)0.74,
 				  this->x[npoints-1],
-				  (float)0.74,(float)1);
+				  (float)0.74,1);
 	    ajGraphPlpDataAddLine(this,this->x[0],(float)0.95,
 				  this->x[npoints-1],
-				  (float)0.95,(float)3);
+				  (float)0.95,3);
 
 	    ajGraphDataAdd(graph,this);
 	    ajGraphxyDisplay(graph,ajTrue);

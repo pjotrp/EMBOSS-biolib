@@ -221,7 +221,7 @@ int main(int argc, char **argv)
 	    }
 
 
-	ymax += 0.1;
+	ymax += (float) 0.1;
 
 
 	if(report)

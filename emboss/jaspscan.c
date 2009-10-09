@@ -660,7 +660,7 @@ static void jaspscan_scan(const AjPStr seq, const ajuint begin,
 	}
 
 
-	scorepc = (sum * 100.) / maxscore;
+	scorepc = (sum * (float)100.) / maxscore;
 
 
 	if(scorepc >= threshold)
@@ -704,7 +704,7 @@ static void jaspscan_scan(const AjPStr seq, const ajuint begin,
 	    }
 
 
-	    scorepc = (sum * 100.) / maxscore;
+	    scorepc = (sum * (float)100.) / maxscore;
 
 
 	    if(scorepc >= threshold)
