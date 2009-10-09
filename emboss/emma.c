@@ -21,6 +21,12 @@
 
 #include "emboss.h"
 
+/* In Windows allow getpid() without setting _CRT_NONSTDC_NO_DEPRECATE */
+#ifdef WIN32
+#include <process.h>
+#define getpid _getpid
+#endif
+
 static AjPStr emma_getUniqueFileName(void);
 
 
