@@ -34,7 +34,7 @@ end
 
 #echo "Ajax functions"
 # ... skip pcre
-foreach x ($edir/ajax/core/*.c $edir/ajax/graphics/*.c $edir/ajax/ajaxseq/*.c  $edir/ajax/acd/*.c $edir/ajax/ensembl/*.c)
+foreach x ($edir/ajax/core/*.c $edir/ajax/graphics/*.c $edir/ajax/ajaxdb/*.c  $edir/ajax/acd/*.c $edir/ajax/ensembl/*.c)
   embossdoccheck.pl $x >> ../efunc.check
   embossdoc.pl $x >> ../efunc.out
 end
@@ -54,7 +54,7 @@ end
 \rm *.srs
 
 #echo "Ajax static datatypes"
-foreach x ($edir/ajax/core/*.c $edir/ajax/graphics/*.c $edir/ajax/ajaxseq/*.c  $edir/ajax/acd/*.c $edir/ajax/ensembl/*.c)
+foreach x ($edir/ajax/core/*.c $edir/ajax/graphics/*.c $edir/ajax/ajaxdb/*.c  $edir/ajax/acd/*.c $edir/ajax/ensembl/*.c)
   embossdatacheck.pl $x >> ../edata.check
   embossdatadoc.pl $x >> ../edata.out
 end
@@ -128,7 +128,7 @@ end
 \rm *.srsdata
 
 #echo "Ajax datatypes"
-foreach x ($edir/ajax/core/*.h $edir/ajax/graphics/*.h $edir/ajax/ajaxseq/*.h  $edir/ajax/acd/*.h $edir/ajax/ensembl/*.h)
+foreach x ($edir/ajax/core/*.h $edir/ajax/graphics/*.h $edir/ajax/ajaxdb/*.h  $edir/ajax/acd/*.h $edir/ajax/ensembl/*.h)
   embossdatacheck.pl $x >> ../edata.check
   embossdatadoc.pl $x >> ../edata.out
 end
