@@ -78,7 +78,7 @@ static unsigned callStrHash(const void *key, unsigned hashsize)
 **
 ** Create new function hash table
 **
-** @return [AjPTable]
+** @return [AjPTable] Hash table with string keys
 ** @@
 ******************************************************************************/
 
@@ -86,6 +86,10 @@ AjPTable ajCallTableNew(void)
 {
     return ajTableNewFunctionLen(50, callCmpStr,callStrHash);
 }
+
+
+
+
 
 /* @func ajCallTableRegister **************************************************
 **
@@ -257,7 +261,7 @@ void* ajCall(const char *name, ...)
 ** Returns a named function by its name. If it does not exist then give
 ** an error message saying so.
 **
-** @param [r] table [const AjPTable] 
+** @param [r] table [const AjPTable] Function hash table
 ** @param [r] name [const char*] name of the function
 ** @return [void*] NULL if function call not found.
 ** @@
@@ -276,8 +280,8 @@ void* ajCallTableGetC(const AjPTable table, const char *name)
     rec = ajTableFetch(table, name);
 
     if(!rec)
-	ajMessCrash("ajCallTableGet function %s not found. "
-		    "Use ajCallTableRegister first",name);
+	return NULL;
+
     return rec;
 }
 
@@ -289,7 +293,7 @@ void* ajCallTableGetC(const AjPTable table, const char *name)
 ** Returns a named function by its name. If it does not exist then give
 ** an error message saying so.
 **
-** @param [r] table [const AjPTable] 
+** @param [r] table [const AjPTable]  Function hash table
 ** @param [r] namestr [const AjPStr] name of the function
 ** @return [void*] NULL if function call not found.
 ** @@
@@ -364,8 +368,10 @@ static void callCountDel(void** key, void** value, void* cl)
 
 /* @func ajCallTableDel *******************************************************
 **
+** Destructor for a function table
+**
 ** @param [d] Ptable [AjPTable*] Table to be freed
-** @return [vod]
+** @return [void]
 ******************************************************************************/
 
 void ajCallTableDel(AjPTable* Ptable)
