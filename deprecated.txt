@@ -1,23 +1,3 @@
-#ajacd
-ajAcdGetBool ajAcdGetBoolean
-ajAcdGetDiscretestatesI =ajAcdGetDiscretestatesSingle 1,2 1
-ajAcdGetDiscretestatesI @ajAcdGetDiscretestatesSingle
-ajAcdGetFeat ajAcdGetFeatures
-ajAcdGetListI =ajAcdGetListSingle 1,2 1
-ajAcdGetListI @ajAcdGetListSingle
-ajAcdGetSelectI =ajAcdGetSelectSingle 1,2 1
-ajAcdGetSelectI @ajAcdGetSelectSingle
-ajAcdGetSeqsetallI =ajAcdGetSeqsetallSingle 1,2 1
-ajAcdGetSeqsetallI @ajAcdGetSeqsetallSingle
-ajAcdGetTreeI =ajAcdGetTreeSingle 1,2 1
-ajAcdGetTreeI @ajAcdGetTreeSingle
-ajAcdValue ajAcdGetValue
-ajAcdDebug -
-ajAcdDebugIsSet -
-ajAcdFilter -
-ajAcdStdout -
-ajAcdProgramS -
-ajAcdProgram -
 #ajalign
 #ajarr
 #ajassert
@@ -59,8 +39,8 @@ ajTm ajMeltTemp
 ajTm2 ajMeltTempSave
 ajProdTm ajMeltTempProd
 #ajdmx
-#ajdomain
 #ajdom
+#ajdomain
 #ajexcept
 #ajfeat
 ajFeatUfoWrite =ajFeattableWriteUfo 1,2,3 2,1,3
@@ -310,7 +290,6 @@ ajReportAppendSubTailC ajReportAppendSubtailC
 ajReportAppendSubTail ajReportAppendSubtailS
 ajReportSeqName ajReportGetSeqnameSeq
 ajReportFileAdd ajReportAddFile
-#ajseqabi
 #ajseq
 ajSeqNewC ajSeqNewNameC
 ajSeqNewStr ajSeqNewNameS
@@ -446,7 +425,7 @@ ajSeqReverseStr ajSeqstrReverse
 ajSeqCrc ajSeqstrCalcCrc
 ajSeqGapStandardS -
 ajSeqCalcCrc -
-#ajseqdb
+#ajseqabi
 #ajseqread
 #ajseqtype
 #ajseqwrite
@@ -727,10 +706,13 @@ ajUtilRevUint ajByteRevUint
 ajUtilBigendian ajUtilGetBigendian
 ajUtilUid ajUtilGetUid
 ajLogInfo ajUtilLoginfo
+ajAcdGetCmdline ajUtilGetCmdline
+ajAcdGetInputs ajUtilGetInputs
+ajAcdProgramS -
+ajAcdGetProgram ajUtilGetProgram
+ajAcdProgram -
 #ajvector
 #ajgraph
-ajGraphInit ajGraphicsInit
-ajGraphInitPV ajGraphicsInitPV
 ajGraphSetBackBlack ajGraphicsSetBgcolourBlack
 ajGraphColourFore ajGraphicsSetColourReset
 ajGraphSetBackWhite ajGraphicsSetBgcolourkWhite
@@ -808,8 +790,29 @@ ajGraphInfo ajGraphicsGetOutfiles
 ajGraphColourBack ajGraphicsSetBgcolourReset
 #ajgraphxml
 #ajhist
-#ajdummyseq
-#ajdummyacd
+#ajseqdb
+#ajacd
+ajAcdGetBool ajAcdGetBoolean
+ajAcdGetDiscretestatesI =ajAcdGetDiscretestatesSingle 1,2 1
+ajAcdGetDiscretestatesI @ajAcdGetDiscretestatesSingle
+ajAcdGetFeat ajAcdGetFeatures
+ajAcdGetListI =ajAcdGetListSingle 1,2 1
+ajAcdGetListI @ajAcdGetListSingle
+ajAcdGetSelectI =ajAcdGetSelectSingle 1,2 1
+ajAcdGetSelectI @ajAcdGetSelectSingle
+ajAcdGetSeqsetallI =ajAcdGetSeqsetallSingle 1,2 1
+ajAcdGetSeqsetallI @ajAcdGetSeqsetallSingle
+ajAcdGetTreeI =ajAcdGetTreeSingle 1,2 1
+ajAcdGetTreeI @ajAcdGetTreeSingle
+ajAcdValue ajAcdGetValue
+ajAcdDebug -
+ajAcdDebugIsSet -
+ajAcdFilter -
+ajAcdStdout -
+ajGraphicsInit ajAcdGraphicsInit
+ajGraphInit ajAcdGraphicsInit
+ajGraphicsInitPV ajAcdGraphicsInitPV
+ajGraphInitPV ajAcdGraphicsInitPV
 #ensanalysis
 #ensassembly
 #ensassemblyexception
@@ -836,8 +839,8 @@ ajGraphColourBack ajGraphicsSetBgcolourReset
 #ensmiscellaneous
 #ensprediction
 #ensprojectionsegment
-#ensqcalignment
 #ensqc
+#ensqcalignment
 #ensqcdatabase
 #ensqcsequence
 #ensregistry
@@ -909,8 +912,8 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #coderet
 #complex
 #compseq
-#consambig
 #cons
+#consambig
 #corbatest
 #cpgplot
 #cpgreport
@@ -943,8 +946,8 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #embossversion
 #emma
 #emowse
-#entrailsbook
 #entrails
+#entrailsbook
 #entrailshtml
 #entrailswiki
 #entret
@@ -1021,8 +1024,8 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #pepnet
 #pepstats
 #pepwheel
-#pepwindowall
 #pepwindow
+#pepwindowall
 #plotcon
 #plotorf
 #polydot
@@ -1049,11 +1052,11 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #seealso
 #seqinfo
 #seqmatchall
+#seqret
 #seqretall
 #seqretallfeat
-#seqret
-#seqretsetall
 #seqretset
+#seqretsetall
 #seqretsingle
 #seqretsplit
 #seqrettype
