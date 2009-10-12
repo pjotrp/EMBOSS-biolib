@@ -29,7 +29,7 @@ section: input [
     information: "Restriction enzyme methylation data file (optional)"
     knowntype: "restriction enzyme methylation data"
     nullok: "Y"
-    relations:  "EDAM: EMBOSS restrict recognition site report"        
+    relations:  "EDAM: Restriction enzyme reference data"        
   ]
 
 endsection: input

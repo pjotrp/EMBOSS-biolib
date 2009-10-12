@@ -27,7 +27,7 @@ section: input [
     default: "Emethylsites.dat"
     information: "Restriction enzyme methylation data file"
     knowntype: "restriction enzyme methylation data"
-    relations:  "EDAM: EMBOSS restrict recognition site report"        
+    relations:  "EDAM: Restriction enzyme reference data"        
   ]
 
 endsection: input
