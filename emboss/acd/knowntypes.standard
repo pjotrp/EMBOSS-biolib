@@ -237,7 +237,7 @@ restdist_output                     | file           |  "EDAM: PHYLIP phylogenet
 restml_input                        | file           |                                                 | Phylip restml program input
 restml_output                       | file           |  "EDAM: Phylip phylogenetic tree raw data"              | Phylip restml program output
 restriction_enzyme_data             | file           |  "EDAM: Restriction enzyme pattern data"                | Restriction enzyme data
-restriction_enzyme_methylation_data | file           |  "EDAM: EMBOSS restrict recognition site report"        | Restriction enzyme methylation data
+restriction_enzyme_methylation_data | file           |  "EDAM: Restriction enzyme reference data"              | Restriction enzyme methylation data
 rna_concentration                   | file           |  "EDAM: Vienna RNA concentration data"                  | Vienna RNA concentration data
 rna_constraint                      | file           |  "EDAM: Vienna RNA structure constraints"               | Vienna RNA structure constraints
 rna_parameter                       | file           |  "EDAM: Vienna RNA parameters"                          | Vienna RNA parameters
