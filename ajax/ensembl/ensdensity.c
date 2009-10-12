@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -3055,6 +3055,8 @@ AjBool ensDensityFeatureadaptorFetchAllBySlice(
 {
     double portion = 0.0;
     double ratio   = 0.0;
+    ajint  slctmp  = 0;
+    double ceitmp  = 0.0;
     float value    = 0.0;
     
     register ajuint i = 0;
@@ -3168,10 +3170,15 @@ AjBool ensDensityFeatureadaptorFetchAllBySlice(
     /*
      ** The window size is the length of the Ensembl Slice
      ** divided by the number of requested blocks.
+     ** Need to go through some horrendous casting to
+     ** satisfy really pedantic compilers
      */
+
     
-    bsize = (ajint)
-        (ceil( (double) ensSliceGetLength(slice) / (double) blocks));
+    slctmp = (ajint) ensSliceGetLength(slice);
+    ceitmp = ceil((double) slctmp / (double) blocks);
+    
+    bsize = (ajint) ceitmp;
     
     dtrs = ajListNew();
     
