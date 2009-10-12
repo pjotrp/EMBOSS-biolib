@@ -241,7 +241,8 @@ static AjPFloat2d distmat_Tamura(char* const * seqcharptr,
     ajint m;
     ajint trans;
     ajint tranv;
-
+    ajint ival;
+    
     float P;
     float Q;
     float D;
@@ -353,12 +354,16 @@ static AjPFloat2d distmat_Tamura(char* const * seqcharptr,
 	{
 	    C = ajFloat2dGet(GC,j,i)+ajFloat2dGet(GC,i,j);
 	    C = C - (2*ajFloat2dGet(GC,j,i)*ajFloat2dGet(GC,i,j));
-	    X1 = (float) ajInt2dGet(Ptrans,i,j);
-	    X2 = (float) ajInt2dGet(score,i,j);
+            ival = ajInt2dGet(Ptrans,i,j);
+	    X1 = (float) ival;
+            ival = ajInt2dGet(score,i,j);
+	    X2 = (float) ival;
 	    P = X1/X2;
 	    
-	    X1= (float) ajInt2dGet(Qtranv,i,j);
-	    X2 = (float) ajInt2dGet(score,i,j);
+            ival = ajInt2dGet(Qtranv,i,j);
+	    X1= (float) ival;
+            ival = ajInt2dGet(score,i,j);
+	    X2 = (float) ival;
 	    Q = X1/X2;
 
 	    if(P != 0.)
@@ -413,7 +418,8 @@ static AjPFloat2d distmat_Kimura(char* const * seqcharptr,
     ajint m;
     ajint trans;
     ajint tranv;
-
+    ajint ival;
+    
     AjPFloat2d matDist = NULL;
     AjPInt2d Ptrans    = NULL;
     AjPInt2d Qtranv    = NULL;
@@ -471,12 +477,16 @@ static AjPFloat2d distmat_Kimura(char* const * seqcharptr,
     {
 	for(j=i+1;j<nseqs;j++)
 	{
-	    X1 = (float) ajInt2dGet(Ptrans,i,j);
-	    X2 = (float) ajInt2dGet(match,i,j);
+            ival = ajInt2dGet(Ptrans,i,j);
+	    X1 = (float) ival;
+            ival = ajInt2dGet(match,i,j);
+	    X2 = (float) ival;
 	    P = X1/X2;
 
-	    X1 = (float) ajInt2dGet(Qtranv,i,j);
-	    X2 = (float) ajInt2dGet(match,i,j);
+            ival = ajInt2dGet(Qtranv,i,j);
+	    X1 = (float) ival;
+            ival = ajInt2dGet(match,i,j);
+	    X2 = (float) ival;
 	    Q = X1/X2;
 
 	    D = (float) (-0.5*log((1-(2*P)-Q)*sqrt(1-(2*Q))));
@@ -513,7 +523,8 @@ static AjPFloat2d distmat_KimuraProt(char* const * seqcharptr, ajint mlen,
     ajint j;
     ajint k;
     ajint mi;
-
+    ajint ival;
+    
     char m1;
     char m2;
 
@@ -573,7 +584,8 @@ static AjPFloat2d distmat_KimuraProt(char* const * seqcharptr, ajint mlen,
     {
 	for(j=i+1;j<nseqs;j++)
 	{
-	    X2 = (float) ajInt2dGet(scored,i,j);
+            ival = ajInt2dGet(scored,i,j);
+	    X2 = (float) ival;
 	    D = (float) (1.-(ajFloat2dGet(match,i,j)/X2));
 	    D = (float) (-log(1-D-(0.2*D*D)));
 	    ajFloat2dPut(&matDist,i,j,D);
@@ -760,7 +772,8 @@ static AjPFloat2d distmat_TajimaNei(char* const * seqcharptr,
     ajint bs1;
     ajint pair;
     ajint val;
-
+    ajint ival;
+    
     AjPInt2d len   = NULL;
     AjPInt3d pfreq = NULL;
     AjPInt3d cbase = NULL;
@@ -816,7 +829,8 @@ static AjPFloat2d distmat_TajimaNei(char* const * seqcharptr,
 
 		    if(!strchr("-NXWMKBVDH",tj))
 		    {
-			slen = (float) ajInt2dGet(len,i,j)+1;
+                        ival = ajInt2dGet(len,i,j)+1;
+			slen = (float) ival;
 			ajInt2dPut(&len,i,j,(ajint)slen);
 			if(strchr("G",ti))
 			{
@@ -888,13 +902,16 @@ static AjPFloat2d distmat_TajimaNei(char* const * seqcharptr,
     for(i=0;i<nseqs;i++)
 	for(j=i+1;j<nseqs;j++)
 	{
-	    slen = (float) ajInt2dGet(len,i,j);
+            ival = ajInt2dGet(len,i,j);
+	    slen = (float) ival;
 
 	    fij2 = 0.;
 	    for(bs=0;bs<4;bs++)
 	    {
-		fi  = (float) ajInt3dGet(cbase,i,j,bs);
-		fj  = (float) ajInt3dGet(cbase,j,i,bs);
+                ival = ajInt3dGet(cbase,i,j,bs);
+		fi  = (float) ival;
+                ival = ajInt3dGet(cbase,j,i,bs);
+		fj  = (float) ival;
 		fij = 0.;
 		if(fi != 0. && fj != 0.)
 		    fij = (fi+fj)/((float)2.*slen);
@@ -907,12 +924,17 @@ static AjPFloat2d distmat_TajimaNei(char* const * seqcharptr,
 	    {
 		for(bs1=bs+1;bs1<4;bs1++)
 		{
-		    X1 = (float) ajInt3dGet(pfreq,i,j,pair);
+                    ival = ajInt3dGet(pfreq,i,j,pair);
+		    X1 = (float) ival;
 		    fij = X1/slen;
-		    ci1 = (float) ajInt3dGet(cbase,j,i,bs);
-		    cj1 = (float) ajInt3dGet(cbase,i,j,bs);
-		    ci2 = (float) ajInt3dGet(cbase,j,i,bs1);
-		    cj2 = (float) ajInt3dGet(cbase,i,j,bs1);
+                    ival = ajInt3dGet(cbase,j,i,bs);
+		    ci1 = (float) ival;
+                    ival = ajInt3dGet(cbase,i,j,bs);
+		    cj1 = (float) ival;
+                    ival = ajInt3dGet(cbase,j,i,bs1);
+		    ci2 = (float) ival;
+                    ival = ajInt3dGet(cbase,i,j,bs1);
+		    cj2 = (float) ival;
 
 		    if(fij !=0.)
 			h += ((float)0.5*fij*fij)/((ci1+cj1)/((float)2.*slen) *
