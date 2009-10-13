@@ -13,6 +13,7 @@ $funcline = "Function 'undefined'\n";
 open (LOG, ">embossdocreport.log") || die "Cannot open embossdocreport.log";
 
 %badfiles = ();
+%badcount = ();
 %badtotfiles = ();
 
 while (<>) {
@@ -73,7 +74,8 @@ while (<>) {
 	$newfunc = 1;
     }
 
-    elsif (/^bad/) {
+    elsif (/^bad (\S+)/) {
+	$badcount{$1}++;
 	if (!$errcount) {
 	    if (!$errfile) {
 		print LOG "=============================\n";
@@ -158,3 +160,7 @@ foreach $x (sort (keys (%badfiles))) {
 
 print STDERR "$totcount errors in $errfunc functions in $totfile files\n";
 close LOG;
+
+foreach $b (sort(keys(%badcount))) {
+    printf STDERR "%4d %s\n", $badcount{$b},$b;
+}
