@@ -17,25 +17,25 @@ extern "C"
 
 /* Ensembl Analysis */
 
-EnsPAnalysis ensAnalysisNew(EnsPAnalysisadaptor adaptor,
-                            ajuint identifier,
-                            AjPStr cdate,
-                            AjPStr name,
-                            AjPStr databasename,
-                            AjPStr databaseversion,
-                            AjPStr databasefile,
-                            AjPStr programname,
-                            AjPStr programversion,
-                            AjPStr programfile,
-                            AjPStr parameters,
-                            AjPStr modulename,
-                            AjPStr moduleversion,
-                            AjPStr gffsource,
-                            AjPStr gfffeature,
-                            AjPStr description,
-                            AjPStr displaylabel,
-                            AjBool displayable,
-                            AjPStr webdata);
+EnsPAnalysis ensAnalysisNewData(EnsPAnalysisadaptor adaptor,
+                                ajuint identifier,
+                                AjPStr cdate,
+                                AjPStr name,
+                                AjPStr databasename,
+                                AjPStr databaseversion,
+                                AjPStr databasefile,
+                                AjPStr programname,
+                                AjPStr programversion,
+                                AjPStr programfile,
+                                AjPStr parameters,
+                                AjPStr modulename,
+                                AjPStr moduleversion,
+                                AjPStr gffsource,
+                                AjPStr gfffeature,
+                                AjPStr description,
+                                AjPStr displaylabel,
+                                AjBool displayable,
+                                AjPStr webdata);
 
 EnsPAnalysis ensAnalysisNewObj(const EnsPAnalysis object);
 
@@ -43,7 +43,7 @@ EnsPAnalysis ensAnalysisNewRef(EnsPAnalysis analysis);
 
 void ensAnalysisDel(EnsPAnalysis* Panalysis);
 
-EnsPAnalysisadaptor ensAnalysisGetadaptor(const EnsPAnalysis analysis);
+EnsPAnalysisadaptor ensAnalysisGetAdaptor(const EnsPAnalysis analysis);
 
 ajuint ensAnalysisGetIdentifier(const EnsPAnalysis analysis);
 
@@ -81,7 +81,7 @@ extern const AjPStr ensAnalysisGetWebData(const EnsPAnalysis analysis);
 
 AjBool ensAnalysisGetDisplayable(const EnsPAnalysis analysis);
 
-AjBool ensAnalysisSetadaptor(EnsPAnalysis analysis,
+AjBool ensAnalysisSetAdaptor(EnsPAnalysis analysis,
                              EnsPAnalysisadaptor adaptor);
 
 AjBool ensAnalysisSetIdentifier(EnsPAnalysis analysis, ajuint identifier);

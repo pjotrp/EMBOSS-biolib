@@ -22,13 +22,13 @@ extern "C"
 ** @alias EnsOAssembly
 **
 ** @attr Use [ajuint] Use counter
-** @attr AssembledSeqRegionId [ajuint] Assembled Ensembl Sequence Region
+** @attr AssembledSeqregionId [ajuint] Assembled Ensembl Sequence Region
 **                                     identifier
 ** @attr AssembledStart [ajuint] Assembled Ensembl Sequence Region
 **                               start coordinate
 ** @attr AssembledEnd [ajuint] Assembled Ensembl Sequence Region
 **                             end coordinate
-** @attr ComponentSeqRegionId [ajuint] Component Ensembl Sequence Region
+** @attr ComponentSeqregionId [ajuint] Component Ensembl Sequence Region
 **                                     identifier
 ** @attr ComponentStart [ajuint] Component Ensembl Sequence Region
 **                               start coordinate
@@ -41,10 +41,10 @@ extern "C"
 typedef struct EnsSAssembly
 {
     ajuint Use;
-    ajuint AssembledSeqRegionId;
+    ajuint AssembledSeqregionId;
     ajuint AssembledStart;
     ajuint AssembledEnd;
-    ajuint ComponentSeqRegionId;
+    ajuint ComponentSeqregionId;
     ajuint ComponentStart;
     ajuint ComponentEnd;
     ajint Orientation;
@@ -75,13 +75,13 @@ EnsPAssembly ensAssemblyNewRef(EnsPAssembly assembly);
 
 void ensAssemblyDel(EnsPAssembly* Passembly);
 
-ajuint ensAssemblyGetAssembledSeqRegionId(const EnsPAssembly assembly);
+ajuint ensAssemblyGetAssembledSeqregionId(const EnsPAssembly assembly);
 
 ajuint ensAssemblyGetAssembledStart(const EnsPAssembly assembly);
 
 ajuint ensAssemblyGetAssembledEnd(const EnsPAssembly assembly);
 
-ajuint ensAssemblyGetComponentSeqRegionId(const EnsPAssembly assembly);
+ajuint ensAssemblyGetComponentSeqregionId(const EnsPAssembly assembly);
 
 ajuint ensAssemblyGetComponentStart(const EnsPAssembly assembly);
 

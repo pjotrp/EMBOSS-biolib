@@ -12,14 +12,14 @@ extern "C"
 
 
 
-/* @data EnsPMapperUnit *******************************************************
+/* @data EnsPMapperunit *******************************************************
 **
 ** Ensembl Mapper Unit.
 **
 ** One unit of an Ensembl Mapper Pair.
 **
-** @alias EnsSMapperUnit
-** @alias EnsOMapperUnit
+** @alias EnsSMapperunit
+** @alias EnsOMapperunit
 **
 ** @cc Bio::EnsEMBL::Mapper::Unit
 ** @attr ObjectIdentifier [ajuint] Ensembl Object identifier
@@ -29,15 +29,15 @@ extern "C"
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSMapperUnit
+typedef struct EnsSMapperunit
 {
     ajuint ObjectIdentifier;
     ajint Start;
     ajint End;
     ajuint Use;
-} EnsOMapperUnit;
+} EnsOMapperunit;
 
-#define EnsPMapperUnit EnsOMapperUnit*
+#define EnsPMapperunit EnsOMapperunit*
 
 
 
@@ -48,28 +48,28 @@ typedef struct EnsSMapperUnit
 **
 ******************************************************************************/
 
-enum EnsEMapperUnitType
+enum EnsEMapperunitType
 {
-    ensEMapperUnitTypeNULL,
-    ensEMapperUnitTypeSource,
-    ensEMapperUnitTypeTarget
+    ensEMapperunitTypeNULL,
+    ensEMapperunitTypeSource,
+    ensEMapperunitTypeTarget
 };
 
 
 
 
-/* @data EnsPMapperPair *******************************************************
+/* @data EnsPMapperpair *******************************************************
 **
 ** Ensembl Mapper Pair.
 **
 ** An Ensembl Mapper Pair consists of two Ensembl Mapper Units.
 **
-** @alias EnsSMapperPair
-** @alias EnsOMapperPair
+** @alias EnsSMapperpair
+** @alias EnsOMapperpair
 **
 ** @cc Bio::EnsEMBL::Mapper::Pair
-** @attr Source [EnsPMapperUnit] Source Ensembl Mapper Unit
-** @attr Target [EnsPMapperUnit] Target Ensembl Mapper Unit
+** @attr Source [EnsPMapperunit] Source Ensembl Mapper Unit
+** @attr Target [EnsPMapperunit] Target Ensembl Mapper Unit
 ** @attr Orientation [ajint] Relative orientation of the Ensembl Mapper Units
 ** @cc Bio::EnsEMBL::Mapper::IndelPair
 ** @attr InsertionDeletion [AjBool] Insertion-deletion attribute
@@ -78,17 +78,17 @@ enum EnsEMapperUnitType
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSMapperPair
+typedef struct EnsSMapperpair
 {
-    EnsPMapperUnit Source;
-    EnsPMapperUnit Target;
+    EnsPMapperunit Source;
+    EnsPMapperunit Target;
     ajint Orientation;
     AjBool InsertionDeletion;
     ajuint Use;
     ajuint Padding;
-} EnsOMapperPair;
+} EnsOMapperpair;
 
-#define EnsPMapperPair EnsOMapperPair*
+#define EnsPMapperpair EnsOMapperpair*
 
 
 
@@ -99,18 +99,18 @@ typedef struct EnsSMapperPair
 **
 ******************************************************************************/
 
-enum EnsEMapperResultType
+enum EnsEMapperresultType
 {
-    ensEMapperResultNULL,
-    ensEMapperResultCoordinate,
-    ensEMapperResultGap,
-    ensEMapperResultInDel
+    ensEMapperresultNULL,
+    ensEMapperresultCoordinate,
+    ensEMapperresultGap,
+    ensEMapperresultInDel
 };
 
 
 
 
-/* @data EnsPMapperResult *****************************************************
+/* @data EnsPMapperresult *****************************************************
 **
 ** Ensembl Mapper Result.
 **
@@ -118,11 +118,11 @@ enum EnsEMapperResultType
 ** the source region maps to valid sequence. Depending on the type element
 ** this can also represent a gap.
 **
-** @alias EnsSMapperResult
-** @alias EnsOMapperResult
+** @alias EnsSMapperresult
+** @alias EnsOMapperresult
 **
-** @attr CoordSystem [EnsPCoordSystem] Ensembl Coordinate System
-** @attr Type [AjEnum] Result type (ensEMapperResultCoordinate, ...)
+** @attr Coordsystem [EnsPCoordsystem] Ensembl Coordinate System
+** @attr Type [AjEnum] Result type (ensEMapperresultCoordinate, ...)
 ** @cc Bio::EnsEMBL::Mapper::Coordinate
 ** @cc Bio::EnsEMBL::Mapper::IndelCoordinate
 ** @attr ObjectIdentifier [ajuint] Ensembl Object identifier
@@ -146,9 +146,9 @@ enum EnsEMapperResultType
 ** The objects can be distinguished by their type element.
 ******************************************************************************/
 
-typedef struct EnsSMapperResult
+typedef struct EnsSMapperresult
 {
-    EnsPCoordSystem CoordSystem;
+    EnsPCoordsystem Coordsystem;
     AjEnum Type;
     ajuint ObjectIdentifier;
     ajint Start;
@@ -157,21 +157,21 @@ typedef struct EnsSMapperResult
     ajint GapStart;
     ajint GapEnd;
     ajuint Use;
-} EnsOMapperResult;
+} EnsOMapperresult;
 
-#define EnsPMapperResult EnsOMapperResult*
-
-
+#define EnsPMapperresult EnsOMapperresult*
 
 
-/* @data EnsPMapperRange ******************************************************
+
+
+/* @data EnsPMapperrange ******************************************************
 **
 ** Ensembl Mapper Range.
 **
 ** An Ensembl Mapper Range defines start and end ccordinates of genome ranges.
 **
-** @alias EnsSMapperRange
-** @alias EnsOMapperRange
+** @alias EnsSMapperrange
+** @alias EnsOMapperrange
 **
 ** @attr Start [ajint] Start coordinate
 ** @attr End [ajint] End coordinate
@@ -180,27 +180,27 @@ typedef struct EnsSMapperResult
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSMapperRange
+typedef struct EnsSMapperrange
 {
     ajint Start;
     ajint End;
     ajuint Use;
     ajuint Padding;
-} EnsOMapperRange;
+} EnsOMapperrange;
 
-#define EnsPMapperRange EnsOMapperRange*
-
-
+#define EnsPMapperrange EnsOMapperrange*
 
 
-/* @data EnsPMapperRangeRegistry **********************************************
+
+
+/* @data EnsPMapperrangeregistry **********************************************
 **
 ** Ensembl Mapper Range Registry.
 **
 ** An Ensembl Mapper Range Registry maintains a table of registered regions.
 **
-** @alias EnsSMapperRangeRegistry
-** @alias EnsOMapperRangeRegistry
+** @alias EnsSMapperrangeregistry
+** @alias EnsOMapperrangeregistry
 **
 ** @attr Registry [AjPTable] Registry Table
 ** @attr Use [ajuint] Use counter
@@ -213,14 +213,14 @@ typedef struct EnsSMapperRange
 ** Ensembl Mapper Ranges as values.
 ******************************************************************************/
 
-typedef struct EnsSMapperRangeRegistry
+typedef struct EnsSMapperrangeregistry
 {
     AjPTable Registry;
     ajuint Use;
     ajuint Padding;
-} EnsOMapperRangeRegistry;
+} EnsOMapperrangeregistry;
 
-#define EnsPMapperRangeRegistry EnsOMapperRangeRegistry*
+#define EnsPMapperrangeregistry EnsOMapperrangeregistry*
 
 
 
@@ -238,8 +238,8 @@ typedef struct EnsSMapperRangeRegistry
 ** @cc Bio::EnsEMBL::Mapper
 ** @attr SourceType [AjPStr] Source mapping type
 ** @attr TargetType [AjPStr] Target mapping type
-** @attr SourceCoordSystem [EnsPCoordSystem] Source Ensembl Coordinate System
-** @attr TargetCoordSystem [EnsPCoordSystem] Target Ensembl Coordinate System
+** @attr SourceCoordsystem [EnsPCoordsystem] Source Ensembl Coordinate System
+** @attr TargetCoordsystem [EnsPCoordsystem] Target Ensembl Coordinate System
 ** @attr Pairs [AjPTable] AJAX Table of AJAX Tables with Ensembl Mapper Pairs
 ** @attr IsSorted [AjBool] Ensembl Mapper Pairs in the Mapper are sorted
 ** @attr PairCount [ajuint] Number of Ensembl Mapper Pairs
@@ -257,8 +257,8 @@ typedef struct EnsSMapper
 {
     AjPStr SourceType;
     AjPStr TargetType;
-    EnsPCoordSystem SourceCoordSystem;
-    EnsPCoordSystem TargetCoordSystem;
+    EnsPCoordsystem SourceCoordsystem;
+    EnsPCoordsystem TargetCoordsystem;
     AjPTable Pairs;
     AjBool IsSorted;
     ajuint PairCount;
@@ -277,38 +277,38 @@ typedef struct EnsSMapper
 
 /* Ensembl Mapper Unit */
 
-EnsPMapperUnit ensMapperUnitNew(ajuint oid, ajint start, ajint end);
+EnsPMapperunit ensMapperunitNew(ajuint oid, ajint start, ajint end);
 
-EnsPMapperUnit ensMapperUnitNewObj(const EnsPMapperUnit object);
+EnsPMapperunit ensMapperunitNewObj(const EnsPMapperunit object);
 
-EnsPMapperUnit ensMapperUnitNewRef(EnsPMapperUnit mu);
+EnsPMapperunit ensMapperunitNewRef(EnsPMapperunit mu);
 
-void ensMapperUnitDel(EnsPMapperUnit* Pmu);
+void ensMapperunitDel(EnsPMapperunit* Pmu);
 
-ajuint ensMapperUnitGetObjectIdentifier(const EnsPMapperUnit mu);
+ajuint ensMapperunitGetObjectIdentifier(const EnsPMapperunit mu);
 
-ajint ensMapperUnitGetStart(const EnsPMapperUnit mu);
+ajint ensMapperunitGetStart(const EnsPMapperunit mu);
 
-ajint ensMapperUnitGetEnd(const EnsPMapperUnit mu);
+ajint ensMapperunitGetEnd(const EnsPMapperunit mu);
 
-AjBool ensMapperUnitSetObjectIdentifier(EnsPMapperUnit mu, ajuint oid);
+AjBool ensMapperunitSetObjectIdentifier(EnsPMapperunit mu, ajuint oid);
 
-AjBool ensMapperUnitSetStart(EnsPMapperUnit mu, ajint start);
+AjBool ensMapperunitSetStart(EnsPMapperunit mu, ajint start);
 
-AjBool ensMapperUnitSetEnd(EnsPMapperUnit mu, ajint end);
+AjBool ensMapperunitSetEnd(EnsPMapperunit mu, ajint end);
 
-ajuint ensMapperUnitGetMemSize(const EnsPMapperUnit mu);
+ajuint ensMapperunitGetMemSize(const EnsPMapperunit mu);
 
-AjBool ensMapperUnitTrace(const EnsPMapperUnit mu, ajuint level);
+AjBool ensMapperunitTrace(const EnsPMapperunit mu, ajuint level);
 
 /* Ensembl Mapper Pair */
 
-EnsPMapperPair ensMapperPairNew(EnsPMapperUnit source,
-                                EnsPMapperUnit target,
+EnsPMapperpair ensMapperpairNew(EnsPMapperunit source,
+                                EnsPMapperunit target,
                                 ajint ori,
                                 AjBool indel);
 
-EnsPMapperPair ensMapperPairNewC(ajuint srcoid,
+EnsPMapperpair ensMapperpairNewC(ajuint srcoid,
                                  ajint srcstart,
                                  ajint srcend,
                                  ajuint trgoid,
@@ -317,93 +317,93 @@ EnsPMapperPair ensMapperPairNewC(ajuint srcoid,
                                  ajint ori,
                                  AjBool indel);
 
-EnsPMapperPair ensMapperPairNewObj(const EnsPMapperPair object);
+EnsPMapperpair ensMapperpairNewObj(const EnsPMapperpair object);
 
-EnsPMapperPair ensMapperPairNewRef(EnsPMapperPair mp);
+EnsPMapperpair ensMapperpairNewRef(EnsPMapperpair mp);
 
-void ensMapperPairDel(EnsPMapperPair* Pmp);
+void ensMapperpairDel(EnsPMapperpair* Pmp);
 
-EnsPMapperUnit ensMapperPairGetSource(const EnsPMapperPair mp);
+EnsPMapperunit ensMapperpairGetSource(const EnsPMapperpair mp);
 
-EnsPMapperUnit ensMapperPairGetTarget(const EnsPMapperPair mp);
+EnsPMapperunit ensMapperpairGetTarget(const EnsPMapperpair mp);
 
-ajint ensMapperPairGetOrientation(const EnsPMapperPair mp);
+ajint ensMapperpairGetOrientation(const EnsPMapperpair mp);
 
-AjBool ensMapperPairGetInsertionDeletion(const EnsPMapperPair mp);
+AjBool ensMapperpairGetInsertionDeletion(const EnsPMapperpair mp);
 
-EnsPMapperUnit ensMapperPairGetUnit(const EnsPMapperPair mp, AjEnum type);
+EnsPMapperunit ensMapperpairGetUnit(const EnsPMapperpair mp, AjEnum type);
 
-ajuint ensMapperPairGetMemSize(const EnsPMapperPair mp);
+ajuint ensMapperpairGetMemSize(const EnsPMapperpair mp);
 
-AjBool ensMapperPairTrace(const EnsPMapperPair mp, ajuint level);
+AjBool ensMapperpairTrace(const EnsPMapperpair mp, ajuint level);
 
 /* Ensembl Mapper Result */
 
-EnsPMapperResult ensMapperResultNew(AjEnum type,
+EnsPMapperresult ensMapperresultNew(AjEnum type,
                                     ajuint oid,
                                     ajint start,
                                     ajint end,
                                     ajint strand,
-                                    EnsPCoordSystem cs,
+                                    EnsPCoordsystem cs,
                                     ajint gapstart,
                                     ajint gapend);
 
-EnsPMapperResult ensMapperResultNewObj(const EnsPMapperResult object);
+EnsPMapperresult ensMapperresultNewObj(const EnsPMapperresult object);
 
-EnsPMapperResult ensMapperResultNewRef(EnsPMapperResult mr);
+EnsPMapperresult ensMapperresultNewRef(EnsPMapperresult mr);
 
-void ensMapperResultDel(EnsPMapperResult* Pmr);
+void ensMapperresultDel(EnsPMapperresult* Pmr);
 
-AjEnum ensMapperResultGetType(const EnsPMapperResult mr);
+AjEnum ensMapperresultGetType(const EnsPMapperresult mr);
 
-ajuint ensMapperResultGetObjectIdentifier(const EnsPMapperResult mr);
+ajuint ensMapperresultGetObjectIdentifier(const EnsPMapperresult mr);
 
-ajint ensMapperResultGetStart(const EnsPMapperResult mr);
+ajint ensMapperresultGetStart(const EnsPMapperresult mr);
 
-ajint ensMapperResultGetEnd(const EnsPMapperResult mr);
+ajint ensMapperresultGetEnd(const EnsPMapperresult mr);
 
-ajint ensMapperResultGetStrand(const EnsPMapperResult mr);
+ajint ensMapperresultGetStrand(const EnsPMapperresult mr);
 
-EnsPCoordSystem ensMapperResultGetCoordSystem(const EnsPMapperResult mr);
+EnsPCoordsystem ensMapperresultGetCoordsystem(const EnsPMapperresult mr);
 
-ajint ensMapperResultGetGapStart(const EnsPMapperResult mr);
+ajint ensMapperresultGetGapStart(const EnsPMapperresult mr);
 
-ajint ensMapperResultGetGapEnd(const EnsPMapperResult mr);
+ajint ensMapperresultGetGapEnd(const EnsPMapperresult mr);
 
-ajuint ensMapperResultGetCoordinateLength(const EnsPMapperResult mr);
+ajuint ensMapperresultGetCoordinateLength(const EnsPMapperresult mr);
 
-ajuint ensMapperResultGetGapLength(const EnsPMapperResult mr);
+ajuint ensMapperresultGetGapLength(const EnsPMapperresult mr);
 
-ajuint ensMapperResultGetLength(const EnsPMapperResult mr);
+ajuint ensMapperresultGetLength(const EnsPMapperresult mr);
 
-AjBool ensMapperResultTrace(const EnsPMapperResult mr, ajuint level);
+AjBool ensMapperresultTrace(const EnsPMapperresult mr, ajuint level);
 
 /* Ensembl Mapper Range */
 
-EnsPMapperRange ensMapperRangeNew(ajint start, ajint end);
+EnsPMapperrange ensMapperrangeNew(ajint start, ajint end);
 
-EnsPMapperRange ensMapperRangeNewObj(const EnsPMapperRange object);
+EnsPMapperrange ensMapperrangeNewObj(const EnsPMapperrange object);
 
-EnsPMapperRange ensMapperRangeNewRef(EnsPMapperRange mr);
+EnsPMapperrange ensMapperrangeNewRef(EnsPMapperrange mr);
 
-void ensMapperRangeDel(EnsPMapperRange* Pmr);
+void ensMapperrangeDel(EnsPMapperrange* Pmr);
 
-ajint ensMapperRangeGetStart(const EnsPMapperRange mr);
+ajint ensMapperrangeGetStart(const EnsPMapperrange mr);
 
-ajint ensMapperRangeGetEnd(const EnsPMapperRange mr);
+ajint ensMapperrangeGetEnd(const EnsPMapperrange mr);
 
 /* Ensembl Mapper Range Registry */
 
-EnsPMapperRangeRegistry ensMapperRangeRegistryNew(void);
+EnsPMapperrangeregistry ensMapperrangeregistryNew(void);
 
-EnsPMapperRangeRegistry ensMapperRangeRegistryNewRef(
-    EnsPMapperRangeRegistry mrr);
+EnsPMapperrangeregistry ensMapperrangeregistryNewRef(
+    EnsPMapperrangeregistry mrr);
 
-AjBool ensMapperRangeRegistryClear(EnsPMapperRangeRegistry mrr);
+AjBool ensMapperrangeregistryClear(EnsPMapperrangeregistry mrr);
 
-void ensMapperRangeRegistryDel(EnsPMapperRangeRegistry* Pmrr);
+void ensMapperrangeregistryDel(EnsPMapperrangeregistry* Pmrr);
 
-AjBool ensMapperRangeRegistryCheckAndRegister(EnsPMapperRangeRegistry mrr,
+AjBool ensMapperrangeregistryCheckAndRegister(EnsPMapperrangeregistry mrr,
                                               ajuint oid,
                                               ajint chkstart,
                                               ajint chkend,
@@ -411,11 +411,11 @@ AjBool ensMapperRangeRegistryCheckAndRegister(EnsPMapperRangeRegistry mrr,
                                               ajint regend,
                                               AjPList ranges);
 
-const AjPList ensMapperRangeRegistryGetRanges(
-    const EnsPMapperRangeRegistry mrr,
+const AjPList ensMapperrangeregistryGetRanges(
+    const EnsPMapperrangeregistry mrr,
     ajuint oid);
 
-ajuint ensMapperRangeRegistryOverlapSize(const EnsPMapperRangeRegistry mrr,
+ajuint ensMapperrangeregistryOverlapSize(const EnsPMapperrangeregistry mrr,
                                          ajuint oid,
                                          ajint start,
                                          ajint end);
@@ -424,8 +424,8 @@ ajuint ensMapperRangeRegistryOverlapSize(const EnsPMapperRangeRegistry mrr,
 
 EnsPMapper ensMapperNew(AjPStr srctype,
                         AjPStr trgtype,
-                        EnsPCoordSystem srccs,
-                        EnsPCoordSystem trgcs);
+                        EnsPCoordsystem srccs,
+                        EnsPCoordsystem trgcs);
 
 EnsPMapper ensMapperNewRef(EnsPMapper mapper);
 
@@ -450,13 +450,13 @@ AjBool ensMapperAddCoordinates(EnsPMapper mapper,
                                ajint trgstart,
                                ajint trgend);
 
-AjBool ensMapperAddMapperUnits(EnsPMapper mapper,
-                               EnsPMapperUnit srcmu,
-                               EnsPMapperUnit trgmu,
+AjBool ensMapperAddMapperunits(EnsPMapper mapper,
+                               EnsPMapperunit srcmu,
+                               EnsPMapperunit trgmu,
                                ajint ori,
                                AjBool indel);
 
-AjBool ensMapperAddMapperPair(EnsPMapper mapper, EnsPMapperPair mp);
+AjBool ensMapperAddMapperpair(EnsPMapper mapper, EnsPMapperpair mp);
 
 AjBool ensMapperListPairs(EnsPMapper mapper,
                           ajuint oid,
@@ -510,20 +510,20 @@ AjBool ensMapperTrace(const EnsPMapper mapper, ajuint level);
 
 
 #define MENSMAPPERINDELPAIRNEW(source, target, ori) \
-ensMapperPairNew(source, target, ori, AJTRUE);
+ensMapperpairNew(source, target, ori, AJTRUE);
 
 #define MENSMAPPERINDELPAIRDEL(Pmp) \
-ensMapperPairDel(Pmp);
+ensMapperpairDel(Pmp);
 
 #define MENSMAPPERCOORDINATENEW(oid, start, end, strand, cs) \
-ensMapperResultNew(ensEMapperResultCoordinate, oid, start, end, strand, cs, \
+ensMapperresultNew(ensEMapperresultCoordinate, oid, start, end, strand, cs, \
 		   0, 0)
 
 #define MENSMAPPERGAPNEW(start, end) \
-ensMapperResultNew(ensEMapperResultGap, 0, 0, 0, 0, NULL, start, end)
+ensMapperresultNew(ensEMapperresultGap, 0, 0, 0, 0, NULL, start, end)
 
 #define MENSMAPPERINDELNEW(oid, start, end, strand, cs, gstart, gend) \
-ensMapperResultNew(ensEMapperResultInDel, oid, start, end, strand, cs, \
+ensMapperresultNew(ensEMapperresultInDel, oid, start, end, strand, cs, \
 		   gstart, gend)
 
 

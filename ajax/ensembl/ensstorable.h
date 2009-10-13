@@ -22,7 +22,7 @@ enum EnsEStorableType
 {
     ensEStorableTypeNULL,
     ensEStorableTypeAnalysis,
-    ensEStorableTypeRepeatConsensus
+    ensEStorableTypeRepeatconsensus
 };
 
 
@@ -78,16 +78,16 @@ void ensStorableDel(EnsPStorable* Pstorable);
 
 AjEnum ensStorableGetType(const EnsPStorable storable);
 
-void *ensStorableGetadaptor(const EnsPStorable storable);
+void *ensStorableGetAdaptor(const EnsPStorable storable);
 
 ajuint ensStorableGetIdentifier(const EnsPStorable storable);
 
 AjBool ensStorableSetIdentifier(EnsPStorable storable, ajuint identifier);
 
-AjBool ensStorableSetadaptor(EnsPStorable storable, void* adaptor);
+AjBool ensStorableSetAdaptor(EnsPStorable storable, void* adaptor);
 
 AjBool ensStorableIsStored(const EnsPStorable storable,
-                           const EnsPDatabaseConnection dbc);
+                           const EnsPDatabaseconnection dbc);
 
 /*
 ** End of prototype definitions

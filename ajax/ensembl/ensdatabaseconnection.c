@@ -3,8 +3,8 @@
 **
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
-** @modified $Date: 2009/10/07 19:21:41 $ by $Author: rice $
-** @version $Revision: 1.2 $
+** @modified $Date: 2009/10/13 09:23:15 $ by $Author: rice $
+** @version $Revision: 1.3 $
 **
 ** This library is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU Library General Public
@@ -53,13 +53,13 @@
 
 
 
-/* @datasection [EnsPDatabaseConnection] Database Connection ******************
+/* @datasection [EnsPDatabaseconnection] Database Connection ******************
 **
 ** Functions for manipulating Ensembl Database Connection objects
 **
 ** @cc Bio::EnsEMBL::DBSQL::DbConnection CVS Revision: 1.51
 **
-** @nam2rule DatabaseConnection
+** @nam2rule Databaseconnection
 **
 ******************************************************************************/
 
@@ -73,17 +73,17 @@
 ** Database Connection. The target pointer does not need to be initialised to
 ** NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPDatabaseConnection]
+** @fdata [EnsPDatabaseconnection]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPDatabaseConnection] Ensembl Database Connection
-** @argrule Ref object [EnsPDatabaseConnection] Ensembl Database Connection
+** @argrule Obj object [EnsPDatabaseconnection] Ensembl Database Connection
+** @argrule Ref object [EnsPDatabaseconnection] Ensembl Database Connection
 **
-** @valrule * [EnsPDatabaseConnection] Ensembl Database Connection
+** @valrule * [EnsPDatabaseconnection] Ensembl Database Connection
 **
 ** @fcategory new
 ******************************************************************************/
@@ -91,7 +91,7 @@
 
 
 
-/* @func ensDatabaseConnectionNew *********************************************
+/* @func ensDatabaseconnectionNew *********************************************
 **
 ** Default Ensembl Database Connection constructor.
 **
@@ -103,11 +103,11 @@
 ** @param [u] socket [AjPStr] UNIX socket file
 ** @param [u] database [AjPStr] SQL database name
 **
-** @return [EnsPDatabaseConnection] Ensembl Database Connection or NULL
+** @return [EnsPDatabaseconnection] Ensembl Database Connection or NULL
 ** @@
 ******************************************************************************/
 
-EnsPDatabaseConnection ensDatabaseConnectionNew(AjEnum client,
+EnsPDatabaseconnection ensDatabaseconnectionNew(AjEnum client,
                                                 AjPStr user,
                                                 AjPStr password,
                                                 AjPStr host,
@@ -115,13 +115,13 @@ EnsPDatabaseConnection ensDatabaseConnectionNew(AjEnum client,
                                                 AjPStr socket,
                                                 AjPStr database)
 {
-    EnsPDatabaseConnection dbc = NULL;
+    EnsPDatabaseconnection dbc = NULL;
     
     if(!client)
 	return NULL;
     
     /*
-     ajDebug("ensDatabaseConnectionNew\n"
+     ajDebug("ensDatabaseconnectionNew\n"
 	     "  client %d\n"
 	     "  user '%S'\n"
 	     "  password '***'\n"
@@ -167,35 +167,35 @@ EnsPDatabaseConnection ensDatabaseConnectionNew(AjEnum client,
 
 
 
-/* @func ensDatabaseConnectionNewC ********************************************
+/* @func ensDatabaseconnectionNewC ********************************************
 **
 ** Construct an Ensembl Database Connection on an already existing connection.
 ** Optionally, a database name may be provided to connect to a different
 ** database on the same SQL server using the same SQL account information.
 **
-** @param [u] dbc [EnsPDatabaseConnection] Ensembl Database Connection
+** @param [u] dbc [EnsPDatabaseconnection] Ensembl Database Connection
 ** @param [u] database [AjPStr] SQL database name (optional)
 **
-** @return [EnsPDatabaseConnection] Ensembl Database Connection or NULL
+** @return [EnsPDatabaseconnection] Ensembl Database Connection or NULL
 ** @@
 ******************************************************************************/
 
-EnsPDatabaseConnection ensDatabaseConnectionNewC(
-    EnsPDatabaseConnection dbc, AjPStr database)
+EnsPDatabaseconnection ensDatabaseconnectionNewC(
+    EnsPDatabaseconnection dbc, AjPStr database)
 {
-    EnsPDatabaseConnection newdbc = NULL;
+    EnsPDatabaseconnection newdbc = NULL;
     
     if(!dbc)
         return NULL;
     
     /*
-     ajDebug("ensDatabaseConnectionNewC\n"
+     ajDebug("ensDatabaseconnectionNewC\n"
 	     "  dbc %p\n"
 	     "  database '%S'\n",
 	     dbc,
 	     database);
      
-     ensDatabaseConnectionDebug(dbc, 1);
+     ensDatabaseconnectionDebug(dbc, 1);
      */
     
     AJNEW0(newdbc);
@@ -238,13 +238,13 @@ EnsPDatabaseConnection ensDatabaseConnectionNewC(
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] dbc [EnsPDatabaseConnection] Ensembl Database Connection
+** @param [u] dbc [EnsPDatabaseconnection] Ensembl Database Connection
 **
-** @return [EnsPDatabaseConnection] Ensembl Database Connection
+** @return [EnsPDatabaseconnection] Ensembl Database Connection
 ** @@
 ******************************************************************************/
 
-EnsPDatabaseConnection ensDatabaseConnectionNewRef(EnsPDatabaseConnection dbc)
+EnsPDatabaseconnection ensDatabaseconnectionNewRef(EnsPDatabaseconnection dbc)
 {
     if(!dbc)
 	return NULL;
@@ -262,12 +262,12 @@ EnsPDatabaseConnection ensDatabaseConnectionNewRef(EnsPDatabaseConnection dbc)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Database Connection.
 **
-** @fdata [EnsPDatabaseConnection]
+** @fdata [EnsPDatabaseconnection]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) an Database Connection object
 **
-** @argrule * Pdbc [EnsPDatabaseConnection*] Ensembl Database Connection
+** @argrule * Pdbc [EnsPDatabaseconnection*] Ensembl Database Connection
 **                                           object address
 **
 ** @valrule * [void]
@@ -278,21 +278,21 @@ EnsPDatabaseConnection ensDatabaseConnectionNewRef(EnsPDatabaseConnection dbc)
 
 
 
-/* @func ensDatabaseConnectionDel *********************************************
+/* @func ensDatabaseconnectionDel *********************************************
 **
 ** Default Ensembl Database Connection destructor. Before freeing memory the
 ** connection to the SQL server is dropped.
 **
-** @param [d] Pdbc [EnsPDatabaseConnection*] Ensembl Database Connection
+** @param [d] Pdbc [EnsPDatabaseconnection*] Ensembl Database Connection
 **                                           address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensDatabaseConnectionDel(EnsPDatabaseConnection* Pdbc)
+void ensDatabaseconnectionDel(EnsPDatabaseconnection* Pdbc)
 {
-    EnsPDatabaseConnection pthis = NULL;
+    EnsPDatabaseconnection pthis = NULL;
     
     if(!Pdbc)
         return;
@@ -303,7 +303,7 @@ void ensDatabaseConnectionDel(EnsPDatabaseConnection* Pdbc)
     pthis = *Pdbc;
     
     /*
-     ajDebug("ensDatabaseConnectionDel\n"
+     ajDebug("ensDatabaseconnectionDel\n"
 	     "  *Pdbc %p\n",
 	     *Pdbc);
      */
@@ -345,7 +345,7 @@ void ensDatabaseConnectionDel(EnsPDatabaseConnection* Pdbc)
 **
 ** Functions for returning elements of an Ensembl Database Connection object.
 **
-** @fdata [EnsPDatabaseConnection]
+** @fdata [EnsPDatabaseconnection]
 ** @fnote None
 **
 ** @nam3rule Get Return Database Connection attribute(s)
@@ -358,7 +358,7 @@ void ensDatabaseConnectionDel(EnsPDatabaseConnection* Pdbc)
 ** @nam4rule GetDatabaseName Return the database name
 ** @nam4rule GetSqlClientType Return the SQL client type
 **
-** @argrule * dbc [const EnsPDatabaseConnection] Ensembl Database Connection
+** @argrule * dbc [const EnsPDatabaseconnection] Ensembl Database Connection
 **
 ** @valrule Sqlconnection [AjPSqlconnection] AJAX SQL Connection
 ** @valrule UserName [AjPStr] User name
@@ -375,18 +375,18 @@ void ensDatabaseConnectionDel(EnsPDatabaseConnection* Pdbc)
 
 
 
-/* @func ensDatabaseConnectionGetSqlconnection ********************************
+/* @func ensDatabaseconnectionGetSqlconnection ********************************
 **
 ** Get the AJAX SQL Connection element of an Ensembl Database Connection.
 **
-** @param [r] dbc [const EnsPDatabaseConnection] Ensembl Database Connection
+** @param [r] dbc [const EnsPDatabaseconnection] Ensembl Database Connection
 **
 ** @return [AjPSqlconnection] AJAX SQL Connection
 ** @@
 ******************************************************************************/
 
-AjPSqlconnection ensDatabaseConnectionGetSqlconnection(
-    const EnsPDatabaseConnection dbc)
+AjPSqlconnection ensDatabaseconnectionGetSqlconnection(
+    const EnsPDatabaseconnection dbc)
 {
     if(!dbc)
         return NULL;
@@ -397,17 +397,17 @@ AjPSqlconnection ensDatabaseConnectionGetSqlconnection(
 
 
 
-/* @func ensDatabaseConnectionGetUserName *************************************
+/* @func ensDatabaseconnectionGetUserName *************************************
 **
 ** Get the user name element of an Ensembl Database Connection.
 **
-** @param [r] dbc [const EnsPDatabaseConnection] Ensembl Database Connection
+** @param [r] dbc [const EnsPDatabaseconnection] Ensembl Database Connection
 **
 ** @return [AjPStr] User name
 ** @@
 ******************************************************************************/
 
-AjPStr ensDatabaseConnectionGetUserName(const EnsPDatabaseConnection dbc)
+AjPStr ensDatabaseconnectionGetUserName(const EnsPDatabaseconnection dbc)
 {
     if(!dbc)
         return NULL;
@@ -418,17 +418,17 @@ AjPStr ensDatabaseConnectionGetUserName(const EnsPDatabaseConnection dbc)
 
 
 
-/* @func ensDatabaseConnectionGetPassword *************************************
+/* @func ensDatabaseconnectionGetPassword *************************************
 **
 ** Get the password element of an Ensembl Database Connection.
 **
-** @param [r] dbc [const EnsPDatabaseConnection] Ensembl Database Connection
+** @param [r] dbc [const EnsPDatabaseconnection] Ensembl Database Connection
 **
 ** @return [AjPStr] Password
 ** @@
 ******************************************************************************/
 
-AjPStr ensDatabaseConnectionGetPassword(const EnsPDatabaseConnection dbc)
+AjPStr ensDatabaseconnectionGetPassword(const EnsPDatabaseconnection dbc)
 {
     if(!dbc)
         return NULL;
@@ -439,17 +439,17 @@ AjPStr ensDatabaseConnectionGetPassword(const EnsPDatabaseConnection dbc)
 
 
 
-/* @func ensDatabaseConnectionGetHostName *************************************
+/* @func ensDatabaseconnectionGetHostName *************************************
 **
 ** Get the host name element of an Ensembl Database Connection.
 **
-** @param [r] dbc [const EnsPDatabaseConnection] Ensembl Database Connection
+** @param [r] dbc [const EnsPDatabaseconnection] Ensembl Database Connection
 **
 ** @return [AjPStr] Host name
 ** @@
 ******************************************************************************/
 
-AjPStr ensDatabaseConnectionGetHostName(const EnsPDatabaseConnection dbc)
+AjPStr ensDatabaseconnectionGetHostName(const EnsPDatabaseconnection dbc)
 {
     if(!dbc)
         return NULL;
@@ -460,17 +460,17 @@ AjPStr ensDatabaseConnectionGetHostName(const EnsPDatabaseConnection dbc)
 
 
 
-/* @func ensDatabaseConnectionGetHostPort *************************************
+/* @func ensDatabaseconnectionGetHostPort *************************************
 **
 ** Get the host port element of an Ensembl Database Connection.
 **
-** @param [r] dbc [const EnsPDatabaseConnection] Ensembl Database Connection
+** @param [r] dbc [const EnsPDatabaseconnection] Ensembl Database Connection
 **
 ** @return [AjPStr] Host port
 ** @@
 ******************************************************************************/
 
-AjPStr ensDatabaseConnectionGetHostPort(const EnsPDatabaseConnection dbc)
+AjPStr ensDatabaseconnectionGetHostPort(const EnsPDatabaseconnection dbc)
 {
     if(!dbc)
         return NULL;
@@ -481,17 +481,17 @@ AjPStr ensDatabaseConnectionGetHostPort(const EnsPDatabaseConnection dbc)
 
 
 
-/* @func ensDatabaseConnectionGetSocket ***************************************
+/* @func ensDatabaseconnectionGetSocket ***************************************
 **
 ** Get the UNIX socket element of an Ensembl Database Connection.
 **
-** @param [r] dbc [const EnsPDatabaseConnection] Ensembl Database Connection
+** @param [r] dbc [const EnsPDatabaseconnection] Ensembl Database Connection
 **
 ** @return [AjPStr] UNIX socket
 ** @@
 ******************************************************************************/
 
-AjPStr ensDatabaseConnectionGetSocket(const EnsPDatabaseConnection dbc)
+AjPStr ensDatabaseconnectionGetSocket(const EnsPDatabaseconnection dbc)
 {
     if(!dbc)
         return NULL;
@@ -502,17 +502,17 @@ AjPStr ensDatabaseConnectionGetSocket(const EnsPDatabaseConnection dbc)
 
 
 
-/* @func ensDatabaseConnectionGetDatabaseName *********************************
+/* @func ensDatabaseconnectionGetDatabaseName *********************************
 **
 ** Get the database name element of an Ensembl Database Connection.
 **
-** @param [r] dbc [const EnsPDatabaseConnection] Ensembl Database Connection
+** @param [r] dbc [const EnsPDatabaseconnection] Ensembl Database Connection
 **
 ** @return [AjPStr] Database name
 ** @@
 ******************************************************************************/
 
-AjPStr ensDatabaseConnectionGetDatabaseName(const EnsPDatabaseConnection dbc)
+AjPStr ensDatabaseconnectionGetDatabaseName(const EnsPDatabaseconnection dbc)
 {
     if(!dbc)
         return NULL;
@@ -523,17 +523,17 @@ AjPStr ensDatabaseConnectionGetDatabaseName(const EnsPDatabaseConnection dbc)
 
 
 
-/* @func ensDatabaseConnectionGetSqlClientType ********************************
+/* @func ensDatabaseconnectionGetSqlClientType ********************************
 **
 ** Get the SQL client type element of an Ensembl Database Connection.
 **
-** @param [r] dbc [const EnsPDatabaseConnection] Ensembl Database Connection
+** @param [r] dbc [const EnsPDatabaseconnection] Ensembl Database Connection
 **
 ** @return [AjEnum] SQL client type
 ** @@
 ******************************************************************************/
 
-AjEnum ensDatabaseConnectionGetSqlClientType(const EnsPDatabaseConnection dbc)
+AjEnum ensDatabaseconnectionGetSqlClientType(const EnsPDatabaseconnection dbc)
 {
     if(!dbc)
         return ajESqlClientNULL;
@@ -544,12 +544,12 @@ AjEnum ensDatabaseConnectionGetSqlClientType(const EnsPDatabaseConnection dbc)
 
 
 
-/* @func ensDatabaseConnectionMatch *******************************************
+/* @func ensDatabaseconnectionMatch *******************************************
 **
 ** Tests for matching two Ensembl Database Connections.
 **
-** @param [r] dbc1 [const EnsPDatabaseConnection] Ensembl Database Connection
-** @param [r] dbc2 [const EnsPDatabaseConnection] Ensembl Database Connection
+** @param [r] dbc1 [const EnsPDatabaseconnection] Ensembl Database Connection
+** @param [r] dbc2 [const EnsPDatabaseconnection] Ensembl Database Connection
 **
 ** @return [AjBool] ajTrue if the Ensembl Database Connections are equal
 ** @@
@@ -557,8 +557,8 @@ AjEnum ensDatabaseConnectionGetSqlClientType(const EnsPDatabaseConnection dbc)
 ** direct comparison of Ensembl Database Connection elements.
 ******************************************************************************/
 
-AjBool ensDatabaseConnectionMatch(const EnsPDatabaseConnection dbc1,
-                                  const EnsPDatabaseConnection dbc2)
+AjBool ensDatabaseconnectionMatch(const EnsPDatabaseconnection dbc1,
+                                  const EnsPDatabaseconnection dbc2)
 {
     if(!dbc1)
 	return ajFalse;
@@ -602,17 +602,17 @@ AjBool ensDatabaseConnectionMatch(const EnsPDatabaseConnection dbc1,
 
 
 
-/* @func ensDatabaseConnectionConnect *****************************************
+/* @func ensDatabaseconnectionConnect *****************************************
 **
 ** Connect an Ensembl Database Connection to the specified SQL database.
 **
-** @param [u] dbc [EnsPDatabaseConnection] Ensembl Database Connection
+** @param [u] dbc [EnsPDatabaseconnection] Ensembl Database Connection
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensDatabaseConnectionConnect(EnsPDatabaseConnection dbc)
+AjBool ensDatabaseconnectionConnect(EnsPDatabaseconnection dbc)
 {
     if(!dbc)
         return ajFalse;
@@ -621,7 +621,7 @@ AjBool ensDatabaseConnectionConnect(EnsPDatabaseConnection dbc)
         return ajTrue;
     
     /*
-     ajDebug("ensDatabaseConnectionConnect\n"
+     ajDebug("ensDatabaseconnectionConnect\n"
 	     "  dbc %p\n",
 	     dbc);
      */
@@ -652,27 +652,27 @@ AjBool ensDatabaseConnectionConnect(EnsPDatabaseConnection dbc)
 
 
 
-/* @func ensDatabaseConnectionDisconnect **************************************
+/* @func ensDatabaseconnectionDisconnect **************************************
 **
 ** Disconnect an Ensembl Database Connection from its SQL database.
 **
-** @param [u] Pdbc [EnsPDatabaseConnection] Ensembl Database Connection
+** @param [u] Pdbc [EnsPDatabaseconnection] Ensembl Database Connection
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensDatabaseConnectionDisconnect(EnsPDatabaseConnection dbc)
+void ensDatabaseconnectionDisconnect(EnsPDatabaseconnection dbc)
 {
     if(!dbc)
         return;
     
     /*
-     ajDebug("ensDatabaseConnectionDisconnect\n"
+     ajDebug("ensDatabaseconnectionDisconnect\n"
 	     "  dbc %p\n",
 	     dbc);
      
-     ensDatabaseConnectionDebug(dbc, 1);
+     ensDatabaseconnectionDebug(dbc, 1);
      */
     
     ajSqlconnectionDel(&(dbc->Sqlconnection));
@@ -683,19 +683,19 @@ void ensDatabaseConnectionDisconnect(EnsPDatabaseConnection dbc)
 
 
 
-/* @func ensDatabaseConnectionIsConnected *************************************
+/* @func ensDatabaseconnectionIsConnected *************************************
 **
 ** Test whether an Ensembl Database Connection has an active
 ** AJAX SQL Connection assigned.
 **
-** @param [r] dbc [const EnsPDatabaseConnection] Ensembl Database Connection
+** @param [r] dbc [const EnsPDatabaseconnection] Ensembl Database Connection
 **
 ** @return [AjBool] ajTrue if the Ensembl Database Connection has an active
 **                  AJAX SQL Connection assigned
 ** @@
 ******************************************************************************/
 
-AjBool ensDatabaseConnectionIsConnected(const EnsPDatabaseConnection dbc)
+AjBool ensDatabaseconnectionIsConnected(const EnsPDatabaseconnection dbc)
 {
     if(!dbc)
         return ajFalse;
@@ -709,36 +709,36 @@ AjBool ensDatabaseConnectionIsConnected(const EnsPDatabaseConnection dbc)
 
 
 
-/* @func ensDatabaseConnectionSqlstatementNew *********************************
+/* @func ensDatabaseconnectionSqlstatementNew *********************************
 **
 ** Run an SQL statement against an Ensembl Database Connection.
 **
-** @param [u] dbc [EnsPDatabaseConnection] Ensembl Database Connection
+** @param [u] dbc [EnsPDatabaseconnection] Ensembl Database Connection
 ** @param [r] statement [const AjPStr] SQL statement
 **
 ** @return [AjPSqlstatement] AJAX SQL Statement
 ** @@
 ******************************************************************************/
 
-AjPSqlstatement ensDatabaseConnectionSqlstatementNew(
-    EnsPDatabaseConnection dbc,
+AjPSqlstatement ensDatabaseconnectionSqlstatementNew(
+    EnsPDatabaseconnection dbc,
     const AjPStr statement)
 {
     if(!dbc)
         return NULL;
     
     /*
-     ajDebug("ensDatabaseConnectionSqlstatementNew\n"
+     ajDebug("ensDatabaseconnectionSqlstatementNew\n"
 	     "  dbc %p\n"
 	     "  statement '%S'\n",
 	     dbc,
 	     statement);
      
-     ensDatabaseConnectionTrace(dbc, 1);
+     ensDatabaseconnectionTrace(dbc, 1);
      */
     
-    if(!ensDatabaseConnectionIsConnected(dbc))
-        if(!ensDatabaseConnectionConnect(dbc))
+    if(!ensDatabaseconnectionIsConnected(dbc))
+        if(!ensDatabaseconnectionConnect(dbc))
             return NULL;
     
     return ajSqlstatementNewRun(dbc->Sqlconnection, statement);
@@ -747,13 +747,13 @@ AjPSqlstatement ensDatabaseConnectionSqlstatementNew(
 
 
 
-/* @func ensDatabaseConnectionEscapeC ****************************************
+/* @func ensDatabaseconnectionEscapeC ****************************************
 **
 ** Escape an AJAX String based on an AJAX SQL Connection.
 ** The caller is responsible for deleting the char string at the returned
 ** address.
 **
-** @param [u] dbc [EnsPDatabaseConnection] Ensembl Database Connection
+** @param [u] dbc [EnsPDatabaseconnection] Ensembl Database Connection
 ** @param [wP] Ptxt [char**] Address of the (new) SQL-escaped C string
 ** @param [r] str [const AjPStr] AJAX String to be escaped
 **
@@ -761,7 +761,7 @@ AjPSqlstatement ensDatabaseConnectionSqlstatementNew(
 ** @@
 ******************************************************************************/
 
-AjBool ensDatabaseConnectionEscapeC(EnsPDatabaseConnection dbc,
+AjBool ensDatabaseconnectionEscapeC(EnsPDatabaseconnection dbc,
                                      char **Ptxt,
                                      const AjPStr str)
 {
@@ -772,7 +772,7 @@ AjBool ensDatabaseConnectionEscapeC(EnsPDatabaseConnection dbc,
 	return ajFalse;
     
     /*
-     ajDebug("ensDatabaseConnectionEscapeC\n"
+     ajDebug("ensDatabaseconnectionEscapeC\n"
 	     "  dbc %p\n"
 	     "  Ptxt %p\n"
 	     "  str '%S'\n",
@@ -780,11 +780,11 @@ AjBool ensDatabaseConnectionEscapeC(EnsPDatabaseConnection dbc,
 	     Ptxt,
 	     str);
      
-     ensDatabaseConnectionTrace(dbc, 1);
+     ensDatabaseconnectionTrace(dbc, 1);
      */
     
-    if(!ensDatabaseConnectionIsConnected(dbc))
-        if(!ensDatabaseConnectionConnect(dbc))
+    if(!ensDatabaseconnectionIsConnected(dbc))
+        if(!ensDatabaseconnectionConnect(dbc))
             return ajFalse;
     
     return ajSqlconnectionEscapeC(dbc->Sqlconnection, Ptxt, str);
@@ -793,13 +793,13 @@ AjBool ensDatabaseConnectionEscapeC(EnsPDatabaseConnection dbc,
 
 
 
-/* @func ensDatabaseConnectionEscapeS ****************************************
+/* @func ensDatabaseconnectionEscapeS ****************************************
 **
 ** Escape an AJAX String based on an AJAX SQL Connection.
 ** The caller is responsible for deleting the AJAX String at the returned
 ** address.
 **
-** @param [u] dbc [EnsPDatabaseConnection] Ensembl Database Connection
+** @param [u] dbc [EnsPDatabaseconnection] Ensembl Database Connection
 ** @param [wP] Pstr [AjPStr*] Address of the (new) SQL-escaped AJAX String
 ** @param [r] str [const AjPStr] AJAX String to be escaped
 **
@@ -807,7 +807,7 @@ AjBool ensDatabaseConnectionEscapeC(EnsPDatabaseConnection dbc,
 ** @@
 ******************************************************************************/
 
-AjBool ensDatabaseConnectionEscapeS(EnsPDatabaseConnection dbc,
+AjBool ensDatabaseconnectionEscapeS(EnsPDatabaseconnection dbc,
                                     AjPStr *Pstr,
                                     const AjPStr str)
 {
@@ -818,7 +818,7 @@ AjBool ensDatabaseConnectionEscapeS(EnsPDatabaseConnection dbc,
 	return ajFalse;
     
     /*
-     ajDebug("ensDatabaseConnectionEscapeS\n"
+     ajDebug("ensDatabaseconnectionEscapeS\n"
 	     "  dbc %p\n"
 	     "  Pstr %p\n"
 	     "  str '%S'\n",
@@ -826,11 +826,11 @@ AjBool ensDatabaseConnectionEscapeS(EnsPDatabaseConnection dbc,
 	     Pstr,
 	     str);
      
-     ensDatabaseConnectionTrace(dbc, 1);
+     ensDatabaseconnectionTrace(dbc, 1);
      */
     
-    if(!ensDatabaseConnectionIsConnected(dbc))
-        if(!ensDatabaseConnectionConnect(dbc))
+    if(!ensDatabaseconnectionIsConnected(dbc))
+        if(!ensDatabaseconnectionConnect(dbc))
             return ajFalse;
     
     return ajSqlconnectionEscapeS(dbc->Sqlconnection, Pstr, str);
@@ -843,10 +843,10 @@ AjBool ensDatabaseConnectionEscapeS(EnsPDatabaseConnection dbc,
 **
 ** Functions for reporting of an Ensembl Database Connection object.
 **
-** @fdata [EnsPDatabaseConnection]
+** @fdata [EnsPDatabaseconnection]
 ** @nam3rule Trace Report Ensembl Database Connection elements to debug file
 **
-** @argrule Trace dbc [const EnsPDatabaseConnection] Ensembl Database
+** @argrule Trace dbc [const EnsPDatabaseconnection] Ensembl Database
 **                                                   Connection
 ** @argrule Trace level [ajuint] Indentation level
 **
@@ -858,18 +858,18 @@ AjBool ensDatabaseConnectionEscapeS(EnsPDatabaseConnection dbc,
 
 
 
-/* @func ensDatabaseConnectionTrace *******************************************
+/* @func ensDatabaseconnectionTrace *******************************************
 **
 ** Trace an Ensembl Database Connection.
 **
-** @param [r] dbc [const EnsPDatabaseConnection] Ensembl Database Connection
+** @param [r] dbc [const EnsPDatabaseconnection] Ensembl Database Connection
 ** @param [r] level [ajuint] Indentation level
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensDatabaseConnectionTrace(const EnsPDatabaseConnection dbc,
+AjBool ensDatabaseconnectionTrace(const EnsPDatabaseconnection dbc,
                                   ajuint level)
 {
     AjPStr indent = NULL;
@@ -881,7 +881,7 @@ AjBool ensDatabaseConnectionTrace(const EnsPDatabaseConnection dbc,
     
     ajStrAppendCountK(&indent, ' ', level * 2);
     
-    ajDebug("%SensDatabaseConnectionTrace %p\n"
+    ajDebug("%SensDatabaseconnectionTrace %p\n"
 	    "%S  Sqlconnection %p\n"
 	    "%S  SqlClientType %d\n"
 	    "%S  UserName '%S'\n"

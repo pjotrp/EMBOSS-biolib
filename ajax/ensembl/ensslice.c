@@ -7,7 +7,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -49,25 +49,25 @@
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-extern EnsPAssemblyExceptionadaptor
-ensRegistryGetAssemblyExceptionadaptor(EnsPDatabaseadaptor dba);
+extern EnsPAssemblyexceptionadaptor
+ensRegistryGetAssemblyexceptionadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPAssemblyMapperadaptor
-ensRegistryGetAssemblyMapperadaptor(EnsPDatabaseadaptor dba);
+extern EnsPAssemblymapperadaptor
+ensRegistryGetAssemblymapperadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPCoordSystemadaptor
-ensRegistryGetCoordSystemadaptor(EnsPDatabaseadaptor dba);
+extern EnsPCoordsystemadaptor
+ensRegistryGetCoordsystemadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPRepeatFeatureadaptor
-ensRegistryGetRepeatFeatureadaptor(EnsPDatabaseadaptor dba);
+extern EnsPRepeatfeatureadaptor
+ensRegistryGetRepeatfeatureadaptor(EnsPDatabaseadaptor dba);
 
 extern EnsPSequenceadaptor
 ensRegistryGetSequenceadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPSeqRegionadaptor
-ensRegistryGetSeqRegionadaptor(EnsPDatabaseadaptor dba);
+extern EnsPSeqregionadaptor
+ensRegistryGetSeqregionadaptor(EnsPDatabaseadaptor dba);
 
-static EnsPProjectionSegment sliceConstrainToSeqRegion(EnsPSlice slice);
+static EnsPProjectionsegment sliceConstrainToSeqregion(EnsPSlice slice);
 
 static void* sliceAdaptorCacheReference(void *value);
 
@@ -131,7 +131,7 @@ static ajuint sliceAdaptorCacheSize(const void* value);
 **
 ** @cc Bio::EnsEMBL::Slice::new
 ** @param [r] adaptor [EnsPSliceadaptor] Ensembl Slice Adaptor
-** @param [u] sr [EnsPSeqRegion] Ensembl Sequence Region
+** @param [u] sr [EnsPSeqregion] Ensembl Sequence Region
 ** @param [r] start [ajint] Ensembl Sequence Region start
 ** @param [r] end [ajint] Ensembl Sequence Region end
 ** @param [r] strand [ajint] Ensembl Sequence Region strand
@@ -142,7 +142,7 @@ static ajuint sliceAdaptorCacheSize(const void* value);
 ******************************************************************************/
 
 EnsPSlice ensSliceNewS(EnsPSliceadaptor adaptor,
-                       EnsPSeqRegion sr,
+                       EnsPSeqregion sr,
                        ajint start,
                        ajint end,
                        ajint strand,
@@ -157,7 +157,7 @@ EnsPSlice ensSliceNewS(EnsPSliceadaptor adaptor,
 	return NULL;
     }
     
-    if(ensCoordSystemIsTopLevel(ensSeqRegionGetCoordSystem(sr)))
+    if(ensCoordsystemIsTopLevel(ensSeqregionGetCoordsystem(sr)))
     {
 	ajDebug("ensSliceNewS cannot create a Slice on a Sequence Region "
 		"with a top-level Coordinate System.\n");
@@ -169,7 +169,7 @@ EnsPSlice ensSliceNewS(EnsPSliceadaptor adaptor,
 	start = 1;
     
     if(!end)
-	end = ensSeqRegionGetLength(sr);
+	end = ensSeqregionGetLength(sr);
     
     if(start > (end + 1))
     {
@@ -192,11 +192,11 @@ EnsPSlice ensSliceNewS(EnsPSliceadaptor adaptor,
     }
     
     if(sequence &&
-	(ajStrGetLen(sequence) != (ajuint) ensSeqRegionGetLength(sr)))
+	(ajStrGetLen(sequence) != (ajuint) ensSeqregionGetLength(sr)))
     {
 	ajDebug("ensSliceNewS requires that the Sequence Region length %d "
 		"matches the length of the Sequence string %u.\n",
-		ensSeqRegionGetLength(sr), ajStrGetLen(sequence));
+		ensSeqregionGetLength(sr), ajStrGetLen(sequence));
 	
 	return NULL;
     }
@@ -205,7 +205,7 @@ EnsPSlice ensSliceNewS(EnsPSliceadaptor adaptor,
     
     slice->Adaptor = adaptor;
     
-    slice->SeqRegion = ensSeqRegionNewRef(sr);
+    slice->Seqregion = ensSeqregionNewRef(sr);
     
     if(sequence)
 	slice->Sequence = ajStrNewRef(sequence);
@@ -230,7 +230,7 @@ EnsPSlice ensSliceNewS(EnsPSliceadaptor adaptor,
 **
 ** @cc Bio::EnsEMBL::Slice::new
 ** @param [r] adaptor [EnsPSliceadaptor] Ensembl Slice Adaptor
-** @param [u] sr [EnsPSeqRegion] Ensembl Sequence Region
+** @param [u] sr [EnsPSeqregion] Ensembl Sequence Region
 ** @param [r] start [ajint] Ensembl Sequence Region start
 ** @param [r] end [ajint] Ensembl Sequence Region end
 ** @param [r] strand [ajint] Ensembl Sequence Region strand
@@ -240,7 +240,7 @@ EnsPSlice ensSliceNewS(EnsPSliceadaptor adaptor,
 ******************************************************************************/
 
 EnsPSlice ensSliceNew(EnsPSliceadaptor adaptor,
-                      EnsPSeqRegion sr,
+                      EnsPSeqregion sr,
                       ajint start,
                       ajint end,
                       ajint strand)
@@ -254,7 +254,7 @@ EnsPSlice ensSliceNew(EnsPSliceadaptor adaptor,
 	return NULL;
     }
     
-    if(ensCoordSystemIsTopLevel(ensSeqRegionGetCoordSystem(sr)))
+    if(ensCoordsystemIsTopLevel(ensSeqregionGetCoordsystem(sr)))
     {
 	ajDebug("ensSliceNew cannot create a Slice on a Sequence Region "
 		"with a top-level Coordinate System.\n");
@@ -266,7 +266,7 @@ EnsPSlice ensSliceNew(EnsPSliceadaptor adaptor,
 	start = 1;
     
     if(!end)
-	end = ensSeqRegionGetLength(sr);
+	end = ensSeqregionGetLength(sr);
     
     if(start > (end + 1))
     {
@@ -292,7 +292,7 @@ EnsPSlice ensSliceNew(EnsPSliceadaptor adaptor,
     
     slice->Adaptor = adaptor;
     
-    slice->SeqRegion = ensSeqRegionNewRef(sr);
+    slice->Seqregion = ensSeqregionNewRef(sr);
     
     slice->Sequence = (AjPStr) NULL;
     
@@ -331,7 +331,7 @@ EnsPSlice ensSliceNewObj(EnsPSlice object)
     
     slice->Adaptor = object->Adaptor;
     
-    slice->SeqRegion = ensSeqRegionNewRef(object->SeqRegion);
+    slice->Seqregion = ensSeqregionNewRef(object->Seqregion);
     
     if(object->Sequence)
 	slice->Sequence = ajStrNewRef(object->Sequence);
@@ -431,7 +431,7 @@ void ensSliceDel(EnsPSlice *Pslice)
 	return;
     }
     
-    ensSeqRegionDel(&pthis->SeqRegion);
+    ensSeqregionDel(&pthis->Seqregion);
     
     ajStrDel(&pthis->Sequence);
     
@@ -453,8 +453,8 @@ void ensSliceDel(EnsPSlice *Pslice)
 ** @fnote None
 **
 ** @nam3rule Get Return Slice attribute(s)
-** @nam4rule Getadaptor Return the Ensembl Slice Adaptor
-** @nam4rule GetSeqRegion Return the Ensembl Sequence Region
+** @nam4rule GetAdaptor Return the Ensembl Slice Adaptor
+** @nam4rule GetSeqregion Return the Ensembl Sequence Region
 ** @nam4rule GetSequence Return the sequence
 ** @nam4rule GetStart Return the start
 ** @nam4rule GetEnd Return the end
@@ -463,7 +463,7 @@ void ensSliceDel(EnsPSlice *Pslice)
 ** @argrule * slice [const EnsPSlice] Slice
 **
 ** @valrule Adaptor [EnsPSliceadaptor] Ensembl Slice Adaptor
-** @valrule SeqRegion [EnsPSeqRegion] Ensembl Sequence Region
+** @valrule Seqregion [EnsPSeqregion] Ensembl Sequence Region
 ** @valrule Sequence [AjPStr] Sequence
 ** @valrule Start [ajint] Start
 ** @valrule End [ajint] End
@@ -475,7 +475,7 @@ void ensSliceDel(EnsPSlice *Pslice)
 
 
 
-/* @func ensSliceGetadaptor ***************************************************
+/* @func ensSliceGetAdaptor ***************************************************
 **
 ** Get the Ensembl Slice Adaptor element an Ensembl Slice.
 **
@@ -486,7 +486,7 @@ void ensSliceDel(EnsPSlice *Pslice)
 ** @@
 ******************************************************************************/
 
-EnsPSliceadaptor ensSliceGetadaptor(const EnsPSlice slice)
+EnsPSliceadaptor ensSliceGetAdaptor(const EnsPSlice slice)
 {
     if(!slice)
         return NULL;
@@ -497,22 +497,22 @@ EnsPSliceadaptor ensSliceGetadaptor(const EnsPSlice slice)
 
 
 
-/* @func ensSliceGetSeqRegion *************************************************
+/* @func ensSliceGetSeqregion *************************************************
 **
 ** Get the Ensembl Sequence Region element of an Ensembl Slice.
 **
 ** @param [r] slice [const EnsPSlice] Ensembl Slice
 **
-** @return [EnsPSeqRegion] Ensembl Sequence Region
+** @return [EnsPSeqregion] Ensembl Sequence Region
 ** @@
 ******************************************************************************/
 
-EnsPSeqRegion ensSliceGetSeqRegion(const EnsPSlice slice)
+EnsPSeqregion ensSliceGetSeqregion(const EnsPSlice slice)
 {
     if(!slice)
         return NULL;
     
-    return slice->SeqRegion;
+    return slice->Seqregion;
 }
 
 
@@ -613,7 +613,7 @@ ajint ensSliceGetStrand(const EnsPSlice slice)
 ** @fnote None
 **
 ** @nam3rule Set Set one element of a Slice
-** @nam4rule Setadaptor Set the Ensembl Slice Adaptor
+** @nam4rule SetAdaptor Set the Ensembl Slice Adaptor
 ** @nam4rule SetSequence Set the sequence
 **
 ** @argrule * slice [EnsPSlice] Ensembl Slice object
@@ -626,7 +626,7 @@ ajint ensSliceGetStrand(const EnsPSlice slice)
 
 
 
-/* @func ensSliceSetadaptor ***************************************************
+/* @func ensSliceSetAdaptor ***************************************************
 **
 ** Set the Ensembl Slice Adaptor element of an Ensembl Slice.
 **
@@ -638,7 +638,7 @@ ajint ensSliceGetStrand(const EnsPSlice slice)
 ** @@
 ******************************************************************************/
 
-AjBool ensSliceSetadaptor(EnsPSlice slice, EnsPSliceadaptor adaptor)
+AjBool ensSliceSetAdaptor(EnsPSlice slice, EnsPSliceadaptor adaptor)
 {
     if(!slice)
         return ajFalse;
@@ -728,7 +728,7 @@ AjBool ensSliceTrace(const EnsPSlice slice, ajuint level)
     
     ajDebug("%SensSliceTrace %p\n"
 	    "%S  Adaptor %p\n"
-	    "%S  SeqRegion %p\n"
+	    "%S  Seqregion %p\n"
 	    "%S  Sequence %p\n"
 	    "%S  Start %d\n"
 	    "%S  End %d\n"
@@ -736,14 +736,14 @@ AjBool ensSliceTrace(const EnsPSlice slice, ajuint level)
 	    "%S  Use %u\n",
 	    indent, slice,
 	    indent, slice->Adaptor,
-	    indent, slice->SeqRegion,
+	    indent, slice->Seqregion,
 	    indent, slice->Sequence,
 	    indent, slice->Start,
 	    indent, slice->End,
 	    indent, slice->Strand,
 	    indent, slice->Use);
     
-    ensSeqRegionTrace(slice->SeqRegion, level + 1);
+    ensSeqregionTrace(slice->Seqregion, level + 1);
     
     ajStrDel(&indent);
     
@@ -753,7 +753,7 @@ AjBool ensSliceTrace(const EnsPSlice slice, ajuint level)
 
 
 
-/* @func ensSliceGetSeqRegionIdentifier ***************************************
+/* @func ensSliceGetSeqregionIdentifier ***************************************
 **
 ** Get the identifier element of the Ensembl Sequence Region element of an
 ** Ensembl Slice.
@@ -764,18 +764,18 @@ AjBool ensSliceTrace(const EnsPSlice slice, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensSliceGetSeqRegionIdentifier(const EnsPSlice slice)
+ajuint ensSliceGetSeqregionIdentifier(const EnsPSlice slice)
 {
     if(!slice)
 	return 0;
     
-    return ensSeqRegionGetIdentifier(slice->SeqRegion);
+    return ensSeqregionGetIdentifier(slice->Seqregion);
 }
 
 
 
 
-/* @func ensSliceGetSeqRegionName *********************************************
+/* @func ensSliceGetSeqregionName *********************************************
 **
 ** Get the name element of the Ensembl Sequence Region element of an
 ** Ensembl Slice.
@@ -786,18 +786,18 @@ ajuint ensSliceGetSeqRegionIdentifier(const EnsPSlice slice)
 ** @@
 ******************************************************************************/
 
-const AjPStr ensSliceGetSeqRegionName(const EnsPSlice slice)
+const AjPStr ensSliceGetSeqregionName(const EnsPSlice slice)
 {
     if(!slice)
         return NULL;
     
-    return ensSeqRegionGetName(slice->SeqRegion);
+    return ensSeqregionGetName(slice->Seqregion);
 }
 
 
 
 
-/* @func ensSliceGetSeqRegionLength *******************************************
+/* @func ensSliceGetSeqregionLength *******************************************
 **
 ** Get the length element of the Ensembl Sequence Region element of an
 ** Ensembl Slice.
@@ -808,18 +808,18 @@ const AjPStr ensSliceGetSeqRegionName(const EnsPSlice slice)
 ** @@
 ******************************************************************************/
 
-ajint ensSliceGetSeqRegionLength(const EnsPSlice slice)
+ajint ensSliceGetSeqregionLength(const EnsPSlice slice)
 {
     if(!slice)
         return 0;
     
-    return ensSeqRegionGetLength(slice->SeqRegion);
+    return ensSeqregionGetLength(slice->Seqregion);
 }
 
 
 
 
-/* @func ensSliceGetCoordSystem ***********************************************
+/* @func ensSliceGetCoordsystem ***********************************************
 **
 ** Get the Ensembl Coordinate System element of the
 ** Ensembl Sequence Region element of an Ensembl Slice.
@@ -827,30 +827,30 @@ ajint ensSliceGetSeqRegionLength(const EnsPSlice slice)
 ** @cc Bio::EnsEMBL::Slice::coord_system
 ** @param [r] slice [const EnsPSlice] Ensembl Slice
 **
-** @return [EnsPCoordSystem] Ensembl Coordinate System
+** @return [EnsPCoordsystem] Ensembl Coordinate System
 ** @@
 ******************************************************************************/
 
-EnsPCoordSystem ensSliceGetCoordSystem(const EnsPSlice slice)
+EnsPCoordsystem ensSliceGetCoordsystem(const EnsPSlice slice)
 {
     if(!slice)
 	return NULL;
     
-    if(!slice->SeqRegion)
+    if(!slice->Seqregion)
     {
-	ajDebug("ensSliceGetCoordSystem cannot get the Coordinate System of "
+	ajDebug("ensSliceGetCoordsystem cannot get the Coordinate System of "
 		"a Slice without a Sequence Region.\n");
 	
 	return NULL;
     }
     
-    return ensSeqRegionGetCoordSystem(slice->SeqRegion);
+    return ensSeqregionGetCoordsystem(slice->Seqregion);
 }
 
 
 
 
-/* @func ensSliceGetCoordSystemName *******************************************
+/* @func ensSliceGetCoordsystemName *******************************************
 **
 ** Get the name element of the Ensembl Coordinate System element of the
 ** Ensembl Sequence Region element of an Ensembl Slice.
@@ -862,26 +862,26 @@ EnsPCoordSystem ensSliceGetCoordSystem(const EnsPSlice slice)
 ** @@
 ******************************************************************************/
 
-const AjPStr ensSliceGetCoordSystemName(const EnsPSlice slice)
+const AjPStr ensSliceGetCoordsystemName(const EnsPSlice slice)
 {
     if(!slice)
         return NULL;
     
-    if(!slice->SeqRegion)
+    if(!slice->Seqregion)
     {
-	ajDebug("ensSliceGetCoordSystemName cannot get the Coordinate System "
+	ajDebug("ensSliceGetCoordsystemName cannot get the Coordinate System "
 		"name of a Slice without a Sequence Region.\n");
 	
 	return NULL;
     }
     
-    return ensCoordSystemGetName(ensSeqRegionGetCoordSystem(slice->SeqRegion));
+    return ensCoordsystemGetName(ensSeqregionGetCoordsystem(slice->Seqregion));
 }
 
 
 
 
-/* @func ensSliceGetCoordSystemVersion ****************************************
+/* @func ensSliceGetCoordsystemVersion ****************************************
 **
 ** Get the version element of the Ensembl Coordinate System element of the
 ** Ensembl Sequence Region element of an Ensembl Slice.
@@ -892,22 +892,22 @@ const AjPStr ensSliceGetCoordSystemName(const EnsPSlice slice)
 ** @@
 ******************************************************************************/
 
-const AjPStr ensSliceGetCoordSystemVersion(const EnsPSlice slice)
+const AjPStr ensSliceGetCoordsystemVersion(const EnsPSlice slice)
 {
     if(!slice)
         return NULL;
     
-    if(!slice->SeqRegion)
+    if(!slice->Seqregion)
     {
-	ajDebug("ensSliceGetCoordSystemVersion cannot get the "
+	ajDebug("ensSliceGetCoordsystemVersion cannot get the "
 		"Coordinate System version for a Slice without a "
 		"Sequence Region.\n");
 	
 	return NULL;
     }
     
-    return ensCoordSystemGetVersion(ensSeqRegionGetCoordSystem(
-                                        slice->SeqRegion));
+    return ensCoordsystemGetVersion(ensSeqregionGetCoordsystem(
+                                        slice->Seqregion));
 }
 
 
@@ -976,7 +976,7 @@ ajuint ensSliceGetMemSize(const EnsPSlice slice)
     
     size += (ajuint) sizeof (EnsOSlice);
     
-    size += ensSeqRegionGetMemSize(slice->SeqRegion);
+    size += ensSeqregionGetMemSize(slice->Seqregion);
     
     if(slice->Sequence)
     {
@@ -1005,7 +1005,7 @@ ajuint ensSliceGetMemSize(const EnsPSlice slice)
 
 AjBool ensSliceFetchName(const EnsPSlice slice, AjPStr* Pname)
 {
-    EnsPCoordSystem cs = NULL;
+    EnsPCoordsystem cs = NULL;
     
     if(!slice)
         return ajFalse;
@@ -1013,12 +1013,12 @@ AjBool ensSliceFetchName(const EnsPSlice slice, AjPStr* Pname)
     if(!Pname)
         return ajFalse;
     
-    cs = ensSeqRegionGetCoordSystem(slice->SeqRegion);
+    cs = ensSeqregionGetCoordsystem(slice->Seqregion);
     
     *Pname = ajFmtStr("%S:%S:%S:%d:%d:%d",
-		      ensCoordSystemGetName(cs),
-		      ensCoordSystemGetVersion(cs),
-		      ensSeqRegionGetName(slice->SeqRegion),
+		      ensCoordsystemGetName(cs),
+		      ensCoordsystemGetVersion(cs),
+		      ensSeqregionGetName(slice->Seqregion),
 		      slice->Start,
 		      slice->End,
 		      slice->Strand);
@@ -1069,7 +1069,7 @@ AjBool ensSliceMatch(const EnsPSlice slice1, const EnsPSlice slice2)
     if(slice1 == slice2)
 	return ajTrue;
     
-    if(!ensSeqRegionMatch(slice1->SeqRegion, slice2->SeqRegion))
+    if(!ensSeqregionMatch(slice1->Seqregion, slice2->Seqregion))
 	return ajFalse;
     
     if(slice1->Start != slice2->Start)
@@ -1109,7 +1109,7 @@ AjBool ensSliceIsTopLevel(EnsPSlice slice)
     if(!slice)
 	return ajFalse;
     
-    if(!slice->SeqRegion)
+    if(!slice->Seqregion)
     {
 	ajDebug("ensSliceIsTopLevel requires the Ensembl Slice to have an "
 		"Ensembl Sequence region attached.\n");
@@ -1117,7 +1117,7 @@ AjBool ensSliceIsTopLevel(EnsPSlice slice)
 	return ajFalse;
     }
     
-    return ensSeqRegionIsTopLevel(slice->SeqRegion);
+    return ensSeqregionIsTopLevel(slice->Seqregion);
 }
 
 
@@ -1309,9 +1309,9 @@ AjBool ensSliceFetchSubSequenceSeq(EnsPSlice slice,
     srstrand = slice->Strand * strand;
     
     name = ajFmtStr("%S:%S:%S:%d:%d:%d",
-		    ensSliceGetCoordSystemName(slice),
-		    ensSliceGetCoordSystemVersion(slice),
-		    ensSliceGetSeqRegionName(slice),
+		    ensSliceGetCoordsystemName(slice),
+		    ensSliceGetCoordsystemVersion(slice),
+		    ensSliceGetSeqregionName(slice),
 		    srstart,
 		    srend,
 		    srstrand);
@@ -1542,7 +1542,7 @@ AjBool ensSliceFetchInvertedSlice(EnsPSlice slice, EnsPSlice *Pslice)
 	ajSeqstrReverse(&sequence);
 	
 	*Pslice = ensSliceNewS(slice->Adaptor,
-			       slice->SeqRegion,
+			       slice->Seqregion,
 			       slice->Start,
 			       slice->End,
 			       slice->Strand * -1,
@@ -1552,7 +1552,7 @@ AjBool ensSliceFetchInvertedSlice(EnsPSlice slice, EnsPSlice *Pslice)
     }
     else
 	*Pslice = ensSliceNew(slice->Adaptor,
-			      slice->SeqRegion,
+			      slice->Seqregion,
 			      slice->Start,
 			      slice->End,
 			      slice->Strand * -1);
@@ -1668,7 +1668,7 @@ AjBool ensSliceFetchSubSlice(EnsPSlice slice,
 				    &sequence);
 				    
 	*Pslice = ensSliceNewS(slice->Adaptor,
-			       slice->SeqRegion,
+			       slice->Seqregion,
 			       srstart,
 			       srend,
 			       srstrand,
@@ -1678,7 +1678,7 @@ AjBool ensSliceFetchSubSlice(EnsPSlice slice,
     }
     else
 	*Pslice = ensSliceNew(slice->Adaptor,
-			      slice->SeqRegion,
+			      slice->Seqregion,
 			      srstart,
 			      srend,
 			      srstrand);
@@ -1688,6 +1688,18 @@ AjBool ensSliceFetchSubSlice(EnsPSlice slice,
 
 
 
+
+/*
+** FIXME: This should probably go though the Slice Adaptor so that the Slice
+** would be inserted into the Adaptor cache. Expanded Slices would then exist
+** in memory only once.
+**
+** FIXME: The ensSliceFetchSubSlice function does in principle the same and
+** could expand a Slice by providing a negative start and an end that lies
+** beyond the length. The reason why two functions are required are Slices
+** that have a sequence attached. It is possible to contract them (sub-slice)
+** but it is not possible to expand them without loosing information.
+*/
 
 /* @func ensSliceFetchExpandedSlice *******************************************
 **
@@ -1717,18 +1729,6 @@ AjBool ensSliceFetchSubSlice(EnsPSlice slice,
 ** overlap. In that case 'five' and 'three' will be set to a maximum possible
 ** number and that will result in the slice which would have only 2 base pairs.
 ******************************************************************************/
-
-/*
-** FIXME: This should probably go though the Slice Adaptor so that the Slice
-** would be inserted into the Adaptor cache. Expanded Slices would then exist
-** in memory only once.
-**
-** FIXME: The ensSliceFetchSubSlice function does in principle the same and
-** could expand a Slice by providing a negative start and an end that lies
-** beyond the length. The reason why two functions are required are Slices
-** that have a sequence attached. It is possible to contract them (sub-slice)
-** but it is not possible to expand them without loosing information.
-*/
 
 AjBool ensSliceFetchExpandedSlice(const EnsPSlice slice,
                                   ajint five,
@@ -1788,7 +1788,7 @@ AjBool ensSliceFetchExpandedSlice(const EnsPSlice slice,
         eshift = five;
     }
     
-    srid = ensSeqRegionGetIdentifier(slice->SeqRegion);
+    srid = ensSeqregionGetIdentifier(slice->Seqregion);
     
     srstart = slice->Start - sshift;
     
@@ -1845,7 +1845,7 @@ AjBool ensSliceFetchExpandedSlice(const EnsPSlice slice,
     }
     
     if(slice->Adaptor)
-	ensSliceadaptorFetchBySeqRegionIdentifier(slice->Adaptor,
+	ensSliceadaptorFetchBySeqregionIdentifier(slice->Adaptor,
 						  srid,
 						  srstart,
 						  srend,
@@ -1853,7 +1853,7 @@ AjBool ensSliceFetchExpandedSlice(const EnsPSlice slice,
 						  Pslice);
     else
 	*Pslice = ensSliceNew(slice->Adaptor,
-			      slice->SeqRegion,
+			      slice->Seqregion,
 			      srstart,
 			      srend,
 			      slice->Strand);
@@ -1864,24 +1864,24 @@ AjBool ensSliceFetchExpandedSlice(const EnsPSlice slice,
 
 
 
-/* @funcstatic sliceConstrainToSeqRegion **************************************
-**
-** Constrain an Ensembl Slice to its Ensembl Sequence Region element.
-**
-** @cc Bio::EnsEMBL::Slice::_constrain_to_region
-** @param [r] slice [EnsPSlice] Ensembl Slice
-**
-** @return [EnsPProjectionSegment] Ensembl Projection Segment or NULL
-** @@
-******************************************************************************/
-
 /*
 ** FIXME: This should probably go though the Slice Adaptor so that the Slice
 ** would be inserted into the Adaptor cache. Expanded Slices would then exist
 ** in memory only once.
 */
 
-static EnsPProjectionSegment sliceConstrainToSeqRegion(EnsPSlice slice)
+/* @funcstatic sliceConstrainToSeqregion **************************************
+**
+** Constrain an Ensembl Slice to its Ensembl Sequence Region element.
+**
+** @cc Bio::EnsEMBL::Slice::_constrain_to_region
+** @param [r] slice [EnsPSlice] Ensembl Slice
+**
+** @return [EnsPProjectionsegment] Ensembl Projection Segment or NULL
+** @@
+******************************************************************************/
+
+static EnsPProjectionsegment sliceConstrainToSeqregion(EnsPSlice slice)
 {
     ajint sshift = 0;
     ajint eshift = 0;
@@ -1889,13 +1889,13 @@ static EnsPProjectionSegment sliceConstrainToSeqRegion(EnsPSlice slice)
     ajint *Pfive  = NULL;
     ajint *Pthree = NULL;
     
-    EnsPProjectionSegment ps = NULL;
+    EnsPProjectionsegment ps = NULL;
     
     EnsPSlice nslice = NULL;
     
     if(!slice)
     {
-        ajDebug("sliceConstrainToSeqRegion requires an Ensembl Slice.\n");
+        ajDebug("sliceConstrainToSeqregion requires an Ensembl Slice.\n");
 	
 	return NULL;
     }
@@ -1908,15 +1908,15 @@ static EnsPProjectionSegment sliceConstrainToSeqRegion(EnsPSlice slice)
     
     /* Return NULL, if this Slice does not overlap with its Sequence Region. */
     
-    if((slice->Start > ensSeqRegionGetLength(slice->SeqRegion)) ||
+    if((slice->Start > ensSeqregionGetLength(slice->Seqregion)) ||
 	(slice->End < 1))
 	return NULL;
     
     if(slice->Start < 1)
 	sshift = slice->Start - 1;
     
-    if(slice->End > ensSeqRegionGetLength(slice->SeqRegion))
-	eshift = ensSeqRegionGetLength(slice->SeqRegion) - slice->End;
+    if(slice->End > ensSeqregionGetLength(slice->Seqregion))
+	eshift = ensSeqregionGetLength(slice->Seqregion) - slice->End;
     
     if(sshift || eshift)
 	ensSliceFetchExpandedSlice(slice,
@@ -1929,7 +1929,7 @@ static EnsPProjectionSegment sliceConstrainToSeqRegion(EnsPSlice slice)
     else
 	nslice = ensSliceNewRef(slice);
     
-    ps = ensProjectionSegmentNew(1 - sshift,
+    ps = ensProjectionsegmentNew(1 - sshift,
 				 ensSliceGetLength(slice) + eshift,
 				 nslice);
     
@@ -1955,7 +1955,7 @@ static EnsPProjectionSegment sliceConstrainToSeqRegion(EnsPSlice slice)
 ** @param [u] slice [EnsPSlice] Ensembl Slice
 ** @param [r] csname [const AjPStr] Ensembl Coordinate System name
 ** @param [r] csversion [const AjPStr] Ensembl Coordinate System version
-** @param [u] pslist [AjList] AJAX List of Ensembl Projection Segments
+** @param [u] pslist [AjPList] AJAX List of Ensembl Projection Segments
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
@@ -1973,21 +1973,21 @@ AjBool ensSliceProject(EnsPSlice slice,
     AjPList nrmpslist = NULL;
     AjPList mrs       = NULL;
     
-    EnsPAssemblyMapper am         = NULL;
-    EnsPAssemblyMapperadaptor ama = NULL;
+    EnsPAssemblymapper am         = NULL;
+    EnsPAssemblymapperadaptor ama = NULL;
     
-    EnsPCoordSystem srccs     = NULL;
-    EnsPCoordSystem trgcs      = NULL;
-    EnsPCoordSystem nrmcs      = NULL;
-    EnsPCoordSystem mrcs       = NULL;
-    EnsPCoordSystemadaptor csa = NULL;
+    EnsPCoordsystem srccs     = NULL;
+    EnsPCoordsystem trgcs      = NULL;
+    EnsPCoordsystem nrmcs      = NULL;
+    EnsPCoordsystem mrcs       = NULL;
+    EnsPCoordsystemadaptor csa = NULL;
     
     EnsPDatabaseadaptor dba = NULL;
     
-    EnsPProjectionSegment nrmps = NULL;
-    EnsPProjectionSegment ps    = NULL;
+    EnsPProjectionsegment nrmps = NULL;
+    EnsPProjectionsegment ps    = NULL;
     
-    EnsPMapperResult mr = NULL;
+    EnsPMapperresult mr = NULL;
     
     const EnsPSlice nrmslc = NULL;
     EnsPSlice newslc = NULL;
@@ -2037,7 +2037,7 @@ AjBool ensSliceProject(EnsPSlice slice,
 	return ajFalse;
     }
     
-    if(!slice->SeqRegion)
+    if(!slice->Seqregion)
     {
 	ajDebug("ensSliceProject requires that an Ensembl Sequence Region "
 		"has been set in the Ensembl Slice.\n");
@@ -2047,9 +2047,9 @@ AjBool ensSliceProject(EnsPSlice slice,
     
     dba = ensSliceadaptorGetDatabaseadaptor(slice->Adaptor);
     
-    ama = ensRegistryGetAssemblyMapperadaptor(dba);
+    ama = ensRegistryGetAssemblymapperadaptor(dba);
     
-    csa = ensRegistryGetCoordSystemadaptor(dba);
+    csa = ensRegistryGetCoordsystemadaptor(dba);
     
     /*
     ** Get the source Coordinate System, which is the
@@ -2057,7 +2057,7 @@ AjBool ensSliceProject(EnsPSlice slice,
     ** Ensembl Sequence Region element of this Ensembl Slice.
     */
     
-    srccs = ensSeqRegionGetCoordSystem(slice->SeqRegion);
+    srccs = ensSeqregionGetCoordsystem(slice->Seqregion);
     
     if(!srccs)
     {
@@ -2070,7 +2070,7 @@ AjBool ensSliceProject(EnsPSlice slice,
     
     /* Fetch the target Coordinate System. */
     
-    ensCoordSystemadaptorFetchByName(csa, csname, csversion, &trgcs);
+    ensCoordsystemadaptorFetchByName(csa, csname, csversion, &trgcs);
     
     if(!trgcs)
     {
@@ -2086,11 +2086,11 @@ AjBool ensSliceProject(EnsPSlice slice,
     ** of the Slice is outside of defined regions.
     */
     
-    if(ensCoordSystemMatch(srccs, trgcs))
+    if(ensCoordsystemMatch(srccs, trgcs))
     {
-        ajListPushAppend(pslist, (void *) sliceConstrainToSeqRegion(slice));
+        ajListPushAppend(pslist, (void *) sliceConstrainToSeqregion(slice));
 	
-	ensCoordSystemDel(&trgcs);
+	ensCoordsystemDel(&trgcs);
 	
 	return ajTrue;
     }
@@ -2110,43 +2110,43 @@ AjBool ensSliceProject(EnsPSlice slice,
     
     while(ajListPop(nrmpslist, (void **) &nrmps))
     {
-	nrmslc = ensProjectionSegmentGetTrgSlice(nrmps);
+	nrmslc = ensProjectionsegmentGetTrgSlice(nrmps);
 	
-	nrmcs = ensSeqRegionGetCoordSystem(nrmslc->SeqRegion);
+	nrmcs = ensSeqregionGetCoordsystem(nrmslc->Seqregion);
 	
-	am = ensAssemblyMapperadaptorFetchByCoordSystems(ama, nrmcs, trgcs);
+	am = ensAssemblymapperadaptorFetchByCoordsystems(ama, nrmcs, trgcs);
 	
 	mrs = ajListNew();
 	
 	if(am)
-	    ensAssemblyMapperMap(am,
-				 nrmslc->SeqRegion,
+	    ensAssemblymapperMap(am,
+				 nrmslc->Seqregion,
 				 nrmslc->Start,
 				 nrmslc->End,
 				 nrmslc->Strand,
 				 mrs);
 	else
 	{
-	    ajDebug("ensSliceProject got no AssemblyMapper -> gap\n");
+	    ajDebug("ensSliceProject got no Assemblymapper -> gap\n");
 	    
 	    mr = MENSMAPPERGAPNEW(nrmslc->Start, nrmslc->End);
 	    
 	    ajListPushAppend(mrs, (void *) mr);
 	}
 	
-	ensAssemblyMapperDel(&am);
+	ensAssemblymapperDel(&am);
 	
 	/* Construct a projection from the mapping results and return it. */
 	
 	while(ajListPop(mrs, (void **) &mr))
 	{
-	    length = ensMapperResultGetLength(mr);
+	    length = ensMapperresultGetLength(mr);
 	    
 	    /* Skip gaps. */
 	    
-	    if(ensMapperResultGetType(mr) == ensEMapperResultCoordinate)
+	    if(ensMapperresultGetType(mr) == ensEMapperresultCoordinate)
 	    {
-		mrcs = ensMapperResultGetCoordSystem(mr);
+		mrcs = ensMapperresultGetCoordsystem(mr);
 		
 		/*
 		** If the normalised projection just ended up mapping to the
@@ -2156,22 +2156,22 @@ AjBool ensSliceProject(EnsPSlice slice,
 		** to X and a projection to 'toplevel' was requested.
 		*/
 		
-		if(ensCoordSystemMatch(mrcs, nrmcs))
+		if(ensCoordsystemMatch(mrcs, nrmcs))
 		{
 		    /* Trim off regions, which are not defined. */
 		    
 		    ajListPushAppend(pslist, (void *)
-				     sliceConstrainToSeqRegion(slice));
+				     sliceConstrainToSeqregion(slice));
 		    
 		    /*
 		    ** Delete this Ensembl Mapper Result and the rest of the
 		    ** Ensembl Mapper Results including the AJAX List.
 		    */
 		    
-		    ensMapperResultDel(&mr);
+		    ensMapperresultDel(&mr);
 		    
 		    while(ajListPop(mrs, (void **) &mr))
-			ensMapperResultDel(&mr);
+			ensMapperresultDel(&mr);
 		    
 		    ajListFree(&mrs);
 		    
@@ -2181,16 +2181,16 @@ AjBool ensSliceProject(EnsPSlice slice,
 		    ** AJAX List.
 		    */
 		    
-		    ensProjectionSegmentDel(&nrmps);
+		    ensProjectionsegmentDel(&nrmps);
 		    
 		    while(ajListPop(nrmpslist, (void **) &nrmps))
-		    	ensProjectionSegmentDel(&nrmps);
+		    	ensProjectionsegmentDel(&nrmps);
 		    
 		    ajListFree(&nrmpslist);
 		    
 		    /* Finally, delete the target Coordinate System. */
 		    
-		    ensCoordSystemDel(&trgcs);
+		    ensCoordsystemDel(&trgcs);
 		    
 		    return ajTrue;
 		}
@@ -2198,22 +2198,22 @@ AjBool ensSliceProject(EnsPSlice slice,
 		{
 		    /* Create a Slice for the target Coordinate System. */
 		    
-		    ensSliceadaptorFetchBySeqRegionIdentifier(
+		    ensSliceadaptorFetchBySeqregionIdentifier(
                         slice->Adaptor,
-                        ensMapperResultGetObjectIdentifier(mr),
-                        ensMapperResultGetStart(mr),
-                        ensMapperResultGetEnd(mr),
-                        ensMapperResultGetStrand(mr),
+                        ensMapperresultGetObjectIdentifier(mr),
+                        ensMapperresultGetStart(mr),
+                        ensMapperresultGetEnd(mr),
+                        ensMapperresultGetStrand(mr),
                         &newslc);
 		    
 		    /*
-		    ** TODO: We could have a ensSliceadaptorFetchByMapperResult
+		    ** TODO: We could have a ensSliceadaptorFetchByMapperresult
 		    ** function to simplify this.
 		    */
 		    
 		    end = start + length - 1;
 		    
-		    ps = ensProjectionSegmentNew(start, end, newslc);
+		    ps = ensProjectionsegmentNew(start, end, newslc);
 		    
 		    ajListPushAppend(pslist, (void *) ps);
 		    
@@ -2223,17 +2223,17 @@ AjBool ensSliceProject(EnsPSlice slice,
 	    
 	    start += length;
 	    
-	    ensMapperResultDel(&mr);
+	    ensMapperresultDel(&mr);
 	}
 	
 	ajListFree(&mrs);
 	
-	ensProjectionSegmentDel(&nrmps);
+	ensProjectionsegmentDel(&nrmps);
     }
     
     ajListFree(&nrmpslist);
     
-    ensCoordSystemDel(&trgcs);
+    ensCoordsystemDel(&trgcs);
     
     return ajTrue;
 }
@@ -2253,7 +2253,7 @@ AjBool ensSliceProject(EnsPSlice slice,
 ** @cc Bio::EnsEMBL::Slice::project_to_slice
 ** @param [u] srcslice [EnsPSlice] Ensembl Slice
 ** @param [r] trgslice [EnsPSlice] Target Ensembl Slice
-** @param [u] pslist [AjList] AJAX List of Ensembl Projection Segments
+** @param [u] pslist [AjPList] AJAX List of Ensembl Projection Segments
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
@@ -2270,20 +2270,20 @@ AjBool ensPSliceProjectToSlice(EnsPSlice srcslice,
     AjPList nrmpslist = NULL;
     AjPList mrs       = NULL;
     
-    EnsPAssemblyMapper am         = NULL;
-    EnsPAssemblyMapperadaptor ama = NULL;
+    EnsPAssemblymapper am         = NULL;
+    EnsPAssemblymapperadaptor ama = NULL;
     
-    EnsPCoordSystem srccs = NULL;
-    EnsPCoordSystem trgcs = NULL;
-    EnsPCoordSystem nrmcs = NULL;
-    EnsPCoordSystem mrcs  = NULL;
+    EnsPCoordsystem srccs = NULL;
+    EnsPCoordsystem trgcs = NULL;
+    EnsPCoordsystem nrmcs = NULL;
+    EnsPCoordsystem mrcs  = NULL;
     
     EnsPDatabaseadaptor dba = NULL;
     
-    EnsPProjectionSegment nrmps = NULL;
-    EnsPProjectionSegment ps    = NULL;
+    EnsPProjectionsegment nrmps = NULL;
+    EnsPProjectionsegment ps    = NULL;
     
-    EnsPMapperResult mr = NULL;
+    EnsPMapperresult mr = NULL;
     
     const EnsPSlice nrmslc = NULL;
     EnsPSlice newslc       = NULL;
@@ -2296,7 +2296,7 @@ AjBool ensPSliceProjectToSlice(EnsPSlice srcslice,
     
     dba = ensSliceadaptorGetDatabaseadaptor(srcslice->Adaptor);
     
-    ama = ensRegistryGetAssemblyMapperadaptor(dba);
+    ama = ensRegistryGetAssemblymapperadaptor(dba);
     
     /*
     ** Get the source Coordinate System, which is the
@@ -2304,7 +2304,7 @@ AjBool ensPSliceProjectToSlice(EnsPSlice srcslice,
     ** Ensembl Sequence Region element of this Ensembl Slice.
     */
     
-    srccs = ensSeqRegionGetCoordSystem(srcslice->SeqRegion);
+    srccs = ensSeqregionGetCoordsystem(srcslice->Seqregion);
     
     if(!srccs)
     {
@@ -2322,7 +2322,7 @@ AjBool ensPSliceProjectToSlice(EnsPSlice srcslice,
     ** Ensembl Sequence Region element of this Ensembl Slice.
     */
     
-    trgcs = ensSeqRegionGetCoordSystem(trgslice->SeqRegion);
+    trgcs = ensSeqregionGetCoordsystem(trgslice->Seqregion);
     
     if(!trgcs)
     {
@@ -2347,63 +2347,63 @@ AjBool ensPSliceProjectToSlice(EnsPSlice srcslice,
     
     while(ajListPop(nrmpslist, (void **) &nrmps))
     {
-	nrmslc = ensProjectionSegmentGetTrgSlice(nrmps);
+	nrmslc = ensProjectionsegmentGetTrgSlice(nrmps);
 	
-	nrmcs = ensSeqRegionGetCoordSystem(nrmslc->SeqRegion);
+	nrmcs = ensSeqregionGetCoordsystem(nrmslc->Seqregion);
 	
-	am = ensAssemblyMapperadaptorFetchByCoordSystems(ama, nrmcs, trgcs);
+	am = ensAssemblymapperadaptorFetchByCoordsystems(ama, nrmcs, trgcs);
 	
 	mrs = ajListNew();
 	
 	if(am)
-	    ensAssemblyMapperMapToSeqRegion(am,
-					    nrmslc->SeqRegion,
+	    ensAssemblymapperMapToSeqregion(am,
+					    nrmslc->Seqregion,
 					    nrmslc->Start,
 					    nrmslc->End,
 					    nrmslc->Strand,
-					    trgslice->SeqRegion,
+					    trgslice->Seqregion,
 					    mrs);
 	else
 	{
-	    ajDebug("ensSliceProject got no AssemblyMapper -> gap\n");
+	    ajDebug("ensSliceProject got no Assemblymapper -> gap\n");
 	    
 	    mr = MENSMAPPERGAPNEW(nrmslc->Start, nrmslc->End);
 	    
 	    ajListPushAppend(mrs, (void *) mr);
 	}
 	
-	ensAssemblyMapperDel(&am);
+	ensAssemblymapperDel(&am);
 	
 	/* Construct a projection from the mapping results and return it. */
 	
 	while(ajListPop(mrs, (void **) &mr))
 	{
-	    length = ensMapperResultGetLength(mr);
+	    length = ensMapperresultGetLength(mr);
 	    
 	    /* Skip gaps. */
 	    
-	    if(ensMapperResultGetType(mr) == ensEMapperResultCoordinate)
+	    if(ensMapperresultGetType(mr) == ensEMapperresultCoordinate)
 	    {
-		mrcs = ensMapperResultGetCoordSystem(mr);
+		mrcs = ensMapperresultGetCoordsystem(mr);
 		
 		/* Create a Slice for the target Coordinate System. */
 		
-		ensSliceadaptorFetchBySeqRegionIdentifier(
+		ensSliceadaptorFetchBySeqregionIdentifier(
                     srcslice->Adaptor,
-                    ensMapperResultGetObjectIdentifier(mr),
-                    ensMapperResultGetStart(mr),
-                    ensMapperResultGetEnd(mr),
-                    ensMapperResultGetStrand(mr),
+                    ensMapperresultGetObjectIdentifier(mr),
+                    ensMapperresultGetStart(mr),
+                    ensMapperresultGetEnd(mr),
+                    ensMapperresultGetStrand(mr),
                     &newslc);
 		
 		/*
-		** TODO: We could have a ensSliceadaptorFetchByMapperResult
+		** TODO: We could have a ensSliceadaptorFetchByMapperresult
 		** function to simplify this.
 	        */
 		
 		end = start + length - 1;
 		
-		ps = ensProjectionSegmentNew(start, end, newslc);
+		ps = ensProjectionsegmentNew(start, end, newslc);
 		
 		ajListPushAppend(pslist, (void *) ps);
 		
@@ -2412,24 +2412,24 @@ AjBool ensPSliceProjectToSlice(EnsPSlice srcslice,
 	    
 	    start += length;
 	    
-	    ensMapperResultDel(&mr);
+	    ensMapperresultDel(&mr);
 	}
 	
 	ajListFree(&mrs);
 	
-	ensProjectionSegmentDel(&nrmps);
+	ensProjectionsegmentDel(&nrmps);
     }
     
     ajListFree(&nrmpslist);
     
-    ensCoordSystemDel(&trgcs);
+    ensCoordsystemDel(&trgcs);
     
     /*
     ** Delete the Ensembl Assembly Mapper Adaptor cache,
     ** as the next mapping may include a different set.
     */
     
-    ensAssemblyMapperadaptorCacheClear(ama);
+    ensAssemblymapperadaptorCacheClear(ama);
     
     return ajTrue;
 }
@@ -2462,7 +2462,7 @@ AjBool ensSliceFetchAllAttributes(EnsPSlice slice,
     if(!attributes)
 	return ajFalse;
     
-    if(!slice->SeqRegion)
+    if(!slice->Seqregion)
     {
 	ajDebug("ensSliceFetchAllAttributes cannot fetch Ensembl Attributes "
 		"for a Slice without a Sequence Region.\n");
@@ -2470,7 +2470,7 @@ AjBool ensSliceFetchAllAttributes(EnsPSlice slice,
 	return ajFalse;
     }
     
-    ensSeqRegionFetchAllAttributes(slice->SeqRegion, code, attributes);
+    ensSeqregionFetchAllAttributes(slice->Seqregion, code, attributes);
     
     return ajTrue;
 }
@@ -2478,14 +2478,14 @@ AjBool ensSliceFetchAllAttributes(EnsPSlice slice,
 
 
 
-/* @func ensSliceFetchAllRepeatFeatures ***************************************
+/* @func ensSliceFetchAllRepeatfeatures ***************************************
 **
 ** Fetch all Ensembl Repeat Features on an Ensembl Slice.
 ** The caller is responsible for deleting the Ensembl Repeat Fetures before
 ** deleting the AJAX List.
 **
-** @param [r] slice [const EnsPSlice] Ensembl Slice
-** @param [r] anname [AjPStr] Ensembl Analysis name
+** @param [u] slice [EnsPSlice] Ensembl Slice
+** @param [r] anname [const AjPStr] Ensembl Analysis name
 ** @param [r] rctype [AjPStr] Ensembl Repeat Consensus type
 ** @param [r] rcclass [AjPStr] Ensembl Repeat Consensus class
 ** @param [r] rcname [AjPStr] Ensembl Repeat Consensus name
@@ -2495,17 +2495,17 @@ AjBool ensSliceFetchAllAttributes(EnsPSlice slice,
 ** @@
 ******************************************************************************/
 
-AjBool ensSliceFetchAllRepeatFeatures(EnsPSlice slice,
-                                      AjPStr anname,
+AjBool ensSliceFetchAllRepeatfeatures(EnsPSlice slice,
+                                      const AjPStr anname,
                                       AjPStr rctype,
                                       AjPStr rcclass,
                                       AjPStr rcname,
                                       AjPList rfs)
 {
-    EnsPRepeatFeatureadaptor rfa = NULL;
+    EnsPRepeatfeatureadaptor rfa = NULL;
     
     /*
-     ajDebug("ensSliceFetchAllRepeatFeatures\n"
+     ajDebug("ensSliceFetchAllRepeatfeatures\n"
 	     "  slice %p\n"
 	     "  anname '%S'\n"
 	     "  rctype '%S'\n"
@@ -2525,15 +2525,15 @@ AjBool ensSliceFetchAllRepeatFeatures(EnsPSlice slice,
     
     if(!slice->Adaptor)
     {
-	ajDebug("ensSliceFetchAllRepeatFeatures cannot get Repeat Features "
+	ajDebug("ensSliceFetchAllRepeatfeatures cannot get Repeat Features "
 		"without a Slice Adaptor attached to the Slice.\n");
 	
 	return ajFalse;
     }
     
-    rfa = ensRegistryGetRepeatFeatureadaptor(slice->Adaptor->Adaptor);
+    rfa = ensRegistryGetRepeatfeatureadaptor(slice->Adaptor->Adaptor);
     
-    return ensRepeatFeatureadaptorFetchAllBySlice(
+    return ensRepeatfeatureadaptorFetchAllBySlice(
         rfa,
         slice,
         anname,
@@ -2614,7 +2614,7 @@ static void sliceAdaptorCacheDelete(void **value)
     AjPStr newkey = NULL;
     AjPStr oldkey = NULL;
     
-    EnsPCoordSystem cs = NULL;
+    EnsPCoordsystem cs = NULL;
     
     EnsPSlice oldslice = NULL;
     EnsPSlice *Pslice  = NULL;
@@ -2636,7 +2636,7 @@ static void sliceAdaptorCacheDelete(void **value)
     
     if((*Pslice)->Adaptor && (*Pslice)->Adaptor->CacheByName)
     {
-	cs = ensSeqRegionGetCoordSystem((*Pslice)->SeqRegion);
+	cs = ensSeqregionGetCoordsystem((*Pslice)->Seqregion);
 	
 	start = (*Pslice)->Start;
 	
@@ -2645,7 +2645,7 @@ static void sliceAdaptorCacheDelete(void **value)
 	strand = (*Pslice)->Strand;
 	
 	if((start == 1) &&
-	    (end == ensSeqRegionGetLength((*Pslice)->SeqRegion)) &&
+	    (end == ensSeqregionGetLength((*Pslice)->Seqregion)) &&
 	    (strand == 1))
 	{
 	    start = 0;
@@ -2658,9 +2658,9 @@ static void sliceAdaptorCacheDelete(void **value)
 	/* Remove from the name cache. */
 	
 	newkey = ajFmtStr("%S:%S:%S:%d:%d:%d",
-			  ensCoordSystemGetName(cs),
-			  ensCoordSystemGetVersion(cs),
-			  ensSeqRegionGetName((*Pslice)->SeqRegion),
+			  ensCoordsystemGetName(cs),
+			  ensCoordsystemGetVersion(cs),
+			  ensSeqregionGetName((*Pslice)->Seqregion),
 			  start, end, strand);
 	
 	oldslice = (EnsPSlice)
@@ -2868,7 +2868,7 @@ AjBool ensSliceadaptorCacheInsert(EnsPSliceadaptor adaptor, EnsPSlice* Pslice)
     AjPStr ikey = NULL;
     AjPStr nkey = NULL;
     
-    EnsPCoordSystem cs = NULL;
+    EnsPCoordsystem cs = NULL;
     
     EnsPSlice slice1 = NULL;
     EnsPSlice slice2 = NULL;
@@ -2892,7 +2892,7 @@ AjBool ensSliceadaptorCacheInsert(EnsPSliceadaptor adaptor, EnsPSlice* Pslice)
     if(!*Pslice)
 	return ajFalse;
     
-    cs = ensSeqRegionGetCoordSystem((*Pslice)->SeqRegion);
+    cs = ensSeqregionGetCoordsystem((*Pslice)->Seqregion);
     
     start = (*Pslice)->Start;
     
@@ -2903,7 +2903,7 @@ AjBool ensSliceadaptorCacheInsert(EnsPSliceadaptor adaptor, EnsPSlice* Pslice)
     /* For Slices that cover entire Sequence Regions zero all coordinates. */
     
     if((start == 1) &&
-	(end == ensSeqRegionGetLength((*Pslice)->SeqRegion)) &&
+	(end == ensSeqregionGetLength((*Pslice)->Seqregion)) &&
 	(strand == 1))
     {
 	start = 0;
@@ -2916,7 +2916,7 @@ AjBool ensSliceadaptorCacheInsert(EnsPSliceadaptor adaptor, EnsPSlice* Pslice)
     /* Search the identifier cache. */
     
     ikey = ajFmtStr("%u:%d:%d:%d",
-		    ensSeqRegionGetIdentifier((*Pslice)->SeqRegion),
+		    ensSeqregionGetIdentifier((*Pslice)->Seqregion),
 		    start, end, strand);
     
     slice1 = (EnsPSlice)
@@ -2925,9 +2925,9 @@ AjBool ensSliceadaptorCacheInsert(EnsPSliceadaptor adaptor, EnsPSlice* Pslice)
     /* Search the name cache. */
     
     nkey = ajFmtStr("%S:%S:%S:%d:%d:%d",
-		    ensCoordSystemGetName(cs),
-		    ensCoordSystemGetVersion(cs),
-		    ensSeqRegionGetName((*Pslice)->SeqRegion),
+		    ensCoordsystemGetName(cs),
+		    ensCoordsystemGetVersion(cs),
+		    ensSeqregionGetName((*Pslice)->Seqregion),
 		    start, end, strand);
     
     slice2 = (EnsPSlice)
@@ -2988,7 +2988,7 @@ AjBool ensSliceadaptorCacheInsert(EnsPSliceadaptor adaptor, EnsPSlice* Pslice)
 
 
 
-/* @func ensSliceadaptorFetchBySeqRegionIdentifier ****************************
+/* @func ensSliceadaptorFetchBySeqregionIdentifier ****************************
 **
 ** Fetch an Ensembl Slice by an Ensembl Sequence Region identifier.
 ** The caller is responsible for deleting the Ensembl Slice.
@@ -3004,7 +3004,7 @@ AjBool ensSliceadaptorCacheInsert(EnsPSliceadaptor adaptor, EnsPSlice* Pslice)
 ** @@
 ******************************************************************************/
 
-AjBool ensSliceadaptorFetchBySeqRegionIdentifier(EnsPSliceadaptor adaptor,
+AjBool ensSliceadaptorFetchBySeqregionIdentifier(EnsPSliceadaptor adaptor,
                                                  ajuint srid,
                                                  ajint srstart,
                                                  ajint srend,
@@ -3013,11 +3013,11 @@ AjBool ensSliceadaptorFetchBySeqRegionIdentifier(EnsPSliceadaptor adaptor,
 {
     AjPStr key = NULL;
     
-    EnsPSeqRegion sr         = NULL;
-    EnsPSeqRegionadaptor sra = NULL;
+    EnsPSeqregion sr         = NULL;
+    EnsPSeqregionadaptor sra = NULL;
     
     /*
-     ajDebug("ensSliceadaptorFetchBySeqRegionIdentifier\n"
+     ajDebug("ensSliceadaptorFetchBySeqregionIdentifier\n"
 	     "  adaptor %p\n"
 	     "  srid %u\n"
 	     "  srstart %d\n"
@@ -3034,7 +3034,7 @@ AjBool ensSliceadaptorFetchBySeqRegionIdentifier(EnsPSliceadaptor adaptor,
     
     if(!adaptor)
     {
-	ajDebug("ensSliceadaptorFetchBySeqRegionIdentifier requires an "
+	ajDebug("ensSliceadaptorFetchBySeqregionIdentifier requires an "
 		"Ensembl Slice Adaptor.\n");
 	
 	return ajFalse;
@@ -3042,7 +3042,7 @@ AjBool ensSliceadaptorFetchBySeqRegionIdentifier(EnsPSliceadaptor adaptor,
     
     if(!srid)
     {
-	ajDebug("ensSliceadaptorFetchBySeqRegionIdentifier requires an "
+	ajDebug("ensSliceadaptorFetchBySeqregionIdentifier requires an "
 		"Ensembl Sequence Region identifier.\n");
 	
 	return ajFalse;
@@ -3063,13 +3063,13 @@ AjBool ensSliceadaptorFetchBySeqRegionIdentifier(EnsPSliceadaptor adaptor,
     if(*Pslice)
 	return ajTrue;
     
-    sra = ensRegistryGetSeqRegionadaptor(adaptor->Adaptor);
+    sra = ensRegistryGetSeqregionadaptor(adaptor->Adaptor);
     
-    ensSeqRegionadaptorFetchByIdentifier(sra, srid, &sr);
+    ensSeqregionadaptorFetchByIdentifier(sra, srid, &sr);
     
     if(!sr)
     {
-	ajDebug("ensSliceadaptorFetchBySeqRegionIdentifier could not load an "
+	ajDebug("ensSliceadaptorFetchBySeqregionIdentifier could not load an "
 		"Ensembl Sequence Region for identifier %d.\n", srid);
 	
 	return ajTrue;
@@ -3079,10 +3079,10 @@ AjBool ensSliceadaptorFetchBySeqRegionIdentifier(EnsPSliceadaptor adaptor,
 	srstart = 1;
     
     if(!srend)
-	srend = ensSeqRegionGetLength(sr);
+	srend = ensSeqregionGetLength(sr);
     
     if(srstart > (srend + 1))
-	ajFatal("ensSliceadaptorFetchBySeqRegionIdentifier requires the Slice "
+	ajFatal("ensSliceadaptorFetchBySeqregionIdentifier requires the Slice "
 		"start %d to be less than or equal to the end %d + 1.",
 		srstart, srend);
     
@@ -3093,7 +3093,7 @@ AjBool ensSliceadaptorFetchBySeqRegionIdentifier(EnsPSliceadaptor adaptor,
     
     ensSliceadaptorCacheInsert(adaptor, Pslice);
     
-    ensSeqRegionDel(&sr);
+    ensSeqregionDel(&sr);
     
     return ajTrue;
 }
@@ -3142,11 +3142,11 @@ AjBool ensSliceadaptorFetchByRegion(EnsPSliceadaptor adaptor,
 {
     AjPStr key = NULL;
     
-    EnsPCoordSystem cs         = NULL;
-    EnsPCoordSystemadaptor csa = NULL;
+    EnsPCoordsystem cs         = NULL;
+    EnsPCoordsystemadaptor csa = NULL;
     
-    EnsPSeqRegion sr         = NULL;
-    EnsPSeqRegionadaptor sra = NULL;
+    EnsPSeqregion sr         = NULL;
+    EnsPSeqregionadaptor sra = NULL;
     
     /*
      ajDebug("ensSliceadaptorFetchByRegion\n"
@@ -3225,9 +3225,9 @@ AjBool ensSliceadaptorFetchByRegion(EnsPSliceadaptor adaptor,
     
     if(csname && ajStrGetLen(csname))
     {
-	csa = ensRegistryGetCoordSystemadaptor(adaptor->Adaptor);
+	csa = ensRegistryGetCoordsystemadaptor(adaptor->Adaptor);
 	
-	ensCoordSystemadaptorFetchByName(csa, csname, csversion, &cs);
+	ensCoordsystemadaptorFetchByName(csa, csname, csversion, &cs);
 	
 	if(!cs)
 	{
@@ -3241,19 +3241,19 @@ AjBool ensSliceadaptorFetchByRegion(EnsPSliceadaptor adaptor,
     
     /* Load the Ensembl Sequence Region. */
     
-    sra = ensRegistryGetSeqRegionadaptor(adaptor->Adaptor);
+    sra = ensRegistryGetSeqregionadaptor(adaptor->Adaptor);
     
-    ensSeqRegionadaptorFetchByName(sra, cs, srname, &sr);
+    ensSeqregionadaptorFetchByName(sra, cs, srname, &sr);
     
     if(!sr)
     {
 	ajDebug("ensSliceadaptorFetchByRegion could not load an Ensembl "
 		"Sequence Region for name '%S' and Coordinate System "
-		"identifier %d.\n", srname, ensCoordSystemGetIdentifier(cs));
+		"identifier %d.\n", srname, ensCoordsystemGetIdentifier(cs));
 	
-	ensCoordSystemTrace(cs, 1);
+	ensCoordsystemTrace(cs, 1);
 	
-	ensCoordSystemDel(&cs);
+	ensCoordsystemDel(&cs);
 	
 	return ajTrue;
     }
@@ -3262,7 +3262,7 @@ AjBool ensSliceadaptorFetchByRegion(EnsPSliceadaptor adaptor,
 	srstart = 1;
     
     if(!srend)
-	srend = ensSeqRegionGetLength(sr);
+	srend = ensSeqregionGetLength(sr);
     
     if(srstart > (srend + 1))
 	ajFatal("ensSliceadaptorFetchByRegion requires the Slice start %d "
@@ -3276,9 +3276,9 @@ AjBool ensSliceadaptorFetchByRegion(EnsPSliceadaptor adaptor,
     
     ensSliceadaptorCacheInsert(adaptor, Pslice);
     
-    ensCoordSystemDel(&cs);
+    ensCoordsystemDel(&cs);
     
-    ensSeqRegionDel(&sr);
+    ensSeqregionDel(&sr);
     
     return ajTrue;
 }
@@ -3471,7 +3471,7 @@ AjBool ensSliceadaptorFetchBySlice(EnsPSliceadaptor adaptor,
      **     SS     \    +1   /     SE
      **  1    \     |-------|     /    length
      **   \    |------Slice------|    /
-     **    |--------SeqRegion--------|
+     **    |--------Seqregion--------|
      **        |------Slice------|
      **       /     |-------|     \
      **     SS     /    -1   \     SE
@@ -3479,7 +3479,7 @@ AjBool ensSliceadaptorFetchBySlice(EnsPSliceadaptor adaptor,
      **
      */
     
-    srid = ensSeqRegionGetIdentifier(slice->SeqRegion);
+    srid = ensSeqregionGetIdentifier(slice->Seqregion);
     
     if(slice->Strand >= 0)
     {
@@ -3496,7 +3496,7 @@ AjBool ensSliceadaptorFetchBySlice(EnsPSliceadaptor adaptor,
     
     srstrand = slice->Strand * strand;
     
-    ensSliceadaptorFetchBySeqRegionIdentifier(adaptor,
+    ensSliceadaptorFetchBySeqregionIdentifier(adaptor,
 					      srid,
 					      srstart,
 					      srend,
@@ -3528,7 +3528,7 @@ AjBool ensSliceadaptorFetchBySlice(EnsPSliceadaptor adaptor,
 ** @param [r] adaptor [EnsPSliceadaptor] Ensembl Slice Adaptor
 ** @param [r] feature [const EnsPFeature] Ensembl Feature
 ** @param [r] flank [ajint] Flanking region in base pair coordinates
-** @param [wP] Pslice [EnsPSlice] Ensembl Slice address
+** @param [wP] Pslice [EnsPSlice*] Ensembl Slice address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
@@ -3592,7 +3592,7 @@ AjBool ensSliceadaptorFetchByFeature(EnsPSliceadaptor adaptor,
 	return ajFalse;
     }
     
-    srid = ensSliceGetSeqRegionIdentifier(slice);
+    srid = ensSliceGetSeqregionIdentifier(slice);
     
     /* Convert the Feature Slice coordinates to Sequence Region coordinates. */
     
@@ -3609,7 +3609,7 @@ AjBool ensSliceadaptorFetchByFeature(EnsPSliceadaptor adaptor,
 	srend = slice->End - ensFeatureGetStart(feature) + 1;
     }
     
-    ensSliceadaptorFetchBySeqRegionIdentifier(adaptor,
+    ensSliceadaptorFetchBySeqregionIdentifier(adaptor,
 					      srid,
 					      srstart - flank,
 					      srend + flank,
@@ -3649,7 +3649,7 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
     ajuint diff   = 0;
     ajuint start  = 0;
     
-    AjEnum aetype = ensEAssemblyExceptionTypeNULL;
+    AjEnum aetype = ensEAssemblyexceptionTypeNULL;
     
     AjPList haps    = NULL;
     AjPList pars    = NULL;
@@ -3660,15 +3660,15 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
     AjPStr source = NULL;
     AjPStr target = NULL;
     
-    EnsPAssemblyException ae         = NULL;
-    EnsPAssemblyException tmpae      = NULL;
-    EnsPAssemblyExceptionadaptor aea = NULL;
+    EnsPAssemblyexception ae         = NULL;
+    EnsPAssemblyexception tmpae      = NULL;
+    EnsPAssemblyexceptionadaptor aea = NULL;
     
     EnsPMapper mapper = NULL;
     
-    EnsPMapperResult mr = NULL;
+    EnsPMapperresult mr = NULL;
     
-    EnsPProjectionSegment ps = NULL;
+    EnsPProjectionsegment ps = NULL;
     
     EnsPSlice srslice = NULL;
     EnsPSlice exslice = NULL;
@@ -3707,9 +3707,9 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
 	return ajFalse;
     }
 
-    aea = ensRegistryGetAssemblyExceptionadaptor(adaptor->Adaptor);
+    aea = ensRegistryGetAssemblyexceptionadaptor(adaptor->Adaptor);
 
-    srid = ensSliceGetSeqRegionIdentifier(slice);
+    srid = ensSliceGetSeqregionIdentifier(slice);
 
     haps = ajListNew();
 
@@ -3717,7 +3717,7 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
 
     regions = ajListNew();
 
-    ensAssemblyExceptionadaptorFetchAllBySeqRegionIdentifier(aea, srid,
+    ensAssemblyexceptionadaptorFetchAllBySeqregionIdentifier(aea, srid,
                                                              regions);
 
     while(ajListPop(regions, (void **) &ae))
@@ -3727,21 +3727,21 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
 	** haplotype regions (HAPs) if any.
 	*/
 
-	if(ensAssemblyExceptionGetType(ae) == ensEAssemblyExceptionTypePAR)
+	if(ensAssemblyexceptionGetType(ae) == ensEAssemblyexceptionTypePAR)
 	{
-	    if(((ajint) ensAssemblyExceptionGetSeqRegionStart(ae) <= slice->End) &&
-               ((ajint) ensAssemblyExceptionGetSeqRegionEnd(ae) >= slice->Start))
+	    if(((ajint) ensAssemblyexceptionGetSeqregionStart(ae) <= slice->End) &&
+               ((ajint) ensAssemblyexceptionGetSeqregionEnd(ae) >= slice->Start))
 		ajListPushAppend(pars, (void *) ae);
 	    else
-		ensAssemblyExceptionDel(&ae);
+		ensAssemblyexceptionDel(&ae);
 	}
-	else if(ensAssemblyExceptionGetType(ae) ==
-		 ensEAssemblyExceptionTypeHAP)
+	else if(ensAssemblyexceptionGetType(ae) ==
+		 ensEAssemblyexceptionTypeHAP)
 	    ajListPushAppend(haps, (void *) ae);
 	else
 	    ajWarn("ensSliceadaptorFetchNormalisedSliceProjection got "
 		   "unexpected Assembly Exception type %d.\n",
-		   ensAssemblyExceptionGetType(ae));
+		   ensAssemblyexceptionGetType(ae));
     }
     
     ajListFree(&regions);
@@ -3756,7 +3756,7 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
 	ajListFree(&haps);
 	ajListFree(&pars);
 	
-	ps = ensProjectionSegmentNew(1, ensSliceGetLength(slice), slice);
+	ps = ensProjectionsegmentNew(1, ensSliceGetLength(slice), slice);
 	
 	ajListPushAppend(pslist, (void *) ps);
 	
@@ -3773,7 +3773,7 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
     {
 	ajListPop(haps, (void **) &ae);
 	
-	ensSliceadaptorFetchBySeqRegionIdentifier(
+	ensSliceadaptorFetchBySeqregionIdentifier(
             adaptor,
             srid,
             0,
@@ -3781,9 +3781,9 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
             0,
             &srslice);
 	
-	ensSliceadaptorFetchBySeqRegionIdentifier(
+	ensSliceadaptorFetchBySeqregionIdentifier(
             adaptor,
-            ensAssemblyExceptionGetExcRegionIdentifier(ae),
+            ensAssemblyexceptionGetExcRegionIdentifier(ae),
             0,
             0,
             0,
@@ -3806,10 +3806,10 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
 	** sections need to be of same lengths.
 	*/
 	
-	diff = ensAssemblyExceptionGetExcRegionEnd(ae) -
-	    ensAssemblyExceptionGetSeqRegionEnd(ae);
+	diff = ensAssemblyexceptionGetExcRegionEnd(ae) -
+	    ensAssemblyexceptionGetSeqregionEnd(ae);
 	
-	aetype = ensEAssemblyExceptionTypeNULL;
+	aetype = ensEAssemblyexceptionTypeNULL;
 	
 	/*
 	** We want the region of the haplotype inverted, which means that we
@@ -3821,28 +3821,28 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
 	** Projection Segments:   ++++++       ++++++
 	*/
 	
-	tmpae = ensAssemblyExceptionNew(
-            (EnsPAssemblyExceptionadaptor) NULL,
+	tmpae = ensAssemblyexceptionNew(
+            (EnsPAssemblyexceptionadaptor) NULL,
             0,
             srid,
             1,
-            ensAssemblyExceptionGetSeqRegionStart(ae) - 1,
-            ensAssemblyExceptionGetExcRegionIdentifier(ae),
+            ensAssemblyexceptionGetSeqregionStart(ae) - 1,
+            ensAssemblyexceptionGetExcRegionIdentifier(ae),
             1,
-            ensAssemblyExceptionGetExcRegionStart(ae) - 1,
+            ensAssemblyexceptionGetExcRegionStart(ae) - 1,
             1,
             aetype);
 	
 	ajListPushAppend(syms, (void *) tmpae);
 	
-	tmpae = ensAssemblyExceptionNew(
-            (EnsPAssemblyExceptionadaptor) NULL,
+	tmpae = ensAssemblyexceptionNew(
+            (EnsPAssemblyexceptionadaptor) NULL,
             0,
             srid,
-            ensAssemblyExceptionGetSeqRegionEnd(ae) + 1,
+            ensAssemblyexceptionGetSeqregionEnd(ae) + 1,
             maxlen - diff,
-            ensAssemblyExceptionGetExcRegionIdentifier(ae),
-            ensAssemblyExceptionGetExcRegionEnd(ae) + 1,
+            ensAssemblyexceptionGetExcRegionIdentifier(ae),
+            ensAssemblyexceptionGetExcRegionEnd(ae) + 1,
             maxlen,
             1,
             aetype);
@@ -3852,7 +3852,7 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
 	ensSliceDel(&srslice);
 	ensSliceDel(&exslice);
 	
-	ensAssemblyExceptionDel(&ae);
+	ensAssemblyexceptionDel(&ae);
     }
     
     ajListFree(&haps);
@@ -3875,27 +3875,27 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
     ** Experimentally, we set the Coordinate System of the Sequence Region
     ** element of the current Slice two times for source and target.
     ** The line was previously:
-    ** mapper = ensMapperNew(source, target, (EnsPCoordSystem) NULL,
-    **                       (EnsPCoordSystem) NULL);
+    ** mapper = ensMapperNew(source, target, (EnsPCoordsystem) NULL,
+    **                       (EnsPCoordsystem) NULL);
     */
     
     mapper = ensMapperNew(source,
 			  target,
-			  ensSeqRegionGetCoordSystem(slice->SeqRegion),
-			  ensSeqRegionGetCoordSystem(slice->SeqRegion));
+			  ensSeqregionGetCoordsystem(slice->Seqregion),
+			  ensSeqregionGetCoordsystem(slice->Seqregion));
     
     while(ajListPop(syms, (void **) &ae))
     {
 	ensMapperAddCoordinates(mapper,
 				srid,
-				ensAssemblyExceptionGetSeqRegionStart(ae),
-				ensAssemblyExceptionGetSeqRegionEnd(ae),
+				ensAssemblyexceptionGetSeqregionStart(ae),
+				ensAssemblyexceptionGetSeqregionEnd(ae),
 				1,
-				ensAssemblyExceptionGetExcRegionIdentifier(ae),
-				ensAssemblyExceptionGetExcRegionStart(ae),
-				ensAssemblyExceptionGetExcRegionEnd(ae));
+				ensAssemblyexceptionGetExcRegionIdentifier(ae),
+				ensAssemblyexceptionGetExcRegionStart(ae),
+				ensAssemblyexceptionGetExcRegionEnd(ae));
 	
-	ensAssemblyExceptionDel(&ae);
+	ensAssemblyexceptionDel(&ae);
     }
     
     ajListFree(&syms);
@@ -3922,14 +3922,14 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
 	
 	ajListPop(linked, (void **) &mr);
 	
-	if(ensMapperResultGetType(mr) == ensEMapperResultGap)
+	if(ensMapperresultGetType(mr) == ensEMapperresultGap)
 	{
-	    ps = ensProjectionSegmentNew(1, ensSliceGetLength(slice), slice);
+	    ps = ensProjectionsegmentNew(1, ensSliceGetLength(slice), slice);
 	    
 	    ajListPushAppend(pslist, (void *) ps);
 	}
 	
-	ensMapperResultDel(&mr);
+	ensMapperresultDel(&mr);
 	
 	ajListFree(&linked);
 	
@@ -3942,16 +3942,16 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
     
     while(ajListPop(linked, (void **) &mr))
     {
-	if(ensMapperResultGetType(mr) == ensEMapperResultGap)
+	if(ensMapperresultGetType(mr) == ensEMapperresultGap)
 	{
 	    exslice = ensSliceNew(adaptor,
-				  slice->SeqRegion,
-				  ensMapperResultGetGapStart(mr),
-				  ensMapperResultGetGapEnd(mr),
+				  slice->Seqregion,
+				  ensMapperresultGetGapStart(mr),
+				  ensMapperresultGetGapEnd(mr),
 				  slice->Strand);
 	    
-	    ps = ensProjectionSegmentNew(start,
-					 ensMapperResultGetGapLength(mr)
+	    ps = ensProjectionsegmentNew(start,
+					 ensMapperresultGetGapLength(mr)
 					 + start - 1,
 					 exslice);
 	    
@@ -3962,16 +3962,16 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
 	
 	else
 	{
-	    ensSliceadaptorFetchBySeqRegionIdentifier(
+	    ensSliceadaptorFetchBySeqregionIdentifier(
                 adaptor,
-                ensMapperResultGetObjectIdentifier(mr),
-                ensMapperResultGetStart(mr),
-                ensMapperResultGetEnd(mr),
-                ensMapperResultGetStrand(mr),
+                ensMapperresultGetObjectIdentifier(mr),
+                ensMapperresultGetStart(mr),
+                ensMapperresultGetEnd(mr),
+                ensMapperresultGetStrand(mr),
                 &exslice);
 	    
-	    ps = ensProjectionSegmentNew(start,
-					 ensMapperResultGetLength(mr)
+	    ps = ensProjectionsegmentNew(start,
+					 ensMapperresultGetLength(mr)
 					 + start - 1,
 					 exslice);
 	    
@@ -3980,14 +3980,14 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
 	    ensSliceDel(&exslice);
 	}
 	
-	start += ensMapperResultGetLength(mr);
+	start += ensMapperresultGetLength(mr);
 	
 	/*
 	** FIXME: The else case includes Mapper Result Coordinates and Indels.
-	** Is this desired? As MapperResultGetLength returns either the
+	** Is this desired? As MapperresultGetLength returns either the
 	** Coordinate or Gap Length, we could add the length to the start after
-	** the else case. We can also replace ensMapperResultGetGapLength with
-	** ensMapperResultGetLength for ensEMapperResultGap.
+	** the else case. We can also replace ensMapperresultGetGapLength with
+	** ensMapperresultGetLength for ensEMapperresultGap.
 	**
 	** FIXME: Should the Mapper Result also provide distinct
 	** GetCoordinateStart
@@ -3999,7 +3999,7 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
 	** Gaps for Gap?
         */
 	
-	ensMapperResultDel(&mr);
+	ensMapperresultDel(&mr);
     }
     
     ajListFree(&linked);
@@ -4069,16 +4069,16 @@ AjBool ensSliceadaptorFetchAll(EnsPSliceadaptor adaptor,
     
     AjPTable nonrefsr = NULL;
     
-    EnsPAssemblyException ae         = NULL;
-    EnsPAssemblyExceptionadaptor aea = NULL;
+    EnsPAssemblyexception ae         = NULL;
+    EnsPAssemblyexceptionadaptor aea = NULL;
     
-    EnsPCoordSystem cs         = NULL;
-    EnsPCoordSystemadaptor csa = NULL;
+    EnsPCoordsystem cs         = NULL;
+    EnsPCoordsystemadaptor csa = NULL;
     
-    EnsPProjectionSegment ps = NULL;
+    EnsPProjectionsegment ps = NULL;
     
-    EnsPSeqRegion sr         = NULL;
-    EnsPSeqRegionadaptor sra = NULL;
+    EnsPSeqregion sr         = NULL;
+    EnsPSeqregionadaptor sra = NULL;
     
     EnsPSlice slice  = NULL;
     EnsPSlice nslice = NULL;
@@ -4096,13 +4096,13 @@ AjBool ensSliceadaptorFetchAll(EnsPSliceadaptor adaptor,
 	return ajFalse;
     
     if(!duplicates)
-	aea = ensRegistryGetAssemblyExceptionadaptor(adaptor->Adaptor);
+	aea = ensRegistryGetAssemblyexceptionadaptor(adaptor->Adaptor);
     
-    csa = ensRegistryGetCoordSystemadaptor(adaptor->Adaptor);
+    csa = ensRegistryGetCoordsystemadaptor(adaptor->Adaptor);
     
-    sra = ensRegistryGetSeqRegionadaptor(adaptor->Adaptor);
+    sra = ensRegistryGetSeqregionadaptor(adaptor->Adaptor);
     
-    ensCoordSystemadaptorFetchByName(csa, csname, csversion, &cs);
+    ensCoordsystemadaptorFetchByName(csa, csname, csversion, &cs);
     
     if(!cs)
     {
@@ -4120,11 +4120,11 @@ AjBool ensSliceadaptorFetchAll(EnsPSliceadaptor adaptor,
     {
 	/*
 	** FIXME: Should this be handled via the Sequence Region Adaptor?
-	** A function like ensSeqRegionadaptorFetchAllByAttribute?
+	** A function like ensSeqregionadaptorFetchAllByAttribute?
 	**
-	** There could be a Cache in the SeqRegion Adaptor that holds all
+	** There could be a Cache in the Seqregion Adaptor that holds all
 	** non-ref Sequence Regions so that we can have a function
-	** ensSeqRegionadaptorFetchAllNonRef
+	** ensSeqregionadaptorFetchAllNonRef
 	*/
 	
 	statement = ajFmtStr("SELECT "
@@ -4179,11 +4179,11 @@ AjBool ensSliceadaptorFetchAll(EnsPSliceadaptor adaptor,
     
     srlist = ajListNew();
     
-    ensSeqRegionadaptorFetchAllByCoordSystem(sra, cs, srlist);
+    ensSeqregionadaptorFetchAllByCoordsystem(sra, cs, srlist);
     
     while(ajListPop(srlist, (void **) &sr))
     {
-	srid = ensSeqRegionGetIdentifier(sr);
+	srid = ensSeqregionGetIdentifier(sr);
 	
 	Pvalue = (AjBool *) ajTableFetch(nonrefsr, (const void *) &srid);
 	
@@ -4191,7 +4191,7 @@ AjBool ensSliceadaptorFetchAll(EnsPSliceadaptor adaptor,
 	{
 	    /* Create a new Slice spanning the entire Sequence Region. */
 	    
-	    slice = ensSliceNew(adaptor, sr, 1, ensSeqRegionGetLength(sr), 1);
+	    slice = ensSliceNew(adaptor, sr, 1, ensSeqregionGetLength(sr), 1);
 	    
 	    if(duplicates)
 	    {
@@ -4212,7 +4212,7 @@ AjBool ensSliceadaptorFetchAll(EnsPSliceadaptor adaptor,
 		
 		aelist = ajListNew();
 		
-		ensAssemblyExceptionadaptorFetchAllBySeqRegionIdentifier(
+		ensAssemblyexceptionadaptorFetchAllBySeqregionIdentifier(
                     aea,
                     srid,
                     aelist);
@@ -4236,14 +4236,14 @@ AjBool ensSliceadaptorFetchAll(EnsPSliceadaptor adaptor,
 		    
 		    while(ajListPop(pslist, (void **) &ps))
 		    {
-			nslice = ensProjectionSegmentGetTrgSlice(ps);
+			nslice = ensProjectionsegmentGetTrgSlice(ps);
 			
-			if(ensSeqRegionMatch(nslice->SeqRegion,
-					      slice->SeqRegion))
+			if(ensSeqregionMatch(nslice->Seqregion,
+					      slice->Seqregion))
 			    ajListPushAppend(slices,
 					     (void *) ensSliceNewRef(nslice));
 			
-			ensProjectionSegmentDel(&ps);
+			ensProjectionsegmentDel(&ps);
 		    }
 		    
 		    ajListFree(&pslist);
@@ -4258,18 +4258,18 @@ AjBool ensSliceadaptorFetchAll(EnsPSliceadaptor adaptor,
 		}
 		
 		while(ajListPop(aelist, (void **) &ae))
-		    ensAssemblyExceptionDel(&ae);
+		    ensAssemblyexceptionDel(&ae);
 		
 		ajListFree(&aelist);
 	    }
 	}
 	
-	ensSeqRegionDel(&sr);
+	ensSeqregionDel(&sr);
     }
     
     ajListFree(&srlist);
     
-    ensCoordSystemDel(&cs);
+    ensCoordsystemDel(&cs);
     
     /* Clear the AJAX Table of non-reference Sequence Region identifiers. */
     
@@ -4292,13 +4292,13 @@ AjBool ensSliceadaptorFetchAll(EnsPSliceadaptor adaptor,
 
 
 
-/* @datasection [EnsPRepeatMaskedSlice] Repeat-Masked Slice *******************
+/* @datasection [EnsPRepeatmaskedslice] Repeat-Masked Slice *******************
 **
 ** Functions for manipulating Ensembl Repeat-Masked Slice objects
 **
-** @cc Bio::EnsEMBL::RepeatMaskedSlice CVS Revision: 1.12
+** @cc Bio::EnsEMBL::Repeatmaskedslice CVS Revision: 1.12
 **
-** @nam2rule RepeatMaskedSlice
+** @nam2rule Repeatmaskedslice
 **
 ******************************************************************************/
 
@@ -4312,17 +4312,17 @@ AjBool ensSliceadaptorFetchAll(EnsPSliceadaptor adaptor,
 ** Repeat-Masked Slice. The target pointer does not need to be initialised to
 ** NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPRepeatMaskedSlice]
+** @fdata [EnsPRepeatmaskedslice]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPRepeatMaskedSlice] Ensembl Repeat-Masked Slice
-** @argrule Ref object [EnsPRepeatMaskedSlice] Ensembl Repeat-Masked Slice
+** @argrule Obj object [EnsPRepeatmaskedslice] Ensembl Repeat-Masked Slice
+** @argrule Ref object [EnsPRepeatmaskedslice] Ensembl Repeat-Masked Slice
 **
-** @valrule * [EnsPRepeatMaskedSlice] Ensembl Repeat-Masked Slice
+** @valrule * [EnsPRepeatmaskedslice] Ensembl Repeat-Masked Slice
 **
 ** @fcategory new
 ******************************************************************************/
@@ -4330,7 +4330,7 @@ AjBool ensSliceadaptorFetchAll(EnsPSliceadaptor adaptor,
 
 
 
-/* @func ensRepeatMaskedSliceNew **********************************************
+/* @func ensRepeatmaskedsliceNew **********************************************
 **
 ** Default constructor for an Ensembl Repeat-Masked Slice.
 **
@@ -4339,11 +4339,11 @@ AjBool ensSliceadaptorFetchAll(EnsPSliceadaptor adaptor,
 **                              AJAX Strings
 ** @param [r] masking [AjPTable] AJAX Table to override masking types
 **
-** @return [EnsPRepeatMaskedSlice] Ensembl Repeat-Masked Slice or NULL
+** @return [EnsPRepeatmaskedslice] Ensembl Repeat-Masked Slice or NULL
 ** @@
 ******************************************************************************/
 
-EnsPRepeatMaskedSlice ensRepeatMaskedSliceNew(EnsPSlice slice,
+EnsPRepeatmaskedslice ensRepeatmaskedsliceNew(EnsPSlice slice,
                                               AjPList annames,
                                               AjPTable masking)
 {
@@ -4358,10 +4358,10 @@ EnsPRepeatMaskedSlice ensRepeatMaskedSliceNew(EnsPSlice slice,
     
     AjPStr key = NULL;
     
-    EnsPRepeatMaskedSlice rmslice = NULL;
+    EnsPRepeatmaskedslice rmslice = NULL;
     
     /*
-     ajDebug("ensRepeatMaskedSliceNew\n"
+     ajDebug("ensRepeatmaskedsliceNew\n"
 	     "  slice %p\n"
 	     "  annames %p\n"
 	     "  masking %p\n",
@@ -4428,17 +4428,17 @@ EnsPRepeatMaskedSlice ensRepeatMaskedSliceNew(EnsPSlice slice,
 
 
 
-/* @func ensRepeatMaskedSliceNewObj *******************************************
+/* @func ensRepeatmaskedsliceNewObj *******************************************
 **
 ** Object-based constructor function, which returns an independent object.
 **
-** @param [r] object [EnsPRepeatMaskedSlice] Ensembl Repeat-Masked Slice
+** @param [r] object [EnsPRepeatmaskedslice] Ensembl Repeat-Masked Slice
 **
-** @return [EnsPRepeatMaskedSlice] Ensembl Repeat-Masked Slice or NULL
+** @return [EnsPRepeatmaskedslice] Ensembl Repeat-Masked Slice or NULL
 ** @@
 ******************************************************************************/
 
-EnsPRepeatMaskedSlice ensRepeatMaskedSliceNewObj(EnsPRepeatMaskedSlice object)
+EnsPRepeatmaskedslice ensRepeatmaskedsliceNewObj(EnsPRepeatmaskedslice object)
 {
     void **keyarray = NULL;
     void **valarray = NULL;
@@ -4451,7 +4451,7 @@ EnsPRepeatMaskedSlice ensRepeatMaskedSliceNewObj(EnsPRepeatMaskedSlice object)
     
     AjPStr key = NULL;
     
-    EnsPRepeatMaskedSlice rmslice = NULL;
+    EnsPRepeatmaskedslice rmslice = NULL;
     
     if(!object)
 	return NULL;
@@ -4506,18 +4506,18 @@ EnsPRepeatMaskedSlice ensRepeatMaskedSliceNewObj(EnsPRepeatMaskedSlice object)
 
 
 
-/* @func ensRepeatMaskedSliceNewRef *******************************************
+/* @func ensRepeatmaskedsliceNewRef *******************************************
 **
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] rmslice [EnsPRepeatMaskedSlice] Ensembl Repeat-Masked Slice
+** @param [u] rmslice [EnsPRepeatmaskedslice] Ensembl Repeat-Masked Slice
 **
-** @return [EnsPRepeatMaskedSlice] Ensembl Repeat-Masked Slice or NULL
+** @return [EnsPRepeatmaskedslice] Ensembl Repeat-Masked Slice or NULL
 ** @@
 ******************************************************************************/
 
-EnsPRepeatMaskedSlice ensRepeatMaskedSliceNewRef(EnsPRepeatMaskedSlice rmslice)
+EnsPRepeatmaskedslice ensRepeatmaskedsliceNewRef(EnsPRepeatmaskedslice rmslice)
 {
     if(!rmslice)
 	return NULL;
@@ -4535,12 +4535,12 @@ EnsPRepeatMaskedSlice ensRepeatMaskedSliceNewRef(EnsPRepeatMaskedSlice rmslice)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Repeat-Masked Slice.
 **
-** @fdata [EnsPRepeatMaskedSlice]
+** @fdata [EnsPRepeatmaskedslice]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a Repeat-Masked Slice object
 **
-** @argrule * Prmslice [EnsPRepeatMaskedSlice*] Repeat-Masked Slice object
+** @argrule * Prmslice [EnsPRepeatmaskedslice*] Repeat-Masked Slice object
 **                                              address
 **
 ** @valrule * [void]
@@ -4551,22 +4551,22 @@ EnsPRepeatMaskedSlice ensRepeatMaskedSliceNewRef(EnsPRepeatMaskedSlice rmslice)
 
 
 
-/* @func ensRepeatMaskedSliceDel **********************************************
+/* @func ensRepeatmaskedsliceDel **********************************************
 **
 ** Default Ensembl Repeat-Masked Slice destructor.
 **
-** @param [d] Prmslice [EnsPRepeatMaskedSlice*] Ensembl Repeat-Masked Slice
+** @param [d] Prmslice [EnsPRepeatmaskedslice*] Ensembl Repeat-Masked Slice
 **                                              address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensRepeatMaskedSliceDel(EnsPRepeatMaskedSlice *Prmslice)
+void ensRepeatmaskedsliceDel(EnsPRepeatmaskedslice *Prmslice)
 {
     void **keyarray = NULL;
     void **valarray = NULL;
-    EnsPRepeatMaskedSlice pthis = NULL;
+    EnsPRepeatmaskedslice pthis = NULL;
     
     register ajuint i = 0;
     
@@ -4621,12 +4621,12 @@ void ensRepeatMaskedSliceDel(EnsPRepeatMaskedSlice *Prmslice)
 
 
 
-/* @func ensRepeatMaskedSliceFetchSequenceSeq *********************************
+/* @func ensRepeatmaskedsliceFetchSequenceSeq *********************************
 **
 ** Fetch the (masked) sequence of an Ensembl Repeat-Masked Slice as
 ** AJAX Sequence.
 **
-** @param [r] rmslice [EnsPRepeatMaskedSlice] Ensembl Repeat-Masked Slice
+** @param [r] rmslice [EnsPRepeatmaskedslice] Ensembl Repeat-Masked Slice
 ** @param [r] mtype [AjEnum] Repeat masking type, i.e. none, soft, hard
 ** @param [wP] Psequence [AjPSeq*] Sequence address
 **
@@ -4634,7 +4634,7 @@ void ensRepeatMaskedSliceDel(EnsPRepeatMaskedSlice *Prmslice)
 ** @@
 ******************************************************************************/
 
-AjBool ensRepeatMaskedSliceFetchSequenceSeq(EnsPRepeatMaskedSlice rmslice,
+AjBool ensRepeatmaskedsliceFetchSequenceSeq(EnsPRepeatmaskedslice rmslice,
                                             AjEnum mtype,
                                             AjPSeq *Psequence)
 {
@@ -4653,7 +4653,7 @@ AjBool ensRepeatMaskedSliceFetchSequenceSeq(EnsPRepeatMaskedSlice rmslice,
     
     sequence = ajStrNew();
     
-    ensRepeatMaskedSliceFetchSequenceStr(rmslice, mtype, &sequence);
+    ensRepeatmaskedsliceFetchSequenceStr(rmslice, mtype, &sequence);
     
     *Psequence = ajSeqNewNameS(sequence, name);
     
@@ -4666,14 +4666,26 @@ AjBool ensRepeatMaskedSliceFetchSequenceSeq(EnsPRepeatMaskedSlice rmslice,
 
 
 
-/* @func ensRepeatMaskedSliceFetchSequenceStr *********************************
+/*
+** FIXME: This function also incorporates the private
+** Bio::EnsEMBL::Slice::_mask_features. Passing information between
+** Slice.pm and Repeatmaskedslice.pm seems rather inefficient and many
+** parameter checks can be avoided if sequence and Repeat Features are
+** fetched from the same Slice.
+** FIXME: The private function however is not only used by
+** Bio::EnsEMBL::Repeatmaskedslice::seq, but also used by
+** Bio::EnsEMBL::Repeatmaskedslice::subseq.
+** The old function is still available from the OldCode.c file.
+*/
+
+/* @func ensRepeatmaskedsliceFetchSequenceStr *********************************
 **
 ** Fetch the (masked) sequence for an Ensembl Repeat-Masked Slice as
 ** AJAX String.
 **
-** @cc Bio::EnsEMBL::RepeatMaskedSlice::seq
+** @cc Bio::EnsEMBL::Repeatmaskedslice::seq
 ** @cc Bio::EnsEMBL::Slice::_mask_features
-** @param [r] rmslice [EnsPRepeatMaskedSlice] Ensembl Repeat-Masked Slice
+** @param [r] rmslice [EnsPRepeatmaskedslice] Ensembl Repeat-Masked Slice
 ** @param [r] mtype [AjEnum] Repeat masking type, i.e. none, soft, hard
 ** @param [wP] Psequence [AjPStr*] Sequence String address
 **
@@ -4681,19 +4693,7 @@ AjBool ensRepeatMaskedSliceFetchSequenceSeq(EnsPRepeatMaskedSlice rmslice,
 ** @@
 ******************************************************************************/
 
-/*
-** FIXME: This function also incorporates the private
-** Bio::EnsEMBL::Slice::_mask_features. Passing information between
-** Slice.pm and RepeatMaskedSlice.pm seems rather inefficient and many
-** parameter checks can be avoided if sequence and Repeat Features are
-** fetched from the same Slice.
-** FIXME: The private function however is not only used by
-** Bio::EnsEMBL::RepeatMaskedSlice::seq, but also used by
-** Bio::EnsEMBL::RepeatMaskedSlice::subseq.
-** The old function is still available from the OldCode.c file.
-*/
-
-AjBool ensRepeatMaskedSliceFetchSequenceStr(EnsPRepeatMaskedSlice rmslice,
+AjBool ensRepeatmaskedsliceFetchSequenceStr(EnsPRepeatmaskedslice rmslice,
                                             AjEnum mtype,
                                             AjPStr *Psequence)
 {
@@ -4712,15 +4712,15 @@ AjBool ensRepeatMaskedSliceFetchSequenceStr(EnsPRepeatMaskedSlice rmslice,
     
     EnsPFeature feature = NULL;
     
-    EnsPRepeatConsensus rc = NULL;
+    EnsPRepeatconsensus rc = NULL;
     
-    EnsPRepeatFeature rf         = NULL;
-    EnsPRepeatFeatureadaptor rfa = NULL;
+    EnsPRepeatfeature rf         = NULL;
+    EnsPRepeatfeatureadaptor rfa = NULL;
     
     EnsPSliceadaptor sa = NULL;
     
     /*
-     ajDebug("ensRepeatMaskedSliceFetchSequenceStr\n"
+     ajDebug("ensRepeatmaskedsliceFetchSequenceStr\n"
 	     "  rmslice %p\n"
 	     "  *Psequence %p\n"
 	     "  mtype %d\n",
@@ -4737,7 +4737,7 @@ AjBool ensRepeatMaskedSliceFetchSequenceStr(EnsPRepeatMaskedSlice rmslice,
     
     if((mtype <= 0) || (mtype > ensERepeatMaskTypeHard))
     {
-	ajDebug("ensRepeatMaskedSliceFetchSequenceStr got unsupported "
+	ajDebug("ensRepeatmaskedsliceFetchSequenceStr got unsupported "
 		"masking type %d\n", mtype);
 	
 	return ajFalse;
@@ -4745,7 +4745,7 @@ AjBool ensRepeatMaskedSliceFetchSequenceStr(EnsPRepeatMaskedSlice rmslice,
     
     if(!rmslice->Slice)
     {
-	ajDebug("ensRepeatMaskedSliceFetchSequenceStr got an "
+	ajDebug("ensRepeatmaskedsliceFetchSequenceStr got an "
 		"Ensembl Repeat-Masked Slice without an "
 		"Ensembl Slice.\n");
 	
@@ -4757,16 +4757,16 @@ AjBool ensRepeatMaskedSliceFetchSequenceStr(EnsPRepeatMaskedSlice rmslice,
     /* Sanity check */
     
     if(ensSliceGetLength(rmslice->Slice) != ajStrGetLen(*Psequence))
-	ajWarn("ensRepeatMaskedSliceFetchSequenceStr got Slice of length %u, "
+	ajWarn("ensRepeatmaskedsliceFetchSequenceStr got Slice of length %u, "
 	       "but DNA sequence of length %u.\n",
 	       ensSliceGetLength(rmslice->Slice),
 	       ajStrGetLen(*Psequence));
     
-    sa = ensSliceGetadaptor(rmslice->Slice);
+    sa = ensSliceGetAdaptor(rmslice->Slice);
     
     dba = ensSliceadaptorGetDatabaseadaptor(sa);
     
-    rfa = ensRegistryGetRepeatFeatureadaptor(dba);
+    rfa = ensRegistryGetRepeatfeatureadaptor(dba);
     
     rfs = ajListNew();
     
@@ -4776,7 +4776,7 @@ AjBool ensRepeatMaskedSliceFetchSequenceStr(EnsPRepeatMaskedSlice rmslice,
     {
 	key = (AjPStr) ajListIterGet(iter);
 	
-	ensRepeatFeatureadaptorFetchAllBySlice(rfa,
+	ensRepeatfeatureadaptorFetchAllBySlice(rfa,
 					       rmslice->Slice,
 					       key,
 					       (AjPStr) NULL,
@@ -4788,7 +4788,7 @@ AjBool ensRepeatMaskedSliceFetchSequenceStr(EnsPRepeatMaskedSlice rmslice,
     ajListIterDel(&iter);
     
     /*
-     sliceMaskRepeatFeatures(rmslice->Slice,
+     sliceMaskRepeatfeatures(rmslice->Slice,
 			     Psequence,
 			     rfs,
 			     mtype,
@@ -4797,7 +4797,7 @@ AjBool ensRepeatMaskedSliceFetchSequenceStr(EnsPRepeatMaskedSlice rmslice,
     
     while(ajListPop(rfs, (void **) &rf))
     {
-	feature = ensRepeatFeatureGetFeature(rf);
+	feature = ensRepeatfeatureGetFeature(rf);
 	
 	start = ensFeatureGetStart(feature);
 	
@@ -4814,7 +4814,7 @@ AjBool ensRepeatMaskedSliceFetchSequenceStr(EnsPRepeatMaskedSlice rmslice,
 	 
 	 if((start > dnalen) || (end < 1))
 	 {
-	     ajDebug("sliceMaskRepeatFeatures got "
+	     ajDebug("sliceMaskRepeatfeatures got "
 		     "start %d > DNA sequence length %u or "
 		     "end %d < 1.\n", start, dnalen, end);
 	     
@@ -4836,11 +4836,11 @@ AjBool ensRepeatMaskedSliceFetchSequenceStr(EnsPRepeatMaskedSlice rmslice,
 	if(end > (ajint) ensSliceGetLength(rmslice->Slice))
 	    end = ensSliceGetLength(rmslice->Slice);
 	
-	rc = ensRepeatFeatureGetRepeatConsensus(rf);
+	rc = ensRepeatfeatureGetRepeatconsensus(rf);
 	
 	/* Get the masking type for the Repeat Consensus Type if defined. */
 	
-	key = ajFmtStr("repeat_type_%S", ensRepeatConsensusGetType(rc));
+	key = ajFmtStr("repeat_type_%S", ensRepeatconsensusGetType(rc));
 	
 	Pmsktyp = (AjEnum *)
 	    ajTableFetch(rmslice->Masking, (const void *) key);
@@ -4852,7 +4852,7 @@ AjBool ensRepeatMaskedSliceFetchSequenceStr(EnsPRepeatMaskedSlice rmslice,
 	
 	/* Get the masking type for the Repeat Consensus Class if defined. */
 	
-	key = ajFmtStr("repeat_class_%S", ensRepeatConsensusGetClass(rc));
+	key = ajFmtStr("repeat_class_%S", ensRepeatconsensusGetClass(rc));
 	
 	Pmsktyp = (AjEnum *)
 	    ajTableFetch(rmslice->Masking, (const void *) key);
@@ -4864,7 +4864,7 @@ AjBool ensRepeatMaskedSliceFetchSequenceStr(EnsPRepeatMaskedSlice rmslice,
 	
 	/* Get the masking type for the Repeat Consensus Name if defined. */
 	
-	key = ajFmtStr("repeat_name_%S", ensRepeatConsensusGetName(rc));
+	key = ajFmtStr("repeat_name_%S", ensRepeatconsensusGetName(rc));
 	
 	Pmsktyp = (AjEnum *)
 	    ajTableFetch(rmslice->Masking, (const void *) key);
@@ -4886,10 +4886,10 @@ AjBool ensRepeatMaskedSliceFetchSequenceStr(EnsPRepeatMaskedSlice rmslice,
 	else if(msktyp == ensERepeatMaskTypeHard)
 	    ajStrMaskRange(Psequence, start, end, 'N');
 	else
-	    ajDebug("ensRepeatMaskedSliceFetchSequenceStr got unsupported "
+	    ajDebug("ensRepeatmaskedsliceFetchSequenceStr got unsupported "
 		    "masking type %d\n", msktyp);
 	
-	ensRepeatFeatureDel(&rf);
+	ensRepeatfeatureDel(&rf);
     }
     
     ajListFree(&rfs);
@@ -4898,15 +4898,15 @@ AjBool ensRepeatMaskedSliceFetchSequenceStr(EnsPRepeatMaskedSlice rmslice,
 }
 
 /*
-** FIXME: Bio::EnsEMBL::RepeatMaskedSlice::subseq is missing.
+** FIXME: Bio::EnsEMBL::Repeatmaskedslice::subseq is missing.
 ** Currently, Features are not globally cached by the BaseFeatureadaptor so
 ** that this function does not offer much benefit. Each sub-Slice would still
-** require RepeatFeatures to be called.
+** require Repeatfeatures to be called.
 */
 
 #if AJFALSE
 
-AjBool ensRepeatMaskedSliceFetchSubSequenceStr(EnsPRepeatMaskedSlice rmslice,
+AjBool ensRepeatmaskedsliceFetchSubSequenceStr(EnsPRepeatmaskedslice rmslice,
                                                AjEnum mtype,
                                                AjPStr *Psequence)
 {
@@ -4918,7 +4918,7 @@ AjBool ensRepeatMaskedSliceFetchSubSequenceStr(EnsPRepeatMaskedSlice rmslice,
     
     if((mtype <= 0) || (mtype > ensERepeatMaskTypeHard))
     {
-	ajDebug("ensRepeatMaskedSliceFetchSubSequenceStr got unsupported "
+	ajDebug("ensRepeatmaskedsliceFetchSubSequenceStr got unsupported "
 		"masking type %d\n", mtype);
 	
 	return ajFalse;
@@ -4926,7 +4926,7 @@ AjBool ensRepeatMaskedSliceFetchSubSequenceStr(EnsPRepeatMaskedSlice rmslice,
     
     if(!rmslice->Slice)
     {
-	ajDebug("ensRepeatMaskedSliceFetchSubSequenceStr got an "
+	ajDebug("ensRepeatmaskedsliceFetchSubSequenceStr got an "
 		"Ensembl Repeat-Masked Slice without an "
 		"Ensembl Slice.\n");
 	

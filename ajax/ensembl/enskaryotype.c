@@ -4,11 +4,11 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
-** Bio::EnsEMBL::KaryotypeBand CVS Revision: 1.6
-** Bio::EnsEMBL::DBSQL::KaryotypeBandadaptor CVS Revision: 1.27
+** Bio::EnsEMBL::Karyotypeband CVS Revision: 1.6
+** Bio::EnsEMBL::DBSQL::Karyotypebandadaptor CVS Revision: 1.27
 **
 ** This library is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU Library General Public
@@ -46,18 +46,18 @@
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-extern EnsPCoordSystemadaptor
-ensRegistryGetCoordSystemadaptor(EnsPDatabaseadaptor dba);
+extern EnsPCoordsystemadaptor
+ensRegistryGetCoordsystemadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPKaryotypeBandadaptor
-ensRegistryGetKaryotypeBandadaptor(EnsPDatabaseadaptor dba);
+extern EnsPKaryotypebandadaptor
+ensRegistryGetKaryotypebandadaptor(EnsPDatabaseadaptor dba);
 
 extern EnsPSliceadaptor
 ensRegistryGetSliceadaptor(EnsPDatabaseadaptor dba);
 
 static AjBool karyotypeBandadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                 const AjPStr statement,
-                                                EnsPAssemblyMapper am,
+                                                EnsPAssemblymapper am,
                                                 EnsPSlice slice,
                                                 AjPList kblist);
 
@@ -81,13 +81,13 @@ static EnsPFeature karyotypeBandadaptorGetFeature(const void *value);
 
 
 
-/* @datasection [EnsPKaryotypeBand] Karyotype Band ****************************
+/* @datasection [EnsPKaryotypeband] Karyotype Band ****************************
 **
 ** Functions for manipulating Ensembl Karyotype Band objects
 **
-** @cc Bio::EnsEMBL::KaryotypeBand CVS Revision: 1.7
+** @cc Bio::EnsEMBL::Karyotypeband CVS Revision: 1.7
 **
-** @nam2rule Karyotype Band
+** @nam2rule Karyotypeband
 **
 ******************************************************************************/
 
@@ -101,17 +101,17 @@ static EnsPFeature karyotypeBandadaptorGetFeature(const void *value);
 ** Karyotype Band. The target pointer does not need to be initialised to
 ** NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPKaryotypeBand]
+** @fdata [EnsPKaryotypeband]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPKaryotypeBand] Ensembl Karyotype Band
-** @argrule Ref object [EnsPKaryotypeBand] Ensembl Karyotype Band
+** @argrule Obj object [EnsPKaryotypeband] Ensembl Karyotype Band
+** @argrule Ref object [EnsPKaryotypeband] Ensembl Karyotype Band
 **
-** @valrule * [EnsPKaryotypeBand] Ensembl Karyotype Band
+** @valrule * [EnsPKaryotypeband] Ensembl Karyotype Band
 **
 ** @fcategory new
 ******************************************************************************/
@@ -119,27 +119,27 @@ static EnsPFeature karyotypeBandadaptorGetFeature(const void *value);
 
 
 
-/* @func ensKaryotypeBandNew **************************************************
+/* @func ensKaryotypebandNew **************************************************
 **
 ** Default Ensembl Karyotype Band constructor.
 **
-** @cc Bio::EnsEMBL::KaryotypeBand::new
+** @cc Bio::EnsEMBL::Karyotypeband::new
 ** @param [r] identifier [ajuint]
 ** @cc Bio::EnsEMBL::Feature::new
 ** @param [u] feature [EnsPFeature] Ensembl Feature.
 ** @param [u] name [AjPStr] Name.
 ** @param [u] stain [AjPStr] Stain.
 **
-** @return [EnsPKaryotypeBand] Ensembl Karyotype Band or NULL.
+** @return [EnsPKaryotypeband] Ensembl Karyotype Band or NULL.
 ** @@
 ******************************************************************************/
 
-EnsPKaryotypeBand ensKaryotypeBandNew(ajuint identifier,
+EnsPKaryotypeband ensKaryotypebandNew(ajuint identifier,
                                       EnsPFeature feature,
                                       AjPStr name,
                                       AjPStr stain)
 {
-    EnsPKaryotypeBand kb = NULL;
+    EnsPKaryotypeband kb = NULL;
     
     if(!feature)
 	return NULL;
@@ -164,19 +164,19 @@ EnsPKaryotypeBand ensKaryotypeBandNew(ajuint identifier,
 
 
 
-/* @func ensKaryotypeBandNewObj ***********************************************
+/* @func ensKaryotypebandNewObj ***********************************************
 **
 ** Object-based constructor function, which returns an independent object.
 **
-** @param [u] object [const EnsPKaryotypeBand] Ensembl Karyotype Band.
+** @param [u] object [const EnsPKaryotypeband] Ensembl Karyotype Band.
 **
-** @return [EnsPKaryotypeBand] Ensembl Karyotype Band or NULL.
+** @return [EnsPKaryotypeband] Ensembl Karyotype Band or NULL.
 ** @@
 ******************************************************************************/
 
-EnsPKaryotypeBand ensKaryotypeBandNewObj(EnsPKaryotypeBand object)
+EnsPKaryotypeband ensKaryotypebandNewObj(const EnsPKaryotypeband object)
 {
-    EnsPKaryotypeBand kb = NULL;
+    EnsPKaryotypeband kb = NULL;
     
     if(!object)
 	return NULL;
@@ -203,18 +203,18 @@ EnsPKaryotypeBand ensKaryotypeBandNewObj(EnsPKaryotypeBand object)
 
 
 
-/* @func ensKaryotypeBandNewRef ***********************************************
+/* @func ensKaryotypebandNewRef ***********************************************
 **
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] kb [EnsPKaryotypeBand] Ensembl Karyotype Band.
+** @param [u] kb [EnsPKaryotypeband] Ensembl Karyotype Band.
 **
-** @return [EnsPKaryotypeBand] Ensembl Karyotype Band.
+** @return [EnsPKaryotypeband] Ensembl Karyotype Band.
 ** @@
 ******************************************************************************/
 
-EnsPKaryotypeBand ensKaryotypeBandNewRef(EnsPKaryotypeBand kb)
+EnsPKaryotypeband ensKaryotypebandNewRef(EnsPKaryotypeband kb)
 {
     if(!kb)
 	return NULL;
@@ -232,12 +232,12 @@ EnsPKaryotypeBand ensKaryotypeBandNewRef(EnsPKaryotypeBand kb)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Karyotype Band.
 **
-** @fdata [EnsPKaryotypeBand]
+** @fdata [EnsPKaryotypeband]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) an Karyotype Band object
 **
-** @argrule * Pkb [EnsPKaryotypeBand*] Karyotype Band object address
+** @argrule * Pkb [EnsPKaryotypeband*] Karyotype Band object address
 **
 ** @valrule * [void]
 **
@@ -247,19 +247,19 @@ EnsPKaryotypeBand ensKaryotypeBandNewRef(EnsPKaryotypeBand kb)
 
 
 
-/* @func ensKaryotypeBandDel **************************************************
+/* @func ensKaryotypebandDel **************************************************
 **
 ** Default destructor for an Ensembl Karyotype Band.
 **
-** @param [d] Pkb [EnsPKaryotypeBand*] Ensembl KaryotypeBand address.
+** @param [d] Pkb [EnsPKaryotypeband*] Ensembl Karyotypeband address.
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensKaryotypeBandDel(EnsPKaryotypeBand *Pkb)
+void ensKaryotypebandDel(EnsPKaryotypeband *Pkb)
 {
-    EnsPKaryotypeBand pthis = NULL;
+    EnsPKaryotypeband pthis = NULL;
     
     if(!Pkb)
         return;
@@ -298,19 +298,19 @@ void ensKaryotypeBandDel(EnsPKaryotypeBand *Pkb)
 **
 ** Functions for returning elements of an Ensembl Karyotype Band object.
 **
-** @fdata [EnsPKaryotypeBand]
+** @fdata [EnsPKaryotypeband]
 ** @fnote None
 **
 ** @nam3rule Get Return Karyotype Band attribute(s)
-** @nam4rule Getadaptor Return the Ensembl Karyotype Band Adaptor
+** @nam4rule GetAdaptor Return the Ensembl Karyotype Band Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetFeature Return the Ensembl Feature
 ** @nam4rule GetName Return the name
 ** @nam4rule GetStain Return the stain
 **
-** @argrule * kb [const EnsPKaryotypeBand] Karyotype Band
+** @argrule * kb [const EnsPKaryotypeband] Karyotype Band
 **
-** @valrule Adaptor [EnsPKaryotypeBandadaptor] Ensembl Karyotype Band Adaptor
+** @valrule Adaptor [EnsPKaryotypebandadaptor] Ensembl Karyotype Band Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule Name [AjPStr] Name
 ** @valrule Stain [AjPStr] Stain
@@ -321,17 +321,17 @@ void ensKaryotypeBandDel(EnsPKaryotypeBand *Pkb)
 
 
 
-/* @func ensKaryotypeBandGetadaptor *******************************************
+/* @func ensKaryotypebandGetAdaptor *******************************************
 **
 ** Get the Ensembl Karyotype Band Adaptor element of an Ensembl Karyotype Band.
 **
-** @param [r] kb [const EnsPKaryotypeBand] Ensembl Karyotype Band.
+** @param [r] kb [const EnsPKaryotypeband] Ensembl Karyotype Band.
 **
-** @return [EnsPKaryotypeBandadaptor] Ensembl Karyotype Band Adaptor.
+** @return [EnsPKaryotypebandadaptor] Ensembl Karyotype Band Adaptor.
 ** @@
 ******************************************************************************/
 
-EnsPKaryotypeBandadaptor ensKaryotypeBandGetadaptor(const EnsPKaryotypeBand kb)
+EnsPKaryotypebandadaptor ensKaryotypebandGetAdaptor(const EnsPKaryotypeband kb)
 {
     if(!kb)
 	return NULL;
@@ -347,13 +347,13 @@ EnsPKaryotypeBandadaptor ensKaryotypeBandGetadaptor(const EnsPKaryotypeBand kb)
 ** Get the SQL database-internal identifier element of an
 ** Ensembl Karyotype Band.
 **
-** @param [r] kb [const EnsPKaryotypeBand] Ensembl Karyotype Band.
+** @param [r] kb [const EnsPKaryotypeband] Ensembl Karyotype Band.
 **
-** @return [EnsPKaryotypeBandadaptor] Internal database identifier.
+** @return [EnsPKaryotypebandadaptor] Internal database identifier.
 ** @@
 ******************************************************************************/
 
-ajuint ensKaryotypeBandGetIdentifier(const EnsPKaryotypeBand kb)
+ajuint ensKaryotypebandGetIdentifier(const EnsPKaryotypeband kb)
 {
     if(!kb)
 	return 0;
@@ -364,17 +364,17 @@ ajuint ensKaryotypeBandGetIdentifier(const EnsPKaryotypeBand kb)
 
 
 
-/* @func ensKaryotypeBandGetFeature *******************************************
+/* @func ensKaryotypebandGetFeature *******************************************
 **
 ** Get the Ensembl Feature element of an Ensembl Karyotype Band.
 **
-** @param [r] kb [const EnsPKaryotypeBand] Ensembl Karyotype Band.
+** @param [r] kb [const EnsPKaryotypeband] Ensembl Karyotype Band.
 **
 ** @return [EnsPFeature] Ensembl Feature.
 ** @@
 ******************************************************************************/
 
-EnsPFeature ensKaryotypeBandGetFeature(const EnsPKaryotypeBand kb)
+EnsPFeature ensKaryotypebandGetFeature(const EnsPKaryotypeband kb)
 {
     if(!kb)
 	return NULL;
@@ -385,17 +385,17 @@ EnsPFeature ensKaryotypeBandGetFeature(const EnsPKaryotypeBand kb)
 
 
 
-/* @func ensKaryotypeBandGetName **********************************************
+/* @func ensKaryotypebandGetName **********************************************
 **
 ** Get the name element of an Ensembl Karyotype Band.
 **
-** @param [r] kb [const EnsPKaryotypeBand] Ensembl Karyotype Band.
+** @param [r] kb [const EnsPKaryotypeband] Ensembl Karyotype Band.
 **
 ** @return [AjPStr] Name.
 ** @@
 ******************************************************************************/
 
-AjPStr ensKaryotypeBandGetName(const EnsPKaryotypeBand kb)
+AjPStr ensKaryotypebandGetName(const EnsPKaryotypeband kb)
 {
     if(!kb)
 	return NULL;
@@ -406,17 +406,17 @@ AjPStr ensKaryotypeBandGetName(const EnsPKaryotypeBand kb)
 
 
 
-/* @func ensKaryotypeBandGetStain *********************************************
+/* @func ensKaryotypebandGetStain *********************************************
 **
 ** Get the stain element of an Ensembl Karyotype Band.
 **
-** @param [r] kb [const EnsPKaryotypeBand] Ensembl Karyotype Band.
+** @param [r] kb [const EnsPKaryotypeband] Ensembl Karyotype Band.
 **
 ** @return [AjPStr] Stain.
 ** @@
 ******************************************************************************/
 
-AjPStr ensKaryotypeBandGetStain(const EnsPKaryotypeBand kb)
+AjPStr ensKaryotypebandGetStain(const EnsPKaryotypeband kb)
 {
     if(!kb)
 	return NULL;
@@ -431,17 +431,17 @@ AjPStr ensKaryotypeBandGetStain(const EnsPKaryotypeBand kb)
 **
 ** Functions for assigning elements of an Ensembl Karyotype Band object.
 **
-** @fdata [EnsPKaryotypeBand]
+** @fdata [EnsPKaryotypeband]
 ** @fnote None
 **
 ** @nam3rule Set Set one element of an Karyotype Band
-** @nam4rule Setadaptor Set the Ensembl Karyotype Band Adaptor
+** @nam4rule SetAdaptor Set the Ensembl Karyotype Band Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetFeature Set the Ensembl Feature
 ** @nam4rule SetName Set the name
 ** @nam4rule SetStain Set the stain
 **
-** @argrule * kb [EnsPKaryotypeBand] Ensembl Karyotype Band object
+** @argrule * kb [EnsPKaryotypeband] Ensembl Karyotype Band object
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
@@ -451,19 +451,19 @@ AjPStr ensKaryotypeBandGetStain(const EnsPKaryotypeBand kb)
 
 
 
-/* @func ensKaryotypeBandSetadaptor *******************************************
+/* @func ensKaryotypebandSetAdaptor *******************************************
 **
 ** Set the Ensembl Karyotype Band Adaptor element of an Ensembl Karyotype Band.
 **
-** @param [u] kb [EnsPKaryotypeBand] Ensembl Karyotype Band.
-** @param [r] kba [EnsPKaryotypeBandadaptor] Ensembl Karyotype Band Adaptor.
+** @param [u] kb [EnsPKaryotypeband] Ensembl Karyotype Band.
+** @param [r] kba [EnsPKaryotypebandadaptor] Ensembl Karyotype Band Adaptor.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
 ******************************************************************************/
 
-AjBool ensKaryotypeBandSetadaptor(EnsPKaryotypeBand kb,
-                                  EnsPKaryotypeBandadaptor kba)
+AjBool ensKaryotypebandSetAdaptor(EnsPKaryotypeband kb,
+                                  EnsPKaryotypebandadaptor kba)
 {
     if(!kb)
         return ajFalse;
@@ -476,19 +476,19 @@ AjBool ensKaryotypeBandSetadaptor(EnsPKaryotypeBand kb,
 
 
 
-/* @func ensKaryotypeBandSetIdentifier ****************************************
+/* @func ensKaryotypebandSetIdentifier ****************************************
 **
 ** Set the SQL database-internal identifier element of an
 ** Ensembl Karyotype Band.
 **
-** @param [u] kb [EnsPKaryotypeBand] Ensembl Karyotype Band.
+** @param [u] kb [EnsPKaryotypeband] Ensembl Karyotype Band.
 ** @param [r] identifier [ajuint] Database identifier.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
 ******************************************************************************/
 
-AjBool ensKaryotypeBandSetIdentifier(EnsPKaryotypeBand kb, ajuint identifier)
+AjBool ensKaryotypebandSetIdentifier(EnsPKaryotypeband kb, ajuint identifier)
 {
     if(!kb)
         return ajFalse;
@@ -501,18 +501,18 @@ AjBool ensKaryotypeBandSetIdentifier(EnsPKaryotypeBand kb, ajuint identifier)
 
 
 
-/* @func ensKaryotypeBandSetFeature *******************************************
+/* @func ensKaryotypebandSetFeature *******************************************
 **
 ** Set the Ensembl Feature element of an Ensembl Karyotype Band.
 **
-** @param [u] kb [EnsPKaryotypeBand] Ensembl Karyotype Band.
+** @param [u] kb [EnsPKaryotypeband] Ensembl Karyotype Band.
 ** @param [u] feature [EnsPFeature] Ensembl Feature.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
 ******************************************************************************/
 
-AjBool ensKaryotypeBandSetFeature(EnsPKaryotypeBand kb, EnsPFeature feature)
+AjBool ensKaryotypebandSetFeature(EnsPKaryotypeband kb, EnsPFeature feature)
 {
     if(!kb)
         return ajFalse;
@@ -527,18 +527,18 @@ AjBool ensKaryotypeBandSetFeature(EnsPKaryotypeBand kb, EnsPFeature feature)
 
 
 
-/* @func ensKaryotypeBandSetName **********************************************
+/* @func ensKaryotypebandSetName **********************************************
 **
 ** Set the name element of an Ensembl Karyotype Band.
 **
-** @param [u] kb [EnsPKaryotypeBand] Ensembl Karyotype Band.
+** @param [u] kb [EnsPKaryotypeband] Ensembl Karyotype Band.
 ** @param [u] name [AjPStr] Name.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
 ******************************************************************************/
 
-AjBool ensKaryotypeBandSetName(EnsPKaryotypeBand kb, AjPStr name)
+AjBool ensKaryotypebandSetName(EnsPKaryotypeband kb, AjPStr name)
 {
     if(!kb)
         return ajFalse;
@@ -553,18 +553,18 @@ AjBool ensKaryotypeBandSetName(EnsPKaryotypeBand kb, AjPStr name)
 
 
 
-/* @func ensKaryotypeBandSetStain *********************************************
+/* @func ensKaryotypebandSetStain *********************************************
 **
 ** Set the stain element of an Ensembl Karyotype Band.
 **
-** @param [u] kb [EnsPKaryotypeBand] Ensembl Karyotype Band.
+** @param [u] kb [EnsPKaryotypeband] Ensembl Karyotype Band.
 ** @param [u] stain [AjPStr] Logic name.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
 ******************************************************************************/
 
-AjBool ensKaryotypeBandSetStain(EnsPKaryotypeBand kb, AjPStr stain)
+AjBool ensKaryotypebandSetStain(EnsPKaryotypeband kb, AjPStr stain)
 {
     if(!kb)
         return ajFalse;
@@ -583,10 +583,10 @@ AjBool ensKaryotypeBandSetStain(EnsPKaryotypeBand kb, AjPStr stain)
 **
 ** Functions for reporting of an Ensembl Karyotype Band object.
 **
-** @fdata [EnsPKaryotypeBand]
+** @fdata [EnsPKaryotypeband]
 ** @nam3rule Trace Report Ensembl Karyotype Band elements to debug file
 **
-** @argrule Trace kb [const EnsPKaryotypeBand] Ensembl Karyotype Band
+** @argrule Trace kb [const EnsPKaryotypeband] Ensembl Karyotype Band
 ** @argrule Trace level [ajuint] Indentation level
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -597,18 +597,18 @@ AjBool ensKaryotypeBandSetStain(EnsPKaryotypeBand kb, AjPStr stain)
 
 
 
-/* @func ensKaryotypeBandTrace ************************************************
+/* @func ensKaryotypebandTrace ************************************************
 **
 ** Trace an Ensembl Karyotype Band.
 **
-** @param [r] kb [const EnsPKaryotypeBand] Ensembl Karyotype Band.
+** @param [r] kb [const EnsPKaryotypeband] Ensembl Karyotype Band.
 ** @param [r] level [ajuint] Indentation level.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
 ******************************************************************************/
 
-AjBool ensKaryotypeBandTrace(const EnsPKaryotypeBand kb, ajuint level)
+AjBool ensKaryotypebandTrace(const EnsPKaryotypeband kb, ajuint level)
 {
     AjPStr indent = NULL;
     
@@ -619,7 +619,7 @@ AjBool ensKaryotypeBandTrace(const EnsPKaryotypeBand kb, ajuint level)
     
     ajStrAppendCountK(&indent, ' ', level * 2);
     
-    ajDebug("%SensKaryotypeBandTrace %p\n"
+    ajDebug("%SensKaryotypebandTrace %p\n"
 	    "%S  Adaptor %p\n"
 	    "%S  Identifier %u\n"
 	    "%S  Feature %p\n"
@@ -642,24 +642,24 @@ AjBool ensKaryotypeBandTrace(const EnsPKaryotypeBand kb, ajuint level)
 
 
 
-/* @func ensKaryotypeBandGetMemSize *******************************************
+/* @func ensKaryotypebandGetMemSize *******************************************
 **
 ** Get the memory size in bytes of an Ensembl Karyotype Band.
 **
-** @param [r] kb [const EnsPKaryotypeBand] Ensembl Karyotype Band.
+** @param [r] kb [const EnsPKaryotypeband] Ensembl Karyotype Band.
 **
 ** @return [ajuint] Memory size.
 ** @@
 ******************************************************************************/
 
-ajuint ensKaryotypeBandGetMemSize(const EnsPKaryotypeBand kb)
+ajuint ensKaryotypebandGetMemSize(const EnsPKaryotypeband kb)
 {
     ajuint size = 0;
     
     if(!kb)
 	return 0;
     
-    size += sizeof (EnsOKaryotypeBand);
+    size += sizeof (EnsOKaryotypeband);
     
     size += ensFeatureGetMemSize(kb->Feature);
     
@@ -683,13 +683,13 @@ ajuint ensKaryotypeBandGetMemSize(const EnsPKaryotypeBand kb)
 
 
 
-/* @datasection [EnsPKaryotypeBandadaptor] Karyotype Band Adaptor *************
+/* @datasection [EnsPKaryotypebandadaptor] Karyotype Band Adaptor *************
 **
 ** Functions for manipulating Ensembl Karyotype Band Adaptor objects
 **
-** @cc Bio::EnsEMBL::DBSQL::KaryotypeBandadaptor CVS Revision: 1.30
+** @cc Bio::EnsEMBL::DBSQL::Karyotypebandadaptor CVS Revision: 1.30
 **
-** @nam2rule KaryotypeBandadaptor
+** @nam2rule Karyotypebandadaptor
 **
 ******************************************************************************/
 
@@ -737,7 +737,7 @@ static const char *karyotypeBandadaptorFinalCondition = NULL;
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
 ** @param [r] statement [const AjPStr] SQL statement.
-** @param [u] am [EnsPAssemblyMapper] Ensembl Assembly Mapper.
+** @param [u] am [EnsPAssemblymapper] Ensembl Assembly Mapper.
 ** @param [r] slice [EnsPSlice] Ensembl Slice.
 ** @param [u] kblist [AjPList] AJAX List of Ensembl Karyotype Band objects.
 **
@@ -747,7 +747,7 @@ static const char *karyotypeBandadaptorFinalCondition = NULL;
 
 static AjBool karyotypeBandadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                 const AjPStr statement,
-                                                EnsPAssemblyMapper am,
+                                                EnsPAssemblymapper am,
                                                 EnsPSlice slice,
                                                 AjPList kblist)
 {
@@ -764,12 +764,12 @@ static AjBool karyotypeBandadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     AjISqlrow sqli       = NULL;
     AjPSqlrow sqlr       = NULL;
     
-    EnsPCoordSystemadaptor csa = NULL;
+    EnsPCoordsystemadaptor csa = NULL;
     
     EnsPFeature feature = NULL;
     
-    EnsPKaryotypeBand kb         = NULL;
-    EnsPKaryotypeBandadaptor kba = NULL;
+    EnsPKaryotypeband kb         = NULL;
+    EnsPKaryotypebandadaptor kba = NULL;
     
     EnsPSlice srslice   = NULL;
     EnsPSliceadaptor sa = NULL;
@@ -787,9 +787,9 @@ static AjBool karyotypeBandadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     if(!kblist)
 	return ajFalse;
     
-    csa = ensRegistryGetCoordSystemadaptor(dba);
+    csa = ensRegistryGetCoordsystemadaptor(dba);
     
-    kba = ensRegistryGetKaryotypeBandadaptor(dba);
+    kba = ensRegistryGetKaryotypebandadaptor(dba);
     
     sa = ensRegistryGetSliceadaptor(dba);
     
@@ -817,7 +817,7 @@ static AjBool karyotypeBandadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	/* Need to get the internal Ensembl Sequence Region identifier. */
 	
-	srid = ensCoordSystemadaptorGetInternalSeqRegionIdentifier(csa, srid);
+	srid = ensCoordsystemadaptorGetInternalSeqregionIdentifier(csa, srid);
 	
 	/*
 	** FIXME: karyotype.seq_region_start and karyotype.seq_region_end are
@@ -825,7 +825,7 @@ static AjBool karyotypeBandadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	** All other features use unsigned start and end coordinates.
 	*/
 	
-	ensSliceadaptorFetchBySeqRegionIdentifier(sa, srid, 0, 0, 0, &srslice);
+	ensSliceadaptorFetchBySeqregionIdentifier(sa, srid, 0, 0, 0, &srslice);
 	
 	feature = ensFeatureNewS((EnsPAnalysis) NULL,
 				 srslice,
@@ -833,7 +833,7 @@ static AjBool karyotypeBandadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 				 srend,
 				 1);
 	
-	kb = ensKaryotypeBandNew(identifier, feature, name, stain);
+	kb = ensKaryotypebandNew(identifier, feature, name, stain);
 	
 	ajListPushAppend(kblist, (void *) kb);
 	
@@ -871,7 +871,7 @@ static void *karyotypeBandadaptorCacheReference(void *value)
     if(!value)
 	return NULL;
     
-    return (void *) ensKaryotypeBandNewRef((EnsPKaryotypeBand) value);
+    return (void *) ensKaryotypebandNewRef((EnsPKaryotypeband) value);
 }
 
 
@@ -882,7 +882,7 @@ static void *karyotypeBandadaptorCacheReference(void *value)
 ** Wrapper function to delete (de-reference) an Ensembl Karyotype Band
 ** from an Ensembl Cache.
 **
-** @param [r] value [void *] Ensembl Karyotype Band.
+** @param [r] value [void**] Ensembl Karyotype Band.
 **
 ** @return [void]
 ** @@
@@ -893,7 +893,7 @@ static void karyotypeBandadaptorCacheDelete(void **value)
     if(!value)
 	return;
     
-    ensKaryotypeBandDel((EnsPKaryotypeBand *) value);
+    ensKaryotypebandDel((EnsPKaryotypeband *) value);
     
     return;
 }
@@ -917,7 +917,7 @@ static ajuint karyotypeBandadaptorCacheSize(const void *value)
     if(!value)
 	return 0;
     
-    return ensKaryotypeBandGetMemSize((const EnsPKaryotypeBand) value);
+    return ensKaryotypebandGetMemSize((const EnsPKaryotypeband) value);
 }
 
 
@@ -939,7 +939,7 @@ static EnsPFeature karyotypeBandadaptorGetFeature(const void *value)
     if(!value)
 	return NULL;
     
-    return ensKaryotypeBandGetFeature((const EnsPKaryotypeBand) value);
+    return ensKaryotypebandGetFeature((const EnsPKaryotypeband) value);
 }
 
 
@@ -952,7 +952,7 @@ static EnsPFeature karyotypeBandadaptorGetFeature(const void *value)
 ** Karyotype Band Adaptor. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPKaryotypeBandadaptor]
+** @fdata [EnsPKaryotypebandadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
@@ -960,12 +960,12 @@ static EnsPFeature karyotypeBandadaptorGetFeature(const void *value)
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
 ** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPKaryotypeBandadaptor] Ensembl Karyotype
+** @argrule Obj object [EnsPKaryotypebandadaptor] Ensembl Karyotype
 **                                                Band Adaptor
-** @argrule Ref object [EnsPKaryotypeBandadaptor] Ensembl Karyotype
+** @argrule Ref object [EnsPKaryotypebandadaptor] Ensembl Karyotype
 **                                                Band Adaptor
 **
-** @valrule * [EnsPKaryotypeBandadaptor] Ensembl Karyotype Band Adaptor
+** @valrule * [EnsPKaryotypebandadaptor] Ensembl Karyotype Band Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -973,19 +973,19 @@ static EnsPFeature karyotypeBandadaptorGetFeature(const void *value)
 
 
 
-/* @func ensKaryotypeBandadaptorNew *******************************************
+/* @func ensKaryotypebandadaptorNew *******************************************
 **
 ** Default Ensembl Karyotype Band Adaptor constructor.
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
 **
-** @return [EnsPKaryotypeBandadaptor] Ensembl Karyotype Band Adaptor or NULL.
+** @return [EnsPKaryotypebandadaptor] Ensembl Karyotype Band Adaptor or NULL.
 ** @@
 ******************************************************************************/
 
-EnsPKaryotypeBandadaptor ensKaryotypeBandadaptorNew(EnsPDatabaseadaptor dba)
+EnsPKaryotypebandadaptor ensKaryotypebandadaptorNew(EnsPDatabaseadaptor dba)
 {
-    EnsPKaryotypeBandadaptor kba = NULL;
+    EnsPKaryotypebandadaptor kba = NULL;
     
     if(!dba)
 	return NULL;
@@ -1019,12 +1019,12 @@ EnsPKaryotypeBandadaptor ensKaryotypeBandadaptorNew(EnsPDatabaseadaptor dba)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Karyotype Band Adaptor.
 **
-** @fdata [EnsPKaryotypeBandadaptor]
+** @fdata [EnsPKaryotypebandadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) an Ensembl Karyotype Band Adaptor object
 **
-** @argrule * Padaptor [EnsPKaryotypeBandadaptor*] Ensembl Karyotype Band
+** @argrule * Padaptor [EnsPKaryotypebandadaptor*] Ensembl Karyotype Band
 **                                                 Adaptor object address
 **
 ** @valrule * [void]
@@ -1035,20 +1035,20 @@ EnsPKaryotypeBandadaptor ensKaryotypeBandadaptorNew(EnsPDatabaseadaptor dba)
 
 
 
-/* @func ensKaryotypeBandadaptorDel *******************************************
+/* @func ensKaryotypebandadaptorDel *******************************************
 **
 ** Default destructor for an Ensembl Karyotype Band Adaptor.
 **
-** @param [d] Padaptor [EnsPKaryotypeBandadaptor*] Ensembl Karyotype Band
+** @param [d] Padaptor [EnsPKaryotypebandadaptor*] Ensembl Karyotype Band
 **                                                 Adaptor address.
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensKaryotypeBandadaptorDel(EnsPKaryotypeBandadaptor *Padaptor)
+void ensKaryotypebandadaptorDel(EnsPKaryotypebandadaptor *Padaptor)
 {
-    EnsPKaryotypeBandadaptor pthis = NULL;
+    EnsPKaryotypebandadaptor pthis = NULL;
     
     if(!Padaptor)
 	return;
@@ -1068,12 +1068,12 @@ void ensKaryotypeBandadaptorDel(EnsPKaryotypeBandadaptor *Padaptor)
 
 
 
-/* @func ensKaryotypeBandadaptorFetchAllByChromosomeName **********************
+/* @func ensKaryotypebandadaptorFetchAllByChromosomeName **********************
 **
 ** Fetch all Ensembl Karyotype Bands via a chromosome name.
 **
-** @cc Bio::EnsEMBL::DBSQL::KaryotypeBandadaptor::fetch_all_by_chr_name
-** @param [u] adaptor [EnsPKaryotypeBandadaptor] Ensembl Karyotype Band
+** @cc Bio::EnsEMBL::DBSQL::Karyotypebandadaptor::fetch_all_by_chr_name
+** @param [u] adaptor [EnsPKaryotypebandadaptor] Ensembl Karyotype Band
 **                                               Adaptor.
 ** @param [r] name [const AjPStr] Chromosome name.
 ** @param [u] kblist [AjPList] AJAX List of Ensembl Karyotype Bands.
@@ -1082,8 +1082,8 @@ void ensKaryotypeBandadaptorDel(EnsPKaryotypeBandadaptor *Padaptor)
 ** @@
 ******************************************************************************/
 
-AjBool ensKaryotypeBandadaptorFetchAllByChromosomeName(
-    EnsPKaryotypeBandadaptor adaptor,
+AjBool ensKaryotypebandadaptorFetchAllByChromosomeName(
+    EnsPKaryotypebandadaptor adaptor,
     const AjPStr name,
     AjPList kblist)
 {
@@ -1129,15 +1129,15 @@ AjBool ensKaryotypeBandadaptorFetchAllByChromosomeName(
 
 
 
-/* @func ensKaryotypeBandadaptorFetchAllByChromosomeBand **********************
+/* @func ensKaryotypebandadaptorFetchAllByChromosomeBand **********************
 **
 ** Fetch all Ensembl Karyotype Bands via a chromosome and band name.
 **
 ** This function uses fuzzy matching of the band name.
 ** For example the bands 'q23.1' and 'q23.4' could be matched by 'q23'.
 **
-** @cc Bio::EnsEMBL::DBSQL::KaryotypeBandadaptor::fetch_all_by_chr_band
-** @param [u] adaptor [EnsPKaryotypeBandadaptor] Ensembl Karyotype Band
+** @cc Bio::EnsEMBL::DBSQL::Karyotypebandadaptor::fetch_all_by_chr_band
+** @param [u] adaptor [EnsPKaryotypebandadaptor] Ensembl Karyotype Band
 **                                               Adaptor.
 ** @param [r] name [const AjPStr] Chromosome name.
 ** @param [r] band [const AjPStr] Karyotype Band name.
@@ -1147,8 +1147,8 @@ AjBool ensKaryotypeBandadaptorFetchAllByChromosomeName(
 ** @@
 ******************************************************************************/
 
-AjBool ensKaryotypeBandadaptorFetchAllByChromosomeBand(
-    EnsPKaryotypeBandadaptor adaptor,
+AjBool ensKaryotypebandadaptorFetchAllByChromosomeBand(
+    EnsPKaryotypebandadaptor adaptor,
     const AjPStr name,
     const AjPStr band,
     AjPList kblist)

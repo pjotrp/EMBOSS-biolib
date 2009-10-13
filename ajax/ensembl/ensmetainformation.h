@@ -12,12 +12,12 @@ extern "C"
 
 
 
-/* @data EnsPMetaInformationadaptor *******************************************
+/* @data EnsPMetainformationadaptor *******************************************
 **
 ** Ensembl Meta-Information Adaptor.
 **
-** @alias EnsSMetaInformationadaptor
-** @alias EnsOMetaInformationadaptor
+** @alias EnsSMetainformationadaptor
+** @alias EnsOMetainformationadaptor
 **
 ** @attr Adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor.
 ** @attr CacheByIdentifier [AjPTable] Cache by Meta-Information SQL identifier.
@@ -25,29 +25,29 @@ extern "C"
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSMetaInformationadaptor
+typedef struct EnsSMetainformationadaptor
 {
     EnsPDatabaseadaptor Adaptor;
     AjPTable CacheByIdentifier;
     AjPTable CacheByKey;
-} EnsOMetaInformationadaptor;
+} EnsOMetainformationadaptor;
 
-#define EnsPMetaInformationadaptor EnsOMetaInformationadaptor*
-
-
+#define EnsPMetainformationadaptor EnsOMetainformationadaptor*
 
 
-/* @data EnsPMetaInformation **************************************************
+
+
+/* @data EnsPMetainformation **************************************************
 **
 ** Ensembl Meta-Information.
 **
-** @alias EnsSMetaInformation
-** @alias EnsOMetaInformation
+** @alias EnsSMetainformation
+** @alias EnsOMetainformation
 **
 ** @attr Use [ajuint] Use counter.
 ** @cc Bio::EnsEMBL::Storable
 ** @attr Identifier [ajuint] SQL Database-internal identifier.
-** @attr Adaptor [EnsPMetaInformationadaptor] Ensembl Meta-Information Adaptor.
+** @attr Adaptor [EnsPMetainformationadaptor] Ensembl Meta-Information Adaptor.
 ** @cc Bio::EnsEMBL::MetaContainer
 ** @attr Key [AjPStr] Key.
 ** @attr Value [AjPStr] Value.
@@ -56,18 +56,18 @@ typedef struct EnsSMetaInformationadaptor
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSMetaInformation
+typedef struct EnsSMetainformation
 {
     ajuint Use;
     ajuint Identifier;
-    EnsPMetaInformationadaptor Adaptor;
+    EnsPMetainformationadaptor Adaptor;
     AjPStr Key;
     AjPStr Value;
     ajuint Species;
     ajuint Padding;
-} EnsOMetaInformation;
+} EnsOMetainformation;
 
-#define EnsPMetaInformation EnsOMetaInformation*
+#define EnsPMetainformation EnsOMetainformation*
 
 
 
@@ -78,76 +78,76 @@ typedef struct EnsSMetaInformation
 
 /* Ensembl Meta-Information */
 
-EnsPMetaInformation ensMetaInformationNew(EnsPMetaInformationadaptor adaptor,
+EnsPMetainformation ensMetainformationNew(EnsPMetainformationadaptor adaptor,
                                           ajuint identifier,
                                           ajuint species,
                                           AjPStr key,
                                           AjPStr value);
 
-EnsPMetaInformation ensMetaInformationNewObj(EnsPMetaInformation object);
+EnsPMetainformation ensMetainformationNewObj(EnsPMetainformation object);
 
-EnsPMetaInformation ensMetaInformationNewRef(EnsPMetaInformation mi);
+EnsPMetainformation ensMetainformationNewRef(EnsPMetainformation mi);
 
-void ensMetaInformationDel(EnsPMetaInformation* Pmi);
+void ensMetainformationDel(EnsPMetainformation* Pmi);
 
-EnsPMetaInformationadaptor ensMetaInformationGetadaptor(
-    const EnsPMetaInformation mi);
+EnsPMetainformationadaptor ensMetainformationGetAdaptor(
+    const EnsPMetainformation mi);
 
-ajuint ensMetaInformationGetIdentifier(const EnsPMetaInformation mi);
+ajuint ensMetainformationGetIdentifier(const EnsPMetainformation mi);
 
-AjPStr ensMetaInformationGetKey(const EnsPMetaInformation mi);
+AjPStr ensMetainformationGetKey(const EnsPMetainformation mi);
 
-AjPStr ensMetaInformationGetValue(const EnsPMetaInformation mi);
+AjPStr ensMetainformationGetValue(const EnsPMetainformation mi);
 
-ajuint ensMetaInformationGetSpecies(const EnsPMetaInformation mi);
+ajuint ensMetainformationGetSpecies(const EnsPMetainformation mi);
 
-AjBool ensMetaInformationSetadaptor(EnsPMetaInformation mi,
-                                    EnsPMetaInformationadaptor adaptor);
+AjBool ensMetainformationSetAdaptor(EnsPMetainformation mi,
+                                    EnsPMetainformationadaptor adaptor);
 
-AjBool ensMetaInformationSetIdentifier(EnsPMetaInformation mi,
+AjBool ensMetainformationSetIdentifier(EnsPMetainformation mi,
                                        ajuint identifier);
 
-AjBool ensMetaInformationSetKey(EnsPMetaInformation mi, AjPStr key);
+AjBool ensMetainformationSetKey(EnsPMetainformation mi, AjPStr key);
 
-AjBool ensMetaInformationSetValue(EnsPMetaInformation mi, AjPStr value);
+AjBool ensMetainformationSetValue(EnsPMetainformation mi, AjPStr value);
 
-AjBool ensMetaInformationSetSpecies(EnsPMetaInformation mi, ajuint species);
+AjBool ensMetainformationSetSpecies(EnsPMetainformation mi, ajuint species);
 
-AjBool ensMetaInformationTrace(const EnsPMetaInformation mi, ajuint level);
+AjBool ensMetainformationTrace(const EnsPMetainformation mi, ajuint level);
 
-ajuint ensMetaInformationGetMemSize(const EnsPMetaInformation mi);
+ajuint ensMetainformationGetMemSize(const EnsPMetainformation mi);
 
 /* Ensembl Meta-Information Adaptor */
 
-EnsPMetaInformationadaptor ensMetaInformationadaptorNew(
+EnsPMetainformationadaptor ensMetainformationadaptorNew(
     EnsPDatabaseadaptor dba);
 
-void ensMetaInformationadaptorDel(EnsPMetaInformationadaptor* Padaptor);
+void ensMetainformationadaptorDel(EnsPMetainformationadaptor* Padaptor);
 
-AjBool ensMetaInformationadaptorFetchAllByKey(
-    const EnsPMetaInformationadaptor adaptor,
+AjBool ensMetainformationadaptorFetchAllByKey(
+    const EnsPMetainformationadaptor adaptor,
     const AjPStr key,
     AjPList mis);
 
-AjBool ensMetaInformationadaptorGetValueByKey(
-    const EnsPMetaInformationadaptor adaptor,
+AjBool ensMetainformationadaptorGetValueByKey(
+    const EnsPMetainformationadaptor adaptor,
 				       const AjPStr key,
 				       AjPStr *Pvalue);
 
-AjBool ensMetaInformationadaptorGetGenebuildVersion(
-    const EnsPMetaInformationadaptor adaptor,
+AjBool ensMetainformationadaptorGetGenebuildVersion(
+    const EnsPMetainformationadaptor adaptor,
     AjPStr *Pvalue);
 
-AjBool ensMetaInformationadaptorGetSchemaVersion(
-    const EnsPMetaInformationadaptor adaptor,
+AjBool ensMetainformationadaptorGetSchemaVersion(
+    const EnsPMetainformationadaptor adaptor,
     AjPStr *Pvalue);
 
-AjBool ensMetaInformationadaptorGetTaxonomyIdentifier(
-    const EnsPMetaInformationadaptor adaptor,
+AjBool ensMetainformationadaptorGetTaxonomyIdentifier(
+    const EnsPMetainformationadaptor adaptor,
     AjPStr *Pvalue);
 
-AjBool ensMetaInformationadaptorKeyValueExists(
-    const EnsPMetaInformationadaptor adaptor,
+AjBool ensMetainformationadaptorKeyValueExists(
+    const EnsPMetainformationadaptor adaptor,
     const AjPStr key,
     const AjPStr value);
 

@@ -11,43 +11,43 @@ extern "C"
 
 
 
-/* @data EnsPMarkerSynonym ****************************************************
+/* @data EnsPMarkersynonym ****************************************************
 **
 ** Ensembl Marker Synonym
 **
-** @alias EnsSMarkerSynonym
-** @alias EnsOMarkerSynonym
+** @alias EnsSMarkersynonym
+** @alias EnsOMarkersynonym
 **
 ** @attr Use [ajuint] Use counter
-** @cc Bio::EnsEMBL::Map::MarkerSynonym
+** @cc Bio::EnsEMBL::Map::Markersynonym
 ** @attr Identifier [ajuint] Internal SQL database identifier (primary key)
 ** @attr Source [AjPStr] Source
 ** @attr Name [AjPStr] Name
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSMarkerSynonym
+typedef struct EnsSMarkersynonym
 {
     ajuint Use;
     ajuint Identifier;
     AjPStr Source;
     AjPStr Name;
-} EnsOMarkerSynonym;
+} EnsOMarkersynonym;
 
-#define EnsPMarkerSynonym EnsOMarkerSynonym*
-
-
+#define EnsPMarkersynonym EnsOMarkersynonym*
 
 
-/* @data EnsPMarkerMapLocation ************************************************
+
+
+/* @data EnsPMarkermaplocation ************************************************
 **
 ** Ensembl Marker Map Location
 **
-** @alias EnsSMarkerMapLocation
-** @alias EnsOMarkerMapLocation
+** @alias EnsSMarkermaplocation
+** @alias EnsOMarkermaplocation
 **
 ** @cc Bio::EnsEMBL::Map::MapLocation
-** @attr MarkerSynonym [EnsPMarkerSynonym] Ensembl Marker Synonym
+** @attr Markersynonym [EnsPMarkersynonym] Ensembl Marker Synonym
 ** @attr MapName [AjPStr] Map name
 ** @attr ChromosomeName [AjPStr] Chromosome name
 ** @attr Position [AjPStr] Position
@@ -56,17 +56,17 @@ typedef struct EnsSMarkerSynonym
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSMarkerMapLocation
+typedef struct EnsSMarkermaplocation
 {
-    EnsPMarkerSynonym MarkerSynonym;
+    EnsPMarkersynonym Markersynonym;
     AjPStr MapName;
     AjPStr ChromosomeName;
     AjPStr Position;
     float LODScore;
     ajuint Use;
-} EnsOMarkerMapLocation;
+} EnsOMarkermaplocation;
 
-#define EnsPMarkerMapLocation EnsOMarkerMapLocation*
+#define EnsPMarkermaplocation EnsOMarkermaplocation*
 
 
 
@@ -120,11 +120,11 @@ enum EnsEMarkerType
 ** @attr Identifier [ajuint] Internal SQL database identifier (primary key)
 ** @attr Adaptor [EnsPMarkeradaptor] Ensembl Marker Adaptor
 ** @cc Bio::EnsEMBL::Map::Marker
-** @attr DisplaySynonym [EnsPMarkerSynonym] Display Ensembl Marker Synonym
+** @attr DisplaySynonym [EnsPMarkersynonym] Display Ensembl Marker Synonym
 ** @attr LeftPrimer [AjPStr] Left primer
 ** @attr RightPrimer [AjPStr] Right primer
-** @attr MarkerSynonyms [AjPList] AJAX List of Ensembl Marker Synonyms
-** @attr MarkerMapLocations [AjPList] AJAX List of Ensembl Marker Map Locations
+** @attr Markersynonyms [AjPList] AJAX List of Ensembl Marker Synonyms
+** @attr Markermaplocations [AjPList] AJAX List of Ensembl Marker Map Locations
 ** @attr MinimumDistance [ajuint] Minimum primer distance
 ** @attr MaximumDistance [ajuint] Maximum primer distance
 ** @attr Type [AjEnum] Type
@@ -137,11 +137,11 @@ typedef struct EnsSMarker
     ajuint Use;
     ajuint Identifier;
     EnsPMarkeradaptor Adaptor;
-    EnsPMarkerSynonym DisplaySynonym;
+    EnsPMarkersynonym DisplaySynonym;
     AjPStr LeftPrimer;
     AjPStr RightPrimer;
-    AjPList MarkerSynonyms;
-    AjPList MarkerMapLocations;
+    AjPList Markersynonyms;
+    AjPList Markermaplocations;
     ajuint MinimumDistance;
     ajuint MaximumDistance;
     AjEnum Type;
@@ -153,60 +153,60 @@ typedef struct EnsSMarker
 
 
 
-/* @data EnsPMarkerFeatureadaptor *********************************************
+/* @data EnsPMarkerfeatureadaptor *********************************************
 **
 ** Ensembl Marker Feature Adaptor.
 **
-** @alias EnsSMarkerFeatureadaptor
-** @alias EnsOMarkerFeatureadaptor
+** @alias EnsSMarkerfeatureadaptor
+** @alias EnsOMarkerfeatureadaptor
 **
-** @cc Bio::EnsEMBL::Map::DBSQL::MarkerFeatureadaptor
+** @cc Bio::EnsEMBL::Map::DBSQL::Markerfeatureadaptor
 ** @attr Adaptor [EnsPFeatureadaptor] Ensembl Feature Adaptor
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSMarkerFeatureadaptor
+typedef struct EnsSMarkerfeatureadaptor
 {
     EnsPFeatureadaptor Adaptor;
-} EnsOMarkerFeatureadaptor;
+} EnsOMarkerfeatureadaptor;
 
-#define EnsPMarkerFeatureadaptor EnsOMarkerFeatureadaptor*
-
-
+#define EnsPMarkerfeatureadaptor EnsOMarkerfeatureadaptor*
 
 
-/* @data EnsPMarkerFeature ****************************************************
+
+
+/* @data EnsPMarkerfeature ****************************************************
 **
 ** Ensembl Marker Feature
 **
-** @alias EnsSMarkerFeature
-** @alias EnsOMarkerFeature
+** @alias EnsSMarkerfeature
+** @alias EnsOMarkerfeature
 **
 ** @attr Use [ajuint] Use counter
 ** @cc Bio::EnsEMBL::Storable
 ** @attr Identifier [ajuint] Internal SQL database identifier (primary key)
-** @attr Adaptor [EnsPMarkerFeatureadaptor] Ensembl Marker Feature Adaptor
+** @attr Adaptor [EnsPMarkerfeatureadaptor] Ensembl Marker Feature Adaptor
 ** @cc Bio::EnsEMBL::Feature
 ** @attr Feature [EnsPFeature] Ensembl Feature
-** @cc Bio::EnsEMBL::Map::MarkerFeature
+** @cc Bio::EnsEMBL::Map::Markerfeature
 ** @attr Marker [EnsPMarker] Ensembl Marker
 ** @attr MapWeight [ajint] Map weight
 ** @attr Padding [ajint] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSMarkerFeature
+typedef struct EnsSMarkerfeature
 {
     ajuint Use;
     ajuint Identifier;
-    EnsPMarkerFeatureadaptor Adaptor;
+    EnsPMarkerfeatureadaptor Adaptor;
     EnsPFeature Feature;
     EnsPMarker Marker;
     ajint MapWeight;
     ajint Padding;
-} EnsOMarkerFeature;
+} EnsOMarkerfeature;
 
-#define EnsPMarkerFeature EnsOMarkerFeature*
+#define EnsPMarkerfeature EnsOMarkerfeature*
 
 
 
@@ -217,91 +217,91 @@ typedef struct EnsSMarkerFeature
 
 /* Ensembl Marker Synonym */
 
-EnsPMarkerSynonym ensMarkerSynonymNew(ajuint identifier,
+EnsPMarkersynonym ensMarkersynonymNew(ajuint identifier,
                                       AjPStr source,
                                       AjPStr name);
 
-EnsPMarkerSynonym ensMarkerSynonymNewObj(const EnsPMarkerSynonym object);
+EnsPMarkersynonym ensMarkersynonymNewObj(const EnsPMarkersynonym object);
 
-EnsPMarkerSynonym ensMarkerSynonymNewRef(EnsPMarkerSynonym ms);
+EnsPMarkersynonym ensMarkersynonymNewRef(EnsPMarkersynonym ms);
 
-void ensMarkerSynonymDel(EnsPMarkerSynonym* Pms);
+void ensMarkersynonymDel(EnsPMarkersynonym* Pms);
 
-ajuint ensMarkerSynonymGetIdentifier(const EnsPMarkerSynonym ms);
+ajuint ensMarkersynonymGetIdentifier(const EnsPMarkersynonym ms);
 
-AjPStr ensMarkerSynonymGetSource(const EnsPMarkerSynonym ms);
+AjPStr ensMarkersynonymGetSource(const EnsPMarkersynonym ms);
 
-AjPStr ensMarkerSynonymGetName(const EnsPMarkerSynonym ms);
+AjPStr ensMarkersynonymGetName(const EnsPMarkersynonym ms);
 
-AjBool ensMarkerSynonymSetIdentifier(EnsPMarkerSynonym ms, ajuint identifier);
+AjBool ensMarkersynonymSetIdentifier(EnsPMarkersynonym ms, ajuint identifier);
 
-AjBool ensMarkerSynonymSetSource(EnsPMarkerSynonym ms, AjPStr source);
+AjBool ensMarkersynonymSetSource(EnsPMarkersynonym ms, AjPStr source);
 
-AjBool ensMarkerSynonymSetName(EnsPMarkerSynonym ms, AjPStr name);
+AjBool ensMarkersynonymSetName(EnsPMarkersynonym ms, AjPStr name);
 
-AjBool ensMarkerSynonymTrace(const EnsPMarkerSynonym ms, ajuint level);
+AjBool ensMarkersynonymTrace(const EnsPMarkersynonym ms, ajuint level);
 
-ajuint ensMarkerSynonymGetMemSize(const EnsPMarkerSynonym ms);
+ajuint ensMarkersynonymGetMemSize(const EnsPMarkersynonym ms);
 
 /* Ensembl Marker Synonym Adaptor */
 
-AjBool ensMarkerSynonymadaptorFetchByIdentifier(EnsPDatabaseadaptor dba,
+AjBool ensMarkersynonymadaptorFetchByIdentifier(EnsPDatabaseadaptor dba,
                                                 ajuint identifier,
-                                                EnsPMarkerSynonym *Pms);
+                                                EnsPMarkersynonym *Pms);
 
-AjBool ensMarkerSynonymadaptorFetchAllByMarkerIdentifier(
+AjBool ensMarkersynonymadaptorFetchAllByMarkerIdentifier(
     EnsPDatabaseadaptor dba,
     ajuint markerid,
     AjPList mslist);
 
 /* Ensembl Marker Map Location */
 
-EnsPMarkerMapLocation ensMarkerMapLocationNew(EnsPMarkerSynonym ms,
+EnsPMarkermaplocation ensMarkermaplocationNew(EnsPMarkersynonym ms,
                                               AjPStr mapname,
                                               AjPStr chrname,
                                               AjPStr position,
                                               float lodscore);
 
-EnsPMarkerMapLocation ensMarkerMapLocationNewObj(
-    const EnsPMarkerMapLocation object);
+EnsPMarkermaplocation ensMarkermaplocationNewObj(
+    const EnsPMarkermaplocation object);
 
-EnsPMarkerMapLocation ensMarkerMapLocationNewRef(EnsPMarkerMapLocation mml);
+EnsPMarkermaplocation ensMarkermaplocationNewRef(EnsPMarkermaplocation mml);
 
-void ensMarkerMapLocationDel(EnsPMarkerMapLocation* Pmml);
+void ensMarkermaplocationDel(EnsPMarkermaplocation* Pmml);
 
-EnsPMarkerSynonym ensMarkerMapLocationGetMarkerSynonym(
-    const EnsPMarkerMapLocation mml);
+EnsPMarkersynonym ensMarkermaplocationGetMarkersynonym(
+    const EnsPMarkermaplocation mml);
 
-AjPStr ensMarkerMapLocationGetMapName(const EnsPMarkerMapLocation mml);
+AjPStr ensMarkermaplocationGetMapName(const EnsPMarkermaplocation mml);
 
-AjPStr ensMarkerMapLocationGetChromosomeName(const EnsPMarkerMapLocation mml);
+AjPStr ensMarkermaplocationGetChromosomeName(const EnsPMarkermaplocation mml);
 
-AjPStr ensMarkerMapLocationGetPosition(const EnsPMarkerMapLocation mml);
+AjPStr ensMarkermaplocationGetPosition(const EnsPMarkermaplocation mml);
 
-float ensMarkerMapLocationGetLODScore(const EnsPMarkerMapLocation mml);
+float ensMarkermaplocationGetLODScore(const EnsPMarkermaplocation mml);
 
-AjBool ensMarkerMapLocationSetMarkerSynonym(EnsPMarkerMapLocation mml,
-				     EnsPMarkerSynonym ms);
+AjBool ensMarkermaplocationSetMarkersynonym(EnsPMarkermaplocation mml,
+				     EnsPMarkersynonym ms);
 
-AjBool ensMarkerMapLocationSetMapName(EnsPMarkerMapLocation mml,
+AjBool ensMarkermaplocationSetMapName(EnsPMarkermaplocation mml,
                                       AjPStr mapname);
 
-AjBool ensMarkerMapLocationSetChromosomeName(EnsPMarkerMapLocation mml,
+AjBool ensMarkermaplocationSetChromosomeName(EnsPMarkermaplocation mml,
                                              AjPStr chrname);
 
-AjBool ensMarkerMapLocationSetPosition(EnsPMarkerMapLocation mml,
+AjBool ensMarkermaplocationSetPosition(EnsPMarkermaplocation mml,
                                        AjPStr position);
 
-AjBool ensMarkerMapLocationSetLODScore(EnsPMarkerMapLocation mml,
+AjBool ensMarkermaplocationSetLODScore(EnsPMarkermaplocation mml,
                                        float lodscore);
 
-AjBool ensMarkerMapLocationTrace(const EnsPMarkerMapLocation mml, ajuint level);
+AjBool ensMarkermaplocationTrace(const EnsPMarkermaplocation mml, ajuint level);
 
-ajuint ensMarkerMapLocationGetMemSize(const EnsPMarkerMapLocation mml);
+ajuint ensMarkermaplocationGetMemSize(const EnsPMarkermaplocation mml);
 
 /* Ensembl Marker Map Location Adaptor */
 
-AjBool ensMarkerMapLocationadaptorFetchAllByMarkerIdentifier(
+AjBool ensMarkermaplocationadaptorFetchAllByMarkerIdentifier(
     EnsPDatabaseadaptor dba,
     ajuint markerid,
     AjPList mmlist);
@@ -310,7 +310,7 @@ AjBool ensMarkerMapLocationadaptorFetchAllByMarkerIdentifier(
 
 EnsPMarker ensMarkerNew(EnsPMarkeradaptor adaptor,
                         ajuint identifier,
-                        EnsPMarkerSynonym display,
+                        EnsPMarkersynonym display,
                         AjPStr lprimer,
                         AjPStr rprimer,
                         AjPList synonyms,
@@ -326,19 +326,19 @@ EnsPMarker ensMarkerNewRef(EnsPMarker marker);
 
 void ensMarkerDel(EnsPMarker* Pmarker);
 
-EnsPMarkeradaptor ensMarkerGetadaptor(const EnsPMarker marker);
+EnsPMarkeradaptor ensMarkerGetAdaptor(const EnsPMarker marker);
 
 ajuint ensMarkerGetIdentifier(const EnsPMarker marker);
 
-EnsPMarkerSynonym ensMarkerGetDisplaySynonym(const EnsPMarker marker);
+EnsPMarkersynonym ensMarkerGetDisplaySynonym(const EnsPMarker marker);
 
 AjPStr ensMarkerGetLeftPrimer(const EnsPMarker marker);
 
 AjPStr ensMarkerGetRightPrimer(const EnsPMarker marker);
 
-const AjPList ensMarkerGetMarkerSynonyms(EnsPMarker marker);
+const AjPList ensMarkerGetMarkersynonyms(EnsPMarker marker);
 
-const AjPList ensMarkerGetMarkerMapLocations(EnsPMarker marker);
+const AjPList ensMarkerGetMarkermaplocations(EnsPMarker marker);
 
 ajuint ensMarkerGetMinimumDistance(const EnsPMarker marker);
 
@@ -348,7 +348,7 @@ AjEnum ensMarkerGetType(const EnsPMarker marker);
 
 ajint ensMarkerGetPriority(const EnsPMarker marker);
 
-AjBool ensMarkerSetadaptor(EnsPMarker marker, EnsPMarkeradaptor adaptor);
+AjBool ensMarkerSetAdaptor(EnsPMarker marker, EnsPMarkeradaptor adaptor);
 
 AjBool ensMarkerSetIdentifier(EnsPMarker marker, ajuint identifier);
 
@@ -356,7 +356,7 @@ AjBool ensMarkerSetLeftPrimer(EnsPMarker marker, AjPStr lprimer);
 
 AjBool ensMarkerSetRightPrimer(EnsPMarker marker, AjPStr rprimer);
 
-AjBool ensMarkerSetDisplaySynonym(EnsPMarker marker, EnsPMarkerSynonym display);
+AjBool ensMarkerSetDisplaySynonym(EnsPMarker marker, EnsPMarkersynonym display);
 
 AjBool ensMarkerSetMinimumDistance(EnsPMarker marker, ajuint mindistance);
 
@@ -370,18 +370,18 @@ AjBool ensMarkerTrace(const EnsPMarker marker, ajuint level);
 
 ajuint ensMarkerGetMemSize(const EnsPMarker marker);
 
-AjBool ensMarkerAddMarkerSynonym(EnsPMarker marker, EnsPMarkerSynonym ms);
+AjBool ensMarkerAddMarkersynonym(EnsPMarker marker, EnsPMarkersynonym ms);
 
-AjBool ensMarkerAddMarkerMapLocation(EnsPMarker marker,
-                                     EnsPMarkerMapLocation mml);
+AjBool ensMarkerAddMarkermaplocation(EnsPMarker marker,
+                                     EnsPMarkermaplocation mml);
 
 AjEnum ensMarkerTypeFromStr(const AjPStr type);
 
 const char *ensMarkerTypeToChar(const AjEnum type);
 
-AjBool ensMarkerClearMarkerSynonyms(EnsPMarker marker);
+AjBool ensMarkerClearMarkersynonyms(EnsPMarker marker);
 
-AjBool ensMarkerClearMarkerMapLocations(EnsPMarker marker);
+AjBool ensMarkerClearMarkermaplocations(EnsPMarker marker);
 
 /* Ensembl Marker Adaptor */
 
@@ -391,70 +391,71 @@ void ensMarkeradaptorDel(EnsPMarkeradaptor* Padaptor);
 
 EnsPBaseadaptor ensMarkeradaptorGetBaseadaptor(const EnsPMarkeradaptor adaptor);
 
-AjBool ensMarkeradaptorFetchAll(EnsPMarkeradaptor adaptor, AjPList markers);
+AjBool ensMarkeradaptorFetchAll(const EnsPMarkeradaptor adaptor,
+                                AjPList markers);
 
-AjBool ensMarkeradaptorFetchByIdentifier(EnsPMarkeradaptor adaptor,
+AjBool ensMarkeradaptorFetchByIdentifier(const EnsPMarkeradaptor adaptor,
                                          ajuint identifier,
                                          EnsPMarker *Pmarker);
 
-AjBool ensMarkeradaptorFetchAllBySynonym(EnsPMarkeradaptor ma,
+AjBool ensMarkeradaptorFetchAllBySynonym(const EnsPMarkeradaptor ma,
                                          const AjPStr name,
                                          const AjPStr source,
                                          AjPList markers);
 
-__deprecated AjBool ensMarkeradaptorFetchAttributes(EnsPMarkeradaptor adaptor,
+__deprecated AjBool ensMarkeradaptorFetchAttributes(const EnsPMarkeradaptor adaptor,
                                                     EnsPMarker marker);
 
 /* Ensembl Marker Feature */
 
-EnsPMarkerFeature ensMarkerFeatureNew(EnsPMarkerFeatureadaptor adaptor,
+EnsPMarkerfeature ensMarkerfeatureNew(EnsPMarkerfeatureadaptor adaptor,
                                       ajuint identifier,
                                       EnsPFeature feature,
                                       EnsPMarker marker,
                                       ajint mapweight);
 
-EnsPMarkerFeature ensMarkerFeatureNewObj(const EnsPMarkerFeature object);
+EnsPMarkerfeature ensMarkerfeatureNewObj(const EnsPMarkerfeature object);
 
-EnsPMarkerFeature ensMarkerFeatureNewRef(EnsPMarkerFeature mf);
+EnsPMarkerfeature ensMarkerfeatureNewRef(EnsPMarkerfeature mf);
 
-void ensMarkerFeatureDel(EnsPMarkerFeature* Pmf);
+void ensMarkerfeatureDel(EnsPMarkerfeature* Pmf);
 
-EnsPMarkerFeatureadaptor ensMarkerFeatureGetadaptor(const EnsPMarkerFeature mf);
+EnsPMarkerfeatureadaptor ensMarkerfeatureGetAdaptor(const EnsPMarkerfeature mf);
 
-ajuint ensMarkerFeatureGetIdentifier(const EnsPMarkerFeature mf);
+ajuint ensMarkerfeatureGetIdentifier(const EnsPMarkerfeature mf);
 
-EnsPFeature ensMarkerFeatureGetFeature(const EnsPMarkerFeature mf);
+EnsPFeature ensMarkerfeatureGetFeature(const EnsPMarkerfeature mf);
 
-EnsPMarker ensMarkerFeatureGetMarker(const EnsPMarkerFeature mf);
+EnsPMarker ensMarkerfeatureGetMarker(const EnsPMarkerfeature mf);
 
-ajint ensMarkerFeatureGetMapWeight(const EnsPMarkerFeature mf);
+ajint ensMarkerfeatureGetMapWeight(const EnsPMarkerfeature mf);
 
-AjBool ensMarkerFeatureSetadaptor(EnsPMarkerFeature mf,
-                                  EnsPMarkerFeatureadaptor adaptor);
+AjBool ensMarkerfeatureSetAdaptor(EnsPMarkerfeature mf,
+                                  EnsPMarkerfeatureadaptor adaptor);
 
-AjBool ensMarkerFeatureSetIdentifier(EnsPMarkerFeature mf, ajuint identifier);
+AjBool ensMarkerfeatureSetIdentifier(EnsPMarkerfeature mf, ajuint identifier);
 
-AjBool ensMarkerFeatureSetFeature(EnsPMarkerFeature mf, EnsPFeature feature);
+AjBool ensMarkerfeatureSetFeature(EnsPMarkerfeature mf, EnsPFeature feature);
 
-AjBool ensMarkerFeatureSetMarker(EnsPMarkerFeature mf, EnsPMarker marker);
+AjBool ensMarkerfeatureSetMarker(EnsPMarkerfeature mf, EnsPMarker marker);
 
-AjBool ensMarkerFeatureSetMapWeight(EnsPMarkerFeature mf, ajint mapweight);
+AjBool ensMarkerfeatureSetMapWeight(EnsPMarkerfeature mf, ajint mapweight);
 
-AjBool ensMarkerFeatureTrace(const EnsPMarkerFeature mf, ajuint level);
+AjBool ensMarkerfeatureTrace(const EnsPMarkerfeature mf, ajuint level);
 
-ajuint ensMarkerFeatureGetMemSize(const EnsPMarkerFeature mf);
+ajuint ensMarkerfeatureGetMemSize(const EnsPMarkerfeature mf);
 
 /* Ensembl Marker Feature Adaptor */
 
-EnsPMarkerFeatureadaptor ensMarkerFeatureadaptorNew(EnsPDatabaseadaptor dba);
+EnsPMarkerfeatureadaptor ensMarkerfeatureadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensMarkerFeatureadaptorDel(EnsPMarkerFeatureadaptor *Padaptor);
+void ensMarkerfeatureadaptorDel(EnsPMarkerfeatureadaptor *Padaptor);
 
-AjBool ensMarkerFeatureadaptorFetchAllByMarker(EnsPMarkerFeatureadaptor adaptor,
+AjBool ensMarkerfeatureadaptorFetchAllByMarker(const EnsPMarkerfeatureadaptor adaptor,
                                                const EnsPMarker marker,
                                                AjPList mflist);
 
-AjBool ensMarkerFeatureadaptorFetchAllBySlice(EnsPMarkerFeatureadaptor adaptor,
+AjBool ensMarkerfeatureadaptorFetchAllBySlice(const EnsPMarkerfeatureadaptor adaptor,
                                               EnsPSlice slice,
                                               ajint priority,
                                               ajuint mapweight,

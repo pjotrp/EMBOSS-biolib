@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -78,7 +78,7 @@
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPAssembly] Ensembl Assembly
+** @argrule Obj object [const EnsPAssembly] Ensembl Assembly
 ** @argrule Ref object [EnsPAssembly] Ensembl Assembly
 **
 ** @valrule * [EnsPAssembly] Ensembl Assembly
@@ -125,10 +125,10 @@ EnsPAssembly ensAssemblyNew(ajuint asmsrid,
     
     assembly->Use = 1;
     
-    assembly->AssembledSeqRegionId = asmsrid;
+    assembly->AssembledSeqregionId = asmsrid;
     assembly->AssembledStart       = asmstart;
     assembly->AssembledEnd         = asmend;
-    assembly->ComponentSeqRegionId = cmpsrid;
+    assembly->ComponentSeqregionId = cmpsrid;
     assembly->ComponentStart       = cmpstart;
     assembly->ComponentEnd         = cmpend;
     assembly->Orientation          = orientation;
@@ -160,10 +160,10 @@ EnsPAssembly ensAssemblyNewObj(const EnsPAssembly object)
     
     assembly->Use = 1;
     
-    assembly->AssembledSeqRegionId = object->AssembledSeqRegionId;
+    assembly->AssembledSeqregionId = object->AssembledSeqregionId;
     assembly->AssembledStart       = object->AssembledStart;
     assembly->AssembledEnd         = object->AssembledEnd;
-    assembly->ComponentSeqRegionId = object->ComponentSeqRegionId;
+    assembly->ComponentSeqregionId = object->ComponentSeqregionId;
     assembly->ComponentStart       = object->ComponentStart;
     assembly->ComponentEnd         = object->ComponentEnd;
     assembly->Orientation          = object->Orientation;
@@ -222,7 +222,7 @@ EnsPAssembly ensAssemblyNewRef(EnsPAssembly assembly)
 **
 ** Default destructor for an Ensembl Assembly.
 **
-** @param [d] Passembly [EnsPAssembly] Ensembl Assembly address
+** @param [d] Passembly [EnsPAssembly*] Ensembl Assembly address
 **
 ** @return [void]
 ** @@
@@ -265,13 +265,13 @@ void ensAssemblyDel(EnsPAssembly* Passembly)
 ** @fnote None
 **
 ** @nam3rule Get Return Assembly attribute(s)
-** @nam4rule GetAssembledSeqRegionId Return the assembled
+** @nam4rule GetAssembledSeqregionId Return the assembled
 **                                   Ensembl Sequence Region identifier
 ** @nam4rule GetAssembledStart Return the assembled
 **                             Ensembl Sequence Region start
 ** @nam4rule GetAssembledEnd Return the assembled
 **                           Ensembl Sequence Region end
-** @nam4rule GetComponentSeqRegionId Return the component
+** @nam4rule GetComponentSeqregionId Return the component
 **                                   Ensembl Sequence Region identifier
 ** @nam4rule GetComponentStart Return the component
 **                             Ensembl Sequence Region start
@@ -282,10 +282,10 @@ void ensAssemblyDel(EnsPAssembly* Passembly)
 **
 ** @argrule * assembly [const EnsPAssembly] Ensembl Assembly
 **
-** @valrule AssembledSeqRegionId [ajuint] Ensembl Analysis Adaptor
+** @valrule AssembledSeqregionId [ajuint] Ensembl Analysis Adaptor
 ** @valrule AssembledStart [ajuint] SQL database-internal identifier
 ** @valrule AssembledEnd [ajuint] Creation date
-** @valrule ComponentSeqRegionId [ajuint] Name
+** @valrule ComponentSeqregionId [ajuint] Name
 ** @valrule ComponentStart [ajuint] Database name
 ** @valrule ComponentEnd [ajuint] Database version
 ** @valrule Orientation [ajint] Database file
@@ -296,7 +296,7 @@ void ensAssemblyDel(EnsPAssembly* Passembly)
 
 
 
-/* @func ensAssemblyGetAssembledSeqRegionId ***********************************
+/* @func ensAssemblyGetAssembledSeqregionId ***********************************
 **
 ** Get the assembled Ensembl Sequence Region identifier element of an
 ** Ensembl Assembly.
@@ -307,12 +307,12 @@ void ensAssemblyDel(EnsPAssembly* Passembly)
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyGetAssembledSeqRegionId(const EnsPAssembly assembly)
+ajuint ensAssemblyGetAssembledSeqregionId(const EnsPAssembly assembly)
 {
     if(!assembly)
 	return 0;
     
-    return assembly->AssembledSeqRegionId;
+    return assembly->AssembledSeqregionId;
 }
 
 
@@ -362,7 +362,7 @@ ajuint ensAssemblyGetAssembledEnd(const EnsPAssembly assembly)
 
 
 
-/* @func ensAssemblyGetComponentSeqRegionId ***********************************
+/* @func ensAssemblyGetComponentSeqregionId ***********************************
 **
 ** Get the component Ensembl Sequence Region identifier element of an
 ** Ensembl Assembly.
@@ -373,12 +373,12 @@ ajuint ensAssemblyGetAssembledEnd(const EnsPAssembly assembly)
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyGetComponentSeqRegionId(const EnsPAssembly assembly)
+ajuint ensAssemblyGetComponentSeqregionId(const EnsPAssembly assembly)
 {
     if(!assembly)
 	return 0;
     
-    return assembly->ComponentSeqRegionId;
+    return assembly->ComponentSeqregionId;
 }
 
 
@@ -492,19 +492,19 @@ AjBool ensAssemblyTrace(const EnsPAssembly assembly, ajuint level)
     
     ajDebug("%SensAssemblyTrace %p\n"
 	    "%S  Use %u\n"
-	    "%S  AssembledSeqRegionId %u\n"
+	    "%S  AssembledSeqregionId %u\n"
 	    "%S  AssembledStart %u\n"
 	    "%S  AssembledEnd %u\n"
-	    "%S  ComponentSeqRegionId %u\n"
+	    "%S  ComponentSeqregionId %u\n"
 	    "%S  ComponentStart %u\n"
 	    "%S  ComponentEnd %u\n"
 	    "%S  Orientation %d\n",
 	    indent, assembly,
 	    indent, assembly->Use,
-	    indent, assembly->AssembledSeqRegionId,
+	    indent, assembly->AssembledSeqregionId,
 	    indent, assembly->AssembledStart,
 	    indent, assembly->AssembledEnd,
-	    indent, assembly->ComponentSeqRegionId,
+	    indent, assembly->ComponentSeqregionId,
 	    indent, assembly->ComponentStart,
 	    indent, assembly->ComponentEnd,
 	    indent, assembly->Orientation);

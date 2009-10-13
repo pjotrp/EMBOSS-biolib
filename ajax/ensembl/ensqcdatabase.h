@@ -11,12 +11,12 @@ extern "C"
 
 
 
-/* @data EnsPQCDatabaseadaptor ************************************************
+/* @data EnsPQcdatabaseadaptor ************************************************
 **
 ** Ensembl QC Database Adaptor
 **
-** @alias EnsSQCDatabaseadaptor
-** @alias EnsOQCDatabaseadaptor
+** @alias EnsSQcdatabaseadaptor
+** @alias EnsOQcdatabaseadaptor
 **
 ** @attr Adaptor [EnsPBaseadaptor] Ensembl Base Adaptor
 ** @attr CacheByIdentifier [AjPTable] Identifier cache
@@ -24,14 +24,14 @@ extern "C"
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSQCDatabaseadaptor
+typedef struct EnsSQcdatabaseadaptor
 {
     EnsPBaseadaptor Adaptor;
     AjPTable CacheByIdentifier;
     AjPTable CacheByName;
-} EnsOQCDatabaseadaptor;
+} EnsOQcdatabaseadaptor;
 
-#define EnsPQCDatabaseadaptor EnsOQCDatabaseadaptor*
+#define EnsPQcdatabaseadaptor EnsOQcdatabaseadaptor*
 
 
 
@@ -42,14 +42,14 @@ typedef struct EnsSQCDatabaseadaptor
 **
 ******************************************************************************/
 
-enum EnsEQCDatabaseClass
+enum EnsEQcdatabaseClass
 {
-    ensEQCDatabaseClassNULL,
-    ensEQCDatabaseClassUnknown,
-    ensEQCDatabaseClassReference,
-    ensEQCDatabaseClassTest,
-    ensEQCDatabaseClassBoth,
-    ensEQCDatabaseClassGenome
+    ensEQcdatabaseClassNULL,
+    ensEQcdatabaseClassUnknown,
+    ensEQcdatabaseClassReference,
+    ensEQcdatabaseClassTest,
+    ensEQcdatabaseClassBoth,
+    ensEQcdatabaseClassGenome
 };
 
 
@@ -61,28 +61,28 @@ enum EnsEQCDatabaseClass
 **
 ******************************************************************************/
 
-enum EnsEQCDatabaseType
+enum EnsEQcdatabaseType
 {
-    ensEQCDatabaseTypeNULL,
-    ensEQCDatabaseTypeUnknown,
-    ensEQCDatabaseTypeDNA,
-    ensEQCDatabaseTypeProtein
+    ensEQcdatabaseTypeNULL,
+    ensEQcdatabaseTypeUnknown,
+    ensEQcdatabaseTypeDNA,
+    ensEQcdatabaseTypeProtein
 };
 
 
 
 
-/* @data EnsPQCDatabase *******************************************************
+/* @data EnsPQcdatabase *******************************************************
 **
 ** Ensembl QC Database
 **
-** @alias EnsSQCDatabase
-** @alias EnsOQCDatabase
+** @alias EnsSQcdatabase
+** @alias EnsOQcdatabase
 **
 ** @attr Use [ajuint] Use counter
 ** @cc Bio::EnsEMBL::Storable
 ** @attr Identifier [ajuint] SQL database-internal identifier
-** @attr Adaptor [EnsPQCDatabaseadaptor] Ensembl Database Adaptor
+** @attr Adaptor [EnsPQcdatabaseadaptor] Ensembl Database Adaptor
 ** @cc Bio::EnsEMBL::QC::SequenceDB
 ** @cc 'sequence_db' SQL table
 ** @attr Analysis [EnsPAnalysis] Ensembl Analysis
@@ -103,11 +103,11 @@ enum EnsEQCDatabaseType
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSQCDatabase
+typedef struct EnsSQcdatabase
 {
     ajuint Use;
     ajuint Identifier;
-    EnsPQCDatabaseadaptor Adaptor;
+    EnsPQcdatabaseadaptor Adaptor;
     EnsPAnalysis Analysis;
     AjPStr Name;
     AjPStr Release;
@@ -123,9 +123,9 @@ typedef struct EnsSQCDatabase
     AjPStr File;
     AjPStr ExternalURL;
     AjPStr InternalURL;
-} EnsOQCDatabase;
+} EnsOQcdatabase;
 
-#define EnsPQCDatabase EnsOQCDatabase*
+#define EnsPQcdatabase EnsOQcdatabase*
 
 
 
@@ -136,7 +136,7 @@ typedef struct EnsSQCDatabase
 
 /* Ensembl Quality Check Database */
 
-EnsPQCDatabase ensQCDatabaseNew(EnsPQCDatabaseadaptor adaptor,
+EnsPQcdatabase ensQcdatabaseNew(EnsPQcdatabaseadaptor adaptor,
                                 ajuint identifier,
                                 EnsPAnalysis analysis,
                                 AjPStr name,
@@ -152,120 +152,120 @@ EnsPQCDatabase ensQCDatabaseNew(EnsPQCDatabaseadaptor adaptor,
                                 AjPStr file,
                                 AjPStr externalurl);
 
-EnsPQCDatabase ensQCDatabaseNewObj(const EnsPQCDatabase object);
+EnsPQcdatabase ensQcdatabaseNewObj(const EnsPQcdatabase object);
 
-EnsPQCDatabase ensQCDatabaseNewRef(EnsPQCDatabase qcdb);
+EnsPQcdatabase ensQcdatabaseNewRef(EnsPQcdatabase qcdb);
 
-void ensQCDatabaseDel(EnsPQCDatabase* Pqcdb);
+void ensQcdatabaseDel(EnsPQcdatabase* Pqcdb);
 
-EnsPQCDatabaseadaptor ensQCDatabaseGetadaptor(const EnsPQCDatabase qcdb);
+EnsPQcdatabaseadaptor ensQcdatabaseGetAdaptor(const EnsPQcdatabase qcdb);
 
-ajuint ensQCDatabaseGetIdentifier(const EnsPQCDatabase qcdb);
+ajuint ensQcdatabaseGetIdentifier(const EnsPQcdatabase qcdb);
 
-const EnsPAnalysis ensQCDatabaseGetAnalysis(const EnsPQCDatabase qcdb);
+const EnsPAnalysis ensQcdatabaseGetAnalysis(const EnsPQcdatabase qcdb);
 
-AjPStr ensQCDatabaseGetName(const EnsPQCDatabase qcdb);
+AjPStr ensQcdatabaseGetName(const EnsPQcdatabase qcdb);
 
-AjPStr ensQCDatabaseGetRelease(const EnsPQCDatabase qcdb);
+AjPStr ensQcdatabaseGetRelease(const EnsPQcdatabase qcdb);
 
-AjPStr ensQCDatabaseGetDate(const EnsPQCDatabase qcdb);
+AjPStr ensQcdatabaseGetDate(const EnsPQcdatabase qcdb);
 
-AjPStr ensQCDatabaseGetFormat(const EnsPQCDatabase qcdb);
+AjPStr ensQcdatabaseGetFormat(const EnsPQcdatabase qcdb);
 
-AjEnum ensQCDatabaseGetClass(const EnsPQCDatabase qcdb);
+AjEnum ensQcdatabaseGetClass(const EnsPQcdatabase qcdb);
 
-AjEnum ensQCDatabaseGetType(const EnsPQCDatabase qcdb);
+AjEnum ensQcdatabaseGetType(const EnsPQcdatabase qcdb);
 
-AjPStr ensQCDatabaseGetSpecies(const EnsPQCDatabase qcdb);
+AjPStr ensQcdatabaseGetSpecies(const EnsPQcdatabase qcdb);
 
-AjEnum ensQCDatabaseGetGroup(const EnsPQCDatabase qcdb);
+AjEnum ensQcdatabaseGetGroup(const EnsPQcdatabase qcdb);
 
-AjPStr ensQCDatabaseGetHost(const EnsPQCDatabase qcdb);
+AjPStr ensQcdatabaseGetHost(const EnsPQcdatabase qcdb);
 
-AjPStr ensQCDatabaseGetDirectory(const EnsPQCDatabase qcdb);
+AjPStr ensQcdatabaseGetDirectory(const EnsPQcdatabase qcdb);
 
-AjPStr ensQCDatabaseGetFile(const EnsPQCDatabase qcdb);
+AjPStr ensQcdatabaseGetFile(const EnsPQcdatabase qcdb);
 
-AjPStr ensQCDatabaseGetExternalURL(const EnsPQCDatabase qcdb);
+AjPStr ensQcdatabaseGetExternalURL(const EnsPQcdatabase qcdb);
 
-AjPStr ensQCDatabaseGetInternalURL(const EnsPQCDatabase qcdb);
+AjPStr ensQcdatabaseGetInternalURL(const EnsPQcdatabase qcdb);
 
-AjBool ensQCDatabaseSetadaptor(EnsPQCDatabase qcdb,
-                               EnsPQCDatabaseadaptor qcdba);
+AjBool ensQcdatabaseSetAdaptor(EnsPQcdatabase qcdb,
+                               EnsPQcdatabaseadaptor qcdba);
 
-AjBool ensQCDatabaseSetIdentifier(EnsPQCDatabase qcdb, ajuint identifier);
+AjBool ensQcdatabaseSetIdentifier(EnsPQcdatabase qcdb, ajuint identifier);
 
-AjBool ensQCDatabaseSetAnalysis(EnsPQCDatabase qcdb, EnsPAnalysis analysis);
+AjBool ensQcdatabaseSetAnalysis(EnsPQcdatabase qcdb, EnsPAnalysis analysis);
 
-AjBool ensQCDatabaseSetName(EnsPQCDatabase qcdb, AjPStr name);
+AjBool ensQcdatabaseSetName(EnsPQcdatabase qcdb, AjPStr name);
 
-AjBool ensQCDatabaseSetRelease(EnsPQCDatabase qcdb, AjPStr release);
+AjBool ensQcdatabaseSetRelease(EnsPQcdatabase qcdb, AjPStr release);
 
-AjBool ensQCDatabaseSetDate(EnsPQCDatabase qcdb, AjPStr date);
+AjBool ensQcdatabaseSetDate(EnsPQcdatabase qcdb, AjPStr date);
 
-AjBool ensQCDatabaseSetFormat(EnsPQCDatabase qcdb, AjPStr format);
+AjBool ensQcdatabaseSetFormat(EnsPQcdatabase qcdb, AjPStr format);
 
-AjBool ensQCDatabaseSetClass(EnsPQCDatabase qcdb, AjEnum class);
+AjBool ensQcdatabaseSetClass(EnsPQcdatabase qcdb, AjEnum class);
 
-AjBool ensQCDatabaseSetType(EnsPQCDatabase qcdb, AjEnum type);
+AjBool ensQcdatabaseSetType(EnsPQcdatabase qcdb, AjEnum type);
 
-AjBool ensQCDatabaseSetSpecies(EnsPQCDatabase qcdb, AjPStr species);
+AjBool ensQcdatabaseSetSpecies(EnsPQcdatabase qcdb, AjPStr species);
 
-AjBool ensQCDatabaseSetGroup(EnsPQCDatabase qcdb, AjEnum group);
+AjBool ensQcdatabaseSetGroup(EnsPQcdatabase qcdb, AjEnum group);
 
-AjBool ensQCDatabaseSetHost(EnsPQCDatabase qcdb, AjPStr host);
+AjBool ensQcdatabaseSetHost(EnsPQcdatabase qcdb, AjPStr host);
 
-AjBool ensQCDatabaseSetDirectory(EnsPQCDatabase qcdb, AjPStr directory);
+AjBool ensQcdatabaseSetDirectory(EnsPQcdatabase qcdb, AjPStr directory);
 
-AjBool ensQCDatabaseSetFile(EnsPQCDatabase qcdb, AjPStr file);
+AjBool ensQcdatabaseSetFile(EnsPQcdatabase qcdb, AjPStr file);
 
-AjBool ensQCDatabaseSetExternalURL(EnsPQCDatabase qcdb, AjPStr url);
+AjBool ensQcdatabaseSetExternalURL(EnsPQcdatabase qcdb, AjPStr url);
 
-AjBool ensQCDatabaseSetInternalURL(EnsPQCDatabase qcdb, AjPStr url);
+AjBool ensQcdatabaseSetInternalURL(EnsPQcdatabase qcdb, AjPStr url);
 
-ajuint ensQCDatabaseGetMemSize(const EnsPQCDatabase qcdb);
+ajuint ensQcdatabaseGetMemSize(const EnsPQcdatabase qcdb);
 
-AjBool ensQCDatabaseTrace(const EnsPQCDatabase qcdb, ajuint level);
+AjBool ensQcdatabaseTrace(const EnsPQcdatabase qcdb, ajuint level);
 
-AjEnum ensQCDatabaseClassFromStr(const AjPStr class);
+AjEnum ensQcdatabaseClassFromStr(const AjPStr class);
 
-AjEnum ensQCDatabaseTypeFromStr(const AjPStr type);
+AjEnum ensQcdatabaseTypeFromStr(const AjPStr type);
 
-const char *ensQCDatabaseClassToChar(const AjEnum class);
+const char *ensQcdatabaseClassToChar(const AjEnum class);
 
-const char *ensQCDatabaseTypeToChar(const AjEnum type);
+const char *ensQcdatabaseTypeToChar(const AjEnum type);
 
-AjBool ensQCDatabaseMatch(const EnsPQCDatabase qcdb1,
-                          const EnsPQCDatabase qcdb2);
+AjBool ensQcdatabaseMatch(const EnsPQcdatabase qcdb1,
+                          const EnsPQcdatabase qcdb2);
 
 /* Ensembl Quality Check Database Adaptor */
 
-EnsPQCDatabaseadaptor ensQCDatabaseadaptorNew(EnsPDatabaseadaptor dba);
+EnsPQcdatabaseadaptor ensQcdatabaseadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensQCDatabaseadaptorDel(EnsPQCDatabaseadaptor* Pqcdba);
+void ensQcdatabaseadaptorDel(EnsPQcdatabaseadaptor* Pqcdba);
 
-AjBool ensQCDatabaseadaptorFetchByIdentifier(EnsPQCDatabaseadaptor qcdba,
+AjBool ensQcdatabaseadaptorFetchByIdentifier(EnsPQcdatabaseadaptor qcdba,
                                              ajuint identifier,
-                                             EnsPQCDatabase *Pqcdb);
+                                             EnsPQcdatabase *Pqcdb);
 
-AjBool ensQCDatabaseadaptorFetchByName(EnsPQCDatabaseadaptor qcdba,
+AjBool ensQcdatabaseadaptorFetchByName(EnsPQcdatabaseadaptor qcdba,
                                        const AjPStr name,
                                        const AjPStr release,
-                                       EnsPQCDatabase *Pqcdb);
+                                       EnsPQcdatabase *Pqcdb);
 
-AjBool ensQCDatabaseadaptorFetchAllByClassType(EnsPQCDatabaseadaptor qcdba,
+AjBool ensQcdatabaseadaptorFetchAllByClassType(EnsPQcdatabaseadaptor qcdba,
                                                AjEnum class,
                                                AjEnum type,
                                                AjPList qcdbs);
 
-AjBool ensQCDatabaseadaptorStore(EnsPQCDatabaseadaptor qcdba,
-                                 EnsPQCDatabase qcdb);
+AjBool ensQcdatabaseadaptorStore(EnsPQcdatabaseadaptor qcdba,
+                                 EnsPQcdatabase qcdb);
 
-AjBool ensQCDatabaseadaptorUpdate(EnsPQCDatabaseadaptor qcdba,
-                                  const EnsPQCDatabase qcdb);
+AjBool ensQcdatabaseadaptorUpdate(EnsPQcdatabaseadaptor qcdba,
+                                  const EnsPQcdatabase qcdb);
 
-AjBool ensQCDatabaseadaptorDelete(EnsPQCDatabaseadaptor qcdba,
-                                  const EnsPQCDatabase qcdb);
+AjBool ensQcdatabaseadaptorDelete(EnsPQcdatabaseadaptor qcdba,
+                                  const EnsPQcdatabase qcdb);
 
 
 /*

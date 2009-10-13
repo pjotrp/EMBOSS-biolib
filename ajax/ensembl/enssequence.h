@@ -45,45 +45,45 @@ EnsPSequenceadaptor ensSequenceadaptorNew(EnsPDatabaseadaptor dba);
 
 void ensSequenceadaptorDel(EnsPSequenceadaptor* Psa);
 
-AjBool ensSequenceadaptorFetchSubStrBySeqRegion(EnsPSequenceadaptor sa,
-                                                EnsPSeqRegion sr,
+AjBool ensSequenceadaptorFetchSubStrBySeqregion(const EnsPSequenceadaptor sa,
+                                                EnsPSeqregion sr,
                                                 ajuint start,
                                                 ajuint length,
                                                 AjPStr *Psequence);
 
-AjBool ensSequenceadaptorFetchStrBySeqRegion(EnsPSequenceadaptor sa,
-                                             EnsPSeqRegion sr,
+AjBool ensSequenceadaptorFetchStrBySeqregion(const EnsPSequenceadaptor sa,
+                                             EnsPSeqregion sr,
                                              AjPStr *Psequence);
 
-AjBool ensSequenceadaptorFetchSubSeqBySeqRegion(EnsPSequenceadaptor sa,
-                                                EnsPSeqRegion sr,
+AjBool ensSequenceadaptorFetchSubSeqBySeqregion(const EnsPSequenceadaptor sa,
+                                                EnsPSeqregion sr,
                                                 ajuint start,
                                                 ajuint length,
                                                 AjPSeq *Psequence);
 
-AjBool ensSequenceadaptorFetchSeqBySeqRegion(EnsPSequenceadaptor sa,
-                                             EnsPSeqRegion sr,
+AjBool ensSequenceadaptorFetchSeqBySeqregion(const EnsPSequenceadaptor sa,
+                                             EnsPSeqregion sr,
                                              AjPSeq *Psequence);
 
-AjBool ensSequenceadaptorFetchSubStrBySlice(EnsPSequenceadaptor sa,
+AjBool ensSequenceadaptorFetchSubStrBySlice(const EnsPSequenceadaptor sa,
                                             EnsPSlice slice,
                                             ajint start,
                                             ajint end,
                                             ajint strand,
                                             AjPStr *Psequence);
 
-AjBool ensSequenceadaptorFetchStrBySlice(EnsPSequenceadaptor sa,
+AjBool ensSequenceadaptorFetchStrBySlice(const EnsPSequenceadaptor sa,
                                          EnsPSlice slice,
                                          AjPStr *Psequence);
 
-AjBool ensSequenceadaptorFetchSubSeqBySlice(EnsPSequenceadaptor sa,
+AjBool ensSequenceadaptorFetchSubSeqBySlice(const EnsPSequenceadaptor sa,
                                             EnsPSlice slice,
                                             ajint start,
                                             ajint end,
                                             ajint strand,
                                             AjPSeq *Psequence);
 
-AjBool ensSequenceadaptorFetchSeqBySlice(EnsPSequenceadaptor sa,
+AjBool ensSequenceadaptorFetchSeqBySlice(const EnsPSequenceadaptor sa,
                                          EnsPSlice slice,
                                          AjPSeq *Psequence);
 

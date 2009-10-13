@@ -11,14 +11,14 @@ extern "C"
 
 
 
-/* @data EnsPProjectionSegment ************************************************
+/* @data EnsPProjectionsegment ************************************************
 **
 ** Ensembl Projection Segment.
 **
 ** Holds information about a genome sequence slice.
 **
-** @alias EnsSProjectionSegment
-** @alias EnsOProjectionSegment
+** @alias EnsSProjectionsegment
+** @alias EnsOProjectionsegment
 **
 ** @attr SrcStart [ajuint] Source start coordinate.
 ** @attr SrcEnd [ajuint] Source end coordinate.
@@ -28,16 +28,16 @@ extern "C"
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSProjectionSegment
+typedef struct EnsSProjectionsegment
 {
     ajuint SrcStart;
     ajuint SrcEnd;
     EnsPSlice TrgSlice;
     ajuint Use;
     ajuint Padding;
-} EnsOProjectionSegment;
+} EnsOProjectionsegment;
 
-#define EnsPProjectionSegment EnsOProjectionSegment*
+#define EnsPProjectionsegment EnsOProjectionsegment*
 
 
 
@@ -46,20 +46,20 @@ typedef struct EnsSProjectionSegment
 ** Prototype definitions
 */
 
-EnsPProjectionSegment ensProjectionSegmentNew(ajuint srcstart, ajuint srcend,
+EnsPProjectionsegment ensProjectionsegmentNew(ajuint srcstart, ajuint srcend,
                                               EnsPSlice trgslice);
 
-EnsPProjectionSegment ensProjectionSegmentNewRef(EnsPProjectionSegment ps);
+EnsPProjectionsegment ensProjectionsegmentNewRef(EnsPProjectionsegment ps);
 
-void ensProjectionSegmentDel(EnsPProjectionSegment* Pps);
+void ensProjectionsegmentDel(EnsPProjectionsegment* Pps);
 
-ajuint ensProjectionSegmentGetSrcStart(const EnsPProjectionSegment ps);
+ajuint ensProjectionsegmentGetSrcStart(const EnsPProjectionsegment ps);
 
-ajuint ensProjectionSegmentGetSrcEnd(const EnsPProjectionSegment ps);
+ajuint ensProjectionsegmentGetSrcEnd(const EnsPProjectionsegment ps);
 
-EnsPSlice ensProjectionSegmentGetTrgSlice(const EnsPProjectionSegment ps);
+EnsPSlice ensProjectionsegmentGetTrgSlice(const EnsPProjectionsegment ps);
 
-AjBool ensProjectionSegmentTrace(const EnsPProjectionSegment ps, ajuint level);
+AjBool ensProjectionsegmentTrace(const EnsPProjectionsegment ps, ajuint level);
 
 /*
 ** End of prototype definitions

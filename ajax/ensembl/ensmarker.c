@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -54,14 +54,14 @@ static const char *markerType[] =
 extern EnsPAnalysisadaptor
 ensRegistryGetAnalysisadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPAssemblyMapperadaptor
-ensRegistryGetAssemblyMapperadaptor(EnsPDatabaseadaptor dba);
+extern EnsPAssemblymapperadaptor
+ensRegistryGetAssemblymapperadaptor(EnsPDatabaseadaptor dba);
 
 extern EnsPMarkeradaptor
 ensRegistryGetMarkeradaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPMarkerFeatureadaptor
-ensRegistryGetMarkerFeatureadaptor(EnsPDatabaseadaptor dba);
+extern EnsPMarkerfeatureadaptor
+ensRegistryGetMarkerfeatureadaptor(EnsPDatabaseadaptor dba);
 
 extern EnsPSliceadaptor
 ensRegistryGetSliceadaptor(EnsPDatabaseadaptor dba);
@@ -76,7 +76,7 @@ static AjBool markerMapLocationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 static AjBool markerAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                          const AjPStr statement,
-                                         EnsPAssemblyMapper am,
+                                         EnsPAssemblymapper am,
                                          EnsPSlice slice,
                                          AjPList markers);
 
@@ -88,7 +88,7 @@ static void markerFeatureadaptorClearMarkerTable(void **key, void **value,
 
 static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                 const AjPStr statement,
-                                                EnsPAssemblyMapper am,
+                                                EnsPAssemblymapper am,
                                                 EnsPSlice slice,
                                                 AjPList mflist);
 
@@ -112,13 +112,13 @@ static EnsPFeature markerFeatureadaptorGetFeature(const void *value);
 
 
 
-/* @datasection [EnsPMarkerSynonym] Marker Synonym ****************************
+/* @datasection [EnsPMarkersynonym] Marker Synonym ****************************
 **
 ** Functions for manipulating Ensembl Marker Synonym objects
 **
-** @cc Bio::EnsEMBL::Map::MarkerSynonym CVS Revision: 1.2
+** @cc Bio::EnsEMBL::Map::Markersynonym CVS Revision: 1.2
 **
-** @nam2rule MarkerSynonym
+** @nam2rule Markersynonym
 **
 ******************************************************************************/
 
@@ -132,17 +132,17 @@ static EnsPFeature markerFeatureadaptorGetFeature(const void *value);
 ** Marker Synonyms. The target pointer does not need to be initialised to
 ** NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPMarkerSynonym]
+** @fdata [EnsPMarkersynonym]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPMarkerSynonym] Ensembl Marker Synonym
-** @argrule Ref object [EnsPMarkerSynonym] Ensembl Marker Synonym
+** @argrule Obj object [EnsPMarkersynonym] Ensembl Marker Synonym
+** @argrule Ref object [EnsPMarkersynonym] Ensembl Marker Synonym
 **
-** @valrule * [EnsPMarkerSynonym] Ensembl Marker Synonym
+** @valrule * [EnsPMarkersynonym] Ensembl Marker Synonym
 **
 ** @fcategory new
 ******************************************************************************/
@@ -150,24 +150,24 @@ static EnsPFeature markerFeatureadaptorGetFeature(const void *value);
 
 
 
-/* @func ensMarkerSynonymNew **************************************************
+/* @func ensMarkersynonymNew **************************************************
 **
 ** Default constructor for an Ensembl Marker Synonym.
 **
-** @cc Bio::EnsEMBL::Map::MarkerSynonym::new
+** @cc Bio::EnsEMBL::Map::Markersynonym::new
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @param [u] source [AjPStr] Source
 ** @param [u] name [AjPStr] Name
 **
-** @return [EnsPMarkerSynonym] Ensembl Marker Synonym or NULL
+** @return [EnsPMarkersynonym] Ensembl Marker Synonym or NULL
 ** @@
 ******************************************************************************/
 
-EnsPMarkerSynonym ensMarkerSynonymNew(ajuint identifier,
+EnsPMarkersynonym ensMarkersynonymNew(ajuint identifier,
                                       AjPStr source,
                                       AjPStr name)
 {
-    EnsPMarkerSynonym ms = NULL;
+    EnsPMarkersynonym ms = NULL;
     
     AJNEW0(ms);
     
@@ -187,19 +187,19 @@ EnsPMarkerSynonym ensMarkerSynonymNew(ajuint identifier,
 
 
 
-/* @func ensMarkerSynonymNewObj ***********************************************
+/* @func ensMarkersynonymNewObj ***********************************************
 **
 ** Object-based constructor function, which returns an independent object.
 **
-** @param [r] object [const EnsPMarkerSynonym] Ensembl Marker Synonym
+** @param [r] object [const EnsPMarkersynonym] Ensembl Marker Synonym
 **
-** @return [EnsPMarkerSynonym] Ensembl Marker Synonym or NULL
+** @return [EnsPMarkersynonym] Ensembl Marker Synonym or NULL
 ** @@
 ******************************************************************************/
 
-EnsPMarkerSynonym ensMarkerSynonymNewObj(const EnsPMarkerSynonym object)
+EnsPMarkersynonym ensMarkersynonymNewObj(const EnsPMarkersynonym object)
 {
-    EnsPMarkerSynonym ms = NULL;
+    EnsPMarkersynonym ms = NULL;
     
     if(!object)
 	return NULL;
@@ -222,18 +222,18 @@ EnsPMarkerSynonym ensMarkerSynonymNewObj(const EnsPMarkerSynonym object)
 
 
 
-/* @func ensMarkerSynonymNewRef ***********************************************
+/* @func ensMarkersynonymNewRef ***********************************************
 **
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] ms [EnsPMarkerSynonym] Ensembl Marker Synonym
+** @param [u] ms [EnsPMarkersynonym] Ensembl Marker Synonym
 **
-** @return [EnsPMarkerSynonym] Ensembl Marker Synonym or NULL
+** @return [EnsPMarkersynonym] Ensembl Marker Synonym or NULL
 ** @@
 ******************************************************************************/
 
-EnsPMarkerSynonym ensMarkerSynonymNewRef(EnsPMarkerSynonym ms)
+EnsPMarkersynonym ensMarkersynonymNewRef(EnsPMarkersynonym ms)
 {
     if(!ms)
 	return NULL;
@@ -251,12 +251,12 @@ EnsPMarkerSynonym ensMarkerSynonymNewRef(EnsPMarkerSynonym ms)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Marker Synonym.
 **
-** @fdata [EnsPMarkerSynonym]
+** @fdata [EnsPMarkersynonym]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) an Ensembl Marker Synonym object
 **
-** @argrule * Pms [EnsPMarkerSynonym*] Ensembl Marker Synonym object address
+** @argrule * Pms [EnsPMarkersynonym*] Ensembl Marker Synonym object address
 **
 ** @valrule * [void]
 **
@@ -266,26 +266,26 @@ EnsPMarkerSynonym ensMarkerSynonymNewRef(EnsPMarkerSynonym ms)
 
 
 
-/* @func ensMarkerSynonymDel **************************************************
+/* @func ensMarkersynonymDel **************************************************
 **
 ** Default destructor for an Ensembl Marker Synonym.
 **
-** @param [d] Pms [EnsPMarkerSynonym*] Ensembl Marker Synonym address
+** @param [d] Pms [EnsPMarkersynonym*] Ensembl Marker Synonym address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensMarkerSynonymDel(EnsPMarkerSynonym *Pms)
+void ensMarkersynonymDel(EnsPMarkersynonym *Pms)
 {
-    EnsPMarkerSynonym pthis = NULL;
+    EnsPMarkersynonym pthis = NULL;
     
     /*
-     ajDebug("ensMarkerSynonymDel\n"
+     ajDebug("ensMarkersynonymDel\n"
 	     "  *Pms %p\n",
 	     *Pms);
      
-     ensMarkerSynonymTrace(*Pms, 1);
+     ensMarkersynonymTrace(*Pms, 1);
      */
     
     if(!Pms)
@@ -322,7 +322,7 @@ void ensMarkerSynonymDel(EnsPMarkerSynonym *Pms)
 **
 ** Functions for returning elements of an Ensembl Marker Synonym object.
 **
-** @fdata [EnsPMarkerSynonym]
+** @fdata [EnsPMarkersynonym]
 ** @fnote None
 **
 ** @nam3rule Get Return Marker Synonym attribute(s)
@@ -330,7 +330,7 @@ void ensMarkerSynonymDel(EnsPMarkerSynonym *Pms)
 ** @nam4rule GetSource Return the source
 ** @nam4rule GetName Return the name
 **
-** @argrule * ms [const EnsPMarkerSynonym] Marker Synonym
+** @argrule * ms [const EnsPMarkersynonym] Marker Synonym
 **
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule Source [AjPStr] Source
@@ -342,19 +342,19 @@ void ensMarkerSynonymDel(EnsPMarkerSynonym *Pms)
 
 
 
-/* @func ensMarkerSynonymGetIdentifier ****************************************
+/* @func ensMarkersynonymGetIdentifier ****************************************
 **
 ** Get the SQL database-internal identifier element of an
 ** Ensembl Marker Synonym.
 **
-** @cc Bio::EnsEMBL::Map::MarkerSynonym::dbID
-** @param [r] ms [const EnsPMarkerSynonym] Ensembl Marker Synonym
+** @cc Bio::EnsEMBL::Map::Markersynonym::dbID
+** @param [r] ms [const EnsPMarkersynonym] Ensembl Marker Synonym
 **
 ** @return [ajuint] Internal database identifier
 ** @@
 ******************************************************************************/
 
-ajuint ensMarkerSynonymGetIdentifier(const EnsPMarkerSynonym ms)
+ajuint ensMarkersynonymGetIdentifier(const EnsPMarkersynonym ms)
 {
     if(!ms)
         return 0;
@@ -365,18 +365,18 @@ ajuint ensMarkerSynonymGetIdentifier(const EnsPMarkerSynonym ms)
 
 
 
-/* @func ensMarkerSynonymGetSource ********************************************
+/* @func ensMarkersynonymGetSource ********************************************
 **
 ** Get the source element of an Ensembl Marker Synonym.
 **
-** @cc Bio::EnsEMBL::Map::MarkerSynonym::source
-** @param [r] ms [const EnsPMarkerSynonym] Ensembl Marker Synonym
+** @cc Bio::EnsEMBL::Map::Markersynonym::source
+** @param [r] ms [const EnsPMarkersynonym] Ensembl Marker Synonym
 **
 ** @return [AjPStr] Source
 ** @@
 ******************************************************************************/
 
-AjPStr ensMarkerSynonymGetSource(const EnsPMarkerSynonym ms)
+AjPStr ensMarkersynonymGetSource(const EnsPMarkersynonym ms)
 {
     if(!ms)
         return NULL;
@@ -391,14 +391,14 @@ AjPStr ensMarkerSynonymGetSource(const EnsPMarkerSynonym ms)
 **
 ** Get the name element of an Ensembl Marker Synonym.
 **
-** @cc Bio::EnsEMBL::Map::MarkerSynonym::name
-** @param  [r] ms [const EnsPMarkerSynonym] Ensembl Marker Synonym
+** @cc Bio::EnsEMBL::Map::Markersynonym::name
+** @param  [r] ms [const EnsPMarkersynonym] Ensembl Marker Synonym
 **
 ** @return [AjPStr] Name
 ** @@
 ******************************************************************************/
 
-AjPStr ensMarkerSynonymGetName(const EnsPMarkerSynonym ms)
+AjPStr ensMarkersynonymGetName(const EnsPMarkersynonym ms)
 {
     if(!ms)
         return NULL;
@@ -413,7 +413,7 @@ AjPStr ensMarkerSynonymGetName(const EnsPMarkerSynonym ms)
 **
 ** Functions for assigning elements of an Ensembl Marker Synonym object.
 **
-** @fdata [EnsPMarkerSynonym]
+** @fdata [EnsPMarkersynonym]
 ** @fnote None
 **
 ** @nam3rule Set Set one element of an Ensembl Marker Synonym
@@ -421,7 +421,7 @@ AjPStr ensMarkerSynonymGetName(const EnsPMarkerSynonym ms)
 ** @nam4rule SetSource Set the source
 ** @nam4rule SetName Set the name
 **
-** @argrule * ms [EnsPMarkerSynonym] Ensembl Marker Synonym object
+** @argrule * ms [EnsPMarkersynonym] Ensembl Marker Synonym object
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
@@ -431,20 +431,20 @@ AjPStr ensMarkerSynonymGetName(const EnsPMarkerSynonym ms)
 
 
 
-/* @func ensMarkerSynonymSetIdentifier ****************************************
+/* @func ensMarkersynonymSetIdentifier ****************************************
 **
 ** Set the SQL database-internal identifier element of an
 ** Ensembl Marker Synonym.
 **
-** @cc Bio::EnsEMBL::Map::MarkerSynonym::dbID
-** @param [u] ms [EnsPMarkerSynonym] Ensembl Marker Synonym
+** @cc Bio::EnsEMBL::Map::Markersynonym::dbID
+** @param [u] ms [EnsPMarkersynonym] Ensembl Marker Synonym
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerSynonymSetIdentifier(EnsPMarkerSynonym ms, ajuint identifier)
+AjBool ensMarkersynonymSetIdentifier(EnsPMarkersynonym ms, ajuint identifier)
 {
     if(!ms)
         return ajFalse;
@@ -457,19 +457,19 @@ AjBool ensMarkerSynonymSetIdentifier(EnsPMarkerSynonym ms, ajuint identifier)
 
 
 
-/* @func ensMarkerSynonymSetSource ********************************************
+/* @func ensMarkersynonymSetSource ********************************************
 **
 ** Set the source element of an Ensembl Marker Synonym.
 **
-** @cc Bio::EnsEMBL::Map::MarkerSynonym::source
-** @param [u] ms [EnsPMarkerSynonym] Ensembl Marker Synonym
+** @cc Bio::EnsEMBL::Map::Markersynonym::source
+** @param [u] ms [EnsPMarkersynonym] Ensembl Marker Synonym
 ** @param [u] synonym [AjPStr] Synonym
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerSynonymSetSource(EnsPMarkerSynonym ms, AjPStr source)
+AjBool ensMarkersynonymSetSource(EnsPMarkersynonym ms, AjPStr source)
 {
     if(!ms)
         return ajFalse;
@@ -484,19 +484,19 @@ AjBool ensMarkerSynonymSetSource(EnsPMarkerSynonym ms, AjPStr source)
 
 
 
-/* @func ensMarkerSynonymSetName **********************************************
+/* @func ensMarkersynonymSetName **********************************************
 **
 ** Set the name element of an Ensembl Marker Synonym.
 **
-** @cc Bio::EnsEMBL::Map::MarkerSynonym::name
-** @param [u] ms [EnsPMarkerSynonym] Ensembl Marker Synonym
+** @cc Bio::EnsEMBL::Map::Markersynonym::name
+** @param [u] ms [EnsPMarkersynonym] Ensembl Marker Synonym
 ** @param [u] name [AjPStr] Name
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerSynonymSetName(EnsPMarkerSynonym ms, AjPStr name)
+AjBool ensMarkersynonymSetName(EnsPMarkersynonym ms, AjPStr name)
 {
     if(!ms)
         return ajFalse;
@@ -515,10 +515,10 @@ AjBool ensMarkerSynonymSetName(EnsPMarkerSynonym ms, AjPStr name)
 **
 ** Functions for reporting of an Ensembl Marker Synonym object.
 **
-** @fdata [EnsPMarkerSynonym]
+** @fdata [EnsPMarkersynonym]
 ** @nam3rule Trace Report Ensembl Marker Synonym elements to debug file.
 **
-** @argrule Trace ms [const EnsPMarkerSynonym] Ensembl Marker Synonym
+** @argrule Trace ms [const EnsPMarkersynonym] Ensembl Marker Synonym
 ** @argrule Trace level [ajuint] Indentation level
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -529,18 +529,18 @@ AjBool ensMarkerSynonymSetName(EnsPMarkerSynonym ms, AjPStr name)
 
 
 
-/* @func ensMarkerSynonymTrace ************************************************
+/* @func ensMarkersynonymTrace ************************************************
 **
 ** Trace an Ensembl Marker Synonym.
 **
-** @param [r] ms [const EnsPMarkerSynonym] Ensembl Marker Synonym
+** @param [r] ms [const EnsPMarkersynonym] Ensembl Marker Synonym
 ** @param [r] level [ajuint] Indentation level
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerSynonymTrace(const EnsPMarkerSynonym ms, ajuint level)
+AjBool ensMarkersynonymTrace(const EnsPMarkersynonym ms, ajuint level)
 {
     AjPStr indent = NULL;
     
@@ -551,7 +551,7 @@ AjBool ensMarkerSynonymTrace(const EnsPMarkerSynonym ms, ajuint level)
     
     ajStrAppendCountK(&indent, ' ', level * 2);
     
-    ajDebug("%SensMarkerSynonymTrace %p\n"
+    ajDebug("%SensMarkersynonymTrace %p\n"
 	    "%S  Use %u\n"
 	    "%S  Identifier %u\n"
 	    "%S  Source '%S'\n"
@@ -570,24 +570,24 @@ AjBool ensMarkerSynonymTrace(const EnsPMarkerSynonym ms, ajuint level)
 
 
 
-/* @func ensMarkerSynonymGetMemSize *******************************************
+/* @func ensMarkersynonymGetMemSize *******************************************
 **
 ** Get the memory size in bytes of an Ensembl Marker Synonym.
 **
-** @param [r] ms [const EnsPMarkerSynonym] Ensembl Marker Synonym
+** @param [r] ms [const EnsPMarkersynonym] Ensembl Marker Synonym
 **
 ** @return [ajuint] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensMarkerSynonymGetMemSize(const EnsPMarkerSynonym ms)
+ajuint ensMarkersynonymGetMemSize(const EnsPMarkersynonym ms)
 {
     ajuint size = 0;
     
     if(!ms)
 	return 0;
     
-    size += (ajuint) sizeof (EnsOMarkerSynonym);
+    size += (ajuint) sizeof (EnsOMarkersynonym);
     
     if(ms->Source)
     {
@@ -613,7 +613,7 @@ ajuint ensMarkerSynonymGetMemSize(const EnsPMarkerSynonym ms)
 **
 ** Functions for manipulating Ensembl Marker Synonym Adaptor objects
 **
-** @nam2rule MarkerSynonymadaptor
+** @nam2rule Markersynonymadaptor
 **
 ******************************************************************************/
 
@@ -646,7 +646,7 @@ static AjBool markerSynonymadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     AjPStr name   = NULL;
     AjPStr source = NULL;
     
-    EnsPMarkerSynonym ms = NULL;
+    EnsPMarkersynonym ms = NULL;
     
     if(!dba)
 	return ajFalse;
@@ -673,7 +673,7 @@ static AjBool markerSynonymadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	ajSqlcolumnToStr(sqlr, &name);
 	ajSqlcolumnToStr(sqlr, &source);
 	
-	ms = ensMarkerSynonymNew(identifier, source, name);
+	ms = ensMarkersynonymNew(identifier, source, name);
 	
 	ajListPushAppend(mslist, (void *) ms);
 	
@@ -691,7 +691,7 @@ static AjBool markerSynonymadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @func ensMarkerSynonymadaptorFetchByIdentifier *****************************
+/* @func ensMarkersynonymadaptorFetchByIdentifier *****************************
 **
 ** Fetch an Ensembl Marker Synonym via its SQL database-internal identifier.
 **
@@ -699,21 +699,21 @@ static AjBool markerSynonymadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
-** @param [wP] Pms [EnsPMarkerSynonym*] Ensembl Marker Synonym address
+** @param [wP] Pms [EnsPMarkersynonym*] Ensembl Marker Synonym address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerSynonymadaptorFetchByIdentifier(EnsPDatabaseadaptor dba,
+AjBool ensMarkersynonymadaptorFetchByIdentifier(EnsPDatabaseadaptor dba,
                                                 ajuint identifier,
-                                                EnsPMarkerSynonym *Pms)
+                                                EnsPMarkersynonym *Pms)
 {
     AjPList mslist = NULL;
     
     AjPStr statement = NULL;
     
-    EnsPMarkerSynonym ms = NULL;
+    EnsPMarkersynonym ms = NULL;
     
     if(!dba)
 	return ajFalse;
@@ -741,14 +741,14 @@ AjBool ensMarkerSynonymadaptorFetchByIdentifier(EnsPDatabaseadaptor dba,
     markerSynonymadaptorFetchAllBySQL(dba, statement, mslist);
     
     if(ajListGetLength(mslist) > 1)
-	ajWarn("ensMarkerSynonymadaptorFetchByIdentifier got more than one "
+	ajWarn("ensMarkersynonymadaptorFetchByIdentifier got more than one "
 	       "Ensembl Marker Synonym for identifier %u.\n",
 	       identifier);
     
     ajListPop(mslist, (void **) Pms);
     
     while(ajListPop(mslist, (void **) &ms))
-	ensMarkerSynonymDel(&ms);
+	ensMarkersynonymDel(&ms);
     
     ajListFree(&mslist);
     
@@ -760,7 +760,7 @@ AjBool ensMarkerSynonymadaptorFetchByIdentifier(EnsPDatabaseadaptor dba,
 
 
 
-/* @func ensMarkerSynonymadaptorFetchAllByMarkerIdentifier ********************
+/* @func ensMarkersynonymadaptorFetchAllByMarkerIdentifier ********************
 **
 ** Fetch all Ensembl Marker Synonyms by an Ensembl Marker identifier.
 **
@@ -775,7 +775,7 @@ AjBool ensMarkerSynonymadaptorFetchByIdentifier(EnsPDatabaseadaptor dba,
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerSynonymadaptorFetchAllByMarkerIdentifier(
+AjBool ensMarkersynonymadaptorFetchAllByMarkerIdentifier(
     EnsPDatabaseadaptor dba,
     ajuint markerid,
     AjPList mslist)
@@ -810,13 +810,13 @@ AjBool ensMarkerSynonymadaptorFetchAllByMarkerIdentifier(
 
 
 
-/* @datasection [EnsPMarkerMapLocation] Marker Map Location *******************
+/* @datasection [EnsPMarkermaplocation] Marker Map Location *******************
 **
 ** Functions for manipulating Ensembl Marker Map Location objects
 **
 ** @cc Bio::EnsEMBL::Map::MapLocation CVS Revision: 1.3
 **
-** @nam2rule MarkerMapLocation
+** @nam2rule Markermaplocation
 **
 ******************************************************************************/
 
@@ -830,17 +830,17 @@ AjBool ensMarkerSynonymadaptorFetchAllByMarkerIdentifier(
 ** Marker Map Locations. The target pointer does not need to be initialised to
 ** NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPMarkerMapLocation]
+** @fdata [EnsPMarkermaplocation]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPMarkerMapLocation] Ensembl Marker Map Location
-** @argrule Ref object [EnsPMarkerMapLocation] Ensembl Marker Map Location
+** @argrule Obj object [EnsPMarkermaplocation] Ensembl Marker Map Location
+** @argrule Ref object [EnsPMarkermaplocation] Ensembl Marker Map Location
 **
-** @valrule * [EnsPMarkerMapLocation] Ensembl Marker Map Location
+** @valrule * [EnsPMarkermaplocation] Ensembl Marker Map Location
 **
 ** @fcategory new
 ******************************************************************************/
@@ -848,32 +848,32 @@ AjBool ensMarkerSynonymadaptorFetchAllByMarkerIdentifier(
 
 
 
-/* @func ensMarkerMapLocationNew **********************************************
+/* @func ensMarkermaplocationNew **********************************************
 **
 ** Default constructor for an Ensembl Marker Map Location.
 **
 ** @cc Bio::EnsEMBL::Map::MapLocation::new
-** @param [u] ms [EnsPMarkerSynonym] Ensembl Marker Synonym
+** @param [u] ms [EnsPMarkersynonym] Ensembl Marker Synonym
 ** @param [u] mapname [AjPStr] Map name
 ** @param [u] chrname [AjPStr] Chromosome name
 ** @param [u] position [AjPStr] Position
 ** @param [r] lodscore [float] LOD score
 **
-** @return [EnsPMarkerMapLocation] Ensembl Marker Map Location or NULL
+** @return [EnsPMarkermaplocation] Ensembl Marker Map Location or NULL
 ** @@
 ******************************************************************************/
 
-EnsPMarkerMapLocation ensMarkerMapLocationNew(EnsPMarkerSynonym ms,
+EnsPMarkermaplocation ensMarkermaplocationNew(EnsPMarkersynonym ms,
                                               AjPStr mapname,
                                               AjPStr chrname,
                                               AjPStr position,
                                               float lodscore)
 {
-    EnsPMarkerMapLocation mml = NULL;
+    EnsPMarkermaplocation mml = NULL;
     
     AJNEW0(mml);
     
-    mml->MarkerSynonym = ensMarkerSynonymNewRef(ms);
+    mml->Markersynonym = ensMarkersynonymNewRef(ms);
     
     if(mapname)
         mml->MapName = ajStrNewRef(mapname);
@@ -894,27 +894,27 @@ EnsPMarkerMapLocation ensMarkerMapLocationNew(EnsPMarkerSynonym ms,
 
 
 
-/* @func ensMarkerMapLocationNewObj *******************************************
+/* @func ensMarkermaplocationNewObj *******************************************
 **
 ** Object-based constructor function, which returns an independent object.
 **
-** @param [r] object [const EnsPMarkerMapLocation] Ensembl Marker Map Location
+** @param [r] object [const EnsPMarkermaplocation] Ensembl Marker Map Location
 **
-** @return [EnsPMarkerMapLocation] Ensembl Marker Map Location or NULL
+** @return [EnsPMarkermaplocation] Ensembl Marker Map Location or NULL
 ** @@
 ******************************************************************************/
 
-EnsPMarkerMapLocation ensMarkerMapLocationNewObj(
-    const EnsPMarkerMapLocation object)
+EnsPMarkermaplocation ensMarkermaplocationNewObj(
+    const EnsPMarkermaplocation object)
 {
-    EnsPMarkerMapLocation mml = NULL;
+    EnsPMarkermaplocation mml = NULL;
     
     if(!object)
 	return NULL;
     
     AJNEW0(mml);
     
-    mml->MarkerSynonym = ensMarkerSynonymNewRef(object->MarkerSynonym);
+    mml->Markersynonym = ensMarkersynonymNewRef(object->Markersynonym);
     
     if(object->MapName)
         mml->MapName = ajStrNewRef(object->MapName);
@@ -935,18 +935,18 @@ EnsPMarkerMapLocation ensMarkerMapLocationNewObj(
 
 
 
-/* @func ensMarkerMapLocationNewRef *******************************************
+/* @func ensMarkermaplocationNewRef *******************************************
 **
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] mml [EnsPMarkerMapLocation] Ensembl Marker Map Location
+** @param [u] mml [EnsPMarkermaplocation] Ensembl Marker Map Location
 **
-** @return [EnsPMarkerMapLocation] Ensembl Marker Map Location or NULL
+** @return [EnsPMarkermaplocation] Ensembl Marker Map Location or NULL
 ** @@
 ******************************************************************************/
 
-EnsPMarkerMapLocation ensMarkerMapLocationNewRef(EnsPMarkerMapLocation mml)
+EnsPMarkermaplocation ensMarkermaplocationNewRef(EnsPMarkermaplocation mml)
 {
     if(!mml)
 	return NULL;
@@ -964,12 +964,12 @@ EnsPMarkerMapLocation ensMarkerMapLocationNewRef(EnsPMarkerMapLocation mml)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Marker Map Location.
 **
-** @fdata [EnsPMarkerMapLocation]
+** @fdata [EnsPMarkermaplocation]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) an Ensembl Marker Map Location object
 **
-** @argrule * Pmml [EnsPMarkerMapLocation*] Ensembl Marker Map Location
+** @argrule * Pmml [EnsPMarkermaplocation*] Ensembl Marker Map Location
 **                                          object address
 **
 ** @valrule * [void]
@@ -980,26 +980,26 @@ EnsPMarkerMapLocation ensMarkerMapLocationNewRef(EnsPMarkerMapLocation mml)
 
 
 
-/* @func ensMarkerMapLocationDel **********************************************
+/* @func ensMarkermaplocationDel **********************************************
 **
 ** Default destructor for an Ensembl Marker Map Location.
 **
-** @param [d] Pmml [EnsPMarkerMapLocation*] Ensembl Marker Map Location address
+** @param [d] Pmml [EnsPMarkermaplocation*] Ensembl Marker Map Location address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensMarkerMapLocationDel(EnsPMarkerMapLocation *Pmml)
+void ensMarkermaplocationDel(EnsPMarkermaplocation *Pmml)
 {
-    EnsPMarkerMapLocation pthis = NULL;
+    EnsPMarkermaplocation pthis = NULL;
     
     /*
-     ajDebug("ensMarkerMapLocationDel\n"
+     ajDebug("ensMarkermaplocationDel\n"
 	     "  *Pmml %p\n",
 	     *Pmml);
      
-     ensMarkerMapLocationTrace(*Pmml, 1);
+     ensMarkermaplocationTrace(*Pmml, 1);
      */
     
     if(!Pmml)
@@ -1019,7 +1019,7 @@ void ensMarkerMapLocationDel(EnsPMarkerMapLocation *Pmml)
 	return;
     }
     
-    ensMarkerSynonymDel(&pthis->MarkerSynonym);
+    ensMarkersynonymDel(&pthis->Markersynonym);
     
     ajStrDel(&pthis->MapName);
     ajStrDel(&pthis->ChromosomeName);
@@ -1039,19 +1039,19 @@ void ensMarkerMapLocationDel(EnsPMarkerMapLocation *Pmml)
 **
 ** Functions for returning elements of an Ensembl Marker Map Location object.
 **
-** @fdata [EnsPMarkerMapLocation]
+** @fdata [EnsPMarkermaplocation]
 ** @fnote None
 **
 ** @nam3rule Get Return Marker Map Location attribute(s)
-** @nam4rule GetMarkerSynonym Return the Ensembl Marker Synonym
+** @nam4rule GetMarkersynonym Return the Ensembl Marker Synonym
 ** @nam4rule GetMapName Return the map name
 ** @nam4rule GetChromosomeName Return the chromosome name
 ** @nam4rule GetPosition Return the position
 ** @nam4rule GetLODScore Return the LOD score
 **
-** @argrule * mml [const EnsPMarkerMapLocation] Marker Map Location
+** @argrule * mml [const EnsPMarkermaplocation] Marker Map Location
 **
-** @valrule MarkerSynonym [EnsPMarkerSynonym] Ensembl Marker Synonym
+** @valrule Markersynonym [EnsPMarkersynonym] Ensembl Marker Synonym
 ** @valrule MapName [AjPStr] Map name
 ** @valrule ChromosomeName [AjPStr] Chromosome name
 ** @valrule Position [AjPStr] Position
@@ -1063,41 +1063,41 @@ void ensMarkerMapLocationDel(EnsPMarkerMapLocation *Pmml)
 
 
 
-/* @func ensMarkerMapLocationGetMarkerSynonym *********************************
+/* @func ensMarkermaplocationGetMarkersynonym *********************************
 **
 ** Get the Ensembl Marker Synonym element of an Ensembl Marker Map Location.
 **
 ** @cc Bio::EnsEMBL::Map::MapLocation::name
-** @param  [r] mml [const EnsPMarkerMapLocation] Ensembl Marker Map Location
+** @param  [r] mml [const EnsPMarkermaplocation] Ensembl Marker Map Location
 **
-** @return [EnsPMarkerSynonym] Ensembl Marker Synonym
+** @return [EnsPMarkersynonym] Ensembl Marker Synonym
 ** @@
 ******************************************************************************/
 
-EnsPMarkerSynonym ensMarkerMapLocationGetMarkerSynonym(
-    const EnsPMarkerMapLocation mml)
+EnsPMarkersynonym ensMarkermaplocationGetMarkersynonym(
+    const EnsPMarkermaplocation mml)
 {
     if(!mml)
         return NULL;
     
-    return mml->MarkerSynonym;
+    return mml->Markersynonym;
 }
 
 
 
 
-/* @func ensMarkerMapLocationGetMapName ***************************************
+/* @func ensMarkermaplocationGetMapName ***************************************
 **
 ** Get the map name element of an Ensembl Marker Map Location.
 **
 ** @cc Bio::EnsEMBL::Map::MapLocation::map_name
-** @param  [r] mml [const EnsPMarkerMapLocation] Ensembl Marker Map Location
+** @param  [r] mml [const EnsPMarkermaplocation] Ensembl Marker Map Location
 **
 ** @return [AjPStr] Map name
 ** @@
 ******************************************************************************/
 
-AjPStr ensMarkerMapLocationGetMapName(const EnsPMarkerMapLocation mml)
+AjPStr ensMarkermaplocationGetMapName(const EnsPMarkermaplocation mml)
 {
     if(!mml)
         return NULL;
@@ -1108,18 +1108,18 @@ AjPStr ensMarkerMapLocationGetMapName(const EnsPMarkerMapLocation mml)
 
 
 
-/* @func ensMarkerMapLocationGetChromosomeName ********************************
+/* @func ensMarkermaplocationGetChromosomeName ********************************
 **
 ** Get the chromosome name element of an Ensembl Marker Map Location.
 **
 ** @cc Bio::EnsEMBL::Map::MapLocation::chromosome_name
-** @param  [r] mml [const EnsPMarkerMapLocation] Ensembl Marker Map Location
+** @param  [r] mml [const EnsPMarkermaplocation] Ensembl Marker Map Location
 **
 ** @return [AjPStr] Chromosome name
 ** @@
 ******************************************************************************/
 
-AjPStr ensMarkerMapLocationGetChromosomeName(const EnsPMarkerMapLocation mml)
+AjPStr ensMarkermaplocationGetChromosomeName(const EnsPMarkermaplocation mml)
 {
     if(!mml)
         return NULL;
@@ -1130,18 +1130,18 @@ AjPStr ensMarkerMapLocationGetChromosomeName(const EnsPMarkerMapLocation mml)
 
 
 
-/* @func ensMarkerMapLocationGetPosition **************************************
+/* @func ensMarkermaplocationGetPosition **************************************
 **
 ** Get the position element of an Ensembl Marker Map Location.
 **
 ** @cc Bio::EnsEMBL::Map::MapLocation::position
-** @param  [r] mml [const EnsPMarkerMapLocation] Ensembl Marker Map Location
+** @param  [r] mml [const EnsPMarkermaplocation] Ensembl Marker Map Location
 **
 ** @return [AjPStr] Position
 ** @@
 ******************************************************************************/
 
-AjPStr ensMarkerMapLocationGetPosition(const EnsPMarkerMapLocation mml)
+AjPStr ensMarkermaplocationGetPosition(const EnsPMarkermaplocation mml)
 {
     if(!mml)
         return NULL;
@@ -1152,18 +1152,18 @@ AjPStr ensMarkerMapLocationGetPosition(const EnsPMarkerMapLocation mml)
 
 
 
-/* @func ensMarkerMapLocationGetLODScore **************************************
+/* @func ensMarkermaplocationGetLODScore **************************************
 **
 ** Get the LOD score element of an Ensembl Marker Map Location.
 **
 ** @cc Bio::EnsEMBL::Map::MapLocation::lod_score
-** @param [r] mml [const EnsPMarkerMapLocation] Ensembl Marker Map Location
+** @param [r] mml [const EnsPMarkermaplocation] Ensembl Marker Map Location
 **
 ** @return [float] LOD score
 ** @@
 ******************************************************************************/
 
-float ensMarkerMapLocationGetLODScore(const EnsPMarkerMapLocation mml)
+float ensMarkermaplocationGetLODScore(const EnsPMarkermaplocation mml)
 {
     if(!mml)
         return 0;
@@ -1178,17 +1178,17 @@ float ensMarkerMapLocationGetLODScore(const EnsPMarkerMapLocation mml)
 **
 ** Functions for assigning elements of an Ensembl Marker Map Location object.
 **
-** @fdata [EnsPMarkerMapLocation]
+** @fdata [EnsPMarkermaplocation]
 ** @fnote None
 **
 ** @nam3rule Set Set one element of an Ensembl Marker Map Location
-** @nam4rule SetMarkerSynonym Set the Ensembl Marker Synonym
+** @nam4rule SetMarkersynonym Set the Ensembl Marker Synonym
 ** @nam4rule SetMapName Set the map name
 ** @nam4rule SetChromosomeName Set the chromosome name
 ** @nam4rule SetPosition Set the position
 ** @nam4rule SetLODScore Set the LOD score
 **
-** @argrule * mml [EnsPMarkerMapLocation] Ensembl Marker Map Location object
+** @argrule * mml [EnsPMarkermaplocation] Ensembl Marker Map Location object
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
@@ -1198,27 +1198,27 @@ float ensMarkerMapLocationGetLODScore(const EnsPMarkerMapLocation mml)
 
 
 
-/* @func ensMarkerMapLocationSetMarkerSynonym *********************************
+/* @func ensMarkermaplocationSetMarkersynonym *********************************
 **
 ** Set the Ensembl Marker Synonym element of an Ensembl Marker Map Location.
 **
 ** @cc Bio::EnsEMBL::Map::MapLocation::name
-** @param [u] mml [EnsPMarkerMapLocation] Ensembl Marker Map Location
-** @param [u] ms [EnsPMarkerSynonym] Ensembl Marker Synonym
+** @param [u] mml [EnsPMarkermaplocation] Ensembl Marker Map Location
+** @param [u] ms [EnsPMarkersynonym] Ensembl Marker Synonym
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerMapLocationSetMarkerSynonym(EnsPMarkerMapLocation mml,
-                                            EnsPMarkerSynonym ms)
+AjBool ensMarkermaplocationSetMarkersynonym(EnsPMarkermaplocation mml,
+                                            EnsPMarkersynonym ms)
 {
     if(!mml)
         return ajFalse;
     
-    ensMarkerSynonymDel(&(mml->MarkerSynonym));
+    ensMarkersynonymDel(&(mml->Markersynonym));
     
-    mml->MarkerSynonym = ensMarkerSynonymNewRef(ms);
+    mml->Markersynonym = ensMarkersynonymNewRef(ms);
     
     return ajTrue;
 }
@@ -1226,19 +1226,19 @@ AjBool ensMarkerMapLocationSetMarkerSynonym(EnsPMarkerMapLocation mml,
 
 
 
-/* @func ensMarkerMapLocationSetMapName ***************************************
+/* @func ensMarkermaplocationSetMapName ***************************************
 **
 ** Set the map name element of an Ensembl Marker Map Location.
 **
 ** @cc Bio::EnsEMBL::Map::MapLocation::map_name
-** @param [u] mml [EnsPMarkerMapLocation] Ensembl Marker Map Location
+** @param [u] mml [EnsPMarkermaplocation] Ensembl Marker Map Location
 ** @param [u] mapname [AjPStr] Map name
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerMapLocationSetMapName(EnsPMarkerMapLocation mml, AjPStr mapname)
+AjBool ensMarkermaplocationSetMapName(EnsPMarkermaplocation mml, AjPStr mapname)
 {
     if(!mml)
         return ajFalse;
@@ -1253,19 +1253,19 @@ AjBool ensMarkerMapLocationSetMapName(EnsPMarkerMapLocation mml, AjPStr mapname)
 
 
 
-/* @func ensMarkerMapLocationSetChromosomeName ********************************
+/* @func ensMarkermaplocationSetChromosomeName ********************************
 **
 ** Set the chromosome name element of an Ensembl Marker Map Location.
 **
 ** @cc Bio::EnsEMBL::Map::MapLocation::chromosome_name
-** @param [u] mml [EnsPMarkerMapLocation] Ensembl Marker Map Location
+** @param [u] mml [EnsPMarkermaplocation] Ensembl Marker Map Location
 ** @param [u] chrname [AjPStr] Chromosome name
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerMapLocationSetChromosomeName(EnsPMarkerMapLocation mml,
+AjBool ensMarkermaplocationSetChromosomeName(EnsPMarkermaplocation mml,
                                              AjPStr chrname)
 {
     if(!mml)
@@ -1281,19 +1281,19 @@ AjBool ensMarkerMapLocationSetChromosomeName(EnsPMarkerMapLocation mml,
 
 
 
-/* @func ensMarkerMapLocationSetPosition **************************************
+/* @func ensMarkermaplocationSetPosition **************************************
 **
 ** Set the position element of an Ensembl Marker Map Location.
 **
 ** @cc Bio::EnsEMBL::Map::MapLocation::position
-** @param [u] mml [EnsPMarkerMapLocation] Ensembl Marker Map Location
+** @param [u] mml [EnsPMarkermaplocation] Ensembl Marker Map Location
 ** @param [u] position [AjPStr] Position
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerMapLocationSetPosition(EnsPMarkerMapLocation mml,
+AjBool ensMarkermaplocationSetPosition(EnsPMarkermaplocation mml,
                                        AjPStr position)
 {
     if(!mml)
@@ -1309,19 +1309,19 @@ AjBool ensMarkerMapLocationSetPosition(EnsPMarkerMapLocation mml,
 
 
 
-/* @func ensMarkerMapLocationSetLODScore **************************************
+/* @func ensMarkermaplocationSetLODScore **************************************
 **
 ** Set the LOD score element of an Ensembl Marker Map Location.
 **
 ** @cc Bio::EnsEMBL::Map::MapLocation::lod_score
-** @param [u] mml [EnsPMarkerMapLocation] Ensembl Marker Map Location
+** @param [u] mml [EnsPMarkermaplocation] Ensembl Marker Map Location
 ** @param [r] lodscore [float] LOD score
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerMapLocationSetLODScore(EnsPMarkerMapLocation mml,
+AjBool ensMarkermaplocationSetLODScore(EnsPMarkermaplocation mml,
                                        float lodscore)
 {
     if(!mml)
@@ -1339,10 +1339,10 @@ AjBool ensMarkerMapLocationSetLODScore(EnsPMarkerMapLocation mml,
 **
 ** Functions for reporting of an Ensembl Marker Map Location object.
 **
-** @fdata [EnsPMarkerMapLocation]
+** @fdata [EnsPMarkermaplocation]
 ** @nam3rule Trace Report Ensembl Marker Map Location elements to debug file.
 **
-** @argrule Trace mml [const EnsPMarkerMapLocation] Ensembl Marker Map Location
+** @argrule Trace mml [const EnsPMarkermaplocation] Ensembl Marker Map Location
 ** @argrule Trace level [ajuint] Indentation level
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -1353,18 +1353,18 @@ AjBool ensMarkerMapLocationSetLODScore(EnsPMarkerMapLocation mml,
 
 
 
-/* @func ensMarkerMapLocationTrace ********************************************
+/* @func ensMarkermaplocationTrace ********************************************
 **
 ** Trace an Ensembl Marker Map Location.
 **
-** @param [r] mml [const EnsPMarkerMapLocation] Ensembl Marker Map Location
+** @param [r] mml [const EnsPMarkermaplocation] Ensembl Marker Map Location
 ** @param [r] level [ajuint] Indentation level
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerMapLocationTrace(const EnsPMarkerMapLocation mml, ajuint level)
+AjBool ensMarkermaplocationTrace(const EnsPMarkermaplocation mml, ajuint level)
 {
     AjPStr indent = NULL;
     
@@ -1375,8 +1375,8 @@ AjBool ensMarkerMapLocationTrace(const EnsPMarkerMapLocation mml, ajuint level)
     
     ajStrAppendCountK(&indent, ' ', level * 2);
     
-    ajDebug("%SensMarkerMapLocationTrace %p\n"
-	    "%S  MarkerSynonym %p\n"
+    ajDebug("%SensMarkermaplocationTrace %p\n"
+	    "%S  Markersynonym %p\n"
 	    "%S  MapName '%S'\n"
 	    "%S  ChromosomeName '%S'\n"
 	    "%S  Position '%S'\n"
@@ -1384,12 +1384,12 @@ AjBool ensMarkerMapLocationTrace(const EnsPMarkerMapLocation mml, ajuint level)
 	    "%S  Use %u\n",
 	    indent, mml,
 	    indent, mml->Use,
-	    indent, mml->MarkerSynonym,
+	    indent, mml->Markersynonym,
 	    indent, mml->MapName,
 	    indent, mml->ChromosomeName,
 	    indent, mml->LODScore);
     
-    ensMarkerSynonymTrace(mml->MarkerSynonym, level + 1);
+    ensMarkersynonymTrace(mml->Markersynonym, level + 1);
     
     ajStrDel(&indent);
     
@@ -1399,26 +1399,26 @@ AjBool ensMarkerMapLocationTrace(const EnsPMarkerMapLocation mml, ajuint level)
 
 
 
-/* @func ensMarkerMapLocationGetMemSize ***************************************
+/* @func ensMarkermaplocationGetMemSize ***************************************
 **
 ** Get the memory size in bytes of an Ensembl Marker Map Location.
 **
-** @param [r] mml [const EnsPMarkerMapLocation] Ensembl Marker Map Location
+** @param [r] mml [const EnsPMarkermaplocation] Ensembl Marker Map Location
 **
 ** @return [ajuint] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensMarkerMapLocationGetMemSize(const EnsPMarkerMapLocation mml)
+ajuint ensMarkermaplocationGetMemSize(const EnsPMarkermaplocation mml)
 {
     ajuint size = 0;
     
     if(!mml)
 	return 0;
     
-    size += (ajuint) sizeof (EnsOMarkerMapLocation);
+    size += (ajuint) sizeof (EnsOMarkermaplocation);
     
-    size += ensMarkerSynonymGetMemSize(mml->MarkerSynonym);
+    size += ensMarkersynonymGetMemSize(mml->Markersynonym);
     
     if(mml->MapName)
     {
@@ -1451,7 +1451,7 @@ ajuint ensMarkerMapLocationGetMemSize(const EnsPMarkerMapLocation mml)
 **
 ** Functions for manipulating Ensembl Marker Map Location Adaptor objects
 **
-** @nam2rule MarkerMapLocationadaptor
+** @nam2rule Markermaplocationadaptor
 **
 ******************************************************************************/
 
@@ -1489,9 +1489,9 @@ static AjBool markerMapLocationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     AjPStr position = NULL;
     AjPStr mapname  = NULL;
     
-    EnsPMarkerSynonym ms = NULL;
+    EnsPMarkersynonym ms = NULL;
     
-    EnsPMarkerMapLocation mml = NULL;
+    EnsPMarkermaplocation mml = NULL;
     
     if(!dba)
 	return ajFalse;
@@ -1526,9 +1526,9 @@ static AjBool markerMapLocationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	ajSqlcolumnToStr(sqlr, &mssource);
 	ajSqlcolumnToStr(sqlr, &msname);
 	
-	ms = ensMarkerSynonymNew(msid, mssource, msname);
+	ms = ensMarkersynonymNew(msid, mssource, msname);
 	
-	mml = ensMarkerMapLocationNew(ms,
+	mml = ensMarkermaplocationNew(ms,
 				      mapname,
 				      chrname,
 				      position,
@@ -1536,7 +1536,7 @@ static AjBool markerMapLocationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	ajListPushAppend(mmlist, mml);
 	
-	ensMarkerSynonymDel(&ms);
+	ensMarkersynonymDel(&ms);
 	
 	ajStrDel(&chrname);
 	ajStrDel(&position);
@@ -1555,7 +1555,7 @@ static AjBool markerMapLocationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @func ensMarkerMapLocationadaptorFetchAllByMarkerIdentifier ****************
+/* @func ensMarkermaplocationadaptorFetchAllByMarkerIdentifier ****************
 **
 ** Fetch all Ensembl Marker Map Locations by an Ensembl Marker identifier.
 **
@@ -1570,7 +1570,7 @@ static AjBool markerMapLocationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerMapLocationadaptorFetchAllByMarkerIdentifier(
+AjBool ensMarkermaplocationadaptorFetchAllByMarkerIdentifier(
     EnsPDatabaseadaptor dba,
     ajuint markerid,
     AjPList mmlist)
@@ -1665,7 +1665,7 @@ AjBool ensMarkerMapLocationadaptorFetchAllByMarkerIdentifier(
 ** @param [r] adaptor [EnsPMarkeradaptor] Ensembl Marker Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::Map::Marker::new
-** @param [u] display [EnsPMarkerSynonym] Ensembl Marker Synonym
+** @param [u] display [EnsPMarkersynonym] Ensembl Marker Synonym
 ** @param [u] lprimer [AjPStr] Left primer
 ** @param [u] rprimer [AjPStr] Right primer
 ** @param [r] synonyms [AjPList] AJAX List of Ensembl Marker Synonyms
@@ -1681,7 +1681,7 @@ AjBool ensMarkerMapLocationadaptorFetchAllByMarkerIdentifier(
 
 EnsPMarker ensMarkerNew(EnsPMarkeradaptor adaptor,
                         ajuint identifier,
-                        EnsPMarkerSynonym display,
+                        EnsPMarkersynonym display,
                         AjPStr lprimer,
                         AjPStr rprimer,
                         AjPList synonyms,
@@ -1695,9 +1695,9 @@ EnsPMarker ensMarkerNew(EnsPMarkeradaptor adaptor,
     
     EnsPMarker marker = NULL;
     
-    EnsPMarkerMapLocation mml = NULL;
+    EnsPMarkermaplocation mml = NULL;
     
-    EnsPMarkerSynonym ms = NULL;
+    EnsPMarkersynonym ms = NULL;
     
     AJNEW0(marker);
     
@@ -1707,7 +1707,7 @@ EnsPMarker ensMarkerNew(EnsPMarkeradaptor adaptor,
     
     marker->Adaptor = adaptor;
     
-    marker->DisplaySynonym = ensMarkerSynonymNewRef(display);
+    marker->DisplaySynonym = ensMarkersynonymNewRef(display);
     
     if(lprimer)
         marker->LeftPrimer = ajStrNewRef(lprimer);
@@ -1719,45 +1719,45 @@ EnsPMarker ensMarkerNew(EnsPMarkeradaptor adaptor,
     
     if(synonyms && ajListGetLength(synonyms))
     {
-	marker->MarkerSynonyms = ajListNew();
+	marker->Markersynonyms = ajListNew();
 	
 	iter = ajListIterNew(synonyms);
 	
 	while(!ajListIterDone(iter))
 	{
-	    ms = (EnsPMarkerSynonym) ajListIterGet(iter);
+	    ms = (EnsPMarkersynonym) ajListIterGet(iter);
 	    
 	    if(ms)
-		ajListPushAppend(marker->MarkerSynonyms,
-				 (void *) ensMarkerSynonymNewRef(ms));
+		ajListPushAppend(marker->Markersynonyms,
+				 (void *) ensMarkersynonymNewRef(ms));
 	}
 	
 	ajListIterDel(&iter);
     }
     else
-	marker->MarkerSynonyms = NULL;
+	marker->Markersynonyms = NULL;
     
     /* Copy the AJAX List of Ensembl Marker Map Locations. */
     
     if(locations && ajListGetLength(locations))
     {
-	marker->MarkerMapLocations = ajListNew();
+	marker->Markermaplocations = ajListNew();
 	
 	iter = ajListIterNew(locations);
 	
 	while(!ajListIterDone(iter))
 	{
-	    mml = (EnsPMarkerMapLocation) ajListIterGet(iter);
+	    mml = (EnsPMarkermaplocation) ajListIterGet(iter);
 	    
 	    if(mml)
-		ajListPushAppend(marker->MarkerMapLocations,
-				 (void *) ensMarkerMapLocationNewRef(mml));
+		ajListPushAppend(marker->Markermaplocations,
+				 (void *) ensMarkermaplocationNewRef(mml));
 	}
 	
 	ajListIterDel(&iter);
     }
     else
-	marker->MarkerMapLocations = NULL;
+	marker->Markermaplocations = NULL;
     
     marker->MinimumDistance = mindistance;
     
@@ -1789,9 +1789,9 @@ EnsPMarker ensMarkerNewObj(const EnsPMarker object)
     
     EnsPMarker marker = NULL;
     
-    EnsPMarkerMapLocation mml = NULL;
+    EnsPMarkermaplocation mml = NULL;
     
-    EnsPMarkerSynonym ms = NULL;
+    EnsPMarkersynonym ms = NULL;
     
     if(!object)
 	return NULL;
@@ -1804,7 +1804,7 @@ EnsPMarker ensMarkerNewObj(const EnsPMarker object)
     
     marker->Adaptor = object->Adaptor;
     
-    marker->DisplaySynonym = ensMarkerSynonymNewRef(object->DisplaySynonym);
+    marker->DisplaySynonym = ensMarkersynonymNewRef(object->DisplaySynonym);
     
     if(object->LeftPrimer)
         marker->LeftPrimer = ajStrNewRef(object->LeftPrimer);
@@ -1814,48 +1814,48 @@ EnsPMarker ensMarkerNewObj(const EnsPMarker object)
     
     /* Copy the AJAX List of Ensembl Marker Synonyms. */
     
-    if(object->MarkerSynonyms && ajListGetLength(object->MarkerSynonyms))
+    if(object->Markersynonyms && ajListGetLength(object->Markersynonyms))
     {
-	marker->MarkerSynonyms = ajListNew();
+	marker->Markersynonyms = ajListNew();
 	
-	iter = ajListIterNew(object->MarkerSynonyms);
+	iter = ajListIterNew(object->Markersynonyms);
 	
 	while(!ajListIterDone(iter))
 	{
-	    ms = (EnsPMarkerSynonym) ajListIterGet(iter);
+	    ms = (EnsPMarkersynonym) ajListIterGet(iter);
 	    
 	    if(ms)
-		ajListPushAppend(marker->MarkerSynonyms,
-				 (void *) ensMarkerSynonymNewRef(ms));
+		ajListPushAppend(marker->Markersynonyms,
+				 (void *) ensMarkersynonymNewRef(ms));
 	}
 	
 	ajListIterDel(&iter);
     }
     else
-	marker->MarkerSynonyms = NULL;
+	marker->Markersynonyms = NULL;
     
     /* Copy the AJAX List of Ensembl Marker Map Locations. */
     
-    if(object->MarkerMapLocations &&
-	ajListGetLength(object->MarkerMapLocations))
+    if(object->Markermaplocations &&
+	ajListGetLength(object->Markermaplocations))
     {
-	marker->MarkerMapLocations = ajListNew();
+	marker->Markermaplocations = ajListNew();
 	
-	iter = ajListIterNew(object->MarkerMapLocations);
+	iter = ajListIterNew(object->Markermaplocations);
 	
 	while(!ajListIterDone(iter))
 	{
-	    mml = (EnsPMarkerMapLocation) ajListIterGet(iter);
+	    mml = (EnsPMarkermaplocation) ajListIterGet(iter);
 	    
 	    if(mml)
-		ajListPushAppend(marker->MarkerMapLocations,
-				 (void *) ensMarkerMapLocationNewRef(mml));
+		ajListPushAppend(marker->Markermaplocations,
+				 (void *) ensMarkermaplocationNewRef(mml));
 	}
 	
 	ajListIterDel(&iter);
     }
     else
-	marker->MarkerMapLocations = NULL;
+	marker->Markermaplocations = NULL;
     
     marker->MinimumDistance = object->MinimumDistance;
     
@@ -1927,9 +1927,9 @@ EnsPMarker ensMarkerNewRef(EnsPMarker marker)
 
 void ensMarkerDel(EnsPMarker *Pmarker)
 {
-    EnsPMarkerMapLocation mml = NULL;
+    EnsPMarkermaplocation mml = NULL;
     
-    EnsPMarkerSynonym ms = NULL;
+    EnsPMarkersynonym ms = NULL;
 
     EnsPMarker pthis = NULL;
     
@@ -1961,17 +1961,17 @@ void ensMarkerDel(EnsPMarker *Pmarker)
     ajStrDel(&pthis->LeftPrimer);
     ajStrDel(&pthis->RightPrimer);
     
-    ensMarkerSynonymDel(&pthis->DisplaySynonym);
+    ensMarkersynonymDel(&pthis->DisplaySynonym);
     
-    while(ajListPop(pthis->MarkerSynonyms, (void **) &ms))
-	ensMarkerSynonymDel(&ms);
+    while(ajListPop(pthis->Markersynonyms, (void **) &ms))
+	ensMarkersynonymDel(&ms);
     
-    ajListFree(&pthis->MarkerSynonyms);
+    ajListFree(&pthis->Markersynonyms);
     
-    while(ajListPop(pthis->MarkerMapLocations, (void **) &mml))
-	ensMarkerMapLocationDel(&mml);
+    while(ajListPop(pthis->Markermaplocations, (void **) &mml))
+	ensMarkermaplocationDel(&mml);
     
-    ajListFree(&pthis->MarkerMapLocations);
+    ajListFree(&pthis->Markermaplocations);
     
     AJFREE(pthis);
 
@@ -1991,13 +1991,13 @@ void ensMarkerDel(EnsPMarker *Pmarker)
 ** @fnote None
 **
 ** @nam3rule Get Return Marker attribute(s)
-** @nam4rule Getadaptor Return the Ensembl Marker Adaptor
+** @nam4rule GetAdaptor Return the Ensembl Marker Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetDisplaySynonym Return the display synonym
 ** @nam4rule GetLeftPrimer Return the left primer
 ** @nam4rule GetRightPrimer Return the right primer
-** @nam4rule GetMarkerSynonyms Return all Ensembl Marker Synonyms
-** @nam4rule GetMarkerMapLocations Return all Ensembl Marker Map Locations
+** @nam4rule GetMarkersynonyms Return all Ensembl Marker Synonyms
+** @nam4rule GetMarkermaplocations Return all Ensembl Marker Map Locations
 ** @nam4rule GetMinimumDistance Return the minimum distance
 ** @nam4rule GetMaximumDistance Return the maximum distance
 ** @nam4rule GetType Return the type
@@ -2007,11 +2007,11 @@ void ensMarkerDel(EnsPMarker *Pmarker)
 **
 ** @valrule Adaptor [EnsPMarkeradaptor] Ensembl Marker Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
-** @valrule DisplaySynonym [EnsPMarkerSynonym] Ensembl Marker Synonym
+** @valrule DisplaySynonym [EnsPMarkersynonym] Ensembl Marker Synonym
 ** @valrule LeftPrimer [AjPStr] Left primer
 ** @valrule RightPrimer [AjPStr] Right primer
-** @valrule MarkerSynonyms [const AjPList] AJAX List of Ensembl Marker Synonyms
-** @valrule MarkerMapLocations [const AjPList] AJAX List of Ensembl Marker
+** @valrule Markersynonyms [const AjPList] AJAX List of Ensembl Marker Synonyms
+** @valrule Markermaplocations [const AjPList] AJAX List of Ensembl Marker
 **                                             Map Locations
 ** @valrule MinimumDistance [ajuint] Minimum distance
 ** @valrule MaximumDistance [ajuint] Maximum distance
@@ -2024,7 +2024,7 @@ void ensMarkerDel(EnsPMarker *Pmarker)
 
 
 
-/* @func ensMarkerGetadaptor **************************************************
+/* @func ensMarkerGetAdaptor **************************************************
 **
 ** Get the Ensembl Marker Adaptor element of an Ensembl Marker.
 **
@@ -2035,7 +2035,7 @@ void ensMarkerDel(EnsPMarker *Pmarker)
 ** @@
 ******************************************************************************/
 
-EnsPMarkeradaptor ensMarkerGetadaptor(const EnsPMarker marker)
+EnsPMarkeradaptor ensMarkerGetAdaptor(const EnsPMarker marker)
 {
     if(!marker)
         return NULL;
@@ -2072,14 +2072,14 @@ ajuint ensMarkerGetIdentifier(const EnsPMarker marker)
 **
 ** Get the display synonym element of an Ensembl Marker.
 **
-** @cc Bio::EnsEMBL::Map::Marker::display_MarkerSynonym
+** @cc Bio::EnsEMBL::Map::Marker::display_Markersynonym
 ** @param [r] marker [const EnsPMarker] Ensembl Marker
 **
-** @return [EnsPMarkerSynonym] Display Ensembl Marker Synonym
+** @return [EnsPMarkersynonym] Display Ensembl Marker Synonym
 ** @@
 ******************************************************************************/
 
-EnsPMarkerSynonym ensMarkerGetDisplaySynonym(const EnsPMarker marker)
+EnsPMarkersynonym ensMarkerGetDisplaySynonym(const EnsPMarker marker)
 {
     if(!marker)
         return NULL;
@@ -2134,7 +2134,7 @@ AjPStr ensMarkerGetRightPrimer(const EnsPMarker marker)
 
 
 
-/* @func ensMarkerGetMarkerSynonyms *******************************************
+/* @func ensMarkerGetMarkersynonyms *******************************************
 **
 ** Get all Ensembl Marker Synonyms of an Ensembl Marker.
 **
@@ -2142,20 +2142,20 @@ AjPStr ensMarkerGetRightPrimer(const EnsPMarker marker)
 ** Ensembl Marker Synonyms from the Ensembl Core database
 ** in case the AJAX List is not defined.
 **
-** @cc Bio::EnsEMBL::Map::Marker::get_all_MarkerSynonyms
+** @cc Bio::EnsEMBL::Map::Marker::get_all_Markersynonyms
 ** @param [u] marker [EnsPMarker] Ensembl Marker
 **
 ** @return [const AjPList] AJAX List of Ensembl Marker Synonyms
 ** @@
 ** NOTE: The Perl API uses a
 ** Bio::EnsEMBL::Map::DBSQL::Markeradaptor::fetch_attributes method to load
-** Bio::EnsEMBL::Map::MarkerSynonym and Bio::EnsEMBL::Map::MapLocation objects.
+** Bio::EnsEMBL::Map::Markersynonym and Bio::EnsEMBL::Map::MapLocation objects.
 ** This is not ideal as the method requires a Marker Adaptor and a Marker.
 ** There is no check that the MArker Adaptor and Marker refer to the same
 ** Ensembl Core database.
 ******************************************************************************/
 
-const AjPList ensMarkerGetMarkerSynonyms(EnsPMarker marker)
+const AjPList ensMarkerGetMarkersynonyms(EnsPMarker marker)
 {
     ajuint identifier = 0;
     
@@ -2166,8 +2166,8 @@ const AjPList ensMarkerGetMarkerSynonyms(EnsPMarker marker)
     if(!marker)
         return NULL;
     
-    if(marker->MarkerSynonyms)
-	return marker->MarkerSynonyms;
+    if(marker->Markersynonyms)
+	return marker->Markersynonyms;
     
     ba = ensMarkeradaptorGetBaseadaptor(marker->Adaptor);
     
@@ -2178,19 +2178,19 @@ const AjPList ensMarkerGetMarkerSynonyms(EnsPMarker marker)
     
     identifier = ensMarkerGetIdentifier(marker);
     
-    marker->MarkerSynonyms = ajListNew();
+    marker->Markersynonyms = ajListNew();
     
-    ensMarkerSynonymadaptorFetchAllByMarkerIdentifier(dba,
+    ensMarkersynonymadaptorFetchAllByMarkerIdentifier(dba,
 						      identifier,
-						      marker->MarkerSynonyms);
+						      marker->Markersynonyms);
     
-    return marker->MarkerSynonyms;
+    return marker->Markersynonyms;
 }
 
 
 
 
-/* @func ensMarkerGetMarkerMapLocations ***************************************
+/* @func ensMarkerGetMarkermaplocations ***************************************
 **
 ** Get all Ensembl Marker Map Locations of an Ensembl Marker.
 **
@@ -2205,13 +2205,13 @@ const AjPList ensMarkerGetMarkerSynonyms(EnsPMarker marker)
 ** @@
 ** NOTE: The Perl API uses a
 ** Bio::EnsEMBL::Map::DBSQL::Markeradaptor::fetch_attributes method to load
-** Bio::EnsEMBL::Map::MarkerSynonym and Bio::EnsEMBL::Map::MapLocation objects.
+** Bio::EnsEMBL::Map::Markersynonym and Bio::EnsEMBL::Map::MapLocation objects.
 ** This is not ideal as the method requires a Marker Adaptor and a Marker.
 ** There is no check that the MArker Adaptor and Marker refer to the same
 ** Ensembl Core database.
 ******************************************************************************/
 
-const AjPList ensMarkerGetMarkerMapLocations(EnsPMarker marker)
+const AjPList ensMarkerGetMarkermaplocations(EnsPMarker marker)
 {
     ajuint identifier = 0;
     
@@ -2222,8 +2222,8 @@ const AjPList ensMarkerGetMarkerMapLocations(EnsPMarker marker)
     if(!marker)
         return NULL;
     
-    if(marker->MarkerMapLocations)
-	return marker->MarkerMapLocations;
+    if(marker->Markermaplocations)
+	return marker->Markermaplocations;
     
     ba = ensMarkeradaptorGetBaseadaptor(marker->Adaptor);
     
@@ -2234,14 +2234,14 @@ const AjPList ensMarkerGetMarkerMapLocations(EnsPMarker marker)
     
     identifier = ensMarkerGetIdentifier(marker);
     
-    marker->MarkerMapLocations = ajListNew();
+    marker->Markermaplocations = ajListNew();
     
-    ensMarkerMapLocationadaptorFetchAllByMarkerIdentifier(
+    ensMarkermaplocationadaptorFetchAllByMarkerIdentifier(
         dba,
         identifier,
-        marker->MarkerMapLocations);
+        marker->Markermaplocations);
     
-    return marker->MarkerMapLocations;
+    return marker->Markermaplocations;
 }
 
 
@@ -2343,7 +2343,7 @@ ajint ensMarkerGetPriority(const EnsPMarker marker)
 ** @fnote None
 **
 ** @nam3rule Set Set one element of an Ensembl Marker
-** @nam4rule Setadaptor Set the Ensembl Marker Adaptor
+** @nam4rule SetAdaptor Set the Ensembl Marker Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetDisplaySynonym Set the display synonym
 ** @nam4rule SetLeftPrimer Set the left primer
@@ -2363,7 +2363,7 @@ ajint ensMarkerGetPriority(const EnsPMarker marker)
 
 
 
-/* @func ensMarkerSetadaptor **************************************************
+/* @func ensMarkerSetAdaptor **************************************************
 **
 ** Set the Ensembl Marker Adaptor element of an Ensembl Marker.
 **
@@ -2375,7 +2375,7 @@ ajint ensMarkerGetPriority(const EnsPMarker marker)
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerSetadaptor(EnsPMarker marker, EnsPMarkeradaptor adaptor)
+AjBool ensMarkerSetAdaptor(EnsPMarker marker, EnsPMarkeradaptor adaptor)
 {
     if(!marker)
         return ajFalse;
@@ -2418,22 +2418,22 @@ AjBool ensMarkerSetIdentifier(EnsPMarker marker, ajuint identifier)
 **
 ** Set the display synonym element of an Ensembl Marker.
 **
-** @cc Bio::EnsEMBL::Map::Marker::display_MarkerSynonym
+** @cc Bio::EnsEMBL::Map::Marker::display_Markersynonym
 ** @param [u] marker [EnsPMarker] Ensembl Marker
-** @param [u] display [EnsPMarkerSynonym] Display synonym
+** @param [u] display [EnsPMarkersynonym] Display synonym
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerSetDisplaySynonym(EnsPMarker marker, EnsPMarkerSynonym display)
+AjBool ensMarkerSetDisplaySynonym(EnsPMarker marker, EnsPMarkersynonym display)
 {
     if(!marker)
         return ajFalse;
     
-    ensMarkerSynonymDel(&marker->DisplaySynonym);
+    ensMarkersynonymDel(&marker->DisplaySynonym);
     
-    marker->DisplaySynonym = ensMarkerSynonymNewRef(display);
+    marker->DisplaySynonym = ensMarkersynonymNewRef(display);
     
     return ajTrue;
 }
@@ -2632,9 +2632,9 @@ AjBool ensMarkerTrace(const EnsPMarker marker, ajuint level)
     
     AjPStr indent = NULL;
     
-    EnsPMarkerMapLocation mml = NULL;
+    EnsPMarkermaplocation mml = NULL;
     
-    EnsPMarkerSynonym ms = NULL;
+    EnsPMarkersynonym ms = NULL;
     
     if(!marker)
 	return ajFalse;
@@ -2651,8 +2651,8 @@ AjBool ensMarkerTrace(const EnsPMarker marker, ajuint level)
 	    "%S  RightPrimer '%S'\n"
 	    "%S  Type '%S'\n"
 	    "%S  DisplaySynonym %p\n"
-	    "%S  MarkerSynonyms %p\n"
-	    "%S  MarkerMapLocations %p\n"
+	    "%S  Markersynonyms %p\n"
+	    "%S  Markermaplocations %p\n"
 	    "%S  MinimumDistance %u\n"
 	    "%S  MaximumDistance %u\n"
 	    "%S  Priority %d\n",
@@ -2664,36 +2664,36 @@ AjBool ensMarkerTrace(const EnsPMarker marker, ajuint level)
 	    indent, marker->RightPrimer,
 	    indent, marker->Type,
 	    indent, marker->DisplaySynonym,
-	    indent, marker->MarkerSynonyms,
-	    indent, marker->MarkerMapLocations,
+	    indent, marker->Markersynonyms,
+	    indent, marker->Markermaplocations,
 	    indent, marker->MinimumDistance,
 	    indent, marker->MaximumDistance,
 	    indent, marker->Priority);
     
-    ensMarkerSynonymTrace(marker->DisplaySynonym, level + 1);
+    ensMarkersynonymTrace(marker->DisplaySynonym, level + 1);
     
     /* Trace the AJAX List of Ensembl Marker Synonyms. */
     
-    iter = ajListIterNew(marker->MarkerSynonyms);
+    iter = ajListIterNew(marker->Markersynonyms);
     
     while(!ajListIterDone(iter))
     {
-	ms = (EnsPMarkerSynonym) ajListIterGet(iter);
+	ms = (EnsPMarkersynonym) ajListIterGet(iter);
 	
-	ensMarkerSynonymTrace(ms, level + 1);
+	ensMarkersynonymTrace(ms, level + 1);
     }
     
     ajListIterDel(&iter);
     
     /* Trace the AJAX List of Ensembl Marker Map Locations. */
     
-    iter = ajListIterNew(marker->MarkerMapLocations);
+    iter = ajListIterNew(marker->Markermaplocations);
     
     while(!ajListIterDone(iter))
     {
-	mml = (EnsPMarkerMapLocation) ajListIterGet(iter);
+	mml = (EnsPMarkermaplocation) ajListIterGet(iter);
 	
-	ensMarkerMapLocationTrace(mml, level + 1);
+	ensMarkermaplocationTrace(mml, level + 1);
     }
     
     ajListIterDel(&iter);
@@ -2722,16 +2722,16 @@ ajuint ensMarkerGetMemSize(const EnsPMarker marker)
     
     AjIList iter = NULL;
     
-    EnsPMarkerMapLocation mml = NULL;
+    EnsPMarkermaplocation mml = NULL;
     
-    EnsPMarkerSynonym ms = NULL;
+    EnsPMarkersynonym ms = NULL;
     
     if(!marker)
 	return 0;
     
     size += (ajuint) sizeof (EnsOMarker);
     
-    size += ensMarkerSynonymGetMemSize(marker->DisplaySynonym);
+    size += ensMarkersynonymGetMemSize(marker->DisplaySynonym);
     
     if(marker->LeftPrimer)
     {
@@ -2749,26 +2749,26 @@ ajuint ensMarkerGetMemSize(const EnsPMarker marker)
     
     /* Summarise the AJAX List of Ensembl Marker Synonyms. */
     
-    iter = ajListIterNew(marker->MarkerSynonyms);
+    iter = ajListIterNew(marker->Markersynonyms);
     
     while(!ajListIterDone(iter))
     {
-	ms = (EnsPMarkerSynonym) ajListIterGet(iter);
+	ms = (EnsPMarkersynonym) ajListIterGet(iter);
 	
-	size += ensMarkerSynonymGetMemSize(ms);
+	size += ensMarkersynonymGetMemSize(ms);
     }
     
     ajListIterDel(&iter);
     
     /* Summarise the AJAX List of Ensembl Marker Map Locations. */
     
-    iter = ajListIterNew(marker->MarkerMapLocations);
+    iter = ajListIterNew(marker->Markermaplocations);
     
     while(!ajListIterDone(iter))
     {
-	mml = (EnsPMarkerMapLocation) ajListIterGet(iter);
+	mml = (EnsPMarkermaplocation) ajListIterGet(iter);
 	
-	size += ensMarkerMapLocationGetMemSize(mml);
+	size += ensMarkermaplocationGetMemSize(mml);
     }
     
     ajListIterDel(&iter);
@@ -2779,19 +2779,19 @@ ajuint ensMarkerGetMemSize(const EnsPMarker marker)
 
 
 
-/* @func ensMarkerAddMarkerSynonym ********************************************
+/* @func ensMarkerAddMarkersynonym ********************************************
 **
 ** Add an Ensembl Marker Synonym to an Ensembl Marker.
 **
-** @cc Bio::EnsEMBL::Map::Marker::add_MarkerSynonym
+** @cc Bio::EnsEMBL::Map::Marker::add_Markersynonym
 ** @param [u] marker [EnsPMarker] Ensembl Marker
-** @param [u] ms [EnsPMarkerSynonym] Ensembl Marker Synonym
+** @param [u] ms [EnsPMarkersynonym] Ensembl Marker Synonym
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerAddMarkerSynonym(EnsPMarker marker, EnsPMarkerSynonym ms)
+AjBool ensMarkerAddMarkersynonym(EnsPMarker marker, EnsPMarkersynonym ms)
 {
     if(!marker)
 	return ajFalse;
@@ -2799,11 +2799,11 @@ AjBool ensMarkerAddMarkerSynonym(EnsPMarker marker, EnsPMarkerSynonym ms)
     if(!ms)
 	return ajFalse;
     
-    if(!marker->MarkerSynonyms)
-	marker->MarkerSynonyms = ajListNew();
+    if(!marker->Markersynonyms)
+	marker->Markersynonyms = ajListNew();
     
-    ajListPushAppend(marker->MarkerSynonyms,
-		     (void *) ensMarkerSynonymNewRef(ms));
+    ajListPushAppend(marker->Markersynonyms,
+		     (void *) ensMarkersynonymNewRef(ms));
     
     return ajTrue;
 }
@@ -2811,20 +2811,20 @@ AjBool ensMarkerAddMarkerSynonym(EnsPMarker marker, EnsPMarkerSynonym ms)
 
 
 
-/* @func ensMarkerAddMarkerMapLocation ****************************************
+/* @func ensMarkerAddMarkermaplocation ****************************************
 **
 ** Add an Ensembl Marker Map Location to an Ensembl Marker.
 **
 ** @cc Bio::EnsEMBL::Map::Marker::add_MapLocations
 ** @param [u] marker [EnsPMarker] Ensembl Marker
-** @param [u] mml [EnsPMarkerMapLocation] Ensembl Marker Map Location
+** @param [u] mml [EnsPMarkermaplocation] Ensembl Marker Map Location
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerAddMarkerMapLocation(EnsPMarker marker,
-                                     EnsPMarkerMapLocation mml)
+AjBool ensMarkerAddMarkermaplocation(EnsPMarker marker,
+                                     EnsPMarkermaplocation mml)
 {
     if(!marker)
 	return ajFalse;
@@ -2832,11 +2832,11 @@ AjBool ensMarkerAddMarkerMapLocation(EnsPMarker marker,
     if(!mml)
 	return ajFalse;
     
-    if(!marker->MarkerMapLocations)
-	marker->MarkerMapLocations = ajListNew();
+    if(!marker->Markermaplocations)
+	marker->Markermaplocations = ajListNew();
     
-    ajListPushAppend(marker->MarkerMapLocations,
-		     (void *) ensMarkerMapLocationNewRef(mml));
+    ajListPushAppend(marker->Markermaplocations,
+		     (void *) ensMarkermaplocationNewRef(mml));
     
     return ajTrue;
 }
@@ -2903,26 +2903,26 @@ const char* ensMarkerTypeToChar(const AjEnum type)
 
 
 
-/* @func ensMarkerClearMarkerSynonyms *****************************************
+/* @func ensMarkerClearMarkersynonyms *****************************************
 **
 ** Clear all Ensembl Marker Synonyms of an Ensembl Marker.
 **
-** @cc Bio::EnsEMBL::Map::Marker::flush_MarkerSynonyms
+** @cc Bio::EnsEMBL::Map::Marker::flush_Markersynonyms
 ** @param [u] marker [EnsPMarker] Ensembl Marker
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerClearMarkerSynonyms(EnsPMarker marker)
+AjBool ensMarkerClearMarkersynonyms(EnsPMarker marker)
 {
-    EnsPMarkerSynonym ms = NULL;
+    EnsPMarkersynonym ms = NULL;
     
     if(!marker)
 	return ajFalse;
     
-    while(ajListPop(marker->MarkerSynonyms, (void **) &ms))
-	ensMarkerSynonymDel(&ms);
+    while(ajListPop(marker->Markersynonyms, (void **) &ms))
+	ensMarkersynonymDel(&ms);
     
     return ajTrue;
 }
@@ -2930,7 +2930,7 @@ AjBool ensMarkerClearMarkerSynonyms(EnsPMarker marker)
 
 
 
-/* @func ensMarkerClearMarkerMapLocations *************************************
+/* @func ensMarkerClearMarkermaplocations *************************************
 **
 ** Clear all Ensembl Marker Map Locations of an Ensembl Marker.
 **
@@ -2941,15 +2941,15 @@ AjBool ensMarkerClearMarkerSynonyms(EnsPMarker marker)
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerClearMarkerMapLocations(EnsPMarker marker)
+AjBool ensMarkerClearMarkermaplocations(EnsPMarker marker)
 {
-    EnsPMarkerMapLocation mml = NULL;
+    EnsPMarkermaplocation mml = NULL;
     
     if(!marker)
 	return ajFalse;
     
-    while(ajListPop(marker->MarkerMapLocations, (void **) &mml))
-	ensMarkerMapLocationDel(&mml);
+    while(ajListPop(marker->Markermaplocations, (void **) &mml))
+	ensMarkermaplocationDel(&mml);
     
     return ajTrue;
 }
@@ -3029,7 +3029,7 @@ static const char *markerAdaptorFinalCondition = NULL;
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
-** @param [u] am [EnsPAssemblyMapper] Ensembl Assembly Mapper
+** @param [u] am [EnsPAssemblymapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [u] markers [AjPList] AJAX List of Ensembl Markers
 **
@@ -3039,7 +3039,7 @@ static const char *markerAdaptorFinalCondition = NULL;
 
 static AjBool markerAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                          const AjPStr statement,
-                                         EnsPAssemblyMapper am,
+                                         EnsPAssemblymapper am,
                                          EnsPSlice slice,
                                          AjPList markers)
 {
@@ -3067,7 +3067,7 @@ static AjBool markerAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPMarker marker         = NULL;
     EnsPMarkeradaptor adaptor = NULL;
     
-    EnsPMarkerSynonym ms = NULL;
+    EnsPMarkersynonym ms = NULL;
     
     if(!adaptor)
 	return ajFalse;
@@ -3121,7 +3121,7 @@ static AjBool markerAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    
 	    marker = ensMarkerNew(adaptor,
 				  identifier,
-				  (EnsPMarkerSynonym) NULL,
+				  (EnsPMarkersynonym) NULL,
 				  lprimer,
 				  rprimer,
 				  (AjPList) NULL,
@@ -3138,14 +3138,14 @@ static AjBool markerAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	if(msid)
 	{
-	    ms = ensMarkerSynonymNew(msid, mssource, msname);
+	    ms = ensMarkersynonymNew(msid, mssource, msname);
 	    
 	    if(msid == displaymsid)
 		ensMarkerSetDisplaySynonym(marker, ms);
 	    else
-		ensMarkerAddMarkerSynonym(marker, ms);
+		ensMarkerAddMarkersynonym(marker, ms);
 	    
-	    ensMarkerSynonymDel(&ms);
+	    ensMarkersynonymDel(&ms);
 	}
 	
 	ajStrDel(&lprimer);
@@ -3286,7 +3286,7 @@ void ensMarkeradaptorDel(EnsPMarkeradaptor *Padaptor)
 ** @fnote None
 **
 ** @nam3rule Get Return Marker Adaptor attribute(s)
-** @nam4rule Getadaptor Return the Ensembl Base Adaptor
+** @nam4rule GetAdaptor Return the Ensembl Base Adaptor
 **
 ** @argrule * adaptor [const EnsPMarkeradaptor] Marker Adaptor
 **
@@ -3360,7 +3360,7 @@ EnsPBaseadaptor ensMarkeradaptorGetBaseadaptor(const EnsPMarkeradaptor adaptor)
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkeradaptorFetchAll(EnsPMarkeradaptor adaptor, AjPList markers)
+AjBool ensMarkeradaptorFetchAll(const EnsPMarkeradaptor adaptor, AjPList markers)
 {
     if(!adaptor)
 	return ajFalse;
@@ -3370,7 +3370,7 @@ AjBool ensMarkeradaptorFetchAll(EnsPMarkeradaptor adaptor, AjPList markers)
     
     ensBaseadaptorGenericFetch(adaptor->Adaptor,
 			       (AjPStr) NULL,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       markers);
     
@@ -3387,7 +3387,7 @@ AjBool ensMarkeradaptorFetchAll(EnsPMarkeradaptor adaptor, AjPList markers)
 ** The caller is responsible for deleting the Ensembl Marker.
 **
 ** @cc Bio::EnsEMBL::Map::DBSQL::Markeradaptor::fetch_by_dbID
-** @param [r] adaptor [EnsPMarkeradaptor] Ensembl Marker Adaptor
+** @param [r] adaptor [const EnsPMarkeradaptor] Ensembl Marker Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @param [wP] Pmarker [EnsPMarker*] Ensembl Marker address
 **
@@ -3395,7 +3395,7 @@ AjBool ensMarkeradaptorFetchAll(EnsPMarkeradaptor adaptor, AjPList markers)
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkeradaptorFetchByIdentifier(EnsPMarkeradaptor adaptor,
+AjBool ensMarkeradaptorFetchByIdentifier(const EnsPMarkeradaptor adaptor,
                                          ajuint identifier,
                                          EnsPMarker *Pmarker)
 {
@@ -3419,7 +3419,7 @@ AjBool ensMarkeradaptorFetchByIdentifier(EnsPMarkeradaptor adaptor,
     
     ensBaseadaptorGenericFetch(adaptor->Adaptor,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       markers);
     
@@ -3496,7 +3496,7 @@ static void markerAdaptorClearIdentifierTable(void **key, void **value,
 ** the AJAX List.
 **
 ** @cc Bio::EnsEMBL::Map::DBSQL::Markeradaptor::fetch_all_by_synonym
-** @param [r] adaptor [EnsPMarkeradaptor] Ensembl Marker Adaptor
+** @param [r] adaptor [const EnsPMarkeradaptor] Ensembl Marker Adaptor
 ** @param [r] synonym [const AjPStr] Marker Synonym name
 ** @param [rN] source [const AjPStr] Marker Synonym source
 ** @param [w] markers [AjPList] AJAX List of Ensembl Markers
@@ -3505,7 +3505,7 @@ static void markerAdaptorClearIdentifierTable(void **key, void **value,
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkeradaptorFetchAllBySynonym(EnsPMarkeradaptor ma,
+AjBool ensMarkeradaptorFetchAllBySynonym(const EnsPMarkeradaptor ma,
                                          const AjPStr name,
                                          const AjPStr source,
                                          AjPList markers)
@@ -3540,7 +3540,7 @@ AjBool ensMarkeradaptorFetchAllBySynonym(EnsPMarkeradaptor ma,
     if(!markers)
 	return ajFalse;
     
-    table = ajTableNewFunctionLen(0, ensTableCmpUInt, ensTableHashUInt);
+    table = ajTableNewFunctionLen(0, ensTableCmpUint, ensTableHashUint);
     
     dba = ensBaseadaptorGetDatabaseadaptor(ma->Adaptor);
     
@@ -3620,11 +3620,11 @@ AjBool ensMarkeradaptorFetchAllBySynonym(EnsPMarkeradaptor ma,
 ** Fetch Ensembl Marker Synonyms and Ensembl Maker Map Locations of an
 ** Ensembl Marker.
 **
-** Deperecated. Use ensMarkerGetMarkerSynonyms and
-** ensMarkerGetMarkerMapLocations instead.
+** Deperecated. Use ensMarkerGetMarkersynonyms and
+** ensMarkerGetMarkermaplocations instead.
 **
 ** @cc Bio::EnsEMBL::Map::DBSQL::Markeradaptor::fetch_attributes
-** @param [r] adaptor [EnsPMarkeradaptor] Ensembl Marker Adaptor
+** @param [r] adaptor [const EnsPMarkeradaptor] Ensembl Marker Adaptor
 ** @param [u] marker [EnsPMarker] Ensembl Marker
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -3638,7 +3638,7 @@ AjBool ensMarkeradaptorFetchAllBySynonym(EnsPMarkeradaptor ma,
 ** Attribute objects come form the same database.
 ******************************************************************************/
 
-__deprecated AjBool ensMarkeradaptorFetchAttributes(EnsPMarkeradaptor adaptor,
+__deprecated AjBool ensMarkeradaptorFetchAttributes(const EnsPMarkeradaptor adaptor,
                                                     EnsPMarker marker)
 {
     float lodscore = 0;
@@ -3658,9 +3658,9 @@ __deprecated AjBool ensMarkeradaptorFetchAttributes(EnsPMarkeradaptor adaptor,
     
     EnsPDatabaseadaptor dba = NULL;
     
-    EnsPMarkerSynonym ms = NULL;
+    EnsPMarkersynonym ms = NULL;
     
-    EnsPMarkerMapLocation mml = NULL;
+    EnsPMarkermaplocation mml = NULL;
     
     if(!adaptor)
 	return ajFalse;
@@ -3680,7 +3680,7 @@ __deprecated AjBool ensMarkeradaptorFetchAttributes(EnsPMarkeradaptor adaptor,
     
     /* First, retrieve all Ensembl Marker Synonyms for this Ensembl Marker. */
     
-    ensMarkerClearMarkerSynonyms(marker);
+    ensMarkerClearMarkersynonyms(marker);
     
     statement = ajFmtStr("SELECT "
 			 "marker_synonym.marker_synonym_id, "
@@ -3708,11 +3708,11 @@ __deprecated AjBool ensMarkeradaptorFetchAttributes(EnsPMarkeradaptor adaptor,
 	ajSqlcolumnToStr(sqlr, &msname);
 	ajSqlcolumnToStr(sqlr, &mssource);
 	
-	ms = ensMarkerSynonymNew(msid, mssource, msname);
+	ms = ensMarkersynonymNew(msid, mssource, msname);
 	
-	ensMarkerAddMarkerSynonym(marker, ms);
+	ensMarkerAddMarkersynonym(marker, ms);
 	
-	ensMarkerSynonymDel(&ms);
+	ensMarkersynonymDel(&ms);
 	
 	ajStrDel(&msname);
 	ajStrDel(&mssource);
@@ -3729,7 +3729,7 @@ __deprecated AjBool ensMarkeradaptorFetchAttributes(EnsPMarkeradaptor adaptor,
     ** Ensembl Marker.
     */
     
-    ensMarkerClearMarkerMapLocations(marker);
+    ensMarkerClearMarkermaplocations(marker);
     
     statement = ajFmtStr("SELECT "
 			 "marker_map_location.chromosome_name, "
@@ -3776,19 +3776,19 @@ __deprecated AjBool ensMarkeradaptorFetchAttributes(EnsPMarkeradaptor adaptor,
 	ajSqlcolumnToStr(sqlr, &mssource);
 	ajSqlcolumnToStr(sqlr, &msname);
 	
-	ms = ensMarkerSynonymNew(msid, mssource, msname);
+	ms = ensMarkersynonymNew(msid, mssource, msname);
 	
-	mml = ensMarkerMapLocationNew(ms,
+	mml = ensMarkermaplocationNew(ms,
 				      mapname,
 				      chrname,
 				      position,
 				      lodscore);
 	
-	ensMarkerAddMarkerMapLocation(marker, mml);
+	ensMarkerAddMarkermaplocation(marker, mml);
 	
-	ensMarkerMapLocationDel(&mml);
+	ensMarkermaplocationDel(&mml);
 	
-	ensMarkerSynonymDel(&ms);
+	ensMarkersynonymDel(&ms);
 	
 	ajStrDel(&chrname);
 	ajStrDel(&position);
@@ -3812,7 +3812,7 @@ __deprecated AjBool ensMarkeradaptorFetchAttributes(EnsPMarkeradaptor adaptor,
 /*
 ** FIXME: The above function is problematic as the object could be based on a
 ** different adaptor than the one passed in here. There should really just be
-** ensMarkerGetMarkerSynonyms and ensMarkerGetMarkerMapLocations functions
+** ensMarkerGetMarkersynonyms and ensMarkerGetMarkermaplocations functions
 ** that lazy-load from the database with the object internal adaptor.
 **
 ** FIXME: Alternatively, the Marker Adaptor could just fetch the
@@ -3827,13 +3827,13 @@ __deprecated AjBool ensMarkeradaptorFetchAttributes(EnsPMarkeradaptor adaptor,
 
 
 
-/* @datasection [EnsPMarkerFeature] Marker Feature ****************************
+/* @datasection [EnsPMarkerfeature] Marker Feature ****************************
 **
 ** Functions for manipulating Ensembl Marker Feature objects
 **
-** @cc Bio::EnsEMBL::Map::MarkerFeature CVS Revision: 1.4
+** @cc Bio::EnsEMBL::Map::Markerfeature CVS Revision: 1.4
 **
-** @nam2rule MarkerFeature
+** @nam2rule Markerfeature
 **
 ******************************************************************************/
 
@@ -3847,17 +3847,17 @@ __deprecated AjBool ensMarkeradaptorFetchAttributes(EnsPMarkeradaptor adaptor,
 ** Marker Features. The target pointer does not need to be initialised to
 ** NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPMarkerFeature]
+** @fdata [EnsPMarkerfeature]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPMarkerFeature] Ensembl Marker Feature
-** @argrule Ref object [EnsPMarkerFeature] Ensembl Marker Feature
+** @argrule Obj object [EnsPMarkerfeature] Ensembl Marker Feature
+** @argrule Ref object [EnsPMarkerfeature] Ensembl Marker Feature
 **
-** @valrule * [EnsPMarkerFeature] Ensembl Marker Feature
+** @valrule * [EnsPMarkerfeature] Ensembl Marker Feature
 **
 ** @fcategory new
 ******************************************************************************/
@@ -3865,30 +3865,30 @@ __deprecated AjBool ensMarkeradaptorFetchAttributes(EnsPMarkeradaptor adaptor,
 
 
 
-/* @func ensMarkerFeatureNew **************************************************
+/* @func ensMarkerfeatureNew **************************************************
 **
 ** Default constructor for an Ensembl Marker Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] adaptor [EnsPMarkerFeatureadaptor] Ensembl Marker Feature Adaptor
+** @param [r] adaptor [EnsPMarkerfeatureadaptor] Ensembl Marker Feature Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::Feature::new
 ** @param [u] feature [EnsPFeature] Ensembl Feature
-** @cc Bio::EnsEMBL::Map::MarkerFeature::new
+** @cc Bio::EnsEMBL::Map::Markerfeature::new
 ** @param [u] marker [EnsPMarker] Ensembl Marker
 ** @param [r] mapweight [ajint] Map weight
 **
-** @return [EnsPMarkerFeature] Ensembl Marker Feature or NULL
+** @return [EnsPMarkerfeature] Ensembl Marker Feature or NULL
 ** @@
 ******************************************************************************/
 
-EnsPMarkerFeature ensMarkerFeatureNew(EnsPMarkerFeatureadaptor adaptor,
+EnsPMarkerfeature ensMarkerfeatureNew(EnsPMarkerfeatureadaptor adaptor,
                                       ajuint identifier,
                                       EnsPFeature feature,
                                       EnsPMarker marker,
                                       ajint mapweight)
 {
-    EnsPMarkerFeature mf = NULL;
+    EnsPMarkerfeature mf = NULL;
     
     AJNEW0(mf);
     
@@ -3910,19 +3910,19 @@ EnsPMarkerFeature ensMarkerFeatureNew(EnsPMarkerFeatureadaptor adaptor,
 
 
 
-/* @func ensMarkerFeatureNewObj ***********************************************
+/* @func ensMarkerfeatureNewObj ***********************************************
 **
 ** Object-based constructor function, which returns an independent object.
 **
-** @param [r] object [const EnsPMarkerFeature] Ensembl Marker Feature
+** @param [r] object [const EnsPMarkerfeature] Ensembl Marker Feature
 **
-** @return [EnsPMarkerFeature] Ensembl Marker Feature or NULL
+** @return [EnsPMarkerfeature] Ensembl Marker Feature or NULL
 ** @@
 ******************************************************************************/
 
-EnsPMarkerFeature ensMarkerFeatureNewObj(const EnsPMarkerFeature object)
+EnsPMarkerfeature ensMarkerfeatureNewObj(const EnsPMarkerfeature object)
 {
-    EnsPMarkerFeature mf = NULL;
+    EnsPMarkerfeature mf = NULL;
     
     if(!object)
 	return NULL;
@@ -3947,18 +3947,18 @@ EnsPMarkerFeature ensMarkerFeatureNewObj(const EnsPMarkerFeature object)
 
 
 
-/* @func ensMarkerFeatureNewRef ***********************************************
+/* @func ensMarkerfeatureNewRef ***********************************************
 **
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] mf [EnsPMarkerFeature] Ensembl Marker Feature
+** @param [u] mf [EnsPMarkerfeature] Ensembl Marker Feature
 **
-** @return [EnsPMarkerFeature] Ensembl Marker Feature or NULL
+** @return [EnsPMarkerfeature] Ensembl Marker Feature or NULL
 ** @@
 ******************************************************************************/
 
-EnsPMarkerFeature ensMarkerFeatureNewRef(EnsPMarkerFeature mf)
+EnsPMarkerfeature ensMarkerfeatureNewRef(EnsPMarkerfeature mf)
 {
     if(!mf)
 	return NULL;
@@ -3976,12 +3976,12 @@ EnsPMarkerFeature ensMarkerFeatureNewRef(EnsPMarkerFeature mf)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Marker Feature.
 **
-** @fdata [EnsPMarkerFeature]
+** @fdata [EnsPMarkerfeature]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) an Ensembl Marker Feature object
 **
-** @argrule * Pmf [EnsPMarkerFeature*] Ensembl Marker Feature object address
+** @argrule * Pmf [EnsPMarkerfeature*] Ensembl Marker Feature object address
 **
 ** @valrule * [void]
 **
@@ -3991,26 +3991,26 @@ EnsPMarkerFeature ensMarkerFeatureNewRef(EnsPMarkerFeature mf)
 
 
 
-/* @func ensMarkerFeatureDel **************************************************
+/* @func ensMarkerfeatureDel **************************************************
 **
 ** Default destructor for an Ensembl Marker Feature.
 **
-** @param [d] Pmf [EnsPMarkerFeature*] Ensembl Marker Feature address
+** @param [d] Pmf [EnsPMarkerfeature*] Ensembl Marker Feature address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensMarkerFeatureDel(EnsPMarkerFeature *Pmf)
+void ensMarkerfeatureDel(EnsPMarkerfeature *Pmf)
 {
-    EnsPMarkerFeature pthis = NULL;
+    EnsPMarkerfeature pthis = NULL;
     
     /*
-     ajDebug("ensMarkerFeatureDel\n"
+     ajDebug("ensMarkerfeatureDel\n"
 	     "  *Pmf %p\n",
 	     *Pmf);
      
-     ensMarkerFeatureTrace(*Pmf, 1);
+     ensMarkerfeatureTrace(*Pmf, 1);
      */
     
     if(!Pmf)
@@ -4048,19 +4048,19 @@ void ensMarkerFeatureDel(EnsPMarkerFeature *Pmf)
 **
 ** Functions for returning elements of an Ensembl Marker Feature object.
 **
-** @fdata [EnsPMarkerFeature]
+** @fdata [EnsPMarkerfeature]
 ** @fnote None
 **
 ** @nam3rule Get Return Marker Feature attribute(s)
-** @nam4rule Getadaptor Return the Ensembl Marker Feature Adaptor
+** @nam4rule GetAdaptor Return the Ensembl Marker Feature Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetFeature Return the Ensembl Feature
 ** @nam4rule GetMarker Return the Ensembl Marker
 ** @nam4rule GetMapWeight return the map weight
 **
-** @argrule * mf [const EnsPMarkerFeature] Marker Feature
+** @argrule * mf [const EnsPMarkerfeature] Marker Feature
 **
-** @valrule Adaptor [EnsPMarkerFeatureadaptor] Ensembl Marker Feature Adaptor
+** @valrule Adaptor [EnsPMarkerfeatureadaptor] Ensembl Marker Feature Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule Feature [EnsPFeature] Ensembl Feature
 ** @valrule Marker [EnsPMarker] Ensembl Marker
@@ -4072,18 +4072,18 @@ void ensMarkerFeatureDel(EnsPMarkerFeature *Pmf)
 
 
 
-/* @func ensMarkerFeatureGetadaptor *******************************************
+/* @func ensMarkerfeatureGetAdaptor *******************************************
 **
 ** Get the Ensembl Marker Feature Adaptor element of an Ensembl Marker Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::adaptor
-** @param [r] mf [const EnsPMarkerFeature] Ensembl Marker Feature
+** @param [r] mf [const EnsPMarkerfeature] Ensembl Marker Feature
 **
-** @return [EnsPMarkerFeatureadaptor] Ensembl Marker Feature Adaptor
+** @return [EnsPMarkerfeatureadaptor] Ensembl Marker Feature Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPMarkerFeatureadaptor ensMarkerFeatureGetadaptor(const EnsPMarkerFeature mf)
+EnsPMarkerfeatureadaptor ensMarkerfeatureGetAdaptor(const EnsPMarkerfeature mf)
 {
     if(!mf)
         return NULL;
@@ -4094,19 +4094,19 @@ EnsPMarkerFeatureadaptor ensMarkerFeatureGetadaptor(const EnsPMarkerFeature mf)
 
 
 
-/* @func ensMarkerFeatureGetIdentifier ****************************************
+/* @func ensMarkerfeatureGetIdentifier ****************************************
 **
 ** Get the SQL database-internal identifier element of an
 ** Ensembl Marker Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::dbID
-** @param [r] mf [const EnsPMarkerFeature] Ensembl Marker Feature
+** @param [r] mf [const EnsPMarkerfeature] Ensembl Marker Feature
 **
 ** @return [ajuint] Internal database identifier
 ** @@
 ******************************************************************************/
 
-ajuint ensMarkerFeatureGetIdentifier(const EnsPMarkerFeature mf)
+ajuint ensMarkerfeatureGetIdentifier(const EnsPMarkerfeature mf)
 {
     if(!mf)
         return 0;
@@ -4117,17 +4117,17 @@ ajuint ensMarkerFeatureGetIdentifier(const EnsPMarkerFeature mf)
 
 
 
-/* @func ensMarkerFeatureGetFeature *******************************************
+/* @func ensMarkerfeatureGetFeature *******************************************
 **
 ** Get the Ensembl Feature element of an Ensembl Marker Feature.
 **
-** @param [r] mf [const EnsPMarkerFeature] Ensembl Marker Feature
+** @param [r] mf [const EnsPMarkerfeature] Ensembl Marker Feature
 **
 ** @return [EnsPFeature] Ensembl Feature
 ** @@
 ******************************************************************************/
 
-EnsPFeature ensMarkerFeatureGetFeature(const EnsPMarkerFeature mf)
+EnsPFeature ensMarkerfeatureGetFeature(const EnsPMarkerfeature mf)
 {
     if(!mf)
         return NULL;
@@ -4138,18 +4138,18 @@ EnsPFeature ensMarkerFeatureGetFeature(const EnsPMarkerFeature mf)
 
 
 
-/* @func ensMarkerFeatureGetMarker ********************************************
+/* @func ensMarkerfeatureGetMarker ********************************************
 **
 ** Get the Ensembl Marker element of an Ensembl Marker Feature.
 **
-** @cc Bio::EnsEMBL::Map::MarkerFeature::marker
-** @param [r] mf [const EnsPMarkerFeature] Ensembl Marker Feature
+** @cc Bio::EnsEMBL::Map::Markerfeature::marker
+** @param [r] mf [const EnsPMarkerfeature] Ensembl Marker Feature
 **
 ** @return [EnsPMarker] Ensembl Marker
 ** @@
 ******************************************************************************/
 
-EnsPMarker ensMarkerFeatureGetMarker(const EnsPMarkerFeature mf)
+EnsPMarker ensMarkerfeatureGetMarker(const EnsPMarkerfeature mf)
 {
     if(!mf)
         return NULL;
@@ -4160,18 +4160,18 @@ EnsPMarker ensMarkerFeatureGetMarker(const EnsPMarkerFeature mf)
 
 
 
-/* @func ensMarkerFeatureGetMapWeight *****************************************
+/* @func ensMarkerfeatureGetMapWeight *****************************************
 **
 ** Get the map wight element of an Ensembl Marker Feature.
 **
-** @cc Bio::EnsEMBL::Map::MarkerFeature::map_weight
-** @param [r] mf [const EnsPMarkerFeature] Ensembl Marker Feature
+** @cc Bio::EnsEMBL::Map::Markerfeature::map_weight
+** @param [r] mf [const EnsPMarkerfeature] Ensembl Marker Feature
 **
 ** @return [ajint] Map weight
 ** @@
 ******************************************************************************/
 
-ajint ensMarkerFeatureGetMapWeight(const EnsPMarkerFeature mf)
+ajint ensMarkerfeatureGetMapWeight(const EnsPMarkerfeature mf)
 {
     if(!mf)
         return 0;
@@ -4186,17 +4186,17 @@ ajint ensMarkerFeatureGetMapWeight(const EnsPMarkerFeature mf)
 **
 ** Functions for assigning elements of an Ensembl Marker Feature object.
 **
-** @fdata [EnsPMarkerFeature]
+** @fdata [EnsPMarkerfeature]
 ** @fnote None
 **
 ** @nam3rule Set Set one element of an Ensembl Marker Feature
-** @nam4rule Setadaptor Set the Ensembl Marker Feature Adaptor
+** @nam4rule SetAdaptor Set the Ensembl Marker Feature Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetFeature Set the Ensembl Feature
 ** @nam4rule SetMarker Set the Ensembl Marker
 ** @nam4rule SetMapWeight Set the map weight
 **
-** @argrule * mf [EnsPMarkerFeature] Ensembl Marker Feature object
+** @argrule * mf [EnsPMarkerfeature] Ensembl Marker Feature object
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
@@ -4206,20 +4206,20 @@ ajint ensMarkerFeatureGetMapWeight(const EnsPMarkerFeature mf)
 
 
 
-/* @func ensMarkerFeatureSetadaptor *******************************************
+/* @func ensMarkerfeatureSetAdaptor *******************************************
 **
 ** Set the Ensembl Marker Feature Adaptor element of an Ensembl Marker Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::adaptor
-** @param [u] mf [EnsPMarkerFeature] Ensembl Marker Feature
-** @param [r] adaptor [EnsPMarkerFeatureadaptor] Ensembl Marker Feature Adaptor
+** @param [u] mf [EnsPMarkerfeature] Ensembl Marker Feature
+** @param [r] adaptor [EnsPMarkerfeatureadaptor] Ensembl Marker Feature Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerFeatureSetadaptor(EnsPMarkerFeature mf,
-                                  EnsPMarkerFeatureadaptor adaptor)
+AjBool ensMarkerfeatureSetAdaptor(EnsPMarkerfeature mf,
+                                  EnsPMarkerfeatureadaptor adaptor)
 {
     if(!mf)
         return ajFalse;
@@ -4232,20 +4232,20 @@ AjBool ensMarkerFeatureSetadaptor(EnsPMarkerFeature mf,
 
 
 
-/* @func ensMarkerFeatureSetIdentifier ****************************************
+/* @func ensMarkerfeatureSetIdentifier ****************************************
 **
 ** Set the SQL database-internal identifier element of an
 ** Ensembl Marker Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::dbID
-** @param [u] mf [EnsPMarkerFeature] Ensembl Marker Feature
+** @param [u] mf [EnsPMarkerfeature] Ensembl Marker Feature
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerFeatureSetIdentifier(EnsPMarkerFeature mf, ajuint identifier)
+AjBool ensMarkerfeatureSetIdentifier(EnsPMarkerfeature mf, ajuint identifier)
 {
     if(!mf)
         return ajFalse;
@@ -4258,18 +4258,18 @@ AjBool ensMarkerFeatureSetIdentifier(EnsPMarkerFeature mf, ajuint identifier)
 
 
 
-/* @func ensMarkerFeatureSetFeature *******************************************
+/* @func ensMarkerfeatureSetFeature *******************************************
 **
 ** Set the Ensembl Feature element of an Ensembl Marker Feature.
 **
-** @param [u] mf [EnsPMarkerFeature] Ensembl Marker Feature
-** @param [u] feature [EnsPFeaturer] Ensembl Feature
+** @param [u] mf [EnsPMarkerfeature] Ensembl Marker Feature
+** @param [u] feature [EnsPFeature] Ensembl Feature
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerFeatureSetFeature(EnsPMarkerFeature mf, EnsPFeature feature)
+AjBool ensMarkerfeatureSetFeature(EnsPMarkerfeature mf, EnsPFeature feature)
 {
     if(!mf)
         return ajFalse;
@@ -4284,19 +4284,19 @@ AjBool ensMarkerFeatureSetFeature(EnsPMarkerFeature mf, EnsPFeature feature)
 
 
 
-/* @func ensMarkerFeatureSetMarker ********************************************
+/* @func ensMarkerfeatureSetMarker ********************************************
 **
 ** Set the Ensembl Marker element of an Ensembl Marker Feature.
 **
-** @cc Bio::EnsEMBL::Map::MarkerFeature::marker
-** @param [u] mf [EnsPMarkerFeature] Ensembl Marker Feature
+** @cc Bio::EnsEMBL::Map::Markerfeature::marker
+** @param [u] mf [EnsPMarkerfeature] Ensembl Marker Feature
 ** @param [u] marker [EnsPMarker] Ensembl Marker
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerFeatureSetMarker(EnsPMarkerFeature mf, EnsPMarker marker)
+AjBool ensMarkerfeatureSetMarker(EnsPMarkerfeature mf, EnsPMarker marker)
 {
     if(!mf)
         return ajFalse;
@@ -4311,19 +4311,19 @@ AjBool ensMarkerFeatureSetMarker(EnsPMarkerFeature mf, EnsPMarker marker)
 
 
 
-/* @func ensMarkerFeatureSetMapWeight *****************************************
+/* @func ensMarkerfeatureSetMapWeight *****************************************
 **
 ** Set the map weight element of an Ensembl Marker Feature.
 **
-** @cc Bio::EnsEMBL::Map::MarkerFeature::map_weight
-** @param [u] mf [EnsPMarkerFeature] Ensembl Marker Feature
+** @cc Bio::EnsEMBL::Map::Markerfeature::map_weight
+** @param [u] mf [EnsPMarkerfeature] Ensembl Marker Feature
 ** @param [r] mapweight [ajint] Map weight
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerFeatureSetMapWeight(EnsPMarkerFeature mf, ajint mapweight)
+AjBool ensMarkerfeatureSetMapWeight(EnsPMarkerfeature mf, ajint mapweight)
 {
     if(!mf)
         return ajFalse;
@@ -4340,10 +4340,10 @@ AjBool ensMarkerFeatureSetMapWeight(EnsPMarkerFeature mf, ajint mapweight)
 **
 ** Functions for reporting of an Ensembl Marker Feature object.
 **
-** @fdata [EnsPMarkerFeature]
+** @fdata [EnsPMarkerfeature]
 ** @nam3rule Trace Report Ensembl Marker Feature elements to debug file.
 **
-** @argrule Trace mf [const EnsPMarkerFeature] Ensembl Marker Feature
+** @argrule Trace mf [const EnsPMarkerfeature] Ensembl Marker Feature
 ** @argrule Trace level [ajuint] Indentation level
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -4354,18 +4354,18 @@ AjBool ensMarkerFeatureSetMapWeight(EnsPMarkerFeature mf, ajint mapweight)
 
 
 
-/* @func ensMarkerFeatureTrace ************************************************
+/* @func ensMarkerfeatureTrace ************************************************
 **
 ** Trace an Ensembl Marker Feature.
 **
-** @param [r] mf [const EnsPMarkerFeature] Ensembl Marker Feature
+** @param [r] mf [const EnsPMarkerfeature] Ensembl Marker Feature
 ** @param [r] level [ajuint] Indentation level
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerFeatureTrace(const EnsPMarkerFeature mf, ajuint level)
+AjBool ensMarkerfeatureTrace(const EnsPMarkerfeature mf, ajuint level)
 {
     AjPStr indent = NULL;
     
@@ -4376,7 +4376,7 @@ AjBool ensMarkerFeatureTrace(const EnsPMarkerFeature mf, ajuint level)
     
     ajStrAppendCountK(&indent, ' ', level * 2);
     
-    ajDebug("%SensMarkerFeatureTrace %p\n"
+    ajDebug("%SensMarkerfeatureTrace %p\n"
 	    "%S  Use %u\n"
 	    "%S  Identifier %u\n"
 	    "%S  Adaptor %p\n"
@@ -4403,24 +4403,24 @@ AjBool ensMarkerFeatureTrace(const EnsPMarkerFeature mf, ajuint level)
 
 
 
-/* @func ensMarkerFeatureGetMemSize *******************************************
+/* @func ensMarkerfeatureGetMemSize *******************************************
 **
 ** Get the memory size in bytes of an Ensembl Marker Feature.
 **
-** @param [r] mf [const EnsPMarkerFeature] Ensembl Marker Feature
+** @param [r] mf [const EnsPMarkerfeature] Ensembl Marker Feature
 **
 ** @return [ajuint] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensMarkerFeatureGetMemSize(const EnsPMarkerFeature mf)
+ajuint ensMarkerfeatureGetMemSize(const EnsPMarkerfeature mf)
 {
     ajuint size = 0;
     
     if(!mf)
 	return 0;
     
-    size += (ajuint) sizeof (EnsOMarkerFeature);
+    size += (ajuint) sizeof (EnsOMarkerfeature);
     
     size += ensFeatureGetMemSize(mf->Feature);
     size += ensMarkerGetMemSize(mf->Marker);
@@ -4431,13 +4431,13 @@ ajuint ensMarkerFeatureGetMemSize(const EnsPMarkerFeature mf)
 
 
 
-/* @datasection [EnsPMarkerFeatureadaptor] Marker Feature Adaptor *************
+/* @datasection [EnsPMarkerfeatureadaptor] Marker Feature Adaptor *************
 **
 ** Functions for manipulating Ensembl Marker Feature Adaptor objects
 **
-** @cc Bio::EnsEMBL::Map::DBSQL::MarkerFeatureadaptor CVS Revision: 1.11
+** @cc Bio::EnsEMBL::Map::DBSQL::Markerfeatureadaptor CVS Revision: 1.11
 **
-** @nam2rule MarkerFeatureadaptor
+** @nam2rule Markerfeatureadaptor
 **
 ******************************************************************************/
 
@@ -4544,7 +4544,7 @@ static void markerFeatureadaptorClearMarkerTable(void **key, void **value,
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
-** @param [u] am [EnsPAssemblyMapper] Ensembl Assembly Mapper
+** @param [u] am [EnsPAssemblymapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [u] mflist [AjPList] AJAX List of Ensembl Marker Features
 **
@@ -4554,7 +4554,7 @@ static void markerFeatureadaptorClearMarkerTable(void **key, void **value,
 
 static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                 const AjPStr statement,
-                                                EnsPAssemblyMapper am,
+                                                EnsPAssemblymapper am,
                                                 EnsPSlice slice,
                                                 AjPList mflist)
 {
@@ -4596,19 +4596,19 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPAnalysis analysis  = NULL;
     EnsPAnalysisadaptor aa = NULL;
     
-    EnsPAssemblyMapperadaptor ama = NULL;
+    EnsPAssemblymapperadaptor ama = NULL;
     
     EnsPFeature feature = NULL;
     
-    EnsPMapperResult mr = NULL;
+    EnsPMapperresult mr = NULL;
     
     EnsPMarker marker    = NULL;
     EnsPMarkeradaptor ma = NULL;
     
-    EnsPMarkerFeature mf         = NULL;
-    EnsPMarkerFeatureadaptor mfa = NULL;
+    EnsPMarkerfeature mf         = NULL;
+    EnsPMarkerfeatureadaptor mfa = NULL;
     
-    EnsPMarkerSynonym ms = NULL;
+    EnsPMarkersynonym ms = NULL;
     
     EnsPSlice srslice   = NULL;
     EnsPSliceadaptor sa = NULL;
@@ -4630,16 +4630,16 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     
     ma = ensRegistryGetMarkeradaptor(dba);
     
-    mfa = ensRegistryGetMarkerFeatureadaptor(dba);
+    mfa = ensRegistryGetMarkerfeatureadaptor(dba);
     
     sa = ensRegistryGetSliceadaptor(dba);
     
     if(slice)
-	ama = ensRegistryGetAssemblyMapperadaptor(dba);
+	ama = ensRegistryGetAssemblymapperadaptor(dba);
     
     mrs = ajListNew();
     
-    table = ajTableNewFunctionLen(0, ensTableCmpUInt, ensTableHashUInt);
+    table = ajTableNewFunctionLen(0, ensTableCmpUint, ensTableHashUint);
     
     sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
@@ -4710,7 +4710,7 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	/* Fetch a Slice spanning the entire Sequence Region. */
 	
-	ensSliceadaptorFetchBySeqRegionIdentifier(sa, srid, 0, 0, 0, &srslice);
+	ensSliceadaptorFetchBySeqregionIdentifier(sa, srid, 0, 0, 0, &srslice);
 	
 	/*
 	** Increase the reference counter of the Ensembl Assembly Mapper if
@@ -4724,16 +4724,16 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	*/
 	
 	if(am)
-	    am = ensAssemblyMapperNewRef(am);
+	    am = ensAssemblymapperNewRef(am);
 	
 	if((!am) &&
            slice &&
-           (!ensCoordSystemMatch(ensSliceGetCoordSystem(slice),
-				   ensSliceGetCoordSystem(srslice))))
-	    am = ensAssemblyMapperadaptorFetchByCoordSystems(
+           (!ensCoordsystemMatch(ensSliceGetCoordsystem(slice),
+				   ensSliceGetCoordsystem(srslice))))
+	    am = ensAssemblymapperadaptorFetchByCoordsystems(
                 ama,
-                ensSliceGetCoordSystem(slice),
-                ensSliceGetCoordSystem(srslice));
+                ensSliceGetCoordsystem(slice),
+                ensSliceGetCoordsystem(srslice));
 	
 	/*
 	** Remap the Feature coordinates to another Ensembl Coordinate System
@@ -4742,15 +4742,15 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	if(am)
 	{
-	    ensAssemblyMapperFastMap(am,
-				     ensSliceGetSeqRegion(srslice),
+	    ensAssemblymapperFastMap(am,
+				     ensSliceGetSeqregion(srslice),
 				     slstart,
 				     slend,
 				     slstrand,
 				     mrs);
 	    
 	    /*
-	    ** The ensAssemblyMapperFastMap function returns at best one
+	    ** The ensAssemblymapperFastMap function returns at best one
 	    ** Ensembl Mapper Result.
 	    */
 	    
@@ -4761,7 +4761,7 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    ** Coordinate System boundaries.
 	    */
 	    
-	    if(ensMapperResultGetType(mr) != ensEMapperResultCoordinate)
+	    if(ensMapperresultGetType(mr) != ensEMapperresultCoordinate)
 	    {
 		/* Load the next Feature but destroy first! */
 		
@@ -4773,20 +4773,20 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 		
 		ensSliceDel(&srslice);
 		
-		ensAssemblyMapperDel(&am);
+		ensAssemblymapperDel(&am);
 		
-		ensMapperResultDel(&mr);
+		ensMapperresultDel(&mr);
 		
 		continue;
 	    }
 	    
-	    srid = ensMapperResultGetObjectIdentifier(mr);
+	    srid = ensMapperresultGetObjectIdentifier(mr);
 	    
-	    slstart = ensMapperResultGetStart(mr);
+	    slstart = ensMapperresultGetStart(mr);
 	    
-	    slend = ensMapperResultGetEnd(mr);
+	    slend = ensMapperresultGetEnd(mr);
 	    
-	    slstrand = ensMapperResultGetStrand(mr);
+	    slstrand = ensMapperresultGetStrand(mr);
 	    
 	    /*
 	    ** Delete the Sequence Region Slice and fetch a Slice in the
@@ -4795,14 +4795,14 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    
 	    ensSliceDel(&srslice);
 	    
-	    ensSliceadaptorFetchBySeqRegionIdentifier(sa,
+	    ensSliceadaptorFetchBySeqregionIdentifier(sa,
 						      srid,
 						      0,
 						      0,
 						      0,
 						      &srslice);
 	    
-	    ensMapperResultDel(&mr);
+	    ensMapperresultDel(&mr);
 	}
 	
 	/*
@@ -4853,7 +4853,7 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    
 	    if((slend < 1) ||
                (slstart > sllength) ||
-               (srid != ensSliceGetSeqRegionIdentifier(slice)))
+               (srid != ensSliceGetSeqregionIdentifier(slice)))
 	    {
 		/* Load the next Feature but destroy first! */
 		
@@ -4865,7 +4865,7 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 		
 		ensSliceDel(&srslice);
 		
-		ensAssemblyMapperDel(&am);
+		ensAssemblymapperDel(&am);
 		
 		continue;
 	    }
@@ -4886,7 +4886,7 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	if(!marker)
 	{
 	    if(msid)
-		ms = ensMarkerSynonymNew(msid, mssource, msname);
+		ms = ensMarkersynonymNew(msid, mssource, msname);
 	    
 	    AJNEW0(Pidentifier);
 	    
@@ -4908,10 +4908,10 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    
 	    ajTablePut(table, (void *) Pidentifier, (void *) marker);
 	    
-	    ensMarkerSynonymDel(&ms);
+	    ensMarkersynonymDel(&ms);
 	}
 	
-	mf = ensMarkerFeatureNew(mfa, identifier, feature, marker, mapweight);
+	mf = ensMarkerfeatureNew(mfa, identifier, feature, marker, mapweight);
 	
 	ajListPushAppend(mflist, (void *) mf);
 	
@@ -4927,7 +4927,7 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	ensSliceDel(&srslice);
 	
-	ensAssemblyMapperDel(&am);
+	ensAssemblymapperDel(&am);
     }
     
     ajSqlrowiterDel(&sqli);
@@ -4962,7 +4962,7 @@ static void *markerFeatureadaptorCacheReference(void *value)
     if(!value)
 	return NULL;
     
-    return (void *) ensMarkerFeatureNewRef((EnsPMarkerFeature) value);
+    return (void *) ensMarkerfeatureNewRef((EnsPMarkerfeature) value);
 }
 
 
@@ -4984,7 +4984,7 @@ static void markerFeatureadaptorCacheDelete(void **value)
     if(!value)
 	return;
     
-    ensMarkerFeatureDel((EnsPMarkerFeature *) value);
+    ensMarkerfeatureDel((EnsPMarkerfeature *) value);
     
     return;
 }
@@ -5008,7 +5008,7 @@ static ajuint markerFeatureadaptorCacheSize(const void *value)
     if(!value)
 	return 0;
     
-    return ensMarkerFeatureGetMemSize((const EnsPMarkerFeature) value);
+    return ensMarkerfeatureGetMemSize((const EnsPMarkerfeature) value);
 }
 
 
@@ -5030,7 +5030,7 @@ static EnsPFeature markerFeatureadaptorGetFeature(const void *value)
     if(!value)
 	return NULL;
     
-    return ensMarkerFeatureGetFeature((const EnsPMarkerFeature) value);
+    return ensMarkerfeatureGetFeature((const EnsPMarkerfeature) value);
 }
 
 
@@ -5043,7 +5043,7 @@ static EnsPFeature markerFeatureadaptorGetFeature(const void *value)
 ** Marker Feature Adaptor. The target pointer does not need to be initialised
 ** to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPMarkerFeatureadaptor]
+** @fdata [EnsPMarkerfeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
@@ -5051,12 +5051,12 @@ static EnsPFeature markerFeatureadaptorGetFeature(const void *value)
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
 ** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPMarkerFeatureadaptor] Ensembl Marker
+** @argrule Obj object [EnsPMarkerfeatureadaptor] Ensembl Marker
 **                                                Feature Adaptor
-** @argrule Ref object [EnsPMarkerFeatureadaptor] Ensembl Marker
+** @argrule Ref object [EnsPMarkerfeatureadaptor] Ensembl Marker
 **                                                Feature Adaptor
 **
-** @valrule * [EnsPMarkerFeatureadaptor] Ensembl Marker Feature Adaptor
+** @valrule * [EnsPMarkerfeatureadaptor] Ensembl Marker Feature Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -5064,19 +5064,19 @@ static EnsPFeature markerFeatureadaptorGetFeature(const void *value)
 
 
 
-/* @func ensMarkerFeatureadaptorNew *******************************************
+/* @func ensMarkerfeatureadaptorNew *******************************************
 **
 ** Default Ensembl Marker Feature Adaptor constructor.
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPMarkerFeatureadaptor] Ensembl Marker Feature Adaptor or NULL
+** @return [EnsPMarkerfeatureadaptor] Ensembl Marker Feature Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPMarkerFeatureadaptor ensMarkerFeatureadaptorNew(EnsPDatabaseadaptor dba)
+EnsPMarkerfeatureadaptor ensMarkerfeatureadaptorNew(EnsPDatabaseadaptor dba)
 {
-    EnsPMarkerFeatureadaptor adaptor = NULL;
+    EnsPMarkerfeatureadaptor adaptor = NULL;
     
     if(!dba)
 	return NULL;
@@ -5110,12 +5110,12 @@ EnsPMarkerFeatureadaptor ensMarkerFeatureadaptorNew(EnsPDatabaseadaptor dba)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Marker Feature Adaptor.
 **
-** @fdata [EnsPMarkerFeatureadaptor]
+** @fdata [EnsPMarkerfeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) an Ensembl Marker Feature Adaptor object.
 **
-** @argrule * Padaptor [EnsPMarkerFeatureadaptor*] Ensembl Marker Feature
+** @argrule * Padaptor [EnsPMarkerfeatureadaptor*] Ensembl Marker Feature
 **                                                 Adaptor object address
 **
 ** @valrule * [void]
@@ -5126,20 +5126,20 @@ EnsPMarkerFeatureadaptor ensMarkerFeatureadaptorNew(EnsPDatabaseadaptor dba)
 
 
 
-/* @func ensMarkerFeatureadaptorDel *******************************************
+/* @func ensMarkerfeatureadaptorDel *******************************************
 **
 ** Default destructor for an Ensembl Marker Feature Adaptor.
 **
-** @param [d] Padaptor [EnsPMarkerFeatureadaptor*] Ensembl Marker Feature
+** @param [d] Padaptor [EnsPMarkerfeatureadaptor*] Ensembl Marker Feature
 **                                                 Adaptor address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensMarkerFeatureadaptorDel(EnsPMarkerFeatureadaptor *Padaptor)
+void ensMarkerfeatureadaptorDel(EnsPMarkerfeatureadaptor *Padaptor)
 {
-    EnsPMarkerFeatureadaptor pthis = NULL;
+    EnsPMarkerfeatureadaptor pthis = NULL;
     
     if(!Padaptor)
 	return;
@@ -5166,7 +5166,7 @@ void ensMarkerFeatureadaptorDel(EnsPMarkerFeatureadaptor *Padaptor)
 ** Functions for retrieving Ensembl Marker Feature objects from an
 ** Ensembl Core database.
 **
-** @fdata [EnsPMarkerFeatureadaptor]
+** @fdata [EnsPMarkerfeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule Fetch Retrieve Ensembl Marker Feature object(s)
@@ -5176,7 +5176,7 @@ void ensMarkerFeatureadaptorDel(EnsPMarkerFeatureadaptor *Padaptor)
 ** @nam4rule FetchBy Retrieve one Ensembl Marker Feature object
 **                   matching a criterion
 **
-** @argrule * adaptor [const EnsPMarkerFeature Adaptor] Ensembl Marker
+** @argrule * adaptor [const EnsPMarkerfeature Adaptor] Ensembl Marker
 **                                                      Feature Adaptor
 ** @argrule FetchAll [AjPList] AJAX List of Ensembl Marker Feature objects
 **
@@ -5188,15 +5188,15 @@ void ensMarkerFeatureadaptorDel(EnsPMarkerFeatureadaptor *Padaptor)
 
 
 
-/* @func ensMarkerFeatureadaptorFetchAllByMarker ******************************
+/* @func ensMarkerfeatureadaptorFetchAllByMarker ******************************
 **
 ** Fetch all Ensembl Marker Features by an Ensembl Marker.
 **
 ** The caller is responsible for deleting the Ensembl Markers Features before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::Map::DBSQL::MarkerFeatureadaptor::fetch_all_by_Marker
-** @param [r] adaptor [const EnsPMarkerFeatureadaptor] Ensembl Marker
+** @cc Bio::EnsEMBL::Map::DBSQL::Markerfeatureadaptor::fetch_all_by_Marker
+** @param [r] adaptor [const EnsPMarkerfeatureadaptor] Ensembl Marker
 **                                                     Feature Adaptor
 ** @param [r] marker [const EnsPMarker] Ensembl Marker
 ** @param [u] mflist [AjPList] AJAX List of Ensembl Marker Features
@@ -5205,7 +5205,7 @@ void ensMarkerFeatureadaptorDel(EnsPMarkerFeatureadaptor *Padaptor)
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerFeatureadaptorFetchAllByMarker(EnsPMarkerFeatureadaptor adaptor,
+AjBool ensMarkerfeatureadaptorFetchAllByMarker(const EnsPMarkerfeatureadaptor adaptor,
                                                const EnsPMarker marker,
                                                AjPList mflist)
 {
@@ -5230,7 +5230,7 @@ AjBool ensMarkerFeatureadaptorFetchAllByMarker(EnsPMarkerFeatureadaptor adaptor,
     
     value = ensBaseadaptorGenericFetch(ba,
 				       constraint,
-				       (EnsPAssemblyMapper) NULL,
+				       (EnsPAssemblymapper) NULL,
 				       (EnsPSlice) NULL,
 				       mflist);
     
@@ -5242,18 +5242,18 @@ AjBool ensMarkerFeatureadaptorFetchAllByMarker(EnsPMarkerFeatureadaptor adaptor,
 
 
 
-/* @func ensMarkerFeatureadaptorFetchAllBySlice *******************************
+/* @func ensMarkerfeatureadaptorFetchAllBySlice *******************************
 **
 ** Fetch all Ensembl Marker Features by an Ensembl Slice.
 **
 ** The caller is responsible for deleting the Ensembl Markers Features before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::Map::DBSQL::MarkerFeatureadaptor::
+** @cc Bio::EnsEMBL::Map::DBSQL::Markerfeatureadaptor::
 **     fetch_all_by_Slice_and_priority
-** @param [r] adaptor [const EnsPMarkerFeatureadaptor] Ensembl Marker
+** @param [r] adaptor [const EnsPMarkerfeatureadaptor] Ensembl Marker
 **                                                     Feature Adaptor
-** @param [r] slice [const EnsPSlice] Ensembl Slice
+** @param [u] slice [EnsPSlice] Ensembl Slice
 ** @param [r] priority [ajint] Priority
 ** @param [r] mapweight [ajuint] Map weight
 ** @param [r] anname [const AjPStr] Ensembl Analysis name
@@ -5263,7 +5263,7 @@ AjBool ensMarkerFeatureadaptorFetchAllByMarker(EnsPMarkerFeatureadaptor adaptor,
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerFeatureadaptorFetchAllBySlice(EnsPMarkerFeatureadaptor adaptor,
+AjBool ensMarkerfeatureadaptorFetchAllBySlice(const EnsPMarkerfeatureadaptor adaptor,
                                               EnsPSlice slice,
                                               ajint priority,
                                               ajuint mapweight,

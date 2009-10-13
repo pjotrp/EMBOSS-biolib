@@ -43,7 +43,7 @@ EnsPTranslation ensTranslationNewRef(EnsPTranslation translation);
 
 void ensTranslationDel(EnsPTranslation* Ptranslation);
 
-const EnsPTranslationadaptor ensTranslationGetadaptor(
+const EnsPTranslationadaptor ensTranslationGetAdaptor(
     const EnsPTranslation translation);
 
 ajuint ensTranslationGetIdentifier(const EnsPTranslation translation);
@@ -70,7 +70,7 @@ const AjPList ensTranslationGetAttributes(EnsPTranslation translation);
 
 const AjPList ensTranslationGetDatabaseEntries(EnsPTranslation translation);
 
-const AjPList ensTranslationGetProteinFeatures(EnsPTranslation translation);
+const AjPList ensTranslationGetProteinfeatures(EnsPTranslation translation);
 
 ajuint ensTranslationGetTranscriptStart(EnsPTranslation translation);
 
@@ -82,7 +82,7 @@ ajuint ensTranslationGetSliceEnd(EnsPTranslation translation);
 
 ajuint ensTranslationGetMemSize(const EnsPTranslation translation);
 
-AjBool ensTranslationSetadaptor(EnsPTranslation translation,
+AjBool ensTranslationSetAdaptor(EnsPTranslation translation,
                                 EnsPTranslationadaptor adaptor);
 
 AjBool ensTranslationSetIdentifier(EnsPTranslation translation,
@@ -112,13 +112,13 @@ AjBool ensTranslationSetModificationDate(EnsPTranslation translation,
 AjBool ensTranslationAddAttribute(EnsPTranslation translation,
                                   EnsPAttribute attribute);
 
-AjBool ensTranslationAddDatabaseEntry(EnsPTranslation translation,
-                                      EnsPDatabaseEntry dbe);
+AjBool ensTranslationAddDatabaseentry(EnsPTranslation translation,
+                                      EnsPDatabaseentry dbe);
 
-AjBool ensTranslationAddProteinFeature(EnsPTranslation translation,
-                                       EnsPProteinFeature pf);
+AjBool ensTranslationAddProteinfeature(EnsPTranslation translation,
+                                       EnsPProteinfeature pf);
 
-AjBool ensTranslationFetchAllAttributes(EnsPTranslation translation,
+AjBool ensTranslationFetchAllAttributes( EnsPTranslation translation,
                                         const AjPStr code,
                                         AjPList attributes);
 
@@ -127,11 +127,11 @@ AjBool ensTranslationFetchAllDatabaseEntries(EnsPTranslation translation,
                                              AjEnum type,
                                              AjPList dbes);
 
-AjBool ensTranslationFetchAllProteinFeatures(EnsPTranslation translation,
+AjBool ensTranslationFetchAllProteinfeatures(EnsPTranslation translation,
                                              const AjPStr name,
                                              AjPList pfs);
 
-AjBool ensTranslationFetchAllProteinFeaturesDomain(EnsPTranslation translation,
+AjBool ensTranslationFetchAllProteinfeaturesDomain(EnsPTranslation translation,
                                                    AjPList pfs);
 
 AjBool ensTranslationFetchAllSequenceEdits(EnsPTranslation translation,
@@ -157,7 +157,7 @@ EnsPTranslationadaptor ensTranslationadaptorNew(EnsPDatabaseadaptor dba);
 void ensTranslationadaptorDel(EnsPTranslationadaptor *Padaptor);
 
 EnsPDatabaseadaptor ensTranslationadaptorGetDatabaseadaptor(
-    EnsPTranslationadaptor adaptor);
+    const EnsPTranslationadaptor adaptor);
 
 AjBool ensTranslationadaptorFetchByIdentifier(EnsPTranslationadaptor adaptor,
                                               ajuint identifier,

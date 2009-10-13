@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -46,16 +46,16 @@
 extern EnsPAnalysisadaptor
 ensRegistryGetAnalysisadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPQCAlignmentadaptor
-ensRegistryGetQCAlignmentadaptor(EnsPDatabaseadaptor dba);
+extern EnsPQcalignmentadaptor
+ensRegistryGetQcalignmentadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPQCSequenceadaptor
-ensRegistryGetQCSequenceadaptor(EnsPDatabaseadaptor dba);
+extern EnsPQcsequenceadaptor
+ensRegistryGetQcsequenceadaptor(EnsPDatabaseadaptor dba);
 
 
 static AjBool qcAlignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
-                                              EnsPAssemblyMapper am,
+                                              EnsPAssemblymapper am,
                                               EnsPSlice slice,
                                               AjPList qcas);
 
@@ -71,13 +71,13 @@ static AjBool qcAlignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @datasection [EnsPQCAlignment] QC Alignment ********************************
+/* @datasection [EnsPQcalignment] QC Alignment ********************************
 **
 ** Functions for manipulating Ensembl QC Alignment objects
 **
 ** Bio::EnsEMBL::QC::Alignment CVS Revision:
 **
-** @nam2rule QCAlignment
+** @nam2rule Qcalignment
 **
 ******************************************************************************/
 
@@ -91,17 +91,17 @@ static AjBool qcAlignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** QC Alignment. The target pointer does not need to be initialised to
 ** NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPQCAlignment]
+** @fdata [EnsPQcalignment]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPQCAlignment] Ensembl QC Alignment
-** @argrule Ref object [EnsPQCAlignment] Ensembl QC Alignment
+** @argrule Obj object [EnsPQcalignment] Ensembl QC Alignment
+** @argrule Ref object [EnsPQcalignment] Ensembl QC Alignment
 **
-** @valrule * [EnsPQCAlignment] Ensembl QC Alignment
+** @valrule * [EnsPQcalignment] Ensembl QC Alignment
 **
 ** @fcategory new
 ******************************************************************************/
@@ -109,20 +109,20 @@ static AjBool qcAlignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @func ensQCAlignmentNew ****************************************************
+/* @func ensQcalignmentNew ****************************************************
 **
 ** Default constructor for an Ensembl QC Alignment.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] adaptor [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
+** @param [r] adaptor [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::QC::Alignment::new
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [u] qsequence [EnsPQCSequence] Query Ensembl QC Sequence
+** @param [u] qsequence [EnsPQcsequence] Query Ensembl QC Sequence
 ** @param [r] qstart [ajuint] Query start
 ** @param [r] qend [ajuint] Query end
 ** @param [r] qstrand [ajint] Query strand
-** @param [u] tsequence [EnsPQCSequence] Target Ensembl QC Sequence
+** @param [u] tsequence [EnsPQcsequence] Target Ensembl QC Sequence
 ** @param [r] tstart [ajuint] Target start
 ** @param [r] tend [ajuint] Target end
 ** @param [r] tstrand [ajint] Target strand
@@ -132,18 +132,18 @@ static AjBool qcAlignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @param [r] identity [float] Identity
 ** @param [u] vulgar [AjPStr] VULGAR line
 **
-** @return [EnsPQCAlignment] Ensembl QC Alignment or NULL
+** @return [EnsPQcalignment] Ensembl QC Alignment or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCAlignment ensQCAlignmentNew(EnsPQCAlignmentadaptor adaptor,
+EnsPQcalignment ensQcalignmentNew(EnsPQcalignmentadaptor adaptor,
                                   ajuint identifier,
                                   EnsPAnalysis analysis,
-                                  EnsPQCSequence qsequence,
+                                  EnsPQcsequence qsequence,
                                   ajuint qstart,
                                   ajuint qend,
                                   ajint qstrand,
-                                  EnsPQCSequence tsequence,
+                                  EnsPQcsequence tsequence,
                                   ajuint tstart,
                                   ajuint tend,
                                   ajint tstrand,
@@ -153,7 +153,7 @@ EnsPQCAlignment ensQCAlignmentNew(EnsPQCAlignmentadaptor adaptor,
                                   float identity,
                                   AjPStr vulgar)
 {
-    EnsPQCAlignment qca = NULL;
+    EnsPQcalignment qca = NULL;
     
     if(!analysis)
 	return NULL;
@@ -174,7 +174,7 @@ EnsPQCAlignment ensQCAlignmentNew(EnsPQCAlignmentadaptor adaptor,
     
     qca->Analysis = ensAnalysisNewRef(analysis);
     
-    qca->QuerySequence = ensQCSequenceNewRef(qsequence);
+    qca->QuerySequence = ensQcsequenceNewRef(qsequence);
     
     qca->QueryStart = qstart;
     
@@ -182,7 +182,7 @@ EnsPQCAlignment ensQCAlignmentNew(EnsPQCAlignmentadaptor adaptor,
     
     qca->QueryStrand = qstrand;
     
-    qca->TargetSequence = ensQCSequenceNewRef(tsequence);
+    qca->TargetSequence = ensQcsequenceNewRef(tsequence);
     
     qca->TargetStart = tstart;
     
@@ -206,19 +206,19 @@ EnsPQCAlignment ensQCAlignmentNew(EnsPQCAlignmentadaptor adaptor,
 
 
 
-/* @func ensQCAlignmentNewObj *************************************************
+/* @func ensQcalignmentNewObj *************************************************
 **
 ** Object-based constructor function, which returns an independent object.
 **
-** @param [r] object [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] object [const EnsPQcalignment] Ensembl QC Alignment
 **
-** @return [EnsPQCAlignment] Ensembl QC Alignment or NULL
+** @return [EnsPQcalignment] Ensembl QC Alignment or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCAlignment ensQCAlignmentNewObj(const EnsPQCAlignment object)
+EnsPQcalignment ensQcalignmentNewObj(const EnsPQcalignment object)
 {
-    EnsPQCAlignment qca = NULL;
+    EnsPQcalignment qca = NULL;
     
     if(!object)
 	return NULL;
@@ -234,7 +234,7 @@ EnsPQCAlignment ensQCAlignmentNewObj(const EnsPQCAlignment object)
     if(object->Analysis)
 	qca->Analysis = ensAnalysisNewRef(object->Analysis);
     
-    qca->QuerySequence = ensQCSequenceNewRef(object->QuerySequence);
+    qca->QuerySequence = ensQcsequenceNewRef(object->QuerySequence);
     
     qca->QueryStart = object->QueryStart;
     
@@ -242,7 +242,7 @@ EnsPQCAlignment ensQCAlignmentNewObj(const EnsPQCAlignment object)
     
     qca->QueryStrand = object->QueryStrand;
     
-    qca->TargetSequence = ensQCSequenceNewRef(object->TargetSequence);
+    qca->TargetSequence = ensQcsequenceNewRef(object->TargetSequence);
     
     qca->TargetStart = object->TargetStart;
     
@@ -267,18 +267,18 @@ EnsPQCAlignment ensQCAlignmentNewObj(const EnsPQCAlignment object)
 
 
 
-/* @func ensQCAlignmentNewRef *************************************************
+/* @func ensQcalignmentNewRef *************************************************
 **
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] qca [EnsPQCAlignment] Ensembl Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl Alignment
 **
-** @return [EnsPQCAlignment] Ensembl QC Alignment or NULL
+** @return [EnsPQcalignment] Ensembl QC Alignment or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCAlignment ensQCAlignmentNewRef(EnsPQCAlignment qca)
+EnsPQcalignment ensQcalignmentNewRef(EnsPQcalignment qca)
 {
     if(!qca)
 	return NULL;
@@ -296,12 +296,12 @@ EnsPQCAlignment ensQCAlignmentNewRef(EnsPQCAlignment qca)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl QC Alignment.
 **
-** @fdata [EnsPQCAlignment]
+** @fdata [EnsPQcalignment]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a QC Alignment object
 **
-** @argrule * Pqca [EnsPQCAlignment*] QC Alignment object address
+** @argrule * Pqca [EnsPQcalignment*] QC Alignment object address
 **
 ** @valrule * [void]
 **
@@ -311,26 +311,26 @@ EnsPQCAlignment ensQCAlignmentNewRef(EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentDel ****************************************************
+/* @func ensQcalignmentDel ****************************************************
 **
 ** Default destructor for an Ensembl QC Alignment.
 **
-** @param [d] Pqca [EnsPQCAlignment*] Ensembl QC Alignment address
+** @param [d] Pqca [EnsPQcalignment*] Ensembl QC Alignment address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensQCAlignmentDel(EnsPQCAlignment *Pqca)
+void ensQcalignmentDel(EnsPQcalignment *Pqca)
 {
-    EnsPQCAlignment pthis = NULL;
+    EnsPQcalignment pthis = NULL;
     
     /*
-     ajDebug("ensQCAlignmentDel\n"
+     ajDebug("ensQcalignmentDel\n"
 	     "  *Pqca %p\n",
 	     *Pqca);
      
-     ensQCAlignmentTrace(*Pqca, 1);
+     ensQcalignmentTrace(*Pqca, 1);
      */
     
     if(!Pqca)
@@ -352,9 +352,9 @@ void ensQCAlignmentDel(EnsPQCAlignment *Pqca)
     
     ensAnalysisDel(&pthis->Analysis);
     
-    ensQCSequenceDel(&pthis->QuerySequence);
+    ensQcsequenceDel(&pthis->QuerySequence);
     
-    ensQCSequenceDel(&pthis->TargetSequence);
+    ensQcsequenceDel(&pthis->TargetSequence);
     
     ajStrDel(&pthis->VULGAR);
     
@@ -371,16 +371,16 @@ void ensQCAlignmentDel(EnsPQCAlignment *Pqca)
 **
 ** Functions for returning elements of an Ensembl QC Alignment object.
 **
-** @fdata [EnsPQCAlignment]
+** @fdata [EnsPQcalignment]
 ** @fnote None
 **
 ** @nam3rule Get Return QC Alignment attribute(s)
-** @nam4rule Getadaptor Return the Ensembl QC Alignment Adaptor
+** @nam4rule GetAdaptor Return the Ensembl QC Alignment Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 **
-** @argrule * qca [const EnsPQCAlignment] QC Alignment
+** @argrule * qca [const EnsPQcalignment] QC Alignment
 **
-** @valrule Adaptor [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
+** @valrule Adaptor [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule Analysis [EnsPAnalysis] Ensembl Analysis
 ** @valrule QuerySequence [AjPStr] Query Ensembl QC Sequence
@@ -403,17 +403,17 @@ void ensQCAlignmentDel(EnsPQCAlignment *Pqca)
 
 
 
-/* @func ensQCAlignmentGetadaptor *********************************************
+/* @func ensQcalignmentGetAdaptor *********************************************
 **
 ** Get the Ensembl QC Alignment Adaptor element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
-** @return [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
+** @return [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPQCAlignmentadaptor ensQCAlignmentGetadaptor(const EnsPQCAlignment qca)
+EnsPQcalignmentadaptor ensQcalignmentGetAdaptor(const EnsPQcalignment qca)
 {
     if(!qca)
 	return NULL;
@@ -424,18 +424,18 @@ EnsPQCAlignmentadaptor ensQCAlignmentGetadaptor(const EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentGetIdentifier ***********************************
+/* @func ensQcalignmentGetIdentifier ***********************************
 **
 ** Get the SQL database-internal identifier element of an
 ** Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [ajuint] Internal database identifier
 ** @@
 ******************************************************************************/
 
-ajuint ensQCAlignmentGetIdentifier(const EnsPQCAlignment qca)
+ajuint ensQcalignmentGetIdentifier(const EnsPQcalignment qca)
 {
     if(!qca)
 	return 0;
@@ -446,17 +446,17 @@ ajuint ensQCAlignmentGetIdentifier(const EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentGetAnalysis ********************************************
+/* @func ensQcalignmentGetAnalysis ********************************************
 **
 ** Get the Ensembl Analysis element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [const EnsPAnalysis] Ensembl Analysis
 ** @@
 ******************************************************************************/
 
-const EnsPAnalysis ensQCAlignmentGetAnalysis(const EnsPQCAlignment qca)
+const EnsPAnalysis ensQcalignmentGetAnalysis(const EnsPQcalignment qca)
 {
     if(!qca)
 	return NULL;
@@ -467,17 +467,17 @@ const EnsPAnalysis ensQCAlignmentGetAnalysis(const EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentGetQuerySequence ***************************************
+/* @func ensQcalignmentGetQuerySequence ***************************************
 **
 ** Get the query Ensembl QC Sequence element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
-** @return [EnsPQCSequence] Query Ensembl QC Sequence
+** @return [EnsPQcsequence] Query Ensembl QC Sequence
 ** @@
 ******************************************************************************/
 
-EnsPQCSequence ensQCAlignmentGetQuerySequence(const EnsPQCAlignment qca)
+EnsPQcsequence ensQcalignmentGetQuerySequence(const EnsPQcalignment qca)
 {
     if(!qca)
 	return NULL;
@@ -488,17 +488,17 @@ EnsPQCSequence ensQCAlignmentGetQuerySequence(const EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentGetQueryStart ******************************************
+/* @func ensQcalignmentGetQueryStart ******************************************
 **
 ** Get the query start element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [ajuint] Query start
 ** @@
 ******************************************************************************/
 
-ajuint ensQCAlignmentGetQueryStart(const EnsPQCAlignment qca)
+ajuint ensQcalignmentGetQueryStart(const EnsPQcalignment qca)
 {
     if(!qca)
 	return 0;
@@ -509,17 +509,17 @@ ajuint ensQCAlignmentGetQueryStart(const EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentGetQueryEnd ********************************************
+/* @func ensQcalignmentGetQueryEnd ********************************************
 **
 ** Get the query end element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [ajuint] Query end
 ** @@
 ******************************************************************************/
 
-ajuint ensQCAlignmentGetQueryEnd(const EnsPQCAlignment qca)
+ajuint ensQcalignmentGetQueryEnd(const EnsPQcalignment qca)
 {
     if(!qca)
 	return 0;
@@ -530,17 +530,17 @@ ajuint ensQCAlignmentGetQueryEnd(const EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentGetQueryStrand *****************************************
+/* @func ensQcalignmentGetQueryStrand *****************************************
 **
 ** Get the query strand element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [ajint] Query strand
 ** @@
 ******************************************************************************/
 
-ajint ensQCAlignmentGetQueryStrand(const EnsPQCAlignment qca)
+ajint ensQcalignmentGetQueryStrand(const EnsPQcalignment qca)
 {
     if(!qca)
 	return 0;
@@ -551,17 +551,17 @@ ajint ensQCAlignmentGetQueryStrand(const EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentGetTargetSequence **************************************
+/* @func ensQcalignmentGetTargetSequence **************************************
 **
 ** Get the target Ensembl QC Sequence element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
-** @return [EnsPQCSequence] Target Ensembl QC Sequence
+** @return [EnsPQcsequence] Target Ensembl QC Sequence
 ** @@
 ******************************************************************************/
 
-EnsPQCSequence ensQCAlignmentGetTargetSequence(const EnsPQCAlignment qca)
+EnsPQcsequence ensQcalignmentGetTargetSequence(const EnsPQcalignment qca)
 {
     if(!qca)
 	return NULL;
@@ -572,17 +572,17 @@ EnsPQCSequence ensQCAlignmentGetTargetSequence(const EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentGetTargetStart *****************************************
+/* @func ensQcalignmentGetTargetStart *****************************************
 **
 ** Get the target start element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [ajuint] Target start
 ** @@
 ******************************************************************************/
 
-ajuint ensQCAlignmentGetTargetStart(const EnsPQCAlignment qca)
+ajuint ensQcalignmentGetTargetStart(const EnsPQcalignment qca)
 {
     if(!qca)
 	return 0;
@@ -593,17 +593,17 @@ ajuint ensQCAlignmentGetTargetStart(const EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentGetTargetEnd *******************************************
+/* @func ensQcalignmentGetTargetEnd *******************************************
 **
 ** Get the target end element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [ajuint] Target end
 ** @@
 ******************************************************************************/
 
-ajuint ensQCAlignmentGetTargetEnd(const EnsPQCAlignment qca)
+ajuint ensQcalignmentGetTargetEnd(const EnsPQcalignment qca)
 {
     if(!qca)
 	return 0;
@@ -614,17 +614,17 @@ ajuint ensQCAlignmentGetTargetEnd(const EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentGetTargetStrand ****************************************
+/* @func ensQcalignmentGetTargetStrand ****************************************
 **
 ** Get the target strand element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [ajint] Target strand
 ** @@
 ******************************************************************************/
 
-ajint ensQCAlignmentGetTargetStrand(const EnsPQCAlignment qca)
+ajint ensQcalignmentGetTargetStrand(const EnsPQcalignment qca)
 {
     if(!qca)
 	return 0;
@@ -635,17 +635,17 @@ ajint ensQCAlignmentGetTargetStrand(const EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentGetSpliceStrand ****************************************
+/* @func ensQcalignmentGetSpliceStrand ****************************************
 **
 ** Get the splice strand element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [ajint] Splice strand
 ** @@
 ******************************************************************************/
 
-ajint ensQCAlignmentGetSpliceStrand(const EnsPQCAlignment qca)
+ajint ensQcalignmentGetSpliceStrand(const EnsPQcalignment qca)
 {
     if(!qca)
 	return 0;
@@ -656,17 +656,17 @@ ajint ensQCAlignmentGetSpliceStrand(const EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentGetCoverage ********************************************
+/* @func ensQcalignmentGetCoverage ********************************************
 **
 ** Get the coverage score element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [ajuint] Coverage score
 ** @@
 ******************************************************************************/
 
-ajuint ensQCAlignmentGetCoverage(const EnsPQCAlignment qca)
+ajuint ensQcalignmentGetCoverage(const EnsPQcalignment qca)
 {
     if(!qca)
 	return 0;
@@ -677,17 +677,17 @@ ajuint ensQCAlignmentGetCoverage(const EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentGetScore ***********************************************
+/* @func ensQcalignmentGetScore ***********************************************
 **
 ** Get the score element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [double] Score
 ** @@
 ******************************************************************************/
 
-double ensQCAlignmentGetScore(const EnsPQCAlignment qca)
+double ensQcalignmentGetScore(const EnsPQcalignment qca)
 {
     if(!qca)
 	return 0;
@@ -698,17 +698,17 @@ double ensQCAlignmentGetScore(const EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentGetIdentity ********************************************
+/* @func ensQcalignmentGetIdentity ********************************************
 **
 ** Get the identity element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [float] Identity
 ** @@
 ******************************************************************************/
 
-float ensQCAlignmentGetIdentity(const EnsPQCAlignment qca)
+float ensQcalignmentGetIdentity(const EnsPQcalignment qca)
 {
     if(!qca)
 	return 0;
@@ -719,17 +719,17 @@ float ensQCAlignmentGetIdentity(const EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentGetVULGAR **********************************************
+/* @func ensQcalignmentGetVULGAR **********************************************
 **
 ** Get the VULGAR line element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [AjPStr] VULGAR line or NULL
 ** @@
 ******************************************************************************/
 
-AjPStr ensQCAlignmentGetVULGAR(const EnsPQCAlignment qca)
+AjPStr ensQcalignmentGetVULGAR(const EnsPQcalignment qca)
 {
     if(!qca)
 	return NULL;
@@ -744,11 +744,11 @@ AjPStr ensQCAlignmentGetVULGAR(const EnsPQCAlignment qca)
 **
 ** Functions for assigning elements of an Ensembl QC Alignment object.
 **
-** @fdata [EnsPQCAlignment]
+** @fdata [EnsPQcalignment]
 ** @fnote None
 **
 ** @nam3rule Set Set one element of a QC Alignment
-** @nam4rule Setadaptor Set the Ensembl QC Alignment Adaptor
+** @nam4rule SetAdaptor Set the Ensembl QC Alignment Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetQuerySequence Set the query Ensembl QC Sequence
 ** @nam4rule SetQueryStart Set the query start
@@ -764,7 +764,7 @@ AjPStr ensQCAlignmentGetVULGAR(const EnsPQCAlignment qca)
 ** @nam4rule SetIdentity Set the identity
 ** @nam4rule SetVULGAR Set the VULGAR line
 **
-** @argrule * qca [EnsPQCAlignment] Ensembl QC Alignment
+** @argrule * qca [EnsPQcalignment] Ensembl QC Alignment
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
@@ -774,19 +774,19 @@ AjPStr ensQCAlignmentGetVULGAR(const EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentSetadaptor *********************************************
+/* @func ensQcalignmentSetAdaptor *********************************************
 **
 ** Set the Ensembl QC Alignment Adaptor element of an QC Alignment.
 **
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
-** @param [r] qcaa [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
+** @param [r] qcaa [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentSetadaptor(EnsPQCAlignment qca,
-                                EnsPQCAlignmentadaptor qcaa)
+AjBool ensQcalignmentSetAdaptor(EnsPQcalignment qca,
+                                EnsPQcalignmentadaptor qcaa)
 {
     if(!qca)
 	return ajFalse;
@@ -799,19 +799,19 @@ AjBool ensQCAlignmentSetadaptor(EnsPQCAlignment qca,
 
 
 
-/* @func ensQCAlignmentSetIdentifier ******************************************
+/* @func ensQcalignmentSetIdentifier ******************************************
 **
 ** Set the SQL database-internal identifier element of an
 ** Ensembl QC Alignment.
 **
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentSetIdentifier(EnsPQCAlignment qca, ajuint identifier)
+AjBool ensQcalignmentSetIdentifier(EnsPQcalignment qca, ajuint identifier)
 {
     if(!qca)
 	return ajFalse;
@@ -824,18 +824,18 @@ AjBool ensQCAlignmentSetIdentifier(EnsPQCAlignment qca, ajuint identifier)
 
 
 
-/* @func ensQCAlignmentSetAnalysis ********************************************
+/* @func ensQcalignmentSetAnalysis ********************************************
 **
 ** Set the Ensembl Analysis element of an Ensembl QC Alignment.
 **
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentSetAnalysis(EnsPQCAlignment qca, EnsPAnalysis analysis)
+AjBool ensQcalignmentSetAnalysis(EnsPQcalignment qca, EnsPAnalysis analysis)
 {
     if(!qca)
 	return ajFalse;
@@ -850,25 +850,25 @@ AjBool ensQCAlignmentSetAnalysis(EnsPQCAlignment qca, EnsPAnalysis analysis)
 
 
 
-/* @func ensQCAlignmentSetQuerySequence ***************************************
+/* @func ensQcalignmentSetQuerySequence ***************************************
 **
 ** Set the query Ensembl QC Sequence element of an Ensembl QC Alignment.
 **
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
-** @param [u] qcs [EnsPQCSequence] Ensembl QC Sequence
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
+** @param [u] qcs [EnsPQcsequence] Ensembl QC Sequence
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentSetQuerySequence(EnsPQCAlignment qca, EnsPQCSequence qcs)
+AjBool ensQcalignmentSetQuerySequence(EnsPQcalignment qca, EnsPQcsequence qcs)
 {
     if(!qca)
 	return ajFalse;
     
-    ensQCSequenceDel(&(qca->QuerySequence));
+    ensQcsequenceDel(&(qca->QuerySequence));
     
-    qca->QuerySequence = ensQCSequenceNewRef(qcs);
+    qca->QuerySequence = ensQcsequenceNewRef(qcs);
     
     return ajTrue;
 }
@@ -876,18 +876,18 @@ AjBool ensQCAlignmentSetQuerySequence(EnsPQCAlignment qca, EnsPQCSequence qcs)
 
 
 
-/* @func ensQCAlignmentSetQueryStart ******************************************
+/* @func ensQcalignmentSetQueryStart ******************************************
 **
 ** Set the query start element of an Ensembl QC Alignment.
 **
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [r] qstart [ajuint] Query start
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentSetQueryStart(EnsPQCAlignment qca, ajuint qstart)
+AjBool ensQcalignmentSetQueryStart(EnsPQcalignment qca, ajuint qstart)
 {
     if(!qca)
 	return ajFalse;
@@ -900,18 +900,18 @@ AjBool ensQCAlignmentSetQueryStart(EnsPQCAlignment qca, ajuint qstart)
 
 
 
-/* @func ensQCAlignmentSetQueryEnd ********************************************
+/* @func ensQcalignmentSetQueryEnd ********************************************
 **
 ** Set the query end element of an Ensembl QC Alignment.
 **
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [r] qend [ajuint] Query end
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentSetQueryEnd(EnsPQCAlignment qca, ajuint qend)
+AjBool ensQcalignmentSetQueryEnd(EnsPQcalignment qca, ajuint qend)
 {
     if(!qca)
 	return ajFalse;
@@ -924,18 +924,18 @@ AjBool ensQCAlignmentSetQueryEnd(EnsPQCAlignment qca, ajuint qend)
 
 
 
-/* @func ensQCAlignmentSetQueryStrand *****************************************
+/* @func ensQcalignmentSetQueryStrand *****************************************
 **
 ** Set the query strand element of an Ensembl QC Alignment.
 **
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [r] qstrand [ajint] Query strand
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentSetQueryStrand(EnsPQCAlignment qca, ajint qstrand)
+AjBool ensQcalignmentSetQueryStrand(EnsPQcalignment qca, ajint qstrand)
 {
     if(!qca)
 	return ajFalse;
@@ -948,25 +948,25 @@ AjBool ensQCAlignmentSetQueryStrand(EnsPQCAlignment qca, ajint qstrand)
 
 
 
-/* @func ensQCAlignmentSetTargetSequence **************************************
+/* @func ensQcalignmentSetTargetSequence **************************************
 **
 ** Set the target Ensembl QC Sequence element of an Ensembl QC Alignment.
 **
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
-** @param [u] qcs [EnsPQCSequence] Ensembl QC Sequence
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
+** @param [u] qcs [EnsPQcsequence] Ensembl QC Sequence
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentSetTargetSequence(EnsPQCAlignment qca, EnsPQCSequence qcs)
+AjBool ensQcalignmentSetTargetSequence(EnsPQcalignment qca, EnsPQcsequence qcs)
 {
     if(!qca)
 	return ajFalse;
     
-    ensQCSequenceDel(&(qca->TargetSequence));
+    ensQcsequenceDel(&(qca->TargetSequence));
     
-    qca->TargetSequence = ensQCSequenceNewRef(qcs);
+    qca->TargetSequence = ensQcsequenceNewRef(qcs);
     
     return ajTrue;
 }
@@ -974,18 +974,18 @@ AjBool ensQCAlignmentSetTargetSequence(EnsPQCAlignment qca, EnsPQCSequence qcs)
 
 
 
-/* @func ensQCAlignmentSetTargetStart *****************************************
+/* @func ensQcalignmentSetTargetStart *****************************************
 **
 ** Set the target start element of an Ensembl QC Alignment.
 **
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [r] tstart [ajuint] Target start
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentSetTargetStart(EnsPQCAlignment qca, ajuint tstart)
+AjBool ensQcalignmentSetTargetStart(EnsPQcalignment qca, ajuint tstart)
 {
     if(!qca)
 	return ajFalse;
@@ -998,18 +998,18 @@ AjBool ensQCAlignmentSetTargetStart(EnsPQCAlignment qca, ajuint tstart)
 
 
 
-/* @func ensQCAlignmentSetTargetEnd *******************************************
+/* @func ensQcalignmentSetTargetEnd *******************************************
 **
 ** Set the target end element of an Ensembl QC Alignment.
 **
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [r] tend [ajuint] Target end
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentSetTargetEnd(EnsPQCAlignment qca, ajuint tend)
+AjBool ensQcalignmentSetTargetEnd(EnsPQcalignment qca, ajuint tend)
 {
     if(!qca)
 	return ajFalse;
@@ -1022,18 +1022,18 @@ AjBool ensQCAlignmentSetTargetEnd(EnsPQCAlignment qca, ajuint tend)
 
 
 
-/* @func ensQCAlignmentSetTargetStrand ****************************************
+/* @func ensQcalignmentSetTargetStrand ****************************************
 **
 ** Set the target strand element of an Ensembl QC Alignment.
 **
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [r] tstrand [ajint] Target strand
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentSetTargetStrand(EnsPQCAlignment qca, ajint tstrand)
+AjBool ensQcalignmentSetTargetStrand(EnsPQcalignment qca, ajint tstrand)
 {
     if(!qca)
 	return ajFalse;
@@ -1046,18 +1046,18 @@ AjBool ensQCAlignmentSetTargetStrand(EnsPQCAlignment qca, ajint tstrand)
 
 
 
-/* @func ensQCAlignmentSetSpliceStrand ****************************************
+/* @func ensQcalignmentSetSpliceStrand ****************************************
 **
 ** Set the splice strand element of an Ensembl QC Alignment.
 **
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [r] sstrand [ajint] Splice strand
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentSetSpliceStrand(EnsPQCAlignment qca, ajint sstrand)
+AjBool ensQcalignmentSetSpliceStrand(EnsPQcalignment qca, ajint sstrand)
 {
     if(!qca)
 	return ajFalse;
@@ -1070,18 +1070,18 @@ AjBool ensQCAlignmentSetSpliceStrand(EnsPQCAlignment qca, ajint sstrand)
 
 
 
-/* @func ensQCAlignmentSetCoverage ********************************************
+/* @func ensQcalignmentSetCoverage ********************************************
 **
 ** Set the coverage score element of an Ensembl QC Alignment.
 **
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [r] coverage [ajuint] Coverage score
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentSetCoverage(EnsPQCAlignment qca, ajuint coverage)
+AjBool ensQcalignmentSetCoverage(EnsPQcalignment qca, ajuint coverage)
 {
     if(!qca)
 	return ajFalse;
@@ -1094,18 +1094,18 @@ AjBool ensQCAlignmentSetCoverage(EnsPQCAlignment qca, ajuint coverage)
 
 
 
-/* @func ensQCAlignmentSetScore ***********************************************
+/* @func ensQcalignmentSetScore ***********************************************
 **
 ** Set the score element of an Ensembl QC Alignment.
 **
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [r] score [double] Score
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentSetScore(EnsPQCAlignment qca, double score)
+AjBool ensQcalignmentSetScore(EnsPQcalignment qca, double score)
 {
     if(!qca)
 	return ajFalse;
@@ -1118,18 +1118,18 @@ AjBool ensQCAlignmentSetScore(EnsPQCAlignment qca, double score)
 
 
 
-/* @func ensQCAlignmentSetIdentity ********************************************
+/* @func ensQcalignmentSetIdentity ********************************************
 **
 ** Set the identity element of an Ensembl QC Alignment.
 **
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [r] identity [float] Score
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentSetIdentity(EnsPQCAlignment qca, float identity)
+AjBool ensQcalignmentSetIdentity(EnsPQcalignment qca, float identity)
 {
     if(!qca)
 	return ajFalse;
@@ -1142,18 +1142,18 @@ AjBool ensQCAlignmentSetIdentity(EnsPQCAlignment qca, float identity)
 
 
 
-/* @func ensQCAlignmentSetVULGAR **********************************************
+/* @func ensQcalignmentSetVULGAR **********************************************
 **
 ** Set the VULGAR line element of an Ensembl QC Alignment.
 **
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [u] vulgar [AjPStr] VULGAR line
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentSetVULGAR(EnsPQCAlignment qca, AjPStr vulgar)
+AjBool ensQcalignmentSetVULGAR(EnsPQcalignment qca, AjPStr vulgar)
 {
     if(!qca)
 	return ajFalse;
@@ -1168,30 +1168,30 @@ AjBool ensQCAlignmentSetVULGAR(EnsPQCAlignment qca, AjPStr vulgar)
 
 
 
-/* @func ensQCAlignmentGetMemSize *********************************************
+/* @func ensQcalignmentGetMemSize *********************************************
 **
 ** Get the memory size in bytes of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [ajuint] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensQCAlignmentGetMemSize(const EnsPQCAlignment qca)
+ajuint ensQcalignmentGetMemSize(const EnsPQcalignment qca)
 {
     ajuint size = 0;
     
     if(!qca)
 	return 0;
     
-    size += (ajuint) sizeof (EnsOQCAlignment);
+    size += (ajuint) sizeof (EnsOQcalignment);
     
     size += ensAnalysisGetMemSize(qca->Analysis);
     
-    size += ensQCSequenceGetMemSize(qca->QuerySequence);
+    size += ensQcsequenceGetMemSize(qca->QuerySequence);
     
-    size += ensQCSequenceGetMemSize(qca->TargetSequence);
+    size += ensQcsequenceGetMemSize(qca->TargetSequence);
     
     return size;
 }
@@ -1203,10 +1203,10 @@ ajuint ensQCAlignmentGetMemSize(const EnsPQCAlignment qca)
 **
 ** Functions for reporting of an Ensembl QC Alignment object.
 **
-** @fdata [EnsPQCAlignment]
+** @fdata [EnsPQcalignment]
 ** @nam3rule Trace Report Ensembl QC Alignment elements to debug file
 **
-** @argrule Trace qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @argrule Trace qca [const EnsPQcalignment] Ensembl QC Alignment
 ** @argrule Trace level [ajuint] Indentation level
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -1217,18 +1217,18 @@ ajuint ensQCAlignmentGetMemSize(const EnsPQCAlignment qca)
 
 
 
-/* @func ensQCAlignmentTrace **************************************************
+/* @func ensQcalignmentTrace **************************************************
 **
 ** Trace an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 ** @param [r] level [ajuint] Indentation level
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentTrace(const EnsPQCAlignment qca, ajuint level)
+AjBool ensQcalignmentTrace(const EnsPQcalignment qca, ajuint level)
 {
     AjPStr indent = NULL;
     
@@ -1239,7 +1239,7 @@ AjBool ensQCAlignmentTrace(const EnsPQCAlignment qca, ajuint level)
     
     ajStrAppendCountK(&indent, ' ', level * 2);
     
-    ajDebug("%SensQCAlignmentTrace %p\n"
+    ajDebug("%SensQcalignmentTrace %p\n"
 	    "%S  Use %u\n"
 	    "%S  Identifier %u\n"
 	    "%S  Adaptor %p\n"
@@ -1278,9 +1278,9 @@ AjBool ensQCAlignmentTrace(const EnsPQCAlignment qca, ajuint level)
     
     ensAnalysisTrace(qca->Analysis, 1);
     
-    ensQCSequenceTrace(qca->QuerySequence, 1);
+    ensQcsequenceTrace(qca->QuerySequence, 1);
     
-    ensQCSequenceTrace(qca->TargetSequence, 1);
+    ensQcsequenceTrace(qca->TargetSequence, 1);
     
     ajStrDel(&indent);
     
@@ -1290,11 +1290,11 @@ AjBool ensQCAlignmentTrace(const EnsPQCAlignment qca, ajuint level)
 
 
 
-/* @func ensQCAlignmentGetQueryCoordinates ************************************
+/* @func ensQcalignmentGetQueryCoordinates ************************************
 **
 ** Return query coordinates of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 ** @param [wP] Pstart [ajint*] Start
 ** @param [wP] Pend [ajint*] End
 ** @param [wP] Pstrand [ajint*] Strand
@@ -1304,7 +1304,7 @@ AjBool ensQCAlignmentTrace(const EnsPQCAlignment qca, ajuint level)
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentGetQueryCoordinates(const EnsPQCAlignment qca,
+AjBool ensQcalignmentGetQueryCoordinates(const EnsPQcalignment qca,
                                          ajint *Pstart,
                                          ajint *Pend,
                                          ajint *Pstrand,
@@ -1350,11 +1350,11 @@ AjBool ensQCAlignmentGetQueryCoordinates(const EnsPQCAlignment qca,
 
 
 
-/* @func ensQCAlignmentGetTargetCoordinates ***********************************
+/* @func ensQcalignmentGetTargetCoordinates ***********************************
 **
 ** Return target coordinates of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 ** @param [wP] Pstart [ajint*] Start
 ** @param [wP] Pend [ajint*] End
 ** @param [wP] Pstrand [ajint*] Strand
@@ -1364,7 +1364,7 @@ AjBool ensQCAlignmentGetQueryCoordinates(const EnsPQCAlignment qca,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentGetTargetCoordinates(const EnsPQCAlignment qca,
+AjBool ensQcalignmentGetTargetCoordinates(const EnsPQcalignment qca,
                                           ajint *Pstart,
                                           ajint *Pend,
                                           ajint *Pstrand,
@@ -1410,21 +1410,21 @@ AjBool ensQCAlignmentGetTargetCoordinates(const EnsPQCAlignment qca,
 
 
 
-/* @func ensQCAlignmentOverlapOnTarget ***************************************
+/* @func ensQcalignmentOverlapOnTarget ***************************************
 **
 ** Test if two Ensembl QC Alignments overlap on the target Ensembl QC Sequence.
 ** The test checks for identical Ensembl QC Sequences and takes strand
 ** information into account.
 **
-** @param [r] qca1 [const EnsPQCAlignment] First Ensembl QC Sequence
-** @param [r] qca2 [const EnsPQCAlignment] Second Ensembl QC Sequence
+** @param [r] qca1 [const EnsPQcalignment] First Ensembl QC Sequence
+** @param [r] qca2 [const EnsPQcalignment] Second Ensembl QC Sequence
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentOverlapOnTarget(const EnsPQCAlignment qca1,
-                                     const EnsPQCAlignment qca2)
+AjBool ensQcalignmentOverlapOnTarget(const EnsPQcalignment qca1,
+                                     const EnsPQcalignment qca2)
 {
     ajint start1 = 0;
     ajint start2 = 0;
@@ -1444,7 +1444,7 @@ AjBool ensQCAlignmentOverlapOnTarget(const EnsPQCAlignment qca1,
     
     /* Check for identical target sequence objects. */
     
-    if(!ensQCSequenceMatch(qca1->TargetSequence, qca2->TargetSequence))
+    if(!ensQcsequenceMatch(qca1->TargetSequence, qca2->TargetSequence))
 	return ajFalse;
     
     /* Check for identical target strands. */
@@ -1457,13 +1457,13 @@ AjBool ensQCAlignmentOverlapOnTarget(const EnsPQCAlignment qca1,
     ** alignment.
     */
     
-    ensQCAlignmentGetTargetCoordinates(qca1,
+    ensQcalignmentGetTargetCoordinates(qca1,
 				       &start1,
 				       &end1,
 				       &strand1,
 				       &length1);
     
-    ensQCAlignmentGetTargetCoordinates(qca2,
+    ensQcalignmentGetTargetCoordinates(qca2,
 				       &start2,
 				       &end2,
 				       &strand2,
@@ -1480,12 +1480,12 @@ AjBool ensQCAlignmentOverlapOnTarget(const EnsPQCAlignment qca1,
 
 
 
-/* @func ensQCAlignmentCalculateProteinToProteinQueryCoverage *****************
+/* @func ensQcalignmentCalculateQueryCoverage ********************************
 **
 ** Calculates the alignment coverage score for the query sequence and sets it
 ** in the coverage attribute of an Ensembl QC Alignment.
 **
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [r] identity [float] Identity threshold
 ** @param [r] edge [ajuint] Edge threshold to classify cases where only few
 **                          residues at the edge are different.
@@ -1509,38 +1509,38 @@ AjBool ensQCAlignmentOverlapOnTarget(const EnsPQCAlignment qca1,
 **
 ******************************************************************************/
 
-AjBool ensQCAlignmentCalculateQueryCoverage(EnsPQCAlignment qca,
+AjBool ensQcalignmentCalculateQueryCoverage(EnsPQcalignment qca,
                                             float identity,
                                             ajuint edge)
 {
     AjBool value = ajFalse;
     
-    EnsPQCDatabase qqcdb = NULL;
-    EnsPQCDatabase tqcdb = NULL;
+    EnsPQcdatabase qqcdb = NULL;
+    EnsPQcdatabase tqcdb = NULL;
     
     if(!qca)
 	return ajFalse;
     
-    qqcdb = ensQCSequenceGetQCDatabase(qca->QuerySequence);
+    qqcdb = ensQcsequenceGetQcdatabase(qca->QuerySequence);
     
-    tqcdb = ensQCSequenceGetQCDatabase(qca->TargetSequence);
+    tqcdb = ensQcsequenceGetQcdatabase(qca->TargetSequence);
     
-    switch(ensQCDatabaseGetClass(tqcdb))
+    switch(ensQcdatabaseGetClass(tqcdb))
     {
-	case ensEQCDatabaseClassGenome:
+	case ensEQcdatabaseClassGenome:
 	    
-	    switch(ensQCDatabaseGetType(qqcdb))
+	    switch(ensQcdatabaseGetType(qqcdb))
 	    {
-		case ensEQCDatabaseTypeProtein:
-		   value = ensQCAlignmentCalculateProteinToGenomeQueryCoverage(
+		case ensEQcdatabaseTypeProtein:
+		   value = ensQcalignmentCalculateProteinToGenomeQueryCoverage(
                        qca,
                        identity,
                        edge);
 		    
 		    break;
 		    
-		case ensEQCDatabaseTypeDNA:
-		    value = ensQCAlignmentCalculateDNAToGenomeQueryCoverage(
+		case ensEQcdatabaseTypeDNA:
+		    value = ensQcalignmentCalculateDNAToGenomeQueryCoverage(
                         qca,
                         identity,
                         edge);
@@ -1551,27 +1551,27 @@ AjBool ensQCAlignmentCalculateQueryCoverage(EnsPQCAlignment qca,
 		    ajWarn("Cannot calculate a query to genome alignment "
                            "coverage "
 			   "for a database of type '%s'.",
-			   ensQCDatabaseTypeToChar(
-                               ensQCDatabaseGetType(qqcdb)));
+			   ensQcdatabaseTypeToChar(
+                               ensQcdatabaseGetType(qqcdb)));
 	    }
 	    
 	    break;
 	    
 	default:
 	    
-	    switch(ensQCDatabaseGetType(qqcdb))
+	    switch(ensQcdatabaseGetType(qqcdb))
 	    {
-		case ensEQCDatabaseTypeProtein:
+		case ensEQcdatabaseTypeProtein:
 		    
-		    value = ensQCAlignmentCalculateProteinToProteinQueryCoverage(
+		    value = ensQcalignmentCalculateProteinToProteinQueryCoverage(
                         qca,
                         identity);
 		    
 		    break;
 		    
-		case ensEQCDatabaseTypeDNA:
+		case ensEQcdatabaseTypeDNA:
 		    
-		    value = ensQCAlignmentCalculateDNAToDNAQueryCoverage(
+		    value = ensQcalignmentCalculateDNAToDNAQueryCoverage(
                         qca,
                         identity,
                         edge);
@@ -1582,8 +1582,8 @@ AjBool ensQCAlignmentCalculateQueryCoverage(EnsPQCAlignment qca,
 		    
 		    ajWarn("Cannot calculate a query alignment coverage for "
 			   "a database of type '%s'.",
-			   ensQCDatabaseTypeToChar(
-                               ensQCDatabaseGetType(qqcdb)));
+			   ensQcdatabaseTypeToChar(
+                               ensQcdatabaseGetType(qqcdb)));
 	    }
     }
     
@@ -1640,13 +1640,13 @@ static const char *qcAlignmentProteinToProteinQueryCoverageProperties[] =
 
 
 
-/* @func ensQCAlignmentCalculateProteinToProteinQueryCoverage *****************
+/* @func ensQcalignmentCalculateProteinToProteinQueryCoverage *****************
 **
 ** Calculates the alignment coverage score for a query of type 'protein'
 ** against a target of type 'protein' and sets the score in the coverage
 ** element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [r] identity [float] Identity threshold
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -1678,8 +1678,8 @@ static const char *qcAlignmentProteinToProteinQueryCoverageProperties[] =
 **
 ******************************************************************************/
 
-AjBool ensQCAlignmentCalculateProteinToProteinQueryCoverage(
-    EnsPQCAlignment qca,
+AjBool ensQcalignmentCalculateProteinToProteinQueryCoverage(
+    EnsPQcalignment qca,
     float identity)
 {
     ajuint qlength = 0;
@@ -1711,21 +1711,21 @@ AjBool ensQCAlignmentCalculateProteinToProteinQueryCoverage(
     
     /* Assign alignment coordinates strand-dependent. */
     
-    ensQCAlignmentGetQueryCoordinates(qca,
+    ensQcalignmentGetQueryCoordinates(qca,
 				      &qstart,
 				      &qend,
 				      &qstrand,
 				      &qlength);
     
-    ensQCAlignmentGetTargetCoordinates(qca,
+    ensQcalignmentGetTargetCoordinates(qca,
 				       &tstart,
 				       &tend,
 				       &tstrand,
 				       &tlength);
     
-    qlength = ensQCSequenceGetLength(qca->QuerySequence);
+    qlength = ensQcsequenceGetLength(qca->QuerySequence);
     
-    tlength = ensQCSequenceGetLength(qca->TargetSequence);
+    tlength = ensQcsequenceGetLength(qca->TargetSequence);
     
     /* Test for completeness of the N-terminus. */
     
@@ -1885,13 +1885,13 @@ static const char *qcAlignmentProteinToGenomeQueryCoverageProperties[] =
 
 
 
-/* @func ensQCAlignmentCalculateProteinToProteinQueryCoverage *****************
+/* @func ensQcalignmentCalculateProteinToProteinQueryCoverage *****************
 **
 ** Calculates the alignment coverage score for a query of type 'protein'
 ** against a target of class 'genome' and sets the score in the coverage
 ** element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [r] identity [float] Identity threshold
 ** @param [r] edge [ajuint] Edge threshold
 **
@@ -1914,7 +1914,7 @@ static const char *qcAlignmentProteinToGenomeQueryCoverageProperties[] =
 **
 ******************************************************************************/
 
-AjBool ensQCAlignmentCalculateProteinToGenomeQueryCoverage(EnsPQCAlignment qca,
+AjBool ensQcalignmentCalculateProteinToGenomeQueryCoverage(EnsPQcalignment qca,
                                                            float identity,
                                                            ajuint edge)
 {
@@ -1936,13 +1936,13 @@ AjBool ensQCAlignmentCalculateProteinToGenomeQueryCoverage(EnsPQCAlignment qca,
     
     /* Assign alignment coordinates strand-dependent. */
     
-    ensQCAlignmentGetQueryCoordinates(qca,
+    ensQcalignmentGetQueryCoordinates(qca,
 				      &qstart,
 				      &qend,
 				      &qstrand,
 				      &qlength);
     
-    qlength = ensQCSequenceGetLength(qca->QuerySequence);
+    qlength = ensQcsequenceGetLength(qca->QuerySequence);
     
     /*
     ** A query to target alignment is there, which is already good.
@@ -2039,13 +2039,13 @@ static const char *qcAlignmentDNAToDNAQueryCoverageProperties[] =
 
 
 
-/* @func ensQCAlignmentCalculateDNAToDNAQueryCoverage *************************
+/* @func ensQcalignmentCalculateDNAToDNAQueryCoverage *************************
 **
 ** Calculates the alignment coverage score for a query of type 'dna'
 ** against a target of type 'dna' and sets the score in the coverage
 ** element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [r] identity [float] Identity threshold
 ** @param [r] edge [ajuint] Edge threshold to classify cases where only few
 **                          residues at the edge are different.
@@ -2079,7 +2079,7 @@ static const char *qcAlignmentDNAToDNAQueryCoverageProperties[] =
 **
 ******************************************************************************/
 
-AjBool ensQCAlignmentCalculateDNAToDNAQueryCoverage(EnsPQCAlignment qca,
+AjBool ensQcalignmentCalculateDNAToDNAQueryCoverage(EnsPQcalignment qca,
                                                     float identity,
                                                     ajuint edge)
 {
@@ -2105,13 +2105,13 @@ AjBool ensQCAlignmentCalculateDNAToDNAQueryCoverage(EnsPQCAlignment qca,
     
     /* Assign alignment coordinates strand-dependent. */
     
-    ensQCAlignmentGetQueryCoordinates(qca,
+    ensQcalignmentGetQueryCoordinates(qca,
 				      &qstart,
 				      &qend,
 				      &qstrand,
 				      &qlength);
     
-    ensQCAlignmentGetTargetCoordinates(qca,
+    ensQcalignmentGetTargetCoordinates(qca,
 				       &tstart,
 				       &tend,
 				       &tstrand,
@@ -2119,13 +2119,13 @@ AjBool ensQCAlignmentCalculateDNAToDNAQueryCoverage(EnsPQCAlignment qca,
     
     /* Correct sequence lengths for PolyA+ tails. */
     
-    qlength = ensQCSequenceGetLength(qca->QuerySequence);
+    qlength = ensQcsequenceGetLength(qca->QuerySequence);
     
-    qlength -= ensQCSequenceGetPolyA(qca->QuerySequence);
+    qlength -= ensQcsequenceGetPolyA(qca->QuerySequence);
     
-    tlength = ensQCSequenceGetLength(qca->TargetSequence);
+    tlength = ensQcsequenceGetLength(qca->TargetSequence);
     
-    tlength -= ensQCSequenceGetPolyA(qca->TargetSequence);
+    tlength -= ensQcsequenceGetPolyA(qca->TargetSequence);
     
     /*
     ** A query to target alignment is there, which is already good.
@@ -2305,13 +2305,13 @@ static const char *qcAlignmentDNAToGenomeQueryCoverageProperties[] =
 
 
 
-/* @func ensQCAlignmentCalculateDNAToGenomeQueryCoverage **********************
+/* @func ensQcalignmentCalculateDNAToGenomeQueryCoverage **********************
 **
 ** Calculates the alignment coverage score for a query of type 'dna'
 ** against a target of class 'genome' and sets the score in the coverage
 ** element of an Ensembl QC Alignment.
 **
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [r] identity [float] Identity threshold
 ** @param [r] edge [ajuint] Edge threshold to classify cases where only few
 **                          residues at the edge fall into a separate exon.
@@ -2337,7 +2337,7 @@ static const char *qcAlignmentDNAToGenomeQueryCoverageProperties[] =
 **
 ******************************************************************************/
 
-AjBool ensQCAlignmentCalculateDNAToGenomeQueryCoverage(EnsPQCAlignment qca,
+AjBool ensQcalignmentCalculateDNAToGenomeQueryCoverage(EnsPQcalignment qca,
                                                        float identity,
                                                        ajuint edge)
 {
@@ -2359,15 +2359,15 @@ AjBool ensQCAlignmentCalculateDNAToGenomeQueryCoverage(EnsPQCAlignment qca,
     
     /* Assign alignment coordinates strand-dependent. */
     
-    ensQCAlignmentGetQueryCoordinates(qca,
+    ensQcalignmentGetQueryCoordinates(qca,
 				      &qstart,
 				      &qend,
 				      &qstrand,
 				      &qlength);
     
-    qlength = ensQCSequenceGetLength(qca->QuerySequence);
+    qlength = ensQcsequenceGetLength(qca->QuerySequence);
     
-    qlength -= ensQCSequenceGetPolyA(qca->QuerySequence);
+    qlength -= ensQcsequenceGetPolyA(qca->QuerySequence);
     
     /*
     ** A query to target alignment is there, which is already good.
@@ -2469,7 +2469,7 @@ static const char* qcAlignmentQueryToQueryCoverageProperties[] =
 
 
 
-/* @func ensQCAlignmentCalculateQueryToQueryCoverage **************************
+/* @func ensQcalignmentCalculateQueryToQueryCoverage **************************
 **
 ** Compares and scores two Ensembl QC Alignment objects based on the coverage
 ** of the query sequences in the alignment. The score is the sum of 5' and 3'
@@ -2478,8 +2478,8 @@ static const char* qcAlignmentQueryToQueryCoverageProperties[] =
 ** The first alignment is usually the genome alignment the second one the
 ** reference to test alignment.
 **
-** @param [r] qca1 [const EnsPQCAlignment] First Ensembl QC Alignment
-** @param [r] qca2 [const EnsPQCAlignment] Second Ensembl QC Alignment
+** @param [r] qca1 [const EnsPQcalignment] First Ensembl QC Alignment
+** @param [r] qca2 [const EnsPQcalignment] Second Ensembl QC Alignment
 **
 ** @return [ajuint] Score
 ** @@
@@ -2500,8 +2500,8 @@ static const char* qcAlignmentQueryToQueryCoverageProperties[] =
 **
 ******************************************************************************/
 
-ajuint ensQCAlignmentCalculateQueryToQueryCoverage(const EnsPQCAlignment qca1,
-                                                   const EnsPQCAlignment qca2)
+ajuint ensQcalignmentCalculateQueryToQueryCoverage(const EnsPQcalignment qca1,
+                                                   const EnsPQcalignment qca2)
 {
     ajuint score = 0;
     
@@ -2536,7 +2536,7 @@ ajuint ensQCAlignmentCalculateQueryToQueryCoverage(const EnsPQCAlignment qca1,
     {
 	/* Check whether the query sequence is the same in both alignments. */
 	
-	/* FIXME: Should this use ensQCSequenceMatch? */
+	/* FIXME: Should this use ensQcsequenceMatch? */
 	if(qca1->QuerySequence != qca2->QuerySequence)
 	    return 0;
 	
@@ -2601,8 +2601,8 @@ ajuint ensQCAlignmentCalculateQueryToQueryCoverage(const EnsPQCAlignment qca1,
     
     /*
     ** Test for perfect query coverage in genome alignments. See
-    ** ensQCAlignmentCalculateProteinToGenomeQueryCoverage and
-    ** ensQCAlignmentCalculateDNAToGenomeQueryCoverage for details.
+    ** ensQcalignmentCalculateProteinToGenomeQueryCoverage and
+    ** ensQcalignmentCalculateDNAToGenomeQueryCoverage for details.
     ** Since this method is called for the genome alignment, the test
     ** refers to the first alignment (qca1).
     */
@@ -2621,13 +2621,13 @@ ajuint ensQCAlignmentCalculateQueryToQueryCoverage(const EnsPQCAlignment qca1,
 
 
 
-/* @func ensQCAlignmentReport *************************************************
+/* @func ensQcalignmentReport *************************************************
 **
 ** Report an Ensembl QC Alignment in the following way:
 ** query:start-end:strand (length)
 ** target:start-end:strand (length)
 **
-** @param [r] qca [EnsPQCAlignment] Ensembl QC Alignment Adaptor
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment Adaptor
 ** @param [w] Pstr [AjPStr *] AJAX String
 ** @param [r] internalquery [AjBool] HTML document-internal query link
 ** @param [r] internaltarget [AjBool] HTML document-internal target link
@@ -2636,7 +2636,7 @@ ajuint ensQCAlignmentCalculateQueryToQueryCoverage(const EnsPQCAlignment qca1,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentReport(const EnsPQCAlignment qca,
+AjBool ensQcalignmentReport(const EnsPQcalignment qca,
                             AjPStr *Pstr,
                             AjBool internalquery,
                             AjBool internaltarget)
@@ -2651,20 +2651,20 @@ AjBool ensQCAlignmentReport(const EnsPQCAlignment qca,
     AjPStr exturl   = NULL;
     AjPStr location = NULL;
     
-    EnsPQCDatabase qcdb = NULL;
+    EnsPQcdatabase qcdb = NULL;
     
     if(!qca)
 	return ajFalse;
     
     /* Format the query part of the Alignment object. */
     
-    ensQCAlignmentGetQueryCoordinates(qca,
+    ensQcalignmentGetQueryCoordinates(qca,
 				      &start,
 				      &end,
 				      &strand,
 				      &length);
     
-    qcdb = ensQCSequenceGetQCDatabase(qca->QuerySequence);
+    qcdb = ensQcsequenceGetQcdatabase(qca->QuerySequence);
     
     if(internalquery)
     {
@@ -2672,24 +2672,24 @@ AjBool ensQCAlignmentReport(const EnsPQCAlignment qca,
 	
 	anchor = ajStrNew();
 	
-	ensQCSequenceFetchInternalAnchor(qca->QuerySequence, &anchor);
+	ensQcsequenceFetchInternalAnchor(qca->QuerySequence, &anchor);
 	
 	ajFmtPrintAppS(Pstr, "%S:%d-%d:%d", anchor, start, end, strand);
 	
 	ajStrDel(&anchor);
     }
-    else if(ensQCDatabaseGetExternalURL(qcdb))
+    else if(ensQcdatabaseGetExternalURL(qcdb))
     {
 	/* An URL has been set in the sequence database definition. */
 	
-	exturl = ajStrNewS(ensQCDatabaseGetExternalURL(qcdb));
+	exturl = ajStrNewS(ensQcdatabaseGetExternalURL(qcdb));
 	
 	if(ajStrFindC(exturl, "###LOCATION###"))
 	{
 	    /* ###LOCATION### links to Location/View. */
 	    
 	    location = ajFmtStr("%S:%d-%d",
-				ensQCSequenceGetName(qca->QuerySequence),
+				ensQcsequenceGetName(qca->QuerySequence),
 				start,
 				end);
 	    
@@ -2711,7 +2711,7 @@ AjBool ensQCAlignmentReport(const EnsPQCAlignment qca,
 	    
 	    anchor = ajStrNew();
 	    
-	    ensQCSequenceFetchExternalAnchor(qca->QuerySequence,
+	    ensQcsequenceFetchExternalAnchor(qca->QuerySequence,
 					     &anchor,
 					     ajFalse);
 	    
@@ -2733,7 +2733,7 @@ AjBool ensQCAlignmentReport(const EnsPQCAlignment qca,
 	
 	ajFmtPrintAppS(Pstr,
 		       "%S:%d-%d:%d",
-		       ensQCSequenceGetName(qca->QuerySequence),
+		       ensQcsequenceGetName(qca->QuerySequence),
 		       start,
 		       end,
 		       strand);
@@ -2746,13 +2746,13 @@ AjBool ensQCAlignmentReport(const EnsPQCAlignment qca,
     
     /* Format the target part of the Alignment object. */
     
-    ensQCAlignmentGetTargetCoordinates(qca,
+    ensQcalignmentGetTargetCoordinates(qca,
 				       &start,
 				       &end,
 				       &strand,
 				       &length);
     
-    qcdb = ensQCSequenceGetQCDatabase(qca->TargetSequence);
+    qcdb = ensQcsequenceGetQcdatabase(qca->TargetSequence);
     
     ajStrAppendC(Pstr, "\t");
     
@@ -2762,17 +2762,17 @@ AjBool ensQCAlignmentReport(const EnsPQCAlignment qca,
 	
 	anchor = ajStrNew();
 	
-	ensQCSequenceFetchInternalAnchor(qca->TargetSequence, &anchor);
+	ensQcsequenceFetchInternalAnchor(qca->TargetSequence, &anchor);
 	
 	ajFmtPrintAppS(Pstr, "%S:%d-%d:%d", anchor, start, end, strand);
 	
 	ajStrDel(&anchor);
     }
-    else if(ensQCDatabaseGetExternalURL(qcdb))
+    else if(ensQcdatabaseGetExternalURL(qcdb))
     {	
 	/* URL has been set in the sequence database definition. */
 	
-	exturl = ajStrNewS(ensQCDatabaseGetExternalURL(qcdb));
+	exturl = ajStrNewS(ensQcdatabaseGetExternalURL(qcdb));
 	
 	if(ajStrFindC(exturl, "###LOCATION###"))
         {
@@ -2780,7 +2780,7 @@ AjBool ensQCAlignmentReport(const EnsPQCAlignment qca,
 	    /* ###LOCATION### links to Location/View. */
 	    
 	    location = ajFmtStr("%S:%d-%d",
-				ensQCSequenceGetName(qca->TargetSequence),
+				ensQcsequenceGetName(qca->TargetSequence),
 				start,
 				end);
 	    
@@ -2802,7 +2802,7 @@ AjBool ensQCAlignmentReport(const EnsPQCAlignment qca,
 	    
 	    anchor = ajStrNew();
 	    
-	    ensQCSequenceFetchExternalAnchor(qca->TargetSequence,
+	    ensQcsequenceFetchExternalAnchor(qca->TargetSequence,
 					     &anchor,
 					     ajFalse);
 	    
@@ -2824,7 +2824,7 @@ AjBool ensQCAlignmentReport(const EnsPQCAlignment qca,
 	
 	ajFmtPrintAppS(Pstr,
 		       "%S:%d-%d:%d",
-		       ensQCSequenceGetName(qca->TargetSequence),
+		       ensQcsequenceGetName(qca->TargetSequence),
 		       start,
 		       end,
 		       strand);
@@ -2838,13 +2838,13 @@ AjBool ensQCAlignmentReport(const EnsPQCAlignment qca,
 
 
 
-/* @datasection [EnsPQCAlignmentadaptor] QC Alignment Adaptor *****************
+/* @datasection [EnsPQcalignmentadaptor] QC Alignment Adaptor *****************
 **
 ** Functions for manipulating Ensembl QC Alignment Adaptor objects
 **
 ** Bio::EnsEMBL::QC::DBSQL::Alignmentadaptor CVS Revision:
 **
-** @nam2rule QCAlignmentadaptor
+** @nam2rule Qcalignmentadaptor
 **
 ******************************************************************************/
 
@@ -2906,7 +2906,7 @@ static const char *qcAlignmentadaptorFinalCondition =
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
-** @param [u] am [EnsPAssemblyMapper] Ensembl Assembly Mapper
+** @param [u] am [EnsPAssemblymapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [u] qcas [AjPList] AJAX List of Ensembl QC Alignments
 **
@@ -2916,7 +2916,7 @@ static const char *qcAlignmentadaptorFinalCondition =
 
 static AjBool qcAlignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
-                                              EnsPAssemblyMapper am,
+                                              EnsPAssemblymapper am,
                                               EnsPSlice slice,
                                               AjPList qcas)
 {
@@ -2949,12 +2949,12 @@ static AjBool qcAlignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPAnalysis analysis  = NULL;
     EnsPAnalysisadaptor aa = NULL;
     
-    EnsPQCAlignment qca         = NULL;
-    EnsPQCAlignmentadaptor qcaa = NULL;
+    EnsPQcalignment qca         = NULL;
+    EnsPQcalignmentadaptor qcaa = NULL;
     
-    EnsPQCSequence qsequence   = NULL;
-    EnsPQCSequence tsequence   = NULL;
-    EnsPQCSequenceadaptor qcsa = NULL;
+    EnsPQcsequence qsequence   = NULL;
+    EnsPQcsequence tsequence   = NULL;
+    EnsPQcsequenceadaptor qcsa = NULL;
     
     if(!dba)
 	return ajFalse;
@@ -2971,9 +2971,9 @@ static AjBool qcAlignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     
     aa = ensRegistryGetAnalysisadaptor(dba);
     
-    qcaa = ensRegistryGetQCAlignmentadaptor(dba);
+    qcaa = ensRegistryGetQcalignmentadaptor(dba);
     
-    qcsa = ensRegistryGetQCSequenceadaptor(dba);
+    qcsa = ensRegistryGetQcsequenceadaptor(dba);
     
     sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
@@ -3021,11 +3021,11 @@ static AjBool qcAlignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	ensAnalysisadaptorFetchByIdentifier(aa, analysisid, &analysis);
 	
-	ensQCSequenceadaptorFetchByIdentifier(qcsa, qsid, &qsequence);
+	ensQcsequenceadaptorFetchByIdentifier(qcsa, qsid, &qsequence);
 	
-	ensQCSequenceadaptorFetchByIdentifier(qcsa, tsid, &tsequence);
+	ensQcsequenceadaptorFetchByIdentifier(qcsa, tsid, &tsequence);
 	
-	qca = ensQCAlignmentNew(qcaa,
+	qca = ensQcalignmentNew(qcaa,
 				identifier,
 				analysis,
 				qsequence,
@@ -3044,9 +3044,9 @@ static AjBool qcAlignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	ajListPushAppend(qcas, (void *) qca);
 	
-	ensQCSequenceDel(&qsequence);
+	ensQcsequenceDel(&qsequence);
 	
-	ensQCSequenceDel(&tsequence);
+	ensQcsequenceDel(&tsequence);
 	
 	ensAnalysisDel(&analysis);
 	
@@ -3070,7 +3070,7 @@ static AjBool qcAlignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** QC Alignment Adaptor. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPQCAlignmentadaptor]
+** @fdata [EnsPQcalignmentadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
@@ -3078,10 +3078,10 @@ static AjBool qcAlignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
 ** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
-** @argrule Ref object [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
+** @argrule Obj object [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor
+** @argrule Ref object [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor
 **
-** @valrule * [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
+** @valrule * [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -3089,17 +3089,17 @@ static AjBool qcAlignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @func ensQCAlignmentadaptorNew *********************************************
+/* @func ensQcalignmentadaptorNew *********************************************
 **
 ** Default constructor for an Ensembl QC Alignment Adaptor.
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor or NULL
+** @return [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCAlignmentadaptor ensQCAlignmentadaptorNew(EnsPDatabaseadaptor dba)
+EnsPQcalignmentadaptor ensQcalignmentadaptorNew(EnsPDatabaseadaptor dba)
 {
     if(!dba)
 	return NULL;
@@ -3121,12 +3121,12 @@ EnsPQCAlignmentadaptor ensQCAlignmentadaptorNew(EnsPDatabaseadaptor dba)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl QC Alignment Adaptor.
 **
-** @fdata [EnsPQCAlignmentadaptor]
+** @fdata [EnsPQcalignmentadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a QC Alignment Adaptor object
 **
-** @argrule * Pqcaa [EnsPQCAlignmentadaptor*] QC Alignment Adaptor
+** @argrule * Pqcaa [EnsPQcalignmentadaptor*] QC Alignment Adaptor
 **                                            object address
 **
 ** @valrule * [void]
@@ -3137,21 +3137,21 @@ EnsPQCAlignmentadaptor ensQCAlignmentadaptorNew(EnsPDatabaseadaptor dba)
 
 
 
-/* @func ensQCAlignmentadaptorDel *********************************************
+/* @func ensQcalignmentadaptorDel *********************************************
 **
 ** Default destructor for an Ensembl QC Alignment Adaptor.
 **
-** @param [d] Pqcaa [EnsPQCAlignmentadaptor*] Ensembl QC Alignment Adaptor
+** @param [d] Pqcaa [EnsPQcalignmentadaptor*] Ensembl QC Alignment Adaptor
 **                                            address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensQCAlignmentadaptorDel(EnsPQCAlignmentadaptor *Pqcaa)
+void ensQcalignmentadaptorDel(EnsPQcalignmentadaptor *Pqcaa)
 {
     /*
-     ajDebug("ensQCAlignmentadaptorDel\n"
+     ajDebug("ensQcalignmentadaptorDel\n"
 	     "  *Pqcaa %p\n",
 	     *Pqcaa);
      */
@@ -3170,22 +3170,22 @@ void ensQCAlignmentadaptorDel(EnsPQCAlignmentadaptor *Pqcaa)
 
 
 
-/* @func ensQCAlignmentadaptorFetchByIdentifier *******************************
+/* @func ensQcalignmentadaptorFetchByIdentifier *******************************
 **
 ** Fetch an Ensembl QC Alignment via its SQL database-internal identifier.
 ** The caller is responsible for deleting the Ensembl QC Alignment.
 **
-** @param [r] adaptor [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
+** @param [r] adaptor [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal QC Alignment identifier
-** @param [wP] Pqca [EnsPQCAlignment*] Ensembl QC Alignment address
+** @param [wP] Pqca [EnsPQcalignment*] Ensembl QC Alignment address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentadaptorFetchByIdentifier(EnsPQCAlignmentadaptor adaptor,
+AjBool ensQcalignmentadaptorFetchByIdentifier(EnsPQcalignmentadaptor adaptor,
                                               ajuint identifier,
-                                              EnsPQCAlignment *Pqca)
+                                              EnsPQcalignment *Pqca)
 {
     if(!adaptor)
 	return ajFalse;
@@ -3196,7 +3196,7 @@ AjBool ensQCAlignmentadaptorFetchByIdentifier(EnsPQCAlignmentadaptor adaptor,
     if(!Pqca)
 	return ajFalse;
     
-    *Pqca = (EnsPQCAlignment)
+    *Pqca = (EnsPQcalignment)
 	ensBaseadaptorFetchByIdentifier(adaptor, identifier);
     
     return ajTrue;
@@ -3205,28 +3205,28 @@ AjBool ensQCAlignmentadaptorFetchByIdentifier(EnsPQCAlignmentadaptor adaptor,
 
 
 
-/* @func ensQCAlignmentadaptorFetchAllByAnalysisQueryTarget *******************
+/* @func ensQcalignmentadaptorFetchAllByAnalysisQueryTarget *******************
 **
 ** Fetch all Ensembl QC Alignments by Ensembl an Analysis, as well as
 ** Query and Target Ensembl Sequences.
 ** The caller is responsible for deleting the Ensembl QC Alignments
 ** before deleting the AJAX List.
 **
-** @param [r] qcaa [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
+** @param [r] qcaa [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
-** @param [r] qdb [const EnsPQCDatabase] Query Ensembl QC Database
-** @param [r] tdb [const EnsPQCDatabase] Target Ensembl QC Database
+** @param [r] qdb [const EnsPQcdatabase] Query Ensembl QC Database
+** @param [r] tdb [const EnsPQcdatabase] Target Ensembl QC Database
 ** @param [w] qcas [AjPList] AJAX List of Ensembl QC Alignments
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentadaptorFetchAllByAnalysisQueryTarget(
-    EnsPQCAlignmentadaptor qcaa,
+AjBool ensQcalignmentadaptorFetchAllByAnalysisQueryTarget(
+    EnsPQcalignmentadaptor qcaa,
     const EnsPAnalysis analysis,
-    const EnsPQCDatabase qdb,
-    const EnsPQCDatabase tdb,
+    const EnsPQcdatabase qdb,
+    const EnsPQcdatabase tdb,
     AjPList qcas)
 {
     AjPStr constraint = NULL;
@@ -3252,12 +3252,12 @@ AjBool ensQCAlignmentadaptorFetchAllByAnalysisQueryTarget(
 			  "AND "
 			  "alignment.target_db_id = %u",
 			  ensAnalysisGetIdentifier(analysis),
-			  ensQCDatabaseGetIdentifier(qdb),
-			  ensQCDatabaseGetIdentifier(tdb));
+			  ensQcdatabaseGetIdentifier(qdb),
+			  ensQcdatabaseGetIdentifier(tdb));
     
     ensBaseadaptorGenericFetch(qcaa,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcas);
     
@@ -3269,24 +3269,24 @@ AjBool ensQCAlignmentadaptorFetchAllByAnalysisQueryTarget(
 
 
 
-/* @func ensQCAlignmentadaptorFetchAllByQuery *********************************
+/* @func ensQcalignmentadaptorFetchAllByQuery *********************************
 **
 ** Fetch all Ensembl QC Alignments by a Query Ensembl QC Sequence.
 ** The caller is responsible for deleting the Ensembl QC Alignments
 ** before deleting the AJAX List.
 **
-** @param [r] qcaa [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
+** @param [r] qcaa [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor
 ** @param [rN] analysis [const EnsPAnalysis] Ensembl Analysis
-** @param [r] qdb [const EnsPQCDatabase] Query Ensembl QC Database
+** @param [r] qdb [const EnsPQcdatabase] Query Ensembl QC Database
 ** @param [w] qcas [AjPList] AJAX List of Ensembl QC Alignments
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentadaptorFetchAllByQuery(EnsPQCAlignmentadaptor qcaa,
+AjBool ensQcalignmentadaptorFetchAllByQuery(EnsPQcalignmentadaptor qcaa,
                                             const EnsPAnalysis analysis,
-                                            const EnsPQCDatabase qdb,
+                                            const EnsPQcdatabase qdb,
                                             AjPList qcas)
 {
     AjPStr constraint = NULL;
@@ -3301,7 +3301,7 @@ AjBool ensQCAlignmentadaptorFetchAllByQuery(EnsPQCAlignmentadaptor qcaa,
 	return ajFalse;
     
     constraint = ajFmtStr("alignment.query_db_id = %u",
-			  ensQCDatabaseGetIdentifier(qdb));
+			  ensQcdatabaseGetIdentifier(qdb));
     
     if(analysis)
 	ajFmtPrintAppS(&constraint,
@@ -3310,7 +3310,7 @@ AjBool ensQCAlignmentadaptorFetchAllByQuery(EnsPQCAlignmentadaptor qcaa,
     
     ensBaseadaptorGenericFetch(qcaa,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcas);
     
@@ -3322,24 +3322,24 @@ AjBool ensQCAlignmentadaptorFetchAllByQuery(EnsPQCAlignmentadaptor qcaa,
 
 
 
-/* @func ensQCAlignmentadaptorFetchAllByTarget ********************************
+/* @func ensQcalignmentadaptorFetchAllByTarget ********************************
 **
 ** Fetch all Ensembl QC Alignments by a Target Ensembl QC Sequence.
 ** The caller is responsible for deleting the Ensembl QC Alignments
 ** before deleting the AJAX List.
 **
-** @param [r] qcaa [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
+** @param [r] qcaa [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor
 ** @param [rN] analysis [const EnsPAnalysis] Ensembl Analysis
-** @param [r] tdb [const EnsPQCDatabase] Target Ensembl QC Database
+** @param [r] tdb [const EnsPQcdatabase] Target Ensembl QC Database
 ** @param [w] qcas [AjPList] AJAX List of Ensembl QC Alignments
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentadaptorFetchAllByTarget(EnsPQCAlignmentadaptor qcaa,
+AjBool ensQcalignmentadaptorFetchAllByTarget(EnsPQcalignmentadaptor qcaa,
                                              const EnsPAnalysis analysis,
-                                             const EnsPQCDatabase tdb,
+                                             const EnsPQcdatabase tdb,
                                              AjPList qcas)
 {
     AjPStr constraint = NULL;
@@ -3354,7 +3354,7 @@ AjBool ensQCAlignmentadaptorFetchAllByTarget(EnsPQCAlignmentadaptor qcaa,
 	return ajFalse;
     
     constraint = ajFmtStr("alignment.target_db_id = %u",
-			  ensQCDatabaseGetIdentifier(tdb));
+			  ensQcdatabaseGetIdentifier(tdb));
     
     if(analysis)
 	ajFmtPrintAppS(&constraint,
@@ -3363,7 +3363,7 @@ AjBool ensQCAlignmentadaptorFetchAllByTarget(EnsPQCAlignmentadaptor qcaa,
     
     ensBaseadaptorGenericFetch(qcaa,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcas);
     
@@ -3375,13 +3375,13 @@ AjBool ensQCAlignmentadaptorFetchAllByTarget(EnsPQCAlignmentadaptor qcaa,
 
 
 
-/* @func ensQCAlignmentadaptorFetchAllByCoverage ******************************
+/* @func ensQcalignmentadaptorFetchAllByCoverage ******************************
 **
 ** Fetch all Ensembl QC Alignments by a coverage score range.
 ** The caller is responsible for deleting the Ensembl QC Alignments
 ** before deleting the AJAX List.
 **
-** @param [r] qcaa [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
+** @param [r] qcaa [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor
 ** @param [r] lower [ajuint] Lower coverage score
 ** @param [r] upper [ajuint] Upper coverage score
 ** @param [w] qcas [AjPList] AJAX List of Ensembl QC Alignments
@@ -3390,7 +3390,7 @@ AjBool ensQCAlignmentadaptorFetchAllByTarget(EnsPQCAlignmentadaptor qcaa,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentadaptorFetchAllByCoverage(EnsPQCAlignmentadaptor qcaa,
+AjBool ensQcalignmentadaptorFetchAllByCoverage(EnsPQcalignmentadaptor qcaa,
                                                ajuint lower,
                                                ajuint upper,
                                                AjPList qcas)
@@ -3410,7 +3410,7 @@ AjBool ensQCAlignmentadaptorFetchAllByCoverage(EnsPQCAlignmentadaptor qcaa,
     
     ensBaseadaptorGenericFetch(qcaa,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcas);
     
@@ -3422,15 +3422,15 @@ AjBool ensQCAlignmentadaptorFetchAllByCoverage(EnsPQCAlignmentadaptor qcaa,
 
 
 
-/* @func ensQCAlignmentadaptorFetchAllByTargetLocation ************************
+/* @func ensQcalignmentadaptorFetchAllByTargetLocation ************************
 **
 ** Fetch all Ensembl QC Alignments by a target location.
 ** The caller is responsible for deleting the Ensembl QC Alignments
 ** before deleting the AJAX List.
 **
-** @param [r] qcaa [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
+** @param [r] qcaa [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor
 ** @param [rN] analysis [const EnsPAnalysis] Ensembl Analysis
-** @param [r] tsequence [const EnsPQCSequence] Target Ensembl QC Sequence
+** @param [r] tsequence [const EnsPQcsequence] Target Ensembl QC Sequence
 ** @param [r] tstart [ajuint] Target start
 ** @param [r] tend [ajuint] Target end
 ** @param [w] qcas [AjPList] AJAX List of Ensembl QC Alignments
@@ -3439,10 +3439,10 @@ AjBool ensQCAlignmentadaptorFetchAllByCoverage(EnsPQCAlignmentadaptor qcaa,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentadaptorFetchAllByTargetLocation(
-    EnsPQCAlignmentadaptor qcaa,
+AjBool ensQcalignmentadaptorFetchAllByTargetLocation(
+    EnsPQcalignmentadaptor qcaa,
     const EnsPAnalysis analysis,
-    const EnsPQCSequence tsequence,
+    const EnsPQcsequence tsequence,
     ajuint tstart,
     ajuint tend,
     AjPList qcas)
@@ -3500,7 +3500,7 @@ AjBool ensQCAlignmentadaptorFetchAllByTargetLocation(
 			  "alignment.target_start <= ? AND "
 			  "alignment.target_end >= ?))",
 			  ensAnalysisGetIdentifier(analysis),
-			  ensQCSequenceGetIdentifier(tsequence),
+			  ensQcsequenceGetIdentifier(tsequence),
 			  tstart,
 			  tend,
 			  tstart,
@@ -3510,7 +3510,7 @@ AjBool ensQCAlignmentadaptorFetchAllByTargetLocation(
     
     ensBaseadaptorGenericFetch(qcaa,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcas);
     
@@ -3526,7 +3526,7 @@ AjBool ensQCAlignmentadaptorFetchAllByTargetLocation(
 			  "alignment.target_end <= ? AND "
 			  "alignment.target_start >= ?))",
 			  ensAnalysisGetIdentifier(analysis),
-			  ensQCSequenceGetIdentifier(tsequence),
+			  ensQcsequenceGetIdentifier(tsequence),
 			  tstart,
 			  tend,
 			  tstart,
@@ -3536,7 +3536,7 @@ AjBool ensQCAlignmentadaptorFetchAllByTargetLocation(
     
     ensBaseadaptorGenericFetch(qcaa,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcas);
     
@@ -3548,19 +3548,19 @@ AjBool ensQCAlignmentadaptorFetchAllByTargetLocation(
 
 
 
-/* @func ensQCAlignmentadaptorStore *******************************************
+/* @func ensQcalignmentadaptorStore *******************************************
 **
 ** Store an Ensembl QC Alignment.
 **
-** @param [r] qcaa [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qcaa [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentadaptorStore(EnsPQCAlignmentadaptor qcaa,
-                                  EnsPQCAlignment qca)
+AjBool ensQcalignmentadaptorStore(EnsPQcalignmentadaptor qcaa,
+                                  EnsPQcalignment qca)
 {
     char *txtvulgar = NULL;
     
@@ -3578,8 +3578,8 @@ AjBool ensQCAlignmentadaptorStore(EnsPQCAlignmentadaptor qcaa,
     if(!qca)
 	return ajFalse;
     
-    if(ensQCAlignmentGetadaptor(qca) &&
-	ensQCAlignmentGetIdentifier(qca))
+    if(ensQcalignmentGetAdaptor(qca) &&
+	ensQcalignmentGetIdentifier(qca))
 	return ajFalse;
     
     dba = ensBaseadaptorGetDatabaseadaptor(qcaa);
@@ -3606,15 +3606,15 @@ AjBool ensQCAlignmentadaptorStore(EnsPQCAlignmentadaptor qcaa,
 			 "alignment.vulgar_line = '%s', "
 			 "alignment.coverage = %u",
 			 ensAnalysisGetIdentifier(qca->Analysis),
-			 ensQCSequenceGetQCDatabaseIdentifier(
+			 ensQcsequenceGetQcdatabaseIdentifier(
                              qca->QuerySequence),
-			 ensQCSequenceGetIdentifier(qca->QuerySequence),
+			 ensQcsequenceGetIdentifier(qca->QuerySequence),
 			 qca->QueryStart,
 			 qca->QueryEnd,
 			 qca->QueryStrand,
-			 ensQCSequenceGetQCDatabaseIdentifier(
+			 ensQcsequenceGetQcdatabaseIdentifier(
                              qca->TargetSequence),
-			 ensQCSequenceGetIdentifier(qca->TargetSequence),
+			 ensQcsequenceGetIdentifier(qca->TargetSequence),
 			 qca->TargetStart,
 			 qca->TargetEnd,
 			 qca->TargetStrand,
@@ -3630,9 +3630,9 @@ AjBool ensQCAlignmentadaptorStore(EnsPQCAlignmentadaptor qcaa,
     
     if(ajSqlstatementGetAffectedrows(sqls))
     {
-	ensQCAlignmentSetIdentifier(qca, ajSqlstatementGetIdentifier(sqls));
+	ensQcalignmentSetIdentifier(qca, ajSqlstatementGetIdentifier(sqls));
 	
-	ensQCAlignmentSetadaptor(qca, qcaa);
+	ensQcalignmentSetAdaptor(qca, qcaa);
 	
 	value = ajTrue;
     }
@@ -3647,19 +3647,19 @@ AjBool ensQCAlignmentadaptorStore(EnsPQCAlignmentadaptor qcaa,
 
 
 
-/* @func ensQCAlignmentadaptorUpdate ******************************************
+/* @func ensQcalignmentadaptorUpdate ******************************************
 **
 ** Update an Ensembl QC Alignment.
 **
-** @param [r] qcaa [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qcaa [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentadaptorUpdate(EnsPQCAlignmentadaptor qcaa,
-                                   const EnsPQCAlignment qca)
+AjBool ensQcalignmentadaptorUpdate(EnsPQcalignmentadaptor qcaa,
+                                   const EnsPQcalignment qca)
 {
     char *txtvulgar = NULL;
     
@@ -3677,7 +3677,7 @@ AjBool ensQCAlignmentadaptorUpdate(EnsPQCAlignmentadaptor qcaa,
     if(!qca)
 	return ajFalse;
     
-    if(!ensQCAlignmentGetIdentifier(qca))
+    if(!ensQcalignmentGetIdentifier(qca))
 	return ajFalse;
     
     dba = ensBaseadaptorGetDatabaseadaptor(qcaa);
@@ -3706,15 +3706,15 @@ AjBool ensQCAlignmentadaptorUpdate(EnsPQCAlignmentadaptor qcaa,
 			 "WHERE "
 			 "alignment.alignment_id = %u",
 			 ensAnalysisGetIdentifier(qca->Analysis),
-			 ensQCSequenceGetQCDatabaseIdentifier(
+			 ensQcsequenceGetQcdatabaseIdentifier(
                              qca->QuerySequence),
-			 ensQCSequenceGetIdentifier(qca->QuerySequence),
+			 ensQcsequenceGetIdentifier(qca->QuerySequence),
 			 qca->QueryStart,
 			 qca->QueryEnd,
 			 qca->QueryStrand,
-			 ensQCSequenceGetQCDatabaseIdentifier(
+			 ensQcsequenceGetQcdatabaseIdentifier(
                              qca->TargetSequence),
-			 ensQCSequenceGetIdentifier(qca->TargetSequence),
+			 ensQcsequenceGetIdentifier(qca->TargetSequence),
 			 qca->TargetStart,
 			 qca->TargetEnd,
 			 qca->TargetStrand,
@@ -3742,19 +3742,19 @@ AjBool ensQCAlignmentadaptorUpdate(EnsPQCAlignmentadaptor qcaa,
 
 
 
-/* @func ensQCAlignmentadaptorDelete ******************************************
+/* @func ensQcalignmentadaptorDelete ******************************************
 **
 ** Delete an Ensembl QC Alignment.
 **
-** @param [r] qcaa [EnsPQCAlignmentadaptor] Ensembl QC Alignment Adaptor
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qcaa [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCAlignmentadaptorDelete(EnsPQCAlignmentadaptor qcaa,
-                                   const EnsPQCAlignment qca)
+AjBool ensQcalignmentadaptorDelete(EnsPQcalignmentadaptor qcaa,
+                                   const EnsPQcalignment qca)
 {
     AjBool value = ajFalse;
     
@@ -3770,7 +3770,7 @@ AjBool ensQCAlignmentadaptorDelete(EnsPQCAlignmentadaptor qcaa,
     if(!qca)
 	return ajFalse;
     
-    if(!ensQCAlignmentGetIdentifier(qca))
+    if(!ensQcalignmentGetIdentifier(qca))
 	return ajFalse;
     
     dba = ensBaseadaptorGetDatabaseadaptor(qcaa);
@@ -3793,7 +3793,7 @@ AjBool ensQCAlignmentadaptorDelete(EnsPQCAlignmentadaptor qcaa,
     return value;
 }
 
-/* @func ensQCAlignmentDummyFunction ******************************************
+/* @func ensQcalignmentDummyFunction ******************************************
 **
 ** Dummy function to catch all unused functions defined in the
 ** ensqcalignment source file.
@@ -3802,7 +3802,7 @@ AjBool ensQCAlignmentadaptorDelete(EnsPQCAlignmentadaptor qcaa,
 **
 ******************************************************************************/
 
-void endQCAlignmenttDummyFunction(void)
+void endQcalignmenttDummyFunction(void)
 {
     (void) qcAlignmentProteinToProteinQueryCoverageProperties[0];
     (void) qcAlignmentProteinToGenomeQueryCoverageProperties[0];

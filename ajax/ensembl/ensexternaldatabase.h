@@ -17,7 +17,7 @@ extern "C"
 
 /* Ensembl External Database */
 
-EnsPExternalDatabase ensExternalDatabaseNew(EnsPExternalDatabaseadaptor adaptor,
+EnsPExternaldatabase ensExternaldatabaseNew(EnsPExternaldatabaseadaptor adaptor,
                                             ajuint identifier,
                                             AjPStr name,
                                             AjPStr release,
@@ -31,94 +31,94 @@ EnsPExternalDatabase ensExternalDatabaseNew(EnsPExternalDatabaseadaptor adaptor,
                                             AjEnum type,
                                             ajint priority);
 
-EnsPExternalDatabase ensExternalDatabaseNewObj(
-    const EnsPExternalDatabase object);
+EnsPExternaldatabase ensExternaldatabaseNewObj(
+    const EnsPExternaldatabase object);
 
-EnsPExternalDatabase ensExternalDatabaseNewRef(EnsPExternalDatabase edb);
+EnsPExternaldatabase ensExternaldatabaseNewRef(EnsPExternaldatabase edb);
 
-void ensExternalDatabaseDel(EnsPExternalDatabase *Pedb);
+void ensExternaldatabaseDel(EnsPExternaldatabase *Pedb);
 
-const EnsPExternalDatabaseadaptor ensExternalDatabaseGetadaptor(
-    const EnsPExternalDatabase edb);
+const EnsPExternaldatabaseadaptor ensExternaldatabaseGetAdaptor(
+    const EnsPExternaldatabase edb);
 
-ajuint ensExternalDatabaseGetIdentifier(const EnsPExternalDatabase edb);
+ajuint ensExternaldatabaseGetIdentifier(const EnsPExternaldatabase edb);
 
-AjPStr ensExternalDatabaseGetName(const EnsPExternalDatabase edb);
+AjPStr ensExternaldatabaseGetName(const EnsPExternaldatabase edb);
 
-AjPStr ensExternalDatabaseGetRelease(const EnsPExternalDatabase edb);
+AjPStr ensExternaldatabaseGetRelease(const EnsPExternaldatabase edb);
 
-AjPStr ensExternalDatabaseGetSecondaryName(const EnsPExternalDatabase edb);
+AjPStr ensExternaldatabaseGetSecondaryName(const EnsPExternaldatabase edb);
 
-AjPStr ensExternalDatabaseGetSecondaryTable(const EnsPExternalDatabase edb);
+AjPStr ensExternaldatabaseGetSecondaryTable(const EnsPExternaldatabase edb);
 
-AjPStr ensExternalDatabaseGetDescription(const EnsPExternalDatabase edb);
+AjPStr ensExternaldatabaseGetDescription(const EnsPExternaldatabase edb);
 
-AjBool ensExternalDatabaseGetPrimaryIdIsLinkable(
-    const EnsPExternalDatabase edb);
+AjBool ensExternaldatabaseGetPrimaryIdIsLinkable(
+    const EnsPExternaldatabase edb);
 
-AjBool ensExternalDatabaseGetDisplayIdIsLinkable(
-    const EnsPExternalDatabase edb);
+AjBool ensExternaldatabaseGetDisplayIdIsLinkable(
+    const EnsPExternaldatabase edb);
 
-AjEnum ensExternalDatabaseGetStatus(const EnsPExternalDatabase edb);
+AjEnum ensExternaldatabaseGetStatus(const EnsPExternaldatabase edb);
 
-AjEnum ensExternalDatabaseGetType(const EnsPExternalDatabase edb);
+AjEnum ensExternaldatabaseGetType(const EnsPExternaldatabase edb);
 
-ajint ensExternalDatabaseGetPriority(const EnsPExternalDatabase edb);
+ajint ensExternaldatabaseGetPriority(const EnsPExternaldatabase edb);
 
-AjBool ensExternalDatabaseSetadaptor(EnsPExternalDatabase edb,
-                                     EnsPExternalDatabaseadaptor adaptor);
+AjBool ensExternaldatabaseSetAdaptor(EnsPExternaldatabase edb,
+                                     EnsPExternaldatabaseadaptor adaptor);
 
-AjBool ensExternalDatabaseSetIdentifier(EnsPExternalDatabase edb,
+AjBool ensExternaldatabaseSetIdentifier(EnsPExternaldatabase edb,
                                         ajuint identifier);
 
-AjBool ensExternalDatabaseSetName(EnsPExternalDatabase edb, AjPStr name);
+AjBool ensExternaldatabaseSetName(EnsPExternaldatabase edb, AjPStr name);
 
-AjBool ensExternalDatabaseSetRelease(EnsPExternalDatabase edb, AjPStr release);
+AjBool ensExternaldatabaseSetRelease(EnsPExternaldatabase edb, AjPStr release);
 
-AjBool ensExternalDatabaseSetSecondaryName(EnsPExternalDatabase edb,
+AjBool ensExternaldatabaseSetSecondaryName(EnsPExternaldatabase edb,
                                            AjPStr secondaryname);
 
-AjBool ensExternalDatabaseSetSecondaryTable(EnsPExternalDatabase edb,
+AjBool ensExternaldatabaseSetSecondaryTable(EnsPExternaldatabase edb,
                                             AjPStr secondarytable);
 
-AjBool ensExternalDatabaseSetDescription(EnsPExternalDatabase edb,
+AjBool ensExternaldatabaseSetDescription(EnsPExternaldatabase edb,
                                          AjPStr description);
 
-AjBool ensExternalDatabaseSetPrimaryIdIsLinkable(EnsPExternalDatabase edb,
+AjBool ensExternaldatabaseSetPrimaryIdIsLinkable(EnsPExternaldatabase edb,
                                                   AjBool primarylinkable);
 
-AjBool ensExternalDatabaseSetDisplayIdIsLinkable(EnsPExternalDatabase edb,
+AjBool ensExternaldatabaseSetDisplayIdIsLinkable(EnsPExternaldatabase edb,
                                                  AjBool displaylinkable);
 
-AjBool ensExternalDatabaseSetStatus(EnsPExternalDatabase edb, AjEnum status);
+AjBool ensExternaldatabaseSetStatus(EnsPExternaldatabase edb, AjEnum status);
 
-AjBool ensExternalDatabaseSetType(EnsPExternalDatabase edb, AjEnum type);
+AjBool ensExternaldatabaseSetType(EnsPExternaldatabase edb, AjEnum type);
 
-AjBool ensExternalDatabaseSetPriority(EnsPExternalDatabase edb, ajint priority);
+AjBool ensExternaldatabaseSetPriority(EnsPExternaldatabase edb, ajint priority);
 
-AjBool ensExternalDatabaseTrace(const EnsPExternalDatabase edb, ajuint level);
+AjBool ensExternaldatabaseTrace(const EnsPExternaldatabase edb, ajuint level);
 
-AjEnum ensExternalDatabaseStatusFromStr(const AjPStr status);
+AjEnum ensExternaldatabaseStatusFromStr(const AjPStr status);
 
-AjEnum ensExternalDatabaseTypeFromStr(const AjPStr type);
+AjEnum ensExternaldatabaseTypeFromStr(const AjPStr type);
 
-const char *ensExternalDatabaseStatusToChar(const AjEnum status);
+const char *ensExternaldatabaseStatusToChar(const AjEnum status);
 
-const char *ensExternalDatabaseTypeToChar(const AjEnum type);
+const char *ensExternaldatabaseTypeToChar(const AjEnum type);
 
-ajuint ensExternalDatabaseGetMemSize(const EnsPExternalDatabase edb);
+ajuint ensExternaldatabaseGetMemSize(const EnsPExternaldatabase edb);
 
 /* Ensembl External Database Adaptor */
 
-EnsPExternalDatabaseadaptor ensExternalDatabaseadaptorNew(
+EnsPExternaldatabaseadaptor ensExternaldatabaseadaptorNew(
     EnsPDatabaseadaptor dba);
 
-void ensExternalDatabaseadaptorDel(EnsPExternalDatabaseadaptor* Pedba);
+void ensExternaldatabaseadaptorDel(EnsPExternaldatabaseadaptor* Pedba);
 
-AjBool ensExternalDatabaseadaptorFetchByIdentifier(
-    EnsPExternalDatabaseadaptor edba,
+AjBool ensExternaldatabaseadaptorFetchByIdentifier(
+    EnsPExternaldatabaseadaptor edba,
     ajuint identifier,
-    EnsPExternalDatabase *Pedb);
+    EnsPExternaldatabase *Pedb);
 
 /*
 ** End of prototype definitions

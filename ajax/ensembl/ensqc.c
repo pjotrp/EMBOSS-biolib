@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -120,36 +120,36 @@ static const char *qcVariationState[] =
 extern EnsPAnalysisadaptor
 ensRegistryGetAnalysisadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPQCAlignmentadaptor
-ensRegistryGetQCAlignmentadaptor(EnsPDatabaseadaptor dba);
+extern EnsPQcalignmentadaptor
+ensRegistryGetQcalignmentadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPQCDASFeatureadaptor
-ensRegistryGetQCDASFeatureadaptor(EnsPDatabaseadaptor dba);
+extern EnsPQcdasfeatureadaptor
+ensRegistryGetQcdasfeatureadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPQCSequenceadaptor
-ensRegistryGetQCSequenceadaptor(EnsPDatabaseadaptor dba);
+extern EnsPQcsequenceadaptor
+ensRegistryGetQcsequenceadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPQCSubmissionadaptor
-ensRegistryGetQCSubmissionadaptor(EnsPDatabaseadaptor dba);
+extern EnsPQcsubmissionadaptor
+ensRegistryGetQcsubmissionadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPQCVariationadaptor
-ensRegistryGetQCVariationadaptor(EnsPDatabaseadaptor dba);
+extern EnsPQcvariationadaptor
+ensRegistryGetQcvariationadaptor(EnsPDatabaseadaptor dba);
 
 static AjBool qcDASFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
-                                               EnsPAssemblyMapper am,
+                                               EnsPAssemblymapper am,
                                                EnsPSlice slice,
                                                AjPList qcdasfs);
 
 static AjBool qcVariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
-                                              EnsPAssemblyMapper am,
+                                              EnsPAssemblymapper am,
                                               EnsPSlice slice,
                                               AjPList qcvs);
 
 static AjBool qcSubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
-                                               EnsPAssemblyMapper am,
+                                               EnsPAssemblymapper am,
                                                EnsPSlice slice,
                                                AjPList qcss);
 
@@ -165,13 +165,13 @@ static AjBool qcSubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @datasection [EnsPQCDASFeature] QC DAS Feature *****************************
+/* @datasection [EnsPQcdasfeature] QC DAS Feature *****************************
 **
 ** Functions for manipulating Ensembl QC DAS Feature objects
 **
 ** Bio::EnsEMBL::QC::DASFeature CVS Revision:
 **
-** @nam2rule QCDASFeature
+** @nam2rule Qcdasfeature
 **
 ******************************************************************************/
 
@@ -185,17 +185,17 @@ static AjBool qcSubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** QC DAS Feature. The target pointer does not need to be initialised to
 ** NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPQCDASFeature]
+** @fdata [EnsPQcdasfeature]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPQCDASFeature] Ensembl QC DAS Feature
-** @argrule Ref object [EnsPQCDASFeature] Ensembl QC DAS Feature
+** @argrule Obj object [EnsPQcdasfeature] Ensembl QC DAS Feature
+** @argrule Ref object [EnsPQcdasfeature] Ensembl QC DAS Feature
 **
-** @valrule * [EnsPQCDASFeature] Ensembl QC DAS Feature
+** @valrule * [EnsPQcdasfeature] Ensembl QC DAS Feature
 **
 ** @fcategory new
 ******************************************************************************/
@@ -203,47 +203,47 @@ static AjBool qcSubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @func ensQCDASFeatureNew ***************************************************
+/* @func ensQcdasfeatureNew ***************************************************
 **
 ** Default constructor for an Ensembl QC DAS Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] adaptor [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] adaptor [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::QC::DASFeature::new
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [u] ssequence [EnsPQCSequence] Segment Ensembl QC Sequence
+** @param [u] ssequence [EnsPQcsequence] Segment Ensembl QC Sequence
 ** @param [r] sstart [ajuint] Segment start
 ** @param [r] send [ajuint] Segment end
 ** @param [r] sstrand [ajint] Segment strand
-** @param [u] fsequence [EnsPQCSequence] Feature Ensembl QC Sequence
+** @param [u] fsequence [EnsPQcsequence] Feature Ensembl QC Sequence
 ** @param [r] tstart [ajuint] Feature start
 ** @param [r] tend [ajuint] Feature end
 ** @param [r] phase [ajint] Phase
 ** @param [r] category [AjEnum] Category
 ** @param [r] type [AjEnum] Type
 **
-** @return [EnsPQCDASFeature] Ensembl QC DAS Feature or NULL
+** @return [EnsPQcdasfeature] Ensembl QC DAS Feature or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCDASFeature ensQCDASFeatureNew(EnsPQCDASFeatureadaptor adaptor,
+EnsPQcdasfeature ensQcdasfeatureNew(EnsPQcdasfeatureadaptor adaptor,
                                     ajuint identifier,
-                                    EnsPQCAlignment qca,
+                                    EnsPQcalignment qca,
                                     EnsPAnalysis analysis,
-                                    EnsPQCSequence segment,
+                                    EnsPQcsequence segment,
                                     ajuint sstart,
                                     ajuint send,
                                     ajint sstrand,
-                                    EnsPQCSequence feature,
+                                    EnsPQcsequence feature,
                                     ajuint fstart,
                                     ajuint fend,
                                     ajint phase,
                                     AjEnum category,
                                     AjEnum type)
 {
-    EnsPQCDASFeature qcdasf = NULL;
+    EnsPQcdasfeature qcdasf = NULL;
     
     if(!qca)
 	return NULL;
@@ -265,11 +265,11 @@ EnsPQCDASFeature ensQCDASFeatureNew(EnsPQCDASFeatureadaptor adaptor,
     
     qcdasf->Adaptor = adaptor;
     
-    qcdasf->QCAlignment = ensQCAlignmentNewRef(qca);
+    qcdasf->Qcalignment = ensQcalignmentNewRef(qca);
     
     qcdasf->Analysis = ensAnalysisNewRef(analysis);
     
-    qcdasf->SegmentSequence = ensQCSequenceNewRef(segment);
+    qcdasf->SegmentSequence = ensQcsequenceNewRef(segment);
     
     qcdasf->SegmentStart = sstart;
     
@@ -277,7 +277,7 @@ EnsPQCDASFeature ensQCDASFeatureNew(EnsPQCDASFeatureadaptor adaptor,
     
     qcdasf->SegmentStrand = sstrand;
     
-    qcdasf->FeatureSequence = ensQCSequenceNewRef(feature);
+    qcdasf->FeatureSequence = ensQcsequenceNewRef(feature);
     
     qcdasf->FeatureStart = fstart;
     
@@ -295,19 +295,19 @@ EnsPQCDASFeature ensQCDASFeatureNew(EnsPQCDASFeatureadaptor adaptor,
 
 
 
-/* @func ensQCDASFeatureNewObj ************************************************
+/* @func ensQcdasfeatureNewObj ************************************************
 **
 ** Object-based constructor function, which returns an independent object.
 **
-** @param [r] object [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] object [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
-** @return [EnsPQCDASFeature] Ensembl QC DAS Feature or NULL
+** @return [EnsPQcdasfeature] Ensembl QC DAS Feature or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCDASFeature ensQCDASFeatureNewObj(const EnsPQCDASFeature object)
+EnsPQcdasfeature ensQcdasfeatureNewObj(const EnsPQcdasfeature object)
 {
-    EnsPQCDASFeature qcdasf = NULL;
+    EnsPQcdasfeature qcdasf = NULL;
     
     if(!object)
 	return NULL;
@@ -320,17 +320,17 @@ EnsPQCDASFeature ensQCDASFeatureNewObj(const EnsPQCDASFeature object)
     
     qcdasf->Adaptor = object->Adaptor;
     
-    if(object->QCAlignment)
-	qcdasf->QCAlignment = ensQCAlignmentNewRef(object->QCAlignment);
+    if(object->Qcalignment)
+	qcdasf->Qcalignment = ensQcalignmentNewRef(object->Qcalignment);
     
     if(object->Analysis)
 	qcdasf->Analysis = ensAnalysisNewRef(object->Analysis);
     
     if(object->SegmentSequence)
-	qcdasf->SegmentSequence = ensQCSequenceNewRef(object->SegmentSequence);
+	qcdasf->SegmentSequence = ensQcsequenceNewRef(object->SegmentSequence);
     
     if(object->FeatureSequence)
-	qcdasf->FeatureSequence = ensQCSequenceNewRef(object->FeatureSequence);
+	qcdasf->FeatureSequence = ensQcsequenceNewRef(object->FeatureSequence);
     
     qcdasf->SegmentStart = object->SegmentStart;
     
@@ -354,18 +354,18 @@ EnsPQCDASFeature ensQCDASFeatureNewObj(const EnsPQCDASFeature object)
 
 
 
-/* @func ensQCDASFeatureNewRef ************************************************
+/* @func ensQcdasfeatureNewRef ************************************************
 **
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] qcdasf [EnsPQCDASFeature] Ensembl DAS Feature
+** @param [u] qcdasf [EnsPQcdasfeature] Ensembl DAS Feature
 **
-** @return [EnsPQCDASFeature] Ensembl QC DAS Feature or NULL
+** @return [EnsPQcdasfeature] Ensembl QC DAS Feature or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCDASFeature ensQCDASFeatureNewRef(EnsPQCDASFeature qcdasf)
+EnsPQcdasfeature ensQcdasfeatureNewRef(EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
 	return NULL;
@@ -383,12 +383,12 @@ EnsPQCDASFeature ensQCDASFeatureNewRef(EnsPQCDASFeature qcdasf)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl QC DAS Feature.
 **
-** @fdata [EnsPQCDASFeature]
+** @fdata [EnsPQcdasfeature]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a QC DAS Feature object
 **
-** @argrule * Pqcdasf [EnsPQCDASFeature*] QC DAS Feature object address
+** @argrule * Pqcdasf [EnsPQcdasfeature*] QC DAS Feature object address
 **
 ** @valrule * [void]
 **
@@ -398,26 +398,26 @@ EnsPQCDASFeature ensQCDASFeatureNewRef(EnsPQCDASFeature qcdasf)
 
 
 
-/* @func ensQCDASFeatureDel ***************************************************
+/* @func ensQcdasfeatureDel ***************************************************
 **
 ** Default destructor for an Ensembl QC DAS Feature.
 **
-** @param [d] Pqcdasf [EnsPQCDASFeature*] Ensembl QC DAS Feature address
+** @param [d] Pqcdasf [EnsPQcdasfeature*] Ensembl QC DAS Feature address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensQCDASFeatureDel(EnsPQCDASFeature *Pqcdasf)
+void ensQcdasfeatureDel(EnsPQcdasfeature *Pqcdasf)
 {
-    EnsPQCDASFeature pthis = NULL;
+    EnsPQcdasfeature pthis = NULL;
     
     /*
-     ajDebug("ensQCDASFeatureDel\n"
+     ajDebug("ensQcdasfeatureDel\n"
 	     "  *Pqcdasf %p\n",
 	     *Pqcdasf);
      
-     ensQCDASFeatureTrace(*Pqcdasf, 1);
+     ensQcdasfeatureTrace(*Pqcdasf, 1);
      */
     
     if(!Pqcdasf)
@@ -437,13 +437,13 @@ void ensQCDASFeatureDel(EnsPQCDASFeature *Pqcdasf)
 	return;
     }
     
-    ensQCAlignmentDel(&pthis->QCAlignment);
+    ensQcalignmentDel(&pthis->Qcalignment);
     
     ensAnalysisDel(&pthis->Analysis);
     
-    ensQCSequenceDel(&pthis->SegmentSequence);
+    ensQcsequenceDel(&pthis->SegmentSequence);
     
-    ensQCSequenceDel(&pthis->FeatureSequence);
+    ensQcsequenceDel(&pthis->FeatureSequence);
     
     AJFREE(pthis);
 
@@ -459,13 +459,13 @@ void ensQCDASFeatureDel(EnsPQCDASFeature *Pqcdasf)
 **
 ** Functions for returning elements of an Ensembl QC DASFeature object.
 **
-** @fdata [EnsPQCDASFeature]
+** @fdata [EnsPQcdasfeature]
 ** @fnote None
 **
 ** @nam3rule Get Return QC DAS Feature attribute(s)
-** @nam4rule Getadaptor Return the Ensembl DAS Feature Adaptor
+** @nam4rule GetAdaptor Return the Ensembl DAS Feature Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
-** @nam4rule GetQCAlignment Return the Ensembl QC Alignment
+** @nam4rule GetQcalignment Return the Ensembl QC Alignment
 ** @nam4rule GetAnalysis Return the Ensembl Analysis
 ** @nam4rule GetSegmentSequence Return the segment Ensembl QC Sequence
 ** @nam4rule GetFeatureSequence Return the feature Ensembl QC Sequence
@@ -478,14 +478,14 @@ void ensQCDASFeatureDel(EnsPQCDASFeature *Pqcdasf)
 ** @nam4rule GetCategory Return the category
 ** @nam4rule GetType Return the type
 **
-** @argrule * qcdasf [const EnsPQCDASFeature] QC DAS Feature
+** @argrule * qcdasf [const EnsPQcdasfeature] QC DAS Feature
 **
-** @valrule Adaptor [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @valrule Adaptor [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
-** @valrule QCAlignment [EnsPQCAlignment] Ensembl QC Alignment
+** @valrule Qcalignment [EnsPQcalignment] Ensembl QC Alignment
 ** @valrule Analysis [EnsPAnalysis] Ensembl Analysis
-** @valrule SegmentSequence [EnsPQCSequence] Segment Ensembl QC Sequence
-** @valrule FeatureSequence [EnsPQCSequence] Feature Ensembl QC Sequence
+** @valrule SegmentSequence [EnsPQcsequence] Segment Ensembl QC Sequence
+** @valrule FeatureSequence [EnsPQcsequence] Feature Ensembl QC Sequence
 ** @valrule SegmentStart [ajuint] Segment start
 ** @valrule SegmentEnd [ajuint] Segment end
 ** @valrule SegmentStrand [ajint] Segment strand
@@ -501,17 +501,17 @@ void ensQCDASFeatureDel(EnsPQCDASFeature *Pqcdasf)
 
 
 
-/* @func ensQCDASFeatureGetadaptor ********************************************
+/* @func ensQcdasfeatureGetAdaptor ********************************************
 **
 ** Get the Ensembl DAS Feature Adaptor element of an Ensembl DAS Feature.
 **
-** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
-** @return [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @return [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPQCDASFeatureadaptor ensQCDASFeatureGetadaptor(const EnsPQCDASFeature qcdasf)
+EnsPQcdasfeatureadaptor ensQcdasfeatureGetAdaptor(const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return NULL;
@@ -522,18 +522,18 @@ EnsPQCDASFeatureadaptor ensQCDASFeatureGetadaptor(const EnsPQCDASFeature qcdasf)
 
 
 
-/* @func ensQCDASFeatureGetIdentifier *****************************************
+/* @func ensQcdasfeatureGetIdentifier *****************************************
 **
 ** Get the SQL database-internal identifier element of an
 ** Ensembl QC DAS Feature.
 **
-** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
 ** @return [ajuint] Internal database identifier
 ** @@
 ******************************************************************************/
 
-ajuint ensQCDASFeatureGetIdentifier(const EnsPQCDASFeature qcdasf)
+ajuint ensQcdasfeatureGetIdentifier(const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return 0;
@@ -544,38 +544,38 @@ ajuint ensQCDASFeatureGetIdentifier(const EnsPQCDASFeature qcdasf)
 
 
 
-/* @func ensQCDASFeatureGetQCAlignment ****************************************
+/* @func ensQcdasfeatureGetQcalignment ****************************************
 **
 ** Get the Ensembl QC Alignment element of an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
-** @return [EnsPQCAlignment] Ensembl QC Alignment
+** @return [EnsPQcalignment] Ensembl QC Alignment
 ** @@
 ******************************************************************************/
 
-EnsPQCAlignment ensQCDASFeatureGetQCAlignment(const EnsPQCDASFeature qcdasf)
+EnsPQcalignment ensQcdasfeatureGetQcalignment(const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return NULL;
     
-    return qcdasf->QCAlignment;
+    return qcdasf->Qcalignment;
 }
 
 
 
 
-/* @func ensQCDASFeatureGetAnalysis *******************************************
+/* @func ensQcdasfeatureGetAnalysis *******************************************
 **
 ** Get the Ensembl Analysis element of an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
 ** @return [EnsPAnalysis] Ensembl Analysis
 ** @@
 ******************************************************************************/
 
-EnsPAnalysis ensQCDASFeatureGetAnalysis(const EnsPQCDASFeature qcdasf)
+EnsPAnalysis ensQcdasfeatureGetAnalysis(const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return NULL;
@@ -586,17 +586,17 @@ EnsPAnalysis ensQCDASFeatureGetAnalysis(const EnsPQCDASFeature qcdasf)
 
 
 
-/* @func ensQCDASFeatureGetSegmentSequence ************************************
+/* @func ensQcdasfeatureGetSegmentSequence ************************************
 **
 ** Get the segment Ensembl QC Sequence element of an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
-** @return [EnsPQCSequence] Ensembl QC Sequence
+** @return [EnsPQcsequence] Ensembl QC Sequence
 ** @@
 ******************************************************************************/
 
-EnsPQCSequence ensQCDASFeatureGetSegmentSequence(const EnsPQCDASFeature qcdasf)
+EnsPQcsequence ensQcdasfeatureGetSegmentSequence(const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return NULL;
@@ -607,17 +607,17 @@ EnsPQCSequence ensQCDASFeatureGetSegmentSequence(const EnsPQCDASFeature qcdasf)
 
 
 
-/* @func ensQCDASFeatureGetFeatureSequence ************************************
+/* @func ensQcdasfeatureGetFeatureSequence ************************************
 **
 ** Get the feature Ensembl QC Sequence element of an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
-** @return [EnsPQCSequence] Ensembl QC Sequence
+** @return [EnsPQcsequence] Ensembl QC Sequence
 ** @@
 ******************************************************************************/
 
-EnsPQCSequence ensQCDASFeatureGetFeatureSequence(const EnsPQCDASFeature qcdasf)
+EnsPQcsequence ensQcdasfeatureGetFeatureSequence(const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return NULL;
@@ -628,17 +628,17 @@ EnsPQCSequence ensQCDASFeatureGetFeatureSequence(const EnsPQCDASFeature qcdasf)
 
 
 
-/* @func ensQCDASFeatureGetSegmentStart ***************************************
+/* @func ensQcdasfeatureGetSegmentStart ***************************************
 **
 ** Get the segment start element of an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
 ** @return [ajuint] Segment start
 ** @@
 ******************************************************************************/
 
-ajuint ensQCDASFeatureGetSegmentStart(const EnsPQCDASFeature qcdasf)
+ajuint ensQcdasfeatureGetSegmentStart(const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return 0;
@@ -649,17 +649,17 @@ ajuint ensQCDASFeatureGetSegmentStart(const EnsPQCDASFeature qcdasf)
 
 
 
-/* @func ensQCDASFeatureGetSegmentEnd *****************************************
+/* @func ensQcdasfeatureGetSegmentEnd *****************************************
 **
 ** Get the segment end element of an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
 ** @return [ajuint] Segment end
 ** @@
 ******************************************************************************/
 
-ajuint ensQCDASFeatureGetSegmentEnd(const EnsPQCDASFeature qcdasf)
+ajuint ensQcdasfeatureGetSegmentEnd(const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return 0;
@@ -670,17 +670,17 @@ ajuint ensQCDASFeatureGetSegmentEnd(const EnsPQCDASFeature qcdasf)
 
 
 
-/* @func ensQCDASFeatureGetSegmentStrand **************************************
+/* @func ensQcdasfeatureGetSegmentStrand **************************************
 **
 ** Get the segment strand element of an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
 ** @return [ajint] Segment strand
 ** @@
 ******************************************************************************/
 
-ajint ensQCDASFeatureGetSegmentStrand(const EnsPQCDASFeature qcdasf)
+ajint ensQcdasfeatureGetSegmentStrand(const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return 0;
@@ -691,17 +691,17 @@ ajint ensQCDASFeatureGetSegmentStrand(const EnsPQCDASFeature qcdasf)
 
 
 
-/* @func ensQCDASFeatureGetFeatureStart ***************************************
+/* @func ensQcdasfeatureGetFeatureStart ***************************************
 **
 ** Get the feature start element of an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
 ** @return [ajuint] Feature start
 ** @@
 ******************************************************************************/
 
-ajuint ensQCDASFeatureGetFeatureStart(const EnsPQCDASFeature qcdasf)
+ajuint ensQcdasfeatureGetFeatureStart(const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return 0;
@@ -712,17 +712,17 @@ ajuint ensQCDASFeatureGetFeatureStart(const EnsPQCDASFeature qcdasf)
 
 
 
-/* @func ensQCDASFeatureGetFeatureEnd ***************************************
+/* @func ensQcdasfeatureGetFeatureEnd ***************************************
 **
 ** Get the feature end element of an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
 ** @return [ajuint] Feature end
 ** @@
 ******************************************************************************/
 
-ajuint ensQCDASFeatureGetFeatureEnd(const EnsPQCDASFeature qcdasf)
+ajuint ensQcdasfeatureGetFeatureEnd(const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return 0;
@@ -733,17 +733,17 @@ ajuint ensQCDASFeatureGetFeatureEnd(const EnsPQCDASFeature qcdasf)
 
 
 
-/* @func ensQCDASFeatureGetPhase **********************************************
+/* @func ensQcdasfeatureGetPhase **********************************************
 **
 ** Get the phase element of an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
 ** @return [ajint] Phase
 ** @@
 ******************************************************************************/
 
-ajint ensQCDASFeatureGetPhase(const EnsPQCDASFeature qcdasf)
+ajint ensQcdasfeatureGetPhase(const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return 0;
@@ -754,20 +754,20 @@ ajint ensQCDASFeatureGetPhase(const EnsPQCDASFeature qcdasf)
 
 
 
-/* @func ensQCDASFeatureGetCategory *******************************************
+/* @func ensQcdasfeatureGetCategory *******************************************
 **
 ** Get the category element of an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
 ** @return [AjEnum] Category
 ** @@
 ******************************************************************************/
 
-AjEnum ensQCDASFeatureGetCategory(const EnsPQCDASFeature qcdasf)
+AjEnum ensQcdasfeatureGetCategory(const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
-        return ensEQCDASFeatureCategoryNULL;
+        return ensEQcdasfeatureCategoryNULL;
     
     return qcdasf->Category;
 }
@@ -775,20 +775,20 @@ AjEnum ensQCDASFeatureGetCategory(const EnsPQCDASFeature qcdasf)
 
 
 
-/* @func ensQCDASFeatureGetType ***********************************************
+/* @func ensQcdasfeatureGetType ***********************************************
 **
 ** Get the type element of an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
 ** @return [AjEnum] Type
 ** @@
 ******************************************************************************/
 
-AjEnum ensQCDASFeatureGetType(const EnsPQCDASFeature qcdasf)
+AjEnum ensQcdasfeatureGetType(const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
-        return ensEQCDASFeatureTypeNULL;
+        return ensEQcdasfeatureTypeNULL;
     
     return qcdasf->Type;
 }
@@ -800,13 +800,13 @@ AjEnum ensQCDASFeatureGetType(const EnsPQCDASFeature qcdasf)
 **
 ** Functions for assigning elements of an Ensembl QC DAS Feature object.
 **
-** @fdata [EnsPQCDASFeature]
+** @fdata [EnsPQcdasfeature]
 ** @fnote None
 **
 ** @nam3rule Set Set one element of a QC DAS Feature
-** @nam4rule Setadaptor Set the Ensembl QC DAS Feature Adaptor
+** @nam4rule SetAdaptor Set the Ensembl QC DAS Feature Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
-** @nam4rule SetQCAlignment Set the Ensembl QC Alignment
+** @nam4rule SetQcalignment Set the Ensembl QC Alignment
 ** @nam4rule SetAnalysis Set the Ensembl Analysis
 ** @nam4rule SetSegmentSequence Set the segment Ensembl QC Sequence
 ** @nam4rule SetFeatureSequence Set the feature Ensembl QC Sequence
@@ -819,7 +819,7 @@ AjEnum ensQCDASFeatureGetType(const EnsPQCDASFeature qcdasf)
 ** @nam4rule SetCategory Set the category
 ** @nam4rule SetType Set the type
 **
-** @argrule * qcdasf [EnsPQCDASFeature] Ensembl QC DAS Feature
+** @argrule * qcdasf [EnsPQcdasfeature] Ensembl QC DAS Feature
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
@@ -829,19 +829,19 @@ AjEnum ensQCDASFeatureGetType(const EnsPQCDASFeature qcdasf)
 
 
 
-/* @func ensQCDASFeatureSetadaptor ********************************************
+/* @func ensQcdasfeatureSetAdaptor ********************************************
 **
 ** Set the Ensembl QC DAS Feature Adaptor element of an Ensembl QC DAS Feature.
 **
-** @param [u] qcdasf [EnsPQCDASFeature] Ensembl QC DAS Feature
-** @param [r] adaptor [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @param [u] qcdasf [EnsPQcdasfeature] Ensembl QC DAS Feature
+** @param [r] adaptor [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureSetadaptor(EnsPQCDASFeature qcdasf,
-                                 EnsPQCDASFeatureadaptor adaptor)
+AjBool ensQcdasfeatureSetAdaptor(EnsPQcdasfeature qcdasf,
+                                 EnsPQcdasfeatureadaptor adaptor)
 {
     if(!qcdasf)
 	return ajFalse;
@@ -854,19 +854,19 @@ AjBool ensQCDASFeatureSetadaptor(EnsPQCDASFeature qcdasf,
 
 
 
-/* @func ensQCDASFeatureSetIdentifier *****************************************
+/* @func ensQcdasfeatureSetIdentifier *****************************************
 **
 ** Set the SQL database-internal identifier element of an
 ** Ensembl QC DAS Feature.
 **
-** @param [u] qcdasf [EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [u] qcdasf [EnsPQcdasfeature] Ensembl QC DAS Feature
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureSetIdentifier(EnsPQCDASFeature qcdasf, ajuint identifier)
+AjBool ensQcdasfeatureSetIdentifier(EnsPQcdasfeature qcdasf, ajuint identifier)
 {
     if(!qcdasf)
 	return ajFalse;
@@ -879,26 +879,26 @@ AjBool ensQCDASFeatureSetIdentifier(EnsPQCDASFeature qcdasf, ajuint identifier)
 
 
 
-/* @func ensQCDASFeatureSetQCAlignment ****************************************
+/* @func ensQcdasfeatureSetQcalignment ****************************************
 **
 ** Set the Ensembl QC Alignment element of an Ensembl QC DAS Feature.
 **
-** @param [u] qcdasf [EnsPQCDASFeature] Ensembl QC DAS Feature
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qcdasf [EnsPQcdasfeature] Ensembl QC DAS Feature
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureSetQCAlignment(EnsPQCDASFeature qcdasf,
-                                     EnsPQCAlignment qca)
+AjBool ensQcdasfeatureSetQcalignment(EnsPQcdasfeature qcdasf,
+                                     EnsPQcalignment qca)
 {
     if(!qcdasf)
 	return ajFalse;
     
-    ensQCAlignmentDel(&qcdasf->QCAlignment);
+    ensQcalignmentDel(&qcdasf->Qcalignment);
     
-    qcdasf->QCAlignment = ensQCAlignmentNewRef(qca);
+    qcdasf->Qcalignment = ensQcalignmentNewRef(qca);
     
     return ajTrue;
 }
@@ -906,18 +906,18 @@ AjBool ensQCDASFeatureSetQCAlignment(EnsPQCDASFeature qcdasf,
 
 
 
-/* @func ensQCDASFeatureSetAnalysis *******************************************
+/* @func ensQcdasfeatureSetAnalysis *******************************************
 **
 ** Set the Ensembl Analysis element of an Ensembl QC DAS Feature.
 **
-** @param [u] qcdasf [EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [u] qcdasf [EnsPQcdasfeature] Ensembl QC DAS Feature
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureSetAnalysis(EnsPQCDASFeature qcdasf,
+AjBool ensQcdasfeatureSetAnalysis(EnsPQcdasfeature qcdasf,
                                   EnsPAnalysis analysis)
 {
     if(!qcdasf)
@@ -933,26 +933,26 @@ AjBool ensQCDASFeatureSetAnalysis(EnsPQCDASFeature qcdasf,
 
 
 
-/* @func ensQCDASFeatureSetSegmentSequence ************************************
+/* @func ensQcdasfeatureSetSegmentSequence ************************************
 **
 ** Set the segment Ensembl QC Sequence element of an Ensembl QC DAS Feature.
 **
-** @param [u] qcdasf [EnsPQCDASFeature] Ensembl QC DAS Feature
-** @param [u] qcs [EnsPQCSequence] Ensembl QC Sequence
+** @param [u] qcdasf [EnsPQcdasfeature] Ensembl QC DAS Feature
+** @param [u] qcs [EnsPQcsequence] Ensembl QC Sequence
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureSetSegmentSequence(EnsPQCDASFeature qcdasf,
-                                         EnsPQCSequence qcs)
+AjBool ensQcdasfeatureSetSegmentSequence(EnsPQcdasfeature qcdasf,
+                                         EnsPQcsequence qcs)
 {
     if(!qcdasf)
 	return ajFalse;
     
-    ensQCSequenceDel(&qcdasf->SegmentSequence);
+    ensQcsequenceDel(&qcdasf->SegmentSequence);
     
-    qcdasf->SegmentSequence = ensQCSequenceNewRef(qcs);
+    qcdasf->SegmentSequence = ensQcsequenceNewRef(qcs);
     
     return ajTrue;
 }
@@ -960,26 +960,26 @@ AjBool ensQCDASFeatureSetSegmentSequence(EnsPQCDASFeature qcdasf,
 
 
 
-/* @func ensQCDASFeatureSetFeatureSequence ************************************
+/* @func ensQcdasfeatureSetFeatureSequence ************************************
 **
 ** Set the feature Ensembl QC Sequence element of an Ensembl QC DAS Feature.
 **
-** @param [u] qcdasf [EnsPQCDASFeature] Ensembl QC DAS Feature
-** @param [u] qcs [EnsPQCSequence] Ensembl QC Sequence
+** @param [u] qcdasf [EnsPQcdasfeature] Ensembl QC DAS Feature
+** @param [u] qcs [EnsPQcsequence] Ensembl QC Sequence
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureSetFeatureSequence(EnsPQCDASFeature qcdasf,
-                                         EnsPQCSequence qcs)
+AjBool ensQcdasfeatureSetFeatureSequence(EnsPQcdasfeature qcdasf,
+                                         EnsPQcsequence qcs)
 {
     if(!qcdasf)
 	return ajFalse;
     
-    ensQCSequenceDel(&qcdasf->FeatureSequence);
+    ensQcsequenceDel(&qcdasf->FeatureSequence);
     
-    qcdasf->FeatureSequence = ensQCSequenceNewRef(qcs);
+    qcdasf->FeatureSequence = ensQcsequenceNewRef(qcs);
     
     return ajTrue;
 }
@@ -987,18 +987,18 @@ AjBool ensQCDASFeatureSetFeatureSequence(EnsPQCDASFeature qcdasf,
 
 
 
-/* @func ensQCDASFeatureSetSegmentStart ***************************************
+/* @func ensQcdasfeatureSetSegmentStart ***************************************
 **
 ** Set the segment start element of an Ensembl QC DAS Feature.
 **
-** @param [u] qcdasf [EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [u] qcdasf [EnsPQcdasfeature] Ensembl QC DAS Feature
 ** @param [r] start [ajuint] Segment start
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureSetSegmentStart(EnsPQCDASFeature qcdasf, ajuint start)
+AjBool ensQcdasfeatureSetSegmentStart(EnsPQcdasfeature qcdasf, ajuint start)
 {
     if(!qcdasf)
 	return ajFalse;
@@ -1011,18 +1011,18 @@ AjBool ensQCDASFeatureSetSegmentStart(EnsPQCDASFeature qcdasf, ajuint start)
 
 
 
-/* @func ensQCDASFeatureSetSegmentEnd *****************************************
+/* @func ensQcdasfeatureSetSegmentEnd *****************************************
 **
 ** Set the segment end element of an Ensembl QC DAS Feature.
 **
-** @param [u] qcdasf [EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [u] qcdasf [EnsPQcdasfeature] Ensembl QC DAS Feature
 ** @param [r] end [ajuint] Segment end
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureSetSegmentEnd(EnsPQCDASFeature qcdasf, ajuint end)
+AjBool ensQcdasfeatureSetSegmentEnd(EnsPQcdasfeature qcdasf, ajuint end)
 {
     if(!qcdasf)
 	return ajFalse;
@@ -1035,18 +1035,18 @@ AjBool ensQCDASFeatureSetSegmentEnd(EnsPQCDASFeature qcdasf, ajuint end)
 
 
 
-/* @func ensQCDASFeatureSetSegmentStrand **************************************
+/* @func ensQcdasfeatureSetSegmentStrand **************************************
 **
 ** Set the segment strand element of an Ensembl QC DAS Feature.
 **
-** @param [u] qcdasf [EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [u] qcdasf [EnsPQcdasfeature] Ensembl QC DAS Feature
 ** @param [r] strand [ajint] Segment strand
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureSetSegmentStrand(EnsPQCDASFeature qcdasf, ajint strand)
+AjBool ensQcdasfeatureSetSegmentStrand(EnsPQcdasfeature qcdasf, ajint strand)
 {
     if(!qcdasf)
 	return ajFalse;
@@ -1059,18 +1059,18 @@ AjBool ensQCDASFeatureSetSegmentStrand(EnsPQCDASFeature qcdasf, ajint strand)
 
 
 
-/* @func ensQCDASFeatureSetFeatureStart ***************************************
+/* @func ensQcdasfeatureSetFeatureStart ***************************************
 **
 ** Set the feature start element of an Ensembl QC DAS Feature.
 **
-** @param [u] qcdasf [EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [u] qcdasf [EnsPQcdasfeature] Ensembl QC DAS Feature
 ** @param [r] start [ajuint] Feature start
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureSetFeatureStart(EnsPQCDASFeature qcdasf, ajuint start)
+AjBool ensQcdasfeatureSetFeatureStart(EnsPQcdasfeature qcdasf, ajuint start)
 {
     if(!qcdasf)
 	return ajFalse;
@@ -1083,18 +1083,18 @@ AjBool ensQCDASFeatureSetFeatureStart(EnsPQCDASFeature qcdasf, ajuint start)
 
 
 
-/* @func ensQCDASFeatureSetFeatureEnd *****************************************
+/* @func ensQcdasfeatureSetFeatureEnd *****************************************
 **
 ** Set the feature end element of an Ensembl QC DAS Feature.
 **
-** @param [u] qcdasf [EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [u] qcdasf [EnsPQcdasfeature] Ensembl QC DAS Feature
 ** @param [r] end [ajuint] Feature end
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureSetFeatureEnd(EnsPQCDASFeature qcdasf, ajuint end)
+AjBool ensQcdasfeatureSetFeatureEnd(EnsPQcdasfeature qcdasf, ajuint end)
 {
     if(!qcdasf)
 	return ajFalse;
@@ -1107,18 +1107,18 @@ AjBool ensQCDASFeatureSetFeatureEnd(EnsPQCDASFeature qcdasf, ajuint end)
 
 
 
-/* @func ensQCDASFeatureSetPhase **********************************************
+/* @func ensQcdasfeatureSetPhase **********************************************
 **
 ** Set the phase element of an Ensembl QC DAS Feature.
 **
-** @param [u] qcdasf [EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [u] qcdasf [EnsPQcdasfeature] Ensembl QC DAS Feature
 ** @param [r] phase [ajint] Phase
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureSetPhase(EnsPQCDASFeature qcdasf, ajint phase)
+AjBool ensQcdasfeatureSetPhase(EnsPQcdasfeature qcdasf, ajint phase)
 {
     if(!qcdasf)
 	return ajFalse;
@@ -1131,18 +1131,18 @@ AjBool ensQCDASFeatureSetPhase(EnsPQCDASFeature qcdasf, ajint phase)
 
 
 
-/* @func ensQCDASFeatureSetCategory *******************************************
+/* @func ensQcdasfeatureSetCategory *******************************************
 **
 ** Set the category element of an Ensembl QC DAS Feature.
 **
-** @param [u] qcdasf [EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [u] qcdasf [EnsPQcdasfeature] Ensembl QC DAS Feature
 ** @param [r] category [AjEnum] Category
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureSetCategory(EnsPQCDASFeature qcdasf, AjEnum category)
+AjBool ensQcdasfeatureSetCategory(EnsPQcdasfeature qcdasf, AjEnum category)
 {
     if(!qcdasf)
 	return ajFalse;
@@ -1155,18 +1155,18 @@ AjBool ensQCDASFeatureSetCategory(EnsPQCDASFeature qcdasf, AjEnum category)
 
 
 
-/* @func ensQCDASFeatureSetType ***********************************************
+/* @func ensQcdasfeatureSetType ***********************************************
 **
 ** Set the type element of an Ensembl QC DAS Feature.
 **
-** @param [u] qcdasf [EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [u] qcdasf [EnsPQcdasfeature] Ensembl QC DAS Feature
 ** @param [r] type [AjEnum] Type
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureSetType(EnsPQCDASFeature qcdasf, AjEnum type)
+AjBool ensQcdasfeatureSetType(EnsPQcdasfeature qcdasf, AjEnum type)
 {
     if(!qcdasf)
 	return ajFalse;
@@ -1179,32 +1179,32 @@ AjBool ensQCDASFeatureSetType(EnsPQCDASFeature qcdasf, AjEnum type)
 
 
 
-/* @func ensQCDASFeatureGetMemSize ********************************************
+/* @func ensQcdasfeatureGetMemSize ********************************************
 **
 ** Get the memory size in bytes of an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
 ** @return [ajuint] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensQCDASFeatureGetMemSize(const EnsPQCDASFeature qcdasf)
+ajuint ensQcdasfeatureGetMemSize(const EnsPQcdasfeature qcdasf)
 {
     ajuint size = 0;
     
     if(!qcdasf)
 	return 0;
     
-    size += (ajuint) sizeof (EnsOQCDASFeature);
+    size += (ajuint) sizeof (EnsOQcdasfeature);
     
     size += ensAnalysisGetMemSize(qcdasf->Analysis);
     
-    size += ensQCAlignmentGetMemSize(qcdasf->QCAlignment);
+    size += ensQcalignmentGetMemSize(qcdasf->Qcalignment);
     
-    size += ensQCSequenceGetMemSize(qcdasf->SegmentSequence);
+    size += ensQcsequenceGetMemSize(qcdasf->SegmentSequence);
     
-    size += ensQCSequenceGetMemSize(qcdasf->FeatureSequence);
+    size += ensQcsequenceGetMemSize(qcdasf->FeatureSequence);
     
     return size;
 }
@@ -1216,10 +1216,10 @@ ajuint ensQCDASFeatureGetMemSize(const EnsPQCDASFeature qcdasf)
 **
 ** Functions for reporting of an Ensembl QC DAS Feature object.
 **
-** @fdata [EnsPQCDASFeature]
+** @fdata [EnsPQcdasfeature]
 ** @nam3rule Trace Report Ensembl QC DAS Feature elements to debug file
 **
-** @argrule Trace qcdasf [const EnsPQCSequence] Ensembl QC DAS Feature
+** @argrule Trace qcdasf [const EnsPQcsequence] Ensembl QC DAS Feature
 ** @argrule Trace level [ajuint] Indentation level
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -1230,18 +1230,18 @@ ajuint ensQCDASFeatureGetMemSize(const EnsPQCDASFeature qcdasf)
 
 
 
-/* @func ensQCDASFeatureTrace *************************************************
+/* @func ensQcdasfeatureTrace *************************************************
 **
 ** Trace an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 ** @param [r] level [ajuint] Indentation level
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureTrace(const EnsPQCDASFeature qcdasf, ajuint level)
+AjBool ensQcdasfeatureTrace(const EnsPQcdasfeature qcdasf, ajuint level)
 {
     AjPStr indent = NULL;
     
@@ -1252,11 +1252,11 @@ AjBool ensQCDASFeatureTrace(const EnsPQCDASFeature qcdasf, ajuint level)
     
     ajStrAppendCountK(&indent, ' ', level * 2);
     
-    ajDebug("%SensQCDASFeatureTrace %p\n"
+    ajDebug("%SensQcdasfeatureTrace %p\n"
 	    "%S  Use %u\n"
 	    "%S  Identifier %u\n"
 	    "%S  Adaptor %p\n"
-	    "%S  QCAlignment %p\n"
+	    "%S  Qcalignment %p\n"
 	    "%S  Analysis %p\n"
 	    "%S  SegmentSequence %p\n"
 	    "%S  FeatureSequence %p\n"
@@ -1272,7 +1272,7 @@ AjBool ensQCDASFeatureTrace(const EnsPQCDASFeature qcdasf, ajuint level)
 	    indent, qcdasf->Use,
 	    indent, qcdasf->Identifier,
 	    indent, qcdasf->Adaptor,
-	    indent, qcdasf->QCAlignment,
+	    indent, qcdasf->Qcalignment,
 	    indent, qcdasf->Analysis,
 	    indent, qcdasf->SegmentSequence,
 	    indent, qcdasf->FeatureSequence,
@@ -1282,16 +1282,16 @@ AjBool ensQCDASFeatureTrace(const EnsPQCDASFeature qcdasf, ajuint level)
 	    indent, qcdasf->FeatureStart,
 	    indent, qcdasf->FeatureEnd,
 	    indent, qcdasf->Phase,
-	    indent, ensQCDASFeatureCategoryToChar(qcdasf->Category),
-	    indent, ensQCDASFeatureTypeToChar(qcdasf->Type));
+	    indent, ensQcdasfeatureCategoryToChar(qcdasf->Category),
+	    indent, ensQcdasfeatureTypeToChar(qcdasf->Type));
     
     ensAnalysisTrace(qcdasf->Analysis, 1);
     
-    ensQCAlignmentTrace(qcdasf->QCAlignment, 1);
+    ensQcalignmentTrace(qcdasf->Qcalignment, 1);
     
-    ensQCSequenceTrace(qcdasf->SegmentSequence, 1);
+    ensQcsequenceTrace(qcdasf->SegmentSequence, 1);
     
-    ensQCSequenceTrace(qcdasf->FeatureSequence, 1);
+    ensQcsequenceTrace(qcdasf->FeatureSequence, 1);
     
     ajStrDel(&indent);
     
@@ -1301,29 +1301,29 @@ AjBool ensQCDASFeatureTrace(const EnsPQCDASFeature qcdasf, ajuint level)
 
 
 
-/* @func ensQCDASFeatureCategoryFromStr ***************************************
+/* @func ensQcdasfeatureCategoryFromStr ***************************************
 **
 ** Convert an AJAX String into an Ensembl QC DAS Feature category element.
 **
 ** @param [r] category [const AjPStr] Category string
 **
 ** @return [AjEnum] Ensembl QC DAS Feature category element or
-**                  ensEQCDASFeatureCategoryNULL
+**                  ensEQcdasfeatureCategoryNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQCDASFeatureCategoryFromStr(const AjPStr category)
+AjEnum ensQcdasfeatureCategoryFromStr(const AjPStr category)
 {
     register ajint i = 0;
     
-    AjEnum ecategory = ensEQCDASFeatureCategoryNULL;
+    AjEnum ecategory = ensEQcdasfeatureCategoryNULL;
     
     for(i = 1; qcDASFeatureCategory[i]; i++)
 	if(ajStrMatchCaseC(category, qcDASFeatureCategory[i]))
 	    ecategory = i;
     
     if(!ecategory)
-	ajDebug("ensQCDASFeatureCategoryFromStr encountered "
+	ajDebug("ensQcdasfeatureCategoryFromStr encountered "
 		"unexpected string '%S'.\n", category);
     
     return ecategory;
@@ -1332,29 +1332,29 @@ AjEnum ensQCDASFeatureCategoryFromStr(const AjPStr category)
 
 
 
-/* @func ensQCDASFeatureTypeFromStr *******************************************
+/* @func ensQcdasfeatureTypeFromStr *******************************************
 **
 ** Convert an AJAX String into an Ensembl QC DAS Feature type element.
 **
 ** @param [r] type [const AjPStr] Type string
 **
 ** @return [AjEnum] Ensembl QC DAS Feature type element or
-**                  ensEQCDASFeatureTypeNULL
+**                  ensEQcdasfeatureTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQCDASFeatureTypeFromStr(const AjPStr type)
+AjEnum ensQcdasfeatureTypeFromStr(const AjPStr type)
 {
     register ajint i = 0;
     
-    AjEnum etype = ensEQCDASFeatureTypeNULL;
+    AjEnum etype = ensEQcdasfeatureTypeNULL;
     
     for(i = 1; qcDASFeatureType[i]; i++)
 	if(ajStrMatchCaseC(type, qcDASFeatureType[i]))
 	    etype = i;
     
     if(!etype)
-	ajDebug("ensQCDASFeatureTypeFromStr encountered "
+	ajDebug("ensQcdasfeatureTypeFromStr encountered "
 		"unexpected string '%S'.\n", type);
     
     return etype;
@@ -1363,7 +1363,7 @@ AjEnum ensQCDASFeatureTypeFromStr(const AjPStr type)
 
 
 
-/* @func ensQCDASFeatureCategoryToChar ****************************************
+/* @func ensQcdasfeatureCategoryToChar ****************************************
 **
 ** Convert an Ensembl QC DAS Feature category element into a
 ** C-type (char*) string.
@@ -1376,7 +1376,7 @@ AjEnum ensQCDASFeatureTypeFromStr(const AjPStr type)
 ** @@
 ******************************************************************************/
 
-const char* ensQCDASFeatureCategoryToChar(const AjEnum category)
+const char* ensQcdasfeatureCategoryToChar(const AjEnum category)
 {
     register ajint i = 0;
     
@@ -1386,7 +1386,7 @@ const char* ensQCDASFeatureCategoryToChar(const AjEnum category)
     for(i = 1; qcDASFeatureCategory[i] && (i < category); i++);
     
     if(!qcDASFeatureCategory[i])
-	ajDebug("ensQCDASFeatureCategoryToChar encountered an "
+	ajDebug("ensQcdasfeatureCategoryToChar encountered an "
 		"out of boundary error on group %d.\n", category);
     
     return qcDASFeatureCategory[i];
@@ -1395,7 +1395,7 @@ const char* ensQCDASFeatureCategoryToChar(const AjEnum category)
 
 
 
-/* @func ensQCDASFeatureTypeToChar ********************************************
+/* @func ensQcdasfeatureTypeToChar ********************************************
 **
 ** Convert an Ensembl QC DAS Feature type element into a
 ** C-type (char*) string.
@@ -1407,7 +1407,7 @@ const char* ensQCDASFeatureCategoryToChar(const AjEnum category)
 ** @@
 ******************************************************************************/
 
-const char *ensQCDASFeatureTypeToChar(const AjEnum type)
+const char *ensQcdasfeatureTypeToChar(const AjEnum type)
 {
     register ajint i = 0;
     
@@ -1417,7 +1417,7 @@ const char *ensQCDASFeatureTypeToChar(const AjEnum type)
     for(i = 1; qcDASFeatureType[i] && (i < type); i++);
     
     if(!qcDASFeatureType[i])
-	ajDebug("ensQCDASFeatureTypeToChar encountered an "
+	ajDebug("ensQcdasfeatureTypeToChar encountered an "
 		"out of boundary error on group %d.\n", type);
     
     return qcDASFeatureType[i];
@@ -1426,13 +1426,13 @@ const char *ensQCDASFeatureTypeToChar(const AjEnum type)
 
 
 
-/* @datasection [EnsPQCDASFeatureadaptor] QC DAS Feature Adaptor **************
+/* @datasection [EnsPQcdasfeatureadaptor] QC DAS Feature Adaptor **************
 **
 ** Functions for manipulating Ensembl QC DAS Feature Adaptor objects
 **
 ** Bio::EnsEMBL::QC::DBSQL::DASFeatureadaptor CVS Revision:
 **
-** @nam2rule QCDASFeatureadaptor
+** @nam2rule Qcdasfeatureadaptor
 **
 ******************************************************************************/
 
@@ -1493,7 +1493,7 @@ static const char *qcDASFeatureadaptorFinalCondition =
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
-** @param [u] am [EnsPAssemblyMapper] Ensembl Assembly Mapper
+** @param [u] am [EnsPAssemblymapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [u] qcdasfs [AjPList] AJAX List of Ensembl QC DAS Features
 **
@@ -1503,7 +1503,7 @@ static const char *qcDASFeatureadaptorFinalCondition =
 
 static AjBool qcDASFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
-                                               EnsPAssemblyMapper am,
+                                               EnsPAssemblymapper am,
                                                EnsPSlice slice,
                                                AjPList qcdasfs)
 {
@@ -1520,8 +1520,8 @@ static AjBool qcDASFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     ajuint tstart = 0;
     ajuint tend   = 0;
     
-    AjEnum ecategory = ensEQCDASFeatureCategoryNULL;
-    AjEnum etype     = ensEQCDASFeatureTypeNULL;
+    AjEnum ecategory = ensEQcdasfeatureCategoryNULL;
+    AjEnum etype     = ensEQcdasfeatureTypeNULL;
     
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;
@@ -1533,15 +1533,15 @@ static AjBool qcDASFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPAnalysis analysis  = NULL;
     EnsPAnalysisadaptor aa = NULL;
     
-    EnsPQCAlignment qca         = NULL;
-    EnsPQCAlignmentadaptor qcaa = NULL;
+    EnsPQcalignment qca         = NULL;
+    EnsPQcalignmentadaptor qcaa = NULL;
     
-    EnsPQCDASFeature qcdasf         = NULL;
-    EnsPQCDASFeatureadaptor qcdasfa = NULL;
+    EnsPQcdasfeature qcdasf         = NULL;
+    EnsPQcdasfeatureadaptor qcdasfa = NULL;
     
-    EnsPQCSequence qsequence   = NULL;
-    EnsPQCSequence tsequence   = NULL;
-    EnsPQCSequenceadaptor qcsa = NULL;
+    EnsPQcsequence qsequence   = NULL;
+    EnsPQcsequence tsequence   = NULL;
+    EnsPQcsequenceadaptor qcsa = NULL;
     
     if(!dba)
 	return ajFalse;
@@ -1558,11 +1558,11 @@ static AjBool qcDASFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     
     aa = ensRegistryGetAnalysisadaptor(dba);
     
-    qcaa = ensRegistryGetQCAlignmentadaptor(dba);
+    qcaa = ensRegistryGetQcalignmentadaptor(dba);
     
-    qcdasfa = ensRegistryGetQCDASFeatureadaptor(dba);
+    qcdasfa = ensRegistryGetQcdasfeatureadaptor(dba);
     
-    qcsa = ensRegistryGetQCSequenceadaptor(dba);
+    qcsa = ensRegistryGetQcsequenceadaptor(dba);
     
     sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
@@ -1583,8 +1583,8 @@ static AjBool qcDASFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	phase       = 0;
 	category    = ajStrNew();
 	type        = ajStrNew();
-	ecategory   = ensEQCDASFeatureCategoryNULL;
-	etype       = ensEQCDASFeatureTypeNULL;
+	ecategory   = ensEQcdasfeatureCategoryNULL;
+	etype       = ensEQcdasfeatureTypeNULL;
 	
         sqlr = ajSqlrowiterGet(sqli);
 	
@@ -1604,17 +1604,17 @@ static AjBool qcDASFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	ensAnalysisadaptorFetchByIdentifier(aa, analysisid, &analysis);
 	
-	ensQCAlignmentadaptorFetchByIdentifier(qcaa, alignmentid, &qca);
+	ensQcalignmentadaptorFetchByIdentifier(qcaa, alignmentid, &qca);
 	
-	ensQCSequenceadaptorFetchByIdentifier(qcsa, qsid, &qsequence);
+	ensQcsequenceadaptorFetchByIdentifier(qcsa, qsid, &qsequence);
 	
-	ensQCSequenceadaptorFetchByIdentifier(qcsa, tsid, &tsequence);
+	ensQcsequenceadaptorFetchByIdentifier(qcsa, tsid, &tsequence);
 	
-	ecategory = ensQCDASFeatureCategoryFromStr(category);
+	ecategory = ensQcdasfeatureCategoryFromStr(category);
 	
-	etype = ensQCDASFeatureTypeFromStr(type);
+	etype = ensQcdasfeatureTypeFromStr(type);
 	
-	qcdasf = ensQCDASFeatureNew(qcdasfa,
+	qcdasf = ensQcdasfeatureNew(qcdasfa,
 				    identifier,
 				    qca,
 				    analysis,
@@ -1631,12 +1631,12 @@ static AjBool qcDASFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	ajListPushAppend(qcdasfs, (void *) qcdasf);
 	
-	ensQCSequenceDel(&qsequence);
-	ensQCSequenceDel(&tsequence);
+	ensQcsequenceDel(&qsequence);
+	ensQcsequenceDel(&tsequence);
 	
 	ensAnalysisDel(&analysis);
 	
-	ensQCAlignmentDel(&qca);
+	ensQcalignmentDel(&qca);
 	
 	ajStrDel(&category);
 	ajStrDel(&type);
@@ -1659,7 +1659,7 @@ static AjBool qcDASFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** QC DAS Feature Adaptor. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPQCDASFeatureadaptor]
+** @fdata [EnsPQcdasfeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
@@ -1667,10 +1667,10 @@ static AjBool qcDASFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
 ** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
-** @argrule Ref object [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @argrule Obj object [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @argrule Ref object [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
 **
-** @valrule * [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @valrule * [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -1678,17 +1678,17 @@ static AjBool qcDASFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @func ensQCDASFeatureadaptorNew ********************************************
+/* @func ensQcdasfeatureadaptorNew ********************************************
 **
 ** Default constructor for an Ensembl QC DAS Feature Adaptor.
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor or NULL
+** @return [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCDASFeatureadaptor ensQCDASFeatureadaptorNew(EnsPDatabaseadaptor dba)
+EnsPQcdasfeatureadaptor ensQcdasfeatureadaptorNew(EnsPDatabaseadaptor dba)
 {
     if(!dba)
 	return NULL;
@@ -1710,12 +1710,12 @@ EnsPQCDASFeatureadaptor ensQCDASFeatureadaptorNew(EnsPDatabaseadaptor dba)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl QC DAS Feature Adaptor.
 **
-** @fdata [EnsPQCDASFeatureadaptor]
+** @fdata [EnsPQcdasfeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a QC DAS Feature Adaptor object
 **
-** @argrule * Pqcdasfa [EnsPQCDASFeatureadaptor*] QC DAS Feature Adaptor
+** @argrule * Pqcdasfa [EnsPQcdasfeatureadaptor*] QC DAS Feature Adaptor
 **                                                object address
 **
 ** @valrule * [void]
@@ -1726,21 +1726,21 @@ EnsPQCDASFeatureadaptor ensQCDASFeatureadaptorNew(EnsPDatabaseadaptor dba)
 
 
 
-/* @func ensQCDASFeatureadaptorDel ********************************************
+/* @func ensQcdasfeatureadaptorDel ********************************************
 **
 ** Default destructor for an Ensembl QC DAS Feature Adaptor.
 **
-** @param [d] Pqcfasfa [EnsPQCDASFeatureadaptor*] Ensembl QC DAS Feature
+** @param [d] Pqcfasfa [EnsPQcdasfeatureadaptor*] Ensembl QC DAS Feature
 **                                                Adaptor address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensQCDASFeatureadaptorDel(EnsPQCDASFeatureadaptor *Pqcdasfa)
+void ensQcdasfeatureadaptorDel(EnsPQcdasfeatureadaptor *Pqcdasfa)
 {
     /*
-     ajDebug("ensQCDASFeatureadaptorDel\n"
+     ajDebug("ensQcdasfeatureadaptorDel\n"
 	     "  *Pqcdasfa %p\n",
 	     *Pqcdasfa);
      */
@@ -1759,23 +1759,23 @@ void ensQCDASFeatureadaptorDel(EnsPQCDASFeatureadaptor *Pqcdasfa)
 
 
 
-/* @func ensQCDASFeatureadaptorFetchByIdentifier ******************************
+/* @func ensQcdasfeatureadaptorFetchByIdentifier ******************************
 **
 ** Fetch an Ensembl QC DAS Feature via its SQL database-internal identifier.
 ** The caller is responsible for deleting the Ensembl QC DAS Feature.
 **
-** @param [r] adaptor [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] adaptor [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal QC DAS Feature
 **                                identifier
-** @param [wP] Pqcdasf [EnsPQCDASFeature*] Ensembl QC DAS Feature address
+** @param [wP] Pqcdasf [EnsPQcdasfeature*] Ensembl QC DAS Feature address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureadaptorFetchByIdentifier(EnsPQCDASFeatureadaptor adaptor,
+AjBool ensQcdasfeatureadaptorFetchByIdentifier(EnsPQcdasfeatureadaptor adaptor,
                                                ajuint identifier,
-                                               EnsPQCDASFeature *Pqcdasf)
+                                               EnsPQcdasfeature *Pqcdasf)
 {
     if(!adaptor)
 	return ajFalse;
@@ -1786,7 +1786,7 @@ AjBool ensQCDASFeatureadaptorFetchByIdentifier(EnsPQCDASFeatureadaptor adaptor,
     if(!Pqcdasf)
 	return ajFalse;
     
-    *Pqcdasf = (EnsPQCDASFeature)
+    *Pqcdasf = (EnsPQcdasfeature)
 	ensBaseadaptorFetchByIdentifier(adaptor, identifier);
     
     return ajTrue;
@@ -1795,23 +1795,23 @@ AjBool ensQCDASFeatureadaptorFetchByIdentifier(EnsPQCDASFeatureadaptor adaptor,
 
 
 
-/* @func ensQCDASFeatureadaptorFetchAllByQCAlignment **************************
+/* @func ensQcdasfeatureadaptorFetchAllByQcalignment **************************
 **
 ** Fetch all Ensembl QC DAS Features by an Ensembl QC Alignment.
 ** The caller is responsible for deleting the Ensembl QC DAS Features
 ** before deleting the AJAX List.
 **
-** @param [r] qcdasfa [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qcdasfa [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 ** @param [w] qcdasfs [AjPList] AJAX List of Ensembl QC DAS Features
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureadaptorFetchAllByQCAlignment(
-    EnsPQCDASFeatureadaptor qcdasfa,
-    const EnsPQCAlignment qca,
+AjBool ensQcdasfeatureadaptorFetchAllByQcalignment(
+    EnsPQcdasfeatureadaptor qcdasfa,
+    const EnsPQcalignment qca,
     AjPList qcdasfs)
 {
     AjPStr constraint = NULL;
@@ -1826,11 +1826,11 @@ AjBool ensQCDASFeatureadaptorFetchAllByQCAlignment(
 	return ajFalse;
     
     constraint = ajFmtStr("das_feature.alignment_id = %u",
-			  ensQCAlignmentGetIdentifier(qca));
+			  ensQcalignmentGetIdentifier(qca));
     
     ensBaseadaptorGenericFetch(qcdasfa,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcdasfs);
     
@@ -1842,25 +1842,25 @@ AjBool ensQCDASFeatureadaptorFetchAllByQCAlignment(
 
 
 
-/* @func ensQCDASFeatureadaptorFetchAllByFeature ******************************
+/* @func ensQcdasfeatureadaptorFetchAllByFeature ******************************
 **
 ** Fetch all Ensembl QC DAS Features by an Ensembl QC Sequence representing an
 ** Ensembl QC DAS Feature feature.
 ** The caller is responsible for deleting the Ensembl QC DAS Features
 ** before deleting the AJAX List.
 **
-** @param [r] qcdasfa [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] qcdasfa [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @param [rN] analysis [const EnsPAnalysis] Ensembl Analysis
-** @param [r] feature [const EnsPQCSequence] Feature Ensembl QC Sequence
+** @param [r] feature [const EnsPQcsequence] Feature Ensembl QC Sequence
 ** @param [w] qcdasfs [AjPList] AJAX List of Ensembl QC DAS Features
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureadaptorFetchAllByFeature(EnsPQCDASFeatureadaptor qcdasfa,
+AjBool ensQcdasfeatureadaptorFetchAllByFeature(EnsPQcdasfeatureadaptor qcdasfa,
                                                const EnsPAnalysis analysis,
-                                               const EnsPQCSequence feature,
+                                               const EnsPQcsequence feature,
                                                AjPList qcdasfs)
 {
     AjPStr constraint = NULL;
@@ -1875,7 +1875,7 @@ AjBool ensQCDASFeatureadaptorFetchAllByFeature(EnsPQCDASFeatureadaptor qcdasfa,
 	return ajFalse;
     
     constraint = ajFmtStr("das_feature.feature_id = %u",
-			  ensQCSequenceGetIdentifier(feature));
+			  ensQcsequenceGetIdentifier(feature));
     
     if(analysis)
 	ajFmtPrintAppS(&constraint,
@@ -1884,7 +1884,7 @@ AjBool ensQCDASFeatureadaptorFetchAllByFeature(EnsPQCDASFeatureadaptor qcdasfa,
     
     ensBaseadaptorGenericFetch(qcdasfa,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcdasfs);
     
@@ -1896,25 +1896,25 @@ AjBool ensQCDASFeatureadaptorFetchAllByFeature(EnsPQCDASFeatureadaptor qcdasfa,
 
 
 
-/* @func ensQCDASFeatureadaptorFetchAllBySegment ******************************
+/* @func ensQcdasfeatureadaptorFetchAllBySegment ******************************
 **
 ** Fetch all Ensembl QC DAS Features by an Ensembl QC Sequence representing an
 ** Ensembl QC DAS Feature segment.
 ** The caller is responsible for deleting the Ensembl QC DAS Features
 ** before deleting the AJAX List.
 **
-** @param [r] qcdasfa [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] qcdasfa [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @param [rN] analysis [const EnsPAnalysis] Ensembl Analysis
-** @param [r] segment [const EnsPQCSequence] Segment Ensembl QC Sequence
+** @param [r] segment [const EnsPQcsequence] Segment Ensembl QC Sequence
 ** @param [w] qcdasfs [AjPList] AJAX List of Ensembl QC DAS Features
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureadaptorFetchAllBySegment( EnsPQCDASFeatureadaptor qcdasfa,
+AjBool ensQcdasfeatureadaptorFetchAllBySegment( EnsPQcdasfeatureadaptor qcdasfa,
                                                 const EnsPAnalysis analysis,
-                                                const EnsPQCSequence segment,
+                                                const EnsPQcsequence segment,
                                                 AjPList qcdasfs)
 {
     AjPStr constraint = NULL;
@@ -1929,7 +1929,7 @@ AjBool ensQCDASFeatureadaptorFetchAllBySegment( EnsPQCDASFeatureadaptor qcdasfa,
 	return ajFalse;
     
     constraint = ajFmtStr("das_feature.segment_id = %u",
-			  ensQCSequenceGetIdentifier(segment));
+			  ensQcsequenceGetIdentifier(segment));
     
     if(analysis)
 	ajFmtPrintAppS(&constraint,
@@ -1938,7 +1938,7 @@ AjBool ensQCDASFeatureadaptorFetchAllBySegment( EnsPQCDASFeatureadaptor qcdasfa,
     
     ensBaseadaptorGenericFetch(qcdasfa,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcdasfs);
     
@@ -1950,7 +1950,7 @@ AjBool ensQCDASFeatureadaptorFetchAllBySegment( EnsPQCDASFeatureadaptor qcdasfa,
 
 
 
-/* @func ensQCDASFeatureadaptorFetchAllByAFS **********************************
+/* @func ensQcdasfeatureadaptorFetchAllByAFS **********************************
 **
 ** Fetch all Ensembl QC DAS Features by an Ensembl Analysis and
 ** Ensembl QC Sequences representing Ensembl QC DAS Feature feature and
@@ -1958,20 +1958,20 @@ AjBool ensQCDASFeatureadaptorFetchAllBySegment( EnsPQCDASFeatureadaptor qcdasfa,
 ** The caller is responsible for deleting the Ensembl QC DAS Features
 ** before deleting the AJAX List.
 **
-** @param [r] qcdasfa [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] qcdasfa [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
-** @param [r] feature [const EnsPQCSequence] Feature Ensembl QC Sequence
-** @param [r] segment [const EnsPQCSequence] Segment Ensembl QC Sequence
+** @param [r] feature [const EnsPQcsequence] Feature Ensembl QC Sequence
+** @param [r] segment [const EnsPQcsequence] Segment Ensembl QC Sequence
 ** @param [w] qcdasfs [AjPList] AJAX List of Ensembl QC DAS Features
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureadaptorFetchAllByAFS(EnsPQCDASFeatureadaptor qcdasfa,
+AjBool ensQcdasfeatureadaptorFetchAllByAFS(EnsPQcdasfeatureadaptor qcdasfa,
                                            const EnsPAnalysis analysis,
-                                           const EnsPQCSequence feature,
-                                           const EnsPQCSequence segment,
+                                           const EnsPQcsequence feature,
+                                           const EnsPQcsequence segment,
                                            AjPList qcdasfs)
 {
     AjPStr constraint = NULL;
@@ -1994,12 +1994,12 @@ AjBool ensQCDASFeatureadaptorFetchAllByAFS(EnsPQCDASFeatureadaptor qcdasfa,
 			  "AND "
 			  "das_feature.segment_id = %u ",
 			  ensAnalysisGetIdentifier(analysis),
-			  ensQCSequenceGetIdentifier(feature),
-			  ensQCSequenceGetIdentifier(segment));
+			  ensQcsequenceGetIdentifier(feature),
+			  ensQcsequenceGetIdentifier(segment));
     
     ensBaseadaptorGenericFetch(qcdasfa,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcdasfs);
     
@@ -2011,15 +2011,15 @@ AjBool ensQCDASFeatureadaptorFetchAllByAFS(EnsPQCDASFeatureadaptor qcdasfa,
 
 
 
-/* @func ensQCDASFeatureadaptorFetchAllByRegion *******************************
+/* @func ensQcdasfeatureadaptorFetchAllByRegion *******************************
 **
 ** Fetch all Ensembl QC DAS Features that fall into a region on the segment.
 ** The caller is responsible for deleting the Ensembl QC DAS Features
 ** before deleting the AJAX List.
 **
-** @param [r] qcdasfa [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] qcdasfa [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
-** @param [r] segment [const EnsPQCSequence] Segment Ensembl QC Sequence
+** @param [r] segment [const EnsPQcsequence] Segment Ensembl QC Sequence
 ** @param [r] start [ajuint] Start
 ** @param [r] end [ajuint] End
 ** @param [w] qcdasfs [AjPList] AJAX List of Ensembl QC DAS Features
@@ -2028,9 +2028,9 @@ AjBool ensQCDASFeatureadaptorFetchAllByAFS(EnsPQCDASFeatureadaptor qcdasfa,
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureadaptorFetchAllByRegion(EnsPQCDASFeatureadaptor qcdasfa,
+AjBool ensQcdasfeatureadaptorFetchAllByRegion(EnsPQcdasfeatureadaptor qcdasfa,
                                               const EnsPAnalysis analysis,
-                                              const EnsPQCSequence segment,
+                                              const EnsPQcsequence segment,
                                               ajuint start,
                                               ajuint end,
                                               AjPList qcdasfs)
@@ -2058,7 +2058,7 @@ AjBool ensQCDASFeatureadaptorFetchAllByRegion(EnsPQCDASFeatureadaptor qcdasfa,
 			  "das.segment_start <= %u AND "
 			  "das.segment_end >= %u))",
 			  ensAnalysisGetIdentifier(analysis),
-			  ensQCSequenceGetIdentifier(segment),
+			  ensQcsequenceGetIdentifier(segment),
 			  start,
 			  end,
 			  start,
@@ -2068,7 +2068,7 @@ AjBool ensQCDASFeatureadaptorFetchAllByRegion(EnsPQCDASFeatureadaptor qcdasfa,
     
     ensBaseadaptorGenericFetch(qcdasfa,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcdasfs);
     
@@ -2080,19 +2080,19 @@ AjBool ensQCDASFeatureadaptorFetchAllByRegion(EnsPQCDASFeatureadaptor qcdasfa,
 
 
 
-/* @func ensQCDASFeatureadaptorStore ******************************************
+/* @func ensQcdasfeatureadaptorStore ******************************************
 **
 ** Store an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasfa [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
-** @param [u] qcdasf [EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasfa [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @param [u] qcdasf [EnsPQcdasfeature] Ensembl QC DAS Feature
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureadaptorStore(EnsPQCDASFeatureadaptor qcdasfa,
-                                   EnsPQCDASFeature qcdasf)
+AjBool ensQcdasfeatureadaptorStore(EnsPQcdasfeatureadaptor qcdasfa,
+                                   EnsPQcdasfeature qcdasf)
 {
     AjBool value = ajFalse;
     
@@ -2108,8 +2108,8 @@ AjBool ensQCDASFeatureadaptorStore(EnsPQCDASFeatureadaptor qcdasfa,
     if(!qcdasf)
 	return ajFalse;
     
-    if(ensQCDASFeatureGetadaptor(qcdasf) &&
-	ensQCDASFeatureGetIdentifier(qcdasf))
+    if(ensQcdasfeatureGetAdaptor(qcdasf) &&
+	ensQcdasfeatureGetIdentifier(qcdasf))
 	return ajFalse;
     
     dba = ensBaseadaptorGetDatabaseadaptor(qcdasfa);
@@ -2129,27 +2129,27 @@ AjBool ensQCDASFeatureadaptorStore(EnsPQCDASFeatureadaptor qcdasfa,
 			 "das_feature.phase = %d, "
 			 "das_feature.category = '%s', "
 			 "das_feature.type = '%s'",
-			 ensQCAlignmentGetIdentity(qcdasf->QCAlignment),
+			 ensQcalignmentGetIdentity(qcdasf->Qcalignment),
 			 ensAnalysisGetIdentifier(qcdasf->Analysis),
-			 ensQCSequenceGetIdentifier(qcdasf->FeatureSequence),
+			 ensQcsequenceGetIdentifier(qcdasf->FeatureSequence),
 			 qcdasf->FeatureStart,
 			 qcdasf->FeatureEnd,
-			 ensQCSequenceGetIdentifier(qcdasf->SegmentSequence),
+			 ensQcsequenceGetIdentifier(qcdasf->SegmentSequence),
 			 qcdasf->SegmentStart,
 			 qcdasf->SegmentEnd,
 			 qcdasf->SegmentStrand,
 			 qcdasf->Phase,
-			 ensQCDASFeatureCategoryToChar(qcdasf->Category),
-			 ensQCDASFeatureTypeToChar(qcdasf->Type));
+			 ensQcdasfeatureCategoryToChar(qcdasf->Category),
+			 ensQcdasfeatureTypeToChar(qcdasf->Type));
     
     sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
     if(ajSqlstatementGetAffectedrows(sqls))
     {
-	ensQCDASFeatureSetIdentifier(qcdasf,
+	ensQcdasfeatureSetIdentifier(qcdasf,
 				     ajSqlstatementGetIdentifier(sqls));
 	
-	ensQCDASFeatureSetadaptor(qcdasf, qcdasfa);
+	ensQcdasfeatureSetAdaptor(qcdasf, qcdasfa);
 	
 	value = ajTrue;
     }
@@ -2164,19 +2164,19 @@ AjBool ensQCDASFeatureadaptorStore(EnsPQCDASFeatureadaptor qcdasfa,
 
 
 
-/* @func ensQCDASFeatureadaptorUpdate *****************************************
+/* @func ensQcdasfeatureadaptorUpdate *****************************************
 **
 ** Update an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasfa [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
-** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasfa [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureadaptorUpdate(EnsPQCDASFeatureadaptor qcdasfa,
-                                    const EnsPQCDASFeature qcdasf)
+AjBool ensQcdasfeatureadaptorUpdate(EnsPQcdasfeatureadaptor qcdasfa,
+                                    const EnsPQcdasfeature qcdasf)
 {
     AjBool value = ajFalse;
     
@@ -2192,7 +2192,7 @@ AjBool ensQCDASFeatureadaptorUpdate(EnsPQCDASFeatureadaptor qcdasfa,
     if(!qcdasf)
 	return ajFalse;
     
-    if(!ensQCDASFeatureGetIdentifier(qcdasf))
+    if(!ensQcdasfeatureGetIdentifier(qcdasf))
 	return ajFalse;
     
     dba = ensBaseadaptorGetDatabaseadaptor(qcdasfa);
@@ -2214,19 +2214,19 @@ AjBool ensQCDASFeatureadaptorUpdate(EnsPQCDASFeatureadaptor qcdasfa,
 			 "das_feature.type = '%s' "
 			 "WHERE "
 			 "das_feature.das_feature_id = %u",
-			 ensQCAlignmentGetIdentity(qcdasf->QCAlignment),
+			 ensQcalignmentGetIdentity(qcdasf->Qcalignment),
 			 ensAnalysisGetIdentifier(qcdasf->Analysis),
-			 ensQCSequenceGetIdentifier(qcdasf->FeatureSequence),
+			 ensQcsequenceGetIdentifier(qcdasf->FeatureSequence),
 			 qcdasf->FeatureStart,
 			 qcdasf->FeatureEnd,
-			 ensQCSequenceGetIdentifier(qcdasf->SegmentSequence),
+			 ensQcsequenceGetIdentifier(qcdasf->SegmentSequence),
 			 qcdasf->SegmentStart,
 			 qcdasf->SegmentEnd,
 			 qcdasf->SegmentStrand,
 			 qcdasf->Phase,
-			 ensQCDASFeatureCategoryToChar(qcdasf->Category),
-			 ensQCDASFeatureTypeToChar(qcdasf->Type),
-			 ensQCDASFeatureGetIdentifier(qcdasf));
+			 ensQcdasfeatureCategoryToChar(qcdasf->Category),
+			 ensQcdasfeatureTypeToChar(qcdasf->Type),
+			 ensQcdasfeatureGetIdentifier(qcdasf));
     
     sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
@@ -2243,19 +2243,19 @@ AjBool ensQCDASFeatureadaptorUpdate(EnsPQCDASFeatureadaptor qcdasfa,
 
 
 
-/* @func ensQCDASFeatureadaptorDelete *****************************************
+/* @func ensQcdasfeatureadaptorDelete *****************************************
 **
 ** Delete an Ensembl QC DAS Feature.
 **
-** @param [r] qcdasfa [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
-** @param [r] qcdasf [const EnsPQCDASFeature] Ensembl QC DAS Feature
+** @param [r] qcdasfa [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCDASFeatureadaptorDelete(EnsPQCDASFeatureadaptor qcdasfa,
-                                    const EnsPQCDASFeature qcdasf)
+AjBool ensQcdasfeatureadaptorDelete(EnsPQcdasfeatureadaptor qcdasfa,
+                                    const EnsPQcdasfeature qcdasf)
 {
     AjBool value = ajFalse;
     
@@ -2271,7 +2271,7 @@ AjBool ensQCDASFeatureadaptorDelete(EnsPQCDASFeatureadaptor qcdasfa,
     if(!qcdasf)
 	return ajFalse;
     
-    if(!ensQCDASFeatureGetIdentifier(qcdasf))
+    if(!ensQcdasfeatureGetIdentifier(qcdasf))
 	return ajFalse;
     
     dba = ensBaseadaptorGetDatabaseadaptor(qcdasfa);
@@ -2297,13 +2297,13 @@ AjBool ensQCDASFeatureadaptorDelete(EnsPQCDASFeatureadaptor qcdasfa,
 
 
 
-/* @datasection [EnsPQCVariation] QC Variation ********************************
+/* @datasection [EnsPQcvariation] QC Variation ********************************
 **
 ** Functions for manipulating Ensembl QC Variation objects
 **
 ** Bio::EnsEMBL::QC::Variation CVS Revision:
 **
-** @nam2rule QCVariation
+** @nam2rule Qcvariation
 **
 ******************************************************************************/
 
@@ -2317,17 +2317,17 @@ AjBool ensQCDASFeatureadaptorDelete(EnsPQCDASFeatureadaptor qcdasfa,
 ** QC Variation. The target pointer does not need to be initialised to
 ** NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPQCVariation]
+** @fdata [EnsPQcvariation]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPQCVariation] Ensembl QC Variation
-** @argrule Ref object [EnsPQCVariation] Ensembl QC Variation
+** @argrule Obj object [EnsPQcvariation] Ensembl QC Variation
+** @argrule Ref object [EnsPQcvariation] Ensembl QC Variation
 **
-** @valrule * [EnsPQCVariation] Ensembl QC Variation
+** @valrule * [EnsPQcvariation] Ensembl QC Variation
 **
 ** @fcategory new
 ******************************************************************************/
@@ -2335,21 +2335,21 @@ AjBool ensQCDASFeatureadaptorDelete(EnsPQCDASFeatureadaptor qcdasfa,
 
 
 
-/* @func ensQCVariationNew ****************************************************
+/* @func ensQcvariationNew ****************************************************
 **
 ** Default constructor for an Ensembl QC Variation.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] adaptor [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
+** @param [r] adaptor [EnsPQcvariationadaptor] Ensembl QC Variation Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::QC::Variation::new
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [u] qsequence [EnsPQCSequence] Query Ensembl QC Sequence
+** @param [u] qsequence [EnsPQcsequence] Query Ensembl QC Sequence
 ** @param [r] qstart [ajuint] Query start
 ** @param [r] qend [ajuint] Query end
 ** @param [r] qstring [AjPStr] Query string
-** @param [u] tsequence [EnsPQCSequence] Target Ensembl QC Sequence
+** @param [u] tsequence [EnsPQcsequence] Target Ensembl QC Sequence
 ** @param [r] tstart [ajuint] Target start
 ** @param [r] tend [ajuint] Target end
 ** @param [r] tstring [AjPStr] Target string
@@ -2357,19 +2357,19 @@ AjBool ensQCDASFeatureadaptorDelete(EnsPQCDASFeatureadaptor qcdasfa,
 ** @param [r] type [AjEnum] Type
 ** @param [r] state [AjEnum] State
 **
-** @return [EnsPQCVariation] Ensembl QC Variation or NULL
+** @return [EnsPQcvariation] Ensembl QC Variation or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCVariation ensQCVariationNew(EnsPQCVariationadaptor adaptor,
+EnsPQcvariation ensQcvariationNew(EnsPQcvariationadaptor adaptor,
                                   ajuint identifier,
-                                  EnsPQCAlignment qca,
+                                  EnsPQcalignment qca,
                                   EnsPAnalysis analysis,
-                                  EnsPQCSequence qsequence,
+                                  EnsPQcsequence qsequence,
                                   ajuint qstart,
                                   ajuint qend,
                                   AjPStr qstring,
-                                  EnsPQCSequence tsequence,
+                                  EnsPQcsequence tsequence,
                                   ajuint tstart,
                                   ajuint tend,
                                   AjPStr tstring,
@@ -2377,7 +2377,7 @@ EnsPQCVariation ensQCVariationNew(EnsPQCVariationadaptor adaptor,
                                   AjEnum type,
                                   AjEnum state)
 {
-    EnsPQCVariation qcv = NULL;
+    EnsPQcvariation qcv = NULL;
     
     if(!qca)
 	return NULL;
@@ -2399,11 +2399,11 @@ EnsPQCVariation ensQCVariationNew(EnsPQCVariationadaptor adaptor,
     
     qcv->Adaptor = adaptor;
     
-    qcv->QCAlignment = ensQCAlignmentNewRef(qca);
+    qcv->Qcalignment = ensQcalignmentNewRef(qca);
     
     qcv->Analysis = ensAnalysisNewRef(analysis);
     
-    qcv->QuerySequence = ensQCSequenceNewRef(qsequence);
+    qcv->QuerySequence = ensQcsequenceNewRef(qsequence);
     
     qcv->QueryStart = qstart;
     
@@ -2412,7 +2412,7 @@ EnsPQCVariation ensQCVariationNew(EnsPQCVariationadaptor adaptor,
     if(qstring)
 	qcv->QueryString = ajStrNewRef(qstring);
     
-    qcv->TargetSequence = ensQCSequenceNewRef(tsequence);
+    qcv->TargetSequence = ensQcsequenceNewRef(tsequence);
     
     qcv->TargetStart = tstart;
     
@@ -2433,19 +2433,19 @@ EnsPQCVariation ensQCVariationNew(EnsPQCVariationadaptor adaptor,
 
 
 
-/* @func ensQCVariationNewObj *************************************************
+/* @func ensQcvariationNewObj *************************************************
 **
 ** Object-based constructor function, which returns an independent object.
 **
-** @param [r] object [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] object [const EnsPQcvariation] Ensembl QC Variation
 **
-** @return [EnsPQCVariation] Ensembl QC Variation or NULL
+** @return [EnsPQcvariation] Ensembl QC Variation or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCVariation ensQCVariationNewObj(const EnsPQCVariation object)
+EnsPQcvariation ensQcvariationNewObj(const EnsPQcvariation object)
 {
-    EnsPQCVariation qcv= NULL;
+    EnsPQcvariation qcv= NULL;
     
     if(!object)
 	return NULL;
@@ -2458,11 +2458,11 @@ EnsPQCVariation ensQCVariationNewObj(const EnsPQCVariation object)
     
     qcv->Adaptor = object->Adaptor;
     
-    qcv->QCAlignment = ensQCAlignmentNewRef(object->QCAlignment);
+    qcv->Qcalignment = ensQcalignmentNewRef(object->Qcalignment);
     
     qcv->Analysis = ensAnalysisNewRef(object->Analysis);
     
-    qcv->QuerySequence = ensQCSequenceNewRef(object->QuerySequence);
+    qcv->QuerySequence = ensQcsequenceNewRef(object->QuerySequence);
     
     qcv->QueryStart = object->QueryStart;
     
@@ -2471,7 +2471,7 @@ EnsPQCVariation ensQCVariationNewObj(const EnsPQCVariation object)
     if(object->QueryString)
 	qcv->QueryString = ajStrNewRef(object->QueryString);
     
-    qcv->TargetSequence = ensQCSequenceNewRef(object->TargetSequence);
+    qcv->TargetSequence = ensQcsequenceNewRef(object->TargetSequence);
     
     qcv->TargetStart = object->TargetStart;
     
@@ -2492,18 +2492,18 @@ EnsPQCVariation ensQCVariationNewObj(const EnsPQCVariation object)
 
 
 
-/* @func ensQCVariationNewRef *************************************************
+/* @func ensQcvariationNewRef *************************************************
 **
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] qca [EnsPQCVariation] Ensembl Variation
+** @param [u] qca [EnsPQcvariation] Ensembl Variation
 **
-** @return [EnsPQCVariation] Ensembl QC Variation
+** @return [EnsPQcvariation] Ensembl QC Variation
 ** @@
 ******************************************************************************/
 
-EnsPQCVariation ensQCVariationNewRef(EnsPQCVariation qcv)
+EnsPQcvariation ensQcvariationNewRef(EnsPQcvariation qcv)
 {
     if(!qcv)
 	return NULL;
@@ -2521,12 +2521,12 @@ EnsPQCVariation ensQCVariationNewRef(EnsPQCVariation qcv)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl QC Variation.
 **
-** @fdata [EnsPQCVariation]
+** @fdata [EnsPQcvariation]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a QC Variation object
 **
-** @argrule * Pqcv [EnsPQCVariation*] QC Variation object address
+** @argrule * Pqcv [EnsPQcvariation*] QC Variation object address
 **
 ** @valrule * [void]
 **
@@ -2536,26 +2536,26 @@ EnsPQCVariation ensQCVariationNewRef(EnsPQCVariation qcv)
 
 
 
-/* @func ensQCVariationDel ****************************************************
+/* @func ensQcvariationDel ****************************************************
 **
 ** Default destructor for an Ensembl QC Variation.
 **
-** @param [d] Pqcv [EnsPQCVariation*] Ensembl QC Variation address
+** @param [d] Pqcv [EnsPQcvariation*] Ensembl QC Variation address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensQCVariationDel(EnsPQCVariation *Pqcv)
+void ensQcvariationDel(EnsPQcvariation *Pqcv)
 {
-    EnsPQCVariation pthis = NULL;
+    EnsPQcvariation pthis = NULL;
     
     /*
-     ajDebug("ensQCVariationDel\n"
+     ajDebug("ensQcvariationDel\n"
 	     "  *Pqcv %p\n",
 	     *Pqcv);
      
-     ensQCVariationTrace(*Pqcv, 1);
+     ensQcvariationTrace(*Pqcv, 1);
      */
     
     if(!Pqcv)
@@ -2575,13 +2575,13 @@ void ensQCVariationDel(EnsPQCVariation *Pqcv)
 	return;
     }
     
-    ensQCAlignmentDel(&pthis->QCAlignment);
+    ensQcalignmentDel(&pthis->Qcalignment);
     
     ensAnalysisDel(&pthis->Analysis);
     
-    ensQCSequenceDel(&pthis->QuerySequence);
+    ensQcsequenceDel(&pthis->QuerySequence);
     
-    ensQCSequenceDel(&pthis->TargetSequence);
+    ensQcsequenceDel(&pthis->TargetSequence);
     
     ajStrDel(&pthis->QueryString);
     ajStrDel(&pthis->TargetString);
@@ -2600,13 +2600,13 @@ void ensQCVariationDel(EnsPQCVariation *Pqcv)
 **
 ** Functions for returning elements of an Ensembl QC Variation object.
 **
-** @fdata [EnsPQCVariation]
+** @fdata [EnsPQcvariation]
 ** @fnote None
 **
 ** @nam3rule Get Return QC Variation attribute(s)
-** @nam4rule Getadaptor Return the Ensembl QC Variation Adaptor
+** @nam4rule GetAdaptor Return the Ensembl QC Variation Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
-** @nam4rule GetQCAlignment Return the Ensembl QC Alignment
+** @nam4rule GetQcalignment Return the Ensembl QC Alignment
 ** @nam4rule GetAnalysis Return the Ensembl Analysis
 ** @nam4rule GetQuerySequence Return the query Ensembl QC Sequence
 ** @nam4rule GetQueryStart Return the query start
@@ -2620,11 +2620,11 @@ void ensQCVariationDel(EnsPQCVariation *Pqcv)
 ** @nam4rule GetType Return the type
 ** @nam4rule GetState Return the state
 **
-** @argrule * qcv [const EnsPQCVariation] QC Variation
+** @argrule * qcv [const EnsPQcvariation] QC Variation
 **
-** @valrule Adaptor [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
+** @valrule Adaptor [EnsPQcvariationadaptor] Ensembl QC Variation Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
-** @valrule QCAlignment [EnsPQCAlignment] Ensembl QC Alignment
+** @valrule Qcalignment [EnsPQcalignment] Ensembl QC Alignment
 ** @valrule Analysis [EnsPAnalysis] Ensembl Analysis
 ** @valrule QuerySequence [AjPStr] Query Ensembl QC Sequence
 ** @valrule QueryStart [ajuint] Query start
@@ -2644,17 +2644,17 @@ void ensQCVariationDel(EnsPQCVariation *Pqcv)
 
 
 
-/* @func ensQCVariationGetadaptor *********************************************
+/* @func ensQcvariationGetAdaptor *********************************************
 **
 ** Get the Ensembl QC Variation Adaptor element of an Ensembl QC Variation.
 **
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
-** @return [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
+** @return [EnsPQcvariationadaptor] Ensembl QC Variation Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPQCVariationadaptor ensQCVariationGetadaptor(const EnsPQCVariation qcv)
+EnsPQcvariationadaptor ensQcvariationGetAdaptor(const EnsPQcvariation qcv)
 {
     if(!qcv)
 	return NULL;
@@ -2665,18 +2665,18 @@ EnsPQCVariationadaptor ensQCVariationGetadaptor(const EnsPQCVariation qcv)
 
 
 
-/* @func ensQCVariationGetIdentifier ******************************************
+/* @func ensQcvariationGetIdentifier ******************************************
 **
 ** Get the SQL database-internal identifier element of an
 ** Ensembl QC Variation.
 **
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
 ** @return [ajuint] SQL database-internal identifier
 ** @@
 ******************************************************************************/
 
-ajuint ensQCVariationGetIdentifier(const EnsPQCVariation qcv)
+ajuint ensQcvariationGetIdentifier(const EnsPQcvariation qcv)
 {
     if(!qcv)
 	return 0;
@@ -2687,38 +2687,38 @@ ajuint ensQCVariationGetIdentifier(const EnsPQCVariation qcv)
 
 
 
-/* @func ensQCVariationGetQCAlignment *****************************************
+/* @func ensQcvariationGetQcalignment *****************************************
 **
 ** Get the Ensembl QC Alignment element of an Ensembl QC Variation.
 **
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
-** @return [EnsPQCAlignment] Ensembl QC Alignment
+** @return [EnsPQcalignment] Ensembl QC Alignment
 ** @@
 ******************************************************************************/
 
-EnsPQCAlignment ensQCVariationGetQCAlignment(const EnsPQCVariation qcv)
+EnsPQcalignment ensQcvariationGetQcalignment(const EnsPQcvariation qcv)
 {
     if(!qcv)
 	return NULL;
     
-    return qcv->QCAlignment;
+    return qcv->Qcalignment;
 }
 
 
 
 
-/* @func ensQCVariationGetAnalysis ********************************************
+/* @func ensQcvariationGetAnalysis ********************************************
 **
 ** Get the Ensembl Analysis element of an Ensembl QC Variation.
 **
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
 ** @return [EnsPAnalysis] Ensembl Analysis
 ** @@
 ******************************************************************************/
 
-EnsPAnalysis ensQCVariationGetAnalysis(const EnsPQCVariation qcv)
+EnsPAnalysis ensQcvariationGetAnalysis(const EnsPQcvariation qcv)
 {
     if(!qcv)
 	return NULL;
@@ -2729,17 +2729,17 @@ EnsPAnalysis ensQCVariationGetAnalysis(const EnsPQCVariation qcv)
 
 
 
-/* @func ensQCVariationGetQuerySequence ***************************************
+/* @func ensQcvariationGetQuerySequence ***************************************
 **
 ** Get the query Ensembl QC Sequence element of an Ensembl QC Variation.
 **
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
-** @return [EnsPQCSequence] Query Ensembl QC Sequence
+** @return [EnsPQcsequence] Query Ensembl QC Sequence
 ** @@
 ******************************************************************************/
 
-EnsPQCSequence ensQCVariationGetQuerySequence(const EnsPQCVariation qcv)
+EnsPQcsequence ensQcvariationGetQuerySequence(const EnsPQcvariation qcv)
 {
     if(!qcv)
 	return NULL;
@@ -2750,17 +2750,17 @@ EnsPQCSequence ensQCVariationGetQuerySequence(const EnsPQCVariation qcv)
 
 
 
-/* @func ensQCVariationGetQueryStart ******************************************
+/* @func ensQcvariationGetQueryStart ******************************************
 **
 ** Get the query start element of an Ensembl QC Variation.
 **
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
 ** @return [ajuint] Query start
 ** @@
 ******************************************************************************/
 
-ajuint ensQCVariationGetQueryStart(const EnsPQCVariation qcv)
+ajuint ensQcvariationGetQueryStart(const EnsPQcvariation qcv)
 {
     if(!qcv)
 	return 0;
@@ -2771,17 +2771,17 @@ ajuint ensQCVariationGetQueryStart(const EnsPQCVariation qcv)
 
 
 
-/* @func ensQCVariationGetQueryEnd ********************************************
+/* @func ensQcvariationGetQueryEnd ********************************************
 **
 ** Get the query end element of an Ensembl QC Variation.
 **
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
 ** @return [ajuint] Query end
 ** @@
 ******************************************************************************/
 
-ajuint ensQCVariationGetQueryEnd(const EnsPQCVariation qcv)
+ajuint ensQcvariationGetQueryEnd(const EnsPQcvariation qcv)
 {
     if(!qcv)
 	return 0;
@@ -2792,17 +2792,17 @@ ajuint ensQCVariationGetQueryEnd(const EnsPQCVariation qcv)
 
 
 
-/* @func ensQCVariationGetQueryString *****************************************
+/* @func ensQcvariationGetQueryString *****************************************
 **
 ** Get the query string element of an Ensembl QC Variation.
 **
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
 ** @return [AjPStr] Query string
 ** @@
 ******************************************************************************/
 
-AjPStr ensQCVariationGetQueryString(const EnsPQCVariation qcv)
+AjPStr ensQcvariationGetQueryString(const EnsPQcvariation qcv)
 {
     if(!qcv)
 	return NULL;
@@ -2813,17 +2813,17 @@ AjPStr ensQCVariationGetQueryString(const EnsPQCVariation qcv)
 
 
 
-/* @func ensQCVariationGetTargetSequence **************************************
+/* @func ensQcvariationGetTargetSequence **************************************
 **
 ** Get the target Ensembl QC Sequence element of an Ensembl QC Variation.
 **
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
-** @return [EnsPQCSequence] Target Ensembl QC Sequence
+** @return [EnsPQcsequence] Target Ensembl QC Sequence
 ** @@
 ******************************************************************************/
 
-EnsPQCSequence ensQCVariationGetTargetSequence(const EnsPQCVariation qcv)
+EnsPQcsequence ensQcvariationGetTargetSequence(const EnsPQcvariation qcv)
 {
     if(!qcv)
 	return NULL;
@@ -2834,17 +2834,17 @@ EnsPQCSequence ensQCVariationGetTargetSequence(const EnsPQCVariation qcv)
 
 
 
-/* @func ensQCVariationGetTargetStart *****************************************
+/* @func ensQcvariationGetTargetStart *****************************************
 **
 ** Get the target start element of an Ensembl QC Variation.
 **
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
 ** @return [ajuint] Target start
 ** @@
 ******************************************************************************/
 
-ajuint ensQCVariationGetTargetStart(const EnsPQCVariation qcv)
+ajuint ensQcvariationGetTargetStart(const EnsPQcvariation qcv)
 {
     if(!qcv)
 	return 0;
@@ -2855,17 +2855,17 @@ ajuint ensQCVariationGetTargetStart(const EnsPQCVariation qcv)
 
 
 
-/* @func ensQCVariationGetTargetEnd *******************************************
+/* @func ensQcvariationGetTargetEnd *******************************************
 **
 ** Get the target end element of an Ensembl QC Variation.
 **
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
 ** @return [ajuint] Target end
 ** @@
 ******************************************************************************/
 
-ajuint ensQCVariationGetTargetEnd(const EnsPQCVariation qcv)
+ajuint ensQcvariationGetTargetEnd(const EnsPQcvariation qcv)
 {
     if(!qcv)
 	return 0;
@@ -2876,17 +2876,17 @@ ajuint ensQCVariationGetTargetEnd(const EnsPQCVariation qcv)
 
 
 
-/* @func ensQCVariationGetTargetString ****************************************
+/* @func ensQcvariationGetTargetString ****************************************
 **
 ** Get the target string element of an Ensembl QC Variation.
 **
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
 ** @return [AjPStr] Target string
 ** @@
 ******************************************************************************/
 
-AjPStr ensQCVariationGetTargetString(const EnsPQCVariation qcv)
+AjPStr ensQcvariationGetTargetString(const EnsPQcvariation qcv)
 {
     if(!qcv)
 	return NULL;
@@ -2897,20 +2897,20 @@ AjPStr ensQCVariationGetTargetString(const EnsPQCVariation qcv)
 
 
 
-/* @func ensQCVariationGetClass ***********************************************
+/* @func ensQcvariationGetClass ***********************************************
 **
 ** Get the class element of an Ensembl QC Variation.
 **
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
 ** @return [AjEnum] Class
 ** @@
 ******************************************************************************/
 
-AjEnum ensQCVariationGetClass(const EnsPQCVariation qcv)
+AjEnum ensQcvariationGetClass(const EnsPQcvariation qcv)
 {
     if(!qcv)
-	return ensEQCVariationClassNULL;
+	return ensEQcvariationClassNULL;
     
     return qcv->Class;
 }
@@ -2918,20 +2918,20 @@ AjEnum ensQCVariationGetClass(const EnsPQCVariation qcv)
 
 
 
-/* @func ensQCVariationGetType ************************************************
+/* @func ensQcvariationGetType ************************************************
 **
 ** Get the type element of an Ensembl QC Variation.
 **
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
 ** @return [AjEnum] Type
 ** @@
 ******************************************************************************/
 
-AjEnum ensQCVariationGetType(const EnsPQCVariation qcv)
+AjEnum ensQcvariationGetType(const EnsPQcvariation qcv)
 {
     if(!qcv)
-	return ensEQCVariationTypeNULL;
+	return ensEQcvariationTypeNULL;
     
     return qcv->Type;
 }
@@ -2939,20 +2939,20 @@ AjEnum ensQCVariationGetType(const EnsPQCVariation qcv)
 
 
 
-/* @func ensQCVariationGetState ***********************************************
+/* @func ensQcvariationGetState ***********************************************
 **
 ** Get the state element of an Ensembl QC Variation.
 **
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
 ** @return [AjEnum] State
 ** @@
 ******************************************************************************/
 
-AjEnum ensQCVariationGetState(const EnsPQCVariation qcv)
+AjEnum ensQcvariationGetState(const EnsPQcvariation qcv)
 {
     if(!qcv)
-	return ensEQCVariationStateNULL;
+	return ensEQcvariationStateNULL;
     
     return qcv->State;
 }
@@ -2964,13 +2964,13 @@ AjEnum ensQCVariationGetState(const EnsPQCVariation qcv)
 **
 ** Functions for assigning elements of an Ensembl QC Variation object.
 **
-** @fdata [EnsPQCVariation]
+** @fdata [EnsPQcvariation]
 ** @fnote None
 **
 ** @nam3rule Set Set one element of a QC Variation
-** @nam4rule Setadaptor Set the Ensembl QC Variation Adaptor
+** @nam4rule SetAdaptor Set the Ensembl QC Variation Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
-** @nam4rule SetQCAlignment Set the Ensembl QC Alignment
+** @nam4rule SetQcalignment Set the Ensembl QC Alignment
 ** @nam4rule SetAnalysis Set the Ensembl Analysis
 ** @nam4rule SetQuerySequence Set the query Ensembl QC Sequence
 ** @nam4rule SetQueryStart Set the query start
@@ -2984,7 +2984,7 @@ AjEnum ensQCVariationGetState(const EnsPQCVariation qcv)
 ** @nam4rule SetType Set the type
 ** @nam4rule SetState Set the state
 **
-** @argrule * qcv [EnsPQCVariation] Ensembl QC Variation
+** @argrule * qcv [EnsPQcvariation] Ensembl QC Variation
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
@@ -2994,19 +2994,19 @@ AjEnum ensQCVariationGetState(const EnsPQCVariation qcv)
 
 
 
-/* @func ensQCVariationSetadaptor *********************************************
+/* @func ensQcvariationSetAdaptor *********************************************
 **
 ** Set the Ensembl Database Adaptor element of an Ensembl QC Variation.
 **
-** @param [u] qcv [EnsPQCVariation] Ensembl QC Variation
-** @param [r] qcva [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
+** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
+** @param [r] qcva [EnsPQcvariationadaptor] Ensembl QC Variation Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationSetadaptor(EnsPQCVariation qcv,
-                                EnsPQCVariationadaptor qcva)
+AjBool ensQcvariationSetAdaptor(EnsPQcvariation qcv,
+                                EnsPQcvariationadaptor qcva)
 {
     if(!qcv)
 	return ajFalse;
@@ -3019,19 +3019,19 @@ AjBool ensQCVariationSetadaptor(EnsPQCVariation qcv,
 
 
 
-/* @func ensQCVariationSetIdentifier ******************************************
+/* @func ensQcvariationSetIdentifier ******************************************
 **
 ** Set the SQL database-internal identifier element of an
 ** Ensembl QC Variation.
 **
-** @param [u] qcv [EnsPQCVariation] Ensembl QC Variation
+** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationSetIdentifier(EnsPQCVariation qcv, ajuint identifier)
+AjBool ensQcvariationSetIdentifier(EnsPQcvariation qcv, ajuint identifier)
 {
     if(!qcv)
 	return ajFalse;
@@ -3044,18 +3044,18 @@ AjBool ensQCVariationSetIdentifier(EnsPQCVariation qcv, ajuint identifier)
 
 
 
-/* @func ensQCVariationSetAnalysis ********************************************
+/* @func ensQcvariationSetAnalysis ********************************************
 **
 ** Set the Ensembl Analysis element of an Ensembl QC Variation.
 **
-** @param [u] qcv [EnsPQCVariation] Ensembl QC Variation
+** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationSetAnalysis(EnsPQCVariation qcv, EnsPAnalysis analysis)
+AjBool ensQcvariationSetAnalysis(EnsPQcvariation qcv, EnsPAnalysis analysis)
 {
     if(!qcv)
 	return ajFalse;
@@ -3070,25 +3070,25 @@ AjBool ensQCVariationSetAnalysis(EnsPQCVariation qcv, EnsPAnalysis analysis)
 
 
 
-/* @func ensQCVariationSetQCAlignment *****************************************
+/* @func ensQcvariationSetQcalignment *****************************************
 **
 ** Set the Ensembl QC Alignment element of an Ensembl QC Variation.
 **
-** @param [u] qcv [EnsPQCVariation] Ensembl QC Variation
-** @param [u] qca [EnsPQCAlignment] Ensembl QC Alignment
+** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
+** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationSetQCAlignment(EnsPQCVariation qcv, EnsPQCAlignment qca)
+AjBool ensQcvariationSetQcalignment(EnsPQcvariation qcv, EnsPQcalignment qca)
 {
     if(!qcv)
 	return ajFalse;
     
-    ensQCAlignmentDel(&qcv->QCAlignment);
+    ensQcalignmentDel(&qcv->Qcalignment);
     
-    qcv->QCAlignment = ensQCAlignmentNewRef(qca);
+    qcv->Qcalignment = ensQcalignmentNewRef(qca);
     
     return ajTrue;
 }
@@ -3096,26 +3096,26 @@ AjBool ensQCVariationSetQCAlignment(EnsPQCVariation qcv, EnsPQCAlignment qca)
 
 
 
-/* @func ensQCVariationSetQuerySequence ***************************************
+/* @func ensQcvariationSetQuerySequence ***************************************
 **
 ** Set the query Ensembl QC Sequence element of an Ensembl QC Variation.
 **
-** @param [u] qcv [EnsPQCVariation] Ensembl QC Variation
-** @param [u] qsequence [EnsPQCSequence] Ensembl QC Sequence
+** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
+** @param [u] qsequence [EnsPQcsequence] Ensembl QC Sequence
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationSetQuerySequence(EnsPQCVariation qcv,
-                                      EnsPQCSequence qsequence)
+AjBool ensQcvariationSetQuerySequence(EnsPQcvariation qcv,
+                                      EnsPQcsequence qsequence)
 {
     if(!qcv)
 	return ajFalse;
     
-    ensQCSequenceDel(&qcv->QuerySequence);
+    ensQcsequenceDel(&qcv->QuerySequence);
     
-    qcv->QuerySequence = ensQCSequenceNewRef(qsequence);
+    qcv->QuerySequence = ensQcsequenceNewRef(qsequence);
     
     return ajTrue;
 }
@@ -3123,18 +3123,18 @@ AjBool ensQCVariationSetQuerySequence(EnsPQCVariation qcv,
 
 
 
-/* @func ensQCVariationSetQueryStart ******************************************
+/* @func ensQcvariationSetQueryStart ******************************************
 **
 ** Set the query start element of an Ensembl QC Variation.
 **
-** @param [u] qcv [EnsPQCVariation] Ensembl QC Variation
+** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
 ** @param [r] qstart [ajuint] Query start
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationSetQueryStart(EnsPQCVariation qcv, ajuint qstart)
+AjBool ensQcvariationSetQueryStart(EnsPQcvariation qcv, ajuint qstart)
 {
     if(!qcv)
 	return ajFalse;
@@ -3147,18 +3147,18 @@ AjBool ensQCVariationSetQueryStart(EnsPQCVariation qcv, ajuint qstart)
 
 
 
-/* @func ensQCVariationSetQueryEnd ********************************************
+/* @func ensQcvariationSetQueryEnd ********************************************
 **
 ** Set the query end element of an Ensembl QC Variation.
 **
-** @param [u] qcv [EnsPQCVariation] Ensembl QC Variation
+** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
 ** @param [r] qend [ajuint] Query end
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationSetQueryEnd(EnsPQCVariation qcv, ajuint qend)
+AjBool ensQcvariationSetQueryEnd(EnsPQcvariation qcv, ajuint qend)
 {
     if(!qcv)
 	return ajFalse;
@@ -3171,18 +3171,18 @@ AjBool ensQCVariationSetQueryEnd(EnsPQCVariation qcv, ajuint qend)
 
 
 
-/* @func ensQCVariationSetQueryString *****************************************
+/* @func ensQcvariationSetQueryString *****************************************
 **
 ** Set the query string element of an Ensembl QC Variation.
 **
-** @param [u] qcv [EnsPQCVariation] Ensembl QC Variation
+** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
 ** @param [u] qstring [AjPStr] Query string
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationSetQueryString(EnsPQCVariation qcv, AjPStr qstring)
+AjBool ensQcvariationSetQueryString(EnsPQcvariation qcv, AjPStr qstring)
 {
     if(!qcv)
 	return ajFalse;
@@ -3198,26 +3198,26 @@ AjBool ensQCVariationSetQueryString(EnsPQCVariation qcv, AjPStr qstring)
 
 
 
-/* @func ensQCVariationSetTargetSequence **************************************
+/* @func ensQcvariationSetTargetSequence **************************************
 **
 ** Set the target Ensembl QC Sequence element of an Ensembl QC Variation.
 **
-** @param [u] qcv [EnsPQCVariation] Ensembl QC Variation
-** @param [u] tsequence [EnsPQCSequence] Ensembl QC Sequence
+** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
+** @param [u] tsequence [EnsPQcsequence] Ensembl QC Sequence
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationSetTargetSequence(EnsPQCVariation qcv,
-                                       EnsPQCSequence tsequence)
+AjBool ensQcvariationSetTargetSequence(EnsPQcvariation qcv,
+                                       EnsPQcsequence tsequence)
 {
     if(!qcv)
 	return ajFalse;
     
-    ensQCSequenceDel(&qcv->TargetSequence);
+    ensQcsequenceDel(&qcv->TargetSequence);
     
-    qcv->TargetSequence = ensQCSequenceNewRef(tsequence);
+    qcv->TargetSequence = ensQcsequenceNewRef(tsequence);
     
     return ajTrue;
 }
@@ -3225,18 +3225,18 @@ AjBool ensQCVariationSetTargetSequence(EnsPQCVariation qcv,
 
 
 
-/* @func ensQCVariationSetTargetStart *****************************************
+/* @func ensQcvariationSetTargetStart *****************************************
 **
 ** Set the target start element of an Ensembl QC Variation.
 **
-** @param [u] qcv [EnsPQCVariation] Ensembl QC Variation
+** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
 ** @param [r] tstart [ajuint] Target start
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationSetTargetStart(EnsPQCVariation qcv, ajuint tstart)
+AjBool ensQcvariationSetTargetStart(EnsPQcvariation qcv, ajuint tstart)
 {
     if(!qcv)
 	return ajFalse;
@@ -3249,18 +3249,18 @@ AjBool ensQCVariationSetTargetStart(EnsPQCVariation qcv, ajuint tstart)
 
 
 
-/* @func ensQCVariationSetTargetEnd *******************************************
+/* @func ensQcvariationSetTargetEnd *******************************************
 **
 ** Set the target end element of an Ensembl QC Variation.
 **
-** @param [u] qcv [EnsPQCVariation] Ensembl QC Variation
+** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
 ** @param [r] tend [ajuint] Target end
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationSetTargetEnd(EnsPQCVariation qcv, ajuint tend)
+AjBool ensQcvariationSetTargetEnd(EnsPQcvariation qcv, ajuint tend)
 {
     if(!qcv)
 	return ajFalse;
@@ -3273,18 +3273,18 @@ AjBool ensQCVariationSetTargetEnd(EnsPQCVariation qcv, ajuint tend)
 
 
 
-/* @func ensQCVariationSetTargetString ****************************************
+/* @func ensQcvariationSetTargetString ****************************************
 **
 ** Set the target string element of an Ensembl QC Variation.
 **
-** @param [u] qcv [EnsPQCVariation] Ensembl QC Variation
+** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
 ** @param [u] tstring [AjPStr] Target string
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationSetTargetString(EnsPQCVariation qcv, AjPStr tstring)
+AjBool ensQcvariationSetTargetString(EnsPQcvariation qcv, AjPStr tstring)
 {
     if(!qcv)
 	return ajFalse;
@@ -3300,18 +3300,18 @@ AjBool ensQCVariationSetTargetString(EnsPQCVariation qcv, AjPStr tstring)
 
 
 
-/* @func ensQCVariationSetClass ***********************************************
+/* @func ensQcvariationSetClass ***********************************************
 **
 ** Set the class element of an Ensembl QC Variation.
 **
-** @param [u] qcv [EnsPQCVariation] Ensembl QC Variation
+** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
 ** @param [r] class [AjEnum] Class
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationSetClass(EnsPQCVariation qcv, AjEnum class)
+AjBool ensQcvariationSetClass(EnsPQcvariation qcv, AjEnum class)
 {
     if(!qcv)
 	return ajFalse;
@@ -3324,18 +3324,18 @@ AjBool ensQCVariationSetClass(EnsPQCVariation qcv, AjEnum class)
 
 
 
-/* @func ensQCVariationSetType ************************************************
+/* @func ensQcvariationSetType ************************************************
 **
 ** Set the type element of an Ensembl QC Variation.
 **
-** @param [u] qcv [EnsPQCVariation] Ensembl QC Variation
+** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
 ** @param [r] type [AjEnum] Type
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationSetType(EnsPQCVariation qcv, AjEnum type)
+AjBool ensQcvariationSetType(EnsPQcvariation qcv, AjEnum type)
 {
     if(!qcv)
 	return ajFalse;
@@ -3348,18 +3348,18 @@ AjBool ensQCVariationSetType(EnsPQCVariation qcv, AjEnum type)
 
 
 
-/* @func ensQCVariationSetState ***********************************************
+/* @func ensQcvariationSetState ***********************************************
 **
 ** Set the state element of an Ensembl QC Variation.
 **
-** @param [u] qcv [EnsPQCVariation] Ensembl QC Variation
+** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
 ** @param [r] state [AjEnum] State
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationSetState(EnsPQCVariation qcv, AjEnum state)
+AjBool ensQcvariationSetState(EnsPQcvariation qcv, AjEnum state)
 {
     if(!qcv)
 	return ajFalse;
@@ -3372,31 +3372,31 @@ AjBool ensQCVariationSetState(EnsPQCVariation qcv, AjEnum state)
 
 
 
-/* @func ensQCVariationGetMemSize *********************************************
+/* @func ensQcvariationGetMemSize *********************************************
 **
 ** Get the memory size in bytes of an Ensembl QC Variation.
 **
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
 ** @return [ajuint] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensQCVariationGetMemSize(const EnsPQCVariation qcv)
+ajuint ensQcvariationGetMemSize(const EnsPQcvariation qcv)
 {
     ajuint size = 0;
     
     if(!qcv)
 	return 0;
     
-    size += (ajuint) sizeof (EnsOQCVariation);
+    size += (ajuint) sizeof (EnsOQcvariation);
     
-    size += ensQCAlignmentGetMemSize(qcv->QCAlignment);
+    size += ensQcalignmentGetMemSize(qcv->Qcalignment);
     
     size += ensAnalysisGetMemSize(qcv->Analysis);
     
-    size += ensQCSequenceGetMemSize(qcv->QuerySequence);
-    size += ensQCSequenceGetMemSize(qcv->TargetSequence);
+    size += ensQcsequenceGetMemSize(qcv->QuerySequence);
+    size += ensQcsequenceGetMemSize(qcv->TargetSequence);
     
     if(qcv->QueryString)
     {
@@ -3422,10 +3422,10 @@ ajuint ensQCVariationGetMemSize(const EnsPQCVariation qcv)
 **
 ** Functions for reporting of an Ensembl QC Variation object.
 **
-** @fdata [EnsPQCVariation]
+** @fdata [EnsPQcvariation]
 ** @nam3rule Trace Report QC Variation elements to debug file
 **
-** @argrule Trace qcv [const EnsPQCVariation] Ensembl QC Variation
+** @argrule Trace qcv [const EnsPQcvariation] Ensembl QC Variation
 ** @argrule Trace level [ajuint] Indentation level
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -3436,18 +3436,18 @@ ajuint ensQCVariationGetMemSize(const EnsPQCVariation qcv)
 
 
 
-/* @func ensQCVariationTrace **************************************************
+/* @func ensQcvariationTrace **************************************************
 **
 ** Trace an Ensembl QC Variation.
 **
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 ** @param [r] level [ajuint] Indentation level
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationTrace(const EnsPQCVariation qcv, ajuint level)
+AjBool ensQcvariationTrace(const EnsPQcvariation qcv, ajuint level)
 {
     AjPStr indent = NULL;
     
@@ -3458,11 +3458,11 @@ AjBool ensQCVariationTrace(const EnsPQCVariation qcv, ajuint level)
     
     ajStrAppendCountK(&indent, ' ', level * 2);
     
-    ajDebug("%SensQCVariationTrace %p\n"
+    ajDebug("%SensQcvariationTrace %p\n"
 	    "%S  Use %u\n"
 	    "%S  Identifier %u\n"
 	    "%S  Adaptor %p\n"
-	    "%S  QCAlignment %p\n"
+	    "%S  Qcalignment %p\n"
 	    "%S  Analysis %p\n"
 	    "%S  QuerySequence %p\n"
 	    "%S  QueryStart %u\n"
@@ -3479,7 +3479,7 @@ AjBool ensQCVariationTrace(const EnsPQCVariation qcv, ajuint level)
 	    indent, qcv->Use,
 	    indent, qcv->Identifier,
 	    indent, qcv->Adaptor,
-	    indent, qcv->QCAlignment,
+	    indent, qcv->Qcalignment,
 	    indent, qcv->Analysis,
 	    indent, qcv->QuerySequence,
 	    indent, qcv->QueryStart,
@@ -3489,17 +3489,17 @@ AjBool ensQCVariationTrace(const EnsPQCVariation qcv, ajuint level)
 	    indent, qcv->TargetStart,
 	    indent, qcv->TargetEnd,
 	    indent, qcv->TargetString,
-	    indent, ensQCVariationClassToChar(qcv->Class),
-	    indent, ensQCVariationTypeToChar(qcv->Type),
-	    indent, ensQCVariationStateToChar(qcv->State));
+	    indent, ensQcvariationClassToChar(qcv->Class),
+	    indent, ensQcvariationTypeToChar(qcv->Type),
+	    indent, ensQcvariationStateToChar(qcv->State));
     
-    ensQCAlignmentTrace(qcv->QCAlignment, level + 1);
+    ensQcalignmentTrace(qcv->Qcalignment, level + 1);
     
     ensAnalysisTrace(qcv->Analysis, level + 1);
     
-    ensQCSequenceTrace(qcv->QuerySequence, level + 1);
+    ensQcsequenceTrace(qcv->QuerySequence, level + 1);
     
-    ensQCSequenceTrace(qcv->TargetSequence, level + 1);
+    ensQcsequenceTrace(qcv->TargetSequence, level + 1);
     
     ajStrDel(&indent);
     
@@ -3509,29 +3509,29 @@ AjBool ensQCVariationTrace(const EnsPQCVariation qcv, ajuint level)
 
 
 
-/* @func ensQCVariationClassFromStr *******************************************
+/* @func ensQcvariationClassFromStr *******************************************
 **
 ** Convert an AJAX String into an Ensembl QC Variation class element.
 **
 ** @param [r] vclass [const AjPStr] Class string
 **
 ** @return [AjEnum] Ensembl QC Variation class element or
-**                  ensEQCVariationClassNULL
+**                  ensEQcvariationClassNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQCVariationClassFromStr(const AjPStr vclass)
+AjEnum ensQcvariationClassFromStr(const AjPStr vclass)
 {
     register ajint i = 0;
     
-    AjEnum eclass = ensEQCVariationClassNULL;
+    AjEnum eclass = ensEQcvariationClassNULL;
     
     for(i = 1; qcVariationClass[i]; i++)
 	if(ajStrMatchCaseC(vclass, qcVariationClass[i]))
 	    eclass = i;
     
     if(!eclass)
-	ajDebug("ensQCVariationClassFromStr encountered "
+	ajDebug("ensQcvariationClassFromStr encountered "
 		"unexpected string '%S'.\n", vclass);
     
     return eclass;
@@ -3540,29 +3540,29 @@ AjEnum ensQCVariationClassFromStr(const AjPStr vclass)
 
 
 
-/* @func ensQCVariationTypeFromStr ********************************************
+/* @func ensQcvariationTypeFromStr ********************************************
 **
 ** Convert an AJAX String into an Ensembl QC Variation type element.
 **
 ** @param [r] type [const AjPStr] Type string
 **
 ** @return [AjEnum] Ensembl QC Variation type element or
-**                  ensEQCVariationTypeNULL
+**                  ensEQcvariationTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQCVariationTypeFromStr(const AjPStr type)
+AjEnum ensQcvariationTypeFromStr(const AjPStr type)
 {
     register ajint i = 0;
     
-    AjEnum etype = ensEQCVariationTypeNULL;
+    AjEnum etype = ensEQcvariationTypeNULL;
     
     for(i = 1; qcVariationType[i]; i++)
 	if(ajStrMatchCaseC(type, qcVariationType[i]))
 	    etype = i;
     
     if(!etype)
-	ajDebug("ensQCVariationTypeFromStr encountered "
+	ajDebug("ensQcvariationTypeFromStr encountered "
 		"unexpected string '%S'.\n", type);
     
     return etype;
@@ -3571,29 +3571,29 @@ AjEnum ensQCVariationTypeFromStr(const AjPStr type)
 
 
 
-/* @func ensQCVariationStateFromStr *******************************************
+/* @func ensQcvariationStateFromStr *******************************************
 **
 ** Convert an AJAX String into an Ensembl QC Variation state element.
 **
 ** @param [r] state [const AjPStr] State string
 **
 ** @return [AjEnum] Ensembl QC Variation state element or
-**                  ensEQCVariationStateNULL
+**                  ensEQcvariationStateNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQCVariationStateFromStr(const AjPStr state)
+AjEnum ensQcvariationStateFromStr(const AjPStr state)
 {
     register ajint i = 0;
     
-    AjEnum estate = ensEQCVariationStateNULL;
+    AjEnum estate = ensEQcvariationStateNULL;
     
     for(i = 1; qcVariationState[i]; i++)
 	if(ajStrMatchCaseC(state, qcVariationState[i]))
 	    estate = i;
     
     if(!estate)
-	ajDebug("ensQCVariationStateFromStr encountered "
+	ajDebug("ensQcvariationStateFromStr encountered "
 		"unexpected string '%S'.\n", state);
     
     return estate;
@@ -3602,7 +3602,7 @@ AjEnum ensQCVariationStateFromStr(const AjPStr state)
 
 
 
-/* @func ensQCVariationClassToChar ********************************************
+/* @func ensQcvariationClassToChar ********************************************
 **
 ** Convert an Ensembl QC Variation class element into a C-type (char*) string.
 **
@@ -3612,7 +3612,7 @@ AjEnum ensQCVariationStateFromStr(const AjPStr state)
 ** @@
 ******************************************************************************/
 
-const char *ensQCVariationClassToChar(const AjEnum vclass)
+const char *ensQcvariationClassToChar(const AjEnum vclass)
 {
     register ajint i = 0;
     
@@ -3622,7 +3622,7 @@ const char *ensQCVariationClassToChar(const AjEnum vclass)
     for(i = 1; qcVariationClass[i] && (i < vclass); i++);
     
     if(!qcVariationClass[i])
-	ajDebug("ensQCVariationClassToChar encountered an "
+	ajDebug("ensQcvariationClassToChar encountered an "
 		"out of boundary error on group %d.\n", vclass);
     
     return qcVariationClass[i];
@@ -3631,7 +3631,7 @@ const char *ensQCVariationClassToChar(const AjEnum vclass)
 
 
 
-/* @func ensQCVariationTypeToChar *********************************************
+/* @func ensQcvariationTypeToChar *********************************************
 **
 ** Convert an Ensembl QC Variation type element into a C-type (char*) string.
 **
@@ -3641,7 +3641,7 @@ const char *ensQCVariationClassToChar(const AjEnum vclass)
 ** @@
 ******************************************************************************/
 
-const char *ensQCVariationTypeToChar(const AjEnum type)
+const char *ensQcvariationTypeToChar(const AjEnum type)
 {
     register ajint i = 0;
     
@@ -3651,7 +3651,7 @@ const char *ensQCVariationTypeToChar(const AjEnum type)
     for(i = 1; qcVariationType[i] && (i < type); i++);
     
     if(!qcVariationType[i])
-	ajDebug("ensQCVariationTypeToChar encountered an "
+	ajDebug("ensQcvariationTypeToChar encountered an "
 		"out of boundary error on group %d.\n", type);
     
     return qcVariationType[i];
@@ -3660,7 +3660,7 @@ const char *ensQCVariationTypeToChar(const AjEnum type)
 
 
 
-/* @func ensQCVariationStateToChar ********************************************
+/* @func ensQcvariationStateToChar ********************************************
 **
 ** Convert an Ensembl QC Variation state element into a C-type (char*) string.
 **
@@ -3670,7 +3670,7 @@ const char *ensQCVariationTypeToChar(const AjEnum type)
 ** @@
 ******************************************************************************/
 
-const char *ensQCVariationStateToChar(const AjEnum state)
+const char *ensQcvariationStateToChar(const AjEnum state)
 {
     register ajint i = 0;
     
@@ -3680,7 +3680,7 @@ const char *ensQCVariationStateToChar(const AjEnum state)
     for(i = 1; qcVariationState[i] && (i < state); i++);
     
     if(!qcVariationState[i])
-	ajDebug("ensQCVariationStateToChar encountered an "
+	ajDebug("ensQcvariationStateToChar encountered an "
 		"out of boundary error on group %d.\n", state);
     
     return qcVariationState[i];
@@ -3689,13 +3689,13 @@ const char *ensQCVariationStateToChar(const AjEnum state)
 
 
 
-/* @datasection [EnsPQCVariationadaptor] QC Variation Adaptor *****************
+/* @datasection [EnsPQcvariationadaptor] QC Variation Adaptor *****************
 **
 ** Functions for manipulating Ensembl QC Variation Adaptor objects
 **
 ** Bio::EnsEMBL::QC::DBSQL::Variationadaptor CVS Revision:
 **
-** @nam2rule QCVariationadaptor
+** @nam2rule Qcvariationadaptor
 **
 ******************************************************************************/
 
@@ -3759,7 +3759,7 @@ static const char *qcVariationadaptorFinalCondition =
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
-** @param [u] am [EnsPAssemblyMapper] Ensembl Assembly Mapper
+** @param [u] am [EnsPAssemblymapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [u] qcvs [AjPList] AJAX List of Ensembl QC Variations
 **
@@ -3769,7 +3769,7 @@ static const char *qcVariationadaptorFinalCondition =
 
 static AjBool qcVariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
-                                              EnsPAssemblyMapper am,
+                                              EnsPAssemblymapper am,
                                               EnsPSlice slice,
                                               AjPList qcvs)
 {
@@ -3786,9 +3786,9 @@ static AjBool qcVariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     ajuint tstart = 0;
     ajuint tend   = 0;
     
-    AjEnum eclass = ensEQCVariationClassNULL;
-    AjEnum etype  = ensEQCVariationTypeNULL;
-    AjEnum estate = ensEQCVariationStateNULL;
+    AjEnum eclass = ensEQcvariationClassNULL;
+    AjEnum etype  = ensEQcvariationTypeNULL;
+    AjEnum estate = ensEQcvariationStateNULL;
     
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;
@@ -3803,15 +3803,15 @@ static AjBool qcVariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPAnalysis analysis  = NULL;
     EnsPAnalysisadaptor aa = NULL;
     
-    EnsPQCAlignment qca         = NULL;
-    EnsPQCAlignmentadaptor qcaa = NULL;
+    EnsPQcalignment qca         = NULL;
+    EnsPQcalignmentadaptor qcaa = NULL;
     
-    EnsPQCSequence qsequence   = NULL;
-    EnsPQCSequence tsequence   = NULL;
-    EnsPQCSequenceadaptor qcsa = NULL;
+    EnsPQcsequence qsequence   = NULL;
+    EnsPQcsequence tsequence   = NULL;
+    EnsPQcsequenceadaptor qcsa = NULL;
     
-    EnsPQCVariation qcv         = NULL;
-    EnsPQCVariationadaptor qcva = NULL;
+    EnsPQcvariation qcv         = NULL;
+    EnsPQcvariationadaptor qcva = NULL;
     
     if(!dba)
 	return ajFalse;
@@ -3828,11 +3828,11 @@ static AjBool qcVariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     
     aa = ensRegistryGetAnalysisadaptor(dba);
     
-    qcaa = ensRegistryGetQCAlignmentadaptor(dba);
+    qcaa = ensRegistryGetQcalignmentadaptor(dba);
     
-    qcva = ensRegistryGetQCVariationadaptor(dba);
+    qcva = ensRegistryGetQcvariationadaptor(dba);
     
-    qcsa = ensRegistryGetQCSequenceadaptor(dba);
+    qcsa = ensRegistryGetQcsequenceadaptor(dba);
     
     sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
@@ -3876,21 +3876,21 @@ static AjBool qcVariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	ajSqlcolumnToStr(sqlr, &type);
 	ajSqlcolumnToStr(sqlr, &state);
 	
-	ensQCAlignmentadaptorFetchByIdentifier(qcaa, alignmentid, &qca);
+	ensQcalignmentadaptorFetchByIdentifier(qcaa, alignmentid, &qca);
 	
 	ensAnalysisadaptorFetchByIdentifier(aa, analysisid, &analysis);
 	
-	ensQCSequenceadaptorFetchByIdentifier(qcsa, qsid, &qsequence);
+	ensQcsequenceadaptorFetchByIdentifier(qcsa, qsid, &qsequence);
 	
-	ensQCSequenceadaptorFetchByIdentifier(qcsa, tsid, &tsequence);
+	ensQcsequenceadaptorFetchByIdentifier(qcsa, tsid, &tsequence);
 	
-	eclass = ensQCVariationClassFromStr(class);
+	eclass = ensQcvariationClassFromStr(class);
 	
-	etype = ensQCVariationTypeFromStr(type);
+	etype = ensQcvariationTypeFromStr(type);
 	
-	estate = ensQCVariationClassFromStr(class);
+	estate = ensQcvariationClassFromStr(class);
 	
-	qcv = ensQCVariationNew(qcva,
+	qcv = ensQcvariationNew(qcva,
 				identifier,
 				qca,
 				analysis,
@@ -3908,12 +3908,12 @@ static AjBool qcVariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	ajListPushAppend(qcvs, (void *) qcv);
 	
-	ensQCSequenceDel(&qsequence);
-	ensQCSequenceDel(&tsequence);
+	ensQcsequenceDel(&qsequence);
+	ensQcsequenceDel(&tsequence);
 	
 	ensAnalysisDel(&analysis);
 	
-	ensQCAlignmentDel(&qca);
+	ensQcalignmentDel(&qca);
 	
 	ajStrDel(&qstring);
 	ajStrDel(&tstring);
@@ -3939,7 +3939,7 @@ static AjBool qcVariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** QC Variation Adaptor. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPQCVariationadaptor]
+** @fdata [EnsPQcvariationadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
@@ -3947,10 +3947,10 @@ static AjBool qcVariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
 ** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
-** @argrule Ref object [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
+** @argrule Obj object [EnsPQcvariationadaptor] Ensembl QC Variation Adaptor
+** @argrule Ref object [EnsPQcvariationadaptor] Ensembl QC Variation Adaptor
 **
-** @valrule * [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
+** @valrule * [EnsPQcvariationadaptor] Ensembl QC Variation Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -3958,17 +3958,17 @@ static AjBool qcVariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @func ensQCVariationadaptorNew *********************************************
+/* @func ensQcvariationadaptorNew *********************************************
 **
 ** Default constructor for an Ensembl QC Variation Adaptor.
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor or NULL
+** @return [EnsPQcvariationadaptor] Ensembl QC Variation Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCVariationadaptor ensQCVariationadaptorNew(EnsPDatabaseadaptor dba)
+EnsPQcvariationadaptor ensQcvariationadaptorNew(EnsPDatabaseadaptor dba)
 {
     if(!dba)
 	return NULL;
@@ -3990,12 +3990,12 @@ EnsPQCVariationadaptor ensQCVariationadaptorNew(EnsPDatabaseadaptor dba)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl QC Variation Adaptor.
 **
-** @fdata [EnsPQCVariationadaptor]
+** @fdata [EnsPQcvariationadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a QC Variation Adaptor object
 **
-** @argrule * Pqcva [EnsPQCVariationadaptor*] QC Variation Adaptor
+** @argrule * Pqcva [EnsPQcvariationadaptor*] QC Variation Adaptor
 **                                            object address
 **
 ** @valrule * [void]
@@ -4006,21 +4006,21 @@ EnsPQCVariationadaptor ensQCVariationadaptorNew(EnsPDatabaseadaptor dba)
 
 
 
-/* @func ensQCVariationadaptorDel *********************************************
+/* @func ensQcvariationadaptorDel *********************************************
 **
 ** Default destructor for an Ensembl QC Variation Adaptor.
 **
-** @param [d] Pqcva [EnsPQCVariationadaptor*] Ensembl QC Variation Adaptor
+** @param [d] Pqcva [EnsPQcvariationadaptor*] Ensembl QC Variation Adaptor
 **                                            address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensQCVariationadaptorDel(EnsPQCVariationadaptor* Pqcva)
+void ensQcvariationadaptorDel(EnsPQcvariationadaptor* Pqcva)
 {
     /*
-     ajDebug("ensQCVariationadaptorDel\n"
+     ajDebug("ensQcvariationadaptorDel\n"
 	     "  *Pqcva %p\n",
 	     *Pqcva);
      */
@@ -4039,22 +4039,22 @@ void ensQCVariationadaptorDel(EnsPQCVariationadaptor* Pqcva)
 
 
 
-/* @func ensQCVariationadaptorFetchByIdentifier *******************************
+/* @func ensQcvariationadaptorFetchByIdentifier *******************************
 **
 ** Fetch an Ensembl QC Variation via its SQL database-internal identifier.
 ** The caller is responsible for deleting the Ensembl QC Variation.
 **
-** @param [r] adaptor [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
+** @param [r] adaptor [EnsPQcvariationadaptor] Ensembl QC Variation Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal QC Variation identifier
-** @param [wP] Pqcv [EnsPQCVariation*] Ensembl QC Variation address
+** @param [wP] Pqcv [EnsPQcvariation*] Ensembl QC Variation address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationadaptorFetchByIdentifier(EnsPQCVariationadaptor adaptor,
+AjBool ensQcvariationadaptorFetchByIdentifier(EnsPQcvariationadaptor adaptor,
                                               ajuint identifier,
-                                              EnsPQCVariation *Pqcv)
+                                              EnsPQcvariation *Pqcv)
 {
     if(!adaptor)
 	return ajFalse;
@@ -4065,7 +4065,7 @@ AjBool ensQCVariationadaptorFetchByIdentifier(EnsPQCVariationadaptor adaptor,
     if(!Pqcv)
 	return ajFalse;
     
-    *Pqcv = (EnsPQCVariation)
+    *Pqcv = (EnsPQcvariation)
 	ensBaseadaptorFetchByIdentifier(adaptor, identifier);
     
     return ajTrue;
@@ -4074,22 +4074,22 @@ AjBool ensQCVariationadaptorFetchByIdentifier(EnsPQCVariationadaptor adaptor,
 
 
 
-/* @func ensQCVariationadaptorFetchAllByQCAlignment ***************************
+/* @func ensQcvariationadaptorFetchAllByQcalignment ***************************
 **
 ** Fetch all Ensembl QC Variations by an Ensembl QC Alignment.
 ** The caller is responsible for deleting the Ensembl QC Variations
 ** before deleting the AJAX List.
 **
-** @param [r] qcva [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
-** @param [r] qca [const EnsPQCAlignment] Ensembl QC Alignment
+** @param [r] qcva [EnsPQcvariationadaptor] Ensembl QC Variation Adaptor
+** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 ** @param [w] qcvs [AjPList] AJAX List of Ensembl QC Variations
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationadaptorFetchAllByQCAlignment(EnsPQCVariationadaptor qcva,
-                                                  const EnsPQCAlignment qca,
+AjBool ensQcvariationadaptorFetchAllByQcalignment(EnsPQcvariationadaptor qcva,
+                                                  const EnsPQcalignment qca,
                                                   AjPList qcvs)
 {
     AjPStr constraint = NULL;
@@ -4104,11 +4104,11 @@ AjBool ensQCVariationadaptorFetchAllByQCAlignment(EnsPQCVariationadaptor qcva,
 	return ajFalse;
     
     constraint = ajFmtStr("variation.alignment_id = %u",
-			  ensQCAlignmentGetIdentifier(qca));
+			  ensQcalignmentGetIdentifier(qca));
     
     ensBaseadaptorGenericFetch(qcva,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcvs);
     
@@ -4120,28 +4120,28 @@ AjBool ensQCVariationadaptorFetchAllByQCAlignment(EnsPQCVariationadaptor qcva,
 
 
 
-/* @func ensQCVariationadaptorFetchAllByAnalysisQueryTarget *******************
+/* @func ensQcvariationadaptorFetchAllByAnalysisQueryTarget *******************
 **
 ** Fetch all Ensembl QC Variations by Ensembl an Analysis, as well as
 ** Query and Target Ensembl Sequences.
 ** The caller is responsible for deleting the Ensembl QC Variations
 ** before deleting the AJAX List.
 **
-** @param [r] qcva [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
+** @param [r] qcva [EnsPQcvariationadaptor] Ensembl QC Variation Adaptor
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
-** @param [r] qdb [const EnsPQCDatabase] Query Ensembl QC Database
-** @param [r] tdb [const EnsPQCDatabase] Target Ensembl QC Database
+** @param [r] qdb [const EnsPQcdatabase] Query Ensembl QC Database
+** @param [r] tdb [const EnsPQcdatabase] Target Ensembl QC Database
 ** @param [w] qcvs [AjPList] AJAX List of Ensembl QC Variations
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationadaptorFetchAllByAnalysisQueryTarget(
-    EnsPQCVariationadaptor qcva,
+AjBool ensQcvariationadaptorFetchAllByAnalysisQueryTarget(
+    EnsPQcvariationadaptor qcva,
     const EnsPAnalysis analysis,
-    const EnsPQCDatabase qdb,
-    const EnsPQCDatabase tdb,
+    const EnsPQcdatabase qdb,
+    const EnsPQcdatabase tdb,
     AjPList qcvs)
 {
     AjPStr constraint = NULL;
@@ -4167,12 +4167,12 @@ AjBool ensQCVariationadaptorFetchAllByAnalysisQueryTarget(
 			  "AND "
 			  "variation.target_db_id = %u",
 			  ensAnalysisGetIdentifier(analysis),
-			  ensQCDatabaseGetIdentifier(qdb),
-			  ensQCDatabaseGetIdentifier(tdb));
+			  ensQcdatabaseGetIdentifier(qdb),
+			  ensQcdatabaseGetIdentifier(tdb));
     
     ensBaseadaptorGenericFetch(qcva,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcvs);
     
@@ -4184,24 +4184,24 @@ AjBool ensQCVariationadaptorFetchAllByAnalysisQueryTarget(
 
 
 
-/* @func ensQCVariationadaptorFetchAllByQuery *********************************
+/* @func ensQcvariationadaptorFetchAllByQuery *********************************
 **
 ** Fetch all Ensembl QC Variations by a Query Ensembl QC Sequence.
 ** The caller is responsible for deleting the Ensembl QC Variations
 ** before deleting the AJAX List.
 **
-** @param [r] qcva [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
+** @param [r] qcva [EnsPQcvariationadaptor] Ensembl QC Variation Adaptor
 ** @param [rN] analysis [const EnsPAnalysis] Ensembl Analysis
-** @param [r] qdb [const EnsPQCDatabase] Query Ensembl QC Database
+** @param [r] qdb [const EnsPQcdatabase] Query Ensembl QC Database
 ** @param [w] qcvs [AjPList] AJAX List of Ensembl QC Variations
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationadaptorFetchAllByQuery(EnsPQCVariationadaptor qcva,
+AjBool ensQcvariationadaptorFetchAllByQuery(EnsPQcvariationadaptor qcva,
                                             const EnsPAnalysis analysis,
-                                            const EnsPQCDatabase qdb,
+                                            const EnsPQcdatabase qdb,
                                             AjPList qcvs)
 {
     AjPStr constraint = NULL;
@@ -4216,7 +4216,7 @@ AjBool ensQCVariationadaptorFetchAllByQuery(EnsPQCVariationadaptor qcva,
 	return ajFalse;
     
     constraint = ajFmtStr("variation.query_db_id = %u",
-			  ensQCDatabaseGetIdentifier(qdb));
+			  ensQcdatabaseGetIdentifier(qdb));
     
     if(analysis)
 	ajFmtPrintAppS(&constraint,
@@ -4225,7 +4225,7 @@ AjBool ensQCVariationadaptorFetchAllByQuery(EnsPQCVariationadaptor qcva,
     
     ensBaseadaptorGenericFetch(qcva,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcvs);
     
@@ -4237,24 +4237,24 @@ AjBool ensQCVariationadaptorFetchAllByQuery(EnsPQCVariationadaptor qcva,
 
 
 
-/* @func ensQCVariationadaptorFetchAllByTarget ********************************
+/* @func ensQcvariationadaptorFetchAllByTarget ********************************
 **
 ** Fetch all Ensembl QC Variations by a Target Ensembl QC Sequence.
 ** The caller is responsible for deleting the Ensembl QC Variations
 ** before deleting the AJAX List.
 **
-** @param [r] qcva [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
+** @param [r] qcva [EnsPQcvariationadaptor] Ensembl QC Variation Adaptor
 ** @param [rN] analysis [const EnsPAnalysis] Ensembl Analysis
-** @param [r] tdb [const EnsPQCDatabase] Target Ensembl QC Database
+** @param [r] tdb [const EnsPQcdatabase] Target Ensembl QC Database
 ** @param [w] qcvs [AjPList] AJAX List of Ensembl QC Variations
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationadaptorFetchAllByTarget(EnsPQCVariationadaptor qcva,
+AjBool ensQcvariationadaptorFetchAllByTarget(EnsPQcvariationadaptor qcva,
                                              const EnsPAnalysis analysis,
-                                             const EnsPQCDatabase tdb,
+                                             const EnsPQcdatabase tdb,
                                              AjPList qcvs)
 {
     AjPStr constraint = NULL;
@@ -4269,7 +4269,7 @@ AjBool ensQCVariationadaptorFetchAllByTarget(EnsPQCVariationadaptor qcva,
 	return ajFalse;
     
     constraint = ajFmtStr("variation.target_db_id = %u",
-			  ensQCDatabaseGetIdentifier(tdb));
+			  ensQcdatabaseGetIdentifier(tdb));
     
     if(analysis)
 	ajFmtPrintAppS(&constraint,
@@ -4278,7 +4278,7 @@ AjBool ensQCVariationadaptorFetchAllByTarget(EnsPQCVariationadaptor qcva,
     
     ensBaseadaptorGenericFetch(qcva,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcvs);
     
@@ -4290,19 +4290,19 @@ AjBool ensQCVariationadaptorFetchAllByTarget(EnsPQCVariationadaptor qcva,
 
 
 
-/* @func ensQCVariationadaptorStore *******************************************
+/* @func ensQcvariationadaptorStore *******************************************
 **
 ** Store an Ensembl QC Variation.
 **
-** @param [r] qcva [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
-** @param [u] qcv [EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcva [EnsPQcvariationadaptor] Ensembl QC Variation Adaptor
+** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationadaptorStore(EnsPQCVariationadaptor qcva,
-                                  EnsPQCVariation qcv)
+AjBool ensQcvariationadaptorStore(EnsPQcvariationadaptor qcva,
+                                  EnsPQcvariation qcv)
 {
     char *txtqstr = NULL;
     char *txttstr = NULL;
@@ -4321,7 +4321,7 @@ AjBool ensQCVariationadaptorStore(EnsPQCVariationadaptor qcva,
     if(!qcv)
 	return ajFalse;
     
-    if(ensQCVariationGetadaptor(qcv) && ensQCVariationGetIdentifier(qcv))
+    if(ensQcvariationGetAdaptor(qcv) && ensQcvariationGetIdentifier(qcv))
 	return ajFalse;
     
     dba = ensBaseadaptorGetDatabaseadaptor(qcva);
@@ -4349,22 +4349,22 @@ AjBool ensQCVariationadaptorStore(EnsPQCVariationadaptor qcva,
 			 "variation.type = '%s', "
 			 "variation.state = '%s'",
 			 ensAnalysisGetIdentifier(qcv->Analysis),
-			 ensQCAlignmentGetIdentity(qcv->QCAlignment),
-			 ensQCSequenceGetQCDatabaseIdentifier(
+			 ensQcalignmentGetIdentity(qcv->Qcalignment),
+			 ensQcsequenceGetQcdatabaseIdentifier(
                              qcv->QuerySequence),
-			 ensQCSequenceGetIdentifier(qcv->QuerySequence),
+			 ensQcsequenceGetIdentifier(qcv->QuerySequence),
 			 qcv->QueryStart,
 			 qcv->QueryEnd,
 			 txtqstr,
-			 ensQCSequenceGetQCDatabaseIdentifier(
+			 ensQcsequenceGetQcdatabaseIdentifier(
                              qcv->TargetSequence),
-			 ensQCSequenceGetIdentifier(qcv->TargetSequence),
+			 ensQcsequenceGetIdentifier(qcv->TargetSequence),
 			 qcv->TargetStart,
 			 qcv->TargetEnd,
 			 txttstr,
-			 ensQCVariationClassToChar(qcv->Class),
-			 ensQCVariationTypeToChar(qcv->Type),
-			 ensQCVariationStateToChar(qcv->State));
+			 ensQcvariationClassToChar(qcv->Class),
+			 ensQcvariationTypeToChar(qcv->Type),
+			 ensQcvariationStateToChar(qcv->State));
     
     ajCharDel(&txtqstr);
     ajCharDel(&txttstr);
@@ -4373,9 +4373,9 @@ AjBool ensQCVariationadaptorStore(EnsPQCVariationadaptor qcva,
     
     if(ajSqlstatementGetAffectedrows(sqls))
     {
-	ensQCVariationSetIdentifier(qcv, ajSqlstatementGetIdentifier(sqls));
+	ensQcvariationSetIdentifier(qcv, ajSqlstatementGetIdentifier(sqls));
 	
-	ensQCVariationSetadaptor(qcv, qcva);
+	ensQcvariationSetAdaptor(qcv, qcva);
 	
 	value = ajTrue;
     }
@@ -4390,19 +4390,19 @@ AjBool ensQCVariationadaptorStore(EnsPQCVariationadaptor qcva,
 
 
 
-/* @func ensQCVariationadaptorUpdate ******************************************
+/* @func ensQcvariationadaptorUpdate ******************************************
 **
 ** Update an Ensembl QC Variation.
 **
-** @param [r] qcva [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcva [EnsPQcvariationadaptor] Ensembl QC Variation Adaptor
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationadaptorUpdate(EnsPQCVariationadaptor qcva,
-                                   const EnsPQCVariation qcv)
+AjBool ensQcvariationadaptorUpdate(EnsPQcvariationadaptor qcva,
+                                   const EnsPQcvariation qcv)
 {
     char *txtqstr = NULL;
     char *txttstr = NULL;
@@ -4421,7 +4421,7 @@ AjBool ensQCVariationadaptorUpdate(EnsPQCVariationadaptor qcva,
     if(!qcv)
 	return ajFalse;
     
-    if(!ensQCVariationGetIdentifier(qcv))
+    if(!ensQcvariationGetIdentifier(qcv))
 	return ajFalse;
     
     dba = ensBaseadaptorGetDatabaseadaptor(qcva);
@@ -4451,22 +4451,22 @@ AjBool ensQCVariationadaptorUpdate(EnsPQCVariationadaptor qcva,
 			 "WHERE "
 			 "variation.variation_id = %u",
 			 ensAnalysisGetIdentifier(qcv->Analysis),
-			 ensQCAlignmentGetIdentity(qcv->QCAlignment),
-			 ensQCSequenceGetQCDatabaseIdentifier(
+			 ensQcalignmentGetIdentity(qcv->Qcalignment),
+			 ensQcsequenceGetQcdatabaseIdentifier(
                              qcv->QuerySequence),
-			 ensQCSequenceGetIdentifier(qcv->QuerySequence),
+			 ensQcsequenceGetIdentifier(qcv->QuerySequence),
 			 qcv->QueryStart,
 			 qcv->QueryEnd,
 			 txtqstr,
-			 ensQCSequenceGetQCDatabaseIdentifier(
+			 ensQcsequenceGetQcdatabaseIdentifier(
                              qcv->TargetSequence),
-			 ensQCSequenceGetIdentifier(qcv->TargetSequence),
+			 ensQcsequenceGetIdentifier(qcv->TargetSequence),
 			 qcv->TargetStart,
 			 qcv->TargetEnd,
 			 txttstr,
-			 ensQCVariationClassToChar(qcv->Class),
-			 ensQCVariationTypeToChar(qcv->Type),
-			 ensQCVariationStateToChar(qcv->State),
+			 ensQcvariationClassToChar(qcv->Class),
+			 ensQcvariationTypeToChar(qcv->Type),
+			 ensQcvariationStateToChar(qcv->State),
 			 qcv->Identifier);
     
     ajCharDel(&txtqstr);
@@ -4487,19 +4487,19 @@ AjBool ensQCVariationadaptorUpdate(EnsPQCVariationadaptor qcva,
 
 
 
-/* @func ensQCVariationadaptorDelete ******************************************
+/* @func ensQcvariationadaptorDelete ******************************************
 **
 ** Delete an Ensembl QC Variation.
 **
-** @param [r] qcva [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
-** @param [r] qcv [const EnsPQCVariation] Ensembl QC Variation
+** @param [r] qcva [EnsPQcvariationadaptor] Ensembl QC Variation Adaptor
+** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCVariationadaptorDelete(EnsPQCVariationadaptor qcva,
-                                   const EnsPQCVariation qcv)
+AjBool ensQcvariationadaptorDelete(EnsPQcvariationadaptor qcva,
+                                   const EnsPQcvariation qcv)
 {
     AjBool value = ajFalse;
     
@@ -4515,7 +4515,7 @@ AjBool ensQCVariationadaptorDelete(EnsPQCVariationadaptor qcva,
     if(!qcv)
 	return ajFalse;
     
-    if(!ensQCVariationGetIdentifier(qcv))
+    if(!ensQcvariationGetIdentifier(qcv))
 	return ajFalse;
     
     dba = ensBaseadaptorGetDatabaseadaptor(qcva);
@@ -4541,13 +4541,13 @@ AjBool ensQCVariationadaptorDelete(EnsPQCVariationadaptor qcva,
 
 
 
-/* @datasection [EnsPQCSubmission] QC Submission ******************************
+/* @datasection [EnsPQcsubmission] QC Submission ******************************
 **
 ** Functions for manipulating Ensembl QC Submission objects
 **
 ** Bio::EnsEMBL::QC::Submission CVS Revision:
 **
-** @nam2rule QCSubmission
+** @nam2rule Qcsubmission
 **
 ******************************************************************************/
 
@@ -4561,17 +4561,17 @@ AjBool ensQCVariationadaptorDelete(EnsPQCVariationadaptor qcva,
 ** QC Submission. The target pointer does not need to be initialised to
 ** NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPQCSubmission]
+** @fdata [EnsPQcsubmission]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPQCSubmission] Ensembl QC Submission
-** @argrule Ref object [EnsPQCSubmission] Ensembl QC Submission
+** @argrule Obj object [EnsPQcsubmission] Ensembl QC Submission
+** @argrule Ref object [EnsPQcsubmission] Ensembl QC Submission
 **
-** @valrule * [EnsPQCSubmission] Ensembl QC Submission
+** @valrule * [EnsPQcsubmission] Ensembl QC Submission
 **
 ** @fcategory new
 ******************************************************************************/
@@ -4579,37 +4579,37 @@ AjBool ensQCVariationadaptorDelete(EnsPQCVariationadaptor qcva,
 
 
 
-/* @func ensQCSubmissionNew ***************************************************
+/* @func ensQcsubmissionNew ***************************************************
 **
 ** Default constructor for an Ensembl QC Submission.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] adaptor [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
+** @param [r] adaptor [EnsPQcsubmissionadaptor] Ensembl QC Submission Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::QC::Submission::new
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [u] qsequence [EnsPQCSequence] Query Ensembl QC Sequence
-** @param [u] tsequence [EnsPQCSequence] Target Ensembl QC Sequence
+** @param [u] qsequence [EnsPQcsequence] Query Ensembl QC Sequence
+** @param [u] tsequence [EnsPQcsequence] Target Ensembl QC Sequence
 ** @param [r] tstart [ajuint] Target start
 ** @param [r] tend [ajuint] Target end
 ** @param [r] tstrand [ajint] Target strand
 ** @param [r] analysisjobid [ajuint] Ensembl Hive Analysis Job identifier
 **
-** @return [EnsPQCSubmission] Ensembl QC Submission or NULL
+** @return [EnsPQcsubmission] Ensembl QC Submission or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCSubmission ensQCSubmissionNew(EnsPQCSubmissionadaptor adaptor,
+EnsPQcsubmission ensQcsubmissionNew(EnsPQcsubmissionadaptor adaptor,
                                     ajuint identifier,
                                     EnsPAnalysis analysis,
-                                    EnsPQCSequence qsequence,
-                                    EnsPQCSequence tsequence,
+                                    EnsPQcsequence qsequence,
+                                    EnsPQcsequence tsequence,
                                     ajuint tstart,
                                     ajuint tend,
                                     ajint tstrand,
                                     ajuint analysisjobid)
 {
-    EnsPQCSubmission qcs = NULL;
+    EnsPQcsubmission qcs = NULL;
     
     if(!analysis)
 	return NULL;
@@ -4630,8 +4630,8 @@ EnsPQCSubmission ensQCSubmissionNew(EnsPQCSubmissionadaptor adaptor,
     
     qcs->Analysis = ensAnalysisNewRef(analysis);
     
-    qcs->QuerySequence  = ensQCSequenceNewRef(qsequence);
-    qcs->TargetSequence = ensQCSequenceNewRef(tsequence);
+    qcs->QuerySequence  = ensQcsequenceNewRef(qsequence);
+    qcs->TargetSequence = ensQcsequenceNewRef(tsequence);
     
     qcs->TargetStart = tstart;
     qcs->TargetEnd   = tend;
@@ -4646,19 +4646,19 @@ EnsPQCSubmission ensQCSubmissionNew(EnsPQCSubmissionadaptor adaptor,
 
 
 
-/* @func ensQCSubmissionNewObj ************************************************
+/* @func ensQcsubmissionNewObj ************************************************
 **
 ** Object-based constructor function, which returns an independent object.
 **
-** @param [r] object [const EnsPQCSubmission] Ensembl QC Submission
+** @param [r] object [const EnsPQcsubmission] Ensembl QC Submission
 **
-** @return [EnsPQCSubmission] Ensembl QC Submission or NULL
+** @return [EnsPQcsubmission] Ensembl QC Submission or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCSubmission ensQCSubmissionNewObj(const EnsPQCSubmission object)
+EnsPQcsubmission ensQcsubmissionNewObj(const EnsPQcsubmission object)
 {
-    EnsPQCSubmission qcs= NULL;
+    EnsPQcsubmission qcs= NULL;
     
     if(!object)
 	return NULL;
@@ -4674,9 +4674,9 @@ EnsPQCSubmission ensQCSubmissionNewObj(const EnsPQCSubmission object)
     if(object->Analysis)
 	qcs->Analysis = ensAnalysisNewRef(object->Analysis);
     
-    qcs->QuerySequence = ensQCSequenceNewRef(object->QuerySequence);
+    qcs->QuerySequence = ensQcsequenceNewRef(object->QuerySequence);
     
-    qcs->TargetSequence = ensQCSequenceNewRef(object->TargetSequence);
+    qcs->TargetSequence = ensQcsequenceNewRef(object->TargetSequence);
     
     qcs->TargetStart = object->TargetStart;
     
@@ -4692,18 +4692,18 @@ EnsPQCSubmission ensQCSubmissionNewObj(const EnsPQCSubmission object)
 
 
 
-/* @func ensQCSubmissionNewRef ************************************************
+/* @func ensQcsubmissionNewRef ************************************************
 **
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] qca [EnsPQCSubmission] Ensembl Submission
+** @param [u] qca [EnsPQcsubmission] Ensembl Submission
 **
-** @return [EnsPQCSubmission] Ensembl QC Submission
+** @return [EnsPQcsubmission] Ensembl QC Submission
 ** @@
 ******************************************************************************/
 
-EnsPQCSubmission ensQCSubmissionNewRef(EnsPQCSubmission qcs)
+EnsPQcsubmission ensQcsubmissionNewRef(EnsPQcsubmission qcs)
 {
     if(!qcs)
 	return NULL;
@@ -4721,12 +4721,12 @@ EnsPQCSubmission ensQCSubmissionNewRef(EnsPQCSubmission qcs)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl QC Submission.
 **
-** @fdata [EnsPQCSubmission]
+** @fdata [EnsPQcsubmission]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a QC Submission object
 **
-** @argrule * Pqcs [EnsPQCSubmission*] QC Submission object address
+** @argrule * Pqcs [EnsPQcsubmission*] QC Submission object address
 **
 ** @valrule * [void]
 **
@@ -4736,26 +4736,26 @@ EnsPQCSubmission ensQCSubmissionNewRef(EnsPQCSubmission qcs)
 
 
 
-/* @func ensQCSubmissionDel ***************************************************
+/* @func ensQcsubmissionDel ***************************************************
 **
 ** Default destructor for an Ensembl QC Submission.
 **
-** @param [d] Pqcs [EnsPQCSubmission*] Ensembl QC Submission address
+** @param [d] Pqcs [EnsPQcsubmission*] Ensembl QC Submission address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensQCSubmissionDel(EnsPQCSubmission *Pqcs)
+void ensQcsubmissionDel(EnsPQcsubmission *Pqcs)
 {
-    EnsPQCSubmission pthis = NULL;
+    EnsPQcsubmission pthis = NULL;
     
     /*
-     ajDebug("ensQCSubmissionDel\n"
+     ajDebug("ensQcsubmissionDel\n"
 	     "  *Pqcs %p\n",
 	     *Pqcs);
      
-     ensQCSubmissionTrace(*Pqcs, 1);
+     ensQcsubmissionTrace(*Pqcs, 1);
      */
     
     if(!Pqcs)
@@ -4777,9 +4777,9 @@ void ensQCSubmissionDel(EnsPQCSubmission *Pqcs)
     
     ensAnalysisDel(&pthis->Analysis);
     
-    ensQCSequenceDel(&pthis->QuerySequence);
+    ensQcsequenceDel(&pthis->QuerySequence);
     
-    ensQCSequenceDel(&pthis->TargetSequence);
+    ensQcsequenceDel(&pthis->TargetSequence);
     
     AJFREE(pthis);
 
@@ -4795,11 +4795,11 @@ void ensQCSubmissionDel(EnsPQCSubmission *Pqcs)
 **
 ** Functions for returning elements of an Ensembl QC Submission object.
 **
-** @fdata [EnsPQCSubmission]
+** @fdata [EnsPQcsubmission]
 ** @fnote None
 **
 ** @nam3rule Get Return QC Submission attribute(s)
-** @nam4rule Getadaptor Return the Ensembl QC Submission Adaptor
+** @nam4rule GetAdaptor Return the Ensembl QC Submission Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetAnalysis Return the Ensembl Analysis
 ** @nam4rule GetQuerySequence Return the query Ensembl QC Sequence
@@ -4812,9 +4812,9 @@ void ensQCSubmissionDel(EnsPQCSubmission *Pqcs)
 ** @nam4rule GetTargetStrand Return the target strand
 ** @nam4rule GetAnalysisJobIdentifier Return the Hive Analysis Job Identifier
 **
-** @argrule * qcs [const EnsPQCSubmission] QC Submission
+** @argrule * qcs [const EnsPQcsubmission] QC Submission
 **
-** @valrule Adaptor [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
+** @valrule Adaptor [EnsPQcsubmissionadaptor] Ensembl QC Submission Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule Analysis [EnsPAnalysis] Ensembl Analysis
 ** @valrule QuerySequence [AjPStr] Query Ensembl QC Sequence
@@ -4833,17 +4833,17 @@ void ensQCSubmissionDel(EnsPQCSubmission *Pqcs)
 
 
 
-/* @func ensQCSubmissionGetadaptor ********************************************
+/* @func ensQcsubmissionGetAdaptor ********************************************
 **
 ** Get the Ensembl QC Submission Adaptor element of an Ensembl QC Submission.
 **
-** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Submission
+** @param [r] qcs [const EnsPQcsubmission] Ensembl QC Submission
 **
-** @return [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
+** @return [EnsPQcsubmissionadaptor] Ensembl QC Submission Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPQCSubmissionadaptor ensQCSubmissionGetadaptor(const EnsPQCSubmission qcs)
+EnsPQcsubmissionadaptor ensQcsubmissionGetAdaptor(const EnsPQcsubmission qcs)
 {
     if(!qcs)
 	return NULL;
@@ -4854,18 +4854,18 @@ EnsPQCSubmissionadaptor ensQCSubmissionGetadaptor(const EnsPQCSubmission qcs)
 
 
 
-/* @func ensQCSubmissionGetIdentifier *****************************************
+/* @func ensQcsubmissionGetIdentifier *****************************************
 **
 ** Get the SQL database-internal identifier element of an
 ** Ensembl QC Submission.
 **
-** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Submission
+** @param [r] qcs [const EnsPQcsubmission] Ensembl QC Submission
 **
 ** @return [ajuint] Internal database identifier
 ** @@
 ******************************************************************************/
 
-ajuint ensQCSubmissionGetIdentifier(const EnsPQCSubmission qcs)
+ajuint ensQcsubmissionGetIdentifier(const EnsPQcsubmission qcs)
 {
     if(!qcs)
 	return 0;
@@ -4876,17 +4876,17 @@ ajuint ensQCSubmissionGetIdentifier(const EnsPQCSubmission qcs)
 
 
 
-/* @func ensQCSubmissionGetAnalysis *******************************************
+/* @func ensQcsubmissionGetAnalysis *******************************************
 **
 ** Get the Ensembl Analysis element of an Ensembl QC Submission.
 **
-** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Submission
+** @param [r] qcs [const EnsPQcsubmission] Ensembl QC Submission
 **
 ** @return [EnsPAnalysis] Ensembl Analysis
 ** @@
 ******************************************************************************/
 
-EnsPAnalysis ensQCSubmissionGetAnalysis(const EnsPQCSubmission qcs)
+EnsPAnalysis ensQcsubmissionGetAnalysis(const EnsPQcsubmission qcs)
 {
     if(!qcs)
 	return NULL;
@@ -4897,17 +4897,17 @@ EnsPAnalysis ensQCSubmissionGetAnalysis(const EnsPQCSubmission qcs)
 
 
 
-/* @func ensQCSubmissionGetQuerySequence **************************************
+/* @func ensQcsubmissionGetQuerySequence **************************************
 **
 ** Get the query Ensembl QC Sequence element of an Ensembl QC Submission.
 **
-** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Submission
+** @param [r] qcs [const EnsPQcsubmission] Ensembl QC Submission
 **
-** @return [EnsPQCSequence] Query Ensembl QC Sequence
+** @return [EnsPQcsequence] Query Ensembl QC Sequence
 ** @@
 ******************************************************************************/
 
-EnsPQCSequence ensQCSubmissionGetQuerySequence(const EnsPQCSubmission qcs)
+EnsPQcsequence ensQcsubmissionGetQuerySequence(const EnsPQcsubmission qcs)
 {
     if(!qcs)
 	return NULL;
@@ -4918,17 +4918,17 @@ EnsPQCSequence ensQCSubmissionGetQuerySequence(const EnsPQCSubmission qcs)
 
 
 
-/* @func ensQCSubmissionGetQueryStart *****************************************
+/* @func ensQcsubmissionGetQueryStart *****************************************
 **
 ** Get the query start element of an Ensembl QC Submission.
 **
-** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Submission
+** @param [r] qcs [const EnsPQcsubmission] Ensembl QC Submission
 **
 ** @return [ajuint] Query start
 ** @@
 ******************************************************************************/
 
-ajuint ensQCSubmissionGetQueryStart(const EnsPQCSubmission qcs)
+ajuint ensQcsubmissionGetQueryStart(const EnsPQcsubmission qcs)
 {
     if(!qcs)
 	return 0;
@@ -4939,17 +4939,17 @@ ajuint ensQCSubmissionGetQueryStart(const EnsPQCSubmission qcs)
 
 
 
-/* @func ensQCSubmissionGetQueryEnd *******************************************
+/* @func ensQcsubmissionGetQueryEnd *******************************************
 **
 ** Get the query end element of an Ensembl QC Submission.
 **
-** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Submission
+** @param [r] qcs [const EnsPQcsubmission] Ensembl QC Submission
 **
 ** @return [ajuint] Query end
 ** @@
 ******************************************************************************/
 
-ajuint ensQCSubmissionGetQueryEnd(const EnsPQCSubmission qcs)
+ajuint ensQcsubmissionGetQueryEnd(const EnsPQcsubmission qcs)
 {
     if(!qcs)
 	return 0;
@@ -4960,17 +4960,17 @@ ajuint ensQCSubmissionGetQueryEnd(const EnsPQCSubmission qcs)
 
 
 
-/* @func ensQCSubmissionGetQueryStrand ****************************************
+/* @func ensQcsubmissionGetQueryStrand ****************************************
 **
 ** Get the query strand element of an Ensembl QC Submission.
 **
-** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Submission
+** @param [r] qcs [const EnsPQcsubmission] Ensembl QC Submission
 **
 ** @return [ajint] Query strand
 ** @@
 ******************************************************************************/
 
-ajint ensQCSubmissionGetQueryStrand(const EnsPQCSubmission qcs)
+ajint ensQcsubmissionGetQueryStrand(const EnsPQcsubmission qcs)
 {
     if(!qcs)
 	return 0;
@@ -4981,17 +4981,17 @@ ajint ensQCSubmissionGetQueryStrand(const EnsPQCSubmission qcs)
 
 
 
-/* @func ensQCSubmissionGetTargetSequence *************************************
+/* @func ensQcsubmissionGetTargetSequence *************************************
 **
 ** Get the target Ensembl QC Sequence element of an Ensembl QC Submission.
 **
-** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Submission
+** @param [r] qcs [const EnsPQcsubmission] Ensembl QC Submission
 **
-** @return [EnsPQCSequence] Target Ensembl QC Sequence
+** @return [EnsPQcsequence] Target Ensembl QC Sequence
 ** @@
 ******************************************************************************/
 
-EnsPQCSequence ensQCSubmissionGetTargetSequence(const EnsPQCSubmission qcs)
+EnsPQcsequence ensQcsubmissionGetTargetSequence(const EnsPQcsubmission qcs)
 {
     if(!qcs)
 	return NULL;
@@ -5002,17 +5002,17 @@ EnsPQCSequence ensQCSubmissionGetTargetSequence(const EnsPQCSubmission qcs)
 
 
 
-/* @func ensQCSubmissionGetTargetStart ****************************************
+/* @func ensQcsubmissionGetTargetStart ****************************************
 **
 ** Get the target start element of an Ensembl QC Submission.
 **
-** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Submission
+** @param [r] qcs [const EnsPQcsubmission] Ensembl QC Submission
 **
 ** @return [ajuint] Target start
 ** @@
 ******************************************************************************/
 
-ajuint ensQCSubmissionGetTargetStart(const EnsPQCSubmission qcs)
+ajuint ensQcsubmissionGetTargetStart(const EnsPQcsubmission qcs)
 {
     if(!qcs)
 	return 0;
@@ -5023,17 +5023,17 @@ ajuint ensQCSubmissionGetTargetStart(const EnsPQCSubmission qcs)
 
 
 
-/* @func ensQCSubmissionGetTargetEnd ******************************************
+/* @func ensQcsubmissionGetTargetEnd ******************************************
 **
 ** Get the target end element of an Ensembl QC Submission.
 **
-** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Submission
+** @param [r] qcs [const EnsPQcsubmission] Ensembl QC Submission
 **
 ** @return [ajuint] Target end
 ** @@
 ******************************************************************************/
 
-ajuint ensQCSubmissionGetTargetEnd(const EnsPQCSubmission qcs)
+ajuint ensQcsubmissionGetTargetEnd(const EnsPQcsubmission qcs)
 {
     if(!qcs)
 	return 0;
@@ -5044,17 +5044,17 @@ ajuint ensQCSubmissionGetTargetEnd(const EnsPQCSubmission qcs)
 
 
 
-/* @func ensQCSubmissionGetTargetStrand ***************************************
+/* @func ensQcsubmissionGetTargetStrand ***************************************
 **
 ** Get the target strand element of an Ensembl QC Submission.
 **
-** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Submission
+** @param [r] qcs [const EnsPQcsubmission] Ensembl QC Submission
 **
 ** @return [ajint] Target strand
 ** @@
 ******************************************************************************/
 
-ajint ensQCSubmissionGetTargetStrand(const EnsPQCSubmission qcs)
+ajint ensQcsubmissionGetTargetStrand(const EnsPQcsubmission qcs)
 {
     if(!qcs)
 	return 0;
@@ -5065,17 +5065,17 @@ ajint ensQCSubmissionGetTargetStrand(const EnsPQCSubmission qcs)
 
 
 
-/* @func ensQCSubmissionGetAnalysisJobIdentifier ******************************
+/* @func ensQcsubmissionGetAnalysisJobIdentifier ******************************
 **
 ** Get the Hive Analysis Job identifier element of an Ensembl QC Variation.
 **
-** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Variation
+** @param [r] qcs [const EnsPQcsubmission] Ensembl QC Variation
 **
 ** @return [ajuint] Hive Analysis Job identifier
 ** @@
 ******************************************************************************/
 
-ajuint ensQCSubmissionGetAnalysisJobIdentifier(const EnsPQCSubmission qcs)
+ajuint ensQcsubmissionGetAnalysisJobIdentifier(const EnsPQcsubmission qcs)
 {
     if(!qcs)
 	return 0;
@@ -5090,11 +5090,11 @@ ajuint ensQCSubmissionGetAnalysisJobIdentifier(const EnsPQCSubmission qcs)
 **
 ** Functions for assigning elements of an Ensembl QC Submission object.
 **
-** @fdata [EnsPQCSubmission]
+** @fdata [EnsPQcsubmission]
 ** @fnote None
 **
 ** @nam3rule Set Set one element of a QC Submission
-** @nam4rule Setadaptor Set the Ensembl QC Submission Adaptor
+** @nam4rule SetAdaptor Set the Ensembl QC Submission Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetQuerySequence Set the query Ensembl QC Sequence
 ** @nam4rule SetQueryStart Set the query start
@@ -5106,7 +5106,7 @@ ajuint ensQCSubmissionGetAnalysisJobIdentifier(const EnsPQCSubmission qcs)
 ** @nam4rule SetTargetStrand Set the target strand
 ** @nam4rule SetAnalysisJobIdentifier Set the Analysis Job Identifier
 **
-** @argrule * qcs [EnsPQCSubmission] Ensembl QC Submission
+** @argrule * qcs [EnsPQcsubmission] Ensembl QC Submission
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
@@ -5116,19 +5116,19 @@ ajuint ensQCSubmissionGetAnalysisJobIdentifier(const EnsPQCSubmission qcs)
 
 
 
-/* @func ensQCSubmissionSetadaptor ********************************************
+/* @func ensQcsubmissionSetAdaptor ********************************************
 **
 ** Set the Ensembl Database Adaptor element of an QC Submission.
 **
-** @param [u] qcs [EnsPQCSubmission] Ensembl QC Submission
-** @param [r] qcsa [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
+** @param [u] qcs [EnsPQcsubmission] Ensembl QC Submission
+** @param [r] qcsa [EnsPQcsubmissionadaptor] Ensembl QC Submission Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionSetadaptor(EnsPQCSubmission qcs,
-                                 EnsPQCSubmissionadaptor qcsa)
+AjBool ensQcsubmissionSetAdaptor(EnsPQcsubmission qcs,
+                                 EnsPQcsubmissionadaptor qcsa)
 {
     if(!qcs)
 	return ajFalse;
@@ -5141,19 +5141,19 @@ AjBool ensQCSubmissionSetadaptor(EnsPQCSubmission qcs,
 
 
 
-/* @func ensQCSubmissionSetIdentifier *****************************************
+/* @func ensQcsubmissionSetIdentifier *****************************************
 **
 ** Set the SQL database-internal identifier element of an
 ** Ensembl QC Submission.
 **
-** @param [u] qcs [EnsPQCSubmission] Ensembl QC Submission
+** @param [u] qcs [EnsPQcsubmission] Ensembl QC Submission
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionSetIdentifier(EnsPQCSubmission qcs, ajuint identifier)
+AjBool ensQcsubmissionSetIdentifier(EnsPQcsubmission qcs, ajuint identifier)
 {
     if(!qcs)
 	return ajFalse;
@@ -5166,18 +5166,18 @@ AjBool ensQCSubmissionSetIdentifier(EnsPQCSubmission qcs, ajuint identifier)
 
 
 
-/* @func ensQCSubmissionSetAnalysis *******************************************
+/* @func ensQcsubmissionSetAnalysis *******************************************
 **
 ** Set the Ensembl Analysis element of an Ensembl QC Submission.
 **
-** @param [u] qcs [EnsPQCSubmission] Ensembl QC Submission
+** @param [u] qcs [EnsPQcsubmission] Ensembl QC Submission
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionSetAnalysis(EnsPQCSubmission qcs, EnsPAnalysis analysis)
+AjBool ensQcsubmissionSetAnalysis(EnsPQcsubmission qcs, EnsPAnalysis analysis)
 {
     if(!qcs)
 	return ajFalse;
@@ -5192,26 +5192,26 @@ AjBool ensQCSubmissionSetAnalysis(EnsPQCSubmission qcs, EnsPAnalysis analysis)
 
 
 
-/* @func ensQCSubmissionSetQuerySequence **************************************
+/* @func ensQcsubmissionSetQuerySequence **************************************
 **
 ** Set the query Ensembl QC Sequence element of an Ensembl QC Submission.
 **
-** @param [u] qcs [EnsPQCSubmission] Ensembl QC Submission
-** @param [u] qcseq [EnsPQCSequence] Ensembl QC Sequence
+** @param [u] qcs [EnsPQcsubmission] Ensembl QC Submission
+** @param [u] qcseq [EnsPQcsequence] Ensembl QC Sequence
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionSetQuerySequence(EnsPQCSubmission qcs,
-                                       EnsPQCSequence qcseq)
+AjBool ensQcsubmissionSetQuerySequence(EnsPQcsubmission qcs,
+                                       EnsPQcsequence qcseq)
 {
     if(!qcs)
 	return ajFalse;
     
-    ensQCSequenceDel(&qcs->QuerySequence);
+    ensQcsequenceDel(&qcs->QuerySequence);
     
-    qcs->QuerySequence = ensQCSequenceNewRef(qcseq);
+    qcs->QuerySequence = ensQcsequenceNewRef(qcseq);
     
     return ajTrue;
 }
@@ -5219,18 +5219,18 @@ AjBool ensQCSubmissionSetQuerySequence(EnsPQCSubmission qcs,
 
 
 
-/* @func ensQCSubmissionSetQueryStart *****************************************
+/* @func ensQcsubmissionSetQueryStart *****************************************
 **
 ** Set the query start element of an Ensembl QC Submission.
 **
-** @param [u] qcs [EnsPQCSubmission] Ensembl QC Submission
+** @param [u] qcs [EnsPQcsubmission] Ensembl QC Submission
 ** @param [r] qstart [ajuint] Query start
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionSetQueryStart(EnsPQCSubmission qcs, ajuint qstart)
+AjBool ensQcsubmissionSetQueryStart(EnsPQcsubmission qcs, ajuint qstart)
 {
     if(!qcs)
 	return ajFalse;
@@ -5243,18 +5243,18 @@ AjBool ensQCSubmissionSetQueryStart(EnsPQCSubmission qcs, ajuint qstart)
 
 
 
-/* @func ensQCSubmissionSetQueryEnd *******************************************
+/* @func ensQcsubmissionSetQueryEnd *******************************************
 **
 ** Set the query end element of an Ensembl QC Submission.
 **
-** @param [u] qcs [EnsPQCSubmission] Ensembl QC Submission
+** @param [u] qcs [EnsPQcsubmission] Ensembl QC Submission
 ** @param [r] qend [ajuint] Query end
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionSetQueryEnd(EnsPQCSubmission qcs, ajuint qend)
+AjBool ensQcsubmissionSetQueryEnd(EnsPQcsubmission qcs, ajuint qend)
 {
     if(!qcs)
 	return ajFalse;
@@ -5267,18 +5267,18 @@ AjBool ensQCSubmissionSetQueryEnd(EnsPQCSubmission qcs, ajuint qend)
 
 
 
-/* @func ensQCSubmissionSetQueryStrand ****************************************
+/* @func ensQcsubmissionSetQueryStrand ****************************************
 **
 ** Set the query strand element of an Ensembl QC Submission.
 **
-** @param [u] qcs [EnsPQCSubmission] Ensembl QC Submission
+** @param [u] qcs [EnsPQcsubmission] Ensembl QC Submission
 ** @param [u] qstrand [ajint] Query strand
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionSetQueryStrand(EnsPQCSubmission qcs, ajint qstrand)
+AjBool ensQcsubmissionSetQueryStrand(EnsPQcsubmission qcs, ajint qstrand)
 {
     if(!qcs)
 	return ajFalse;
@@ -5291,26 +5291,26 @@ AjBool ensQCSubmissionSetQueryStrand(EnsPQCSubmission qcs, ajint qstrand)
 
 
 
-/* @func ensQCSubmissionSetTargetSequence *************************************
+/* @func ensQcsubmissionSetTargetSequence *************************************
 **
 ** Set the target Ensembl QC Sequence element of an Ensembl QC Submission.
 **
-** @param [u] qcs [EnsPQCSubmission] Ensembl QC Submission
-** @param [u] qcseq [EnsPQCSequence] Ensembl QC Sequence
+** @param [u] qcs [EnsPQcsubmission] Ensembl QC Submission
+** @param [u] qcseq [EnsPQcsequence] Ensembl QC Sequence
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionSetTargetSequence(EnsPQCSubmission qcs,
-                                        EnsPQCSequence qcseq)
+AjBool ensQcsubmissionSetTargetSequence(EnsPQcsubmission qcs,
+                                        EnsPQcsequence qcseq)
 {
     if(!qcs)
 	return ajFalse;
     
-    ensQCSequenceDel(&qcs->TargetSequence);
+    ensQcsequenceDel(&qcs->TargetSequence);
     
-    qcs->TargetSequence = ensQCSequenceNewRef(qcseq);
+    qcs->TargetSequence = ensQcsequenceNewRef(qcseq);
     
     return ajTrue;
 }
@@ -5318,18 +5318,18 @@ AjBool ensQCSubmissionSetTargetSequence(EnsPQCSubmission qcs,
 
 
 
-/* @func ensQCSubmissionSetTargetStart ****************************************
+/* @func ensQcsubmissionSetTargetStart ****************************************
 **
 ** Set the target start element of an Ensembl QC Submission.
 **
-** @param [u] qcs [EnsPQCSubmission] Ensembl QC Submission
+** @param [u] qcs [EnsPQcsubmission] Ensembl QC Submission
 ** @param [r] tstart [ajuint] Target start
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionSetTargetStart(EnsPQCSubmission qcs, ajuint tstart)
+AjBool ensQcsubmissionSetTargetStart(EnsPQcsubmission qcs, ajuint tstart)
 {
     if(!qcs)
 	return ajFalse;
@@ -5342,18 +5342,18 @@ AjBool ensQCSubmissionSetTargetStart(EnsPQCSubmission qcs, ajuint tstart)
 
 
 
-/* @func ensQCSubmissionSetTargetEnd ******************************************
+/* @func ensQcsubmissionSetTargetEnd ******************************************
 **
 ** Set the target end element of an Ensembl QC Submission.
 **
-** @param [u] qcs [EnsPQCSubmission] Ensembl QC Submission
+** @param [u] qcs [EnsPQcsubmission] Ensembl QC Submission
 ** @param [r] tend [ajuint] Target end
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionSetTargetEnd(EnsPQCSubmission qcs, ajuint tend)
+AjBool ensQcsubmissionSetTargetEnd(EnsPQcsubmission qcs, ajuint tend)
 {
     if(!qcs)
 	return ajFalse;
@@ -5366,18 +5366,18 @@ AjBool ensQCSubmissionSetTargetEnd(EnsPQCSubmission qcs, ajuint tend)
 
 
 
-/* @func ensQCSubmissionSetTargetStrand ***************************************
+/* @func ensQcsubmissionSetTargetStrand ***************************************
 **
 ** Set the target strand element of an Ensembl QC Submission.
 **
-** @param [u] qcs [EnsPQCSubmission] Ensembl QC Submission
+** @param [u] qcs [EnsPQcsubmission] Ensembl QC Submission
 ** @param [u] tstrand [ajint] Target strand
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionSetTargetStrand(EnsPQCSubmission qcs, ajint tstrand)
+AjBool ensQcsubmissionSetTargetStrand(EnsPQcsubmission qcs, ajint tstrand)
 {
     if(!qcs)
 	return ajFalse;
@@ -5390,18 +5390,18 @@ AjBool ensQCSubmissionSetTargetStrand(EnsPQCSubmission qcs, ajint tstrand)
 
 
 
-/* @func ensQCSubmissionSetAnalysisJobIdentifier ******************************
+/* @func ensQcsubmissionSetAnalysisJobIdentifier ******************************
 **
 ** Set the Hive Analysis Job identifier element of an Ensembl QC Submission.
 **
-** @param [u] qcs [EnsPQCSubmission] Ensembl QC Submission
+** @param [u] qcs [EnsPQcsubmission] Ensembl QC Submission
 ** @param [r] jobid [ajuint] Hive Analysis Job identifier
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionSetAnalysisJobIdentifier(EnsPQCSubmission qcs,
+AjBool ensQcsubmissionSetAnalysisJobIdentifier(EnsPQcsubmission qcs,
                                                ajuint jobid)
 {
     if(!qcs)
@@ -5415,29 +5415,29 @@ AjBool ensQCSubmissionSetAnalysisJobIdentifier(EnsPQCSubmission qcs,
 
 
 
-/* @func ensQCSubmissionGetMemSize *********************************************
+/* @func ensQcsubmissionGetMemSize *********************************************
 **
 ** Get the memory size in bytes of an Ensembl QC Submission.
 **
-** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Submission
+** @param [r] qcs [const EnsPQcsubmission] Ensembl QC Submission
 **
 ** @return [ajuint] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensQCSubmissionGetMemSize(const EnsPQCSubmission qcs)
+ajuint ensQcsubmissionGetMemSize(const EnsPQcsubmission qcs)
 {
     ajuint size = 0;
     
     if(!qcs)
 	return 0;
     
-    size += (ajuint) sizeof (EnsOQCSubmission);
+    size += (ajuint) sizeof (EnsOQcsubmission);
     
     size += ensAnalysisGetMemSize(qcs->Analysis);
     
-    size += ensQCSequenceGetMemSize(qcs->QuerySequence);
-    size += ensQCSequenceGetMemSize(qcs->TargetSequence);
+    size += ensQcsequenceGetMemSize(qcs->QuerySequence);
+    size += ensQcsequenceGetMemSize(qcs->TargetSequence);
     
     return size;
 }
@@ -5449,10 +5449,10 @@ ajuint ensQCSubmissionGetMemSize(const EnsPQCSubmission qcs)
 **
 ** Functions for reporting of an Ensembl QC Submission object.
 **
-** @fdata [EnsPQCSubmission]
+** @fdata [EnsPQcsubmission]
 ** @nam3rule Trace Report Ensembl QC Submission elements to debug file
 **
-** @argrule Trace qcs [const EnsPQCSubmission] Ensembl QC Submission
+** @argrule Trace qcs [const EnsPQcsubmission] Ensembl QC Submission
 ** @argrule Trace level [ajuint] Indentation level
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -5463,18 +5463,18 @@ ajuint ensQCSubmissionGetMemSize(const EnsPQCSubmission qcs)
 
 
 
-/* @func ensQCSubmissionTrace *************************************************
+/* @func ensQcsubmissionTrace *************************************************
 **
 ** Trace an Ensembl QC Submission.
 **
-** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Submission
+** @param [r] qcs [const EnsPQcsubmission] Ensembl QC Submission
 ** @param [r] level [ajuint] Indentation level
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionTrace(const EnsPQCSubmission qcs, ajuint level)
+AjBool ensQcsubmissionTrace(const EnsPQcsubmission qcs, ajuint level)
 {
     AjPStr indent = NULL;
     
@@ -5485,7 +5485,7 @@ AjBool ensQCSubmissionTrace(const EnsPQCSubmission qcs, ajuint level)
     
     ajStrAppendCountK(&indent, ' ', level * 2);
     
-    ajDebug("%SensQCSubmissionTrace %p\n"
+    ajDebug("%SensQcsubmissionTrace %p\n"
 	    "%S  Use %u\n"
 	    "%S  Identifier %u\n"
 	    "%S  Adaptor %p\n"
@@ -5520,8 +5520,8 @@ AjBool ensQCSubmissionTrace(const EnsPQCSubmission qcs, ajuint level)
     
     ensAnalysisTrace(qcs->Analysis, 1);
     
-    ensQCSequenceTrace(qcs->QuerySequence, 1);
-    ensQCSequenceTrace(qcs->TargetSequence, 1);
+    ensQcsequenceTrace(qcs->QuerySequence, 1);
+    ensQcsequenceTrace(qcs->TargetSequence, 1);
     
     ajStrDel(&indent);
     
@@ -5531,13 +5531,13 @@ AjBool ensQCSubmissionTrace(const EnsPQCSubmission qcs, ajuint level)
 
 
 
-/* @datasection [EnsPQCSubmissionadaptor] QC Submission Adaptor ***************
+/* @datasection [EnsPQcsubmissionadaptor] QC Submission Adaptor ***************
 **
 ** Functions for manipulating Ensembl QC Submission Adaptor objects
 **
 ** Bio::EnsEMBL::QC::DBSQL::Submissionadaptor CVS Revision:
 **
-** @nam2rule QCSubmissionadaptor
+** @nam2rule Qcsubmissionadaptor
 **
 ******************************************************************************/
 
@@ -5595,7 +5595,7 @@ static const char *qcSubmissionadaptorFinalCondition =
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
-** @param [u] am [EnsPAssemblyMapper] Ensembl Assembly Mapper
+** @param [u] am [EnsPAssemblymapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [u] qcss [AjPList] AJAX List of Ensembl QC Submissions
 **
@@ -5605,7 +5605,7 @@ static const char *qcSubmissionadaptorFinalCondition =
 
 static AjBool qcSubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
-                                               EnsPAssemblyMapper am,
+                                               EnsPAssemblymapper am,
                                                EnsPSlice slice,
                                                AjPList qcss)
 {
@@ -5629,12 +5629,12 @@ static AjBool qcSubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPAnalysis analysis  = NULL;
     EnsPAnalysisadaptor aa = NULL;
     
-    EnsPQCSequence qsequence   = NULL;
-    EnsPQCSequence tsequence   = NULL;
-    EnsPQCSequenceadaptor qcsa = NULL;
+    EnsPQcsequence qsequence   = NULL;
+    EnsPQcsequence tsequence   = NULL;
+    EnsPQcsequenceadaptor qcsa = NULL;
     
-    EnsPQCSubmission qcb         = NULL;
-    EnsPQCSubmissionadaptor qcba = NULL;
+    EnsPQcsubmission qcb         = NULL;
+    EnsPQcsubmissionadaptor qcba = NULL;
     
     if(!dba)
 	return ajFalse;
@@ -5651,9 +5651,9 @@ static AjBool qcSubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     
     aa = ensRegistryGetAnalysisadaptor(dba);
     
-    qcsa = ensRegistryGetQCSequenceadaptor(dba);
+    qcsa = ensRegistryGetQcsequenceadaptor(dba);
     
-    qcba = ensRegistryGetQCSubmissionadaptor(dba);
+    qcba = ensRegistryGetQcsubmissionadaptor(dba);
     
     sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
@@ -5687,11 +5687,11 @@ static AjBool qcSubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	ensAnalysisadaptorFetchByIdentifier(aa, analysisid, &analysis);
 	
-	ensQCSequenceadaptorFetchByIdentifier(qcsa, qsid, &qsequence);
+	ensQcsequenceadaptorFetchByIdentifier(qcsa, qsid, &qsequence);
 	
-	ensQCSequenceadaptorFetchByIdentifier(qcsa, tsid, &tsequence);
+	ensQcsequenceadaptorFetchByIdentifier(qcsa, tsid, &tsequence);
 	
-	qcb = ensQCSubmissionNew(qcba,
+	qcb = ensQcsubmissionNew(qcba,
 				 identifier,
 				 analysis,
 				 qsequence,
@@ -5705,8 +5705,8 @@ static AjBool qcSubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	ensAnalysisDel(&analysis);
 	
-	ensQCSequenceDel(&qsequence);
-	ensQCSequenceDel(&tsequence);
+	ensQcsequenceDel(&qsequence);
+	ensQcsequenceDel(&tsequence);
     }
     
     ajSqlrowiterDel(&sqli);
@@ -5726,7 +5726,7 @@ static AjBool qcSubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** QC Submission Adaptor. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPQCSubmissionadaptor]
+** @fdata [EnsPQcsubmissionadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
@@ -5734,10 +5734,10 @@ static AjBool qcSubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
 ** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
-** @argrule Ref object [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
+** @argrule Obj object [EnsPQcsubmissionadaptor] Ensembl QC Submission Adaptor
+** @argrule Ref object [EnsPQcsubmissionadaptor] Ensembl QC Submission Adaptor
 **
-** @valrule * [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
+** @valrule * [EnsPQcsubmissionadaptor] Ensembl QC Submission Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -5745,17 +5745,17 @@ static AjBool qcSubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @func ensQCSubmissionadaptorNew ********************************************
+/* @func ensQcsubmissionadaptorNew ********************************************
 **
 ** Default constructor for an Ensembl QC Submission Adaptor.
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor or NULL
+** @return [EnsPQcsubmissionadaptor] Ensembl QC Submission Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQCSubmissionadaptor ensQCSubmissionadaptorNew(EnsPDatabaseadaptor dba)
+EnsPQcsubmissionadaptor ensQcsubmissionadaptorNew(EnsPDatabaseadaptor dba)
 {
     if(!dba)
 	return NULL;
@@ -5777,12 +5777,12 @@ EnsPQCSubmissionadaptor ensQCSubmissionadaptorNew(EnsPDatabaseadaptor dba)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl QC Submission Adaptor.
 **
-** @fdata [EnsPQCSubmissionadaptor]
+** @fdata [EnsPQcsubmissionadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a QC Submission Adaptor object
 **
-** @argrule * Pqcsa [EnsPQCSubmissionadaptor*] QC Submission Adaptor
+** @argrule * Pqcsa [EnsPQcsubmissionadaptor*] QC Submission Adaptor
 **                                             object address
 **
 ** @valrule * [void]
@@ -5793,21 +5793,21 @@ EnsPQCSubmissionadaptor ensQCSubmissionadaptorNew(EnsPDatabaseadaptor dba)
 
 
 
-/* @func ensQCSubmissionadaptorDel ********************************************
+/* @func ensQcsubmissionadaptorDel ********************************************
 **
 ** Default destructor for an Ensembl QC Submission Adaptor.
 **
-** @param [d] Pqcsa [EnsPQCSubmissionadaptor*] Ensembl QC Submission Adaptor
+** @param [d] Pqcsa [EnsPQcsubmissionadaptor*] Ensembl QC Submission Adaptor
 **                                             address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensQCSubmissionadaptorDel(EnsPQCSubmissionadaptor* Pqcsa)
+void ensQcsubmissionadaptorDel(EnsPQcsubmissionadaptor* Pqcsa)
 {
     /*
-     ajDebug("ensQCSubmissionadaptorDel\n"
+     ajDebug("ensQcsubmissionadaptorDel\n"
 	     "  *Pqcsa %p\n",
 	     *Pqcsa);
      */
@@ -5826,23 +5826,23 @@ void ensQCSubmissionadaptorDel(EnsPQCSubmissionadaptor* Pqcsa)
 
 
 
-/* @func ensQCSubmissionadaptorFetchByIdentifier ******************************
+/* @func ensQcsubmissionadaptorFetchByIdentifier ******************************
 **
 ** Fetch an Ensembl QC Submission via its SQL database-internal identifier.
 ** The caller is responsible for deleting the Ensembl QC Submission.
 **
-** @param [r] adaptor [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
+** @param [r] adaptor [EnsPQcsubmissionadaptor] Ensembl QC Submission Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal QC Submission
 **                                identifier
-** @param [wP] Pqcs [EnsPQCSubmission*] Ensembl QC Submission address
+** @param [wP] Pqcs [EnsPQcsubmission*] Ensembl QC Submission address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionadaptorFetchByIdentifier(EnsPQCSubmissionadaptor adaptor,
+AjBool ensQcsubmissionadaptorFetchByIdentifier(EnsPQcsubmissionadaptor adaptor,
                                                ajuint identifier,
-                                               EnsPQCSubmission *Pqcs)
+                                               EnsPQcsubmission *Pqcs)
 {
     if(!adaptor)
 	return ajFalse;
@@ -5853,7 +5853,7 @@ AjBool ensQCSubmissionadaptorFetchByIdentifier(EnsPQCSubmissionadaptor adaptor,
     if(!Pqcs)
 	return ajFalse;
     
-    *Pqcs = (EnsPQCSubmission)
+    *Pqcs = (EnsPQcsubmission)
 	ensBaseadaptorFetchByIdentifier(adaptor, identifier);
     
     return ajTrue;
@@ -5862,28 +5862,28 @@ AjBool ensQCSubmissionadaptorFetchByIdentifier(EnsPQCSubmissionadaptor adaptor,
 
 
 
-/* @func ensQCSubmissionadaptorFetchAllByAnalysisQueryTarget ******************
+/* @func ensQcsubmissionadaptorFetchAllByAnalysisQueryTarget ******************
 **
 ** Fetch all Ensembl QC Submissions by an Ensembl Analysis, as well as
 ** Query and Target Ensembl Sequences.
 ** The caller is responsible for deleting the Ensembl QC Submissions
 ** before deleting the AJAX List.
 **
-** @param [r] qcsa [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
+** @param [r] qcsa [EnsPQcsubmissionadaptor] Ensembl QC Submission Adaptor
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
-** @param [r] qdb [const EnsPQCDatabase] Query Ensembl QC Database
-** @param [r] tdb [const EnsPQCDatabase] Target Ensembl QC Database
+** @param [r] qdb [const EnsPQcdatabase] Query Ensembl QC Database
+** @param [r] tdb [const EnsPQcdatabase] Target Ensembl QC Database
 ** @param [w] qcss [AjPList] AJAX List of Ensembl QC Submissions
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionadaptorFetchAllByAnalysisQueryTarget(
-    EnsPQCSubmissionadaptor qcsa,
+AjBool ensQcsubmissionadaptorFetchAllByAnalysisQueryTarget(
+    EnsPQcsubmissionadaptor qcsa,
     const EnsPAnalysis analysis,
-    const EnsPQCDatabase qdb,
-    const EnsPQCDatabase tdb,
+    const EnsPQcdatabase qdb,
+    const EnsPQcdatabase tdb,
     AjPList qcss)
 {
     AjPStr constraint = NULL;
@@ -5909,12 +5909,12 @@ AjBool ensQCSubmissionadaptorFetchAllByAnalysisQueryTarget(
 			  "AND "
 			  "submission.target_db_id = %u",
 			  ensAnalysisGetIdentifier(analysis),
-			  ensQCDatabaseGetIdentifier(qdb),
-			  ensQCDatabaseGetIdentifier(tdb));
+			  ensQcdatabaseGetIdentifier(qdb),
+			  ensQcdatabaseGetIdentifier(tdb));
     
     ensBaseadaptorGenericFetch(qcsa,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcss);
     
@@ -5926,18 +5926,18 @@ AjBool ensQCSubmissionadaptorFetchAllByAnalysisQueryTarget(
 
 
 
-/* @func ensQCSubmissionadaptorFetchAllByANQIDTDB *****************************
+/* @func ensQcsubmissionadaptorFetchAllByANQIDTDB *****************************
 **
 ** Fetch all Ensembl QC Submissions by an Ensembl Analysis, as well as
 ** Query and Target Ensembl Sequences.
 ** The caller is responsible for deleting the Ensembl QC Submissions
 ** before deleting the AJAX List.
 **
-** @param [r] qcsa [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
+** @param [r] qcsa [EnsPQcsubmissionadaptor] Ensembl QC Submission Adaptor
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
-** @param [r] qsequence [const EnsPQCSequence] Query Ensembl QC Sequence
-** @param [r] tdb [const EnsPQCDatabase] Target Ensembl QC Database
-** @param [r] tsequence [const EnsPQCSequence] Target Ensembl QC Sequence
+** @param [r] qsequence [const EnsPQcsequence] Query Ensembl QC Sequence
+** @param [r] tdb [const EnsPQcdatabase] Target Ensembl QC Database
+** @param [r] tsequence [const EnsPQcsequence] Target Ensembl QC Sequence
 ** @param [r] tstart [ajuint] Target start
 ** @param [r] tend [ajuint] Target end
 ** @param [r] tstrand [ajint] Target strand
@@ -5947,11 +5947,11 @@ AjBool ensQCSubmissionadaptorFetchAllByAnalysisQueryTarget(
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionadaptorFetchAllByANQIDTDB(EnsPQCSubmissionadaptor qcsa,
+AjBool ensQcsubmissionadaptorFetchAllByANQIDTDB(EnsPQcsubmissionadaptor qcsa,
                                                 const EnsPAnalysis analysis,
-                                                const EnsPQCSequence qsequence,
-                                                const EnsPQCDatabase tdb,
-                                                const EnsPQCSequence tsequence,
+                                                const EnsPQcsequence qsequence,
+                                                const EnsPQcdatabase tdb,
+                                                const EnsPQcsequence tsequence,
                                                 ajuint tstart,
                                                 ajuint tend,
                                                 ajint tstrand,
@@ -5982,14 +5982,14 @@ AjBool ensQCSubmissionadaptorFetchAllByANQIDTDB(EnsPQCSubmissionadaptor qcsa,
 			  "AND "
 			  "submission.query_id = %u",
 			  ensAnalysisGetIdentifier(analysis),
-			  ensQCSequenceGetQCDatabaseIdentifier(qsequence),
-			  ensQCDatabaseGetIdentifier(tdb),
-			  ensQCSequenceGetIdentifier(qsequence));
+			  ensQcsequenceGetQcdatabaseIdentifier(qsequence),
+			  ensQcdatabaseGetIdentifier(tdb),
+			  ensQcsequenceGetIdentifier(qsequence));
     
     if(tsequence)
 	ajFmtPrintAppS(&constraint,
 		       " AND submission.target_id = %u",
-		       ensQCSequenceGetIdentifier(tsequence));
+		       ensQcsequenceGetIdentifier(tsequence));
     
     if(tstart && tend)
 	ajFmtPrintAppS(&constraint,
@@ -6005,7 +6005,7 @@ AjBool ensQCSubmissionadaptorFetchAllByANQIDTDB(EnsPQCSubmissionadaptor qcsa,
     
     ensBaseadaptorGenericFetch(qcsa,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcss);
     
@@ -6017,24 +6017,24 @@ AjBool ensQCSubmissionadaptorFetchAllByANQIDTDB(EnsPQCSubmissionadaptor qcsa,
 
 
 
-/* @func ensQCSubmissionadaptorFetchAllByQuery ********************************
+/* @func ensQcsubmissionadaptorFetchAllByQuery ********************************
 **
 ** Fetch all Ensembl QC Submissions by a Query Ensembl QC Sequence.
 ** The caller is responsible for deleting the Ensembl QC Submissions
 ** before deleting the AJAX List.
 **
-** @param [r] qcsa [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
+** @param [r] qcsa [EnsPQcsubmissionadaptor] Ensembl QC Submission Adaptor
 ** @param [rN] analysis [const EnsPAnalysis] Ensembl Analysis
-** @param [r] qdb [const EnsPQCDatabase] Query Ensembl QC Database
+** @param [r] qdb [const EnsPQcdatabase] Query Ensembl QC Database
 ** @param [w] qcss [AjPList] AJAX List of Ensembl QC Submissions
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionadaptorFetchAllByQuery(EnsPQCSubmissionadaptor qcsa,
+AjBool ensQcsubmissionadaptorFetchAllByQuery(EnsPQcsubmissionadaptor qcsa,
                                              const EnsPAnalysis analysis,
-                                             const EnsPQCDatabase qdb,
+                                             const EnsPQcdatabase qdb,
                                              AjPList qcss)
 {
     AjPStr constraint = NULL;
@@ -6049,7 +6049,7 @@ AjBool ensQCSubmissionadaptorFetchAllByQuery(EnsPQCSubmissionadaptor qcsa,
 	return ajFalse;
     
     constraint = ajFmtStr("submission.query_db_id = %u",
-			  ensQCDatabaseGetIdentifier(qdb));
+			  ensQcdatabaseGetIdentifier(qdb));
     
     if(analysis)
 	ajFmtPrintAppS(&constraint,
@@ -6058,7 +6058,7 @@ AjBool ensQCSubmissionadaptorFetchAllByQuery(EnsPQCSubmissionadaptor qcsa,
     
     ensBaseadaptorGenericFetch(qcsa,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcss);
     
@@ -6070,24 +6070,24 @@ AjBool ensQCSubmissionadaptorFetchAllByQuery(EnsPQCSubmissionadaptor qcsa,
 
 
 
-/* @func ensQCSubmissionadaptorFetchAllByTarget *******************************
+/* @func ensQcsubmissionadaptorFetchAllByTarget *******************************
 **
 ** Fetch all Ensembl QC Submissions by a Target Ensembl QC Sequence.
 ** The caller is responsible for deleting the Ensembl QC Submissions
 ** before deleting the AJAX List.
 **
-** @param [r] qcsa [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
+** @param [r] qcsa [EnsPQcsubmissionadaptor] Ensembl QC Submission Adaptor
 ** @param [rN] analysis [const EnsPAnalysis] Ensembl Analysis
-** @param [r] tdb [const EnsPQCDatabase] Target Ensembl QC Database
+** @param [r] tdb [const EnsPQcdatabase] Target Ensembl QC Database
 ** @param [w] qcss [AjPList] AJAX List of Ensembl QC Submissions
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionadaptorFetchAllByTarget(EnsPQCSubmissionadaptor qcsa,
+AjBool ensQcsubmissionadaptorFetchAllByTarget(EnsPQcsubmissionadaptor qcsa,
                                               const EnsPAnalysis analysis,
-                                              const EnsPQCDatabase tdb,
+                                              const EnsPQcdatabase tdb,
                                               AjPList qcss)
 {
     AjPStr constraint = NULL;
@@ -6102,7 +6102,7 @@ AjBool ensQCSubmissionadaptorFetchAllByTarget(EnsPQCSubmissionadaptor qcsa,
 	return ajFalse;
     
     constraint = ajFmtStr("submission.target_db_id = %u",
-			  ensQCDatabaseGetIdentifier(tdb));
+			  ensQcdatabaseGetIdentifier(tdb));
     
     if(analysis)
 	ajFmtPrintAppS(&constraint,
@@ -6111,7 +6111,7 @@ AjBool ensQCSubmissionadaptorFetchAllByTarget(EnsPQCSubmissionadaptor qcsa,
     
     ensBaseadaptorGenericFetch(qcsa,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       qcss);
     
@@ -6123,19 +6123,19 @@ AjBool ensQCSubmissionadaptorFetchAllByTarget(EnsPQCSubmissionadaptor qcsa,
 
 
 
-/* @func ensQCSubmissionadaptorStore ******************************************
+/* @func ensQcsubmissionadaptorStore ******************************************
 **
 ** Store an Ensembl QC Submission.
 **
-** @param [r] qcsa [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
-** @param [u] qcs [EnsPQCSubmission] Ensembl QC Submission
+** @param [r] qcsa [EnsPQcsubmissionadaptor] Ensembl QC Submission Adaptor
+** @param [u] qcs [EnsPQcsubmission] Ensembl QC Submission
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionadaptorStore(EnsPQCSubmissionadaptor qcsa,
-                                   EnsPQCSubmission qcs)
+AjBool ensQcsubmissionadaptorStore(EnsPQcsubmissionadaptor qcsa,
+                                   EnsPQcsubmission qcs)
 {
     AjBool value = ajFalse;
     
@@ -6151,7 +6151,7 @@ AjBool ensQCSubmissionadaptorStore(EnsPQCSubmissionadaptor qcsa,
     if(!qcs)
 	return ajFalse;
     
-    if(ensQCSubmissionGetadaptor(qcs) && ensQCSubmissionGetIdentifier(qcs))
+    if(ensQcsubmissionGetAdaptor(qcs) && ensQcsubmissionGetIdentifier(qcs))
 	return ajFalse;
     
     dba = ensBaseadaptorGetDatabaseadaptor(qcsa);
@@ -6169,12 +6169,12 @@ AjBool ensQCSubmissionadaptorStore(EnsPQCSubmissionadaptor qcsa,
 			 "submission.target_strand = %d, "
 			 "submission.analysis_job_id = %u",
 			 ensAnalysisGetIdentifier(qcs->Analysis),
-			 ensQCSequenceGetQCDatabaseIdentifier(
+			 ensQcsequenceGetQcdatabaseIdentifier(
                              qcs->QuerySequence),
-			 ensQCSequenceGetIdentifier(qcs->QuerySequence),
-			 ensQCSequenceGetQCDatabaseIdentifier(
+			 ensQcsequenceGetIdentifier(qcs->QuerySequence),
+			 ensQcsequenceGetQcdatabaseIdentifier(
                              qcs->TargetSequence),
-			 ensQCSequenceGetIdentifier(qcs->TargetSequence),
+			 ensQcsequenceGetIdentifier(qcs->TargetSequence),
 			 qcs->TargetStart,
 			 qcs->TargetEnd,
 			 qcs->TargetStrand,
@@ -6184,9 +6184,9 @@ AjBool ensQCSubmissionadaptorStore(EnsPQCSubmissionadaptor qcsa,
     
     if(ajSqlstatementGetAffectedrows(sqls))
     {
-	ensQCSubmissionSetIdentifier(qcs, ajSqlstatementGetIdentifier(sqls));
+	ensQcsubmissionSetIdentifier(qcs, ajSqlstatementGetIdentifier(sqls));
 	
-	ensQCSubmissionSetadaptor(qcs, qcsa);
+	ensQcsubmissionSetAdaptor(qcs, qcsa);
 	
 	value = ajTrue;
     }
@@ -6201,19 +6201,19 @@ AjBool ensQCSubmissionadaptorStore(EnsPQCSubmissionadaptor qcsa,
 
 
 
-/* @func ensQCSubmissionadaptorUpdate *****************************************
+/* @func ensQcsubmissionadaptorUpdate *****************************************
 **
 ** Update an Ensembl QC Submission.
 **
-** @param [r] qcsa [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
-** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Submission
+** @param [r] qcsa [EnsPQcsubmissionadaptor] Ensembl QC Submission Adaptor
+** @param [r] qcs [const EnsPQcsubmission] Ensembl QC Submission
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionadaptorUpdate(EnsPQCSubmissionadaptor qcsa,
-                                    const EnsPQCSubmission qcs)
+AjBool ensQcsubmissionadaptorUpdate(EnsPQcsubmissionadaptor qcsa,
+                                    const EnsPQcsubmission qcs)
 {
     AjBool value = ajFalse;
     
@@ -6229,7 +6229,7 @@ AjBool ensQCSubmissionadaptorUpdate(EnsPQCSubmissionadaptor qcsa,
     if(!qcs)
 	return ajFalse;
     
-    if(!ensQCSubmissionGetIdentifier(qcs))
+    if(!ensQcsubmissionGetIdentifier(qcs))
 	return ajFalse;
     
     dba = ensBaseadaptorGetDatabaseadaptor(qcsa);
@@ -6249,12 +6249,12 @@ AjBool ensQCSubmissionadaptorUpdate(EnsPQCSubmissionadaptor qcsa,
 			 "WHERE "
 			 "submission.submission_id = %u",
 			 ensAnalysisGetIdentifier(qcs->Analysis),
-			 ensQCSequenceGetQCDatabaseIdentifier(
+			 ensQcsequenceGetQcdatabaseIdentifier(
                              qcs->QuerySequence),
-			 ensQCSequenceGetIdentifier(qcs->QuerySequence),
-			 ensQCSequenceGetQCDatabaseIdentifier(
+			 ensQcsequenceGetIdentifier(qcs->QuerySequence),
+			 ensQcsequenceGetQcdatabaseIdentifier(
                              qcs->TargetSequence),
-			 ensQCSequenceGetIdentifier(qcs->TargetSequence),
+			 ensQcsequenceGetIdentifier(qcs->TargetSequence),
 			 qcs->TargetStart,
 			 qcs->TargetEnd,
 			 qcs->TargetStrand,
@@ -6275,19 +6275,19 @@ AjBool ensQCSubmissionadaptorUpdate(EnsPQCSubmissionadaptor qcsa,
 
 
 
-/* @func ensQCSubmissionadaptorDelete *****************************************
+/* @func ensQcsubmissionadaptorDelete *****************************************
 **
 ** Delete an Ensembl QC Submission.
 **
-** @param [r] qcsa [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
-** @param [r] qcs [const EnsPQCSubmission] Ensembl QC Submission
+** @param [r] qcsa [EnsPQcsubmissionadaptor] Ensembl QC Submission Adaptor
+** @param [r] qcs [const EnsPQcsubmission] Ensembl QC Submission
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQCSubmissionadaptorDelete(EnsPQCSubmissionadaptor qcsa,
-                                    const EnsPQCSubmission qcs)
+AjBool ensQcsubmissionadaptorDelete(EnsPQcsubmissionadaptor qcsa,
+                                    const EnsPQcsubmission qcs)
 {
     AjBool value = ajFalse;
     
@@ -6303,7 +6303,7 @@ AjBool ensQCSubmissionadaptorDelete(EnsPQCSubmissionadaptor qcsa,
     if(!qcs)
 	return ajFalse;
     
-    if(!ensQCSubmissionGetIdentifier(qcs))
+    if(!ensQcsubmissionGetIdentifier(qcs))
 	return ajFalse;
     
     dba = ensBaseadaptorGetDatabaseadaptor(qcsa);

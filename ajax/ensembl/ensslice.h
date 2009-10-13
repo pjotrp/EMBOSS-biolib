@@ -16,14 +16,14 @@ extern "C"
 
 
 
-/* @data EnsPRepeatMaskedSlice ************************************************
+/* @data EnsPRepeatmaskedslice ************************************************
 **
 ** Ensembl Repeat Masked Slice.
 **
 ** Holds information about a genome sequence slice.
 **
-** @alias EnsSRepeatMaskedSlice
-** @alias EnsORepeatMaskedSlice
+** @alias EnsSRepeatmaskedslice
+** @alias EnsORepeatmaskedslice
 **
 ** @attr Slice [EnsPSlice] Ensembl Slice.
 ** @attr AnalysisNames [AjPList] AJAX List of Ensembl Analysis name
@@ -35,16 +35,16 @@ extern "C"
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSRepeatMaskedSlice
+typedef struct EnsSRepeatmaskedslice
 {
     EnsPSlice Slice;
     AjPList AnalysisNames;
     AjPTable Masking;
     ajuint Use;
     ajuint Padding;
-} EnsORepeatMaskedSlice;
+} EnsORepeatmaskedslice;
 
-#define EnsPRepeatMaskedSlice EnsORepeatMaskedSlice*
+#define EnsPRepeatmaskedslice EnsORepeatmaskedslice*
 
 
 
@@ -61,14 +61,14 @@ typedef struct EnsSRepeatMaskedSlice
 /* Ensembl Slice */
 
 EnsPSlice ensSliceNewS(EnsPSliceadaptor adaptor,
-                       EnsPSeqRegion sr,
+                       EnsPSeqregion sr,
                        ajint start,
                        ajint end,
                        ajint strand,
                        AjPStr sequence);
 	     
 EnsPSlice ensSliceNew(EnsPSliceadaptor adaptor,
-                      EnsPSeqRegion sr,
+                      EnsPSeqregion sr,
                       ajint start,
                       ajint end,
                       ajint strand);
@@ -79,9 +79,9 @@ EnsPSlice ensSliceNewRef(EnsPSlice slice);
 
 void ensSliceDel(EnsPSlice* Pslice);
 
-EnsPSliceadaptor ensSliceGetadaptor(const EnsPSlice slice);
+EnsPSliceadaptor ensSliceGetAdaptor(const EnsPSlice slice);
 
-EnsPSeqRegion ensSliceGetSeqRegion(const EnsPSlice slice);
+EnsPSeqregion ensSliceGetSeqregion(const EnsPSlice slice);
 
 const AjPStr ensSliceGetSequence(const EnsPSlice slice);
 
@@ -91,23 +91,23 @@ ajint ensSliceGetEnd(const EnsPSlice slice);
 
 ajint ensSliceGetStrand(const EnsPSlice slice);
 
-AjBool ensSliceSetadaptor(EnsPSlice slice, EnsPSliceadaptor adaptor);
+AjBool ensSliceSetAdaptor(EnsPSlice slice, EnsPSliceadaptor adaptor);
 
 AjBool ensSliceSetSequence(EnsPSlice slice, AjPStr sequence);
 
 AjBool ensSliceTrace(const EnsPSlice slice, ajuint level);
 
-ajuint ensSliceGetSeqRegionIdentifier(const EnsPSlice slice);
+ajuint ensSliceGetSeqregionIdentifier(const EnsPSlice slice);
 
-const AjPStr ensSliceGetSeqRegionName(const EnsPSlice slice);
+const AjPStr ensSliceGetSeqregionName(const EnsPSlice slice);
 
-ajint ensSliceGetSeqRegionLength(const EnsPSlice slice);
+ajint ensSliceGetSeqregionLength(const EnsPSlice slice);
 
-EnsPCoordSystem ensSliceGetCoordSystem(const EnsPSlice slice);
+EnsPCoordsystem ensSliceGetCoordsystem(const EnsPSlice slice);
 
-const AjPStr ensSliceGetCoordSystemName(const EnsPSlice slice);
+const AjPStr ensSliceGetCoordsystemName(const EnsPSlice slice);
 
-const AjPStr ensSliceGetCoordSystemVersion(const EnsPSlice slice);
+const AjPStr ensSliceGetCoordsystemVersion(const EnsPSlice slice);
 
 ajint ensSliceGetCentrePoint(const EnsPSlice slice);
 
@@ -166,8 +166,8 @@ AjBool ensSliceFetchAllAttributes(EnsPSlice slice,
                                   const AjPStr code,
                                   AjPList attributes);
 
-AjBool ensSliceFetchAllRepeatFeatures(EnsPSlice slice,
-                                      AjPStr anname,
+AjBool ensSliceFetchAllRepeatfeatures(EnsPSlice slice,
+                                      const AjPStr anname,
                                       AjPStr rctype,
                                       AjPStr rcclass,
                                       AjPStr rcname,
@@ -184,7 +184,7 @@ EnsPDatabaseadaptor ensSliceadaptorGetDatabaseadaptor(
 
 AjBool ensSliceadaptorCacheInsert(EnsPSliceadaptor adaptor, EnsPSlice* Pslice);
 
-AjBool ensSliceadaptorFetchBySeqRegionIdentifier(EnsPSliceadaptor adaptor,
+AjBool ensSliceadaptorFetchBySeqregionIdentifier(EnsPSliceadaptor adaptor,
                                                  ajuint srid,
                                                  ajint srstart,
                                                  ajint srend,
@@ -229,20 +229,20 @@ AjBool ensSliceadaptorFetchAll(EnsPSliceadaptor adaptor,
 
 /* Ensembl Repeat Masked Slice */
 
-EnsPRepeatMaskedSlice ensRepeatMaskedSliceNew(EnsPSlice slice, AjPList annames,
+EnsPRepeatmaskedslice ensRepeatmaskedsliceNew(EnsPSlice slice, AjPList annames,
                                               AjPTable masking);
 
-EnsPRepeatMaskedSlice ensRepeatMaskedSliceNewObj(EnsPRepeatMaskedSlice object);
+EnsPRepeatmaskedslice ensRepeatmaskedsliceNewObj(EnsPRepeatmaskedslice object);
 
-EnsPRepeatMaskedSlice ensRepeatMaskedSliceNewRef(EnsPRepeatMaskedSlice rmslice);
+EnsPRepeatmaskedslice ensRepeatmaskedsliceNewRef(EnsPRepeatmaskedslice rmslice);
 
-void ensRepeatMaskedSliceDel(EnsPRepeatMaskedSlice* Prmslice);
+void ensRepeatmaskedsliceDel(EnsPRepeatmaskedslice* Prmslice);
 
-AjBool ensRepeatMaskedSliceFetchSequenceSeq(EnsPRepeatMaskedSlice rmslice,
+AjBool ensRepeatmaskedsliceFetchSequenceSeq(EnsPRepeatmaskedslice rmslice,
                                             AjEnum mtype,
                                             AjPSeq *Psequence);
 
-AjBool ensRepeatMaskedSliceFetchSequenceStr(EnsPRepeatMaskedSlice rmslice,
+AjBool ensRepeatmaskedsliceFetchSequenceStr(EnsPRepeatmaskedslice rmslice,
                                             AjEnum mtype,
                                             AjPStr *Psequence);
 

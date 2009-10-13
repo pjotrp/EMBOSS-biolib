@@ -45,8 +45,8 @@ AjBool ensAttributeadaptorFetchAllByGene(EnsPDatabaseadaptor adaptor,
                                          const AjPStr code,
                                          AjPList attributes);
 
-AjBool ensAttributeadaptorFetchAllBySeqRegion(EnsPDatabaseadaptor adaptor,
-                                              const EnsPSeqRegion sr,
+AjBool ensAttributeadaptorFetchAllBySeqregion(EnsPDatabaseadaptor adaptor,
+                                              const EnsPSeqregion sr,
                                               const AjPStr code,
                                               AjPList attributes);
 

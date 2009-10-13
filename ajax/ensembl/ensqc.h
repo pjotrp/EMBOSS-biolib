@@ -19,7 +19,7 @@ extern "C"
 **
 ******************************************************************************/
 
-#define EnsPQCDASFeatureadaptor EnsPBaseadaptor
+#define EnsPQcdasfeatureadaptor EnsPBaseadaptor
 
 
 
@@ -30,20 +30,20 @@ extern "C"
 **
 ******************************************************************************/
 
-enum EnsEQCDASFeatureCategory
+enum EnsEQcdasfeatureCategory
 {
-    ensEQCDASFeatureCategoryNULL,
-    ensEQCDASFeatureCategoryUnknown,
-    ensEQCDASFeatureCategoryTranscriptPerfect,
-    ensEQCDASFeatureCategoryTranscriptTolerance,
-    ensEQCDASFeatureCategoryTranscriptPartial,
-    ensEQCDASFeatureCategoryTranscriptMissing,
-    ensEQCDASFeatureCategoryTranscript,
-    ensEQCDASFeatureCategoryTranslationPerfect,
-    ensEQCDASFeatureCategoryTranslationTolerance,
-    ensEQCDASFeatureCategoryTranslationPartial,
-    ensEQCDASFeatureCategoryTranslationMissing,
-    ensEQCDASFeatureCategoryTranslation
+    ensEQcdasfeatureCategoryNULL,
+    ensEQcdasfeatureCategoryUnknown,
+    ensEQcdasfeatureCategoryTranscriptPerfect,
+    ensEQcdasfeatureCategoryTranscriptTolerance,
+    ensEQcdasfeatureCategoryTranscriptPartial,
+    ensEQcdasfeatureCategoryTranscriptMissing,
+    ensEQcdasfeatureCategoryTranscript,
+    ensEQcdasfeatureCategoryTranslationPerfect,
+    ensEQcdasfeatureCategoryTranslationTolerance,
+    ensEQcdasfeatureCategoryTranslationPartial,
+    ensEQcdasfeatureCategoryTranslationMissing,
+    ensEQcdasfeatureCategoryTranslation
 };
 
 
@@ -55,38 +55,38 @@ enum EnsEQCDASFeatureCategory
 **
 ******************************************************************************/
 
-enum EnsEQCDASFeatureType
+enum EnsEQcdasfeatureType
 {
-    ensEQCDASFeatureTypeNULL,
-    ensEQCDASFeatureTypeUnknown,
-    ensEQCDASFeatureTypeExonPerfect,
-    ensEQCDASFeatureTypeExonPartial,
-    ensEQCDASFeatureTypeExonMissing,
-    ensEQCDASFeatureTypeExonFrameshift,
-    ensEQCDASFeatureTypeExonGap,
-    ensEQCDASFeatureTypeExon
+    ensEQcdasfeatureTypeNULL,
+    ensEQcdasfeatureTypeUnknown,
+    ensEQcdasfeatureTypeExonPerfect,
+    ensEQcdasfeatureTypeExonPartial,
+    ensEQcdasfeatureTypeExonMissing,
+    ensEQcdasfeatureTypeExonFrameshift,
+    ensEQcdasfeatureTypeExonGap,
+    ensEQcdasfeatureTypeExon
 };
 
 
 
 
-/* @data EnsPQCDASFeature *****************************************************
+/* @data EnsPQcdasfeature *****************************************************
 **
 ** Ensembl QC DAS Feature
 **
-** @alias EnsSQCDASFeature
-** @alias EnsOQCDASFeature
+** @alias EnsSQcdasfeature
+** @alias EnsOQcdasfeature
 **
 ** @attr Use [ajuint] Use counter
 ** @cc Bio::EnsEMBL::Storable
 ** @attr Identifier [ajuint] SQL database-internal identifier
-** @attr Adaptor [EnsPQCDASFeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @attr Adaptor [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @cc Bio::EnsEMBL::QC::DASFeature
 ** @cc 'das_feature' SQL table
-** @attr QCAlignment [EnsPQCAlignment] Ensembl QC Alignment
+** @attr Qcalignment [EnsPQcalignment] Ensembl QC Alignment
 ** @attr Analysis [EnsPAnalysis] Ensembl Analysis
-** @attr SegmentSequence [EnsPQCSequence] Segment Ensembl QC Sequence
-** @attr FeatureSequence [EnsPQCSequence] Feature Ensembl QC Sequence
+** @attr SegmentSequence [EnsPQcsequence] Segment Ensembl QC Sequence
+** @attr FeatureSequence [EnsPQcsequence] Feature Ensembl QC Sequence
 ** @attr SegmentStart [ajuint] Segment start
 ** @attr SegmentEnd [ajuint] Segment end
 ** @attr SegmentStrand [ajint] Segment strand
@@ -98,15 +98,15 @@ enum EnsEQCDASFeatureType
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSQCDASFeature
+typedef struct EnsSQcdasfeature
 {
     ajuint Use;
     ajuint Identifier;
-    EnsPQCDASFeatureadaptor Adaptor;
-    EnsPQCAlignment QCAlignment;
+    EnsPQcdasfeatureadaptor Adaptor;
+    EnsPQcalignment Qcalignment;
     EnsPAnalysis Analysis;
-    EnsPQCSequence SegmentSequence;
-    EnsPQCSequence FeatureSequence;
+    EnsPQcsequence SegmentSequence;
+    EnsPQcsequence FeatureSequence;
     ajuint SegmentStart;
     ajuint SegmentEnd;
     ajint SegmentStrand;
@@ -115,9 +115,9 @@ typedef struct EnsSQCDASFeature
     ajint Phase;
     AjEnum Category;
     AjEnum Type;
-} EnsOQCDASFeature;
+} EnsOQcdasfeature;
 
-#define EnsPQCDASFeature EnsOQCDASFeature*
+#define EnsPQcdasfeature EnsOQcdasfeature*
 
 
 
@@ -128,7 +128,7 @@ typedef struct EnsSQCDASFeature
 **
 ******************************************************************************/
 
-#define EnsPQCVariationadaptor EnsPBaseadaptor
+#define EnsPQcvariationadaptor EnsPBaseadaptor
 
 
 
@@ -139,13 +139,13 @@ typedef struct EnsSQCDASFeature
 **
 ******************************************************************************/
 
-enum EnsEQCVariationClass
+enum EnsEQcvariationClass
 {
-    ensEQCVariationClassNULL,
-    ensEQCVariationClassNone,
-    ensEQCVariationClassSimple,
-    ensEQCVariationClassSplice,
-    ensEQCVariationClassExon
+    ensEQcvariationClassNULL,
+    ensEQcvariationClassNone,
+    ensEQcvariationClassSimple,
+    ensEQcvariationClassSplice,
+    ensEQcvariationClassExon
 };
 
 
@@ -157,12 +157,12 @@ enum EnsEQCVariationClass
 **
 ******************************************************************************/
 
-enum EnsEQCVariationType
+enum EnsEQcvariationType
 {
-    ensEQCVariationTypeNULL,
-    ensEQCVariationTypeNone,
-    ensEQCVariationTypeSingle,
-    ensEQCVariationTypeMulti
+    ensEQcvariationTypeNULL,
+    ensEQcvariationTypeNone,
+    ensEQcvariationTypeSingle,
+    ensEQcvariationTypeMulti
 };
 
 
@@ -174,41 +174,41 @@ enum EnsEQCVariationType
 **
 ******************************************************************************/
 
-enum EnsEQCVariationState
+enum EnsEQcvariationState
 {
-    ensEQCVariationStateNULL,
-    ensEQCVariationStateNone,
-    ensEQCVariationStateMatch,
-    ensEQCVariationStateGap,
-    ensEQCVariationStateFrameshift,
-    ensEQCVariationState5ss,
-    ensEQCVariationState3ss,
-    EnsEQCVariationStateSplit
+    ensEQcvariationStateNULL,
+    ensEQcvariationStateNone,
+    ensEQcvariationStateMatch,
+    ensEQcvariationStateGap,
+    ensEQcvariationStateFrameshift,
+    ensEQcvariationState5ss,
+    ensEQcvariationState3ss,
+    EnsEQcvariationStateSplit
 };
 
 
 
 
-/* @data EnsPQCVariation ******************************************************
+/* @data EnsPQcvariation ******************************************************
 **
 ** Ensembl QC Variation
 **
-** @alias EnsSQCVariation
-** @alias EnsOQCVariation
+** @alias EnsSQcvariation
+** @alias EnsOQcvariation
 **
 ** @attr Use [ajuint] Use counter
 ** @cc Bio::EnsEMBL::Storable
 ** @attr Identifier [ajuint] SQL database-internal identifier
-** @attr Adaptor [EnsPQCVariationadaptor] Ensembl QC Variation Adaptor
+** @attr Adaptor [EnsPQcvariationadaptor] Ensembl QC Variation Adaptor
 ** @cc Bio::EnsEMBL::QC::Variation
 ** @cc 'variation' SQL table
 ** @attr Analysis [EnsPAnalysis] Ensembl Analysis
-** @attr QCAlignment [EnsPQCAlignment] Ensembl QC Alignment
-** @attr QuerySequence [EnsPQCSequence] Query Ensembl QC Sequence
+** @attr Qcalignment [EnsPQcalignment] Ensembl QC Alignment
+** @attr QuerySequence [EnsPQcsequence] Query Ensembl QC Sequence
 ** @attr QueryStart [ajuint] Query start
 ** @attr QueryEnd [ajuint] Query end
 ** @attr QueryString [AjPStr] Query string
-** @attr TargetSequence [EnsPQCSequence] Target Ensembl QC Sequence
+** @attr TargetSequence [EnsPQcsequence] Target Ensembl QC Sequence
 ** @attr TargetStart [ajuint] Target start
 ** @attr TargetEnd [ajuint] Target end
 ** @attr TargetString [AjPStr] Target string
@@ -219,18 +219,18 @@ enum EnsEQCVariationState
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSQCVariation
+typedef struct EnsSQcvariation
 {
     ajuint Use;
     ajuint Identifier;
-    EnsPQCVariationadaptor Adaptor;
+    EnsPQcvariationadaptor Adaptor;
     EnsPAnalysis Analysis;
-    EnsPQCAlignment QCAlignment;
-    EnsPQCSequence QuerySequence;
+    EnsPQcalignment Qcalignment;
+    EnsPQcsequence QuerySequence;
     ajuint QueryStart;
     ajuint QueryEnd;
     AjPStr QueryString;
-    EnsPQCSequence TargetSequence;
+    EnsPQcsequence TargetSequence;
     ajuint TargetStart;
     ajuint TargetEnd;
     AjPStr TargetString;
@@ -238,9 +238,9 @@ typedef struct EnsSQCVariation
     AjEnum Type;
     AjEnum State;
     char Padding[4];
-} EnsOQCVariation;
+} EnsOQcvariation;
 
-#define EnsPQCVariation EnsOQCVariation*
+#define EnsPQcvariation EnsOQcvariation*
 
 
 
@@ -251,27 +251,27 @@ typedef struct EnsSQCVariation
 **
 ******************************************************************************/
 
-#define EnsPQCSubmissionadaptor EnsPBaseadaptor
+#define EnsPQcsubmissionadaptor EnsPBaseadaptor
 
 
 
 
-/* @data EnsPQCSubmission *****************************************************
+/* @data EnsPQcsubmission *****************************************************
 **
 ** Ensembl QC Submission
 **
-** @alias EnsSQCSubmission
-** @alias EnsOQCSubmission
+** @alias EnsSQcsubmission
+** @alias EnsOQcsubmission
 **
 ** @attr Use [ajuint] Use counter
 ** @cc Bio::EnsEMBL::Storable
 ** @attr Identifier [ajuint] SQL database-internal identifier
-** @attr Adaptor [EnsPQCSubmissionadaptor] Ensembl QC Submission Adaptor
+** @attr Adaptor [EnsPQcsubmissionadaptor] Ensembl QC Submission Adaptor
 ** @cc Bio::EnsEMBL::QC::Submission
 ** @cc 'submission' SQL table
 ** @attr Analysis [EnsPAnalysis] Ensembl Analysis
-** @attr QuerySequence [EnsPQCSequence] Query Ensembl QC Sequence
-** @attr TargetSequence [EnsPQCSequence] Target Ensembl QC Sequence
+** @attr QuerySequence [EnsPQcsequence] Query Ensembl QC Sequence
+** @attr TargetSequence [EnsPQcsequence] Target Ensembl QC Sequence
 ** @attr QueryStart [ajuint] Query start
 ** @attr QueryEnd [ajuint] Query end
 ** @attr QueryStrand [ajint] Query strand
@@ -283,14 +283,14 @@ typedef struct EnsSQCVariation
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSQCSubmission
+typedef struct EnsSQcsubmission
 {
     ajuint Use;
     ajuint Identifier;
-    EnsPQCSubmissionadaptor Adaptor;
+    EnsPQcsubmissionadaptor Adaptor;
     EnsPAnalysis Analysis;
-    EnsPQCSequence QuerySequence;
-    EnsPQCSequence TargetSequence;
+    EnsPQcsequence QuerySequence;
+    EnsPQcsequence TargetSequence;
     ajuint QueryStart;
     ajuint QueryEnd;
     ajint QueryStrand;
@@ -299,9 +299,9 @@ typedef struct EnsSQCSubmission
     ajint TargetStrand;
     ajuint AnalysisJobIdentifier;
     ajuint Padding;
-} EnsOQCSubmission;
+} EnsOQcsubmission;
 
-#define EnsPQCSubmission EnsOQCSubmission*
+#define EnsPQcsubmission EnsOQcsubmission*
 
 
 
@@ -312,159 +312,159 @@ typedef struct EnsSQCSubmission
 
 /* Ensembl Quality Check DAS Feature */
 
-EnsPQCDASFeature ensQCDASFeatureNew(EnsPQCDASFeatureadaptor adaptor,
+EnsPQcdasfeature ensQcdasfeatureNew(EnsPQcdasfeatureadaptor adaptor,
                                     ajuint identifier,
-                                    EnsPQCAlignment qca,
+                                    EnsPQcalignment qca,
                                     EnsPAnalysis analysis,
-                                    EnsPQCSequence segment,
+                                    EnsPQcsequence segment,
                                     ajuint sstart,
                                     ajuint send,
                                     ajint sstrand,
-                                    EnsPQCSequence feature,
+                                    EnsPQcsequence feature,
                                     ajuint fstart,
                                     ajuint fend,
                                     ajint phase,
                                     AjEnum category,
                                     AjEnum type);
 
-EnsPQCDASFeature ensQCDASFeatureNewObj(const EnsPQCDASFeature object);
+EnsPQcdasfeature ensQcdasfeatureNewObj(const EnsPQcdasfeature object);
 
-EnsPQCDASFeature ensQCDASFeatureNewRef(EnsPQCDASFeature qcdasf);
+EnsPQcdasfeature ensQcdasfeatureNewRef(EnsPQcdasfeature qcdasf);
 
-void ensQCDASFeatureDel(EnsPQCDASFeature* Pqcdasf);
+void ensQcdasfeatureDel(EnsPQcdasfeature* Pqcdasf);
 
-EnsPQCDASFeatureadaptor ensQCDASFeatureGetadaptor(
-    const EnsPQCDASFeature qcdasf);
+EnsPQcdasfeatureadaptor ensQcdasfeatureGetAdaptor(
+    const EnsPQcdasfeature qcdasf);
 
-ajuint ensQCDASFeatureGetIdentifier(const EnsPQCDASFeature qcdasf);
+ajuint ensQcdasfeatureGetIdentifier(const EnsPQcdasfeature qcdasf);
 
-EnsPQCAlignment ensQCDASFeatureGetQCAlignment(const EnsPQCDASFeature qcdasf);
+EnsPQcalignment ensQcdasfeatureGetQcalignment(const EnsPQcdasfeature qcdasf);
 
-EnsPAnalysis ensQCDASFeatureGetAnalysis(const EnsPQCDASFeature qcdasf);
+EnsPAnalysis ensQcdasfeatureGetAnalysis(const EnsPQcdasfeature qcdasf);
 
-EnsPQCSequence ensQCDASFeatureGetSegmentSequence(const EnsPQCDASFeature qcdasf);
+EnsPQcsequence ensQcdasfeatureGetSegmentSequence(const EnsPQcdasfeature qcdasf);
 
-EnsPQCSequence ensQCDASFeatureGetFeatureSequence(const EnsPQCDASFeature qcdasf);
+EnsPQcsequence ensQcdasfeatureGetFeatureSequence(const EnsPQcdasfeature qcdasf);
 
-ajuint ensQCDASFeatureGetSegmentStart(const EnsPQCDASFeature qcdasf);
+ajuint ensQcdasfeatureGetSegmentStart(const EnsPQcdasfeature qcdasf);
 
-ajuint ensQCDASFeatureGetSegmentEnd(const EnsPQCDASFeature qcdasf);
+ajuint ensQcdasfeatureGetSegmentEnd(const EnsPQcdasfeature qcdasf);
 
-ajint ensQCDASFeatureGetSegmentStrand(const EnsPQCDASFeature qcdasf);
+ajint ensQcdasfeatureGetSegmentStrand(const EnsPQcdasfeature qcdasf);
 
-ajuint ensQCDASFeatureGetFeatureStart(const EnsPQCDASFeature qcdasf);
+ajuint ensQcdasfeatureGetFeatureStart(const EnsPQcdasfeature qcdasf);
 
-ajuint ensQCDASFeatureGetFeatureEnd(const EnsPQCDASFeature qcdasf);
+ajuint ensQcdasfeatureGetFeatureEnd(const EnsPQcdasfeature qcdasf);
 
-ajint ensQCDASFeatureGetPhase(const EnsPQCDASFeature qcdasf);
+ajint ensQcdasfeatureGetPhase(const EnsPQcdasfeature qcdasf);
 
-AjEnum ensQCDASFeatureGetCategory(const EnsPQCDASFeature qcdasf);
+AjEnum ensQcdasfeatureGetCategory(const EnsPQcdasfeature qcdasf);
 
-AjEnum ensQCDASFeatureGetType(const EnsPQCDASFeature qcdasf);
+AjEnum ensQcdasfeatureGetType(const EnsPQcdasfeature qcdasf);
 
-AjBool ensQCDASFeatureSetadaptor(EnsPQCDASFeature qcdasf,
-                                 EnsPQCDASFeatureadaptor adaptor);
+AjBool ensQcdasfeatureSetAdaptor(EnsPQcdasfeature qcdasf,
+                                 EnsPQcdasfeatureadaptor adaptor);
 
-AjBool ensQCDASFeatureSetIdentifier(EnsPQCDASFeature qcdasf, ajuint identifier);
+AjBool ensQcdasfeatureSetIdentifier(EnsPQcdasfeature qcdasf, ajuint identifier);
 
-AjBool ensQCDASFeatureSetQCAlignment(EnsPQCDASFeature qcdasf,
-                                     EnsPQCAlignment qca);
+AjBool ensQcdasfeatureSetQcalignment(EnsPQcdasfeature qcdasf,
+                                     EnsPQcalignment qca);
 
-AjBool ensQCDASFeatureSetAnalysis(EnsPQCDASFeature qcdasf,
+AjBool ensQcdasfeatureSetAnalysis(EnsPQcdasfeature qcdasf,
                                   EnsPAnalysis analysis);
 
-AjBool ensQCDASFeatureSetSegmentSequence(EnsPQCDASFeature qcdasf,
-                                         EnsPQCSequence qcs);
+AjBool ensQcdasfeatureSetSegmentSequence(EnsPQcdasfeature qcdasf,
+                                         EnsPQcsequence qcs);
 
-AjBool ensQCDASFeatureSetFeatureSequence(EnsPQCDASFeature qcdasf,
-                                         EnsPQCSequence qcs);
+AjBool ensQcdasfeatureSetFeatureSequence(EnsPQcdasfeature qcdasf,
+                                         EnsPQcsequence qcs);
 
-AjBool ensQCDASFeatureSetSegmentStart(EnsPQCDASFeature qcdasf, ajuint start);
+AjBool ensQcdasfeatureSetSegmentStart(EnsPQcdasfeature qcdasf, ajuint start);
 
-AjBool ensQCDASFeatureSetSegmentEnd(EnsPQCDASFeature qcdasf, ajuint end);
+AjBool ensQcdasfeatureSetSegmentEnd(EnsPQcdasfeature qcdasf, ajuint end);
 
-AjBool ensQCDASFeatureSetSegmentStrand(EnsPQCDASFeature qcdasf, ajint strand);
+AjBool ensQcdasfeatureSetSegmentStrand(EnsPQcdasfeature qcdasf, ajint strand);
 
-AjBool ensQCDASFeatureSetFeatureStart(EnsPQCDASFeature qcdasf, ajuint start);
+AjBool ensQcdasfeatureSetFeatureStart(EnsPQcdasfeature qcdasf, ajuint start);
 
-AjBool ensQCDASFeatureSetFeatureEnd(EnsPQCDASFeature qcdasf, ajuint end);
+AjBool ensQcdasfeatureSetFeatureEnd(EnsPQcdasfeature qcdasf, ajuint end);
 
-AjBool ensQCDASFeatureSetPhase(EnsPQCDASFeature qcdasf, ajint phase);
+AjBool ensQcdasfeatureSetPhase(EnsPQcdasfeature qcdasf, ajint phase);
 
-AjBool ensQCDASFeatureSetCategory(EnsPQCDASFeature qcdasf, AjEnum category);
+AjBool ensQcdasfeatureSetCategory(EnsPQcdasfeature qcdasf, AjEnum category);
 
-AjBool ensQCDASFeatureSetType(EnsPQCDASFeature qcdasf, AjEnum type);
+AjBool ensQcdasfeatureSetType(EnsPQcdasfeature qcdasf, AjEnum type);
 
-ajuint ensQCDASFeatureGetMemSize(const EnsPQCDASFeature qcdasf);
+ajuint ensQcdasfeatureGetMemSize(const EnsPQcdasfeature qcdasf);
 
-AjBool ensQCDASFeatureTrace(const EnsPQCDASFeature qcdasf, ajuint level);
+AjBool ensQcdasfeatureTrace(const EnsPQcdasfeature qcdasf, ajuint level);
 
-AjEnum ensQCDASFeatureCategoryFromStr(const AjPStr category);
+AjEnum ensQcdasfeatureCategoryFromStr(const AjPStr category);
 
-AjEnum ensQCDASFeatureTypeFromStr(const AjPStr type);
+AjEnum ensQcdasfeatureTypeFromStr(const AjPStr type);
 
-const char *ensQCDASFeatureCategoryToChar(const AjEnum category);
+const char *ensQcdasfeatureCategoryToChar(const AjEnum category);
 
-const char *ensQCDASFeatureTypeToChar(const AjEnum type);
+const char *ensQcdasfeatureTypeToChar(const AjEnum type);
 
 /* Ensembl Quality Check DAS Feature Adaptor */
 
-EnsPQCDASFeatureadaptor ensQCDASFeatureadaptorNew(EnsPDatabaseadaptor dba);
+EnsPQcdasfeatureadaptor ensQcdasfeatureadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensQCDASFeatureadaptorDel(EnsPQCDASFeatureadaptor* Pqcdasfa);
+void ensQcdasfeatureadaptorDel(EnsPQcdasfeatureadaptor* Pqcdasfa);
 
-AjBool ensQCDASFeatureadaptorFetchByIdentifier(EnsPQCDASFeatureadaptor adaptor,
+AjBool ensQcdasfeatureadaptorFetchByIdentifier(EnsPQcdasfeatureadaptor adaptor,
                                                ajuint identifier,
-                                               EnsPQCDASFeature *Pqcdasf);
+                                               EnsPQcdasfeature *Pqcdasf);
 
-AjBool ensQCDASFeatureadaptorFetchAllByQCAlignment(
-    EnsPQCDASFeatureadaptor qcdasfa,
-    const EnsPQCAlignment qca,
+AjBool ensQcdasfeatureadaptorFetchAllByQcalignment(
+    EnsPQcdasfeatureadaptor qcdasfa,
+    const EnsPQcalignment qca,
     AjPList qcdasfs);
 
-AjBool ensQCDASFeatureadaptorFetchAllByFeature(EnsPQCDASFeatureadaptor qcdasfa,
+AjBool ensQcdasfeatureadaptorFetchAllByFeature(EnsPQcdasfeatureadaptor qcdasfa,
                                                const EnsPAnalysis analysis,
-                                               const EnsPQCSequence feature,
+                                               const EnsPQcsequence feature,
                                                AjPList qcdasfs);
 
-AjBool ensQCDASFeatureadaptorFetchAllBySegment(EnsPQCDASFeatureadaptor qcdasfa,
+AjBool ensQcdasfeatureadaptorFetchAllBySegment(EnsPQcdasfeatureadaptor qcdasfa,
                                                const EnsPAnalysis analysis,
-                                               const EnsPQCSequence segment,
+                                               const EnsPQcsequence segment,
                                                AjPList qcdasfs);
 
-AjBool ensQCDASFeatureadaptorFetchAllByAFS(EnsPQCDASFeatureadaptor qcdasfa,
+AjBool ensQcdasfeatureadaptorFetchAllByAFS(EnsPQcdasfeatureadaptor qcdasfa,
                                            const EnsPAnalysis analysis,
-                                           const EnsPQCSequence feature,
-                                           const EnsPQCSequence segment,
+                                           const EnsPQcsequence feature,
+                                           const EnsPQcsequence segment,
                                            AjPList qcdasfs);
 
-AjBool ensQCDASFeatureadaptorFetchAllByRegion(EnsPQCDASFeatureadaptor qcdasfa,
+AjBool ensQcdasfeatureadaptorFetchAllByRegion(EnsPQcdasfeatureadaptor qcdasfa,
                                               const EnsPAnalysis analysis,
-                                              const EnsPQCSequence segment,
+                                              const EnsPQcsequence segment,
                                               ajuint start,
                                               ajuint end,
                                               AjPList qcdasfs);
 
-AjBool ensQCDASFeatureadaptorStore(EnsPQCDASFeatureadaptor qcdasfa,
-                                   EnsPQCDASFeature qcdasf);
+AjBool ensQcdasfeatureadaptorStore(EnsPQcdasfeatureadaptor qcdasfa,
+                                   EnsPQcdasfeature qcdasf);
 
-AjBool ensQCDASFeatureadaptorUpdate(EnsPQCDASFeatureadaptor qcdasfa,
-                                    const EnsPQCDASFeature qcdasf);
+AjBool ensQcdasfeatureadaptorUpdate(EnsPQcdasfeatureadaptor qcdasfa,
+                                    const EnsPQcdasfeature qcdasf);
 
-AjBool ensQCDASFeatureadaptorDelete(EnsPQCDASFeatureadaptor qcdasfa,
-                                    const EnsPQCDASFeature qcdasf);
+AjBool ensQcdasfeatureadaptorDelete(EnsPQcdasfeatureadaptor qcdasfa,
+                                    const EnsPQcdasfeature qcdasf);
 
 /* Ensembl Quality Check Variation */
 
-EnsPQCVariation ensQCVariationNew(EnsPQCVariationadaptor adaptor,
+EnsPQcvariation ensQcvariationNew(EnsPQcvariationadaptor adaptor,
                                   ajuint identifier,
-                                  EnsPQCAlignment qca,
+                                  EnsPQcalignment qca,
                                   EnsPAnalysis analysis,
-                                  EnsPQCSequence qsequence,
+                                  EnsPQcsequence qsequence,
                                   ajuint qstart,
                                   ajuint qend,
                                   AjPStr qstring,
-                                  EnsPQCSequence tsequence,
+                                  EnsPQcsequence tsequence,
                                   ajuint tstart,
                                   ajuint tend,
                                   AjPStr tstring,
@@ -472,250 +472,250 @@ EnsPQCVariation ensQCVariationNew(EnsPQCVariationadaptor adaptor,
                                   AjEnum type,
                                   AjEnum state);
 
-EnsPQCVariation ensQCVariationNewObj(const EnsPQCVariation object);
+EnsPQcvariation ensQcvariationNewObj(const EnsPQcvariation object);
 
-EnsPQCVariation ensQCVariationNewRef(EnsPQCVariation qcv);
+EnsPQcvariation ensQcvariationNewRef(EnsPQcvariation qcv);
 
-void ensQCVariationDel(EnsPQCVariation* Pqcv);
+void ensQcvariationDel(EnsPQcvariation* Pqcv);
 
-EnsPQCVariationadaptor ensQCVariationGetadaptor(const EnsPQCVariation qcv);
+EnsPQcvariationadaptor ensQcvariationGetAdaptor(const EnsPQcvariation qcv);
 
-ajuint ensQCVariationGetIdentifier(const EnsPQCVariation qcv);
+ajuint ensQcvariationGetIdentifier(const EnsPQcvariation qcv);
 
-EnsPQCAlignment ensQCVariationGetQCAlignment(const EnsPQCVariation qcv);
+EnsPQcalignment ensQcvariationGetQcalignment(const EnsPQcvariation qcv);
 
-EnsPAnalysis ensQCVariationGetAnalysis(const EnsPQCVariation qcv);
+EnsPAnalysis ensQcvariationGetAnalysis(const EnsPQcvariation qcv);
 
-EnsPQCSequence ensQCVariationGetQuerySequence(const EnsPQCVariation qcv);
+EnsPQcsequence ensQcvariationGetQuerySequence(const EnsPQcvariation qcv);
 
-ajuint ensQCVariationGetQueryStart(const EnsPQCVariation qcv);
+ajuint ensQcvariationGetQueryStart(const EnsPQcvariation qcv);
 
-ajuint ensQCVariationGetQueryEnd(const EnsPQCVariation qcv);
+ajuint ensQcvariationGetQueryEnd(const EnsPQcvariation qcv);
 
-AjPStr ensQCVariationGetQueryString(const EnsPQCVariation qcv);
+AjPStr ensQcvariationGetQueryString(const EnsPQcvariation qcv);
 
-EnsPQCSequence ensQCVariationGetTargetSequence(const EnsPQCVariation qcv);
+EnsPQcsequence ensQcvariationGetTargetSequence(const EnsPQcvariation qcv);
 
-ajuint ensQCVariationGetTargetStart(const EnsPQCVariation qcv);
+ajuint ensQcvariationGetTargetStart(const EnsPQcvariation qcv);
 
-ajuint ensQCVariationGetTargetEnd(const EnsPQCVariation qcv);
+ajuint ensQcvariationGetTargetEnd(const EnsPQcvariation qcv);
 
-AjPStr ensQCVariationGetTargetString(const EnsPQCVariation qcv);
+AjPStr ensQcvariationGetTargetString(const EnsPQcvariation qcv);
 
-AjEnum ensQCVariationGetClass(const EnsPQCVariation qcv);
+AjEnum ensQcvariationGetClass(const EnsPQcvariation qcv);
 
-AjEnum ensQCVariationGetType(const EnsPQCVariation qcv);
+AjEnum ensQcvariationGetType(const EnsPQcvariation qcv);
 
-AjEnum ensQCVariationGetState(const EnsPQCVariation qcv);
+AjEnum ensQcvariationGetState(const EnsPQcvariation qcv);
 
-AjBool ensQCVariationSetadaptor(EnsPQCVariation qcv,
-                                EnsPQCVariationadaptor qcva);
+AjBool ensQcvariationSetAdaptor(EnsPQcvariation qcv,
+                                EnsPQcvariationadaptor qcva);
 
-AjBool ensQCVariationSetIdentifier(EnsPQCVariation qcv, ajuint identifier);
+AjBool ensQcvariationSetIdentifier(EnsPQcvariation qcv, ajuint identifier);
 
-AjBool ensQCVariationSetQCAlignment(EnsPQCVariation qcv, EnsPQCAlignment qca);
+AjBool ensQcvariationSetQcalignment(EnsPQcvariation qcv, EnsPQcalignment qca);
 
-AjBool ensQCVariationSetAnalysis(EnsPQCVariation qcv, EnsPAnalysis analysis);
+AjBool ensQcvariationSetAnalysis(EnsPQcvariation qcv, EnsPAnalysis analysis);
 
-AjBool ensQCVariationSetQuerySequence(EnsPQCVariation qcv,
-                                      EnsPQCSequence qsequence);
+AjBool ensQcvariationSetQuerySequence(EnsPQcvariation qcv,
+                                      EnsPQcsequence qsequence);
 
-AjBool ensQCVariationSetQueryStart(EnsPQCVariation qcv, ajuint qstart);
+AjBool ensQcvariationSetQueryStart(EnsPQcvariation qcv, ajuint qstart);
 
-AjBool ensQCVariationSetQueryEnd(EnsPQCVariation qcv, ajuint qend);
+AjBool ensQcvariationSetQueryEnd(EnsPQcvariation qcv, ajuint qend);
 
-AjBool ensQCVariationSetQueryString(EnsPQCVariation qcv, AjPStr qstring);
+AjBool ensQcvariationSetQueryString(EnsPQcvariation qcv, AjPStr qstring);
 
-AjBool ensQCVariationSetTargetSequence(EnsPQCVariation qcv,
-                                       EnsPQCSequence tsequence);
+AjBool ensQcvariationSetTargetSequence(EnsPQcvariation qcv,
+                                       EnsPQcsequence tsequence);
 
-AjBool ensQCVariationSetTargetStart(EnsPQCVariation qcv, ajuint tstart);
+AjBool ensQcvariationSetTargetStart(EnsPQcvariation qcv, ajuint tstart);
 
-AjBool ensQCVariationSetTargetEnd(EnsPQCVariation qcv, ajuint tend);
+AjBool ensQcvariationSetTargetEnd(EnsPQcvariation qcv, ajuint tend);
 
-AjBool ensQCVariationSetTargetString(EnsPQCVariation qcv, AjPStr tstring);
+AjBool ensQcvariationSetTargetString(EnsPQcvariation qcv, AjPStr tstring);
 
-AjBool ensQCVariationSetClass(EnsPQCVariation qcv, AjEnum class);
+AjBool ensQcvariationSetClass(EnsPQcvariation qcv, AjEnum class);
 
-AjBool ensQCVariationSetType(EnsPQCVariation qcv, AjEnum type);
+AjBool ensQcvariationSetType(EnsPQcvariation qcv, AjEnum type);
 
-AjBool ensQCVariationSetState(EnsPQCVariation qcv, AjEnum state);
+AjBool ensQcvariationSetState(EnsPQcvariation qcv, AjEnum state);
 
-ajuint ensQCVariationGetMemSize(const EnsPQCVariation qcv);
+ajuint ensQcvariationGetMemSize(const EnsPQcvariation qcv);
 
-AjBool ensQCVariationTrace(const EnsPQCVariation qcv, ajuint level);
+AjBool ensQcvariationTrace(const EnsPQcvariation qcv, ajuint level);
 
-AjEnum ensQCVariationClassFromStr(const AjPStr vclass);
+AjEnum ensQcvariationClassFromStr(const AjPStr vclass);
 
-AjEnum ensQCVariationTypeFromStr(const AjPStr type);
+AjEnum ensQcvariationTypeFromStr(const AjPStr type);
 
-AjEnum ensQCVariationStateFromStr(const AjPStr state);
+AjEnum ensQcvariationStateFromStr(const AjPStr state);
 
-const char *ensQCVariationClassToChar(const AjEnum vclass);
+const char *ensQcvariationClassToChar(const AjEnum vclass);
 
-const char *ensQCVariationTypeToChar(const AjEnum type);
+const char *ensQcvariationTypeToChar(const AjEnum type);
 
-const char *ensQCVariationStateToChar(const AjEnum state);
+const char *ensQcvariationStateToChar(const AjEnum state);
 
 /* Ensembl Quality Check Variation Adaptor */
 
-EnsPQCVariationadaptor ensQCVariationadaptorNew(EnsPDatabaseadaptor dba);
+EnsPQcvariationadaptor ensQcvariationadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensQCVariationadaptorDel(EnsPQCVariationadaptor* Pqcva);
+void ensQcvariationadaptorDel(EnsPQcvariationadaptor* Pqcva);
 
-AjBool ensQCVariationadaptorFetchByIdentifier(EnsPQCVariationadaptor adaptor,
+AjBool ensQcvariationadaptorFetchByIdentifier(EnsPQcvariationadaptor adaptor,
                                               ajuint identifier,
-                                              EnsPQCVariation *Pqcvf);
+                                              EnsPQcvariation *Pqcvf);
 
-AjBool ensQCVariationadaptorFetchAllByQCAlignment(EnsPQCVariationadaptor qcva,
-                                                  const EnsPQCAlignment qca,
+AjBool ensQcvariationadaptorFetchAllByQcalignment(EnsPQcvariationadaptor qcva,
+                                                  const EnsPQcalignment qca,
                                                   AjPList qcvs);
 
-AjBool ensQCVariationadaptorFetchAllByAnalysisQueryTarget(
-    EnsPQCVariationadaptor qcva,
+AjBool ensQcvariationadaptorFetchAllByAnalysisQueryTarget(
+    EnsPQcvariationadaptor qcva,
     const EnsPAnalysis analysis,
-    const EnsPQCDatabase qdb,
-    const EnsPQCDatabase tdb,
+    const EnsPQcdatabase qdb,
+    const EnsPQcdatabase tdb,
     AjPList qcvs);
 
-AjBool ensQCVariationadaptorFetchAllByQuery(EnsPQCVariationadaptor qcva,
+AjBool ensQcvariationadaptorFetchAllByQuery(EnsPQcvariationadaptor qcva,
                                             const EnsPAnalysis analysis,
-                                            const EnsPQCDatabase qdb,
+                                            const EnsPQcdatabase qdb,
                                             AjPList qcvs);
 
-AjBool ensQCVariationadaptorFetchAllByTarget(EnsPQCVariationadaptor qcva,
+AjBool ensQcvariationadaptorFetchAllByTarget(EnsPQcvariationadaptor qcva,
                                              const EnsPAnalysis analysis,
-                                             const EnsPQCDatabase tdb,
+                                             const EnsPQcdatabase tdb,
                                              AjPList qcvs);
 
-AjBool ensQCVariationadaptorStore(EnsPQCVariationadaptor qcva,
-                                  EnsPQCVariation qcv);
+AjBool ensQcvariationadaptorStore(EnsPQcvariationadaptor qcva,
+                                  EnsPQcvariation qcv);
 
-AjBool ensQCVariationadaptorUpdate(EnsPQCVariationadaptor qcva,
-                                   const EnsPQCVariation qcv);
+AjBool ensQcvariationadaptorUpdate(EnsPQcvariationadaptor qcva,
+                                   const EnsPQcvariation qcv);
 
-AjBool ensQCVariationadaptorDelete(EnsPQCVariationadaptor qcva,
-                                   const EnsPQCVariation qcv);
+AjBool ensQcvariationadaptorDelete(EnsPQcvariationadaptor qcva,
+                                   const EnsPQcvariation qcv);
 
 /* Ensembl Quality Check Submission */
 
-EnsPQCSubmission ensQCSubmissionNew(EnsPQCSubmissionadaptor adaptor,
+EnsPQcsubmission ensQcsubmissionNew(EnsPQcsubmissionadaptor adaptor,
                                     ajuint identifier,
                                     EnsPAnalysis analysis,
-                                    EnsPQCSequence qsequence,
-                                    EnsPQCSequence tsequence,
+                                    EnsPQcsequence qsequence,
+                                    EnsPQcsequence tsequence,
                                     ajuint tstart,
                                     ajuint tend,
                                     ajint tstrand,
                                     ajuint analysisjobid);
 
-EnsPQCSubmission ensQCSubmissionNewObj(const EnsPQCSubmission object);
+EnsPQcsubmission ensQcsubmissionNewObj(const EnsPQcsubmission object);
 
-EnsPQCSubmission ensQCSubmissionNewRef(EnsPQCSubmission qcs);
+EnsPQcsubmission ensQcsubmissionNewRef(EnsPQcsubmission qcs);
 
-void ensQCSubmissionDel(EnsPQCSubmission* Pqcs);
+void ensQcsubmissionDel(EnsPQcsubmission* Pqcs);
 
-EnsPQCSubmissionadaptor ensQCSubmissionGetadaptor(const EnsPQCSubmission qcs);
+EnsPQcsubmissionadaptor ensQcsubmissionGetAdaptor(const EnsPQcsubmission qcs);
 
-ajuint ensQCSubmissionGetIdentifier(const EnsPQCSubmission qcs);
+ajuint ensQcsubmissionGetIdentifier(const EnsPQcsubmission qcs);
 
-EnsPAnalysis ensQCSubmissionGetAnalysis(const EnsPQCSubmission qcs);
+EnsPAnalysis ensQcsubmissionGetAnalysis(const EnsPQcsubmission qcs);
 
-EnsPQCSequence ensQCSubmissionGetQuerySequence(const EnsPQCSubmission qcs);
+EnsPQcsequence ensQcsubmissionGetQuerySequence(const EnsPQcsubmission qcs);
 
-ajuint ensQCSubmissionGetQueryStart(const EnsPQCSubmission qcs);
+ajuint ensQcsubmissionGetQueryStart(const EnsPQcsubmission qcs);
 
-ajuint ensQCSubmissionGetQueryEnd(const EnsPQCSubmission qcs);
+ajuint ensQcsubmissionGetQueryEnd(const EnsPQcsubmission qcs);
 
-ajint ensQCSubmissionGetQueryStrand(const EnsPQCSubmission qcs);
+ajint ensQcsubmissionGetQueryStrand(const EnsPQcsubmission qcs);
 
-EnsPQCSequence ensQCSubmissionGetTargetSequence(const EnsPQCSubmission qcs);
+EnsPQcsequence ensQcsubmissionGetTargetSequence(const EnsPQcsubmission qcs);
 
-ajuint ensQCSubmissionGetTargetStart(const EnsPQCSubmission qcs);
+ajuint ensQcsubmissionGetTargetStart(const EnsPQcsubmission qcs);
 
-ajuint ensQCSubmissionGetTargetEnd(const EnsPQCSubmission qcs);
+ajuint ensQcsubmissionGetTargetEnd(const EnsPQcsubmission qcs);
 
-ajint ensQCSubmissionGetTargetStrand(const EnsPQCSubmission qcs);
+ajint ensQcsubmissionGetTargetStrand(const EnsPQcsubmission qcs);
 
-ajuint ensQCSubmissionGetAnalysisJobIdentifier(const EnsPQCSubmission qcs);
+ajuint ensQcsubmissionGetAnalysisJobIdentifier(const EnsPQcsubmission qcs);
 
-AjBool ensQCSubmissionSetadaptor(EnsPQCSubmission qcs,
-                                 EnsPQCSubmissionadaptor qcsa);
+AjBool ensQcsubmissionSetAdaptor(EnsPQcsubmission qcs,
+                                 EnsPQcsubmissionadaptor qcsa);
 
-AjBool ensQCSubmissionSetIdentifier(EnsPQCSubmission qcs, ajuint identifier);
+AjBool ensQcsubmissionSetIdentifier(EnsPQcsubmission qcs, ajuint identifier);
 
-AjBool ensQCSubmissionSetAnalysis(EnsPQCSubmission qcs, EnsPAnalysis analysis);
+AjBool ensQcsubmissionSetAnalysis(EnsPQcsubmission qcs, EnsPAnalysis analysis);
 
-AjBool ensQCSubmissionSetQuerySequence(EnsPQCSubmission qcs,
-                                       EnsPQCSequence qcseq);
+AjBool ensQcsubmissionSetQuerySequence(EnsPQcsubmission qcs,
+                                       EnsPQcsequence qcseq);
 
-AjBool ensQCSubmissionSetQueryStart(EnsPQCSubmission qcs, ajuint qstart);
+AjBool ensQcsubmissionSetQueryStart(EnsPQcsubmission qcs, ajuint qstart);
 
-AjBool ensQCSubmissionSetQueryEnd(EnsPQCSubmission qcs, ajuint qend);
+AjBool ensQcsubmissionSetQueryEnd(EnsPQcsubmission qcs, ajuint qend);
 
-AjBool ensQCSubmissionSetQueryStrand(EnsPQCSubmission qcs, ajint qstrand);
+AjBool ensQcsubmissionSetQueryStrand(EnsPQcsubmission qcs, ajint qstrand);
 
-AjBool ensQCSubmissionSetTargetSequence(EnsPQCSubmission qcs,
-                                        EnsPQCSequence qcseq);
+AjBool ensQcsubmissionSetTargetSequence(EnsPQcsubmission qcs,
+                                        EnsPQcsequence qcseq);
 
-AjBool ensQCSubmissionSetTargetStart(EnsPQCSubmission qcs, ajuint tstart);
+AjBool ensQcsubmissionSetTargetStart(EnsPQcsubmission qcs, ajuint tstart);
 
-AjBool ensQCSubmissionSetTargetEnd(EnsPQCSubmission qcs, ajuint tend);
+AjBool ensQcsubmissionSetTargetEnd(EnsPQcsubmission qcs, ajuint tend);
 
-AjBool ensQCSubmissionSetTargetStrand(EnsPQCSubmission qcs, ajint tstrand);
+AjBool ensQcsubmissionSetTargetStrand(EnsPQcsubmission qcs, ajint tstrand);
 
-AjBool ensQCSubmissionSetAnalysisJobIdentifier(EnsPQCSubmission qcs,
+AjBool ensQcsubmissionSetAnalysisJobIdentifier(EnsPQcsubmission qcs,
                                                ajuint jobid);
 
-ajuint ensQCSubmissionGetMemSize(const EnsPQCSubmission qcs);
+ajuint ensQcsubmissionGetMemSize(const EnsPQcsubmission qcs);
 
-AjBool ensQCSubmissionTrace(const EnsPQCSubmission qcs, ajuint level);
+AjBool ensQcsubmissionTrace(const EnsPQcsubmission qcs, ajuint level);
 
 /* Ensembl Quality Check Submission Adaptor */
 
-EnsPQCSubmissionadaptor ensQCSubmissionadaptorNew(EnsPDatabaseadaptor dba);
+EnsPQcsubmissionadaptor ensQcsubmissionadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensQCSubmissionadaptorDel(EnsPQCSubmissionadaptor* Pqcsa);
+void ensQcsubmissionadaptorDel(EnsPQcsubmissionadaptor* Pqcsa);
 
-AjBool ensQCSubmissionadaptorFetchByIdentifier(EnsPQCSubmissionadaptor adaptor,
+AjBool ensQcsubmissionadaptorFetchByIdentifier(EnsPQcsubmissionadaptor adaptor,
                                                ajuint identifier,
-                                               EnsPQCSubmission *Pqcs);
+                                               EnsPQcsubmission *Pqcs);
 
-AjBool ensQCSubmissionadaptorFetchAllByAnalysisQueryTarget(
-    EnsPQCSubmissionadaptor qcsa,
+AjBool ensQcsubmissionadaptorFetchAllByAnalysisQueryTarget(
+    EnsPQcsubmissionadaptor qcsa,
     const EnsPAnalysis analysis,
-    const EnsPQCDatabase qdb,
-    const EnsPQCDatabase tdb,
+    const EnsPQcdatabase qdb,
+    const EnsPQcdatabase tdb,
     AjPList qcss);
 
-AjBool ensQCSubmissionadaptorFetchAllByANQIDTDB(EnsPQCSubmissionadaptor qcsa,
+AjBool ensQcsubmissionadaptorFetchAllByANQIDTDB(EnsPQcsubmissionadaptor qcsa,
                                                 const EnsPAnalysis analysis,
-                                                const EnsPQCSequence qseqeunce,
-                                                const EnsPQCDatabase tdb,
-                                                const EnsPQCSequence tsequence,
+                                                const EnsPQcsequence qseqeunce,
+                                                const EnsPQcdatabase tdb,
+                                                const EnsPQcsequence tsequence,
                                                 ajuint tstart,
                                                 ajuint tend,
                                                 ajint tstrand,
                                                 AjPList qcss);
 
-AjBool ensQCSubmissionadaptorFetchAllByQuery(EnsPQCSubmissionadaptor qcsa,
+AjBool ensQcsubmissionadaptorFetchAllByQuery(EnsPQcsubmissionadaptor qcsa,
                                              const EnsPAnalysis analysis,
-                                             const EnsPQCDatabase qdb,
+                                             const EnsPQcdatabase qdb,
                                              AjPList qcss);
 
-AjBool ensQCSubmissionadaptorFetchAllByTarget(EnsPQCSubmissionadaptor qcsa,
+AjBool ensQcsubmissionadaptorFetchAllByTarget(EnsPQcsubmissionadaptor qcsa,
                                               const EnsPAnalysis analysis,
-                                              const EnsPQCDatabase tdb,
+                                              const EnsPQcdatabase tdb,
                                               AjPList qcss);
 
-AjBool ensQCSubmissionadaptorStore(EnsPQCSubmissionadaptor qcsa,
-                                   EnsPQCSubmission qcs);
+AjBool ensQcsubmissionadaptorStore(EnsPQcsubmissionadaptor qcsa,
+                                   EnsPQcsubmission qcs);
 
-AjBool ensQCSubmissionadaptorUpdate(EnsPQCSubmissionadaptor qcsa,
-                                    const EnsPQCSubmission qcs);
+AjBool ensQcsubmissionadaptorUpdate(EnsPQcsubmissionadaptor qcsa,
+                                    const EnsPQcsubmission qcs);
 
-AjBool ensQCSubmissionadaptorDelete(EnsPQCSubmissionadaptor qcsa,
-                                    const EnsPQCSubmission qcs);
+AjBool ensQcsubmissionadaptorDelete(EnsPQcsubmissionadaptor qcsa,
+                                    const EnsPQcsubmission qcs);
 
 /*
 ** End of prototype definitions

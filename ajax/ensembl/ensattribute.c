@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -301,7 +301,7 @@ void ensAttributeDel(EnsPAttribute* Pattribute)
 ** Get the code element of an Ensembl Attribute.
 **
 ** @cc Bio::EnsEMBL::Attribute::code
-** @param [r] attribute [const EnsPFeature] Ensembl Attribute
+** @param [r] attribute [const EnsPAttribute] Ensembl Attribute
 **
 ** @return [AjPStr] Code
 ** @@
@@ -323,7 +323,7 @@ AjPStr ensAttributeGetCode(const EnsPAttribute attribute)
 ** Get the name element of an Ensembl Attribute.
 **
 ** @cc Bio::EnsEMBL::Attribute::name
-** @param [r] attribute [const EnsPFeature] Ensembl Attribute
+** @param [r] attribute [const EnsPAttribute] Ensembl Attribute
 **
 ** @return [AjPStr] Name
 ** @@
@@ -345,7 +345,7 @@ AjPStr ensAttributeGetName(const EnsPAttribute attribute)
 ** Get the description element of an Ensembl Attribute.
 **
 ** @cc Bio::EnsEMBL::Attribute::description
-** @param [r] attribute [const EnsPFeature] Ensembl Attribute
+** @param [r] attribute [const EnsPAttribute] Ensembl Attribute
 **
 ** @return [AjPStr] Description
 ** @@
@@ -367,7 +367,7 @@ AjPStr ensAttributeGetDescription(const EnsPAttribute attribute)
 ** Get the value element of an Ensembl Attribute.
 **
 ** @cc Bio::EnsEMBL::Attribute::value
-** @param [r] attribute [const EnsPFeature] Ensembl Attribute
+** @param [r] attribute [const EnsPAttribute] Ensembl Attribute
 **
 ** @return [AjPStr] Value
 ** @@
@@ -695,7 +695,7 @@ AjBool ensAttributeadaptorFetchAllByGene(EnsPDatabaseadaptor adaptor,
 
 
 
-/* @func ensAttributeadaptorFetchAllBySeqRegion *******************************
+/* @func ensAttributeadaptorFetchAllBySeqregion *******************************
 **
 ** Fetch all Ensembl Attributes via an Ensembl Sequence Region.
 **
@@ -705,7 +705,7 @@ AjBool ensAttributeadaptorFetchAllByGene(EnsPDatabaseadaptor adaptor,
 ** @cc Bio::EnsEMBL::DBSQL::Attributeadaptor::AUTOLOAD
 ** @cc Bio::EnsEMBL::DBSQL::Attributeadaptor::fetch_all_by_
 ** @param [r] adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor.
-** @param [r] sr [const EnsPSeqRegion] Ensembl Sequence Region.
+** @param [r] sr [const EnsPSeqregion] Ensembl Sequence Region.
 ** @param [r] code [const AjPStr] Ensembl Attribute code.
 ** @param [u] attributes [AjPList] AJAX List of Ensembl Attributes.
 **
@@ -713,8 +713,8 @@ AjBool ensAttributeadaptorFetchAllByGene(EnsPDatabaseadaptor adaptor,
 ** @@
 ******************************************************************************/
 
-AjBool ensAttributeadaptorFetchAllBySeqRegion(EnsPDatabaseadaptor adaptor,
-                                              const EnsPSeqRegion sr,
+AjBool ensAttributeadaptorFetchAllBySeqregion(EnsPDatabaseadaptor adaptor,
+                                              const EnsPSeqregion sr,
                                               const AjPStr code,
                                               AjPList attributes)
 {
@@ -744,7 +744,7 @@ AjBool ensAttributeadaptorFetchAllBySeqRegion(EnsPDatabaseadaptor adaptor,
 			 "seq_region_attrib.attrib_type_id "
 			 "AND "
 			 "seq_region_attrib.seq_region_id = %u",
-			 ensSeqRegionGetIdentifier(sr));
+			 ensSeqregionGetIdentifier(sr));
     
     if(code && ajStrGetLen(code))
     {
@@ -797,7 +797,7 @@ AjBool ensAttributeadaptorFetchAllBySlice(EnsPDatabaseadaptor adaptor,
                                           const AjPStr code,
                                           AjPList attributes)
 {
-    EnsPSeqRegion sr = NULL;
+    EnsPSeqregion sr = NULL;
     
     if(!adaptor)
 	return ajFalse;
@@ -808,7 +808,7 @@ AjBool ensAttributeadaptorFetchAllBySlice(EnsPDatabaseadaptor adaptor,
     if(!attributes)
 	return ajFalse;
     
-    sr = ensSliceGetSeqRegion(slice);
+    sr = ensSliceGetSeqregion(slice);
     
     if(!sr)
     {
@@ -818,7 +818,7 @@ AjBool ensAttributeadaptorFetchAllBySlice(EnsPDatabaseadaptor adaptor,
 	return ajFalse;
     }
     
-    return ensAttributeadaptorFetchAllBySeqRegion(adaptor,
+    return ensAttributeadaptorFetchAllBySeqregion(adaptor,
 						  sr,
 						  code,
 						  attributes);

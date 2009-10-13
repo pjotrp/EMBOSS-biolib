@@ -18,9 +18,9 @@ extern "C"
 
 /* Ensembl External Reference */
 
-EnsPExternalReference ensExternalReferenceNew(ajuint identifier,
+EnsPExternalreference ensExternalreferenceNew(ajuint identifier,
                                               EnsPAnalysis analysis,
-                                              EnsPExternalDatabase edb,
+                                              EnsPExternaldatabase edb,
                                               AjPStr primaryid,
                                               AjPStr displayid,
                                               AjPStr version,
@@ -29,74 +29,74 @@ EnsPExternalReference ensExternalReferenceNew(ajuint identifier,
                                               AjPStr infotext,
                                               AjEnum infotype);
 
-EnsPExternalReference ensExternalReferenceNewObj(
-    const EnsPExternalReference object);
+EnsPExternalreference ensExternalreferenceNewObj(
+    const EnsPExternalreference object);
 
-EnsPExternalReference ensExternalReferenceNewRef(EnsPExternalReference er);
+EnsPExternalreference ensExternalreferenceNewRef(EnsPExternalreference er);
 
-void ensExternalReferenceDel(EnsPExternalReference *Per);
+void ensExternalreferenceDel(EnsPExternalreference *Per);
 
-ajuint ensExternalReferenceGetIdentifier(const EnsPExternalReference er);
+ajuint ensExternalreferenceGetIdentifier(const EnsPExternalreference er);
 
-EnsPAnalysis ensExternalReferenceGetAnalysis(const EnsPExternalReference er);
+EnsPAnalysis ensExternalreferenceGetAnalysis(const EnsPExternalreference er);
 
-EnsPExternalDatabase ensExternalReferenceGetExternalDatabase(
-    const EnsPExternalReference er);
+EnsPExternaldatabase ensExternalreferenceGetExternaldatabase(
+    const EnsPExternalreference er);
 
-AjPStr ensExternalReferenceGetPrimaryIdentifier(const EnsPExternalReference er);
+AjPStr ensExternalreferenceGetPrimaryIdentifier(const EnsPExternalreference er);
 
-AjPStr ensExternalReferenceGetDisplayIdentifier(const EnsPExternalReference er);
+AjPStr ensExternalreferenceGetDisplayIdentifier(const EnsPExternalreference er);
 
-AjPStr ensExternalReferenceGetVersion(const EnsPExternalReference er);
+AjPStr ensExternalreferenceGetVersion(const EnsPExternalreference er);
 
-AjPStr ensExternalReferenceGetDescription(const EnsPExternalReference er);
+AjPStr ensExternalreferenceGetDescription(const EnsPExternalreference er);
 
-AjPStr ensExternalReferenceGetLinkageAnnotation(const EnsPExternalReference er);
+AjPStr ensExternalreferenceGetLinkageAnnotation(const EnsPExternalreference er);
 
-AjPStr ensExternalReferenceGetInfoText(const EnsPExternalReference er);
+AjPStr ensExternalreferenceGetInfoText(const EnsPExternalreference er);
 
-AjEnum ensExternalReferenceGetInfoType(const EnsPExternalReference er);
+AjEnum ensExternalreferenceGetInfoType(const EnsPExternalreference er);
 
-AjBool ensExternalReferenceSetIdentifier(EnsPExternalReference er,
+AjBool ensExternalreferenceSetIdentifier(EnsPExternalreference er,
                                          ajuint identifier);
 
-AjBool ensExternalReferenceSetAnalysis(EnsPExternalReference er,
+AjBool ensExternalreferenceSetAnalysis(EnsPExternalreference er,
                                        EnsPAnalysis analysis);
 
-AjBool ensExternalReferenceSetExternalDatabase(EnsPExternalReference er,
-                                               EnsPExternalDatabase edb);
+AjBool ensExternalreferenceSetExternaldatabase(EnsPExternalreference er,
+                                               EnsPExternaldatabase edb);
 
-AjBool ensExternalReferenceSetPrimaryIdentifier(EnsPExternalReference er,
+AjBool ensExternalreferenceSetPrimaryIdentifier(EnsPExternalreference er,
                                                 AjPStr primaryid);
 
-AjBool ensExternalReferenceSetDisplayIdentifier(EnsPExternalReference er,
+AjBool ensExternalreferenceSetDisplayIdentifier(EnsPExternalreference er,
                                                 AjPStr displayid);
 
-AjBool ensExternalReferenceSetVersion(EnsPExternalReference er, AjPStr version);
+AjBool ensExternalreferenceSetVersion(EnsPExternalreference er, AjPStr version);
 
-AjBool ensExternalReferenceSetDescription(EnsPExternalReference er,
+AjBool ensExternalreferenceSetDescription(EnsPExternalreference er,
                                           AjPStr description);
 
-AjBool ensExternalReferenceSetLinkageAnnotation(EnsPExternalReference er,
+AjBool ensExternalreferenceSetLinkageAnnotation(EnsPExternalreference er,
                                                 AjPStr linkageannotation);
 
-AjBool ensExternalReferenceSetInfoText(EnsPExternalReference er,
+AjBool ensExternalreferenceSetInfoText(EnsPExternalreference er,
                                        AjPStr infotext);
 
-AjBool ensExternalReferenceSetInfoType(EnsPExternalReference er,
+AjBool ensExternalreferenceSetInfoType(EnsPExternalreference er,
                                        AjEnum infotype);
 
-AjBool ensExternalReferenceTrace(const EnsPExternalReference er, ajuint level);
+AjBool ensExternalreferenceTrace(const EnsPExternalreference er, ajuint level);
 
-AjEnum ensExternalReferenceInfoTypeFromStr(const AjPStr infotype);
+AjEnum ensExternalreferenceInfoTypeFromStr(const AjPStr infotype);
 
-const char *ensExternalReferenceInfoTypeToChar(const AjEnum type);
+const char *ensExternalreferenceInfoTypeToChar(const AjEnum type);
 
-ajuint ensExternalReferenceGetMemSize(const EnsPExternalReference er);
+ajuint ensExternalreferenceGetMemSize(const EnsPExternalreference er);
 
 /* Ensembl Identity Reference */
 
-EnsPIdentityReference ensIdentityReferenceNew(AjPStr cigar,
+EnsPIdentityreference ensIdentityreferenceNew(AjPStr cigar,
                                               ajint qstart,
                                               ajint qend,
                                               ajint qidentity,
@@ -106,74 +106,74 @@ EnsPIdentityReference ensIdentityReferenceNew(AjPStr cigar,
                                               double score,
                                               double evalue);
 
-EnsPIdentityReference ensIdentityReferenceNewObj(
-    const EnsPIdentityReference object);
+EnsPIdentityreference ensIdentityreferenceNewObj(
+    const EnsPIdentityreference object);
 
-void ensIdentityReferenceDel(EnsPIdentityReference *Pir);
+void ensIdentityreferenceDel(EnsPIdentityreference *Pir);
 
-AjPStr ensIdentityReferenceGetCigar(const EnsPIdentityReference ir);
+AjPStr ensIdentityreferenceGetCigar(const EnsPIdentityreference ir);
 
-ajint ensIdentityReferenceGetQueryStart(const EnsPIdentityReference ir);
+ajint ensIdentityreferenceGetQueryStart(const EnsPIdentityreference ir);
 
-ajint ensIdentityReferenceGetQueryEnd(const EnsPIdentityReference ir);
+ajint ensIdentityreferenceGetQueryEnd(const EnsPIdentityreference ir);
 
-ajint ensIdentityReferenceGetQueryIdentity(const EnsPIdentityReference ir);
+ajint ensIdentityreferenceGetQueryIdentity(const EnsPIdentityreference ir);
 
-ajint ensIdentityReferenceGetTargetStart(const EnsPIdentityReference ir);
+ajint ensIdentityreferenceGetTargetStart(const EnsPIdentityreference ir);
 
-ajint ensIdentityReferenceGetTargetEnd(const EnsPIdentityReference ir);
+ajint ensIdentityreferenceGetTargetEnd(const EnsPIdentityreference ir);
 
-ajint ensIdentityReferenceGetTargetIdentity(const EnsPIdentityReference ir);
+ajint ensIdentityreferenceGetTargetIdentity(const EnsPIdentityreference ir);
 
-double ensIdentityReferenceGetEvalue(const EnsPIdentityReference ir);
+double ensIdentityreferenceGetEvalue(const EnsPIdentityreference ir);
 
-double ensIdentityReferenceGetScore(const EnsPIdentityReference ir);
+double ensIdentityreferenceGetScore(const EnsPIdentityreference ir);
 
-AjBool ensIdentityReferenceSetCigar(EnsPIdentityReference ir, AjPStr cigar);
+AjBool ensIdentityreferenceSetCigar(EnsPIdentityreference ir, AjPStr cigar);
 
-AjBool ensIdentityReferenceSetQueryStart(EnsPIdentityReference ir,
+AjBool ensIdentityreferenceSetQueryStart(EnsPIdentityreference ir,
                                          ajint qstart);
 
-AjBool ensIdentityReferenceSetQueryEnd(EnsPIdentityReference ir, ajint qend);
+AjBool ensIdentityreferenceSetQueryEnd(EnsPIdentityreference ir, ajint qend);
 
-AjBool ensIdentityReferenceSetQueryIdentity(EnsPIdentityReference ir,
+AjBool ensIdentityreferenceSetQueryIdentity(EnsPIdentityreference ir,
                                             ajint qidentity);
 
-AjBool ensIdentityReferenceSetTargetStart(EnsPIdentityReference ir,
+AjBool ensIdentityreferenceSetTargetStart(EnsPIdentityreference ir,
                                           ajint tstart);
 
-AjBool ensIdentityReferenceSetTargetEnd(EnsPIdentityReference ir, ajint tend);
+AjBool ensIdentityreferenceSetTargetEnd(EnsPIdentityreference ir, ajint tend);
 
-AjBool ensIdentityReferenceSetTargetIdentity(EnsPIdentityReference ir,
+AjBool ensIdentityreferenceSetTargetIdentity(EnsPIdentityreference ir,
                                              ajint tidentity);
 
-AjBool ensIdentityReferenceSetEvalue(EnsPIdentityReference ir, double evalue);
+AjBool ensIdentityreferenceSetEvalue(EnsPIdentityreference ir, double evalue);
 
-AjBool ensIdentityReferenceSetScore(EnsPIdentityReference ir, double score);
+AjBool ensIdentityreferenceSetScore(EnsPIdentityreference ir, double score);
 
-AjBool ensIdentityReferenceTrace(const EnsPIdentityReference ir, ajuint level);
+AjBool ensIdentityreferenceTrace(const EnsPIdentityreference ir, ajuint level);
 
-ajuint ensIdentityReferenceGetMemSize(const EnsPIdentityReference ir);
+ajuint ensIdentityreferenceGetMemSize(const EnsPIdentityreference ir);
 
 /* Ensembl Gene Ontology Linkage */
 
-EnsPGeneOntologyLinkage ensGeneOntologyLinkageNew(AjPStr linkagetype,
-                                                  EnsPDatabaseEntry source);
+EnsPGeneontologylinkage ensGeneontologylinkageNew(AjPStr linkagetype,
+                                                  EnsPDatabaseentry source);
 
-EnsPGeneOntologyLinkage ensGeneOntologyLinkageNewObj(
-    const EnsPGeneOntologyLinkage object);
+EnsPGeneontologylinkage ensGeneontologylinkageNewObj(
+    const EnsPGeneontologylinkage object);
 
-EnsPGeneOntologyLinkage ensGeneOntologyLinkageNewRef(
-    EnsPGeneOntologyLinkage gol);
+EnsPGeneontologylinkage ensGeneontologylinkageNewRef(
+    EnsPGeneontologylinkage gol);
 
-void ensGeneOntologyLinkageDel(EnsPGeneOntologyLinkage *Pgol);
+void ensGeneontologylinkageDel(EnsPGeneontologylinkage *Pgol);
 
 /* Ensembl Database Entry */
 
-EnsPDatabaseEntry ensDatabaseEntryNew(EnsPDatabaseEntryadaptor adaptor,
+EnsPDatabaseentry ensDatabaseentryNew(EnsPDatabaseentryadaptor adaptor,
                                       ajuint identifier,
                                       EnsPAnalysis analysis,
-                                      EnsPExternalDatabase edb,
+                                      EnsPExternaldatabase edb,
                                       AjPStr primaryid,
                                       AjPStr displayid,
                                       AjPStr version,
@@ -182,108 +182,108 @@ EnsPDatabaseEntry ensDatabaseEntryNew(EnsPDatabaseEntryadaptor adaptor,
                                       AjEnum infotype,
                                       AjPStr infotext);
 
-EnsPDatabaseEntry ensDatabaseEntryNewObj(const EnsPDatabaseEntry object);
+EnsPDatabaseentry ensDatabaseentryNewObj(const EnsPDatabaseentry object);
 
-EnsPDatabaseEntry ensDatabaseEntryNewRef(EnsPDatabaseEntry dbe);
+EnsPDatabaseentry ensDatabaseentryNewRef(EnsPDatabaseentry dbe);
 
-void ensDatabaseEntryDel(EnsPDatabaseEntry *Pdbe);
+void ensDatabaseentryDel(EnsPDatabaseentry *Pdbe);
 
-EnsPDatabaseEntryadaptor ensDatabaseEntryGetadaptor(
-    const EnsPDatabaseEntry dbe);
+EnsPDatabaseentryadaptor ensDatabaseentryGetAdaptor(
+    const EnsPDatabaseentry dbe);
 
-ajuint ensDatabaseEntryGetIdentifier(const EnsPDatabaseEntry dbe);
+ajuint ensDatabaseentryGetIdentifier(const EnsPDatabaseentry dbe);
 
-AjPStr ensDatabaseEntryGetPrimaryIdentifier(const EnsPDatabaseEntry dbe);
+AjPStr ensDatabaseentryGetPrimaryIdentifier(const EnsPDatabaseentry dbe);
 
-AjPStr ensDatabaseEntryGetDisplayIdentifier(const EnsPDatabaseEntry dbe);
+AjPStr ensDatabaseentryGetDisplayIdentifier(const EnsPDatabaseentry dbe);
 
-AjPStr ensDatabaseEntryGetVersion(const EnsPDatabaseEntry dbe);
+AjPStr ensDatabaseentryGetVersion(const EnsPDatabaseentry dbe);
 
-AjPStr ensDatabaseEntryGetDescription(const EnsPDatabaseEntry dbe);
+AjPStr ensDatabaseentryGetDescription(const EnsPDatabaseentry dbe);
 
-AjPStr ensDatabaseEntryGetInfoText(const EnsPDatabaseEntry dbe);
+AjPStr ensDatabaseentryGetInfoText(const EnsPDatabaseentry dbe);
 
-AjEnum ensDatabaseEntryGetInfoType(const EnsPDatabaseEntry dbe);
+AjEnum ensDatabaseentryGetInfoType(const EnsPDatabaseentry dbe);
 
-AjPStr ensDatabaseEntryGetDbName(const EnsPDatabaseEntry dbe);
+AjPStr ensDatabaseentryGetDbName(const EnsPDatabaseentry dbe);
 
-AjPStr ensDatabaseEntryGetDbRelease(const EnsPDatabaseEntry dbe);
+AjPStr ensDatabaseentryGetDbRelease(const EnsPDatabaseentry dbe);
 
-AjPStr ensDatabaseEntryGetDbDisplayName(const EnsPDatabaseEntry dbe);
+AjPStr ensDatabaseentryGetDbDisplayName(const EnsPDatabaseentry dbe);
 
-AjBool ensDatabaseEntryGetPrimaryIdIsLinkable(const EnsPDatabaseEntry dbe);
+AjBool ensDatabaseentryGetPrimaryIdIsLinkable(const EnsPDatabaseentry dbe);
 
-AjBool ensDatabaseEntryGetDisplayIdIsLinkable(const EnsPDatabaseEntry dbe);
+AjBool ensDatabaseentryGetDisplayIdIsLinkable(const EnsPDatabaseentry dbe);
 
-ajint ensDatabaseEntryGetPriority(const EnsPDatabaseEntry dbe);
+ajint ensDatabaseentryGetPriority(const EnsPDatabaseentry dbe);
 
-AjEnum ensDatabaseEntryGetStatus(const EnsPDatabaseEntry dbe);
+AjEnum ensDatabaseentryGetStatus(const EnsPDatabaseentry dbe);
 
-AjEnum ensDatabaseEntryGetType(const EnsPDatabaseEntry dbe);
+AjEnum ensDatabaseentryGetType(const EnsPDatabaseentry dbe);
 
-AjPList ensDatabaseEntryGetSynonyms(const EnsPDatabaseEntry dbe);
+AjPList ensDatabaseentryGetSynonyms(const EnsPDatabaseentry dbe);
 
-AjBool ensDatabaseEntryTrace(const EnsPDatabaseEntry dbe, ajuint level);
+AjBool ensDatabaseentryTrace(const EnsPDatabaseentry dbe, ajuint level);
 
-ajuint ensDatabaseEntryGetMemSize(const EnsPDatabaseEntry dbe);
+ajuint ensDatabaseentryGetMemSize(const EnsPDatabaseentry dbe);
 
-AjBool ensDatabaseEntryAddGeneOntologyLinkage(EnsPDatabaseEntry dbe,
+AjBool ensDatabaseentryAddGeneontologylinkage(EnsPDatabaseentry dbe,
                                               AjPStr linkagetype,
-                                              EnsPDatabaseEntry source);
+                                              EnsPDatabaseentry source);
 
-const AjPList ensDatabaseEntryGetGeneOntologyLinkages(EnsPDatabaseEntry dbe);
+const AjPList ensDatabaseentryGetGeneontologylinkages(const EnsPDatabaseentry dbe);
 
-AjBool ensDatabaseEntryGetAllLinkageTypes(EnsPDatabaseEntry dbe, AjPList types);
+AjBool ensDatabaseentryGetAllLinkageTypes(const EnsPDatabaseentry dbe, AjPList types);
 
-AjBool EnsDatabaseEntryClearGeneOntologyLinkageTypes(EnsPDatabaseEntry dbe);
+AjBool EnsDatabaseentryClearGeneontologylinkageTypes(EnsPDatabaseentry dbe);
 
 /* Ensembl Database Entry Adaptor */
 
-EnsPDatabaseEntryadaptor ensDatabaseEntryadaptorNew(EnsPDatabaseadaptor dba);
+EnsPDatabaseentryadaptor ensDatabaseentryadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensDatabaseEntryadaptorDel(EnsPDatabaseEntryadaptor *Pdbea);
+void ensDatabaseentryadaptorDel(EnsPDatabaseentryadaptor *Pdbea);
 
-EnsPDatabaseadaptor ensDatabaseEntryadaptorGetDatabaseadaptor(
-    const EnsPDatabaseEntryadaptor dbea);
+EnsPDatabaseadaptor ensDatabaseentryadaptorGetDatabaseadaptor(
+    const EnsPDatabaseentryadaptor dbea);
 
-AjBool ensDatabaseEntryadaptorFetchByIdentifier(EnsPDatabaseEntryadaptor dbea,
+AjBool ensDatabaseentryadaptorFetchByIdentifier(EnsPDatabaseentryadaptor dbea,
                                                 ajuint identifier,
-                                                EnsPDatabaseEntry *Pdbe);
+                                                EnsPDatabaseentry *Pdbe);
 
-AjBool ensDatabaseEntryadaptorFetchByDbNameAccession(
-    EnsPDatabaseEntryadaptor dbea,
+AjBool ensDatabaseentryadaptorFetchByDbNameAccession(
+    EnsPDatabaseentryadaptor dbea,
     const AjPStr dbname,
     const AjPStr accession,
-    EnsPDatabaseEntry *Pdbe);
+    EnsPDatabaseentry *Pdbe);
 
-AjBool ensDatabaseEntryadaptorFetchAllByObjectType(
-    EnsPDatabaseEntryadaptor dbea,
+AjBool ensDatabaseentryadaptorFetchAllByObjectType(
+    EnsPDatabaseentryadaptor dbea,
     ajuint objid,
     AjPStr objtype,
     AjPStr dbname,
     AjEnum dbtype,
     AjPList dbes);
 
-AjBool ensDatabaseEntryadaptorFetchAllGeneIdentifiersByExternalName(
-    EnsPDatabaseEntryadaptor dbea,
+AjBool ensDatabaseentryadaptorFetchAllGeneIdentifiersByExternalName(
+    EnsPDatabaseentryadaptor dbea,
     AjPStr name,
     AjPStr dbname,
     AjPList idlist);
 
-AjBool ensDatabaseEntryadaptorFetchAllTranscriptIdentifiersByExternalName(
-    EnsPDatabaseEntryadaptor dbea,
+AjBool ensDatabaseentryadaptorFetchAllTranscriptIdentifiersByExternalName(
+    EnsPDatabaseentryadaptor dbea,
     AjPStr name,
     AjPStr dbname,
     AjPList idlist);
 
-AjBool ensDatabaseEntryadaptorFetchAllTranslationIdentifiersByExternalName(
-    EnsPDatabaseEntryadaptor dbea,
+AjBool ensDatabaseentryadaptorFetchAllTranslationIdentifiersByExternalName(
+    EnsPDatabaseentryadaptor dbea,
     AjPStr name,
     AjPStr dbname,
     AjPList idlist);
 
-AjBool ensDatabaseEntryadaptorFetchAllGeneIdentifiersByExternalDatabaseName(
-    EnsPDatabaseEntryadaptor dbea,
+AjBool ensDatabaseentryadaptorFetchAllGeneIdentifiersByExternaldatabaseName(
+    EnsPDatabaseentryadaptor dbea,
     AjPStr dbname,
     AjPList idlist);
 

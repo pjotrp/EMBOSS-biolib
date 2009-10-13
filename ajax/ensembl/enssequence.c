@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -46,11 +46,11 @@
 extern EnsPSliceadaptor
 ensRegistryGetSliceadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPCoordSystemadaptor
-ensRegistryGetCoordSystemadaptor(EnsPDatabaseadaptor dba);
+extern EnsPCoordsystemadaptor
+ensRegistryGetCoordsystemadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPSeqRegionadaptor
-ensRegistryGetSeqRegionadaptor(EnsPDatabaseadaptor dba);
+extern EnsPSeqregionadaptor
+ensRegistryGetSeqregionadaptor(EnsPDatabaseadaptor dba);
 
 static void* sequenceAdaptorCacheReference(void *value);
 
@@ -277,7 +277,7 @@ EnsPSequenceadaptor ensSequenceadaptorNew(EnsPDatabaseadaptor dba)
 **
 ** Default destructor for an Ensembl Sequence Adaptor.
 **
-** @param [d] Psa [EnsPSequenceadaptor] Ensembl Sequence Adaptor address
+** @param [d] Psa [EnsPSequenceadaptor*] Ensembl Sequence Adaptor address
 **
 ** @return [void]
 ** @@
@@ -324,11 +324,11 @@ void ensSequenceadaptorDel(EnsPSequenceadaptor *Psa)
 ** @nam3rule Fetch Retrieve Sequence object(s)
 ** @nam4rule FetchStr Fetch a Sequence as AJAX String
 ** @nam4rule FetchSeq Fetch a Sequence as AJAX Sequence
-** @nam5rule BySeqRegion Fetch Sequence via an Ensembl Sequence Region
+** @nam5rule BySeqregion Fetch Sequence via an Ensembl Sequence Region
 ** @nam5rule BySlice Fetch Sequence via an Ensembl Slice
 **
 ** @argrule * sa [const EnsPSequenceadaptor] Ensembl Sequence Adaptor
-** @argrule BySeqRegion sr [EnsPSeqRegion] Ensembl Sequence Region
+** @argrule BySeqregion sr [EnsPSeqregion] Ensembl Sequence Region
 ** @argrule BySlice slice [EnsPSlice] Ensembl Slice
 **
 ** @valrule FetchStr Psequence [AjPStr*] AJAX String address
@@ -340,13 +340,13 @@ void ensSequenceadaptorDel(EnsPSequenceadaptor *Psa)
 
 
 
-/* @func ensSequenceadaptorFetchSubStrBySeqRegion *****************************
+/* @func ensSequenceadaptorFetchSubStrBySeqregion *****************************
 **
 ** Fetch a sub-sequence of an Ensembl Sequence Region as an AJAX String.
 **
 ** @cc Bio::EnsEMBL::DBSQL::Sequenceadaptor::_fetch_seq
-** @param [r] sa [EnsPSequenceadaptor] Ensembl Sequence Adaptor
-** @param [r] sr [EnsPSeqRegion] Ensembl Sequence Region
+** @param [r] sa [const EnsPSequenceadaptor] Ensembl Sequence Adaptor
+** @param [r] sr [EnsPSeqregion] Ensembl Sequence Region
 ** @param [r] start [ajuint] Start coordinate
 ** @param [r] length [ajuint] Sequence length
 ** @param [u] Psequence [AjPStr*] Sequence address
@@ -362,8 +362,8 @@ void ensSequenceadaptorDel(EnsPSequenceadaptor *Psa)
 ** further details.
 ******************************************************************************/
 
-AjBool ensSequenceadaptorFetchSubStrBySeqRegion(EnsPSequenceadaptor sa,
-                                                EnsPSeqRegion sr,
+AjBool ensSequenceadaptorFetchSubStrBySeqregion(const EnsPSequenceadaptor sa,
+                                                EnsPSeqregion sr,
                                                 ajuint start,
                                                 ajuint length,
                                                 AjPStr *Psequence)
@@ -385,7 +385,7 @@ AjBool ensSequenceadaptorFetchSubStrBySeqRegion(EnsPSequenceadaptor sa,
     AjPStr statement = NULL;
     
     /*
-     ajDebug("ensSequenceadaptorFetchSubStrBySeqRegion\n"
+     ajDebug("ensSequenceadaptorFetchSubStrBySeqregion\n"
 	     "  sa %p\n"
 	     "  sr %p\n"
 	     "  start %d\n"
@@ -395,7 +395,7 @@ AjBool ensSequenceadaptorFetchSubStrBySeqRegion(EnsPSequenceadaptor sa,
 	     start,
 	     length);
      
-     ensSeqRegionTrace(sr, 1);
+     ensSeqregionTrace(sr, 1);
      */
     
     if(!sa)
@@ -408,7 +408,7 @@ AjBool ensSequenceadaptorFetchSubStrBySeqRegion(EnsPSequenceadaptor sa,
 	start = 1;
     
     if(!length)
-	length = (ajuint) ensSeqRegionGetLength(sr);
+	length = (ajuint) ensSeqregionGetLength(sr);
     
     /*
     ** FIXME: Should we re-adjust the length to the Sequence Region length
@@ -416,13 +416,13 @@ AjBool ensSequenceadaptorFetchSubStrBySeqRegion(EnsPSequenceadaptor sa,
     ** The SQL substring function would not return more than it has available.
     */
     
-    if(length > (ajuint) ensSeqRegionGetLength(sr))
+    if(length > (ajuint) ensSeqregionGetLength(sr))
     {
-	ajWarn("ensSequenceadaptorFetchStrBySubSeqRegion got length %u "
+	ajWarn("ensSequenceadaptorFetchStrBySubSeqregion got length %u "
 	       "exceeding Sequence Region length %d.\n",
-	       length, ensSeqRegionGetLength(sr));
+	       length, ensSeqregionGetLength(sr));
 	
-	length = (ajuint) ensSeqRegionGetLength(sr);
+	length = (ajuint) ensSeqregionGetLength(sr);
     }
     
     /*
@@ -458,7 +458,7 @@ AjBool ensSequenceadaptorFetchSubStrBySeqRegion(EnsPSequenceadaptor sa,
 	
 	for(i = chkmin; i <= chkmax; i++)
 	{
-	    key = ajFmtStr("%u:%u", ensSeqRegionGetIdentifier(sr), i);
+	    key = ajFmtStr("%u:%u", ensSeqregionGetIdentifier(sr), i);
 	    
 	    chkstr = (AjPStr) ensCacheFetch(sa->Cache, (void *) key);
 	    
@@ -482,7 +482,7 @@ AjBool ensSequenceadaptorFetchSubStrBySeqRegion(EnsPSequenceadaptor sa,
 				     "dna.seq_region_id = %u",
 				     posmin,
 				     1 << sequenceChunkPower,
-				     ensSeqRegionGetIdentifier(sr));
+				     ensSeqregionGetIdentifier(sr));
 		
 		sqls = ensDatabaseadaptorSqlstatementNew(sa->Adaptor,
 							 statement);
@@ -551,7 +551,7 @@ AjBool ensSequenceadaptorFetchSubStrBySeqRegion(EnsPSequenceadaptor sa,
 			     "dna.seq_region_id = %u",
 			     start,
 			     length,
-			     ensSeqRegionGetIdentifier(sr));
+			     ensSeqregionGetIdentifier(sr));
 	
 	sqls = ensDatabaseadaptorSqlstatementNew(sa->Adaptor, statement);
 	
@@ -595,15 +595,13 @@ AjBool ensSequenceadaptorFetchSubStrBySeqRegion(EnsPSequenceadaptor sa,
 
 
 
-/* @func ensSequenceadaptorFetchStrBySeqRegion ********************************
+/* @func ensSequenceadaptorFetchStrBySeqregion ********************************
 **
 ** Fetch the sequence of an Ensembl Sequence Region as an AJAX String.
 **
 ** @cc Bio::EnsEMBL::DBSQL::Sequenceadaptor::_fetch_seq
-** @param [r] sa [EnsPSequenceadaptor] Ensembl Sequence Adaptor
-** @param [r] sr [EnsPSeqRegion] Ensembl Sequence Region
-** @param [r] start [ajuint] Start coordinate
-** @param [r] length [ajuint] Sequence length
+** @param [r] sa [const EnsPSequenceadaptor] Ensembl Sequence Adaptor
+** @param [r] sr [EnsPSeqregion] Ensembl Sequence Region
 ** @param [u] Psequence [AjPStr*] Sequence address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -617,8 +615,8 @@ AjBool ensSequenceadaptorFetchSubStrBySeqRegion(EnsPSequenceadaptor sa,
 ** further details.
 ******************************************************************************/
 
-AjBool ensSequenceadaptorFetchStrBySeqRegion(EnsPSequenceadaptor sa,
-                                             EnsPSeqRegion sr,
+AjBool ensSequenceadaptorFetchStrBySeqregion(const EnsPSequenceadaptor sa,
+                                             EnsPSeqregion sr,
                                              AjPStr *Psequence)
 {
     if(!sa)
@@ -630,23 +628,23 @@ AjBool ensSequenceadaptorFetchStrBySeqRegion(EnsPSequenceadaptor sa,
     if(!Psequence)
 	return ajFalse;
     
-    return ensSequenceadaptorFetchSubStrBySeqRegion(
+    return ensSequenceadaptorFetchSubStrBySeqregion(
         sa,
         sr,
         1,
-        (ajuint) ensSeqRegionGetLength(sr),
+        (ajuint) ensSeqregionGetLength(sr),
         Psequence);
 }
 
 
 
 
-/* @func ensSequenceadaptorFetchSubSeqBySeqRegion *****************************
+/* @func ensSequenceadaptorFetchSubSeqBySeqregion *****************************
 **
 ** Fetch a sub-sequence of an Ensembl Sequence Region as an AJAX Sequence.
 **
-** @param [r] sa [EnsPSequenceadaptor] Ensembl Sequence Adaptor
-** @param [r] sr [EnsPSeqRegion] Ensembl Sequence Region
+** @param [r] sa [const EnsPSequenceadaptor] Ensembl Sequence Adaptor
+** @param [r] sr [EnsPSeqregion] Ensembl Sequence Region
 ** @param [r] start [ajuint] Start coordinate
 ** @param [r] length [ajuint] Sequence length
 ** @param [wP] Psequence [AjPSeq*] AJAX Sequence address
@@ -662,8 +660,8 @@ AjBool ensSequenceadaptorFetchStrBySeqRegion(EnsPSequenceadaptor sa,
 ** further details.
 ******************************************************************************/
 
-AjBool ensSequenceadaptorFetchSubSeqBySeqRegion(EnsPSequenceadaptor sa,
-                                                EnsPSeqRegion sr,
+AjBool ensSequenceadaptorFetchSubSeqBySeqregion(const EnsPSequenceadaptor sa,
+                                                EnsPSeqregion sr,
                                                 ajuint start,
                                                 ajuint length,
                                                 AjPSeq *Psequence)
@@ -672,7 +670,7 @@ AjBool ensSequenceadaptorFetchSubSeqBySeqRegion(EnsPSequenceadaptor sa,
     AjPStr sequence = NULL;
     
     /*
-     ajDebug("ensSequenceadaptorFetchSubSeqBySeqRegion\n"
+     ajDebug("ensSequenceadaptorFetchSubSeqBySeqregion\n"
 	     "  sa %p\n"
 	     "  sr %p\n"
 	     "  start %u\n"
@@ -684,7 +682,7 @@ AjBool ensSequenceadaptorFetchSubSeqBySeqRegion(EnsPSequenceadaptor sa,
 	     length,
 	     Psequence);
      
-     ensSeqRegionTrace(sr, 1);
+     ensSeqregionTrace(sr, 1);
      */
     
     if(!sa)
@@ -699,22 +697,22 @@ AjBool ensSequenceadaptorFetchSubSeqBySeqRegion(EnsPSequenceadaptor sa,
 	start = 1;
     
     if(!length)
-	length = (ajuint) ensSeqRegionGetLength(sr);
+	length = (ajuint) ensSeqregionGetLength(sr);
     
-    if(length > (ajuint) ensSeqRegionGetLength(sr))
-	length = (ajuint) ensSeqRegionGetLength(sr);
+    if(length > (ajuint) ensSeqregionGetLength(sr))
+	length = (ajuint) ensSeqregionGetLength(sr);
     
     if(!Psequence)
 	return ajFalse;
     
     name = ajFmtStr("%S:%S:%S:%u:%u:1",
-		    ensCoordSystemGetName(ensSeqRegionGetCoordSystem(sr)),
-		    ensCoordSystemGetVersion(ensSeqRegionGetCoordSystem(sr)),
-		    ensSeqRegionGetName(sr),
+		    ensCoordsystemGetName(ensSeqregionGetCoordsystem(sr)),
+		    ensCoordsystemGetVersion(ensSeqregionGetCoordsystem(sr)),
+		    ensSeqregionGetName(sr),
 		    start,
 		    start + length - 1);
     
-    ensSequenceadaptorFetchSubStrBySeqRegion(sa, sr, start, length, &sequence);
+    ensSequenceadaptorFetchSubStrBySeqregion(sa, sr, start, length, &sequence);
     
     *Psequence = ajSeqNewNameS(sequence, name);
     
@@ -727,12 +725,12 @@ AjBool ensSequenceadaptorFetchSubSeqBySeqRegion(EnsPSequenceadaptor sa,
 
 
 
-/* @func ensSequenceadaptorFetchSeqBySeqRegion ********************************
+/* @func ensSequenceadaptorFetchSeqBySeqregion ********************************
 **
 ** Fetch the sequence of an Ensembl Sequence Region as an AJAX Sequence.
 **
-** @param [r] sa [EnsPSequenceadaptor] Ensembl Sequence Adaptor
-** @param [r] sr [EnsPSeqRegion] Ensembl Sequence Region
+** @param [r] sa [const EnsPSequenceadaptor] Ensembl Sequence Adaptor
+** @param [r] sr [EnsPSeqregion] Ensembl Sequence Region
 ** @param [wP] Psequence [AjPSeq*] AJAX Sequence address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -746,8 +744,8 @@ AjBool ensSequenceadaptorFetchSubSeqBySeqRegion(EnsPSequenceadaptor sa,
 ** further details.
 ******************************************************************************/
 
-AjBool ensSequenceadaptorFetchSeqBySeqRegion(EnsPSequenceadaptor sa,
-                                             EnsPSeqRegion sr,
+AjBool ensSequenceadaptorFetchSeqBySeqregion(const EnsPSequenceadaptor sa,
+                                             EnsPSeqregion sr,
                                              AjPSeq *Psequence)
 {
     if(!sa)
@@ -759,11 +757,11 @@ AjBool ensSequenceadaptorFetchSeqBySeqRegion(EnsPSequenceadaptor sa,
     if(!Psequence)
 	return ajFalse;
     
-    return ensSequenceadaptorFetchSubSeqBySeqRegion(
+    return ensSequenceadaptorFetchSubSeqBySeqregion(
         sa,
         sr,
         1,
-        (ajuint) ensSeqRegionGetLength(sr),
+        (ajuint) ensSeqregionGetLength(sr),
         Psequence);
 }
 
@@ -776,7 +774,7 @@ AjBool ensSequenceadaptorFetchSeqBySeqRegion(EnsPSequenceadaptor sa,
 ** in relative coordinates.
 **
 ** @cc Bio::EnsEMBL::DBSQL::Sequenceadaptor::fetch_by_Slice_start_end_strand
-** @param [r] sa [EnsPSequenceadaptor] Ensembl Sequence Adaptor
+** @param [r] sa [const EnsPSequenceadaptor] Ensembl Sequence Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [r] start [ajint] Start coordinate
 ** @param [r] end [ajint] End coordinate
@@ -787,7 +785,7 @@ AjBool ensSequenceadaptorFetchSeqBySeqRegion(EnsPSequenceadaptor sa,
 ** @@
 ******************************************************************************/
 
-AjBool ensSequenceadaptorFetchSubStrBySlice(EnsPSequenceadaptor sa,
+AjBool ensSequenceadaptorFetchSubStrBySlice(const EnsPSequenceadaptor sa,
                                             EnsPSlice slice,
                                             ajint start,
                                             ajint end,
@@ -810,12 +808,12 @@ AjBool ensSequenceadaptorFetchSubStrBySlice(EnsPSequenceadaptor sa,
     
     AjPStr tmpstr = NULL;
     
-    EnsPCoordSystem seqlvlcs   = NULL;
-    EnsPCoordSystemadaptor csa = NULL;
+    EnsPCoordsystem seqlvlcs   = NULL;
+    EnsPCoordsystemadaptor csa = NULL;
     
-    EnsPProjectionSegment ps = NULL;
+    EnsPProjectionsegment ps = NULL;
     
-    EnsPSeqRegion sr = NULL;
+    EnsPSeqregion sr = NULL;
     
     EnsPSlice eslice       = NULL;
     EnsPSlice nslice       = NULL;
@@ -932,7 +930,7 @@ AjBool ensSequenceadaptorFetchSubStrBySlice(EnsPSequenceadaptor sa,
     ajListPeekFirst(pslist, (void **) &ps);
     
     if((ajListGetLength(pslist) != 1) ||
-	(!ensSliceMatch(ensProjectionSegmentGetTrgSlice(ps), slice)))
+	(!ensSliceMatch(ensProjectionsegmentGetTrgSlice(ps), slice)))
     {
 	/* FIXME: Could we reserve space with ajStrNewRes here? */
 	
@@ -940,13 +938,13 @@ AjBool ensSequenceadaptorFetchSubStrBySlice(EnsPSequenceadaptor sa,
 	
 	while(ajListPop(pslist, (void **) &ps))
 	{
-	    nslice = ensProjectionSegmentGetTrgSlice(ps);
+	    nslice = ensProjectionsegmentGetTrgSlice(ps);
 	    
 	    ensSequenceadaptorFetchStrBySlice(sa, nslice, &tmpstr);
 	    
 	    ajStrAppendS(Psequence, tmpstr);
 	    
-	    ensProjectionSegmentDel(&ps);
+	    ensProjectionsegmentDel(&ps);
 	}
 	
 	ajStrDel(&tmpstr);
@@ -967,7 +965,7 @@ AjBool ensSequenceadaptorFetchSubStrBySlice(EnsPSequenceadaptor sa,
     */
     
     while(ajListPop(pslist, (void **) &ps))
-	ensProjectionSegmentDel(&ps);
+	ensProjectionsegmentDel(&ps);
     
     /*
     ** Now, we need to project this Slice onto the sequence-level
@@ -976,16 +974,16 @@ AjBool ensSequenceadaptorFetchSubStrBySlice(EnsPSequenceadaptor sa,
     ** the Sequence Region.
     */
     
-    csa = ensRegistryGetCoordSystemadaptor(sa->Adaptor);
+    csa = ensRegistryGetCoordsystemadaptor(sa->Adaptor);
     
-    ensCoordSystemadaptorFetchSeqLevel(csa, &seqlvlcs);
+    ensCoordsystemadaptorFetchSeqLevel(csa, &seqlvlcs);
     
     ensSliceProject(slice,
-		    ensCoordSystemGetName(seqlvlcs),
-		    ensCoordSystemGetVersion(seqlvlcs),
+		    ensCoordsystemGetName(seqlvlcs),
+		    ensCoordsystemGetVersion(seqlvlcs),
 		    pslist);
     
-    ensCoordSystemDel(&seqlvlcs);
+    ensCoordsystemDel(&seqlvlcs);
     
     /*
     ** Fetch the sequence for each of the Sequence Regions projected onto.
@@ -998,7 +996,7 @@ AjBool ensSequenceadaptorFetchSubStrBySlice(EnsPSequenceadaptor sa,
     {
 	/* Check for gaps between Projection Segments and pad them with Ns. */
 	
-	padding = ensProjectionSegmentGetSrcStart(ps) - total - 1;
+	padding = ensProjectionsegmentGetSrcStart(ps) - total - 1;
 	
 	if(padding)
 	{
@@ -1008,19 +1006,19 @@ AjBool ensSequenceadaptorFetchSubStrBySlice(EnsPSequenceadaptor sa,
 	     ajDebug("ensSequenceadaptorFetchStrBySubSlice got total %u and "
 		     "Projection Segment source start %u, "
 		     "therefore added %u N padding between.\n",
-		     total, ensProjectionSegmentGetSrcStart(ps), padding);
+		     total, ensProjectionsegmentGetSrcStart(ps), padding);
 	     */
 	}
 	
-	sslice = ensProjectionSegmentGetTrgSlice(ps);
+	sslice = ensProjectionsegmentGetTrgSlice(ps);
 	
-	sr = ensSliceGetSeqRegion(sslice);
+	sr = ensSliceGetSeqregion(sslice);
 	
 	srstart = ensSliceGetStart(sslice);
 	
 	srlength = ensSliceGetLength(sslice);
 	
-	ensSequenceadaptorFetchSubStrBySeqRegion(sa,
+	ensSequenceadaptorFetchSubStrBySeqregion(sa,
 						 sr,
 						 srstart,
 						 srlength,
@@ -1031,9 +1029,9 @@ AjBool ensSequenceadaptorFetchSubStrBySlice(EnsPSequenceadaptor sa,
 	
 	ajStrAppendS(Psequence, tmpstr);
 	
-	total = ensProjectionSegmentGetSrcEnd(ps);
+	total = ensProjectionsegmentGetSrcEnd(ps);
 	
-	ensProjectionSegmentDel(&ps);
+	ensProjectionsegmentDel(&ps);
     }
     
     ajStrDel(&tmpstr);
@@ -1085,7 +1083,7 @@ AjBool ensSequenceadaptorFetchSubStrBySlice(EnsPSequenceadaptor sa,
 **
 ** Fetch the sequence of an Ensembl Slice as an AJAX String.
 **
-** @param [r] sa [EnsPSequenceadaptor] Ensembl Sequence Adaptor
+** @param [r] sa [const EnsPSequenceadaptor] Ensembl Sequence Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [u] Psequence [AjPStr*] Sequence address
 **
@@ -1093,7 +1091,7 @@ AjBool ensSequenceadaptorFetchSubStrBySlice(EnsPSequenceadaptor sa,
 ** @@
 ******************************************************************************/
 
-AjBool ensSequenceadaptorFetchStrBySlice(EnsPSequenceadaptor sa,
+AjBool ensSequenceadaptorFetchStrBySlice(const EnsPSequenceadaptor sa,
                                          EnsPSlice slice,
                                          AjPStr *Psequence)
 {
@@ -1123,7 +1121,7 @@ AjBool ensSequenceadaptorFetchStrBySlice(EnsPSequenceadaptor sa,
 ** Fetch a sub-sequence of an Ensembl Slice as an AJAX Sequence
 ** in releative coordinates.
 **
-** @param [r] sa [EnsPSequenceadaptor] Ensembl Sequence Adaptor
+** @param [r] sa [const EnsPSequenceadaptor] Ensembl Sequence Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [r] start [ajint] Start coordinate
 ** @param [r] end [ajint] End coordinate
@@ -1134,7 +1132,7 @@ AjBool ensSequenceadaptorFetchStrBySlice(EnsPSequenceadaptor sa,
 ** @@
 ******************************************************************************/
 
-AjBool ensSequenceadaptorFetchSubSeqBySlice(EnsPSequenceadaptor sa,
+AjBool ensSequenceadaptorFetchSubSeqBySlice(const EnsPSequenceadaptor sa,
                                             EnsPSlice slice,
                                             ajint start,
                                             ajint end,
@@ -1180,9 +1178,9 @@ AjBool ensSequenceadaptorFetchSubSeqBySlice(EnsPSequenceadaptor sa,
     }
     
     name = ajFmtStr("%S:%S:%S:%d:%d:%d",
-		    ensSliceGetCoordSystemName(slice),
-		    ensSliceGetCoordSystemVersion(slice),
-		    ensSliceGetSeqRegionName(slice),
+		    ensSliceGetCoordsystemName(slice),
+		    ensSliceGetCoordsystemVersion(slice),
+		    ensSliceGetSeqregionName(slice),
 		    srstart,
 		    srend,
 		    srstrand);
@@ -1209,7 +1207,7 @@ AjBool ensSequenceadaptorFetchSubSeqBySlice(EnsPSequenceadaptor sa,
 **
 ** Fetch the sequence of an Ensembl Slice as an AJAX Sequence.
 **
-** @param [r] sa [EnsPSequenceadaptor] Ensembl Sequence Adaptor
+** @param [r] sa [const EnsPSequenceadaptor] Ensembl Sequence Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [wP] Psequence [AjPSeq*] AJAX Sequence address
 **
@@ -1217,7 +1215,7 @@ AjBool ensSequenceadaptorFetchSubSeqBySlice(EnsPSequenceadaptor sa,
 ** @@
 ******************************************************************************/
 
-AjBool ensSequenceadaptorFetchSeqBySlice(EnsPSequenceadaptor sa,
+AjBool ensSequenceadaptorFetchSeqBySlice(const EnsPSequenceadaptor sa,
                                          EnsPSlice slice,
                                          AjPSeq *Psequence)
 {

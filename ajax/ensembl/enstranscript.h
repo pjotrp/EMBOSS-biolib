@@ -20,7 +20,7 @@ extern "C"
 EnsPTranscript ensTranscriptNew(EnsPTranscriptadaptor adaptor,
                                 ajuint identifier,
                                 EnsPFeature feature,
-                                EnsPDatabaseEntry displaydbe,
+                                EnsPDatabaseentry displaydbe,
                                 AjPStr description,
                                 AjPStr biotype,
                                 AjEnum status,
@@ -37,13 +37,13 @@ EnsPTranscript ensTranscriptNewRef(EnsPTranscript transcript);
 
 void ensTranscriptDel(EnsPTranscript* Ptranscript);
 
-EnsPTranscriptadaptor ensTranscriptGetadaptor(const EnsPTranscript transcript);
+EnsPTranscriptadaptor ensTranscriptGetAdaptor(const EnsPTranscript transcript);
 
 ajuint ensTranscriptGetIdentifier(const EnsPTranscript transcript);
 
 EnsPFeature ensTranscriptGetFeature(const EnsPTranscript transcript);
 
-EnsPDatabaseEntry ensTranscriptGetDisplayReference(
+EnsPDatabaseentry ensTranscriptGetDisplayReference(
     const EnsPTranscript transcript);
 
 AjPStr ensTranscriptGetDescription(const EnsPTranscript transcript);
@@ -70,7 +70,7 @@ const AjPList ensTranscriptGetDatabaseEntries(EnsPTranscript transcript);
 
 const AjPList ensTranscriptGetExons(EnsPTranscript transcript);
 
-const AjPList ensTranscriptGetSupportingFeatures(EnsPTranscript transcript);
+const AjPList ensTranscriptGetSupportingfeatures(EnsPTranscript transcript);
 
 const AjPList ensTranscriptGetTranslations(const EnsPTranscript transcript);
 
@@ -86,7 +86,7 @@ ajuint ensTranscriptGetLength(EnsPTranscript transcript);
 
 ajuint ensTranscriptGetMemSize(const EnsPTranscript transcript);
 
-AjBool ensTranscriptSetadaptor(EnsPTranscript transcript,
+AjBool ensTranscriptSetAdaptor(EnsPTranscript transcript,
                                EnsPTranscriptadaptor ta);
 
 AjBool ensTranscriptSetIdentifier(EnsPTranscript transcript, ajuint identifier);
@@ -96,8 +96,8 @@ AjBool ensTranscriptSetFeature(EnsPTranscript transcript, EnsPFeature feature);
 AjBool ensTranscriptAddAttribute(EnsPTranscript transcript,
                                  EnsPAttribute attribute);
 
-AjBool ensTranscriptAddDatabaseEntry(EnsPTranscript transcript,
-                                     EnsPDatabaseEntry dbe);
+AjBool ensTranscriptAddDatabaseentry(EnsPTranscript transcript,
+                                     EnsPDatabaseentry dbe);
 
 AjBool ensTranscriptLinkTranslation(EnsPTranscript transcript,
                                     EnsPTranslation translation);
@@ -224,7 +224,7 @@ AjBool ensTranscriptMapperSlice2Translation(EnsPTranscript transcript,
 
 /* Ensembl Supporting Feature Adaptor */
 
-AjBool ensSupportingFeatureadaptorFetchAllByTranscript(
+AjBool ensSupportingfeatureadaptorFetchAllByTranscript(
     EnsPDatabaseadaptor dba,
     EnsPTranscript transcript,
     AjPList bafs);

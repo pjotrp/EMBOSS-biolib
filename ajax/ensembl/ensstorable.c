@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** Bio::EnsEMBL::Storable CVS Revision: 1.8
@@ -30,6 +30,28 @@
 /* ==================================================================== */
 
 #include "ensstorable.h"
+
+
+/* @filesection ensstorable ***************************************************
+**
+** @nam1rule ens Function belongs to the AJAX Ensembl library
+** @nam2rule Storable Ensembl Storable objects
+**
+******************************************************************************/
+
+/* @datasection [EnsPStorable] Ensembl Storable ********************************
+**
+** Functions for Ensembl Storables
+**
+**
+******************************************************************************/
+
+/* @section functions *********************************************************
+**
+** @fdata [EnsPStorable]
+** @fcategory misc
+**
+******************************************************************************/
 
 
 
@@ -182,7 +204,7 @@ AjEnum ensStorableGetType(const EnsPStorable storable)
 
 
 
-/* @func ensStorableGetadaptor ************************************************
+/* @func ensStorableGetAdaptor ************************************************
 **
 ** Get the Ensembl Object Adaptor element of an Ensembl Storable.
 **
@@ -192,7 +214,7 @@ AjEnum ensStorableGetType(const EnsPStorable storable)
 ** @@
 ******************************************************************************/
 
-void* ensStorableGetadaptor(const EnsPStorable storable)
+void* ensStorableGetAdaptor(const EnsPStorable storable)
 {
     if(!storable)
         return NULL;
@@ -224,7 +246,7 @@ ajuint ensStorableGetIdentifier(const EnsPStorable storable)
 
 
 
-/* @func ensStorableSetadaptor ************************************************
+/* @func ensStorableSetAdaptor ************************************************
 **
 ** Set the Ensembl Object Adaptor element of an Ensembl Storable.
 **
@@ -235,7 +257,7 @@ ajuint ensStorableGetIdentifier(const EnsPStorable storable)
 ** @@
 ******************************************************************************/
 
-AjBool ensStorableSetadaptor(EnsPStorable storable, void* adaptor)
+AjBool ensStorableSetAdaptor(EnsPStorable storable, void* adaptor)
 {
     if(!storable)
         return ajFalse;
@@ -284,14 +306,14 @@ AjBool ensStorableSetIdentifier(EnsPStorable storable, ajuint identifier)
 ** Ensembl Database Connection.
 **
 ** @param [r] storable [const EnsPStorable] Ensembl Storable
-** @param [r] dbc [const EnsPDatabaseConnection] Ensembl Database Connection
+** @param [r] dbc [const EnsPDatabaseconnection] Ensembl Database Connection
 **
 ** @return [AjBool] ajTrue if the Storable is alread stored in the database
 ** @@
 ******************************************************************************/
 
 AjBool ensStorableIsStored(const EnsPStorable storable,
-                           const EnsPDatabaseConnection dbc)
+                           const EnsPDatabaseconnection dbc)
 {
     if(!storable)
         return ajFalse;
@@ -311,9 +333,9 @@ AjBool ensStorableIsStored(const EnsPStorable storable,
     /*
     ** TODO: Compare host, port and dbname of the Database Connection.
     ** How to get at the Database Connection?
-    ** We would need a type-specific GetDatabaseConnection function for each
+    ** We would need a type-specific GetDatabaseconnection function for each
     ** object adaptor, or we use direct object access.
-    ** Objectadaptor->Databaseadaptor->DatabaseConnection
+    ** Objectadaptor->Databaseadaptor->Databaseconnection
     */
     
     return ajFalse;

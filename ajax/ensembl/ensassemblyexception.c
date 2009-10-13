@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** The Ensembl Assembly Exception object has been split out of the
@@ -61,19 +61,19 @@ static const char *assemblyExceptionType[] =
 /* ==================================================================== */
 
 static AjBool assemblyExceptionadaptorFetchAllBySQL(
-    EnsPAssemblyExceptionadaptor adaptor,
+    EnsPAssemblyexceptionadaptor adaptor,
     const AjPStr statement,
     AjPList aes);
 
 static AjBool assemblyExceptionadaptorCacheInit(
-    EnsPAssemblyExceptionadaptor adaptor);
+    EnsPAssemblyexceptionadaptor adaptor);
 
 static void assemblyExceptionadaptorClearIdentifierCache(void **key,
                                                          void **value,
                                                          void *cl);
 
 static AjBool assemblyExceptionadaptorCacheExit(
-    EnsPAssemblyExceptionadaptor adaptor);
+    EnsPAssemblyexceptionadaptor adaptor);
 
 static void assemblyExceptionadaptorFetchAll(const void *key, void **value,
                                              void *cl);
@@ -90,11 +90,11 @@ static void assemblyExceptionadaptorFetchAll(const void *key, void **value,
 
 
 
-/* @datasection [EnsPAssemblyException] Assembly Exception ********************
+/* @datasection [EnsPAssemblyexception] Assembly Exception ********************
 **
 ** Functions for manipulating Ensembl Assembly Exception objects
 **
-** @nam2rule AssemblyException
+** @nam2rule Assemblyexception
 **
 ******************************************************************************/
 
@@ -108,17 +108,17 @@ static void assemblyExceptionadaptorFetchAll(const void *key, void **value,
 ** Assembly Exception. The target pointer does not need to be initialised to
 ** NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPAssemblyException]
+** @fdata [EnsPAssemblyexception]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPAssemblyException] Ensembl Assembly Exception
-** @argrule Ref object [EnsPAssemblyException] Ensembl Assembly Exception
+** @argrule Obj object [EnsPAssemblyexception] Ensembl Assembly Exception
+** @argrule Ref object [EnsPAssemblyexception] Ensembl Assembly Exception
 **
-** @valrule * [EnsPAssemblyException] Ensembl Assembly Exception
+** @valrule * [EnsPAssemblyexception] Ensembl Assembly Exception
 **
 ** @fcategory new
 ******************************************************************************/
@@ -126,11 +126,11 @@ static void assemblyExceptionadaptorFetchAll(const void *key, void **value,
 
 
 
-/* @func ensAssemblyExceptionNew **********************************************
+/* @func ensAssemblyexceptionNew **********************************************
 **
 ** Default constructor for an Ensembl Assembly Exception.
 **
-** @param [r] adaptor [EnsPAssemblyExceptionadaptor] Ensembl Assembly
+** @param [r] adaptor [EnsPAssemblyexceptionadaptor] Ensembl Assembly
 **                                                   Exception Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @param [r] srid [ajuint] Reference Ensembl Sequence Region identifier
@@ -142,12 +142,12 @@ static void assemblyExceptionadaptorFetchAll(const void *key, void **value,
 ** @param [r] ori [ajint] Orientation
 ** @param [r] type [AjEnum] Type
 **
-** @return [EnsPAssemblyException] Ensembl Assembl Exception or NULL
+** @return [EnsPAssemblyexception] Ensembl Assembl Exception or NULL
 ** @@
 ******************************************************************************/
 
-EnsPAssemblyException ensAssemblyExceptionNew(
-    EnsPAssemblyExceptionadaptor adaptor,
+EnsPAssemblyexception ensAssemblyexceptionNew(
+    EnsPAssemblyexceptionadaptor adaptor,
     ajuint identifier,
     ajuint srid,
     ajuint srstart,
@@ -158,7 +158,7 @@ EnsPAssemblyException ensAssemblyExceptionNew(
     ajint ori,
     AjEnum type)
 {
-    EnsPAssemblyException ae = NULL;
+    EnsPAssemblyexception ae = NULL;
     
     if(!srid)
 	return NULL;
@@ -172,9 +172,9 @@ EnsPAssemblyException ensAssemblyExceptionNew(
     
     ae->Identifier          = identifier;
     ae->Adaptor             = adaptor;
-    ae->SeqRegionIdentifier = srid;
-    ae->SeqRegionStart      = srstart;
-    ae->SeqRegionEnd        = srend;
+    ae->SeqregionIdentifier = srid;
+    ae->SeqregionStart      = srstart;
+    ae->SeqregionEnd        = srend;
     ae->ExcRegionIdentifier = erid;
     ae->ExcRegionStart      = erstart;
     ae->ExcRegionEnd        = erend;
@@ -187,20 +187,20 @@ EnsPAssemblyException ensAssemblyExceptionNew(
 
 
 
-/* @func ensAssemblyExceptionNewObj *******************************************
+/* @func ensAssemblyexceptionNewObj *******************************************
 **
 ** Object-based constructor function, which returns an independent object.
 **
-** @param [r] object [const EnsPAssemblyException] Ensembl Assembly Exception
+** @param [r] object [const EnsPAssemblyexception] Ensembl Assembly Exception
 **
 ** @return [EnsPAssembly] Ensembl Assembly Exception or NULL
 ** @@
 ******************************************************************************/
 
-EnsPAssemblyException ensAssemblyExceptionNewObj(
-    const EnsPAssemblyException object)
+EnsPAssemblyexception ensAssemblyexceptionNewObj(
+    const EnsPAssemblyexception object)
 {
-    EnsPAssemblyException ae = NULL;
+    EnsPAssemblyexception ae = NULL;
     
     if(!object)
 	return NULL;
@@ -211,9 +211,9 @@ EnsPAssemblyException ensAssemblyExceptionNewObj(
     
     ae->Identifier          = object->Identifier;
     ae->Adaptor             = object->Adaptor;
-    ae->SeqRegionIdentifier = object->SeqRegionIdentifier;
-    ae->SeqRegionStart      = object->SeqRegionStart;
-    ae->SeqRegionEnd        = object->SeqRegionEnd;
+    ae->SeqregionIdentifier = object->SeqregionIdentifier;
+    ae->SeqregionStart      = object->SeqregionStart;
+    ae->SeqregionEnd        = object->SeqregionEnd;
     ae->ExcRegionIdentifier = object->ExcRegionIdentifier;
     ae->ExcRegionStart      = object->ExcRegionStart;
     ae->ExcRegionEnd        = object->ExcRegionEnd;
@@ -226,18 +226,18 @@ EnsPAssemblyException ensAssemblyExceptionNewObj(
 
 
 
-/* @func ensAssemblyExceptionNewRef *******************************************
+/* @func ensAssemblyexceptionNewRef *******************************************
 **
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] ae [EnsPAssemblyException] Ensembl Assembly Exception
+** @param [u] ae [EnsPAssemblyexception] Ensembl Assembly Exception
 **
-** @return [EnsPAssemblyException] Ensembl Assembly Exception or NULL
+** @return [EnsPAssemblyexception] Ensembl Assembly Exception or NULL
 ** @@
 ******************************************************************************/
 
-EnsPAssemblyException ensAssemblyExceptionNewRef(EnsPAssemblyException ae)
+EnsPAssemblyexception ensAssemblyexceptionNewRef(EnsPAssemblyexception ae)
 {
     if(!ae)
 	return NULL;
@@ -255,12 +255,12 @@ EnsPAssemblyException ensAssemblyExceptionNewRef(EnsPAssemblyException ae)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Assembly Exception.
 **
-** @fdata [EnsPAssemblyException]
+** @fdata [EnsPAssemblyexception]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) an Assembly Exception object
 **
-** @argrule * Pae [EnsPAssemblyException*] Ensembl Assembly Exception object
+** @argrule * Pae [EnsPAssemblyexception*] Ensembl Assembly Exception object
 **                                         address
 **
 ** @valrule * [void]
@@ -271,19 +271,19 @@ EnsPAssemblyException ensAssemblyExceptionNewRef(EnsPAssemblyException ae)
 
 
 
-/* @func ensAssemblyExceptionDel **********************************************
+/* @func ensAssemblyexceptionDel **********************************************
 **
 ** Default Ensembl Assembly Exception destructor.
 **
-** @param [d] Pae [EnsPAssemblyException*] Ensembl Assembly Exception address
+** @param [d] Pae [EnsPAssemblyexception*] Ensembl Assembly Exception address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensAssemblyExceptionDel(EnsPAssemblyException* Pae)
+void ensAssemblyexceptionDel(EnsPAssemblyexception* Pae)
 {
-    EnsPAssemblyException pthis = NULL;
+    EnsPAssemblyexception pthis = NULL;
     
     if(!Pae)
 	return;
@@ -314,16 +314,16 @@ void ensAssemblyExceptionDel(EnsPAssemblyException* Pae)
 **
 ** Functions for returning elements of an Ensembl Assembly Exception object.
 **
-** @fdata [EnsPAssemblyException]
+** @fdata [EnsPAssemblyexception]
 ** @fnote None
 **
 ** @nam3rule Get Return Assembly Exception attribute(s)
-** @nam4rule Getadaptor Return the Ensembl Assembly Excepton Adaptor
+** @nam4rule GetAdaptor Return the Ensembl Assembly Excepton Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
-** @nam4rule GetSeqRegion Return reference Ensembl Sequence Region attribute(s)
-** @nam5rule GetSeqRegionIdentfier Return the identifier
-** @nam5rule GetSeqRegionStart Return the start
-** @nam5rule GetSeqRegionEnd Return the end
+** @nam4rule GetSeqregion Return reference Ensembl Sequence Region attribute(s)
+** @nam5rule GetSeqregionIdentfier Return the identifier
+** @nam5rule GetSeqregionStart Return the start
+** @nam5rule GetSeqregionEnd Return the end
 ** @nam4rule GetExcRegion Return exception Ensembl Sequence Region attribute(s)
 ** @nam5rule GetExcRegionIdentifier Return the identifier
 ** @nam5rule GetExcRegionStart Return the start
@@ -331,14 +331,14 @@ void ensAssemblyExceptionDel(EnsPAssemblyException* Pae)
 ** @nam4rule GetOrientation Return the orientation
 ** @nam4rule GetType Return the type
 **
-** @argrule * ae [const EnsPAssemblyException] Ensembl Assembly Exception
+** @argrule * ae [const EnsPAssemblyexception] Ensembl Assembly Exception
 **
-** @valrule Adaptor [EnsPAssemblyExceptionadaptor] Ensembl Assembly Exception
+** @valrule Adaptor [EnsPAssemblyexceptionadaptor] Ensembl Assembly Exception
 **                                                 Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
-** @valrule SeqRegionIdentfier [ajuint] Reference Sequence Region identifier
-** @valrule SeqRegionStart [ajuint] Reference Sequence Region start
-** @valrule SeqRegionEnd [ajuint] Reference Sequence Region end
+** @valrule SeqregionIdentfier [ajuint] Reference Sequence Region identifier
+** @valrule SeqregionStart [ajuint] Reference Sequence Region start
+** @valrule SeqregionEnd [ajuint] Reference Sequence Region end
 ** @valrule ExcRegionIdentifier [ajuint] Exception Sequence Region identifier
 ** @valrule ExcRegionStart [ajuint] Exception Sequence Region start
 ** @valrule ExcRegionEnd [ajuint] Exception Sequence Region end
@@ -351,19 +351,19 @@ void ensAssemblyExceptionDel(EnsPAssemblyException* Pae)
 
 
 
-/* @func ensAssemblyExceptionGetadaptor ***************************************
+/* @func ensAssemblyexceptionGetAdaptor ***************************************
 **
 ** Get the Ensembl Assembly Exception Adaptor element of an
 ** Ensembl Assembly Exception.
 **
-** @param [r] ae [const EnsPAssemblyException] Ensembl Assembly Exception
+** @param [r] ae [const EnsPAssemblyexception] Ensembl Assembly Exception
 **
-** @return [EnsPAssemblyExceptionadaptor] Ensembl Assembly Exception Adaptor
+** @return [EnsPAssemblyexceptionadaptor] Ensembl Assembly Exception Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPAssemblyExceptionadaptor ensAssemblyExceptionGetadaptor(
-    const EnsPAssemblyException ae)
+EnsPAssemblyexceptionadaptor ensAssemblyexceptionGetAdaptor(
+    const EnsPAssemblyexception ae)
 {
     if(!ae)
 	return 0;
@@ -374,18 +374,18 @@ EnsPAssemblyExceptionadaptor ensAssemblyExceptionGetadaptor(
 
 
 
-/* @func ensAssemblyExceptionGetIdentifier ************************************
+/* @func ensAssemblyexceptionGetIdentifier ************************************
 **
 ** Get the SQL database-internal identifier element of an
 ** Ensembl Assembly Exception.
 **
-** @param [r] ae [const EnsPAssemblyException] Ensembl Assembly Exception
+** @param [r] ae [const EnsPAssemblyexception] Ensembl Assembly Exception
 **
 ** @return [ajuint] Internal database identifier
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyExceptionGetIdentifier(const EnsPAssemblyException ae)
+ajuint ensAssemblyexceptionGetIdentifier(const EnsPAssemblyexception ae)
 {
     if(!ae)
 	return 0;
@@ -396,86 +396,86 @@ ajuint ensAssemblyExceptionGetIdentifier(const EnsPAssemblyException ae)
 
 
 
-/* @func ensAssemblyExceptionGetSeqRegionIdentfier ****************************
+/* @func ensAssemblyexceptionGetSeqregionIdentfier ****************************
 **
 ** Get the reference Ensembl Sequence Region identifier element of an
 ** Ensembl Assembly Exception.
 **
-** @param [r] ae [const EnsPAssemblyException] Ensembl Assembly Exception
+** @param [r] ae [const EnsPAssemblyexception] Ensembl Assembly Exception
 **
 ** @return [ajuint] Reference Ensembl Sequence Region identifier
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyExceptionGetSeqRegionIdentifier(
-    const EnsPAssemblyException ae)
+ajuint ensAssemblyexceptionGetSeqregionIdentifier(
+    const EnsPAssemblyexception ae)
 {
     if(!ae)
 	return 0;
     
-    return ae->SeqRegionIdentifier;
+    return ae->SeqregionIdentifier;
 }
 
 
 
 
-/* @func ensAssemblyExceptionGetSeqRegionStart ********************************
+/* @func ensAssemblyexceptionGetSeqregionStart ********************************
 **
 ** Get the reference Ensembl Sequence Region start element of an
 ** Ensembl Assembly Exception.
 **
-** @param [r] ae [const EnsPAssemblyException] Ensembl Assembly Exception
+** @param [r] ae [const EnsPAssemblyexception] Ensembl Assembly Exception
 **
 ** @return [ajuint] Reference Ensembl Sequence Region start
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyExceptionGetSeqRegionStart(const EnsPAssemblyException ae)
+ajuint ensAssemblyexceptionGetSeqregionStart(const EnsPAssemblyexception ae)
 {
     if(!ae)
 	return 0;
     
-    return ae->SeqRegionStart;
+    return ae->SeqregionStart;
 }
 
 
 
 
-/* @func ensAssemblyExceptionGetSeqRegionEnd **********************************
+/* @func ensAssemblyexceptionGetSeqregionEnd **********************************
 **
 ** Get the reference Ensembl Sequence Region end element of an
 ** Ensembl Assembly Exception.
 **
-** @param [r] ae [const EnsPAssemblyException] Ensembl Assembly Exception
+** @param [r] ae [const EnsPAssemblyexception] Ensembl Assembly Exception
 **
 ** @return [ajuint] Reference Ensembl Sequence Region end
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyExceptionGetSeqRegionEnd(const EnsPAssemblyException ae)
+ajuint ensAssemblyexceptionGetSeqregionEnd(const EnsPAssemblyexception ae)
 {
     if(!ae)
 	return 0;
     
-    return ae->SeqRegionEnd;
+    return ae->SeqregionEnd;
 }
 
 
 
 
-/* @func ensAssemblyExceptionGetExcRegionIdentifier ***************************
+/* @func ensAssemblyexceptionGetExcRegionIdentifier ***************************
 **
 ** Get the exception Ensembl Sequence Region identifier element of an
 ** Ensembl Assembly Exception.
 **
-** @param [r] ae [const EnsPAssemblyException] Ensembl Assembly Exception
+** @param [r] ae [const EnsPAssemblyexception] Ensembl Assembly Exception
 **
 ** @return [ajuint] Exception Ensembl Sequence Region identifier
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyExceptionGetExcRegionIdentifier(
-    const EnsPAssemblyException ae)
+ajuint ensAssemblyexceptionGetExcRegionIdentifier(
+    const EnsPAssemblyexception ae)
 {
     if(!ae)
 	return 0;
@@ -486,61 +486,61 @@ ajuint ensAssemblyExceptionGetExcRegionIdentifier(
 
 
 
-/* @func ensAssemblyExceptionGetExcRegionStart ********************************
+/* @func ensAssemblyexceptionGetExcRegionStart ********************************
 **
 ** Get the exception Ensembl Sequence Region start element of an
 ** Ensembl Assembly Exception.
 **
-** @param [r] ae [const EnsPAssemblyException] Ensembl Assembly Exception
+** @param [r] ae [const EnsPAssemblyexception] Ensembl Assembly Exception
 **
 ** @return [ajuint] Exception Ensembl Sequence Region start
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyExceptionGetExcRegionStart(const EnsPAssemblyException ae)
+ajuint ensAssemblyexceptionGetExcRegionStart(const EnsPAssemblyexception ae)
 {
     if(!ae)
 	return 0;
     
-    return ae->SeqRegionStart;
+    return ae->SeqregionStart;
 }
 
 
 
 
-/* @func ensAssemblyExceptionGetExcRegionEnd **********************************
+/* @func ensAssemblyexceptionGetExcRegionEnd **********************************
 **
 ** Get the exception Ensembl Sequence Region end element of an
 ** Ensembl Assembly Exception.
 **
-** @param [r] ae [const EnsPAssemblyException] Ensembl Assembly Exception
+** @param [r] ae [const EnsPAssemblyexception] Ensembl Assembly Exception
 **
 ** @return [ajuint] Exception Ensembl Sequence Region end
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyExceptionGetExcRegionEnd(const EnsPAssemblyException ae)
+ajuint ensAssemblyexceptionGetExcRegionEnd(const EnsPAssemblyexception ae)
 {
     if(!ae)
 	return 0;
     
-    return ae->SeqRegionEnd;
+    return ae->SeqregionEnd;
 }
 
 
 
 
-/* @func ensAssemblyExceptionGetOrientation ***********************************
+/* @func ensAssemblyexceptionGetOrientation ***********************************
 **
 ** Get the orientation element of an Ensembl Assembly Exception.
 **
-** @param [r] ae [const EnsPAssemblyException] Ensembl Assembly Exception
+** @param [r] ae [const EnsPAssemblyexception] Ensembl Assembly Exception
 **
 ** @return [ajint] Orientation
 ** @@
 ******************************************************************************/
 
-ajint ensAssemblyExceptionGetOrientation(const EnsPAssemblyException ae)
+ajint ensAssemblyexceptionGetOrientation(const EnsPAssemblyexception ae)
 {
     if(!ae)
 	return 0;
@@ -551,17 +551,17 @@ ajint ensAssemblyExceptionGetOrientation(const EnsPAssemblyException ae)
 
 
 
-/* @func ensAssemblyExceptionGetType ******************************************
+/* @func ensAssemblyexceptionGetType ******************************************
 **
 ** Get the type element of an Ensembl Assembly Exception.
 **
-** @param [r] ae [const EnsPAssemblyException] Ensembl Assembly Exception
+** @param [r] ae [const EnsPAssemblyexception] Ensembl Assembly Exception
 **
 ** @return [AjEnum] Type
 ** @@
 ******************************************************************************/
 
-AjEnum ensAssemblyExceptionGetType(const EnsPAssemblyException ae)
+AjEnum ensAssemblyexceptionGetType(const EnsPAssemblyexception ae)
 {
     if(!ae)
 	return 0;
@@ -576,16 +576,16 @@ AjEnum ensAssemblyExceptionGetType(const EnsPAssemblyException ae)
 **
 ** Functions for assigning elements of an Ensembl Assembly Exception object.
 **
-** @fdata [EnsPAssemblyException]
+** @fdata [EnsPAssemblyexception]
 ** @fnote None
 **
 ** @nam3rule Set Set one element of an Assembly Exception
-** @nam4rule Setadaptor Set the Ensembl Assembly Excepton Adaptor
+** @nam4rule SetAdaptor Set the Ensembl Assembly Excepton Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
-** @nam4rule SetSeqRegion Set reference Ensembl Sequence Region attribute(s)
-** @nam5rule SetSeqRegionIdentfier Set the identifier
-** @nam5rule SetSeqRegionStart Set the start
-** @nam5rule SetSeqRegionEnd Set the end
+** @nam4rule SetSeqregion Set reference Ensembl Sequence Region attribute(s)
+** @nam5rule SetSeqregionIdentfier Set the identifier
+** @nam5rule SetSeqregionStart Set the start
+** @nam5rule SetSeqregionEnd Set the end
 ** @nam4rule SetExcRegion Set exception Ensembl Sequence Region attribute(s)
 ** @nam5rule SetExcRegionIdentifier Set the identifier
 ** @nam5rule SetExcRegionStart Set the start
@@ -593,7 +593,7 @@ AjEnum ensAssemblyExceptionGetType(const EnsPAssemblyException ae)
 ** @nam4rule SetOrientation Set the orientation
 ** @nam4rule SetType Set the type
 **
-** @argrule * ae [EnsPAssemblyException] Assembly Exception
+** @argrule * ae [EnsPAssemblyexception] Assembly Exception
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
@@ -603,21 +603,21 @@ AjEnum ensAssemblyExceptionGetType(const EnsPAssemblyException ae)
 
 
 
-/* @func ensAssemblyExceptionSetadaptor ***************************************
+/* @func ensAssemblyexceptionSetAdaptor ***************************************
 **
 ** Set the Ensembl Assembly Exception Adaptor element of an
 ** Ensembl Assembly Exception.
 **
-** @param [u] ae [EnsPAssemblyException] Ensembl Assembly Exception
-** @param [r] adaptor [EnsPAssemblyExceptionadaptor] Ensembl Assembly
+** @param [u] ae [EnsPAssemblyexception] Ensembl Assembly Exception
+** @param [r] adaptor [EnsPAssemblyexceptionadaptor] Ensembl Assembly
 **                                                   Exception Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionSetadaptor(EnsPAssemblyException ae,
-                                      EnsPAssemblyExceptionadaptor adaptor)
+AjBool ensAssemblyexceptionSetAdaptor(EnsPAssemblyexception ae,
+                                      EnsPAssemblyexceptionadaptor adaptor)
 {
     if(!ae)
         return ajFalse;
@@ -630,18 +630,18 @@ AjBool ensAssemblyExceptionSetadaptor(EnsPAssemblyException ae,
 
 
 
-/* @func ensAssemblyExceptionSetIdentfier *************************************
+/* @func ensAssemblyexceptionSetIdentfier *************************************
 **
 ** Set the SQL database identifier element of an Ensembl Assembly Exception.
 **
-** @param [u] ae [EnsPAssemblyException] Ensembl Assembly Exception
+** @param [u] ae [EnsPAssemblyexception] Ensembl Assembly Exception
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionSetIdentifier(EnsPAssemblyException ae,
+AjBool ensAssemblyexceptionSetIdentifier(EnsPAssemblyexception ae,
                                          ajuint identifier)
 {
     if(!ae)
@@ -655,25 +655,25 @@ AjBool ensAssemblyExceptionSetIdentifier(EnsPAssemblyException ae,
 
 
 
-/* @func ensAssemblyExceptionSetSeqRegionIdentifier ***************************
+/* @func ensAssemblyexceptionSetSeqregionIdentifier ***************************
 **
 ** Set the reference Ensembl Sequence Region identifier element of an
 ** Ensembl Assembly Exception.
 **
-** @param [u] ae [EnsPAssemblyException] Ensembl Assembly Exception
+** @param [u] ae [EnsPAssemblyexception] Ensembl Assembly Exception
 ** @param [r] srid [ajuint] Reference Ensembl Sequence Region identifier
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionSetSeqRegionIdentifier(EnsPAssemblyException ae,
+AjBool ensAssemblyexceptionSetSeqregionIdentifier(EnsPAssemblyexception ae,
                                                   ajuint srid)
 {
     if(!ae)
         return ajFalse;
     
-    ae->SeqRegionIdentifier = srid;
+    ae->SeqregionIdentifier = srid;
     
     return ajTrue;
 }
@@ -681,25 +681,25 @@ AjBool ensAssemblyExceptionSetSeqRegionIdentifier(EnsPAssemblyException ae,
 
 
 
-/* @func ensAssemblyExceptionSetSeqRegionStart ********************************
+/* @func ensAssemblyexceptionSetSeqregionStart ********************************
 **
 ** Set the reference Ensembl Sequence Region start element of an
 ** Ensembl Assembly Exception.
 **
-** @param [u] ae [EnsPAssemblyException] Ensembl Assembly Exception
+** @param [u] ae [EnsPAssemblyexception] Ensembl Assembly Exception
 ** @param [r] srstart [ajuint] Reference Ensembl Sequence Region start
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionSetSeqRegionStart(EnsPAssemblyException ae,
+AjBool ensAssemblyexceptionSetSeqregionStart(EnsPAssemblyexception ae,
                                              ajuint srstart)
 {
     if(!ae)
         return ajFalse;
     
-    ae->SeqRegionStart = srstart;
+    ae->SeqregionStart = srstart;
     
     return ajTrue;
 }
@@ -707,25 +707,25 @@ AjBool ensAssemblyExceptionSetSeqRegionStart(EnsPAssemblyException ae,
 
 
 
-/* @func ensAssemblyExceptionSetSeqRegionEnd **********************************
+/* @func ensAssemblyexceptionSetSeqregionEnd **********************************
 **
 ** Set the reference Ensembl Sequence Region end element of an
 ** Ensembl Assembly Exception.
 **
-** @param [u] ae [EnsPAssemblyException] Ensembl Assembly Exception
+** @param [u] ae [EnsPAssemblyexception] Ensembl Assembly Exception
 ** @param [r] srend [ajuint] Reference Ensembl Sequence Region end
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionSetSeqRegionEnd(EnsPAssemblyException ae,
+AjBool ensAssemblyexceptionSetSeqregionEnd(EnsPAssemblyexception ae,
                                            ajuint srend)
 {
     if(!ae)
         return ajFalse;
     
-    ae->SeqRegionEnd = srend;
+    ae->SeqregionEnd = srend;
     
     return ajTrue;
 }
@@ -733,19 +733,19 @@ AjBool ensAssemblyExceptionSetSeqRegionEnd(EnsPAssemblyException ae,
 
 
 
-/* @func ensAssemblyExceptionSetExcRegionIdentifier ***************************
+/* @func ensAssemblyexceptionSetExcRegionIdentifier ***************************
 **
 ** Set the exception Ensembl Sequence Region identifier element of an
 ** Ensembl Assembly Exception.
 **
-** @param [u] ae [EnsPAssemblyException] Ensembl Assembly Exception
+** @param [u] ae [EnsPAssemblyexception] Ensembl Assembly Exception
 ** @param [r] exid [ajuint] Exception Ensembl Sequence Region identifier
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionSetExcRegionIdentifier(EnsPAssemblyException ae,
+AjBool ensAssemblyexceptionSetExcRegionIdentifier(EnsPAssemblyexception ae,
                                                   ajuint exid)
 {
     if(!ae)
@@ -759,19 +759,19 @@ AjBool ensAssemblyExceptionSetExcRegionIdentifier(EnsPAssemblyException ae,
 
 
 
-/* @func ensAssemblyExceptionSetExcRegionStart ********************************
+/* @func ensAssemblyexceptionSetExcRegionStart ********************************
 **
 ** Set the exception Ensembl Sequence Region start element of an
 ** Ensembl Assembly Exception.
 **
-** @param [u] ae [EnsPAssemblyException] Ensembl Assembly Exception
+** @param [u] ae [EnsPAssemblyexception] Ensembl Assembly Exception
 ** @param [r] exstart [ajuint] Exception Ensembl Sequence Region start
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionSetEcxRegionStart(EnsPAssemblyException ae,
+AjBool ensAssemblyexceptionSetEcxRegionStart(EnsPAssemblyexception ae,
                                              ajuint exstart)
 {
     if(!ae)
@@ -785,19 +785,19 @@ AjBool ensAssemblyExceptionSetEcxRegionStart(EnsPAssemblyException ae,
 
 
 
-/* @func ensAssemblyExceptionSetExcRegionEnd **********************************
+/* @func ensAssemblyexceptionSetExcRegionEnd **********************************
 **
 ** Set the exception Ensembl Sequence Region end element of an
 ** Ensembl Assembly Exception.
 **
-** @param [u] ae [EnsPAssemblyException] Ensembl Assembly Exception
+** @param [u] ae [EnsPAssemblyexception] Ensembl Assembly Exception
 ** @param [r] exend [ajuint] Exception Ensembl Sequence Region end
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionSetExcRegionStart(EnsPAssemblyException ae,
+AjBool ensAssemblyexceptionSetExcRegionStart(EnsPAssemblyexception ae,
                                              ajuint exend)
 {
     if(!ae)
@@ -811,18 +811,18 @@ AjBool ensAssemblyExceptionSetExcRegionStart(EnsPAssemblyException ae,
 
 
 
-/* @func ensAssemblyExceptionSetOrientation ***********************************
+/* @func ensAssemblyexceptionSetOrientation ***********************************
 **
 ** Set the orientation element of an Ensembl Assembly Exception.
 **
-** @param [u] ae [EnsPAssemblyException] Ensembl Assembly Exception
+** @param [u] ae [EnsPAssemblyexception] Ensembl Assembly Exception
 ** @param [r] orientation [ajint] Orientation
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionSetOrientation(EnsPAssemblyException ae,
+AjBool ensAssemblyexceptionSetOrientation(EnsPAssemblyexception ae,
                                           ajint orientation)
 {
     if(!ae)
@@ -836,18 +836,18 @@ AjBool ensAssemblyExceptionSetOrientation(EnsPAssemblyException ae,
 
 
 
-/* @func ensAssemblyExceptionSetType ******************************************
+/* @func ensAssemblyexceptionSetType ******************************************
 **
 ** Set the type element of an Ensembl Assembly Exception.
 **
-** @param [u] ae [EnsPAssemblyException] Ensembl Assembly Exception
+** @param [u] ae [EnsPAssemblyexception] Ensembl Assembly Exception
 ** @param [r] type [AjEnum] Type
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionSetType(EnsPAssemblyException ae, AjEnum type)
+AjBool ensAssemblyexceptionSetType(EnsPAssemblyexception ae, AjEnum type)
 {
     if(!ae)
         return ajFalse;
@@ -864,10 +864,10 @@ AjBool ensAssemblyExceptionSetType(EnsPAssemblyException ae, AjEnum type)
 **
 ** Functions for reporting of an Ensembl Assembly Exception object.
 **
-** @fdata [EnsPAssemblyException]
+** @fdata [EnsPAssemblyexception]
 ** @nam3rule Trace Report Ensembl Assembly Exception elements to debug file
 **
-** @argrule Trace ae [const EnsPAssemblyException] Ensembl Assembly Exception
+** @argrule Trace ae [const EnsPAssemblyexception] Ensembl Assembly Exception
 ** @argrule Trace level [ajuint] Indentation level
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -878,18 +878,18 @@ AjBool ensAssemblyExceptionSetType(EnsPAssemblyException ae, AjEnum type)
 
 
 
-/* @func ensAssemblyExceptionTrace ********************************************
+/* @func ensAssemblyexceptionTrace ********************************************
 **
 ** Trace an Ensembl Assembly Eception.
 **
-** @param [r] ae [const EnsPAssemblyException] Ensembl Assembly Exception
+** @param [r] ae [const EnsPAssemblyexception] Ensembl Assembly Exception
 ** @param [r] level [ajuint] Indentation level
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionTrace(const EnsPAssemblyException ae, ajuint level)
+AjBool ensAssemblyexceptionTrace(const EnsPAssemblyexception ae, ajuint level)
 {
     AjPStr indent = NULL;
     
@@ -900,12 +900,12 @@ AjBool ensAssemblyExceptionTrace(const EnsPAssemblyException ae, ajuint level)
     
     ajStrAppendCountK(&indent, ' ', level * 2);
     
-    ajDebug("%SensAssemblyExceptionTrace %p\n"
+    ajDebug("%SensAssemblyexceptionTrace %p\n"
 	    "%S  Identfier %u\n"
-	    "%S  SeqRegionIdentfier %u\n"
-	    "%S  SeqRegionStart %u\n"
-	    "%S  SeqRegionEnd %u\n"
-	    "%S  ExcSeqRegionIdentifier %u\n"
+	    "%S  SeqregionIdentfier %u\n"
+	    "%S  SeqregionStart %u\n"
+	    "%S  SeqregionEnd %u\n"
+	    "%S  ExcSeqregionIdentifier %u\n"
 	    "%S  ExcRegionStart %d\n"
 	    "%S  ExcRegionEnd %u\n"
 	    "%S  Orientation %d\n"
@@ -913,13 +913,13 @@ AjBool ensAssemblyExceptionTrace(const EnsPAssemblyException ae, ajuint level)
 	    "%S  Use %u\n",
 	    indent, ae,
 	    indent, ae->Identifier,
-	    indent, ae->SeqRegionIdentifier,
-	    indent, ae->SeqRegionStart,
-	    indent, ae->SeqRegionEnd,
+	    indent, ae->SeqregionIdentifier,
+	    indent, ae->SeqregionStart,
+	    indent, ae->SeqregionEnd,
 	    indent, ae->ExcRegionIdentifier,
 	    indent, ae->ExcRegionStart,
 	    indent, ae->ExcRegionEnd,
-	    indent, ensAssemblyExceptionTypeToChar(ae->Type),
+	    indent, ensAssemblyexceptionTypeToChar(ae->Type),
 	    indent, ae->Orientation,
 	    indent, ae->Use);
     
@@ -931,24 +931,24 @@ AjBool ensAssemblyExceptionTrace(const EnsPAssemblyException ae, ajuint level)
 
 
 
-/* @func ensAssemblyExceptionGetMemSize ***************************************
+/* @func ensAssemblyexceptionGetMemSize ***************************************
 **
 ** Get the memory size in bytes of an Ensembl Assembly Exception.
 **
-** @param [r] ae [const EnsPAssemblyException] Ensembl Assembly Exception
+** @param [r] ae [const EnsPAssemblyexception] Ensembl Assembly Exception
 **
 ** @return [ajuint] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyExceptionGetMemSize(const EnsPAssemblyException ae)
+ajuint ensAssemblyexceptionGetMemSize(const EnsPAssemblyexception ae)
 {
     ajuint size = 0;
     
     if(!ae)
 	return 0;
     
-    size += sizeof (EnsOAssemblyException);
+    size += sizeof (EnsOAssemblyexception);
     
     return size;
 }
@@ -956,29 +956,29 @@ ajuint ensAssemblyExceptionGetMemSize(const EnsPAssemblyException ae)
 
 
 
-/* @func ensAssemblyExceptionTypeFromStr **************************************
+/* @func ensAssemblyexceptionTypeFromStr **************************************
 **
 ** Convert an AJAX String into an Ensembl Assembly Exception type element.
 **
 ** @param [r] type [const AjPStr] Type string
 **
 ** @return [AjEnum] Ensembl Assembly Exception type element or
-**                  ensEAssemblyExceptionTypeNULL
+**                  ensEAssemblyexceptionTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensAssemblyExceptionTypeFromStr(const AjPStr type)
+AjEnum ensAssemblyexceptionTypeFromStr(const AjPStr type)
 {
     register ajint i = 0;
     
-    AjEnum etype = ensEAssemblyExceptionTypeNULL;
+    AjEnum etype = ensEAssemblyexceptionTypeNULL;
     
     for (i = 1; assemblyExceptionType[i]; i++)
 	if (ajStrMatchC(type, assemblyExceptionType[i]))
 	    etype = i;
     
     if(!etype)
-	ajDebug("ensAssemblyExceptionTypeFromStr encountered "
+	ajDebug("ensAssemblyexceptionTypeFromStr encountered "
 		"unexpected string '%S'.\n", type);
     
     return etype;
@@ -987,7 +987,7 @@ AjEnum ensAssemblyExceptionTypeFromStr(const AjPStr type)
 
 
 
-/* @func ensAssemblyExceptionTypeToChar ***************************************
+/* @func ensAssemblyexceptionTypeToChar ***************************************
 **
 ** Convert an Ensembl Assembly Exception type element into a
 ** C-type (char*) string.
@@ -998,7 +998,7 @@ AjEnum ensAssemblyExceptionTypeFromStr(const AjPStr type)
 ** @@
 ******************************************************************************/
 
-const char* ensAssemblyExceptionTypeToChar(const AjEnum type)
+const char* ensAssemblyexceptionTypeToChar(const AjEnum type)
 {
     register ajint i = 0;
     
@@ -1008,7 +1008,7 @@ const char* ensAssemblyExceptionTypeToChar(const AjEnum type)
     for(i = 1; assemblyExceptionType[i] && (i < type); i++);
     
     if(!assemblyExceptionType[i])
-	ajDebug("ensAssemblyExceptionTypeToChar encountered an "
+	ajDebug("ensAssemblyexceptionTypeToChar encountered an "
 		"out of boundary error on status %d.\n", type);
     
     return assemblyExceptionType[i];
@@ -1017,13 +1017,13 @@ const char* ensAssemblyExceptionTypeToChar(const AjEnum type)
 
 
 
-/* @datasection [EnsPAssemblyExceptionadaptor] Assembly Exception Adaptor *****
+/* @datasection [EnsPAssemblyexceptionadaptor] Assembly Exception Adaptor *****
 **
 ** Functions for manipulating Ensembl Assembly Exception Adaptor objects
 **
 ** @cc Bio::EsnSEMBL::DBSQL::Sliceadaptor CVS Revision: 1.104
 **
-** @nam2rule AssemblyExceptionadaptor
+** @nam2rule Assemblyexceptionadaptor
 **
 ******************************************************************************/
 
@@ -1036,7 +1036,7 @@ const char* ensAssemblyExceptionTypeToChar(const AjEnum type)
 ** Assembly Exception Adaptor. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPAssemblyExceptionadaptor]
+** @fdata [EnsPAssemblyexceptionadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
@@ -1044,12 +1044,12 @@ const char* ensAssemblyExceptionTypeToChar(const AjEnum type)
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
 ** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPAssemblyExceptionadaptor] Ensembl Assembly
+** @argrule Obj object [EnsPAssemblyexceptionadaptor] Ensembl Assembly
 **                                                    Exception Adaptor
-** @argrule Ref object [EnsPAssemblyExceptionadaptor] Ensembl Assembly
+** @argrule Ref object [EnsPAssemblyexceptionadaptor] Ensembl Assembly
 **                                                    Exception Adaptor
 **
-** @valrule * [EnsPAssemblyExceptionadaptor] Ensembl Assembly Exception Adaptor
+** @valrule * [EnsPAssemblyexceptionadaptor] Ensembl Assembly Exception Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -1063,7 +1063,7 @@ const char* ensAssemblyExceptionTypeToChar(const AjEnum type)
 ** consolidate the results into an AJAX List of Ensembl Assembly Exception
 ** objects.
 **
-** @param [r] adaptor [EnsPAssemblyExceptionadaptor] Ensembl Assembly
+** @param [r] adaptor [EnsPAssemblyexceptionadaptor] Ensembl Assembly
 **                                                   Exception Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
 ** @param [u] aes [AjPList] AJAX List of Ensembl Assembly Exceptions
@@ -1073,7 +1073,7 @@ const char* ensAssemblyExceptionTypeToChar(const AjEnum type)
 ******************************************************************************/
 
 static AjBool assemblyExceptionadaptorFetchAllBySQL(
-    EnsPAssemblyExceptionadaptor adaptor,
+    EnsPAssemblyexceptionadaptor adaptor,
     const AjPStr statement,
     AjPList aes)
 {
@@ -1087,7 +1087,7 @@ static AjBool assemblyExceptionadaptorFetchAllBySQL(
     ajuint erend      = 0;
     ajuint srend      = 0;
     
-    AjEnum type = ensEAssemblyExceptionTypeNULL;
+    AjEnum type = ensEAssemblyexceptionTypeNULL;
     
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;
@@ -1095,7 +1095,7 @@ static AjBool assemblyExceptionadaptorFetchAllBySQL(
     
     AjPStr typestr = NULL;
     
-    EnsPAssemblyException ae = NULL;
+    EnsPAssemblyexception ae = NULL;
     
     if(!adaptor)
 	return ajFalse;
@@ -1122,7 +1122,7 @@ static AjBool assemblyExceptionadaptorFetchAllBySQL(
 	erend      = 0;
 	ori        = 0;
 	
-	type = ensEAssemblyExceptionTypeNULL;
+	type = ensEAssemblyexceptionTypeNULL;
 	
         sqlr = ajSqlrowiterGet(sqli);
 	
@@ -1138,7 +1138,7 @@ static AjBool assemblyExceptionadaptorFetchAllBySQL(
 	
 	/* Set the Assembly Exception type. */
 	
-	type = ensAssemblyExceptionTypeFromStr(typestr);
+	type = ensAssemblyexceptionTypeFromStr(typestr);
 	
 	if(!type)
 	    ajFatal("assemblyExceptionadaptorFetchAllBySQL "
@@ -1146,7 +1146,7 @@ static AjBool assemblyExceptionadaptorFetchAllBySQL(
 		    "from database.\n",
 		    typestr);
 	
-        ae = ensAssemblyExceptionNew(adaptor,
+        ae = ensAssemblyexceptionNew(adaptor,
 				     identifier,
 				     srid,
 				     srstart,
@@ -1177,7 +1177,7 @@ static AjBool assemblyExceptionadaptorFetchAllBySQL(
 ** Initialise the Ensembl Assembly Exception cache in the
 ** Assembly Exception Adaptor.
 **
-** @param [u] adaptor [EnsPAssemblyExceptionadaptor] Ensembl Assembly
+** @param [u] adaptor [EnsPAssemblyexceptionadaptor] Ensembl Assembly
 **                                                   Exception Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -1185,7 +1185,7 @@ static AjBool assemblyExceptionadaptorFetchAllBySQL(
 ******************************************************************************/
 
 static AjBool assemblyExceptionadaptorCacheInit(
-    EnsPAssemblyExceptionadaptor adaptor)
+    EnsPAssemblyexceptionadaptor adaptor)
 {
     ajuint *Pidentifier = NULL;
     
@@ -1194,17 +1194,17 @@ static AjBool assemblyExceptionadaptorCacheInit(
     
     AjPStr statement = NULL;
     
-    EnsPAssemblyException ae = NULL;
+    EnsPAssemblyexception ae = NULL;
     
     if(!adaptor)
         return ajFalse;
     
-    if(adaptor->CacheBySeqRegionIdentifier)
+    if(adaptor->CacheBySeqregionIdentifier)
         return ajTrue;
     
     else
-        adaptor->CacheBySeqRegionIdentifier =
-	    ajTableNewFunctionLen(0, ensTableCmpUInt, ensTableHashUInt);
+        adaptor->CacheBySeqregionIdentifier =
+	    ajTableNewFunctionLen(0, ensTableCmpUint, ensTableHashUint);
     
     statement = ajFmtStr("SELECT "
 			 "assembly_exception.assembly_exception_id, "
@@ -1239,18 +1239,18 @@ static AjBool assemblyExceptionadaptorCacheInit(
     while(ajListPop(aes, (void **) &ae))
     {
         list = (AjPList)
-	ajTableFetch(adaptor->CacheBySeqRegionIdentifier,
-		     (const void *) &(ae->SeqRegionIdentifier));
+	ajTableFetch(adaptor->CacheBySeqregionIdentifier,
+		     (const void *) &(ae->SeqregionIdentifier));
 	
 	if(!list)
 	{
 	    AJNEW0(Pidentifier);
 	    
-	    *Pidentifier = ae->SeqRegionIdentifier;
+	    *Pidentifier = ae->SeqregionIdentifier;
 	    
 	    list = ajListNew();
 	    
-	    ajTablePut(adaptor->CacheBySeqRegionIdentifier,
+	    ajTablePut(adaptor->CacheBySeqregionIdentifier,
 		       (void *) Pidentifier,
 		       (void *) list);
 	}
@@ -1266,21 +1266,21 @@ static AjBool assemblyExceptionadaptorCacheInit(
 
 
 
-/* @func ensAssemblyExceptionadaptorNew ***************************************
+/* @func ensAssemblyexceptionadaptorNew ***************************************
 **
 ** Default constructor for an Ensembl Assembly Exception Adaptor.
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPAssemblyExceptionadaptor] Ensembl Assembly Exception Adaptor
+** @return [EnsPAssemblyexceptionadaptor] Ensembl Assembly Exception Adaptor
 **                                        or NULL
 ** @@
 ******************************************************************************/
 
-EnsPAssemblyExceptionadaptor ensAssemblyExceptionadaptorNew(
+EnsPAssemblyexceptionadaptor ensAssemblyexceptionadaptorNew(
     EnsPDatabaseadaptor dba)
 {
-    EnsPAssemblyExceptionadaptor adaptor = NULL;
+    EnsPAssemblyexceptionadaptor adaptor = NULL;
     
     if(!dba)
 	return NULL;
@@ -1302,7 +1302,7 @@ EnsPAssemblyExceptionadaptor ensAssemblyExceptionadaptorNew(
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Assembly Exception Adaptor.
 **
-** @fdata [EnsPAssemblyExceptionadaptor]
+** @fdata [EnsPAssemblyexceptionadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) an Ensembl Assembly Exception Adaptor object
@@ -1338,7 +1338,7 @@ static void assemblyExceptionadaptorClearIdentifierCache(void **key,
                                                          void **value,
                                                          void *cl)
 {
-    EnsPAssemblyException ae = NULL;
+    EnsPAssemblyexception ae = NULL;
     
     if(!key)
 	return;
@@ -1357,7 +1357,7 @@ static void assemblyExceptionadaptorClearIdentifierCache(void **key,
     AJFREE(*key);
     
     while(ajListPop(*((AjPList *) value), (void **) &ae))
-	ensAssemblyExceptionDel(&ae);
+	ensAssemblyexceptionDel(&ae);
     
     ajListFree((AjPList *) value);
     
@@ -1372,7 +1372,7 @@ static void assemblyExceptionadaptorClearIdentifierCache(void **key,
 ** Clears the Ensembl Assembly Exception cache in the
 ** Ensembl Assembly Exception Adaptor.
 **
-** @param [u] adaptor [EnsPAssemblyExceptionadaptor] Ensembl Assembly
+** @param [u] adaptor [EnsPAssemblyexceptionadaptor] Ensembl Assembly
 **                                                   Exception Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -1380,19 +1380,19 @@ static void assemblyExceptionadaptorClearIdentifierCache(void **key,
 ******************************************************************************/
 
 static AjBool assemblyExceptionadaptorCacheExit(
-    EnsPAssemblyExceptionadaptor adaptor)
+    EnsPAssemblyexceptionadaptor adaptor)
 {
     if(!adaptor)
         return ajFalse;
     
-    if(!adaptor->CacheBySeqRegionIdentifier)
+    if(!adaptor->CacheBySeqregionIdentifier)
 	return ajTrue;
     
-    ajTableMapDel(adaptor->CacheBySeqRegionIdentifier,
+    ajTableMapDel(adaptor->CacheBySeqregionIdentifier,
 		  assemblyExceptionadaptorClearIdentifierCache,
 		  NULL);
     
-    ajTableFree(&(adaptor->CacheBySeqRegionIdentifier));
+    ajTableFree(&(adaptor->CacheBySeqregionIdentifier));
     
     return ajTrue;
 }
@@ -1400,12 +1400,12 @@ static AjBool assemblyExceptionadaptorCacheExit(
 
 
 
-/* @func ensAssemblyExceptionadaptorDel ***************************************
+/* @func ensAssemblyexceptionadaptorDel ***************************************
 **
 ** Default destructor for an Ensembl Assembly Exception Adaptor.
 ** This function also clears the internal Assembly Exception cache.
 **
-** @param [r] Padaptor [EnsPAssemblyExceptionadaptor*] Ensembl Assembly
+** @param [r] Padaptor [EnsPAssemblyexceptionadaptor*] Ensembl Assembly
 **                                                     Exception Adaptor
 **                                                     address
 **
@@ -1413,7 +1413,7 @@ static AjBool assemblyExceptionadaptorCacheExit(
 ** @@
 ******************************************************************************/
 
-void ensAssemblyExceptionadaptorDel(EnsPAssemblyExceptionadaptor* Padaptor)
+void ensAssemblyexceptionadaptorDel(EnsPAssemblyexceptionadaptor* Padaptor)
 {
     if(!Padaptor)
 	return;
@@ -1436,7 +1436,7 @@ void ensAssemblyExceptionadaptorDel(EnsPAssemblyExceptionadaptor* Padaptor)
 ** Functions for retrieving Ensembl Assembly Exception objects from an
 ** Ensembl Core database.
 **
-** @fdata [EnsPAssemblyExceptionadaptor]
+** @fdata [EnsPAssemblyexceptionadaptor]
 ** @fnote None
 **
 ** @nam3rule Fetch Retrieve Ensembl Assembly Exception object(s)
@@ -1446,7 +1446,7 @@ void ensAssemblyExceptionadaptorDel(EnsPAssemblyExceptionadaptor* Padaptor)
 ** @nam4rule FetchBy Retrieve one Ensembl Assembly Exception object
 **                   matching a criterion
 **
-** @argrule * adaptor [const EnsPAssemblyExceptionadaptor] Ensembl Assembly
+** @argrule * adaptor [const EnsPAssemblyexceptionadaptor] Ensembl Assembly
 **                                                         Exception Adaptor
 ** @argrule FetchAll [AjPList] AJAX List of Ensembl Assembly Exception objects
 **
@@ -1478,7 +1478,7 @@ static void assemblyExceptionadaptorFetchAll(const void *key, void **value,
 {
     AjIList iter = NULL;
     
-    EnsPAssemblyException ae = NULL;
+    EnsPAssemblyexception ae = NULL;
     
     if(!key)
 	return;
@@ -1496,10 +1496,10 @@ static void assemblyExceptionadaptorFetchAll(const void *key, void **value,
     
     while(!ajListIterDone(iter))
     {
-	ae = (EnsPAssemblyException) ajListIterGet(iter);
+	ae = (EnsPAssemblyexception) ajListIterGet(iter);
 	
 	ajListPushAppend((AjPList) cl,
-			 (void *) ensAssemblyExceptionNewRef(ae));
+			 (void *) ensAssemblyexceptionNewRef(ae));
     }
     
     ajListIterDel(&iter);
@@ -1510,14 +1510,14 @@ static void assemblyExceptionadaptorFetchAll(const void *key, void **value,
 
 
 
-/* @func ensAssemblyExceptionadaptorFetchAll **********************************
+/* @func ensAssemblyexceptionadaptorFetchAll **********************************
 **
 ** Fetch all Ensembl Assembly Exceptions.
 **
 ** The caller is responsible for deleting the Ensembl Assembly Exception
 ** objects before deleting the AJAX List.
 **
-** @param [r] adaptor [const EnsPAssemblyExceptionadaptor] Ensembl Assembly
+** @param [r] adaptor [const EnsPAssemblyexceptionadaptor] Ensembl Assembly
 **                                                         Exception Adaptor
 ** @param [u] aes [AjPList] AJAX List of Ensembl Assembly Exceptions
 **
@@ -1525,8 +1525,8 @@ static void assemblyExceptionadaptorFetchAll(const void *key, void **value,
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionadaptorFetchAll(
-    const EnsPAssemblyExceptionadaptor adaptor,
+AjBool ensAssemblyexceptionadaptorFetchAll(
+    const EnsPAssemblyexceptionadaptor adaptor,
     AjPList aes)
 {
     if(!adaptor)
@@ -1535,7 +1535,7 @@ AjBool ensAssemblyExceptionadaptorFetchAll(
     if(!aes)
         return ajFalse;
     
-    ajTableMap(adaptor->CacheBySeqRegionIdentifier,
+    ajTableMap(adaptor->CacheBySeqregionIdentifier,
 	       assemblyExceptionadaptorFetchAll,
 	       (void *) aes);
     
@@ -1545,14 +1545,14 @@ AjBool ensAssemblyExceptionadaptorFetchAll(
 
 
 
-/* @func ensAssemblyExceptionadaptorFetchAllBySeqRegionIdentifier *************
+/* @func ensAssemblyexceptionadaptorFetchAllBySeqregionIdentifier *************
 **
 ** Fetch all Ensembl Assembly Exceptions by a Sequence Region identifier.
 **
 ** The caller is responsible for deleting the Ensembl Assembly Exception
 ** objects before deleting the AJAX List.
 **
-** @param [r] adaptor [const EnsPAssemblyExceptionadaptor] Ensembl Assembly
+** @param [r] adaptor [const EnsPAssemblyexceptionadaptor] Ensembl Assembly
 **                                                         Exception Adaptor
 ** @param [r] srid [ajuint] Ensembl Sequence Region identifier
 ** @param [u] aes [AjPList] AJAX List of Ensembl Assembly Exceptions
@@ -1561,18 +1561,18 @@ AjBool ensAssemblyExceptionadaptorFetchAll(
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionadaptorFetchAllBySeqRegionIdentifier(
-    EnsPAssemblyExceptionadaptor adaptor,
+AjBool ensAssemblyexceptionadaptorFetchAllBySeqregionIdentifier(
+    const EnsPAssemblyexceptionadaptor adaptor,
     ajuint srid,
     AjPList aes)
 {
     AjIList iter = NULL;
     AjPList list = NULL;
     
-    EnsPAssemblyException ae = NULL;
+    EnsPAssemblyexception ae = NULL;
     
     /*
-     ajDebug("ensAssemblyExceptionadaptorFetchAllBySeqRegionIdentifier\n"
+     ajDebug("ensAssemblyexceptionadaptorFetchAllBySeqregionIdentifier\n"
 	     "  adaptor %p\n"
 	     "  srid %u\n"
 	     "  aes %p\n",
@@ -1588,16 +1588,16 @@ AjBool ensAssemblyExceptionadaptorFetchAllBySeqRegionIdentifier(
 	return ajFalse;
     
     list = (AjPList)
-	ajTableFetch(adaptor->CacheBySeqRegionIdentifier,
+	ajTableFetch(adaptor->CacheBySeqregionIdentifier,
 		     (const void *) &srid);
     
     iter = ajListIterNew(list);
     
     while(!ajListIterDone(iter))
     {
-	ae = (EnsPAssemblyException) ajListIterGet(iter);
+	ae = (EnsPAssemblyexception) ajListIterGet(iter);
 	
-	ajListPushAppend(aes, (void *) ensAssemblyExceptionNewRef(ae));
+	ajListPushAppend(aes, (void *) ensAssemblyexceptionNewRef(ae));
     }
     
     ajListIterDel(&iter);

@@ -21,7 +21,7 @@
 EnsPGene ensGeneNew(EnsPGeneadaptor adaptor,
                     ajuint identifier,
                     EnsPFeature feature,
-                    EnsPDatabaseEntry displaydbe,
+                    EnsPDatabaseentry displaydbe,
                     AjPStr description,
                     AjPStr source,
                     AjPStr biotype,
@@ -39,13 +39,13 @@ EnsPGene ensGeneNewRef(EnsPGene gene);
 
 void ensGeneDel(EnsPGene* Pgene);
 
-EnsPGeneadaptor ensGeneGetadaptor(const EnsPGene gene);
+EnsPGeneadaptor ensGeneGetAdaptor(const EnsPGene gene);
 
 ajuint ensGeneGetIdentifier(const EnsPGene gene);
 
 EnsPFeature ensGeneGetFeature(const EnsPGene gene);
 
-EnsPDatabaseEntry ensGeneGetDisplayReference(const EnsPGene gene);
+EnsPDatabaseentry ensGeneGetDisplayReference(const EnsPGene gene);
 
 AjPStr ensGeneGetDescription(const EnsPGene gene);
 
@@ -71,13 +71,13 @@ const AjPList ensGeneGetDatabaseEntries(EnsPGene gene);
 
 const AjPList ensGeneGetTranscripts(EnsPGene gene);
 
-AjBool ensGeneSetadaptor(EnsPGene gene, EnsPGeneadaptor adaptor);
+AjBool ensGeneSetAdaptor(EnsPGene gene, EnsPGeneadaptor adaptor);
 
 AjBool ensGeneSetIdentifier(EnsPGene gene, ajuint identifier);
 
 AjBool ensGeneSetFeature(EnsPGene gene, EnsPFeature feature);
 
-AjBool ensGeneSetDisplayReference(EnsPGene gene, EnsPDatabaseEntry dbe);
+AjBool ensGeneSetDisplayReference(EnsPGene gene, EnsPDatabaseentry dbe);
 
 AjBool ensGeneSetDescription(EnsPGene gene, AjPStr description);
 
@@ -103,7 +103,7 @@ ajuint ensGeneGetMemSize(const EnsPGene gene);
 
 AjBool ensGeneAddAttribute(EnsPGene gene, EnsPAttribute attribute);
 
-AjBool ensGeneAddDatabaseEntry(EnsPGene gene, EnsPDatabaseEntry dbe);
+AjBool ensGeneAddDatabaseentry(EnsPGene gene, EnsPDatabaseentry dbe);
 
 AjBool ensGeneAddTranscript(EnsPGene gene, EnsPTranscript transcript);
 
@@ -140,7 +140,8 @@ EnsPFeatureadaptor ensGeneadaptorGetFeatureadaptor(
 EnsPDatabaseadaptor ensGeneadaptorGetDatabaseadaptor(
     const EnsPGeneadaptor adaptor);
 
-AjBool ensGeneadaptorFetchAll(EnsPGeneadaptor adaptor, AjPList genes);
+AjBool ensGeneadaptorFetchAll(const EnsPGeneadaptor adaptor,
+                              AjPList genes);
 
 AjBool ensGeneadaptorFetchByIdentifier(EnsPGeneadaptor adaptor,
                                        ajuint identifier,

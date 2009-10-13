@@ -12,27 +12,27 @@ extern "C"
 
 
 
-/* @data EnsPAssemblyExceptionadaptor *****************************************
+/* @data EnsPAssemblyexceptionadaptor *****************************************
 **
 ** Ensembl Assembly Exception Adaptor.
 **
-** @alias EnsSAssemblyExceptionadaptor
-** @alias EnsOAssemblyExceptionadaptor
+** @alias EnsSAssemblyexceptionadaptor
+** @alias EnsOAssemblyexceptionadaptor
 **
 ** @attr Adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @attr CacheBySeqRegionIdentifier [AjPTable] Ensembl Assembly Exception cache
+** @attr CacheBySeqregionIdentifier [AjPTable] Ensembl Assembly Exception cache
 **                                             indexed on Ensembl Sequence
 **                                             Region identifiers
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSAssemblyExceptionadaptor
+typedef struct EnsSAssemblyexceptionadaptor
 {
     EnsPDatabaseadaptor Adaptor;
-    AjPTable CacheBySeqRegionIdentifier;
-} EnsOAssemblyExceptionadaptor;
+    AjPTable CacheBySeqregionIdentifier;
+} EnsOAssemblyexceptionadaptor;
 
-#define EnsPAssemblyExceptionadaptor EnsOAssemblyExceptionadaptor*
+#define EnsPAssemblyexceptionadaptor EnsOAssemblyexceptionadaptor*
 
 
 
@@ -43,18 +43,18 @@ typedef struct EnsSAssemblyExceptionadaptor
 **
 ******************************************************************************/
 
-enum EnsEAssemblyExceptionType
+enum EnsEAssemblyexceptionType
 {
-    ensEAssemblyExceptionTypeNULL,
-    ensEAssemblyExceptionTypeHAP,
-    ensEAssemblyExceptionTypePAR,
-    ensEAssemblyExceptionTypeHAPREF
+    ensEAssemblyexceptionTypeNULL,
+    ensEAssemblyexceptionTypeHAP,
+    ensEAssemblyexceptionTypePAR,
+    ensEAssemblyexceptionTypeHAPREF
 };
 
 
 
 
-/* @data EnsPAssemblyException ************************************************
+/* @data EnsPAssemblyexception ************************************************
 **
 ** Ensembl Assembly Exception.
 **
@@ -69,18 +69,18 @@ enum EnsEAssemblyExceptionType
 ** Due to the frequent exchange of genetic material those sequences represent
 ** exact copies of each other.
 **
-** @alias EnsSAssemblyException
-** @alias EnsOAssemblyException
+** @alias EnsSAssemblyexception
+** @alias EnsOAssemblyexception
 **
 ** @attr Use [ajuint] Use counter
 ** @cc Bio::EnsEMBL::Storable
 ** @attr Identifier [ajuint] SQL database-internal identifier
-** @attr Adaptor [EnsPAssemblyExceptionadaptor] Ensembl Assembly
+** @attr Adaptor [EnsPAssemblyexceptionadaptor] Ensembl Assembly
 **                                              Exception Adaptor
-** @cc Bio::EnsEMBL::AssemblyException
-** @attr SeqRegionIdentifier [ajuint] Ensembl Sequence Region identifier
-** @attr SeqRegionStart [ajuint] Ensembl Sequence Region start
-** @attr SeqRegionEnd [ajuint] Ensembl Sequence Region end
+** @cc Bio::EnsEMBL::Assemblyexception
+** @attr SeqregionIdentifier [ajuint] Ensembl Sequence Region identifier
+** @attr SeqregionStart [ajuint] Ensembl Sequence Region start
+** @attr SeqregionEnd [ajuint] Ensembl Sequence Region end
 ** @attr ExcRegionIdentifier [ajuint] Ensembl Sequence Region identifier
 ** @attr ExcRegionStart [ajuint] Ensembl Sequence Region start
 ** @attr ExcRegionEnd [ajuint] Ensembl Sequence Region end
@@ -89,22 +89,22 @@ enum EnsEAssemblyExceptionType
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSAssemblyException
+typedef struct EnsSAssemblyexception
 {
     ajuint Use;
     ajuint Identifier;
-    EnsPAssemblyExceptionadaptor Adaptor;
-    ajuint SeqRegionIdentifier;
-    ajuint SeqRegionStart;
-    ajuint SeqRegionEnd;
+    EnsPAssemblyexceptionadaptor Adaptor;
+    ajuint SeqregionIdentifier;
+    ajuint SeqregionStart;
+    ajuint SeqregionEnd;
     ajuint ExcRegionIdentifier;
     ajuint ExcRegionStart;
     ajuint ExcRegionEnd;
     ajint Orientation;
     AjEnum Type;
-} EnsOAssemblyException;
+} EnsOAssemblyexception;
 
-#define EnsPAssemblyException EnsOAssemblyException*
+#define EnsPAssemblyexception EnsOAssemblyexception*
 
 
 
@@ -115,8 +115,8 @@ typedef struct EnsSAssemblyException
 
 /* Ensembl Assembly Exception */
 
-EnsPAssemblyException ensAssemblyExceptionNew(
-                        EnsPAssemblyExceptionadaptor adaptor,
+EnsPAssemblyexception ensAssemblyexceptionNew(
+                        EnsPAssemblyexceptionadaptor adaptor,
 			ajuint identifier,
 			ajuint srid,
 			ajuint srstart,
@@ -127,86 +127,86 @@ EnsPAssemblyException ensAssemblyExceptionNew(
 			ajint ori,
 			AjEnum type);
 
-EnsPAssemblyException ensAssemblyExceptionNewObj(
-    const EnsPAssemblyException object);
+EnsPAssemblyexception ensAssemblyexceptionNewObj(
+    const EnsPAssemblyexception object);
 
-EnsPAssemblyException ensAssemblyExceptionNewRef(EnsPAssemblyException ae);
+EnsPAssemblyexception ensAssemblyexceptionNewRef(EnsPAssemblyexception ae);
 
-void ensAssemblyExceptionDel(EnsPAssemblyException* Pae);
+void ensAssemblyexceptionDel(EnsPAssemblyexception* Pae);
 
-EnsPAssemblyExceptionadaptor ensAssemblyExceptionGetadaptor(
-    const EnsPAssemblyException ae);
+EnsPAssemblyexceptionadaptor ensAssemblyexceptionGetAdaptor(
+    const EnsPAssemblyexception ae);
 
-ajuint ensAssemblyExceptionGetIdentifier(const EnsPAssemblyException ae);
+ajuint ensAssemblyexceptionGetIdentifier(const EnsPAssemblyexception ae);
 
-ajuint ensAssemblyExceptionGetSeqRegionIdentifier(
-    const EnsPAssemblyException ae);
+ajuint ensAssemblyexceptionGetSeqregionIdentifier(
+    const EnsPAssemblyexception ae);
 
-ajuint ensAssemblyExceptionGetSeqRegionStart(const EnsPAssemblyException ae);
+ajuint ensAssemblyexceptionGetSeqregionStart(const EnsPAssemblyexception ae);
 
-ajuint ensAssemblyExceptionGetSeqRegionEnd(const EnsPAssemblyException ae);
+ajuint ensAssemblyexceptionGetSeqregionEnd(const EnsPAssemblyexception ae);
 
-ajuint ensAssemblyExceptionGetExcRegionIdentifier(
-    const EnsPAssemblyException ae);
+ajuint ensAssemblyexceptionGetExcRegionIdentifier(
+    const EnsPAssemblyexception ae);
 
-ajuint ensAssemblyExceptionGetExcRegionStart(const EnsPAssemblyException ae);
+ajuint ensAssemblyexceptionGetExcRegionStart(const EnsPAssemblyexception ae);
 
-ajuint ensAssemblyExceptionGetExcRegionEnd(const EnsPAssemblyException ae);
+ajuint ensAssemblyexceptionGetExcRegionEnd(const EnsPAssemblyexception ae);
 
-ajint ensAssemblyExceptionGetOrientation(const EnsPAssemblyException ae);
+ajint ensAssemblyexceptionGetOrientation(const EnsPAssemblyexception ae);
 
-AjEnum ensAssemblyExceptionGetType(const EnsPAssemblyException ae);
+AjEnum ensAssemblyexceptionGetType(const EnsPAssemblyexception ae);
 
-AjBool ensAssemblyExceptionSetadaptor(EnsPAssemblyException ae,
-                                      EnsPAssemblyExceptionadaptor adaptor);
+AjBool ensAssemblyexceptionSetAdaptor(EnsPAssemblyexception ae,
+                                      EnsPAssemblyexceptionadaptor adaptor);
 
-AjBool ensAssemblyExceptionSetIdentifier(EnsPAssemblyException ae,
+AjBool ensAssemblyexceptionSetIdentifier(EnsPAssemblyexception ae,
                                          ajuint identifier);
 
-AjBool ensAssemblyExceptionSetSeqRegionIdentifier(EnsPAssemblyException ae,
+AjBool ensAssemblyexceptionSetSeqregionIdentifier(EnsPAssemblyexception ae,
                                                   ajuint srid);
 
-AjBool ensAssemblyExceptionSetSeqRegionStart(EnsPAssemblyException ae,
+AjBool ensAssemblyexceptionSetSeqregionStart(EnsPAssemblyexception ae,
                                              ajuint srstart);
 
-AjBool ensAssemblyExceptionSetSeqRegionEnd(EnsPAssemblyException ae,
+AjBool ensAssemblyexceptionSetSeqregionEnd(EnsPAssemblyexception ae,
                                            ajuint srend);
 
-AjBool ensAssemblyExceptionSetExcRegionIdentifier(EnsPAssemblyException ae,
+AjBool ensAssemblyexceptionSetExcRegionIdentifier(EnsPAssemblyexception ae,
                                                   ajuint exid);
 
-AjBool ensAssemblyExceptionSetEcxRegionStart(EnsPAssemblyException ae,
+AjBool ensAssemblyexceptionSetEcxRegionStart(EnsPAssemblyexception ae,
                                              ajuint exstart);
 
-AjBool ensAssemblyExceptionSetExcRegionStart(EnsPAssemblyException ae,
+AjBool ensAssemblyexceptionSetExcRegionStart(EnsPAssemblyexception ae,
                                              ajuint exend);
 
-AjBool ensAssemblyExceptionSetOrientation(EnsPAssemblyException ae,
+AjBool ensAssemblyexceptionSetOrientation(EnsPAssemblyexception ae,
                                           ajint orientation);
 
-AjBool ensAssemblyExceptionSetType(EnsPAssemblyException ae, AjEnum type);
+AjBool ensAssemblyexceptionSetType(EnsPAssemblyexception ae, AjEnum type);
 
-AjBool ensAssemblyExceptionTrace(const EnsPAssemblyException ae, ajuint level);
+AjBool ensAssemblyexceptionTrace(const EnsPAssemblyexception ae, ajuint level);
 
-ajuint ensAssemblyExceptionGetMemSize(const EnsPAssemblyException ae);
+ajuint ensAssemblyexceptionGetMemSize(const EnsPAssemblyexception ae);
 
-AjEnum ensAssemblyExceptionTypeFromStr(const AjPStr type);
+AjEnum ensAssemblyexceptionTypeFromStr(const AjPStr type);
 
-const char* ensAssemblyExceptionTypeToChar(const AjEnum type);
+const char* ensAssemblyexceptionTypeToChar(const AjEnum type);
 
 /* Ensembl Assembly Exception Adaptor */
 
-EnsPAssemblyExceptionadaptor ensAssemblyExceptionadaptorNew(
+EnsPAssemblyexceptionadaptor ensAssemblyexceptionadaptorNew(
     EnsPDatabaseadaptor dba);
 
-void ensAssemblyExceptionadaptorDel(EnsPAssemblyExceptionadaptor* Padaptor);
+void ensAssemblyexceptionadaptorDel(EnsPAssemblyexceptionadaptor* Padaptor);
 
-AjBool ensAssemblyExceptionadaptorFetchAll(
-    const EnsPAssemblyExceptionadaptor adaptor,
+AjBool ensAssemblyexceptionadaptorFetchAll(
+    const EnsPAssemblyexceptionadaptor adaptor,
     AjPList aes);
 
-AjBool ensAssemblyExceptionadaptorFetchAllBySeqRegionIdentifier(
-    EnsPAssemblyExceptionadaptor adaptor,
+AjBool ensAssemblyexceptionadaptorFetchAllBySeqregionIdentifier(
+    const  EnsPAssemblyexceptionadaptor adaptor,
     ajuint srid,
     AjPList aes);
 

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -50,7 +50,7 @@ extern EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(
 
 static AjBool analysisAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                            const AjPStr statement,
-                                           EnsPAssemblyMapper am,
+                                           EnsPAssemblymapper am,
                                            EnsPSlice slice,
                                            AjPList analyses);
 
@@ -102,11 +102,31 @@ static void analysisAdaptorFetchAll(const void *key, void **value, void *cl);
 ** @fnote None
 **
 ** @nam3rule New Constructor
+** @nam4rule NewData Constructor with data values
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPAnalysis] Ensembl Analysis
+** @argrule Obj object [const EnsPAnalysis] Ensembl Analysis
 ** @argrule Ref object [EnsPAnalysis] Ensembl Analysis
+** @argrule Data adaptor [EnsPAnalysisadaptor] Undocumented
+** @argrule Data identifier [ajuint] Undocumented
+** @argrule Data cdate [AjPStr] Undocumented
+** @argrule Data name [AjPStr] Undocumented
+** @argrule Data databasename [AjPStr] Undocumented
+** @argrule Data databaseversion [AjPStr] Undocumented
+** @argrule Data databasefile [AjPStr] Undocumented
+** @argrule Data programname [AjPStr] Undocumented
+** @argrule Data programversion [AjPStr] Undocumented
+** @argrule Data programfile [AjPStr] Undocumented
+** @argrule Data parameters [AjPStr] Undocumented
+** @argrule Data modulename [AjPStr] Undocumented
+** @argrule Data moduleversion [AjPStr] Undocumented
+** @argrule Data gffsource [AjPStr] Undocumented
+** @argrule Data gfffeature [AjPStr] Undocumented
+** @argrule Data description [AjPStr] Undocumented
+** @argrule Data displaylabel [AjPStr] Undocumented
+** @argrule Data displayable [AjBool] Undocumented
+** @argrule Data webdata [AjPStr] Undocumented
 **
 ** @valrule * [EnsPAnalysis] Ensembl Analysis
 **
@@ -116,7 +136,7 @@ static void analysisAdaptorFetchAll(const void *key, void **value, void *cl);
 
 
 
-/* @func ensAnalysisNew *******************************************************
+/* @func ensAnalysisNewData ***************************************************
 **
 ** Default constructor for an Ensembl Analysis.
 **
@@ -146,25 +166,25 @@ static void analysisAdaptorFetchAll(const void *key, void **value, void *cl);
 ** @@
 ******************************************************************************/
 
-EnsPAnalysis ensAnalysisNew(EnsPAnalysisadaptor adaptor,
-                            ajuint identifier,
-                            AjPStr cdate,
-                            AjPStr name,
-                            AjPStr databasename,
-                            AjPStr databaseversion,
-                            AjPStr databasefile,
-                            AjPStr programname,
-                            AjPStr programversion,
-                            AjPStr programfile,
-                            AjPStr parameters,
-                            AjPStr modulename,
-                            AjPStr moduleversion,
-                            AjPStr gffsource,
-                            AjPStr gfffeature,
-                            AjPStr description,
-                            AjPStr displaylabel,
-                            AjBool displayable,
-                            AjPStr webdata)
+EnsPAnalysis ensAnalysisNewData(EnsPAnalysisadaptor adaptor,
+                                ajuint identifier,
+                                AjPStr cdate,
+                                AjPStr name,
+                                AjPStr databasename,
+                                AjPStr databaseversion,
+                                AjPStr databasefile,
+                                AjPStr programname,
+                                AjPStr programversion,
+                                AjPStr programfile,
+                                AjPStr parameters,
+                                AjPStr modulename,
+                                AjPStr moduleversion,
+                                AjPStr gffsource,
+                                AjPStr gfffeature,
+                                AjPStr description,
+                                AjPStr displaylabel,
+                                AjBool displayable,
+                                AjPStr webdata)
 {
     EnsPAnalysis analysis = NULL;
     
@@ -434,7 +454,7 @@ void ensAnalysisDel(EnsPAnalysis* Panalysis)
 ** @fnote None
 **
 ** @nam3rule Get Return Analysis attribute(s)
-** @nam4rule Getadaptor Return the Ensembl Analysis Adaptor
+** @nam4rule GetAdaptor Return the Ensembl Analysis Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetCreationDate Return the creation date
 ** @nam4rule GetName Return the name
@@ -486,7 +506,7 @@ void ensAnalysisDel(EnsPAnalysis* Panalysis)
 
 
 
-/* @func ensAnalysisGetadaptor ************************************************
+/* @func ensAnalysisGetAdaptor ************************************************
 **
 ** Get the Ensembl Analysis Adaptor element of an Ensembl Analysis.
 **
@@ -496,7 +516,7 @@ void ensAnalysisDel(EnsPAnalysis* Panalysis)
 ** @@
 ******************************************************************************/
 
-EnsPAnalysisadaptor ensAnalysisGetadaptor(const EnsPAnalysis analysis)
+EnsPAnalysisadaptor ensAnalysisGetAdaptor(const EnsPAnalysis analysis)
 {
     if (!analysis)
         return NULL;
@@ -893,7 +913,7 @@ AjBool ensAnalysisGetDisplayable(const EnsPAnalysis analysis)
 ** @fnote None
 **
 ** @nam3rule Set Set one element of an Ensembl Analysis
-** @nam4rule Setadaptor Set the Ensembl Analysis Adaptor
+** @nam4rule SetAdaptor Set the Ensembl Analysis Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetCreationDate Set the creation date
 ** @nam4rule SetName Set the name
@@ -923,7 +943,7 @@ AjBool ensAnalysisGetDisplayable(const EnsPAnalysis analysis)
 
 
 
-/* @func ensAnalysisSetadaptor ************************************************
+/* @func ensAnalysisSetAdaptor ************************************************
 **
 ** Set the Ensembl Analysis Adaptor element of an Ensembl Analysis.
 **
@@ -934,7 +954,7 @@ AjBool ensAnalysisGetDisplayable(const EnsPAnalysis analysis)
 ** @@
 ******************************************************************************/
 
-AjBool ensAnalysisSetadaptor(EnsPAnalysis analysis, EnsPAnalysisadaptor adaptor)
+AjBool ensAnalysisSetAdaptor(EnsPAnalysis analysis, EnsPAnalysisadaptor adaptor)
 {
     if(!analysis)
         return ajFalse;
@@ -1848,7 +1868,7 @@ static const char *analysisAdaptorFinalCondition = NULL;
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
-** @param [u] am [EnsPAssemblyMapper] Ensembl Assembly Mapper
+** @param [u] am [EnsPAssemblymapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [u] analyses [AjPList] AJAX List of Ensembl Analyses
 **
@@ -1858,7 +1878,7 @@ static const char *analysisAdaptorFinalCondition = NULL;
 
 static AjBool analysisAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                            const AjPStr statement,
-                                           EnsPAssemblyMapper am,
+                                           EnsPAssemblymapper am,
                                            EnsPSlice slice,
                                            AjPList analyses)
 {
@@ -1965,25 +1985,25 @@ static AjBool analysisAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         ajSqlcolumnToBool(sqlr, &displayable);
         ajSqlcolumnToStr(sqlr, &webdata);
 	
-        analysis = ensAnalysisNew(adaptor,
-				  identifier,
-				  cdate,
-				  name,
-				  databasename,
-				  databaseversion,
-				  databasefile,
-				  programname,
-				  programversion,
-				  programfile,
-				  parameters,
-				  modulename,
-				  moduleversion,
-				  gffsource,
-				  gfffeature,
-				  description,
-				  displaylabel,
-				  displayable,
-				  webdata);
+        analysis = ensAnalysisNewData(adaptor,
+                                      identifier,
+                                      cdate,
+                                      name,
+                                      databasename,
+                                      databaseversion,
+                                      databasefile,
+                                      programname,
+                                      programversion,
+                                      programfile,
+                                      parameters,
+                                      modulename,
+                                      moduleversion,
+                                      gffsource,
+                                      gfffeature,
+                                      description,
+                                      displaylabel,
+                                      displayable,
+                                      webdata);
 	
         ajListPushAppend(analyses, (void *) analysis);
 	
@@ -2216,7 +2236,7 @@ static AjBool analysisAdaptorCacheInit(EnsPAnalysisadaptor adaptor)
         return ajFalse;
     else
         adaptor->CacheByIdentifier =
-	    ajTableNewFunctionLen(0, ensTableCmpUInt, ensTableHashUInt);
+	    ajTableNewFunctionLen(0, ensTableCmpUint, ensTableHashUint);
     
     if(adaptor->CacheByName)
         return ajFalse;
@@ -2227,7 +2247,7 @@ static AjBool analysisAdaptorCacheInit(EnsPAnalysisadaptor adaptor)
     
     ensBaseadaptorGenericFetch(adaptor->Adaptor,
 			       (const AjPStr) NULL,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       analyses);
     
@@ -2522,7 +2542,7 @@ void ensAnalysisadaptorDel(EnsPAnalysisadaptor* Padaptor)
 ** @fnote None
 **
 ** @nam3rule Get Return Ensembl Analysis Adaptor attribute(s)
-** @nam4rule Getadaptor Return the Ensembl Base Adaptor
+** @nam4rule GetAdaptor Return the Ensembl Base Adaptor
 **
 ** @argrule * adaptor [const EnsPAnalysisadaptor] Ensembl Analysis Adaptor
 **
@@ -2736,7 +2756,7 @@ AjBool ensAnalysisadaptorFetchByIdentifier(EnsPAnalysisadaptor adaptor,
     
     ensBaseadaptorGenericFetch(adaptor->Adaptor,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       analyses);
     
@@ -2831,7 +2851,7 @@ AjBool ensAnalysisadaptorFetchByName(EnsPAnalysisadaptor adaptor,
     
     ensBaseadaptorGenericFetch(adaptor->Adaptor,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       analyses);
     
@@ -2864,17 +2884,17 @@ AjBool ensAnalysisadaptorFetchByName(EnsPAnalysisadaptor adaptor,
 static const char* analysisAdaptorFeatureClasses[] =
 {
     "AffyFeature", "affy_feature",
-    "DensityFeature", "density_type", /* density_type.analysis_id */
+    "Densityfeature", "density_type", /* density_type.analysis_id */
     "DnaAlignFeature", "dna_align_feature",
     "Gene", "gene",
-    "MarkerFeature", "marker_feature",
-    "PredictionTranscript", "prediction_transcript",
+    "Markerfeature", "marker_feature",
+    "Predictiontranscript", "prediction_transcript",
     "OligoFeature", "oligo_feature",
-    "ProteinAlignFeature", "protein_align_feature",
-    "ProteinFeature", "protein_feature",
+    "Proteinalignfeature", "protein_align_feature",
+    "Proteinfeature", "protein_feature",
     "QtlFeature", "qtl_feature",
-    "RepeatFeature", "repeat_feature",
-    "SimpleFeature", "simple_feature",
+    "Repeatfeature", "repeat_feature",
+    "Simplefeature", "simple_feature",
     NULL, NULL
 };
 

@@ -29,18 +29,18 @@ enum EnsERepeatMaskType
 
 
 
-/* @data EnsPRepeatConsensus **************************************************
+/* @data EnsPRepeatconsensus **************************************************
 **
 ** Ensembl Repeat Consensus.
 **
-** @alias EnsSRepeatConsensus
-** @alias EnsORepeatConsensus
+** @alias EnsSRepeatconsensus
+** @alias EnsORepeatconsensus
 **
 ** @attr Use [ajuint] Use counter
 ** @cc Bio::EnsEMBL::Storable
 ** @attr Identifier [ajuint] The SQL database-internal identifier
 ** @attr Adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @cc Bio::EnsEMBL::RepeatConsensus
+** @cc Bio::EnsEMBL::Repeatconsensus
 ** @attr Name [AjPStr] Repeat Consensus name
 ** @attr Class [AjPStr] Repeat Consensus class
 ** @attr Type [AjPStr] Repeat Consensus type
@@ -50,7 +50,7 @@ enum EnsERepeatMaskType
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSRepeatConsensus
+typedef struct EnsSRepeatconsensus
 {
     ajuint Use;
     ajuint Identifier;
@@ -61,68 +61,68 @@ typedef struct EnsSRepeatConsensus
     AjPStr Consensus;
     ajuint Length;
     ajuint Padding;
-} EnsORepeatConsensus;
+} EnsORepeatconsensus;
 
-#define EnsPRepeatConsensus EnsORepeatConsensus*
-
-
+#define EnsPRepeatconsensus EnsORepeatconsensus*
 
 
-/* @data EnsPRepeatFeatureadaptor *********************************************
+
+
+/* @data EnsPRepeatfeatureadaptor *********************************************
 **
 ** Ensembl Repeat Feature Adaptor.
 **
-** @alias EnsSRepeatFeatureadaptor
-** @alias EnsORepeatFeatureadaptor
+** @alias EnsSRepeatfeatureadaptor
+** @alias EnsORepeatfeatureadaptor
 **
 ** @cc Bio::EnsEMBL::DBSQL::BaseFeatureadaptor
 ** @attr Adaptor [EnsPFeatureadaptor] Ensembl Feature Adaptor
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSRepeatFeatureadaptor
+typedef struct EnsSRepeatfeatureadaptor
 {
     EnsPFeatureadaptor Adaptor;
-} EnsORepeatFeatureadaptor;
+} EnsORepeatfeatureadaptor;
 
-#define EnsPRepeatFeatureadaptor EnsORepeatFeatureadaptor*
-
-
+#define EnsPRepeatfeatureadaptor EnsORepeatfeatureadaptor*
 
 
-/* @data EnsPRepeatFeature ****************************************************
+
+
+/* @data EnsPRepeatfeature ****************************************************
 **
 ** Ensembl Repeat Feature.
 **
-** @alias EnsSRepeatFeature
-** @alias EnsORepeatFeature
+** @alias EnsSRepeatfeature
+** @alias EnsORepeatfeature
 **
 ** @attr Use [ajuint] Use counter
 ** @cc Bio::EnsEMBL::Storable
 ** @attr Identifier [ajuint] The SQL database-internal identifier
-** @attr Adaptor [EnsPRepeatFeatureadaptor] Ensembl Repeat Feature Adaptor
-** @cc Bio::EnsEMBL::RepeatFeature
+** @attr Adaptor [EnsPRepeatfeatureadaptor] Ensembl Repeat Feature Adaptor
+** @cc Bio::EnsEMBL::Repeatfeature
 ** @attr Feature [EnsPFeature] Ensembl Feature
-** @attr RepeatConsensus [EnsPRepeatConsensus] Ensembl Repeat Consensus
+** @attr Repeatconsensus [EnsPRepeatconsensus] Ensembl Repeat Consensus
 ** @attr HitStart [ajint] The hit start on he consensus sequence
 ** @attr HitEnd [ajint] The hit end on the consensus sequence
 ** @attr Score [double] Score
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSRepeatFeature
+typedef struct EnsSRepeatfeature
 {
     ajuint Use;
     ajuint Identifier;
-    EnsPRepeatFeatureadaptor Adaptor;
+    EnsPRepeatfeatureadaptor Adaptor;
     EnsPFeature Feature;
-    EnsPRepeatConsensus RepeatConsensus;
+    EnsPRepeatconsensus Repeatconsensus;
     ajint HitStart;
     ajint HitEnd;
     double Score;
-} EnsORepeatFeature;
+} EnsORepeatfeature;
 
-#define EnsPRepeatFeature EnsORepeatFeature*
+#define EnsPRepeatfeature EnsORepeatfeature*
 
 
 
@@ -133,7 +133,7 @@ typedef struct EnsSRepeatFeature
 
 /* Ensembl Repeat Consensus */
 
-EnsPRepeatConsensus ensRepeatConsensusNew(EnsPDatabaseadaptor adaptor,
+EnsPRepeatconsensus ensRepeatconsensusNew(EnsPDatabaseadaptor adaptor,
                                           ajuint identifier,
                                           AjPStr name,
                                           AjPStr class,
@@ -141,62 +141,62 @@ EnsPRepeatConsensus ensRepeatConsensusNew(EnsPDatabaseadaptor adaptor,
                                           AjPStr consensus,
                                           ajuint length);
 
-EnsPRepeatConsensus ensRepeatConsensusNewObj(EnsPRepeatConsensus object);
+EnsPRepeatconsensus ensRepeatconsensusNewObj(EnsPRepeatconsensus object);
 
-EnsPRepeatConsensus ensRepeatConsensusNewRef(EnsPRepeatConsensus rc);
+EnsPRepeatconsensus ensRepeatconsensusNewRef(EnsPRepeatconsensus rc);
 
-void ensRepeatConsensusDel(EnsPRepeatConsensus* Prc);
+void ensRepeatconsensusDel(EnsPRepeatconsensus* Prc);
 
-EnsPDatabaseadaptor ensRepeatConsensusGetadaptor(const EnsPRepeatConsensus rc);
+EnsPDatabaseadaptor ensRepeatconsensusGetAdaptor(const EnsPRepeatconsensus rc);
 
-ajuint ensRepeatConsensusGetIdentifier(const EnsPRepeatConsensus rc);
+ajuint ensRepeatconsensusGetIdentifier(const EnsPRepeatconsensus rc);
 
-AjPStr ensRepeatConsensusGetName(const EnsPRepeatConsensus rc);
+AjPStr ensRepeatconsensusGetName(const EnsPRepeatconsensus rc);
 
-AjPStr ensRepeatConsensusGetClass(const EnsPRepeatConsensus rc);
+AjPStr ensRepeatconsensusGetClass(const EnsPRepeatconsensus rc);
 
-AjPStr ensRepeatConsensusGetType(const EnsPRepeatConsensus rc);
+AjPStr ensRepeatconsensusGetType(const EnsPRepeatconsensus rc);
 
-AjPStr ensRepeatConsensusGetConsensus(const EnsPRepeatConsensus rc);
+AjPStr ensRepeatconsensusGetConsensus(const EnsPRepeatconsensus rc);
 
-ajuint ensRepeatConsensusGetLength(const EnsPRepeatConsensus rc);
+ajuint ensRepeatconsensusGetLength(const EnsPRepeatconsensus rc);
 
-AjBool ensRepeatConsensusSetadaptor(EnsPRepeatConsensus rc,
+AjBool ensRepeatconsensusSetAdaptor(EnsPRepeatconsensus rc,
                                     EnsPDatabaseadaptor dba);
 
-AjBool ensRepeatConsensusSetIdentifier(EnsPRepeatConsensus rc,
+AjBool ensRepeatconsensusSetIdentifier(EnsPRepeatconsensus rc,
                                        ajuint identifier);
 
-AjBool ensRepeatConsensusSetName(EnsPRepeatConsensus rc, AjPStr name);
+AjBool ensRepeatconsensusSetName(EnsPRepeatconsensus rc, AjPStr name);
 
-AjBool ensRepeatConsensusSetClass(EnsPRepeatConsensus rc, AjPStr class);
+AjBool ensRepeatconsensusSetClass(EnsPRepeatconsensus rc, AjPStr class);
 
-AjBool ensRepeatConsensusSetType(EnsPRepeatConsensus rc, AjPStr type);
+AjBool ensRepeatconsensusSetType(EnsPRepeatconsensus rc, AjPStr type);
 
-AjBool ensRepeatConsensusSetConsensus(EnsPRepeatConsensus rc, AjPStr consensus);
+AjBool ensRepeatconsensusSetConsensus(EnsPRepeatconsensus rc, AjPStr consensus);
 
-AjBool ensRepeatConsensusSetLength(EnsPRepeatConsensus rc, ajuint length);
+AjBool ensRepeatconsensusSetLength(EnsPRepeatconsensus rc, ajuint length);
 
-ajuint ensRepeatConsensusGetMemSize(const EnsPRepeatConsensus rc);
+ajuint ensRepeatconsensusGetMemSize(const EnsPRepeatconsensus rc);
 
-AjBool ensRepeatConsensusTrace(const EnsPRepeatConsensus rc, ajuint level);
+AjBool ensRepeatconsensusTrace(const EnsPRepeatconsensus rc, ajuint level);
 
 /* Ensembl Repeat Consensus Adaptor */
 
-AjBool ensRepeatConsensusadaptorFetchByIdentifier(EnsPDatabaseadaptor dba,
+AjBool ensRepeatconsensusadaptorFetchByIdentifier(EnsPDatabaseadaptor dba,
                                                   ajuint identifier,
-                                                  EnsPRepeatConsensus *Prc);
+                                                  EnsPRepeatconsensus *Prc);
 
-AjBool ensRepeatConsensusadaptorFetchByName(EnsPDatabaseadaptor dba,
+AjBool ensRepeatconsensusadaptorFetchByName(EnsPDatabaseadaptor dba,
                                             const AjPStr name,
-                                            EnsPRepeatConsensus *Prc);
+                                            EnsPRepeatconsensus *Prc);
 
-AjBool ensRepeatConsensusadaptorFetchByNameClass(EnsPDatabaseadaptor dba,
+AjBool ensRepeatconsensusadaptorFetchByNameClass(EnsPDatabaseadaptor dba,
                                                  const AjPStr name,
                                                  const AjPStr class,
-                                                 EnsPRepeatConsensus *Prc);
+                                                 EnsPRepeatconsensus *Prc);
 
-AjBool ensRepeatConsensusadaptorFetchAllByClassConsensus(
+AjBool ensRepeatconsensusadaptorFetchAllByClassConsensus(
     EnsPDatabaseadaptor dba,
     const AjPStr class,
     const AjPStr consensus,
@@ -204,66 +204,66 @@ AjBool ensRepeatConsensusadaptorFetchAllByClassConsensus(
 
 /* Ensembl Repeat Feature */
 
-EnsPRepeatFeature ensRepeatFeatureNew(EnsPRepeatFeatureadaptor adaptor,
+EnsPRepeatfeature ensRepeatfeatureNew(EnsPRepeatfeatureadaptor adaptor,
                                       ajuint identifier,
                                       EnsPFeature feature,
-                                      EnsPRepeatConsensus rc,
+                                      EnsPRepeatconsensus rc,
                                       ajint hstart,
                                       ajint hend,
                                       double score);
 
-EnsPRepeatFeature ensRepeatFeatureNewObj(EnsPRepeatFeature object);
+EnsPRepeatfeature ensRepeatfeatureNewObj(EnsPRepeatfeature object);
 
-EnsPRepeatFeature ensRepeatFeatureNewRef(EnsPRepeatFeature rf);
+EnsPRepeatfeature ensRepeatfeatureNewRef(EnsPRepeatfeature rf);
 
-void ensRepeatFeatureDel(EnsPRepeatFeature* Prf);
+void ensRepeatfeatureDel(EnsPRepeatfeature* Prf);
 
-const EnsPRepeatFeatureadaptor ensRepeatFeatureGetadaptor(
-    const EnsPRepeatFeature rf);
+const EnsPRepeatfeatureadaptor ensRepeatfeatureGetAdaptor(
+    const EnsPRepeatfeature rf);
 
-ajuint ensRepeatFeatureGetIdentifier(const EnsPRepeatFeature rf);
+ajuint ensRepeatfeatureGetIdentifier(const EnsPRepeatfeature rf);
 
-EnsPFeature ensRepeatFeatureGetFeature(const EnsPRepeatFeature rf);
+EnsPFeature ensRepeatfeatureGetFeature(const EnsPRepeatfeature rf);
 
-EnsPRepeatConsensus ensRepeatFeatureGetRepeatConsensus(
-    const EnsPRepeatFeature rf);
+EnsPRepeatconsensus ensRepeatfeatureGetRepeatconsensus(
+    const EnsPRepeatfeature rf);
 
-ajint ensRepeatFeatureGetHitStart(const EnsPRepeatFeature rf);
+ajint ensRepeatfeatureGetHitStart(const EnsPRepeatfeature rf);
 
-ajint ensRepeatFeatureGetHitEnd(const EnsPRepeatFeature rf);
+ajint ensRepeatfeatureGetHitEnd(const EnsPRepeatfeature rf);
 
-ajint ensRepeatFeatureGetHitStrand(const EnsPRepeatFeature rf);
+ajint ensRepeatfeatureGetHitStrand(const EnsPRepeatfeature rf);
 
-double ensRepeatFeatureGetScore(const EnsPRepeatFeature rf);
+double ensRepeatfeatureGetScore(const EnsPRepeatfeature rf);
 
-AjBool ensRepeatFeatureSetadaptor(EnsPRepeatFeature rf,
-                                  EnsPRepeatFeatureadaptor rfa);
+AjBool ensRepeatfeatureSetAdaptor(EnsPRepeatfeature rf,
+                                  EnsPRepeatfeatureadaptor rfa);
 
-AjBool ensRepeatFeatureSetIdentifier(EnsPRepeatFeature rf, ajuint identifier);
+AjBool ensRepeatfeatureSetIdentifier(EnsPRepeatfeature rf, ajuint identifier);
 
-AjBool ensRepeatFeatureSetFeature(EnsPRepeatFeature rf, EnsPFeature feature);
+AjBool ensRepeatfeatureSetFeature(EnsPRepeatfeature rf, EnsPFeature feature);
 
-AjBool ensRepeatFeatureSetRepeatConsensus(EnsPRepeatFeature rf,
-                                          EnsPRepeatConsensus rc);
+AjBool ensRepeatfeatureSetRepeatconsensus(EnsPRepeatfeature rf,
+                                          EnsPRepeatconsensus rc);
 
-AjBool ensRepeatFeatureSetHitStart(EnsPRepeatFeature rf, ajuint hstart);
+AjBool ensRepeatfeatureSetHitStart(EnsPRepeatfeature rf, ajuint hstart);
 
-AjBool ensRepeatFeatureSetHitEnd(EnsPRepeatFeature rf, ajuint hend);
+AjBool ensRepeatfeatureSetHitEnd(EnsPRepeatfeature rf, ajuint hend);
 
-AjBool ensRepeatFeatureSetScore(EnsPRepeatFeature rf, double score);
+AjBool ensRepeatfeatureSetScore(EnsPRepeatfeature rf, double score);
 
-AjBool ensRepeatFeatureTrace(const EnsPRepeatFeature rf, ajuint level);
+AjBool ensRepeatfeatureTrace(const EnsPRepeatfeature rf, ajuint level);
 
-ajuint ensRepeatFeatureGetMemSize(const EnsPRepeatFeature rf);
+ajuint ensRepeatfeatureGetMemSize(const EnsPRepeatfeature rf);
 
 /* Ensembl Repeat Feature Adaptor */
 
-EnsPRepeatFeatureadaptor ensRepeatFeatureadaptorNew(EnsPDatabaseadaptor dba);
+EnsPRepeatfeatureadaptor ensRepeatfeatureadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensRepeatFeatureadaptorDel(EnsPRepeatFeatureadaptor *Prfa);
+void ensRepeatfeatureadaptorDel(EnsPRepeatfeatureadaptor *Prfa);
 
-AjBool ensRepeatFeatureadaptorFetchAllBySlice(
-    const EnsPRepeatFeatureadaptor rfa,
+AjBool ensRepeatfeatureadaptorFetchAllBySlice(
+    const EnsPRepeatfeatureadaptor rfa,
     EnsPSlice slice,
     const AjPStr anname,
     const AjPStr rctype,

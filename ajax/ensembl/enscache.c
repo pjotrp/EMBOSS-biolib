@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** Bio::EnsEMBL::Utils::Cache CVS Revision: 1.2
@@ -354,6 +354,26 @@ static AjBool cacheNodeRemove(EnsPCache cache, const CachePNode node)
     return ajTrue;
 }
 
+/* @filesection enscache *****************************************************
+**
+** @nam1rule ens Function belongs to the AJAX Ensembl library
+** @nam2rule Cache Ensembl Cache objects
+**
+******************************************************************************/
+
+/* @datasection [EnsPCache] Ensembl Cache **************************************
+**
+** Functions for Ensembl Caches
+**
+**
+******************************************************************************/
+
+/* @section functions *********************************************************
+**
+** @fdata [EnsPCache]
+** @fcategory misc
+**
+******************************************************************************/
 
 
 
@@ -483,7 +503,7 @@ EnsPCache ensCacheNew(AjEnum type,
     
     if(type == ensECacheTypeNumeric)
 	cache->Table =
-	    ajTableNewFunctionLen(0, ensTableCmpUInt, ensTableHashUInt);
+	    ajTableNewFunctionLen(0, ensTableCmpUint, ensTableHashUint);
     
     if(type == ensECacheTypeAlphaNumeric)
 	cache->Table = ajTablestrNewLen(0);

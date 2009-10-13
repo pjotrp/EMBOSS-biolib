@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -124,7 +124,7 @@ static const char *databaseAdaptorGroup[] =
 ** Ensembl Registry and subsequently return it for use.
 **
 ** @cc Bio::EnsEMBL::DBSQL::DBAdaptor::new
-** @param [r] dbc [EnsPDatabaseConnection] Ensembl Database Connection
+** @param [r] dbc [EnsPDatabaseconnection] Ensembl Database Connection
 ** @param [u] database [AjPStr] Database name (optional). If not provided, the
 **                              database name in the Database Connection will
 **                              be used.
@@ -143,7 +143,7 @@ static const char *databaseAdaptorGroup[] =
 ******************************************************************************/
 
 EnsPDatabaseadaptor ensDatabaseadaptorNew(
-    EnsPDatabaseConnection dbc,
+    EnsPDatabaseconnection dbc,
     AjPStr database,
     AjPStr species,
     AjEnum group,
@@ -167,7 +167,7 @@ EnsPDatabaseadaptor ensDatabaseadaptorNew(
 	     multi,
 	     identifier);
      
-     ensDatabaseConnectionTrace(dbc, 1);
+     ensDatabaseconnectionTrace(dbc, 1);
      */
     
     if(!dbc)
@@ -181,7 +181,7 @@ EnsPDatabaseadaptor ensDatabaseadaptorNew(
     
     AJNEW0(dba);
     
-    dba->DatabaseConnection = ensDatabaseConnectionNewC(dbc, database);
+    dba->Databaseconnection = ensDatabaseconnectionNewC(dbc, database);
     
     if(species)
 	dba->Species = ajStrNewRef(species);
@@ -259,7 +259,7 @@ void ensDatabaseadaptorDel(EnsPDatabaseadaptor* Pdba)
      ensDatabaseadaptorDebug(*Pdba, 1);
      */
     
-    ensDatabaseConnectionDel(&pthis->DatabaseConnection);
+    ensDatabaseconnectionDel(&pthis->Databaseconnection);
     
     ajStrDel(&pthis->Species);
     
@@ -281,7 +281,7 @@ void ensDatabaseadaptorDel(EnsPDatabaseadaptor* Pdba)
 ** @fnote None
 **
 ** @nam3rule Get Return Database Adaptor attribute(s)
-** @nam4rule GetDatabaseConnection Return the Ensembl Database Connection
+** @nam4rule GetDatabaseconnection Return the Ensembl Database Connection
 ** @nam4rule GetSpecies Return the species
 ** @nam4rule GetGroup Return the group
 ** @nam4rule GetMultiSpecies Return the multi-species flag
@@ -289,7 +289,7 @@ void ensDatabaseadaptorDel(EnsPDatabaseadaptor* Pdba)
 **
 ** @argrule * dba [const EnsPDatabaseadaptor] Database Adaptor
 **
-** @valrule DatabaseConnection [EnsPDatabaseConnection] Ensembl Database
+** @valrule Databaseconnection [EnsPDatabaseconnection] Ensembl Database
 **                                                      Connection
 ** @valrule Species [AjPStr] Species
 ** @valrule Group [AjEnum] Group
@@ -302,24 +302,24 @@ void ensDatabaseadaptorDel(EnsPDatabaseadaptor* Pdba)
 
 
 
-/* @func ensDatabaseadaptorGetDatabaseConnection ******************************
+/* @func ensDatabaseadaptorGetDatabaseconnection ******************************
 **
 ** Get the Ensembl Database Connection element of an Ensembl Database Adaptor.
 **
 ** @cc Bio::EnsEMBL::DBSQL::DBAdaptor::dbc
 ** @param [r] dba [const EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPDatabaseConnection] Ensembl Database Connection or NULL
+** @return [EnsPDatabaseconnection] Ensembl Database Connection or NULL
 ** @@
 ******************************************************************************/
 
-EnsPDatabaseConnection ensDatabaseadaptorGetDatabaseConnection(
+EnsPDatabaseconnection ensDatabaseadaptorGetDatabaseconnection(
     const EnsPDatabaseadaptor dba)
 {
     if(!dba)
         return NULL;
     
-    return dba->DatabaseConnection;
+    return dba->Databaseconnection;
 }
 
 
@@ -424,7 +424,7 @@ ajuint ensDatabaseadaptorGetIdentifier(const EnsPDatabaseadaptor dba)
 ** @fnote None
 **
 ** @nam3rule Set Set one element of an Ensembl Database Adaptor
-** @nam4rule SetDatabaseConnection Set the Ensembl Database Connection
+** @nam4rule SetDatabaseconnection Set the Ensembl Database Connection
 ** @nam4rule SetSpecies Set the species
 ** @nam4rule SetGroup Set the group
 ** @nam4rule SetMultiSpecies Set the multiple-species flag
@@ -440,27 +440,27 @@ ajuint ensDatabaseadaptorGetIdentifier(const EnsPDatabaseadaptor dba)
 
 
 
-/* @func ensDatabaseadaptorSetDatabaseConnection ******************************
+/* @func ensDatabaseadaptorSetDatabaseconnection ******************************
 **
 ** Set the Ensembl Database Connection element of an Ensembl Database Adaptor.
 **
 ** @cc Bio::EnsEMBL::DBSQL::DBAdaptor::dbc
 ** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @param [u] dbc [EnsPDatabaseConnection] Ensembl Database Connection
+** @param [u] dbc [EnsPDatabaseconnection] Ensembl Database Connection
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensDatabaseadaptorSetDatabaseConnection(EnsPDatabaseadaptor dba,
-                                               EnsPDatabaseConnection dbc)
+AjBool ensDatabaseadaptorSetDatabaseconnection(EnsPDatabaseadaptor dba,
+                                               EnsPDatabaseconnection dbc)
 {
     if(!dba)
         return ajFalse;
     
-    ensDatabaseConnectionDel(&(dba->DatabaseConnection));
+    ensDatabaseconnectionDel(&(dba->Databaseconnection));
     
-    dba->DatabaseConnection = ensDatabaseConnectionNewRef(dbc);
+    dba->Databaseconnection = ensDatabaseconnectionNewRef(dbc);
     
     return ajTrue;
 }
@@ -659,8 +659,8 @@ AjBool ensDatabaseadaptorMatch(const EnsPDatabaseadaptor dba1,
     if(dba1 == dba2)
 	return ajTrue;
     
-    if(!ensDatabaseConnectionMatch(dba1->DatabaseConnection,
-                                   dba2->DatabaseConnection))
+    if(!ensDatabaseconnectionMatch(dba1->Databaseconnection,
+                                   dba2->Databaseconnection))
 	return ajFalse;
     
     if(dba1->Group != dba2->Group)
@@ -686,7 +686,7 @@ AjBool ensDatabaseadaptorMatch(const EnsPDatabaseadaptor dba1,
 ** Tests whether an Ensembl Database Adaptor matches component elements.
 **
 ** @param [r] dba [const EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @param [r] dbc [cons EnsPDatabaseConnection] Ensembl Database Connection
+** @param [r] dbc [const EnsPDatabaseconnection] Ensembl Database Connection
 ** @param [r] species [const AjPStr] Species
 ** @param [r] group [AjEnum] Group
 ** @param [r] multi [AjBool] Multiple species
@@ -697,7 +697,7 @@ AjBool ensDatabaseadaptorMatch(const EnsPDatabaseadaptor dba1,
 ******************************************************************************/
 
 AjBool ensDatabaseadaptorMatchComponents(const EnsPDatabaseadaptor dba,
-                                         const EnsPDatabaseConnection dbc,
+                                         const EnsPDatabaseconnection dbc,
                                          const AjPStr species,
                                          AjEnum group,
                                          AjBool multi,
@@ -724,7 +724,7 @@ AjBool ensDatabaseadaptorMatchComponents(const EnsPDatabaseadaptor dba,
     if(dba->Identifier != identifier)
 	return ajFalse;
     
-    if(!ensDatabaseConnectionMatch(dba->DatabaseConnection, dbc))
+    if(!ensDatabaseconnectionMatch(dba->Databaseconnection, dbc))
 	return ajFalse;
     
     if(!ajStrMatchCaseS(dba->Species, species))
@@ -756,7 +756,7 @@ AjPSqlstatement ensDatabaseadaptorSqlstatementNew(EnsPDatabaseadaptor dba,
     if(!statement)
 	return NULL;
     
-    return ensDatabaseConnectionSqlstatementNew(dba->DatabaseConnection,
+    return ensDatabaseconnectionSqlstatementNew(dba->Databaseconnection,
 						statement);
 }
 
@@ -798,7 +798,7 @@ AjBool ensDatabaseadaptorEscapeC(EnsPDatabaseadaptor dba,
      ensDatabaseadaptorTrace(dba, 1);
      */
     
-    return ensDatabaseConnectionEscapeC(dba->DatabaseConnection, Ptxt, str);
+    return ensDatabaseconnectionEscapeC(dba->Databaseconnection, Ptxt, str);
 }
 
 
@@ -839,7 +839,7 @@ AjBool ensDatabaseadaptorEscapeS(EnsPDatabaseadaptor dba,
      ensDatabaseadaptorTrace(dba, 1);
      */
     
-    return ensDatabaseConnectionEscapeS(dba->DatabaseConnection, Pstr, str);
+    return ensDatabaseconnectionEscapeS(dba->Databaseconnection, Pstr, str);
 }
 
 
@@ -886,19 +886,19 @@ AjBool ensDatabaseadaptorTrace(const EnsPDatabaseadaptor dba, ajuint level)
     ajStrAppendCountK(&indent, ' ', level * 2);
     
     ajDebug("%SensDatabaseadaptorTrace %p\n"
-	    "%S  DatabaseConnection %p\n"
+	    "%S  Databaseconnection %p\n"
 	    "%S  Species '%S'\n"
 	    "%S  Group '%s'\n"
 	    "%S  MultiSpecies %B\n"
 	    "%S  Identifier %u\n",
 	    indent, dba,
-	    indent, dba->DatabaseConnection,
+	    indent, dba->Databaseconnection,
 	    indent, dba->Species,
 	    indent, ensDatabaseadaptorGroupToChar(dba->Group),
 	    indent, dba->MultiSpecies,
 	    indent, dba->Identifier);
     
-    ensDatabaseConnectionTrace(dba->DatabaseConnection, level + 1);
+    ensDatabaseconnectionTrace(dba->Databaseconnection, level + 1);
     
     ajStrDel(&indent);
     
@@ -921,7 +921,8 @@ AjBool ensDatabaseadaptorTrace(const EnsPDatabaseadaptor dba, ajuint level)
 ** @@
 ******************************************************************************/
 
-AjBool ensDatabaseadaptorGetSchemaBuild(EnsPDatabaseadaptor dba, AjPStr *Pbuild)
+AjBool ensDatabaseadaptorGetSchemaBuild(const EnsPDatabaseadaptor dba,
+                                        AjPStr *Pbuild)
 {
     ajuint i = 0;
     ajuint tokens = 0;
@@ -938,7 +939,7 @@ AjBool ensDatabaseadaptorGetSchemaBuild(EnsPDatabaseadaptor dba, AjPStr *Pbuild)
     
     ajStrAssignClear(Pbuild);
     
-    database = ensDatabaseConnectionGetDatabaseName(dba->DatabaseConnection);
+    database = ensDatabaseconnectionGetDatabaseName(dba->Databaseconnection);
     
     tokens = ajStrParseCountC(database, "_");
     

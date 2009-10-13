@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -39,38 +39,38 @@
 extern EnsPAnalysisadaptor
 ensRegistryGetAnalysisadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPAssemblyExceptionadaptor
-ensRegistryGetAssemblyExceptionadaptor(EnsPDatabaseadaptor dba);
+extern EnsPAssemblyexceptionadaptor
+ensRegistryGetAssemblyexceptionadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPAssemblyExceptionFeatureadaptor
-ensRegistryGetAssemblyExceptionFeatureadaptor(EnsPDatabaseadaptor dba);
+extern EnsPAssemblyexceptionfeatureadaptor
+ensRegistryGetAssemblyexceptionfeatureadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPAssemblyMapperadaptor
-ensRegistryGetAssemblyMapperadaptor(EnsPDatabaseadaptor dba);
+extern EnsPAssemblymapperadaptor
+ensRegistryGetAssemblymapperadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPCoordSystemadaptor
-ensRegistryGetCoordSystemadaptor(EnsPDatabaseadaptor dba);
+extern EnsPCoordsystemadaptor
+ensRegistryGetCoordsystemadaptor(EnsPDatabaseadaptor dba);
 
 extern EnsPDNAAlignFeatureadaptor
 ensRegistryGetDNAAlignFeatureadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPExternalDatabaseadaptor
-ensRegistryGetExternalDatabaseadaptor(EnsPDatabaseadaptor dba);
+extern EnsPExternaldatabaseadaptor
+ensRegistryGetExternaldatabaseadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPMetaInformationadaptor
-ensRegistryGetMetaInformationadaptor(EnsPDatabaseadaptor dba);
+extern EnsPMetainformationadaptor
+ensRegistryGetMetainformationadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPMetaCoordinateadaptor
-ensRegistryGetMetaCoordinateadaptor(EnsPDatabaseadaptor dba);
+extern EnsPMetacoordinateadaptor
+ensRegistryGetMetacoordinateadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPProteinAlignFeatureadaptor
-ensRegistryGetProteinAlignFeatureadaptor(EnsPDatabaseadaptor dba);
+extern EnsPProteinalignfeatureadaptor
+ensRegistryGetProteinalignfeatureadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPProteinFeatureadaptor
-ensRegistryGetProteinFeatureadaptor(EnsPDatabaseadaptor dba);
+extern EnsPProteinfeatureadaptor
+ensRegistryGetProteinfeatureadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPSimpleFeatureadaptor
-ensRegistryGetSimpleFeatureadaptor(EnsPDatabaseadaptor dba);
+extern EnsPSimplefeatureadaptor
+ensRegistryGetSimplefeatureadaptor(EnsPDatabaseadaptor dba);
 
 extern EnsPSliceadaptor
 ensRegistryGetSliceadaptor(EnsPDatabaseadaptor dba);
@@ -82,7 +82,7 @@ static AjBool featureAdaptorAnalysisNameToConstraint(
 
 static AjBool featureAdaptorRemap(EnsPFeatureadaptor adaptor,
                                   AjPList objects,
-                                  EnsPAssemblyMapper am,
+                                  EnsPAssemblymapper am,
                                   EnsPSlice slice);
 
 static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
@@ -93,10 +93,11 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
 static int baseAlignFeatureCompareSourceFeatureStart(const void* P1,
                                                      const void* P2);
 
-static AjBool baseAlignFeatureParseFeatures(EnsPBaseAlignFeature baf,
+static AjBool baseAlignFeatureParseFeatures(EnsPBasealignfeature baf,
                                             AjPList objects);
 
-static AjBool baseAlignFeatureParseCigar(EnsPBaseAlignFeature baf, AjPList fps);
+static AjBool baseAlignFeatureParseCigar(const EnsPBasealignfeature baf,
+                                         AjPList fps);
 
 static void *baseAlignFeatureadaptorCacheReference(void *value);
 
@@ -108,25 +109,25 @@ static EnsPFeature baseAlignFeatureadaptorGetFeature(const void *value);
 
 static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                   const AjPStr statement,
-                                                  EnsPAssemblyMapper mapper,
+                                                  EnsPAssemblymapper mapper,
                                                   EnsPSlice slice,
                                                   AjPList bafs);
 
 static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                       const AjPStr statement,
-                                                      EnsPAssemblyMapper mapper,
+                                                      EnsPAssemblymapper mapper,
                                                       EnsPSlice slice,
                                                       AjPList bafs);
 
 static AjBool proteinFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                  const AjPStr statement,
-                                                 EnsPAssemblyMapper mapper,
+                                                 EnsPAssemblymapper mapper,
                                                  EnsPSlice slice,
                                                  AjPList pfs);
 
 static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                 const AjPStr statement,
-                                                EnsPAssemblyMapper mapper,
+                                                EnsPAssemblymapper mapper,
                                                 EnsPSlice slice,
                                                 AjPList sfs);
 
@@ -139,21 +140,21 @@ static ajuint simpleFeatureadaptorCacheSize(const void *value);
 static EnsPFeature simpleFeatureadaptorGetFeature(const void *value);
 
 static AjBool assemblyExceptionFeatureadaptorCacheInit(
-    EnsPAssemblyExceptionFeatureadaptor aefa);
+    EnsPAssemblyexceptionfeatureadaptor aefa);
 
 static AjBool assemblyExceptionFeatureadaptorCacheClear(
-    EnsPAssemblyExceptionFeatureadaptor adaptor);
+    EnsPAssemblyexceptionfeatureadaptor adaptor);
 
 static AjBool assemblyExceptionFeatureadaptorRemap(
-    EnsPAssemblyExceptionFeatureadaptor adaptor,
+    EnsPAssemblyexceptionfeatureadaptor adaptor,
     AjPList aefs,
-    EnsPAssemblyMapper am,
+    EnsPAssemblymapper am,
     EnsPSlice slice);
 
 
 
 
-static ajuint ensFeatureadaptorMaxSplitQuerySeqRegions = 3;
+static ajuint ensFeatureadaptorMaxSplitQuerySeqregions = 3;
 
 
 
@@ -933,18 +934,18 @@ ajuint ensFeatureGetMemSize(const EnsPFeature feature)
 
 
 
-/* @func ensFeatureGetSeqRegion ***********************************************
+/* @func ensFeatureGetSeqregion ***********************************************
 **
 ** Get the Ensembl Sequence Region element of the
 ** Ensembl Slice element of an Ensembl Feature.
 **
 ** @param [r] feature [const EnsPFeature] Ensembl Feature
 **
-** @return [const EnsPSeqRegion] Ensembl Sequence Region
+** @return [const EnsPSeqregion] Ensembl Sequence Region
 ** @@
 ******************************************************************************/
 
-const EnsPSeqRegion ensFeatureGetSeqRegion(const EnsPFeature feature)
+const EnsPSeqregion ensFeatureGetSeqregion(const EnsPFeature feature)
 {
     if(!feature)
         return NULL;
@@ -952,13 +953,13 @@ const EnsPSeqRegion ensFeatureGetSeqRegion(const EnsPFeature feature)
     if(!feature->Slice)
 	return NULL;
     
-    return ensSliceGetSeqRegion(feature->Slice);
+    return ensSliceGetSeqregion(feature->Slice);
 }
 
 
 
 
-/* @func ensFeatureGetSeqRegionName *******************************************
+/* @func ensFeatureGetSeqregionName *******************************************
 **
 ** Get the name element of the Ensembl Sequence Region element of the
 ** Ensembl Slice element of an Ensembl Feature.
@@ -970,7 +971,7 @@ const EnsPSeqRegion ensFeatureGetSeqRegion(const EnsPFeature feature)
 ** @@
 ******************************************************************************/
 
-const AjPStr ensFeatureGetSeqRegionName(const EnsPFeature feature)
+const AjPStr ensFeatureGetSeqregionName(const EnsPFeature feature)
 {
     if(!feature)
         return NULL;
@@ -978,13 +979,13 @@ const AjPStr ensFeatureGetSeqRegionName(const EnsPFeature feature)
     if(!feature->Slice)
 	return NULL;
     
-    return ensSliceGetSeqRegionName(feature->Slice);
+    return ensSliceGetSeqregionName(feature->Slice);
 }
 
 
 
 
-/* @func ensFeatureGetSeqRegionStart ******************************************
+/* @func ensFeatureGetSeqregionStart ******************************************
 **
 ** Get the start coordinate of an Ensembl Feature relative to the
 ** Ensembl Sequence Region element of the Ensembl Slice element of an
@@ -997,7 +998,7 @@ const AjPStr ensFeatureGetSeqRegionName(const EnsPFeature feature)
 ** @@
 ******************************************************************************/
 
-ajint ensFeatureGetSeqRegionStart(const EnsPFeature feature)
+ajint ensFeatureGetSeqregionStart(const EnsPFeature feature)
 {
     if(!feature)
         return 0;
@@ -1014,7 +1015,7 @@ ajint ensFeatureGetSeqRegionStart(const EnsPFeature feature)
 
 
 
-/* @func ensFeatureGetSeqRegionEnd ********************************************
+/* @func ensFeatureGetSeqregionEnd ********************************************
 **
 ** Get the end coordinate of an Ensembl Feature relative to the
 ** Ensembl Sequence Region element of the Ensembl Slice element of an
@@ -1027,7 +1028,7 @@ ajint ensFeatureGetSeqRegionStart(const EnsPFeature feature)
 ** @@
 ******************************************************************************/
 
-ajint ensFeatureGetSeqRegionEnd(const EnsPFeature feature)
+ajint ensFeatureGetSeqregionEnd(const EnsPFeature feature)
 {
     if(!feature)
         return 0;
@@ -1044,7 +1045,7 @@ ajint ensFeatureGetSeqRegionEnd(const EnsPFeature feature)
 
 
 
-/* @func ensFeatureGetSeqRegionStrand *****************************************
+/* @func ensFeatureGetSeqregionStrand *****************************************
 **
 ** Get the strand information of an Ensembl Feature relative to the
 ** Ensembl Sequence Region element of the Ensembl Slice element of an
@@ -1057,7 +1058,7 @@ ajint ensFeatureGetSeqRegionEnd(const EnsPFeature feature)
 ** @@
 ******************************************************************************/
 
-ajint ensFeatureGetSeqRegionStrand(const EnsPFeature feature)
+ajint ensFeatureGetSeqregionStrand(const EnsPFeature feature)
 {
     if(!feature)
         return 0;
@@ -1071,7 +1072,7 @@ ajint ensFeatureGetSeqRegionStrand(const EnsPFeature feature)
 
 
 
-/* @func ensFeatureGetSeqRegionLength *****************************************
+/* @func ensFeatureGetSeqregionLength *****************************************
 **
 ** Get the length element of the Ensembl Sequence Region element of the
 ** Ensembl Slice element of an Ensembl Feature.
@@ -1083,7 +1084,7 @@ ajint ensFeatureGetSeqRegionStrand(const EnsPFeature feature)
 ** @@
 ******************************************************************************/
 
-ajuint ensFeatureGetSeqRegionLength(const EnsPFeature feature)
+ajuint ensFeatureGetSeqregionLength(const EnsPFeature feature)
 {
     if(!feature)
         return 0;
@@ -1091,7 +1092,7 @@ ajuint ensFeatureGetSeqRegionLength(const EnsPFeature feature)
     if(!feature->Slice)
 	return 0;
     
-    return ensSliceGetSeqRegionLength(feature->Slice);
+    return ensSliceGetSeqregionLength(feature->Slice);
 }
 
 
@@ -1148,7 +1149,7 @@ AjBool ensFeatureMove(EnsPFeature feature, ajint start, ajint end, ajint strand)
 **
 ** @cc Bio::EnsEMBL::Feature::project
 ** @param [r] feature [const EnsPFeature] Ensembl Feature
-** @param [r] csname [const AjPstr] Ensembl Coordinate System name
+** @param [r] csname [const AjPStr] Ensembl Coordinate System name
 ** @param [r] csversion [const AjPStr] Ensembl Coordinate System version
 ** @param [u] pslist [AjPList] AJAX List of Ensembl Projection Segments
 **
@@ -1207,7 +1208,7 @@ AjBool ensFeatureProject(const EnsPFeature feature,
     ** yet be stored in the database and may not have its own Adaptor.
     */
     
-    sa = ensSliceGetadaptor(feature->Slice);
+    sa = ensSliceGetAdaptor(feature->Slice);
     
     if(!sa)
     {
@@ -1257,6 +1258,8 @@ AjBool ensFeatureProject(const EnsPFeature feature,
 **
 ** Transform an Ensembl Feature into another Ensembl Coordinate System.
 **
+** May simply return a reference copy
+**
 ** @cc Bio::EnsEMBL::Feature::transform
 ** @param [u] feature [EnsPFeature] Ensembl Feature
 ** @param [r] csname [const AjPStr] Ensembl Coordinate System name
@@ -1290,15 +1293,15 @@ EnsPFeature ensFeatureTransform(EnsPFeature feature,
     const AjPStr pcsversion = NULL;
     const AjPStr psrname    = NULL;
     
-    EnsPCoordSystem cs         = NULL;
-    const EnsPCoordSystem pcs  = NULL;
-    EnsPCoordSystemadaptor csa = NULL;
+    EnsPCoordsystem cs         = NULL;
+    const EnsPCoordsystem pcs  = NULL;
+    EnsPCoordsystemadaptor csa = NULL;
     
     EnsPDatabaseadaptor dba = NULL;
     
     EnsPFeature nfeature = NULL;
     
-    EnsPProjectionSegment ps = NULL;
+    EnsPProjectionsegment ps = NULL;
     
     EnsPSlice nslice       = NULL;
     const EnsPSlice pslice = NULL;
@@ -1341,7 +1344,7 @@ EnsPFeature ensFeatureTransform(EnsPFeature feature,
     ** yet be stored in the database and may not have its own Adaptor.
     */
     
-    sa = ensSliceGetadaptor(feature->Slice);
+    sa = ensSliceGetAdaptor(feature->Slice);
     
     if(!sa)
     {
@@ -1352,7 +1355,7 @@ EnsPFeature ensFeatureTransform(EnsPFeature feature,
 	return NULL;
     }
     
-    if(!ensSliceGetCoordSystem(feature->Slice))
+    if(!ensSliceGetCoordsystem(feature->Slice))
     {
 	ajWarn("ensFeatureTransform requires an Ensembl Feature with "
 	       "an Ensembl Coordinate System element attached to the "
@@ -1363,9 +1366,9 @@ EnsPFeature ensFeatureTransform(EnsPFeature feature,
     
     dba = ensSliceadaptorGetDatabaseadaptor(sa);
     
-    csa = ensRegistryGetCoordSystemadaptor(dba);
+    csa = ensRegistryGetCoordsystemadaptor(dba);
     
-    ensCoordSystemadaptorFetchByName(csa, csname, csversion, &cs);
+    ensCoordsystemadaptorFetchByName(csa, csname, csversion, &cs);
     
     if(!cs)
 	ajFatal("ensFeatureTransform cannot transform to an unknown "
@@ -1386,13 +1389,13 @@ EnsPFeature ensFeatureTransform(EnsPFeature feature,
     ** full Sequence Region.
     */
     
-    if(ensCoordSystemMatch(cs, ensSliceGetCoordSystem(feature->Slice)) &&
+    if(ensCoordsystemMatch(cs, ensSliceGetCoordsystem(feature->Slice)) &&
        (ensSliceGetStart(feature->Slice) == 1) &&
        (ensSliceGetStrand(feature->Slice) >= 0))
     {
 	nfeature = ensFeatureNewRef(feature);
 	
-	ensCoordSystemDel(&cs);
+	ensCoordsystemDel(&cs);
 	
 	return nfeature;
     }
@@ -1410,19 +1413,19 @@ EnsPFeature ensFeatureTransform(EnsPFeature feature,
     
     if(ajListGetLength(pslist) == 1)
     {
-	pslice = ensProjectionSegmentGetTrgSlice(ps);
+	pslice = ensProjectionsegmentGetTrgSlice(ps);
 	
-	pcs = ensSliceGetCoordSystem(pslice);
+	pcs = ensSliceGetCoordsystem(pslice);
 	
-	pcsname = ensCoordSystemGetName(pcs);
+	pcsname = ensCoordsystemGetName(pcs);
 	
-	pcsversion = ensCoordSystemGetVersion(pcs);
+	pcsversion = ensCoordsystemGetVersion(pcs);
 	
-	psrname = ensSliceGetSeqRegionName(pslice);
+	psrname = ensSliceGetSeqregionName(pslice);
 	
 	/*
 	** TODO: This could all be simpler if we had an
-	** ensSliceadaptorFetchBySeqRegion function.
+	** ensSliceadaptorFetchBySeqregion function.
 	** We could create the Slice directly from the Sequence Region, but
 	** going through the Adaptor has the big advantage that the Slice
 	** would be inserted into the Adaptor-internal cache, which would
@@ -1453,11 +1456,11 @@ EnsPFeature ensFeatureTransform(EnsPFeature feature,
     }
     
     while(ajListPop(pslist, (void **) &ps))
-	ensProjectionSegmentDel(&ps);
+	ensProjectionsegmentDel(&ps);
     
     ajListFree(&pslist);
     
-    ensCoordSystemDel(&cs);
+    ensCoordsystemDel(&cs);
     
     return nfeature;
 }
@@ -1492,8 +1495,8 @@ EnsPFeature ensFeatureTransfer(EnsPFeature feature, EnsPSlice slice)
     ajint nfstart = 0;
     ajint nfend = 0;
     
-    const EnsPCoordSystem srccs = NULL;
-    const EnsPCoordSystem trgcs = NULL;
+    const EnsPCoordsystem srccs = NULL;
+    const EnsPCoordsystem trgcs = NULL;
     
     EnsPFeature nf = NULL;
     
@@ -1519,9 +1522,9 @@ EnsPFeature ensFeatureTransfer(EnsPFeature feature, EnsPSlice slice)
 	return NULL;
     }
     
-    srccs = ensSliceGetCoordSystem(feature->Slice);
+    srccs = ensSliceGetCoordsystem(feature->Slice);
     
-    trgcs = ensSliceGetCoordSystem(slice);
+    trgcs = ensSliceGetCoordsystem(slice);
     
     /*
     ** If the Coordinate Systems of the Feature and the Slice are identical,
@@ -1529,13 +1532,13 @@ EnsPFeature ensFeatureTransfer(EnsPFeature feature, EnsPSlice slice)
     ** transforming into the target Cordinate System first.
     */
     
-    if(ensCoordSystemMatch(srccs, trgcs))
+    if(ensCoordsystemMatch(srccs, trgcs))
 	nf = ensFeatureNewObj(feature);
     else
     {
 	nf = ensFeatureTransform(feature,
-				 ensCoordSystemGetName(trgcs),
-				 ensCoordSystemGetVersion(trgcs));
+				 ensCoordsystemGetName(trgcs),
+				 ensCoordsystemGetVersion(trgcs));
 	
 	if(!nf)
 	{
@@ -1555,7 +1558,7 @@ EnsPFeature ensFeatureTransfer(EnsPFeature feature, EnsPSlice slice)
     ** Sequence Regions in different coordinate systems may have the same
     ** name e.g. clone and contig.
     **
-    ** We should really use ensSeqRegionMatch for this.
+    ** We should really use ensSeqregionMatch for this.
     **
     ** But why is this test there at all?
     ** The Perl API method description claims that this method can transform
@@ -1572,13 +1575,13 @@ EnsPFeature ensFeatureTransfer(EnsPFeature feature, EnsPSlice slice)
     ** Test this!
     */
     
-    if(!ajStrMatchCaseS(ensSliceGetSeqRegionName(nf->Slice),
-			  ensSliceGetSeqRegionName(slice)))
+    if(!ajStrMatchCaseS(ensSliceGetSeqregionName(nf->Slice),
+			  ensSliceGetSeqregionName(slice)))
     {
 	ajDebug("ensFeatureTransfer got a Feature on a different "
 		"Sequence Region '%S' vs '%S'.\n",
-		ensSliceGetSeqRegionName(nf->Slice),
-		ensSliceGetSeqRegionName(slice));
+		ensSliceGetSeqregionName(nf->Slice),
+		ensSliceGetSeqregionName(slice));
 	
 	ensFeatureDel(&nf);
 	
@@ -1677,9 +1680,9 @@ AjBool ensFeatureFetchAllAlternativeLocations(EnsPFeature feature,
     AjPList haps = NULL;
     AjPList alts = NULL;
     
-    EnsPAssemblyExceptionFeature aef         = NULL;
-    EnsPAssemblyExceptionFeature naef        = NULL;
-    EnsPAssemblyExceptionFeatureadaptor aefa = NULL;
+    EnsPAssemblyexceptionfeature aef         = NULL;
+    EnsPAssemblyexceptionfeature naef        = NULL;
+    EnsPAssemblyexceptionfeatureadaptor aefa = NULL;
     
     EnsPDatabaseadaptor dba = NULL;
     
@@ -1700,7 +1703,7 @@ AjBool ensFeatureFetchAllAlternativeLocations(EnsPFeature feature,
     if(!fslice)
 	return ajTrue;
     
-    sa = ensSliceGetadaptor(fslice);
+    sa = ensSliceGetAdaptor(fslice);
     
     if(!sa)
 	return ajTrue;
@@ -1712,15 +1715,15 @@ AjBool ensFeatureFetchAllAlternativeLocations(EnsPFeature feature,
     
     dba = ensSliceadaptorGetDatabaseadaptor(sa);
     
-    aefa = ensRegistryGetAssemblyExceptionFeatureadaptor(dba);
+    aefa = ensRegistryGetAssemblyexceptionfeatureadaptor(dba);
     
-    srid = ensSliceGetSeqRegionIdentifier(fslice);
+    srid = ensSliceGetSeqregionIdentifier(fslice);
     
-    ensSliceadaptorFetchBySeqRegionIdentifier(sa, srid, 0, 0, 0, &rslice);
+    ensSliceadaptorFetchBySeqregionIdentifier(sa, srid, 0, 0, 0, &rslice);
     
     aefs = ajListNew();
     
-    ensAssemblyExceptionFeatureadaptorFetchAllBySlice(aefa, rslice, aefs);
+    ensAssemblyexceptionfeatureadaptorFetchAllBySlice(aefa, rslice, aefs);
     
     /*
     ** Group Ensembl Assembly Exception Features based on their type element
@@ -1733,21 +1736,21 @@ AjBool ensFeatureFetchAllAlternativeLocations(EnsPFeature feature,
     
     while(ajListPop(aefs, (void **) &aef))
     {
-	switch(ensAssemblyExceptionFeatureGetType(aef))
+	switch(ensAssemblyexceptionfeatureGetType(aef))
 	{
-	    case ensEAssemblyExceptionTypeHAP:
+	    case ensEAssemblyexceptionTypeHAP:
 		
 		ajListPushAppend(haps, (void *) aef);
 		
 		break;
 		
-	    case ensEAssemblyExceptionTypePAR:
+	    case ensEAssemblyexceptionTypePAR:
 		
 		ajListPushAppend(alts, (void *) aef);
 		
 		break;
 		
-	    case ensEAssemblyExceptionTypeHAPREF:
+	    case ensEAssemblyexceptionTypeHAPREF:
 		
 		if(all)
 		    ajListPushAppend(haps, (void *) aef);
@@ -1757,20 +1760,20 @@ AjBool ensFeatureFetchAllAlternativeLocations(EnsPFeature feature,
 	    default:
 		
 		ajDebug("ensFeatureFetchAllAlternativeLocations got unknown "
-			"EnsEAssemblyExceptionType (%d).\n",
-			ensAssemblyExceptionFeatureGetType(aef));
+			"EnsEAssemblyexceptionType (%d).\n",
+			ensAssemblyexceptionfeatureGetType(aef));
 	}
 	
 	/*
 	** FIXME: remove this once we know the switch above works.
 	 
-	 if (type == ensEAssemblyExceptionTypeHAP)
+	 if (type == ensEAssemblyexceptionTypeHAP)
 	 ajListPushAppend(haps, (void *) aef);
 	 
-	 else if (type == ensEAssemblyExceptionTypePAR)
+	 else if (type == ensEAssemblyexceptionTypePAR)
 	 ajListPushAppend(alts, (void *) aef);
 	 
-	 else if (type == ensEAssemblyExceptionTypeHAPREF)
+	 else if (type == ensEAssemblyexceptionTypeHAPREF)
 	 {
 	     if (all)
 		 ajListPushAppend(haps, (void *) aef);
@@ -1778,7 +1781,7 @@ AjBool ensFeatureFetchAllAlternativeLocations(EnsPFeature feature,
 	 
 	 else
 	 ajDebug("ensFeatureFetchAllAlternativeLocations got unknown "
-		 "EnsEAssemblyExceptionType (%d).\n", type);
+		 "EnsEAssemblyexceptionType (%d).\n", type);
 	*/
     }
     
@@ -1792,26 +1795,26 @@ AjBool ensFeatureFetchAllAlternativeLocations(EnsPFeature feature,
     
     while (ajListPop(haps, (void **) &aef))
     {
-	afeature = ensAssemblyExceptionFeatureGetFeature(aef);
+	afeature = ensAssemblyexceptionfeatureGetFeature(aef);
 	
-	aslice = ensAssemblyExceptionFeatureGetAlternateSlice(aef);
+	aslice = ensAssemblyexceptionfeatureGetAlternateSlice(aef);
 	
 	if((ensFeatureGetStart(afeature) > 1) &&
 	    (ensSliceGetStart(aslice) > 1))
 	{
 	    /*
             ** TODO: Rewrite this, as it could be much simpler using
-	    ** ensAssemblyExceptionFeatureNewObj and then
-	    ** ensAssemblyExceptionFeatureGetFeature
+	    ** ensAssemblyexceptionfeatureNewObj and then
+	    ** ensAssemblyexceptionfeatureGetFeature
 	    ** ensFeatureNewObj
 	    ** ensFeatureSetStart
 	    ** ensFeatureSetEnd
-	    ** ensAssemblyExceptionFeatureGetAlternateSlice
+	    ** ensAssemblyexceptionfeatureGetAlternateSlice
 	    ** ensSliceNewObj
 	    ** ensSliceSetStart
 	    ** ensSliceSetEnd
-	    ** ensAssemblyExceptionFeatureSetFeature
-	    ** ensAssemblyExceptionFeatureSetAlternateSlice
+	    ** ensAssemblyexceptionfeatureSetFeature
+	    ** ensAssemblyexceptionfeatureSetAlternateSlice
 	    ** ensFeatureDel
 	    ** ensSliceDel
 	    **
@@ -1833,20 +1836,20 @@ AjBool ensFeatureFetchAllAlternativeLocations(EnsPFeature feature,
 	    ensFeatureSetEnd(nfeature, ensFeatureGetStart(afeature) - 1);
 	    
 	    ensSliceadaptorFetchByRegion(sa,
-					 ensSliceGetCoordSystemName(aslice),
-					 ensSliceGetCoordSystemVersion(aslice),
-					 ensSliceGetSeqRegionName(aslice),
+					 ensSliceGetCoordsystemName(aslice),
+					 ensSliceGetCoordsystemVersion(aslice),
+					 ensSliceGetSeqregionName(aslice),
 					 1,
 					 ensSliceGetStart(aslice) - 1,
 					 ensSliceGetStrand(aslice),
 					 &nslice);
 	    
-	    naef = ensAssemblyExceptionFeatureNew(
+	    naef = ensAssemblyexceptionfeatureNew(
                 aefa,
                 0,
                 nfeature,
                 nslice,
-                ensAssemblyExceptionFeatureGetType(aef));
+                ensAssemblyexceptionfeatureGetType(aef));
 	    
 	    ajListPushAppend(alts, (void *) naef);
 	    
@@ -1857,20 +1860,20 @@ AjBool ensFeatureFetchAllAlternativeLocations(EnsPFeature feature,
 	
 	/* Check that Slice lengths are within range. */
 	
-	if(ensSliceGetSeqRegionLength(rslice) <= INT_MAX)
-	    rlength = ensSliceGetSeqRegionLength(rslice);
+	if(ensSliceGetSeqregionLength(rslice) <= INT_MAX)
+	    rlength = ensSliceGetSeqregionLength(rslice);
 	else
 	    ajFatal("ensFeatureFetchAllAlternativeLocations got "
 		    "Sequence Region length (%u) exceeding MAX_INT (%d).\n",
-		    ensSliceGetSeqRegionLength(rslice),
+		    ensSliceGetSeqregionLength(rslice),
 		    INT_MAX);
 	
-	if(ensSliceGetSeqRegionLength(aslice) <= INT_MAX)
-	    alength = ensSliceGetSeqRegionLength(aslice);
+	if(ensSliceGetSeqregionLength(aslice) <= INT_MAX)
+	    alength = ensSliceGetSeqregionLength(aslice);
 	else
 	    ajFatal("ensFeatureFetchAllAlternativeLocations got "
 		    "Sequence Region length (%u) exceeding MAX_INT (%d).\n",
-		    ensSliceGetSeqRegionLength(aslice),
+		    ensSliceGetSeqregionLength(aslice),
 		    INT_MAX);
 	
 	if((ensFeatureGetEnd(afeature) < rlength) &&
@@ -1882,30 +1885,30 @@ AjBool ensFeatureFetchAllAlternativeLocations(EnsPFeature feature,
 	    
 	    ensFeatureSetStart(nfeature, ensFeatureGetEnd(afeature) + 1);
 	    
-	    ensFeatureSetEnd(nfeature, ensFeatureGetSeqRegionLength(afeature));
+	    ensFeatureSetEnd(nfeature, ensFeatureGetSeqregionLength(afeature));
 	    
 	    ensSliceadaptorFetchByRegion(sa,
-					 ensSliceGetCoordSystemName(aslice),
-					 ensSliceGetCoordSystemVersion(aslice),
-					 ensSliceGetSeqRegionName(aslice),
+					 ensSliceGetCoordsystemName(aslice),
+					 ensSliceGetCoordsystemVersion(aslice),
+					 ensSliceGetSeqregionName(aslice),
 					 ensSliceGetEnd(aslice) + 1,
-					 ensSliceGetSeqRegionLength(aslice),
+					 ensSliceGetSeqregionLength(aslice),
 					 ensSliceGetStrand(aslice),
 					 &nslice);
 	    
-	    naef = ensAssemblyExceptionFeatureNew(
+	    naef = ensAssemblyexceptionfeatureNew(
                 aefa,
                 0,
                 nfeature,
                 nslice,
-                ensAssemblyExceptionFeatureGetType(aef));
+                ensAssemblyexceptionfeatureGetType(aef));
 	    
 	    ajListPushAppend(alts, (void *) naef);
 	    
 	    ensSliceDel(&nslice);
 	}
 	
-	ensAssemblyExceptionFeatureDel(&aef);
+	ensAssemblyexceptionfeatureDel(&aef);
     }
     
     ajListFree(&haps);
@@ -1914,17 +1917,17 @@ AjBool ensFeatureFetchAllAlternativeLocations(EnsPFeature feature,
     
     while(ajListPop(alts, (void **) &aef))
     {
-	afeature = ensAssemblyExceptionFeatureGetFeature(aef);
+	afeature = ensAssemblyexceptionfeatureGetFeature(aef);
 	
-	aslice = ensAssemblyExceptionFeatureGetAlternateSlice(aef);
+	aslice = ensAssemblyexceptionfeatureGetAlternateSlice(aef);
 	
 	/* Ignore the other region if the Feature is not entirely on it. */
 	
-	if((ensFeatureGetSeqRegionStart(feature) <
+	if((ensFeatureGetSeqregionStart(feature) <
 	    ensFeatureGetStart(afeature)) ||
-	   (ensFeatureGetSeqRegionEnd(feature) > ensFeatureGetEnd(afeature)))
+	   (ensFeatureGetSeqregionEnd(feature) > ensFeatureGetEnd(afeature)))
 	{
-	    ensAssemblyExceptionFeatureDel(&aef);
+	    ensAssemblyexceptionfeatureDel(&aef);
 	    
 	    continue;
 	}
@@ -1934,12 +1937,12 @@ AjBool ensFeatureFetchAllAlternativeLocations(EnsPFeature feature,
 	/* Position the Feature on the entire Slice of the other region. */
 	
 	nfeature->Start =
-	    ensFeatureGetSeqRegionStart(nfeature) -
+	    ensFeatureGetSeqregionStart(nfeature) -
 	    ensFeatureGetStart(afeature) +
 	    ensSliceGetStart(aslice);
 	
 	nfeature->End =
-	    ensFeatureGetSeqRegionEnd(nfeature) -
+	    ensFeatureGetSeqregionEnd(nfeature) -
 	    ensFeatureGetStart(afeature) +
 	    ensSliceGetStart(aslice);
 	
@@ -1950,9 +1953,9 @@ AjBool ensFeatureFetchAllAlternativeLocations(EnsPFeature feature,
 	** Ensembl Sequence Region element.
 	*/
 	
-	ensSliceadaptorFetchBySeqRegionIdentifier(
+	ensSliceadaptorFetchBySeqregionIdentifier(
             sa,
-            ensSliceGetSeqRegionIdentifier(aslice),
+            ensSliceGetSeqregionIdentifier(aslice),
             0,
             0,
             0,
@@ -2002,8 +2005,8 @@ AjBool ensFeatureOverlap(const EnsPFeature feature1, const EnsPFeature feature2)
     name1 = ajStrNew();
     name2 = ajStrNew();
     
-    ensFeatureFetchSeqRegionName(feature1, &name1);
-    ensFeatureFetchSeqRegionName(feature2, &name2);
+    ensFeatureFetchSeqregionName(feature1, &name1);
+    ensFeatureFetchSeqregionName(feature2, &name2);
     
     if((name1 && name2) && (! ajStrMatchCaseS(name1, name2)))
     {
@@ -2026,7 +2029,7 @@ AjBool ensFeatureOverlap(const EnsPFeature feature1, const EnsPFeature feature2)
 
 
 
-/* @func ensFeatureFetchSeqRegionName *****************************************
+/* @func ensFeatureFetchSeqregionName *****************************************
 **
 ** Fetch the Ensembl Sequence Region name, which can be the sequence name
 ** element set in the Ensembl Feature or, if not available, the
@@ -2040,7 +2043,7 @@ AjBool ensFeatureOverlap(const EnsPFeature feature1, const EnsPFeature feature2)
 ** @@
 ******************************************************************************/
 
-AjBool ensFeatureFetchSeqRegionName(const EnsPFeature feature, AjPStr* Pname)
+AjBool ensFeatureFetchSeqregionName(const EnsPFeature feature, AjPStr* Pname)
 {
     if(!feature)
         return ajFalse;
@@ -2161,7 +2164,7 @@ EnsPFeatureadaptor ensFeatureadaptorNew(
     const char *final,
     AjBool Fquery(EnsPDatabaseadaptor dba,
                   const AjPStr statement,
-                  EnsPAssemblyMapper mapper,
+                  EnsPAssemblymapper mapper,
                   EnsPSlice slice,
                   AjPList objects),
     void* Fread(const void* key),
@@ -2900,7 +2903,7 @@ static AjBool featureAdaptorAnalysisNameToConstraint(
 ** @param [r] adaptor [EnsPFeatureadaptor] Ensembl Feature Adaptor
 ** @param [u] objects [AjPList] AJAX List of Ensembl Objects based on
 **                              Ensembl Features
-** @param [rN] am [EnsPAssemblyMapper] Ensembl Assembly Mapper
+** @param [rN] am [EnsPAssemblymapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -2909,7 +2912,7 @@ static AjBool featureAdaptorAnalysisNameToConstraint(
 
 static AjBool featureAdaptorRemap(EnsPFeatureadaptor adaptor,
                                   AjPList objects,
-                                  EnsPAssemblyMapper am,
+                                  EnsPAssemblymapper am,
                                   EnsPSlice slice)
 {
     ajint start  = 0;
@@ -2925,7 +2928,7 @@ static AjBool featureAdaptorRemap(EnsPFeatureadaptor adaptor,
     AjPList mrs  = NULL;
     
     EnsPFeature feature = NULL;
-    EnsPMapperResult mr = NULL;
+    EnsPMapperresult mr = NULL;
     
     /*
      ajDebug("featureAdaptorRemap\n"
@@ -2979,7 +2982,7 @@ static AjBool featureAdaptorRemap(EnsPFeatureadaptor adaptor,
     
     /* Remapping has not been done, we have to do our own conversion. */
     
-    trgsrid = ensSliceGetSeqRegionIdentifier(slice);
+    trgsrid = ensSliceGetSeqregionIdentifier(slice);
     
     iter = ajListIterNew(objects);
     
@@ -2998,8 +3001,8 @@ static AjBool featureAdaptorRemap(EnsPFeatureadaptor adaptor,
 	    ajFatal("featureAdaptorRemap Feature (%p) does not have a "
 		    "Slice attached.\n", feature);
 	
-	if(ensCoordSystemMatch(ensSliceGetCoordSystem(slice),
-                               ensSliceGetCoordSystem(feature->Slice)))
+	if(ensCoordsystemMatch(ensSliceGetCoordsystem(slice),
+                               ensSliceGetCoordsystem(feature->Slice)))
 	{
 	    /*
 	    ** The Slice attached to the Feature is in the same
@@ -3014,7 +3017,7 @@ static AjBool featureAdaptorRemap(EnsPFeatureadaptor adaptor,
 	    
 	    strand = feature->Strand;
 	    
-	    srcsrid = ensSliceGetSeqRegionIdentifier(feature->Slice);
+	    srcsrid = ensSliceGetSeqregionIdentifier(feature->Slice);
 	}
 	else
 	{
@@ -3030,8 +3033,8 @@ static AjBool featureAdaptorRemap(EnsPFeatureadaptor adaptor,
 	    
 	    mrs = ajListNew();
 	    
-	    ensAssemblyMapperFastMap(am,
-				     ensSliceGetSeqRegion(feature->Slice),
+	    ensAssemblymapperFastMap(am,
+				     ensSliceGetSeqregion(feature->Slice),
 				     feature->Start,
 				     feature->End,
 				     feature->Strand,
@@ -3055,15 +3058,15 @@ static AjBool featureAdaptorRemap(EnsPFeatureadaptor adaptor,
 		continue;
 	    }
 	    
-	    start = ensMapperResultGetStart(mr);
+	    start = ensMapperresultGetStart(mr);
 	    
-	    end = ensMapperResultGetEnd(mr);
+	    end = ensMapperresultGetEnd(mr);
 	    
-	    strand = ensMapperResultGetStrand(mr);
+	    strand = ensMapperresultGetStrand(mr);
 	    
-	    srcsrid = ensMapperResultGetObjectIdentifier(mr);
+	    srcsrid = ensMapperresultGetObjectIdentifier(mr);
 	    
-	    ensMapperResultDel(&mr);
+	    ensMapperresultDel(&mr);
 	    
 	    ajListFree(&mrs);
 	}
@@ -3113,7 +3116,7 @@ static AjBool featureAdaptorRemap(EnsPFeatureadaptor adaptor,
 ** Helper function used by ensFeatureadaptorFetchAllBySliceConstraint.
 **
 ** @cc Bio::EnsEMBL::DBSQL::BaseFeatureadaptor::_slice_fetch
-** @param [r] adaptor [const EnsPFeatureadaptor] Ensembl Feature Adaptor
+** @param [u] adaptor [EnsPFeatureadaptor] Ensembl Feature Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [r] constraint [AjPStr] SQL statement constraint
 ** @param [r] objects [AjPList] AJAX List of Ensembl Objects
@@ -3143,20 +3146,20 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
     AjPStr tmpconstr = NULL;
     AjPStr tmpstr    = NULL;
     
-    EnsPAssemblyMapper am         = NULL;
-    EnsPAssemblyMapperadaptor ama = NULL;
+    EnsPAssemblymapper am         = NULL;
+    EnsPAssemblymapperadaptor ama = NULL;
     
-    EnsPCoordSystem ftcs       = NULL;
-    EnsPCoordSystemadaptor csa = NULL;
+    EnsPCoordsystem ftcs       = NULL;
+    EnsPCoordsystemadaptor csa = NULL;
     
     EnsPDatabaseadaptor dba = NULL;
     
-    EnsPMapperResult mr = NULL;
+    EnsPMapperresult mr = NULL;
     
-    EnsPMetaInformation mi         = NULL;
-    EnsPMetaInformationadaptor mia = NULL;
+    EnsPMetainformation mi         = NULL;
+    EnsPMetainformationadaptor mia = NULL;
     
-    EnsPMetaCoordinateadaptor mca = NULL;
+    EnsPMetacoordinateadaptor mca = NULL;
     
     /*
      ajDebug("featureAdaptorSliceFetch\n"
@@ -3200,13 +3203,13 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
 	return ajFalse;
     }
     
-    ama = ensRegistryGetAssemblyMapperadaptor(dba);
+    ama = ensRegistryGetAssemblymapperadaptor(dba);
     
-    csa = ensRegistryGetCoordSystemadaptor(dba);
+    csa = ensRegistryGetCoordsystemadaptor(dba);
     
-    mia = ensRegistryGetMetaInformationadaptor(dba);
+    mia = ensRegistryGetMetainformationadaptor(dba);
     
-    mca = ensRegistryGetMetaCoordinateadaptor(dba);
+    mca = ensRegistryGetMetacoordinateadaptor(dba);
     
     /*
     ** Fetch the *build.level Ensembl Meta-Information entry, which specifies
@@ -3219,7 +3222,7 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
     
     mis = ajListNew();
     
-    ensMetaInformationadaptorFetchAllByKey(mia, key, mis);
+    ensMetainformationadaptorFetchAllByKey(mia, key, mis);
     
     ajStrAssignC(&key, table);
     
@@ -3227,12 +3230,12 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
     
     if(ajListGetLength(mis) && ensSliceIsTopLevel(slice))
 	ajListPushAppend(cslist, (void *)
-			 ensCoordSystemNewRef(ensSliceGetCoordSystem(slice)));
+			 ensCoordsystemNewRef(ensSliceGetCoordsystem(slice)));
     else
-	ensMetaCoordinateadaptorFetchAllCoordSystems(mca, key, cslist);
+	ensMetacoordinateadaptorFetchAllCoordsystems(mca, key, cslist);
     
     while(ajListPop(mis, (void **) &mi))
-	ensMetaInformationDel(&mi);
+	ensMetainformationDel(&mi);
     
     ajListFree(&mis);
     
@@ -3246,7 +3249,7 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
     
     while(ajListPop(cslist, (void **) &ftcs))
     {
-	if(ensCoordSystemMatch(ftcs, ensSliceGetCoordSystem(slice)))
+	if(ensCoordsystemMatch(ftcs, ensSliceGetCoordsystem(slice)))
 	{
 	    /*
 	    ** No mapping is required as the Coordinate Systems of Feature
@@ -3258,16 +3261,16 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
 		key = ajStrNewC(table);
 		
 		adaptor->MaxFeatureLength =
-		    ensMetaCoordinateadaptorGetMaximumLength(mca, ftcs, key);
+		    ensMetacoordinateadaptorGetMaximumLength(mca, ftcs, key);
 		
 		ajStrDel(&key);
 	    }
 	    
 	    /* Use external Ensembl Sequence Region identifiers if present. */
 	    
-	    srid = ensSliceGetSeqRegionIdentifier(slice);
+	    srid = ensSliceGetSeqregionIdentifier(slice);
 	    
-	    srid = ensCoordSystemadaptorGetExternalSeqRegionIdentifier(csa,
+	    srid = ensCoordsystemadaptorGetExternalSeqregionIdentifier(csa,
 								       srid);
 	    
 	    tmpconstr = ajStrNewS(constraint);
@@ -3299,7 +3302,7 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
 	    
 	    ensBaseadaptorGenericFetch(adaptor->Adaptor,
 				       tmpconstr,
-				       (EnsPAssemblyMapper) NULL,
+				       (EnsPAssemblymapper) NULL,
 				       slice,
 				       pos);
 	    
@@ -3319,7 +3322,7 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
 	    
 	    featureAdaptorRemap(adaptor,
 				pos,
-				(EnsPAssemblyMapper) NULL,
+				(EnsPAssemblymapper) NULL,
 				slice);
 	    
 	    ajListPushlist(objects, &pos);
@@ -3334,14 +3337,14 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
 	    */
 	    
 	    am =
-                ensAssemblyMapperadaptorFetchByCoordSystems(
+                ensAssemblymapperadaptorFetchByCoordsystems(
                     ama,
                     ftcs,
-                    ensSliceGetCoordSystem(slice));
+                    ensSliceGetCoordsystem(slice));
 	    
 	    if(!am)
 	    {
-		ensCoordSystemDel(&ftcs);
+		ensCoordsystemDel(&ftcs);
 		
 		continue;
 	    }
@@ -3353,8 +3356,8 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
 	    ** identifiers for the regions the Slice spans.
 	    */
 	    
-	    ensAssemblyMapperMap(am,
-				 ensSliceGetSeqRegion(slice),
+	    ensAssemblymapperMap(am,
+				 ensSliceGetSeqregion(slice),
 				 ensSliceGetStart(slice),
 				 ensSliceGetEnd(slice),
 				 ensSliceGetStrand(slice),
@@ -3364,15 +3367,15 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
 	    
 	    while(!ajListIterDone(iter))
 	    {
-		mr = (EnsPMapperResult) ajListIterGet(iter);
+		mr = (EnsPMapperresult) ajListIterGet(iter);
 		
 		/* Remove all Ensembl Mapper Results that represent gaps. */
 		
-		if(ensMapperResultGetType(mr) == ensEMapperResultGap)
+		if(ensMapperresultGetType(mr) == ensEMapperresultGap)
 		{
 		    ajListIterRemove(iter);
 		    
-		    ensMapperResultDel(&mr);
+		    ensMapperresultDel(&mr);
 		}
 	    }
 	    
@@ -3382,7 +3385,7 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
 	    
 	    if(!mrslength)
 	    {
-		ensCoordSystemDel(&ftcs);
+		ensCoordsystemDel(&ftcs);
 		
 		continue;
 	    }
@@ -3394,7 +3397,7 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
 	    ** are less than a specific number of regions covered.
 	    */
 	    
-	    if(mrslength > ensFeatureadaptorMaxSplitQuerySeqRegions)
+	    if(mrslength > ensFeatureadaptorMaxSplitQuerySeqregions)
 	    {
 		tmpconstr = ajStrNewS(constraint);
 		
@@ -3407,9 +3410,9 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
 		{
 		    ajFmtPrintAppS(&tmpstr,
 				   "%u, ",
-				   ensMapperResultGetObjectIdentifier(mr));
+				   ensMapperresultGetObjectIdentifier(mr));
 		    
-		    ensMapperResultDel(&mr);
+		    ensMapperresultDel(&mr);
 		}
 		
 		/* Remove last comma and space. */
@@ -3449,7 +3452,7 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
 		    key = ajStrNewC(table);
 		    
 		    adaptor->MaxFeatureLength =
-			ensMetaCoordinateadaptorGetMaximumLength(mca,
+			ensMetacoordinateadaptorGetMaximumLength(mca,
 								 ftcs,
 								 key);
 		    
@@ -3470,18 +3473,18 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
 				   "AND "
 				   "%s.seq_region_end >= %d",
 				   table,
-				   ensMapperResultGetObjectIdentifier(mr),
+				   ensMapperresultGetObjectIdentifier(mr),
 				   table,
-				   ensMapperResultGetStart(mr),
+				   ensMapperresultGetStart(mr),
 				   table,
-				   ensMapperResultGetEnd(mr));
+				   ensMapperresultGetEnd(mr));
 		    
 		    if(adaptor->MaxFeatureLength)
 			ajFmtPrintAppS(&tmpconstr,
 				       " AND "
 				       "%s.seq_region_start >= %d",
 				       table,
-				       ensMapperResultGetStart(mr) -
+				       ensMapperresultGetStart(mr) -
 				       (ajint) adaptor->MaxFeatureLength);
 		    
 		    /*
@@ -3503,16 +3506,16 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
 		    
 		    ajListPushlist(objects, &pos);
 		    
-		    ensMapperResultDel(&mr);
+		    ensMapperresultDel(&mr);
 		}
 	    }
 	    
 	    ajListFree(&mrs);
 	    
-	    ensAssemblyMapperDel(&am);
+	    ensAssemblymapperDel(&am);
 	}
 	
-	ensCoordSystemDel(&ftcs);
+	ensCoordsystemDel(&ftcs);
     }
     
     ajListFree(&cslist);
@@ -3556,10 +3559,10 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor adaptor,
 ** SQL constraint on an Ensembl Slice.
 **
 ** @cc Bio::EnsEMBL::DBSQL::BaseFeatureadaptor::fetch_all_by_Slice_constraint
-** @param [r] adaptor [EnsPFeatureadaptor] Ensembl Feature Adaptor
+** @param [u] adaptor [EnsPFeatureadaptor] Ensembl Feature Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
-** @param [r] constraint [AjPStr] SQL constraint
-** @param [r] anname [AjPStr] Ensembl Analysis name
+** @param [r] constraint [const AjPStr] SQL constraint
+** @param [r] anname [const AjPStr] Ensembl Analysis name
 ** @param [u] objects [AjPList] AJAX List of Ensembl Objects based on
 **                              Ensembl Features
 **
@@ -3597,7 +3600,7 @@ AjBool ensFeatureadaptorFetchAllBySliceConstraint(EnsPFeatureadaptor adaptor,
     
     EnsPFeature ft = NULL;
     
-    EnsPProjectionSegment ps = NULL;
+    EnsPProjectionsegment ps = NULL;
     
     EnsPSlice psslice   = NULL;
     EnsPSlice srslice   = NULL;
@@ -3702,23 +3705,23 @@ AjBool ensFeatureadaptorFetchAllBySliceConstraint(EnsPFeatureadaptor adaptor,
     ** A Projection Segment representing the original Slice is added later on.
     */
     
-    srid = ensSliceGetSeqRegionIdentifier(slice);
+    srid = ensSliceGetSeqregionIdentifier(slice);
     
     psiter = ajListIterNew(pslist);
     
     while(!ajListIterDone(psiter))
     {
-	ps = (EnsPProjectionSegment) ajListIterGet(psiter);
+	ps = (EnsPProjectionsegment) ajListIterGet(psiter);
 	
-	psslice = ensProjectionSegmentGetTrgSlice(ps);
+	psslice = ensProjectionsegmentGetTrgSlice(ps);
 	
-	pssrid = ensSliceGetSeqRegionIdentifier(psslice);
+	pssrid = ensSliceGetSeqregionIdentifier(psslice);
 	
 	if(pssrid == srid)
 	{
 	    ajListIterRemove(psiter);
 	    
-	    ensProjectionSegmentDel(&ps);
+	    ensProjectionsegmentDel(&ps);
 	}
     }
     
@@ -3726,7 +3729,7 @@ AjBool ensFeatureadaptorFetchAllBySliceConstraint(EnsPFeatureadaptor adaptor,
     
     /* Add back a Projection Segment representing the original Slice. */
     
-    ps = ensProjectionSegmentNew(1, ensSliceGetLength(slice), slice);
+    ps = ensProjectionsegmentNew(1, ensSliceGetLength(slice), slice);
     
     ajListPushAppend(pslist, (void *) ps);
     
@@ -3742,7 +3745,7 @@ AjBool ensFeatureadaptorFetchAllBySliceConstraint(EnsPFeatureadaptor adaptor,
     ** Alternatively, this could be solved with a simple array.
     */
     
-    ensSliceadaptorFetchBySeqRegionIdentifier(sa, srid, 0, 0, 0, &srslice);
+    ensSliceadaptorFetchBySeqregionIdentifier(sa, srid, 0, 0, 0, &srslice);
     
     if(ensSliceGetStrand(slice) >= 0)
 	psslice = ensSliceNewRef(srslice);
@@ -3773,18 +3776,18 @@ AjBool ensFeatureadaptorFetchAllBySliceConstraint(EnsPFeatureadaptor adaptor,
     
     ajListPop(srpslist, (void **) &ps);
     
-    ensProjectionSegmentDel(&ps);
+    ensProjectionsegmentDel(&ps);
     
     while(ajListPop(srpslist, (void **) &ps))
     {
 	AJNEW0(Pboundary);
 	
 	*Pboundary =
-	    ensProjectionSegmentGetSrcStart(ps) - ensSliceGetStart(slice) + 1;
+	    ensProjectionsegmentGetSrcStart(ps) - ensSliceGetStart(slice) + 1;
 	
 	ajListPushAppend(boundaries, (void *) Pboundary);
 	
-	ensProjectionSegmentDel(&ps);
+	ensProjectionsegmentDel(&ps);
     }
     
     ajListFree(&srpslist);
@@ -3794,11 +3797,11 @@ AjBool ensFeatureadaptorFetchAllBySliceConstraint(EnsPFeatureadaptor adaptor,
     while(ajListPop(pslist, (void **) &ps))
     {
 	featureAdaptorSliceFetch(adaptor,
-				 ensProjectionSegmentGetTrgSlice(ps),
+				 ensProjectionsegmentGetTrgSlice(ps),
 				 constr,
 				 objects);
 	
-	if(!ensSliceMatch(slice, ensProjectionSegmentGetTrgSlice(ps)))
+	if(!ensSliceMatch(slice, ensProjectionsegmentGetTrgSlice(ps)))
 	{
 	    /*
 	     ** Features returned on symlinked Slices need checking that they
@@ -3813,11 +3816,11 @@ AjBool ensFeatureadaptorFetchAllBySliceConstraint(EnsPFeatureadaptor adaptor,
 		
 		ft = (*adaptor->GetFeature)(Pobject);
 		
-		if(ensProjectionSegmentGetSrcStart(ps) != 1)
+		if(ensProjectionsegmentGetSrcStart(ps) != 1)
 		{
-		    ft->Start += ensProjectionSegmentGetSrcStart(ps) - 1;
+		    ft->Start += ensProjectionsegmentGetSrcStart(ps) - 1;
 		    
-		    ft->End += ensProjectionSegmentGetSrcStart(ps) - 1;
+		    ft->End += ensProjectionsegmentGetSrcStart(ps) - 1;
 		}
 		
 		/*
@@ -3855,7 +3858,7 @@ AjBool ensFeatureadaptorFetchAllBySliceConstraint(EnsPFeatureadaptor adaptor,
 	    ajListIterDel(&ftiter);
 	}
 	
-	ensProjectionSegmentDel(&ps);
+	ensProjectionsegmentDel(&ps);
     }
     
     /*
@@ -3889,7 +3892,7 @@ AjBool ensFeatureadaptorFetchAllBySliceConstraint(EnsPFeatureadaptor adaptor,
 ** @cc Bio::EnsEMBL::DBSQL::BaseFeatureadaptor::fetch_all_by_Slice
 ** @param [r] adaptor [EnsPFeatureadaptor] Ensembl Feature Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
-** @param [r] anname [AjPStr] Ensembl Analysis name
+** @param [r] anname [const AjPStr] Ensembl Analysis name
 ** @param [u] objects [AjPList] AJAX List of Ensembl Objects based on
 **                              Ensembl Features
 **
@@ -3927,7 +3930,7 @@ AjBool ensFeatureadaptorFetchAllBySlice(EnsPFeatureadaptor adaptor,
 ** @param [r] adaptor [EnsPFeatureadaptor] Ensembl Feature Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [r] score [double] Score
-** @param [r] anname [AjPStr] Ensembl Analysis name
+** @param [r] anname [const AjPStr] Ensembl Analysis name
 ** @param [u] objects [AjPList] AJAX List of Ensembl Objects based on
 **                              Ensembl Features
 **
@@ -3978,7 +3981,7 @@ AjBool ensFeatureadaptorFetchAllBySliceScore(EnsPFeatureadaptor adaptor,
 **
 ** @cc Bio::EnsEMBL::DBSQL::BaseFeatureadaptor::fetch_all_by_logic_name
 ** @param [r] adaptor [EnsPFeatureadaptor] Ensembl Feature Adaptor
-** @param [r] anname [AjPStr] Ensembl Analysis name
+** @param [r] anname [const AjPStr] Ensembl Analysis name
 ** @param [u] objects [AjPList] AJAX List of Ensembl Objects based on
 **                              Ensembl Features
 **
@@ -3987,7 +3990,7 @@ AjBool ensFeatureadaptorFetchAllBySliceScore(EnsPFeatureadaptor adaptor,
 ******************************************************************************/
 
 AjBool ensFeatureadaptorFetchAllByAnalysisName(EnsPFeatureadaptor adaptor,
-                                               AjPStr anname,
+                                               const AjPStr anname,
                                                AjPList objects)
 {
     AjBool value = AJFALSE;
@@ -4011,7 +4014,7 @@ AjBool ensFeatureadaptorFetchAllByAnalysisName(EnsPFeatureadaptor adaptor,
     
     value = ensBaseadaptorGenericFetch(adaptor->Adaptor,
 				       constraint,
-				       (EnsPAssemblyMapper) NULL,
+				       (EnsPAssemblymapper) NULL,
 				       (EnsPSlice) NULL,
 				       objects);
     
@@ -4023,13 +4026,13 @@ AjBool ensFeatureadaptorFetchAllByAnalysisName(EnsPFeatureadaptor adaptor,
 
 
 
-/* @datasection [EnsPFeaturePair] Feature Pair ********************************
+/* @datasection [EnsPFeaturepair] Feature Pair ********************************
 **
 ** Functions for manipulating Ensembl Feature Pair objects
 **
-** @cc Bio::EnsEMBL::FeaturePair CVS Revision: 1.61
+** @cc Bio::EnsEMBL::Featurepair CVS Revision: 1.61
 **
-** @nam2rule FeaturePair
+** @nam2rule Featurepair
 **
 ******************************************************************************/
 
@@ -4043,17 +4046,17 @@ AjBool ensFeatureadaptorFetchAllByAnalysisName(EnsPFeatureadaptor adaptor,
 ** Feature Pair. The target pointer does not need to be initialised to
 ** NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPFeaturePair]
+** @fdata [EnsPFeaturepair]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPFeaturePair] Ensembl Feature Pair
-** @argrule Ref object [EnsPFeaturePair] Ensembl Feature Pair
+** @argrule Obj object [EnsPFeaturepair] Ensembl Feature Pair
+** @argrule Ref object [EnsPFeaturepair] Ensembl Feature Pair
 **
-** @valrule * [EnsPFeaturePair] Ensembl Feature Pair
+** @valrule * [EnsPFeaturepair] Ensembl Feature Pair
 **
 ** @fcategory new
 ******************************************************************************/
@@ -4061,31 +4064,33 @@ AjBool ensFeatureadaptorFetchAllByAnalysisName(EnsPFeatureadaptor adaptor,
 
 
 
-/* @func ensFeaturePairNew ****************************************************
+/* @func ensFeaturepairNew ****************************************************
 **
 ** Default Ensembl Feature Pair constructor.
 **
 ** @cc Bio::EnsEMBL::Feature::new
 ** @param [u] srcfeature [EnsPFeature] Source Ensembl Feature
-** @cc Bio::EnsEMBL::FeaturePair::new
+** @cc Bio::EnsEMBL::Featurepair::new
 ** @param [u] trgfeature [EnsPFeature] Target Ensembl Feature
-** @param [u] edb [EnsPExternalDatabase] Ensembl External Database
+** @param [u] edb [EnsPExternaldatabase] Ensembl External Database
 ** @param [u] extra [AjPStr] Extra data
 ** @param [u] srcspecies [AjPStr] Source species name
 ** @param [u] trgspecies [AjPStr] Target species name
+** @param [r] groupid [ajuint] Group id
+** @param [r] levelid [ajuint] Level id
 ** @param [r] evalue [double] e- or p-value
 ** @param [r] score [double] Score
 ** @param [r] srccoverage [float] Source coverage in percent
 ** @param [r] trgcoverage [float] Target coverage in percent
 ** @param [r] identity [float] Sequence identity in percent
 **
-** @return [EnsPFeature] Ensembl Feature Pair or NULL
+** @return [EnsPFeaturepair] Ensembl Feature Pair or NULL
 ** @@
 ******************************************************************************/
 
-EnsPFeaturePair ensFeaturePairNew(EnsPFeature srcfeature,
+EnsPFeaturepair ensFeaturepairNew(EnsPFeature srcfeature,
                                   EnsPFeature trgfeature,
-                                  EnsPExternalDatabase edb,
+                                  EnsPExternaldatabase edb,
                                   AjPStr extra,
                                   AjPStr srcspecies,
                                   AjPStr trgspecies,
@@ -4097,7 +4102,7 @@ EnsPFeaturePair ensFeaturePairNew(EnsPFeature srcfeature,
                                   float trgcoverage,
                                   float identity)
 {
-    EnsPFeaturePair fp = NULL;
+    EnsPFeaturepair fp = NULL;
     
     if(!srcfeature)
 	return NULL;
@@ -4111,7 +4116,7 @@ EnsPFeaturePair ensFeaturePairNew(EnsPFeature srcfeature,
     
     fp->TargetFeature = ensFeatureNewRef(trgfeature);
     
-    fp->ExternalDatabase = ensExternalDatabaseNewRef(edb);
+    fp->Externaldatabase = ensExternaldatabaseNewRef(edb);
     
     if(extra)
 	fp->ExtraData = ajStrNewRef(extra);
@@ -4144,25 +4149,25 @@ EnsPFeaturePair ensFeaturePairNew(EnsPFeature srcfeature,
 
 
 
-/* @func ensFeaturePairNewObj *************************************************
+/* @func ensFeaturepairNewObj *************************************************
 **
 ** Object-based constructor function, which returns an independent object.
 **
-** @param [r] object [const EnsPFeaturePair] Ensembl Feature Pair
+** @param [r] object [const EnsPFeaturepair] Ensembl Feature Pair
 **
-** @return [EnsPFeaturePair] Ensembl Feature Pair or NULL
+** @return [EnsPFeaturepair] Ensembl Feature Pair or NULL
 ** @@
 ******************************************************************************/
 
-EnsPFeaturePair ensFeaturePairNewObj(const EnsPFeaturePair object)
+EnsPFeaturepair ensFeaturepairNewObj(const EnsPFeaturepair object)
 {
-    EnsPFeaturePair fp = NULL;
+    EnsPFeaturepair fp = NULL;
     
     AJNEW0(fp);
     
     fp->SourceFeature    = ensFeatureNewRef(object->SourceFeature);
     fp->TargetFeature    = ensFeatureNewRef(object->TargetFeature);
-    fp->ExternalDatabase = ensExternalDatabaseNewRef(object->ExternalDatabase);
+    fp->Externaldatabase = ensExternaldatabaseNewRef(object->Externaldatabase);
     
     if(object->ExtraData)
 	fp->ExtraData = ajStrNewRef(object->ExtraData);
@@ -4189,18 +4194,18 @@ EnsPFeaturePair ensFeaturePairNewObj(const EnsPFeaturePair object)
 
 
 
-/* @func ensFeaturePairNewRef *************************************************
+/* @func ensFeaturepairNewRef *************************************************
 **
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
 **
-** @return [EnsPFeaturePair] Ensembl Feature Pair or NULL
+** @return [EnsPFeaturepair] Ensembl Feature Pair or NULL
 ** @@
 ******************************************************************************/
 
-EnsPFeaturePair ensFeaturePairNewRef(EnsPFeaturePair fp)
+EnsPFeaturepair ensFeaturepairNewRef(EnsPFeaturepair fp)
 {
     if(!fp)
 	return NULL;
@@ -4218,12 +4223,12 @@ EnsPFeaturePair ensFeaturePairNewRef(EnsPFeaturePair fp)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Feature Pair.
 **
-** @fdata [EnsPFeaturePair]
+** @fdata [EnsPFeaturepair]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) an Ensembl Feature Pair object
 **
-** @argrule * Pfp [EnsPFeaturePair*] Ensembl Feature Pair object address
+** @argrule * Pfp [EnsPFeaturepair*] Ensembl Feature Pair object address
 **
 ** @valrule * [void]
 **
@@ -4233,19 +4238,19 @@ EnsPFeaturePair ensFeaturePairNewRef(EnsPFeaturePair fp)
 
 
 
-/* @func ensFeaturePairDel ****************************************************
+/* @func ensFeaturepairDel ****************************************************
 **
 ** Default destructor for an Ensembl Feature Pair.
 **
-** @param [d] Pfp [EnsPFeaturePair*] Ensembl Feature Pair address
+** @param [d] Pfp [EnsPFeaturepair*] Ensembl Feature Pair address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensFeaturePairDel(EnsPFeaturePair *Pfp)
+void ensFeaturepairDel(EnsPFeaturepair *Pfp)
 {
-    EnsPFeaturePair pthis = NULL;
+    EnsPFeaturepair pthis = NULL;
     
     if(!Pfp)
 	return;
@@ -4268,7 +4273,7 @@ void ensFeaturePairDel(EnsPFeaturePair *Pfp)
     
     ensFeatureDel(&pthis->TargetFeature);
     
-    ensExternalDatabaseDel(&((*Pfp)->ExternalDatabase));
+    ensExternaldatabaseDel(&((*Pfp)->Externaldatabase));
     
     ajStrDel(&pthis->ExtraData);
     
@@ -4290,13 +4295,13 @@ void ensFeaturePairDel(EnsPFeaturePair *Pfp)
 **
 ** Functions for returning elements of an Ensembl Feature Pair object.
 **
-** @fdata [EnsPFeaturePair]
+** @fdata [EnsPFeaturepair]
 ** @fnote None
 **
 ** @nam3rule Get Return Feature Pair attribute(s)
 ** @nam4rule GetSourceFeature Return the source Ensembl Feature
 ** @nam4rule GetTargetFeature Return the target Ensembl Feature
-** @nam4rule GetExternalDatabase Return the Ensembl External Database
+** @nam4rule GetExternaldatabase Return the Ensembl External Database
 ** @nam4rule GetExtraData Return the extra data
 ** @nam4rule GetSourceSpecies Return the source species name
 ** @nam4rule GetTargetSpecies Return the target species name
@@ -4308,11 +4313,11 @@ void ensFeaturePairDel(EnsPFeaturePair *Pfp)
 ** @nam4rule GetTargetCoverage Return the target coverage
 ** @nam4rule GetSequenceIdentity Return the sequence identity
 **
-** @argrule * fp [const EnsPFeaturePair] Feature Pair
+** @argrule * fp [const EnsPFeaturepair] Feature Pair
 **
 ** @valrule SourceFeature [EnsPFeature] Source Ensembl Feature
 ** @valrule TargetFeature [EnsPFeature] Target Ensembl Feature
-** @valrule ExternalDatabase [EnsPExternalDatabase] Ensembl External Database
+** @valrule Externaldatabase [EnsPExternaldatabase] Ensembl External Database
 ** @valrule ExtraData [AjPStr] Extra data
 ** @valrule SourceSpecies [AjPStr] Source species name
 ** @valrule TargetSpecies [AjPStr] Target species name
@@ -4330,17 +4335,17 @@ void ensFeaturePairDel(EnsPFeaturePair *Pfp)
 
 
 
-/* @func ensFeaturePairGetSourceFeature ***************************************
+/* @func ensFeaturepairGetSourceFeature ***************************************
 **
 ** Get the source Ensembl Feature element of an Ensembl Feature Pair.
 **
-** @param [r] fp [const EnsPFeaturePair] Ensembl Feature Pair
+** @param [r] fp [const EnsPFeaturepair] Ensembl Feature Pair
 **
 ** @return [EnsPFeature] Source Ensembl Feature or NULL
 ** @@
 ******************************************************************************/
 
-EnsPFeature ensFeaturePairGetSourceFeature(const EnsPFeaturePair fp)
+EnsPFeature ensFeaturepairGetSourceFeature(const EnsPFeaturepair fp)
 {
     if(!fp)
 	return NULL;
@@ -4351,22 +4356,22 @@ EnsPFeature ensFeaturePairGetSourceFeature(const EnsPFeaturePair fp)
 
 
 
-/* @func ensFeaturePairGetTargetFeature ***************************************
+/* @func ensFeaturepairGetTargetFeature ***************************************
 **
 ** Get the target Ensembl Feature element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::hslice
-** @cc Bio::EnsEMBL::FeaturePair::hseqname
-** @cc Bio::EnsEMBL::FeaturePair::hstart
-** @cc Bio::EnsEMBL::FeaturePair::hend
-** @cc Bio::EnsEMBL::FeaturePair::hstrand
-** @param [r] fp [const EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::hslice
+** @cc Bio::EnsEMBL::Featurepair::hseqname
+** @cc Bio::EnsEMBL::Featurepair::hstart
+** @cc Bio::EnsEMBL::Featurepair::hend
+** @cc Bio::EnsEMBL::Featurepair::hstrand
+** @param [r] fp [const EnsPFeaturepair] Ensembl Feature Pair
 **
 ** @return [EnsPFeature] Target Ensembl Feature or NULL
 ** @@
 ******************************************************************************/
 
-EnsPFeature ensFeaturePairGetTargetFeature(const EnsPFeaturePair fp)
+EnsPFeature ensFeaturepairGetTargetFeature(const EnsPFeaturepair fp)
 {
     if(!fp)
 	return NULL;
@@ -4377,39 +4382,39 @@ EnsPFeature ensFeaturePairGetTargetFeature(const EnsPFeaturePair fp)
 
 
 
-/* @func ensFeaturePairGetExternalDatabase ************************************
+/* @func ensFeaturepairGetExternaldatabase ************************************
 **
 ** Get the Ensembl External Database element of an Ensembl Feature Pair.
 **
-** @param [r] fp [const EnsPFeaturePair] Ensembl Feature Pair
+** @param [r] fp [const EnsPFeaturepair] Ensembl Feature Pair
 **
-** @return [EnsPExternalDatabase] Ensembl External Database or NULL
+** @return [EnsPExternaldatabase] Ensembl External Database or NULL
 ** @@
 ******************************************************************************/
 
-EnsPExternalDatabase ensFeaturePairGetExternalDatabase(const EnsPFeaturePair fp)
+EnsPExternaldatabase ensFeaturepairGetExternaldatabase(const EnsPFeaturepair fp)
 {
     if(!fp)
 	return NULL;
     
-    return fp->ExternalDatabase;
+    return fp->Externaldatabase;
 }
 
 
 
 
-/* @func ensFeaturePairGetExtraData *******************************************
+/* @func ensFeaturepairGetExtraData *******************************************
 **
 ** Get the extra data element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::extra_data
-** @param [r] fp [const EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::extra_data
+** @param [r] fp [const EnsPFeaturepair] Ensembl Feature Pair
 **
 ** @return [AjPStr] Extra data or NULL
 ** @@
 ******************************************************************************/
 
-AjPStr ensFeaturePairGetExtraData(const EnsPFeaturePair fp)
+AjPStr ensFeaturepairGetExtraData(const EnsPFeaturepair fp)
 {
     if(!fp)
 	return NULL;
@@ -4420,18 +4425,18 @@ AjPStr ensFeaturePairGetExtraData(const EnsPFeaturePair fp)
 
 
 
-/* @func ensFeaturePairGetSourceSpecies ***************************************
+/* @func ensFeaturepairGetSourceSpecies ***************************************
 **
 ** Get the source species name element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::species
-** @param [r] fp [const EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::species
+** @param [r] fp [const EnsPFeaturepair] Ensembl Feature Pair
 **
 ** @return [AjPStr] Source species or NULL
 ** @@
 ******************************************************************************/
 
-AjPStr ensFeaturePairGetSourceSpecies(const EnsPFeaturePair fp)
+AjPStr ensFeaturepairGetSourceSpecies(const EnsPFeaturepair fp)
 {
     if(!fp)
 	return NULL;
@@ -4442,18 +4447,18 @@ AjPStr ensFeaturePairGetSourceSpecies(const EnsPFeaturePair fp)
 
 
 
-/* @func ensFeaturePairGetTargetSpecies ***************************************
+/* @func ensFeaturepairGetTargetSpecies ***************************************
 **
 ** Get the target species name element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::hspecies
-** @param [r] fp [const EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::hspecies
+** @param [r] fp [const EnsPFeaturepair] Ensembl Feature Pair
 **
 ** @return [AjPStr] Target species or NULL
 ** @@
 ******************************************************************************/
 
-AjPStr ensFeaturePairGetTargetSpecies(const EnsPFeaturePair fp)
+AjPStr ensFeaturepairGetTargetSpecies(const EnsPFeaturepair fp)
 {
     if(!fp)
 	return NULL;
@@ -4464,18 +4469,18 @@ AjPStr ensFeaturePairGetTargetSpecies(const EnsPFeaturePair fp)
 
 
 
-/* @func ensFeaturePairGetGroupIdentifier *************************************
+/* @func ensFeaturepairGetGroupIdentifier *************************************
 **
 ** Get the group identifier element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::group_id
-** @param [r] fp [const EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::group_id
+** @param [r] fp [const EnsPFeaturepair] Ensembl Feature Pair
 **
 ** @return [ajuint] Group identifier or 0
 ** @@
 ******************************************************************************/
 
-ajuint ensFeaturePairGetGroupIdentifier(const EnsPFeaturePair fp)
+ajuint ensFeaturepairGetGroupIdentifier(const EnsPFeaturepair fp)
 {
     if(!fp)
 	return 0;
@@ -4486,18 +4491,18 @@ ajuint ensFeaturePairGetGroupIdentifier(const EnsPFeaturePair fp)
 
 
 
-/* @func ensFeaturePairGetLevelIdentifier *************************************
+/* @func ensFeaturepairGetLevelIdentifier *************************************
 **
 ** Get the level identifier element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::level_id
-** @param [r] fp [const EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::level_id
+** @param [r] fp [const EnsPFeaturepair] Ensembl Feature Pair
 **
 ** @return [ajuint] Level identifier or 0
 ** @@
 ******************************************************************************/
 
-ajuint ensFeaturePairGetLevelIdentifier(const EnsPFeaturePair fp)
+ajuint ensFeaturepairGetLevelIdentifier(const EnsPFeaturepair fp)
 {
     if(!fp)
 	return 0;
@@ -4508,18 +4513,18 @@ ajuint ensFeaturePairGetLevelIdentifier(const EnsPFeaturePair fp)
 
 
 
-/* @func ensFeaturePairGetEvalue **********************************************
+/* @func ensFeaturepairGetEvalue **********************************************
 **
 ** Get the e-value element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::p_value
-** @param [r] fp [const EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::p_value
+** @param [r] fp [const EnsPFeaturepair] Ensembl Feature Pair
 **
 ** @return [double] E-value or 0
 ** @@
 ******************************************************************************/
 
-double ensFeaturePairGetEvalue(const EnsPFeaturePair fp)
+double ensFeaturepairGetEvalue(const EnsPFeaturepair fp)
 {
     if(!fp)
 	return 0;
@@ -4530,18 +4535,18 @@ double ensFeaturePairGetEvalue(const EnsPFeaturePair fp)
 
 
 
-/* @func ensFeaturePairGetScore ***********************************************
+/* @func ensFeaturepairGetScore ***********************************************
 **
 ** Get the score element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::score
-** @param [r] fp [const EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::score
+** @param [r] fp [const EnsPFeaturepair] Ensembl Feature Pair
 **
 ** @return [double] Score or 0
 ** @@
 ******************************************************************************/
 
-double ensFeaturePairGetScore(const EnsPFeaturePair fp)
+double ensFeaturepairGetScore(const EnsPFeaturepair fp)
 {
     if(!fp)
 	return 0;
@@ -4552,18 +4557,18 @@ double ensFeaturePairGetScore(const EnsPFeaturePair fp)
 
 
 
-/* @func ensFeaturePairGetSourceCoverage **************************************
+/* @func ensFeaturepairGetSourceCoverage **************************************
 **
 ** Get the source coverage element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::coverage
-** @param [r] fp [const EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::coverage
+** @param [r] fp [const EnsPFeaturepair] Ensembl Feature Pair
 **
 ** @return [float] Source coverage or 0
 ** @@
 ******************************************************************************/
 
-float ensFeaturePairGetSourceCoverage(const EnsPFeaturePair fp)
+float ensFeaturepairGetSourceCoverage(const EnsPFeaturepair fp)
 {
     if(!fp)
 	return 0;
@@ -4574,18 +4579,18 @@ float ensFeaturePairGetSourceCoverage(const EnsPFeaturePair fp)
 
 
 
-/* @func ensFeaturePairGetTargetCoverage **************************************
+/* @func ensFeaturepairGetTargetCoverage **************************************
 **
 ** Get the target coverage element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::hcoverage
-** @param [r] fp [const EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::hcoverage
+** @param [r] fp [const EnsPFeaturepair] Ensembl Feature Pair
 **
 ** @return [float] Target coverage or 0
 ** @@
 ******************************************************************************/
 
-float ensFeaturePairGetTargetCoverage(const EnsPFeaturePair fp)
+float ensFeaturepairGetTargetCoverage(const EnsPFeaturepair fp)
 {
     if(!fp)
 	return 0;
@@ -4596,18 +4601,18 @@ float ensFeaturePairGetTargetCoverage(const EnsPFeaturePair fp)
 
 
 
-/* @func ensFeaturePairGetSequenceIdentity ************************************
+/* @func ensFeaturepairGetSequenceIdentity ************************************
 **
 ** Get the sequence identity element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::percent_id
-** @param [r] fp [const EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::percent_id
+** @param [r] fp [const EnsPFeaturepair] Ensembl Feature Pair
 **
 ** @return [float] Sequence identity or 0
 ** @@
 ******************************************************************************/
 
-float ensFeaturePairGetSequenceIdentity(const EnsPFeaturePair fp)
+float ensFeaturepairGetSequenceIdentity(const EnsPFeaturepair fp)
 {
     if(!fp)
 	return 0;
@@ -4622,13 +4627,13 @@ float ensFeaturePairGetSequenceIdentity(const EnsPFeaturePair fp)
 **
 ** Functions for assigning elements of an Ensembl Feature Pair object.
 **
-** @fdata [EnsPFeaturePair]
+** @fdata [EnsPFeaturepair]
 ** @fnote None
 **
 ** @nam3rule Set Set one element of a Feature
 ** @nam4rule SetSourceFeature Set the source Ensembl Feature
 ** @nam4rule SetTargetFeature Set the target Ensembl Feature
-** @nam4rule SetExternalDatabase Set the Ensembl External Database
+** @nam4rule SetExternaldatabase Set the Ensembl External Database
 ** @nam4rule SetExtraData Set the extra data
 ** @nam4rule SetSourceSpecies Set the source species name
 ** @nam4rule SetTargetSpecies Set the target species name
@@ -4640,7 +4645,7 @@ float ensFeaturePairGetSequenceIdentity(const EnsPFeaturePair fp)
 ** @nam4rule SetTargetCoverage Set the target coverage
 ** @nam4rule SetSequenceIdentity Set the sequence identity
 **
-** @argrule * fp [EnsPFeaturePair] Ensembl Feature Pair object
+** @argrule * fp [EnsPFeaturepair] Ensembl Feature Pair object
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
@@ -4650,26 +4655,26 @@ float ensFeaturePairGetSequenceIdentity(const EnsPFeaturePair fp)
 
 
 
-/* @func ensFeaturePairSetSourceFeature ***************************************
+/* @func ensFeaturepairSetSourceFeature ***************************************
 **
 ** Set the source Ensembl Feature element of an Ensembl Feature Pair.
 **
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
 ** @param [u] feature [EnsPFeature] Source Ensembl Feature
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensFeaturePairSetSourceFeature(EnsPFeaturePair fp, EnsPFeature feature)
+AjBool ensFeaturepairSetSourceFeature(EnsPFeaturepair fp, EnsPFeature feature)
 {
-    ajDebug("ensFeaturePairSetSourceFeature\n"
+    ajDebug("ensFeaturepairSetSourceFeature\n"
 	    "  fp %p\n"
 	    "  feature %p\n",
 	    fp,
 	    feature);
     
-    ensFeaturePairTrace(fp, 1);
+    ensFeaturepairTrace(fp, 1);
     
     ensFeatureTrace(feature, 1);
     
@@ -4688,31 +4693,31 @@ AjBool ensFeaturePairSetSourceFeature(EnsPFeaturePair fp, EnsPFeature feature)
 
 
 
-/* @func ensFeaturePairSetTargetFeature ***************************************
+/* @func ensFeaturepairSetTargetFeature ***************************************
 **
 ** Set the target Ensembl Feature element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::hslice
-** @cc Bio::EnsEMBL::FeaturePair::hseqname
-** @cc Bio::EnsEMBL::FeaturePair::hstart
-** @cc Bio::EnsEMBL::FeaturePair::hend
-** @cc Bio::EnsEMBL::FeaturePair::hstrand
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::hslice
+** @cc Bio::EnsEMBL::Featurepair::hseqname
+** @cc Bio::EnsEMBL::Featurepair::hstart
+** @cc Bio::EnsEMBL::Featurepair::hend
+** @cc Bio::EnsEMBL::Featurepair::hstrand
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
 ** @param [u] feature [EnsPFeature] Target Ensembl Feature
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensFeaturePairSetTargetFeature(EnsPFeaturePair fp, EnsPFeature feature)
+AjBool ensFeaturepairSetTargetFeature(EnsPFeaturepair fp, EnsPFeature feature)
 {
-    ajDebug("ensFeaturePairSetTargetFeature\n"
+    ajDebug("ensFeaturepairSetTargetFeature\n"
 	    "  fp %p\n"
 	    "  feature %p\n",
 	    fp,
 	    feature);
     
-    ensFeaturePairTrace(fp, 1);
+    ensFeaturepairTrace(fp, 1);
     
     ensFeatureTrace(feature, 1);
     
@@ -4731,27 +4736,27 @@ AjBool ensFeaturePairSetTargetFeature(EnsPFeaturePair fp, EnsPFeature feature)
 
 
 
-/* @func ensFeaturePairSetExternalDatabase ************************************
+/* @func ensFeaturepairSetExternaldatabase ************************************
 **
 ** Set the Ensembl External Database element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::external_db_id
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
-** @param [u] edb [EnsPExternalDatabase] Ensembl External Database
+** @cc Bio::EnsEMBL::Featurepair::external_db_id
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
+** @param [u] edb [EnsPExternaldatabase] Ensembl External Database
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensFeaturePairSetExternalDatabase(EnsPFeaturePair fp,
-                                         EnsPExternalDatabase edb)
+AjBool ensFeaturepairSetExternaldatabase(EnsPFeaturepair fp,
+                                         EnsPExternaldatabase edb)
 {
     if(!fp)
 	return ajFalse;
     
-    ensExternalDatabaseDel(&fp->ExternalDatabase);
+    ensExternaldatabaseDel(&fp->Externaldatabase);
     
-    fp->ExternalDatabase = ensExternalDatabaseNewRef(edb);
+    fp->Externaldatabase = ensExternaldatabaseNewRef(edb);
     
     return ajTrue;
 }
@@ -4759,19 +4764,19 @@ AjBool ensFeaturePairSetExternalDatabase(EnsPFeaturePair fp,
 
 
 
-/* @func ensFeaturePairSetExtraData *******************************************
+/* @func ensFeaturepairSetExtraData *******************************************
 **
 ** Set the extra data element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::extra_data
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::extra_data
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
 ** @param [u] extra [AjPStr] Extra data
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensFeaturePairSetExtraData(EnsPFeaturePair fp, AjPStr extra)
+AjBool ensFeaturepairSetExtraData(EnsPFeaturepair fp, AjPStr extra)
 {
     if(!fp)
 	return ajFalse;
@@ -4787,19 +4792,19 @@ AjBool ensFeaturePairSetExtraData(EnsPFeaturePair fp, AjPStr extra)
 
 
 
-/* @func ensFeaturePairSetSourceSpecies ***************************************
+/* @func ensFeaturepairSetSourceSpecies ***************************************
 **
 ** Set the source species element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::species
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::species
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
 ** @param [u] species [AjPStr] Source species
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensFeaturePairSetSourceSpecies(EnsPFeaturePair fp, AjPStr species)
+AjBool ensFeaturepairSetSourceSpecies(EnsPFeaturepair fp, AjPStr species)
 {
     if(!fp)
 	return ajFalse;
@@ -4815,19 +4820,19 @@ AjBool ensFeaturePairSetSourceSpecies(EnsPFeaturePair fp, AjPStr species)
 
 
 
-/* @func ensFeaturePairSetTargetSpecies ***************************************
+/* @func ensFeaturepairSetTargetSpecies ***************************************
 **
 ** Set the target species element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::hspecies
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::hspecies
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
 ** @param [u] tspecies [AjPStr] Target species
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensFeaturePairSetTargetSpecies(EnsPFeaturePair fp, AjPStr tspecies)
+AjBool ensFeaturepairSetTargetSpecies(EnsPFeaturepair fp, AjPStr tspecies)
 {
     if(!fp)
 	return ajFalse;
@@ -4843,19 +4848,19 @@ AjBool ensFeaturePairSetTargetSpecies(EnsPFeaturePair fp, AjPStr tspecies)
 
 
 
-/* @func ensFeaturePairSetGroupIdentifier *************************************
+/* @func ensFeaturepairSetGroupIdentifier *************************************
 **
 ** Set the group identifier element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::group_id
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::group_id
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
 ** @param [r] groupid [ajuint] Group identifier
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensFeaturePairSetGroupIdentifier(EnsPFeaturePair fp, ajint groupid)
+AjBool ensFeaturepairSetGroupIdentifier(EnsPFeaturepair fp, ajuint groupid)
 {
     if(!fp)
 	return ajFalse;
@@ -4868,19 +4873,19 @@ AjBool ensFeaturePairSetGroupIdentifier(EnsPFeaturePair fp, ajint groupid)
 
 
 
-/* @func ensFeaturePairSetLevelIdentifier *************************************
+/* @func ensFeaturepairSetLevelIdentifier *************************************
 **
 ** Set the level identifier element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::level_id
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::level_id
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
 ** @param [r] levelid [ajuint] Level identifier
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensFeaturePairSetLevelIdentifier(EnsPFeaturePair fp, ajint levelid)
+AjBool ensFeaturepairSetLevelIdentifier(EnsPFeaturepair fp, ajuint levelid)
 {
     if(!fp)
 	return ajFalse;
@@ -4893,19 +4898,19 @@ AjBool ensFeaturePairSetLevelIdentifier(EnsPFeaturePair fp, ajint levelid)
 
 
 
-/* @func ensFeaturePairSetEvalue **********************************************
+/* @func ensFeaturepairSetEvalue **********************************************
 **
 ** Set the e-value element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::p_value
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::p_value
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
 ** @param [r] evalue [double] E-value
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensFeaturePairSetEvalue(EnsPFeaturePair fp, double evalue)
+AjBool ensFeaturepairSetEvalue(EnsPFeaturepair fp, double evalue)
 {
     if(!fp)
 	return ajFalse;
@@ -4918,19 +4923,19 @@ AjBool ensFeaturePairSetEvalue(EnsPFeaturePair fp, double evalue)
 
 
 
-/* @func ensFeaturePairSetScore ***********************************************
+/* @func ensFeaturepairSetScore ***********************************************
 **
 ** Set the score element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::score
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::score
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
 ** @param [r] score [double] Score
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensFeaturePairSetScore(EnsPFeaturePair fp, double score)
+AjBool ensFeaturepairSetScore(EnsPFeaturepair fp, double score)
 {
     if(!fp)
 	return ajFalse;
@@ -4943,19 +4948,19 @@ AjBool ensFeaturePairSetScore(EnsPFeaturePair fp, double score)
 
 
 
-/* @func ensFeaturePairSetSourceCoverage **************************************
+/* @func ensFeaturepairSetSourceCoverage **************************************
 **
 ** Set the source coverage element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::coverage
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::coverage
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
 ** @param [r] coverage [float] Source coverage
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensFeaturePairSetSourceCoverage(EnsPFeaturePair fp, float coverage)
+AjBool ensFeaturepairSetSourceCoverage(EnsPFeaturepair fp, float coverage)
 {
     if(!fp)
 	return ajFalse;
@@ -4968,19 +4973,19 @@ AjBool ensFeaturePairSetSourceCoverage(EnsPFeaturePair fp, float coverage)
 
 
 
-/* @func ensFeaturePairSetTargetCoverage **************************************
+/* @func ensFeaturepairSetTargetCoverage **************************************
 **
 ** Set the target coverage element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::hcoverage
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::hcoverage
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
 ** @param [r] coverage [float] Target coverage
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensFeaturePairSetTargetCoverage(EnsPFeaturePair fp, float coverage)
+AjBool ensFeaturepairSetTargetCoverage(EnsPFeaturepair fp, float coverage)
 {
     if(!fp)
 	return ajFalse;
@@ -4993,19 +4998,19 @@ AjBool ensFeaturePairSetTargetCoverage(EnsPFeaturePair fp, float coverage)
 
 
 
-/* @func ensFeaturePairSetSequenceIdentity ************************************
+/* @func ensFeaturepairSetSequenceIdentity ************************************
 **
 ** Set the sequence identity element of an Ensembl Feature Pair.
 **
-** @cc Bio::EnsEMBL::FeaturePair::percent_id
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Featurepair::percent_id
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
 ** @param [r] identity [float] Sequence identity
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensFeaturePairSetSequenceIdentity(EnsPFeaturePair fp, float identity)
+AjBool ensFeaturepairSetSequenceIdentity(EnsPFeaturepair fp, float identity)
 {
     if(!fp)
 	return ajFalse;
@@ -5022,10 +5027,10 @@ AjBool ensFeaturePairSetSequenceIdentity(EnsPFeaturePair fp, float identity)
 **
 ** Functions for reporting of an Ensembl Feature Pair object.
 **
-** @fdata [EnsPFeaturePair]
+** @fdata [EnsPFeaturepair]
 ** @nam3rule Trace Report Ensembl Feature Pair elements to debug file
 **
-** @argrule Trace fp [const EnsPFeaturePair] Ensembl Feature Pair
+** @argrule Trace fp [const EnsPFeaturepair] Ensembl Feature Pair
 ** @argrule Trace level [ajuint] Indentation level
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -5036,18 +5041,18 @@ AjBool ensFeaturePairSetSequenceIdentity(EnsPFeaturePair fp, float identity)
 
 
 
-/* @func ensFeaturePairTrace **************************************************
+/* @func ensFeaturepairTrace **************************************************
 **
 ** Trace an Ensembl Feature Pair.
 **
-** @param [r] fp [const EnsPFeaturePair] Ensembl Feature Pair
+** @param [r] fp [const EnsPFeaturepair] Ensembl Feature Pair
 ** @param [r] level [ajuint] Indentation level
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensFeaturePairTrace(const EnsPFeaturePair fp, ajuint level)
+AjBool ensFeaturepairTrace(const EnsPFeaturepair fp, ajuint level)
 {
     AjPStr indent = NULL;
     
@@ -5058,10 +5063,10 @@ AjBool ensFeaturePairTrace(const EnsPFeaturePair fp, ajuint level)
     
     ajStrAppendCountK(&indent, ' ', level * 2);
     
-    ajDebug("ensFeaturePairTrace %p\n"
+    ajDebug("ensFeaturepairTrace %p\n"
 	    "%S  SourceFeature %p\n"
 	    "%S  TargetFeature %p\n"
-	    "%S  ExternalDatabase %p\n"
+	    "%S  Externaldatabase %p\n"
 	    "%S  ExtraData %p\n"
 	    "%S  SourceSpecies '%S'\n"
 	    "%S  TargetSpecies '%S'\n"
@@ -5076,7 +5081,7 @@ AjBool ensFeaturePairTrace(const EnsPFeaturePair fp, ajuint level)
 	    indent, fp,
 	    indent, fp->SourceFeature,
 	    indent, fp->TargetFeature,
-	    indent, fp->ExternalDatabase,
+	    indent, fp->Externaldatabase,
 	    indent, fp->ExtraData,
 	    indent, fp->SourceSpecies,
 	    indent, fp->TargetSpecies,
@@ -5093,7 +5098,7 @@ AjBool ensFeaturePairTrace(const EnsPFeaturePair fp, ajuint level)
     
     ensFeatureTrace(fp->TargetFeature, level + 1);
     
-    ensExternalDatabaseTrace(fp->ExternalDatabase, level + 1);
+    ensExternaldatabaseTrace(fp->Externaldatabase, level + 1);
     
     ajStrDel(&indent);
     
@@ -5103,24 +5108,24 @@ AjBool ensFeaturePairTrace(const EnsPFeaturePair fp, ajuint level)
 
 
 
-/* @func ensFeaturePairGetMemSize *********************************************
+/* @func ensFeaturepairGetMemSize *********************************************
 **
 ** Get the memory size in bytes of an Ensembl Feature Pair.
 **
-** @param [r] baf [const EnsPFeaturePair] Ensembl Feature Pair
+** @param [r] baf [const EnsPFeaturepair] Ensembl Feature Pair
 **
 ** @return [ajuint] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensFeaturePairGetMemSize(const EnsPFeaturePair fp)
+ajuint ensFeaturepairGetMemSize(const EnsPFeaturepair fp)
 {
     ajuint size = 0;
     
     if(!fp)
 	return 0;
     
-    size += (ajuint) sizeof (EnsOFeaturePair);
+    size += (ajuint) sizeof (EnsOFeaturepair);
     
     size += ensFeatureGetMemSize(fp->SourceFeature);
     
@@ -5153,26 +5158,26 @@ ajuint ensFeaturePairGetMemSize(const EnsPFeaturePair fp)
 
 
 
-/* @func ensFeaturePairTransform **********************************************
+/* @func ensFeaturepairTransform **********************************************
 **
 ** Transform an Ensembl Feature Pair into another Ensembl Coordinate System.
 **
 ** @cc Bio::EnsEMBL::Feature::transform
-** @param [u] fp [const EnsPFeaturePair] Ensembl Feature Pair
+** @param [r] fp [const EnsPFeaturepair] Ensembl Feature Pair
 ** @param [r] csname [const AjPStr] Ensembl Coordinate System name
 ** @param [r] csversion [const AjPStr] Ensembl Coordinate System version
 ** @see ensFeatureTransform
 **
-** @return [EnsPFeaturePair] Ensembl Feature Pair or NULL
+** @return [EnsPFeaturepair] Ensembl Feature Pair or NULL
 ** @@
 ******************************************************************************/
 
-EnsPFeaturePair ensFeaturePairTransform(EnsPFeaturePair fp,
+EnsPFeaturepair ensFeaturepairTransform(const EnsPFeaturepair fp,
                                         const AjPStr csname,
                                         const AjPStr csversion)
 {
     EnsPFeature nfeature = NULL;
-    EnsPFeaturePair nfp  = NULL;
+    EnsPFeaturepair nfp  = NULL;
     
     if(!fp)
 	return NULL;
@@ -5188,9 +5193,9 @@ EnsPFeaturePair ensFeaturePairTransform(EnsPFeaturePair fp,
     if(!nfeature)
 	return NULL;
     
-    nfp = ensFeaturePairNewObj(fp);
+    nfp = ensFeaturepairNewObj(fp);
     
-    ensFeaturePairSetSourceFeature(nfp, nfeature);
+    ensFeaturepairSetSourceFeature(nfp, nfeature);
     
     ensFeatureDel(&nfeature);
     
@@ -5200,23 +5205,23 @@ EnsPFeaturePair ensFeaturePairTransform(EnsPFeaturePair fp,
 
 
 
-/* @func ensFeaturePairTransfer ***********************************************
+/* @func ensFeaturepairTransfer ***********************************************
 **
 ** Transfer an Ensembl Feature Pair onto another Ensembl Slice.
 **
 ** @cc Bio::EnsEMBL::Feature::transfer
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
 ** @param [u] slice [EnsPSlice] Ensembl Slice
 ** @see ensFeatureTransfer
 **
-** @return [EnsPFeaturePair] Ensembl Feature Pair or NULL
+** @return [EnsPFeaturepair] Ensembl Feature Pair or NULL
 ** @@
 ******************************************************************************/
 
-EnsPFeaturePair ensFeaturePairTransfer(EnsPFeaturePair fp, EnsPSlice slice)
+EnsPFeaturepair ensFeaturepairTransfer(EnsPFeaturepair fp, EnsPSlice slice)
 {
     EnsPFeature newfeature = NULL;
-    EnsPFeaturePair newfp  = NULL;
+    EnsPFeaturepair newfp  = NULL;
     
     if(!fp)
 	return NULL;
@@ -5229,9 +5234,9 @@ EnsPFeaturePair ensFeaturePairTransfer(EnsPFeaturePair fp, EnsPSlice slice)
     if(!newfeature)
 	return NULL;
     
-    newfp = ensFeaturePairNewObj(fp);
+    newfp = ensFeaturepairNewObj(fp);
     
-    ensFeaturePairSetSourceFeature(newfp, newfeature);
+    ensFeaturepairSetSourceFeature(newfp, newfeature);
     
     ensFeatureDel(&newfeature);
     
@@ -5241,16 +5246,16 @@ EnsPFeaturePair ensFeaturePairTransfer(EnsPFeaturePair fp, EnsPSlice slice)
 
 
 
-/* @datasection [EnsPBaseAlignFeature] Base Align Feature *********************
+/* @datasection [EnsPBasealignfeature] Base Align Feature *********************
 **
 ** Functions for manipulating Ensembl Base Align Feature objects
 **
-** @cc Bio::EnsEMBL::BaseAlignFeature CVS Revision: 1.58
+** @cc Bio::EnsEMBL::Basealignfeature CVS Revision: 1.58
 ** @cc Bio::EnsEMBL::DnaDnaAlignFeature CVS Revision: 1.22
 ** @cc Bio::EnsEMBL::DnaPepAlignFeature CVS Revision: 1.12
 ** @cc Bio::EnsEMBL::PepDnaAlignFeature CVS Revision: 1.9
 **
-** @nam2rule BaseAlignFeature
+** @nam2rule Basealignfeature
 **
 ******************************************************************************/
 
@@ -5278,12 +5283,12 @@ static int baseAlignFeatureCompareSourceFeatureStart(const void* P1,
 {
     int value = 0;
     
-    EnsPFeaturePair fp1 = NULL;
-    EnsPFeaturePair fp2 = NULL;
+    EnsPFeaturepair fp1 = NULL;
+    EnsPFeaturepair fp2 = NULL;
     
-    fp1 = *(EnsPFeaturePair const *) P1;
+    fp1 = *(EnsPFeaturepair const *) P1;
     
-    fp2 = *(EnsPFeaturePair const *) P2;
+    fp2 = *(EnsPFeaturepair const *) P2;
     
     /*
      ajDebug("baseAlignFeatureCompareFeatureStart\n"
@@ -5292,9 +5297,9 @@ static int baseAlignFeatureCompareSourceFeatureStart(const void* P1,
 	     fp1,
 	     fp2);
      
-     ensFeaturePairTrace(fp1, 1);
+     ensFeaturepairTrace(fp1, 1);
      
-     ensFeaturePairTrace(fp2, 1);
+     ensFeaturepairTrace(fp2, 1);
      */
     
     if(!fp1)
@@ -5358,7 +5363,7 @@ static int baseAlignFeatureCompareSourceFeatureStart(const void* P1,
 ** upon Ensembl Feature Pairs. This creates an internal CIGAR string and sets
 ** internal alignment coordinates.
 **
-** @param [r] baf [EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @param [r] baf [EnsPBasealignfeature] Ensembl Base Align Feature
 ** @param [r] objects [AjPList] AJAX List of Ensembl Objects based on
 **                              Ensembl Feature Pairs
 **
@@ -5371,7 +5376,7 @@ static int baseAlignFeatureCompareSourceFeatureStart(const void* P1,
 ** these values.
 */
 
-static AjBool baseAlignFeatureParseFeatures(EnsPBaseAlignFeature baf,
+static AjBool baseAlignFeatureParseFeatures(EnsPBasealignfeature baf,
                                             AjPList objects)
 {
     void *Pobject = NULL;
@@ -5405,9 +5410,9 @@ static AjBool baseAlignFeatureParseFeatures(EnsPBaseAlignFeature baf,
     EnsPFeature srcfeature = NULL;
     EnsPFeature trgfeature = NULL;
     
-    EnsPFeaturePair firstfp = NULL;
-    EnsPFeaturePair lastfp  = NULL;
-    EnsPFeaturePair fp      = NULL;
+    EnsPFeaturepair firstfp = NULL;
+    EnsPFeaturepair lastfp  = NULL;
+    EnsPFeaturepair fp      = NULL;
     
     if(!baf)
 	return ajFalse;
@@ -5418,9 +5423,9 @@ static AjBool baseAlignFeatureParseFeatures(EnsPBaseAlignFeature baf,
     if(!ajListGetLength(objects))
 	return ajTrue;
     
-    srcunit = ensBaseAlignFeatureGetSourceUnit(baf);
+    srcunit = ensBasealignfeatureGetSourceUnit(baf);
     
-    trgunit = ensBaseAlignFeatureGetTargetUnit(baf);
+    trgunit = ensBasealignfeatureGetTargetUnit(baf);
     
     ajStrDelStatic(&baf->Cigar);
     
@@ -5435,7 +5440,7 @@ static AjBool baseAlignFeatureParseFeatures(EnsPBaseAlignFeature baf,
     {
 	Pobject = ajListIterGet(iter);
 	
-	ajListPushAppend(fps, (void *) baf->GetFeaturePair(Pobject));
+	ajListPushAppend(fps, (void *) baf->GetFeaturepair(Pobject));
     }
     
     ajListIterDel(&iter);
@@ -5488,7 +5493,7 @@ static AjBool baseAlignFeatureParseFeatures(EnsPBaseAlignFeature baf,
     
     while(!ajListIterDone(iter))
     {
-	fp = (EnsPFeaturePair) ajListIterGet(iter);
+	fp = (EnsPFeaturepair) ajListIterGet(iter);
 	
 	/* Sanity checks */
 	
@@ -5760,7 +5765,7 @@ static AjBool baseAlignFeatureParseFeatures(EnsPBaseAlignFeature baf,
     
     /* Replace the Feature Pair in the Base Align Feature. */
     
-    ensFeaturePairDel(&(baf->FeaturePair));
+    ensFeaturepairDel(&(baf->Featurepair));
     
     /* Clone the source Feature and set the new coordinates. */
     
@@ -5780,11 +5785,11 @@ static AjBool baseAlignFeatureParseFeatures(EnsPBaseAlignFeature baf,
     
     /* Clone the Feature Pair and set the new source and target Features. */
     
-    baf->FeaturePair = ensFeaturePairNewObj(firstfp);
+    baf->Featurepair = ensFeaturepairNewObj(firstfp);
     
-    ensFeaturePairSetSourceFeature(baf->FeaturePair, srcfeature);
+    ensFeaturepairSetSourceFeature(baf->Featurepair, srcfeature);
     
-    ensFeaturePairSetTargetFeature(baf->FeaturePair, trgfeature);
+    ensFeaturepairSetTargetFeature(baf->Featurepair, trgfeature);
     
     /* Delete the source and target Features. */
     
@@ -5803,14 +5808,14 @@ static AjBool baseAlignFeatureParseFeatures(EnsPBaseAlignFeature baf,
 ** Convert an Ensembl Base Align Feature CIGAR line into a
 ** List of Ensembl Feature Pairs.
 **
-** @param [r] baf [EnsPBaseAlignFeature] Ensembl Base Align Feature
-** @param [u] fps [AjPLIst] AJAX List of Ensembl Feature Pairs
+** @param [r] baf [const EnsPBasealignfeature] Ensembl Base Align Feature
+** @param [u] fps [AjPList] AJAX List of Ensembl Feature Pairs
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-static AjBool baseAlignFeatureParseCigar(EnsPBaseAlignFeature baf, AjPList fps)
+static AjBool baseAlignFeatureParseCigar(const EnsPBasealignfeature baf, AjPList fps)
 {
     ajint fpsrcstart = 0;
     ajint fptrgstart = 0;
@@ -5832,7 +5837,7 @@ static AjBool baseAlignFeatureParseCigar(EnsPBaseAlignFeature baf, AjPList fps)
     EnsPFeature srcfeature = NULL;
     EnsPFeature trgfeature = NULL;
     
-    EnsPFeaturePair fp = NULL;
+    EnsPFeaturepair fp = NULL;
     
     if(!baf)
 	return ajFalse;
@@ -5840,27 +5845,27 @@ static AjBool baseAlignFeatureParseCigar(EnsPBaseAlignFeature baf, AjPList fps)
     if((! baf->Cigar) && (! ajStrGetLen(baf->Cigar)))
 	ajFatal("baseAlignFeatureParseCigar no CIGAR string defined!\n");
     
-    if(! baf->FeaturePair)
+    if(! baf->Featurepair)
 	ajFatal("baseAlignFeatureParseCigar no Feature Pair defined in the "
 		"Base Align Feature!\n");
     
-    if(!baf->FeaturePair->SourceFeature)
+    if(!baf->Featurepair->SourceFeature)
 	ajFatal("baseAlignFeatureParseCigar no Feature defined in the "
 		"Feature Pair of the Base Align Feature!\n");
     
-    srcunit = ensBaseAlignFeatureGetSourceUnit(baf);
+    srcunit = ensBasealignfeatureGetSourceUnit(baf);
     
-    trgunit = ensBaseAlignFeatureGetTargetUnit(baf);
+    trgunit = ensBasealignfeatureGetTargetUnit(baf);
     
-    if(baf->FeaturePair->SourceFeature->Strand > 0)
-	fpsrcstart = baf->FeaturePair->SourceFeature->Start;
+    if(baf->Featurepair->SourceFeature->Strand > 0)
+	fpsrcstart = baf->Featurepair->SourceFeature->Start;
     else
-	fpsrcstart = baf->FeaturePair->SourceFeature->End;
+	fpsrcstart = baf->Featurepair->SourceFeature->End;
     
-    if(baf->FeaturePair->TargetFeature->Strand > 0)
-	fptrgstart = baf->FeaturePair->TargetFeature->Start;
+    if(baf->Featurepair->TargetFeature->Strand > 0)
+	fptrgstart = baf->Featurepair->TargetFeature->Start;
     else
-	fptrgstart = baf->FeaturePair->TargetFeature->End;
+	fptrgstart = baf->Featurepair->TargetFeature->End;
     
     /* Construct ungapped blocks as Feature Pair objects for each MATCH. */
     
@@ -5888,7 +5893,7 @@ static AjBool baseAlignFeatureParseCigar(EnsPBaseAlignFeature baf, AjPList fps)
 	{
 	    /* MATCH */
 	    
-	    if(baf->FeaturePair->SourceFeature->Strand > 0)
+	    if(baf->Featurepair->SourceFeature->Strand > 0)
 	    {
 		srcstart = fpsrcstart;
 		
@@ -5905,7 +5910,7 @@ static AjBool baseAlignFeatureParseCigar(EnsPBaseAlignFeature baf, AjPList fps)
 		fpsrcstart = srcstart - 1;
 	    }
 	    
-	    if(baf->FeaturePair->TargetFeature->Strand > 0)
+	    if(baf->Featurepair->TargetFeature->Strand > 0)
 	    {
 		trgstart = fptrgstart;
 		
@@ -5924,7 +5929,7 @@ static AjBool baseAlignFeatureParseCigar(EnsPBaseAlignFeature baf, AjPList fps)
 	    
 	    /* Clone the source Feature and set the new coordinates. */
 	    
-	    srcfeature = ensFeatureNewObj(baf->FeaturePair->SourceFeature);
+	    srcfeature = ensFeatureNewObj(baf->Featurepair->SourceFeature);
 	    
 	    ensFeatureSetStart(srcfeature, srcstart);
 	    
@@ -5932,7 +5937,7 @@ static AjBool baseAlignFeatureParseCigar(EnsPBaseAlignFeature baf, AjPList fps)
 	    
 	    /* Clone the target Feature and set the new coordinates. */
 	    
-	    trgfeature = ensFeatureNewObj(baf->FeaturePair->TargetFeature);
+	    trgfeature = ensFeatureNewObj(baf->Featurepair->TargetFeature);
 	    
 	    ensFeatureSetStart(trgfeature, trgstart);
 	    
@@ -5943,11 +5948,11 @@ static AjBool baseAlignFeatureParseCigar(EnsPBaseAlignFeature baf, AjPList fps)
 	    ** Features.
 	    */
 	    
-	    fp = ensFeaturePairNewObj(baf->FeaturePair);
+	    fp = ensFeaturepairNewObj(baf->Featurepair);
 	    
-	    ensFeaturePairSetSourceFeature(baf->FeaturePair, srcfeature);
+	    ensFeaturepairSetSourceFeature(baf->Featurepair, srcfeature);
 	    
-	    ensFeaturePairSetTargetFeature(baf->FeaturePair, trgfeature);
+	    ensFeaturepairSetTargetFeature(baf->Featurepair, trgfeature);
 	    
 	    /* Delete the source and target Features. */
 	    
@@ -5961,7 +5966,7 @@ static AjBool baseAlignFeatureParseCigar(EnsPBaseAlignFeature baf, AjPList fps)
 	{
 	    /* INSERT */
 	    
-	    if(baf->FeaturePair->SourceFeature->Strand > 0)
+	    if(baf->Featurepair->SourceFeature->Strand > 0)
 		fpsrcstart += tlength;
 	    else
 		fpsrcstart -= tlength;
@@ -5971,7 +5976,7 @@ static AjBool baseAlignFeatureParseCigar(EnsPBaseAlignFeature baf, AjPList fps)
 	{
 	    /* DELETION */
 	    
-	    if(baf->FeaturePair->TargetFeature->Strand > 0)
+	    if(baf->Featurepair->TargetFeature->Strand > 0)
 		fptrgstart += mlength;
 	    else
 		fptrgstart -= mlength;
@@ -5995,7 +6000,7 @@ static AjBool baseAlignFeatureParseCigar(EnsPBaseAlignFeature baf, AjPList fps)
 ** Base Align Feature. The target pointer does not need to be initialised to
 ** NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPBaseAlignFeature]
+** @fdata [EnsPBasealignfeature]
 ** @fnote None
 **
 ** @nam3rule New Constructor
@@ -6005,10 +6010,10 @@ static AjBool baseAlignFeatureParseCigar(EnsPBaseAlignFeature baf, AjPList fps)
 ** @suffix D Constructor for a Base Align Feature of type 'DNA'
 ** @suffix P Constructor for a Base Align Feature of type 'Protein'
 **
-** @argrule Obj object [EnsPBaseAlignFeature] Ensembl Base Align Feature
-** @argrule Ref object [EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @argrule Obj object [EnsPBasealignfeature] Ensembl Base Align Feature
+** @argrule Ref object [EnsPBasealignfeature] Ensembl Base Align Feature
 **
-** @valrule * [EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @valrule * [EnsPBasealignfeature] Ensembl Base Align Feature
 **
 ** @fcategory new
 ******************************************************************************/
@@ -6016,7 +6021,7 @@ static AjBool baseAlignFeatureParseCigar(EnsPBaseAlignFeature baf, AjPList fps)
 
 
 
-/* @func ensBaseAlignFeatureNewD **********************************************
+/* @func ensBasealignfeatureNewD **********************************************
 **
 ** Ensembl Base Align Feature constructor for type 'DNA'.
 **
@@ -6024,24 +6029,24 @@ static AjBool baseAlignFeatureParseCigar(EnsPBaseAlignFeature baf, AjPList fps)
 ** @param [r] adaptor [EnsPDNAAlignFeatureadaptor] Ensembl DNA Align
 **                                                 Feature Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
-** @cc Bio::EnsEMBL::FeaturePair
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
-** @cc Bio::EnsEMBL::BaseAlignFeature
+** @cc Bio::EnsEMBL::Featurepair
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Basealignfeature
 ** @param [u] cigar [AjPStr] CIGAR line
 ** @param [r] pair [ajuint] Pair DNA Align Feature identifier
 **
-** @return [EnsPBaseAlignFeature] Ensembl Base Align Feature or NULL
+** @return [EnsPBasealignfeature] Ensembl Base Align Feature or NULL
 ** @@
 ******************************************************************************/
 
-EnsPBaseAlignFeature ensBaseAlignFeatureNewD(
+EnsPBasealignfeature ensBasealignfeatureNewD(
     EnsPDNAAlignFeatureadaptor adaptor,
     ajuint identifier,
-    EnsPFeaturePair fp,
+    EnsPFeaturepair fp,
     AjPStr cigar,
     ajuint pair)
 {
-    EnsPBaseAlignFeature baf = NULL;
+    EnsPBasealignfeature baf = NULL;
     
     if(!fp)
 	return NULL;
@@ -6057,12 +6062,12 @@ EnsPBaseAlignFeature ensBaseAlignFeatureNewD(
     
     baf->DNAAlignFeatureadaptor = adaptor;
     
-    baf->FeaturePair = ensFeaturePairNewRef(fp);
+    baf->Featurepair = ensFeaturepairNewRef(fp);
     
     if(cigar)
 	baf->Cigar = ajStrNewRef(cigar);
     
-    baf->Type = ensEBaseAlignFeatureTypeDNA;
+    baf->Type = ensEBasealignfeatureTypeDNA;
     
     baf->PairDNAAlignFeatureIdentifier = pair;
     
@@ -6072,30 +6077,30 @@ EnsPBaseAlignFeature ensBaseAlignFeatureNewD(
 
 
 
-/* @func ensBaseAlignFeatureNewP **********************************************
+/* @func ensBasealignfeatureNewP **********************************************
 **
 ** Ensembl Base Align Feature constructor for type 'Protein'.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] adaptor [EnsPProteinAlignFeatureadaptor] Ensembl Protein Align
+** @param [r] adaptor [EnsPProteinalignfeatureadaptor] Ensembl Protein Align
 **                                                     Feature Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
-** @cc Bio::EnsEMBL::FeaturePair
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
-** @cc Bio::EnsEMBL::BaseAlignFeature
+** @cc Bio::EnsEMBL::Featurepair
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Basealignfeature
 ** @param [u] cigar [AjPStr] CIGAR line
 **
-** @return [EnsPBaseAlignFeature] Ensembl Base Align Feature or NULL
+** @return [EnsPBasealignfeature] Ensembl Base Align Feature or NULL
 ** @@
 ******************************************************************************/
 
-EnsPBaseAlignFeature ensBaseAlignFeatureNewP(
-    EnsPProteinAlignFeatureadaptor adaptor,
+EnsPBasealignfeature ensBasealignfeatureNewP(
+    EnsPProteinalignfeatureadaptor adaptor,
     ajuint identifier,
-    EnsPFeaturePair fp,
+    EnsPFeaturepair fp,
     AjPStr cigar)
 {
-    EnsPBaseAlignFeature baf = NULL;
+    EnsPBasealignfeature baf = NULL;
     
     if(!fp)
 	return NULL;
@@ -6109,14 +6114,14 @@ EnsPBaseAlignFeature ensBaseAlignFeatureNewP(
     
     baf->Identifier = identifier;
     
-    baf->ProteinAlignFeatureadaptor = adaptor;
+    baf->Proteinalignfeatureadaptor = adaptor;
     
-    baf->FeaturePair = ensFeaturePairNewRef(fp);
+    baf->Featurepair = ensFeaturepairNewRef(fp);
     
     if(cigar)
 	baf->Cigar = ajStrNewRef(cigar);
     
-    baf->Type = ensEBaseAlignFeatureTypeProtein;
+    baf->Type = ensEBasealignfeatureTypeProtein;
     
     baf->PairDNAAlignFeatureIdentifier = 0;
     
@@ -6126,43 +6131,43 @@ EnsPBaseAlignFeature ensBaseAlignFeatureNewP(
 
 
 
-/* @func ensBaseAlignFeatureNew ***********************************************
+/*
+** FIXME: We should split this into two separate Functions.
+** ensBasealignfeatureNewC (cigar)
+** ensBasealignfeatureNewF (feature pairs).
+*/
+
+/* @func ensBasealignfeatureNew ***********************************************
 **
 ** Default Ensembl Base Align Feature constructor.
 **
-** @cc Bio::EnsEMBL::FeaturePair
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
-** @cc Bio::EnsEMBL::BaseAlignFeature
+** @cc Bio::EnsEMBL::Featurepair
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Basealignfeature
 ** @param [u] cigar [AjPStr] CIGAR line
 ** @param [r] fps [AjPList] AJAX List of Ensembl Feature Pairs
 ** @param [r] type [AjEnum] Ensembl Base Align Feature type
 ** @param [r] pair [ajuint] Pair DNA Align Feature identifier
 **
-** @return [EnsPBaseAlignFeature] Ensembl Base Align Feature or NULL
+** @return [EnsPBasealignfeature] Ensembl Base Align Feature or NULL
 ** @@
 ******************************************************************************/
 
-/*
-** FIXME: We should split this into two separate Functions.
-** ensBaseAlignFeatureNewC (cigar)
-** ensBaseAlignFeatureNewF (feature pairs).
-*/
-
-EnsPBaseAlignFeature ensBaseAlignFeatureNew(EnsPFeaturePair fp,
+EnsPBasealignfeature ensBasealignfeatureNew(EnsPFeaturepair fp,
                                             AjPStr cigar,
                                             AjPList fps,
                                             AjEnum type,
                                             ajuint pair)
 {
-    EnsPBaseAlignFeature baf = NULL;
+    EnsPBasealignfeature baf = NULL;
     
     if(!fp)
 	return NULL;
     
-    if((type < ensEBaseAlignFeatureTypeDNA) ||
-       (type > ensEBaseAlignFeatureTypeProtein))
+    if((type < ensEBasealignfeatureTypeDNA) ||
+       (type > ensEBasealignfeatureTypeProtein))
     {
-	ajDebug("ensBaseAlignFeatureNew got illegal type (%d).\n", type);
+	ajDebug("ensBasealignfeatureNew got illegal type (%d).\n", type);
 	
 	return NULL;
     }
@@ -6171,11 +6176,11 @@ EnsPBaseAlignFeature ensBaseAlignFeatureNew(EnsPFeaturePair fp,
     
     baf->Use = 1;
     
-    baf->FeaturePair = ensFeaturePairNewRef(fp);
+    baf->Featurepair = ensFeaturepairNewRef(fp);
     
     if(cigar && ajStrGetLen(cigar) && fps && ajListGetLength(fps))
     {
-	ajDebug("ensBaseAlignFeatureNew requires a CIGAR String or a "
+	ajDebug("ensBasealignfeatureNew requires a CIGAR String or a "
 		"List of Ensembl Feature Pairs, not both.\n");
 	
 	AJFREE(baf);
@@ -6191,7 +6196,7 @@ EnsPBaseAlignFeature ensBaseAlignFeatureNew(EnsPFeaturePair fp,
 	baseAlignFeatureParseFeatures(baf, fps);
     }
     else
-	ajDebug("ensBaseAlignFeatureNew requirs either a CIGAR String or a "
+	ajDebug("ensBasealignfeatureNew requirs either a CIGAR String or a "
 		"List of Ensembl Feature Pairs.\n");
     
     baf->Type = type;
@@ -6204,20 +6209,20 @@ EnsPBaseAlignFeature ensBaseAlignFeatureNew(EnsPFeaturePair fp,
 
 
 
-/* @func ensBaseAlignFeatureNewObj ********************************************
+/* @func ensBasealignfeatureNewObj ********************************************
 **
 ** Object-based constructor function, which returns an independent object.
 **
-** @param [r] object [const EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @param [r] object [const EnsPBasealignfeature] Ensembl Base Align Feature
 **
-** @return [EnsPBaseAlignFeature] Ensembl Base Align Feature or NULL
+** @return [EnsPBasealignfeature] Ensembl Base Align Feature or NULL
 ** @@
 ******************************************************************************/
 
-EnsPBaseAlignFeature ensBaseAlignFeatureNewObj(
-    const EnsPBaseAlignFeature object)
+EnsPBasealignfeature ensBasealignfeatureNewObj(
+    const EnsPBasealignfeature object)
 {
-    EnsPBaseAlignFeature baf = NULL;
+    EnsPBasealignfeature baf = NULL;
     
     AJNEW0(baf);
     
@@ -6225,9 +6230,9 @@ EnsPBaseAlignFeature ensBaseAlignFeatureNewObj(
     
     baf->Identifier                 = object->Identifier;
     baf->DNAAlignFeatureadaptor     = object->DNAAlignFeatureadaptor;
-    baf->ProteinAlignFeatureadaptor = object->ProteinAlignFeatureadaptor;
+    baf->Proteinalignfeatureadaptor = object->Proteinalignfeatureadaptor;
     
-    baf->FeaturePair = ensFeaturePairNewRef(object->FeaturePair);
+    baf->Featurepair = ensFeaturepairNewRef(object->Featurepair);
     
     if(object->Cigar)
 	baf->Cigar = ajStrNewRef(object->Cigar);
@@ -6244,18 +6249,18 @@ EnsPBaseAlignFeature ensBaseAlignFeatureNewObj(
 
 
 
-/* @func ensBaseAlignFeatureNewRef ********************************************
+/* @func ensBasealignfeatureNewRef ********************************************
 **
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] baf [EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @param [u] baf [EnsPBasealignfeature] Ensembl Base Align Feature
 **
-** @return [EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @return [EnsPBasealignfeature] Ensembl Base Align Feature
 ** @@
 ******************************************************************************/
 
-EnsPBaseAlignFeature ensBaseAlignFeatureNewRef(EnsPBaseAlignFeature baf)
+EnsPBasealignfeature ensBasealignfeatureNewRef(EnsPBasealignfeature baf)
 {
     if(!baf)
 	return NULL;
@@ -6273,12 +6278,12 @@ EnsPBaseAlignFeature ensBaseAlignFeatureNewRef(EnsPBaseAlignFeature baf)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Base Align Feature.
 **
-** @fdata [EnsPBaseAlignFeature]
+** @fdata [EnsPBasealignfeature]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) an Ensembl Base Align Feature object
 **
-** @argrule * Pbaf [EnsPBaseAlignFeature*] Ensembl Base Align Feature
+** @argrule * Pbaf [EnsPBasealignfeature*] Ensembl Base Align Feature
 **                                         object address
 **
 ** @valrule * [void]
@@ -6289,19 +6294,19 @@ EnsPBaseAlignFeature ensBaseAlignFeatureNewRef(EnsPBaseAlignFeature baf)
 
 
 
-/* @func ensBaseAlignFeatureDel ***********************************************
+/* @func ensBasealignfeatureDel ***********************************************
 **
 ** Default destructor for an Ensembl Base Align Feature.
 **
-** @param [d] Pbaf [EnsPBaseAlignFeature*] Ensembl Base Align Feature address
+** @param [d] Pbaf [EnsPBasealignfeature*] Ensembl Base Align Feature address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensBaseAlignFeatureDel(EnsPBaseAlignFeature *Pbaf)
+void ensBasealignfeatureDel(EnsPBasealignfeature *Pbaf)
 {
-    EnsPBaseAlignFeature pthis = NULL;
+    EnsPBasealignfeature pthis = NULL;
     
     if(!Pbaf)
 	return;
@@ -6320,7 +6325,7 @@ void ensBaseAlignFeatureDel(EnsPBaseAlignFeature *Pbaf)
 	return;
     }
     
-    ensFeaturePairDel(&pthis->FeaturePair);
+    ensFeaturepairDel(&pthis->Featurepair);
     
     AJFREE(pthis);
 
@@ -6336,30 +6341,30 @@ void ensBaseAlignFeatureDel(EnsPBaseAlignFeature *Pbaf)
 **
 ** Functions for returning elements of an Ensembl Base Align Feature object.
 **
-** @fdata [EnsPBaseAlignFeature]
+** @fdata [EnsPBasealignfeature]
 ** @fnote None
 **
 ** @nam3rule Get Return Base Align Feature attribute(s)
 ** @nam4rule GetDNAAlignFeatureadaptor
 **           Return the Ensembl DNA Align Feature Adaptor
-** @nam4rule GetProteinAlignFeatureadaptor
+** @nam4rule GetProteinalignfeatureadaptor
 **           Return the Ensembl Protein Align Feature Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
-** @nam4rule GetFeaturePair Return the Ensembl Feature Pair
+** @nam4rule GetFeaturepair Return the Ensembl Feature Pair
 ** @nam4rule GetCigar Return the CIGAR line
 ** @nam4rule GetType Return the type
 ** @nam4rule GetAlignmentLength Return the alignment length
 ** @nam4rule GetPairDNAAlignFeatureIdentifier Return the pair DNA align feature
 **                                            identifier
 **
-** @argrule * baf [const EnsPBaseAlignFeature] Base Align Feature
+** @argrule * baf [const EnsPBasealignfeature] Base Align Feature
 **
 ** @valrule DNAAlignFeatureadaptor [EnsPDNAAlignFeatureadaptor]
 **                                  Ensembl DNA Align Feature Adaptor
-** @valrule ProteinAlignFeatureadaptor [EnsPProteinAlignFeatureadaptor]
+** @valrule Proteinalignfeatureadaptor [EnsPProteinalignfeatureadaptor]
 **                                      Ensembl Protein Align Feature Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
-** @valrule FeaturePair [EnsPFeaturePair] Ensembl Feature Pair
+** @valrule Featurepair [EnsPFeaturepair] Ensembl Feature Pair
 ** @valrule Cigar [AjPStr] CIGAR line
 ** @valrule Type [AjEnum] Type
 ** @valrule AlignmentLength [ajuint] Alignment length
@@ -6372,20 +6377,20 @@ void ensBaseAlignFeatureDel(EnsPBaseAlignFeature *Pbaf)
 
 
 
-/* @func ensBaseAlignFeatureGetDNAAlignFeatureadaptor *************************
+/* @func ensBasealignfeatureGetDNAAlignFeatureadaptor *************************
 **
 ** Get the DNA Align Feature Adaptor element of an Ensembl Base Align Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::adaptor
-** @param [r] baf [const EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @param [r] baf [const EnsPBasealignfeature] Ensembl Base Align Feature
 **
 ** @return [EnsPDNAAlignFeatureadaptor] Ensembl DNA Align Feature Adaptor
 **                                      or NULL
 ** @@
 ******************************************************************************/
 
-EnsPDNAAlignFeatureadaptor ensBaseAlignFeatureGetDNAAlignFeatureadaptor(
-    const EnsPBaseAlignFeature baf)
+EnsPDNAAlignFeatureadaptor ensBasealignfeatureGetDNAAlignFeatureadaptor(
+    const EnsPBasealignfeature baf)
 {
     if(!baf)
         return NULL;
@@ -6396,44 +6401,44 @@ EnsPDNAAlignFeatureadaptor ensBaseAlignFeatureGetDNAAlignFeatureadaptor(
 
 
 
-/* @func ensBaseAlignFeatureGetProteinAlignFeatureadaptor *********************
+/* @func ensBasealignfeatureGetProteinalignfeatureadaptor *********************
 **
 ** Get the Protein Align Feature Adaptor element of an
 ** Ensembl Base Align Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::adaptor
-** @param [r] baf [const EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @param [r] baf [const EnsPBasealignfeature] Ensembl Base Align Feature
 **
-** @return [EnsPProteinAlignFeatureadaptor] Ensembl Protein Align
+** @return [EnsPProteinalignfeatureadaptor] Ensembl Protein Align
 **                                          Feature Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPProteinAlignFeatureadaptor ensBaseAlignFeatureGetProteinAlignFeatureadaptor(
-    const EnsPBaseAlignFeature baf)
+EnsPProteinalignfeatureadaptor ensBasealignfeatureGetProteinalignfeatureadaptor(
+    const EnsPBasealignfeature baf)
 {
     if(!baf)
         return NULL;
     
-    return baf->ProteinAlignFeatureadaptor;
+    return baf->Proteinalignfeatureadaptor;
 }
 
 
 
 
-/* @func ensBaseAlignFeatureGetIdentifier *************************************
+/* @func ensBasealignfeatureGetIdentifier *************************************
 **
 ** Get the SQL database-internal identifier element of an
 ** Ensembl Base Align Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::dbID
-** @param [r] baf [const EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @param [r] baf [const EnsPBasealignfeature] Ensembl Base Align Feature
 **
 ** @return [ajuint] SQL database-internal identifier
 ** @@
 ******************************************************************************/
 
-ajuint ensBaseAlignFeatureGetIdentifier(const EnsPBaseAlignFeature baf)
+ajuint ensBasealignfeatureGetIdentifier(const EnsPBasealignfeature baf)
 {
     if(!baf)
         return 0;
@@ -6444,23 +6449,23 @@ ajuint ensBaseAlignFeatureGetIdentifier(const EnsPBaseAlignFeature baf)
 
 
 
-/* @func ensBaseAlignFeatureGetFeaturePair ************************************
+/* @func ensBasealignfeatureGetFeaturepair ************************************
 **
 ** Get the Ensembl Feature Pair element of an Ensembl Base Align Feature.
 **
-** @param [r] baf [const EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @param [r] baf [const EnsPBasealignfeature] Ensembl Base Align Feature
 **
-** @return [EnsPFeaturePair] Ensembl Feature Pair
+** @return [EnsPFeaturepair] Ensembl Feature Pair
 ** @@
 ******************************************************************************/
 
-EnsPFeaturePair ensBaseAlignFeatureGetFeaturePair(
-    const EnsPBaseAlignFeature baf)
+EnsPFeaturepair ensBasealignfeatureGetFeaturepair(
+    const EnsPBasealignfeature baf)
 {
     if(!baf)
 	return NULL;
     
-    return baf->FeaturePair;
+    return baf->Featurepair;
 }
 
 
@@ -6471,7 +6476,7 @@ EnsPFeaturePair ensBaseAlignFeatureGetFeaturePair(
 ** is parsed the first time in baseAlignFeatureParseCigar.
 */
 
-ajuint ensBaseAlignFeatureGetAlignmentLength(EnsPBaseAlignFeature baf)
+ajuint ensBasealignfeatureGetAlignmentLength(EnsPBasealignfeature baf)
 {
     ajint tlength = 0;
     
@@ -6503,13 +6508,13 @@ ajuint ensBaseAlignFeatureGetAlignmentLength(EnsPBaseAlignFeature baf)
 **
 ** Functions for assigning elements of an Ensembl Base Align Feature object.
 **
-** @fdata [EnsPBaseAlignFeature]
+** @fdata [EnsPBasealignfeature]
 ** @fnote None
 **
 ** @nam3rule Set Set one element of a Base Align Feature
-** @nam4rule SetFeaturePair Set the Ensembl Feature Pair
+** @nam4rule SetFeaturepair Set the Ensembl Feature Pair
 **
-** @argrule * baf [EnsPBaseAlignFeature] Ensembl Base Align Feature object
+** @argrule * baf [EnsPBasealignfeature] Ensembl Base Align Feature object
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
@@ -6519,29 +6524,29 @@ ajuint ensBaseAlignFeatureGetAlignmentLength(EnsPBaseAlignFeature baf)
 
 
 
-/* @func ensBaseAlignFeatureSetFeaturePair ************************************
+/* @func ensBasealignfeatureSetFeaturepair ************************************
 **
 ** Set the Ensembl Feature Pair element of an Ensembl Base Align Feature.
 **
-** @param [u] baf [EnsPBaseAlignFeature] Ensembl Base Align Feature
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
+** @param [u] baf [EnsPBasealignfeature] Ensembl Base Align Feature
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensBaseAlignFeatureSetFeaturePair(EnsPBaseAlignFeature baf,
-                                         EnsPFeaturePair fp)
+AjBool ensBasealignfeatureSetFeaturepair(EnsPBasealignfeature baf,
+                                         EnsPFeaturepair fp)
 {
-    ajDebug("ensBaseAlignFeatureSetFeaturePair\n"
+    ajDebug("ensBasealignfeatureSetFeaturepair\n"
 	    "  baf %p\n"
 	    "  fp %p\n",
 	    baf,
 	    fp);
     
-    ensBaseAlignFeatureTrace(baf, 1);
+    ensBasealignfeatureTrace(baf, 1);
     
-    ensFeaturePairTrace(fp, 1);
+    ensFeaturepairTrace(fp, 1);
     
     if(!baf)
 	return ajFalse;
@@ -6551,10 +6556,10 @@ AjBool ensBaseAlignFeatureSetFeaturePair(EnsPBaseAlignFeature baf,
     
     /* Replace the current Feature Pair. */
     
-    if(baf->FeaturePair)
-	ensFeaturePairDel(&(baf->FeaturePair));
+    if(baf->Featurepair)
+	ensFeaturepairDel(&(baf->Featurepair));
     
-    baf->FeaturePair = ensFeaturePairNewRef(fp);
+    baf->Featurepair = ensFeaturepairNewRef(fp);
     
     return ajTrue;
 }
@@ -6562,50 +6567,50 @@ AjBool ensBaseAlignFeatureSetFeaturePair(EnsPBaseAlignFeature baf,
 
 
 
-/* @func ensBaseAlignFeatureGetFeature ****************************************
+/* @func ensBasealignfeatureGetFeature ****************************************
 **
 ** Get the Ensembl Feature element of an Ensembl Feature Pair element of an
 ** Ensembl Base Align Feature.
 **
-** @param [r] baf [const EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @param [r] baf [const EnsPBasealignfeature] Ensembl Base Align Feature
 **
 ** @return [EnsPFeature] Ensembl Feature
 ** @@
 ******************************************************************************/
 
-EnsPFeature ensBaseAlignFeatureGetFeature(const EnsPBaseAlignFeature baf)
+EnsPFeature ensBasealignfeatureGetFeature(const EnsPBasealignfeature baf)
 {
     if(!baf)
 	return NULL;
     
-    return ensFeaturePairGetSourceFeature(baf->FeaturePair);
+    return ensFeaturepairGetSourceFeature(baf->Featurepair);
 }
 
 
 
 
-/* @func ensBaseAlignFeatureGetadaptor ****************************************
+/* @func ensBasealignfeatureGetAdaptor ****************************************
 **
 ** Get the Adaptor element of an Ensembl Base Align Feature.
 ** This will return an EnsPDNAAlignFeatureadaptor for a feature of type 'DNA'
-** and an EnsPProteinAlignFeatureadaptor for a feature of type 'protein'.
+** and an EnsPProteinalignfeatureadaptor for a feature of type 'protein'.
 **
 ** @cc Bio::EnsEMBL::Storable::adaptor
-** @param [r] baf [const EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @param [r] baf [const EnsPBasealignfeature] Ensembl Base Align Feature
 **
 ** @return [void *] Ensembl DNA or Protein Align Feature Adaptor
 ** @@
 ******************************************************************************/
 
-void *ensBaseAlignFeatureGetadaptor(const EnsPBaseAlignFeature baf)
+void *ensBasealignfeatureGetAdaptor(const EnsPBasealignfeature baf)
 {
     if(!baf)
         return NULL;
     
-    if(baf->Type == ensEBaseAlignFeatureTypeDNA)
+    if(baf->Type == ensEBasealignfeatureTypeDNA)
 	return (void *) baf->DNAAlignFeatureadaptor;
-    else if(baf->Type == ensEBaseAlignFeatureTypeProtein)
-	return (void *) baf->ProteinAlignFeatureadaptor;
+    else if(baf->Type == ensEBasealignfeatureTypeProtein)
+	return (void *) baf->Proteinalignfeatureadaptor;
     
     return NULL;
 }
@@ -6613,24 +6618,24 @@ void *ensBaseAlignFeatureGetadaptor(const EnsPBaseAlignFeature baf)
 
 
 
-/* @func ensBaseAlignFeatureGetSourceUnit *************************************
+/* @func ensBasealignfeatureGetSourceUnit *************************************
 **
 ** Get the alignment unit for the source part of an Ensembl Base Align Feature.
 **
-** @param [r] baf [const EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @param [r] baf [const EnsPBasealignfeature] Ensembl Base Align Feature
 **
 ** @return [ajuint] Alignment unit for the source part
 ** @@
 ******************************************************************************/
 
-ajuint ensBaseAlignFeatureGetSourceUnit(const EnsPBaseAlignFeature baf)
+ajuint ensBasealignfeatureGetSourceUnit(const EnsPBasealignfeature baf)
 {
     if(!baf)
 	return 0;
     
-    if(baf->Type == ensEBaseAlignFeatureTypeDNA)
+    if(baf->Type == ensEBasealignfeatureTypeDNA)
 	return 1;
-    else if(baf->Type == ensEBaseAlignFeatureTypeProtein)
+    else if(baf->Type == ensEBasealignfeatureTypeProtein)
 	return 3;
     
     return 0;
@@ -6639,24 +6644,24 @@ ajuint ensBaseAlignFeatureGetSourceUnit(const EnsPBaseAlignFeature baf)
 
 
 
-/* @func ensBaseAlignFeatureGetTargetUnit *************************************
+/* @func ensBasealignfeatureGetTargetUnit *************************************
 **
 ** Get the alignment unit for the target part of an Ensembl Base Align Feature.
 **
-** @param [r] baf [const EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @param [r] baf [const EnsPBasealignfeature] Ensembl Base Align Feature
 **
 ** @return [ajuint] Alignment unit for the target part
 ** @@
 ******************************************************************************/
 
-ajuint ensBaseAlignFeatureGetTargetUnit(const EnsPBaseAlignFeature baf)
+ajuint ensBasealignfeatureGetTargetUnit(const EnsPBasealignfeature baf)
 {
     if(!baf)
 	return 0;
     
-    if(baf->Type == ensEBaseAlignFeatureTypeDNA)
+    if(baf->Type == ensEBasealignfeatureTypeDNA)
 	return 1;
-    else if (baf->Type == ensEBaseAlignFeatureTypeProtein)
+    else if (baf->Type == ensEBasealignfeatureTypeProtein)
 	return 1;
     
     return 0;
@@ -6665,26 +6670,26 @@ ajuint ensBaseAlignFeatureGetTargetUnit(const EnsPBaseAlignFeature baf)
 
 
 
-/* @func ensBaseAlignFeatureGetMemSize ****************************************
+/* @func ensBasealignfeatureGetMemSize ****************************************
 **
 ** Get the memory size in bytes of an Ensembl Base Align Feature.
 **
-** @param [r] baf [const EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @param [r] baf [const EnsPBasealignfeature] Ensembl Base Align Feature
 **
 ** @return [ajuint] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensBaseAlignFeatureGetMemSize(const EnsPBaseAlignFeature baf)
+ajuint ensBasealignfeatureGetMemSize(const EnsPBasealignfeature baf)
 {
     ajuint size = 0;
     
     if(!baf)
 	return 0;
     
-    size += (ajuint) sizeof (EnsOBaseAlignFeature);
+    size += (ajuint) sizeof (EnsOBasealignfeature);
     
-    size += ensFeaturePairGetMemSize(baf->FeaturePair);
+    size += ensFeaturepairGetMemSize(baf->Featurepair);
     
     if(baf->Cigar)
     {
@@ -6699,28 +6704,28 @@ ajuint ensBaseAlignFeatureGetMemSize(const EnsPBaseAlignFeature baf)
 
 
 
-/* @func ensBaseAlignFeatureTransform *****************************************
+/* @func ensBasealignfeatureTransform *****************************************
 **
 ** Transform an Ensembl Base Align Feature into another
 ** Ensembl Coordinate System.
 **
 ** @cc Bio::EnsEMBL::Feature::transform
-** @param [u] baf [const EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @param [u] baf [const EnsPBasealignfeature] Ensembl Base Align Feature
 ** @param [r] csname [const AjPStr] Ensembl Coordinate System name
 ** @param [r] csversion [const AjPStr] Ensembl Coordinate System version
 ** @see ensFeatureTransform
 **
-** @return [EnsPBaseAlignFeature] Ensembl Base Align Feature or NULL
+** @return [EnsPBasealignfeature] Ensembl Base Align Feature or NULL
 ** @@
 ******************************************************************************/
 
-EnsPBaseAlignFeature ensBaseAlignFeatureTransform(EnsPBaseAlignFeature baf,
+EnsPBasealignfeature ensBasealignfeatureTransform(const EnsPBasealignfeature baf,
                                                   const AjPStr csname,
                                                   const AjPStr csversion)
 {
-    EnsPFeaturePair nfp = NULL;
+    EnsPFeaturepair nfp = NULL;
     
-    EnsPBaseAlignFeature nbaf = NULL;
+    EnsPBasealignfeature nbaf = NULL;
     
     if(!baf)
 	return NULL;
@@ -6731,16 +6736,16 @@ EnsPBaseAlignFeature ensBaseAlignFeatureTransform(EnsPBaseAlignFeature baf,
     if(!csversion)
 	return NULL;
     
-    nfp = ensFeaturePairTransform(baf->FeaturePair, csname, csversion);
+    nfp = ensFeaturepairTransform(baf->Featurepair, csname, csversion);
     
     if(!nfp)
 	return NULL;
     
-    nbaf = ensBaseAlignFeatureNewObj(baf);
+    nbaf = ensBasealignfeatureNewObj(baf);
     
-    ensBaseAlignFeatureSetFeaturePair(nbaf, nfp);
+    ensBasealignfeatureSetFeaturepair(nbaf, nfp);
     
-    ensFeaturePairDel(&nfp);
+    ensFeaturepairDel(&nfp);
     
     return nbaf;
 }
@@ -6748,25 +6753,25 @@ EnsPBaseAlignFeature ensBaseAlignFeatureTransform(EnsPBaseAlignFeature baf,
 
 
 
-/* @func ensBaseAlignFeatureTransfer ******************************************
+/* @func ensBasealignfeatureTransfer ******************************************
 **
 ** Transfer an Ensembl Base Align Feature onto another Ensembl Slice.
 **
 ** @cc Bio::EnsEMBL::Feature::transfer
-** @param [u] baf [EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @param [u] baf [EnsPBasealignfeature] Ensembl Base Align Feature
 ** @param [u] slice [EnsPSlice] Ensembl Slice
 ** @see ensFeatureTransfer
 **
-** @return [EnsPBaseAlignFeature] Ensembl Base Align Feature or NULL
+** @return [EnsPBasealignfeature] Ensembl Base Align Feature or NULL
 ** @@
 ******************************************************************************/
 
-EnsPBaseAlignFeature ensBaseAlignFeatureTransfer(EnsPBaseAlignFeature baf,
+EnsPBasealignfeature ensBasealignfeatureTransfer(EnsPBasealignfeature baf,
                                                  EnsPSlice slice)
 {
-    EnsPBaseAlignFeature newbaf = NULL;
+    EnsPBasealignfeature newbaf = NULL;
     
-    EnsPFeaturePair newfp = NULL;
+    EnsPFeaturepair newfp = NULL;
     
     if(!baf)
 	return NULL;
@@ -6774,16 +6779,16 @@ EnsPBaseAlignFeature ensBaseAlignFeatureTransfer(EnsPBaseAlignFeature baf,
     if(!slice)
 	return NULL;
     
-    newfp = ensFeaturePairTransfer(baf->FeaturePair, slice);
+    newfp = ensFeaturepairTransfer(baf->Featurepair, slice);
     
     if(!newfp)
 	return NULL;
     
-    newbaf = ensBaseAlignFeatureNewObj(baf);
+    newbaf = ensBasealignfeatureNewObj(baf);
     
-    ensBaseAlignFeatureSetFeaturePair(newbaf, newfp);
+    ensBasealignfeatureSetFeaturepair(newbaf, newfp);
     
-    ensFeaturePairDel(&newfp);
+    ensFeaturepairDel(&newfp);
     
     return newbaf;
 }
@@ -6795,10 +6800,10 @@ EnsPBaseAlignFeature ensBaseAlignFeatureTransfer(EnsPBaseAlignFeature baf,
 **
 ** Functions for reporting of an Ensembl Base Align Feature object.
 **
-** @fdata [EnsPBaseAlignFeature]
+** @fdata [EnsPBasealignfeature]
 ** @nam3rule Trace Report Ensembl Base Align Feature elements to debug file
 **
-** @argrule Trace baf [const EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @argrule Trace baf [const EnsPBasealignfeature] Ensembl Base Align Feature
 ** @argrule Trace level [ajuint] Indentation level
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -6809,18 +6814,18 @@ EnsPBaseAlignFeature ensBaseAlignFeatureTransfer(EnsPBaseAlignFeature baf,
 
 
 
-/* @func ensBaseAlignFeatureTrace *********************************************
+/* @func ensBasealignfeatureTrace *********************************************
 **
 ** Trace an Ensembl Base Align Feature.
 **
-** @param [r] baf [const EnsPBaseAlignFeature] Ensembl Base Align Feature
+** @param [r] baf [const EnsPBasealignfeature] Ensembl Base Align Feature
 ** @param [r] level [ajuint] Indentation level
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensBaseAlignFeatureTrace(const EnsPBaseAlignFeature baf, ajuint level)
+AjBool ensBasealignfeatureTrace(const EnsPBasealignfeature baf, ajuint level)
 {
     AjPStr indent = NULL;
     
@@ -6831,30 +6836,30 @@ AjBool ensBaseAlignFeatureTrace(const EnsPBaseAlignFeature baf, ajuint level)
     
     ajStrAppendCountK(&indent, ' ', level * 2);
     
-    ajDebug("ensBaseAlignFeatureTrace %p\n"
+    ajDebug("ensBasealignfeatureTrace %p\n"
 	    "%S  DNAAlignFeatureadaptor %p\n"
-	    "%S  ProteinAlignFeatureadaptor %p\n"
+	    "%S  Proteinalignfeatureadaptor %p\n"
 	    "%S  Identifier %u\n"
-	    "%S  FeaturePair %p\n"
+	    "%S  Featurepair %p\n"
 	    "%S  Cigar '%S'\n"
-	    "%S  (*GetFeaturePair) %p\n"
+	    "%S  (*GetFeaturepair) %p\n"
 	    "%S  Type %d\n"
 	    "%S  AlignmentLength %u\n"
 	    "%S  PairDNAAlignFeatureIdentifier %u\n"
 	    "%S  Use %u\n",
 	    indent, baf,
 	    indent, baf->DNAAlignFeatureadaptor,
-	    indent, baf->ProteinAlignFeatureadaptor,
+	    indent, baf->Proteinalignfeatureadaptor,
 	    indent, baf->Identifier,
-	    indent, baf->FeaturePair,
+	    indent, baf->Featurepair,
 	    indent, baf->Cigar,
-	    indent, baf->GetFeaturePair,
+	    indent, baf->GetFeaturepair,
 	    indent, baf->Type,
 	    indent, baf->AlignmentLength,
 	    indent, baf->PairDNAAlignFeatureIdentifier,
 	    indent, baf->Use);
     
-    ensFeaturePairTrace(baf->FeaturePair, level + 1);
+    ensFeaturepairTrace(baf->Featurepair, level + 1);
     
     ajStrDel(&indent);
     
@@ -6864,7 +6869,7 @@ AjBool ensBaseAlignFeatureTrace(const EnsPBaseAlignFeature baf, ajuint level)
 
 
 
-/* @func ensBaseAlignFeatureFetchAllFeaturePairs ******************************
+/* @func ensBasealignfeatureFetchAllFeaturepairs ******************************
 **
 ** Fetch all (ungapped) Ensembl Feature Pairs of an
 ** Ensembl Base Align Feature.
@@ -6872,14 +6877,14 @@ AjBool ensBaseAlignFeatureTrace(const EnsPBaseAlignFeature baf, ajuint level)
 ** The caller is responsible for deleting the Ensembl Feature Pairs before
 ** deleting the AJAX List.
 **
-** @param [r] baf [EnsPBaseAlignFeature] Ensembl Base Align Feature
-** @param [u] fps [AjPLIst] AJAX List of Ensembl Feature Pairs
+** @param [r] baf [const EnsPBasealignfeature] Ensembl Base Align Feature
+** @param [u] fps [AjPList] AJAX List of Ensembl Feature Pairs
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensBaseAlignFeatureFetchAllFeaturePairs(EnsPBaseAlignFeature baf,
+AjBool ensBasealignfeatureFetchAllFeaturepairs(const EnsPBasealignfeature baf,
                                                AjPList fps)
 {
     if(!baf)
@@ -6910,7 +6915,7 @@ static void *baseAlignFeatureadaptorCacheReference(void *value)
     if(!value)
 	return NULL;
     
-    return (void *) ensBaseAlignFeatureNewRef((EnsPBaseAlignFeature) value);
+    return (void *) ensBasealignfeatureNewRef((EnsPBasealignfeature) value);
 }
 
 
@@ -6932,7 +6937,7 @@ static void baseAlignFeatureadaptorCacheDelete(void **value)
     if(!value)
 	return;
     
-    ensBaseAlignFeatureDel((EnsPBaseAlignFeature *) value);
+    ensBasealignfeatureDel((EnsPBasealignfeature *) value);
     
     return;
 }
@@ -6956,7 +6961,7 @@ static ajuint baseAlignFeatureadaptorCacheSize(const void *value)
     if (!value)
 	return 0;
     
-    return ensBaseAlignFeatureGetMemSize((const EnsPBaseAlignFeature) value);
+    return ensBasealignfeatureGetMemSize((const EnsPBasealignfeature) value);
 }
 
 
@@ -6978,7 +6983,7 @@ static EnsPFeature baseAlignFeatureadaptorGetFeature(const void *value)
     if(!value)
 	return NULL;
     
-    return ensBaseAlignFeatureGetFeature((const EnsPBaseAlignFeature) value);
+    return ensBasealignfeatureGetFeature((const EnsPBasealignfeature) value);
 }
 
 
@@ -6989,7 +6994,7 @@ static EnsPFeature baseAlignFeatureadaptorGetFeature(const void *value)
 ** Functions for manipulating Ensembl DNA Align Feature Adaptor objects
 **
 ** @cc Bio::EnsEMBL::DBSQL::DNAAlignFeatureadaptor CVS Revision: 1.67
-** @cc Bio::EnsEMBL::DBSQL::BaseAlignFeatureadaptor CVS Revision: 1.30
+** @cc Bio::EnsEMBL::DBSQL::Basealignfeatureadaptor CVS Revision: 1.30
 **
 ** @nam2rule DNAAlignFeatureadaptor
 **
@@ -7066,7 +7071,7 @@ static const char *dnaAlignFeatureadaptorFinalCondition = NULL;
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
-** @param [r] mapper [EnsPAssemblyMapper] Ensembl Assembly Mapper
+** @param [r] mapper [EnsPAssemblymapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [u] bafs [AjPList] AJAX List of Ensembl Base Align Features
 **
@@ -7076,7 +7081,7 @@ static const char *dnaAlignFeatureadaptorFinalCondition = NULL;
 
 static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                   const AjPStr statement,
-                                                  EnsPAssemblyMapper mapper,
+                                                  EnsPAssemblymapper mapper,
                                                   EnsPSlice slice,
                                                   AjPList bafs)
 {
@@ -7118,22 +7123,22 @@ static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPAnalysis analysis  = NULL;
     EnsPAnalysisadaptor aa = NULL;
     
-    EnsPAssemblyMapper am         = NULL;
-    EnsPAssemblyMapperadaptor ama = NULL;
+    EnsPAssemblymapper am         = NULL;
+    EnsPAssemblymapperadaptor ama = NULL;
     
-    EnsPBaseAlignFeature baf = NULL;
+    EnsPBasealignfeature baf = NULL;
     
     EnsPDNAAlignFeatureadaptor dafa = NULL;
     
-    EnsPExternalDatabase edb         = NULL;
-    EnsPExternalDatabaseadaptor edba = NULL;
+    EnsPExternaldatabase edb         = NULL;
+    EnsPExternaldatabaseadaptor edba = NULL;
     
     EnsPFeature srcfeature = NULL;
     EnsPFeature trgfeature = NULL;
     
-    EnsPFeaturePair fp = NULL;
+    EnsPFeaturepair fp = NULL;
     
-    EnsPMapperResult mr = NULL;
+    EnsPMapperresult mr = NULL;
     
     EnsPSlice srslice   = NULL;
     EnsPSliceadaptor sa = NULL;
@@ -7163,9 +7168,9 @@ static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     
     dafa = ensRegistryGetDNAAlignFeatureadaptor(dba);
     
-    edba = ensRegistryGetExternalDatabaseadaptor(dba);
+    edba = ensRegistryGetExternaldatabaseadaptor(dba);
     
-    sa = (slice) ? ensSliceGetadaptor(slice) : ensRegistryGetSliceadaptor(dba);
+    sa = (slice) ? ensSliceGetAdaptor(slice) : ensRegistryGetSliceadaptor(dba);
     
     mrs = ajListNew();
     
@@ -7241,7 +7246,7 @@ static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	/* Fetch a Slice spanning the entire Sequence Region. */
 	
-	ensSliceadaptorFetchBySeqRegionIdentifier(sa, srid, 0, 0, 0, &srslice);
+	ensSliceadaptorFetchBySeqregionIdentifier(sa, srid, 0, 0, 0, &srslice);
 	
 	/*
 	** Obtain an Ensembl Assembly Mapper if none was defined, but a
@@ -7249,17 +7254,17 @@ static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	*/
 	
 	if(mapper)
-	    am = ensAssemblyMapperNewRef(mapper);
+	    am = ensAssemblymapperNewRef(mapper);
 	
 	if((! mapper) &&
 	   slice &&
-	   (! ensCoordSystemMatch(ensSliceGetCoordSystem(slice),
-                                  ensSliceGetCoordSystem(srslice))))
+	   (! ensCoordsystemMatch(ensSliceGetCoordsystem(slice),
+                                  ensSliceGetCoordsystem(srslice))))
 	    am =
-		ensAssemblyMapperadaptorFetchByCoordSystems(
+		ensAssemblymapperadaptorFetchByCoordsystems(
                     ama,
-		    ensSliceGetCoordSystem(slice),
-		    ensSliceGetCoordSystem(srslice));
+		    ensSliceGetCoordsystem(slice),
+		    ensSliceGetCoordsystem(srslice));
 	
 	/*
 	** Remap the Feature coordinates to another Ensembl Coordinate System
@@ -7268,15 +7273,15 @@ static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	if(am)
 	{
-	    ensAssemblyMapperFastMap(am,
-				     ensSliceGetSeqRegion(srslice),
+	    ensAssemblymapperFastMap(am,
+				     ensSliceGetSeqregion(srslice),
 				     slstart,
 				     slend,
 				     slstrand,
 				     mrs);
 	    
 	    /*
-	    ** The ensAssemblyMapperFastMap function returns at best one
+	    ** The ensAssemblymapperFastMap function returns at best one
 	    ** Ensembl Mapper Result.
 	    */
 	    
@@ -7287,7 +7292,7 @@ static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    ** Coordinate System boundaries.
 	    */
 	    
-	    if(ensMapperResultGetType(mr) != ensEMapperResultCoordinate)
+	    if(ensMapperresultGetType(mr) != ensEMapperresultCoordinate)
 	    {
 		/* Load the next Feature but destroy first! */
 		
@@ -7297,20 +7302,20 @@ static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 		
 		ensSliceDel(&srslice);
 		
-		ensAssemblyMapperDel(&am);
+		ensAssemblymapperDel(&am);
 		
-		ensMapperResultDel(&mr);
+		ensMapperresultDel(&mr);
 		
 		continue;
 	    }
 	    
-	    srid = ensMapperResultGetObjectIdentifier(mr);
+	    srid = ensMapperresultGetObjectIdentifier(mr);
 	    
-	    slstart = ensMapperResultGetStart(mr);
+	    slstart = ensMapperresultGetStart(mr);
 	    
-	    slend = ensMapperResultGetEnd(mr);
+	    slend = ensMapperresultGetEnd(mr);
 	    
-	    slstrand = ensMapperResultGetStrand(mr);
+	    slstrand = ensMapperresultGetStrand(mr);
 	    
 	    /*
 	    ** FIXME: In contrast to the Bio::EnsEMBL::DBSQL::Exonadaptor
@@ -7327,14 +7332,14 @@ static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    
 	    ensSliceDel(&srslice);
 	    
-	    ensSliceadaptorFetchBySeqRegionIdentifier(sa,
+	    ensSliceadaptorFetchBySeqregionIdentifier(sa,
 						      srid,
 						      0,
 						      0,
 						      0,
 						      &srslice);
 	    
-	    ensMapperResultDel(&mr);
+	    ensMapperresultDel(&mr);
 	}
 	
 	/*
@@ -7385,7 +7390,7 @@ static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    
 	    if((slend < 1) ||
                (slstart > sllength) ||
-	       (srid =! ensSliceGetSeqRegionIdentifier(slice)))
+	       (srid =! ensSliceGetSeqregionIdentifier(slice)))
 	    {
 		/* Next feature but destroy first! */
 		
@@ -7395,7 +7400,7 @@ static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 		
 		ensSliceDel(&srslice);
 		
-		ensAssemblyMapperDel(&am);
+		ensAssemblymapperDel(&am);
 		
 		continue;
 	    }
@@ -7409,7 +7414,7 @@ static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	ensAnalysisadaptorFetchByIdentifier(aa, analysisid, &analysis);
 	
-	ensExternalDatabaseadaptorFetchByIdentifier(edba, edbid, &edb);
+	ensExternaldatabaseadaptorFetchByIdentifier(edba, edbid, &edb);
 	
 	srcfeature = ensFeatureNewS(analysis,
 				    srslice,
@@ -7423,7 +7428,7 @@ static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 				    hitend,
 				    hitstrand);
 	
-	fp = ensFeaturePairNew(srcfeature,
+	fp = ensFeaturepairNew(srcfeature,
 			       trgfeature,
 			       edb,
 			       extra,
@@ -7439,20 +7444,20 @@ static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	/*
 	** Finally, create a Base Align Feature object of type
-	** ensEBaseAlignFeatureTypeDNA.
+	** ensEBasealignfeatureTypeDNA.
 	*/
 	
-	baf = ensBaseAlignFeatureNewD(dafa, identifier, fp, cigar, pair);
+	baf = ensBasealignfeatureNewD(dafa, identifier, fp, cigar, pair);
 	
 	ajListPushAppend(bafs, (void *) baf);	
 	
-	ensFeaturePairDel(&fp);
+	ensFeaturepairDel(&fp);
 	
 	ensFeatureDel(&srcfeature);
 	
 	ensFeatureDel(&trgfeature);
 	
-	ensExternalDatabaseDel(&edb);
+	ensExternaldatabaseDel(&edb);
 	
 	ensAnalysisDel(&analysis);
 	
@@ -7462,7 +7467,7 @@ static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	ensSliceDel(&srslice);
 	
-	ensAssemblyMapperDel(&am);
+	ensAssemblymapperDel(&am);
     }
     
     ajSqlrowiterDel(&sqli);
@@ -7638,7 +7643,7 @@ void ensDNAAlignFeatureadaptorDel(EnsPDNAAlignFeatureadaptor *Padaptor)
 ** @param [u] adaptor [EnsPDNAAlignFeatureadaptor] Ensembl DNA Align
 **                                                 Feature Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
-** @param [wP] Pbaf [EnsPBaseAlignFeature*] Ensembl Base Align Feature address
+** @param [wP] Pbaf [EnsPBasealignfeature*] Ensembl Base Align Feature address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
@@ -7647,7 +7652,7 @@ void ensDNAAlignFeatureadaptorDel(EnsPDNAAlignFeatureadaptor *Padaptor)
 AjBool ensDNAAlignFeatureadaptorFetchByIdentifier(
     EnsPDNAAlignFeatureadaptor adaptor,
     ajuint identifier,
-    EnsPBaseAlignFeature *Pbaf)
+    EnsPBasealignfeature *Pbaf)
 {
     EnsPBaseadaptor ba = NULL;
     
@@ -7662,7 +7667,7 @@ AjBool ensDNAAlignFeatureadaptorFetchByIdentifier(
     
     ba = ensFeatureadaptorGetBaseadaptor(adaptor->Adaptor);
     
-    *Pbaf = (EnsPBaseAlignFeature)
+    *Pbaf = (EnsPBasealignfeature)
 	ensBaseadaptorFetchByIdentifier(ba, identifier);
     
     return ajTrue;
@@ -7777,7 +7782,7 @@ AjBool ensDNAAlignFeatureadaptorFetchAllBySliceCoverage(
 
 
 
-/* @func ensDNAAlignFeatureadaptorFetchAllBySliceExternalDatabase *************
+/* @func ensDNAAlignFeatureadaptorFetchAllBySliceExternaldatabase *************
 **
 ** Fetch Ensembl DNA Align Features via an Ensembl Slice and
 ** an Ensembl External Database name.
@@ -7793,7 +7798,7 @@ AjBool ensDNAAlignFeatureadaptorFetchAllBySliceCoverage(
 ** @@
 ******************************************************************************/
 
-AjBool ensDNAAlignFeatureadaptorFetchAllBySliceExternalDatabase(
+AjBool ensDNAAlignFeatureadaptorFetchAllBySliceExternaldatabase(
     EnsPDNAAlignFeatureadaptor adaptor,
     EnsPSlice slice,
     const AjPStr edbname,
@@ -7892,7 +7897,7 @@ AjBool ensDNAAlignFeatureadaptorFetchAllByHitName(
     
     value = ensBaseadaptorGenericFetch(ba,
 				       constraint,
-				       (EnsPAssemblyMapper) NULL,
+				       (EnsPAssemblymapper) NULL,
 				       (EnsPSlice) NULL,
 				       bafs);
     
@@ -7960,7 +7965,7 @@ AjBool ensDNAAlignFeatureadaptorFetchAllByHitUnversioned(
     
     value = ensBaseadaptorGenericFetch(ba,
 				       constraint,
-				       (EnsPAssemblyMapper) NULL,
+				       (EnsPAssemblymapper) NULL,
 				       (EnsPSlice) NULL,
 				       bafs);
     
@@ -8017,14 +8022,14 @@ AjBool ensDNAAlignFeatureadaptorFetchAllIdentifiers(
 
 
 
-/* @datasection [EnsPProteinAlignFeatureadaptor] Protein Align Feature Adaptor
+/* @datasection [EnsPProteinalignfeatureadaptor] Protein Align Feature Adaptor
 **
 ** Functions for manipulating Ensembl Protein Align Feature Adaptor objects
 **
-** @cc Bio::EnsEMBL::BBSQL::ProteinAlignFeatureadaptor CVS Revision: 1.46
-** @cc Bio::EnsEMBL::DBSQL::BaseAlignFeatureadaptor CVS Revision: 1.30
+** @cc Bio::EnsEMBL::BBSQL::Proteinalignfeatureadaptor CVS Revision: 1.46
+** @cc Bio::EnsEMBL::DBSQL::Basealignfeatureadaptor CVS Revision: 1.30
 **
-** @nam2rule ProteinAlignFeatureadaptor
+** @nam2rule Proteinalignfeatureadaptor
 **
 ******************************************************************************/
 
@@ -8100,7 +8105,7 @@ static const char *proteinAlignFeatureadaptorFinalCondition = NULL;
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
-** @param [r] mapper [EnsPAssemblyMapper] Ensembl Assembly Mapper
+** @param [r] mapper [EnsPAssemblymapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [u] bafs [AjPList] AJAX List of Ensembl Base Align Features
 **
@@ -8110,7 +8115,7 @@ static const char *proteinAlignFeatureadaptorFinalCondition = NULL;
 
 static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                       const AjPStr statement,
-                                                      EnsPAssemblyMapper mapper,
+                                                      EnsPAssemblymapper mapper,
                                                       EnsPSlice slice,
                                                       AjPList bafs)
 {
@@ -8149,22 +8154,22 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPAnalysis analysis  = NULL;
     EnsPAnalysisadaptor aa = NULL;
     
-    EnsPAssemblyMapper am         = NULL;
-    EnsPAssemblyMapperadaptor ama = NULL;
+    EnsPAssemblymapper am         = NULL;
+    EnsPAssemblymapperadaptor ama = NULL;
     
-    EnsPBaseAlignFeature baf = NULL;
+    EnsPBasealignfeature baf = NULL;
     
-    EnsPExternalDatabase edb         = NULL;
-    EnsPExternalDatabaseadaptor edba = NULL;
+    EnsPExternaldatabase edb         = NULL;
+    EnsPExternaldatabaseadaptor edba = NULL;
     
     EnsPFeature srcfeature = NULL;
     EnsPFeature trgfeature = NULL;
     
-    EnsPFeaturePair fp = NULL;
+    EnsPFeaturepair fp = NULL;
     
-    EnsPMapperResult mr = NULL;
+    EnsPMapperresult mr = NULL;
     
-    EnsPProteinAlignFeatureadaptor pafa = NULL;
+    EnsPProteinalignfeatureadaptor pafa = NULL;
     
     EnsPSlice srslice   = NULL;
     EnsPSliceadaptor sa = NULL;
@@ -8192,9 +8197,9 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     
     aa = ensRegistryGetAnalysisadaptor(dba);
     
-    edba = ensRegistryGetExternalDatabaseadaptor(dba);
+    edba = ensRegistryGetExternaldatabaseadaptor(dba);
     
-    pafa = ensRegistryGetProteinAlignFeatureadaptor(dba);
+    pafa = ensRegistryGetProteinalignfeatureadaptor(dba);
     
     sa = ensRegistryGetSliceadaptor(dba);
     
@@ -8264,7 +8269,7 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	/* Fetch a Slice spanning the entire Sequence Region. */
 	
-	ensSliceadaptorFetchBySeqRegionIdentifier(sa, srid, 0, 0, 0, &srslice);
+	ensSliceadaptorFetchBySeqregionIdentifier(sa, srid, 0, 0, 0, &srslice);
 	
 	/*
 	** Obtain an Ensembl Assembly Mapper if none was defined, but a
@@ -8272,17 +8277,17 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	*/
 	
 	if(mapper)
-	    am = ensAssemblyMapperNewRef(mapper);
+	    am = ensAssemblymapperNewRef(mapper);
 	
 	if((! mapper) &&
 	   slice &&
-	   (! ensCoordSystemMatch(ensSliceGetCoordSystem(slice),
-				   ensSliceGetCoordSystem(srslice))))
+	   (! ensCoordsystemMatch(ensSliceGetCoordsystem(slice),
+				   ensSliceGetCoordsystem(srslice))))
 	    am =
-		ensAssemblyMapperadaptorFetchByCoordSystems(
+		ensAssemblymapperadaptorFetchByCoordsystems(
                     ama,
-		    ensSliceGetCoordSystem(slice),
-		    ensSliceGetCoordSystem(srslice));
+		    ensSliceGetCoordsystem(slice),
+		    ensSliceGetCoordsystem(srslice));
 	
 	/*
 	** Remap the Feature coordinates to another Ensembl Coordinate System
@@ -8291,15 +8296,15 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	if(am)
 	{
-	    ensAssemblyMapperFastMap(am,
-				     ensSliceGetSeqRegion(srslice),
+	    ensAssemblymapperFastMap(am,
+				     ensSliceGetSeqregion(srslice),
 				     slstart,
 				     slend,
 				     slstrand,
 				     mrs);
 	    
 	    /*
-	    ** The ensAssemblyMapperFastMap function returns at best one
+	    ** The ensAssemblymapperFastMap function returns at best one
 	    ** Ensembl Mapper Result.
 	    */
 	    
@@ -8310,7 +8315,7 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    ** Coordinate System boundaries.
 	    */
 	    
-	    if(ensMapperResultGetType(mr) != ensEMapperResultCoordinate)
+	    if(ensMapperresultGetType(mr) != ensEMapperresultCoordinate)
 	    {
 		/* Load the next Feature but destroy first! */
 		
@@ -8320,26 +8325,26 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 		
 		ensSliceDel(&srslice);
 		
-		ensAssemblyMapperDel(&am);
+		ensAssemblymapperDel(&am);
 		
-		ensMapperResultDel(&mr);
+		ensMapperresultDel(&mr);
 		
 		continue;
 	    }
 	    
-	    srid = ensMapperResultGetObjectIdentifier(mr);
+	    srid = ensMapperresultGetObjectIdentifier(mr);
 	    
-	    slstart = ensMapperResultGetStart(mr);
+	    slstart = ensMapperresultGetStart(mr);
 	    
-	    slend = ensMapperResultGetEnd(mr);
+	    slend = ensMapperresultGetEnd(mr);
 	    
-	    slstrand = ensMapperResultGetStrand(mr);
+	    slstrand = ensMapperresultGetStrand(mr);
 	    
 	    /*
 	    ** FIXME: Like in the Bio::EnsEMBL::DBSQL::Exonadaptor
 	    ** code, a construct to get a Slice from the cache is
 	    ** commented out from the
-	    ** Bio::EnsEMBL::DBSQL::ProteinAlignFeatureadaptor of the Perl API.
+	    ** Bio::EnsEMBL::DBSQL::Proteinalignfeatureadaptor of the Perl API.
 	    ** See CVS versions 1.39 and 1.39.14.1 for details.
 	    */
 	    
@@ -8350,14 +8355,14 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    
 	    ensSliceDel(&srslice);
 	    
-	    ensSliceadaptorFetchBySeqRegionIdentifier(sa,
+	    ensSliceadaptorFetchBySeqregionIdentifier(sa,
 						      srid,
 						      0,
 						      0,
 						      0,
 						      &srslice);
 	    
-	    ensMapperResultDel(&mr);
+	    ensMapperresultDel(&mr);
 	}
 	
 	/*
@@ -8408,7 +8413,7 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    
 	    if((slend < 1) ||
                (slstart > sllength) ||
-	       (srid =! ensSliceGetSeqRegionIdentifier(slice)))
+	       (srid =! ensSliceGetSeqregionIdentifier(slice)))
 	    {
 		/* Next feature but destroy first! */
 		
@@ -8418,7 +8423,7 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 		
 		ensSliceDel(&srslice);
 		
-		ensAssemblyMapperDel(&am);
+		ensAssemblymapperDel(&am);
 		
 		continue;
 	    }
@@ -8432,7 +8437,7 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	ensAnalysisadaptorFetchByIdentifier(aa, analysisid, &analysis);
 	
-	ensExternalDatabaseadaptorFetchByIdentifier(edba, edbid, &edb);
+	ensExternaldatabaseadaptorFetchByIdentifier(edba, edbid, &edb);
 	
 	srcfeature = ensFeatureNewS(analysis,
 				    srslice,
@@ -8446,7 +8451,7 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 				    hitend,
 				    1);
 	
-	fp = ensFeaturePairNew(srcfeature,
+	fp = ensFeaturepairNew(srcfeature,
 			       trgfeature,
 			       edb,
 			       (AjPStr) NULL, /* extra data */
@@ -8462,20 +8467,20 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	/*
 	** Finally, create a Base Align Feature object of type
-	** ensEBaseAlignFeatureTypeProtein.
+	** ensEBasealignfeatureTypeProtein.
 	*/
 	
-	baf = ensBaseAlignFeatureNewP(pafa, identifier, fp, cigar);
+	baf = ensBasealignfeatureNewP(pafa, identifier, fp, cigar);
 	
 	ajListPushAppend(bafs, (void *) baf);	
 	
-	ensFeaturePairDel(&fp);
+	ensFeaturepairDel(&fp);
 	
 	ensFeatureDel(&srcfeature);
 	
 	ensFeatureDel(&trgfeature);
 	
-	ensExternalDatabaseDel(&edb);
+	ensExternaldatabaseDel(&edb);
 	
 	ensAnalysisDel(&analysis);
 	
@@ -8485,7 +8490,7 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	ensSliceDel(&srslice);
 	
-	ensAssemblyMapperDel(&am);
+	ensAssemblymapperDel(&am);
     }
     
     ajSqlrowiterDel(&sqli);
@@ -8508,7 +8513,7 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** Protein Align Feature Adaptor. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPProteinAlignFeatureadaptor]
+** @fdata [EnsPProteinalignfeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
@@ -8516,12 +8521,12 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
 ** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPProteinAlignFeatureadaptor] Ensembl Protein Align
+** @argrule Obj object [EnsPProteinalignfeatureadaptor] Ensembl Protein Align
 **                                                      Feature Adaptor
-** @argrule Ref object [EnsPProteinAlignFeatureadaptor] Ensembl Protein Align
+** @argrule Ref object [EnsPProteinalignfeatureadaptor] Ensembl Protein Align
 **                                                      Feature Adaptor
 **
-** @valrule * [EnsPProteinAlignFeatureadaptor] Ensembl Protein Align
+** @valrule * [EnsPProteinalignfeatureadaptor] Ensembl Protein Align
 **                                             Feature Adaptor
 **
 ** @fcategory new
@@ -8530,21 +8535,21 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @func ensProteinAlignFeatureadaptorNew *************************************
+/* @func ensProteinalignfeatureadaptorNew *************************************
 **
 ** Default Ensembl Protein Align Feature Adaptor constructor.
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPProteinAlignFeatureadaptor] Ensembl Protein Align Feature
+** @return [EnsPProteinalignfeatureadaptor] Ensembl Protein Align Feature
 **                                          Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPProteinAlignFeatureadaptor ensProteinAlignFeatureadaptorNew(
+EnsPProteinalignfeatureadaptor ensProteinalignfeatureadaptorNew(
     EnsPDatabaseadaptor dba)
 {
-    EnsPProteinAlignFeatureadaptor pafa = NULL;
+    EnsPProteinalignfeatureadaptor pafa = NULL;
     
     if(!dba)
 	return NULL;
@@ -8578,12 +8583,12 @@ EnsPProteinAlignFeatureadaptor ensProteinAlignFeatureadaptorNew(
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Protein Align Feature Adaptor.
 **
-** @fdata [EnsPProteinAlignFeatureadaptor]
+** @fdata [EnsPProteinalignfeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) an Ensembl Protein Align Feature Adaptor object
 **
-** @argrule * Padaptor [EnsPProteinAlignFeatureadaptor*] Ensembl Protein Align
+** @argrule * Padaptor [EnsPProteinalignfeatureadaptor*] Ensembl Protein Align
 **                                                       Feature Adaptor
 **                                                       object address
 **
@@ -8595,11 +8600,11 @@ EnsPProteinAlignFeatureadaptor ensProteinAlignFeatureadaptorNew(
 
 
 
-/* @func ensProteinAlignFeatureadaptorDel *************************************
+/* @func ensProteinalignfeatureadaptorDel *************************************
 **
 ** Default destructor for an Ensembl Protein Align Feature Adaptor.
 **
-** @param [d] Padaptor [EnsPProteinAlignFeatureadaptor*] Ensembl Protein Align
+** @param [d] Padaptor [EnsPProteinalignfeatureadaptor*] Ensembl Protein Align
 **                                                       Feature Adaptor
 **                                                       address
 **
@@ -8607,9 +8612,9 @@ EnsPProteinAlignFeatureadaptor ensProteinAlignFeatureadaptorNew(
 ** @@
 ******************************************************************************/
 
-void ensProteinAlignFeatureadaptorDel(EnsPProteinAlignFeatureadaptor *Padaptor)
+void ensProteinalignfeatureadaptorDel(EnsPProteinalignfeatureadaptor *Padaptor)
 {
-    EnsPProteinAlignFeatureadaptor pthis = NULL;
+    EnsPProteinalignfeatureadaptor pthis = NULL;
     
     if(!Padaptor)
 	return;
@@ -8631,24 +8636,24 @@ void ensProteinAlignFeatureadaptorDel(EnsPProteinAlignFeatureadaptor *Padaptor)
 
 
 
-/* @func ensProteinAlignFeatureadaptorFetchByIdentifier ***********************
+/* @func ensProteinalignfeatureadaptorFetchByIdentifier ***********************
 **
 ** Fetch an Ensembl Protein Align Feature via its SQL database-internal
 ** identifier.
 **
-** @param [u] adaptor [EnsPProteinAlignFeatureadaptor] Ensembl Protein Align
+** @param [u] adaptor [EnsPProteinalignfeatureadaptor] Ensembl Protein Align
 **                                                     Feature Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
-** @param [wP] Pbaf [EnsPBaseAlignFeature*] Ensembl Base Align Feature address
+** @param [wP] Pbaf [EnsPBasealignfeature*] Ensembl Base Align Feature address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensProteinAlignFeatureadaptorFetchByIdentifier(
-    EnsPProteinAlignFeatureadaptor adaptor,
+AjBool ensProteinalignfeatureadaptorFetchByIdentifier(
+    EnsPProteinalignfeatureadaptor adaptor,
     ajuint identifier,
-    EnsPBaseAlignFeature *Pbaf)
+    EnsPBasealignfeature *Pbaf)
 {
     EnsPBaseadaptor ba = NULL;
     
@@ -8663,7 +8668,7 @@ AjBool ensProteinAlignFeatureadaptorFetchByIdentifier(
     
     ba = ensFeatureadaptorGetBaseadaptor(adaptor->Adaptor);
     
-    *Pbaf = (EnsPBaseAlignFeature)
+    *Pbaf = (EnsPBasealignfeature)
 	ensBaseadaptorFetchByIdentifier(ba, identifier);
     
     return ajTrue;
@@ -8672,12 +8677,12 @@ AjBool ensProteinAlignFeatureadaptorFetchByIdentifier(
 
 
 
-/* @func ensProteinAlignFeatureadaptorFetchAllBySliceIdentity *****************
+/* @func ensProteinalignfeatureadaptorFetchAllBySliceIdentity *****************
 **
 ** Fetch Ensembl Protein Align Features via an Ensembl Slice and
 ** an alignment identity threshold.
 **
-** @param [u] adaptor [EnsPProteinAlignFeatureadaptor] Ensembl Protein Align
+** @param [u] adaptor [EnsPProteinalignfeatureadaptor] Ensembl Protein Align
 **                                                     Feature Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [r] identity [float] Alignment identity threshold
@@ -8688,8 +8693,8 @@ AjBool ensProteinAlignFeatureadaptorFetchByIdentifier(
 ** @@
 ******************************************************************************/
 
-AjBool ensProteinAlignFeatureadaptorFetchAllBySliceIdentity(
-    EnsPProteinAlignFeatureadaptor adaptor,
+AjBool ensProteinalignfeatureadaptorFetchAllBySliceIdentity(
+    EnsPProteinalignfeatureadaptor adaptor,
     EnsPSlice slice,
     float identity,
     const AjPStr anname,
@@ -8726,12 +8731,12 @@ AjBool ensProteinAlignFeatureadaptorFetchAllBySliceIdentity(
 
 
 
-/* @func ensProteinAlignFeatureadaptorFetchAllBySliceCoverage *****************
+/* @func ensProteinalignfeatureadaptorFetchAllBySliceCoverage *****************
 **
 ** Fetch Ensembl Protein Align Features via an Ensembl Slice and
 ** an alignment target coverage.
 **
-** @param [u] adaptor [EnsPProteinAlignFeatureadaptor] Ensembl Protein Align
+** @param [u] adaptor [EnsPProteinalignfeatureadaptor] Ensembl Protein Align
 **                                                     Feature Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [r] coverage [float] Alignment target coverage threshold
@@ -8742,8 +8747,8 @@ AjBool ensProteinAlignFeatureadaptorFetchAllBySliceIdentity(
 ** @@
 ******************************************************************************/
 
-AjBool ensProteinAlignFeatureadaptorFetchAllBySliceCoverage(
-    EnsPProteinAlignFeatureadaptor adaptor,
+AjBool ensProteinalignfeatureadaptorFetchAllBySliceCoverage(
+    EnsPProteinalignfeatureadaptor adaptor,
     EnsPSlice slice,
     float coverage,
     const AjPStr anname,
@@ -8780,12 +8785,12 @@ AjBool ensProteinAlignFeatureadaptorFetchAllBySliceCoverage(
 
 
 
-/* @func ensProteinAlignFeatureadaptorFetchAllBySliceExternalDatabase *********
+/* @func ensProteinalignfeatureadaptorFetchAllBySliceExternaldatabase *********
 **
 ** Fetch Ensembl Protein Align Features via an Ensembl Slice and
 ** an Ensembl External Database name.
 **
-** @param [u] adaptor [EnsPProteinAlignFeatureadaptor] Ensembl Protein Align
+** @param [u] adaptor [EnsPProteinalignfeatureadaptor] Ensembl Protein Align
 **                                                     Feature Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [r] edbname [const AjPStr] Ensembl External Database name
@@ -8796,8 +8801,8 @@ AjBool ensProteinAlignFeatureadaptorFetchAllBySliceCoverage(
 ** @@
 ******************************************************************************/
 
-AjBool ensProteinAlignFeatureadaptorFetchAllBySliceExternalDatabase(
-    EnsPProteinAlignFeatureadaptor adaptor,
+AjBool ensProteinalignfeatureadaptorFetchAllBySliceExternaldatabase(
+    EnsPProteinalignfeatureadaptor adaptor,
     EnsPSlice slice,
     const AjPStr edbname,
     const AjPStr anname,
@@ -8841,11 +8846,11 @@ AjBool ensProteinAlignFeatureadaptorFetchAllBySliceExternalDatabase(
 
 
 
-/* @func ensProteinAlignFeatureadaptorFetchAllByHitName ***********************
+/* @func ensProteinalignfeatureadaptorFetchAllByHitName ***********************
 **
 ** Fetch Ensembl Protein Align Features via a hit name.
 **
-** @param [u] adaptor [EnsPProteinAlignFeatureadaptor] Ensembl Protein Align
+** @param [u] adaptor [EnsPProteinalignfeatureadaptor] Ensembl Protein Align
 **                                                     Feature Adaptor
 ** @param [r] hitname [const AjPStr] Hit (Target) sequence name
 ** @param [r] anname [const AjPStr] Ensembl Analysis name
@@ -8855,8 +8860,8 @@ AjBool ensProteinAlignFeatureadaptorFetchAllBySliceExternalDatabase(
 ** @@
 ******************************************************************************/
 
-AjBool ensProteinAlignFeatureadaptorFetchAllByHitName(
-    EnsPProteinAlignFeatureadaptor adaptor,
+AjBool ensProteinalignfeatureadaptorFetchAllByHitName(
+    EnsPProteinalignfeatureadaptor adaptor,
     const AjPStr hitname,
     const AjPStr anname,
     AjPList bafs)
@@ -8895,7 +8900,7 @@ AjBool ensProteinAlignFeatureadaptorFetchAllByHitName(
     
     value = ensBaseadaptorGenericFetch(ba,
 				       constraint,
-				       (EnsPAssemblyMapper) NULL,
+				       (EnsPAssemblymapper) NULL,
 				       (EnsPSlice) NULL,
 				       bafs);
     
@@ -8908,11 +8913,11 @@ AjBool ensProteinAlignFeatureadaptorFetchAllByHitName(
 
 
 
-/* @func ensProteinAlignFeatureadaptorFetchAllByHitUnversioned ****************
+/* @func ensProteinalignfeatureadaptorFetchAllByHitUnversioned ****************
 **
 ** Fetch Ensembl Protein Align Features via an unversioned hit name.
 **
-** @param [u] adaptor [EnsPProteinAlignFeatureadaptor] Ensembl Protein Align
+** @param [u] adaptor [EnsPProteinalignfeatureadaptor] Ensembl Protein Align
 **                                                     Feature Adaptor
 ** @param [r] hitname [const AjPStr] Hit (Target) sequence name
 ** @param [r] anname [const AjPStr] Ensembl Analysis name
@@ -8922,8 +8927,8 @@ AjBool ensProteinAlignFeatureadaptorFetchAllByHitName(
 ** @@
 ******************************************************************************/
 
-AjBool ensProteinAlignFeatureadaptorFetchAllByHitUnversioned(
-    EnsPProteinAlignFeatureadaptor adaptor,
+AjBool ensProteinalignfeatureadaptorFetchAllByHitUnversioned(
+    EnsPProteinalignfeatureadaptor adaptor,
     const AjPStr hitname,
     const AjPStr anname,
     AjPList bafs)
@@ -8963,7 +8968,7 @@ AjBool ensProteinAlignFeatureadaptorFetchAllByHitUnversioned(
     
     value = ensBaseadaptorGenericFetch(ba,
 				       constraint,
-				       (EnsPAssemblyMapper) NULL,
+				       (EnsPAssemblymapper) NULL,
 				       (EnsPSlice) NULL,
 				       bafs);
     
@@ -8975,12 +8980,12 @@ AjBool ensProteinAlignFeatureadaptorFetchAllByHitUnversioned(
 
 
 
-/* @func ensProteinAlignFeatureadaptorFetchAllIdentifiers *********************
+/* @func ensProteinalignfeatureadaptorFetchAllIdentifiers *********************
 **
 ** Fetch all SQL database-internal identifiers of
 ** Ensembl Protein Align Features.
 **
-** @param [u] adaptor [EnsPProteinAlignFeatureadaptor] Ensembl Protein Align
+** @param [u] adaptor [EnsPProteinalignfeatureadaptor] Ensembl Protein Align
 **                                                     Feature Adaptor
 ** @param [u] idlist [AjPList] AJAX List of ajuint identifiers
 **
@@ -8988,8 +8993,8 @@ AjBool ensProteinAlignFeatureadaptorFetchAllByHitUnversioned(
 ** @@
 ******************************************************************************/
 
-AjBool ensProteinAlignFeatureadaptorFetchAllIdentifiers(
-    EnsPProteinAlignFeatureadaptor adaptor,
+AjBool ensProteinalignfeatureadaptorFetchAllIdentifiers(
+    EnsPProteinalignfeatureadaptor adaptor,
     AjPList idlist)
 {
     AjBool value = AJFALSE;
@@ -9021,13 +9026,13 @@ AjBool ensProteinAlignFeatureadaptorFetchAllIdentifiers(
 
 
 
-/* @datasection [EnsPProteinFeature] Protein Feature **************************
+/* @datasection [EnsPProteinfeature] Protein Feature **************************
 **
 ** Functions for manipulating Ensembl Protein Feature objects
 **
-** @cc Bio::EnsEMBL::ProteinFeature CVS Revision: 1.12
+** @cc Bio::EnsEMBL::Proteinfeature CVS Revision: 1.12
 **
-** @nam2rule ProteinFeature
+** @nam2rule Proteinfeature
 **
 ******************************************************************************/
 
@@ -9042,17 +9047,17 @@ AjBool ensProteinAlignFeatureadaptorFetchAllIdentifiers(
 ** Protein Feature. The target pointer does not need to be initialised to
 ** NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPProteinFeature]
+** @fdata [EnsPProteinfeature]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPProteinFeature] Ensembl Protein Feature
-** @argrule Ref object [EnsPProteinFeature] Ensembl Protein Feature
+** @argrule Obj object [EnsPProteinfeature] Ensembl Protein Feature
+** @argrule Ref object [EnsPProteinfeature] Ensembl Protein Feature
 **
-** @valrule * [EnsPProteinFeature] Ensembl Protein Feature
+** @valrule * [EnsPProteinfeature] Ensembl Protein Feature
 **
 ** @fcategory new
 ******************************************************************************/
@@ -9060,21 +9065,21 @@ AjBool ensProteinAlignFeatureadaptorFetchAllIdentifiers(
 
 
 
-/* @func ensProteinFeatureNew *************************************************
+/* @func ensProteinfeatureNew *************************************************
 **
 ** Default Ensembl Protein Feature constructor.
 **
 ** @cc Bio::EnsEMBL::Storable
-** @param [r] adaptor [EnsPProteinFeatureadaptor] Ensembl Protein
+** @param [r] adaptor [EnsPProteinfeatureadaptor] Ensembl Protein
 **                                                Feature Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
-** @cc Bio::EnsEMBL::FeaturePair
-** @param [r] fp [EnsPFeaturePair] Ensembl Feature Pair
-** @cc Bio::EnsEMBL::ProteinFeature
+** @cc Bio::EnsEMBL::Featurepair
+** @param [r] fp [EnsPFeaturepair] Ensembl Feature Pair
+** @cc Bio::EnsEMBL::Proteinfeature
 ** @param [r] accession [AjPStr] (InterPro) Accession
 ** @param [r] description [AjPStr] (InterPro) Description
 **
-** @return [EnsPProteinFeature] Ensembl Protein Feature or NULL
+** @return [EnsPProteinfeature] Ensembl Protein Feature or NULL
 ** @@
 ******************************************************************************/
 
@@ -9084,13 +9089,13 @@ AjBool ensProteinAlignFeatureadaptorFetchAllIdentifiers(
 ** TODO: Report to the Ensembl Core team.
 */
 
-EnsPProteinFeature ensProteinFeatureNew(EnsPProteinFeatureadaptor adaptor,
+EnsPProteinfeature ensProteinfeatureNew(EnsPProteinfeatureadaptor adaptor,
                                         ajuint identifier,
-                                        EnsPFeaturePair fp,
+                                        EnsPFeaturepair fp,
                                         AjPStr accession,
                                         AjPStr description)
 {
-    EnsPProteinFeature pf = NULL;
+    EnsPProteinfeature pf = NULL;
     
     AJNEW0(pf);
     
@@ -9100,7 +9105,7 @@ EnsPProteinFeature ensProteinFeatureNew(EnsPProteinFeatureadaptor adaptor,
     
     pf->Adaptor = adaptor;
     
-    pf->FeaturePair = ensFeaturePairNewRef(fp);
+    pf->Featurepair = ensFeaturepairNewRef(fp);
     
     if(accession)
 	pf->Accession = ajStrNewRef(accession);
@@ -9114,19 +9119,19 @@ EnsPProteinFeature ensProteinFeatureNew(EnsPProteinFeatureadaptor adaptor,
 
 
 
-/* @func ensProteinFeatureNewObj **********************************************
+/* @func ensProteinfeatureNewObj **********************************************
 **
 ** Object-based constructor function, which returns an independent object.
 **
-** @param [r] object [const EnsPProteinFeature] Ensembl Protein Feature
+** @param [r] object [const EnsPProteinfeature] Ensembl Protein Feature
 **
-** @return [EnsPProteinFeature] Ensembl Protein Feature or NULL
+** @return [EnsPProteinfeature] Ensembl Protein Feature or NULL
 ** @@
 ******************************************************************************/
 
-EnsPProteinFeature ensProteinFeatureNewObj(const EnsPProteinFeature object)
+EnsPProteinfeature ensProteinfeatureNewObj(const EnsPProteinfeature object)
 {
-    EnsPProteinFeature pf = NULL;
+    EnsPProteinfeature pf = NULL;
     
     AJNEW0(pf);
     
@@ -9134,7 +9139,7 @@ EnsPProteinFeature ensProteinFeatureNewObj(const EnsPProteinFeature object)
     
     pf->Adaptor = object->Adaptor;
     
-    pf->FeaturePair = ensFeaturePairNewRef(object->FeaturePair);
+    pf->Featurepair = ensFeaturepairNewRef(object->Featurepair);
     
     if(object->Accession)
         pf->Accession = ajStrNewRef(object->Accession);
@@ -9148,18 +9153,18 @@ EnsPProteinFeature ensProteinFeatureNewObj(const EnsPProteinFeature object)
 
 
 
-/* @func ensProteinFeatureNewRef **********************************************
+/* @func ensProteinfeatureNewRef **********************************************
 **
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] baf [EnsPProteinFeature] Ensembl Protein Feature
+** @param [u] baf [EnsPProteinfeature] Ensembl Protein Feature
 **
-** @return [EnsPProteinFeature] Ensembl Protein Feature or NULL
+** @return [EnsPProteinfeature] Ensembl Protein Feature or NULL
 ** @@
 ******************************************************************************/
 
-EnsPProteinFeature ensProteinFeatureNewRef(EnsPProteinFeature pf)
+EnsPProteinfeature ensProteinfeatureNewRef(EnsPProteinfeature pf)
 {
     if(!pf)
 	return NULL;
@@ -9177,12 +9182,12 @@ EnsPProteinFeature ensProteinFeatureNewRef(EnsPProteinFeature pf)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Protein Feature.
 **
-** @fdata [EnsPProteinFeature]
+** @fdata [EnsPProteinfeature]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a Protein Feature object
 **
-** @argrule * Ppf [EnsPProteinFeature*] Protein Feature object address
+** @argrule * Ppf [EnsPProteinfeature*] Protein Feature object address
 **
 ** @valrule * [void]
 **
@@ -9192,19 +9197,19 @@ EnsPProteinFeature ensProteinFeatureNewRef(EnsPProteinFeature pf)
 
 
 
-/* @func ensProteinFeatureDel *************************************************
+/* @func ensProteinfeatureDel *************************************************
 **
 ** Default destructor for an Ensembl Protein Feature.
 **
-** @param [d] Ppf [EnsPProteinFeature*] Ensembl Protein Feature address
+** @param [d] Ppf [EnsPProteinfeature*] Ensembl Protein Feature address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensProteinFeatureDel(EnsPProteinFeature *Ppf)
+void ensProteinfeatureDel(EnsPProteinfeature *Ppf)
 {
-    EnsPProteinFeature pthis = NULL;
+    EnsPProteinfeature pthis = NULL;
     
     if(!Ppf)
 	return;
@@ -9223,7 +9228,7 @@ void ensProteinFeatureDel(EnsPProteinFeature *Ppf)
 	return;
     }
     
-    ensFeaturePairDel(&pthis->FeaturePair);
+    ensFeaturepairDel(&pthis->Featurepair);
     
     ajStrDel(&pthis->Accession);
     ajStrDel(&pthis->Description);
@@ -9242,21 +9247,21 @@ void ensProteinFeatureDel(EnsPProteinFeature *Ppf)
 **
 ** Functions for returning elements of an Ensembl Protein Feature object.
 **
-** @fdata [EnsPProteinFeature]
+** @fdata [EnsPProteinfeature]
 ** @fnote None
 **
 ** @nam3rule Get Return Protein Feature attribute(s)
-** @nam4rule Getadaptor Return the Ensembl Protein Feature Adaptor
+** @nam4rule GetAdaptor Return the Ensembl Protein Feature Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
-** @nam4rule GetFeaturePair Return the Ensembl Feature Pair
+** @nam4rule GetFeaturepair Return the Ensembl Feature Pair
 ** @nam4rule GetAccession Return the accession
 ** @nam4rule GetDescription Return the description
 **
-** @argrule * pf [const EnsPProteinFeature] Protein Feature
+** @argrule * pf [const EnsPProteinfeature] Protein Feature
 **
-** @valrule Adaptor [EnsPProteinFeatureadaptor] Ensembl Protein Feature Adaptor
+** @valrule Adaptor [EnsPProteinfeatureadaptor] Ensembl Protein Feature Adaptor
 ** @valrule Identifier [ajuint] SQL databse-internal identifier
-** @valrule FeaturePair [EnsPFeaturePair] Ensembl Feature Pair
+** @valrule Featurepair [EnsPFeaturepair] Ensembl Feature Pair
 ** @valrule Accession [AjPStr] Accession
 ** @valrule Description [AjPStr] Description
 **
@@ -9266,19 +9271,19 @@ void ensProteinFeatureDel(EnsPProteinFeature *Ppf)
 
 
 
-/* @func ensProteinFeatureGetadaptor ******************************************
+/* @func ensProteinfeatureGetAdaptor ******************************************
 **
 ** Get the Ensembl Protein Feature Adaptor element of an
 ** Ensembl Protein Feature.
 **
-** @param [r] pf [const EnsPProteinFeature] Ensembl Protein Feature
+** @param [r] pf [const EnsPProteinfeature] Ensembl Protein Feature
 **
-** @return [EnsPProteinFeatureadaptor] Ensembl Protein Feature Adaptor
+** @return [EnsPProteinfeatureadaptor] Ensembl Protein Feature Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPProteinFeatureadaptor ensProteinFeatureGetadaptor(
-    const EnsPProteinFeature pf)
+EnsPProteinfeatureadaptor ensProteinfeatureGetAdaptor(
+    const EnsPProteinfeature pf)
 {
     if(!pf)
         return NULL;
@@ -9289,18 +9294,18 @@ EnsPProteinFeatureadaptor ensProteinFeatureGetadaptor(
 
 
 
-/* @func ensProteinFeatureGetIdentifier ***************************************
+/* @func ensProteinfeatureGetIdentifier ***************************************
 **
 ** Get the SQL database-internal identifier element of an
 ** Ensembl Protein Feature.
 **
-** @param [r] pf [const EnsPProteinFeature] Ensembl Protein Feature
+** @param [r] pf [const EnsPProteinfeature] Ensembl Protein Feature
 **
 ** @return [ajuint] SQL database-internal identifier
 ** @@
 ******************************************************************************/
 
-ajuint ensProteinFeatureGetIdentifier(const EnsPProteinFeature pf)
+ajuint ensProteinfeatureGetIdentifier(const EnsPProteinfeature pf)
 {
     if(!pf)
         return 0;
@@ -9311,38 +9316,38 @@ ajuint ensProteinFeatureGetIdentifier(const EnsPProteinFeature pf)
 
 
 
-/* @func ensProteinFeatureGetFeaturePair **************************************
+/* @func ensProteinfeatureGetFeaturepair **************************************
 **
 ** Get the Ensembl Feature Pair element of an Ensembl Protein Feature.
 **
-** @param [r] pf [const EnsPProteinFeature] Ensembl Protein Feature
+** @param [r] pf [const EnsPProteinfeature] Ensembl Protein Feature
 **
-** @return [EnsPFeaturePair] Ensembl Feature Pair
+** @return [EnsPFeaturepair] Ensembl Feature Pair
 ** @@
 ******************************************************************************/
 
-EnsPFeaturePair ensProteinFeatureGetFeaturePair(const EnsPProteinFeature pf)
+EnsPFeaturepair ensProteinfeatureGetFeaturepair(const EnsPProteinfeature pf)
 {
     if(!pf)
 	return NULL;
     
-    return pf->FeaturePair;
+    return pf->Featurepair;
 }
 
 
 
 
-/* @func ensProteinFeatureGetAccession ****************************************
+/* @func ensProteinfeatureGetAccession ****************************************
 **
 ** Get the (InterPro) accession element of an Ensembl Protein Feature.
 **
-** @param [r] pf [const EnsPProteinFeature] Ensembl Protein Feature
+** @param [r] pf [const EnsPProteinfeature] Ensembl Protein Feature
 **
 ** @return [AjPStr] (InterPro) accession
 ** @@
 ******************************************************************************/
 
-AjPStr ensProteinFeatureGetAccession(const EnsPProteinFeature pf)
+AjPStr ensProteinfeatureGetAccession(const EnsPProteinfeature pf)
 {
     if(!pf)
 	return NULL;
@@ -9353,17 +9358,17 @@ AjPStr ensProteinFeatureGetAccession(const EnsPProteinFeature pf)
 
 
 
-/* @func ensProteinFeatureGetDescription **************************************
+/* @func ensProteinfeatureGetDescription **************************************
 **
 ** Get the (InterPro) description element of an Ensembl Protein Feature.
 **
-** @param [r] pf [const EnsPProteinFeature] Ensembl Protein Feature
+** @param [r] pf [const EnsPProteinfeature] Ensembl Protein Feature
 **
 ** @return [AjPStr] (InterPro) description
 ** @@
 ******************************************************************************/
 
-AjPStr ensProteinFeatureGetDescription(const EnsPProteinFeature pf)
+AjPStr ensProteinfeatureGetDescription(const EnsPProteinfeature pf)
 {
     if(!pf)
 	return NULL;
@@ -9378,17 +9383,17 @@ AjPStr ensProteinFeatureGetDescription(const EnsPProteinFeature pf)
 **
 ** Functions for assigning elements of an Ensembl Protein Feature object.
 **
-** @fdata [EnsPProteinFeature]
+** @fdata [EnsPProteinfeature]
 ** @fnote None
 **
 ** @nam3rule Set Set one element of a Protein Feature
-** @nam4rule Setadaptor Set the Ensembl Protein Feature Adaptor
+** @nam4rule SetAdaptor Set the Ensembl Protein Feature Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
-** @nam4rule SetFeaturePair Set the Ensembl Feature Pair
+** @nam4rule SetFeaturepair Set the Ensembl Feature Pair
 ** @nam4rule SetAccession Set the accession
 ** @nam4rule SetDescription Set the description
 **
-** @argrule * pf [EnsPProteinFeature] Ensembl Protein Feature object
+** @argrule * pf [EnsPProteinfeature] Ensembl Protein Feature object
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
@@ -9398,21 +9403,21 @@ AjPStr ensProteinFeatureGetDescription(const EnsPProteinFeature pf)
 
 
 
-/* @func ensProteinFeatureSetadaptor ******************************************
+/* @func ensProteinfeatureSetAdaptor ******************************************
 **
 ** Set the Ensembl Protein Feature Adaptor element of an
 ** Ensembl Protein Feature.
 **
-** @param [u] pf [EnsPProteinFeature] Ensembl Protein Feature
-** @param [r] adaptor [EnsPProteinFeatureadaptor] Ensembl Protein Feature
+** @param [u] pf [EnsPProteinfeature] Ensembl Protein Feature
+** @param [r] adaptor [EnsPProteinfeatureadaptor] Ensembl Protein Feature
 **                                                Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensProteinFeatureSetadaptor(EnsPProteinFeature pf,
-                                   EnsPProteinFeatureadaptor adaptor)
+AjBool ensProteinfeatureSetAdaptor(EnsPProteinfeature pf,
+                                   EnsPProteinfeatureadaptor adaptor)
 {
     if(!pf)
         return ajFalse;
@@ -9425,19 +9430,19 @@ AjBool ensProteinFeatureSetadaptor(EnsPProteinFeature pf,
 
 
 
-/* @func ensProteinFeatureSetIdentifier ***************************************
+/* @func ensProteinfeatureSetIdentifier ***************************************
 **
 ** Set the SQL database-internal identifier element of an
 ** Ensembl Protein Feature.
 **
-** @param [u] pf [EnsPProteinFeature] Ensembl Protein Feature
+** @param [u] pf [EnsPProteinfeature] Ensembl Protein Feature
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensProteinFeatureSetIdentifier(EnsPProteinFeature pf, ajuint identifier)
+AjBool ensProteinfeatureSetIdentifier(EnsPProteinfeature pf, ajuint identifier)
 {
     if(!pf)
         return ajFalse;
@@ -9450,26 +9455,26 @@ AjBool ensProteinFeatureSetIdentifier(EnsPProteinFeature pf, ajuint identifier)
 
 
 
-/* @func ensProteinFeatureSetFeaturePair **************************************
+/* @func ensProteinfeatureSetFeaturepair **************************************
 **
 ** Set the Ensembl Feature Pair element of an Ensembl Protein Feature.
 **
-** @param [u] pf [EnsPProteinFeature] Ensembl Protein Feature
-** @param [u] fp [EnsPFeaturePair] Ensembl Feature Pair
+** @param [u] pf [EnsPProteinfeature] Ensembl Protein Feature
+** @param [u] fp [EnsPFeaturepair] Ensembl Feature Pair
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensProteinFeatureSetFeaturePair(EnsPProteinFeature pf,
-                                       EnsPFeaturePair fp)
+AjBool ensProteinfeatureSetFeaturepair(EnsPProteinfeature pf,
+                                       EnsPFeaturepair fp)
 {
     if(!pf)
         return ajFalse;
     
-    ensFeaturePairDel(&pf->FeaturePair);
+    ensFeaturepairDel(&pf->Featurepair);
     
-    pf->FeaturePair = ensFeaturePairNewRef(fp);
+    pf->Featurepair = ensFeaturepairNewRef(fp);
     
     return ajTrue;
 }
@@ -9477,18 +9482,18 @@ AjBool ensProteinFeatureSetFeaturePair(EnsPProteinFeature pf,
 
 
 
-/* @func ensProteinFeatureSetAccession ****************************************
+/* @func ensProteinfeatureSetAccession ****************************************
 **
 ** Set the accession element of an Ensembl Protein Feature.
 **
-** @param [u] pf [EnsPProteinFeature] Ensembl Protein Feature
+** @param [u] pf [EnsPProteinfeature] Ensembl Protein Feature
 ** @param [u] accession [AjPStr] Accession
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensProteinFeatureSetAccession(EnsPProteinFeature pf, AjPStr accession)
+AjBool ensProteinfeatureSetAccession(EnsPProteinfeature pf, AjPStr accession)
 {
     if(!pf)
         return ajFalse;
@@ -9503,18 +9508,18 @@ AjBool ensProteinFeatureSetAccession(EnsPProteinFeature pf, AjPStr accession)
 
 
 
-/* @func ensProteinFeatureSetDescription **************************************
+/* @func ensProteinfeatureSetDescription **************************************
 **
 ** Set the description element of an Ensembl Protein Feature.
 **
-** @param [u] pf [EnsPProteinFeature] Ensembl Protein Feature
+** @param [u] pf [EnsPProteinfeature] Ensembl Protein Feature
 ** @param [u] description [AjPStr] Description
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensProteinFeatureSetDescription(EnsPProteinFeature pf,
+AjBool ensProteinfeatureSetDescription(EnsPProteinfeature pf,
                                        AjPStr description)
 {
     if(!pf)
@@ -9534,10 +9539,10 @@ AjBool ensProteinFeatureSetDescription(EnsPProteinFeature pf,
 **
 ** Functions for reporting of an Ensembl Protein Feature object.
 **
-** @fdata [EnsPProteinFeature]
+** @fdata [EnsPProteinfeature]
 ** @nam3rule Trace Report Ensembl Protein Feature elements to debug file
 **
-** @argrule Trace pf [const EnsPProteinFeature] Ensembl Protein Feature
+** @argrule Trace pf [const EnsPProteinfeature] Ensembl Protein Feature
 ** @argrule Trace level [ajuint] Indentation level
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -9548,18 +9553,18 @@ AjBool ensProteinFeatureSetDescription(EnsPProteinFeature pf,
 
 
 
-/* @func ensProteinFeatureTrace ***********************************************
+/* @func ensProteinfeatureTrace ***********************************************
 **
 ** Trace an Ensembl Protein Feature.
 **
-** @param [r] pf [const EnsPProteinFeature] Ensembl Protein Feature
+** @param [r] pf [const EnsPProteinfeature] Ensembl Protein Feature
 ** @param [r] level [ajuint] Indentation level
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensProteinFeatureTrace(const EnsPProteinFeature pf, ajuint level)
+AjBool ensProteinfeatureTrace(const EnsPProteinfeature pf, ajuint level)
 {
     AjPStr indent = NULL;
     
@@ -9570,22 +9575,22 @@ AjBool ensProteinFeatureTrace(const EnsPProteinFeature pf, ajuint level)
     
     ajStrAppendCountK(&indent, ' ', level * 2);
     
-    ajDebug("%SensProteinFeatureTrace %p\n"
+    ajDebug("%SensProteinfeatureTrace %p\n"
 	    "%S  Use %u\n"
 	    "%S  Identifier %u\n"
 	    "%S  Adaptor %p\n"
-	    "%S  FeaturePair %p\n"
+	    "%S  Featurepair %p\n"
 	    "%S  Accession '%S'\n"
 	    "%S  Description '%S'\n",
 	    indent, pf,
 	    indent, pf->Use,
 	    indent, pf->Identifier,
 	    indent, pf->Adaptor,
-	    indent, pf->FeaturePair,
+	    indent, pf->Featurepair,
 	    indent, pf->Accession,
 	    indent, pf->Description);
     
-    ensFeaturePairTrace(pf->FeaturePair, level + 1);
+    ensFeaturepairTrace(pf->Featurepair, level + 1);
     
     ajStrDel(&indent);
     
@@ -9595,26 +9600,26 @@ AjBool ensProteinFeatureTrace(const EnsPProteinFeature pf, ajuint level)
 
 
 
-/* @func ensProteinFeatureGetMemSize ******************************************
+/* @func ensProteinfeatureGetMemSize ******************************************
 **
 ** Get the memory size in bytes of an Ensembl Protein Feature.
 **
-** @param [r] pf [const EnsPProteinFeature] Ensembl Protein Feature
+** @param [r] pf [const EnsPProteinfeature] Ensembl Protein Feature
 **
 ** @return [ajuint] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensProteinFeatureGetMemSize(const EnsPProteinFeature pf)
+ajuint ensProteinfeatureGetMemSize(const EnsPProteinfeature pf)
 {
     ajuint size = 0;
     
     if(!pf)
 	return 0;
     
-    size += (ajuint) sizeof (EnsOProteinFeature);
+    size += (ajuint) sizeof (EnsOProteinfeature);
     
-    size += ensFeaturePairGetMemSize(pf->FeaturePair);
+    size += ensFeaturepairGetMemSize(pf->Featurepair);
     
     if(pf->Accession)
     {
@@ -9636,13 +9641,13 @@ ajuint ensProteinFeatureGetMemSize(const EnsPProteinFeature pf)
 
 
 
-/* @datasection [EnsPProteinFeatureadaptor] Protein Feature Adaptor ***********
+/* @datasection [EnsPProteinfeatureadaptor] Protein Feature Adaptor ***********
 **
 ** Functions for manipulating Ensembl Protein Feature Adaptor objects
 **
-** @cc Bio::EnsEMBL::DBSQL::ProteinFeatureadaptor CVS Revision: 1.29
+** @cc Bio::EnsEMBL::DBSQL::Proteinfeatureadaptor CVS Revision: 1.29
 **
-** @nam2rule ProteinFeatureadaptor
+** @nam2rule Proteinfeatureadaptor
 **
 ******************************************************************************/
 
@@ -9700,7 +9705,7 @@ static const char *proteinFeatureadaptorFinalCondition = NULL;
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
-** @param [r] mapper [EnsPAssemblyMapper] Ensembl Assembly Mapper
+** @param [r] mapper [EnsPAssemblymapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [u] pfs [AjPList] AJAX List of Ensembl Protein Features
 **
@@ -9710,7 +9715,7 @@ static const char *proteinFeatureadaptorFinalCondition = NULL;
 
 static AjBool proteinFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                  const AjPStr statement,
-                                                 EnsPAssemblyMapper mapper,
+                                                 EnsPAssemblymapper mapper,
                                                  EnsPSlice slice,
                                                  AjPList pfs)
 {
@@ -9740,10 +9745,10 @@ static AjBool proteinFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPFeature srcfeature = NULL;
     EnsPFeature trgfeature = NULL;
     
-    EnsPFeaturePair fp = NULL;
+    EnsPFeaturepair fp = NULL;
     
-    EnsPProteinFeature pf         = NULL;
-    EnsPProteinFeatureadaptor pfa = NULL;
+    EnsPProteinfeature pf         = NULL;
+    EnsPProteinfeatureadaptor pfa = NULL;
     
     ajDebug("proteinFeatureadaptorFetchAllBySQL\n"
 	    "  dba %p\n"
@@ -9768,7 +9773,7 @@ static AjBool proteinFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     
     aa = ensRegistryGetAnalysisadaptor(dba);
     
-    pfa = ensRegistryGetProteinFeatureadaptor(dba);
+    pfa = ensRegistryGetProteinfeatureadaptor(dba);
     
     sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
     
@@ -9822,9 +9827,9 @@ static AjBool proteinFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 				    hitend,
 				    1);
 	
-	fp = ensFeaturePairNew(srcfeature,
+	fp = ensFeaturepairNew(srcfeature,
 			       trgfeature,
-			       (EnsPExternalDatabase) NULL, /* edb */
+			       (EnsPExternaldatabase) NULL, /* edb */
 			       (AjPStr) NULL, /* extra data */
 			       (AjPStr) NULL, /* srcspecies */
 			       (AjPStr) NULL, /* trgspecies */
@@ -9838,11 +9843,11 @@ static AjBool proteinFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	/* Create a Protein Feature object. */
 	
-	pf = ensProteinFeatureNew(pfa, identifier, fp, accession, description);
+	pf = ensProteinfeatureNew(pfa, identifier, fp, accession, description);
 	
 	ajListPushAppend(pfs, (void *) pf);	
 	
-	ensFeaturePairDel(&fp);
+	ensFeaturepairDel(&fp);
 	
 	ensFeatureDel(&srcfeature);
 	
@@ -9876,7 +9881,7 @@ static AjBool proteinFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** Protein Feature Adaptor. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPProteinFeatureadaptor]
+** @fdata [EnsPProteinfeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
@@ -9884,12 +9889,12 @@ static AjBool proteinFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
 ** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPProteinFeatureadaptor] Ensembl Protein
+** @argrule Obj object [EnsPProteinfeatureadaptor] Ensembl Protein
 **                                                 Feature Adaptor
-** @argrule Ref object [EnsPProteinFeatureadaptor] Ensembl Protein
+** @argrule Ref object [EnsPProteinfeatureadaptor] Ensembl Protein
 **                                                 Feature Adaptor
 **
-** @valrule * [EnsPProteinFeatureadaptor] Ensembl Protein Feature Adaptor
+** @valrule * [EnsPProteinfeatureadaptor] Ensembl Protein Feature Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -9897,19 +9902,19 @@ static AjBool proteinFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @func ensProteinFeatureadaptorNew ******************************************
+/* @func ensProteinfeatureadaptorNew ******************************************
 **
 ** Default Ensembl Protein Feature Adaptor constructor.
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPProteinFeatureadaptor] Ensembl Protein Feature Adaptor or NULL
+** @return [EnsPProteinfeatureadaptor] Ensembl Protein Feature Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPProteinFeatureadaptor ensProteinFeatureadaptorNew(EnsPDatabaseadaptor dba)
+EnsPProteinfeatureadaptor ensProteinfeatureadaptorNew(EnsPDatabaseadaptor dba)
 {
-    EnsPProteinFeatureadaptor pfa = NULL;
+    EnsPProteinfeatureadaptor pfa = NULL;
     
     if(!dba)
 	return NULL;
@@ -9936,12 +9941,12 @@ EnsPProteinFeatureadaptor ensProteinFeatureadaptorNew(EnsPDatabaseadaptor dba)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Protein Feature Adaptor.
 **
-** @fdata [EnsPProteinFeatureadaptor]
+** @fdata [EnsPProteinfeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) an Ensembl Protein Feature Adaptor object
 **
-** @argrule * Padaptor [EnsPProteinFeatureadaptor*] Ensembl Protein Feature
+** @argrule * Padaptor [EnsPProteinfeatureadaptor*] Ensembl Protein Feature
 **                                                  Adaptor object address
 **
 ** @valrule * [void]
@@ -9952,20 +9957,20 @@ EnsPProteinFeatureadaptor ensProteinFeatureadaptorNew(EnsPDatabaseadaptor dba)
 
 
 
-/* @func ensProteinFeatureadaptorDel ******************************************
+/* @func ensProteinfeatureadaptorDel ******************************************
 **
 ** Default destructor for an Ensembl Protein Feature Adaptor.
 **
-** @param [d] Padaptor [EnsPProteinFeatureadaptor*] Ensembl Protein Feature
+** @param [d] Padaptor [EnsPProteinfeatureadaptor*] Ensembl Protein Feature
 **                                                  Adaptor address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensProteinFeatureadaptorDel(EnsPProteinFeatureadaptor *Padaptor)
+void ensProteinfeatureadaptorDel(EnsPProteinfeatureadaptor *Padaptor)
 {
-    EnsPProteinFeatureadaptor pthis = NULL;
+    EnsPProteinfeatureadaptor pthis = NULL;
 
     if(!Padaptor)
 	return;
@@ -9992,7 +9997,7 @@ void ensProteinFeatureadaptorDel(EnsPProteinFeatureadaptor *Padaptor)
 ** Functions for retrieving Ensembl Protein Feature objects from an
 ** Ensembl Core database.
 **
-** @fdata [EnsPProteinFeatureadaptor]
+** @fdata [EnsPProteinfeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule Fetch Retrieve Ensembl Protein Feature object(s)
@@ -10002,7 +10007,7 @@ void ensProteinFeatureadaptorDel(EnsPProteinFeatureadaptor *Padaptor)
 ** @nam4rule FetchBy Retrieve one Ensembl Protein Feature object
 **                   matching a criterion
 **
-** @argrule * adaptor [const EnsPProteinFeatureadaptor] Ensembl Protein Feature
+** @argrule * adaptor [const EnsPProteinfeatureadaptor] Ensembl Protein Feature
 **                                                      Adaptor
 ** @argrule FetchAll [AjPList] AJAX List of Ensembl Protein Feature objects
 **
@@ -10014,12 +10019,12 @@ void ensProteinFeatureadaptorDel(EnsPProteinFeatureadaptor *Padaptor)
 
 
 
-/* @func ensProteinFeatureadaptorFetchAllByTranslationIdentifier **************
+/* @func ensProteinfeatureadaptorFetchAllByTranslationIdentifier **************
 **
 ** Fetch an Ensembl Protein Feature via an Ensembl Translation identifier.
 ** The caller is responsible for deleting the Ensembl Protein Feature.
 **
-** @param [r] adaptor [EnsPProteinFeatureadaptor] Ensembl Protein Feature
+** @param [r] adaptor [EnsPProteinfeatureadaptor] Ensembl Protein Feature
 *                                                 Adaptor
 ** @param [r] tlid [ajuint] Ensembl Translation identifier
 ** @param [u] pfs [AjPList] AJAX List of Ensembl Protein Features
@@ -10028,8 +10033,8 @@ void ensProteinFeatureadaptorDel(EnsPProteinFeatureadaptor *Padaptor)
 ** @@
 ******************************************************************************/
 
-AjBool ensProteinFeatureadaptorFetchAllByTranslationIdentifier(
-    EnsPProteinFeatureadaptor adaptor,
+AjBool ensProteinfeatureadaptorFetchAllByTranslationIdentifier(
+    EnsPProteinfeatureadaptor adaptor,
     ajuint tlid,
     AjPList pfs)
 {
@@ -10048,7 +10053,7 @@ AjBool ensProteinFeatureadaptorFetchAllByTranslationIdentifier(
     
     ensBaseadaptorGenericFetch(adaptor->Adaptor,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       pfs);
     
@@ -10060,24 +10065,24 @@ AjBool ensProteinFeatureadaptorFetchAllByTranslationIdentifier(
 
 
 
-/* @func ensProteinFeatureadaptorFetchByIdentifier ****************************
+/* @func ensProteinfeatureadaptorFetchByIdentifier ****************************
 **
 ** Fetch an Ensembl Protein Feature by its SQL database-internal identifier.
 **
-** @param [r] adaptor [EnsPProteinFeatureadaptor] Ensembl Protein Feature
+** @param [r] adaptor [EnsPProteinfeatureadaptor] Ensembl Protein Feature
 **                                                Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
-** @param [wP] Ppf [EnsPProteinFeature*] Ensembl Protein Feature address
+** @param [wP] Ppf [EnsPProteinfeature*] Ensembl Protein Feature address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
 
-AjBool ensProteinFeatureadaptorFetchByIdentifier(
-    EnsPProteinFeatureadaptor adaptor,
+AjBool ensProteinfeatureadaptorFetchByIdentifier(
+    EnsPProteinfeatureadaptor adaptor,
     ajuint identifier,
-    EnsPProteinFeature *Ppf)
+    EnsPProteinfeature *Ppf)
 {
     if(!adaptor)
 	return ajFalse;
@@ -10088,7 +10093,7 @@ AjBool ensProteinFeatureadaptorFetchByIdentifier(
     if(!Ppf)
 	return ajFalse;
     
-    *Ppf = (EnsPProteinFeature)
+    *Ppf = (EnsPProteinfeature)
 	ensBaseadaptorFetchByIdentifier(adaptor->Adaptor, identifier);
     
     return ajTrue;
@@ -10097,13 +10102,13 @@ AjBool ensProteinFeatureadaptorFetchByIdentifier(
 
 
 
-/* @datasection [EnsPSimpleFeature] Simple Feature ****************************
+/* @datasection [EnsPSimplefeature] Simple Feature ****************************
 **
 ** Functions for manipulating Ensembl Simple Feature objects
 **
-** @cc Bio::EnsEMBL::SimpleFeature CVS Revision: 1.9
+** @cc Bio::EnsEMBL::Simplefeature CVS Revision: 1.9
 **
-** @nam2rule SimpleFeature
+** @nam2rule Simplefeature
 **
 ******************************************************************************/
 
@@ -10117,17 +10122,17 @@ AjBool ensProteinFeatureadaptorFetchByIdentifier(
 ** Simple Feature. The target pointer does not need to be initialised to
 ** NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPSimpleFeature]
+** @fdata [EnsPSimplefeature]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPSimpleFeature] Ensembl Simple Feature
-** @argrule Ref object [EnsPSimpleFeature] Ensembl Simple Feature
+** @argrule Obj object [EnsPSimplefeature] Ensembl Simple Feature
+** @argrule Ref object [EnsPSimplefeature] Ensembl Simple Feature
 **
-** @valrule * [EnsPSimpleFeature] Ensembl Simple Feature
+** @valrule * [EnsPSimplefeature] Ensembl Simple Feature
 **
 ** @fcategory new
 ******************************************************************************/
@@ -10135,30 +10140,30 @@ AjBool ensProteinFeatureadaptorFetchByIdentifier(
 
 
 
-/* @func ensSimpleFeatureNew **************************************************
+/* @func ensSimplefeatureNew **************************************************
 **
 ** Default Ensembl Simple Feature constructor.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] adaptor [EnsPSimpleFeatureadaptor] Ensembl Simple Feature Adaptor
+** @param [r] adaptor [EnsPSimplefeatureadaptor] Ensembl Simple Feature Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::Feature::new
 ** @param [u] feature [EnsPFeature] Ensembl Feature
-** @cc Bio::EnsEMBL::SimpleFeature::new
+** @cc Bio::EnsEMBL::Simplefeature::new
 ** @param [u] label [AjPStr] Display label
 ** @param [r] score [double] Score
 **
-** @return [EnsPSimpleFeature] Ensembl Simple Feature or NULL
+** @return [EnsPSimplefeature] Ensembl Simple Feature or NULL
 ** @@
 ******************************************************************************/
 
-EnsPSimpleFeature ensSimpleFeatureNew(EnsPSimpleFeatureadaptor adaptor,
+EnsPSimplefeature ensSimplefeatureNew(EnsPSimplefeatureadaptor adaptor,
                                       ajuint identifier,
                                       EnsPFeature feature,
                                       AjPStr label,
                                       double score)
 {
-    EnsPSimpleFeature sf = NULL;
+    EnsPSimplefeature sf = NULL;
     
     if(!feature)
         return NULL;
@@ -10182,19 +10187,19 @@ EnsPSimpleFeature ensSimpleFeatureNew(EnsPSimpleFeatureadaptor adaptor,
 
 
 
-/* @func ensSimpleFeatureNewObj ***********************************************
+/* @func ensSimplefeatureNewObj ***********************************************
 **
 ** Object-based constructor function, which returns an independent object.
 **
-** @param [r] object [const EnsPSimpleFeature] Ensembl Simple Feature
+** @param [r] object [const EnsPSimplefeature] Ensembl Simple Feature
 **
-** @return [EnsPSimpleFeature] Ensembl Simple Feature or NULL
+** @return [EnsPSimplefeature] Ensembl Simple Feature or NULL
 ** @@
 ******************************************************************************/
 
-EnsPSimpleFeature ensSimpleFeatureNewObj(const EnsPSimpleFeature object)
+EnsPSimplefeature ensSimplefeatureNewObj(const EnsPSimplefeature object)
 {
-    EnsPSimpleFeature sf = NULL;
+    EnsPSimplefeature sf = NULL;
     
     AJNEW0(sf);
     
@@ -10215,18 +10220,18 @@ EnsPSimpleFeature ensSimpleFeatureNewObj(const EnsPSimpleFeature object)
 
 
 
-/* @func ensSimpleFeatureNewRef ***********************************************
+/* @func ensSimplefeatureNewRef ***********************************************
 **
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] sf [EnsPSimpleFeature] Ensembl Simple Feature
+** @param [u] sf [EnsPSimplefeature] Ensembl Simple Feature
 **
-** @return [EnsPSimpleFeature] Ensembl Simple Feature or NULL
+** @return [EnsPSimplefeature] Ensembl Simple Feature or NULL
 ** @@
 ******************************************************************************/
 
-EnsPSimpleFeature ensSimpleFeatureNewRef(EnsPSimpleFeature sf)
+EnsPSimplefeature ensSimplefeatureNewRef(EnsPSimplefeature sf)
 {
     if(!sf)
 	return NULL;
@@ -10244,12 +10249,12 @@ EnsPSimpleFeature ensSimpleFeatureNewRef(EnsPSimpleFeature sf)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Simple Features.
 **
-** @fdata [EnsPSimpleFeature]
+** @fdata [EnsPSimplefeature]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a Simple Feature object
 **
-** @argrule * Psf [EnsPSimpleFeature*] Simple Feature object address
+** @argrule * Psf [EnsPSimplefeature*] Simple Feature object address
 **
 ** @valrule * [void]
 **
@@ -10259,19 +10264,19 @@ EnsPSimpleFeature ensSimpleFeatureNewRef(EnsPSimpleFeature sf)
 
 
 
-/* @func ensSimpleFeatureDel **************************************************
+/* @func ensSimplefeatureDel **************************************************
 **
 ** Default destructor for an Ensembl Simple Feature.
 **
-** @param [d] Psf [EnsPSimpleFeature*] Ensembl Simple Feature address
+** @param [d] Psf [EnsPSimplefeature*] Ensembl Simple Feature address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensSimpleFeatureDel(EnsPSimpleFeature *Psf)
+void ensSimplefeatureDel(EnsPSimplefeature *Psf)
 {
-    EnsPSimpleFeature pthis = NULL;
+    EnsPSimplefeature pthis = NULL;
     
     if(!Psf)
         return;
@@ -10308,19 +10313,19 @@ void ensSimpleFeatureDel(EnsPSimpleFeature *Psf)
 **
 ** Functions for returning elements of an Ensembl Simple Feature object.
 **
-** @fdata [EnsPSimpleFeature]
+** @fdata [EnsPSimplefeature]
 ** @fnote None
 **
 ** @nam3rule Get Return Simple Feature attribute(s)
-** @nam4rule Getadaptor Return the Ensembl Simple Feature Adaptor
+** @nam4rule GetAdaptor Return the Ensembl Simple Feature Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetFeature Return the Ensembl Feature
 ** @nam4rule GetDisplayLabel Return the display label
 ** @nam4rule GetScore Return the score
 **
-** @argrule * sf [const EnsPSimpleFeature] Simple Feature
+** @argrule * sf [const EnsPSimplefeature] Simple Feature
 **
-** @valrule Adaptor [EnsPSimpleFeatureadaptor] Ensembl Simple Feature Adaptor
+** @valrule Adaptor [EnsPSimplefeatureadaptor] Ensembl Simple Feature Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule Feature [EnsPFeature] Ensembl Feature
 ** @valrule DisplayLabel [AjPStr] Display label
@@ -10332,18 +10337,18 @@ void ensSimpleFeatureDel(EnsPSimpleFeature *Psf)
 
 
 
-/* @func ensSimpleFeatureGetadaptor *******************************************
+/* @func ensSimplefeatureGetAdaptor *******************************************
 **
 ** Get the Ensembl Simple Feature Adaptor element of an Ensembl Simple Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::adaptor
-** @param [r] sf [const EnsPSimpleFeature] Ensembl Simple Feature
+** @param [r] sf [const EnsPSimplefeature] Ensembl Simple Feature
 **
-** @return [EnsPSimpleFeatureadaptor] Ensembl Simple Feature Adaptor
+** @return [EnsPSimplefeatureadaptor] Ensembl Simple Feature Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPSimpleFeatureadaptor ensSimpleFeatureGetadaptor(const EnsPSimpleFeature sf)
+EnsPSimplefeatureadaptor ensSimplefeatureGetAdaptor(const EnsPSimplefeature sf)
 {
     if(!sf)
         return NULL;
@@ -10354,19 +10359,19 @@ EnsPSimpleFeatureadaptor ensSimpleFeatureGetadaptor(const EnsPSimpleFeature sf)
 
 
 
-/* @func ensSimpleFeatureGetIdentifier ****************************************
+/* @func ensSimplefeatureGetIdentifier ****************************************
 **
 ** Get the SQL database-internal identifier element of an
 ** Ensembl Simple Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::dbID
-** @param [r] sf [const EnsPSimpleFeature] Ensembl Simple Feature
+** @param [r] sf [const EnsPSimplefeature] Ensembl Simple Feature
 **
 ** @return [ajuint] Internal database identifier
 ** @@
 ******************************************************************************/
 
-ajuint ensSimpleFeatureGetIdentifier(const EnsPSimpleFeature sf)
+ajuint ensSimplefeatureGetIdentifier(const EnsPSimplefeature sf)
 {
     if(!sf)
         return 0;
@@ -10377,17 +10382,17 @@ ajuint ensSimpleFeatureGetIdentifier(const EnsPSimpleFeature sf)
 
 
 
-/* @func ensSimpleFeatureGetFeature *******************************************
+/* @func ensSimplefeatureGetFeature *******************************************
 **
 ** Get the Ensembl Feature element of an Ensembl Simple Feature.
 **
-** @param [r] sf [const EnsPSimpleFeature] Ensembl Simple Feature
+** @param [r] sf [const EnsPSimplefeature] Ensembl Simple Feature
 **
 ** @return [EnsPFeature] Ensembl Feature
 ** @@
 ******************************************************************************/
 
-EnsPFeature ensSimpleFeatureGetFeature(const EnsPSimpleFeature sf)
+EnsPFeature ensSimplefeatureGetFeature(const EnsPSimplefeature sf)
 {
     if(!sf)
         return NULL;
@@ -10398,18 +10403,18 @@ EnsPFeature ensSimpleFeatureGetFeature(const EnsPSimpleFeature sf)
 
 
 
-/* @func ensSimpleFeatureGetDisplayLabel **************************************
+/* @func ensSimplefeatureGetDisplayLabel **************************************
 **
 ** Get the display label element of an Ensembl Simple Feature.
 **
-** @cc Bio::EnsEMBL::SimpleFeature::display_label
-** @param [r] sf [const EnsPSimpleFeature] Ensembl Simple Feature
+** @cc Bio::EnsEMBL::Simplefeature::display_label
+** @param [r] sf [const EnsPSimplefeature] Ensembl Simple Feature
 **
 ** @return [AjPStr] Display label
 ** @@
 ******************************************************************************/
 
-AjPStr ensSimpleFeatureGetDisplayLabel(const EnsPSimpleFeature sf)
+AjPStr ensSimplefeatureGetDisplayLabel(const EnsPSimplefeature sf)
 {
     if(!sf)
         return NULL;
@@ -10420,18 +10425,18 @@ AjPStr ensSimpleFeatureGetDisplayLabel(const EnsPSimpleFeature sf)
 
 
 
-/* @func ensSimpleFeatureGetScore *********************************************
+/* @func ensSimplefeatureGetScore *********************************************
 **
 ** Get the score element of an Ensembl Simple Feature.
 **
-** @cc Bio::EnsEMBL::SimpleFeature::score
-** @param [r] sf [const EnsPSimpleFeature] Ensembl Simple Feature
+** @cc Bio::EnsEMBL::Simplefeature::score
+** @param [r] sf [const EnsPSimplefeature] Ensembl Simple Feature
 **
 ** @return [double] Score
 ** @@
 ******************************************************************************/
 
-double ensSimpleFeatureGetScore(const EnsPSimpleFeature sf)
+double ensSimplefeatureGetScore(const EnsPSimplefeature sf)
 {
     if(!sf)
         return 0;
@@ -10446,17 +10451,17 @@ double ensSimpleFeatureGetScore(const EnsPSimpleFeature sf)
 **
 ** Functions for assigning elements of an Ensembl Simple Feature object.
 **
-** @fdata [EnsPSimpleFeature]
+** @fdata [EnsPSimplefeature]
 ** @fnote None
 **
 ** @nam3rule Set Set one element of a Simple Feature
-** @nam4rule Setadaptor Set the Ensembl Simple Feature Adaptor
+** @nam4rule SetAdaptor Set the Ensembl Simple Feature Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetFeature Set the Ensembl Feature
 ** @nam4rule SetDisplayLabel Set the display label
 ** @nam4rule SetScore Set the score
 **
-** @argrule * sf [EnsPSimpleFeature] Ensembl Simple Feature object
+** @argrule * sf [EnsPSimplefeature] Ensembl Simple Feature object
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
@@ -10466,21 +10471,21 @@ double ensSimpleFeatureGetScore(const EnsPSimpleFeature sf)
 
 
 
-/* @func ensSimpleFeatureSetadaptor *******************************************
+/* @func ensSimplefeatureSetAdaptor *******************************************
 **
 ** Set the Ensembl Simple Feature Adaptor element of an Ensembl Simple Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::adaptor
-** @param [u] sf [EnsPSimpleFeature] Ensembl Simple Feature
-** @param [r] adaptor [EnsPSimpleFeatureadaptor] Ensembl Simple
+** @param [u] sf [EnsPSimplefeature] Ensembl Simple Feature
+** @param [r] adaptor [EnsPSimplefeatureadaptor] Ensembl Simple
 **                                               Feature Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensSimpleFeatureSetadaptor(EnsPSimpleFeature sf,
-                                  EnsPSimpleFeatureadaptor adaptor)
+AjBool ensSimplefeatureSetAdaptor(EnsPSimplefeature sf,
+                                  EnsPSimplefeatureadaptor adaptor)
 {
     if(!sf)
         return ajFalse;
@@ -10493,20 +10498,20 @@ AjBool ensSimpleFeatureSetadaptor(EnsPSimpleFeature sf,
 
 
 
-/* @func ensSimpleFeatureSetIdentifier ****************************************
+/* @func ensSimplefeatureSetIdentifier ****************************************
 **
 ** Set the SQL database-internal identifier element of an
 ** Ensembl Simple Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::dbID
-** @param [u] sf [EnsPSimpleFeature] Ensembl Simple Feature
+** @param [u] sf [EnsPSimplefeature] Ensembl Simple Feature
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensSimpleFeatureSetIdentifier(EnsPSimpleFeature sf, ajuint identifier)
+AjBool ensSimplefeatureSetIdentifier(EnsPSimplefeature sf, ajuint identifier)
 {
     if(!sf)
         return ajFalse;
@@ -10519,18 +10524,18 @@ AjBool ensSimpleFeatureSetIdentifier(EnsPSimpleFeature sf, ajuint identifier)
 
 
 
-/* @func ensSimpleFeatureSetFeature *******************************************
+/* @func ensSimplefeatureSetFeature *******************************************
 **
 ** Set the Ensembl Feature element of an Ensembl Simple Feature.
 **
-** @param [u] sf [EnsPSimpleFeature] Ensembl Simple Feature
+** @param [u] sf [EnsPSimplefeature] Ensembl Simple Feature
 ** @param [u] feature [EnsPFeature] Ensembl Feature
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensSimpleFeatureSetFeature(EnsPSimpleFeature sf, EnsPFeature feature)
+AjBool ensSimplefeatureSetFeature(EnsPSimplefeature sf, EnsPFeature feature)
 {
     if(!sf)
         return ajFalse;
@@ -10545,19 +10550,19 @@ AjBool ensSimpleFeatureSetFeature(EnsPSimpleFeature sf, EnsPFeature feature)
 
 
 
-/* @func ensSimpleFeatureSetDisplayLabel **************************************
+/* @func ensSimplefeatureSetDisplayLabel **************************************
 **
 ** Set the display label element of an Ensembl Simple Feature.
 **
-** @cc Bio::EnsEMBL::SimpleFeature::display_label
-** @param [u] sf [EnsPSimpleFeature] Ensembl Simple Feature
+** @cc Bio::EnsEMBL::Simplefeature::display_label
+** @param [u] sf [EnsPSimplefeature] Ensembl Simple Feature
 ** @param [u] label [AjPStr] Display label
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensSimpleFeatureSetDisplayLabel(EnsPSimpleFeature sf, AjPStr label)
+AjBool ensSimplefeatureSetDisplayLabel(EnsPSimplefeature sf, AjPStr label)
 {
     if(!sf)
         return ajFalse;
@@ -10572,19 +10577,19 @@ AjBool ensSimpleFeatureSetDisplayLabel(EnsPSimpleFeature sf, AjPStr label)
 
 
 
-/* @func ensSimpleFeatureSetScore *********************************************
+/* @func ensSimplefeatureSetScore *********************************************
 **
 ** Set the score element of an Ensembl Simple Feature.
 **
-** @cc Bio::EnsEMBL::SimpleFeature::score
-** @param [u] sf [EnsPSimpleFeature] Ensembl Simple Feature
+** @cc Bio::EnsEMBL::Simplefeature::score
+** @param [u] sf [EnsPSimplefeature] Ensembl Simple Feature
 ** @param [r] score [double] Score
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensSimpleFeatureSetScore(EnsPSimpleFeature sf, double score)
+AjBool ensSimplefeatureSetScore(EnsPSimplefeature sf, double score)
 {
     if(!sf)
         return ajFalse;
@@ -10601,10 +10606,10 @@ AjBool ensSimpleFeatureSetScore(EnsPSimpleFeature sf, double score)
 **
 ** Functions for reporting of an Ensembl Simple Feature object.
 **
-** @fdata [EnsPSimpleFeature]
+** @fdata [EnsPSimplefeature]
 ** @nam3rule Trace Report Ensembl Simple Feature elements to debug file
 **
-** @argrule Trace sf [const EnsPSimpleFeature] Ensembl Simple Feature
+** @argrule Trace sf [const EnsPSimplefeature] Ensembl Simple Feature
 ** @argrule Trace level [ajuint] Indentation level
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -10615,18 +10620,18 @@ AjBool ensSimpleFeatureSetScore(EnsPSimpleFeature sf, double score)
 
 
 
-/* @func ensSimpleFeatureTrace ************************************************
+/* @func ensSimplefeatureTrace ************************************************
 **
 ** Trace an Ensembl Simple Feature.
 **
-** @param [r] sf [const EnsPSimpleFeature] Ensembl Simple Feature
+** @param [r] sf [const EnsPSimplefeature] Ensembl Simple Feature
 ** @param [r] level [ajuint] Indentation level
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensSimpleFeatureTrace(const EnsPSimpleFeature sf, ajuint level)
+AjBool ensSimplefeatureTrace(const EnsPSimplefeature sf, ajuint level)
 {
     AjPStr indent = NULL;
     
@@ -10637,7 +10642,7 @@ AjBool ensSimpleFeatureTrace(const EnsPSimpleFeature sf, ajuint level)
     
     ajStrAppendCountK(&indent, ' ', level * 2);
     
-    ajDebug("%SensSimpleFeatureTrace %p\n"
+    ajDebug("%SensSimplefeatureTrace %p\n"
 	    "%S  Use %u\n"
 	    "%S  Identifier %u\n"
 	    "%S  Adaptor %p\n"
@@ -10662,24 +10667,24 @@ AjBool ensSimpleFeatureTrace(const EnsPSimpleFeature sf, ajuint level)
 
 
 
-/* @func ensSimpleFeatureGetMemSize *******************************************
+/* @func ensSimplefeatureGetMemSize *******************************************
 **
 ** Get the memory size in bytes of an Ensembl Simple Feature.
 **
-** @param [r] sf [const EnsPSimpleFeature] Ensembl Simple Feature
+** @param [r] sf [const EnsPSimplefeature] Ensembl Simple Feature
 **
 ** @return [ajuint] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensSimpleFeatureGetMemSize(const EnsPSimpleFeature sf)
+ajuint ensSimplefeatureGetMemSize(const EnsPSimplefeature sf)
 {
     ajuint size = 0;
     
     if(!sf)
 	return 0;
     
-    size += (ajuint) sizeof (EnsOSimpleFeature);
+    size += (ajuint) sizeof (EnsOSimplefeature);
     
     size += ensFeatureGetMemSize(sf->Feature);
     
@@ -10696,13 +10701,13 @@ ajuint ensSimpleFeatureGetMemSize(const EnsPSimpleFeature sf)
 
 
 
-/* @datasection [EnsPSimpleFeatureadaptor] Simple Feature Adaptor *************
+/* @datasection [EnsPSimplefeatureadaptor] Simple Feature Adaptor *************
 **
 ** Functions for manipulating Ensembl Simple Feature Adaptor objects
 **
-** @cc Bio::EnsEMBL::DBSQL::SimpleFeatureadaptor CVS Revision: 1.33
+** @cc Bio::EnsEMBL::DBSQL::Simplefeatureadaptor CVS Revision: 1.33
 **
-** @nam2rule SimpleFeatureadaptor
+** @nam2rule Simplefeatureadaptor
 **
 ******************************************************************************/
 
@@ -10752,10 +10757,10 @@ static const char *simpleFeatureadaptorFinalCondition = NULL;
 **
 ** Fetch all Ensembl Simple Feature objects via an SQL statement.
 **
-** @cc Bio::EnsEMBL::DBSQL::SimpleFeatureadaptor::_objs_from_sth
+** @cc Bio::EnsEMBL::DBSQL::Simplefeatureadaptor::_objs_from_sth
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
-** @param [r] mapper [EnsPAssemblyMapper] Ensembl Assembly Mapper
+** @param [r] mapper [EnsPAssemblymapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [u] sfs [AjPList] AJAX List of Ensembl Simple Features
 **
@@ -10765,7 +10770,7 @@ static const char *simpleFeatureadaptorFinalCondition = NULL;
 
 static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                 const AjPStr statement,
-                                                EnsPAssemblyMapper mapper,
+                                                EnsPAssemblymapper mapper,
                                                 EnsPSlice slice,
                                                 AjPList sfs)
 {
@@ -10796,17 +10801,17 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPAnalysis analysis  = NULL;
     EnsPAnalysisadaptor aa = NULL;
     
-    EnsPAssemblyMapper am         = NULL;
-    EnsPAssemblyMapperadaptor ama = NULL;
+    EnsPAssemblymapper am         = NULL;
+    EnsPAssemblymapperadaptor ama = NULL;
     
-    EnsPCoordSystemadaptor csa = NULL;
+    EnsPCoordsystemadaptor csa = NULL;
     
     EnsPFeature feature = NULL;
     
-    EnsPSimpleFeature sf         = NULL;
-    EnsPSimpleFeatureadaptor sfa = NULL;
+    EnsPSimplefeature sf         = NULL;
+    EnsPSimplefeatureadaptor sfa = NULL;
     
-    EnsPMapperResult mr = NULL;
+    EnsPMapperresult mr = NULL;
     
     EnsPSlice srslice   = NULL;
     EnsPSliceadaptor sa = NULL;
@@ -10834,14 +10839,14 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     
     aa = ensRegistryGetAnalysisadaptor(dba);
     
-    csa = ensRegistryGetCoordSystemadaptor(dba);
+    csa = ensRegistryGetCoordsystemadaptor(dba);
     
-    sfa = ensRegistryGetSimpleFeatureadaptor(dba);
+    sfa = ensRegistryGetSimplefeatureadaptor(dba);
     
     sa = ensRegistryGetSliceadaptor(dba);
     
     if(slice)
-	ama = ensRegistryGetAssemblyMapperadaptor(dba);
+	ama = ensRegistryGetAssemblymapperadaptor(dba);
     
     mrs = ajListNew();
     
@@ -10872,7 +10877,7 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	/* Need to get the internal Ensembl Sequence Region identifier. */
 	
-	srid = ensCoordSystemadaptorGetInternalSeqRegionIdentifier(csa, srid);
+	srid = ensCoordsystemadaptorGetInternalSeqregionIdentifier(csa, srid);
 	
 	/*
 	** Since the Ensembl SQL schema defines Sequence Region start and end
@@ -10900,7 +10905,7 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	/* Fetch a Slice spanning the entire Sequence Region. */
 	
-	ensSliceadaptorFetchBySeqRegionIdentifier(sa, srid, 0, 0, 0, &srslice);
+	ensSliceadaptorFetchBySeqregionIdentifier(sa, srid, 0, 0, 0, &srslice);
 	
 	/*
 	** Obtain an Ensembl Assembly Mapper if none was defined, but a
@@ -10908,17 +10913,17 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	*/
 	
 	if(mapper)
-	    am = ensAssemblyMapperNewRef(mapper);
+	    am = ensAssemblymapperNewRef(mapper);
 	
 	if((! mapper) &&
 	   slice &&
-	   (! ensCoordSystemMatch(ensSliceGetCoordSystem(slice),
-				   ensSliceGetCoordSystem(srslice))))
+	   (! ensCoordsystemMatch(ensSliceGetCoordsystem(slice),
+				   ensSliceGetCoordsystem(srslice))))
 	    am =
-		ensAssemblyMapperadaptorFetchByCoordSystems(
+		ensAssemblymapperadaptorFetchByCoordsystems(
                     ama,
-		    ensSliceGetCoordSystem(slice),
-		    ensSliceGetCoordSystem(srslice));
+		    ensSliceGetCoordsystem(slice),
+		    ensSliceGetCoordsystem(srslice));
 	
 	/*
 	** Remap the Feature coordinates to another Ensembl Coordinate System
@@ -10927,15 +10932,15 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	if(am)
 	{
-	    ensAssemblyMapperFastMap(am,
-				     ensSliceGetSeqRegion(srslice),
+	    ensAssemblymapperFastMap(am,
+				     ensSliceGetSeqregion(srslice),
 				     slstart,
 				     slend,
 				     slstrand,
 				     mrs);
 	    
 	    /*
-	    ** The ensAssemblyMapperFastMap function returns at best one
+	    ** The ensAssemblymapperFastMap function returns at best one
 	    ** Ensembl Mapper Result.
 	    */
 	    
@@ -10946,7 +10951,7 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    ** Coordinate System boundaries.
 	    */
 	    
-	    if(ensMapperResultGetType(mr) != ensEMapperResultCoordinate)
+	    if(ensMapperresultGetType(mr) != ensEMapperresultCoordinate)
 	    {
 		/* Load the next Feature but destroy first! */
 		
@@ -10954,20 +10959,20 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 		
 		ensSliceDel(&srslice);
 		
-		ensAssemblyMapperDel(&am);
+		ensAssemblymapperDel(&am);
 		
-		ensMapperResultDel(&mr);
+		ensMapperresultDel(&mr);
 		
 		continue;
 	    }
 	    
-	    srid = ensMapperResultGetObjectIdentifier(mr);
+	    srid = ensMapperresultGetObjectIdentifier(mr);
 	    
-	    slstart = ensMapperResultGetStart(mr);
+	    slstart = ensMapperresultGetStart(mr);
 	    
-	    slend = ensMapperResultGetEnd(mr);
+	    slend = ensMapperresultGetEnd(mr);
 	    
-	    slstrand = ensMapperResultGetStrand(mr);
+	    slstrand = ensMapperresultGetStrand(mr);
 	    
 	    /*
 	    ** Delete the Sequence Region Slice and fetch a Slice in the
@@ -10976,14 +10981,14 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    
 	    ensSliceDel(&srslice);
 	    
-	    ensSliceadaptorFetchBySeqRegionIdentifier(sa,
+	    ensSliceadaptorFetchBySeqregionIdentifier(sa,
 						      srid,
 						      0,
 						      0,
 						      0,
 						      &srslice);
 	    
-	    ensMapperResultDel(&mr);
+	    ensMapperresultDel(&mr);
 	}
 	
 	/*
@@ -11034,7 +11039,7 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    
 	    if((slend < 1) ||
 	       (slstart > sllength) ||
-	       (srid != ensSliceGetSeqRegionIdentifier(slice)))
+	       (srid != ensSliceGetSeqregionIdentifier(slice)))
 	    {
 		/* Load the next Feature but destroy first! */
 		
@@ -11042,7 +11047,7 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 		
 		ensSliceDel(&srslice);
 		
-		ensAssemblyMapperDel(&am);
+		ensAssemblymapperDel(&am);
 		
 		continue;
 	    }
@@ -11064,7 +11069,7 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 				 slend,
 				 slstrand);
 	
-	sf = ensSimpleFeatureNew(sfa, identifier, feature, label, score);
+	sf = ensSimplefeatureNew(sfa, identifier, feature, label, score);
 	
 	ajListPushAppend(sfs, (void *) sf);
 	
@@ -11072,7 +11077,7 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	
 	ensAnalysisDel(&analysis);
 	
-	ensAssemblyMapperDel(&am);
+	ensAssemblymapperDel(&am);
 	
 	ensSliceDel(&srslice);
 	
@@ -11107,7 +11112,7 @@ static void *simpleFeatureadaptorCacheReference(void *value)
     if(!value)
 	return NULL;
     
-    return (void *) ensSimpleFeatureNewRef((EnsPSimpleFeature) value);
+    return (void *) ensSimplefeatureNewRef((EnsPSimplefeature) value);
 }
 
 
@@ -11129,7 +11134,7 @@ static void simpleFeatureadaptorCacheDelete(void **value)
     if(!value)
 	return;
     
-    ensSimpleFeatureDel((EnsPSimpleFeature *) value);
+    ensSimplefeatureDel((EnsPSimplefeature *) value);
     
     return;
 }
@@ -11153,7 +11158,7 @@ static ajuint simpleFeatureadaptorCacheSize(const void *value)
     if(!value)
 	return 0;
     
-    return ensSimpleFeatureGetMemSize((const EnsPSimpleFeature) value);
+    return ensSimplefeatureGetMemSize((const EnsPSimplefeature) value);
 }
 
 
@@ -11175,7 +11180,7 @@ static EnsPFeature simpleFeatureadaptorGetFeature(const void *value)
     if(!value)
 	return NULL;
     
-    return ensSimpleFeatureGetFeature((const EnsPSimpleFeature) value);
+    return ensSimplefeatureGetFeature((const EnsPSimplefeature) value);
 }
 
 
@@ -11188,7 +11193,7 @@ static EnsPFeature simpleFeatureadaptorGetFeature(const void *value)
 ** Simple Feature Adaptor. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPSimpleFeatureadaptor]
+** @fdata [EnsPSimplefeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
@@ -11196,12 +11201,12 @@ static EnsPFeature simpleFeatureadaptorGetFeature(const void *value)
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
 ** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPSimpleFeatureadaptor] Ensembl Simple
+** @argrule Obj object [EnsPSimplefeatureadaptor] Ensembl Simple
 **                                                Feature Adaptor
-** @argrule Ref object [EnsPSimpleFeatureadaptor] Ensembl Simple
+** @argrule Ref object [EnsPSimplefeatureadaptor] Ensembl Simple
 **                                                Feature Adaptor
 **
-** @valrule * [EnsPSimpleFeatureadaptor] Ensembl Simple Feature Adaptor
+** @valrule * [EnsPSimplefeatureadaptor] Ensembl Simple Feature Adaptor
 **
 ** @fcategory new
 ******************************************************************************/
@@ -11209,20 +11214,20 @@ static EnsPFeature simpleFeatureadaptorGetFeature(const void *value)
 
 
 
-/* @func ensSimpleFeatureadaptorNew *******************************************
+/* @func ensSimplefeatureadaptorNew *******************************************
 **
 ** Default Ensembl Simple Feature Adaptor constructor.
 **
-** @cc Bio::EnsEMBL::DBSQL::SimpleFeatureadaptor::new
+** @cc Bio::EnsEMBL::DBSQL::Simplefeatureadaptor::new
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPSimpleFeatureadaptor] Ensembl Simple Feature Adaptor or NULL
+** @return [EnsPSimplefeatureadaptor] Ensembl Simple Feature Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPSimpleFeatureadaptor ensSimpleFeatureadaptorNew(EnsPDatabaseadaptor dba)
+EnsPSimplefeatureadaptor ensSimplefeatureadaptorNew(EnsPDatabaseadaptor dba)
 {
-    EnsPSimpleFeatureadaptor sfa = NULL;
+    EnsPSimplefeatureadaptor sfa = NULL;
     
     if(!dba)
 	return NULL;
@@ -11256,12 +11261,12 @@ EnsPSimpleFeatureadaptor ensSimpleFeatureadaptorNew(EnsPDatabaseadaptor dba)
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Simple Feature Adaptor.
 **
-** @fdata [EnsPSimpleFeatureadaptor]
+** @fdata [EnsPSimplefeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) an Ensembl Simple Feature Adaptor object
 **
-** @argrule * Padaptor [EnsPSimpleFeatureadaptor*] Ensembl Simple Feature
+** @argrule * Padaptor [EnsPSimplefeatureadaptor*] Ensembl Simple Feature
 **                                                 Adaptor object address
 **
 ** @valrule * [void]
@@ -11272,20 +11277,20 @@ EnsPSimpleFeatureadaptor ensSimpleFeatureadaptorNew(EnsPDatabaseadaptor dba)
 
 
 
-/* @func ensSimpleFeatureadaptorDel *******************************************
+/* @func ensSimplefeatureadaptorDel *******************************************
 **
 ** Default destructor for an Ensembl Simple Feature Adaptor.
 **
-** @param [d] Padaptor [EnsPSimpleFeatureadaptor*] Ensembl Simple Feature
+** @param [d] Padaptor [EnsPSimplefeatureadaptor*] Ensembl Simple Feature
 **                                                 Adaptor address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensSimpleFeatureadaptorDel(EnsPSimpleFeatureadaptor *Padaptor)
+void ensSimplefeatureadaptorDel(EnsPSimplefeatureadaptor *Padaptor)
 {
-    EnsPSimpleFeatureadaptor pthis = NULL;
+    EnsPSimplefeatureadaptor pthis = NULL;
     
     if(!Padaptor)
 	return;
@@ -11307,22 +11312,22 @@ void ensSimpleFeatureadaptorDel(EnsPSimpleFeatureadaptor *Padaptor)
 
 
 
-/* @func ensSimpleFeatureadaptorFetchAllBySlice *******************************
+/* @func ensSimplefeatureadaptorFetchAllBySlice *******************************
 **
 ** Fetch all Ensembl Simple Features on an Ensembl Slice.
 **
 ** @cc Bio::EnsEMBL::DBSQL::BaseFeatureadaptor::fetch_all_by_Slice
-** @param [r] adaptor [EnsPSimpleFeatureadaptor] Ensembl Simple Feature
+** @param [r] adaptor [EnsPSimplefeatureadaptor] Ensembl Simple Feature
 **                                               Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
-** @param [r] anname [AjPStr] Ensembl Analysis name
+** @param [r] anname [const AjPStr] Ensembl Analysis name
 ** @param [r] sfs [AjPList] AJAX List of Ensembl Simple Features
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensSimpleFeatureadaptorFetchAllBySlice(EnsPSimpleFeatureadaptor adaptor,
+AjBool ensSimplefeatureadaptorFetchAllBySlice(EnsPSimplefeatureadaptor adaptor,
                                               EnsPSlice slice,
                                               const AjPStr anname,
                                               AjPList sfs)
@@ -11345,25 +11350,25 @@ AjBool ensSimpleFeatureadaptorFetchAllBySlice(EnsPSimpleFeatureadaptor adaptor,
 
 
 
-/* @func ensSimpleFeatureadaptorFetchAllBySliceScore **************************
+/* @func ensSimplefeatureadaptorFetchAllBySliceScore **************************
 **
 ** Fetch all Ensembl Simple Features on an Ensembl Slice
 ** above a threshold score.
 **
 ** @cc Bio::EnsEMBL::DBSQL::BaseFeatureadaptor::fetch_all_by_Slice
-** @param [r] adaptor [EnsPSimpleFeatureadaptor] Ensembl Simple Feature
+** @param [r] adaptor [EnsPSimplefeatureadaptor] Ensembl Simple Feature
 **                                               Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [r] score [double] Score
-** @param [r] anname [AjPStr] Ensembl Analysis name
+** @param [r] anname [const AjPStr] Ensembl Analysis name
 ** @param [r] sfs [AjPList] AJAX List of Ensembl Simple Features
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensSimpleFeatureadaptorFetchAllBySliceScore(
-    EnsPSimpleFeatureadaptor adaptor,
+AjBool ensSimplefeatureadaptorFetchAllBySliceScore(
+    EnsPSimplefeatureadaptor adaptor,
     EnsPSlice slice,
     double score,
     const AjPStr anname,
@@ -11388,23 +11393,23 @@ AjBool ensSimpleFeatureadaptorFetchAllBySliceScore(
 
 
 
-/* @func ensSimpleFeatureadaptorFetchAllByAnalysisName ************************
+/* @func ensSimplefeatureadaptorFetchAllByAnalysisName ************************
 **
 ** Fetch all Ensembl Simple Features via an Ensembl Analysis name.
 **
 ** @cc Bio::EnsEMBL::DBSQL::BaseFeatureadaptor::fetch_all_by_logic_name
-** @param [r] adaptor [EnsPSimpleFeatureadaptor] Ensembl Simple Feature
+** @param [r] adaptor [EnsPSimplefeatureadaptor] Ensembl Simple Feature
 **                                               Adaptor
-** @param [r] anname [AjPStr] Ensembl Analysis name
+** @param [r] anname [const AjPStr] Ensembl Analysis name
 ** @param [r] sfs [AjPList] AJAX List of Ensembl Simple Features
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensSimpleFeatureadaptorFetchAllByAnalysisName(
-    EnsPSimpleFeatureadaptor adaptor,
-    AjPStr anname,
+AjBool ensSimplefeatureadaptorFetchAllByAnalysisName(
+    EnsPSimplefeatureadaptor adaptor,
+    const AjPStr anname,
     AjPList sfs)
 {
     if(!adaptor)
@@ -11424,13 +11429,13 @@ AjBool ensSimpleFeatureadaptorFetchAllByAnalysisName(
 
 
 
-/* @datasection [EnsPAssemblyExceptionFeature] Assembly Exception Feature *****
+/* @datasection [EnsPAssemblyexceptionfeature] Assembly Exception Feature *****
 **
 ** Functions for manipulating Ensembl Assembly Exception Feature objects
 **
-** @cc Bio::EnsEMBL::AssemblyExceptionFeature CVS Revision: 1.4
+** @cc Bio::EnsEMBL::Assemblyexceptionfeature CVS Revision: 1.4
 **
-** @nam2rule AssemblyExceptionFeature
+** @nam2rule Assemblyexceptionfeature
 **
 ******************************************************************************/
 
@@ -11444,19 +11449,19 @@ AjBool ensSimpleFeatureadaptorFetchAllByAnalysisName(
 ** Assembly Exception Feature. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so anyway.
 **
-** @fdata [EnsPAssemblyExceptionFeature]
+** @fdata [EnsPAssemblyexceptionfeature]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @argrule Obj object [EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                                    Exception Feature
-** @argrule Ref object [EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @argrule Ref object [EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                                    Exception Feature
 **
-** @valrule * [EnsPAssemblyExceptionFeature] Ensembl Assembly Exception Feature
+** @valrule * [EnsPAssemblyexceptionfeature] Ensembl Assembly Exception Feature
 **
 ** @fcategory new
 ******************************************************************************/
@@ -11464,34 +11469,34 @@ AjBool ensSimpleFeatureadaptorFetchAllByAnalysisName(
 
 
 
-/* @func ensAssemblyExceptionFeatureNew ***************************************
+/* @func ensAssemblyexceptionfeatureNew ***************************************
 **
 ** Default Ensembl Assembly Exception Feature constructor.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] adaptor [EnsPAssemblyExceptionFeatureadaptor] Ensembl Assembly
+** @param [r] adaptor [EnsPAssemblyexceptionfeatureadaptor] Ensembl Assembly
 **                                                          Exception Feature
 **                                                          Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::Feature::new
 ** @param [u] feature [EnsPFeature] Ensembl Feature
-** @cc Bio::EnsEMBL::AssemblyExceptionFeature::new
+** @cc Bio::EnsEMBL::Assemblyexceptionfeature::new
 ** @param [u] slice [EnsPSlice] Alternative Slice
 ** @param [r] type [AjEnum] Assembly Exception Feature type
 **
-** @return [EnsPAssemblyExceptionFeature] Ensembl Assembly Exception Feature
+** @return [EnsPAssemblyexceptionfeature] Ensembl Assembly Exception Feature
 **                                        or NULL
 ** @@
 ******************************************************************************/
 
-EnsPAssemblyExceptionFeature ensAssemblyExceptionFeatureNew(
-    EnsPAssemblyExceptionFeatureadaptor adaptor,
+EnsPAssemblyexceptionfeature ensAssemblyexceptionfeatureNew(
+    EnsPAssemblyexceptionfeatureadaptor adaptor,
     ajuint identifier,
     EnsPFeature feature,
     EnsPSlice slice,
     AjEnum type)
 {
-    EnsPAssemblyExceptionFeature aef = NULL;
+    EnsPAssemblyexceptionfeature aef = NULL;
     
     if(!slice)
 	return NULL;
@@ -11515,22 +11520,22 @@ EnsPAssemblyExceptionFeature ensAssemblyExceptionFeatureNew(
 
 
 
-/* @func ensAssemblyExceptionFeatureNewObj ************************************
+/* @func ensAssemblyexceptionfeatureNewObj ************************************
 **
 ** Object-based constructor function, which returns an independent object.
 **
-** @param [r] object [const EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @param [r] object [const EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                                        Exception Feature
 **
-** @return [EnsPAssemblyExceptionFeature] Ensembl Assembly Exception Feature
+** @return [EnsPAssemblyexceptionfeature] Ensembl Assembly Exception Feature
 **                                        or NULL
 ** @@
 ******************************************************************************/
 
-EnsPAssemblyExceptionFeature ensAssemblyExceptionFeatureNewObj(
-    const EnsPAssemblyExceptionFeature object)
+EnsPAssemblyexceptionfeature ensAssemblyexceptionfeatureNewObj(
+    const EnsPAssemblyexceptionfeature object)
 {
-    EnsPAssemblyExceptionFeature aef = NULL;
+    EnsPAssemblyexceptionfeature aef = NULL;
     
     AJNEW0(aef);
     
@@ -11547,21 +11552,21 @@ EnsPAssemblyExceptionFeature ensAssemblyExceptionFeatureNewObj(
 
 
 
-/* @func ensAssemblyExceptionFeatureNewRef ************************************
+/* @func ensAssemblyexceptionfeatureNewRef ************************************
 **
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] aef [EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @param [u] aef [EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                               Exception Feature
 **
-** @return [EnsPAssemblyExceptionFeature] Ensembl Assembly Exception Feature
+** @return [EnsPAssemblyexceptionfeature] Ensembl Assembly Exception Feature
 **                                        or NULL
 ** @@
 ******************************************************************************/
 
-EnsPAssemblyExceptionFeature ensAssemblyExceptionFeatureNewRef(
-    EnsPAssemblyExceptionFeature aef)
+EnsPAssemblyexceptionfeature ensAssemblyexceptionfeatureNewRef(
+    EnsPAssemblyexceptionfeature aef)
 {
     if(!aef)
 	return NULL;
@@ -11579,12 +11584,12 @@ EnsPAssemblyExceptionFeature ensAssemblyExceptionFeatureNewRef(
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Assembly Exception Feature.
 **
-** @fdata [EnsPAssemblyExceptionFeature]
+** @fdata [EnsPAssemblyexceptionfeature]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a Feature object
 **
-** @argrule * Paef [EnsPAssemblyExceptionFeature*] Assembly Exception Feature
+** @argrule * Paef [EnsPAssemblyexceptionfeature*] Assembly Exception Feature
 **                                                 object address
 **
 ** @valrule * [void]
@@ -11595,20 +11600,20 @@ EnsPAssemblyExceptionFeature ensAssemblyExceptionFeatureNewRef(
 
 
 
-/* @func ensAssemblyExceptionFeatureDel ***************************************
+/* @func ensAssemblyexceptionfeatureDel ***************************************
 **
 ** Default destructor for an Ensembl Assembly Exception Feature.
 **
-** @param [d] Paef [EnsPAssemblyExceptionFeature*] Ensembl Assembly
+** @param [d] Paef [EnsPAssemblyexceptionfeature*] Ensembl Assembly
 **                                                 Exception Feature address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensAssemblyExceptionFeatureDel(EnsPAssemblyExceptionFeature *Paef)
+void ensAssemblyexceptionfeatureDel(EnsPAssemblyexceptionfeature *Paef)
 {
-    EnsPAssemblyExceptionFeature pthis = NULL;
+    EnsPAssemblyexceptionfeature pthis = NULL;
     
     if(!Paef)
 	return;
@@ -11646,20 +11651,20 @@ void ensAssemblyExceptionFeatureDel(EnsPAssemblyExceptionFeature *Paef)
 ** Functions for returning elements of an
 ** Ensembl Assembly Exception Feature object.
 **
-** @fdata [EnsPAssemblyExceptionFeature]
+** @fdata [EnsPAssemblyexceptionfeature]
 ** @fnote None
 **
 ** @nam3rule Get Return Assembly Exception Feature attribute(s)
-** @nam4rule Getadaptor Return the Ensembl Assembly Exception Feature Adaptor
+** @nam4rule GetAdaptor Return the Ensembl Assembly Exception Feature Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetFeature Return the Ensembl Feature
 ** @nam4rule GetAlternateSlice Return the alternate Ensembl Slice
 ** @nam4rule GetType Return the Assembly Exception type
 **
-** @argrule * aef [const EnsPAssemblyExceptionFeature] Assembly Exception
+** @argrule * aef [const EnsPAssemblyexceptionfeature] Assembly Exception
 **                                                     Feature
 **
-** @valrule Adaptor [EnsPAssemblyExceptionFeatureadaptor] Ensembl Assembly
+** @valrule Adaptor [EnsPAssemblyexceptionfeatureadaptor] Ensembl Assembly
 **                                                        Exception Feature
 **                                                        Adaptor
 ** @valrule Feature [EnsPFeature] Ensembl Feature
@@ -11672,22 +11677,22 @@ void ensAssemblyExceptionFeatureDel(EnsPAssemblyExceptionFeature *Paef)
 
 
 
-/* @func ensAssemblyExceptionFeatureGetadaptor ********************************
+/* @func ensAssemblyexceptionfeatureGetAdaptor ********************************
 **
 ** Get the Ensembl Assembly Exception Feature Adaptor element of an
 ** Ensembl Assembly Exception Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::adaptor
-** @param [r] aef [const EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @param [r] aef [const EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                                     Exception Feature
 **
-** @return [EnsPAssemblyExceptionFeatureadaptor] Ensembl Assembly
+** @return [EnsPAssemblyexceptionfeatureadaptor] Ensembl Assembly
 **                                               Exception Feature Adaptor
 ** @@
 ******************************************************************************/
 
-EnsPAssemblyExceptionFeatureadaptor ensAssemblyExceptionFeatureGetadaptor(
-    const EnsPAssemblyExceptionFeature aef)
+EnsPAssemblyexceptionfeatureadaptor ensAssemblyexceptionfeatureGetAdaptor(
+    const EnsPAssemblyexceptionfeature aef)
 {
     if(!aef)
 	return NULL;
@@ -11698,21 +11703,21 @@ EnsPAssemblyExceptionFeatureadaptor ensAssemblyExceptionFeatureGetadaptor(
 
 
 
-/* @func ensAssemblyExceptionFeatureGetIdentifier *****************************
+/* @func ensAssemblyexceptionfeatureGetIdentifier *****************************
 **
 ** Get the SQL database-internal identifier element of an
 ** Ensembl Assembly Exception Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::dbID
-** @param [r] aef [const EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @param [r] aef [const EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                                     Exception Feature
 **
 ** @return [ajuint] SQL database-internal identifier
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyExceptionFeatureGetIdentifier(
-    const EnsPAssemblyExceptionFeature aef)
+ajuint ensAssemblyexceptionfeatureGetIdentifier(
+    const EnsPAssemblyexceptionfeature aef)
 {
     if(!aef)
 	return 0;
@@ -11723,19 +11728,19 @@ ajuint ensAssemblyExceptionFeatureGetIdentifier(
 
 
 
-/* @func ensAssemblyExceptionFeatureGetFeature ********************************
+/* @func ensAssemblyexceptionfeatureGetFeature ********************************
 **
 ** Get the Ensembl Feature element of an Ensembl Assembly Exception Feature.
 **
-** @param [r] aef [const EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @param [r] aef [const EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                                     Exception Feature
 **
 ** @return [EnsPFeature] Ensembl Feature
 ** @@
 ******************************************************************************/
 
-EnsPFeature ensAssemblyExceptionFeatureGetFeature(
-    const EnsPAssemblyExceptionFeature aef)
+EnsPFeature ensAssemblyexceptionfeatureGetFeature(
+    const EnsPAssemblyexceptionfeature aef)
 {
     if(!aef)
 	return NULL;
@@ -11746,21 +11751,21 @@ EnsPFeature ensAssemblyExceptionFeatureGetFeature(
 
 
 
-/* @func ensAssemblyExceptionFeatureGetAlternateSlice *************************
+/* @func ensAssemblyexceptionfeatureGetAlternateSlice *************************
 **
 ** Get the alternate Ensembl Slice element of an
 ** Ensembl Assembly Exception Feature.
 **
-** @cc Bio::EnsEMBL::AssemblyExceptionFeature::alternate_slice
-** @param [r] aef [const EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @cc Bio::EnsEMBL::Assemblyexceptionfeature::alternate_slice
+** @param [r] aef [const EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                                     Exception Feature
 **
 ** @return [EnsPSlice] Alternate Ensembl Slice
 ** @@
 ******************************************************************************/
 
-EnsPSlice ensAssemblyExceptionFeatureGetAlternateSlice(
-    const EnsPAssemblyExceptionFeature aef)
+EnsPSlice ensAssemblyexceptionfeatureGetAlternateSlice(
+    const EnsPAssemblyexceptionfeature aef)
 {
     if(!aef)
 	return NULL;
@@ -11771,21 +11776,21 @@ EnsPSlice ensAssemblyExceptionFeatureGetAlternateSlice(
 
 
 
-/* @func ensAssemblyExceptionFeatureGetType ***********************************
+/* @func ensAssemblyexceptionfeatureGetType ***********************************
 **
 ** Get the Ensembl Assembly Exception Feature type element of an
 ** Ensembl Assembly Exception Feature.
 **
-** @cc Bio::EnsEMBL::AssemblyExceptionFeature::type
-** @param [r] aef [const EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @cc Bio::EnsEMBL::Assemblyexceptionfeature::type
+** @param [r] aef [const EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                                     Exception Feature
 **
 ** @return [AjEnum] Ensembl Assembly Exception Feature type
 ** @@
 ******************************************************************************/
 
-AjEnum ensAssemblyExceptionFeatureGetType(
-    const EnsPAssemblyExceptionFeature aef)
+AjEnum ensAssemblyexceptionfeatureGetType(
+    const EnsPAssemblyexceptionfeature aef)
 {
     if(!aef)
 	return 0;
@@ -11801,17 +11806,17 @@ AjEnum ensAssemblyExceptionFeatureGetType(
 ** Functions for assigning elements of an
 ** Ensembl Assembly Exception Feature object.
 **
-** @fdata [EnsPAssemblyExceptionFeature]
+** @fdata [EnsPAssemblyexceptionfeature]
 ** @fnote None
 **
 ** @nam3rule Set Set one element of an Assembly Exception Feature
-** @nam4rule Setadaptor Set the Ensembl Assembly Exception Feature Adaptor
+** @nam4rule SetAdaptor Set the Ensembl Assembly Exception Feature Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetFeature Set the Ensembl Feature
 ** @nam4rule SetAlternatSlice Set the alternate Ensembl Slice
 ** @nam4rule SetType Set the type
 **
-** @argrule * aef [EnsPAssemblyExceptionFeature] Ensembl Assembly Exception
+** @argrule * aef [EnsPAssemblyexceptionfeature] Ensembl Assembly Exception
 **                                               Feature object
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -11822,15 +11827,15 @@ AjEnum ensAssemblyExceptionFeatureGetType(
 
 
 
-/* @func ensAssemblyExceptionFeatureSetadaptor ********************************
+/* @func ensAssemblyexceptionfeatureSetAdaptor ********************************
 **
 ** Set the Ensembl Assembly Exception Feature Adaptor element of an
 ** Ensembl Assembly Exception Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::adaptor
-** @param [u] aef [EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @param [u] aef [EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                               Exception Feature
-** @param [u] adaptor [EnsPAssemblyExceptionFeatureadaptor] Ensembl Assembly
+** @param [u] adaptor [EnsPAssemblyexceptionfeatureadaptor] Ensembl Assembly
 **                                                          Exception Feature
 **                                                          Adaptor
 **
@@ -11838,9 +11843,9 @@ AjEnum ensAssemblyExceptionFeatureGetType(
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionFeatureSetadaptor(
-    EnsPAssemblyExceptionFeature aef,
-    EnsPAssemblyExceptionFeatureadaptor adaptor)
+AjBool ensAssemblyexceptionfeatureSetAdaptor(
+    EnsPAssemblyexceptionfeature aef,
+    EnsPAssemblyexceptionfeatureadaptor adaptor)
 {
     if(!aef)
 	return ajFalse;
@@ -11853,13 +11858,13 @@ AjBool ensAssemblyExceptionFeatureSetadaptor(
 
 
 
-/* @func ensAssemblyExceptionFeatureSetIdentifier *****************************
+/* @func ensAssemblyexceptionfeatureSetIdentifier *****************************
 **
 ** Set the SQL database-internal identifier element of an
 ** Ensembl Assembly Exception Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::dbID
-** @param [u] aef [EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @param [u] aef [EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                               Exception Feature
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 **
@@ -11867,8 +11872,8 @@ AjBool ensAssemblyExceptionFeatureSetadaptor(
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionFeatureSetIdentifier(
-    EnsPAssemblyExceptionFeature aef,
+AjBool ensAssemblyexceptionfeatureSetIdentifier(
+    EnsPAssemblyexceptionfeature aef,
     ajuint identifier)
 {
     if(!aef)
@@ -11882,11 +11887,11 @@ AjBool ensAssemblyExceptionFeatureSetIdentifier(
 
 
 
-/* @func ensAssemblyExceptionFeatureSetFeature ********************************
+/* @func ensAssemblyexceptionfeatureSetFeature ********************************
 **
 ** Set the Ensembl Feature element of an Ensembl Assembly Exception Feature.
 **
-** @param [u] aef [EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @param [u] aef [EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                               Exception Feature
 ** @param [u] feature [EnsPFeature] Ensembl Feature
 **
@@ -11894,8 +11899,8 @@ AjBool ensAssemblyExceptionFeatureSetIdentifier(
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionFeatureSetFeature(
-    EnsPAssemblyExceptionFeature aef,
+AjBool ensAssemblyexceptionfeatureSetFeature(
+    EnsPAssemblyexceptionfeature aef,
     EnsPFeature feature)
 {
     if(!aef)
@@ -11911,12 +11916,12 @@ AjBool ensAssemblyExceptionFeatureSetFeature(
 
 
 
-/* @func ensAssemblyExceptionFeatureSetAlternateSlice *************************
+/* @func ensAssemblyexceptionfeatureSetAlternateSlice *************************
 **
 ** Set the alternate Ensembl Slice element of an
 ** Ensembl Assembly Exception Feature.
 **
-** @param [u] aef [EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @param [u] aef [EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                               Exception Feature
 ** @param [u] altslice [EnsPSlice] Alternate Ensembl Slice
 **
@@ -11924,8 +11929,8 @@ AjBool ensAssemblyExceptionFeatureSetFeature(
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionFeatureSetAlternateSlice(
-    EnsPAssemblyExceptionFeature aef,
+AjBool ensAssemblyexceptionfeatureSetAlternateSlice(
+    EnsPAssemblyexceptionfeature aef,
     EnsPSlice altslice)
 {
     if(!aef)
@@ -11941,12 +11946,12 @@ AjBool ensAssemblyExceptionFeatureSetAlternateSlice(
 
 
 
-/* @func ensAssemblyExceptionFeatureSetType ***********************************
+/* @func ensAssemblyexceptionfeatureSetType ***********************************
 **
 ** Set the Ensembl Assembly Exception Feature type element of an
 ** Ensembl Assembly Exception Feature.
 **
-** @param [u] aef [EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @param [u] aef [EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                               Exception Feature
 ** @param [r] type [AjEnum] Ensembl Assembly Exception Feature type
 **
@@ -11954,7 +11959,7 @@ AjBool ensAssemblyExceptionFeatureSetAlternateSlice(
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionFeatureSetType(EnsPAssemblyExceptionFeature aef,
+AjBool ensAssemblyexceptionfeatureSetType(EnsPAssemblyexceptionfeature aef,
                                           AjEnum type)
 {
     if(!aef)
@@ -11972,11 +11977,11 @@ AjBool ensAssemblyExceptionFeatureSetType(EnsPAssemblyExceptionFeature aef,
 **
 ** Functions for reporting of an Ensembl Assembly Exception Feature object.
 **
-** @fdata [EnsPAssemblyExceptionFeature]
+** @fdata [EnsPAssemblyexceptionfeature]
 ** @nam3rule Trace Report Ensembl Assembly Exception Feature elements to
 **                 debug file
 **
-** @argrule Trace aef [const EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @argrule Trace aef [const EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                                         Exception Feature
 ** @argrule Trace level [ajuint] Indentation level
 **
@@ -11988,11 +11993,11 @@ AjBool ensAssemblyExceptionFeatureSetType(EnsPAssemblyExceptionFeature aef,
 
 
 
-/* @func ensAssemblyExceptionFeatureTrace *************************************
+/* @func ensAssemblyexceptionfeatureTrace *************************************
 **
 ** Trace an Ensembl Assembly Exception Feature.
 **
-** @param [r] aef [const EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @param [r] aef [const EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                                     Exception Feature
 ** @param [r] level [ajuint] Indentation level
 **
@@ -12000,7 +12005,7 @@ AjBool ensAssemblyExceptionFeatureSetType(EnsPAssemblyExceptionFeature aef,
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionFeatureTrace(const EnsPAssemblyExceptionFeature aef,
+AjBool ensAssemblyexceptionfeatureTrace(const EnsPAssemblyexceptionfeature aef,
                                         ajuint level)
 {
     AjPStr indent = NULL;
@@ -12012,10 +12017,10 @@ AjBool ensAssemblyExceptionFeatureTrace(const EnsPAssemblyExceptionFeature aef,
     
     ajStrAppendCountK(&indent, ' ', level * 2);
     
-    ajDebug("ensAssemblyExceptionFeatureTrace %p\n"
+    ajDebug("ensAssemblyexceptionfeatureTrace %p\n"
 	    "%S  Use %u\n"
 	    "%S  Identifier %u\n"
-	    "%S  EnsPAssemblyExceptionFeatureadaptor %p\n"
+	    "%S  EnsPAssemblyexceptionfeatureadaptor %p\n"
 	    "%S  Feature %p\n"
 	    "%S  AlternateSlice %p\n"
 	    "%S  Type %d\n",
@@ -12039,11 +12044,11 @@ AjBool ensAssemblyExceptionFeatureTrace(const EnsPAssemblyExceptionFeature aef,
 
 
 
-/* @func ensAssemblyExceptionFeatureFetchDisplayIdentifier ********************
+/* @func ensAssemblyexceptionfeatureFetchDisplayIdentifier ********************
 **
 ** Fetch the display identifier of an Ensembl Assembly Exception Feature.
 **
-** @param [r] aef [const EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @param [r] aef [const EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                                     Exception Feature
 ** @param [wP] Pidentifier [AjPStr*] Display identifier String address
 **
@@ -12051,8 +12056,8 @@ AjBool ensAssemblyExceptionFeatureTrace(const EnsPAssemblyExceptionFeature aef,
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionFeatureFetchDisplayIdentifier(
-    const EnsPAssemblyExceptionFeature aef,
+AjBool ensAssemblyexceptionfeatureFetchDisplayIdentifier(
+    const EnsPAssemblyexceptionfeature aef,
     AjPStr *Pidentifier)
 {
     if(!aef)
@@ -12064,7 +12069,7 @@ AjBool ensAssemblyExceptionFeatureFetchDisplayIdentifier(
     if(!aef->AlternateSlice)
 	return ajFalse;
     
-    ajStrAssignS(Pidentifier, ensSliceGetSeqRegionName(aef->AlternateSlice));
+    ajStrAssignS(Pidentifier, ensSliceGetSeqregionName(aef->AlternateSlice));
     
     return ajTrue;
 }
@@ -12072,14 +12077,14 @@ AjBool ensAssemblyExceptionFeatureFetchDisplayIdentifier(
 
 
 
-/* @datasection [EnsPAssemblyExceptionFeatureadaptor] Assembly Exception Feature Adaptor
+/* @datasection [EnsPAssemblyexceptionfeatureadaptor] Assembly Exception Feature Adaptor
 **
 ** Functions for manipulating Ensembl Assembly Exception Feature Adaptor
 ** objects
 **
-** @cc Bio::EnsEMBL::DBSQL::AssemblyExceptionFeatureadaptor CVS Revision: 1.14
+** @cc Bio::EnsEMBL::DBSQL::Assemblyexceptionfeatureadaptor CVS Revision: 1.14
 **
-** @nam2rule AssemblyExceptionFeatureadaptor
+** @nam2rule Assemblyexceptionfeatureadaptor
 **
 ******************************************************************************/
 
@@ -12097,7 +12102,7 @@ static ajuint assemblyExceptionFeatureadaptorCacheMaxSize = 0;
 ** Initialise an Ensembl Assembly Exception Feature Adaptor-internal
 ** Ensembl Assembly Exception Feature cache.
 **
-** @param [u] aefa [EnsPAssemblyExceptionFeatureadaptor] Ensembl Assembly
+** @param [u] aefa [EnsPAssemblyexceptionfeatureadaptor] Ensembl Assembly
 **                                                       Exception Feature
 **                                                       Adaptor
 **
@@ -12106,7 +12111,7 @@ static ajuint assemblyExceptionFeatureadaptorCacheMaxSize = 0;
 ******************************************************************************/
 
 static AjBool assemblyExceptionFeatureadaptorCacheInit(
-    EnsPAssemblyExceptionFeatureadaptor aefa)
+    EnsPAssemblyexceptionfeatureadaptor aefa)
 {
     ajuint erid    = 0;
     ajuint srid    = 0;
@@ -12119,11 +12124,11 @@ static AjBool assemblyExceptionFeatureadaptorCacheInit(
     
     AjPList aes = NULL;
     
-    EnsPAssemblyException ae         = NULL;
-    EnsPAssemblyExceptionadaptor aea = NULL;
+    EnsPAssemblyexception ae         = NULL;
+    EnsPAssemblyexceptionadaptor aea = NULL;
     
-    EnsPAssemblyExceptionFeature refaef = NULL;
-    EnsPAssemblyExceptionFeature excaef = NULL;
+    EnsPAssemblyexceptionfeature refaef = NULL;
+    EnsPAssemblyexceptionfeature excaef = NULL;
     
     EnsPFeature feature = NULL;
     
@@ -12142,27 +12147,27 @@ static AjBool assemblyExceptionFeatureadaptorCacheInit(
 	return ajFalse;
     }
     
-    aea = ensRegistryGetAssemblyExceptionadaptor(aefa->Adaptor);
+    aea = ensRegistryGetAssemblyexceptionadaptor(aefa->Adaptor);
     
     sa = ensRegistryGetSliceadaptor(aefa->Adaptor);
     
     aes = ajListNew();
     
-    ensAssemblyExceptionadaptorFetchAll(aea, aes);
+    ensAssemblyexceptionadaptorFetchAll(aea, aes);
     
     while(ajListPop(aes, (void **) &ae))
     {
-	srid = ensAssemblyExceptionGetSeqRegionIdentifier(ae);
+	srid = ensAssemblyexceptionGetSeqregionIdentifier(ae);
 	
-	srstart = ensAssemblyExceptionGetSeqRegionStart(ae);
+	srstart = ensAssemblyexceptionGetSeqregionStart(ae);
 	
-	srend = ensAssemblyExceptionGetSeqRegionEnd(ae);
+	srend = ensAssemblyexceptionGetSeqregionEnd(ae);
 	
-	erid = ensAssemblyExceptionGetExcRegionIdentifier(ae);
+	erid = ensAssemblyexceptionGetExcRegionIdentifier(ae);
 	
-	erstart = ensAssemblyExceptionGetExcRegionStart(ae);
+	erstart = ensAssemblyexceptionGetExcRegionStart(ae);
 	
-	erend = ensAssemblyExceptionGetExcRegionEnd(ae);
+	erend = ensAssemblyexceptionGetExcRegionEnd(ae);
 	
 	/*
 	** Each Ensembl Assembly Exception creates two
@@ -12175,14 +12180,14 @@ static AjBool assemblyExceptionFeatureadaptorCacheInit(
 	
 	/* For the reference Slice ... */
 	
-	ensSliceadaptorFetchBySeqRegionIdentifier(sa,
+	ensSliceadaptorFetchBySeqregionIdentifier(sa,
 						  srid,
 						  0,
 						  0,
 						  0,
 						  &refslice);
 	
-	ensSliceadaptorFetchBySeqRegionIdentifier(sa,
+	ensSliceadaptorFetchBySeqregionIdentifier(sa,
 						  erid,
 						  erstart,
 						  erend,
@@ -12195,12 +12200,12 @@ static AjBool assemblyExceptionFeatureadaptorCacheInit(
 				 srend,
 				 1);
 	
-	refaef = ensAssemblyExceptionFeatureNew(
+	refaef = ensAssemblyexceptionfeatureNew(
             aefa,
-            ensAssemblyExceptionGetIdentifier(ae),
+            ensAssemblyexceptionGetIdentifier(ae),
             feature,
             excslice,
-            ensAssemblyExceptionGetType(ae));
+            ensAssemblyexceptionGetType(ae));
 	
 	ensFeatureDel(&feature);
 	
@@ -12218,18 +12223,18 @@ static AjBool assemblyExceptionFeatureadaptorCacheInit(
 	
 	ajTablePut(aefa->CacheByIdentifier,
 		   (void *) Pidentifier,
-		   (void *) ensAssemblyExceptionFeatureNewRef(refaef));
+		   (void *) ensAssemblyexceptionfeatureNewRef(refaef));
 	
 	/* For the exception Slice ... */
 	
-	ensSliceadaptorFetchBySeqRegionIdentifier(sa,
+	ensSliceadaptorFetchBySeqregionIdentifier(sa,
 						  erid,
 						  0,
 						  0,
 						  0,
 						  &excslice);
 	
-	ensSliceadaptorFetchBySeqRegionIdentifier(sa,
+	ensSliceadaptorFetchBySeqregionIdentifier(sa,
 						  srid,
 						  srstart,
 						  srend,
@@ -12243,12 +12248,12 @@ static AjBool assemblyExceptionFeatureadaptorCacheInit(
 				 1);
 	
 	excaef =
-	    ensAssemblyExceptionFeatureNew(
+	    ensAssemblyexceptionfeatureNew(
                 aefa,
-                ensAssemblyExceptionGetIdentifier(ae),
+                ensAssemblyexceptionGetIdentifier(ae),
                 feature,
                 refslice,
-                ensAssemblyExceptionGetType(ae));
+                ensAssemblyexceptionGetType(ae));
 	
 	ensFeatureDel(&feature);
 	
@@ -12260,7 +12265,7 @@ static AjBool assemblyExceptionFeatureadaptorCacheInit(
 	
 	ajListPushAppend(aefa->Cache, (void *) excaef);
 	
-	ensAssemblyExceptionDel(&ae);
+	ensAssemblyexceptionDel(&ae);
     }
     
     ajListFree(&aes);
@@ -12279,19 +12284,19 @@ static AjBool assemblyExceptionFeatureadaptorCacheInit(
 ** Assembly Exception Feature Adaptor. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so anyway
 **
-** @fdata [EnsPAssemblyExceptionFeatureadaptor]
+** @fdata [EnsPAssemblyexceptionfeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule New Constructor
 **
 ** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @argrule Obj object [EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                                    Exception Feature Adaptor
-** @argrule Ref object [EnsPAssemblyExceptionFeature] Ensembl Assembly
+** @argrule Ref object [EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                                    Exception Feature Adaptor
 **
 **
-** @valrule * [EnsPAssemblyExceptionFeatureadaptor] Ensembl Assembly
+** @valrule * [EnsPAssemblyexceptionfeatureadaptor] Ensembl Assembly
 **                                                  Exception Feature Adaptor
 **
 ** @fcategory new
@@ -12300,22 +12305,22 @@ static AjBool assemblyExceptionFeatureadaptorCacheInit(
 
 
 
-/* @func ensAssemblyExceptionFeatureadaptorNew ********************************
+/* @func ensAssemblyexceptionfeatureadaptorNew ********************************
 **
 ** Default Ensembl Assembly Exception Feature Adaptor constructor.
 **
-** @cc Bio::EnsEMBL::DBSQL::AssemblyExceptionFeatureadaptor::new
+** @cc Bio::EnsEMBL::DBSQL::Assemblyexceptionfeatureadaptor::new
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [EnsPAssemblyExceptionFeatureadaptor] Ensembl Assembly Exception
+** @return [EnsPAssemblyexceptionfeatureadaptor] Ensembl Assembly Exception
 **                                               Feature Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPAssemblyExceptionFeatureadaptor ensAssemblyExceptionFeatureadaptorNew(
+EnsPAssemblyexceptionfeatureadaptor ensAssemblyexceptionfeatureadaptorNew(
     EnsPDatabaseadaptor dba)
 {
-    EnsPAssemblyExceptionFeatureadaptor aefa = NULL;
+    EnsPAssemblyexceptionfeatureadaptor aefa = NULL;
     
     if(!dba)
 	return NULL;
@@ -12327,7 +12332,7 @@ EnsPAssemblyExceptionFeatureadaptor ensAssemblyExceptionFeatureadaptorNew(
     aefa->Cache = ajListNew();
     
     aefa->CacheByIdentifier =
-	ajTableNewFunctionLen(0, ensTableCmpUInt, ensTableHashUInt);
+	ajTableNewFunctionLen(0, ensTableCmpUint, ensTableHashUint);
     
     aefa->CacheBySlice =
 	ensCacheNew(ensECacheTypeAlphaNumeric,
@@ -12355,7 +12360,7 @@ EnsPAssemblyExceptionFeatureadaptor ensAssemblyExceptionFeatureadaptorNew(
 ** Clear an Ensembl Assembly Exception Feature Adaptor-internal
 ** Ensembl Assembly Exception Feature cache.
 **
-** @param [u] adaptor [EnsPAssemblyExceptionFeatureadaptor] Ensembl Assembly
+** @param [u] adaptor [EnsPAssemblyexceptionfeatureadaptor] Ensembl Assembly
 **                                                          Exception Feature
 **                                                          Adaptor
 **
@@ -12364,20 +12369,20 @@ EnsPAssemblyExceptionFeatureadaptor ensAssemblyExceptionFeatureadaptorNew(
 ******************************************************************************/
 
 static AjBool assemblyExceptionFeatureadaptorCacheClear(
-    EnsPAssemblyExceptionFeatureadaptor adaptor)
+    EnsPAssemblyexceptionfeatureadaptor adaptor)
 {
     void **keyarray = NULL;
     void **valarray = NULL;
     
     register ajuint i = 0;
     
-    EnsPAssemblyExceptionFeature aef = NULL;
+    EnsPAssemblyexceptionfeature aef = NULL;
     
     if(!adaptor)
 	return ajFalse;
     
     while(ajListPop(adaptor->Cache, (void **) &aef))
-	ensAssemblyExceptionFeatureDel(&aef);
+	ensAssemblyexceptionfeatureDel(&aef);
     
     ajTableToarray(adaptor->CacheByIdentifier, &keyarray, &valarray);
     
@@ -12391,7 +12396,7 @@ static AjBool assemblyExceptionFeatureadaptorCacheClear(
 	
 	/* Delete the Ensembl Assembly Exception Feature. */
 	
-	ensAssemblyExceptionFeatureDel((EnsPAssemblyExceptionFeature *)
+	ensAssemblyexceptionfeatureDel((EnsPAssemblyexceptionfeature *)
 				       &valarray[i]);
     }
     
@@ -12409,12 +12414,12 @@ static AjBool assemblyExceptionFeatureadaptorCacheClear(
 ** Destruction destroys all internal data structures and frees the
 ** memory allocated for the Ensembl Assembly Exception Feature Adaptor.
 **
-** @fdata [EnsPAssemblyExceptionFeatureadaptor]
+** @fdata [EnsPAssemblyexceptionfeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule Del Destroy (free) a Feature object
 **
-** @argrule * Padaptor [EnsPAssemblyExceptionFeatureadaptor*] Assembly Exception
+** @argrule * Padaptor [EnsPAssemblyexceptionfeatureadaptor*] Assembly Exception
 **                                                            Feature Adaptor
 **                                                            object address
 **
@@ -12426,11 +12431,11 @@ static AjBool assemblyExceptionFeatureadaptorCacheClear(
 
 
 
-/* @func ensAssemblyExceptionFeatureadaptorDel ********************************
+/* @func ensAssemblyexceptionfeatureadaptorDel ********************************
 **
 ** Default destructor for an Ensembl Assembly Exception Feature Adaptor.
 **
-** @param [d] Padaptor [EnsPAssemblyExceptionFeatureadaptor*] Ensembl Assembly
+** @param [d] Padaptor [EnsPAssemblyexceptionfeatureadaptor*] Ensembl Assembly
 **                                                            Exception Feature
 **                                                            Adaptor address
 **
@@ -12438,10 +12443,10 @@ static AjBool assemblyExceptionFeatureadaptorCacheClear(
 ** @@
 ******************************************************************************/
 
-void ensAssemblyExceptionFeatureadaptorDel(
-    EnsPAssemblyExceptionFeatureadaptor *Padaptor)
+void ensAssemblyexceptionfeatureadaptorDel(
+    EnsPAssemblyexceptionfeatureadaptor *Padaptor)
 {
-    EnsPAssemblyExceptionFeatureadaptor pthis = NULL;
+    EnsPAssemblyexceptionfeatureadaptor pthis = NULL;
     
     if(!Padaptor)
 	return;
@@ -12468,7 +12473,7 @@ void ensAssemblyExceptionFeatureadaptorDel(
 ** Functions for retrieving Ensembl Assembly Exception Feature objects from an
 ** Ensembl Core database.
 **
-** @fdata [EnsPAssemblyExceptionFeatureadaptor]
+** @fdata [EnsPAssemblyexceptionfeatureadaptor]
 ** @fnote None
 **
 ** @nam3rule Fetch Retrieve Ensembl Assembly Exception Feature object(s)
@@ -12478,7 +12483,7 @@ void ensAssemblyExceptionFeatureadaptorDel(
 ** @nam4rule FetchBy Retrieve one Ensembl Assembly Exception Feature object
 **                   matching a criterion
 **
-** @argrule * adaptor [const EnsPAssemblyExceptionFeatureadaptor] Ensembl
+** @argrule * adaptor [const EnsPAssemblyexceptionfeatureadaptor] Ensembl
 **                     Assembly Exception Feature Adaptor
 ** @argrule FetchAll [AjPList] AJAX List of Ensembl Assembly Exception Feature
 **                             objects
@@ -12491,11 +12496,11 @@ void ensAssemblyExceptionFeatureadaptorDel(
 
 
 
-/* @func ensAssemblyExceptionFeatureadaptorFetchAll ***************************
+/* @func ensAssemblyexceptionfeatureadaptorFetchAll ***************************
 **
 ** Fetch all Ensembl Assembly Exception Features.
 **
-** @param [r] adaptor [EnsPAssemblyExceptionFeatureadaptor] Ensembl Assembly
+** @param [r] adaptor [EnsPAssemblyexceptionfeatureadaptor] Ensembl Assembly
 **                                                          Exception Feature
 **                                                          Adaptor
 ** @param [u] aefs [AjPList] AJAX List of Ensembl Assembly Exception Features
@@ -12504,13 +12509,13 @@ void ensAssemblyExceptionFeatureadaptorDel(
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionFeatureadaptorFetchAll(
-    EnsPAssemblyExceptionFeatureadaptor adaptor,
+AjBool ensAssemblyexceptionfeatureadaptorFetchAll(
+    EnsPAssemblyexceptionfeatureadaptor adaptor,
     AjPList aefs)
 {
     AjIList iter = NULL;
     
-    EnsPAssemblyExceptionFeature aef = NULL;
+    EnsPAssemblyexceptionfeature aef = NULL;
     
     if(!adaptor)
 	return ajFalse;
@@ -12522,10 +12527,10 @@ AjBool ensAssemblyExceptionFeatureadaptorFetchAll(
     
     while(!ajListIterDone(iter))
     {
-	aef = (EnsPAssemblyExceptionFeature) ajListIterGet(iter);
+	aef = (EnsPAssemblyexceptionfeature) ajListIterGet(iter);
 	
 	ajListPushAppend(aefs,
-			 (void *) ensAssemblyExceptionFeatureNewRef(aef));
+			 (void *) ensAssemblyexceptionfeatureNewRef(aef));
     }
     
     ajListIterDel(&iter);
@@ -12536,33 +12541,33 @@ AjBool ensAssemblyExceptionFeatureadaptorFetchAll(
 
 
 
-/* @func ensAssemblyExceptionFeatureadaptorFetchByIdentifier ******************
+/* @func ensAssemblyexceptionfeatureadaptorFetchByIdentifier ******************
 **
 ** Fetch all Ensembl Assembly Exception Features.
 **
-** @param [r] adaptor [EnsPAssemblyExceptionFeatureadaptor] Ensembl Assembly
+** @param [r] adaptor [EnsPAssemblyexceptionfeatureadaptor] Ensembl Assembly
 **                                                          Exception Feature
 **                                                          Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
-** @param [wP] Paef [EnsPAssemblyExceptionFeature*] Ensembl Assembly Exception
+** @param [wP] Paef [EnsPAssemblyexceptionfeature*] Ensembl Assembly Exception
 **                                                  Feature address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionFeatureadaptorFetchByIdentifier(
-    EnsPAssemblyExceptionFeatureadaptor adaptor,
+AjBool ensAssemblyexceptionfeatureadaptorFetchByIdentifier(
+    EnsPAssemblyexceptionfeatureadaptor adaptor,
     ajuint identifier,
-    EnsPAssemblyExceptionFeature* Paef)
+    EnsPAssemblyexceptionfeature* Paef)
 {
     if(!adaptor)
 	return ajFalse;
     
-    *Paef = (EnsPAssemblyExceptionFeature)
+    *Paef = (EnsPAssemblyexceptionfeature)
 	ajTableFetch(adaptor->CacheByIdentifier, (const void *) &identifier);
     
-    ensAssemblyExceptionFeatureNewRef(*Paef);
+    ensAssemblyexceptionfeatureNewRef(*Paef);
     
     return ajTrue;
 }
@@ -12574,12 +12579,12 @@ AjBool ensAssemblyExceptionFeatureadaptorFetchByIdentifier(
 **
 ** Remap Ensembl Assembly Exception Features onto an Ensembl Slice.
 **
-** @cc Bio::EnsEMBL::DBSQL::AssemblyExceptionFeatureadaptor::_remap
-** @param [r] adaptor [EnsPAssemblyExceptionFeatureadaptor] Ensembl Assembly
+** @cc Bio::EnsEMBL::DBSQL::Assemblyexceptionfeatureadaptor::_remap
+** @param [r] adaptor [EnsPAssemblyexceptionfeatureadaptor] Ensembl Assembly
 **                                                          Exception Feature
 **                                                          Adaptor
 ** @param [r] aefs [AjPList] AJAX List of Ensembl Assembly Exception Features
-** @param [r] am [EnsPAssemblyMapper] Ensembl Assembly Mapper
+** @param [r] am [EnsPAssemblymapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -12587,9 +12592,9 @@ AjBool ensAssemblyExceptionFeatureadaptorFetchByIdentifier(
 ******************************************************************************/
 
 static AjBool assemblyExceptionFeatureadaptorRemap(
-    EnsPAssemblyExceptionFeatureadaptor adaptor,
+    EnsPAssemblyexceptionfeatureadaptor adaptor,
     AjPList aefs,
-    EnsPAssemblyMapper am,
+    EnsPAssemblymapper am,
     EnsPSlice slice)
 {
     ajint start  = 0;
@@ -12602,11 +12607,11 @@ static AjBool assemblyExceptionFeatureadaptorRemap(
     AjIList iter = NULL;
     AjPList mrs  = NULL;
     
-    EnsPAssemblyExceptionFeature aef = NULL;
+    EnsPAssemblyexceptionfeature aef = NULL;
     
     EnsPFeature feature = NULL;
     
-    EnsPMapperResult mr = NULL;
+    EnsPMapperresult mr = NULL;
     
     if(!adaptor)
 	return ajFalse;
@@ -12646,13 +12651,13 @@ static AjBool assemblyExceptionFeatureadaptorRemap(
     
     /* Remapping has not been done, we have to do our own conversion. */
     
-    trgsrid = ensSliceGetSeqRegionIdentifier(slice);
+    trgsrid = ensSliceGetSeqregionIdentifier(slice);
     
     iter = ajListIterNew(aefs);
     
     while(!ajListIterDone(iter))
     {
-	aef = (EnsPAssemblyExceptionFeature) ajListIterGet(iter);
+	aef = (EnsPAssemblyexceptionfeature) ajListIterGet(iter);
 	
 	feature = aef->Feature;
 	
@@ -12665,8 +12670,8 @@ static AjBool assemblyExceptionFeatureadaptorRemap(
 	    ajFatal("assemblyExceptionFeatureadaptorRemap Feature (%p) "
 		    "does not have a Slice attached.\n", feature);
 	
-	if(ensCoordSystemMatch(ensSliceGetCoordSystem(slice),
-				ensSliceGetCoordSystem(feature->Slice)))
+	if(ensCoordsystemMatch(ensSliceGetCoordsystem(slice),
+				ensSliceGetCoordsystem(feature->Slice)))
 	{
 	    /*
 	    ** The Slice attached to the Feature is in the same
@@ -12681,7 +12686,7 @@ static AjBool assemblyExceptionFeatureadaptorRemap(
 	    
 	    strand = feature->Strand;
 	    
-	    srcsrid = ensSliceGetSeqRegionIdentifier(feature->Slice);
+	    srcsrid = ensSliceGetSeqregionIdentifier(feature->Slice);
 	}
 	else
 	{
@@ -12697,8 +12702,8 @@ static AjBool assemblyExceptionFeatureadaptorRemap(
 	    
 	    mrs = ajListNew();
 	    
-	    ensAssemblyMapperFastMap(am,
-				     ensSliceGetSeqRegion(feature->Slice),
+	    ensAssemblymapperFastMap(am,
+				     ensSliceGetSeqregion(feature->Slice),
 				     feature->Start,
 				     feature->End,
 				     feature->Strand,
@@ -12717,20 +12722,20 @@ static AjBool assemblyExceptionFeatureadaptorRemap(
 	    {
 		ajListIterRemove(iter);
 		
-		ensAssemblyExceptionFeatureDel(&aef);
+		ensAssemblyexceptionfeatureDel(&aef);
 		
 		continue;
 	    }
 	    
-	    start = ensMapperResultGetStart(mr);
+	    start = ensMapperresultGetStart(mr);
 	    
-	    end = ensMapperResultGetEnd(mr);
+	    end = ensMapperresultGetEnd(mr);
 	    
-	    strand = ensMapperResultGetStrand(mr);
+	    strand = ensMapperresultGetStrand(mr);
 	    
-	    srcsrid = ensMapperResultGetObjectIdentifier(mr);
+	    srcsrid = ensMapperresultGetObjectIdentifier(mr);
 	    
-	    ensMapperResultDel(&mr);
+	    ensMapperresultDel(&mr);
 	    
 	    ajListFree(&mrs);
 	}
@@ -12746,7 +12751,7 @@ static AjBool assemblyExceptionFeatureadaptorRemap(
 	    
 	    ajListIterRemove(iter);
 	    
-	    ensAssemblyExceptionFeatureDel(&aef);
+	    ensAssemblyexceptionfeatureDel(&aef);
 	    
 	    continue;
 	}
@@ -12786,11 +12791,11 @@ static AjBool assemblyExceptionFeatureadaptorRemap(
 
 
 
-/* @func ensAssemblyExceptionFeatureadaptorFetchAllBySlice ********************
+/* @func ensAssemblyexceptionfeatureadaptorFetchAllBySlice ********************
 **
 ** Fetch all Ensembl Assembly Exception Features via an Ensembl Slice.
 **
-** @param [r] adaptor [EnsPAssemblyExceptionFeatureadaptor] Ensembl Assembly
+** @param [r] adaptor [EnsPAssemblyexceptionfeatureadaptor] Ensembl Assembly
 **                                                          Exception Feature
 **                                                          Adaptor
 ** @param [u] slice [EnsPSlice] Ensembl Slice
@@ -12800,8 +12805,8 @@ static AjBool assemblyExceptionFeatureadaptorRemap(
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyExceptionFeatureadaptorFetchAllBySlice(
-    EnsPAssemblyExceptionFeatureadaptor adaptor,
+AjBool ensAssemblyexceptionfeatureadaptorFetchAllBySlice(
+    EnsPAssemblyexceptionfeatureadaptor adaptor,
     EnsPSlice slice,
     AjPList aefs)
 {
@@ -12810,13 +12815,13 @@ AjBool ensAssemblyExceptionFeatureadaptorFetchAllBySlice(
     
     AjPStr name = NULL;
     
-    EnsPAssemblyMapper am         = NULL;
-    EnsPAssemblyMapperadaptor ama = NULL;
+    EnsPAssemblymapper am         = NULL;
+    EnsPAssemblymapperadaptor ama = NULL;
     
-    EnsPCoordSystem mcs = NULL;
-    EnsPCoordSystem scs = NULL;
+    EnsPCoordsystem mcs = NULL;
+    EnsPCoordsystem scs = NULL;
     
-    EnsPMetaCoordinateadaptor mca = NULL;
+    EnsPMetacoordinateadaptor mca = NULL;
     
     if(!adaptor)
 	return ajFalse;
@@ -12850,30 +12855,30 @@ AjBool ensAssemblyExceptionFeatureadaptorFetchAllBySlice(
 	}
     */
     
-    ensAssemblyExceptionFeatureadaptorFetchAll(adaptor, aefs);
+    ensAssemblyexceptionfeatureadaptorFetchAll(adaptor, aefs);
     
-    mca = ensRegistryGetMetaCoordinateadaptor(adaptor->Adaptor);
+    mca = ensRegistryGetMetacoordinateadaptor(adaptor->Adaptor);
     
     name = ajStrNewC("assembly_exception");
     
     cslist = ajListNew();
     
-    ensMetaCoordinateadaptorFetchAllCoordSystems(mca, name, cslist);
+    ensMetacoordinateadaptorFetchAllCoordsystems(mca, name, cslist);
     
-    ama = ensRegistryGetAssemblyMapperadaptor(adaptor->Adaptor);
+    ama = ensRegistryGetAssemblymapperadaptor(adaptor->Adaptor);
     
-    scs = ensSliceGetCoordSystem(slice);
+    scs = ensSliceGetCoordsystem(slice);
     
     while(ajListPop(cslist, (void **) &mcs))
     {
-	if(ensCoordSystemMatch(mcs, scs))
+	if(ensCoordsystemMatch(mcs, scs))
 	    am = NULL;
 	else
-	    am = ensAssemblyMapperadaptorFetchByCoordSystems(ama, mcs, scs);
+	    am = ensAssemblymapperadaptorFetchByCoordsystems(ama, mcs, scs);
 	
 	assemblyExceptionFeatureadaptorRemap(adaptor, aefs, am, slice);
 	
-	ensCoordSystemDel(&mcs);
+	ensCoordsystemDel(&mcs);
     }
     
     /* TODO: Implement Slice cache.

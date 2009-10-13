@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -46,9 +46,45 @@
 
 
 
-/* @func ensTableCmpUInt ******************************************************
+/* @filesection enstable *****************************************************
 **
-** AJAX Table function to compare AJAX unsignd integer (ajuint)
+** @nam1rule ens Function belongs to the AJAX Ensembl library
+** @nam2rule Table Ensembl Table objects
+**
+******************************************************************************/
+
+/* @datasection [none] Ensembl Table **************************************
+**
+** Functions for Ensembl Tables
+**
+** @nam2rule Table Ensembl function for AJAX tables.
+**
+******************************************************************************/
+
+/* @section functions *********************************************************
+**
+** @fdata [none]
+** @fcategory misc
+**
+** @nam3rule Cmp Comparison function
+** @nam3rule Hash Hash function
+** @nam4rule Uint Unsigned integer table key
+**
+** @argrule Cmp x [const void*] Unsigned integer first key
+** @argrule Cmp y [const void*] Unsigned integer ssecond key
+** @argrule Hash key [const void*] Unsigned integer key
+** @argrule Hash hashsize [ajuint] Hash table size
+**
+** @valrule Cmp [ajint] 0 for a match, -1 or +1 for one key greater
+** @valrule Hash [ajuint] Unsigned integer hash value
+**
+******************************************************************************/
+
+
+
+/* @func ensTableCmpUint ******************************************************
+**
+** AJAX Table function to compare AJAX unsignud integer (ajuint)
 ** hash key values.
 **
 ** @param [r] x [const void*] AJAX unsigned integer value address
@@ -58,7 +94,7 @@
 ** @@
 ******************************************************************************/
 
-ajint ensTableCmpUInt(const void *x, const void *y)
+ajint ensTableCmpUint(const void *x, const void *y)
 {
     const ajuint *a = NULL;
     const ajuint *b = NULL;
@@ -67,7 +103,7 @@ ajint ensTableCmpUInt(const void *x, const void *y)
     b = (const ajuint *) y;
     
     /*
-     ajDebug("ensTableCmpUInt *a %u *b %u result %d\n", *a, *b, (*a != *b));
+     ajDebug("ensTableCmpUint *a %u *b %u result %d\n", *a, *b, (*a != *b));
      */
     
     return (*a != *b);
@@ -76,7 +112,7 @@ ajint ensTableCmpUInt(const void *x, const void *y)
 
 
 
-/* @func ensTableHashUInt *****************************************************
+/* @func ensTableHashUint *****************************************************
 **
 ** AJAX Table function to handle AJAX unsigned integer (ajuint)
 ** hash key values.
@@ -88,7 +124,7 @@ ajint ensTableCmpUInt(const void *x, const void *y)
 ** @@
 ******************************************************************************/
 
-ajuint ensTableHashUInt(const void *key, ajuint hashsize)
+ajuint ensTableHashUint(const void *key, ajuint hashsize)
 {
     const ajuint *a = NULL;
     
@@ -101,7 +137,7 @@ ajuint ensTableHashUInt(const void *key, ajuint hashsize)
     a = (const ajuint *) key;
     
     /*
-     ajDebug("ensTableHashUInt result %u\n", ((*a >> 2) % hashsize));
+     ajDebug("ensTableHashUint result %u\n", ((*a >> 2) % hashsize));
      */
     
     return ((*a >> 2) % hashsize);

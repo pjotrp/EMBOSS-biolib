@@ -27,7 +27,7 @@ EnsPBaseadaptor ensBaseadaptorNew(
     const char *final,
     AjBool Fquery(EnsPDatabaseadaptor dba,
                   const AjPStr statement,
-                  EnsPAssemblyMapper am,
+                  EnsPAssemblymapper am,
                   EnsPSlice slice,
                   AjPList objects));
 
@@ -62,19 +62,19 @@ AjBool ensBaseadaptorEscapeS(EnsPBaseadaptor ba, AjPStr *Pstr,
 
 AjBool ensBaseadaptorGenericFetch(const EnsPBaseadaptor ba,
                                   const AjPStr constraint,
-                                  EnsPAssemblyMapper am,
+                                  EnsPAssemblymapper am,
                                   EnsPSlice slice,
                                   AjPList objects);
 
-void *ensBaseadaptorFetchByIdentifier(EnsPBaseadaptor ba, ajuint identifier);
+void *ensBaseadaptorFetchByIdentifier(const EnsPBaseadaptor ba, ajuint identifier);
 
-AjBool ensBaseadaptorFetchAllByIdentifiers(EnsPBaseadaptor ba,
+AjBool ensBaseadaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
                                            AjPList idlist,
                                            AjPList objects);
 
-AjBool ensBaseadaptorFetchAll(EnsPBaseadaptor ba, AjPList objects);
+AjBool ensBaseadaptorFetchAll(const EnsPBaseadaptor ba, AjPList objects);
 
-AjBool ensBaseadaptorFetchAllIdentifiers(EnsPBaseadaptor ba,
+AjBool ensBaseadaptorFetchAllIdentifiers(const EnsPBaseadaptor ba,
 				  AjPStr table,
 				  AjPStr prikey,
 				  AjPList idlist);

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
-static const char *translationProteinFeatureDomainName[] =
+static const char *translationProteinfeatureDomainName[] =
 {
     "pfscan",
     "scanprosite",
@@ -76,11 +76,11 @@ static AjPTable translationCache = NULL;
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-extern EnsPDatabaseEntryadaptor
-ensRegistryGetDatabaseEntryadaptor(EnsPDatabaseadaptor dba);
+extern EnsPDatabaseentryadaptor
+ensRegistryGetDatabaseentryadaptor(EnsPDatabaseadaptor dba);
 
-extern EnsPProteinFeatureadaptor
-ensRegistryGetProteinFeatureadaptor(EnsPDatabaseadaptor dba);
+extern EnsPProteinfeatureadaptor
+ensRegistryGetProteinfeatureadaptor(EnsPDatabaseadaptor dba);
 
 extern EnsPTranscriptadaptor
 ensRegistryGetTranscriptadaptor(EnsPDatabaseadaptor dba);
@@ -92,7 +92,7 @@ static void translationCacheClear(void **key, void **value, void *cl);
 
 static AjBool translationAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
-                                              EnsPAssemblyMapper mapper,
+                                              EnsPAssemblymapper mapper,
                                               EnsPSlice slice,
                                               AjPList translations);
 
@@ -105,7 +105,7 @@ static ajuint translationAdaptorCacheSize(const void *value);
 #endif
 
 static AjBool translationAdaptorFetchAllByIdentifiers(
-    EnsPTranslationadaptor adaptor,
+    const EnsPTranslationadaptor adaptor,
     AjPStr identifiers,
     AjPList translations);
 
@@ -366,7 +366,7 @@ EnsPTranslation ensTranslationNew(EnsPTranslationadaptor adaptor,
     
     translation->DatabaseEntries = NULL;
     
-    translation->ProteinFeatures = NULL;
+    translation->Proteinfeatures = NULL;
     
     if(sequence)
 	translation->Sequence = ajStrNewRef(sequence);
@@ -405,9 +405,9 @@ EnsPTranslation ensTranslationNewObj(const EnsPTranslation object)
     
     EnsPAttribute attribute = NULL;
     
-    EnsPDatabaseEntry dbe = NULL;
+    EnsPDatabaseentry dbe = NULL;
     
-    EnsPProteinFeature pf = NULL;
+    EnsPProteinfeature pf = NULL;
     
     EnsPTranslation translation = NULL;
     
@@ -474,10 +474,10 @@ EnsPTranslation ensTranslationNewObj(const EnsPTranslation object)
 	
 	while(!ajListIterDone(iter))
 	{
-	    dbe = (EnsPDatabaseEntry) ajListIterGet(iter);
+	    dbe = (EnsPDatabaseentry) ajListIterGet(iter);
 	    
 	    ajListPushAppend(translation->DatabaseEntries,
-			     (void *) ensDatabaseEntryNewRef(dbe));
+			     (void *) ensDatabaseentryNewRef(dbe));
 	}
 	
 	ajListIterDel(&iter);
@@ -487,24 +487,24 @@ EnsPTranslation ensTranslationNewObj(const EnsPTranslation object)
     
     /* Copy the List of Ensembl Protein Features. */
     
-    if(object->ProteinFeatures && ajListGetLength(object->ProteinFeatures))
+    if(object->Proteinfeatures && ajListGetLength(object->Proteinfeatures))
     {
-	translation->ProteinFeatures = ajListNew();
+	translation->Proteinfeatures = ajListNew();
 	
-	iter = ajListIterNew(object->ProteinFeatures);
+	iter = ajListIterNew(object->Proteinfeatures);
 	
 	while(!ajListIterDone(iter))
 	{
-	    pf = (EnsPProteinFeature) ajListIterGet(iter);
+	    pf = (EnsPProteinfeature) ajListIterGet(iter);
 	    
-	    ajListPushAppend(translation->ProteinFeatures,
-			     (void *) ensProteinFeatureNewRef(pf));
+	    ajListPushAppend(translation->Proteinfeatures,
+			     (void *) ensProteinfeatureNewRef(pf));
 	}
 	
 	ajListIterDel(&iter);
     }
     else
-	translation->ProteinFeatures = NULL;
+	translation->Proteinfeatures = NULL;
     
     if(object->Sequence)
 	translation->Sequence = ajStrNewRef(object->Sequence);
@@ -583,9 +583,9 @@ void ensTranslationDel(EnsPTranslation *Ptranslation)
     
     EnsPAttribute attribute = NULL;
     
-    EnsPDatabaseEntry dbe = NULL;
+    EnsPDatabaseentry dbe = NULL;
     
-    EnsPProteinFeature pf = NULL;
+    EnsPProteinfeature pf = NULL;
     
     if(!Ptranslation)
         return;
@@ -627,16 +627,16 @@ void ensTranslationDel(EnsPTranslation *Ptranslation)
     /* Clear and delete the AJAX List of Ensembl Database Entries. */
     
     while(ajListPop((*Ptranslation)->DatabaseEntries, (void **) &dbe))
-	ensDatabaseEntryDel(&dbe);
+	ensDatabaseentryDel(&dbe);
     
     ajListFree(&pthis->DatabaseEntries);
     
     /* Clear and delete the AJAX List of Ensembl Protein Features. */
     
-    while(ajListPop(pthis->ProteinFeatures, (void **) &pf))
-	ensProteinFeatureDel(&pf);
+    while(ajListPop(pthis->Proteinfeatures, (void **) &pf))
+	ensProteinfeatureDel(&pf);
     
-    ajListFree(&pthis->ProteinFeatures);
+    ajListFree(&pthis->Proteinfeatures);
     
     ajStrDel(&pthis->Sequence);
     
@@ -658,7 +658,7 @@ void ensTranslationDel(EnsPTranslation *Ptranslation)
 ** @fnote None
 **
 ** @nam3rule Get Return Translation attribute(s)
-** @nam4rule Getadaptor Return the Ensembl Translation Adaptor
+** @nam4rule GetAdaptor Return the Ensembl Translation Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetTranscript Return the Transcript
 ** @nam4rule GetStartExon Return the start Exon
@@ -671,7 +671,7 @@ void ensTranslationDel(EnsPTranslation *Ptranslation)
 ** @nam4rule GetModificationDate Return the modification date
 ** @nam4rule GetAttributes Return all Ensembl Attributes
 ** @nam4rule GetDatabaseEntries Return all Ensembl Database Entries
-** @nam4rule GetProteinFeatures Return all Ensembl Protein Features
+** @nam4rule GetProteinfeatures Return all Ensembl Protein Features
 **
 ** @argrule * translation [const EnsPTranslation] Translation
 **
@@ -689,7 +689,7 @@ void ensTranslationDel(EnsPTranslation *Ptranslation)
 ** @valrule GetAttributes [const AjPList] AJAX List of Ensembl Attributes
 ** @valrule GetDatabaseEntries [const AjPList] AJAX List of
 **                                             Ensembl Database Entries
-** @valrule GetProteinFeatures [const AjPList] AJAX List of
+** @valrule GetProteinfeatures [const AjPList] AJAX List of
 **                                             Ensembl Protein Features
 **
 ** @fcategory use
@@ -698,7 +698,7 @@ void ensTranslationDel(EnsPTranslation *Ptranslation)
 
 
 
-/* @func ensTranslationGetadaptor *********************************************
+/* @func ensTranslationGetAdaptor *********************************************
 **
 ** Get the Ensembl Translation Adaptor element of an Ensembl Translation.
 **
@@ -709,7 +709,7 @@ void ensTranslationDel(EnsPTranslation *Ptranslation)
 ** @@
 ******************************************************************************/
 
-const EnsPTranslationadaptor ensTranslationGetadaptor(
+const EnsPTranslationadaptor ensTranslationGetAdaptor(
     const EnsPTranslation translation)
 {
     if(!translation)
@@ -1027,7 +1027,7 @@ const AjPList ensTranslationGetDatabaseEntries(EnsPTranslation translation)
     
     EnsPDatabaseadaptor dba = NULL;
     
-    EnsPDatabaseEntryadaptor dbea = NULL;
+    EnsPDatabaseentryadaptor dbea = NULL;
     
     if(!translation)
 	return NULL;
@@ -1057,15 +1057,15 @@ const AjPList ensTranslationGetDatabaseEntries(EnsPTranslation translation)
 	return NULL;
     }
     
-    dbea = ensRegistryGetDatabaseEntryadaptor(dba);
+    dbea = ensRegistryGetDatabaseentryadaptor(dba);
     
     objtype = ajStrNewC("Translation");
     
-    ensDatabaseEntryadaptorFetchAllByObjectType(dbea,
+    ensDatabaseentryadaptorFetchAllByObjectType(dbea,
 						translation->Identifier,
 						objtype,
 						(AjPStr) NULL,
-						ensEExternalDatabaseTypeNULL,
+						ensEExternaldatabaseTypeNULL,
 						translation->DatabaseEntries);
     
     ajStrDel(&objtype);
@@ -1076,7 +1076,7 @@ const AjPList ensTranslationGetDatabaseEntries(EnsPTranslation translation)
 
 
 
-/* @func ensTranslationGetProteinFeatures *************************************
+/* @func ensTranslationGetProteinfeatures *************************************
 **
 ** Get all Ensembl Protein Features of an Ensembl Translation.
 **
@@ -1084,26 +1084,26 @@ const AjPList ensTranslationGetDatabaseEntries(EnsPTranslation translation)
 ** Ensembl Protein Features from the Ensembl Core database in case the
 ** AJAX List is empty.
 **
-** @cc Bio::EnsEMBL::Translation::get_all_ProteinFeatures
+** @cc Bio::EnsEMBL::Translation::get_all_Proteinfeatures
 ** @param [u] translation [EnsPTranslation] Ensembl Translation
 **
 ** @return [const AjPList] AJAX List of Ensembl Protein Features
 ** @@
 ******************************************************************************/
 
-const AjPList ensTranslationGetProteinFeatures(EnsPTranslation translation)
+const AjPList ensTranslationGetProteinfeatures(EnsPTranslation translation)
 {
     EnsPDatabaseadaptor dba = NULL;
     
-    EnsPProteinFeatureadaptor pfa = NULL;
+    EnsPProteinfeatureadaptor pfa = NULL;
     
     if(!translation)
 	return NULL;
     
-    if(translation->ProteinFeatures)
-	return translation->ProteinFeatures;
+    if(translation->Proteinfeatures)
+	return translation->Proteinfeatures;
     else
-	translation->ProteinFeatures = ajListNew();
+	translation->Proteinfeatures = ajListNew();
     
     if(!translation->Adaptor)
     {
@@ -1125,14 +1125,14 @@ const AjPList ensTranslationGetProteinFeatures(EnsPTranslation translation)
 	return NULL;
     }
     
-    pfa = ensRegistryGetProteinFeatureadaptor(dba);
+    pfa = ensRegistryGetProteinfeatureadaptor(dba);
     
-    ensProteinFeatureadaptorFetchAllByTranslationIdentifier(
+    ensProteinfeatureadaptorFetchAllByTranslationIdentifier(
         pfa,
         translation->Identifier,
-        translation->ProteinFeatures);
+        translation->Proteinfeatures);
     
-    return translation->ProteinFeatures;
+    return translation->Proteinfeatures;
 }
 
 
@@ -1315,9 +1315,9 @@ ajuint ensTranslationGetMemSize(const EnsPTranslation translation)
     
     EnsPAttribute attribute = NULL;
     
-    EnsPDatabaseEntry dbe = NULL;
+    EnsPDatabaseentry dbe = NULL;
     
-    EnsPProteinFeature pf = NULL;
+    EnsPProteinfeature pf = NULL;
     
     if(!translation)
 	return 0;
@@ -1386,9 +1386,9 @@ ajuint ensTranslationGetMemSize(const EnsPTranslation translation)
 	
 	while(!ajListIterDone(iter))
 	{
-	    dbe = (EnsPDatabaseEntry) ajListIterGet(iter);
+	    dbe = (EnsPDatabaseentry) ajListIterGet(iter);
 	    
-	    size += ensDatabaseEntryGetMemSize(dbe);
+	    size += ensDatabaseentryGetMemSize(dbe);
 	}
 	
 	ajListIterDel(&iter);
@@ -1396,17 +1396,17 @@ ajuint ensTranslationGetMemSize(const EnsPTranslation translation)
     
     /* Summarise the AJAX List of Ensembl Protein Features. */
     
-    if(translation->ProteinFeatures)
+    if(translation->Proteinfeatures)
     {
 	size += (ajuint) sizeof (AjOList);
 	
-	iter = ajListIterNewread(translation->ProteinFeatures);
+	iter = ajListIterNewread(translation->Proteinfeatures);
 	
 	while(!ajListIterDone(iter))
 	{
-	    pf = (EnsPProteinFeature) ajListIterGet(iter);
+	    pf = (EnsPProteinfeature) ajListIterGet(iter);
 	    
-	    size += ensProteinFeatureGetMemSize(pf);
+	    size += ensProteinfeatureGetMemSize(pf);
 	}
 	
 	ajListIterDel(&iter);
@@ -1426,7 +1426,7 @@ ajuint ensTranslationGetMemSize(const EnsPTranslation translation)
 ** @fnote None
 **
 ** @nam3rule Set Set one element of a Translation
-** @nam4rule Setadaptor Set the Ensembl Translation Adaptor
+** @nam4rule SetAdaptor Set the Ensembl Translation Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetTranscript Set the Ensembl Transcript
 ** @nam4rule SetStartExon Set the start Exon
@@ -1448,7 +1448,7 @@ ajuint ensTranslationGetMemSize(const EnsPTranslation translation)
 
 
 
-/* @func ensTranslationSetadaptor *********************************************
+/* @func ensTranslationSetAdaptor *********************************************
 **
 ** Set the Ensembl Translation Adaptor element of an Ensembl Translation.
 **
@@ -1459,7 +1459,7 @@ ajuint ensTranslationGetMemSize(const EnsPTranslation translation)
 ** @@
 ******************************************************************************/
 
-AjBool ensTranslationSetadaptor(EnsPTranslation translation,
+AjBool ensTranslationSetAdaptor(EnsPTranslation translation,
                                 EnsPTranslationadaptor adaptor)
 {
     if(!translation)
@@ -1949,20 +1949,20 @@ AjBool ensTranslationAddAttribute(EnsPTranslation translation,
 
 
 
-/* @func ensTranslationAddDatabaseEntry ***************************************
+/* @func ensTranslationAddDatabaseentry ***************************************
 **
 ** Add an Ensembl Database Entry to an Ensembl Translation.
 **
 ** @cc Bio::EnsEMBL::Translation::add_DBEntry
 ** @param [u] translation [EnsPTranslation] Ensembl Translation
-** @param [u] dbe [EnsPDatabaseEntry] Ensembl Database Entry
+** @param [u] dbe [EnsPDatabaseentry] Ensembl Database Entry
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensTranslationAddDatabaseEntry(EnsPTranslation translation,
-                                      EnsPDatabaseEntry dbe)
+AjBool ensTranslationAddDatabaseentry(EnsPTranslation translation,
+                                      EnsPDatabaseentry dbe)
 {
     if(!translation)
 	return ajFalse;
@@ -1974,7 +1974,7 @@ AjBool ensTranslationAddDatabaseEntry(EnsPTranslation translation,
 	translation->DatabaseEntries = ajListNew();
     
     ajListPushAppend(translation->DatabaseEntries,
-		     (void *) ensDatabaseEntryNewRef(dbe));
+		     (void *) ensDatabaseentryNewRef(dbe));
     
     return ajTrue;
 }
@@ -1982,20 +1982,20 @@ AjBool ensTranslationAddDatabaseEntry(EnsPTranslation translation,
 
 
 
-/* @func ensTranslationAddProteinFeature **************************************
+/* @func ensTranslationAddProteinfeature **************************************
 **
 ** Add an Ensembl Protein Feature to an Ensembl Translation.
 **
-** @cc Bio::EnsEMBL::Translation::add_ProteinFeature
+** @cc Bio::EnsEMBL::Translation::add_Proteinfeature
 ** @param [u] translation [EnsPTranslation] Ensembl Translation
-** @param [u] pf [EnsPProteinFeature] Ensembl Protein Feature
+** @param [u] pf [EnsPProteinfeature] Ensembl Protein Feature
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensTranslationAddProteinFeature(EnsPTranslation translation,
-                                       EnsPProteinFeature pf)
+AjBool ensTranslationAddProteinfeature(EnsPTranslation translation,
+                                       EnsPProteinfeature pf)
 {
     if(!translation)
 	return ajFalse;
@@ -2003,11 +2003,11 @@ AjBool ensTranslationAddProteinFeature(EnsPTranslation translation,
     if(!pf)
 	return ajFalse;
     
-    if(!translation->ProteinFeatures)
-	translation->ProteinFeatures = ajListNew();
+    if(!translation->Proteinfeatures)
+	translation->Proteinfeatures = ajListNew();
     
-    ajListPushAppend(translation->ProteinFeatures,
-		     (void *) ensProteinFeatureNewRef(pf));
+    ajListPushAppend(translation->Proteinfeatures,
+		     (void *) ensProteinfeatureNewRef(pf));
     
     return ajTrue;
 }
@@ -2052,9 +2052,9 @@ AjBool ensTranslationTrace(const EnsPTranslation translation, ajuint level)
     
     EnsPAttribute attribute = NULL;
     
-    EnsPDatabaseEntry dbe = NULL;
+    EnsPDatabaseentry dbe = NULL;
     
-    EnsPProteinFeature pf = NULL;
+    EnsPProteinfeature pf = NULL;
     
     if(!translation)
 	return ajFalse;
@@ -2078,7 +2078,7 @@ AjBool ensTranslationTrace(const EnsPTranslation translation, ajuint level)
 	    "%S  Version %u\n"
 	    "%S  Attributes %p\n"
 	    "%S  DatabaseEntries %p\n"
-	    "%S  ProteinFeatures %p\n"
+	    "%S  Proteinfeatures %p\n"
 	    "%S  Sequence %p\n"
 	    "%S  TranscriptStart %u\n"
 	    "%S  TranscriptEnd %u\n"
@@ -2099,7 +2099,7 @@ AjBool ensTranslationTrace(const EnsPTranslation translation, ajuint level)
 	    indent, translation->Version,
 	    indent, translation->Attributes,
 	    indent, translation->DatabaseEntries,
-	    indent, translation->ProteinFeatures,
+	    indent, translation->Proteinfeatures,
 	    indent, translation->Sequence,
 	    indent, translation->TranscriptStart,
 	    indent, translation->TranscriptEnd,
@@ -2142,9 +2142,9 @@ AjBool ensTranslationTrace(const EnsPTranslation translation, ajuint level)
 	
 	while(!ajListIterDone(iter))
 	{
-	    dbe = (EnsPDatabaseEntry) ajListIterGet(iter);
+	    dbe = (EnsPDatabaseentry) ajListIterGet(iter);
 	    
-	    ensDatabaseEntryTrace(dbe, level + 2);
+	    ensDatabaseentryTrace(dbe, level + 2);
 	}
 	
 	ajListIterDel(&iter);
@@ -2152,18 +2152,18 @@ AjBool ensTranslationTrace(const EnsPTranslation translation, ajuint level)
     
     /* Trace the AJAX List of Ensembl Protein Features. */
     
-    if(translation->ProteinFeatures)
+    if(translation->Proteinfeatures)
     {
 	ajDebug("%S    AJAX List %p of Ensembl Protein Features\n",
-		indent, translation->ProteinFeatures);
+		indent, translation->Proteinfeatures);
 	
-	iter = ajListIterNewread(translation->ProteinFeatures);
+	iter = ajListIterNewread(translation->Proteinfeatures);
 	
 	while(!ajListIterDone(iter))
 	{
-	    pf = (EnsPProteinFeature) ajListIterGet(iter);
+	    pf = (EnsPProteinfeature) ajListIterGet(iter);
 	    
-	    ensProteinFeatureTrace(pf, level + 2);
+	    ensProteinfeatureTrace(pf, level + 2);
 	}
 	
 	ajListIterDel(&iter);
@@ -2276,7 +2276,7 @@ AjBool ensTranslationFetchAllDatabaseEntries(EnsPTranslation translation,
     const AjPList list = NULL;
     AjIList iter       = NULL;
     
-    EnsPDatabaseEntry dbe = NULL;
+    EnsPDatabaseentry dbe = NULL;
     
     if(!translation)
 	return ajFalse;
@@ -2290,11 +2290,11 @@ AjBool ensTranslationFetchAllDatabaseEntries(EnsPTranslation translation,
     
     while(!ajListIterDone(iter))
     {
-	dbe = (EnsPDatabaseEntry) ajListIterGet(iter);
+	dbe = (EnsPDatabaseentry) ajListIterGet(iter);
 	
 	if(name)
 	{
-	    if(ajStrMatchCaseS(name, ensDatabaseEntryGetDbName(dbe)))
+	    if(ajStrMatchCaseS(name, ensDatabaseentryGetDbName(dbe)))
 		namematch = ajTrue;
 	    else
 		namematch = ajFalse;
@@ -2304,7 +2304,7 @@ AjBool ensTranslationFetchAllDatabaseEntries(EnsPTranslation translation,
 	
 	if(type)
 	{
-	    if(type == ensDatabaseEntryGetType(dbe))
+	    if(type == ensDatabaseentryGetType(dbe))
 		typematch = ajTrue;
 	    else
 		typematch = ajFalse;
@@ -2313,7 +2313,7 @@ AjBool ensTranslationFetchAllDatabaseEntries(EnsPTranslation translation,
 	    typematch = ajTrue;
 	
 	if(namematch && typematch)
-	    ajListPushAppend(dbes, (void *) ensDatabaseEntryNewRef(dbe));
+	    ajListPushAppend(dbes, (void *) ensDatabaseentryNewRef(dbe));
     }
     
     ajListIterDel(&iter);
@@ -2324,11 +2324,11 @@ AjBool ensTranslationFetchAllDatabaseEntries(EnsPTranslation translation,
 
 
 
-/* @func ensTranslationFetchAllProteinFeatures ********************************
+/* @func ensTranslationFetchAllProteinfeatures ********************************
 **
 ** Fetch all Ensembl Protein Features of an Ensembl Translation.
 **
-** @cc Bio::EnsEMBL::Translation::get_all_ProteinFeatures
+** @cc Bio::EnsEMBL::Translation::get_all_Proteinfeatures
 ** @param [u] translation [EnsPTranslation] Ensembl Translation
 ** @param [r] name [const AjPStr] Ensembl Analysis name
 ** @param [u] pfs [AjPList] AJAX List of Ensembl Protein Features
@@ -2337,7 +2337,7 @@ AjBool ensTranslationFetchAllDatabaseEntries(EnsPTranslation translation,
 ** @@
 ******************************************************************************/
 
-AjBool ensTranslationFetchAllProteinFeatures(EnsPTranslation translation,
+AjBool ensTranslationFetchAllProteinfeatures(EnsPTranslation translation,
                                              const AjPStr name,
                                              AjPList pfs)
 {
@@ -2351,9 +2351,9 @@ AjBool ensTranslationFetchAllProteinFeatures(EnsPTranslation translation,
     
     EnsPFeature feature = NULL;
     
-    EnsPFeaturePair fp = NULL;
+    EnsPFeaturepair fp = NULL;
     
-    EnsPProteinFeature pf = NULL;
+    EnsPProteinfeature pf = NULL;
     
     if(!translation)
 	return ajFalse;
@@ -2361,19 +2361,19 @@ AjBool ensTranslationFetchAllProteinFeatures(EnsPTranslation translation,
     if(!pfs)
 	return ajFalse;
     
-    list = ensTranslationGetProteinFeatures(translation);
+    list = ensTranslationGetProteinfeatures(translation);
     
     iter = ajListIterNewread(list);
     
     while(!ajListIterDone(iter))
     {
-	pf = (EnsPProteinFeature) ajListIterGet(iter);
+	pf = (EnsPProteinfeature) ajListIterGet(iter);
 	
 	if(name)
 	{
-	    fp = ensProteinFeatureGetFeaturePair(pf);
+	    fp = ensProteinfeatureGetFeaturepair(pf);
 	    
-	    feature = ensFeaturePairGetSourceFeature(fp);
+	    feature = ensFeaturepairGetSourceFeature(fp);
 	    
 	    analysis = ensFeatureGetAnalysis(feature);
 	    
@@ -2386,7 +2386,7 @@ AjBool ensTranslationFetchAllProteinFeatures(EnsPTranslation translation,
 	    match = ajTrue;
 	
 	if(match)
-	    ajListPushAppend(pfs, (void *) ensProteinFeatureNewRef(pf));
+	    ajListPushAppend(pfs, (void *) ensProteinfeatureNewRef(pf));
     }
     
     ajListIterDel(&iter);
@@ -2397,13 +2397,13 @@ AjBool ensTranslationFetchAllProteinFeatures(EnsPTranslation translation,
 
 
 
-/* @func ensTranslationFetchAllProteinFeaturesDomain **************************
+/* @func ensTranslationFetchAllProteinfeaturesDomain **************************
 **
 ** Fetch all Ensembl Protein Features of an Ensembl Translation that are
 ** associated to the InterPro conserved domain database.
 **
 ** The cooresponding Ensembl Analysis names for Protein Features have to be
-** defined in the static const char* translationProteinFeatureDomainNames[]
+** defined in the static const char* translationProteinfeatureDomainNames[]
 ** array.
 **
 ** @cc Bio::EnsEMBL::Translation::get_all_DomainFeatures
@@ -2414,7 +2414,7 @@ AjBool ensTranslationFetchAllProteinFeatures(EnsPTranslation translation,
 ** @@
 ******************************************************************************/
 
-AjBool ensTranslationFetchAllProteinFeaturesDomain(EnsPTranslation translation,
+AjBool ensTranslationFetchAllProteinfeaturesDomain(EnsPTranslation translation,
                                                    AjPList pfs)
 {
     register ajuint i = 0;
@@ -2429,11 +2429,11 @@ AjBool ensTranslationFetchAllProteinFeaturesDomain(EnsPTranslation translation,
     
     name = ajStrNew();
     
-    for(i = 0; translationProteinFeatureDomainName[i]; i++)
+    for(i = 0; translationProteinfeatureDomainName[i]; i++)
     {
-	ajStrAssignC(&name, translationProteinFeatureDomainName[i]);
+	ajStrAssignC(&name, translationProteinfeatureDomainName[i]);
 	
-	ensTranslationFetchAllProteinFeatures(translation, name, pfs);
+	ensTranslationFetchAllProteinfeatures(translation, name, pfs);
     }
     
     ajStrDel(&name);
@@ -2751,7 +2751,7 @@ static const char *translationAdaptorFinalCondition = NULL;
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
-** @param [r] mapper [EnsPAssemblyMapper] Ensembl Assembly Mapper
+** @param [r] mapper [EnsPAssemblymapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [u] translations [AjPList] AJAX List of Ensembl Translations
 **
@@ -2761,7 +2761,7 @@ static const char *translationAdaptorFinalCondition = NULL;
 
 static AjBool translationAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
-                                              EnsPAssemblyMapper mapper,
+                                              EnsPAssemblymapper mapper,
                                               EnsPSlice slice,
                                               AjPList translations)
 {
@@ -3121,7 +3121,7 @@ void ensTranslationadaptorDel(EnsPTranslationadaptor *Padaptor)
 ******************************************************************************/
 
 EnsPDatabaseadaptor ensTranslationadaptorGetDatabaseadaptor(
-    EnsPTranslationadaptor adaptor)
+    const EnsPTranslationadaptor adaptor)
 {
     if(!adaptor)
 	return NULL;
@@ -3237,7 +3237,7 @@ AjBool ensTranslationadaptorFetchByStableIdentifier(
     
     ensBaseadaptorGenericFetch(adaptor->Adaptor,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       translations);
     
@@ -3527,7 +3527,7 @@ AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor adaptor,
     
     ensBaseadaptorGenericFetch(ta->Adaptor,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       translations);
     
@@ -3593,7 +3593,7 @@ AjBool ensTranslationadaptorFetchAllByExternalName(
     
     EnsPDatabaseadaptor dba = NULL;
     
-    EnsPDatabaseEntryadaptor dbea = NULL;
+    EnsPDatabaseentryadaptor dbea = NULL;
     
     EnsPTranslation translation = NULL;
     
@@ -3611,11 +3611,11 @@ AjBool ensTranslationadaptorFetchAllByExternalName(
     
     dba = ensTranslationadaptorGetDatabaseadaptor(adaptor);
     
-    dbea = ensRegistryGetDatabaseEntryadaptor(dba);
+    dbea = ensRegistryGetDatabaseentryadaptor(dba);
     
     idlist = ajListNew();
     
-    ensDatabaseEntryadaptorFetchAllTranslationIdentifiersByExternalName(
+    ensDatabaseentryadaptorFetchAllTranslationIdentifiersByExternalName(
         dbea,
         externalname,
         externaldbname,
@@ -3658,7 +3658,7 @@ AjBool ensTranslationadaptorFetchAllByExternalName(
 ******************************************************************************/
 
 static AjBool translationAdaptorFetchAllByIdentifiers(
-    EnsPTranslationadaptor adaptor,
+    const EnsPTranslationadaptor adaptor,
     AjPStr identifiers,
     AjPList translations)
 {
@@ -3677,7 +3677,7 @@ static AjBool translationAdaptorFetchAllByIdentifiers(
     
     ensBaseadaptorGenericFetch(adaptor->Adaptor,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       translations);
     

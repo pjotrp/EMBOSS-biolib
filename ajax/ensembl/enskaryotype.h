@@ -11,57 +11,57 @@ extern "C"
 
 
 
-/* @data EnsPKaryotypeBandadaptor *********************************************
+/* @data EnsPKaryotypebandadaptor *********************************************
 **
 ** Ensembl Karyotype Band Adaptor.
 **
-** @alias EnsSKaryotypeBandadaptor
-** @alias EnsOKaryotypeBandadaptor
+** @alias EnsSKaryotypebandadaptor
+** @alias EnsOKaryotypebandadaptor
 **
 ** @cc Bio::EnsEMBL::BaseFeatureadaptor
 ** @attr Adaptor [EnsPFeatureadaptor] Ensembl Feature Adaptor.
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSKaryotypeBandadaptor
+typedef struct EnsSKaryotypebandadaptor
 {
     EnsPFeatureadaptor Adaptor;
-} EnsOKaryotypeBandadaptor;
+} EnsOKaryotypebandadaptor;
 
-#define EnsPKaryotypeBandadaptor EnsOKaryotypeBandadaptor*
-
-
+#define EnsPKaryotypebandadaptor EnsOKaryotypebandadaptor*
 
 
-/* @data EnsPKaryotypeBand ****************************************************
+
+
+/* @data EnsPKaryotypeband ****************************************************
 **
 ** Ensembl Karyotype Band.
 **
-** @alias EnsSKaryotypeBand
-** @alias EnsOKaryotypeBand
+** @alias EnsSKaryotypeband
+** @alias EnsOKaryotypeband
 **
 ** @attr Use [ajuint] Use counter.
 ** @cc Bio::EnsEMBL::Storable
 ** @attr Identifier [ajuint] Internal SQL database identifier (primary key).
-** @attr Adaptor [EnsPKaryotypeBandadaptor] Ensembl Karyotype Band Adaptor.
-** @cc Bio::EnsEMBL::KaryotypeBand
+** @attr Adaptor [EnsPKaryotypebandadaptor] Ensembl Karyotype Band Adaptor.
+** @cc Bio::EnsEMBL::Karyotypeband
 ** @attr Feature [EnsPFeature] Ensembl Feature.
 ** @attr Name [AjPStr] Karyotype Band Name.
 ** @attr Stain [AjPStr] Karyotype Band Stain.
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSKaryotypeBand
+typedef struct EnsSKaryotypeband
 {
     ajuint Use;
     ajuint Identifier;
-    EnsPKaryotypeBandadaptor Adaptor;
+    EnsPKaryotypebandadaptor Adaptor;
     EnsPFeature Feature;
     AjPStr Name;
     AjPStr Stain;
-} EnsOKaryotypeBand;
+} EnsOKaryotypeband;
 
-#define EnsPKaryotypeBand EnsOKaryotypeBand*
+#define EnsPKaryotypeband EnsOKaryotypeband*
 
 
 
@@ -72,55 +72,55 @@ typedef struct EnsSKaryotypeBand
 
 /* Ensembl Karyotype Band */
 
-EnsPKaryotypeBand ensKaryotypeBandNew(ajuint identifier,
+EnsPKaryotypeband ensKaryotypebandNew(ajuint identifier,
                                       EnsPFeature feature,
                                       AjPStr name,
                                       AjPStr stain);
 
-EnsPKaryotypeBand ensKaryotypeBandNewObj(EnsPKaryotypeBand object);
+EnsPKaryotypeband ensKaryotypebandNewObj(const EnsPKaryotypeband object);
 
-EnsPKaryotypeBand ensKaryotypeBandNewRef(EnsPKaryotypeBand kb);
+EnsPKaryotypeband ensKaryotypebandNewRef(EnsPKaryotypeband kb);
 
-void ensKaryotypeBandDel(EnsPKaryotypeBand* Pkb);
+void ensKaryotypebandDel(EnsPKaryotypeband* Pkb);
 
-EnsPKaryotypeBandadaptor ensKaryotypeBandGetadaptor(const EnsPKaryotypeBand kb);
+EnsPKaryotypebandadaptor ensKaryotypebandGetAdaptor(const EnsPKaryotypeband kb);
 
-ajuint ensKaryotypeBandGetIdentifier(const EnsPKaryotypeBand kb);
+ajuint ensKaryotypebandGetIdentifier(const EnsPKaryotypeband kb);
 
-EnsPFeature ensKaryotypeBandGetFeature(const EnsPKaryotypeBand kb);
+EnsPFeature ensKaryotypebandGetFeature(const EnsPKaryotypeband kb);
 
-AjPStr ensKaryotypeBandGetName(const EnsPKaryotypeBand kb);
+AjPStr ensKaryotypebandGetName(const EnsPKaryotypeband kb);
 
-AjPStr ensKaryotypeBandGetStain(const EnsPKaryotypeBand kb);
+AjPStr ensKaryotypebandGetStain(const EnsPKaryotypeband kb);
 
-AjBool ensKaryotypeBandSetadaptor(EnsPKaryotypeBand kb,
-                                  EnsPKaryotypeBandadaptor kba);
+AjBool ensKaryotypebandSetAdaptor(EnsPKaryotypeband kb,
+                                  EnsPKaryotypebandadaptor kba);
 
-AjBool ensKaryotypeBandSetIdentifier(EnsPKaryotypeBand kb, ajuint identifier);
+AjBool ensKaryotypebandSetIdentifier(EnsPKaryotypeband kb, ajuint identifier);
 
-AjBool ensKaryotypeBandSetFeature(EnsPKaryotypeBand kb, EnsPFeature feature);
+AjBool ensKaryotypebandSetFeature(EnsPKaryotypeband kb, EnsPFeature feature);
 
-AjBool ensKaryotypeBandSetName(EnsPKaryotypeBand kb, AjPStr name);
+AjBool ensKaryotypebandSetName(EnsPKaryotypeband kb, AjPStr name);
 
-AjBool ensKaryotypeBandSetStain(EnsPKaryotypeBand kb, AjPStr stain);
+AjBool ensKaryotypebandSetStain(EnsPKaryotypeband kb, AjPStr stain);
 
-AjBool ensKaryotypeBandTrace(const EnsPKaryotypeBand kb, ajuint level);
+AjBool ensKaryotypebandTrace(const EnsPKaryotypeband kb, ajuint level);
 
-ajuint ensKaryotypeBandGetMemSize(const EnsPKaryotypeBand kb);
+ajuint ensKaryotypebandGetMemSize(const EnsPKaryotypeband kb);
 
 /* Ensembl Karyoptype Band Adaptor */
 
-EnsPKaryotypeBandadaptor ensKaryotypeBandadaptorNew(EnsPDatabaseadaptor dba);
+EnsPKaryotypebandadaptor ensKaryotypebandadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensKaryotypeBandadaptorDel(EnsPKaryotypeBandadaptor* Padaptor);
+void ensKaryotypebandadaptorDel(EnsPKaryotypebandadaptor* Padaptor);
 
-AjBool ensKaryotypeBandadaptorFetchAllByChromosomeName(
-    EnsPKaryotypeBandadaptor adaptor,
+AjBool ensKaryotypebandadaptorFetchAllByChromosomeName(
+    EnsPKaryotypebandadaptor adaptor,
     const AjPStr name,
     AjPList kblist);
 
-AjBool ensKaryotypeBandadaptorFetchAllByChromosomeBand(
-    EnsPKaryotypeBandadaptor adaptor,
+AjBool ensKaryotypebandadaptorFetchAllByChromosomeBand(
+    EnsPKaryotypebandadaptor adaptor,
     const AjPStr name,
     const AjPStr band,
     AjPList kblist);

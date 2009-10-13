@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -55,7 +55,7 @@ const ajuint baseAdaptorFetchAllByIdentifiersMax = 2048;
 
 
 
-static AjBool baseAdaptorFetchAllByIdentifiers(EnsPBaseadaptor ba,
+static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
                                                AjPStr identifiers,
                                                AjPList objects);
 
@@ -77,7 +77,7 @@ static AjBool baseAdaptorFetchAllByIdentifiers(EnsPBaseadaptor ba,
 **
 ** @cc Bio::EnsEMBL::DBSQL::Baseadaptor CVS Revision: 1.46
 **
-** @nam2rule Analysis
+** @nam2rule Baseadaptor Base adaptor object function
 **
 ******************************************************************************/
 
@@ -124,7 +124,7 @@ static AjBool baseAdaptorFetchAllByIdentifiers(EnsPBaseadaptor ba,
 **                                     SQL SELECT statement
 ** @param [r] final [const char *] Final condition in a
 **                                 SQL SELECT statement
-** @param [f] Fquery [AjBool fjunction] Pointer to a function to handle the
+** @param [f] Fquery [AjBool function] Pointer to a function to handle the
 **                              Ensembl Object-specific SQL statement
 **
 ** @return [EnsPBaseadaptor] Ensembl Base Adaptor or NULL
@@ -140,7 +140,7 @@ EnsPBaseadaptor ensBaseadaptorNew(
     const char *final,
     AjBool Fquery(EnsPDatabaseadaptor dba,
                   const AjPStr statement,
-                  EnsPAssemblyMapper am,
+                  EnsPAssemblymapper am,
                   EnsPSlice slice,
                   AjPList objects))
 {
@@ -612,7 +612,7 @@ AjBool ensBaseadaptorEscapeS(EnsPBaseadaptor ba, AjPStr *Pstr,
 ** @cc Bio::EnsEMBL::DBSQL::Baseadaptor::generic_fetch
 ** @param [r] ba [const EnsPBaseadaptor] Ensembl Base Adaptor
 ** @param [r] constraint [const AjPStr] Constraint in a SQL SELECT statement
-** @param [r] am [EnsPAssemblyMapper] Ensembl Assembly Mapper
+** @param [r] am [EnsPAssemblymapper] Ensembl Assembly Mapper
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [u] objects [AjPList] AJAX List to Ensembl Objects
 **
@@ -622,7 +622,7 @@ AjBool ensBaseadaptorEscapeS(EnsPBaseadaptor ba, AjPStr *Pstr,
 
 AjBool ensBaseadaptorGenericFetch(const EnsPBaseadaptor ba,
                                   const AjPStr constraint,
-                                  EnsPAssemblyMapper am,
+                                  EnsPAssemblymapper am,
                                   EnsPSlice slice,
                                   AjPList objects)
 {
@@ -821,7 +821,7 @@ AjBool ensBaseadaptorGenericFetch(const EnsPBaseadaptor ba,
 ** @@
 ******************************************************************************/
 
-void *ensBaseadaptorFetchByIdentifier(EnsPBaseadaptor ba, ajuint identifier)
+void *ensBaseadaptorFetchByIdentifier(const EnsPBaseadaptor ba, ajuint identifier)
 {
     void *Pobject = NULL;
     
@@ -847,7 +847,7 @@ void *ensBaseadaptorFetchByIdentifier(EnsPBaseadaptor ba, ajuint identifier)
     
     ensBaseadaptorGenericFetch(ba,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       objects);
     
@@ -889,7 +889,7 @@ void *ensBaseadaptorFetchByIdentifier(EnsPBaseadaptor ba, ajuint identifier)
 ** @@
 ******************************************************************************/
 
-static AjBool baseAdaptorFetchAllByIdentifiers(EnsPBaseadaptor ba,
+static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
                                                AjPStr identifiers,
                                                AjPList objects)
 {
@@ -922,7 +922,7 @@ static AjBool baseAdaptorFetchAllByIdentifiers(EnsPBaseadaptor ba,
     
     ensBaseadaptorGenericFetch(ba,
 			       constraint,
-			       (EnsPAssemblyMapper) NULL,
+			       (EnsPAssemblymapper) NULL,
 			       (EnsPSlice) NULL,
 			       objects);
     
@@ -951,7 +951,7 @@ static AjBool baseAdaptorFetchAllByIdentifiers(EnsPBaseadaptor ba,
 ** @@
 ******************************************************************************/
 
-AjBool ensBaseadaptorFetchAllByIdentifiers(EnsPBaseadaptor ba,
+AjBool ensBaseadaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
                                            AjPList idlist,
                                            AjPList objects)
 {
@@ -1032,7 +1032,7 @@ AjBool ensBaseadaptorFetchAllByIdentifiers(EnsPBaseadaptor ba,
 ** @@
 ******************************************************************************/
 
-AjBool ensBaseadaptorFetchAll(EnsPBaseadaptor ba, AjPList objects)
+AjBool ensBaseadaptorFetchAll(const EnsPBaseadaptor ba, AjPList objects)
 {
     if(!ba)
 	return ajFalse;
@@ -1042,7 +1042,7 @@ AjBool ensBaseadaptorFetchAll(EnsPBaseadaptor ba, AjPList objects)
     
     return ensBaseadaptorGenericFetch(ba,
 				      (AjPStr) NULL,
-				      (EnsPAssemblyMapper) NULL,
+				      (EnsPAssemblymapper) NULL,
 				      (EnsPSlice) NULL,
 				      objects);
 }
@@ -1069,7 +1069,7 @@ AjBool ensBaseadaptorFetchAll(EnsPBaseadaptor ba, AjPList objects)
 ** @@
 ******************************************************************************/
 
-AjBool ensBaseadaptorFetchAllIdentifiers(EnsPBaseadaptor ba,
+AjBool ensBaseadaptorFetchAllIdentifiers(const EnsPBaseadaptor ba,
                                          AjPStr table,
                                          AjPStr prikey,
                                          AjPList idlist)

@@ -12,12 +12,12 @@ extern "C"
 
 
 
-/* @data EnsPMetaCoordinateadaptor ********************************************
+/* @data EnsPMetacoordinateadaptor ********************************************
 **
 ** Ensembl Meta-Coordinate Adaptor.
 **
-** @alias EnsSMetaCoordinateadaptor
-** @alias EnsOMetaCoordinateadaptor
+** @alias EnsSMetacoordinateadaptor
+** @alias EnsOMetacoordinateadaptor
 **
 ** @attr Adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor.
 ** @attr CacheByName [AjPTable] Ensembl Feature name (i.e. table name) cache.
@@ -25,14 +25,14 @@ extern "C"
 ** @@
 ******************************************************************************/
 
-typedef struct EnsSMetaCoordinateadaptor
+typedef struct EnsSMetacoordinateadaptor
 {
     EnsPDatabaseadaptor Adaptor;
     AjPTable CacheByName;
     AjPTable CacheByLength;
-} EnsOMetaCoordinateadaptor;
+} EnsOMetacoordinateadaptor;
 
-#define EnsPMetaCoordinateadaptor EnsOMetaCoordinateadaptor*
+#define EnsPMetacoordinateadaptor EnsOMetacoordinateadaptor*
 
 
 
@@ -43,18 +43,18 @@ typedef struct EnsSMetaCoordinateadaptor
 
 /* Ensembl Meta-Coordinate Adaptor */
 
-EnsPMetaCoordinateadaptor ensMetaCoordinateadaptorNew(EnsPDatabaseadaptor dba);
+EnsPMetacoordinateadaptor ensMetacoordinateadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensMetaCoordinateadaptorDel(EnsPMetaCoordinateadaptor *Padaptor);
+void ensMetacoordinateadaptorDel(EnsPMetacoordinateadaptor *Padaptor);
 
-AjBool ensMetaCoordinateadaptorFetchAllCoordSystems(
-    EnsPMetaCoordinateadaptor adaptor,
+AjBool ensMetacoordinateadaptorFetchAllCoordsystems(
+    EnsPMetacoordinateadaptor adaptor,
     const AjPStr name,
     AjPList cslist);
 
-ajuint ensMetaCoordinateadaptorGetMaximumLength(
-    EnsPMetaCoordinateadaptor adaptor,
-    const EnsPCoordSystem cs,
+ajuint ensMetacoordinateadaptorGetMaximumLength(
+    EnsPMetacoordinateadaptor adaptor,
+    const EnsPCoordsystem cs,
     const AjPStr name);
 
 /*
