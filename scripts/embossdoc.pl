@@ -1687,8 +1687,11 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	elsif ($token eq "cc")  {
 	    if($mastertoken ne "func" &&
 	       $mastertoken ne "funcstatic" &&
-	       $mastertoken ne "macro") {
-		print "bad syntax \@$token must be in \@func, funcstatic, or macro\n";
+	       $mastertoken ne "macro" &&
+	       $mastertoken ne "section" &&
+	       $mastertoken ne "filesection" &&
+	       $mastertoken ne "datasection") {
+		print "bad syntax \@$token must be in \@func, funcstatic, or macro or a section\n";
 	    }
 	    next;
 	}
@@ -1940,9 +1943,9 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 #			print LOG "calling isnamrule i: $i rules $#{$namrules[$i]} names $#nameparts\n";
 			if(!isnamrule($i, @{$namrules[$i]}, @nameparts)) {
 			    print "bad name $fname: '$f' not found\n";
-			    print "** \@nam$i";
+			    print "** \@nam$j";
 			    if($j == $#nameparts) {
-				print "rule $f $frest";
+				print "rule $f $frest\n";
                             }
                             else{
                                 print "rule $f Undocumented\n";
