@@ -181,7 +181,7 @@ them both to 0; an emulation function will be used. */
 #define PCREPACKAGE "pcre"
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT ""
+/* #define PACKAGE_BUGREPORT "" */
 
 /* Define to the full name of this package. */
 #define PCREPACKAGE_NAME "PCRE"
