@@ -1,16 +1,47 @@
 Version 6.2.0
+	The change to graphics library access makes the ajGraphInit call
+	which registered graphics functions for use by ACD parsing
+	redundant. In its place we need to register data access
+	functions. As all applications make use of this, we now include
+	this automatically in embInit so there is no longer a need for
+	applications to make a separate call before invoking
+	code (e.g. ACD parsing) that may require registration of
+	functions.
+
+	The AJAX ACD code is now in a separate library. New core library
+	functions store and retrieve ACD persistent data such as the
+	program name, command line and list of inputs. As ACD is now
+	linked separately from core AJAX and the graphics library, the
+	callback mechanism for ajGraph functions to be called from ACD is
+	no longer needed.
+
+	The database access code in ajseqdb.c has been moved to a separate
+	higher level library. This is where we will insert code to acces
+	the new ensembl library functions in AJAX, and possible future
+	data access libraries. A callback mechanism is used so that the
+	embInit call automatically registers data access methods to make
+	them available within the core library functions that read
+	sequences. This allows ajSeqRead to remain in the core library
+	while calling database access methods that in turn may invoke
+	ensembl access.
+
+	The PCRE (perl-compatible regular expressions) code in AJAX has
+	been updated to release 7.9 of PCRE. Previous releases were still
+	at version 4.3. The code is standard PCRE code with the LINK_SIZE
+	set to 4 bytes to allow matches in long sequences.
+
 	ACD files include relations attributes with text taken from terms
 	in the EMBRACE EDAM ontology. These terms are also described in
 	the knowntypes.standard file and are matched to the known types
 	when validating ACD files.
-	
+
 	EMBOSS now uses a more complete User-Agent string when
 	communicating with HTTP servers.
-	
+
 	FASTQ short read sequence formats now read and write faster using
 	lookup tables to avoid calculations in the conversion of quality
 	scores.
-	
+
 	FASTQ short read formats have additional warning messages for bad
 	or incomplete data.
 
@@ -22,7 +53,7 @@ Version 6.2.0
 
 	Common output formats now write faster, using lightweight output
 	functions to copy strings to the output file.
-	
+
 	SwissProt output formats now wrap long OS lines.
 
 	Needle was updated with end-gap penalties support allowing
@@ -30,11 +61,11 @@ Version 6.2.0
 	endopen, endextend, and endweight. endopen and endextend options
 	are used to specify gap opening and extension penalties for end
 	gaps.  The endweight option turns on weighting of end gaps.
-    
+
 	Application documentation has a new format HTML table for the
 	command line options. This is excluded from the text
 	documentation, where the format of the help output is improved.
-	
+
 	Function names standardised for ajcod.c ajrange.c ajtranslate.c
 	ajgraph.c ajhist.c and a few other functions renamed. The old
 	names continue to work as "deprecated" functions although these
