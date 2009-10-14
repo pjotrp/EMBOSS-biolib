@@ -261,7 +261,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqType
 {
 
     AjPStr name    = NULL;
-    char *javaname = NULL;
+    const char *javaname = NULL;
     AjBool ok      = ajFalse;
     AjPSeq seq     = NULL;
     AjBool nuc     = ajFalse;
@@ -275,7 +275,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqType
     name = ajStrNew();
     seq  = ajSeqNew();
 
-    javaname = (char *) (*env)->GetStringUTFChars(env,usa,0);
+    javaname = (*env)->GetStringUTFChars(env,usa,0);
     ajStrAssignC(&name,javaname);
     (*env)->ReleaseStringUTFChars(env,usa,javaname);
 
@@ -322,7 +322,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqsetType
            (JNIEnv *env, jobject obj, jstring usa)
 {
     AjPStr name    = NULL;
-    char *javaname = NULL;
+    const char *javaname = NULL;
     AjBool ok      = ajFalse;
     AjPSeqset seq  = NULL;
     AjBool nuc     = ajFalse;
@@ -336,7 +336,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqsetType
 
     jvc = (*env)->GetObjectClass(env,obj);
 
-    javaname = (char *) (*env)->GetStringUTFChars(env,usa,0);
+    javaname = (*env)->GetStringUTFChars(env,usa,0);
     ajStrAssignC(&name,javaname);
     (*env)->ReleaseStringUTFChars(env,usa,javaname);
 
@@ -456,8 +456,8 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userInfo
     AjPStr username = NULL;
     AjPStr password = NULL;
     AjPStr home     = NULL;
-    char *juser     = NULL;
-    char *jpass     = NULL;
+    const char *juser = NULL;
+    const char *jpass = NULL;
     AjBool ok       = ajFalse;
 
     jclass jvc;
@@ -476,7 +476,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userInfo
     password = ajStrNew();
     home     = ajStrNew();
 
-    juser = (char *) (*env)->GetStringUTFChars(env,door,0);
+    juser = (*env)->GetStringUTFChars(env,door,0);
 
     if(juser)
 	ajStrAssignC(&username,juser);
@@ -491,7 +491,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userInfo
 
     (*env)->ReleaseStringUTFChars(env,door,juser);
 
-    jpass = (char *) (*env)->GetStringUTFChars(env,key,0);
+    jpass = (*env)->GetStringUTFChars(env,key,0);
 
     if(jpass)
 	ajStrAssignC(&password,jpass);
@@ -530,10 +530,9 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userInfo
     jhpstr = (*env)->NewStringUTF(env,hp);
     (*env)->SetObjectField(env,obj,field,jhpstr);
 
-
-    bzero((void*)ajStrGetPtr(username),ajStrGetLen(username));
-    bzero((void*)ajStrGetPtr(password),ajStrGetLen(password));
-    bzero((void*)ajStrGetPtr(home),ajStrGetLen(home));
+    bzero((void *)username->Ptr,ajStrGetLen(username));
+    bzero((void *)password->Ptr,ajStrGetLen(password));
+    bzero((void *)home->Ptr,ajStrGetLen(home));
 
     ajStrDel(&username);
     ajStrDel(&password);
@@ -556,7 +555,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userInfo
 ** @@
 ******************************************************************************/
 
-static void java_core_dump()
+static void java_core_dump(void)
 {
     struct rlimit limit;
 
@@ -1037,6 +1036,9 @@ static AjBool java_pass(AjPStr username,AjPStr password,ajint *uid,
 JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_setuid
 (JNIEnv *env, jclass j, jint uid)
 {
+    (void) env;
+    (void) j;
+    
     return((jint)setuid((uid_t)uid));
 }
 
@@ -1058,9 +1060,12 @@ JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_setuid
 JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_seteuid
 (JNIEnv *env, jclass j, jint uid)
 {
+    (void) env;
+    (void) j;
 #ifndef __hpux
     return((jint)seteuid((uid_t)uid));
 #else
+    (void) uid;
     return -1;
 #endif
 }
@@ -1083,6 +1088,9 @@ JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_seteuid
 JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_setgid
 (JNIEnv *env, jclass j, jint gid)
 {
+    (void) env;
+    (void) j;
+    
     return((jint)setgid((gid_t)gid));
 }
 
@@ -1104,9 +1112,12 @@ JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_setgid
 JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_setegid
 (JNIEnv *env, jclass j, jint gid)
 {
+    (void) env;
+    (void) j;
 #ifndef __hpux
     return((jint)setegid((gid_t)gid));
 #else
+    (void) gid;
     return -1;
 #endif
 }
@@ -1128,6 +1139,9 @@ JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_setegid
 JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_getuid
 (JNIEnv *env, jclass j)
 {
+    (void) env;
+    (void) j;
+    
     return((jint)getuid());
 }
 
@@ -1148,6 +1162,9 @@ JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_getuid
 JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_getgid
 (JNIEnv *env, jclass j)
 {
+    (void) env;
+    (void) j;
+    
     return((jint)getgid());
 }
 
@@ -1168,6 +1185,9 @@ JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_getgid
 JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_geteuid
 (JNIEnv *env, jclass j)
 {
+    (void) env;
+    (void) j;
+    
     return((jint)geteuid());
 }
 
@@ -1188,6 +1208,9 @@ JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_geteuid
 JNIEXPORT jint JNICALL Java_org_emboss_jemboss_parser_Ajax_getegid
 (JNIEnv *env, jclass j)
 {
+    (void) env;
+    (void) j;
+    
     return((jint)getegid());
 }
 
@@ -1220,7 +1243,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
     jstring  ostr;
     jstring  estr;
 
-    char  *sptr;
+    const char  *sptr;
 
     AjPStr prog = NULL;
     AjPStr cl   = NULL;
@@ -1275,7 +1298,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
     errstd = ajStrNew();
 
 
-    sptr = (char *) (*env)->GetStringUTFChars(env,commandline,0);
+    sptr = (*env)->GetStringUTFChars(env,commandline,0);
     ajStrAssignC(&cl,sptr);
     (*env)->ReleaseStringUTFChars(env,commandline,sptr);
 
@@ -1283,11 +1306,11 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
     ajSysFuncStrtokR(ajStrGetPtr(cl)," \t\n",&save,&prog);
 
 
-    sptr = (char *) (*env)->GetStringUTFChars(env,environment,0);
+    sptr = (*env)->GetStringUTFChars(env,environment,0);
     ajStrAssignC(&envi,sptr);
     (*env)->ReleaseStringUTFChars(env,environment,sptr);
 
-    sptr = (char *) (*env)->GetStringUTFChars(env,directory,0);
+    sptr = (*env)->GetStringUTFChars(env,directory,0);
     ajStrAssignC(&dir,sptr);
     (*env)->ReleaseStringUTFChars(env,directory,sptr);
 
@@ -2507,9 +2530,9 @@ static void java_wait_for_term(int pid,AjPStr *outstd, AjPStr *errstd,
 ** @return [void]
 ******************************************************************************/
 
-static void java_wait_for_file(int pid,AjPStr *outstd, AjPStr *errstd,
+static void java_wait_for_file(int pid, AjPStr *outstd, AjPStr *errstd,
 			       int *outpipe, int *errpipe, char *buf,
-			       unsigned char *fbuf,int size)
+			       unsigned char *fbuf, int size)
 {
 #ifdef HAVE_POLL
     struct pollfd ufds[2];
@@ -3193,9 +3216,9 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userAuth
     jstring  hstr;    /* Java returned strings */
     jstring  ostr;
     jstring  estr;
-    char   *juser = NULL;
+    const char   *juser = NULL;
     char   *jpass = NULL;
-    char   *jenv  = NULL;
+    const char   *jenv  = NULL;
     jsize  plen;
     jbyte  *ca;
 
@@ -3217,7 +3240,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userAuth
     ca   = (*env)->GetByteArrayElements(env,key,0);
 
 
-    juser = (char *) (*env)->GetStringUTFChars(env,door,0);
+    juser = (*env)->GetStringUTFChars(env,door,0);
 
     if(juser)
 	ajStrAssignC(&username,juser);
@@ -3242,7 +3265,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_userAuth
     ajStrAssignC(&password,jpass);
     (*env)->ReleaseByteArrayElements(env,key,ca,0);
 
-    jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
+    jenv = (*env)->GetStringUTFChars(env,environment,0);
 
     if(jenv)
 	ajStrAssignC(&envi,jenv);
@@ -3329,11 +3352,11 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkBatch
     jfieldID field;
     jstring  ostr;
     jstring  estr;
-    char   *juser = NULL;
+    const char   *juser = NULL;
     char   *jpass = NULL;
-    char   *jenv  = NULL;
-    char   *jcl   = NULL;
-    char   *jdir  = NULL;
+    const char   *jenv  = NULL;
+    const char   *jcl   = NULL;
+    const char   *jdir  = NULL;
 
     AjPStr commandline = NULL;
     AjPStr directory   = NULL;
@@ -3356,7 +3379,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkBatch
     plen = (*env)->GetArrayLength(env,key);
     ca = (*env)->GetByteArrayElements(env,key,0);
 
-    juser = (char *) (*env)->GetStringUTFChars(env,door,0);
+    juser = (*env)->GetStringUTFChars(env,door,0);
 
     if(juser)
 	ajStrAssignC(&username,juser);
@@ -3390,7 +3413,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkBatch
     (*env)->ReleaseByteArrayElements(env,key,ca,0);
 
 
-    jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
+    jenv = (*env)->GetStringUTFChars(env,environment,0);
 
     if(jenv)
 	ajStrAssignC(&envi,jenv);
@@ -3407,7 +3430,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkBatch
     (*env)->ReleaseStringUTFChars(env,environment,jenv);
 
 
-    jcl = (char *) (*env)->GetStringUTFChars(env,cline,0);
+    jcl = (*env)->GetStringUTFChars(env,cline,0);
 
     if(jcl)
 	ajStrAssignC(&commandline,jcl);
@@ -3423,7 +3446,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkBatch
 
     (*env)->ReleaseStringUTFChars(env,cline,jcl);
 
-    jdir = (char *) (*env)->GetStringUTFChars(env,direct,0);
+    jdir = (*env)->GetStringUTFChars(env,direct,0);
 
     if(jdir)
 	ajStrAssignC(&directory,jdir);
@@ -3512,11 +3535,11 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkEmboss
     jfieldID field;
     jstring  ostr;
     jstring  estr;
-    char   *juser = NULL;
+    const char   *juser = NULL;
     char   *jpass = NULL;
-    char   *jenv  = NULL;
-    char   *jcl   = NULL;
-    char   *jdir  = NULL;
+    const char   *jenv  = NULL;
+    const char   *jcl   = NULL;
+    const char   *jdir  = NULL;
 
     AjPStr commandline = NULL;
     AjPStr directory   = NULL;
@@ -3540,7 +3563,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkEmboss
     ca   = (*env)->GetByteArrayElements(env,key,0);
     jvc  = (*env)->GetObjectClass(env,obj);
 
-    juser = (char *) (*env)->GetStringUTFChars(env,door,0);
+    juser = (*env)->GetStringUTFChars(env,door,0);
 
     if(juser)
 	ajStrAssignC(&username,juser);
@@ -3574,7 +3597,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkEmboss
     (*env)->ReleaseByteArrayElements(env,key,ca,0);
 
 
-    jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
+    jenv = (*env)->GetStringUTFChars(env,environment,0);
 
     if(jenv)
 	ajStrAssignC(&envi,jenv);
@@ -3591,7 +3614,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkEmboss
     (*env)->ReleaseStringUTFChars(env,environment,jenv);
 
 
-    jcl = (char *) (*env)->GetStringUTFChars(env,cline,0);
+    jcl = (*env)->GetStringUTFChars(env,cline,0);
 
     if(jcl)
 	ajStrAssignC(&commandline,jcl);
@@ -3607,7 +3630,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_forkEmboss
 
     (*env)->ReleaseStringUTFChars(env,cline,jcl);
 
-    jdir = (char *) (*env)->GetStringUTFChars(env,direct,0);
+    jdir = (*env)->GetStringUTFChars(env,direct,0);
 
     if(jdir)
 	ajStrAssignC(&directory,jdir);
@@ -3694,10 +3717,10 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_makeDir
     jfieldID field;
     jstring  ostr;
     jstring  estr;
-    char   *juser = NULL;
+    const char   *juser = NULL;
     char   *jpass = NULL;
-    char   *jenv  = NULL;
-    char   *jdir  = NULL;
+    const char   *jenv  = NULL;
+    const char   *jdir  = NULL;
 
     AjPStr directory = NULL;
 
@@ -3719,7 +3742,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_makeDir
     plen = (*env)->GetArrayLength(env,key);
     ca   = (*env)->GetByteArrayElements(env,key,0);
 
-    juser = (char *) (*env)->GetStringUTFChars(env,door,0);
+    juser = (*env)->GetStringUTFChars(env,door,0);
 
     if(juser)
 	ajStrAssignC(&username,juser);
@@ -3748,7 +3771,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_makeDir
     ajStrAssignC(&password,jpass);
     (*env)->ReleaseByteArrayElements(env,key,ca,0);
 
-    jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
+    jenv = (*env)->GetStringUTFChars(env,environment,0);
 
     if(jenv)
 	ajStrAssignC(&envi,jenv);
@@ -3772,7 +3795,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_makeDir
 	return (unsigned char)ajFalse;
     }
 
-    jdir = (char *) (*env)->GetStringUTFChars(env,direct,0);
+    jdir = (*env)->GetStringUTFChars(env,direct,0);
 
     if(jdir)
 	ajStrAssignC(&directory,jdir);
@@ -3846,10 +3869,10 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delFile
     jfieldID field;
     jstring  ostr;
     jstring  estr;
-    char   *juser = NULL;
+    const char   *juser = NULL;
     char   *jpass = NULL;
-    char   *jenv  = NULL;
-    char   *jfil  = NULL;
+    const char   *jenv  = NULL;
+    const char   *jfil  = NULL;
 
     AjPStr file=NULL;
 
@@ -3871,7 +3894,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delFile
     plen = (*env)->GetArrayLength(env,key);
     ca   = (*env)->GetByteArrayElements(env,key,0);
 
-    juser = (char *) (*env)->GetStringUTFChars(env,door,0);
+    juser = (*env)->GetStringUTFChars(env,door,0);
 
     if(juser)
 	ajStrAssignC(&username,juser);
@@ -3903,7 +3926,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delFile
     (*env)->ReleaseByteArrayElements(env,key,ca,0);
 
 
-    jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
+    jenv = (*env)->GetStringUTFChars(env,environment,0);
 
     if(jenv)
 	ajStrAssignC(&envi,jenv);
@@ -3927,7 +3950,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delFile
 	return (unsigned char)ajFalse;
     }
 
-    jfil = (char *) (*env)->GetStringUTFChars(env,filename,0);
+    jfil = (*env)->GetStringUTFChars(env,filename,0);
 
     if(jfil)
 	ajStrAssignC(&file,jfil);
@@ -4006,11 +4029,11 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_renameFile
     jfieldID field;
     jstring  ostr;
     jstring  estr;
-    char   *juser = NULL;
+    const char   *juser = NULL;
     char   *jpass = NULL;
-    char   *jenv  = NULL;
-    char   *jfil  = NULL;
-    char   *jfil2 = NULL;
+    const char   *jenv  = NULL;
+    const char   *jfil  = NULL;
+    const char   *jfil2 = NULL;
 
     AjPStr file  = NULL;
     AjPStr file2 = NULL;
@@ -4033,7 +4056,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_renameFile
     plen = (*env)->GetArrayLength(env,key);
     ca = (*env)->GetByteArrayElements(env,key,0);
 
-    juser = (char *) (*env)->GetStringUTFChars(env,door,0);
+    juser = (*env)->GetStringUTFChars(env,door,0);
 
     if(juser)
 	ajStrAssignC(&username,juser);
@@ -4065,7 +4088,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_renameFile
     (*env)->ReleaseByteArrayElements(env,key,ca,0);
 
 
-    jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
+    jenv = (*env)->GetStringUTFChars(env,environment,0);
 
     if(jenv)
 	ajStrAssignC(&envi,jenv);
@@ -4089,7 +4112,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_renameFile
 	return (unsigned char)ajFalse;
     }
 
-    jfil = (char *) (*env)->GetStringUTFChars(env,filename,0);
+    jfil = (*env)->GetStringUTFChars(env,filename,0);
 
     if(jfil)
 	ajStrAssignC(&file,jfil);
@@ -4107,7 +4130,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_renameFile
 
     file2 = ajStrNew();
 
-    jfil2 = (char *) (*env)->GetStringUTFChars(env,filename2,0);
+    jfil2 = (*env)->GetStringUTFChars(env,filename2,0);
 
     if(jfil2)
 	ajStrAssignC(&file2,jfil2);
@@ -4185,10 +4208,10 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delDir
     jfieldID field;
     jstring  ostr;
     jstring  estr;
-    char   *juser = NULL;
+    const char   *juser = NULL;
     char   *jpass = NULL;
-    char   *jenv  = NULL;
-    char   *jdir  = NULL;
+    const char   *jenv  = NULL;
+    const char   *jdir  = NULL;
 
     AjPStr directory = NULL;
 
@@ -4211,7 +4234,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delDir
     plen = (*env)->GetArrayLength(env,key);
     ca   = (*env)->GetByteArrayElements(env,key,0);
 
-    juser = (char *) (*env)->GetStringUTFChars(env,door,0);
+    juser = (*env)->GetStringUTFChars(env,door,0);
 
     if(juser)
 	ajStrAssignC(&username,juser);
@@ -4243,7 +4266,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delDir
     (*env)->ReleaseByteArrayElements(env,key,ca,0);
 
 
-    jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
+    jenv = (*env)->GetStringUTFChars(env,environment,0);
 
     if(jenv)
 	ajStrAssignC(&envi,jenv);
@@ -4267,7 +4290,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_delDir
 	return (unsigned char)ajFalse;
     }
 
-    jdir = (char *) (*env)->GetStringUTFChars(env,direct,0);
+    jdir = (*env)->GetStringUTFChars(env,direct,0);
 
     if(jdir)
 	ajStrAssignC(&directory,jdir);
@@ -4343,10 +4366,10 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listFiles
     jfieldID field;
     jstring  ostr;
     jstring  estr;
-    char   *juser = NULL;
+    const char   *juser = NULL;
     char   *jpass = NULL;
-    char   *jenv  = NULL;
-    char   *jdir  = NULL;
+    const char   *jenv  = NULL;
+    const char   *jdir  = NULL;
 
     AjPStr directory = NULL;
 
@@ -4370,7 +4393,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listFiles
     ca   = (*env)->GetByteArrayElements(env,key,0);
 
 
-    juser = (char *) (*env)->GetStringUTFChars(env,door,0);
+    juser = (*env)->GetStringUTFChars(env,door,0);
 
     if(juser)
 	ajStrAssignC(&username,juser);
@@ -4403,7 +4426,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listFiles
 
 
 
-    jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
+    jenv = (*env)->GetStringUTFChars(env,environment,0);
     if(jenv)
 	ajStrAssignC(&envi,jenv);
     else
@@ -4425,7 +4448,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listFiles
 	return (unsigned char)ajFalse;
     }
 
-    jdir = (char *) (*env)->GetStringUTFChars(env,direct,0);
+    jdir = (*env)->GetStringUTFChars(env,direct,0);
 
     if(jdir)
 	ajStrAssignC(&directory,jdir);
@@ -4501,10 +4524,10 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listDirs
     jfieldID field;
     jstring  ostr;
     jstring  estr;
-    char   *juser = NULL;
+    const char   *juser = NULL;
     char   *jpass = NULL;
-    char   *jenv  = NULL;
-    char   *jdir  = NULL;
+    const char   *jenv  = NULL;
+    const char   *jdir  = NULL;
 
     AjPStr directory = NULL;
 
@@ -4526,7 +4549,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listDirs
     plen = (*env)->GetArrayLength(env,key);
     ca = (*env)->GetByteArrayElements(env,key,0);
 
-    juser = (char *) (*env)->GetStringUTFChars(env,door,0);
+    juser = (*env)->GetStringUTFChars(env,door,0);
 
     if(juser)
 	ajStrAssignC(&username,juser);
@@ -4557,7 +4580,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listDirs
     (*env)->ReleaseByteArrayElements(env,key,ca,0);
 
 
-    jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
+    jenv = (*env)->GetStringUTFChars(env,environment,0);
 
     if(jenv)
 	ajStrAssignC(&envi,jenv);
@@ -4581,7 +4604,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listDirs
 	return (unsigned char)ajFalse;
     }
 
-    jdir = (char *) (*env)->GetStringUTFChars(env,direct,0);
+    jdir = (*env)->GetStringUTFChars(env,direct,0);
 
     if(jdir)
 	ajStrAssignC(&directory,jdir);
@@ -4663,10 +4686,10 @@ JNIEXPORT jbyteArray JNICALL Java_org_emboss_jemboss_parser_Ajax_getFile
     jstring  estr;
     jbyteArray jb;
 
-    char   *juser = NULL;
+    const char   *juser = NULL;
     char   *jpass = NULL;
-    char   *jenv  = NULL;
-    char   *jfil  = NULL;
+    const char   *jenv  = NULL;
+    const char   *jfil  = NULL;
 
     AjPStr file=NULL;
     unsigned char *fbuf = NULL;
@@ -4694,7 +4717,7 @@ JNIEXPORT jbyteArray JNICALL Java_org_emboss_jemboss_parser_Ajax_getFile
     plen = (*env)->GetArrayLength(env,key);
     ca   = (*env)->GetByteArrayElements(env,key,0);
 
-    juser = (char *) (*env)->GetStringUTFChars(env,door,0);
+    juser = (*env)->GetStringUTFChars(env,door,0);
 
     if(juser)
 	ajStrAssignC(&username,juser);
@@ -4718,7 +4741,7 @@ JNIEXPORT jbyteArray JNICALL Java_org_emboss_jemboss_parser_Ajax_getFile
     (*env)->ReleaseByteArrayElements(env,key,ca,0);
 
 
-    jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
+    jenv = (*env)->GetStringUTFChars(env,environment,0);
 
     if(jenv)
 	ajStrAssignC(&envi,jenv);
@@ -4726,7 +4749,7 @@ JNIEXPORT jbyteArray JNICALL Java_org_emboss_jemboss_parser_Ajax_getFile
     (*env)->ReleaseStringUTFChars(env,environment,jenv);
 
 
-    jfil = (char *) (*env)->GetStringUTFChars(env,filename,0);
+    jfil = (*env)->GetStringUTFChars(env,filename,0);
 
     if(jfil)
 	ajStrAssignC(&file,jfil);
@@ -4843,10 +4866,10 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_putFile
     jstring  estr;
     jsize    len;
     jbyte    *ba;
-    char   *juser = NULL;
+    const char   *juser = NULL;
     char   *jpass = NULL;
-    char   *jenv  = NULL;
-    char   *jfil  = NULL;
+    const char   *jenv  = NULL;
+    const char   *jfil  = NULL;
 
     AjPStr file = NULL;
     unsigned char *fbuf;
@@ -4884,7 +4907,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_putFile
     ca   = (*env)->GetByteArrayElements(env,key,0);
 
 
-    juser = (char *) (*env)->GetStringUTFChars(env,door,0);
+    juser = (*env)->GetStringUTFChars(env,door,0);
 
     if(juser)
 	ajStrAssignC(&username,juser);
@@ -4919,7 +4942,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_putFile
     (*env)->ReleaseByteArrayElements(env,key,ca,0);
 
 
-    jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
+    jenv = (*env)->GetStringUTFChars(env,environment,0);
 
     if(jenv)
 	ajStrAssignC(&envi,jenv);
@@ -4949,7 +4972,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_putFile
 	return (unsigned char)ajFalse;
     }
 
-    jfil = (char *) (*env)->GetStringUTFChars(env,filename,0);
+    jfil = (*env)->GetStringUTFChars(env,filename,0);
 
     if(jfil)
 	ajStrAssignC(&file,jfil);
@@ -5031,10 +5054,10 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqAttrib
     jfieldID field;
     jstring  ostr;
     jstring  estr;
-    char   *juser = NULL;
+    const char   *juser = NULL;
     char   *jpass = NULL;
-    char   *jenv  = NULL;
-    char   *jfil  = NULL;
+    const char   *jenv  = NULL;
+    const char   *jfil  = NULL;
 
     AjPStr file = NULL;
 
@@ -5059,7 +5082,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqAttrib
     plen = (*env)->GetArrayLength(env,key);
     ca   = (*env)->GetByteArrayElements(env,key,0);
 
-    juser = (char *) (*env)->GetStringUTFChars(env,door,0);
+    juser = (*env)->GetStringUTFChars(env,door,0);
 
     if(juser)
 	ajStrAssignC(&username,juser);
@@ -5091,7 +5114,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqAttrib
     (*env)->ReleaseByteArrayElements(env,key,ca,0);
 
 
-    jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
+    jenv = (*env)->GetStringUTFChars(env,environment,0);
 
     if(jenv)
 	ajStrAssignC(&envi,jenv);
@@ -5114,7 +5137,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqAttrib
 	return (unsigned char)ajFalse;
     }
 
-    jfil = (char *) (*env)->GetStringUTFChars(env,filename,0);
+    jfil = (*env)->GetStringUTFChars(env,filename,0);
 
     if(jfil)
 	ajStrAssignC(&file,jfil);
@@ -5207,10 +5230,10 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqsetAttrib
     jfieldID field;
     jstring  ostr;
     jstring  estr;
-    char   *juser = NULL;
+    const char   *juser = NULL;
     char   *jpass = NULL;
-    char   *jenv  = NULL;
-    char   *jfil  = NULL;
+    const char   *jenv  = NULL;
+    const char   *jfil  = NULL;
 
     AjPStr file = NULL;
 
@@ -5235,7 +5258,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqsetAttrib
     plen = (*env)->GetArrayLength(env,key);
     ca   = (*env)->GetByteArrayElements(env,key,0);
 
-    juser = (char *) (*env)->GetStringUTFChars(env,door,0);
+    juser = (*env)->GetStringUTFChars(env,door,0);
 
     if(juser)
 	ajStrAssignC(&username,juser);
@@ -5267,7 +5290,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqsetAttrib
     (*env)->ReleaseByteArrayElements(env,key,ca,0);
 
 
-    jenv = (char *) (*env)->GetStringUTFChars(env,environment,0);
+    jenv = (*env)->GetStringUTFChars(env,environment,0);
 
     if(jenv)
 	ajStrAssignC(&envi,jenv);
@@ -5291,7 +5314,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqsetAttrib
 	return (unsigned char)ajFalse;
     }
 
-    jfil = (char *) (*env)->GetStringUTFChars(env,filename,0);
+    jfil = (*env)->GetStringUTFChars(env,filename,0);
 
     if(jfil)
 	ajStrAssignC(&file,jfil);
