@@ -63,7 +63,6 @@
 ******************************************************************************/
 
 #include "emboss.h"
-#include "ajtime.h"
 #include <limits.h>
 
 #define BOXTOP      0x0001

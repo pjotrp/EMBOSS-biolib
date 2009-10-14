@@ -20,7 +20,7 @@
 ******************************************************************************/
 
 #include "emboss.h"
-#include "ajgraph.h"
+
 
 static float xstart = 0;
 static float ystart = 0;

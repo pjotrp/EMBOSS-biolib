@@ -28,7 +28,6 @@
 **
 */
 
-#include "ajax.h"
 #include "emboss.h"
 
 

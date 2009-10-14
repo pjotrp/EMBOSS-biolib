@@ -5,6 +5,7 @@
 #include "ajgraph.h"
 #include "ajgraphstruct.h"
 #include "ajgraphxml.h"
+#include "ajhist.h"
 #include "ajseqdb.h"
 #include "ajacd.h"
 #include "embaln.h"
@@ -31,5 +32,6 @@
 #include "embdmx.h"
 #include "embexit.h"
 #include "embindex.h"
+#include "embest.h"
 
 #endif

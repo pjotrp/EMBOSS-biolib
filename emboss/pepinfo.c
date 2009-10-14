@@ -20,8 +20,6 @@
 ******************************************************************************/
 
 #include "emboss.h"
-#include "ajhist.h"
-#include <stdlib.h>
 
 
 #define NOY (AJGRAPH_X_BOTTOM + AJGRAPH_Y_LEFT + AJGRAPH_Y_RIGHT + \

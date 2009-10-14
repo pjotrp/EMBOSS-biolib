@@ -19,9 +19,8 @@
 
 #ifndef NO_PLOT
 #include "emboss.h"
-#include "ajax.h"
-#include "ajgraph.h"
 #include <math.h>
+
 #define numsets 3
 #define numpoints 360
 
