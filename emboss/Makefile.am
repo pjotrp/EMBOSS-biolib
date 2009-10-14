@@ -14,14 +14,14 @@ endif
 
 
 check_PROGRAMS = acdlog acdrelations acdxsd ajtest \
-complex corbatest \
+complex corbatest ensembltest \
 entrails entrailsbook entrailshtml entrailswiki giep histogramtest intconv \
 origsplitter origunion \
 newcoils \
 patmattest \
 prima primers \
 seqinfo seqretall seqretallfeat \
-seqretset seqretsingle seqrettype \
+seqretset seqretsingle seqrettype sqltest \
 testplot treetypedisplay
 
 bin_PROGRAMS = aaindexextract abiview \
@@ -76,6 +76,7 @@ yank
 
 INCLUDES = -I$(top_srcdir)/nucleus -I$(top_srcdir)/ajax/pcre \
 	-I$(top_srcdir)/ajax/core -I$(top_srcdir)/ajax/graphics \
+	-I$(top_srcdir)/ajax/ensembl \
 	-I$(top_srcdir)/ajax/ajaxdb -I$(top_srcdir)/ajax/acd \
 	-I$(top_srcdir)/plplot
 
