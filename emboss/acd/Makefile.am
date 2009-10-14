@@ -15,6 +15,7 @@ pkgdata_DATA = aaindexextract.acd abiview.acd acdc.acd acdlog.acd \
 	distmat.acd dotmatcher.acd dotpath.acd dottup.acd dreg.acd \
 	edialign.acd \
 	einverted.acd embossdata.acd embossversion.acd emma.acd emowse.acd \
+	ensembltest.acd \
 	entrails.acd entret.acd epestfind.acd eprimer3.acd equicktandem.acd \
 	est2genome.acd etandem.acd \
 	extractalign.acd extractfeat.acd extractseq.acd \
@@ -49,7 +50,7 @@ pkgdata2_DATA = needle.acd newcoils.acd newcpgreport.acd newcpgseek.acd \
 	showpep.acd showseq.acd shuffleseq.acd \
 	sigcleave.acd silent.acd sirna.acd \
 	sixpack.acd sizeseq.acd skipredundant.acd skipseq.acd \
-	splitsource.acd splitter.acd stretcher.acd \
+	splitsource.acd splitter.acd sqltest.acd stretcher.acd \
 	stssearch.acd supermatcher.acd syco.acd \
 	tcode.acd testplot.acd textsearch.acd tfextract.acd tfm.acd \
 	tfscan.acd tmap.acd tranalign.acd transeq.acd treetypedisplay.acd \
