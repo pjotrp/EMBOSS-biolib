@@ -341,7 +341,7 @@ AjPBtcache ajBtreeCacheNewC(const char *file, const char *ext,
     FILE *fp;
     AjPBtcache cache = NULL;
 #if 0
-#if defined (HAVE64) && !defined(WIN32) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !defined(__APPLE__) && !defined(__FreeBSD__)
+#if defined (HAVE64) && !defined(WIN32) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !defined(__ppc__) && !defined(__FreeBSD__)
     struct stat64 buf;
 #else
     struct stat buf;
@@ -365,7 +365,7 @@ AjPBtcache ajBtreeCacheNewC(const char *file, const char *ext,
 #if 0
     if(strcmp(mode,"r"))
     {
-#if defined (HAVE64) && !defined(WIN32) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !defined(__APPLE__) && !defined(__FreeBSD__)
+#if defined (HAVE64) && !defined(WIN32) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !defined(__ppc__) && !defined(__FreeBSD__)
 	if(!stat64(fn->Ptr, &buf))
 #else
 	    if(!stat(fn->Ptr, &buf))
@@ -7354,7 +7354,7 @@ AjPBtcache ajBtreeSecCacheNewC(const char *file, const char *ext,
     FILE *fp;
     AjPBtcache cache = NULL;
 #if 0
-#if defined (HAVE64) && !defined(WIN32) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !defined(__APPLE__) && !defined(__FreeBSD__)
+#if defined (HAVE64) && !defined(WIN32) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !defined(__ppc__) && !defined(__FreeBSD__)
     struct stat64 buf;
 #else
     struct stat buf;
@@ -7375,7 +7375,7 @@ AjPBtcache ajBtreeSecCacheNewC(const char *file, const char *ext,
 #if 0
     if(strcmp(mode,"r"))
     {
-#if defined (HAVE64) && !defined(WIN32) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !defined(__APPLE__) && !defined(__FreeBSD__)
+#if defined (HAVE64) && !defined(WIN32) && !defined(_OSF_SOURCE) && !defined(_AIX) && !defined(__hpux) && !defined(__ppc__) && !defined(__FreeBSD__)
 	if(!stat64(fn->Ptr, &buf))
 #else
 	    if(!stat(fn->Ptr, &buf))
