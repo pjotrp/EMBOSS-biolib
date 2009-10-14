@@ -549,6 +549,9 @@ AjBool ajTimeSetC(AjPTime thys, const char* timestr)
     ajint min;
     ajint sec;
 
+    if(!thys)
+        return ajFalse;
+    
     if(!timestr)
 	return ajFalse;
 
@@ -599,6 +602,9 @@ AjBool ajTimeSetS(AjPTime thys, const AjPStr timestr)
     ajint min;
     ajint sec;
 
+    if(!thys)
+        return ajFalse;
+    
     if(!ajStrGetLen(timestr))
 	return ajFalse;
 
