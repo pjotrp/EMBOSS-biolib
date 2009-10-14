@@ -278,6 +278,7 @@ acdlog_SOURCES = acdlog.c
 ajtest_SOURCES = ajtest.c
 complex_SOURCES = complex.c
 corbatest_SOURCES = corbatest.c
+ensembltest_SOURCES = ensembltest.c
 entrails_SOURCES = entrails.c
 entrailsbook_SOURCES = entrailsbook.c
 entrailshtml_SOURCES = entrailshtml.c
@@ -296,6 +297,7 @@ seqretallfeat_SOURCES = seqretallfeat.c
 seqretset_SOURCES = seqretset.c
 seqretsingle_SOURCES = seqretsingle.c
 seqrettype_SOURCES = seqrettype.c
+sqltest_SOURCES = sqltest.c
 testplot_SOURCES = testplot.c
 treetypedisplay_SOURCES = treetypedisplay.c
 
