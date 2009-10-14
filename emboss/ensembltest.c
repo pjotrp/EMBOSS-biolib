@@ -21,9 +21,10 @@
 ******************************************************************************/
 
 #include "emboss.h"
-#include <sys/time.h>
-#include <sys/resource.h>
 
+#ifndef WIN32
+#include <sys/resource.h>
+#endif
 
 
 
@@ -1964,8 +1965,10 @@ static AjBool ensembltest_density(EnsPDatabaseadaptor dba, AjPFile outfile)
 
 int main(int argc, char **argv)
 {
+#ifndef WIN32
     struct rusage ru;
-    
+#endif
+
     AjBool large = AJFALSE;
     
     AjEnum client = ajESqlClientMySQL;
@@ -2274,9 +2277,9 @@ int main(int argc, char **argv)
     ajStrDel(&srname);
     
     /* Get resource usage */
-    
+#ifndef WIN32    
     getrusage(RUSAGE_SELF, &ru);
-    
+
     ajDebug("main resource usage\n"
 	    "  user time %ld s\n"
 	    "  user time %ld us\n"
@@ -2318,6 +2321,8 @@ int main(int argc, char **argv)
 	    ru.ru_nsignals,
 	    ru.ru_nvcsw,
 	    ru.ru_nivcsw);
+#endif
+
     
 #if defined(__APPLE__)
     
