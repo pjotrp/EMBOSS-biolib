@@ -6,6 +6,7 @@
 #include "ajgraphstruct.h"
 #include "ajgraphxml.h"
 #include "ajhist.h"
+#include "ensembl.h"
 #include "ajseqdb.h"
 #include "ajacd.h"
 #include "embaln.h"
