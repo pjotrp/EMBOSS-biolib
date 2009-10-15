@@ -52,6 +52,413 @@ typedef struct EnsembltestSProjections
 
 
 
+static AjBool ensembltest_registry(AjPFile outfile);
+static AjBool ensembltest_analyses(EnsPDatabaseadaptor dba, AjPFile outfile);
+static AjBool ensembltest_meta(EnsPDatabaseadaptor dba, AjPFile outfile);
+static AjBool ensembltest_coordinate_systems(EnsPDatabaseadaptor dba,
+                                             AjPFile outfile);
+static AjBool ensembltest_sequence_regions(EnsPDatabaseadaptor dba,
+                                           AjPFile outfile);
+static AjBool ensembltest_assembly_exceptions(EnsPDatabaseadaptor dba,
+                                              AjPFile outfile);
+static AjBool ensembltest_slice_projections(EnsPDatabaseadaptor dba,
+                                            AjPFile outfile);
+static AjBool ensembltest_features(EnsPDatabaseadaptor dba, AjPFile outfile);
+static AjBool ensembltest_masking(EnsPDatabaseadaptor dba, AjPSeqout outseq);
+static AjBool ensembltest_markers(EnsPDatabaseadaptor dba,  AjPFile outfile);
+static AjBool ensembltest_ditags(EnsPDatabaseadaptor dba,  AjPFile outfile);
+static AjBool ensembltest_transformations(EnsPDatabaseadaptor dba,
+                                          AjPFile outfile);
+static AjBool ensembltest_density(EnsPDatabaseadaptor dba, AjPFile outfile);
+static AjBool ensembltest_genes(EnsPDatabaseadaptor dba);
+
+
+
+
+/* @prog testensembl **********************************************************
+**
+** Demonstration of the Ensembl API to be.
+**
+******************************************************************************/
+
+int main(int argc, char **argv)
+{
+#ifndef WIN32
+    struct rusage ru;
+#endif
+
+    AjBool large = AJFALSE;
+    
+    AjEnum client = ajESqlClientMySQL;
+    AjEnum group  = ensEDatabaseadaptorGroupCore;
+    
+    AjPFile outfile = NULL;
+    
+    AjIList iter         = NULL;
+    AjPList list         = NULL;
+    const AjPList exlist = NULL;
+    AjPList mrlist       = NULL;
+    
+    AjPSeq seq = NULL;
+    
+    AjPSeqout outseq = NULL;
+    
+    AjPStr user     = NULL;
+    AjPStr password = NULL;
+    AjPStr host     = NULL;
+    AjPStr port     = NULL;
+    AjPStr socket   = NULL;
+    AjPStr dbname   = NULL;
+    AjPStr species  = NULL;
+    AjPStr srname   = NULL;
+    AjPStr tmpstr   = NULL;
+    
+    EnsPDatabaseadaptor dba = NULL;
+    
+    EnsPDatabaseconnection dbc = NULL;
+    
+    EnsPExon exon      = NULL;
+    EnsPExonadaptor ea = NULL;
+    
+    EnsPFeature feature = NULL;
+    
+    EnsPMapperresult mr = NULL;
+    
+    EnsPTranscript transcript = NULL;
+    EnsPTranscriptadaptor ta  = NULL;
+    
+    EnsPTranslation translation = NULL;
+    
+    embInit("ensembltest", argc, argv);
+    
+    list     = ajListNew();
+    user     = ajStrNewC("anonymous");
+    password = ajStrNew();
+    host     = ajStrNewC("ensembldb.ensembl.org");
+    port     = ajStrNewC("5306");
+    socket   = ajStrNew();
+    dbname   = ajStrNew();
+    species  = ajStrNewC("homo sapiens");
+    srname   = ajStrNew();
+    
+    outfile = ajAcdGetOutfile("outfile");
+    
+    outseq = ajAcdGetSeqoutall("outseq");
+    
+    large = ajAcdGetBoolean("large");
+    
+    /* AJAX SQL test. */
+    
+    /* This needs moving into Ensembl Init and AJAX init */
+    
+    if(!ajSqlInit())
+	ajFatal("main Library initialisation failed.");
+    
+    ensInit();
+    
+    dbc = ensDatabaseconnectionNew(client,
+				   user,
+				   password,
+				   host,
+				   port,
+				   socket,
+				   dbname);
+    
+    if(!dbc)
+	ajFatal("main Could not connect as user '%S' to server '%S' "
+		"at port '%S' to database '%S'.", user, host, port, dbname);
+    
+    /* Ensembl Registry test. */
+    
+    ensRegistryLoadFromServer(dbc);
+    
+    ensDatabaseconnectionDel(&dbc);
+    
+    ensRegistryTraceAliases(0);
+    
+    ensRegistryTraceEntries(0);
+    
+    ajDebug("main ensRegistryLoadFromServer finished.\n");
+    
+    dba = ensRegistryGetDatabaseadaptor(group, species);
+    
+    /* Fetch Exon ENSE00001434436 */
+    
+    ea = ensRegistryGetExonadaptor(dba);
+    
+    tmpstr = ajStrNewC("ENSE00001191187");
+    
+    ensExonadaptorFetchByStableIdentifier(ea, tmpstr, 0, &exon);
+    
+    ajFmtPrintF(outfile,
+		"Ensembl Exon '%S'\n",
+		ensExonGetStableIdentifier(exon));
+    
+    ensExonFetchSequenceSeq(exon, &seq);
+    
+    if(seq)
+	ajSeqoutWriteSeq(outseq, seq);
+    else
+	ajFatal("main could not get an AJAX sequence.\n");
+    
+    ajSeqDel(&seq);
+    
+    ensExonDel(&exon);
+    
+    ajStrDel(&tmpstr);
+    
+    /* Fetch Transcript ENST00000262160 */
+    
+    ta = ensRegistryGetTranscriptadaptor(dba);
+    
+    tmpstr = ajStrNewC("ENST00000262160");
+    
+    ensTranscriptadaptorFetchByStableIdentifier(ta, tmpstr, 0, &transcript);
+    
+    ajStrDel(&tmpstr);
+    
+    if(transcript)
+    {
+	feature = ensTranscriptGetFeature(transcript);
+	
+	ajFmtPrintF(outfile,
+		    "Ensembl Transcript '%S' %S:%d:%d:%d\n",
+		    ensTranscriptGetStableIdentifier(transcript),
+		    ensFeatureGetSeqregionName(feature),
+		    ensFeatureGetSeqregionStart(feature),
+		    ensFeatureGetSeqregionEnd(feature),
+		    ensFeatureGetSeqregionStrand(feature));
+	
+	/* Transcript Mapper Test */
+	
+	mrlist = ajListNew();
+	
+	ensTranscriptMapperTranscript2Slice(transcript, 2, 3, mrlist);
+	
+	while(ajListPop(mrlist, (void **) &mr))
+	{
+	    if(ensMapperresultGetType(mr) == ensEMapperresultCoordinate)
+	    {
+		
+		ajFmtPrintF(outfile,
+			    "Ensembl Transcript Mapper map positions 2:3 to "
+			    "Slice %d:%d:%d\n",
+			    ensMapperresultGetStart(mr),
+			    ensMapperresultGetEnd(mr),
+			    ensMapperresultGetStrand(mr));
+	    }
+	    else if(ensMapperresultGetType(mr) == ensEMapperresultGap)
+	    {
+		ajFmtPrintF(outfile,
+			    "Ensembl Transcript Mapper 2:3 to Slice got "
+			    "Mapper Result of type Gap %d:%d. \n",
+			    ensMapperresultGetGapStart(mr),
+			    ensMapperresultGetGapEnd(mr));
+	    }
+	    else
+	    {
+		ajFmtPrintF(outfile,
+			    "Ensembl Transcript Mapper 2:3 to Slice got "
+			    "Mapper Result of other type?\n");	    
+		
+		ensMapperresultTrace(mr, 1);
+	    }
+	    
+	    ensMapperresultDel(&mr);
+	}
+	
+	ajListFree(&mrlist);
+	
+	/* Trace the Transcript Mapper */
+	
+	/*
+	** FIXME: For debugging only!
+	 ensMapperTrace(transcript->ExonCoordMapper, 1);
+	*/
+	
+	/* Fetch the Transcript sequence. */
+	
+	ensTranscriptFetchSequenceSeq(transcript, &seq);
+	
+	ajSeqoutWriteSeq(outseq, seq);
+	
+	ajSeqDel(&seq);
+	
+	translation = ensTranscriptFetchTranslation(transcript);
+	
+	if(translation)
+	{
+	    ensTranslationFetchSequenceSeq(translation, &seq);
+	    
+	    ajSeqoutWriteSeq(outseq, seq);
+	    
+	    ajSeqDel(&seq);
+	}
+	
+	/*
+	** Fetch all Exons of this Transcript and write out their
+	** coordinates.
+	*/
+	
+	exlist = ensTranscriptGetExons(transcript);
+	
+	iter = ajListIterNewread(exlist);
+	
+	while(!ajListIterDone(iter))
+	{
+	    exon = (EnsPExon) ajListIterGet(iter);
+	    
+	    feature = ensExonGetFeature(exon);
+	    
+	    ajFmtPrintF(outfile,
+			"  Ensembl Exon '%S'\n"
+			"    Transcript %u:%u\n"
+			"    Slice %d:%d:%d\n"
+			"    Ensembl Translation\n"
+			"      Transcript %u:%u\n"
+			"      Slice %u:%u\n",
+			ensExonGetStableIdentifier(exon),
+			ensExonGetTranscriptStart(exon, transcript),
+			ensExonGetTranscriptEnd(exon, transcript),
+			ensFeatureGetStart(feature),
+			ensFeatureGetEnd(feature),
+			ensFeatureGetStrand(feature),
+			ensExonGetTranscriptCodingStart(exon, transcript),
+			ensExonGetTranscriptCodingEnd(exon, transcript),
+			ensExonGetSliceCodingStart(exon, transcript),
+			ensExonGetSliceCodingEnd(exon, transcript));
+	}
+	
+	ajListIterDel(&iter);
+	
+	ensTranslationDel(&translation);
+    }
+    
+    ensTranscriptDel(&transcript);
+    
+    ensembltest_registry(outfile);
+    
+    ensembltest_analyses(dba, outfile);
+    
+    ensembltest_meta(dba, outfile);
+    
+    ensembltest_coordinate_systems(dba, outfile);
+    
+    ensembltest_sequence_regions(dba, outfile);
+    
+    ensembltest_assembly_exceptions(dba, outfile);
+    
+    ensembltest_slice_projections(dba, outfile);
+    
+    ensembltest_features(dba, outfile);
+    
+    ensembltest_masking(dba, outseq);
+    
+    ensembltest_markers(dba, outfile);
+    
+    ensembltest_ditags(dba, outfile);
+    
+    ensembltest_transformations(dba, outfile);
+    
+    ensembltest_density(dba, outfile);
+    
+    /* Fetch larger data sets... */
+    
+    if(large)
+    {
+	ensembltest_genes(dba);
+	
+	/* FIXME: Fetch sequence for human chromosome 21.
+	ensembltest_chromosome(dba, outseq);
+	*/
+    }
+    
+    /* Clean up and exit. */
+    
+    ensExit();
+    
+    ajListFree(&list);
+    
+    ajFileClose(&outfile);
+    
+    ajSeqoutClose(outseq);
+    
+    ajSeqoutDel(&outseq);
+    
+    ajStrDel(&user);
+    ajStrDel(&password);
+    ajStrDel(&host);
+    ajStrDel(&port);
+    ajStrDel(&socket);
+    ajStrDel(&dbname);
+    ajStrDel(&species);
+    ajStrDel(&srname);
+    
+    /* Get resource usage */
+#ifndef WIN32    
+    getrusage(RUSAGE_SELF, &ru);
+
+    ajDebug("main resource usage\n"
+	    "  user time %ld s\n"
+	    "  user time %ld us\n"
+	    "  system time %ld s\n"
+	    "  system time %ld us\n"
+	    "  max resident set size %ld kB\n"
+	    "  integral shared text memory size %ld kB*ticks\n"
+	    "  integral unshared data size %ld kB*ticks\n"
+	    "  integral unshared stack size %ld kB*ticks\n"
+	    "  page reclaims %ld\n"
+	    "  page faults %ld\n"
+	    "  swaps %ld\n"
+	    "  block input operations %ld\n"
+	    "  block output operations %ld\n"
+	    "  messages sent %ld\n"
+	    "  messages received %ld\n"
+	    "  signals received %ld\n"
+	    "  voluntary context switches %ld\n"
+	    "  involuntary context switches %ld\n",
+	    /*
+	     ru.ru_utime.tv_sec * 1.0E6 + ru.ru_utime.tv_usec,
+	     ru.ru_stime.tv_sec * 1.0E6 + ru.ru_stime.tv_usec,
+	     */
+	    ru.ru_utime.tv_sec,
+	    ru.ru_utime.tv_usec,
+	    ru.ru_stime.tv_sec,
+	    ru.ru_stime.tv_usec,
+	    ru.ru_maxrss,
+	    ru.ru_ixrss,
+	    ru.ru_idrss,
+	    ru.ru_isrss,
+	    ru.ru_minflt,
+	    ru.ru_majflt,
+	    ru.ru_nswap,
+	    ru.ru_inblock,
+	    ru.ru_oublock,
+	    ru.ru_msgsnd,
+	    ru.ru_msgrcv,
+	    ru.ru_nsignals,
+	    ru.ru_nvcsw,
+	    ru.ru_nivcsw);
+#endif
+
+    
+#if defined(__APPLE__)
+    
+    /* Inserted to allow the leaks application to analyse this process. */
+    
+    ajUser("ensembltest sleeping for 30 seconds.");
+    
+    sleep(30);
+    
+#endif
+    
+    embExit();
+    
+    return 0;
+}
+
+
+
 
 /* @funcstatic ensembltest_slice_projections **********************************
 **
@@ -1952,389 +2359,4 @@ static AjBool ensembltest_density(EnsPDatabaseadaptor dba, AjPFile outfile)
     ajStrDel(&srname);
     
     return ajTrue;
-}
-
-
-
-
-/* @prog testensembl **********************************************************
-**
-** Demonstration of the Ensembl API to be.
-**
-******************************************************************************/
-
-int main(int argc, char **argv)
-{
-#ifndef WIN32
-    struct rusage ru;
-#endif
-
-    AjBool large = AJFALSE;
-    
-    AjEnum client = ajESqlClientMySQL;
-    AjEnum group  = ensEDatabaseadaptorGroupCore;
-    
-    AjPFile outfile = NULL;
-    
-    AjIList iter         = NULL;
-    AjPList list         = NULL;
-    const AjPList exlist = NULL;
-    AjPList mrlist       = NULL;
-    
-    AjPSeq seq = NULL;
-    
-    AjPSeqout outseq = NULL;
-    
-    AjPStr user     = NULL;
-    AjPStr password = NULL;
-    AjPStr host     = NULL;
-    AjPStr port     = NULL;
-    AjPStr socket   = NULL;
-    AjPStr dbname   = NULL;
-    AjPStr species  = NULL;
-    AjPStr srname   = NULL;
-    AjPStr tmpstr   = NULL;
-    
-    EnsPDatabaseadaptor dba = NULL;
-    
-    EnsPDatabaseconnection dbc = NULL;
-    
-    EnsPExon exon      = NULL;
-    EnsPExonadaptor ea = NULL;
-    
-    EnsPFeature feature = NULL;
-    
-    EnsPMapperresult mr = NULL;
-    
-    EnsPTranscript transcript = NULL;
-    EnsPTranscriptadaptor ta  = NULL;
-    
-    EnsPTranslation translation = NULL;
-    
-    embInit("ensembltest", argc, argv);
-    
-    list     = ajListNew();
-    user     = ajStrNewC("anonymous");
-    password = ajStrNew();
-    host     = ajStrNewC("ensembldb.ensembl.org");
-    port     = ajStrNewC("5306");
-    socket   = ajStrNew();
-    dbname   = ajStrNew();
-    species  = ajStrNewC("homo sapiens");
-    srname   = ajStrNew();
-    
-    outfile = ajAcdGetOutfile("outfile");
-    
-    outseq = ajAcdGetSeqoutall("outseq");
-    
-    large = ajAcdGetBoolean("large");
-    
-    /* AJAX SQL test. */
-    
-    /* This needs moving into Ensembl Init and AJAX init */
-    
-    if(!ajSqlInit())
-	ajFatal("main Library initialisation failed.");
-    
-    ensInit();
-    
-    dbc = ensDatabaseconnectionNew(client,
-				   user,
-				   password,
-				   host,
-				   port,
-				   socket,
-				   dbname);
-    
-    if(!dbc)
-	ajFatal("main Could not connect as user '%S' to server '%S' "
-		"at port '%S' to database '%S'.", user, host, port, dbname);
-    
-    /* Ensembl Registry test. */
-    
-    ensRegistryLoadFromServer(dbc);
-    
-    ensDatabaseconnectionDel(&dbc);
-    
-    ensRegistryTraceAliases(0);
-    
-    ensRegistryTraceEntries(0);
-    
-    ajDebug("main ensRegistryLoadFromServer finished.\n");
-    
-    dba = ensRegistryGetDatabaseadaptor(group, species);
-    
-    /* Fetch Exon ENSE00001434436 */
-    
-    ea = ensRegistryGetExonadaptor(dba);
-    
-    tmpstr = ajStrNewC("ENSE00001191187");
-    
-    ensExonadaptorFetchByStableIdentifier(ea, tmpstr, 0, &exon);
-    
-    ajFmtPrintF(outfile,
-		"Ensembl Exon '%S'\n",
-		ensExonGetStableIdentifier(exon));
-    
-    ensExonFetchSequenceSeq(exon, &seq);
-    
-    if(seq)
-	ajSeqoutWriteSeq(outseq, seq);
-    else
-	ajFatal("main could not get an AJAX sequence.\n");
-    
-    ajSeqDel(&seq);
-    
-    ensExonDel(&exon);
-    
-    ajStrDel(&tmpstr);
-    
-    /* Fetch Transcript ENST00000262160 */
-    
-    ta = ensRegistryGetTranscriptadaptor(dba);
-    
-    tmpstr = ajStrNewC("ENST00000262160");
-    
-    ensTranscriptadaptorFetchByStableIdentifier(ta, tmpstr, 0, &transcript);
-    
-    ajStrDel(&tmpstr);
-    
-    if(transcript)
-    {
-	feature = ensTranscriptGetFeature(transcript);
-	
-	ajFmtPrintF(outfile,
-		    "Ensembl Transcript '%S' %S:%d:%d:%d\n",
-		    ensTranscriptGetStableIdentifier(transcript),
-		    ensFeatureGetSeqregionName(feature),
-		    ensFeatureGetSeqregionStart(feature),
-		    ensFeatureGetSeqregionEnd(feature),
-		    ensFeatureGetSeqregionStrand(feature));
-	
-	/* Transcript Mapper Test */
-	
-	mrlist = ajListNew();
-	
-	ensTranscriptMapperTranscript2Slice(transcript, 2, 3, mrlist);
-	
-	while(ajListPop(mrlist, (void **) &mr))
-	{
-	    if(ensMapperresultGetType(mr) == ensEMapperresultCoordinate)
-	    {
-		
-		ajFmtPrintF(outfile,
-			    "Ensembl Transcript Mapper map positions 2:3 to "
-			    "Slice %d:%d:%d\n",
-			    ensMapperresultGetStart(mr),
-			    ensMapperresultGetEnd(mr),
-			    ensMapperresultGetStrand(mr));
-	    }
-	    else if(ensMapperresultGetType(mr) == ensEMapperresultGap)
-	    {
-		ajFmtPrintF(outfile,
-			    "Ensembl Transcript Mapper 2:3 to Slice got "
-			    "Mapper Result of type Gap %d:%d. \n",
-			    ensMapperresultGetGapStart(mr),
-			    ensMapperresultGetGapEnd(mr));
-	    }
-	    else
-	    {
-		ajFmtPrintF(outfile,
-			    "Ensembl Transcript Mapper 2:3 to Slice got "
-			    "Mapper Result of other type?\n");	    
-		
-		ensMapperresultTrace(mr, 1);
-	    }
-	    
-	    ensMapperresultDel(&mr);
-	}
-	
-	ajListFree(&mrlist);
-	
-	/* Trace the Transcript Mapper */
-	
-	/*
-	** FIXME: For debugging only!
-	 ensMapperTrace(transcript->ExonCoordMapper, 1);
-	*/
-	
-	/* Fetch the Transcript sequence. */
-	
-	ensTranscriptFetchSequenceSeq(transcript, &seq);
-	
-	ajSeqoutWriteSeq(outseq, seq);
-	
-	ajSeqDel(&seq);
-	
-	translation = ensTranscriptFetchTranslation(transcript);
-	
-	if(translation)
-	{
-	    ensTranslationFetchSequenceSeq(translation, &seq);
-	    
-	    ajSeqoutWriteSeq(outseq, seq);
-	    
-	    ajSeqDel(&seq);
-	}
-	
-	/*
-	** Fetch all Exons of this Transcript and write out their
-	** coordinates.
-	*/
-	
-	exlist = ensTranscriptGetExons(transcript);
-	
-	iter = ajListIterNewread(exlist);
-	
-	while(!ajListIterDone(iter))
-	{
-	    exon = (EnsPExon) ajListIterGet(iter);
-	    
-	    feature = ensExonGetFeature(exon);
-	    
-	    ajFmtPrintF(outfile,
-			"  Ensembl Exon '%S'\n"
-			"    Transcript %u:%u\n"
-			"    Slice %d:%d:%d\n"
-			"    Ensembl Translation\n"
-			"      Transcript %u:%u\n"
-			"      Slice %u:%u\n",
-			ensExonGetStableIdentifier(exon),
-			ensExonGetTranscriptStart(exon, transcript),
-			ensExonGetTranscriptEnd(exon, transcript),
-			ensFeatureGetStart(feature),
-			ensFeatureGetEnd(feature),
-			ensFeatureGetStrand(feature),
-			ensExonGetTranscriptCodingStart(exon, transcript),
-			ensExonGetTranscriptCodingEnd(exon, transcript),
-			ensExonGetSliceCodingStart(exon, transcript),
-			ensExonGetSliceCodingEnd(exon, transcript));
-	}
-	
-	ajListIterDel(&iter);
-	
-	ensTranslationDel(&translation);
-    }
-    
-    ensTranscriptDel(&transcript);
-    
-    ensembltest_registry(outfile);
-    
-    ensembltest_analyses(dba, outfile);
-    
-    ensembltest_meta(dba, outfile);
-    
-    ensembltest_coordinate_systems(dba, outfile);
-    
-    ensembltest_sequence_regions(dba, outfile);
-    
-    ensembltest_assembly_exceptions(dba, outfile);
-    
-    ensembltest_slice_projections(dba, outfile);
-    
-    ensembltest_features(dba, outfile);
-    
-    ensembltest_masking(dba, outseq);
-    
-    ensembltest_markers(dba, outfile);
-    
-    ensembltest_ditags(dba, outfile);
-    
-    ensembltest_transformations(dba, outfile);
-    
-    ensembltest_density(dba, outfile);
-    
-    /* Fetch larger data sets... */
-    
-    if(large)
-    {
-	ensembltest_genes(dba);
-	
-	/* FIXME: Fetch sequence for human chromosome 21.
-	ensembltest_chromosome(dba, outseq);
-	*/
-    }
-    
-    /* Clean up and exit. */
-    
-    ensExit();
-    
-    ajListFree(&list);
-    
-    ajFileClose(&outfile);
-    
-    ajSeqoutClose(outseq);
-    
-    ajSeqoutDel(&outseq);
-    
-    ajStrDel(&user);
-    ajStrDel(&password);
-    ajStrDel(&host);
-    ajStrDel(&port);
-    ajStrDel(&socket);
-    ajStrDel(&dbname);
-    ajStrDel(&species);
-    ajStrDel(&srname);
-    
-    /* Get resource usage */
-#ifndef WIN32    
-    getrusage(RUSAGE_SELF, &ru);
-
-    ajDebug("main resource usage\n"
-	    "  user time %ld s\n"
-	    "  user time %ld us\n"
-	    "  system time %ld s\n"
-	    "  system time %ld us\n"
-	    "  max resident set size %ld kB\n"
-	    "  integral shared text memory size %ld kB*ticks\n"
-	    "  integral unshared data size %ld kB*ticks\n"
-	    "  integral unshared stack size %ld kB*ticks\n"
-	    "  page reclaims %ld\n"
-	    "  page faults %ld\n"
-	    "  swaps %ld\n"
-	    "  block input operations %ld\n"
-	    "  block output operations %ld\n"
-	    "  messages sent %ld\n"
-	    "  messages received %ld\n"
-	    "  signals received %ld\n"
-	    "  voluntary context switches %ld\n"
-	    "  involuntary context switches %ld\n",
-	    /*
-	     ru.ru_utime.tv_sec * 1.0E6 + ru.ru_utime.tv_usec,
-	     ru.ru_stime.tv_sec * 1.0E6 + ru.ru_stime.tv_usec,
-	     */
-	    ru.ru_utime.tv_sec,
-	    ru.ru_utime.tv_usec,
-	    ru.ru_stime.tv_sec,
-	    ru.ru_stime.tv_usec,
-	    ru.ru_maxrss,
-	    ru.ru_ixrss,
-	    ru.ru_idrss,
-	    ru.ru_isrss,
-	    ru.ru_minflt,
-	    ru.ru_majflt,
-	    ru.ru_nswap,
-	    ru.ru_inblock,
-	    ru.ru_oublock,
-	    ru.ru_msgsnd,
-	    ru.ru_msgrcv,
-	    ru.ru_nsignals,
-	    ru.ru_nvcsw,
-	    ru.ru_nivcsw);
-#endif
-
-    
-#if defined(__APPLE__)
-    
-    /* Inserted to allow the leaks application to analyse this process. */
-    
-    ajUser("ensembltest sleeping for 30 seconds.");
-    
-    sleep(30);
-    
-#endif
-    
-    embExit();
-    
-    return 0;
 }
