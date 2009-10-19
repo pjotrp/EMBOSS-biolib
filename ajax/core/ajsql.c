@@ -2088,7 +2088,7 @@ ajuint ajSqlrowGetCurrent(const AjPSqlrow sqlr)
     if(!sqlr)
         return 0;
     
-    return sqlr->Columns;
+    return sqlr->Current;
 }
 
 
