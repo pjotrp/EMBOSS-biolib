@@ -225,7 +225,7 @@ typedef struct AjSNexusSets {
 
 /* @data AjPNexusAssumptions **************************************************
 **
-** Ajax nexus data sssumptions block object.
+** Ajax nexus data assumptions block object.
 **
 ** @alias AjSNexusAssumptions
 ** @alias AjONexusAssumptions
