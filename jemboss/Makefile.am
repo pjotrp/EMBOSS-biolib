@@ -69,7 +69,7 @@ install-exec-hook:
 	echo "(cd $(prefix)/share/$(PACKAGE)/jemboss; java org/emboss/jemboss/Jemboss &)" >> $(DESTDIR)$(bindir)/runJemboss.csh; \
 	chmod 755 $(DESTDIR)$(bindir)/runJemboss.csh; \
 	(cd $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources; sed "s|user.auth=true|user.auth=false|" jemboss.properties | sed "s|jemboss.server=true|jemboss.server=false|" |  sed "s|/packages/emboss/STABLE|$(prefix)|" > jemboss.properties.new; mv -f jemboss.properties.new jemboss.properties; cd -); \
-    sed "s|JEMBOSS_HOME=.|JEMBOSS_HOME=$(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/|" runJemboss.sh > $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/runJemboss.sh; \
+    sed "s|JEMBOSS_HOME=.|JEMBOSS_HOME=$(prefix)/share/$(PACKAGE)/jemboss/|" runJemboss.sh > $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/runJemboss.sh; \
     chmod 755 $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/runJemboss.sh;
     
 pkgdata_DATA = LICENSE readme.html README
