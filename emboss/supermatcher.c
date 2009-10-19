@@ -229,7 +229,7 @@ int main(int argc, char **argv)
 		    ajSeqGetNameS(a), ajSeqGetNameS(b),
 		    start1, start2, end1, end2);
 
-	    if(end1-start1 > oldmax)
+	    if(end1-start1+1 > oldmax)
 	    {
 		oldmax = ((end1-start1)+1);
 		AJRESIZE(path,oldmax*width*sizeof(float));
