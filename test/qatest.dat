@@ -11248,6 +11248,26 @@ FP /HBB_HUMAN +1 +MVHLTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGD +48\n/
 FP /HBA_HUMAN +49 +LS-----HGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLR +93\n/
 //
 
+ID needleall-ex
+AP needleall
+CL -minscore 40 -stdout
+IN ../../data/illumina_adapter_primer.fa
+IN ../../data/test1_illumina.fastq
+IN
+IN
+IN
+FI stderr
+FI needleall.error
+FC = 0
+FI stdout
+FC = 26
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FZ > 1270
+FP /^Illumina_DpnII_Gex_PCR_Primer_2.*(41.0)/
+//
+
 ID newcpgreport-ex
 AP newcpgreport
 IN tembl:u68037
@@ -20710,11 +20730,11 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /^# Identity: +46\/67 \(68\.7%\)/
+FP /^# Identity: +4[4,6]\/6[6,7] \(6[6,8]\.7%\)/
 FP /^# Score: +162\.0\n/
-FP /^AFULL +17 ggtttaaccggttacgt      1\n/
-FP /^      +   \|\|\|\|\|\|\|\|\|\|\|\|\|    \n/
-FP /^APART +13 ggtttaaccggtt----      1\n/
+FP /^AFULL +1[6,7] g+tttaaccggttacgt      1\n/
+FP /^      +   [\|]{10,12}    \n/
+FP /^APART +1[2,3] g+tttaaccggtt----      1\n/
 FC = 44
 //
 
@@ -20848,7 +20868,7 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/11 \(45\.5%\)/
 FP /^# Score: +1\.0\n/
-FP /^asis               1 --P-AW-HEAE      7\n/
+FP /^asis               1 -(-P)|(P-)-AW-HEAE      7\n/
 FP /^asis               1 HEAGAWGHE-E     10\n/
 FC = 42
 //
