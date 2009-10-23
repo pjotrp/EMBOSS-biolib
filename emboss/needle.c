@@ -36,8 +36,8 @@ int main(int argc, char **argv)
     AjPSeqall seqall;
     AjPSeq a;
     AjPSeq b;
-    AjPStr m;
-    AjPStr n;
+    AjPStr alga;
+    AjPStr algb;
     AjPStr ss;
 
     ajuint    lena;
@@ -51,6 +51,9 @@ int main(int argc, char **argv)
 
     float *path;
     ajint *compass;
+    float* ix;
+    float* iy;
+    float* m;
 
     AjPMatrixf matrix;
     AjPSeqCvt cvt = 0;
@@ -97,9 +100,12 @@ int main(int argc, char **argv)
 
     AJCNEW(path, maxarr);
     AJCNEW(compass, maxarr);
+    AJCNEW(m, maxarr);
+    AJCNEW(ix, maxarr);
+    AJCNEW(iy, maxarr);
 
-    m  = ajStrNew();
-    n  = ajStrNew();
+    alga  = ajStrNew();
+    algb  = ajStrNew();
     ss = ajStrNew();
 
     sub = ajMatrixfArray(matrix);
@@ -126,6 +132,15 @@ int main(int argc, char **argv)
 	    AJCRESIZETRY(compass,stlen);
 	    if(!compass)
 		ajDie("Sequences too big. Try 'stretcher'");
+        AJCRESIZETRY(m,stlen);
+        if(!m)
+        ajDie("Sequences too big. Try 'stretcher'");
+        AJCRESIZETRY(ix,stlen);
+        if(!ix)
+        ajDie("Sequences too big. Try 'stretcher'");
+        AJCRESIZETRY(iy,stlen);
+        if(!iy)
+        ajDie("Sequences too big. Try 'stretcher'");
 	    maxarr=len;
 	}
 
@@ -133,29 +148,20 @@ int main(int argc, char **argv)
 	p = ajSeqGetSeqC(a);
 	q = ajSeqGetSeqC(b);
 
-	ajStrAssignC(&m,"");
-	ajStrAssignC(&n,"");
+	ajStrAssignC(&alga,"");
+	ajStrAssignC(&algb,"");
 
-	score= embAlignPathCalcUsingEndGapPenalties(p,q,lena,lenb,gapopen,gapextend,
-			endgapopen, endgapextend, path,sub,cvt,	compass,ajFalse, endweight);
-
-	/*score = embAlignScoreNWMatrix(path,compass,gapopen,gapextend,
-                                      a,b,lena,lenb,sub,cvt,
-				      &start1,&start2);*/
+	embAlignPathCalcWithEndGapPenalties(p,q,lena,lenb,gapopen,gapextend,
+	        endgapopen, endgapextend, path,sub,cvt,
+	        m, ix, iy, compass,ajTrue, endweight);
 
 
-	if (endweight)
-	{
-	    embAlignWalkNWMatrixEndGaps(path,a,b,&m,&n,lena,lenb,&start1,&start2,
-	            compass);
-	}
-	else
-	{
-	    embAlignWalkNWMatrix(path,a,b,&m,&n,lena,lenb,&start1,&start2,gapopen,
-			    gapextend,compass);
-	}
+
+	score = embAlignWalkNWMatrixUsingCompass(path,a,b,&alga,&algb,
+	        lena,lenb,&start1,&start2,
+	        compass, endweight);
 		
-	embAlignReportGlobal(align, a, b ,m, n,
+	embAlignReportGlobal(align, a, b, alga, algb,
 			     start1, start2,
 			     gapopen, gapextend,
 			     score, matrix,
@@ -163,7 +169,7 @@ int main(int argc, char **argv)
 
 	if(!dobrief)
 	{
-	  embAlignCalcSimilarity(m,n,sub,cvt,lena,lenb,&id,&sim,&idx,
+	  embAlignCalcSimilarity(alga,algb,sub,cvt,lena,lenb,&id,&sim,&idx,
 				 &simx);
 	  ajFmtPrintS(&tmpstr,"Longest_Identity = %5.2f%%\n",
 			 id);
@@ -189,9 +195,12 @@ int main(int argc, char **argv)
 
     AJFREE(compass);
     AJFREE(path);
+    AJFREE(ix);
+    AJFREE(iy);
+    AJFREE(m);
 
-    ajStrDel(&n);
-    ajStrDel(&m);
+    ajStrDel(&alga);
+    ajStrDel(&algb);
     ajStrDel(&ss);
     ajStrDel(&tmpstr);
 
