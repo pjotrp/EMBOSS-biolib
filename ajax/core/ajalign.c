@@ -105,7 +105,7 @@ typedef struct AlignSData
 **
 ** Ajax Align Formats
 **
-** List of alignment ouptut formats available
+** List of alignment output formats available
 **
 ** @alias AlignSFormat
 ** @alias AlignOFormat
@@ -116,6 +116,8 @@ typedef struct AlignSData
 ** @attr Nucleotide [AjBool] ajTrue if format can work with nucleotide sequences
 ** @attr Protein [AjBool] ajTrue if format can work with protein sequences
 ** @attr Showheader [AjBool] ajTrue if header appears in output
+** @attr Showseqs [AjBool] ajTrue if sequences appear in output
+** @attr Padding [ajint] Padding to alignment boundary
 ** @attr Minseq [ajint] Minimum number of sequences, 2 for pairwise
 ** @attr Maxseq [ajint] Maximum number of sequences, 2 for pairwise
 ** @attr Write [(void*)] Function to write alignment
@@ -130,6 +132,8 @@ typedef struct AlignSFormat
     AjBool Nucleotide;
     AjBool Protein;
     AjBool Showheader;
+    AjBool Showseqs;
+    ajint  Padding;
     ajint  Minseq;
     ajint  Maxseq;
     void (*Write) (AjPAlign thys);
@@ -147,6 +151,9 @@ static AjBool     alignConsSet(const AjPAlign thys, ajint iali, ajint seqnum,
 			       AjPStr *cons);
 static AlignPData alignData(const AjPAlign thys, ajint iali);
 static void       alignDataDel(AlignPData* pthys, AjBool external);
+static AlignPData alignDataNew(ajint nseqs, AjBool external);
+static void       alignDataSetSequence(AlignPData thys, const AjPSeq seq,
+                    ajint i, AjBool external);
 static void       alignDiff(AjPStr* pmark, const AjPStr seq, char idchar);
 static ajint      alignLen(const AjPAlign thys, ajint iali);
 static const AjPSeq alignSeq(const AjPAlign thys, ajint iseq, ajint iali);
@@ -211,71 +218,71 @@ static AlignOFormat alignFormat[] =
   /*   Alias    nucleic  protein  header min max zero */
   /* standard sequence formats */
   {"unknown",   "Unknown format",
-       AJFALSE, AJFALSE, AJFALSE, AJTRUE,  0, 0, alignWriteSimple},
+     AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0, alignWriteSimple},
   {"fasta",     "Fasta format sequence",
-       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteFasta},
+     AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, AJTRUE, 0, 0, 0, alignWriteFasta},
   {"a2m",     "A2M (fasta) format sequence", /* same as fasta */
-       AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteFasta},
+     AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE, AJTRUE, 0, 0, 0, alignWriteFasta},
   {"msf",       "MSF format sequence",
-       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteMsf},
+     AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, AJTRUE, 0, 0, 0, alignWriteMsf},
   {"clustal",   "clustalw format sequence",
-       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteClustal},
+     AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, AJTRUE, 0, 0, 0, alignWriteClustal},
   {"mega",       "Mega format sequence",
-       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteMega},
+     AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, AJTRUE, 0, 0, 0, alignWriteMega},
   {"meganon",       "Mega non-interleaved format sequence",
-       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteMeganon},
+     AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, AJTRUE, 0, 0, 0, alignWriteMeganon},
   {"nexus",   "nexus/paup format sequence",
-       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteNexus},
+     AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, AJTRUE, 0, 0, 0, alignWriteNexus},
   {"paup",    "nexus/paup format sequence (alias)",
-       AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteNexus},
+     AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE, AJTRUE, 0, 0, 0, alignWriteNexus},
   {"nexusnon",   "nexus/paup non-interleaved format sequence",
-       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteNexusnon},
+     AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, AJTRUE, 0, 0, 0, alignWriteNexusnon},
   {"paupnon",    "nexus/paup non-interleaved format sequence (alias)",
-       AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteNexusnon},
+     AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE, AJTRUE, 0, 0, 0, alignWriteNexusnon},
   {"phylip",   "phylip format sequence",
-       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWritePhylip},
+     AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, AJTRUE, 0, 0, 0, alignWritePhylip},
   {"phylipnon", "phylip non-interleaved format sequence",
-       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWritePhylipnon},
+     AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, AJTRUE, 0, 0, 0, alignWritePhylipnon},
   {"selex",       "SELEX format sequence",
-       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteSelex},
+     AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, AJTRUE, 0, 0, 0, alignWriteSelex},
   {"treecon",       "Treecon format sequence",
-       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteTreecon},
+     AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, AJTRUE, 0, 0, 0, alignWriteTreecon},
   /* trace  for debug */
   {"debug", "Debugging trace of full internal data content",
-       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  0, 0, alignWriteTrace},
+      AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE, 0,  0, 0, alignWriteTrace},
   /* alignment formats */
   {"markx0",    "Pearson MARKX0 format",
-       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  2, 2, alignWriteMarkX0},
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE, 0,  2, 2, alignWriteMarkX0},
   {"markx1",    "Pearson MARKX1 format",
-       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  2, 2, alignWriteMarkX1},
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE, 0,  2, 2, alignWriteMarkX1},
   {"markx2",    "Pearson MARKX2 format",
-       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  2, 2, alignWriteMarkX2},
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE, 0,  2, 2, alignWriteMarkX2},
   {"markx3",    "Pearson MARKX3 format",
-       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  2, 2, alignWriteMarkX3},
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE, 0,  2, 2, alignWriteMarkX3},
   {"markx10",   "Pearson MARKX10 format",
-       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE , 2, 2, alignWriteMarkX10},
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE, 0, 2, 2, alignWriteMarkX10},
   {"match","Start and end of matches between sequence pairs",
-       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  2, 2, alignWriteMatch},
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE, 0,  2, 2, alignWriteMatch},
   {"multiple",  "Simple multiple alignment",
-       AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,  0, 0, alignWriteSimple},
+     AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE, 0,  0, 0, alignWriteSimple},
   {"pair",      "Simple pairwise alignment",
-       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  2, 2, alignWriteSimple},
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE, 0,  2, 2, alignWriteSimple},
   {"simple",    "Simple multiple alignment",
-       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  0, 0, alignWriteSimple},
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE, 0,  0, 0, alignWriteSimple},
   {"sam",       "Sequence alignent/map (SAM) format",
-       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE,  2, 2, alignWriteSam},
+     AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, AJTRUE, 0,  2, 2, alignWriteSam},
   {"bam",       "Binary sequence alignent/map (BAM) format",
-       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE,  2, 2, alignWriteBam},
+     AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, AJTRUE, 0,  2, 2, alignWriteBam},
   {"score",     "Score values for pairs of sequences",
-       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  2, 2, alignWriteScore},
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE, 0,  2, 2, alignWriteScore},
   {"srs",       "Simple multiple sequence format for SRS",
-       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  0, 0, alignWriteSrs},
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE, 0,  0, 0, alignWriteSrs},
   {"srspair",   "Simple pairwise sequence format for SRS",
-       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  2, 2, alignWriteSrsPair},
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE, 0,  2, 2, alignWriteSrsPair},
   {"tcoffee",   "TCOFFEE program format",
-       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, 0, 0, alignWriteTCoffee},
+     AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, AJTRUE, 0, 0, 0, alignWriteTCoffee},
   {NULL, NULL,
-       AJFALSE, AJFALSE, AJFALSE, AJFALSE, 0, 0, NULL}
+     AJFALSE, AJFALSE, AJFALSE, AJFALSE, AJTRUE, 0, 0, 0, NULL}
 };
 
 static char alignDefformat[] = "simple";
@@ -1978,45 +1985,18 @@ AjBool ajAlignDefine(AjPAlign thys, AjPSeqset seqset)
     AlignPData data = NULL;
     ajint i;
     const AjPSeq seq = NULL;
-
-    AJNEW0(data);
     
     if(!thys->Nseqs)
 	thys->Nseqs = ajSeqsetGetSize(seqset);
 
+       
+    data = alignDataNew(thys->Nseqs, thys->SeqExternal);
     
-    data->Nseqs = thys->Nseqs;
-    
-    AJCNEW0(data->Start, thys->Nseqs);
-    AJCNEW0(data->End, thys->Nseqs);
-    AJCNEW0(data->Len, thys->Nseqs);
-    AJCNEW0(data->Offset, thys->Nseqs);
-    AJCNEW0(data->Offend, thys->Nseqs);
-    AJCNEW0(data->SubOffset, thys->Nseqs);
-    AJCNEW0(data->Rev, thys->Nseqs);
-    AJCNEW0(data->Seq, thys->Nseqs);
-    AJCNEW0(data->RealSeq, thys->Nseqs);
     
     for(i=0; i < thys->Nseqs; i++)
     {
 	seq = ajSeqsetGetseqSeq(seqset, i);
-	data->Start[i] = ajSeqGetBegin(seq);
-	data->End[i]   = ajSeqGetEnd(seq);
-	data->Len[i]   = ajSeqGetLen(seq) + ajSeqGetOffset(seq)
-	    + ajSeqGetOffend(seq) - ajSeqCountGaps(seq);
-	data->Offset[i] = ajSeqGetOffset(seq);
-	data->Offend[i] = ajSeqGetOffend(seq);
-	data->SubOffset[i] = 0;
-	data->Rev[i]    = ajSeqIsReversed(seq);
-
-	if(thys->SeqExternal)
-	    data->Seq[i] = seq;
-	else
-	{
-	    data->RealSeq[i] = ajSeqNewSeq(seq);
-	    ajSeqGapStandard(data->RealSeq[i], '-');
-	    data->Seq[i] = data->RealSeq[i];
-	}
+	alignDataSetSequence(data, seq, i, thys->SeqExternal);
     }
     
     data->LenAli = ajSeqsetGetLen(seqset);
@@ -2031,8 +2011,9 @@ AjBool ajAlignDefine(AjPAlign thys, AjPSeqset seqset)
 
 /* @func ajAlignDefineSS ******************************************************
 **
-** Defines a sequence pair as an alignment. The sequences are stored internally
-** and may be edited by alignment processing.
+** Defines a sequence pair as an alignment. Either new copies of the
+** sequences or direct references to them are made depending on the value
+** of the SeqExternal attribute of the alignment object. 
 **
 ** @param [u] thys [AjPAlign] Alignment object
 ** @param [u] seqa [AjPSeq] Sequence object
@@ -2041,10 +2022,9 @@ AjBool ajAlignDefine(AjPAlign thys, AjPSeqset seqset)
 ** @@
 ******************************************************************************/
 
-AjBool ajAlignDefineSS(AjPAlign thys, AjPSeq seqa, AjPSeq seqb)
+AjBool ajAlignDefineSS(AjPAlign thys, const AjPSeq seqa, const AjPSeq seqb)
 {
     AlignPData data = NULL;
-    const AjPSeq seq;
 
     if (!thys->Nseqs)
 	thys->Nseqs = 2;
@@ -2055,85 +2035,28 @@ AjBool ajAlignDefineSS(AjPAlign thys, AjPSeq seqa, AjPSeq seqb)
 	      thys->Nseqs);
     }
 
-    AJNEW0(data);
-
-    data->Nseqs = 2;
-
-    if (!data->Start)
-    {
-	AJCNEW0(data->Start, 2);
-	AJCNEW0(data->End, 2);
-	AJCNEW0(data->Len, 2);
-	AJCNEW0(data->Offset, 2);
-	AJCNEW0(data->Offend, 2);
-	AJCNEW0(data->SubOffset, 2);
-	AJCNEW0(data->Rev, 2);
-	AJCNEW0(data->Seq, 2);
-	AJCNEW0(data->RealSeq, 2);
-    }
+    data = alignDataNew(2, thys->SeqExternal);
 
     ajDebug("ajAlignDefineSS '%S' '%S'\n",
 	    ajSeqGetNameS(seqa), ajSeqGetNameS(seqb));
 
-    if(thys->SeqExternal)
-	data->Seq[0] = seqa;
-    else
+    alignDataSetSequence(data, seqa, 0, thys->SeqExternal);
+    
+    if(!thys->SeqExternal && !ajSeqIsTrimmed(data->RealSeq[0]))
     {
-	if (data->RealSeq[0])
-	    ajSeqDel(&data->RealSeq[0]);
-
-	data->RealSeq[0] = ajSeqNewSeq(seqa);
-	ajSeqGapStandard(data->RealSeq[0], '-');
-
-	if (!ajSeqIsTrimmed(data->RealSeq[0]))
 	    ajSeqTrim(data->RealSeq[0]);
-
-	data->Seq[0] = data->RealSeq[0];
     }
 
-    seq = data->Seq[0];
+    alignDataSetSequence(data, seqb, 1, thys->SeqExternal);
 
-    data->Start[0] = ajSeqGetBegin(seq);
-    data->End[0] = ajSeqGetEnd(seq);
-    data->Len[0] = ajSeqGetLen(seq) + ajSeqGetOffset(seq) + ajSeqGetOffend(seq)
-	- ajSeqCountGaps(seq);
-    data->Offset[0] = ajSeqGetOffset(seq);
-    data->Offend[0] = ajSeqGetOffend(seq);
-    data->SubOffset[0] = 0;
-    data->Rev[0] = ajSeqIsReversed(seq);
-
-    if(thys->SeqExternal)
-	data->Seq[1] = seqb;
-    else
+    if(!thys->SeqExternal && !ajSeqIsTrimmed(data->RealSeq[1]))
     {
-	if (data->RealSeq[1])
-	    ajSeqDel(&data->RealSeq[1]);
-
-	data->RealSeq[1] = ajSeqNewSeq(seqb);
-	ajSeqGapStandard(data->RealSeq[1], '-');
-
-	if (!ajSeqIsTrimmed(data->RealSeq[1]))
 	    ajSeqTrim(data->RealSeq[1]);
-
-	data->Seq[1] = data->RealSeq[1];
     }
-
-    seq = data->Seq[1];
-
-    data->Start[1] = ajSeqGetBegin(seq);
-    data->End[1] = ajSeqGetEnd(seq);
-    data->Len[1] = ajSeqGetLen(seq) + ajSeqGetOffset(seq) + ajSeqGetOffend(seq)
-	- ajSeqCountGaps(seq);
-    data->Offset[1] = ajSeqGetOffset(seq);
-    data->Offend[1] = ajSeqGetOffend(seq);
-    data->SubOffset[1] = 0;
-    data->Rev[1] = ajSeqIsReversed(seq);
 
     data->LenAli = AJMIN(ajSeqGetLen(seqa), ajSeqGetLen(seqb));
 
     ajListPushAppend(thys->Data, data);
-
-    /*ajAlignTraceT(thys, "ajAlignDefineSS result");*/
 
     return ajTrue;
 }
@@ -2161,21 +2084,10 @@ AjBool ajAlignDefineCC(AjPAlign thys, const char* seqa, const char* seqb,
 
     AjPStr tmpstr = NULL;
 
-    AJNEW0(data);
-
     if(!thys->Nseqs)
 	thys->Nseqs = 2;
 
-    data->Nseqs = 2;
-    AJCNEW0(data->Start, 2);
-    AJCNEW0(data->End, 2);
-    AJCNEW0(data->Len, 2);
-    AJCNEW0(data->Offset, 2);
-    AJCNEW0(data->Offend, 2);
-    AJCNEW0(data->SubOffset, 2);
-    AJCNEW0(data->Rev, 2);
-    AJCNEW0(data->Seq, 2);
-    AJCNEW0(data->RealSeq, 2);
+    data = alignDataNew(2, AJFALSE);
 
     ajStrAssignC(&tmpstr, seqa);
     data->Start[0] = 1;
@@ -2427,6 +2339,26 @@ const AjPStr ajAlignGetFormat(const AjPAlign thys)
 	return NULL;
     
     return thys->Formatstr;
+}
+
+
+
+
+/* @func ajAlignFormatShowsSequences ****************************************
+**
+** Returns whether current alignment format includes sequences in output
+**
+** @param [r] thys [const AjPAlign] Alignment object
+** @return [AjBool] true if sequences appear in output
+** @@
+******************************************************************************/
+
+AjBool ajAlignFormatShowsSequences(const AjPAlign thys)
+{
+    if(!thys)
+    return AJTRUE;
+    
+    return alignFormat[thys->Format].Showseqs;
 }
 
 
@@ -4062,24 +3994,14 @@ AjBool ajAlignSetSubRange(AjPAlign thys,
     data->Offend[1]    = len2 - (substart2 + end2 - start2 + 1);
     data->Rev[1]       = rev2;
 
-    if(thys->SeqExternal)
-    {
 	data->LenAli = (end1 - start1) + 1;
 
 	if(data->LenAli < (end2 - start2 + 1))
+	{
 	    data->LenAli = (end2 - start2) + 1;
+	}
 
 	ajDebug("len:  %d\n", data->LenAli);
-    }
-    else
-    {
-        data->LenAli = (end1 - start1) + 1;
-
-	if(data->LenAli < (end2 - start2 + 1))
-	    data->LenAli = (end2 - start2) + 1;
-
-	ajDebug("len:  %d\n", data->LenAli);
-    }
 
     AJFREE(pdata);
 
@@ -4161,6 +4083,85 @@ static void alignDataDel(AlignPData* pthys, AjBool external)
     AJFREE(freeptr);
     AJFREE(*pthys);
 
+    return;
+}
+
+
+
+
+/* @funcstatic alignDataNew ***************************************************
+**
+** Creates and initialises an alignment data object
+** with a specified number of sequences
+**
+** @param [r] nseqs [ajint] Number of sequences alignment data object will
+**                          store
+** @param [r] external [AjBool] Sequence is a pointer to an external
+**                              object, no need for an own copy.
+** @return [AlignPData] Pointer to the new alignment data object
+******************************************************************************/
+
+static AlignPData alignDataNew(ajint nseqs, AjBool external)
+{
+    AlignPData data = NULL;
+
+    AJNEW0(data);
+
+    data->Nseqs = nseqs;
+    AJCNEW0(data->Start, nseqs);
+    AJCNEW0(data->End, nseqs);
+    AJCNEW0(data->Len, nseqs);
+    AJCNEW0(data->Offset, nseqs);
+    AJCNEW0(data->Offend, nseqs);
+    AJCNEW0(data->SubOffset, nseqs);
+    AJCNEW0(data->Rev, nseqs);
+    AJCNEW0(data->Seq, nseqs);
+    if(!external)
+        AJCNEW0(data->RealSeq, nseqs);
+
+    return data;
+}
+
+
+
+
+/* @funcstatic alignDataSetSequence *******************************************
+**
+** Sets specified sequence in the alignment data object 
+**
+** @param [u] thys [AlignPData] Alignment data object
+** @param [r] seq [const AjPSeq] Input sequence, either a new copy is made
+**                               or a direct reference is made depending on
+**                               the external parameter
+** @param [r] iseq [ajint] Index of the sequence
+** @param [r] external [AjBool] Sequence is a pointer to an external
+**                              object
+** @return [void]
+******************************************************************************/
+
+static void alignDataSetSequence(AlignPData thys, const AjPSeq seq, ajint iseq, 
+        AjBool external)
+{
+    thys->Start[iseq] = ajSeqGetBegin(seq);
+    thys->End[iseq]   = ajSeqGetEnd(seq);
+    thys->Len[iseq]   = ajSeqGetLen(seq) + ajSeqGetOffset(seq)
+                        + ajSeqGetOffend(seq) - ajSeqCountGaps(seq);
+    thys->Offset[iseq] = ajSeqGetOffset(seq);
+    thys->Offend[iseq] = ajSeqGetOffend(seq);
+    thys->SubOffset[iseq] = 0;
+    thys->Rev[iseq]    = ajSeqIsReversed(seq);
+
+    if(external)
+    {
+        thys->Seq[iseq] = seq;
+    }
+    else
+    {
+        thys->RealSeq[iseq] = ajSeqNewSeq(seq);
+        ajSeqGapStandard(thys->RealSeq[iseq], '-');
+        thys->Seq[iseq] = thys->RealSeq[iseq];
+    }
+    
     return;
 }
 
