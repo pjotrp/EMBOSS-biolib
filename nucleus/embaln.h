@@ -27,11 +27,14 @@ float embAlignPathCalc(const char *a, const char *b,
                        float * const *sub, const AjPSeqCvt cvt,
                        ajint *compass, AjBool show);
 
-float embAlignPathCalcUsingEndGapPenalties(const char *a, const char *b,
-                       ajint lena, ajint lenb, float gapopen,
-                       float gapextend, float endgapopen, float endgapextend,
+void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
+                       const ajint lena, const ajint lenb,
+                       const float gapopen, const float gapextend,
+                       const float endgapopen, const float endgapextend,
                        float *path, float * const *sub, const AjPSeqCvt cvt,
-                       ajint *compass, AjBool show, AjBool endweight);
+                       float *m, float *ix, float *iy,
+                       ajint *compass, const AjBool show,
+                       const AjBool endweight);
 
 float embAlignPathCalcSW(const char *a, const char *b, ajint lena, ajint lenb,
                          float gapopen, float gapextend, float *path,
@@ -98,11 +101,17 @@ void embAlignWalkNWMatrix(const float *path,
                           float gapopen, float gapextend,
                           const ajint *compass);
 
-void embAlignWalkNWMatrixEndGaps(const float *path, const AjPSeq a, const AjPSeq b,
-              AjPStr *m, AjPStr *n,
-              ajint lena, ajint lenb,
-              ajint *start1, ajint *start2,
-              const ajint *compass);
+float embAlignWalkNWMatrixUsingCompass(const float *path,
+        const AjPSeq a, const AjPSeq b,
+        AjPStr *m, AjPStr *n,
+        const ajint lena, const ajint lenb,
+        ajint *start1, ajint *start2,
+        const ajint *compass, const AjBool endweight);
+
+float embAlignGetScoreNWMatrix(const float *path,
+        const ajint lena, const ajint lenb,
+        ajint *xpos, ajint *ypos,
+        const AjBool endweight);
 
 void embAlignWalkProfileMatrix(const float *path, const ajint *compass,
 			       float gapopen, float gapextend,
@@ -111,6 +120,7 @@ void embAlignWalkProfileMatrix(const float *path, const ajint *compass,
                                ajint clen, ajint slen,
 			       float * const *pmatrix,
 			       ajint *start1, ajint *start2);
+
 void embAlignWalkSWMatrix(const float *path, const ajint *compass,
 			  float gapopen, float gapextend,
                           const AjPSeq a, const AjPSeq b,
