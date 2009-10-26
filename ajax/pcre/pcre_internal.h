@@ -261,6 +261,9 @@ must begin with PCRE_. */
 /* Include the public PCRE header and the definitions of UCP character property
 values. */
 
+/* Rename API to avoid conflict with existing PCRE installations */
+#include "pcreemboss.h"
+
 #include "pcre.h"
 #include "ucp.h"
 
