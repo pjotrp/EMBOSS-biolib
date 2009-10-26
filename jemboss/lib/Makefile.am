@@ -21,7 +21,6 @@ install-exec-hook:
 
 
 pkgdata_DATA = README activation.jar jakarta-regexp-1.2.jar \
-mail.jar jalview.jar \
-JembossPrintAlignment.jar grout.jar
+mail.jar jalview.jar
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/jemboss/lib
