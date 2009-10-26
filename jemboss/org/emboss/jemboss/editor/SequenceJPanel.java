@@ -361,7 +361,7 @@ public class SequenceJPanel extends JPanel
 
     int istart = 0;
     int istop  = seqLength;
-    try
+    if (viewPane != null)
     {
       Rectangle viewRect = ((GraphicSequenceCollection)viewPane).getViewRect();
       istart = viewRect.x/resWidth;
@@ -369,7 +369,6 @@ public class SequenceJPanel extends JPanel
       if(istop > seqLength)
         istop = seqLength;
     }
-    catch( NullPointerException npe) {}
 
 // highlight patterns by making bold
     Vector pvec = null;
