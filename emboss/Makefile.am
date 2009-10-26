@@ -48,7 +48,7 @@ makenucseq makeprotseq marscan \
 maskambignuc maskambigprot maskfeat maskseq \
 matcher megamerger merger msbar \
 mwcontam mwfilter \
-needle newcpgreport newcpgseek newseq \
+needle needleall newcpgreport newcpgseek newseq \
 nohtml noreturn nospace notab notseq nthseq nthseqset \
 octanol oddcomp \
 palindrome pasteseq patmatdb patmatmotifs \
@@ -182,6 +182,7 @@ merger_SOURCES = merger.c
 mwcontam_SOURCES = mwcontam.c
 mwfilter_SOURCES = mwfilter.c
 needle_SOURCES = needle.c
+needleall_SOURCES = needleall.c
 newcpgreport_SOURCES = newcpgreport.c
 newcpgseek_SOURCES = newcpgseek.c
 newseq_SOURCES = newseq.c
