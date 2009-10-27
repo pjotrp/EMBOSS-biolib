@@ -36,8 +36,8 @@
 
 
 
-static void printPathMatrix(float* path, ajint* compass, ajint lena,
-                            ajint lenb);
+static void printPathMatrix(float* path, ajint* compass, ajuint lena,
+                            ajuint lenb);
 
 
 
@@ -234,8 +234,8 @@ float embAlignPathCalc(const char *a, const char *b,
 **
 ** @param [r] a [const char *] first sequence
 ** @param [r] b [const char *] second sequence
-** @param [r] lena [ajint] length of first sequence
-** @param [r] lenb [ajint] length of second sequence
+** @param [r] lena [ajuint] length of first sequence
+** @param [r] lenb [ajuint] length of second sequence
 ** @param [r] gapopen [float] gap opening penalty
 ** @param [r] gapextend [float] gap extension penalty
 ** @param [r] endgapopen [float] end gap opening penalty
@@ -253,7 +253,7 @@ float embAlignPathCalc(const char *a, const char *b,
 ******************************************************************************/
 
 void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
-                       const ajint lena, const ajint lenb,
+                       const ajuint lena, const ajuint lenb,
                        const float gapopen, const float gapextend,
                        const float endgapopen, const float endgapextend,
                        float *path, float * const *sub, const AjPSeqCvt cvt,
@@ -265,7 +265,8 @@ void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
     ajint ypos;
     ajint i;
     ajint j;
-
+    ajint bconvcode;
+    
     float match;
     float ixp;
     float iyp;
@@ -282,10 +283,9 @@ void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
     match = sub[ajSeqcvtGetCodeK(cvt, a[0])][ajSeqcvtGetCodeK(cvt, b[0])];
     compass[0] = 0;
     path[0] = (float) match;
-    if (endweight && -endgapopen > match)
-    {
+
+    if(endweight && -endgapopen > match)
         path[0] = endgapopen;
-    }
 
     ix[0] = INT_MIN;
     iy[0] = INT_MIN;
@@ -295,6 +295,7 @@ void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
     for (i = 1; i < lena; ++i)
     {
         match = sub[ajSeqcvtGetCodeK(cvt, a[i])][ajSeqcvtGetCodeK(cvt, b[0])];
+
         if (!endweight)
         {
             path[i * lenb] = (float) match;
@@ -308,18 +309,17 @@ void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
             ypos=i;
             cursor = ypos * lenb;
             cursorp = (ypos-1) * lenb;
-            double testog = m[cursorp] - endgapopen;
-            double testeg = iy[cursorp] - endgapextend;
+            testog = m[cursorp] - endgapopen;
+            testeg = iy[cursorp] - endgapextend;
 
-            if ( testog >= testeg)
-            {
+            if(testog >= testeg)
                 iy[cursor] = testog;
-            }
-            else {
+            else
                 iy[cursor] = testeg;
-            }
+
             m[cursor] = match - (endgapopen + (i - 1) * endgapextend);
             ix[cursor] = INT_MIN;
+
             if(m[cursor]>iy[cursor])
             {
                 path[cursor] = m[cursor];
@@ -336,7 +336,8 @@ void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
     for (j = 1; j < lenb; ++j)
     {
         match = sub[ajSeqcvtGetCodeK(cvt, a[0])][ajSeqcvtGetCodeK(cvt, b[j])];
-        if (!endweight)
+
+        if(!endweight)
         {
             path[j] = (float) match;
             compass[j] = 0;
@@ -349,18 +350,17 @@ void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
             xpos=j;
             cursor = xpos;
             cursorp = xpos -1;
-            double testog = m[cursorp] - endgapopen;
-            double testeg = iy[cursorp] - endgapextend;
+            testog = m[cursorp] - endgapopen;
+            testeg = iy[cursorp] - endgapextend;
 
-            if ( testog >= testeg)
-            {
+            if(testog >= testeg)
                 ix[cursor] = testog;
-            }
-            else {
+            else
                 ix[cursor] = testeg;
-            }
+
             m[cursor] = match - (endgapopen + (j - 1) * endgapextend);
             iy[cursor] = INT_MIN;
+
             if(m[cursor]>ix[cursor])
             {
                 path[cursor] = m[cursor];
@@ -380,7 +380,7 @@ void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
     while (xpos != lenb)
     {
         ypos = 1;
-        ajint bconvcode = ajSeqcvtGetCodeK(cvt, *++b);
+        bconvcode = ajSeqcvtGetCodeK(cvt, *++b);
 
         while (ypos < lena)
         {
@@ -396,33 +396,22 @@ void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
             iyp = iy[cursorp];
 
             if (mp >= ixp && mp >= iyp)
-            {
                 m[cursor] = mp+match;                     
-            }
             else if (ixp > iyp)
-            {
                 m[cursor] = ixp+match;
-            }
             else
-            {
                 m[cursor] = iyp+match;
-            }
 
             testog = m[++cursorp] - gapopen;
             testeg = iy[cursorp] - gapextend;
             testdg = ix[cursorp] - gapopen;
             
             if ( testog >= testeg && testog >= testdg )
-            {
                 iy[cursor] = testog;
-            }
             else if (testeg >testdg)
-            {
                 iy[cursor] = testeg;
-            }
-            else {
+            else
                 iy[cursor] = testdg;
-            }
 
             cursorp += lenb;
             
@@ -431,16 +420,11 @@ void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
             testdg = iy[cursorp] - gapopen;
             
             if ( testog >= testeg && testog >= testdg )
-            {
                 ix[cursor] = testog;
-            }
             else if (testeg >testdg)
-            {
                 ix[cursor] = testeg;
-            }
-            else {
+            else
                 ix[cursor] = testdg;
-            }
 
             
             mp = m[cursor];
@@ -460,12 +444,14 @@ void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
                 path[cursor] = iy[cursor];
                 compass[cursor] = 2;
             }
+
             ++ypos;
         }
+
         ++xpos;
     }
 
-    if (show)
+    if(show)
         printPathMatrix(path, compass, lena, lenb);
 
     return;
@@ -3262,14 +3248,14 @@ void embAlignReportProfile(AjPAlign align,
 ** Prints path matrix for Needleman-Wunsch
 **
 ** @param [r] path [float*] Alignment path matrix to be printed 
-** @param [r] lena [ajint] length of first sequence
-** @param [r] lenb [ajint] length of second sequence
+** @param [r] lena [ajuint] length of first sequence
+** @param [r] lenb [ajuint] length of second sequence
 ** 
 ** @return [void]
 ******************************************************************************/
 
-static void printPathMatrix(float* path, ajint* compass, ajint lena,
-                            ajint lenb)
+static void printPathMatrix(float* path, ajint* compass, ajuint lena,
+                            ajuint lenb)
 {
     char compasschar;
     ajuint i;
@@ -3277,26 +3263,34 @@ static void printPathMatrix(float* path, ajint* compass, ajint lena,
     static AjPStr outstr = NULL;
 
     ajDebug("path matrix:\n%S\n", outstr);
-    for (i = 0; i < lena; i++)
+
+    for(i = 0; i < lena; i++)
     {
         ajFmtPrintS(&outstr, "%6d ", i);
-        for (j = 0; j < lenb; j++)
+
+        for(j = 0; j < lenb; j++)
         {
-            if (compass[i * lenb + j] == 1)
+            if(compass[i * lenb + j] == 1)
                 compasschar = '<';
             else if (compass[i * lenb + j] == 2)
                 compasschar = '^';
             else
                 compasschar = ' ';
+
             ajFmtPrintAppS(&outstr, "%6.2f%c ", path[i * lenb + j],
                     compasschar);
         }
+
         ajDebug("%S\n", outstr);
     }
+
     ajFmtPrintS(&outstr, "       ");
 
     for (j = 0; j < lenb; ++j)
         ajFmtPrintAppS(&outstr, "%6d  ", j);
+
     ajDebug("%S\n", outstr);
     ajStrDelStatic(&outstr);
+
+    return;
 }
