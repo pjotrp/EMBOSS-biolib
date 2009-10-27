@@ -261,10 +261,10 @@ void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
                        ajint *compass, const AjBool show,
                        const AjBool endweight)
 {
-    ajint xpos;
-    ajint ypos;
-    ajint i;
-    ajint j;
+    ajuint xpos;
+    ajuint ypos;
+    ajuint i;
+    ajuint j;
     ajint bconvcode;
     
     float match;
@@ -296,7 +296,7 @@ void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
     {
         match = sub[ajSeqcvtGetCodeK(cvt, a[i])][ajSeqcvtGetCodeK(cvt, b[0])];
 
-        if (!endweight)
+        if(!endweight)
         {
             path[i * lenb] = (float) match;
             compass[i * lenb] = 0;
@@ -395,9 +395,9 @@ void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
             ixp = ix[cursorp];
             iyp = iy[cursorp];
 
-            if (mp >= ixp && mp >= iyp)
+            if(mp >= ixp && mp >= iyp)
                 m[cursor] = mp+match;                     
-            else if (ixp > iyp)
+            else if(ixp > iyp)
                 m[cursor] = ixp+match;
             else
                 m[cursor] = iyp+match;
@@ -406,9 +406,9 @@ void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
             testeg = iy[cursorp] - gapextend;
             testdg = ix[cursorp] - gapopen;
             
-            if ( testog >= testeg && testog >= testdg )
+            if(testog >= testeg && testog >= testdg)
                 iy[cursor] = testog;
-            else if (testeg >testdg)
+            else if(testeg >testdg)
                 iy[cursor] = testeg;
             else
                 iy[cursor] = testdg;
@@ -419,9 +419,9 @@ void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
             testeg = ix[cursorp] - gapextend;
             testdg = iy[cursorp] - gapopen;
             
-            if ( testog >= testeg && testog >= testdg )
+            if(testog >= testeg && testog >= testdg)
                 ix[cursor] = testog;
-            else if (testeg >testdg)
+            else if(testeg >testdg)
                 ix[cursor] = testeg;
             else
                 ix[cursor] = testdg;
@@ -434,7 +434,7 @@ void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
                 path[cursor] = mp;
                 compass[cursor] = 0;
             }
-            else if (ix[cursor]>=iy[cursor])
+            else if(ix[cursor]>=iy[cursor])
             {
                 path[cursor] = ix[cursor];
                 compass[cursor] = 1;
@@ -975,13 +975,15 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 float embAlignWalkNWMatrixUsingCompass(const float *path,
                                  const AjPSeq a, const AjPSeq b,
                                  AjPStr *m, AjPStr *n,
-                                 const ajint lena, const ajint lenb,
+                                 const ajuint lena, const ajuint lenb,
                                  ajint *start1, ajint *start2,
                                  const ajint *compass, const AjBool endweight)
 {
     ajint xpos;
     ajint ypos;
-    ajint i,j;
+    ajint i;
+    ajint j;
+    ajuint cursor;
     float score;
     const char *p;
     const char *q;
@@ -1013,19 +1015,20 @@ float embAlignWalkNWMatrixUsingCompass(const float *path,
 
     while (xpos >= 0 && ypos >= 0)
     {
-        if (!compass[ypos * lenb + xpos]) /* diagonal */
+        cursor = ypos * lenb + xpos;
+        if(!compass[cursor]) /* diagonal */
         {
             ajStrAppendK(m, p[ypos--]);
             ajStrAppendK(n, q[xpos--]);
             continue;
         }
-        else if (compass[ypos * lenb + xpos] == 1) /* Left, gap(s) in vertical */
+        else if(compass[cursor] == 1) /* Left, gap(s) in vertical */
         {
             ajStrAppendK(m, '.');
             ajStrAppendK(n, q[xpos--]);
             continue;
         }
-        else if (compass[ypos * lenb + xpos] == 2) /* Down, gap(s) in horizontal */
+        else if(compass[cursor] == 2) /* Down, gap(s) in horizontal */
         {
             ajStrAppendK(m, p[ypos--]);
             ajStrAppendK(n, '.');
@@ -1035,20 +1038,16 @@ float embAlignWalkNWMatrixUsingCompass(const float *path,
             ajFatal("Walk Error in NW");
     }
 
-
-    if (endweight)
+    for (;xpos>=0;xpos--)
     {
-        for (;xpos>=0;xpos--)
-        {
-            ajStrAppendK(n, q[xpos]);
-            ajStrAppendK(m, '.');
-        }
+        ajStrAppendK(n, q[xpos]);
+        ajStrAppendK(m, '.');
+    }
 
-        for (;ypos>=0;ypos--)
-        {
-            ajStrAppendK(m, p[ypos]);
-            ajStrAppendK(n, '.');
-        }
+    for (;ypos>=0;ypos--)
+    {
+        ajStrAppendK(m, p[ypos]);
+        ajStrAppendK(n, '.');
     }
 
     *start2 = xpos+1;
@@ -1057,6 +1056,9 @@ float embAlignWalkNWMatrixUsingCompass(const float *path,
     ajStrReverse(m); /* written with append, need to reverse */
     ajStrReverse(n);
 
+    ajDebug("mmm: %S\n", *m);
+    ajDebug("nnn: %S\n", *n);
+    
     return score;
 }
 
@@ -2879,7 +2881,7 @@ float embAlignGetScoreNWMatrix(const float *path,
     *start1= lenb -1;
     *start2 = lena-1;
     
-    if (endweight)
+    if(endweight)
     {
         /* when using end gap penalties the score of the best global alignment
          * is stored in the final cell of the path matrix */
@@ -2888,14 +2890,14 @@ float embAlignGetScoreNWMatrix(const float *path,
     else {
 
         for (i = 0; i < lenb; ++i)
-            if (path[(lena - 1) * lenb + i] > score)
+            if(path[(lena - 1) * lenb + i] > score)
             {
                 *start1 = i;
                 score = path[(lena - 1) * lenb + i];
             }
 
         for (j = 0; j < lena; ++j)
-            if (path[j * lenb + lenb - 1] > score)
+            if(path[j * lenb + lenb - 1] > score)
             {
                 *start2 = j;
                 *start1=lenb-1;
@@ -3272,7 +3274,7 @@ static void printPathMatrix(float* path, ajint* compass, ajuint lena,
         {
             if(compass[i * lenb + j] == 1)
                 compasschar = '<';
-            else if (compass[i * lenb + j] == 2)
+            else if(compass[i * lenb + j] == 2)
                 compasschar = '^';
             else
                 compasschar = ' ';
