@@ -62,10 +62,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libmysql.lib WS2_32.lib"
+				AdditionalDependencies="libmysql.lib eexpat.lib WS2_32.lib"
 				OutputFile="$(OutDir)\ajax.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\..\mysql\Debug"
+				AdditionalLibraryDirectories="..\..\Debug;..\..\..\mysql\Debug"
 				GenerateManifest="false"
 				ModuleDefinitionFile="ajaxdll.def"
 				GenerateDebugInformation="true"
@@ -146,10 +146,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libmysql.lib WS2_32.lib"
+				AdditionalDependencies="libmysql.lib eexpat.lib WS2_32.lib"
 				OutputFile="$(OutDir)\ajax.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\..\mysql\Release"
+				AdditionalLibraryDirectories="..\..\Release;..\..\..\mysql\Release"
 				GenerateManifest="false"
 				ModuleDefinitionFile="ajaxdll.def"
 				GenerateDebugInformation="true"

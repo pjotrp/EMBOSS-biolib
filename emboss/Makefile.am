@@ -6,9 +6,9 @@ EXTRA_DIST = emboss.default.template
 if ISSHARED
 if ISAIXIA64
 AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../ajax/pcre/.libs \
--L../ajax/core/.libs -L../ajax/graphics/.libs -L../ajax/ensembl/.libs \
--L../ajax/ajaxdb/.libs -L../ajax/acd/.libs \
- -lacd -lajaxdb -lensembl -lajaxg -lajax -lepcre
+-L../ajax/expat/.libs -L../ajax/core/.libs -L../ajax/graphics/.libs \
+-L../ajax/ensembl/.libs -L../ajax/ajaxdb/.libs -L../ajax/acd/.libs \
+ -lacd -lajaxdb -lensembl -lajaxg -lajax -leexpat -lepcre
 endif
 endif
 
@@ -75,8 +75,8 @@ yank
 
 
 INCLUDES = -I$(top_srcdir)/nucleus -I$(top_srcdir)/ajax/pcre \
-	-I$(top_srcdir)/ajax/core -I$(top_srcdir)/ajax/graphics \
-	-I$(top_srcdir)/ajax/ensembl \
+	-I$(top_srcdir)/ajax/expat -I$(top_srcdir)/ajax/core \
+	-I$(top_srcdir)/ajax/graphics -I$(top_srcdir)/ajax/ensembl \
 	-I$(top_srcdir)/ajax/ajaxdb -I$(top_srcdir)/ajax/acd \
 	-I$(top_srcdir)/plplot
 
@@ -305,7 +305,8 @@ treetypedisplay_SOURCES = treetypedisplay.c
 LDADD = ../nucleus/libnucleus.la ../ajax/acd/libacd.la \
 	../ajax/ajaxdb/libajaxdb.la ../ajax/ensembl/libensembl.la \
 	../ajax/graphics/libajaxg.la ../ajax/core/libajax.la \
-	../ajax/pcre/libepcre.la ../plplot/libeplplot.la $(XLIB)
+	../ajax/expat/libeexpat.la ../ajax/pcre/libepcre.la \
+	../plplot/libeplplot.la $(XLIB)
 
 pkgdata_DATA = emboss.default.template
 pkgdatadir=$(prefix)/share/$(PACKAGE)

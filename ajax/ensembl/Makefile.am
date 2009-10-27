@@ -5,11 +5,11 @@ lib_LTLIBRARIES = libensembl.la
 
 if ISCYGWIN
 CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import
-CYGWIN_LDENSEMBL = -L../../plplot -L../pcre -L../core -lajax -leplplot -lepcre
+CYGWIN_LDENSEMBL = -L../../plplot -L../expat -L../pcre -L../core -lajax -leplplot -leexpat -lepcre
 endif
 
-INCLUDES = -I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/pcre \
--I$(top_srcdir)/ajax/core
+INCLUDES = -I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/expat \
+-I$(top_srcdir)/ajax/pcre -I$(top_srcdir)/ajax/core
 
 ENSEMBLSRC = ensanalysis.c ensassembly.c ensassemblyexception.c \
 ensassemblymapper.c ensattribute.c ensbaseadaptor.c enscache.c \

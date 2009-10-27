@@ -5,10 +5,10 @@ lib_LTLIBRARIES = libajax.la
 
 if ISCYGWIN
 CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import
-CYGWIN_LDAJAX = -L../../plplot -L../pcre -leplplot -lepcre
+CYGWIN_LDAJAX = -L../../plplot -L../expat -L../pcre -leplplot -leexpat -lepcre
 endif
 
-INCLUDES = -DAJAX_FIXED_ROOT=$(AJAX_FIXED_ROOT) -DAJAX_SYSTEM="$(AJAX_SYSTEM)" -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/pcre
+INCLUDES = -DAJAX_FIXED_ROOT=$(AJAX_FIXED_ROOT) -DAJAX_SYSTEM="$(AJAX_SYSTEM)" -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/pcre -I$(top_srcdir)/ajax/expat
 
 AJAXSRC = ajalign.c ajarr.c ajassert.c \
 ajbase.c ajcall.c ajcod.c \

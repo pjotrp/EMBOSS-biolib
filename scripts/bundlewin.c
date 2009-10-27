@@ -46,6 +46,7 @@
 
 #define COREDEF "ajaxdll.def"
 #define PCREDEF "epcredll.def"
+#define EXPATDEF "eexpatdll.def"
 #define GRAPHICSDEF "ajaxgdll.def"
 #define ENSEMBLDEF "ensembldll.def"
 #define AJAXDBDEF "ajaxdbdll.def"
@@ -137,6 +138,9 @@ static void write_projects(char *basedir, char **prognames, char **uids,
 static void sub_text(char *line, char *tline, char *given, char *rep);
 static void zip_up(char *basedir);
 
+static void extract_expat_funcnames(char *filename, FILE *fout);
+static void make_expat_header_exports(char *basedir);
+
 
 int main(int argc, char **argv)
 {
@@ -192,8 +196,13 @@ int main(int argc, char **argv)
     
     /* Construct exports file (ajaxdll.def) */
 
+
+    
     make_ajax_header_exports(basedir,"core");
     write_coreexports(TMPFILE,basedir);
+
+    make_expat_header_exports(basedir);
+    write_genajaxexport(TMPFILE,basedir,EXPATDEF,"expat","eexpat");
 
 
     make_ajax_header_exports(basedir,"pcre");    
@@ -312,6 +321,21 @@ static void copy_ajax(char *basedir)
 	exit(-1);
     }
 
+    sprintf(command,"cp -f %s/emboss/ajax/expat/*.h %s/win32/ajax/expat",
+            basedir, basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -f %s/emboss/ajax/expat/*.c %s/win32/ajax/expat",
+            basedir, basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
 
     sprintf(command,"cp -f %s/emboss/ajax/core/*.h %s/win32/ajax/core",basedir,
 	    basedir);
@@ -556,6 +580,15 @@ static void copy_DLLs(char *basedir)
 
     sprintf(command,"cp -fR %s/emboss/win32/DLLs/ajax/ensembl.vcproj "
             "%s/win32/DLLs/ajax/ensembl",
+	    basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -fR %s/emboss/win32/DLLs/ajax/expat.vcproj "
+            "%s/win32/DLLs/ajax/expat",
 	    basedir,basedir);
     if(system(command))
     {
@@ -868,6 +901,7 @@ static void create_directories(char *basedir)
 	"win32",
 	"win32/ajax",
         "win32/ajax/pcre",
+        "win32/ajax/expat",
         "win32/ajax/core",
         "win32/ajax/graphics",
         "win32/ajax/ensembl",
@@ -887,6 +921,7 @@ static void create_directories(char *basedir)
 	"win32/plplot-inc/lib/Release",
 	"win32/DLLs/ajax",
 	"win32/DLLs/ajax/pcre",
+	"win32/DLLs/ajax/expat",
 	"win32/DLLs/ajax/core",
 	"win32/DLLs/ajax/graphics",
 	"win32/DLLs/ajax/ensembl",
@@ -896,6 +931,8 @@ static void create_directories(char *basedir)
 	"win32/DLLs/ajax/core/Release",
 	"win32/DLLs/ajax/pcre/Debug",
 	"win32/DLLs/ajax/pcre/Release",
+	"win32/DLLs/ajax/expat/Debug",
+	"win32/DLLs/ajax/expat/Release",
 	"win32/DLLs/ajax/graphics/Debug",
 	"win32/DLLs/ajax/graphics/Release",
 	"win32/DLLs/ajax/ensembl/Debug",
@@ -1896,6 +1933,109 @@ static void make_ajax_header_exports(char *basedir,char *subdir)
     }
 
     fclose(fp);
+
+    return;
+}
+
+
+
+
+static void make_expat_header_exports(char *basedir)
+{
+    char hfname[MAXNAMLEN];
+    FILE *fp = NULL;
+    
+
+    sprintf(hfname,"%s/emboss/ajax/expat/expat.h",basedir);
+
+
+    if(!(fp=fopen(TMPFILE,"w")))
+    {
+	fprintf(stderr,"Cannot open temporary file %s\n",TMPFILE);
+	exit(-1);
+    }
+
+    extract_expat_funcnames(hfname,fp);
+
+    fclose(fp);
+    
+    return;
+}
+
+
+
+
+static void extract_expat_funcnames(char *filename, FILE *fout)
+{
+    FILE *inf;
+    char line[MAXNAMLEN];
+    char tline[MAXNAMLEN];
+    char command[MAXNAMLEN];
+    
+    int found = 0;
+    char *p;
+    char *q;
+    int len;
+    
+
+    if(!(inf=fopen(filename,"r")))
+    {
+	fprintf(stderr,"Cannot open header file %s\n",filename);
+	exit(-1);
+    }
+
+
+    while(fgets(line,MAXNAMLEN,inf))
+    {
+	if(!strstr(line,"XMLPARSEAPI"))
+	    continue;
+
+        if(!fgets(line,MAXNAMLEN,inf))
+        {
+            fprintf(stderr,"Error in expat.h: expected line after "
+                    "XMLPARSEAPI\n");
+            exit(1);
+        }
+
+	/*
+	** Expects start of a function definition here so looks for
+	** an opening parenthesis. Exits if not found
+        */
+	p = line;
+	while(*p && *p!='(')
+	    ++p;
+	if(!*p)
+	{
+	    fprintf(stderr,"Cannot find '(' in line:\n%s",line);
+	    exit(-1);
+	}
+
+	/* Find last character of function name */
+	--p;
+	while(*p == ' ' || *p == '\t')
+	    --p;
+	
+	q = p;
+
+	/* Find start character of function name */
+	while(*p != ' ' && *p != '\t' && p != line)
+	    --p;
+
+        if(p != line)
+            ++p;
+
+	while(*p=='*')
+	    ++p;
+
+	len = q - p + 1;
+
+	strncpy(tline,p,len);
+	tline[len] = '\0';
+
+	fprintf(fout,"e%s\n",tline);
+    }
+
+    fclose(inf);
 
     return;
 }

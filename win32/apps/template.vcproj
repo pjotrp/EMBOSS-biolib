@@ -42,7 +42,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../ajax/core;../../../ajax/pcre;../../../ajax/graphics;../../../ajax/ensembl;../../../ajax/ajaxdb;../../../ajax/acd;../../../nucleus;&quot;../../../plplot-inc/include&quot;;&quot;../../../plplot-inc/include/plplot&quot;"
+				AdditionalIncludeDirectories="../../../ajax/core;../../../ajax/pcre;../../../ajax/expat;../../../ajax/graphics;../../../ajax/ensembl;../../../ajax/ajaxdb;../../../ajax/acd;../../../nucleus;&quot;../../../plplot-inc/include&quot;;&quot;../../../plplot-inc/include/plplot&quot;"
 				PreprocessorDefinitions="VERSION=\&quot;6.1.0.2\&quot;;WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,7 +63,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ajax.lib ajaxg.lib ensembl.lib ajaxdb.lib acd.lib nucleus.lib plplot.lib"
+				AdditionalDependencies="eexpat.lib ajax.lib ajaxg.lib ensembl.lib ajaxdb.lib acd.lib nucleus.lib plplot.lib"
 				OutputFile="$(OutDir)/<PROGNAME>.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../../DLLs/Debug;../../../DLLs/Debug;&quot;../../../plplot-inc/lib/Debug&quot;"
@@ -121,7 +121,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../../ajax/core;../../../ajax/pcre;../../../ajax/graphics;../../../ajax/ensembl;../../../ajax/ajaxdb;../../../ajax/acd;../../../nucleus;&quot;../../../plplot-inc/include&quot;;&quot;../../../plplot-inc/include/plplot&quot;"
+				AdditionalIncludeDirectories="../../../ajax/core;../../../ajax/pcre;../../../ajax/expat;../../../ajax/graphics;../../../ajax/ensembl;../../../ajax/ajaxdb;../../../ajax/acd;../../../nucleus;&quot;../../../plplot-inc/include&quot;;&quot;../../../plplot-inc/include/plplot&quot;"
 				PreprocessorDefinitions="VERSION=\&quot;6.1.0.2\&quot;;WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -140,7 +140,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ajax.lib ajaxg.lib ensembl.lib ajaxdb.lib acd.lib nucleus.lib plplot.lib"
+				AdditionalDependencies="eexpat.lib ajax.lib ajaxg.lib ensembl.lib ajaxdb.lib acd.lib nucleus.lib plplot.lib"
 				OutputFile="$(OutDir)/<PROGNAME>.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../../DLLs/Release;../../../DLLs/Release;&quot;../../../plplot-inc/lib/Release&quot;"

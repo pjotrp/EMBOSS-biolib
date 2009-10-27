@@ -5,11 +5,13 @@ lib_LTLIBRARIES = libacd.la
 
 if ISCYGWIN
 CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import
-CYGWIN_LDACD = -L../../plplot -L../pcre -L../core -L../graphics -L../ensembl \
--L../ajaxdb -lajaxdb -lensembl -lajaxg -lajax -leplplot -lepcre
+CYGWIN_LDACD = -L../../plplot -L../pcre -L../expat -L../core -L../graphics \
+-L../ensembl -L../ajaxdb -lajaxdb -lensembl -lajaxg -lajax -leplplot \
+-leexpat -lepcre
 endif
 
 INCLUDES = -I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/pcre \
+-I$(top_srcdir)/ajax/expat \
 -I$(top_srcdir)/ajax/core \
 -I$(top_srcdir)/ajax/graphics \
 -I$(top_srcdir)/ajax/ensembl \
