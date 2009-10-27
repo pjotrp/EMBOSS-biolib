@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 
     ajuint    lena;
     ajuint    lenb;
-    ajint     k;
+    ajuint     k;
 
     const char   *p;
     const char   *q;
@@ -161,21 +161,16 @@ int main(int argc, char **argv)
                     gapextend, endgapopen, endgapextend, path,sub,cvt,
                     m, ix, iy, compass,ajFalse, endweight);
 
-            if(!ajAlignFormatShowsSequences(align))
-            {
-                score = embAlignGetScoreNWMatrix(path, lena, lenb,
-                        &start1, &start2, endweight);
-            }
-            else
-            {
-                score = embAlignWalkNWMatrixUsingCompass(path,seqa, seqb,
-                        &alga, &algb, lena, lenb, &start1, &start2, compass,
-                        endweight);
-            }
+            score = embAlignWalkNWMatrixUsingCompass(path,seqa, seqb,
+                    &alga, &algb, lena, lenb, &start1, &start2, compass,
+                    endweight);
+
             if (score > minscore){
                 if(!ajAlignFormatShowsSequences(align))
                 {
-                    ajAlignDefineSS(align, seqa, seqb);
+                    ajAlignDefineCC(align, ajStrGetPtr(alga),
+                            ajStrGetPtr(algb), ajSeqGetNameC(seqa),
+                            ajSeqGetNameC(seqb));
                     ajAlignSetScoreR(align, score);
                 }
                 else
