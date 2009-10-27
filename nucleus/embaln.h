@@ -104,7 +104,7 @@ void embAlignWalkNWMatrix(const float *path,
 float embAlignWalkNWMatrixUsingCompass(const float *path,
         const AjPSeq a, const AjPSeq b,
         AjPStr *m, AjPStr *n,
-        const ajint lena, const ajint lenb,
+        const ajuint lena, const ajuint lenb,
         ajint *start1, ajint *start2,
         const ajint *compass, const AjBool endweight);
 
