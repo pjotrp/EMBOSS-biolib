@@ -11250,15 +11250,14 @@ FP /HBA_HUMAN +49 +LS-----HGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLR +93\n/
 
 ID needleall-ex
 AP needleall
-CL -minscore 40 -stdout
-IN ../../data/illumina_adapter_primer.fa
-IN ../../data/test1_illumina.fastq
-IN
-IN
+CL -minscore 40 -stdout -auto
+CL ../../data/illumina_adapter_primer.fa
+CL ../../data/test1_illumina.fastq
 IN
 FI stderr
 FI needleall.error
-FC = 0
+FP /Alignment score \(21.5\) is less than minimum score/
+FC = 752
 FI stdout
 FC = 26
 FP 0 /Warning: /
@@ -20856,7 +20855,8 @@ FC = 40
 
 ID align-needle-withendweight
 AP needle
-CL -gapopen=8 -gapextend=8 -endopen=8 -endextend=8 -stdout -datafile=EBLOSUM50 -endweight
+CL -gapopen=8 -gapextend=8 -endopen=8 -endextend=8 -stdout
+CL -datafile=EBLOSUM50 -endweight
 IN asis::PAWHEAE
 IN asis::HEAGAWGHEE
 IN
@@ -20871,6 +20871,47 @@ FP /^# Score: +1\.0\n/
 FP /^asis               1 -(-P)|(P-)-AW-HEAE      7\n/
 FP /^asis               1 HEAGAWGHE-E     10\n/
 FC = 42
+//
+
+ID align-needleall-withendweight
+AP needleall
+CL -auto -stdout -endweight -aformat simple
+CL asis::DVDAKTPIVLISGGVGLTPMVSMLKVALQAPPRQVVFVHGARNSAVHAMRDRLREAAKTYENLDLFV\
+CL FYDQPLPEDVQGRDYDYPGLVDVKQIEKSILLPDADYYICGPIPFMRMQHDALKNLGIHEARIHYEV
+CL asis::RDDEERPMILIAGGTGFSYARSILLTALARNPNRDITIYWGGREEQHLYDLCELEALSLKHPGLQVV\
+CL PVVEQPEAGWRGRTGTVLTAVLQDHGTLAEHDIYIAGRFEMAKIARDLFCSERNAREDRLFGDA
+IN
+IN
+FI needleall.error
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +31\/154 \(20\.1%\)/
+FP /^# Score: +62\.5\n/
+FP /^asis +43 ---R-------E-EQH-LYD--LCEL-EALSLKHPGLQVVPVVEQPEAGW     77\n/
+FP /^asis +95 --K------S-IL----LPDADYYICGPIPFMRMQHDAL-KNLGIHEARI    130\n/
+FC = 51
+//
+
+ID align-needleall-noendweight
+AP needleall
+CL -auto -stdout -noendweight
+CL asis::DVDAKTPIVLISGGVGLTPMVSMLKVALQAPPRQVVFVHGARNSAVHAMRDRLREAAKTYENLDLFV\
+CL FYDQPLPEDVQGRDYDYPGLVDVKQIEKSILLPDADYYICGPIPFMRMQHDALKNLGIHEARIHYEV
+CL asis::RDDEERPMILIAGGTGFSYARSILLTALARNPNRDITIYWGGREEQHLYDLCELEALSLKHPGLQVV\
+CL PVVEQPEAGWRGRTGTVLTAVLQDHGTLAEHDIYIAGRFEMAKIARDLFCSERNAREDRLFGDA
+IN
+IN
+FI needleall.error
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^asis asis 155 \(63.5\)\n/
+FC = 4
 //
 
 ID align-water-full
