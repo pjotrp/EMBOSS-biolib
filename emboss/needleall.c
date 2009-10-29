@@ -44,13 +44,14 @@ int main(int argc, char **argv)
     AjPStr alga;
     AjPStr algb;
     AjPStr ss;
+    AjPFile errorf;
 
-    ajuint    lena;
-    ajuint    lenb;
-    ajuint     k;
+    ajuint lena;
+    ajuint lenb;
+    ajuint k;
 
-    const char   *p;
-    const char   *q;
+    const char *p;
+    const char *q;
 
     ajint start1 = 0;
     ajint start2 = 0;
@@ -99,8 +100,8 @@ int main(int argc, char **argv)
     minscore = ajAcdGetFloat("minscore");
     dobrief   = ajAcdGetBoolean("brief");
     endweight   = ajAcdGetBoolean("endweight");
-
     align     = ajAcdGetAlign("outfile");
+    errorf    = ajAcdGetOutfile("errorfile");
 
     gapopen = ajRoundF(gapopen, 8);
     gapextend = ajRoundF(gapextend, 8);
@@ -161,7 +162,7 @@ int main(int argc, char **argv)
                     gapextend, endgapopen, endgapextend, path,sub,cvt,
                     m, ix, iy, compass,ajFalse, endweight);
 
-            score = embAlignWalkNWMatrixUsingCompass(path,seqa, seqb,
+            score = embAlignWalkNWMatrixUsingCompass(path, seqa, seqb,
                     &alga, &algb, lena, lenb, &start1, &start2, compass,
                     endweight);
 
@@ -199,6 +200,12 @@ int main(int argc, char **argv)
                 ajAlignWrite(align);
                 ajAlignReset(align);
             }
+            else
+                ajFmtPrintF(errorf,
+                        "Alignment score (%.1f) is less than minimum score"
+                        "(%.1f) for sequences %s vs %s\n",
+                        score, minscore, ajSeqGetNameC(seqa),
+                        ajSeqGetNameC(seqb));
         }
     }
     
@@ -210,7 +217,8 @@ int main(int argc, char **argv)
 
     ajAlignClose(align);
     ajAlignDel(&align);
-    
+    ajFileClose(&errorf);
+
 
     ajSeqallDel(&seqall);
     ajSeqsetDel(&seqset);
