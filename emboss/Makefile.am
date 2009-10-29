@@ -15,7 +15,7 @@ endif
 
 check_PROGRAMS = acdlog acdrelations acdxsd ajtest \
 complex corbatest ensembltest \
-entrails entrailsbook entrailshtml entrailswiki giep histogramtest intconv \
+entrails entrailsbook entrailshtml entrailswiki histogramtest intconv \
 origsplitter origunion \
 newcoils \
 patmattest \

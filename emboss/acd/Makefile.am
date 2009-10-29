@@ -21,7 +21,7 @@ pkgdata_DATA = aaindexextract.acd abiview.acd acdc.acd acdlog.acd \
 	extractalign.acd extractfeat.acd extractseq.acd \
 	featcopy.acd featreport.acd findkm.acd freak.acd \
 	fuzznuc.acd fuzzpro.acd fuzztran.acd \
-	garnier.acd geecee.acd getorf.acd giep.acd \
+	garnier.acd geecee.acd getorf.acd \
 	helixturnhelix.acd histogramtest.acd \
 	hmoment.acd iep.acd infoalign.acd infobase.acd inforesidue.acd \
         infoseq.acd intconv.acd \
