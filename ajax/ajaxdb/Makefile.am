@@ -4,14 +4,15 @@ lib_LTLIBRARIES = libajaxdb.la
 
 
 if ISCYGWIN
-CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import
-CYGWIN_LDAJAXDB = -L../../plplot -L../pcre -L../expat -L../core -L../ensembl \
--lensembl lajax -leplplot -leexpat -lepcre
+CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias \
+-Wl,--export-all-symbols -Wl,--enable-auto-import
+CYGWIN_LDAJAXDB = -L../../plplot -L../pcre -L../expat -L../zlib -L../core \
+-L../ensembl -lensembl lajax -leplplot -leexpat -lepcre -lezlib
 endif
 
 INCLUDES = -I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/pcre \
--I$(top_srcdir)/ajax/expat -I$(top_srcdir)/ajax/core \
--I$(top_srcdir)/ajax/ensembl
+-I$(top_srcdir)/ajax/expat -I$(top_srcdir)/ajax/zlib \
+-I$(top_srcdir)/ajax/core -I$(top_srcdir)/ajax/ensembl
 
 AJAXDBSRC = ajseqdb.c
 

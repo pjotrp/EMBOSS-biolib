@@ -573,7 +573,7 @@ CHECK_THREADS
 
 
 AC_OUTPUT(plplot/Makefile plplot/lib/Makefile nucleus/Makefile ajax/Makefile
-ajax/pcre/Makefile ajax/expat/Makefile ajax/core/Makefile
+ajax/pcre/Makefile ajax/expat/Makefile ajax/zlib/Makefile ajax/core/Makefile
 ajax/graphics/Makefile ajax/ensembl/Makefile ajax/ajaxdb/Makefile
 ajax/acd/Makefile
 emboss/Makefile emboss/acd/Makefile test/Makefile test/data/Makefile

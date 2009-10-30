@@ -47,6 +47,7 @@
 #define COREDEF "ajaxdll.def"
 #define PCREDEF "epcredll.def"
 #define EXPATDEF "eexpatdll.def"
+#define ZLIBDEF "ezlibdll.def"
 #define GRAPHICSDEF "ajaxgdll.def"
 #define ENSEMBLDEF "ensembldll.def"
 #define AJAXDBDEF "ajaxdbdll.def"
@@ -140,6 +141,10 @@ static void zip_up(char *basedir);
 
 static void extract_expat_funcnames(char *filename, FILE *fout);
 static void make_expat_header_exports(char *basedir);
+static void make_zlib_header_exports(char *basedir);
+static void extract_zlib_funcnames(char *filename, FILE *fout);
+
+
 
 
 int main(int argc, char **argv)
@@ -203,6 +208,9 @@ int main(int argc, char **argv)
 
     make_expat_header_exports(basedir);
     write_genajaxexport(TMPFILE,basedir,EXPATDEF,"expat","eexpat");
+
+    make_zlib_header_exports(basedir);
+    write_genajaxexport(TMPFILE,basedir,ZLIBDEF,"zlib","ezlib");
 
 
     make_ajax_header_exports(basedir,"pcre");    
@@ -330,6 +338,22 @@ static void copy_ajax(char *basedir)
     }
 
     sprintf(command,"cp -f %s/emboss/ajax/expat/*.c %s/win32/ajax/expat",
+            basedir, basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -f %s/emboss/ajax/zlib/*.h %s/win32/ajax/zlib",
+            basedir, basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -f %s/emboss/ajax/zlib/*.c %s/win32/ajax/zlib",
             basedir, basedir);
     if(system(command))
     {
@@ -589,6 +613,15 @@ static void copy_DLLs(char *basedir)
 
     sprintf(command,"cp -fR %s/emboss/win32/DLLs/ajax/expat.vcproj "
             "%s/win32/DLLs/ajax/expat",
+	    basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -fR %s/emboss/win32/DLLs/ajax/zlib.vcproj "
+            "%s/win32/DLLs/ajax/zlib",
 	    basedir,basedir);
     if(system(command))
     {
@@ -902,6 +935,7 @@ static void create_directories(char *basedir)
 	"win32/ajax",
         "win32/ajax/pcre",
         "win32/ajax/expat",
+        "win32/ajax/zlib",
         "win32/ajax/core",
         "win32/ajax/graphics",
         "win32/ajax/ensembl",
@@ -922,6 +956,7 @@ static void create_directories(char *basedir)
 	"win32/DLLs/ajax",
 	"win32/DLLs/ajax/pcre",
 	"win32/DLLs/ajax/expat",
+	"win32/DLLs/ajax/zlib",
 	"win32/DLLs/ajax/core",
 	"win32/DLLs/ajax/graphics",
 	"win32/DLLs/ajax/ensembl",
@@ -933,6 +968,8 @@ static void create_directories(char *basedir)
 	"win32/DLLs/ajax/pcre/Release",
 	"win32/DLLs/ajax/expat/Debug",
 	"win32/DLLs/ajax/expat/Release",
+	"win32/DLLs/ajax/zlib/Debug",
+	"win32/DLLs/ajax/zlib/Release",
 	"win32/DLLs/ajax/graphics/Debug",
 	"win32/DLLs/ajax/graphics/Release",
 	"win32/DLLs/ajax/ensembl/Debug",
@@ -2023,6 +2060,111 @@ static void extract_expat_funcnames(char *filename, FILE *fout)
 
         if(p != line)
             ++p;
+
+	while(*p=='*')
+	    ++p;
+
+	len = q - p + 1;
+
+	strncpy(tline,p,len);
+	tline[len] = '\0';
+
+	fprintf(fout,"e%s\n",tline);
+    }
+
+    fclose(inf);
+
+    return;
+}
+
+
+
+
+static void make_zlib_header_exports(char *basedir)
+{
+    char hfname[MAXNAMLEN];
+    FILE *fp = NULL;
+    
+
+    sprintf(hfname,"%s/emboss/ajax/zlib/zlib.h",basedir);
+
+
+    if(!(fp=fopen(TMPFILE,"w")))
+    {
+	fprintf(stderr,"Cannot open temporary file %s\n",TMPFILE);
+	exit(-1);
+    }
+
+    extract_zlib_funcnames(hfname,fp);
+
+    fclose(fp);
+    
+    return;
+}
+
+
+
+
+static void extract_zlib_funcnames(char *filename, FILE *fout)
+{
+    FILE *inf;
+    char line[MAXNAMLEN];
+    char tline[MAXNAMLEN];
+    char command[MAXNAMLEN];
+    
+    int found = 0;
+    char *p;
+    char *q;
+    int len;
+    
+
+    if(!(inf=fopen(filename,"r")))
+    {
+	fprintf(stderr,"Cannot open header file %s\n",filename);
+	exit(-1);
+    }
+
+
+    while(fgets(line,MAXNAMLEN,inf))
+    {
+        if(!strncmp(line,"/*",2))
+        {
+            while(strncmp(line,"*/",2))
+                if(!fgets(line,MAXNAMLEN,inf))
+                {
+                    fprintf(stderr,"extract_zlib_funcnames: Can't find /*\n");
+                    exit(1);
+                }
+            
+            continue;
+        }
+
+        if(!strstr(line,"ZEXTERN"))
+	    continue;
+
+	/*
+	** Expects start of a function definition here so looks for
+	** "OF(". Exits if not found
+        */
+        p = strstr(line,"OF(");
+	if(!p)
+	{
+	    fprintf(stderr,"Cannot find 'OF(' in line:\n%s",line);
+	    exit(-1);
+	}
+
+	/* Find last character of function name */
+	--p;
+	while(*p == ' ' || *p == '\t')
+	    --p;
+	
+	q = p;
+
+	/* Find start character of function name */
+	while(*p != ' ' && *p != '\t' && p != line)
+	    --p;
+
+        ++p;
 
 	while(*p=='*')
 	    ++p;

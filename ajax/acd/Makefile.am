@@ -4,14 +4,16 @@ lib_LTLIBRARIES = libacd.la
 
 
 if ISCYGWIN
-CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import
-CYGWIN_LDACD = -L../../plplot -L../pcre -L../expat -L../core -L../graphics \
--L../ensembl -L../ajaxdb -lajaxdb -lensembl -lajaxg -lajax -leplplot \
--leexpat -lepcre
+CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias \
+-Wl,--export-all-symbols -Wl,--enable-auto-import
+CYGWIN_LDACD = -L../../plplot -L../pcre -L../expat -L../zlib -L../core \
+-L../graphics -L../ensembl -L../ajaxdb -lajaxdb -lensembl -lajaxg -lajax \
+-leplplot -leexpat -lepcre -lezlib
 endif
 
 INCLUDES = -I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/pcre \
 -I$(top_srcdir)/ajax/expat \
+-I$(top_srcdir)/ajax/zlib \
 -I$(top_srcdir)/ajax/core \
 -I$(top_srcdir)/ajax/graphics \
 -I$(top_srcdir)/ajax/ensembl \
@@ -19,7 +21,6 @@ INCLUDES = -I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/pcre \
 
 ACDSRC = ajacd.c
 
-# Uncomment and amend when there are some real headers
 include_HEADERS = ajacd.h
 
 libacd_la_SOURCES = $(ACDSRC)

@@ -11,15 +11,16 @@ endif
 if ISCYGWIN
 CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias \
 	-Wl,--export-all-symbols -Wl,--enable-auto-import
-CYGWIN_LIBS = -L../plplot -L../ajax/pcre -L../ajax/expat -L../ajax/core \
--L../ajax/graphics -L../ajax/ensembl -L../ajax/ajaxdb -L../ajax/acd \
--lacd -lajaxdb -lensembl -lajaxg -lajax -leexpat -lepcre -leplplot
+CYGWIN_LIBS = -L../plplot -L../ajax/pcre -L../ajax/expat -L../ajax/zlib \
+-L../ajax/core -L../ajax/graphics -L../ajax/ensembl -L../ajax/ajaxdb \
+-L../ajax/acd -lacd -lajaxdb -lensembl -lajaxg -lajax -leexpat -lepcre \
+-lezlib -leplplot
 endif
 
 
 INCLUDES = -I$(top_srcdir)/plplot $(X_CFLAGS) -I$(srcdir)/ \
 	-I$(top_srcdir)/ajax -I$(top_srcdir)/ajax/pcre \
-	-I$(top_srcdir)/ajax/expat \
+	-I$(top_srcdir)/ajax/expat -I$(top_srcdir)/ajax/zlib \
 	-I$(top_srcdir)/ajax/core -I$(top_srcdir)/ajax/graphics \
 	-I$(top_srcdir)/ajax/ensembl -I$(top_srcdir)/ajax/ajaxdb \
 	-I$(top_srcdir)/ajax/acd
