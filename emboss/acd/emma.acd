@@ -336,7 +336,7 @@ section: additional [
       default: "10.0"
       minimum: "0.0"
       information: "Multiple alignment: Gap opening penalty"
-      valid: "Positive foating point number"
+      valid: "Positive floating point number"
       help: "The penalty for opening a gap in the alignment.
              Increasing the gap opening penalty will make gaps less
              frequent."
@@ -348,7 +348,7 @@ section: additional [
       default: "5.0"
       minimum: "0.0"
       information: "Multiple alignment: Gap extension penalty"
-      valid: "Positive foating point number"
+      valid: "Positive floating point number"
       help: "The penalty for extending a gap by 1 residue. Increasing
              the gap extension penalty will make gaps shorter. Terminal gaps
              are not penalised."
