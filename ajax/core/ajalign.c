@@ -2016,8 +2016,8 @@ AjBool ajAlignDefine(AjPAlign thys, AjPSeqset seqset)
 ** of the SeqExternal attribute of the alignment object. 
 **
 ** @param [u] thys [AjPAlign] Alignment object
-** @param [u] seqa [AjPSeq] Sequence object
-** @param [u] seqb [AjPSeq] Second sequence object
+** @param [r] seqa [const AjPSeq] Sequence object
+** @param [r] seqb [const AjPSeq] Second sequence object
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
