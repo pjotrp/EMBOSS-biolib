@@ -293,7 +293,7 @@ int main(int argc, char **argv)
     AjBool  dspinv = AJTRUE;		/* display invalid motifs */
     AjBool  dspmap = AJTRUE;		/* display map of motifs */
     AjPGraph graph = NULL;		/* graphics object */
-    AjPGraphPlpData plot = NULL;	      /* sub set of graphics object */
+    AjPGraphdata plot = NULL;	      /* sub set of graphics object */
     
     PestfindPData pstdat = NULL;	/* PEST find data object */
     /*
@@ -705,21 +705,21 @@ int main(int argc, char **argv)
     ajListIterDel(&itrlst);
     
     /* Display graphics. */
-    plot = ajGraphPlpDataNew();
+    plot = ajGraphdataNew();
     ajGraphxySetOverLap(graph, ajFalse);
-    ajGraphPlpDataSetTypeC(plot, "2D Plot");
-    ajGraphPlpDataSetTitleC(plot, "PEST-find");
+    ajGraphdataSetTypeC(plot, "2D Plot");
+    ajGraphdataSetTitleC(plot, "PEST-find");
     ajFmtPrintS(&map, "Sequence %s from %d to %d", ajSeqGetNameC(seq),
 		begin, end);
-    ajGraphPlpDataSetXTitle(plot, map);
-    ajGraphPlpDataSetYTitleC(plot, "PEST score");
-    ajGraphPlpDataSetMaxMin(plot, (float) 1, (float) seqlen, ymin, ymax);
-    ajGraphPlpDataSetMaxima(plot, (float) 1, (float) seqlen, ymin, ymax);
+    ajGraphdataSetXTitle(plot, map);
+    ajGraphdataSetYTitleC(plot, "PEST score");
+    ajGraphdataSetMaxMin(plot, (float) 1, (float) seqlen, ymin, ymax);
+    ajGraphdataSetMaxima(plot, (float) 1, (float) seqlen, ymin, ymax);
     /* threshold line */
-    ajGraphPlpDataAddLine(plot, (float) 0, (float) trshld, (float) seqlen,
+    ajGraphdataAddLine(plot, (float) 0, (float) trshld, (float) seqlen,
 			  (float) trshld, AQUAMARINE);
     ajFmtPrintS(&map, "threshold %+.2f", trshld);
-    ajGraphPlpDataAddText(plot, (float) 0 + 2, (float) trshld + 2,
+    ajGraphdataAddText(plot, (float) 0 + 2, (float) trshld + 2,
 			  AQUAMARINE, ajStrGetPtr(map));
     ajListSort(reslst, pestfind_compare_position);
     itrlst = ajListIterNewread(reslst);
@@ -728,35 +728,35 @@ int main(int argc, char **argv)
 	pstdat = (PestfindPData) ajListIterGet(itrlst);
 	if((pstdat->Type) == PSTPOT)
 	{
-	    ajGraphPlpDataAddLine(plot, (float) (pstdat->Begin),
+	    ajGraphdataAddLine(plot, (float) (pstdat->Begin),
 				  (float) (pstdat->Pscore),
 				  (float) (pstdat->End),
 				  (float) (pstdat->Pscore), GREEN);
 	    ajFmtPrintS(&map, "%+.2f", (pstdat->Pscore));
-	    ajGraphPlpDataAddText(plot, (float) (pstdat->Begin) + 2,
+	    ajGraphdataAddText(plot, (float) (pstdat->Begin) + 2,
 				  (float) (pstdat->Pscore) + 2, GREEN,
 				  ajStrGetPtr(map));
 	}
 
 	if((pstdat->Type) == PSTWEA)
 	{
-	    ajGraphPlpDataAddLine(plot, (float) (pstdat->Begin),
+	    ajGraphdataAddLine(plot, (float) (pstdat->Begin),
 				  (float) (pstdat->Pscore),
 				  (float) (pstdat->End),
 				  (float) (pstdat->Pscore), RED);
 	    ajFmtPrintS(&map, "%+.2f", (pstdat->Pscore));
-	    ajGraphPlpDataAddText(plot, (float) (pstdat->Begin) + 2,
+	    ajGraphdataAddText(plot, (float) (pstdat->Begin) + 2,
 				  (float) (pstdat->Pscore) + 2, RED,
 				  ajStrGetPtr(map));
 	}
 
 	if((pstdat->Type) == PSTINV)
 	{
-	    ajGraphPlpDataAddLine(plot, (float) (pstdat->Begin),
+	    ajGraphdataAddLine(plot, (float) (pstdat->Begin),
 				  (float) (pstdat->Pscore),
 				  (float) (pstdat->End),
 				  (float) (pstdat->Pscore), BROWN);
-	    ajGraphPlpDataAddText(plot, (float) (pstdat->Begin) + 2,
+	    ajGraphdataAddText(plot, (float) (pstdat->Begin) + 2,
 				  (float) (pstdat->Pscore) + 2, BROWN,
 				  "inv.");
 	}

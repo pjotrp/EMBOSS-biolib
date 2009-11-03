@@ -1,6 +1,6 @@
 application: needleall [
   documentation: "Many-to-many pairwise alignments of two sequence sets"
-  groups: "Alignment:Pairwise"
+  groups: "Alignment:Global"
   gui: "yes"
   batch: "yes"
   cpu: "medium"
@@ -15,6 +15,7 @@ section: input [
   seqset: asequence [
     parameter: "Y"
     type: "any"
+    aligned: "N"
     relations: "EDAM: Sequence record"                                     
   ]
 
@@ -78,6 +79,13 @@ section: required [
     relations: "EDAM: Generic float"                                       
   ]
 
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
   boolean: endweight [
     additional: "Y"
     default: "N"
@@ -116,7 +124,7 @@ section: required [
 
   float: minscore [
     additional: "Y"
-    information: "minimum alignment score"
+    information: "Minimum alignment score"
     minimum: "-10.0"
     maximum: "100.0"
     default: "0"
@@ -126,7 +134,7 @@ section: required [
     relations: "EDAM: Generic float"                                       
   ]
 
-endsection: required
+endsection: additional
 
 section: output [
   information: "Output section"
@@ -154,7 +162,7 @@ section: output [
     default: "needleall.error"
     help: "Error file to be written to"
     knowntype: "needleall error"
-    information: "Program needleall errors output file for failed alignments"
+    information: "Program needleall errors output file"
     relations:  "EDAM: EMBOSS needleall error file"                 
   ]
 

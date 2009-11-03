@@ -208,14 +208,14 @@ static void charge_addgraph(AjPGraph graph, ajint limit, const float *x,
 {
     ajint i;
 
-    AjPGraphPlpData data;
+    AjPGraphdata data;
     AjPStr st = NULL;
     float baseline = 0.;
 
     if(limit<1)
 	return;
 
-    data = ajGraphPlpDataNewI(limit);
+    data = ajGraphdataNewI(limit);
 
     st = ajStrNew();
 
@@ -225,21 +225,21 @@ static void charge_addgraph(AjPGraph graph, ajint limit, const float *x,
 	data->y[i] = y[i];
     }
 
-    ajGraphPlpDataSetColour(data,BLACK);
-    ajGraphPlpDataSetMaxMin(data,x[0],x[limit-1],ymin,ymax);
-    ajGraphPlpDataSetMaxima(data,x[0],x[limit-1],ymin,ymax);
+    ajGraphdataSetColour(data,BLACK);
+    ajGraphdataSetMaxMin(data,x[0],x[limit-1],ymin,ymax);
+    ajGraphdataSetMaxima(data,x[0],x[limit-1],ymin,ymax);
 
     ajFmtPrintS(&st,"Window:%d",window);
-    ajGraphPlpDataSetSubTitle(data,st);
+    ajGraphdataSetSubTitle(data,st);
 
-    ajGraphPlpDataSetTypeC(data,"2D Plot Float");
+    ajGraphdataSetTypeC(data,"2D Plot Float");
     ajFmtPrintS(&st,"Charge");
-    ajGraphPlpDataSetYTitle(data,st);
+    ajGraphdataSetYTitle(data,st);
 
     ajFmtPrintS(&st,"Position");
-    ajGraphPlpDataSetXTitle(data,st);
+    ajGraphdataSetXTitle(data,st);
 
-    ajGraphPlpDataAddLine(data,x[0],baseline,x[limit-1],baseline,BLUE);
+    ajGraphdataAddLine(data,x[0],baseline,x[limit-1],baseline,BLUE);
 
     ajGraphDataAdd(graph,data);
 

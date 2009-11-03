@@ -47,7 +47,7 @@ int main(int argc, char **argv)
     float min;
 
     AjPGraph graph = NULL;
-    AjPGraphPlpData this = NULL;
+    AjPGraphdata this = NULL;
 
     const char *frames[]=
     {
@@ -177,8 +177,8 @@ int main(int argc, char **argv)
 
 	if(plot)
 	{
-	    this = ajGraphPlpDataNewI(count);
-	    ajGraphPlpDataSetTypeC(this,"Multi 2D plot");
+	    this = ajGraphdataNewI(count);
+	    ajGraphdataSetTypeC(this,"Multi 2D plot");
 
 	    ajGraphxySetOverLap(graph,ajFalse);
 	    for(i=0;i<count;++i)
@@ -187,7 +187,7 @@ int main(int argc, char **argv)
 		this->y[i]=farr[base][i];
 	    }
 	    ajGraphArrayMaxMin(this->y,count,&amin,&amax);
-	    ajGraphPlpDataSetMaxima(this,(float)beg,(float)end,amin,amax);
+	    ajGraphdataSetMaxima(this,(float)beg,(float)end,amin,amax);
 
 	    ajGraphDataAdd(graph,this);
 	    if(show)
@@ -203,15 +203,15 @@ int main(int argc, char **argv)
 
 		for(i=0;i<count;++i)
 		    if(unc[base][i])
-			ajGraphPlpDataAddLine(this,xarr[base][i],1.,
+			ajGraphdataAddLine(this,xarr[base][i],1.,
 					      xarr[base][i],(float)1.005,3);
 	    }
 
 
-	    ajGraphPlpDataSetYTitleC(this,"Gribskov value");
-	    ajGraphPlpDataSetXTitleC(this,"Sequence position");
-	    ajGraphPlpDataSetSubTitleC(this,frames[base]);
-	    ajGraphPlpDataAddLine(this,(float)beg,1.0,(float)end,
+	    ajGraphdataSetYTitleC(this,"Gribskov value");
+	    ajGraphdataSetXTitleC(this,"Sequence position");
+	    ajGraphdataSetSubTitleC(this,frames[base]);
+	    ajGraphdataAddLine(this,(float)beg,1.0,(float)end,
 				  1.0,4);
 	}
 	if(outf)

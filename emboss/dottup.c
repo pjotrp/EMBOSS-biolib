@@ -329,7 +329,7 @@ static void dottup_stretchplot(AjPGraph graph, const AjPList matchlist,
     EmbPWordMatch wmp = NULL;
     float xa[1];
     float ya[2];
-    AjPGraphPlpData gdata = NULL;
+    AjPGraphdata gdata = NULL;
     AjPStr tit = NULL;
     float x1;
     float y1;
@@ -341,7 +341,7 @@ static void dottup_stretchplot(AjPGraph graph, const AjPList matchlist,
     ajFmtPrintS(&tit,"%S",ajGraphGetTitle(graph));
 
 
-    gdata = ajGraphPlpDataNewI(1);
+    gdata = ajGraphdataNewI(1);
     xa[0] = (float)begin1;
     ya[0] = (float)begin2;
 
@@ -350,10 +350,10 @@ static void dottup_stretchplot(AjPGraph graph, const AjPList matchlist,
     ajGraphSetXlabelC(graph,ajSeqGetNameC(seq1));
     ajGraphSetYlabelC(graph,ajSeqGetNameC(seq2));
 
-    ajGraphPlpDataSetTypeC(gdata,"2D Plot Float");
-    ajGraphPlpDataSetMaxMin(gdata,(float)begin1,(float)end1,(float)begin2,
+    ajGraphdataSetTypeC(gdata,"2D Plot Float");
+    ajGraphdataSetMaxMin(gdata,(float)begin1,(float)end1,(float)begin2,
 			   (float)end2);
-    ajGraphPlpDataSetMaxima(gdata,(float)begin1,(float)end1,(float)begin2,
+    ajGraphdataSetMaxima(gdata,(float)begin1,(float)end1,(float)begin2,
 			   (float)end2);
     ajGraphxySetXstartF(graph,(float)begin1);
     ajGraphxySetXendF(graph,(float)end1);
@@ -378,7 +378,7 @@ static void dottup_stretchplot(AjPGraph graph, const AjPList matchlist,
 	ajListIterDel(&iter);
     }
 
-    ajGraphPlpDataSetXY(gdata,xa,ya);
+    ajGraphdataSetXY(gdata,xa,ya);
     ajGraphDataReplace(graph,gdata);
 
 

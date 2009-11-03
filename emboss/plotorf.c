@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     ajint nstops;
 
     AjPGraph graph;
-    AjPGraphPlpData data;
+    AjPGraphdata data;
 
     float *x[6] = {NULL,NULL,NULL,NULL,NULL,NULL};
     float *y[6] = {NULL,NULL,NULL,NULL,NULL,NULL};
@@ -102,21 +102,21 @@ int main(int argc, char **argv)
     {
 	plotorf_norfs(ajStrGetPtr(str),ajStrGetPtr(rev),i,x,y,&cnt,beg,starts,
 		      nstarts,stops,nstops);
-	data = ajGraphPlpDataNewI(2);
+	data = ajGraphdataNewI(2);
 	data->numofpoints = 0;
 
 
 	ajGraphDataAdd(graph,data);
 	ajGraphxySetOverLap(graph,ajFalse);
 	ajGraphxySetShowYtick(graph, ajFalse);
-	ajGraphPlpDataSetMaxima(data,(float)beg,(float)end,0.0,1.0);
-	ajGraphPlpDataSetTypeC(data,"Multi 2D Plot Small");
-	ajGraphPlpDataSetYTitleC(data,"Orf");
-	ajGraphPlpDataSetXTitleC(data,"Sequence");
-	ajGraphPlpDataSetTitleC(data,ftit[i]);
+	ajGraphdataSetMaxima(data,(float)beg,(float)end,0.0,1.0);
+	ajGraphdataSetTypeC(data,"Multi 2D Plot Small");
+	ajGraphdataSetYTitleC(data,"Orf");
+	ajGraphdataSetXTitleC(data,"Sequence");
+	ajGraphdataSetTitleC(data,ftit[i]);
 
 	for(j=0;j<ajIntGet(cnt,i);++j)
-	    ajGraphPlpDataAddRect(data,y[i][j],0.0,
+	    ajGraphdataAddRect(data,y[i][j],0.0,
 					      x[i][j],1.0,4,1);
     }
 

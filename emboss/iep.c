@@ -64,7 +64,7 @@ int main(int argc, char **argv)
     double sum;
     double charge;
 
-    AjPGraphPlpData phGraph = NULL;
+    AjPGraphdata phGraph = NULL;
     AjPStr title = NULL;
     AjPStr tmp = NULL;
 
@@ -178,14 +178,14 @@ int main(int argc, char **argv)
 	    ajStrAppendS(&title,tmp);
 
 
-	    phGraph = ajGraphPlpDataNewI(npoints);
+	    phGraph = ajGraphdataNewI(npoints);
 	    ajGraphSetTitleS(graph,title);
 	    ajGraphSetXlabelC(graph,"pH");
 	    ajGraphSetYlabelC(graph,"Charge");
 
-	    ajGraphPlpDataSetTypeC(phGraph,"2D Plot Float");
-	    ajGraphPlpDataSetMaxMin(phGraph,1.0,14.0,minchg,maxchg);
-	    ajGraphPlpDataSetMaxima(phGraph,1.0,14.0,minchg,maxchg);
+	    ajGraphdataSetTypeC(phGraph,"2D Plot Float");
+	    ajGraphdataSetMaxMin(phGraph,1.0,14.0,minchg,maxchg);
+	    ajGraphdataSetMaxima(phGraph,1.0,14.0,minchg,maxchg);
 	    ajGraphxySetXstartF(graph,1.0);
 	    ajGraphxySetXendF(graph,14.0);
 	    ajGraphxySetYstartF(graph,minchg);
@@ -193,7 +193,7 @@ int main(int argc, char **argv)
 	    ajGraphxySetXrangeII(graph,1,14);
 	    ajGraphxySetYrangeII(graph,(ajint)minchg,(ajint)maxchg);
 
-	    ajGraphPlpDataSetXY(phGraph,xa,ya);
+	    ajGraphdataSetXY(phGraph,xa,ya);
 	    ajGraphDataReplace(graph,phGraph);
 
 

@@ -284,25 +284,23 @@ int main(int argc, char **argv)
 
 	ajGraphSetTitlePlus(graph, ajSeqGetUsaS(seq));
 
+        ajGraphSetPage(960, 768);
+
 	ajGraphOpenWin(graph,(float)-1.0, (float)numres+(float)10.0,
 		       (float)0.0, ystart+(float)5.0);
 
 	ajGraphicsGetParamsPage(&fxp,&fyp,&ixlen,&iylen,&ixoff,&iyoff);
 
-	if(ixlen == 0)
-	{
-	    /* for postscript these are 0.0 ????? */
-	    if(portrait)
-	    {
-		ixlen = 768;
-		iylen = 960;
-	    }
-	    else
-	    {
-		ixlen = 960;
-		iylen = 768;
-	    }
-	}
+	if(portrait)
+        {
+            ixlen = 768;
+            iylen = 960;
+        }
+        else
+        {
+            ixlen = 960;
+            iylen = 768;
+        }
 
 	ajGraphicsGetCharsize(&defheight,&currentheight);
 	if(!currentheight)

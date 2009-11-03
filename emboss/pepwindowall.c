@@ -49,7 +49,7 @@ int main(int argc, char **argv)
     AjBool normal;
     AjPStr aa0str = NULL;
     AjPSeqset seqset;
-    AjPGraphPlpData graphdata;
+    AjPGraphdata graphdata;
     AjPGraph mult;
     const char *seq;
     const char *s1;
@@ -113,8 +113,8 @@ int main(int argc, char **argv)
 	seq = ajSeqsetGetseqSeqC(seqset, i);
 	ajStrSetClear(&aa0str);
 
-	graphdata = ajGraphPlpDataNewI(maxlen);
-	ajGraphPlpDataSetTypeC(graphdata,"Overlay 2D Plot");
+	graphdata = ajGraphdataNewI(maxlen);
+	ajGraphdataSetTypeC(graphdata,"Overlay 2D Plot");
 	ymin = 64000.;
 	ymax = -64000.;
 
@@ -177,12 +177,12 @@ int main(int argc, char **argv)
 	while(!graphdata->x[end])
 	    --end;
 
-	ajGraphPlpDataSetMaxima(graphdata,(float)graphdata->x[0],
+	ajGraphdataSetMaxima(graphdata,(float)graphdata->x[0],
 			       (float)graphdata->x[graphdata->numofpoints-1],
 			       ymin,ymax);
 
-	ajGraphPlpDataSetYTitleC(graphdata,"Hydropathy");
-	ajGraphPlpDataSetXTitleC(graphdata,"Sequence");
+	ajGraphdataSetYTitleC(graphdata,"Hydropathy");
+	ajGraphdataSetXTitleC(graphdata,"Sequence");
 
 	ajGraphDataAdd(mult,graphdata);
     }

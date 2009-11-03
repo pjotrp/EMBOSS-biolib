@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     AjPStr str   = NULL;
     AjBool plot;
     AjPGraph graph=NULL;
-    AjPGraphPlpData fgraph=NULL;
+    AjPGraphdata fgraph=NULL;
     AjPStr st = NULL;
 
     ajint c;
@@ -133,7 +133,7 @@ int main(int argc, char **argv)
 	}
 	else if(plot && c)
 	{
-	    fgraph = ajGraphPlpDataNewI(c);
+	    fgraph = ajGraphdataNewI(c);
 	    ajGraphSetTitleS(graph,ajSeqGetNameS(seq));
 	    ajFmtPrintS(&st,"From %d to %d. Residues:%s Window:%d Step:%d",
 			pos+1,end+1,ajStrGetPtr(bases),window,step);
@@ -146,12 +146,12 @@ int main(int argc, char **argv)
 	    ajGraphxySetYendF(graph,y[c-1]);
 	    ajGraphxySetXrangeII(graph,(ajint)x[0],(ajint)x[c-1]);
 	    ajGraphxySetYrangeII(graph,0,(ajint)y[c-1]);
-	    ajGraphPlpDataSetMaxMin(fgraph,x[0],x[c-1],0.,1.0);
+	    ajGraphdataSetMaxMin(fgraph,x[0],x[c-1],0.,1.0);
 	    ajGraphArrayMaxMin(y,c,&min,&max);
-	    ajGraphPlpDataSetMaxima(fgraph,x[0],x[c-1],min,max);
-	    ajGraphPlpDataSetTypeC(fgraph,"2D Plot");
+	    ajGraphdataSetMaxima(fgraph,x[0],x[c-1],min,max);
+	    ajGraphdataSetTypeC(fgraph,"2D Plot");
 
-	    ajGraphPlpDataSetXY(fgraph,x,y);
+	    ajGraphdataSetXY(fgraph,x,y);
 	    ajGraphDataReplace(graph,fgraph);
 	    ajGraphxyDisplay(graph,ajFalse);
 	}

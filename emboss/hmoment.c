@@ -220,14 +220,14 @@ static void hmoment_addgraph(AjPGraph graph, ajint limit,
 {
     ajint i;
 
-    AjPGraphPlpData data;
+    AjPGraphdata data;
     AjPStr st = NULL;
 
     if(limit<1)
 	return;
 
 
-    data = ajGraphPlpDataNewI(limit);
+    data = ajGraphdataNewI(limit);
 
     st = ajStrNew();
 
@@ -237,22 +237,22 @@ static void hmoment_addgraph(AjPGraph graph, ajint limit,
 	data->y[i] = y[i];
     }
 
-    ajGraphPlpDataSetColour(data,colour);
-    ajGraphPlpDataSetMaxMin(data,x[0],x[limit-1],0.,ymax);
-    ajGraphPlpDataSetMaxima(data,x[0],x[limit-1],0.,ymax);
+    ajGraphdataSetColour(data,colour);
+    ajGraphdataSetMaxMin(data,x[0],x[limit-1],0.,ymax);
+    ajGraphdataSetMaxima(data,x[0],x[limit-1],0.,ymax);
 
-    ajGraphPlpDataSetTypeC(data,"2D Plot Float");
+    ajGraphdataSetTypeC(data,"2D Plot Float");
 
     ajFmtPrintS(&st,"HMOMENT of %s. Window:%d",sname,window);
-    ajGraphPlpDataSetTitle(data,st);
+    ajGraphdataSetTitle(data,st);
 
     ajFmtPrintS(&st,"uH (%d deg)",angle);
-    ajGraphPlpDataSetYTitle(data,st);
+    ajGraphdataSetYTitle(data,st);
 
     ajFmtPrintS(&st,"Position (w=%d)",window);
-    ajGraphPlpDataSetXTitle(data,st);
+    ajGraphdataSetXTitle(data,st);
 
-    ajGraphPlpDataAddLine(data,x[0],baseline,x[limit-1],baseline,BLUE);
+    ajGraphdataAddLine(data,x[0],baseline,x[limit-1],baseline,BLUE);
 
     ajGraphDataAdd(graph,data);
 

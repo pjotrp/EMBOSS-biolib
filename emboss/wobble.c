@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 
 
     AjPGraph   graph;
-    AjPGraphPlpData data;
+    AjPGraphdata data;
 
     float *x[6] = {NULL, NULL, NULL, NULL, NULL, NULL};
     float *y[6] = {NULL, NULL, NULL, NULL, NULL, NULL};
@@ -117,7 +117,7 @@ int main(int argc, char **argv)
 		      count,beg,ajStrGetPtr(gc),
 		      window);
 
-	data = ajGraphPlpDataNewI(count[i]);
+	data = ajGraphdataNewI(count[i]);
 
 	ajGraphxySetOverLap(graph,ajFalse);
 
@@ -134,17 +134,17 @@ int main(int argc, char **argv)
 	}
 
 	ajGraphArrayMaxMin(data->y,count[i],&ymin,&ymax);
-	ajGraphPlpDataSetMaxima(data,(float)beg,(float)end,ymin,ymax);
+	ajGraphdataSetMaxima(data,(float)beg,(float)end,ymin,ymax);
 
-	ajGraphPlpDataSetTypeC(data,"2D Plot");
+	ajGraphdataSetTypeC(data,"2D Plot");
 	ajGraphDataAdd(graph,data);
 
 	ajGraphxySetShowYtick(graph, ajTrue);
 
-	ajGraphPlpDataSetYTitleC(data,ajStrGetPtr(gc));
-	ajGraphPlpDataSetXTitleC(data,"Sequence");
-	ajGraphPlpDataSetTitleC(data,ftit[i]);
-	ajGraphPlpDataAddLine(data,(float)beg,mean,(float)end,mean,4);
+	ajGraphdataSetYTitleC(data,ajStrGetPtr(gc));
+	ajGraphdataSetXTitleC(data,"Sequence");
+	ajGraphdataSetTitleC(data,ftit[i]);
+	ajGraphdataAddLine(data,(float)beg,mean,(float)end,mean,4);
     }
     
     

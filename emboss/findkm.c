@@ -50,8 +50,8 @@ int main(int argc, char **argv)
     AjPFile outfile = NULL;
     AjPStr line;
     AjPGraph graphLB = NULL;
-    AjPGraphPlpData xygraph  = NULL;
-    AjPGraphPlpData xygraph2 = NULL;
+    AjPGraphdata xygraph  = NULL;
+    AjPGraphdata xygraph2 = NULL;
     AjBool doplot;
 
     ajint N=0;
@@ -224,12 +224,12 @@ int main(int argc, char **argv)
 
     if(doplot)
     {
-	xygraph = ajGraphPlpDataNewI(N);
-	ajGraphPlpDataSetXY(xygraph, S, V);
+	xygraph = ajGraphdataNewI(N);
+	ajGraphdataSetXY(xygraph, S, V);
 	ajGraphDataAdd(graphLB, xygraph);
-	ajGraphPlpDataSetTitleC(xygraph, "Michaelis Menten Plot");
-	ajGraphPlpDataSetXTitleC(xygraph, "[S]");
-	ajGraphPlpDataSetYTitleC(xygraph, "V");
+	ajGraphdataSetTitleC(xygraph, "Michaelis Menten Plot");
+	ajGraphdataSetXTitleC(xygraph, "[S]");
+	ajGraphdataSetYTitleC(xygraph, "V");
 
 	ajGraphxySetXstartF(graphLB, 0.0);
 	ajGraphxySetXendF(graphLB, xmax2);
@@ -237,23 +237,23 @@ int main(int argc, char **argv)
 	ajGraphxySetYendF(graphLB, ymax2);
 	ajGraphxySetXrangeII(graphLB, (ajint)0.0, (ajint)xmax2);
 	ajGraphxySetYrangeII(graphLB, (ajint)0.0, (ajint)ymax2);
-	ajGraphPlpDataAddLine(xygraph, 0.0, 0.0, S[0], V[0], (ajint)BLACK);
+	ajGraphdataAddLine(xygraph, 0.0, 0.0, S[0], V[0], (ajint)BLACK);
 	ajGraphxySetCirclePoints(graphLB, ajTrue);
-	ajGraphPlpDataSetMaxMin(xygraph,0.0,xmax2,0.0,ymax2);
+	ajGraphdataSetMaxMin(xygraph,0.0,xmax2,0.0,ymax2);
 
 
 	ajGraphArrayMaxMin(S,N,&amin,&amax);
 	ajGraphArrayMaxMin(V,N,&bmin,&bmax);
-	ajGraphPlpDataSetMaxima(xygraph,amin,amax,bmin,bmax);
-	ajGraphPlpDataSetTypeC(xygraph,"2D Plot Float");
+	ajGraphdataSetMaxima(xygraph,amin,amax,bmin,bmax);
+	ajGraphdataSetTypeC(xygraph,"2D Plot Float");
 
-	xygraph2 = ajGraphPlpDataNewI(N);
-	ajGraphPlpDataSetXY(xygraph2, xdata, ydata);
+	xygraph2 = ajGraphdataNewI(N);
+	ajGraphdataSetXY(xygraph2, xdata, ydata);
 	ajGraphDataAdd(graphLB, xygraph2);
 
-	ajGraphPlpDataSetTitleC(xygraph2, "Hanes Woolf Plot");
-	ajGraphPlpDataSetXTitleC(xygraph2, "[S]");
-	ajGraphPlpDataSetYTitleC(xygraph2, "[S]/V");
+	ajGraphdataSetTitleC(xygraph2, "Hanes Woolf Plot");
+	ajGraphdataSetXTitleC(xygraph2, "[S]");
+	ajGraphdataSetYTitleC(xygraph2, "[S]/V");
 
 	ajGraphxySetXstartF(graphLB, cutx);
 	ajGraphxySetXendF(graphLB, upperXlimit);
@@ -263,11 +263,11 @@ int main(int argc, char **argv)
 	ajGraphxySetYrangeII(graphLB, (ajint)0.0, (ajint)upperYlimit);
 
 	ajGraphxySetCirclePoints(graphLB, ajTrue);
-	ajGraphPlpDataSetMaxMin(xygraph2, cutx,upperXlimit,0.0,upperYlimit);
+	ajGraphdataSetMaxMin(xygraph2, cutx,upperXlimit,0.0,upperYlimit);
 	ajGraphArrayMaxMin(xdata,N,&amin,&amax);
 	ajGraphArrayMaxMin(ydata,N,&bmin,&bmax);
-	ajGraphPlpDataSetMaxima(xygraph2,amin,amax,bmin,bmax);
-	ajGraphPlpDataSetTypeC(xygraph2,"2D Plot");
+	ajGraphdataSetMaxima(xygraph2,amin,amax,bmin,bmax);
+	ajGraphdataSetTypeC(xygraph2,"2D Plot");
 
 
 

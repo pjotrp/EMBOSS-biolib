@@ -488,7 +488,7 @@ static void pepinfo_plotGraph2Float(AjPGraph graphs,
 				    const char * xtext, const char * ytext)
 {
 
-    AjPGraphPlpData plot;
+    AjPGraphdata plot;
 
     ajint npts = 0;
 
@@ -503,17 +503,17 @@ static void pepinfo_plotGraph2Float(AjPGraph graphs,
     **  initialise plot, the number of points will be the length of the data
     **  in the results structure
     */
-    plot = ajGraphPlpDataNewI(npts);
+    plot = ajGraphdataNewI(npts);
 
     /*Set up rest of plot information*/
-    ajGraphPlpDataSetTitleC(plot, title_text);
-    ajGraphPlpDataSetXTitleC(plot, xtext);
-    ajGraphPlpDataSetYTitleC(plot, ytext);
-    ajGraphPlpDataSetMaxMin(plot,(float)1,(float)npts,ymin,ymax);
-    ajGraphPlpDataSetMaxima(plot,(float)1,(float)npts,ymin,ymax);
-    ajGraphPlpDataSetTypeC(plot,"2D Plot");
+    ajGraphdataSetTitleC(plot, title_text);
+    ajGraphdataSetXTitleC(plot, xtext);
+    ajGraphdataSetYTitleC(plot, ytext);
+    ajGraphdataSetMaxMin(plot,(float)1,(float)npts,ymin,ymax);
+    ajGraphdataSetMaxima(plot,(float)1,(float)npts,ymin,ymax);
+    ajGraphdataSetTypeC(plot,"2D Plot");
 
-    ajGraphPlpDataCalcXY(plot, npts, (float)seq_begin, 1.0, results);
+    ajGraphdataCalcXY(plot, npts, (float)seq_begin, 1.0, results);
     ajGraphDataAdd(graphs, plot);
 
     return;

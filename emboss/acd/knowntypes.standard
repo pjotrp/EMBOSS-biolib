@@ -168,6 +168,7 @@ naccess_log                         | file           |  "EDAM: NACCESS log file"
 name                                | string         |  "EDAM: Generic string"                                 | Single word without spaces
 name_prefix                         | string         |  "EDAM: Generic string"                                 | First part of a name
 name_suffix                         | string         |  "EDAM: Generic string"                                 | Last part of a name
+needleall_error                    | file           |  "EDAM: EMBOSS needleall log file"                     | Program needleall errors
 neighbor_input                      | file           |                                                 | Phylip neighbor program input
 neighbor_output                     | file           |  "EDAM: Phylip phylogenetic tree raw data"              | Phylip neighbor program output
 newcoils_datafile                   | file           |                                                 | Program newcoils data

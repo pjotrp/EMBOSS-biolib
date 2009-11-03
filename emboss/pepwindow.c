@@ -54,7 +54,7 @@ int main(int argc, char **argv)
     ajuint midpoint;
     ajuint j;
     ajuint k;
-    AjPGraphPlpData graphdata;
+    AjPGraphdata graphdata;
     AjPGraph mult;
     float min = 555.5;
     float max = -555.5;
@@ -89,9 +89,9 @@ int main(int argc, char **argv)
     else
         ilen = 1;
 
-    graphdata = ajGraphPlpDataNewI(ilen);
+    graphdata = ajGraphdataNewI(ilen);
 
-    ajGraphPlpDataSetTypeC(graphdata,"2D Plot");
+    ajGraphdataSetTypeC(graphdata,"2D Plot");
 
     ajGraphDataAdd(mult,graphdata);
 
@@ -123,12 +123,12 @@ int main(int argc, char **argv)
     }
     fstart = (float) istart;
     fend = (float) iend;
-    ajGraphPlpDataSetMaxima(graphdata,fstart,fend,min,max);
+    ajGraphdataSetMaxima(graphdata,fstart,fend,min,max);
 
     min = min*(float)1.1;
     max = max*(float)1.1;
 
-    ajGraphPlpDataSetMaxMin(graphdata,fstart,fend,min,max);
+    ajGraphdataSetMaxMin(graphdata,fstart,fend,min,max);
     ajGraphxySetMaxMin(mult,fstart,fend,min,max);
 
     ajGraphxyDisplay(mult,AJTRUE);

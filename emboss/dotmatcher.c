@@ -130,7 +130,7 @@ int main(int argc, char **argv)
     PPoint ppt = NULL;
     float xa[1];
     float ya[1];
-    AjPGraphPlpData gdata=NULL;
+    AjPGraphdata gdata=NULL;
     AjPStr tit   = NULL;
     AjIList iter = NULL;
     float x1 = 0.;
@@ -406,7 +406,7 @@ int main(int argc, char **argv)
 	ajFmtPrintS(&tit,"%S",ajGraphGetTitle(xygraph));
 
 
-	gdata = ajGraphPlpDataNewI(1);
+	gdata = ajGraphdataNewI(1);
 	xa[0] = (float)b1;
 	ya[0] = (float)b2;
 
@@ -415,11 +415,11 @@ int main(int argc, char **argv)
 	ajGraphSetXlabelC(xygraph,ajSeqGetNameC(seq));
 	ajGraphSetYlabelC(xygraph,ajSeqGetNameC(seq2));
 
-	ajGraphPlpDataSetTypeC(gdata,"2D Plot Float");
-	ajGraphPlpDataSetTitle(gdata,subt);
-	ajGraphPlpDataSetMaxMin(gdata,(float)b1,(float)e1,(float)b2,
+	ajGraphdataSetTypeC(gdata,"2D Plot Float");
+	ajGraphdataSetTitle(gdata,subt);
+	ajGraphdataSetMaxMin(gdata,(float)b1,(float)e1,(float)b2,
 			       (float)e2);
-	ajGraphPlpDataSetMaxima(gdata,(float)b1,(float)e1,(float)b2,
+	ajGraphdataSetMaxima(gdata,(float)b1,(float)e1,(float)b2,
 			       (float)e2);
 	ajGraphxySetXstartF(xygraph,(float)b1);
 	ajGraphxySetXendF(xygraph,(float)e1);
@@ -445,7 +445,7 @@ int main(int argc, char **argv)
 	    ajListIterDel(&iter);
 	}
 
-	ajGraphPlpDataSetXY(gdata,xa,ya);
+	ajGraphdataSetXY(gdata,xa,ya);
 	ajGraphDataReplace(xygraph,gdata);
 
 

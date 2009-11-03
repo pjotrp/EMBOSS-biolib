@@ -3,12 +3,10 @@
 
 #define MAX_STRING 180
 
-#include "ajgraphxml.h"
-
-/* @data AjPGraphPlpObj *******************************************************
+/* @data AjPGraphobj *******************************************************
 **
 ** AJAX data structure for graph objects, contained as a substructure
-** in AjPGraphPlpData
+** in AjPGraphdata
 **
 ** @attr type [ajint] Object type in AjEGraphObjectTypes
 ** @attr colour [ajint] See AjEGraphColour for plplot colours
@@ -17,13 +15,13 @@
 ** @attr xx2 [float] x end
 ** @attr yy1 [float] y start
 ** @attr yy2 [float] y end
-** @attr next [struct AjSGraphPlpObj*] link to next object in the list
+** @attr next [struct AjSGraphobj*] link to next object in the list
 ** @attr scale [float] scale for text (0.0 to use the default)
 ** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
-typedef struct AjSGraphPlpObj {
+typedef struct AjSGraphobj {
   ajint type;
   ajint colour;
   AjPStr text;
@@ -31,13 +29,13 @@ typedef struct AjSGraphPlpObj {
   float xx2;
   float yy1;
   float yy2;
-  struct AjSGraphPlpObj *next;
+  struct AjSGraphobj *next;
   float scale;
   char Padding[4];
-} AjOGraphPlpObj;
-#define AjPGraphPlpObj AjOGraphPlpObj*
+} AjOGraphobj;
+#define AjPGraphobj AjOGraphobj*
 
-/* @data AjPGraphPlpData ******************************************************
+/* @data AjPGraphdata ******************************************************
 **
 ** Graph data object. Substructure of AjPGraphPlp.
 **
@@ -63,11 +61,11 @@ typedef struct AjSGraphPlpObj {
 ** @attr gtype [AjPStr] Graph type: 2D, Tick etc
 ** @attr colour [ajint] See AjEGraphColour for plplot colours
 ** @attr lineType [ajint] Line type for plplot
-** @attr Obj [AjPGraphPlpObj] First graph object - links to rest
+** @attr Dataobj [AjPGraphobj] First graph object - links to rest
 ** @@
 ******************************************************************************/
 
-typedef struct AjSGraphPlpData {
+typedef struct AjSGraphdata {
   float *x;
   float *y;
   AjBool xcalc;
@@ -89,16 +87,18 @@ typedef struct AjSGraphPlpData {
   AjPStr gtype;
   ajint colour;
   ajint lineType;
-  AjPGraphPlpObj Obj;
-} AjOGraphPlpData;
-#define AjPGraphPlpData AjOGraphPlpData*
+  AjPGraphobj Dataobj;
+} AjOGraphdata;
+#define AjPGraphdata AjOGraphdata*
 
-/* @data AjPGraphPlp **********************************************************
+/* @data AjPGraph *************************************************************
 **
-** Graph plplot object.
+** Graph object.
 **
+** @attr displaytype [ajint] Displaytype index to graphType
+** @attr numsets [ajint] Number of sets in a multiple graph
 ** @attr numofgraphs [ajint] Number of graphs in graphs
-** @attr numofobjects [ajint] Number of objects in Obj
+** @attr numofobjects [ajint] Number of objects in Mainobj
 ** @attr numofgraphsmax [ajint] Maximum number of graphs expected
 ** @attr flags [ajint] over rides the EmbGraphData flags
 ** @attr minX [float] Lowest x value for all graphs
@@ -119,14 +119,15 @@ typedef struct AjSGraphPlpData {
 ** @attr xaxis [AjPStr] Plot x axis title
 ** @attr yaxis [AjPStr] Plot y axis title
 ** @attr outputfile [AjPStr] Output filename
-** @attr graphs [AjPGraphPlpData*] XY Data to plot for Graph(s)
-** @attr Obj [AjPGraphPlpObj] Objects to plot for single graph
-** @attr displaytype [ajint] Displaytype index to graphType
-** @attr Padding [char[4]] Padding to alignment boundary
+** @attr graphs [AjPGraphdata*] XY Data to plot for Graph(s)
+** @attr Mainobj [AjPGraphobj] Objects to plot for single graph
 ** @@
 ******************************************************************************/
 
-typedef struct AjSGraphPlp {
+typedef struct AjSGraph {
+
+  ajint displaytype;
+  ajint numsets;
   ajint numofgraphs;
   ajint numofobjects;
   ajint numofgraphsmax;
@@ -149,30 +150,8 @@ typedef struct AjSGraphPlp {
   AjPStr xaxis;
   AjPStr yaxis;
   AjPStr outputfile;
-  AjPGraphPlpData *graphs;
-  AjPGraphPlpObj Obj;
-  ajint displaytype;
-  char Padding[4];
-} AjOGraphPlp;
-#define AjPGraphPlp AjOGraphPlp*
-
-/* @data AjPGraph *************************************************************
-**
-** Graph object.
-**
-** @attr plplot [AjPGraphPlp] PlPlot graph object
-** @attr xml [AjPGraphXml] XML graph object
-** @attr numsets [ajint] Number of sets in a multiple graph
-** @attr Padding [char[4]] Padding to alignment boundary
-** @@
-******************************************************************************/
-
-typedef struct AjSGraph {
-
-    AjPGraphPlp plplot;
-    AjPGraphXml xml;
-    ajint numsets;
-    char Padding[4];
+  AjPGraphdata *graphs;
+  AjPGraphobj Mainobj;
 } AjOGraph;
 #define AjPGraph AjOGraph*
 

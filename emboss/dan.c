@@ -529,7 +529,7 @@ static void dan_plotit(const AjPSeq seq, const float *xa, const float *ta,
 		       ajint npoints, ajint ibegin, ajint iend,
 		       AjPGraph graphs, float mintemp)
 {
-    AjPGraphPlpData tmGraph = NULL;
+    AjPGraphdata tmGraph = NULL;
     float max = -64000.;
     float min = 64000.;
 
@@ -541,7 +541,7 @@ static void dan_plotit(const AjPSeq seq, const float *xa, const float *ta,
 	max = (max>ta[i]) ? max : ta[i];
     }
 
-    tmGraph = ajGraphPlpDataNewI(npoints);
+    tmGraph = ajGraphdataNewI(npoints);
     ajGraphSetShowTitle(graphs,ajTrue);
     ajGraphxySetShowXlabel(graphs,ajTrue);
     ajGraphxySetShowYlabel(graphs,ajTrue);
@@ -557,12 +557,12 @@ static void dan_plotit(const AjPSeq seq, const float *xa, const float *ta,
     ajGraphxySetXrangeII(graphs,ibegin,iend);
     ajGraphxySetYrangeII(graphs,(ajint)mintemp,100);
 
-    ajGraphPlpDataSetTypeC(tmGraph,"2D Plot");
-    ajGraphPlpDataSetMaxMin(tmGraph,(float)ibegin,(float)iend,min,max);
-    ajGraphPlpDataSetMaxima(tmGraph,(float)ibegin,(float)iend,min,max);
+    ajGraphdataSetTypeC(tmGraph,"2D Plot");
+    ajGraphdataSetMaxMin(tmGraph,(float)ibegin,(float)iend,min,max);
+    ajGraphdataSetMaxima(tmGraph,(float)ibegin,(float)iend,min,max);
 
 
-    ajGraphPlpDataSetXY(tmGraph,xa,ta);
+    ajGraphdataSetXY(tmGraph,xa,ta);
     ajGraphDataAdd(graphs,tmGraph);
 
     ajGraphxyDisplay(graphs,AJTRUE);

@@ -119,7 +119,7 @@ int main(int argc, char **argv)
     AjPInt   to        = NULL;
 
     AjPGraph graph     = NULL;
-    AjPGraphPlpData this  = NULL;
+    AjPGraphdata this  = NULL;
 
     ajint i;
     float ymin = 0.;
@@ -187,8 +187,8 @@ int main(int argc, char **argv)
 	    tcode_report(report, from, to, testcodes, npoints, ftable, seq);
 	if(plot)
 	{
-	    this = ajGraphPlpDataNewI(npoints);
-	    ajGraphPlpDataSetTypeC(this,"2D plot");
+	    this = ajGraphdataNewI(npoints);
+	    ajGraphdataSetTypeC(this,"2D plot");
 	    ajGraphxySetOverLap(graph,ajFalse);
 	    ajGraphArrayMaxMin(this->y,npoints,&ymin,&ymax);
 
@@ -198,20 +198,20 @@ int main(int argc, char **argv)
 				    / 2);
 		this->y[i] = ajFloatGet(testcodes,i);
 	    }
-	    ajGraphPlpDataSetMaxima(this,this->x[0],this->x[npoints-1],
+	    ajGraphdataSetMaxima(this,this->x[0],this->x[npoints-1],
 				   (float)0.,(float)1.37);
 
 
 
 	    ajGraphSetShowTitle(graph, ajTrue);
-	    ajGraphPlpDataSetYTitleC(this,"TESTCODE value");
-	    ajGraphPlpDataSetXTitleC(this,"Sequence mid position");
+	    ajGraphdataSetYTitleC(this,"TESTCODE value");
+	    ajGraphdataSetXTitleC(this,"Sequence mid position");
 	    ajGraphSetTitlePlus(graph, ajSeqGetUsaS(seq));
 
-	    ajGraphPlpDataAddLine(this,this->x[0],(float)0.74,
+	    ajGraphdataAddLine(this,this->x[0],(float)0.74,
 				  this->x[npoints-1],
 				  (float)0.74,1);
-	    ajGraphPlpDataAddLine(this,this->x[0],(float)0.95,
+	    ajGraphdataAddLine(this,this->x[0],(float)0.95,
 				  this->x[npoints-1],
 				  (float)0.95,3);
 

@@ -105,7 +105,7 @@ int main(int argc, char **argv)
     IsochorePFltarr results;
 
     AjPGraph plot;
-    AjPGraphPlpData graphdata;
+    AjPGraphdata graphdata;
 
     ajint iwin;
     ajint ishift;
@@ -183,21 +183,21 @@ int main(int argc, char **argv)
 
     /* create the graph */
 
-    graphdata = ajGraphPlpDataNew();
+    graphdata = ajGraphdataNew();
 
     ajGraphArrayMaxMin(results->Array,isize,&amin,&amax);
 
-    ajGraphPlpDataSetMaxima(graphdata,(float)ipos,(float)(ipos+(ishift*isize)),
+    ajGraphdataSetMaxima(graphdata,(float)ipos,(float)(ipos+(ishift*isize)),
 			   amin,amax);
-    ajGraphPlpDataSetMaxMin(graphdata,(float)ipos,(float)(ipos+(ishift*isize)),
+    ajGraphdataSetMaxMin(graphdata,(float)ipos,(float)(ipos+(ishift*isize)),
 			   amin,amax);
-    ajGraphPlpDataSetTypeC(graphdata,"2D Plot");
-    ajGraphPlpDataSetTitleC(graphdata,"");
+    ajGraphdataSetTypeC(graphdata,"2D Plot");
+    ajGraphdataSetTitleC(graphdata,"");
 
 
 
     ajGraphDataAdd(plot,graphdata);
-    ajGraphPlpDataCalcXY(graphdata, isize,(float)(ipos),(float)ishift,
+    ajGraphdataCalcXY(graphdata, isize,(float)(ipos),(float)ishift,
 			    results->Array);
 
 

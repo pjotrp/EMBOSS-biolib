@@ -48,7 +48,7 @@ extern "C"
 #define AJGRAPH_X_LABEL    0x0040  /* add x axis label */
 #define AJGRAPH_Y_LABEL    0x0080  /* add y axis label */
 #define AJGRAPH_TITLE      0x0100  /* add title */
-#define AJGRAPH_JOINPOINTS 0x0200  /* join the point data by a line a line */
+#define AJGRAPH_JOINPOINTS 0x0200  /* join the point data by a line */
 #define AJGRAPH_OVERLAP    0x0400  /* write plots on top of each other */
 #define AJGRAPH_Y_NUMLABEL_LEFT   0x0800
 #define AJGRAPH_Y_INVERT_TICK     0x1000
@@ -77,6 +77,7 @@ extern "C"
 */
 
 void          ajGraphListDevices (AjPList list);
+void          ajGraphxyListDevices (AjPList list);
 ajint*        ajGraphicsBasecolourNewNuc(const AjPStr codes);
 ajint*        ajGraphicsBasecolourNewProt(const AjPStr codes);
 ajint         ajGraphicsCheckColourC(const char* text);
@@ -85,6 +86,9 @@ ajint         ajGraphicsCheckColourS(const AjPStr colour);
 void          ajGraphicsGetCharsize(float *defheight, float *currentscale);
 ajint         ajGraphicsGetColourFore(void);
 ajint         ajGraphicsGetOutfiles(AjPList* files);
+void          ajGraphGetParamsPage(const AjPGraph thys,
+                                   float *xp,float *yp, ajint *xleng,
+                                   ajint *yleng, ajint *xoff, ajint *yoff);
 void          ajGraphicsGetParamsPage(float *xp,float *yp, ajint *xleng,
                                       ajint *yleng, ajint *xoff, ajint *yoff);
 
@@ -114,6 +118,7 @@ void          ajGraphClose (void);
 void          ajGraphCloseWin (void);
 
 void          ajGraphDumpDevices (void);
+void          ajGraphxyDumpDevices (void);
 
 void          ajGraphArrayMaxMin(const float *array, ajint npoints, float *min,
 				  float *max);
@@ -215,9 +220,9 @@ void          ajGraphSetDevice(const AjPGraph thys);
 void          ajGraphSetMulti (AjPGraph thys, ajint numsets);
 void          ajGraphSetName (const AjPGraph thys);
 void          ajGraphTrace (const AjPGraph thys);
-ajint         ajGraphDataAdd (AjPGraph thys, AjPGraphPlpData graphdata);
-ajint         ajGraphDataReplace (AjPGraph thys, AjPGraphPlpData graphdata);
-ajint         ajGraphDataReplaceI (AjPGraph thys, AjPGraphPlpData graphdata,
+ajint         ajGraphDataAdd (AjPGraph thys, AjPGraphdata graphdata);
+ajint         ajGraphDataReplace (AjPGraph thys, AjPGraphdata graphdata);
+ajint         ajGraphDataReplaceI (AjPGraph thys, AjPGraphdata graphdata,
 				   ajint num);
 void          ajGraphSetTitlePlus(AjPGraph thys, const AjPStr title);
 void          ajGraphxyDel (AjPGraph* pmult);
@@ -272,59 +277,59 @@ void          ajGraphxySetYinvert(AjPGraph thys, AjBool set);
 void          ajGraphxySetYrangeII(AjPGraph thys, ajint start, ajint end);
 void          ajGraphxySetYstartF(AjPGraph thys, float val);
 
-AjPGraphPlpData  ajGraphPlpDataNew (void);
-AjPGraphPlpData  ajGraphPlpDataNewI (ajint numsets);
+AjPGraphdata  ajGraphdataNew (void);
+AjPGraphdata  ajGraphdataNewI (ajint numsets);
 
-void          ajGraphPlpDataDel(AjPGraphPlpData *thys);
-void          ajGraphPlpDataAddLine (AjPGraphPlpData graphs,
+void          ajGraphdataDel(AjPGraphdata *thys);
+void          ajGraphdataAddLine (AjPGraphdata graphs,
 				     float xx1, float yy1,
 				     float xx2, float yy2, ajint colour);
-void          ajGraphPlpDataAddRect (AjPGraphPlpData graphs,
+void          ajGraphdataAddRect (AjPGraphdata graphs,
 				     float xx1, float yy1,
 				     float xx2, float yy2,
 				     ajint colour, ajint fill);
-void          ajGraphPlpDataAddText (AjPGraphPlpData graphs,
+void          ajGraphdataAddText (AjPGraphdata graphs,
 				     float xx1, float yy1,
 				     ajint colour, const char *text);
-void          ajGraphPlpDataAddTextScale (AjPGraphPlpData graphs,
+void          ajGraphdataAddTextScale (AjPGraphdata graphs,
 					  float xx1, float yy1,
 					  ajint colour, float scale,
 					  const char *text);
-void          ajGraphPlpDataSetMaxMin (AjPGraphPlpData graphdata, float xmin,
+void          ajGraphdataSetMaxMin (AjPGraphdata graphdata, float xmin,
 				      float xmax, float ymin, float ymax);
 
-void          ajGraphPlpDataSetMaxima(AjPGraphPlpData graphdata, float xmin,
+void          ajGraphdataSetMaxima(AjPGraphdata graphdata, float xmin,
 				     float xmax, float ymin, float ymax);
-void          ajGraphPlpDataSetTypeC(AjPGraphPlpData graphdata,
+void          ajGraphdataSetTypeC(AjPGraphdata graphdata,
 				     const char *type);
 
-void          ajGraphPlpDataCalcXY (AjPGraphPlpData graphdata,
+void          ajGraphdataCalcXY (AjPGraphdata graphdata,
 				    ajint numofpoints,
 				    float start, float incr,
 				    const float* y);
-void          ajGraphPlpDataSetXY (AjPGraphPlpData graphdata,
+void          ajGraphdataSetXY (AjPGraphdata graphdata,
 				   const float *x, const float *y);
-void          ajGraphPlpDataSetSubTitle  (AjPGraphPlpData graphdata,
+void          ajGraphdataSetSubTitle  (AjPGraphdata graphdata,
 					  const AjPStr title);
-void          ajGraphPlpDataSetSubTitleC (AjPGraphPlpData graphdata,
+void          ajGraphdataSetSubTitleC (AjPGraphdata graphdata,
 					  const char *title);
-void          ajGraphPlpDataSetTitle  (AjPGraphPlpData graphdata,
+void          ajGraphdataSetTitle  (AjPGraphdata graphdata,
 				       const AjPStr title);
-void          ajGraphPlpDataSetTitleC (AjPGraphPlpData graphdata,
+void          ajGraphdataSetTitleC (AjPGraphdata graphdata,
 				       const char *title);
-void          ajGraphPlpDataSetXTitle  (AjPGraphPlpData graphdata,
+void          ajGraphdataSetXTitle  (AjPGraphdata graphdata,
 				       const AjPStr title);
-void          ajGraphPlpDataSetXTitleC (AjPGraphPlpData graphdata,
+void          ajGraphdataSetXTitleC (AjPGraphdata graphdata,
 				       const char *title);
-void          ajGraphPlpDataSetYTitle  (AjPGraphPlpData graphdata,
+void          ajGraphdataSetYTitle  (AjPGraphdata graphdata,
 				       const AjPStr title);
-void          ajGraphPlpDataSetYTitleC (AjPGraphPlpData graphdata,
+void          ajGraphdataSetYTitleC (AjPGraphdata graphdata,
 				       const char *title);
-void          ajGraphPlpDataSetColour (AjPGraphPlpData graphdata,
+void          ajGraphdataSetColour (AjPGraphdata graphdata,
 				       ajint colour);
-void          ajGraphPlpDataSetLineType (AjPGraphPlpData graphdata,
+void          ajGraphdataSetLineType (AjPGraphdata graphdata,
 					 ajint type);
-void          ajGraphPlpDataTrace (const AjPGraphPlpData thys);
+void          ajGraphdataTrace (const AjPGraphdata thys);
 
 void          ajGraphUnused(void);
 
