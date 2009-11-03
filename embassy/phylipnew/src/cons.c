@@ -3,7 +3,7 @@
 
 int tree_pairing;
 
-Char outfilename[FNMLNGTH], intreename[FNMLNGTH], intree2name[FNMLNGTH], outtreename[FNMLNGTH];
+Char intreename[FNMLNGTH], intree2name[FNMLNGTH];
 node *root;
 
 long numopts, outgrno, col, setsz;
