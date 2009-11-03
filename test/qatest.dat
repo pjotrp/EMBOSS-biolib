@@ -12123,7 +12123,7 @@ FZ = 22
 FP /^Created prettyplot\.ps\n/
 FI prettyplot.ps
 FP /^%%Title: PLplot Graph\n/
-FP /^%%Pages: 2\n/
+FP /^%%Pages: 1\n/
 //
 
 ID prettyplot-ex2
