@@ -4,7 +4,6 @@
 #include "ajax.h"
 #include "ajgraph.h"
 #include "ajgraphstruct.h"
-#include "ajgraphxml.h"
 #include "ajhist.h"
 #include "ensembl.h"
 #include "ajseqdb.h"
