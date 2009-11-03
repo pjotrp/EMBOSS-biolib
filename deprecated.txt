@@ -788,7 +788,6 @@ ajGraphGetOut ajGraphicsGetParamsPage
 ajGraphGetColour ajGraphicsGetColourFore
 ajGraphInfo ajGraphicsGetOutfiles
 ajGraphColourBack ajGraphicsSetBgcolourReset
-#ajgraphxml
 #ajhist
 #ajseqdb
 #ajacd
@@ -946,6 +945,7 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #embossversion
 #emma
 #emowse
+#ensembltest
 #entrails
 #entrailsbook
 #entrailshtml
@@ -969,7 +969,6 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #garnier
 #geecee
 #getorf
-#giep
 #helixturnhelix
 #histogramtest
 #hmoment
@@ -999,6 +998,7 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #mwcontam
 #mwfilter
 #needle
+#needleall
 #newcoils
 #newcpgreport
 #newcpgseek
@@ -1076,6 +1076,7 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #skipseq
 #splitsource
 #splitter
+#sqltest
 #stretcher
 #stssearch
 #supermatcher
