@@ -978,7 +978,7 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 ******************************************************************************/
 
 float embAlignWalkNWMatrixUsingCompass(const float *path,
-                                 const AjPSeq a, const AjPSeq b,
+                                 const char* p, const char* q,
                                  AjPStr *m, AjPStr *n,
                                  ajuint lena, ajuint lenb,
                                  ajint *start1, ajint *start2,
@@ -990,16 +990,11 @@ float embAlignWalkNWMatrixUsingCompass(const float *path,
     ajint j;
     ajuint cursor;
     float score;
-    const char *p;
-    const char *q;
 
     ajDebug("embAlignWalkNWMatrixUsingCompass\n");
 
     ajStrAssignClear(m);
     ajStrAssignClear(n);
-
-    p = ajSeqGetSeqC(a);
-    q = ajSeqGetSeqC(b);
 
     score = embAlignGetScoreNWMatrix(path,
             lena, lenb,

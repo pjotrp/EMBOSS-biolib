@@ -102,7 +102,7 @@ void embAlignWalkNWMatrix(const float *path,
                           const ajint *compass);
 
 float embAlignWalkNWMatrixUsingCompass(const float *path,
-        const AjPSeq a, const AjPSeq b,
+        const char* p, const char* q,
         AjPStr *m, AjPStr *n,
         ajuint lena, ajuint lenb,
         ajint *start1, ajint *start2,

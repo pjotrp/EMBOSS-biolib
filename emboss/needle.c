@@ -157,7 +157,7 @@ int main(int argc, char **argv)
 
 
 
-	score = embAlignWalkNWMatrixUsingCompass(path,a,b,&alga,&algb,
+	score = embAlignWalkNWMatrixUsingCompass(path,p,q,&alga,&algb,
 	        lena,lenb,&start1,&start2,
 	        compass, endweight);
 		

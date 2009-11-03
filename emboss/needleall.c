@@ -162,7 +162,7 @@ int main(int argc, char **argv)
                     gapextend, endgapopen, endgapextend, path,sub,cvt,
                     m, ix, iy, compass,ajFalse, endweight);
 
-            score = embAlignWalkNWMatrixUsingCompass(path, seqa, seqb,
+            score = embAlignWalkNWMatrixUsingCompass(path, p, q,
                     &alga, &algb, lena, lenb, &start1, &start2, compass,
                     endweight);
 
