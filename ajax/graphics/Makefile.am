@@ -11,9 +11,9 @@ endif
 INCLUDES = -I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/pcre \
 -I$(top_srcdir)/ajax/expat -I$(top_srcdir)/ajax/core
 
-AJAXGSRC = ajgraph.c ajgraphxml.c ajhist.c
+AJAXGSRC = ajgraph.c ajhist.c
 
-include_HEADERS = ajgraph.h ajgraphstruct.h ajgraphxml.h ajhist.h
+include_HEADERS = ajgraph.h ajgraphstruct.h  ajhist.h
 
 libajaxg_la_SOURCES = $(AJAXGSRC)
 
