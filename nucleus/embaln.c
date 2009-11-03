@@ -962,8 +962,8 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 ** penalties. Form aligned strings. Nucleotides or proteins as needed.
 **
 ** @param [r] path [const float*] path matrix
-** @param [r] a [const AjPSeq] first sequence
-** @param [r] b [const AjPSeq] second sequence
+** @param [r] p [const char*] first sequence
+** @param [r] q [const char*] second sequence
 ** @param [w] m [AjPStr *] alignment for first sequence
 ** @param [w] n [AjPStr *] alignment for second sequence
 ** @param [r] lena [ajuint] length of first sequence
