@@ -784,7 +784,7 @@ AjBool ajSqlconnectionEscapeS(const AjPSqlconnection sqlc,
                               AjPStr *Pstr,
                               const AjPStr str)
 {
-    char **Ptxt = NULL;
+    char *Ptxt = NULL;
     
     if(!sqlc)
 	return ajFalse;
@@ -792,11 +792,11 @@ AjBool ajSqlconnectionEscapeS(const AjPSqlconnection sqlc,
     if(!str)
 	return ajFalse;
     
-    ajSqlconnectionEscapeC(sqlc, Ptxt, str);
+    ajSqlconnectionEscapeC(sqlc, &Ptxt, str);
     
-    ajStrAssignC(Pstr, *Ptxt);
+    ajStrAssignC(Pstr, Ptxt);
     
-    ajCharDel(Ptxt);
+    ajCharDel(&Ptxt);
     
     return ajTrue;
 }
