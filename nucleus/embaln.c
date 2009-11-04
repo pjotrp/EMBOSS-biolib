@@ -39,6 +39,9 @@
 static void printPathMatrix(const float* path, const ajint* compass,
                             ajuint lena, ajuint lenb);
 
+static float embAlignGetScoreNWMatrix(const float *path, ajint lena,
+        ajint lenb, ajint *xpos, ajint *ypos, AjBool endweight);
+
 
 
 
@@ -229,8 +232,8 @@ float embAlignPathCalc(const char *a, const char *b,
 
 /* @func embAlignPathCalcWithEndGapPenalties *********************************
 **
-** Create path matrix for Needleman-Wunsch, using end gap penalties.
-** Nucleotides or proteins as needed. Supports affine gap penalties.
+** Create path matrix for Needleman-Wunsch alignment of two sequences.
+** Nucleotides or proteins as needed. Supports end gap penalties.
 **
 ** @param [r] a [const char *] first sequence
 ** @param [r] b [const char *] second sequence
@@ -240,6 +243,8 @@ float embAlignPathCalc(const char *a, const char *b,
 ** @param [r] gapextend [float] gap extension penalty
 ** @param [r] endgapopen [float] end gap opening penalty
 ** @param [r] endgapextend [float] end gap extension penalty
+** @param [w] start1 [ajint *] start of alignment in first sequence
+** @param [w] start2 [ajint *] start of alignment in second sequence
 ** @param [w] path [float *] path matrix
 ** @param [r] sub [float * const *] substitution matrix from AjPMatrixf
 ** @param [r] cvt [const AjPSeqCvt] Conversion array for AjPMatrixf
@@ -250,15 +255,16 @@ float embAlignPathCalc(const char *a, const char *b,
 ** @param [r] show [AjBool] Display path matrix
 ** @param [r] endweight [AjBool] Use end gap weights
 **
-** @return [void]
+** @return [float] Score
 ** @@
 **
 ******************************************************************************/
 
-void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
+float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
                        ajuint lena, ajuint lenb,
                        float gapopen, float gapextend,
                        float endgapopen, float endgapextend,
+                       ajint *start1, ajint *start2,
                        float *path, float * const *sub, const AjPSeqCvt cvt,
                        float *m, float *ix, float *iy,
                        ajint *compass, AjBool show,
@@ -280,6 +286,7 @@ void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
     float testog;
     float testeg;
     float testdg;
+    float score;
     
     ajDebug("embAlignPathCalcWithEndGapPenalties\n");
     
@@ -457,7 +464,10 @@ void embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
     if(show)
         printPathMatrix(path, compass, lena, lenb);
 
-    return;
+    score = embAlignGetScoreNWMatrix(path, lena, lenb,
+            start1, start2, endweight);
+    
+    return score;
 }
 
 
@@ -973,33 +983,28 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 ** @param [r] compass [ajint const *] Path direction pointer array
 ** @param [r] endweight [AjBool] Use end gap weights
 **
-** @return [float] Score
+** @return [void]
+** @@
 **
 ******************************************************************************/
 
-float embAlignWalkNWMatrixUsingCompass(const float *path,
+void embAlignWalkNWMatrixUsingCompass(const float *path,
                                  const char* p, const char* q,
                                  AjPStr *m, AjPStr *n,
                                  ajuint lena, ajuint lenb,
                                  ajint *start1, ajint *start2,
                                  ajint const *compass, AjBool endweight)
 {
-    ajint xpos;
-    ajint ypos;
+    ajint xpos = *start2;
+    ajint ypos = *start1;
     ajint i;
     ajint j;
     ajuint cursor;
-    float score;
 
     ajDebug("embAlignWalkNWMatrixUsingCompass\n");
 
     ajStrAssignClear(m);
     ajStrAssignClear(n);
-
-    score = embAlignGetScoreNWMatrix(path,
-            lena, lenb,
-            &xpos, &ypos,
-            endweight);
     
     for (i=lenb-1; i>xpos;)
     {
@@ -1056,10 +1061,10 @@ float embAlignWalkNWMatrixUsingCompass(const float *path,
     ajStrReverse(m); /* written with append, need to reverse */
     ajStrReverse(n);
 
-    ajDebug("mmm: %S\n", *m);
-    ajDebug("nnn: %S\n", *n);
+    ajDebug("first sequence extended with gaps  (m): %S\n", *m);
+    ajDebug("second sequence extended with gaps (n): %S\n", *n);
     
-    return score;
+    return;
 }
 
 
@@ -2857,7 +2862,7 @@ void embAlignCalcSimilarity(const AjPStr m, const AjPStr n,
 
 /* @func embAlignGetScoreNWMatrix ******************************************
 **
-** Returns score of the best global or overlap alignment for
+** Returns score of the optimal global or overlap alignment for
 ** the specified path matrix for Needleman Wunsch
 **
 ** @param [r] path [const float*] path matrix
@@ -2866,25 +2871,25 @@ void embAlignCalcSimilarity(const AjPStr m, const AjPStr n,
 ** @param [w] start1 [ajint *] start of alignment in first sequence
 ** @param [w] start2 [ajint *] start of alignment in second sequence
 ** @param [r] endweight [AjBool] whether the matrix was built for
-**                                     a global or overlap alignment
+**                               a global or overlap alignment
 **
-** @return [float] best score
+** @return [float] optimal score
 ******************************************************************************/
 
-float embAlignGetScoreNWMatrix(const float *path,
+static float embAlignGetScoreNWMatrix(const float *path,
         ajint lena, ajint lenb,
         ajint *start1, ajint *start2,
         AjBool endweight)
 {
     ajint i,j;
     float score = FLT_MIN;
-    *start1= lenb -1;
-    *start2 = lena-1;
+    *start1 = lena-1;
+    *start2 = lenb-1;
     
     if(endweight)
     {
-        /* when using end gap penalties the score of the best global alignment
-         * is stored in the final cell of the path matrix */
+        /* when using end gap penalties the score of the optimal global
+         * alignment is stored in the final cell of the path matrix */
         score = path[lena * lenb - 1];
     }
     else {
@@ -2892,15 +2897,15 @@ float embAlignGetScoreNWMatrix(const float *path,
         for (i = 0; i < lenb; ++i)
             if(path[(lena - 1) * lenb + i] > score)
             {
-                *start1 = i;
+                *start2 = i;
                 score = path[(lena - 1) * lenb + i];
             }
 
         for (j = 0; j < lena; ++j)
             if(path[j * lenb + lenb - 1] > score)
             {
-                *start2 = j;
-                *start1=lenb-1;
+                *start1 = j;
+                *start2 = lenb-1;
                 score = path[j * lenb + lenb - 1];
             }
     }

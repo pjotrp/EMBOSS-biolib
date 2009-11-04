@@ -158,13 +158,13 @@ int main(int argc, char **argv)
             ajStrAssignC(&alga,"");
             ajStrAssignC(&algb,"");
 
-            embAlignPathCalcWithEndGapPenalties(p, q, lena, lenb, gapopen,
-                    gapextend, endgapopen, endgapextend, path,sub,cvt,
-                    m, ix, iy, compass,ajFalse, endweight);
+            score = embAlignPathCalcWithEndGapPenalties(p, q, lena, lenb,
+                    gapopen, gapextend, endgapopen, endgapextend,
+                    &start1, &start2, path, sub, cvt, m, ix, iy,
+                    compass, ajFalse, endweight);
 
-            score = embAlignWalkNWMatrixUsingCompass(path, p, q,
-                    &alga, &algb, lena, lenb, &start1, &start2, compass,
-                    endweight);
+            embAlignWalkNWMatrixUsingCompass(path, p, q, &alga, &algb,
+                    lena, lenb, &start1, &start2, compass, endweight);
 
             if (score > minscore){
                 if(!ajAlignFormatShowsSequences(align))
