@@ -92,6 +92,7 @@ int main(int argc, char **argv)
 
     matrix    = ajAcdGetMatrixf("datafile");
     seqset    = ajAcdGetSeqset("asequence");
+    ajSeqsetTrim(seqset);
     seqall    = ajAcdGetSeqall("bsequence");
     gapopen   = ajAcdGetFloat("gapopen");
     gapextend = ajAcdGetFloat("gapextend");
