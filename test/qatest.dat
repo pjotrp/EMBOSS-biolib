@@ -18495,15 +18495,15 @@ IN
 IN 3.0
 IN
 FI stderr
-FC = 6
-FP 4 /^Target [0-9]+ [A-Z][0-9]+ matches 1\n/
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout 
 FZ = 0
 FI wordfinder.error
-FC = 0
+FC = 5
+FP 5 /^Target [0-9]+ [A-Z][0-9]+ matches 1\n/
 FI j01636.wordfinder
 FZ > 71230
 FP /^J01636 +1 /
@@ -21183,6 +21183,19 @@ FP /^BFULL              7 cccgtt      2\n/
 FC = 44
 //
 
+ID align-wordfinder-simple
+AP wordfinder
+CL -gapopen 10 -gapextend 1 -wordlen 3 -aformat simple -outfile align.simple
+CL asis:GATCGGAAGAGCTCGTATGCCGTCTTCTGCTTGGGGGGG asis:TCGTTT -auto
+FI wordfinder.error
+FC = 1
+FP /matches 1/
+FI align.simple
+FC = 43
+FP /^# Score: 21\.0/
+FP /TCGTAT/
+//
+
 ID align-supermatcher-default
 TI 400
 AP supermatcher
@@ -21278,6 +21291,18 @@ FP /^# Score: 36385\.0/
 FP 5 /^# Score: /
 FP /^X51872 +32 [acgt]+ +1\n/
 FP 2 /^J01636 +127 [acgt]+ +101\n/
+//
+
+ID align-supermatcher-simple
+AP supermatcher
+CL -gapopen 10 -gapextend 1 -wordlen 3 -aformat simple -outfile align.simple
+CL asis:GATCGGAAGAGCTCGTATGCCGTCTTCTGCTTGGGGGGG asis:TCGTTT -auto
+FI supermatcher.error
+FZ = 0
+FI align.simple
+FC = 41
+FP /^# Score: 21\.0/
+FP /TCGTAT/
 //
 
 #######################################
