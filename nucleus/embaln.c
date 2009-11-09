@@ -1427,29 +1427,11 @@ void embAlignPrintGlobal(AjPFile outf, const char *a, const char *b,
 
 
 
-/* @func embAlignPrintLocal ***************************************************
-**
-** Print a local alignment
-** Nucleotides or proteins as needed.
-**
-** @param [u] outf [AjPFile] output stream
-** @param [r] m [const AjPStr] Walk alignment for first sequence
-** @param [r] n [const AjPStr] Walk alignment for second sequence
-** @param [r] start1 [ajint] start of alignment in first sequence
-** @param [r] start2 [ajint] start of alignment in second sequence
-** @param [r] score [float] alignment score from AlignScoreX
-** @param [r] mark [AjBool] mark matches and conservatives
-** @param [r] sub [float * const *] substitution matrix
-** @param [r] cvt [const AjPSeqCvt] conversion table for matrix
-** @param [r] namea [const char*] name of first sequence
-** @param [r] nameb [const char*] name of second sequence
-** @param [r] begina [ajint] first sequence offset
-** @param [r] beginb [ajint] second sequence offset
-**
-** @return [void]
-******************************************************************************/
+/* @obsolete embAlignPrintLocal
+** @remove not used, see ajAlignWrite
+*/
 
-void embAlignPrintLocal(AjPFile outf,
+__deprecated void embAlignPrintLocal(AjPFile outf,
 			const AjPStr m, const AjPStr n,
 			ajint start1, ajint start2, float score, AjBool mark,
 			float * const *sub, const AjPSeqCvt cvt,
