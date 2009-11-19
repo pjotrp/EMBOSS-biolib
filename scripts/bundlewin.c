@@ -157,7 +157,8 @@ int main(int argc, char **argv)
     listnode *tptr;
     char **uids = NULL;
     char **prognames = NULL;
-    
+    char *vcfiles = NULL;
+
     FILE *fp = NULL;
     
     int len;
@@ -854,10 +855,21 @@ static void copy_redist(char *basedir)
     static char *def2="/root/vc80";
     int len;
     
-    fprintf(stdout,"Redist 90 file directory [%s]: ",def);
+    char vc80[MAXNAMLEN];
+    char vc90[MAXNAMLEN];
+    char *ev = NULL;
+
+
+    if((ev = getenv("vc90files")))
+        strcpy(vc90,ev);
+    else
+        strcpy(vc90,def);
+    
+
+    fprintf(stdout,"Redist 90 file directory [%s]: ",vc90);
     fgets(prompt,MAXNAMLEN,stdin);
     if(*prompt == '\n')
-        sprintf(prompt,"%s",def);
+        sprintf(prompt,"%s",vc90);
 
     len = strlen(prompt);
     if(prompt[len-1] == '\n')
@@ -872,10 +884,16 @@ static void copy_redist(char *basedir)
 	exit(-1);
     }
 
-    fprintf(stdout,"Redist 80 file directory [%s]: ",def2);
+    if((ev = getenv("vc80files")))
+        strcpy(vc80,ev);
+    else
+        strcpy(vc80,def2);
+
+    
+    fprintf(stdout,"Redist 80 file directory [%s]: ",vc80);
     fgets(prompt,MAXNAMLEN,stdin);
     if(*prompt == '\n')
-        sprintf(prompt,"%s",def2);
+        sprintf(prompt,"%s",vc80);
 
     len = strlen(prompt);
     if(prompt[len-1] == '\n')
