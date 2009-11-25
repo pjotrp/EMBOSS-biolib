@@ -1392,9 +1392,7 @@ RUNFILE=$JEMBOSS/runJemboss.sh
   cp $JEMBOSS/lib/mail.jar $TOMCAT_ROOT/webapps/axis/WEB-INF/lib
   cp $JEMBOSS/lib/activation.jar $TOMCAT_ROOT/webapps/axis/WEB-INF/lib
 
-  mv $JEMBOSS/org $TOMCAT_ROOT/webapps/axis/WEB-INF/classes/org
-  cp -R $JEMBOSS/resources $TOMCAT_ROOT/webapps/axis/WEB-INF/classes/
-  
+  cp -R $JEMBOSS/resources $TOMCAT_ROOT/webapps/axis/WEB-INF/classes/  
   cp -R $EMBOSS_DOWNLOAD/jemboss/lib/axis $JEMBOSS/lib
   
 # Ensure that the native library is not loaded more than once.
@@ -1402,17 +1400,19 @@ RUNFILE=$JEMBOSS/runJemboss.sh
 # web app, and ensure that the loadLibrary() call is executed only once
 # during the lifetime of a particular JVM.
   cd $JEMBOSS;
+  echo "moving Ajax and AjaxUtil classes from jemboss.jar into ajax.jar"
   mkdir tmp;
   cd tmp;
-  jar -xvf ../lib/jemboss.jar org/emboss/jemboss/parser/Ajax.class org/emboss/jemboss/parser/AjaxUtil.class
-  jar -cvf ../lib/ajax.jar org
-  jar -xvf ../lib/jemboss.jar
+  jar -xf ../lib/jemboss.jar org/emboss/jemboss/parser/Ajax.class org/emboss/jemboss/parser/AjaxUtil.class
+  jar -cf ../lib/ajax.jar org
+  jar -xf ../lib/jemboss.jar
   rm org/emboss/jemboss/parser/Ajax.class org/emboss/jemboss/parser/AjaxUtil.class
-  jar -cvf jemboss.jar .
-  cp jemboss.jar $TOMCAT_ROOT/webapps/axis/WEB-INF/lib/
+  echo "copying Java class files to axis web-application classes folder"
+  cp -R org $TOMCAT_ROOT/webapps/axis/WEB-INF/classes/
   cd ..;
   rm -rf tmp;
 
+  echo "copying ajax.jar to Tomcat shared libraries folder"
   if [ -d "$TOMCAT_ROOT/shared/lib" ]; then
   #tomcat 4.1.x and 5.5.x
     cp lib/ajax.jar $TOMCAT_ROOT/shared/lib/
