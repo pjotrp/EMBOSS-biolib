@@ -13,55 +13,6 @@ if EHAVEANT
 endif
 
 all-local:
-if ISCYGWIN
-	@if test "${JAVA_OK}" != "yes" ; then \
-	  echo "Not compiling Jemboss"; \
-	else \
-	  (if test "${SHELL}" = "/bin/bash" ; then \
-	  declare -x CLASSPATH=`cygpath -wp lib/mail.jar:lib/activation.jar:lib/jakarta-regexp-1.2.jar:lib/jalview.jar:lib/jcert.jar:lib/jnet.jar:lib/jsse.jar:.:lib/axis/axis-ant.jar:lib/axis/axis.jar:lib/axis/commons-discovery.jar:lib/axis/commons-logging.jar:lib/axis/jaxrpc.jar:lib/axis/log4j-1.2.4.jar:lib/axis/saaj.jar:lib/axis/wsdl4j.jar:$(srcdir)`; \
-	  export CLASSPATH; \
-          mv -f ./org/emboss/jemboss/editor/PrintAlignmentImage.java ./org/emboss/jemboss/editor/PrintAlignmentImage.java_o; \
-          mv -f org/emboss/jemboss/draw/PrintDNAImage.java org/emboss/jemboss/draw/PrintDNAImage.java_o; \
-          javac -target 1.3 -source 1.3 -d . org/emboss/jemboss/draw/DNADraw.java; \
-	  javac -target 1.3 -source 1.3 -d . org/emboss/jemboss/Jemboss.java; \
-          mv -f ./org/emboss/jemboss/editor/PrintAlignmentImage.java_o ./org/emboss/jemboss/editor/PrintAlignmentImage.java; \
-          mv -f org/emboss/jemboss/draw/PrintDNAImage.java_o org/emboss/jemboss/draw/PrintDNAImage.java; \
-	  else \
-	  CLASSPATH="lib/mail.jar:lib/activation.jar:lib/jakarta-regexp-1.2.jar:lib/jalview.jar:lib/jcert.jar:lib/jnet.jar:lib/jsse.jar:.:lib/axis/axis-ant.jar:lib/axis/axis.jar:lib/axis/commons-discovery.jar:lib/axis/commons-logging.jar:lib/axis/jaxrpc.jar:lib/axis/log4j-1.2.4.jar:lib/axis/saaj.jar:lib/axis/wsdl4j.jar:$(srcdir)"; \
-	  export CLASSPATH; \
-          mv -f ./org/emboss/jemboss/editor/PrintAlignmentImage.java ./org/emboss/jemboss/editor/PrintAlignmentImage.java_o; \
-          mv -f org/emboss/jemboss/draw/PrintDNAImage.java org/emboss/jemboss/draw/PrintDNAImage.java_o; \
-          javac -target 1.3 -source 1.3 -d . org/emboss/jemboss/draw/DNADraw.java; \
-	  javac -target 1.3 -source 1.3 -d . org/emboss/jemboss/Jemboss.java; \
-          mv -f ./org/emboss/jemboss/editor/PrintAlignmentImage.java_o ./org/emboss/jemboss/editor/PrintAlignmentImage.java; \
-          mv -f org/emboss/jemboss/draw/PrintDNAImage.java_o org/emboss/jemboss/draw/PrintDNAImage.java; \
-	  fi); \
-	fi
-else
-	@if test "${JAVA_OK}" != "yes" ; then \
-	  echo "Not compiling Jemboss"; \
-	else \
-	  (if test "${SHELL}" = "/bin/bash" ; then \
-	  declare -x CLASSPATH=lib/mail.jar:lib/activation.jar:lib/jakarta-regexp-1.2.jar:lib/jalview.jar:lib/jcert.jar:lib/jnet.jar:lib/jsse.jar:.:lib/axis/axis-ant.jar:lib/axis/axis.jar:lib/axis/commons-discovery.jar:lib/axis/commons-logging.jar:lib/axis/jaxrpc.jar:lib/axis/log4j-1.2.4.jar:lib/axis/saaj.jar:lib/axis/wsdl4j.jar:$(srcdir); \
-	  export CLASSPATH; \
-          mv -f ./org/emboss/jemboss/editor/PrintAlignmentImage.java ./org/emboss/jemboss/editor/PrintAlignmentImage.java_o; \
-          mv -f org/emboss/jemboss/draw/PrintDNAImage.java org/emboss/jemboss/draw/PrintDNAImage.java_o; \
-          javac -target 1.3 -source 1.3 -d . org/emboss/jemboss/draw/DNADraw.java; \
-	  javac -target 1.3 -source 1.3 -d . org/emboss/jemboss/Jemboss.java; \
-          mv -f ./org/emboss/jemboss/editor/PrintAlignmentImage.java_o ./org/emboss/jemboss/editor/PrintAlignmentImage.java; \
-          mv -f org/emboss/jemboss/draw/PrintDNAImage.java_o org/emboss/jemboss/draw/PrintDNAImage.java; \
-	  else \
-	  CLASSPATH="lib/mail.jar:lib/activation.jar:lib/jakarta-regexp-1.2.jar:lib/jalview.jar:lib/jcert.jar:lib/jnet.jar:lib/jsse.jar:.:lib/axis/axis-ant.jar:lib/axis/axis.jar:lib/axis/commons-discovery.jar:lib/axis/commons-logging.jar:lib/axis/jaxrpc.jar:lib/axis/log4j-1.2.4.jar:lib/axis/saaj.jar:lib/axis/wsdl4j.jar:$(srcdir)"; \
-	  export CLASSPATH; \
-          mv -f ./org/emboss/jemboss/editor/PrintAlignmentImage.java ./org/emboss/jemboss/editor/PrintAlignmentImage.java_o; \
-          mv -f org/emboss/jemboss/draw/PrintDNAImage.java org/emboss/jemboss/draw/PrintDNAImage.java_o; \
-          javac -target 1.3 -source 1.3 -d . org/emboss/jemboss/draw/DNADraw.java; \
-	  javac -target 1.3 -source 1.3 -d . org/emboss/jemboss/Jemboss.java; \
-          mv -f ./org/emboss/jemboss/editor/PrintAlignmentImage.java_o ./org/emboss/jemboss/editor/PrintAlignmentImage.java; \
-          mv -f org/emboss/jemboss/draw/PrintDNAImage.java_o org/emboss/jemboss/draw/PrintDNAImage.java; \
-	  fi); \
-	fi
-endif
 
 install-exec-hook:
 	echo "#!/bin/csh" > $(DESTDIR)$(bindir)/runJemboss.csh; \
