@@ -971,7 +971,6 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 ** Walk down a matrix for Needleman Wunsch which was constructed using end gap
 ** penalties. Form aligned strings. Nucleotides or proteins as needed.
 **
-** @param [r] path [const float*] path matrix
 ** @param [r] p [const char*] first sequence
 ** @param [r] q [const char*] second sequence
 ** @param [w] m [AjPStr *] alignment for first sequence
@@ -981,19 +980,17 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 ** @param [w] start1 [ajint *] start of alignment in first sequence
 ** @param [w] start2 [ajint *] start of alignment in second sequence
 ** @param [r] compass [ajint const *] Path direction pointer array
-** @param [r] endweight [AjBool] Use end gap weights
 **
 ** @return [void]
 ** @@
 **
 ******************************************************************************/
 
-void embAlignWalkNWMatrixUsingCompass(const float *path,
-                                 const char* p, const char* q,
+void embAlignWalkNWMatrixUsingCompass(const char* p, const char* q,
                                  AjPStr *m, AjPStr *n,
                                  ajuint lena, ajuint lenb,
                                  ajint *start1, ajint *start2,
-                                 ajint const *compass, AjBool endweight)
+                                 ajint const *compass)
 {
     ajint xpos = *start2;
     ajint ypos = *start1;
