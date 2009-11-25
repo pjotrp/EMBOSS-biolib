@@ -164,8 +164,8 @@ int main(int argc, char **argv)
                     &start1, &start2, path, sub, cvt, m, ix, iy,
                     compass, ajFalse, endweight);
 
-            embAlignWalkNWMatrixUsingCompass(path, p, q, &alga, &algb,
-                    lena, lenb, &start1, &start2, compass, endweight);
+            embAlignWalkNWMatrixUsingCompass(p, q, &alga, &algb,
+                    lena, lenb, &start1, &start2, compass);
 
             if (score > minscore){
                 if(!ajAlignFormatShowsSequences(align))

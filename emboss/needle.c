@@ -158,9 +158,9 @@ int main(int argc, char **argv)
 
 
 
-	embAlignWalkNWMatrixUsingCompass(path, p, q, &alga, &algb,
+	embAlignWalkNWMatrixUsingCompass(p, q, &alga, &algb,
 	        lena, lenb, &start1, &start2,
-	        compass, endweight);
+	        compass);
 		
 	embAlignReportGlobal(align, a, b, alga, algb,
 			     start1, start2,
