@@ -4130,9 +4130,10 @@ __deprecated AjBool ajFileBuffNobuff(AjPFilebuff buff)
 **
 ** @nam3rule Html Modify HTML tags in the buffer
 ** @nam4rule HtmlPre Reduce to a preformatted section if found in HTML
+** @nam4rule HtmlNoheader Remove HTML header in the buffer
 ** @nam4rule HtmlStrip Remove all HTML tags in the buffer
 ** @nam3rule Load Add text to the buffer
-** @nam4rule LoadAll      Read all file lines into buffer
+** @nam4rule LoadAll Read all file lines into buffer
 **
 ** @suffix C Character string text
 ** @suffix S String object text
@@ -4251,6 +4252,205 @@ AjBool ajFilebuffHtmlPre(AjPFilebuff buff)
 __deprecated AjBool ajFileBuffStripHtmlPre(AjPFilebuff buff)
 {
     return ajFilebuffHtmlPre(buff);
+}
+
+
+
+
+/* @func ajFilebuffHtmlNoheader **********************************************
+**
+** Processes data in the file buffer, removing HTML titles and
+** decoding possible chunked input
+**
+** @param [u] buff [AjPFilebuff] Buffered file with data loaded
+**                                     in the buffer.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajFilebuffHtmlNoheader(AjPFilebuff buff)
+{
+    AjPRegexp httpexp  = NULL;
+    AjPRegexp nullexp  = NULL;
+    AjPRegexp chunkexp = NULL;
+    AjPRegexp hexexp   = NULL;
+    
+    AjBool doChunk = ajFalse;
+    ajint ichunk;
+    ajint chunkSize;
+    ajint iline;
+    AjPStr saveLine = NULL;
+    AjPStr hexstr   = NULL;
+    
+    httpexp  = ajRegCompC("^HTTP/");
+    nullexp  = ajRegCompC("^\r?\n?$");
+    chunkexp = ajRegCompC("^Transfer-Encoding: +chunked");
+    hexexp   = ajRegCompC("^([0-9a-fA-F]+) *\r?\n?$");
+    
+    /* first take out the HTTP header (HTTP 1.0 onwards) */
+    if(!buff->Size)
+	return;
+    
+    ajFilebuffTraceTitle(buff, "Before ajFileBuffStripHtml");
+
+
+    ajDebug("First line [%d] '%S' \n",
+	     ajStrGetUse(buff->Curr->Line), buff->Curr->Line);
+    
+    if(ajRegExec(httpexp, buff->Curr->Line))
+    {
+	/* ^HTTP  header processing */
+	while(buff->Pos < buff->Size &&
+	      !ajRegExec(nullexp, buff->Curr->Line))
+	{
+	    /* to empty line */
+	    if(ajRegExec(chunkexp, buff->Curr->Line))
+	    {
+		ajDebug("Chunk encoding: %S", buff->Curr->Line);
+		/* chunked - see later */
+		doChunk = ajTrue;
+	    }
+	    fileBuffLineDel(buff);
+	}
+
+	/* blank line after header */
+	fileBuffLineDel(buff);
+    }
+
+    if(doChunk)
+    {
+	/*ajFilebuffTraceFull(buff, 999999, 0);*/
+	
+	if(!ajRegExec(hexexp, buff->Curr->Line))
+	{
+	    ajFatal("Bad chunk data from HTTP, expect chunk size got '%S'",
+		    buff->Curr->Line);
+	}
+
+	ajRegSubI(hexexp, 1, &hexstr);
+	ajStrToHex(hexstr, &chunkSize);
+	
+	ajDebug("chunkSize hex:%x %d\n", chunkSize, chunkSize);
+	fileBuffLineDel(buff);	/* chunk size */
+	
+	ichunk = 0;
+	iline = 0;
+
+	while(chunkSize && buff->Curr)
+	{
+	    iline++;
+	    /* get the chunk size - zero is the end */
+	    /* process the chunk */
+	    ichunk += ajStrGetLen(buff->Curr->Line);
+	    
+	    ajDebug("++input line [%d] ichunk=%d:%d %d:%S",
+		    iline, ichunk, chunkSize,
+		    ajStrGetLen(buff->Curr->Line), buff->Curr->Line);
+
+	    if(ichunk >= chunkSize)	/* end of chunk */
+	    {
+		if(ichunk == chunkSize)
+		{
+		    /* end-of-chunk at end-of-line */
+		    fileBuffLineNext(buff);
+		    ajStrAssignClear(&saveLine);
+		    ajDebug("end-of-chunk at end-of-line: '%S'\n", saveLine);
+		}
+		else
+		{
+		    /* end-of-chunk in mid-line, patch up the input */
+		    ajDebug("end-of-chunk in mid-line, %d:%d have input: "
+                            "%d '%S'\n",
+			    ichunk, chunkSize,
+			    ajStrGetLen(buff->Curr->Line),
+			    buff->Curr->Line);
+		    ajStrAssignSubS(&saveLine, buff->Curr->Line, 0,
+				-(ichunk-chunkSize+1));
+		    ajStrKeepRange(&buff->Curr->Line, -(ichunk-chunkSize), -1);
+		}
+		
+		/* skip a blank line */
+		
+		if(!ajRegExec(nullexp, buff->Curr->Line))
+		{
+		    ajFilebuffTraceTitle(buff, "Blank line not found");
+		    ajFatal("Bad chunk data from HTTP, expect blank line"
+			    " got '%S'", buff->Curr->Line);
+		}
+
+		fileBuffLineDel(buff);
+		
+		/** read the next chunk size */
+		
+		if(!ajRegExec(hexexp, buff->Curr->Line))
+		{
+		    ajFilebuffTraceTitle(buff, "Chunk size not found");
+		    ajFatal("Bad chunk data from HTTP, expect chunk size "
+			    "got '%S'",
+			    buff->Curr->Line);
+		}
+
+		ajRegSubI(hexexp, 1, &hexstr);
+		ajStrToHex(hexstr, &chunkSize);
+		ichunk = 0;
+		fileBuffLineDel(buff);
+	    }
+
+	    if(saveLine)
+	    {
+		if(ajStrGetLen(saveLine))
+		{
+		    ichunk = ajStrGetLen(buff->Curr->Line);
+		    /* preserve the line split by chunksize */
+		    ajStrInsertS(&buff->Curr->Line, 0, saveLine);
+
+		    if(ichunk < chunkSize)
+		    {
+			/* process the next line */
+			fileBuffLineNext(buff); /* after restored line */
+		    }
+		    else
+		    {
+			/* we alrady have the whole chunk! */
+			ichunk -= ajStrGetLen(buff->Curr->Line);
+		    }
+		}
+		else
+		{
+		    /* just a chunksize, skip */
+		    if(buff->Curr && chunkSize)
+		    {
+			/*fileBuffLineDel(buff);*/
+		    }
+		    else if (chunkSize)/* final non-zero chunksize */
+		    {
+			fileBuffLineDel(buff);
+		    }
+		}
+
+		ajStrDel(&saveLine);
+	    }
+	    else
+	    {
+		/* next line */
+		fileBuffLineNext(buff);
+	    }
+	}
+
+	ajFilebuffFix(buff);
+	/*ajFilebuffTraceFull(buff, 999999, 0);*/
+	ajStrDel(&hexstr);
+	/*ajFilebuffTraceTitle(buff, "Chunks resolved");*/
+    }
+    
+    ajFilebuffReset(buff);
+
+    ajRegFree(&httpexp);
+    ajRegFree(&nullexp);
+    ajRegFree(&chunkexp);
+    ajRegFree(&hexexp);
+    
+    return;
 }
 
 

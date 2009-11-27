@@ -281,6 +281,7 @@ void           ajFilebuffResetPos(AjPFilebuff thys);
 void           ajFilebuffResetStore(AjPFilebuff thys,
                                     AjBool store, AjPStr *astr);
 AjBool         ajFilebuffReopenFile(AjPFilebuff* Pbuff, AjPFile file);
+void           ajFilebuffHtmlNoheader(AjPFilebuff buff);
 void           ajFilebuffHtmlStrip(AjPFilebuff thys);
 AjBool         ajFilebuffHtmlPre(AjPFilebuff thys);
 void           ajFilebuffTrace(const AjPFilebuff thys);
