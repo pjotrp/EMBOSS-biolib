@@ -7027,7 +7027,7 @@ static AjBool seqoutUsaProcess(AjPSeqout thys)
 #else
     /* Windows file names can start with e.g.: 'C:\' */
     /* -> Require that format names have at least 2 letters */
-    seqoutRegFmt = ajRegCompC("^([A-Za-z0-9][A-Za-z0-9][A-Za-z0-9-]*)::?(.*)$");
+    seqoutRegFmt = ajRegCompC("^([A-Za-z0-9][A-Za-z0-9-][A-Za-z0-9-]*)::?(.*)$");
     /* \1 format */
     /* \2 remainder */
 #endif
