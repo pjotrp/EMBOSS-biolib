@@ -1210,7 +1210,14 @@ void ajPatCompDel (AjPPatComp *pthys)
 {
     ajuint i;
 
-    AjPPatComp thys = *pthys;
+    AjPPatComp thys;
+
+    if(!pthys)
+        return;
+    if(!*pthys)
+        return;
+
+    thys = *pthys;
     ajStrDel(&thys->pattern);
     ajStrDel(&thys->regex);
 
