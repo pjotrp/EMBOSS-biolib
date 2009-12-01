@@ -55,8 +55,11 @@ AjBool        ajFeatGetRemoteseq(const AjPFeature thys, const AjPStr usa,
                                  AjPSeq seq);
 float         ajFeatGetScore (const AjPFeature thys);
 const AjPStr  ajFeatGetSource (const AjPFeature thys);
-AjBool        ajFeatGetSeq(const AjPFeature feat, const AjPFeattable table,
+AjBool        ajFeatGetFlags(const AjPFeature thys,  AjPStr* Pflagstr);
+AjBool        ajFeatGetSeq(const AjPFeature feat,
                            const AjPSeq seq, AjPStr* seqstr);
+AjBool        ajFeatGetSeqJoin(const AjPFeature thys, const AjPFeattable table,
+                               const AjPSeq seq, AjPStr* Pseqstr);
 ajuint        ajFeatGetStart (const AjPFeature thys);
 char          ajFeatGetStrand (const AjPFeature thys);
 AjBool        ajFeatGetTagC(const AjPFeature thys, const char* tname,
