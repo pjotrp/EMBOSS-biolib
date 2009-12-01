@@ -1,6 +1,7 @@
 application: acdrelations 
 [
   documentation: "Add relations: attribute to ACD files"
+  groups: "Acd"
 ]
 
 
