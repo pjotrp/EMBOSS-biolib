@@ -218,9 +218,11 @@ int main(int argc, char **argv)
 	ajGraphOpenWin(graph, (float)0.0-ymargin,(max*(float)1.35)+ymargin,
 		       (float)0.0-xmargin,(float)max+xmargin);
 
-	ajGraphicsDrawTextAtmid(flen1*(float)0.5,(float)0.0-(xmargin/(float)2.0),
+	ajGraphicsDrawposTextAtmid(flen1*(float)0.5,
+                                   (float)0.0-(xmargin/(float)2.0),
 		       ajGraphGetXTitleC(graph));
-	ajGraphicsDrawTextAtline((float)0.0-(xmargin*(float)0.75),flen2*(float)0.5,
+	ajGraphicsDrawposTextAtlineJustify((float)0.0-(xmargin*(float)0.75),
+                                           flen2*(float)0.5,
 			(float)0.0-(xmargin*(float)0.75),flen1,
 			ajGraphGetYTitleC(graph),0.5);
 
@@ -334,7 +336,7 @@ int main(int argc, char **argv)
     
     if(boxit && !stretch)
     {
-	ajGraphicsDrawRect(0.0,0.0,flen1, flen2);
+	ajGraphicsDrawposRect(0.0,0.0,flen1, flen2);
 
 	i=0;
 	while(acceptableticksx[i]*numbofticks < len1)
@@ -350,22 +352,22 @@ int main(int argc, char **argv)
 	if(len2/len1 > 10 )
 	{
 	    /* if a lot smaller then just label start and end */
-	    ajGraphicsDrawLine((float)0.0,(float)0.0,(float)0.0,(float)0.0-ticklen);
+	    ajGraphicsDrawposLine((float)0.0,(float)0.0,(float)0.0,(float)0.0-ticklen);
 	    sprintf(ptr,"%d",b1-1);
-	    ajGraphicsDrawTextAtmid((float)0.0,(float)0.0-(onefifth),ptr);
+	    ajGraphicsDrawposTextAtmid((float)0.0,(float)0.0-(onefifth),ptr);
 
-	    ajGraphicsDrawLine(flen1,(float)0.0,
+	    ajGraphicsDrawposLine(flen1,(float)0.0,
 			flen1,(float)0.0-ticklen);
 	    sprintf(ptr,"%d",len1+b1-1);
-	    ajGraphicsDrawTextAtmid(flen1,(float)0.0-(onefifth),ptr);
+	    ajGraphicsDrawposTextAtmid(flen1,(float)0.0-(onefifth),ptr);
 
 	}
 	else
 	    for(k2=0.0;k2<len1;k2+=tickgap)
 	    {
-		ajGraphicsDrawLine(k2,(float)0.0,k2,(float)0.0-ticklen);
+		ajGraphicsDrawposLine(k2,(float)0.0,k2,(float)0.0-ticklen);
 		sprintf(ptr,"%d",(ajint)k2+b1-1);
-		ajGraphicsDrawTextAtmid(k2,(float)0.0-(onefifth),ptr);
+		ajGraphicsDrawposTextAtmid(k2,(float)0.0-(onefifth),ptr);
 	    }
 
 	i = 0;
@@ -379,21 +381,21 @@ int main(int argc, char **argv)
 	if(len1/len2 > 10 )
 	{
 	    /* if a lot smaller then just label start and end */
-	    ajGraphicsDrawLine((float)0.0,(float)0.0,(float)0.0-ticklen,(float)0.0);
+	    ajGraphicsDrawposLine((float)0.0,(float)0.0,(float)0.0-ticklen,(float)0.0);
 	    sprintf(ptr,"%d",b2-1);
-	    ajGraphicsDrawTextAtend((float)0.0-(onefifth),(float)0.0,ptr);
+	    ajGraphicsDrawposTextAtend((float)0.0-(onefifth),(float)0.0,ptr);
 
-	    ajGraphicsDrawLine((float)0.0,flen2,(float)0.0-ticklen,
+	    ajGraphicsDrawposLine((float)0.0,flen2,(float)0.0-ticklen,
 			flen2);
 	    sprintf(ptr,"%d",len2+b2-1);
-	    ajGraphicsDrawTextAtend((float)0.0-(onefifth),flen2,ptr);
+	    ajGraphicsDrawposTextAtend((float)0.0-(onefifth),flen2,ptr);
 	}
 	else
 	    for(k2=0.0;k2<len2;k2+=tickgap)
 	    {
-		ajGraphicsDrawLine((float)0.0,k2,(float)0.0-ticklen,k2);
+		ajGraphicsDrawposLine((float)0.0,k2,(float)0.0-ticklen,k2);
 		sprintf(ptr,"%d",(ajint)k2+b2-1);
-		ajGraphicsDrawTextAtend((float)0.0-(onefifth),k2,ptr);
+		ajGraphicsDrawposTextAtend((float)0.0-(onefifth),k2,ptr);
 	    }
     }
     
@@ -504,7 +506,7 @@ static void dotmatcher_pushpoint(AjPList *l, float x1, float y1, float x2,
 
     if(!stretch)
     {
-	ajGraphicsDrawLine(x1+1,y1+1,x2+1,y2+1);
+	ajGraphicsDrawposLine(x1+1,y1+1,x2+1,y2+1);
 	return;
     }
 

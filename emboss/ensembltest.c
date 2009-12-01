@@ -868,7 +868,7 @@ static AjBool ensembltest_features(EnsPDatabaseadaptor dba, AjPFile outfile)
     
     EnsPTranscript transcript = NULL;
     EnsPTranscriptadaptor ta  = NULL;
-    
+
     if(!dba)
 	return ajFalse;
     

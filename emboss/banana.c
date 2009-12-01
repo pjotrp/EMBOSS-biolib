@@ -282,9 +282,9 @@ int main(int argc, char **argv)
 
 	ystart = 75.0;
 
-	ajGraphSetTitlePlus(graph, ajSeqGetUsaS(seq));
+	ajGraphAppendTitleS(graph, ajSeqGetUsaS(seq));
 
-        ajGraphSetPage(960, 768);
+        ajGraphicsSetPagesize(960, 768);
 
 	ajGraphOpenWin(graph,(float)-1.0, (float)numres+(float)10.0,
 		       (float)0.0, ystart+(float)5.0);
@@ -345,19 +345,19 @@ int main(int argc, char **argv)
 			yy1 = ystart-(float)5.0;
 
 		    yy1 = yy1-(yincr*((float)5.0));
-		    ajGraphNewPage(graph,AJFALSE);
+		    ajGraphNewpage(graph,AJFALSE);
 		}
 		count = 1;
 	    }
 	    residue[0] = *ptr;
 
-	    ajGraphicsDrawTextAtend((float)(count)+(float)2.0,yy1,residue);
+	    ajGraphicsDrawposTextAtend((float)(count)+(float)2.0,yy1,residue);
 
 	    if(ii>1 && ii < ajStrGetLen(sstr))
 	    {
 		yp1 = yy1+yincr + (bend[ii]*bendfactor);
 		yp2 = yy1+yincr + (bend[ii+1]*bendfactor);
-		ajGraphicsDrawLine((float)count+(float)1.5,yp1,
+		ajGraphicsDrawposLine((float)count+(float)1.5,yp1,
 			    (float)(count)+(float)2.5,yp2);
 	    }
 
@@ -369,11 +369,11 @@ int main(int argc, char **argv)
 	    {
 		yp1 = yy1+yincr + (curve[ii]*curvefactor);
 		yp2 = yy1+yincr + (curve[ii+1]*curvefactor);
-		ajGraphicsDrawLine((float)count+(float)1.7,yp1,
+		ajGraphicsDrawposLine((float)count+(float)1.7,yp1,
 			    (float)(count)+(float)2.3,yp2);
 	    }
 
-	    ajGraphicsDrawLine((float)count+(float)1.5,yy1+yincr,
+	    ajGraphicsDrawposLine((float)count+(float)1.5,yy1+yincr,
 			(float)(count)+(float)2.5,yy1+yincr);
 
 	    count++;

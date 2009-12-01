@@ -73,7 +73,7 @@ int main(int argc, char **argv)
 
 
     embInit("plotorf", argc, argv);
-    ajGraphSetPage(960, 960);
+    ajGraphicsSetPagesize(960, 960);
 
     seq       = ajAcdGetSeq("sequence");
     graph     = ajAcdGetGraphxy("graph");
@@ -108,7 +108,7 @@ int main(int argc, char **argv)
 
 	ajGraphDataAdd(graph,data);
 	ajGraphxySetOverLap(graph,ajFalse);
-	ajGraphxySetShowYtick(graph, ajFalse);
+	ajGraphxyShowYtick(graph, ajFalse);
 	ajGraphdataSetMaxima(data,(float)beg,(float)end,0.0,1.0);
 	ajGraphdataSetTypeC(data,"Multi 2D Plot Small");
 	ajGraphdataSetYTitleC(data,"Orf");
@@ -121,7 +121,7 @@ int main(int argc, char **argv)
     }
 
 
-    ajGraphSetShowTitle(graph, ajTrue);
+    ajGraphShowTitle(graph, ajTrue);
     ajGraphxySetMaxMin(graph,(float)beg,(float)end,0.0,1.0);
 
     ajGraphxySetYstartF(graph,0.0);

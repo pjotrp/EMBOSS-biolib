@@ -141,7 +141,7 @@ int main(int argc, char **argv)
     AJNEW0(density);
 
     if(graph)
-        ajGraphSetTitlePlus(graph, ajSeqallGetUsa(seqall));
+        ajGraphAppendTitleS(graph, ajSeqallGetUsa(seqall));
 
     while(ajSeqallNext(seqall, &seq))
     {

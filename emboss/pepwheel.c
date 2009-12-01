@@ -136,11 +136,11 @@ int main(int argc, char **argv)
     ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
     len = ajStrGetLen(substr);
 
-    ajGraphSetTitlePlus(graph, ajSeqGetUsaS(seq));
+    ajGraphAppendTitleS(graph, ajSeqGetUsaS(seq));
 
     ajGraphOpenWin(graph,xmin,xmax,ymin,ymax);
 
-    ajGraphicsSetColourFore(AJB_BLACK);
+    ajGraphicsSetFgcolour(AJB_BLACK);
 
     ang = ((float)360.0 / (float)steps) * (float)turns;
 
@@ -170,7 +170,7 @@ int main(int argc, char **argv)
 		    {
 			ajPolToRec(wradius-wheelgap,oldangle,&xx1,&yy1);
 			ajPolToRec(wradius,angle,&xx2,&yy2);
-			ajGraphicsDrawLine(xx1,yy1,xx2,yy2);
+			ajGraphicsDrawposLine(xx1,yy1,xx2,yy2);
 		    }
 		    startloop=ajFalse;
 		}
@@ -179,7 +179,7 @@ int main(int argc, char **argv)
 		    {
 			ajPolToRec(wradius,oldangle,&xx1,&yy1);
 			ajPolToRec(wradius,angle,&xx2,&yy2);
-			ajGraphicsDrawLine(xx1,yy1,xx2,yy2);
+			ajGraphicsDrawposLine(xx1,yy1,xx2,yy2);
 		    }
 	    }
 	    pepwheel_plotresidue(*(ajStrGetPtr(substr)+lc),radius+resgap,angle,
@@ -242,8 +242,8 @@ static void pepwheel_drawocta(float x, float y, float size)
 
 
     for(i=0;i<8;++i)
-	ajGraphicsDrawLine(x+polyx[i]*size,y+polyy[i]*size,x+polyx[i+1]*size,
-			y+polyy[i+1]*size);
+	ajGraphicsDrawposLine(x+polyx[i]*size,y+polyy[i]*size,x+polyx[i+1]*size,
+                              y+polyy[i+1]*size);
 
     return;
 }
@@ -287,28 +287,28 @@ static void pepwheel_plotresidue(char c, float r, float a, const char *squares,
 	return;
 
 
-    ajGraphicsSetColourFore(AJB_PURPLE);
+    ajGraphicsSetFgcolour(AJB_PURPLE);
 
     if(strstr(squares,cs))
     {
-	ajGraphicsSetColourFore(AJB_BLUE);
-	ajGraphicsDrawBox(x-(float)0.025,y-(float)0.022,(float)0.05);
+	ajGraphicsSetFgcolour(AJB_BLUE);
+	ajGraphicsDrawposBox(x-(float)0.025,y-(float)0.022,(float)0.05);
     }
 
     if(strstr(octags,cs))
     {
-	ajGraphicsSetColourFore(AJB_BLACK);
+	ajGraphicsSetFgcolour(AJB_BLACK);
 	pepwheel_drawocta(x,y+(float)0.003,(float)0.28);
     }
 
     if(strstr(diamonds,cs))
     {
-	ajGraphicsSetColourFore(AJB_RED);
-	ajGraphicsDrawDia(x-(float)0.042,y-(float)0.04,(float)0.085);
+	ajGraphicsSetFgcolour(AJB_RED);
+	ajGraphicsDrawposDia(x-(float)0.042,y-(float)0.04,(float)0.085);
     }
 
-    ajGraphicsDrawText(x,y,cs,0.5);
-    ajGraphicsSetColourFore(AJB_BLACK);
+    ajGraphicsDrawposTextJustify(x,y,cs,0.5);
+    ajGraphicsSetFgcolour(AJB_BLACK);
  
     return;
 }

@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 
     str = ajStrNew();
 
-    ajGraphSetTitlePlus(graph, ajSeqallGetUsa(seqall));
+    ajGraphAppendTitleS(graph, ajSeqallGetUsa(seqall));
     while(ajSeqallNext(seqall, &seq))
     {
 	beg = ajSeqallGetseqBegin(seqall);

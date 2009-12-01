@@ -120,9 +120,6 @@ int main(int argc, char **argv)
     sub = ajMatrixfArray(matrix);
     cvt = ajMatrixfCvt(matrix);
 
-    if(!ajAlignFormatShowsSequences(align))
-        ajAlignSetExternal(align, ajTrue);
-    
     while(ajSeqallNext(seqall,&seqb))
     {
         ajSeqTrim(seqb);

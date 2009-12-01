@@ -348,7 +348,7 @@ int main(int argc, char **argv)
             }
             else
     	        ajDie("The program 'primer3_core' must be on the path.\n"
-		      "It is part of the 'primer3' package, version 1.1,\n"
+		      "It is part of the 'primer3' package, version 3.0,\n"
 		      "available from the Whitehead Institute.\n"
 		      "See: http://primer3.sourceforge.net/");
     

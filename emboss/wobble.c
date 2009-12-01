@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 
 
     embInit("wobble", argc, argv);
-    ajGraphSetPage(960, 960);
+    ajGraphicsSetPagesize(960, 960);
 
     seq    = ajAcdGetSeq("sequence");
     graph  = ajAcdGetGraphxy("graph");
@@ -133,13 +133,13 @@ int main(int argc, char **argv)
 	    data->y[j] = y[i][j];
 	}
 
-	ajGraphArrayMaxMin(data->y,count[i],&ymin,&ymax);
+	ajGraphicsCalcRange(data->y,count[i],&ymin,&ymax);
 	ajGraphdataSetMaxima(data,(float)beg,(float)end,ymin,ymax);
 
 	ajGraphdataSetTypeC(data,"2D Plot");
 	ajGraphDataAdd(graph,data);
 
-	ajGraphxySetShowYtick(graph, ajTrue);
+	ajGraphxyShowYtick(graph, ajTrue);
 
 	ajGraphdataSetYTitleC(data,ajStrGetPtr(gc));
 	ajGraphdataSetXTitleC(data,"Sequence");
@@ -148,7 +148,7 @@ int main(int argc, char **argv)
     }
     
     
-    ajGraphSetShowTitle(graph, ajTrue);
+    ajGraphShowTitle(graph, ajTrue);
     ajGraphxySetMaxMin(graph,(float)beg,(float)end,0.0,100.0);
     
     ajGraphxySetYstartF(graph,0.0);

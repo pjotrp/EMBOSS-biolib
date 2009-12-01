@@ -69,14 +69,15 @@ int main(int argc, char **argv)
     graph = ajAcdGetGraph("graph");
 
     ajGraphOpenWin(graph, xmin,xmax,ymin,ymax);
-    ajGraphicsDrawLines(x1,y1,x2,y2,8);
-    ajGraphicsDrawDots(pt1,pt2,9);
+    ajGraphicsDrawsetLines(8,x1,y1,x2,y2);
+    ajGraphicsDrawsetDots(9,pt1,pt2);
     i = 0;
 
     for(i=0;i<8;i++)
     {
 	sprintf(temp,"line %d",i);
-	ajGraphicsDrawTextAtline(x1[i], y1[i], x2[i], y2[i], temp, 1.0);
+	ajGraphicsDrawposTextAtlineJustify(x1[i], y1[i], x2[i], y2[i],
+                                           temp, 1.0);
     }
 
     ajGraphCloseWin();

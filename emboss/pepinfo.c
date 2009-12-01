@@ -118,7 +118,7 @@ int main(int argc, char **argv)
     };
 
     embInit("pepinfo", argc, argv);
-    ajGraphSetPage(960, 960);
+    ajGraphicsSetPagesize(960, 960);
 
     ajHistSetMark(NOY);
 
@@ -356,7 +356,7 @@ int main(int argc, char **argv)
     if(numGraphs)
     {
 	if(do_general || do_seq)
-	    ajGraphNewPage(graphs, ajFalse);
+	    ajGraphNewpage(graphs, ajFalse);
 
 	ajGraphicsSetCharscale(0.50);
 	ajGraphSetTitleC(graphs,"Pepinfo");
@@ -497,7 +497,7 @@ static void pepinfo_plotGraph2Float(AjPGraph graphs,
 
     npts = seq_end - seq_start;
 
-    ajGraphArrayMaxMin(results,npts,&ymin,&ymax);
+    ajGraphicsCalcRange(results,npts,&ymin,&ymax);
 
     /*
     **  initialise plot, the number of points will be the length of the data

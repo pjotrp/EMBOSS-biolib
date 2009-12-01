@@ -87,7 +87,7 @@ int main(int argc, char **argv)
 
     embInit("syco", argc, argv);
 
-    ajGraphSetPage(960, 960);
+    ajGraphicsSetPagesize(960, 960);
 
     a      = ajAcdGetSeq("sequence");
     codon  = ajAcdGetCodon("cfile");
@@ -186,7 +186,7 @@ int main(int argc, char **argv)
 		this->x[i]=xarr[base][i];
 		this->y[i]=farr[base][i];
 	    }
-	    ajGraphArrayMaxMin(this->y,count,&amin,&amax);
+	    ajGraphicsCalcRange(this->y,count,&amin,&amax);
 	    ajGraphdataSetMaxima(this,(float)beg,(float)end,amin,amax);
 
 	    ajGraphDataAdd(graph,this);
@@ -226,12 +226,12 @@ int main(int argc, char **argv)
     
     if(plot)
     {
-	ajGraphSetShowTitle(graph, ajTrue);
+	ajGraphShowTitle(graph, ajTrue);
 	ajGraphxySetMaxMin(graph,(float)beg,(float)end,miny,maxy);
 	ajGraphxySetYstartF(graph,0.0);
 	ajGraphxySetYendF(graph,2.0);
 	/* ajGraphSetTitleC(graph,"Gribskov Codon Plot"); */
-	ajGraphSetTitlePlus(graph, ajSeqGetUsaS(a));
+	ajGraphAppendTitleS(graph, ajSeqGetUsaS(a));
 	ajGraphxyDisplay(graph,ajTrue);
     }
     

@@ -147,7 +147,7 @@ int main(int argc, char **argv)
 	    ajGraphxySetXrangeII(graph,(ajint)x[0],(ajint)x[c-1]);
 	    ajGraphxySetYrangeII(graph,0,(ajint)y[c-1]);
 	    ajGraphdataSetMaxMin(fgraph,x[0],x[c-1],0.,1.0);
-	    ajGraphArrayMaxMin(y,c,&min,&max);
+	    ajGraphicsCalcRange(y,c,&min,&max);
 	    ajGraphdataSetMaxima(fgraph,x[0],x[c-1],min,max);
 	    ajGraphdataSetTypeC(fgraph,"2D Plot");
 

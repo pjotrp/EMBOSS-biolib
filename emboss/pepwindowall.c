@@ -58,7 +58,7 @@ int main(int argc, char **argv)
     ajuint j;
     ajuint k;
     ajuint w;
-    ajint a;
+    ajuint a;
     ajuint midpoint,llen, maxlen, maxsize;
     float total;
     float matrix[AZ];

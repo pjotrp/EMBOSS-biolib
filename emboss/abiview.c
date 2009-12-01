@@ -204,15 +204,15 @@ int main(int argc, char **argv)
 
     nstop  = window+1+nstart;
 
-    ajGraphSetTitlePlus(graphs,fname);
+    ajGraphAppendTitleS(graphs,fname);
     ajGraphSetYlabelC(graphs,"Signal");
     if(yticks)
     {
-	ajGraphxySetShowYtick(graphs,ajTrue);
+	ajGraphxyShowYtick(graphs,ajTrue);
 	ajGraphxySetYinvert(graphs,ajTrue);
     }
     else
-	ajGraphxySetShowYtick(graphs,ajFalse);
+	ajGraphxyShowYtick(graphs,ajFalse);
 
     ajGraphxySetXinvert(graphs,ajTrue);
 

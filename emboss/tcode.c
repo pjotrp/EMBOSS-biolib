@@ -190,7 +190,7 @@ int main(int argc, char **argv)
 	    this = ajGraphdataNewI(npoints);
 	    ajGraphdataSetTypeC(this,"2D plot");
 	    ajGraphxySetOverLap(graph,ajFalse);
-	    ajGraphArrayMaxMin(this->y,npoints,&ymin,&ymax);
+	    ajGraphicsCalcRange(this->y,npoints,&ymin,&ymax);
 
 	    for(i=0;i<npoints;++i)
 	    {
@@ -203,10 +203,10 @@ int main(int argc, char **argv)
 
 
 
-	    ajGraphSetShowTitle(graph, ajTrue);
+	    ajGraphShowTitle(graph, ajTrue);
 	    ajGraphdataSetYTitleC(this,"TESTCODE value");
 	    ajGraphdataSetXTitleC(this,"Sequence mid position");
-	    ajGraphSetTitlePlus(graph, ajSeqGetUsaS(seq));
+	    ajGraphAppendTitleS(graph, ajSeqGetUsaS(seq));
 
 	    ajGraphdataAddLine(this,this->x[0],(float)0.74,
 				  this->x[npoints-1],

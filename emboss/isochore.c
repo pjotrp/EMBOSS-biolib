@@ -185,7 +185,7 @@ int main(int argc, char **argv)
 
     graphdata = ajGraphdataNew();
 
-    ajGraphArrayMaxMin(results->Array,isize,&amin,&amax);
+    ajGraphicsCalcRange(results->Array,isize,&amin,&amax);
 
     ajGraphdataSetMaxima(graphdata,(float)ipos,(float)(ipos+(ishift*isize)),
 			   amin,amax);

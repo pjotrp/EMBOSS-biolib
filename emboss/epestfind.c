@@ -347,7 +347,7 @@ int main(int argc, char **argv)
     
     embInit("epestfind", argc, argv);
 
-    ajGraphSetPage(960, 960);
+    ajGraphicsSetPagesize(960, 960);
 
     seq    = ajAcdGetSeq("sequence");
     win    = ajAcdGetInt("window");

@@ -154,7 +154,7 @@ int main(int argc, char **argv)
 
 	if(boxit)
 	{
-	    ajGraphicsDrawRect(fbegin1, fbegin2, fend1, fend2);
+	    ajGraphicsDrawposRect(fbegin1, fbegin2, fend1, fend2);
 	    i = 0;
 	    while(acceptableticksx[i]*numbofticks < len1)
 		i++;
@@ -166,29 +166,29 @@ int main(int argc, char **argv)
 
 	    ticklen = xmargin * (float) 0.1;
 	    onefifth  = xmargin * (float)0.2;
-	    ajGraphicsDrawTextAtmid(fbegin1+flen1*(float)0.5,
-                                    fbegin1-(onefifth*(float)3.0),
-			   ajGraphGetYTitleC(graph));
+	    ajGraphicsDrawposTextAtmid(fbegin1+flen1*(float)0.5,
+                                       fbegin1-(onefifth*(float)3.0),
+                                       ajGraphGetYTitleC(graph));
 
 	    if(len2/len1 > 10 )
 	    {
 		/* a lot smaller then just label start and end */
-		ajGraphicsDrawLine(fbegin1,fbegin2,fbegin1,
+		ajGraphicsDrawposLine(fbegin1,fbegin2,fbegin1,
 			    fbegin2-ticklen);
 		sprintf(ptr,"%d",ajSeqGetOffset(seq1));
-		ajGraphicsDrawTextAtmid(fbegin1,fbegin2-(onefifth),ptr);
+		ajGraphicsDrawposTextAtmid(fbegin1,fbegin2-(onefifth),ptr);
 		
-		ajGraphicsDrawLine(fend1,fbegin2,
+		ajGraphicsDrawposLine(fend1,fbegin2,
 			    fend1,fbegin2-ticklen);
 		sprintf(ptr,"%d",end1);
-		ajGraphicsDrawTextAtmid(fend1,fbegin2-(onefifth),ptr);
+		ajGraphicsDrawposTextAtmid(fend1,fbegin2-(onefifth),ptr);
 	    }
 	    else
 		for(k=fbegin1;k<fend1;k+=tickgap)
 		{
-		    ajGraphicsDrawLine(k,fbegin2,k,fbegin2-ticklen);
+		    ajGraphicsDrawposLine(k,fbegin2,k,fbegin2-ticklen);
 		    sprintf(ptr,"%d",(ajint)k);
-		    ajGraphicsDrawTextAtmid( k,fbegin2-(onefifth),ptr);
+		    ajGraphicsDrawposTextAtmid( k,fbegin2-(onefifth),ptr);
 		}
 
 	    i = 0;
@@ -198,31 +198,32 @@ int main(int argc, char **argv)
 	    tickgap   = (float) acceptableticks[i];
 	    ticklen   = ymargin*(float)0.1;
 	    onefifth  = ymargin*(float)0.2;
-	    ajGraphicsDrawTextAtline(fbegin1-(onefifth*(float)4.),
-			    fbegin2+flen2*(float)0.5,
-			    fbegin2-(onefifth*(float)4.),
-			    fbegin2+flen2,
-			    ajGraphGetXTitleC(graph),0.5);
+	    ajGraphicsDrawposTextAtlineJustify(fbegin1-(onefifth*(float)4.),
+                                               fbegin2+flen2*(float)0.5,
+                                               fbegin2-(onefifth*(float)4.),
+                                               fbegin2+flen2,
+                                               ajGraphGetXTitleC(graph),
+                                               0.5);
 
 	    if(len1/len2 > 10 )
 	    {
 		/* a lot smaller then just label start and end */
-		ajGraphicsDrawLine(fbegin1,fbegin2,fbegin1-ticklen,
+		ajGraphicsDrawposLine(fbegin1,fbegin2,fbegin1-ticklen,
 			    fbegin2);
 		sprintf(ptr,"%d",ajSeqGetOffset(seq2));
-		ajGraphicsDrawTextAtend(fbegin1-(onefifth),fbegin2,ptr);
+		ajGraphicsDrawposTextAtend(fbegin1-(onefifth),fbegin2,ptr);
 
-		ajGraphicsDrawLine(fbegin1,fend2,fbegin1-ticklen,
+		ajGraphicsDrawposLine(fbegin1,fend2,fbegin1-ticklen,
 			    fend2);
 		sprintf(ptr,"%d",end2);
-		ajGraphicsDrawTextAtend(fbegin2-(onefifth),fend2,ptr);
+		ajGraphicsDrawposTextAtend(fbegin2-(onefifth),fend2,ptr);
 	    }
 	    else
 		for(k=fbegin2;k<fend2;k+=tickgap)
 		{
-		    ajGraphicsDrawLine(fbegin1,k,fbegin1-ticklen,k);
+		    ajGraphicsDrawposLine(fbegin1,k,fbegin1-ticklen,k);
 		    sprintf(ptr,"%d",(ajint)k);
-		    ajGraphicsDrawTextAtend(fbegin1-(onefifth),k,ptr);
+		    ajGraphicsDrawposTextAtend(fbegin1-(onefifth),k,ptr);
 		}
 	}
     }
@@ -276,7 +277,7 @@ static void dottup_drawPlotlines(void *x, void *cl)
     x2 += (PLFLT)p->length - (PLFLT)1.0;
     y2 += (PLFLT)p->length - (PLFLT)1.0;
 
-    ajGraphicsDrawLine(x1, y1, x2, y2);
+    ajGraphicsDrawposLine(x1, y1, x2, y2);
 
     return;
 }

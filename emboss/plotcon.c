@@ -232,12 +232,12 @@ int main(int argc, char **argv)
     }
 
 
-    ajGraphArrayMaxMin(gdata->y,(ajint)flen,&ymin,&ymax);
+    ajGraphicsCalcRange(gdata->y,(ajint)flen,&ymin,&ymax);
     ajGraphdataSetMaxima(gdata,0,flen,ymin,ymax);
     
     ajGraphdataSetTypeC(gdata,"2D Plot");
     ajGraphDataAdd(graphs,gdata);
-    ajGraphxySetShowYtick(graphs, ajTrue);
+    ajGraphxyShowYtick(graphs, ajTrue);
     ajGraphSetTitleC(graphs,"Similarity Plot of Aligned Sequences");
     ajGraphSetYlabelC(graphs,"Similarity");
     

@@ -242,8 +242,8 @@ int main(int argc, char **argv)
 	ajGraphdataSetMaxMin(xygraph,0.0,xmax2,0.0,ymax2);
 
 
-	ajGraphArrayMaxMin(S,N,&amin,&amax);
-	ajGraphArrayMaxMin(V,N,&bmin,&bmax);
+	ajGraphicsCalcRange(S,N,&amin,&amax);
+	ajGraphicsCalcRange(V,N,&bmin,&bmax);
 	ajGraphdataSetMaxima(xygraph,amin,amax,bmin,bmax);
 	ajGraphdataSetTypeC(xygraph,"2D Plot Float");
 
@@ -264,8 +264,8 @@ int main(int argc, char **argv)
 
 	ajGraphxySetCirclePoints(graphLB, ajTrue);
 	ajGraphdataSetMaxMin(xygraph2, cutx,upperXlimit,0.0,upperYlimit);
-	ajGraphArrayMaxMin(xdata,N,&amin,&amax);
-	ajGraphArrayMaxMin(ydata,N,&bmin,&bmax);
+	ajGraphicsCalcRange(xdata,N,&amin,&amax);
+	ajGraphicsCalcRange(ydata,N,&bmin,&bmax);
 	ajGraphdataSetMaxima(xygraph2,amin,amax,bmin,bmax);
 	ajGraphdataSetTypeC(xygraph2,"2D Plot");
 
