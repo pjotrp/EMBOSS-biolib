@@ -2839,7 +2839,7 @@ void embAlignCalcSimilarity(const AjPStr m, const AjPStr n,
 
 
 
-/* @func embAlignGetScoreNWMatrix ******************************************
+/* @funcstatic embAlignGetScoreNWMatrix ***************************************
 **
 ** Returns score of the optimal global or overlap alignment for
 ** the specified path matrix for Needleman Wunsch
@@ -3233,7 +3233,7 @@ void embAlignReportProfile(AjPAlign align,
 **
 ** Prints path matrix for Needleman-Wunsch
 **
-** @param [r] path [const loat*] Alignment path matrix to be printed 
+** @param [r] path [const float*] Alignment path matrix to be printed 
 ** @param [r] compass [const ajint*] Path direction pointer array
 ** @param [r] lena [ajuint] length of first sequence
 ** @param [r] lenb [ajuint] length of second sequence
@@ -3247,7 +3247,7 @@ static void printPathMatrix(const float* path, const ajint* compass,
     char compasschar;
     ajuint i;
     ajuint j;
-    static AjPStr outstr = NULL;
+    AjPStr outstr = NULL;
 
     ajDebug("path matrix:\n%S\n", outstr);
 
@@ -3277,7 +3277,7 @@ static void printPathMatrix(const float* path, const ajint* compass,
         ajFmtPrintAppS(&outstr, "%6d  ", j);
 
     ajDebug("%S\n", outstr);
-    ajStrDelStatic(&outstr);
+    ajStrDel(&outstr);
 
     return;
 }
