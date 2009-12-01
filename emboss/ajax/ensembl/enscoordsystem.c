@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2458,7 +2458,6 @@ AjBool ensCoordsystemadaptorFetchByName(const EnsPCoordsystemadaptor adaptor,
                                         const AjPStr version,
                                         EnsPCoordsystem *Pcs)
 {
-    void **keyarray = NULL;
     void **valarray = NULL;
     
     register ajuint i = 0;
@@ -2511,7 +2510,7 @@ AjBool ensCoordsystemadaptorFetchByName(const EnsPCoordsystemadaptor adaptor,
 	     ** Ensembl Coordinate System of this name.
 	     */
 	    
-            ajTableToarrayKeysValues(versions, &keyarray, &valarray);
+            ajTableToarrayValues(versions, &valarray);
 	    
             for(i = 0; valarray[i]; i++)
             {
@@ -2525,7 +2524,6 @@ AjBool ensCoordsystemadaptorFetchByName(const EnsPCoordsystemadaptor adaptor,
 		}
             }
 	    
-            AJFREE(keyarray);
 	    AJFREE(valarray);
         }
 	
