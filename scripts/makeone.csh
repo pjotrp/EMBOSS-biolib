@@ -17,16 +17,16 @@ cd $embosshome
 
 cd plplot
 echo "make PLPLOT"
-make install |& egrep '^[^ =\[]*:' |& grep -v '^libtool: '
+make -j 4 install |& egrep '^[^ =\[]*:' |& grep -v '^libtool: '
 cd ../ajax 
 echo "make AJAX"
-make install |& egrep '^[^ =\[]*:' |& grep -v '^libtool: '
+make -j 4 install |& egrep '^[^ =\[]*:' |& grep -v '^libtool: '
 cd ../nucleus
 echo "make NUCLEUS"
-make install |& egrep '^[^ =\[]*:' |& grep -v '^libtool: '
+make -j 4 install |& egrep '^[^ =\[]*:' |& grep -v '^libtool: '
 cd ../emboss
 echo "make $app"
-make $app |& egrep '^[^ =\[]*:' |& grep -v '^libtool: '
+make -j 4 $app |& egrep '^[^ =\[]*:' |& grep -v '^libtool: '
 echo "install $app"
 echo "/bin/sh ../libtool --mode=install /usr/bin/install -c $app $embossinst/$app"
 /bin/sh ../libtool --mode=install /usr/bin/install  -c $app $embossinst/bin/$app
