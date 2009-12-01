@@ -1814,7 +1814,7 @@ AjBool ajSeqsetRead(AjPSeqset thys, AjPSeqin seqin)
 	else
 	    ajSeqSetRange(seq, thys->Begin, thys->End);
 
-	ajDebug ("ajSeqsetRead read sequence %d %x '%s' %d..%d (%d) "
+	ajDebug ("ajSeqsetRead read sequence %d %x '%S' %d..%d (%d) "
                  "Rev:%B Reversed:%B\n",
 		 iseq, seq, ajSeqGetNameS(seq),
 		 seq->Begin, seq->End, ajSeqGetLen(seq),
@@ -2175,11 +2175,14 @@ static ajuint seqReadFmt(AjPSeq thys, AjPSeqin seqin,
 		}
 	    }
 
-	    if (!ajStrGetLen(thys->Seq))	/* empty sequence string! */
-		return FMT_EMPTY;
+            if (!ajStrGetLen(thys->Seq))      /* empty sequence string! */
+                return FMT_EMPTY;
 
 	    if(ajSeqTypeCheckIn(thys, seqin))
 	    {
+                if (!ajStrGetLen(thys->Seq))  /* removed all remaining chars */
+                    return FMT_EMPTY;
+
 		/* ajSeqinTrace(seqin); */
 		if(seqin->Upper)
 		    ajSeqFmtUpper(thys);
@@ -11500,6 +11503,7 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
     ok = ajBuffreadLineStore(buff, &seqReadLine, seqin->Text, &thys->TextPtr);
 
     while(ok &&
+	  !ajStrPrefixC(seqReadLine, "//") &&
 	  !ajStrPrefixC(seqReadLine, "ORIGIN") &&
 	  !ajStrPrefixC(seqReadLine, "BASE COUNT"))
     {
@@ -11762,14 +11766,21 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 	/* read the sequence and terminator */
 	ajDebug("sequence start at '%S'\n", seqReadLine);
 
-	while(!ajStrPrefixC(seqReadLine,"ORIGIN") &&
-	      !ajStrPrefixC(seqReadLine,"BASE COUNT"))
-	    if(!ajBuffreadLineStore(buff,&seqReadLine,
-				   seqin->Text, &thys->TextPtr))
-		break;
+	while(ok &&
+              !ajStrPrefixC(seqReadLine,"//") &&
+	      !ajStrPrefixC(seqReadLine,"ORIGIN") &&
+              !ajStrPrefixC(seqReadLine,"BASE COUNT"))
+        {
+            ok = ajBuffreadLineStore(buff,&seqReadLine,
+                                     seqin->Text, &thys->TextPtr);
+            if(!ok)
+                break;
+        }
 
-	ok = ajBuffreadLineStore(buff, &seqReadLine,
-				seqin->Text, &thys->TextPtr);
+        if(ok && !ajStrPrefixC(seqReadLine,"//"))
+            ok = ajBuffreadLineStore(buff, &seqReadLine,
+                                     seqin->Text, &thys->TextPtr);
+
 	ajStrSetRes(&thys->Seq, seqlen+1);
 
 	while(ok && !ajStrPrefixC(seqReadLine, "//"))
