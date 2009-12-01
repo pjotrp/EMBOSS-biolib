@@ -16,7 +16,7 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "protein"
-    relations: "EDAM: Protein sequence record"                             
+    relations: "EDAM: Protein sequence record"
   ]
 
   pattern: pattern [
