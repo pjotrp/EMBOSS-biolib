@@ -720,6 +720,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
     @savecode = ();
     @savevar = ();
     @savecast = ();
+    @savedesc = ();
     $inputargs = "";
     $outputargs = "";
     $modifyargs = "";
@@ -1343,7 +1344,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    push @savecode, $code;
 	    push @savevar,  $var;
 	    push @savecast, $cast;
-
+	    push @savedesc, $prest;
 	    $drest = $prest;
 	    $drest =~ s/\n\n+$/\n/gos;
 	    $drest =~ s/\n\n\n+/\n\n/gos;
@@ -2035,7 +2036,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    if($igen < $isave) {
 		print "bad argrule: $igen/$isave params defined\n";
 		for($i=$igen;$i <$isave;$i++) {
-		    print "** \@argrule $fname $savevar[$i] \[$savecast[$i]\] Undocumented\n";
+		    print "** \@argrule $fname $savevar[$i] \[$savecast[$i]\] $savedesc[$i]\n";
 		}
 	    }
 	    elsif($igen > $isave) {
