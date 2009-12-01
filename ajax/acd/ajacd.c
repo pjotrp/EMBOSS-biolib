@@ -8793,7 +8793,7 @@ static void acdSetGraph(AcdPAcd thys)
 
 	    if(!val)
 	      val = ajGraphNew();
-	    ok = ajGraphSet(val, acdReply);
+	    ok = ajGraphSetDevicetype(val, acdReply);
 
 	    if(!ok)
 	    {
@@ -8835,15 +8835,15 @@ static void acdSetGraph(AcdPAcd thys)
 	    ajGraphSetYlabelS(val,title);
     
 	if(acdGetValueAssoc(thys, "goutfile", &title))
-	    ajGraphSetOut(val,title);
+	    ajGraphSetOutfileS(val,title);
     
 	if(acdGetValueAssoc(thys, "gdirectory", &title))
-	    ajGraphSetOutputDirS(val,title);
+	    ajGraphSetOutdirS(val,title);
 	else
 	{
 	    ajStrAssignClear(&title);
 	    if(acdOutDirectory(&title))
-	        ajGraphSetOutputDirS(val,title);
+	        ajGraphSetOutdirS(val,title);
 	}
 
 	ajStrDel(&title);
@@ -8971,7 +8971,7 @@ static void acdSetGraphxy(AcdPAcd thys)
 	    if(!val)
 	        val = ajGraphxyNewI(multi);
     
-	    ok = ajGraphxySet(val, acdReply);
+	    ok = ajGraphxySetDevicetype(val, acdReply);
 
 	    if(!ok)
 	    {
@@ -9013,15 +9013,15 @@ static void acdSetGraphxy(AcdPAcd thys)
 	    ajGraphSetYlabelS(val,title);
 
 	if(acdGetValueAssoc(thys, "goutfile", &title))
-	    ajGraphSetOut(val,title);
+	    ajGraphSetOutfileS(val,title);
 
 	if(acdGetValueAssoc(thys, "gdirectory", &title))
-	    ajGraphSetOutputDirS(val,title);
+	    ajGraphSetOutdirS(val,title);
 	else
 	{
 	    ajStrAssignClear(&title);
 	    if(acdOutDirectory(&title))
-		ajGraphSetOutputDirS(val,title);
+                ajGraphSetOutdirS(val,title);
 	}
 
 	ajStrDel(&title);

@@ -239,7 +239,7 @@ void ajHistDisplay(const AjPHist hist)
                              hist->title,
                              hist->subtitle);
 
-	ajGraphicsDrawRlabelS(hist->yaxisright);
+	ajGraphicsSetRlabelS(hist->yaxisright);
     }
     else 
 	ajGraphOpenPlot(hist->graph, hist->numofsets);
@@ -266,19 +266,19 @@ void ajHistDisplay(const AjPHist hist)
 		    tot = tot / (float)num;
 
 		    if(hist->BaW)
-			old = ajGraphSetFillPat(hist->hists[i]->pattern);
+			old = ajGraphicsSetFillpat(hist->hists[i]->pattern);
 		    else
-			old = ajGraphicsSetColourFore(hist->hists[i]->colour);
-		    ajGraphicsDrawRectFill(start+offset,0.0,
-                                           start+offset+bar_width,tot);
+			old = ajGraphicsSetFgcolour(hist->hists[i]->colour);
+		    ajGraphicsDrawposRectFill(start+offset,0.0,
+                                              start+offset+bar_width,tot);
 
 		    if(hist->BaW)
-			ajGraphSetFillPat(old);
+			ajGraphicsSetFillpat(old);
 		    else
-			ajGraphicsSetColourFore(old);
+			ajGraphicsSetFgcolour(old);
 
-		    ajGraphicsDrawRect(start+offset,0.0,
-                                    start+offset+bar_width,tot);
+		    ajGraphicsDrawposRect(start+offset,0.0,
+                                          start+offset+bar_width,tot);
 		    num = 0;
 		    tot = 0;
 		    start +=bin_range;
@@ -323,20 +323,20 @@ void ajHistDisplay(const AjPHist hist)
 		    tot = tot / (float)num;
 
 		    if(hist->BaW)
-			old = ajGraphSetFillPat(hist->hists[i]->pattern);
+			old = ajGraphicsSetFillpat(hist->hists[i]->pattern);
 		    else
-			old = ajGraphicsSetColourFore(hist->hists[i]->colour);
+			old = ajGraphicsSetFgcolour(hist->hists[i]->colour);
 
-		    ajGraphicsDrawRectFill(start+offset,0.0,
-                                        start+offset+bar_width,tot);
+		    ajGraphicsDrawposRectFill(start+offset,0.0,
+                                              start+offset+bar_width,tot);
 
 		    if(hist->BaW)
-			ajGraphSetFillPat(old);
+			ajGraphicsSetFillpat(old);
 		    else
-			ajGraphicsSetColourFore(old);
+			ajGraphicsSetFgcolour(old);
 
-		    ajGraphicsDrawRect(start+offset,0.0,
-                                       start+offset+bar_width,tot);
+		    ajGraphicsDrawposRect(start+offset,0.0,
+                                          start+offset+bar_width,tot);
 		    num = 0;
 		    tot = 0;
 		    start +=bin_range;
@@ -366,19 +366,19 @@ void ajHistDisplay(const AjPHist hist)
 		    tot = tot / (float)num;
 
 		    if(hist->BaW)
-			old = ajGraphSetFillPat(hist->hists[i]->pattern);
+			old = ajGraphicsSetFillpat(hist->hists[i]->pattern);
 		    else
-			old = ajGraphicsSetColourFore(hist->hists[i]->colour);
+			old = ajGraphicsSetFgcolour(hist->hists[i]->colour);
 
-		    ajGraphicsDrawRectFill(start,totals[j],
-                                           start+bin_range,tot+totals[j]);
+		    ajGraphicsDrawposRectFill(start,totals[j],
+                                              start+bin_range,tot+totals[j]);
 		    if(hist->BaW)
-			ajGraphSetFillPat(old);
+			ajGraphicsSetFillpat(old);
 		    else
-			ajGraphicsSetColourFore(old);
+			ajGraphicsSetFgcolour(old);
 
-		    ajGraphicsDrawRect(start,totals[j],
-                                       start+bin_range,tot+totals[j]);
+		    ajGraphicsDrawposRect(start,totals[j],
+                                          start+bin_range,tot+totals[j]);
 		    totals[j] += tot;
 		    tot = 0;
 		    /*	  ajDebug("num = %d",num);*/
@@ -537,9 +537,9 @@ AjPHist ajHistNewG(ajint numofsets, ajint numofpoints, AjPGraph graph)
 {
     AjPHist hist = ajHistNew(numofsets, numofpoints);
     hist->graph = graph;
-    ajGraphSetDevice(graph);
+    ajGraphicsSetDevice(graph);
     ajGraphSetMulti(graph, numofsets);
-    ajGraphSetName(graph);
+    ajGraphicsSetFilename(graph);
 
     return hist;
 }

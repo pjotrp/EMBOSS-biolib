@@ -8,8 +8,8 @@
 ** AJAX data structure for graph objects, contained as a substructure
 ** in AjPGraphdata
 **
-** @attr type [ajint] Object type in AjEGraphObjectTypes
-** @attr colour [ajint] See AjEGraphColour for plplot colours
+** @attr type [ajuint] Object type in AjEGraphObjectTypes
+** @attr colour [ajuint] See AjEGraphColour for plplot colours
 ** @attr text [AjPStr] Text to plot
 ** @attr xx1 [float] x start
 ** @attr xx2 [float] x end
@@ -22,8 +22,8 @@
 ******************************************************************************/
 
 typedef struct AjSGraphobj {
-  ajint type;
-  ajint colour;
+  ajuint type;
+  ajuint colour;
   AjPStr text;
   float xx1;
   float xx2;
@@ -44,8 +44,8 @@ typedef struct AjSGraphobj {
 ** @attr xcalc [AjBool] if x calculated then delete after
 ** @attr ycalc [AjBool] as with x. So we do not delete data if it was
 **                      passed as a ptr
-** @attr numofpoints [ajint] Number of points in x and y
-** @attr numofobjects [ajint] Number of graph objects starting at Obj
+** @attr numofpoints [ajuint] Number of points in x and y
+** @attr numofobjects [ajuint] Number of graph objects starting at Obj
 ** @attr minX [float] Lowest x value
 ** @attr maxX [float] Highest x value
 ** @attr minY [float] Lowest y value
@@ -70,8 +70,8 @@ typedef struct AjSGraphdata {
   float *y;
   AjBool xcalc;
   AjBool ycalc;
-  ajint numofpoints;
-  ajint numofobjects;
+  ajuint numofpoints;
+  ajuint numofobjects;
   float minX;
   float maxX;
   float minY;
@@ -95,12 +95,12 @@ typedef struct AjSGraphdata {
 **
 ** Graph object.
 **
-** @attr displaytype [ajint] Displaytype index to graphType
-** @attr numsets [ajint] Number of sets in a multiple graph
-** @attr numofgraphs [ajint] Number of graphs in graphs
-** @attr numofobjects [ajint] Number of objects in Mainobj
-** @attr numofgraphsmax [ajint] Maximum number of graphs expected
-** @attr flags [ajint] over rides the EmbGraphData flags
+** @attr displaytype [ajuint] Displaytype index to graphType
+** @attr numsets [ajuint] Number of sets in a multiple graph
+** @attr numofgraphs [ajuint] Number of graphs in graphs
+** @attr numofobjects [ajuint] Number of objects in Mainobj
+** @attr numofgraphsmax [ajuint] Maximum number of graphs expected
+** @attr flags [ajuint] over rides the EmbGraphData flags
 ** @attr minX [float] Lowest x value for all graphs
 ** @attr maxX [float] Highest x value for all graphs
 ** @attr minY [float] Lowest y value for all graphs
@@ -126,12 +126,12 @@ typedef struct AjSGraphdata {
 
 typedef struct AjSGraph {
 
-  ajint displaytype;
-  ajint numsets;
-  ajint numofgraphs;
-  ajint numofobjects;
-  ajint numofgraphsmax;
-  ajint flags;
+  ajuint displaytype;
+  ajuint numsets;
+  ajuint numofgraphs;
+  ajuint numofobjects;
+  ajuint numofgraphsmax;
+  ajuint flags;
   float minX;
   float maxX;
   float minY;
