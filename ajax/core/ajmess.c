@@ -1619,7 +1619,7 @@ void ajMessCodesDelete(void)
     if(!errorTable)
 	return;
 
-    ajTableToarray(errorTable, &keyarray, &valarray);
+    ajTableToarrayKeysValues(errorTable, &keyarray, &valarray);
 
     for(i = 0; keyarray[i]; i++)
     {

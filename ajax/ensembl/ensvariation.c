@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -5732,7 +5732,7 @@ EnsPGvvariation ensGvvariationNew(EnsPGvvariationadaptor gvva,
     {
 	gvv->Synonyms = ajTablestrNewLen(0);
 	
-	ajTableToarray(synonyms, &keyarray, &valarray);
+	ajTableToarrayKeysValues(synonyms, &keyarray, &valarray);
 	
 	for(i = 0; keyarray[i]; i++)
 	{
@@ -5863,7 +5863,7 @@ EnsPGvvariation ensGvvariationNewObj(const EnsPGvvariation object)
     {
 	gvv->Synonyms = ajTablestrNewLen(0);
 	
-	ajTableToarray(object->Synonyms, &keyarray, &valarray);
+	ajTableToarrayKeysValues(object->Synonyms, &keyarray, &valarray);
 	
 	for(i = 0; keyarray[i]; i++)
 	{
@@ -6051,7 +6051,7 @@ void ensGvvariationDel(EnsPGvvariation *Pgvv)
     
     if(pthis->Synonyms)
     {
-	ajTableToarray(pthis->Synonyms, &keyarray, &valarray);
+	ajTableToarrayKeysValues(pthis->Synonyms, &keyarray, &valarray);
 	
 	for(i = 0; keyarray[i]; i++)
 	{
@@ -7046,7 +7046,7 @@ AjBool ensGvvariationFetchAllSynonyms(const EnsPGvvariation gvv,
 	}
 	else
 	{
-	    ajTableToarray(gvv->Synonyms, &keyarray, &valarray);
+	    ajTableToarrayKeysValues(gvv->Synonyms, &keyarray, &valarray);
 	    
 	    for(i = 0; keyarray[i]; i++)
 	    {
@@ -7103,7 +7103,7 @@ AjBool ensGvvariationFetchAllSynonymSources(const EnsPGvvariation gvv,
     
     if(gvv->Synonyms)
     {
-	ajTableToarray(gvv->Synonyms, &keyarray, &valarray);
+	ajTableToarrayKeysValues(gvv->Synonyms, &keyarray, &valarray);
 	
 	for(i = 0; keyarray[i]; i++)
 	    ajListPushAppend(sources,

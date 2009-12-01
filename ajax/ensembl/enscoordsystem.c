@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2511,7 +2511,7 @@ AjBool ensCoordsystemadaptorFetchByName(const EnsPCoordsystemadaptor adaptor,
 	     ** Ensembl Coordinate System of this name.
 	     */
 	    
-            ajTableToarray(versions, &keyarray, &valarray);
+            ajTableToarrayKeysValues(versions, &keyarray, &valarray);
 	    
             for(i = 0; valarray[i]; i++)
             {
@@ -2781,7 +2781,7 @@ const AjPList ensCoordsystemadaptorGetMappingPath(
     
     midcs2 = ajTablestrNewLen(0);
     
-    ajTableToarray(adaptor->MappingPaths, &keyarray, &valarray);
+    ajTableToarrayKeysValues(adaptor->MappingPaths, &keyarray, &valarray);
     
     for(i = 0; keyarray[i]; i++)
     {
@@ -2989,7 +2989,7 @@ const AjPList ensCoordsystemadaptorGetMappingPath(
     ** Do not delete Coordinate Systems from the Lists.
     */
     
-    ajTableToarray(midcs1, &keyarray, &valarray);
+    ajTableToarrayKeysValues(midcs1, &keyarray, &valarray);
     
     for(i = 0; keyarray[i]; i++)
     {
@@ -3006,7 +3006,7 @@ const AjPList ensCoordsystemadaptorGetMappingPath(
     
     ajTableFree(&midcs1);
     
-    ajTableToarray(midcs2, &keyarray, &valarray);
+    ajTableToarrayKeysValues(midcs2, &keyarray, &valarray);
     
     for(i = 0; keyarray[i]; i++)
     {

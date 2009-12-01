@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -482,7 +482,7 @@ static AjBool exonCoordinatesClear(EnsPExon exon)
     
     /* Clear the first-level AJAX Table. */
     
-    ajTableToarray(exon->Coordinates, &keyarray, &valarray);
+    ajTableToarrayKeysValues(exon->Coordinates, &keyarray, &valarray);
     
     for(i = 0; keyarray[i]; i++)
     {
@@ -1439,7 +1439,7 @@ AjBool ensExonTrace(const EnsPExon exon, ajuint level)
 	ajDebug("%S  AJAX Table %p of Ensembl Exon coordinates\n",
 		indent, exon->Coordinates);
 	
-	ajTableToarray(exon->Coordinates, &keyarray, &valarray);
+	ajTableToarrayKeysValues(exon->Coordinates, &keyarray, &valarray);
 	
 	for(i = 0; valarray[i]; i++)
 	{

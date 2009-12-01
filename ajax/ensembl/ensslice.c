@@ -7,7 +7,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -4273,7 +4273,7 @@ AjBool ensSliceadaptorFetchAll(EnsPSliceadaptor adaptor,
     
     /* Clear the AJAX Table of non-reference Sequence Region identifiers. */
     
-    ajTableToarray(nonrefsr, &keyarray, &valarray);
+    ajTableToarrayKeysValues(nonrefsr, &keyarray, &valarray);
     
     for(i = 0; keyarray[i]; i++)
     {
@@ -4404,7 +4404,7 @@ EnsPRepeatmaskedslice ensRepeatmaskedsliceNew(EnsPSlice slice,
     
     rmslice->Masking = ajTablestrNewLen(0);
     
-    ajTableToarray(masking, &keyarray, &valarray);
+    ajTableToarrayKeysValues(masking, &keyarray, &valarray);
     
     for(i = 0; keyarray[i]; i++)
     {
@@ -4482,7 +4482,7 @@ EnsPRepeatmaskedslice ensRepeatmaskedsliceNewObj(EnsPRepeatmaskedslice object)
     
     rmslice->Masking = ajTablestrNewLen(0);
     
-    ajTableToarray(object->Masking, &keyarray, &valarray);
+    ajTableToarrayKeysValues(object->Masking, &keyarray, &valarray);
     
     for(i = 0; keyarray[i]; i++)
     {
@@ -4595,7 +4595,7 @@ void ensRepeatmaskedsliceDel(EnsPRepeatmaskedslice *Prmslice)
     
     /* Clear and delete the AJAX Table. */
     
-    ajTableToarray(pthis->Masking, &keyarray, &valarray);
+    ajTableToarrayKeysValues(pthis->Masking, &keyarray, &valarray);
     
     for(i = 0; keyarray[i]; i++)
     {

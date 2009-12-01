@@ -409,7 +409,7 @@ static void namListMasterDelete(AjPTable table, ajint which)
 
     if(!table) return;
 
-    ajTableToarray(table, &keyarray, &valarray);
+    ajTableToarrayKeysValues(table, &keyarray, &valarray);
 
     for(i = 0; keyarray[i]; i++)
     {
@@ -632,7 +632,7 @@ static void namListMaster(const AjPTable table, ajint which)
     void **valarray = NULL;
     char *key;
 
-    ajTableToarray(table, &keyarray, &valarray);
+    ajTableToarrayKeysValues(table, &keyarray, &valarray);
 
     for(i = 0; keyarray[i]; i++)
     {
@@ -684,7 +684,7 @@ static void namDebugMaster(const AjPTable table, ajint which)
     void **valarray = NULL;
     char *key;
 
-    ajTableToarray(table, &keyarray, &valarray);
+    ajTableToarrayKeysValues(table, &keyarray, &valarray);
 
     for(i = 0; keyarray[i]; i++)
     {
@@ -1064,10 +1064,9 @@ void ajNamListListDatabases(AjPList dbnames)
 {
     ajint i;
     NamPEntry fnew;
-    void **keyarray =  NULL;
     void **valarray =  NULL;
 
-    ajTableToarray(namDbMasterTable, &keyarray, &valarray);
+    ajTableToarrayValues(namDbMasterTable, &valarray);
     ajDebug("ajNamListListDatabases\n");
 
     for(i = 0; valarray[i]; i++)
@@ -1077,7 +1076,6 @@ void ajNamListListDatabases(AjPList dbnames)
 	ajListstrPushAppend(dbnames, fnew->name);
     }
 
-    AJFREE(keyarray);
     AJFREE(valarray);
 
     return;
@@ -1099,10 +1097,9 @@ void ajNamListListResources(AjPList rsnames)
 {
     ajint i;
     NamPEntry fnew;
-    void **keyarray = NULL;
     void **valarray = NULL;
 
-    ajTableToarray(namResMasterTable, &keyarray, &valarray);
+    ajTableToarrayValues(namResMasterTable, &valarray);
 
     for(i = 0; valarray[i]; i++)
     {
@@ -1111,7 +1108,6 @@ void ajNamListListResources(AjPList rsnames)
 	ajListstrPushAppend(rsnames, fnew->name);
     }
 
-    AJFREE(keyarray);
     AJFREE(valarray);
 
     return;

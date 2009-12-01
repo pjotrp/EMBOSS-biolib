@@ -211,7 +211,7 @@ int main(int argc, char **argv)
 	ajFileClose(&inf);
     }
 
-    ajTableToarray(table,(void***) &keyarray, (void***) &valarray);
+    ajTableToarrayKeysValues(table,(void***) &keyarray, (void***) &valarray);
 
     i = 0;
     while(keyarray[i])

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** Bio::EnsEMBL::MiscSet CVS Revision: 1.5
@@ -2698,7 +2698,7 @@ static AjBool miscellaneousFeatureadaptorClearAttributes(AjPTable attributes)
     if(!attributes)
 	return ajFalse;
     
-    ajTableToarray(attributes, &keyarray, &valarray);
+    ajTableToarrayKeysValues(attributes, &keyarray, &valarray);
     
     for(i = 0; keyarray[i]; i++)
     {
@@ -2789,7 +2789,7 @@ static AjBool miscellaneousFeatureadaptorClearMiscellaneoussets(AjPTable sets)
     if(!sets)
 	return ajFalse;
     
-    ajTableToarray(sets, &keyarray, &valarray);
+    ajTableToarrayKeysValues(sets, &keyarray, &valarray);
     
     for(i = 0; keyarray[i]; i++)
     {

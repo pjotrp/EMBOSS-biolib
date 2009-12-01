@@ -295,11 +295,13 @@ AjPTable ajTableNewLen(ajuint size)
 ** @nam3rule Get return attribute
 ** @nam4rule GetLength Table size
 ** @nam3rule Toarray Return keys and values as arrays
+** @suffix Keys Return keys as array
+** @suffix Values Return values as array
 **
 ** @argrule * table [const AjPTable] Hash table
 ** @argrule Fetch key [const void*] Key
-** @argrule Toarray keyarray [void***] Array of keys, ending with NULL
-** @argrule Toarray valarray [void***] Array of values, ending with NULL
+** @argrule Keys keyarray [void***] Array of keys, ending with NULL
+** @argrule Values valarray [void***] Array of values, ending with NULL
 **
 ** @valrule Fetch [void*] Value
 ** @valrule *Key [const void*] Key
@@ -441,7 +443,59 @@ __deprecated ajint ajTableLength(const AjPTable table)
 
 
 
-/* @func ajTableToarray *******************************************************
+/* @func ajTableToarrayKeys ***************************************************
+**
+** creates two N+1 element arrays that holds the N keys
+** in table in an unspecified order and returns the number of elements.
+** The final element of the array is NULL.
+**
+** @param [r] table [const AjPTable] Table
+** @param [w] keyarray [void***] NULL terminated array of keys.
+** @return [ajuint] size of array returned
+** @category cast [AjPTable] Creates an array to hold each key.
+**                           The last element of each array is null.
+** @@
+******************************************************************************/
+
+ajuint ajTableToarrayKeys(const AjPTable table,
+                          void*** keyarray)
+{
+    ajuint i;
+    ajint j = 0;
+    struct binding *p;
+
+    if (*keyarray)
+	AJFREE(*keyarray);
+
+    if(!table)
+	return 0;
+ 
+    *keyarray = AJALLOC((table->length + 1)*sizeof(keyarray));
+
+    for(i = 0; i < table->size; i++)
+	for(p = table->buckets[i]; p; p = p->link)
+	{
+	    (*keyarray)[j++] = p->key;
+	}
+
+    (*keyarray)[j] = NULL;
+
+    return table->length;
+}
+
+/* @obsolete ajTableToarray
+** @rename ajTableToarrayKeysValues
+*/
+
+__deprecated ajuint ajTableToarray(const AjPTable table,
+                                   void*** keyarray, void*** valarray)
+{
+
+    return ajTableToarrayKeysValues(table, keyarray, valarray);
+}
+
+
+/* @func ajTableToarrayKeysValues *********************************************
 **
 ** creates two N+1 element arrays that holds the N key-value pairs
 ** in table in an unspecified order and returns the number of elements.
@@ -456,8 +510,8 @@ __deprecated ajint ajTableLength(const AjPTable table)
 ** @@
 ******************************************************************************/
 
-ajuint ajTableToarray(const AjPTable table,
-		      void*** keyarray, void*** valarray)
+ajuint ajTableToarrayKeysValues(const AjPTable table,
+                                void*** keyarray, void*** valarray)
 {
     ajuint i;
     ajint j = 0;
@@ -488,8 +542,45 @@ ajuint ajTableToarray(const AjPTable table,
     return table->length;
 }
 
+/* @func ajTableToarrayValues *************************************************
+**
+** creates two N+1 element arrays that holds the N values
+** in table in an unspecified order and returns the number of elements.
+** The final element of the array is NULL.
+**
+** @param [r] table [const AjPTable] Table
+** @param [w] valarray [void***] NULL terminated array of values.
+** @return [ajuint] size of array returned
+** @category cast [AjPTable] Creates an array to hold each value.
+**                           The last element of each array is null.
+** @@
+******************************************************************************/
 
+ajuint ajTableToarrayValues(const AjPTable table,
+                            void*** valarray)
+{
+    ajuint i;
+    ajint j = 0;
+    struct binding *p;
 
+    if (*valarray)
+	AJFREE(*valarray);
+
+    if(!table)
+	return 0;
+ 
+    *valarray = AJALLOC((table->length + 1)*sizeof(valarray));
+
+    for(i = 0; i < table->size; i++)
+	for(p = table->buckets[i]; p; p = p->link)
+	{
+	    (*valarray)[j++] = p->value;
+	}
+
+    (*valarray)[j] = NULL;
+
+    return table->length;
+}
 
 /* @section Trace functions ***************************************************
 **

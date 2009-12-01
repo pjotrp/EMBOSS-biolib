@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1996,7 +1996,7 @@ AjBool ensMapperrangeregistryClear(EnsPMapperrangeregistry mrr)
     
     /* Clear the first-level AJAX Table. */
     
-    ajTableToarray(mrr->Registry, &keyarray, &valarray);
+    ajTableToarrayKeysValues(mrr->Registry, &keyarray, &valarray);
     
     for(i = 0; keyarray[i]; i++)
     {
@@ -2812,7 +2812,7 @@ AjBool ensMapperClear(EnsPMapper mapper)
     ** ensMapperDel function.
     */
     
-    ajTableToarray(mapper->Pairs, &keyarray1, &valarray1);
+    ajTableToarrayKeysValues(mapper->Pairs, &keyarray1, &valarray1);
     
     for(i = 0; keyarray1[i]; i++)
     {
@@ -2821,7 +2821,8 @@ AjBool ensMapperClear(EnsPMapper mapper)
 	** as keys and AJAX Lists as values.
 	*/
 	
-	ajTableToarray((AjPTable) valarray1[i], &keyarray2, &valarray2);
+	ajTableToarrayKeysValues((AjPTable) valarray1[i],
+                                 &keyarray2, &valarray2);
 	
 	for(j = 0; keyarray2[j]; j++)
 	{
@@ -2932,7 +2933,7 @@ void ensMapperDel(EnsPMapper *Pmapper)
     
     ensCoordsystemDel(&pthis->TargetCoordsystem);
     
-    ajTableToarray(pthis->Pairs, &keyarray, &valarray);
+    ajTableToarrayKeysValues(pthis->Pairs, &keyarray, &valarray);
     
     for(i = 0; keyarray[i]; i++)
     {
@@ -3262,7 +3263,7 @@ static AjBool mapperMergePairs(EnsPMapper mapper)
     trgtable = (AjPTable)
 	ajTableFetch(mapper->Pairs, (const void *) mapper->TargetType);
     
-    ajTableToarray(trgtable, &keyarray, &valarray);
+    ajTableToarrayKeysValues(trgtable, &keyarray, &valarray);
     
     for(i = 0; valarray[i]; i++)
     {
@@ -3440,7 +3441,7 @@ static AjBool mapperSort(EnsPMapper mapper)
     table = (AjPTable)
 	ajTableFetch(mapper->Pairs, (const void *) mapper->SourceType);
     
-    ajTableToarray(table, &keyarray, &valarray);
+    ajTableToarrayKeysValues(table, &keyarray, &valarray);
     
     for(i = 0; valarray[i]; i++)
 	ajListSort((AjPList) valarray[i], mapperCompareMapperpairSources);
@@ -3451,7 +3452,7 @@ static AjBool mapperSort(EnsPMapper mapper)
     table = (AjPTable)
 	ajTableFetch(mapper->Pairs, (const void *) mapper->TargetType);
     
-    ajTableToarray(table, &keyarray, &valarray);
+    ajTableToarrayKeysValues(table, &keyarray, &valarray);
     
     for(i = 0; valarray[i]; i++)
 	ajListSort((AjPList) valarray[i], mapperCompareMapperpairTargets);
@@ -4817,7 +4818,7 @@ AjBool ensMapperAddMapper(EnsPMapper mapper1, EnsPMapper mapper2)
     ** Ensembl Mapper.
     */
     
-    ajTableToarray(table2, &keyarray, &valarray);
+    ajTableToarrayKeysValues(table2, &keyarray, &valarray);
     
     for(i = 0; keyarray[i]; i++)
     {
@@ -4878,7 +4879,7 @@ AjBool ensMapperAddMapper(EnsPMapper mapper1, EnsPMapper mapper2)
     ** as key data and AJAX List value data for the second Ensembl Mapper.
     */
     
-    ajTableToarray(table2, &keyarray, &valarray);
+    ajTableToarrayKeysValues(table2, &keyarray, &valarray);
     
     for(i = 0; keyarray[i]; i++)
     {
@@ -4981,7 +4982,7 @@ ajuint ensMapperGetMemSize(const EnsPMapper mapper)
     
     size += (ajuint) sizeof (AjOTable);
     
-    ajTableToarray(mapper->Pairs, &keyarray1, &valarray1);
+    ajTableToarrayKeysValues(mapper->Pairs, &keyarray1, &valarray1);
     
     for(i = 0; valarray1[i]; i++)
     {
@@ -4995,7 +4996,7 @@ ajuint ensMapperGetMemSize(const EnsPMapper mapper)
 	
 	size += (ajuint) sizeof (AjOTable);
 	
-	ajTableToarray(valarray1[i], &keyarray2, &valarray2);
+	ajTableToarrayKeysValues(valarray1[i], &keyarray2, &valarray2);
 	
 	for(j = 0; valarray2[j]; j++)
 	{
@@ -5118,7 +5119,7 @@ AjBool ensMapperTrace(const EnsPMapper mapper, ajuint level)
     ajDebug("%S  AJAX Table %p for SourceType '%S'\n",
 	    indent, table, mapper->SourceType);
     
-    ajTableToarray(table, &keyarray, &valarray);
+    ajTableToarrayKeysValues(table, &keyarray, &valarray);
     
     for(i = 0; valarray[i]; i++)
     {
@@ -5150,7 +5151,7 @@ AjBool ensMapperTrace(const EnsPMapper mapper, ajuint level)
     ajDebug("%S  AJAX Table %p for TargetType '%S'\n",
 	    indent, table, mapper->TargetType);
     
-    ajTableToarray(table, &keyarray, &valarray);
+    ajTableToarrayKeysValues(table, &keyarray, &valarray);
     
     for(i = 0; valarray[i]; i++)
     {

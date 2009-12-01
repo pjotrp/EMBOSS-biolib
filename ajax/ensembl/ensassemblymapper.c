@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -282,7 +282,7 @@ AjBool ensGenericassemblymapperClear(EnsPGenericassemblymapper gam)
     if(!gam)
 	return ajFalse;
     
-    ajTableToarray(gam->AsmRegister, &keyarray1, &valarray1);
+    ajTableToarrayKeysValues(gam->AsmRegister, &keyarray1, &valarray1);
     
     /*
      ** Free the Assembled Sequence Region identifiers and the second-level
@@ -294,7 +294,8 @@ AjBool ensGenericassemblymapperClear(EnsPGenericassemblymapper gam)
     {
 	ajTableRemove(gam->AsmRegister, (const void *) keyarray1[i]);
 	AJFREE(keyarray1[i]);
-	ajTableToarray((AjPTable) valarray1[i], &keyarray2, &valarray2);
+	ajTableToarrayKeysValues((AjPTable) valarray1[i],
+                                 &keyarray2, &valarray2);
 	
 	/*
 	 ** Free the Assembled Sequence Region chunk identifiers and the
@@ -318,7 +319,7 @@ AjBool ensGenericassemblymapperClear(EnsPGenericassemblymapper gam)
     AJFREE(keyarray1);
     AJFREE(valarray1);
     
-    ajTableToarray(gam->CmpRegister, &keyarray1, &valarray1);
+    ajTableToarrayKeysValues(gam->CmpRegister, &keyarray1, &valarray1);
     
     /* Free the Component Sequence Region identifiers and the AjBool flags. */
     
@@ -3415,7 +3416,7 @@ static AjBool assemblyMapperadaptorMultipleMappingsExit(
     
     if(ama->MultipleMappings)
     {
-        ajTableToarray(ama->MultipleMappings, &keyarray, &valarray);
+        ajTableToarrayKeysValues(ama->MultipleMappings, &keyarray, &valarray);
 	
         /* Free the ajuint key and the AjBool value data. */
 	
@@ -3466,7 +3467,7 @@ AjBool ensAssemblymapperadaptorCacheClear(EnsPAssemblymapperadaptor ama)
     
     if(ama->AsmMapperCache)
     {
-        ajTableToarray(ama->AsmMapperCache, &keyarray, &valarray);
+        ajTableToarrayKeysValues(ama->AsmMapperCache, &keyarray, &valarray);
 	
         /* Free the AJAX String key and Ensembl Assembly Mapper value data. */
 	

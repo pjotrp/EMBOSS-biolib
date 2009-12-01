@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -3597,7 +3597,7 @@ static AjBool databaseEntryadaptorCacheClear(AjPTable table)
     if(!table)
 	return ajFalse;
     
-    ajTableToarray(table, &keyarray1, &valarray1);
+    ajTableToarrayKeysValues(table, &keyarray1, &valarray1);
     
     for(i = 0; keyarray1[i]; i++)
     {
@@ -3612,7 +3612,8 @@ static AjBool databaseEntryadaptorCacheClear(AjPTable table)
 	 ** AJAX Boolean value data.
 	 */
 	
-	ajTableToarray((AjPTable) valarray1[i], &keyarray2, &valarray2);
+	ajTableToarrayKeysValues((AjPTable) valarray1[i],
+                                 &keyarray2, &valarray2);
 	
 	for(j = 0; keyarray2[j]; j++)
 	{
@@ -3666,7 +3667,7 @@ static AjBool databaseEntryadaptorTempClear(AjPTable table)
     if(!table)
 	return ajFalse;
     
-    ajTableToarray(table, &keyarray, &valarray);
+    ajTableToarrayKeysValues(table, &keyarray, &valarray);
     
     for(i = 0; keyarray[i]; i++)
     {

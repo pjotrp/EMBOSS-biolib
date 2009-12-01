@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** Bio::EnsEMBL::Registry CVS Revision:
@@ -1108,7 +1108,7 @@ void ensRegistryClear(void)
     
     register ajuint i = 0;
     
-    ajTableToarray(registryEntries, &keyarray, &valarray);
+    ajTableToarrayKeysValues(registryEntries, &keyarray, &valarray);
     
     for(i = 0; keyarray[i]; i++)
     {
@@ -1417,7 +1417,7 @@ AjBool ensRegistryTraceEntries(ajuint level)
     ajDebug("%SensRegistryTraceEntries %p\n",
 	    indent, registryEntries);
     
-    ajTableToarray(registryEntries, &keyarray, &valarray);
+    ajTableToarrayKeysValues(registryEntries, &keyarray, &valarray);
     
     for(i = 0; keyarray[i]; i++)
     {
@@ -2019,7 +2019,7 @@ AjBool ensRegistryGetAllDatabaseadaptors(AjEnum group,
     
     species = ensRegistryGetSpecies(alias);
     
-    ajTableToarray(registryEntries, &keyarray, &valarray);
+    ajTableToarrayKeysValues(registryEntries, &keyarray, &valarray);
     
     for(i = 0; keyarray[i]; i++)
     {

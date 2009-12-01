@@ -7237,7 +7237,132 @@ void ajFeattabInClear(AjPFeattabIn thys)
 
 
 
-/* @func ajFeatGetSeq **********************************************************
+/* @func ajFeatGetFlags *******************************************************
+**
+** Returns the sequence matching a feature. For multiple location features
+** (joins in an EMBL/GenBank feature table) the full feature table is used
+** to find all exons.
+**
+** The database name is used to retrieve sequences from other entries
+**
+** @param [r] thys [const AjPFeature] Feature
+** @param [u] Pflagstr [AjPStr*] Sequence for this feature
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+
+AjBool ajFeatGetFlags(const AjPFeature thys,  AjPStr* Pflagstr)
+{
+    ajStrAssignC(Pflagstr, "");
+
+    if(thys->Flags & FEATFLAG_START_BEFORE_SEQ)
+        ajStrAppendC(Pflagstr, "<start ");
+    if(thys->Flags & FEATFLAG_END_AFTER_SEQ)
+        ajStrAppendC(Pflagstr, ">end ");
+    if(thys->Flags & FEATFLAG_CHILD)
+        ajStrAppendC(Pflagstr, "child-exon ");
+    if(thys->Flags & FEATFLAG_BETWEEN_SEQ)
+        ajStrAppendC(Pflagstr, "x^y ");
+    if(thys->Flags & FEATFLAG_START_TWO)
+        ajStrAppendC(Pflagstr, "startrange ");
+    if(thys->Flags & FEATFLAG_END_TWO)
+        ajStrAppendC(Pflagstr, "endrange ");
+    if(thys->Flags & FEATFLAG_POINT)
+        ajStrAppendC(Pflagstr, "single-base ");
+    if(thys->Flags & FEATFLAG_COMPLEMENT_MAIN)
+        ajStrAppendC(Pflagstr, "complement(join) ");
+    if(thys->Flags & FEATFLAG_MULTIPLE)
+        ajStrAppendC(Pflagstr, "multiple ");
+    if(thys->Flags & FEATFLAG_GROUP)
+        ajStrAppendC(Pflagstr, "group ");
+    if(thys->Flags & FEATFLAG_ORDER)
+        ajStrAppendC(Pflagstr, "order ");
+    if(thys->Flags & FEATFLAG_ONEOF)
+        ajStrAppendC(Pflagstr, "oneof ");
+    if(thys->Flags & FEATFLAG_REMOTEID)
+        ajStrAppendC(Pflagstr, "remoteid ");
+    if(thys->Flags & FEATFLAG_LABEL)
+        ajStrAppendC(Pflagstr, "LABEL ");
+    if(thys->Flags & FEATFLAG_START_UNSURE)
+        ajStrAppendC(Pflagstr, "start-unsure ");
+    if(thys->Flags & FEATFLAG_END_UNSURE)
+        ajStrAppendC(Pflagstr, "end-unsure ");
+
+    ajStrTrimWhite(Pflagstr);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ajFeatGetSeq *********************************************************
+**
+** Returns the sequence matching a feature. 
+**
+** The database name is used to retrieve sequences from other entries
+**
+** @param [r] thys [const AjPFeature] Feature
+** @param [r] seq [const AjPSeq] Sequence for the current feature table
+** @param [u] Pseqstr [AjPStr*] Sequence for this feature
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+
+AjBool ajFeatGetSeq(const AjPFeature thys,
+                    const AjPSeq seq, AjPStr* Pseqstr)
+{
+    AjPSeq remoteseq = NULL;
+    AjBool isjoin = ajFalse;
+    AjPStr tmpseq = NULL;
+    AjBool compjoin = ajFalse;
+
+    ajStrSetClear(Pseqstr);
+
+    isjoin = ajFeatIsMultiple(thys);
+
+    ajDebug("ajFeatGetSeq usa:%S\n",
+            ajSeqGetUsaS(seq));
+
+    if(thys->Flags & FEATFLAG_BETWEEN_SEQ)
+        return ajTrue;
+
+    ajFeatTrace(thys);
+
+    if(thys->Flags & FEATFLAG_REMOTEID)
+    {
+        if(!remoteseq)
+            remoteseq = ajSeqNew();
+
+        ajFeatGetRemoteseq(thys, ajSeqGetUsaS(seq), remoteseq);
+        ajStrAppendS(Pseqstr, ajSeqGetSeqS(remoteseq));
+    }
+    else
+    {
+        if(thys->Strand == '-' && !compjoin)
+        {
+            ajStrAppendSubS(&tmpseq, ajSeqGetSeqS(seq),
+                            ajFeatGetStart(thys)-1, ajFeatGetEnd(thys)-1);
+            ajSeqstrReverse(&tmpseq);
+            ajStrInsertS(Pseqstr, 0, tmpseq);
+            ajStrDel(&tmpseq);
+        }
+        else
+        {
+            ajStrAppendSubS(Pseqstr, ajSeqGetSeqS(seq),
+                            ajFeatGetStart(thys)-1, ajFeatGetEnd(thys)-1);
+        }
+    }
+
+    ajSeqDel(&remoteseq);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ajFeatGetSeqJoin ******************************************************
 **
 ** Returns the sequence matching a feature. For multiple location features
 ** (joins in an EMBL/GenBank feature table) the full feature table is used
@@ -7253,30 +7378,36 @@ void ajFeattabInClear(AjPFeattabIn thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajFeatGetSeq(const AjPFeature thys, const AjPFeattable table,
-                    const AjPSeq seq, AjPStr* Pseqstr)
+AjBool ajFeatGetSeqJoin(const AjPFeature thys, const AjPFeattable table,
+                        const AjPSeq seq, AjPStr* Pseqstr)
 {
     const AjPFeature gf;
     AjIList iter = NULL;
     AjPSeq remoteseq = NULL;
     AjBool isjoin = ajFalse;
+    AjPStr tmpseq = NULL;
+    AjBool compjoin = ajFalse;
+    AjPStr flags = NULL;
+    ajuint count=0;
+
+    ajStrSetClear(Pseqstr);
 
     isjoin = ajFeatIsMultiple(thys);
+    if(thys->Flags & FEATFLAG_COMPLEMENT_MAIN)
+        compjoin = ajTrue;
 
-    ajDebug("ajFeatGetSeq nfeat:%u usa:%S\n",
+    ajDebug("ajFeatGetSeqJoin nfeat:%u usa:%S\n",
             ajFeattableGetSize(table), ajSeqGetUsaS(seq));
     iter = ajListIterNewread(table->Features);
 
     while(!ajListIterDone(iter))
     {
+        count++;
         gf = (const AjPFeature) ajListIterGet(iter);
 
         if(gf->Group == thys->Group)
         {
-/*
-  if(isjoin && !ajFeatIsChild(gf))
-                continue;
-*/
+            ajFeatGetFlags(gf, &flags);
             ajFeatTrace(gf);
 
             if(gf->Flags & FEATFLAG_BETWEEN_SEQ)
@@ -7293,18 +7424,29 @@ AjBool ajFeatGetSeq(const AjPFeature thys, const AjPFeattable table,
             }
             else
             {
-                if(gf->Strand == '-')
-                    ajStrAppendSubS(Pseqstr, ajSeqGetSeqS(seq),
-                                    ajFeatGetEnd(gf)-1, ajFeatGetStart(gf)-1);
+                if(gf->Strand == '-' && !compjoin)
+                {
+                    ajStrAppendSubS(&tmpseq, ajSeqGetSeqS(seq),
+                                    ajFeatGetStart(gf)-1, ajFeatGetEnd(gf)-1);
+                    ajSeqstrReverse(&tmpseq);
+                    ajStrAppendS(Pseqstr, tmpseq);
+                    ajStrDel(&tmpseq);
+                }
                 else
+                {
                     ajStrAppendSubS(Pseqstr, ajSeqGetSeqS(seq),
                                     ajFeatGetStart(gf)-1, ajFeatGetEnd(gf)-1);
+                }
             }
         }
     }
 
+    if(compjoin)
+        ajSeqstrReverse(Pseqstr);
+
     ajListIterDel(&iter);
     ajSeqDel(&remoteseq);
+    ajStrDel(&flags);
 
     return ajTrue;
 }
@@ -7406,8 +7548,6 @@ AjBool ajFeatGetXrefs(const AjPFeature thys, AjPList *Pxreflist)
                     xref->Start = ajFeatGetStart(thys)-1;
                     xref->End   = ajFeatGetEnd(thys)-1;
                     ajListPushAppend(xreflist, xref);
-                    ajUser("/%S='%S' db: '%S' id: '%S'",
-                           item->Tag, item->Value, xref->Db, xref->Id);
                     xref->Type = XREF_DBXREF;
                     xref = NULL;
                 }
@@ -11043,7 +11183,6 @@ static AjBool featTableTypeTestWild(const AjPStr type,
     ajuint i = 0;
     ajuint nkeys;
     void **keys = NULL;
-    void **values = NULL;
     AjPStr key = NULL;
 
     if(ajStrMatchWildS(type, str))
@@ -11088,8 +11227,7 @@ static AjBool featTableTypeTestWild(const AjPStr type,
                 ++i, retkey);
     }
 
-    nkeys = ajTableToarray(table, &keys, &values);
-    AJFREE(values);
+    nkeys = ajTableToarrayKeys(table, &keys);
     for (i=0; i<nkeys; i++) 
     {
         key = (AjPStr) keys[i];

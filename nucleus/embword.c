@@ -218,12 +218,11 @@ void embWordClear(void)
 
 void embWordPrintTable(const AjPTable table)
 {
-    void **keyarray = NULL;
     void **valarray = NULL;
     EmbPWord ajnew;
     ajint i;
 
-    ajTableToarray(table, &keyarray, &valarray);
+    ajTableToarrayValues(table, &valarray);
 
     qsort(valarray, ajTableGetLength(table), sizeof (*valarray), wordCompare);
 
@@ -233,7 +232,6 @@ void embWordPrintTable(const AjPTable table)
 	ajUser("%.*s\t%d", wordLength, ajnew->fword,ajnew->count);
     }
 
-    AJFREE(keyarray);
     AJFREE(valarray);
 
     return;
@@ -255,14 +253,13 @@ void embWordPrintTable(const AjPTable table)
 
 void embWordPrintTableFI(const AjPTable table, ajint mincount, AjPFile outf)
 {
-    void **keyarray = NULL;
     void **valarray = NULL;
     EmbPWord ajnew;
     ajint i;
 
     if(!ajTableGetLength(table)) return;
 
-    i = ajTableToarray(table, &keyarray, &valarray);
+    i = ajTableToarrayValues(table, &valarray);
 
     ajDebug("embWordPrintTableFI size %d mincount:%d\n", i, mincount);
 
@@ -288,7 +285,6 @@ void embWordPrintTableFI(const AjPTable table, ajint mincount, AjPFile outf)
 			   wordLength, ajnew->fword,ajnew->count);
     }
 
-    AJFREE(keyarray);
     AJFREE(valarray);
 
     return;

@@ -84,8 +84,12 @@ void*      ajTablePut   (AjPTable table, void *key,
 			 void *value);
 void*      ajTableRemove (AjPTable table, const void *key);
 void*      ajTableRemoveKey(AjPTable table, const void *key, void** truekey);
-ajuint     ajTableToarray (const AjPTable table,
-			   void*** keyarray, void*** valarray);
+ajuint     ajTableToarrayKeys(const AjPTable table,
+                              void*** keyarray);
+ajuint     ajTableToarrayKeysValues(const AjPTable table,
+                                    void*** keyarray, void*** valarray);
+ajuint     ajTableToarrayValues(const AjPTable table,
+                                void*** valarray);
 void       ajTableTrace   (const AjPTable table);
 
 ajint      ajTablecharCmp     (const void *x, const void *y);
@@ -121,6 +125,8 @@ const void * ajTableFetchKey(const AjPTable table, const void *key);
 ** End of prototype definitions
 */
 
+__deprecated ajuint     ajTableToarray (const AjPTable table,
+			   void*** keyarray, void*** valarray);
 __deprecated ajint      ajTableLength (const AjPTable table);
 __deprecated void*      ajTableGet  (const AjPTable table, const void *key);
 __deprecated ajint      ajStrTableCmp      (const void *x, const void *y);
