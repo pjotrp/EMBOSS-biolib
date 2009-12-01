@@ -121,7 +121,7 @@ int i;
   progress = true;
   treeprint = true;
 
-  embInitP (pgm, argc, argv,"PHYLIP");
+  embInitPV(pgm, argc, argv,"PHYLIP",VERSION);
 
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;

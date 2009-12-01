@@ -154,7 +154,7 @@ int main(ajint argc, char **argv)
 
 
     /* Read data from acd. */
-    embInitP("pdbplus",argc,argv,"STRUCTURE");
+    embInitPV("pdbplus",argc,argv,"STRUCTURE",VERSION);
 
     ccfin        = ajAcdGetDirlist("ccfinpath");  
     pdbin        = ajAcdGetDirectory("pdbindir"); 
@@ -262,11 +262,6 @@ int main(ajint argc, char **argv)
 		       pdb_name, randomname,ajFileGetNameC(serrf));
 	    system(ajStrGetPtr(syscmd));  
 
-/*	    ajFmtPrintS(&syscmd, "stride %S -f%S >> %s",  
-			pdb_name, randomname, ajFileGetNameC(serrf));
-	    ajFmtPrint("stride %S -f%S >> %s\n",  
-		       pdb_name, randomname,ajFileGetNameC(serrf));
-	    system(ajStrGetPtr(syscmd));  */
 	    
 	    /* Open the stride output file */
 	    if (((tempf = ajFileNewInNameS(randomname)) == NULL))
@@ -408,13 +403,6 @@ int main(ajint argc, char **argv)
 		       ajFileGetNameC(nerrf));
 	    system(ajStrGetPtr(syscmd));  
 
-/*	    ajFmtPrintS(&syscmd, "naccess %S  >> %s",  
-			pdb_name, 
-			ajFileGetNameC(nerrf));
-	    ajFmtPrint("naccess %S  >> %s\n",  
-		       pdb_name, 
-		       ajFileGetNameC(nerrf));
-	    system(ajStrGetPtr(syscmd));  */
 
 	    
 	    ajStrAssignS(&naccess_str, pdbprefix);

@@ -71,7 +71,7 @@ int main(int argc, char **argv)
      * Parse command line
      ***********************************************/
 
-    embInitP("ohmmconvert",argc,argv,"HMMER");
+    embInitPV("ohmmconvert",argc,argv,"HMMER",VERSION);
 
     outfmt    = P7ASCII; 
     do_append = FALSE;

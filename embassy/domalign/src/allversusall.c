@@ -86,7 +86,7 @@ int main(int argc, char **argv)
 
 
     /* Read data from acd */
-    embInitP("allversusall",argc,argv,"DOMALIGN");
+    embInitPV("allversusall",argc,argv,"DOMALIGN",VERSION);
 
     in        = ajAcdGetDirlist("seqinpath");
     matrix    = ajAcdGetMatrixf("matrix");

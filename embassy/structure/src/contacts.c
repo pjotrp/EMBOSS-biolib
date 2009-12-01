@@ -134,7 +134,7 @@ int main(ajint argc, char **argv)
 
 
     /* Read data from acd. */
-    embInitP("contacts",argc,argv,"STRUCTURE");
+    embInitPV("contacts",argc,argv,"STRUCTURE",VERSION);
 
     cpdb_path     = ajAcdGetDirlist("cpdbdir");
     con_path      = ajAcdGetOutdir("conoutdir");

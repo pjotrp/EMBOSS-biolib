@@ -136,7 +136,7 @@ int main(int argc, char **argv)
 
 
     /* Read data from acd */
-    embInitP("domainrep",argc,argv,"DOMALIGN");
+    embInitPV("domainrep",argc,argv,"DOMALIGN",VERSION);
 
     dcfin     = ajAcdGetInfile("dcfinfile");
     dcfout    = ajAcdGetOutfile("dcfoutfile");

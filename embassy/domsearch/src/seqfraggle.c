@@ -120,7 +120,7 @@ int main(int argc, char **argv)
 
 
     /* Read data from acd. */
-    embInitP("seqfraggle",argc,argv,"DOMSEARCH");
+    embInitPV("seqfraggle",argc,argv,"DOMSEARCH",VERSION);
 
     dhfin      = ajAcdGetDirlist("dhfinpath");
     dhfout     = ajAcdGetOutdir("dhfoutdir");

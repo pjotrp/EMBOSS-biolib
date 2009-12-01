@@ -199,7 +199,7 @@ AjPFile outf;
 
   ease = 0.457;
 
-  embInitP (pgm, argc, argv, "PHYLIP");
+  embInitPV(pgm, argc, argv, "PHYLIP",VERSION);
 
   seqset = ajAcdGetSeqset("sequence");
 

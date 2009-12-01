@@ -125,7 +125,7 @@ int main(int argc, char **argv)
 
 
     /* ACD processing */
-    embInitP("seqsort",argc,argv,"DOMSEARCH");
+    embInitPV("seqsort",argc,argv,"DOMSEARCH",VERSION);
 
     sig_overlap    = ajAcdGetInt("overlap");
     ambigf         = ajAcdGetOutfile("ambigfile");

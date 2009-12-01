@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 
 
     /* Read data from acd. */
-    embInitP("scopparse", argc, argv, "DOMAINATRIX");
+    embInitPV("scopparse", argc, argv, "DOMAINATRIX",VERSION);
     inf1         =  ajAcdGetInfile("classfile");
     inf2         =  ajAcdGetInfile("desinfile");
     outf         = ajAcdGetOutfile("dcffile");

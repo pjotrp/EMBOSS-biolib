@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 
 
     /* ACD file processing */
-    embInitP("ehmmindex",argc,argv,"HMMERNEW");
+    embInitPV("ehmmindex",argc,argv,"HMMERNEW",VERSION);
 
     database   = ajAcdGetInfile("database");
 

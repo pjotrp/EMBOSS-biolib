@@ -77,7 +77,7 @@ int main(int argc, char **argv)
 
     
     /* Get values from acd. */
-    embInitP("hetparse", argc, argv, "STRUCTURE");
+    embInitPV("hetparse", argc, argv, "STRUCTURE",VERSION);
 
     fin     = ajAcdGetInfile("infile");
     fout    = ajAcdGetOutfile("outfile");

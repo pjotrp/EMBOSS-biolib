@@ -217,7 +217,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   AjPStr getpreviewer = NULL;
   AjPStr getnodeposition = NULL;
   
-  embInitP (pgm, argc, argv, "PHYLIPNEW");
+  embInitPV(pgm, argc, argv, "PHYLIPNEW",VERSION);
 
   n = (int)((pagex-hpmargin-0.01)/(paperx-hpmargin)+1.0);
   m = (int)((pagey-vpmargin-0.01)/(papery-vpmargin)+1.0);

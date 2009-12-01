@@ -51,7 +51,7 @@ int main(int argc, char **argv)
 
 
     /* ACD file processing */
-    embInitP("ehmmconvert",argc,argv,"HMMERNEW");
+    embInitPV("ehmmconvert",argc,argv,"HMMERNEW",VERSION);
 
     oldhmmfile = ajAcdGetInfile("oldhmmfile");
     format     = ajAcdGetListSingle("format");

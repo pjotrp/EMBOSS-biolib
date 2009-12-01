@@ -164,7 +164,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   stepbox = false;
   ancseq = false;
   
-  embInitP (pgm, argc, argv, "PHYLIP");
+  embInitPV(pgm, argc, argv, "PHYLIP",VERSION);
 
   seqset = ajAcdGetSeqset("sequence");
   

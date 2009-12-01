@@ -78,7 +78,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 AjPFile outf;
 AjPFile inf;
 
-  embInitP (pgm, argc, argv,"PHYLIP");
+  embInitPV(pgm, argc, argv,"PHYLIP",VERSION);
 
   inf = ajAcdGetInfile("datafile");
   infile = inf->fp;

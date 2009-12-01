@@ -325,7 +325,7 @@ int main(ajint argc, char **argv)
 
 
     /* Read data from acd. */
-    embInitP("siggen",argc,argv,"SIGNATURE");
+    embInitPV("siggen",argc,argv,"SIGNATURE",VERSION);
 
     sig_path      = ajAcdGetOutdir("sigoutdir");
     alg_path      = ajAcdGetDirlist("algpath");

@@ -14,7 +14,7 @@
  * Score an HMM against random sequence data sets;
  * set histogram fitting parameters.
  * 
- * RCS $Id: ohmmcalibrate.c,v 1.8 2009/02/19 13:14:37 rice Exp $
+ * RCS $Id: ohmmcalibrate.c,v 1.9 2009/12/01 14:42:44 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -155,7 +155,7 @@ int main(int argc, char **argv)
     num_threads  = 0;
 #endif
 
-    embInitP("ohmmcalibrate",argc,argv,"HMMER");
+    embInitPV("ohmmcalibrate",argc,argv,"HMMER",VERSION);
 
     num_threads = ajAcdGetInt("cpu");
     fixedlen   = ajAcdGetInt("fixed");

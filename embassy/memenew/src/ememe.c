@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 
     
     /* ACD file processing */
-    embInitP("ememe",argc,argv,"MEMENEW");
+    embInitPV("ememe",argc,argv,"MEMENEW",VERSION);
     dataset   = ajAcdGetSeqset("dataset");
     bfile     = ajAcdGetInfile("bfile");
     plib      = ajAcdGetInfile("plibfile");

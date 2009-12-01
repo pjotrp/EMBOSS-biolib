@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     AjPStr eline = NULL;
    
 
-    embInitP("vrnaplot",argc,argv,"VIENNA");
+    embInitPV("vrnaplot",argc,argv,"VIENNA",VERSION);
 
 
     inf    = ajAcdGetInfile("structuresfile");

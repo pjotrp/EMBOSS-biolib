@@ -12,7 +12,7 @@
  * SRE, Mon Nov 18 12:41:29 1996
  *
  * main() for HMM construction from an alignment.
- * RCS $Id: ohmmbuild.c,v 1.6 2008/06/26 08:40:56 rice Exp $
+ * RCS $Id: ohmmbuild.c,v 1.7 2009/12/01 14:42:44 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -239,7 +239,7 @@ int main(int argc, char **argv)
 
   
 
-    embInitP("ohmmbuild",argc,argv,"HMMER");
+    embInitPV("ohmmbuild",argc,argv,"HMMER",VERSION);
 
     ajstrategy = ajAcdGetListSingle("strategy");
     ajstrat = ajStrGetCharFirst(ajstrategy);

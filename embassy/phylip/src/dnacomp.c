@@ -161,7 +161,7 @@ AjPFile treef;
 int temp;
 long inseed0;
 
-  embInitP (pgm, argc, argv,"PHYLIP");
+embInitPV(pgm, argc, argv,"PHYLIP",VERSION);
 
   seqset = ajAcdGetSeqset("sequence");
 

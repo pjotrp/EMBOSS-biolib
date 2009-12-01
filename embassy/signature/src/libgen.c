@@ -137,7 +137,7 @@ int main(int argc, char **argv)
     float      evalue    = 0.0;   /* Threshold E-value                     */
     AjPStr     database  = NULL;  /* Blast-indexed database to search      */
 
-    embInitP("libgen",argc,argv,"SIGNATURE");
+    embInitPV("libgen",argc,argv,"SIGNATURE",VERSION);
     
     
     /* ACD processing. */
@@ -269,11 +269,11 @@ int main(int argc, char **argv)
 		system(ajStrGetPtr(cmd));
 
 		/* Could run buildmodel to refine the model 
-		   ajFmtPrintS(&cmd,"buildmodel %S -train %S -alignfile %S",
-		   outname,tmpfname,seqsfname);
-		   ajFmtPrint("%S\n", cmd);
-		   system(ajStrGetPtr(cmd));
-		   */
+		//   ajFmtPrintS(&cmd,"buildmodel %S -train %S -alignfile %S",
+		//   outname,tmpfname,seqsfname);
+		//   ajFmtPrint("%S\n", cmd);
+		//   system(ajStrGetPtr(cmd));
+                */
 
 		ajFmtPrintS(&cmd,"rm %S",tmpfname);
 		system(ajStrGetPtr(cmd));

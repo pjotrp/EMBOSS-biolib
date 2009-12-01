@@ -92,7 +92,7 @@ int i;
 
   outgrno = 1;
 
-  embInitP (pgm, argc, argv,"PHYLIP");
+  embInitPV(pgm, argc, argv,"PHYLIP",VERSION);
 
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;

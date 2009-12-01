@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 
 
     /* Read data from acd */
-    embInitP("domainer",argc,argv,"STRUCTURE");
+    embInitPV("domainer",argc,argv,"STRUCTURE",VERSION);
 
     cpdb_dir     = ajAcdGetDirectory("ccfpdir");
     mode          = ajAcdGetListSingle("mode");

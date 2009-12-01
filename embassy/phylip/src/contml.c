@@ -123,7 +123,7 @@ AjPFile inf;
 int temp;
 long inseed0;
  
-  embInitP (pgm, argc, argv,"PHYLIP");
+  embInitPV(pgm, argc, argv,"PHYLIP",VERSION);
 
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;

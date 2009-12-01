@@ -75,7 +75,7 @@ int main(int argc, char **argv)
 
 
     /* ACD file processing */
-    embInitP("ehmmbuild",argc,argv,"HMMERNEW");
+    embInitPV("ehmmbuild",argc,argv,"HMMERNEW",VERSION);
 
     alignfile = ajAcdGetSeqset("alignfile");
     prior     = ajAcdGetInfile("prior");

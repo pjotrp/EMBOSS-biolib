@@ -65,7 +65,7 @@ int main(int argc, char **argv)
 
 
     /* ACD file processing */
-    embInitP("ehmmsearch",argc,argv,"HMMERNEW");
+    embInitPV("ehmmsearch",argc,argv,"HMMERNEW",VERSION);
 
     hmmfile = ajAcdGetInfile("hmmfile");
     seqfile = ajAcdGetSeqall("seqfile");

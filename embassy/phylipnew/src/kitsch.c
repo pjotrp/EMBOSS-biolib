@@ -100,7 +100,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   datasets = 1;
 
 
-    embInitP (pgm, argc, argv, "PHYLIPNEW");
+  embInitPV(pgm, argc, argv, "PHYLIPNEW",VERSION);
 
     matrixtype = ajAcdGetListSingle("matrixtype");
     if(ajStrMatchC(matrixtype, "l")) lower = true;

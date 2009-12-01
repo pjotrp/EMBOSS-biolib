@@ -28,7 +28,7 @@ extern float energy_of_circ_struct(const char *seq, const char *structure);
 extern AjBool vienna_GetConstraints(AjPFile file, AjPStr *constring);
 
 /*@unused@*/
-static const char rcsid[] = "$Id: vrnaalifoldpf.c,v 1.12 2009/02/19 13:11:56 rice Exp $";
+static const char rcsid[] = "$Id: vrnaalifoldpf.c,v 1.13 2009/12/01 14:42:44 rice Exp $";
 
 #define PRIVATE static
 
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
     int doColor = 0;
     
 
-    embInitP("vrnaalifoldpf",argc,argv,"VIENNA");
+    embInitPV("vrnaalifoldpf",argc,argv,"VIENNA",VERSION);
     
     
     constring = ajStrNew();

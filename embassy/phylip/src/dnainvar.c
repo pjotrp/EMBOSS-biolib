@@ -76,7 +76,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 AjPFile outf;
 
 
-  embInitP (pgm, argc, argv,"PHYLIP");
+  embInitPV(pgm, argc, argv,"PHYLIP",VERSION);
 
   seqset = ajAcdGetSeqset("sequence");
 

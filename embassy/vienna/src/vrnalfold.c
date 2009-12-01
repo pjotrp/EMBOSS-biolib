@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 
     
 
-    embInitP("vrnalfold",argc,argv,"VIENNA");
+    embInitPV("vrnalfold",argc,argv,"VIENNA",VERSION);
 
 
     do_backtrack = 1; 

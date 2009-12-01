@@ -189,7 +189,7 @@ int scanned;
   progress = true;
   treeprint = true;
 
-  embInitP (pgm, argc, argv,"PHYLIP");
+  embInitPV(pgm, argc, argv,"PHYLIP",VERSION);
 
   seqset = ajAcdGetSeqset("sequence");
 

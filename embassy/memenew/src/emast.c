@@ -77,7 +77,7 @@ int main(int argc, char **argv)
     ajint ret;
     
     /* ACD file processing */
-    embInitP("emast",argc,argv,"MEMENEW");
+    embInitPV("emast",argc,argv,"MEMENEW",VERSION);
     mfile    = ajAcdGetInfile("mfile");
     d        = ajAcdGetInfile("dfile");
     a        = ajAcdGetInfile("afile");

@@ -77,7 +77,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   permute = jackknife = false;
   all = false;
 
-  embInitP (pgm, argc, argv,"PHYLIP");
+  embInitPV(pgm, argc, argv,"PHYLIP",VERSION);
 
   inf = ajAcdGetInfile("datafile");
   infile = inf->fp;

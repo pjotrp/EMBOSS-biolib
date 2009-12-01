@@ -106,7 +106,7 @@ int main(int argc, char **argv)
 
 
     /* Read data from acd. */
-    embInitP("seqnr",argc,argv,"DOMSEARCH");
+    embInitPV("seqnr",argc,argv,"DOMSEARCH",VERSION);
 
     in        = ajAcdGetDirlist("dhfinpath");
     dosing    = ajAcdGetToggle("dosing");

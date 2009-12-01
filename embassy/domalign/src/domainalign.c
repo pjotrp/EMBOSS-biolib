@@ -201,7 +201,7 @@ int main(int argc, char **argv)
 
 
     /* Read data from acd. */
-    embInitP("domainalign",argc,argv,"DOMALIGN");
+    embInitPV("domainalign",argc,argv,"DOMALIGN",VERSION);
 
     dcfin       = ajAcdGetInfile("dcfinfile");
     pdb           = ajAcdGetDirectory("pdbdir");

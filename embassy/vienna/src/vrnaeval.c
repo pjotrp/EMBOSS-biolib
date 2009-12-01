@@ -24,7 +24,7 @@
 
 /*@unused@*/
 #if 0
-static char UNUSED rcsid[]="$Id: vrnaeval.c,v 1.9 2009/02/19 13:11:56 rice Exp $";
+static char UNUSED rcsid[]="$Id: vrnaeval.c,v 1.10 2009/12/01 14:42:44 rice Exp $";
 #endif
 
 #define  PUBLIC
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 /*    AjPStr constring2 = NULL; */
     
 
-    embInitP("vrnaeval",argc,argv,"VIENNA");
+    embInitPV("vrnaeval",argc,argv,"VIENNA",VERSION);
 
 
     string    = NULL;

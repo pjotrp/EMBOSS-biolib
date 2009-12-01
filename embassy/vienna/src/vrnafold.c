@@ -26,7 +26,7 @@ extern void init_pf_circ_fold(int length);
 
 /*@unused@*/
 #if 0
-static char UNUSED rcsid[] = "$Id: vrnafold.c,v 1.10 2009/02/19 13:11:56 rice Exp $";
+static char UNUSED rcsid[] = "$Id: vrnafold.c,v 1.11 2009/12/01 14:42:44 rice Exp $";
 #endif
 
 #define PRIVATE static
@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
 
 
 
-    embInitP("vrnafold",argc,argv,"VIENNA");
+    embInitPV("vrnafold",argc,argv,"VIENNA",VERSION);
     
     
     seqstring = ajStrNew();

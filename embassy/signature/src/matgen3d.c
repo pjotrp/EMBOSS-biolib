@@ -151,7 +151,7 @@ int main(ajint argc, char **argv)
 
 
     /* ACD processing */
-    embInitP("matgen3d",argc,argv,"SIGNATURE"); 
+    embInitPV("matgen3d",argc,argv,"SIGNATURE",VERSION); 
     
     ccfddir      = ajAcdGetDirectory("ccfddir");
     ccfpdir      = ajAcdGetDirectory("ccfpdir");

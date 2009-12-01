@@ -149,7 +149,7 @@ int main(int argc, char **argv)
 
 
     /* Read data from acd. */
-    embInitP("seqsearch",argc,argv,"DOMSEARCH");
+    embInitPV("seqsearch",argc,argv,"DOMSEARCH",VERSION);
 
     mode       = ajAcdGetList("mode");
     inseqs     = ajAcdGetDirlist("inseqspath");

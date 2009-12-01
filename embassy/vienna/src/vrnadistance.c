@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
     
     AjPStr etypes = NULL;
 
-    embInitP("vrnadistance",argc,argv,"VIENNA");
+    embInitPV("vrnadistance",argc,argv,"VIENNA",VERSION);
 
     sfile     = ajAcdGetInfile("structuresfile");
     edist     = ajAcdGetList("distance");

@@ -352,7 +352,7 @@ int main(int argc, char **argv)
     /********************/
     /* PROCESS ACD DATA */
     /********************/    
-    embInitP("rocplot", argc, argv, "SIGNATURE");
+    embInitPV("rocplot", argc, argv, "SIGNATURE",VERSION);
 
     hitsfiles     = ajAcdGetDirlist("hitsfilespath");
     outdir        = ajAcdGetOutdir("outdir");

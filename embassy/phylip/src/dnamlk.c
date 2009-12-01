@@ -195,7 +195,7 @@ int scanned;
   probcat = (double *)Malloc(sizeof(double));
   probcat[0] = 1.0;
 
-  embInitP (pgm, argc, argv,"PHYLIP");
+  embInitPV(pgm, argc, argv,"PHYLIP",VERSION);
 
   seqset = ajAcdGetSeqset("sequence");
 

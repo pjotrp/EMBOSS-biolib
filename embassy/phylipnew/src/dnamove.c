@@ -407,8 +407,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   scrollinc = 20;
   screenwidth = 80;
 
-
-  embInitP(pgm, argc, argv, "PHYLIPNEW");
+  embInitPV(pgm, argc, argv, "PHYLIPNEW",VERSION);
 
     seqsets = ajAcdGetSeqsetall("sequence");
 

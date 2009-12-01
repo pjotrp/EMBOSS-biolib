@@ -145,7 +145,7 @@ int main(int argc, char **argv)
 
     
     /* Read data from acd */
-    embInitP("domainnr",argc,argv,"DOMAINATRIX");
+    embInitPV("domainnr",argc,argv,"DOMAINATRIX",VERSION);
     domain_inf  = ajAcdGetInfile("dcfinfile");
     domain_outf = ajAcdGetOutfile("dcfoutfile");
     matrix    = ajAcdGetMatrixf("datafile");

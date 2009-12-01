@@ -107,8 +107,9 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   mulsets = false;
   msets = 1;
 
-    embInitP (pgm, argc, argv, "PHYLIPNEW");
-    seqsets = ajAcdGetSeqsetall("sequence");
+  embInitPV(pgm, argc, argv, "PHYLIPNEW",VERSION);
+
+  seqsets = ajAcdGetSeqsetall("sequence");
 
     phylotrees = ajAcdGetTree("intreefile");
     if (phylotrees)

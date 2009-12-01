@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 
 
 
-    embInitP("sigscan", argc, argv, "SIGNATURE");
+    embInitPV("sigscan", argc, argv, "SIGNATURE",VERSION);
     
 
     /* GET VALUES FROM ACD */

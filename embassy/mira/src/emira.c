@@ -399,7 +399,7 @@ int main(int argc, char **argv)
     AjPTable preftab = NULL;
 
 
-    embInitP("emira", argc, argv, "MIRA");
+    embInitPV("emira", argc, argv, "MIRA",VERSION);
 
 
     cl = ajStrNewC("mira");

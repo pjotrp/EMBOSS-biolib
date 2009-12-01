@@ -24,7 +24,7 @@ extern AjBool vienna_GetConstraints(AjPFile confile, AjPStr *constring);
 
 /*@unused@*/
 #if 0
-static char rcsid[] = "$Id: vrnacofoldpf.c,v 1.10 2009/02/19 13:11:56 rice Exp $";
+static char rcsid[] = "$Id: vrnacofoldpf.c,v 1.11 2009/12/01 14:42:44 rice Exp $";
 #endif
 
 #define PRIVATE static
@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
     AjBool paired;
 
 
-    embInitP("vrnacofoldpf",argc,argv,"VIENNA");
+    embInitPV("vrnacofoldpf",argc,argv,"VIENNA",VERSION);
 
     seqstring1 = ajStrNew();
     constring1 = ajStrNew();

@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
     char edangle = '\0';
 
 
-    embInitP("vrnaheat",argc,argv,"VIENNA");
+    embInitPV("vrnaheat",argc,argv,"VIENNA",VERSION);
     
     
     seq       = ajAcdGetSeq("sequence");

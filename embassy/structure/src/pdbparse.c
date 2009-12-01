@@ -132,7 +132,7 @@ int main(ajint argc, char **argv)
     
     
     /* Read data from acd */
-    embInitP("pdbparse",argc,argv,"STRUCTURE");
+    embInitPV("pdbparse",argc,argv,"STRUCTURE",VERSION);
 
     pdb_path     = ajAcdGetDirlist("pdbpath");
     ccf_path     = ajAcdGetOutdir("ccfoutdir");

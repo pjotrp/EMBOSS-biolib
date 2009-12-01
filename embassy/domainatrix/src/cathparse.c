@@ -69,7 +69,7 @@ int main(int argc, char **argv)
     AjPCath tmp      = NULL; /* Temp. pointer.                          */
     
     
-    embInitP("cathparse", argc, argv, "DOMAINATRIX");
+    embInitPV("cathparse", argc, argv, "DOMAINATRIX",VERSION);
 
     listf  =  ajAcdGetInfile("listfile");   
     domf   =  ajAcdGetInfile("domfile");    

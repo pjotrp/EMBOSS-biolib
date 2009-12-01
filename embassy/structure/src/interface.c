@@ -115,7 +115,7 @@ int main(ajint argc, char **argv)
 
 
     /* Read data from acd */
-    embInitP("interface",argc,argv,"STRUCTURE");
+    embInitPV("interface",argc,argv,"STRUCTURE",VERSION);
 
     cpdb_inf      = ajAcdGetInfile("infile");
     con_outf      = ajAcdGetOutfile("outfile");

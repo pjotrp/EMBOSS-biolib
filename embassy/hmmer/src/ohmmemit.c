@@ -12,7 +12,7 @@
  * SRE, Sun Mar  8 14:11:24 1998 [St. Louis]
  * 
  * main() for generating sequences from an HMM
- * RCS $Id: ohmmemit.c,v 1.7 2009/02/19 13:14:37 rice Exp $
+ * RCS $Id: ohmmemit.c,v 1.8 2009/12/01 14:42:44 rice Exp $
  *
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
@@ -74,7 +74,7 @@ int main(int argc, char **argv)
     do_consensus = FALSE;
     ofile        = NULL;
 
-    embInitP("ohmmemit",argc,argv,"HMMER");
+    embInitPV("ohmmemit",argc,argv,"HMMER",VERSION);
 
     ajselex = ajAcdGetBoolean("selex");
     ajcons  = ajAcdGetBoolean("consensus");

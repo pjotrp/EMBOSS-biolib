@@ -151,7 +151,7 @@ AjPStr *methodlist;
   allwagner = false;
   mixture = false;
 
-  embInitP (pgm, argc, argv, "PHYLIP");
+  embInitPV(pgm, argc, argv, "PHYLIP",VERSION);
 
   inf = ajAcdGetInfile("infile");
   infile = inf->fp;

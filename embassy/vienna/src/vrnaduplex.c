@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     duplexT mfe;
     duplexT *subopt;
 
-    embInitP("vrnaduplex",argc,argv,"VIENNA");
+    embInitPV("vrnaduplex",argc,argv,"VIENNA",VERSION);
     
     seq1      = ajAcdGetSeq("asequence");
     seq2      = ajAcdGetSeq("bsequence");

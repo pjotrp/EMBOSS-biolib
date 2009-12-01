@@ -400,7 +400,7 @@ int main(int argc, char **argv)
 
 
 
-    embInitP("emiraest", argc, argv, "MIRA");
+    embInitPV("emiraest", argc, argv, "MIRA",VERSION);
 
 
     cl = ajStrNewC("miraEST");

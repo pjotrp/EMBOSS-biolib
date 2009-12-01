@@ -171,7 +171,7 @@ int main(int argc, char **argv)
 
     SigPLighit lighit   = NULL;
 
-    embInitP("sigscanlig", argc, argv, "SIGNATURE");
+    embInitPV("sigscanlig", argc, argv, "SIGNATURE",VERSION);
     
 
     /* GET VALUES FROM ACD */

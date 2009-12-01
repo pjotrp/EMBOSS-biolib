@@ -205,7 +205,7 @@ AjPFile treef;
   stepbox = false;
   ancseq = false;
 
-  embInitP (pgm, argc, argv,"PHYLIP");
+  embInitPV(pgm, argc, argv,"PHYLIP",VERSION);
 
   seqset = ajAcdGetSeqset("sequence");
 

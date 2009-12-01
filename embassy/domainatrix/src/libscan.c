@@ -322,7 +322,7 @@ int main(int argc, char **argv)
     AjBool  do_pssm    = ajFalse;
     AjBool  do_sig     = ajFalse;
 
-    embInitP("libscan",argc,argv,"DOMAINATRIX");
+    embInitPV("libscan",argc,argv,"DOMAINATRIX",VERSION);
   
     mode      = ajAcdGetList("mode");
     do_grib   = ajAcdGetBoolean("grib");

@@ -100,7 +100,7 @@ int main(int argc, char **argv)
 
 
     /* Read data from acd */
-    embInitP("domainsse",argc,argv,"DOMAINATRIX");
+    embInitPV("domainsse",argc,argv,"DOMAINATRIX",VERSION);
     dcf_inf    = ajAcdGetInfile("dcfinfile");
     dcf_outf   = ajAcdGetOutfile("dcfoutfile");
     dccf        = ajAcdGetDirectory("dccfdir");

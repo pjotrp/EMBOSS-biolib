@@ -134,7 +134,7 @@ int main(int argc, char **argv)
  
    
     /* Read data from acd */
-    embInitP("seqwords",argc,argv,"DOMSEARCH");
+    embInitPV("seqwords",argc,argv,"DOMSEARCH",VERSION);
 
     key_inf  = ajAcdGetInfile("keyfile");
     sp_inf  = ajAcdGetInfile("spfile");

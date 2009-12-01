@@ -308,7 +308,7 @@ int main(ajint argc, char **argv)
 
     
     /* READ ACD FILE */
-    embInitP("sites",argc,argv,"STRUCTURE");
+    embInitPV("sites",argc,argv,"STRUCTURE",VERSION);
 
     prot        = ajAcdGetDirlist("protpath");
     dom         = ajAcdGetDirectory("domaindir");

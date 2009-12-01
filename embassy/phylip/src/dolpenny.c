@@ -144,7 +144,7 @@ AjPFile inf;
   stepbox = false;
   ancseq = false;
 
-  embInitP (pgm, argc, argv,"PHYLIP");
+  embInitPV(pgm, argc, argv,"PHYLIP",VERSION);
   
   inf = ajAcdGetInfile("datafile");
   infile = inf->fp;

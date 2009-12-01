@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 
 
     /* ACD file processing */
-    embInitP("ehmmemit",argc,argv,"HMMERNEW");
+    embInitPV("ehmmemit",argc,argv,"HMMERNEW",VERSION);
 
     hmmfile = ajAcdGetInfile("hmmfile");
     seed    = ajAcdGetInt("seed");

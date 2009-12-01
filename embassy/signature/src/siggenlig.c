@@ -122,7 +122,7 @@ int main(ajint argc, char **argv)
     /*************************/
     /* Read data from acd.   */
     /*************************/
-    embInitP("siggenlig",argc,argv,"SIGNATURE");
+    embInitPV("siggenlig",argc,argv,"SIGNATURE",VERSION);
 
     conf        = ajAcdGetInfile("confile");
     ccfd        = ajAcdGetDirectory("ccfddir");

@@ -79,7 +79,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     printf("\nRestriction site or fragment distances, ");
     printf("version %s\n\n",VERSION);
  
-    embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitPV(pgm, argc, argv, "PHYLIPNEW",VERSION);
 
     phylostates = ajAcdGetDiscretestates("data");
 

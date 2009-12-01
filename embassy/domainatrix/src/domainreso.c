@@ -102,7 +102,7 @@ int main(ajint argc, char **argv)
     
                                            
     /* Read data from acd */
-    embInitP("domainreso",argc,argv,"DOMAINATRIX"); 
+    embInitPV("domainreso",argc,argv,"DOMAINATRIX",VERSION);
     cpdb_path     = ajAcdGetDirlist("cpdbpath");    
     threshold     = ajAcdGetFloat("threshold");
     dcfin         = ajAcdGetInfile("dcfinfile");

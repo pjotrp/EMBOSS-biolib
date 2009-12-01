@@ -130,7 +130,8 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   mulsets = false;
   msets = 1;
 
-    embInitP (pgm, argc, argv, "PHYLIPNEW");
+  embInitPV(pgm, argc, argv, "PHYLIPNEW",VERSION);
+
     seqsets = ajAcdGetSeqsetall("sequence");
 
     howmany = ajAcdGetInt("howmany");
