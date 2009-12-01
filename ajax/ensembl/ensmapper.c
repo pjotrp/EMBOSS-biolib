@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -3230,7 +3230,6 @@ static int mapperCompareMapperpairTargets(const void* P1, const void* P2)
 
 static AjBool mapperMergePairs(EnsPMapper mapper)
 {
-    void **keyarray = NULL;
     void **valarray = NULL;
     
     register ajuint i = 0;
@@ -3263,7 +3262,7 @@ static AjBool mapperMergePairs(EnsPMapper mapper)
     trgtable = (AjPTable)
 	ajTableFetch(mapper->Pairs, (const void *) mapper->TargetType);
     
-    ajTableToarrayKeysValues(trgtable, &keyarray, &valarray);
+    ajTableToarrayValues(trgtable, &valarray);
     
     for(i = 0; valarray[i]; i++)
     {
@@ -3396,7 +3395,6 @@ static AjBool mapperMergePairs(EnsPMapper mapper)
 	mapper->PairCount = ajListGetLength(trglist);
     }
     
-    AJFREE(keyarray);
     AJFREE(valarray);
     
     return ajTrue;
@@ -3420,7 +3418,6 @@ static AjBool mapperMergePairs(EnsPMapper mapper)
 
 static AjBool mapperSort(EnsPMapper mapper)
 {
-    void **keyarray = NULL;
     void **valarray = NULL;
     
     register ajuint i = 0;
@@ -3441,23 +3438,21 @@ static AjBool mapperSort(EnsPMapper mapper)
     table = (AjPTable)
 	ajTableFetch(mapper->Pairs, (const void *) mapper->SourceType);
     
-    ajTableToarrayKeysValues(table, &keyarray, &valarray);
+    ajTableToarrayValues(table, &valarray);
     
     for(i = 0; valarray[i]; i++)
 	ajListSort((AjPList) valarray[i], mapperCompareMapperpairSources);
     
-    AJFREE(keyarray);
     AJFREE(valarray);
     
     table = (AjPTable)
 	ajTableFetch(mapper->Pairs, (const void *) mapper->TargetType);
     
-    ajTableToarrayKeysValues(table, &keyarray, &valarray);
+    ajTableToarrayValues(table, &valarray);
     
     for(i = 0; valarray[i]; i++)
 	ajListSort((AjPList) valarray[i], mapperCompareMapperpairTargets);
     
-    AJFREE(keyarray);
     AJFREE(valarray);
     
     mapperMergePairs(mapper);
@@ -4944,7 +4939,6 @@ ajuint ensMapperGetMemSize(const EnsPMapper mapper)
     void **keyarray1 = NULL;
     void **valarray1 = NULL;
     
-    void **keyarray2 = NULL;
     void **valarray2 = NULL;
     
     register ajuint i = 0;
@@ -4996,7 +4990,7 @@ ajuint ensMapperGetMemSize(const EnsPMapper mapper)
 	
 	size += (ajuint) sizeof (AjOTable);
 	
-	ajTableToarrayKeysValues(valarray1[i], &keyarray2, &valarray2);
+	ajTableToarrayValues(valarray1[i], &valarray2);
 	
 	for(j = 0; valarray2[j]; j++)
 	{
@@ -5022,7 +5016,6 @@ ajuint ensMapperGetMemSize(const EnsPMapper mapper)
 	    ajListIterDel(&iter);
 	}
 	
-	AJFREE(keyarray2);
 	AJFREE(valarray2);
     }
     
