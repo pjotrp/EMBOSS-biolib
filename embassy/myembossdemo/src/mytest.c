@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     AjPSeq seq = NULL;
     AjPFile outf = NULL;
 
-    embInitP("mytest", argc, argv, "MYEMBOSS");
+    embInitPV("mytest", argc, argv, "MYEMBOSS",VERSION);
 
     seq = ajAcdGetSeq("sequence");
     outf = ajAcdGetOutfile("outfile");
