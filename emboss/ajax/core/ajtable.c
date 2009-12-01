@@ -398,7 +398,7 @@ const void * ajTableFetchKey(const AjPTable table, const void *key)
 
 
 /* @obsolete ajTableKey
-** @rename ajTableGetKey
+** @rename ajTableFetchKey
 */
 
 __deprecated const void * ajTableKey(const AjPTable table, const void *key)
@@ -847,7 +847,7 @@ void * ajTableRemoveKey(AjPTable table, const void *key, void** truekey)
 **
 ** calls function 'apply' for each key-value in table
 ** in an unspecified order. The table keys should not be modified by
-** function 'apply' although values canbe updated.
+** function 'apply' although values can be updated.
 **
 ** See ajTableMapDel for a function that can delete.
 **
@@ -1261,7 +1261,7 @@ const AjPStr ajTablestrFetch(const AjPTable table, const AjPStr key)
 **
 ** Updates values from a hash table
 **
-** @nam3rule Fetchmod Retrieval fuction
+** @nam3rule Fetchmod Retrieval function
 **
 ** @argrule Fetchmod table [AjPTable] Hash table
 ** @argrule Fetchmod key [const AjPStr] Key
