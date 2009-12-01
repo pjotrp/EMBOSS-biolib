@@ -1372,7 +1372,7 @@ static char seqTypeTestS(const AjPStr thys, const AjPStr goodchars)
     if(!ajStrGetLen(thys))
 	return ret;
 
-    ajDebug("seqTypeTest, len %d goodchars '%S'\n",
+    ajDebug("seqTypeTestS, len %d goodchars '%S'\n",
 	    ajStrGetLen(thys), goodchars);
 
     if(ajStrIsCharsetCaseS(thys, goodchars))
