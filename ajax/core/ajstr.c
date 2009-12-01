@@ -5326,6 +5326,11 @@ AjBool ajStrRemoveDupchar(AjPStr* Pstr)
             filter[(ajint)*cp] = 1;
             *cq++ = *cp;
         }
+        else
+        {
+            --thys->Len;
+        }
+        
         cp++;
     }
     *cq = '\0';
