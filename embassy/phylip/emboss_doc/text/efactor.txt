@@ -1,5 +1,4 @@
-
-                                  efactor 
+                                   efactor
 
 
 
@@ -35,6 +34,7 @@ Beta      BBX01%
 Gamma     ABY12#
 Epsilon   CAZ01$
 
+
 % efactor test -options
 
 multistate to binary recoding program
@@ -48,6 +48,7 @@ Alpha     11100000
 Beta      10001001
 Gamma     00011100
 Epsilon   11101010
+
 
 
 Command line arguments
@@ -99,8 +100,8 @@ Author(s)
 
    (c)              Copyright 1986-1993 by Joseph Felsenstein and by the University of
    Washington.      Written by Joseph Felsenstein. Permission is granted to
-                    copy this document provided that no fee is charged for it and that
-                    this copyright notice is not removed.
+                    copy this document provided that no fee is charged for it and that this
+                    copyright notice is not removed.
 
                     This application was modified for inclusion in EMBOSS by Ian Longden
    (il@sanger.ac.uk) Informatics Division, The Sanger Centre, Wellcome

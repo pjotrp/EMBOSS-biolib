@@ -1,24 +1,23 @@
+                            SEQSORT documentation
 
-                           SEQSORT documentation
-                                      
-   
+
 
 CONTENTS
 
-   1.0 SUMMARY 
-   2.0 INPUTS & OUTPUTS 
-   3.0 INPUT FILE FORMAT 
-   4.0 OUTPUT FILE FORMAT 
-   5.0 DATA FILES 
-   6.0 USAGE 
-   7.0 KNOWN BUGS & WARNINGS 
-   8.0 NOTES 
-   9.0 DESCRIPTION 
-   10.0 ALGORITHM 
-   11.0 RELATED APPLICATIONS 
-   12.0 DIAGNOSTIC ERROR MESSAGES 
-   13.0 AUTHORS 
-   14.0 REFERENCES 
+   1.0 SUMMARY
+   2.0 INPUTS & OUTPUTS
+   3.0 INPUT FILE FORMAT
+   4.0 OUTPUT FILE FORMAT
+   5.0 DATA FILES
+   6.0 USAGE
+   7.0 KNOWN BUGS & WARNINGS
+   8.0 NOTES
+   9.0 DESCRIPTION
+   10.0 ALGORITHM
+   11.0 RELATED APPLICATIONS
+   12.0 DIAGNOSTIC ERROR MESSAGES
+   13.0 AUTHORS
+   14.0 REFERENCES
 
 1.0 SUMMARY
 
@@ -60,138 +59,139 @@ CONTENTS
 
   File: fam.dhf
 
-> Q9YBD5^.^1^95^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
-Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate c
-arbamoyltransferase, Regulatory-chain, N-terminal domain^.^55.30^0.000e+00^2.00
-0e-11
-VRKIRSGVVIDHIPPGRAFTMLKALGLLPPRGYRWRIAVVINAESSKLGRKDILKIEGYKPRQRDLEVLGIIAPGATFN
-VIEDYKVVEKVKLKLP
-> Q97FS4^.^1^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
-Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate c
-arbamoyltransferase, Regulatory-chain, N-terminal domain^.^42.60^0.000e+00^1.00
-0e-07
-INSIKNGIVIDHIKAGHGIKIYNYLKLGEAEFPTALIMNAISKKNKAKDIIKIENVMDLDLAVLGFLDPNITVNIIEDE
-KIRQKIQLKLP
-> Q7MX57^.^1^92^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
-Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate c
-arbamoyltransferase, Regulatory-chain, N-terminal domain^.^72.70^0.000e+00^1.00
-0e-16
-VAAIRNGIVIDHIPPTKLFKVATLLQLDDLDKRITIGNNLRSRSHGSKGVIKIEDKTFEEEELNRIALIAPNVRLNIIR
-DYEVVEKRQVEVP
-> P96111^.^1^98^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
-Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate c
-arbamoyltransferase, Regulatory-chain, N-terminal domain^.^42.20^0.000e+00^1.00
-0e-07
-GIKPIENGTVIDHIAKGKTPEEIYSTILKIRKILRLYDVDSADGIFRSSDGSFKGYISLPDRYLSKKEIKKLSAISPNT
-TVNIIKNSTVVEKYRIKLP
-> Q08462^.^1^167^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase c
-atalytic domain^.^49.70^0.000e+00^3.000e-09
-DCVCVMFASIPDFKEFYTESDVNKEGLECLRLLNEIIADFDDLLSKPKFSGVEKIKTIGSTYMAATGLSAVPSQEHSQE
-PERQYMHIGTMVEFAFALVGKLDAINKHSFNDFKLRVGINHGPVIAGVIGAQKPQYDIWGNTVNVASRMDSTGVLDKIQ
-VTEETSLVL
-> Q03101^.^1^149^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase c
-atalytic domain^.^70.90^0.000e+00^1.000e-15
-NNACVFFLDIAGFTRFSSIHSPEQVIQVLIKIFNSMDLLCAKHGIEKIKTIGDAYMATCGIFPKCDDIRHNTYKMLGFA
-MDVLEFIPKEMSFHLGLQVRVGIHCGPVISGVISGYAKPHFDVWGDTVNVASRMESTGIAGQIHVSDRVY
-> Q02153^.^1^165^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase c
-atalytic domain^.^75.90^0.000e+00^4.000e-17
-HKRPVPAKRYDNVTILFSGIVGFNAFCSKHASGEGAMKIVNLLNDLYTRFDTLTDSRKNPFVYKVETVGDKYMTVSGLP
-EPCIHHARSICHLALDMMEIAGQVQVDGESVQITIGIHTGEVVTGVIGQRMPRYCLFGNTVNLTSRTETTGEKGKINVS
-EYTYRCL
-> P46197^.^1^168^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase c
-atalytic domain^.^84.40^0.000e+00^1.000e-19
-VQAEAFDSVTIYFSDIVGFTALSAESTPMQVVTLLNDLYTCFDAIIDNFDVYKVETIGDAYMVVSGLPGRNGQRHAPEI
-ARMALALLDAVSSFRIRHRPHDQLRLRIGVHTGPVCAGVVGLKMPRYCLFGDTVNTASRMESNGQALKIHVSSTTKDAL
-DELGCFQLEL
-> P40137^.^1^139^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase c
-atalytic domain^.^50.90^0.000e+00^1.000e-09
-VTLLFADIRDFTSLSERLRPEQVVTLLNEYYGRMVEVVFRHGGTLDKFIGDALMVYFGAPIADPAHARRGVQCALDMVQ
-ELETVNALRSARGEPCLRIGVGVHTGPAVLGNIGSATRRLEYTAIGDTVNLASRIESLTK
-> P23466^.^1^154^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase c
-atalytic domain^.^55.90^0.000e+00^4.000e-11
-PTGNVAIVFTDIKNSTFLWELFPDAMRAAIKTHNDIMRRQLRIYGGYEVKTEGDAFMVAFPTPTSALVWCLSVQLKLLE
-AEWPEEITSIQDGCLITDNSGTKVYLGLSVRMGVHWGCPVPEIDLVTQRMDYLGPVVNKAARVSGVADGGQITLS
-> O30820^.^1^149^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase c
-atalytic domain^.^80.20^0.000e+00^2.000e-18
-DEASVLFADIVGFTERASSTAPADLVRFLDRLYSAFDELVDQHGLEKIKVSGDSYMVVSGVPRPRPDHTQALADFALDM
-TNVAAQLKDPRGNPVPLRVGLATGPVVAGVVGSRRFFYDVWGDAVNVASRMESTDSVGQIQVPDEVYERL
+> Q9YBD5^.^1^95^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^A
+spartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate car
+bamoyltransferase, Regulatory-chain, N-terminal domain^.^56.10^0.000e+00^9.000e-
+12
+VRKIRSGVVIDHIPPGRAFTMLKALGLLPPRGYRWRIAVVINAESSKLGRKDILKIEGYKPRQRDLEVLGIIAPGATFNV
+IEDYKVVEKVKLKLP
+> Q97FS4^.^1^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^A
+spartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate car
+bamoyltransferase, Regulatory-chain, N-terminal domain^.^43.40^0.000e+00^6.000e-
+08
+INSIKNGIVIDHIKAGHGIKIYNYLKLGEAEFPTALIMNAISKKNKAKDIIKIENVMDLDLAVLGFLDPNITVNIIEDEK
+IRQKIQLKLP
+> Q7MX57^.^1^92^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^A
+spartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate car
+bamoyltransferase, Regulatory-chain, N-terminal domain^.^73.80^0.000e+00^5.000e-
+17
+VAAIRNGIVIDHIPPTKLFKVATLLQLDDLDKRITIGNNLRSRSHGSKGVIKIEDKTFEEEELNRIALIAPNVRLNIIRD
+YEVVEKRQVEVP
+> P96111^.^1^98^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^A
+spartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate car
+bamoyltransferase, Regulatory-chain, N-terminal domain^.^43.00^0.000e+00^9.000e-
+08
+GIKPIENGTVIDHIAKGKTPEEIYSTILKIRKILRLYDVDSADGIFRSSDGSFKGYISLPDRYLSKKEIKKLSAISPNTT
+VNIIKNSTVVEKYRIKLP
+> Q08462^.^1^167^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^46.20^0.000e+00^4.000e-08
+DCVCVMFASIPDFKEFYTESDVNKEGLECLRLLNEIIADFDDLLSKPKFSGVEKIKTIGSTYMAATGLSAVPSQEHSQEP
+ERQYMHIGTMVEFAFALVGKLDAINKHSFNDFKLRVGINHGPVIAGVIGAQKPQYDIWGNTVNVASRMDSTGVLDKIQVT
+EETSLVL
+> Q03101^.^1^149^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^65.80^0.000e+00^4.000e-14
+NNACVFFLDIAGFTRFSSIHSPEQVIQVLIKIFNSMDLLCAKHGIEKIKTIGDAYMATCGIFPKCDDIRHNTYKMLGFAM
+DVLEFIPKEMSFHLGLQVRVGIHCGPVISGVISGYAKPHFDVWGDTVNVASRMESTGIAGQIHVSDRVY
+> Q02153^.^1^165^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^68.90^0.000e+00^4.000e-15
+HKRPVPAKRYDNVTILFSGIVGFNAFCSKHASGEGAMKIVNLLNDLYTRFDTLTDSRKNPFVYKVETVGDKYMTVSGLPE
+PCIHHARSICHLALDMMEIAGQVQVDGESVQITIGIHTGEVVTGVIGQRMPRYCLFGNTVNLTSRTETTGEKGKINVSEY
+TYRCL
+> P46197^.^1^168^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^78.50^0.000e+00^7.000e-18
+VQAEAFDSVTIYFSDIVGFTALSAESTPMQVVTLLNDLYTCFDAIIDNFDVYKVETIGDAYMVVSGLPGRNGQRHAPEIA
+RMALALLDAVSSFRIRHRPHDQLRLRIGVHTGPVCAGVVGLKMPRYCLFGDTVNTASRMESNGQALKIHVSSTTKDALDE
+LGCFQLEL
+> P40137^.^1^139^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^48.50^0.000e+00^6.000e-09
+VTLLFADIRDFTSLSERLRPEQVVTLLNEYYGRMVEVVFRHGGTLDKFIGDALMVYFGAPIADPAHARRGVQCALDMVQE
+LETVNALRSARGEPCLRIGVGVHTGPAVLGNIGSATRRLEYTAIGDTVNLASRIESLTK
+> P23466^.^1^154^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^50.80^0.000e+00^1.000e-09
+PTGNVAIVFTDIKNSTFLWELFPDAMRAAIKTHNDIMRRQLRIYGGYEVKTEGDAFMVAFPTPTSALVWCLSVQLKLLEA
+EWPEEITSIQDGCLITDNSGTKVYLGLSVRMGVHWGCPVPEIDLVTQRMDYLGPVVNKAARVSGVADGGQITLS
+> O30820^.^1^149^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^75.40^0.000e+00^6.000e-17
+DEASVLFADIVGFTERASSTAPADLVRFLDRLYSAFDELVDQHGLEKIKVSGDSYMVVSGVPRPRPDHTQALADFALDMT
+NVAAQLKDPRGNPVPLRVGLATGPVVAGVVGSRRFFYDVWGDAVNVASRMESTDSVGQIQVPDEVYERL
 
   File: oth.dhf
 
+
   File: 54894.dhf
 
-> Q9YBD5^.^1^95^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
-Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate c
-arbamoyltransferase, Regulatory-chain, N-terminal domain^.^55.30^0.000e+00^2.00
-0e-11
-VRKIRSGVVIDHIPPGRAFTMLKALGLLPPRGYRWRIAVVINAESSKLGRKDILKIEGYKPRQRDLEVLGIIAPGATFN
-VIEDYKVVEKVKLKLP
-> Q97FS4^.^1^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
-Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate c
-arbamoyltransferase, Regulatory-chain, N-terminal domain^.^42.60^0.000e+00^1.00
-0e-07
-INSIKNGIVIDHIKAGHGIKIYNYLKLGEAEFPTALIMNAISKKNKAKDIIKIENVMDLDLAVLGFLDPNITVNIIEDE
-KIRQKIQLKLP
-> Q7MX57^.^1^92^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
-Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate c
-arbamoyltransferase, Regulatory-chain, N-terminal domain^.^72.70^0.000e+00^1.00
-0e-16
-VAAIRNGIVIDHIPPTKLFKVATLLQLDDLDKRITIGNNLRSRSHGSKGVIKIEDKTFEEEELNRIALIAPNVRLNIIR
-DYEVVEKRQVEVP
-> P96111^.^1^98^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
-Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate c
-arbamoyltransferase, Regulatory-chain, N-terminal domain^.^42.20^0.000e+00^1.00
-0e-07
-GIKPIENGTVIDHIAKGKTPEEIYSTILKIRKILRLYDVDSADGIFRSSDGSFKGYISLPDRYLSKKEIKKLSAISPNT
-TVNIIKNSTVVEKYRIKLP
+> Q9YBD5^.^1^95^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^A
+spartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate car
+bamoyltransferase, Regulatory-chain, N-terminal domain^.^56.10^0.000e+00^9.000e-
+12
+VRKIRSGVVIDHIPPGRAFTMLKALGLLPPRGYRWRIAVVINAESSKLGRKDILKIEGYKPRQRDLEVLGIIAPGATFNV
+IEDYKVVEKVKLKLP
+> Q97FS4^.^1^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^A
+spartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate car
+bamoyltransferase, Regulatory-chain, N-terminal domain^.^43.40^0.000e+00^6.000e-
+08
+INSIKNGIVIDHIKAGHGIKIYNYLKLGEAEFPTALIMNAISKKNKAKDIIKIENVMDLDLAVLGFLDPNITVNIIEDEK
+IRQKIQLKLP
+> Q7MX57^.^1^92^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^A
+spartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate car
+bamoyltransferase, Regulatory-chain, N-terminal domain^.^73.80^0.000e+00^5.000e-
+17
+VAAIRNGIVIDHIPPTKLFKVATLLQLDDLDKRITIGNNLRSRSHGSKGVIKIEDKTFEEEELNRIALIAPNVRLNIIRD
+YEVVEKRQVEVP
+> P96111^.^1^98^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^A
+spartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate car
+bamoyltransferase, Regulatory-chain, N-terminal domain^.^43.00^0.000e+00^9.000e-
+08
+GIKPIENGTVIDHIAKGKTPEEIYSTILKIRKILRLYDVDSADGIFRSSDGSFKGYISLPDRYLSKKEIKKLSAISPNTT
+VNIIKNSTVVEKYRIKLP
 
   File: 55074.dhf
 
-> Q08462^.^1^167^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase c
-atalytic domain^.^49.70^0.000e+00^3.000e-09
-DCVCVMFASIPDFKEFYTESDVNKEGLECLRLLNEIIADFDDLLSKPKFSGVEKIKTIGSTYMAATGLSAVPSQEHSQE
-PERQYMHIGTMVEFAFALVGKLDAINKHSFNDFKLRVGINHGPVIAGVIGAQKPQYDIWGNTVNVASRMDSTGVLDKIQ
-VTEETSLVL
-> Q03101^.^1^149^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase c
-atalytic domain^.^70.90^0.000e+00^1.000e-15
-NNACVFFLDIAGFTRFSSIHSPEQVIQVLIKIFNSMDLLCAKHGIEKIKTIGDAYMATCGIFPKCDDIRHNTYKMLGFA
-MDVLEFIPKEMSFHLGLQVRVGIHCGPVISGVISGYAKPHFDVWGDTVNVASRMESTGIAGQIHVSDRVY
-> Q02153^.^1^165^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase c
-atalytic domain^.^75.90^0.000e+00^4.000e-17
-HKRPVPAKRYDNVTILFSGIVGFNAFCSKHASGEGAMKIVNLLNDLYTRFDTLTDSRKNPFVYKVETVGDKYMTVSGLP
-EPCIHHARSICHLALDMMEIAGQVQVDGESVQITIGIHTGEVVTGVIGQRMPRYCLFGNTVNLTSRTETTGEKGKINVS
-EYTYRCL
-> P46197^.^1^168^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase c
-atalytic domain^.^84.40^0.000e+00^1.000e-19
-VQAEAFDSVTIYFSDIVGFTALSAESTPMQVVTLLNDLYTCFDAIIDNFDVYKVETIGDAYMVVSGLPGRNGQRHAPEI
-ARMALALLDAVSSFRIRHRPHDQLRLRIGVHTGPVCAGVVGLKMPRYCLFGDTVNTASRMESNGQALKIHVSSTTKDAL
-DELGCFQLEL
-> P40137^.^1^139^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase c
-atalytic domain^.^50.90^0.000e+00^1.000e-09
-VTLLFADIRDFTSLSERLRPEQVVTLLNEYYGRMVEVVFRHGGTLDKFIGDALMVYFGAPIADPAHARRGVQCALDMVQ
-ELETVNALRSARGEPCLRIGVGVHTGPAVLGNIGSATRRLEYTAIGDTVNLASRIESLTK
-> P23466^.^1^154^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase c
-atalytic domain^.^55.90^0.000e+00^4.000e-11
-PTGNVAIVFTDIKNSTFLWELFPDAMRAAIKTHNDIMRRQLRIYGGYEVKTEGDAFMVAFPTPTSALVWCLSVQLKLLE
-AEWPEEITSIQDGCLITDNSGTKVYLGLSVRMGVHWGCPVPEIDLVTQRMDYLGPVVNKAARVSGVADGGQITLS
-> O30820^.^1^149^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like
-^Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase c
-atalytic domain^.^80.20^0.000e+00^2.000e-18
-DEASVLFADIVGFTERASSTAPADLVRFLDRLYSAFDELVDQHGLEKIKVSGDSYMVVSGVPRPRPDHTQALADFALDM
-TNVAAQLKDPRGNPVPLRVGLATGPVVAGVVGSRRFFYDVWGDAVNVASRMESTDSVGQIQVPDEVYERL
+> Q08462^.^1^167^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^46.20^0.000e+00^4.000e-08
+DCVCVMFASIPDFKEFYTESDVNKEGLECLRLLNEIIADFDDLLSKPKFSGVEKIKTIGSTYMAATGLSAVPSQEHSQEP
+ERQYMHIGTMVEFAFALVGKLDAINKHSFNDFKLRVGINHGPVIAGVIGAQKPQYDIWGNTVNVASRMDSTGVLDKIQVT
+EETSLVL
+> Q03101^.^1^149^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^65.80^0.000e+00^4.000e-14
+NNACVFFLDIAGFTRFSSIHSPEQVIQVLIKIFNSMDLLCAKHGIEKIKTIGDAYMATCGIFPKCDDIRHNTYKMLGFAM
+DVLEFIPKEMSFHLGLQVRVGIHCGPVISGVISGYAKPHFDVWGDTVNVASRMESTGIAGQIHVSDRVY
+> Q02153^.^1^165^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^68.90^0.000e+00^4.000e-15
+HKRPVPAKRYDNVTILFSGIVGFNAFCSKHASGEGAMKIVNLLNDLYTRFDTLTDSRKNPFVYKVETVGDKYMTVSGLPE
+PCIHHARSICHLALDMMEIAGQVQVDGESVQITIGIHTGEVVTGVIGQRMPRYCLFGNTVNLTSRTETTGEKGKINVSEY
+TYRCL
+> P46197^.^1^168^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^78.50^0.000e+00^7.000e-18
+VQAEAFDSVTIYFSDIVGFTALSAESTPMQVVTLLNDLYTCFDAIIDNFDVYKVETIGDAYMVVSGLPGRNGQRHAPEIA
+RMALALLDAVSSFRIRHRPHDQLRLRIGVHTGPVCAGVVGLKMPRYCLFGDTVNTASRMESNGQALKIHVSSTTKDALDE
+LGCFQLEL
+> P40137^.^1^139^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^48.50^0.000e+00^6.000e-09
+VTLLFADIRDFTSLSERLRPEQVVTLLNEYYGRMVEVVFRHGGTLDKFIGDALMVYFGAPIADPAHARRGVQCALDMVQE
+LETVNALRSARGEPCLRIGVGVHTGPAVLGNIGSATRRLEYTAIGDTVNLASRIESLTK
+> P23466^.^1^154^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^50.80^0.000e+00^1.000e-09
+PTGNVAIVFTDIKNSTFLWELFPDAMRAAIKTHNDIMRRQLRIYGGYEVKTEGDAFMVAFPTPTSALVWCLSVQLKLLEA
+EWPEEITSIQDGCLITDNSGTKVYLGLSVRMGVHWGCPVPEIDLVTQRMDYLGPVVNKAARVSGVADGGQITLS
+> O30820^.^1^149^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^75.40^0.000e+00^6.000e-17
+DEASVLFADIVGFTERASSTAPADLVRFLDRLYSAFDELVDQHGLEKIKVSGDSYMVVSGVPRPRPDHTQALADFALDMT
+NVAAQLKDPRGNPVPLRVGLATGPVVAGVVGSRRFFYDVWGDAVNVASRMESTDSVGQIQVPDEVYERL
 
 5.0 DATA FILES
 
@@ -302,146 +302,4 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
-  6.2 EXAMPLE SESSION
 
-   An example of interactive use of SEQSORT is shown below. Here is a
-   sample session with seqsort
-
-
-% seqsort 
-Remove ambiguous classified sequences from DHF files.
-Domain hits directory [./]: ../seqnr-keep/hitsnr
-Number of overlapping residues required for merging of two hits. [10]: 10
-Write domain families file. [N]: Y
-Write domain ambiguities file. [N]: Y
-Domain hits file output directory [./]: 
-
-   Go to the output files for this example
-
-7.0 KNOWN BUGS & WARNINGS
-
-   None.
-
-8.0 NOTES
-
-   None.
-
-  8.1 GLOSSARY OF FILE TYPES
-
-   FILE TYPE FORMAT DESCRIPTION CREATED BY SEE ALSO
-   Domain hits file DHF format (FASTA-like). Database hits (sequences)
-   with domain classification information. The hits are relatives to a
-   SCOP or CATH family (or other node in the structural hierarchies) and
-   are found from a search of a discriminating element (e.g. a protein
-   signature, hidden Markov model, simple frequency matrix, Gribskov
-   profile or Hennikoff profile) against a sequence database. SEQSEARCH
-   (hits retrieved by PSIBLAST). SIGSCAN (hits retrieved by sparse
-   protein signature). LIBSCAN (hits retrieved by various types of HMM
-   and profile). N.A.
-   Domain families & ambiguities file Contains sequence relatives (hits)
-   for each of a number of different SCOP or CATH families found from
-   PSIBLAST searches of a sequence database. The file contains the
-   collated search results for the indvidual families; only those hits of
-   unambiguous family assignment are included. Hits of ambiguous family
-   assignment are assigned as relatives to a SCOP or CATH superfamily or
-   fold instead and are collated into a 'domain ambiguities file'. The
-   domain families and ambiguities files are generated by using SEQSORT
-   and use the same format as a DHF file (domain hits file). N.A.
-   Domain validation file Contains sequence relatives (hits) for each of
-   a number of different SCOP or CATH families, superfamilies and folds.
-   The file contains the collated results from PSIBLAST searches of a
-   sequence database for the indvidual families; hits of unambiguous
-   family assignment are listed under their respective family, otherwise
-   a hit is assigned as relatives to a superfamily or fold instead. The
-   domain validation file is generated by using SEQNR and uses the same
-   format as a DHF file (domain hits file). N.A.
-
-   None
-
-9.0 DESCRIPTION
-
-   The results of multiple searches of a sequence database using an
-   homology search tool such as blast may contain overlapping or
-   identical hits, especially where the query sequences are related, for
-   instance, belong to different families but the same superfamily. For
-   certain analyses it is desirable to assign a hit with confidence to a
-   unique family, or otherwise assign it as a member of a larger
-   superfamily or fold instead. SEQSORT reads a directory of DHF files
-   (domain hits files) where each file containing hits to a different
-   SCOP family, compares, processes and collates the hits and writes a
-   directory of DHF files which contain only those hits that could be
-   uniquely assigned to a SCOP family. Optionally, two further files are
-   written: (i) a domain families file, of hits (from ALL the input
-   files) that could be uniquely assigned to a SCOP family and (ii) a
-   domain ambiguities file, for hits (from ALL the input files) of
-   ambiguous family assignment which are assigned as relatives to a SCOP
-   superfamily or fold instead.
-
-10.0 ALGORITHM
-
-   A rough outline of the algorithm follows; a better description will
-   appear in a publication in preparation. Hits from searches for all
-   domain families are collated into a single list and the list sorted
-   according to family name. The hits hits within each family are sorted
-   by accession number, then hits within a family and with identical
-   accession number are sorted by the start position of the hit relative
-   to the full length sequence in swissprot. In each family identical
-   hits (i.e. those with identical accession number and the same start
-   and end points relative to the full-length sequence in swissprot) were
-   removed leaving only a single copy. Each family is also processed so
-   that ovlerapping hits (hits with identical accesssion number that
-   overlap by at least a user-defined number of residues) are replaced by
-   a hit that is produced from merging the two overlapping hits. If two
-   hits have the same accession number and overlap but are from searches
-   for different families, the hits are merged and the merged hit placed
-   into a new list for hits to superfamilies (if the two families
-   belonged to the same superfamily) or for hits to folds (if the two
-   families were in different superfamilies but the same fold). In this
-   way hits that are unique to a particular family are identified, and
-   hits of ambiguous family assignment are assigned as belonging to a
-   superfamily or fold instead.
-
-11.0 RELATED APPLICATIONS
-
-See also
-
-                    Program name                          Description
-                    contacts     Generate intra-chain CON files from CCF files
-                    domainalign  Generate alignments (DAF file) for nodes in a DCF file
-                    domainrep    Reorder DCF file to identify representative structures
-                    domainreso   Remove low resolution domains from a DCF file
-                    interface    Generate inter-chain CON files from CCF files
-                    libgen       Generate discriminating elements from alignments
-                    matgen3d     Generate a 3D-1D scoring matrix from CCF files
-                    psiphi       Calculates phi and psi torsion angles from protein coordinates
-                    rocon        Generates a hits file from comparing two DHF files
-                    rocplot      Performs ROC analysis on hits files
-                    seqalign     Extend alignments (DAF file) with sequences (DHF file)
-                    seqfraggle   Removes fragment sequences from DHF files
-                    seqsearch    Generate PSI-BLAST hits (DHF file) from a DAF file
-                    seqwords     Generates DHF files from keyword search of UniProt
-                    siggen       Generates a sparse protein signature from an alignment
-                    siggenlig    Generates ligand-binding signatures from a CON file
-                    sigscan      Generates hits (DHF file) from a signature search
-                    sigscanlig   Searches ligand-signature library & writes hits (LHF file)
-
-12.0 DIAGNOSTIC ERROR MESSAGES
-
-                    None.
-
-13.0 AUTHORS
-
-   Ranjeeva         Ranasinghe
-   Jon              Ison (jison@ebi.ac.uk)
-   The              European Bioinformatics Institute Wellcome Trust Genome Campus
-   Cambridge        CB10 1SD UK
-
-14.0 REFERENCES
-
-                    Please cite the authors and EMBOSS.
-   Rice             P, Longden I and Bleasby A (2000) "EMBOSS - The European
-   Molecular        Biology Open Software Suite" Trends in Genetics, 15:276-278.
-                    
-                    See also http://emboss.sourceforge.net/
-
-  14.1             Other useful references

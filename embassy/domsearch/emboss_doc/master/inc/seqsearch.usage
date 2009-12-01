@@ -27,10 +27,10 @@ Domainatrix log output file [seqsearch.log]: <b></b>
 
 
 PROCESSING /homes/user/test/qa/domainalign-keep/daf/54894.daf
-blastpgp -i ./seqsearch-1234567890.1234.seqin -B ./seqsearch-1234567890.1234.seqsin -j 1 -e 0.000100 -b 100 -v 100 -d ../../data/structure/swsmall > ./seqsearch-1234567890.1234.psiout
+blastpgp -t 1 -i ./seqsearch-1234567890.1234.seqin -B ./seqsearch-1234567890.1234.seqsin -j 1 -e 0.000100 -b 100 -v 100 -d ../../data/structure/swsmall > ./seqsearch-1234567890.1234.psiout
 
 PROCESSING /homes/user/test/qa/domainalign-keep/daf/55074.daf
-blastpgp -i ./seqsearch-1234567890.1234.seqin -B ./seqsearch-1234567890.1234.seqsin -j 1 -e 0.000100 -b 100 -v 100 -d ../../data/structure/swsmall > ./seqsearch-1234567890.1234.psiout
+blastpgp -t 1 -i ./seqsearch-1234567890.1234.seqin -B ./seqsearch-1234567890.1234.seqsin -j 1 -e 0.000100 -b 100 -v 100 -d ../../data/structure/swsmall > ./seqsearch-1234567890.1234.psiout
 
 
 </pre></td></tr></table><p>

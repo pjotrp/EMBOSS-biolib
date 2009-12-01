@@ -1,5 +1,4 @@
-
-                                 ednainvar 
+                                  ednainvar
 
 
 
@@ -29,6 +28,7 @@ Alpha     AACGTGGCCAAAT
 Beta      AAGGTCGCCAAAC
 Gamma     CATTTCGTCACAA
 Delta     GGTATTTCGGCCT
+
 
 
 % ednainvar test
@@ -147,6 +147,7 @@ No statistical test is done on them here.
 
 
 
+
 Command line arguments
 
    Mandatory qualifiers:
@@ -194,8 +195,8 @@ Author(s)
 
    (c)              Copyright 1986-1993 by Joseph Felsenstein and by the University of
    Washington.      Written by Joseph Felsenstein. Permission is granted to
-                    copy this document provided that no fee is charged for it and that
-                    this copyright notice is not removed.
+                    copy this document provided that no fee is charged for it and that this
+                    copyright notice is not removed.
 
                     This application was modified for inclusion in EMBOSS by Ian Longden
    (il@sanger.ac.uk) Informatics Division, The Sanger Centre, Wellcome

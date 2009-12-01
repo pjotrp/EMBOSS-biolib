@@ -1,5 +1,4 @@
-
-                                  erestml 
+                                   erestml
 
 
 
@@ -29,6 +28,7 @@ Beta      ++++--+--+++-
 Gamma     -+--+-++-+-++
 Delta     ++-+----++---
 Epsilon   ++++----++---
+
 
 
 % erestml test
@@ -86,6 +86,7 @@ Examined   15 trees
 % more erestml.treefile
 ((Epsilon:0.00005,Delta:0.01458):0.05855,(Gamma:0.11430,
 Beta:0.00008):0.00002,Alpha:0.02468);
+
 
 Command line arguments
 
@@ -167,8 +168,8 @@ Author(s)
 
    (c)              Copyright 1986-1993 by Joseph Felsenstein and by the University of
    Washington.      Written by Joseph Felsenstein. Permission is granted to
-                    copy this document provided that no fee is charged for it and that
-                    this copyright notice is not removed.
+                    copy this document provided that no fee is charged for it and that this
+                    copyright notice is not removed.
 
                     This application was modified for inclusion in EMBOSS by Ian Longden
    (il@sanger.ac.uk) Informatics Division, The Sanger Centre, Wellcome

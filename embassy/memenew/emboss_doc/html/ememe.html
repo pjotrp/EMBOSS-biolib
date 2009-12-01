@@ -1775,7 +1775,7 @@ include file="inc/reportformats.ihtml"
         td.right {text-align: right; padding-right: 1cm;}
       &lt;/style&gt;
 &lt;/head&gt;
-&lt;body bgcolor="#D5F0FF"&gt;&lt;form enctype="application/x-www-form-urlencoded" method="post" target="_new" action="http://emboss6.ebi.ac.uk/meme/cgi-bin/process_request.cgi"&gt;
+&lt;body bgcolor="#D5F0FF"&gt;&lt;form enctype="application/x-www-form-urlencoded" method="post" target="_new" action="http://emboss4.ebi.ac.uk/meme/cgi-bin/process_request.cgi"&gt;
 &lt;a name="top_buttons"&gt;&lt;/a&gt;&lt;hr&gt;
 &lt;table summary="buttons" align="left" cellspacing="0"&gt;&lt;tr&gt;
 &lt;td bgcolor="#DDDDFF"&gt;&lt;a href="#command"&gt;&lt;b&gt;Command line&lt;/b&gt;&lt;/a&gt;&lt;/td&gt;
@@ -1786,18 +1786,25 @@ include file="inc/reportformats.ihtml"
 &lt;td bgcolor="#FFFF00"&gt;&lt;a href="#explanation"&gt;&lt;b&gt;Explanation&lt;/b&gt;&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;&lt;/table&gt;
 &lt;br clear="left"&gt;&lt;b&gt;&lt;br&gt;&lt;input type="submit" name="action" value="MAST"&gt;
-      Search sequence databases with these motifs using
-      &lt;a href="http://meme.nbcr.net/meme/mast-intro.html"&gt;MAST.&lt;/a&gt;&lt;br&gt;&lt;input type="submit" name="action" value="BLOCKS"&gt;
+      Search sequence databases for the best combined matches with these motifs using
+      &lt;a href="http://emboss4.ebi.ac.uk/meme/mast-intro.html"&gt;MAST.&lt;/a&gt;&lt;br&gt;&lt;input type="submit" name="action" value="FIMO"&gt;
+      Search sequence databases for all matches with these motifs using
+      &lt;a href="http://emboss4.ebi.ac.uk/meme/fimo-intro.html"&gt;FIMO&lt;/a&gt;.
+      &lt;br&gt;&lt;input type="submit" name="action" value="GOMO"&gt;
+	      Find Genome Ontology terms associated
+	      with upstream sequences matching these motifs using 
+	      &lt;a href="http://emboss4.ebi.ac.uk/meme/gomo-intro.html"&gt;GOMO&lt;/a&gt;.
+	&lt;br&gt;&lt;input type="submit" name="action" value="BLOCKS"&gt;
       Submit these motifs to 
       &lt;a href="http://blocks.fhcrc.org/blocks/process_blocks.html"&gt;
-      BLOCKS multiple alignment processor.
-      &lt;/a&gt;&lt;/b&gt;&lt;br clear="left"&gt;&lt;hr&gt;
+        BLOCKS multiple alignment processor.
+      &lt;/a&gt;&lt;br&gt;&lt;/b&gt;&lt;br clear="left"&gt;&lt;hr&gt;
 &lt;center&gt;
 &lt;a name="version"&gt;&lt;/a&gt;&lt;big&gt;&lt;b&gt;&lt;a href="#version_doc"&gt;MEME - Motif discovery tool&lt;/a&gt;&lt;/b&gt;&lt;/big&gt;
 &lt;/center&gt;
 &lt;hr&gt;
 &lt;p&gt;
-MEME version 4.0.0 (Release date: 0 PDT 20)
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
      &lt;/p&gt;
 &lt;p&gt;
      For further information on how to interpret these results or to get
@@ -1808,13 +1815,6 @@ MEME version 4.0.0 (Release date: 0 PDT 20)
      This file may be used as input to the MAST algorithm for searching
      sequence databases for matches to groups of motifs.  MAST is available
      for interactive use and downloading at 
-     &lt;a href="http://meme.sdsc.edu"&gt;http://meme.sdsc.edu&lt;/a&gt;.
-     &lt;/p&gt;
-&lt;hr&gt;
-&lt;center&gt;
-&lt;a name="reference"&gt;&lt;/a&gt;&lt;big&gt;&lt;b&gt;&lt;a href="#reference_doc"&gt;REFERENCE&lt;/a&gt;&lt;/b&gt;&lt;/big&gt;
-&lt;/center&gt;
-&lt;hr&gt;
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
@@ -1936,7 +1936,7 @@ GAAAGTATTGAAAGTTAATTTGTGAGTGGTCGCACATATCCTGTT
 ********************************************************************************
 MEME - Motif discovery tool
 ********************************************************************************
-MEME version 4.0.0 (Release date: 0 PDT 20)
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
 
 For further information on how to interpret these results or to get
 a copy of the MEME software please access http://meme.nbcr.net.
@@ -1994,7 +1994,7 @@ TGTGA[ACT][CAG][GT][AGT][GC][TAC]TCAC
 
 
 
-Time  0.73 secs.
+Time  0.30 secs.
 
 ********************************************************************************
 
@@ -2035,7 +2035,7 @@ tdc                              1.57e-03  80_[1(1.73e-05)]_10
 Stopped because nmotifs = 1 reached.
 ********************************************************************************
 
-CPU: emboss6.ebi.ac.uk
+CPU: emboss4.ebi.ac.uk
 
 ********************************************************************************
 </pre>
@@ -2177,7 +2177,7 @@ CPU: emboss6.ebi.ac.uk
           enctype="application/x-www-form-urlencoded"
           method = "post"
           target = "_new"
-          action = "http://emboss6.ebi.ac.uk/meme/cgi-bin/process_request.cgi"
+          action = "http://emboss4.ebi.ac.uk/meme/cgi-bin/process_request.cgi"
         &gt;
         &lt;!-- Create the various sub-sections of the document --&gt;
         &lt;xsl:call-template name="top-buttons"/&gt;
@@ -2207,13 +2207,6 @@ CPU: emboss6.ebi.ac.uk
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-"/&gt;
-&lt;/xsl:template&gt;
-
-&lt;xsl:template name="pspm"&gt;
-  &lt;xsl:param name="motif_index"/&gt;
-  &lt;xsl:text&gt;&amp;#10;&lt;/xsl:text&gt;
-  &lt;hr/&gt;&lt;center&gt;&lt;a name="pspm{$motif_index}"/&gt;
     &lt;xsl:text&gt;&amp;#10;&lt;/xsl:text&gt;
     &lt;big&gt;&lt;b&gt;&lt;a href="#pspm_doc"&gt;Motif &lt;xsl:value-of select="$motif_index"/&gt; position-specific probability matrix&lt;/a&gt; 
     &lt;xsl:text&gt;&amp;#10;&lt;/xsl:text&gt;
@@ -2249,7 +2242,14 @@ log-odds matrix: alength= &lt;xsl:value-of select="/MEME/training_set/alphabet/@
         &lt;xsl:text&gt;&amp;#10;&lt;/xsl:text&gt;
       &lt;/xsl:for-each&gt;
     &lt;/xsl:variable&gt;
+    &lt;xsl:variable name="motifblock"&gt;
+BL   MOTIF &lt;xsl:value-of select="@name"/&gt; width=&lt;xsl:value-of select="@width"/&gt; seqs=&lt;xsl:value-of select="@sites"/&gt; 
+    &lt;/xsl:variable&gt;
     &lt;xsl:text&gt;&amp;#10;&lt;/xsl:text&gt;
+&lt;!-- motif Block entry --&gt;    
+    &lt;input type="hidden" name="motifblock{$motif_index}" value="
+{$motifblock}
+"/&gt;
 &lt;!-- don't change the next 3 lines or make_logodds breaks --&gt;
     &lt;input type="hidden" name="pssm{$motif_index}" value="
 {$pssm}

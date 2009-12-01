@@ -1,5 +1,4 @@
-
-                                   notab 
+                                    notab
 
 
 
@@ -23,10 +22,11 @@ Usage
    Here is a sample session with notab
 
 
-% notab 
+% notab
 Replace tabs with spaces in an ASCII text file
 ASCII text file: tabfile.txt
-ASCII text output file [tabfile.notab]: 
+ASCII text output file [tabfile.notab]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -63,6 +63,7 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 
 Input file format
 
@@ -180,7 +181,7 @@ See also
 
 Author(s)
 
-   Jon Ison (jison © ebi.ac.uk)
+   Jon Ison (jison (c) ebi.ac.uk)
    European Bioinformatics Institute, Wellcome Trust Genome Campus,
    Hinxton, Cambridge CB10 1SD, UK
 

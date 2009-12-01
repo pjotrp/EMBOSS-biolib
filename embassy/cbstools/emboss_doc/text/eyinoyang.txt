@@ -1,5 +1,4 @@
-
-                                 eyinoyang 
+                                  eyinoyang
 
 
 
@@ -17,7 +16,7 @@ Function
 Description
 
    The YinOYang WWW server produces neural network predictions for
-   O-ß-GlcNAc attachment sites in eukaryotic protein sequences. This
+   O-ss-GlcNAc attachment sites in eukaryotic protein sequences. This
    server can also use NetPhos, to mark possible phosphorylated sites and
    hence identify "Yin-Yang" sites.
 
@@ -26,10 +25,11 @@ Usage
    Here is a sample session with eyinoyang
 
 
-% eyinoyang 
+% eyinoyang
 Reports O-(beta)-GlcNAc attachment sites
 Input (aligned) sequence set: CBG_HUMAN.fsa
-Output file [cbg_human.eyinoyang]: 
+Output file [cbg_human.eyinoyang]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -37,10 +37,11 @@ Output file [cbg_human.eyinoyang]:
    Example 2
 
 
-% eyinoyang 
+% eyinoyang
 Reports O-(beta)-GlcNAc attachment sites
 Input (aligned) sequence set: LEUK_RAT.fsa
-Output file [leuk_rat.eyinoyang]: 
+Output file [leuk_rat.eyinoyang]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -102,6 +103,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    eyinoyang reads any normal sequence USAs.
@@ -123,8 +125,8 @@ AGSTGVTLNLTSKPIILRFNQPFIIMIFDHFTWSSLFLARVMNPV
 
   File: LEUK_RAT.fsa
 
->LEUK_RAT P13838 LEUKOSIALIN PRECURSOR (LEUCOCYTE SIALOGLYCOPROTEIN) (SIALOPHOR
-IN) (CD43) (W3/13 ANTIGEN) (FRAGMENT). - RATTUS NORVEGICUS (RAT).
+>LEUK_RAT P13838 LEUKOSIALIN PRECURSOR (LEUCOCYTE SIALOGLYCOPROTEIN) (SIALOPHORI
+N) (CD43) (W3/13 ANTIGEN) (FRAGMENT). - RATTUS NORVEGICUS (RAT).
 WAQVVSQENLPNTMTMLPFTPNSESPSTSEALSTYSSIATVPVTEDPKESISPWGQTTAP
 ASSIPLGTPELSSFFFTSAGASGNTPVPELTTSQEVSTEASLVLFPKSSGVASDPPVTIT
 NPATSSAVASTSLETFKGTSAPPVTVTSSTMTSGPFVATTVSSETSGPPVTMATGSLGPS
@@ -153,30 +155,30 @@ Warning:   This sequence seems to contain a signal peptide !!
 
 
 Name:  CBG_HUMAN        Length:  405
-MPLLLYTCLLWLPTSGLWTVQAMDPNAAYVNMSNHHRGLASANVDFAFSLYKHLVALSPKKNIFISPVSISMALAMLSL
-G      80
-TCGHTRAQLLQGLGFNLTERSETEIHQGFQHLHQLFAKSDTSLEMTMGNALFLDGSLELLESFSADIKHYYESEVLAMN
-F     160
-QDWATASRQINSYVKNKTQGKIVDLFSGLDSPAILVLVNYIFFKGTWTQPFDLASTREENFYVDETTVVKVPMMLQSST
-I     240
-SYLHDSELPCQLVQMNYVGNGTVFFILPDKGKMNTVIAALSRDTINRWSAGLTSSQVDLYIPKVTISGVYDLGDVLEEM
-G     320
-IADLFTNQANFSRITQDAQLKSSKVVHKAVLQLNEEGVDTAGSTGVTLNLTSKPIILRFNQPFIIMIFDHFTWSSLFLA
-R     400
+MPLLLYTCLLWLPTSGLWTVQAMDPNAAYVNMSNHHRGLASANVDFAFSLYKHLVALSPKKNIFISPVSISMALAMLSLG
+      80
+TCGHTRAQLLQGLGFNLTERSETEIHQGFQHLHQLFAKSDTSLEMTMGNALFLDGSLELLESFSADIKHYYESEVLAMNF
+     160
+QDWATASRQINSYVKNKTQGKIVDLFSGLDSPAILVLVNYIFFKGTWTQPFDLASTREENFYVDETTVVKVPMMLQSSTI
+     240
+SYLHDSELPCQLVQMNYVGNGTVFFILPDKGKMNTVIAALSRDTINRWSAGLTSSQVDLYIPKVTISGVYDLGDVLEEMG
+     320
+IADLFTNQANFSRITQDAQLKSSKVVHKAVLQLNEEGVDTAGSTGVTLNLTSKPIILRFNQPFIIMIFDHFTWSSLFLAR
+     400
 VMNPV
-      480
-..............G.....................................................G..........
-.      80
-...............................................................................
-.     160
-....G..........................................................................
-.     240
-................................................................G..............
-.     320
-.....................GG........................................................
-.     400
+     480
+..............G.....................................................G...........
+      80
+................................................................................
+     160
+....G...........................................................................
+     240
+................................................................G...............
+     320
+.....................GG.........................................................
+     400
 .....
-      480
+     480
 
 
 ----------------------------------------------------------
@@ -199,26 +201,26 @@ The predictions for O-GlcNAc sites in 1 sequence
 
 
 Name:  LEUK_RAT         Length:  378
-WAQVVSQENLPNTMTMLPFTPNSESPSTSEALSTYSSIATVPVTEDPKESISPWGQTTAPASSIPLGTPELSSFFFTSA
-G      80
-ASGNTPVPELTTSQEVSTEASLVLFPKSSGVASDPPVTITNPATSSAVASTSLETFKGTSAPPVTVTSSTMTSGPFVAT
-T     160
-VSSETSGPPVTMATGSLGPSKETHGLSATIATSSGESSSVAGGTPVFSTKISTTSTPNPITTVPPRPGSSGMLLVSMLI
-A     240
-LTVVLVLVALLLLWRQRQKRRTGALTLSRGGKRNGTVDAWAGPARVPDEEATTASGSGGNKSSGAPETDGSGQRPTLTT
-F     320
+WAQVVSQENLPNTMTMLPFTPNSESPSTSEALSTYSSIATVPVTEDPKESISPWGQTTAPASSIPLGTPELSSFFFTSAG
+      80
+ASGNTPVPELTTSQEVSTEASLVLFPKSSGVASDPPVTITNPATSSAVASTSLETFKGTSAPPVTVTSSTMTSGPFVATT
+     160
+VSSETSGPPVTMATGSLGPSKETHGLSATIATSSGESSSVAGGTPVFSTKISTTSTPNPITTVPPRPGSSGMLLVSMLIA
+     240
+LTVVLVLVALLLLWRQRQKRRTGALTLSRGGKRNGTVDAWAGPARVPDEEATTASGSGGNKSSGAPETDGSGQRPTLTTF
+     320
 FSRRKSRQGSVALEELKPGTGPNLKGEEEPLVGSEDEAVETPTSDGPQAKDGAAPQSL
-      400
-.....G.............G..G....GG...G..........G.....G......GG...GG................
-.      80
-..........GGG...GG.........GG........G.G...GGG....G.............G.GGG...G.....G
-.     160
-.GG..G....G...........G........GGG...G.........G.....G......GG......G..........
-.     240
-.....................G.............................GG.G............G.........G.
-.     320
+     400
+.....G.............G..G....GG...G..........G.....G......GG...GG.................
+      80
+..........GGG...GG.........GG........G.G...GGG....G.............G.GGG...G.....G.
+     160
+.GG..G....G...........G........GGG...G.........G.....G......GG......G...........
+     240
+.....................G.............................GG.G............G.........G..
+     320
 ...........................................G............G.
-      400
+     400
 
 
 ----------------------------------------------------------

@@ -1,5 +1,4 @@
-
-                                prosextract 
+                                 prosextract
 
 
 
@@ -18,28 +17,29 @@ Description
 
    prosextract processes the PROSITE motif database for use by
    patmatmotifs. It reads the prosite.dat and prosite.doc files (from the
-   Prosite distribution) from the specified directory and writes an
-   output file (by default called prosite.lines) with the following
-   information (corresponding lines from prosite.dat given in
-   parentheses): i. Identity (ID). ii. Accession number (AC). iii. Motif
-   pattern (PA). iv. The motif pattern converted a regular expression.
-   Additionally, one output file per accession number is written
-   containing documentation from prosite.doc.
+   Prosite distribution) from the specified directory and writes an output
+   file (by default called prosite.lines) with the following information
+   (corresponding lines from prosite.dat given in parentheses): i.
+   Identity (ID). ii. Accession number (AC). iii. Motif pattern (PA). iv.
+   The motif pattern converted a regular expression. Additionally, one
+   output file per accession number is written containing documentation
+   from prosite.doc.
 
 Usage
 
    Here is a sample session with prosextract
 
 
-% prosextract 
+% prosextract
 Processes the PROSITE motif database for use by patmatmotifs
-PROSITE database directory [.]: 
+PROSITE database directory [.]:
+
 
    Go to the output files for this example
 
-   The output files named after the prosite accession numbers can now
-   also be seen in the prosite directory. This files are automatically
-   created after prosextract is run.
+   The output files named after the prosite accession numbers can now also
+   be seen in the prosite directory. This files are automatically created
+   after prosextract is run.
 
 Command line arguments
 
@@ -69,6 +69,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    These files must be the "prosite.dat" and "prosite.doc" file of a
@@ -96,8 +97,8 @@ Notes
 
 References
 
-    1. Bairoch, A., Bucher P. (1994) PROSITE: recent developments.
-       Nucleic Acids Research, Vol 22, No.17 3583-3589.
+    1. Bairoch, A., Bucher P. (1994) PROSITE: recent developments. Nucleic
+       Acids Research, Vol 22, No.17 3583-3589.
     2. Bairoch, A., (1992) PROSITE: a dictionary of sites and patterns in
        proteins. Nucleic Acids Research, Vol 20, Supplement, 2013-2018.
     3. Peek, J., O'Reilly, T., Loukides, M., (1997) Unix Power Tools, 2nd
@@ -125,8 +126,8 @@ See also
    cutgextract      Extract codon usage tables from CUTG database
    jaspextract      Extract data from JASPAR
    printsextract    Extract data from PRINTS database for use by pscan
-   rebaseextract    Process the REBASE database for use by restriction
-                    enzyme applications
+   rebaseextract    Process the REBASE database for use by restriction enzyme
+                    applications
    tfextract        Process TRANSFAC transcription factor database for use by
                     tfscan
 

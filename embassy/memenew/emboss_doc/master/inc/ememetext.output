@@ -66,7 +66,7 @@ GAAAGTATTGAAAGTTAATTTGTGAGTGGTCGCACATATCCTGTT
 ********************************************************************************
 MEME - Motif discovery tool
 ********************************************************************************
-MEME version 4.0.0 (Release date: 0 PDT 20)
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
 
 For further information on how to interpret these results or to get
 a copy of the MEME software please access http://meme.nbcr.net.
@@ -124,7 +124,7 @@ GTGA[TC][CG][TC][ATG][GT][TC]TCACA
 
 
 
-Time  1.24 secs.
+Time  0.48 secs.
 
 ********************************************************************************
 
@@ -165,7 +165,7 @@ tdc                              3.35e-03  81_[+1(1.84e-05)]_9
 Stopped because nmotifs = 1 reached.
 ********************************************************************************
 
-CPU: emboss6.ebi.ac.uk
+CPU: emboss4.ebi.ac.uk
 
 ********************************************************************************
 </pre>
@@ -179,7 +179,7 @@ CPU: emboss6.ebi.ac.uk
 ********************************************************************************
 MEME - Motif discovery tool
 ********************************************************************************
-MEME version 4.0.0 (Release date: 0 PDT 20)
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
 
 For further information on how to interpret these results or to get
 a copy of the MEME software please access http://meme.nbcr.net.
@@ -237,7 +237,7 @@ problem with the MEME software.
 
 
 
-Time  0.19 secs.
+Time  0.07 secs.
 
 ********************************************************************************
 
@@ -278,7 +278,7 @@ tdc                              4.03e-04  79_[-1(2.34e-06)]_6
 Stopped because nmotifs = 1 reached.
 ********************************************************************************
 
-CPU: emboss6.ebi.ac.uk
+CPU: emboss4.ebi.ac.uk
 
 ********************************************************************************
 </pre>
@@ -402,7 +402,7 @@ AGAATAGCGCAAGTCAAGCG
 ********************************************************************************
 MEME - Motif discovery tool
 ********************************************************************************
-MEME version 4.0.0 (Release date: 0 PDT 20)
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
 
 For further information on how to interpret these results or to get
 a copy of the MEME software please access http://meme.nbcr.net.
@@ -471,7 +471,7 @@ TTCACATG[CG][CA][AGC][CA][CA][CT][CT]
 
 
 
-Time 25.61 secs.
+Time 10.41 secs.
 
 ********************************************************************************
 
@@ -501,7 +501,7 @@ OPI3                             1.57e-03  581_[-1(1.82e-06)]_40_[+1(1.00e-06)]_
 Stopped because nmotifs = 1 reached.
 ********************************************************************************
 
-CPU: emboss6.ebi.ac.uk
+CPU: emboss4.ebi.ac.uk
 
 ********************************************************************************
 </pre>
@@ -542,7 +542,7 @@ AHLINEKDGETFQLMGLYGREPDLSSDIKERFAKLCEEHGILRENIIDLSNANRCLQARE
 ********************************************************************************
 MEME - Motif discovery tool
 ********************************************************************************
-MEME version 4.0.0 (Release date: 0 PDT 20)
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
 
 For further information on how to interpret these results or to get
 a copy of the MEME software please access http://meme.nbcr.net.
@@ -613,7 +613,7 @@ width:  minw=            8    maxw=           20    minic=        0.00
 
 
 
-Time  0.27 secs.
+Time  0.13 secs.
 
 ********************************************************************************
 
@@ -641,7 +641,7 @@ MUP2_MOUSE                       2.28e-27  23_[1(1.21e-16)]_62_[2(1.09e-17)]_56
 Stopped because nmotifs = 2 reached.
 ********************************************************************************
 
-CPU: emboss6.ebi.ac.uk
+CPU: emboss4.ebi.ac.uk
 
 ********************************************************************************
 </pre>
@@ -700,7 +700,7 @@ CIPQEIFNDFSKRCCF
 ********************************************************************************
 MEME - Motif discovery tool
 ********************************************************************************
-MEME version 4.0.0 (Release date: 0 PDT 20)
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
 
 For further information on how to interpret these results or to get
 a copy of the MEME software please access http://meme.nbcr.net.
@@ -771,7 +771,7 @@ Qx[EP][DE]GG[FL]G[GD]RP[GN]K[EL][VA][DH][GV]C[YH][TS]
 
 
 
-Time  5.57 secs.
+Time  1.52 secs.
 
 ********************************************************************************
 
@@ -799,7 +799,7 @@ CAL1_YEAST                       2.42e-13  270_[1(6.78e-16)]_32_[1(4.48e-11)]_34
 Stopped because nmotifs = 1 reached.
 ********************************************************************************
 
-CPU: emboss6.ebi.ac.uk
+CPU: emboss4.ebi.ac.uk
 
 ********************************************************************************
 </pre>
@@ -813,7 +813,7 @@ CPU: emboss6.ebi.ac.uk
 ********************************************************************************
 MEME - Motif discovery tool
 ********************************************************************************
-MEME version 4.0.0 (Release date: 0 PDT 20)
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
 
 For further information on how to interpret these results or to get
 a copy of the MEME software please access http://meme.nbcr.net.
@@ -884,7 +884,7 @@ width:  minw=           10    maxw=           10    minic=        0.00
 
 
 
-Time  1.64 secs.
+Time  0.48 secs.
 
 ********************************************************************************
 
@@ -912,7 +912,7 @@ CAL1_YEAST                       5.03e-15  41_[2(7.36e-07)]_74_[3(3.01e-05)]_32_
 Stopped because nmotifs = 3 reached.
 ********************************************************************************
 
-CPU: emboss6.ebi.ac.uk
+CPU: emboss4.ebi.ac.uk
 
 ********************************************************************************
 </pre>
@@ -926,7 +926,7 @@ CPU: emboss6.ebi.ac.uk
 ********************************************************************************
 MEME - Motif discovery tool
 ********************************************************************************
-MEME version 4.0.0 (Release date: 0 PDT 20)
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
 
 For further information on how to interpret these results or to get
 a copy of the MEME software please access http://meme.nbcr.net.
@@ -997,7 +997,7 @@ INVEK[LV][IL][EQ][YF][ILV]LS
 
 
 
-Time  1.38 secs.
+Time  0.60 secs.
 
 ********************************************************************************
 
@@ -1025,7 +1025,7 @@ CAL1_YEAST                       2.39e-16  10_[3(4.04e-07)]_19_[1(2.94e-07)]_79_
 Stopped because nmotifs = 3 reached.
 ********************************************************************************
 
-CPU: emboss6.ebi.ac.uk
+CPU: emboss4.ebi.ac.uk
 
 ********************************************************************************
 </pre>
@@ -1149,7 +1149,7 @@ MAKVLPNPLFDAAARRLR
 ********************************************************************************
 MEME - Motif discovery tool
 ********************************************************************************
-MEME version 4.0.0 (Release date: 0 PDT 20)
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
 
 For further information on how to interpret these results or to get
 a copy of the MEME software please access http://meme.nbcr.net.
@@ -1248,7 +1248,7 @@ YURA_MYXXA                       5.59e-32  35_[8(6.92e-05)]_26_[3(6.11e-09)]_12_
 Stopped because motif E-value &gt; 1.00e-02.
 ********************************************************************************
 
-CPU: emboss6.ebi.ac.uk
+CPU: emboss4.ebi.ac.uk
 
 ********************************************************************************
 </pre>

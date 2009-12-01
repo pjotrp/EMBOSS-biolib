@@ -1,5 +1,4 @@
-
-                                 econsense 
+                                  econsense
 
 
 
@@ -32,6 +31,7 @@ Usage
 (A,(B,(E,((F,I),(G,(((J,H),D),C))))));
 (A,(B,(E,((G,(F,I)),((J,(H,D)),C)))));
 (A,(B,(E,((G,(F,I)),(((J,H),D),C)))));
+
 
 % econsense test
 Majority-rule and strict consensus tree
@@ -116,9 +116,10 @@ among the trees, out of   9.00 trees
 
 
 % more econsense.treefile
-(A:9.0,((E:9.0,(((I:9.0,F:9.0):9.0,((D:9.0,(J:9.0,H:9.0):4.0):6.0,C:9.0):6.0):2
-.0,G:9.0):6.0):9.0,
+(A:9.0,((E:9.0,(((I:9.0,F:9.0):9.0,((D:9.0,(J:9.0,H:9.0):4.0):6.0,C:9.0):6.0):2.
+0,G:9.0):6.0):9.0,
 B:9.0):9.0);
+
 
 Command line arguments
 
@@ -185,8 +186,8 @@ Author(s)
 
    (c)              Copyright 1986-1993 by Joseph Felsenstein and by the University of
    Washington.      Written by Joseph Felsenstein. Permission is granted to
-                    copy this document provided that no fee is charged for it and that
-                    this copyright notice is not removed.
+                    copy this document provided that no fee is charged for it and that this
+                    copyright notice is not removed.
 
                     This application was modified for inclusion in EMBOSS by Ian Longden
    (il@sanger.ac.uk) Informatics Division, The Sanger Centre, Wellcome

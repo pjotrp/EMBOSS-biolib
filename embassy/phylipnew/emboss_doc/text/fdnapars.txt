@@ -1,5 +1,4 @@
-
-                                 fdnapars 
+                                  fdnapars
 
 
 
@@ -25,11 +24,11 @@ Description
 
 Algorithm
 
-   This program carries out unrooted parsimony (analogous to Wagner
-   trees) (Eck and Dayhoff, 1966; Kluge and Farris, 1969) on DNA
-   sequences. The method of Fitch (1971) is used to count the number of
-   changes of base needed on a given tree. The assumptions of this method
-   are analogous to those of MIX:
+   This program carries out unrooted parsimony (analogous to Wagner trees)
+   (Eck and Dayhoff, 1966; Kluge and Farris, 1969) on DNA sequences. The
+   method of Fitch (1971) is used to count the number of changes of base
+   needed on a given tree. The assumptions of this method are analogous to
+   those of MIX:
     1. Each site evolves independently.
     2. Different lineages evolve independently.
     3. The probability of a base substitution at a given site is small
@@ -41,17 +40,17 @@ Algorithm
        two changes in one site are more probable than one change in
        another.
 
-   That these are the assumptions of parsimony methods has been
-   documented in a series of papers of mine: (1973a, 1978b, 1979, 1981b,
-   1983b, 1988b). For an opposing view arguing that the parsimony methods
-   make no substantive assumptions such as these, see the papers by
-   Farris (1983) and Sober (1983a, 1983b, 1988), but also read the
-   exchange between Felsenstein and Sober (1986).
+   That these are the assumptions of parsimony methods has been documented
+   in a series of papers of mine: (1973a, 1978b, 1979, 1981b, 1983b,
+   1988b). For an opposing view arguing that the parsimony methods make no
+   substantive assumptions such as these, see the papers by Farris (1983)
+   and Sober (1983a, 1983b, 1988), but also read the exchange between
+   Felsenstein and Sober (1986).
 
    Change from an occupied site to a deletion is counted as one change.
    Reversion from a deletion to an occupied site is allowed and is also
-   counted as one change. Note that this in effect assumes that a
-   deletion N bases long is N separate events.
+   counted as one change. Note that this in effect assumes that a deletion
+   N bases long is N separate events.
 
    Dnapars can handle both bifurcating and multifurcating trees. In doing
    its search for most parsimonious trees, it adds species not only by
@@ -75,23 +74,23 @@ Algorithm
    Next come the species data. Each sequence starts on a new line, has a
    ten-character species name that must be blank-filled to be of that
    length, followed immediately by the species data in the one-letter
-   code. The sequences must either be in the "interleaved" or
-   "sequential" formats described in the Molecular Sequence Programs
-   document. The I option selects between them. The sequences can have
-   internal blanks in the sequence but there must be no extra blanks at
-   the end of the terminated line. Note that a blank is not a valid
-   symbol for a deletion.
+   code. The sequences must either be in the "interleaved" or "sequential"
+   formats described in the Molecular Sequence Programs document. The I
+   option selects between them. The sequences can have internal blanks in
+   the sequence but there must be no extra blanks at the end of the
+   terminated line. Note that a blank is not a valid symbol for a
+   deletion.
 
 Usage
 
    Here is a sample session with fdnapars
 
 
-% fdnapars 
+% fdnapars
 DNA parsimony algorithm
 Input (aligned) nucleotide sequence set(s): dnapars.dat
-Phylip tree file (optional): 
-Phylip dnapars program output file [dnapars.fdnapars]: 
+Phylip tree file (optional):
+Phylip dnapars program output file [dnapars.fdnapars]:
 
 Adding species:
    1. Alpha
@@ -113,6 +112,7 @@ Output written to file "dnapars.fdnapars"
 Tree also written onto file "dnapars.treefile"
 
 Done.
+
 
 
    Go to the input files for this example
@@ -197,6 +197,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    fdnapars reads any normal sequence USAs.
@@ -230,68 +231,67 @@ Output file format
    the branch, and what the states are inferred to have been at the top
    end of the branch. This is a reconstruction of the ancestral sequences
    in the tree. If you choose option 5, a menu item "." appears which
-   gives you the opportunity to turn off dot-differencing so that
-   complete ancestral sequences are shown. If the inferred state is a "?"
-   or one of the IUB ambiguity symbols, there will be multiple
-   equally-parsimonious assignments of states; the user must work these
-   out for themselves by hand. A "?" in the reconstructed states means
-   that in addition to one or more bases, a deletion may or may not be
-   present. If option 6 is left in its default state the trees found will
-   be written to a tree file, so that they are available to be used in
-   other programs. If the U (User Tree) option is used and more than one
-   tree is supplied, the program also performs a statistical test of each
-   of these trees against the best tree. This test, which is a version of
-   the test proposed by Alan Templeton (1983) and evaluated in a test
-   case by me (1985a). It is closely parallel to a test using log
-   likelihood differences due to Kishino and Hasegawa (1989), and uses
-   the mean and variance of step differences between trees, taken across
-   sites. If the mean is more than 1.96 standard deviations different
-   then the trees are declared significantly different. The program
-   prints out a table of the steps for each tree, the differences of each
-   from the best one, the variance of that quantity as determined by the
-   step differences at individual sites, and a conclusion as to whether
-   that tree is or is not significantly worse than the best one. If the U
-   (User Tree) option is used and more than one tree is supplied, and the
-   program is not told to assume autocorrelation between the rates at
-   different sites, the program also performs a statistical test of each
-   of these trees against the one with highest likelihood. If there are
-   two user trees, this is a version of the test proposed by Alan
-   Templeton (1983) and evaluated in a test case by me (1985a). It is
+   gives you the opportunity to turn off dot-differencing so that complete
+   ancestral sequences are shown. If the inferred state is a "?" or one of
+   the IUB ambiguity symbols, there will be multiple equally-parsimonious
+   assignments of states; the user must work these out for themselves by
+   hand. A "?" in the reconstructed states means that in addition to one
+   or more bases, a deletion may or may not be present. If option 6 is
+   left in its default state the trees found will be written to a tree
+   file, so that they are available to be used in other programs. If the U
+   (User Tree) option is used and more than one tree is supplied, the
+   program also performs a statistical test of each of these trees against
+   the best tree. This test, which is a version of the test proposed by
+   Alan Templeton (1983) and evaluated in a test case by me (1985a). It is
    closely parallel to a test using log likelihood differences due to
-   Kishino and Hasegawa (1989) It uses the mean and variance of the
-   differences in the number of steps between trees, taken across sites.
-   If the two trees' means are more than 1.96 standard deviations
-   different, then the trees are declared significantly different. If
-   there are more than two trees, the test done is an extension of the
-   KHT test, due to Shimodaira and Hasegawa (1999). They pointed out that
-   a correction for the number of trees was necessary, and they
-   introduced a resampling method to make this correction. In the version
-   used here the variances and covariances of the sums of steps across
-   sites are computed for all pairs of trees. To test whether the
-   difference between each tree and the best one is larger than could
-   have been expected if they all had the same expected number of steps,
-   numbers of steps for all trees are sampled with these covariances and
-   equal means (Shimodaira and Hasegawa's "least favorable hypothesis"),
-   and a P value is computed from the fraction of times the difference
-   between the tree's value and the lowest number of steps exceeds that
-   actually observed. Note that this sampling needs random numbers, and
-   so the program will prompt the user for a random number seed if one
-   has not already been supplied. With the two-tree KHT test no random
-   numbers are used. In either the KHT or the SH test the program prints
-   out a table of the number of steps for each tree, the differences of
-   each from the lowest one, the variance of that quantity as determined
-   by the differences of the numbers of steps at individual sites, and a
-   conclusion as to whether that tree is or is not significantly worse
-   than the best one. Option 6 in the menu controls whether the tree
-   estimated by the program is written onto a tree file. The default name
-   of this output tree file is "outtree". If the U option is in effect,
-   all the user-defined trees are written to the output tree file. If the
-   program finds multiple trees tied for best, all of these are written
-   out onto the output tree file. Each is followed by a numerical weight
-   in square brackets (such as [0.25000]). This is needed when we use the
-   trees to make a consensus tree of the results of bootstrapping or
-   jackknifing, to avoid overrepresenting replicates that find many tied
-   trees.
+   Kishino and Hasegawa (1989), and uses the mean and variance of step
+   differences between trees, taken across sites. If the mean is more than
+   1.96 standard deviations different then the trees are declared
+   significantly different. The program prints out a table of the steps
+   for each tree, the differences of each from the best one, the variance
+   of that quantity as determined by the step differences at individual
+   sites, and a conclusion as to whether that tree is or is not
+   significantly worse than the best one. If the U (User Tree) option is
+   used and more than one tree is supplied, and the program is not told to
+   assume autocorrelation between the rates at different sites, the
+   program also performs a statistical test of each of these trees against
+   the one with highest likelihood. If there are two user trees, this is a
+   version of the test proposed by Alan Templeton (1983) and evaluated in
+   a test case by me (1985a). It is closely parallel to a test using log
+   likelihood differences due to Kishino and Hasegawa (1989) It uses the
+   mean and variance of the differences in the number of steps between
+   trees, taken across sites. If the two trees' means are more than 1.96
+   standard deviations different, then the trees are declared
+   significantly different. If there are more than two trees, the test
+   done is an extension of the KHT test, due to Shimodaira and Hasegawa
+   (1999). They pointed out that a correction for the number of trees was
+   necessary, and they introduced a resampling method to make this
+   correction. In the version used here the variances and covariances of
+   the sums of steps across sites are computed for all pairs of trees. To
+   test whether the difference between each tree and the best one is
+   larger than could have been expected if they all had the same expected
+   number of steps, numbers of steps for all trees are sampled with these
+   covariances and equal means (Shimodaira and Hasegawa's "least favorable
+   hypothesis"), and a P value is computed from the fraction of times the
+   difference between the tree's value and the lowest number of steps
+   exceeds that actually observed. Note that this sampling needs random
+   numbers, and so the program will prompt the user for a random number
+   seed if one has not already been supplied. With the two-tree KHT test
+   no random numbers are used. In either the KHT or the SH test the
+   program prints out a table of the number of steps for each tree, the
+   differences of each from the lowest one, the variance of that quantity
+   as determined by the differences of the numbers of steps at individual
+   sites, and a conclusion as to whether that tree is or is not
+   significantly worse than the best one. Option 6 in the menu controls
+   whether the tree estimated by the program is written onto a tree file.
+   The default name of this output tree file is "outtree". If the U option
+   is in effect, all the user-defined trees are written to the output tree
+   file. If the program finds multiple trees tied for best, all of these
+   are written out onto the output tree file. Each is followed by a
+   numerical weight in square brackets (such as [0.25000]). This is needed
+   when we use the trees to make a consensus tree of the results of
+   bootstrapping or jackknifing, to avoid overrepresenting replicates that
+   find many tied trees.
 
   Output files for usage example
 
@@ -326,6 +326,7 @@ requires a total of     19.000
      2      Gamma        0.275641
      1      Beta         0.076923
      1      Alpha        0.173077
+
 
   File: dnapars.treefile
 

@@ -1,24 +1,23 @@
-
                            HETPARSE documentation
-                                      
-   
+
+
 
 CONTENTS
 
-   1.0 SUMMARY 
-   2.0 INPUTS & OUTPUTS 
-   3.0 INPUT FILE FORMAT 
-   4.0 OUTPUT FILE FORMAT 
-   5.0 DATA FILES 
-   6.0 USAGE 
-   7.0 KNOWN BUGS & WARNINGS 
-   8.0 NOTES 
-   9.0 DESCRIPTION 
-   10.0 ALGORITHM 
-   11.0 RELATED APPLICATIONS 
-   12.0 DIAGNOSTIC ERROR MESSAGES 
-   13.0 AUTHORS 
-   14.0 REFERENCES 
+   1.0 SUMMARY
+   2.0 INPUTS & OUTPUTS
+   3.0 INPUT FILE FORMAT
+   4.0 OUTPUT FILE FORMAT
+   5.0 DATA FILES
+   6.0 USAGE
+   7.0 KNOWN BUGS & WARNINGS
+   8.0 NOTES
+   9.0 DESCRIPTION
+   10.0 ALGORITHM
+   11.0 RELATED APPLICATIONS
+   12.0 DIAGNOSTIC ERROR MESSAGES
+   13.0 AUTHORS
+   14.0 REFERENCES
 
 1.0 SUMMARY
 
@@ -149,6 +148,7 @@ HETNAM     105 N-[5-METHYL-3-O-TOLYL-ISOXAZOLE-4-CARBOXYLIC ACID
 HETNAM   2 105 AMIDE] BORONIC ACID
 FORMUL      105    C12 H12 N2 O4 B1 CL1
 
+
 4.0 OUTPUT FILE FORMAT
 
    The records used in the output file (Figure 2) are as follows:
@@ -205,8 +205,8 @@ NN   0
 //
 ID   061
 DE
-DE   2-BUTYL-6-HYDROXY-3-[2'-(1H-TETRAZOL-5-YL)-BIPHENYL-4-YLMETHYL]-3H-QUINAZO
-LIN-4-ONE
+DE   2-BUTYL-6-HYDROXY-3-[2'-(1H-TETRAZOL-5-YL)-BIPHENYL-4-YLMETHYL]-3H-QUINAZOL
+IN-4-ONE
 SY   L-159,061
 NN   0
 //
@@ -260,6 +260,7 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 
   6.1 COMMAND LINE ARGUMENTS
 

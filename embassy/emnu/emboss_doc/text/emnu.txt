@@ -1,5 +1,4 @@
-
-                                   emnu 
+                                    emnu
 
 
 
@@ -31,25 +30,23 @@ Description
    of the option that you desire. You will move to the item in the menu
    that first matches those letters.
 
-   You can also type in UNIX commands as if you were typing them in a
-   UNIX session. (Of course, as you type, emnu will not know if you wish
-   to run a UNIX command or go to a menu item starting with the letters
-   you are typing, so you will see the menu selection changing as you
-   type. If this irritates you and you are confident enough with UNIX
-   commands to be typing them directly, maybe you do not need to use
-   emnu?)
+   You can also type in UNIX commands as if you were typing them in a UNIX
+   session. (Of course, as you type, emnu will not know if you wish to run
+   a UNIX command or go to a menu item starting with the letters you are
+   typing, so you will see the menu selection changing as you type. If
+   this irritates you and you are confident enough with UNIX commands to
+   be typing them directly, maybe you do not need to use emnu?)
 
    If you run a command or program that creates one or more files, then
-   when you return to the menu, the command line will be set up to
-   contain the command more followed by the names of the files. Pressing
-   RETURN to run this command will display the contents of these files.
-   If you do not wish to see these files, just press ^C to clear the
-   command line.
+   when you return to the menu, the command line will be set up to contain
+   the command more followed by the names of the files. Pressing RETURN to
+   run this command will display the contents of these files. If you do
+   not wish to see these files, just press ^C to clear the command line.
 
    You can also navigate around the menu and do many other things by
    typing control keys and Function keys. Control keys can be typed by
-   pressing the Control key and another key. Control keys are written
-   here and in the online help text as a ^ and then the key's letter, for
+   pressing the Control key and another key. Control keys are written here
+   and in the online help text as a ^ and then the key's letter, for
    example ^C means Control-C.
 
    The control key commands that are most useful will be displayed in the
@@ -57,42 +54,41 @@ Description
    further help.
 
    If you are using emnu through a telnet session or in a 'xterm' window,
-   you may be able to click on menu options and on the bottom two lines
-   of help in the screen to select items. (Double click on the menu to
-   run that item.)
+   you may be able to click on menu options and on the bottom two lines of
+   help in the screen to select items. (Double click on the menu to run
+   that item.)
 
-   The menus that are displayed are very simple. They consist of the
-   title of the menu at the top of the screen, followed by several lines
-   of things to select. The first two items are always 'EXIT' which takes
-   you back to the previous menu, and 'HELP' which shows help for this
-   menu.
+   The menus that are displayed are very simple. They consist of the title
+   of the menu at the top of the screen, followed by several lines of
+   things to select. The first two items are always 'EXIT' which takes you
+   back to the previous menu, and 'HELP' which shows help for this menu.
 
-   The first menu you see (the GROUPS MENU) will consist of two columns
-   of the groups of EMBOSS programs. You can move up and down, left and
-   right using the arrow keys. The bottom two lines show useful control
-   keys you can type to do things. You may be able to click on the help
-   text or on the menu items to select them.
+   The first menu you see (the GROUPS MENU) will consist of two columns of
+   the groups of EMBOSS programs. You can move up and down, left and right
+   using the arrow keys. The bottom two lines show useful control keys you
+   can type to do things. You may be able to click on the help text or on
+   the menu items to select them.
 
    The line above the two help lines is the command line. This is where
    the currently selected menu item or any command you type is displayed.
    See the Usage section of this document below to see useful control
-   codes for navigating and editing this command line. You may type in
-   any UNIX command or any EMBOSS program name in this command line. It
-   is common to add extra parameters or options to change the default
+   codes for navigating and editing this command line. You may type in any
+   UNIX command or any EMBOSS program name in this command line. It is
+   common to add extra parameters or options to change the default
    behaviour of an EMBOSS program. You may edit the command line to do
    this. For example the program seqret can take many options. You may
    wish to type the command 'seqret -osf gcg' to make seqret write out
    sequences in GCG format.
 
-   Selecting any item in the GROUPS menu apart from 'EXIT' and 'HELP'
-   will select a sub-menu. The 'ALL FILES' and 'NEW FILES' items will
-   start a menu displaying files, all others will display a menu of
-   EMBOSS programs.
+   Selecting any item in the GROUPS menu apart from 'EXIT' and 'HELP' will
+   select a sub-menu. The 'ALL FILES' and 'NEW FILES' items will start a
+   menu displaying files, all others will display a menu of EMBOSS
+   programs.
 
   Groups menu
 
    This is the menu that is initially displayed.
-     _________________________________________________________________
+     __________________________________________________________________
 
                                    GROUPS MENU
 >EXIT                                HELP
@@ -119,8 +115,8 @@ Description
 > EXIT
  ? Help ^N New Files ^A StartLine ^B Back    ^C Clear  ^U Menu Up ^P Page Up
 ^X Exit ^T All Files ^E End Line  ^F Forward ^K ClrEnd ^D Menu Dn ^Z Page Dn
-     _________________________________________________________________
-     _________________________________________________________________
+     __________________________________________________________________
+     __________________________________________________________________
 
                                   MAIN MENU HELP
 This menu system aims to make it easy to run EMBOSS programs and manage files.
@@ -147,7 +143,7 @@ F1,F2,F3,F5 -view, view sequence, copy and delete the last file looked at
 ^X exit, ^N/^T file menus, ^R recall stored file, TAB complete name of option
 
 Press any key to continue...
-     _________________________________________________________________
+     __________________________________________________________________
 
   Programs menus
 
@@ -171,21 +167,20 @@ Press any key to continue...
 
    If you run a program that creates one or more files, then when you
    return to the menu, the command line will be set up to contain the
-   command more followed by the names of the files. Pressing RETURN to
-   run this command will display the contents of these files. If you do
-   not wish to see these files, just press ^C to clear the command line.
+   command more followed by the names of the files. Pressing RETURN to run
+   this command will display the contents of these files. If you do not
+   wish to see these files, just press ^C to clear the command line.
 
    To run the program, just press RETURN.
 
    NOTE: Once you start running any program, you are no longer talking to
-   the menu system, you are only talking to that program. Therefore all
-   of the control codes for doing things like putting file names in the
+   the menu system, you are only talking to that program. Therefore all of
+   the control codes for doing things like putting file names in the
    command line will have no effect.
-     _________________________________________________________________
+     __________________________________________________________________
 
                                   PROGRAMS MENU
 >EXIT
-
  HELP
 
  chaos        Create a chaos game representation plot fro a sequence
@@ -209,8 +204,8 @@ Press any key to continue...
 > EXIT
  ? Help ^N New Files ^G Get File  ^J Complete  ^C Clear  ^U Menu Up ^P Page Up
 ^X Exit ^T All Files ^R RecalFile ^E End Line  ^K ClrEnd ^D Menu Dn ^Z Page Dn
-     _________________________________________________________________
-     _________________________________________________________________
+     __________________________________________________________________
+     __________________________________________________________________
 
                                 PROGRAMS MENU HELP
 This menu aims to make it easy to run the EMBOSS programs.
@@ -230,15 +225,14 @@ The following control keys edit the command line:
 
 The following keys get other things:
 F1,F2,F3,F5 -view, view sequence, copy and delete the last file looked at
-^X exit, ^N/^T file menus, ^R recall stored file, ? see detailed help on progra
-m
+^X exit, ^N/^T file menus, ^R recall stored file, ? see detailed help on program
 
 
 
 
 
 Press any key to continue...
-     _________________________________________________________________
+     __________________________________________________________________
 
   All files menu
 
@@ -247,8 +241,8 @@ Press any key to continue...
 
    This will show a list of the files in your current directory (folder).
 
-   The name of the current directory will be displayed as the title of
-   the menu.
+   The name of the current directory will be displayed as the title of the
+   menu.
 
    You can see the contents of a file by pressing RETURN when the file is
    the currently selected item in the menu. If the current item is a
@@ -271,12 +265,12 @@ Press any key to continue...
      Sort the files by time (Start a files menu if not already in one)
 
    The following will use the current files menu item to display, copy of
-   delete. If you are not currently in a FILES menu or if the current
-   item is not a file, then the last valid file that you pressed RETURN
-   on will be remembered and used.
+   delete. If you are not currently in a FILES menu or if the current item
+   is not a file, then the last valid file that you pressed RETURN on will
+   be remembered and used.
 
-   The ^G key is useful for adding this default file name to a command
-   you are typing into the command line.
+   The ^G key is useful for adding this default file name to a command you
+   are typing into the command line.
 
    Note: you can use the commands in any menu and they will work on the
    default file.
@@ -296,10 +290,10 @@ Press any key to continue...
  ^G  GetFile
      Add the name of the current file to the command line
 
-   Separate from the memory of the default file used by the above
-   commands is a specific method of remembering the name of an item in
-   the FILES menus and recalling it into the command line at a later date
-   by using the following pair of key codes.
+   Separate from the memory of the default file used by the above commands
+   is a specific method of remembering the name of an item in the FILES
+   menus and recalling it into the command line at a later date by using
+   the following pair of key codes.
 
  ^S  StoreFile
      Remember the name of the current menu item file
@@ -312,7 +306,7 @@ Press any key to continue...
 
  F3  New Dir
      Create a new directory and go into it
-     _________________________________________________________________
+     __________________________________________________________________
 
                 FILES: /people/gwilliam/tmp
  EXIT
@@ -339,8 +333,8 @@ Press any key to continue...
 > one.seq
  ? Help F1 ViewFile F3 New Dir  ^G GetFile ^S StoreFile F9 TimeSort ^N NewFile
 ^X Exit F2 View Seq F4 CopyFile F5 DelFile ^R RecalFile F8 AlphaSort
-     _________________________________________________________________
-     _________________________________________________________________
+     __________________________________________________________________
+     __________________________________________________________________
 
                                 ALL FILES MENU HELP
 This menu aims to make it easy to view and manage the files output by programs.
@@ -367,17 +361,17 @@ F4 makes a new directory, F8 sort files by name, F9 sort files by time
 
 
 Press any key to continue...
-     _________________________________________________________________
+     __________________________________________________________________
 
   New files menu
 
    The NEW FILES menu is exactly the same at the ALL FILES menu except
-   that it only holds those files that have been created or modified
-   since you started the menu program.
+   that it only holds those files that have been created or modified since
+   you started the menu program.
 
    It therefore consists of a convenient way of quickly finding those
    files which you have worked on during this menu session.
-     _________________________________________________________________
+     __________________________________________________________________
 
               NEW FILES: /people/gwilliam/tmp
 >EXIT
@@ -397,8 +391,8 @@ Press any key to continue...
 > EXIT
  ? Help F1 ViewFile F3 New Dir  ^G GetFile ^S StoreFile F9 TimeSort ^T AllFile
 ^X Exit F2 View Seq F4 CopyFile F5 DelFile ^R RecalFile F8 AlphaSort
-     _________________________________________________________________
-     _________________________________________________________________
+     __________________________________________________________________
+     __________________________________________________________________
 
                                 NEW FILES MENU HELP
 This menu aims to make it easy to view and manage the files output by programs.
@@ -425,7 +419,7 @@ F4 makes a new directory, F8 sort files by name, F9 sort files by time
 ^X exit, ^T all files menu, ^S store current file name, ^R recall stored file
 
 Press any key to continue...
-     _________________________________________________________________
+     __________________________________________________________________
 
    The name of this program, emnu, comes from the observation that the
    EMBOSS Menu is Not UNIX.
@@ -448,15 +442,14 @@ Usage
 
   Command-line editing
 
-   Key Name Description
-   ^A StartLine Move to the start of the command line
-   ^E End Line Move to the end of the command line
-   ^B Back Move back one character in the command line
-   ^F Forward Move forward one character in the command line
-   ^C Clear Clear all of the command line
-   ^K ClrEnd Clear from the cursor position to the end of the command
-   line
-   ^J Complete Complete the command line to match the current menu item
+   Key    Name                            Description
+   ^A  StartLine Move to the start of the command line
+   ^E  End Line  Move to the end of the command line
+   ^B  Back      Move back one character in the command line
+   ^F  Forward   Move forward one character in the command line
+   ^C  Clear     Clear all of the command line
+   ^K  ClrEnd    Clear from the cursor position to the end of the command line
+   ^J  Complete  Complete the command line to match the current menu item
 
   Files
 
@@ -526,6 +519,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    None.
@@ -564,10 +558,9 @@ Known bugs
    It crashes if you resize the xterm window to make it smaller than when
    the menu system started.
 
-   When using the '-explode' option, one of the program groups is
-   expanded to be 'HELP'. Selecting this option simply gives the help for
-   the Groups Menu. I don't intend to alter this situation, it is a
-   feature.
+   When using the '-explode' option, one of the program groups is expanded
+   to be 'HELP'. Selecting this option simply gives the help for the
+   Groups Menu. I don't intend to alter this situation, it is a feature.
 
    delete_file() doesn't delete directories - this is because we don't
    allow directories to be default files. Should we? It would complicate

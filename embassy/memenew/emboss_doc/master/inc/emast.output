@@ -84,7 +84,7 @@
 &lt;PRE&gt;
 
 
-CPU: emboss6.ebi.ac.uk
+CPU: emboss4.ebi.ac.uk
 Time 0.001999 secs.
 
 mast ../../data/memenew/ex1.html -ev 10.000000 -mt 0.000100

@@ -1,5 +1,4 @@
-
-                              vrnacofoldconc 
+                               vrnacofoldconc
 
 
 
@@ -33,12 +32,13 @@ Usage
    Here is a sample session with vrnacofoldconc
 
 
-% vrnacofoldconc 
+% vrnacofoldconc
 RNA cofolding with concentrations
 Input nucleotide sequence: cofold-red.fasta
 Second nucleotide sequence: cofold-blue.fasta
 Vienna RNA concentration data file: cofold-conc.dat
-Vienna RNAfold output file [red.vrnacofoldconc]: 
+Vienna RNAfold output file [red.vrnacofoldconc]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -166,6 +166,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    vrnacofoldconc reads any normal sequence USAs.
@@ -184,7 +185,7 @@ CUGUCUGUCUUGAGACA
 
   File: cofold-conc.dat
 
-   10 10
+10 10
 
 Output file format
 

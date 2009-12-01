@@ -165,6 +165,8 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   Emolwt.dat
   Emwfilter.dat
   Enakai.dat
+  EnsemblAliases.dat
+  EnsemblIdentifiers.dat
   Epepcoil.dat
   Epk.dat
   Epprofile

@@ -6,11 +6,11 @@ Version: EMBOSS:6.1.0
                                   format, or reference (input USA)
    -graph              graph      [$EMBOSS_GRAPHICS value, or x11] Graph type
                                   (ps, hpgl, hp7470, hp7580, meta, cps, x11,
-                                  tekt, tek, none, data, das, xterm, png, gif)
+                                  tek, tekt, none, data, xterm, png, gif)
 
    Additional (Optional) qualifiers:
-   -anglesfile         datafile   [Eangles_tri.dat] DNA base timer roll angles
-                                  data file
+   -anglesfile         datafile   [Eangles_tri.dat] DNA base trimer roll
+                                  angles data file
    -residuesperline    integer    [50] Number of residues to be displayed on
                                   each line (Any integer value)
    -outfile            outfile    [banana.profile] Output file name

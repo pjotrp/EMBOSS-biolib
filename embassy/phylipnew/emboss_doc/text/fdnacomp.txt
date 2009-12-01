@@ -1,5 +1,4 @@
-
-                                 fdnacomp 
+                                  fdnacomp
 
 
 
@@ -17,24 +16,24 @@ Function
 Description
 
    Estimates phylogenies from nucleic acid sequence data using the
-   compatibility criterion, which searches for the largest number of
-   sites which could have all states (nucleotides) uniquely evolved on
-   the same tree. Compatibility is particularly appropriate when sites
-   vary greatly in their rates of evolution, but we do not know in
-   advance which are the less reliable ones.
+   compatibility criterion, which searches for the largest number of sites
+   which could have all states (nucleotides) uniquely evolved on the same
+   tree. Compatibility is particularly appropriate when sites vary greatly
+   in their rates of evolution, but we do not know in advance which are
+   the less reliable ones.
 
 Algorithm
 
-   This program implements the compatibility method for DNA sequence
-   data. For a four-state character without a character-state tree, as in
-   DNA sequences, the usual clique theorems cannot be applied. The
-   approach taken in this program is to directly evaluate each tree
-   topology by counting how many substitutions are needed in each site,
-   comparing this to the minimum number that might be needed (one less
-   than the number of bases observed at that site), and then evaluating
-   the number of sites which achieve the minimum number. This is the
-   evaluation of the tree (the number of compatible sites), and the
-   topology is chosen so as to maximize that number.
+   This program implements the compatibility method for DNA sequence data.
+   For a four-state character without a character-state tree, as in DNA
+   sequences, the usual clique theorems cannot be applied. The approach
+   taken in this program is to directly evaluate each tree topology by
+   counting how many substitutions are needed in each site, comparing this
+   to the minimum number that might be needed (one less than the number of
+   bases observed at that site), and then evaluating the number of sites
+   which achieve the minimum number. This is the evaluation of the tree
+   (the number of compatible sites), and the topology is chosen so as to
+   maximize that number.
 
    Compatibility methods originated with Le Quesne's (1969) suggestion
    that one ought to look for trees supported by the largest number of
@@ -52,60 +51,60 @@ Algorithm
     4. The rates of change in most sites over the time spans involved in
        the the divergence of the group are very small.
     5. A few of the sites have very high rates of change.
-    6. We do not know in advance which are the high and which the low
-       rate sites.
+    6. We do not know in advance which are the high and which the low rate
+       sites.
 
    That these are the assumptions of compatibility methods has been
    documented in a series of papers of mine: (1973a, 1978b, 1979, 1981b,
-   1983b, 1988b). For an opposing view arguing that arguments such as
-   mine are invalid and that parsimony (and perhaps compatibility)
-   methods make no substantive assumptions such as these, see the papers
-   by Farris (1983) and Sober (1983a, 1983b, 1988), but also read the
-   exchange between Felsenstein and Sober (1986).
+   1983b, 1988b). For an opposing view arguing that arguments such as mine
+   are invalid and that parsimony (and perhaps compatibility) methods make
+   no substantive assumptions such as these, see the papers by Farris
+   (1983) and Sober (1983a, 1983b, 1988), but also read the exchange
+   between Felsenstein and Sober (1986).
 
-   There is, however, some reason to believe that the present criterion
-   is not the proper way to correct for the presence of some sites with
-   high rates of change in nucleotide sequence data. It can be argued
-   that sites showing more than two nucleotide states, even if those are
+   There is, however, some reason to believe that the present criterion is
+   not the proper way to correct for the presence of some sites with high
+   rates of change in nucleotide sequence data. It can be argued that
+   sites showing more than two nucleotide states, even if those are
    compatible with the other sites, are also candidates for sites with
    high rates of change. It might then be more proper to use DNAPARS with
    the Threshold option with a threshold value of 2.
 
    Change from an occupied site to a gap is counted as one change.
-   Reversion from a gap to an occupied site is allowed and is also
-   counted as one change. Note that this in effect assumes that a gap N
-   bases long is N separate events. This may be an overcorrection. When
-   we have nonoverlapping gaps, we could instead code a gap as a single
-   event by changing all but the first "-" in the gap into "?"
-   characters. In this way only the first base of the gap causes the
-   program to infer a change.
+   Reversion from a gap to an occupied site is allowed and is also counted
+   as one change. Note that this in effect assumes that a gap N bases long
+   is N separate events. This may be an overcorrection. When we have
+   nonoverlapping gaps, we could instead code a gap as a single event by
+   changing all but the first "-" in the gap into "?" characters. In this
+   way only the first base of the gap causes the program to infer a
+   change.
 
-   If the U (User Tree) option is used and more than one tree is
-   supplied, the program also performs a statistical test of each of
-   these trees against the one with highest likelihood. If there are two
-   user trees, the test done is one which is due to Kishino and Hasegawa
-   (1989), a version of a test originally introduced by Templeton (1983).
-   In this implementation it uses the mean and variance of weighted
-   compatibility differences between trees, taken across sites. If the
-   two trees compatibilities are more than 1.96 standard deviations
-   different then the trees are declared significantly different.
+   If the U (User Tree) option is used and more than one tree is supplied,
+   the program also performs a statistical test of each of these trees
+   against the one with highest likelihood. If there are two user trees,
+   the test done is one which is due to Kishino and Hasegawa (1989), a
+   version of a test originally introduced by Templeton (1983). In this
+   implementation it uses the mean and variance of weighted compatibility
+   differences between trees, taken across sites. If the two trees
+   compatibilities are more than 1.96 standard deviations different then
+   the trees are declared significantly different.
 
    If there are more than two trees, the test done is an extension of the
    KHT test, due to Shimodaira and Hasegawa (1999). They pointed out that
-   a correction for the number of trees was necessary, and they
-   introduced a resampling method to make this correction. In the version
-   used here the variances and covariances of the sum of weighted
-   compatibilities of sites are computed for all pairs of trees. To test
-   whether the difference between each tree and the best one is larger
-   than could have been expected if they all had the same expected
-   compatibility, compatibilities for all trees are sampled with these
-   covariances and equal means (Shimodaira and Hasegawa's "least
-   favorable hypothesis"), and a P value is computed from the fraction of
-   times the difference between the tree's value and the highest
-   compatibility exceeds that actually observed. Note that this sampling
-   needs random numbers, and so the program will prompt the user for a
-   random number seed if one has not already been supplied. With the
-   two-tree KHT test no random numbers are used.
+   a correction for the number of trees was necessary, and they introduced
+   a resampling method to make this correction. In the version used here
+   the variances and covariances of the sum of weighted compatibilities of
+   sites are computed for all pairs of trees. To test whether the
+   difference between each tree and the best one is larger than could have
+   been expected if they all had the same expected compatibility,
+   compatibilities for all trees are sampled with these covariances and
+   equal means (Shimodaira and Hasegawa's "least favorable hypothesis"),
+   and a P value is computed from the fraction of times the difference
+   between the tree's value and the highest compatibility exceeds that
+   actually observed. Note that this sampling needs random numbers, and so
+   the program will prompt the user for a random number seed if one has
+   not already been supplied. With the two-tree KHT test no random numbers
+   are used.
 
    In either the KHT or the SH test the program prints out a table of the
    compatibility of each tree, the differences of each from the highest
@@ -115,20 +114,20 @@ Algorithm
 
    The algorithm is a straightforward modification of DNAPARS, but with
    some extra machinery added to calculate, as each species is added, how
-   many base changes are the minimum which could be required at that
-   site. The program runs fairly quickly.
+   many base changes are the minimum which could be required at that site.
+   The program runs fairly quickly.
 
 Usage
 
    Here is a sample session with fdnacomp
 
 
-% fdnacomp -ancseq -stepbox -printdata 
+% fdnacomp -ancseq -stepbox -printdata
 DNA compatibility algorithm
 Input (aligned) nucleotide sequence set(s): dnacomp.dat
-Phylip tree file (optional): 
-Phylip weights file (optional): 
-Phylip dnacomp program output file [dnacomp.fdnacomp]: 
+Phylip tree file (optional):
+Phylip weights file (optional):
+Phylip dnacomp program output file [dnacomp.fdnacomp]:
 
 Adding species:
    1. Alpha
@@ -146,22 +145,24 @@ Output written to file "dnacomp.fdnacomp"
 Trees also written onto file "dnacomp.treefile"
 
 
+
    Go to the input files for this example
    Go to the output files for this example
 
    Example 2
 
 
-% fdnacomp 
+% fdnacomp
 DNA compatibility algorithm
 Input (aligned) nucleotide sequence set(s): dnacomp.dat
 Phylip tree file (optional): dnacomptree.dat
-Phylip weights file (optional): 
-Phylip dnacomp program output file [dnacomp.fdnacomp]: 
+Phylip weights file (optional):
+Phylip dnacomp program output file [dnacomp.fdnacomp]:
 
 Output written to file "dnacomp.fdnacomp"
 
 Trees also written onto file "dnacomp.treefile"
+
 
 
    Go to the input files for this example
@@ -238,6 +239,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    fdnacomp reads any normal sequence USAs.
@@ -257,7 +259,7 @@ Epsilon   GGGAUCUCGGCCC
 
   File: dnacomptree.dat
 
-   ((((Epsilon,Delta),Gamma),Beta),Alpha);
+((((Epsilon,Delta),Gamma),Beta),Alpha);
 
 Output file format
 
@@ -272,15 +274,15 @@ Output file format
    or one of the IUB ambiguity symbols, there will be multiple
    equally-parsimonious assignments of states; the user must work these
    out for themselves by hand. A "?" in the reconstructed states means
-   that in addition to one or more bases, a gap may or may not be
-   present. If option 6 is left in its default state the trees found will
-   be written to a tree file, so that they are available to be used in
-   other programs. If the program finds multiple trees tied for best, all
-   of these are written out onto the output tree file. Each is followed
-   by a numerical weight in square brackets (such as [0.25000]). This is
-   needed when we use the trees to make a consensus tree of the results
-   of bootstrapping or jackknifing, to avoid overrepresenting replicates
-   that find many tied trees.
+   that in addition to one or more bases, a gap may or may not be present.
+   If option 6 is left in its default state the trees found will be
+   written to a tree file, so that they are available to be used in other
+   programs. If the program finds multiple trees tied for best, all of
+   these are written out onto the output tree file. Each is followed by a
+   numerical weight in square brackets (such as [0.25000]). This is needed
+   when we use the trees to make a consensus tree of the results of
+   bootstrapping or jackknifing, to avoid overrepresenting replicates that
+   find many tied trees.
 
   Output files for usage example
 
@@ -348,9 +350,10 @@ From    To     Any Steps?    State at upper node
    1   Alpha       maybe   AACGTGGCCA AAT
 
 
+
   File: dnacomp.treefile
 
-   ((((Epsilon,Delta),Gamma),Beta),Alpha);
+((((Epsilon,Delta),Gamma),Beta),Alpha);
 
   Output files for usage example 2
 
@@ -377,6 +380,7 @@ User-defined tree:
 
 
 total number of compatible sites is       11.0
+
 
 
 Data files

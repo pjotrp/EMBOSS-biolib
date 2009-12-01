@@ -1,5 +1,4 @@
-
-                                   fmix 
+                                    fmix
 
 
 
@@ -25,9 +24,9 @@ Description
 Algorithm
 
    MIX is a general parsimony program which carries out the Wagner and
-   Camin-Sokal parsimony methods in mixture, where each character can
-   have its method specified separately. The program defaults to carrying
-   out Wagner parsimony.
+   Camin-Sokal parsimony methods in mixture, where each character can have
+   its method specified separately. The program defaults to carrying out
+   Wagner parsimony.
 
    The Camin-Sokal parsimony method explains the data by assuming that
    changes 0 --> 1 are allowed but not changes 1 --> 0. Wagner parsimony
@@ -48,29 +47,29 @@ Algorithm
     5. Both of these kinds of changes are a priori improbable over the
        evolutionary time spans involved in the differentiation of the
        group in question.
-    6. Other kinds of evolutionary event such as retention of
-       polymorphism are far less probable than 0 --> 1 changes.
+    6. Other kinds of evolutionary event such as retention of polymorphism
+       are far less probable than 0 --> 1 changes.
     7. Rates of evolution in different lineages are sufficiently low that
        two changes in a long segment of the tree are far less probable
        than one change in a short segment.
 
-   That these are the assumptions of parsimony methods has been
-   documented in a series of papers of mine: (1973a, 1978b, 1979, 1981b,
-   1983b, 1988b). For an opposing view arguing that the parsimony methods
-   make no substantive assumptions such as these, see the papers by
-   Farris (1983) and Sober (1983a, 1983b), but also read the exchange
-   between Felsenstein and Sober (1986).
+   That these are the assumptions of parsimony methods has been documented
+   in a series of papers of mine: (1973a, 1978b, 1979, 1981b, 1983b,
+   1988b). For an opposing view arguing that the parsimony methods make no
+   substantive assumptions such as these, see the papers by Farris (1983)
+   and Sober (1983a, 1983b), but also read the exchange between
+   Felsenstein and Sober (1986).
 
 Usage
 
    Here is a sample session with fmix
 
 
-% fmix 
+% fmix
 Mixed parsimony algorithm
 Phylip character discrete states file: mix.dat
-Phylip tree file (optional): 
-Phylip mix program output file [mix.fmix]: 
+Phylip tree file (optional):
+Phylip mix program output file [mix.fmix]:
 
 Adding species:
    1. Alpha
@@ -87,6 +86,7 @@ Doing global rearrangements
 Output written to file "mix.fmix"
 
 Trees also written onto file "mix.treefile"
+
 
 
    Go to the input files for this example
@@ -95,11 +95,11 @@ Trees also written onto file "mix.treefile"
    Example 2
 
 
-% fmix -printdata -ancfile mixancfile.dat 
+% fmix -printdata -ancfile mixancfile.dat
 Mixed parsimony algorithm
 Phylip character discrete states file: mix.dat
-Phylip tree file (optional): 
-Phylip mix program output file [mix.fmix]: 
+Phylip tree file (optional):
+Phylip mix program output file [mix.fmix]:
 
 Adding species:
    1. Alpha
@@ -116,6 +116,7 @@ Doing global rearrangements
 Output written to file "mix.fmix"
 
 Trees also written onto file "mix.treefile"
+
 
 
    Go to the input files for this example
@@ -179,6 +180,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    fmix reads discrete character data. States "?", "P", and "B" are
@@ -187,21 +189,21 @@ Input file format
   (0,1) Discrete character data
 
    These programs are intended for the use of morphological systematists
-   who are dealing with discrete characters, or by molecular
-   evolutionists dealing with presence-absence data on restriction sites.
-   One of the programs (PARS) allows multistate characters, with up to 8
-   states, plus the unknown state symbol "?". For the others, the
-   characters are assumed to be coded into a series of (0,1) two-state
-   characters. For most of the programs there are two other states
-   possible, "P", which stands for the state of Polymorphism for both
-   states (0 and 1), and "?", which stands for the state of ignorance: it
-   is the state "unknown", or "does not apply". The state "P" can also be
-   denoted by "B", for "both".
+   who are dealing with discrete characters, or by molecular evolutionists
+   dealing with presence-absence data on restriction sites. One of the
+   programs (PARS) allows multistate characters, with up to 8 states, plus
+   the unknown state symbol "?". For the others, the characters are
+   assumed to be coded into a series of (0,1) two-state characters. For
+   most of the programs there are two other states possible, "P", which
+   stands for the state of Polymorphism for both states (0 and 1), and
+   "?", which stands for the state of ignorance: it is the state
+   "unknown", or "does not apply". The state "P" can also be denoted by
+   "B", for "both".
 
    There is a method invented by Sokal and Sneath (1963) for linear
    sequences of character states, and fully developed for branching
-   sequences of character states by Kluge and Farris (1969) for recoding
-   a multistate character into a series of two-state (0,1) characters.
+   sequences of character states by Kluge and Farris (1969) for recoding a
+   multistate character into a series of two-state (0,1) characters.
    Suppose we had a character with four states whose character-state tree
    had the rooted form:
 
@@ -210,6 +212,7 @@ Input file format
                       |
                       V
                       3
+
 
    so that 1 is the ancestral state and 0, 2 and 3 derived states. We can
    represent this as three two-state characters:
@@ -220,6 +223,7 @@ Input file format
                     1                  000
                     2                  011
                     3                  101
+
 
    The three new states correspond to the three arrows in the above
    character state tree. Possession of one of the new states corresponds
@@ -238,19 +242,19 @@ Input file format
    states are known and contain no loops.
 
    However, in the default option of programs DOLLOP, DOLMOVE, DOLPENNY
-   and DOLBOOT the multistate recoding does not necessarily work
-   properly, as it may lead the program to reconstruct nonexistent state
+   and DOLBOOT the multistate recoding does not necessarily work properly,
+   as it may lead the program to reconstruct nonexistent state
    combinations such as 010. An example of this problem is given in my
    paper on alternative phylogenetic methods (1979).
 
-   If you have multistate character data where the states are connected
-   in a branching "character state tree" you may want to do the binary
+   If you have multistate character data where the states are connected in
+   a branching "character state tree" you may want to do the binary
    recoding yourself. Thanks to Christopher Meacham, the package contains
    a program, FACTOR, which will do the recoding itself. For details see
    the documentation file for FACTOR.
 
-   We now also have the program PARS, which can do parsimony for
-   unordered character states.
+   We now also have the program PARS, which can do parsimony for unordered
+   character states.
 
   Input files for usage example
 
@@ -267,31 +271,31 @@ Epsilon   001110
 
   File: mixancfile.dat
 
-   001??1
+001??1
 
 Output file format
 
    fmix output is standard: a list of equally parsimonious trees, which
    will be printed as rooted or unrooted depending on which is
-   appropriate, and, if the user chooses, a table of the number of
-   changes of state required in each character. If the Wagner option is
-   in force for a character, it may not be possible to unambiguously
-   locate the places on the tree where the changes occur, as there may be
-   multiple possibilities. If the user selects menu option 5, a table is
-   printed out after each tree, showing for each branch whether there are
-   known to be changes in the branch, and what the states are inferred to
-   have been at the top end of the branch. If the inferred state is a "?"
-   there will be multiple equally-parsimonious assignments of states; the
-   user must work these out for themselves by hand.
+   appropriate, and, if the user chooses, a table of the number of changes
+   of state required in each character. If the Wagner option is in force
+   for a character, it may not be possible to unambiguously locate the
+   places on the tree where the changes occur, as there may be multiple
+   possibilities. If the user selects menu option 5, a table is printed
+   out after each tree, showing for each branch whether there are known to
+   be changes in the branch, and what the states are inferred to have been
+   at the top end of the branch. If the inferred state is a "?" there will
+   be multiple equally-parsimonious assignments of states; the user must
+   work these out for themselves by hand.
 
-   If the Camin-Sokal parsimony method is invoked and the Ancestors
-   option is also used, then the program will infer, for any character
-   whose ancestral state is unknown ("?") whether the ancestral state 0
-   or 1 will give the fewest state changes. If these are tied, then it
-   may not be possible for the program to infer the state in the internal
-   nodes, and these will all be printed as ".". If this has happened and
-   you want to know more about the states at the internal nodes, you will
-   find helpful to use MOVE to display the tree and examine its interior
+   If the Camin-Sokal parsimony method is invoked and the Ancestors option
+   is also used, then the program will infer, for any character whose
+   ancestral state is unknown ("?") whether the ancestral state 0 or 1
+   will give the fewest state changes. If these are tied, then it may not
+   be possible for the program to infer the state in the internal nodes,
+   and these will all be printed as ".". If this has happened and you want
+   to know more about the states at the internal nodes, you will find
+   helpful to use MOVE to display the tree and examine its interior
    states, as the algorithm in MOVE shows all that can be known in this
    case about the interior states, including where there is and is not
    amibiguity. The algorithm in MIX gives up more easily on displaying
@@ -302,45 +306,45 @@ Output file format
    and will assume that the ancestral state is unknown for those
    characters following Wagner parsimony. If any characters have unknown
    ancestral states, and if the resulting tree is rooted (even by
-   outgroup), a table will also be printed out showing the best guesses
-   of which are the ancestral states in each character. You will find it
+   outgroup), a table will also be printed out showing the best guesses of
+   which are the ancestral states in each character. You will find it
    useful to understand the difference between the Camin-Sokal parsimony
    criterion with unknown ancestral state and the Wagner parsimony
    criterion.
 
-   If the U (User Tree) option is used and more than one tree is
-   supplied, the program also performs a statistical test of each of
-   these trees against the best tree. This test, which is a version of
-   the test proposed by Alan Templeton (1983) and evaluated in a test
-   case by me (1985a). It is closely parallel to a test using log
-   likelihood differences invented by Kishino and Hasegawa (1989), and
-   uses the mean and variance of step differences between trees, taken
-   across characters. If the mean is more than 1.96 standard deviations
-   different then the trees are declared significantly different. The
-   program prints out a table of the steps for each tree, the differences
-   of each from the highest one, the variance of that quantity as
-   determined by the step differences at individual characters, and a
-   conclusion as to whether that tree is or is not significantly worse
-   than the best one. It is important to understand that the test assumes
-   that all the binary characters are evolving independently, which is
-   unlikely to be true for many suites of morphological characters.
+   If the U (User Tree) option is used and more than one tree is supplied,
+   the program also performs a statistical test of each of these trees
+   against the best tree. This test, which is a version of the test
+   proposed by Alan Templeton (1983) and evaluated in a test case by me
+   (1985a). It is closely parallel to a test using log likelihood
+   differences invented by Kishino and Hasegawa (1989), and uses the mean
+   and variance of step differences between trees, taken across
+   characters. If the mean is more than 1.96 standard deviations different
+   then the trees are declared significantly different. The program prints
+   out a table of the steps for each tree, the differences of each from
+   the highest one, the variance of that quantity as determined by the
+   step differences at individual characters, and a conclusion as to
+   whether that tree is or is not significantly worse than the best one.
+   It is important to understand that the test assumes that all the binary
+   characters are evolving independently, which is unlikely to be true for
+   many suites of morphological characters.
 
    If there are more than two trees, the test done is an extension of the
    KHT test, due to Shimodaira and Hasegawa (1999). They pointed out that
-   a correction for the number of trees was necessary, and they
-   introduced a resampling method to make this correction. In the version
-   used here the variances and covariances of the sums of steps across
-   characters are computed for all pairs of trees. To test whether the
-   difference between each tree and the best one is larger than could
-   have been expected if they all had the same expected number of steps,
-   numbers of steps for all trees are sampled with these covariances and
-   equal means (Shimodaira and Hasegawa's "least favorable hypothesis"),
-   and a P value is computed from the fraction of times the difference
-   between the tree's value and the lowest number of steps exceeds that
-   actually observed. Note that this sampling needs random numbers, and
-   so the program will prompt the user for a random number seed if one
-   has not already been supplied. With the two-tree KHT test no random
-   numbers are used.
+   a correction for the number of trees was necessary, and they introduced
+   a resampling method to make this correction. In the version used here
+   the variances and covariances of the sums of steps across characters
+   are computed for all pairs of trees. To test whether the difference
+   between each tree and the best one is larger than could have been
+   expected if they all had the same expected number of steps, numbers of
+   steps for all trees are sampled with these covariances and equal means
+   (Shimodaira and Hasegawa's "least favorable hypothesis"), and a P value
+   is computed from the fraction of times the difference between the
+   tree's value and the lowest number of steps exceeds that actually
+   observed. Note that this sampling needs random numbers, and so the
+   program will prompt the user for a random number seed if one has not
+   already been supplied. With the two-tree KHT test no random numbers are
+   used.
 
    In either the KHT or the SH test the program prints out a table of the
    number of steps for each tree, the differences of each from the lowest
@@ -352,10 +356,10 @@ Output file format
    written to a tree file, so that they are available to be used in other
    programs. If the program finds multiple trees tied for best, all of
    these are written out onto the output tree file. Each is followed by a
-   numerical weight in square brackets (such as [0.25000]). This is
-   needed when we use the trees to make a consensus tree of the results
-   of bootstrapping or jackknifing, to avoid overrepresenting replicates
-   that find many tied trees.
+   numerical weight in square brackets (such as [0.25000]). This is needed
+   when we use the trees to make a consensus tree of the results of
+   bootstrapping or jackknifing, to avoid overrepresenting replicates that
+   find many tied trees.
 
   Output files for usage example
 
@@ -447,6 +451,7 @@ requires a total of      9.000
 requires a total of      9.000
 
 
+
   File: mix.treefile
 
 (((Epsilon,Gamma),(Delta,Beta)),Alpha)[0.2500];
@@ -504,9 +509,10 @@ best guesses of ancestral states:
     0!   0 0 1 ? ? 1
 
 
+
   File: mix.treefile
 
-   (Delta,(Epsilon,(Gamma,(Beta,Alpha))));
+(Delta,(Epsilon,(Gamma,(Beta,Alpha))));
 
 Data files
 

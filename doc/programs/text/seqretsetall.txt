@@ -1,5 +1,4 @@
-
-                               seqretsetall 
+                                seqretsetall
 
 
 
@@ -23,10 +22,11 @@ Usage
    Here is a sample session with seqretsetall
 
 
-% seqretsetall -osf phylip 
+% seqretsetall -osf phylip
 Reads and writes (returns) many sets of sequences
 Input sequence set(s): globins-all.phy
-output sequence(s) [globins-all.phylip]: 
+output sequence(s) [globins-all.phylip]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -92,6 +92,7 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 
 Input file format
 
@@ -313,7 +314,7 @@ See also
 
 Author(s)
 
-   Peter Rice (pmr © ebi.ac.uk)
+   Peter Rice (pmr (c) ebi.ac.uk)
    European Bioinformatics Institute, Wellcome Trust Genome Campus,
    Hinxton, Cambridge CB10 1SD, UK
 

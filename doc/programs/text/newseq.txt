@@ -1,5 +1,4 @@
-
-                                  newseq 
+                                   newseq
 
 
 
@@ -27,7 +26,7 @@ Usage
    Type in a short sequence to the file 'mycc.pep' in SWISSPROT format:
 
 
-% newseq 
+% newseq
 Create a sequence file from a typed-in sequence
 Name of the sequence: cytoc
 Description of the sequence: fragment of cytochrome c
@@ -37,6 +36,7 @@ Type of sequence
 Type of sequence [N]: p
 Enter the sequence: KKKEERADLIAY
 output sequence [outfile.fasta]: swiss::mycc.pep
+
 
    Go to the output files for this example
 
@@ -99,6 +99,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
 Output file format
@@ -136,11 +137,11 @@ Warnings
    of the sequence that may be entered. This is not a property of the
    EMBOSS package but of the computer system you are using. Whenever you
    type something in at the command-line, the text is stored in a buffer
-   before being passed to the program. There is often a limit of less
-   than 255 characters on the size of the buffer and so also the size of
-   the sequence you can specify to newseq. The computer will normally
-   issue a beep when the end of buffer is reached, and allow no more
-   character input.
+   before being passed to the program. There is often a limit of less than
+   255 characters on the size of the buffer and so also the size of the
+   sequence you can specify to newseq. The computer will normally issue a
+   beep when the end of buffer is reached, and allow no more character
+   input.
 
 Diagnostic Error Messages
 
@@ -206,7 +207,7 @@ See also
 
 Author(s)
 
-   Gary Williams (gwilliam © rfcgr.mrc.ac.uk)
+   Gary Williams (gwilliam (c) rfcgr.mrc.ac.uk)
    MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
    Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 

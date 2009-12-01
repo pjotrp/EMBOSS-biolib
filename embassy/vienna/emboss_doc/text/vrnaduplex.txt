@@ -1,5 +1,4 @@
-
-                                vrnaduplex 
+                                 vrnaduplex
 
 
 
@@ -28,11 +27,12 @@ Usage
    Here is a sample session with vrnaduplex
 
 
-% vrnaduplex 
+% vrnaduplex
 RNA duplex calculation
 Input nucleotide sequence: cofold-red.fasta
 Second nucleotide sequence: cofold-blue.fasta
-Vienna RNAfold output file [red.vrnaduplex]: 
+Vienna RNAfold output file [red.vrnaduplex]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -121,6 +121,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    vrnaduplex reads any normal sequence USAs.
@@ -146,7 +147,7 @@ Output file format
 
   File: red.vrnaduplex
 
-   .(.(((((.&.))))).).   1,9   :   6,14  (-4.10)
+.(.(((((.&.))))).).   1,9   :   6,14  (-4.10)
 
 Data files
 

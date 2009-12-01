@@ -1,5 +1,4 @@
-
-                               vrnadistance 
+                                vrnadistance
 
 
 
@@ -28,10 +27,11 @@ Usage
    Here is a sample session with vrnadistance
 
 
-% vrnadistance -distance 'f,h' -doalignment 
+% vrnadistance -distance 'f,h' -doalignment
 RNA distances
 Vienna RNA structures file: rna4.fold
-Vienna RNAfold output file [rna4.vrnadistance]: 
+Vienna RNAfold output file [rna4.vrnadistance]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -83,6 +83,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    vrnadistance reads any normal sequence USAs.
@@ -109,6 +110,7 @@ _.....(_(((..((((..........)))).)))_)_....__.__(((...._)))_.___
 h: 32
 (____((U1)((U5_)P7)(U1)P2)(U4)((U2)((U5)P4)(U1)P2)(U1)R1)
 ((U5)((U2)((U10)P4)(U1)P4)(U5)_____((U4)P3)(U1)_______R1)
+
 
 Data files
 

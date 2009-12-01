@@ -1,5 +1,4 @@
-
-                                   esim4 
+                                    esim4
 
 
 
@@ -32,11 +31,12 @@ Usage
    Here is a sample session with esim4
 
 
-% esim4 
+% esim4
 Align an mRNA to a genomic DNA sequence
 Input nucleotide sequence: tembl:h45989
 Genomic sequence: tembl:z69719
-Sim4 program output file [h45989.esim4]: 
+Sim4 program output file [h45989.esim4]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -213,14 +213,15 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    esim4 reads any normal sequence USAs.
 
   Input files for usage example
 
-   'tembl:h45989' is a sequence entry in the example nucleic acid
-   database 'tembl'
+   'tembl:h45989' is a sequence entry in the example nucleic acid database
+   'tembl'
 
   Database entry: tembl:h45989
 
@@ -237,8 +238,7 @@ XX
 KW   EST.
 XX
 OS   Homo sapiens (human)
-OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia
-;
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia;
 OC   Eutheria; Euarchontoglires; Primates; Haplorrhini; Catarrhini; Hominidae;
 OC   Homo.
 XX
@@ -303,38 +303,26 @@ FT                   the Not I and Eco RI sites of a modified pT7T3 vector
 FT                   (Pharmacia). Library went through one round of
 FT                   normalization to a Cot = 53. Library constructed by Bento
 FT                   Soares and M.Fatima Bonaldo. The adult brain RNA was
-FT                   provided by Dr. Donald H. Gilden. Tissue was acquired 17-1
-8
+FT                   provided by Dr. Donald H. Gilden. Tissue was acquired 17-18
 FT                   hours after death which occurred in consequence of a
 FT                   ruptured aortic aneurysm. RNA was prepared from a pool of
 FT                   tissues representing the following areas of the brain:
 FT                   frontal, parietal, temporal and occipital cortex from the
-FT                   left and right hemispheres, subcortical white matter, basa
-l
-FT                   ganglia, thalamus, cerebellum, midbrain, pons and medulla.
-"
+FT                   left and right hemispheres, subcortical white matter, basal
+FT                   ganglia, thalamus, cerebellum, midbrain, pons and medulla."
 FT                   /db_xref="taxon:9606"
 FT                   /db_xref="UNILIB:555"
 XX
 SQ   Sequence 495 BP; 73 A; 135 C; 169 G; 104 T; 14 other;
-     ccggnaagct cancttggac caccgactct cgantgnntc gccgcgggag ccggntggan        6
-0
-     aacctgagcg ggactggnag aaggagcaga gggaggcagc acccggcgtg acggnagtgt       12
-0
-     gtggggcact caggccttcc gcagtgtcat ctgccacacg gaaggcacgg ccacgggcag       18
-0
-     gggggtctat gatcttctgc atgcccagct ggcatggccc cacgtagagt ggnntggcgt       24
-0
-     ctcggtgctg gtcagcgaca cgttgtcctg gctgggcagg tccagctccc ggaggacctg       30
-0
-     gggcttcagc ttcccgtagc gctggctgca gtgacggatg ctcttgcgct gccatttctg       36
-0
-     ggtgctgtca ctgtccttgc tcactccaaa ccagttcggc ggtccccctg cggatggtct       42
-0
-     gtgttgatgg acgtttgggc tttgcagcac cggccgccga gttcatggtn gggtnaagag       48
-0
-     atttgggttt tttcn                                                        49
-5
+     ccggnaagct cancttggac caccgactct cgantgnntc gccgcgggag ccggntggan        60
+     aacctgagcg ggactggnag aaggagcaga gggaggcagc acccggcgtg acggnagtgt       120
+     gtggggcact caggccttcc gcagtgtcat ctgccacacg gaaggcacgg ccacgggcag       180
+     gggggtctat gatcttctgc atgcccagct ggcatggccc cacgtagagt ggnntggcgt       240
+     ctcggtgctg gtcagcgaca cgttgtcctg gctgggcagg tccagctccc ggaggacctg       300
+     gggcttcagc ttcccgtagc gctggctgca gtgacggatg ctcttgcgct gccatttctg       360
+     ggtgctgtca ctgtccttgc tcactccaaa ccagttcggc ggtccccctg cggatggtct       420
+     gtgttgatgg acgtttgggc tttgcagcac cggccgccga gttcatggtn gggtnaagag       480
+     atttgggttt tttcn                                                        495
 //
 
   Database entry: tembl:z69719
@@ -351,8 +339,7 @@ XX
 KW   C16orf33; HTG; POLR3K; RHBDF1.
 XX
 OS   Homo sapiens (human)
-OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia
-;
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia;
 OC   Eutheria; Euarchontoglires; Primates; Haplorrhini; Catarrhini; Hominidae;
 OC   Homo.
 XX
@@ -394,106 +381,56 @@ CC   http://www.sanger.ac.uk/Projects/C_elegans/wormpep
 
   [Part of this file has been deleted for brevity]
 
-     gagacagcag agtgctcagc tcatgaagga ggcaccagcc gccatgcctc tacatccagg     3084
-0
-     tctcctgggg ttcccacctc cacaaaaacc cccactgcta ggagtgcagg caggagggga     3090
-0
-     cctgagaacc gacagttata ggtcctgcgg gtgggcagtg ctgggtgttc tggtctgccc     3096
-0
-     cacccctgtg tgcctagatc cccatctggg cctcaagtgg gtgggattcc aaaggaagag     3102
-0
-     ccggagtagg cgtggggagg ggcaggccca ggctggacaa agagtctggc cagggagcgg     3108
-0
-     cacattgccc tcccagagac agtggctcag tgtccaggcc ttccccaggc gcacagtggg     3114
-0
-     ctcttgttcc cagaaagccc ctcgggggga tccaaacagt gtctccccca ccccgctgac     3120
-0
-     ccctcagtgt atggggaaac cgtggcccac ggaaggcctc actgcctggg gtcacacagc     3126
-0
-     atctgagtca ctgcagcagc ctcacagctg ccagcccagg cccagcccca tcaggagaca     3132
-0
-     cccaaagcca cagtgcatcc caggaccagc tgggggggct gcgggcagga ctctcgatga     3138
-0
-     ggctgaggga cgaggagggt caagggagcc actggcgcca tgcatgctga cgtcccctct     3144
-0
-     ggctgcctgc agagcctggt gtggaagggc tgagtggggg atggtggaga gtcctgttaa     3150
-0
-     ctcaggtttc tgctctgggg atgtctgggc acccatcaag ctggccgcgt gcacaggtgc     3156
-0
-     agggagagcc agaaagcagg agccgatgca gggaggccac tggggacagc ccaggctgat     3162
-0
-     gcttgggccc catgtgtctc caccacctac aaccctaagc aagcctcagc tttcccatct     3168
-0
-     ggaaatcagg ggtcacagca gtgcctggca cagtagcagc ggctgactcc atcacagggt     3174
-0
-     ggtgtagcct gtgggtactt ggcactctct gaggggcagg agctgggggg tgaaaggacc     3180
-0
-     ctagagcata tgcaacaaga gggcagccct ggggacacct ggggacagaa ccctccaaag     3186
-0
-     gtgtcgagtt tgggaagaga ctagagagaa gctctggcca gtccaggcat agacagtggc     3192
-0
-     cacagccagt ggagagctgc atcctcaggt gtgagcagca accacctctg tactcaggcc     3198
-0
-     tgccctgcac actcacagga ccatgctggc agggacaact ggcggcggag ttgactgcca     3204
-0
-     accccggggc cagaaccatc aagcctgggc tctgctccgc ccaaggaact gcctgctgcc     3210
-0
-     gaggtcagct ggagcaaggg gcctcacccc gggacacctt cccagacgtg tcctcagctc     3216
-0
-     acatgagcct catcccaggg ggatgtggct cctccagcat ccccacccac acgctgctct     3222
-0
-     ctgaccctca gtcttctgtt tgactcctaa tctgaagctc aatcctagat ctcccttgag     3228
-0
-     aagggggtca ccagctgtct ggcagcccag cctccaggtc ttctggatta atgaagggaa     3234
-0
-     agtcacctgg cctctctgcc ttgtctatta atggcatcat gctgagaatg atatttgcta     3240
-0
-     ggccctttgc aaaccccaaa gtgctcttca accctcccag tgaagcctct tcttttctgt     3246
-0
-     ggaagaaatg aggttcaggg tggagcaggg caggcctgag acctttgcag ggttctctcc     3252
-0
-     aggtccccag caggacagac tggcaccctg cctcccctca tcaccctaga caaggagaca     3258
-0
-     gaacaagagg ttccctgcta caggccatct gtgagggaag ccgccctagg gcctgtagac     3264
-0
-     acaggaatcc ctgaggacct gacctgtgag ggtagtgcac aaaggggcca gcacttggca     3270
-0
-     ggaggggggg gggcactgcc ccaaggctca gctagcaaat gtggcacagg ggtcaccaga     3276
-0
-     gctaaacccc tgactcagtt gggtctgaca ggggctgaca tggcagacac acccaggaat     3282
-0
-     caggggacac caagtgcagc tcagggcacc tgtccaggcc acacagtcag aaaggggatg     3288
-0
-     gcagcaagga cttagctaca ctagattctg ggggtaaact gcctggtatg ctggtcactg     3294
-0
-     ctagtcccca gtctggagtc tagctgggtc tcaggagtta ggcgaaaaca ccctccccag     3300
-0
-     gctgcaggtg ggagaggccc acatcccctg cacacgtctg gccagaggac agatgggcag     3306
-0
-     cccagtcacc agtcagagcc ctccagaggt gtccctgact gaccctacac acatgcaccc     3312
-0
-     aggtgcccag gcacccttgg gctcagcaac cctgcaaccc cctcccagga cccaccagaa     3318
-0
-     gcaggatagg actagagagg ccacaggagg gaaaccaagt cagagcagaa atggcttcgg     3324
-0
-     tcctcagcag cctggctcag cttcctcaaa ccagatcctg actgatcaca ctggtctgtc     3330
-0
-     taacccctgg gaggggtcct ctgtatccat cttacagata aggaaactga ggctcagaga     3336
-0
-     agcccatcac tgcctaaggt cccagggcct ataagggagc tcaaagcctt gggccaggtc     3342
-0
-     tgcccaggag ctgcagtgga agggaccctg tctgcagacc cccagaagac aaggcagacc     3348
-0
-     acctgggttc ttcagccttg tggctgtgga cggctgtcag acccttctaa gaccccttgc     3354
-0
-     cacctgctcc atcaggggca tctcagttga agaaggaagg actcaccccc aaaatcgtcc     3360
-0
-     aactcagaaa aaaaggcaga agccaaggaa tccaatcact gggcaaaatg tgatcctggc     3366
-0
-     acagacactg aggtggggga actggagccg gtgtggcgga ggccctcaca gccaagagca     3372
-0
-     actgggggtg ccctgggcag ggactgtagc tgggaagatc                           3376
-0
+     gagacagcag agtgctcagc tcatgaagga ggcaccagcc gccatgcctc tacatccagg     30840
+     tctcctgggg ttcccacctc cacaaaaacc cccactgcta ggagtgcagg caggagggga     30900
+     cctgagaacc gacagttata ggtcctgcgg gtgggcagtg ctgggtgttc tggtctgccc     30960
+     cacccctgtg tgcctagatc cccatctggg cctcaagtgg gtgggattcc aaaggaagag     31020
+     ccggagtagg cgtggggagg ggcaggccca ggctggacaa agagtctggc cagggagcgg     31080
+     cacattgccc tcccagagac agtggctcag tgtccaggcc ttccccaggc gcacagtggg     31140
+     ctcttgttcc cagaaagccc ctcgggggga tccaaacagt gtctccccca ccccgctgac     31200
+     ccctcagtgt atggggaaac cgtggcccac ggaaggcctc actgcctggg gtcacacagc     31260
+     atctgagtca ctgcagcagc ctcacagctg ccagcccagg cccagcccca tcaggagaca     31320
+     cccaaagcca cagtgcatcc caggaccagc tgggggggct gcgggcagga ctctcgatga     31380
+     ggctgaggga cgaggagggt caagggagcc actggcgcca tgcatgctga cgtcccctct     31440
+     ggctgcctgc agagcctggt gtggaagggc tgagtggggg atggtggaga gtcctgttaa     31500
+     ctcaggtttc tgctctgggg atgtctgggc acccatcaag ctggccgcgt gcacaggtgc     31560
+     agggagagcc agaaagcagg agccgatgca gggaggccac tggggacagc ccaggctgat     31620
+     gcttgggccc catgtgtctc caccacctac aaccctaagc aagcctcagc tttcccatct     31680
+     ggaaatcagg ggtcacagca gtgcctggca cagtagcagc ggctgactcc atcacagggt     31740
+     ggtgtagcct gtgggtactt ggcactctct gaggggcagg agctgggggg tgaaaggacc     31800
+     ctagagcata tgcaacaaga gggcagccct ggggacacct ggggacagaa ccctccaaag     31860
+     gtgtcgagtt tgggaagaga ctagagagaa gctctggcca gtccaggcat agacagtggc     31920
+     cacagccagt ggagagctgc atcctcaggt gtgagcagca accacctctg tactcaggcc     31980
+     tgccctgcac actcacagga ccatgctggc agggacaact ggcggcggag ttgactgcca     32040
+     accccggggc cagaaccatc aagcctgggc tctgctccgc ccaaggaact gcctgctgcc     32100
+     gaggtcagct ggagcaaggg gcctcacccc gggacacctt cccagacgtg tcctcagctc     32160
+     acatgagcct catcccaggg ggatgtggct cctccagcat ccccacccac acgctgctct     32220
+     ctgaccctca gtcttctgtt tgactcctaa tctgaagctc aatcctagat ctcccttgag     32280
+     aagggggtca ccagctgtct ggcagcccag cctccaggtc ttctggatta atgaagggaa     32340
+     agtcacctgg cctctctgcc ttgtctatta atggcatcat gctgagaatg atatttgcta     32400
+     ggccctttgc aaaccccaaa gtgctcttca accctcccag tgaagcctct tcttttctgt     32460
+     ggaagaaatg aggttcaggg tggagcaggg caggcctgag acctttgcag ggttctctcc     32520
+     aggtccccag caggacagac tggcaccctg cctcccctca tcaccctaga caaggagaca     32580
+     gaacaagagg ttccctgcta caggccatct gtgagggaag ccgccctagg gcctgtagac     32640
+     acaggaatcc ctgaggacct gacctgtgag ggtagtgcac aaaggggcca gcacttggca     32700
+     ggaggggggg gggcactgcc ccaaggctca gctagcaaat gtggcacagg ggtcaccaga     32760
+     gctaaacccc tgactcagtt gggtctgaca ggggctgaca tggcagacac acccaggaat     32820
+     caggggacac caagtgcagc tcagggcacc tgtccaggcc acacagtcag aaaggggatg     32880
+     gcagcaagga cttagctaca ctagattctg ggggtaaact gcctggtatg ctggtcactg     32940
+     ctagtcccca gtctggagtc tagctgggtc tcaggagtta ggcgaaaaca ccctccccag     33000
+     gctgcaggtg ggagaggccc acatcccctg cacacgtctg gccagaggac agatgggcag     33060
+     cccagtcacc agtcagagcc ctccagaggt gtccctgact gaccctacac acatgcaccc     33120
+     aggtgcccag gcacccttgg gctcagcaac cctgcaaccc cctcccagga cccaccagaa     33180
+     gcaggatagg actagagagg ccacaggagg gaaaccaagt cagagcagaa atggcttcgg     33240
+     tcctcagcag cctggctcag cttcctcaaa ccagatcctg actgatcaca ctggtctgtc     33300
+     taacccctgg gaggggtcct ctgtatccat cttacagata aggaaactga ggctcagaga     33360
+     agcccatcac tgcctaaggt cccagggcct ataagggagc tcaaagcctt gggccaggtc     33420
+     tgcccaggag ctgcagtgga agggaccctg tctgcagacc cccagaagac aaggcagacc     33480
+     acctgggttc ttcagccttg tggctgtgga cggctgtcag acccttctaa gaccccttgc     33540
+     cacctgctcc atcaggggca tctcagttga agaaggaagg actcaccccc aaaatcgtcc     33600
+     aactcagaaa aaaaggcaga agccaaggaa tccaatcact gggcaaaatg tgatcctggc     33660
+     acagacactg aggtggggga actggagccg gtgtggcgga ggccctcaca gccaagagca     33720
+     actgggggtg ccctgggcag ggactgtagc tgggaagatc                           33760
 //
 
 Output file format
@@ -544,6 +481,7 @@ See also
                     Program name                       Description
                     est2genome   Align EST sequences to genomic DNA sequence
                     needle       Needleman-Wunsch global alignment of two sequences
+                    needleall    Many-to-many pairwise alignments of two sequence sets
                     stretcher    Needleman-Wunsch rapid global alignment of two sequences
 
 Author(s)

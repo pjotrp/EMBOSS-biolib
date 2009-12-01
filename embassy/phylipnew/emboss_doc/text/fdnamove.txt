@@ -1,5 +1,4 @@
-
-                                 fdnamove 
+                                  fdnamove
 
 
 
@@ -17,9 +16,9 @@ Function
 Description
 
    Interactive construction of phylogenies from nucleic acid sequences,
-   with their evaluation by parsimony and compatibility and the display
-   of reconstructed ancestral bases. This can be used to find parsimony
-   or compatibility estimates by hand.
+   with their evaluation by parsimony and compatibility and the display of
+   reconstructed ancestral bases. This can be used to find parsimony or
+   compatibility estimates by hand.
 
 Algorithm
 
@@ -43,14 +42,14 @@ Algorithm
    whose screen or terminals emulate ANSI standard terminals such as old
    Digital VT100 terminals, Telnet programs, or VT100-compatible windows
    in the X windowing system. For any other screen types, (such as
-   Macintosh windows) there is a generic option which does not make use
-   of screen graphics characters. The program will work well in those
-   cases, but the tree it displays will look a bit uglier.
+   Macintosh windows) there is a generic option which does not make use of
+   screen graphics characters. The program will work well in those cases,
+   but the tree it displays will look a bit uglier.
 
-   This program carries out unrooted parsimony (analogous to Wagner
-   trees) (Eck and Dayhoff, 1966; Kluge and Farris, 1969) on DNA
-   sequences. The method of Fitch (1971) is used to count the number of
-   changes of base needed on a given tree.
+   This program carries out unrooted parsimony (analogous to Wagner trees)
+   (Eck and Dayhoff, 1966; Kluge and Farris, 1969) on DNA sequences. The
+   method of Fitch (1971) is used to count the number of changes of base
+   needed on a given tree.
 
    The assumptions of this method are exactly analogous to those of MIX:
     1. Each site evolves independently.
@@ -64,12 +63,12 @@ Algorithm
        two changes in one site are more probable than one change in
        another.
 
-   That these are the assumptions of parsimony methods has been
-   documented in a series of papers of mine: (1973a, 1978b, 1979, 1981b,
-   1983b, 1988b). For an opposing view arguing that the parsimony methods
-   make no substantive assumptions such as these, see the papers by
-   Farris (1983) and Sober (1983a, 1983b), but also read the exchange
-   between Felsenstein and Sober (1986).
+   That these are the assumptions of parsimony methods has been documented
+   in a series of papers of mine: (1973a, 1978b, 1979, 1981b, 1983b,
+   1988b). For an opposing view arguing that the parsimony methods make no
+   substantive assumptions such as these, see the papers by Farris (1983)
+   and Sober (1983a, 1983b), but also read the exchange between
+   Felsenstein and Sober (1986).
 
    Change from an occupied site to a deletion is counted as one change.
    Reversion from a deletion to an occupied site is allowed and is also
@@ -80,10 +79,10 @@ Usage
    Here is a sample session with fdnamove
 
 
-% fdnamove 
+% fdnamove
 Interactive DNA parsimony
 Input (aligned) nucleotide sequence set(s): dnamove.dat
-Phylip tree file (optional): 
+Phylip tree file (optional):
 NEXT (R # + - S . T U W O F H J K L C ? X Q) (? for Help): Q
 Do you want to write out the tree to a file? (Y or N): Y
 
@@ -106,6 +105,7 @@ Computing steps needed for compatibility in sites ...
 
 
 Tree written to file "dnamove.treefile"
+
 
 
    Go to the input files for this example
@@ -176,6 +176,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    fdnamove reads any normal sequence USAs.
@@ -200,7 +201,7 @@ Output file format
 
   File: dnamove.treefile
 
-   (Epsilon,(Delta,(Gamma,(Beta,Alpha))));
+(Epsilon,(Delta,(Gamma,(Beta,Alpha))));
 
 Data files
 

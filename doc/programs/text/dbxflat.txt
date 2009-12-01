@@ -1,5 +1,4 @@
-
-                                  dbxflat 
+                                   dbxflat
 
 
 
@@ -25,7 +24,7 @@ Usage
    Here is a sample session with dbxflat
 
 
-% dbxflat 
+% dbxflat
 Index a flat file database using b+tree indices
 Basename for index files: embl
 Resource name: emblresource
@@ -42,8 +41,9 @@ Database directory [.]: embl
        des : Description
        key : Keywords
        org : Taxonomy
-Index fields [id,acc]: 
-General log output file [outfile.dbxflat]: 
+Index fields [id,acc]:
+General log output file [outfile.dbxflat]:
+
 
    Go to the output files for this example
 
@@ -101,6 +101,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    dbxflat reads any normal sequence USAs.
@@ -123,7 +124,7 @@ Output file format
   File: outfile.dbxflat
 
 Processing directory: /homes/user/test/embl/
-Processing file: rod.dat entries: 6 (6) time: 0.0s (0.0s)
+Processing file: rod.dat entries: 6 (6) time: 0.0/0.0s (0.0/0.0s)
 Total time: 0.0s
 
   File: embl.ent
@@ -178,8 +179,8 @@ Notes
    indexes. This feature is, however, not implemented in the current
    version. It will be made available in future releases.
 
-   Having created the EMBOSS indexes for this file, a database can then
-   be defined in the file emboss.defaults as something like:
+   Having created the EMBOSS indexes for this file, a database can then be
+   defined in the file emboss.defaults as something like:
 DB embl [
    type: N
    dbalias: embl   (see below)
@@ -196,12 +197,12 @@ DB embl [
 
   Fields Indexed
 
-   By default, dbxflat will index the ID name and the accession number
-   (if present).
-   If they are present in your database, you may also specify that
-   dbxflat should index the Sequence Version and GI, the words in the
-   description, the keywords and the organism words using the '-fields'
-   qualifier with the appropriate values.
+   By default, dbxflat will index the ID name and the accession number (if
+   present).
+   If they are present in your database, you may also specify that dbxflat
+   should index the Sequence Version and GI, the words in the description,
+   the keywords and the organism words using the '-fields' qualifier with
+   the appropriate values.
 
 Global Parameters
 
@@ -263,7 +264,7 @@ See also
 
 Author(s)
 
-   Alan             Bleasby (ajb © ebi.ac.uk)
+   Alan             Bleasby (ajb (c) ebi.ac.uk)
    European         Bioinformatics Institute, Wellcome Trust Genome Campus,
    Hinxton,         Cambridge CB10 1SD, UK
 

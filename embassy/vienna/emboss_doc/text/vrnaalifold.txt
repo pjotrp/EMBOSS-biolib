@@ -1,5 +1,4 @@
-
-                                vrnaalifold 
+                                 vrnaalifold
 
 
 
@@ -32,10 +31,11 @@ Usage
    Here is a sample session with vrnaalifold
 
 
-% vrnaalifold 
+% vrnaalifold
 RNA alignment folding
 Input (aligned) nucleotide sequence set: ecoli6s.fasta
-Vienna RNAfold output file [ecoli6s.vrnaalifold]: 
+Vienna RNAfold output file [ecoli6s.vrnaalifold]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -129,6 +129,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    vrnaalifold reads any normal sequence USAs.
@@ -175,19 +176,19 @@ CAACGGCA.UC.CCGGGG.UUC.
 
 Output file format
 
-   vrnaalifold outputs a graph to the specified graphics device. outputs
-   a report format file. The default format is ...
+   vrnaalifold outputs a graph to the specified graphics device. outputs a
+   report format file. The default format is ...
 
   Output files for usage example
 
   File: ecoli6s.vrnaalifold
 
-AUUUCCCUGAGGUGUUCGCCAGCGGGC_CAUGUCCCUGAGCCGAUAUUUAAUACCACAAGAAUGUGGUGCUCCGUGGUU
-GGUGAGCAUGCUCGGCCCGU_______________CCGAGAAGCCUUAAAAUUGCGACGACACAUUCACCUUGAACCAA
-_GGGUUCAAGGGCUACAGCCUGCAGCGGCA_UC_UCGGGG_AUUC
-....(((((((((((.(((..((((((................................(((((((......(((((((
-...(.((...(((((....................)))))..)))....)))))))....))))))).(((((((((..
-..)))))))))......)))))).)))))).)).))))))..... (-56.91 = -48.71 +  -8.20)
+AUUUCCCUGAGGUGUUCGCCAGCGGGC_CAUGUCCCUGAGCCGAUAUUUAAUACCACAAGAAUGUGGUGCUCCGUGGUUG
+GUGAGCAUGCUCGGCCCGU_______________CCGAGAAGCCUUAAAAUUGCGACGACACAUUCACCUUGAACCAA_G
+GGUUCAAGGGCUACAGCCUGCAGCGGCA_UC_UCGGGG_AUUC
+....(((((((((((.(((..((((((................................(((((((......(((((((.
+..(.((...(((((....................)))))..)))....)))))))....))))))).(((((((((....
+)))))))))......)))))).)))))).)).))))))..... (-56.91 = -48.71 +  -8.20)
 
   Graphics File: ecoli6s.ssps
 

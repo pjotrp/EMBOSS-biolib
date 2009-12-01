@@ -1,5 +1,4 @@
-
-                                vrnafoldpf 
+                                 vrnafoldpf
 
 
 
@@ -21,8 +20,8 @@ Description
    The original program has additional inputs and produces different
    outputs, depending on the options selected. In the EMBASSY
    implementation it is split into vrnafold for a single sequence and
-   vrnafoldpair for a pair of sequences See the original documentation
-   for the Vienna RNA package http://www.tbi.univie.ac.at/~ivo/RNA/
+   vrnafoldpair for a pair of sequences See the original documentation for
+   the Vienna RNA package http://www.tbi.univie.ac.at/~ivo/RNA/
 
 Algorithm
 
@@ -31,10 +30,11 @@ Usage
    Here is a sample session with vrnafoldpf
 
 
-% vrnafoldpf -temperature 42 
+% vrnafoldpf -temperature 42
 Secondary structures of RNAs with partition
 Input nucleotide sequence: rna2.seq
-Vienna RNAfold output file [rna2.vrnafoldpf]: 
+Vienna RNAfold output file [rna2.vrnafoldpf]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -124,6 +124,7 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 
 Input file format
 

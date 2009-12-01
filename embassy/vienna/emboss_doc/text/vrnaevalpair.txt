@@ -1,5 +1,4 @@
-
-                               vrnaevalpair 
+                                vrnaevalpair
 
 
 
@@ -32,13 +31,14 @@ Usage
    Here is a sample session with vrnaevalpair
 
 
-% vrnaevalpair 
+% vrnaevalpair
 RNA eval with cofold
 Input nucleotide sequence: cofold-red.fasta
 Vienna RNA structure constraints file: cofold-red.con
 Second nucleotide sequence: cofold-blue.fasta
 Second vienna RNA structure constraints file: cofold-blue.con
-Vienna RNAeval output file [red.vrnaevalpair]: 
+Vienna RNAeval output file [red.vrnaevalpair]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -129,6 +129,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    vrnaevalpair reads any normal sequence USAs.
@@ -142,7 +143,7 @@ AUGAAGAUGA
 
   File: cofold-red.con
 
-   ....((((..
+....((((..
 
   File: cofold-blue.fasta
 
@@ -151,7 +152,7 @@ CUGUCUGUCUUGAGACA
 
   File: cofold-blue.con
 
-   ..))))(((....))).
+..))))(((....))).
 
 Output file format
 

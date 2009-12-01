@@ -1,24 +1,23 @@
-
                             SIGGEN documentation
-                                      
-   
+
+
 
 CONTENTS
 
-   1.0 SUMMARY 
-   2.0 INPUTS & OUTPUTS 
-   3.0 INPUT FILE FORMAT 
-   4.0 OUTPUT FILE FORMAT 
-   5.0 DATA FILES 
-   6.0 USAGE 
-   7.0 KNOWN BUGS & WARNINGS 
-   8.0 NOTES 
-   9.0 DESCRIPTION 
-   10.0 ALGORITHM 
-   11.0 RELATED APPLICATIONS 
-   12.0 DIAGNOSTIC ERROR MESSAGES 
-   13.0 AUTHORS 
-   14.0 REFERENCES 
+   1.0 SUMMARY
+   2.0 INPUTS & OUTPUTS
+   3.0 INPUT FILE FORMAT
+   4.0 OUTPUT FILE FORMAT
+   5.0 DATA FILES
+   6.0 USAGE
+   7.0 KNOWN BUGS & WARNINGS
+   8.0 NOTES
+   9.0 DESCRIPTION
+   10.0 ALGORITHM
+   11.0 RELATED APPLICATIONS
+   12.0 DIAGNOSTIC ERROR MESSAGES
+   13.0 AUTHORS
+   14.0 REFERENCES
 
 1.0 SUMMARY
 
@@ -45,9 +44,9 @@ CONTENTS
 
    The output file (Figure 1) uses the following records. Domain
    classification records for the node in SCOP or CATH from which the
-   input alignment and therefore signature were derived are given. In
-   this example, the four records taken from the DAF (input) file are CL,
-   FO, SF and FA.
+   input alignment and therefore signature were derived are given. In this
+   example, the four records taken from the DAF (input) file are CL, FO,
+   SF and FA.
      * TY - Signature type, either SCOP or CATH for domain signatures, or
        LIGAND for ligand signatures.
      * TS - Signature data type, either 1D or 3D, for sequence or
@@ -449,4 +448,5 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 

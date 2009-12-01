@@ -67,10 +67,10 @@ POSTSTAMP, R.B. Russell 1995
  Reading domain descriptors/transformations from the file ./domainalign-1234567890.1234.1
  Reading alignment...
   Reading coordinates...
- Domain   1 /homes/user/test/qa/domainer-keep2//d1cs4a_.ent d1cs4a_
+ Domain   1 /homes/pmr/cvsemboss/test/qa/domainer-keep2//d1cs4a_.ent d1cs4a_
         all residues 189 CAs =>  189 CAs in total
  Transforming coordinates...
- Domain   2 /homes/user/test/qa/domainer-keep2//d1fx2a_.ent d1fx2a__1
+ Domain   2 /homes/pmr/cvsemboss/test/qa/domainer-keep2//d1fx2a_.ent d1fx2a__1
         all residues 235 CAs =>  235 CAs in total
  Transforming coordinates...
  ...done.
@@ -94,7 +94,7 @@ P(m)  = P value (p=1/10) calculated after Murzin (1993), JMB, 230, 689-694
 
      Domain1         Domain2          Fits  Sc      RMS   Len1 Len2 Align Fit   Eq. Secs    %I    %S     P(m)
 Scan d4at1b1         d4at1b1            1   9.799   0.001   93   93   93   93   92    0 100.00 100.00 1.00e-92
-Scan d4at1b1         d4at1d1            1   9.250   0.588   93   93   94   89   88    0 100.00 100.00 1.00e-88
+Scan d4at1b1         d4at1d1            1   9.251   0.588   93   93   94   89   88    0 100.00 100.00 1.00e-88
 See the file ./domainalign-1234567890.1234.scan
 
 Processing node 54894
@@ -122,10 +122,10 @@ POSTSTAMP, R.B. Russell 1995
  Reading domain descriptors/transformations from the file ./domainalign-1234567890.1234.1
  Reading alignment...
   Reading coordinates...
- Domain   1 /homes/user/test/qa/domainer-keep2//d4at1b1.ent d4at1b1
+ Domain   1 /homes/pmr/cvsemboss/test/qa/domainer-keep2//d4at1b1.ent d4at1b1
         all residues  93 CAs =>   93 CAs in total
  Transforming coordinates...
- Domain   2 /homes/user/test/qa/domainer-keep2//d4at1d1.ent d4at1d1_1
+ Domain   2 /homes/pmr/cvsemboss/test/qa/domainer-keep2//d4at1d1.ent d4at1d1_1
         all residues  93 CAs =>   93 CAs in total
  Transforming coordinates...
  ...done.

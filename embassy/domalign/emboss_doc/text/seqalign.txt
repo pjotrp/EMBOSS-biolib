@@ -1,24 +1,23 @@
-
                            SEQALIGN documentation
-                                      
-   
+
+
 
 CONTENTS
 
-   1.0 SUMMARY 
-   2.0 INPUTS & OUTPUTS 
-   3.0 INPUT FILE FORMAT 
-   4.0 OUTPUT FILE FORMAT 
-   5.0 DATA FILES 
-   6.0 USAGE 
-   7.0 KNOWN BUGS & WARNINGS 
-   8.0 NOTES 
-   9.0 DESCRIPTION 
-   10.0 ALGORITHM 
-   11.0 RELATED APPLICATIONS 
-   12.0 DIAGNOSTIC ERROR MESSAGES 
-   13.0 AUTHORS 
-   14.0 REFERENCES 
+   1.0 SUMMARY
+   2.0 INPUTS & OUTPUTS
+   3.0 INPUT FILE FORMAT
+   4.0 OUTPUT FILE FORMAT
+   5.0 DATA FILES
+   6.0 USAGE
+   7.0 KNOWN BUGS & WARNINGS
+   8.0 NOTES
+   9.0 DESCRIPTION
+   10.0 ALGORITHM
+   11.0 RELATED APPLICATIONS
+   12.0 DIAGNOSTIC ERROR MESSAGES
+   13.0 AUTHORS
+   14.0 REFERENCES
 
 1.0 SUMMARY
 
@@ -26,18 +25,18 @@ CONTENTS
 
 2.0 INPUTS & OUTPUTS
 
-   SEQALIGN reads a directory of "seed" alignments and a directory of
-   sets of protein sequences and writes a directory of "extended"
-   alignments. An extended alignment is a seed alignment that is extended
-   with sequences from the appropriate sequence set. The sets directory
-   must contain a sequence set for each seed alignment directory and the
-   files must have the same base name. For example, sequences from
-   "family.sets" are used to extend the seed alignment "family.aln".
+   SEQALIGN reads a directory of "seed" alignments and a directory of sets
+   of protein sequences and writes a directory of "extended" alignments.
+   An extended alignment is a seed alignment that is extended with
+   sequences from the appropriate sequence set. The sets directory must
+   contain a sequence set for each seed alignment directory and the files
+   must have the same base name. For example, sequences from "family.sets"
+   are used to extend the seed alignment "family.aln".
    Typically, the inputs are (i) DAF files (domain alignment files)
    containing structure-based sequence alignments and (ii) DHF files
    (domain hits files) containing sequence relatives (of unknown
-   structure) of these alignments, and the output are DAF files
-   containing the extended alignments.
+   structure) of these alignments, and the output are DAF files containing
+   the extended alignments.
    The base names of the output alignments are the same as the input
    alignments. The paths for input and output files are specified by the
    user and the file extensions are set in the ACD file.
@@ -57,13 +56,13 @@ CONTENTS
 
    The format of the domain alignment file is described in DOMAINALIGN
    documentation. Note however that the file will never contain 'Number'
-   or 'Post_similar' records. Futhermore, the code before each sequence
-   is of the form Acc_Start_End (where domain hits files were used as
-   input sequences) or Acc_n (where other sequences were used as input),
-   where 'Acc' is the accession number of the sequence, 'Start' and 'End'
-   are the start and end point of the sequence in the full length
-   sequence respectively, and 'n' is a sequential count of the sequence
-   in the alignment.
+   or 'Post_similar' records. Futhermore, the code before each sequence is
+   of the form Acc_Start_End (where domain hits files were used as input
+   sequences) or Acc_n (where other sequences were used as input), where
+   'Acc' is the accession number of the sequence, 'Start' and 'End' are
+   the start and end point of the sequence in the full length sequence
+   respectively, and 'n' is a sequential count of the sequence in the
+   alignment.
 
   Output files for usage example
 
@@ -81,90 +80,90 @@ CONTENTS
 # XX
 # SI   54894
 # XX
-d4at1b1_0                 0 GVEAIKRGTVIDHIPAQIGFKLLSLFKLTETD----QRITIGLNLPXSGEM
-GRKDLIKIE 0
-d4at1d1_1                 0 GVEAIKRGTVIDHIPAQIGFKLLSLFKLTETD----QRITIGLNLPSGXEM
-GRKDLIKIE 0
-P00478_1_92               0 -VEAIKRGTVIDHIPAQIGFKLLSLFKLTETD----QRITIGLNLPSG-EM
-GRKDLIKIE 0
-Q83IL8_1_92               0 -VEAIKRGTVIDHIPAQIGFKLLSLFKLTETD----QRITIGLNLPSG-EM
-GRKDLIKIE 0
-P08421_1_92               0 -VEAIKCGTVIDHIPAQVGFKLLSLFKLTETD----QRITIGLNLPSG-EM
-GRKDLIKIE 0
-Q8Z130_1_92               0 -VEAIKCGTVIDHIPAQVGFKLLSLFKLTETD----QRITIGLNLPSG-EM
-GRKDLIKIE 0
-Q8ZB38_1_92               0 -VEAIKCGTVIDHIPAQIGFKLLSLFKLTATD----QRITIGLNLPSK-RS
-GRKDLIKIE 0
-P19936_1_92               0 -VEAIKCGTVIDHIPAQIGFKLLTLFKLTATD----QRITIGLNLPSN-EL
-GRKDLIKIE 0
-Q7MZ14_1_92               0 -VEAIRCGTVIDHIPAQVGFKLLSLFKLTETD----QRITIGLNLPSN-RL
-GKKDLIKIE 0
-Q8K9H8_1_92               0 -VEAIKSGSVIDHIPAHIGFKLLSLFRFTETE----KRITIGLNLPSQ-KL
-DKKDIIKIE 0
-P57451_1_92               0 -VEAIKSGSVIDHIPEYIGFKLLSLFRFTETE----KRITIGLNLPSK-KL
-GRKDIIKIE 0
-Q9KP65_1_92               0 -VEAIKNGTVIDHIPAKVGIKVLKLFDMHNSA----QRVTIGLNLPSS-AL
-GSKDLLKIE 0
-Q87LF7_1_92               0 -VEAIKNGTVIDHIPAQIGIKVLKLFDMHNSS----QRVTIGLNLPSS-AL
-GHKDLLKIE 0
-Q8DCF7_1_92               0 -VEAIKNGTVIDHIPAQVGIKVLKLFDMHNSS----QRVTIGLNLPSS-AL
-GNKDLLKIE 0
-Q7MHF0_1_92               0 -VEAIKNGTVIDHIPAQVGIKVLKLFDMHNSS----QRVTIGLNLPSS-AL
-GNKDLLKIE 0
-Q8D1W6_1_92               0 -VEAIFGGTVIDHIPAQVGLKLLSLFKWLHTK----ERITMGLNLPSN-QQ
-KKKDLIKLE 0
-Q7P144_1_92               0 -VEALKQGTVIDHIPAGEGVKILRLFKLTETG----ERVTVGLNLVSR-HM
-GSKDLIKVE 0
-P96175_1_92               0 -VEAICNGYVIDHIPSGQGVKILRLFSLTDTK----QRVTVGFNLPSH-DG
-TTKDLIKVE 0
-Q9K1K9_1_92               0 -VEAIEKGTVIDHIPAGRGLTILRQFKLLHYG----NAVTVGFNLPSK-TQ
-GSKDIIKIK 0
-Q9JWY6_1_92               0 -VEAIEKGTVIDHIPAGRGLTILRQFKLLHYG----NAVTVGFNLPSK-TQ
-GSKDIIKIK 0
-Q970X3_1_91               0 -VSKIKNGTVIDHIPAGRALAVLRILKIAEG-----YRIALVMNVESK-KM
-GKKDIVKIE 0
-Q9UX07_1_93               0 -VSKIRNGTVIDHIPAGRALAVLRILGIRGSEG---YRVALVMNVESK-KI
-GRKDIVKIE 0
-P74766_1_93               0 -VSKIKNGTVIDHIPAGRAFAVLNVLGIKGHEG---FRIALVINVDSK-KM
-GKKDIVKIE 0
-Q8ZTG2_1_93               0 -VSKIENGTVIDHIPAGRALTVLRILGISGKEG---LRVALVMNVESK-KL
-GKKDIVKIE 0
-O58452_1_94               0 -VSAIKEGTVIDHIPAGKGLKVIEILGLSKLSNG--GSVLLAMNVPSK-KL
-GRKDIVKVE 0
-Q8U374_1_94               0 -VSAIKEGTVIDHIPAGKGLKVIQILGLGELKNG--GAVLLAMNVPSK-KL
-GRKDIVKVE 0
-P77919_1_94               0 -VSAIKEGTVIDHIPAGKGLKVIEILKLGKLTNG--GAVLLAMNVPSK-KL
-GRKDIVKVE 0
-O30129_1_93               0 -VSKIKEGTVIDHINAGKALLVLKILKIQPGTD---LTVSMAMNVPSS-KM
-GKKDIVKVE 0
-Q8TVB1_1_92               0 -VKRIEMGTVLDHLPPGTAPQIMRILDIDPTET----TLLVAINVESS-KM
-GRKDILKIE 0
-Q8THL3_1_92               0 -IQAIENGTVIDHITAGQALNVLRILRISSAFR---ATVSFVMNAPGA--R
-GKKDVVKIE 0
-Q8PXK6_1_92               0 -VQAIESGTVIDHIKSGQALNVLRILGISSAFR---ATISFVMNAPGA--G
-GKKDVVKIE 0
-Q9HHN3_1_93               0 -VSKIQAGTVIDHIPAGQALQVLQILGTNGASD---DQITVGMNVTSE-RH
-HRKDIVKIE 0
-Q58801_1_91               0 -VKKITNGTVIDHIDAGKALMVFKVLNVPKETS-----VMIAINVPSK-KK
-GKKDILKIE 0
-O26938_1_91               0 -VKPIKNGTVIDHITANRSLNVLNILGLPDGRS----KVTVAMNMDSS-QL
-GSKDIVKIE 0
-Q97B28_1_93               0 -ISKIKDGTVIDHIPSGKALRVLSILGIRDDVD---YTVSVGMHVPSS-KM
-EYKDVIKIE 0
-Q9HKM3_1_93               0 -ISKIRDGTVIDHVPSGKGIRVIGVLGVHEDVN---YTVSLAIHVPSN-KM
-GFKDVIKIE 0
-Q9YBD5_1_95               0 -VRKIRSGVVIDHIPPGRAFTMLKALGLLPPRGY-RWRIAVVINAESS-KL
-GRKDILKIE 0
-Q7MX57_1_92               0 -VAAIRNGIVIDHIPPTKLFKVATLLQLDDLDK----RITIGNNLRSR-SH
-GSKGVIKIE 0
-Q8A9S4_1_92               0 -VAALKNGTVIDHIPSEKLFTVVQLLGVEQMKCN----ITIGFNLDSK-KL
-GKKGIIKIA 0
-Q891I9_1_91               0 -ITSIKDGIVIDHIKSGYGIKIFNYLNLKNVEYS----VALIMNVFSS-KL
-GKKDIIKIA 0
-Q97FS4_1_90               0 -INSIKNGIVIDHIKAGHGIKIYNYLKLGEAEFP----TALIMNAISK-KN
-KAKDIIKIE 0
-P96111_1_98               0 GIKPIENGTVIDHIAKGKTPEEIYSTILKIRKILRLYDVDSADGIFRSSDG
-SFKGYISLP 0
+d4at1b1_0                 0 GVEAIKRGTVIDHIPAQIGFKLLSLFKLTETD----QRITIGLNLPXSGEMG
+RKDLIKIE 0
+d4at1d1_1                 0 GVEAIKRGTVIDHIPAQIGFKLLSLFKLTETD----QRITIGLNLPSGXEMG
+RKDLIKIE 0
+P00478_1_92               0 -VEAIKRGTVIDHIPAQIGFKLLSLFKLTETD----QRITIGLNLPSG-EMG
+RKDLIKIE 0
+Q83IL8_1_92               0 -VEAIKRGTVIDHIPAQIGFKLLSLFKLTETD----QRITIGLNLPSG-EMG
+RKDLIKIE 0
+P08421_1_92               0 -VEAIKCGTVIDHIPAQVGFKLLSLFKLTETD----QRITIGLNLPSG-EMG
+RKDLIKIE 0
+Q8Z130_1_92               0 -VEAIKCGTVIDHIPAQVGFKLLSLFKLTETD----QRITIGLNLPSG-EMG
+RKDLIKIE 0
+Q8ZB38_1_92               0 -VEAIKCGTVIDHIPAQIGFKLLSLFKLTATD----QRITIGLNLPSK-RSG
+RKDLIKIE 0
+P19936_1_92               0 -VEAIKCGTVIDHIPAQIGFKLLTLFKLTATD----QRITIGLNLPSN-ELG
+RKDLIKIE 0
+Q7MZ14_1_92               0 -VEAIRCGTVIDHIPAQVGFKLLSLFKLTETD----QRITIGLNLPSN-RLG
+KKDLIKIE 0
+Q8K9H8_1_92               0 -VEAIKSGSVIDHIPAHIGFKLLSLFRFTETE----KRITIGLNLPSQ-KLD
+KKDIIKIE 0
+P57451_1_92               0 -VEAIKSGSVIDHIPEYIGFKLLSLFRFTETE----KRITIGLNLPSK-KLG
+RKDIIKIE 0
+Q9KP65_1_92               0 -VEAIKNGTVIDHIPAKVGIKVLKLFDMHNSA----QRVTIGLNLPSS-ALG
+SKDLLKIE 0
+Q87LF7_1_92               0 -VEAIKNGTVIDHIPAQIGIKVLKLFDMHNSS----QRVTIGLNLPSS-ALG
+HKDLLKIE 0
+Q8DCF7_1_92               0 -VEAIKNGTVIDHIPAQVGIKVLKLFDMHNSS----QRVTIGLNLPSS-ALG
+NKDLLKIE 0
+Q7MHF0_1_92               0 -VEAIKNGTVIDHIPAQVGIKVLKLFDMHNSS----QRVTIGLNLPSS-ALG
+NKDLLKIE 0
+Q8D1W6_1_92               0 -VEAIFGGTVIDHIPAQVGLKLLSLFKWLHTK----ERITMGLNLPSN-QQK
+KKDLIKLE 0
+Q7P144_1_92               0 -VEALKQGTVIDHIPAGEGVKILRLFKLTETG----ERVTVGLNLVSR-HMG
+SKDLIKVE 0
+P96175_1_92               0 -VEAICNGYVIDHIPSGQGVKILRLFSLTDTK----QRVTVGFNLPSH-DGT
+TKDLIKVE 0
+Q9K1K9_1_92               0 -VEAIEKGTVIDHIPAGRGLTILRQFKLLHYG----NAVTVGFNLPSK-TQG
+SKDIIKIK 0
+Q9JWY6_1_92               0 -VEAIEKGTVIDHIPAGRGLTILRQFKLLHYG----NAVTVGFNLPSK-TQG
+SKDIIKIK 0
+Q970X3_1_91               0 -VSKIKNGTVIDHIPAGRALAVLRILKIAEG-----YRIALVMNVESK-KMG
+KKDIVKIE 0
+Q9UX07_1_93               0 -VSKIRNGTVIDHIPAGRALAVLRILGIRGSEG---YRVALVMNVESK-KIG
+RKDIVKIE 0
+P74766_1_93               0 -VSKIKNGTVIDHIPAGRAFAVLNVLGIKGHEG---FRIALVINVDSK-KMG
+KKDIVKIE 0
+Q8ZTG2_1_93               0 -VSKIENGTVIDHIPAGRALTVLRILGISGKEG---LRVALVMNVESK-KLG
+KKDIVKIE 0
+O58452_1_94               0 -VSAIKEGTVIDHIPAGKGLKVIEILGLSKLSNG--GSVLLAMNVPSK-KLG
+RKDIVKVE 0
+Q8U374_1_94               0 -VSAIKEGTVIDHIPAGKGLKVIQILGLGELKNG--GAVLLAMNVPSK-KLG
+RKDIVKVE 0
+P77919_1_94               0 -VSAIKEGTVIDHIPAGKGLKVIEILKLGKLTNG--GAVLLAMNVPSK-KLG
+RKDIVKVE 0
+O30129_1_93               0 -VSKIKEGTVIDHINAGKALLVLKILKIQPGTD---LTVSMAMNVPSS-KMG
+KKDIVKVE 0
+Q8TVB1_1_92               0 -VKRIEMGTVLDHLPPGTAPQIMRILDIDPTET----TLLVAINVESS-KMG
+RKDILKIE 0
+Q8THL3_1_92               0 -IQAIENGTVIDHITAGQALNVLRILRISSAFR---ATVSFVMNAPGA--RG
+KKDVVKIE 0
+Q8PXK6_1_92               0 -VQAIESGTVIDHIKSGQALNVLRILGISSAFR---ATISFVMNAPGA--GG
+KKDVVKIE 0
+Q9HHN3_1_93               0 -VSKIQAGTVIDHIPAGQALQVLQILGTNGASD---DQITVGMNVTSE-RHH
+RKDIVKIE 0
+Q58801_1_91               0 -VKKITNGTVIDHIDAGKALMVFKVLNVPKETS-----VMIAINVPSK-KKG
+KKDILKIE 0
+O26938_1_91               0 -VKPIKNGTVIDHITANRSLNVLNILGLPDGRS----KVTVAMNMDSS-QLG
+SKDIVKIE 0
+Q97B28_1_93               0 -ISKIKDGTVIDHIPSGKALRVLSILGIRDDVD---YTVSVGMHVPSS-KME
+YKDVIKIE 0
+Q9HKM3_1_93               0 -ISKIRDGTVIDHVPSGKGIRVIGVLGVHEDVN---YTVSLAIHVPSN-KMG
+FKDVIKIE 0
+Q9YBD5_1_95               0 -VRKIRSGVVIDHIPPGRAFTMLKALGLLPPRGY-RWRIAVVINAESS-KLG
+RKDILKIE 0
+Q7MX57_1_92               0 -VAAIRNGIVIDHIPPTKLFKVATLLQLDDLDK----RITIGNNLRSR-SHG
+SKGVIKIE 0
+Q8A9S4_1_92               0 -VAALKNGTVIDHIPSEKLFTVVQLLGVEQMKCN----ITIGFNLDSK-KLG
+KKGIIKIA 0
+Q891I9_1_91               0 -ITSIKDGIVIDHIKSGYGIKIFNYLNLKNVEYS----VALIMNVFSS-KLG
+KKDIIKIA 0
+Q97FS4_1_90               0 -INSIKNGIVIDHIKAGHGIKIYNYLKLGEAEFP----TALIMNAISK-KNK
+AKDIIKIE 0
+P96111_1_98               0 GIKPIENGTVIDHIAKGKTPEEIYSTILKIRKILRLYDVDSADGIFRSSDGS
+FKGYISLP 0
 
 d4at1b1_0                 0 NTFLSEDQVDQLALYAPQATVNRIDNYEVVGKSRPSLP 0
 d4at1d1_1                 0 NTFLSEDQVDQLALYAPQATVNRIDNYEVVGKSRPSLP 0
@@ -209,6 +208,7 @@ Q891I9_1_91               0 NKEIDID-FTVLGLIDPTITINIIEDEKIKEKLNLELP 0
 Q97FS4_1_90               0 N--VMDLDLAVLGFLDPNITVNIIEDEKIRQKIQLKLP 0
 P96111_1_98               0 DRYLSKKEIKKLSAISPNTTVNIIKNSTVVEKYRIKLP 0
 
+
   File: 55074.daf
 
 # TY   SCOP
@@ -223,136 +223,137 @@ P96111_1_98               0 DRYLSKKEIKKLSAISPNTTVNIIKNSTVVEKYRIKLP 0
 # XX
 # SI   55074
 # XX
-d1cs4a__0                 0 MMFHKIYIQKXHXDNVSILFADIEGFTSLASQCTAQEL----VMTLNELFA
-RFDKLAAE- 0
-d1fx2a__1                 0 XXNNNRAPXKEPTDPVTLIFTDIESSTALWAAXHPDLM----PDAVAAHHR
-MVRSLIGR- 0
-Q04400_1_189              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQCTAQEL----VMTLNELFA
-RFDKLAAE- 0
-P40144_1_189              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQCTAQEL----VMTLNELFA
-RFDKLAAE- 0
-P30803_1_189              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQCTAQEL----VMTLNELFA
-RFDKLAAE- 0
-O95622_1_189              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQCTAQEL----VMTLNELFA
-RFDKLAAE- 0
-Q03343_1_189              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQCTAQEL----VMTLNELFA
-RFDKLAAE- 0
-O43306_1_189              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQCTAQEL----VMTLNELFA
-RFDKLAAE- 0
-Q01341_1_188              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQCTAQEL----VMTLNELFA
-RFDKLAAE- 0
-P30804_1_188              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQCTAQEL----VMTLNELFA
-RFDKLAAE- 0
-Q99279_1_218              0 --NNNRAPKE-PTDPVTLIFTDIESSTALWAA-HPDLM----PDAVAAHHR
-MVRSLIGR- 0
-Q99280_1_216              0 ---NDSAPKE-PTGPVTLIFTDIESSTALWAA-HPDLM----PDAVATHHR
-LIRSLITR- 0
-P26338_1_216              0 ---NNLAPKE-LTDPVTLIFTDIESSTALWAA-HPELM----PDAVATHHR
-LIRSLIGR- 0
-Q26721_1_206              0 --------------PVTLIFTDIESSTALWAA-HPEVM----PDAVATHHR
-LIRTLISK- 0
-Q99396_1_212              0 ---------KELADPVTLIFTDIESSTAQWAT-QPELM----PDAVATHHS
-MVRSLIEN- 0
-Q08828_1_186              0 --FHKIYIQR--HDNVSILFADIVGFTGLASQCTAQEL----VKLLNELFG
-KFDELATE- 0
-P19754_1_186              0 --FHKIYIQR--HDNVSILFADIVGFTGLASQCTAQEL----VKLLNELFG
-KFDELATE- 0
-P32870_1_186              0 --FHRIYIQK--HENVSILFADIVGFTVLSSQCSAQEL----VRLLNELFG
-RFDQLAHD- 0
-Q26896_1_216              0 ----NDSAPKEFTDPVTLIFTDIESSTALWAA-HPGMM----ADAVATHHR
-LIRSLIAL- 0
-P97490_1_186              0 --FHRIYIHR--YENVSILFADVKGFTNLSTTLSAQEL----VRMLNELFA
-RFDRLAHE- 0
-P40146_1_186              0 --FHRIYIHR--YENVSILFADVKGFTNLSTTLSAQEL----VRMLNELFA
-RFDRLAHE- 0
-P40145_1_186              0 --FHRIYIHR--YENVSILFADVKGFTNLSTTLSAQEL----VRMLNELFA
-RFDRLAHE- 0
-Q27675_1_217              0 ---NNDAAPKDGDEPVTLLFTDIESSTALWAA-LPQLM----SDAIAAHHR
-VIRQLVKK- 0
-Q25263_1_217              0 ---NNDAAPKDGDEPVTLLFTDIESSTALWAA-LPQLM----SDAIAAHHR
-VIRQLVKK- 0
-Q8VHH7_1_186              0 --FNTMYMYR--HENVSILFADIVGFTQLSSACSAQEL----VKLLNELFA
-RFDKLAAK- 0
-P21932_1_186              0 --FNTMYMYR--HENVSILFADIVGFTQLSSACSAQEL----VKLLNELFA
-RFDKLAAK- 0
-O60266_1_186              0 --FNTMYMYR--HENVSILFADIVGFTQLSSACSAQEL----VKLLNELFA
-RFDKLAAK- 0
-Q29450_1_186              0 --FHNLYVKR--HQNVSILYADIVGFTRLASDCSPKEL----VVVLNELFG
-KFDQIAKA- 0
-P51829_1_186              0 --FHSLYVKR--HQNVSILYADIVGFTRLASDCSPKEL----VVVLNELFG
-KFDQIAKA- 0
-P51828_1_186              0 --FHSLYVKR--HQNVSILYADIVGFTQLASDCSPKEL----VVVLNELFG
-KFDQIAKA- 0
-Q91WF3_1_158              0 --FHSLYVKR--HQGVSVLYADIVGFTRLASECSPKEL----VLMLNELFG
-KFDQIAKE- 0
-Q8NFM4_1_158              0 --FHSLYVKR--HQGVSVLYADIVGFTRLASECSPKEL----VLMLNELFG
-KFDQIAKE- 0
-P26770_1_158              0 --FHSLYVKR--HQGVSVLYADIVGFTRLASECSPKEL----VLMLNELFG
-KFDQIAKE- 0
-Q08462_1_186              0 --FHNLYVKR--HTNVSILYADIVGFTRLASDCSPGEL----VHMLNELFG
-KFDQIAKE- 0
-P26769_1_186              0 --FHNLYVKR--HTNVSILYADIVGFTRLASDCSPGEL----VHMLNELFG
-KFDQIAKE- 0
-P98999_1_150              0 -------------EQVSILFADIVGFTKMSANKSAHAL----VGLLNDLFG
-RFDRLCEE- 0
-Q9DGG6_1_181              0 -------------EQVSILFADIVGFTKMSANKSAHAL----VGLLNDLFG
-RFDRLCED- 0
-P51830_1_179              0 ---------------VSILFADIVGFTKMSANKSAHAL----VGLLNDLFG
-RFDRLCEQ- 0
+d1cs4a__0                 0 MMFHKIYIQKXHXDNVSILFADIEGFTSLASQC----TAQELVMTLNELFAR
+FDKLAAE- 0
+d1fx2a__1                 0 XXNNNRAPXKEPTDPVTLIFTDIESSTALWAAX----HPDLMPDAVAAHHRM
+VRSLIGR- 0
+Q04400_1_189              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQC----TAQELVMTLNELFAR
+FDKLAAE- 0
+P40144_1_189              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQC----TAQELVMTLNELFAR
+FDKLAAE- 0
+P30803_1_189              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQC----TAQELVMTLNELFAR
+FDKLAAE- 0
+O95622_1_189              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQC----TAQELVMTLNELFAR
+FDKLAAE- 0
+Q03343_1_189              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQC----TAQELVMTLNELFAR
+FDKLAAE- 0
+O43306_1_189              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQC----TAQELVMTLNELFAR
+FDKLAAE- 0
+Q01341_1_188              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQC----TAQELVMTLNELFAR
+FDKLAAE- 0
+P30804_1_188              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQC----TAQELVMTLNELFAR
+FDKLAAE- 0
+Q99279_1_218              0 --NNNRAPKE-PTDPVTLIFTDIESSTALWAA-----HPDLMPDAVAAHHRM
+VRSLIGR- 0
+Q99280_6_216              0 ---------KEPTGPVTLIFTDIESSTALWAA-----HPDLMPDAVATHHRL
+IRSLITR- 0
+P26338_1_216              0 ----NNLAPKELTDPVTLIFTDIESSTALWAA-----HPELMPDAVATHHRL
+IRSLIGR- 0
+Q26721_1_206              0 --------------PVTLIFTDIESSTALWAA-----HPEVMPDAVATHHRL
+IRTLISK- 0
+Q99396_1_212              0 ---------KELADPVTLIFTDIESSTAQWAT-----QPELMPDAVATHHSM
+VRSLIEN- 0
+Q08828_1_186              0 --FHKIYIQR--HDNVSILFADIVGFTGLASQC----TAQELVKLLNELFGK
+FDELATE- 0
+P19754_1_186              0 --FHKIYIQR--HDNVSILFADIVGFTGLASQC----TAQELVKLLNELFGK
+FDELATE- 0
+P32870_1_186              0 --FHRIYIQK--HENVSILFADIVGFTVLSSQC----SAQELVRLLNELFGR
+FDQLAHD- 0
+Q26896_6_216              0 ---------KEFTDPVTLIFTDIESSTALWAA-----HPGMMADAVATHHRL
+IRSLIAL- 0
+P97490_1_186              0 --FHRIYIHR--YENVSILFADVKGFTNLSTTL----SAQELVRMLNELFAR
+FDRLAHE- 0
+P40146_1_186              0 --FHRIYIHR--YENVSILFADVKGFTNLSTTL----SAQELVRMLNELFAR
+FDRLAHE- 0
+P40145_1_186              0 --FHRIYIHR--YENVSILFADVKGFTNLSTTL----SAQELVRMLNELFAR
+FDRLAHE- 0
+Q8VHH7_1_186              0 --FNTMYMYR--HENVSILFADIVGFTQLSSAC----SAQELVKLLNELFAR
+FDKLAAK- 0
+P21932_1_186              0 --FNTMYMYR--HENVSILFADIVGFTQLSSAC----SAQELVKLLNELFAR
+FDKLAAK- 0
+O60266_1_186              0 --FNTMYMYR--HENVSILFADIVGFTQLSSAC----SAQELVKLLNELFAR
+FDKLAAK- 0
+Q27675_1_217              0 ---NNDAAPKDGDEPVTLLFTDIESSTALWAA-----LPQLMSDAIAAHHRV
+IRQLVKK- 0
+Q25263_1_217              0 ---NNDAAPKDGDEPVTLLFTDIESSTALWAA-----LPQLMSDAIAAHHRV
+IRQLVKK- 0
+Q91WF3_1_158              0 --FHSLYVKR--HQGVSVLYADIVGFTRLASEC----SPKELVLMLNELFGK
+FDQIAKE- 0
+Q8NFM4_1_158              0 --FHSLYVKR--HQGVSVLYADIVGFTRLASEC----SPKELVLMLNELFGK
+FDQIAKE- 0
+P26770_1_158              0 --FHSLYVKR--HQGVSVLYADIVGFTRLASEC----SPKELVLMLNELFGK
+FDQIAKE- 0
+Q08462_1_186              0 --FHNLYVKR--HTNVSILYADIVGFTRLASDC----SPGELVHMLNELFGK
+FDQIAKE- 0
+P26769_1_186              0 --FHNLYVKR--HTNVSILYADIVGFTRLASDC----SPGELVHMLNELFGK
+FDQIAKE- 0
+Q29450_1_186              0 --FHNLYVKR--HQNVSILYADIVGFTRLASDC----SPKELVVVLNELFGK
+FDQIAKA- 0
+P51829_1_186              0 --FHSLYVKR--HQNVSILYADIVGFTRLASDC----SPKELVVVLNELFGK
+FDQIAKA- 0
+P51828_1_186              0 --FHSLYVKR--HQNVSILYADIVGFTQLASDC----SPKELVVVLNELFGK
+FDQIAKA- 0
+P98999_1_150              0 -------------EQVSILFADIVGFTKMSANK----SAHALVGLLNDLFGR
+FDRLCEE- 0
+Q9DGG6_1_181              0 -------------EQVSILFADIVGFTKMSANK----SAHALVGLLNDLFGR
+FDRLCED- 0
+P51830_1_179              0 ---------------VSILFADIVGFTKMSANK----SAHALVGLLNDLFGR
+FDRLCEQ- 0
 
 
   [Part of this file has been deleted for brevity]
 
-P40144_1_159              0 --------------------- 0
-P30803_1_159              0 --------------------- 0
-O95622_1_159              0 --------------------- 0
-Q03343_1_159              0 --------------------- 0
-Q01341_1_159              0 --------------------- 0
-P30804_1_159              0 --------------------- 0
-O43306_1_159              0 --------------------- 0
-P97490_1_162              0 --------------------- 0
-P40146_1_162              0 --------------------- 0
-P40145_1_162              0 --------------------- 0
-O30820_1_149              0 --------------------- 0
-Q03101_1_149              0 --------------------- 0
-P16065_1_143              0 --------------------- 0
-P46197_1_168              0 --------------------- 0
-P20594_1_168              0 --------------------- 0
-P16067_1_168              0 --------------------- 0
-P18910_1_168              0 --------------------- 0
-P18293_1_168              0 --------------------- 0
-P16066_1_168              0 --------------------- 0
-P55202_1_154              0 --------------------- 0
-Q02846_1_152              0 --------------------- 0
-P51840_1_150              0 --------------------- 0
-P52785_1_160              0 --------------------- 0
-O19179_1_161              0 --------------------- 0
-P55203_1_151              0 --------------------- 0
-P51842_1_162              0 --------------------- 0
-P51841_1_162              0 --------------------- 0
-O02740_1_162              0 --------------------- 0
-P51839_1_163              0 --------------------- 0
-P55204_1_150              0 --------------------- 0
-P25092_1_150              0 --------------------- 0
-P70106_1_150              0 --------------------- 0
-P23897_1_150              0 --------------------- 0
-Q07553_1_152              0 --------------------- 0
-P55205_1_154              0 --------------------- 0
-Q09435_1_161              0 --------------------- 0
-P22717_1_147              0 --------------------- 0
-O75343_1_147              0 --------------------- 0
-Q9WVI4_1_149              0 --------------------- 0
-P33402_1_149              0 --------------------- 0
-Q9ERL9_1_152              0 --------------------- 0
-P19686_1_160              0 --------------------- 0
-Q02108_1_160              0 --------------------- 0
-P19687_1_161              0 --------------------- 0
-Q07093_1_158              0 --------------------- 0
-Q02153_1_165              0 --------------------- 0
-P20595_1_165              0 --------------------- 0
-P16068_1_165              0 --------------------- 0
-P40137_1_139              0 --------------------- 0
-P23466_1_154              0 --------------------- 0
+P40144_1_159              0 ---------------------- 0
+P30803_1_159              0 ---------------------- 0
+O95622_1_159              0 ---------------------- 0
+Q03343_1_159              0 ---------------------- 0
+Q01341_1_159              0 ---------------------- 0
+P30804_1_159              0 ---------------------- 0
+O43306_1_159              0 ---------------------- 0
+P97490_1_162              0 ---------------------- 0
+P40146_1_162              0 ---------------------- 0
+P40145_1_162              0 ---------------------- 0
+O30820_1_149              0 ---------------------- 0
+Q03101_1_149              0 ---------------------- 0
+P16065_1_143              0 ---------------------- 0
+P46197_1_168              0 ---------------------- 0
+P20594_1_168              0 ---------------------- 0
+P16067_1_168              0 ---------------------- 0
+P18293_1_168              0 ---------------------- 0
+P18910_1_168              0 ---------------------- 0
+P16066_1_168              0 ---------------------- 0
+P55202_1_154              0 ---------------------- 0
+Q07553_1_152              0 ---------------------- 0
+Q02846_1_152              0 ---------------------- 0
+P52785_1_150              0 ---------------------- 0
+P51840_1_150              0 ---------------------- 0
+O19179_1_150              0 ---------------------- 0
+P55203_1_151              0 ---------------------- 0
+P51842_1_152              0 ---------------------- 0
+P51841_1_152              0 ---------------------- 0
+O02740_1_162              0 ---------------------- 0
+P51839_1_163              0 ---------------------- 0
+P55204_1_150              0 ---------------------- 0
+P25092_1_150              0 ---------------------- 0
+P70106_1_150              0 ---------------------- 0
+P23897_1_150              0 ---------------------- 0
+P55205_1_154              0 ---------------------- 0
+Q09435_1_161              0 ---------------------- 0
+P22717_1_147              0 ---------------------- 0
+O75343_1_147              0 ---------------------- 0
+Q9WVI4_1_149              0 ---------------------- 0
+P33402_1_149              0 ---------------------- 0
+Q9ERL9_1_152              0 ---------------------- 0
+P19686_1_160              0 ---------------------- 0
+Q02108_1_160              0 ---------------------- 0
+P19687_1_161              0 ---------------------- 0
+Q07093_1_158              0 ---------------------- 0
+Q02153_1_165              0 ---------------------- 0
+P20595_1_165              0 ---------------------- 0
+P16068_1_165              0 ---------------------- 0
+P40137_1_139              0 ---------------------- 0
+P23466_1_154              0 ---------------------- 0
+
 
   File: seqalign.log
 
@@ -476,4 +477,5 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 

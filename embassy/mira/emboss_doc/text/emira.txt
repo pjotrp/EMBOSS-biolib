@@ -1,5 +1,4 @@
-
-                                   emira 
+                                    emira
 
 
 
@@ -27,8 +26,8 @@ Usage
    Here is a sample session with emira
 
 
-% emira -setparam fasta -project cjejuni_demo -genome accurate -mxti -rns tigr
--orh 
+% emira -setparam fasta -project cjejuni_demo -genome accurate -mxti -rns tigr -
+orh
 MIRA fragment assembly program
 
 This is MIRA V2.8.3 (production version).
@@ -44,8 +43,8 @@ Mail questions, bug reports, ideas or suggestions to:
 Compiled in boundtracking mode.
 Compiled in bugtracking mode.
 
-Parsing parameters: -genomeaccurate -fasta -GE:project=cjejuni_demo -GE:mxti=ye
-s -OUT:orh=yes -GE:rns=tigr
+Parsing parameters: -genomeaccurate -fasta -GE:project=cjejuni_demo -GE:mxti=yes
+ -OUT:orh=yes -GE:rns=tigr
 
 Using quickmode switch -genomeaccurate :
         -GE:uti=yes
@@ -151,8 +150,8 @@ Used parameter settings:
 
   Contig parameters (-CO):
         Name prefix (np)                                         : cjejuni_demo
-        Error analysis (an)                                      : SCF signal (
-signal)
+        Error analysis (an)                                      : SCF signal (s
+ignal)
         Reject on drop in relative alignment score (%)           : 25
         Max. error rate in dangerous zones in % (dmer)           : 1
         Mark repeats (mr)                                        : Yes
@@ -184,15 +183,14 @@ signal)
         When loading project from CAF            : cjejuni_demo_in.caf
         When loading sequences from FASTA        : cjejuni_demo_in.fasta
         When loading qualities from FASTA quality: cjejuni_demo_in.fasta.qual
-        When loading straindata                  : cjejuni_demo_straindata_in.t
-xt
-        When loading XML trace info files        : cjejuni_demo_traceinfo_in.xm
-l
+        When loading straindata                  : cjejuni_demo_straindata_in.tx
+t
+        When loading XML trace info files        : cjejuni_demo_traceinfo_in.xml
 
         When loading backbone from CAF           : cjejuni_demo_backbone_in.caf
         When loading backbone from GenBank       : cjejuni_demo_backbone_in.gbf
-        When loading backbone from FASTA         : cjejuni_demo_backbone_in.fas
-ta
+        When loading backbone from FASTA         : cjejuni_demo_backbone_in.fast
+a
 
   Output files (-OUTPUT/-OUT):
     Result files:
@@ -244,20 +242,19 @@ Creating directory cjejuni_demo_results ... done.
 Creating directory cjejuni_demo_info ... done.
 Localtime: Tue Jul 15 12:00:00 2008
 
-Loading data normal (probably Sanger type) from FASTA file cjejuni_demo_in.fast
-a
+Loading data normal (probably Sanger type) from FASTA file cjejuni_demo_in.fasta
 Counting sequences in FASTA file:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Loading sequence data from FASTA file:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Loading quality data from FASTA quality file:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Done.
 There haven been 544 reads given, 544 of which have quality accounted for.
@@ -265,18 +262,18 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Checking SCF files (loading qualities only if needed):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Done.
 0 SCF files loaded ok.
-544 SCF files were not found (see 'cjejuni_demo_log/cjejuni_demo_info_scfreadfa
-il.0' for a list of names).
+544 SCF files were not found (see 'cjejuni_demo_log/cjejuni_demo_info_scfreadfai
+l.0' for a list of names).
 
 
 Localtime: Tue Jul 15 12:00:00 2008
 
-Merging data from XML trace info file cjejuni_demo_traceinfo_in.xml ...Num read
-s: 496
+Merging data from XML trace info file cjejuni_demo_traceinfo_in.xml ...Num reads
+: 496
 Building hash table ... done.
 Localtime: Tue Jul 15 12:00:00 2008
 
@@ -288,20 +285,20 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Checking SCF files (loading qualities only if needed):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Done.
 0 SCF files loaded ok.
-544 SCF files were not found (see 'cjejuni_demo_log/cjejuni_demo_info_scfreadfa
-il.0' for a list of names).
+544 SCF files were not found (see 'cjejuni_demo_log/cjejuni_demo_info_scfreadfai
+l.0' for a list of names).
 
 
 Starting minimum left vector clip ... done.
 Pool has 544 reads .
 Checking reads for trace data:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 No SCF data present in any read, automatic contig editing is now switched off.
 544 reads with valid data for assembly.
 
@@ -329,8 +326,8 @@ Now running partitioned skimmer with 1 partitions:
 Working on partition 1/1
 Will contain read IDs 0 to 543
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Total megahubs: 0
 
 Skim summary:
@@ -348,29 +345,29 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible forward matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible complement matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Calculating possible vector leftovers ... done.
 
 Loading confirmed overlaps from disk (will need approximately 1.2 M.):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Sorting confirmed overlaps (this may take a while) ... done.
 
 Generating clusters:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Pre-assembly read extension:
 
@@ -378,8 +375,8 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Searching possible read extensions:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Changed length of 258 sequences.
 Mean length gained in these sequences: 73.2713 bases.
 Pre-assembly vector clipping
@@ -388,8 +385,8 @@ Performing vector clipping ... done.
 Pool has 544 reads .
 Checking reads for trace data:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 No SCF data present in any read, automatic contig editing is now switched off.
 544 reads with valid data for assembly.
 
@@ -417,8 +414,8 @@ Now running partitioned skimmer with 1 partitions:
 Working on partition 1/1
 Will contain read IDs 0 to 543
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Total megahubs: 0
 
 Skim summary:
@@ -438,29 +435,29 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible forward matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible complement matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Calculating possible vector leftovers ... done.
 
 Loading confirmed overlaps from disk (will need approximately 1.2 M.):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Sorting confirmed overlaps (this may take a while) ... done.
 
 Generating clusters:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Localtime: Tue Jul 15 12:00:00 2008
 
@@ -529,8 +526,8 @@ Marking possibly misassembled repeats ...done. Found
 positions tagged.Transfering contig RMB permanent pair bans.
 Transfering tags to readpool.
 
-The previously assembled contig had grave misassemblies, rebuilding contig 2 no
-w.
+The previously assembled contig had grave misassemblies, rebuilding contig 2 now
+.
 Localtime: Tue Jul 15 12:00:00 2008
 Unused reads: 537
 +[1] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -876,14 +873,14 @@ Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
 Localtime: Tue Jul 15 12:00:00 2008
 
-Saving project statistics to file: cjejuni_demo_log/cjejuni_demo_info_contigsta
-ts_pass.1.txt
-Saving read tag list to file: cjejuni_demo_log/cjejuni_demo_info_readtaglist.1.
-txt
-Saving contig tag list to file: cjejuni_demo_log/cjejuni_demo_info_consensustag
-list.1.txt
-Saving project contig<->read list to file: cjejuni_demo_log/cjejuni_demo_info_c
-ontigreadlist_pass.1.txt
+Saving project statistics to file: cjejuni_demo_log/cjejuni_demo_info_contigstat
+s_pass.1.txt
+Saving read tag list to file: cjejuni_demo_log/cjejuni_demo_info_readtaglist.1.t
+xt
+Saving contig tag list to file: cjejuni_demo_log/cjejuni_demo_info_consensustagl
+ist.1.txt
+Saving project contig<->read list to file: cjejuni_demo_log/cjejuni_demo_info_co
+ntigreadlist_pass.1.txt
 
 
 Pass: 2
@@ -892,8 +889,8 @@ Performing vector clipping ... done.
 Pool has 544 reads .
 Checking reads for trace data:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 No SCF data present in any read, automatic contig editing is now switched off.
 544 reads with valid data for assembly.
 
@@ -921,8 +918,8 @@ Now running partitioned skimmer with 1 partitions:
 Working on partition 1/1
 Will contain read IDs 0 to 543
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Total megahubs: 0
 
 Skim summary:
@@ -939,29 +936,29 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible forward matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible complement matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Calculating possible vector leftovers ... done.
 
 Loading confirmed overlaps from disk (will need approximately 1.2 M.):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Sorting confirmed overlaps (this may take a while) ... done.
 
 Generating clusters:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Localtime: Tue Jul 15 12:00:00 2008
 
@@ -1338,14 +1335,14 @@ Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
 Localtime: Tue Jul 15 12:00:00 2008
 
-Saving project statistics to file: cjejuni_demo_log/cjejuni_demo_info_contigsta
-ts_pass.2.txt
-Saving read tag list to file: cjejuni_demo_log/cjejuni_demo_info_readtaglist.2.
-txt
-Saving contig tag list to file: cjejuni_demo_log/cjejuni_demo_info_consensustag
-list.2.txt
-Saving project contig<->read list to file: cjejuni_demo_log/cjejuni_demo_info_c
-ontigreadlist_pass.2.txt
+Saving project statistics to file: cjejuni_demo_log/cjejuni_demo_info_contigstat
+s_pass.2.txt
+Saving read tag list to file: cjejuni_demo_log/cjejuni_demo_info_readtaglist.2.t
+xt
+Saving contig tag list to file: cjejuni_demo_log/cjejuni_demo_info_consensustagl
+ist.2.txt
+Saving project contig<->read list to file: cjejuni_demo_log/cjejuni_demo_info_co
+ntigreadlist_pass.2.txt
 
 
 Pass: 3
@@ -1354,8 +1351,8 @@ Performing vector clipping ... done.
 Pool has 544 reads .
 Checking reads for trace data:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 No SCF data present in any read, automatic contig editing is now switched off.
 544 reads with valid data for assembly.
 
@@ -1383,8 +1380,8 @@ Now running partitioned skimmer with 1 partitions:
 Working on partition 1/1
 Will contain read IDs 0 to 543
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Total megahubs: 0
 
 Skim summary:
@@ -1401,29 +1398,29 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible forward matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible complement matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Calculating possible vector leftovers ... done.
 
 Loading confirmed overlaps from disk (will need approximately 1.2 M.):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Sorting confirmed overlaps (this may take a while) ... done.
 
 Generating clusters:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Localtime: Tue Jul 15 12:00:00 2008
 
@@ -1800,14 +1797,14 @@ Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
 Localtime: Tue Jul 15 12:00:00 2008
 
-Saving project statistics to file: cjejuni_demo_log/cjejuni_demo_info_contigsta
-ts_pass.3.txt
-Saving read tag list to file: cjejuni_demo_log/cjejuni_demo_info_readtaglist.3.
-txt
-Saving contig tag list to file: cjejuni_demo_log/cjejuni_demo_info_consensustag
-list.3.txt
-Saving project contig<->read list to file: cjejuni_demo_log/cjejuni_demo_info_c
-ontigreadlist_pass.3.txt
+Saving project statistics to file: cjejuni_demo_log/cjejuni_demo_info_contigstat
+s_pass.3.txt
+Saving read tag list to file: cjejuni_demo_log/cjejuni_demo_info_readtaglist.3.t
+xt
+Saving contig tag list to file: cjejuni_demo_log/cjejuni_demo_info_consensustagl
+ist.3.txt
+Saving project contig<->read list to file: cjejuni_demo_log/cjejuni_demo_info_co
+ntigreadlist_pass.3.txt
 
 
 Localtime: Tue Jul 15 12:00:00 2008
@@ -1821,8 +1818,8 @@ Performing vector clipping ... done.
 Pool has 544 reads .
 Checking reads for trace data:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 No SCF data present in any read, automatic contig editing is now switched off.
 544 reads with valid data for assembly.
 
@@ -1850,8 +1847,8 @@ Now running partitioned skimmer with 1 partitions:
 Working on partition 1/1
 Will contain read IDs 0 to 543
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Total megahubs: 0
 
 Skim summary:
@@ -1868,29 +1865,29 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible forward matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible complement matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Calculating possible vector leftovers ... done.
 
 Loading confirmed overlaps from disk (will need approximately 1.2 M.):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Sorting confirmed overlaps (this may take a while) ... done.
 
 Generating clusters:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Localtime: Tue Jul 15 12:00:00 2008
 
@@ -2267,14 +2264,14 @@ Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
 Localtime: Tue Jul 15 12:00:00 2008
 
-Saving project statistics to file: cjejuni_demo_log/cjejuni_demo_info_contigsta
-ts_pass.4.txt
-Saving read tag list to file: cjejuni_demo_log/cjejuni_demo_info_readtaglist.4.
-txt
-Saving contig tag list to file: cjejuni_demo_log/cjejuni_demo_info_consensustag
-list.4.txt
-Saving project contig<->read list to file: cjejuni_demo_log/cjejuni_demo_info_c
-ontigreadlist_pass.4.txt
+Saving project statistics to file: cjejuni_demo_log/cjejuni_demo_info_contigstat
+s_pass.4.txt
+Saving read tag list to file: cjejuni_demo_log/cjejuni_demo_info_readtaglist.4.t
+xt
+Saving contig tag list to file: cjejuni_demo_log/cjejuni_demo_info_consensustagl
+ist.4.txt
+Saving project contig<->read list to file: cjejuni_demo_log/cjejuni_demo_info_co
+ntigreadlist_pass.4.txt
 
 
 
@@ -2282,17 +2279,17 @@ Assembly finished, saving final results.
 
 
 Localtime: Tue Jul 15 12:00:00 2008
-Saving project statistics to file: cjejuni_demo_info/cjejuni_demo_info_contigst
-ats.txt
+Saving project statistics to file: cjejuni_demo_info/cjejuni_demo_info_contigsta
+ts.txt
 Localtime: Tue Jul 15 12:00:00 2008
-Saving read tag list to file: cjejuni_demo_info/cjejuni_demo_info_readtaglist.t
-xt
+Saving read tag list to file: cjejuni_demo_info/cjejuni_demo_info_readtaglist.tx
+t
 Localtime: Tue Jul 15 12:00:00 2008
-Saving contig tag list to file: cjejuni_demo_info/cjejuni_demo_info_consensusta
-glist.txt
+Saving contig tag list to file: cjejuni_demo_info/cjejuni_demo_info_consensustag
+list.txt
 Localtime: Tue Jul 15 12:00:00 2008
-Saving project contig<->read list to file: cjejuni_demo_info/cjejuni_demo_info_
-contigreadlist.txt
+Saving project contig<->read list to file: cjejuni_demo_info/cjejuni_demo_info_c
+ontigreadlist.txt
 Localtime: Tue Jul 15 12:00:00 2008
 Saving contigs to file: cjejuni_demo_results/cjejuni_demo_out.caf
 Localtime: Tue Jul 15 12:00:00 2008
@@ -2302,19 +2299,18 @@ Saving contigs to directory: cjejuni_demo_results/cjejuni_demo_out.gap4da
 (saving contigs)
 Done.
 Localtime: Tue Jul 15 12:00:00 2008
-Saving contigs to FASTA file: cjejuni_demo_results/cjejuni_demo_out.unpadded.fa
-sta
-Saving padded contigs to FASTA file: cjejuni_demo_results/cjejuni_demo_out.padd
-ed.fasta
-Saving contig qualities to FASTA quality file: cjejuni_demo_results/cjejuni_dem
-o_out.unpadded.fasta.qual
-Saving padded contig qualities to FASTA quality file: cjejuni_demo_results/cjej
-uni_demo_out.padded.fasta.qual
+Saving contigs to FASTA file: cjejuni_demo_results/cjejuni_demo_out.unpadded.fas
+ta
+Saving padded contigs to FASTA file: cjejuni_demo_results/cjejuni_demo_out.padde
+d.fasta
+Saving contig qualities to FASTA quality file: cjejuni_demo_results/cjejuni_demo
+_out.unpadded.fasta.qual
+Saving padded contig qualities to FASTA quality file: cjejuni_demo_results/cjeju
+ni_demo_out.padded.fasta.qual
 Localtime: Tue Jul 15 12:00:00 2008
 Saving contigs TCS to file: cjejuni_demo_results/cjejuni_demo_out.tcs
 Localtime: Tue Jul 15 12:00:00 2008
-Saving SNP analysis to file: cjejuni_demo_info/cjejuni_demo_info_snpanalysis.tx
-t
+Saving SNP analysis to file: cjejuni_demo_info/cjejuni_demo_info_snpanalysis.txt
 Saving contigs to file: cjejuni_demo_results/cjejuni_demo_out.txt
 Localtime: Tue Jul 15 12:00:00 2008
 Saving contigs to file: cjejuni_demo_results/cjejuni_demo_out.ace
@@ -2324,6 +2320,7 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 
 End of assembly process, thank you for using MIRA.
+
 
    Go to the output files for this example
 
@@ -2499,8 +2496,7 @@ Version: EMBOSS:6.1.0
                                   the different centres or ask your sequence
                                   provider. In a nutshell, the Sanger scheme
                                   is
-                                  'somename.[pqsfrw][12][bckdeflmnpt][a|b|c|...
-'
+                                  'somename.[pqsfrw][12][bckdeflmnpt][a|b|c|...'
                                   (e.g. U13a08f10.p1ca), TIGR scheme is
                                   'somenameTF*|TR*|TA*' (e.g. GCPBN02TF or
                                   GCPDL68TABRPT103A58B). (Values: sanger
@@ -3185,6 +3181,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    emira reads any normal sequence USAs.
@@ -3197,6 +3194,7 @@ Output file format
   Output files for usage example
 
   File: EdIt.log
+
 
   Directory: cjejuni_demo_info
 

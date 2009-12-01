@@ -1,5 +1,4 @@
-
-                                 ednacomp 
+                                  ednacomp
 
 
 
@@ -29,6 +28,7 @@ Beta      AAGGUCGCCAAAC
 Gamma     CAUUUCGUCACAA
 Delta     GGUAUUUCGGCCU
 Epsilon   GGGAUCUCGGCCC
+
 
 
 % ednacomp test
@@ -65,6 +65,7 @@ total number of compatible sites is       11.0
 
 % more ednacomp.treefile
 ((((Epsilon,Delta),Gamma),Beta),Alpha);
+
 
 Command line arguments
 
@@ -135,8 +136,8 @@ Author(s)
 
    (c)              Copyright 1986-1993 by Joseph Felsenstein and by the University of
    Washington.      Written by Joseph Felsenstein. Permission is granted to
-                    copy this document provided that no fee is charged for it and that
-                    this copyright notice is not removed.
+                    copy this document provided that no fee is charged for it and that this
+                    copyright notice is not removed.
 
                     This application was modified for inclusion in EMBOSS by Ian Longden
    (il@sanger.ac.uk) Informatics Division, The Sanger Centre, Wellcome

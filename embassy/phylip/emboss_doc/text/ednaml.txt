@@ -1,5 +1,4 @@
-
-                                  ednaml 
+                                   ednaml
 
 
 
@@ -34,6 +33,7 @@ Epsilon   GGGATCTCGGCCC
 run with two categories with rates 1.0 and 3.2, and with
 probabilities 0.4 and 0.6 for these rates, and with patch length
 parameter = 1.5
+
 
 % ednaml test -options
 
@@ -122,8 +122,9 @@ Combination of categories that contributes the most to the likelihood:
 
 
 % more ednaml.treefile
-(((Epsilon:0.00012,Delta:0.31956):3.33631,Beta:0.00012):0.06470,Gamma:1.47621,A
-lpha:0.28041);
+(((Epsilon:0.00012,Delta:0.31956):3.33631,Beta:0.00012):0.06470,Gamma:1.47621,Al
+pha:0.28041);
+
 
 
 
@@ -225,8 +226,8 @@ Author(s)
 
    (c)              Copyright 1986-1993 by Joseph Felsenstein and by the University of
    Washington.      Written by Joseph Felsenstein. Permission is granted to
-                    copy this document provided that no fee is charged for it and that
-                    this copyright notice is not removed.
+                    copy this document provided that no fee is charged for it and that this
+                    copyright notice is not removed.
 
                     This application was modified for inclusion in EMBOSS by Ian Longden
    (il@sanger.ac.uk) Informatics Division, The Sanger Centre, Wellcome

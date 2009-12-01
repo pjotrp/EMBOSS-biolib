@@ -1,5 +1,4 @@
-
-                                  elipop 
+                                   elipop
 
 
 
@@ -25,10 +24,11 @@ Usage
    Here is a sample session with elipop
 
 
-% elipop 
+% elipop
 Prediction of lipoproteins
 Input (aligned) sequence set: 5h2a_crigr.fsa
-Output file [5h2a_crigr.elipop]: 
+Output file [5h2a_crigr.elipop]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -89,6 +89,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    elipop reads any normal sequence USAs.
@@ -118,7 +119,7 @@ Output file format
 # 5H2A_CRIGR you can have comments after the ID
 # len 70
 # lett A:2 C:2 D:7 E:4 F:2 G:4 H:1 I:4 K:0 L:8 M:2 N:8 P:3 Q:1 R:3 S:11 T:4 V:1
- W:1 Y:2
+W:1 Y:2
 5H2A_CRIGR      LipoP1.0        SEQUENCE        1       70      0       +
 .       #you can have comments after the ID
 5H2A_CRIGR      LipoP1.0:Signal CYT     1       1       -0.200913       +

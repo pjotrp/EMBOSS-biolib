@@ -8,4 +8,16 @@ href="ftp://emboss.open-bio.org/pub/EMBOSS/">current myemboss release</a></h3>
 <th>Description</th>
 </tr>
 
+<tr>
+<td><a href="ensembltest.html">ensembltest</a></td>
+<td>
+Demonstration of the Ensembl API to be
+</td>
+</tr>
+<tr>
+<td><a href="sqltest.html">sqltest</a></td>
+<td>
+Demonstration of SQL server access
+</td>
+</tr>
 </table>

@@ -1,5 +1,4 @@
-
-                               ftreedistpair 
+                                ftreedistpair
 
 
 
@@ -30,15 +29,15 @@ Algorithm
    (1981). The Branch Score Distance uses branch lengths, and can only be
    calculated when the trees have lengths on all branches. The Symmetric
    Difference does not use branch length information, only the tree
-   topologies. It must also be borne in mind that neither distance has
-   any immediate statistical interpretation -- we cannot say whether a
-   larger distance is significantly larger than a smaller one.
+   topologies. It must also be borne in mind that neither distance has any
+   immediate statistical interpretation -- we cannot say whether a larger
+   distance is significantly larger than a smaller one.
 
    These distances are computed by considering all possible branches that
    could exist on the the two trees. Each branch divides the set of
    species into two groups -- the ones connected to one end of the branch
-   and the ones connected to the other. This makes a partition of the
-   full set of species. (in Newick notation)
+   and the ones connected to the other. This makes a partition of the full
+   set of species. (in Newick notation)
 
   ((A,C),(D,(B,E)))
 
@@ -50,16 +49,17 @@ Algorithm
 
    has internal branches that correspond to the two partitions {A, C, D |
    B, E} and {A, D | B, C, E}. Note that the other branches, all of which
-   are external branches, induce partitions that separate one species
-   from all the others. Thus there are 5 partitions like this: {C | A, B,
-   D, E} on each of these trees. These are always present on all trees,
-   provided that each tree has each species at the end of its own branch.
+   are external branches, induce partitions that separate one species from
+   all the others. Thus there are 5 partitions like this: {C | A, B, D, E}
+   on each of these trees. These are always present on all trees, provided
+   that each tree has each species at the end of its own branch.
 
    In the case of the Branch Score distance, each partition that does
    exist on a tree also has a branch length associated with it. Thus if
    the tree is
 
   (((A:0.1,D:0.25):0.05,C:0.01):0.2,(B:0.3,E:0.8):0.2)
+
 
    The list of partitions and their branch lengths is:
 
@@ -72,41 +72,41 @@ Algorithm
 {E  |  A, B, C, D}     0.8
 
    Note that the tree is being treated as unrooted here, so that the
-   branch lengths on either side of the rootmost node are summed up to
-   get a branch length of 0.4.
+   branch lengths on either side of the rootmost node are summed up to get
+   a branch length of 0.4.
 
    The Branch Score Distance imagines us as having made a list of all
-   possible partitions, the ones shown above and also all 7 other
-   possible partitions, which correspond to branches that are not found
-   in this tree. These are assigned branch lengths of 0. For two trees,
-   we imagine constructing these lists, and then summing the squared
-   differences between the branch lengths. Thus if both trees have
-   branches {A, D | B, C, E}, the sum contains the square of the
-   difference between the branch lengths. If one tree has the branch and
-   the other doesn't, it contains the square of the difference between
-   the branch length and zero (in other words, the square of that branch
-   length). If both trees do not have a particular branch, nothing is
-   added to the sum because the difference is then between 0 and 0.
+   possible partitions, the ones shown above and also all 7 other possible
+   partitions, which correspond to branches that are not found in this
+   tree. These are assigned branch lengths of 0. For two trees, we imagine
+   constructing these lists, and then summing the squared differences
+   between the branch lengths. Thus if both trees have branches {A, D | B,
+   C, E}, the sum contains the square of the difference between the branch
+   lengths. If one tree has the branch and the other doesn't, it contains
+   the square of the difference between the branch length and zero (in
+   other words, the square of that branch length). If both trees do not
+   have a particular branch, nothing is added to the sum because the
+   difference is then between 0 and 0.
 
    The Branch Score Distance takes this sum of squared differences and
    computes its square root. Note that it has some desirable properties.
    When small branches differ in tree topology, it is not very big. When
    branches are both present but differ in length, it is affected.
 
-   The Symmetric Difference is simply a count of how many partitions
-   there are, among the two trees, that are on one tree and not on the
-   other. In the example above there are two partitions, {A, C | B, D, E}
-   and {A, D | B, C, E}, each of which is present on only one of the two
-   trees. The Symmetric Difference between the two trees is therefore 2.
-   When the two trees are fully resolved bifurcating trees, their
-   symmetric distance must be an even number; it can range from 0 to
-   twice the number of internal branches, which for n species is 4n-6.
+   The Symmetric Difference is simply a count of how many partitions there
+   are, among the two trees, that are on one tree and not on the other. In
+   the example above there are two partitions, {A, C | B, D, E} and {A, D
+   | B, C, E}, each of which is present on only one of the two trees. The
+   Symmetric Difference between the two trees is therefore 2. When the two
+   trees are fully resolved bifurcating trees, their symmetric distance
+   must be an even number; it can range from 0 to twice the number of
+   internal branches, which for n species is 4n-6.
 
    Note the relationship between the two distances. If all trees have all
-   their branches have length 1.0, the Branch Score Distance is the
-   square of the Symmetric Difference, as each branch that is present in
-   one but not in the other results in 1.0 being added to the sum of
-   squared differences.
+   their branches have length 1.0, the Branch Score Distance is the square
+   of the Symmetric Difference, as each branch that is present in one but
+   not in the other results in 1.0 being added to the sum of squared
+   differences.
 
    We have assumed that nothing is lost if the trees are treated as
    unrooted trees. It is easy to define a counterpart to the Branch Score
@@ -124,29 +124,30 @@ Algorithm
    D}, {B, C, E}, and {B, E}. The Symmetric Difference between thee two
    rooted trees would then be 4.
 
-   Although the examples we have discussed have involved fully
-   bifurcating trees, the input trees can have multifurcations. This does
-   not cause any complication for the Branch Score Distance. For the
-   Symmetric Difference, it can lead to distances that are odd numbers.
+   Although the examples we have discussed have involved fully bifurcating
+   trees, the input trees can have multifurcations. This does not cause
+   any complication for the Branch Score Distance. For the Symmetric
+   Difference, it can lead to distances that are odd numbers.
 
    However, note one strong restriction. The trees should all have the
    same list of species. If you use one set of species in the first two
-   trees, and another in the second two, and choose distances for
-   adjacent pairs, the distances will be incorrect and will depend on the
-   order of these pairs in the input tree file, in odd ways.
+   trees, and another in the second two, and choose distances for adjacent
+   pairs, the distances will be incorrect and will depend on the order of
+   these pairs in the input tree file, in odd ways.
 
 Usage
 
    Here is a sample session with ftreedistpair
 
 
-% ftreedistpair -style s 
+% ftreedistpair -style s
 Distances between two sets of trees
 Phylip tree file: treedist.dat
 Second phylip tree file: treedist.dat
-Phylip treedist program output file [treedist.ftreedistpair]: 
+Phylip treedist program output file [treedist.ftreedistpair]:
 
 Done.
+
 
 
    Go to the input files for this example
@@ -201,6 +202,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    ftreedistpair reads two input tree files. The tree files may either
@@ -211,8 +213,8 @@ Input file format
    if you feed in too many, there may be an error message about running
    out of memory. The problem is particularly acute if you choose the
    option to examine all possible pairs of trees one from each of two
-   input tree files. Thus if there are 1,000 trees in the input tree
-   file, keep in mind that all possible pairs means 1,000,000 pairs to be
+   input tree files. Thus if there are 1,000 trees in the input tree file,
+   keep in mind that all possible pairs means 1,000,000 pairs to be
    examined!
 
   Input files for usage example
@@ -290,6 +292,7 @@ Symmetric differences between all pairs of trees in tree file:
    11 |   0    10
    12 |  10     0
 
+
    The Full matrix is only available for analyses P and L (not for A or
    C).
 
@@ -311,10 +314,10 @@ Trees 11 and 12:    10
    each line are the numbers of the two trees and the distance, separated
    by blanks. This may be a convenient format if you want to write a
    program to read these numbers in, and you want to spare yourself the
-   effort of having the program wade through the words on each line in
-   the Verbose output. The first four lines of the Sparse output are
-   titles that your program would want to skip past. Here is the Sparse
-   output for the example trees.
+   effort of having the program wade through the words on each line in the
+   Verbose output. The first four lines of the Sparse output are titles
+   that your program would want to skip past. Here is the Sparse output
+   for the example trees.
 
 1 2 4
 3 4 10
@@ -322,6 +325,7 @@ Trees 11 and 12:    10
 7 8 4
 9 10 4
 11 12 10
+
 
   Output files for usage example
 

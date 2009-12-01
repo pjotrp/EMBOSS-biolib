@@ -1,5 +1,4 @@
-
-                                 pasteseq 
+                                  pasteseq
 
 
 
@@ -27,9 +26,10 @@ Usage
    'tsw:amir_pseae' and write the results to the file 'amir_pseae.fasta':
 
 
-% pasteseq tsw:amir_pseae tsw:flav_nossm -pos=67 
+% pasteseq tsw:amir_pseae tsw:flav_nossm -pos=67
 Insert one sequence into another
-output sequence [amir_pseae.fasta]: 
+output sequence [amir_pseae.fasta]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -39,8 +39,9 @@ output sequence [amir_pseae.fasta]:
    This does the same thing, but the output qualifier is explicitly used:
 
 
-% pasteseq tsw:amir_pseae tsw:flav_nossm -out=amirplus.seq -pos=67 
+% pasteseq tsw:amir_pseae tsw:flav_nossm -out=amirplus.seq -pos=67
 Insert one sequence into another
+
 
    Go to the output files for this example
 
@@ -50,8 +51,9 @@ Insert one sequence into another
    'tsw:amir_pseae' use -pos=0:
 
 
-% pasteseq tsw:amir_pseae tsw:flav_nossm -out=amirplus.seq -pos=0 
+% pasteseq tsw:amir_pseae tsw:flav_nossm -out=amirplus.seq -pos=0
 Insert one sequence into another
+
 
    Go to the output files for this example
 
@@ -135,6 +137,7 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 
 Input file format
 
@@ -416,7 +419,7 @@ See also
 
 Author(s)
 
-   Gary Williams (gwilliam © rfcgr.mrc.ac.uk)
+   Gary Williams (gwilliam (c) rfcgr.mrc.ac.uk)
    MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
    Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 

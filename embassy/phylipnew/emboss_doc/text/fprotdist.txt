@@ -1,5 +1,4 @@
-
-                                 fprotdist 
+                                  fprotdist
 
 
 
@@ -22,72 +21,72 @@ Description
    based on the genetic code plus a constraint on changing to a different
    category of amino acid. The distances can also be corrected for
    gamma-distributed and gamma-plus-invariant-sites-distributed rates of
-   change in different sites. Rates of evolution can vary among sites in
-   a prespecified way, and also according to a Hidden Markov model. The
-   program can also make a table of percentage similarity among
-   sequences. The distances can be used in the distance matrix programs.
+   change in different sites. Rates of evolution can vary among sites in a
+   prespecified way, and also according to a Hidden Markov model. The
+   program can also make a table of percentage similarity among sequences.
+   The distances can be used in the distance matrix programs.
 
 Algorithm
 
-   This program uses protein sequences to compute a distance matrix,
-   under four different models of amino acid replacement. It can also
-   compute a table of similarity between the amino acid sequences. The
-   distance for each pair of species estimates the total branch length
-   between the two species, and can be used in the distance matrix
-   programs FITCH, KITSCH or NEIGHBOR. This is an alternative to use of
-   the sequence data itself in the parsimony program PROTPARS.
+   This program uses protein sequences to compute a distance matrix, under
+   four different models of amino acid replacement. It can also compute a
+   table of similarity between the amino acid sequences. The distance for
+   each pair of species estimates the total branch length between the two
+   species, and can be used in the distance matrix programs FITCH, KITSCH
+   or NEIGHBOR. This is an alternative to use of the sequence data itself
+   in the parsimony program PROTPARS.
 
    The program reads in protein sequences and writes an output file
    containing the distance matrix or similarity table. The five models of
-   amino acid substitution are one which is based on the Jones, Taylor
-   and Thornton (1992) model of amino acid change, the PMB model
-   (Veerassamy, Smith and Tillier, 2004) which is derived from the Blocks
-   database of conserved protein motifs, one based on the PAM matrixes of
-   Margaret Dayhoff, one due to Kimura (1983) which approximates it based
-   simply on the fraction of similar amino acids, and one based on a
-   model in which the amino acids are divided up into groups, with change
-   occurring based on the genetic code but with greater difficulty of
-   changing between groups. The program correctly takes into account a
-   variety of sequence ambiguities.
+   amino acid substitution are one which is based on the Jones, Taylor and
+   Thornton (1992) model of amino acid change, the PMB model (Veerassamy,
+   Smith and Tillier, 2004) which is derived from the Blocks database of
+   conserved protein motifs, one based on the PAM matrixes of Margaret
+   Dayhoff, one due to Kimura (1983) which approximates it based simply on
+   the fraction of similar amino acids, and one based on a model in which
+   the amino acids are divided up into groups, with change occurring based
+   on the genetic code but with greater difficulty of changing between
+   groups. The program correctly takes into account a variety of sequence
+   ambiguities.
 
    The five methods are:
 
    (1) The Dayhoff PAM matrix. This uses Dayhoff's PAM 001 matrix from
-   Dayhoff (1979), page 348. The PAM model is an empirical one that
-   scales probabilities of change from one amino acid to another in terms
-   of a unit which is an expected 1% change between two amino acid
-   sequences. The PAM 001 matrix is used to make a transition probability
-   matrix which allows prediction of the probability of changing from any
-   one amino acid to any other, and also predicts equilibrium amino acid
+   Dayhoff (1979), page 348. The PAM model is an empirical one that scales
+   probabilities of change from one amino acid to another in terms of a
+   unit which is an expected 1% change between two amino acid sequences.
+   The PAM 001 matrix is used to make a transition probability matrix
+   which allows prediction of the probability of changing from any one
+   amino acid to any other, and also predicts equilibrium amino acid
    composition. The program assumes that these probabilities are correct
    and bases its computations of distance on them. The distance that is
    computed is scaled in units of expected fraction of amino acids
    changed. This is a unit such that 1.0 is 100 PAM's.
 
-   (2) The Jones-Taylor-Thornton model. This is similar to the Dayhoff
-   PAM model, except that it is based on a recounting of the number of
+   (2) The Jones-Taylor-Thornton model. This is similar to the Dayhoff PAM
+   model, except that it is based on a recounting of the number of
    observed changes in amino acids by Jones, Taylor, and Thornton (1992).
    They used a much larger sample of protein sequences than did Dayhoff.
-   The distance is scaled in units of the expected fraction of amino
-   acids changed (100 PAM's). Because its sample is so much larger this
-   model is to be preferred over the original Dayhoff PAM model. It is
-   the default model in this program.
+   The distance is scaled in units of the expected fraction of amino acids
+   changed (100 PAM's). Because its sample is so much larger this model is
+   to be preferred over the original Dayhoff PAM model. It is the default
+   model in this program.
 
    (3) The PMB (Probability Matrix from Blocks) model. This is derived
    using the Blocks database of conserved protein motifs. It will be
-   described in a paper by Veerassamy, Smith and Tillier (2004).
-   Elisabeth Tillier kindly made the matrices available for this model.
+   described in a paper by Veerassamy, Smith and Tillier (2004). Elisabeth
+   Tillier kindly made the matrices available for this model.
 
    (4) Kimura's distance. This is a rough-and-ready distance formula for
    approximating PAM distance by simply measuring the fraction of amino
-   acids, p, that differs between two sequences and computing the
-   distance as (Kimura, 1983) D = - loge ( 1 - p - 0.2 p2 ). This is very
-   quick to do but has some obvious limitations. It does not take into
-   account which amino acids differ or to what amino acids they change,
-   so some information is lost. The units of the distance measure are
-   fraction of amino acids differing, as also in the case of the PAM
-   distance. If the fraction of amino acids differing gets larger than
-   0.8541 the distance becomes infinite.
+   acids, p, that differs between two sequences and computing the distance
+   as (Kimura, 1983) D = - loge ( 1 - p - 0.2 p2 ). This is very quick to
+   do but has some obvious limitations. It does not take into account
+   which amino acids differ or to what amino acids they change, so some
+   information is lost. The units of the distance measure are fraction of
+   amino acids differing, as also in the case of the PAM distance. If the
+   fraction of amino acids differing gets larger than 0.8541 the distance
+   becomes infinite.
 
    (5) The Categories distance. This is my own concoction. I imagined a
    nucleotide sequence changing according to Kimura's 2-parameter model,
@@ -105,8 +104,8 @@ Algorithm
    and which categorization of amino acids to use. There are three of
    them, a somewhat random sample:
     1. The George-Hunt-Barker (1988) classification of amino acids,
-    2. A classification provided by my colleague Ben Hall when I asked
-       him for one,
+    2. A classification provided by my colleague Ben Hall when I asked him
+       for one,
     3. One I found in an old "baby biochemistry" book (Conn and Stumpf,
        1963), which contains most of the biochemistry I was ever taught,
        and all that I ever learned.
@@ -131,10 +130,11 @@ Algorithm
                C  |   b        b       1-a-2b    a
                T  |   b        b         a     1-a-2b
 
+
    where a is u dt, the product of the rate of transitions per unit time
    and dt is the length dt of the time interval, and b is v dt, the
-   product of half the rate of transversions (i.e., the rate of a
-   specific transversion) and the length dt of the time interval.
+   product of half the rate of transversions (i.e., the rate of a specific
+   transversion) and the length dt of the time interval.
 
    Each distance that is calculated is an estimate, from that particular
    pair of species, of the divergence time between those two species. The
@@ -147,14 +147,13 @@ Algorithm
    two amino acids that are actually found. This is fairly slow to
    compute.
 
-   The computation proceeds from an eigenanalysis (spectral
-   decomposition) of the transition probability matrix. In the case of
-   the PAM 001 matrix the eigenvalues and eigenvectors are precomputed
-   and are hard-coded into the program in over 400 statements. In the
-   case of the Categories model the program computes the eigenvalues and
-   eigenvectors itself, which will add a delay. But the delay is
-   independent of the number of species as the calculation is done only
-   once, at the outset.
+   The computation proceeds from an eigenanalysis (spectral decomposition)
+   of the transition probability matrix. In the case of the PAM 001 matrix
+   the eigenvalues and eigenvectors are precomputed and are hard-coded
+   into the program in over 400 statements. In the case of the Categories
+   model the program computes the eigenvalues and eigenvectors itself,
+   which will add a delay. But the delay is independent of the number of
+   species as the calculation is done only once, at the outset.
 
    The actual algorithm for estimating the distance is in both cases a
    bisection algorithm which tries to find the point at which the
@@ -162,9 +161,9 @@ Algorithm
    amino acids like "glx" are correctly taken into account. However, gaps
    are treated as if they are unkown nucleotides, which means those
    positions get dropped from that particular comparison. However, they
-   are not dropped from the whole analysis. You need not eliminate
-   regions containing gaps, as long as you are reasonably sure of the
-   alignment there.
+   are not dropped from the whole analysis. You need not eliminate regions
+   containing gaps, as long as you are reasonably sure of the alignment
+   there.
 
    Note that there is an assumption that we are looking at all positions,
    including those that have not changed at all. It is important not to
@@ -178,16 +177,15 @@ Algorithm
    for DNA sequences by Jin and Nei (1990), assumes that the distribution
    of rates of change among amino acid positions follows a Gamma
    distribution. The user is asked for the value of a parameter that
-   determines the amount of variation of rates among amino acid
-   positions. Instead of the more widely-known coefficient alpha,
-   PROTDIST uses the coefficient of variation (ratio of the standard
-   deviation to the mean) of rates among amino acid positions. . So if
-   there is 20% variation in rates, the CV is is 0.20. The square of the
-   C.V. is also the reciprocal of the better-known "shape parameter",
-   alpha, of the Gamma distribution, so in this case the shape parameter
-   alpha = 1/(0.20*0.20) = 25. If you want to achieve a particular value
-   of alpha, such as 10, you will want to use a CV of 1/sqrt(100) = 1/10
-   = 0.1.
+   determines the amount of variation of rates among amino acid positions.
+   Instead of the more widely-known coefficient alpha, PROTDIST uses the
+   coefficient of variation (ratio of the standard deviation to the mean)
+   of rates among amino acid positions. . So if there is 20% variation in
+   rates, the CV is is 0.20. The square of the C.V. is also the reciprocal
+   of the better-known "shape parameter", alpha, of the Gamma
+   distribution, so in this case the shape parameter alpha = 1/(0.20*0.20)
+   = 25. If you want to achieve a particular value of alpha, such as 10,
+   you will want to use a CV of 1/sqrt(100) = 1/10 = 0.1.
 
    In addition to the five distance calculations, the program can also
    compute a table of similarities between amino acid sequences. These
@@ -204,10 +202,10 @@ Usage
    Here is a sample session with fprotdist
 
 
-% fprotdist 
+% fprotdist
 Protein distance algorithm
 Input (aligned) protein sequence set(s): protdist.dat
-Phylip distance matrix output file [protdist.fprotdist]: 
+Phylip distance matrix output file [protdist.fprotdist]:
 
 
 Computing distances:
@@ -220,6 +218,7 @@ Computing distances:
 Output written to file "protdist.fprotdist"
 
 Done.
+
 
 
    Go to the input files for this example
@@ -313,6 +312,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    fprotdist reads any normal sequence USAs.
@@ -332,61 +332,58 @@ Output file format
 
    fprotdist output contains on its first line the number of species. The
    distance matrix is then printed in standard form, with each species
-   starting on a new line with the species name, followed by the
-   distances to the species in order. These continue onto a new line
-   after every nine distances. The distance matrix is square with zero
-   distances on the diagonal. In general the format of the distance
-   matrix is such that it can serve as input to any of the distance
-   matrix programs.
+   starting on a new line with the species name, followed by the distances
+   to the species in order. These continue onto a new line after every
+   nine distances. The distance matrix is square with zero distances on
+   the diagonal. In general the format of the distance matrix is such that
+   it can serve as input to any of the distance matrix programs.
 
    If the similarity table is selected, the table that is produced is not
    in a format that can be used as input to the distance matrix programs.
-   it has a heading, and the species names are also put at the tops of
-   the columns of the table (or rather, the first 8 characters of each
-   species name is there, the other two characters omitted to save
-   space). There is not an option to put the table into a format that can
-   be read by the distance matrix programs, nor is there one to make it
-   into a table of fractions of difference by subtracting the similarity
-   values from 1. This is done deliberately to make it more difficult for
-   the use to use these values to construct trees. The similarity values
-   are not corrected for multiple changes, and their use to construct
-   trees (even after converting them to fractions of difference) would be
-   wrong, as it would lead to severe conflict between the distant pairs
-   of sequences and the close pairs of sequences.
+   it has a heading, and the species names are also put at the tops of the
+   columns of the table (or rather, the first 8 characters of each species
+   name is there, the other two characters omitted to save space). There
+   is not an option to put the table into a format that can be read by the
+   distance matrix programs, nor is there one to make it into a table of
+   fractions of difference by subtracting the similarity values from 1.
+   This is done deliberately to make it more difficult for the use to use
+   these values to construct trees. The similarity values are not
+   corrected for multiple changes, and their use to construct trees (even
+   after converting them to fractions of difference) would be wrong, as it
+   would lead to severe conflict between the distant pairs of sequences
+   and the close pairs of sequences.
 
    If the option to print out the data is selected, the output file will
-   precede the data by more complete information on the input and the
-   menu selections. The output file begins by giving the number of
-   species and the number of characters, and the identity of the distance
-   measure that is being used.
+   precede the data by more complete information on the input and the menu
+   selections. The output file begins by giving the number of species and
+   the number of characters, and the identity of the distance measure that
+   is being used.
 
    In the Categories model of substitution, the distances printed out are
    scaled in terms of expected numbers of substitutions, counting both
-   transitions and transversions but not replacements of a base by
-   itself, and scaled so that the average rate of change is set to 1.0.
-   For the Dayhoff PAM and Kimura models the distance are scaled in terms
-   of the expected numbers of amino acid substitutions per site. Of
-   course, when a branch is twice as long this does not mean that there
-   will be twice as much net change expected along it, since some of the
-   changes may occur in the same site and overlie or even reverse each
-   other. The branch lengths estimates here are in terms of the expected
-   underlying numbers of changes. That means that a branch of length 0.26
-   is 26 times as long as one which would show a 1% difference between
-   the protein (or nucleotide) sequences at the beginning and end of the
-   branch. But we would not expect the sequences at the beginning and end
-   of the branch to be 26% different, as there would be some overlaying
-   of changes.
+   transitions and transversions but not replacements of a base by itself,
+   and scaled so that the average rate of change is set to 1.0. For the
+   Dayhoff PAM and Kimura models the distance are scaled in terms of the
+   expected numbers of amino acid substitutions per site. Of course, when
+   a branch is twice as long this does not mean that there will be twice
+   as much net change expected along it, since some of the changes may
+   occur in the same site and overlie or even reverse each other. The
+   branch lengths estimates here are in terms of the expected underlying
+   numbers of changes. That means that a branch of length 0.26 is 26 times
+   as long as one which would show a 1% difference between the protein (or
+   nucleotide) sequences at the beginning and end of the branch. But we
+   would not expect the sequences at the beginning and end of the branch
+   to be 26% different, as there would be some overlaying of changes.
 
-   One problem that can arise is that two or more of the species can be
-   so dissimilar that the distance between them would have to be
-   infinite, as the likelihood rises indefinitely as the estimated
-   divergence time increases. For example, with the Kimura model, if the
-   two sequences differ in 85.41% or more of their positions then the
-   estimate of divergence time would be infinite. Since there is no way
-   to represent an infinite distance in the output file, the program
-   regards this as an error, issues a warning message indicating which
-   pair of species are causing the problem, and computes a distance of
-   -1.0.
+   One problem that can arise is that two or more of the species can be so
+   dissimilar that the distance between them would have to be infinite, as
+   the likelihood rises indefinitely as the estimated divergence time
+   increases. For example, with the Kimura model, if the two sequences
+   differ in 85.41% or more of their positions then the estimate of
+   divergence time would be infinite. Since there is no way to represent
+   an infinite distance in the output file, the program regards this as an
+   error, issues a warning message indicating which pair of species are
+   causing the problem, and computes a distance of -1.0.
 
   Output files for usage example
 

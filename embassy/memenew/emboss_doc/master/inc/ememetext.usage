@@ -21,6 +21,7 @@ output sequence set [crp0.fasta]: <b></b>
 % <b>ememetext crp0.s -mod oops -revcomp -w 20 ex2.text </b>
 Multiple EM for Motif Elicitation. Text file only.
 output sequence set [crp0.fasta]: <b></b>
+w set, setting max and min to 20#######
 
 </pre></td></tr></table><p>
 <p>
@@ -77,6 +78,7 @@ output sequence set [farntrans5.fasta]: <b></b>
 % <b>ememetext farntrans5.s -mod anr -w 10 -maxsites 30 -nmotifs 3 ex6.text </b>
 Multiple EM for Motif Elicitation. Text file only.
 output sequence set [farntrans5.fasta]: <b></b>
+w set, setting max and min to 10#######
 
 </pre></td></tr></table><p>
 <p>

@@ -1,5 +1,4 @@
-
-                                crystalball 
+                                 crystalball
 
 
 
@@ -20,8 +19,8 @@ Description
    in their book "Sequence Analysis in a Nutshell". They put the
    description into Appendix D with the comment:
 
-   Here's a program we're working on. When it's finished we plan to
-   donate it to the EMBOSS package. It may take us a while, so be patient
+   Here's a program we're working on. When it's finished we plan to donate
+   it to the EMBOSS package. It may take us a while, so be patient
 
    It took just 30 minutes from seeing a draft of Appendix D to sending
    Scott the ACD file and then the C source code.
@@ -33,8 +32,8 @@ Description
 
 Algorithm
 
-   Scott and Darryl defined the ACD interface in the book, together with
-   3 of the responses.
+   Scott and Darryl defined the ACD interface in the book, together with 3
+   of the responses.
 
    We added the others in the same spirit.
 
@@ -46,11 +45,12 @@ Usage
    Here is a sample session with crystalball
 
 
-% crystalball -competition -rdtime -rdcost -animalstudies -clinicaltrials -fdap
-roblems -fdatime -profit -everythingelse 
+% crystalball -competition -rdtime -rdcost -animalstudies -clinicaltrials -fdapr
+oblems -fdatime -profit -everythingelse
 Answers every drug discovery question about a sequence.
 Input sequence: tembl:x65923
-Output file [x65923.crystalball]: 
+Output file [x65923.crystalball]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -123,14 +123,15 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    crystalball reads any normal sequence USAs.
 
   Input files for usage example
 
-   'tembl:x65923' is a sequence entry in the example nucleic acid
-   database 'tembl'
+   'tembl:x65923' is a sequence entry in the example nucleic acid database
+   'tembl'
 
   Database entry: tembl:x65923
 
@@ -146,8 +147,7 @@ XX
 KW   fau gene.
 XX
 OS   Homo sapiens (human)
-OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia
-;
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia;
 OC   Eutheria; Euarchontoglires; Primates; Haplorrhini; Catarrhini; Hominidae;
 OC   Homo.
 XX
@@ -191,10 +191,8 @@ FT                   /db_xref="HSSP:1GJZ"
 FT                   /db_xref="InterPro:IPR006846"
 FT                   /db_xref="UniProtKB/Swiss-Prot:P35544"
 FT                   /protein_id="CAA46716.1"
-FT                   /translation="MQLFVRAQELHTFEVTGQETVAQIKAHVASLEGIAPEDQVVLLA
-G
-FT                   APLEDEATLGQCGVEALTTLEVAGRMLGGKVHGSLARAGKVRGQTPKVAKQEKKKKKT
-G
+FT                   /translation="MQLFVRAQELHTFEVTGQETVAQIKAHVASLEGIAPEDQVVLLAG
+FT                   APLEDEATLGQCGVEALTTLEVAGRMLGGKVHGSLARAGKVRGQTPKVAKQEKKKKKTG
 FT                   RAKRRMQYNRRFVNVVPTFGKKKGPNANS"
 FT   misc_feature    98..102
 FT                   /note="nucleolar localization signal"
@@ -204,24 +202,15 @@ FT   polyA_signal    484..489
 FT   polyA_site      509
 XX
 SQ   Sequence 518 BP; 125 A; 139 C; 148 G; 106 T; 0 other;
-     ttcctctttc tcgactccat cttcgcggta gctgggaccg ccgttcagtc gccaatatgc        6
-0
-     agctctttgt ccgcgcccag gagctacaca ccttcgaggt gaccggccag gaaacggtcg       12
-0
-     cccagatcaa ggctcatgta gcctcactgg agggcattgc cccggaagat caagtcgtgc       18
-0
-     tcctggcagg cgcgcccctg gaggatgagg ccactctggg ccagtgcggg gtggaggccc       24
-0
-     tgactaccct ggaagtagca ggccgcatgc ttggaggtaa agttcatggt tccctggccc       30
-0
-     gtgctggaaa agtgagaggt cagactccta aggtggccaa acaggagaag aagaagaaga       36
-0
-     agacaggtcg ggctaagcgg cggatgcagt acaaccggcg ctttgtcaac gttgtgccca       42
-0
-     cctttggcaa gaagaagggc cccaatgcca actcttaagt cttttgtaat tctggctttc       48
-0
-     tctaataaaa aagccactta gttcagtcaa aaaaaaaa                               51
-8
+     ttcctctttc tcgactccat cttcgcggta gctgggaccg ccgttcagtc gccaatatgc        60
+     agctctttgt ccgcgcccag gagctacaca ccttcgaggt gaccggccag gaaacggtcg       120
+     cccagatcaa ggctcatgta gcctcactgg agggcattgc cccggaagat caagtcgtgc       180
+     tcctggcagg cgcgcccctg gaggatgagg ccactctggg ccagtgcggg gtggaggccc       240
+     tgactaccct ggaagtagca ggccgcatgc ttggaggtaa agttcatggt tccctggccc       300
+     gtgctggaaa agtgagaggt cagactccta aggtggccaa acaggagaag aagaagaaga       360
+     agacaggtcg ggctaagcgg cggatgcagt acaaccggcg ctttgtcaac gttgtgccca       420
+     cctttggcaa gaagaagggc cccaatgcca actcttaagt cttttgtaat tctggctttc       480
+     tctaataaaa aagccactta gttcagtcaa aaaaaaaa                               518
 //
 
 Output file format
@@ -272,21 +261,23 @@ Known bugs
 
 See also
 
-   Program name     Description
+                    Program name              Description
+                    ensembltest  Demonstration of the Ensembl API to be
+                    sqltest      Demonstration of SQL server access
 
 Author(s)
 
-   Peter Rice (pmr © ebi.ac.uk)
-   European Bioinformatics Institute, Wellcome Trust Genome Campus,
-   Hinxton, Cambridge CB10 1SD, UK
+   Peter            Rice (pmr (c) ebi.ac.uk)
+   European         Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton,         Cambridge CB10 1SD, UK
 
 History
 
-   Written (Feb 2003) - Peter Rice.
+                    Written (Feb 2003) - Peter Rice.
 
 Target users
 
-   This program is intended to be used by everyone and everything, from
-   naive users to embedded scripts.
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
 
 Comments

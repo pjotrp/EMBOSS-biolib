@@ -1,5 +1,4 @@
-
-                                  edollop 
+                                   edollop
 
 
 
@@ -29,6 +28,7 @@ Beta      110000
 Gamma     100110
 Delta     001001
 Epsilon   001110
+
 
 % edollop test
 
@@ -69,6 +69,7 @@ requires a total of      3.000
 % more edollop.treefile
 (Delta,(Epsilon,(Gamma,(Beta,Alpha))));
 
+
 Command line arguments
 
    Mandatory qualifiers (* if not always prompted):
@@ -95,6 +96,7 @@ Command line arguments
 
    Advanced qualifiers:
    -thresh             bool       Use Threshold parsimony
+
 
    Mandatory qualifiers Allowed values Default
    [-datafile]
@@ -146,8 +148,8 @@ Author(s)
 
    (c)              Copyright 1986-1993 by Joseph Felsenstein and by the University of
    Washington.      Written by Joseph Felsenstein. Permission is granted to
-                    copy this document provided that no fee is charged for it and that
-                    this copyright notice is not removed.
+                    copy this document provided that no fee is charged for it and that this
+                    copyright notice is not removed.
 
                     This application was modified for inclusion in EMBOSS by Ian Longden
    (il@sanger.ac.uk) Informatics Division, The Sanger Centre, Wellcome

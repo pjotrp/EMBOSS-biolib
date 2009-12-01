@@ -1,5 +1,4 @@
-
-                                  efitch 
+                                   efitch
 
 
 
@@ -30,6 +29,7 @@ Beta       1.000 0.000 2.000 3.000 3.000
 Gamma      2.000 2.000 0.000 3.000 3.000
 Delta      3.000 3.000 3.000 0.000 1.000
 Epsilon    3.000 3.000 3.000 1.000 0.000
+
 
 
 % efitch test
@@ -83,8 +83,9 @@ Between        And            Length
 
 
 % more efitch.treefile
-(Beta:0.50000,((Epsilon:0.50000,Delta:0.50000):1.50000,Gamma:1.00000):0.50000,A
-lpha:0.50000);
+(Beta:0.50000,((Epsilon:0.50000,Delta:0.50000):1.50000,Gamma:1.00000):0.50000,Al
+pha:0.50000);
+
 
 Command line arguments
 
@@ -169,8 +170,8 @@ Author(s)
 
    (c)              Copyright 1986-1993 by Joseph Felsenstein and by the University of
    Washington.      Written by Joseph Felsenstein. Permission is granted to
-                    copy this document provided that no fee is charged for it and that
-                    this copyright notice is not removed.
+                    copy this document provided that no fee is charged for it and that this
+                    copyright notice is not removed.
 
                     This application was modified for inclusion in EMBOSS by Ian Longden
    (il@sanger.ac.uk) Informatics Division, The Sanger Centre, Wellcome

@@ -1,5 +1,4 @@
-
-                               vrnaalifoldpf 
+                                vrnaalifoldpf
 
 
 
@@ -32,10 +31,11 @@ Usage
    Here is a sample session with vrnaalifoldpf
 
 
-% vrnaalifoldpf 
+% vrnaalifoldpf
 RNA alignment folding with partition
 Input (aligned) nucleotide sequence set: ecoli6s.fasta
-Vienna RNAfold output file [ecoli6s.vrnaalifoldpf]: 
+Vienna RNAfold output file [ecoli6s.vrnaalifoldpf]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -134,6 +134,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    vrnaalifoldpf reads any normal sequence USAs.
@@ -180,8 +181,8 @@ CAACGGCA.UC.CCGGGG.UUC.
 
 Output file format
 
-   vrnaalifoldpf outputs a graph to the specified graphics device.
-   outputs a report format file. The default format is ...
+   vrnaalifoldpf outputs a graph to the specified graphics device. outputs
+   a report format file. The default format is ...
 
   Output files for usage example
 
@@ -199,15 +200,15 @@ Output file format
 
   File: ecoli6s.vrnaalifoldpf
 
-AUUUCCCUGAGGUGUUCGCCAGCGGGC_CAUGUCCCUGAGCCGAUAUUUAAUACCACAAGAAUGUGGUGCUCCGUGGUU
-GGUGAGCAUGCUCGGCCCGU_______________CCGAGAAGCCUUAAAAUUGCGACGACACAUUCACCUUGAACCAA
-_GGGUUCAAGGGCUACAGCCUGCAGCGGCA_UC_UCGGGG_AUUC
-....(((((((((((.(((..((((((................................(((((((......(((((((
-...(.((...(((((....................)))))..)))....)))))))....))))))).(((((((((..
-..)))))))))......)))))).)))))).)).))))))..... (-56.91 = -48.71 +  -8.20)
-....(((((((((({{(((..((((((................................(((((((......(((((((
-...{.((...(((((....................)))))..)),....)))))))..,.))))))).(((((((((..
-..)))))))))......)))))).)))))).)).))))))..... [-59.30]
+AUUUCCCUGAGGUGUUCGCCAGCGGGC_CAUGUCCCUGAGCCGAUAUUUAAUACCACAAGAAUGUGGUGCUCCGUGGUUG
+GUGAGCAUGCUCGGCCCGU_______________CCGAGAAGCCUUAAAAUUGCGACGACACAUUCACCUUGAACCAA_G
+GGUUCAAGGGCUACAGCCUGCAGCGGCA_UC_UCGGGG_AUUC
+....(((((((((((.(((..((((((................................(((((((......(((((((.
+..(.((...(((((....................)))))..)))....)))))))....))))))).(((((((((....
+)))))))))......)))))).)))))).)).))))))..... (-56.91 = -48.71 +  -8.20)
+....(((((((((({{(((..((((((................................(((((((......(((((((.
+..{.((...(((((....................)))))..)),....)))))))..,.))))))).(((((((((....
+)))))))))......)))))).)))))).)).))))))..... [-59.30]
  frequency of mfe structure in ensemble 0.0206905
 
 # Alignment section
@@ -309,9 +310,9 @@ alifold output
    35   170  2   0.2%   1.006 CG:5    +
    24    36  2   0.1%   0.486 GC:5    +
    20    25  2   0.1%   0.419 CG:5    +
-....(((((((((({{(((..((((((................................(((((((......(((((((
-...{.((...(((((....................)))))..)),....)))))))..,.))))))).(((((((((..
-..)))))))))......)))))).)))))).)).)))))).....
+....(((((((((({{(((..((((((................................(((((((......(((((((.
+..{.((...(((((....................)))))..)),....)))))))..,.))))))).(((((((((....
+)))))))))......)))))).)))))).)).)))))).....
 
 Data files
 

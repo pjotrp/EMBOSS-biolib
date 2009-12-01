@@ -1,5 +1,4 @@
-
-                                  fproml 
+                                   fproml
 
 
 
@@ -20,23 +19,22 @@ Description
    likelihood. The PAM, JTT, or PMB models can be employed, and also use
    of a Hidden Markov model of rates, with the program inferring which
    sites have which rates. This also allows gamma-distribution and
-   gamma-plus-invariant sites distributions of rates across sites. It
-   also allows different rates of change at known sites.
+   gamma-plus-invariant sites distributions of rates across sites. It also
+   allows different rates of change at known sites.
 
 Algorithm
 
-   This program implements the maximum likelihood method for protein
-   amino acid sequences. It uses the either the Jones-Taylor-Thornton or
-   the Dayhoff probability model of change between amino acids. The
+   This program implements the maximum likelihood method for protein amino
+   acid sequences. It uses the either the Jones-Taylor-Thornton or the
+   Dayhoff probability model of change between amino acids. The
    assumptions of these present models are:
     1. Each position in the sequence evolves independently.
     2. Different lineages evolve independently.
     3. Each position undergoes substitution at an expected rate which is
        chosen from a series of rates (each with a probability of
        occurrence) which we specify.
-    4. All relevant positions are included in the sequence, not just
-       those that have changed or those that are "phylogenetically
-       informative".
+    4. All relevant positions are included in the sequence, not just those
+       that have changed or those that are "phylogenetically informative".
     5. The probabilities of change between amino acids are given by the
        model of Jones, Taylor, and Thornton (1992), the PMB model of
        Veerassamy, Smith and Tillier (2004), or the PAM model of Dayhoff
@@ -53,19 +51,18 @@ Algorithm
    different rates of evolution at different amino acid positions. This
    was described in a paper by me and Gary Churchill (1996). It allows us
    to specify to the program that there will be a number of different
-   possible evolutionary rates, what the prior probabilities of
-   occurrence of each is, and what the average length of a patch of
-   positions all having the same rate. The rates can also be chosen by
-   the program to approximate a Gamma distribution of rates, or a Gamma
-   distribution plus a class of invariant positions. The program computes
-   the the likelihood by summing it over all possible assignments of
-   rates to positions, weighting each by its prior probability of
-   occurrence.
+   possible evolutionary rates, what the prior probabilities of occurrence
+   of each is, and what the average length of a patch of positions all
+   having the same rate. The rates can also be chosen by the program to
+   approximate a Gamma distribution of rates, or a Gamma distribution plus
+   a class of invariant positions. The program computes the the likelihood
+   by summing it over all possible assignments of rates to positions,
+   weighting each by its prior probability of occurrence.
 
    For example, if we have used the C and A options (described below) to
-   specify that there are three possible rates of evolution, 1.0, 2.4,
-   and 0.0, that the prior probabilities of a position having these rates
-   are 0.4, 0.3, and 0.3, and that the average patch length (number of
+   specify that there are three possible rates of evolution, 1.0, 2.4, and
+   0.0, that the prior probabilities of a position having these rates are
+   0.4, 0.3, and 0.3, and that the average patch length (number of
    consecutive positions with the same rate) is 2.0, the program will sum
    the likelihood over all possibilities, but giving less weight to those
    that (say) assign all positions to rate 2.4, or that fail to have
@@ -85,36 +82,36 @@ Algorithm
    evolution.
 
    Another layer of rate variation also is available. The user can assign
-   categories of rates to each positions (for example, we might want
-   amino acid positions in the active site of a protein to change more
-   slowly than other positions. This is done with the categories input
-   file and the C option. We then specify (using the menu) the relative
-   rates of evolution of amino acid positions in the different
-   categories. For example, we might specify that positions in the active
-   site evolve at relative rates of 0.2 compared to 1.0 at other
-   positions. If we are assuming that a particular position maintains a
-   cysteine bridge to another, we may want to put it in a category of
-   positions (including perhaps the initial position of the protein
-   sequence which maintains methionine) which changes at a rate of 0.0.
+   categories of rates to each positions (for example, we might want amino
+   acid positions in the active site of a protein to change more slowly
+   than other positions. This is done with the categories input file and
+   the C option. We then specify (using the menu) the relative rates of
+   evolution of amino acid positions in the different categories. For
+   example, we might specify that positions in the active site evolve at
+   relative rates of 0.2 compared to 1.0 at other positions. If we are
+   assuming that a particular position maintains a cysteine bridge to
+   another, we may want to put it in a category of positions (including
+   perhaps the initial position of the protein sequence which maintains
+   methionine) which changes at a rate of 0.0.
 
-   If both user-assigned rate categories and Hidden Markov Model rates
-   are allowed, the program assumes that the actual rate at a position is
-   the product of the user-assigned category rate and the Hidden Markov
-   Model regional rate. (This may not always make perfect biological
-   sense: it would be more natural to assume some upper bound to the
-   rate, as we have discussed in the Felsenstein and Churchill paper).
-   Nevertheless you may want to use both types of rate variation.
+   If both user-assigned rate categories and Hidden Markov Model rates are
+   allowed, the program assumes that the actual rate at a position is the
+   product of the user-assigned category rate and the Hidden Markov Model
+   regional rate. (This may not always make perfect biological sense: it
+   would be more natural to assume some upper bound to the rate, as we
+   have discussed in the Felsenstein and Churchill paper). Nevertheless
+   you may want to use both types of rate variation.
 
 Usage
 
    Here is a sample session with fproml
 
 
-% fproml 
+% fproml
 Protein phylogeny by maximum likelihood
 Input (aligned) protein sequence set(s): proml.dat
-Phylip tree file (optional): 
-Phylip proml program output file [proml.fproml]: 
+Phylip tree file (optional):
+Phylip proml program output file [proml.fproml]:
 
 
 Adding species:
@@ -129,6 +126,7 @@ Output written to file "proml.fproml"
 Tree also written onto file "proml.treefile"
 
 Done.
+
 
 
    Go to the input files for this example
@@ -236,6 +234,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    fproml reads any normal sequence USAs.
@@ -251,30 +250,31 @@ Gamma     CATTTCGTCACAA
 Delta     GGTATTTCGGCCT
 Epsilon   GGGATCTCGGCCC
 
+
 Output file format
 
    fproml output starts by giving the number of species and the number of
    amino acid positions.
 
    If the R (HMM rates) option is used a table of the relative rates of
-   expected substitution at each category of positions is printed, as
-   well as the probabilities of each of those rates.
+   expected substitution at each category of positions is printed, as well
+   as the probabilities of each of those rates.
 
-   There then follow the data sequences, if the user has selected the
-   menu option to print them, with the sequences printed in groups of ten
-   amino acids. The trees found are printed as an unrooted tree topology
+   There then follow the data sequences, if the user has selected the menu
+   option to print them, with the sequences printed in groups of ten amino
+   acids. The trees found are printed as an unrooted tree topology
    (possibly rooted by outgroup if so requested). The internal nodes are
    numbered arbitrarily for the sake of identification. The number of
    trees evaluated so far and the log likelihood of the tree are also
-   given. Note that the trees printed out have a trifurcation at the
-   base. The branch lengths in the diagram are roughly proportional to
-   the estimated branch lengths, except that very short branches are
-   printed out at least three characters in length so that the
-   connections can be seen. The unit of branch length is the expected
-   fraction of amino acids changed (so that 1.0 is 100 PAMs).
+   given. Note that the trees printed out have a trifurcation at the base.
+   The branch lengths in the diagram are roughly proportional to the
+   estimated branch lengths, except that very short branches are printed
+   out at least three characters in length so that the connections can be
+   seen. The unit of branch length is the expected fraction of amino acids
+   changed (so that 1.0 is 100 PAMs).
 
-   A table is printed showing the length of each tree segment (in units
-   of expected amino acid substitutions per position), as well as (very)
+   A table is printed showing the length of each tree segment (in units of
+   expected amino acid substitutions per position), as well as (very)
    rough confidence limits on their lengths. If a confidence limit is
    negative, this indicates that rearrangement of the tree in that region
    is not excluded, while if both limits are positive, rearrangement is
@@ -288,8 +288,8 @@ Output file format
    forced to zero length. This done by comparing the likelihoods changing
    only that branch length. A truly correct LRT would force that branch
    length to zero and also allow the other branch lengths to adjust to
-   that. The result would be a likelihood ratio closer to 1. Therefore
-   the present LRT will err on the side of being too significant. YOU ARE
+   that. The result would be a likelihood ratio closer to 1. Therefore the
+   present LRT will err on the side of being too significant. YOU ARE
    WARNED AGAINST TAKING IT TOO SERIOUSLY. If you want to get a better
    likelihood curve for a branch length you can do multiple runs with
    different prespecified lengths for that branch, as discussed above in
@@ -302,58 +302,58 @@ Output file format
    therefore use a much more conservative significance level, such as .05
    divided by the number of tests. The significance of these tests is
    shown by printing asterisks next to the confidence interval on each
-   branch length. It is important to keep in mind that both the
-   confidence limits and the tests are very rough and approximate, and
-   probably indicate more significance than they should. Nevertheless,
-   maximum likelihood is one of the few methods that can give you any
-   indication of its own error; most other methods simply fail to warn
-   the user that there is any error! (In fact, whole philosophical
-   schools of taxonomists exist whose main point seems to be that there
-   isn't any error, that the "most parsimonious" tree is the best tree by
-   definition and that's that).
+   branch length. It is important to keep in mind that both the confidence
+   limits and the tests are very rough and approximate, and probably
+   indicate more significance than they should. Nevertheless, maximum
+   likelihood is one of the few methods that can give you any indication
+   of its own error; most other methods simply fail to warn the user that
+   there is any error! (In fact, whole philosophical schools of
+   taxonomists exist whose main point seems to be that there isn't any
+   error, that the "most parsimonious" tree is the best tree by definition
+   and that's that).
 
    The log likelihood printed out with the final tree can be used to
    perform various likelihood ratio tests. One can, for example, compare
-   runs with different values of the relative rate of change in the
-   active site and in the rest of the protein to determine which value is
-   the maximum likelihood estimate, and what is the allowable range of
-   values (using a likelihood ratio test, which you will find described
-   in mathematical statistics books). One could also estimate the base
+   runs with different values of the relative rate of change in the active
+   site and in the rest of the protein to determine which value is the
+   maximum likelihood estimate, and what is the allowable range of values
+   (using a likelihood ratio test, which you will find described in
+   mathematical statistics books). One could also estimate the base
    frequencies in the same way. Both of these, particularly the latter,
    require multiple runs of the program to evaluate different possible
    values, and this might get expensive.
 
-   If the U (User Tree) option is used and more than one tree is
-   supplied, and the program is not told to assume autocorrelation
-   between the rates at different amino acid positions, the program also
-   performs a statistical test of each of these trees against the one
-   with highest likelihood. If there are two user trees, the test done is
-   one which is due to Kishino and Hasegawa (1989), a version of a test
-   originally introduced by Templeton (1983). In this implementation it
-   uses the mean and variance of log-likelihood differences between
-   trees, taken across amino acid positions. If the two trees' means are
-   more than 1.96 standard deviations different then the trees are
-   declared significantly different. This use of the empirical variance
-   of log-likelihood differences is more robust and nonparametric than
-   the classical likelihood ratio test, and may to some extent compensate
-   for the any lack of realism in the model underlying this program.
+   If the U (User Tree) option is used and more than one tree is supplied,
+   and the program is not told to assume autocorrelation between the rates
+   at different amino acid positions, the program also performs a
+   statistical test of each of these trees against the one with highest
+   likelihood. If there are two user trees, the test done is one which is
+   due to Kishino and Hasegawa (1989), a version of a test originally
+   introduced by Templeton (1983). In this implementation it uses the mean
+   and variance of log-likelihood differences between trees, taken across
+   amino acid positions. If the two trees' means are more than 1.96
+   standard deviations different then the trees are declared significantly
+   different. This use of the empirical variance of log-likelihood
+   differences is more robust and nonparametric than the classical
+   likelihood ratio test, and may to some extent compensate for the any
+   lack of realism in the model underlying this program.
 
    If there are more than two trees, the test done is an extension of the
    KHT test, due to Shimodaira and Hasegawa (1999). They pointed out that
-   a correction for the number of trees was necessary, and they
-   introduced a resampling method to make this correction. In the version
-   used here the variances and covariances of the sum of log likelihoods
-   across amino acid positions are computed for all pairs of trees. To
-   test whether the difference between each tree and the best one is
-   larger than could have been expected if they all had the same expected
+   a correction for the number of trees was necessary, and they introduced
+   a resampling method to make this correction. In the version used here
+   the variances and covariances of the sum of log likelihoods across
+   amino acid positions are computed for all pairs of trees. To test
+   whether the difference between each tree and the best one is larger
+   than could have been expected if they all had the same expected
    log-likelihood, log-likelihoods for all trees are sampled with these
-   covariances and equal means (Shimodaira and Hasegawa's "least
-   favorable hypothesis"), and a P value is computed from the fraction of
-   times the difference between the tree's value and the highest
-   log-likelihood exceeds that actually observed. Note that this sampling
-   needs random numbers, and so the program will prompt the user for a
-   random number seed if one has not already been supplied. With the
-   two-tree KHT test no random numbers are used.
+   covariances and equal means (Shimodaira and Hasegawa's "least favorable
+   hypothesis"), and a P value is computed from the fraction of times the
+   difference between the tree's value and the highest log-likelihood
+   exceeds that actually observed. Note that this sampling needs random
+   numbers, and so the program will prompt the user for a random number
+   seed if one has not already been supplied. With the two-tree KHT test
+   no random numbers are used.
 
    In either the KHT or the SH test the program prints out a table of the
    log-likelihoods of each tree, the differences of each from the highest
@@ -367,18 +367,18 @@ Output file format
    The branch lengths printed out are scaled in terms of 100 times the
    expected numbers of amino acid substitutions, scaled so that the
    average rate of change, averaged over all the positions analyzed, is
-   set to 100.0, if there are multiple categories of positions. This
-   means that whether or not there are multiple categories of positions,
-   the expected percentage of change for very small branches is equal to
-   the branch length. Of course, when a branch is twice as long this does
-   not mean that there will be twice as much net change expected along
-   it, since some of the changes occur in the same position and overlie
-   or even reverse each other. underlying numbers of changes. That means
-   that a branch of length 26 is 26 times as long as one which would show
-   a 1% difference between the amino acid sequences at the beginning and
-   end of the branch, but we would not expect the sequences at the
-   beginning and end of the branch to be 26% different, as there would be
-   some overlaying of changes.
+   set to 100.0, if there are multiple categories of positions. This means
+   that whether or not there are multiple categories of positions, the
+   expected percentage of change for very small branches is equal to the
+   branch length. Of course, when a branch is twice as long this does not
+   mean that there will be twice as much net change expected along it,
+   since some of the changes occur in the same position and overlie or
+   even reverse each other. underlying numbers of changes. That means that
+   a branch of length 26 is 26 times as long as one which would show a 1%
+   difference between the amino acid sequences at the beginning and end of
+   the branch, but we would not expect the sequences at the beginning and
+   end of the branch to be 26% different, as there would be some
+   overlaying of changes.
 
    Confidence limits on the branch lengths are also given. Of course a
    negative value of the branch length is meaningless, and a confidence
@@ -399,48 +399,48 @@ Output file format
    At the end of the output, if the R option is in effect with multiple
    HMM rates, the program will print a list of what amino acid position
    categories contributed the most to the final likelihood. This
-   combination of HMM rate categories need not have contributed a
-   majority of the likelihood, just a plurality. Still, it will be
-   helpful as a view of where the program infers that the higher and
-   lower rates are. Note that the use in this calculations of the prior
-   probabilities of different rates, and the average patch length, gives
-   this inference a "smoothed" appearance: some other combination of
-   rates might make a greater contribution to the likelihood, but be
-   discounted because it conflicts with this prior information. See the
-   example output below to see what this printout of rate categories
-   looks like. A second list will also be printed out, showing for each
-   position which rate accounted for the highest fraction of the
-   likelihood. If the fraction of the likelihood accounted for is less
-   than 95%, a dot is printed instead.
+   combination of HMM rate categories need not have contributed a majority
+   of the likelihood, just a plurality. Still, it will be helpful as a
+   view of where the program infers that the higher and lower rates are.
+   Note that the use in this calculations of the prior probabilities of
+   different rates, and the average patch length, gives this inference a
+   "smoothed" appearance: some other combination of rates might make a
+   greater contribution to the likelihood, but be discounted because it
+   conflicts with this prior information. See the example output below to
+   see what this printout of rate categories looks like. A second list
+   will also be printed out, showing for each position which rate
+   accounted for the highest fraction of the likelihood. If the fraction
+   of the likelihood accounted for is less than 95%, a dot is printed
+   instead.
 
    Option 3 in the menu controls whether the tree is printed out into the
    output file. This is on by default, and usually you will want to leave
    it this way. However for runs with multiple data sets such as
-   bootstrapping runs, you will primarily be interested in the trees
-   which are written onto the output tree file, rather than the trees
-   printed on the output file. To keep the output file from becoming too
-   large, it may be wisest to use option 3 to prevent trees being printed
-   onto the output file.
+   bootstrapping runs, you will primarily be interested in the trees which
+   are written onto the output tree file, rather than the trees printed on
+   the output file. To keep the output file from becoming too large, it
+   may be wisest to use option 3 to prevent trees being printed onto the
+   output file.
 
-   Option 4 in the menu controls whether the tree estimated by the
-   program is written onto a tree file. The default name of this output
-   tree file is "outtree". If the U option is in effect, all the
-   user-defined trees are written to the output tree file.
+   Option 4 in the menu controls whether the tree estimated by the program
+   is written onto a tree file. The default name of this output tree file
+   is "outtree". If the U option is in effect, all the user-defined trees
+   are written to the output tree file.
 
-   Option 5 in the menu controls whether ancestral states are estimated
-   at each node in the tree. If it is in effect, a table of ancestral
+   Option 5 in the menu controls whether ancestral states are estimated at
+   each node in the tree. If it is in effect, a table of ancestral
    sequences is printed out (including the sequences in the tip species
-   which are the input sequences). The symbol printed out is for the
-   amino acid which accounts for the largest fraction of the likelihood
-   at that position. In that table, if a position has an amino acid which
-   accounts for more than 95% of the likelihood, its symbol printed in
-   capital letters (W rather than w). One limitation of the current
-   version of the program is that when there are multiple HMM rates
-   (option R) the reconstructed amino acids are based on only the single
-   assignment of rates to positions which accounts for the largest amount
-   of the likelihood. Thus the assessment of 95% of the likelihood, in
-   tabulating the ancestral states, refers to 95% of the likelihood that
-   is accounted for by that particular combination of rates.
+   which are the input sequences). The symbol printed out is for the amino
+   acid which accounts for the largest fraction of the likelihood at that
+   position. In that table, if a position has an amino acid which accounts
+   for more than 95% of the likelihood, its symbol printed in capital
+   letters (W rather than w). One limitation of the current version of the
+   program is that when there are multiple HMM rates (option R) the
+   reconstructed amino acids are based on only the single assignment of
+   rates to positions which accounts for the largest amount of the
+   likelihood. Thus the assessment of 95% of the likelihood, in tabulating
+   the ancestral states, refers to 95% of the likelihood that is accounted
+   for by that particular combination of rates.
 
   Output files for usage example
 
@@ -480,6 +480,7 @@ Ln Likelihood =  -131.55052
 
      *  = significantly positive, P < 0.05
      ** = significantly positive, P < 0.01
+
 
 
   File: proml.treefile

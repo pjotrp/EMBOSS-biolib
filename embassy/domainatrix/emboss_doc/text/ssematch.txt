@@ -1,24 +1,23 @@
-
                            SSEMATCH documentation
-                                      
-   
+
+
 
 CONTENTS
 
-   1.0 SUMMARY 
-   2.0 INPUTS & OUTPUTS 
-   3.0 INPUT FILE FORMAT 
-   4.0 OUTPUT FILE FORMAT 
-   5.0 DATA FILES 
-   6.0 USAGE 
-   7.0 KNOWN BUGS & WARNINGS 
-   8.0 NOTES 
-   9.0 DESCRIPTION 
-   10.0 ALGORITHM 
-   11.0 RELATED APPLICATIONS 
-   12.0 DIAGNOSTIC ERROR MESSAGES 
-   13.0 AUTHORS 
-   14.0 REFERENCES 
+   1.0 SUMMARY
+   2.0 INPUTS & OUTPUTS
+   3.0 INPUT FILE FORMAT
+   4.0 OUTPUT FILE FORMAT
+   5.0 DATA FILES
+   6.0 USAGE
+   7.0 KNOWN BUGS & WARNINGS
+   8.0 NOTES
+   9.0 DESCRIPTION
+   10.0 ALGORITHM
+   11.0 RELATED APPLICATIONS
+   12.0 DIAGNOSTIC ERROR MESSAGES
+   13.0 AUTHORS
+   14.0 REFERENCES
 
 1.0 SUMMARY
 
@@ -35,33 +34,32 @@ CONTENTS
    represents an amino acid residue) for a given query. Matches are found
    by global alignment of (1) element maps and (2) strings (individual
    residues) to generate the two DCF (output) files.
-   The DCF input file must contain domain secondary structure
-   information, which can be added by using DOMAINSSE.
-   The names of the secondary structure file, DCF files (input and
-   output) and number of top-scoring matches to report are specified by
-   the user. A log file is also written.
+   The DCF input file must contain domain secondary structure information,
+   which can be added by using DOMAINSSE.
+   The names of the secondary structure file, DCF files (input and output)
+   and number of top-scoring matches to report are specified by the user.
+   A log file is also written.
 
 3.0 INPUT FILE FORMAT
 
    Domain classification file
-   The format of the DCF file is described in the SCOPPARSE
-   documentation.
-   The DCF input file must contain domain secondary structure
-   information, which can be added by using DOMAINSSE.
+   The format of the DCF file is described in the SCOPPARSE documentation.
+   The DCF input file must contain domain secondary structure information,
+   which can be added by using DOMAINSSE.
    Secondary structure file
    The format of the secondary structure file (Figure 1) is identical to
    the SS and SE records from a DCF file (see DOMAINSSE documentation.).
    The records are as follows:
-     * (1) SS - Secondary structure assignment (per residue). A
-       simplified 3-state assignment: H (helix), E (extended, beta
-       strand) and L (loop, open coil) should be used.
+     * (1) SS - Secondary structure assignment (per residue). A simplified
+       3-state assignment: H (helix), E (extended, beta strand) and L
+       (loop, open coil) should be used.
      * (2) SE - Secondary structure element assignment (per secondary
        structure element). The same 3-state assignment as for the SS
        record should be used.
 
    Note that if the file contains secondary structure characters other
-   than H, E and L they will be converted before they are used by
-   SSEMATCH (see NOTES below).
+   than H, E and L they will be converted before they are used by SSEMATCH
+   (see NOTES below).
 
   Input files for usage example
 
@@ -138,10 +136,9 @@ CH   A CHAIN; . START; . END;
 
 4.0 OUTPUT FILE FORMAT
 
-   The format of the DCF file is described in the SCOPPARSE
-   documentation. SSEMATCH adds an extra comment line at the top
-   containing the score for the appropriate alignment (residue or
-   element).
+   The format of the DCF file is described in the SCOPPARSE documentation.
+   SSEMATCH adds an extra comment line at the top containing the score for
+   the appropriate alignment (residue or element).
 
   Output files for usage example
 
@@ -219,12 +216,13 @@ CH   A CHAIN; . START; . END;
 
   File: ssematch.log
 
+
 5.0 DATA FILES
 
    SSEMATCH requires a secondary structure substitution table such as
    SSSUB distributed with EMBOSS. An example (taken from Wallqvist et al)
    is shown in Figure 3.
-   Figure 3 Excerpt from a DCF (output) file 
+   Figure 3 Excerpt from a DCF (output) file
 
     H   E   C   *
 H   2 -15  -4  -7
@@ -344,4 +342,5 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 

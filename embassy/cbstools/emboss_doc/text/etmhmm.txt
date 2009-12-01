@@ -1,5 +1,4 @@
-
-                                  etmhmm 
+                                   etmhmm
 
 
 
@@ -23,10 +22,11 @@ Usage
    Here is a sample session with etmhmm
 
 
-% etmhmm 
+% etmhmm
 Reports transmembrane helices
 Input (aligned) sequence set: 5h2a_crigr.fsa
-Output file [5h2a_crigr.etmhmm]: 
+Output file [5h2a_crigr.etmhmm]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -86,6 +86,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    etmhmm reads any normal sequence USAs.
@@ -141,14 +142,14 @@ Notes
 References
 
     1. Anders Krogh and Bjorn Larsson, Gunnar von Heijne, and Erik L.L.
-       Sonnhammer: Predicting Transmembrane Protein Topology with a
-       Hidden Markov Model: Application to Complete Genomes. J. Mol.
-       Biol. 305:567-580, 2001.
-    2. Erik L.L. Sonnhammer, Gunnar von Heijne, and Anders Krogh: A
-       hidden Markov model for predicting transmembrane helices in
-       protein sequences. In J. Glasgow et al., eds.: Proc. Sixth Int.
-       Conf. on Intelligent Systems for Molecular Biology, pages 175-182.
-       AAAI Press, 1998.
+       Sonnhammer: Predicting Transmembrane Protein Topology with a Hidden
+       Markov Model: Application to Complete Genomes. J. Mol. Biol.
+       305:567-580, 2001.
+    2. Erik L.L. Sonnhammer, Gunnar von Heijne, and Anders Krogh: A hidden
+       Markov model for predicting transmembrane helices in protein
+       sequences. In J. Glasgow et al., eds.: Proc. Sixth Int. Conf. on
+       Intelligent Systems for Molecular Biology, pages 175-182. AAAI
+       Press, 1998.
 
 Warnings
 

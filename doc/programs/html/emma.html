@@ -147,6 +147,19 @@ Version: EMBOSS:6.1.0
 *  -dend               toggle     [N] Do alignment using an old dendrogram
 *  -dendfile           infile     Dendrogram (tree file) from clustalw file
                                   (optional)
+   -[no]slow           toggle     [Y] A distance is calculated between every
+                                  pair of sequences and these are used to
+                                  construct the dendrogram which guides the
+                                  final multiple alignment. The scores are
+                                  calculated from separate pairwise
+                                  alignments. These can be calculated using 2
+                                  methods: dynamic programming (slow but
+                                  accurate) or by the method of Wilbur and
+                                  Lipman (extremely fast but approximate).
+                                  The slow-accurate method is fine for short
+                                  sequences but will be VERY SLOW for many
+                                  (e.g. >100) long (e.g. >1000 residue)
+                                  sequences.
 *  -pwmatrix           menu       [b] The scoring table which describes the
                                   similarity of each amino acid to each other.
                                   There are three 'in-built' series of weight
@@ -242,19 +255,6 @@ Version: EMBOSS:6.1.0
                                   (not a series) can be selected. (Values: i
                                   (iub); c (clustalw); o (own))
 *  -mamatrixfile       infile     Comparison matrix file (optional)
-   -[no]slow           toggle     [Y] A distance is calculated between every
-                                  pair of sequences and these are used to
-                                  construct the dendrogram which guides the
-                                  final multiple alignment. The scores are
-                                  calculated from separate pairwise
-                                  alignments. These can be calculated using 2
-                                  methods: dynamic programming (slow but
-                                  accurate) or by the method of Wilbur and
-                                  Lipman (extremely fast but approximate).
-                                  The slow-accurate method is fine for short
-                                  sequences but will be VERY SLOW for many
-                                  (e.g. >100) long (e.g. >1000 residue)
-                                  sequences.
 *  -pwgapopen          float      [10.0] The penalty for opening a gap in the
                                   pairwise alignments. (Number 0.000 or more)
 *  -pwgapextend        float      [0.1] The penalty for extending a gap by 1
@@ -289,11 +289,11 @@ Version: EMBOSS:6.1.0
    -gapopen            float      [10.0] The penalty for opening a gap in the
                                   alignment. Increasing the gap opening
                                   penalty will make gaps less frequent.
-                                  (Positive foating point number)
+                                  (Positive floating point number)
    -gapextend          float      [5.0] The penalty for extending a gap by 1
                                   residue. Increasing the gap extension
                                   penalty will make gaps shorter. Terminal
-                                  gaps are not penalised. (Positive foating
+                                  gaps are not penalised. (Positive floating
                                   point number)
    -[no]endgaps        boolean    [Y] End gap separation: treats end gaps just
                                   like internal gaps for the purposes of
@@ -459,6 +459,15 @@ Version: EMBOSS:6.1.0
 </tr>
 
 <tr bgcolor="#FFFFCC">
+<td>-[no]slow</td>
+<td>toggle</td>
+<td>A distance is calculated between every pair of sequences and these are used to construct the dendrogram which guides the final multiple alignment. The scores are calculated from separate pairwise alignments. These can be calculated using 2 methods: dynamic programming (slow but accurate) or by the method of Wilbur and Lipman (extremely fast but approximate).
+The slow-accurate method is fine for short sequences but will be VERY SLOW for many (e.g. &gt;100) long (e.g. &gt;1000 residue) sequences.</td>
+<td>Toggle value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
 <td>-pwmatrix</td>
 <td>list</td>
 <td>The scoring table which describes the similarity of each amino acid to each other.
@@ -514,15 +523,6 @@ We also supply an identity matrix which gives a score of 1.0 to two identical am
 <td>Comparison matrix file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
-</tr>
-
-<tr bgcolor="#FFFFCC">
-<td>-[no]slow</td>
-<td>toggle</td>
-<td>A distance is calculated between every pair of sequences and these are used to construct the dendrogram which guides the final multiple alignment. The scores are calculated from separate pairwise alignments. These can be calculated using 2 methods: dynamic programming (slow but accurate) or by the method of Wilbur and Lipman (extremely fast but approximate).
-The slow-accurate method is fine for short sequences but will be VERY SLOW for many (e.g. &gt;100) long (e.g. &gt;1000 residue) sequences.</td>
-<td>Toggle value Yes/No</td>
-<td>Yes</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -585,7 +585,7 @@ The slow-accurate method is fine for short sequences but will be VERY SLOW for m
 <td>-gapopen</td>
 <td>float</td>
 <td>The penalty for opening a gap in the alignment. Increasing the gap opening penalty will make gaps less frequent.</td>
-<td>Positive foating point number</td>
+<td>Positive floating point number</td>
 <td>10.0</td>
 </tr>
 
@@ -593,7 +593,7 @@ The slow-accurate method is fine for short sequences but will be VERY SLOW for m
 <td>-gapextend</td>
 <td>float</td>
 <td>The penalty for extending a gap by 1 residue. Increasing the gap extension penalty will make gaps shorter. Terminal gaps are not penalised.</td>
-<td>Positive foating point number</td>
+<td>Positive floating point number</td>
 <td>5.0</td>
 </tr>
 

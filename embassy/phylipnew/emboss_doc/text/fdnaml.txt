@@ -1,5 +1,4 @@
-
-                                  fdnaml 
+                                   fdnaml
 
 
 
@@ -19,9 +18,9 @@ Description
    Estimates phylogenies from nucleotide sequences by maximum likelihood.
    The model employed allows for unequal expected frequencies of the four
    nucleotides, for unequal rates of transitions and transversions, and
-   for different (prespecified) rates of change in different categories
-   of sites, and also use of a Hidden Markov model of rates, with the
-   program inferring which sites have which rates. This also allows
+   for different (prespecified) rates of change in different categories of
+   sites, and also use of a Hidden Markov model of rates, with the program
+   inferring which sites have which rates. This also allows
    gamma-distribution and gamma-plus-invariant sites distributions of
    rates across sites.
 
@@ -30,11 +29,11 @@ Algorithm
    This program implements the maximum likelihood method for DNA
    sequences. The present version is faster than earlier versions of
    DNAML. Details of the algorithm are published in the paper by
-   Felsenstein and Churchill (1996). The model of base substitution
-   allows the expected frequencies of the four bases to be unequal,
-   allows the expected frequencies of transitions and transversions to be
-   unequal, and has several ways of allowing different rates of evolution
-   at different sites.
+   Felsenstein and Churchill (1996). The model of base substitution allows
+   the expected frequencies of the four bases to be unequal, allows the
+   expected frequencies of transitions and transversions to be unequal,
+   and has several ways of allowing different rates of evolution at
+   different sites.
 
    The assumptions of the present model are:
     1. Each site in the sequence evolves independently.
@@ -43,22 +42,21 @@ Algorithm
        chosen from a series of rates (each with a probability of
        occurrence) which we specify.
     4. All relevant sites are included in the sequence, not just those
-       that have changed or those that are "phylogenetically
-       informative".
+       that have changed or those that are "phylogenetically informative".
     5. A substitution consists of one of two sorts of events:
          1. The first kind of event consists of the replacement of the
-            existing base by a base drawn from a pool of purines or a
-            pool of pyrimidines (depending on whether the base being
-            replaced was a purine or a pyrimidine). It can lead either to
-            no change or to a transition.
+            existing base by a base drawn from a pool of purines or a pool
+            of pyrimidines (depending on whether the base being replaced
+            was a purine or a pyrimidine). It can lead either to no change
+            or to a transition.
          2. The second kind of event consists of the replacement of the
             existing base by a base drawn at random from a pool of bases
             at known frequencies, independently of the identity of the
             base which is being replaced. This could lead either to a no
             change, to a transition or to a transversion.
-            The ratio of the two purines in the purine replacement pool
-            is the same as their ratio in the overall pool, and similarly
-            for the pyrimidines.
+            The ratio of the two purines in the purine replacement pool is
+            the same as their ratio in the overall pool, and similarly for
+            the pyrimidines.
             The ratios of transitions to transversions can be set by the
             user. The substitution process can be diagrammed as follows:
             Suppose that you specified A, C, G, and T base frequencies of
@@ -76,6 +74,7 @@ Algorithm
      |  0.24 : 0.27) |            |  0.28 : 0.21) |
      |_______________|            |_______________|
 
+
                o Second kind of event:
                  Draw from the overall pool:
 
@@ -86,6 +85,7 @@ Algorithm
               |      0.21 T      |
               |__________________|
 
+
    Note that if the existing base is, say, an A, the first kind of event
    has a 0.4706 probability of "replacing" it by another A. The second
    kind of event has a 0.24 chance of replacing it by another A. This
@@ -93,46 +93,46 @@ Algorithm
    properties that make likelihood calculations far easier. A closely
    similar, but not precisely identical model having different rates of
    transitions and transversions has been used by Hasegawa et. al.
-   (1985b). The transition probability formulas for the current model
-   were given (with my permission) by Kishino and Hasegawa (1989).
-   Another explanation is available in the paper by Felsenstein and
-   Churchill (1996).
+   (1985b). The transition probability formulas for the current model were
+   given (with my permission) by Kishino and Hasegawa (1989). Another
+   explanation is available in the paper by Felsenstein and Churchill
+   (1996).
 
    Note the assumption that we are looking at all sites, including those
-   that have not changed at all. It is important not to restrict
-   attention to some sites based on whether or not they have changed;
-   doing that would bias branch lengths by making them too long, and that
-   in turn would cause the method to misinterpret the meaning of those
-   sites that had changed.
+   that have not changed at all. It is important not to restrict attention
+   to some sites based on whether or not they have changed; doing that
+   would bias branch lengths by making them too long, and that in turn
+   would cause the method to misinterpret the meaning of those sites that
+   had changed.
 
    This program uses a Hidden Markov Model (HMM) method of inferring
    different rates of evolution at different sites. This was described in
-   a paper by me and Gary Churchill (1996). It allows us to specify to
-   the program that there will be a number of different possible
-   evolutionary rates, what the prior probabilities of occurrence of each
-   is, and what the average length of a patch of sites all having the
-   same rate. The rates can also be chosen by the program to approximate
-   a Gamma distribution of rates, or a Gamma distribution plus a class of
+   a paper by me and Gary Churchill (1996). It allows us to specify to the
+   program that there will be a number of different possible evolutionary
+   rates, what the prior probabilities of occurrence of each is, and what
+   the average length of a patch of sites all having the same rate. The
+   rates can also be chosen by the program to approximate a Gamma
+   distribution of rates, or a Gamma distribution plus a class of
    invariant sites. The program computes the the likelihood by summing it
    over all possible assignments of rates to sites, weighting each by its
    prior probability of occurrence.
 
    For example, if we have used the C and A options (described below) to
-   specify that there are three possible rates of evolution, 1.0, 2.4,
-   and 0.0, that the prior probabilities of a site having these rates are
-   0.4, 0.3, and 0.3, and that the average patch length (number of
-   consecutive sites with the same rate) is 2.0, the program will sum the
-   likelihood over all possibilities, but giving less weight to those
-   that (say) assign all sites to rate 2.4, or that fail to have
-   consecutive sites that have the same rate.
+   specify that there are three possible rates of evolution, 1.0, 2.4, and
+   0.0, that the prior probabilities of a site having these rates are 0.4,
+   0.3, and 0.3, and that the average patch length (number of consecutive
+   sites with the same rate) is 2.0, the program will sum the likelihood
+   over all possibilities, but giving less weight to those that (say)
+   assign all sites to rate 2.4, or that fail to have consecutive sites
+   that have the same rate.
 
    The Hidden Markov Model framework for rate variation among sites was
-   independently developed by Yang (1993, 1994, 1995). We have
-   implemented a general scheme for a Hidden Markov Model of rates; we
-   allow the rates and their prior probabilities to be specified
-   arbitrarily by the user, or by a discrete approximation to a Gamma
-   distribution of rates (Yang, 1995), or by a mixture of a Gamma
-   distribution and a class of invariant sites.
+   independently developed by Yang (1993, 1994, 1995). We have implemented
+   a general scheme for a Hidden Markov Model of rates; we allow the rates
+   and their prior probabilities to be specified arbitrarily by the user,
+   or by a discrete approximation to a Gamma distribution of rates (Yang,
+   1995), or by a mixture of a Gamma distribution and a class of invariant
+   sites.
 
    This feature effectively removes the artificial assumption that all
    sites have the same rate, and also means that we need not know in
@@ -142,14 +142,14 @@ Algorithm
    Another layer of rate variation also is available. The user can assign
    categories of rates to each site (for example, we might want first,
    second, and third codon positions in a protein coding sequence to be
-   three different categories. This is done with the categories input
-   file and the C option. We then specify (using the menu) the relative
-   rates of evolution of sites in the different categories. For example,
-   we might specify that first, second, and third positions evolve at
+   three different categories. This is done with the categories input file
+   and the C option. We then specify (using the menu) the relative rates
+   of evolution of sites in the different categories. For example, we
+   might specify that first, second, and third positions evolve at
    relative rates of 1.0, 0.8, and 2.7.
 
-   If both user-assigned rate categories and Hidden Markov Model rates
-   are allowed, the program assumes that the actual rate at a site is the
+   If both user-assigned rate categories and Hidden Markov Model rates are
+   allowed, the program assumes that the actual rate at a site is the
    product of the user-assigned category rate and the Hidden Markov Model
    regional rate. (This may not always make perfect biological sense: it
    would be more natural to assume some upper bound to the rate, as we
@@ -161,14 +161,13 @@ Usage
    Here is a sample session with fdnaml
 
 
-% fdnaml -printdata -ncategories 2 -categories '1111112222222' -rate '1.0 2.0'
--gamma h -nhmmcategories 5 -hmmrates '0.264 1.413 3.596 7.086 12.641' -hmmproba
-bilities '0.522 0.399 0.076 0.0036 0.000023' -lambda 1.5 -weight '0111111111110
-' 
+% fdnaml -printdata -ncategories 2 -categories '1111112222222' -rate '1.0 2.0' -
+gamma h -nhmmcategories 5 -hmmrates '0.264 1.413 3.596 7.086 12.641' -hmmprobabi
+lities '0.522 0.399 0.076 0.0036 0.000023' -lambda 1.5 -weight '0111111111110'
 Estimates nucleotide phylogeny by maximum likelihood
 Input (aligned) nucleotide sequence set(s): dnaml.dat
-Phylip tree file (optional): 
-Phylip dnaml program output file [dnaml.fdnaml]: 
+Phylip tree file (optional):
+Phylip dnaml program output file [dnaml.fdnaml]:
 
 
  mulsets: false
@@ -224,17 +223,18 @@ Tree also written onto file "dnaml.treefile"
 Done.
 
 
+
    Go to the input files for this example
    Go to the output files for this example
 
    Example 2
 
 
-% fdnaml -printdata -njumble 3 -seed 3  
+% fdnaml -printdata -njumble 3 -seed 3
 Estimates nucleotide phylogeny by maximum likelihood
 Input (aligned) nucleotide sequence set(s): dnaml.dat
-Phylip tree file (optional): 
-Phylip dnaml program output file [dnaml.fdnaml]: 
+Phylip tree file (optional):
+Phylip dnaml program output file [dnaml.fdnaml]:
 
 
  mulsets: false
@@ -302,6 +302,7 @@ Output written to file "dnaml.fdnaml"
 Tree also written onto file "dnaml.treefile"
 
 Done.
+
 
 
    Go to the output files for this example
@@ -409,6 +410,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    fdnaml reads any normal sequence USAs.
@@ -437,27 +439,26 @@ Output file format
    expected substitution at each category of sites is printed, as well as
    the probabilities of each of those rates.
 
-   There then follow the data sequences, if the user has selected the
-   menu option to print them out, with the base sequences printed in
-   groups of ten bases along the lines of the Genbank and EMBL formats.
-   The trees found are printed as an unrooted tree topology (possibly
-   rooted by outgroup if so requested). The internal nodes are numbered
-   arbitrarily for the sake of identification. The number of trees
-   evaluated so far and the log likelihood of the tree are also given.
-   Note that the trees printed out have a trifurcation at the base. The
-   branch lengths in the diagram are roughly proportional to the
-   estimated branch lengths, except that very short branches are printed
-   out at least three characters in length so that the connections can be
-   seen.
+   There then follow the data sequences, if the user has selected the menu
+   option to print them out, with the base sequences printed in groups of
+   ten bases along the lines of the Genbank and EMBL formats. The trees
+   found are printed as an unrooted tree topology (possibly rooted by
+   outgroup if so requested). The internal nodes are numbered arbitrarily
+   for the sake of identification. The number of trees evaluated so far
+   and the log likelihood of the tree are also given. Note that the trees
+   printed out have a trifurcation at the base. The branch lengths in the
+   diagram are roughly proportional to the estimated branch lengths,
+   except that very short branches are printed out at least three
+   characters in length so that the connections can be seen.
 
-   A table is printed showing the length of each tree segment (in units
-   of expected nucleotide substitutions per site), as well as (very)
-   rough confidence limits on their lengths. If a confidence limit is
-   negative, this indicates that rearrangement of the tree in that region
-   is not excluded, while if both limits are positive, rearrangement is
-   still not necessarily excluded because the variance calculation on
-   which the confidence limits are based results in an underestimate,
-   which makes the confidence limits too narrow.
+   A table is printed showing the length of each tree segment (in units of
+   expected nucleotide substitutions per site), as well as (very) rough
+   confidence limits on their lengths. If a confidence limit is negative,
+   this indicates that rearrangement of the tree in that region is not
+   excluded, while if both limits are positive, rearrangement is still not
+   necessarily excluded because the variance calculation on which the
+   confidence limits are based results in an underestimate, which makes
+   the confidence limits too narrow.
 
    In addition to the confidence limits, the program performs a crude
    Likelihood Ratio Test (LRT) for each branch of the tree. The program
@@ -465,8 +466,8 @@ Output file format
    forced to zero length. This done by comparing the likelihoods changing
    only that branch length. A truly correct LRT would force that branch
    length to zero and also allow the other branch lengths to adjust to
-   that. The result would be a likelihood ratio closer to 1. Therefore
-   the present LRT will err on the side of being too significant. YOU ARE
+   that. The result would be a likelihood ratio closer to 1. Therefore the
+   present LRT will err on the side of being too significant. YOU ARE
    WARNED AGAINST TAKING IT TOO SERIOUSLY. If you want to get a better
    likelihood curve for a branch length you can do multiple runs with
    different prespecified lengths for that branch, as discussed above in
@@ -479,15 +480,15 @@ Output file format
    therefore use a much more conservative significance level, such as .05
    divided by the number of tests. The significance of these tests is
    shown by printing asterisks next to the confidence interval on each
-   branch length. It is important to keep in mind that both the
-   confidence limits and the tests are very rough and approximate, and
-   probably indicate more significance than they should. Nevertheless,
-   maximum likelihood is one of the few methods that can give you any
-   indication of its own error; most other methods simply fail to warn
-   the user that there is any error! (In fact, whole philosophical
-   schools of taxonomists exist whose main point seems to be that there
-   isn't any error, that the "most parsimonious" tree is the best tree by
-   definition and that's that).
+   branch length. It is important to keep in mind that both the confidence
+   limits and the tests are very rough and approximate, and probably
+   indicate more significance than they should. Nevertheless, maximum
+   likelihood is one of the few methods that can give you any indication
+   of its own error; most other methods simply fail to warn the user that
+   there is any error! (In fact, whole philosophical schools of
+   taxonomists exist whose main point seems to be that there isn't any
+   error, that the "most parsimonious" tree is the best tree by definition
+   and that's that).
 
    The log likelihood printed out with the final tree can be used to
    perform various likelihood ratio tests. One can, for example, compare
@@ -496,40 +497,40 @@ Output file format
    what is the allowable range of values (using a likelihood ratio test,
    which you will find described in mathematical statistics books). One
    could also estimate the base frequencies in the same way. Both of
-   these, particularly the latter, require multiple runs of the program
-   to evaluate different possible values, and this might get expensive.
+   these, particularly the latter, require multiple runs of the program to
+   evaluate different possible values, and this might get expensive.
 
-   If the U (User Tree) option is used and more than one tree is
-   supplied, and the program is not told to assume autocorrelation
-   between the rates at different sites, the program also performs a
-   statistical test of each of these trees against the one with highest
-   likelihood. If there are two user trees, the test done is one which is
-   due to Kishino and Hasegawa (1989), a version of a test originally
-   introduced by Templeton (1983). In this implementation it uses the
-   mean and variance of log-likelihood differences between trees, taken
-   across sites. If the two trees' means are more than 1.96 standard
-   deviations different then the trees are declared significantly
-   different. This use of the empirical variance of log-likelihood
-   differences is more robust and nonparametric than the classical
-   likelihood ratio test, and may to some extent compensate for the any
-   lack of realism in the model underlying this program.
+   If the U (User Tree) option is used and more than one tree is supplied,
+   and the program is not told to assume autocorrelation between the rates
+   at different sites, the program also performs a statistical test of
+   each of these trees against the one with highest likelihood. If there
+   are two user trees, the test done is one which is due to Kishino and
+   Hasegawa (1989), a version of a test originally introduced by Templeton
+   (1983). In this implementation it uses the mean and variance of
+   log-likelihood differences between trees, taken across sites. If the
+   two trees' means are more than 1.96 standard deviations different then
+   the trees are declared significantly different. This use of the
+   empirical variance of log-likelihood differences is more robust and
+   nonparametric than the classical likelihood ratio test, and may to some
+   extent compensate for the any lack of realism in the model underlying
+   this program.
 
    If there are more than two trees, the test done is an extension of the
    KHT test, due to Shimodaira and Hasegawa (1999). They pointed out that
-   a correction for the number of trees was necessary, and they
-   introduced a resampling method to make this correction. In the version
-   used here the variances and covariances of the sum of log likelihoods
-   across sites are computed for all pairs of trees. To test whether the
-   difference between each tree and the best one is larger than could
-   have been expected if they all had the same expected log-likelihood,
+   a correction for the number of trees was necessary, and they introduced
+   a resampling method to make this correction. In the version used here
+   the variances and covariances of the sum of log likelihoods across
+   sites are computed for all pairs of trees. To test whether the
+   difference between each tree and the best one is larger than could have
+   been expected if they all had the same expected log-likelihood,
    log-likelihoods for all trees are sampled with these covariances and
    equal means (Shimodaira and Hasegawa's "least favorable hypothesis"),
    and a P value is computed from the fraction of times the difference
    between the tree's value and the highest log-likelihood exceeds that
-   actually observed. Note that this sampling needs random numbers, and
-   so the program will prompt the user for a random number seed if one
-   has not already been supplied. With the two-tree KHT test no random
-   numbers are used.
+   actually observed. Note that this sampling needs random numbers, and so
+   the program will prompt the user for a random number seed if one has
+   not already been supplied. With the two-tree KHT test no random numbers
+   are used.
 
    In either the KHT or the SH test the program prints out a table of the
    log-likelihoods of each tree, the differences of each from the highest
@@ -542,19 +543,19 @@ Output file format
    The branch lengths printed out are scaled in terms of expected numbers
    of substitutions, counting both transitions and transversions but not
    replacements of a base by itself, and scaled so that the average rate
-   of change, averaged over all sites analyzed, is set to 1.0 if there
-   are multiple categories of sites. This means that whether or not there
-   are multiple categories of sites, the expected fraction of change for
-   very small branches is equal to the branch length. Of course, when a
-   branch is twice as long this does not mean that there will be twice as
-   much net change expected along it, since some of the changes occur in
-   the same site and overlie or even reverse each other. The branch
-   length estimates here are in terms of the expected underlying numbers
-   of changes. That means that a branch of length 0.26 is 26 times as
-   long as one which would show a 1% difference between the nucleotide
-   sequences at the beginning and end of the branch. But we would not
-   expect the sequences at the beginning and end of the branch to be 26%
-   different, as there would be some overlaying of changes.
+   of change, averaged over all sites analyzed, is set to 1.0 if there are
+   multiple categories of sites. This means that whether or not there are
+   multiple categories of sites, the expected fraction of change for very
+   small branches is equal to the branch length. Of course, when a branch
+   is twice as long this does not mean that there will be twice as much
+   net change expected along it, since some of the changes occur in the
+   same site and overlie or even reverse each other. The branch length
+   estimates here are in terms of the expected underlying numbers of
+   changes. That means that a branch of length 0.26 is 26 times as long as
+   one which would show a 1% difference between the nucleotide sequences
+   at the beginning and end of the branch. But we would not expect the
+   sequences at the beginning and end of the branch to be 26% different,
+   as there would be some overlaying of changes.
 
    Confidence limits on the branch lengths are also given. Of course a
    negative value of the branch length is meaningless, and a confidence
@@ -563,9 +564,9 @@ Output file format
    of the numerical algorithm, branch length estimates of zero will often
    print out as small numbers such as 0.00001. If you see a branch length
    that small, it is really estimated to be of zero length. Note that
-   versions 2.7 and earlier of this program printed out the branch
-   lengths in terms of expected probability of change, so that they were
-   scaled differently.
+   versions 2.7 and earlier of this program printed out the branch lengths
+   in terms of expected probability of change, so that they were scaled
+   differently.
 
    Another possible source of confusion is the existence of negative
    values for the log likelihood. This is not really a problem; the log
@@ -578,35 +579,35 @@ Output file format
    At the end of the output, if the R option is in effect with multiple
    HMM rates, the program will print a list of what site categories
    contributed the most to the final likelihood. This combination of HMM
-   rate categories need not have contributed a majority of the
-   likelihood, just a plurality. Still, it will be helpful as a view of
-   where the program infers that the higher and lower rates are. Note
-   that the use in this calculations of the prior probabilities of
-   different rates, and the average patch length, gives this inference a
-   "smoothed" appearance: some other combination of rates might make a
-   greater contribution to the likelihood, but be discounted because it
-   conflicts with this prior information. See the example output below to
-   see what this printout of rate categories looks like. A second list
-   will also be printed out, showing for each site which rate accounted
-   for the highest fraction of the likelihood. If the fraction of the
-   likelihood accounted for is less than 95%, a dot is printed instead.
+   rate categories need not have contributed a majority of the likelihood,
+   just a plurality. Still, it will be helpful as a view of where the
+   program infers that the higher and lower rates are. Note that the use
+   in this calculations of the prior probabilities of different rates, and
+   the average patch length, gives this inference a "smoothed" appearance:
+   some other combination of rates might make a greater contribution to
+   the likelihood, but be discounted because it conflicts with this prior
+   information. See the example output below to see what this printout of
+   rate categories looks like. A second list will also be printed out,
+   showing for each site which rate accounted for the highest fraction of
+   the likelihood. If the fraction of the likelihood accounted for is less
+   than 95%, a dot is printed instead.
 
    Option 3 in the menu controls whether the tree is printed out into the
    output file. This is on by default, and usually you will want to leave
    it this way. However for runs with multiple data sets such as
-   bootstrapping runs, you will primarily be interested in the trees
-   which are written onto the output tree file, rather than the trees
-   printed on the output file. To keep the output file from becoming too
-   large, it may be wisest to use option 3 to prevent trees being printed
-   onto the output file.
+   bootstrapping runs, you will primarily be interested in the trees which
+   are written onto the output tree file, rather than the trees printed on
+   the output file. To keep the output file from becoming too large, it
+   may be wisest to use option 3 to prevent trees being printed onto the
+   output file.
 
-   Option 4 in the menu controls whether the tree estimated by the
-   program is written onto a tree file. The default name of this output
-   tree file is "outtree". If the U option is in effect, all the
-   user-defined trees are written to the output tree file.
+   Option 4 in the menu controls whether the tree estimated by the program
+   is written onto a tree file. The default name of this output tree file
+   is "outtree". If the U option is in effect, all the user-defined trees
+   are written to the output tree file.
 
-   Option 5 in the menu controls whether ancestral states are estimated
-   at each node in the tree. If it is in effect, a table of ancestral
+   Option 5 in the menu controls whether ancestral states are estimated at
+   each node in the tree. If it is in effect, a table of ancestral
    sequences is printed out (including the sequences in the tip species
    which are the input sequences). In that table, if a site has a base
    which accounts for more than 95% of the likelihood, it is printed in
@@ -618,10 +619,9 @@ Output file format
    of the current version of the program is that when there are multiple
    HMM rates (option R) the reconstructed nucleotides are based on only
    the single assignment of rates to sites which accounts for the largest
-   amount of the likelihood. Thus the assessment of 95% of the
-   likelihood, in tabulating the ancestral states, refers to 95% of the
-   likelihood that is accounted for by that particular combination of
-   rates.
+   amount of the likelihood. Thus the assessment of 95% of the likelihood,
+   in tabulating the ancestral states, refers to 95% of the likelihood
+   that is accounted for by that particular combination of rates.
 
   Output files for usage example
 
@@ -718,6 +718,7 @@ Most probable category at each site if > 0.95 probability ("." otherwise)
 
              .......... ...
 
+
   File: dnaml.treefile
 
 (((Epsilon:0.00006,Delta:0.27319):7.59821,Beta:0.00006):0.04687,
@@ -782,6 +783,7 @@ Ln Likelihood =   -72.25088
 
      *  = significantly positive, P < 0.05
      ** = significantly positive, P < 0.01
+
 
 
   File: dnaml.treefile

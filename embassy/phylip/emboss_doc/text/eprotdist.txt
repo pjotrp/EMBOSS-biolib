@@ -1,5 +1,4 @@
-
-                                 eprotdist 
+                                  eprotdist
 
 
 
@@ -16,8 +15,8 @@ Function
 
 Description
 
-   EPROTDIST --Embossified program to compute distance matrix from
-   protein sequences
+   EPROTDIST --Embossified program to compute distance matrix from protein
+   sequences
 
    Phylip protdist documentation.
 
@@ -30,6 +29,7 @@ Beta      AAGGTCGCCACAC
 Gamma     CAGTTCGCCACAA
 Delta     GAGATTTCCGCCT
 Epsilon   GAGATCTCCGCCC
+
 
 % eprotdist test
 
@@ -46,6 +46,7 @@ Beta           0.47285  0.00000  0.45192  1.34185  0.84009
 Gamma          0.88304  0.45192  0.00000  1.30693  1.21582
 Delta          1.29841  1.34185  1.30693  0.00000  0.27536
 Epsilon        2.12269  0.84009  1.21582  0.27536  0.00000
+
 
 Command line arguments
 
@@ -81,8 +82,7 @@ Command line arguments
    Pam
    Optional qualifiers Allowed values Default
    -categ Choose the categorie to use
-   G (George/Hunt/Barker (Cys), (Met Val Leu Ileu), (Gly Ala Ser Thr
-   Pro))
+   G (George/Hunt/Barker (Cys), (Met Val Leu Ileu), (Gly Ala Ser Thr Pro))
    C (Chemical (Cys Met), (Val Leu Ileu Gly Ala Ser Thr), (Pro))
    H (Hall (Cys), (Met Val Leu Ileu), (Gly Ala Ser Thr), (Pro))
    G
@@ -125,9 +125,9 @@ See also
 
 Author(s)
 
-   (c)              Copyright 1993 by Joseph Felsenstein. Permission is granted to
-                    copy this document provided that no fee is charged for it and that
-                    this copyright notice is not removed.
+   (c)              Copyright 1993 by Joseph Felsenstein. Permission is granted to copy
+                    this document provided that no fee is charged for it and that this
+                    copyright notice is not removed.
 
                     This application was modified for inclusion in EMBOSS by Ian Longden
    (il@sanger.ac.uk) Informatics Division, The Sanger Centre, Wellcome

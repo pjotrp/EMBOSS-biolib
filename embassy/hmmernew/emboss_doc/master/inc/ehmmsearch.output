@@ -102,12 +102,12 @@ Whole sequence top hits:
 tophits_s report:
      Total hits:           1
      Satisfying E cutoff:  1
-     Total memory:         16K
+     Total memory:         20K
 
 Domain top hits:
 tophits_s report:
      Total hits:           9
      Satisfying E cutoff:  9
-     Total memory:         21K
+     Total memory:         26K
 </pre>
 </td></tr></table><p>

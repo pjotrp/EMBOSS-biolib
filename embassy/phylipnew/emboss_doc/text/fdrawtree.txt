@@ -1,5 +1,4 @@
-
-                                 fdrawtree 
+                                  fdrawtree
 
 
 
@@ -21,10 +20,10 @@ Description
    interactive and allows previewing of the tree on PC, Macintosh, or X
    Windows screens, or on Tektronix or Digital graphics terminals. Final
    output can be to a file formatted for one of the drawing programs, for
-   a ray-tracing or VRML browser, or one at can be sent to a laser
-   printer (such as Postscript or PCL-compatible printers), on graphics
-   screens or terminals, on pen plotters or on dot matrix printers
-   capable of graphics.
+   a ray-tracing or VRML browser, or one at can be sent to a laser printer
+   (such as Postscript or PCL-compatible printers), on graphics screens or
+   terminals, on pen plotters or on dot matrix printers capable of
+   graphics.
 
    Similar to DRAWGRAM but plots unrooted phylogenies.
 
@@ -33,32 +32,32 @@ Algorithm
    DRAWTREE interactively plots an unrooted tree diagram, with many
    options including orientation of tree and branches, label sizes and
    angles, margin sizes. Particularly if you can use your computer screen
-   to preview the plot, you can very effectively adjust the details of
-   the plotting to get just the kind of plot you want.
+   to preview the plot, you can very effectively adjust the details of the
+   plotting to get just the kind of plot you want.
 
    To understand the working of DRAWGRAM and DRAWTREE, you should first
    read the Tree Drawing Programs web page in this documentation.
 
    As with DRAWGRAM, to run DRAWTREE you need a compiled copy of the
-   program, a font file, and a tree file. The tree file has a default
-   name of intree. The font file has a default name of "fontfile". If
-   there is no file of that name, the program will ask you for the name
-   of a font file (we provide ones that have the names font1 through
-   font6). Once you decide on a favorite one of these, you could make a
-   copy of it and call it fontfile, and it will then be used by default.
-   Note that the program will get confused if the input tree file has the
-   number of trees on the first line of the file, so that number may have
-   to be removed.
+   program, a font file, and a tree file. The tree file has a default name
+   of intree. The font file has a default name of "fontfile". If there is
+   no file of that name, the program will ask you for the name of a font
+   file (we provide ones that have the names font1 through font6). Once
+   you decide on a favorite one of these, you could make a copy of it and
+   call it fontfile, and it will then be used by default. Note that the
+   program will get confused if the input tree file has the number of
+   trees on the first line of the file, so that number may have to be
+   removed.
 
 Usage
 
    Here is a sample session with fdrawtree
 
 
-% fdrawtree -previewer n 
+% fdrawtree -previewer n
 Plots an unrooted tree diagram
 Phylip tree file: drawgram.tree
-Phylip drawtree output file [drawgram.fdrawtree]: 
+Phylip drawtree output file [drawgram.fdrawtree]:
 
 DRAWTREE from PHYLIP version 3.69
 Reading tree ...
@@ -71,6 +70,7 @@ Writing plot file ...
 Plot written to file "drawgram.fdrawtree"
 
 Done.
+
 
 
    Go to the input files for this example
@@ -181,6 +181,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    fdrawtree input ...
@@ -189,7 +190,7 @@ Input file format
 
   File: drawgram.tree
 
-   (Delta,(Epsilon,(Gamma,(Beta,Alpha))));
+(Delta,(Epsilon,(Gamma,(Beta,Alpha))));
 
 Output file format
 

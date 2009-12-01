@@ -1,5 +1,4 @@
-
-                                  ednamlk 
+                                   ednamlk
 
 
 
@@ -113,6 +112,7 @@ Combination of categories that contributes the most to the likelihood:
 ((Delta:0.15834,Epsilon:0.15834):3.40036,(Gamma:0.80621,
 (Alpha:0.17218,Beta:0.17218):0.63403):2.75249);
 
+
 Command line arguments
 
    Mandatory qualifiers (* if not always prompted):
@@ -207,8 +207,8 @@ Author(s)
 
    (c)              Copyright 1986-1993 by Joseph Felsenstein and by the University of
    Washington.      Written by Joseph Felsenstein. Permission is granted to
-                    copy this document provided that no fee is charged for it and that
-                    this copyright notice is not removed.
+                    copy this document provided that no fee is charged for it and that this
+                    copyright notice is not removed.
 
                     This application was modified for inclusion in EMBOSS by Ian Longden
    (il@sanger.ac.uk) Informatics Division, The Sanger Centre, Wellcome

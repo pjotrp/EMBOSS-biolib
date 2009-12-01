@@ -1,5 +1,4 @@
-
-                                  twofeat 
+                                   twofeat
 
 
 
@@ -35,14 +34,13 @@ Algorithm
    Minimum and maximum distance between each feature.
 
    Distance measurement (measure from the nearest ends of the two
-   features, from the left ends, from right ends, from the furthest
-   ends.)
+   features, from the left ends, from right ends, from the furthest ends.)
 
    Type of overlap (any type of overlap or no overlap is allowed, Overlap
    required, No overlaps are allowed, Overlap required but one feature
    must not be completely within the other, Feature A must be completely
-   enclosed within feature B, Feature B must be completely enclosed
-   within feature A).
+   enclosed within feature B, Feature B must be completely enclosed within
+   feature A).
 
    Feature sense (any sense, in the same sense or in opposite senses)
 
@@ -55,10 +53,10 @@ Algorithm
    they satisfy the requirements output them to the report file
 
    By default the resulting pairs of features found are then written to a
-   report file as a single feature from the first postion of the
-   left-most feature to the last position of the right-most feature. You
-   can modify the output to report the pairs of features with no changes
-   made to them.
+   report file as a single feature from the first postion of the left-most
+   feature to the last position of the right-most feature. You can modify
+   the output to report the pairs of features with no changes made to
+   them.
 
 Usage
 
@@ -68,13 +66,14 @@ Usage
    for every pair of features found.
 
 
-% twofeat tembl:x65923 
+% twofeat tembl:x65923
 Finds neighbouring pairs of features in sequence(s)
 Type of first feature [*]: polyA_signal
 Type of second feature [*]: polyA_site
 The minimum distance between the features [0]: 10
 The maximum distance between the features [0]: 50
-Output report [x65923.twofeat]: 
+Output report [x65923.twofeat]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -86,13 +85,14 @@ Output report [x65923.twofeat]:
    full original pairs of features in GFF format.
 
 
-% twofeat -twoout -rformat gff tembl:x65923 
+% twofeat -twoout -rformat gff tembl:x65923
 Finds neighbouring pairs of features in sequence(s)
 Type of first feature [*]: polyA_signal
 Type of second feature [*]: polyA_site
 The minimum distance between the features [0]: 10
 The maximum distance between the features [0]: 50
-Output report [x65923.twofeat]: 
+Output report [x65923.twofeat]:
+
 
    Go to the output files for this example
 
@@ -372,14 +372,15 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    twofeat reads any normal sequence USAs.
 
   Input files for usage example
 
-   'tembl:x65923' is a sequence entry in the example nucleic acid
-   database 'tembl'
+   'tembl:x65923' is a sequence entry in the example nucleic acid database
+   'tembl'
 
   Database entry: tembl:x65923
 
@@ -395,8 +396,7 @@ XX
 KW   fau gene.
 XX
 OS   Homo sapiens (human)
-OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia
-;
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia;
 OC   Eutheria; Euarchontoglires; Primates; Haplorrhini; Catarrhini; Hominidae;
 OC   Homo.
 XX
@@ -440,10 +440,8 @@ FT                   /db_xref="HSSP:1GJZ"
 FT                   /db_xref="InterPro:IPR006846"
 FT                   /db_xref="UniProtKB/Swiss-Prot:P35544"
 FT                   /protein_id="CAA46716.1"
-FT                   /translation="MQLFVRAQELHTFEVTGQETVAQIKAHVASLEGIAPEDQVVLLA
-G
-FT                   APLEDEATLGQCGVEALTTLEVAGRMLGGKVHGSLARAGKVRGQTPKVAKQEKKKKKT
-G
+FT                   /translation="MQLFVRAQELHTFEVTGQETVAQIKAHVASLEGIAPEDQVVLLAG
+FT                   APLEDEATLGQCGVEALTTLEVAGRMLGGKVHGSLARAGKVRGQTPKVAKQEKKKKKTG
 FT                   RAKRRMQYNRRFVNVVPTFGKKKGPNANS"
 FT   misc_feature    98..102
 FT                   /note="nucleolar localization signal"
@@ -453,24 +451,15 @@ FT   polyA_signal    484..489
 FT   polyA_site      509
 XX
 SQ   Sequence 518 BP; 125 A; 139 C; 148 G; 106 T; 0 other;
-     ttcctctttc tcgactccat cttcgcggta gctgggaccg ccgttcagtc gccaatatgc        6
-0
-     agctctttgt ccgcgcccag gagctacaca ccttcgaggt gaccggccag gaaacggtcg       12
-0
-     cccagatcaa ggctcatgta gcctcactgg agggcattgc cccggaagat caagtcgtgc       18
-0
-     tcctggcagg cgcgcccctg gaggatgagg ccactctggg ccagtgcggg gtggaggccc       24
-0
-     tgactaccct ggaagtagca ggccgcatgc ttggaggtaa agttcatggt tccctggccc       30
-0
-     gtgctggaaa agtgagaggt cagactccta aggtggccaa acaggagaag aagaagaaga       36
-0
-     agacaggtcg ggctaagcgg cggatgcagt acaaccggcg ctttgtcaac gttgtgccca       42
-0
-     cctttggcaa gaagaagggc cccaatgcca actcttaagt cttttgtaat tctggctttc       48
-0
-     tctaataaaa aagccactta gttcagtcaa aaaaaaaa                               51
-8
+     ttcctctttc tcgactccat cttcgcggta gctgggaccg ccgttcagtc gccaatatgc        60
+     agctctttgt ccgcgcccag gagctacaca ccttcgaggt gaccggccag gaaacggtcg       120
+     cccagatcaa ggctcatgta gcctcactgg agggcattgc cccggaagat caagtcgtgc       180
+     tcctggcagg cgcgcccctg gaggatgagg ccactctggg ccagtgcggg gtggaggccc       240
+     tgactaccct ggaagtagca ggccgcatgc ttggaggtaa agttcatggt tccctggccc       300
+     gtgctggaaa agtgagaggt cagactccta aggtggccaa acaggagaag aagaagaaga       360
+     agacaggtcg ggctaagcgg cggatgcagt acaaccggcg ctttgtcaac gttgtgccca       420
+     cctttggcaa gaagaagggc cccaatgcca actcttaagt cttttgtaat tctggctttc       480
+     tctaataaaa aagccactta gttcagtcaa aaaaaaaa                               518
 //
 
 Output file format
@@ -535,8 +524,8 @@ Output file format
 #!Source-version EMBOSS 6.1.0
 X65923  EMBL    polyA_signal_sequence   484     489     0.000   +       .
 ID="X65923.6"
-X65923  EMBL    polyA_site      509     509     0.000   +       .       ID="X65
-923.7";featflags="0x40"
+X65923  EMBL    polyA_site      509     509     0.000   +       .       ID="X659
+23.7";featflags="0x40"
 
 Data files
 
@@ -579,7 +568,7 @@ See also
 
 Author(s)
 
-   Gary             Williams (gwilliam © rfcgr.mrc.ac.uk)
+   Gary             Williams (gwilliam (c) rfcgr.mrc.ac.uk)
    MRC              Rosalind Franklin Centre for Genomics Research Wellcome Trust
    Genome           Campus, Hinxton, Cambridge, CB10 1SB, UK
 

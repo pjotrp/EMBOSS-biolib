@@ -1,24 +1,23 @@
-
                           DOMAINRESO documentation
-                                      
-   
+
+
 
 CONTENTS
 
-   1.0 SUMMARY 
-   2.0 INPUTS & OUTPUTS 
-   3.0 INPUT FILE FORMAT 
-   4.0 OUTPUT FILE FORMAT 
-   5.0 DATA FILES 
-   6.0 USAGE 
-   7.0 KNOWN BUGS & WARNINGS 
-   8.0 NOTES 
-   9.0 DESCRIPTION 
-   10.0 ALGORITHM 
-   11.0 RELATED APPLICATIONS 
-   12.0 DIAGNOSTIC ERROR MESSAGES 
-   13.0 AUTHORS 
-   14.0 REFERENCES 
+   1.0 SUMMARY
+   2.0 INPUTS & OUTPUTS
+   3.0 INPUT FILE FORMAT
+   4.0 OUTPUT FILE FORMAT
+   5.0 DATA FILES
+   6.0 USAGE
+   7.0 KNOWN BUGS & WARNINGS
+   8.0 NOTES
+   9.0 DESCRIPTION
+   10.0 ALGORITHM
+   11.0 RELATED APPLICATIONS
+   12.0 DIAGNOSTIC ERROR MESSAGES
+   13.0 AUTHORS
+   14.0 REFERENCES
 
 1.0 SUMMARY
 
@@ -28,15 +27,14 @@ CONTENTS
 
    DOMAINRESO reads a DCF file and writes a DCF file containing the same
    domains excluding those whose resolution (Angstrom) of structure
-   determination exceeds a user-defined threshold. The resolution data
-   are taken from CCF (clean coordinate files) whose path and file
-   extension (via the ACD file) are specified by the user. The names of
-   the input and output files are also specified by the user.
+   determination exceeds a user-defined threshold. The resolution data are
+   taken from CCF (clean coordinate files) whose path and file extension
+   (via the ACD file) are specified by the user. The names of the input
+   and output files are also specified by the user.
 
 3.0 INPUT FILE FORMAT
 
-   The format of the DCF file is described in the SCOPPARSE
-   documentation.
+   The format of the DCF file is described in the SCOPPARSE documentation.
 
   Input files for usage example
 
@@ -97,8 +95,7 @@ CH   A CHAIN; . START; . END;
 
 4.0 OUTPUT FILE FORMAT
 
-   The format of the DCF file is described in the SCOPPARSE
-   documentation.
+   The format of the DCF file is described in the SCOPPARSE documentation.
 
   Output files for usage example
 
@@ -202,4 +199,5 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 

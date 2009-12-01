@@ -1,5 +1,4 @@
-
-                                 esignalp 
+                                  esignalp
 
 
 
@@ -16,49 +15,50 @@ Function
 
 Description
 
-   SignalP 3.0 server predicts the presence and location of signal
-   peptide cleavage sites in amino acid sequences from different
-   organisms: Gram-positive prokaryotes, Gram-negative prokaryotes, and
-   eukaryotes. The method incorporates a prediction of cleavage sites and
-   a signal peptide/non-signal peptide prediction based on a combination
-   of several artificial neural networks and hidden Markov models.
+   SignalP 3.0 server predicts the presence and location of signal peptide
+   cleavage sites in amino acid sequences from different organisms:
+   Gram-positive prokaryotes, Gram-negative prokaryotes, and eukaryotes.
+   The method incorporates a prediction of cleavage sites and a signal
+   peptide/non-signal peptide prediction based on a combination of several
+   artificial neural networks and hidden Markov models.
 
 Usage
 
    Here is a sample session with esignalp
 
 
-% esignalp 
+% esignalp
 Reports protein signal cleavage sites
 Input (aligned) sequence set: test.seq
 Organism
        euk : euk
      gramp : gram positive
      gramn : gram negative
-Organism type to use [euk]: 
+Organism type to use [euk]:
 Algorithm method
     nn+hmm : Neural net plus hmm
         nn : Neural net
        hmm : Hmm
-Method to use [nn+hmm]: 
+Method to use [nn+hmm]:
 Text output format
       full : Full
    summary : Summary
      short : Short
-Output format [full]: 
+Output format [full]:
 Graphics mode
       none : none
        gif : gif
        eps : eps
    gif+eps : gif+eps
         ps : ps
-Graphics output [none]: 
+Graphics output [none]:
        1.0 : 1.0
        1.1 : 1.1
        2.0 : 2.0
        3.0 : 3.0
-Signalp version weights [3.0]: 
-Output file [test.esignalp]: 
+Signalp version weights [3.0]:
+Output file [test.esignalp]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -129,6 +129,7 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 
 Input file format
 
@@ -253,6 +254,7 @@ Signal peptide probability: 0.990
 Signal anchor probability: 0.008
 Max cleavage site probability: 0.704 between pos. 25 and 26
 
+
 Data files
 
    None.
@@ -263,9 +265,9 @@ Notes
 
 References
 
-   Locating proteins in the cell using TargetP, SignalP, and related
-   tools Olof Emanuelsson, Søren Brunak, Gunnar von Heijne, Henrik
-   Nielsen Nature Protocols 2, 953-971 (2007).
+   Locating proteins in the cell using TargetP, SignalP, and related tools
+   Olof Emanuelsson, So/ren Brunak, Gunnar von Heijne, Henrik Nielsen
+   Nature Protocols 2, 953-971 (2007).
 
 Warnings
 

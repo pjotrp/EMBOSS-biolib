@@ -1,24 +1,23 @@
-
                            MATGEN3D documentation
-                                      
-   
+
+
 
 CONTENTS
 
-   1.0 SUMMARY 
-   2.0 INPUTS & OUTPUTS 
-   3.0 INPUT FILE FORMAT 
-   4.0 OUTPUT FILE FORMAT 
-   5.0 DATA FILES 
-   6.0 USAGE 
-   7.0 KNOWN BUGS & WARNINGS 
-   8.0 NOTES 
-   9.0 DESCRIPTION 
-   10.0 ALGORITHM 
-   11.0 RELATED APPLICATIONS 
-   12.0 DIAGNOSTIC ERROR MESSAGES 
-   13.0 AUTHORS 
-   14.0 REFERENCES 
+   1.0 SUMMARY
+   2.0 INPUTS & OUTPUTS
+   3.0 INPUT FILE FORMAT
+   4.0 OUTPUT FILE FORMAT
+   5.0 DATA FILES
+   6.0 USAGE
+   7.0 KNOWN BUGS & WARNINGS
+   8.0 NOTES
+   9.0 DESCRIPTION
+   10.0 ALGORITHM
+   11.0 RELATED APPLICATIONS
+   12.0 DIAGNOSTIC ERROR MESSAGES
+   13.0 AUTHORS
+   14.0 REFERENCES
 
 1.0 SUMMARY
 
@@ -34,19 +33,19 @@ CONTENTS
    by using PDBPLUS so that they contain solvent accessibility and
    secondary structure information. The directory must contain a CCF file
    for the first domain from each family represented in the DCF file. A
-   matrix of 3D:1D scores (environment:residue scoring matrix),
-   reflecting the probability of the amino acids occuring in different
-   tertiary environments, is calculated from the CCF files of the first
-   domain from each family only. The path of the CCF files is specified
-   by the user and the file extensions is specified in the ACD file. Two
-   log files of informative messages are also written.
+   matrix of 3D:1D scores (environment:residue scoring matrix), reflecting
+   the probability of the amino acids occuring in different tertiary
+   environments, is calculated from the CCF files of the first domain from
+   each family only. The path of the CCF files is specified by the user
+   and the file extensions is specified in the ACD file. Two log files of
+   informative messages are also written.
 
 3.0 INPUT FILE FORMAT
 
    The format of domain CCF files is described in the DOMAINER
    documentation.
-   The format of the DCF file (domain classification file) is described
-   in the SCOPPARSE documentation and the CATHPARSE documentation.
+   The format of the DCF file (domain classification file) is described in
+   the SCOPPARSE documentation and the CATHPARSE documentation.
 
   Input files for usage example
 
@@ -111,11 +110,11 @@ CH   A CHAIN; . START; . END;
    1) follows the standard EMBOSS format. Single letter amino acid codes
    are column labels and environments are row labels. The environment
    labels are strings of 2 characters, beginning with AA, AB, AC, through
-   to AZ, BA, BB etc. The final row and column have the label '*' and
-   give default substitution values (the minimum from the entire matrix).
-   In the example shown (Figure 1), only two environments AA through AX
-   are defined but only AA to AB are given scores owing to the sparse
-   input data for this example (typically, all environments would receive
+   to AZ, BA, BB etc. The final row and column have the label '*' and give
+   default substitution values (the minimum from the entire matrix). In
+   the example shown (Figure 1), only two environments AA through AX are
+   defined but only AA to AB are given scores owing to the sparse input
+   data for this example (typically, all environments would receive
    scores).
 
   Output files for usage example
@@ -226,6 +225,7 @@ X       0.000
 Y       0.011
 
 Z       0.000
+
 
   File: matgen3d.log
 
@@ -343,51 +343,51 @@ R:L-50 S:C A:55.40
 # No. of files opened: 2
 # No. of files not opened: 0
          A     R     N     D     C     Q     E     G     H     I     L     K
-  M     F     P     S     T     W     Y     V     B     Z     X     *
-AA    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0
-.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
-AB    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0
-.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
-AC    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0
-.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
-AD    0.98  1.09  0.80  0.39  1.09  0.58 -0.21  0.80  1.09  0.24  0.48  0.80  2
-.19  1.63  2.19  1.49  1.09 -2.30  2.19  1.09 -2.30 -2.30 -2.30 -2.64
-AE    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0
-.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
-AF    0.80  2.00  1.72  1.31  2.00  1.49  0.70  1.72  2.00  1.85  0.70  1.72  3
-.10  1.16  3.10  2.41  2.00 -1.39  3.10  2.00 -1.39 -1.39 -1.39 -2.64
-AG    0.58  1.78  1.49  1.09  1.78  1.27  0.48  1.49  1.78  0.93  1.17  1.49  2
-.88  0.93  2.88  2.19  1.78 -1.61  2.88  1.78 -1.61 -1.61 -1.61 -2.64
-AH    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0
-.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
-AI    0.58  1.78  1.49  1.09  1.78  1.27  0.48  1.49  1.78  2.03  0.48  1.49  2
-.88  0.93  2.88  2.19  1.78 -1.61  2.88  1.78 -1.61 -1.61 -1.61 -2.64
-AJ    1.09  1.60  1.31  0.91  1.60  1.09  0.99  1.31  1.60  0.75  0.30  1.31  2
-.70  0.75  2.70  2.00  1.60 -1.79  2.70  1.60 -1.79 -1.79 -1.79 -2.64
-AK    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0
-.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
-AL    0.39  1.60  1.31  0.91  1.60  1.09  0.30  1.31  1.60  0.75  0.30  1.31  2
-.70  0.75  2.70  2.00  1.60 -1.79  2.70  1.60 -1.79 -1.79 -1.79 -2.64
-AM   -0.30  0.91  0.62  0.21  0.91  0.39  0.99  0.62  0.91  0.06 -0.39  0.62  2
-.00  0.06  2.00  1.31  0.91 -2.48  2.00  0.91 -2.48 -2.48 -2.48 -2.64
-AN    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0
-.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
-AO    0.39  1.60  1.31  1.60  1.60  1.09  0.30  1.31  1.60  0.75  0.30  1.31  2
-.70  0.75  2.70  2.00  1.60 -1.79  2.70  1.60 -1.79 -1.79 -1.79 -2.64
-AP    0.24  0.75  0.46  0.06  0.75  1.34  0.14  0.46  0.75 -0.10 -0.55  0.46  1
-.85 -0.10  1.85  1.16  0.75 -2.64  1.85  1.44 -2.64 -2.64 -2.64 -2.64
-AQ    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0
-.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
-AR    0.11  1.31  1.02  0.62  1.31  0.80  0.01  1.02  1.31  0.46  0.01  1.02  2
-.41  0.46  2.41  1.72  1.31 -2.08  2.41  1.31 -2.08 -2.08 -2.08 -2.64
-AS    0.80  2.00  1.72  1.31  2.00  1.49  0.70  1.72  2.00  1.16  0.70  1.72  3
-.10  1.16  3.10  2.41  2.00 -1.39  3.10  2.00 -1.39 -1.39 -1.39 -2.64
-AT    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0
-.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
-AU   -0.01  1.19  0.91  0.50  1.19  0.68 -0.11  2.00  1.19  0.35 -0.11  0.91  2
-.29  0.35  2.29  1.60  1.19 -2.20  2.29  1.19 -2.20 -2.20 -2.20 -2.64
-*    -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2
-.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64
+ M     F     P     S     T     W     Y     V     B     Z     X     *
+AA    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.
+00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
+AB    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.
+00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
+AC    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.
+00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
+AD    0.98  1.09  0.80  0.39  1.09  0.58 -0.21  0.80  1.09  0.24  0.48  0.80  2.
+19  1.63  2.19  1.49  1.09 -2.30  2.19  1.09 -2.30 -2.30 -2.30 -2.64
+AE    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.
+00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
+AF    0.80  2.00  1.72  1.31  2.00  1.49  0.70  1.72  2.00  1.85  0.70  1.72  3.
+10  1.16  3.10  2.41  2.00 -1.39  3.10  2.00 -1.39 -1.39 -1.39 -2.64
+AG    0.58  1.78  1.49  1.09  1.78  1.27  0.48  1.49  1.78  0.93  1.17  1.49  2.
+88  0.93  2.88  2.19  1.78 -1.61  2.88  1.78 -1.61 -1.61 -1.61 -2.64
+AH    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.
+00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
+AI    0.58  1.78  1.49  1.09  1.78  1.27  0.48  1.49  1.78  2.03  0.48  1.49  2.
+88  0.93  2.88  2.19  1.78 -1.61  2.88  1.78 -1.61 -1.61 -1.61 -2.64
+AJ    1.09  1.60  1.31  0.91  1.60  1.09  0.99  1.31  1.60  0.75  0.30  1.31  2.
+70  0.75  2.70  2.00  1.60 -1.79  2.70  1.60 -1.79 -1.79 -1.79 -2.64
+AK    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.
+00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
+AL    0.39  1.60  1.31  0.91  1.60  1.09  0.30  1.31  1.60  0.75  0.30  1.31  2.
+70  0.75  2.70  2.00  1.60 -1.79  2.70  1.60 -1.79 -1.79 -1.79 -2.64
+AM   -0.30  0.91  0.62  0.21  0.91  0.39  0.99  0.62  0.91  0.06 -0.39  0.62  2.
+00  0.06  2.00  1.31  0.91 -2.48  2.00  0.91 -2.48 -2.48 -2.48 -2.64
+AN    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.
+00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
+AO    0.39  1.60  1.31  1.60  1.60  1.09  0.30  1.31  1.60  0.75  0.30  1.31  2.
+70  0.75  2.70  2.00  1.60 -1.79  2.70  1.60 -1.79 -1.79 -1.79 -2.64
+AP    0.24  0.75  0.46  0.06  0.75  1.34  0.14  0.46  0.75 -0.10 -0.55  0.46  1.
+85 -0.10  1.85  1.16  0.75 -2.64  1.85  1.44 -2.64 -2.64 -2.64 -2.64
+AQ    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.
+00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
+AR    0.11  1.31  1.02  0.62  1.31  0.80  0.01  1.02  1.31  0.46  0.01  1.02  2.
+41  0.46  2.41  1.72  1.31 -2.08  2.41  1.31 -2.08 -2.08 -2.08 -2.64
+AS    0.80  2.00  1.72  1.31  2.00  1.49  0.70  1.72  2.00  1.16  0.70  1.72  3.
+10  1.16  3.10  2.41  2.00 -1.39  3.10  2.00 -1.39 -1.39 -1.39 -2.64
+AT    0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.
+00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00 -2.64
+AU   -0.01  1.19  0.91  0.50  1.19  0.68 -0.11  2.00  1.19  0.35 -0.11  0.91  2.
+29  0.35  2.29  1.60  1.19 -2.20  2.29  1.19 -2.20 -2.20 -2.20 -2.64
+*    -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.
+64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64 -2.64
 
 5.0 DATA FILES
 
@@ -508,4 +508,5 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 

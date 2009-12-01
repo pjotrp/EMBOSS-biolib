@@ -1,5 +1,4 @@
-
-                                 frestdist 
+                                  frestdist
 
 
 
@@ -22,44 +21,43 @@ Description
 
 Algorithm
 
-   Restdist reads the same restriction sites format as RESTML and
-   computes a restriction sites distance. It can also compute a
-   restriction fragments distance. The original restriction fragments and
-   restriction sites distance methods were introduced by Nei and Li
-   (1979). Their original method for restriction fragments is also
-   available in this program, although its default methods are my
-   modifications of the original Nei and Li methods.
+   Restdist reads the same restriction sites format as RESTML and computes
+   a restriction sites distance. It can also compute a restriction
+   fragments distance. The original restriction fragments and restriction
+   sites distance methods were introduced by Nei and Li (1979). Their
+   original method for restriction fragments is also available in this
+   program, although its default methods are my modifications of the
+   original Nei and Li methods.
 
    These two distances assume that the restriction sites are accidental
-   byproducts of random change of nucleotide sequences. For my
-   restriction sites distance the DNA sequences are assumed to be
-   changing according to the Kimura 2-parameter model of DNA change
-   (Kimura, 1980). The user can set the transition/transversion rate for
-   the model. For my restriction fragments distance there is there is an
-   implicit assumption of a Jukes-Cantor (1969) model of change, The user
-   can also set the parameter of a correction for unequal rates of
-   evolution between sites in the DNA sequences, using a Gamma
-   distribution of rates among sites. The Jukes-Cantor model is also
-   implicit in the restriction fragments distance of Nei and Li(1979). It
-   does not allow us to correct for a Gamma distribution of rates among
-   sites.
+   byproducts of random change of nucleotide sequences. For my restriction
+   sites distance the DNA sequences are assumed to be changing according
+   to the Kimura 2-parameter model of DNA change (Kimura, 1980). The user
+   can set the transition/transversion rate for the model. For my
+   restriction fragments distance there is there is an implicit assumption
+   of a Jukes-Cantor (1969) model of change, The user can also set the
+   parameter of a correction for unequal rates of evolution between sites
+   in the DNA sequences, using a Gamma distribution of rates among sites.
+   The Jukes-Cantor model is also implicit in the restriction fragments
+   distance of Nei and Li(1979). It does not allow us to correct for a
+   Gamma distribution of rates among sites.
 
   Restriction Sites Distance
 
    The restriction sites distances use data coded for the presence of
    absence of individual restriction sites (usually as + and - or 0 and
    1). My distance is based on the proportion, out of all sites observed
-   in one species or the other, which are present in both species. This
-   is done to correct for the ascertainment of sites, for the fact that
-   we are not aware of many sites because they do not appear in any
-   species.
+   in one species or the other, which are present in both species. This is
+   done to correct for the ascertainment of sites, for the fact that we
+   are not aware of many sites because they do not appear in any species.
 
-   My distance starts by computing from the particular pair of species
-   the fraction
+   My distance starts by computing from the particular pair of species the
+   fraction
 
                  n++
    f =  ---------------------
          n++ + 1/2 (n+- + n-+)
+
 
    where n++ is the number of sites contained in both species, n+- is the
    number of sites contained in the first of the two species but not in
@@ -77,51 +75,52 @@ Algorithm
       Qs,
 
    `where Q is the probability that a nucleotide has no net change as one
-   goes from the one species to the other. It may have changed in
-   between; we are interested in the probability that that nucleotide
-   site is in the same base in both species, irrespective of what has
-   happened in between. The distance is then computed by finding the
-   branch length of a two-species tree (connecting these two species with
-   a single branch) such that Q equals the s-th root of f. For this the
-   program computes Q for various values of branch length, iterating them
-   by a Newton-Raphson algorithm until the two quantities are equal.
+   goes from the one species to the other. It may have changed in between;
+   we are interested in the probability that that nucleotide site is in
+   the same base in both species, irrespective of what has happened in
+   between. The distance is then computed by finding the branch length of
+   a two-species tree (connecting these two species with a single branch)
+   such that Q equals the s-th root of f. For this the program computes Q
+   for various values of branch length, iterating them by a Newton-Raphson
+   algorithm until the two quantities are equal.
 
    The resulting distance should be numerically close to the original
    restriction sites distance of Nei and Li (1979) when divergence is
    small. Theirs computes the probability of retention of a site in a way
-   that assumes that the site is present in the common ancestor of the
-   two species. Ours does not make this assumption. It is inspired by
-   theirs, but differs in this detail. Their distance also assumes a
-   Jukes-Cantor (1969) model of base change, and does not allow for
-   transitions being more frequent than transversions. In this sense mine
-   generalizes theres somewhat. Their distance does include, as mine does
-   as well, a correction for Gamma distribution of rate of change among
-   nucleotide sites.
+   that assumes that the site is present in the common ancestor of the two
+   species. Ours does not make this assumption. It is inspired by theirs,
+   but differs in this detail. Their distance also assumes a Jukes-Cantor
+   (1969) model of base change, and does not allow for transitions being
+   more frequent than transversions. In this sense mine generalizes theres
+   somewhat. Their distance does include, as mine does as well, a
+   correction for Gamma distribution of rate of change among nucleotide
+   sites.
 
    I have made their original distance available here
 
   Restriction Fragments Distance
 
    For restriction fragments data we use a different distance. If we
-   average over all restriction fragment lengths, each at its own
-   expected frequency, the probability that the fragment will still be in
-   existence after a certain amount of branch length, we must take into
-   account the probability that the two restriction sites at the ends of
-   the fragment do not mutate, and the probability that no new
-   restriction site occurs within the fragment in that amount of branch
-   length. The result for a restriction site length of s is:
+   average over all restriction fragment lengths, each at its own expected
+   frequency, the probability that the fragment will still be in existence
+   after a certain amount of branch length, we must take into account the
+   probability that the two restriction sites at the ends of the fragment
+   do not mutate, and the probability that no new restriction site occurs
+   within the fragment in that amount of branch length. The result for a
+   restriction site length of s is:
 
                 Q2s
           f = --------
                2 - Qs
 
+
    (The details of the derivation will be given in my forthcoming book
    Inferring Phylogenies (to be published by Sinauer Associates in 2001).
    Given the observed fraction of restriction sites retained, f, we can
-   solve a quadratic equation from the above expression for Qs. That
-   makes it easy to obtain a value of Q, and the branch length can then
-   be estimated by adjusting it so the probability of a base not changing
-   is equal to that value. Alternatively, if we use the Nei and Li (1979)
+   solve a quadratic equation from the above expression for Qs. That makes
+   it easy to obtain a value of Q, and the branch length can then be
+   estimated by adjusting it so the probability of a base not changing is
+   equal to that value. Alternatively, if we use the Nei and Li (1979)
    restriction fragments distance, this involves solving for g in the
    nonlinear equation
 
@@ -135,11 +134,11 @@ Algorithm
 
    Comparing these two restriction fragments distances in a case where
    their underlying DNA model is the same (which is when the
-   transition/transversion ratio of the modified model is set to 0.5),
-   you will find that they are very close to each other, differing very
-   little at small distances, with the modified distance become smaller
-   than the Nei/Li distance at larger distances. It will therefore matter
-   very little which one you use.
+   transition/transversion ratio of the modified model is set to 0.5), you
+   will find that they are very close to each other, differing very little
+   at small distances, with the modified distance become smaller than the
+   Nei/Li distance at larger distances. It will therefore matter very
+   little which one you use.
 
   A Comment About RAPDs and AFLPs
 
@@ -155,22 +154,22 @@ Algorithm
    restriction sites. Thus a pair of 10-nucleotide primers will behave
    much the same as a 20-nucleotide restriction site, for RAPDs (26 for
    AFLPs). You can use the restriction sites distance as the distance
-   between RAPD or AFLP patterns if you set the proper value for the
-   total length of the site to the total length of the primers (plus 6 in
-   the case of AFLPs). Of course there are many possible sources of noise
-   in these data, including confusing fragments of similar length for
-   each other and having primers near each other in the genome, and these
-   are not taken into account in the statistical model used here.
+   between RAPD or AFLP patterns if you set the proper value for the total
+   length of the site to the total length of the primers (plus 6 in the
+   case of AFLPs). Of course there are many possible sources of noise in
+   these data, including confusing fragments of similar length for each
+   other and having primers near each other in the genome, and these are
+   not taken into account in the statistical model used here.
 
 Usage
 
    Here is a sample session with frestdist
 
 
-% frestdist 
+% frestdist
 Distance matrix from restriction sites or fragments
 Input file: restdist.dat
-Phylip restdist program output file [restdist.frestdist]: 
+Phylip restdist program output file [restdist.frestdist]:
 
 
 Restriction site or fragment distances, version 3.69
@@ -185,6 +184,7 @@ Distances calculated for species
 Distances written to file "restdist.frestdist"
 
 Done.
+
 
 
    Go to the input files for this example
@@ -239,6 +239,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    frestdist input is fairly standard, with one addition. As usual the
@@ -251,24 +252,25 @@ Input file format
 
    10   35    4
 
+
    The site data are in standard form. Each species starts with a species
    name whose maximum length is given by the constant "nmlngth" (whose
-   value in the program as distributed is 10 characters). The name
-   should, as usual, be padded out to that length with blanks if
-   necessary. The sites data then follows, one character per site (any
-   blanks will be skipped and ignored). Like the DNA and protein sequence
-   data, the restriction sites data may be either in the "interleaved"
-   form or the "sequential" form. Note that if you are analyzing
-   restriction sites data with the programs DOLLOP or MIX or other
-   discrete character programs, at the moment those programs do not use
-   the "aligned" or "interleaved" data format. Therefore you may want to
-   avoid that format when you have restriction sites data that you will
-   want to feed into those programs.
+   value in the program as distributed is 10 characters). The name should,
+   as usual, be padded out to that length with blanks if necessary. The
+   sites data then follows, one character per site (any blanks will be
+   skipped and ignored). Like the DNA and protein sequence data, the
+   restriction sites data may be either in the "interleaved" form or the
+   "sequential" form. Note that if you are analyzing restriction sites
+   data with the programs DOLLOP or MIX or other discrete character
+   programs, at the moment those programs do not use the "aligned" or
+   "interleaved" data format. Therefore you may want to avoid that format
+   when you have restriction sites data that you will want to feed into
+   those programs.
 
    The presence of a site is indicated by a "+" and the absence by a "-".
-   I have also allowed the use of "1" and "0" as synonyms for "+" and
-   "-", for compatibility with MIX and DOLLOP which do not allow "+" and
-   "-". If the presence of the site is unknown (for example, if the DNA
+   I have also allowed the use of "1" and "0" as synonyms for "+" and "-",
+   for compatibility with MIX and DOLLOP which do not allow "+" and "-".
+   If the presence of the site is unknown (for example, if the DNA
    containing it has been deleted so that one does not know whether it
    would have contained the site) then the state "?" can be used to
    indicate that the state of this site is unknown.
@@ -288,27 +290,26 @@ Output file format
 
    frestdist output contains on its first line the number of species. The
    distance matrix is then printed in standard form, with each species
-   starting on a new line with the species name, followed by the
-   distances to the species in order. These continue onto a new line
-   after every nine distances. If the L option is used, the matrix or
-   distances is in lower triangular form, so that only the distances to
-   the other species that precede each species are printed. Otherwise the
-   distance matrix is square with zero distances on the diagonal. In
-   general the format of the distance matrix is such that it can serve as
-   input to any of the distance matrix programs.
+   starting on a new line with the species name, followed by the distances
+   to the species in order. These continue onto a new line after every
+   nine distances. If the L option is used, the matrix or distances is in
+   lower triangular form, so that only the distances to the other species
+   that precede each species are printed. Otherwise the distance matrix is
+   square with zero distances on the diagonal. In general the format of
+   the distance matrix is such that it can serve as input to any of the
+   distance matrix programs.
 
    If the option to print out the data is selected, the output file will
-   precede the data by more complete information on the input and the
-   menu selections. The output file begins by giving the number of
-   species and the number of characters.
+   precede the data by more complete information on the input and the menu
+   selections. The output file begins by giving the number of species and
+   the number of characters.
 
    The distances printed out are scaled in terms of expected numbers of
-   substitutions per DNA site, counting both transitions and
-   transversions but not replacements of a base by itself, and scaled so
-   that the average rate of change, averaged over all sites analyzed, is
-   set to 1.0. Thus when the G option is used, the rate of change at one
-   site may be higher than at another, but their mean is expected to be
-   1.
+   substitutions per DNA site, counting both transitions and transversions
+   but not replacements of a base by itself, and scaled so that the
+   average rate of change, averaged over all sites analyzed, is set to
+   1.0. Thus when the G option is used, the rate of change at one site may
+   be higher than at another, but their mean is expected to be 1.
 
   Output files for usage example
 

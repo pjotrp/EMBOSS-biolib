@@ -1,5 +1,4 @@
-
-                                 vrnaplot 
+                                  vrnaplot
 
 
 
@@ -28,10 +27,11 @@ Usage
    Here is a sample session with vrnaplot
 
 
-% vrnaplot 
+% vrnaplot
 Plot vrnafold output
 Vienna RNAfold output file: ../vrnafold-keep/rna1.vrnafold
-Vienna RNAfold output file [rna1.vrnaplot]: 
+Vienna RNAfold output file [rna1.vrnaplot]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -76,6 +76,7 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 
 Input file format
 
@@ -150,7 +151,7 @@ See also
 
 Author(s)
 
-   Peter            Rice (pmr © ebi.ac.uk)
+   Peter            Rice (pmr (c) ebi.ac.uk)
    European         Bioinformatics Institute, Wellcome Trust Genome Campus,
    Hinxton,         Cambridge CB10 1SD, UK
 

@@ -1,5 +1,4 @@
-
-                               vrnacofoldpf 
+                                vrnacofoldpf
 
 
 
@@ -33,11 +32,12 @@ Usage
    Here is a sample session with vrnacofoldpf
 
 
-% vrnacofoldpf 
+% vrnacofoldpf
 RNA cofolding with partitioning
 Input nucleotide sequence: cofold-red.fasta
 Second nucleotide sequence: cofold-blue.fasta
-Vienna RNAfold output file [red.vrnacofoldpf]: 
+Vienna RNAfold output file [red.vrnacofoldpf]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -142,6 +142,7 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 
 Input file format
 

@@ -1,5 +1,4 @@
-
-                                 enetphos 
+                                  enetphos
 
 
 
@@ -24,10 +23,11 @@ Usage
    Here is a sample session with enetphos
 
 
-% enetphos 
+% enetphos
 Reports ser, thr and tyr phosphorylation sites in eukaryotic proteins
 Input (aligned) sequence set: EFTU_HUMAN.fsa
-Output file [eftu_human.enetphos]: 
+Output file [eftu_human.enetphos]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -96,6 +96,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    enetphos reads any normal sequence USAs.
@@ -104,8 +105,8 @@ Input file format
 
   File: EFTU_HUMAN.fsa
 
->EFTU_HUMAN  P49411 Elongation factor Tu, mitochondrial precursor (EF-Tu) (P43)
-. - Homo sapiens (Human).
+>EFTU_HUMAN  P49411 Elongation factor Tu, mitochondrial precursor (EF-Tu) (P43).
+ - Homo sapiens (Human).
 MAAATLLRATPHFSGLAAGRTFLLQGLLRLLKAPALPLLCRGLAVEAKKTYVRDKPHVNV
 GTIGHVDHGKTTLTAAITKILAEGGGAKFKKYEEIDNAPEERARGITINAAHVEYSTAAR
 HYAHTDCPGHADYVKNMITGTAPLDGCILVVAANDGPMPQTREHLLLARQIGVEHVVVYV

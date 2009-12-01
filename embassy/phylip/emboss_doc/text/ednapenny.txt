@@ -1,5 +1,4 @@
-
-                                 ednapenny 
+                                  ednapenny
 
 
 
@@ -33,6 +32,7 @@ Gamma1    AGGAAG
 Gamma2    AGGAAG
 Delta     GGAGGA
 Epsilon   GGAAAG
+
 
 
 % ednapenny test
@@ -262,6 +262,7 @@ requires a total of              8.000
 (Alpha1,(((((Delta,Epsilon),Gamma1),Gamma2),Alpha2),(Beta2,Beta1)))[0.1111];
 
 
+
 Command line arguments
 
    Mandatory qualifiers (* if not always prompted):
@@ -285,6 +286,7 @@ Command line arguments
 
    Advanced qualifiers:
    -thresh             bool       Use Threshold parsimony
+
 
    Mandatory qualifiers Allowed values Default
    [-msf]
@@ -333,8 +335,8 @@ Author(s)
 
    (c)              Copyright 1986-1993 by Joseph Felsenstein and by the University of
    Washington.      Written by Joseph Felsenstein. Permission is granted to
-                    copy this document provided that no fee is charged for it and that
-                    this copyright notice is not removed.
+                    copy this document provided that no fee is charged for it and that this
+                    copyright notice is not removed.
 
                     This application was modified for inclusion in EMBOSS by Ian Longden
    (il@sanger.ac.uk) Informatics Division, The Sanger Centre, Wellcome

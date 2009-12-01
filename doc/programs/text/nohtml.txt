@@ -1,5 +1,4 @@
-
-                                  nohtml 
+                                   nohtml
 
 
 
@@ -25,10 +24,11 @@ Usage
    Here is a sample session with nohtml
 
 
-% nohtml 
+% nohtml
 Remove mark-up (e.g. HTML tags) from an ASCII text file
 ASCII text file: webfile.html
-ASCII text output file [webfile.nohtml]: 
+ASCII text output file [webfile.nohtml]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -65,6 +65,7 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 
 Input file format
 
@@ -170,7 +171,7 @@ See also
 
 Author(s)
 
-   Jon Ison (jison © ebi.ac.uk)
+   Jon Ison (jison (c) ebi.ac.uk)
    European Bioinformatics Institute, Wellcome Trust Genome Campus,
    Hinxton, Cambridge CB10 1SD, UK
 

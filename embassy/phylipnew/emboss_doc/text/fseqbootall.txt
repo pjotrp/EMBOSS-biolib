@@ -1,5 +1,4 @@
-
-                                fseqbootall 
+                                 fseqbootall
 
 
 
@@ -17,8 +16,8 @@ Function
 Description
 
    Reads in a data set, and produces multiple data sets from it by
-   bootstrap resampling. Since most programs in the current version of
-   the package allow processing of multiple data sets, this can be used
+   bootstrap resampling. Since most programs in the current version of the
+   package allow processing of multiple data sets, this can be used
    together with the consensus tree program CONSENSE to do bootstrap (or
    delete-half-jackknife) analyses with most of the methods in this
    package. This program also allows the Archie/Faith technique of
@@ -29,10 +28,10 @@ Description
 
 Algorithm
 
-   SEQBOOT is a general bootstrapping and data set translation tool. It
-   is intended to allow you to generate multiple data sets that are
-   resampled versions of the input data set. Since almost all programs in
-   the package can analyze these multiple data sets, this allows almost
+   SEQBOOT is a general bootstrapping and data set translation tool. It is
+   intended to allow you to generate multiple data sets that are resampled
+   versions of the input data set. Since almost all programs in the
+   package can analyze these multiple data sets, this allows almost
    anything in this package to be bootstrapped, jackknifed, or permuted.
    SEQBOOT can handle molecular sequences, binary characters, restriction
    sites, or gene frequencies. It can also convert data sets between
@@ -48,12 +47,12 @@ Algorithm
    For example, if you were using DNAPARS you would first run SEQBOOT and
    make a file with 100 bootstrapped data sets. Then you would give this
    file the proper name to have it be the input file for DNAPARS. Running
-   DNAPARS with the M (Multiple Data Sets) menu choice and informing it
-   to expect 100 data sets, you would generate a big output file as well
-   as a treefile with the trees from the 100 data sets. This treefile
-   could be renamed so that it would serve as the input for CONSENSE.
-   When CONSENSE is run the majority rule consensus tree will result,
-   showing the outcome of the analysis.
+   DNAPARS with the M (Multiple Data Sets) menu choice and informing it to
+   expect 100 data sets, you would generate a big output file as well as a
+   treefile with the trees from the 100 data sets. This treefile could be
+   renamed so that it would serve as the input for CONSENSE. When CONSENSE
+   is run the majority rule consensus tree will result, showing the
+   outcome of the analysis.
 
    This may sound tedious, but the run of CONSENSE is fast, and that of
    SEQBOOT is fairly fast, so that it will not actually take any longer
@@ -61,12 +60,12 @@ Algorithm
    and the same number of replicates. This is not very hard and allows
    bootstrapping or jackknifing on many of the methods in this package.
    The same steps are necessary with all of them. Doing things this way
-   some of the intermediate files (the tree file from the DNAPARS run,
-   for example) can be used to summarize the results of the bootstrap in
-   other ways than the majority rule consensus method does.
+   some of the intermediate files (the tree file from the DNAPARS run, for
+   example) can be used to summarize the results of the bootstrap in other
+   ways than the majority rule consensus method does.
 
-   If you are using the Distance Matrix programs, you will have to add
-   one extra step to this, calculating distance matrices from each of the
+   If you are using the Distance Matrix programs, you will have to add one
+   extra step to this, calculating distance matrices from each of the
    replicate data sets, using DNADIST or GENDIST. So (for example) you
    would run SEQBOOT, then run DNADIST using the output of SEQBOOT as its
    input, then run (say) NEIGHBOR using the output of DNADIST as its
@@ -74,13 +73,13 @@ Algorithm
    input.
 
    The resampling methods available are:
-     * The bootstrap. Bootstrapping was invented by Bradley Efron in
-       1979, and its use in phylogeny estimation was introduced by me
+     * The bootstrap. Bootstrapping was invented by Bradley Efron in 1979,
+       and its use in phylogeny estimation was introduced by me
        (Felsenstein, 1985b; see also Penny and Hendy, 1985). It involves
        creating a new data set by sampling N characters randomly with
        replacement, so that the resulting data set has the same size as
-       the original, but some characters have been left out and others
-       are duplicated. The random variation of the results from analyzing
+       the original, but some characters have been left out and others are
+       duplicated. The random variation of the results from analyzing
        these bootstrapped data sets can be shown statistically to be
        typical of the variation that you would get from collecting new
        data sets. The method assumes that the characters evolve
@@ -92,21 +91,21 @@ Algorithm
        carrying out Zharkikh and Li's (1995) Complete And Partial
        Bootstrap method, and Shimodaira's (2002) AU method, both of which
        correct the bias of bootstrap P values.
-     * Block-bootstrapping. One pattern of departure from indeopendence
-       of character evolution is correlation of evolution in adjacent
+     * Block-bootstrapping. One pattern of departure from indeopendence of
+       character evolution is correlation of evolution in adjacent
        characters. When this is thought to have occurred, we can correct
        for it by samopling, not individual characters, but blocks of
        adjacent characters. This is called a block bootstrap and was
-       introduced by Künsch (1989). If the correlations are believed to
+       introduced by Kuensch (1989). If the correlations are believed to
        extend over some number of characters, you choose a block size, B,
        that is larger than this, and choose N/B blocks of size B. In its
        implementation here the block bootstrap "wraps around" at the end
        of the characters (so that if a block starts in the last B-1
        characters, it continues by wrapping around to the first character
        after it reaches the last character). Note also that if you have a
-       DNA sequence data set of an exon of a coding region, you can
-       ensure that equal numbers of first, second, and third coding
-       positions are sampled by using the block bootstrap with B = 3.
+       DNA sequence data set of an exon of a coding region, you can ensure
+       that equal numbers of first, second, and third coding positions are
+       sampled by using the block bootstrap with B = 3.
      * Partial block-bootstrapping. Similar to partial bootstrapping
        except sampling blocks rather than single characters.
      * Delete-half-jackknifing.. This alternative to the bootstrap
@@ -118,28 +117,28 @@ Algorithm
        advocated by Wu (1986). It was mentioned by me in my bootstrapping
        paper (Felsenstein, 1985b), and has been available for many years
        in this program as an option. Note that, for the present,
-       block-jackknifing is not available, because I cannot figure out
-       how to do it straightforwardly when the block size is not a
-       divisor of the number of characters.
-     * Delete-fraction jackknifing. Jackknifing is advocated by Farris
-       et. al. (1996) but as deleting a fraction 1/e (1/2.71828). This
-       retains too many characters and will lead to overconfidence in the
+       block-jackknifing is not available, because I cannot figure out how
+       to do it straightforwardly when the block size is not a divisor of
+       the number of characters.
+     * Delete-fraction jackknifing. Jackknifing is advocated by Farris et.
+       al. (1996) but as deleting a fraction 1/e (1/2.71828). This retains
+       too many characters and will lead to overconfidence in the
        resulting groups when there are conflicting characters. However it
        is made available here as an option, with the user asked to supply
        the fraction of characters that are to be retained.
      * Permuting species within characters. This method of resampling
-       (well, OK, it may not be best to call it resampling) was
-       introduced by Archie (1989) and Faith (1990; see also Faith and
-       Cranston, 1991). It involves permuting the columns of the data
-       matrix separately. This produces data matrices that have the same
-       number and kinds of characters but no taxonomic structure. It is
-       used for different purposes than the bootstrap, as it tests not
-       the variation around an estimated tree but the hypothesis that
-       there is no taxonomic structure in the data: if a statistic such
-       as number of steps is significantly smaller in the actual data
-       than it is in replicates that are permuted, then we can argue that
-       there is some taxonomic structure in the data (though perhaps it
-       might be just the presence of aa pair of sibling species).
+       (well, OK, it may not be best to call it resampling) was introduced
+       by Archie (1989) and Faith (1990; see also Faith and Cranston,
+       1991). It involves permuting the columns of the data matrix
+       separately. This produces data matrices that have the same number
+       and kinds of characters but no taxonomic structure. It is used for
+       different purposes than the bootstrap, as it tests not the
+       variation around an estimated tree but the hypothesis that there is
+       no taxonomic structure in the data: if a statistic such as number
+       of steps is significantly smaller in the actual data than it is in
+       replicates that are permuted, then we can argue that there is some
+       taxonomic structure in the data (though perhaps it might be just
+       the presence of aa pair of sibling species).
      * Permuting characters. This simply permutes the order of the
        characters, the same reordering being applied to all species. For
        many methods of tree inference this will make no difference to the
@@ -157,15 +156,15 @@ Algorithm
        can be the PHYLIP format. For molecular sequences and discrete
        morphological character it can also be the NEXUS format. For
        molecular sequences one other format is available, a new (and
-       nonstandard) XML format of our own devising. When the PHYLIP
-       format is chosen the data set is coverted between Interleaved and
+       nonstandard) XML format of our own devising. When the PHYLIP format
+       is chosen the data set is coverted between Interleaved and
        Sequential format. If it was read in as Interleaved sequences, it
-       will be written out as Sequential format, and vice versa. The
-       NEXUS format for molecular sequences is always written as
-       interleaved sequences. The XML format is different from (though
-       similar to) a number of other XML sequence alignment formats. An
-       example will be found below. Here is a table to links to those
-       other XML alignment formats:
+       will be written out as Sequential format, and vice versa. The NEXUS
+       format for molecular sequences is always written as interleaved
+       sequences. The XML format is different from (though similar to) a
+       number of other XML sequence alignment formats. An example will be
+       found below. Here is a table to links to those other XML alignment
+       formats:
 
    Andrew Rambaut's BEAST XML format
    http://evolve.zoo.ox.ac.uk/beast/introXML.html and
@@ -182,10 +181,10 @@ Usage
    Here is a sample session with fseqbootall
 
 
-% fseqbootall -seed 3 
+% fseqbootall -seed 3
 Bootstrapped sequences algorithm
 Input (aligned) sequence set: seqboot.dat
-Phylip seqboot program output file [seqboot.fseqbootall]: 
+Phylip seqboot program output file [seqboot.fseqbootall]:
 
 
  bootstrap: true
@@ -209,6 +208,7 @@ completed replicate number  100
 Output written to file "seqboot.fseqbootall"
 
 Done.
+
 
 
    Go to the input files for this example
@@ -302,6 +302,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    fseqbootall data files read by SEQBOOT are the standard ones for the
@@ -311,8 +312,8 @@ Input file format
    the number of restriction enzymes used. Discrete morphological
    characters are always assumed to be in sequential format. Gene
    frequencies data start with the number of species and the number of
-   loci, and then follow that by a line with the number of alleles at
-   each locus. The data for each locus may either have one entry for each
+   loci, and then follow that by a line with the number of alleles at each
+   locus. The data for each locus may either have one entry for each
    allele, or omit one allele at each locus. The details of the formats
    are given in the main documentation file, and in the documentation
    files for the groups of programsreads any normal sequence USAs.
@@ -335,8 +336,8 @@ Output file format
    when Discrete Morphological characters with the Factors option are
    used, the number of characters in each data set may vary. It may also
    vary if there are an odd number of characters or sites and the
-   Delete-Half-Jackknife resampling method is used, for then there will
-   be a 50% chance of choosing (n+1)/2 characters and a 50% chance of
+   Delete-Half-Jackknife resampling method is used, for then there will be
+   a 50% chance of choosing (n+1)/2 characters and a 50% chance of
    choosing (n-1)/2 characters.
 
    The Factors option causes the characters to be resampled together. If

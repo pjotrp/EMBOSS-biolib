@@ -64,6 +64,15 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
+<td>-[no]slow</td>
+<td>toggle</td>
+<td>A distance is calculated between every pair of sequences and these are used to construct the dendrogram which guides the final multiple alignment. The scores are calculated from separate pairwise alignments. These can be calculated using 2 methods: dynamic programming (slow but accurate) or by the method of Wilbur and Lipman (extremely fast but approximate).
+The slow-accurate method is fine for short sequences but will be VERY SLOW for many (e.g. &gt;100) long (e.g. &gt;1000 residue) sequences.</td>
+<td>Toggle value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
 <td>-pwmatrix</td>
 <td>list</td>
 <td>The scoring table which describes the similarity of each amino acid to each other.
@@ -119,15 +128,6 @@ We also supply an identity matrix which gives a score of 1.0 to two identical am
 <td>Comparison matrix file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
-</tr>
-
-<tr bgcolor="#FFFFCC">
-<td>-[no]slow</td>
-<td>toggle</td>
-<td>A distance is calculated between every pair of sequences and these are used to construct the dendrogram which guides the final multiple alignment. The scores are calculated from separate pairwise alignments. These can be calculated using 2 methods: dynamic programming (slow but accurate) or by the method of Wilbur and Lipman (extremely fast but approximate).
-The slow-accurate method is fine for short sequences but will be VERY SLOW for many (e.g. &gt;100) long (e.g. &gt;1000 residue) sequences.</td>
-<td>Toggle value Yes/No</td>
-<td>Yes</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -190,7 +190,7 @@ The slow-accurate method is fine for short sequences but will be VERY SLOW for m
 <td>-gapopen</td>
 <td>float</td>
 <td>The penalty for opening a gap in the alignment. Increasing the gap opening penalty will make gaps less frequent.</td>
-<td>Positive foating point number</td>
+<td>Positive floating point number</td>
 <td>10.0</td>
 </tr>
 
@@ -198,7 +198,7 @@ The slow-accurate method is fine for short sequences but will be VERY SLOW for m
 <td>-gapextend</td>
 <td>float</td>
 <td>The penalty for extending a gap by 1 residue. Increasing the gap extension penalty will make gaps shorter. Terminal gaps are not penalised.</td>
-<td>Positive foating point number</td>
+<td>Positive floating point number</td>
 <td>5.0</td>
 </tr>
 

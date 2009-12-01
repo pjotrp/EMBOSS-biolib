@@ -1,5 +1,4 @@
-
-                                 oalistat 
+                                  oalistat
 
 
 
@@ -29,9 +28,10 @@ Usage
    Here is a sample session with oalistat
 
 
-% oalistat ../ohmmalign-keep/globins630.ali 
+% oalistat ../ohmmalign-keep/globins630.ali
 Statistics for multiple alignment files
-HMMER alistat program output file [globins630.oalistat]: 
+HMMER alistat program output file [globins630.oalistat]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -72,6 +72,7 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 
 Input file format
 
@@ -186,6 +187,7 @@ MYG_VULCH   ...................
 MYG_ZALCA   ...................
 MYG_ZIPCA   ...................
 
+
 Output file format
 
    oalistat outputs a graph to the specified graphics device. outputs a
@@ -208,6 +210,7 @@ Average identity:    25%
 Most related pair:   99%
 Most unrelated pair: 0%
 Most distant seq:    6%
+
 
 Data files
 

@@ -1,43 +1,42 @@
+                            PDBTOSP documentation
 
-                           PDBTOSP documentation
-                                      
-   
+
 
 CONTENTS
 
-   1.0 SUMMARY 
-   2.0 INPUTS & OUTPUTS 
-   3.0 INPUT FILE FORMAT 
-   4.0 OUTPUT FILE FORMAT 
-   5.0 DATA FILES 
-   6.0 USAGE 
-   7.0 KNOWN BUGS & WARNINGS 
-   8.0 NOTES 
-   9.0 DESCRIPTION 
-   10.0 ALGORITHM 
-   11.0 RELATED APPLICATIONS 
-   12.0 DIAGNOSTIC ERROR MESSAGES 
-   13.0 AUTHORS 
-   14.0 REFERENCES 
+   1.0 SUMMARY
+   2.0 INPUTS & OUTPUTS
+   3.0 INPUT FILE FORMAT
+   4.0 OUTPUT FILE FORMAT
+   5.0 DATA FILES
+   6.0 USAGE
+   7.0 KNOWN BUGS & WARNINGS
+   8.0 NOTES
+   9.0 DESCRIPTION
+   10.0 ALGORITHM
+   11.0 RELATED APPLICATIONS
+   12.0 DIAGNOSTIC ERROR MESSAGES
+   13.0 AUTHORS
+   14.0 REFERENCES
 
 1.0 SUMMARY
 
-   Convert raw swissprot:PDB equivalence file to EMBL-like format.
-   Convert swissprot:PDB codes file to EMBL-like format
+   Convert raw swissprot:PDB equivalence file to EMBL-like format. Convert
+   swissprot:PDB codes file to EMBL-like format
 
 2.0 INPUTS & OUTPUTS
 
    PDBTOSP parses the swissprot:PDB equivalence table available at
    http://www.expasy.ch/cgi-bin/lists?pdbtosp.txt and writes the data out
    in EMBL-like format. The raw (input) file can be obtained by doing a
-   "save as ... text format" from the web page. No changes are made to
-   the data other than changing the format in which it is held. The input
-   and output files are specified by the user.
+   "save as ... text format" from the web page. No changes are made to the
+   data other than changing the format in which it is held. The input and
+   output files are specified by the user.
 
 3.0 INPUT FILE FORMAT
 
-   An excerpt from the raw swissprot:PDB equivalence file is shown
-   (Figure 1).
+   An excerpt from the raw swissprot:PDB equivalence file is shown (Figure
+   1).
 
   Input files for usage example
 
@@ -172,8 +171,7 @@ Version: EMBOSS:6.1.0
                                   swissprot:PDB equivalence file (input).
                                   HETPARSE parses this file, which is
                                   available at URL
-                                  http://www.expasy.ch/cgi-bin/lists?pdbtosp.tx
-t
+                                  http://www.expasy.ch/cgi-bin/lists?pdbtosp.txt
   [-outfile]           outfile    [Epdbtosp.dat] This option specifies the
                                   name of swissprot:PDB equivalence file
                                   (EMBL-like format). This is the PDBTOSP
@@ -202,6 +200,7 @@ t
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 
   6.1 COMMAND LINE ARGUMENTS
 

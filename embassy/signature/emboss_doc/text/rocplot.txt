@@ -1,33 +1,32 @@
+                            ROCPLOT documentation
 
-                           ROCPLOT documentation
-                                      
-   
+
 
 CONTENTS
 
-   1.0 SUMMARY 
-   2.0 INPUTS & OUTPUTS 
-   3.0 INPUT FILE FORMAT 
-   4.0 OUTPUT FILE FORMAT 
-   5.0 DATA FILES 
-   6.0 USAGE 
-   7.0 KNOWN BUGS & WARNINGS 
-   8.0 NOTES 
-   9.0 DESCRIPTION 
-   10.0 ALGORITHM 
-   11.0 RELATED APPLICATIONS 
-   12.0 DIAGNOSTIC ERROR MESSAGES 
-   13.0 AUTHORS 
-   14.0 REFERENCES 
+   1.0 SUMMARY
+   2.0 INPUTS & OUTPUTS
+   3.0 INPUT FILE FORMAT
+   4.0 OUTPUT FILE FORMAT
+   5.0 DATA FILES
+   6.0 USAGE
+   7.0 KNOWN BUGS & WARNINGS
+   8.0 NOTES
+   9.0 DESCRIPTION
+   10.0 ALGORITHM
+   11.0 RELATED APPLICATIONS
+   12.0 DIAGNOSTIC ERROR MESSAGES
+   13.0 AUTHORS
+   14.0 REFERENCES
 
 1.0 SUMMARY
 
    Provides interpretation and graphical display of the performance of
    discriminating elements (e.g. profiles for protein families). rocplot
    reads file(s) of hits from discriminator-database search(es), performs
-   ROC analysis on the hits, and writes graphs illustrating the
-   diagnostic performance of the discriminating elements. Performs ROC
-   analysis on hits files
+   ROC analysis on the hits, and writes graphs illustrating the diagnostic
+   performance of the discriminating elements. Performs ROC analysis on
+   hits files
 
 2.0 INPUTS & OUTPUTS
 
@@ -51,8 +50,8 @@ CONTENTS
   2.1.1 Single hits file mode
 
    ROC analysis is performed on the single hits file. A ROC plot
-   containing one ROC curve and a single ROC value and classification
-   plot are generated.
+   containing one ROC curve and a single ROC value and classification plot
+   are generated.
 
   2.1.2 Multiple hits files mode
 
@@ -93,13 +92,12 @@ CONTENTS
 
    There is a gold standard for each different search.
    The output in the different modes is summarised (Figure 1).
-   Figure 1 Summary of ROCPLOT output 
+   Figure 1 Summary of ROCPLOT output
 
                       ____________________________________________________
                       | SINGLE HITS FILE  |      MULTIPLE HITS FILES     |
                       |                   |                |             |
                       |                   | Do not combine |   Combine   |
-
                       |                   | data           |   data      |
  _____________________|___________________|________________|_____________|
                       |                   |                |             |
@@ -115,33 +113,32 @@ CONTENTS
 
   3.1 Hits files
 
-   A hits file contains a list of classified hits that are rank-ordered
-   on the basis of score. The first line must have '>' in the first
-   character position and a space (' ') in the second, then two token -
-   integer pairs delimited by ';'. The integer following 'RELATED' is the
-   total number of known true hits ('relatives') and is the maximum
-   number of TRUE tokens (see below) that could ever appear in the hits
-   file. The integer following 'ROC' is the ROC value that will be
-   calculated. This integer also determines the limit of the x-axes of
-   the ROC and classification plots (see Sections 9.2 & 9.4).
+   A hits file contains a list of classified hits that are rank-ordered on
+   the basis of score. The first line must have '>' in the first character
+   position and a space (' ') in the second, then two token - integer
+   pairs delimited by ';'. The integer following 'RELATED' is the total
+   number of known true hits ('relatives') and is the maximum number of
+   TRUE tokens (see below) that could ever appear in the hits file. The
+   integer following 'ROC' is the ROC value that will be calculated. This
+   integer also determines the limit of the x-axes of the ROC and
+   classification plots (see Sections 9.2 & 9.4).
    The file then contains a number of lines corresponding to a list of
-   classified hits. The hits *must* be rank-ordered on the basis of
-   score, p-value, E-value etc, with the highest scoring / most
-   significant hit given in the highest rank (1); i.e. on the second line
-   of the file. Other hits should then be given in order of decreasing
-   score / significance.
-   The first string in a hit line is the classification and must be one
-   of the following: 'TRUE', 'CROSS', 'UNCERTAIN', 'UNKNOWN' or 'FALSE'.
-   If ROCPLOT is run in "Multiple hits files" - "Combine data" - "Single
-   gold standard" modes, each hit line must contain a second string
-   followed by 2 integers. These are required so that ROCPLOT can
-   identify unique hits in the lists of hits (see Section 10.4). For hits
-   to sequences, the string is the accession number (or other database
-   code) and the integers are the start and end point of the hit relative
-   to the full length sequence. For some applications the start and end
-   point data are not required to define unique hits: in these cases the
-   start and end values for all hits should be set to 0 and 1
-   respectively.
+   classified hits. The hits *must* be rank-ordered on the basis of score,
+   p-value, E-value etc, with the highest scoring / most significant hit
+   given in the highest rank (1); i.e. on the second line of the file.
+   Other hits should then be given in order of decreasing score /
+   significance.
+   The first string in a hit line is the classification and must be one of
+   the following: 'TRUE', 'CROSS', 'UNCERTAIN', 'UNKNOWN' or 'FALSE'. If
+   ROCPLOT is run in "Multiple hits files" - "Combine data" - "Single gold
+   standard" modes, each hit line must contain a second string followed by
+   2 integers. These are required so that ROCPLOT can identify unique hits
+   in the lists of hits (see Section 10.4). For hits to sequences, the
+   string is the accession number (or other database code) and the
+   integers are the start and end point of the hit relative to the full
+   length sequence. For some applications the start and end point data are
+   not required to define unique hits: in these cases the start and end
+   values for all hits should be set to 0 and 1 respectively.
 
 4.0 OUTPUT FILE FORMAT
 
@@ -317,10 +314,10 @@ set nokey
 set key top outside title "Data Series" box 3
 set data style points
 set pointsize 0.45
-plot "_classplot_dat0" smooth bezier title "True hits", "_classplot_dat1" smoot
-h bezier title "Cross hits", "_classplot_dat2" smooth bezier title "Uncertain h
-its", "_classplot_dat3" smooth bezier title "Unknown hits", "_classplot_dat4" s
-mooth bezier title "False hits"
+plot "_classplot_dat0" smooth bezier title "True hits", "_classplot_dat1" smooth
+ bezier title "Cross hits", "_classplot_dat2" smooth bezier title "Uncertain hit
+s", "_classplot_dat3" smooth bezier title "Unknown hits", "_classplot_dat4" smoo
+th bezier title "False hits"
 
   File: _classplot_dat0
 
@@ -782,12 +779,13 @@ roc: 50
 
 
 ROC VALUES
-rocn[0]: -2.000000
+rocn[0]: 0.184714
 
 
 
 COUNT OF HITS
 hitcnt[0]: 80
+
 
 
 
@@ -985,4 +983,5 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 

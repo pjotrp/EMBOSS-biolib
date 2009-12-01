@@ -23,7 +23,7 @@
 <td>-graph</td>
 <td>graph</td>
 <td>Graph type</td>
-<td>EMBOSS has a list of known devices, including ps, hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data, das, xterm, png, gif</td>
+<td>EMBOSS has a list of known devices, including ps, hpgl, hp7470, hp7580, meta, cps, x11, tek, tekt, none, data, xterm, png, gif</td>
 <td><i>EMBOSS_GRAPHICS</i> value, or x11</td>
 </tr>
 
@@ -34,7 +34,7 @@
 <tr bgcolor="#FFFFCC">
 <td>-anglesfile</td>
 <td>datafile</td>
-<td>DNA base timer roll angles data file</td>
+<td>DNA base trimer roll angles data file</td>
 <td>Data file</td>
 <td>Eangles_tri.dat</td>
 </tr>

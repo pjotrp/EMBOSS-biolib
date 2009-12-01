@@ -1,5 +1,4 @@
-
-                                 ednahist 
+                                  ednahist
 
 
 
@@ -55,6 +54,7 @@ Beta        0.2997  0.0000  0.3219  0.8997  0.5653
 Gamma       0.7820  0.3219  0.0000  1.4481  1.0726
 Delta       1.1716  0.8997  1.4481  0.0000  0.1679
 Epsilon     1.4617  0.5653  1.0726  0.1679  0.0000
+
 
 
 Command line arguments
@@ -128,8 +128,8 @@ Author(s)
 
    (c)              Copyright 1986-1993 by Joseph Felsenstein and by the University of
    Washington.      Written by Joseph Felsenstein. Permission is granted to
-                    copy this document provided that no fee is charged for it and that
-                    this copyright notice is not removed.
+                    copy this document provided that no fee is charged for it and that this
+                    copyright notice is not removed.
 
                     This application was modified for inclusion in EMBOSS by Ian Longden
    (il@sanger.ac.uk) Informatics Division, The Sanger Centre, Wellcome

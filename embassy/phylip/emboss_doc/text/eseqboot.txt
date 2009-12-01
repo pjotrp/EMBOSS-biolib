@@ -1,5 +1,4 @@
-
-                                 eseqboot 
+                                  eseqboot
 
 
 
@@ -32,6 +31,7 @@ Beta      AACCCC
 Gamma     ACCAAC
 Delta     CCACCA
 Epsilon   CCAAAC
+
 
 % eseqboot test
 
@@ -112,6 +112,7 @@ Delta        CCCCAC
 Epsilon      CCCCAA
 
 
+
 Command line arguments
 
    Mandatory qualifiers:
@@ -178,8 +179,8 @@ Author(s)
 
    (c)              Copyright 1991-1993 by the University of Washington and by Joseph
    Felsenstein.     Written by Joseph Felsenstein. Permission is granted to
-                    copy this document provided that no fee is charged for it and that
-                    this copyright notice is not removed.
+                    copy this document provided that no fee is charged for it and that this
+                    copyright notice is not removed.
 
                     This application was modified for inclusion in EMBOSS by Ian Longden
    (il@sanger.ac.uk) Informatics Division, The Sanger Centre, Wellcome

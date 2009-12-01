@@ -1,5 +1,4 @@
-
-                                  fclique 
+                                   fclique
 
 
 
@@ -18,13 +17,13 @@ Description
 
    Finds the largest clique of mutually compatible characters, and the
    phylogeny which they recommend, for discrete character data with two
-   states. The largest clique (or all cliques within a given size range
-   of the largest one) are found by a very fast branch and bound search
+   states. The largest clique (or all cliques within a given size range of
+   the largest one) are found by a very fast branch and bound search
    method. The method does not allow for missing data. For such cases the
    T (Threshold) option of PARS or MIX may be a useful alternative.
-   Compatibility methods are particular useful when some characters are
-   of poor quality and the rest of good quality, but when it is not known
-   in advance which ones are which.
+   Compatibility methods are particular useful when some characters are of
+   poor quality and the rest of good quality, but when it is not known in
+   advance which ones are which.
 
 Algorithm
 
@@ -34,20 +33,20 @@ Algorithm
    (1969), though the algorithms were not precisely specified until the
    later work of Estabrook, Johnson, and McMorris (1976a, 1976b). These
    authors proved the theorem that a group of two-state characters which
-   were pairwise compatible would be jointly compatible. This program
-   uses an algorithm inspired by the Kent Fiala - George Estabrook
-   program CLINCH, though closer in detail to the algorithm of Bron and
-   Kerbosch (1973). I am indebted to Kent Fiala for pointing out that
-   paper to me, and to David Penny for decribing to me his
-   branch-and-bound approach to finding largest cliques, from which I
-   have also borrowed. I am particularly grateful to Kent Fiala for
-   catching a bug in versions 2.0 and 2.1 which resulted in those
-   versions failing to find all of the cliques which they should. The
-   program computes a compatibility matrix for the characters, then uses
-   a recursive procedure to examine all possible cliques of characters.
+   were pairwise compatible would be jointly compatible. This program uses
+   an algorithm inspired by the Kent Fiala - George Estabrook program
+   CLINCH, though closer in detail to the algorithm of Bron and Kerbosch
+   (1973). I am indebted to Kent Fiala for pointing out that paper to me,
+   and to David Penny for decribing to me his branch-and-bound approach to
+   finding largest cliques, from which I have also borrowed. I am
+   particularly grateful to Kent Fiala for catching a bug in versions 2.0
+   and 2.1 which resulted in those versions failing to find all of the
+   cliques which they should. The program computes a compatibility matrix
+   for the characters, then uses a recursive procedure to examine all
+   possible cliques of characters.
 
-   After one pass through all possible cliques, the program knows the
-   size of the largest clique, and during a second pass it prints out the
+   After one pass through all possible cliques, the program knows the size
+   of the largest clique, and during a second pass it prints out the
    cliques of the right size. It also, along with each clique, prints out
    the tree suggested by that clique.
 
@@ -63,8 +62,8 @@ Algorithm
     5. The probability of a single change in a character (other than in
        the high rate characters) is low but not as low as the probability
        of being one of these "bad" characters.
-    6. The probability of two changes in a low-rate character is much
-       less than the probability that it is a high-rate character.
+    6. The probability of two changes in a low-rate character is much less
+       than the probability that it is a high-rate character.
     7. The true tree has segments which are not so unequal in length that
        two changes in a long are as easy to envisage as one change in a
        short segment.
@@ -87,10 +86,10 @@ Usage
    Here is a sample session with fclique
 
 
-% fclique 
+% fclique
 Largest clique program
 Phylip discrete states file: clique.dat
-Phylip clique program output file [clique.fclique]: 
+Phylip clique program output file [clique.fclique]:
 
 
 Output written to file "clique.fclique"
@@ -98,6 +97,7 @@ Output written to file "clique.fclique"
 Tree written on file "clique.treefile"
 
 Done.
+
 
 
    Go to the input files for this example
@@ -153,6 +153,7 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 
 Input file format
 
@@ -216,9 +217,10 @@ Characters: (  1  2  3  6)
 remember: this is an unrooted tree!
 
 
+
   File: clique.treefile
 
-   (((Delta,Epsilon),Gamma),Alpha,Beta);
+(((Delta,Epsilon),Gamma),Alpha,Beta);
 
 Data files
 

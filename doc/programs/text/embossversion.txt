@@ -1,5 +1,4 @@
-
-                               embossversion 
+                                embossversion
 
 
 
@@ -24,10 +23,11 @@ Usage
    Here is a sample session with embossversion
 
 
-% embossversion 
+% embossversion
 Reports the current EMBOSS version number
 
 6.1.0
+
 
 Command line arguments
 
@@ -62,6 +62,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    None.
@@ -71,8 +72,8 @@ Output file format
    embossversion writes just the version number followed by a newline
    character to end the line.
 
-   The output is written to the screen by default, but can be written to
-   a named file by using the '-outfile' option.
+   The output is written to the screen by default, but can be written to a
+   named file by using the '-outfile' option.
 
    The version number is in three parts, separated by '.'s.
    The first number is the major version number - this only changes when
@@ -89,10 +90,9 @@ Data files
 
 Notes
 
-   embossversion might be called by scripts in automated systems
-   requiring versioning information, or in user-support as a convenient
-   way to ascertain the version of an EMBOSS installation being used
-   remotely.
+   embossversion might be called by scripts in automated systems requiring
+   versioning information, or in user-support as a convenient way to
+   ascertain the version of an EMBOSS installation being used remotely.
 
 References
 
@@ -121,7 +121,7 @@ See also
 
 Author(s)
 
-   Gary             Williams (gwilliam © rfcgr.mrc.ac.uk)
+   Gary             Williams (gwilliam (c) rfcgr.mrc.ac.uk)
    MRC              Rosalind Franklin Centre for Genomics Research Wellcome Trust
    Genome           Campus, Hinxton, Cambridge, CB10 1SB, UK
 

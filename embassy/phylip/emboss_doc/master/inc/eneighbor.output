@@ -12,36 +12,36 @@
  Negative branch lengths allowed
 
 
-  +----Gorilla   
+  +--------Orang     
   !  
-  !  +----Chimp     
---5--3  
-  !  +---Human     
+  !  +----Gorilla   
+--5--4  
+  !  !  +----Chimp     
+  !  +--3  
+  !     +---Human     
   !  
-  !                  +---------------------------Bovine    
-  !     +------------1  
-  !  +--2            +----------------------Mouse     
-  !  !  !  
-  +--4  +----------Gibbon    
+  !               +---------------------------Bovine    
+  !  +------------1  
+  +--2            +----------------------Mouse     
      !  
-     +--------Orang     
+     +----------Gibbon    
 
 
 remember: this is an unrooted tree!
 
 Between        And            Length
 -------        ---            ------
-   5          Gorilla           0.15393
-   5             3              0.03982
-   3          Chimp             0.15168
-   3          Human             0.11753
+   5          Orang             0.28469
    5             4              0.02696
-   4             2              0.04648
+   4          Gorilla           0.15393
+   4             3              0.03982
+   3          Chimp             0.15167
+   3          Human             0.11753
+   5             2              0.04648
    2             1              0.42027
    1          Bovine            0.91769
    1          Mouse             0.76891
    2          Gibbon            0.35793
-   4          Orang             0.28469
 
 
 </pre>
@@ -49,7 +49,7 @@ Between        And            Length
 <p><h3>File: eneighbor.treefile</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-(Gorilla:0.15393,(Chimp:0.15168,Human:0.11753):0.03982,(((Bovine:0.91769,
-Mouse:0.76891):0.42027,Gibbon:0.35793):0.04648,Orang:0.28469):0.02696);
+(Orang:0.28469,(Gorilla:0.15393,(Chimp:0.15167,Human:0.11753):0.03982):0.02696,((Bovine:0.91769,
+Mouse:0.76891):0.42027,Gibbon:0.35793):0.04648);
 </pre>
 </td></tr></table><p>

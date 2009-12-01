@@ -65,6 +65,7 @@ ALIGNMENT GLOBAL
 esim4      Align an mRNA to a genomic DNA sequence
 est2genome Align EST sequences to genomic DNA sequence
 needle     Needleman-Wunsch global alignment of two sequences
+needleall  Many-to-many pairwise alignments of two sequence sets
 stretcher  Needleman-Wunsch rapid global alignment of two sequences
 
 ALIGNMENT LOCAL
@@ -491,6 +492,8 @@ prophet  Scan one or more sequences with a Gribskov or Henikoff profile
 
 TEST
 crystalball Answers every drug discovery question about a sequence
+ensembltest Demonstration of the Ensembl API to be
+sqltest     Demonstration of SQL server access
 
 UTILS DATABASE CREATION
 aaindexextract Extract amino acid property data from AAINDEX
@@ -652,6 +655,7 @@ eneighbor      Phylogenies from distance matrix by N-J or UPGMA method
 enetnglyc      Reports N-glycosylation sites in human proteins
 enetoglyc      Reports mucin type GalNAc O-glycosylation sites in mammalian proteins
 enetphos       Reports ser, thr and tyr phosphorylation sites in eukaryotic proteins
+ensembltest    Demonstration of the Ensembl API to be
 entret         Retrieves sequence entries from flatfile databases and files
 epenny         Penny algorithm, branch-and-bound
 epestfind      Finds PEST motifs as potential proteolytic cleavage sites
@@ -752,6 +756,7 @@ mse            Multiple Sequence Editor
 mwcontam       Find weights common to multiple molecular weights files
 mwfilter       Filter noisy data from molecular weights file
 needle         Needleman-Wunsch global alignment of two sequences
+needleall      Many-to-many pairwise alignments of two sequence sets
 newcpgreport   Identify CpG islands in nucleotide sequence(s)
 newcpgseek     Identify and report CpG-rich regions in nucleotide sequence(s)
 newseq         Create a sequence file from a typed-in sequence
@@ -845,6 +850,7 @@ skipredundant  Remove redundant sequences from an input set
 skipseq        Reads and writes (returns) sequences, skipping first few
 splitsource    Split sequence(s) into original source sequences
 splitter       Split sequence(s) into smaller sequences
+sqltest        Demonstration of SQL server access
 ssematch       Search a DCF file for secondary structure matches
 stretcher      Needleman-Wunsch rapid global alignment of two sequences
 stssearch      Search a DNA database for matches with a set of STS primers

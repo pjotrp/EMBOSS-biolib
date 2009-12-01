@@ -1,5 +1,4 @@
-
-                                  notseq 
+                                   notseq
 
 
 
@@ -29,11 +28,12 @@ Usage
    saved to any file:
 
 
-% notseq 
+% notseq
 Write to file a subset of an input stream of sequences
 Input (gapped) sequence(s): globins.fasta
 Sequence names to exclude: myg_phyca,lgb2_luplu
 output sequence(s) [hbb_human.fasta]: mydata.seq
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -44,11 +44,12 @@ output sequence(s) [hbb_human.fasta]: mydata.seq
    another file:
 
 
-% notseq -junkout hb.seq 
+% notseq -junkout hb.seq
 Write to file a subset of an input stream of sequences
 Input (gapped) sequence(s): globins.fasta
 Sequence names to exclude: hb*
 output sequence(s) [hbb_human.fasta]: mydata.seq
+
 
    Go to the output files for this example
 
@@ -146,6 +147,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    notseq reads normal sequence USAs.
@@ -183,9 +185,9 @@ GALTESQAALVKSSWEEFNANIPKHTHRFFILVLEIAPAAKDLFSFLKGTSEVPQNNPEL
 QAHAGKVFKLVYEAAIQLQVTGVVVTDATLKNLGSVHVSKGVADAHFPVVKEAILKTIKE
 VVGAKWSEELNSAWTIAYDELAIVIKKEMNDAA
 
-   The names (or accession numbers) of the sequences to be excluded can
-   be entered as a file of such names by specifying an '@' followed by
-   the name of the file containing the sequence names. For example:
+   The names (or accession numbers) of the sequences to be excluded can be
+   entered as a file of such names by specifying an '@' followed by the
+   name of the file containing the sequence names. For example:
    '@names.dat'.
 
    The names or accession numbers of the sequences to be excluded are not
@@ -265,17 +267,16 @@ Data files
 Notes
 
    notseq was written for the case where a file containing several
-   sequences was being used as a small database, but some of the
-   sequences were no longer required. notseq splits the input sequences
-   into those that you wish to keep and those you wish to exclude.
+   sequences was being used as a small database, but some of the sequences
+   were no longer required. notseq splits the input sequences into those
+   that you wish to keep and those you wish to exclude.
 
    Wildcarded names and accession numbers may be specified in the input
    string by using *.
 
-   The names (or accession numbers) of the sequences to be excluded can
-   be entered as a file of such names by specifying an @ followed by the
-   name of the file containing the sequence names. For example:
-   @names.dat.
+   The names (or accession numbers) of the sequences to be excluded can be
+   entered as a file of such names by specifying an @ followed by the name
+   of the file containing the sequence names. For example: @names.dat.
 
 References
 
@@ -283,8 +284,8 @@ References
 
 Warnings
 
-   The input string does not support the full USA syntax; only the name
-   or accession number should be specified, not the database or file that
+   The input string does not support the full USA syntax; only the name or
+   accession number should be specified, not the database or file that
    these entries may occur in.
 
 Diagnostic Error Messages
@@ -353,7 +354,7 @@ See also
 
 Author(s)
 
-   Gary Williams (gwilliam © rfcgr.mrc.ac.uk)
+   Gary Williams (gwilliam (c) rfcgr.mrc.ac.uk)
    MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
    Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 

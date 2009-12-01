@@ -1,24 +1,23 @@
+                           DOMAINREP documentation
 
-                          DOMAINREP documentation
-                                      
-   
+
 
 CONTENTS
 
-   1.0 SUMMARY 
-   2.0 INPUTS & OUTPUTS 
-   3.0 INPUT FILE FORMAT 
-   4.0 OUTPUT FILE FORMAT 
-   5.0 DATA FILES 
-   6.0 USAGE 
-   7.0 KNOWN BUGS & WARNINGS 
-   8.0 NOTES 
-   9.0 DESCRIPTION 
-   10.0 ALGORITHM 
-   11.0 RELATED APPLICATIONS 
-   12.0 DIAGNOSTIC ERROR MESSAGES 
-   13.0 AUTHORS 
-   14.0 REFERENCES 
+   1.0 SUMMARY
+   2.0 INPUTS & OUTPUTS
+   3.0 INPUT FILE FORMAT
+   4.0 OUTPUT FILE FORMAT
+   5.0 DATA FILES
+   6.0 USAGE
+   7.0 KNOWN BUGS & WARNINGS
+   8.0 NOTES
+   9.0 DESCRIPTION
+   10.0 ALGORITHM
+   11.0 RELATED APPLICATIONS
+   12.0 DIAGNOSTIC ERROR MESSAGES
+   13.0 AUTHORS
+   14.0 REFERENCES
 
 1.0 SUMMARY
 
@@ -40,8 +39,7 @@ CONTENTS
 
 3.0 INPUT FILE FORMAT
 
-   The format of the DCF file is described in the SCOPPARSE
-   documentation.
+   The format of the DCF file is described in the SCOPPARSE documentation.
 
   Input files for usage example
 
@@ -155,8 +153,7 @@ CH   D CHAIN; 8 START; 100 END;
 
 4.0 OUTPUT FILE FORMAT
 
-   The format of the DCF file is described in the SCOPPARSE
-   documentation.
+   The format of the DCF file is described in the SCOPPARSE documentation.
 
   Output files for usage example
 
@@ -334,4 +331,5 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 

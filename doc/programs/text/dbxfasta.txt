@@ -1,5 +1,4 @@
-
-                                 dbxfasta 
+                                  dbxfasta
 
 
 
@@ -25,7 +24,7 @@ Usage
    Here is a sample session with dbxfasta
 
 
-% dbxfasta 
+% dbxfasta
 Index a fasta file database using b+tree indices
 Basename for index files: emrod
 Resource name: emblresource
@@ -42,8 +41,9 @@ Wildcard database filename [*.fasta]: emrod
        acc : Accession number
         sv : Sequence Version and GI
        des : Description
-Index fields [id,acc]: 
-General log output file [outfile.dbxfasta]: 
+Index fields [id,acc]:
+General log output file [outfile.dbxfasta]:
+
 
    Go to the output files for this example
 
@@ -100,6 +100,7 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 
 Input file format
 
@@ -178,8 +179,8 @@ Notes
    indexes. This feature is, however, not implemented in the current
    version. It will be made available in future releases.
 
-   Having created the EMBOSS indexes for this file, a database can then
-   be defined in the file emboss.defaults as something like:
+   Having created the EMBOSS indexes for this file, a database can then be
+   defined in the file emboss.defaults as something like:
 DB emrod [
    type: N
    dbalias: emrod   (see below)
@@ -216,8 +217,8 @@ SET CACHESIZE 200
 
 Resources
 
-   dbxfasta will ask you for the name of a resource definition in the
-   file emboss.defaults. This will be something like:
+   dbxfasta will ask you for the name of a resource definition in the file
+   emboss.defaults. This will be something like:
 RES embl [
    type: Index
    idlen:  15
@@ -263,7 +264,7 @@ See also
 
 Author(s)
 
-   Alan             Bleasby (ajb © ebi.ac.uk)
+   Alan             Bleasby (ajb (c) ebi.ac.uk)
    European         Bioinformatics Institute, Wellcome Trust Genome Campus,
    Hinxton,         Cambridge CB10 1SD, UK
 

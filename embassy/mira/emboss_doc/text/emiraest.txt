@@ -1,5 +1,4 @@
-
-                                 emiraest 
+                                  emiraest
 
 
 
@@ -27,14 +26,14 @@ Usage
    Here is a sample session with emiraest
 
 
-% emiraest -setparam fasta 
+% emiraest -setparam fasta
 MIRAest fragment assembly program
-Basename for index files [mira]: 
+Basename for index files [mira]:
 Error while trying to load parameter file me_step1.par
-Setting defaults for this step.Error while trying to load parameter file me_ste
-p2.par
-Setting defaults for this step.Error while trying to load parameter file me_ste
-p3.par
+Setting defaults for this step.Error while trying to load parameter file me_step
+2.par
+Setting defaults for this step.Error while trying to load parameter file me_step
+3.par
 Setting defaults for this step.
 This is miraEST V2.8.3 (production version) for EST SNP analysis in strains.
 
@@ -155,8 +154,8 @@ Used parameter settings:
 
   Contig parameters (-CO):
         Name prefix (np)                                         : step1
-        Error analysis (an)                                      : SCF signal (
-signal)
+        Error analysis (an)                                      : SCF signal (s
+ignal)
         Reject on drop in relative alignment score (%)           : 15
         Max. error rate in dangerous zones in % (dmer)           : 1
         Mark repeats (mr)                                        : Yes
@@ -248,16 +247,16 @@ Localtime: Tue Jul 15 12:00:00 2008
 Loading data normal (probably Sanger type) from FASTA file step1_in.fasta
 Counting sequences in FASTA file:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Loading sequence data from FASTA file:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Loading quality data from FASTA quality file:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Done.
 There haven been 2396 reads given, 2396 of which have quality accounted for.
@@ -265,12 +264,12 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Checking SCF files (loading qualities only if needed):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Done.
 0 SCF files loaded ok.
-2396 SCF files were not found (see 'step1_log/step1_info_scfreadfail.0' for a l
-ist of names).
+2396 SCF files were not found (see 'step1_log/step1_info_scfreadfail.0' for a li
+st of names).
 
 
 Starting clips: quality, masked characters done.
@@ -2682,8 +2681,8 @@ Starting minimum left vector clip ... done.
 Pool has 2396 reads .
 Checking reads for trace data:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 No SCF data present in any read, automatic contig editing is now switched off.
 2396 reads with valid data for assembly.
 
@@ -2713,8 +2712,8 @@ Now running partitioned skimmer with 1 partitions:
 Working on partition 1/1
 Will contain read IDs 0 to 2395
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Total megahubs: 0
 
 Skim summary:
@@ -2732,29 +2731,29 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible forward matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible complement matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Calculating possible vector leftovers ... done.
 
 Loading confirmed overlaps from disk (will need approximately 1 M.):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Sorting confirmed overlaps (this may take a while) ... done.
 
 Generating clusters:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Pre-assembly vector clipping
 
@@ -2762,8 +2761,8 @@ Performing vector clipping ... done.
 Pool has 2396 reads .
 Checking reads for trace data:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 No SCF data present in any read, automatic contig editing is now switched off.
 2396 reads with valid data for assembly.
 
@@ -2793,8 +2792,8 @@ Now running partitioned skimmer with 1 partitions:
 Working on partition 1/1
 Will contain read IDs 0 to 2395
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Total megahubs: 0
 
 Skim summary:
@@ -2814,29 +2813,29 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible forward matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible complement matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Calculating possible vector leftovers ... done.
 
 Loading confirmed overlaps from disk (will need approximately 1 M.):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Sorting confirmed overlaps (this may take a while) ... done.
 
 Generating clusters:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Localtime: Tue Jul 15 12:00:00 2008
 
@@ -2924,8 +2923,8 @@ Marking possibly misassembled repeats ...done. Found
 positions tagged.Transfering contig RMB permanent pair bans.
 Transfering tags to readpool.
 
-The previously assembled contig had grave misassemblies, rebuilding contig 3 no
-w.
+The previously assembled contig had grave misassemblies, rebuilding contig 3 now
+.
 Localtime: Tue Jul 15 12:00:00 2008
 Unused reads: 1839
 +[1] +pp+pp
@@ -3117,8 +3116,8 @@ Marking possibly misassembled repeats ...done. Found
 positions tagged.Transfering contig RMB permanent pair bans.
 Transfering tags to readpool.
 
-The previously assembled contig had grave misassemblies, rebuilding contig 9 no
-w.
+The previously assembled contig had grave misassemblies, rebuilding contig 9 now
+.
 Localtime: Tue Jul 15 12:00:00 2008
 Unused reads: 1819
 +[1] pp+pp
@@ -3283,8 +3282,8 @@ Marking possibly misassembled repeats ...done. Found
 positions tagged.Transfering contig RMB permanent pair bans.
 Transfering tags to readpool.
 
-The previously assembled contig had grave misassemblies, rebuilding contig 14 n
-ow.
+The previously assembled contig had grave misassemblies, rebuilding contig 14 no
+w.
 Localtime: Tue Jul 15 12:00:00 2008
 Unused reads: 1806
 +[1] +ppp
@@ -3666,8 +3665,8 @@ Marking possibly misassembled repeats ...done. Found
 positions tagged.Transfering contig RMB permanent pair bans.
 Transfering tags to readpool.
 
-The previously assembled contig had grave misassemblies, rebuilding contig 27 n
-ow.
+The previously assembled contig had grave misassemblies, rebuilding contig 27 no
+w.
 Localtime: Tue Jul 15 12:00:00 2008
 Unused reads: 1768
 +[1] +p
@@ -4102,8 +4101,8 @@ Marking possibly misassembled repeats ...done. Found
 positions tagged.Transfering contig RMB permanent pair bans.
 Transfering tags to readpool.
 
-The previously assembled contig had grave misassemblies, rebuilding contig 42 n
-ow.
+The previously assembled contig had grave misassemblies, rebuilding contig 42 no
+w.
 Localtime: Tue Jul 15 12:00:00 2008
 Unused reads: 1722
 +[1] +pp
@@ -4862,8 +4861,8 @@ Marking possibly misassembled repeats ...done. Found
 positions tagged.Transfering contig RMB permanent pair bans.
 Transfering tags to readpool.
 
-The previously assembled contig had grave misassemblies, rebuilding contig 69 n
-ow.
+The previously assembled contig had grave misassemblies, rebuilding contig 69 no
+w.
 Localtime: Tue Jul 15 12:00:00 2008
 Unused reads: 1642
 +[1] ppp
@@ -4948,8 +4947,8 @@ Marking possibly misassembled repeats ...done. Found
 positions tagged.Transfering contig RMB permanent pair bans.
 Transfering tags to readpool.
 
-The previously assembled contig had grave misassemblies, rebuilding contig 71 n
-ow.
+The previously assembled contig had grave misassemblies, rebuilding contig 71 no
+w.
 Localtime: Tue Jul 15 12:00:00 2008
 Unused reads: 1638
 +[1] p+p
@@ -6059,8 +6058,8 @@ Marking possibly misassembled repeats ...done. Found
 positions tagged.Transfering contig RMB permanent pair bans.
 Transfering tags to readpool.
 
-The previously assembled contig had grave misassemblies, rebuilding contig 111
-now.
+The previously assembled contig had grave misassemblies, rebuilding contig 111 n
+ow.
 Localtime: Tue Jul 15 12:00:00 2008
 Unused reads: 1552
 +[1] +pp+p+pppppp
@@ -11528,8 +11527,8 @@ Marking possibly misassembled repeats ...done. Found
 positions tagged.Transfering contig RMB permanent pair bans.
 Transfering tags to readpool.
 
-The previously assembled contig had grave misassemblies, rebuilding contig 312
-now.
+The previously assembled contig had grave misassemblies, rebuilding contig 312 n
+ow.
 Localtime: Tue Jul 15 12:00:00 2008
 Unused reads: 1130
 +[1] ++app+a
@@ -11667,8 +11666,8 @@ Marking possibly misassembled repeats ...done. Found
 positions tagged.Transfering contig RMB permanent pair bans.
 Transfering tags to readpool.
 
-The previously assembled contig had grave misassemblies, rebuilding contig 316
-now.
+The previously assembled contig had grave misassemblies, rebuilding contig 316 n
+ow.
 Localtime: Tue Jul 15 12:00:00 2008
 Unused reads: 1119
 +[1] +pp+pp+
@@ -11890,8 +11889,8 @@ Marking possibly misassembled repeats ...done. Found
 positions tagged.Transfering contig RMB permanent pair bans.
 Transfering tags to readpool.
 
-The previously assembled contig had grave misassemblies, rebuilding contig 323
-now.
+The previously assembled contig had grave misassemblies, rebuilding contig 323 n
+ow.
 Localtime: Tue Jul 15 12:00:00 2008
 Unused reads: 1099
 +[1] +apap+pp+raa
@@ -11948,8 +11947,8 @@ Marking possibly misassembled repeats ...done. Found
 positions tagged.Transfering contig RMB permanent pair bans.
 Transfering tags to readpool.
 
-The previously assembled contig had grave misassemblies, rebuilding contig 324
-now.
+The previously assembled contig had grave misassemblies, rebuilding contig 324 n
+ow.
 Localtime: Tue Jul 15 12:00:00 2008
 Unused reads: 1095
 +[1] ppp++ppaaa
@@ -41528,8 +41527,8 @@ Localtime: Tue Jul 15 12:00:00 2008
 Saving project statistics to file: step1_log/step1_info_contigstats_pass.1.txt
 Saving read tag list to file: step1_log/step1_info_readtaglist.1.txt
 Saving contig tag list to file: step1_log/step1_info_consensustaglist.1.txt
-Saving project contig<->read list to file: step1_log/step1_info_contigreadlist_
-pass.1.txt
+Saving project contig<->read list to file: step1_log/step1_info_contigreadlist_p
+ass.1.txt
 Localtime: Tue Jul 15 12:00:00 2008
 Saving project statistics to file: step1_info/step1_info_contigstats.txt
 Localtime: Tue Jul 15 12:00:00 2008
@@ -41537,8 +41536,8 @@ Saving read tag list to file: step1_info/step1_info_readtaglist.txt
 Localtime: Tue Jul 15 12:00:00 2008
 Saving contig tag list to file: step1_info/step1_info_consensustaglist.txt
 Localtime: Tue Jul 15 12:00:00 2008
-Saving project contig<->read list to file: step1_info/step1_info_contigreadlist
-.txt
+Saving project contig<->read list to file: step1_info/step1_info_contigreadlist.
+txt
 Localtime: Tue Jul 15 12:00:00 2008
 Saving contigs to file: step1_results/step1_out.caf
 Localtime: Tue Jul 15 12:00:00 2008
@@ -41550,10 +41549,10 @@ Done.
 Localtime: Tue Jul 15 12:00:00 2008
 Saving contigs to FASTA file: step1_results/step1_out.unpadded.fasta
 Saving padded contigs to FASTA file: step1_results/step1_out.padded.fasta
-Saving contig qualities to FASTA quality file: step1_results/step1_out.unpadded
-.fasta.qual
-Saving padded contig qualities to FASTA quality file: step1_results/step1_out.p
-added.fasta.qual
+Saving contig qualities to FASTA quality file: step1_results/step1_out.unpadded.
+fasta.qual
+Saving padded contig qualities to FASTA quality file: step1_results/step1_out.pa
+dded.fasta.qual
 Localtime: Tue Jul 15 12:00:00 2008
 Saving SNP analysis to file: step1_info/step1_info_snpanalysis.txt
 Writing CAF for reads for strain default
@@ -41648,8 +41647,8 @@ Used parameter settings:
 
   Contig parameters (-CO):
         Name prefix (np)                                         : step1
-        Error analysis (an)                                      : SCF signal (
-signal)
+        Error analysis (an)                                      : SCF signal (s
+ignal)
         Reject on drop in relative alignment score (%)           : 15
         Max. error rate in dangerous zones in % (dmer)           : 1
         Mark repeats (mr)                                        : Yes
@@ -41741,8 +41740,8 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Loading project from CAF file: step1_snpsinSTRAIN_default.caf
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Loading straindata.
@@ -42557,8 +42556,8 @@ Starting minimum left vector clip ... done.
 Pool has 802 reads .
 Checking reads for trace data:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 No SCF data present in any read, automatic contig editing is now switched off.
 802 reads with valid data for assembly.
 
@@ -42587,8 +42586,8 @@ Now running partitioned skimmer with 1 partitions:
 Working on partition 1/1
 Will contain read IDs 0 to 801
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Total megahubs: 0
 
 Skim summary:
@@ -42606,29 +42605,29 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible forward matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible complement matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Calculating possible vector leftovers ... done.
 
 Loading confirmed overlaps from disk (will need approximately 1 M.):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Sorting confirmed overlaps (this may take a while) ... done.
 
 Generating clusters:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Pre-assembly vector clipping
 
@@ -42636,8 +42635,8 @@ Performing vector clipping ... done.
 Pool has 802 reads .
 Checking reads for trace data:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 No SCF data present in any read, automatic contig editing is now switched off.
 802 reads with valid data for assembly.
 
@@ -42666,8 +42665,8 @@ Now running partitioned skimmer with 1 partitions:
 Working on partition 1/1
 Will contain read IDs 0 to 801
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Total megahubs: 0
 
 Skim summary:
@@ -42687,29 +42686,29 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible forward matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible complement matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Calculating possible vector leftovers ... done.
 
 Loading confirmed overlaps from disk (will need approximately 1 M.):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Sorting confirmed overlaps (this may take a while) ... done.
 
 Generating clusters:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Localtime: Tue Jul 15 12:00:00 2008
 
@@ -53046,12 +53045,12 @@ Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
 Localtime: Tue Jul 15 12:00:00 2008
 
-Saving project statistics to file: default_log/default_info_contigstats_pass.1.
-txt
+Saving project statistics to file: default_log/default_info_contigstats_pass.1.t
+xt
 Saving read tag list to file: default_log/default_info_readtaglist.1.txt
 Saving contig tag list to file: default_log/default_info_consensustaglist.1.txt
-Saving project contig<->read list to file: default_log/default_info_contigreadl
-ist_pass.1.txt
+Saving project contig<->read list to file: default_log/default_info_contigreadli
+st_pass.1.txt
 Localtime: Tue Jul 15 12:00:00 2008
 Saving project statistics to file: default_info/default_info_contigstats.txt
 Localtime: Tue Jul 15 12:00:00 2008
@@ -53059,8 +53058,8 @@ Saving read tag list to file: default_info/default_info_readtaglist.txt
 Localtime: Tue Jul 15 12:00:00 2008
 Saving contig tag list to file: default_info/default_info_consensustaglist.txt
 Localtime: Tue Jul 15 12:00:00 2008
-Saving project contig<->read list to file: default_info/default_info_contigread
-list.txt
+Saving project contig<->read list to file: default_info/default_info_contigreadl
+ist.txt
 Localtime: Tue Jul 15 12:00:00 2008
 Saving contigs to file: default_results/default_out.caf
 Localtime: Tue Jul 15 12:00:00 2008
@@ -53072,10 +53071,10 @@ Done.
 Localtime: Tue Jul 15 12:00:00 2008
 Saving contigs to FASTA file: default_results/default_out.unpadded.fasta
 Saving padded contigs to FASTA file: default_results/default_out.padded.fasta
-Saving contig qualities to FASTA quality file: default_results/default_out.unpa
-dded.fasta.qual
-Saving padded contig qualities to FASTA quality file: default_results/default_o
-ut.padded.fasta.qual
+Saving contig qualities to FASTA quality file: default_results/default_out.unpad
+ded.fasta.qual
+Saving padded contig qualities to FASTA quality file: default_results/default_ou
+t.padded.fasta.qual
 Localtime: Tue Jul 15 12:00:00 2008
 Saving SNP analysis to file: default_info/default_info_snpanalysis.txt
 Finished assembly, extracting contigs.
@@ -53087,8 +53086,8 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Loading project from CAF file: step1_nosnps_remain.caf
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Loading straindata.
@@ -54695,8 +54694,8 @@ Starting minimum left vector clip ... done.
 Pool has 1594 reads .
 Checking reads for trace data:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 No SCF data present in any read, automatic contig editing is now switched off.
 1594 reads with valid data for assembly.
 
@@ -54725,8 +54724,8 @@ Now running partitioned skimmer with 1 partitions:
 Working on partition 1/1
 Will contain read IDs 0 to 1593
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Total megahubs: 0
 
 Skim summary:
@@ -54744,29 +54743,29 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible forward matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible complement matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Calculating possible vector leftovers ... done.
 
 Loading confirmed overlaps from disk (will need approximately 1 M.):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Sorting confirmed overlaps (this may take a while) ... done.
 
 Generating clusters:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Pre-assembly vector clipping
 
@@ -54774,8 +54773,8 @@ Performing vector clipping ... done.
 Pool has 1594 reads .
 Checking reads for trace data:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 No SCF data present in any read, automatic contig editing is now switched off.
 1594 reads with valid data for assembly.
 
@@ -54804,8 +54803,8 @@ Now running partitioned skimmer with 1 partitions:
 Working on partition 1/1
 Will contain read IDs 0 to 1593
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Total megahubs: 0
 
 Skim summary:
@@ -54825,29 +54824,29 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible forward matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible complement matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Calculating possible vector leftovers ... done.
 
 Loading confirmed overlaps from disk (will need approximately 1 M.):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Sorting confirmed overlaps (this may take a while) ... done.
 
 Generating clusters:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Localtime: Tue Jul 15 12:00:00 2008
 
@@ -84083,12 +84082,11 @@ Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
 Localtime: Tue Jul 15 12:00:00 2008
 
-Saving project statistics to file: remain_log/remain_info_contigstats_pass.1.tx
-t
+Saving project statistics to file: remain_log/remain_info_contigstats_pass.1.txt
 Saving read tag list to file: remain_log/remain_info_readtaglist.1.txt
 Saving contig tag list to file: remain_log/remain_info_consensustaglist.1.txt
-Saving project contig<->read list to file: remain_log/remain_info_contigreadlis
-t_pass.1.txt
+Saving project contig<->read list to file: remain_log/remain_info_contigreadlist
+_pass.1.txt
 Localtime: Tue Jul 15 12:00:00 2008
 Saving project statistics to file: remain_info/remain_info_contigstats.txt
 Localtime: Tue Jul 15 12:00:00 2008
@@ -84096,8 +84094,8 @@ Saving read tag list to file: remain_info/remain_info_readtaglist.txt
 Localtime: Tue Jul 15 12:00:00 2008
 Saving contig tag list to file: remain_info/remain_info_consensustaglist.txt
 Localtime: Tue Jul 15 12:00:00 2008
-Saving project contig<->read list to file: remain_info/remain_info_contigreadli
-st.txt
+Saving project contig<->read list to file: remain_info/remain_info_contigreadlis
+t.txt
 Localtime: Tue Jul 15 12:00:00 2008
 Saving contigs to file: remain_results/remain_out.caf
 Localtime: Tue Jul 15 12:00:00 2008
@@ -84109,10 +84107,10 @@ Done.
 Localtime: Tue Jul 15 12:00:00 2008
 Saving contigs to FASTA file: remain_results/remain_out.unpadded.fasta
 Saving padded contigs to FASTA file: remain_results/remain_out.padded.fasta
-Saving contig qualities to FASTA quality file: remain_results/remain_out.unpadd
-ed.fasta.qual
-Saving padded contig qualities to FASTA quality file: remain_results/remain_out
-.padded.fasta.qual
+Saving contig qualities to FASTA quality file: remain_results/remain_out.unpadde
+d.fasta.qual
+Saving padded contig qualities to FASTA quality file: remain_results/remain_out.
+padded.fasta.qual
 Localtime: Tue Jul 15 12:00:00 2008
 Saving SNP analysis to file: remain_info/remain_info_snpanalysis.txt
 Finished assembly, extracting contigs.
@@ -84216,8 +84214,8 @@ Used parameter settings:
 
   Contig parameters (-CO):
         Name prefix (np)                                         : step3
-        Error analysis (an)                                      : SCF signal (
-signal)
+        Error analysis (an)                                      : SCF signal (s
+ignal)
         Reject on drop in relative alignment score (%)           : 12
         Max. error rate in dangerous zones in % (dmer)           : 1
         Mark repeats (mr)                                        : Yes
@@ -84308,8 +84306,8 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Loading project from CAF file: step2_reads.caf
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Loading straindata.
@@ -84321,8 +84319,8 @@ Read 1424 straindata lines.
 Pool has 1424 reads .
 Checking reads for trace data:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 No SCF data present in any read, automatic contig editing is now switched off.
 1424 reads with valid data for assembly.
 
@@ -84354,8 +84352,8 @@ Now running partitioned skimmer with 1 partitions:
 Working on partition 1/1
 Will contain read IDs 0 to 1423
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Total megahubs: 0
 
 Skim summary:
@@ -84375,26 +84373,26 @@ Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible forward matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 Localtime: Tue Jul 15 12:00:00 2008
 
 Aligning possible complement matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Loading confirmed overlaps from disk (will need approximately 1 M.):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Sorting confirmed overlaps (this may take a while) ... done.
 
 Generating clusters:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|....
- [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|...
-. [100%]
+[50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|....
+[100%]
 
 Localtime: Tue Jul 15 12:00:00 2008
 
@@ -123501,8 +123499,8 @@ Localtime: Tue Jul 15 12:00:00 2008
 Saving project statistics to file: step3_log/step3_info_contigstats_pass.1.txt
 Saving read tag list to file: step3_log/step3_info_readtaglist.1.txt
 Saving contig tag list to file: step3_log/step3_info_consensustaglist.1.txt
-Saving project contig<->read list to file: step3_log/step3_info_contigreadlist_
-pass.1.txt
+Saving project contig<->read list to file: step3_log/step3_info_contigreadlist_p
+ass.1.txt
 Localtime: Tue Jul 15 12:00:00 2008
 Saving project statistics to file: step3_info/step3_info_contigstats.txt
 Localtime: Tue Jul 15 12:00:00 2008
@@ -123510,8 +123508,8 @@ Saving read tag list to file: step3_info/step3_info_readtaglist.txt
 Localtime: Tue Jul 15 12:00:00 2008
 Saving contig tag list to file: step3_info/step3_info_consensustaglist.txt
 Localtime: Tue Jul 15 12:00:00 2008
-Saving project contig<->read list to file: step3_info/step3_info_contigreadlist
-.txt
+Saving project contig<->read list to file: step3_info/step3_info_contigreadlist.
+txt
 Localtime: Tue Jul 15 12:00:00 2008
 Saving contigs to file: step3_results/step3_out.caf
 Localtime: Tue Jul 15 12:00:00 2008
@@ -123523,18 +123521,19 @@ Done.
 Localtime: Tue Jul 15 12:00:00 2008
 Saving contigs to FASTA file: step3_results/step3_out.unpadded.fasta
 Saving padded contigs to FASTA file: step3_results/step3_out.padded.fasta
-Saving contig qualities to FASTA quality file: step3_results/step3_out.unpadded
-.fasta.qual
-Saving padded contig qualities to FASTA quality file: step3_results/step3_out.p
-added.fasta.qual
-Saving padded strain contigs to FASTA file: step3_results/step3_out.padded_.fas
-ta
+Saving contig qualities to FASTA quality file: step3_results/step3_out.unpadded.
+fasta.qual
+Saving padded contig qualities to FASTA quality file: step3_results/step3_out.pa
+dded.fasta.qual
+Saving padded strain contigs to FASTA file: step3_results/step3_out.padded_.fast
+a
 (qualities have .qual appended)
 Localtime: Tue Jul 15 12:00:00 2008
 Saving SNP analysis to file: step3_info/step3_info_snpanalysis.txt
 
 
 End of assembly process, thank you for using miraEST.
+
 
    Go to the output files for this example
 
@@ -123710,8 +123709,7 @@ Version: EMBOSS:6.1.0
                                   the different centres or ask your sequence
                                   provider. In a nutshell, the Sanger scheme
                                   is
-                                  'somename.[pqsfrw][12][bckdeflmnpt][a|b|c|...
-'
+                                  'somename.[pqsfrw][12][bckdeflmnpt][a|b|c|...'
                                   (e.g. U13a08f10.p1ca), TIGR scheme is
                                   'somenameTF*|TR*|TA*' (e.g. GCPBN02TF or
                                   GCPDL68TABRPT103A58B). (Values: sanger
@@ -124396,6 +124394,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    emiraest reads any normal sequence USAs.
@@ -124408,6 +124407,7 @@ Output file format
   Output files for usage example
 
   File: EdIt.log
+
 
   Directory: step1_info
 
@@ -124550,46 +124550,46 @@ GCCTATGGGATTTTCGGTATCCGGCCCGTTCTTGTTTTGTTGGCCAATAAGGGCCAAAAC
 TAAAGGTAAAAATGATTTTTAATTCTAATGGCTCATTTGCCCTTTT
 
 BaseQuality : gnlti136477494
-7 7 7 9 15 19 24 20 20 20 23 23 29 29 26 21 19 16 9 10 19 25 29 40 40 40 40 29
-29 34 34
-34 34 35 37 37 40 37 37 32 29 29 33 34 30 34 34 34 35 35 35 40 39 35 35 35 35 3
-5 39 40 45 45
-45 45 35 35 35 35 35 35 40 35 35 35 35 35 35 37 37 37 35 45 45 45 45 35 39 35 3
-5 35 35 35 35
-35 37 35 35 35 35 35 35 35 35 39 39 37 37 37 39 39 39 39 39 45 37 35 35 39 39 3
-5 37 40 40 40
-37 40 40 40 40 40 40 40 56 35 35 28 25 25 25 34 34 35 35 35 35 35 39 39 45 46 4
-6 46 46 46 46
-42 42 42 46 39 35 35 35 35 35 35 35 35 35 45 40 40 40 46 46 46 46 42 42 40 46 4
-6 51 51 51 39
-39 39 39 39 35 46 46 46 40 40 42 46 40 40 40 40 37 37 40 45 45 45 45 45 45 45 4
-5 40 40 40 46
-46 46 34 37 37 48 48 48 46 44 44 36 33 32 32 25 25 27 32 33 36 39 44 46 46 46 4
-6 46 46 46 46
-40 39 39 39 33 33 32 27 22 22 26 27 33 36 44 44 48 48 19 16 8 8 14 19 28 36 39
-44 46 40 39
-36 33 32 32 32 32 32 32 32 32 32 34 32 32 32 32 23 13 12 15 19 25 33 33 25 18 1
-0 10 19 21 33
-40 40 25 18 4 0 4 24 24 32 32 26 26 32 32 32 32 32 32 32 33 36 36 33 25 19 15 1
-5 19 22 32
-32 32 27 19 15 15 19 19 15 26 27 26 28 28 32 32 27 26 26 19 23 27 32 32 25 25 1
-0 8 8 19 19
-26 19 18 18 26 48 48 48 48 40 34 29 32 32 32 32 32 32 32 10 19 10 10 19 19 32 4
-8 48 48 48 48
-48 48 48 29 19 18 14 12 19 13 15 15 29 30 32 26 21 21 12 12 9 7 8 19 23 20 14 1
-2 7 10 19
-21 19 7 7 6 10 10 10 10 19 12 12 11 11 12 19 24 39 32 26 19 17 8 8 10 19 21 25
-25 23 29
-31 16 9 7 11 11 16 14 15 19 14 8 8 9 15 11 11 6 6 7 9 16 24 19 14 12 7 7 14 16
-16
+7 7 7 9 15 19 24 20 20 20 23 23 29 29 26 21 19 16 9 10 19 25 29 40 40 40 40 29 2
+9 34 34
+34 34 35 37 37 40 37 37 32 29 29 33 34 30 34 34 34 35 35 35 40 39 35 35 35 35 35
+ 39 40 45 45
+45 45 35 35 35 35 35 35 40 35 35 35 35 35 35 37 37 37 35 45 45 45 45 35 39 35 35
+ 35 35 35 35
+35 37 35 35 35 35 35 35 35 35 39 39 37 37 37 39 39 39 39 39 45 37 35 35 39 39 35
+ 37 40 40 40
+37 40 40 40 40 40 40 40 56 35 35 28 25 25 25 34 34 35 35 35 35 35 39 39 45 46 46
+ 46 46 46 46
+42 42 42 46 39 35 35 35 35 35 35 35 35 35 45 40 40 40 46 46 46 46 42 42 40 46 46
+ 51 51 51 39
+39 39 39 39 35 46 46 46 40 40 42 46 40 40 40 40 37 37 40 45 45 45 45 45 45 45 45
+ 40 40 40 46
+46 46 34 37 37 48 48 48 46 44 44 36 33 32 32 25 25 27 32 33 36 39 44 46 46 46 46
+ 46 46 46 46
+40 39 39 39 33 33 32 27 22 22 26 27 33 36 44 44 48 48 19 16 8 8 14 19 28 36 39 4
+4 46 40 39
+36 33 32 32 32 32 32 32 32 32 32 34 32 32 32 32 23 13 12 15 19 25 33 33 25 18 10
+ 10 19 21 33
+40 40 25 18 4 0 4 24 24 32 32 26 26 32 32 32 32 32 32 32 33 36 36 33 25 19 15 15
+ 19 22 32
+32 32 27 19 15 15 19 19 15 26 27 26 28 28 32 32 27 26 26 19 23 27 32 32 25 25 10
+ 8 8 19 19
+26 19 18 18 26 48 48 48 48 40 34 29 32 32 32 32 32 32 32 10 19 10 10 19 19 32 48
+ 48 48 48 48
+48 48 48 29 19 18 14 12 19 13 15 15 29 30 32 26 21 21 12 12 9 7 8 19 23 20 14 12
+ 7 10 19
+21 19 7 7 6 10 10 10 10 19 12 12 11 11 12 19 24 39 32 26 19 17 8 8 10 19 21 25 2
+5 23 29
+31 16 9 7 11 11 16 14 15 19 14 8 8 9 15 11 11 6 6 7 9 16 24 19 14 12 7 7 14 16 1
+6
 12 10 10 10 15 29 40 28 25 9 10 6 6 8 6 8 15 13 19 12 21 18 16 12 19 7 7 7 11 8
- 10
-20 15 14 14 7 9 12 12 18 19 24 24 21 11 11 8 8 9 8 15 6 7 14 14 20 18 14 13 11
-9 9
+10
+20 15 14 14 7 9 12 12 18 19 24 24 21 11 11 8 8 9 8 15 6 7 14 14 20 18 14 13 11 9
+ 9
 7 7 11 11 12 19 23 25 16 10 10 10 15 16 24 14 14 13 21 10 15 11 7 7 10 14 9 7 7
- 19 13
-12 12 12 12 15 25 25 25 21 21 8 8 12 21 12 10 10 14 14 10 13 10 7 11 10 10 16 1
-4 9 9 10
+19 13
+12 12 12 12 15 25 25 25 21 21 8 8 12 21 12 10 10 14 14 10 13 10 7 11 10 10 16 14
+ 9 9 10
 9 16 19 27 19 19 10 7 11 9 13 10 10 7 7 9 9 11 14 14 12 18 14 13 8 8 8 7 13 7 7
 11 8 10 12 10 8 8 6 6 8 8 8 7 7 6 9 9 9 9 9 8 9 9 8 8 11 12 6 7 7 7
 12 18 13 8 8 6 6 10 7 7 9 9 10 9 10 9 11 7 7 6 6 9 9 14 14 13 11 9 6 6 6
@@ -124614,42 +124614,42 @@ GAGGCAGAGGGGGGGGGGGGGGAGGGGGTGGGTGTGGGTGGGGGCGGGGGTGGGCTGGTG
 GGGGGGGAGTGGCGTGGCTGC
 
 BaseQuality : gnlti136479889
-7 10 19 19 9 9 10 17 29 25 28 19 14 9 9 19 27 29 33 34 34 29 26 26 22 22 26 26
-32 33 35
-35 42 42 34 34 34 29 29 29 37 37 40 37 37 37 40 46 51 56 56 56 51 51 51 42 40 4
-0 45 35 35 35
-35 33 33 35 35 35 35 45 39 34 34 34 35 35 35 35 35 35 39 40 40 40 37 40 40 48 4
-4 37 35 37 37
-40 40 40 45 51 51 40 35 35 35 35 35 42 44 44 44 48 44 44 44 44 48 44 56 45 45 4
-5 45 40 40 43
-42 46 40 37 37 37 37 37 44 42 42 42 42 42 42 46 42 42 42 42 42 35 35 35 33 33 2
-3 23 23 29 29
-35 35 35 40 40 40 35 35 35 32 32 35 33 37 37 29 23 15 21 16 25 21 35 35 35 35 3
-2 32 32 35 42
-56 56 42 42 29 28 24 32 32 35 35 35 33 22 22 29 29 21 17 20 24 24 29 50 37 47 4
-4 50 44 44 29
-28 28 29 29 29 35 35 35 35 42 37 44 40 40 35 42 37 42 44 56 42 42 23 23 22 31 3
-1 46 46 56 56
-44 44 35 24 19 19 19 21 28 28 32 32 30 29 29 29 32 42 42 42 35 32 32 30 27 30 3
-3 33 42 36 29
-35 35 35 29 29 32 34 30 33 28 28 28 28 28 27 27 13 13 13 27 33 42 37 34 34 34 3
-4 33 29 32 31
-34 29 29 29 21 14 12 7 7 13 16 24 29 29 32 40 40 37 37 40 33 37 25 25 13 14 15
-25 25 35 35
-35 37 37 40 40 42 42 56 51 46 34 34 32 32 29 29 31 29 29 21 18 17 17 17 19 22 2
-2 29 29 23 17
-17 17 24 29 25 25 20 20 16 8 8 10 21 20 29 23 27 27 33 37 37 37 37 30 27 27 33
-27 28 26 26
+7 10 19 19 9 9 10 17 29 25 28 19 14 9 9 19 27 29 33 34 34 29 26 26 22 22 26 26 3
+2 33 35
+35 42 42 34 34 34 29 29 29 37 37 40 37 37 37 40 46 51 56 56 56 51 51 51 42 40 40
+ 45 35 35 35
+35 33 33 35 35 35 35 45 39 34 34 34 35 35 35 35 35 35 39 40 40 40 37 40 40 48 44
+ 37 35 37 37
+40 40 40 45 51 51 40 35 35 35 35 35 42 44 44 44 48 44 44 44 44 48 44 56 45 45 45
+ 45 40 40 43
+42 46 40 37 37 37 37 37 44 42 42 42 42 42 42 46 42 42 42 42 42 35 35 35 33 33 23
+ 23 23 29 29
+35 35 35 40 40 40 35 35 35 32 32 35 33 37 37 29 23 15 21 16 25 21 35 35 35 35 32
+ 32 32 35 42
+56 56 42 42 29 28 24 32 32 35 35 35 33 22 22 29 29 21 17 20 24 24 29 50 37 47 44
+ 50 44 44 29
+28 28 29 29 29 35 35 35 35 42 37 44 40 40 35 42 37 42 44 56 42 42 23 23 22 31 31
+ 46 46 56 56
+44 44 35 24 19 19 19 21 28 28 32 32 30 29 29 29 32 42 42 42 35 32 32 30 27 30 33
+ 33 42 36 29
+35 35 35 29 29 32 34 30 33 28 28 28 28 28 27 27 13 13 13 27 33 42 37 34 34 34 34
+ 33 29 32 31
+34 29 29 29 21 14 12 7 7 13 16 24 29 29 32 40 40 37 37 40 33 37 25 25 13 14 15 2
+5 25 35 35
+35 37 37 40 40 42 42 56 51 46 34 34 32 32 29 29 31 29 29 21 18 17 17 17 19 22 22
+ 29 29 23 17
+17 17 24 29 25 25 20 20 16 8 8 10 21 20 29 23 27 27 33 37 37 37 37 30 27 27 33 2
+7 28 26 26
 26 26 24 24 27 32 29 29 30 33 33 40 32 32 22 19 13 9 9 15 23 37 32 29 19 11 9 9
- 12 16 17
+12 16 17
 19 18 18 15 23 24 29 30 20 16 16 18 20 26 27 27 27 18 14 9 9 17 18 26 19 13 7 7
- 10 16 20
-29 29 29 29 27 29 29 29 29 29 25 14 12 6 6 8 12 16 23 21 23 23 26 29 29 20 20 2
-0 22 18 11
+10 16 20
+29 29 29 29 27 29 29 29 29 29 25 14 12 6 6 8 12 16 23 21 23 23 26 29 29 20 20 20
+ 22 18 11
 10 9 9 9 16 24 11 11 11 14 14 21 16 13 7 7 12 12 16 10 8 6 6 8 8 11 13 17 24 20
- 22
-25 25 32 33 34 29 29 24 24 22 19 17 12 12 10 11 13 20 21 10 10 8 8 6 6 8 8 9 9
-9 8
+22
+25 25 32 33 34 29 29 24 24 22 19 17 12 12 10 11 13 20 21 10 10 8 8 6 6 8 8 9 9 9
+ 8
 7 6 8 6 6 11 14 20 22 22 23 17 13 9 10 10 11 14 9 9 9 8 8 6 6 8 8 9 9 7 7
 9 9 9 12 9 9 8 8 9 11 16 8 8 6 6 8 8 9 11 13 24 24 14 8 6 6 10 6 10 17 13
 8 6 6 8 8 8 16 17 20 15 10 10 8 8 8 8 8 8 8 6 6 9 9 12 12 9 10 6 6 8 6
@@ -124674,6 +124674,7 @@ Clipping QUAL 724 723
 Align_to_SCF 1 981 1 981
 
 
+
   File: step1_snpsinSTRAIN_default.caf
 
 
@@ -124695,48 +124696,47 @@ GGAAATAGACCGGTCCGGTTTGGTCATGTTCTACCGTTGGTTGGTTTTTATTTATTGGTT
 GGATTTTTTCTTGACCCGAATTGGCTTAATTTTTTCGGGAGGGGAAATTTCC
 
 BaseQuality : gnlti136477498
-8 11 11 9 9 10 21 21 34 34 34 39 33 20 19 19 10 10 19 32 40 48 48 44 46 34 34 3
-4 34 34 34
-39 40 40 40 40 40 29 29 29 30 30 30 35 35 35 35 35 35 40 40 40 40 45 45 45 45 4
-5 45 51 51 51
-39 34 34 34 34 34 34 35 35 35 35 35 34 34 34 35 35 35 40 40 56 51 51 40 40 40 4
-0 40 40 40 40
-40 40 40 37 40 35 39 39 39 39 35 39 35 35 35 35 39 39 35 35 35 35 35 35 35 40 4
-0 51 51 35 35
-35 35 35 35 43 43 51 56 51 45 45 45 45 45 45 51 51 51 39 39 34 34 34 34 35 39 5
-1 45 45 45 45
-40 40 40 40 46 46 51 51 51 51 51 40 35 35 35 35 35 35 39 39 39 39 42 42 42 39 3
-7 40 40 40 40
-39 35 35 42 46 46 51 51 51 51 51 45 40 40 40 40 40 35 33 33 33 33 33 34 35 35 3
-5 40 35 34 34
-34 34 34 45 51 51 51 51 51 46 46 46 40 40 40 39 34 34 39 36 33 25 19 15 15 19 1
-9 19 10 10 14
-8 9 19 14 19 26 22 22 26 23 19 10 10 10 10 17 22 24 25 32 32 33 36 36 40 24 19
-8 8 9 10
-10 23 32 34 32 32 26 15 19 4 0 4 19 19 23 14 14 11 10 11 17 17 32 26 26 25 25 2
-2 22 23 23
+8 11 11 9 9 10 21 21 34 34 34 39 33 20 19 19 10 10 19 32 40 48 48 44 46 34 34 34
+ 34 34 34
+39 40 40 40 40 40 29 29 29 30 30 30 35 35 35 35 35 35 40 40 40 40 45 45 45 45 45
+ 45 51 51 51
+39 34 34 34 34 34 34 35 35 35 35 35 34 34 34 35 35 35 40 40 56 51 51 40 40 40 40
+ 40 40 40 40
+40 40 40 37 40 35 39 39 39 39 35 39 35 35 35 35 39 39 35 35 35 35 35 35 35 40 40
+ 51 51 35 35
+35 35 35 35 43 43 51 56 51 45 45 45 45 45 45 51 51 51 39 39 34 34 34 34 35 39 51
+ 45 45 45 45
+40 40 40 40 46 46 51 51 51 51 51 40 35 35 35 35 35 35 39 39 39 39 42 42 42 39 37
+ 40 40 40 40
+39 35 35 42 46 46 51 51 51 51 51 45 40 40 40 40 40 35 33 33 33 33 33 34 35 35 35
+ 40 35 34 34
+34 34 34 45 51 51 51 51 51 46 46 46 40 40 40 39 34 34 39 36 33 25 19 15 15 19 19
+ 19 10 10 14
+8 9 19 14 19 26 22 22 26 23 19 10 10 10 10 17 22 24 25 32 32 33 36 36 40 24 19 8
+ 8 9 10
+10 23 32 34 32 32 26 15 19 4 0 4 19 19 23 14 14 11 10 11 17 17 32 26 26 25 25 22
+ 22 23 23
 12 12 12 7 7 9 7 7 8 8 8 19 24 48 32 25 21 16 22 19 19 15 10 15 8 8 12 10 7 8 9
 15 19 27 32 26 32 32 19 19 9 9 9 9 9 9 19 25 33 24 15 4 0 4 8 19 21 17 15 10 17
- 21
-32 24 24 9 9 9 19 29 33 36 36 33 27 23 12 12 8 8 7 19 8 8 7 12 10 16 18 29 22 2
-6 16
+21
+32 24 24 9 9 9 19 29 33 36 36 33 27 23 12 12 8 8 7 19 8 8 7 12 10 16 18 29 22 26
+ 16
 19 4 0 4 25 25 33 33 32 19 15 15 15 19 21 29 29 23 19 15 15 19 12 22 8 10 7 7 9
- 7 8
-13 11 9 11 19 19 19 7 7 11 17 19 13 13 15 17 13 11 7 7 7 12 9 10 10 10 9 9 9 9
-9
+7 8
+13 11 9 11 19 19 19 7 7 11 17 19 13 13 15 17 13 11 7 7 7 12 9 10 10 10 9 9 9 9 9
 19 14 17 23 19 10 13 8 10 9 9 6 6 6 9 15 15 7 7 9 7 10 10 4 0 4 9 12 7 7 7
 13 14 10 10 6 6 8 7 10 14 12 12 9 9 6 10 13 16 21 21 11 11 6 6 8 16 17 18 13 11
- 15
+15
 7 7 7 7 11 12 10 12 10 19 11 10 19 7 7 12 19 22 24 21 14 14 19 18 13 10 6 6 6 6
- 6
-16 12 12 19 25 27 12 10 11 10 7 6 6 6 8 9 11 21 20 29 20 20 18 18 18 18 15 16 1
-3 9 6
+6
+16 12 12 19 25 27 12 10 11 10 7 6 6 6 8 9 11 21 20 29 20 20 18 18 18 18 15 16 13
+ 9 6
 6 6 6 7 6 6 8 6 8 11 13 17 15 15 20 21 26 32 29 14 10 11 11 11 9 10 10 16 16 16
- 18
-17 19 20 15 12 12 12 14 14 17 22 18 19 14 14 14 20 16 13 13 11 10 10 7 6 6 6 9
-9 12 12
-16 16 19 8 8 11 11 17 15 13 11 17 16 13 15 8 6 6 6 6 6 6 13 11 9 12 7 13 13 16
-17
+18
+17 19 20 15 12 12 12 14 14 17 22 18 19 14 14 14 20 16 13 13 11 10 10 7 6 6 6 9 9
+ 12 12
+16 16 19 8 8 11 11 17 15 13 11 17 16 13 15 8 6 6 6 6 6 6 13 11 9 12 7 13 13 16 1
+7
 17 19 10 9 14 15 15 8 8 8 15 10 8 7 9 8 8 6 6 9 9 12 21 14 13 11 8 8 11 11 6
 6 9 6 7 7 9 19 10 10 8 8 8 7 7 13 7 8 9 10 7 7 9 9 8 8 12 16 10 10 9 7
 6 6 9 9 7 7 9 9 10 10 6 6 11 7 7 6 6 8 6 8 12 9 6 6 10 6 6 9 10 6 9
@@ -124758,55 +124758,55 @@ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 BaseQuality : gnlti136479884
-22 29 17 17 17 29 17 11 10 6 6 8 15 19 28 16 17 15 28 28 33 32 34 25 15 23 27 3
-3 33 33 39
-40 46 46 40 40 34 34 34 29 35 35 40 40 45 45 40 40 40 51 45 45 45 45 45 45 45 5
-1 56 56 56 40
-37 35 34 34 34 35 35 35 40 40 40 40 40 40 45 45 51 34 33 33 33 33 31 35 35 34 3
-4 34 35 35 35
-40 40 40 40 39 39 40 40 37 37 40 45 45 51 51 56 56 51 51 51 51 51 51 51 56 56 5
-1 51 51 51 51
-51 51 45 45 45 45 40 40 40 40 40 39 51 51 46 46 46 56 48 48 48 48 36 36 33 27 2
-3 15 15 19 23
-27 40 40 44 46 46 48 40 40 40 40 40 40 42 42 42 46 56 42 42 42 46 46 51 51 51 5
-1 51 51 51 51
-51 45 40 40 40 37 37 38 35 33 33 34 34 34 35 40 40 37 40 37 34 34 32 32 32 37 5
-6 56 45 45 40
-40 56 46 46 42 40 35 39 39 37 37 37 45 45 45 45 45 40 40 40 40 40 40 40 45 40 3
-7 37 37 35 35
-35 35 35 40 45 43 56 56 51 51 51 51 51 51 51 51 51 40 40 37 39 35 35 44 50 50 4
-2 35 25 25 28
-28 28 35 46 46 45 45 45 45 45 51 56 56 56 56 56 56 51 51 51 51 51 51 56 56 56 5
-6 51 40 40 40
-40 40 40 51 45 45 45 45 45 40 40 40 40 40 45 51 51 51 56 56 56 56 51 51 51 45 4
-5 45 45 45 45
-40 37 37 45 40 40 40 45 42 40 40 46 46 30 29 28 45 45 40 40 40 45 45 40 40 40 3
-7 37 40 42 42
-46 56 56 56 45 40 37 37 37 39 40 40 40 39 39 40 40 40 40 51 56 56 56 56 56 48 4
-6 18 18 20 29
-37 40 40 40 46 40 39 36 33 32 32 32 32 32 32 33 36 39 39 39 39 32 34 34 46 40 4
-0 40 40 39 36
-40 40 34 34 22 48 31 40 40 44 44 46 46 46 46 46 46 46 40 40 40 40 39 39 22 21 2
-1 33 33 42 46
-35 35 35 32 32 29 34 34 29 29 39 39 40 40 40 40 51 46 37 25 25 25 29 29 37 40 4
-0 40 40 40 37
-37 35 34 34 34 32 32 32 33 29 32 25 29 37 31 31 18 18 18 48 48 48 56 56 56 46 4
-6 46 46 40 28
-28 24 30 30 31 31 29 32 32 29 35 35 45 35 21 26 11 11 11 27 27 45 45 40 40 46 3
-5 29 29 29 29
-26 32 29 28 28 32 27 25 20 18 18 10 10 6 6 9 13 10 10 12 14 12 12 15 21 28 19 1
-5 6 6 9
+22 29 17 17 17 29 17 11 10 6 6 8 15 19 28 16 17 15 28 28 33 32 34 25 15 23 27 33
+ 33 33 39
+40 46 46 40 40 34 34 34 29 35 35 40 40 45 45 40 40 40 51 45 45 45 45 45 45 45 51
+ 56 56 56 40
+37 35 34 34 34 35 35 35 40 40 40 40 40 40 45 45 51 34 33 33 33 33 31 35 35 34 34
+ 34 35 35 35
+40 40 40 40 39 39 40 40 37 37 40 45 45 51 51 56 56 51 51 51 51 51 51 51 56 56 51
+ 51 51 51 51
+51 51 45 45 45 45 40 40 40 40 40 39 51 51 46 46 46 56 48 48 48 48 36 36 33 27 23
+ 15 15 19 23
+27 40 40 44 46 46 48 40 40 40 40 40 40 42 42 42 46 56 42 42 42 46 46 51 51 51 51
+ 51 51 51 51
+51 45 40 40 40 37 37 38 35 33 33 34 34 34 35 40 40 37 40 37 34 34 32 32 32 37 56
+ 56 45 45 40
+40 56 46 46 42 40 35 39 39 37 37 37 45 45 45 45 45 40 40 40 40 40 40 40 45 40 37
+ 37 37 35 35
+35 35 35 40 45 43 56 56 51 51 51 51 51 51 51 51 51 40 40 37 39 35 35 44 50 50 42
+ 35 25 25 28
+28 28 35 46 46 45 45 45 45 45 51 56 56 56 56 56 56 51 51 51 51 51 51 56 56 56 56
+ 51 40 40 40
+40 40 40 51 45 45 45 45 45 40 40 40 40 40 45 51 51 51 56 56 56 56 51 51 51 45 45
+ 45 45 45 45
+40 37 37 45 40 40 40 45 42 40 40 46 46 30 29 28 45 45 40 40 40 45 45 40 40 40 37
+ 37 40 42 42
+46 56 56 56 45 40 37 37 37 39 40 40 40 39 39 40 40 40 40 51 56 56 56 56 56 48 46
+ 18 18 20 29
+37 40 40 40 46 40 39 36 33 32 32 32 32 32 32 33 36 39 39 39 39 32 34 34 46 40 40
+ 40 40 39 36
+40 40 34 34 22 48 31 40 40 44 44 46 46 46 46 46 46 46 40 40 40 40 39 39 22 21 21
+ 33 33 42 46
+35 35 35 32 32 29 34 34 29 29 39 39 40 40 40 40 51 46 37 25 25 25 29 29 37 40 40
+ 40 40 40 37
+37 35 34 34 34 32 32 32 33 29 32 25 29 37 31 31 18 18 18 48 48 48 56 56 56 46 46
+ 46 46 40 28
+28 24 30 30 31 31 29 32 32 29 35 35 45 35 21 26 11 11 11 27 27 45 45 40 40 46 35
+ 29 29 29 29
+26 32 29 28 28 32 27 25 20 18 18 10 10 6 6 9 13 10 10 12 14 12 12 15 21 28 19 15
+ 6 6 9
 13 22 21 11 9 6 7 13 16 14 11 11 11 16 18 26 24 29 25 24 16 16 11 8 10 17 20 25
- 26 29 29
-34 29 26 26 29 29 26 26 20 25 25 29 33 33 33 40 34 29 27 16 15 6 6 8 16 19 17 1
-3 8 13 9
+26 29 29
+34 29 26 26 29 29 26 26 20 25 25 29 33 33 33 40 34 29 27 16 15 6 6 8 16 19 17 13
+ 8 13 9
 9 9 8 8 16 25 25 19 14 8 8 8 14 13 11 10 14 14 23 23 27 20 15 15 20 23 25 20 19
- 17 10
-8 12 12 15 21 23 29 27 27 23 23 19 14 7 7 6 9 17 16 18 15 9 6 8 8 23 31 24 13 1
-1 9
+17 10
+8 12 12 15 21 23 29 27 27 23 23 19 14 7 7 6 9 17 16 18 15 9 6 8 8 23 31 24 13 11
+ 9
 7 7 15 19 10 10 7 6 9 9 18 17 10 9 11 8 8 11 16 15 19 15 14 19 9 9 8 8 13 18 27
-31 32 24 17 14 14 14 11 15 15 10 11 15 21 21 21 21 17 12 6 7 8 6 6 15 13 13 11
-8 8 8
+31 32 24 17 14 14 14 11 15 15 10 11 15 21 21 21 21 17 12 6 7 8 6 6 15 13 13 11 8
+ 8 8
 13 10 9 9 9 15 15 24 17 14 7 6 11 8 8 8 8 8 8 10 11 10 10 12 10 10 8 8 9 14 15
 6 6 6 6 9 11 9 9 9 10 9 9 9 13 16 16 13 6 6 9 9 8 12 6 6 8 8 9 9 9 9
 9 13 10 6 6 8 8 10 13 7 6 10 9 9 10 12 15 6 6 8 6 6 8 13 9 11 8 8 9 9 10
@@ -124823,6 +124823,7 @@ Insert_size 500 5000
 SCF_File "gnlti136479884.scf"
 Clipping QUAL 31 434
 Align_to_SCF 1 999 1 999
+
 
 
   File: step1_res_cafstrainnames.txt
@@ -124847,44 +124848,44 @@ TGGCATATCCGCCTCGGCAGGTCACGAACGACCTGTCAACCTTGTACCTGCCCGGGCGGC
 CGCTCGAAA
 
 BaseQuality : default_c1
-32 37 43 35 43 20 48 18 49 44 39 44 44 39 39 48 55 55 50 49 48 48 50 49 49 56 5
-5 49 55 55 55
-56 56 55 55 55 55 55 55 61 55 55 55 60 60 48 43 44 44 44 48 55 55 55 55 55 61 6
-0 61 61 61 61
-61 61 61 61 55 55 55 61 61 61 61 61 61 61 61 61 61 61 61 61 55 55 55 61 49 49 4
-9 49 49 49 60
-60 49 46 46 47 46 46 50 49 49 49 49 49 55 61 61 55 55 55 60 55 55 60 60 60 60 6
-1 55 61 56 61
-61 55 49 54 54 60 45 49 49 50 65 68 68 60 60 64 58 67 70 58 58 60 58 58 78 81 8
-7 69 57 57 63
-74 74 73 72 70 62 59 59 57 56 65 58 56 54 59 54 54 56 48 68 79 70 57 57 59 59 5
-9 76 82 73 79
-85 82 82 84 90 90 90 73 86 86 76 76 74 68 68 71 80 85 79 75 76 80 83 86 81 88 8
-8 88 84 82 80
-75 75 82 86 76 74 73 78 82 63 89 79 79 83 83 76 76 79 59 74 74 86 81 83 88 82 9
-0 90 90 90 90
-90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 69 8
-9 90 81 81 75
-72 72 80 90 90 87 87 80 73 73 86 81 87 88 90 90 88 90 90 86 76 76 77 70 38 54 6
-5 70 86 87 90
-90 90 90 90 90 70 90 90 88 81 81 76 81 75 81 90 89 90 90 90 90 90 84 85 86 90 9
-0 90 90 90 90
-90 90 90 90 90 74 81 81 63 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 9
-0 87 86 87 90
-90 88 90 90 90 90 90 90 90 90 90 89 78 82 82 85 85 90 90 90 90 90 90 90 90 65 9
-0 90 90 90 88
-89 89 90 90 90 66 90 90 90 90 90 90 90 90 90 84 90 90 90 79 90 87 87 90 88 90 9
-0 90 90 90 90
-90 90 81 90 90 90 90 90 90 90 90 88 88 90 86 90 90 90 90 90 90 90 90 90 90 90 9
-0 90 90 82 75
-75 87 76 84 89 90 89 90 90 90 90 90 90 90 85 85 88 83 82 83 83 79 83 89 90 66 9
-0 64 90 63 90
-65 73 84 57 90 62 62 90 62 90 90 80 40 60 33 33 75 81 44 90 90 90 88 88 88 80 7
-8 81 78 78 83
-83 79 79 85 84 68 67 54 50 48 55 62 64 89 90 90 87 83 82 76 75 58 66 62 67 67 6
-5 78 78 69 69
-70 75 80 79 79 79 79 79 79 81 69 61 54 30 50 60 71 80 39 35 39 44 44 50 60 49 5
-0 44 44 49 56
+32 37 43 35 43 20 48 18 49 44 39 44 44 39 39 48 55 55 50 49 48 48 50 49 49 56 55
+ 49 55 55 55
+56 56 55 55 55 55 55 55 61 55 55 55 60 60 48 43 44 44 44 48 55 55 55 55 55 61 60
+ 61 61 61 61
+61 61 61 61 55 55 55 61 61 61 61 61 61 61 61 61 61 61 61 61 55 55 55 61 49 49 49
+ 49 49 49 60
+60 49 46 46 47 46 46 50 49 49 49 49 49 55 61 61 55 55 55 60 55 55 60 60 60 60 61
+ 55 61 56 61
+61 55 49 54 54 60 45 49 49 50 65 68 68 60 60 64 58 67 70 58 58 60 58 58 78 81 87
+ 69 57 57 63
+74 74 73 72 70 62 59 59 57 56 65 58 56 54 59 54 54 56 48 68 79 70 57 57 59 59 59
+ 76 82 73 79
+85 82 82 84 90 90 90 73 86 86 76 76 74 68 68 71 80 85 79 75 76 80 83 86 81 88 88
+ 88 84 82 80
+75 75 82 86 76 74 73 78 82 63 89 79 79 83 83 76 76 79 59 74 74 86 81 83 88 82 90
+ 90 90 90 90
+90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 69 89
+ 90 81 81 75
+72 72 80 90 90 87 87 80 73 73 86 81 87 88 90 90 88 90 90 86 76 76 77 70 38 54 65
+ 70 86 87 90
+90 90 90 90 90 70 90 90 88 81 81 76 81 75 81 90 89 90 90 90 90 90 84 85 86 90 90
+ 90 90 90 90
+90 90 90 90 90 74 81 81 63 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
+ 87 86 87 90
+90 88 90 90 90 90 90 90 90 90 90 89 78 82 82 85 85 90 90 90 90 90 90 90 90 65 90
+ 90 90 90 88
+89 89 90 90 90 66 90 90 90 90 90 90 90 90 90 84 90 90 90 79 90 87 87 90 88 90 90
+ 90 90 90 90
+90 90 81 90 90 90 90 90 90 90 90 88 88 90 86 90 90 90 90 90 90 90 90 90 90 90 90
+ 90 90 82 75
+75 87 76 84 89 90 89 90 90 90 90 90 90 90 85 85 88 83 82 83 83 79 83 89 90 66 90
+ 64 90 63 90
+65 73 84 57 90 62 62 90 62 90 90 80 40 60 33 33 75 81 44 90 90 90 88 88 88 80 78
+ 81 78 78 83
+83 79 79 85 84 68 67 54 50 48 55 62 64 89 90 90 87 83 82 76 75 58 66 62 67 67 65
+ 78 78 69 69
+70 75 80 79 79 79 79 79 79 81 69 61 54 30 50 60 71 80 39 35 39 44 44 50 60 49 50
+ 44 44 49 56
 64 55 40 38 40 34 34 51 51 40 34 34 34 34 34 35 51 51 40 40
 
 Sequence : default_c1
@@ -124905,18 +124906,18 @@ TTAGCGTGGTCGCGGCCGAGGTGTGAGATTGGAGCAGAGACATGGCAAAGCAAAGGTGCG
 
   [Part of this file has been deleted for brevity]
 
-51 51 51 56 56 56 56 56 56 56 45 45 45 45 45 45 45 43 43 45 45 45 45 51 51 51 4
-5 40 43 40 40
-43 40 40 40 43 40 35 43 43 35 35 35 40 40 45 46 42 42 42 56 56 56 56 56 56 56 5
-6 50 44 44 56
-42 43 51 51 51 51 56 46 46 56 56 37 40 40 40 40 45 56 56 51 51 40 40 40 40 45 4
-5 45 45 51 51
-56 51 51 40 40 40 45 56 56 47 47 47 42 44 37 45 45 45 45 45 45 45 45 45 39 35 4
-0 40 40 40 40
-46 46 56 51 51 51 51 51 51 51 51 51 45 39 39 39 35 35 35 35 35 35 40 40 40 45 4
-5 45 40 40 40
-45 45 45 45 26 25 15 15 15 25 46 46 40 40 40 34 34 34 44 40 48 40 25 25 26 26 2
-7 27 33 36 29
+51 51 51 56 56 56 56 56 56 56 45 45 45 45 45 45 45 43 43 45 45 45 45 51 51 51 45
+ 40 43 40 40
+43 40 40 40 43 40 35 43 43 35 35 35 40 40 45 46 42 42 42 56 56 56 56 56 56 56 56
+ 50 44 44 56
+42 43 51 51 51 51 56 46 46 56 56 37 40 40 40 40 45 56 56 51 51 40 40 40 40 45 45
+ 45 45 51 51
+56 51 51 40 40 40 45 56 56 47 47 47 42 44 37 45 45 45 45 45 45 45 45 45 39 35 40
+ 40 40 40 40
+46 46 56 51 51 51 51 51 51 51 51 51 45 39 39 39 35 35 35 35 35 35 40 40 40 45 45
+ 45 40 40 40
+45 45 45 45 26 25 15 15 15 25 46 46 40 40 40 34 34 34 44 40 48 40 25 25 26 26 27
+ 27 33 36 29
 30 36 36 36 36 46 46 36 41 41 30 30 30
 
 Sequence : remain_s1043
@@ -124939,30 +124940,30 @@ GTGAATGAAATGGAAGAGGATAACTCAGATGGTGTGGAAGTTGAGTGTCAGGATATGGAT
 GTTGTCACACAA
 
 BaseQuality : remain_s1044
-29 29 29 23 19 9 9 9 21 21 46 46 22 22 22 45 30 40 40 40 40 40 45 29 19 19 17 2
-0 17 17 14
+29 29 29 23 19 9 9 9 21 21 46 46 22 22 22 45 30 40 40 40 40 40 45 29 19 19 17 20
+ 17 17 14
 16 16 11 11 16 23 27 31 17 17 17 30 33 35 40 35 37 42 33 33 11 10 9 9 9 9 13 13
- 12 10 9
-9 9 19 20 39 35 35 33 29 23 26 19 19 19 29 24 28 24 22 21 23 16 15 8 8 9 17 13
-16 15 16
+12 10 9
+9 9 19 20 39 35 35 33 29 23 26 19 19 19 29 24 28 24 22 21 23 16 15 8 8 9 17 13 1
+6 15 16
 18 16 17 21 16 20 13 13 13 17 19 29 21 19 15 11 11 11 14 12 14 9 7 7 9 10 18 18
- 23 29 29
-28 30 25 29 28 28 28 24 24 28 28 28 27 27 22 24 15 17 9 9 9 12 13 14 11 10 10 1
-1 20 13 22
+23 29 29
+28 30 25 29 28 28 28 24 24 28 28 28 27 27 22 24 15 17 9 9 9 12 13 14 11 10 10 11
+ 20 13 22
 16 24 9 10 10 25 23 19 20 22 27 27 44 35 35 32 32 32 29 35 35 35 35 29 30 23 26
- 26 27 29 33
-29 29 32 32 32 27 27 14 14 12 24 19 19 19 14 14 22 27 27 17 16 15 25 25 27 33 2
-4 28 28 29 32
-32 34 34 29 29 25 25 29 38 38 29 25 25 17 15 9 11 9 20 20 25 23 23 28 31 32 29
-16 13 6 6
+26 27 29 33
+29 29 32 32 32 27 27 14 14 12 24 19 19 19 14 14 22 27 27 17 16 15 25 25 27 33 24
+ 28 28 29 32
+32 34 34 29 29 25 25 29 38 38 29 25 25 17 15 9 11 9 20 20 25 23 23 28 31 32 29 1
+6 13 6 6
 8 8 9 9 10 16 21 24 27 19 9 9 9 13 19 16 10 10 9 8 8 11 17 14 20 23 23 32 29 12
- 11
-6 6 6 13 10 10 10 19 21 28 27 28 23 24 20 20 21 29 29 29 29 29 35 35 35 39 21 1
-2 10 10 21
-24 25 22 19 19 19 19 20 26 42 26 22 13 10 9 9 11 21 27 30 28 26 26 29 25 15 15
-15 18 20 17
-11 11 14 14 29 29 29 24 18 18 27 30 29 34 35 35 40 36 38 34 30 30 18 9 6 5 5 5
-5 11 14
+11
+6 6 6 13 10 10 10 19 21 28 27 28 23 24 20 20 21 29 29 29 29 29 35 35 35 39 21 12
+ 10 10 21
+24 25 22 19 19 19 19 20 26 42 26 22 13 10 9 9 11 21 27 30 28 26 26 29 25 15 15 1
+5 18 20 17
+11 11 14 14 29 29 29 24 18 18 27 30 29 34 35 35 40 36 38 34 30 30 18 9 6 5 5 5 5
+ 11 14
 
 
 Sequence : remain_s1044
@@ -124972,6 +124973,7 @@ Insert_size 500 5000
 SCF_File "remain_s1044.scf"
 Clipping QUAL 1 372
 Align_to_SCF 1 372 1 372
+
 
 
   File: step2_straindata.txt

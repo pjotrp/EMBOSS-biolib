@@ -1,24 +1,23 @@
+                           DOMAINSSE documentation
 
-                          DOMAINSSE documentation
-                                      
-   
+
 
 CONTENTS
 
-   1.0 SUMMARY 
-   2.0 INPUTS & OUTPUTS 
-   3.0 INPUT FILE FORMAT 
-   4.0 OUTPUT FILE FORMAT 
-   5.0 DATA FILES 
-   6.0 USAGE 
-   7.0 KNOWN BUGS & WARNINGS 
-   8.0 NOTES 
-   9.0 DESCRIPTION 
-   10.0 ALGORITHM 
-   11.0 RELATED APPLICATIONS 
-   12.0 DIAGNOSTIC ERROR MESSAGES 
-   13.0 AUTHORS 
-   14.0 REFERENCES 
+   1.0 SUMMARY
+   2.0 INPUTS & OUTPUTS
+   3.0 INPUT FILE FORMAT
+   4.0 OUTPUT FILE FORMAT
+   5.0 DATA FILES
+   6.0 USAGE
+   7.0 KNOWN BUGS & WARNINGS
+   8.0 NOTES
+   9.0 DESCRIPTION
+   10.0 ALGORITHM
+   11.0 RELATED APPLICATIONS
+   12.0 DIAGNOSTIC ERROR MESSAGES
+   13.0 AUTHORS
+   14.0 REFERENCES
 
 1.0 SUMMARY
 
@@ -37,8 +36,8 @@ CONTENTS
 
 3.0 INPUT FILE FORMAT
 
-   The format of the DCF file is described in the SCOPPARSE
-   documentation. An example of the input file is shown in Figure 1.
+   The format of the DCF file is described in the SCOPPARSE documentation.
+   An example of the input file is shown in Figure 1.
 
   Input files for usage example
 
@@ -99,11 +98,11 @@ CH   A CHAIN; . START; . END;
 
 4.0 OUTPUT FILE FORMAT
 
-   The format of the DCF file is described in the SCOPPARSE
-   documentation. DOMAINRESO adds the following records:
-     * (1) SS - Secondary structure assignment (per residue). A
-       simplified 3-state assignment: H (helix), E (extended, beta
-       strand) and L (loop, open coil) is used.
+   The format of the DCF file is described in the SCOPPARSE documentation.
+   DOMAINRESO adds the following records:
+     * (1) SS - Secondary structure assignment (per residue). A simplified
+       3-state assignment: H (helix), E (extended, beta strand) and L
+       (loop, open coil) is used.
      * (2) SE - Secondary structure element assignment (per secondary
        structure element). The same 3-state assignment as for the SS
        record is used: H (helix), E (extended, beta strand) and L (loop,
@@ -177,6 +176,7 @@ CH   A CHAIN; . START; . END;
 //
 
   File: domainsse.log
+
 
 5.0 DATA FILES
 
@@ -252,4 +252,5 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 

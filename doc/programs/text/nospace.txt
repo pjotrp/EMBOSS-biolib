@@ -1,5 +1,4 @@
-
-                                  nospace 
+                                   nospace
 
 
 
@@ -24,10 +23,11 @@ Usage
    Here is a sample session with nospace
 
 
-% nospace 
+% nospace
 Remove all whitespace from an ASCII text file
 ASCII text file: seqspace.txt
-ASCII text output file [seqspace.nospace]: 
+ASCII text output file [seqspace.nospace]:
+
 
    Go to the input files for this example
    Go to the output files for this example
@@ -64,6 +64,7 @@ Version: EMBOSS:6.1.0
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
+
 
 Input file format
 
@@ -119,6 +120,7 @@ Input file format
  ggccggagcg ctgaccctgc tattcgcttt tacctatctg tgggtggccg
  ccaaccagtt cctcgag
 
+
 Output file format
 
    nospace rewrites the input file.
@@ -172,6 +174,7 @@ gtcgggaggtggcggtgatcaacttcctggtcggcgtgctgagcgcctgc
 gtcgcgttctacctgatcttttccgcagcagccgggcagggctcgctgaa
 ggccggagcgctgaccctgctattcgcttttacctatctgtgggtggccg
 ccaaccagttcctcgag
+
 
 Data files
 
@@ -253,7 +256,7 @@ See also
 
 Author(s)
 
-   Jon Ison (jison © ebi.ac.uk)
+   Jon Ison (jison (c) ebi.ac.uk)
    European Bioinformatics Institute, Wellcome Trust Genome Campus,
    Hinxton, Cambridge CB10 1SD, UK
 

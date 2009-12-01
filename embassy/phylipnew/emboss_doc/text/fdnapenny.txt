@@ -1,5 +1,4 @@
-
-                                 fdnapenny 
+                                  fdnapenny
 
 
 
@@ -22,20 +21,20 @@ Description
 
 Algorithm
 
-   DNAPENNY is a program that will find all of the most parsimonious
-   trees implied by your data when the nucleic acid sequence parsimony
-   criterion is employed. It does so not by examining all possible trees,
-   but by using the more sophisticated "branch and bound" algorithm, a
-   standard computer science search strategy first applied to
-   phylogenetic inference by Hendy and Penny (1982). (J. S. Farris
-   [personal communication, 1975] had also suggested that this strategy,
-   which is well-known in computer science, might be applied to
-   phylogenies, but he did not publish this suggestion).
+   DNAPENNY is a program that will find all of the most parsimonious trees
+   implied by your data when the nucleic acid sequence parsimony criterion
+   is employed. It does so not by examining all possible trees, but by
+   using the more sophisticated "branch and bound" algorithm, a standard
+   computer science search strategy first applied to phylogenetic
+   inference by Hendy and Penny (1982). (J. S. Farris [personal
+   communication, 1975] had also suggested that this strategy, which is
+   well-known in computer science, might be applied to phylogenies, but he
+   did not publish this suggestion).
 
    There is, however, a price to be paid for the certainty that one has
-   found all members of the set of most parsimonious trees. The problem
-   of finding these has been shown (Graham and Foulds, 1982; Day, 1983)
-   to be NP-complete, which is equivalent to saying that there is no fast
+   found all members of the set of most parsimonious trees. The problem of
+   finding these has been shown (Graham and Foulds, 1982; Day, 1983) to be
+   NP-complete, which is equivalent to saying that there is no fast
    algorithm that is guaranteed to solve the problem in all cases (for a
    discussion of NP-completeness, see the Scientific American article by
    Lewis and Papadimitriou, 1978). The result is that this program,
@@ -57,28 +56,28 @@ Algorithm
 
   The Algorithm
 
-   The search strategy used by DNAPENNY starts by making a tree
-   consisting of the first two species (the first three if the tree is to
-   be unrooted). Then it tries to add the next species in all possible
-   places (there are three of these). For each of the resulting trees it
-   evaluates the number of base substitutions. It adds the next species
-   to each of these, again in all possible spaces. If this process would
+   The search strategy used by DNAPENNY starts by making a tree consisting
+   of the first two species (the first three if the tree is to be
+   unrooted). Then it tries to add the next species in all possible places
+   (there are three of these). For each of the resulting trees it
+   evaluates the number of base substitutions. It adds the next species to
+   each of these, again in all possible spaces. If this process would
    continue it would simply generate all possible trees, of which there
    are a very large number even when the number of species is moderate
-   (34,459,425 with 10 species). Actually it does not do this, because
-   the trees are generated in a particular order and some of them are
-   never generated.
+   (34,459,425 with 10 species). Actually it does not do this, because the
+   trees are generated in a particular order and some of them are never
+   generated.
 
    This is because the order in which trees are generated is not quite as
-   implied above, but is a "depth-first search". This means that first
-   one adds the third species in the first possible place, then the
-   fourth species in its first possible place, then the fifth and so on
-   until the first possible tree has been produced. For each tree the
-   number of steps is evaluated. Then one "backtracks" by trying the
-   alternative placements of the last species. When these are exhausted
-   one tries the next placement of the next-to-last species. The order of
-   placement in a depth-first search is like this for a four-species case
-   (parentheses enclose monophyletic groups):
+   implied above, but is a "depth-first search". This means that first one
+   adds the third species in the first possible place, then the fourth
+   species in its first possible place, then the fifth and so on until the
+   first possible tree has been produced. For each tree the number of
+   steps is evaluated. Then one "backtracks" by trying the alternative
+   placements of the last species. When these are exhausted one tries the
+   next placement of the next-to-last species. The order of placement in a
+   depth-first search is like this for a four-species case (parentheses
+   enclose monophyletic groups):
 
      Make tree of first two species:     (A,B)
           Add C in first place:     ((A,B),C)
@@ -110,11 +109,11 @@ Algorithm
    is made as to how many steps will be added, at a minimum, as further
    species are added.
 
-   This is done by counting how many sites which are invariant in the
-   data up the most recent species added will ultimately show variation
-   when further species are added. Thus if 20 sites vary among species A,
-   B, and C and their root, and if tree ((A,C),B) requires 24 steps, then
-   if there are 8 more sites which will be seen to vary when species D is
+   This is done by counting how many sites which are invariant in the data
+   up the most recent species added will ultimately show variation when
+   further species are added. Thus if 20 sites vary among species A, B,
+   and C and their root, and if tree ((A,C),B) requires 24 steps, then if
+   there are 8 more sites which will be seen to vary when species D is
    added, we can immediately say that no matter how we add D, the
    resulting tree can have no less than 24 + 8 = 32 steps. The point of
    all this is that if a previously-found tree such as ((A,B),(C,D))
@@ -124,26 +123,26 @@ Algorithm
    avoid going down that particular branch any farther.
 
    The branch-and-bound algorithm thus allows us to find all most
-   parsimonious trees without generating all possible trees. How much of
-   a saving this is depends strongly on the data. For very clean (nearly
+   parsimonious trees without generating all possible trees. How much of a
+   saving this is depends strongly on the data. For very clean (nearly
    "Hennigian") data, it saves much time, but on very messy data it will
    still take a very long time.
 
-   The algorithm in the program differs from the one outlined here in
-   some essential details: it investigates possibilities in the order of
-   their apparent promise. This applies to the order of addition of
-   species, and to the places where they are added to the tree. After the
-   first two-species tree is constructed, the program tries adding each
-   of the remaining species in turn, each in the best possible place it
-   can find. Whichever of those species adds (at a minimum) the most
-   additional steps is taken to be the one to be added next to the tree.
-   When it is added, it is added in turn to places which cause the fewest
-   additional steps to be added. This sounds a bit complex, but it is
-   done with the intention of eliminating regions of the search of all
-   possible trees as soon as possible, and lowering the bound on tree
-   length as quickly as possible. This process of evaluating which
-   species to add in which order goes on the first time the search makes
-   a tree; thereafter it uses that order.
+   The algorithm in the program differs from the one outlined here in some
+   essential details: it investigates possibilities in the order of their
+   apparent promise. This applies to the order of addition of species, and
+   to the places where they are added to the tree. After the first
+   two-species tree is constructed, the program tries adding each of the
+   remaining species in turn, each in the best possible place it can find.
+   Whichever of those species adds (at a minimum) the most additional
+   steps is taken to be the one to be added next to the tree. When it is
+   added, it is added in turn to places which cause the fewest additional
+   steps to be added. This sounds a bit complex, but it is done with the
+   intention of eliminating regions of the search of all possible trees as
+   soon as possible, and lowering the bound on tree length as quickly as
+   possible. This process of evaluating which species to add in which
+   order goes on the first time the search makes a tree; thereafter it
+   uses that order.
 
    The program keeps a list of all the most parsimonious trees found so
    far. Whenever it finds one that has fewer losses than these, it clears
@@ -158,48 +157,47 @@ Algorithm
 
   Controlling Run Times
 
-   Among the quantities available to be set from the menu of DNAPENNY,
-   two (howoften and howmany) are of particular importance. As DNAPENNY
-   goes along it will keep count of how many trees it has examined.
-   Suppose that howoften is 100 and howmany is 1000, the default
-   settings. Every time 100 trees have been examined, DNAPENNY will print
-   out a line saying how many multiples of 100 trees have now been
-   examined, how many steps the most parsimonious tree found so far has,
-   how many trees of with that number of steps have been found, and a
-   very rough estimate of what fraction of all trees have been looked at
-   so far. When the number of these multiples printed out reaches the
-   number howmany (say 1000), the whole algorithm aborts and prints out
-   that it has not found all most parsimonious trees, but prints out what
-   is has got so far anyway. These trees need not be any of the most
-   parsimonious trees: they are simply the most parsimonious ones found
-   so far. By setting the product (howoften times howmany) large you can
-   make the algorithm less likely to abort, but then you risk getting
-   bogged down in a gigantic computation. You should adjust these
-   constants so that the program cannot go beyond examining the number of
-   trees you are reasonably willing to pay for (or wait for). In their
-   initial setting the program will abort after looking at 100,000 trees.
-   Obviously you may want to adjust howoften in order to get more or
-   fewer lines of intermediate notice of how many trees have been looked
-   at so far. Of course, in small cases you may never even reach the
-   first multiple of howoften, and nothing will be printed out except
-   some headings and then the final trees. The indication of the
-   approximate percentage of trees searched so far will be helpful in
-   judging how much farther you would have to go to get the full search.
-   Actually, since that fraction is the fraction of the set of all
-   possible trees searched or ruled out so far, and since the search
-   becomes progressively more efficient, the approximate fraction printed
-   out will usually be an underestimate of how far along the program is,
-   sometimes a serious underestimate.
+   Among the quantities available to be set from the menu of DNAPENNY, two
+   (howoften and howmany) are of particular importance. As DNAPENNY goes
+   along it will keep count of how many trees it has examined. Suppose
+   that howoften is 100 and howmany is 1000, the default settings. Every
+   time 100 trees have been examined, DNAPENNY will print out a line
+   saying how many multiples of 100 trees have now been examined, how many
+   steps the most parsimonious tree found so far has, how many trees of
+   with that number of steps have been found, and a very rough estimate of
+   what fraction of all trees have been looked at so far. When the number
+   of these multiples printed out reaches the number howmany (say 1000),
+   the whole algorithm aborts and prints out that it has not found all
+   most parsimonious trees, but prints out what is has got so far anyway.
+   These trees need not be any of the most parsimonious trees: they are
+   simply the most parsimonious ones found so far. By setting the product
+   (howoften times howmany) large you can make the algorithm less likely
+   to abort, but then you risk getting bogged down in a gigantic
+   computation. You should adjust these constants so that the program
+   cannot go beyond examining the number of trees you are reasonably
+   willing to pay for (or wait for). In their initial setting the program
+   will abort after looking at 100,000 trees. Obviously you may want to
+   adjust howoften in order to get more or fewer lines of intermediate
+   notice of how many trees have been looked at so far. Of course, in
+   small cases you may never even reach the first multiple of howoften,
+   and nothing will be printed out except some headings and then the final
+   trees. The indication of the approximate percentage of trees searched
+   so far will be helpful in judging how much farther you would have to go
+   to get the full search. Actually, since that fraction is the fraction
+   of the set of all possible trees searched or ruled out so far, and
+   since the search becomes progressively more efficient, the approximate
+   fraction printed out will usually be an underestimate of how far along
+   the program is, sometimes a serious underestimate.
 
    A constant at the beginning of the program that affects the result is
    "maxtrees", which controls the maximum number of trees that can be
    stored. Thus if maxtrees is 25, and 32 most parsimonious trees are
    found, only the first 25 of these are stored and printed out. If
-   maxtrees is increased, the program does not run any slower but
-   requires a little more intermediate storage space. I recommend that
-   maxtrees be kept as large as you can, provided you are willing to look
-   at an output with that many trees on it! Initially, maxtrees is set to
-   100 in the distribution copy.
+   maxtrees is increased, the program does not run any slower but requires
+   a little more intermediate storage space. I recommend that maxtrees be
+   kept as large as you can, provided you are willing to look at an output
+   with that many trees on it! Initially, maxtrees is set to 100 in the
+   distribution copy.
 
   Method and Options
 
@@ -208,11 +206,11 @@ Algorithm
    remainder of this document will be nearly identical to the DNAPARS
    document.
 
-   This program carries out unrooted parsimony (analogous to Wagner
-   trees) (Eck and Dayhoff, 1966; Kluge and Farris, 1969) on DNA
-   sequences. The method of Fitch (1971) is used to count the number of
-   changes of base needed on a given tree. The assumptions of this method
-   are exactly analogous to those of DNAPARS:
+   This program carries out unrooted parsimony (analogous to Wagner trees)
+   (Eck and Dayhoff, 1966; Kluge and Farris, 1969) on DNA sequences. The
+   method of Fitch (1971) is used to count the number of changes of base
+   needed on a given tree. The assumptions of this method are exactly
+   analogous to those of DNAPARS:
     1. Each site evolves independently.
     2. Different lineages evolve independently.
     3. The probability of a base substitution at a given site is small
@@ -230,8 +228,8 @@ Algorithm
    methods has been documented in a series of papers of mine: (1973a,
    1978b, 1979, 1981b, 1983b, 1988b). For an opposing view arguing that
    the parsimony methods make no substantive assumptions such as these,
-   see the papers by Farris (1983) and Sober (1983a, 1983b), but also
-   read the exchange between Felsenstein and Sober (1986). Change from an
+   see the papers by Farris (1983) and Sober (1983a, 1983b), but also read
+   the exchange between Felsenstein and Sober (1986). Change from an
    occupied site to a deletion is counted as one change. Reversion from a
    deletion to an occupied site is allowed and is also counted as one
    change. Note that this in effect assumes that a deletion N bases long
@@ -242,10 +240,10 @@ Usage
    Here is a sample session with fdnapenny
 
 
-% fdnapenny 
+% fdnapenny
 Penny algorithm for DNA
 Input (aligned) nucleotide sequence set(s): dnapenny.dat
-Phylip dnapenny program output file [dnapenny.fdnapenny]: 
+Phylip dnapenny program output file [dnapenny.fdnapenny]:
 
 justweights: false
 numwts: 0
@@ -264,6 +262,7 @@ of  100):      found so far     found so far       so far
 Output written to file "dnapenny.fdnapenny"
 
 Trees also written onto file "dnapenny.treefile"
+
 
 
    Go to the input files for this example
@@ -342,6 +341,7 @@ Version: EMBOSS:6.1.0
    -die                boolean    Report dying program messages
    -version            boolean    Report version number and exit
 
+
 Input file format
 
    fdnapenny reads any normal sequence USAs
@@ -377,11 +377,11 @@ Output file format
    present. If option 6 is left in its default state the trees found will
    be written to a tree file, so that they are available to be used in
    other programs. If the program finds multiple trees tied for best, all
-   of these are written out onto the output tree file. Each is followed
-   by a numerical weight in square brackets (such as [0.25000]). This is
-   needed when we use the trees to make a consensus tree of the results
-   of bootstrapping or jackknifing, to avoid overrepresenting replicates
-   that find many tied trees.
+   of these are written out onto the output tree file. Each is followed by
+   a numerical weight in square brackets (such as [0.25000]). This is
+   needed when we use the trees to make a consensus tree of the results of
+   bootstrapping or jackknifing, to avoid overrepresenting replicates that
+   find many tied trees.
 
   Output files for usage example
 
@@ -490,6 +490,7 @@ requires a total of              8.000
                     +--Gamma1
 
   remember: this is an unrooted tree!
+
 
 
   File: dnapenny.treefile
