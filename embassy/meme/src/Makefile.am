@@ -2,8 +2,6 @@
 
 SUBDIRS = INCLUDE
 
-lib_LTLIBRARIES = libmeme.la
-
 if ISCYGWIN
 CYGWIN_LDFLAGS = -Wl,--add-stdcall-alias -Wl,--export-all-symbols \
 -Wl,--enable-auto-import
@@ -20,8 +18,6 @@ CYGWIN_LDMEME = -L${embprefix}/lib -lnucleus -lacd -lajaxdb -lensembl \
 endif
 endif
 
-bin_PROGRAMS = omeme
-
 if LOCALLINK
 INCLUDES = -IINCLUDE \
 	-I../../../nucleus -I../../../ajax/pcre \
@@ -37,7 +33,7 @@ endif
 if ISSHARED
 if ISAIXIA64
 if LOCALLINK
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs \
+AIX_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs \
 -L../../../ajax/pcre/.libs -L../../../ajax/expat/.libs \
 -L../../../ajax/zlib/.libs -L../../../ajax/core/.libs \
 -L../../../ajax/graphics/.libs -L../../../ajax/ensembl/.libs \
@@ -46,14 +42,18 @@ AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs \
 -lnucleus -lacd -lajaxdb -lensembl -lajaxg -lajax -leexpat -lepcre \
 -lezlib -leplplot
 else
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lnucleus -lacd \
+AIX_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lnucleus -lacd \
 -lajaxdb -lensembl -lajaxg -lajax -leexpat -lepcre -lezlib -leplplot
 endif
-else
-AM_CFLAGS =
 endif
 endif
 
+
+AM_CFLAGS =  $(AIX_CFLAGS) $(WARN_CFLAGS) $(DEVWARN_CFLAGS)
+
+lib_LTLIBRARIES = libmeme.la
+
+bin_PROGRAMS = omeme
 
 MEMESRC = clock.c display.c em.c init.c meme_util.c seq2theta.c \
 	shorten.c starts.c prior.c split.c align.c justlike.c \
@@ -64,7 +64,7 @@ MEMESRC = clock.c display.c em.c init.c meme_util.c seq2theta.c \
 
 libmeme_la_SOURCES = $(MEMESRC)
 
-VERS_INF = -version-info 2:1:1
+VERS_INF = -version-info 3:0:1
 
 if ISCYGWIN
 LINKFLAGS = $(VERS_INF) $(CYGWIN_LDFLAGS) $(CYGWIN_LDMEME)

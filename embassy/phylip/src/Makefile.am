@@ -1,10 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
 
-bin_PROGRAMS = eclique econsense econtml econtrast ednacomp ednadist ednainvar \
-ednaml ednamlk ednapars ednapenny edollop edolpenny efactor efitch egendist \
-ekitsch emix epenny eprotdist eprotpars erestml eseqboot eneighbor
-
 if LOCALLINK
 INCLUDES = -I../include -I../../../nucleus -I../../../ajax/pcre \
 	-I../../../ajax/expat -I../../../ajax/zlib \
@@ -18,7 +14,7 @@ endif
 if ISSHARED
 if ISAIXIA64
 if LOCALLINK
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs \
+AIX_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs \
 -L../../../ajax/pcre/.libs -L../../../ajax/expat/.libs \
 -L../../../ajax/zlib/.libs -L../../../ajax/core/.libs \
 -L../../../ajax/graphics/.libs -L../../../ajax/ensembl/.libs \
@@ -27,13 +23,17 @@ AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs \
 -lnucleus -lacd -lajaxdb -lensembl -lajaxg -lajax -leexpat -lepcre \
 -lezlib -leplplot
 else
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lnucleus -lacd \
+AIX_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lnucleus -lacd \
 -lajaxdb -lensembl -lajaxg -lajax -leexpat -lepcre -lezlib -leplplot
 endif
-else
-AM_CFLAGS =
 endif
 endif
+
+AM_CFLAGS =  $(AIX_CFLAGS) $(WARN_CFLAGS) $(DEVWARN_CFLAGS)
+
+bin_PROGRAMS = eclique econsense econtml econtrast ednacomp ednadist ednainvar \
+ednaml ednamlk ednapars ednapenny edollop edolpenny efactor efitch egendist \
+ekitsch emix epenny eprotdist eprotpars erestml eseqboot eneighbor
 
 eclique_SOURCES = clique.c
 econsense_SOURCES = consense.c

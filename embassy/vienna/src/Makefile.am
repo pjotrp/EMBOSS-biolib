@@ -1,7 +1,5 @@
 ## Process this file with automake to produce Makefile.in
 
-lib_LTLIBRARIES = libviennarna.la
-
 if ISCYGWIN
 CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import
 if LOCALLINK
@@ -17,11 +15,6 @@ CYGWIN_LDVIENNA = -L${embprefix}/lib -lnucleus -lacd -lajaxdb -lensembl \
 endif
 endif
 
-bin_PROGRAMS = vrnaalifold vrnacofoldpf vrnaevalpair vrnainverse \
-	vrnaalifoldpf vrnadistance vrnafold vrnalfold \
-	vrnacofold vrnaduplex vrnafoldpf vrnaplot \
-	vrnacofoldconc vrnaeval vrnaheat vrnasubopt
-
 if LOCALLINK
 INCLUDES = -I../H -I../../../nucleus -I../../../ajax/pcre \
 	-I../../../ajax/expat -I../../../ajax/zlib \
@@ -35,7 +28,7 @@ endif
 if ISSHARED
 if ISAIXIA64
 if LOCALLINK
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs \
+AIX_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs \
 -L../../../ajax/pcre/.libs -L../../../ajax/expat/.libs \
 -L../../../ajax/zlib/.libs -L../../../ajax/core/.libs \
 -L../../../ajax/graphics/.libs -L../../../ajax/ensembl/.libs \
@@ -44,14 +37,21 @@ AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs \
 -lnucleus -lacd -lajaxdb -lensembl -lajaxg -lajax -leexpat -lepcre \
 -lezlib -leplplot
 else
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lnucleus -lacd \
+AIX_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lnucleus -lacd \
 -lajaxdb -lensembl -lajaxg -lajax -leexpat -lepcre -lezlib -leplplot
 endif
-else
-AM_CFLAGS =
 endif
 endif
 
+
+AM_CFLAGS =  $(AIX_CFLAGS) $(WARN_CFLAGS) $(DEVWARN_CFLAGS)
+
+lib_LTLIBRARIES = libviennarna.la
+
+bin_PROGRAMS = vrnaalifold vrnacofoldpf vrnaevalpair vrnainverse \
+	vrnaalifoldpf vrnadistance vrnafold vrnalfold \
+	vrnacofold vrnaduplex vrnafoldpf vrnaplot \
+	vrnacofoldconc vrnaeval vrnaheat vrnasubopt
 
 VIENNALIBSRC = dist_vars.c fold_vars.c part_func.c eread_epars.c \
         treedist.c energy_par.c inverse.c ProfileDist.c RNAstruct.c utils.c \

@@ -31,7 +31,8 @@ pkgdata_DATA = aaindexextract.acd abiview.acd acdc.acd acdlog.acd \
 	matcher.acd megamerger.acd \
 	merger.acd msbar.acd mwcontam.acd mwfilter.acd
 
-pkgdata2_DATA = needle.acd newcoils.acd newcpgreport.acd newcpgseek.acd \
+pkgdata2_DATA = needle.acd needleall.acd \
+	newcoils.acd newcpgreport.acd newcpgseek.acd \
 	newseq.acd nohtml.acd noreturn.acd nospace.acd notab.acd \
 	notseq.acd nthseq.acd nthseqset.acd \
 	octanol.acd oddcomp.acd origsplitter.acd origunion.acd \

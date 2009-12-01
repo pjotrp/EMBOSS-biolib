@@ -4,9 +4,11 @@ lib_LTLIBRARIES = libnucleus.la
 
 if ISSHARED
 if ISAIXIA64
-AM_CFLAGS = -Wl,-G -lm
+AIX_CFLAGS = -Wl,-G -lm
 endif
 endif
+
+AM_CFLAGS = $(AIX_CFLAGS) $(WARN_CFLAGS) $(DEVWARN_CFLAGS)
 
 if ISCYGWIN
 CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias \

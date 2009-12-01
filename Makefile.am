@@ -1,5 +1,8 @@
 ## Makefile.am for EMBOSS
 ## Process this file with automake to produce Makefile.in in all directories.
+
+ACLOCAL_AMFLAGS = -I m4
+
 AUTOMAKE_OPTIONS = gnits
 
 SUBDIRS = plplot ajax nucleus emboss test doc jemboss

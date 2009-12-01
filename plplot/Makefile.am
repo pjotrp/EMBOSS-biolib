@@ -8,15 +8,14 @@ if ISSHARED
 if ISAIXIA64
 
 if AMPNG
-AM_CFLAGS = -Wl,-G -lgd -lpng -lz -lX11 -lm
+TESTPNG_CFLAGS = -Wl,-G -lgd -lpng -lz -lX11 -lm
 else
-AM_CFLAGS = -Wl,-G -lX11
+TESTPNG_CFLAGS = -Wl,-G -lX11
+endif
+endif
 endif
 
-else
-AM_CFLAGS =
-endif
-endif
+AM_CFLAGS = $(TESTPNG_CFLAGS)
 
 if ISCYGWIN
 CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import

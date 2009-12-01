@@ -2,6 +2,7 @@
 
 lib_LTLIBRARIES = libajaxg.la
 
+AM_CFLAGS = $(WARN_CFLAGS) $(DEVWARN_CFLAGS)
 
 if ISCYGWIN
 CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import

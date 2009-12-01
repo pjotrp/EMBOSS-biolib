@@ -5,7 +5,7 @@ EXTRA_DIST = emboss.default.template
 
 if ISSHARED
 if ISAIXIA64
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../ajax/pcre/.libs \
+AIX_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../ajax/pcre/.libs \
 -L../ajax/expat/.libs -L../ajax/zlib/.libs -L../ajax/core/.libs \
 -L../ajax/graphics/.libs -L../ajax/ensembl/.libs -L../ajax/ajaxdb/.libs \
 -L../ajax/acd/.libs \
@@ -13,6 +13,7 @@ AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../ajax/pcre/.libs \
 endif
 endif
 
+AM_CFLAGS =  $(AIX_CFLAGS) $(WARN_CFLAGS) $(DEVWARN_CFLAGS)
 
 check_PROGRAMS = acdlog acdrelations acdxsd ajtest \
 complex corbatest ensembltest \
