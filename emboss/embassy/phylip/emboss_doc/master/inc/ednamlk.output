@@ -1,0 +1,72 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: ednamlk.outfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+Nucleic acid sequence
+   Maximum Likelihood method with molecular clock, version 3.57c
+
+
+
+Site category   Rate of change    Probability
+
+           1        1.000            0.400
+           2        3.200            0.600
+
+
+Expected length of a patch of sites having the same rate =    1.500
+
+Empirical Base Frequencies:
+
+   A       0.24615
+   C       0.29231
+   G       0.24615
+  T(U)     0.21538
+
+Transition/transversion ratio =   2.000000
+
+(Transition/transversion parameter =   1.523077)
+
+
+
+
+
+                                                           +--Delta     
+  +--------------------------------------------------------4  
+  !                                                        +--Epsilon   
+--3  
+  !                                             +-------------Gamma     
+  +---------------------------------------------2  
+                                                !          +--Alpha     
+                                                +----------1  
+                                                           +--Beta      
+
+
+Ln Likelihood =   -72.40499
+
+ Ancestor      Node      Node Time     Length
+ --------      ----      ---- ----     ------
+ root            3      
+   3             4         3.40036     3.40036
+   4          Delta        3.55871     0.15834
+   4          Epsilon      3.55871     0.15834
+   3             2         2.75249     2.75249
+   2          Gamma        3.55871     0.80621
+   2             1         3.38652     0.63403
+   1          Alpha        3.55871     0.17218
+   1          Beta         3.55871     0.17218
+
+
+Combination of categories that contributes the most to the likelihood:
+             2222221111 112
+</pre>
+</td></tr></table><p>
+<p><h3>File: ednamlk.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+((Delta:0.15834,Epsilon:0.15834):3.40036,(Gamma:0.80621,
+(Alpha:0.17218,Beta:0.17218):0.63403):2.75249);
+</pre>
+</td></tr></table><p>

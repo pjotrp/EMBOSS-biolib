@@ -1,0 +1,113 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: globino.ehmmsearch</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+hmmsearch - search a sequence database with a profile HMM
+HMMER 2.3.2 (Oct 2003)
+Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
+Freely distributed under the GNU General Public License (GPL)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+HMM file:                   ../ehmmcalibrate-ex-keep/globino.hmm [globins50]
+Sequence database:          ../../data/hmmnew/Artemia.fa
+per-sequence score cutoff:  &gt;= -1000000.0
+per-domain score cutoff:    &gt;= -1000000.0
+per-sequence Eval cutoff:   &lt;= 10        
+per-domain Eval cutoff:     &lt;=      1e+06
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query HMM:   globins50
+Accession:   [none]
+Description: [none]
+  [HMM has been calibrated; E-values are empirical estimates]
+
+Scores for complete sequences (score includes all domains):
+Sequence Description                                    Score    E-value  N 
+-------- -----------                                    -----    ------- ---
+S13421   S13421 GLOBIN - BRINE SHRIMP                   474.3   1.7e-143   9
+
+Parsed for domains:
+Sequence Domain  seq-f seq-t    hmm-f hmm-t      score  E-value
+-------- ------- ----- -----    ----- -----      -----  -------
+S13421     7/9     932  1075 ..     1   143 []    76.9  7.3e-24
+S13421     2/9     153   293 ..     1   143 []    63.7  6.8e-20
+S13421     3/9     307   450 ..     1   143 []    59.8  9.8e-19
+S13421     8/9    1089  1234 ..     1   143 []    57.6  4.5e-18
+S13421     9/9    1248  1390 ..     1   143 []    52.3  1.8e-16
+S13421     1/9       1   143 [.     1   143 []    51.2    4e-16
+S13421     4/9     464   607 ..     1   143 []    46.7  8.6e-15
+S13421     6/9     775   918 ..     1   143 []    42.2    2e-13
+S13421     5/9     623   762 ..     1   143 []    23.9  6.6e-08
+
+Alignments of top-scoring domains:
+S13421: domain 7 of 9, from 932 to 1075: score 76.9, E = 7.3e-24
+                   *-&gt;eekalvksvwgkveknveevGaeaLerllvvyPetkryFpkFkdLss
+                      +e a vk+ w+ v+ ++  vG  +++ l++ +P+ +++FpkF d+  
+      S13421   932    REVAVVKQTWNLVKPDLMGVGMRIFKSLFEAFPAYQAVFPKFSDVPL 978  
+
+                   adavkgsakvkahgkkVltalgdavkkldd...lkgalakLselHaqklr
+                    d++++++ v +h   V t+l++ ++ ld++ +l+   ++L+e H+  lr
+      S13421   979 -DKLEDTPAVGKHSISVTTKLDELIQTLDEpanLALLARQLGEDHIV-LR 1026 
+
+                   vdpenfkllsevllvvlaeklgkeftpevqaalekllaavataLaakYk&lt;
+                   v+   fk +++vl+  l++ lg+ f+  ++ +++k+++++++ +++  + 
+      S13421  1027 VNKPMFKSFGKVLVRLLENDLGQRFSSFASRSWHKAYDVIVEYIEEGLQ  1075 
+
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+                   lrvdpenfkllsevllvvlaeklgkeftpevqaalekllaavataLaakY
+                   l + + +f  +++++l v ++  ++++t     +l+k ++++  ++++  
+      S13421   868 LGMTRSHFDNFATAFLSVAQDIAPNQLTVLGRESLNKGFKLMHGVIEEGL 917  
+
+                   k&lt;-*
+                       
+      S13421   918 L    918  
+
+S13421: domain 5 of 9, from 623 to 762: score 23.9, E = 6.6e-08
+                   *-&gt;eekalvksvwgkveknveevGaeaLerllvvyPetkryFpkFkdLss
+                      +e  ++++++  v+    e+G+ ++++l+  +Pe k+ F+kF++ s 
+      S13421   623    KEIVALRQAFAAVTPRNVEIGKRVFAKLFAAHPEYKNLFKKFEQYSV 669  
+
+                   adavkgsakvkahgkkVltalgdavkkldd...lkgalakLselHaqklr
+                    +++  ++  + h + V++ ++ + k +dd+ +    l+kL++ H+++  
+      S13421   670 -EELPSTDAFHYHISLVMNRFSSIGKVIDDnvsFVYLLKKLGREHIKRGL 718  
+
+                   vdpenfkllsevllvvlaeklgkeftpevqaalekllaavataLaakYk&lt;
+                      ++ ++++  +     ++ ++e++      lek+l     ++++    
+      S13421   719 SRKQFDQFVELYI-----AEISSELSDTGRNGLEKVLTFATGVIEQGLF  762  
+
+                   -*
+                     
+      S13421     -    -    
+
+
+Histogram of all scores:
+score    obs    exp  (one = represents 1 sequences)
+-----    ---    ---
+  474      1      0|=                                                          
+
+
+% Statistical details of theoretical EVD fit:
+              mu =   -35.9593
+          lambda =     0.2675
+chi-sq statistic =     0.0000
+  P(chi-square)  =          0
+
+Total sequences searched: 1
+
+Whole sequence top hits:
+tophits_s report:
+     Total hits:           1
+     Satisfying E cutoff:  1
+     Total memory:         20K
+
+Domain top hits:
+tophits_s report:
+     Total hits:           9
+     Satisfying E cutoff:  9
+     Total memory:         26K
+</pre>
+</td></tr></table><p>
