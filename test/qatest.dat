@@ -3072,7 +3072,7 @@ FI x03487.noncoding
 FP /^>x03487_noncoding_501\ngtgagcgcgggc/
 FI x03487.coderet
 FC = 3
-FP /     1     1     2     1     5 X03487\n/
+FP /     1     1     6     1     8 X03487\n/
 //
 
 ID coderet-ex2
