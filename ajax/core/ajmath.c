@@ -671,20 +671,22 @@ ajuint ajMathPos(ajuint len, ajint ipos)
 
 ajuint ajMathPosI(ajuint len, ajuint imin, ajint ipos)
 {
-    ajuint jpos;
+    ajint jpos;
+    ajint jmin = imin;
+    ajint jlen = len;
 
     if(ipos < 0)
 	jpos = len + ipos;
     else
 	jpos = ipos;
 
-    if(jpos >= len)
+    if(jpos >= jlen)
 	jpos = len - 1;
 
-    if(jpos < imin)
+    if(jpos < jmin)
 	jpos = imin;
 
-    return jpos;
+    return (ajuint) jpos;
 }
 
 
