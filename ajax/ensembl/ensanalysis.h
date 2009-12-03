@@ -108,7 +108,8 @@ AjBool ensAnalysisSetParameters(EnsPAnalysis analysis, AjPStr parameters);
 
 AjBool ensAnalysisSetModuleName(EnsPAnalysis analysis, AjPStr modulename);
 
-AjBool ensAnalysisSetModuleVersion(EnsPAnalysis analysis, AjPStr moduleversion);
+AjBool ensAnalysisSetModuleVersion(EnsPAnalysis analysis,
+                                   AjPStr moduleversion);
 
 AjBool ensAnalysisSetGFFSource(EnsPAnalysis analysis, AjPStr gffsource);
 
