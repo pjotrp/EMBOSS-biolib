@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -384,7 +384,7 @@ ajuint ensAssemblyGetComponentSeqregionId(const EnsPAssembly assembly)
 
 
 
-/* @func ensComponentGetAssembledStart *****************************************
+/* @func ensComponentGetAssembledStart ****************************************
 **
 ** Get the component Ensembl Sequence Region start element of an
 ** Ensembl Assembly.
