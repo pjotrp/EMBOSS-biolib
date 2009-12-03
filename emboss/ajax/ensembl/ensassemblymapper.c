@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -93,7 +93,7 @@ static AjBool assemblyMapperadaptorBuildCombinedMapper(
 **
 ** Functions for manipulating Ensembl Generic Assembly Mapper objects
 **
-** @cc Bio::EnsEMBL::Assemblymapper CVS Revision: 1.42
+** @cc Bio::EnsEMBL::AssemblyMapper CVS Revision: 1.42
 **
 ** @nam2rule Genericassemblymapper
 **
@@ -133,7 +133,7 @@ static AjBool assemblyMapperadaptorBuildCombinedMapper(
 **
 ** Default constructor for an Ensembl Generic Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Assemblymapper::new
+** @cc Bio::EnsEMBL::AssemblyMapper::new
 ** @param [r] ama [EnsPAssemblymapperadaptor] Ensembl Assembly Mapper Adaptor
 ** @param [u] asmcs [EnsPCoordsystem] Assembled Ensembl Coordinate System
 ** @param [u] cmpcs [EnsPCoordsystem] Component Ensembl Coordinate System
@@ -152,19 +152,18 @@ EnsPGenericassemblymapper ensGenericassemblymapperNew(
     
     EnsPGenericassemblymapper gam = NULL;
     
-    /*
-     ajDebug("ensGenericassemblymapperNew\n"
-	     "  ama %p\n"
-	     "  asmcs %p\n"
-	     "  cmpcs %p\n",
-	     ama,
-	     asmcs,
-	     cmpcs);
-     
-     ensCoordsystemTrace(asmcs, 1);
-     
-     ensCoordsystemTrace(cmpcs, 1);
-     */
+#if AJFALSE
+    ajDebug("ensGenericassemblymapperNew\n"
+            "  ama %p\n"
+            "  asmcs %p\n"
+            "  cmpcs %p\n",
+            ama,
+            asmcs,
+            cmpcs);
+    
+    ensCoordsystemTrace(asmcs, 1);
+    ensCoordsystemTrace(cmpcs, 1);
+#endif
     
     if(!ama)
 	return NULL;
@@ -256,7 +255,7 @@ EnsPGenericassemblymapper ensGenericassemblymapperNewRef(
 **
 ** Clear an Ensembl Generic Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Assemblymapper::flush
+** @cc Bio::EnsEMBL::AssemblyMapper::flush
 ** @param [u] gam [EnsPGenericassemblymapper] Ensembl Generic Assembly Mapper
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -273,11 +272,11 @@ AjBool ensGenericassemblymapperClear(EnsPGenericassemblymapper gam)
     register ajint i = 0;
     register ajint j = 0;
     
-    /*
-     ajDebug("ensGenericassemblymapperClear\n"
-	     "  gam %p\n",
-	     gam);
-     */
+#if AJFALSE
+    ajDebug("ensGenericassemblymapperClear\n"
+            "  gam %p\n",
+            gam);
+#endif
     
     if(!gam)
 	return ajFalse;
@@ -285,10 +284,10 @@ AjBool ensGenericassemblymapperClear(EnsPGenericassemblymapper gam)
     ajTableToarrayKeysValues(gam->AsmRegister, &keyarray1, &valarray1);
     
     /*
-     ** Free the Assembled Sequence Region identifiers and the second-level
-     ** AJAX Tables from the first-level Table. The first-level Table is not
-     ** deleted here but in the ensGenericassemblymapperDel function.
-     */
+    ** Free the Assembled Sequence Region identifiers and the second-level
+    ** AJAX Tables from the first-level Table. The first-level Table is not
+    ** deleted here but in the ensGenericassemblymapperDel function.
+    */
     
     for(i = 0; keyarray1[i]; i++)
     {
@@ -298,9 +297,9 @@ AjBool ensGenericassemblymapperClear(EnsPGenericassemblymapper gam)
                                  &keyarray2, &valarray2);
 	
 	/*
-	 ** Free the Assembled Sequence Region chunk identifiers and the
-	 ** flags from the second-level Table.
-	 */
+        ** Free the Assembled Sequence Region chunk identifiers and the
+        ** flags from the second-level Table.
+        */
 	
 	for(j = 0; keyarray2[j]; j++)
 	{
@@ -347,7 +346,7 @@ AjBool ensGenericassemblymapperClear(EnsPGenericassemblymapper gam)
 ** Default destructor for an Ensembl Generic Assembly Mapper.
 **
 ** @param [d] Pgam [EnsPGenericassemblymapper*] Ensembl Generic Assembly Mapper
-**                                             address
+**                                              address
 **
 ** @return [void]
 ** @@
@@ -363,11 +362,11 @@ void ensGenericassemblymapperDel(EnsPGenericassemblymapper* Pgam)
     if(!*Pgam)
 	return;
     
-    /*
-     ajDebug("ensGenericassemblymapperDel\n"
-	     "  *Pgam %p\n",
-	     *Pgam);
-     */
+#if AJFALSE
+    ajDebug("ensGenericassemblymapperDel\n"
+            "  *Pgam %p\n",
+            *Pgam);
+#endif
 
     pthis = *Pgam;
     
@@ -436,7 +435,7 @@ void ensGenericassemblymapperDel(EnsPGenericassemblymapper* Pgam)
 ** Get the Ensembl Assembly Mapper Adaptor element of an
 ** Ensembl Generic Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Assemblymapper::adaptor
+** @cc Bio::EnsEMBL::AssemblyMapper::adaptor
 ** @param [r] gam [const EnsPGenericassemblymapper] Ensembl Generic
 **                                                  Assembly Mapper
 **
@@ -461,7 +460,7 @@ EnsPAssemblymapperadaptor ensGenericassemblymapperGetAdaptor(
 ** Get the assembled Ensembl Coordinate System element of an
 ** Ensembl Generic Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Assemblymapper::assembled_Coordsystem
+** @cc Bio::EnsEMBL::AssemblyMapper::assembled_CoordSystem
 ** @param [r] gam [const EnsPGenericassemblymapper] Ensembl Generic
 **                                                  Assembly Mapper
 **
@@ -486,7 +485,7 @@ const EnsPCoordsystem ensGenericassemblymapperGetAssembledCoordsystem(
 ** Get the component Ensembl Coordinate System element of an
 ** Ensembl Generic Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Assemblymapper::component_Coordsystem
+** @cc Bio::EnsEMBL::AssemblyMapper::component_CoordSystem
 ** @param [r] gam [const EnsPGenericassemblymapper] Ensembl Generic
 **                                                  Assembly Mapper
 **
@@ -510,7 +509,7 @@ const EnsPCoordsystem ensGenericassemblymapperGetComponentCoordsystem(
 **
 ** Get the Ensembl Mapper element of an Ensembl Generic Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Assemblymapper::mapper
+** @cc Bio::EnsEMBL::AssemblyMapper::mapper
 ** @param [r] gam [const EnsPGenericassemblymapper] Ensembl Generic
 **                                                  Assembly Mapper
 **
@@ -535,7 +534,7 @@ EnsPMapper ensGenericassemblymapperGetMapper(
 ** Get the maximum Ensembl Mapper Pair count element of an
 ** Ensembl Generic Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Assemblymapper::max_pair_count
+** @cc Bio::EnsEMBL::AssemblyMapper::max_pair_count
 ** @param [r] gam [const EnsPGenericassemblymapper] Ensembl Generic
 **                                                  Assembly Mapper
 **
@@ -582,7 +581,7 @@ ajuint ensGenericassemblymapperGetMaxPairCount(
 **
 ** Set the Adaptor element of an Ensembl Generic Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Assemblymapper::adaptor
+** @cc Bio::EnsEMBL::AssemblyMapper::adaptor
 ** @param [u] gam [EnsPGenericassemblymapper] Ensembl Generic Assembly Mapper
 ** @param [r] ama [EnsPAssemblymapperadaptor] Ensembl Assembly Mapper Adaptor
 **
@@ -612,7 +611,7 @@ AjBool ensGenericassemblymapperSetAdaptor(EnsPGenericassemblymapper gam,
 ** Set the maximum Ensembl Mapper Pair count element of an
 ** Ensembl Generic Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Assemblymapper::max_pair_count
+** @cc Bio::EnsEMBL::AssemblyMapper::max_pair_count
 ** @param [u] gam [EnsPGenericassemblymapper] Ensembl Generic Assembly Mapper
 ** @param [r] count [ajuint] Maximum Ensembl Mapper Pair count
 **
@@ -639,7 +638,7 @@ AjBool ensGenericassemblymapperSetMaxPairCount(EnsPGenericassemblymapper gam,
 ** Get the number of Ensembl Mapper Pairs stored in the Ensembl Mapper that is
 ** associated with an Ensembl Generic Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Assemblymapper::size
+** @cc Bio::EnsEMBL::AssemblyMapper::size
 ** @param [r] gam [const EnsPGenericassemblymapper] Ensembl Generic
 **                                                  Assembly Mapper
 **
@@ -663,7 +662,7 @@ ajuint ensGenericassemblymapperGetPairCount(const EnsPGenericassemblymapper gam)
 ** Register an Assembled Ensembl Sequence Region in an
 ** Ensembl Generic Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Assemblymapper::register_assembled
+** @cc Bio::EnsEMBL::AssemblyMapper::register_assembled
 ** @param [u] gam [EnsPGenericassemblymapper] Ensembl Generic Assembly Mapper
 ** @param [r] asmsrid [ajuint] Assembled Ensembl Sequence Region identifier
 ** @param [r] chunkid [ajuint] Chunk identifier
@@ -673,10 +672,10 @@ ajuint ensGenericassemblymapperGetPairCount(const EnsPGenericassemblymapper gam)
 ******************************************************************************/
 
 /*
- ** FIXME: The Perl API
- ** Bio::EnsEMBL::Assemblymapper::register_assembled method requires a
- ** sequence region identifier not a sequence region name as in the POD.
- */
+** FIXME: The Perl API
+** Bio::EnsEMBL::AssemblyMapper::register_assembled method requires a
+** sequence region identifier not a sequence region name as in the POD.
+*/
 
 AjBool ensGenericassemblymapperRegisterAssembled(EnsPGenericassemblymapper gam,
                                                  ajuint asmsrid,
@@ -689,15 +688,15 @@ AjBool ensGenericassemblymapperRegisterAssembled(EnsPGenericassemblymapper gam,
     
     AjPTable table = NULL;
     
-    /*
-     ajDebug("ensGenericassemblymapperRegisterAssembled\n"
-	     "  gam %p\n"
-	     "  asmsrid %u\n"
-	     "  chunkid %u\n",
-	     gam,
-	     asmsrid,
-	     chunkid);
-     */
+#if AJFALSE
+    ajDebug("ensGenericassemblymapperRegisterAssembled\n"
+            "  gam %p\n"
+            "  asmsrid %u\n"
+            "  chunkid %u\n",
+            gam,
+            asmsrid,
+            chunkid);
+#endif
     
     if(!gam)
 	return ajFalse;
@@ -745,7 +744,7 @@ AjBool ensGenericassemblymapperRegisterAssembled(EnsPGenericassemblymapper gam,
 ** Register a Component Ensembl Sequence Region in an
 ** Ensembl Generic Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Assemblymapper::register_component
+** @cc Bio::EnsEMBL::AssemblyMapper::register_component
 ** @param [u] gam [EnsPGenericassemblymapper] Ensembl Generic Assembly Mapper
 ** @param [r] cmpsrid [ajuint] Component Ensembl Sequence Region identifier
 **
@@ -754,10 +753,10 @@ AjBool ensGenericassemblymapperRegisterAssembled(EnsPGenericassemblymapper gam,
 ******************************************************************************/
 
 /*
- ** FIXME: The Perl API
- ** Bio::EnsEMBL::Assemblymapper::register_component method requires a
- ** sequence region identifier not a sequence region name as in the POD.
- */
+** FIXME: The Perl API
+** Bio::EnsEMBL::AssemblyMapper::register_component method requires a
+** sequence region identifier not a sequence region name as in the POD.
+*/
 
 AjBool ensGenericassemblymapperRegisterComponent(EnsPGenericassemblymapper gam,
                                                  ajuint cmpsrid)
@@ -767,13 +766,13 @@ AjBool ensGenericassemblymapperRegisterComponent(EnsPGenericassemblymapper gam,
     AjBool *Pold = NULL;
     AjBool *Pflag = NULL;
     
-    /*
-     ajDebug("ensGenericassemblymapperRegisterComponent\n"
-	     "  gam %p\n"
-	     "  cmpsrid %u\n",
-	     gam,
-	     cmpsrid);
-     */
+#if AJFALSE
+    ajDebug("ensGenericassemblymapperRegisterComponent\n"
+            "  gam %p\n"
+            "  cmpsrid %u\n",
+            gam,
+            cmpsrid);
+#endif
     
     if(!gam)
 	return ajFalse;
@@ -810,7 +809,7 @@ AjBool ensGenericassemblymapperRegisterComponent(EnsPGenericassemblymapper gam,
 ** Test whether an Ensembl Generic Assembly Mapper has an
 ** Ensembl Sequence Region in the cache of assembled sequence regions.
 **
-** @cc Bio::EnsEMBL::Assemblymapper::have_registered_assembled
+** @cc Bio::EnsEMBL::AssemblyMapper::have_registered_assembled
 ** @param [r] gam [const EnsPGenericassemblymapper] Ensembl Generic
 **                                                  Assembly Mapper
 ** @param [r] asmsrid [ajuint] Assembled Ensembl Sequence Region identifier
@@ -828,15 +827,15 @@ AjBool ensGenericassemblymapperHaveRegisteredAssembled(
 {
     AjPTable table = NULL;
     
-    /*
-     ajDebug("ensGenericassemblymapperHaveRegisteredAssembled\n"
-	     "  gam %p\n"
-	     "  asmsrid %u\n"
-	     "  chunkid %u\n",
-	     gam,
-	     asmsrid,
-	     chunkid);
-     */
+#if AJFALSE
+    ajDebug("ensGenericassemblymapperHaveRegisteredAssembled\n"
+            "  gam %p\n"
+            "  asmsrid %u\n"
+            "  chunkid %u\n",
+            gam,
+            asmsrid,
+            chunkid);
+#endif
     
     if(!gam)
 	return ajFalse;
@@ -845,9 +844,9 @@ AjBool ensGenericassemblymapperHaveRegisteredAssembled(
 	return ajFalse;
     
     /*
-     ** Get the second-level AJAX table keyed on chunk identifers from the
-     ** first-level table keyed on Ensembl Sequence Region identifiers.
-     */
+    ** Get the second-level AJAX table keyed on chunk identifers from the
+    ** first-level table keyed on Ensembl Sequence Region identifiers.
+    */
     
     table = (AjPTable) ajTableFetch(gam->AsmRegister, (const void *) &asmsrid);
     
@@ -870,7 +869,7 @@ AjBool ensGenericassemblymapperHaveRegisteredAssembled(
 ** Test whether an Ensembl Enseric Assembly Mapper has an
 ** Ensembl Sequence Region in the cache of component sequence regions.
 **
-** @cc Bio::EnsEMBL::Assemblymapper::have_registered_component
+** @cc Bio::EnsEMBL::AssemblyMapper::have_registered_component
 ** @param [r] gam [const EnsPGenericassemblymapper] Ensembl Generic
 **                                                  Assembly Mapper
 ** @param [r] cmpsrid [ajuint] Component Ensembl Sequence Region identifier
@@ -884,13 +883,13 @@ AjBool ensGenericassemblymapperHaveRegisteredComponent(
     const EnsPGenericassemblymapper gam,
     ajuint cmpsrid)
 {
-    /*
-     ajDebug("ensGenericassemblymapperHaveRegisteredComponent\n"
-	     "  gam %p\n"
-	     "  cmpsrid %u\n",
-	     gam,
-	     cmpsrid);
-     */
+#if AJFALSE
+    ajDebug("ensGenericassemblymapperHaveRegisteredComponent\n"
+            "  gam %p\n"
+            "  cmpsrid %u\n",
+            gam,
+            cmpsrid);
+#endif
     
     if(!gam)
 	return ajFalse;
@@ -915,7 +914,7 @@ AjBool ensGenericassemblymapperHaveRegisteredComponent(
 ** The caller is responsible for deleting the
 ** Ensembl Mapper Results before deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::Assemblymapper::map
+** @cc Bio::EnsEMBL::AssemblyMapper::map
 ** @param [r] gam [EnsPGenericassemblymapper] Ensembl Generic Assembly Mapper
 ** @param [r] sr [const EnsPSeqregion] Ensembl Sequence Region
 ** @param [r] srstart [ajint] Sequence Region Start coordinate
@@ -939,30 +938,23 @@ AjBool ensGenericassemblymapperMap(EnsPGenericassemblymapper gam,
     AjBool *Pflag = NULL;
     AjPStr type = NULL;
     
-    /* TODO: Remove this once it works!
-	EnsPDatabaseadaptor dba = NULL;
-    
-    EnsPSeqregion sr = NULL;
-    EnsPSeqregionadaptor sra = NULL;
-    */
-    
-    /*
-     ajDebug("ensGenericassemblymapperMap\n"
-	     "  gam %p\n"
-	     "  sr %p\n"
-	     "  srstart %d\n"
-	     "  srend %d\n"
-	     "  srstrand %d\n"
-	     "  mrs %p\n",
-	     gam,
-	     sr,
-	     srstart,
-	     srend,
-	     srstrand,
-	     mrs);
+#if AJFALSE
+    ajDebug("ensGenericassemblymapperMap\n"
+            "  gam %p\n"
+            "  sr %p\n"
+            "  srstart %d\n"
+            "  srend %d\n"
+            "  srstrand %d\n"
+            "  mrs %p\n",
+            gam,
+            sr,
+            srstart,
+            srend,
+            srstrand,
+            mrs);
      
-     ensSeqregionTrace(sr, 1);
-     */
+    ensSeqregionTrace(sr, 1);
+#endif
     
     if(!gam)
 	return ajFalse;
@@ -973,28 +965,13 @@ AjBool ensGenericassemblymapperMap(EnsPGenericassemblymapper gam,
     if(!mrs)
 	return ajFalse;
     
-    /* TODO: Remove this once it works!
-	dba = ensAssemblymapperadaptorGetDatabaseadaptor(gam->Adaptor);
-    
-    sra = ensRegistryGetSeqregionadaptor(dba);
-    
-    ensSeqregionadaptorFetchByName(sra, cs, srname, &sr);
-    */
-    
     srid = ensSeqregionGetIdentifier(sr);
     
-    /* TODO: Remove this once it works!
-	ensSeqregionDel(&sr);
-    */
-    
-    /* TODO: Remove this once it works!
-	if (ensCoordsystemMatch(cs, gam->CmpCoordsystem))
-	*/
     if(ensCoordsystemMatch(ensSeqregionGetCoordsystem(sr),
                            gam->CmpCoordsystem))
     {
 	Pflag = (AjBool *)
-	ajTableFetch(gam->CmpRegister, (const void *) &srid);
+            ajTableFetch(gam->CmpRegister, (const void *) &srid);
 	
 	if(!*Pflag)
 	    ensAssemblymapperadaptorRegisterComponent(gam->Adaptor,
@@ -1003,9 +980,6 @@ AjBool ensGenericassemblymapperMap(EnsPGenericassemblymapper gam,
 	
 	type = ajStrNewC("component");
     }
-    /* TODO: Remove this once it works!
-	else if (ensCoordsystemMatch(cs, gam->AsmCoordsystem))
-	*/
     else if (ensCoordsystemMatch(ensSeqregionGetCoordsystem(sr),
 				 gam->AsmCoordsystem))
     {
@@ -1049,7 +1023,7 @@ AjBool ensGenericassemblymapperMap(EnsPGenericassemblymapper gam,
 ** The caller is responsible for deleting the
 ** Ensembl Mapper Results before deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::Assemblymapper::fastmap
+** @cc Bio::EnsEMBL::AssemblyMapper::fastmap
 ** @param [r] gam [EnsPGenericassemblymapper] Ensembl Generic Assembly Mapper
 ** @param [r] sr [const EnsPSeqregion] Ensembl Sequence Region
 ** @param [r] srstart [ajint] Sequence Region Start coordinate
@@ -1074,28 +1048,21 @@ AjBool ensGenericassemblymapperFastMap(EnsPGenericassemblymapper gam,
     
     AjPStr type = NULL;
     
-    /* TODO: Remove once this works.
-	EnsPDatabaseadaptor dba = NULL;
-    
-    EnsPSeqregion sr = NULL;
-    EnsPSeqregionadaptor sra = NULL;
-    */
-    
-    /*
-     ajDebug("ensGenericassemblymapperFastMap\n"
-	     "  gam %p\n"
-	     "  sr %p\n"
-	     "  srstart %d\n"
-	     "  srend %d\n"
-	     "  srstrand %d\n"
-	     "  mrs %p\n",
-	     gam,
-	     sr,
-	     srstart,
-	     srend,
-	     srstrand,
-	     mrs);
-     */
+#if AJFALSE
+    ajDebug("ensGenericassemblymapperFastMap\n"
+            "  gam %p\n"
+            "  sr %p\n"
+            "  srstart %d\n"
+            "  srend %d\n"
+            "  srstrand %d\n"
+            "  mrs %p\n",
+            gam,
+            sr,
+            srstart,
+            srend,
+            srstrand,
+            mrs);
+#endif
     
     if(!gam)
 	return ajFalse;
@@ -1106,47 +1073,29 @@ AjBool ensGenericassemblymapperFastMap(EnsPGenericassemblymapper gam,
     if(!mrs)
 	return ajFalse;
     
-    /*
-     ** TODO: Remove this once it works!
-     dba = ensAssemblymapperadaptorGetDatabaseadaptor(gam->Adaptor);
-     
-     sra = ensRegistryGetSeqregionadaptor(dba);
-     
-     ensSeqregionadaptorFetchByName(sra, cs, srname, &sr);
-     */
-    
     srid = ensSeqregionGetIdentifier(sr);
-    
-    /*
-     ** TODO: Remove this once it works!
-     if (ensCoordsystemMatch(cs, gam->CmpCoordsystem))
-     */
     
     if(ensCoordsystemMatch(ensSeqregionGetCoordsystem(sr),
                            gam->CmpCoordsystem))
     {
 	Pflag = (AjBool *)
-	ajTableFetch(gam->CmpRegister, (const void *) &srid);
+            ajTableFetch(gam->CmpRegister, (const void *) &srid);
 	
 	if(!*Pflag)
 	    ensAssemblymapperadaptorRegisterComponent(gam->Adaptor, gam, srid);
 	
 	type = ajStrNewC("component");
     }
-    /*
-     ** TODO: Remove this once it works!
-     else if (ensCoordsystemMatch(cs, gam->AsmCoordsystem))
-     */
     else if (ensCoordsystemMatch(ensSeqregionGetCoordsystem(sr),
 				 gam->AsmCoordsystem))
     {
 	/*
-	 ** TODO: The following note from the Perl API is probably not relevant
-	 ** for the C implementation.
-	 **
-	 ** This can be probably be sped up some by only calling registered
-	 ** assembled if needed.
-	 */
+        ** TODO: The following note from the Perl API is probably not relevant
+        ** for the C implementation.
+        **
+        ** This can be probably be sped up some by only calling registered
+        ** assembled if needed.
+        */
 	
 	ensAssemblymapperadaptorRegisterAssembled(gam->Adaptor,
 						  gam,
@@ -1174,11 +1123,6 @@ AjBool ensGenericassemblymapperFastMap(EnsPGenericassemblymapper gam,
     
     ajStrDel(&type);
     
-    /*
-     ** TODO: Remove this once it works!
-     ensSeqregionDel(&sr);
-     */
-    
     return ajTrue;
 }
 
@@ -1190,7 +1134,7 @@ AjBool ensGenericassemblymapperFastMap(EnsPGenericassemblymapper gam,
 ** Register all mappings between two Ensembl Coordinate Systems in an
 ** Ensembl Generic Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Genericassemblymapper::register_all
+** @cc Bio::EnsEMBL::AssemblyMapper::register_all
 ** @param [r] gam [EnsPGenericassemblymapper] Ensembl Generic Assembly Mapper
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -1212,7 +1156,7 @@ AjBool ensGenericassemblymapperRegisterAll(EnsPGenericassemblymapper gam)
 **
 ** Functions for manipulating Ensembl Chained Assembly Mapper objects
 **
-** @cc Bio::EnsEMBL::Chainedassemblymapper CVS Revision: 1.14
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper CVS Revision: 1.14
 **
 ** @nam2rule Chainedassemblymapper
 **
@@ -1252,7 +1196,7 @@ AjBool ensGenericassemblymapperRegisterAll(EnsPGenericassemblymapper gam)
 **
 ** Default constructor for an Ensembl Chained Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Chainedassemblymapper::new
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper::new
 ** @param [r] ama [EnsPAssemblymapperadaptor] Ensembl Assembly Mapper Adaptor
 ** @param [r] srccs [EnsPCoordsystem] Source Ensembl Coordinate System
 ** @param [r] midcs [EnsPCoordsystem] Middle Ensembl Coordinate System
@@ -1274,23 +1218,21 @@ EnsPChainedassemblymapper ensChainedassemblymapperNew(
     
     EnsPChainedassemblymapper cam = NULL;
     
-    /*
-     ajDebug("ensChainedassemblymapperNew\n"
-	     "  ama %p\n"
-	     "  srccs %p\n"
-	     "  midcs %p\n"
-	     "  trgcs %p\n",
-	     ama,
-	     midcs,
-	     trgcs,
-	     trgcs);
-     
-     ensCoordsystemTrace(srccs, 1);
-     
-     ensCoordsystemTrace(midcs, 1);
-     
-     ensCoordsystemTrace(trgcs, 1);
-     */
+#if AJFALSE
+    ajDebug("ensChainedassemblymapperNew\n"
+            "  ama %p\n"
+            "  srccs %p\n"
+            "  midcs %p\n"
+            "  trgcs %p\n",
+            ama,
+            midcs,
+            trgcs,
+            trgcs);
+    
+    ensCoordsystemTrace(srccs, 1);
+    ensCoordsystemTrace(midcs, 1);
+    ensCoordsystemTrace(trgcs, 1);
+#endif
     
     if(!ama)
 	return NULL;
@@ -1298,12 +1240,12 @@ EnsPChainedassemblymapper ensChainedassemblymapperNew(
     if(!srccs)
 	return NULL;
     
-    /*
-     if (! midcs)
-     ajDebug("ensChainedassemblymapperNew got no middle Coordinate System. "
-	     "Multiple parts of a component map to more than one "
-	     "assembled part.\n");
-     */
+#if AJFALSE
+    if (! midcs)
+        ajDebug("ensChainedassemblymapperNew got no middle Coordinate System. "
+                "Multiple parts of a component map to more than one "
+                "assembled part.\n");
+#endif
     
     if(!trgcs)
 	return NULL;
@@ -1389,7 +1331,7 @@ EnsPChainedassemblymapper ensChainedassemblymapperNewRef(
 ** Clear all Ensembl Mappers and Ensembl Mapper Range Registries in an
 ** Ensembl Chained Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Chainedassemblymapper::flush
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper::flush
 ** @param [u] cam [EnsPChainedassemblymapper] Ensembl Chained Assembly Mapper
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -1398,11 +1340,11 @@ EnsPChainedassemblymapper ensChainedassemblymapperNewRef(
 
 AjBool ensChainedassemblymapperClear(EnsPChainedassemblymapper cam)
 {
-    /*
-     ajDebug("ensChainedassemblymapperClear\n"
-	     "  cam %p\n",
-	     cam);
-     */
+#if AJFALSE
+    ajDebug("ensChainedassemblymapperClear\n"
+            "  cam %p\n",
+            cam);
+#endif
     
     if(!cam)
 	return ajFalse;
@@ -1443,11 +1385,11 @@ void ensChainedassemblymapperDel(EnsPChainedassemblymapper *Pcam)
 
     pthis = *Pcam;
     
-    /*
-     ajDebug("ensChainedassemblymapperDel\n"
-	     "  *Pcam %p\n",
-	     *Pcam);
-     */
+#if AJFALSE
+    ajDebug("ensChainedassemblymapperDel\n"
+            "  *Pcam %p\n",
+            *Pcam);
+#endif
     
     pthis->Use--;
     
@@ -1526,7 +1468,7 @@ void ensChainedassemblymapperDel(EnsPChainedassemblymapper *Pcam)
 ** Get the Ensembl Assembly Mapper Adaptor element of an
 ** Ensembl Chained Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Chainedassemblymapper::adaptor
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper::adaptor
 ** @param [r] cam [const EnsPChainedassemblymapper] Ensembl Chained
 **                                                  Assembly Mapper
 **
@@ -1551,7 +1493,7 @@ EnsPAssemblymapperadaptor ensChainedassemblymapperGetAdaptor(
 ** Get the source Coordinate System element of an
 ** Ensembl Chained Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Chainedassemblymapper::first_Coordsystem
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper::first_CoordSystem
 ** @param [r] cam [const EnsPChainedassemblymapper] Ensembl Chained
 **                                                  Assembly Mapper
 **
@@ -1576,7 +1518,7 @@ const EnsPCoordsystem ensChainedassemblymapperGetSourceCoordsystem(
 ** Get the middle Coordinate System element of an
 ** Ensembl Chained Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Chainedassemblymapper::middle_Coordsystem
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper::middle_CoordSystem
 ** @param [r] cam [const EnsPChainedassemblymapper] Ensembl Chained
 **                                                  Assembly Mapper
 **
@@ -1601,7 +1543,7 @@ const EnsPCoordsystem ensChainedassemblymapperGetMiddleCoordsystem(
 ** Get the target Coordinate System element of an
 ** Ensembl Chained Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Chainedassemblymapper::last_Coordsystem
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper::last_CoordSystem
 ** @param [r] cam [const EnsPChainedassemblymapper] Ensembl Chained
 **                                                  Assembly Mapper
 **
@@ -1626,7 +1568,7 @@ const EnsPCoordsystem ensChainedassemblymapperGetTargetCoordsystem(
 ** Get the source to middle Ensembl Mapper element of an
 ** Ensembl Chained Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Chainedassemblymapper::first_middle_mapper
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper::first_middle_mapper
 ** @param [r] cam [const EnsPChainedassemblymapper] Ensembl Chained
 **                                                  Assembly Mapper
 **
@@ -1651,7 +1593,7 @@ EnsPMapper ensChainedassemblymapperGetSourceMiddleMapper(
 ** Get the target to middle Ensembl Mapper element of an
 ** Ensembl Chained Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Chainedassemblymapper::last_middle_mapper
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper::last_middle_mapper
 ** @param [r] cam [const EnsPChainedassemblymapper] Ensembl Chained
 **                                                  Assembly Mapper
 **
@@ -1676,7 +1618,7 @@ EnsPMapper ensChainedassemblymapperGetTargetMiddleMapper(
 ** Get the source to target Ensembl Mapper element of an
 ** Ensembl Chained Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Chainedassemblymapper::first_last_mapper
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper::first_last_mapper
 ** @param [r] cam [const EnsPChainedassemblymapper] Ensembl Chained
 **                                                  Assembly Mapper
 **
@@ -1701,7 +1643,7 @@ EnsPMapper ensChainedassemblymapperGetSourceTargetMapper(
 ** Get the source Ensembl Mapper Range Registry element of an
 ** Ensembl Chained Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Chainedassemblymapper::first_registry
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper::first_registry
 ** @param [r] cam [const EnsPChainedassemblymapper] Ensembl Chained
 **                                                  Assembly Mapper
 **
@@ -1727,7 +1669,7 @@ EnsPMapperrangeregistry ensChainedassemblymapperGetSourceRegistry(
 ** Get the target Ensembl Mapper Range Registry element of an
 ** Ensembl Chained Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Chainedassemblymapper::last_registry
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper::last_registry
 ** @param [r] cam [const EnsPChainedassemblymapper] Ensembl Chained
 **                                                  Assembly Mapper
 **
@@ -1758,7 +1700,7 @@ EnsPMapperrangeregistry ensChainedassemblymapperGetTargetRegistry(
 ** Get the maximum Ensembl Mapper Pair count element of an
 ** Ensembl Chained Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Chainedassemblymapper::max_pair_count
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper::max_pair_count
 ** @param [r] cam [const EnsPChainedassemblymapper] Ensembl Chained
 **                                                  Assembly Mapper
 **
@@ -1805,7 +1747,7 @@ ajuint ensChainedassemblymapperGetMaxPairCount(
 **
 ** Set the Adaptor element of an Ensembl Chained Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Chainedassemblymapper::adaptor
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper::adaptor
 ** @param [u] cam [EnsPChainedassemblymapper] Ensembl Chained Assembly Mapper
 ** @param [r] ama [EnsPAssemblymapperadaptor] Ensembl Assembly Mapper Adaptor
 **
@@ -1835,7 +1777,7 @@ AjBool ensChainedassemblymapperSetAdaptor(EnsPChainedassemblymapper cam,
 ** Set the maximum Ensembl Mapper Pair count element of an
 ** Ensembl Chained Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Chainedassemblymapper::max_pair_count
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper::max_pair_count
 ** @param [u] cam [EnsPChainedassemblymapper] Ensembl Chained Assembly Mapper
 ** @param [r] count [ajuint] Maximum Ensembl Mapper Pair count
 **
@@ -1869,7 +1811,7 @@ AjBool ensChainedassemblymapperSetMaxPairCount(EnsPChainedassemblymapper cam,
 ** Get the number of Ensembl Mapper Pairs in an
 ** Ensembl Chained Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Chainedassemblymapper::size
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper::size
 ** @param [r] cam [const EnsPChainedassemblymapper] Ensembl Chained
 **                                                  Assembly Mapper
 **
@@ -1877,7 +1819,8 @@ AjBool ensChainedassemblymapperSetMaxPairCount(EnsPChainedassemblymapper cam,
 ** @@
 ******************************************************************************/
 
-ajuint ensChainedassemblymapperGetPairCount(const EnsPChainedassemblymapper cam)
+ajuint ensChainedassemblymapperGetPairCount(
+    const EnsPChainedassemblymapper cam)
 {
     if(!cam)
 	return 0;
@@ -1898,8 +1841,8 @@ ajuint ensChainedassemblymapperGetPairCount(const EnsPChainedassemblymapper cam)
 ** The caller is responsible for deleting the
 ** Ensembl Mapper Results before deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::Chainedassemblymapper::map
-** @cc Bio::EnsEMBL::Chainedassemblymapper::fastmap
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper::map
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper::fastmap
 ** @param [r] cam [EnsPChainedassemblymapper] Ensembl Chained Assembly Mapper
 ** @param [r] sr [const EnsPSeqregion] Ensembl Sequence Region
 ** @param [r] srstart [ajint] Sequence Region Start coordinate
@@ -1934,42 +1877,31 @@ AjBool ensChainedassemblymapperMap(EnsPChainedassemblymapper cam,
     
     AjPStr type = NULL;
     
-    /*
-    ** TODO: Remove once this works.
-    **	EnsPDatabaseadaptor dba = NULL;
-    */
-    
     EnsPMapperrange mr = NULL;
     EnsPMapperrangeregistry registry = NULL;
     
-    /*
-    ** TODO: Remove once this works.
-    ** EnsPSeqregionadaptor sra = NULL;
-    */
-    
-    /*
-     ajDebug("ensChainedassemblymapperMap\n"
-	     "  cam %p\n"
-	     "  sr %p\n"
-	     "  srstart %d\n"
-	     "  srend %d\n"
-	     "  srstrand %d\n"
-	     "  optsr %p\n"
-	     "  fastmap '%B'\n"
-	     "  mrs %p\n",
-	     cam,
-	     sr,
-	     srstart,
-	     srend,
-	     srstrand,
-	     optsr,
-	     fastmap,
-	     mrs);
+#if AJFALSE
+    ajDebug("ensChainedassemblymapperMap\n"
+            "  cam %p\n"
+            "  sr %p\n"
+            "  srstart %d\n"
+            "  srend %d\n"
+            "  srstrand %d\n"
+            "  optsr %p\n"
+            "  fastmap '%B'\n"
+            "  mrs %p\n",
+            cam,
+            sr,
+            srstart,
+            srend,
+            srstrand,
+            optsr,
+            fastmap,
+            mrs);
      
-     ensSeqregionTrace(sr, 1);
-     
-     ensSeqregionTrace(optsr, 1);
-     */
+    ensSeqregionTrace(sr, 1);
+    ensSeqregionTrace(optsr, 1);
+#endif
     
     if(!cam)
 	return ajFalse;
@@ -1982,46 +1914,17 @@ AjBool ensChainedassemblymapperMap(EnsPChainedassemblymapper cam,
     
     isinsert = (srstart == (srend + 1));
     
-    /* TODO: Remove once this works.
-	dba = ensAssemblymapperadaptorGetDatabaseadaptor(cam->Adaptor);
-    
-    sra = ensRegistryGetSeqregionadaptor(dba);
-    
-    ensSeqregionadaptorFetchByName(sra, cs, srname, &sr);
-    
-    if(!sr)
-    {
-	ajWarn("ensChainedassemblymapperMap could not get "
-	       "Ensembl Sequence Region for name '%S' and "
-	       "Ensembl Coordinate System %p.\n",
-	       srname,
-	       cs);
-	
-	ensCoordsystemTrace(cs, 1);
-    }
-    */
-    
     srid = ensSeqregionGetIdentifier(sr);
     
     optsrid = ensSeqregionGetIdentifier(optsr);
     
-    /* TODO: Remove once this works.
-	ensSeqregionDel(&sr);
-    */
-    
-    /* TODO: Remove once this works.
-	if (ensCoordsystemMatch(cs, cam->SourceCoordsystem))
-	*/
     if(ensCoordsystemMatch(ensSeqregionGetCoordsystem(sr),
-			    cam->SourceCoordsystem))
+                           cam->SourceCoordsystem))
     {
 	type = ajStrNewC("source");
 	
 	registry = cam->SourceRegistry;
     }
-    /* TODO: Remove once this works.
-	else if (ensCoordsystemMatch(cs, cam->TargetCoordsystem))
-	*/
     else if (ensCoordsystemMatch(ensSeqregionGetCoordsystem(sr),
 				 cam->TargetCoordsystem))
     {
@@ -2039,13 +1942,13 @@ AjBool ensChainedassemblymapperMap(EnsPChainedassemblymapper cam,
     
     
     /*
-     ** The minimum area we want to register if registration is necessary is
-     ** about 1 Mb. Break requested ranges into chunks of 1 Mb and then
-     ** register this larger region if we have a registry miss.
-     **
-     ** Use bitwise shift for fast and easy integer multiplication and
-     ** division.
-     */
+    ** The minimum area we want to register if registration is necessary is
+    ** about 1 Mb. Break requested ranges into chunks of 1 Mb and then
+    ** register this larger region if we have a registry miss.
+    **
+    ** Use bitwise shift for fast and easy integer multiplication and
+    ** division.
+    */
     
     if (isinsert)
     {
@@ -2065,9 +1968,9 @@ AjBool ensChainedassemblymapperMap(EnsPChainedassemblymapper cam,
     }
     
     /*
-     ** Get a list of Mapper Ranges in the requested region that have not been
-     ** registered, and register them at the same time.
-     */
+    ** Get a list of Mapper Ranges in the requested region that have not been
+    ** registered, and register them at the same time.
+    */
     
     ranges = ajListNew();
     
@@ -2093,11 +1996,11 @@ AjBool ensChainedassemblymapperMap(EnsPChainedassemblymapper cam,
 	if(ensChainedassemblymapperGetPairCount(cam) > cam->MaxPairCount)
 	{
 	    /*
-	     ** If the Chained Assembly Mapper contains already more
-	     ** Ensembl Mapper Pairs than allowed, clear the internal cache and
-	     ** re-register the lot. The AJAX List of Ensembl Mapper Ranges
-	     ** needs clearing as well.
-	     */
+            ** If the Chained Assembly Mapper contains already more
+            ** Ensembl Mapper Pairs than allowed, clear the internal cache and
+            ** re-register the lot. The AJAX List of Ensembl Mapper Ranges
+            ** needs clearing as well.
+            */
 	    
 	    ensChainedassemblymapperClear(cam);
 	    
@@ -2148,9 +2051,9 @@ AjBool ensChainedassemblymapperMap(EnsPChainedassemblymapper cam,
 				mrs);
     
     /*
-     ** Delete all Ensembl Mapper Ranges from the AJAX List before
-     ** deleting the List.
-     */
+    ** Delete all Ensembl Mapper Ranges from the AJAX List before
+    ** deleting the List.
+    */
     
     while(ajListPop(ranges, (void **) &mr))
 	ensMapperrangeDel(&mr);
@@ -2170,7 +2073,7 @@ AjBool ensChainedassemblymapperMap(EnsPChainedassemblymapper cam,
 ** Register all mappings between two Ensembl Coordinate Systems in an
 ** Ensembl Chained Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Chainedassemblymapper::register_all
+** @cc Bio::EnsEMBL::ChainedAssemblyMapper::register_all
 ** @param [r] cam [EnsPChainedassemblymapper] Ensembl Chained Assembly Mapper
 **
 ** @return [AjBool] ajTrue on success, ajFalse otherwise
@@ -2192,7 +2095,7 @@ AjBool ensChainedassemblymapperRegisterAll(EnsPChainedassemblymapper cam)
 **
 ** Functions for manipulating Ensembl Top-Level Assembly Mapper objects
 **
-** @cc Bio::EnsEMBL::Toplevelassemblymapper CVS Revision: 1.7
+** @cc Bio::EnsEMBL::TopLevelAssemblyMapper CVS Revision: 1.7
 **
 ** @nam2rule Toplevelassemblymapper
 **
@@ -2232,7 +2135,7 @@ AjBool ensChainedassemblymapperRegisterAll(EnsPChainedassemblymapper cam)
 **
 ** Default constructor for an Ensembl TopLevel Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Toplevelassemblymapper::new
+** @cc Bio::EnsEMBL::TopLevelAssemblyMapper::new
 ** @param [r] ama [EnsPAssemblymapperadaptor] Ensembl Assembly Mapper Adaptor
 ** @param [u] cs1 [EnsPCoordsystem] Top-level Ensembl Coordinate System
 ** @param [u] cs2 [EnsPCoordsystem] Other Ensembl Coordinate System
@@ -2243,9 +2146,9 @@ AjBool ensChainedassemblymapperRegisterAll(EnsPChainedassemblymapper cam)
 ******************************************************************************/
 
 /*
- ** FIXME: The name section in the Perl API POD lists this as
- ** Bio::EnsEMBL::TopLevelMapper not Bio::EnsEMBL::Toplevelassemblymapper.
- */
+** FIXME: The name section in the Perl API POD lists this as
+** Bio::EnsEMBL::TopLevelMapper not Bio::EnsEMBL::TopLevelAssemblyMapper.
+*/
 
 EnsPToplevelassemblymapper ensToplevelassemblymapperNew(
     EnsPAssemblymapperadaptor ama,
@@ -2383,15 +2286,19 @@ void ensToplevelassemblymapperDel(EnsPToplevelassemblymapper* Ptlam)
     ensCoordsystemDel(&pthis->OtherCoordsystem);
     
     /*
-     ** Delete the Ensembl Coordinate System list elements before deleting
-     ** the AJAX List.
-     */
+    ** Delete the Ensembl Coordinate System list elements before deleting
+    ** the AJAX List.
+    */
     
     while (ajListPop(pthis->Coordsystems, (void **) &cs))
 	ensCoordsystemDel(&cs);
 	   
     ajListFree(&pthis->Coordsystems);
 	   
+    AJFREE(*Ptlam);
+    
+    *Ptlam = NULL;
+    
     return;
 }
 
@@ -2428,7 +2335,7 @@ void ensToplevelassemblymapperDel(EnsPToplevelassemblymapper* Ptlam)
 ** Get the Ensembl Assembly Mapper Adaptor element of an
 ** Ensembl Top-Level Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Toplevelassemblymapper::adaptor
+** @cc Bio::EnsEMBL::TopLevelAssemblyMapper::adaptor
 ** @param [r] tlam [const EnsPToplevelassemblymapper] Ensembl Top-Level
 **                                                    Assembly Mapper
 **
@@ -2454,7 +2361,7 @@ const EnsPAssemblymapperadaptor ensToplevelassemblymapperGetAdaptor(
 ** Get the Assembled Ensembl Coordinate System element of an
 ** Ensembl Top-Level Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Toplevelassemblymapper::assembled_Coordsystem
+** @cc Bio::EnsEMBL::TopLevelAssemblyMapper::assembled_CoordSystem
 ** @param [r] tlam [const EnsPToplevelassemblymapper] Ensembl Top-Level
 **                                                    Assembly Mapper
 **
@@ -2479,7 +2386,7 @@ const EnsPCoordsystem ensToplevelassemblymapperGetAssembledCoordsystem(
 ** Get the component Ensembl Coordinate System element of an
 ** Ensembl Top-Level Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::Toplevelassemblymapper::component_Coordsystem
+** @cc Bio::EnsEMBL::TopLevelAssemblyMapper::component_CoordSystem
 ** @param [r] tlam [const EnsPToplevelassemblymapper] Ensembl Top-Level
 **                                                    Assembly Mapper
 **
@@ -2560,8 +2467,8 @@ AjBool ensToplevelassemblymapperSetAdaptor(EnsPToplevelassemblymapper tlam,
 ** The caller is responsible for deleting the
 ** Ensembl Mapper Results before deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::Toplevelassemblymapper::map
-** @cc Bio::EnsEMBL::Toplevelassemblymapper::fastmap
+** @cc Bio::EnsEMBL::TopLevelAssemblyMapper::map
+** @cc Bio::EnsEMBL::TopLevelAssemblyMapper::fastmap
 ** @param [r] tlam [EnsPToplevelassemblymapper] Ensembl Top-Level
 **                                              Assembly Mapper
 ** @param [r] sr [const EnsPSeqregion] Sequence Region
@@ -2599,12 +2506,6 @@ AjBool ensToplevelassemblymapperMap(EnsPToplevelassemblymapper tlam,
     
     EnsPMapperresult mr = NULL;
     
-    /*
-     ** TODO: Remove this once it works!
-     EnsPSeqregion sr = NULL;
-     EnsPSeqregionadaptor sra = NULL;
-     */
-    
     if(!tlam)
 	return ajFalse;
     
@@ -2636,19 +2537,7 @@ AjBool ensToplevelassemblymapperMap(EnsPToplevelassemblymapper tlam,
     dba = ensAssemblymapperadaptorGetDatabaseadaptor(tlam->Adaptor);
     csa = ensRegistryGetCoordsystemadaptor(dba);
     
-    /*
-    ** TODO: Remove once it works!
-    ** sra = ensRegistryGetSeqregionadaptor(dba);
-    ** 
-    ** ensSeqregionadaptorFetchByName(sra, cs, srname, &sr);
-    */
-    
     srid = ensSeqregionGetIdentifier(sr);
-    
-    /*
-    ** TODO: Remove once it works!
-    ** ensSeqregionDel(&sr);
-    */
     
     iter = ajListIterNew(tlam->Coordsystems);
     
@@ -2662,23 +2551,23 @@ AjBool ensToplevelassemblymapperMap(EnsPToplevelassemblymapper tlam,
 	
 	/* Check if a mapping path even exists to this Coordinate System. */
 	
-	mappath =
-	    ensCoordsystemadaptorGetMappingPath(csa,
-						tstcs,
-						tlam->OtherCoordsystem);
+	mappath = ensCoordsystemadaptorGetMappingPath(
+            csa,
+            tstcs,
+            tlam->OtherCoordsystem);
 	
 	if(ajListGetLength(mappath))
 	{
 	    /*
-	     ** Try to map to this Coordinate System.
-	     ** If we get back any coordinates then it is our 'toplevel' that
-	     ** we were looking for.
-	     */
+            ** Try to map to this Coordinate System.
+            ** If we get back any coordinates then it is our 'toplevel' that
+            ** we were looking for.
+            */
 	    
-	    am =
-	    ensAssemblymapperadaptorFetchByCoordsystems(tlam->Adaptor,
-							tlam->OtherCoordsystem,
-							tstcs);
+	    am = ensAssemblymapperadaptorFetchByCoordsystems(
+                tlam->Adaptor,
+                tlam->OtherCoordsystem,
+                tstcs);
 	    
 	    if(fastmap)
 	    {
@@ -2742,9 +2631,9 @@ AjBool ensToplevelassemblymapperMap(EnsPToplevelassemblymapper tlam,
     }
     
     /*
-     ** The top-level coordinate system for the region requested *is* the
-     ** requested region.
-     */
+    ** The top-level coordinate system for the region requested *is* the
+    ** requested region.
+    */
     
     mr = MENSMAPPERCOORDINATENEW(srid,
 				 srstart,
@@ -2914,11 +2803,11 @@ void ensAssemblymapperDel(EnsPAssemblymapper* Pam)
 
     pthis = *Pam;
     
-    /*
-     ajDebug("ensAssemblymapperDel\n"
-	     "  *Pam %p\n",
-	     *Pam);
-     */
+#if AJFALSE
+    ajDebug("ensAssemblymapperDel\n"
+            "  *Pam %p\n",
+            *Pam);
+#endif
     
     pthis->Use--;
     
@@ -3137,7 +3026,7 @@ AjBool ensAssemblymapperMapToSeqregion(EnsPAssemblymapper am,
 **
 ** Functions for manipulating Ensembl Assembly Mapper Adaptor objects
 **
-** @cc Bio::EnsEMBL::DBSQL::Assemblymapperadaptor CVS Revision: 1.57
+** @cc Bio::EnsEMBL::DBSQL::AssemblyMapperAdaptor CVS Revision: 1.57
 **
 ** @nam2rule Assemblymapperadaptor
 **
@@ -3215,7 +3104,7 @@ static AjBool assemblyMapperadaptorHasMultipleMappings(
 ** Initialise Ensembl Assembly Mapper Adaptor-internal cache of
 ** Ensembl Sequence Regions that map to more than one location.
 **
-** @cc Bio::EnsEMBL::DBSQL::Assemblymapperadaptor::
+** @cc Bio::EnsEMBL::DBSQL::AssemblyMapperAdaptor::
 **     cache_seq_ids_with_mult_assemblys
 ** @param [u] ama [EnsPAssemblymapperadaptor] Ensembl Assembly Mapper Adaptor
 **
@@ -3240,11 +3129,11 @@ static AjBool assemblyMapperadaptorMultipleMappingsInit(
     
     EnsPDatabaseadaptor dba = NULL;
     
-    /*
-     ajDebug("assemblyMapperadaptorMultipleMappingsInit\n"
-	     "  ama %p\n",
-	     ama);
-     */
+#if AJFALSE
+    ajDebug("assemblyMapperadaptorMultipleMappingsInit\n"
+            "  ama %p\n",
+            ama);
+#endif
     
     if(!ama)
 	return ajFalse;
@@ -3256,27 +3145,25 @@ static AjBool assemblyMapperadaptorMultipleMappingsInit(
     
     dba = ensAssemblymapperadaptorGetDatabaseadaptor(ama);
     
-    statement = ajFmtStr("SELECT "
-			 "seq_region_attrib.seq_region_id "
-			 "FROM "
-			 "seq_region_attrib, "
-			 "attrib_type, "
-			 "seq_region, "
-			 "coord_system "
-			 "WHERE "
-			 "seq_region_attrib.attrib_type_id = "
-			 "attrib_type.attrib_type_id "
-			 "AND "
-			 "attrib_type.code = 'MultAssem' "
-			 "AND "
-			 "seq_region_attrib.seq_region_id = "
-			 "seq_region.seq_region_id "
-			 "AND "
-			 "seq_region.coord_system_id = "
-			 "coord_system.coord_system_id "
-			 "AND "
-			 "coord_system.species_id = %u",
-			 ensDatabaseadaptorGetIdentifier(dba));
+    statement = ajFmtStr(
+        "SELECT "
+        "seq_region_attrib.seq_region_id "
+        "FROM "
+        "seq_region_attrib, "
+        "attrib_type, "
+        "seq_region, "
+        "coord_system "
+        "WHERE "
+        "seq_region_attrib.attrib_type_id = attrib_type.attrib_type_id "
+        "AND "
+        "attrib_type.code = 'MultAssem' "
+        "AND "
+        "seq_region_attrib.seq_region_id = seq_region.seq_region_id "
+        "AND "
+        "seq_region.coord_system_id = coord_system.coord_system_id "
+        "AND "
+        "coord_system.species_id = %u",
+        ensDatabaseadaptorGetIdentifier(dba));
     
     sqls = ensDatabaseadaptorSqlstatementNew(ama->Adaptor, statement);
     
@@ -3329,7 +3216,7 @@ static AjBool assemblyMapperadaptorMultipleMappingsInit(
 **
 ** Default constructor for an Ensembl Assembly Mapper Adaptor.
 **
-** @cc Bio::EnsEMBL::DBSQL::Assemblymapperadaptor::new
+** @cc Bio::EnsEMBL::DBSQL::AssemblyMapperAdaptor::new
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
 ** @return [EnsPAssemblymapperadaptor] Ensembl Assembly Mapper Adaptor or NULL
@@ -3340,11 +3227,11 @@ EnsPAssemblymapperadaptor ensAssemblymapperadaptorNew(EnsPDatabaseadaptor dba)
 {
     EnsPAssemblymapperadaptor ama = NULL;
     
-    /*
-     ajDebug("ensAssemblymapperadaptorNew\n"
-	     "  dba %p\n",
-	     dba);
-     */
+#if AJFALSE
+    ajDebug("ensAssemblymapperadaptorNew\n"
+            "  dba %p\n",
+            dba);
+#endif
     
     if(!dba)
 	return NULL;
@@ -3406,11 +3293,11 @@ static AjBool assemblyMapperadaptorMultipleMappingsExit(
     if(!ama)
 	return ajFalse;
     
-    /*
-     ajDebug("ensAsemblyMapperadaptorMultipleMappingsExit\n"
-	     "  ama %p\n",
-	     ama);
-     */
+#if AJFALSE
+    ajDebug("ensAsemblyMapperadaptorMultipleMappingsExit\n"
+            "  ama %p\n",
+            ama);
+#endif
     
     /* Clear the Multiple Mappings AJAX Table. */
     
@@ -3457,11 +3344,11 @@ AjBool ensAssemblymapperadaptorCacheClear(EnsPAssemblymapperadaptor ama)
     if(!ama)
 	return ajFalse;
     
-    /*
-     ajDebug("ensAssemblymapperadaptorCacheClear\n"
-	     "  ama %p\n",
-	     ama);
-     */
+#if AJFALSE
+    ajDebug("ensAssemblymapperadaptorCacheClear\n"
+            "  ama %p\n",
+            ama);
+#endif
     
     /* Delete the Assembly Mapper Cache. */
     
@@ -3513,11 +3400,11 @@ void ensAssemblymapperadaptorDel(EnsPAssemblymapperadaptor* Pama)
 
     pthis = *Pama;
     
-    /*
-     ajDebug("ensAssemblymapperadaptorDel\n"
-	     "  *Pama %p\n",
-	     *Pama);
-     */
+#if AJFALSE
+    ajDebug("ensAssemblymapperadaptorDel\n"
+            "  *Pama %p\n",
+            *Pama);
+#endif
     
     /* Clear the Assembly Mapper AJAX Table. */
     
@@ -3620,7 +3507,7 @@ EnsPDatabaseadaptor ensAssemblymapperadaptorGetDatabaseadaptor(
 **
 ** The caller is responsible for deleting the Ensembl Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::DBSQL::Assemblymapperadaptor::fetch_by_Coordsystems
+** @cc Bio::EnsEMBL::DBSQL::AssemblyMapperAdaptor::fetch_by_CoordSystems
 ** @param [r] ama [EnsPAssemblymapperadaptor] Ensembl Assembly Mapper Adaptor
 ** @param [r] cs1 [EnsPCoordsystem] Ensembl Coordinate System
 ** @param [r] cs2 [EnsPCoordsystem] Ensembl Coordinate System
@@ -3653,19 +3540,18 @@ EnsPAssemblymapper ensAssemblymapperadaptorFetchByCoordsystems(
 
     EnsPCoordsystemadaptor csa = NULL;
     
-    /*
-     ajDebug("ensAssemblymapperadaptorFetchByCoordsystems\n"
-	     "  ama %p\n"
-	     "  cs1 %p\n"
-	     "  cs2 %p\n",
-	     ama,
-	     cs1,
-	     cs2);
-     
-     ensCoordsystemTrace(cs1, 1);
-     
-     ensCoordsystemTrace(cs2, 1);
-     */
+#if AJFALSE
+    ajDebug("ensAssemblymapperadaptorFetchByCoordsystems\n"
+            "  ama %p\n"
+            "  cs1 %p\n"
+            "  cs2 %p\n",
+            ama,
+            cs1,
+            cs2);
+    
+    ensCoordsystemTrace(cs1, 1);
+    ensCoordsystemTrace(cs2, 1);
+#endif
     
     if(!ama)
     {
@@ -3785,20 +3671,20 @@ EnsPAssemblymapper ensAssemblymapperadaptorFetchByCoordsystems(
 				      (EnsPToplevelassemblymapper) NULL);
 	    
 	    /*
-	     ** The Assembly Mapper reference counter is incremented with
-	     ** the return statement.
-	     */
+            ** The Assembly Mapper reference counter is incremented with
+            ** the return statement.
+            */
 	    
 	    ajTablePut(ama->AsmMapperCache,
 		       (void *) ajStrNewS(keystr),
 		       (void *) am);
 	    
 	    /*
-	     ** If you want multiple pieces on two Ensembl Sequence Regions
-	     ** to map to each other you need to make an 'assembly.mapping'
-	     ** entry in the 'meta' table of the Ensembl Core database, that
-	     ** is seperated with a '#' character instead of a '|' character.
-	     */
+            ** If you want multiple pieces on two Ensembl Sequence Regions
+            ** to map to each other you need to make an 'assembly.mapping'
+            ** entry in the 'meta' table of the Ensembl Core database, that
+            ** is seperated with a '#' character instead of a '|' character.
+            */
 	    
 	    ensGenericassemblymapperDel(&gam);
 	}
@@ -3894,8 +3780,8 @@ EnsPAssemblymapper ensAssemblymapperadaptorFetchByCoordsystems(
 ** The caller is responsible for deleting the
 ** AJAX Strings before deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::DBSQL::Assemblymapperadaptor::seq_ids_to_regions
-** @cc Bio::EnsEMBL::DBSQL::Assemblymapperadaptor::_seq_region_id_to_name
+** @cc Bio::EnsEMBL::DBSQL::AssemblyMapperAdaptor::seq_ids_to_regions
+** @cc Bio::EnsEMBL::DBSQL::AssemblyMapperAdaptor::_seq_region_id_to_name
 ** @param [r] ama [EnsPAssemblymapperadaptor] Ensembl Assembly Mapper Adaptor
 ** @param [r] identifiers [const AjPList] AJAX List of AJAX unsigned integers
 **                                        of Ensembl Sequence Region
@@ -3972,8 +3858,8 @@ AjBool ensAssemblymapperadaptorSeqregionIdsToNames(
 ** The caller is responsible for deleting the
 ** AJAX unsigned integers before deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::DBSQL::Assemblymapperadaptor::seq_regions_to_ids
-** @cc Bio::EnsEMBL::DBSQL::Assemblymapperadaptor::_seq_region_name_to_id
+** @cc Bio::EnsEMBL::DBSQL::AssemblyMapperAdaptor::seq_regions_to_ids
+** @cc Bio::EnsEMBL::DBSQL::AssemblyMapperAdaptor::_seq_region_name_to_id
 ** @param [r] ama [EnsPAssemblymapperadaptor] Ensembl Assembly Mapper Adaptor
 ** @param [r] cs [EnsPCoordsystem] Ensembl Coordinate System
 ** @param [r] names [const AjPList] AJAX List of AJAX Strings of
@@ -4059,7 +3945,7 @@ AjBool ensAssemblymapperadaptorSeqregionNamesToIds(
 ** Registers an assembled Ensembl Sequence Region in an
 ** Ensembl Generic Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::DBSQL::Assemblymapperadaptor::register_assembled
+** @cc Bio::EnsEMBL::DBSQL::AssemblyMapperAdaptor::register_assembled
 ** @param [r] ama [EnsPAssemblymapperadaptor] Ensembl Assembly Mapper Adaptor
 ** @param [u] gam [EnsPGenericassemblymapper] Ensembl Generic Assembly Mapper
 ** @param [r] asmsrid [ajuint] Assembled Ensembl Sequence Region identifier
@@ -4081,8 +3967,8 @@ AjBool ensAssemblymapperadaptorSeqregionNamesToIds(
 
 /*
 ** FIXME: The Perl API
-** Bio::EnsEMBL::DBSQL::AssenblyMapperadaptor::register_assembled method
-** expects a sequence region identifier not a sequence region name as in the
+** Bio::EnsEMBL::DBSQL::AssemblyMapperAdaptor::register_assembled method
+** expects a Sequence Region identifier not a Sequence Region name as in the
 ** documentation. This is only apparent from the SQL statement.
 ** The documentation should be updated and the variable name should probably
 ** change back to seq_region_id as it was in CVS revision 1.39.
@@ -4129,19 +4015,19 @@ AjBool ensAssemblymapperadaptorRegisterAssembled(
     
     EnsPMapperrange chunkregion = NULL;
     
-    /*
-     ajDebug("ensAssemblymapperadaptorRegisterAssembled\n"
-	     "  ama %p\n"
-	     "  gam %p\n"
-	     "  asmsrid %u\n"
-	     "  regstart %d\n"
-	     "  regend %d\n",
-	     ama,
-	     gam,
-	     asmsrid,
-	     regstart,
-	     regend);
-     */
+#if AJFALSE
+    ajDebug("ensAssemblymapperadaptorRegisterAssembled\n"
+            "  ama %p\n"
+            "  gam %p\n"
+            "  asmsrid %u\n"
+            "  regstart %d\n"
+            "  regend %d\n",
+            ama,
+            gam,
+            asmsrid,
+            regstart,
+            regend);
+#endif
     
     if(!ama)
 	return ajFalse;
@@ -4178,9 +4064,9 @@ AjBool ensAssemblymapperadaptorRegisterAssembled(
     chunkend = regend >> assemblyMapperChunkFactor;
     
     /*
-     ** Inserts have start == end + 1, on boundary condition start chunk
-     ** could be less than end chunk.
-     */
+    ** Inserts have start == end + 1, on boundary condition start chunk
+    ** could be less than end chunk.
+    */
     
     if (regstart == (regend + 1))
     {
@@ -4201,11 +4087,9 @@ AjBool ensAssemblymapperadaptorRegisterAssembled(
 	    {
 		/* This is the end of an unregistered region. */
 		
-		chunkregion =
-		ensMapperrangeNew(chunkregionstart <<
-				  assemblyMapperChunkFactor,
-				  ((chunkregionend + 1) <<
-				   assemblyMapperChunkFactor) - 1);
+		chunkregion = ensMapperrangeNew(
+                    chunkregionstart << assemblyMapperChunkFactor,
+                    ((chunkregionend + 1) << assemblyMapperChunkFactor) - 1);
 		
 		ajListPushAppend(chunkregions, (void *) chunkregion);
 		
@@ -4229,10 +4113,9 @@ AjBool ensAssemblymapperadaptorRegisterAssembled(
     
     if(chunkregionstart >= 0)
     {
-	chunkregion =
-	ensMapperrangeNew(chunkregionstart << assemblyMapperChunkFactor,
-			  ((chunkregionend + 1) << assemblyMapperChunkFactor) -
-			  1);
+	chunkregion = ensMapperrangeNew(
+            chunkregionstart << assemblyMapperChunkFactor,
+            ((chunkregionend + 1) << assemblyMapperChunkFactor) - 1);
 	
 	ajListPushAppend(chunkregions, (void *) chunkregion);
     }
@@ -4251,10 +4134,9 @@ AjBool ensAssemblymapperadaptorRegisterAssembled(
 	
 	/* After clearing the cache, everything needs to be re-registered. */
 	
-	chunkregion =
-	    ensMapperrangeNew(chunkstart << assemblyMapperChunkFactor,
-			      ((chunkend + 1) << assemblyMapperChunkFactor) -
-			      1);
+	chunkregion = ensMapperrangeNew(
+            chunkstart << assemblyMapperChunkFactor,
+            ((chunkend + 1) << assemblyMapperChunkFactor) - 1);
 	
 	ajListPushAppend(chunkregions, (void *) chunkregion);
 	
@@ -4263,42 +4145,42 @@ AjBool ensAssemblymapperadaptorRegisterAssembled(
     }
     
     /*
-     ** Retrieve the description of how the assembled region is made from
-     ** component regions for each of the continuous blocks of unregistered,
-     ** chunked regions.
-     */
+    ** Retrieve the description of how the assembled region is made from
+    ** component regions for each of the continuous blocks of unregistered,
+    ** chunked regions.
+    */
     
     sra = ensRegistryGetSeqregionadaptor(ama->Adaptor);
     
     while(ajListPop(chunkregions, (void **) &chunkregion))
     {
-	statement =
-	ajFmtStr("SELECT "
-		 "assembly.cmp_start, "
-		 "assembly.cmp_end, "
-		 "assembly.cmp_seq_region_id, "
-		 "seq_region.name, "
-		 "seq_region.length, "
-		 "assembly.ori, "
-		 "assembly.asm_start, "
-		 "assembly.asm_end "
-		 "FROM "
-		 "assembly, "
-		 "seq_region "
-		 "WHERE "
-		 "assembly.asm_seq_region_id = %u "
-		 "AND "
-		 "assembly.asm_end >= %d "
-		 "AND "
-		 "assembly.asm_start <= %d "
-		 "AND "
-		 "assembly.cmp_seq_region_id = seq_region.seq_region_id "
-		 "AND "
-		 "seq_region.coord_system_id = %u",
-		 asmsrid,
-		 ensMapperrangeGetStart(chunkregion),
-		 ensMapperrangeGetEnd(chunkregion),
-		 ensCoordsystemGetIdentifier(gam->CmpCoordsystem));
+	statement = ajFmtStr(
+            "SELECT "
+            "assembly.cmp_start, "
+            "assembly.cmp_end, "
+            "assembly.cmp_seq_region_id, "
+            "seq_region.name, "
+            "seq_region.length, "
+            "assembly.ori, "
+            "assembly.asm_start, "
+            "assembly.asm_end "
+            "FROM "
+            "assembly, "
+            "seq_region "
+            "WHERE "
+            "assembly.asm_seq_region_id = %u "
+            "AND "
+            "assembly.asm_end >= %d "
+            "AND "
+            "assembly.asm_start <= %d "
+            "AND "
+            "assembly.cmp_seq_region_id = seq_region.seq_region_id "
+            "AND "
+            "seq_region.coord_system_id = %u",
+            asmsrid,
+            ensMapperrangeGetStart(chunkregion),
+            ensMapperrangeGetEnd(chunkregion),
+            ensCoordsystemGetIdentifier(gam->CmpCoordsystem));
 	
 	sqls = ensDatabaseadaptorSqlstatementNew(ama->Adaptor, statement);
 	
@@ -4348,9 +4230,9 @@ AjBool ensAssemblymapperadaptorRegisterAssembled(
 					cmpsrend);
 		
 		/*
-		 ** Add the component Ensembl Sequence Region into the
-		 ** Ensembl Sequence Region Adaptor cache.
-		 */
+                ** Add the component Ensembl Sequence Region into the
+                ** Ensembl Sequence Region Adaptor cache.
+                */
 		
 		sr = ensSeqregionNew(sra,
 				     cmpsrid,
@@ -4388,7 +4270,7 @@ AjBool ensAssemblymapperadaptorRegisterAssembled(
 ** Registers a component Ensembl Sequence Region in an
 ** Ensembl Generic Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::DBSQL::Assemblymapperadaptor::register_component
+** @cc Bio::EnsEMBL::DBSQL::AssemblyMapperAdaptor::register_component
 ** @param [r] ama [EnsPAssemblymapperadaptor] Ensembl Assembly Mapper Adaptor
 ** @param [u] gam [EnsPGenericassemblymapper] Ensembl Generic Assembly Mapper
 ** @param [r] cmpsrid [ajuint] Component Ensembl Sequence Region identifier
@@ -4405,8 +4287,8 @@ AjBool ensAssemblymapperadaptorRegisterAssembled(
 
 /*
 ** FIXME: The Perl API
-** Bio::EnsEMBL::DBSQL::Assemblymapperadaptor::register_component method
-** expects a sequence region identifier not a sequence region name as in the
+** Bio::EnsEMBL::DBSQL::AssemblyMapperAdaptor::register_component method
+** expects a Sequence Region identifier not a Sequence Region name as in the
 ** documentation. This is only apparent from the SQL statement.
 ** The documentation should be updated and the variable name should probably
 ** change back to seq_region_id as it was in CVS revision 1.39.
@@ -4432,15 +4314,15 @@ AjBool ensAssemblymapperadaptorRegisterComponent(
     EnsPSeqregion sr = NULL;
     EnsPSeqregionadaptor sra = NULL;
     
-    /*
-     ajDebug("ensAssemblymapperadaptorRegisterComponent\n"
-	     "  ama %p\n"
-	     "  gam %p\n"
-	     "  cmpsrid %u\n",
-	     ama,
-	     gam,
-	     cmpsrid);
-     */
+#if AJFALSE
+    ajDebug("ensAssemblymapperadaptorRegisterComponent\n"
+            "  ama %p\n"
+            "  gam %p\n"
+            "  cmpsrid %u\n",
+            ama,
+            gam,
+            cmpsrid);
+#endif
     
     if(!ama)
 	return ajFalse;
@@ -4460,23 +4342,23 @@ AjBool ensAssemblymapperadaptorRegisterComponent(
     ** region makes up.
     */
     
-    statement =
-	ajFmtStr("SELECT "
-		 "assembly.asm_start, "
-		 "assembly.asm_end, "
-		 "assembly.asm_seq_region_id, "
-		 "seq_region.name, "
-		 "seq_region.length "
-		 "FROM "
-		 "assembly, seq_region "
-		 "WHERE "
-		 "assembly.cmp_seq_region_id = %u "
-		 "AND "
-		 "assembly.asm_seq_region_id = seq_region.seq_region_id "
-		 "AND "
-		 "seq_region.coord_system_id = %u",
-		 cmpsrid,
-		 ensCoordsystemGetIdentifier(gam->AsmCoordsystem));
+    statement = ajFmtStr(
+        "SELECT "
+        "assembly.asm_start, "
+        "assembly.asm_end, "
+        "assembly.asm_seq_region_id, "
+        "seq_region.name, "
+        "seq_region.length "
+        "FROM "
+        "assembly, seq_region "
+        "WHERE "
+        "assembly.cmp_seq_region_id = %u "
+        "AND "
+        "assembly.asm_seq_region_id = seq_region.seq_region_id "
+        "AND "
+        "seq_region.coord_system_id = %u",
+        cmpsrid,
+        ensCoordsystemGetIdentifier(gam->AsmCoordsystem));
     
     sqls = ensDatabaseadaptorSqlstatementNew(ama->Adaptor, statement);
     
@@ -4573,7 +4455,7 @@ AjBool ensAssemblymapperadaptorRegisterComponent(
 ** This will use a lot of memory but will be much more efficient when doing a
 ** lot of mapping which is spread over the entire genome.
 **
-** @cc Bio::EnsEMBL::DBSQL::Assemblymapperadaptor::register_all
+** @cc Bio::EnsEMBL::DBSQL::AssemblyMapperAdaptor::register_all
 ** @param [r] ama [EnsPAssemblymapperadaptor] Ensembl Assembly Mapper Adaptor
 ** @param [u] gam [EnsPGenericassemblymapper] Ensembl Generic Assembly Mapper
 **
@@ -4614,42 +4496,43 @@ AjBool ensAssemblymapperadaptorRegisterAll(EnsPAssemblymapperadaptor ama,
     EnsPSeqregion sr = NULL;
     EnsPSeqregionadaptor sra = NULL;
     
-    /*
-     ajDebug("ensAssemblymapperadaptorRegisterAll\n"
-	     "  ama %p\n"
-	     "  gam %p\n",
-	     ama,
-	     gam);
-     */
+#if AJFALSE
+    ajDebug("ensAssemblymapperadaptorRegisterAll\n"
+            "  ama %p\n"
+            "  gam %p\n",
+            ama,
+            gam);
+#endif
     
     dba = ensAssemblymapperadaptorGetDatabaseadaptor(gam->Adaptor);
     
     sra = ensRegistryGetSeqregionadaptor(dba);
     
-    sqlfmt = ajStrNewC("SELECT "
-		       "assembly.cmp_start, "
-		       "assembly.cmp_end, "
-		       "assembly.cmp_seq_region_id, "
-		       "cmp_sr.name, "
-		       "cmp_sr.length, "
-		       "assembly.ori, "
-		       "assembly.asm_start, "
-		       "assembly.asm_end, "
-		       "assembly.asm_seq_region_id, "
-		       "asm_sr.name, "
-		       "asm_sr.length "
-		       "FROM "
-		       "assembly, "
-		       "seq_region asm_sr, "
-		       "seq_region cmp_sr "
-		       "WHERE "
-		       "assembly.cmp_seq_region_id = cmp_sr.seq_region_id "
-		       "AND "
-		       "assembly.asm_seq_region_id = asm_sr.seq_region_id "
-		       "AND "
-		       "cmp_sr.coord_system_id = %u "
-		       "AND "
-		       "asm_sr.coord_system_id = %u");
+    sqlfmt = ajStrNewC(
+        "SELECT "
+        "assembly.cmp_start, "
+        "assembly.cmp_end, "
+        "assembly.cmp_seq_region_id, "
+        "cmp_sr.name, "
+        "cmp_sr.length, "
+        "assembly.ori, "
+        "assembly.asm_start, "
+        "assembly.asm_end, "
+        "assembly.asm_seq_region_id, "
+        "asm_sr.name, "
+        "asm_sr.length "
+        "FROM "
+        "assembly, "
+        "seq_region asm_sr, "
+        "seq_region cmp_sr "
+        "WHERE "
+        "assembly.cmp_seq_region_id = cmp_sr.seq_region_id "
+        "AND "
+        "assembly.asm_seq_region_id = asm_sr.seq_region_id "
+        "AND "
+        "cmp_sr.coord_system_id = %u "
+        "AND "
+        "asm_sr.coord_system_id = %u");
     
     statement = ajFmtStr(ajStrGetPtr(sqlfmt),
 			 ensCoordsystemGetIdentifier(gam->CmpCoordsystem),
@@ -4755,8 +4638,6 @@ AjBool ensAssemblymapperadaptorRegisterAll(EnsPAssemblymapperadaptor ama,
 	
 	ensSeqregionDel(&sr);
 	
-	/* Clean up. */
-	
 	ajStrDel(&asmsrname);
 	
 	ajStrDel(&cmpsrname);
@@ -4781,7 +4662,7 @@ AjBool ensAssemblymapperadaptorRegisterAll(EnsPAssemblymapperadaptor ama,
 ** Build a combined Mapper after both halves of an
 ** Ensembl Chained Assembly Mapper have been loaded.
 **
-** @cc Bio::EnsEMBL::DBSQL::Assemblymapperadaptor::_build_combined_mapper
+** @cc Bio::EnsEMBL::DBSQL::AssemblyMapperAdaptor::_build_combined_mapper
 ** @param [r] ama [EnsPAssemblymapperadaptor] Ensembl Assembly Mapper Adaptor
 ** @param [r] ranges [AjPList] AJAX List of Ensembl Mapper Ranges
 ** @param [r] srcmidmapper [EnsPMapper] Ensembl Mapper for source to middle
@@ -4828,27 +4709,25 @@ static AjBool assemblyMapperadaptorBuildCombinedMapper(
     
     EnsPMapperunit mu = NULL;
     
-    /*
-     ajDebug("assemblyMapperadaptorBuildCombinedMapper\n"
-	     "  ama %p\n"
-	     "  ranges %p\n"
-	     "  srcmidmapper %p\n"
-	     "  trgmidmapper %p\n"
-	     "  srctrgmapper %p\n"
-	     "  srctype '%S'\n",
-	     ama,
-	     ranges,
-	     srcmidmapper,
-	     trgmidmapper,
-	     srctrgmapper,
-	     srctype);
-     
-     ensMapperTrace(srcmidmapper, 1);
-     
-     ensMapperTrace(trgmidmapper, 1);
-     
-     ensMapperTrace(srctrgmapper, 1);
-     */
+#if AJFALSE
+    ajDebug("assemblyMapperadaptorBuildCombinedMapper\n"
+            "  ama %p\n"
+            "  ranges %p\n"
+            "  srcmidmapper %p\n"
+            "  trgmidmapper %p\n"
+            "  srctrgmapper %p\n"
+            "  srctype '%S'\n",
+            ama,
+            ranges,
+            srcmidmapper,
+            trgmidmapper,
+            srctrgmapper,
+            srctype);
+    
+    ensMapperTrace(srcmidmapper, 1);
+    ensMapperTrace(trgmidmapper, 1);
+    ensMapperTrace(srctrgmapper, 1);
+#endif
     
     if(!ama)
         return ajFalse;
@@ -4973,7 +4852,7 @@ static AjBool assemblyMapperadaptorBuildCombinedMapper(
 ** Optionally, only those Ensembl Mapper Ranges can be registered, which map
 ** onto a particular Ensembl Sequence Region, if its identifier was specified.
 **
-** @cc Bio::EnsEMBL::DBSQL::Assemblymapperadaptor::register_chained
+** @cc Bio::EnsEMBL::DBSQL::AssemblyMapperAdaptor::register_chained
 ** @param [r] ama [EnsPAssemblymapperadaptor] Ensembl Assembly Mapper Adaptor
 ** @param [u] cam [EnsPChainedassemblymapper] Ensembl Chained Assembly Mapper
 ** @param [r] source [const AjPStr] Mapping type for the source
@@ -5053,21 +4932,21 @@ AjBool ensAssemblymapperadaptorRegisterChained(EnsPAssemblymapperadaptor ama,
     EnsPSeqregion optsr = NULL;
     EnsPSeqregionadaptor sra = NULL;
     
-    /*
-     ajDebug("ensAssemblymapperadaptorRegisterChained\n"
-	     "  ama %p\n"
-	     "  cam %p\n"
-	     "  source '%S'\n"
-	     "  srcsrid %u\n"
-	     "  optsrid %u\n"
-	     "  ranges %p\n",
-	     ama,
-	     cam,
-	     source,
-	     srcsrid,
-	     optsrid,
-	     ranges);
-     */
+#if AJFALSE
+    ajDebug("ensAssemblymapperadaptorRegisterChained\n"
+            "  ama %p\n"
+            "  cam %p\n"
+            "  source '%S'\n"
+            "  srcsrid %u\n"
+            "  optsrid %u\n"
+            "  ranges %p\n",
+            ama,
+            cam,
+            source,
+            srcsrid,
+            optsrid,
+            ranges);
+#endif
     
     if(!ama)
 	return ajFalse;
@@ -5202,53 +5081,53 @@ AjBool ensAssemblymapperadaptorRegisterChained(EnsPAssemblymapperadaptor ama,
     
     ajListPeekLast(mappath, (void **) &cmpcs);
     
-    asm2cmp = ajStrNewC("SELECT "
-			"assembly.cmp_start, "
-			"assembly.cmp_end, "
-			"assembly.cmp_seq_region_id, "
-			"seq_region.name, "
-			"seq_region.length, "
-			"assembly.ori, "
-			"assembly.asm_start, "
-			"assembly.asm_end "
-			"FROM "
-			"assembly, "
-			"seq_region "
-			"WHERE "
-			"assembly.asm_seq_region_id = %u "
-			"AND "
-			"%d <= assembly.asm_end "
-			"AND "
-			"%d >= assembly.asm_start "
-			"AND "
-			"assembly.cmp_seq_region_id = "
-			"seq_region.seq_region_id "
-			"AND "
-			"seq_region.coord_system_id = %u");
+    asm2cmp = ajStrNewC(
+        "SELECT "
+        "assembly.cmp_start, "
+        "assembly.cmp_end, "
+        "assembly.cmp_seq_region_id, "
+        "seq_region.name, "
+        "seq_region.length, "
+        "assembly.ori, "
+        "assembly.asm_start, "
+        "assembly.asm_end "
+        "FROM "
+        "assembly, "
+        "seq_region "
+        "WHERE "
+        "assembly.asm_seq_region_id = %u "
+        "AND "
+        "%d <= assembly.asm_end "
+        "AND "
+        "%d >= assembly.asm_start "
+        "AND "
+        "assembly.cmp_seq_region_id = seq_region.seq_region_id "
+        "AND "
+        "seq_region.coord_system_id = %u");
     
-    cmp2asm = ajStrNewC("SELECT "
-			"assembly.asm_start, "
-			"assembly.asm_end, "
-			"assembly.asm_seq_region_id, "
-			"seq_region.name, "
-			"seq_region.length, "
-			"assembly.ori, "
-			"assembly.cmp_start, "
-			"assembly.cmp_end "
-			"FROM "
-			"assembly, "
-			"seq_region "
-			"WHERE "
-			"assembly.cmp_seq_region_id = %u "
-			"AND "
-			"%d <= assembly.cmp_end "
-			"AND "
-			"%d >= assembly.cmp_start "
-			"AND "
-			"assembly.asm_seq_region_id = "
-			"seq_region.seq_region_id "
-			"AND "
-			"seq_region.coord_system_id = %u");
+    cmp2asm = ajStrNewC(
+        "SELECT "
+        "assembly.asm_start, "
+        "assembly.asm_end, "
+        "assembly.asm_seq_region_id, "
+        "seq_region.name, "
+        "seq_region.length, "
+        "assembly.ori, "
+        "assembly.cmp_start, "
+        "assembly.cmp_end "
+        "FROM "
+        "assembly, "
+        "seq_region "
+        "WHERE "
+        "assembly.cmp_seq_region_id = %u "
+        "AND "
+        "%d <= assembly.cmp_end "
+        "AND "
+        "%d >= assembly.cmp_start "
+        "AND "
+        "assembly.asm_seq_region_id = seq_region.seq_region_id "
+        "AND "
+        "seq_region.coord_system_id = %u");
     
     if(optsrid)
     {
@@ -5415,9 +5294,9 @@ AjBool ensAssemblymapperadaptorRegisterChained(EnsPAssemblymapperadaptor ama,
     ajListIterDel(&liter);
     
     /*
-     ** In the one-step case, the middle Mapper Units are simply registered
-     ** in the target Mapper Range Registry.
-     */
+    ** In the one-step case, the middle Mapper Units are simply registered
+    ** in the target Mapper Range Registry.
+    */
     
     if(!midcs)
     {
@@ -5429,10 +5308,10 @@ AjBool ensAssemblymapperadaptorRegisterChained(EnsPAssemblymapperadaptor ama,
 	ajListFree(&srcranges);
 	
 	/*
-	 ** Register the middle Mapper Units in the
-	 ** target Mapper Range Registry
-	 ** and that's it for the simple case ...
-	 */
+        ** Register the middle Mapper Units in the
+        ** target Mapper Range Registry
+        ** and that's it for the simple case ...
+        */
 	
 	while(ajListPop(midranges, (void **) &mu))
 	{
@@ -5451,13 +5330,9 @@ AjBool ensAssemblymapperadaptorRegisterChained(EnsPAssemblymapperadaptor ama,
 	ajListFree(&midranges);
 	
 	ajStrDel(&asm2cmp);
-	
 	ajStrDel(&cmp2asm);
-	
 	ajStrDel(&srctype);
-	
 	ajStrDel(&midtype);
-	
 	ajStrDel(&trgtype);
 	
 	return ajTrue;
@@ -5567,9 +5442,9 @@ AjBool ensAssemblymapperadaptorRegisterChained(EnsPAssemblymapperadaptor ama,
 				    midsrend);
 	    
 	    /*
-	     ** Add the (new) target Ensembl Sequence Region into the
-	     ** Ensembl Sequence Region Adaptor cache.
-	     */
+            ** Add the (new) target Ensembl Sequence Region into the
+            ** Ensembl Sequence Region Adaptor cache.
+            */
 	    
 	    sr = ensSeqregionNew(sra,
 				 trgsrid,
@@ -5582,9 +5457,9 @@ AjBool ensAssemblymapperadaptorRegisterChained(EnsPAssemblymapperadaptor ama,
 	    ensSeqregionDel(&sr);
 	    
 	    /*
-	     ** Register the target Mapper Unit in the
-	     ** target Mapper Range Registry.
-	     */
+            ** Register the target Mapper Unit in the
+            ** target Mapper Range Registry.
+            */
 	    
 	    ensMapperrangeregistryCheckAndRegister(trgregistry,
 						   trgsrid,
@@ -5626,13 +5501,9 @@ AjBool ensAssemblymapperadaptorRegisterChained(EnsPAssemblymapperadaptor ama,
     ajListFree(&srcranges);
     
     ajStrDel(&srctype);
-    
     ajStrDel(&midtype);
-    
     ajStrDel(&trgtype);
-    
     ajStrDel(&asm2cmp);
-    
     ajStrDel(&cmp2asm);
     
     return ajTrue;
@@ -5649,7 +5520,7 @@ AjBool ensAssemblymapperadaptorRegisterChained(EnsPAssemblymapperadaptor ama,
 ** Optionally, only those Ensembl Mapper Ranges can be registered, which map
 ** onto a particular Ensembl Sequence Region, if its identifier was specified.
 **
-** @cc Bio::EnsEMBL::DBSQL::Assemblymapperadaptor::register_chained_special
+** @cc Bio::EnsEMBL::DBSQL::AssemblyMapperAdaptor::register_chained_special
 ** @param [r] ama [EnsPAssemblymapperadaptor] Ensembl Assembly Mapper Adaptor
 ** @param [u] cam [EnsPChainedassemblymapper] Ensembl Chained Assembly Mapper
 ** @param [r] source [const AjPStr] Mapping type for the source
@@ -5681,12 +5552,12 @@ AjBool ensAssemblymapperadaptorRegisterChainedSpecial(
     ajint midsrlength = 0;
     
     /*
-     ** FIXME: Remove this!
-     ajuint trgsrid = 0;
-     ajint trgsrstart = 0;
-     ajint trgsrend = 0;
-     ajint trgsrlength = 0;
-     */
+    ** FIXME: Remove this!
+    ajuint trgsrid = 0;
+    ajint trgsrstart = 0;
+    ajint trgsrend = 0;
+    ajint trgsrlength = 0;
+    */
     
     AjBool found = AJFALSE;
     
@@ -5739,21 +5610,21 @@ AjBool ensAssemblymapperadaptorRegisterChainedSpecial(
     EnsPSeqregion optsr = NULL;
     EnsPSeqregionadaptor sra = NULL;
     
-    /*
-     ajDebug("ensAssemblymapperadaptorRegisterChainedSpecial\n"
-	     "  ama %p\n"
-	     "  cam %p\n"
-	     "  source '%S'\n"
-	     "  srcsrid %u\n"
-	     "  optsrid %u\n"
-	     "  ranges %p\n",
-	     ama,
-	     cam,
-	     source,
-	     srcsrid,
-	     optsrid,
-	     ranges);
-     */
+#if AJFALSE
+    ajDebug("ensAssemblymapperadaptorRegisterChainedSpecial\n"
+            "  ama %p\n"
+            "  cam %p\n"
+            "  source '%S'\n"
+            "  srcsrid %u\n"
+            "  optsrid %u\n"
+            "  ranges %p\n",
+            ama,
+            cam,
+            source,
+            srcsrid,
+            optsrid,
+            ranges);
+#endif
     
     if(!ama)
 	return ajFalse;
@@ -5885,61 +5756,61 @@ AjBool ensAssemblymapperadaptorRegisterChainedSpecial(
     
     ajListPeekLast(mappath, (void **) &cmpcs);
     
-    asm2cmp = ajStrNewC("SELECT "
-			"assembly.cmp_start, "
-			"assembly.cmp_end, "
-			"assembly.cmp_seq_region_id, "
-			"seq_region.name, "
-			"seq_region.length, "
-			"assembly.ori, "
-			"assembly.asm_start, "
-			"assembly.asm_end "
-			"FROM "
-			"assembly, "
-			"seq_region "
-			"WHERE "
-			"assembly.asm_seq_region_id = %u "
-			"AND "
-			"%d <= assembly.asm_end "
-			"AND "
-			"%d >= assembly.asm_start "
-			"AND "
-			"assembly.cmp_seq_region_id = "
-			"seq_region.seq_region_id "
-			"AND "
-			"seq_region.coord_system_id = %u "
-			"AND "
-			"assembly.cmp_seq_region_id = %u");
+    asm2cmp = ajStrNewC(
+        "SELECT "
+        "assembly.cmp_start, "
+        "assembly.cmp_end, "
+        "assembly.cmp_seq_region_id, "
+        "seq_region.name, "
+        "seq_region.length, "
+        "assembly.ori, "
+        "assembly.asm_start, "
+        "assembly.asm_end "
+        "FROM "
+        "assembly, "
+        "seq_region "
+        "WHERE "
+        "assembly.asm_seq_region_id = %u "
+        "AND "
+        "%d <= assembly.asm_end "
+        "AND "
+        "%d >= assembly.asm_start "
+        "AND "
+        "assembly.cmp_seq_region_id = seq_region.seq_region_id "
+        "AND "
+        "seq_region.coord_system_id = %u "
+        "AND "
+        "assembly.cmp_seq_region_id = %u");
     
     if(optsrid)
 	ensSeqregionadaptorFetchByIdentifier(sra, optsrid, &optsr);
     
     /*
-     ** FIXME: Remove this!
-     if (slice)
-     {
-	 if (ensCoordsystemMatch(asmcs, ensSliceGetCoordsystem(slice)))
-	 {
-	     ajFmtPrintAppS(&cmp2asm,
-			    " AND asm.asm_seq_region_id = %u",
-			    ensSliceGetSeqregionIdentifier(slice));
-	 }
+    ** FIXME: Remove this!
+    if (slice)
+    {
+    if (ensCoordsystemMatch(asmcs, ensSliceGetCoordsystem(slice)))
+    {
+    ajFmtPrintAppS(&cmp2asm,
+    " AND asm.asm_seq_region_id = %u",
+    ensSliceGetSeqregionIdentifier(slice));
+    }
 	 
-	 else if (ensCoordsystemMatch(cmpcs, ensSliceGetCoordsystem(slice)))
-	 {
-	     ajFmtPrintAppS(&asm2cmp,
-			    " AND asm.cmp_seq_region_id = %u",
-			    ensSliceGetSeqregionIdentifier(slice));
-	 }
+    else if (ensCoordsystemMatch(cmpcs, ensSliceGetCoordsystem(slice)))
+    {
+    ajFmtPrintAppS(&asm2cmp,
+    " AND asm.cmp_seq_region_id = %u",
+    ensSliceGetSeqregionIdentifier(slice));
+    }
 	 
-	 else
-	     ajWarn("ensAssemblymapperadaptorRegisterChained got a Slice, "
-		    "which is neither in the source nor target "
-		    "Coordinate System.");
-     }
+    else
+    ajWarn("ensAssemblymapperadaptorRegisterChained got a Slice, "
+    "which is neither in the source nor target "
+    "Coordinate System.");
+    }
      
-     sqlfmt = (ensCoordsystemMatch(srccs, asmcs)) ? asm2cmp : cmp2asm;
-     */
+    sqlfmt = (ensCoordsystemMatch(srccs, asmcs)) ? asm2cmp : cmp2asm;
+    */
     
     sqlfmt = asm2cmp;
     
@@ -5958,13 +5829,13 @@ AjBool ensAssemblymapperadaptorRegisterChainedSpecial(
 	{
 	    mr = (EnsPMapperrange) ajListIterGet(liter);
 	    
-	    statement = ajFmtStr(ajStrGetPtr(sqlfmt),
-				 (i) ? optsrid : srcsrid,
-				 ensMapperrangeGetStart(mr),
-				 ensMapperrangeGetEnd(mr),
-				 ensCoordsystemGetIdentifier(
-                                     ensSeqregionGetCoordsystem(optsr)),
-				 (i) ? srcsrid : optsrid);
+	    statement = ajFmtStr(
+                ajStrGetPtr(sqlfmt),
+                (i) ? optsrid : srcsrid,
+                ensMapperrangeGetStart(mr),
+                ensMapperrangeGetEnd(mr),
+                ensCoordsystemGetIdentifier(ensSeqregionGetCoordsystem(optsr)),
+                (i) ? srcsrid : optsrid);
 	    
 	    sqls = ensDatabaseadaptorSqlstatementNew(ama->Adaptor, statement);
 	    
@@ -6098,7 +5969,7 @@ AjBool ensAssemblymapperadaptorRegisterChainedSpecial(
 		*/
 		
 		if((srcsrstart < ensMapperrangeGetStart(mr)) ||
-		    (srcsrend > ensMapperrangeGetEnd(mr)))
+                   (srcsrend > ensMapperrangeGetEnd(mr)))
 		    ensMapperrangeregistryCheckAndRegister(
                         srcregistry,
                         (i) ? optsrid : srcsrid,
@@ -6136,10 +6007,10 @@ AjBool ensAssemblymapperadaptorRegisterChainedSpecial(
 	ajListFree(&srcranges);
 	
 	/*
-	 ** Register the middle Mapper Units in the
-	 ** target Mapper Range Registry
-	 ** and that's it for the simple case ...
-	 */
+        ** Register the middle Mapper Units in the
+        ** target Mapper Range Registry
+        ** and that's it for the simple case ...
+        */
 	
 	while(ajListPop(midranges, (void **) &mu))
 	{
@@ -6179,11 +6050,8 @@ AjBool ensAssemblymapperadaptorRegisterChainedSpecial(
     ajListFree(&midranges);
     
     ajStrDel(&srctype);
-    
     ajStrDel(&midtype);
-    
     ajStrDel(&trgtype);
-    
     ajStrDel(&asm2cmp);
     
     return ajTrue;
@@ -6197,7 +6065,7 @@ AjBool ensAssemblymapperadaptorRegisterChainedSpecial(
 ** Registers all Ensembl Mapper Ranges in an
 ** Ensembl Chained Assembly Mapper.
 **
-** @cc Bio::EnsEMBL::DBSQL::Assemblymapperadaptor::register_all_chained
+** @cc Bio::EnsEMBL::DBSQL::AssemblyMapperAdaptor::register_all_chained
 ** @param [r] ama [EnsPAssemblymapperadaptor] Ensembl Assembly Mapper Adaptor
 ** @param [u] cam [EnsPChainedassemblymapper] Ensembl Chained Assembly Mapper
 **
@@ -6265,13 +6133,13 @@ AjBool ensAssemblymapperadaptorRegisterAllChained(
     EnsPSeqregion sr = NULL;
     EnsPSeqregionadaptor sra = NULL;
     
-    /*
-     ajDebug("ensAssemblymapperadaptorRegisterAllChained\n"
-	     "  ama %p\n"
-	     "  cam %p\n",
-	     ama,
-	     cam);
-     */
+#if AJFALSE
+    ajDebug("ensAssemblymapperadaptorRegisterAllChained\n"
+            "  ama %p\n"
+            "  cam %p\n",
+            ama,
+            cam);
+#endif
     
     if(!ama)
 	return ajFalse;
@@ -6280,43 +6148,40 @@ AjBool ensAssemblymapperadaptorRegisterAllChained(
 	return ajFalse;
     
     srccs = cam->SourceCoordsystem;
-    
     midcs = cam->MiddleCoordsystem;
-    
     trgcs = cam->TargetCoordsystem;
     
     srcmidmapper = cam->SourceMiddleMapper;
-    
     trgmidmapper = cam->TargetMiddleMapper;
-    
     srctrgmapper = cam->SourceTargetMapper;
     
     csa = ensRegistryGetCoordsystemadaptor(ama->Adaptor);
     
     sra = ensRegistryGetSeqregionadaptor(ama->Adaptor);
     
-    sqlfmt = ajStrNewC("SELECT "
-		       "assembly.cmp_start, "
-		       "assembly.cmp_end, "
-		       "assembly.cmp_seq_region_id, "
-		       "sr_cmp.name, "
-		       "sr_cmp.length, "
-		       "assembly.ori, "
-		       "assembly.asm_start, "
-		       "assembly.asm_end, "
-		       "assembly.asm_seq_region_id, "
-		       "sr_asm.name, "
-		       "sr_asm.length "
-		       "FROM "
-		       "assembly, seq_region sr_asm, seq_region sr_cmp "
-		       "WHERE "
-		       "sr_asm.seq_region_id = assembly.asm_seq_region_id "
-		       "AND "
-		       "sr_cmp.seq_region_id = assembly.cmp_seq_region_id "
-		       "AND "
-		       "sr_asm.coord_system_id = %u "
-		       "AND "
-		       "sr_cmp.coord_system_id = %u");
+    sqlfmt = ajStrNewC(
+        "SELECT "
+        "assembly.cmp_start, "
+        "assembly.cmp_end, "
+        "assembly.cmp_seq_region_id, "
+        "sr_cmp.name, "
+        "sr_cmp.length, "
+        "assembly.ori, "
+        "assembly.asm_start, "
+        "assembly.asm_end, "
+        "assembly.asm_seq_region_id, "
+        "sr_asm.name, "
+        "sr_asm.length "
+        "FROM "
+        "assembly, seq_region sr_asm, seq_region sr_cmp "
+        "WHERE "
+        "sr_asm.seq_region_id = assembly.asm_seq_region_id "
+        "AND "
+        "sr_cmp.seq_region_id = assembly.cmp_seq_region_id "
+        "AND "
+        "sr_asm.coord_system_id = %u "
+        "AND "
+        "sr_cmp.coord_system_id = %u");
     
     if(midcs)
     {
@@ -6497,7 +6362,6 @@ AjBool ensAssemblymapperadaptorRegisterAllChained(
 	ensSeqregionDel(&sr);
 	
 	ajStrDel(&srcsrname);
-	
 	ajStrDel(&trgsrname);
     }
     
@@ -6657,7 +6521,6 @@ AjBool ensAssemblymapperadaptorRegisterAllChained(
 	ensSeqregionDel(&sr);
 	
 	ajStrDel(&srcsrname);
-	
 	ajStrDel(&trgsrname);
     }
     
