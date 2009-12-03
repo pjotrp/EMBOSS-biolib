@@ -77,7 +77,7 @@ enum EnsEAssemblyexceptionType
 ** @attr Identifier [ajuint] SQL database-internal identifier
 ** @attr Adaptor [EnsPAssemblyexceptionadaptor] Ensembl Assembly
 **                                              Exception Adaptor
-** @cc Bio::EnsEMBL::Assemblyexception
+** @cc Bio::EnsEMBL::AssemblyException
 ** @attr SeqregionIdentifier [ajuint] Ensembl Sequence Region identifier
 ** @attr SeqregionStart [ajuint] Ensembl Sequence Region start
 ** @attr SeqregionEnd [ajuint] Ensembl Sequence Region end
@@ -116,16 +116,16 @@ typedef struct EnsSAssemblyexception
 /* Ensembl Assembly Exception */
 
 EnsPAssemblyexception ensAssemblyexceptionNew(
-                        EnsPAssemblyexceptionadaptor adaptor,
-			ajuint identifier,
-			ajuint srid,
-			ajuint srstart,
-			ajuint srend,
-			ajuint exid,
-			ajuint exstart,
-			ajuint exend,
-			ajint ori,
-			AjEnum type);
+    EnsPAssemblyexceptionadaptor adaptor,
+    ajuint identifier,
+    ajuint srid,
+    ajuint srstart,
+    ajuint srend,
+    ajuint exid,
+    ajuint exstart,
+    ajuint exend,
+    ajint ori,
+    AjEnum type);
 
 EnsPAssemblyexception ensAssemblyexceptionNewObj(
     const EnsPAssemblyexception object);
@@ -175,11 +175,11 @@ AjBool ensAssemblyexceptionSetSeqregionEnd(EnsPAssemblyexception ae,
 AjBool ensAssemblyexceptionSetExcRegionIdentifier(EnsPAssemblyexception ae,
                                                   ajuint exid);
 
-AjBool ensAssemblyexceptionSetEcxRegionStart(EnsPAssemblyexception ae,
+AjBool ensAssemblyexceptionSetExcRegionStart(EnsPAssemblyexception ae,
                                              ajuint exstart);
 
-AjBool ensAssemblyexceptionSetExcRegionStart(EnsPAssemblyexception ae,
-                                             ajuint exend);
+AjBool ensAssemblyexceptionSetExcRegionEnd(EnsPAssemblyexception ae,
+                                           ajuint exend);
 
 AjBool ensAssemblyexceptionSetOrientation(EnsPAssemblyexception ae,
                                           ajint orientation);
@@ -206,7 +206,7 @@ AjBool ensAssemblyexceptionadaptorFetchAll(
     AjPList aes);
 
 AjBool ensAssemblyexceptionadaptorFetchAllBySeqregionIdentifier(
-    const  EnsPAssemblyexceptionadaptor adaptor,
+    const EnsPAssemblyexceptionadaptor adaptor,
     ajuint srid,
     AjPList aes);
 

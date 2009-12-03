@@ -4,15 +4,14 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** The Ensembl Assembly Exception object has been split out of the
-** Bio::EnsEMBL::DBSQL::Slice
-adaptor Perl object.
+** Bio::EnsEMBL::DBSQL::SliceAdaptor Perl object.
 **
 ** Bio::EnsEMBL::Slice CVS Revision: 1.219
-** Bio::EnsEMBL::DBSQL::Sliceadaptor CVS Revision: 1.102
+** Bio::EnsEMBL::DBSQL::SliceAdaptor CVS Revision: 1.104
 **
 ** This library is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU Library General Public
@@ -771,7 +770,7 @@ AjBool ensAssemblyexceptionSetExcRegionIdentifier(EnsPAssemblyexception ae,
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyexceptionSetEcxRegionStart(EnsPAssemblyexception ae,
+AjBool ensAssemblyexceptionSetExcRegionStart(EnsPAssemblyexception ae,
                                              ajuint exstart)
 {
     if(!ae)
@@ -797,8 +796,8 @@ AjBool ensAssemblyexceptionSetEcxRegionStart(EnsPAssemblyexception ae,
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyexceptionSetExcRegionStart(EnsPAssemblyexception ae,
-                                             ajuint exend)
+AjBool ensAssemblyexceptionSetExcRegionEnd(EnsPAssemblyexception ae,
+                                           ajuint exend)
 {
     if(!ae)
         return ajFalse;
@@ -1021,7 +1020,7 @@ const char* ensAssemblyexceptionTypeToChar(const AjEnum type)
 **
 ** Functions for manipulating Ensembl Assembly Exception Adaptor objects
 **
-** @cc Bio::EsnSEMBL::DBSQL::Sliceadaptor CVS Revision: 1.104
+** @cc Bio::EnsEMBL::DBSQL::SliceAdaptor CVS Revision: 1.104
 **
 ** @nam2rule Assemblyexceptionadaptor
 **
@@ -1239,8 +1238,8 @@ static AjBool assemblyExceptionadaptorCacheInit(
     while(ajListPop(aes, (void **) &ae))
     {
         list = (AjPList)
-	ajTableFetch(adaptor->CacheBySeqregionIdentifier,
-		     (const void *) &(ae->SeqregionIdentifier));
+            ajTableFetch(adaptor->CacheBySeqregionIdentifier,
+                         (const void *) &(ae->SeqregionIdentifier));
 	
 	if(!list)
 	{
@@ -1536,8 +1535,8 @@ AjBool ensAssemblyexceptionadaptorFetchAll(
         return ajFalse;
     
     ajTableMap(adaptor->CacheBySeqregionIdentifier,
-	       assemblyExceptionadaptorFetchAll,
-	       (void *) aes);
+               assemblyExceptionadaptorFetchAll,
+               (void *) aes);
     
     return ajTrue;
 }
@@ -1571,18 +1570,18 @@ AjBool ensAssemblyexceptionadaptorFetchAllBySeqregionIdentifier(
     
     EnsPAssemblyexception ae = NULL;
     
-    /*
-     ajDebug("ensAssemblyexceptionadaptorFetchAllBySeqregionIdentifier\n"
-	     "  adaptor %p\n"
-	     "  srid %u\n"
-	     "  aes %p\n",
-	     adaptor,
-	     srid,
-	     aes);
-     */
+#if AJFALSE
+    ajDebug("ensAssemblyexceptionadaptorFetchAllBySeqregionIdentifier\n"
+            "  adaptor %p\n"
+            "  srid %u\n"
+            "  aes %p\n",
+            adaptor,
+            srid,
+            aes);
+#endif
     
     if(!adaptor)
-	return ajFalse;
+        return ajFalse;
     
     if(!aes)
 	return ajFalse;
