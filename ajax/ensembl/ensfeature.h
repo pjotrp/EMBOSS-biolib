@@ -410,7 +410,9 @@ const AjPStr ensFeatureGetSeqregionName(const EnsPFeature feature);
 
 ajuint ensFeatureGetSeqregionLength(const EnsPFeature feature);
 
-AjBool ensFeatureMove(EnsPFeature feature, ajint start, ajint end,
+AjBool ensFeatureMove(EnsPFeature feature,
+                      ajint start,
+                      ajint end,
                       ajint strand);
 
 AjBool ensFeatureProject(const EnsPFeature feature,
