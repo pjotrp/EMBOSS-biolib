@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -75,7 +75,7 @@ static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
 **
 ** Functions for manipulating Ensembl Base Adaptor objects
 **
-** @cc Bio::EnsEMBL::DBSQL::Baseadaptor CVS Revision: 1.46
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor CVS Revision: 1.47
 **
 ** @nam2rule Baseadaptor Base adaptor object function
 **
@@ -114,7 +114,7 @@ static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
 **
 ** Default constructor for an Ensembl Base Adaptor.
 **
-** @cc Bio::EnsEMBL::DBSQL::Baseadaptor::new
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::new
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] Ptables [const char**] Array of char strings of table names
 ** @param [r] Pcolumns [const char**] Array of char strings of column names
@@ -257,7 +257,7 @@ void ensBaseadaptorDel(EnsPBaseadaptor *Pba)
 **
 ** Get the Ensembl Database Adaptor element of an Ensembl Base Adaptor.
 **
-** @cc Bio::EnsEMBL::DBSQL::Baseadaptor::db
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::db
 ** @param [r] ba [const EnsPBaseadaptor] Ensembl Base Adaptor
 **
 ** @return [EnsPDatabaseadaptor] Ensembl Database Adaptor or NULL
@@ -279,7 +279,7 @@ EnsPDatabaseadaptor ensBaseadaptorGetDatabaseadaptor(const EnsPBaseadaptor ba)
 **
 ** Get the tables element of an Ensembl Base Adaptor.
 **
-** @cc Bio::EnsEMBL::DBSQL::Baseadaptor::_tables
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::_tables
 ** @param [r] ba [const EnsPBaseadaptor] Ensembl Base Adaptor
 **
 ** @return [const char**] Address of the table name character string array
@@ -302,7 +302,7 @@ const char **ensBaseadaptorGetTables(const EnsPBaseadaptor ba)
 **
 ** Get the columns element of an Ensembl Base Adaptor.
 **
-** @cc Bio::EnsEMBL::DBSQL::Baseadaptor::_columns
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::_columns
 ** @param [r] ba [const EnsPBaseadaptor] Ensembl Base Adaptor
 **
 ** @return [const char**] Address of the column name character string array
@@ -348,7 +348,7 @@ const char **ensBaseadaptorGetColumns(const EnsPBaseadaptor ba)
 **
 ** Set the tables element of an Ensembl Base Adaptor.
 **
-** @cc Bio::EnsEMBL::DBSQL::Baseadaptor::_tables
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::_tables
 ** @param [r] ba [EnsPBaseadaptor] Ensembl Base Adaptor
 ** @param [r] Ptables [const char**] One dimensional array of table name
 **                                    character strings
@@ -377,7 +377,7 @@ AjBool ensBaseadaptorSetTables(EnsPBaseadaptor ba, const char ** Ptables)
 **
 ** Set the columns element of an Ensembl Base Adaptor.
 **
-** @cc Bio::EnsEMBL::DBSQL::Baseadaptor::_columns
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::_columns
 ** @param [r] ba [EnsPBaseadaptor] Ensembl Base Adaptor
 ** @param [r] Pcolumns [const char**] One dimensional array of column name
 **                                     character strings
@@ -406,7 +406,7 @@ AjBool ensBaseadaptorSetColumns(EnsPBaseadaptor ba, const char ** Pcolumns)
 **
 ** Set the default SQL condition element of an Ensembl Base Adaptor.
 **
-** @cc Bio::EnsEMBL::DBSQL::Baseadaptor::_default_where_clause
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::_default_where_clause
 ** @param [r] ba [EnsPBaseadaptor] Ensembl Base Adaptor
 ** @param [r] condition [const char *] Default SQL condition
 **
@@ -432,7 +432,7 @@ AjBool ensBaseadaptorSetDefaultCondition(EnsPBaseadaptor ba,
 **
 ** Set the final SQL condition element of an Ensembl Base Adaptor.
 **
-** @cc Bio::EnsEMBL::DBSQL::Baseadaptor::_final_clause
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::_final_clause
 ** @param [r] ba [EnsPBaseadaptor] Ensembl Base Adaptor
 ** @param [r] final [const char *] Final SQL condition
 **
@@ -481,7 +481,7 @@ const char *ensBaseadaptorGetPrimaryTable(const EnsPBaseadaptor ba)
 ** Get the multiple-species element of the Ensembl Database Adaptor element
 ** of an Ensembl Base Adaptor.
 **
-** @cc Bio::EnsEMBL::DBSQL::Baseadaptor::is_multispecies
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::is_multispecies
 ** @param [r] ba [const EnsPBaseadaptor] Ensembl Base Adaptor
 **
 ** @return [AjBool] ajTrue if the database contains multiple species,
@@ -505,7 +505,7 @@ AjBool ensBaseadaptorGetMultiSpecies(const EnsPBaseadaptor ba)
 ** Get the species identifier element of the Ensembl Database Adaptor element
 ** of an Ensembl Base Adaptor.
 **
-** @cc Bio::EnsEMBL::DBSQL::Baseadaptor::species_id
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::species_id
 ** @param [r] ba [const EnsPBaseadaptor] Ensembl Base Adaptor
 **
 ** @return [ajuint] Ensembl species identifier, defaults to 1
@@ -544,17 +544,17 @@ AjBool ensBaseadaptorEscapeC(EnsPBaseadaptor ba, char **Ptxt, const AjPStr str)
     if(!str)
 	return ajFalse;
     
-    /*
-     ajDebug("ensBaseadaptorEscapeC\n"
-	     "  ba %p\n"
-	     "  Ptxt %p\n"
-	     "  str '%S'\n",
-	     ba,
-	     Ptxt,
-	     str);
-     
-     ensBaseadaptorTrace(ba, 1);
-     */
+#if AJFALSE
+    ajDebug("ensBaseadaptorEscapeC\n"
+            "  ba %p\n"
+            "  Ptxt %p\n"
+            "  str '%S'\n",
+            ba,
+            Ptxt,
+            str);
+    
+    ensBaseadaptorTrace(ba, 1);
+#endif
     
     return ensDatabaseadaptorEscapeC(ba->Adaptor, Ptxt, str);
 }
@@ -576,7 +576,7 @@ AjBool ensBaseadaptorEscapeC(EnsPBaseadaptor ba, char **Ptxt, const AjPStr str)
 ******************************************************************************/
 
 AjBool ensBaseadaptorEscapeS(EnsPBaseadaptor ba, AjPStr *Pstr,
-                              const AjPStr str)
+                             const AjPStr str)
 {
     if(!ba)
         return ajFalse;
@@ -584,17 +584,17 @@ AjBool ensBaseadaptorEscapeS(EnsPBaseadaptor ba, AjPStr *Pstr,
     if(!str)
 	return ajFalse;
     
-    /*
-     ajDebug("ensBaseadaptorEscapeS\n"
-	     "  ba %p\n"
-	     "  Pstr %p\n"
-	     "  str '%S'\n",
-	     ba,
-	     Pstr,
-	     str);
-     
-     ensBaseadaptorTrace(ba, 1);
-     */
+#if AJFALSE
+    ajDebug("ensBaseadaptorEscapeS\n"
+            "  ba %p\n"
+            "  Pstr %p\n"
+            "  str '%S'\n",
+            ba,
+            Pstr,
+            str);
+    
+    ensBaseadaptorTrace(ba, 1);
+#endif
     
     return ensDatabaseadaptorEscapeS(ba->Adaptor, Pstr, str);
 }
@@ -609,7 +609,7 @@ AjBool ensBaseadaptorEscapeS(EnsPBaseadaptor ba, AjPStr *Pstr,
 ** The caller is responsible for deleting the Ensembl Objects before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::DBSQL::Baseadaptor::generic_fetch
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::generic_fetch
 ** @param [r] ba [const EnsPBaseadaptor] Ensembl Base Adaptor
 ** @param [r] constraint [const AjPStr] Constraint in a SQL SELECT statement
 ** @param [r] am [EnsPAssemblymapper] Ensembl Assembly Mapper
@@ -637,19 +637,19 @@ AjBool ensBaseadaptorGenericFetch(const EnsPBaseadaptor ba,
     AjPStr parentheses = NULL;
     AjPStr statement = NULL;
     
-    /*
-     ajDebug("ensBaseadaptorGenericFetch\n"
-	     "  ba %p\n"
-	     "  constraint '%S'\n"
-	     "  am %p\n"
-	     "  slice %p\n"
-	     "  objects %p\n",
-	     ba,
-	     constraint,
-	     am,
-	     slice,
-	     objects);
-     */
+#if AJFALSE
+    ajDebug("ensBaseadaptorGenericFetch\n"
+            "  ba %p\n"
+            "  constraint '%S'\n"
+            "  am %p\n"
+            "  slice %p\n"
+            "  objects %p\n",
+            ba,
+            constraint,
+            am,
+            slice,
+            objects);
+#endif
     
     if(!ba)
 	return ajFalse;
@@ -698,8 +698,8 @@ AjBool ensBaseadaptorGenericFetch(const EnsPBaseadaptor ba,
     ** TODO: Report to core.
     **
     ** The Perl API also applies a hack for the
-    ** Bio::EnsEMBL::DBSQL::UnmappedObjectadaptor, which should not be a sub
-    ** class of Bio::ensEMBL::Feature in the first place.
+    ** Bio::EnsEMBL::DBSQL::UnmappedObjectAdaptor, which should not be a sub
+    ** class of Bio::EnsEMBL::Feature in the first place.
     */
     
     /*
@@ -813,7 +813,7 @@ AjBool ensBaseadaptorGenericFetch(const EnsPBaseadaptor ba,
 ** Generic function to fetch an Ensembl Object by its SQL database-internal
 ** identifier via an Ensembl Base Adaptor.
 **
-** @cc Bio::EnsEMBL::DBSQL::Baseadaptor::fetch_by_dbID
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::fetch_by_dbID
 ** @param [r] ba [const EnsPBaseadaptor] Ensembl Base Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 **
@@ -911,7 +911,7 @@ static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
     ** FIXME: The Perl API has an ordered parameter to this function, which
     ** appends an 'order by seq_region_id, seq_region_start' clause.
     ** A seq_region column however may not be part of the table definition.
-    ** This should probably move to Bio::EnEMBL::DBSQL::BaseFeatureadaptor,
+    ** This should probably move to Bio::EnEMBL::DBSQL::BaseFeatureAdaptor,
     ** which always has a seq_region associated.
     */
     
@@ -939,7 +939,7 @@ static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
 ** Generic function to fetch Ensembl Objects by an AJAX List of
 ** SQL database-internal identifiers via an Ensembl Base Adaptor.
 **
-** @cc Bio::EnsEMBL::DBSQL::Baseadaptor::fetch_all_by_dbID_list
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::fetch_all_by_dbID_list
 ** @param [r] ba [const EnsPBaseadaptor] Ensembl Base Adaptor.
 ** @param [r] idlist [AjPList] AJAX List of AJAX unsigned integers of
 **                             SQL database-internal identifiers
@@ -1024,7 +1024,7 @@ AjBool ensBaseadaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
 ** Please note that it is probably not a good idea to use this function on
 ** *very* large tables quite common in the Ensembl genome annotation system.
 **
-** @cc Bio::EnsEMBL::DBSQL::Baseadaptor::fetch_all
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::fetch_all
 ** @param [r] ba [const EnsPBaseadaptor] Ensembl Base Adaptor
 ** @param [u] objects [AjPList] AJAX List of Ensembl Objects
 **
@@ -1058,7 +1058,7 @@ AjBool ensBaseadaptorFetchAll(const EnsPBaseadaptor ba, AjPList objects)
 ** The caller is responsible for deleting the AJAX unsigned integers before
 ** deleting the AJAX List.
 **
-** @cc Bio::EnsEMBL::DBSQL::Baseadaptor::_list_dbIDs
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::_list_dbIDs
 ** @param [r] ba [const EnsPBaseadaptor] Ensembl Base Adaptor
 ** @param [r] table [AjPStr] SQL table name
 ** @param [r] prikey [AjPStr] Primary key of the SQL table
