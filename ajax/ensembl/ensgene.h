@@ -1,5 +1,5 @@
 #ifdef __cplusplus
-"C"
+extern "C"
 {
 #endif
 
@@ -114,17 +114,17 @@ const char* ensGeneStatusToChar(const AjEnum status);
 AjBool ensGeneCalculateCoordinates(EnsPGene gene);
 
 AjBool ensGeneFetchAllAttributes(EnsPGene gene, const AjPStr code,
-                                AjPList attributes);
+                                 AjPList attributes);
 
 AjBool ensGeneFetchAllDatabaseEntries(EnsPGene gene,
-                                     const AjPStr name,
-                                     AjEnum type,
-                                     AjPList dbes);
+                                      const AjPStr name,
+                                      AjEnum type,
+                                      AjPList dbes);
 
 AjBool ensGeneFetchAllExons(EnsPGene gene, AjPList exons);
 
 EnsPGene ensGeneTransform(EnsPGene gene, const AjPStr csname,
-                         const AjPStr csversion);
+                          const AjPStr csversion);
 
 EnsPGene ensGeneTransfer(EnsPGene gene, EnsPSlice slice);
 
