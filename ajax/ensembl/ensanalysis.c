@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -79,6 +79,7 @@ static void analysisAdaptorFetchAll(const void *key, void **value, void *cl);
 
 
 
+
 /* @datasection [EnsPAnalysis] Analysis ***************************************
 **
 ** Functions for manipulating Ensembl Analysis objects
@@ -88,6 +89,7 @@ static void analysisAdaptorFetchAll(const void *key, void **value, void *cl);
 ** @nam2rule Analysis
 **
 ******************************************************************************/
+
 
 
 
@@ -394,20 +396,20 @@ void ensAnalysisDel(EnsPAnalysis* Panalysis)
 {
     EnsPAnalysis pthis = NULL;
     
-    /*
-     ajDebug("ensAnalysisDel\n"
-	     "  *Panalysis %p\n",
-	     *Panalysis);
-     
-     ensAnalysisTrace(*Panalysis, 1);
-     */
+#if AJFALSE
+    ajDebug("ensAnalysisDel\n"
+            "  *Panalysis %p\n",
+            *Panalysis);
+    
+    ensAnalysisTrace(*Panalysis, 1);
+#endif
     
     if(!Panalysis)
         return;
     
-    if (!*Panalysis)
+    if(!*Panalysis)
         return;
-
+    
     pthis = *Panalysis;
     
     pthis->Use--;
@@ -510,6 +512,7 @@ void ensAnalysisDel(EnsPAnalysis* Panalysis)
 **
 ** Get the Ensembl Analysis Adaptor element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Storable::adaptor
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [EnsPAnalysisadaptor] Ensembl Analysis Adaptor
@@ -518,7 +521,7 @@ void ensAnalysisDel(EnsPAnalysis* Panalysis)
 
 EnsPAnalysisadaptor ensAnalysisGetAdaptor(const EnsPAnalysis analysis)
 {
-    if (!analysis)
+    if(!analysis)
         return NULL;
     
     return analysis->Adaptor;
@@ -531,6 +534,7 @@ EnsPAnalysisadaptor ensAnalysisGetAdaptor(const EnsPAnalysis analysis)
 **
 ** Get the SQL database-internal identifier element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Storable::dbID
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [ajuint] Internal database identifier
@@ -552,6 +556,7 @@ ajuint ensAnalysisGetIdentifier(const EnsPAnalysis analysis)
 **
 ** Get the creation date element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::created
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [const AjPStr] Creation date
@@ -560,7 +565,7 @@ ajuint ensAnalysisGetIdentifier(const EnsPAnalysis analysis)
 
 const AjPStr ensAnalysisGetCreationDate(const EnsPAnalysis analysis)
 {
-    if (!analysis)
+    if(!analysis)
         return NULL;
     
     return analysis->CreationDate;
@@ -573,6 +578,7 @@ const AjPStr ensAnalysisGetCreationDate(const EnsPAnalysis analysis)
 **
 ** Get the name element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::logic_name
 ** @param  [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [const AjPStr] Name
@@ -581,7 +587,7 @@ const AjPStr ensAnalysisGetCreationDate(const EnsPAnalysis analysis)
 
 const AjPStr ensAnalysisGetName(const EnsPAnalysis analysis)
 {
-    if (!analysis)
+    if(!analysis)
         return NULL;
     
     return analysis->Name;
@@ -594,6 +600,7 @@ const AjPStr ensAnalysisGetName(const EnsPAnalysis analysis)
 **
 ** Get the database name element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::db
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [const AjPStr] Database name
@@ -615,6 +622,7 @@ const AjPStr ensAnalysisGetDatabaseName(const EnsPAnalysis analysis)
 **
 ** Get the database version element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::db_version
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [const AjPStr] Database version
@@ -636,6 +644,7 @@ const AjPStr ensAnalysisGetDatabaseVersion(const EnsPAnalysis analysis)
 **
 ** Get the database file element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::db_file
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [const AjPStr] Database file
@@ -657,6 +666,7 @@ const AjPStr ensAnalysisGetDatabaseFile(const EnsPAnalysis analysis)
 **
 ** Get the program name element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::program
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [const AjPStr] Program name
@@ -678,6 +688,7 @@ const AjPStr ensAnalysisGetProgramName(const EnsPAnalysis analysis)
 **
 ** Get the program version element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::program_version
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [const AjPStr] Program version
@@ -699,6 +710,7 @@ const AjPStr ensAnalysisGetProgramVersion(const EnsPAnalysis analysis)
 **
 ** Get the program file element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::program_file
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [const AjPStr] Program file
@@ -720,6 +732,7 @@ const AjPStr ensAnalysisGetProgramFile(const EnsPAnalysis analysis)
 **
 ** Get the parameters element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::parameters
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [const AjPStr] Parameters
@@ -741,6 +754,7 @@ const AjPStr ensAnalysisGetParameters(const EnsPAnalysis analysis)
 **
 ** Get the module name element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::module
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [const AjPStr] Module name
@@ -762,6 +776,7 @@ const AjPStr ensAnalysisGetModuleName(const EnsPAnalysis analysis)
 **
 ** Get the module version element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::module_version
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [const AjPStr] Module version
@@ -783,6 +798,7 @@ const AjPStr ensAnalysisGetModuleVersion(const EnsPAnalysis analysis)
 **
 ** Get the GFF source element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::gff_source
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [const AjPStr] GFF source
@@ -804,6 +820,7 @@ const AjPStr ensAnalysisGetGFFSource(const EnsPAnalysis analysis)
 **
 ** Get the GFF feature element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::gff_feature
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [const AjPStr] GFF feature
@@ -825,6 +842,7 @@ const AjPStr ensAnalysisGetGFFFeature(const EnsPAnalysis analysis)
 **
 ** Get the description element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::description
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [const AjPStr] Description
@@ -846,6 +864,7 @@ const AjPStr ensAnalysisGetDescription(const EnsPAnalysis analysis)
 **
 ** Get the display label element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::display_label
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [const AjPStr] Display label
@@ -867,6 +886,7 @@ const AjPStr ensAnalysisGetDisplayLabel(const EnsPAnalysis analysis)
 **
 ** Get the web data element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::web_data
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [const AjPStr] Web data
@@ -888,6 +908,7 @@ const AjPStr ensAnalysisGetWebData(const EnsPAnalysis analysis)
 **
 ** Get the displayable element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::displayable
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [AjBool] Displayable element
@@ -947,6 +968,7 @@ AjBool ensAnalysisGetDisplayable(const EnsPAnalysis analysis)
 **
 ** Set the Ensembl Analysis Adaptor element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Storable::adaptor
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [r] adaptor [EnsPAnalysisadaptor] Ensembl Analysis Adaptor
 **
@@ -954,7 +976,8 @@ AjBool ensAnalysisGetDisplayable(const EnsPAnalysis analysis)
 ** @@
 ******************************************************************************/
 
-AjBool ensAnalysisSetAdaptor(EnsPAnalysis analysis, EnsPAnalysisadaptor adaptor)
+AjBool ensAnalysisSetAdaptor(EnsPAnalysis analysis,
+                             EnsPAnalysisadaptor adaptor)
 {
     if(!analysis)
         return ajFalse;
@@ -971,6 +994,7 @@ AjBool ensAnalysisSetAdaptor(EnsPAnalysis analysis, EnsPAnalysisadaptor adaptor)
 **
 ** Set the SQL database-internal identifier element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Storable::dbID
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 **
@@ -995,6 +1019,7 @@ AjBool ensAnalysisSetIdentifier(EnsPAnalysis analysis, ajuint identifier)
 **
 ** Set the creation date element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::created
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [u] cdate [AjPStr] Creation date
 **
@@ -1021,6 +1046,7 @@ AjBool ensAnalysisSetCreationDate(EnsPAnalysis analysis, AjPStr cdate)
 **
 ** Set the name element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::logic_name
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [u] name [AjPStr] Name
 **
@@ -1047,6 +1073,7 @@ AjBool ensAnalysisSetName(EnsPAnalysis analysis, AjPStr name)
 **
 ** Set the database name element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::db
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [u] databasename [AjPStr] Database name
 **
@@ -1073,6 +1100,7 @@ AjBool ensAnalysisSetDatabaseName(EnsPAnalysis analysis, AjPStr databasename)
 **
 ** Set the database version element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::db_version
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [u] databaseversion [AjPStr] Database version
 **
@@ -1100,6 +1128,7 @@ AjBool ensAnalysisSetDatabaseVersion(EnsPAnalysis analysis,
 **
 ** Set the database file element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::db_file
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [u] databasefile [AjPStr] Database file
 **
@@ -1126,6 +1155,7 @@ AjBool ensAnalysisSetDatabaseFile(EnsPAnalysis analysis, AjPStr databasefile)
 **
 ** Set the program name element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::program
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [u] programname [AjPStr] Program name
 **
@@ -1152,6 +1182,7 @@ AjBool ensAnalysisSetProgramName(EnsPAnalysis analysis, AjPStr programname)
 **
 ** Set the program version element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::program_version
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [u] programversion [AjPStr] Program version
 **
@@ -1179,6 +1210,7 @@ AjBool ensAnalysisSetProgramVersion(EnsPAnalysis analysis,
 **
 ** Set the program file element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::program_file
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [u] programfile [AjPStr] Program file
 **
@@ -1205,6 +1237,7 @@ AjBool ensAnalysisSetProgramFile(EnsPAnalysis analysis, AjPStr programfile)
 **
 ** Set the parameters element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::parameters
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [u] parameters [AjPStr] Parameters
 **
@@ -1231,6 +1264,7 @@ AjBool ensAnalysisSetParameters(EnsPAnalysis analysis, AjPStr parameters)
 **
 ** Set the module name element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::module
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [u] modulename [AjPStr] Module name
 **
@@ -1257,6 +1291,7 @@ AjBool ensAnalysisSetModuleName(EnsPAnalysis analysis, AjPStr modulename)
 **
 ** Set the module version element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::module_version
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [u] moduleversion [AjPStr] Module version
 **
@@ -1264,7 +1299,8 @@ AjBool ensAnalysisSetModuleName(EnsPAnalysis analysis, AjPStr modulename)
 ** @@
 ******************************************************************************/
 
-AjBool ensAnalysisSetModuleVersion(EnsPAnalysis analysis, AjPStr moduleversion)
+AjBool ensAnalysisSetModuleVersion(EnsPAnalysis analysis,
+                                   AjPStr moduleversion)
 {
     if(!analysis)
         return ajFalse;
@@ -1283,6 +1319,7 @@ AjBool ensAnalysisSetModuleVersion(EnsPAnalysis analysis, AjPStr moduleversion)
 **
 ** Set the GFF source element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::gff_source
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [u] gffsource [AjPStr] GFF source
 **
@@ -1309,6 +1346,7 @@ AjBool ensAnalysisSetGFFSource(EnsPAnalysis analysis, AjPStr gffsource)
 **
 ** Set the GFF feature element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::gff_feature
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [u] gfffeature [AjPStr] GFF feature
 **
@@ -1335,6 +1373,7 @@ AjBool ensAnalysisSetGFFFeature(EnsPAnalysis analysis, AjPStr gfffeature)
 **
 ** Set the description element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::description
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [u] description [AjPStr] Description
 **
@@ -1361,6 +1400,7 @@ AjBool ensAnalysisSetDescription(EnsPAnalysis analysis, AjPStr description)
 **
 ** Set the display label element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::display_label
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [u] displaylabel [AjPStr] Display label
 **
@@ -1387,6 +1427,7 @@ AjBool ensAnalysisSetDisplayLabel(EnsPAnalysis analysis, AjPStr displaylabel)
 **
 ** Set the web data element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::web_data
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [u] webdata [AjPStr] Web data
 **
@@ -1413,6 +1454,7 @@ AjBool ensAnalysisSetWebData(EnsPAnalysis analysis, AjPStr webdata)
 **
 ** Set the displayable element of an Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::Analysis::displayable
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
 ** @param [r] displayable [AjBool] Displayable element
 **
@@ -1548,6 +1590,7 @@ AjBool ensAnalysisTrace(const EnsPAnalysis analysis, ajuint level)
 **
 ** Test whether an Ensembl Analysis is based on a database.
 **
+** @cc Bio::EnsEMBL::Analysis::has_database
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
 ** @return [AjBool] ajTrue if the Ensembl Analysis was defined and has a
@@ -1606,14 +1649,13 @@ AjBool ensAnalysisIsDatabase(const EnsPAnalysis analysis)
 AjBool ensAnalysisMatch(const EnsPAnalysis analysis1,
                         const EnsPAnalysis analysis2)
 {
-    /*
-     ajDebug("ensAnalysisMatch\n"
-	     "  analysis1 %p\n"
-	     "  analysis2 %p\n",
-	     analysis1,
-	     analysis2);
-     
-     */
+#if AJFALSE
+    ajDebug("ensAnalysisMatch\n"
+            "  analysis1 %p\n"
+            "  analysis2 %p\n",
+            analysis1,
+            analysis2);
+#endif
     
     if(!analysis1)
 	return ajFalse;
@@ -1809,7 +1851,7 @@ ajuint ensAnalysisGetMemSize(const EnsPAnalysis analysis)
 **
 ** Functions for manipulating Ensembl Analysis Adaptor objects
 **
-** @cc Bio::EnsEMBL::DBSQL::Analysisadaptor CVS Revision: 1.63
+** @cc Bio::EnsEMBL::DBSQL::AnalysisAdaptor CVS Revision: 1.64
 **
 ** @nam2rule Analysisadaptor
 **
@@ -1866,6 +1908,7 @@ static const char *analysisAdaptorFinalCondition = NULL;
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl Analysis objects.
 **
+** @cc Bio::EnsEMBL::DBSQL::AnalysisAdaptor::_objFromHashref
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
 ** @param [u] am [EnsPAssemblymapper] Ensembl Assembly Mapper
@@ -1910,19 +1953,19 @@ static AjBool analysisAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPAnalysis analysis       = NULL;
     EnsPAnalysisadaptor adaptor = NULL;
     
-    /*
-     ajDebug("analysisAdaptorFetchAllBySQL\n"
-	     "  dba %p\n"
-	     "  statement %p\n"
-	     "  am %p\n"
-	     "  slice %p\n"
-	     "  analyses %p\n",
-	     dba,
-	     statement,
-	     am,
-	     slice,
-	     analyses);
-     */
+#if AJFALSE
+    ajDebug("analysisAdaptorFetchAllBySQL\n"
+            "  dba %p\n"
+            "  statement %p\n"
+            "  am %p\n"
+            "  slice %p\n"
+            "  analyses %p\n",
+            dba,
+            statement,
+            am,
+            slice,
+            analyses);
+#endif
     
     if(!dba)
         return ajFalse;
@@ -2182,7 +2225,7 @@ static AjBool analysisAdaptorCacheRemove(EnsPAnalysisadaptor adaptor,
 	       analysis->Identifier,
 	       analysis->Name);
     
-    if ((!analysis1) && analysis2)
+    if((!analysis1) && analysis2)
 	ajWarn("analysisAdaptorCacheRemove could remove Analysis with "
 	       "identifier %u and name '%S' only from the name cache.\n",
 	       analysis->Identifier,
@@ -2223,11 +2266,11 @@ static AjBool analysisAdaptorCacheInit(EnsPAnalysisadaptor adaptor)
     
     EnsPAnalysis analysis = NULL;
     
-    /*
-     ajDebug("analysisAdaptorCacheInit\n"
-	     "  adaptor %p\n",
-	     adaptor);
-     */
+#if AJFALSE
+    ajDebug("analysisAdaptorCacheInit\n"
+            "  adaptor %p\n",
+            adaptor);
+#endif
     
     if(!adaptor)
         return ajFalse;
@@ -2241,7 +2284,7 @@ static AjBool analysisAdaptorCacheInit(EnsPAnalysisadaptor adaptor)
     if(adaptor->CacheByName)
         return ajFalse;
     else
-        adaptor->CacheByName = ajTablestrNewLen(0);
+        adaptor->CacheByName = ajTablestrNewCaseLen(0);
     
     analyses = ajListNew();
     
@@ -2309,6 +2352,7 @@ static AjBool analysisAdaptorCacheInit(EnsPAnalysisadaptor adaptor)
 ** @see ensRegistryGetDatabaseadaptor
 ** @see ensRegistryGetAnalysisadaptor
 **
+** @cc Bio::EnsEMBL::DBSQL::AnalysisAdaptor::new
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
 ** @return [EnsPAnalysisadaptor] Ensembl Analyis Adaptor or NULL
@@ -2322,11 +2366,11 @@ EnsPAnalysisadaptor ensAnalysisadaptorNew(EnsPDatabaseadaptor dba)
     if(!dba)
         return NULL;
     
-    /*
-     ajDebug("ensAnalysisadaptorNew\n"
-	     "  dba %p\n",
-	     dba);
-     */
+#if AJFALSE
+    ajDebug("ensAnalysisadaptorNew\n"
+            "  dba %p\n",
+            dba);
+#endif
     
     AJNEW0(adaptor);
     
@@ -2344,7 +2388,7 @@ EnsPAnalysisadaptor ensAnalysisadaptorNew(EnsPDatabaseadaptor dba)
     ** which calls analysisAdaptorFetchAllBySQL, which calls
     ** ensRegistryGetAnalysisadaptor. At that point, however, the Analysis
     ** Adaptor has not been stored in the Registry. Therefore, each
-    ** ensAnaylsisadaptorFetch function has to test the presence of the
+    ** ensAnalysisadaptorFetch function has to test the presence of the
     ** adaptor-internal cache and eventually initialise before accessing it.
     ** 
     **  analysisAdaptorCacheInit(adaptor);
@@ -2669,6 +2713,7 @@ static void analysisAdaptorFetchAll(const void *key, void **value, void *cl)
 ** The caller is responsible for deleting the Ensembl Analyses before
 ** deleting the AJAX List.
 **
+** @cc Bio::EnsEMBL::DBSQL::AnalysisAdaptor::fetch_all
 ** @param [r] adaptor [EnsPAnalysisadaptor] Ensembl Analysis Adaptor
 ** @param [u] analyses [AjPList] AJAX List of Ensembl Analyses
 **
@@ -2676,7 +2721,8 @@ static void analysisAdaptorFetchAll(const void *key, void **value, void *cl)
 ** @@
 ******************************************************************************/
 
-AjBool ensAnalysisadaptorFetchAll(EnsPAnalysisadaptor adaptor, AjPList analyses)
+AjBool ensAnalysisadaptorFetchAll(EnsPAnalysisadaptor adaptor,
+                                  AjPList analyses)
 {
     if(!adaptor)
         return ajFalse;
@@ -2700,8 +2746,9 @@ AjBool ensAnalysisadaptorFetchAll(EnsPAnalysisadaptor adaptor, AjPList analyses)
 /* @func ensAnalysisadaptorFetchByIdentifier **********************************
 **
 ** Fetch an Ensembl Analysis by its SQL database-internal identifier.
-** The caller is responsible for deleting the Ensembl Anaylsis.
+** The caller is responsible for deleting the Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::DBSQL::AnalysisAdaptor::fetch_by_dbID
 ** @param [r] adaptor [EnsPAnalysisadaptor] Ensembl Analysis Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @param [wP] Panalysis [EnsPAnalysis*] Ensembl Analysis address
@@ -2789,8 +2836,9 @@ AjBool ensAnalysisadaptorFetchByIdentifier(EnsPAnalysisadaptor adaptor,
 /* @func ensAnalysisadaptorFetchByName ****************************************
 **
 ** Fetch an Ensembl Analysis by its name.
-** The caller is responsible for deleting the Ensembl Anaylsis.
+** The caller is responsible for deleting the Ensembl Analysis.
 **
+** @cc Bio::EnsEMBL::DBSQL::AnalysisAdaptor::fetch_by_logic_name
 ** @param [r] adaptor [EnsPAnalysisadaptor] Ensembl Analysis Adaptor
 ** @param [r] name [const AjPStr] Ensembl Analysis name
 ** @param [wP] Panalysis [EnsPAnalysis*] Ensembl Analysis address
@@ -2911,6 +2959,7 @@ static const char* analysisAdaptorFeatureClasses[] =
 ** The caller is responsible for deleting the Ensembl Analyses before
 ** deleting the AJAX List.
 **
+** @cc Bio::EnsEMBL::DBSQL::AnalysisAdaptor::fetch_all_by_feature_class
 ** @param [r] adaptor [EnsPAnalysisadaptor] Ensembl Analysis Adaptor
 ** @param [r] class [const AjPStr] Ensembl Feature class
 ** @param [u] analyses [AjPList] AJAX List of Ensembl Analyses
