@@ -520,7 +520,8 @@ ensMapperresultNew(ensEMapperresultCoordinate, oid, start, end, strand, cs, \
 		   0, 0)
 
 #define MENSMAPPERGAPNEW(start, end) \
-ensMapperresultNew(ensEMapperresultGap, 0, 0, 0, 0, NULL, start, end)
+ensMapperresultNew(ensEMapperresultGap, 0, 0, 0, 0, (EnsPCoordsystem) NULL, \
+		   start, end)
 
 #define MENSMAPPERINDELNEW(oid, start, end, strand, cs, gstart, gend) \
 ensMapperresultNew(ensEMapperresultInDel, oid, start, end, strand, cs, \
