@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -431,7 +431,7 @@ EnsPTranscript ensTranscriptNewObj(const EnsPTranscript object)
     /* Copy the AJAX List of supporting Ensembl Base Align Features. */
     
     if(object->Supportingfeatures &&
-	ajListGetLength(object->Supportingfeatures))
+       ajListGetLength(object->Supportingfeatures))
     {
 	transcript->Supportingfeatures = ajListNew();
 	
@@ -467,9 +467,9 @@ EnsPTranscript ensTranscriptNewObj(const EnsPTranscript object)
     transcript->StartPhase = object->StartPhase;
     
     /*
-     ** TODO: The ExonCoordMapper is missing, but how should the
-     ** Ensembl Mapper be copied? Should we really copy it deeply?
-     */
+    ** TODO: The ExonCoordMapper is missing, but how should the
+    ** Ensembl Mapper be copied? Should we really copy it deeply?
+    */
     
     transcript->ExonCoordMapper = NULL;
     
@@ -555,11 +555,11 @@ void ensTranscriptDel(EnsPTranscript *Ptranscript)
 
     pthis = *Ptranscript;
     
-    /*
-     ajDebug("ensTranscriptDel\n"
-	     "  *Ptranscript %p\n",
-	     *Ptranscript);
-     */
+#if AJFALSE
+    ajDebug("ensTranscriptDel\n"
+            "  *Ptranscript %p\n",
+            *Ptranscript);
+#endif
     
     pthis->Use--;
     
@@ -693,7 +693,8 @@ void ensTranscriptDel(EnsPTranscript *Ptranscript)
 ** @valrule CreationDate [AjPStr] Creation date
 ** @valrule ModificationDate [AjPStr] Modification date
 ** @valrule Attributes [const AjPList] AJAX List of Ensembl Attributes
-** @valrule DatabaseEntries [const AjPList] AJAX List of Ensembl Database Entries
+** @valrule DatabaseEntries [const AjPList] AJAX List of
+**                                          Ensembl Database Entries
 ** @valrule Exons [const AjPList] AJAX List of Ensembl Exons
 ** @valrule Supportingfeatures [const AjPList] AJAX List of Ensembl Base
 **                                       Align Features
@@ -1239,7 +1240,7 @@ const AjPList ensTranscriptGetSupportingfeatures(EnsPTranscript transcript)
 ** Transcript needs to have weak references to each of its (cloned) Translation
 ** objects.
 **
-** Please note, since this is a List of weak refrences to Translation objects,
+** Please note, since this is a List of weak references to Translation objects,
 ** the List will be empty if a Translation is not owned by any other object.
 ** Please use ensTranscriptFetchTranslation to own the Translation.
 **
@@ -1319,7 +1320,7 @@ ajuint ensTranscriptGetTranscriptCodingStart(EnsPTranscript transcript)
 		/* Add the UTR portion of the first coding Exon. */
 		
 		transcript->TranscriptCodingStart +=
-		ensTranslationGetStart(translation);
+                    ensTranslationGetStart(translation);
 		
 		break;
 	    }
@@ -1354,7 +1355,7 @@ ajuint ensTranscriptGetTranscriptCodingStart(EnsPTranscript transcript)
 	    while(ajListPop(selist, (void **) &se))
 	    {
 		if(ensSequenceEditGetStart(se) <
-		    transcript->TranscriptCodingStart)
+                   transcript->TranscriptCodingStart)
 		    transcript->TranscriptCodingStart +=
 			ensSequenceEditGetLengthDifference(se);
 		
@@ -1427,7 +1428,7 @@ ajuint ensTranscriptGetTranscriptCodingEnd(EnsPTranscript transcript)
 		/* Add the coding portion of the last coding Exon. */
 		
 		transcript->TranscriptCodingEnd +=
-		ensTranslationGetEnd(translation);
+                    ensTranslationGetEnd(translation);
 		
 		break;
 	    }
@@ -1453,9 +1454,9 @@ ajuint ensTranscriptGetTranscriptCodingEnd(EnsPTranscript transcript)
 	    ensTranscriptFetchAllSequenceEdits(transcript, selist);
 	    
 	    /*
-	     ** Sort in reverse order to avoid adjustment of down-stream
-	     ** Sequence Edits.
-	     */
+            ** Sort in reverse order to avoid adjustment of down-stream
+            ** Sequence Edits.
+            */
 	    
 	    ajListSort(selist, ensSequenceEditCompareStartDescending);
 	    
@@ -1467,7 +1468,7 @@ ajuint ensTranscriptGetTranscriptCodingEnd(EnsPTranscript transcript)
 	        */
 		
 		if(ensSequenceEditGetStart(se) <=
-		    transcript->TranscriptCodingEnd + 1)
+                   transcript->TranscriptCodingEnd + 1)
 		    transcript->TranscriptCodingEnd +=
 			ensSequenceEditGetLengthDifference(se);
 		
@@ -1954,17 +1955,17 @@ AjBool ensTranscriptSetFeature(EnsPTranscript transcript, EnsPFeature feature)
     
     EnsPTranslation translation = NULL;
     
-    /*
-     ajDebug("ensTranscriptSetFeature\n"
-	     "  transcript %p\n"
-	     "  feature %p\n",
-	     transcript,
-	     feature);
-     
-     ensTranscriptTrace(transcript, 1);
-     
-     ensFeatureTrace(feature, 1);
-     */
+#if AJFALSE
+    ajDebug("ensTranscriptSetFeature\n"
+            "  transcript %p\n"
+            "  feature %p\n",
+            transcript,
+            feature);
+    
+    ensTranscriptTrace(transcript, 1);
+    
+    ensFeatureTrace(feature, 1);
+#endif
     
     if(!transcript)
 	return ajFalse;
@@ -2124,7 +2125,7 @@ AjBool ensTranscriptAddAttribute(EnsPTranscript transcript,
     for(i = 0; transcriptSequenceEditCode[i]; i++)
     {
 	if(ajStrMatchC(ensAttributeGetCode(attribute),
-			transcriptSequenceEditCode[i]))
+                       transcriptSequenceEditCode[i]))
 	    match = ajTrue;
     }
     
@@ -2863,7 +2864,7 @@ EnsPTranscript ensTranscriptTransform(EnsPTranscript transcript,
 			orderbroken = ajTrue;
 		    
 		    if((lastnewstrand < 0) &&
-			(ensFeatureGetStart(newfeature) > lastnewstart))
+                       (ensFeatureGetStart(newfeature) > lastnewstart))
 			orderbroken = ajTrue;
 		    
 		    trstart =
@@ -2980,7 +2981,8 @@ EnsPTranscript ensTranscriptTransform(EnsPTranscript transcript,
 ** @@
 ******************************************************************************/
 
-EnsPTranscript ensTranscriptTransfer(EnsPTranscript transcript, EnsPSlice slice)
+EnsPTranscript ensTranscriptTransfer(EnsPTranscript transcript,
+                                     EnsPSlice slice)
 {
     EnsPFeature newfeature = NULL;
     
@@ -3304,7 +3306,7 @@ AjBool ensTranscriptFetchDisplayIdentifier(const EnsPTranscript transcript,
 	return ajFalse;
     
     if(transcript->StableIdentifier &&
-	ajStrGetLen(transcript->StableIdentifier))
+       ajStrGetLen(transcript->StableIdentifier))
 	*Pidentifier = ajStrNewS(transcript->StableIdentifier);
     else if(transcript->Identifier)
 	*Pidentifier = ajFmtStr("%u", transcript->Identifier);
@@ -3393,15 +3395,8 @@ AjBool ensTranscriptFetchSequenceStr(EnsPTranscript transcript,
     if(!Psequence)
 	return ajFalse;
     
-    /*
-    ** FIXME: Deleting the String can be problematic, depending on what was
-    ** passed into the function.
-    ** We should probably ignore it and always assign a new String to it,
-    ** which needs to be deleted by the caller.
-    */
-    
     if(*Psequence)
-	ajStrDelStatic(Psequence);
+	ajStrAssignClear(Psequence);
     else
 	*Psequence = ajStrNew();
     
@@ -3501,15 +3496,10 @@ AjBool ensTranscriptFetchTranslatableSequence(EnsPTranscript transcript,
     if(!Psequence)
 	return ajFalse;
     
-    /*
-    ** FIXME: Deleting the String can be problematic, depending on what was
-    ** passed into the function.
-    ** We should probably ignore it and always assign a new String to it,
-    ** which needs to be deleted by the caller.
-    */
-    
     if(*Psequence)
 	ajStrAssignClear(Psequence);
+    else
+	*Psequence = ajStrNew();
     
     /*
     ** Return empty string for non-coding Transcripts.
@@ -3671,13 +3661,13 @@ AjBool ensTranscriptTranslateStr(EnsPTranscript transcript, AjPStr* Psequence)
     
     EnsPTranslation etranslation = NULL;
     
-    /*
-     ajDebug("ensTranscriptTranslateStr\n"
-	     "  transcript %p\n"
-	     "  Psequence %p\n",
-	     transcript,
-	     Psequence);
-     */
+#if AJFALSE
+    ajDebug("ensTranscriptTranslateStr\n"
+            "  transcript %p\n"
+            "  Psequence %p\n",
+            transcript,
+            Psequence);
+#endif
     
     if(!transcript)
 	return ajFalse;
@@ -3685,14 +3675,8 @@ AjBool ensTranscriptTranslateStr(EnsPTranscript transcript, AjPStr* Psequence)
     if(!Psequence)
 	return ajFalse;
     
-    /*
-    ** FIXME: Deleting the String can be problematic, depending on what was
-    ** passed into the function. We should probably ignore it and always
-    ** assign a new String to it, which needs to be deleted by the caller.
-    */
-    
     if(*Psequence)
-	ajStrDelStatic(Psequence);
+	ajStrAssignClear(Psequence);
     else
 	*Psequence = ajStrNew();
     
@@ -3713,21 +3697,6 @@ AjBool ensTranscriptTranslateStr(EnsPTranscript transcript, AjPStr* Psequence)
     }
     
     ensTranscriptFetchTranslatableSequence(transcript, &cdna);
-    
-    /*
-    ** Remove the final stop codon from the mRNA if it is present, so that the
-    ** resulting peptides do not end with a '*'. If a terminal stop codon is
-    ** desired, call ensTranscriptFetchTranslatableSequence and translate it
-    ** directly.
-    */
-    
-    if(ajStrGetLen(cdna) % 3 == 0)
-    {
-	if(ajStrSuffixC(cdna, "TAG") ||
-	    ajStrSuffixC(cdna, "TGA") ||
-	    ajStrSuffixC(cdna, "TAA"))
-	    ajStrCutEnd(&cdna, 3);
-    }
     
     if(ajStrGetLen(cdna) < 1)
 	return ajTrue;
@@ -3757,6 +3726,19 @@ AjBool ensTranscriptTranslateStr(EnsPTranscript transcript, AjPStr* Psequence)
     
     ajStrDel(&cdna);
     
+    /*
+    ** Remove the final stop codon from the mRNA if it is present, so that the
+    ** resulting peptides do not end with a '*'. If a terminal stop codon is
+    ** desired, call ensTranscriptFetchTranslatableSequence and translate it
+    ** directly.
+    ** NOTE: This test is simpler and hopefully more efficient than the one
+    ** in the Perl API, which tests for a termination codon in a
+    ** codon table-specifc manner and removes the last triplet from the cDNA.
+    */
+    
+    if (ajStrGetCharLast(*Psequence) == '*')
+	ajStrCutEnd(Psequence, 1);
+    
     if(transcript->EditsEnabled)
 	ensTranslationModify(etranslation, Psequence);
     
@@ -3772,7 +3754,7 @@ AjBool ensTranscriptTranslateStr(EnsPTranscript transcript, AjPStr* Psequence)
 **
 ** Functions for manipulating Ensembl Transcript Adaptor objects
 **
-** @cc Bio::EnsEMBL::DBSQL::Transcriptadaptor CVS Revision: 1.82
+** @cc Bio::EnsEMBL::DBSQL::TranscriptAdaptor CVS Revision: 1.82
 **
 ** @nam2rule Transcriptadaptor
 **
@@ -3929,19 +3911,19 @@ static AjBool transcriptAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPSlice srslice   = NULL;
     EnsPSliceadaptor sa = NULL;
     
-    /*
-     ajDebug("transcriptAdaptorFetchAllBySQL\n"
-	     "  dba %p\n"
-	     "  statement %p\n"
-	     "  am %p\n"
-	     "  slice %p\n"
-	     "  transcripts %p\n",
-	     dba,
-	     statement,
-	     am,
-	     slice,
-	     transcripts);
-     */
+#if AJFALSE
+    ajDebug("transcriptAdaptorFetchAllBySQL\n"
+            "  dba %p\n"
+            "  statement %p\n"
+            "  am %p\n"
+            "  slice %p\n"
+            "  transcripts %p\n",
+            dba,
+            statement,
+            am,
+            slice,
+            transcripts);
+#endif
     
     if(!dba)
 	return ajFalse;
@@ -4070,9 +4052,9 @@ static AjBool transcriptAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    am = ensAssemblymapperNewRef(am);
 	
 	if((!am) &&
-	    slice &&
-	    (!ensCoordsystemMatch(ensSliceGetCoordsystem(slice),
-				   ensSliceGetCoordsystem(srslice))))
+           slice &&
+           (!ensCoordsystemMatch(ensSliceGetCoordsystem(slice),
+                                 ensSliceGetCoordsystem(srslice))))
 	    am =
 		ensAssemblymapperadaptorFetchByCoordsystems(
                     ama,
@@ -4140,9 +4122,9 @@ static AjBool transcriptAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    slstrand = ensMapperresultGetStrand(mr);
 	    
 	    /*
-	    ** FIXME: In contrast to the Bio::EnsEMBL::DBSQL::Exonadaptor
+	    ** FIXME: In contrast to the Bio::EnsEMBL::DBSQL::ExonAdaptor
 	    ** code, a construct to get a Slice from the cache is not
-	    ** commented out from the Bio::EnsEMBL::DBSQL::Transcriptadaptor
+	    ** commented out from the Bio::EnsEMBL::DBSQL::TranscriptAdaptor
 	    ** of the Perl API.
 	    ** See CVS versions 1.68 and 1.68.2.1 for details.
 	    */
@@ -4187,7 +4169,7 @@ static AjBool transcriptAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    */
 	    
 	    if((ensSliceGetStart(slice) != 1) ||
-		(ensSliceGetStrand(slice) < 0))
+               (ensSliceGetStrand(slice) < 0))
 	    {
 		if(ensSliceGetStrand(slice) >= 0)
 		{
@@ -4211,8 +4193,8 @@ static AjBool transcriptAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    */
 	    
 	    if((slend < 1) ||
-		(slstart > sllength) ||
-		(srid != ensSliceGetSeqregionIdentifier(slice)))
+               (slstart > sllength) ||
+               (srid != ensSliceGetSeqregionIdentifier(slice)))
 	    {
 		/* Next feature but destroy first! */
 		
@@ -4250,10 +4232,10 @@ static AjBool transcriptAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	    einfotype = ensExternalreferenceInfoTypeFromStr(erinfotype);
 	    
 	    /* FIXME: The homo_sapiens_core_51_36m database has NULL here.
-		if(!einfotype)
-		ajFatal("transcriptAdaptorFetchAllBySQL encountered "
-			"unexpected string '%S' in the "
-			"'xref.infotype' field.\n", erinfotype);
+               if(!einfotype)
+               ajFatal("transcriptAdaptorFetchAllBySQL encountered "
+               "unexpected string '%S' in the "
+               "'xref.infotype' field.\n", erinfotype);
 	    */
 	    
 	    dbe = ensDatabaseentryNew((EnsPDatabaseentryadaptor) NULL,
@@ -4479,21 +4461,21 @@ EnsPTranscriptadaptor ensTranscriptadaptorNew(EnsPDatabaseadaptor dba)
     
     AJNEW0(adaptor);
     
-    adaptor->Adaptor =
-	ensFeatureadaptorNew(dba,
-			     transcriptAdaptorTables,
-			     transcriptAdaptorColumns,
-			     transcriptAdaptorLeftJoin,
-			     transcriptAdaptorDefaultCondition,
-			     transcriptAdaptorFinalCondition,
-			     transcriptAdaptorFetchAllBySQL,
-			     (void* (*)(const void* key)) NULL, /* Fread */
-			     transcriptAdaptorCacheReference,
-			     (AjBool (*)(const void* value)) NULL, /* Fwrite */
-			     transcriptAdaptorCacheDelete,
-			     transcriptAdaptorCacheSize,
-			     transcriptAdaptorGetFeature,
-			     "Transcript");
+    adaptor->Adaptor = ensFeatureadaptorNew(
+        dba,
+        transcriptAdaptorTables,
+        transcriptAdaptorColumns,
+        transcriptAdaptorLeftJoin,
+        transcriptAdaptorDefaultCondition,
+        transcriptAdaptorFinalCondition,
+        transcriptAdaptorFetchAllBySQL,
+        (void* (*)(const void* key)) NULL, /* Fread */
+        transcriptAdaptorCacheReference,
+        (AjBool (*)(const void* value)) NULL, /* Fwrite */
+        transcriptAdaptorCacheDelete,
+        transcriptAdaptorCacheSize,
+        transcriptAdaptorGetFeature,
+        "Transcript");
     
     return adaptor;
 }
@@ -4846,18 +4828,18 @@ AjBool ensTranscriptadaptorFetchByStableIdentifier(
     ensBaseadaptorEscapeC(ba, &txtstableid, stableid);
     
     if(version)
-	constraint =
-	    ajFmtStr("transcript_stable_id.stable_id = '%s' "
-		     "AND "
-		     "transcript_stable_id.version = %u",
-		     txtstableid,
-		     version);
+	constraint = ajFmtStr(
+            "transcript_stable_id.stable_id = '%s' "
+            "AND "
+            "transcript_stable_id.version = %u",
+            txtstableid,
+            version);
     else
-	constraint =
-	    ajFmtStr("transcript_stable_id.stable_id = '%s' "
-		     "AND "
-		     "transcript.is_current = 1",
-		     txtstableid);
+	constraint = ajFmtStr(
+            "transcript_stable_id.stable_id = '%s' "
+            "AND "
+            "transcript.is_current = 1",
+            txtstableid);
     
     ajCharDel(&txtstableid);
     
@@ -4973,7 +4955,7 @@ AjBool ensTranscriptadaptorFetchByTranslationIdentifier(
     /*
     ** FIXME: Calling the function above directly is a short-cut.
      
-     value = ensTranscriptadaptorFetchByIdentifier(ta, trid, Ptranscript);
+    value = ensTranscriptadaptorFetchByIdentifier(ta, trid, Ptranscript);
     */
     
     return ajTrue;
@@ -5027,22 +5009,23 @@ AjBool ensTranscriptadaptorFetchByTranslationStableIdentifier(
     
     ensBaseadaptorEscapeC(ba, &txtstableid, stableid);
     
-    statement = ajFmtStr("SELECT "
-			 "transcript.transcript_id "
-			 "FROM "
-			 "translation_stable_id, "
-			 "transcript, "
-			 "translation "
-			 "WHERE "
-			 "translation_stable_id.stable_id = '%s' "
-			 "AND "
-			 "translation.translation_id = "
-			 "translation_stable_id.translation_id "
-			 "AND "
-			 "translation.transcript_id = transcript.transcript_id "
-			 "AND "
-			 "transcript.is_current = 1",
-			 txtstableid);
+    statement = ajFmtStr(
+        "SELECT "
+        "transcript.transcript_id "
+        "FROM "
+        "translation_stable_id, "
+        "transcript, "
+        "translation "
+        "WHERE "
+        "translation_stable_id.stable_id = '%s' "
+        "AND "
+        "translation.translation_id = "
+        "translation_stable_id.translation_id "
+        "AND "
+        "translation.transcript_id = transcript.transcript_id "
+        "AND "
+        "transcript.is_current = 1",
+        txtstableid);
     
     ajCharDel(&txtstableid);
     
@@ -5081,7 +5064,7 @@ AjBool ensTranscriptadaptorFetchByTranslationStableIdentifier(
     /*
     ** FIXME: Calling the function above directly is a short-cut.
      
-     value = ensTranscriptadaptorFetchByIdentifier(ta, trid, Ptranscript);
+    value = ensTranscriptadaptorFetchByIdentifier(ta, trid, Ptranscript);
     */
     
     return ajTrue;
@@ -5171,11 +5154,11 @@ AjBool ensTranscriptMapperInit(EnsPTranscript transcript)
     
     EnsPSlice slice = NULL;
     
-    /*
-     ajDebug("ensTranscriptMapperInit\n"
-	     "  transcript %p\n",
-	     transcript);
-     */
+#if AJFALSE
+    ajDebug("ensTranscriptMapperInit\n"
+            "  transcript %p\n",
+            transcript);
+#endif
     
     if(!transcript)
 	return ajFalse;
@@ -5254,7 +5237,7 @@ AjBool ensTranscriptMapperInit(EnsPTranscript transcript)
 	if(transcript->EditsEnabled)
 	{
 	    while(ajListPop(selist, (void **) &se) &&
-		   (ensSequenceEditGetStart(se) + editshift <= curtrcend))
+                  (ensSequenceEditGetStart(se) + editshift <= curtrcend))
 	    {
 		if(ensSequenceEditGetLengthDifference(se))
 		{
@@ -5684,7 +5667,11 @@ AjBool ensTranscriptMapperSlice2CDS(EnsPTranscript transcript,
     
     result = ajListNew();
     
-    ensTranscriptMapperSlice2Transcript(transcript, start, end, strand, result);
+    ensTranscriptMapperSlice2Transcript(transcript,
+                                        start,
+                                        end,
+                                        strand,
+                                        result);
     
     while(ajListPop(result, (void **) &gcmr))
     {
@@ -5693,10 +5680,10 @@ AjBool ensTranscriptMapperSlice2CDS(EnsPTranscript transcript,
 	else
 	{
 	    if((ensMapperresultGetStrand(gcmr) < 0) ||
-		(ensMapperresultGetEnd(gcmr) <
-		 (ajint) transcript->TranscriptCodingStart) ||
-		(ensMapperresultGetStart(gcmr) >
-		 (ajint) transcript->TranscriptCodingEnd))
+               (ensMapperresultGetEnd(gcmr) <
+                (ajint) transcript->TranscriptCodingStart) ||
+               (ensMapperresultGetStart(gcmr) >
+                (ajint) transcript->TranscriptCodingEnd))
 	    {
 		/* All gap - does not map to peptide. */
 		
@@ -5716,9 +5703,9 @@ AjBool ensTranscriptMapperSlice2CDS(EnsPTranscript transcript,
 		{
 		    /* Start coordinate is in the 5' UTR. */
 		    
-		    mr = MENSMAPPERGAPNEW(start,
-					  transcript->TranscriptCodingStart -
-					  1);
+		    mr = MENSMAPPERGAPNEW(
+                        start,
+                        transcript->TranscriptCodingStart - 1);
 		    
 		    ajListPushAppend(mrs, (void *) mr);
 		    
@@ -5733,8 +5720,9 @@ AjBool ensTranscriptMapperSlice2CDS(EnsPTranscript transcript,
 		{
 		    /* End coordinate is in the 3' UTR. */
 		    
-		    endgap =
-		    MENSMAPPERGAPNEW(transcript->TranscriptCodingEnd + 1, end);
+		    endgap = MENSMAPPERGAPNEW(
+                        transcript->TranscriptCodingEnd + 1,
+                        end);
 		    
 		    /* Adjust end coordinate relative to CDS start. */
 		    
@@ -5859,7 +5847,7 @@ AjBool ensTranscriptMapperSlice2Translation(EnsPTranscript transcript,
 	    */
 	    
 	    pepstart = (ajuint)
-	    ((ensMapperresultGetStart(gcmr) + shift + 2) / 3);
+                ((ensMapperresultGetStart(gcmr) + shift + 2) / 3);
 	    
 	    pepend = (ajuint) ((ensMapperresultGetEnd(gcmr) + shift + 2) / 3);
 	    
