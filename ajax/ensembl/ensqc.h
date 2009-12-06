@@ -411,7 +411,7 @@ const char *ensQcdasfeatureTypeToChar(const AjEnum type);
 
 EnsPQcdasfeatureadaptor ensQcdasfeatureadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensQcdasfeatureadaptorDel(EnsPQcdasfeatureadaptor* Pqcdasfa);
+void ensQcdasfeatureadaptorDel(EnsPQcdasfeatureadaptor *Pqcdasfa);
 
 AjBool ensQcdasfeatureadaptorFetchByIdentifier(EnsPQcdasfeatureadaptor adaptor,
                                                ajuint identifier,
