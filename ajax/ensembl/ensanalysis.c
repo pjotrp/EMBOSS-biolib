@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -110,25 +110,25 @@ static void analysisAdaptorFetchAll(const void *key, void **value, void *cl);
 **
 ** @argrule Obj object [const EnsPAnalysis] Ensembl Analysis
 ** @argrule Ref object [EnsPAnalysis] Ensembl Analysis
-** @argrule Data adaptor [EnsPAnalysisadaptor] Undocumented
-** @argrule Data identifier [ajuint] Undocumented
-** @argrule Data cdate [AjPStr] Undocumented
-** @argrule Data name [AjPStr] Undocumented
-** @argrule Data databasename [AjPStr] Undocumented
-** @argrule Data databaseversion [AjPStr] Undocumented
-** @argrule Data databasefile [AjPStr] Undocumented
-** @argrule Data programname [AjPStr] Undocumented
-** @argrule Data programversion [AjPStr] Undocumented
-** @argrule Data programfile [AjPStr] Undocumented
-** @argrule Data parameters [AjPStr] Undocumented
-** @argrule Data modulename [AjPStr] Undocumented
-** @argrule Data moduleversion [AjPStr] Undocumented
-** @argrule Data gffsource [AjPStr] Undocumented
-** @argrule Data gfffeature [AjPStr] Undocumented
-** @argrule Data description [AjPStr] Undocumented
-** @argrule Data displaylabel [AjPStr] Undocumented
-** @argrule Data displayable [AjBool] Undocumented
-** @argrule Data webdata [AjPStr] Undocumented
+** @argrule Data adaptor [EnsPAnalysisadaptor] Ensembl Analysis Adaptor
+** @argrule Data identifier [ajuint] SQL database-internal identifier
+** @argrule Data cdate [AjPStr] Creation date
+** @argrule Data name [AjPStr] Name
+** @argrule Data databasename [AjPStr] Database name
+** @argrule Data databaseversion [AjPStr] Database version
+** @argrule Data databasefile [AjPStr] Database file
+** @argrule Data programname [AjPStr] Program name
+** @argrule Data programversion [AjPStr] Program version
+** @argrule Data programfile [AjPStr] Program file
+** @argrule Data parameters [AjPStr] Parameters
+** @argrule Data modulename [AjPStr] Module name
+** @argrule Data moduleversion [AjPStr] Module version
+** @argrule Data gffsource [AjPStr] GFF source
+** @argrule Data gfffeature [AjPStr] GFF feature
+** @argrule Data description [AjPStr] Description
+** @argrule Data displaylabel [AjPStr] Display label
+** @argrule Data displayable [AjBool] Displayable element
+** @argrule Data webdata [AjPStr] Web data
 **
 ** @valrule * [EnsPAnalysis] Ensembl Analysis
 **
