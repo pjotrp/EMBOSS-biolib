@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** Bio::EnsEMBL::MiscSet CVS Revision: 1.5
@@ -1619,7 +1619,7 @@ AjBool ensMiscellaneoussetadaptorFetchByIdentifier(
     
     if(ajListGetLength(mslist) > 1)
 	ajWarn("ensMiscellaneoussetadaptorFetchByIdentifier got more "
-	       "than one Ensembl Miscellaneous Set for(PRIMARY KEY) "
+	       "than one Ensembl Miscellaneous Set for (PRIMARY KEY) "
 	       "identifier %u.\n", identifier);
     
     ajListPop(mslist, (void **) Pms);
@@ -1718,7 +1718,7 @@ AjBool ensMiscellaneoussetadaptorFetchByCode(
     
     if(ajListGetLength(mslist) > 1)
 	ajWarn("ensMiscellaneoussetadaptorFetchByCode got more than one "
-	       "Ensembl Miscellaneous Sets for(UNIQUE) code '%S'.\n",
+	       "Ensembl Miscellaneous Sets for (UNIQUE) code '%S'.\n",
 	       code);
     
     ajListPop(mslist, (void **) Pms);
