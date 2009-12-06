@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1797,6 +1797,9 @@ EnsPPredictiontranscript ensPredictiontranscriptNewObj(
     
     EnsPPredictiontranscript pt = NULL;
     
+    if(!object)
+	return NULL;
+	
     AJNEW0(pt);
     
     pt->Use = 1;
