@@ -89,7 +89,8 @@ ajuint ensTranscriptGetMemSize(const EnsPTranscript transcript);
 AjBool ensTranscriptSetAdaptor(EnsPTranscript transcript,
                                EnsPTranscriptadaptor ta);
 
-AjBool ensTranscriptSetIdentifier(EnsPTranscript transcript, ajuint identifier);
+AjBool ensTranscriptSetIdentifier(EnsPTranscript transcript,
+                                  ajuint identifier);
 
 AjBool ensTranscriptSetFeature(EnsPTranscript transcript, EnsPFeature feature);
 
@@ -129,7 +130,8 @@ AjBool ensTranscriptFetchAllDatabaseEntries(EnsPTranscript transcript,
                                             AjEnum type,
                                             AjPList dbes);
 
-AjBool ensTranscriptFetchAllIntrons(EnsPTranscript transcript, AjPList introns);
+AjBool ensTranscriptFetchAllIntrons(EnsPTranscript transcript,
+                                    AjPList introns);
 
 AjBool ensTranscriptFetchAllSequenceEdits(EnsPTranscript transcript,
                                           AjPList selist);
