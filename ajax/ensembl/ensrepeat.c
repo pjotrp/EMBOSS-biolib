@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1021,7 +1021,7 @@ AjBool ensRepeatconsensusadaptorFetchByIdentifier(EnsPDatabaseadaptor dba,
     
     if(ajListGetLength(rci) > 1)
 	ajFatal("ensRepeatconsensusadaptorFetchByIdentifier got more than one "
-		"Repeat Consensus for(PRIMARY KEY) identifier %u.\n",
+		"Repeat Consensus for (PRIMARY KEY) identifier %u.\n",
 		identifier);
     
     ajListPop(rci, (void **) Prc);

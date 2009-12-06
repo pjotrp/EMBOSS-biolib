@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2114,7 +2114,7 @@ AjBool ensQcsequenceadaptorFetchByName(EnsPQcsequenceadaptor qcsa,
     
     if(ajListGetLength(qcss) > 1)
 	ajWarn("ensQcsequenceadaptorFetchByName got more than "
-	       "one Ensembl QC Sequence for(UNIQUE) name '%S' "
+	       "one Ensembl QC Sequence for (UNIQUE) name '%S' "
 	       "and QC Database identifier %u.\n",
 	       name, qcdbid);
     
