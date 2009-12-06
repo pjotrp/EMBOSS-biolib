@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** Bio::EnsEMBL::Karyotypeband CVS Revision: 1.6
@@ -1060,6 +1060,8 @@ void ensKaryotypebandadaptorDel(EnsPKaryotypebandadaptor *Padaptor)
     
     ensFeatureadaptorDel(&pthis->Adaptor);
 
+    AJFREE(pthis);
+    
     *Padaptor = NULL;
     
     return;
