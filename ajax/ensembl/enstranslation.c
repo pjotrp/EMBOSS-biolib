@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -961,11 +961,11 @@ const AjPList ensTranslationGetAttributes(EnsPTranslation translation)
 {
     EnsPDatabaseadaptor dba = NULL;
     
-    /*
-     ajDebug("ensTranslationGetAttributes\n"
-	     "  translation %p\n",
-	     translation);
-     */
+#if AJFALSE
+    ajDebug("ensTranslationGetAttributes\n"
+            "  translation %p\n",
+            translation);
+#endif
     
     if(!translation)
 	return NULL;
@@ -1166,8 +1166,8 @@ ajuint ensTranslationGetTranscriptStart(EnsPTranslation translation)
     if(!translation->TranscriptStart)
     {
 	translation->TranscriptStart =
-	ensExonGetTranscriptCodingStart(translation->StartExon,
-					translation->Transcript);
+            ensExonGetTranscriptCodingStart(translation->StartExon,
+                                            translation->Transcript);
     }
     
     return translation->TranscriptStart;
@@ -1203,8 +1203,8 @@ ajuint ensTranslationGetTranscriptEnd(EnsPTranslation translation)
     if(!translation->TranscriptEnd)
     {
 	translation->TranscriptEnd =
-	ensExonGetTranscriptCodingEnd(translation->EndExon,
-				      translation->Transcript);
+            ensExonGetTranscriptCodingEnd(translation->EndExon,
+                                          translation->Transcript);
     }
     
     return translation->TranscriptEnd;
@@ -1238,7 +1238,7 @@ ajuint ensTranslationGetSliceStart(EnsPTranslation translation)
 	if(ensFeatureGetStrand(feature) >= 0)
 	{
 	    translation->SliceStart =
-	    ensFeatureGetStart(feature) + (translation->Start - 1);
+                ensFeatureGetStart(feature) + (translation->Start - 1);
 	}
 	else
 	{
@@ -1280,7 +1280,7 @@ ajuint ensTranslationGetSliceEnd(EnsPTranslation translation)
 	if(ensFeatureGetStrand(feature) >= 0)
 	{
 	    translation->SliceEnd =
-	    ensFeatureGetStart(feature) + (translation->End - 1);
+                ensFeatureGetStart(feature) + (translation->End - 1);
 	}
 	else
 	{
@@ -1513,17 +1513,17 @@ AjBool ensTranslationSetIdentifier(EnsPTranslation translation,
 AjBool ensTranslationSetTranscript(EnsPTranslation translation,
                                    EnsPTranscript transcript)
 {
-    /*
-     ajDebug("ensTranslationSetTranscript\n"
-	     "  translation %p\n"
-	     "  transcript %p\n",
-	     translation,
-	     transcript);
-     
-     ensTranslationTrace(translation, 1);
-     
-     ensTranscriptTrace(transcript, 1);
-     */
+#if AJFALSE
+    ajDebug("ensTranslationSetTranscript\n"
+            "  translation %p\n"
+            "  transcript %p\n",
+            translation,
+            transcript);
+    
+    ensTranslationTrace(translation, 1);
+    
+    ensTranscriptTrace(transcript, 1);
+#endif
     
     if(!translation)
 	return ajFalse;
@@ -1572,17 +1572,17 @@ AjBool ensTranslationSetTranscript(EnsPTranslation translation,
 
 AjBool ensTranslationSetStartExon(EnsPTranslation translation, EnsPExon exon)
 {
-    /*
-     ajDebug("ensTranslationSetStartExon\n"
-	     "  translation %p\n"
-	     "  exon %p\n",
-	     translation,
-	     exon);
-     
-     ensTranslationTrace(translation, 1);
-     
-     ensExonTrace(exon, 1);
-     */
+#if AJFALSE
+    ajDebug("ensTranslationSetStartExon\n"
+            "  translation %p\n"
+            "  exon %p\n",
+            translation,
+            exon);
+    
+    ensTranslationTrace(translation, 1);
+    
+    ensExonTrace(exon, 1);
+#endif
     
     if(!translation)
 	return ajFalse;
@@ -1628,17 +1628,17 @@ AjBool ensTranslationSetStartExon(EnsPTranslation translation, EnsPExon exon)
 
 AjBool ensTranslationSetEndExon(EnsPTranslation translation, EnsPExon exon)
 {
-    /*
-     ajDebug("ensTranslationSetEndExon\n"
-	     "  translation %p\n"
-	     "  exon %p\n",
-	     translation,
-	     exon);
-     
-     ensTranslationTrace(translation, 1);
-     
-     ensExonTrace(exon, 1);
-     */
+#if AJFALSE
+    ajDebug("ensTranslationSetEndExon\n"
+            "  translation %p\n"
+            "  exon %p\n",
+            translation,
+            exon);
+    
+    ensTranslationTrace(translation, 1);
+    
+    ensExonTrace(exon, 1);
+#endif
     
     if(!translation)
 	return ajFalse;
@@ -1684,15 +1684,15 @@ AjBool ensTranslationSetEndExon(EnsPTranslation translation, EnsPExon exon)
 
 AjBool ensTranslationSetStart(EnsPTranslation translation, ajuint start)
 {
-    /*
-     ajDebug("ensTranslationSetStart\n"
-	     "  translation %p\n"
-	     "  start %u\n",
-	     translation,
-	     start);
-     
-     ensTranslationTrace(translation, 1);
-     */
+#if AJFALSE
+    ajDebug("ensTranslationSetStart\n"
+            "  translation %p\n"
+            "  start %u\n",
+            translation,
+            start);
+    
+    ensTranslationTrace(translation, 1);
+#endif
     
     if(!translation)
 	return ajFalse;
@@ -1730,15 +1730,15 @@ AjBool ensTranslationSetStart(EnsPTranslation translation, ajuint start)
 
 AjBool ensTranslationSetEnd(EnsPTranslation translation, ajuint end)
 {
-    /*
-     ajDebug("ensTranslationSetEnd\n"
-	     "  translation %p\n"
-	     "  end %u\n",
-	     translation,
-	     end);
-     
-     ensTranslationTrace(translation, 1);
-     */
+#if AJFALSE
+    ajDebug("ensTranslationSetEnd\n"
+            "  translation %p\n"
+            "  end %u\n",
+            translation,
+            end);
+    
+    ensTranslationTrace(translation, 1);
+#endif
     
     if(!translation)
 	return ajFalse;
@@ -1777,15 +1777,15 @@ AjBool ensTranslationSetEnd(EnsPTranslation translation, ajuint end)
 AjBool ensTranslationSetStableIdentifier(EnsPTranslation translation,
                                          AjPStr stableid)
 {
-    /*
-     ajDebug("ensTranslationSetStableIdentifier\n"
-	     "  translation %p\n"
-	     "  stableid '%S'\n",
-	     translation,
-	     stableid);
-     
-     ensTranslationTrace(translation, 1);
-     */
+#if AJFALSE
+    ajDebug("ensTranslationSetStableIdentifier\n"
+            "  translation %p\n"
+            "  stableid '%S'\n",
+            translation,
+            stableid);
+    
+    ensTranslationTrace(translation, 1);
+#endif
     
     if(!translation)
 	return ajFalse;
@@ -1814,15 +1814,15 @@ AjBool ensTranslationSetStableIdentifier(EnsPTranslation translation,
 
 AjBool ensTranslationSetVersion(EnsPTranslation translation, ajuint version)
 {
-    /*
-     ajDebug("ensTranslationSetVersion\n"
-	     "  translation %p\n"
-	     "  version %u\n",
-	     translation,
-	     version);
-     
-     ensTranslationTrace(translation, 1);
-     */
+#if AJFALSE
+    ajDebug("ensTranslationSetVersion\n"
+            "  translation %p\n"
+            "  version %u\n",
+            translation,
+            version);
+    
+    ensTranslationTrace(translation, 1);
+#endif
     
     if(!translation)
 	return ajFalse;
@@ -1849,15 +1849,15 @@ AjBool ensTranslationSetVersion(EnsPTranslation translation, ajuint version)
 
 AjBool ensTranslationSetCreationDate(EnsPTranslation translation, AjPStr cdate)
 {
-    /*
-     ajDebug("ensTranslationSetCreationDate\n"
-	     "  translation %p\n"
-	     "  cdate '%S'\n",
-	     translation,
-	     cdate);
-     
-     ensTranslationTrace(translation, 1);
-     */
+#if AJFALSE
+    ajDebug("ensTranslationSetCreationDate\n"
+            "  translation %p\n"
+            "  cdate '%S'\n",
+            translation,
+            cdate);
+    
+    ensTranslationTrace(translation, 1);
+#endif
     
     if(!translation)
 	return ajFalse;
@@ -1887,15 +1887,15 @@ AjBool ensTranslationSetCreationDate(EnsPTranslation translation, AjPStr cdate)
 AjBool ensTranslationSetModificationDate(EnsPTranslation translation,
                                          AjPStr mdate)
 {
-    /*
-     ajDebug("ensTranslationSetModificationDate\n"
-	     "  translation %p\n"
-	     "  mdate '%S'\n",
-	     translation,
-	     mdate);
-     
-     ensTranslationTrace(translation, 1);
-     */
+#if AJFALSE
+    ajDebug("ensTranslationSetModificationDate\n"
+            "  translation %p\n"
+            "  mdate '%S'\n",
+            translation,
+            mdate);
+    
+    ensTranslationTrace(translation, 1);
+#endif
     
     if(!translation)
 	return ajFalse;
@@ -2204,15 +2204,15 @@ AjBool ensTranslationFetchAllAttributes(EnsPTranslation translation,
     
     EnsPAttribute attribute = NULL;
     
-    /*
-     ajDebug("ensTranslationFetchAllAttributes\n"
-	     "  translation %p\n"
-	     "  code '%S'\n"
-	     "  attributes %p\n",
-	     translation,
-	     code,
-	     attributes);
-     */
+#if AJFALSE
+    ajDebug("ensTranslationFetchAllAttributes\n"
+            "  translation %p\n"
+            "  code '%S'\n"
+            "  attributes %p\n",
+            translation,
+            code,
+            attributes);
+#endif
     
     if(!translation)
 	return ajFalse;
@@ -2536,7 +2536,7 @@ AjBool ensTranslationFetchDisplayIdentifier(const EnsPTranslation translation,
 	return ajFalse;
     
     if(translation->StableIdentifier &&
-	ajStrGetLen(translation->StableIdentifier))
+       ajStrGetLen(translation->StableIdentifier))
 	*Pidentifier = ajStrNewS(translation->StableIdentifier);
     else if(translation->Identifier)
 	*Pidentifier = ajFmtStr("%u", translation->Identifier);
@@ -2589,7 +2589,7 @@ AjBool ensTranslationModify(EnsPTranslation translation, AjPStr *Psequence)
     ** Sequence Edits.
     */
     
-    ajListSort(selist, ensSequenceEditCompareStartAscending);
+    ajListSort(selist, ensSequenceEditCompareStartDescending);
     
     while(ajListPop(selist, (void **) &se))
     {
@@ -2794,19 +2794,19 @@ static AjBool translationAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPTranslation translation = NULL;
     EnsPTranslationadaptor tla = NULL;
     
-    /*
-     ajDebug("translationAdaptorFetchAllBySQL\n"
-	     "  dba %p\n"
-	     "  statement %p\n"
-	     "  mapper %p\n"
-	     "  slice %p\n"
-	     "  translations %p\n",
-	     dba,
-	     statement,
-	     mapper,
-	     slice,
-	     translations);
-     */
+#if AJFALSE
+    ajDebug("translationAdaptorFetchAllBySQL\n"
+            "  dba %p\n"
+            "  statement %p\n"
+            "  mapper %p\n"
+            "  slice %p\n"
+            "  translations %p\n",
+            dba,
+            statement,
+            mapper,
+            slice,
+            translations);
+#endif
     
     if(!dba)
 	return ajFalse;
@@ -3215,21 +3215,8 @@ AjBool ensTranslationadaptorFetchByStableIdentifier(
 			      txtstableid,
 			      version);
     else
-	constraint = ajFmtStr("translation_stable_id.stable_id = '%s' "
-			      "AND "
-			      "translation.is_current = 1",
+	constraint = ajFmtStr("translation_stable_id.stable_id = '%s'",
 			      txtstableid);
-    
-    /*
-    ** FIXME: The translation_stable_id table does not have a
-    ** translation_stable_id.is_current field like the transcript_stable_id
-    ** table has.
-     
-     constraint = ajFmtStr("translation_stable_id.stable_id = '%s' "
-			   "AND "
-			   "translation.is_current = 1",
-			   txtstableid);
-    */
     
     ajCharDel(&txtstableid);
     
@@ -3248,12 +3235,12 @@ AjBool ensTranslationadaptorFetchByStableIdentifier(
     
     ajListPop(translations, (void **) Ptranslation);
     
-    /*
-     ajDebug("ensTranslationadaptorFetchByStableIdentifier "
-	     "got Translation %p\n", *Ptranslation);
-     
-     ensTranslationTrace(*Ptranslation, 1);
-     */
+#if AJFALSE
+    ajDebug("ensTranslationadaptorFetchByStableIdentifier "
+            "got Translation %p\n", *Ptranslation);
+    
+    ensTranslationTrace(*Ptranslation, 1);
+#endif
     
     while(ajListPop(translations, (void **) &translation))
 	ensTranslationDel(&translation);
@@ -3756,7 +3743,7 @@ AjBool ensTranslationadaptorFetchAllByTranscriptList(
 						    identifiers,
 						    translations);
 	    
-	    ajStrDelStatic(&identifiers);
+	    ajStrAssignClear(&identifiers);
 	    
 	    i = 0;
 	}
@@ -3770,7 +3757,9 @@ AjBool ensTranslationadaptorFetchAllByTranscriptList(
     
     ajStrCutEnd(&identifiers, 2);
     
-    translationAdaptorFetchAllByIdentifiers(adaptor, identifiers, translations);
+    translationAdaptorFetchAllByIdentifiers(adaptor,
+                                            identifiers,
+                                            translations);
     
     ajStrDel(&identifiers);
     
