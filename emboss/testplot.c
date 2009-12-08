@@ -70,8 +70,8 @@ int main(int argc, char **argv)
     }
 
     /* embGraphSetData(graphdata,&array[0][0]);*/
-    ajGraphdataSetYTitleC(graphdata,"SINE(degrees)");
-    ajGraphdataSetXTitleC(graphdata,"degrees");
+    ajGraphdataSetYlabelC(graphdata,"SINE(degrees)");
+    ajGraphdataSetXlabelC(graphdata,"degrees");
     ajGraphdataSetTitleC(graphdata,"hello");
     ajGraphdataSetColour(graphdata,GREEN);
 
@@ -91,8 +91,8 @@ int main(int argc, char **argv)
 	graphdata->y[i] = cos(ajDegToRad((float)i));
     }
 
-    ajGraphdataSetXTitleC(graphdata,"degrees");
-    ajGraphdataSetYTitleC(graphdata,"COS(degrees)");
+    ajGraphdataSetXlabelC(graphdata,"degrees");
+    ajGraphdataSetYlabelC(graphdata,"COS(degrees)");
     ajGraphdataSetTitleC(graphdata,"hello");
     ajGraphdataSetColour(graphdata,RED);
 
@@ -115,8 +115,8 @@ int main(int argc, char **argv)
 	graphdata->y[i] = (tan(ajDegToRad(i))*0.2);
     }
 
-    ajGraphdataSetXTitleC(graphdata,"degrees");
-    ajGraphdataSetYTitleC(graphdata,"TAN(degrees)");
+    ajGraphdataSetXlabelC(graphdata,"degrees");
+    ajGraphdataSetYlabelC(graphdata,"TAN(degrees)");
     ajGraphdataSetTitleC(graphdata,"hello");
     ajGraphdataSetLineType(graphdata, 2);
     ajGraphdataSetColour(graphdata,BLUE);

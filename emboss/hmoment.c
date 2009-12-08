@@ -244,13 +244,13 @@ static void hmoment_addgraph(AjPGraph graph, ajint limit,
     ajGraphdataSetTypeC(data,"2D Plot Float");
 
     ajFmtPrintS(&st,"HMOMENT of %s. Window:%d",sname,window);
-    ajGraphdataSetTitle(data,st);
+    ajGraphdataSetTitleS(data,st);
 
     ajFmtPrintS(&st,"uH (%d deg)",angle);
-    ajGraphdataSetYTitle(data,st);
+    ajGraphdataSetYlabelS(data,st);
 
     ajFmtPrintS(&st,"Position (w=%d)",window);
-    ajGraphdataSetXTitle(data,st);
+    ajGraphdataSetXlabelS(data,st);
 
     ajGraphdataAddLine(data,x[0],baseline,x[limit-1],baseline,BLUE);
 

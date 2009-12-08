@@ -650,7 +650,7 @@ ajSysIsRegular -
 ajTableNewL ajTableNewFunctionLen
 ajTableNew ajTableNewFunctionLen
 ajTableGet ajTableFetch
-ajTableKey ajTableGetKey
+ajTableKey ajTableFetchKey
 ajTableLength ajTableGetLength
 ajTableToarray ajTableToarrayKeysValues
 ajStrTableCmp ajTablestrCmp
@@ -789,6 +789,13 @@ ajGraphSetYTitleC ajGraphSetYlabelC
 ajGraphSetYTitle ajGraphSetYlabelS
 ajGraphSetSubTitleDo ajGraphShowSubtitle
 ajGraphSetTitleDo ajGraphShowTitle
+ajGraphGetSubTitleC ajGraphGetSubtitleC
+ajGraphGetSubTitle ajGraphGetSubtitleS
+ajGraphGetTitle ajGraphGetTitleS
+ajGraphGetXTitleC ajGraphGetXlabelC
+ajGraphGetXTitle ajGraphGetXlabelS
+ajGraphGetYTitleC ajGraphGetYlabelC
+ajGraphGetYTitle ajGraphGetYlabelS
 ajGraphxySet ajGraphxySetDevicetype
 ajGraphxySetXEnd ajGraphxySetXendF
 ajGraphxySetXGrid ajGraphxySetXgrid
@@ -811,7 +818,14 @@ ajGraphxySetYLabel ajGraphxyShowYlabel
 ajGraphxySetYLabelLeft ajGraphxyShowYnum
 ajGraphxySetYTick ajGrapxyhShowYtick
 ajGraphNewPage ajGraphNewpage
+ajGraphdataSetXTitleC ajGraphdataSetXlabelC
+ajGraphdataSetXTitle ajGraphdataSetXlabelS
+ajGraphdataSetYTitleC ajGraphdataSetYlabelC
+ajGraphdataSetYTitle ajGraphdataSetYlabelS
 ajGraphInfo ajGraphicsGetOutfiles
+ajGraphdataSetTitle ajGraphdataSetTitleS
+ajGraphdataSetSubTitleC ajGraphdataSetSubtitleC
+ajGraphdataSetSubTitle ajGraphdataSetSubtitleS
 #ajhist
 #ajseqdb
 #ajacd
