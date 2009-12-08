@@ -230,14 +230,14 @@ static void charge_addgraph(AjPGraph graph, ajint limit, const float *x,
     ajGraphdataSetMaxima(data,x[0],x[limit-1],ymin,ymax);
 
     ajFmtPrintS(&st,"Window:%d",window);
-    ajGraphdataSetSubTitle(data,st);
+    ajGraphdataSetSubtitleS(data,st);
 
     ajGraphdataSetTypeC(data,"2D Plot Float");
     ajFmtPrintS(&st,"Charge");
-    ajGraphdataSetYTitle(data,st);
+    ajGraphdataSetYlabelS(data,st);
 
     ajFmtPrintS(&st,"Position");
-    ajGraphdataSetXTitle(data,st);
+    ajGraphdataSetXlabelS(data,st);
 
     ajGraphdataAddLine(data,x[0],baseline,x[limit-1],baseline,BLUE);
 

@@ -208,9 +208,9 @@ int main(int argc, char **argv)
 	    }
 
 
-	    ajGraphdataSetYTitleC(this,"Gribskov value");
-	    ajGraphdataSetXTitleC(this,"Sequence position");
-	    ajGraphdataSetSubTitleC(this,frames[base]);
+	    ajGraphdataSetYlabelC(this,"Gribskov value");
+	    ajGraphdataSetXlabelC(this,"Sequence position");
+	    ajGraphdataSetSubtitleC(this,frames[base]);
 	    ajGraphdataAddLine(this,(float)beg,1.0,(float)end,
 				  1.0,4);
 	}

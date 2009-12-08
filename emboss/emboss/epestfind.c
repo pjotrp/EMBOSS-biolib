@@ -711,8 +711,8 @@ int main(int argc, char **argv)
     ajGraphdataSetTitleC(plot, "PEST-find");
     ajFmtPrintS(&map, "Sequence %s from %d to %d", ajSeqGetNameC(seq),
 		begin, end);
-    ajGraphdataSetXTitle(plot, map);
-    ajGraphdataSetYTitleC(plot, "PEST score");
+    ajGraphdataSetXlabelS(plot, map);
+    ajGraphdataSetYlabelC(plot, "PEST score");
     ajGraphdataSetMaxMin(plot, (float) 1, (float) seqlen, ymin, ymax);
     ajGraphdataSetMaxima(plot, (float) 1, (float) seqlen, ymin, ymax);
     /* threshold line */

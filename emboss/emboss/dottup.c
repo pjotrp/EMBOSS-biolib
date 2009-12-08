@@ -168,7 +168,7 @@ int main(int argc, char **argv)
 	    onefifth  = xmargin * (float)0.2;
 	    ajGraphicsDrawposTextAtmid(fbegin1+flen1*(float)0.5,
                                        fbegin1-(onefifth*(float)3.0),
-                                       ajGraphGetYTitleC(graph));
+                                       ajGraphGetYlabelC(graph));
 
 	    if(len2/len1 > 10 )
 	    {
@@ -202,7 +202,7 @@ int main(int argc, char **argv)
                                                fbegin2+flen2*(float)0.5,
                                                fbegin2-(onefifth*(float)4.),
                                                fbegin2+flen2,
-                                               ajGraphGetXTitleC(graph),
+                                               ajGraphGetXlabelC(graph),
                                                0.5);
 
 	    if(len1/len2 > 10 )
@@ -339,7 +339,7 @@ static void dottup_stretchplot(AjPGraph graph, const AjPList matchlist,
     AjIList iter = NULL;
 
     tit = ajStrNew();
-    ajFmtPrintS(&tit,"%S",ajGraphGetTitle(graph));
+    ajFmtPrintS(&tit,"%S",ajGraphGetTitleS(graph));
 
 
     gdata = ajGraphdataNewI(1);

@@ -212,7 +212,7 @@ int main(int argc, char **argv)
 
     if(!stretch)
     {
-	if( ajStrGetLen(ajGraphGetSubTitle(graph)) <=1)
+	if( ajStrGetLen(ajGraphGetSubtitleS(graph)) <=1)
 	    ajGraphSetSubtitleS(graph,subt);
 
 	ajGraphOpenWin(graph, (float)0.0-ymargin,(max*(float)1.35)+ymargin,
@@ -405,7 +405,7 @@ int main(int argc, char **argv)
     else			/* the xy graph for -stretch */
     {
 	tit = ajStrNew();
-	ajFmtPrintS(&tit,"%S",ajGraphGetTitle(xygraph));
+	ajFmtPrintS(&tit,"%S",ajGraphGetTitleS(xygraph));
 
 
 	gdata = ajGraphdataNewI(1);
