@@ -6267,7 +6267,8 @@ AjBool ajFeattableWritePir(AjPFeattabOut ftout, const AjPFeattable thys)
 	/*ajDebug("last: calling featDumpPir for gfprev\n");*/
 	/*ajDebug("location: '%S'\n", location);*/
 
-	featDumpPir(gfprev,location, file); /* gfprev has tag data */
+        if(gfprev)
+            featDumpPir(gfprev,location, file); /* gfprev has tag data */
 	ajStrDel(&location);
 	ajStrDel(&pos);
 	ajStrDel(&temp);
