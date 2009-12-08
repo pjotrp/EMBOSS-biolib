@@ -122,8 +122,8 @@ void          ajGraphCloseWin (void);
 void          ajGraphDumpDevices (void);
 void          ajGraphxyDumpDevices (void);
 
-void          ajGraphicsCalcRange(const float *array, ajint npoints, float *min,
-				  float *max);
+void          ajGraphicsCalcRange(const float *array, ajuint npoints,
+                                  float *min, float *max);
 
 PLFLT         *ajGraphicsCalcCoord(PLFLT xcentre, PLFLT ycentre, PLFLT Radius,
                                    PLFLT Angle);
@@ -192,14 +192,14 @@ AjPGraph      ajGraphxyNewI (ajuint numofpoints);
 
 void          ajGraphClear(AjPGraph thys);
 
-const AjPStr  ajGraphGetSubTitle(const AjPGraph thys);
-const char*   ajGraphGetSubTitleC(const AjPGraph thys);
-const AjPStr  ajGraphGetTitle(const AjPGraph thys);
+const char*   ajGraphGetSubtitleC(const AjPGraph thys);
+const AjPStr  ajGraphGetSubtitleS(const AjPGraph thys);
 const char*   ajGraphGetTitleC(const AjPGraph thys);
-const AjPStr  ajGraphGetXTitle(const AjPGraph thys);
-const char*   ajGraphGetXTitleC(const AjPGraph thys);
-const AjPStr  ajGraphGetYTitle(const AjPGraph thys);
-const char*   ajGraphGetYTitleC(const AjPGraph thys);
+const AjPStr  ajGraphGetTitleS(const AjPGraph thys);
+const char*   ajGraphGetXlabelC(const AjPGraph thys);
+const AjPStr  ajGraphGetXlabelS(const AjPGraph thys);
+const char*   ajGraphGetYlabelC(const AjPGraph thys);
+const AjPStr  ajGraphGetYlabelS(const AjPGraph thys);
 
 void          ajGraphInitSeq (AjPGraph thys, const AjPSeq seq);
 AjBool        ajGraphIsData(const AjPGraph thys);
@@ -318,22 +318,22 @@ void          ajGraphdataCalcXY (AjPGraphdata graphdata,
 				    const float* y);
 void          ajGraphdataSetXY (AjPGraphdata graphdata,
 				   const float *x, const float *y);
-void          ajGraphdataSetSubTitle  (AjPGraphdata graphdata,
-					  const AjPStr title);
-void          ajGraphdataSetSubTitleC (AjPGraphdata graphdata,
+void          ajGraphdataSetSubtitleC (AjPGraphdata graphdata,
 					  const char *title);
-void          ajGraphdataSetTitle  (AjPGraphdata graphdata,
-				       const AjPStr title);
+void          ajGraphdataSetSubtitleS (AjPGraphdata graphdata,
+					  const AjPStr title);
 void          ajGraphdataSetTitleC (AjPGraphdata graphdata,
 				       const char *title);
-void          ajGraphdataSetXTitle  (AjPGraphdata graphdata,
+void          ajGraphdataSetTitleS (AjPGraphdata graphdata,
 				       const AjPStr title);
-void          ajGraphdataSetXTitleC (AjPGraphdata graphdata,
+void          ajGraphdataSetXlabelC (AjPGraphdata graphdata,
 				       const char *title);
-void          ajGraphdataSetYTitle  (AjPGraphdata graphdata,
+void          ajGraphdataSetXlabelS (AjPGraphdata graphdata,
 				       const AjPStr title);
-void          ajGraphdataSetYTitleC (AjPGraphdata graphdata,
+void          ajGraphdataSetYlabelC (AjPGraphdata graphdata,
 				       const char *title);
+void          ajGraphdataSetYlabelS (AjPGraphdata graphdata,
+				       const AjPStr title);
 void          ajGraphdataSetColour (AjPGraphdata graphdata,
 				       ajint colour);
 void          ajGraphdataSetLineType (AjPGraphdata graphdata,
@@ -353,6 +353,36 @@ void          ajGraphUnused(void);
 */
 void          ajGraphTraceInt (FILE* outf);
 
+__deprecated void          ajGraphdataSetXTitleC (AjPGraphdata graphdata,
+                                                  const char *title);
+__deprecated void          ajGraphdataSetXTitleS (AjPGraphdata graphdata,
+                                                  const AjPStr title);
+__deprecated void          ajGraphdataSetYTitleC (AjPGraphdata graphdata,
+                                                  const char *title);
+__deprecated void          ajGraphdataSetYTitleS (AjPGraphdata graphdata,
+                                                  const AjPStr title);
+__deprecated const char*   ajGraphGetXTitleC(const AjPGraph thys);
+__deprecated const AjPStr  ajGraphGetXTitleS(const AjPGraph thys);
+__deprecated const char*   ajGraphGetYTitleC(const AjPGraph thys);
+__deprecated const AjPStr  ajGraphGetYTitleS(const AjPGraph thys);
+__deprecated void          ajGraphdataSetSubTitleC (AjPGraphdata graphdata,
+                                                    const char *title);
+__deprecated void          ajGraphdataSetSubTitleS (AjPGraphdata graphdata,
+                                                    const AjPStr title);
+__deprecated const char*   ajGraphGetSubTitleC(const AjPGraph thys);
+__deprecated const AjPStr  ajGraphGetSubTitleS(const AjPGraph thys);
+__deprecated void          ajGraphdataSetYTitle  (AjPGraphdata graphdata,
+                                                  const AjPStr title);
+__deprecated void          ajGraphdataSetXTitle  (AjPGraphdata graphdata,
+                                                  const AjPStr title);
+__deprecated void          ajGraphdataSetTitle  (AjPGraphdata graphdata,
+                                                 const AjPStr title);
+__deprecated void          ajGraphdataSetSubTitle  (AjPGraphdata graphdata,
+                                                    const AjPStr title);
+__deprecated const AjPStr  ajGraphGetSubTitle(const AjPGraph thys);
+__deprecated const AjPStr  ajGraphGetTitle(const AjPGraph thys);
+__deprecated const AjPStr  ajGraphGetXTitle(const AjPGraph thys);
+__deprecated const AjPStr  ajGraphGetYTitle(const AjPGraph thys);
 __deprecated PLFLT         ajGraphTextLength(PLFLT xx1, PLFLT yy1,
                                              PLFLT xx2, PLFLT yy2,
                                              const char *text);

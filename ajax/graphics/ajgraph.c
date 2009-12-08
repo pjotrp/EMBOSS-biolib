@@ -1595,13 +1595,14 @@ __deprecated ajint* ajGraphGetBaseColour(void)
 ** @nam4rule Charsize Character size in plot units
 ** @nam4rule CheckColour Find if the colour is on the list
 ** @nam4rule Fgcolour Undocumented
-** @nam4rule Params Get the output page parameters
+** @nam4rule Params Get parameters
+** @nam5rule ParamsPage Get the output page parameters
 ** @suffix C Character data
 ** @suffix S String object data
 ** 
 **
-** @argrule charsize defheight [float *] default character height
-** @argrule charsize currentscale [float *] current (scaled) character height
+** @argrule Charsize defheight [float*] default character height
+** @argrule Charsize currentscale [float*] current (scaled) character height
 ** @argrule ParamsPage xp [float*] where to store the x pixels/inch
 ** @argrule ParamsPage yp [float*] where to store the y pixels/inch
 ** @argrule ParamsPage xleng [ajint*] where to store the x length
@@ -1612,6 +1613,8 @@ __deprecated ajint* ajGraphGetBaseColour(void)
 ** @argrule S str [const AjPStr] colour name.
 **
 ** @valrule * [void]
+** @valrule *Check [ajint] the colour number if found else -1.
+** @valrule *Fgcolour [ajint] the foreground colour number
 **
 ******************************************************************************/
 
@@ -1620,7 +1623,7 @@ __deprecated ajint* ajGraphGetBaseColour(void)
 **
 ** Find if the colour is on the list
 **
-** @param [r] text [const char*] colour name.
+** @param [r] txt [const char*] colour name.
 ** @return [ajint] the colour number if found else -1.
 ** @@
 ******************************************************************************/
@@ -1641,7 +1644,7 @@ ajint ajGraphicsCheckColourC(const char* txt)
 **
 ** Find if the colour is on the list
 **
-** @param [r] colour [const AjPStr]  colour name.
+** @param [r] str [const AjPStr]  colour name.
 ** @return [ajint] the colour number if found else -1.
 ** @@
 ******************************************************************************/
@@ -1733,7 +1736,8 @@ __deprecated ajint ajGraphGetColour(void)
 
 /* @func ajGraphicsGetParamsPage ***********************************************
 **
-** Get the output page parameters
+** Get the output page parameters for plplot internal use. These can be set by
+** the user and used by some device drivers.
 **
 ** For graph data type, sets to zero as these are not applicable.
 **
@@ -1810,6 +1814,7 @@ __deprecated void ajGraphGetCharSize(float *defheight, float *currentheight)
 **
 ** @nam3rule Draw Draw at a point
 ** @nam3rule Drawarc Draw on an arc
+** @nam3rule Drawbars Draw bar chart
 ** @nam3rule Drawpos Draw at a defined xy coordinate
 ** @nam3rule Drawset Draw at a set of defined xy coordinates
 **
@@ -1827,53 +1832,56 @@ __deprecated void ajGraphGetCharSize(float *defheight, float *currentheight)
 ** @nam4rule Symbols Symbols
 ** @nam4rule Text Text
 ** @nam4rule Tri Triangle
-** @nam5rule Horiz Horizontal direction
-** @nam5rule Vert Vertical direction
+** @nam4rule Horiz Horizontal direction
+** @nam4rule Vert Vertical direction
 ** @nam5rule Atend Placed with end at fixed point
 ** @nam5rule Atline Along a straight line
 ** @nam5rule Atmid Centred at a point
+** @nam5rule Atstart Placed with start at fixed point
 ** @suffix Fill Fill in the plot area
+** @suffix Justify Justify text according to a plplot justify value
 **
 ** @argrule Drawarc xcentre [PLFLT] Centre x coordinate
 ** @argrule Drawarc ycentre [PLFLT] Centre y coordinate
 ** @argrule Drawarc radius [PLFLT] Radius
 ** @argrule Drawarc startangle [PLFLT] Start angle
 ** @argrule Drawarc endangle [PLFLT] End angle
+** @argrule DrawarcRect height [PLFLT] Height of the rectangle
+**                                     in user coordinates.
 **
-** @argrule Drawpos x [PLFLT] x start position.
-** @argrule Drawpos y [PLFLT] y start position.
+** @argrule Drawbars num [ajuint] Number of dots
+** @argrule DrawbarsHoriz y [CONST PLFLT*] y start positions
+** @argrule DrawbarsHoriz xmin [CONST PLFLT*] x minimum values
+** @argrule DrawbarsHoriz xmax [CONST PLFLT*] x maximum values
+** @argrule DrawbarsVert x [CONST PLFLT*] x start positions
+** @argrule DrawbarsVert ymin [CONST PLFLT*] y minimum values
+** @argrule DrawbarsVert ymax [CONST PLFLT*] y maximum values
 **
-** @argrule Drawset num [ajint] Number of dots
+** @argrule Drawpos x [PLFLT] x start position
+** @argrule Drawpos y [PLFLT] y start position
+**
+** @argrule Drawset num [ajuint] Number of dots
 ** @argrule Drawset xx [CONST PLFLT*] Centre x coordinates
 ** @argrule Drawset yy [CONST PLFLT*] Centre y coordinates
 **
-** @argrule Bars numofpoints [ajint] Undocumented
-** @argrule Bars x [CONST PLFLT*] Undocumented
-** @argrule Bars xmin [CONST PLFLT*] Undocumented
-** @argrule Bars xmax [CONST PLFLT*] Undocumented
-**
-** @argrule Box xx0 [PLFLT] Centre x coordinate
-** @argrule Box yy0 [PLFLT] Centre y coordinate
-** @argrule Box size [PLFLT] Size
-** @argrule Circle xcentre [PLFLT] x coor for centre.
-** @argrule Circle ycentre [PLFLT] y coor for centre.
-** @argrule Circle radius [float] radius of the circle.
-** @argrule Dia  xx0 [PLFLT] Centre x coordinate
-** @argrule Dia yy0 [PLFLT] Centre y coordinate
-** @argrule Dia size [PLFLT] Size
-**
-** @argrule Line x2 [PLFLT] x end position.
-** @argrule Line y2 [PLFLT] y end position.
-** @argrule Lines xx1 [PLFLT*] xx1 coordinates
-** @argrule Lines yy1 [PLFLT*] yy1 coordinates
-** @argrule Lines xx2 [PLFLT*] xx2 coordinates
-** @argrule Lines yy2 [PLFLT*] yy2 coordinates
-** @argrule Lines numoflines [ajint] The number of lines to be drawn.
-** @argrule Poly n [ajint] number of points
-** @argrule Poly x [CONST PLFLT*] x coord of points
-** @argrule Poly y [CONST PLFLT*] y coord of points
-** @argrule DrawposRect x2 [PLFLT] xx1 coor.
-** @argrule DrawposRect y2 [PLFLT] yy1 coor.
+** @argrule DrawposBox size [PLFLT] Size of sides starting at x,y
+** @argrule DrawposCircle radius [float] radius of the circle.
+** @argrule DrawposDia size [PLFLT] Size of sides starting at x,y
+** @argrule DrawposLine x2 [PLFLT] x end position
+** @argrule DrawposLine y2 [PLFLT] y end position
+** @argrule DrawposRect x2 [PLFLT] x1 coordinate
+** @argrule DrawposRect y2 [PLFLT] y1 coordinate
+** @argrule DrawposTri x2 [PLFLT] x2 coordinate
+** @argrule DrawposTri y2 [PLFLT] y2 coordinate
+** @argrule DrawposTri x3 [PLFLT] x3 coordinate
+** @argrule DrawposTri y3 [PLFLT] y3 coordinate
+** @argrule DrawsetLines xx2 [CONST PLFLT*] Centre x2 coordinates
+** @argrule DrawsetLines yy2 [CONST PLFLT*] Centre y2 coordinates
+** @argrule DrawsetSymbols symbol [ajuint] Symbol code.
+** @argrule TextAtline x2 [PLFLT] x2 coordinate
+** @argrule TextAtline y2 [PLFLT] y2 coordinate
+** @argrule Text txt [const char*] The text to be displayed.
+** @argrule Justify just [PLFLT] justification of the string.
 **
 ** @valrule * [void]
 **
@@ -2087,7 +2095,7 @@ __deprecated void ajGraphFillRectangleOnCurve(PLFLT xcentre, PLFLT ycentre,
 
 
 
-/* @func ajGraphicsDrawarcTextJustify **1***************************************
+/* @func ajGraphicsDrawarcTextJustify *****************************************
 **
 ** Draw text along a curve (i.e., an arc of a circle).  The text is
 ** written character by character, forwards or backwards depending on
@@ -2344,7 +2352,7 @@ __deprecated void ajGraphBoxFill(PLFLT xx0, PLFLT yy0, PLFLT size)
 **
 ** @param  [r] x [PLFLT] x coor for centre.
 ** @param  [r] y [PLFLT] y coor for centre.
-** @param  [r] redius  [float] radius of the circle.
+** @param  [r] radius  [float] radius of the circle.
 ** @return [void]
 ** @@
 **
@@ -2685,10 +2693,10 @@ __deprecated void ajGraphTextEnd(PLFLT x, PLFLT y, const char *text)
 **
 ** Draw text along a line.
 **
-** @param [r] x [PLFLT] xx1 coor.
-** @param [r] y [PLFLT] yy1 coor.
-** @param [r] x2 [PLFLT] xx2 coor.
-** @param [r] y2 [PLFLT] yy2 coor.
+** @param [r] x [PLFLT] x1 coor.
+** @param [r] y [PLFLT] y1 coor.
+** @param [r] x2 [PLFLT] x2 coor.
+** @param [r] y2 [PLFLT] y2 coor.
 ** @param [r] txt [const char*] The text to be displayed.
 ** @param [r] just [PLFLT] justification of the string.
 **                         (0=left,1=right,0.5=middle etc)
@@ -2990,7 +2998,7 @@ __deprecated void ajGraphDots(PLFLT *xx1, PLFLT *yy1, ajuint numofdots)
 ** @@
 ******************************************************************************/
 
-static void GraphDrawsetLines( ajuint num, PLFLT *xx, PLFLT *yy)
+static void GraphDrawsetLines(ajuint num, PLFLT *xx, PLFLT *yy)
 {
     ajuint i;
     PLFLT xx0;
@@ -3018,10 +3026,10 @@ static void GraphDrawsetLines( ajuint num, PLFLT *xx, PLFLT *yy)
 ** Draw a set of lines.
 **
 ** @param [r] num [ajuint] The number of lines to be drawn.
-** @param [u] xx [PLFLT*] x start coordinates
-** @param [u] yy [PLFLT*] y start coordinates
-** @param [u] xx2 [PLFLT*] x end coordinates
-** @param [u] yy2 [PLFLT*] y end coordinates
+** @param [u] xx [CONST PLFLT*] x start coordinates
+** @param [u] yy [CONST PLFLT*] y start coordinates
+** @param [u] xx2 [CONST PLFLT*] x end coordinates
+** @param [u] yy2 [CONST PLFLT*] y end coordinates
 ** @return [void]
 **
 ** @@
@@ -3167,7 +3175,45 @@ __deprecated void ajGraphSymbols( ajuint numofdots, PLFLT *xx1,PLFLT *yy1,
 ** @fdata [none]
 ** @fcategory cast
 **
+** @nam3rule Calc Calculation
+** @nam4rule Charsize Computes the character size (in mm)
+** @nam4rule Coord Compute the coordinates of a point on a circle
+**                 knowing the angle
+** @nam4rule Distance Compute the distance between 2 points in user coordinates
+** @nam4rule Range Get the max and min of the data points you wish to display.
+** @nam4rule Textheight Get text height (in mm)
+** @nam4rule Textlength Get text length (in mm)
+** @suffix C Character data
+** @suffix S String object data
+**
+** @argrule Charsize xx1 [PLFLT] xx1 coor.
+** @argrule Charsize yy1 [PLFLT] yy1 coor.
+** @argrule Charsize xx2 [PLFLT] xx2 coor.
+** @argrule Charsize yy2 [PLFLT] yy2 coor.
+** @argrule Charsize text [const char*] The text to be displayed.
+** @argrule Charsize TextHeight [PLFLT] The height of the text (in user coord).
+** @argrule Coord x [PLFLT] x coor for centre.
+** @argrule Coord y [PLFLT] y coor for centre.
+** @argrule Coord radius [PLFLT] Radius of the circle.
+** @argrule Coord angle [PLFLT] angle at which the point is.
+** @argrule Distance xx1 [PLFLT] x coord of point 1
+** @argrule Distance yy1 [PLFLT] y coord of point 1
+** @argrule Distance xx2 [PLFLT] x coord of point 2
+** @argrule Distance yy2 [PLFLT] y coord of point 2
+** @argrule Range array [const float*] array
+** @argrule Range npoints [ajuint] Number of data points
+** @argrule Range min [float*] min. value ikn array
+** @argrule Range max [float*] max. value in array
+** @argrule [r] C txt [const char*] Text
+** @argrule [r] S str [const AjPStr] Text
+**
 ** @valrule * [void]
+** @valrule *Charsize [PLFLT] The character size (in mm) that fits the specified
+**                 height and length.
+** @valrule *Coord [PLFLT*] The x and y coordinates of the point
+** @valrule *Distance [PLFLT] Distance between 2 points in user coordinates
+** @valrule *Textheight [PLFLT] Text height (in mm)
+** @valrule *Textlength [PLFLT] Text length (in mm)
 **
 ******************************************************************************/
 
@@ -3320,7 +3366,7 @@ __deprecated PLFLT ajGraphDistPts(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2)
 ** Get the max and min of the data points you wish to display.
 **
 ** @param [r] array [const float*] array
-** @param [r] npoints [ajint] Number of data points
+** @param [r] npoints [ajuint] Number of data points
 ** @param [w] min [float*]  min.
 ** @param [w] max [float*]  max.
 ** @return [void]
@@ -3328,9 +3374,9 @@ __deprecated PLFLT ajGraphDistPts(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2)
 ******************************************************************************/
 
 void ajGraphicsCalcRange(const float *array,
-			ajint npoints, float *min, float *max)
+			ajuint npoints, float *min, float *max)
 {
-    ajint i;
+    ajuint i;
 
     *min = 64000.;
     *max = -64000.;
@@ -3390,15 +3436,15 @@ __deprecated PLFLT ajGraphTextHeight(PLFLT xx1, PLFLT yy1,
 **
 ** Compute the length of a string in millimetres.
 **
-** @param [r] text [const char*] Text
+** @param [r] txt [const char*] Text
 **
 ** @return [PLFLT] The length of the string in user coordinates.
 ** @@
 ******************************************************************************/
 
-PLFLT ajGraphicsCalcTextlengthC(const char *text)
+PLFLT ajGraphicsCalcTextlengthC(const char *txt)
 {
-    return GraphTextLength(text);
+    return GraphTextLength(txt);
 }
 
 /* @func ajGraphicsCalcTextlengthS *********************************************
@@ -3982,14 +4028,14 @@ __deprecated void ajGraphSetXTitleC(AjPGraph thys, const char* title)
 ** Set the title for the X axis for multiple plots on one graph.
 **
 ** @param [u] thys [AjPGraph] Graph structure to store info in.
-** @param [r] xtr [const AjPStr] title for the x axis.
+** @param [r] str [const AjPStr] title for the x axis.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphSetXlabelS(AjPGraph thys, const AjPStr xtr)
+void ajGraphSetXlabelS(AjPGraph thys, const AjPStr str)
 {
-    ajStrAssignS(&thys->xaxis,xtr);
+    ajStrAssignS(&thys->xaxis,str);
 
     return;
 }
@@ -4135,14 +4181,23 @@ __deprecated void ajGraphSetTitleDo(AjPGraph thys, AjBool set)
 ** @fcategory use
 **
 ** @nam3rule Get Return an internal value
+** @nam4rule Params Get parameters
+** @nam5rule ParamsPage Get the output page parameters
 **
+** @argrule * thys [const AjPGraph] Graph object
+** @argrule ParamsPage xp [float*] where to store the x position
+** @argrule ParamsPage yp [float*] where to store the y position
+** @argrule ParamsPage xleng [ajint*] where to store the x length
+** @argrule ParamsPage yleng [ajint*] where to the y length
+** @argrule ParamsPage xoff [ajint*] where to store the x offset
+** @argrule ParamsPage yoff [ajint*] where to store the y offset
 ** @valrule * [void]
 **
 ******************************************************************************/
 
 /* @func ajGraphGetParamsPage **************************************************
 **
-** Get the output page parameters
+** Get the output page parameters stored in a graph object
 **
 ** For graph data type, sets to zero as these are not applicable.
 **
@@ -4188,25 +4243,7 @@ void ajGraphGetParamsPage(const AjPGraph thys,
 }
 
 
-/* @func ajGraphGetSubTitle **************************************************
-**
-** Return plot subtitle
-**
-** @param [r] thys [const AjPGraph] Graph object.
-** @return [const AjPStr] Subtitle
-** @@
-******************************************************************************/
-
-const AjPStr ajGraphGetSubTitle(const AjPGraph thys)
-{
-    return thys->subtitle;
-
-}
-
-
-
-
-/* @func ajGraphGetSubTitleC **************************************************
+/* @func ajGraphGetSubtitleC **************************************************
 **
 ** Return plot subtitle
 **
@@ -4215,7 +4252,7 @@ const AjPStr ajGraphGetSubTitle(const AjPGraph thys)
 ** @@
 ******************************************************************************/
 
-const char* ajGraphGetSubTitleC(const AjPGraph thys)
+const char* ajGraphGetSubtitleC(const AjPGraph thys)
 {
     if (thys->subtitle)
 	    return ajStrGetPtr(thys->subtitle);
@@ -4223,24 +4260,40 @@ const char* ajGraphGetSubTitleC(const AjPGraph thys)
     return "";
 }
 
-
-
-
-/* @func ajGraphGetTitle *****************************************************
-**
-** Return plot title
-**
-** @param [r] thys [const AjPGraph] Graph object.
-** @return [const AjPStr] Title
-** @@
-******************************************************************************/
-
-const AjPStr ajGraphGetTitle(const AjPGraph thys)
+/* @obsolete ajGraphGetSubTitleC
+** @rename ajGraphGetSubtitleC
+*/
+__deprecated const char* ajGraphGetSubTitleC(const AjPGraph thys)
 {
-    return thys->title;
+    return ajGraphGetSubtitleC(thys);
 }
 
 
+
+
+/* @func ajGraphGetSubtitleS **************************************************
+**
+** Return plot subtitle
+**
+** @param [r] thys [const AjPGraph] Graph object.
+** @return [const AjPStr] Subtitle
+** @@
+******************************************************************************/
+
+const AjPStr ajGraphGetSubtitleS(const AjPGraph thys)
+{
+    return thys->subtitle;
+
+}
+
+
+/* @obsolete ajGraphGetSubTitle
+** @rename ajGraphGetSubtitleS
+*/
+__deprecated const AjPStr ajGraphGetSubTitle(const AjPGraph thys)
+{
+    return ajGraphGetSubtitleS(thys);
+}
 
 
 /* @func ajGraphGetTitleC *****************************************************
@@ -4263,33 +4316,41 @@ const char* ajGraphGetTitleC(const AjPGraph thys)
 
 
 
-/* @func ajGraphGetXTitle *****************************************************
+/* @func ajGraphGetTitleS *****************************************************
 **
-** Return plot x-axis title
+** Return plot title
 **
 ** @param [r] thys [const AjPGraph] Graph object.
-** @return [const AjPStr] Title of x-axis
+** @return [const AjPStr] Title
 ** @@
 ******************************************************************************/
 
-const AjPStr ajGraphGetXTitle(const AjPGraph thys)
+const AjPStr ajGraphGetTitleS(const AjPGraph thys)
 {
-    return thys->xaxis;
+    return thys->title;
+}
+
+/* @obsolete ajGraphGetTitle
+** @rename ajGraphGetTitleS
+*/
+__deprecated const AjPStr ajGraphGetTitle(const AjPGraph thys)
+{
+    return thys->title;
 }
 
 
 
 
-/* @func ajGraphGetXTitleC ****************************************************
+/* @func ajGraphGetXlabelC ****************************************************
 **
-** Return plot x-axis title
+** Return plot x-axis label
 **
 ** @param [r] thys [const AjPGraph] Graph object.
 ** @return [const char*] Title of x-axis
 ** @@
 ******************************************************************************/
 
-const char* ajGraphGetXTitleC(const AjPGraph thys)
+const char* ajGraphGetXlabelC(const AjPGraph thys)
 {
     if (thys->xaxis)
         return ajStrGetPtr(thys->xaxis);
@@ -4298,35 +4359,50 @@ const char* ajGraphGetXTitleC(const AjPGraph thys)
 }
 
 
+/* @obsolete ajGraphGetXTitleC
+** @rename ajGraphGetXlabelC
+*/
+__deprecated const char* ajGraphGetXTitleC(const AjPGraph thys)
+{
+    return ajGraphGetXlabelC(thys);
+}
 
 
-/* @func ajGraphGetYTitle *****************************************************
+/* @func ajGraphGetXlabelS *****************************************************
 **
-** Return plot y-axis title
+** Return plot x-axis label
 **
 ** @param [r] thys [const AjPGraph] Graph object.
-** @return [const AjPStr] Title of y-axis
+** @return [const AjPStr] Title of x-axis
 ** @@
 ******************************************************************************/
 
-const AjPStr ajGraphGetYTitle(const AjPGraph thys)
+const AjPStr ajGraphGetXlabelS(const AjPGraph thys)
 {
-    return thys->yaxis;
+    return thys->xaxis;
+}
+
+/* @obsolete ajGraphGetXTitle
+** @rename ajGraphGetXlabelS
+*/
+__deprecated const AjPStr ajGraphGetXTitle(const AjPGraph thys)
+{
+    return thys->xaxis;
 }
 
 
 
 
-/* @func ajGraphGetYTitleC ************************************************
+/* @func ajGraphGetYlabelC ************************************************
 **
-** Return plot y-axis title
+** Return plot y-axis label
 **
 ** @param [r] thys [const AjPGraph] Graph object.
 ** @return [const char*] Title of y-axis
 ** @@
 ******************************************************************************/
 
-const char* ajGraphGetYTitleC(const AjPGraph thys)
+const char* ajGraphGetYlabelC(const AjPGraph thys)
 {
     if (thys->yaxis)
         return ajStrGetPtr(thys->yaxis);
@@ -4334,6 +4410,40 @@ const char* ajGraphGetYTitleC(const AjPGraph thys)
     return "";
 }
 
+
+/* @obsolete ajGraphGetYTitleC
+** @rename ajGraphGetYlabelC
+*/
+__deprecated const char* ajGraphGetYTitleC(const AjPGraph thys)
+{
+    return  ajGraphGetYlabelC(thys);
+}
+
+
+
+
+/* @func ajGraphGetYlabelS *****************************************************
+**
+** Return plot y-axis label
+**
+** @param [r] thys [const AjPGraph] Graph object.
+** @return [const AjPStr] Title of y-axis
+** @@
+******************************************************************************/
+
+const AjPStr ajGraphGetYlabelS(const AjPGraph thys)
+{
+    return thys->yaxis;
+}
+
+
+/* @obsolete ajGraphGetYTitle
+** @rename ajGraphGetYlabelS
+*/
+__deprecated const AjPStr ajGraphGetYTitle(const AjPGraph thys)
+{
+    return thys->yaxis;
+}
 
 
 
@@ -6336,26 +6446,6 @@ void ajGraphdataSetMaxima(AjPGraphdata graphdata, float xmin, float xmax,
 
 
 
-/* @func ajGraphdataSetXTitleC *********************************************
-**
-** Set the title for the X axis.
-**
-** @param [u] graphdata  [AjPGraphdata] Graph structure to store info in.
-** @param [r] title [const char*] title for the X axis.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphdataSetXTitleC(AjPGraphdata graphdata, const char* title)
-{
-    ajStrAssignEmptyC(&graphdata->xaxis,title);
-
-    return;
-}
-
-
-
-
 /* @func ajGraphdataSetTypeC ***********************************************
 **
 ** Set the type of the graph for data output.
@@ -6376,7 +6466,35 @@ void ajGraphdataSetTypeC(AjPGraphdata graphdata,const  char* type)
 
 
 
-/* @func ajGraphdataSetXTitle **********************************************
+/* @func ajGraphdataSetXlabelC *********************************************
+**
+** Set the title for the X axis.
+**
+** @param [u] graphdata  [AjPGraphdata] Graph structure to store info in.
+** @param [r] title [const char*] title for the X axis.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphdataSetXlabelC(AjPGraphdata graphdata, const char* title)
+{
+    ajStrAssignEmptyC(&graphdata->xaxis,title);
+
+    return;
+}
+
+/* @obsolete ajGraphdataSetXTitleC
+** @rename ajGraphdataSetXlabelC
+*/
+__deprecated void ajGraphdataSetXTitleC(AjPGraphdata graphdata,
+                                        const char* title)
+{
+    ajGraphdataSetXlabelC(graphdata, title);
+    return;
+}
+
+
+/* @func ajGraphdataSetXlabelS **********************************************
 **
 ** Set the title for the X axis.
 **
@@ -6386,7 +6504,18 @@ void ajGraphdataSetTypeC(AjPGraphdata graphdata,const  char* type)
 ** @@
 ******************************************************************************/
 
-void ajGraphdataSetXTitle(AjPGraphdata graphdata, const AjPStr title)
+void ajGraphdataSetXlabelS(AjPGraphdata graphdata, const AjPStr title)
+{
+    ajStrAssignEmptyS(&graphdata->xaxis,title);
+
+    return;
+}
+
+/* @obsolete ajGraphdataSetXTitle
+** @rename ajGraphdataSetXlabelS
+*/
+__deprecated void ajGraphdataSetXTitle(AjPGraphdata graphdata,
+                                       const AjPStr title)
 {
     ajStrAssignEmptyS(&graphdata->xaxis,title);
 
@@ -6396,7 +6525,7 @@ void ajGraphdataSetXTitle(AjPGraphdata graphdata, const AjPStr title)
 
 
 
-/* @func ajGraphdataSetYTitleC *********************************************
+/* @func ajGraphdataSetYlabelC *********************************************
 **
 ** Set the title for the Y axis.
 **
@@ -6406,17 +6535,26 @@ void ajGraphdataSetXTitle(AjPGraphdata graphdata, const AjPStr title)
 ** @@
 ******************************************************************************/
 
-void ajGraphdataSetYTitleC(AjPGraphdata graphdata, const char* title)
+void ajGraphdataSetYlabelC(AjPGraphdata graphdata, const char* title)
 {
     ajStrAssignEmptyC(&graphdata->yaxis,title);
 
     return;
 }
 
+/* @obsolete ajGraphdataSetYTitleC
+** @rename ajGraphdataSetYlabelC
+*/
+__deprecated void ajGraphdataSetYTitleC(AjPGraphdata graphdata,
+                                        const char* title)
+{
+    ajGraphdataSetYlabelC(graphdata, title);
+    return;
+}
+        
 
 
-
-/* @func ajGraphdataSetYTitle **********************************************
+/* @func ajGraphdataSetYlabelS **********************************************
 **
 ** Set the title for the Y axis.
 **
@@ -6426,7 +6564,18 @@ void ajGraphdataSetYTitleC(AjPGraphdata graphdata, const char* title)
 ** @@
 ******************************************************************************/
 
-void ajGraphdataSetYTitle(AjPGraphdata graphdata, const AjPStr title)
+void ajGraphdataSetYlabelS(AjPGraphdata graphdata, const AjPStr title)
+{
+    ajStrAssignEmptyS(&graphdata->yaxis,title);
+
+    return;
+}
+
+/* @obsolete ajGraphdataSetYTitle
+** @rename ajGraphdataSetYlabelS
+*/
+__deprecated void ajGraphdataSetYTitle(AjPGraphdata graphdata,
+                                       const AjPStr title)
 {
     ajStrAssignEmptyS(&graphdata->yaxis,title);
 
@@ -8647,27 +8796,6 @@ void ajGraphSetMulti(AjPGraph thys, ajuint numsets)
 
 
 
-/* @func ajGraphdataSetTitle ***********************************************
-**
-**  Set the title.
-**
-**
-** @param [u] graphdata  [AjPGraphdata] Graph structure to store info in.
-** @param [r] title [const AjPStr] Title
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphdataSetTitle(AjPGraphdata graphdata, const AjPStr title)
-{
-    ajStrAssignEmptyS(&graphdata->title,title);
-
-    return;
-}
-
-
-
-
 /* @func ajGraphdataSetTitleC **********************************************
 **
 **  Set the title.
@@ -8689,28 +8817,37 @@ void ajGraphdataSetTitleC(AjPGraphdata graphdata, const char *title)
 
 
 
-/* @func ajGraphdataSetSubTitle ********************************************
+/* @func ajGraphdataSetTitleS ***********************************************
 **
-**  Set the Subtitle.
+**  Set the title.
 **
 **
 ** @param [u] graphdata  [AjPGraphdata] Graph structure to store info in.
-** @param [r] title [const AjPStr] Sub Title
+** @param [r] title [const AjPStr] Title
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphdataSetSubTitle(AjPGraphdata graphdata, const AjPStr title)
+void ajGraphdataSetTitleS(AjPGraphdata graphdata, const AjPStr title)
 {
-    ajStrAssignEmptyS(&graphdata->subtitle,title);
+    ajStrAssignEmptyS(&graphdata->title,title);
 
+    return;
+}
+
+/* @obsolete ajGraphdataSetTitle
+** @rename ajGraphdataSetTitleS
+*/
+__deprecated void ajGraphdataSetTitle(AjPGraphdata graphdata,
+                                      const AjPStr title)
+{
+    ajGraphdataSetTitleS(graphdata, title);
     return;
 }
 
 
 
-
-/* @func ajGraphdataSetSubTitleC *******************************************
+/* @func ajGraphdataSetSubtitleC *******************************************
 **
 **  Set the subtitle.
 **
@@ -8720,7 +8857,18 @@ void ajGraphdataSetSubTitle(AjPGraphdata graphdata, const AjPStr title)
 ** @@
 ******************************************************************************/
 
-void ajGraphdataSetSubTitleC(AjPGraphdata graphdata, const char *title)
+void ajGraphdataSetSubtitleC(AjPGraphdata graphdata, const char *title)
+{
+    ajStrAssignEmptyC(&graphdata->subtitle,title);
+
+    return;
+}
+
+/* @obsolete ajGraphdataSetSubTitleC
+** @rename ajGraphdataSetSubtitleC
+*/
+__deprecated void ajGraphdataSetSubTitleC(AjPGraphdata graphdata,
+                                          const char *title)
 {
     ajStrAssignEmptyC(&graphdata->subtitle,title);
 
@@ -8728,6 +8876,36 @@ void ajGraphdataSetSubTitleC(AjPGraphdata graphdata, const char *title)
 }
 
 
+
+
+
+/* @func ajGraphdataSetSubtitleS ********************************************
+**
+**  Set the Subtitle.
+**
+**
+** @param [u] graphdata  [AjPGraphdata] Graph structure to store info in.
+** @param [r] str [const AjPStr] Sub Title
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphdataSetSubtitleS(AjPGraphdata graphdata, const AjPStr str)
+{
+    ajStrAssignEmptyS(&graphdata->subtitle,str);
+
+    return;
+}
+
+/* @obsolete ajGraphdataSetSubTitle
+** @rename ajGraphdataSetSubtitleS
+*/
+__deprecated void ajGraphdataSetSubTitle(AjPGraphdata graphdata,
+                                         const AjPStr title)
+{
+    ajGraphdataSetSubtitleS(graphdata, title);
+    return;
+}
 
 
 
