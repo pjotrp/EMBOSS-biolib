@@ -4152,111 +4152,6 @@ __deprecated AjBool ajFileBuffNobuff(AjPFilebuff buff)
 
 
 
-/* @func ajFilebuffHtmlPre *****************************************************
-**
-** If we only have one pre-formatted section in HTML, that is all we keep.
-**
-** @param [u] buff [AjPFilebuff] buffer
-** @return [AjBool] ajTrue=cleaned ajFalse=unchanged
-** @@
-******************************************************************************/
-
-AjBool ajFilebuffHtmlPre(AjPFilebuff buff)
-{
-    AjPFilebufflist lptr    = NULL;
-    AjPFilebufflist tptr    = NULL;
-    AjPRegexp preexp = NULL;
-    AjPRegexp endexp = NULL;
-    ajint ifound = 0;
-    
-    lptr = buff->Curr;
-    
-    preexp = ajRegCompC("<[Pp][Rr][Ee]>");
-
-    lptr=buff->Curr;
-    
-    ajDebug("ajFileBuffStripHtmlPre testing for <pre> line(s)\n");
-
-    while(lptr)
-    {
-	if(ajRegExec(preexp, lptr->Line))
-	    ifound++;
-
-	lptr = lptr->Next;
-    }
-    
-    if(!ifound)
-    {
-	ajRegFree(&preexp);
-
-	return ajFalse;
-    }
-
-    if (ifound > 1)
-    {
-	ajRegFree(&preexp);
-
-	return ajFalse;
-    }
-
-    lptr=buff->Curr;
-    
-
-    while(lptr && !ajRegExec(preexp, lptr->Line))
-    {
-	tptr = lptr;
-	lptr = lptr->Next;
-	ajStrDel(&tptr->Line);
-	AJFREE(tptr);
-	buff->Size--;
-    }
-    
-    buff->Lines = buff->Curr = lptr;
-    ajRegPost(preexp, &lptr->Line);
-    ajRegFree(&preexp);
-
-    endexp = ajRegCompC("</[Pp][Rr][Ee]>");
-
-    while(lptr && !ajRegExec(endexp,lptr->Line))
-    {
-	lptr    = lptr->Next;
-    }
-    
-    ajRegPre(endexp, &lptr->Line);
-    buff->Last = lptr;
-    lptr = lptr->Next;
-    ajRegFree(&endexp);
-
-    while(lptr)
-    {
-	tptr = lptr;
-	lptr = lptr->Next;
-	ajStrDel(&tptr->Line);
-	AJFREE(tptr);
-	buff->Size--;
-    }
-
-    buff->Last->Next = NULL;
-    ajFilebuffReset(buff);
-    ajFilebuffTraceTitle(buff, "ajFileBuffHtmlPre completed");
-
-    return ajTrue;
-}
-
-
-
-
-/* @obsolete ajFileBuffStripHtmlPre
-** @rename ajFileBuffHtmlPre
-*/
-__deprecated AjBool ajFileBuffStripHtmlPre(AjPFilebuff buff)
-{
-    return ajFilebuffHtmlPre(buff);
-}
-
-
-
-
 /* @func ajFilebuffHtmlNoheader **********************************************
 **
 ** Processes data in the file buffer, removing HTML titles and
@@ -4451,6 +4346,111 @@ void ajFilebuffHtmlNoheader(AjPFilebuff buff)
     ajRegFree(&hexexp);
     
     return;
+}
+
+
+
+
+/* @func ajFilebuffHtmlPre *****************************************************
+**
+** If we only have one pre-formatted section in HTML, that is all we keep.
+**
+** @param [u] buff [AjPFilebuff] buffer
+** @return [AjBool] ajTrue=cleaned ajFalse=unchanged
+** @@
+******************************************************************************/
+
+AjBool ajFilebuffHtmlPre(AjPFilebuff buff)
+{
+    AjPFilebufflist lptr    = NULL;
+    AjPFilebufflist tptr    = NULL;
+    AjPRegexp preexp = NULL;
+    AjPRegexp endexp = NULL;
+    ajint ifound = 0;
+    
+    lptr = buff->Curr;
+    
+    preexp = ajRegCompC("<[Pp][Rr][Ee]>");
+
+    lptr=buff->Curr;
+    
+    ajDebug("ajFileBuffStripHtmlPre testing for <pre> line(s)\n");
+
+    while(lptr)
+    {
+	if(ajRegExec(preexp, lptr->Line))
+	    ifound++;
+
+	lptr = lptr->Next;
+    }
+    
+    if(!ifound)
+    {
+	ajRegFree(&preexp);
+
+	return ajFalse;
+    }
+
+    if (ifound > 1)
+    {
+	ajRegFree(&preexp);
+
+	return ajFalse;
+    }
+
+    lptr=buff->Curr;
+    
+
+    while(lptr && !ajRegExec(preexp, lptr->Line))
+    {
+	tptr = lptr;
+	lptr = lptr->Next;
+	ajStrDel(&tptr->Line);
+	AJFREE(tptr);
+	buff->Size--;
+    }
+    
+    buff->Lines = buff->Curr = lptr;
+    ajRegPost(preexp, &lptr->Line);
+    ajRegFree(&preexp);
+
+    endexp = ajRegCompC("</[Pp][Rr][Ee]>");
+
+    while(lptr && !ajRegExec(endexp,lptr->Line))
+    {
+	lptr    = lptr->Next;
+    }
+    
+    ajRegPre(endexp, &lptr->Line);
+    buff->Last = lptr;
+    lptr = lptr->Next;
+    ajRegFree(&endexp);
+
+    while(lptr)
+    {
+	tptr = lptr;
+	lptr = lptr->Next;
+	ajStrDel(&tptr->Line);
+	AJFREE(tptr);
+	buff->Size--;
+    }
+
+    buff->Last->Next = NULL;
+    ajFilebuffReset(buff);
+    ajFilebuffTraceTitle(buff, "ajFileBuffHtmlPre completed");
+
+    return ajTrue;
+}
+
+
+
+
+/* @obsolete ajFileBuffStripHtmlPre
+** @rename ajFileBuffHtmlPre
+*/
+__deprecated AjBool ajFileBuffStripHtmlPre(AjPFilebuff buff)
+{
+    return ajFilebuffHtmlPre(buff);
 }
 
 
