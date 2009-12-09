@@ -16,7 +16,7 @@ endif
 AM_CFLAGS =  $(AIX_CFLAGS) $(WARN_CFLAGS) $(DEVWARN_CFLAGS)
 
 check_PROGRAMS = acdlog acdrelations acdxsd ajtest \
-complex corbatest ensembltest \
+complex corbatest edamclean ensembltest \
 entrails entrailsbook entrailshtml entrailswiki histogramtest intconv \
 origsplitter origunion \
 newcoils \
@@ -281,6 +281,7 @@ acdlog_SOURCES = acdlog.c
 ajtest_SOURCES = ajtest.c
 complex_SOURCES = complex.c
 corbatest_SOURCES = corbatest.c
+edamclean_SOURCES = edamclean.c
 ensembltest_SOURCES = ensembltest.c
 entrails_SOURCES = entrails.c
 entrailsbook_SOURCES = entrailsbook.c
