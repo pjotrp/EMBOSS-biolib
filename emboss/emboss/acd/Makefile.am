@@ -15,7 +15,7 @@ pkgdata_DATA = aaindexextract.acd abiview.acd acdc.acd acdlog.acd \
 	distmat.acd dotmatcher.acd dotpath.acd dottup.acd dreg.acd \
 	edialign.acd \
 	einverted.acd embossdata.acd embossversion.acd emma.acd emowse.acd \
-	ensembltest.acd \
+	edamclean.acd ensembltest.acd \
 	entrails.acd entret.acd epestfind.acd eprimer3.acd equicktandem.acd \
 	est2genome.acd etandem.acd \
 	extractalign.acd extractfeat.acd extractseq.acd \
