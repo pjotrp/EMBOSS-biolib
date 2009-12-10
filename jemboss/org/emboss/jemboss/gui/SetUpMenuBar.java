@@ -389,7 +389,8 @@ public class SetUpMenuBar
         return name.endsWith(suffix);
       };
     });
-
+    
+    if (tmpFiles!=null)
     for(int h =0;h<tmpFiles.length;h++)
     {
       File tf = new File(tmpFiles[h]);
