@@ -105,7 +105,7 @@ static unsigned wordStrHash(const void *key, unsigned hashsize)
 
 /* @funcstatic wordCompare ****************************************************
 **
-** Compare two word in descoending order.
+** Compare two words in descending order.
 **
 ** @param [r] x [const void *] First word
 ** @param [r] y [const void *] Second word
@@ -342,7 +342,40 @@ static void wordPositionListDelete(void **x,void *cl)
 
 /* @funcstatic wordVFree ******************************************************
 **
-** free the elements in a list of positons
+** Free the elements in a EmbPWord locations table.
+**
+** @param [r] key [void**] key for a table item
+** @param [d] value [void**] Data values as void**
+** @param [r] cl [void*] Ignored user data, usually NULL.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void wordVFreeSeqLocs(void **key, void **value, void *cl)
+{
+    AjPStr key_;
+
+    key_ = (AjPStr) *key;
+    ajStrDel(&key_);
+
+    /* free the elements in the list of the positions */
+    ajListMap(((EmbPWordSeqLocs)*value)->locs,wordPositionListDelete, NULL);
+
+    /* free the list structure for the positions. */
+    ajListFree(&((EmbPWordSeqLocs)*value)->locs);
+
+    /* free the locations structure */
+    AJFREE(*value);
+
+    return;
+}
+
+
+
+
+/* @funcstatic wordVFree ******************************************************
+**
+** free the elements in a list of positions
 **
 ** @param [r] key [void**] key for a table item
 ** @param [d] count [void**] Data values as void**
@@ -358,11 +391,10 @@ static void wordVFree(void **key, void **count, void *cl)
     ckey = (char*) *key;
     ajCharDel(&ckey);
 
-    /* free the elements in the list of the positons */
-    ajListMap(((EmbPWord)*count)->list,wordPositionListDelete, NULL);
 
-    /* free the list structure for the positions. */
-    ajListFree(&((EmbPWord)*count)->list);
+    ajTableMapDel(((EmbPWord)*count)->seqlocs, wordVFreeSeqLocs, NULL);
+
+    ajTableFree(&((EmbPWord)*count)->seqlocs);
 
     /* free the word structure */
     AJFREE(*count);
@@ -582,6 +614,8 @@ AjBool embWordGetTable(AjPTable *table, const AjPSeq seq)
     ajuint ilast;
     ajuint *k;
     EmbPWord rec;
+    EmbPWordSeqLocs seqlocs;
+    const AjPStr seqname;
     char* key;
 
     ajuint wordsize;
@@ -688,13 +722,21 @@ AjBool embWordGetTable(AjPTable *table, const AjPSeq seq)
 	    rec->count = 1;
 	    key = ajCharNewResLenC(startptr, wordsize, wordLength);
 	    rec->fword = key;
-	    rec->list = ajListNew();
+	    rec->seqlocs = ajTablestrNew();
 	    ajTablePut(*table, key, rec);
 	}
 
 	AJNEW0(k);
 	*k = i;
-	ajListPushAppend(rec->list, k);
+	seqname = ajSeqGetNameS(seq);
+    seqlocs = (EmbPWordSeqLocs) ajTableFetch(rec->seqlocs, seqname);
+    if (seqlocs == NULL){
+        AJNEW0(seqlocs);
+        seqlocs->seq = seq;
+        seqlocs->locs = ajListNew();
+        ajTablePut(rec->seqlocs, ajStrNewS(seqname), seqlocs);
+    }
+    ajListPushAppend(seqlocs->locs, k);
 
 	startptr ++;
 	i++;
@@ -704,99 +746,6 @@ AjBool embWordGetTable(AjPTable *table, const AjPSeq seq)
     ajDebug("table done, size %d\n", ajTableGetLength(*table));
 
     return ajTrue;
-}
-
-
-
-
-/* @funcstatic wordFindWordAtPos **********************************************
-**
-** Looks for a word at a given position
-**
-** @param [r] word [const char*] Word to find
-** @param [r] seq1MatchTable [const AjPTable] Match table
-** @param [r] nextpos [ajint] Not used
-** @return [ajint] Position found (1 is the start) or 0 if none.
-** @@
-******************************************************************************/
-
-static ajint wordFindWordAtPos(const char *word, const AjPTable seq1MatchTable,
-			       ajint nextpos)
-{
-    EmbPWord wordmatch;
-    ajint *k;
-    ajint *pos;
-    AjIList iter;
-
-    k = &nextpos;
-
-    wordmatch = ajTableFetch(seq1MatchTable, word);
-
-    if(wordmatch)
-    {
-	iter = ajListIterNewread(wordmatch->list);
-
-	while((pos = (ajint *) ajListIterGet(iter)))
-	    if(*pos == *k)
-	    {
-		ajListIterDel(&iter);
-
-		return *pos +1;
-	    }
-
-	ajListIterDel(&iter);
-    }
-
-    return 0;
-}
-
-
-
-
-/* @funcstatic wordGetWholeMatch **********************************************
-**
-** Looks for a word length match.
-**
-** @param [u] match [EmbPWordMatch] match structure
-** @param [r] seq1MatchTable [const AjPTable] match table
-** @return [ajint] Match position
-** @@
-******************************************************************************/
-
-static ajint wordGetWholeMatch(EmbPWordMatch match,
-			       const AjPTable seq1MatchTable)
-{
-    const AjPSeq seq2;
-    const char *startptr;
-    ajuint i = 0;
-    ajuint ilast;
-    ajint nextpos = 0;
-
-    assert(wordLength > 0);
-
-    seq2 = match->sequence;
-
-    startptr = &(ajSeqGetSeqC(seq2)[match->seq2start+1]);
-
-    i = match->seq2start;
-
-    nextpos = match->seq1start + 1;
-
-    ilast = ajSeqGetLen(seq2) - wordLength;
-
-    while(i < (ilast+1))
-    {
-	/* find if it matches */
-	if(!wordFindWordAtPos(startptr, seq1MatchTable, nextpos)) break;
-
-	match->length++;
-	nextpos++;
-	i++;
-	startptr++;
-    }
-
-
-    return (nextpos+wordLength) - (match->seq1start +1);
 }
 
 
@@ -985,10 +934,11 @@ AjPList embWordBuildMatchTable(const AjPTable seq1MatchTable,
     ajuint ilast;
     AjPList hitlist = NULL;
     const AjPList newlist = NULL;
+    const AjPTable seqlocst;
+    EmbPWordSeqLocs* seqlocs=NULL;
     const char *startptr;
     EmbPWord wordmatch;
-    EmbPWordMatch match;
-    EmbPWordMatch match2;
+    EmbPWordMatch newmatch;
     EmbPWordMatch curmatch = NULL;
     AjIList newiter;
     AjIList curiter;
@@ -1001,9 +951,6 @@ AjPList embWordBuildMatchTable(const AjPTable seq1MatchTable,
     AjBool matched = ajFalse;
 
     assert(wordLength > 0);
-    AJNEW0(match);
-
-    match->sequence = seq2;
 
     hitlist = ajListNew();
 
@@ -1036,7 +983,10 @@ AjPList embWordBuildMatchTable(const AjPTable seq1MatchTable,
 	    ** this could extend an existing match or start a new one
 	    */
 
-	    newlist = wordmatch->list;
+	    seqlocst = wordmatch->seqlocs;
+	    ajTableToarrayValues(seqlocst, (void***)&seqlocs);
+	    /* TODO: assumes matching against single sequence */
+	    newlist = seqlocs[0]->locs;
 
 	    if(!ajListGetLength(newlist))
 		ajWarn("ERROR: newlist is empty\n");
@@ -1105,21 +1055,17 @@ AjPList embWordBuildMatchTable(const AjPTable seq1MatchTable,
 
                 if(!matched)
                 {			/* new current match */
-                    AJNEW0(match2);
-                    match2->sequence  = seq2;
-                    match2->seq1start = knew;
-                    match2->seq2start = i;
-                    match2->length = wordLength;
                     /*ajDebug("save start1: %d start2: %d len: %d\n",
                             match2->seq1start, match2->seq2start,
                             match2->length);*/
-                    ajListPushAppend(hitlist, match2); /* add to hitlist */
+                    /* add to hitlist */
+                    newmatch = embWordMatchListAppend(hitlist, seq2, knew, i, wordLength);
 
                     if(curiter)
                     {			/* add to wordCurList */
                         /*ajDebug("...ajListInsert using curiter %u\n",
                           ajListGetLength(wordCurList));*/
-                        wordListInsertOld(curiter, match2);
+                        wordListInsertOld(curiter, newmatch);
                         /*wordCurListTrace(wordCurList);*/
                         /*wordCurIterTrace(curiter);*/
                     }
@@ -1127,7 +1073,7 @@ AjPList embWordBuildMatchTable(const AjPTable seq1MatchTable,
                     {
                         /*ajDebug("...ajListPushAppend to wordCurList %u\n",
                           ajListGetLength(wordCurList));*/
-                        ajListPushAppend(wordCurList, match2);
+                        ajListPushAppend(wordCurList, newmatch);
                         /* wordCurListTrace(wordCurList); */
                     }
                 }
@@ -1150,14 +1096,27 @@ AjPList embWordBuildMatchTable(const AjPTable seq1MatchTable,
 
     /* wordCurListTrace(hitlist); */
 
-    AJFREE(match);
-
     while(ajListPop(wordCurList,(void **)&ptr));
 
     return hitlist;
 }
 
 
+EmbPWordMatch embWordMatchListAppend(AjPList hitlist, const AjPSeq seq,
+        const ajuint seq1start, ajuint seq2start, ajint length)
+{
+    EmbPWordMatch match;
+    AJNEW0(match);
+    match->sequence  = seq;
+    match->seq1start = seq1start;
+    match->seq2start = seq2start;
+    match->length = length;
+    ajDebug("new word match start1: %d start2: %d len: %d\n",
+            match->seq1start, match->seq2start,
+            match->length);
+    ajListPushAppend(hitlist, match);
+    return match;
+}
 
 
 /* @funcstatic wordNewListTrace ***********************************************
@@ -1533,7 +1492,7 @@ void embWordMatchMin(AjPList matchlist)
 ******************************************************************************/
 
 AjBool embWordMatchIter(AjIList iter, ajint* start1, ajint* start2,
-			ajint* len)
+			ajint* len, const AjPSeq* seq)
 {
     EmbPWordMatch p;
 
@@ -1544,6 +1503,7 @@ AjBool embWordMatchIter(AjIList iter, ajint* start1, ajint* start2,
     *start1 = p->seq1start;
     *start2 = p->seq2start;
     *len = p->length;
+    *seq = p->sequence;
 
     return ajTrue;
 }
@@ -1636,12 +1596,7 @@ static void wordListInsertNodeOld(AjPListNode* pnode, void* x)
 
 void embWordUnused(void)
 {
-    EmbPWordMatch match;
-    AjPTable ajptable = NULL;
 
-    AJNEW0(match);
-
-    wordGetWholeMatch(match,ajptable);
     wordCurListTrace(NULL);	/* comment out in embWordBuildMatchTable */
     wordCurIterTrace(NULL);	/* comment out in embWordBuildMatchTable */
     wordNewListTrace(0, NULL);	/* comment out in embWordBuildMatchTable */
