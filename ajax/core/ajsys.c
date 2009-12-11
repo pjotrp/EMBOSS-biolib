@@ -41,7 +41,7 @@ static AjPStr sysFname = NULL;
 static AjPStr sysTokRets = NULL;
 static AjPStr sysTokSou  = NULL;
 static const char *sysTokp = NULL;
-
+static AjPStr sysUserPath = NULL;
 
 /* @filesection ajutil ********************************************************
 **
@@ -354,16 +354,26 @@ AjBool ajSysFileWhich(AjPStr *Pfilename)
 {
     char *p;
 
-    p = getenv("PATH");
-    if(!p)
-	return ajFalse;
+    if(!ajStrGetLen(sysUserPath))
+        ajStrAssignC(&sysUserPath, getenv("PATH"));
 
-    ajStrAssignS(&sysTname, *Pfilename);
+    if(!ajStrGetLen(sysUserPath))
+        return ajFalse;
 
+    p = ajStrGetuniquePtr(&sysUserPath);
+
+    if(!ajNamGetValueS(*Pfilename, &sysTname))
+        ajStrAssignS(&sysTname, *Pfilename);
+
+    if(ajFilenameExistsExec(sysTname))
+    {
+        ajStrAssignS(Pfilename,sysTname);
+        ajStrDelStatic(&sysTname);
+        return ajTrue;
+    }
+    
     if(!sysFname)
 	sysFname = ajStrNew();
-
-    ajFilenameTrimPath(&sysTname);
 
     p=ajSysFuncStrtok(p,PATH_SEPARATOR);
 
@@ -381,8 +391,7 @@ AjBool ajSysFileWhich(AjPStr *Pfilename)
 
 	if(ajFilenameExistsExec(sysFname))
 	{
-	    ajStrSetClear(Pfilename);
-	    ajStrAssignEmptyS(Pfilename,sysFname);
+	    ajStrAssignS(Pfilename,sysFname);
 	    break;
 	}
 
@@ -1194,6 +1203,7 @@ void ajSysExit(void)
     ajStrDel(&sysTname);
     ajStrDel(&sysTokSou);
     ajStrDel(&sysTokRets);
+    ajStrDel(&sysUserPath);
 
     return;
 }
