@@ -18529,12 +18529,14 @@ FZ > 608
 FP /^ +5 HBA_HUMAN +[+] +59\.\.63 +HBB_HUMAN +[+] +64\.\.68\n/
 FP /^ +4 HBA_HUMAN +[+] +15\.\.18 +HBB_HUMAN +[+] +16\.\.19\n/
 FP /^ +4 HBA_HUMAN +[+] +117\.\.120 +HBB_HUMAN +[+] +122\.\.125\n/
-FI HBA_HUMAN.gff
+FI hba_human.gff
 FZ = 382
 FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
+FI wordmatch.log
+FP /number of patterns/
 //
 
 ID wossname-ex
@@ -20015,9 +20017,14 @@ CL tembl:v00294 tembl:v00294 -word 50 -auto
 FI v00294.wordmatch
 FC = 23
 FP /^ +1113 +V00294 +[+] +1\.\.1113 +V00294 +[+] +1\.\.1113\n/
+FI v00294.gff
+FZ = 186
+FP /^V00294\twordmatch\tsequence_feature\t1\t1113\t1\.000\t/
 FI V00294.gff
 FZ = 186
 FP /^V00294\twordmatch\tsequence_feature\t1\t1113\t1\.000\t/
+FI wordmatch.log
+FP /number of patterns/
 //
 
 ID align-wordmatch-pair
@@ -20038,12 +20045,14 @@ FP 1 /^HBA_HUMAN         59 HGKKV     63\n/
 FP 1 /^                     \|\|\|\|\|\n/
 FP 2 /^                     \|\|\|\|\n/
 FP 1 /^HBB_HUMAN         64 HGKKV     68\n/
-FI HBA_HUMAN.gff
+FI hba_human.gff
 FZ = 382
 FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
+FI wordmatch.log
+FP /number of patterns/
 //
 
 ID align-wordmatch-srspair
@@ -20064,12 +20073,14 @@ FP 1 /^HBA_HUMAN         59 HGKKV     63\n/
 FP 1 /^                     \|\|\|\|\|\n/
 FP 2 /^                     \|\|\|\|\n/
 FP 1 /^HBB_HUMAN         64 HGKKV     68\n/
-FI HBA_HUMAN.gff
+FI hba_human.gff
 FZ = 382
 FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
+FI wordmatch.log
+FP /number of patterns/
 //
 
 ID align-wordmatch-markx0
@@ -20090,12 +20101,14 @@ FP 1 /^HBA_HU HGKKV\n/
 FP 1 /^       :::::\n/
 FP 1 /^HBB_HU HGKKV\n/
 FP 1 /^       60   \n/
-FI HBA_HUMAN.gff
+FI hba_human.gff
 FZ = 382
 FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
+FI wordmatch.log
+FP /number of patterns/
 //
 
 ID align-wordmatch-markx1
@@ -20117,12 +20130,14 @@ FP 1 /^HBA_HU HGKKV\n/
 FP 2 /^           \n/
 FP 1 /^HBB_HU HGKKV\n/
 FP 1 /^       60   \n/
-FI HBA_HUMAN.gff
+FI hba_human.gff
 FZ = 382
 FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
+FI wordmatch.log
+FP /number of patterns/
 //
 
 ID align-wordmatch-markx2
@@ -20143,12 +20158,14 @@ FP 1 /^       60   \n/
 FP 1 /^HBA_HU HGKKV\n/
 FP 1 /^HBB_HU -----\n/
 FP 2 /^HBB_HU ----\n/
-FI HBA_HUMAN.gff
+FI hba_human.gff
 FZ = 382
 FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
+FI wordmatch.log
+FP /number of patterns/
 //
 
 ID align-wordmatch-markx3
@@ -20167,12 +20184,14 @@ FI hba_human.wordmatch
 FZ > 608
 FP 1 /^>HBA_HUMAN \.\.\nHGKKV\n/
 FP 1 /^>HBB_HUMAN \.\.\nHGKKV\n/
-FI HBA_HUMAN.gff
+FI hba_human.gff
 FZ = 382
 FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
+FI wordmatch.log
+FP /number of patterns/
 //
 
 ID align-wordmatch-markx10
@@ -20200,12 +20219,14 @@ FP 3 /^; sq_len: 147\n/
 FP 1 /^; al_start: 64\n/
 FP 1 /^; al_stop: 68\n/
 FP 1 /^; al_display_start: 64\n/
-FI HBA_HUMAN.gff
+FI hba_human.gff
 FZ = 382
 FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
+FI wordmatch.log
+FP /number of patterns/
 //
 
 ID align-merger-fasta
