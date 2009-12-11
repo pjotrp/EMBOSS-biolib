@@ -42,7 +42,9 @@ __noreturn void embExit (void)
     embPatlistExit();
 
     ajSeqDbExit();
+    ajGraphicsExit();
     ajAcdExit(ajFalse);
+
     ajExit();
 }
 
