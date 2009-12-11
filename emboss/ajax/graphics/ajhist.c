@@ -231,8 +231,8 @@ void ajHistDisplay(const AjPHist hist)
 		max = 1.0;
 	}
 
-	ajGraphOpenPlot(hist->graph, 1);
-	ajGraphPlenv(hist->xmin-percent5, hist->xmax+percent5, min,
+	ajGraphOpenPlotset(hist->graph, 1);
+	ajGraphicsPlenv(hist->xmin-percent5, hist->xmax+percent5, min,
 		     max*((float)1.025), aj_hist_mark);
 	ajGraphicsSetLabelsS(hist->xaxis ,
                              hist->yaxisleft ,
@@ -242,7 +242,7 @@ void ajHistDisplay(const AjPHist hist)
 	ajGraphicsSetRlabelS(hist->yaxisright);
     }
     else 
-	ajGraphOpenPlot(hist->graph, hist->numofsets);
+	ajGraphOpenPlotset(hist->graph, hist->numofsets);
     
     if(hist->displaytype == HIST_SIDEBYSIDE)
     {
@@ -300,9 +300,9 @@ void ajHistDisplay(const AjPHist hist)
 		    totals[i] = 1.0;
 	    }
 
-	    ajGraphPlenv(hist->xmin-percent5, hist->xmax+percent5,
-			 totals2[i]*((float)1.025), totals[i]*((float)1.025),
-			 aj_hist_mark);
+	    ajGraphicsPlenv(hist->xmin-percent5, hist->xmax+percent5,
+                            totals2[i]*((float)1.025), totals[i]*((float)1.025),
+                            aj_hist_mark);
 	    offset = /*bar_width*/0.0;
 	    start = hist->xmin;
 	    num = 0;
@@ -409,7 +409,7 @@ void ajHistDisplay(const AjPHist hist)
 
 void ajHistClose(void)
 {
-    ajGraphCloseWin();
+    ajGraphicsCloseWin();
 
     return;
 }
