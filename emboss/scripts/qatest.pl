@@ -747,6 +747,8 @@ $logfile = "qatest.log";
 $testwild = "*";
 $doembassy=1;
 $docheck=1;
+$qatestfile = "../qatest.dat";
+$acddir=  "../../emboss/acd";
 
 foreach $test (@ARGV) {
   if ($test =~ /^-(.*)/) {
@@ -767,6 +769,8 @@ foreach $test (@ARGV) {
     elsif ($opt =~ /without=(\S+)/) {$without{$1}=1}
     elsif ($opt =~ /t=([0-9]+)/) {$timeoutdef=int($1)}
     elsif ($opt =~ /logfile=(\S+)/) {$logfile=">$1"} # append to logfile
+    elsif ($opt =~ /testfile=(\S+)/) {$qatestfile="$1"}
+    elsif ($opt =~ /acd=(\S+)/) {$acddir="$1"}
     else {print STDERR "+++ unknown option '$opt'\n"; usage()}
   }
   else {
@@ -831,7 +835,7 @@ $SIG{ALRM} = sub { print STDERR "+++ timeout handler\n"; die "qatest timeout" };
 # The relative path is fixed, as are the paths of files in the qatest.dat
 # file, so best to keep everything running in the test/qa directory
 
-opendir (ACDDIR, "../../emboss/acd") || die "Cannot open emboss/acd directory";
+opendir (ACDDIR, "$acddir") || die "Cannot open emboss/acd directory";
 @acdfiles = readdir(ACDDIR);
 closedir ACDDIR;
 
@@ -861,7 +865,7 @@ if (!$numtests) {
 
 }
 
-open (IN, "../qatest.dat") || die "Cannot open qatest.dat";
+open (IN, "$qatestfile") || die "Cannot open $qatestfile";
 open (LOG, ">$logfile") || die "Cannot open $logfile";
 
 # make qatest.log unbuffered and be sure to reset the current filehandle
