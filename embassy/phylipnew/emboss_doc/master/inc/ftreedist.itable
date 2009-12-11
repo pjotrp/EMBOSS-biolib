@@ -51,7 +51,7 @@
 <td>-style</td>
 <td>list</td>
 <td>Distances output option</td>
-<td><table><tr><td>f</td> <td><i>(Full matrix)</i></td></tr><tr><td>v</td> <td><i>(One pair per line, verbose)</i></td></tr><tr><td>s</td> <td><i>(One pair per line, sparse)</i></td></tr></table></td>
+<td><table><tr><td>f</td> <td><i>(Full matrix)</i></td></tr><tr><td>v</td> <td><i>(Verbose, one pair per line)</i></td></tr><tr><td>s</td> <td><i>(Sparse, one pair per line)</i></td></tr></table></td>
 <td>v</td>
 </tr>
 
