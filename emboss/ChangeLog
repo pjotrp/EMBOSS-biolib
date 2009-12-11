@@ -1,4 +1,40 @@
-Version 6.2.0 15-jan-2010
+Version 6.2.0 15-Jan-2010
+	A new function ajDebugTest can be used to turn on/off specific
+	debug calls. The only argument is a quoted string. A file
+	.debugtest in the current directory or the user's home directory
+	is read. This contains a list of tokens to be debugged, so
+	ajDebugTest returns true if any of these tokens is passed in.
+	Optionally, the name in .debugtest can be followed by a number
+	which is the maximum number of times that token will be reported.
+	ajDebugTest is intended for developers who use ajDebug calls that
+	may be expensive or be excessively called.
+
+	Some attributes in ACD files may appear more than once. These
+	include any relations: attribute (now being populated with
+	references to the new EDAM ontology), the groups attribute for
+	applications, the (currently unused) keywords attribute for
+	applications, and the external attribute for applications.
+
+	Any external application must now be defined in the ACD file with
+	an external: attribute in the application section. The string
+	value has the name of the application as the first word, followed
+	by a message to be printed if it is not found. When the ACD file
+	is parsed, before any user prompts, the external applications are
+	searched for by first looking for an environment variable
+	EMBOSS_appname and then checking for an executable file in the
+	current directory or in the path.
+
+	All applications should be launched by using the name returned by
+	the new ajAcdGetPathC or ajAcdGetPathS functions. This ensures the
+	application has been found in ACD processing and any
+	EMBOSS_appname variable has been tested.
+
+	The acdvalid utility now tests for duplicate attributes.
+
+	Format specifiers for strings and characters (%S, %s and %c) now
+	have two flags U (e.g. %US) for uppercase and L for lower case
+	output.
+
 	The configure.in and main package Makefile.am files handle
 	--enable-devwarnings differently. For the imported libraries this
 	level of warning message is turned off. Messages are still
@@ -37,7 +73,7 @@ Version 6.2.0 15-jan-2010
 	no longer needed.
 
 	The database access code in ajseqdb.c has been moved to a separate
-	higher level library. This is where we will insert code to acces
+	higher level library. This is where we will insert code to access
 	the new ensembl library functions in AJAX, and possible future
 	data access libraries. A callback mechanism is used so that the
 	embInit call automatically registers data access methods to make
@@ -141,7 +177,7 @@ Version 6.2.0 15-jan-2010
 	originally intended) for the definition of external applications
 	by SoapLab.
 
-Version 6.1.0 15-jul-2009
+Version 6.1.0 15-Jul-2009
 
 	A new data structure AjPSeqXref holds details of cross-references
 	between a sequence object and any other data resource. The
@@ -181,7 +217,7 @@ Version 6.1.0 15-jul-2009
 	automatically. "fastq" format ignores all quality scores as there
 	is no automatic and safe way to determine whether scores are for
 	Sanger/phred or Illumina/Solexa quality. To read the quality
-	socres we support formats "fast-qsanger" and "fastq-illumina". We
+	scores we support formats "fastq-sanger" and "fastq-illumina". We
 	also support "fastq-int" to read quality scores as integers. These
 	scores are assumed to be Sanger quality. For Illumina quality
 	scores out of range, a warning message is written once for each
@@ -434,7 +470,7 @@ Version 6.1.0 15-jul-2009
 	and similar changes for EMBASSY applications.
 
 	ACD processing now objects if two or more qualifiers are not
-	unique in the first 6 characters. In a future release we cwould
+	unique in the first 6 characters. In a future release we would
 	like to reduce this to a 5 character unique name. Several EMBASSY
 	applications need to be modified to comply with this requirement.
 
@@ -450,7 +486,7 @@ Version 6.1.0 15-jul-2009
 
 	PDB model structures failed to generate a new name for each
 	model. Duplicate sequence names are not ideal. The model number
-	(from the MODEL record) is now appebded to each sequence name in
+	(from the MODEL record) is now appended to each sequence name in
 	"pdb" and "pdbnuc" format. The "pdbseq" and "pdbnucseq" formats
 	read a single copy of each sequence from the SEQRES records.
 
@@ -515,7 +551,7 @@ Version 6.1.0 15-jul-2009
 
 	jaspscan now allows multiple sequences to be scanned.
 
-Version 6.0.0 15-jul-2008
+Version 6.0.0 15-Jul-2008
 
 	New application aligncopy reads a set of aligned sequences and
 	prints a report in one of the standard alignment formats that can
@@ -615,7 +651,7 @@ Version 6.0.0 15-jul-2008
 	with some other local alignment formats that include the sequence.
 	Seqmatchall now stores alignments in the same way as other local
 	alignment applications, and the alignment internals are corrected
-	to ensure other applictaiopns will not have the same problem.
+	to ensure other applications will not have the same problem.
 
 	Emma was officially supporting clustalw 1.83. Issues with clustalw
 	2.0 are now resolved and this version is supported if clustalw2 is
@@ -700,7 +736,7 @@ Version 6.0.0 15-jul-2008
 	AJCNEW0, etc.) tests the bytes before and after and reports any
 	errors. The advantage of using ajMemProbe rather than mprobe is
 	that a macro MAJMEMPROBE also reports the file and line number
-	where ist was called. To avoid large numbers of messages (when
+	where it was called. To avoid large numbers of messages (when
 	code has problems) a limit can be set with ajMemCheckSetLimit
 	after which the program will exit. Note that enable-mprobe is
 	incompatible with using valgrind to test for memory leaks - as
@@ -780,7 +816,7 @@ Version 6.0.0 15-jul-2008
 	now allow #include references to other files. This allows a
 	standard EMBL and Swissprot feature table definition to be
 	included by the internal and GFF definitions. Redefinitions are
-	allowed using + and - prefxes to add and remove tags for existing
+	allowed using + and - prefixes to add and remove tags for existing
 	feature types.
 
 	GFF3 format feature (and report) output is added.
@@ -988,7 +1024,7 @@ Version 5.0.0 15-jul-2007
 
 	String function ajStrFmtWrap to wrap strings for output now
 	respect newlines in the original string. A new function
-	ajStrFmtWrapAt prefers to wrap at a seleacted character, for
+	ajStrFmtWrapAt prefers to wrap at a selected character, for
 	example ',' for author lists.
 
 	Sequence objects are extended to include the full set of fields
@@ -1022,7 +1058,7 @@ Version 5.0.0 15-jul-2007
 	Function ajTableRemove deletes an entry in a table, but only
 	returns the value. This is replaced by ajTableRemoveKey which also
 	returns the original key. The caller now owns both the value and
-	the key, and is reponsible for deleting them. ajTableRemove is now
+	the key, and is responsible for deleting them. ajTableRemove is now
 	declared obsolete and will be removed from a future release.
 
 	Infoseq by default uses columns with fixed width, but this fails
@@ -1087,7 +1123,7 @@ Version 4.1.0 04-mar-2007
 	and preprocesses them by name. A few tests can be flagged as
 	ignored. This is intended for tests known to run for a very long
 	time under valgrind. Memory leaks are fixed for all programs in
-	the main EMBOSS package and for the most used ones in the EMBRASSY
+	the main EMBOSS package and for the most used ones in the EMBASSY
 	packages.
 
 	A new environment variable ACDCOMMANDLINELOG takes a filename as
@@ -1168,7 +1204,7 @@ Version 4.1.0 04-mar-2007
 	way sequence types are tested using regular expressions processed
 	by calls to the PCRE library. These calls were replaced by simple
 	string functions as they are only testing that a sequence is
-	entirely composed of characteres from an allowed set. An
+	entirely composed of characters from an allowed set. An
 	additional speedup was achieved by defining only upper case
 	characters as required (almost halving the number of tests) and
 	testing the upper case version of the sequence characters.
@@ -1379,16 +1415,16 @@ Version 4.1.0 04-mar-2007
 	Matrices.proteinstructure now have comment headers explaining
 	their format.  Fixed issues with nucleotide features in the
 	reverse direction in reports. The start/end positions were stored
-	the wrong way around and then reversed again when repiorted in one
+	the wrong way around and then reversed again when reported in one
 	of the report formats. However, reporting as EMBL features showed
 	the incorrect storage. ajFeatNewII now checks start/end and
-	reverses the feature if start is ggreater than end. ajFeatNewIIRev
+	reverses the feature if start is greater than end. ajFeatNewIIRev
 	sets the reverse strand and also checks that the start position is
 	greater than (or equal to) the end position (added as a fix to 4.0.0)
 
 	To reduce the size of very large reports, for example when fuzznuc
 	or fuzzpro run over very large databases, new qualifiers are added
-	to report output. -rmaxseq gived the maximum hits for any one
+	to report output. -rmaxseq gives the maximum hits for any one
 	sequence, -maxall gives the total maximum number of hits. The
 	report tail contains a record of the number of hits reported and
 	found. The qualifiers are intended for web interfaces to control
@@ -1397,7 +1433,7 @@ Version 4.1.0 04-mar-2007
 	can terminate at that point. (added as a fix to 4.0.0)
 
 	Reports now write a header and tail when closed, to make sure that
-	all programs will wrirte something to the report file. The default
+	all programs will write something to the report file. The default
 	header contains the command line provenance, the tail contains the
 	number of sequences and hits. (added as a fix to 4.0.0)
 
@@ -1421,7 +1457,7 @@ Version 4.0.0 15-jul-2006
 	The output produced by -help provides more information about
 	associated qualifiers than the HTML table view (from acdtable)
 	which is included in the HTML documentation in the
-	duistribution. However, there is also a lot of extra information
+	distribution. However, there is also a lot of extra information
 	in the acdtable output on the default values and the allowed
 	values for each qualifier. The -help output is now expanded to
 	include all the information provided by the acdtable view. A
@@ -1457,7 +1493,7 @@ Version 4.0.0 15-jul-2006
         sequences. This means that any alphabetic text is now a valid
         protein sequence. There are 20 naturally occurring amino acids,
         plus 'X' (unknown) 'B' and 'Z' ('D' or 'N' and 'E' or 'Q' for
-        analyis of complete digests) 'J' ('I' or 'L' in mass spectrometry)
+        analysis of complete digests) 'J' ('I' or 'L' in mass spectrometry)
         plus 'U' (selenocysteine) and 'O' (pyrrolysine). There is a small
         complication - older versions of phylip sometimes use 'O' as a gap
         character. EMBOSS will still allow this in nucleotide sequences.
@@ -1470,13 +1506,13 @@ Version 4.0.0 15-jul-2006
         services http://www.ebi.ac.uk/cgi-bin/dbfetch to query databases
         by ID or accession.
 
-	iep changed to allow users to specifiy number of modified
+	iep changed to allow users to specify number of modified
 	(uncharged) lysines and intrachain disulphide bridges. This
 	includes extensions to embIep functions to include the two new
 	parameters. These updates were provided by Clemens Broger of
 	F.Hofmann-La Roche Ltd.
 
-	Changes to splitter and union by Kim Rutherford (Atermis
+	Changes to splitter and union by Kim Rutherford (Artemis
 	maintainer at the Sanger Institute) allow features to be preserve
 	for nucleotide sequences. The default operation of both programs
 	is unchanged.
@@ -1502,9 +1538,9 @@ Version 4.0.0 15-jul-2006
 
 	New ACD pattern type reads a PROSITE style pattern, or @filename
 	where filename contains patterns with names in FASTA
-	format. Patterns in the file are concate=nated if on multiple
+	format. Patterns in the file are concatenated if on multiple
 	lines. The file may also contain mismatch=n after the ID to set
-	the number of mismatches for a pattersn. Patterns also have
+	the number of mismatches for a pattern. Patterns also have
 	associated qualifiers -pmismatch and -pname for the pattern on the
 	commandline or all patterns in the file.
 
@@ -1527,7 +1563,7 @@ Version 4.0.0 15-jul-2006
 	the original HMMER package version 2.3.2 developed by Sean Eddy.
 	The package is fully documented.
 
-        ACD dirlist: order of list of files is now system-indepdendent.
+        ACD dirlist: order of list of files is now system-independent.
 
 	fuzztran: now always generates an output file, even if there
 	is no data.
@@ -1599,7 +1635,7 @@ Version 4.0.0 15-jul-2006
 	version as a number. Internally in EMBOSS we continue to build the
 	accnum.n style sequence version. We expect most other packages
 	will take some time to change EMBL formats, so for output this is
-	clled "emblnew" format. As input, "embl" format will accept both
+	called "emblnew" format. As input, "embl" format will accept both
 	the old and new style entries. For database indexing, dbiflat and
 	dbxflat will read old and new formats as "embl" by looking for SV
 	on the ID line. EMBL and EMBLNEW format output is also improved by
@@ -1641,7 +1677,7 @@ Version 4.0.0 15-jul-2006
 	from water and supermatcher. For these local alignments all reversed
 	alignments were ending at "1" because the end offset was not
 	calculated correctly. Matcher called a different function to set
-	sequence posisitions and reported correct positions.
+	sequence positions and reported correct positions.
 
 	For alignments with a line of gaps, adjusted the numbering to
 	report the last sequence position instead of the next at the start
@@ -1660,7 +1696,7 @@ Version 4.0.0 15-jul-2006
 	application attributes and reports definitions which are aliases
 	(with -full on the commandline).
 
-	Added -mincount option to wordcount to report only words occuring
+	Added -mincount option to wordcount to report only words occurring
 	a given number of times. The default of 1 does not change the
 	previous results.
 
@@ -1729,7 +1765,7 @@ Version 4.0.0 15-jul-2006
 	New program backtranambig to backtranslate as most ambiguous
 	codons.
 
-	Phylip sequence format can now read sets of alignemnts with blank
+	Phylip sequence format can now read sets of alignments with blank
 	lines in between. Such formats were produced by the new fseqboot
 	program and used by the new phylip programs and seqsetall in ACD.
 
@@ -1737,7 +1773,7 @@ Version 4.0.0 15-jul-2006
 	is given now lists only the unique devices (those defined
 	differently in the plplot library code) with alternative names
 	(xwindows for x11, for example) added in brackets. Specifying an
-	ambuguous device used to accept the first match found, now an
+	ambiguous device used to accept the first match found, now an
 	error message is given.
 
 	Prettyplot and cons were producing different consensus
@@ -1747,11 +1783,11 @@ Version 4.0.0 15-jul-2006
 	used by cons had not been corrected). Prettyplot was missing
 	consensus characters for a different reason - prettyplot has a
 	"collision detection" feature to skip consensus characters for
-	posisions where more than one amino acid or base is valid as a
+	positions where more than one amino acid or base is valid as a
 	consensus character. This was turned on by default, when the ACD
 	file clearly states it should be turned off. In fixing both bugs
 	the two programs will give the same consensus, except for cases
-	where collisions occur - in these cases prettplot may not select
+	where collisions occur - in these cases prettyplot may not select
 	the same character as cons, where both are equally valid.
 
 	Programs that write sequences need to call ajSeqWriteClose before
@@ -1781,7 +1817,7 @@ Version 4.0.0 15-jul-2006
 
 	dbiflat, dbifasta, dbigcg and dbiblast set the system sort to use
 	normal "C" sort order. On systems where the locale is set to a
-	language other than english, sort can have strange behaviour. In
+	language other than English, sort can have strange behaviour. In
 	particular, the underscore character fails to sort in the correct
 	place so that indexing SwissProt/UniProt or RefSeq entries fails
 	to put certain entries in the correct sort position for
@@ -1905,9 +1941,9 @@ Version 3.0.0 15-jul-2005
 	automatically. EMBOSS will now, for example, accept native GCG
 	codon usage tables including those used by the codonusage and
 	transterm databases. The format can be specified for "codon" input
-	by a -format quialifier. Outcodon is now used as an ACD datatype
+	by a -format qualifier. Outcodon is now used as an ACD datatype
 	for writing codon usage tables, and has a -oformat qualifier. A
-	new application codcopy can interconvert the codon usage table
+	new application codcopy can inter-convert the codon usage table
 	formats. The default codon usage table format is called "emboss"
 	and includes structured comments to identify the species, database
 	release, database division, number of CDSs and codons, and GC
@@ -1928,7 +1964,7 @@ Version 3.0.0 15-jul-2005
 	Correction to reversed sequence numbering for local alignments
 	from water.
 
-Version 2.10.0 03-jan-2005
+Version 2.10.0 03-Jan-2005
 
 	Profile analysis with gprof indicates that the regular expressions
 	(and the PCRE library) are very inefficient. Wildcards in regular
@@ -2002,9 +2038,9 @@ Version 2.10.0 03-jan-2005
 
 	FASTA format sequence files with a sequence ID starting P1; were
 	assumed to be PIR format. These can now be read as FASTA, assuming
-	that PIR format has already beed tested for.
+	that PIR format has already been tested for.
 
-	Sequences with zerolength were accepted. Sequences must now have a
+	Sequences with zero length were accepted. Sequences must now have a
 	length of at least 1. Some user scripts could create FASTA format
 	files with no sequence, or with the sequence on the ID line. These
 	can crash many programs, including a core dump from clustalw
@@ -2013,7 +2049,7 @@ Version 2.10.0 03-jan-2005
 	Added a calculated attribute "haslengths" to (phylogenetic) tree
 	input in ACD for use in phylipnew interfaces
 
-	Wossname and seealso have a new commanline option -showembassy
+	Wossname and seealso have a new commandline option -showembassy
 	which defines one embassy package to be shown. The main use is in
 	finding applications when automatically building the
 	documentation, but end users and interface builders may find some
@@ -2156,7 +2192,7 @@ Version 2.9.0 15-Jul-2004
 	appear there. Expected qualifier name is -outdir.
 
 	compseq now has the option '-calcfreq'. This makes it calculate
-	the expecetd frequencies of the words in the sequences from the
+	the expected frequencies of the words in the sequences from the
 	observed frequencies of the single bases or residues in those
 	frequencies.
 
@@ -2164,13 +2200,13 @@ Version 2.9.0 15-Jul-2004
 	makes a first pass to look for a single preformatted block and
 	accepts this as the data (thus avoiding horrors such as the Entrez
 	headers and javascript which NCBI's search service includes).
-	At the sdame time, an old fix to patch SRS 6.1.0 output has been
+	At the same time, an old fix to patch SRS 6.1.0 output has been
 	removed as this clashed with the new code.
 
 	Optional outputs have a new behaviour. With nulldefault defined,
 	an output is, by default, turned off and will return a NULL value
 	to the calling program if nullok is set. Setting the value to ""
-	on the command lne will now ask for the standard filename to be
+	on the command line will now ask for the standard filename to be
 	generated. The "missing" attribute, if defined, allows simply
 	-qualname on the commandline to request the default filename,
 	although care must be taken to avoid anything following the
@@ -2188,13 +2224,13 @@ Version 2.9.0 15-Jul-2004
 
 	New ACD section "additional" added for qualifiers with
 	additional:"Y" defined. These have been put in the "advanced"
-	section until now. Acdvalid checks that these qualidfiers are in
+	section until now. Acdvalid checks that these qualifiers are in
 	the appropriate section.
 
 	Acdvalid now checks that qualifiers are in the expected
 	section. All input qualifiers (including cfile and datafile) aer
 	now in the input section, all output qualifiers are in the output
-	section. All (remaining) standard, addional and advanced
+	section. All (remaining) standard, additional and advanced
 	qualifiers are in the "required" "additional" and "advanced"
 	sections.
 
@@ -2207,9 +2243,9 @@ Version 2.9.0 15-Jul-2004
 	they do still have an upper limit for the number of groups and
 	labels per group, but no longer have static arrays.
 
-Version 2.8.0 30-nov-2003
+Version 2.8.0 30-Nov-2003
 
-	tfm accepts the PAGER environment variable. It can be overrided
+	tfm accepts the PAGER environment variable. It can be overridden
 	by EMBOSS_PAGER.
 
 	Fix for HTTP 1.1 lines for MacOSX added (Cedric Rossi).
@@ -2279,7 +2315,7 @@ Version 2.8.0 30-nov-2003
 	"required" attribute is renamed "standard" and the "optional"
 	attribute is renamed "additional". They have exactly the same
 	functions as before. The change is to (hopefully) make their
-	meannig more obvious to those developing ACD parsers and wrappers
+	meaning more obvious to those developing ACD parsers and wrappers
 	for EMBOSS. ACD attribute "standardtype" clashed with "standard"
 	and is renamed "knowntype".
 
@@ -2298,7 +2334,7 @@ Version 2.8.0 30-nov-2003
 	"optional" definitions (simple true/false relations to another
 	boolean are accepted). In particular: all essential inputs and
 	outputs are parameters, with standardtype defined. Non-essential
-	niputs and outputs have the nullok attribute set. Information
+	inputs and outputs have the nullok attribute set. Information
 	strings are defined only where there is no standard prompt.
 
 	The definition of AjPStr and other "pointers to structs" is
@@ -2307,23 +2343,23 @@ Version 2.8.0 30-nov-2003
 	compilers we tried) that "const" only knows it is for a pointer if
 	it can see the "*" in the type. This means, for example, that
 	"const AjPStr" failed but "const AjOStr*" worked. With "const" if
-	it knows it is a pointer, it maked the data structure
+	it knows it is a pointer, it makes the data structure
 	constant. Otherwise it makes the pointer itself constant, the
 	equivalent of "AjOStr* const". We fixed this by changing AjPStr to
 	be a #define of AjOStr*. This has the advantages that most code is
 	unaffected and that const now works as expected. The only code
 	changes we needed are lines with multiple AjPStr definitions
 	(which is anyway deprecated), for example "AjPStr astr, bstr"
-	which clearly fail when you think about the #define (atr is an
-	AjPStr, but btr is now an AjOStr and will give strange compiler
+	which clearly fail when you think about the #define (astr is an
+	AjPStr, but bstr is now an AjOStr and will give strange compiler
 	errors). We may change this again to define a separate const data
-	type for each strucyt, but probably the #define is a good solution
+	type for each struct, but probably the #define is a good solution
 	and we expect to stay with it.
 
 	PCRE is now the library of choice for regular expressions. This
 	allows the full Perl regular expression syntax, and was very easy
 	to integrate. Regular expressions are used internally for parsing
-	and for manipulating strings such as fiel ane directory names, and
+	and for manipulating strings such as file and directory names, and
 	also for matching by programs such as dreg and preg.
 
 	The previous Henry Spencer library functions are renamed from
@@ -2380,7 +2416,7 @@ Version 2.7.0 01-jun-2003
 	A new test application acdvalid will check for deprecated ACD
 	syntax and report errors for something that should be fixed, or
 	warnings for something still to be clearly defined. None of these
-	"errors" will stop an ACD file from worknig correctly, but they do
+	"errors" will stop an ACD file from working correctly, but they do
 	cause confusion to the authors and maintainers of wrappers, GUIs,
 	and so on.
 
@@ -2395,8 +2431,8 @@ Version 2.7.0 01-jun-2003
 	make it safe to run a program over (for example) swissprot or
 	embl, such programs should read single sequences only, or be
 	converted to support ambiguity codes. This may take a little
-	time. banana, octanol and pepwindow alread reads single sequences.
-	In need of attention are hmoment and  iep.
+	time. banana, octanol and pepwindow already read single sequences.
+	In need of attention are hmoment and iep.
 
 	In ACD files a new application attribute "external" is added where
 	a third-party tool is needed. examples include clustalw (emma) and
@@ -2454,8 +2490,8 @@ Version 2.7.0 01-jun-2003
 	qatest suite. These tests used bad ACD files in the test/acd
 	directory.
 
-	whichdb failed to report error mesasges. They are now turned on -
-	and most of the common errors are reported with less evrbosity.
+	whichdb failed to report error messages. They are now turned on -
+	and most of the common errors are reported with less verbosity.
 
 	TCODE application added. Calculates the TESTCODE statistic.
 
@@ -2527,7 +2563,7 @@ Version 2.7.0 01-jun-2003
 
 	EMBOSS feature output now copies (where available) the name of the
 	input sequence as the filename, so filenames match more closely to
-	the sequence ouptut. For example, "seqret -feat tembl:paamir" will
+	the sequence output. For example, "seqret -feat tembl:paamir" will
 	now create 2 files called paamir.fasta and paamir.gff where the
 	feature file previously was called 'unknown.gff'
 
@@ -2536,7 +2572,7 @@ Version 2.7.0 01-jun-2003
 
 	All EMBOSS output files now have a default output directory
 	(required by some webservices implementations that run in
-	the 'wrong'default directory). Variable EMBOSS_OUTDIRECTORY
+	the 'wrong' default directory). Variable EMBOSS_OUTDIRECTORY
 	if set becomes the default output directory for outfile, align,
 	report, graph, sequence and feature output.
 
@@ -2581,7 +2617,7 @@ Version 2.7.0 01-jun-2003
 	characters to 'X's.  This may be useful because not all programs
 	accept protein sequences containing '*' characters.
 
-Version 2.6.0 20-sep-2002
+Version 2.6.0 20-Sep-2002
 
 	Showdb now can display the presence of any of the extra sv, des,
 	org, and key search fields that can be used to index and search in
@@ -2625,7 +2661,7 @@ Version 2.6.0 20-sep-2002
 	Pasteseq now behaves correctly when -sask2, -sbegin2 or -send2
 	are used.
 
-Version 2.5.1 12-aug-2002
+Version 2.5.1 12-Aug-2002
 
 	Whichdb new option -showall to see which databases are being
 	searched for use where searches hang. The order of searching is
@@ -2698,7 +2734,7 @@ Version 2.5.0 25-may-2002
 	All calls were checked for positions out of range. As a result,
 	many calls to ajStrAssSub and AjStrCut were fixed. ajStrInsertC
 	requires a value from 0 to length (start position to insert can be
-	before or after the string, or any position in bwteen). Fixed by
+	before or after the string, or any position in between). Fixed by
 	passing length+1 to strPosII.
 
 	Added a functions ajUtilCatch for use in debugging with gdb. When
@@ -2870,7 +2906,7 @@ Version 2.5.0 25-may-2002
 			scop classification file.
 	     scopnr   - Removes redundant domains from a scop
 			classification file.
-	     scoprep  - Reorder scop classificaiton file so that the
+	     scoprep  - Reorder scop classification file so that the
 			representative structure of each family is
 			given first.
 	     scopalign- Generate alignments for families in a scop
@@ -2921,7 +2957,7 @@ Version 2.4.1 14-may-2002
 
 	Fixed indexing of REFSEQ
 
-Version 2.4.0 11-apr-2002
+Version 2.4.0 11-Apr-2002
 
 	New Jemboss authorising server code. This uses a new set-uid
 	program (jembossctl) to perform tasks as the user.
@@ -2937,7 +2973,7 @@ Version 2.4.0 11-apr-2002
 	supported.
 
 	Removed the -staden option for the dbi indexing programs. This had
-	no efect (it was originally included to rename files as
+	no effect (it was originally included to rename files as
 	division.lookup for use by internal utilities at the Sanger
 	Centre).
 
@@ -2960,7 +2996,7 @@ Version 2.4.0 11-apr-2002
 
 	Report format "table" is the default for several applications. In
 	this format, the sequence USA has been removed because it already
-	appears in the sequenec header part of the report. A new format
+	appears in the sequence header part of the report. A new format
 	"-rformat nametable" will produce the previous report output for
 	users who are relying on parsing it.
 
@@ -3019,7 +3055,7 @@ Version 2.4.0 11-apr-2002
 	HTML tags before reading. For SRS it is not recommended because
 	"methodall: direct" is faster. For SRSFASTA it is necessary
 	because using SRSFASTA implies EMBOSS does not read the original
-	data format. However, not iomplementing an "all" search left a gap
+	data format. However, not implementing an "all" search left a gap
 	in the SRS access methods which would generate a bad SRS command
 	line or URL.
 
@@ -3051,7 +3087,7 @@ Version 2.4.0 11-apr-2002
 	available (GenBank and some NCBI formats). The GI number is
 	reported in GenBank format if available, but the GenBank VERSION
 	line may have only the SeqVersion if, for example, the sequence
-	was reead from an EMBL entry. "sv" queries check both the
+	was read from an EMBL entry. "sv" queries check both the
 	SeqVersion and GI number.
 
 	Accession numbers have a strict definition, which covers the old
@@ -3100,7 +3136,7 @@ Version 2.4.0 11-apr-2002
 	distribution name) and taxon to organism (EMBCD distribution
 	name). The EMBLCD distribution also included a freetext index
 	which is similar to the SRS alltext search so we did not use the
-	name for the desctription index.
+	name for the description index.
 
 	We are working through the EMBLCD format documentation to make
 	EMBOSS indices more compatible. For example, all tokens in the TRG
@@ -3173,7 +3209,7 @@ Version 2.3.0 03-mar-2002
 
 	ESIM4 added as an embassy package.
 
-Version 2.2.0 12-jan-2001
+Version 2.2.0 12-Jan-2001
 
 	New applications:
 	Biosed, Contacts, Dichet, Psiblasts,
@@ -3183,7 +3219,7 @@ Version 2.2.0 12-jan-2001
 
 	Alignment report fixes.
 
-Version 2.1.0  24-dec-2001
+Version 2.1.0  24-Dec-2001
 
 	Jemboss.
 
@@ -3209,7 +3245,7 @@ Version 1.13.0 24-may-2001
 
 	Prophet fixed.
 
-Version 1.12.0 17-apr-2001
+Version 1.12.0 17-Apr-2001
 
 	New applications distmat and cai.
 
@@ -3217,29 +3253,29 @@ Version 1.11.0 10-mar-2001
 
 	New applications charge and degapseq.
 
-Version 1.10.1 26-feb-2001
+Version 1.10.1 26-Feb-2001
 
 	Bug fixes of marscan, getorf and garnier
 
-Version 1.10.0 18-feb-2001
+Version 1.10.0 18-Feb-2001
 
 	New applications scope, nrscope, domainer.
 
 	Initial large file model support.
 
-Version 1.9.0 22-jan-2001
+Version 1.9.0 22-Jan-2001
 
 	New applications abiview and  recode.
 
 	Linked list and string iterator code rewritten.
 
-Version 1.8.0 20-nov-2000
+Version 1.8.0 20-Nov-2000
 
 	New application coderet.
 
 	Corba test routines
 
-Version 1.7.0 31-oct-2000
+Version 1.7.0 31-Oct-2000
 
 	New application entret.
 
@@ -3247,7 +3283,7 @@ Version 1.7.0 31-oct-2000
 
 	Fixed -slower & -supper input options for multiple sequences
 
-Version 1.6.3 25-oct-2000
+Version 1.6.3 25-Oct-2000
 
 	Further mods for seqed files.
 
@@ -3255,7 +3291,7 @@ Version 1.6.3 25-oct-2000
 
 	Added %id, %sim and fasta output to needle and water.
 
-Version 1.6.2 23-oct-2000
+Version 1.6.2 23-Oct-2000
 
 	Now reads GCG seqed mangled files.
 
@@ -3263,15 +3299,15 @@ Version 1.6.2 23-oct-2000
 
 	Numerous minor changes.
 
-Version 1.6.1 11-oct-2000
+Version 1.6.1 11-Oct-2000
 
 	RedHat Linux 7.0 fpos_t fix
 
-Version 1.6.0 06-oct-2000
+Version 1.6.0 06-Oct-2000
 
 	New application cons.
 
-Version 1.5.6 3-oct-2000
+Version 1.5.6 3-Oct-2000
 
 	URL access handles new SRS6.07* format.
 
@@ -3279,35 +3315,35 @@ Version 1.5.6 3-oct-2000
 
 	Error messages made less daunting.
 
-Version 1.5.5 28-sep-2000
+Version 1.5.5 28-Sep-2000
 
 	dbigcg changes for genbank.
 
 	Memory leaks plugged.
 
-Version 1.5.4 23-sep-2000
+Version 1.5.4 23-Sep-2000
 
 	Added blast multi-volume support for database indexing.
 
 	More gui hints in ACD files.
 
-Version 1.5.3 18-sep-2000
+Version 1.5.3 18-Sep-2000
 
 	LinuxPPC support added.
 
-Version 1.5.2 5-sep-2000
+Version 1.5.2 5-Sep-2000
 
-	dbigcg changes for embl database ikn GCG format.
+	dbigcg changes for embl database in GCG format.
 
-Version 1.5.1 09-sep-2000
+Version 1.5.1 09-Sep-2000
 
 	Changes to graphics data output for GUIs.
 
-Version 1.5.0 07-sep-2000
+Version 1.5.0 07-Sep-2000
 
 	New application emowse.
 
-Version 1.4.3 03-sep-2000
+Version 1.4.3 03-Sep-2000
 
 	tfm corrected.
 
@@ -3345,4 +3381,4 @@ Version 1.0.2 08-aug-2000
 
 Version 1.0.0 15-jul-2000
 
-Version 0.0.4 dec-1998
+Version 0.0.4 Dec-1998
