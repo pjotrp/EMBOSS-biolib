@@ -122,6 +122,7 @@ static AjPStr acdLogFName = NULL;
 static AjPFile acdLogFile = NULL;
 static AjPList acdSecList = NULL;
 static AjPTable acdSecTable = NULL;
+static AjPTable acdExternalTable = NULL;
 
 static AjPStr acdOutFullFName = NULL;
 static AjPStr acdPrettyFName = NULL;
@@ -341,7 +342,7 @@ static AcdOAttrAlias acdAttrAlias[] =
 **
 ** @attr Name [const char*] Attribute name
 ** @attr Type [enum AcdEValtype] Type code
-** @attr Padding [ajint] padding to alignment boundary
+** @attr Multiple [AjBool] True if multiple values are allowed
 ** @attr Default [const char*] Default value as a string for help
 **                             and documentation
 ** @attr Help [const char*] Descriptive short text for documentation
@@ -352,7 +353,7 @@ typedef struct AcdSAttr
 {
     const char* Name;
     enum AcdEValtype Type;
-    ajint Padding;
+    AjBool Multiple;
     const char* Default;
     const char* Help;
 } AcdOAttr;
@@ -1252,54 +1253,54 @@ enum AcdEDef
 
 AcdOAttr acdAttrDef[] =
 {
-    {"default", VT_STR, 0, "",
+    {"default", VT_STR, AJFALSE, "",
 	 "Default value"},
-    {"information", VT_STR, 0, "",
+    {"information", VT_STR, AJFALSE, "",
 	 "Information for menus etc., and default prompt"},
-    {"prompt", VT_STR, 0, "",
+    {"prompt", VT_STR, AJFALSE, "",
 	 "Prompt (if information string is unclear)"},
-    {"code", VT_STR, 0, "",
+    {"code", VT_STR, AJFALSE, "",
 	 "Code name for information/prompt to be looked up in standard table"},
-    {"help", VT_STR, 0, "",
+    {"help", VT_STR, AJFALSE, "",
 	 "Text for help documentation"},
-    {"parameter", VT_BOOL, 0, "N",
+    {"parameter", VT_BOOL, AJFALSE, "N",
 	 "Command line parameter. "
 	     "Can be on the command line with no qualifier name. "
 		 "Implies 'standard' qualifier"},
-    {"standard", VT_BOOL, 0, "N",
+    {"standard", VT_BOOL, AJFALSE, "N",
 	 "Standard qualifier, value required. Interactive prompt if missing"},
-    {"additional", VT_BOOL, 0, "N",
+    {"additional", VT_BOOL, AJFALSE, "N",
 	 "Additional qualifier. "
 	     "Value required if -options is on the command line, "
 		 "or set by default"},
-    {"missing", VT_BOOL, 0, "N",
+    {"missing", VT_BOOL, AJFALSE, "N",
 	 "Allow with no value on the command line to set to ''"},
-    {"valid", VT_STR, 0, "",
+    {"valid", VT_STR, AJFALSE, "",
 	 "Help: String description of allowed values for -help output, "
 	     "used if the default help is nuclear"},
-    {"expected", VT_STR, 0, "",
+    {"expected", VT_STR, AJFALSE, "",
 	 "Help: String description of the expected value for -help output, "
 	     "used if the default help is nuclear"},
-    {"needed", VT_BOOL, 0, "y",
+    {"needed", VT_BOOL, AJFALSE, "y",
 	 "Include in GUI form, "
 	     "used to hide options if they are unclear in GUIs"},
-    {"knowntype", VT_STR, 0, "",
+    {"knowntype", VT_STR, AJFALSE, "",
 	 "Known standard type, "
 	     "used to define input and output types for workflows"},
-    {"relations", VT_STR, 0, "",
+    {"relations", VT_STR, AJTRUE, "",
 	 "Relationships between this ACD item and others, "
 	     "defined as specially formatted text"},
-    {"outputmodifier", VT_BOOL, 0, "N",
+    {"outputmodifier", VT_BOOL, AJFALSE, "N",
 	 "Modifies the output in ways that can break parsers"},
-    {"style", VT_STR, 0, "",
+    {"style", VT_STR, AJFALSE, "",
 	 "Style for SoapLab's ACD files"},
-    {"qualifier", VT_STR, 0, "",
+    {"qualifier", VT_STR, AJFALSE, "",
 	 "Qualifier name for SoapLab's ACD files"},
-    {"template", VT_STR, 0, "",
+    {"template", VT_STR, AJFALSE, "",
 	 "Commandline template for SoapLab's ACD files"},
-    {"comment", VT_STR, 0, "",
+    {"comment", VT_STR, AJTRUE, "",
 	 "Comment for SoapLab's ACD files"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
@@ -1310,910 +1311,910 @@ AcdOAttr acdAttrDef[] =
 
 AcdOAttr acdAttrXxxx[] =
 {
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrAppl[] =
 {
-    {"documentation", VT_STR, 0, "",
+    {"documentation", VT_STR, AJFALSE, "",
 	 "Short description of the application function"},
-    {"groups", VT_STR, 0, "",
+    {"groups", VT_STR, AJTRUE, "",
 	 "Standard application group(s) for wossname and GUIs"},
-    {"keywords", VT_STR, 0, "",
+    {"keywords", VT_STR, AJTRUE, "",
 	 "Standard application group(s) for wossname and GUIs"},
-    {"gui", VT_STR, 0, "",
+    {"gui", VT_STR, AJFALSE, "",
 	 "Suitability for launching in a GUI"},
-    {"batch", VT_STR, 0,"",
+    {"batch", VT_STR, AJFALSE,"",
 	 "Suitability for running in batch"},
-    {"obsolete", VT_STR, 0,"",
+    {"obsolete", VT_STR, AJFALSE,"",
 	 "Reason for obsolete status"},
-    {"embassy", VT_STR, 0,"",
+    {"embassy", VT_STR, AJFALSE,"",
 	 "EMBASSY package name"},
-    {"external", VT_STR, 0, "",
+    {"external", VT_STR, AJTRUE, "",
 	 "Third party tool(s) required by this program"},
-    {"cpu", VT_STR, 0, "",
+    {"cpu", VT_STR, AJFALSE, "",
 	 "Estimated maximum CPU usage"},
-    {"supplier", VT_STR, 0, "",
+    {"supplier", VT_STR, AJFALSE, "",
 	 "Supplier name"},
-    {"versionnumber", VT_STR, 0, "",
+    {"versionnumber", VT_STR, AJFALSE, "",
 	 "Version number"},
-    {"nonemboss", VT_STR, 0, "",
+    {"nonemboss", VT_STR, AJFALSE, "",
 	 "Non-emboss application name for SoapLab"},
-    {"executable", VT_STR, 0,"",
+    {"executable", VT_STR, AJFALSE,"",
 	 "Non-emboss executable for SoapLab"},
-    {"template", VT_STR, 0, "",
+    {"template", VT_STR, AJFALSE, "",
 	 "Commandline template for SoapLab's ACD files"},
-    {"comment", VT_STR, 0, "",
+    {"comment", VT_STR, AJFALSE, "",
 	 "Comment for SoapLab's ACD files"},
-    {"relations", VT_STR, 0, "",
+    {"relations", VT_STR, AJTRUE, "",
 	 "Relationships between this ACD item and others, "
 	     "defined as specially formatted text"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrAlign[] =
 {
-    {"type", VT_STR, 0, "",
+    {"type", VT_STR, AJFALSE, "",
 	 "[P]rotein or [N]ucleotide"},
-    {"taglist", VT_STR, 0, "",
+    {"taglist", VT_STR, AJFALSE, "",
 	 "Extra tags to report"},
-    {"minseqs", VT_INT, 0, "1",
+    {"minseqs", VT_INT, AJFALSE, "1",
 	 "Minimum number of sequences"},
-    {"maxseqs", VT_INT, 0, "(INT_MAX)",
+    {"maxseqs", VT_INT, AJFALSE, "(INT_MAX)",
 	 "Maximum number of sequences"},
-    {"multiple", VT_BOOL, 0, "N",
+    {"multiple", VT_BOOL, AJFALSE, "N",
 	 "More than one alignment in one file"},
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrArray[] =
 {
-    {"minimum", VT_FLOAT, 0, "(-FLT_MAX)",
+    {"minimum", VT_FLOAT, AJFALSE, "(-FLT_MAX)",
 	 "Minimum value"},
-    {"maximum", VT_FLOAT, 0, "(FLT_MAX)",
+    {"maximum", VT_FLOAT, AJFALSE, "(FLT_MAX)",
 	 "Maximum value"},
-    {"increment", VT_FLOAT, 0, "0",
+    {"increment", VT_FLOAT, AJFALSE, "0",
 	 "(Not used by ACD) Increment for GUIs"},
-    {"precision", VT_INT, 0, "0",
+    {"precision", VT_INT, AJFALSE, "0",
 	 "(Not used by ACD) Floating precision for GUIs"},
-    {"warnrange", VT_BOOL, 0, "Y",
+    {"warnrange", VT_BOOL, AJFALSE, "Y",
 	 "Warning if values are out of range"},
-    {"size", VT_INT, 0, "1",
+    {"size", VT_INT, AJFALSE, "1",
 	 "Number of values required"},
-    {"sum", VT_FLOAT, 0, "1.0",
+    {"sum", VT_FLOAT, AJFALSE, "1.0",
 	 "Total for all values"},
-    {"sumtest", VT_BOOL, 0, "Y",
+    {"sumtest", VT_BOOL, AJFALSE, "Y",
 	 "Test sum of all values"},
-    {"tolerance", VT_FLOAT, 0, "0.01",
+    {"tolerance", VT_FLOAT, AJFALSE, "0.01",
 	 "Tolerance (sum +/- tolerance) of the total"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrBool[] =
 {
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrCodon[] =
 {
-    {"name", VT_STR, 0, "Ehum.cut",
+    {"name", VT_STR, AJFALSE, "Ehum.cut",
 	 "Codon table name"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrCpdb[] =
 {
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrDatafile[] =
 {
-    {"name", VT_STR, 0, "",
+    {"name", VT_STR, AJFALSE, "",
 	 "Default file base name"},
-    {"extension", VT_STR, 0, "",
+    {"extension", VT_STR, AJFALSE, "",
 	 "Default file extension"},
-    {"directory", VT_STR, 0, "",
+    {"directory", VT_STR, AJFALSE, "",
 	 "Default installed data directory"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrDirectory[] =
 {
-    {"fullpath", VT_BOOL, 0, "N",
+    {"fullpath", VT_BOOL, AJFALSE, "N",
 	 "Require full path in value"},
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {"extension", VT_STR, 0, "",
+    {"extension", VT_STR, AJFALSE, "",
 	 "Default file extension"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrDirlist[] =
 {
-    {"fullpath", VT_BOOL, 0, "N",
+    {"fullpath", VT_BOOL, AJFALSE, "N",
 	 "Require full path in value"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {"extension", VT_STR, 0, "",
+    {"extension", VT_STR, AJFALSE, "",
 	 "Default file extension"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrDiscretestates[] =
 {
-    {"length", VT_INT, 0, "0",
+    {"length", VT_INT, AJFALSE, "0",
 	 "Number of discrete state values per set"},
-    {"size", VT_INT, 0, "1",
+    {"size", VT_INT, AJFALSE, "1",
 	 "Number of discrete state set"},
-    {"characters", VT_STR, 0, "01",
+    {"characters", VT_STR, AJFALSE, "01",
 	 "Allowed discrete state characters (default is '' for all non-space characters"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrDistances[] =
 {
-    {"size", VT_INT, 0, "1",
+    {"size", VT_INT, AJFALSE, "1",
 	 "Number of rows"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {"missval", VT_BOOL, 0, "N",
+    {"missval", VT_BOOL, AJFALSE, "N",
 	 "Can have missing values (replicates zero)"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrEndsec[] =
 {
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrFeatures[] =
 {
-    {"type", VT_STR, 0, "",
+    {"type", VT_STR, AJFALSE, "",
 	 "Feature type (protein, nucleotide, etc.)"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrFeatout[] =
 {
-    {"name", VT_STR, 0, "",
+    {"name", VT_STR, AJFALSE, "",
 	 "Default base file name (use of -ofname preferred)"},
-    {"extension", VT_STR, 0, "",
+    {"extension", VT_STR, AJFALSE, "",
 	 "Default file extension (use of -offormat preferred)"},
-    {"type", VT_STR, 0, "",
+    {"type", VT_STR, AJFALSE, "",
 	 "Feature type (protein, nucleotide, etc.)"},
-    {"multiple", VT_BOOL, 0, "N",
+    {"multiple", VT_BOOL, AJFALSE, "N",
 	 "Features for multiple sequences"},
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null UFO as 'no output'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrFilelist[] =
 {
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {"binary", VT_BOOL, 0, "N",
+    {"binary", VT_BOOL, AJFALSE, "N",
 	 "File contains binary data"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrFloat[] =
 {
-    {"minimum", VT_FLOAT, 0, "(-FLT_MAX)",
+    {"minimum", VT_FLOAT, AJFALSE, "(-FLT_MAX)",
 	 "Minimum value"},
-    {"maximum", VT_FLOAT, 0, "(FLT_MAX)",
+    {"maximum", VT_FLOAT, AJFALSE, "(FLT_MAX)",
 	 "Maximum value"},
-    {"increment", VT_FLOAT, 0, "1.0",
+    {"increment", VT_FLOAT, AJFALSE, "1.0",
 	 "(Not used by ACD) Increment for GUIs"},
-    {"precision", VT_INT, 0, "3",
+    {"precision", VT_INT, AJFALSE, "3",
 	 "Precision for printing values"},
-    {"warnrange", VT_BOOL, 0, "Y",
+    {"warnrange", VT_BOOL, AJFALSE, "Y",
 	 "Warning if values are out of range"},
-    {"large", VT_BOOL, 0, "N",
+    {"large", VT_BOOL, AJFALSE, "N",
 	 "Large values returned as double"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrFrequencies[] =
 {
-    {"length", VT_INT, 0, "0",
+    {"length", VT_INT, AJFALSE, "0",
 	 "Number of frequency loci/values per set"},
-    {"size", VT_INT, 0, "1",
+    {"size", VT_INT, AJFALSE, "1",
 	 "Number of frequency sets"},
-    {"continuous", VT_BOOL, 0, "N",
+    {"continuous", VT_BOOL, AJFALSE, "N",
 	 "Continuous character data only"},
-    {"genedata", VT_BOOL, 0, "N",
+    {"genedata", VT_BOOL, AJFALSE, "N",
 	 "Gene frequency data only"},
-    {"within", VT_BOOL, 0, "N",
+    {"within", VT_BOOL, AJFALSE, "N",
 	 "Continuous data for multiple individuals"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrGraph[] =
 {
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null graph type as 'no graph'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrGraphxy[] =
 {
-    {"multiple", VT_INT, 0, "1",
+    {"multiple", VT_INT, AJFALSE, "1",
 	 "Number of graphs"},
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null graph type as 'no graph'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrInt[] =
 {
-    {"minimum", VT_INT, 0, "(INT_MIN)",
+    {"minimum", VT_INT, AJFALSE, "(INT_MIN)",
 	 "Minimum value"},
-    {"maximum", VT_INT, 0, "(INT_MAX)",
+    {"maximum", VT_INT, AJFALSE, "(INT_MAX)",
 	 "Maximum value"},
-    {"increment", VT_INT, 0, "0",
+    {"increment", VT_INT, AJFALSE, "0",
 	 "(Not used by ACD) Increment for GUIs"},
-    {"warnrange", VT_BOOL, 0, "Y",
+    {"warnrange", VT_BOOL, AJFALSE, "Y",
 	 "Warning if values are out of range"},
-    {"large", VT_BOOL, 0, "N",
+    {"large", VT_BOOL, AJFALSE, "N",
 	 "Large values returned as long"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrInfile[] =
 {
-    {"directory", VT_STR, 0, "",
+    {"directory", VT_STR, AJFALSE, "",
 	 "Default directory"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {"trydefault", VT_BOOL, 0, "N",
+    {"trydefault", VT_BOOL, AJFALSE, "N",
 	 "Default filename may not exist if nullok is true"},
-    {"binary", VT_BOOL, 0, "N",
+    {"binary", VT_BOOL, AJFALSE, "N",
 	 "File contains binary data"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrList[] =
 {
-    {"minimum", VT_INT, 0, "1",
+    {"minimum", VT_INT, AJFALSE, "1",
 	 "Minimum number of selections"},
-    {"maximum", VT_INT, 0, "1",
+    {"maximum", VT_INT, AJFALSE, "1",
 	 "Maximum number of selections"},
-    {"button", VT_BOOL, 0, "N",
+    {"button", VT_BOOL, AJFALSE, "N",
 	 "(Not used by ACD) Prefer checkboxes in GUI"},
-    {"casesensitive", VT_BOOL, 0, "N",
+    {"casesensitive", VT_BOOL, AJFALSE, "N",
 	 "Case sensitive"},
-    {"header", VT_STR, 0, "",
+    {"header", VT_STR, AJFALSE, "",
 	 "Header description for list"},
-    {"delimiter", VT_STR, 0, ";",
+    {"delimiter", VT_STR, AJFALSE, ";",
 	 "Delimiter for parsing values"},
-    {"codedelimiter", VT_STR, 0, ":",
+    {"codedelimiter", VT_STR, AJFALSE, ":",
 	 "Delimiter for parsing"},
-    {"values", VT_STR, 0, "",
+    {"values", VT_STR, AJFALSE, "",
 	 "Codes and values with delimiters"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrMatrix[] =
 {
-    {"pname", VT_STR, 0, "EBLOSUM62",
+    {"pname", VT_STR, AJFALSE, "EBLOSUM62",
 	 "Default name for protein matrix"},
-    {"nname", VT_STR, 0, "EDNAFULL",
+    {"nname", VT_STR, AJFALSE, "EDNAFULL",
 	 "Default name for nucleotide matrix"},
-    {"protein", VT_BOOL, 0, "Y",
+    {"protein", VT_BOOL, AJFALSE, "Y",
 	 "Protein matrix"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrMatrixf[] =
 {
-    {"pname", VT_STR, 0, "EBLOSUM62",
+    {"pname", VT_STR, AJFALSE, "EBLOSUM62",
 	 "Default name for protein matrix"},
-    {"nname", VT_STR, 0, "EDNAFULL",
+    {"nname", VT_STR, AJFALSE, "EDNAFULL",
 	 "Default name for nucleotide matrix"},
-    {"protein", VT_BOOL, 0, "Y",
+    {"protein", VT_BOOL, AJFALSE, "Y",
 	 "Protein matrix"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrOutcodon[] =
 {
-    {"name", VT_STR, 0, "",
+    {"name", VT_STR, AJFALSE, "",
 	 "Default file name"},
-    {"extension", VT_STR, 0, "",
+    {"extension", VT_STR, AJFALSE, "",
 	 "Default file extension"},
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrOutcpdb[] =
 {
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrOutdata[] =
 {
-    {"type", VT_STR, 0, "",
+    {"type", VT_STR, AJFALSE, "",
 	 "Data type"},
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {"binary", VT_BOOL, 0, "N",
+    {"binary", VT_BOOL, AJFALSE, "N",
 	 "File contains binary data"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrOutdir[] =
 {
-    {"fullpath", VT_BOOL, 0, "N",
+    {"fullpath", VT_BOOL, AJFALSE, "N",
 	 "Require full path in value"},
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {"extension", VT_STR, 0, "",
+    {"extension", VT_STR, AJFALSE, "",
 	 "Default file extension"},
-    {"binary", VT_BOOL, 0, "N",
+    {"binary", VT_BOOL, AJFALSE, "N",
 	 "Files contain binary data"},
-    {"create", VT_BOOL, 0, "N",
+    {"create", VT_BOOL, AJFALSE, "N",
 	 "Can create directory if not found"},
-    {"temporary", VT_BOOL, 0, "N",
+    {"temporary", VT_BOOL, AJFALSE, "N",
 	 "Scratch directory for temporary files deleted on completion"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrOutdiscrete[] =
 {
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrOutdistance[] =
 {
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrOutfile[] =
 {
-    {"name", VT_STR, 0, "",
+    {"name", VT_STR, AJFALSE, "",
 	 "Default file name"},
-    {"extension", VT_STR, 0, "",
+    {"extension", VT_STR, AJFALSE, "",
 	 "Default file extension"},
-    {"append", VT_BOOL, 0, "N",
+    {"append", VT_BOOL, AJFALSE, "N",
 	 "Append to an existing file"},
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {"binary", VT_BOOL, 0, "N",
+    {"binary", VT_BOOL, AJFALSE, "N",
 	 "File contains binary data"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrOutfileall[] =
 {
-    {"name", VT_STR, 0, "",
+    {"name", VT_STR, AJFALSE, "",
 	 "Default file name"},
-    {"extension", VT_STR, 0, "",
+    {"extension", VT_STR, AJFALSE, "",
 	 "Default file extension"},
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {"binary", VT_BOOL, 0, "N",
+    {"binary", VT_BOOL, AJFALSE, "N",
 	 "Files contains binary data"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrOutfreq[] =
 {
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrOutmatrix[] =
 {
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrOutmatrixf[] =
 {
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrOutproperties[] =
 {
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrOutscop[] =
 {
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrOuttree[] =
 {
-    {"name", VT_STR, 0, "",
+    {"name", VT_STR, AJFALSE, "",
 	 "Default file name"},
-    {"extension", VT_STR, 0, "",
+    {"extension", VT_STR, AJFALSE, "",
 	 "Default file extension"},
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrPattern[] =
 {
-    {"minlength", VT_INT, 0, "1",
+    {"minlength", VT_INT, AJFALSE, "1",
 	 "Minimum pattern length"},
-    {"maxlength", VT_INT, 0, "(INT_MAX)",
+    {"maxlength", VT_INT, AJFALSE, "(INT_MAX)",
 	 "Maximum pattern length"},
-    {"maxsize", VT_INT, 0, "(INT_MAX)",
+    {"maxsize", VT_INT, AJFALSE, "(INT_MAX)",
 	 "Maximum number of patterns"},
-    {"upper", VT_BOOL, 0, "N",
+    {"upper", VT_BOOL, AJFALSE, "N",
 	 "Convert to upper case"},
-    {"lower", VT_BOOL, 0, "N",
+    {"lower", VT_BOOL, AJFALSE, "N",
 	 "Convert to lower case"},
-    {"type", VT_STR, 0, "string",
+    {"type", VT_STR, AJFALSE, "string",
 	 "Type (nucleotide, protein)"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrProperties[] =
 {
-    {"length", VT_INT, 0, "0",
+    {"length", VT_INT, AJFALSE, "0",
 	 "Number of property values per set"},
-    {"size", VT_INT, 0, "1",
+    {"size", VT_INT, AJFALSE, "1",
 	 "Number of property sets"},
-    {"characters", VT_STR, 0, "",
-	 "Allowed property characters (default is '' for all non-space characters)"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"characters", VT_STR, AJFALSE, "",
+	 "Allowed property characters (default is '' for all non-space)"},
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrRange[] =
 {
-    {"minimum", VT_INT, 0, "1",
+    {"minimum", VT_INT, AJFALSE, "1",
 	 "Minimum value"},
-    {"maximum", VT_INT, 0, "(INT_MAX)",
+    {"maximum", VT_INT, AJFALSE, "(INT_MAX)",
 	 "Maximum value"},
-    {"size", VT_INT, 0, "0",
+    {"size", VT_INT, AJFALSE, "0",
 	 "Exact number of values required"},
-    {"minsize", VT_INT, 0, "0",
+    {"minsize", VT_INT, AJFALSE, "0",
 	 "Minimum number of values required"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrRegexp[] =
 {
-    {"minlength", VT_INT, 0, "1",
+    {"minlength", VT_INT, AJFALSE, "1",
 	 "Minimum pattern length"},
-    {"maxlength", VT_INT, 0, "(INT_MAX)",
+    {"maxlength", VT_INT, AJFALSE, "(INT_MAX)",
 	 "Maximum pattern length"},
-    {"maxsize", VT_INT, 0, "(INT_MAX)",
+    {"maxsize", VT_INT, AJFALSE, "(INT_MAX)",
 	 "Maximum number of patterns"},
-    {"upper", VT_BOOL, 0, "N",
+    {"upper", VT_BOOL, AJFALSE, "N",
 	 "Convert to upper case"},
-    {"lower", VT_BOOL, 0, "N",
+    {"lower", VT_BOOL, AJFALSE, "N",
 	 "Convert to lower case"},
-    {"type", VT_STR, 0, "string",
+    {"type", VT_STR, AJFALSE, "string",
 	 "Type (string, nucleotide, protein)"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrRel[] =
 {
-    {"relations", VT_STR, 0, "",
+    {"relations", VT_STR, AJTRUE, "",
 	 "Relationships between this ACD item and others, "
 	     "defined as specially formatted text"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrReport[] =
 {
-    {"type", VT_STR, 0, "",
+    {"type", VT_STR, AJFALSE, "",
 	 "[P]rotein or [N]ucleotide"},
-    {"taglist", VT_STR, 0, "",
+    {"taglist", VT_STR, AJFALSE, "",
 	 "Extra tag names to report"},
-    {"multiple", VT_BOOL, 0, "N",
+    {"multiple", VT_BOOL, AJFALSE, "N",
 	 "Multiple sequences in one report"},
-    {"precision", VT_INT, 0, "3",
+    {"precision", VT_INT, AJFALSE, "3",
 	 "Score precision"},
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrScop[] =
 {
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrSec[] =
 {
-    {"information", VT_STR, 0, "",
+    {"information", VT_STR, AJFALSE, "",
 	 "(Not used by ACD) Section description"},
-    {"type", VT_STR, 0, "",
+    {"type", VT_STR, AJFALSE, "",
 	 "(Not used by ACD) Type (frame, page)"},
-    {"comment", VT_STR, 0, "",
+    {"comment", VT_STR, AJFALSE, "",
 	 "(Not used by ACD) Free text comment"},
-    {"border", VT_INT, 0, "1",
+    {"border", VT_INT, AJFALSE, "1",
 	 "(Not used by ACD) Border width"},
-    {"side", VT_STR, 0, "",
+    {"side", VT_STR, AJFALSE, "",
 	 "(Not used by ACD) Side (top, bottom, left, right) "
 	 "for type:frame"},
-    {"folder", VT_STR, 0, "",
+    {"folder", VT_STR, AJFALSE, "",
 	 "(Not used by ACD) Folder name for type:page"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrSelect[] =
 {
-    {"minimum", VT_INT, 0, "1",
+    {"minimum", VT_INT, AJFALSE, "1",
 	 "Minimum number of selections"},
-    {"maximum", VT_INT, 0, "1",
+    {"maximum", VT_INT, AJFALSE, "1",
 	 "Maximum number of selections"},
-    {"button", VT_BOOL, 0, "N",
+    {"button", VT_BOOL, AJFALSE, "N",
 	 "(Not used by ACD) Prefer radiobuttons in GUI"},
-    {"casesensitive", VT_BOOL, 0, "N",
+    {"casesensitive", VT_BOOL, AJFALSE, "N",
 	 "Case sensitive matching"},
-    {"header", VT_STR, 0, "",
+    {"header", VT_STR, AJFALSE, "",
 	 "Header description for selection list"},
-    {"delimiter", VT_STR, 0, ":",
+    {"delimiter", VT_STR, AJFALSE, ":",
 	 "Delimiter for parsing values"},
-    {"values", VT_STR, 0, "",
+    {"values", VT_STR, AJFALSE, "",
 	 "Values with delimiters"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrSeq[] =
 {
-    {"type", VT_STR, 0, "",
+    {"type", VT_STR, AJFALSE, "",
 	 "Input sequence type (protein, gapprotein, etc.)"},
-    {"features", VT_BOOL, 0, "N",
+    {"features", VT_BOOL, AJFALSE, "N",
 	 "Read features if any"},
-    {"entry", VT_BOOL, 0, "N",
+    {"entry", VT_BOOL, AJFALSE, "N",
 	 "Read whole entry text"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrSeqall[] =
 {
-    {"type", VT_STR, 0, "",
+    {"type", VT_STR, AJFALSE, "",
 	 "Input sequence type (protein, gapprotein, etc.)"},
-    {"features", VT_BOOL, 0, "N",
+    {"features", VT_BOOL, AJFALSE, "N",
 	 "Read features if any"},
-    {"entry", VT_BOOL, 0, "N",
+    {"entry", VT_BOOL, AJFALSE, "N",
 	 "Read whole entry text"},
-    {"minseqs", VT_INT, 0, "1",
+    {"minseqs", VT_INT, AJFALSE, "1",
 	 "Minimum number of sequences"},
-    {"maxseqs", VT_INT, 0, "(INT_MAX)",
+    {"maxseqs", VT_INT, AJFALSE, "(INT_MAX)",
 	 "Maximum number of sequences"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrSeqout[] =
 {
-    {"name", VT_STR, 0, "",
+    {"name", VT_STR, AJFALSE, "",
 	 "Output base name (use of -osname preferred)"},
-    {"extension", VT_STR, 0, "",
+    {"extension", VT_STR, AJFALSE, "",
 	 "Output extension (use of -osextension preferred)"},
-    {"features", VT_BOOL, 0, "N",
+    {"features", VT_BOOL, AJFALSE, "N",
 	 "Write features if any"},
-    {"type", VT_STR, 0, "",
+    {"type", VT_STR, AJFALSE, "",
 	 "Output sequence type (protein, gapprotein, etc.)"},
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null USA as 'no output'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrSeqoutall[] =
 {
-    {"name", VT_STR, 0, "",
+    {"name", VT_STR, AJFALSE, "",
 	 "Output base name (use of -osname preferred)"},
-    {"extension", VT_STR, 0, "",
+    {"extension", VT_STR, AJFALSE, "",
 	 "Output extension (use of -osextension preferred)"},
-    {"features", VT_BOOL, 0, "N",
+    {"features", VT_BOOL, AJFALSE, "N",
 	 "Write features if any"},
-    {"type", VT_STR, 0, "",
+    {"type", VT_STR, AJFALSE, "",
 	 "Output sequence type (protein, gapprotein, etc.)"},
-    {"minseqs", VT_INT, 0, "1",
+    {"minseqs", VT_INT, AJFALSE, "1",
 	 "Minimum number of sequences"},
-    {"maxseqs", VT_INT, 0, "(INT_MAX)",
+    {"maxseqs", VT_INT, AJFALSE, "(INT_MAX)",
 	 "Maximum number of sequences"},
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null USA as 'no output'"},
-    {"aligned", VT_BOOL, 0, "N",
+    {"aligned", VT_BOOL, AJFALSE, "N",
          "Sequences are aligned"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrSeqoutset[] =
 {
-    {"name", VT_STR, 0, "",
+    {"name", VT_STR, AJFALSE, "",
 	 "Output base name (use of -osname preferred)"},
-    {"extension", VT_STR, 0, "",
+    {"extension", VT_STR, AJFALSE, "",
 	 "Output extension (use of -osextension preferred)"},
-    {"features", VT_BOOL, 0, "N",
+    {"features", VT_BOOL, AJFALSE, "N",
 	 "Write features if any"},
-    {"type", VT_STR, 0, "",
+    {"type", VT_STR, AJFALSE, "",
 	 "Output sequence type (protein, gapprotein, etc.)"},
-    {"minseqs", VT_INT, 0, "1",
+    {"minseqs", VT_INT, AJFALSE, "1",
 	 "Minimum number of sequences"},
-    {"maxseqs", VT_INT, 0, "(INT_MAX)",
+    {"maxseqs", VT_INT, AJFALSE, "(INT_MAX)",
 	 "Maximum number of sequences"},
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null USA as 'no output'"},
-    {"aligned", VT_BOOL, 0, "N",
+    {"aligned", VT_BOOL, AJFALSE, "N",
 	 "Sequences are aligned"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrSeqset[] =
 {
-    {"type", VT_STR, 0, "",
+    {"type", VT_STR, AJFALSE, "",
 	 "Input sequence type (protein, gapprotein, etc.)"},
-    {"features", VT_BOOL, 0, "N",
+    {"features", VT_BOOL, AJFALSE, "N",
 	 "Read features if any"},
-    {"aligned", VT_BOOL, 0, "N",
+    {"aligned", VT_BOOL, AJFALSE, "N",
 	 "Sequences are aligned"},
-    {"minseqs", VT_INT, 0, "1",
+    {"minseqs", VT_INT, AJFALSE, "1",
 	 "Minimum number of sequences"},
-    {"maxseqs", VT_INT, 0, "(INT_MAX)",
+    {"maxseqs", VT_INT, AJFALSE, "(INT_MAX)",
 	 "Maximum number of sequences"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrSeqsetall[] =
 {
-    {"type", VT_STR, 0, "",
+    {"type", VT_STR, AJFALSE, "",
 	 "Input sequence type (protein, gapprotein, etc.)"},
-    {"features", VT_BOOL, 0, "N",
+    {"features", VT_BOOL, AJFALSE, "N",
 	 "Read features if any"},
-    {"aligned", VT_BOOL, 0, "N",
+    {"aligned", VT_BOOL, AJFALSE, "N",
 	 "Sequences are aligned"},
-    {"minseqs", VT_INT, 0, "1",
+    {"minseqs", VT_INT, AJFALSE, "1",
 	 "Minimum number of sequences"},
-    {"maxseqs", VT_INT, 0, "(INT_MAX)",
+    {"maxseqs", VT_INT, AJFALSE, "(INT_MAX)",
 	 "Maximum number of sequences"},
-    {"minsets", VT_INT, 0, "1",
+    {"minsets", VT_INT, AJFALSE, "1",
 	 "Minimum number of sequence sets"},
-    {"maxsets", VT_INT, 0, "(INT_MAX)",
+    {"maxsets", VT_INT, AJFALSE, "(INT_MAX)",
 	 "Maximum number of sequence sets"},
-    {"nulldefault", VT_BOOL, 0, "N",
+    {"nulldefault", VT_BOOL, AJFALSE, "N",
 	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrString[] =
 {
-    {"minlength", VT_INT, 0, "0",
+    {"minlength", VT_INT, AJFALSE, "0",
 	 "Minimum length"},
-    {"maxlength", VT_INT, 0, "(INT_MAX)",
+    {"maxlength", VT_INT, AJFALSE, "(INT_MAX)",
 	 "Maximum length"},
-    {"pattern", VT_STR, 0, "",
+    {"pattern", VT_STR, AJFALSE, "",
 	 "Regular expression for validation"},
-    {"upper", VT_BOOL, 0, "N",
+    {"upper", VT_BOOL, AJFALSE, "N",
 	 "Convert to upper case"},
-    {"lower", VT_BOOL, 0, "N",
+    {"lower", VT_BOOL, AJFALSE, "N",
 	 "Convert to lower case"},
-    {"word", VT_BOOL, 0, "N",
+    {"word", VT_BOOL, AJFALSE, "N",
 	 "Disallow whitespace in strings"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrToggle[] =
 {
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrTree[] =
 {
-    {"size", VT_INT, 0, "0",
+    {"size", VT_INT, AJFALSE, "0",
 	 "Number of trees (0 means any number)"},
-    {"nullok", VT_BOOL, 0, "N",
+    {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 AcdOAttr acdAttrVar[] =
 {
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
@@ -2222,204 +2223,204 @@ AcdOAttr acdAttrVar[] =
 
 static AcdOAttr acdCalcDiscrete[] =
 {
-    {"discretelength", VT_INT, 0, "",
+    {"discretelength", VT_INT, AJFALSE, "",
 	 "Number of discrete state values per set"},
-    {"discretesize", VT_INT, 0, "",
+    {"discretesize", VT_INT, AJFALSE, "",
 	 "Number of discrete state sets"},
-    {"discretecount", VT_INT, 0, "",
+    {"discretecount", VT_INT, AJFALSE, "",
 	 "Number of sets of discrete states"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 static AcdOAttr acdCalcDistances[] =
 {
-    {"distancecount", VT_INT, 0, "",
+    {"distancecount", VT_INT, AJFALSE, "",
 	 "Number of distance matrices"},
-    {"distancesize", VT_INT, 0, "",
+    {"distancesize", VT_INT, AJFALSE, "",
 	 "Number of distance rows"},
-    {"replicates", VT_BOOL, 0, "",
+    {"replicates", VT_BOOL, AJFALSE, "",
 	 "Replicates data found in input"},
-    {"hasmissing", VT_BOOL, 0, "",
+    {"hasmissing", VT_BOOL, AJFALSE, "",
 	 "Missing values found(replicates=N)"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 static AcdOAttr acdCalcFeat[] =
 {
-    {"fbegin", VT_INT, 0, "(0 if unspecified)",
+    {"fbegin", VT_INT, AJFALSE, "(0 if unspecified)",
 	 "Start of the features to be used"},
-    {"fend", VT_INT, 0, "(0 if unspecified)",
+    {"fend", VT_INT, AJFALSE, "(0 if unspecified)",
 	 "End of the features to be used"},
-    {"flength", VT_INT, 0, "",
+    {"flength", VT_INT, AJFALSE, "",
 	 "Total length of sequence (fsize is feature count)"},
-    {"fprotein", VT_BOOL, 0, "",
+    {"fprotein", VT_BOOL, AJFALSE, "",
 	 "Feature table is protein"},
-    {"fnucleic", VT_BOOL, 0, "",
+    {"fnucleic", VT_BOOL, AJFALSE, "",
 	 "Feature table is nucleotide"},
-    {"fname", VT_STR, 0, "",
+    {"fname", VT_STR, AJFALSE, "",
 	 "The name of the feature table"},
-    {"fsize", VT_STR, 0, "",
+    {"fsize", VT_STR, AJFALSE, "",
 	 "Integer, number of features"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 static AcdOAttr acdCalcFrequencies[] =
 {
-    {"freqlength", VT_INT, 0, "",
+    {"freqlength", VT_INT, AJFALSE, "",
 	 "Number of frequency values per set"},
-    {"freqsize", VT_INT, 0, "",
+    {"freqsize", VT_INT, AJFALSE, "",
 	 "Number of frequency sets"},
-    {"freqloci", VT_INT, 0, "",
+    {"freqloci", VT_INT, AJFALSE, "",
 	 "Number of frequency loci"},
-    {"freqgenedata", VT_BOOL, 0, "",
+    {"freqgenedata", VT_BOOL, AJFALSE, "",
 	 "Gene frequency data"},
-    {"freqcontinuous", VT_BOOL, 0, "",
+    {"freqcontinuous", VT_BOOL, AJFALSE, "",
 	 "Continuous frequency data"},
-    {"freqwithin", VT_BOOL, 0, "",
+    {"freqwithin", VT_BOOL, AJFALSE, "",
 	 "Individual within species frequency data"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 static AcdOAttr acdCalcProperties[] =
 {
-    {"propertylength", VT_INT, 0, "",
+    {"propertylength", VT_INT, AJFALSE, "",
 	 "Number of property values per set"},
-    {"propertysize", VT_INT, 0, "",
+    {"propertysize", VT_INT, AJFALSE, "",
 	 "Number of property sets"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 static AcdOAttr acdCalcRegexp[] =
 {
-    {"length", VT_INT, 0, "",
+    {"length", VT_INT, AJFALSE, "",
 	 "The length of the regular expression"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 static AcdOAttr acdCalcSeq[] =
 {
-    {"begin", VT_INT, 0, "",
+    {"begin", VT_INT, AJFALSE, "",
 	 "Start of the sequence used"},
-    {"end", VT_INT, 0, "",
+    {"end", VT_INT, AJFALSE, "",
 	 "End of the sequence used"},
-    {"length", VT_INT, 0, "",
+    {"length", VT_INT, AJFALSE, "",
 	  "Total length of the sequence"},
-    {"protein", VT_BOOL, 0, "",
+    {"protein", VT_BOOL, AJFALSE, "",
 	 "Boolean, indicates if sequence is protein"},
-    {"nucleic", VT_BOOL, 0, "",
+    {"nucleic", VT_BOOL, AJFALSE, "",
 	 "Boolean, indicates if sequence is DNA"},
-    {"name", VT_STR, 0, "",
+    {"name", VT_STR, AJFALSE, "",
 	 "The name/ID/accession of the sequence"},
-    {"usa", VT_STR, 0, "",
+    {"usa", VT_STR, AJFALSE, "",
 	 "The USA of the sequence"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 static AcdOAttr acdCalcSeqall[] =
 {
-    {"begin", VT_INT, 0, "",
+    {"begin", VT_INT, AJFALSE, "",
 	 "Start of the first sequence used"},
-    {"end", VT_INT, 0, "",
+    {"end", VT_INT, AJFALSE, "",
 	 "End of the first sequence used"},
-    {"length", VT_INT, 0, "",
+    {"length", VT_INT, AJFALSE, "",
 	 "Total length of the first sequence"},
-    {"protein", VT_BOOL, 0, "",
+    {"protein", VT_BOOL, AJFALSE, "",
 	 "Boolean, indicates if sequence is protein"},
-    {"nucleic", VT_BOOL, 0, "",
+    {"nucleic", VT_BOOL, AJFALSE, "",
 	 "Boolean, indicates if sequence is DNA"},
-    {"name", VT_STR, 0, "",
+    {"name", VT_STR, AJFALSE, "",
 	 "The name/ID/accession of the sequence"},
-    {"usa", VT_STR, 0, "",
+    {"usa", VT_STR, AJFALSE, "",
 	 "The USA of the sequence"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 static AcdOAttr acdCalcSeqset[] =
 {
-    {"begin", VT_INT, 0, "",
+    {"begin", VT_INT, AJFALSE, "",
 	 "The beginning of the selection of the sequence"},
-    {"end", VT_INT, 0, "",
+    {"end", VT_INT, AJFALSE, "",
 	 "The end of the selection of the sequence"},
-    {"length", VT_INT, 0, "",
+    {"length", VT_INT, AJFALSE, "",
 	 "The maximum length of the sequence set"},
-    {"protein", VT_BOOL, 0, "",
+    {"protein", VT_BOOL, AJFALSE, "",
 	 "Boolean, indicates if sequence set is protein"},
-    {"nucleic", VT_BOOL, 0, "",
+    {"nucleic", VT_BOOL, AJFALSE, "",
 	 "Boolean, indicates if sequence set is DNA"},
-    {"name", VT_STR, 0, "",
+    {"name", VT_STR, AJFALSE, "",
 	 "The name of the sequence set"},
-    {"usa", VT_STR, 0, "",
+    {"usa", VT_STR, AJFALSE, "",
 	 "The USA of the sequence"},
-    {"totweight", VT_FLOAT, 0, "",
+    {"totweight", VT_FLOAT, AJFALSE, "",
 	 "Float, total sequence weight for a set"},
-    {"count", VT_INT, 0, "",
+    {"count", VT_INT, AJFALSE, "",
 	 "Integer, number of sequences in the set"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 static AcdOAttr acdCalcSeqsetall[] =
 {
-    {"begin", VT_INT, 0, "",
+    {"begin", VT_INT, AJFALSE, "",
 	 "The beginning of the selection of the sequence"},
-    {"end", VT_INT, 0, "",
+    {"end", VT_INT, AJFALSE, "",
 	 "The end of the selection of the sequence"},
-    {"length", VT_INT, 0, "",
+    {"length", VT_INT, AJFALSE, "",
 	 "The maximum length of the sequence set"},
-    {"protein", VT_BOOL, 0, "",
+    {"protein", VT_BOOL, AJFALSE, "",
 	 "Boolean, indicates if sequence set is protein"},
-    {"nucleic", VT_BOOL, 0, "",
+    {"nucleic", VT_BOOL, AJFALSE, "",
 	 "Boolean, indicates if sequence set is DNA"},
-    {"name", VT_STR, 0, "",
+    {"name", VT_STR, AJFALSE, "",
 	 "The name of the sequence set"},
-    {"usa", VT_STR, 0, "",
+    {"usa", VT_STR, AJFALSE, "",
 	 "The USA of the sequence"},
-    {"totweight", VT_FLOAT, 0, "",
+    {"totweight", VT_FLOAT, AJFALSE, "",
 	 "Float, total sequence weight for each set"},
-    {"count", VT_INT, 0, "",
+    {"count", VT_INT, AJFALSE, "",
 	 "Integer, number of sequences in each set"},
-    {"multicount", VT_INT, 0, "",
+    {"multicount", VT_INT, AJFALSE, "",
 	 "Integer, number of sets of sequences"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 static AcdOAttr acdCalcString[] =
 {
-    {"length", VT_INT, 0, "",
+    {"length", VT_INT, AJFALSE, "",
 	 "The length of the string"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
 
 static AcdOAttr acdCalcTree[] =
 {
-    {"treecount", VT_INT, 0, "",
+    {"treecount", VT_INT, AJFALSE, "",
 	 "Number of trees"},
-    {"speciescount", VT_INT, 0, "",
+    {"speciescount", VT_INT, AJFALSE, "",
 	 "Number of species"},
-    {"haslengths", VT_BOOL, 0, "",
+    {"haslengths", VT_BOOL, AJFALSE, "",
 	 "Branch lengths defined"},
-    {NULL, VT_NULL, 0, NULL,
+    {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
@@ -3344,6 +3345,7 @@ static const char* acdResource[] =
 void ajAcdInit(const char *pgm, ajint argc, char * const argv[])
 {
     ajAcdInitPV(pgm, argc, argv, "", "");
+
     return;
 }
 
@@ -3393,6 +3395,7 @@ void ajAcdInitPV(const char *pgm, ajint argc, char * const argv[],
     ajuint pos;
 
     acdProgram = ajStrNewC(pgm);
+
     acdSecList = ajListstrNew();
     acdSecTable = ajTablestrNewCaseLen(50);
 
@@ -3423,8 +3426,11 @@ void ajAcdInitPV(const char *pgm, ajint argc, char * const argv[],
 
     /* open the command definition file */
     
-    ajStrAssignC(&acdPackName, package);
-    ajStrAssignC(&acdPackVersion, packversion);
+    if(*package)
+        ajStrAssignC(&acdPackName, package);
+
+    if(*packversion)
+        ajStrAssignC(&acdPackVersion, packversion);
 
     ajStrAssignS(&acdPack, ajNamValuePackage());
     ajStrAssignS(&acdRootInst, ajNamValueInstalldir());
@@ -6163,14 +6169,18 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @nam5rule  GetValueDefault   ACD datatype default value
 ** @nam5rule  Name    Name of ACD datatype value
 ** @nam5rule  Single  First in array of ACD datatype values
+** @nam3rule  Getpath  Return path for a program definied as external
 ** @nam3rule  Is    Test value
 ** @nam4rule  IsUserdefined    Test value is defined by the user
+** @suffix C Character string data
+** @suffix S String object data
 **
 ** @suffix Double Return double precision
 ** @suffix Long   Return long integer
 **
 ** @argrule   Get    token [const char*] Token name
-** @argrule   Is    token [const char*] Token name
+** @argrule   C      token [const char*] Token name
+** @argrule   S   strtoken [const AjPStr] Token name
 ** @argrule   Num    token [const char*] Token name
 **
 ** @valrule   Align  [AjPAlign]
@@ -6237,6 +6247,7 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @valrule   *TreeSingle  [AjPPhyloTree]
 ** @valrule   Value  [const AjPStr]
 ** @valrule   *Name  [AjPStr]
+** @valrule   Getpath  [const AjPStr]
 ** @valrule   Is  [AjBool]
 ** @fcategory misc
 **
@@ -6327,9 +6338,19 @@ static void acdSetAppl(AcdPAcd thys)
 {
     AjPStr appldoc = NULL;
     AjPStr applobsolete = NULL;
+    AjPStr applexternal = NULL;
+    AjPStrTok handle = NULL;
+    AjPStr token = NULL;
+    AjPStr message = NULL;
+    AjPStr appname = NULL;      /* saved to table */
+    AjPStr appfullname = NULL;  /* saved to table */
 
     acdAttrResolve(thys, "documentation", &appldoc);
     acdAttrResolve(thys, "obsolete", &applobsolete);
+    acdAttrResolve(thys, "external", &applexternal);
+
+    if(!acdExternalTable)
+        acdExternalTable = ajTablestrNewCaseLen(50);
 
     if(!acdAuto && ajStrGetLen(appldoc))
     {
@@ -6343,9 +6364,39 @@ static void acdSetAppl(AcdPAcd thys)
     {
         acdWarnObsolete(applobsolete);
     }
-    
+
+    if(ajStrGetLen(applexternal))
+    {
+        ajStrTokenAssignC(&handle, applexternal, "|");
+
+        while(ajStrTokenNextParse(&handle, &token))
+        {
+            ajStrExtractFirst(token, &message, &appname);
+            ajStrAssignS(&appfullname, appname);
+
+            if(!ajSysFileWhich(&appfullname))
+            {
+                ajStrFmtWrapLeft(&message, 70, 5, 0);
+                ajDie("%S uses external program '%S' "
+                      "which is not in the PATH or defined as %S_%US\n%S",
+                      acdProgram, appname,
+                      ajNamValuePackage(), appname, message);
+            }
+
+            ajTablePut(acdExternalTable, appname, appfullname);
+            appname = NULL;
+            appfullname = NULL;
+        }
+        
+    }
+
     ajStrDel(&appldoc);
     ajStrDel(&applobsolete);
+    ajStrDel(&applexternal);
+    ajStrDel(&message);
+    ajStrDel(&token);
+
+    ajStrTokenDel(&handle);
 
     return;
 }
@@ -14308,7 +14359,63 @@ const AjPStr ajAcdGetValueDefault(const char *token)
 
 
 
-/* @func ajAcdIsUserdefined ***************************************************
+/* @func ajAcdGetpathC ********************************************************
+**
+** Returns the full path of an application defined in an external: attribute
+** within the application definition. If the application was defined by an
+** EMBOSS_appname environment variable this will use the substitution made
+** when the external attribute was validated.
+**
+** @param [r] token [const char*] External application name
+** @return [const AjPStr] Executable application name
+** @@
+******************************************************************************/
+
+const AjPStr ajAcdGetpathC(const char* token)
+{
+    const AjPStr value;	       /* not static - copy of a table text */
+    AjPStr tmpname = NULL;
+
+    ajStrAssignC(&tmpname, token);
+
+    value = ajAcdGetpathS(tmpname);
+
+    ajStrDel(&tmpname);
+
+    return value;
+}
+
+
+
+
+/* @func ajAcdGetpathS ********************************************************
+**
+** Returns the full path of an application defined in an external: attribute
+** within the application definition. If the application was defined by an
+** EMBOSS_appname environment variable this will use the substitution made
+** when the external attribute was validated.
+**
+** @param [r] strtoken [const AjPStr] External application name
+** @return [const AjPStr] Executable application name
+** @@
+******************************************************************************/
+
+const AjPStr ajAcdGetpathS(const AjPStr strtoken)
+{
+    const AjPStr value;
+
+    value = ajTableFetch(acdExternalTable, strtoken);
+
+    if(!value) 
+        ajWarn("Cannot find '%S', no ACD external definition found", strtoken);
+
+    return value;
+}
+
+
+
+
+/* @func ajAcdIsUserdefinedC **************************************************
 **
 ** Tests whether an ACD item has a value set by the user.
 **
@@ -14320,7 +14427,7 @@ const AjPStr ajAcdGetValueDefault(const char *token)
 ** @@
 ******************************************************************************/
 
-AjBool ajAcdIsUserdefined(const char *token)
+AjBool ajAcdIsUserdefinedC(const char *token)
 {
     AcdPAcd acd;
     ajint pnum = 0;		   /* need to get from end of token */
@@ -14335,6 +14442,50 @@ AjBool ajAcdIsUserdefined(const char *token)
     if(!acd)
     {
         ajErr("Qualifier '-%s' not found", token);
+        return ajFalse;
+    }
+
+    ajStrDel(&tmpstr);
+
+    return acd->UserDefined;
+}
+
+/* @obsolete ajAcdIsUserdefined
+** @rename ajAcdIsUserdefinedC
+*/
+__deprecated AjBool ajAcdIsUserdefined(const char *token)
+{
+    return ajAcdIsUserdefinedC(token);
+}
+
+
+/* @func ajAcdIsUserdefinedS **************************************************
+**
+** Tests whether an ACD item has a value set by the user.
+**
+** @param [r] strtoken [const AjPStr] Text token name
+** @return [AjBool] True if token is not found as an ACD object name
+**
+** @cre failure to find an item with the right name gives an error message
+** and continues
+** @@
+******************************************************************************/
+
+AjBool ajAcdIsUserdefinedS(const AjPStr strtoken)
+{
+    AcdPAcd acd;
+    ajint pnum = 0;		   /* need to get from end of token */
+    AjPStr tmpstr = NULL;
+
+    tmpstr = ajStrNewS(strtoken);
+
+    acdTokenToLowerS(&tmpstr, &pnum);
+
+    acd = acdFindAcd(tmpstr, tmpstr);
+
+    if(!acd)
+    {
+        ajErr("Qualifier '-%S' not found", strtoken);
         return ajFalse;
     }
 
@@ -14915,7 +15066,7 @@ static void acdHelp(void)
             case HELP_APP:			/* application, do nothing */
                 iattr = acdFindAttrC(acdAttrAppl, "groups");
                 ajStrAssignS(&groupname, pa->AttrStr[iattr]);
-                igrp = ajStrFindAnyK(groupname, ',');
+                igrp = ajStrFindAnyC(groupname, ",|");
 
                 if(igrp != -1)
                     ajStrTruncateLen(&groupname, igrp);
@@ -17353,7 +17504,18 @@ static AjBool acdSet(const AcdPAcd thys, AjPStr* attrib, const AjPStr value)
     if(iattr >= 0)
     {
 	ajStrAssignC(attrib, attr[iattr].Name);
-	ajStrAssignS(&attrstr[iattr], value);
+        if(attr[iattr].Multiple)
+        {
+            if(ajStrGetLen(attrstr[iattr]))
+                ajStrAppendK(&attrstr[iattr], '|');
+            ajStrAppendS(&attrstr[iattr], value);
+        }
+        else 
+        {
+            if(acdDoValid && ajStrGetLen(attrstr[iattr]))
+                acdWarn("duplicate attribute '%S'", *attrib);
+            ajStrAssignS(&attrstr[iattr], value);
+        }
 
 	return ajTrue;
     }
@@ -17361,7 +17523,19 @@ static AjBool acdSet(const AcdPAcd thys, AjPStr* attrib, const AjPStr value)
     if(idef >= 0)
     {
 	ajStrAssignC(attrib, acdAttrDef[idef].Name);
-	ajStrAssignS(&thys->DefStr[idef], value);
+        if(acdAttrDef[idef].Multiple)
+        {
+            if(ajStrGetLen(thys->DefStr[idef]))
+                ajStrAppendK(&thys->DefStr[idef], '|');
+            ajStrAppendS(&thys->DefStr[idef], value);
+        }
+
+        else
+        {
+            if(acdDoValid && ajStrGetLen(thys->DefStr[idef]))
+                acdWarn("duplicate attribute '%S'", *attrib);
+            ajStrAssignS(&thys->DefStr[idef], value);
+        }
 
 	return ajTrue;
     }
@@ -17417,8 +17591,19 @@ static AjBool acdSetKey(const AcdPAcd thys, AjPStr* attrib, const AjPStr value)
     if(iattr >= 0)
     {
 	ajStrAssignC(attrib, attr[iattr].Name);
-	ajStrAssignS(&attrstr[iattr], value);
-
+        if(attr[iattr].Multiple)
+        {
+            if(ajStrGetLen(attrstr[iattr]))
+                ajStrAppendK(&attrstr[iattr], '|');
+            ajStrAppendS(&attrstr[iattr], value);
+        }
+        else
+        {
+            if(acdDoValid && ajStrGetLen(attrstr[iattr]))
+                acdWarn("duplicate attribute '%S'", *attrib);
+            ajStrAssignS(&attrstr[iattr], value);
+        }
+        
 	return ajTrue;
     }
   
@@ -17834,7 +18019,7 @@ static void acdSetAll(void)
     const char* stdstring = "std";
     const char* addstring = "opt";
     const char* advstring = "   ";
-    const char* nostring = "   ";
+    const char* nostring  = "   ";
     const char* level = NULL;
     ajint iendsec = 0;
 
@@ -17877,13 +18062,13 @@ static void acdSetAll(void)
 		if (pa->Assoc)
 		    continue;
 		else
-		    ajUser("Trace: %4d %s %15s: %S '%S'",
+		    ajUser("Trace: %4d %s %15s: %15S '%S'",
 			   pa->LineNum, level, acdType[pa->Type].Name,
 			   pa->Name, pa->ValStr);
 	    }
 	    else if(acdIsStype(pa))
 	    {
-		ajUser("Trace: %4d %s %15s: %S",
+		ajUser("Trace: %4d %s %15s: %15S",
 		       pa->LineNum, level, acdKeywords[pa->Type].Name,
 		       pa->Name);
 		if (pa->Type == iendsec)
@@ -17891,7 +18076,7 @@ static void acdSetAll(void)
 	    }
 	    else
 	    {
-		ajUser("Trace: %4d %s %15s: %S '%S'",
+		ajUser("Trace: %4d %s %15s: %15S '%S'",
 		       pa->LineNum, nostring, acdKeywords[pa->Type].Name,
 		       pa->Name, pa->ValStr);
 	    }
@@ -26769,7 +26954,7 @@ static void acdWarnObsolete(const AjPStr str)
     
     ajFmtPrintS(&outstr, "Application %S is marked as obsolete.\n%S",
                 acdProgram, str);
-    ajStrFmtWrap(&outstr, 70);
+    ajStrFmtWrap(&outstr, 75);
     ajWarn("%S", outstr);
 
     ajStrDel(&outstr);
@@ -27043,6 +27228,7 @@ static void acdReset(void)
 
     ajListstrFreeData(&acdSecList);
     ajTablestrFree(&acdSecTable);
+    ajTablestrFree(&acdExternalTable);
 
     ajStrDel(&acdPrettyFName);
     ajFileClose(&acdPrettyFile);
@@ -28596,7 +28782,7 @@ static void acdValidApplGroup(const AjPStr groups)
     ajStrAssignS(&tmpGroups, groups);
 
     /* step through each group */
-    grpexp = ajRegCompC("([^,]+),?");
+    grpexp = ajRegCompC("([^,|]+),?");
 
     while(ajRegExec(grpexp, tmpGroups))
     {
@@ -28645,7 +28831,7 @@ static void acdValidApplKeywords(const AjPStr keys)
     ajStrAssignS(&tmpKeys, keys);
 
     /* step through each group */
-    keyexp = ajRegCompC("([^,]+),?");
+    keyexp = ajRegCompC("([^,|]+),?");
 
     while(ajRegExec(keyexp, tmpKeys))
     {
