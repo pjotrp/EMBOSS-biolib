@@ -326,7 +326,7 @@ int main(int argc, char **argv)
     ajGraphAppendTitleS(graph, ajFileGetNameS(infile));
 
     /* open the window in which the graphics will be drawn */
-    ajGraphOpenWinMm(graph, &Width, &Height);
+    ajGraphOpenMm(graph, &Width, &Height);
 
     Border = 2.0 * (TickHeight+TextLength);
     DrawLength = Height - 2*Border;
@@ -546,7 +546,7 @@ int main(int argc, char **argv)
     ajStrDel(&BlockType);
 
     /* close the graphical window */
-    ajGraphCloseWin();
+    ajGraphicsClose();
     ajGraphxyDel(&graph);
 
     for(i=0;i<NumGroups;i++)
