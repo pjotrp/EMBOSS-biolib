@@ -1,9 +1,17 @@
 #!/bin/csh -f
 
 set file = $argv[1]
-set name = $file:r
+set name = $file:t:r
 
-embossdoc.pl ~/devemboss/ajax/graphics/$file > ! $name.out
+embossdoc.pl ~/devemboss/$file > ! $name.out
 embossdocreport.pl $name.out
-mv embossdocreport.log $name.report
+mv embossdocreport.log docsingle.report
+
+rm $name\_static.html
+rm $name.srs
+rm $name.out
+rm $name.log
+rm $name.html
+rm $name.book
+rm deprecated.new
 
