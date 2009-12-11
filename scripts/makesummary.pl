@@ -1,5 +1,14 @@
 #!/usr/bin/perl -w
 
+$dovalgrind = 0;
+
+foreach $test (@ARGV) {
+  if ($test =~ /^-(.*)/) {
+      $opt = $1;
+      if($opt eq "valgrind") {$dovalgrind = 1}
+  }
+}
+
 print "Make errors and warnings\n";
 print "========================\n\n";
 
@@ -101,40 +110,47 @@ else {print "<a href=\"qatest.txt\">detail</a>\n"}
 
 print "\n";
 
+    print "\n";
+    print "ValGrind Memory Test Results\n";
+    print "============================\n";
 
-print "\n";
-print "ValGrind Memory Test Results\n";
-print "============================\n";
+if($dovalgrind) {
 
-open (VG, "$ENV{HOME}/public_html/valgrind.txt") || die "Cannot open valgrind.txt";
+    open (VG, "$ENV{HOME}/public_html/valgrind.txt") || die "Cannot open valgrind.txt";
 
-$tot = 0;
-$totok = -1;
-while (<VG>) {
-    if (/^Detail/) {last}
-    if (/^Valgrind Tests: (\d+) OK: (\d+)/) {
-	$tot = $1;
-	$totok = $2;
+    $tot = 0;
+    $totok = -1;
+    while (<VG>) {
+	if (/^Detail/) {last}
+	if (/^Valgrind Tests: (\d+) OK: (\d+)/) {
+	    $tot = $1;
+	    $totok = $2;
+	}
+	if (/^Leaks: (\d+) Failed: (\d+) Errors: (\d+) Timeout: (\d+)/) {
+	    $totl = $1;
+	    $totf = $2;
+	    $tote = $3;
+	    $tott = $4;
+	}
     }
-    if (/^Leaks: (\d+) Failed: (\d+) Errors: (\d+) Timeout: (\d+)/) {
-	$totl = $1;
-	$totf = $2;
-	$tote = $3;
-	$tott = $4;
+
+    $totbad = $tot - $totok;
+    if ($totbad) {
+	printf "  Problems:%4d /%d\n", $totbad,$tot;
+
+	if ($totf) {printf "%10s %4d\n",  "Failed", $totf}
+	if ($tote) {printf "%10s %4d\n",  "Errors", $tote}
+	if ($tott) {printf "%10s %4d\n",  "Timeout", $tott}
+	if ($totl) {printf "%10s %4d\n",  "Leaking", $totl}
+	print "<a href=\"valgrind.txt\">detail</a>\n";
     }
-}
+    else {print "OK\n"}
 
-$totbad = $tot - $totok;
-if ($totbad) {
-    printf "  Problems:%4d /%d\n", $totbad,$tot;
-
-    if ($totf) {printf "%10s %4d\n",  "Failed", $totf}
-    if ($tote) {printf "%10s %4d\n",  "Errors", $tote}
-    if ($tott) {printf "%10s %4d\n",  "Timeout", $tott}
-    if ($totl) {printf "%10s %4d\n",  "Leaking", $totl}
-    print "<a href=\"valgrind.txt\">detail</a>\n";
 }
-else {print "OK\n"}
+else {
+    print "\n";
+    print "Valgrind not yet completed in this run\n";
+}
 
 print "\n";
 
