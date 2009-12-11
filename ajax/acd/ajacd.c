@@ -8797,7 +8797,7 @@ static void acdSetGraph(AcdPAcd thys)
 
 	    if(!ok)
 	    {
-	        ajGraphDumpDevices();
+	        ajGraphicsDumpDevices();
 		acdBadVal(thys, required,
 			  "Invalid graph value '%S'", acdReply);
 	    }
@@ -8975,7 +8975,7 @@ static void acdSetGraphxy(AcdPAcd thys)
 
 	    if(!ok)
 	    {
-	        ajGraphDumpDevices();
+	        ajGraphicsDumpDevices();
 		acdBadVal(thys, required,
 			  "Invalid XY graph value '%S'", acdReply);
 	    }
@@ -15678,7 +15678,7 @@ static void acdHelpValidGraph(const AcdPAcd thys, AjBool table, AjPStr* str)
 
     list = ajListstrNew();
 
-    ajGraphListDevices(list);
+    ajGraphicsListDevices(list);
 
     if(table)
 	ajFmtPrintAppS(str, "EMBOSS has a list of known devices, including ");
