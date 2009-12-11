@@ -11927,7 +11927,7 @@ AjBool ajStrExtractFirst(const AjPStr str, AjPStr* Prest, AjPStr* Pword)
 
     ajStrAssignSubS(Pword, str, 0, i);
 
-    if(cp)
+    if(*cp)
 	ajStrAssignSubS(Prest, str, j, str->Len);
     else
 	ajStrAssignClear(Prest);
@@ -11995,7 +11995,7 @@ AjBool ajStrExtractWord(const AjPStr str, AjPStr* Prest, AjPStr* Pword)
 
     ajStrAssignSubS(Pword, str, istart, i);
 
-    if(cp)
+    if(*cp)
 	ajStrAssignSubS(Prest, str, j, str->Len);
     else
 	ajStrAssignClear(Prest);
