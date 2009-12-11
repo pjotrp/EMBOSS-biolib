@@ -120,7 +120,7 @@ int main(int argc, char **argv)
     embInit("pepinfo", argc, argv);
     ajGraphicsSetPagesize(960, 960);
 
-    ajHistSetMark(NOY);
+    ajHistogramSetMark(NOY);
 
     /* Get parameters */
     inseq         = ajAcdGetSeq("sequence");
@@ -233,8 +233,8 @@ int main(int argc, char **argv)
 		    "%d to %d", ajSeqGetNameC(inseq),seq_begin, seq_end);
 	ajHistSetTitleC(hist, ajStrGetPtr(tmpa));
 
-	ajHistSetXAxisC(hist, "Residue Number");
-	ajHistSetYAxisLeftC(hist, "");
+	ajHistSetXlabelC(hist, "Residue Number");
+	ajHistSetYlabelC(hist, "");
 
 	for(i=0; i<9; i++)
 	{
@@ -254,7 +254,7 @@ int main(int argc, char **argv)
 	    AJFREE(iv[i]);
 
 	/*delete hist object*/
-	ajHistDelete(&hist);
+	ajHistDel(&hist);
     }
 
     /* if hydropathy plot required */
@@ -263,7 +263,7 @@ int main(int argc, char **argv)
 	ajDebug("hydropathy plot\n");
 
 	if(numGraphs)
-	    ajGraphxySetOverLap(graphs, ajFalse);
+	    ajGraphxySetflagOverlay(graphs, ajFalse);
 
 	/* get data from amino acid properties */
 	aa_hydro = ajListNew();
@@ -365,14 +365,14 @@ int main(int argc, char **argv)
     }
 
     if(do_plot)
-	ajGraphCloseWin();
+	ajGraphicsClose();
 
     ajSeqDel(&inseq);
     ajFileClose(&outfile);
     ajFileClose(&aa_properties);
     ajFileClose(&aa_hydropathy);
     ajGraphxyDel(&graphs);
-    ajHistDelete(&hist);
+    ajHistDel(&hist);
 
     /* Delete Data tables*/
     embDataListDel(&aa_props);
@@ -507,10 +507,10 @@ static void pepinfo_plotGraph2Float(AjPGraph graphs,
 
     /*Set up rest of plot information*/
     ajGraphdataSetTitleC(plot, title_text);
-    ajGraphdataSetXTitleC(plot, xtext);
-    ajGraphdataSetYTitleC(plot, ytext);
-    ajGraphdataSetMaxMin(plot,(float)1,(float)npts,ymin,ymax);
-    ajGraphdataSetMaxima(plot,(float)1,(float)npts,ymin,ymax);
+    ajGraphdataSetXlabelC(plot, xtext);
+    ajGraphdataSetYlabelC(plot, ytext);
+    ajGraphdataSetMinmax(plot,(float)1,(float)npts,ymin,ymax);
+    ajGraphdataSetTruescale(plot,(float)1,(float)npts,ymin,ymax);
     ajGraphdataSetTypeC(plot,"2D Plot");
 
     ajGraphdataCalcXY(plot, npts, (float)seq_begin, 1.0, results);
@@ -552,11 +552,11 @@ static void pepinfo_plotHistInt2(AjPHist hist,
     for(i=0; i<npts; i++)
 	farray[i] = (float) results[i];
 
-    ajHistCopyData(hist, hist_num, farray);
+    ajHistDataCopy(hist, hist_num, farray);
 
-    ajHistSetMultiTitleC(hist, hist_num, header);
-    ajHistSetMultiXTitleC(hist, hist_num, xtext);
-    ajHistSetMultiYTitleC(hist, hist_num, ytext);
+    ajHistSetmultiTitleC(hist, hist_num, header);
+    ajHistSetmultiXlabelC(hist, hist_num, xtext);
+    ajHistSetmultiYlabelC(hist, hist_num, ytext);
 
     AJFREE(farray);
 

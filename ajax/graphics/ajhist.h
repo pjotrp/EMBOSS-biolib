@@ -89,13 +89,13 @@ typedef struct AjSHistData {
 ** AJAX data structure for histogram graph objects
 **
 **
-** @attr numofsets [ajint] number of current sets
-** @attr numofsetsmax [ajint] maximum number of sets
-** @attr numofdatapoints [ajint] numbr of data points
+** @attr numofsets [ajuint] number of current sets
+** @attr numofsetsmax [ajuint] maximum number of sets
+** @attr numofdatapoints [ajuint] numbr of data points
 ** @attr xmin [float] Lowest x value
 ** @attr xmax [float] Highest x value
-** @attr displaytype [ajint] Display type index
-** @attr bins [ajint] Number of histogram bins
+** @attr displaytype [ajuint] Display type index
+** @attr bins [ajuint] Number of histogram bins
 ** @attr BaW [AjBool] Black and white rendering if ajTrue
 ** @attr title [AjPStr] Plot title
 ** @attr subtitle [AjPStr] Plot subtitle
@@ -108,13 +108,13 @@ typedef struct AjSHistData {
 ******************************************************************************/
 
 typedef struct AjSHist {
-  ajint numofsets;
-  ajint numofsetsmax;
-  ajint numofdatapoints;
+  ajuint numofsets;
+  ajuint numofsetsmax;
+  ajuint numofdatapoints;
   float xmin;
   float xmax;
-  ajint displaytype;
-  ajint bins;
+  ajuint displaytype;
+  ajuint bins;
   AjBool BaW;
   AjPStr title;
   AjPStr subtitle;
@@ -133,31 +133,58 @@ typedef struct AjSHist {
 ** Prototype definitions
 */
 
-void    ajHistClose (void);
-void    ajHistCopyData (AjPHist hist, ajint index, const PLFLT *data);
-void    ajHistDelete (AjPHist* hist);
+void    ajHistogramClose (void);
+void    ajHistDataCopy (AjPHist hist, ajuint index, PLFLT const *data);
+void    ajHistDel (AjPHist* hist);
 void    ajHistDisplay (const AjPHist hist);
-AjPHist ajHistNew (ajint numofsets, ajint numofpoints);
-AjPHist ajHistNewG (ajint numofsets, ajint numofpoints, AjPGraph graph);
-void    ajHistSetBlackandWhite (AjPHist hist, AjBool set);
-void    ajHistSetColour(AjPHist hist, ajint index, ajint colour);
-void    ajHistSetMultiTitle  (AjPHist hist, ajint index, const AjPStr title);
-void    ajHistSetMultiTitleC (AjPHist hist, ajint index, const char *title);
-void    ajHistSetMultiXTitle  (AjPHist hist, ajint index, const AjPStr title);
-void    ajHistSetMultiXTitleC (AjPHist hist, ajint index, const char *title);
-void    ajHistSetMultiYTitle  (AjPHist hist, ajint index, const AjPStr title);
-void    ajHistSetMultiYTitleC (AjPHist hist, ajint index, const char *title);
-void    ajHistSetPattern (AjPHist hist, ajint index, ajint style);
-void    ajHistSetPtrToData (AjPHist hist, ajint index, PLFLT *data);
+AjPHist ajHistNew (ajuint numofsets, ajuint numofpoints);
+AjPHist ajHistNewG (ajuint numofsets, ajuint numofpoints, AjPGraph graph);
+void    ajHistSetMono (AjPHist hist, AjBool set);
+void    ajHistSetmultiColour(AjPHist hist, ajuint index, ajint colour);
+void    ajHistSetmultiTitleS (AjPHist hist, ajuint index, const AjPStr title);
+void    ajHistSetmultiTitleC (AjPHist hist, ajuint index, const char *title);
+void    ajHistSetmultiXlabelS (AjPHist hist, ajuint index, const AjPStr title);
+void    ajHistSetmultiXlabelC (AjPHist hist, ajuint index, const char *title);
+void    ajHistSetmultiYlabelS (AjPHist hist, ajuint index, const AjPStr title);
+void    ajHistSetmultiYlabelC (AjPHist hist, ajuint index, const char *title);
+void    ajHistSetmultiPattern (AjPHist hist, ajuint index, ajint style);
+void    ajHistDataAdd (AjPHist hist, ajuint index, PLFLT *data);
 void    ajHistSetTitleC (AjPHist hist, const char* strng);
-void    ajHistSetXAxisC (AjPHist hist, const char* strng);
-void    ajHistSetYAxisLeftC (AjPHist hist,const  char* strng);
-void    ajHistSetYAxisRightC (AjPHist hist, const char* strng);
-void    ajHistSetMark(ajint mark);
+void    ajHistSetXlabelC (AjPHist hist, const char* strng);
+void    ajHistSetYlabelC (AjPHist hist,const  char* strng);
+void    ajHistSetRlabelC (AjPHist hist, const char* strng);
+
+void    ajHistogramSetMark(ajint mark);
 
 /*
 ** End of prototype definitions
 */
+
+__deprecated void    ajHistSetColour(AjPHist hist, ajuint index, ajint colour);
+__deprecated void    ajHistSetPattern (AjPHist hist, ajuint index, ajint style);
+__deprecated void    ajHistSetBlackandWhite (AjPHist hist, AjBool set);
+__deprecated void    ajHistSetXAxisC (AjPHist hist, const char* strng);
+__deprecated void    ajHistSetYAxisLeftC (AjPHist hist,const  char* strng);
+__deprecated void    ajHistSetYAxisRightC (AjPHist hist, const char* strng);
+__deprecated void    ajHistCopyData (AjPHist hist, ajuint index,
+                                     const PLFLT *data);
+__deprecated void    ajHistSetPtrToData (AjPHist hist,
+                                         ajint index, PLFLT *data);
+__deprecated void    ajHistSetMark(ajint mark);
+__deprecated void    ajHistClose (void);
+__deprecated void    ajHistDelete (AjPHist* hist);
+__deprecated void    ajHistSetMultiTitle  (AjPHist hist, ajint index,
+                                           const AjPStr title);
+__deprecated void    ajHistSetMultiTitleC (AjPHist hist, ajint index,
+                                           const char *title);
+__deprecated void    ajHistSetMultiXTitle  (AjPHist hist, ajint index,
+                                            const AjPStr title);
+__deprecated void    ajHistSetMultiXTitleC (AjPHist hist, ajint index,
+                                            const char *title);
+__deprecated void    ajHistSetMultiYTitle  (AjPHist hist, ajint index,
+                                            const AjPStr title);
+__deprecated void    ajHistSetMultiYTitleC (AjPHist hist, ajint index,
+                                            const char *title);
 
 #endif /* ajhist_h */
 
