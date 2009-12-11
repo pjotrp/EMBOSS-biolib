@@ -92,13 +92,17 @@ const AjPStr  ajAcdGetValueDefault (const char* token);
 void          ajAcdInit(const char *pgm, ajint argc, char * const argv[]);
 void          ajAcdInitPV(const char *pgm, ajint argc, char * const argv[],
 			  const char *package, const char *packversion);
-AjBool        ajAcdIsUserdefined(const char* token);
+AjBool        ajAcdIsUserdefinedC(const char* token);
+AjBool        ajAcdIsUserdefinedS(const AjPStr);
+const AjPStr  ajAcdGetpathC(const char *token);
+const AjPStr  ajAcdGetpathS(const AjPStr);
 void          ajAcdPrintAppl(AjPFile outf, AjBool full);
 void          ajAcdPrintQual(AjPFile outf, AjBool full);
 void          ajAcdPrintType (AjPFile outf, AjBool full);
 AjBool        ajAcdSetControl (const char* optionName);
 void          ajAcdUnused(void);
 
+__deprecated AjBool        ajAcdIsUserdefined(const char* token);
 __deprecated AjBool         ajAcdDebug (void);
 __deprecated AjBool         ajAcdDebugIsSet (void);
 __deprecated AjBool         ajAcdFilter (void);
