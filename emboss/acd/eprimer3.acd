@@ -1,7 +1,9 @@
 application: eprimer3 [
   documentation: "Picks PCR primers and hybridization oligos"
   groups: "Nucleic:Primers"
-  external: "primer3_core"
+  external: "primer3_core Part of the 'primer3' package, version 3.0,
+		      available from the Whitehead Institute.
+		      See: http://primer3.sourceforge.net/"
   relations: "EDAM: PCR primer design"
   relations: "EDAM: Microarray probe design"
 ]

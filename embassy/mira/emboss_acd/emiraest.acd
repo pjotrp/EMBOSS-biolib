@@ -289,7 +289,6 @@ section: advanced [
   boolean: borg [
     default: "N"
     information: "Force assembly"
-    information: "Preset EST assembly mode"
     help: "Sets several parameters to have mira try to assemble as many reads
            as possible. Will probably slow down the assembly process and use
            more memory. 'We are MIRA of borg. You will be assembled,

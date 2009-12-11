@@ -73,7 +73,6 @@ section: output
   [
     parameter: "Y"
     information: "ACD file output directory"
-    default: "./"
     extension: "acd"
     default: "acdout"
   ]

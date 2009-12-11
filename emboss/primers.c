@@ -195,7 +195,7 @@ int main(int argc, char **argv)
   ajint     end;
   FILE *    stream;
   AjPStr    taskstr = NULL;
-  AjPStr    program  = NULL;
+  const AjPStr program  = NULL;
 
 /* fork/pipe variables */
   pid_t nPid;
@@ -356,18 +356,12 @@ int main(int argc, char **argv)
         close( pipefrom[0] );
         close( pipefrom[1] );
 
-	program = ajStrNew();
-	ajStrAssignC(&program, "primer3_core");
-	if (ajSysFileWhich(&program)) {
-	    execlp( "primer3_core", "primer3_core", NULL );
-	    ajFatal("There was a problem while executing primer3");
-	} else {
-	    ajFatal("The program 'primer3_core' must be on the path.\n"
-		    "It is part of the 'primer3' package,\n"
-		    "available from the Whitehead Institute.\n"
-		    "See: http://www-genome.wi.mit.edu/");
-	}
-	ajStrDel(&program);
+        program = ajAcdGetpathC("primer3_core");
+          
+        if(program)
+            execlp(ajStrGetPtr(program), "primer3_core", NULL);
+
+        ajDie("There was a problem while executing primer3");
 
     } else {
         /* PARENT PROCESS */
