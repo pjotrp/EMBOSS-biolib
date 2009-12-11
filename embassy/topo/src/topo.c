@@ -845,7 +845,7 @@ int main(int argc, char * argv[])
 	}
     }
 
-    ajGraphCloseWin() ;
+    ajGraphicsCloseWin() ;
 
     ajGraphxyDel(&graph);
     AJFREE(istart);
