@@ -172,8 +172,8 @@ Version: EMBOSS:6.1.0
                                   tree file); l (Distances between all
                                   possible pairs in each tree file))
    -style              menu       [v] Distances output option (Values: f
-                                  (Full_matrix); v (One pair per line,
-                                  verbose); s (One pair per line, sparese))
+                                  (Full_matrix); v (Verbose, one pair per
+                                  line); s (Sparse, one pair per line))
    -noroot             boolean    [N] Trees to be treated as rooted
    -outgrno            integer    [0] Species number to use as outgroup
                                   (Integer 0 or more)
