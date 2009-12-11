@@ -402,34 +402,34 @@ int main(int argc, char **argv)
     embInitPV("emira", argc, argv, "MIRA",VERSION);
 
 
-    cl = ajStrNewC("mira");
+    cl = ajStrNewS(ajAcdGetpathC("mira"));
 
     stmp = ajStrNew();
 
     preftab = emira_makepreftab();
 
-    if(ajAcdIsUserdefined("genome"))
+    if(ajAcdIsUserdefinedC("genome"))
     {
 	squal = ajAcdGetListSingle("genome");
 	ajFmtPrintAppS(&cl," -genome%S",squal);
 	ajStrDel(&squal);
     }
 
-    if(ajAcdIsUserdefined("mapping"))
+    if(ajAcdIsUserdefinedC("mapping"))
     {
 	squal = ajAcdGetListSingle("mapping");
 	ajFmtPrintAppS(&cl," -mapping%S",squal);
 	ajStrDel(&squal);
     }
 
-    if(ajAcdIsUserdefined("clipping"))
+    if(ajAcdIsUserdefinedC("clipping"))
     {
 	squal = ajAcdGetListSingle("clipping");
 	ajFmtPrintAppS(&cl," -clipping%S",squal);
 	ajStrDel(&squal);
     }
 
-    if(ajAcdIsUserdefined("setparam"))
+    if(ajAcdIsUserdefinedC("setparam"))
     {
 	squal = ajAcdGetListSingle("setparam");
 	if(!ajStrMatchC(squal,"unspecified"))

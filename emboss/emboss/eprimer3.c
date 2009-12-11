@@ -187,7 +187,7 @@ int main(int argc, char **argv)
     ajint end;
     FILE* stream;
     AjPStr taskstr  = NULL;
-    AjPStr program  = NULL;
+    const AjPStr program = NULL;
 
     /* fork/pipe variables */
 #ifndef WIN32
@@ -338,22 +338,12 @@ int main(int argc, char **argv)
             close(pipefrom[0]);
             close(pipefrom[1]);
     
-            program = ajStrNew();
-            ajStrAssignC(&program, "primer3_core");
+            program = ajAcdGetpathC("primer3_core");
     
-            if(ajSysFileWhich(&program))
-            {
-    	        execlp( "primer3_core", "primer3_core", NULL );
-    	        ajDie("There was a problem while executing primer3");
-            }
-            else
-    	        ajDie("The program 'primer3_core' must be on the path.\n"
-		      "It is part of the 'primer3' package, version 3.0,\n"
-		      "available from the Whitehead Institute.\n"
-		      "See: http://primer3.sourceforge.net/");
-    
-            ajStrDel(&program);
+            if(program)
+                execlp(ajStrGetPtr(program), "primer3_core", NULL);
 
+            ajDie("There was a problem while executing primer3");
         }
         else
         {
