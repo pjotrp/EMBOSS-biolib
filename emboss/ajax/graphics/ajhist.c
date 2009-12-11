@@ -34,371 +34,43 @@
 
 ajint aj_hist_mark=GRAPH_HIST;
 
-/* @func ajHistSetMark ********************************************************
+/* @filesection ajhist *******************************************************
 **
-** Set the histogram mark internal value
+** @nam1rule aj Function belongs to the AJAX library.
 **
-** @param [r] mark [ajint] Mark value
-** @return [void]
+*/
+
+
+
+/* @datasection [none] Histogram internals ************************************
+**
+** Function is for controlling the histogram internals without using
+** an AjPGraph object
+**
+** @nam2rule Histogram
+*/
+
+
+
+
+/* @section modifiers **********************************************************
+**
+** Controlling the internals
+**
+** @fdata [none]
+** @fcategory modify
+**
+** @nam3rule Close Close a histogram plot
+** @nam3rule Set Set internal state
+** @nam4rule Mark Set the histogram mark internal value
+**
+** @argrule Mark mark [ajint] Mark value
+**
+** @valrule * [void]
+**
 ******************************************************************************/
-void ajHistSetMark(ajint mark)
-{
-  aj_hist_mark = mark;
-  return;
-}
 
-
-/* @func ajHistDisplay ********************************************************
-**
-** Display the histogram.
-**
-** @param [r] hist [const AjPHist] Histogram Structure.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajHistDisplay(const AjPHist hist)
-{
-    PLFLT *data    = NULL;		/* points to data in hist */
-    PLFLT *totals  = NULL;
-    PLFLT *totals2 = NULL;
-    float ptsperbin;
-    float max = FLT_MIN;
-    float min = 0.0;
-    ajint i;
-    ajint j;
-    ajint ratioint;
-    ajint num;
-    ajint old;
-    float bin_range;
-    float bar_width;
-    float offset;
-    float start;
-    float tot;
-    float percent5;
-    
-    /* Sanity check */
-    if(hist->numofdatapoints < 1 || hist->numofsets < 1 || hist->bins < 1)
-    {
-	ajErr("points =%d, sets = %d, bins = %d !!! "
-	      "Must all be Greater than 1 ",
-	      hist->numofdatapoints,hist->numofsets,hist->bins);
-
-	return;
-    }
-
-    /* what multiple is the bins to numofdatasets */
-    /* as i may have to take an average if not identical */
-    ptsperbin = (float)hist->numofdatapoints/(float)hist->bins;
-    
-    if(ptsperbin < 1.0)
-    {
-	ajErr("You cannot more have bins than datapoints!!");
-
-	return;
-    }
-    /* is the ratio a whole number? */
-
-    ratioint = (ajint)ptsperbin;
-
-    if((ptsperbin - (float)ratioint) != 0.0)
-    {
-	ajErr("number of data points needs to be a multiple of bins");
-
-	return;
-    }
-    /* end Sanity check */
-    
-    /* Add spacing either side */
-    percent5 = (hist->xmax-hist->xmin)*(float)0.025;
-    
-    
-    /* calculate max and min for each set */
-    if(hist->numofsets != 1)
-    {	
-	/* if NOT side by side max and min as the sets added together */
-	if(hist->displaytype == HIST_SIDEBYSIDE)
-	{
-	    /* find the max value */
-	    max = INT_MIN;
-	    min = 0;
-
-	    for(j=0;j<hist->numofsets;j++)
-	    {
-		data = hist->hists[j]->data;
-
-		for(i=0;i<hist->numofdatapoints;i++)
-		{
-		    if(data[i] > max)
-			max = data[i];
-
-		    if(data[i] < min)
-			min = data[i];
-		}
-	    }
-	}
-	else if(hist->displaytype == HIST_ONTOP)
-	{
-	    totals = AJALLOC(hist->numofdatapoints*(sizeof(PLFLT)));
-
-	    /* set all memory to 0.0 */
-	    for(i=0;i<hist->numofdatapoints;i++)
-	    {
-		totals[i] = 0.0;
-	    }
-
-	    min = 0;
-	    max = 0;
-
-	    for(j=0;j<hist->numofsets;j++)
-	    {
-		data = hist->hists[j]->data;
-		for(i=0;i<hist->numofdatapoints;i++)
-		{
-		    totals[i] += data[i];
-		    if(totals[i] > max)
-			max = totals[i];
-
-		    if(totals[i] < min)
-			min = totals[i];
-		    /*	  ajDebug("%d %d\t%f",j,i,totals[i]);*/
-		}
-	    }
-	}
-	else if(hist->displaytype == HIST_SEPARATE)
-	{
-	    totals = AJALLOC(hist->numofsets*(sizeof(PLFLT)));
-	    totals2 = AJALLOC(hist->numofsets*(sizeof(PLFLT)));
-
-	    for(j=0;j<hist->numofsets;j++)
-	    {
-		data = hist->hists[j]->data;
-		totals[j] = 0;
-		totals2[j] = 0;
-
-		for(i=0;i<hist->numofdatapoints;i++)
-		{
-		    if(totals[j] < data[i])
-			totals[j] = data[i];
-
-		    if(totals2[j] > data[i])
-			totals2[j] = data[i];
-		}
-	    }
-	}
-    }
-    else
-    {
-	data = hist->hists[0]->data;
-	max = data[0];
-	min = 0;
-
-	for(i=1;i<hist->numofdatapoints;i++)
-	{
-	    if(data[i] > max)
-		max = data[i];
-
-	    if(data[i] < min)
-		min = data[i];
-	}
-
-	if(hist->displaytype == HIST_ONTOP /*!hist->sidebyside*/)
-	{
-	    totals = AJALLOC(hist->numofdatapoints*(sizeof(PLFLT)));
-
-	    /* set all memory to 0.0 */
-	    for(i=0;i<hist->numofdatapoints;i++)
-		totals[i] = 0.0;
-	}
-	else if(hist->displaytype == HIST_SEPARATE)
-	{
-	    totals = AJALLOC((sizeof(PLFLT)));
-	    totals[0]= max;
-	    totals2 = AJALLOC((sizeof(PLFLT)));
-	    totals2[0]= min;
-	}
-    }
-    
-    bin_range = (hist->xmax - hist->xmin)/(float)hist->bins;
-    
-    if(hist->displaytype != HIST_SEPARATE)
-    {
-	if(max <= 0.01)
-	{
-	    if(max < 0.0)
-		max = 0.0;
-	    else
-		max = 1.0;
-	}
-
-	ajGraphOpenPlotset(hist->graph, 1);
-	ajGraphicsPlenv(hist->xmin-percent5, hist->xmax+percent5, min,
-		     max*((float)1.025), aj_hist_mark);
-	ajGraphicsSetLabelsS(hist->xaxis ,
-                             hist->yaxisleft ,
-                             hist->title,
-                             hist->subtitle);
-
-	ajGraphicsSetRlabelS(hist->yaxisright);
-    }
-    else 
-	ajGraphOpenPlotset(hist->graph, hist->numofsets);
-    
-    if(hist->displaytype == HIST_SIDEBYSIDE)
-    {
-	bar_width = bin_range/hist->numofsets;
-
-	for(i=0;i<hist->numofsets;i++)
-	{
-	    offset = i*bar_width;
-	    start = hist->xmin;
-	    num = 0;
-	    tot=0.0;
-	    data = hist->hists[i]->data;
-
-	    for(j=0;j<hist->numofdatapoints;j++)
-	    {
-		tot += data[j];
-		num++;
-
-		if(num >= ptsperbin)
-		{
-		    tot = tot / (float)num;
-
-		    if(hist->BaW)
-			old = ajGraphicsSetFillpat(hist->hists[i]->pattern);
-		    else
-			old = ajGraphicsSetFgcolour(hist->hists[i]->colour);
-		    ajGraphicsDrawposRectFill(start+offset,0.0,
-                                              start+offset+bar_width,tot);
-
-		    if(hist->BaW)
-			ajGraphicsSetFillpat(old);
-		    else
-			ajGraphicsSetFgcolour(old);
-
-		    ajGraphicsDrawposRect(start+offset,0.0,
-                                          start+offset+bar_width,tot);
-		    num = 0;
-		    tot = 0;
-		    start +=bin_range;
-		}		
-	    }
-	}
-    }
-    else if(hist->displaytype == HIST_SEPARATE)
-    {
-	bar_width = bin_range;
-
-	for(i=0;i<hist->numofsets;i++)
-	{	    
-	    if(totals[i] <= 0.01)
-	    {			       /* apparently the ymin value */
-		if(totals[i] < 0.0)
-		    totals[i] = 0.0;
-		else
-		    totals[i] = 1.0;
-	    }
-
-	    ajGraphicsPlenv(hist->xmin-percent5, hist->xmax+percent5,
-                            totals2[i]*((float)1.025), totals[i]*((float)1.025),
-                            aj_hist_mark);
-	    offset = /*bar_width*/0.0;
-	    start = hist->xmin;
-	    num = 0;
-	    tot=0.0;
-	    data = hist->hists[i]->data;
-	    ajGraphicsSetLabelsS(hist->hists[i]->xaxis,
-                                 hist->hists[i]->yaxis,
-                                 hist->hists[i]->title,
-                                 hist->hists[i]->subtitle);
-	    
-	    for(j=0;j<hist->numofdatapoints;j++)
-	    {
-		tot += data[j];
-		num++;
-
-		if(num >= ptsperbin)
-		{
-		    tot = tot / (float)num;
-
-		    if(hist->BaW)
-			old = ajGraphicsSetFillpat(hist->hists[i]->pattern);
-		    else
-			old = ajGraphicsSetFgcolour(hist->hists[i]->colour);
-
-		    ajGraphicsDrawposRectFill(start+offset,0.0,
-                                              start+offset+bar_width,tot);
-
-		    if(hist->BaW)
-			ajGraphicsSetFillpat(old);
-		    else
-			ajGraphicsSetFgcolour(old);
-
-		    ajGraphicsDrawposRect(start+offset,0.0,
-                                          start+offset+bar_width,tot);
-		    num = 0;
-		    tot = 0;
-		    start +=bin_range;
-		}		
-	    }
-	}
-    }
-    else if(hist->displaytype == HIST_ONTOP)
-    {
-	for(i=0;i<hist->numofdatapoints;i++)
-	    totals[i] = 0.0;
-
-	for(i=0;i<hist->numofsets;i++)
-	{
-	    data = hist->hists[i]->data;
-	    start = hist->xmin;
-	    num = 0;
-	    tot=0.0;
-
-	    for(j=0;j<hist->numofdatapoints;j++)
-	    {
-		tot += data[j];
-		num++;
-
-		if(num >= ptsperbin)
-		{
-		    tot = tot / (float)num;
-
-		    if(hist->BaW)
-			old = ajGraphicsSetFillpat(hist->hists[i]->pattern);
-		    else
-			old = ajGraphicsSetFgcolour(hist->hists[i]->colour);
-
-		    ajGraphicsDrawposRectFill(start,totals[j],
-                                              start+bin_range,tot+totals[j]);
-		    if(hist->BaW)
-			ajGraphicsSetFillpat(old);
-		    else
-			ajGraphicsSetFgcolour(old);
-
-		    ajGraphicsDrawposRect(start,totals[j],
-                                          start+bin_range,tot+totals[j]);
-		    totals[j] += tot;
-		    tot = 0;
-		    /*	  ajDebug("num = %d",num);*/
-		    num = 0;
-		    start +=bin_range;
-		}
-	    }
-	}
-    }
-
-    AJFREE(totals);
-    AJFREE(totals2);
-
-    return;
-}
-
-
-
-
-/* @func ajHistClose **********************************************************
+/* @func ajHistogramClose ******************************************************
 **
 ** Closes the histograms window.
 **
@@ -407,7 +79,7 @@ void ajHistDisplay(const AjPHist hist)
 ** @@
 ******************************************************************************/
 
-void ajHistClose(void)
+void ajHistogramClose(void)
 {
     ajGraphicsCloseWin();
 
@@ -415,72 +87,83 @@ void ajHistClose(void)
 }
 
 
-
-
-/* @func ajHistDelete *********************************************************
-**
-** Delete and free all memory associated with the histogram.
-** Does not delete the graph.
-**
-** @param [d] phist [AjPHist*] Histogram to be deleted.
-** @return [void]
-**
-** @@
-******************************************************************************/
-
-void ajHistDelete(AjPHist* phist)
+/* @obsolete ajHistClose
+** @rename ajHistogramClose
+*/
+__deprecated void ajHistClose(void)
 {
-    ajint i;
-    AjPHist hist;
+    ajHistogramClose();
 
-    if(!phist) return;
-
-    hist = *phist;
-
-    if (!hist)
-	return;
-
-    for(i=0;i<hist->numofsets; i++)
-    {
-	if(hist->hists[i]->deletedata)
-	{
-	    ajStrDel(&hist->hists[i]->title);
-	    ajStrDel(&hist->hists[i]->xaxis);
-	    ajStrDel(&hist->hists[i]->yaxis);
-	    AJFREE(hist->hists[i]->data);
-	}
-	AJFREE((hist->hists[i]));
-    }
-
-    AJFREE(hist->hists);
-
-    ajStrDel(&hist->title);
-    ajStrDel(&hist->xaxis);
-    ajStrDel(&hist->yaxisleft);
-    ajStrDel(&hist->yaxisright);
-
-    AJFREE(*phist);
     return;
 }
 
 
 
+/* @func ajHistogramSetMark ***************************************************
+**
+** Set the histogram mark internal value
+**
+** @param [r] mark [ajint] Mark value
+** @return [void]
+******************************************************************************/
+
+void ajHistogramSetMark(ajint mark)
+{
+  aj_hist_mark = mark;
+  return;
+}
+
+/* @obsolete ajHistSetMark
+** @rename ajHistogramSetMark
+*/
+__deprecated void ajHistSetMark(ajint mark)
+{
+    ajHistogramSetMark(mark);
+    return;
+}
+
+
+/* @datasection [AjPHist] Histogram object *************************************
+**
+** Function is for manipulating an AjPHist histogram object
+**
+** @nam2rule Hist
+**
+******************************************************************************/
+
+/* @section Constructors ******************************************************
+**
+** Construct a new histogram object to be populated by other functions
+**
+** @fdata [AjPHist]
+** @fcategory new
+**
+** @nam3rule New
+** @suffix G New with multiple graphdata
+**
+** @argrule New numofsets [ajuint] Number of sets of data.
+** @argrule New numofpoints [ajuint] Number of data points per set.
+** @argrule G graph [AjPGraph] Graph object, device, multi and name are set
+**
+** @valrule * [AjPHist] New histogram object
+**
+******************************************************************************/
 
 /* @func ajHistNew ************************************************************
 **
 ** Create a histogram Object. Which can hold "numofsets" set of data of which
 ** all must have "numofpoints" data points in them.
 **
-** @param [r] numofsets [ajint] Number of sets of data.
-** @param [r] numofpoints [ajint] Number of data points per set.
+** @param [r] numofsets [ajuint] Number of sets of data.
+** @param [r] numofpoints [ajuint] Number of data points per set.
 ** @return [AjPHist] histogram structure.
 ** @@
 ******************************************************************************/
 
-AjPHist ajHistNew(ajint numofsets, ajint numofpoints)
+AjPHist ajHistNew(ajuint numofsets, ajuint numofpoints)
 {
     static AjPHist hist = NULL;
-    ajint i;
+    ajuint i;
 
     AJNEW0(hist);
 
@@ -524,8 +207,8 @@ AjPHist ajHistNew(ajint numofsets, ajint numofpoints)
 ** Create a histogram Object which has the histogram data and graph data
 ** storage capacity.
 **
-** @param [r] numofsets [ajint] Number of sets of data.
-** @param [r] numofpoints [ajint] Number of data points per set.
+** @param [r] numofsets [ajuint] Number of sets of data.
+** @param [r] numofpoints [ajuint] Number of data points per set.
 ** @param [u] graph [AjPGraph] Graph object, device, multi and name are set.
 **                             The orignial AjPGraph object will be used
 **                             by the AjPHist
@@ -533,9 +216,10 @@ AjPHist ajHistNew(ajint numofsets, ajint numofpoints)
 ** @@
 ******************************************************************************/
 
-AjPHist ajHistNewG(ajint numofsets, ajint numofpoints, AjPGraph graph)
+AjPHist ajHistNewG(ajuint numofsets, ajuint numofpoints, AjPGraph graph)
 {
     AjPHist hist = ajHistNew(numofsets, numofpoints);
+
     hist->graph = graph;
     ajGraphicsSetDevice(graph);
     ajGraphSetMulti(graph, numofsets);
@@ -546,28 +230,436 @@ AjPHist ajHistNewG(ajint numofsets, ajint numofpoints, AjPGraph graph)
 
 
 
+/* @section Destructors *******************************************************
+**
+** Destriuctors for histogram objects
+**
+** @fdata [AjPHist]
+** @fcategory delete
+**
+** @nam3rule Del
+**
+** @argrule Del phist [AjPHist*] Histogram to be deleted.
+**
+** @valrule * [void]
+**
+******************************************************************************/
 
-/* @func ajHistSetMultiTitle **************************************************
+/* @func ajHistDel ************************************************************
 **
-** Set ptr for title for index'th set..
+** Delete and free all memory associated with the histogram.
+** Does not delete the graph.
 **
-** @param [u] hist [AjPHist]   Histogram to have ptr set.
-** @param [r] indexnum [ajint]       Index for the set number.
-** @param [r] title [const AjPStr]    Title.
+** @param [d] phist [AjPHist*] Histogram to be deleted.
+** @return [void]
+**
+** @@
+******************************************************************************/
+
+void ajHistDel(AjPHist* phist)
+{
+    ajuint i;
+    AjPHist hist;
+
+    if(!phist) return;
+
+    hist = *phist;
+
+    if (!hist)
+	return;
+
+    for(i=0;i<hist->numofsets; i++)
+    {
+	if(hist->hists[i]->deletedata)
+	{
+	    ajStrDel(&hist->hists[i]->title);
+	    ajStrDel(&hist->hists[i]->xaxis);
+	    ajStrDel(&hist->hists[i]->yaxis);
+	    AJFREE(hist->hists[i]->data);
+	}
+	AJFREE((hist->hists[i]));
+    }
+
+    AJFREE(hist->hists);
+
+    ajStrDel(&hist->title);
+    ajStrDel(&hist->xaxis);
+    ajStrDel(&hist->yaxisleft);
+    ajStrDel(&hist->yaxisright);
+
+    AJFREE(*phist);
+    return;
+}
+
+
+/* @obsolete ajHistDelete
+** @rename ajHistDel
+*/
+__deprecated void ajHistDelete(AjPHist* phist)
+{
+    ajHistDel(phist);
+    return;
+}
+
+
+/* @section Display ***********************************************************
+**
+** Functions to display or write the histogram
+**
+** @fdata [AjPHist]
+** @fcategory use
+**
+** @nam3rule Display Display the histogram
+**
+** @argrule Display thys [const AjPHist] Histogram object
+**
+** @valrule * [void]
+**
+******************************************************************************/
+
+/* @func ajHistDisplay ********************************************************
+**
+** Display the histogram.
+**
+** @param [r] thys [const AjPHist] Histogram Structure.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajHistSetMultiTitle(AjPHist hist, ajint indexnum, const AjPStr title)
+void ajHistDisplay(const AjPHist thys)
 {
-    if(indexnum >= hist->numofdatapoints || indexnum < 0)
+    PLFLT *data    = NULL;		/* points to data in hist */
+    PLFLT *totals  = NULL;
+    PLFLT *totals2 = NULL;
+    float ptsperbin;
+    float max = FLT_MIN;
+    float min = 0.0;
+    ajuint i;
+    ajuint j;
+    ajint ratioint;
+    ajint num;
+    ajint old;
+    float bin_range;
+    float bar_width;
+    float offset;
+    float start;
+    float tot;
+    float percent5;
+    
+    /* Sanity check */
+    if(thys->numofdatapoints < 1 || thys->numofsets < 1 || thys->bins < 1)
     {
-	ajErr("Histograms can only be allocated from 0 to %d. NOT %d",
-	      hist->numofdatapoints-1,indexnum);
+	ajErr("points =%d, sets = %d, bins = %d !!! "
+	      "Must all be Greater than 1 ",
+	      thys->numofdatapoints,thys->numofsets,thys->bins);
+
 	return;
     }
 
-    ajStrAssignS(&hist->hists[indexnum]->title, title);
+    /* what multiple is the bins to numofdatasets */
+    /* as i may have to take an average if not identical */
+    ptsperbin = (float)thys->numofdatapoints/(float)thys->bins;
+    
+    if(ptsperbin < 1.0)
+    {
+	ajErr("You cannot more have bins than datapoints!!");
+
+	return;
+    }
+    /* is the ratio a whole number? */
+
+    ratioint = (ajint)ptsperbin;
+
+    if((ptsperbin - (float)ratioint) != 0.0)
+    {
+	ajErr("number of data points needs to be a multiple of bins");
+
+	return;
+    }
+    /* end Sanity check */
+    
+    /* Add spacing either side */
+    percent5 = (thys->xmax - thys->xmin)*(float)0.025;
+    
+    
+    /* calculate max and min for each set */
+    if(thys->numofsets != 1)
+    {	
+	/* if NOT side by side max and min as the sets added together */
+	if(thys->displaytype == HIST_SIDEBYSIDE)
+	{
+	    /* find the max value */
+	    max = INT_MIN;
+	    min = 0;
+
+	    for(j=0; j < thys->numofsets; j++)
+	    {
+		data = thys->hists[j]->data;
+
+		for(i=0;i<thys->numofdatapoints;i++)
+		{
+		    if(data[i] > max)
+			max = data[i];
+
+		    if(data[i] < min)
+			min = data[i];
+		}
+	    }
+	}
+	else if(thys->displaytype == HIST_ONTOP)
+	{
+	    totals = AJALLOC(thys->numofdatapoints*(sizeof(PLFLT)));
+
+	    /* set all memory to 0.0 */
+	    for(i=0;i<thys->numofdatapoints;i++)
+	    {
+		totals[i] = 0.0;
+	    }
+
+	    min = 0;
+	    max = 0;
+
+	    for(j=0; j < thys->numofsets; j++)
+	    {
+		data = thys->hists[j]->data;
+		for(i=0;i<thys->numofdatapoints;i++)
+		{
+		    totals[i] += data[i];
+		    if(totals[i] > max)
+			max = totals[i];
+
+		    if(totals[i] < min)
+			min = totals[i];
+		    /*	  ajDebug("%d %d\t%f",j,i,totals[i]);*/
+		}
+	    }
+	}
+	else if(thys->displaytype == HIST_SEPARATE)
+	{
+	    totals = AJALLOC(thys->numofsets*(sizeof(PLFLT)));
+	    totals2 = AJALLOC(thys->numofsets*(sizeof(PLFLT)));
+
+	    for(j=0; j < thys->numofsets; j++)
+	    {
+		data = thys->hists[j]->data;
+		totals[j] = 0;
+		totals2[j] = 0;
+
+		for(i=0;i<thys->numofdatapoints;i++)
+		{
+		    if(totals[j] < data[i])
+			totals[j] = data[i];
+
+		    if(totals2[j] > data[i])
+			totals2[j] = data[i];
+		}
+	    }
+	}
+    }
+    else
+    {
+	data = thys->hists[0]->data;
+	max = data[0];
+	min = 0;
+
+	for(i=1; i < thys->numofdatapoints; i++)
+	{
+	    if(data[i] > max)
+		max = data[i];
+
+	    if(data[i] < min)
+		min = data[i];
+	}
+
+	if(thys->displaytype == HIST_ONTOP /*!thys->sidebyside*/)
+	{
+	    totals = AJALLOC(thys->numofdatapoints*(sizeof(PLFLT)));
+
+	    /* set all memory to 0.0 */
+	    for(i=0; i < thys->numofdatapoints; i++)
+		totals[i] = 0.0;
+	}
+	else if(thys->displaytype == HIST_SEPARATE)
+	{
+	    totals = AJALLOC((sizeof(PLFLT)));
+	    totals[0]= max;
+	    totals2 = AJALLOC((sizeof(PLFLT)));
+	    totals2[0]= min;
+	}
+    }
+    
+    bin_range = (thys->xmax - thys->xmin)/(float)thys->bins;
+    
+    if(thys->displaytype != HIST_SEPARATE)
+    {
+	if(max <= 0.01)
+	{
+	    if(max < 0.0)
+		max = 0.0;
+	    else
+		max = 1.0;
+	}
+
+	ajGraphOpenPlotset(thys->graph, 1);
+	ajGraphicsPlenv(thys->xmin-percent5, thys->xmax+percent5, min,
+		     max*((float)1.025), aj_hist_mark);
+	ajGraphicsSetLabelsS(thys->xaxis ,
+                             thys->yaxisleft ,
+                             thys->title,
+                             thys->subtitle);
+
+	ajGraphicsSetRlabelS(thys->yaxisright);
+    }
+    else 
+	ajGraphOpenPlotset(thys->graph, thys->numofsets);
+    
+    if(thys->displaytype == HIST_SIDEBYSIDE)
+    {
+	bar_width = bin_range/thys->numofsets;
+
+	for(i=0; i < thys->numofsets; i++)
+	{
+	    offset = i*bar_width;
+	    start = thys->xmin;
+	    num = 0;
+	    tot=0.0;
+	    data = thys->hists[i]->data;
+
+	    for(j=0; j < thys->numofdatapoints; j++)
+	    {
+		tot += data[j];
+		num++;
+
+		if(num >= ptsperbin)
+		{
+		    tot = tot / (float)num;
+
+		    if(thys->BaW)
+			old = ajGraphicsSetFillpat(thys->hists[i]->pattern);
+		    else
+			old = ajGraphicsSetFgcolour(thys->hists[i]->colour);
+		    ajGraphicsDrawposRectFill(start+offset,0.0,
+                                              start+offset+bar_width,tot);
+
+		    if(thys->BaW)
+			ajGraphicsSetFillpat(old);
+		    else
+			ajGraphicsSetFgcolour(old);
+
+		    ajGraphicsDrawposRect(start+offset,0.0,
+                                          start+offset+bar_width,tot);
+		    num = 0;
+		    tot = 0;
+		    start +=bin_range;
+		}		
+	    }
+	}
+    }
+    else if(thys->displaytype == HIST_SEPARATE)
+    {
+	bar_width = bin_range;
+
+	for(i=0; i < thys->numofsets; i++)
+	{	    
+	    if(totals[i] <= 0.01)
+	    {			       /* apparently the ymin value */
+		if(totals[i] < 0.0)
+		    totals[i] = 0.0;
+		else
+		    totals[i] = 1.0;
+	    }
+
+	    ajGraphicsPlenv(thys->xmin - percent5, thys->xmax + percent5,
+                            totals2[i]*((float)1.025), totals[i]*((float)1.025),
+                            aj_hist_mark);
+	    offset = /*bar_width*/0.0;
+	    start = thys->xmin;
+	    num = 0;
+	    tot=0.0;
+	    data = thys->hists[i]->data;
+	    ajGraphicsSetLabelsS(thys->hists[i]->xaxis,
+                                 thys->hists[i]->yaxis,
+                                 thys->hists[i]->title,
+                                 thys->hists[i]->subtitle);
+	    
+	    for(j=0; j < thys->numofdatapoints; j++)
+	    {
+		tot += data[j];
+		num++;
+
+		if(num >= ptsperbin)
+		{
+		    tot = tot / (float)num;
+
+		    if(thys->BaW)
+			old = ajGraphicsSetFillpat(thys->hists[i]->pattern);
+		    else
+			old = ajGraphicsSetFgcolour(thys->hists[i]->colour);
+
+		    ajGraphicsDrawposRectFill(start+offset,0.0,
+                                              start+offset+bar_width,tot);
+
+		    if(thys->BaW)
+			ajGraphicsSetFillpat(old);
+		    else
+			ajGraphicsSetFgcolour(old);
+
+		    ajGraphicsDrawposRect(start+offset,0.0,
+                                          start+offset+bar_width,tot);
+		    num = 0;
+		    tot = 0;
+		    start +=bin_range;
+		}		
+	    }
+	}
+    }
+    else if(thys->displaytype == HIST_ONTOP)
+    {
+	for(i=0; i < thys->numofdatapoints; i++)
+	    totals[i] = 0.0;
+
+	for(i=0; i < thys->numofsets; i++)
+	{
+	    data = thys->hists[i]->data;
+	    start = thys->xmin;
+	    num = 0;
+	    tot=0.0;
+
+	    for(j=0; j < thys->numofdatapoints; j++)
+	    {
+		tot += data[j];
+		num++;
+
+		if(num >= ptsperbin)
+		{
+		    tot = tot / (float)num;
+
+		    if(thys->BaW)
+			old = ajGraphicsSetFillpat(thys->hists[i]->pattern);
+		    else
+			old = ajGraphicsSetFgcolour(thys->hists[i]->colour);
+
+		    ajGraphicsDrawposRectFill(start,totals[j],
+                                              start+bin_range,tot+totals[j]);
+		    if(thys->BaW)
+			ajGraphicsSetFillpat(old);
+		    else
+			ajGraphicsSetFgcolour(old);
+
+		    ajGraphicsDrawposRect(start,totals[j],
+                                          start+bin_range,tot+totals[j]);
+		    totals[j] += tot;
+		    tot = 0;
+		    /*	  ajDebug("num = %d",num);*/
+		    num = 0;
+		    start +=bin_range;
+		}
+	    }
+	}
+    }
+
+    AJFREE(totals);
+    AJFREE(totals2);
 
     return;
 }
@@ -575,211 +667,88 @@ void ajHistSetMultiTitle(AjPHist hist, ajint indexnum, const AjPStr title)
 
 
 
-/* @func ajHistSetMultiTitleC *************************************************
+/* @section modifiers **********************************************************
 **
-** Store title for the index'th set.
+** Controlling the internals
 **
-** @param [u] hist [AjPHist]   Histogram to have ptr set.
-** @param [r]  indexnum [ajint]      Index for the set number.
-** @param [r]  title  [const char *]  Title.
+** @fdata [AjPHist]
+** @fcategory modify
+**
+** @nam3rule Set Set histogram internals
+** @nam3rule Setmulti Set multiple graph member
+** @nam4rule Title Histogram title
+** @nam4rule Rlabel Right axis label
+** @nam4rule Xlabel X-axis label
+** @nam4rule Ylabel Y-axis label
+** @nam4rule Colour Set colour for a block
+** @nam4rule Mono Set to plot in black and white with patterns
+** @nam4rule Pattern Set pattern for a block in a black and white histogram
+** @suffix C Character data
+** @suffix S String data
+**
+** @argrule * thys [AjPHist]  Histogram object
+** @argrule Setmulti indexnum [ajuint] Index for the set number
+** @argrule Colour colour [ajint] Colour for bar set.
+** @argrule Mono set [AjBool] Set to use patterns or colour for filling
+** @argrule Pattern style [ajint] Line style number for bar set.
+** @argrule C txt [const char*]  Text value
+** @argrule S str [const AjPStr]  Text value
+**
+** @valrule * [void]
+**
+******************************************************************************/
+
+/* @func ajHistSetMono ********************************************************
+**
+** Set patterns instead of colours for printing to B/W printers etc.
+**
+** @param [u] thys [AjPHist] Histogram to have ptr set.
+** @param [r] set [AjBool]    Set to use patterns or colour for filling,
+**                            false to reset to colour.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajHistSetMultiTitleC(AjPHist hist, ajint indexnum, const char *title)
+void ajHistSetMono(AjPHist thys, AjBool set)
 {
-    if(indexnum >= hist->numofdatapoints || indexnum < 0)
-    {
-	ajErr("Histograms can only be allocated from 0 to %d. NOT %d",
-	      hist->numofdatapoints-1,indexnum);
+    thys->BaW = set;
 
-	return;
-    }
+    return;
+}
 
-    ajStrAssignC(&hist->hists[indexnum]->title,title);
+/* @obsolete ajHistSetBlackandWhite
+** @rename ajHistSetMono
+*/
+__deprecated void ajHistSetBlackandWhite(AjPHist thys, AjBool set)
+{
+    ajHistSetMono(thys, set);
+}
+
+
+/* @func ajHistSetRlabelC *****************************************************
+**
+** Store Y Axis Right Label for the histogram
+**
+** @param [u] thys [AjPHist] histogram to set string in.
+** @param [r] txt [const char*] text to be copied.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajHistSetRlabelC(AjPHist thys, const char* txt)
+{
+    ajStrAssignC(&thys->yaxisright,txt);
 
     return;
 }
 
 
-
-
-/* @func ajHistSetMultiXTitle *************************************************
-**
-** Set ptr for X axis title for index'th set..
-**
-** @param [u] hist [AjPHist]   Histogram to have ptr set.
-** @param [r] indexnum [ajint]       Index for the set number.
-** @param [r] title [const AjPStr]    x Title.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajHistSetMultiXTitle(AjPHist hist, ajint indexnum, const AjPStr title)
+/* @obsolete ajHistSetYAxisRightC
+** @rename ajHistSetYlabelC
+*/
+__deprecated void ajHistSetYAxisRightC(AjPHist thys, const char* strng)
 {
-    if(indexnum >= hist->numofdatapoints || indexnum < 0)
-    {
-	ajErr("Histograms can only be allocated from 0 to %d. NOT %d",
-	      hist->numofdatapoints-1,indexnum);
-	return;
-    }
-
-    ajStrAssignS(&hist->hists[indexnum]->xaxis, title);
-
-    return;
-}
-
-
-
-
-/* @func ajHistSetMultiXTitleC ************************************************
-**
-** Store X axis title for the index'th set.
-**
-** @param [u] hist [AjPHist]   Histogram to have ptr set.
-** @param [r] indexnum [ajint]       Index for the set number.
-** @param [r] title [const char *]    x Title.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajHistSetMultiXTitleC(AjPHist hist, ajint indexnum, const char *title)
-{
-    if(indexnum >= hist->numofdatapoints || indexnum < 0)
-    {
-	ajErr("Histograms can only be allocated from 0 to %d. NOT %d",
-	      hist->numofdatapoints-1,indexnum);
-
-	return;
-    }
-
-    ajStrAssignC(&hist->hists[indexnum]->xaxis,title);
-
-    return;
-}
-
-
-
-
-/* @func ajHistSetMultiYTitle *************************************************
-**
-** Set ptr for Y axis title for index'th set..
-**
-** @param [u] hist [AjPHist]   Histogram to have ptr set.
-** @param [r] indexnum [ajint]       Index for the set number.
-** @param [r] title [const AjPStr]    Y Title.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajHistSetMultiYTitle(AjPHist hist, ajint indexnum, const AjPStr title)
-{
-    if(indexnum >= hist->numofdatapoints || indexnum < 0)
-    {
-	ajErr("Histograms can only be allocated from 0 to %d. NOT %d",
-	      hist->numofdatapoints-1,indexnum);
-	return;
-    }
-
-    ajStrAssignS(&hist->hists[indexnum]->yaxis, title);
-
-    return;
-}
-
-
-
-
-/* @func ajHistSetMultiYTitleC ************************************************
-**
-** Store Y axis title for the index'th set.
-**
-** @param [u] hist [AjPHist]   Histogram to have ptr set.
-** @param [r] indexnum [ajint]       Index for the set number.
-** @param [r] title [const char *]    Y Title.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajHistSetMultiYTitleC(AjPHist hist, ajint indexnum, const char *title)
-{
-    if(indexnum >= hist->numofdatapoints || indexnum < 0)
-    {
-	ajErr("Histograms can only be allocated from 0 to %d. NOT %d",
-	      hist->numofdatapoints-1,indexnum);
-	return;
-    }
-
-    ajStrAssignC(&hist->hists[indexnum]->yaxis,title);
-
-    return;
-}
-
-
-
-
-/* @func ajHistSetPtrToData ***************************************************
-**
-** Set ptr to data for a set of data points for index'th set..
-**
-** @param [u] hist [AjPHist] Histogram to have ptr set.
-** @param [r] indexnum [ajint]     Index for the set number.
-** @param [u] data  [PLFLT*]  Ptr to the data. Will now be used by the AjPHist
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajHistSetPtrToData(AjPHist hist, ajint indexnum, PLFLT *data)
-{
-    if(indexnum >= hist->numofdatapoints || indexnum < 0)
-    {
-	ajErr("Histograms can only be allocated from 0 to %d. NOT %d",
-	      hist->numofdatapoints-1,indexnum);
-
-	return;
-    }
-
-    if(!hist->hists[indexnum]->data)
-	hist->numofsets++;
-
-    hist->hists[indexnum]->data = data;
-
-    return;
-}
-
-
-
-
-/* @func ajHistCopyData *******************************************************
-**
-** Copy data from data ptr to histogram for index'th set.
-**
-** @param [u] hist [AjPHist] Histogram to have ptr set.
-** @param [r] indexnum [ajint]     Index for the set number.
-** @param [r] data  [const PLFLT*]  Ptr to the data.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajHistCopyData(AjPHist hist, ajint indexnum, const PLFLT *data)
-{
-    ajint i;
-
-    if(indexnum >= hist->numofdatapoints || indexnum < 0)
-    {
-	ajErr("Histograms can only be allocated from 0 to %d. NOT %d",
-	      hist->numofdatapoints-1,indexnum);
-
-	return;
-    }
-
-    hist->hists[indexnum]->data = AJALLOC(hist->numofdatapoints*sizeof(PLFLT));
-
-    for(i=0;i<hist->numofdatapoints;i++)
-	hist->hists[indexnum]->data[i] = data[i];
-
-    hist->hists[indexnum]->deletedata = AJTRUE;
-    hist->numofsets++;
-
+    ajHistSetRlabelC(thys, strng);
     return;
 }
 
@@ -790,15 +759,15 @@ void ajHistCopyData(AjPHist hist, ajint indexnum, const PLFLT *data)
 **
 ** Copy Title for the histogram.
 **
-** @param [u] hist [AjPHist] histogram to set string in.
-** @param [r] strng [const char*] text to be copied.
+** @param [u] thys [AjPHist] histogram to set string in.
+** @param [r] txt [const char*] text to be copied.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajHistSetTitleC(AjPHist hist, const char* strng)
+void ajHistSetTitleC(AjPHist thys, const char* txt)
 {
-    ajStrAssignC(&hist->title,strng);
+    ajStrAssignC(&thys->title,txt);
 
     return;
 }
@@ -806,137 +775,475 @@ void ajHistSetTitleC(AjPHist hist, const char* strng)
 
 
 
-/* @func ajHistSetXAxisC ******************************************************
+/* @func ajHistSetXlabelC *****************************************************
 **
 ** Store X axis label for the histogram
 **
-** @param [u] hist [AjPHist] histogram to set string in.
-** @param [r] strng [const char*] text to be copied.
+** @param [u] thys [AjPHist] histogram to set string in.
+** @param [r] txt [const char*] text to be copied.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajHistSetXAxisC(AjPHist hist, const char* strng)
+void ajHistSetXlabelC(AjPHist thys, const char* txt)
 {
-    ajStrAssignC(&hist->xaxis,strng);
+    ajStrAssignC(&thys->xaxis,txt);
 
+    return;
+}
+
+/* @obsolete ajHistSetXAxisC
+** @rename ajHistSetXlabelC
+*/
+__deprecated void ajHistSetXAxisC(AjPHist thys, const char* strng)
+{
+    ajHistSetXlabelC(thys, strng);
     return;
 }
 
 
 
-
-/* @func ajHistSetYAxisLeftC **************************************************
+/* @func ajHistSetYlabelC *****************************************************
 **
 ** Store Y Axis Left Label for the histogram
 **
-** @param [u] hist [AjPHist] histogram to set string in.
-** @param [r] strng [const char*] text to be copied.
+** @param [u] thys [AjPHist] histogram to set string in.
+** @param [r] txt [const char*] text to be copied.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajHistSetYAxisLeftC(AjPHist hist, const char* strng)
+void ajHistSetYlabelC(AjPHist thys, const char* txt)
 {
-    ajStrAssignC(&hist->yaxisleft,strng);
+    ajStrAssignC(&thys->yaxisleft,txt);
 
     return;
 }
 
 
-
-
-/* @func ajHistSetYAxisRightC**************************************************
-**
-** Store Y Axis Right Label for the histogram
-**
-** @param [u] hist [AjPHist] histogram to set string in.
-** @param [r] strng [const char*] text to be copied.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajHistSetYAxisRightC(AjPHist hist, const char* strng)
+/* @obsolete ajHistSetYAxisLeftC
+** @rename ajHistSetYlabelC
+*/
+__deprecated void ajHistSetYAxisLeftC(AjPHist thys, const char* strng)
 {
-    ajStrAssignC(&hist->yaxisright,strng);
-
+    ajHistSetYlabelC(thys, strng);
     return;
 }
 
 
 
-
-/* @func  ajHistSetColour *****************************************************
+/* @func ajHistSetmultiColour *************************************************
 **
 ** Set colour for bars in histogram for index'th set.
 **
-** @param [u] hist [AjPHist] Histogram to have ptr set.
-** @param [r] indexnum [ajint]     Index for the set number.
+** @param [u] thys [AjPHist] Histogram to have ptr set.
+** @param [r] indexnum [ajuint]     Index for the set number.
 ** @param [r] colour [ajint]    Colour for bar set.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajHistSetColour(AjPHist hist, ajint indexnum, ajint colour)
+void ajHistSetmultiColour(AjPHist thys, ajuint indexnum, ajint colour)
 {
-    if(indexnum >= hist->numofdatapoints || indexnum < 0)
+    if(indexnum >= thys->numofdatapoints)
     {
-	ajErr("Histograms can only be allocated from 0 to %d. NOT %d",
-	      hist->numofdatapoints-1,indexnum);
+	ajErr("Histograms can only be allocated from 0 to %d. NOT %u",
+	      thys->numofdatapoints-1,indexnum);
 
 	return;
     }
 
-    hist->hists[indexnum]->colour = colour;
+    thys->hists[indexnum]->colour = colour;
 
     return;
 }
 
 
+/* @obsolete ajHistSetColour
+** @rename ajHistSetmltiColour
+*/
+__deprecated void ajHistSetColour(AjPHist thys, ajuint indexnum, ajint colour)
+{
+    ajHistSetmultiColour(thys, indexnum, colour);
+    return;
+}
 
 
-/* @func  ajHistSetPattern ****************************************************
+/* @func ajHistSetmultiPattern ************************************************
 **
-** Set colour for bars in histogram for index'th set.
+** Set colour for bars in histogram for one set.
 **
-** @param [u] hist [AjPHist] Histogram to have ptr set.
-** @param [r] indexnum [ajint]     Index for the set number.
+** @param [u] thys [AjPHist] Histogram to have ptr set.
+** @param [r] indexnum [ajuint]     Index for the set number.
 ** @param [r] style [ajint]    Line style number for bar set.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajHistSetPattern(AjPHist hist, ajint indexnum, ajint style)
+void ajHistSetmultiPattern(AjPHist thys, ajuint indexnum, ajint style)
 {
-    if(indexnum >= hist->numofdatapoints || indexnum < 0)
+    if(indexnum >= thys->numofdatapoints)
     {
-	ajErr("Histograms can only be allocated from 0 to %d. NOT %d",
-	      hist->numofdatapoints-1,indexnum);
+	ajErr("Histograms can only be allocated from 0 to %d. NOT %u",
+	      thys->numofdatapoints-1,indexnum);
 
 	return;
     }
 
-    hist->hists[indexnum]->pattern = style;
+    thys->hists[indexnum]->pattern = style;
 
+    return;
+}
+
+
+/* @obsolete ajHistSetPattern
+** @rename ajHistSetmultiPattern
+*/
+__deprecated void ajHistSetPattern(AjPHist thys, ajuint indexnum, ajint style)
+{
+    ajHistSetmultiPattern(thys, indexnum, style);
     return;
 }
 
 
 
 
-/* @func  ajHistSetBlackandWhite **********************************************
+/* @func ajHistSetmultiTitleC *************************************************
 **
-** Set patterns instead of colours for printing to B/W printers etc.
+** Store title for the index'th set.
 **
-** @param [u] hist [AjPHist] Histogram to have ptr set.
-** @param [r] set [AjBool]    Set to use patterns or colour for filling.
+** @param [u] thys [AjPHist]   Histogram to have ptr set.
+** @param [r]  indexnum [ajuint]      Index for the set number.
+** @param [r]  txt  [const char *]  Title.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajHistSetBlackandWhite(AjPHist hist, AjBool set)
+void ajHistSetmultiTitleC(AjPHist thys, ajuint indexnum, const char *txt)
 {
-    hist->BaW = set;
+    if(indexnum >= thys->numofdatapoints)
+    {
+	ajErr("Histograms can only be allocated from 0 to %d. NOT %u",
+	      thys->numofdatapoints-1,indexnum);
+
+	return;
+    }
+
+    ajStrAssignC(&thys->hists[indexnum]->title,txt);
 
     return;
 }
+
+
+
+
+/* @obsolete ajHistSetMultiTitleC
+** @rename ajHistSetmultiTitleC
+*/
+__deprecated void ajHistSetMultiTitleC(AjPHist hist, ajint indexnum,
+                                      const char* title)
+{
+    ajHistSetmultiTitleC(hist, indexnum, title);
+    return;
+}
+
+
+/* @func ajHistSetmultiTitleS **************************************************
+**
+** Set ptr for title for index'th set..
+**
+** @param [u] thys [AjPHist]   Histogram to have ptr set.
+** @param [r] indexnum [ajuint]       Index for the set number.
+** @param [r] str [const AjPStr]    Title.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajHistSetmultiTitleS(AjPHist thys, ajuint indexnum, const AjPStr str)
+{
+    if(indexnum >= thys->numofdatapoints)
+    {
+	ajErr("Histograms can only be allocated from 0 to %d. NOT %u",
+	      thys->numofdatapoints-1,indexnum);
+	return;
+    }
+
+    ajStrAssignS(&thys->hists[indexnum]->title, str);
+
+    return;
+}
+
+
+/* @obsolete ajHistSetMultiTitle
+** @rename ajHistSetmultiTitleS
+*/
+__deprecated void ajHistSetMultiTitle(AjPHist hist, ajint indexnum,
+                                      const AjPStr title)
+{
+    ajHistSetmultiTitleS(hist, indexnum, title);
+    return;
+}
+
+
+/* @func ajHistSetmultiXlabelC ************************************************
+**
+** Store X axis title for the index'th set.
+**
+** @param [u] thys [AjPHist]   Histogram to have ptr set.
+** @param [r] indexnum [ajuint]       Index for the set number.
+** @param [r] txt [const char *]    x Title.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajHistSetmultiXlabelC(AjPHist thys, ajuint indexnum, const char *txt)
+{
+    if(indexnum >= thys->numofdatapoints)
+    {
+	ajErr("Histograms can only be allocated from 0 to %d. NOT %u",
+	      thys->numofdatapoints-1,indexnum);
+
+	return;
+    }
+
+    ajStrAssignC(&thys->hists[indexnum]->xaxis,txt);
+
+    return;
+}
+
+
+/* @obsolete ajHistSetMultiXTitleC
+** @rename ajHistSetmultiXlabelC
+*/
+__deprecated void ajHistSetMultiXTitleC(AjPHist hist, ajint indexnum,
+                                      const char* title)
+{
+    ajHistSetmultiXlabelC(hist, indexnum, title);
+    return;
+}
+
+
+/* @func ajHistSetmultiXlabelS *************************************************
+**
+** Set ptr for X axis title for index'th set..
+**
+** @param [u] thys [AjPHist]   Histogram to have ptr set.
+** @param [r] indexnum [ajuint]       Index for the set number.
+** @param [r] str [const AjPStr]    x Title.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajHistSetmultiXlabelS(AjPHist thys, ajuint indexnum, const AjPStr str)
+{
+    if(indexnum >= thys->numofdatapoints)
+    {
+	ajErr("Histograms can only be allocated from 0 to %d. NOT %u",
+	      thys->numofdatapoints-1,indexnum);
+	return;
+    }
+
+    ajStrAssignS(&thys->hists[indexnum]->xaxis, str);
+
+    return;
+}
+
+
+/* @obsolete ajHistSetMultiXTitle
+** @rename ajHistSetmultiXlabelS
+*/
+__deprecated void ajHistSetMultiXTitle(AjPHist hist, ajint indexnum,
+                                      const AjPStr title)
+{
+    ajHistSetmultiXlabelS(hist, indexnum, title);
+    return;
+}
+
+
+/* @func ajHistSetmultiYlabelC ************************************************
+**
+** Store Y axis title for the index'th set.
+**
+** @param [u] thys [AjPHist]   Histogram to have ptr set.
+** @param [r] indexnum [ajuint]       Index for the set number.
+** @param [r] txt [const char *]    Y Title.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajHistSetmultiYlabelC(AjPHist thys, ajuint indexnum, const char *txt)
+{
+    if(indexnum >= thys->numofdatapoints)
+    {
+	ajErr("Histograms can only be allocated from 0 to %d. NOT %u",
+	      thys->numofdatapoints-1,indexnum);
+	return;
+    }
+
+    ajStrAssignC(&thys->hists[indexnum]->yaxis,txt);
+
+    return;
+}
+
+
+
+
+/* @obsolete ajHistSetMultiYTitleC
+** @rename ajHistSetmultiYlabelC
+*/
+__deprecated void ajHistSetMultiYTitleC(AjPHist hist, ajint indexnum,
+                                      const char* title)
+{
+    ajHistSetmultiYlabelC(hist, indexnum, title);
+    return;
+}
+
+
+/* @func ajHistSetmultiYlabelS *************************************************
+**
+** Set ptr for Y axis title for index'th set..
+**
+** @param [u] thys [AjPHist]   Histogram to have ptr set.
+** @param [r] indexnum [ajuint]       Index for the set number.
+** @param [r] str [const AjPStr]    Y Title.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajHistSetmultiYlabelS(AjPHist thys, ajuint indexnum, const AjPStr str)
+{
+    if(indexnum >= thys->numofdatapoints)
+    {
+	ajErr("Histograms can only be allocated from 0 to %d. NOT %u",
+	      thys->numofdatapoints-1,indexnum);
+	return;
+    }
+
+    ajStrAssignS(&thys->hists[indexnum]->yaxis, str);
+
+    return;
+}
+
+
+
+
+/* @obsolete ajHistSetMultiYTitle
+** @rename ajHistSetmultiYlabelS
+*/
+__deprecated void ajHistSetMultiYTitle(AjPHist hist, ajint indexnum,
+                                      const AjPStr title)
+{
+    ajHistSetmultiYlabelS(hist, indexnum, title);
+    return;
+}
+
+
+/* @section Histogram data management *****************************************
+**
+** Functions to manage the data values associated with a histogram object
+**
+** @fdata [AjPHist]
+** @fcategory modify
+**
+** @nam3rule Data
+** @nam4rule Add Add data values to be owned by the histogram object
+** @nam4rule Copy Copy data values to histogram object
+** @nam4rule Set Set internals of one plot
+**
+** @argrule * thys [AjPHist] Histogram object
+** @argrule Data indexnum [ajuint] number within multiple graph.
+** @argrule Add data [PLFLT*] graph to be added.
+** @argrule Copy srcdata [PLFLT const*] graph to be added.
+**
+** @valrule * [void]
+**
+******************************************************************************/
+
+/* @func ajHistDataAdd ********************************************************
+**
+** Set internal pointer to data for a set of data points for one set.
+**
+** @param [u] thys [AjPHist] Histogram to have ptr set.
+** @param [r] indexnum [ajuint] Index for the set number.
+** @param [u] data  [PLFLT*]  Data values to be owned by the histogram object
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajHistDataAdd(AjPHist thys, ajuint indexnum, PLFLT *data)
+{
+    if(indexnum >= thys->numofdatapoints)
+    {
+	ajErr("Histograms can only be allocated from 0 to %d. NOT %u",
+	      thys->numofdatapoints-1,indexnum);
+
+	return;
+    }
+
+    if(!thys->hists[indexnum]->data)
+	thys->numofsets++;
+
+    thys->hists[indexnum]->data = data;
+
+    return;
+}
+
+
+/* @obsolete ajHistSetPtrToData
+** @rename ajHistDataAdd
+*/
+__deprecated void ajHistSetPtrToData(AjPHist thys, ajint indexnum, PLFLT *data)
+{
+    ajHistDataAdd(thys, indexnum, data);
+    return;
+}
+
+
+/* @func ajHistDataCopy *******************************************************
+**
+** Copy data from data array to histogram for one set.
+**
+** @param [u] thys [AjPHist] Histogram to have ptr set.
+** @param [r] indexnum [ajuint] Index for the set number.
+** @param [r] srcdata  [PLFLT const*]  Data to be copied
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajHistDataCopy(AjPHist thys, ajuint indexnum, PLFLT const *srcdata)
+{
+    ajuint i;
+
+    if(indexnum >= thys->numofdatapoints)
+    {
+	ajErr("Histograms can only be allocated from 0 to %d. NOT %u",
+	      thys->numofdatapoints-1,indexnum);
+
+	return;
+    }
+
+    thys->hists[indexnum]->data = AJALLOC(thys->numofdatapoints*sizeof(PLFLT));
+
+    for(i=0; i < thys->numofdatapoints; i++)
+	thys->hists[indexnum]->data[i] = srcdata[i];
+
+    thys->hists[indexnum]->deletedata = AJTRUE;
+    thys->numofsets++;
+
+    return;
+}
+
+
+/* @obsolete ajHistCopyData
+** @rename ajHistDataCopy
+*/
+__deprecated void ajHistCopyData(AjPHist thys, ajuint indexnum,
+                                 const PLFLT *data)
+{
+    ajHistDataCopy(thys, indexnum, data);
+    return;
+}
+
+
+
+
