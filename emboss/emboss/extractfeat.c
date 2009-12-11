@@ -824,7 +824,6 @@ static AjBool extractfeat_MatchFeature(const AjPFeature gf,
     AjPStrTok tokens = NULL;
     AjPStr key = NULL;
     AjBool val = ajFalse;
-    AjPStr flagstr = NULL;
 
     /*
     ** is this a child of a join() ?
@@ -851,9 +850,6 @@ static AjBool extractfeat_MatchFeature(const AjPFeature gf,
     */
 
     ajDebug("extractfeat_MatchFeature\n");
-    ajFeatGetFlags(gf, &flagstr);
-    /*ajUser("extractfeat_MatchFeature '%S' %d..%d '%c' %x '%S'",
-      gf->Type, gf->Start, gf->End, gf->Strand, gf->Flags, flagstr);*/
 
     ajDebug("embMiscMatchPatternDelim(ajFeatGetSource(gf), source) %B\n",
 	    embMiscMatchPatternDelimC(ajFeatGetSource(gf), source, ",;|"));
@@ -898,8 +894,6 @@ static AjBool extractfeat_MatchFeature(const AjPFeature gf,
 
     ajDebug("All tests passed, return ajTrue\n");
     /*ajUser("All tests passed, return ajTrue");*/
-
-    ajStrDel(&flagstr);
 
     return ajTrue;
 }
