@@ -180,14 +180,14 @@ int main(int argc, char **argv)
 	    this = ajGraphdataNewI(count);
 	    ajGraphdataSetTypeC(this,"Multi 2D plot");
 
-	    ajGraphxySetOverLap(graph,ajFalse);
+	    ajGraphxySetflagOverlay(graph,ajFalse);
 	    for(i=0;i<count;++i)
 	    {
 		this->x[i]=xarr[base][i];
 		this->y[i]=farr[base][i];
 	    }
 	    ajGraphicsCalcRange(this->y,count,&amin,&amax);
-	    ajGraphdataSetMaxima(this,(float)beg,(float)end,amin,amax);
+	    ajGraphdataSetTruescale(this,(float)beg,(float)end,amin,amax);
 
 	    ajGraphDataAdd(graph,this);
 	    if(show)
@@ -203,7 +203,7 @@ int main(int argc, char **argv)
 
 		for(i=0;i<count;++i)
 		    if(unc[base][i])
-			ajGraphdataAddLine(this,xarr[base][i],1.,
+			ajGraphdataAddposLine(this,xarr[base][i],1.,
 					      xarr[base][i],(float)1.005,3);
 	    }
 
@@ -211,7 +211,7 @@ int main(int argc, char **argv)
 	    ajGraphdataSetYlabelC(this,"Gribskov value");
 	    ajGraphdataSetXlabelC(this,"Sequence position");
 	    ajGraphdataSetSubtitleC(this,frames[base]);
-	    ajGraphdataAddLine(this,(float)beg,1.0,(float)end,
+	    ajGraphdataAddposLine(this,(float)beg,1.0,(float)end,
 				  1.0,4);
 	}
 	if(outf)
@@ -227,7 +227,7 @@ int main(int argc, char **argv)
     if(plot)
     {
 	ajGraphShowTitle(graph, ajTrue);
-	ajGraphxySetMaxMin(graph,(float)beg,(float)end,miny,maxy);
+	ajGraphxySetMinmax(graph,(float)beg,(float)end,miny,maxy);
 	ajGraphxySetYstartF(graph,0.0);
 	ajGraphxySetYendF(graph,2.0);
 	/* ajGraphSetTitleC(graph,"Gribskov Codon Plot"); */

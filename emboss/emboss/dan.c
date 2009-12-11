@@ -196,7 +196,7 @@ int main(int argc, char **argv)
     }
 
     /*if(mult)*/
-	ajGraphCloseWin();
+	ajGraphicsClose();
 
     ajGraphxyDel(&mult);
     ajFileClose(&outf);
@@ -558,11 +558,11 @@ static void dan_plotit(const AjPSeq seq, const float *xa, const float *ta,
     ajGraphxySetYrangeII(graphs,(ajint)mintemp,100);
 
     ajGraphdataSetTypeC(tmGraph,"2D Plot");
-    ajGraphdataSetMaxMin(tmGraph,(float)ibegin,(float)iend,min,max);
-    ajGraphdataSetMaxima(tmGraph,(float)ibegin,(float)iend,min,max);
+    ajGraphdataSetMinmax(tmGraph,(float)ibegin,(float)iend,min,max);
+    ajGraphdataSetTruescale(tmGraph,(float)ibegin,(float)iend,min,max);
 
 
-    ajGraphdataSetXY(tmGraph,xa,ta);
+    ajGraphdataAddXY(tmGraph,xa,ta);
     ajGraphDataAdd(graphs,tmGraph);
 
     ajGraphxyDisplay(graphs,AJTRUE);

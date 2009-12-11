@@ -144,7 +144,7 @@ int main(int argc, char **argv)
     ajGraphicsDrawposTextAtstart((float)1.1,(float)0.25,line);
 
 
-    ajGraphCloseWin();
+    ajGraphicsClose();
     ajSeqDel(&sequence);
     ajGraphxyDel(&graph);
     ajStrDel(&str);

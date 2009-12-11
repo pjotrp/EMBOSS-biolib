@@ -508,7 +508,7 @@ int main(int argc, char **argv)
     ajStrDel(&BlockType);
     ajStrDel(&InterSymbol);
 
-    ajGraphCloseWin();
+    ajGraphicsClose();
     ajGraphxyDel(&graph);
 
     for(i=0;i<NumGroups;i++)

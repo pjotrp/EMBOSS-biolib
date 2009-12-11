@@ -220,11 +220,11 @@ int main(int argc, char **argv)
 
 	ajGraphicsDrawposTextAtmid(flen1*(float)0.5,
                                    (float)0.0-(xmargin/(float)2.0),
-		       ajGraphGetXTitleC(graph));
+		       ajGraphGetXlabelC(graph));
 	ajGraphicsDrawposTextAtlineJustify((float)0.0-(xmargin*(float)0.75),
                                            flen2*(float)0.5,
 			(float)0.0-(xmargin*(float)0.75),flen1,
-			ajGraphGetYTitleC(graph),0.5);
+			ajGraphGetYlabelC(graph),0.5);
 
 	ajGraphicsSetCharscale(0.5);
     }
@@ -401,7 +401,7 @@ int main(int argc, char **argv)
     
     
     if(!stretch)
-	ajGraphClose();
+	ajGraphicsClose();
     else			/* the xy graph for -stretch */
     {
 	tit = ajStrNew();
@@ -418,10 +418,10 @@ int main(int argc, char **argv)
 	ajGraphSetYlabelC(xygraph,ajSeqGetNameC(seq2));
 
 	ajGraphdataSetTypeC(gdata,"2D Plot Float");
-	ajGraphdataSetTitle(gdata,subt);
-	ajGraphdataSetMaxMin(gdata,(float)b1,(float)e1,(float)b2,
+	ajGraphdataSetTitleS(gdata,subt);
+	ajGraphdataSetMinmax(gdata,(float)b1,(float)e1,(float)b2,
 			       (float)e2);
-	ajGraphdataSetMaxima(gdata,(float)b1,(float)e1,(float)b2,
+	ajGraphdataSetTruescale(gdata,(float)b1,(float)e1,(float)b2,
 			       (float)e2);
 	ajGraphxySetXstartF(xygraph,(float)b1);
 	ajGraphxySetXendF(xygraph,(float)e1);
@@ -447,12 +447,12 @@ int main(int argc, char **argv)
 	    ajListIterDel(&iter);
 	}
 
-	ajGraphdataSetXY(gdata,xa,ya);
+	ajGraphdataAddXY(gdata,xa,ya);
 	ajGraphDataReplace(xygraph,gdata);
 
 
 	ajGraphxyDisplay(xygraph,ajFalse);
-	ajGraphClose();
+	ajGraphicsClose();
 
 	ajStrDel(&tit);
     }

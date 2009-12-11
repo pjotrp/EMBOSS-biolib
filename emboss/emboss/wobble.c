@@ -119,7 +119,7 @@ int main(int argc, char **argv)
 
 	data = ajGraphdataNewI(count[i]);
 
-	ajGraphxySetOverLap(graph,ajFalse);
+	ajGraphxySetflagOverlay(graph,ajFalse);
 
 	for(j=0;j<count[i];++j)
 	{
@@ -134,22 +134,22 @@ int main(int argc, char **argv)
 	}
 
 	ajGraphicsCalcRange(data->y,count[i],&ymin,&ymax);
-	ajGraphdataSetMaxima(data,(float)beg,(float)end,ymin,ymax);
+	ajGraphdataSetTruescale(data,(float)beg,(float)end,ymin,ymax);
 
 	ajGraphdataSetTypeC(data,"2D Plot");
 	ajGraphDataAdd(graph,data);
 
 	ajGraphxyShowYtick(graph, ajTrue);
 
-	ajGraphdataSetYTitleC(data,ajStrGetPtr(gc));
-	ajGraphdataSetXTitleC(data,"Sequence");
+	ajGraphdataSetYlabelC(data,ajStrGetPtr(gc));
+	ajGraphdataSetXlabelC(data,"Sequence");
 	ajGraphdataSetTitleC(data,ftit[i]);
-	ajGraphdataAddLine(data,(float)beg,mean,(float)end,mean,4);
+	ajGraphdataAddposLine(data,(float)beg,mean,(float)end,mean,4);
     }
     
     
     ajGraphShowTitle(graph, ajTrue);
-    ajGraphxySetMaxMin(graph,(float)beg,(float)end,0.0,100.0);
+    ajGraphxySetMinmax(graph,(float)beg,(float)end,0.0,100.0);
     
     ajGraphxySetYstartF(graph,0.0);
     ajGraphxySetYendF(graph,100.0);

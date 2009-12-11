@@ -181,7 +181,7 @@ int main(int argc, char **argv)
 	}
     }
 
-    ajGraphCloseWin();
+    ajGraphicsClose();
     ajGraphxyDel(&graph);
 
     ajStrDel(&strand);

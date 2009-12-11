@@ -380,7 +380,7 @@ int main(int argc, char **argv)
 	    ptr++;
 	}
 
-	ajGraphCloseWin();
+	ajGraphicsClose();
     }
 
     AJFREE(iseq);

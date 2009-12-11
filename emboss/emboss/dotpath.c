@@ -151,7 +151,7 @@ int main(int argc, char **argv)
 	onefifth  = xmargin*(float)0.2;
 	ajGraphicsDrawposTextAtmid(flen1*(float)0.5,
                                    (float)0.0-(onefifth*(float)3.),
-                                   ajGraphGetYTitleC(graph));
+                                   ajGraphGetYlabelC(graph));
 
 	if(len2/len1 > 10 )
 	{
@@ -185,7 +185,7 @@ int main(int argc, char **argv)
                                            flen2*(float)0.5,
                                            (float)0.0-(onefifth*(float)4.),
                                            flen2,
-                                           ajGraphGetXTitleC(graph),
+                                           ajGraphGetXlabelC(graph),
                                            (float)0.5);
 
 	if(len1/len2 > 10 )
@@ -210,7 +210,7 @@ int main(int argc, char **argv)
 	    }
     }
 
-    ajGraphClose();
+    ajGraphicsClose();
 
     embWordFreeTable(&seq1MatchTable);
     if(matchlist)

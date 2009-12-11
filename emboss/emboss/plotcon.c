@@ -233,7 +233,7 @@ int main(int argc, char **argv)
 
 
     ajGraphicsCalcRange(gdata->y,(ajint)flen,&ymin,&ymax);
-    ajGraphdataSetMaxima(gdata,0,flen,ymin,ymax);
+    ajGraphdataSetTruescale(gdata,0,flen,ymin,ymax);
     
     ajGraphdataSetTypeC(gdata,"2D Plot");
     ajGraphDataAdd(graphs,gdata);
@@ -243,7 +243,7 @@ int main(int argc, char **argv)
     
     ajGraphxyDisplay(graphs,ajTrue);
     
-    ajGraphCloseWin();
+    ajGraphicsClose();
     ajGraphxyDel(&graphs);
 
     AJFREE(x);

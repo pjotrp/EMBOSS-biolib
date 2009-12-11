@@ -107,22 +107,22 @@ int main(int argc, char **argv)
 
 
 	ajGraphDataAdd(graph,data);
-	ajGraphxySetOverLap(graph,ajFalse);
+	ajGraphxySetflagOverlay(graph,ajFalse);
 	ajGraphxyShowYtick(graph, ajFalse);
-	ajGraphdataSetMaxima(data,(float)beg,(float)end,0.0,1.0);
+	ajGraphdataSetTruescale(data,(float)beg,(float)end,0.0,1.0);
 	ajGraphdataSetTypeC(data,"Multi 2D Plot Small");
-	ajGraphdataSetYTitleC(data,"Orf");
-	ajGraphdataSetXTitleC(data,"Sequence");
+	ajGraphdataSetYlabelC(data,"Orf");
+	ajGraphdataSetXlabelC(data,"Sequence");
 	ajGraphdataSetTitleC(data,ftit[i]);
 
 	for(j=0;j<ajIntGet(cnt,i);++j)
-	    ajGraphdataAddRect(data,y[i][j],0.0,
+	    ajGraphdataAddposRect(data,y[i][j],0.0,
 					      x[i][j],1.0,4,1);
     }
 
 
     ajGraphShowTitle(graph, ajTrue);
-    ajGraphxySetMaxMin(graph,(float)beg,(float)end,0.0,1.0);
+    ajGraphxySetMinmax(graph,(float)beg,(float)end,0.0,1.0);
 
     ajGraphxySetYstartF(graph,0.0);
     ajGraphxySetYendF(graph,2.0);

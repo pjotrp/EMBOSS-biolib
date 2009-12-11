@@ -187,9 +187,9 @@ int main(int argc, char **argv)
 
     ajGraphicsCalcRange(results->Array,isize,&amin,&amax);
 
-    ajGraphdataSetMaxima(graphdata,(float)ipos,(float)(ipos+(ishift*isize)),
+    ajGraphdataSetTruescale(graphdata,(float)ipos,(float)(ipos+(ishift*isize)),
 			   amin,amax);
-    ajGraphdataSetMaxMin(graphdata,(float)ipos,(float)(ipos+(ishift*isize)),
+    ajGraphdataSetMinmax(graphdata,(float)ipos,(float)(ipos+(ishift*isize)),
 			   amin,amax);
     ajGraphdataSetTypeC(graphdata,"2D Plot");
     ajGraphdataSetTitleC(graphdata,"");

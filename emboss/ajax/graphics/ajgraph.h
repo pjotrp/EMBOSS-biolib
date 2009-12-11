@@ -231,9 +231,9 @@ AjBool        ajGraphSetDevicetype(AjPGraph thys, const AjPStr type);
 void          ajGraphSetMulti (AjPGraph thys, ajuint numsets);
 void          ajGraphicsSetFilename (const AjPGraph graph);
 void          ajGraphTrace (const AjPGraph thys);
-ajint         ajGraphDataAdd (AjPGraph thys, AjPGraphdata graphdata);
-ajint         ajGraphDataReplace (AjPGraph thys, AjPGraphdata graphdata);
-ajint         ajGraphDataReplaceI (AjPGraph thys, AjPGraphdata graphdata,
+AjBool        ajGraphDataAdd (AjPGraph thys, AjPGraphdata graphdata);
+AjBool        ajGraphDataReplace (AjPGraph thys, AjPGraphdata graphdata);
+AjBool        ajGraphDataReplaceI (AjPGraph thys, AjPGraphdata graphdata,
 				   ajuint num);
 void          ajGraphAppendTitleC(AjPGraph thys, const char* txt);
 void          ajGraphAppendTitleS(AjPGraph thys, const AjPStr str);
@@ -354,7 +354,8 @@ void          ajGraphdataSetLinetype (AjPGraphdata graphdata,
 					 ajint type);
 void          ajGraphdataTrace (const AjPGraphdata thys);
 
-void          ajGraphUnused(void);
+void          ajGraphicsExit(void);
+void          ajGraphicsUnused(void);
 
 /*
 ** End of prototype definitions

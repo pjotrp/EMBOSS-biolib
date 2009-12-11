@@ -1,4 +1,4 @@
-/* @source pepwindowall application
+/* @source pepwindow application
 **
 ** Displays protein hydropathy.
 ** @author Copyright (C) Ian Longden (il@sanger.ac.uk)
@@ -20,197 +20,124 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
-#include "emboss.h"
-
 #include <limits.h>
 #include <float.h>
-
+#include "emboss.h"
 
 #define AZ 28
 
 
 
 
-static AjBool pepwindowall_getnakaidata(AjPFile file, float matrix[],
-                                        AjBool normal);
+static AjBool pepwindow_getnakaidata(AjPFile file, float matrix[],
+                                     AjBool normal);
 
 
 
 
-/* @prog pepwindowall *********************************************************
+/* @prog pepwindow ************************************************************
 **
-** Displays protein hydropathy of a set of sequences
+** Displays protein hydropathy
 **
 ******************************************************************************/
 
 int main(int argc, char **argv)
 {
     AjPFile datafile;
-    AjBool normal;
-    AjPStr aa0str = NULL;
-    AjPSeqset seqset;
-    AjPGraphdata graphdata;
-    AjPGraph mult;
-    const char *seq;
+    AjPStr aa0str = 0;
     const char *s1;
-    ajint *position;
+    AjPSeq seq;
+    ajuint llen;
+    AjBool normal;
+    float matrix[AZ];
     ajuint i;
+    ajuint midpoint;
     ajuint j;
     ajuint k;
-    ajuint w;
-    ajuint a;
-    ajuint midpoint,llen, maxlen, maxsize;
-    float total;
-    float matrix[AZ];
+    AjPGraphdata graphdata;
+    AjPGraph mult;
     float min = 555.5;
     float max = -555.5;
-    float v   = 0.;
-    float v1  = 0.;
-    float ymin = 64000.;
-    float ymax = -64000.;
-    ajint beg;
-    ajint end;
+    float total;
     float fstart;
     float fend;
     ajuint ilen;
     ajuint istart;
     ajuint iend;
-    
-    embInit("pepwindowall", argc, argv);
 
-    seqset   = ajAcdGetSeqset("sequences");
+    embInit("pepwindow", argc, argv);
+
+    seq  = ajAcdGetSeq("sequence");
+    ilen = ajSeqGetLen(seq);
+    
     mult     = ajAcdGetGraphxy("graph");
     datafile = ajAcdGetDatafile("datafile");
     llen     = ajAcdGetInt("length");
     normal   = ajAcdGetBoolean("normalize");
 
-    if(!pepwindowall_getnakaidata(datafile,&matrix[0], normal))
-	ajExitBad();
+    s1 = ajStrGetPtr(ajSeqGetSeqS(seq));
 
-    maxsize   = ajSeqsetGetSize(seqset);
-    maxlen   = ajSeqsetGetLen(seqset);
-    aa0str   = ajStrNewRes(maxlen);
+    aa0str = ajStrNewRes(ilen+1);
+
     midpoint = (ajint)((llen+1)/2);
 
-    AJCNEW(position, maxlen);
+    istart = ajSeqGetBegin(seq) - 1;
 
-    istart = ajSeqsetGetBegin(seqset) - 1;
-
-    iend = ajSeqsetGetEnd(seqset);
+    iend = ajSeqGetEnd(seq);
     if((iend-istart) > llen)
         ilen = iend-istart+1-llen;
     else
-    {
         ilen = 1;
-        llen = iend-istart;
-    }
 
+    graphdata = ajGraphdataNewI(ilen);
+
+    ajGraphdataSetTypeC(graphdata,"2D Plot");
+
+    ajGraphDataAdd(mult,graphdata);
+
+    for(i=0;i<iend;i++)
+	ajStrAppendK(&aa0str,(char)ajBasecodeToInt(*s1++));
+
+
+    if(!pepwindow_getnakaidata(datafile,&matrix[0], normal))
+	ajExitBad();
+
+    s1 = ajStrGetPtr(aa0str) + istart;
+
+    k=0;
+    for(i=istart;i<=iend-llen;i++)
+    {
+	total = 0;
+	for(j=0;j<llen;j++)
+	    total += matrix[(ajint)s1[j]];
+
+	total /= (float)llen;
+	graphdata->x[k] = (float)i+midpoint;
+	graphdata->y[k] = total;
+	if(total > max)
+	    max= total;
+	if(total < min)
+	    min = total;
+        k++;
+	s1++;
+    }
     fstart = (float) istart;
     fend = (float) iend;
+    ajGraphdataSetTruescale(graphdata,fstart,fend,min,max);
 
-    for(i=0;i<maxsize;i++)
-    {
-	seq = ajSeqsetGetseqSeqC(seqset, i);
-	ajStrSetClear(&aa0str);
+    min = min*(float)1.1;
+    max = max*(float)1.1;
 
-	graphdata = ajGraphdataNewI(maxlen);
-	ajGraphdataSetTypeC(graphdata,"Overlay 2D Plot");
-	ymin = 64000.;
-	ymax = -64000.;
-
-
-	for(k=0;k<iend ;k++)
-	    graphdata->x[k] = FLT_MIN;
-
-	s1 = seq + istart;
-	k = 0;
-	w = istart;
-	while(*s1 != '\0' && w <= iend)
-	{
-	    if(ajBasecodeToInt(*s1) != 27 )
-	    {
-		ajStrAppendK(&aa0str,(char)ajBasecodeToInt(*s1));
-		position[k++]= w+midpoint;
-	    }
-	    w++;
-	    s1++;
-	}
-
-	s1 = ajStrGetPtr(aa0str);
-	for(j=0;j<=k-llen;j++)
-	{
-	    total = 0;
-	    for(w=0;w<llen;w++)
-		total = total + matrix[(ajint)s1[w]];
-
-	    total = total/(float)llen;
-	    v1 = (float)position[j];
-	    graphdata->x[position[j]] = v1;
-	    v    = graphdata->y[position[j]] = total;
-	    ymin = (ymin<v) ? ymin : v;
-	    ymax = (ymax>v) ? ymax : v;
-
-	    if(total > max)
-		max = total;
-	    if(total < min)
-		min = total;
-	    s1++;
-	}
-
-	beg = 0;
-	while(graphdata->x[beg]<0.00001)
-	    ++beg;
-	graphdata->numofpoints -= beg;
-
-	for(a=0;a<graphdata->numofpoints;++a)
-	{
-	    graphdata->x[a] = graphdata->x[a+beg];
-	    graphdata->y[a] = graphdata->y[a+beg];
-	}
-
-	end = graphdata->numofpoints-1;
-
-	while(graphdata->x[end--]<0.00001)
-	    --graphdata->numofpoints;
-
-	end = maxlen-1;
-	while(!graphdata->x[end])
-	    --end;
-
-	ajGraphdataSetTruescale(graphdata,(float)graphdata->x[0],
-			       (float)graphdata->x[graphdata->numofpoints-1],
-			       ymin,ymax);
-
-	ajGraphdataSetYlabelC(graphdata,"Hydropathy");
-	ajGraphdataSetXlabelC(graphdata,"Sequence");
-
-	ajGraphDataAdd(mult,graphdata);
-    }
-
-    min = min * (float) 1.1;
-    max = max * (float) 1.1;
-
-    ajGraphxySetflagGaps(mult,AJTRUE);
-    ajGraphxySetflagOverlay(mult,AJTRUE);
-
-    if(min == max)
-    {
-        min--;
-        max++;
-    }
-
+    ajGraphdataSetMinmax(graphdata,fstart,fend,min,max);
     ajGraphxySetMinmax(mult,fstart,fend,min,max);
-    ajGraphSetTitleC(mult,"Pepwindowall");
-
 
     ajGraphxyDisplay(mult,AJTRUE);
     ajGraphxyDel(&mult);
 
-    ajSeqsetDel(&seqset);
     ajFileClose(&datafile);
-    ajStrDel(&aa0str);
+    ajSeqDel(&seq);
 
-    AJFREE(position);
+    ajStrDel(&aa0str);
 
     embExit();
 
@@ -218,7 +145,9 @@ int main(int argc, char **argv)
 }
 
 
-/* @funcstatic pepwindowall_getnakaidata **************************************
+
+
+/* @funcstatic pepwindow_getnakaidata *****************************************
 **
 ** Read the NAKAI (AAINDEX) data file
 **
@@ -228,27 +157,27 @@ int main(int argc, char **argv)
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
-static AjBool pepwindowall_getnakaidata(AjPFile file, float matrix[],
-                                        AjBool normal)
+
+
+static AjBool pepwindow_getnakaidata(AjPFile file, float matrix[],
+                                     AjBool normal)
 {
     AjPStr buffer = NULL;
     AjPStr buf2   = NULL;
     AjPStr delim  = NULL;
-    AjBool description = ajFalse;
+    AjPStr description = NULL;
     AjPStrTok token;
     ajint line = 0;
     const char *ptr;
-    ajint cols;
     ajint i;
 
     if(!file)
 	return 0;
 
-
     delim  = ajStrNewC(" :\t\n");
     buffer = ajStrNew();
     buf2   = ajStrNew();
-
+    description = ajStrNew();
 
     for (i=0;i<26;i++) {
 	matrix[i] = FLT_MIN;
@@ -257,17 +186,16 @@ static AjBool pepwindowall_getnakaidata(AjPFile file, float matrix[],
     while(ajReadline(file,&buffer))
     {
 	ptr = ajStrGetPtr(buffer);
-	if(*ptr == 'D')			/* description */
-	    description = ajTrue;
+	if(*ptr == 'D')			/* save description */
+	    ajStrAssignS(&description, buffer);
 	else if(*ptr == 'I')
 	    line = 1;
 	else if(line == 1)
 	{
 	    line++;
-            ajStrRemoveWhiteExcess(&buffer);
+	    ajStrRemoveWhiteExcess(&buffer);
+
 	    token = ajStrTokenNewS(buffer,delim);
-	    cols = ajStrParseCountS(buffer,delim);
-	    ajDebug("num of cols = %d\n",cols);
 
 	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[0]);
@@ -304,9 +232,10 @@ static AjBool pepwindowall_getnakaidata(AjPFile file, float matrix[],
 	else if(line == 2)
 	{
 	    line++;
+
 	    ajStrRemoveWhiteExcess(&buffer);
 	    token = ajStrTokenNewS(buffer,delim);
-	    cols  = ajStrParseCountS(buffer,delim);
+
 	    ajStrTokenNextParseS(&token,delim,&buf2);
 	    ajStrToFloat(buf2,&matrix[11]);
 
@@ -347,8 +276,9 @@ static AjBool pepwindowall_getnakaidata(AjPFile file, float matrix[],
     embPropFixF(matrix, FLT_MIN);
 
     ajStrDel(&buffer);
+    ajStrDel(&description);
     ajStrDel(&buf2);
     ajStrDel(&delim);
 
-    return description;
+    return ajTrue;
 }

@@ -153,7 +153,7 @@ int main(int argc, char **argv)
 	if(plot)
 	{
 	    ajGraphSetMulti(graph,1);
-	    ajGraphxySetOverLap(graph,ajFalse);
+	    ajGraphxySetflagOverlay(graph,ajFalse);
 	    ajGraphSetXlabelC(graph,"Position");
 	    ajGraphSetYlabelC(graph,"Charge");
 	    charge_addgraph(graph,limit,x,y,ymax,ymin,window);
@@ -169,7 +169,7 @@ int main(int argc, char **argv)
     }
 
     if(plot)
-        ajGraphClose();
+        ajGraphicsClose();
 
     ajSeqDel(&seq);
     ajSeqallDel(&seqall);
@@ -226,8 +226,8 @@ static void charge_addgraph(AjPGraph graph, ajint limit, const float *x,
     }
 
     ajGraphdataSetColour(data,BLACK);
-    ajGraphdataSetMaxMin(data,x[0],x[limit-1],ymin,ymax);
-    ajGraphdataSetMaxima(data,x[0],x[limit-1],ymin,ymax);
+    ajGraphdataSetMinmax(data,x[0],x[limit-1],ymin,ymax);
+    ajGraphdataSetTruescale(data,x[0],x[limit-1],ymin,ymax);
 
     ajFmtPrintS(&st,"Window:%d",window);
     ajGraphdataSetSubtitleS(data,st);
@@ -239,7 +239,7 @@ static void charge_addgraph(AjPGraph graph, ajint limit, const float *x,
     ajFmtPrintS(&st,"Position");
     ajGraphdataSetXlabelS(data,st);
 
-    ajGraphdataAddLine(data,x[0],baseline,x[limit-1],baseline,BLUE);
+    ajGraphdataAddposLine(data,x[0],baseline,x[limit-1],baseline,BLUE);
 
     ajGraphDataAdd(graph,data);
 
