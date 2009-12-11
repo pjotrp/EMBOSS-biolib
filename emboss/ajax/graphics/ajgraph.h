@@ -76,8 +76,8 @@ extern "C"
 ** Prototype definitions
 */
 
-void          ajGraphListDevices (AjPList list);
-void          ajGraphxyListDevices (AjPList list);
+void          ajGraphicsListDevices (AjPList list);
+void          ajGraphicsxyListDevices (AjPList list);
 ajint*        ajGraphicsBasecolourNewNuc(const AjPStr codes);
 ajint*        ajGraphicsBasecolourNewProt(const AjPStr codes);
 ajint         ajGraphicsCheckColourC(const char* text);
@@ -85,7 +85,7 @@ ajint         ajGraphicsCheckColourS(const AjPStr colour);
 
 void          ajGraphicsGetCharsize(float *defheight, float *currentscale);
 ajint         ajGraphicsGetFgcolour(void);
-ajint         ajGraphicsGetOutfiles(AjPList* files);
+ajuint        ajGraphicsGetOutfiles(AjPList* files);
 void          ajGraphGetParamsPage(const AjPGraph thys,
                                    float *xp,float *yp, ajint *xleng,
                                    ajint *yleng, ajint *xoff, ajint *yoff);
@@ -111,16 +111,16 @@ void          ajGraphicsSetLabelsC(const char *x, const char *y,
 void          ajGraphicsSetLabelsS(const AjPStr x, const AjPStr y,
                                    const AjPStr title, const AjPStr subtitle);
 
-void          ajGraphPlenv (float xmin, float xmax, float ymin, float ymax,
-			    ajint flags);
-void          ajGraphPrintType(AjPFile outf, AjBool full);
+void          ajGraphicsPlenv (float xmin, float xmax, float ymin, float ymax,
+                               ajint flags);
+void          ajGraphicsPrintType(AjPFile outf, AjBool full);
 void          ajGraphicsSetPagesize(ajuint pagewidth, ajuint pageheight);
 
-void          ajGraphClose (void);
-void          ajGraphCloseWin (void);
+void          ajGraphicsClose (void);
+void          ajGraphicsCloseWin (void);
 
-void          ajGraphDumpDevices (void);
-void          ajGraphxyDumpDevices (void);
+void          ajGraphicsDumpDevices (void);
+void          ajGraphicsxyDumpDevices (void);
 
 void          ajGraphicsCalcRange(const float *array, ajuint npoints,
                                   float *min, float *max);
@@ -206,22 +206,27 @@ AjBool        ajGraphIsData(const AjPGraph thys);
 
 
 void          ajGraphNewpage (AjPGraph thys, AjBool resetdefaults);
-void          ajGraphAddLine (AjPGraph thys, float xx1, float yy1,
-			      float xx2, float yy2, ajint colour);
-void          ajGraphAddRect (AjPGraph thys, float xx1, float yy1,
-			      float xx2, float yy2, ajint colour,
-			      ajint fill);
-void          ajGraphAddText (AjPGraph thys, float xx1, float yy1,
+void          ajGraphAddLine (AjPGraph thys, float x, float y,
+                                 float x2, float y2, ajint colour);
+void          ajGraphAddRect (AjPGraph thys, float x, float y,
+                                 float x2, float y2, ajint colour,
+                                 ajint fill);
+void          ajGraphAddTextC (AjPGraph thys, float x, float y,
 				 ajint colour, const char *text);
-void          ajGraphAddTextScale (AjPGraph thys, float xx1, float yy1,
-				   ajint colour, float scale,
-				   const char *text);
-void          ajGraphOpen (AjPGraph thys, PLFLT xmin, PLFLT xmax,
-			   PLFLT ymin, PLFLT ymax, ajint flags);
-void          ajGraphOpenPlot (AjPGraph thys, ajuint numofsets);
+void          ajGraphAddTextScaleC (AjPGraph thys, float x, float y,
+                                       ajint colour, float scale,
+                                       const char *text);
+void          ajGraphAddTextS (AjPGraph thys, float x, float y,
+                                  ajint colour, const AjPStr str);
+void          ajGraphAddTextScaleS (AjPGraph thys, float x, float y,
+                                       ajint colour, float scale,
+                                       const AjPStr str);
+void          ajGraphOpenFlags(AjPGraph thys, PLFLT xmin, PLFLT xmax,
+                               PLFLT ymin, PLFLT ymax, ajint flags);
+void          ajGraphOpenPlotset (AjPGraph thys, ajuint numofsets);
 void          ajGraphOpenWin  (AjPGraph thys, float xmin, float xmax,
 			       float ymin, float ymax);
-void          ajGraphOpenWinMm(AjPGraph thys, float * xmm, float *ymm);
+void          ajGraphOpenMm(AjPGraph thys, float * xmm, float *ymm);
 AjBool        ajGraphSetDevicetype(AjPGraph thys, const AjPStr type);
 void          ajGraphSetMulti (AjPGraph thys, ajuint numsets);
 void          ajGraphicsSetFilename (const AjPGraph graph);
@@ -234,16 +239,16 @@ void          ajGraphAppendTitleC(AjPGraph thys, const char* txt);
 void          ajGraphAppendTitleS(AjPGraph thys, const AjPStr str);
 void          ajGraphxyDel (AjPGraph* pmult);
 void          ajGraphxyDisplay (AjPGraph thys, AjBool closeit );
-void          ajGraphxyCheckMaxMin (AjPGraph thys);
+void          ajGraphxySetRanges (AjPGraph thys);
 AjBool        ajGraphxySetDevicetype (AjPGraph thys, const AjPStr devicetype);
-void          ajGraphxySetCirclePoints (AjPGraph thys, AjBool set);
+void          ajGraphxyShowPointsCircle (AjPGraph thys, AjBool set);
 void          ajGraphSetFlag (AjPGraph thys, ajint flag, AjBool istrue);
-void          ajGraphxySetJoinPoints (AjPGraph thys, AjBool set);
-void          ajGraphxySetMaxMin(AjPGraph thys,float xmin,float xmax,
+void          ajGraphxyShowPointsJoin (AjPGraph thys, AjBool set);
+void          ajGraphxySetMinmax(AjPGraph thys,float xmin,float xmax,
 				 float ymin,float ymax);
 void          ajGraphSetOutfileS (AjPGraph thys, const AjPStr txt);
 void          ajGraphSetOutfileC (AjPGraph thys, const char *txt);
-void          ajGraphxySetOverLap (AjPGraph thys, AjBool overlap);
+void          ajGraphxySetflagOverlay (AjPGraph thys, AjBool set);
 
 void          ajGraphShowSubtitle (AjPGraph thys, AjBool set);
 void          ajGraphShowTitle (AjPGraph thys, AjBool set);
@@ -262,7 +267,7 @@ void          ajGraphSetXlabelS(AjPGraph thys, const AjPStr title);
 void          ajGraphSetYlabelC(AjPGraph thys, const char *title);
 void          ajGraphSetYlabelS(AjPGraph thys, const AjPStr title);
 
-void          ajGraphxySetGaps(AjPGraph thys, AjBool overlap);
+void          ajGraphxySetflagGaps(AjPGraph thys, AjBool overlap);
 
 void          ajGraphxyShowRaxis(AjPGraph thys, AjBool set);
 void          ajGraphxyShowUaxis(AjPGraph thys, AjBool set);
@@ -276,13 +281,13 @@ void          ajGraphxyShowYnum(AjPGraph thys, AjBool set);
 void          ajGraphxyShowYtick(AjPGraph thys, AjBool set);
 
 void          ajGraphxySetXendF(AjPGraph thys, float val);
-void          ajGraphxySetXgrid(AjPGraph thys, AjBool set);
-void          ajGraphxySetXinvert(AjPGraph thys, AjBool set);
+void          ajGraphxyShowXgrid(AjPGraph thys, AjBool set);
+void          ajGraphxyShowXinvert(AjPGraph thys, AjBool set);
 void          ajGraphxySetXrangeII(AjPGraph thys, ajint start, ajint end);
 void          ajGraphxySetXstartF(AjPGraph thys, float val);
 void          ajGraphxySetYendF(AjPGraph thys, float val);
-void          ajGraphxySetYgrid(AjPGraph thys, AjBool set);
-void          ajGraphxySetYinvert(AjPGraph thys, AjBool set);
+void          ajGraphxyShowYgrid(AjPGraph thys, AjBool set);
+void          ajGraphxyShowYinvert(AjPGraph thys, AjBool set);
 void          ajGraphxySetYrangeII(AjPGraph thys, ajint start, ajint end);
 void          ajGraphxySetYstartF(AjPGraph thys, float val);
 
@@ -290,34 +295,43 @@ AjPGraphdata  ajGraphdataNew (void);
 AjPGraphdata  ajGraphdataNewI (ajuint numsets);
 
 void          ajGraphdataDel(AjPGraphdata *thys);
-void          ajGraphdataAddLine (AjPGraphdata graphs,
-				     float xx1, float yy1,
-				     float xx2, float yy2, ajint colour);
-void          ajGraphdataAddRect (AjPGraphdata graphs,
-				     float xx1, float yy1,
-				     float xx2, float yy2,
+void          ajGraphdataAddposLine (AjPGraphdata graphs,
+				     float x, float y,
+				     float x2, float y2, ajint colour);
+void          ajGraphdataAddposRect (AjPGraphdata graphs,
+				     float x, float y,
+				     float x2, float y2,
 				     ajint colour, ajint fill);
-void          ajGraphdataAddText (AjPGraphdata graphs,
-				     float xx1, float yy1,
+void          ajGraphdataAddposTextC (AjPGraphdata graphs,
+				     float x, float y,
 				     ajint colour, const char *text);
-void          ajGraphdataAddTextScale (AjPGraphdata graphs,
-					  float xx1, float yy1,
+void          ajGraphdataAddposTextS (AjPGraphdata graphs,
+				     float x, float y,
+				     ajint colour, const AjPStr str);
+void          ajGraphdataAddposTextScaleC (AjPGraphdata graphs,
+					  float x, float y,
 					  ajint colour, float scale,
 					  const char *text);
-void          ajGraphdataSetMaxMin (AjPGraphdata graphdata, float xmin,
-				      float xmax, float ymin, float ymax);
+void          ajGraphdataAddposTextScaleS (AjPGraphdata graphs,
+					  float x, float y,
+					  ajint colour, float scale,
+					  const AjPStr str);
+void          ajGraphdataSetMinmax (AjPGraphdata graphdata, float xmin,
+                                    float xmax, float ymin, float ymax);
 
-void          ajGraphdataSetMaxima(AjPGraphdata graphdata, float xmin,
+void          ajGraphdataSetTruescale(AjPGraphdata graphdata, float xmin,
 				     float xmax, float ymin, float ymax);
 void          ajGraphdataSetTypeC(AjPGraphdata graphdata,
-				     const char *type);
+				     const char *txt);
+void          ajGraphdataSetTypeS(AjPGraphdata graphdata,
+				     const AjPStr str);
 
 void          ajGraphdataCalcXY (AjPGraphdata graphdata,
                                  ajuint numofpoints,
 				    float start, float incr,
 				    const float* y);
-void          ajGraphdataSetXY (AjPGraphdata graphdata,
-				   const float *x, const float *y);
+void          ajGraphdataAddXY (AjPGraphdata graphdata,
+                                const float *x, const float *y);
 void          ajGraphdataSetSubtitleC (AjPGraphdata graphdata,
 					  const char *title);
 void          ajGraphdataSetSubtitleS (AjPGraphdata graphdata,
@@ -336,7 +350,7 @@ void          ajGraphdataSetYlabelS (AjPGraphdata graphdata,
 				       const AjPStr title);
 void          ajGraphdataSetColour (AjPGraphdata graphdata,
 				       ajint colour);
-void          ajGraphdataSetLineType (AjPGraphdata graphdata,
+void          ajGraphdataSetLinetype (AjPGraphdata graphdata,
 					 ajint type);
 void          ajGraphdataTrace (const AjPGraphdata thys);
 
@@ -347,12 +361,62 @@ void          ajGraphUnused(void);
 */
 
 
-/*
-**  These prototypes do not have any corresponding .c code so cannot
-**  go into the block above, otherwise the VC compilation will fail 
-*/
-void          ajGraphTraceInt (FILE* outf);
+__deprecated void          ajGraphPlenv (float xmin, float xmax,
+                                         float ymin, float ymax,
+                                         ajint flags);
+__deprecated void          ajGraphPrintType(AjPFile outf, AjBool full);
+__deprecated void          ajGraphDumpDevices (void);
+__deprecated void          ajGraphxyDumpDevices (void);
+__deprecated void          ajGraphListDevices (AjPList list);
+__deprecated void          ajGraphxyListDevices (AjPList list);
 
+__deprecated void ajGraphOpenPlot(AjPGraph thys, ajuint numofsets);
+__deprecated void          ajGraphOpen (AjPGraph thys, PLFLT xmin, PLFLT xmax,
+                                        PLFLT ymin, PLFLT ymax, ajint flags);
+__deprecated void          ajGraphClose (void);
+__deprecated void          ajGraphCloseWin (void);
+__deprecated void          ajGraphdataAddLine (AjPGraphdata graphs,
+                                               float x, float y,
+                                               float x2, float y2,
+                                               ajint colour);
+__deprecated void          ajGraphdataAddRect (AjPGraphdata graphs,
+                                               float x, float y,
+                                               float x2, float y2,
+                                               ajint colour, ajint fill);
+__deprecated void          ajGraphdataSetXY (AjPGraphdata graphdata,
+                                             const float *x, const float *y);
+__deprecated void          ajGraphdataAddTextScale (AjPGraphdata graphs,
+                                                    float xx1, float yy1,
+                                                    ajint colour, float scale,
+                                                    const char *text);
+__deprecated void          ajGraphdataAddText (AjPGraphdata graphs,
+                                               float xx1, float yy1,
+                                               ajint colour, const char *text);
+__deprecated void          ajGraphdataSetMaxima(AjPGraphdata graphdata,
+                                                float xmin, float xmax,
+                                                float ymin, float ymax);
+__deprecated void          ajGraphdataSetMaxMin (AjPGraphdata graphdata,
+                                                 float xmin, float xmax,
+                                                 float ymin, float ymax);
+
+__deprecated void          ajGraphdataSetLineType (AjPGraphdata graphdata,
+                                                   ajint type);
+__deprecated void          ajGraphxySetXinvert(AjPGraph thys, AjBool set);
+__deprecated void          ajGraphxySetXgrid(AjPGraph thys, AjBool set);
+__deprecated void          ajGraphxySetGaps(AjPGraph thys, AjBool set);
+__deprecated void          ajGraphxySetOverLap (AjPGraph thys, AjBool overlap);
+__deprecated void          ajGraphxySetMaxMin(AjPGraph thys,
+                                              float xmin,float xmax,
+                                              float ymin,float ymax);
+__deprecated void          ajGraphxySetJoinPoints (AjPGraph thys, AjBool set);
+__deprecated void          ajGraphxySetCirclePoints (AjPGraph thys, AjBool set);
+__deprecated void          ajGraphAddText (AjPGraph thys, float xx1, float yy1,
+                                           ajint colour, const char *text);
+__deprecated void          ajGraphAddTextScale (AjPGraph thys,
+                                                float xx1, float yy1,
+                                                ajint colour, float scale,
+                                                const char *text);
+__deprecated void          ajGraphxyCheckMaxMin (AjPGraph thys);
 __deprecated void          ajGraphdataSetXTitleC (AjPGraphdata graphdata,
                                                   const char *title);
 __deprecated void          ajGraphdataSetXTitleS (AjPGraphdata graphdata,
