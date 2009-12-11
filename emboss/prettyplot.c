@@ -958,7 +958,7 @@ int main(int argc, char **argv)
     if(boxit && boxcol)
 	oldfg = ajGraphicsSetFgcolour(oldfg);
 
-    ajGraphCloseWin();
+    ajGraphicsCloseWin();
     ajGraphxyDel(&graph);
 
     ajStrDel(&sidentity);
