@@ -209,12 +209,12 @@ int main(int argc, char **argv)
     if(yticks)
     {
 	ajGraphxyShowYtick(graphs,ajTrue);
-	ajGraphxySetYinvert(graphs,ajTrue);
+	ajGraphxyShowYinvert(graphs,ajTrue);
     }
     else
 	ajGraphxyShowYtick(graphs,ajFalse);
 
-    ajGraphxySetXinvert(graphs,ajTrue);
+    ajGraphxyShowXinvert(graphs,ajTrue);
 
     ntrace = 0;
     strace = 0;
@@ -227,7 +227,7 @@ int main(int argc, char **argv)
 	    nstop = numBases;
 
 	ajGraphSetMulti(graphs,nbases+1);
-	ajGraphxySetOverLap(graphs,overlay);
+	ajGraphxySetflagOverlay(graphs,overlay);
 
 	if(graph1)
 	    gd1 = abiview_graphDisplay(graphs,trace,nstart,nstop,basePositions,
@@ -296,7 +296,7 @@ int main(int argc, char **argv)
 
     ajFileClose(&fp);
 
-    ajGraphCloseWin();
+    ajGraphicsClose();
     if(dseq && overlay)
 	ajGraphClear(graphs);   /* free seq text mem */
 
@@ -384,7 +384,7 @@ static AjPGraphdata abiview_graphDisplay(AjPGraph graphs,
     }
 
     ajGraphdataSetColour(gdata,colour);
-    ajGraphdataSetMaxMin(gdata,(float)nstart+(float)1.,
+    ajGraphdataSetMinmax(gdata,(float)nstart+(float)1.,
                            (float)nstop,(float)0.,tmax+(float)80.);
 
     /* add graph to list in a multiple graph */
@@ -435,12 +435,12 @@ static AjPGraphdata abiview_graphTextDisplay(AjPGraph graphs, ajint nstart,
     {
 	*res = ajStrGetCharPos(nseq,i);
 	colres = abiview_getResColour(*res);
-	ajGraphdataAddTextScale(gdata,(float)i+(float)1.,
+	ajGraphdataAddposTextScaleC(gdata,(float)i+(float)1.,
 				   tmax+(float)75.,colres, scale,
 				   res);
     }
 
-    ajGraphdataSetMaxMin(gdata,(float)nstart+1,
+    ajGraphdataSetMinmax(gdata,(float)nstart+1,
 			   (float)nstop,tmax+(float)70.,tmax+(float)80.);
 
     /* add graph to list in a multiple graph */
@@ -480,7 +480,7 @@ static void abiview_TextDisplay(AjPGraph graphs, ajint nstart, ajint nstop,
     {
 	*res = ajStrGetCharPos(nseq,i);
 	colres = abiview_getResColour(*res);
-	ajGraphAddTextScale(graphs,(float)i+(float)1.,tmax+(float)30.,
+	ajGraphAddTextScaleC(graphs,(float)i+(float)1.,tmax+(float)30.,
 			    colres, scale, res);
     }
 
