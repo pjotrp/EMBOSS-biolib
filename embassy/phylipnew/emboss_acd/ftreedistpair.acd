@@ -50,9 +50,8 @@ section: additional [
   list: style [
     additional: "Y"
     information: "Distances output option"
-    values: "f:Full_matrix; v:One pair per line, verbose; s:One pair
-             per line, sparese"
-    default: "Verbose"
+    values: "f:Full_matrix; v:Verbose, one pair per line;
+             s:Sparse, one pair per line"
     default: "v"
     relations: "EDAM: Generic string array"                                
   ]

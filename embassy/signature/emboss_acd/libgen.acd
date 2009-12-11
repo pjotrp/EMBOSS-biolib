@@ -15,7 +15,6 @@ section: input [
 
   dirlist: dafinpath [
     parameter: "Y"
-    default: "./"
     information: "Domain alignment directories"
     help: "This option specifies the location of DAF files (domain
            alignment files) (input). A 'domain alignment file' contains a
