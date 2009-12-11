@@ -188,10 +188,11 @@ void ajReset(void)
     ajDatafileExit();
     ajFileExit();
     ajListExit();
+    ajMessExit();
     ajTableExit();
     ajStrExit();
     ajMemExit();
-    ajMessExit();     /* clears data for ajDebug - do this last!!!  */
+    ajMessExitDebug();     /* clears data for ajDebug - do this last!!!  */
 
     return;
 }

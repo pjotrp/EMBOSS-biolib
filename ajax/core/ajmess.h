@@ -134,10 +134,12 @@ void              ajMessErrorCode(const char *name);      /* as above but
 							     uses code to
 							     get message */
 void              ajMessExit (void);
+void              ajMessExitDebug (void);
 void              ajMessExitmsg(const char *format, ...) ;  /* error message,
 							       write to log
 							       file & exit */
 void              ajDebug (const char *fmt, ...);
+AjBool            ajDebugTest (const char *token);
 FILE*             ajMessGetDebugfile (void);
 void              ajDie (const char *format, ...);
 void              ajErr (const char *format, ...) ; /* error message and
@@ -197,9 +199,6 @@ __deprecated FILE*             ajDebugFile (void);
 /*
 ** End of prototype definitions
 */
-
-
-
 
 #define ajMessCrash   ajMessSetErr(__FILE__, __LINE__), ajMessCrashFL
 #define ajMessCrashCode ajMessSetErr(__FILE__, __LINE__), ajMessCrashCodeFL
