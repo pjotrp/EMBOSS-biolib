@@ -353,7 +353,6 @@ static ajuint embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
     const AjPSeq seq;
     ajuint i, j, tlen, ii, k, seqsetindx, indxloc, maxloc;
     ajuint matches=0;
-    ajuint slen;
     EmbPWordWrap* bsres;
     EmbPWordWrap cursor;
     ajulong rm;
