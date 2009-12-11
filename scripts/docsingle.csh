@@ -3,7 +3,7 @@
 set file = $argv[1]
 set name = $file:t:r
 
-embossdoc.pl ~/devemboss/$file > ! $name.out
+embossdoc.pl $file > ! $name.out
 embossdocreport.pl $name.out
 mv embossdocreport.log docsingle.report
 
