@@ -40,11 +40,6 @@ static void     wordCurListTrace(const AjPList curlist);
 static ajint    wordDeadZone(EmbPWordMatch match,
 			     ajint deadx1, ajint deady1,
 			     int deadx2, ajint deady2, ajint minlength);
-static ajint    wordFindWordAtPos(const char *word,
-				  const AjPTable seq1MatchTable,
-				  ajint nextpos);
-static ajint    wordGetWholeMatch(EmbPWordMatch match,
-				  const AjPTable seq1MatchTable);
 static void     wordListInsertNodeOld(AjPListNode* pnode, void* x);
 static void     wordListInsertOld(AjIList iter, void* x);
 static ajint    wordMatchCmp(const void* v1, const void* v2);
@@ -353,10 +348,12 @@ static void wordPositionListDelete(void **x,void *cl)
 
 static void wordVFreeSeqLocs(void **key, void **value, void *cl)
 {
-    AjPStr key_;
+    AjPStr mykey;
 
-    key_ = (AjPStr) *key;
-    ajStrDel(&key_);
+    (void) cl;                  /* make it used */
+
+    mykey = (AjPStr) *key;
+    ajStrDel(&mykey);
 
     /* free the elements in the list of the positions */
     ajListMap(((EmbPWordSeqLocs)*value)->locs,wordPositionListDelete, NULL);
