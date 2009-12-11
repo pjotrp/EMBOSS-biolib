@@ -908,8 +908,8 @@ void ajTableMap(AjPTable table,
 ******************************************************************************/
 
 void ajTableMapDel(AjPTable table,
-		void apply(void **key, void **value, void *cl),
-		void *cl)
+                   void apply(void **key, void **value, void *cl),
+                   void *cl)
 {
     ajuint i;
     ajuint stamp;
