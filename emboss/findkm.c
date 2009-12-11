@@ -225,11 +225,11 @@ int main(int argc, char **argv)
     if(doplot)
     {
 	xygraph = ajGraphdataNewI(N);
-	ajGraphdataSetXY(xygraph, S, V);
+	ajGraphdataAddXY(xygraph, S, V);
 	ajGraphDataAdd(graphLB, xygraph);
 	ajGraphdataSetTitleC(xygraph, "Michaelis Menten Plot");
-	ajGraphdataSetXTitleC(xygraph, "[S]");
-	ajGraphdataSetYTitleC(xygraph, "V");
+	ajGraphdataSetXlabelC(xygraph, "[S]");
+	ajGraphdataSetYlabelC(xygraph, "V");
 
 	ajGraphxySetXstartF(graphLB, 0.0);
 	ajGraphxySetXendF(graphLB, xmax2);
@@ -237,23 +237,23 @@ int main(int argc, char **argv)
 	ajGraphxySetYendF(graphLB, ymax2);
 	ajGraphxySetXrangeII(graphLB, (ajint)0.0, (ajint)xmax2);
 	ajGraphxySetYrangeII(graphLB, (ajint)0.0, (ajint)ymax2);
-	ajGraphdataAddLine(xygraph, 0.0, 0.0, S[0], V[0], (ajint)BLACK);
-	ajGraphxySetCirclePoints(graphLB, ajTrue);
-	ajGraphdataSetMaxMin(xygraph,0.0,xmax2,0.0,ymax2);
+	ajGraphdataAddposLine(xygraph, 0.0, 0.0, S[0], V[0], (ajint)BLACK);
+	ajGraphxyShowPointsCircle(graphLB, ajTrue);
+	ajGraphdataSetMinmax(xygraph,0.0,xmax2,0.0,ymax2);
 
 
 	ajGraphicsCalcRange(S,N,&amin,&amax);
 	ajGraphicsCalcRange(V,N,&bmin,&bmax);
-	ajGraphdataSetMaxima(xygraph,amin,amax,bmin,bmax);
+	ajGraphdataSetTruescale(xygraph,amin,amax,bmin,bmax);
 	ajGraphdataSetTypeC(xygraph,"2D Plot Float");
 
 	xygraph2 = ajGraphdataNewI(N);
-	ajGraphdataSetXY(xygraph2, xdata, ydata);
+	ajGraphdataAddXY(xygraph2, xdata, ydata);
 	ajGraphDataAdd(graphLB, xygraph2);
 
 	ajGraphdataSetTitleC(xygraph2, "Hanes Woolf Plot");
-	ajGraphdataSetXTitleC(xygraph2, "[S]");
-	ajGraphdataSetYTitleC(xygraph2, "[S]/V");
+	ajGraphdataSetXlabelC(xygraph2, "[S]");
+	ajGraphdataSetYlabelC(xygraph2, "[S]/V");
 
 	ajGraphxySetXstartF(graphLB, cutx);
 	ajGraphxySetXendF(graphLB, upperXlimit);
@@ -262,17 +262,17 @@ int main(int argc, char **argv)
 	ajGraphxySetXrangeII(graphLB, (ajint)cutx, (ajint)upperXlimit);
 	ajGraphxySetYrangeII(graphLB, (ajint)0.0, (ajint)upperYlimit);
 
-	ajGraphxySetCirclePoints(graphLB, ajTrue);
-	ajGraphdataSetMaxMin(xygraph2, cutx,upperXlimit,0.0,upperYlimit);
+	ajGraphxyShowPointsCircle(graphLB, ajTrue);
+	ajGraphdataSetMinmax(xygraph2, cutx,upperXlimit,0.0,upperYlimit);
 	ajGraphicsCalcRange(xdata,N,&amin,&amax);
 	ajGraphicsCalcRange(ydata,N,&bmin,&bmax);
-	ajGraphdataSetMaxima(xygraph2,amin,amax,bmin,bmax);
+	ajGraphdataSetTruescale(xygraph2,amin,amax,bmin,bmax);
 	ajGraphdataSetTypeC(xygraph2,"2D Plot");
 
 
 
 	ajGraphSetTitleC(graphLB,"FindKm");
-	ajGraphxySetOverLap(graphLB,ajFalse);
+	ajGraphxySetflagOverlay(graphLB,ajFalse);
 	ajGraphxyDisplay(graphLB, ajTrue);
     }
 

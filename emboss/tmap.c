@@ -1376,18 +1376,18 @@ static void tmap_plot2(AjPGraph mult)
 
     ajGraphdataCalcXY(graphdata,glposs,0.0,1.0,&profile[j][0]);
 
-    ajGraphdataSetMaxima(graphdata,0.,(float)glposs,min,max);
+    ajGraphdataSetTruescale(graphdata,0.,(float)glposs,min,max);
 
-    ajGraphdataSetXTitleC(graphdata,"Residue no.");
-    ajGraphdataSetYTitleC(graphdata,"");
+    ajGraphdataSetXlabelC(graphdata,"Residue no.");
+    ajGraphdataSetYlabelC(graphdata,"");
     ajGraphdataSetTitleC(graphdata,"");
-    ajGraphdataSetSubTitleC(graphdata,"");
+    ajGraphdataSetSubtitleC(graphdata,"");
 
     ajGraphDataAdd(mult,graphdata);
   }
-  ajGraphdataSetLineType(graphdata, 2);
-  ajGraphxySetGaps(mult,AJTRUE);
-  ajGraphxySetOverLap(mult,AJTRUE);
+  ajGraphdataSetLinetype(graphdata, 2);
+  ajGraphxySetflagGaps(mult,AJTRUE);
+  ajGraphxySetflagOverlay(mult,AJTRUE);
 
 
   if(min > 0.0)
@@ -1397,7 +1397,7 @@ static void tmap_plot2(AjPGraph mult)
 
   max = max*(float)1.1;
 
-  ajGraphxySetMaxMin(mult,0.0,(float)glposs,min,max);
+  ajGraphxySetMinmax(mult,0.0,(float)glposs,min,max);
   ajGraphSetTitleC(mult,"Tmap");
 
   max = max * (float)0.95;
@@ -1407,7 +1407,7 @@ static void tmap_plot2(AjPGraph mult)
 		      max+((max-min)*(float)0.01),BLACK,1);
 
   ajGraphxyDisplay(mult,AJFALSE);
-  ajGraphCloseWin();
+  ajGraphicsClose();
 
   return;
 }

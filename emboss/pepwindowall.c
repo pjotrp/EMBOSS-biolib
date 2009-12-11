@@ -177,12 +177,12 @@ int main(int argc, char **argv)
 	while(!graphdata->x[end])
 	    --end;
 
-	ajGraphdataSetMaxima(graphdata,(float)graphdata->x[0],
+	ajGraphdataSetTruescale(graphdata,(float)graphdata->x[0],
 			       (float)graphdata->x[graphdata->numofpoints-1],
 			       ymin,ymax);
 
-	ajGraphdataSetYTitleC(graphdata,"Hydropathy");
-	ajGraphdataSetXTitleC(graphdata,"Sequence");
+	ajGraphdataSetYlabelC(graphdata,"Hydropathy");
+	ajGraphdataSetXlabelC(graphdata,"Sequence");
 
 	ajGraphDataAdd(mult,graphdata);
     }
@@ -190,8 +190,8 @@ int main(int argc, char **argv)
     min = min * (float) 1.1;
     max = max * (float) 1.1;
 
-    ajGraphxySetGaps(mult,AJTRUE);
-    ajGraphxySetOverLap(mult,AJTRUE);
+    ajGraphxySetflagGaps(mult,AJTRUE);
+    ajGraphxySetflagOverlay(mult,AJTRUE);
 
     if(min == max)
     {
@@ -199,7 +199,7 @@ int main(int argc, char **argv)
         max++;
     }
 
-    ajGraphxySetMaxMin(mult,fstart,fend,min,max);
+    ajGraphxySetMinmax(mult,fstart,fend,min,max);
     ajGraphSetTitleC(mult,"Pepwindowall");
 
 

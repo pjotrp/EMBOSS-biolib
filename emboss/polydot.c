@@ -227,7 +227,7 @@ int main(int argc, char **argv)
 	}
     }
     
-    ajGraphClose();
+    ajGraphicsClose();
     ajGraphxyDel(&graph);
 
     ajStrDel(&sajb);

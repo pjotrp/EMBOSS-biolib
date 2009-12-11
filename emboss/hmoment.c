@@ -158,7 +158,7 @@ int main(int argc, char **argv)
 	    else
 		ajGraphSetMulti(graph,1);
 
-	    ajGraphxySetOverLap(graph,ajFalse);
+	    ajGraphxySetflagOverlay(graph,ajFalse);
 
 	    hmoment_addgraph(graph,limit,x,ya,ymax,BLACK,aangle,window,
 			     baseline, sname);
@@ -178,7 +178,7 @@ int main(int argc, char **argv)
 	}
     }
 
-    ajGraphClose();
+    ajGraphicsClose();
     ajGraphxyDel(&graph);
     ajFileClose(&outf);
 
@@ -238,8 +238,8 @@ static void hmoment_addgraph(AjPGraph graph, ajint limit,
     }
 
     ajGraphdataSetColour(data,colour);
-    ajGraphdataSetMaxMin(data,x[0],x[limit-1],0.,ymax);
-    ajGraphdataSetMaxima(data,x[0],x[limit-1],0.,ymax);
+    ajGraphdataSetMinmax(data,x[0],x[limit-1],0.,ymax);
+    ajGraphdataSetTruescale(data,x[0],x[limit-1],0.,ymax);
 
     ajGraphdataSetTypeC(data,"2D Plot Float");
 
@@ -252,7 +252,7 @@ static void hmoment_addgraph(AjPGraph graph, ajint limit,
     ajFmtPrintS(&st,"Position (w=%d)",window);
     ajGraphdataSetXlabelS(data,st);
 
-    ajGraphdataAddLine(data,x[0],baseline,x[limit-1],baseline,BLUE);
+    ajGraphdataAddposLine(data,x[0],baseline,x[limit-1],baseline,BLUE);
 
     ajGraphDataAdd(graph,data);
 

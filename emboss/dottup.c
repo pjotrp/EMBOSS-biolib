@@ -228,7 +228,7 @@ int main(int argc, char **argv)
 	}
     }
 
-    ajGraphClose();
+    ajGraphicsClose();
     ajSeqDel(&seq1);
     ajSeqDel(&seq2);
     ajGraphxyDel(&graph);
@@ -352,9 +352,9 @@ static void dottup_stretchplot(AjPGraph graph, const AjPList matchlist,
     ajGraphSetYlabelC(graph,ajSeqGetNameC(seq2));
 
     ajGraphdataSetTypeC(gdata,"2D Plot Float");
-    ajGraphdataSetMaxMin(gdata,(float)begin1,(float)end1,(float)begin2,
+    ajGraphdataSetMinmax(gdata,(float)begin1,(float)end1,(float)begin2,
 			   (float)end2);
-    ajGraphdataSetMaxima(gdata,(float)begin1,(float)end1,(float)begin2,
+    ajGraphdataSetTruescale(gdata,(float)begin1,(float)end1,(float)begin2,
 			   (float)end2);
     ajGraphxySetXstartF(graph,(float)begin1);
     ajGraphxySetXendF(graph,(float)end1);
@@ -379,12 +379,12 @@ static void dottup_stretchplot(AjPGraph graph, const AjPList matchlist,
 	ajListIterDel(&iter);
     }
 
-    ajGraphdataSetXY(gdata,xa,ya);
+    ajGraphdataAddXY(gdata,xa,ya);
     ajGraphDataReplace(graph,gdata);
 
 
     ajGraphxyDisplay(graph,ajFalse);
-    ajGraphClose();
+    ajGraphicsClose();
 
     ajStrDel(&tit);
 

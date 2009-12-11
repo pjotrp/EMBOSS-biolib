@@ -123,13 +123,13 @@ int main(int argc, char **argv)
     }
     fstart = (float) istart;
     fend = (float) iend;
-    ajGraphdataSetMaxima(graphdata,fstart,fend,min,max);
+    ajGraphdataSetTruescale(graphdata,fstart,fend,min,max);
 
     min = min*(float)1.1;
     max = max*(float)1.1;
 
-    ajGraphdataSetMaxMin(graphdata,fstart,fend,min,max);
-    ajGraphxySetMaxMin(mult,fstart,fend,min,max);
+    ajGraphdataSetMinmax(graphdata,fstart,fend,min,max);
+    ajGraphxySetMinmax(mult,fstart,fend,min,max);
 
     ajGraphxyDisplay(mult,AJTRUE);
     ajGraphxyDel(&mult);

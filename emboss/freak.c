@@ -146,12 +146,12 @@ int main(int argc, char **argv)
 	    ajGraphxySetYendF(graph,y[c-1]);
 	    ajGraphxySetXrangeII(graph,(ajint)x[0],(ajint)x[c-1]);
 	    ajGraphxySetYrangeII(graph,0,(ajint)y[c-1]);
-	    ajGraphdataSetMaxMin(fgraph,x[0],x[c-1],0.,1.0);
+	    ajGraphdataSetMinmax(fgraph,x[0],x[c-1],0.,1.0);
 	    ajGraphicsCalcRange(y,c,&min,&max);
-	    ajGraphdataSetMaxima(fgraph,x[0],x[c-1],min,max);
+	    ajGraphdataSetTruescale(fgraph,x[0],x[c-1],min,max);
 	    ajGraphdataSetTypeC(fgraph,"2D Plot");
 
-	    ajGraphdataSetXY(fgraph,x,y);
+	    ajGraphdataAddXY(fgraph,x,y);
 	    ajGraphDataReplace(graph,fgraph);
 	    ajGraphxyDisplay(graph,ajFalse);
 	}
@@ -162,7 +162,7 @@ int main(int argc, char **argv)
 	ajStrDel(&str);
     }
 
-    ajGraphClose();
+    ajGraphicsClose();
     ajGraphxyDel(&graph);
 
     ajFileClose(&outf);

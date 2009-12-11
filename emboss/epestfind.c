@@ -706,20 +706,20 @@ int main(int argc, char **argv)
     
     /* Display graphics. */
     plot = ajGraphdataNew();
-    ajGraphxySetOverLap(graph, ajFalse);
+    ajGraphxySetflagOverlay(graph, ajFalse);
     ajGraphdataSetTypeC(plot, "2D Plot");
     ajGraphdataSetTitleC(plot, "PEST-find");
     ajFmtPrintS(&map, "Sequence %s from %d to %d", ajSeqGetNameC(seq),
 		begin, end);
     ajGraphdataSetXlabelS(plot, map);
     ajGraphdataSetYlabelC(plot, "PEST score");
-    ajGraphdataSetMaxMin(plot, (float) 1, (float) seqlen, ymin, ymax);
-    ajGraphdataSetMaxima(plot, (float) 1, (float) seqlen, ymin, ymax);
+    ajGraphdataSetMinmax(plot, (float) 1, (float) seqlen, ymin, ymax);
+    ajGraphdataSetTruescale(plot, (float) 1, (float) seqlen, ymin, ymax);
     /* threshold line */
-    ajGraphdataAddLine(plot, (float) 0, (float) trshld, (float) seqlen,
+    ajGraphdataAddposLine(plot, (float) 0, (float) trshld, (float) seqlen,
 			  (float) trshld, AQUAMARINE);
     ajFmtPrintS(&map, "threshold %+.2f", trshld);
-    ajGraphdataAddText(plot, (float) 0 + 2, (float) trshld + 2,
+    ajGraphdataAddposTextC(plot, (float) 0 + 2, (float) trshld + 2,
 			  AQUAMARINE, ajStrGetPtr(map));
     ajListSort(reslst, pestfind_compare_position);
     itrlst = ajListIterNewread(reslst);
@@ -728,35 +728,35 @@ int main(int argc, char **argv)
 	pstdat = (PestfindPData) ajListIterGet(itrlst);
 	if((pstdat->Type) == PSTPOT)
 	{
-	    ajGraphdataAddLine(plot, (float) (pstdat->Begin),
+	    ajGraphdataAddposLine(plot, (float) (pstdat->Begin),
 				  (float) (pstdat->Pscore),
 				  (float) (pstdat->End),
 				  (float) (pstdat->Pscore), GREEN);
 	    ajFmtPrintS(&map, "%+.2f", (pstdat->Pscore));
-	    ajGraphdataAddText(plot, (float) (pstdat->Begin) + 2,
+	    ajGraphdataAddposTextC(plot, (float) (pstdat->Begin) + 2,
 				  (float) (pstdat->Pscore) + 2, GREEN,
 				  ajStrGetPtr(map));
 	}
 
 	if((pstdat->Type) == PSTWEA)
 	{
-	    ajGraphdataAddLine(plot, (float) (pstdat->Begin),
+	    ajGraphdataAddposLine(plot, (float) (pstdat->Begin),
 				  (float) (pstdat->Pscore),
 				  (float) (pstdat->End),
 				  (float) (pstdat->Pscore), RED);
 	    ajFmtPrintS(&map, "%+.2f", (pstdat->Pscore));
-	    ajGraphdataAddText(plot, (float) (pstdat->Begin) + 2,
+	    ajGraphdataAddposTextC(plot, (float) (pstdat->Begin) + 2,
 				  (float) (pstdat->Pscore) + 2, RED,
 				  ajStrGetPtr(map));
 	}
 
 	if((pstdat->Type) == PSTINV)
 	{
-	    ajGraphdataAddLine(plot, (float) (pstdat->Begin),
+	    ajGraphdataAddposLine(plot, (float) (pstdat->Begin),
 				  (float) (pstdat->Pscore),
 				  (float) (pstdat->End),
 				  (float) (pstdat->Pscore), BROWN);
-	    ajGraphdataAddText(plot, (float) (pstdat->Begin) + 2,
+	    ajGraphdataAddposTextC(plot, (float) (pstdat->Begin) + 2,
 				  (float) (pstdat->Pscore) + 2, BROWN,
 				  "inv.");
 	}
@@ -767,7 +767,7 @@ int main(int argc, char **argv)
     ajGraphicsSetCharscale(0.50);
     ajGraphSetTitleC(graph, "PEST-find");
     ajGraphxyDisplay(graph, AJTRUE);
-    ajGraphCloseWin();
+    ajGraphicsClose();
     ajGraphxyDel(&graph);
     
     /* clean-up and destruction */

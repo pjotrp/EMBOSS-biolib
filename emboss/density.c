@@ -233,7 +233,7 @@ int main(int argc, char **argv)
 
         if(graph)
         {
-            ajGraphxySetOverLap(graph,ajTrue);
+            ajGraphxySetflagOverlay(graph,ajTrue);
             ajGraphSetXlabelC(graph,"Position");
             ajGraphSetYlabelC(graph,"Density");
         }
@@ -270,7 +270,7 @@ int main(int argc, char **argv)
     }
 
     if(graph)
-        ajGraphClose();
+        ajGraphicsClose();
 
     AJFREE(density);
 
@@ -337,9 +337,9 @@ static void density_addquadgraph(AjPGraph qgraph, ajint limit,
     }
 
     ajGraphdataSetColour(data,BLACK);
-    ajGraphdataSetMaxMin(data,density->pos[0],density->pos[limit-1],ymin,
+    ajGraphdataSetMinmax(data,density->pos[0],density->pos[limit-1],ymin,
 			    ymax);
-    ajGraphdataSetMaxima(data,density->pos[0],density->pos[limit-1],ymin,
+    ajGraphdataSetTruescale(data,density->pos[0],density->pos[limit-1],ymin,
 			    ymax);
 
     ajGraphdataSetTypeC(data,"2D Plot Float");
@@ -357,9 +357,9 @@ static void density_addquadgraph(AjPGraph qgraph, ajint limit,
     }
 
     ajGraphdataSetColour(data,RED);
-    ajGraphdataSetMaxMin(data,density->pos[0],density->pos[limit-1],ymin,
+    ajGraphdataSetMinmax(data,density->pos[0],density->pos[limit-1],ymin,
 			    ymax);
-    ajGraphdataSetMaxima(data,density->pos[0],density->pos[limit-1],ymin,
+    ajGraphdataSetTruescale(data,density->pos[0],density->pos[limit-1],ymin,
 			    ymax);
 
     ajGraphdataSetTypeC(data,"2D Plot Float");
@@ -377,9 +377,9 @@ static void density_addquadgraph(AjPGraph qgraph, ajint limit,
     }
 
     ajGraphdataSetColour(data,GREEN);
-    ajGraphdataSetMaxMin(data,density->pos[0],density->pos[limit-1],ymin,
+    ajGraphdataSetMinmax(data,density->pos[0],density->pos[limit-1],ymin,
 			    ymax);
-    ajGraphdataSetMaxima(data,density->pos[0],density->pos[limit-1],ymin,
+    ajGraphdataSetTruescale(data,density->pos[0],density->pos[limit-1],ymin,
 			    ymax);
 
     ajGraphdataSetTypeC(data,"2D Plot Float");
@@ -397,9 +397,9 @@ static void density_addquadgraph(AjPGraph qgraph, ajint limit,
     }
 
     ajGraphdataSetColour(data,BLUE);
-    ajGraphdataSetMaxMin(data,density->pos[0],density->pos[limit-1],ymin,
+    ajGraphdataSetMinmax(data,density->pos[0],density->pos[limit-1],ymin,
 			    ymax);
-    ajGraphdataSetMaxima(data,density->pos[0],density->pos[limit-1],ymin,
+    ajGraphdataSetTruescale(data,density->pos[0],density->pos[limit-1],ymin,
 			    ymax);
 
     ajGraphdataSetTypeC(data,"2D Plot Float");
@@ -455,9 +455,9 @@ static void density_adddualgraph(AjPGraph dgraph, ajint limit,
     }
 
     ajGraphdataSetColour(data,GREEN);
-    ajGraphdataSetMaxMin(data,density->pos[0],density->pos[limit-1],ymin,
+    ajGraphdataSetMinmax(data,density->pos[0],density->pos[limit-1],ymin,
 			    ymax);
-    ajGraphdataSetMaxima(data,density->pos[0],density->pos[limit-1],ymin,
+    ajGraphdataSetTruescale(data,density->pos[0],density->pos[limit-1],ymin,
 			    ymax);
 
     ajGraphdataSetTypeC(data,"2D Plot Float");
@@ -475,9 +475,9 @@ static void density_adddualgraph(AjPGraph dgraph, ajint limit,
     }
 
     ajGraphdataSetColour(data,BLUE);
-    ajGraphdataSetMaxMin(data,density->pos[0],density->pos[limit-1],ymin,
+    ajGraphdataSetMinmax(data,density->pos[0],density->pos[limit-1],ymin,
 			    ymax);
-    ajGraphdataSetMaxima(data,density->pos[0],density->pos[limit-1],ymin,
+    ajGraphdataSetTruescale(data,density->pos[0],density->pos[limit-1],ymin,
 			    ymax);
 
     ajGraphdataSetTypeC(data,"2D Plot Float");

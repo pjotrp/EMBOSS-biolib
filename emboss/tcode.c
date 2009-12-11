@@ -189,7 +189,7 @@ int main(int argc, char **argv)
 	{
 	    this = ajGraphdataNewI(npoints);
 	    ajGraphdataSetTypeC(this,"2D plot");
-	    ajGraphxySetOverLap(graph,ajFalse);
+	    ajGraphxySetflagOverlay(graph,ajFalse);
 	    ajGraphicsCalcRange(this->y,npoints,&ymin,&ymax);
 
 	    for(i=0;i<npoints;++i)
@@ -198,20 +198,20 @@ int main(int argc, char **argv)
 				    / 2);
 		this->y[i] = ajFloatGet(testcodes,i);
 	    }
-	    ajGraphdataSetMaxima(this,this->x[0],this->x[npoints-1],
+	    ajGraphdataSetTruescale(this,this->x[0],this->x[npoints-1],
 				   (float)0.,(float)1.37);
 
 
 
 	    ajGraphShowTitle(graph, ajTrue);
-	    ajGraphdataSetYTitleC(this,"TESTCODE value");
-	    ajGraphdataSetXTitleC(this,"Sequence mid position");
+	    ajGraphdataSetYlabelC(this,"TESTCODE value");
+	    ajGraphdataSetXlabelC(this,"Sequence mid position");
 	    ajGraphAppendTitleS(graph, ajSeqGetUsaS(seq));
 
-	    ajGraphdataAddLine(this,this->x[0],(float)0.74,
+	    ajGraphdataAddposLine(this,this->x[0],(float)0.74,
 				  this->x[npoints-1],
 				  (float)0.74,1);
-	    ajGraphdataAddLine(this,this->x[0],(float)0.95,
+	    ajGraphdataAddposLine(this,this->x[0],(float)0.95,
 				  this->x[npoints-1],
 				  (float)0.95,3);
 

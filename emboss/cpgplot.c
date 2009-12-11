@@ -173,7 +173,7 @@ int main(int argc, char **argv)
 
     if(mult)
     {
-	ajGraphCloseWin();
+	ajGraphicsClose();
 	ajGraphxyDel(&mult);
     }
 
@@ -538,8 +538,8 @@ static void cpgplot_plotit(const char *seq,
     {
 	tmGraph2 = ajGraphdataNew();
 	ajGraphdataSetTitleC(tmGraph2,"Observed vs Expected");
-	ajGraphdataSetXTitleC(tmGraph2,"Base number");
-	ajGraphdataSetYTitleC(tmGraph2,"Obs/Exp");
+	ajGraphdataSetXlabelC(tmGraph2,"Base number");
+	ajGraphdataSetYlabelC(tmGraph2,"Obs/Exp");
 
 	min = 64000.;
 	max = -64000.;
@@ -549,9 +549,9 @@ static void cpgplot_plotit(const char *seq,
 	    max = (max>obsexp[i]) ? max : obsexp[i];
 	}
 
-	ajGraphdataSetMaxMin(tmGraph2,(float)begin,(float)begin+len-1,
+	ajGraphdataSetMinmax(tmGraph2,(float)begin,(float)begin+len-1,
 			       min,max);
-	ajGraphdataSetMaxima(tmGraph2,(float)begin,(float)begin+len-1,
+	ajGraphdataSetTruescale(tmGraph2,(float)begin,(float)begin+len-1,
 			       0.0,max);
 	ajGraphdataSetTypeC(tmGraph2,"Multi 2D Plot");
 
@@ -572,8 +572,8 @@ static void cpgplot_plotit(const char *seq,
     {
 	tmGraph3 = ajGraphdataNew();
 	ajGraphdataSetTitleC(tmGraph3,"Percentage");
-	ajGraphdataSetXTitleC(tmGraph3,"Base number");
-	ajGraphdataSetYTitleC(tmGraph3,"Percentage");
+	ajGraphdataSetXlabelC(tmGraph3,"Base number");
+	ajGraphdataSetYlabelC(tmGraph3,"Percentage");
 
 	min = 64000.;
 	max = -64000.;
@@ -583,9 +583,9 @@ static void cpgplot_plotit(const char *seq,
 	    max = (max>xypc[i]) ? max : xypc[i];
 	}
 
-	ajGraphdataSetMaxMin(tmGraph3,(float)begin,(float)begin+len-1,
+	ajGraphdataSetMinmax(tmGraph3,(float)begin,(float)begin+len-1,
 			       min,max);
-	ajGraphdataSetMaxima(tmGraph3,(float)begin,(float)begin+len-1,
+	ajGraphdataSetTruescale(tmGraph3,(float)begin,(float)begin+len-1,
 			      0.0,max);
 	ajGraphdataSetTypeC(tmGraph3,"Multi 2D Plot");
 
@@ -614,10 +614,10 @@ static void cpgplot_plotit(const char *seq,
 
 	tmGraph = ajGraphdataNew();
 	ajGraphdataSetTitleC(tmGraph,"Putative Islands");
-	ajGraphdataSetXTitleC(tmGraph,"Base Number");
-	ajGraphdataSetYTitleC(tmGraph,"Threshold");
+	ajGraphdataSetXlabelC(tmGraph,"Base Number");
+	ajGraphdataSetYlabelC(tmGraph,"Threshold");
 
-	ajGraphdataSetMaxMin(tmGraph,(float)begin,(float)begin+len-1,
+	ajGraphdataSetMinmax(tmGraph,(float)begin,(float)begin+len-1,
 			       0.,1.);
 	ajGraphdataSetTypeC(tmGraph,"Multi 2D Plot");
 
@@ -628,9 +628,9 @@ static void cpgplot_plotit(const char *seq,
 	ajGraphxySetYendF(graphs,2);
 	ajGraphxySetXrangeII(graphs,begin,begin+len-1);
 	ajGraphxySetYrangeII(graphs,0,2);
-	ajGraphdataSetMaxMin(tmGraph,(float)begin,(float)(begin+len-1),
+	ajGraphdataSetMinmax(tmGraph,(float)begin,(float)(begin+len-1),
 			       (float) 0.0, (float) 1.2);
-	ajGraphdataSetMaxima(tmGraph,(float)begin,(float)(begin+len-1),
+	ajGraphdataSetTruescale(tmGraph,(float)begin,(float)(begin+len-1),
 			       (float) 0.0, (float) 1.0);
 
 	ajGraphdataCalcXY(tmGraph,len,(float)begin,1.0,tmp);
@@ -642,7 +642,7 @@ static void cpgplot_plotit(const char *seq,
     if(docg || dopc || doobsexp)
     {
 	ajGraphSetTitleC(graphs,seq);
-	ajGraphxySetOverLap(graphs,ajFalse);
+	ajGraphxySetflagOverlay(graphs,ajFalse);
 	ajGraphxyDisplay(graphs, AJFALSE);
     }
 

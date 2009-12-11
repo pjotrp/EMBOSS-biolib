@@ -184,8 +184,8 @@ int main(int argc, char **argv)
 	    ajGraphSetYlabelC(graph,"Charge");
 
 	    ajGraphdataSetTypeC(phGraph,"2D Plot Float");
-	    ajGraphdataSetMaxMin(phGraph,1.0,14.0,minchg,maxchg);
-	    ajGraphdataSetMaxima(phGraph,1.0,14.0,minchg,maxchg);
+	    ajGraphdataSetMinmax(phGraph,1.0,14.0,minchg,maxchg);
+	    ajGraphdataSetTruescale(phGraph,1.0,14.0,minchg,maxchg);
 	    ajGraphxySetXstartF(graph,1.0);
 	    ajGraphxySetXendF(graph,14.0);
 	    ajGraphxySetYstartF(graph,minchg);
@@ -193,7 +193,7 @@ int main(int argc, char **argv)
 	    ajGraphxySetXrangeII(graph,1,14);
 	    ajGraphxySetYrangeII(graph,(ajint)minchg,(ajint)maxchg);
 
-	    ajGraphdataSetXY(phGraph,xa,ya);
+	    ajGraphdataAddXY(phGraph,xa,ya);
 	    ajGraphDataReplace(graph,phGraph);
 
 
@@ -204,7 +204,7 @@ int main(int argc, char **argv)
 	    AJFREE(xa);
 	}
     }
-    ajGraphClose();
+    ajGraphicsClose();
     ajGraphxyDel(&graph);
 
     embIeppKDel(pK);

@@ -370,7 +370,7 @@ PLPLOT CALLS *START*
 
 /* @section modifiers **********************************************************
 **
-** COntrolling the internals
+** Controlling the internals
 **
 ** @fdata [none]
 ** @fcategory modify
@@ -3645,6 +3645,75 @@ __deprecated PLFLT ajGraphTextLength(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
 
 
 
+/* @section unused ************************************************************
+**
+** @fdata [none]
+**
+** @nam3rule Unused Contains dummy calls to unused functions to keep
+**                 compilers happy
+**
+** @valrule * [void]
+** @fcategory misc
+**
+******************************************************************************/
+ 
+
+
+/* @func ajGraphicsUnused ******************************************************
+**
+** Unused functions to avoid compiler warnings
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphicsUnused(void)
+{
+    float f = 0.0;
+    ajint i = 0;
+    AjPGraph thys = NULL;
+    AjPGraphdata graphdata = NULL;
+
+    GraphPrint(thys);
+    GraphDataPrint(graphdata);
+    GraphCheckPoints(0, &f, &f);
+    GraphCheckFlags(0);
+    GraphArrayGapsI(0, &i, &i);
+
+    return;
+}
+
+/* @section exit **************************************************************
+**
+** Functions called on exit
+**
+** @fdata [none]
+**
+** @nam3rule Exit Cleanup of internals when program exits
+**
+** @valrule * [void]
+** @fcategory misc
+**
+******************************************************************************/
+
+
+/* @func ajGraphicsExit ********************************************************
+**
+** Cleans up graphics internal memory
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphicsExit(void)
+{
+    ajStrDel(&graphBasename);
+    ajStrDel(&graphExtension);
+
+    return;
+}
+
+
 /* @datasection [AjPGraph] Graph object ****************************************
 **
 ** Function is for manipulating an AjPGraph general graph object
@@ -3652,6 +3721,38 @@ __deprecated PLFLT ajGraphTextLength(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
 ** @nam2rule Graph
 **
 ******************************************************************************/
+
+
+/* @section Constructors ******************************************************
+**
+** Construct a new graph object to be populated by other functions
+**
+** @fdata [AjPGraph]
+** @fcategory new
+**
+** @nam3rule New
+**
+** @valrule * [AjPGraph] New graph object
+**
+******************************************************************************/
+
+/* @func ajGraphNew ***********************************************************
+**
+** Create a structure to hold a general graph.
+**
+** @return [AjPGraph] multiple graph structure.
+** @@
+******************************************************************************/
+
+AjPGraph ajGraphNew(void)
+{
+    AjPGraph graph;
+
+    AJNEW0(graph);
+    ajDebug("ajGraphNew - need to call ajGraphSet\n");
+
+    return graph;
+}
 
 
 
@@ -3663,6 +3764,8 @@ __deprecated PLFLT ajGraphTextLength(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
 ** @fdata [AjPGraph]
 ** @fcategory modify
 **
+** @nam3rule Init Initialise a grah object
+** @nam4rule InitSeq Initialises using default values based on a sequence.
 ** @nam3rule Open Open a plot
 ** @nam3rule Newpage Start a new plot page
 ** @nam4rule OpenFlags Open a plot with PLPLOT flag bits
@@ -3685,10 +3788,37 @@ __deprecated PLFLT ajGraphTextLength(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
 ** @argrule OpenPlotset numofsets [ajuint] number of plots in set.
 ** @argrule Mm xmm [float*] x length in millimetres
 ** @argrule Mm ymm [float*] y length in millimetres
+** @argrule ajGraphInitSeq seq [const AjPSeq] Sequence
 **
 ** @valrule * [void]
 **
 ******************************************************************************/
+
+
+/* @func ajGraphInitSeq *******************************************************
+**
+** Initialises a graph using default values based on a sequence.
+**
+** Existing titles and other data are unchanged
+**
+** @param [u] thys [AjPGraph] Graph
+** @param [r] seq [const AjPSeq] Sequence
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphInitSeq(AjPGraph thys, const AjPSeq seq)
+{
+    if(!ajStrGetLen(thys->title))
+        ajFmtPrintS(&thys->title, "%S of %S",
+                    ajUtilGetProgram(), ajSeqGetNameS(seq));
+
+    ajGraphxySetXrangeII(thys, 1, ajSeqGetLen(seq));
+
+    return;
+}
+
+
 
 
 /* @func ajGraphNewpage *******************************************************
@@ -4026,6 +4156,7 @@ void ajGraphOpenWin(AjPGraph thys, float xmin, float xmax,
 ** @nam4rule Desc Plot description
 ** @nam4rule Devicetype Plplot device by name
 ** @nam4rule Flag Set or unset a plplot flag
+** @nam4rule Multi Set graph to store multiple graphs
 ** @nam4rule Outdir Output directory
 ** @nam4rule Outfile Output filename
 ** @nam4rule Subtitle Graph subtitle
@@ -4036,6 +4167,7 @@ void ajGraphOpenWin(AjPGraph thys, float xmin, float xmax,
 ** @suffix S String object data
 **
 ** @argrule * thys [AjPGraph] Graph object
+** @argrule Multi numsets [ajuint] Maximum number of graphs that can be stored
 ** @argrule Show set [AjBool] True to display, false to hide
 ** @argrule Devicetype devicetype [const AjPStr] AJAX device name
 ** @argrule Flag flag [ajint] Plplot flag (one bit set)
@@ -4321,6 +4453,39 @@ void ajGraphSetFlag(AjPGraph thys, ajint flag, AjBool set)
 	if(set)
 	    thys->flags |= flag;
     }
+
+    return;
+}
+
+
+
+
+/* @func ajGraphSetMulti ******************************************************
+**
+** Create a structure to hold a number of graphs.
+**
+** @param [w] thys [AjPGraph] Graph structure to store info in.
+** @param [r] numsets [ajuint] maximum number of graphs that can be stored.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphSetMulti(AjPGraph thys, ajuint numsets)
+{
+    if (!thys)
+	return;
+
+    if (thys->graphs)
+        AJFREE(thys->graphs);
+
+    AJCNEW0(thys->graphs,numsets);
+
+    ajDebug("ajGraphSetMulti numsets: %d\n", numsets);
+
+    thys->numofgraphs    = 0;
+    thys->numofgraphsmax = numsets;
+    thys->minmaxcalc     = 0;
+    thys->flags          = GRAPH_XY;
 
     return;
 }
@@ -5604,12 +5769,288 @@ void ajGraphTrace(const AjPGraph thys)
 
 
 
+/* @section Graph data management ********************************************
+**
+** Functions to manage the graphdata objects associated with a graph object
+**
+** @fdata [AjPGraph]
+** @fcategory modify
+**
+** @nam3rule Data
+** @nam4rule Add Add a graph data object
+** @nam4rule Replace Replace graph data object
+** @suffix I Index number of data for multiple graphs
+**
+** @argrule * thys [AjPGraph] multiple graph structure.
+** @argrule * graphdata [AjPGraphdata] graph to be added.
+** @argrule I num [ajuint] number within multiple graph.
+**
+** @valrule * [AjBool]
+**
+******************************************************************************/
+
+/* @func ajGraphDataAdd ****************************************************
+**
+** Add another graph structure to the multiple graph structure.
+**
+** The graphdata now belongs to the graph - do not delete it while
+** the graph is using it.
+**
+** @param [u] thys [AjPGraph] multiple graph structure.
+** @param [u] graphdata [AjPGraphdata] graph to be added.
+** @return [AjBool] True if graph added successfully
+** @@
+******************************************************************************/
+
+AjBool ajGraphDataAdd(AjPGraph thys, AjPGraphdata graphdata)
+{
+    if(thys->numofgraphs)
+    {
+        ajDebug("ajGraphDataAdd multi \n");
+    }
+
+    if(thys->numofgraphs < thys->numofgraphsmax)
+    {
+        (thys->graphs)[thys->numofgraphs++] = graphdata;
+        return ajTrue;
+    }
+
+    ajErr("Too many multiple graphs - expected %d graphs",
+          thys->numofgraphsmax);
+
+    return ajFalse;
+}
+
+
+
+
+/* @func ajGraphDataReplace ************************************************
+**
+** Replace graph structure into the multiple graph structure.
+**
+** The graphdata now belongs to the graph - do not delete it while
+** the graph is using it.
+**
+** @param [u] thys [AjPGraph] multiple graph structure.
+** @param [u] graphdata [AjPGraphdata] graph to be added.
+** @return [AjBool] True if graph added successfully
+** @@
+******************************************************************************/
+
+AjBool ajGraphDataReplace(AjPGraph thys, AjPGraphdata graphdata)
+{
+    ajGraphdataDel(&(thys->graphs)[0]);
+    (thys->graphs)[0] = graphdata;
+    thys->numofgraphs=1;
+
+    thys->minmaxcalc = 0;
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ajGraphDataReplaceI ************************************************
+**
+** Replace one of the graph structures in the multiple graph structure.
+**
+** The graphdata now belongs to the graph - do not delete it while
+** the graph is using it.
+**
+** @param [u] thys [AjPGraph] multiple graph structure.
+** @param [u] graphdata [AjPGraphdata] graph to be added.
+** @param [r] num [ajuint] number within multiple graph.
+** @return [AjBool] True if graph added successfully
+** @@
+******************************************************************************/
+
+AjBool ajGraphDataReplaceI(AjPGraph thys, AjPGraphdata graphdata, ajuint num)
+{
+    if(thys->numofgraphs > num) {
+        ajGraphdataDel(&(thys->graphs)[num]);
+        (thys->graphs)[num] = graphdata;
+    }
+    else if(thys->numofgraphs < thys->numofgraphsmax)
+    {
+        (thys->graphs)[thys->numofgraphs++] = graphdata;
+    }
+    else
+    {
+        return ajFalse;
+    }
+
+    thys->minmaxcalc = 0;
+
+    return ajTrue;
+}
+
+
+
+
 /* @datasection [AjPGraph] Graph object ****************************************
 **
 ** Function is for manipulating an AjPGraph object for an XY graph
 **
 ** @nam2rule Graphxy
 */
+
+
+/* @section Constructors ******************************************************
+**
+** Construct a new graph object to be populated by other functions
+**
+** @fdata [AjPGraph]
+** @fcategory new
+**
+** @nam3rule New
+** @suffix I Number of graphs
+**
+** @argrule I numsets [ajuint] maximum number of graphs that can be stored
+** @valrule * [AjPGraph] New graph object
+**
+******************************************************************************/
+
+/* @func ajGraphxyNewI ********************************************************
+**
+** Create a structure to hold a number of graphs.
+**
+** @param [r] numsets [ajuint] maximum number of graphs that can be stored.
+** @return [AjPGraph] multiple graph structure.
+** @@
+******************************************************************************/
+
+AjPGraph ajGraphxyNewI(ajuint numsets)
+{
+    AjPGraph ret;
+
+    AJNEW0(ret);
+    ret->numsets = numsets;
+
+    ajDebug("ajGraphxyNewI numsets: %d\n", numsets);
+
+    return ret;
+}
+
+
+
+
+/* @section Destructors *******************************************************
+**
+** Destructors for AjGraph XY graph data
+**
+** @fdata [AjPGraph]
+** @fcategory delete
+**
+** @nam3rule Del Destructor
+**
+** @argrule Del pthis [AjPGraph*] Graph structure to store info in.
+**
+** @valrule * [void]
+**
+******************************************************************************/
+
+
+/* @func ajGraphxyDel *********************************************************
+**
+** Destructor for a graph object
+**
+** @param [w] pthis [AjPGraph*] Graph structure to store info in.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphxyDel(AjPGraph* pthis)
+{
+    AjPGraphdata graphdata;
+    AjPGraph thys;
+    ajuint i;
+
+    if(!pthis)
+	return;
+
+    if(!*pthis)
+	return;
+
+    thys = *pthis;
+
+    ajDebug("ajGraphxyDel numofgraphs:%d\n",
+            thys->numofgraphs);
+
+    for(i = 0 ; i < thys->numofgraphs ; i++)
+    {
+        graphdata = (thys->graphs)[i];
+
+        if (graphdata)
+        {
+            ajDebug("ajGraphxyDel graphs[%d] xcalc:%B ycalc:%B x:%x y:%x\n",
+                    i, graphdata->xcalc, graphdata->ycalc,
+                    graphdata->x, graphdata->y);
+
+            if(!graphdata->xcalc)
+                AJFREE(graphdata->x);
+            if(!graphdata->ycalc)
+                AJFREE(graphdata->y);
+            if(!graphdata->gtype)
+                ajStrDel(&graphdata->gtype);
+            ajGraphdataDel(&graphdata);
+        }
+    }
+
+    ajStrDel(&thys->desc);
+    ajStrDel(&thys->title);
+    ajStrDel(&thys->subtitle);
+    ajStrDel(&thys->xaxis);
+    ajStrDel(&thys->yaxis);
+    ajStrDel(&thys->outputfile);
+
+    ajGraphClear(thys);
+
+    AJFREE(thys->graphs);
+
+    AJFREE(thys);
+
+    *pthis = NULL;
+
+    return;
+}
+
+
+/* @section Display ***********************************************************
+**
+** Functions to display or write the graph
+**
+** @fdata [AjPGraph]
+** @fcategory modify
+**
+** @nam3rule Display Display the graph
+**
+** @argrule Display thys [AjPGraph] Multiple graph pointer.
+** @argrule Display closeit [AjBool] Whether to close graph at the end.
+**
+** @valrule * [void]
+**
+******************************************************************************/
+
+/* @func ajGraphxyDisplay *****************************************************
+**
+** A general routine for drawing graphs.
+**
+** @param [u] thys [AjPGraph] Multiple graph pointer.
+** @param [r] closeit [AjBool]   Whether to close graph at the end.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphxyDisplay(AjPGraph thys, AjBool closeit)
+{
+    /* Calling funclist graphType() */
+    (graphType[thys->displaytype].XYDisplay)
+	(thys, closeit, graphType[thys->displaytype].Ext);
+
+    return;
+}
+
 
 
 /* @section Modifiers *********************************************************
@@ -8710,32 +9151,6 @@ static void GraphCheckPoints(ajint n, const PLFLT *x, const PLFLT *y)
 
 
 
-/* @func ajGraphInitSeq *******************************************************
-**
-** Initialises a graph using default values based on a sequence.
-**
-** Existing titles and other data are unchanged
-**
-** @param [u] thys [AjPGraph] Graph
-** @param [r] seq [const AjPSeq] Sequence
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphInitSeq(AjPGraph thys, const AjPSeq seq)
-{
-    if(!ajStrGetLen(thys->title))
-        ajFmtPrintS(&thys->title, "%S of %S",
-                    ajUtilGetProgram(), ajSeqGetNameS(seq));
-
-    ajGraphxySetXrangeII(thys, 1, ajSeqGetLen(seq));
-
-    return;
-}
-
-
-
-
 /* @funcstatic GraphOpenFile **************************************************
 **
 ** A general routine for setting BaseName and extension in plplot.
@@ -9260,203 +9675,6 @@ static void GraphxyDisplayXwin(AjPGraph thys, AjBool closeit, const char *ext )
     return;
 }
 
-
-/* @section Destructors *******************************************************
-**
-** Destructors for AjGraph XY graph data
-**
-** @fdata [AjPGraph]
-** @fcategory delete
-**
-** @nam3rule Del Destructor
-**
-******************************************************************************/
-
-
-/* @func ajGraphxyDel *********************************************************
-**
-** Destructor for a graph object
-**
-** @param [w] pthis [AjPGraph*] Graph structure to store info in.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphxyDel(AjPGraph* pthis)
-{
-    AjPGraphdata graphdata;
-    AjPGraph thys;
-    ajuint i;
-
-    if(!pthis)
-	return;
-
-    if(!*pthis)
-	return;
-
-    thys = *pthis;
-
-    ajDebug("ajGraphxyDel numofgraphs:%d\n",
-            thys->numofgraphs);
-
-    for(i = 0 ; i < thys->numofgraphs ; i++)
-    {
-        graphdata = (thys->graphs)[i];
-
-        if (graphdata)
-        {
-            ajDebug("ajGraphxyDel graphs[%d] xcalc:%B ycalc:%B x:%x y:%x\n",
-                    i, graphdata->xcalc, graphdata->ycalc,
-                    graphdata->x, graphdata->y);
-
-            if(!graphdata->xcalc)
-                AJFREE(graphdata->x);
-            if(!graphdata->ycalc)
-                AJFREE(graphdata->y);
-            if(!graphdata->gtype)
-                ajStrDel(&graphdata->gtype);
-            ajGraphdataDel(&graphdata);
-        }
-    }
-
-    ajStrDel(&thys->desc);
-    ajStrDel(&thys->title);
-    ajStrDel(&thys->subtitle);
-    ajStrDel(&thys->xaxis);
-    ajStrDel(&thys->yaxis);
-    ajStrDel(&thys->outputfile);
-
-    ajGraphClear(thys);
-
-    AJFREE(thys->graphs);
-
-    AJFREE(thys);
-
-    *pthis = NULL;
-
-    return;
-}
-
-
-
-
-/* @func ajGraphDataAdd ****************************************************
-**
-** Add another graph structure to the multiple graph structure.
-**
-** The graphdata now belongs to the graph - do not delete it while
-** the graph is using it.
-**
-** @param [u] thys [AjPGraph] multiple graph structure.
-** @param [u] graphdata [AjPGraphdata] graph to be added.
-** @return [ajint] 1 if graph added successfully else 0;
-** @@
-******************************************************************************/
-
-ajint ajGraphDataAdd(AjPGraph thys, AjPGraphdata graphdata)
-{
-    if(thys->numofgraphs)
-    {
-        ajDebug("ajGraphDataAdd multi \n");
-    }
-
-    if(thys->numofgraphs < thys->numofgraphsmax)
-    {
-        (thys->graphs)[thys->numofgraphs++] = graphdata;
-        return 1;
-    }
-
-    ajErr("Too many multiple graphs - expected %d graphs",
-          thys->numofgraphsmax);
-
-    return 0;
-}
-
-
-
-
-/* @func ajGraphDataReplace ************************************************
-**
-** Replace graph structure into the multiple graph structure.
-**
-** The graphdata now belongs to the graph - do not delete it while
-** the graph is using it.
-**
-** @param [u] thys [AjPGraph] multiple graph structure.
-** @param [u] graphdata [AjPGraphdata] graph to be added.
-** @return [ajint] 1 if graph added successfully else 0;
-** @@
-******************************************************************************/
-
-ajint ajGraphDataReplace(AjPGraph thys, AjPGraphdata graphdata)
-{
-    ajGraphdataDel(&(thys->graphs)[0]);
-    (thys->graphs)[0] = graphdata;
-    thys->numofgraphs=1;
-
-    thys->minmaxcalc = 0;
-
-    return 1;
-}
-
-
-
-
-/* @func ajGraphDataReplaceI ************************************************
-**
-** Replace one of the graph structures in the multiple graph structure.
-**
-** The graphdata now belongs to the graph - do not delete it while
-** the graph is using it.
-**
-** @param [u] thys [AjPGraph] multiple graph structure.
-** @param [u] graphdata [AjPGraphdata] graph to be added.
-** @param [r] num [ajuint] number within multiple graph.
-** @return [ajint] 1 if graph added successfully else 0;
-** @@
-******************************************************************************/
-
-ajint ajGraphDataReplaceI(AjPGraph thys, AjPGraphdata graphdata, ajuint num)
-{
-    if(thys->numofgraphs > num) {
-        ajGraphdataDel(&(thys->graphs)[num]);
-        (thys->graphs)[num] = graphdata;
-    }
-    else if(thys->numofgraphs < thys->numofgraphsmax)
-    {
-        (thys->graphs)[thys->numofgraphs++] = graphdata;
-    }
-
-
-    thys->minmaxcalc = 0;
-
-    return 1;
-}
-
-
-
-
-/* @func ajGraphNew ***********************************************************
-**
-** Create a structure to hold a general graph.
-**
-** @return [AjPGraph] multiple graph structure.
-** @@
-******************************************************************************/
-
-AjPGraph ajGraphNew(void)
-{
-    AjPGraph graph;
-
-    AJNEW0(graph);
-    ajDebug("ajGraphNew - need to call ajGraphSet\n");
-
-    return graph;
-}
-
-
-
-
 /* @funcstatic GraphNewPlplot *************************************************
 **
 ** Populate a plplot structure to hold a general graph.
@@ -9479,30 +9697,6 @@ static void GraphNewPlplot(AjPGraph graph)
     ajFmtPrintS(&graph->outputfile,"%S", ajUtilGetProgram());
 
     return;
-}
-
-
-
-
-/* @func ajGraphxyNewI ********************************************************
-**
-** Create a structure to hold a number of graphs.
-**
-** @param [r] numsets [ajuint] maximum number of graphs that can stored.
-** @return [AjPGraph] multiple graph structure.
-** @@
-******************************************************************************/
-
-AjPGraph ajGraphxyNewI(ajuint numsets)
-{
-    AjPGraph ret;
-
-    AJNEW0(ret);
-    ret->numsets = numsets;
-
-    ajDebug("ajGraphxyNewI numsets: %d\n", numsets);
-
-    return ret;
 }
 
 
@@ -9533,39 +9727,6 @@ static void GraphxyNewPlplot(AjPGraph thys)
     thys->ystart = thys->yend = 0;
     thys->Mainobj             = NULL;
     ajFmtPrintS(&thys->outputfile,"%S", ajUtilGetProgram());
-
-    return;
-}
-
-
-
-
-/* @func ajGraphSetMulti ******************************************************
-**
-** Create a structure to hold a number of graphs.
-**
-** @param [w] thys [AjPGraph] Graph structure to store info in.
-** @param [r] numsets [ajuint] maximum number of graphs that can stored.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphSetMulti(AjPGraph thys, ajuint numsets)
-{
-    if (!thys)
-	return;
-
-    if (thys->graphs)
-        AJFREE(thys->graphs);
-
-    AJCNEW0(thys->graphs,numsets);
-
-    ajDebug("ajGraphSetMulti numsets: %d\n", numsets);
-
-    thys->numofgraphs    = 0;
-    thys->numofgraphsmax = numsets;
-    thys->minmaxcalc     = 0;
-    thys->flags          = GRAPH_XY;
 
     return;
 }
@@ -9742,27 +9903,6 @@ static void GraphxyGeneral(AjPGraph thys, AjBool closeit)
     return;
 }
 
-
-
-
-/* @func ajGraphxyDisplay *****************************************************
-**
-** A general routine for drawing graphs.
-**
-** @param [u] thys [AjPGraph] Multiple graph pointer.
-** @param [r] closeit [AjBool]   Whether to close graph at the end.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphxyDisplay(AjPGraph thys, AjBool closeit)
-{
-    /* Calling funclist graphType() */
-    (graphType[thys->displaytype].XYDisplay)
-	(thys, closeit, graphType[thys->displaytype].Ext);
-
-    return;
-}
 
 
 
@@ -10101,29 +10241,5 @@ static void GraphColourBack(void)
     return;
 }
 
-
-/* @func ajGraphUnused ********************************************************
-**
-** Unused functions to avoid compiler warnings
-**
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphUnused(void)
-{
-    float f = 0.0;
-    ajint i = 0;
-    AjPGraph thys = NULL;
-    AjPGraphdata graphdata = NULL;
-
-    GraphPrint(thys);
-    GraphDataPrint(graphdata);
-    GraphCheckPoints(0, &f, &f);
-    GraphCheckFlags(0);
-    GraphArrayGapsI(0, &i, &i);
-
-    return;
-}
 
 #endif

@@ -105,7 +105,7 @@ int main(int argc, char **argv)
     if(iface)
     {
 	ajGraphDataAdd(mult,graphdata);
-	ajGraphdataSetYTitleC(graphdata,"interface");
+	ajGraphdataSetYlabelC(graphdata,"interface");
 	ajGraphdataSetTypeC(graphdata,"2D Plot");
     }
 
@@ -116,7 +116,7 @@ int main(int argc, char **argv)
     if(difference)
     {
 	ajGraphDataAdd(mult,graphdata3);
-	ajGraphdataSetYTitleC(graphdata3,"difference");
+	ajGraphdataSetYlabelC(graphdata3,"difference");
 	ajGraphdataSetTypeC(graphdata3,"2D Plot");
     }
 
@@ -126,7 +126,7 @@ int main(int argc, char **argv)
     if(octanol)
     {
 	ajGraphDataAdd(mult,graphdata2);
-	ajGraphdataSetYTitleC(graphdata2,"octanol");
+	ajGraphdataSetYlabelC(graphdata2,"octanol");
 	ajGraphdataSetTypeC(graphdata,"Overlay 2D Plot");
 	ajGraphdataSetTypeC(graphdata2,"Overlay 2D Plot");
 	ajGraphdataSetTypeC(graphdata3,"Overlay 2D Plot");
@@ -192,10 +192,10 @@ int main(int argc, char **argv)
     min = min*(float)1.1;
     max = max*(float)1.1;
 
-    ajGraphxySetMaxMin(mult,0.0,flen,min,max);
-    ajGraphdataSetMaxima(graphdata,xmin1,xmax1,ymin1,ymax1);
-    ajGraphdataSetMaxima(graphdata2,xmin2,xmax2,ymin2,ymax2);
-    ajGraphdataSetMaxima(graphdata3,xmin3,xmax3,ymin3,ymax3);
+    ajGraphxySetMinmax(mult,0.0,flen,min,max);
+    ajGraphdataSetTruescale(graphdata,xmin1,xmax1,ymin1,ymax1);
+    ajGraphdataSetTruescale(graphdata2,xmin2,xmax2,ymin2,ymax2);
+    ajGraphdataSetTruescale(graphdata3,xmin3,xmax3,ymin3,ymax3);
 
     ajGraphxyDisplay(mult,AJTRUE);
 
