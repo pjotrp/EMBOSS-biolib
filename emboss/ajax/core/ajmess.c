@@ -26,6 +26,7 @@
 
 #include "ajax.h"
 #include <errno.h>
+#include <limits.h>
 
 
 #ifdef __CYGWIN__
@@ -53,20 +54,23 @@ AjOError AjErrorLevel =
 
 
 
-AjPTable errorTable = 0;
+AjPTable messErrorTable = 0;
 
 static ajint errorCount = 0;
 
 static char *messErrorFile;
 
-static AjBool fileDebug      = 0;
-static AjPFile fileDebugFile = NULL;
-static AjPStr fileDebugName  = NULL;
+static AjBool messDebug      = 0;
+static AjPFile messDebugFile = NULL;
+static AjPFile messDebugTestFile = NULL;
+static AjPStr messDebugName  = NULL;
 static char* messErrMess = NULL;
+static AjBool messDebugTestInit = AJFALSE;
 
 static char* messGetFilename(const char *path);
+static void messTableDelete(AjPTable* table);
 
-
+static AjPTable messDebugTestTable = NULL;
 
 
 /*============================================================================
@@ -1433,7 +1437,7 @@ static AjBool ajMessReadErrorFile(void)
     if(!fp)
 	return ajFalse;
 
-    errorTable = ajTablecharNew();
+    messErrorTable = ajTablecharNew();
 
     while(fgets(line, 512, fp))
     {
@@ -1448,20 +1452,19 @@ static AjBool ajMessReadErrorFile(void)
 	{
 	    *mess = *cp;
 	    cp++;
-	    /*      *mess++; Looks wrong to me. Replaced by below. AJB */
 	    mess++;
 	}
 
 	*mess = '\0';
 	namestore = ajFmtString("%s",name);
 	messstore = ajFmtString("%s",message);
-	mess = (char *) ajTableFetch(errorTable, namestore);
+	mess = (char *) ajTableFetch(messErrorTable, namestore);
 
 	if(mess)
 	    ajErr("%s is listed more than once in file %s",
 			name,messErrorFile);
 	else
-	    ajTablePut(errorTable, namestore, messstore);
+	    ajTablePut(messErrorTable, namestore, messstore);
     }
 
     return ajTrue;
@@ -1483,9 +1486,9 @@ void ajMessOutCode(const char *code)
 {
     char *mess=0;
 
-    if(errorTable)
+    if(messErrorTable)
     {
-	mess = ajTableFetch(errorTable, code);
+	mess = ajTableFetch(messErrorTable, code);
 
 	if(mess)
 	    ajMessOut(mess);
@@ -1496,7 +1499,7 @@ void ajMessOutCode(const char *code)
     {
 	if(ajMessReadErrorFile())
 	{
-	    mess = ajTableFetch(errorTable, code);
+	    mess = ajTableFetch(messErrorTable, code);
 
 	    if(mess)
 		ajMessOut(mess);
@@ -1527,9 +1530,9 @@ void ajMessErrorCode(const char *code)
 {
     char *mess = 0;
 
-    if(errorTable)
+    if(messErrorTable)
     {
-	mess = ajTableFetch(errorTable, code);
+	mess = ajTableFetch(messErrorTable, code);
 
 	if(mess)
 	    ajErr(mess);
@@ -1540,7 +1543,7 @@ void ajMessErrorCode(const char *code)
     {
 	if(ajMessReadErrorFile())
 	{
-	    mess = ajTableFetch(errorTable, code);
+	    mess = ajTableFetch(messErrorTable, code);
 
 	    if(mess)
 		ajErr(mess);
@@ -1572,9 +1575,9 @@ __noreturn void  ajMessCrashCodeFL(const char *code)
 {
     char *mess = 0;
 
-    if(errorTable)
+    if(messErrorTable)
     {
-	mess = ajTableFetch(errorTable, code);
+	mess = ajTableFetch(messErrorTable, code);
 
 	if(mess)
 	    ajMessCrashFL(mess);
@@ -1585,7 +1588,7 @@ __noreturn void  ajMessCrashCodeFL(const char *code)
     {
 	if(ajMessReadErrorFile())
 	{
-	    mess = ajTableFetch(errorTable, code);
+	    mess = ajTableFetch(messErrorTable, code);
 
 	    if(mess)
 		ajMessCrashFL(mess);
@@ -1612,14 +1615,29 @@ __noreturn void  ajMessCrashCodeFL(const char *code)
 
 void ajMessCodesDelete(void)
 {
+    messTableDelete(&messErrorTable);
+}
+
+/* @funcstatic messTableDelete ************************************************
+**
+** Delete a table, simply freeing the key and value
+**
+** @param [d] table [AjPTable*] Table
+** @return [void]
+******************************************************************************/
+
+static void messTableDelete(AjPTable* table) 
+{
     void **keyarray = NULL;
     void **valarray = NULL;
     ajint i;
 
-    if(!errorTable)
+    if(!table)
+	return;
+    if(!*table)
 	return;
 
-    ajTableToarrayKeysValues(errorTable, &keyarray, &valarray);
+    ajTableToarrayKeysValues(*table, &keyarray, &valarray);
 
     for(i = 0; keyarray[i]; i++)
     {
@@ -1630,13 +1648,11 @@ void ajMessCodesDelete(void)
     AJFREE(keyarray);
     AJFREE(valarray);
 
-    ajTableFree(&errorTable);
-    errorTable = 0;
+    ajTableFree(table);
+    *table = NULL;
 
     return;
 }
-
-
 
 
 /* @func ajDebug **************************************************************
@@ -1664,10 +1680,10 @@ void ajDebug(const char* fmt, ...)
     
     if(depth)
     {				   /* recursive call, get out quick */
-	if(fileDebugFile)
+	if(messDebugFile)
 	{
 	    va_start(args, fmt);
-	    ajFmtVPrintF(fileDebugFile, fmt, args);
+	    ajFmtVPrintF(messDebugFile, fmt, args);
 	    va_end(args);
 	}
 
@@ -1678,15 +1694,15 @@ void ajDebug(const char* fmt, ...)
 
     if(!debugset && acdDebugSet)
     {
-	fileDebug = acdDebug;
+	messDebug = acdDebug;
 
-	if(fileDebug)
+	if(messDebug)
 	{
-	    ajFmtPrintS(&fileDebugName, "%s.dbg", ajStrGetPtr(acdProgram));
-	    fileDebugFile = ajFileNewOutNameS(fileDebugName);
+	    ajFmtPrintS(&messDebugName, "%s.dbg", ajStrGetPtr(acdProgram));
+	    messDebugFile = ajFileNewOutNameS(messDebugName);
 
-	    if(!fileDebugFile)
-		ajFatal("Cannot open debug file %S",fileDebugName);
+	    if(!messDebugFile)
+		ajFatal("Cannot open debug file %S",messDebugName);
 
 	    if(ajNamGetValueC("debugbuffer", &bufstr))
 	    {
@@ -1694,26 +1710,126 @@ void ajDebug(const char* fmt, ...)
 	    }
 
 	    if(!acdDebugBuffer)
-		ajFileSetUnbuffer(fileDebugFile);
+		ajFileSetUnbuffer(messDebugFile);
 
-	    ajFmtPrintF(fileDebugFile, "Debug file %F buffered:%B\n",
-			 fileDebugFile, acdDebugBuffer);
+	    ajFmtPrintF(messDebugFile, "Debug file %F buffered:%B\n",
+			 messDebugFile, acdDebugBuffer);
 	    ajStrDel(&bufstr);
 	}
 
 	debugset = 1;
     }
 
-    if(fileDebug)
+    if(messDebug)
     {
 	va_start(args, fmt);
-	ajFmtVPrintF(fileDebugFile, fmt, args);
+	ajFmtVPrintF(messDebugFile, fmt, args);
 	va_end(args);
     }
 
     depth--;
 
     return;
+}
+
+
+
+
+/* @func ajDebugTest **********************************************************
+**
+** Tests a token string and returns true if the user has requested debug output
+**
+** @param [r] token [const char*] Token name
+** @return [AjBool] True if token has debugging requested
+** @@
+******************************************************************************/
+
+AjBool ajDebugTest(const char* token)
+{
+    AjPStr filename = NULL;
+    const char* debugtestname = ".debugtest";
+    char* ctoken = NULL;
+    AjPStr line = NULL;
+    AjPStr strtoken = NULL;
+    AjPStr rest = NULL;
+    static ajint depth    = 0;
+
+    struct 
+    {
+        ajuint count;
+        ajuint max;
+    } *stats;
+    
+    if(depth)
+        return ajFalse;
+
+    depth++;
+
+    if(!messDebugTestInit)
+    {
+        filename = ajStrNewC(debugtestname);
+
+        if(ajFilenameExists(filename))
+        {
+            messDebugTestFile = ajFileNewInNameS(filename);
+        }
+        else
+        {
+            ajFmtPrintS(&filename, "%s%s%s",
+                        getenv("HOME"), SLASH_STRING, debugtestname); 
+            if(ajFilenameExists(filename))
+                messDebugTestFile = ajFileNewInNameS(filename);
+        }
+        ajStrDel(&filename);
+
+        if(messDebugTestFile) 
+        {
+            messDebugTestTable = ajTablecharNewLen(256);
+
+            while(ajReadlineTrim(messDebugTestFile, &line))
+            {
+                if(ajStrExtractFirst(line, &rest, &strtoken))
+                {
+                    AJNEW0(stats);
+                    ctoken = ajCharNewS(strtoken);
+                    if(ajStrIsInt(rest))
+                        ajStrToUint(rest, &stats->max);
+                    else
+                        stats->max = UINT_MAX;
+                    ajTablePut(messDebugTestTable, ctoken, stats);
+                    ctoken = NULL;
+                    stats = NULL;
+                }
+            }
+
+            ajStrDel(&line);
+            ajStrDel(&strtoken);
+            ajStrDel(&rest);
+            ajFileClose(&messDebugTestFile);
+        }
+        messDebugTestInit = ajTrue;
+     }
+
+    depth--;
+    
+    if(!messDebugTestTable)
+        return ajFalse;
+
+    depth++;
+    stats = ajTableFetch(messDebugTestTable, token);
+    depth--;
+    
+
+    if(!stats)
+        return ajFalse;
+
+    if(!stats->max)
+        return ajTrue;
+
+    if(stats->count++ >= stats->max)
+        return ajFalse;
+
+    return ajTrue;
 }
 
 
@@ -1729,10 +1845,10 @@ void ajDebug(const char* fmt, ...)
 
 FILE* ajMessGetDebugfile(void)
 {
-    if(!fileDebugFile)
+    if(!messDebugFile)
 	return NULL;
 
-    return ajFileGetFileptr(fileDebugFile);
+    return ajFileGetFileptr(messDebugFile);
 }
 
 
@@ -1877,9 +1993,27 @@ ajint ajUserGet(AjPStr* pthis, const char* fmt, ...)
 
 void ajMessExit(void)
 {
-    ajFileClose(&fileDebugFile);
-    ajStrDel(&fileDebugName);
     AJFREE(messErrMess);
+    messTableDelete(&messErrorTable);
+    messTableDelete(&messDebugTestTable);
+
+    return;
+}
+
+/* @func ajMessExitDebug *******************************************************
+**
+** Delete any static initialised values for ajDebug calls
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajMessExitDebug(void)
+{
+    ajFileClose(&messDebugFile);
+    ajStrDel(&messDebugName);
+    ajFileClose(&messDebugTestFile);
+    ajStrDel(&messDebugName);
 
     return;
 }
