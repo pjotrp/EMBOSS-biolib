@@ -13,17 +13,17 @@
 
 <tr bgcolor="#FFFFCC">
 <td>[-asequence]<br>(Parameter 1)</td>
-<td>sequence</td>
-<td>Sequence filename and optional format, or reference (input USA)</td>
-<td>Readable sequence</td>
+<td>seqset</td>
+<td>Sequence set filename and optional format, or reference (input USA)</td>
+<td>Readable set of sequences</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
 <td>[-bsequence]<br>(Parameter 2)</td>
-<td>sequence</td>
-<td>Sequence filename and optional format, or reference (input USA)</td>
-<td>Readable sequence</td>
+<td>seqall</td>
+<td>Sequence(s) filename and optional format, or reference (input USA)</td>
+<td>Readable sequence(s)</td>
 <td><b>Required</b></td>
 </tr>
 
@@ -36,7 +36,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td>[-outfile]<br>(Parameter 3)</td>
+<td>-outfile</td>
 <td>align</td>
 <td>Output alignment file name</td>
 <td>Alignment output file</td>
@@ -44,7 +44,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td>[-aoutfeat]<br>(Parameter 4)</td>
+<td>-aoutfeat</td>
 <td>featout</td>
 <td>Output features UFO</td>
 <td>Writeable feature table</td>
@@ -52,7 +52,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td>[-boutfeat]<br>(Parameter 5)</td>
+<td>-boutfeat</td>
 <td>featout</td>
 <td>Output features UFO</td>
 <td>Writeable feature table</td>
@@ -63,8 +63,28 @@
 <th align="left" colspan=5>Additional (Optional) qualifiers</th>
 </tr>
 
-<tr>
-<td colspan=5>(none)</td>
+<tr bgcolor="#FFFFCC">
+<td>-[no]dumpalign</td>
+<td>toggle</td>
+<td>Dump all matches as alignments</td>
+<td>Toggle value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-logfile</td>
+<td>outfile</td>
+<td>Log file reports statistics on kmer frequency distribution and number of matches in the seqall sequences for each sequence in the seqset</td>
+<td>Output file</td>
+<td>wordmatch.log</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]dumpfeat</td>
+<td>toggle</td>
+<td>Dump all matches as feature files</td>
+<td>Toggle value Yes/No</td>
+<td>Yes</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -80,14 +100,14 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=5>"-asequence" associated sequence qualifiers
+<th align="left" colspan=5>"-asequence" associated seqset qualifiers
 </td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
 <td> -sbegin1<br>-sbegin_asequence</td>
 <td>integer</td>
-<td>Start of the sequence to be used</td>
+<td>Start of each sequence to be used</td>
 <td>Any integer value</td>
 <td>0</td>
 </tr>
@@ -95,7 +115,7 @@
 <tr bgcolor="#FFFFCC">
 <td> -send1<br>-send_asequence</td>
 <td>integer</td>
-<td>End of the sequence to be used</td>
+<td>End of each sequence to be used</td>
 <td>Any integer value</td>
 <td>0</td>
 </tr>
@@ -197,14 +217,14 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=5>"-bsequence" associated sequence qualifiers
+<th align="left" colspan=5>"-bsequence" associated seqall qualifiers
 </td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
 <td> -sbegin2<br>-sbegin_bsequence</td>
 <td>integer</td>
-<td>Start of the sequence to be used</td>
+<td>Start of each sequence to be used</td>
 <td>Any integer value</td>
 <td>0</td>
 </tr>
@@ -212,7 +232,7 @@
 <tr bgcolor="#FFFFCC">
 <td> -send2<br>-send_bsequence</td>
 <td>integer</td>
-<td>End of the sequence to be used</td>
+<td>End of each sequence to be used</td>
 <td>Any integer value</td>
 <td>0</td>
 </tr>
@@ -319,7 +339,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -aformat3<br>-aformat_outfile</td>
+<td> -aformat</td>
 <td>string</td>
 <td>Alignment format</td>
 <td>Any string</td>
@@ -327,7 +347,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -aextension3<br>-aextension_outfile</td>
+<td> -aextension</td>
 <td>string</td>
 <td>File name extension</td>
 <td>Any string</td>
@@ -335,7 +355,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -adirectory3<br>-adirectory_outfile</td>
+<td> -adirectory</td>
 <td>string</td>
 <td>Output directory</td>
 <td>Any string</td>
@@ -343,7 +363,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -aname3<br>-aname_outfile</td>
+<td> -aname</td>
 <td>string</td>
 <td>Base file name</td>
 <td>Any string</td>
@@ -351,7 +371,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -awidth3<br>-awidth_outfile</td>
+<td> -awidth</td>
 <td>integer</td>
 <td>Alignment width</td>
 <td>Any integer value</td>
@@ -359,7 +379,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -aaccshow3<br>-aaccshow_outfile</td>
+<td> -aaccshow</td>
 <td>boolean</td>
 <td>Show accession number in the header</td>
 <td>Boolean value Yes/No</td>
@@ -367,7 +387,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -adesshow3<br>-adesshow_outfile</td>
+<td> -adesshow</td>
 <td>boolean</td>
 <td>Show description in the header</td>
 <td>Boolean value Yes/No</td>
@@ -375,7 +395,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -ausashow3<br>-ausashow_outfile</td>
+<td> -ausashow</td>
 <td>boolean</td>
 <td>Show the full USA in the alignment</td>
 <td>Boolean value Yes/No</td>
@@ -383,11 +403,24 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -aglobal3<br>-aglobal_outfile</td>
+<td> -aglobal</td>
 <td>boolean</td>
 <td>Show the full sequence in alignment</td>
 <td>Boolean value Yes/No</td>
 <td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-logfile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -396,7 +429,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -offormat4<br>-offormat_aoutfeat</td>
+<td> -offormat</td>
 <td>string</td>
 <td>Output feature format</td>
 <td>Any string</td>
@@ -404,7 +437,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -ofopenfile4<br>-ofopenfile_aoutfeat</td>
+<td> -ofopenfile</td>
 <td>string</td>
 <td>Features file name</td>
 <td>Any string</td>
@@ -412,7 +445,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -ofextension4<br>-ofextension_aoutfeat</td>
+<td> -ofextension</td>
 <td>string</td>
 <td>File name extension</td>
 <td>Any string</td>
@@ -420,7 +453,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -ofdirectory4<br>-ofdirectory_aoutfeat</td>
+<td> -ofdirectory</td>
 <td>string</td>
 <td>Output directory</td>
 <td>Any string</td>
@@ -428,15 +461,15 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -ofname4<br>-ofname_aoutfeat</td>
+<td> -ofname</td>
 <td>string</td>
 <td>Base file name</td>
 <td>Any string</td>
-<td>$(asequence.name)</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -ofsingle4<br>-ofsingle_aoutfeat</td>
+<td> -ofsingle</td>
 <td>boolean</td>
 <td>Separate file for each entry</td>
 <td>Boolean value Yes/No</td>
@@ -449,7 +482,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -offormat5<br>-offormat_boutfeat</td>
+<td> -offormat</td>
 <td>string</td>
 <td>Output feature format</td>
 <td>Any string</td>
@@ -457,7 +490,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -ofopenfile5<br>-ofopenfile_boutfeat</td>
+<td> -ofopenfile</td>
 <td>string</td>
 <td>Features file name</td>
 <td>Any string</td>
@@ -465,7 +498,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -ofextension5<br>-ofextension_boutfeat</td>
+<td> -ofextension</td>
 <td>string</td>
 <td>File name extension</td>
 <td>Any string</td>
@@ -473,7 +506,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -ofdirectory5<br>-ofdirectory_boutfeat</td>
+<td> -ofdirectory</td>
 <td>string</td>
 <td>Output directory</td>
 <td>Any string</td>
@@ -481,7 +514,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -ofname5<br>-ofname_boutfeat</td>
+<td> -ofname</td>
 <td>string</td>
 <td>Base file name</td>
 <td>Any string</td>
@@ -489,7 +522,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -ofsingle5<br>-ofsingle_boutfeat</td>
+<td> -ofsingle</td>
 <td>boolean</td>
 <td>Separate file for each entry</td>
 <td>Boolean value Yes/No</td>
