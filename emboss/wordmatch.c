@@ -49,15 +49,15 @@ static ajulong radix =256;
 
 
 
-/* @data EmbPWordWrap *********************************************************
+/* @datastatic EmbPWordWrap ***************************************************
 **
 ** data structure that wraps EmbPWord objects for efficient access
 **
-** @attr word [EmbPWord] Original word object
-** @attr seqs [AjPSeq*] List of sequences word has been seen
+** @attr word [const EmbPWord] Original word object
+** @attr seqs [const AjPSeq*] List of sequences word has been seen
 ** @attr seqindxs [ajuint*] Positions in the seqset
 **                          for each sequence in the seqs array
-** @attr nnseqlocs [ajuint**] Number of word start positions for each sequence
+** @attr nnseqlocs [ajuint*] Number of word start positions for each sequence
 ** @attr locs [ajuint**] List of word start positions for each sequence
 ** @attr hash [ajulong] Hash value for the word
 ** @attr nseqs [ajuint] Number of sequences word has been seen
@@ -81,15 +81,18 @@ typedef struct EmbSWordWrap {
 
 
 
-static ajuint embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
+static ajuint wordmatch_embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
         const EmbPWordWrap* patterns,
         ajuint plen, ajuint nwords, AjPList* l,
         ajuint* lastlocation);
 
-static ajuint getWords(const AjPTable table, EmbPWordWrap**, ajuint wordlen,
-        const AjPSeqset seqset);
+static ajuint wordmatch_getWords(const AjPTable table,
+                                 EmbPWordWrap**, ajuint wordlen,
+                                 const AjPSeqset seqset);
 
 
+static ajint wordmatch_compEmbWordWrap(const void *a, const void *b);
+static ajulong wordmatch_precomputeRM(ajuint m);
 
 
 /* @prog wordmatch ************************************************************
@@ -168,7 +171,8 @@ int main(int argc, char **argv)
 
     if(ajTableGetLength(seq1MatchTable)>0)
     {
-        npatterns = getWords(seq1MatchTable, &wordswrapped, wordlen, seqset);
+        npatterns = wordmatch_getWords(seq1MatchTable,
+                                       &wordswrapped, wordlen, seqset);
 
         while(ajSeqallNext(seqall,&seqofseqall))
         {
@@ -178,7 +182,7 @@ int main(int argc, char **argv)
                 lastlocation[i]=0;
                 matchlist[i] = ajListstrNew();
             }
-            nmatches = embPatRabinKarpSearchMultiPattern(
+            nmatches = wordmatch_embPatRabinKarpSearchMultiPattern(
                     ajSeqGetSeqS(seqofseqall),
                     (const EmbPWordWrap*)wordswrapped, wordlen, npatterns,
                     matchlist, lastlocation);
@@ -280,7 +284,7 @@ int main(int argc, char **argv)
 
 
 
-/* @func compEmbWordWrap ******************************************************
+/* @funcstatic wordmatch_compEmbWordWrap **************************************
 **
 ** Comparison function for EmbPWordWrap objects, based on their hash values
 **
@@ -290,7 +294,7 @@ int main(int argc, char **argv)
 ** @return [ajint] difference of hash values
 ******************************************************************************/
 
-static ajint compEmbWordWrap(const void *a, const void *b)
+static ajint wordmatch_compEmbWordWrap(const void *a, const void *b)
 {
     const EmbPWordWrap ww1;
     const EmbPWordWrap ww2;
@@ -304,7 +308,7 @@ static ajint compEmbWordWrap(const void *a, const void *b)
 
 
 
-/* @func precomputeRM ********************************************************
+/* @funcstatic wordmatch_precomputeRM *****************************************
 **
 ** Precomputes a value that helps recalculating consecutive hash values
 ** with less computation. Uses q and radix variables defined above.
@@ -314,7 +318,8 @@ static ajint compEmbWordWrap(const void *a, const void *b)
 ** @@
 ******************************************************************************/
 
-static ajulong precomputeRM(ajuint m){
+static ajulong wordmatch_precomputeRM(ajuint m)
+{
     ajulong rm;
     ajuint i;
     rm = 1;
@@ -328,7 +333,7 @@ static ajulong precomputeRM(ajuint m){
 
 
 
-/* @func embPatRabinKarpSearchMultiPattern*************************************
+/* @funcstatic wordmatch_embPatRabinKarpSearchMultiPattern ********************
 **
 ** Rabin Karp search for multiple patterns.
 **
@@ -336,18 +341,18 @@ static ajulong precomputeRM(ajuint m){
 ** @param [r] patterns [const EmbPWordWrap*] Patterns to be searched
 ** @param [r] plen [ajuint] Length of patterns
 ** @param [r] npatterns [ajuint] Number of patterns
-** @param [u] matchlist [AjPList] List of matches for each sequence
+** @param [u] matchlist [AjPList*] List of matches for each sequence
 **                                in the sequence set
-** @param [m] lastlocation [ajuint*] Position of the search for each sequence
+** @param [u] lastlocation [ajuint*] Position of the search for each sequence
 **                                in the sequence set
 ** @return [ajuint] number of matches
 ** @@
 ******************************************************************************/
 
-static ajuint embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
-             const EmbPWordWrap* patterns,
-             ajuint plen, ajuint npatterns, AjPList* matchlist,
-             ajuint* lastlocation)
+static ajuint wordmatch_embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
+    const EmbPWordWrap* patterns,
+    ajuint plen, ajuint npatterns, AjPList* matchlist,
+    ajuint* lastlocation)
 {
     const char *text;
     const AjPSeq seq;
@@ -361,7 +366,7 @@ static ajuint embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
 
     AJNEW0(cursor);
 
-    rm = precomputeRM(plen);
+    rm = wordmatch_precomputeRM(plen);
     text = ajStrGetPtr(sseq);
     tlen  = ajStrGetLen(sseq);
 
@@ -375,7 +380,7 @@ static ajuint embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
     {
         cursor->hash = textHash;
         bsres = bsearch(&cursor, patterns, npatterns,
-                sizeof(EmbPWordWrap), compEmbWordWrap);
+                sizeof(EmbPWordWrap), wordmatch_compEmbWordWrap);
         if(bsres!=NULL)
         {
             seq2start = i-plen;
@@ -444,21 +449,21 @@ static ajuint embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
 
 
 
-/* @func getWords ********************************************************
+/* @funcstatic wordmatch_getWords *********************************************
 **
 ** Preprocesses word/pattern table and repackages the words in EmbPWordWrap
 ** objects to improve access efficiency. Also computes hash values
 ** for each pattern.
 **
 ** @param [r] table [const AjPTable] table of patterns
-** @param [u] newwords [const EmbPWordWrap*] Patterns to be searched
+** @param [u] newwords [EmbPWordWrap**] Patterns to be searched
 ** @param [r] wordlen [ajuint] Length of words/patterns
-** @param [u] seqset [AjPSeqset] Sequence set that patterns derived from
+** @param [r] seqset [const AjPSeqset] Sequence set patterns are derived from
 ** @return [ajuint] number of words
 ** @@
 ******************************************************************************/
 
-static ajuint getWords(const AjPTable table, EmbPWordWrap** newwords,
+static ajuint wordmatch_getWords(const AjPTable table, EmbPWordWrap** newwords,
         ajuint wordlen, const AjPSeqset seqset)
 {
     ajuint i, j, k, l;
@@ -536,7 +541,7 @@ static ajuint getWords(const AjPTable table, EmbPWordWrap** newwords,
 
     AJFREE(embwords);
 
-    qsort(*newwords, nwords, sizeof(EmbPWordWrap), compEmbWordWrap);
+    qsort(*newwords, nwords, sizeof(EmbPWordWrap), wordmatch_compEmbWordWrap);
 
     return nwords;
 }
