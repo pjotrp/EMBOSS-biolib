@@ -673,7 +673,7 @@ double*     ajDoubleDouble(const AjPDouble thys);
 double      ajDoubleGet(const AjPDouble thys, ajuint elem);
 ajuint      ajDoubleLen(const AjPDouble thys);
 AjPDouble   ajDoubleNew(void);
-AjPDouble   ajDoubleNewL(ajuint size);
+AjPDouble   ajDoubleNewRes(ajuint size);
 AjBool      ajDoublePut(AjPDouble *thys, ajuint elem, double v);
 
 void        ajDouble2dDel(AjPDouble2d *thys);
@@ -681,7 +681,7 @@ double      ajDouble2dGet(const AjPDouble2d thys, ajuint elem1, ajuint elem2);
 double**    ajDouble2dDouble(const AjPDouble2d thys);
 void        ajDouble2dLen(const AjPDouble2d thys, ajuint *len1, ajuint *len2);
 AjPDouble2d ajDouble2dNew(void);
-AjPDouble2d ajDouble2dNewL(ajuint size);
+AjPDouble2d ajDouble2dNewRes(ajuint size);
 AjBool      ajDouble2dPut(AjPDouble2d *thys,
 			  ajuint elem1, ajuint elem2, double v);
 
@@ -692,7 +692,7 @@ double***   ajDouble3dDouble(const AjPDouble3d thys);
 void        ajDouble3dLen(const AjPDouble3d thys,
 			  ajuint* len1, ajuint* len2, ajuint* len3);
 AjPDouble3d ajDouble3dNew(void);
-AjPDouble3d ajDouble3dNewL(ajuint size);
+AjPDouble3d ajDouble3dNewRes(ajuint size);
 AjBool      ajDouble3dPut(AjPDouble3d *thys,
 			  ajuint elem1, ajuint elem2, ajuint elem3,
 			  double v);
@@ -702,7 +702,7 @@ float*      ajFloatFloat(const AjPFloat thys);
 float       ajFloatGet(const AjPFloat thys, ajuint elem);
 ajuint      ajFloatLen(const AjPFloat thys);
 AjPFloat    ajFloatNew(void);
-AjPFloat    ajFloatNewL(ajuint size);
+AjPFloat    ajFloatNewRes(ajuint size);
 AjBool      ajFloatPut(AjPFloat *thys, ajuint elem, float v);
 
 void        ajFloat2dDel(AjPFloat2d *thys);
@@ -710,7 +710,7 @@ float       ajFloat2dGet(const AjPFloat2d thys, ajuint elem1, ajuint elem2);
 float**     ajFloat2dFloat(const AjPFloat2d thys);
 void        ajFloat2dLen(const AjPFloat2d thys, ajuint *len1, ajuint *len2);
 AjPFloat2d  ajFloat2dNew(void);
-AjPFloat2d  ajFloat2dNewL(ajuint size);
+AjPFloat2d  ajFloat2dNewRes(ajuint size);
 AjBool      ajFloat2dPut(AjPFloat2d *thys,
 			 ajuint elem1, ajuint elem2, float v);
 
@@ -721,17 +721,18 @@ float***    ajFloat3dFloat(const AjPFloat3d thys);
 void        ajFloat3dLen(const AjPFloat3d thys,
 			 ajuint* len1, ajuint* len2, ajuint* len3);
 AjPFloat3d  ajFloat3dNew(void);
-AjPFloat3d  ajFloat3dNewL(ajuint size);
+AjPFloat3d  ajFloat3dNewRes(ajuint size);
 AjBool      ajFloat3dPut(AjPFloat3d *thys,
 			 ajuint elem1, ajuint elem2, ajuint elem3,
 			 float v);
 
 AjPChar     ajChararrNew(void);
-AjPChar     ajChararrNewL(ajuint size);
+AjPChar     ajChararrNewRes(ajuint size);
 void        ajChararrDel(AjPChar *thys);
 char        ajChararrGet(const AjPChar thys, ajuint elem);
 AjBool      ajChararrPut(AjPChar *thys, ajuint elem, char v);
 char*       ajChararrChararr(const AjPChar thys);
+ajuint      ajChararrLen(const AjPChar thys);
 
 
 void        ajIntDel(AjPInt *thys);
@@ -741,7 +742,7 @@ void        ajIntInc(AjPInt *thys, ajuint elem);
 ajint*      ajIntInt(const AjPInt thys);
 ajuint      ajIntLen(const AjPInt thys);
 AjPInt      ajIntNew(void);
-AjPInt      ajIntNewL(ajuint size);
+AjPInt      ajIntNewRes(ajuint size);
 AjBool      ajIntPut(AjPInt *thys, ajuint elem, ajint v);
 
 void        ajInt2dDel(AjPInt2d *thys);
@@ -749,8 +750,8 @@ ajint       ajInt2dGet(const AjPInt2d thys, ajuint elem1, ajuint elem2);
 ajint**     ajInt2dInt(const AjPInt2d thys);
 void        ajInt2dLen(const AjPInt2d thys, ajuint *len1, ajuint *len2);
 AjPInt2d    ajInt2dNew(void);
-AjPInt2d    ajInt2dNewL(ajuint size);
-AjPInt2d    ajInt2dNewLL(ajuint size, ajuint size2);
+AjPInt2d    ajInt2dNewRes(ajuint size);
+AjPInt2d    ajInt2dNewResRes2(ajuint size, ajuint size2);
 AjBool      ajInt2dPut(AjPInt2d *thys, ajuint elem1, ajuint elem2, ajint v);
 
 void        ajInt3dDel(AjPInt3d *thys);
@@ -760,7 +761,7 @@ ajint***    ajInt3dInt(const AjPInt3d thys);
 void        ajInt3dLen(const AjPInt3d thys,
 		       ajuint* len1, ajuint* len2, ajuint* len3);
 AjPInt3d    ajInt3dNew(void);
-AjPInt3d    ajInt3dNewL(ajuint size);
+AjPInt3d    ajInt3dNewRes(ajuint size);
 AjBool      ajInt3dPut(AjPInt3d *thys,
 		       ajuint elem1, ajuint elem2, ajuint elem3, ajint v);
 
@@ -769,7 +770,7 @@ ajlong      ajLongGet(const AjPLong thys, ajuint elem);
 ajuint      ajLongLen(const AjPLong thys);
 ajlong*     ajLongLong(const AjPLong thys);
 AjPLong     ajLongNew(void);
-AjPLong     ajLongNewL(ajuint size);
+AjPLong     ajLongNewRes(ajuint size);
 AjBool      ajLongPut(AjPLong *thys, ajuint elem, ajlong v);
 
 void        ajLong2dDel(AjPLong2d *thys);
@@ -777,7 +778,7 @@ ajlong      ajLong2dGet(const AjPLong2d thys, ajuint elem1, ajuint elem2);
 ajlong**    ajLong2dLong(const AjPLong2d thys);
 void        ajLong2dLen(const AjPLong2d thys, ajuint *len1, ajuint *len2);
 AjPLong2d   ajLong2dNew(void);
-AjPLong2d   ajLong2dNewL(ajuint size);
+AjPLong2d   ajLong2dNewRes(ajuint size);
 AjBool      ajLong2dPut(AjPLong2d *thys, ajuint elem1, ajuint elem2, ajlong v);
 
 void        ajLong3dDel(AjPLong3d *thys);
@@ -787,7 +788,7 @@ void        ajLong3dLen(const AjPLong3d thys,
 			ajuint* len1, ajuint* len2, ajuint* len3);
 ajlong***   ajLong3dLong(const AjPLong3d thys);
 AjPLong3d   ajLong3dNew(void);
-AjPLong3d   ajLong3dNewL(ajuint size);
+AjPLong3d   ajLong3dNewRes(ajuint size);
 AjBool      ajLong3dPut(AjPLong3d *thys,
 			ajuint elem1, ajuint elem2, ajuint elem3,
 			ajlong v);
@@ -797,7 +798,7 @@ short       ajShortGet(const AjPShort thys, ajuint elem);
 ajuint      ajShortLen(const AjPShort thys);
 short*      ajShortShort(const AjPShort thys);
 AjPShort    ajShortNew(void);
-AjPShort    ajShortNewL(ajuint size);
+AjPShort    ajShortNewRes(ajuint size);
 AjBool      ajShortPut(AjPShort *thys, ajuint elem, short v);
 
 void        ajShort2dDel(AjPShort2d *thys);
@@ -805,7 +806,7 @@ short       ajShort2dGet(const AjPShort2d thys, ajuint elem1, ajuint elem2);
 short**     ajShort2dShort(const AjPShort2d thys);
 void        ajShort2dLen(const AjPShort2d thys, ajuint *len1, ajuint *len2);
 AjPShort2d  ajShort2dNew(void);
-AjPShort2d  ajShort2dNewL(ajuint size);
+AjPShort2d  ajShort2dNewRes(ajuint size);
 AjBool      ajShort2dPut(AjPShort2d *thys,
 			 ajuint elem1, ajuint elem2, short v);
 
@@ -816,7 +817,7 @@ void        ajShort3dLen(const AjPShort3d thys,
 			 ajuint* len1, ajuint* len2, ajuint* len3);
 short***    ajShort3dShort(const AjPShort3d thys);
 AjPShort3d  ajShort3dNew(void);
-AjPShort3d  ajShort3dNewL(ajuint size);
+AjPShort3d  ajShort3dNewRes(ajuint size);
 AjBool      ajShort3dPut(AjPShort3d *thys,
 			 ajuint elem1, ajuint elem2, ajuint elem3,
 			 short v);
@@ -829,7 +830,7 @@ void        ajUintInc(AjPUint *thys, ajuint elem);
 ajuint*     ajUintUint(const AjPUint thys);
 ajuint      ajUintLen(const AjPUint thys);
 AjPUint     ajUintNew(void);
-AjPUint     ajUintNewL(ajuint size);
+AjPUint     ajUintNewRes(ajuint size);
 AjBool      ajUintPut(AjPUint *thys, ajuint elem, ajuint v);
 
 void        ajUint2dDel(AjPUint2d *thys);
@@ -837,8 +838,8 @@ ajuint      ajUint2dGet(const AjPUint2d thys, ajuint elem1, ajuint elem2);
 ajuint**    ajUint2dUint(const AjPUint2d thys);
 void        ajUint2dLen(const AjPUint2d thys, ajuint *len1, ajuint *len2);
 AjPUint2d   ajUint2dNew(void);
-AjPUint2d   ajUint2dNewL(ajuint size);
-AjPUint2d   ajUint2dNewLL(ajuint size, ajuint size2);
+AjPUint2d   ajUint2dNewRes(ajuint size);
+AjPUint2d   ajUint2dNewResRes2(ajuint size, ajuint size2);
 AjBool      ajUint2dPut(AjPUint2d *thys, ajuint elem1, ajuint elem2, ajuint v);
 
 void        ajUint3dDel(AjPUint3d *thys);
@@ -848,7 +849,7 @@ ajuint***   ajUint3dUint(const AjPUint3d thys);
 void        ajUint3dLen(const AjPUint3d thys,
 		       ajuint* len1, ajuint* len2, ajuint* len3);
 AjPUint3d   ajUint3dNew(void);
-AjPUint3d   ajUint3dNewL(ajuint size);
+AjPUint3d   ajUint3dNewRes(ajuint size);
 AjBool      ajUint3dPut(AjPUint3d *thys,
 		       ajuint elem1, ajuint elem2, ajuint elem3, ajuint v);
 
@@ -869,6 +870,27 @@ float*      ajArrFloatLine(const AjPStr line, const char *delim,
 ** End of prototype definitions
 */
 
+__deprecated AjPChar     ajChararrNewL(ajuint size);
+__deprecated AjPDouble   ajDoubleNewL(ajuint size);
+__deprecated AjPDouble2d ajDouble2dNewL(ajuint size);
+__deprecated AjPDouble3d ajDouble3dNewL(ajuint size);
+__deprecated AjPFloat    ajFloatNewL(ajuint size);
+__deprecated AjPFloat2d  ajFloat2dNewL(ajuint size);
+__deprecated AjPFloat3d  ajFloat3dNewL(ajuint size);
+__deprecated AjPInt      ajIntNewL(ajuint size);
+__deprecated AjPInt2d    ajInt2dNewL(ajuint size);
+__deprecated AjPInt2d    ajInt2dNewLL(ajuint size, ajuint size2);
+__deprecated AjPInt3d    ajInt3dNewL(ajuint size);
+__deprecated AjPLong     ajLongNewL(ajuint size);
+__deprecated AjPLong2d   ajLong2dNewL(ajuint size);
+__deprecated AjPLong3d   ajLong3dNewL(ajuint size);
+__deprecated AjPShort    ajShortNewL(ajuint size);
+__deprecated AjPShort2d  ajShort2dNewL(ajuint size);
+__deprecated AjPShort3d  ajShort3dNewL(ajuint size);
+__deprecated AjPUint     ajUintNewL(ajuint size);
+__deprecated AjPUint2d   ajUint2dNewL(ajuint size);
+__deprecated AjPUint2d   ajUint2dNewLL(ajuint size, ajuint size2);
+__deprecated AjPUint3d   ajUint3dNewL(ajuint size);
 
 #endif
 

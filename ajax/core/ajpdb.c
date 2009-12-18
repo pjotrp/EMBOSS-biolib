@@ -2867,7 +2867,7 @@ AjPCmap ajCmapNew(ajint n)
     if(n)
     {
 	/* Create the SQUARE contact map */
-	ret->Mat = ajUint2dNewL((ajint)n);
+	ret->Mat = ajUint2dNewRes((ajint)n);
 
 	for(z=0;z<n;++z)
 	    ajUint2dPut(&ret->Mat, z, n-1, (ajint) 0);

@@ -2294,7 +2294,7 @@ static AjPPdbfile PdbfileNew(ajint nlines, ajint nchains)
 	    ret->seqresful[i]=ajStrNew();
 
 
-	ret->chid = ajChararrNewL(nchains);
+	ret->chid = ajChararrNewRes(nchains);
     }
     else
     {
@@ -5140,18 +5140,18 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 
 	/* Array must be big enough to cope with either sequence */
 	if(nres1[i] > nres2[i])
-	    idx[i]=ajIntNewL(nres1[i]);
+	    idx[i]=ajIntNewRes(nres1[i]);
 	else
-	    idx[i]=ajIntNewL(nres2[i]);
+	    idx[i]=ajIntNewRes(nres2[i]);
 
 	
 
 	/* Array must be big enough to cope with highest the residue 
 	   number from either array */
 	if(ajIntGet(num1[i], nres1[i]-1) > ajIntGet(num2[i], nres2[i]-1))
-	    idx_full[i]=ajIntNewL(ajIntGet(num1[i], nres1[i]-1)+1);
+	    idx_full[i]=ajIntNewRes(ajIntGet(num1[i], nres1[i]-1)+1);
 	else
-	    idx_full[i]=ajIntNewL(ajIntGet(num2[i], nres2[i]-1)+1);
+	    idx_full[i]=ajIntNewRes(ajIntGet(num2[i], nres2[i]-1)+1);
     }
     
     
@@ -6654,7 +6654,7 @@ static AjBool PdbfileToPdb(AjPPdb *ret, AjPPdbfile pdb)
     eId = ajStrNew();
     
     
-    lookup = ajIntNewL(pdb->nchains);
+    lookup = ajIntNewRes(pdb->nchains);
     ajIntPut(&lookup, pdb->nchains-1, 0);
 
     for(nchn=0, i=0;i<pdb->nchains;i++)
@@ -6990,7 +6990,7 @@ static AjBool WriteElementData(AjPPdbfile pdbfile, AjPFile logf,
     
     
     /* Allocate memory */
-    nsheets = ajIntNewL(pdbfile->nchains); 
+    nsheets = ajIntNewRes(pdbfile->nchains); 
     ajIntPut(&nsheets, pdbfile->nchains, 0);
     
     

@@ -1796,7 +1796,7 @@ AjBool ajDmxScopalgWrite(const AjPScopalg scop, AjPFile outf)
 				 length alignment */
     AjPInt    idx  = NULL;  /* Index */
     
-    idx = ajIntNewL(scop->N); 
+    idx = ajIntNewRes(scop->N); 
 
     for(x=0; x<scop->N; x++)
 	ajIntPut(&idx, scop->N, 1);

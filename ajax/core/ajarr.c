@@ -118,7 +118,7 @@ AjPChar ajChararrNew(void)
 
 
 
-/* @func ajChararrNewL ********************************************************
+/* @func ajChararrNewRes *******************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -129,7 +129,7 @@ AjPChar ajChararrNew(void)
 ** @@
 ******************************************************************************/
 
-AjPChar ajChararrNewL(ajuint size)
+AjPChar ajChararrNewRes(ajuint size)
 {
     AjPChar thys;
 
@@ -146,6 +146,14 @@ AjPChar ajChararrNewL(ajuint size)
     return thys;
 }
 
+
+/* @obsolete ajChararrNewL
+** @rename ajChararrNewRes
+*/
+__deprecated AjPChar ajChararrNewL(ajuint size)
+{
+    return ajChararrNewRes(size);
+}
 
 
 
@@ -272,6 +280,20 @@ char* ajChararrChararr(const AjPChar thys)
 
 
 
+/* @func ajChararrLen *********************************************************
+**
+** Get length of dynamic character array
+**
+** @param [r] thys [const AjPChar] Source array
+** @return [ajuint] length
+** @@
+******************************************************************************/
+
+ajuint ajChararrLen(const AjPChar thys)
+{
+    return thys->Len;
+}
+
 /* @func ajIntNew *************************************************************
 **
 ** Default constructor for empty AJAX integer arrays.
@@ -299,7 +321,7 @@ AjPInt ajIntNew(void)
 
 
 
-/* @func ajIntNewL ************************************************************
+/* @func ajIntNewRes **********************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -309,7 +331,7 @@ AjPInt ajIntNew(void)
 ** @@
 ******************************************************************************/
 
-AjPInt ajIntNewL(ajuint size)
+AjPInt ajIntNewRes(ajuint size)
 {
     AjPInt thys;
 
@@ -328,6 +350,16 @@ AjPInt ajIntNewL(ajuint size)
 
     return thys;
 }
+
+
+/* @obsolete ajIntNewL
+** @rename ajIntNewRes
+*/
+__deprecated AjPInt ajIntNewL(ajuint size)
+{
+    return ajIntNewRes(size);
+}
+
 
 
 
@@ -513,7 +545,7 @@ AjPUint ajUintNew(void)
 
 
 
-/* @func ajUintNewL ***********************************************************
+/* @func ajUintNewRes *********************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -524,7 +556,7 @@ AjPUint ajUintNew(void)
 ** @@
 ******************************************************************************/
 
-AjPUint ajUintNewL(ajuint size)
+AjPUint ajUintNewRes(ajuint size)
 {
     AjPUint thys;
 
@@ -545,6 +577,13 @@ AjPUint ajUintNewL(ajuint size)
 }
 
 
+/* @obsolete ajUintNewL
+** @rename ajUintNewRes
+*/
+__deprecated AjPUint ajUintNewL(ajuint size)
+{
+    return ajUintNewRes(size);
+}
 
 
 /* @func ajUintDel ************************************************************
@@ -737,7 +776,7 @@ static AjBool arrChararrResize(AjPChar *thys, ajuint size)
 
     p = *thys;
 
-    *thys = ajChararrNewL(s);
+    *thys = ajChararrNewRes(s);
 
     if(size < p->Len)
 	limit = size+1;
@@ -795,7 +834,7 @@ static AjBool arrIntResize(AjPInt *thys, ajuint size)
 
     p = *thys;
 
-    *thys = ajIntNewL(s);
+    *thys = ajIntNewRes(s);
 
     if(size < p->Len)
 	limit = size+1;
@@ -892,7 +931,7 @@ static AjBool arrUintResize(AjPUint *thys, ajuint size)
 
     p = *thys;
 
-    *thys = ajUintNewL(s);
+    *thys = ajUintNewRes(s);
 
     if(size < p->Len)
 	limit = size+1;
@@ -980,7 +1019,7 @@ AjPFloat ajFloatNew(void)
 
 
 
-/* @func ajFloatNewL **********************************************************
+/* @func ajFloatNewRes ********************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -990,7 +1029,7 @@ AjPFloat ajFloatNew(void)
 ** @@
 ******************************************************************************/
 
-AjPFloat ajFloatNewL(ajuint size)
+AjPFloat ajFloatNewRes(ajuint size)
 {
     AjPFloat thys;
 
@@ -1008,6 +1047,13 @@ AjPFloat ajFloatNewL(ajuint size)
 }
 
 
+/* @obsolete ajFloatNewL
+** @rename ajFloatNewRes
+*/
+__deprecated AjPFloat ajFloatNewL(ajuint size)
+{
+    return ajFloatNewRes(size);
+}
 
 
 /* @func ajFloatDel ***********************************************************
@@ -1147,7 +1193,7 @@ static AjBool arrFloatResize(AjPFloat *thys, ajuint size)
 
     p = *thys;
 
-    *thys = ajFloatNewL(s);
+    *thys = ajFloatNewRes(s);
 
     if(size < p->Len)
 	limit = size+1;
@@ -1235,7 +1281,7 @@ AjPDouble ajDoubleNew(void)
 
 
 
-/* @func ajDoubleNewL *********************************************************
+/* @func ajDoubleNewRes *******************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -1246,7 +1292,7 @@ AjPDouble ajDoubleNew(void)
 ** @@
 ******************************************************************************/
 
-AjPDouble ajDoubleNewL(ajuint size)
+AjPDouble ajDoubleNewRes(ajuint size)
 {
     AjPDouble thys;
 
@@ -1263,7 +1309,13 @@ AjPDouble ajDoubleNewL(ajuint size)
     return thys;
 }
 
-
+/* @obsolete ajDoubleNewL
+** @rename ajDoubleNewRes
+*/
+__deprecated AjPDouble ajDoubleNewL(ajuint size)
+{
+    return ajDoubleNewRes(size);
+}
 
 
 /* @func ajDoubleDel **********************************************************
@@ -1402,7 +1454,7 @@ static AjBool arrDoubleResize(AjPDouble *thys, ajuint size)
 
     p = *thys;
 
-    *thys = ajDoubleNewL(s);
+    *thys = ajDoubleNewRes(s);
 
     if(size < p->Len)
 	limit = size+1;
@@ -1490,7 +1542,7 @@ AjPShort ajShortNew(void)
 
 
 
-/* @func ajShortNewL **********************************************************
+/* @func ajShortNewRes ********************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -1500,7 +1552,7 @@ AjPShort ajShortNew(void)
 ** @@
 ******************************************************************************/
 
-AjPShort ajShortNewL(ajuint size)
+AjPShort ajShortNewRes(ajuint size)
 {
     AjPShort thys;
 
@@ -1518,6 +1570,14 @@ AjPShort ajShortNewL(ajuint size)
 }
 
 
+
+/* @obsolete ajShortNewL
+** @rename ajShortNewRes
+*/
+__deprecated AjPShort ajShortNewL(ajuint size)
+{
+    return ajShortNewRes(size);
+}
 
 
 /* @func ajShortDel ***********************************************************
@@ -1656,7 +1716,7 @@ static AjBool arrShortResize(AjPShort *thys, ajuint size)
 
     p = *thys;
 
-    *thys = ajShortNewL(s);
+    *thys = ajShortNewRes(s);
 
     if(size < p->Len)
 	limit = size+1;
@@ -1744,7 +1804,7 @@ AjPLong ajLongNew(void)
 
 
 
-/* @func ajLongNewL ***********************************************************
+/* @func ajLongNewRes *********************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -1754,7 +1814,7 @@ AjPLong ajLongNew(void)
 ** @@
 ******************************************************************************/
 
-AjPLong ajLongNewL(ajuint size)
+AjPLong ajLongNewRes(ajuint size)
 {
     AjPLong thys;
 
@@ -1772,6 +1832,13 @@ AjPLong ajLongNewL(ajuint size)
 }
 
 
+/* @obsolete ajLongNewL
+** @rename ajLongNewRes
+*/
+__deprecated AjPLong ajLongNewL(ajuint size)
+{
+    return ajLongNewRes(size);
+}
 
 
 /* @func ajLongDel ************************************************************
@@ -1911,7 +1978,7 @@ static AjBool arrLongResize(AjPLong *thys, ajuint size)
 
     p = *thys;
 
-    *thys = ajLongNewL(s);
+    *thys = ajLongNewRes(s);
 
     if(size < p->Len)
 	limit = size+1;
@@ -2317,7 +2384,7 @@ AjPInt2d ajInt2dNew(void)
 
 
 
-/* @func ajInt2dNewL **********************************************************
+/* @func ajInt2dNewRes ********************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -2328,7 +2395,7 @@ AjPInt2d ajInt2dNew(void)
 ** @@
 ******************************************************************************/
 
-AjPInt2d ajInt2dNewL(ajuint size)
+AjPInt2d ajInt2dNewRes(ajuint size)
 {
     AjPInt2d thys;
     ajuint i;
@@ -2349,9 +2416,16 @@ AjPInt2d ajInt2dNewL(ajuint size)
 }
 
 
+/* @obsolete ajInt2dNewL
+** @rename ajInt2dNewRes
+*/
+__deprecated AjPInt2d ajInt2dNewL(ajuint size)
+{
+    return ajInt2dNewRes(size);
+}
 
 
-/* @func ajInt2dNewLL *********************************************************
+/* @func ajInt2dNewResRes2 *****************************************************
 **
 ** Constructor given an initial reserved size in both dimensions
 **
@@ -2363,7 +2437,7 @@ AjPInt2d ajInt2dNewL(ajuint size)
 ** @@
 ******************************************************************************/
 
-AjPInt2d ajInt2dNewLL(ajuint size, ajuint size2)
+AjPInt2d ajInt2dNewResRes2(ajuint size, ajuint size2)
 {
     AjPInt2d thys;
     ajuint i;
@@ -2376,7 +2450,7 @@ AjPInt2d ajInt2dNewLL(ajuint size, ajuint size2)
     thys->Res = size;
 
     for(i=0;i<size;++i)
-        thys->Ptr[i] = ajIntNewL(size2);
+        thys->Ptr[i] = ajIntNewRes(size2);
 
     arr2dAlloc++;
 
@@ -2388,6 +2462,13 @@ AjPInt2d ajInt2dNewLL(ajuint size, ajuint size2)
 }
 
 
+/* @obsolete ajInt2dNewLL
+** @rename ajInt2dNewRes2
+*/
+__deprecated AjPInt2d ajInt2dNewLL(ajuint size, ajuint size2)
+{
+    return ajInt2dNewResRes2(size, size2);
+}
 
 
 /* @func ajInt2dDel ***********************************************************
@@ -2680,7 +2761,7 @@ AjPInt3d ajInt3dNew(void)
 
 
 
-/* @func ajInt3dNewL **********************************************************
+/* @func ajInt3dNewRes ********************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -2691,7 +2772,7 @@ AjPInt3d ajInt3dNew(void)
 ** @@
 ******************************************************************************/
 
-AjPInt3d ajInt3dNewL(ajuint size)
+AjPInt3d ajInt3dNewRes(ajuint size)
 {
     AjPInt3d thys;
     ajuint i;
@@ -2710,6 +2791,13 @@ AjPInt3d ajInt3dNewL(ajuint size)
 }
 
 
+/* @obsolete ajInt3dNewL
+** @rename ajInt3dNewRes
+*/
+__deprecated AjPInt3d ajInt3dNewL(ajuint size)
+{
+    return ajInt3dNewRes(size);
+}
 
 
 /* @func ajInt3dDel ***********************************************************
@@ -3033,7 +3121,7 @@ AjPUint2d ajUint2dNew(void)
 
 
 
-/* @func ajUint2dNewL *********************************************************
+/* @func ajUint2dNewRes *******************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -3044,7 +3132,7 @@ AjPUint2d ajUint2dNew(void)
 ** @@
 ******************************************************************************/
 
-AjPUint2d ajUint2dNewL(ajuint size)
+AjPUint2d ajUint2dNewRes(ajuint size)
 {
     AjPUint2d thys;
     ajuint i;
@@ -3065,9 +3153,16 @@ AjPUint2d ajUint2dNewL(ajuint size)
 }
 
 
+/* @obsolete ajUint2dNewL
+** @rename ajUint2dNewRes
+*/
+__deprecated AjPUint2d ajUint2dNewL(ajuint size)
+{
+    return ajUint2dNewRes(size);
+}
 
 
-/* @func ajUint2dNewLL ********************************************************
+/* @func ajUint2dNewResRes2 ***************************************************
 **
 ** Constructor given an initial reserved size in both dimensions
 **
@@ -3079,7 +3174,7 @@ AjPUint2d ajUint2dNewL(ajuint size)
 ** @@
 ******************************************************************************/
 
-AjPUint2d ajUint2dNewLL(ajuint size, ajuint size2)
+AjPUint2d ajUint2dNewResRes2(ajuint size, ajuint size2)
 {
     AjPUint2d thys;
     ajuint i;
@@ -3092,7 +3187,7 @@ AjPUint2d ajUint2dNewLL(ajuint size, ajuint size2)
     thys->Res = size;
 
     for(i=0;i<size;++i)
-        thys->Ptr[i] = ajUintNewL(size2);
+        thys->Ptr[i] = ajUintNewRes(size2);
 
     arr2dAlloc++;
 
@@ -3104,6 +3199,14 @@ AjPUint2d ajUint2dNewLL(ajuint size, ajuint size2)
 
 
 
+
+/* @obsolete ajUint2dNewLL
+** @rename ajUint2dNewRes2
+*/
+__deprecated AjPUint2d ajUint2dNewLL(ajuint size, ajuint size2)
+{
+    return ajUint2dNewResRes2(size, size2);
+}
 
 /* @func ajUint2dDel **********************************************************
 **
@@ -3390,7 +3493,7 @@ AjPUint3d ajUint3dNew(void)
 
 
 
-/* @func ajUint3dNewL *********************************************************
+/* @func ajUint3dNewRes *******************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -3401,7 +3504,7 @@ AjPUint3d ajUint3dNew(void)
 ** @@
 ******************************************************************************/
 
-AjPUint3d ajUint3dNewL(ajuint size)
+AjPUint3d ajUint3dNewRes(ajuint size)
 {
     AjPUint3d thys;
     ajuint i;
@@ -3420,6 +3523,13 @@ AjPUint3d ajUint3dNewL(ajuint size)
 }
 
 
+/* @obsolete ajUint3dNewL
+** @rename ajUint3dNewRes
+*/
+__deprecated AjPUint3d ajUint3dNewL(ajuint size)
+{
+    return ajUint3dNewRes(size);
+}
 
 
 /* @func ajUint3dDel **********************************************************
@@ -3741,7 +3851,7 @@ AjPFloat2d ajFloat2dNew(void)
 
 
 
-/* @func ajFloat2dNewL ********************************************************
+/* @func ajFloat2dNewRes ******************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -3752,7 +3862,7 @@ AjPFloat2d ajFloat2dNew(void)
 ** @@
 ******************************************************************************/
 
-AjPFloat2d ajFloat2dNewL(ajuint size)
+AjPFloat2d ajFloat2dNewRes(ajuint size)
 {
     AjPFloat2d thys;
     ajuint i;
@@ -3772,6 +3882,13 @@ AjPFloat2d ajFloat2dNewL(ajuint size)
 
 
 
+/* @obsolete ajFloat2dNewL
+** @rename ajFloat2dNewRes
+*/
+__deprecated AjPFloat2d ajFloat2dNewL(ajuint size)
+{
+    return ajFloat2dNewRes(size);
+}
 
 /* @func ajFloat2dDel *********************************************************
 **
@@ -4055,7 +4172,7 @@ AjPFloat3d ajFloat3dNew(void)
 
 
 
-/* @func ajFloat3dNewL ********************************************************
+/* @func ajFloat3dNewRes ******************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -4066,7 +4183,7 @@ AjPFloat3d ajFloat3dNew(void)
 ** @@
 ******************************************************************************/
 
-AjPFloat3d ajFloat3dNewL(ajuint size)
+AjPFloat3d ajFloat3dNewRes(ajuint size)
 {
     AjPFloat3d thys;
     ajuint i;
@@ -4085,6 +4202,13 @@ AjPFloat3d ajFloat3dNewL(ajuint size)
 }
 
 
+/* @obsolete ajFloat3dNewL
+** @rename ajFloat3dNewRes
+*/
+__deprecated AjPFloat3d ajFloat3dNewL(ajuint size)
+{
+    return ajFloat3dNewRes(size);
+}
 
 
 /* @func ajFloat3dDel *********************************************************
@@ -4404,7 +4528,7 @@ AjPDouble2d ajDouble2dNew(void)
 
 
 
-/* @func ajDouble2dNewL *******************************************************
+/* @func ajDouble2dNewRes *****************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -4415,7 +4539,7 @@ AjPDouble2d ajDouble2dNew(void)
 ** @@
 ******************************************************************************/
 
-AjPDouble2d ajDouble2dNewL(ajuint size)
+AjPDouble2d ajDouble2dNewRes(ajuint size)
 {
     AjPDouble2d thys;
     ajuint i;
@@ -4434,6 +4558,13 @@ AjPDouble2d ajDouble2dNewL(ajuint size)
 }
 
 
+/* @obsolete ajDouble2dNewL
+** @rename ajDouble2dNewRes
+*/
+__deprecated AjPDouble2d ajDouble2dNewL(ajuint size)
+{
+    return ajDouble2dNewRes(size);
+}
 
 
 /* @func ajDouble2dDel ********************************************************
@@ -4719,7 +4850,7 @@ AjPDouble3d ajDouble3dNew(void)
 
 
 
-/* @func ajDouble3dNewL *******************************************************
+/* @func ajDouble3dNewRes *****************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -4730,7 +4861,7 @@ AjPDouble3d ajDouble3dNew(void)
 ** @@
 ******************************************************************************/
 
-AjPDouble3d ajDouble3dNewL(ajuint size)
+AjPDouble3d ajDouble3dNewRes(ajuint size)
 {
     AjPDouble3d thys;
     ajuint i;
@@ -4749,6 +4880,13 @@ AjPDouble3d ajDouble3dNewL(ajuint size)
 }
 
 
+/* @obsolete ajDouble3dNewL
+** @rename ajDouble3dNewRes
+*/
+__deprecated AjPDouble3d ajDouble3dNewL(ajuint size)
+{
+    return ajDouble3dNewRes(size);
+}
 
 
 /* @func ajDouble3dDel ********************************************************
@@ -5071,7 +5209,7 @@ AjPShort2d ajShort2dNew(void)
 
 
 
-/* @func ajShort2dNewL ********************************************************
+/* @func ajShort2dNewRes ******************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -5082,7 +5220,7 @@ AjPShort2d ajShort2dNew(void)
 ** @@
 ******************************************************************************/
 
-AjPShort2d ajShort2dNewL(ajuint size)
+AjPShort2d ajShort2dNewRes(ajuint size)
 {
     AjPShort2d thys;
     ajuint i;
@@ -5101,6 +5239,13 @@ AjPShort2d ajShort2dNewL(ajuint size)
 }
 
 
+/* @obsolete ajShort2dNewL
+** @rename ajShort2dNewRes
+*/
+__deprecated AjPShort2d ajShort2dNewL(ajuint size)
+{
+    return ajShort2dNewRes(size);
+}
 
 
 /* @func ajShort2dDel *********************************************************
@@ -5387,7 +5532,7 @@ AjPShort3d ajShort3dNew(void)
 
 
 
-/* @func ajShort3dNewL ********************************************************
+/* @func ajShort3dNewRes ******************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -5398,7 +5543,7 @@ AjPShort3d ajShort3dNew(void)
 ** @@
 ******************************************************************************/
 
-AjPShort3d ajShort3dNewL(ajuint size)
+AjPShort3d ajShort3dNewRes(ajuint size)
 {
     AjPShort3d thys;
     ajuint i;
@@ -5418,6 +5563,13 @@ AjPShort3d ajShort3dNewL(ajuint size)
 
 
 
+/* @obsolete ajShort3dNewL
+** @rename ajShort3dNewRes
+*/
+__deprecated AjPShort3d ajShort3dNewL(ajuint size)
+{
+    return ajShort3dNewRes(size);
+}
 
 /* @func ajShort3dDel *********************************************************
 **
@@ -5740,7 +5892,7 @@ AjPLong2d ajLong2dNew(void)
 
 
 
-/* @func ajLong2dNewL *********************************************************
+/* @func ajLong2dNewRes *******************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -5751,7 +5903,7 @@ AjPLong2d ajLong2dNew(void)
 ** @@
 ******************************************************************************/
 
-AjPLong2d ajLong2dNewL(ajuint size)
+AjPLong2d ajLong2dNewRes(ajuint size)
 {
     AjPLong2d thys;
     ajuint i;
@@ -5771,6 +5923,13 @@ AjPLong2d ajLong2dNewL(ajuint size)
 
 
 
+/* @obsolete ajLong2dNewL
+** @rename ajLong2dNewRes
+*/
+__deprecated AjPLong2d ajLong2dNewL(ajuint size)
+{
+    return ajLong2dNewRes(size);
+}
 
 /* @func ajLong2dDel **********************************************************
 **
@@ -6056,7 +6215,7 @@ AjPLong3d ajLong3dNew(void)
 
 
 
-/* @func ajLong3dNewL *********************************************************
+/* @func ajLong3dNewRes *******************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -6067,7 +6226,7 @@ AjPLong3d ajLong3dNew(void)
 ** @@
 ******************************************************************************/
 
-AjPLong3d ajLong3dNewL(ajuint size)
+AjPLong3d ajLong3dNewRes(ajuint size)
 {
     AjPLong3d thys;
     ajuint i;
@@ -6085,6 +6244,13 @@ AjPLong3d ajLong3dNewL(ajuint size)
     return thys;
 }
 
+/* @obsolete ajLong3dNewL
+** @rename ajLong3dNewRes
+*/
+__deprecated AjPLong3d ajLong3dNewL(ajuint size)
+{
+    return ajLong3dNewRes(size);
+}
 
 
 
