@@ -55,7 +55,7 @@ __declspec(dllimport) ajint aj_hist_mark;
 
 
 
-/* @data AjPHistData **********************************************************
+/* @data AjPHistdata **********************************************************
 **
 ** AJAX data structure for histogram graph data
 **
@@ -71,7 +71,7 @@ __declspec(dllimport) ajint aj_hist_mark;
 ** @@
 ******************************************************************************/
 
-typedef struct AjSHistData {
+typedef struct AjSHistdata {
   float *data;
   AjBool deletedata;
   ajint colour;
@@ -81,8 +81,8 @@ typedef struct AjSHistData {
   AjPStr yaxis;
   ajint pattern;
   char Padding[4];
-} AjOHistData;
-#define AjPHistData AjOHistData*
+} AjOHistdata;
+#define AjPHistdata AjOHistdata*
 
 /* @data AjPHist **************************************************************
 **
@@ -103,7 +103,7 @@ typedef struct AjSHistData {
 ** @attr yaxisleft [AjPStr] y axis title
 ** @attr yaxisright [AjPStr] second y axis title for right side
 ** @attr graph [AjPGraph] Graph
-** @attr hists [AjPHistData*] Histogram bin data
+** @attr hists [AjPHistdata*] Histogram bin data
 ** @@
 ******************************************************************************/
 
@@ -122,7 +122,7 @@ typedef struct AjSHist {
   AjPStr yaxisleft;
   AjPStr yaxisright;
   AjPGraph graph;
-  AjPHistData *hists;
+  AjPHistdata *hists;
 } AjOHist;
 #define AjPHist AjOHist*
 
