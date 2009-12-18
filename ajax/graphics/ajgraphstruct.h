@@ -37,7 +37,7 @@ typedef struct AjSGraphobj {
 
 /* @data AjPGraphdata ******************************************************
 **
-** Graph data object. Substructure of AjPGraphPlp.
+** Graph data object. Substructure of AjPGraph.
 **
 ** @attr x [float*] x coordinates
 ** @attr y [float*] y coordinates
