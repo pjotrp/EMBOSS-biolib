@@ -183,8 +183,8 @@ EmbPSigdat embSigdatNew(ajuint nres, ajuint ngap)
 
     if(ngap)
     {
-	ret->gsiz = ajUintNewL((ajint) ngap);
-	ret->gfrq = ajUintNewL((ajint) ngap);
+	ret->gsiz = ajUintNewRes((ajint) ngap);
+	ret->gfrq = ajUintNewRes((ajint) ngap);
 	ajUintPut(&ret->gsiz, ngap-1, (ajint)0);
 	ajUintPut(&ret->gfrq, ngap-1, (ajint)0);
     }
@@ -198,8 +198,8 @@ EmbPSigdat embSigdatNew(ajuint nres, ajuint ngap)
 
     if(nres)
     {
-	ret->rids = ajChararrNewL((ajint) nres);
-	ret->rfrq = ajUintNewL((ajint) nres);
+	ret->rids = ajChararrNewRes((ajint) nres);
+	ret->rfrq = ajUintNewRes((ajint) nres);
         ajUintPut(&ret->rfrq, nres-1, (ajint)0);
 	ajChararrPut(&ret->rids, nres-1, (char)' ');
 
@@ -208,7 +208,7 @@ EmbPSigdat embSigdatNew(ajuint nres, ajuint ngap)
 	for(x=0;x<nres;x++)
 	    ret->eids[x]=ajStrNew();
 
-	ret->efrq = ajUintNewL((ajint) nres);
+	ret->efrq = ajUintNewRes((ajint) nres);
         ajUintPut(&ret->efrq, nres-1, (ajint)0);
     }
     else

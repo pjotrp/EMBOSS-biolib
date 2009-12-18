@@ -1299,7 +1299,7 @@ AjBool embDmxSeqNR(const AjPList input, AjPUint *keep, ajint *nset,
 
 
     /* Create an ajint array to hold lengths of sequences */
-    lens = ajUintNewL(nin);
+    lens = ajUintNewRes(nin);
 
     for(x=0; x<nin; x++)
 	ajUintPut(&lens,x,ajSeqGetLen(inseqs[x]->Seq));
@@ -1584,7 +1584,7 @@ AjBool embDmxSeqNRRange(const AjPList input, AjPUint *keep, ajint *nset,
 
 
     /* Create an ajint array to hold lengths of sequences */
-    lens = ajUintNewL(nin);
+    lens = ajUintNewRes(nin);
 
     for(x=0; x<nin; x++)
 	ajUintPut(&lens,x,ajSeqGetLen(inseqs[x]->Seq));
@@ -1851,7 +1851,7 @@ AjBool embDmxSeqCompall(const AjPList input, AjPFloat2d *scores,
 
 
     /* Create an ajint array to hold lengths of sequences */
-    lens = ajUintNewL(nin);
+    lens = ajUintNewRes(nin);
 
     for(x=0; x<nin; x++)
 	ajUintPut(&lens,x,ajSeqGetLen(inseqs[x]));
