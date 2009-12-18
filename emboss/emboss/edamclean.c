@@ -239,7 +239,7 @@
 
 
 
- /* @datastatic PNamespace *******************************************************
+ /* @datastatic PNamespace *****************************************************
  **
  ** Namespace object
  ** Holds name and array of terms for an EDAM namespace.
@@ -249,7 +249,7 @@
  ** @alias ONamespace
  **
  ** @attr name  [AjPStr]     Name of namespace
- ** @attr terms [AjPTerm *]  Array of terms
+ ** @attr terms [PTerm*]  Array of terms
  ** @attr list  [AjPList]    List of terms
  ** @attr n     [ajint]      Size of array / list
  ******************************************************************************/
