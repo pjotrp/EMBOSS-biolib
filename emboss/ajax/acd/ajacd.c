@@ -6802,7 +6802,7 @@ static void acdSetArray(AcdPAcd thys)
 	ajFmtPrintAppS(&deflist, "%.*f", precision, fdef);
     }
     
-    val = ajFloatNewL(size);	   /* create storage for the result */
+    val = ajFloatNewRes(size);	   /* create storage for the result */
     
     required = acdIsRequired(thys);
     acdReplyInitS(thys, deflist, &acdReplyDef);
