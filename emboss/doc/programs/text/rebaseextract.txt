@@ -17,12 +17,12 @@ Description
 
    rebaseextract processes the REBASE database for use by the EMBOSS
    restriction enzyme applications. It derives recognition site and
-   cleavage information from the withrefm file of an REBASE distribution.
-   It creates three files in the EMBOSS data subdirectory REBASE: a
-   pattern file, a reference file and a supplier file. It will also (by
-   default) produce an embossre.equ file of preferred isoschizomers using
-   restriction enzyme prototypes in the "proto" file. This can be turned
-   off by setting the -equivalences option to be false.
+   cleavage information from the "withrefm" file of an REBASE
+   distribution. It creates three files in the EMBOSS data subdirectory
+   REBASE: a pattern file, a reference file and a supplier file. It will
+   also (by default) produce an embossre.equ file of preferred
+   isoschizomers using restriction enzyme prototypes in the "proto" file.
+   This can be turned off by setting the -equivalences option to be false.
 
 Usage
 
