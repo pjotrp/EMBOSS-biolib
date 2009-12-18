@@ -306,3 +306,4 @@ weights                             | properties     |  "EDAM: PHYLIP discrete s
 white_wimley_datafile               | file           |  "EDAM: Amino acid White-Wimley data"                   | White-Wimley data
 wildcard_string                     | string         |  "EDAM: Wildcard string"                                | string with wildcard characters
 wordfinder_error                    | file           |  "EDAM: EMBOSS wordfinder log file"                     | Program wordfinder errors
+wordmatch_log                           | file           |  "EDAM: EMBOSS wordmatch log file"                          | Wordmatch log
