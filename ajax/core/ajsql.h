@@ -25,7 +25,7 @@ extern "C"
 ** @alias AjOVoid
 **
 ** @new    ajVoidNew Default constructor
-** @new    ajVoidNewL Constructor with reserved size
+** @new    ajVoidNewRes Constructor with reserved size
 ** @delete ajVoidDel Default destructor
 ** @cast   ajVoidGet Retrieve a pointer from an array
 ** @modify ajVoidPut Load a pointer array element
@@ -325,7 +325,7 @@ AjBool ajSqlcolumnNumberIsDefined(const AjPSqlrow sqlr, ajuint column);
 
 AjPVoid ajVoidNew(void);
 
-AjPVoid ajVoidNewL(ajuint size);
+AjPVoid ajVoidNewRes(ajuint size);
 
 void ajVoidDel(AjPVoid *thys);
 

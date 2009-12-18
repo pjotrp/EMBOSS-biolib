@@ -1957,9 +1957,9 @@ AjPSqlrow ajSqlrowNew(ajuint columns)
     
     AJNEW0(sqlr);
     
-    sqlr->Values = ajVoidNewL(columns);
+    sqlr->Values = ajVoidNewRes(columns);
     
-    sqlr->Lengths = ajLongNewL(columns);
+    sqlr->Lengths = ajLongNewRes(columns);
     
     sqlr->Columns = columns;
     
@@ -3191,9 +3191,9 @@ AjBool ajSqlcolumnNumberIsDefined(const AjPSqlrow sqlr, ajuint column)
 ** @fcategory new
 **
 ** @nam3rule New Constructor
-** @suffix L length specified
+** @nam4rule Res length specified
 **
-** @argrule L size [ajuint] Size of array
+** @argrule Res size [ajuint] Size of array
 **
 ** @valrule * [AjPVoid] void pointer array
 **
@@ -3230,7 +3230,7 @@ AjPVoid ajVoidNew(void)
 
 
 
-/* @func ajVoidNewL ***********************************************************
+/* @func ajVoidNewRes **********************************************************
 **
 ** Constructor given an initial reserved size.
 **
@@ -3241,7 +3241,7 @@ AjPVoid ajVoidNew(void)
 ** @@
 ******************************************************************************/
 
-AjPVoid ajVoidNewL(ajuint size)
+AjPVoid ajVoidNewRes(ajuint size)
 {
     AjPVoid thys = NULL;
     
@@ -3458,7 +3458,7 @@ static AjBool arrVoidResize(AjPVoid *thys, ajuint size)
     
     p = *thys;
     
-    *thys = ajVoidNewL(s);
+    *thys = ajVoidNewRes(s);
     
     if(size < p->Len)
 	limit = size + 1;
