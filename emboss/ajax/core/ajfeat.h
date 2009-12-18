@@ -47,8 +47,8 @@ AjBool        ajFeatGetNoteC(const AjPFeature thys, const char* name,
 			     AjPStr* val);
 AjBool        ajFeatGetNoteCI(const AjPFeature thys, const char* name,
 			      ajint count, AjPStr* val);
-AjBool        ajFeatGetNoteI (const AjPFeature thys, const AjPStr name,
-			      ajint count, AjPStr* val);
+AjBool        ajFeatGetNoteSI (const AjPFeature thys, const AjPStr name,
+                               ajint count, AjPStr* val);
 AjBool        ajFeatGetNoteS (const AjPFeature thys, const AjPStr name,
 			     AjPStr* val);
 AjBool        ajFeatGetRemoteseq(const AjPFeature thys, const AjPStr usa,
@@ -219,6 +219,9 @@ AjBool        ajFeattagIsNote(const AjPStr tag);
 
 void          ajFeatUnused(void);
 
+__deprecated AjBool        ajFeatGetNoteI (const AjPFeature thys,
+                                            const AjPStr name,
+                                            ajint count, AjPStr* val);
 __deprecated AjPFeature    ajFeatCopy (const AjPFeature orig);
 __deprecated AjPFeattable  ajFeattableCopy (const AjPFeattable orig);
 __deprecated AjPFeattable  ajFeattableCopyLimit (const AjPFeattable orig,
