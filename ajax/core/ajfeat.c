@@ -7705,7 +7705,7 @@ AjBool ajFeatGetNoteCI(const AjPFeature thys, const char* name, ajint count,
 
 
 
-/* @func ajFeatGetNoteI *******************************************************
+/* @func ajFeatGetNoteSI ******************************************************
 **
 ** Finds a named note tag (with a * prefix)
 **
@@ -7718,10 +7718,21 @@ AjBool ajFeatGetNoteCI(const AjPFeature thys, const char* name, ajint count,
 ** @@
 ******************************************************************************/
 
-AjBool ajFeatGetNoteI(const AjPFeature thys, const AjPStr name, ajint count,
-		      AjPStr* val)
+AjBool ajFeatGetNoteSI(const AjPFeature thys, const AjPStr name, ajint count,
+                       AjPStr* val)
 {
     return ajFeatGetNoteCI(thys, ajStrGetPtr(name), count, val);
+}
+
+
+/* @obsolete ajFeatGetNoteI
+** @rename ajFeatGetNoteSI
+*/
+__deprecated AjBool ajFeatGetNoteI(const AjPFeature thys,
+                                   const AjPStr name, ajint count,
+                                   AjPStr* val)
+{
+    return ajFeatGetNoteSI(thys, name, count, val);
 }
 
 
@@ -7741,7 +7752,7 @@ AjBool ajFeatGetNoteI(const AjPFeature thys, const AjPStr name, ajint count,
 
 AjBool ajFeatGetNoteS(const AjPFeature thys, const AjPStr name, AjPStr* val)
 {
-    return ajFeatGetNoteI(thys, name, 0, val);
+    return ajFeatGetNoteSI(thys, name, 0, val);
 }
 
 
