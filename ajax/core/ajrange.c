@@ -877,8 +877,10 @@ AjBool ajRangeElementSet(AjPRange thys, ajuint element,
 }
 
 
-
-AjBool ajRangeChange(AjPRange thys, ajuint element,
+/* @obsolete ajRangeChange
+** @rename ajRangeElementSet
+*/
+__deprecated AjBool ajRangeChange(AjPRange thys, ajuint element,
                      ajuint start, ajuint end)
 {
     return ajRangeElementSet(thys, element, start, end);
