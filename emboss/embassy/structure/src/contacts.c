@@ -415,7 +415,7 @@ static AjBool contacts_WriteFile(AjPFile logf,
 	    else
 	    {
 		/* Allocate memory for the contact map (SQUARE 2d int array) */
-		mat = ajInt2dNewL((ajint)pdb->Chains[y]->Nres);   	
+		mat = ajInt2dNewRes((ajint)pdb->Chains[y]->Nres);   	
 
 		for(z=0;z<pdb->Chains[y]->Nres;++z)
 		    ajInt2dPut(&mat, z, pdb->Chains[y]->Nres-1, (ajint) 0);

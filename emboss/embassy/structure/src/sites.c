@@ -1568,7 +1568,7 @@ static AjPDomConts sites_DomContsNew(ajint n)
 	    ret->aa_code[i]=ajStrNew();
 	    ret->res_pos2[i]=ajStrNew(); 
 	}
-	ret->res_pos=ajIntNewL(n);    
+	ret->res_pos=ajIntNewRes(n);    
     }
     else
     {

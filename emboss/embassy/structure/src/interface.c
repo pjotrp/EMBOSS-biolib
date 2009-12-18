@@ -352,7 +352,7 @@ static AjBool interface_WriteFile(AjPFile logf, AjPFile outf, float thresh,
 		    /* Allocate memory for the contact map (a 2d int array, 
 		       no. rows = no. res. in chain y,
 		       no. columns = no. res. in chain w)*/
-		    mat = ajInt2dNewL((ajint)pdb->Chains[y]->Nres);   	
+		    mat = ajInt2dNewRes((ajint)pdb->Chains[y]->Nres);   	
 		    for(z=0;z<pdb->Chains[y]->Nres;++z)
 			ajInt2dPut(&mat, z, pdb->Chains[w]->Nres-1, (ajint) 0);
 

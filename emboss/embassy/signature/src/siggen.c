@@ -1034,7 +1034,7 @@ static AjBool  siggen_ScoreSeqVar(AjPScopalg alg, AjPScorealg *scores,
 
 
     /* Create the class frequencey array. */
-    class_freq = ajFloatNewL((float)6);
+    class_freq = ajFloatNewRes((float)6);
     
 
 
@@ -1298,7 +1298,7 @@ static AjBool  siggen_ScoreNcon(AjPScopalg alg,
     
 
     /* Allocate memory for the align_ncon array . */
-    align_ncon = ajUint2dNewL((ajint)alg->width);        
+    align_ncon = ajUint2dNewRes((ajint)alg->width);        
 
 
     /* Assign iterator for post_similar line. */
@@ -1471,9 +1471,9 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
 
     
     /*Allocate memory for arrays . */
-    con_contact    = ajUint2dNewL((ajint)alg->width);    
-    con_line       = ajUintNewL((ajint)alg->width);
-    atomidx_size   = ajUintNewL((ajint)alg->N);
+    con_contact    = ajUint2dNewRes((ajint)alg->width);    
+    con_line       = ajUintNewRes((ajint)alg->width);
+    atomidx_size   = ajUintNewRes((ajint)alg->N);
 
     
     for(memb_cnt = 0; memb_cnt<alg->N;memb_cnt++)
@@ -1830,20 +1830,20 @@ static EmbPSignature  siggen_SigSelect(AjPScopalg alg,
     ajRandomSeed();
     
     /* Create arrays. */
-    seqmat_normal       =  ajFloatNewL(alg->width);
-    seqvar_normal       =  ajFloatNewL(alg->width);
-    ncon_normal         =  ajFloatNewL(alg->width);
-    ccon_normal         =  ajFloatNewL(alg->width);
-    total_score         =  ajFloatNewL(alg->width);
-    keyres_pos          =  ajUintNewL(alg->width);    
+    seqmat_normal       =  ajFloatNewRes(alg->width);
+    seqvar_normal       =  ajFloatNewRes(alg->width);
+    ncon_normal         =  ajFloatNewRes(alg->width);
+    ccon_normal         =  ajFloatNewRes(alg->width);
+    total_score         =  ajFloatNewRes(alg->width);
+    keyres_pos          =  ajUintNewRes(alg->width);    
 
 
-    post_sim            =  ajUintNewL(alg->width);
-    rand_pos            =  ajUintNewL(alg->width);
+    post_sim            =  ajUintNewRes(alg->width);
+    rand_pos            =  ajUintNewRes(alg->width);
     keyres_seq          =  ajUint2dNew();    
     atomres_seq         =  ajUint2dNew();    
-    seq_len             =  ajUintNewL(alg->N);    
-    fullseq_len         =  ajUintNewL(alg->N);    
+    seq_len             =  ajUintNewRes(alg->N);    
+    fullseq_len         =  ajUintNewRes(alg->N);    
     
 
     /* Initialise array elements to zero. */
@@ -2295,7 +2295,7 @@ static EmbPSignature  siggen_SigSelect(AjPScopalg alg,
        identified above. */
 
     /* Assign temp array and initialise. */
-    temp_rand =  ajUintNewL(num_aligned);
+    temp_rand =  ajUintNewRes(num_aligned);
     for(i=0;i<num_aligned;i++)
         ajUintPut(&temp_rand, i, -1);
     
@@ -2715,7 +2715,7 @@ static AjBool siggen_CalcSeqpos(AjPScopalg alg,
     /* This section determines the position of each aligned residue 
        in its original protein sequence. Allocate memory for the seq_pos 
        array. */
-    *seq_pos    = ajUint2dNewL((ajint)alg->N);    
+    *seq_pos    = ajUint2dNewRes((ajint)alg->N);
 
     
     /*Set reserved size. */
@@ -2807,7 +2807,7 @@ static AjBool siggen_Con_Thresh(AjPScopalg alg,
 
 
     /* Allocate memory for the align_ncon array . */
-    align_ncon = ajUint2dNewL((ajint)alg->width);        
+    align_ncon = ajUint2dNewRes((ajint)alg->width);        
 
 
     /* Assign iterator for post_similar line. */
@@ -3020,18 +3020,18 @@ static EmbPSignature  siggen_SigSelectSeq(AjPScopalg alg,
     ajRandomSeed();
     
     /* Create arrays. */
-    seqmat_normal       =  ajFloatNewL(alg->width);
-    seqvar_normal       =  ajFloatNewL(alg->width);
-    ncon_normal         =  ajFloatNewL(alg->width);
-    ccon_normal         =  ajFloatNewL(alg->width);
-    total_score         =  ajFloatNewL(alg->width);
-    keyres_pos          =  ajUintNewL(alg->width);    
+    seqmat_normal       =  ajFloatNewRes(alg->width);
+    seqvar_normal       =  ajFloatNewRes(alg->width);
+    ncon_normal         =  ajFloatNewRes(alg->width);
+    ccon_normal         =  ajFloatNewRes(alg->width);
+    total_score         =  ajFloatNewRes(alg->width);
+    keyres_pos          =  ajUintNewRes(alg->width);    
 
 
-    post_sim            =  ajUintNewL(alg->width);
-    rand_pos            =  ajUintNewL(alg->width);
+    post_sim            =  ajUintNewRes(alg->width);
+    rand_pos            =  ajUintNewRes(alg->width);
     keyres_seq          =  ajUint2dNew();    
-    seq_len             =  ajUintNewL(alg->N);    
+    seq_len             =  ajUintNewRes(alg->N);    
     
 
     /* Initialise array elements to zero. */
@@ -3319,7 +3319,7 @@ static EmbPSignature  siggen_SigSelectSeq(AjPScopalg alg,
        positions identified above. */
 
     /* Assign temp array and initialise. */
-    temp_rand =  ajUintNewL(num_aligned);
+    temp_rand =  ajUintNewRes(num_aligned);
     for(i=0;i<num_aligned;i++)
         ajUintPut(&temp_rand, i, -1);
     
@@ -3926,14 +3926,14 @@ static EmbPSignature siggen_SigSelectManual(AjPScopalg alg,
 
     
     /* Create arrays. */
-    total_score         =  ajFloatNewL(alg->width);
-    keyres_pos          =  ajUintNewL(alg->width);    
+    total_score         =  ajFloatNewRes(alg->width);
+    keyres_pos          =  ajUintNewRes(alg->width);    
 
 
-    post_sim            =  ajUintNewL(alg->width);
+    post_sim            =  ajUintNewRes(alg->width);
     keyres_seq          =  ajUint2dNew();    
-    seq_len             =  ajUintNewL(alg->N);    
-    fullseq_len         =  ajUintNewL(alg->N);    
+    seq_len             =  ajUintNewRes(alg->N);    
+    fullseq_len         =  ajUintNewRes(alg->N);    
     
 
     /* Initialise array elements to zero. */
@@ -4256,26 +4256,26 @@ static AjPScorealg siggen_ScorealgNew(ajint len)
     /* Create the scoring arrays. */
     if(len)
     {
-	ret->seqmat_score    = ajFloatNewL((ajint)len);
+	ret->seqmat_score    = ajFloatNewRes((ajint)len);
 	ajFloatPut(&ret->seqmat_score, len-1, (float)0.0);
-	ret->seqvar_score    = ajFloatNewL((ajint)len);
+	ret->seqvar_score    = ajFloatNewRes((ajint)len);
 	ajFloatPut(&ret->seqvar_score, len-1, (float)0.0);
 
 
-        ret->ncon_thresh = ajUintNewL((ajint)len);
+        ret->ncon_thresh = ajUintNewRes((ajint)len);
 	ajUintPut(&ret->ncon_thresh , len-1, (ajint)0);
 
-	ret->post_similar = ajUintNewL((ajint)len);
+	ret->post_similar = ajUintNewRes((ajint)len);
 	ajUintPut(&ret->post_similar , len-1, (ajint)0);
-	ret->positions = ajUintNewL((ajint)len);
+	ret->positions = ajUintNewRes((ajint)len);
 	ajUintPut(&ret->positions, len-1, (ajint)0);
-	ret->ncon_score   = ajFloatNewL((ajint)len);
+	ret->ncon_score   = ajFloatNewRes((ajint)len);
 	ajFloatPut(&ret->ncon_score , len-1, (float)0.0);
-	ret->ccon_score   = ajFloatNewL((ajint)len);
+	ret->ccon_score   = ajFloatNewRes((ajint)len);
 	ajFloatPut(&ret->ccon_score  , len-1, (float)0.0);
-	ret->nccon_score = ajUintNewL((ajint)len);
+	ret->nccon_score = ajUintNewRes((ajint)len);
 	ajUintPut(&ret->nccon_score, len-1, (ajint)0);
-	ret->combi_score  = ajUintNewL((ajint)len);
+	ret->combi_score  = ajUintNewRes((ajint)len);
 	ajUintPut(&ret->combi_score, len-1, (ajint)0);
     }
 

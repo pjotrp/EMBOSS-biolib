@@ -199,12 +199,12 @@ int main(int argc, char **argv)
 		    ajListToarray(famlist, (void ***) &(arr));
 		    
 		    /* Allocate & initialise scores and mean arrays. */
-		    scores   = ajFloat2dNewL(famsize);
+		    scores   = ajFloat2dNewRes(famsize);
 		    for(x=0;x<famsize;x++)
 			for(y=0;y<famsize;y++)
 			    ajFloat2dPut(&scores, x, y, 0);
 		    
-		    means = ajFloatNewL(famsize);
+		    means = ajFloatNewRes(famsize);
 		    for(x=0;x<famsize;x++)
 			ajFloatPut(&means, x, 0);
 
@@ -373,12 +373,12 @@ int main(int argc, char **argv)
 	ajListToarray(famlist, (void ***) &(arr));
 	
 	/* Allocate & initialise scores and mean arrays. */
-	scores   = ajFloat2dNewL(famsize);
+	scores   = ajFloat2dNewRes(famsize);
 	for(x=0;x<famsize;x++)
 	    for(y=0;y<famsize;y++)
 		ajFloat2dPut(&scores, x, y, 0);
 	
-	means = ajFloatNewL(famsize);
+	means = ajFloatNewRes(famsize);
 	for(x=0;x<famsize;x++)
 	    ajFloatPut(&means, x, 0);
 	

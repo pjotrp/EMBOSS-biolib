@@ -320,9 +320,9 @@ static void seqfraggle_getlengths(EmbPHitlist hitlist,
 
     if(hitlist->N > 1)
     {
-	*seq_len_sort = ajUintNewL(hitlist->N);
-	*seq_len      = ajUintNewL(hitlist->N);
-	*seq_ok       = ajUintNewL(hitlist->N);
+	*seq_len_sort = ajUintNewRes(hitlist->N);
+	*seq_len      = ajUintNewRes(hitlist->N);
+	*seq_ok       = ajUintNewRes(hitlist->N);
 
 	ajUintPut(seq_len_sort, hitlist->N-1, 0);  
 	ajUintPut(seq_len, hitlist->N-1, 0);       
@@ -391,9 +391,9 @@ static void seqfraggle_getlengths_other(AjPStr temp,
 
     if(*num_hits > 1)
     {
-	*seq_len_sort = ajUintNewL(*num_hits);
-	*seq_len      = ajUintNewL(*num_hits);
-	*seq_ok       = ajUintNewL(*num_hits);
+	*seq_len_sort = ajUintNewRes(*num_hits);
+	*seq_len      = ajUintNewRes(*num_hits);
+	*seq_ok       = ajUintNewRes(*num_hits);
 
 	ajUintPut(seq_len_sort, *num_hits-1, 0);  
 	ajUintPut(seq_len, *num_hits-1, 0);       
