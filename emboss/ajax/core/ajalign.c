@@ -3994,7 +3994,7 @@ AjBool ajAlignSetSubRange(AjPAlign thys,
 
 
 
-/* @funcstatic alignGetSeqName ***************************************************
+/* @funcstatic alignSeqName ***************************************************
 **
 ** Returns the sequence name or USA depending on the setting in the
 ** Alignment object (derived from the ACD and command line -ausa option)
