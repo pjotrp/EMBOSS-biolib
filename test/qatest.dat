@@ -15525,7 +15525,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww-ID:AB000095
 FI test.out
-FZ = 4655
+FZ = 4703
 FP /^ID   AB000095; /
 FP 1 /^ID /
 //
@@ -15535,7 +15535,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww-ACC:AB000095
 FI test.out
-FZ = 4655
+FZ = 4703
 FP /^ID   AB000095; /
 FP 1 /^ID /
 //
@@ -15545,7 +15545,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww-SV:AB000095.1
 FI test.out
-FZ = 4655
+FZ = 4703
 FP /^ID   AB000095; /
 FP 1 /^ID /
 //
@@ -15555,7 +15555,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww:AB000095
 FI test.out
-FZ = 4655
+FZ = 4703
 FP /^ID   AB000095; /
 FP 1 /^ID /
 //
