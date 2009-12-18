@@ -1,5 +1,26 @@
 #ajalign
 #ajarr
+ajChararrNewL ajChararrNewRes
+ajIntNewL ajIntNewRes
+ajUintNewL ajUintNewRes
+ajFloatNewL ajFloatNewRes
+ajDoubleNewL ajDoubleNewRes
+ajShortNewL ajShortNewRes
+ajLongNewL ajLongNewRes
+ajInt2dNewL ajNInt2dewRes
+ajInt2dNewLL ajInt2dNewRes2
+ajInt3dNewL ajInt3dNewRes
+ajUint2dNewL ajUint2dNewRes
+ajUint2dNewLL ajUint2dNewRes2
+ajUint3dNewL ajUint3dNewRes
+ajFloat2dNewL ajFloat2dNewRes
+ajFloat3dNewL ajFloat3dNewRes
+ajDouble2dNewL ajDouble2dNewRes
+ajDouble3dNewL ajDouble3dNewRes
+ajShort2dNewL ajShort2dNewRes
+ajShort3dNewL ajShort3dNewRes
+ajLong2dNewL ajLong2dNewRes
+ajLong3dNewL ajLong3dNewRes
 #ajassert
 #ajbase
 ajBaseProb ajBaseAlphaCompare
@@ -49,6 +70,7 @@ ajFeattableBegin ajFeattableGetBegin
 ajFeattableEnd ajFeattableGetEnd
 ajFeattableLen ajFeattableGetLen
 ajFeattableSize ajFeattableGetSize
+ajFeatGetNoteI ajFeatGetNoteSI
 ajFeatGetNote ajFeatGetNoteS
 ajFeatRead ajFeattableNewRead
 ajFeatUfoRead ajFeattableNewReadUfo
@@ -268,6 +290,7 @@ ajRangeCopy ajRangeNewRange
 ajRangeGet ajRangeNewString
 ajRangeGetLimits ajRangeNewStringLimits
 ajRangeNumber ajRangeGetSize
+ajRangeChange ajRangeElementSet
 ajRangeBegin ajRangeSetOffset
 ajRangeOverlapSingle -
 ajRangeOverlaps ajRangeCountOverlaps
@@ -451,6 +474,8 @@ ajSeqOutFormatDefault ajSeqoutstrGetFormatDefault
 ajSeqFindOutFormat seqoutFindOutFormat
 ajSeqOutFormatSingle ajSeqoutstrIsFormatSingle
 #ajsort
+ajSortTwoIntIncI ajSorttwoIntIncI
+ajSortTwoUintIncI ajSorttwoUintIncI
 #ajsql
 #ajstr
 ajCharNew ajCharNewS
@@ -818,7 +843,7 @@ ajGraphxySetOverLap ajGraphxySetflagOverlay
 ajGraphxySetCirclePoints ajGraphxyShowPointsCircle
 ajGraphxySetJoinPoints ajGraphxyShowPointsJoin
 ajGraphxySetYRight ajGraphxyShowRaxis
-ajGraphxySetXTop ajGraphxyShowTaxis
+ajGraphxySetXTop ajGraphxyShowUaxis
 ajGraphxySetXLabelTop ajGraphxyShowUnum
 ajGraphxySetXBottom ajGraphxyShowXaxis
 ajGraphxySetXGrid ajGraphxyShowXgrid
