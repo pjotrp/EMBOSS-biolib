@@ -335,7 +335,7 @@ static void wordPositionListDelete(void **x,void *cl)
 
 
 
-/* @funcstatic wordVFree ******************************************************
+/* @funcstatic wordVFreeSeqLocs ***********************************************
 **
 ** Free the elements in a EmbPWord locations table.
 **
@@ -1079,6 +1079,7 @@ AjPList embWordBuildMatchTable(const AjPTable seq1MatchTable,
 
 	    ajListIterDel(&newiter);
             ajListIterDel(&curiter);
+            AJFREE(seqlocs);
 	}
 
 	/* no match, so all existing matches are completed */
@@ -1475,7 +1476,7 @@ void embWordMatchMin(AjPList matchlist)
 
 
 
-/* @func embWordMatchIter  ****************************************************
+/* @func embWordMatchIter *****************************************************
 **
 ** Return the start positions and length for the next match.
 ** The caller iterates over the list, which is a standard AjPList
@@ -1484,6 +1485,7 @@ void embWordMatchMin(AjPList matchlist)
 ** @param [w] start1 [ajint*] Start in first sequence
 ** @param [w] start2 [ajint*] Start in second sequence
 ** @param [w] len [ajint*] Length of match
+** @param [w] seq [const AjPSeq*] Pointer to sequence
 ** @return [AjBool] ajFalse if the iterator was exhausted
 **
 ******************************************************************************/
