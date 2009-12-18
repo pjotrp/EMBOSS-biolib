@@ -11,12 +11,15 @@ section: input [
 
   seqset: asequence [
     parameter: "Y"
-    relations: "EDAM: Sequence"                                            
+    relations: "EDAM: Sequence" 
+    aligned: "N"  
+    type: "any"                                         
   ]
 
   seqall: bsequence [
     parameter: "Y"
     relations: "EDAM: Sequence"                                            
+    type: "@($(acdprotein) ? stopprotein : nucleotide)"
   ]
 
 endsection: input
@@ -61,7 +64,8 @@ section: output [
     additional: "Y"
     default: "wordmatch.log"
     knowntype: "wordmatch log"
-    information: "Log file reports statistics on kmer frequency
+    information: "Wordmatch log output file"
+    help: "Log file reports statistics on kmer frequency
                   distribution and number of matches in the seqall sequences
                   for each sequence in the seqset"
     relations:  "EDAM: EMBOSS wordmatch log file"                 
