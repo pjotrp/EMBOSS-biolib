@@ -231,7 +231,7 @@ void ajSortUintIncI(const ajuint *a, ajuint *p, ajuint n)
 
 
 
-/* @func ajSortTwoIntIncI *****************************************************
+/* @func ajSorttwoIntIncI *****************************************************
 **
 ** Based on an array of ints, sort (ascending) both this array and
 ** a second ajint element array.
@@ -244,7 +244,7 @@ void ajSortUintIncI(const ajuint *a, ajuint *p, ajuint n)
 ** @@
 ******************************************************************************/
 
-void ajSortTwoIntIncI(ajint *a, ajuint *p, ajuint n)
+void ajSorttwoIntIncI(ajint *a, ajuint *p, ajuint n)
 {
     ajuint s;
     ajuint i;
@@ -269,10 +269,17 @@ void ajSortTwoIntIncI(ajint *a, ajuint *p, ajuint n)
 }
 
 
+/* @obsolete ajSortTwoIntIncI
+** @rename ajSorttwoIntIncI
+*/
+__deprecated void ajSortTwoIntIncI(ajint *a, ajuint *p, ajuint n)
+{
+    ajSorttwoIntIncI(a, p, n);
+    return;
+}
 
 
-
-/* @func ajSortTwoUintIncI ****************************************************
+/* @func ajSorttwoUintIncI ****************************************************
 **
 ** Based on an array of unsigned ints, sort (ascending) both this array and
 ** a second ajint element array.
@@ -285,7 +292,7 @@ void ajSortTwoIntIncI(ajint *a, ajuint *p, ajuint n)
 ** @@
 ******************************************************************************/
 
-void ajSortTwoUintIncI(ajuint *a, ajuint *p, ajuint n)
+void ajSorttwoUintIncI(ajuint *a, ajuint *p, ajuint n)
 {
     ajuint s;
     ajuint i;
@@ -311,6 +318,15 @@ void ajSortTwoUintIncI(ajuint *a, ajuint *p, ajuint n)
 
 
 
+
+/* @obsolete ajSortTwoUintIncI
+** @rename ajSorttwoUintIncI
+*/
+__deprecated void ajSortTwoUintIncI(ajuint *a, ajuint *p, ajuint n)
+{
+    ajSorttwoUintIncI(a, p, n);
+    return;
+}
 
 
 /* @func ajSortFloatDec *******************************************************
