@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** The Ensembl Assembly Exception object has been split out of the
@@ -158,17 +158,17 @@ EnsPAssemblyexception ensAssemblyexceptionNew(
     AjEnum type)
 {
     EnsPAssemblyexception ae = NULL;
-    
+
     if(!srid)
-	return NULL;
-    
+        return NULL;
+
     if(!erid)
-	return NULL;
-    
+        return NULL;
+
     AJNEW0(ae);
-    
+
     ae->Use = 1;
-    
+
     ae->Identifier          = identifier;
     ae->Adaptor             = adaptor;
     ae->SeqregionIdentifier = srid;
@@ -179,7 +179,7 @@ EnsPAssemblyexception ensAssemblyexceptionNew(
     ae->ExcRegionEnd        = erend;
     ae->Orientation         = ori;
     ae->Type                = type;
-    
+
     return ae;
 }
 
@@ -200,14 +200,14 @@ EnsPAssemblyexception ensAssemblyexceptionNewObj(
     const EnsPAssemblyexception object)
 {
     EnsPAssemblyexception ae = NULL;
-    
+
     if(!object)
-	return NULL;
-    
+        return NULL;
+
     AJNEW0(ae);
-    
+
     ae->Use = 1;
-    
+
     ae->Identifier          = object->Identifier;
     ae->Adaptor             = object->Adaptor;
     ae->SeqregionIdentifier = object->SeqregionIdentifier;
@@ -218,7 +218,7 @@ EnsPAssemblyexception ensAssemblyexceptionNewObj(
     ae->ExcRegionEnd        = object->ExcRegionEnd;
     ae->Orientation         = object->Orientation;
     ae->Type                = object->Type;
-    
+
     return ae;
 }
 
@@ -239,10 +239,10 @@ EnsPAssemblyexception ensAssemblyexceptionNewObj(
 EnsPAssemblyexception ensAssemblyexceptionNewRef(EnsPAssemblyexception ae)
 {
     if(!ae)
-	return NULL;
-    
+        return NULL;
+
     ae->Use++;
-    
+
     return ae;
 }
 
@@ -283,26 +283,26 @@ EnsPAssemblyexception ensAssemblyexceptionNewRef(EnsPAssemblyexception ae)
 void ensAssemblyexceptionDel(EnsPAssemblyexception* Pae)
 {
     EnsPAssemblyexception pthis = NULL;
-    
+
     if(!Pae)
-	return;
-    
+        return;
+
     if(!*Pae)
-	return;
+        return;
 
     pthis = *Pae;
-    
+
     pthis->Use--;
-    
+
     if(pthis->Use)
     {
-	*Pae = NULL;
-	
-	return;
+        *Pae = NULL;
+
+        return;
     }
-    
+
     AJFREE(*Pae);
-    
+
     return;
 }
 
@@ -365,8 +365,8 @@ EnsPAssemblyexceptionadaptor ensAssemblyexceptionGetAdaptor(
     const EnsPAssemblyexception ae)
 {
     if(!ae)
-	return 0;
-    
+        return 0;
+
     return ae->Adaptor;
 }
 
@@ -387,8 +387,8 @@ EnsPAssemblyexceptionadaptor ensAssemblyexceptionGetAdaptor(
 ajuint ensAssemblyexceptionGetIdentifier(const EnsPAssemblyexception ae)
 {
     if(!ae)
-	return 0;
-    
+        return 0;
+
     return ae->Identifier;
 }
 
@@ -410,8 +410,8 @@ ajuint ensAssemblyexceptionGetSeqregionIdentifier(
     const EnsPAssemblyexception ae)
 {
     if(!ae)
-	return 0;
-    
+        return 0;
+
     return ae->SeqregionIdentifier;
 }
 
@@ -432,8 +432,8 @@ ajuint ensAssemblyexceptionGetSeqregionIdentifier(
 ajuint ensAssemblyexceptionGetSeqregionStart(const EnsPAssemblyexception ae)
 {
     if(!ae)
-	return 0;
-    
+        return 0;
+
     return ae->SeqregionStart;
 }
 
@@ -454,8 +454,8 @@ ajuint ensAssemblyexceptionGetSeqregionStart(const EnsPAssemblyexception ae)
 ajuint ensAssemblyexceptionGetSeqregionEnd(const EnsPAssemblyexception ae)
 {
     if(!ae)
-	return 0;
-    
+        return 0;
+
     return ae->SeqregionEnd;
 }
 
@@ -477,8 +477,8 @@ ajuint ensAssemblyexceptionGetExcRegionIdentifier(
     const EnsPAssemblyexception ae)
 {
     if(!ae)
-	return 0;
-    
+        return 0;
+
     return ae->ExcRegionIdentifier;
 }
 
@@ -499,8 +499,8 @@ ajuint ensAssemblyexceptionGetExcRegionIdentifier(
 ajuint ensAssemblyexceptionGetExcRegionStart(const EnsPAssemblyexception ae)
 {
     if(!ae)
-	return 0;
-    
+        return 0;
+
     return ae->SeqregionStart;
 }
 
@@ -521,8 +521,8 @@ ajuint ensAssemblyexceptionGetExcRegionStart(const EnsPAssemblyexception ae)
 ajuint ensAssemblyexceptionGetExcRegionEnd(const EnsPAssemblyexception ae)
 {
     if(!ae)
-	return 0;
-    
+        return 0;
+
     return ae->SeqregionEnd;
 }
 
@@ -542,8 +542,8 @@ ajuint ensAssemblyexceptionGetExcRegionEnd(const EnsPAssemblyexception ae)
 ajint ensAssemblyexceptionGetOrientation(const EnsPAssemblyexception ae)
 {
     if(!ae)
-	return 0;
-    
+        return 0;
+
     return ae->Orientation;
 }
 
@@ -563,8 +563,8 @@ ajint ensAssemblyexceptionGetOrientation(const EnsPAssemblyexception ae)
 AjEnum ensAssemblyexceptionGetType(const EnsPAssemblyexception ae)
 {
     if(!ae)
-	return 0;
-    
+        return 0;
+
     return ae->Type;
 }
 
@@ -620,9 +620,9 @@ AjBool ensAssemblyexceptionSetAdaptor(EnsPAssemblyexception ae,
 {
     if(!ae)
         return ajFalse;
-    
+
     ae->Adaptor = adaptor;
-    
+
     return ajTrue;
 }
 
@@ -645,9 +645,9 @@ AjBool ensAssemblyexceptionSetIdentifier(EnsPAssemblyexception ae,
 {
     if(!ae)
         return ajFalse;
-    
+
     ae->Identifier = identifier;
-    
+
     return ajTrue;
 }
 
@@ -671,9 +671,9 @@ AjBool ensAssemblyexceptionSetSeqregionIdentifier(EnsPAssemblyexception ae,
 {
     if(!ae)
         return ajFalse;
-    
+
     ae->SeqregionIdentifier = srid;
-    
+
     return ajTrue;
 }
 
@@ -697,9 +697,9 @@ AjBool ensAssemblyexceptionSetSeqregionStart(EnsPAssemblyexception ae,
 {
     if(!ae)
         return ajFalse;
-    
+
     ae->SeqregionStart = srstart;
-    
+
     return ajTrue;
 }
 
@@ -723,9 +723,9 @@ AjBool ensAssemblyexceptionSetSeqregionEnd(EnsPAssemblyexception ae,
 {
     if(!ae)
         return ajFalse;
-    
+
     ae->SeqregionEnd = srend;
-    
+
     return ajTrue;
 }
 
@@ -749,9 +749,9 @@ AjBool ensAssemblyexceptionSetExcRegionIdentifier(EnsPAssemblyexception ae,
 {
     if(!ae)
         return ajFalse;
-    
+
     ae->ExcRegionIdentifier = exid;
-    
+
     return ajTrue;
 }
 
@@ -775,9 +775,9 @@ AjBool ensAssemblyexceptionSetExcRegionStart(EnsPAssemblyexception ae,
 {
     if(!ae)
         return ajFalse;
-    
+
     ae->ExcRegionStart = exstart;
-    
+
     return ajTrue;
 }
 
@@ -801,9 +801,9 @@ AjBool ensAssemblyexceptionSetExcRegionEnd(EnsPAssemblyexception ae,
 {
     if(!ae)
         return ajFalse;
-    
+
     ae->ExcRegionEnd = exend;
-    
+
     return ajTrue;
 }
 
@@ -826,9 +826,9 @@ AjBool ensAssemblyexceptionSetOrientation(EnsPAssemblyexception ae,
 {
     if(!ae)
         return ajFalse;
-    
+
     ae->Orientation = orientation;
-    
+
     return ajTrue;
 }
 
@@ -850,9 +850,9 @@ AjBool ensAssemblyexceptionSetType(EnsPAssemblyexception ae, AjEnum type)
 {
     if(!ae)
         return ajFalse;
-    
+
     ae->Type = type;
-    
+
     return ajTrue;
 }
 
@@ -891,39 +891,39 @@ AjBool ensAssemblyexceptionSetType(EnsPAssemblyexception ae, AjEnum type)
 AjBool ensAssemblyexceptionTrace(const EnsPAssemblyexception ae, ajuint level)
 {
     AjPStr indent = NULL;
-    
+
     if(!ae)
-	return ajFalse;
-    
+        return ajFalse;
+
     indent = ajStrNew();
-    
+
     ajStrAppendCountK(&indent, ' ', level * 2);
-    
+
     ajDebug("%SensAssemblyexceptionTrace %p\n"
-	    "%S  Identfier %u\n"
-	    "%S  SeqregionIdentfier %u\n"
-	    "%S  SeqregionStart %u\n"
-	    "%S  SeqregionEnd %u\n"
-	    "%S  ExcSeqregionIdentifier %u\n"
-	    "%S  ExcRegionStart %d\n"
-	    "%S  ExcRegionEnd %u\n"
-	    "%S  Orientation %d\n"
-	    "%S  Type '%s'\n"
-	    "%S  Use %u\n",
-	    indent, ae,
-	    indent, ae->Identifier,
-	    indent, ae->SeqregionIdentifier,
-	    indent, ae->SeqregionStart,
-	    indent, ae->SeqregionEnd,
-	    indent, ae->ExcRegionIdentifier,
-	    indent, ae->ExcRegionStart,
-	    indent, ae->ExcRegionEnd,
-	    indent, ensAssemblyexceptionTypeToChar(ae->Type),
-	    indent, ae->Orientation,
-	    indent, ae->Use);
-    
+            "%S  Identfier %u\n"
+            "%S  SeqregionIdentfier %u\n"
+            "%S  SeqregionStart %u\n"
+            "%S  SeqregionEnd %u\n"
+            "%S  ExcSeqregionIdentifier %u\n"
+            "%S  ExcRegionStart %d\n"
+            "%S  ExcRegionEnd %u\n"
+            "%S  Orientation %d\n"
+            "%S  Type '%s'\n"
+            "%S  Use %u\n",
+            indent, ae,
+            indent, ae->Identifier,
+            indent, ae->SeqregionIdentifier,
+            indent, ae->SeqregionStart,
+            indent, ae->SeqregionEnd,
+            indent, ae->ExcRegionIdentifier,
+            indent, ae->ExcRegionStart,
+            indent, ae->ExcRegionEnd,
+            indent, ensAssemblyexceptionTypeToChar(ae->Type),
+            indent, ae->Orientation,
+            indent, ae->Use);
+
     ajStrDel(&indent);
-    
+
     return ajTrue;
 }
 
@@ -943,12 +943,12 @@ AjBool ensAssemblyexceptionTrace(const EnsPAssemblyexception ae, ajuint level)
 ajuint ensAssemblyexceptionGetMemSize(const EnsPAssemblyexception ae)
 {
     ajuint size = 0;
-    
+
     if(!ae)
-	return 0;
-    
+        return 0;
+
     size += sizeof (EnsOAssemblyexception);
-    
+
     return size;
 }
 
@@ -969,17 +969,17 @@ ajuint ensAssemblyexceptionGetMemSize(const EnsPAssemblyexception ae)
 AjEnum ensAssemblyexceptionTypeFromStr(const AjPStr type)
 {
     register ajint i = 0;
-    
+
     AjEnum etype = ensEAssemblyexceptionTypeNULL;
-    
-    for (i = 1; assemblyExceptionType[i]; i++)
-	if (ajStrMatchC(type, assemblyExceptionType[i]))
-	    etype = i;
-    
+
+    for(i = 1; assemblyExceptionType[i]; i++)
+        if(ajStrMatchC(type, assemblyExceptionType[i]))
+            etype = i;
+
     if(!etype)
-	ajDebug("ensAssemblyexceptionTypeFromStr encountered "
-		"unexpected string '%S'.\n", type);
-    
+        ajDebug("ensAssemblyexceptionTypeFromStr encountered "
+                "unexpected string '%S'.\n", type);
+
     return etype;
 }
 
@@ -1000,16 +1000,16 @@ AjEnum ensAssemblyexceptionTypeFromStr(const AjPStr type)
 const char* ensAssemblyexceptionTypeToChar(const AjEnum type)
 {
     register ajint i = 0;
-    
+
     if(!type)
-	return NULL;
-    
+        return NULL;
+
     for(i = 1; assemblyExceptionType[i] && (i < type); i++);
-    
+
     if(!assemblyExceptionType[i])
-	ajDebug("ensAssemblyexceptionTypeToChar encountered an "
-		"out of boundary error on status %d.\n", type);
-    
+        ajDebug("ensAssemblyexceptionTypeToChar encountered an "
+                "out of boundary error on status %d.\n", type);
+
     return assemblyExceptionType[i];
 }
 
@@ -1077,7 +1077,7 @@ static AjBool assemblyExceptionadaptorFetchAllBySQL(
     AjPList aes)
 {
     ajint ori = 0;
-    
+
     ajuint identifier = 0;
     ajuint erid       = 0;
     ajuint srid       = 0;
@@ -1085,46 +1085,46 @@ static AjBool assemblyExceptionadaptorFetchAllBySQL(
     ajuint srstart    = 0;
     ajuint erend      = 0;
     ajuint srend      = 0;
-    
+
     AjEnum type = ensEAssemblyexceptionTypeNULL;
-    
+
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;
     AjPSqlrow sqlr       = NULL;
-    
+
     AjPStr typestr = NULL;
-    
+
     EnsPAssemblyexception ae = NULL;
-    
+
     if(!adaptor)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!statement)
         return ajFalse;
-    
+
     if(!aes)
         return ajFalse;
-    
+
     sqls = ensDatabaseadaptorSqlstatementNew(adaptor->Adaptor, statement);
-    
+
     sqli = ajSqlrowiterNew(sqls);
-    
+
     while(!ajSqlrowiterDone(sqli))
     {
-	identifier = 0;
-	srid       = 0;
-	srstart    = 0;
-	srend      = 0;
-	typestr    = ajStrNew();
-	erid       = 0;
-	erstart    = 0;
-	erend      = 0;
-	ori        = 0;
-	
-	type = ensEAssemblyexceptionTypeNULL;
-	
+        identifier = 0;
+        srid       = 0;
+        srstart    = 0;
+        srend      = 0;
+        typestr    = ajStrNew();
+        erid       = 0;
+        erstart    = 0;
+        erend      = 0;
+        ori        = 0;
+
+        type = ensEAssemblyexceptionTypeNULL;
+
         sqlr = ajSqlrowiterGet(sqli);
-	
+
         ajSqlcolumnToUint(sqlr, &identifier);
         ajSqlcolumnToUint(sqlr, &srid);
         ajSqlcolumnToUint(sqlr, &srstart);
@@ -1134,37 +1134,37 @@ static AjBool assemblyExceptionadaptorFetchAllBySQL(
         ajSqlcolumnToUint(sqlr, &erstart);
         ajSqlcolumnToUint(sqlr, &erend);
         ajSqlcolumnToInt(sqlr, &ori);
-	
-	/* Set the Assembly Exception type. */
-	
-	type = ensAssemblyexceptionTypeFromStr(typestr);
-	
-	if(!type)
-	    ajFatal("assemblyExceptionadaptorFetchAllBySQL "
-		    "got unexpected Assembly Exception type '%S' "
-		    "from database.\n",
-		    typestr);
-	
+
+        /* Set the Assembly Exception type. */
+
+        type = ensAssemblyexceptionTypeFromStr(typestr);
+
+        if(!type)
+            ajFatal("assemblyExceptionadaptorFetchAllBySQL "
+                    "got unexpected Assembly Exception type '%S' "
+                    "from database.\n",
+                    typestr);
+
         ae = ensAssemblyexceptionNew(adaptor,
-				     identifier,
-				     srid,
-				     srstart,
-				     srend,
-				     erid,
-				     erstart,
-				     erend,
-				     ori,
-				     type);
-	
+                                     identifier,
+                                     srid,
+                                     srstart,
+                                     srend,
+                                     erid,
+                                     erstart,
+                                     erend,
+                                     ori,
+                                     type);
+
         ajListPushAppend(aes, (void *) ae);
-	
-	ajStrDel(&typestr);
+
+        ajStrDel(&typestr);
     }
-    
+
     ajSqlrowiterDel(&sqli);
-    
+
     ajSqlstatementDel(&sqls);
-    
+
     return ajTrue;
 }
 
@@ -1187,78 +1187,78 @@ static AjBool assemblyExceptionadaptorCacheInit(
     EnsPAssemblyexceptionadaptor adaptor)
 {
     ajuint *Pidentifier = NULL;
-    
+
     AjPList list = NULL;
     AjPList aes  = NULL;
-    
+
     AjPStr statement = NULL;
-    
+
     EnsPAssemblyexception ae = NULL;
-    
+
     if(!adaptor)
         return ajFalse;
-    
+
     if(adaptor->CacheBySeqregionIdentifier)
         return ajTrue;
-    
+
     else
         adaptor->CacheBySeqregionIdentifier =
-	    ajTableNewFunctionLen(0, ensTableCmpUint, ensTableHashUint);
-    
+            ajTableNewFunctionLen(0, ensTableCmpUint, ensTableHashUint);
+
     statement = ajFmtStr("SELECT "
-			 "assembly_exception.assembly_exception_id, "
-			 "assembly_exception.seq_region_id, "
-			 "assembly_exception.seq_region_start, "
-			 "assembly_exception.seq_region_end, "
-			 "assembly_exception.exc_type, "
-			 "assembly_exception.exc_seq_region_id, "
-			 "assembly_exception.exc_seq_region_start, "
-			 "assembly_exception.exc_seq_region_end, "
-			 "assembly_exception.ori "
-			 "FROM "
-			 "assembly_exception, "
-			 "seq_region, "
-			 "coord_system "
-			 "WHERE "
-			 "seq_region.seq_region_id = "
-			 "assembly_exception.seq_region_id "
-			 "AND "
-			 "seq_region.coord_system_id = "
-			 "coord_system.coord_system_id "
-			 "AND "
-			 "coord_system.species_id = %u",
-			 ensDatabaseadaptorGetIdentifier(adaptor->Adaptor));
-    
+                         "assembly_exception.assembly_exception_id, "
+                         "assembly_exception.seq_region_id, "
+                         "assembly_exception.seq_region_start, "
+                         "assembly_exception.seq_region_end, "
+                         "assembly_exception.exc_type, "
+                         "assembly_exception.exc_seq_region_id, "
+                         "assembly_exception.exc_seq_region_start, "
+                         "assembly_exception.exc_seq_region_end, "
+                         "assembly_exception.ori "
+                         "FROM "
+                         "assembly_exception, "
+                         "seq_region, "
+                         "coord_system "
+                         "WHERE "
+                         "seq_region.seq_region_id = "
+                         "assembly_exception.seq_region_id "
+                         "AND "
+                         "seq_region.coord_system_id = "
+                         "coord_system.coord_system_id "
+                         "AND "
+                         "coord_system.species_id = %u",
+                         ensDatabaseadaptorGetIdentifier(adaptor->Adaptor));
+
     aes = ajListNew();
-    
+
     assemblyExceptionadaptorFetchAllBySQL(adaptor, statement, aes);
-    
+
     ajStrDel(&statement);
-    
+
     while(ajListPop(aes, (void **) &ae))
     {
         list = (AjPList)
             ajTableFetch(adaptor->CacheBySeqregionIdentifier,
                          (const void *) &(ae->SeqregionIdentifier));
-	
-	if(!list)
-	{
-	    AJNEW0(Pidentifier);
-	    
-	    *Pidentifier = ae->SeqregionIdentifier;
-	    
-	    list = ajListNew();
-	    
-	    ajTablePut(adaptor->CacheBySeqregionIdentifier,
-		       (void *) Pidentifier,
-		       (void *) list);
-	}
-	
-	ajListPushAppend(list, (void *) ae);
+
+        if(!list)
+        {
+            AJNEW0(Pidentifier);
+
+            *Pidentifier = ae->SeqregionIdentifier;
+
+            list = ajListNew();
+
+            ajTablePut(adaptor->CacheBySeqregionIdentifier,
+                       (void *) Pidentifier,
+                       (void *) list);
+        }
+
+        ajListPushAppend(list, (void *) ae);
     }
-    
+
     ajListFree(&aes);
-    
+
     return ajTrue;
 }
 
@@ -1280,16 +1280,16 @@ EnsPAssemblyexceptionadaptor ensAssemblyexceptionadaptorNew(
     EnsPDatabaseadaptor dba)
 {
     EnsPAssemblyexceptionadaptor adaptor = NULL;
-    
+
     if(!dba)
-	return NULL;
-    
+        return NULL;
+
     AJNEW0(adaptor);
-    
+
     adaptor->Adaptor = dba;
-    
+
     assemblyExceptionadaptorCacheInit(adaptor);
-    
+
     return adaptor;
 }
 
@@ -1338,28 +1338,28 @@ static void assemblyExceptionadaptorClearIdentifierCache(void **key,
                                                          void *cl)
 {
     EnsPAssemblyexception ae = NULL;
-    
+
     if(!key)
-	return;
-    
+        return;
+
     if(!*key)
-	return;
-    
+        return;
+
     if(!value)
-	return;
-    
+        return;
+
     if(!*value)
-	return;
-    
+        return;
+
     (void) cl;
-    
+
     AJFREE(*key);
-    
+
     while(ajListPop(*((AjPList *) value), (void **) &ae))
-	ensAssemblyexceptionDel(&ae);
-    
+        ensAssemblyexceptionDel(&ae);
+
     ajListFree((AjPList *) value);
-    
+
     return;
 }
 
@@ -1383,16 +1383,16 @@ static AjBool assemblyExceptionadaptorCacheExit(
 {
     if(!adaptor)
         return ajFalse;
-    
+
     if(!adaptor->CacheBySeqregionIdentifier)
-	return ajTrue;
-    
+        return ajTrue;
+
     ajTableMapDel(adaptor->CacheBySeqregionIdentifier,
-		  assemblyExceptionadaptorClearIdentifierCache,
-		  NULL);
-    
+                  assemblyExceptionadaptorClearIdentifierCache,
+                  NULL);
+
     ajTableFree(&(adaptor->CacheBySeqregionIdentifier));
-    
+
     return ajTrue;
 }
 
@@ -1415,15 +1415,15 @@ static AjBool assemblyExceptionadaptorCacheExit(
 void ensAssemblyexceptionadaptorDel(EnsPAssemblyexceptionadaptor* Padaptor)
 {
     if(!Padaptor)
-	return;
-    
+        return;
+
     if(!*Padaptor)
-	return;
-    
+        return;
+
     assemblyExceptionadaptorCacheExit(*Padaptor);
-    
+
     AJFREE(*Padaptor);
-    
+
     return;
 }
 
@@ -1476,33 +1476,33 @@ static void assemblyExceptionadaptorFetchAll(const void *key, void **value,
                                              void *cl)
 {
     AjIList iter = NULL;
-    
+
     EnsPAssemblyexception ae = NULL;
-    
+
     if(!key)
-	return;
-    
+        return;
+
     if(!value)
-	return;
-    
+        return;
+
     if(!*value)
-	return;
-    
+        return;
+
     if(!cl)
-	return;
-    
+        return;
+
     iter = ajListIterNew(*((AjPList *) value));
-    
+
     while(!ajListIterDone(iter))
     {
-	ae = (EnsPAssemblyexception) ajListIterGet(iter);
-	
-	ajListPushAppend((AjPList) cl,
-			 (void *) ensAssemblyexceptionNewRef(ae));
+        ae = (EnsPAssemblyexception) ajListIterGet(iter);
+
+        ajListPushAppend((AjPList) cl,
+                         (void *) ensAssemblyexceptionNewRef(ae));
     }
-    
+
     ajListIterDel(&iter);
-    
+
     return;
 }
 
@@ -1530,14 +1530,14 @@ AjBool ensAssemblyexceptionadaptorFetchAll(
 {
     if(!adaptor)
         return ajFalse;
-    
+
     if(!aes)
         return ajFalse;
-    
+
     ajTableMap(adaptor->CacheBySeqregionIdentifier,
                assemblyExceptionadaptorFetchAll,
                (void *) aes);
-    
+
     return ajTrue;
 }
 
@@ -1567,9 +1567,9 @@ AjBool ensAssemblyexceptionadaptorFetchAllBySeqregionIdentifier(
 {
     AjIList iter = NULL;
     AjPList list = NULL;
-    
+
     EnsPAssemblyexception ae = NULL;
-    
+
 #if AJFALSE
     ajDebug("ensAssemblyexceptionadaptorFetchAllBySeqregionIdentifier\n"
             "  adaptor %p\n"
@@ -1579,27 +1579,27 @@ AjBool ensAssemblyexceptionadaptorFetchAllBySeqregionIdentifier(
             srid,
             aes);
 #endif
-    
+
     if(!adaptor)
         return ajFalse;
-    
+
     if(!aes)
-	return ajFalse;
-    
+        return ajFalse;
+
     list = (AjPList)
-	ajTableFetch(adaptor->CacheBySeqregionIdentifier,
-		     (const void *) &srid);
-    
+        ajTableFetch(adaptor->CacheBySeqregionIdentifier,
+                     (const void *) &srid);
+
     iter = ajListIterNew(list);
-    
+
     while(!ajListIterDone(iter))
     {
-	ae = (EnsPAssemblyexception) ajListIterGet(iter);
-	
-	ajListPushAppend(aes, (void *) ensAssemblyexceptionNewRef(ae));
+        ae = (EnsPAssemblyexception) ajListIterGet(iter);
+
+        ajListPushAppend(aes, (void *) ensAssemblyexceptionNewRef(ae));
     }
-    
+
     ajListIterDel(&iter);
-    
+
     return ajTrue;
 }
