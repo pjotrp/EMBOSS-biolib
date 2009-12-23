@@ -133,11 +133,14 @@ AjBool ensCoordsystemGetTopLevel(const EnsPCoordsystem cs);
 
 ajuint ensCoordsystemGetRank(const EnsPCoordsystem cs);
 
-AjBool ensCoordsystemSetAdaptor(EnsPCoordsystem cs, EnsPCoordsystemadaptor csa);
+AjBool ensCoordsystemSetAdaptor(EnsPCoordsystem cs,
+                                EnsPCoordsystemadaptor csa);
 
 AjBool ensCoordsystemSetIdentifier(EnsPCoordsystem cs, ajuint identifier);
 
 AjBool ensCoordsystemTrace(const EnsPCoordsystem cs, ajuint level);
+
+AjBool ensCoordsystemMappingPathTrace(const AjPList css, ajuint level);
 
 AjBool ensCoordsystemMatch(const EnsPCoordsystem cs1,
                            const EnsPCoordsystem cs2);
@@ -155,32 +158,38 @@ void ensCoordsystemadaptorDel(EnsPCoordsystemadaptor* Pcsa);
 EnsPDatabaseadaptor ensCoordsystemadaptorGetDatabaseadaptor(
     const EnsPCoordsystemadaptor adaptor);
 
-AjBool ensCoordsystemadaptorFetchAll(const EnsPCoordsystemadaptor adaptor,
-                                     AjPList cslist);
+AjBool ensCoordsystemadaptorFetchAll(
+    const EnsPCoordsystemadaptor adaptor,
+    AjPList cslist);
 
-AjBool ensCoordsystemadaptorFetchAllByName(const EnsPCoordsystemadaptor adaptor,
-                                           const AjPStr name,
-                                           AjPList cslist);
+AjBool ensCoordsystemadaptorFetchAllByName(
+    const EnsPCoordsystemadaptor adaptor,
+    const AjPStr name,
+    AjPList cslist);
 
 AjBool ensCoordsystemadaptorFetchByIdentifier(
     const EnsPCoordsystemadaptor adaptor,
     ajuint identifier,
     EnsPCoordsystem *Pcs);
 
-AjBool ensCoordsystemadaptorFetchByName(const EnsPCoordsystemadaptor adaptor,
-                                        const AjPStr name,
-                                        const AjPStr version,
-                                        EnsPCoordsystem *Pcs);
+AjBool ensCoordsystemadaptorFetchByName(
+    const EnsPCoordsystemadaptor adaptor,
+    const AjPStr name,
+    const AjPStr version,
+    EnsPCoordsystem *Pcs);
 
-AjBool ensCoordsystemadaptorFetchByRank(const EnsPCoordsystemadaptor adaptor,
-                                        ajuint rank,
-                                        EnsPCoordsystem *Pcs);
+AjBool ensCoordsystemadaptorFetchByRank(
+    const EnsPCoordsystemadaptor adaptor,
+    ajuint rank,
+    EnsPCoordsystem *Pcs);
 
-AjBool ensCoordsystemadaptorFetchSeqLevel(const EnsPCoordsystemadaptor adaptor,
-                                          EnsPCoordsystem *Pcs);
+AjBool ensCoordsystemadaptorFetchSeqLevel(
+    const EnsPCoordsystemadaptor adaptor,
+    EnsPCoordsystem *Pcs);
 
-AjBool ensCoordsystemadaptorFetchTopLevel(const EnsPCoordsystemadaptor adaptor,
-                                          EnsPCoordsystem *Pcs);
+AjBool ensCoordsystemadaptorFetchTopLevel(
+    const EnsPCoordsystemadaptor adaptor,
+    EnsPCoordsystem *Pcs);
 
 const AjPList ensCoordsystemadaptorGetMappingPath(
     const EnsPCoordsystemadaptor adaptor,
