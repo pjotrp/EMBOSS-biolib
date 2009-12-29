@@ -153,8 +153,8 @@ int main(int argc, char **argv)
 
     /* Housekeeping. */
     modei      = (ajint) ajStrGetCharFirst(mode)-48;
-    gapopen    = ajRoundF(gapopen,8);
-    gapextend  = ajRoundF(gapextend,8);
+    gapopen    = ajRoundFloat(gapopen,8);
+    gapextend  = ajRoundFloat(gapextend,8);
     seqsfname  = ajStrNew();
     cmd        = ajStrNew();
     ajStrAssignC(&database, "swissprot"); /* Dummy value. */
@@ -507,14 +507,14 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
     
     
     mname=ajStrNewC("Epprofile");
-    ajMatrixfRead(&matrix,mname);
+    matrix = ajMatrixfNewFile(mname);
     ajStrDel(&mname);
                  
     nseqs = ajSeqsetGetSize(seqset);
     mlen  = ajSeqsetGetLen(seqset);
 
-    sub = ajMatrixfArray(matrix);
-    cvt = ajMatrixfCvt(matrix);
+    sub = ajMatrixfGetMatrix(matrix);
+    cvt = ajMatrixfGetCvt(matrix);
 
 
 
@@ -738,8 +738,8 @@ static void libgen_henikoff_profile(AjPSeqset seqset,
     nseqs = ajSeqsetGetSize(seqset);
     mlen  = ajSeqsetGetLen(seqset);
 
-    sub = ajMatrixfArray(matrix);
-    cvt = ajMatrixfCvt(matrix);
+    sub = ajMatrixfGetMatrix(matrix);
+    cvt = ajMatrixfGetCvt(matrix);
 
 
     /* Set gaps to be maximum length of gap that can occur
@@ -882,7 +882,7 @@ static void libgen_henikoff_profile(AjPSeqset seqset,
     ajFmtPrintF(outf,"# Rows are alignment positions 1->n\n");
     ajFmtPrintF(outf,"Henikoff\n");
     ajFmtPrintF(outf,"Name\t\t%s\n",ajStrGetPtr(name));
-    ajFmtPrintF(outf,"Matrix\t\t%s\n",ajStrGetPtr(ajMatrixfName(matrix)));
+    ajFmtPrintF(outf,"Matrix\t\t%s\n",ajStrGetPtr(ajMatrixfGetName(matrix)));
     ajFmtPrintF(outf,"Length\t\t%d\n",mlen);
     ajFmtPrintF(outf,"Max_score\t%.2f\n",psum);
     ajFmtPrintF(outf,"Threshold\t%d\n",threshold);

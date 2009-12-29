@@ -744,14 +744,14 @@ int main(ajint argc, char **argv)
 
 
         if((score_seq_mat == ajTrue) && 
-	(ajStrMatchC(ajMatrixfName(mat), "./EBLOSUM62")))
+	(ajStrMatchC(ajMatrixfGetName(mat), "./EBLOSUM62")))
         {
             ajStrAppendC(&sig_name, "sb");             
             ajStrAppendC(&sig_name, "_");             
         }
 
         if((score_seq_mat == ajTrue) && 
-	(ajStrMatchC(ajMatrixfName(mat), "./EBC0030")))
+	(ajStrMatchC(ajMatrixfGetName(mat), "./EBC0030")))
         {
             ajStrAppendC(&sig_name, "ss");             
             ajStrAppendC(&sig_name, "_");             
@@ -918,9 +918,9 @@ static AjBool  siggen_ScoreSeqMat(AjPScopalg alg,
     AjPSeqCvt   cvt          =0;  /* Sequence character conversion table.    */
 
 
-    cvt = ajMatrixfCvt(mat);    /* Create sequence character
+    cvt = ajMatrixfGetCvt(mat);    /* Create sequence character
 				   conversion table. */
-    sub = ajMatrixfArray(mat);  /* Create matrix as array of floats. */
+    sub = ajMatrixfGetMatrix(mat);  /* Create matrix as array of floats. */
     
 
     /* Counter for positions in alignment. */
