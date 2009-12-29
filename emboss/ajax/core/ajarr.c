@@ -345,7 +345,7 @@ AjPInt ajIntNewRes(ajuint size)
     arrTotal++;
     arrAlloc += size*sizeof(ajint);
 
-    /*ajDebug("ajIntNewL size %d*%d %d\n",
+    /*ajDebug("ajIntNewRes size %d*%d %d\n",
 	    size, sizeof(ajint), size*sizeof(ajint));*/
 
     return thys;
