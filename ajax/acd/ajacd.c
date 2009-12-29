@@ -9598,7 +9598,7 @@ AjPMatrixf ajAcdGetMatrixf(const char *token)
 **
 ** @param [u] thys [AcdPAcd] ACD item.
 ** @return [void]
-** @see ajMatrixRead
+** @see ajMatrixNewFile
 ** @@
 ******************************************************************************/
 
@@ -9647,7 +9647,8 @@ static void acdSetMatrix(AcdPAcd thys)
 	
 	if(ajStrGetLen(acdReply))
 	{
-	    if(!ajMatrixRead(&val, acdReply))
+	    val = ajMatrixNewFile(acdReply);
+            if(!val)
 	    {
 		acdBadVal(thys, required,
 			  "Unable to read matrix '%S'", acdReply);
@@ -9684,7 +9685,7 @@ static void acdSetMatrix(AcdPAcd thys)
 **
 ** @param [u] thys [AcdPAcd] ACD item.
 ** @return [void]
-** @see ajMatrixfRead
+** @see ajMatrixfNewFile
 ** @@
 ******************************************************************************/
 
@@ -9735,8 +9736,9 @@ static void acdSetMatrixf(AcdPAcd thys)
 
 	if(ajStrGetLen(acdReply))
 	{
-	    if(!ajMatrixfRead(&val, acdReply))
-	    {
+	    val = ajMatrixfNewFile(acdReply);
+	    if(!val)
+            {
 		acdBadVal(thys, required,
 			  "Unable to read matrix '%S'", acdReply);
 		ok = ajFalse;

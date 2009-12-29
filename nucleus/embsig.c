@@ -4219,8 +4219,8 @@ AjBool embSignatureCompile(EmbPSignature *S, float gapo, float gape,
     
 
     /* INITIALISE SUBSTITUTION MATRIX */
-    sub  = ajMatrixfArray(matrix);
-    cvt  = ajMatrixfCvt(matrix);    
+    sub  = ajMatrixfGetMatrix(matrix);
+    cvt  = ajMatrixfGetCvt(matrix);    
 
     
 

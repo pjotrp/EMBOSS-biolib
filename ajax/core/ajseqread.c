@@ -608,6 +608,7 @@ static AjBool     seqQueryFieldC(const AjPSeqQuery qry, const char* field);
 static AjBool     seqQueryMatch(const AjPSeqQuery query, const AjPSeq thys);
 static void       seqQryWildComp(void);
 static AjBool     seqRead(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadAce(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadAcedb(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadBam(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadClustal(AjPSeq thys, AjPSeqin seqin);
@@ -845,6 +846,12 @@ static SeqOInFormat seqInFormatDef[] =
   {"phylipnon",   "Phylip non-interleaved format",
        AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadPhylipnon, AJTRUE, 0}, /* tried by phylip */
+  {"ace",         "ACE sequence format",
+       AJFALSE, AJTRUE,  AJTRUE,  AJFALSE,
+       AJFALSE, AJTRUE,  seqReadAce, AJFALSE, 0},
+  {"consed",         "ACE sequence format",
+       AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE,
+       AJFALSE, AJTRUE,  seqReadAce, AJFALSE, 0}, /* alias for ace */
   {"acedb",       "ACEDB sequence format",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadAcedb, AJFALSE, 0},
@@ -8409,6 +8416,107 @@ static AjBool seqReadCodata(AjPSeq thys, AjPSeqin seqin)
 				seqin->Text, &thys->TextPtr);
     }
 
+    ajFilebuffClear(buff, 0);
+
+    ajStrTokenDel(&handle);
+    ajStrDel(&token);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic seqReadAce ***************************************************
+**
+** Given data in a sequence structure, tries to read everything needed
+** using ACE format as defined by the consed assembly editor.
+**
+** @param [w] thys [AjPSeq] Sequence object
+** @param [u] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+static AjBool seqReadAce(AjPSeq thys, AjPSeqin seqin)
+{
+    AjPStrTok handle = NULL;
+    AjPStr token     = NULL;
+    AjPFilebuff buff;
+    AjBool ok = ajTrue;
+    ajuint icontig;
+    ajuint iseq;
+    AjPTable acetable        = NULL;
+    SeqPMsfItem aceitem      = NULL;
+    AjPList acelist          = NULL;
+    SeqPMsfData acedata      = NULL;
+    ajuint i;
+
+    ajDebug("seqReadAcedb\n");
+
+    buff = seqin->Filebuff;
+
+    if(!seqin->Data)
+    {					/* start of file */
+	ok = ajBuffreadLineStore(buff, &seqReadLine,
+                                 seqin->Text, &thys->TextPtr);
+        if(!ok)
+	    return ajFalse;
+
+        ajDebug("first line:\n'%S'\n", seqReadLine);
+
+        ajStrTokenAssignC(&handle, seqReadLine, " \n\r");
+        ajStrTokenNextParseC(&handle, " \t", &token); /* 'AS ncontig nseq' */
+        ajDebug("Token 1 '%S'\n", token);
+
+        if(!ajStrMatchCaseC(token, "AS"))
+        {
+            ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
+
+            return ajFalse;
+        }
+
+        ajStrTokenNextParseC(&handle, " \t", &token); /* number of contigs */
+        ajStrToUint(token, &icontig);
+        ajStrTokenNextParseC(&handle, " \t", &token); /* number of reads */
+        ajStrToUint(token, &iseq);
+
+        seqin->Data = AJNEW0(acedata);
+        acedata->Table = acetable = ajTablestrNew();
+        acelist = ajListstrNew();
+        seqin->Filecount = 0;
+
+        /*
+        ** read sequence from CO (* for gap)
+        ** read accuracy from BQ (no quality for gaps)
+        **
+        ** Read with gaps
+        */
+    }
+    
+    acedata = seqin->Data;
+    acetable = acedata->Table;
+
+    i = acedata->Count;
+    /* ajDebug("returning [%d] '%S'\n", i, acedata->Names[i]); */
+    aceitem = ajTableFetch(acetable, acedata->Names[i]);
+    ajStrAssignS(&thys->Name, acedata->Names[i]);
+
+    thys->Weight = aceitem->Weight;
+    ajStrAssignS(&thys->Seq, aceitem->Seq);
+
+    acedata->Count++;
+
+    if(acedata->Count >= acedata->Nseq)
+    {
+	seqin->multidone = ajTrue;
+	ajDebug("seqReadAce Multidone\n");
+	ajFilebuffClear(seqin->Filebuff, 0);
+	seqMsfDataDel((SeqPMsfData*) &seqin->Data);
+    }
+
+    ajSeqSetNuc(thys);
+    
     ajFilebuffClear(buff, 0);
 
     ajStrTokenDel(&handle);

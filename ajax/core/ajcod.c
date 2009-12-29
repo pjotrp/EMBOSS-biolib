@@ -768,14 +768,13 @@ void ajCodSetTripletsS(AjPCod thys, const AjPStr s, ajint *c)
     p = ajStrGetPtr(s);
     last = ajStrGetLen(s)-2;
 
-
     for(i=0;i<last;i+=3,p+=3,++(*c))
     {
 	if((idx=ajCodIndexC(p))!=-1)
 	    ++thys->num[idx];
 	else
 	{
-	    ajDebug("ajCodCountTripletsS skipping triplet %3.3s\n", p);
+	    ajDebug("ajCodSetTripletsS skipping triplet %3.3s\n", p);
 	    --(*c);
 	}
     }
@@ -3448,7 +3447,8 @@ double ajCodCalcNc(const AjPCod thys)
 **
 ** Calculate fractional and thousand elements of a codon object
 ** Used for creating a codon usage table
-** Requires pre-running of ajCodCountTriplets
+**
+** If no counts are stored, warns of need to first run ajCodSetTriplets
 **
 ** @param [u] thys [AjPCod] Codon object
 ** @param [r] c [ajint] triplet count
@@ -3461,6 +3461,12 @@ void ajCodCalcUsage(AjPCod thys, ajint c)
 {
     ajint i;
     ajint *aasum;
+    ajuint totcnt = 0;
+
+    for(i=0;i<AJCODSIZE;i++)
+        totcnt += thys->num[i];
+    if(!totcnt)
+        ajWarn("empty codon usage table, first call ajCodSetTripletsS");
 
     /* Calculate thousands */
     for(i=0;i<AJCODSTART;++i)

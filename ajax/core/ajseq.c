@@ -703,10 +703,11 @@ AjPSeq ajSeqNewSeq(const AjPSeq seq)
     if (seq->Fttable)
 	pthis->Fttable = ajFeattableNewFtable(seq->Fttable);
 
-    if (seq->Accuracy)
+    if (seq->Accuracy && seq->Qualsize)
     {
-    	AJCNEW0(pthis->Accuracy,seq->Seq->Len);
-    	memmove(pthis->Accuracy,seq->Accuracy,seq->Seq->Len*sizeof(float));
+        pthis->Qualsize = seq->Qualsize;
+    	AJCNEW0(pthis->Accuracy,pthis->Qualsize);
+    	memmove(pthis->Accuracy,seq->Accuracy,pthis->Qualsize*sizeof(float));
     }
 
     return pthis;
@@ -2870,8 +2871,8 @@ void ajSeqTrim(AjPSeq seq)
     if(jend > 0)
 	jend--;
 
-    begin = 1 + ajMathPosI(ajSeqGetLen(seq), 0, jbegin);
-    end   = 1 + ajMathPosI(ajSeqGetLen(seq), begin-1, jend);
+    begin = 1 + ajCvtSposToPosStart(ajSeqGetLen(seq), 0, jbegin);
+    end   = 1 + ajCvtSposToPosStart(ajSeqGetLen(seq), begin-1, jend);
 
     ajDebug("Trimming %d from %d (%d) to %d (%d) "
 	    "Rev: %B Reversed: %B Trimmed: %B\n",
@@ -3052,7 +3053,7 @@ ajuint ajSeqGetBegin(const AjPSeq seq)
     if(seq->Begin > 0)
 	i = seq->Begin - 1;
 
-    j =  1 + ajMathPosI(ajSeqGetLen(seq), 0, i);
+    j =  1 + ajCvtSposToPosStart(ajSeqGetLen(seq), 0, i);
 
     return j;
 }
@@ -3230,7 +3231,7 @@ ajuint ajSeqGetEnd(const AjPSeq seq)
     if(seq->End > 0)
 	i--;
 
-    i = 1 + ajMathPosI(ajSeqGetLen(seq), ajSeqGetBegin(seq)-1, i);
+    i = 1 +ajCvtSposToPosStart(ajSeqGetLen(seq), ajSeqGetBegin(seq)-1, i);
 
     return i;
 }
@@ -3716,12 +3717,13 @@ ajuint ajSeqGetRange(const AjPSeq seq, ajint* begin, ajint* end)
 	jend--;
 
     ajDebug("ajSeqGetRange '%S'\n", seq->Name);
-    *begin = ajMathPos(ajSeqGetLen(seq), jbegin); /* string position */
+    *begin = ajCvtSposToPos(ajSeqGetLen(seq), jbegin); /* string position */
 
     if(seq->End)
-	*end = 1 + ajMathPosI(ajSeqGetLen(seq), *begin, jend);
+	*end = 1 + ajCvtSposToPosStart(ajSeqGetLen(seq), *begin, jend);
     else
-	*end = 1 + ajMathPosI(ajSeqGetLen(seq), *begin, ajSeqGetLen(seq));
+	*end = 1 + ajCvtSposToPosStart(ajSeqGetLen(seq),
+                                       *begin, ajSeqGetLen(seq));
 
     (*begin)++;				/* sequence positions are 1..end */
 
@@ -4611,30 +4613,30 @@ float ajSeqCalcMolwt(const AjPSeq seq)
 
 
 /* @obsolete ajSeqPos
-** @replace ajMathPos (1,2/'ajSeqGetLen[1]',2)
+** @replace ajCvtSposToPos (1,2/'ajSeqGetLen[1]',2)
 */
 
 __deprecated ajint  ajSeqPos(const AjPSeq seq, ajint ipos)
 {
-    return 1+ajMathPosI(ajSeqGetLen(seq), 0, ipos);
+    return 1+ajCvtSposToPosStart(ajSeqGetLen(seq), 0, ipos);
 }
 
 
 
 
 /* @obsolete ajSeqPosI
-** @replace ajMathPosI (1,2,3/'ajSeqGetLen[1]',2,3)
+** @replace ajCvtSposToPosStart (1,2,3/'ajSeqGetLen[1]',2,3)
 */
 __deprecated ajint  ajSeqPosI(const AjPSeq seq, ajint imin, ajint ipos)
 {
-    return 1+ajMathPosI(ajSeqGetLen(seq), imin, ipos);
+    return 1+ajCvtSposToPosStart(ajSeqGetLen(seq), imin, ipos);
 }
 
 
 
 
 /* @obsolete ajSeqPosII
-** @rename ajMathPosI
+** @rename ajCvtSposToPosStart
 */
 
 __deprecated ajint  ajSeqPosII(ajint ilen, ajint imin, ajint ipos)
@@ -4698,10 +4700,10 @@ ajint ajSeqCalcTrueposMin(const AjPSeq seq, ajint imin, ajint ipos)
 	jpos--;
 
     if(ajSeqGetRev(seq))
-	return 1 + seq->Offend + ajMathPosI(ajSeqGetLen(seq),
+	return 1 + seq->Offend + ajCvtSposToPosStart(ajSeqGetLen(seq),
 			  jmin, jpos);
     else
-	return 1 + seq->Offset + ajMathPosI(ajSeqGetLen(seq),
+	return 1 + seq->Offset + ajCvtSposToPosStart(ajSeqGetLen(seq),
 			  jmin, jpos);
 }
 
@@ -4721,11 +4723,11 @@ __deprecated ajint  ajSeqTruePosI(const AjPSeq thys, ajint imin, ajint ipos)
 
 
 /* @obsolete ajSeqTruePosII
-** @rename ajMathPosI
+** @rename ajCvtSposToPosStart
 */
 __deprecated ajint  ajSeqTruePosII(ajint ilen, ajint imin, ajint ipos)
 {
-    return ajMathPosI(ilen, imin, ipos);
+    return ajCvtSposToPosStart(ilen, imin, ipos);
 }
 
 
@@ -4755,9 +4757,9 @@ ajint ajSeqCalcTruepos(const AjPSeq seq, ajint ipos)
 	jpos = ipos - 1;
 
     if(ajSeqGetRev(seq))
-	return 1 + seq->Offend + ajMathPosI(ajSeqGetLen(seq), 0, jpos);
+	return 1 + seq->Offend + ajCvtSposToPosStart(ajSeqGetLen(seq), 0, jpos);
 
-    return 1 + seq->Offset + ajMathPosI(ajSeqGetLen(seq), 0, jpos);
+    return 1 + seq->Offset + ajCvtSposToPosStart(ajSeqGetLen(seq), 0, jpos);
 }
 
 
@@ -5557,7 +5559,7 @@ ajint ajSeqallGetseqBegin(const AjPSeqall seq)
 	if(jbegin > 0)
 	    jbegin--;
 
-	return 1 + ajMathPosI(ajSeqGetLen(seq->Seq), 0, jbegin);
+	return 1 + ajCvtSposToPosStart(ajSeqGetLen(seq->Seq), 0, jbegin);
     }
 
     if(seq->Seq->Begin)
@@ -5567,7 +5569,7 @@ ajint ajSeqallGetseqBegin(const AjPSeqall seq)
 	if(jbegin > 0)
 	    jbegin--;
 
-	return 1 + ajMathPosI(ajSeqGetLen(seq->Seq), 0, jbegin);
+	return 1 + ajCvtSposToPosStart(ajSeqGetLen(seq->Seq), 0, jbegin);
     }
 
     return 1;
@@ -5608,8 +5610,8 @@ ajint ajSeqallGetseqEnd(const AjPSeqall seq)
 	if(jend > 0)
 	    jend--;
 
-	return 1 + ajMathPosI(ajSeqGetLen(seq->Seq),
-			      ajSeqallGetseqBegin(seq)-1, jend);
+	return 1 + ajCvtSposToPosStart(ajSeqGetLen(seq->Seq),
+                                       ajSeqallGetseqBegin(seq)-1, jend);
     }
 
     if(seq->Seq->End)
@@ -5619,8 +5621,8 @@ ajint ajSeqallGetseqEnd(const AjPSeqall seq)
 	if(jend > 0)
 	    jend--;
 
-	return 1 + ajMathPosI(ajSeqGetLen(seq->Seq),
-			      ajSeqallGetseqBegin(seq)-1, jend);
+	return 1 + ajCvtSposToPosStart(ajSeqGetLen(seq->Seq),
+                                       ajSeqallGetseqBegin(seq)-1, jend);
     }
 
     return ajSeqGetLen(seq->Seq);
@@ -6052,12 +6054,12 @@ ajint ajSeqsetGetRange(const AjPSeqset seq, ajint* begin, ajint* end)
 
     ajDebug("ajSeqsetGetRange '%S' begin %d end %d len: %d\n",
 	    seq->Name, seq->Begin, seq->End, seq->Len);
-    *begin = ajMathPosI(seq->Len, 0, jbegin);
+    *begin = ajCvtSposToPosStart(seq->Len, 0, jbegin);
 
     if(seq->End)
-	*end = 1 + ajMathPosI(seq->Len, *begin, jend);
+	*end = 1 + ajCvtSposToPosStart(seq->Len, *begin, jend);
     else
-	*end = 1 + ajMathPosI(seq->Len, *begin, seq->Len);
+	*end = 1 + ajCvtSposToPosStart(seq->Len, *begin, seq->Len);
 
     (*begin)++;
 
@@ -6392,8 +6394,8 @@ void ajSeqsetTrim(AjPSeqset seq)
     if(jend > 0)
 	jend--;
 
-    begin = 1 + ajMathPosI(seq->Len, 0, jbegin);
-    end   = 1 + ajMathPosI(seq->Len, begin-1, jend);
+    begin = 1 + ajCvtSposToPosStart(seq->Len, 0, jbegin);
+    end   = 1 + ajCvtSposToPosStart(seq->Len, begin-1, jend);
 
     if(seq->End)
     {
@@ -6547,7 +6549,7 @@ ajuint ajSeqsetGetBegin(const AjPSeqset seq)
     if(jbegin > 0)
 	jbegin--;
 
-    return 1 + ajMathPosI(seq->Len, 0, jbegin);
+    return 1 + ajCvtSposToPosStart(seq->Len, 0, jbegin);
 }
 
 
@@ -6586,7 +6588,7 @@ ajuint ajSeqsetGetEnd(const AjPSeqset seq)
     if(jend > 0)
 	jend--;
 
-    return 1 + ajMathPosI(seq->Len, ajSeqsetGetBegin(seq)-1, jend);
+    return 1 + ajCvtSposToPosStart(seq->Len, ajSeqsetGetBegin(seq)-1, jend);
 }
 
 

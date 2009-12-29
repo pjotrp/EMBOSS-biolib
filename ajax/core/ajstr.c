@@ -3326,8 +3326,8 @@ AjBool ajStrAssignSubS(AjPStr* Pstr, const AjPStr str,
     ajuint iend;
     AjPStr thys;
 
-    ibegin = ajMathPos(str->Len, pos1);
-    iend = ajMathPosI(str->Len, ibegin, pos2);
+    ibegin = ajCvtSposToPos(str->Len, pos1);
+    iend = ajCvtSposToPosStart(str->Len, ibegin, pos2);
 
     if(iend == str->Len)
 	iend--;
@@ -3706,8 +3706,8 @@ AjBool ajStrAppendSubC(AjPStr* Pstr, const char* txt, ajint pos1, ajint pos2)
     thys = *Pstr;
 
     jlen = strlen(txt);
-    ibegin = ajMathPos(jlen, pos1);
-    iend   = ajMathPosI(jlen, ibegin, pos2);
+    ibegin = ajCvtSposToPosStart(jlen, 0, pos1);
+    iend   = ajCvtSposToPosStart(jlen, ibegin, pos2);
 
     ilen = iend - ibegin + 1;
 
@@ -3756,8 +3756,8 @@ AjBool ajStrAppendSubS(AjPStr* Pstr, const AjPStr str, ajint pos1, ajint pos2)
 
     thys = *Pstr;
 
-    ibegin = ajMathPos(str->Len, pos1);
-    iend   = ajMathPosI(str->Len, ibegin, pos2);
+    ibegin = ajCvtSposToPosStart(str->Len, 0, pos1);
+    iend   = ajCvtSposToPosStart(str->Len, ibegin, pos2);
 
     ilen = iend - ibegin + 1;
 
@@ -3827,7 +3827,7 @@ AjBool ajStrInsertC(AjPStr* Pstr, ajint pos, const char* txt )
     }
 
     /* can be at start or after end */
-    ibegin = ajMathPosI(thys->Len+1, 0, pos);
+    ibegin = ajCvtSposToPosStart(thys->Len+1, 0, pos);
 
     j = thys->Len+len+1;
 
@@ -3963,8 +3963,8 @@ AjBool ajStrJoinC(AjPStr* Pstr, ajint pos, const char* txt,
         ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
 
-    ibegin = ajMathPos(thys->Len, pos);
-    ibegin2 = ajMathPos(len, posb);
+    ibegin = ajCvtSposToPosStart(thys->Len, 0, pos);
+    ibegin2 = ajCvtSposToPosStart(len, 0, posb);
 
     if(thys->Len < ibegin || len < ibegin2)
 	return ajFalse;
@@ -4010,8 +4010,8 @@ AjBool ajStrJoinS(AjPStr* Pstr, ajint pos, const AjPStr str,
     ajuint ibegin1;
     ajuint ibegin2;
 
-    ibegin1 = ajMathPos((*Pstr)->Len, pos);
-    ibegin2 = ajMathPos(str->Len, posb);
+    ibegin1 = ajCvtSposToPosStart((*Pstr)->Len, 0, pos);
+    ibegin2 = ajCvtSposToPosStart(str->Len, 0, posb);
 
     return ajStrJoinC(Pstr, ibegin1, str->Ptr, ibegin2);
 }
@@ -4085,8 +4085,8 @@ AjBool ajStrMaskRange(AjPStr* Pstr, ajint pos1, ajint pos2, char maskchr)
 
     thys = *Pstr;
 
-    ibegin = ajMathPos(thys->Len, pos1);
-    iend = ajMathPosI(thys->Len, ibegin, pos2);
+    ibegin = ajCvtSposToPosStart(thys->Len, 0, pos1);
+    iend = ajCvtSposToPosStart(thys->Len, ibegin, pos2);
 
 /*
     ajDebug("ajStrMask %d %d len: %d ibegin: %d iend: %d char '%c'\n",
@@ -4183,7 +4183,7 @@ AjBool ajStrPasteCountK( AjPStr* Pstr, ajint pos, char chr,
 
     thys = *Pstr;
 
-    ibegin = ajMathPos(thys->Len, pos);
+    ibegin = ajCvtSposToPosStart(thys->Len, 0, pos);
     iend   = ibegin + num;
 
     if(iend > thys->Len)		/* can't fit */
@@ -4249,7 +4249,7 @@ AjBool ajStrPasteMaxC (AjPStr* Pstr, ajint pos, const char* txt,
 
     thys = *Pstr;
 
-    ibegin = ajMathPos(thys->Len, pos);
+    ibegin = ajCvtSposToPosStart(thys->Len, 0, pos);
     iend = ibegin + len;
 
     if((iend  > thys->Len) || (len > slen) ) /* can't fit */
@@ -4366,6 +4366,7 @@ __deprecated AjBool  ajStrReplace( AjPStr* pthis, ajint begin,
 ** @nam4rule  TrimWhite        Trim whitespace only.
 ** @nam5rule  TrimWhiteEnd     Trim whitespace from end.
 ** @nam5rule  TrimWhiteStart   Trim whitespace from start.
+** @suffix F  Float array to be kept in step with one valule per character
 **
 ** @argrule   *        Pstr  [AjPStr*] Modifiable string
 ** @argrule   Pos      pos   [ajint]   First position to be deleted.
@@ -4375,6 +4376,7 @@ __deprecated AjBool  ajStrReplace( AjPStr* pthis, ajint begin,
 ** @argrule   C        txt   [const char*]  Text string
 ** @argrule   K        chr   [char]         Single character
 ** @argrule   S        str   [const AjPStr] Text string
+** @argrule   F        Pfloat  [float*] Array of floats
 ** @argrule   Len      len   [ajuint] Number of characters to process
 ** @argrule   CutEnd   len   [ajuint] Number of characters to remove
 ** @argrule   CutStart len   [ajuint] Number of characters to remove
@@ -4634,8 +4636,8 @@ AjBool ajStrCutRange(AjPStr* Pstr, ajint pos1, ajint pos2)
 
     thys = *Pstr;
 
-    ibegin = ajMathPos(thys->Len, pos1);
-    iend = ajMathPosI(thys->Len, ibegin, pos2) + 1;
+    ibegin = ajCvtSposToPosStart(thys->Len, 0, pos1);
+    iend = ajCvtSposToPosStart(thys->Len, ibegin, pos2) + 1;
     ilen = iend - ibegin;
 
     /*ajDebug("ajStrCut %d %d len: %d ibegin: %d iend: %d\n",
@@ -4732,8 +4734,8 @@ AjBool ajStrKeepRange(AjPStr* Pstr, ajint pos1, ajint pos2)
     if(str->Use > 1)
       str = ajStrGetuniqueStr(Pstr);
 
-    ibegin = ajMathPos(str->Len, pos1);
-    iend = ajMathPos(str->Len, pos2);
+    ibegin = ajCvtSposToPosStart(str->Len, 0, pos1);
+    iend = ajCvtSposToPosStart(str->Len, 0, pos2);
 
     if(iend == str->Len)
 	iend--;
@@ -5400,6 +5402,66 @@ AjBool ajStrRemoveGap(AjPStr* Pstr)
 __deprecated void  ajStrDegap(AjPStr* thys)
 {
     ajStrRemoveGap(thys);
+}
+
+
+
+
+/* @func ajStrRemoveGapF ******************************************************
+**
+** Removes non-sequence characters (all but alphabetic characters and asterisk)
+** from a string. Also removes floats from an array of the same size
+**
+** @param [w] Pstr [AjPStr*] String
+** @param [w] Pfloat [float*] Floating point array (e.g. quality scores) 
+** @return [AjBool] True if string is not empty
+** @@
+******************************************************************************/
+
+AjBool ajStrRemoveGapF(AjPStr* Pstr, float* Pfloat)
+{
+    char *p;
+    char *q;
+    ajuint  i;
+    ajuint  len;
+    char c;
+    AjPStr thys;
+    float *fp;
+    float *fq;
+    float f;
+
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
+
+    thys = *Pstr;
+
+    p = q = thys->Ptr;
+    fp = fq = Pfloat;
+    len = thys->Len;
+
+    for(i=0;i<len;++i)
+    {
+	c = *(p++);
+        f = (*fp++);
+
+	/* O is a gap character for Phylip ... but now valid for proteins */
+	if((c>='A' && c<='Z') || (c>='a' && c<='z') || (c=='*'))
+        {
+	    *(q++) = c;
+	    *(fq++) = f;
+        }
+	else
+	    --thys->Len;
+    }
+
+    thys->Ptr[thys->Len] = '\0';
+
+    if(!thys->Len)
+        return ajFalse;
+
+    return ajTrue;
 }
 
 
@@ -6267,7 +6329,7 @@ AjBool ajStrTruncatePos(AjPStr* Pstr, ajint pos)
 
     thys = *Pstr;
 
-    ibegin = 1 + ajMathPos(thys->Len, pos);
+    ibegin = 1 + ajCvtSposToPosStart(thys->Len, 0, pos);
     thys->Ptr[ibegin] = '\0';
     thys->Len = ibegin;
 
@@ -6583,7 +6645,7 @@ AjBool ajStrExchangePosCC(AjPStr* Pstr, ajint ipos, const char* txt,
 			 const char* txtnew)
 {    
     ajuint tlen = strlen(txt);
-    ajint jpos = ajMathPos((*Pstr)->Len, ipos);
+    ajint jpos = ajCvtSposToPosStart((*Pstr)->Len, 0, ipos);
 
     if(ajCharPrefixC(&(*Pstr)->Ptr[jpos], txt))
     {
@@ -7813,12 +7875,12 @@ AjBool ajStrWhole(const AjPStr str, ajint pos1, ajint pos2)
     ajuint ibeg;
     ajuint iend;
 
-    ibeg = ajMathPos(str->Len, pos1);
+    ibeg = ajCvtSposToPosStart(str->Len, 0, pos1);
 
     if(ibeg)
 	return ajFalse;
 
-    iend = ajMathPosI(str->Len, ibeg, pos2);
+    iend = ajCvtSposToPosStart(str->Len, ibeg, pos2);
 
     if(iend != (str->Len - 1))
 	return ajFalse;
@@ -9712,8 +9774,8 @@ AjBool ajStrFmtLowerSub(AjPStr* Pstr, ajint pos1, ajint pos2)
 
     thys = *Pstr;
 
-    ibegin = ajMathPos(thys->Len, pos1);
-    iend = ajMathPosI(thys->Len, ibegin, pos2);
+    ibegin = ajCvtSposToPosStart(thys->Len, 0, pos1);
+    iend = ajCvtSposToPosStart(thys->Len, ibegin, pos2);
 
     for (i=ibegin; i<=iend;i++)
 	thys->Ptr[i] = (char)tolower((ajint) thys->Ptr[i]);
@@ -9900,8 +9962,8 @@ AjBool ajStrFmtUpperSub(AjPStr* Pstr, ajint pos1, ajint pos2)
 
     thys = *Pstr;
 
-    ibegin = ajMathPos(thys->Len, pos1);
-    iend = ajMathPosI(thys->Len, ibegin, pos2);
+    ibegin = ajCvtSposToPosStart(thys->Len, 0, pos1);
+    iend = ajCvtSposToPosStart(thys->Len, ibegin, pos2);
 
     for (i=ibegin; i<=iend;i++)
 	thys->Ptr[i] = (char)toupper((ajint) thys->Ptr[i]);
@@ -11537,7 +11599,7 @@ ajint ajStrFindNextC(const AjPStr str, ajint pos1, const char* txt2)
     ajuint i;
     ajuint jpos;
 
-    jpos = ajMathPos(str->Len, pos1);
+    jpos = ajCvtSposToPosStart(str->Len, 0, pos1);
 
     i = jpos + strcspn(&str->Ptr[jpos], txt2);
 
@@ -11567,7 +11629,7 @@ ajint ajStrFindNextK(const AjPStr str, ajint pos1, char chr)
     const char* cp;
     ajuint jpos;
 
-    jpos = ajMathPos(str->Len, pos1);
+    jpos = ajCvtSposToPosStart(str->Len, 0, pos1);
 
     cp = strchr(&str->Ptr[jpos], (ajint) chr);
 
@@ -11598,7 +11660,7 @@ ajint ajStrFindNextS(const AjPStr str, ajint pos1, const AjPStr str2)
     ajuint i;
     ajuint jpos;
 
-    jpos = ajMathPos(str->Len, pos1);
+    jpos = ajCvtSposToPosStart(str->Len, 0, pos1);
 
     i = jpos + strcspn(&str->Ptr[jpos], str2->Ptr);
 
@@ -12626,48 +12688,48 @@ __deprecated void  ajStrFill(AjPStr* pthys, ajint len, char fill)
 
 
 /* @obsolete ajStrPos
-** @replace ajMathPos (1,2/'ajStrGetLen[1]',2)
+** @replace ajCvtSposToPos (1,2/'ajStrGetLen[1]',2)
 */
 
 __deprecated ajint  ajStrPos(const AjPStr thys, ajint ipos)
 {
-    return ajMathPos(thys->Len, ipos);
+    return ajCvtSposToPos(thys->Len, ipos);
 }
 
 
 
 
 /* @obsolete ajStrPosI
-** @replace ajMathPosI (1,2,3/'ajStrGetLen[1]',2,3)
+** @replace ajCvtSposToPosStart (1,2,3/'ajStrGetLen[1]',2,3)
 */
 
 __deprecated ajint  ajStrPosI(const AjPStr thys, ajint imin, ajint ipos)
 {
-    return ajMathPosI(thys->Len, imin, ipos);
+    return ajCvtSposToPosStart(thys->Len, imin, ipos);
 }
 
 
 
 
 /* @obsolete ajStrPosII
-** @rename ajMathPosI
+** @rename ajCvtSposToPosStart
 */
 
 __deprecated ajint  ajStrPosII(ajint ilen, ajint imin, ajint ipos)
 {
-    return ajMathPosI(ilen, imin, ipos);
+    return ajCvtSposToPosStart(ilen, imin, ipos);
 }
 
 
 
 
 /* @obsolete ajCharPos
-** @replace ajMathPos (1,2/'strlen[1]',2)
+** @replace ajCvtSposToPos (1,2/'strlen[1]',2)
 */
 
 __deprecated ajint  ajCharPos(const char* thys, ajint ipos)
 {
-    return ajMathPos(strlen(thys), ipos);
+    return ajCvtSposToPos(strlen(thys), ipos);
 }
 
 

@@ -25,30 +25,48 @@ extern "C"
 ** Prototype definitions
 */
 
-float              ajDegToRad (float degrees);
-double             ajGaussProb (float mean, float sd, float score);
-float              ajGeoMean(const float *s, ajint n);
-void               ajPolToRec (float radius, float angle, float *x, float *y);
-ajint              ajPosMod (ajint a, ajint b);
-float              ajRadToDeg (float radians);
+float              ajCvtDegToRad (float degrees);
+double             ajCvtGaussToProb (float mean, float sd, float score);
+void               ajCvtPolToRec (float radius, float angle,
+                                  float *x, float *y);
+float              ajCvtRadToDeg (float radians);
+ajuint             ajCvtSposToPos(ajuint len, ajint ipos);
+ajuint             ajCvtSposToPosStart(ajuint len, ajuint imin, ajint ipos);
+float              ajMathGmean(const float *s, ajint n);
+ajint              ajMathModulo (ajint a, ajint b);
 ajint              ajRandomNumber (void);
-double             ajRandomNumberD (void);
+double             ajRandomDouble (void);
 void               ajRandomSeed (void);
-void               ajRecToPol (float x, float y, float *radius, float *angle);
+void               ajCvtRecToPol (float x, float y,
+                                  float *radius, float *angle);
 ajint              ajRound (ajint i, ajint round);
-float              ajRoundF (float a, ajint nbits);
-unsigned long long ajSp64Crc(const AjPStr thys);
-ajuint             ajSp32Crc(const AjPStr thys);
-ajuint             ajMathPosI(ajuint len, ajuint imin, ajint ipos);
-ajuint             ajMathPos(ajuint len, ajint ipos);
+float              ajRoundFloat (float a, ajint nbits);
+unsigned long long ajMathCrc64(const AjPStr thys);
+ajuint             ajMathCrc32(const AjPStr thys);
 ajuint             ajNumLengthDouble(double dnumber);
 ajuint             ajNumLengthFloat(float fnumber);
 ajuint             ajNumLengthInt(ajlong inumber);
 ajuint             ajNumLengthUint(ajulong inumber);
+
 /*
 ** End of prototype definitions
 */
 
+__deprecated float              ajRoundF (float a, ajint nbits);
+__deprecated double             ajRandomNumberD (void);
+__deprecated unsigned long long ajSp64Crc(const AjPStr thys);
+__deprecated ajuint             ajSp32Crc(const AjPStr thys);
+__deprecated ajint              ajPosMod (ajint a, ajint b);
+__deprecated float              ajGeoMean(const float *s, ajint n);
+__deprecated double             ajGaussProb (float mean, float sd, float score);
+__deprecated ajuint             ajMathPosI(ajuint len, ajuint imin, ajint ipos);
+__deprecated ajuint             ajMathPos(ajuint len, ajint ipos);
+__deprecated float              ajDegToRad (float degrees);
+__deprecated float              ajRadToDeg (float radians);
+__deprecated void               ajPolToRec (float radius, float angle,
+                                            float *x, float *y);
+__deprecated void               ajRecToPol (float x, float y,
+                                            float *radius, float *angle);
 #endif
 
 #ifdef __cplusplus

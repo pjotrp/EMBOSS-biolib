@@ -26,6 +26,7 @@
 #include "ajax.h"
 
 
+static AjPStr matrixStrQuery = NULL;
 
 
 /* @func ajMatrixNew **********************************************************
@@ -79,7 +80,6 @@ AjPMatrix ajMatrixNew(const AjPPStr codes, ajint n, const AjPStr filename)
 
     return ret;
 }
-
 
 
 
@@ -385,289 +385,18 @@ void ajMatrixDel(AjPMatrix *thys)
 
 
 
-/* @func ajMatrixArray ********************************************************
-**
-** Returns the comparison matrix as an array of integer arrays.
-** Sequence characters are indexed in this array using the internal
-** Sequence Conversion table in the matrix (see ajMatrixCvt)
-**
-** @param [r] thys [const AjPMatrix] Matrix object
-** @return [AjIntArray*] array of integer arrays for comparison values.
-** @@
-******************************************************************************/
-
-AjIntArray* ajMatrixArray(const AjPMatrix thys)
-{
-    if(thys)
-	return thys->Matrix;
-
-    return NULL;
-}
-
-
-
-
-/* @func ajMatrixfArray *******************************************************
-**
-** Returns the comparison matrix as an array of float arrays.
-** Sequence characters are indexed in this array using the internal
-** Sequence Conversion table in the matrix (see ajMatrixCvt)
-**
-** @param [r] thys [const AjPMatrixf] Float Matrix object
-** @return [AjFloatArray*] array of float arrays for comparison values.
-** @@
-******************************************************************************/
-
-AjFloatArray* ajMatrixfArray(const AjPMatrixf thys)
-{
-    if(thys)
-	return thys->Matrixf;
-
-    return NULL;
-}
-
-
-
-
-/* @func ajMatrixSize *********************************************************
-**
-** Returns the comparison matrix size.
-**
-** @param [r] thys [const AjPMatrix] Matrix object
-** @return [ajint] .
-** @@
-******************************************************************************/
-
-ajint ajMatrixSize(const AjPMatrix thys)
-{
-    if(thys)
-	return thys->Size;
-
-    return 0;
-}
-
-
-
-
-/* @func ajMatrixfSize ********************************************************
-**
-** Returns the comparison matrix size.
-**
-** @param [r] thys [const AjPMatrixf] Matrix object
-** @return [ajint] .
-** @@
-******************************************************************************/
-
-ajint ajMatrixfSize(const AjPMatrixf thys)
-{
-    if(thys)
-	return thys->Size;
-
-    return 0;
-}
-
-
-
-
-/* @func ajMatrixCvt **********************************************************
-**
-** Returns the sequence character conversion table for a matrix.
-** This table converts any character defined in the matrix to a
-** positive integer, and any other character is converted to zero.
-**
-** @param [r] thys [const AjPMatrix] Matrix object
-** @return [AjPSeqCvt] sequence character conversion table
-** @@
-******************************************************************************/
-
-AjPSeqCvt ajMatrixCvt(const AjPMatrix thys)
-{
-    if(thys)
-	return thys->Cvt;
-
-    return NULL;
-}
-
-
-
-
-/* @func ajMatrixfCvt *********************************************************
-**
-** Returns the sequence character conversion table for a matrix.
-** This table converts any character defined in the matrix to a
-** positive integer, and any other character is converted to zero.
-**
-** @param [r] thys [const AjPMatrixf] Float Matrix object
-** @return [AjPSeqCvt] sequence character conversion table
-** @@
-******************************************************************************/
-
-AjPSeqCvt ajMatrixfCvt(const AjPMatrixf thys)
-{
-    if(thys)
-	return thys->Cvt;
-
-    return NULL;
-}
-
-
-
-
-/* @func ajMatrixChar *********************************************************
-**
-** Returns the sequence character conversion table for a matrix.
-** This table converts any string defined in the matrix to a
-** positive integer, and any other string is converted to zero.
-**
-** @param [r] thys [const AjPMatrix] Matrix object
-** @param [r] i [ajint] Character index
-** @param [w] label [AjPStr *] Matrix label, e.g. sequence character code
-** @return [void] 
-** @@
-******************************************************************************/
-
-void ajMatrixChar(const AjPMatrix thys, ajint i, AjPStr *label)
-{
-    if(!thys)
-    {
-	ajStrAssignC(label, "?");
-
-	return;
-    }
-
-    if(i >= thys->Size)
-    {
-	ajStrAssignC(label, "?");
-
-	return;
-    }
-
-    if(i < 0) 
-    {
-	ajStrAssignC(label, "?");
-
-	return;
-    }
-
-    ajStrAssignS(label, thys->Codes[i]);
-
-    return;
-}
-
-
-
-
-/* @func ajMatrixfChar ********************************************************
-**
-** Returns the sequence character conversion table for a floating point matrix.
-** This table converts any character defined in the matrix to a
-** floating point number, and any other character is converted to zero.
-**
-** @param [r] thys [const AjPMatrixf] Matrix object
-** @param [r] i [ajint] Character index
-** @param [w] label [AjPStr *] Matrix label, e.g. sequence character code
-** @return [void] 
-** @@
-******************************************************************************/
-
-void ajMatrixfChar(const AjPMatrixf thys, ajint i, AjPStr *label)
-{
-    if(!thys)
-    {
-	ajStrAssignC(label, "?");
-
-	return;
-    }
-
-    if(i >= thys->Size) 
-    {	
-	ajStrAssignC(label, "?");
-
-	return;
-    }
-    
-    if(i < 0)
-    {
-	ajStrAssignC(label, "?");
-
-	return;
-    }
-
-    ajStrAssignS(label, thys->Codes[i]);
-
-    return;
-}
-
-
-
-
-/* @func ajMatrixName *********************************************************
-**
-** Returns the name of a matrix object, usually the filename from
-** which it was read.
-**
-** @param [r] thys [const AjPMatrix] Matrix object
-** @return [const AjPStr] The name, a pointer to the internal name.
-** @@
-******************************************************************************/
-
-const AjPStr ajMatrixName(const AjPMatrix thys)
-{
-    static AjPStr emptystr = NULL;
-
-    if(!thys)
-    {
-	if (!emptystr)
-	    emptystr = ajStrNewC("");
-
-	return emptystr;
-    }
-
-    return thys->Name;
-}
-
-
-
-
-/* @func ajMatrixfName ********************************************************
-**
-** Returns the name of a matrix object, usually the filename from
-** which it was read.
-**
-** @param [r] thys [const AjPMatrixf] Matrix object
-** @return [const AjPStr] The name, a pointer to the internal name.
-** @@
-******************************************************************************/
-
-const AjPStr ajMatrixfName(const AjPMatrixf thys)
-{
-    static AjPStr emptystr = NULL;
-
-    if(!thys)
-    {
-	emptystr = ajStrNewC("");
-
-	return emptystr;
-    }
-
-    return thys->Name;
-}
-
-
-
-
-/* @func ajMatrixRead *********************************************************
+/* @func ajMatrixNewFile ******************************************************
 **
 ** Constructs a comparison matrix from a given local data file
 **
-** @param [w] pthis [AjPMatrix*] New Matrix object.
 ** @param [r] filename [const AjPStr] Input filename
-** @return [AjBool] ajTrue on success.
+** @return [AjPMatrix] Matrix object
 ** @@
 ******************************************************************************/
 
-AjBool ajMatrixRead(AjPMatrix* pthis, const AjPStr filename)
+AjPMatrix ajMatrixNewFile(const AjPStr filename)
 {
+    AjPMatrix ret = NULL;
     AjPStr buffer = NULL;
     const AjPStr tok    = NULL;
 
@@ -676,7 +405,6 @@ AjBool ajMatrixRead(AjPMatrix* pthis, const AjPStr filename)
 
     AjPFile file    = NULL;
     AjBool first    = ajTrue;
-    AjPMatrix  thys = NULL;
     const char *ptr = NULL;
     ajint **matrix  = NULL;
 
@@ -763,18 +491,18 @@ AjBool ajMatrixRead(AjPMatrix* pthis, const AjPStr filename)
 
 		first = ajFalse;
 
-		thys = *pthis = ajMatrixNewAsym(orderstring, cols, 
+		ret = ajMatrixNewAsym(orderstring, cols, 
 						rlabel_arr, rows, 
 						filename);
-		matrix = thys->Matrix;
+		matrix = ret->Matrix;
 	    }
 	    else
 	    {
 		ajFmtScanC(ptr, "%S", &firststring);
 		
 		/* JISON 19/7/4
-		   k = ajSeqcvtGetCodeK(thys->Cvt, ajStrGetCharFirst(firststring)); */
-		k = ajSeqcvtGetCodeS(thys->Cvt, firststring);
+		   k = ajSeqcvtGetCodeK(ret->Cvt, ajStrGetCharFirst(firststring)); */
+		k = ajSeqcvtGetCodeS(ret->Cvt, firststring);
 
 		/* 
 		 ** cols+1 is used below because 2nd and subsequent lines have 
@@ -788,10 +516,10 @@ AjBool ajMatrixRead(AjPMatrix* pthis, const AjPStr filename)
 			minval = templine[i];
 
 		    /* JISON 19/7/4
-		    matrix[k][ajSeqcvtGetCodeK(thys->Cvt,
+		    matrix[k][ajSeqcvtGetCodeK(ret->Cvt,
 					ajStrGetCharFirst(orderstring[i]))] 
 					    = templine[i]; */
-		    matrix[k][ajSeqcvtGetCodeAsymS(thys->Cvt,
+		    matrix[k][ajSeqcvtGetCodeAsymS(ret->Cvt,
 					       orderstring[i])] 
 						   = templine[i];
 		}
@@ -823,24 +551,35 @@ AjBool ajMatrixRead(AjPMatrix* pthis, const AjPStr filename)
     AJFREE(rlabel_arr);
     ajListFree(&rlabel_list);
 
+    return ret;
+}
+
+
+/* @obsolete ajMatrixRead
+** @remove Use ajMatrixNewFile
+*/
+
+__deprecated AjBool ajMatrixRead(AjPMatrix* pthis, const AjPStr filename)
+{
+    *pthis = ajMatrixNewFile(filename);
+    if(!*pthis)
+        return ajFalse;
     return ajTrue;
 }
 
 
-
-
-/* @func ajMatrixfRead ********************************************************
+/* @func ajMatrixfNewFile *****************************************************
 **
 ** Constructs a comparison matrix from a given local data file
 **
-** @param [w] pthis [AjPMatrixf*] New Float Matrix object.
 ** @param [r] filename [const AjPStr] Input filename
-** @return [AjBool] ajTrue on success.
+** @return [AjPMatrixf] Float matrix object
 ** @@
 ******************************************************************************/
 
-AjBool ajMatrixfRead(AjPMatrixf* pthis, const AjPStr filename)
+AjPMatrixf ajMatrixfNewFile(const AjPStr filename)
 {
+    AjPMatrixf ret = NULL;
     AjPStr *orderstring = NULL;
     AjPStr buffer       = NULL;
     AjPStr firststring  = NULL;
@@ -856,7 +595,6 @@ AjBool ajMatrixfRead(AjPMatrixf* pthis, const AjPStr filename)
     
     const char *ptr = NULL;
 
-    AjPMatrixf thys = NULL;
     AjPFile file    = NULL;
     AjBool  first   = ajTrue;
 
@@ -941,18 +679,18 @@ AjBool ajMatrixfRead(AjPMatrixf* pthis, const AjPStr filename)
 
 		first = ajFalse;
 
-		thys = *pthis = ajMatrixfNewAsym(orderstring, cols, 
+		ret = ajMatrixfNewAsym(orderstring, cols, 
 						 rlabel_arr, rows, 
 						 filename);
-		matrix = thys->Matrixf;
+		matrix = ret->Matrixf;
 	    }
 	    else
 	    {
 		ajFmtScanC(ptr, "%S", &firststring);
 		/* JISON 19/7/4 
-		   k = ajSeqcvtGetCodeK(thys->Cvt,
+		   k = ajSeqcvtGetCodeK(ret->Cvt,
                    ajStrGetCharFirst(firststring)); */
-		k = ajSeqcvtGetCodeS(thys->Cvt, firststring); 
+		k = ajSeqcvtGetCodeS(ret->Cvt, firststring); 
 
 		len = MAJSTRGETLEN(firststring);
 		ajStrAssignSubC(&reststring, ptr, len, -1);
@@ -975,11 +713,11 @@ AjBool ajMatrixfRead(AjPMatrixf* pthis, const AjPStr filename)
 			minval = templine[i];
 
 		    /* JISON 19/7/4
-		    matrix[k][ajSeqcvtGetCodeK(thys->Cvt,
+		    matrix[k][ajSeqcvtGetCodeK(ret->Cvt,
 					ajStrGetCharFirst(orderstring[i]))] 
 					    = templine[i]; */
 
-		    matrix[k][ajSeqcvtGetCodeAsymS(thys->Cvt,
+		    matrix[k][ajSeqcvtGetCodeAsymS(ret->Cvt,
 					       orderstring[i])] 
 						   = templine[i];
 		}
@@ -1010,15 +748,27 @@ AjBool ajMatrixfRead(AjPMatrixf* pthis, const AjPStr filename)
    AJFREE(rlabel_arr);
    ajListFree(&rlabel_list);
 
-   return ajTrue;
+   return ret;
 }
 
 
 
+/* @obsolete ajMatrixfRead
+** @remove Use ajMatrixfNewFile
+*/
 
-/* @func ajMatrixSeqNum *******************************************************
+__deprecated AjBool ajMatrixfRead(AjPMatrixf* pthis, const AjPStr filename)
+{
+    *pthis = ajMatrixfNewFile(filename);
+    if(!*pthis)
+        return ajFalse;
+    return ajTrue;
+}
+
+
+/* @func ajMatrixSeqIndex *****************************************************
 **
-** Converts a sequence top index numbers using the matrix's
+** Converts a sequence to index numbers using the matrix's
 ** internal conversion table. Sequence characters not defined
 ** in the matrix are converted to zero.
 **
@@ -1029,15 +779,26 @@ AjBool ajMatrixfRead(AjPMatrixf* pthis, const AjPStr filename)
 ** @@
 ******************************************************************************/
 
-AjBool ajMatrixSeqNum(const AjPMatrix thys, const AjPSeq seq, AjPStr* numseq)
+AjBool ajMatrixSeqIndex(const AjPMatrix thys, const AjPSeq seq, AjPStr* numseq)
 {
     return ajSeqConvertNum(seq, thys->Cvt, numseq);
 }
 
 
 
+/* @obsolete ajMatrixSeqNum
+** @rename ajMatrixSeqIndex
+*/
 
-/* @func ajMatrixfSeqNum ******************************************************
+__deprecated AjBool ajMatrixSeqNum(const AjPMatrix thys, const AjPSeq seq,
+                                    AjPStr* numseq)
+{
+    return ajSeqConvertNum(seq, thys->Cvt, numseq);
+}
+
+
+
+/* @func ajMatrixfSeqIndex ****************************************************
 **
 ** Converts a sequence to index numbers using the matrix's
 ** internal conversion table. Sequence characters not defined
@@ -1050,7 +811,18 @@ AjBool ajMatrixSeqNum(const AjPMatrix thys, const AjPSeq seq, AjPStr* numseq)
 ** @@
 ******************************************************************************/
 
-AjBool ajMatrixfSeqNum(const AjPMatrixf thys, const AjPSeq seq, AjPStr* numseq)
+AjBool ajMatrixfSeqIndex(const AjPMatrixf thys, const AjPSeq seq,
+                         AjPStr* numseq)
+{
+    return ajSeqConvertNum(seq, thys->Cvt, numseq);
+}
+
+/* @obsolete ajMatrixfSeqNum
+** @rename ajMatrixfSeqIndex
+*/
+
+__deprecated AjBool ajMatrixfSeqNum(const AjPMatrixf thys, const AjPSeq seq,
+                                    AjPStr* numseq)
 {
     return ajSeqConvertNum(seq, thys->Cvt, numseq);
 }
@@ -1106,3 +878,364 @@ AjPStr ajMatrixfGetCodes(const AjPMatrixf thys)
 
     return ret;
 }
+
+
+
+
+/* @func ajMatrixGetMatrix ****************************************************
+**
+** Returns the matrix values array in the matrix
+**
+** @param [r] thys [const AjPMatrix] Matrix object
+** @return [AjIntArray*] Matrix values array
+******************************************************************************/
+
+AjIntArray* ajMatrixGetMatrix(const AjPMatrix thys)
+{
+    if(!thys)
+        return NULL;
+
+    return thys->Matrix;
+}
+
+
+
+/* @obsolete ajMatrixArray
+** @rename ajMatrixGetMatrix
+*/
+
+__deprecated AjIntArray* ajMatrixArray(const AjPMatrix thys)
+{
+    if(thys)
+	return thys->Matrix;
+
+    return NULL;
+}
+
+
+
+
+/* @func ajMatrixfGetMatrix ***************************************************
+**
+** Returns the matrix values array in the matrix
+**
+** @param [r] thys [const AjPMatrixf] Matrix object
+** @return [AjFloatArray*] Matrix values array
+******************************************************************************/
+
+AjFloatArray* ajMatrixfGetMatrix(const AjPMatrixf thys)
+{
+    if(!thys)
+        return NULL;
+
+    return thys->Matrixf;
+}
+
+
+
+
+/* @obsolete ajMatrixfArray
+** @rename ajMatrixfGetMatrix
+*/
+
+__deprecated AjFloatArray* ajMatrixfArray(const AjPMatrixf thys)
+{
+    if(thys)
+	return thys->Matrixf;
+
+    return NULL;
+}
+
+
+
+
+/* @func ajMatrixGetSize ******************************************************
+**
+** Returns the comparison matrix size.
+**
+** @param [r] thys [const AjPMatrix] Matrix object
+** @return [ajint] .
+** @@
+******************************************************************************/
+
+ajint ajMatrixGetSize(const AjPMatrix thys)
+{
+    if(thys)
+	return thys->Size;
+
+    return 0;
+}
+
+/* @obsolete ajMatrixSize
+** @rename ajMatrixGetSize
+*/
+
+__deprecated ajint ajMatrixSize(const AjPMatrix thys)
+{
+    if(thys)
+	return thys->Size;
+
+    return 0;
+}
+
+
+
+
+/* @func ajMatrixfGetSize *****************************************************
+**
+** Returns the comparison matrix size.
+**
+** @param [r] thys [const AjPMatrixf] Matrix object
+** @return [ajint] .
+** @@
+******************************************************************************/
+
+ajint ajMatrixfGetSize(const AjPMatrixf thys)
+{
+    if(thys)
+	return thys->Size;
+
+    return 0;
+}
+
+
+/* @obsolete ajMatrixfSize
+** @rename ajMatrixfGetSize
+*/
+
+__deprecated ajint ajMatrixfSize(const AjPMatrixf thys)
+{
+    if(thys)
+	return thys->Size;
+
+    return 0;
+}
+
+
+/* @func ajMatrixGetCvt *******************************************************
+**
+** Returns the sequence character conversion table for a matrix.
+** This table converts any character defined in the matrix to a
+** positive integer, and any other character is converted to zero.
+**
+** @param [r] thys [const AjPMatrix] Matrix object
+** @return [AjPSeqCvt] sequence character conversion table
+** @@
+******************************************************************************/
+
+AjPSeqCvt ajMatrixGetCvt(const AjPMatrix thys)
+{
+    if(thys)
+	return thys->Cvt;
+
+    return NULL;
+}
+
+
+/* @obsolete ajMatrixCvt
+** @rename ajMatrixGetCvt
+*/
+
+__deprecated AjPSeqCvt ajMatrixCvt(const AjPMatrix thys)
+{
+    if(thys)
+	return thys->Cvt;
+
+    return NULL;
+}
+
+
+
+/* @func ajMatrixfGetCvt ******************************************************
+**
+** Returns the sequence character conversion table for a matrix.
+** This table converts any character defined in the matrix to a
+** positive integer, and any other character is converted to zero.
+**
+** @param [r] thys [const AjPMatrixf] Float Matrix object
+** @return [AjPSeqCvt] sequence character conversion table
+** @@
+******************************************************************************/
+
+AjPSeqCvt ajMatrixfGetCvt(const AjPMatrixf thys)
+{
+    if(thys)
+	return thys->Cvt;
+
+    return NULL;
+}
+
+/* @obsolete ajMatrixfCvt
+** @rename ajMatrixfGetCvt
+*/
+
+__deprecated AjPSeqCvt ajMatrixfCvt(const AjPMatrixf thys)
+{
+    if(thys)
+	return thys->Cvt;
+
+    return NULL;
+}
+
+
+
+
+
+/* @func ajMatrixGetLabelNum **************************************************
+**
+** Returns the sequence character conversion table for a matrix.
+** This table converts any string defined in the matrix to a
+** positive integer, and any other string is converted to zero.
+**
+** @param [r] thys [const AjPMatrix] Matrix object
+** @param [r] i [ajint] Character index
+** @return [const AjPStr] Matrix label, e.g. sequence character code
+** @@
+******************************************************************************/
+
+const AjPStr ajMatrixGetLabelNum(const AjPMatrix thys, ajint i)
+{
+    if(!matrixStrQuery)
+        ajStrAssignK(&matrixStrQuery, '?');
+
+    if(!thys)
+        return matrixStrQuery;
+
+    if(i >= thys->Size) 
+        return matrixStrQuery;
+    
+    if(i < 0)
+        return matrixStrQuery;
+
+    return thys->Codes[i];
+}
+
+
+
+
+/* @obsolete ajMatrixChar
+** @remove Use ajMatrixGetLabelNum
+*/
+
+__deprecated void ajMatrixChar(const AjPMatrix thys, ajint i, AjPStr *label)
+{
+    (void) label;
+    ajStrAssignS(label, ajMatrixGetLabelNum(thys, i));
+    return;
+}
+                 
+
+/* @func ajMatrixfGetLabelNum *************************************************
+**
+** Returns the sequence character conversion table for a floating point matrix.
+** This table converts any character defined in the matrix to a
+** floating point number, and any other character is converted to zero.
+**
+** @param [r] thys [const AjPMatrixf] Matrix object
+** @param [r] i [ajint] Character index
+** @return [const AjPStr] Matrix label, e.g. sequence character code
+** @@
+******************************************************************************/
+
+const AjPStr ajMatrixfGetLabelNum(const AjPMatrixf thys, ajint i)
+{
+    if(!matrixStrQuery)
+        ajStrAssignK(&matrixStrQuery, '?');
+
+    if(!thys)
+        return matrixStrQuery;
+
+    if(i >= thys->Size) 
+        return matrixStrQuery;
+    
+    if(i < 0)
+        return matrixStrQuery;
+
+    return thys->Codes[i];
+}
+
+
+/* @obsolete ajMatrixfChar
+** @remove Use ajMatrixfGetLabelNum
+*/
+
+__deprecated void ajMatrixfChar(const AjPMatrixf thys, ajint i, AjPStr *label)
+{
+    (void) label;
+    ajStrAssignS(label, ajMatrixfGetLabelNum(thys, i));
+    return;
+}
+                 
+
+/* @func ajMatrixGetName ******************************************************
+**
+** Returns the name of a matrix object, usually the filename from
+** which it was read.
+**
+** @param [r] thys [const AjPMatrix] Matrix object
+** @return [const AjPStr] The name, a pointer to the internal name.
+** @@
+******************************************************************************/
+
+const AjPStr ajMatrixGetName(const AjPMatrix thys)
+{
+    static AjPStr emptystr = NULL;
+
+    if(!thys)
+    {
+	if (!emptystr)
+	    emptystr = ajStrNewC("");
+
+	return emptystr;
+    }
+
+    return thys->Name;
+}
+
+
+/* @obsolete ajMatrixName
+** @rename ajMatrixGetName
+*/
+
+__deprecated const AjPStr ajMatrixName(const AjPMatrix thys)
+{
+    return ajMatrixGetName(thys);
+}
+
+
+/* @func ajMatrixfGetName *****************************************************
+**
+** Returns the name of a matrix object, usually the filename from
+** which it was read.
+**
+** @param [r] thys [const AjPMatrixf] Matrix object
+** @return [const AjPStr] The name, a pointer to the internal name.
+** @@
+******************************************************************************/
+
+const AjPStr ajMatrixfGetName(const AjPMatrixf thys)
+{
+    static AjPStr emptystr = NULL;
+
+    if(!thys)
+    {
+	emptystr = ajStrNewC("");
+
+	return emptystr;
+    }
+
+    return thys->Name;
+}
+
+
+
+/* @obsolete ajMatrixfName
+** @rename ajMatrixfGetName
+*/
+
+__deprecated  const AjPStr ajMatrixfName(const AjPMatrixf thys)
+{
+    return ajMatrixfGetName(thys);
+}
+
+

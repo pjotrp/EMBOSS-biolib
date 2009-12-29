@@ -2084,17 +2084,17 @@ void ajGraphicsDrawarcArc(PLFLT xcentre, PLFLT ycentre, PLFLT radius,
     if(endangle < startangle)
         stopangle += 360.0;
 
-    x[0] = xcentre + ( radius*(float)cos(ajDegToRad(startangle)) );
-    y[0] = ycentre + ( radius*(float)sin(ajDegToRad(startangle)) );
+    x[0] = xcentre + ( radius*(float)cos(ajCvtDegToRad(startangle)) );
+    y[0] = ycentre + ( radius*(float)sin(ajCvtDegToRad(startangle)) );
 
     for(i=1, angle=startangle+1; angle<stopangle; angle++, i++)
     {
-	x[i] = xcentre + ( radius*(float)cos(ajDegToRad(angle)) );
-	y[i] = ycentre + ( radius*(float)sin(ajDegToRad(angle)) );
+	x[i] = xcentre + ( radius*(float)cos(ajCvtDegToRad(angle)) );
+	y[i] = ycentre + ( radius*(float)sin(ajCvtDegToRad(angle)) );
     }
 
-    x[i] = xcentre + ( radius*(float)cos(ajDegToRad(stopangle)) );
-    y[i] = ycentre + ( radius*(float)sin(ajDegToRad(stopangle)) );
+    x[i] = xcentre + ( radius*(float)cos(ajCvtDegToRad(stopangle)) );
+    y[i] = ycentre + ( radius*(float)sin(ajCvtDegToRad(stopangle)) );
     numofpoints = i+1;
 
     GraphDrawsetLines(numofpoints, x, y);
@@ -2213,17 +2213,17 @@ void ajGraphicsDrawarcRectFill(PLFLT xcentre, PLFLT ycentre, PLFLT radius,
     r1Blocks = radius;
     r2Blocks = r1Blocks+height;
 
-    x[0]=xcentre + ( r1Blocks*(float)cos(ajDegToRad(startangle)) );
-    y[0]=ycentre + ( r1Blocks*(float)sin(ajDegToRad(startangle)) );
-    x[1]=xcentre + ( r2Blocks*(float)cos(ajDegToRad(startangle)) );
-    y[1]=ycentre + ( r2Blocks*(float)sin(ajDegToRad(startangle)) );
+    x[0]=xcentre + ( r1Blocks*(float)cos(ajCvtDegToRad(startangle)) );
+    y[0]=ycentre + ( r1Blocks*(float)sin(ajCvtDegToRad(startangle)) );
+    x[1]=xcentre + ( r2Blocks*(float)cos(ajCvtDegToRad(startangle)) );
+    y[1]=ycentre + ( r2Blocks*(float)sin(ajCvtDegToRad(startangle)) );
 
     for(i=0, angle=startangle+1; angle<stopangle; angle++, i++)
     {
-	x[2]=xcentre + ( r2Blocks*(float)cos(ajDegToRad(angle)) );
-	y[2]=ycentre + ( r2Blocks*(float)sin(ajDegToRad(angle)) );
-	x[3]=xcentre + ( r1Blocks*(float)cos(ajDegToRad(angle)) );
-	y[3]=ycentre + ( r1Blocks*(float)sin(ajDegToRad(angle)) );
+	x[2]=xcentre + ( r2Blocks*(float)cos(ajCvtDegToRad(angle)) );
+	y[2]=ycentre + ( r2Blocks*(float)sin(ajCvtDegToRad(angle)) );
+	x[3]=xcentre + ( r1Blocks*(float)cos(ajCvtDegToRad(angle)) );
+	y[3]=ycentre + ( r1Blocks*(float)sin(ajCvtDegToRad(angle)) );
 	numofpoints = 4;
 	ajGraphicsDrawsetPolyFill(numofpoints, x, y);
         x[0] = x[3];
@@ -2232,10 +2232,10 @@ void ajGraphicsDrawarcRectFill(PLFLT xcentre, PLFLT ycentre, PLFLT radius,
         y[1] = y[2];
     }
 
-    x[2]=xcentre + ( r2Blocks*(float)cos(ajDegToRad(stopangle)) );
-    y[2]=ycentre + ( r2Blocks*(float)sin(ajDegToRad(stopangle)) );
-    x[3]=xcentre + ( r1Blocks*(float)cos(ajDegToRad(stopangle)) );
-    y[3]=ycentre + ( r1Blocks*(float)sin(ajDegToRad(stopangle)) );
+    x[2]=xcentre + ( r2Blocks*(float)cos(ajCvtDegToRad(stopangle)) );
+    y[2]=ycentre + ( r2Blocks*(float)sin(ajCvtDegToRad(stopangle)) );
+    x[3]=xcentre + ( r1Blocks*(float)cos(ajCvtDegToRad(stopangle)) );
+    y[3]=ycentre + ( r1Blocks*(float)sin(ajCvtDegToRad(stopangle)) );
     numofpoints = 4;
     ajGraphicsDrawsetPolyFill(numofpoints, x, y);
 
@@ -2539,8 +2539,8 @@ void ajGraphicsDrawposCircle(PLFLT x, PLFLT y, float radius)
 
     for(i=0;i<360;i++)
     {
-	xa[i] = x + (radius * (float)cos(ajDegToRad((float)i)));
-	ya[i] = y + (radius * (float)sin(ajDegToRad((float)i)));
+	xa[i] = x + (radius * (float)cos(ajCvtDegToRad((float)i)));
+	ya[i] = y + (radius * (float)sin(ajCvtDegToRad((float)i)));
     }
 
     xa[360] = xa[0];
@@ -3480,8 +3480,8 @@ PLFLT* ajGraphicsCalcCoord(PLFLT x, PLFLT y, PLFLT radius, PLFLT angle)
     PLFLT *xy;
 
     xy = (float *)AJALLOC( 2*sizeof(float) );
-    xy[0] = x + ( radius*(float)cos(ajDegToRad(angle)) );
-    xy[1] = y + ( radius*(float)sin(ajDegToRad(angle)) );
+    xy[0] = x + ( radius*(float)cos(ajCvtDegToRad(angle)) );
+    xy[1] = y + ( radius*(float)sin(ajCvtDegToRad(angle)) );
 
     return xy;
 }

@@ -52,10 +52,10 @@ extern "C"
 **                     in a AjStr
 ** @use ajTrnSeqOrig Translating a sequence
 ** @cast ajTrnGetTitle Returns description of the translation table
-** @cast ajTrnGetFileName Returns file name the translation table was read from
-** @use ajTrnStartStop Checks whether the input codon is a Start codon,
+** @cast ajTrnGetFilename Returns file name the translation table was read from
+** @use ajTrnCodonstrTypeS Checks whether the input codon is a Start codon,
 **                     a Stop codon or something else
-** @use ajTrnStartStopC Checks whether a const char* codon is
+** @use ajTrnCodonstrTypeC Checks whether a const char* codon is
 **                      a Start codon, a Stop codon or something else
 **
 ** @attr FileName [AjPStr] name of file that held the data
@@ -144,19 +144,24 @@ void          ajTrnSeqFrameS (const AjPTrn trnObj, const AjPStr seq,
                               ajint frame, AjPStr *pep);
 void          ajTrnSeqFrameSeq (const AjPTrn trnObj, const AjPSeq seq,
                                 ajint frame, AjPStr *pep);
-ajint         ajTrnSeqDangleC (const AjPTrn trnObj, const char *seq, ajint len,
+ajint         ajTrnSeqDangleC (const AjPTrn trnObj, const char *seq,
 			    ajint frame, AjPStr *pep);
 ajint         ajTrnSeqDangleS (const AjPTrn trnObj, const AjPStr seq,
 			      ajint frame, AjPStr *pep);
 AjPStr        ajTrnGetTitle (const AjPTrn thys);
-AjPStr        ajTrnGetFileName (const AjPTrn thys);
-ajint         ajTrnStartStop (const AjPTrn trnObj,
-			      const AjPStr codon, char *aa);
-ajint         ajTrnStartStopC (const AjPTrn trnObj,
+AjPStr        ajTrnGetFilename (const AjPTrn thys);
+ajint         ajTrnCodonstrTypeC (const AjPTrn trnObj,
 			       const char *codon, char *aa);
+ajint         ajTrnCodonstrTypeS (const AjPTrn trnObj,
+			      const AjPStr codon, char *aa);
 AjPSeq        ajTrnSeqOrig (const AjPTrn trnObj, const AjPSeq seq,
 			    ajint frame);
 
+__deprecated ajint         ajTrnStartStop (const AjPTrn trnObj,
+                                           const AjPStr codon, char *aa);
+__deprecated ajint         ajTrnStartStopC (const AjPTrn trnObj,
+                                            const char *codon, char *aa);
+__deprecated AjPStr        ajTrnGetFileName (const AjPTrn thys);
 __deprecated const  AjPStr ajTrnCodon (const AjPTrn trnObj, const AjPStr codon);
 __deprecated const  AjPStr ajTrnRevCodon (const AjPTrn trnObj,
                                           const AjPStr codon);

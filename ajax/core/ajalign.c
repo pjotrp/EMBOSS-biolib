@@ -356,8 +356,10 @@ static void alignWriteTrace(AjPAlign thys)
 
     ajFmtPrintF(thys->File,
 		"Matrices: IMatrix:'%S'(%d)  FMatrix:'%S'(%d)\n",
-		ajMatrixName(thys->IMatrix), ajMatrixSize(thys->IMatrix),
-		ajMatrixfName(thys->FMatrix), ajMatrixfSize(thys->FMatrix));
+		ajMatrixGetName(thys->IMatrix),
+                ajMatrixGetSize(thys->IMatrix),
+		ajMatrixfGetName(thys->FMatrix),
+                ajMatrixfGetSize(thys->FMatrix));
 
     ajFmtPrintF(thys->File,
 		"Strings:  Matrix:'%S'  GapPen:'%S'  ExtPen:'%S'\n",
@@ -3144,7 +3146,7 @@ void ajAlignSetMatrixInt(AjPAlign thys, AjPMatrix matrix)
     if(!thys->IMatrix)
     {
 	thys->IMatrix = matrix;
-	ajAlignSetMatrixName(thys, ajMatrixName(matrix));
+	ajAlignSetMatrixName(thys, ajMatrixGetName(matrix));
     }
 
     if(thys->FMatrix)
@@ -3171,7 +3173,7 @@ void ajAlignSetMatrixFloat(AjPAlign thys, AjPMatrixf matrix)
     if(!thys->FMatrix)
     {
 	thys->FMatrix = matrix;
-	ajAlignSetMatrixName(thys, ajMatrixfName(matrix));
+	ajAlignSetMatrixName(thys, ajMatrixfGetName(matrix));
     }
 
     if(thys->IMatrix)
@@ -4355,14 +4357,11 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     const AjPSeq* seqs;
     ajint numres;		 /* number of residues (not spaces) */
     AlignPData data = NULL;
-    AjPStr debugstr1 = NULL;
-    AjPStr debugstr2 = NULL;
+    const AjPStr debugstr1 = NULL;
+    const AjPStr debugstr2 = NULL;
     void *freeptr;
     
     
-    debugstr1 = ajStrNew();
-    debugstr2 = ajStrNew();
-
     data = alignData(thys, iali);
 
     if(!thys->IMatrix && !thys->FMatrix)
@@ -4372,7 +4371,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 	else
 	    ajStrAssignC(&thys->Matrix, "EBLOSUM62");
 
-	ajMatrixRead(&thys->IMatrix, thys->Matrix);
+	thys->IMatrix = ajMatrixNewFile(thys->Matrix);
     }
     
     *retident=0;
@@ -4392,15 +4391,15 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     
     if(thys->IMatrix)
     {
-	matrix  = ajMatrixArray(thys->IMatrix);
-	cvt     = ajMatrixCvt(thys->IMatrix); /* return conversion table */
-	matsize = ajMatrixSize(thys->IMatrix);
+	matrix  = ajMatrixGetMatrix(thys->IMatrix);
+	cvt     = ajMatrixGetCvt(thys->IMatrix); /* return conversion table */
+	matsize = ajMatrixGetSize(thys->IMatrix);
     }
     else
     {
-	fmatrix = ajMatrixfArray(thys->FMatrix);
-	cvt     = ajMatrixfCvt(thys->FMatrix); /* return conversion table */
-	matsize = ajMatrixfSize(thys->FMatrix);
+	fmatrix = ajMatrixfGetMatrix(thys->FMatrix);
+	cvt     = ajMatrixfGetCvt(thys->FMatrix); /* return conversion table */
+	matsize = ajMatrixfGetSize(thys->FMatrix);
     }
     
     AJCNEW(seqcharptr,nseqs);
@@ -4632,8 +4631,8 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 	
 	if(thys->IMatrix)
 	{
-	    ajMatrixChar(thys->IMatrix, identicalmaxindex-1, &debugstr1);
-	    ajMatrixChar(thys->IMatrix, matchingmaxindex-1, &debugstr2);
+	    debugstr1 = ajMatrixGetLabelNum(thys->IMatrix, identicalmaxindex-1);
+	    debugstr2 = ajMatrixGetLabelNum(thys->IMatrix, matchingmaxindex-1);
 	    
 
 	    /*ajDebug("index[%d] ident:%d '%S' %.1f matching:%d '%S' %.1f %.1f "
@@ -4651,8 +4650,8 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 	}
 	else
 	{
-	    ajMatrixfChar(thys->FMatrix, identicalmaxindex-1, &debugstr1);
-	    ajMatrixfChar(thys->FMatrix, matchingmaxindex-1, &debugstr2);
+	    debugstr1 = ajMatrixfGetLabelNum(thys->FMatrix,identicalmaxindex-1);
+	    debugstr2 = ajMatrixfGetLabelNum(thys->FMatrix, matchingmaxindex-1);
 	    /* ajDebug("index[%d] ident:%d '%S' %.1f matching:%d '%S' %.1f "
                        "%.1f "
 		    "high:%d '%c' %.1f\n",
@@ -4723,8 +4722,6 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     AJFREE(matching);
     AJFREE(identical);
     ajFloatDel(&posScore);
-    ajStrDel(&debugstr1);
-    ajStrDel(&debugstr2);
 
     return;    
 }
@@ -5403,13 +5400,10 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     AjBool isgap;
     const AjPSeq* seqs;
     ajint numres;		 /* number of residues (not spaces) */
-    AjPStr debugstr1=NULL;
-    AjPStr debugstr2=NULL;
+    const AjPStr debugstr1=NULL;
+    const AjPStr debugstr2=NULL;
     void *freeptr;
     
-    debugstr1=ajStrNew();
-    debugstr2=ajStrNew();
-
     if(mymatrix)
 	imatrix = mymatrix;
 
@@ -5419,7 +5413,7 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
 	    ajStrAssignC(&matname, "EDNAFULL");
 	else
 	    ajStrAssignC(&matname, "EBLOSUM62");
-	ajMatrixRead(&imatrix, matname);
+	imatrix = ajMatrixNewFile(matname);
     }
 
     ajStrDel(&matname);
@@ -5436,9 +5430,9 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     /* ajDebug("fplural:%.2f ident:%.1f mlen: %d\n",
 	    fplural, ident, mlen); */
     
-    matrix  = ajMatrixArray(imatrix);
-    cvt     = ajMatrixCvt(imatrix);	/* return conversion table */
-    matsize = ajMatrixSize(imatrix);
+    matrix  = ajMatrixGetMatrix(imatrix);
+    cvt     = ajMatrixGetCvt(imatrix);	/* return conversion table */
+    matsize = ajMatrixGetSize(imatrix);
     
     AJCNEW(seqs,nseqs);
     AJCNEW(seqcharptr,nseqs);
@@ -5621,8 +5615,8 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
 	khpos = kkpos;
 	himatch = matching[ajSeqcvtGetCodeK(cvt,seqcharptr[highindex][khpos])];
 	
-	ajMatrixChar(imatrix, identicalmaxindex-1, &debugstr1);
-	ajMatrixChar(imatrix, matchingmaxindex-1, &debugstr2);
+	debugstr1 = ajMatrixGetLabelNum(imatrix, identicalmaxindex-1);
+	debugstr2 = ajMatrixGetLabelNum(imatrix, matchingmaxindex-1);
 	
 	if(identical[identicalmaxindex] >= ident)
             isident=ajTrue;
@@ -5677,8 +5671,6 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     AJFREE(matching);
     AJFREE(identical);
     ajFloatDel(&posScore);
-    ajStrDel(&debugstr1);
-    ajStrDel(&debugstr2);
     ajMatrixDel(&imatrix);
 
     return ajTrue;    

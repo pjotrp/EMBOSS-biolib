@@ -292,6 +292,7 @@ AjBool     ajStrQuoteStrip(AjPStr *Pstr);
 AjBool     ajStrQuoteStripAll(AjPStr *Pstr);
 AjBool     ajStrRemoveDupchar(AjPStr* Pstr);
 AjBool     ajStrRemoveGap(AjPStr* thys);
+    AjBool     ajStrRemoveGapF(AjPStr* thys, float *Pfloat);
 AjBool     ajStrRemoveHtml(AjPStr* pthis);
 AjBool     ajStrRemoveLastNewline(AjPStr* Pstr);
 AjBool     ajStrRemoveSetC(AjPStr* Pstr, const char *txt);

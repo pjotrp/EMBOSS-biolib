@@ -341,7 +341,18 @@ static AjBool seqTypeTestI(AjPSeq thys, ajint itype)
     else
     {
 	ajDebug("Remove all gaps\n");
-	ajStrRemoveGap(&thys->Seq);
+
+        if(thys->Qualsize)
+        {
+            ajStrRemoveGapF(&thys->Seq, thys->Accuracy);
+            if(thys->Qualsize > ajStrGetLen(thys->Seq)) 
+            {
+                thys->Qualsize = ajStrGetLen(thys->Seq);
+                AJCRESIZE(thys->Accuracy, thys->Qualsize);
+            }
+        }
+        else
+            ajStrRemoveGap(&thys->Seq);
     }
 
     if(seqType[itype].Type == ISPROT && !ajSeqIsProt(thys))
@@ -403,7 +414,21 @@ static AjBool seqTypeFix(AjPSeq thys, ajint itype)
      */
 
     if(!seqType[itype].Gaps)
-	ajStrRemoveGap(&thys->Seq);
+    {
+        if(thys->Qualsize)
+        {
+            ajStrRemoveGapF(&thys->Seq, thys->Accuracy);
+            if(thys->Qualsize > ajStrGetLen(thys->Seq)) 
+            {
+                thys->Qualsize = ajStrGetLen(thys->Seq);
+                AJCRESIZE(thys->Accuracy, thys->Qualsize);
+            }
+        }
+        else
+            ajStrRemoveGap(&thys->Seq);
+    }
+
+
 
     if (ajCharMatchC(seqType[itype].Name, "pureprotein"))
 	seqTypeStopTrimS(&thys->Seq);
