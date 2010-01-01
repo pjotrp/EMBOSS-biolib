@@ -85,6 +85,11 @@ void* ajMemAlloc(size_t nbytes, const char* file, ajint line, AjBool nofail)
 {
     void *ptr;
 
+#ifdef HAVE_JAVA
+    (void) file;                /* make it used */
+    (void) line;                /* make it used */
+#endif
+
     if(nbytes <= 0)
     {
 #ifdef HAVE_JAVA
@@ -149,6 +154,11 @@ void* ajMemCalloc(size_t count, size_t nbytes,
     void *ptr;
     size_t ibytes = nbytes;
     size_t icount = count;
+
+#ifdef HAVE_JAVA
+    (void) file;                /* make it used */
+    (void) line;                /* make it used */
+#endif
 
     if(count <= 0)
         ajUtilCatch();
@@ -215,6 +225,11 @@ void* ajMemCallocZero(size_t count, size_t nbytes,
     void *ptr;
     size_t ibytes = nbytes;
     size_t icount = count;
+
+#ifdef HAVE_JAVA
+    (void) file;                /* make it used */
+    (void) line;                /* make it used */
+#endif
 
     if(count <= 0)
         ajUtilCatch();
@@ -538,8 +553,6 @@ float* ajMemArrF(size_t size)
 
 void ajMemStat(const char* title)
 {
-    (void) title;               /* make it used */
-
 #ifdef AJ_SAVESTATS
     static ajlong statAlloc       = 0;
     static ajlong statCount       = 0;
@@ -568,6 +581,8 @@ void ajMemStat(const char* title)
     statZero   = memZero;
 
     statResizeCount = memResizeCount;
+#else
+    (void) title;               /* make it used */
 #endif
 
     return;
