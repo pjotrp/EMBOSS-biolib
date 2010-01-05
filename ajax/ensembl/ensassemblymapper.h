@@ -234,6 +234,11 @@ EnsPAssemblymapper ensAssemblymapperadaptorFetchByCoordsystems(
     EnsPCoordsystem cs1,
     EnsPCoordsystem cs2);
 
+EnsPAssemblymapper ensAssemblymapperadaptorFetchBySlices(
+    EnsPAssemblymapperadaptor ama,
+    EnsPSlice slice1,
+    EnsPSlice slice2);
+
 AjBool ensAssemblymapperadaptorSeqregionIdsToNames(
     EnsPAssemblymapperadaptor ama,
     const AjPList ids,
