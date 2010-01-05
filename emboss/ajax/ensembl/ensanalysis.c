@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.6 $
+** @version $Revision: 1.7 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -399,19 +399,20 @@ void ensAnalysisDel(EnsPAnalysis* Panalysis)
 {
     EnsPAnalysis pthis = NULL;
 
-#if AJFALSE
-    ajDebug("ensAnalysisDel\n"
-            "  *Panalysis %p\n",
-            *Panalysis);
-
-    ensAnalysisTrace(*Panalysis, 1);
-#endif
-
     if(!Panalysis)
         return;
 
     if(!*Panalysis)
         return;
+
+    if(ajDebugTest("ensAnalysisDel"))
+    {
+        ajDebug("ensAnalysisDel\n"
+                "  *Panalysis %p\n",
+                *Panalysis);
+
+        ensAnalysisTrace(*Panalysis, 1);
+    }
 
     pthis = *Panalysis;
 
@@ -1652,13 +1653,12 @@ AjBool ensAnalysisIsDatabase(const EnsPAnalysis analysis)
 AjBool ensAnalysisMatch(const EnsPAnalysis analysis1,
                         const EnsPAnalysis analysis2)
 {
-#if AJFALSE
-    ajDebug("ensAnalysisMatch\n"
-            "  analysis1 %p\n"
-            "  analysis2 %p\n",
-            analysis1,
-            analysis2);
-#endif
+    if(ajDebugTest("ensAnalysisMatch"))
+        ajDebug("ensAnalysisMatch\n"
+                "  analysis1 %p\n"
+                "  analysis2 %p\n",
+                analysis1,
+                analysis2);
 
     if(!analysis1)
         return ajFalse;
@@ -1956,19 +1956,18 @@ static AjBool analysisAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPAnalysis analysis       = NULL;
     EnsPAnalysisadaptor adaptor = NULL;
 
-#if AJFALSE
-    ajDebug("analysisAdaptorFetchAllBySQL\n"
-            "  dba %p\n"
-            "  statement %p\n"
-            "  am %p\n"
-            "  slice %p\n"
-            "  analyses %p\n",
-            dba,
-            statement,
-            am,
-            slice,
-            analyses);
-#endif
+    if(ajDebugTest("analysisAdaptorFetchAllBySQL"))
+        ajDebug("analysisAdaptorFetchAllBySQL\n"
+                "  dba %p\n"
+                "  statement %p\n"
+                "  am %p\n"
+                "  slice %p\n"
+                "  analyses %p\n",
+                dba,
+                statement,
+                am,
+                slice,
+                analyses);
 
     if(!dba)
         return ajFalse;
@@ -2269,11 +2268,10 @@ static AjBool analysisAdaptorCacheInit(EnsPAnalysisadaptor adaptor)
 
     EnsPAnalysis analysis = NULL;
 
-#if AJFALSE
-    ajDebug("analysisAdaptorCacheInit\n"
-            "  adaptor %p\n",
-            adaptor);
-#endif
+    if(ajDebugTest("analysisAdaptorCacheInit"))
+        ajDebug("analysisAdaptorCacheInit\n"
+                "  adaptor %p\n",
+                adaptor);
 
     if(!adaptor)
         return ajFalse;
@@ -2369,11 +2367,10 @@ EnsPAnalysisadaptor ensAnalysisadaptorNew(EnsPDatabaseadaptor dba)
     if(!dba)
         return NULL;
 
-#if AJFALSE
-    ajDebug("ensAnalysisadaptorNew\n"
-            "  dba %p\n",
-            dba);
-#endif
+    if(ajDebugTest("ensAnalysisadaptorNew"))
+        ajDebug("ensAnalysisadaptorNew\n"
+                "  dba %p\n",
+                dba);
 
     AJNEW0(adaptor);
 
