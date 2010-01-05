@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -44,11 +44,11 @@ static EnsOBaseadaptorLeftJoin baseAdaptorLeftJoin[] =
 };
 
 /*
-** Limit the number of IDs in SQL queries to chunks of maximum size.
-** Ensure that we do not exceed the MySQL max_allowed_packet, which defaults
+** Limit the number of identifiers in SQL queries to chunks of maximum size.
+** Ensure that the MySQL max_allowed_packet is not exceeded, which defaults
 ** to 1 MB, by splitting large queries into smaller queries of at most 256 KB
-** (32768 8-bit characters).  Assuming a (generous) average dbID string
-** length of 16, this means 2048 dbIDs in each statement.
+** (32768 8-bit characters). Assuming a (generous) average identifier string
+** length of 16, this means a maximum of 2048 identifiers in each statement.
 */
 
 const ajuint baseAdaptorFetchAllByIdentifiersMax = 2048;
@@ -75,7 +75,7 @@ static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
 **
 ** Functions for manipulating Ensembl Base Adaptor objects
 **
-** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor CVS Revision: 1.47
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor CVS Revision: 1.48
 **
 ** @nam2rule Baseadaptor Base adaptor object function
 **
@@ -145,36 +145,36 @@ EnsPBaseadaptor ensBaseadaptorNew(
                   AjPList objects))
 {
     EnsPBaseadaptor ba = NULL;
-    
+
     if(!dba)
-	return NULL;
-    
+        return NULL;
+
     if(!Pcolumns)
-	return NULL;
-    
+        return NULL;
+
     if(!Ptables)
-	return NULL;
-    
+        return NULL;
+
     AJNEW0(ba);
-    
+
     ba->Adaptor = dba;
-    
+
     ba->Tables = Ptables;
-    
+
     ba->Columns = Pcolumns;
-    
+
     if(left_join)
-	ba->LeftJoin = left_join;
-    
+        ba->LeftJoin = left_join;
+
     else
-	ba->LeftJoin = baseAdaptorLeftJoin;
-    
+        ba->LeftJoin = baseAdaptorLeftJoin;
+
     ba->DefaultCondition = condition;
-    
+
     ba->FinalCondition = final;
-    
+
     ba->Query = Fquery;
-    
+
     return ba;
 }
 
@@ -214,15 +214,15 @@ EnsPBaseadaptor ensBaseadaptorNew(
 void ensBaseadaptorDel(EnsPBaseadaptor *Pba)
 {
     if(!Pba)
-	return;
-    
+        return;
+
     if(!*Pba)
-	return;
-    
+        return;
+
     AJFREE(*Pba);
 
     *Pba = NULL;
-    
+
     return;
 }
 
@@ -267,8 +267,8 @@ void ensBaseadaptorDel(EnsPBaseadaptor *Pba)
 EnsPDatabaseadaptor ensBaseadaptorGetDatabaseadaptor(const EnsPBaseadaptor ba)
 {
     if(!ba)
-	return NULL;
-    
+        return NULL;
+
     return ba->Adaptor;
 }
 
@@ -290,8 +290,8 @@ EnsPDatabaseadaptor ensBaseadaptorGetDatabaseadaptor(const EnsPBaseadaptor ba)
 const char **ensBaseadaptorGetTables(const EnsPBaseadaptor ba)
 {
     if(!ba)
-	return NULL;
-    
+        return NULL;
+
     return ba->Tables;
 }
 
@@ -313,8 +313,8 @@ const char **ensBaseadaptorGetTables(const EnsPBaseadaptor ba)
 const char **ensBaseadaptorGetColumns(const EnsPBaseadaptor ba)
 {
     if(!ba)
-	return NULL;
-    
+        return NULL;
+
     return ba->Columns;
 }
 
@@ -360,13 +360,13 @@ const char **ensBaseadaptorGetColumns(const EnsPBaseadaptor ba)
 AjBool ensBaseadaptorSetTables(EnsPBaseadaptor ba, const char ** Ptables)
 {
     if(!ba)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Ptables)
-	return ajFalse;
-    
+        return ajFalse;
+
     ba->Tables = Ptables;
-    
+
     return ajTrue;
 }
 
@@ -389,13 +389,13 @@ AjBool ensBaseadaptorSetTables(EnsPBaseadaptor ba, const char ** Ptables)
 AjBool ensBaseadaptorSetColumns(EnsPBaseadaptor ba, const char ** Pcolumns)
 {
     if(!ba)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Pcolumns)
-	return ajFalse;
-    
+        return ajFalse;
+
     ba->Columns = Pcolumns;
-    
+
     return ajTrue;
 }
 
@@ -418,10 +418,10 @@ AjBool ensBaseadaptorSetDefaultCondition(EnsPBaseadaptor ba,
                                          const char *condition)
 {
     if(!ba)
-	return ajFalse;
-    
+        return ajFalse;
+
     ba->DefaultCondition = condition;
-    
+
     return ajTrue;
 }
 
@@ -443,10 +443,10 @@ AjBool ensBaseadaptorSetDefaultCondition(EnsPBaseadaptor ba,
 AjBool ensBaseadaptorSetFinalCondition(EnsPBaseadaptor ba, const char *final)
 {
     if(!ba)
-	return ajFalse;
-    
+        return ajFalse;
+
     ba->FinalCondition = final;
-    
+
     return ajTrue;
 }
 
@@ -468,8 +468,8 @@ AjBool ensBaseadaptorSetFinalCondition(EnsPBaseadaptor ba, const char *final)
 const char *ensBaseadaptorGetPrimaryTable(const EnsPBaseadaptor ba)
 {
     if(!ba)
-	return NULL;
-    
+        return NULL;
+
     return ba->Tables[0];
 }
 
@@ -492,8 +492,8 @@ const char *ensBaseadaptorGetPrimaryTable(const EnsPBaseadaptor ba)
 AjBool ensBaseadaptorGetMultiSpecies(const EnsPBaseadaptor ba)
 {
     if(!ba)
-	return ajFalse;
-    
+        return ajFalse;
+
     return ensDatabaseadaptorGetMultiSpecies(ba->Adaptor);
 }
 
@@ -515,8 +515,8 @@ AjBool ensBaseadaptorGetMultiSpecies(const EnsPBaseadaptor ba)
 ajuint ensBaseadaptorGetSpeciesIdentifier(const EnsPBaseadaptor ba)
 {
     if(!ba)
-	return 0;
-    
+        return 0;
+
     return ensDatabaseadaptorGetIdentifier(ba->Adaptor);
 }
 
@@ -540,22 +540,19 @@ AjBool ensBaseadaptorEscapeC(EnsPBaseadaptor ba, char **Ptxt, const AjPStr str)
 {
     if(!ba)
         return ajFalse;
-    
+
     if(!str)
-	return ajFalse;
-    
-#if AJFALSE
-    ajDebug("ensBaseadaptorEscapeC\n"
-            "  ba %p\n"
-            "  Ptxt %p\n"
-            "  str '%S'\n",
-            ba,
-            Ptxt,
-            str);
-    
-    ensBaseadaptorTrace(ba, 1);
-#endif
-    
+        return ajFalse;
+
+    if(ajDebugTest("ensBaseadaptorEscapeC"))
+        ajDebug("ensBaseadaptorEscapeC\n"
+                "  ba %p\n"
+                "  Ptxt %p\n"
+                "  str '%S'\n",
+                ba,
+                Ptxt,
+                str);
+
     return ensDatabaseadaptorEscapeC(ba->Adaptor, Ptxt, str);
 }
 
@@ -580,22 +577,19 @@ AjBool ensBaseadaptorEscapeS(EnsPBaseadaptor ba, AjPStr *Pstr,
 {
     if(!ba)
         return ajFalse;
-    
+
     if(!str)
-	return ajFalse;
-    
-#if AJFALSE
-    ajDebug("ensBaseadaptorEscapeS\n"
-            "  ba %p\n"
-            "  Pstr %p\n"
-            "  str '%S'\n",
-            ba,
-            Pstr,
-            str);
-    
-    ensBaseadaptorTrace(ba, 1);
-#endif
-    
+        return ajFalse;
+
+    if(ajDebugTest("ensBaseadaptorEscapeS"))
+        ajDebug("ensBaseadaptorEscapeS\n"
+                "  ba %p\n"
+                "  Pstr %p\n"
+                "  str '%S'\n",
+                ba,
+                Pstr,
+                str);
+
     return ensDatabaseadaptorEscapeS(ba->Adaptor, Pstr, str);
 }
 
@@ -628,52 +622,51 @@ AjBool ensBaseadaptorGenericFetch(const EnsPBaseadaptor ba,
 {
     register ajint i = 0;
     register ajint j = 0;
-    
+
     AjBool match = AJFALSE;
-    
+
     AjPStr columns = NULL;
     AjPStr tables = NULL;
     AjPStr joins = NULL;
     AjPStr parentheses = NULL;
     AjPStr statement = NULL;
-    
-#if AJFALSE
-    ajDebug("ensBaseadaptorGenericFetch\n"
-            "  ba %p\n"
-            "  constraint '%S'\n"
-            "  am %p\n"
-            "  slice %p\n"
-            "  objects %p\n",
-            ba,
-            constraint,
-            am,
-            slice,
-            objects);
-#endif
-    
+
+    if(ajDebugTest("ensBaseadaptorGenericFetch"))
+        ajDebug("ensBaseadaptorGenericFetch\n"
+                "  ba %p\n"
+                "  constraint '%S'\n"
+                "  am %p\n"
+                "  slice %p\n"
+                "  objects %p\n",
+                ba,
+                constraint,
+                am,
+                slice,
+                objects);
+
     if(!ba)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!objects)
-	return ajFalse;
-    
+        return ajFalse;
+
     columns = ajStrNew();
-    
+
     tables = ajStrNew();
-    
+
     joins = ajStrNew();
-    
+
     parentheses = ajStrNew();
-    
+
     /* Build the column expression. */
-    
+
     for(i = 0; ba->Columns[i]; i++)
-	ajFmtPrintAppS(&columns, "%s, ", ba->Columns[i]);
-    
+        ajFmtPrintAppS(&columns, "%s, ", ba->Columns[i]);
+
     /* Remove last comma and space from the column expression. */
-    
+
     ajStrCutEnd(&columns, 2);
-    
+
     /*
     ** FIXME: The extra_default_where clause is missing, which joins
     ** features in multi-species databases to the seq_region and coord_system
@@ -701,82 +694,83 @@ AjBool ensBaseadaptorGenericFetch(const EnsPBaseadaptor ba,
     ** Bio::EnsEMBL::DBSQL::UnmappedObjectAdaptor, which should not be a sub
     ** class of Bio::EnsEMBL::Feature in the first place.
     */
-    
+
     /*
     ** Construct a left join statement if one was defined, and remove the
     ** left-joined tables from the table expression.
     */
-    
+
     for(i = 0; ba->Tables[i]; i++)
     {
-	match = ajFalse;
-	
-	if(ba->LeftJoin)
-	{
-	    for(j = 0; ba->LeftJoin[j].Table; j++)
-	    {
-		if(ajCharMatchC(ba->Tables[i], ba->LeftJoin[j].Table))
-		{
-		    ajStrAppendK(&parentheses, '(');
-		    
-		    ajFmtPrintAppS(&joins,
-				   "LEFT JOIN %s ON %s) ",
-				   ba->LeftJoin[j].Table,
-				   ba->LeftJoin[j].Condition);
-		    
-		    match = ajTrue;
-		    
-		    break;
-		}
-	    }
-	}
-	
-	if(!match)
-	    ajFmtPrintAppS(&tables, "%s, ", ba->Tables[i]);
+        match = ajFalse;
+
+        if(ba->LeftJoin)
+        {
+            for(j = 0; ba->LeftJoin[j].Table; j++)
+            {
+                if(ajCharMatchC(ba->Tables[i], ba->LeftJoin[j].Table))
+                {
+                    ajStrAppendK(&parentheses, '(');
+
+                    ajFmtPrintAppS(&joins,
+                                   "LEFT JOIN %s ON %s) ",
+                                   ba->LeftJoin[j].Table,
+                                   ba->LeftJoin[j].Condition);
+
+                    match = ajTrue;
+
+                    break;
+                }
+            }
+        }
+
+        if(!match)
+            ajFmtPrintAppS(&tables, "%s, ", ba->Tables[i]);
     }
-    
+
     /* Remove last comma and space from the table expression. */
-    
+
     ajStrCutEnd(&tables, 2);
-    
+
     /* Build the SQL statement. */
-    
+
     statement = ajStrNewC("SELECT");
-    
+
     if(ba->StraightJoin)
-	ajStrAppendC(&statement, " STRAIGHT_JOIN");
-    
-    ajFmtPrintAppS(&statement, " %S FROM %S(%S)", columns, parentheses, tables);
-    
+        ajStrAppendC(&statement, " STRAIGHT_JOIN");
+
+    ajFmtPrintAppS(&statement, " %S FROM %S(%S)",
+                   columns, parentheses, tables);
+
     if(joins && ajStrGetLen(joins))
-	ajFmtPrintAppS(&statement, " %S", joins);
-    
+        ajFmtPrintAppS(&statement, " %S", joins);
+
     if(constraint && ajStrGetLen(constraint))
     {
-	ajFmtPrintAppS(&statement, " WHERE %S", constraint);
-	
-	if(ba->DefaultCondition)
-	    ajFmtPrintAppS(&statement, " AND %s", ba->DefaultCondition);
+        ajFmtPrintAppS(&statement, " WHERE %S", constraint);
+
+        if(ba->DefaultCondition)
+            ajFmtPrintAppS(&statement, " AND %s", ba->DefaultCondition);
     }
-    
+
     else if(ba->DefaultCondition)
-	ajFmtPrintAppS(&statement, " WHERE %s", ba->DefaultCondition);
-    
+        ajFmtPrintAppS(&statement, " WHERE %s", ba->DefaultCondition);
+
     if(ba->FinalCondition)
-	ajFmtPrintAppS(&statement, " %s", ba->FinalCondition);
-    
+        ajFmtPrintAppS(&statement, " %s", ba->FinalCondition);
+
     ba->Query(ba->Adaptor, statement, am, slice, objects);
-    
+
     ajStrDel(&columns);
-    
+
     ajStrDel(&tables);
-    
+
     ajStrDel(&joins);
-    
+
     ajStrDel(&parentheses);
-    
+
     ajStrDel(&statement);
-    
+
     return ajTrue;
 }
 
@@ -821,52 +815,47 @@ AjBool ensBaseadaptorGenericFetch(const EnsPBaseadaptor ba,
 ** @@
 ******************************************************************************/
 
-void *ensBaseadaptorFetchByIdentifier(const EnsPBaseadaptor ba, ajuint identifier)
+void *ensBaseadaptorFetchByIdentifier(const EnsPBaseadaptor ba,
+                                      ajuint identifier)
 {
     void *Pobject = NULL;
-    
+
     AjPList objects = NULL;
-    
+
     AjPStr constraint = NULL;
-    
+
     if(!ba)
-	return NULL;
-    
+        return NULL;
+
     if(!identifier)
-	return NULL;
-    
+        return NULL;
+
     if(!ba->Tables[0])
-	return NULL;
-    
+        return NULL;
+
     constraint = ajFmtStr("%s.%s_id = %u",
-			  ba->Tables[0],
-			  ba->Tables[0],
-			  identifier);
-    
+                          ba->Tables[0],
+                          ba->Tables[0],
+                          identifier);
+
     objects = ajListNew();
-    
+
     ensBaseadaptorGenericFetch(ba,
-			       constraint,
-			       (EnsPAssemblymapper) NULL,
-			       (EnsPSlice) NULL,
-			       objects);
-    
+                               constraint,
+                               (EnsPAssemblymapper) NULL,
+                               (EnsPSlice) NULL,
+                               objects);
+
     if(ajListGetLength(objects) > 1)
-	ajFatal("ensBaseadaptorFetchByIdentifier got more than one object "
-		"for constraint %S\n", constraint);
-    
+        ajFatal("ensBaseadaptorFetchByIdentifier got more than one object "
+                "for constraint '%S'.\n", constraint);
+
     ajListPop(objects, &Pobject);
-    
-    /*
-    ** FIXME: More than one object returned, will result in a memory leak!
-    ** while (ajListPop(objects, &Ptmp))
-    ** Pobj = Ptmp;
-    */
-    
+
     ajListFree(&objects);
-    
+
     ajStrDel(&constraint);
-    
+
     return Pobject;
 }
 
@@ -894,19 +883,19 @@ static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
                                                AjPList objects)
 {
     AjPStr constraint = NULL;
-    
+
     if(!ba)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!identifiers)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!objects)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!ba->Tables[0])
-	return ajFalse;
-    
+        return ajFalse;
+
     /*
     ** FIXME: The Perl API has an ordered parameter to this function, which
     ** appends an 'order by seq_region_id, seq_region_start' clause.
@@ -914,20 +903,20 @@ static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
     ** This should probably move to Bio::EnEMBL::DBSQL::BaseFeatureAdaptor,
     ** which always has a seq_region associated.
     */
-    
+
     constraint = ajFmtStr("%s.%s_id IN (%S)",
-			  ba->Tables[0],
-			  ba->Tables[0],
-			  identifiers);
-    
+                          ba->Tables[0],
+                          ba->Tables[0],
+                          identifiers);
+
     ensBaseadaptorGenericFetch(ba,
-			       constraint,
-			       (EnsPAssemblymapper) NULL,
-			       (EnsPSlice) NULL,
-			       objects);
-    
+                               constraint,
+                               (EnsPAssemblymapper) NULL,
+                               (EnsPSlice) NULL,
+                               objects);
+
     ajStrDel(&constraint);
-    
+
     return ajTrue;
 }
 
@@ -956,62 +945,62 @@ AjBool ensBaseadaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
                                            AjPList objects)
 {
     register ajuint i = 0;
-    
+
     ajuint *Pidentifier = NULL;
-    
+
     AjIList iter = NULL;
-    
+
     AjPStr identifiers = NULL;
-    
+
     if(!ba)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!idlist)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!objects)
-	return ajFalse;
-    
+        return ajFalse;
+
     iter = ajListIterNew(idlist);
-    
+
     identifiers = ajStrNew();
-    
+
     while(!ajListIterDone(iter))
     {
-	Pidentifier = (ajuint *) ajListIterGet(iter);
-	
-	ajFmtPrintAppS(&identifiers, "%u, ", *Pidentifier);
-	
-	i++;
-	
-	/* Run the statement if we exceed the maximum chunk size. */
-	
-	if(i >= baseAdaptorFetchAllByIdentifiersMax)
-	{
-	    /* Remove the last comma and space. */
-	    
-	    ajStrCutEnd(&identifiers, 2);
-	    
-	    baseAdaptorFetchAllByIdentifiers(ba, identifiers, objects);
-	    
-	    ajStrAssignClear(&identifiers);
-	    
-	    i = 0;
-	}
+        Pidentifier = (ajuint *) ajListIterGet(iter);
+
+        ajFmtPrintAppS(&identifiers, "%u, ", *Pidentifier);
+
+        i++;
+
+        /* Run the statement if we exceed the maximum chunk size. */
+
+        if(i >= baseAdaptorFetchAllByIdentifiersMax)
+        {
+            /* Remove the last comma and space. */
+
+            ajStrCutEnd(&identifiers, 2);
+
+            baseAdaptorFetchAllByIdentifiers(ba, identifiers, objects);
+
+            ajStrAssignClear(&identifiers);
+
+            i = 0;
+        }
     }
-    
+
     ajListIterDel(&iter);
-    
+
     /* Run the final statement. */
-    
+
     /* Remove the last comma and space. */
-    
+
     ajStrCutEnd(&identifiers, 2);
-    
+
     baseAdaptorFetchAllByIdentifiers(ba, identifiers, objects);
-    
+
     ajStrDel(&identifiers);
-    
+
     return ajTrue;
 }
 
@@ -1035,16 +1024,16 @@ AjBool ensBaseadaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
 AjBool ensBaseadaptorFetchAll(const EnsPBaseadaptor ba, AjPList objects)
 {
     if(!ba)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!objects)
-	return ajFalse;
-    
+        return ajFalse;
+
     return ensBaseadaptorGenericFetch(ba,
-				      (AjPStr) NULL,
-				      (EnsPAssemblymapper) NULL,
-				      (EnsPSlice) NULL,
-				      objects);
+                                      (AjPStr) NULL,
+                                      (EnsPAssemblymapper) NULL,
+                                      (EnsPSlice) NULL,
+                                      objects);
 }
 
 
@@ -1075,45 +1064,44 @@ AjBool ensBaseadaptorFetchAllIdentifiers(const EnsPBaseadaptor ba,
                                          AjPList idlist)
 {
     ajuint *Pid = NULL;
-    
+
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli = NULL;
     AjPSqlrow sqlr = NULL;
-    
+
     AjPStr statement = NULL;
-    
+
     if(!ba)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!idlist)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(prikey && ajStrGetLen(prikey))
-	statement = ajFmtStr("SELECT %S.%S FROM %S", table, prikey, table);
-    
+        statement = ajFmtStr("SELECT %S.%S FROM %S", table, prikey, table);
     else
-	statement = ajFmtStr("SELECT %S.%S_id FROM %S", table, table, table);
-    
+        statement = ajFmtStr("SELECT %S.%S_id FROM %S", table, table, table);
+
     sqls = ensDatabaseadaptorSqlstatementNew(ba->Adaptor, statement);
-    
+
     sqli = ajSqlrowiterNew(sqls);
-    
+
     while(!ajSqlrowiterDone(sqli))
     {
-	AJNEW0(Pid);
-	
+        AJNEW0(Pid);
+
         sqlr = ajSqlrowiterGet(sqli);
-	
+
         ajSqlcolumnToUint(sqlr, Pid);
-	
+
         ajListPushAppend(idlist, (void *) Pid);
     }
-    
+
     ajSqlrowiterDel(&sqli);
-    
+
     ajSqlstatementDel(&sqls);
-    
+
     ajStrDel(&statement);
-    
+
     return ajTrue;
 }
