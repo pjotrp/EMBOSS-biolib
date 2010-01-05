@@ -9,7 +9,7 @@ endif
 
 INCLUDES =
 
-EXPATSRC = xmlparse.c xmltok.c xmlrole.c
+EXPATSRC = xmlparse.c xmltok.c xmlrole.c xmltok_impl.c xmltok_ns.c
 
 # Uncomment and amend when there are some real headers
 include_HEADERS = expat.h expat_external.h expatemboss.h
