@@ -12,7 +12,7 @@ extern "C"
 
 
 
-/*******************************************************************************
+/******************************************************************************
 **
 ** Ensembl Cache Type enumeration.
 **
@@ -35,17 +35,17 @@ enum EnsECacheType
 ** @alias EnsSCache
 ** @alias EnsOCache
 **
+** @attr Label [AjPStr] Cache label for statistics output
 ** @attr List [AjPList] AJAX List implementing LRU functionality
 ** @attr Table [AjPTable] AJAX Table implementing lookup functionality
-** @attr Label [AjPStr] Cache label for statistics output
 ** @attr Reference [(void**)] Object-specific referencing function
 ** @attr Delete [(void*)] Object-specific deletion function
 ** @attr Size [(ajuint*)] Object-specific memory sizing function
 ** @attr Read [(void**)] Object-specific reading function
 ** @attr Write [(AjBool*)] Object-specific writing function
 ** @attr Type [AjEnum] Ensembl Cache type (EnsECacheNumeric, ...)
-** @attr Syncron [AjBool] ajTrue: Immediately write-back value data
-**                       ajFalse: Write-back value data later
+** @attr Synchron [AjBool] ajTrue: Immediately write-back value data
+**                         ajFalse: Write-back value data later
 ** @cc Cache limits
 ** @attr MaxBytes [ajuint] Maximum number of allowed bytes
 ** @attr MaxCount [ajuint] Maximum number of allowed entries
@@ -64,16 +64,16 @@ enum EnsECacheType
 
 typedef struct EnsSCache
 {
+    AjPStr Label;
     AjPList List;
     AjPTable Table;
-    AjPStr Label;
     void* (*Reference)(void *);
     void (*Delete)(void **);
     ajuint (*Size)(const void *);
     void* (*Read)(const void *key);
     AjBool (*Write)(const void *);
     AjEnum Type;
-    AjBool Syncron;
+    AjBool Synchron;
     ajuint MaxBytes;
     ajuint MaxCount;
     ajuint MaxSize;
@@ -106,7 +106,7 @@ EnsPCache ensCacheNew(AjEnum type,
                       ajuint Fsize(const void* value),
                       void* Fread(const void* key),
                       AjBool Fwrite(const void* value),
-                      AjBool syncron,
+                      AjBool synchron,
                       const char *label);
 
 void ensCacheDel(EnsPCache* Pcache);
@@ -117,9 +117,9 @@ AjBool ensCacheStore(EnsPCache cache, void* key, void** value);
 
 AjBool ensCacheRemove(EnsPCache cache, const void* key);
 
-AjBool ensCacheSyncronise(EnsPCache cache);
+AjBool ensCacheSynchronise(EnsPCache cache);
 
-void ensCacheTrace(const EnsPCache cache);
+AjBool ensCacheTrace(const EnsPCache cache, ajuint level);
 
 /*
 ** End of prototype definitions
