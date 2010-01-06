@@ -201,7 +201,6 @@ public class SequenceJPanel extends JPanel
   */
   public SequenceJPanel(int interval, int seqLength)
   {
-    seq = null;
     this.drawNumber = true;
     this.interval   = interval;
     this.seqLength  = seqLength+1;
@@ -856,6 +855,8 @@ public class SequenceJPanel extends JPanel
   */
   public String getName()
   {
+      if(seq==null)
+          return null;
     return seq.getName();
   }
 
