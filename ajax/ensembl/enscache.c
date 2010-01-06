@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** Bio::EnsEMBL::Utils::Cache CVS Revision: 1.2
@@ -102,72 +102,75 @@ static AjBool cacheNodeRemove(EnsPCache cache, const CachePNode node);
 
 static CachePNode cacheNodeNew(const EnsPCache cache, void* key, void* value)
 {
-    ajuint size = 0;
-    
-    ajuint *Puint = NULL;
     ajuint *Puintkey = NULL;
-    
+
     CachePNode node = NULL;
-    
+
     if(!cache)
-	return NULL;
-    
+        return NULL;
+
     if(!key)
-	return NULL;
-    
+        return NULL;
+
     if(!value)
-	return NULL;
-    
+        return NULL;
+
     AJNEW0(node);
-    
+
     /* Add the size of the Ensembl Cache Node itself. */
-    
-    size += (ajuint) sizeof (CacheONode);
-    
-    if(cache->Type == ensECacheTypeNumeric)
+
+    node->Bytes += (ajuint) sizeof (CacheONode);
+
+    switch(cache->Type)
     {
-	/* Reference AJAX unsigned integer key data. */
-	
-	Puint = (ajuint *) key;
-	
-	AJNEW0(Puintkey);
-	
-	*Puintkey = *Puint;
-	
-	node->Key = (void *) Puintkey;
-	
-	/* Add the size of unsigned integer key data. */
-	
-	size += (ajuint) sizeof (ajuint);
+        case ensECacheTypeNumeric:
+
+            /* Reference AJAX unsigned integer key data. */
+
+            AJNEW0(Puintkey);
+
+            *Puintkey = *((ajuint *) key);
+
+            node->Key = (void *) Puintkey;
+
+            /* Add the size of unsigned integer key data. */
+
+            node->Bytes += (ajuint) sizeof (ajuint);
+
+            break;
+
+        case ensECacheTypeAlphaNumeric:
+
+            /* Reference AJAX String key data. */
+
+            node->Key = (void *) ajStrNewS((AjPStr) key);
+
+            /* Add the size of AJAX String key data. */
+
+            node->Bytes += (ajuint) sizeof (AjOStr);
+
+            node->Bytes += ajStrGetRes((AjPStr) node->Key);
+
+            break;
+
+        default:
+
+            ajWarn("cacheNodeNew got unexpected Cache type %d.\n",
+                   cache->Type);
     }
-    
-    if(cache->Type == ensECacheTypeAlphaNumeric)
-    {
-	/* Reference AJAX String key data. */
-	
-	node->Key = (void *) ajStrNewS((AjPStr) key);
-	
-	/* Add the size of AJAX String key data. */
-	
-	size += (ajuint) sizeof (AjOStr);
-	
-	size += ajStrGetRes((AjPStr) node->Key);
-    }
-    
+
     /* Reference the value data. */
-    
+
     if(cache->Reference && value)
-	node->Value = (*cache->Reference)(value);
-    
+        node->Value = (*cache->Reference)(value);
+
     /* Calculate the size of the value data. */
-    
+
     if(cache->Size && node->Value)
-	size += (*cache->Size)(node->Value);
-    
-    node->Bytes = size;
-    
+        node->Bytes += (*cache->Size)(node->Value);
+
     node->Dirty = ajFalse;
-    
+
     return node;
 }
 
@@ -188,33 +191,47 @@ static CachePNode cacheNodeNew(const EnsPCache cache, void* key, void* value)
 static void cacheNodeDel(const EnsPCache cache, CachePNode* Pnode)
 {
     if(!cache)
-	return;
-    
+        return;
+
     if(!Pnode)
-	return;
-    
+        return;
+
     if(!*Pnode)
-	return;
-    
-    /* Delete AJAX unsigned integer key data. */
-    
-    if(cache->Type == ensECacheTypeNumeric)
-	AJFREE((*Pnode)->Key);
-    
-    /* Delete AJAX String key data. */
-    
-    if(cache->Type == ensECacheTypeAlphaNumeric)
-	ajStrDel((AjPStr *) &((*Pnode)->Key));
-    
+        return;
+
+    switch(cache->Type)
+    {
+        case ensECacheTypeNumeric:
+
+            /* Delete AJAX unsigned integer key data. */
+
+            AJFREE((*Pnode)->Key);
+
+            break;
+
+        case ensECacheTypeAlphaNumeric:
+
+            /* Delete AJAX String key data. */
+
+            ajStrDel((AjPStr *) &((*Pnode)->Key));
+
+            break;
+
+        default:
+
+            ajWarn("cacheNodeDel got unexpected Cache type %d.\n",
+                   cache->Type);
+    }
+
     /* Delete the value data. */
-    
+
     if(cache->Delete && (*Pnode)->Value)
-	(*cache->Delete)(&((*Pnode)->Value));
-    
+        (*cache->Delete)(&((*Pnode)->Value));
+
     AJFREE(*Pnode);
 
     *Pnode = NULL;
-    
+
     return;
 }
 
@@ -235,63 +252,63 @@ static void cacheNodeDel(const EnsPCache cache, CachePNode* Pnode)
 static AjBool cacheNodeInsert(EnsPCache cache, CachePNode node)
 {
     CachePNode old = NULL;
-    
+
     if(!cache)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!node)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(cache->MaxSize && (node->Bytes > cache->MaxSize))
-	return ajFalse;
-    
+        return ajFalse;
+
     /* Insert the node into the AJAX List. */
-    
+
     ajListPushAppend(cache->List, (void *) node);
-    
+
     /* Insert the node into the AJAX Table. */
-    
+
     ajTablePut(cache->Table, node->Key, (void *) node);
-    
+
     /* Update the cache statistics. */
-    
+
     cache->Bytes += node->Bytes;
-    
+
     cache->Count++;
-    
+
     cache->Stored++;
-    
+
     /* If the cache is too big, remove the top node(s). */
-    
+
     while((cache->MaxBytes && (cache->Bytes > cache->MaxBytes)) ||
-	  (cache->MaxCount && (cache->Count > cache->MaxCount)))
+          (cache->MaxCount && (cache->Count > cache->MaxCount)))
     {
-	/* Remove the top node from the AJAX List. */
-	
-	ajListPop(cache->List, (void **) &old);
-	
-	/* Remove the node also from the AJAX Table. */
-	
-	ajTableRemove(cache->Table, old->Key);
-	
-	/* Update the cache statistics. */
-	
-	cache->Bytes -= old->Bytes;
-	
-	cache->Count--;
-	
-	cache->Dropped++;
-	
-	/* Write changes of value data to disk if any. */
-	
-	if (cache->Write && old->Value && old->Dirty)
-	    (*cache->Write)(old->Value);
-	
-	/* Both, key and value data are deleted via cacheNodeDel. */
-	
-	cacheNodeDel(cache, &old);
+        /* Remove the top node from the AJAX List. */
+
+        ajListPop(cache->List, (void **) &old);
+
+        /* Remove the node also from the AJAX Table. */
+
+        ajTableRemove(cache->Table, old->Key);
+
+        /* Update the cache statistics. */
+
+        cache->Bytes -= old->Bytes;
+
+        cache->Count--;
+
+        cache->Dropped++;
+
+        /* Write changes of value data to disk if any. */
+
+        if(cache->Write && old->Value && old->Dirty)
+            (*cache->Write)(old->Value);
+
+        /* Both, key and value data are deleted via cacheNodeDel. */
+
+        cacheNodeDel(cache, &old);
     }
-    
+
     return ajTrue;
 }
 
@@ -312,56 +329,59 @@ static AjBool cacheNodeInsert(EnsPCache cache, CachePNode node)
 static AjBool cacheNodeRemove(EnsPCache cache, const CachePNode node)
 {
     AjIList iter = NULL;
-    
+
     CachePNode lnode = NULL;
-    
+
     if(!cache)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!node)
-	return ajFalse;
-    
+        return ajFalse;
+
     /* Remove the node from the AJAX List. */
-    
+
     iter = ajListIterNew(cache->List);
-    
+
     while(!ajListIterDone(iter))
     {
-	lnode = (CachePNode) ajListIterGet(iter);
-	
-	if(lnode == node)
-	{
-	    ajListIterRemove(iter);
-	    
-	    break;
-	}
+        lnode = (CachePNode) ajListIterGet(iter);
+
+        if(lnode == node)
+        {
+            ajListIterRemove(iter);
+
+            break;
+        }
     }
-    
+
     ajListIterDel(&iter);
-    
+
     /* Remove the node from the AJAX Table. */
-    
+
     ajTableRemove(cache->Table, node->Key);
-    
+
     /* Update the cache statistics. */
-    
+
     cache->Bytes -= node->Bytes;
-    
+
     cache->Count--;
-    
+
     cache->Removed++;
-    
+
     return ajTrue;
 }
 
-/* @filesection enscache *****************************************************
+
+
+
+/* @filesection enscache ******************************************************
 **
 ** @nam1rule ens Function belongs to the AJAX Ensembl library
 ** @nam2rule Cache Ensembl Cache objects
 **
 ******************************************************************************/
 
-/* @datasection [EnsPCache] Ensembl Cache **************************************
+/* @datasection [EnsPCache] Ensembl Cache *************************************
 **
 ** Functions for Ensembl Caches
 **
@@ -374,8 +394,6 @@ static AjBool cacheNodeRemove(EnsPCache cache, const CachePNode node)
 ** @fcategory misc
 **
 ******************************************************************************/
-
-
 
 /* @func ensCacheNew **********************************************************
 **
@@ -391,8 +409,8 @@ static AjBool cacheNodeRemove(EnsPCache cache, const CachePNode node)
 ** @param [f] Fsize [ajuint function] Object-specific memory sizing function
 ** @param [f] Fread [void* function] Object-specific reading function
 ** @param [f] Fwrite [AjBool function] Object-specific writing function
-** @param [r] syncron [AjBool] ajTrue: Immediately write-back value data
-**                             ajFalse: Write-back value data later
+** @param [r] synchron [AjBool] ajTrue: Immediately write-back value data
+**                              ajFalse: Write-back value data later
 ** @param [r] label [const char*] Cache label for statistics output
 **
 ** @return [EnsPCache] Ensembl Cache or NULL
@@ -415,70 +433,72 @@ EnsPCache ensCacheNew(AjEnum type,
                       ajuint Fsize(const void* value),
                       void* Fread(const void* key),
                       AjBool Fwrite(const void* value),
-                      AjBool syncron,
+                      AjBool synchron,
                       const char *label)
 {
+    AjBool debug = AJFALSE;
+
     EnsPCache cache = NULL;
-    
-    /*
-     ajDebug("ensCacheNew\n"
-	     "  type %d\n"
-	     "  maxbytes %u\n"
-	     "  maxcount %u\n"
-	     "  maxsize %u\n"
-	     "  Freference %p\n"
-	     "  Fdelete %p\n"
-	     "  Fsize %p\n"
-	     "  Fread %p\n"
-	     "  Fwrite %p\n"
-	     "  syncron '%B'\n"
-	     "  label '%s'\n",
-	     type,
-	     maxbytes,
-	     maxcount,
-	     maxsize,
-	     Freference,
-	     Fdelete,
-	     Fsize,
-	     Fread,
-	     Fwrite,
-	     syncron,
-	     label);
-     */
-    
-    if((type < 1) || (type > 2))
-	ajFatal("ensCacheNew requires a valid type.\n");
-    
+
+    debug = ajDebugTest("ensCacheNew");
+
+    if(debug)
+        ajDebug("ensCacheNew\n"
+                "  type %d\n"
+                "  maxbytes %u\n"
+                "  maxcount %u\n"
+                "  maxsize %u\n"
+                "  Freference %p\n"
+                "  Fdelete %p\n"
+                "  Fsize %p\n"
+                "  Fread %p\n"
+                "  Fwrite %p\n"
+                "  synchron '%B'\n"
+                "  label '%s'\n",
+                type,
+                maxbytes,
+                maxcount,
+                maxsize,
+                Freference,
+                Fdelete,
+                Fsize,
+                Fread,
+                Fwrite,
+                synchron,
+                label);
+
+    if((type < ensECacheTypeNumeric) || (type > ensECacheTypeAlphaNumeric))
+        ajFatal("ensCacheNew requires a valid type.\n");
+
     if((!maxbytes) && (!maxcount))
-	ajFatal("ensCacheNew requires either a "
-		"maximum bytes or maximum count limit.\n");
-    
+        ajFatal("ensCacheNew requires either a "
+                "maximum bytes or maximum count limit.\n");
+
     if(!maxsize)
-	maxsize = maxbytes ? maxbytes / 10 + 1 : 0;
-    
+        maxsize = maxbytes ? maxbytes / 10 + 1 : 0;
+
     if(maxbytes && (!maxsize))
-	ajFatal("ensCacheNew requires a maximum size limit, "
-		"when a maximum bytes limit is set.");
-    
+        ajFatal("ensCacheNew requires a maximum size limit, "
+                "when a maximum bytes limit is set.");
+
     /* TODO: Find and set a sensible value here! */
-    
-    /*
-     ajDebug("ensCacheNew maxbytes %u, maxcount %u, maxsize %u.\n",
-	     maxbytes, maxcount, maxsize);
-     */
-    
+
+    if(debug)
+        ajDebug("ensCacheNew maxbytes %u, maxcount %u, maxsize %u.\n",
+                maxbytes, maxcount, maxsize);
+
     if(maxbytes && (maxbytes < 1000))
-	ajFatal("ensCacheNew cannot set a maximum bytes limit (%u) under "
-		"1000, as each Cache Node requires %u bytes alone.",
-		maxbytes, sizeof(CachePNode));
-    
+        ajFatal("ensCacheNew cannot set a maximum bytes limit (%u) under "
+                "1000, as each Cache Node requires %u bytes alone.",
+                maxbytes, sizeof(CachePNode));
+
     /* TODO: Find and set a sensible value here! */
-    
+
     if(maxsize && (maxsize < 3))
         ajFatal("ensCacheNew cannot set a maximum size limit (%u) under "
-		"3 bytes. maximum bytes %u maximum count %u.",
+                "3 bytes. maximum bytes %u maximum count %u.",
                 maxsize, maxbytes, maxcount);
-    
+
     /*
     ** Pointers to functions for automatic reading of data not yet in the
     ** cache and writing of data modified in cache are not mandatory.
@@ -486,64 +506,64 @@ EnsPCache ensCacheNew(AjEnum type,
     ** However, the specification of a function deleting stale cache entries
     ** and a function calculating the size of value data are required.
     */
-    
+
     if(!(void*)Freference)
-	ajFatal("ensCacheNew requires a referencing function.");
-    
+        ajFatal("ensCacheNew requires a referencing function.");
+
     if(!(void*)Fdelete)
-	ajFatal("ensCacheNew requires a deletion function.");
-    
+        ajFatal("ensCacheNew requires a deletion function.");
+
     if(maxsize && (!(void*)Fsize))
-	ajFatal("ensCacheNew requires a memory sizing function "
-		"when a maximum size limit has been defined.");
-    
+        ajFatal("ensCacheNew requires a memory sizing function "
+                "when a maximum size limit has been defined.");
+
+    if(!label)
+        ajFatal("ensCacheNew requires a label.");
+
     AJNEW0(cache);
-    
-    cache->List = ajListNew();
-    
-    if(type == ensECacheTypeNumeric)
-	cache->Table =
-	    ajTableNewFunctionLen(0, ensTableCmpUint, ensTableHashUint);
-    
-    if(type == ensECacheTypeAlphaNumeric)
-	cache->Table = ajTablestrNewLen(0);
-    
+
     cache->Label = ajStrNewC(label);
-    
+    cache->List  = ajListNew();
+
+    switch(type)
+    {
+        case ensECacheTypeNumeric:
+
+            cache->Table = ajTableNewFunctionLen(0,
+                                                 ensTableCmpUint,
+                                                 ensTableHashUint);
+
+            break;
+
+        case ensECacheTypeAlphaNumeric:
+
+            cache->Table = ajTablestrNewLen(0);
+
+            break;
+
+        default:
+            ajWarn("ensCacheNew got unexpected Cache type %d.\n",
+                   cache->Type);
+    }
+
     cache->Reference = Freference;
-    
-    cache->Delete = Fdelete;
-    
-    cache->Size = Fsize;
-    
-    cache->Read = Fread;
-    
-    cache->Write = Fwrite;
-    
-    cache->Type = type;
-    
-    cache->Syncron = syncron;
-    
-    cache->MaxBytes = maxbytes;
-    
-    cache->MaxCount = maxcount;
-    
-    cache->MaxSize = maxsize;
-    
-    cache->Bytes = 0;
-    
-    cache->Count = 0;
-    
-    cache->Dropped = 0;
-    
-    cache->Removed = 0;
-    
-    cache->Stored = 0;
-    
-    cache->Hit = 0;
-    
-    cache->Miss = 0;
-    
+    cache->Delete    = Fdelete;
+    cache->Size      = Fsize;
+    cache->Read      = Fread;
+    cache->Write     = Fwrite;
+    cache->Type      = type;
+    cache->Synchron  = synchron;
+    cache->MaxBytes  = maxbytes;
+    cache->MaxCount  = maxcount;
+    cache->MaxSize   = maxsize;
+    cache->Bytes     = 0;
+    cache->Count     = 0;
+    cache->Dropped   = 0;
+    cache->Removed   = 0;
+    cache->Stored    = 0;
+    cache->Hit       = 0;
+    cache->Miss      = 0;
+
     return cache;
 }
 
@@ -566,82 +586,64 @@ EnsPCache ensCacheNew(AjEnum type,
 
 void ensCacheDel(EnsPCache* Pcache)
 {
-    double ratio = 0;
+    AjBool debug = AJFALSE;
+
     EnsPCache pthis = NULL;
-    
+
     CachePNode node = NULL;
-    
-    /*
-     ajDebug("ensCacheDel\n"
-	     "  Pcache %p\n",
-	     Pcache);
-     */
-    
+
     if(!Pcache)
-	return;
-    
+        return;
+
     if(!*Pcache)
-	return;
+        return;
+
+    debug = ajDebugTest("ensCacheDel");
+
+    if(debug)
+        ajDebug("ensCacheDel\n"
+                "  *Pcache %p\n",
+                *Pcache);
 
     pthis = *Pcache;
-    
+
     /* Remove nodes from the AJAX List. */
-    
+
     while(ajListPop(pthis->List, (void **) &node))
     {
-	/* Remove the node from the AJAX Table. */
-	
-	ajTableRemove(pthis->Table, node->Key);
-	
-	/* Update the cache statistics. */
-	
-	pthis->Count--;
-	
-	pthis->Bytes -= node->Bytes;
-	
-	/* Write changes of value data to disk if any. */
-	
-	if (pthis->Write && node->Value && node->Dirty)
-	    (*pthis->Write)(node->Value);
-	
-	/* Both, key and value data are deleted via cacheNodeDel. */
-	
-	cacheNodeDel(pthis, &node);
+        /* Remove the node from the AJAX Table. */
+
+        ajTableRemove(pthis->Table, node->Key);
+
+        /* Update the cache statistics. */
+
+        pthis->Count--;
+
+        pthis->Bytes -= node->Bytes;
+
+        /* Write changes of value data to disk if any. */
+
+        if(pthis->Write && node->Value && node->Dirty)
+            (*pthis->Write)(node->Value);
+
+        /* Both, key and value data are deleted via cacheNodeDel. */
+
+        cacheNodeDel(pthis, &node);
     }
-    
-    if(pthis->Hit || pthis->Miss)
-	ratio = (double) pthis->Hit /
-	    ((double) pthis->Hit + (double) pthis->Miss);
-    
-    ajDebug("ensCacheDel %S "
-	    "hit: %u "
-	    "miss: %u "
-	    "ratio: %f "
-            "dropped: %u "
-	    "removed: %u "
-	    "stored: %u "
-	    "count: %u "
-	    "bytes: %u\n",
-	    pthis->Label,
-	    pthis->Hit,
-	    pthis->Miss,
-	    ratio,
-	    pthis->Dropped,
-	    pthis->Removed,
-	    pthis->Stored,
-	    pthis->Count,
-	    pthis->Bytes);
-    
-    ajListFree(&pthis->List);
-    
-    ajTableFree(&pthis->Table);
-    
+
+    if(debug)
+        ensCacheTrace(pthis, 1);
+
     ajStrDel(&pthis->Label);
-    
+
+    ajListFree(&pthis->List);
+
+    ajTableFree(&pthis->Table);
+
     AJFREE(pthis);
 
     *Pcache = NULL;
-    
+
     return;
 }
 
@@ -666,71 +668,71 @@ void ensCacheDel(EnsPCache* Pcache)
 void* ensCacheFetch(EnsPCache cache, void *key)
 {
     void *value = NULL;
-    
+
     AjIList iter = NULL;
-    
+
     CachePNode lnode = NULL;
     CachePNode tnode = NULL;
-    
+
     if(!cache)
-	return NULL;
-    
+        return NULL;
+
     if(!key)
-	return NULL;
-    
+        return NULL;
+
     tnode = (CachePNode) ajTableFetch(cache->Table, key);
-    
+
     if(tnode)
     {
-	cache->Hit++;
-	
-	/* Move the node to the end of the list. */
-	
-	iter = ajListIterNew(cache->List);
-	
-	while(!ajListIterDone(iter))
-	{
-	    lnode = (CachePNode) ajListIterGet(iter);
-	    
-	    if(lnode == tnode)
-	    {
-		ajListIterRemove(iter);
-		
-		ajListPushAppend(cache->List, (void *) lnode);
-		
-		break;
-	    }
-	}
-	
-	ajListIterDel(&iter);
-	
-	/*
-	** Reference the object when returned by the cache so that external
-	** code has to delete it irrespectively whether it was red from the
-	** cache or instantiated by the cache->Read function.
-	*/
-	
-	if(cache->Reference && tnode->Value)
-	    value = (*cache->Reference)(tnode->Value);
+        cache->Hit++;
+
+        /* Move the node to the end of the list. */
+
+        iter = ajListIterNew(cache->List);
+
+        while(!ajListIterDone(iter))
+        {
+            lnode = (CachePNode) ajListIterGet(iter);
+
+            if(lnode == tnode)
+            {
+                ajListIterRemove(iter);
+
+                ajListPushAppend(cache->List, (void *) lnode);
+
+                break;
+            }
+        }
+
+        ajListIterDel(&iter);
+
+        /*
+        ** Reference the object when returned by the cache so that external
+        ** code has to delete it irrespectively whether it was read from the
+        ** cache or instantiated by the cache->Read function.
+        */
+
+        if(cache->Reference && tnode->Value)
+            value = (*cache->Reference)(tnode->Value);
     }
     else
     {
-	cache->Miss++;
-	
-	if(cache->Read)
-	{
-	    value = (*cache->Read)(key);
-	    
-	    if(value)
-	    {
-		tnode = cacheNodeNew(cache, key, value);
-		
-		if(! cacheNodeInsert(cache, tnode))
-		    cacheNodeDel(cache, &tnode);
-	    }
-	}
+        cache->Miss++;
+
+        if(cache->Read)
+        {
+            value = (*cache->Read)(key);
+
+            if(value)
+            {
+                tnode = cacheNodeNew(cache, key, value);
+
+                if(!cacheNodeInsert(cache, tnode))
+                    cacheNodeDel(cache, &tnode);
+            }
+        }
     }
-    
+
     return value;
 }
 
@@ -752,56 +754,56 @@ void* ensCacheFetch(EnsPCache cache, void *key)
 AjBool ensCacheStore(EnsPCache cache, void* key, void** value)
 {
     CachePNode node = NULL;
-    
+
     if(!cache)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!key)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!value)
-	return ajFalse;
-    
+        return ajFalse;
+
     /* Is a node already cached under this key? */
-    
+
     node = (CachePNode) ajTableFetch(cache->Table, key);
-    
+
     if(node)
     {
-	/*
-	** Delete the Object passed in and increase the reference counter
-	** of the cached Object before assigning it.
-	*/
-	
-	(*cache->Delete)(value);
-	
-	*value = (*cache->Reference)(node->Value);
+        /*
+        ** Delete the Object passed in and increase the reference counter
+        ** of the cached Object before assigning it.
+        */
+
+        (*cache->Delete)(value);
+
+        *value = (*cache->Reference)(node->Value);
     }
     else
     {
-	node = cacheNodeNew(cache, key, *value);
-	
-	if(cacheNodeInsert(cache, node))
-	{
-	    if(cache->Syncron)
-	    {
-		if(cache->Write && node->Value)
-		    (*cache->Write)(node->Value);
-		
-		node->Dirty = ajFalse;
-	    }
-	    else
-		node->Dirty = ajTrue;
-	}
-	else
-	{
-	    if(cache->Write && node->Value)
-		(*cache->Write)(node->Value);
-	    
-	    cacheNodeDel(cache, &node);
-	}
+        node = cacheNodeNew(cache, key, *value);
+
+        if(cacheNodeInsert(cache, node))
+        {
+            if(cache->Synchron)
+            {
+                if(cache->Write && node->Value)
+                    (*cache->Write)(node->Value);
+
+                node->Dirty = ajFalse;
+            }
+            else
+                node->Dirty = ajTrue;
+        }
+        else
+        {
+            if(cache->Write && node->Value)
+                (*cache->Write)(node->Value);
+
+            cacheNodeDel(cache, &node);
+        }
     }
-    
+
     return ajTrue;
 }
 
@@ -822,31 +824,31 @@ AjBool ensCacheStore(EnsPCache cache, void* key, void** value)
 AjBool ensCacheRemove(EnsPCache cache, const void* key)
 {
     CachePNode node = NULL;
-    
+
     if(!cache)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!key)
-	return ajFalse;
-    
+        return ajFalse;
+
     node = (CachePNode) ajTableFetch(cache->Table, key);
-    
+
     if(node)
     {
-	cacheNodeRemove(cache, node);
-	
-	/* Both, key and value data are deleted via cacheNodeDel. */
-	
-	cacheNodeDel(cache, &node);
+        cacheNodeRemove(cache, node);
+
+        /* Both, key and value data are deleted via cacheNodeDel. */
+
+        cacheNodeDel(cache, &node);
     }
-    
+
     return ajTrue;
 }
 
 
 
 
-/* @func ensCacheSyncronise ***************************************************
+/* @func ensCacheSynchronise **************************************************
 **
 ** Synchronise an Ensembl Cache by writing-back all value data that have not
 ** been written before.
@@ -857,31 +859,31 @@ AjBool ensCacheRemove(EnsPCache cache, const void* key)
 ** @@
 ******************************************************************************/
 
-AjBool ensCacheSyncronise(EnsPCache cache)
+AjBool ensCacheSynchronise(EnsPCache cache)
 {
     AjIList iter = NULL;
-    
+
     CachePNode node = NULL;
-    
+
     if(!cache)
-	return ajFalse;
-    
+        return ajFalse;
+
     iter = ajListIterNew(cache->List);
-    
+
     while(!ajListIterDone(iter))
     {
-	node = (CachePNode) ajListIterGet(iter);
-	
-	if(cache->Write && node->Value && node->Dirty)
-	{
-	    (*cache->Write)(node->Value);
-	    
-	    node->Dirty = ajFalse;
-	}
+        node = (CachePNode) ajListIterGet(iter);
+
+        if(cache->Write && node->Value && node->Dirty)
+        {
+            (*cache->Write)(node->Value);
+
+            node->Dirty = ajFalse;
+        }
     }
-    
+
     ajListIterDel(&iter);
-    
+
     return ajTrue;
 }
 
@@ -893,21 +895,65 @@ AjBool ensCacheSyncronise(EnsPCache cache)
 ** Writes debug messages to trace the contents of a cache.
 **
 ** @param [r] cache [const EnsPCache] Ensembl Cache
+** @param [r] level [ajuint] Indentation level
 **
-** @return [void]
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-void ensCacheTrace(const EnsPCache cache)
+AjBool ensCacheTrace(const EnsPCache cache, ajuint level)
 {
+    double ratio = 0.0;
+
+    AjPStr indent = NULL;
+
     if(!cache)
-	return;
-    
-    ajDebug("Ensembl Cache trace: "
-	    "table length: %u "
-	    "list length: %u\n",
-	    ajTableGetLength(cache->Table),
-	    ajListGetLength(cache->List));
-    
-    return;
+        return ajFalse;
+
+    indent = ajStrNew();
+
+    ajStrAppendCountK(&indent, ' ', level * 2);
+
+    if(cache->Hit || cache->Miss)
+        ratio = (double) cache->Hit /
+            ((double) cache->Hit + (double) cache->Miss);
+
+    ajDebug("%SensCache trace %p\n"
+            "%S  Label '%S'\n"
+            "%S  List %p length: %u\n"
+            "%S  Table %p length: %u\n"
+            "%S  Type %d\n"
+            "%S  Synchron %B\n"
+            "%S  MaxBytes %u\n"
+            "%S  MaxCount %u\n"
+            "%S  MaxSize %u\n"
+            "%S  Bytes %u\n"
+            "%S  Count %u\n"
+            "%S  Dropped %u\n"
+            "%S  Removed %u\n"
+            "%S  Stored %u\n"
+            "%S  Hit %u\n"
+            "%S  Miss %u\n"
+            "%S  Hit/(Hit + Miss) %f\n",
+            indent, cache,
+            indent, cache->Label,
+            indent, cache->List, ajListGetLength(cache->List),
+            indent, cache->Table, ajTableGetLength(cache->Table),
+            indent, cache->Type,
+            indent, cache->Synchron,
+            indent, cache->MaxBytes,
+            indent, cache->MaxCount,
+            indent, cache->MaxSize,
+            indent, cache->Bytes,
+            indent, cache->Count,
+            indent, cache->Dropped,
+            indent, cache->Removed,
+            indent, cache->Stored,
+            indent, cache->Hit,
+            indent, cache->Miss,
+            indent, ratio);
+
+    ajStrDel(&indent);
+
+    return ajTrue;
 }
