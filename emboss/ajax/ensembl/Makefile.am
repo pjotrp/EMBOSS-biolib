@@ -16,7 +16,8 @@ ENSEMBLSRC = ensanalysis.c ensassembly.c ensassemblyexception.c \
 ensassemblymapper.c ensattribute.c ensbaseadaptor.c enscache.c \
 enscoordsystem.c ensdatabaseadaptor.c ensdatabaseconnection.c \
 ensdatabaseentry.c ensdensity.c ensditag.c ensexon.c \
-ensexternaldatabase.c ensfeature.c ensgene.c ensintron.c \
+ensexternaldatabase.c ensfeature.c ensgene.c ensgvindividual.c \
+ensgvpopulation.c ensgvsample.c ensintron.c \
 enskaryotype.c ensmapper.c ensmarker.c ensmetacoordinate.c \
 ensmetainformation.c ensmiscellaneous.c ensprediction.c \
 ensprojectionsegment.c ensqcalignment.c ensqc.c ensqcdatabase.c \
@@ -29,7 +30,8 @@ include_HEADERS = ensanalysis.h ensassemblyexception.h ensassembly.h \
 ensassemblymapper.h ensattribute.h ensbaseadaptor.h enscache.h \
 enscoordsystem.h ensdatabaseadaptor.h ensdatabaseconnection.h \
 ensdatabaseentry.h ensdata.h ensdensity.h ensditag.h ensembl.h \
-ensexon.h ensexternaldatabase.h ensfeature.h ensgene.h ensintron.h \
+ensexon.h ensexternaldatabase.h ensfeature.h ensgene.h ensgvdata.h \
+ensgvindividual.h ensgvpopulation.h ensgvsample.h ensintron.h \
 enskaryotype.h ensmapper.h ensmarker.h ensmetacoordinate.h \
 ensmetainformation.h ensmiscellaneous.h ensprediction.h \
 ensprojectionsegment.h ensqcalignment.h ensqcdatabase.h \
