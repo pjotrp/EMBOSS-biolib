@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** Bio::EnsEMBL::Registry CVS Revision:
@@ -214,7 +214,7 @@ typedef struct RegistrySGeneticVariation
     EnsPGvgenotypeadaptor Genotypeadaptor;
     EnsPGvindividualadaptor Individualadaptor;
     EnsPGvpopulationadaptor Populationadaptor;
-    EnsPGvvsampleadaptor Sampleadaptor;
+    EnsPGvsampleadaptor Sampleadaptor;
     EnsPGvvariationadaptor Variationadaptor;
 } RegistryOGeneticVariation;
 
