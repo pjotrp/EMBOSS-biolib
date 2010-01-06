@@ -43,7 +43,7 @@ import org.emboss.jemboss.gui.Browser;
 public class AlignJFrame extends JFrame
 {
 
-  private Vector graphicSequence;    // Vector containing graphical seqs
+  //private Vector graphicSequence;    // Vector containing graphical seqs
   protected JScrollPane jspSequence; // Sequence scrollpane
   protected static GraphicSequenceCollection gsc;
   private static Matrix mat;
