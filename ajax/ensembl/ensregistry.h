@@ -18,6 +18,10 @@ extern "C"
 #include "ensexon.h"
 #include "ensexternaldatabase.h"
 #include "ensgene.h"
+#include "ensgvdata.h"
+#include "ensgvsample.h"
+#include "ensgvindividual.h"
+#include "ensgvpopulation.h"
 #include "enskaryotype.h"
 #include "ensmarker.h"
 #include "ensmetacoordinate.h"
@@ -87,7 +91,8 @@ EnsPDatabaseadaptor ensRegistryGetDatabaseadaptor(AjEnum group,
 
 /* Ensembl Core-style Adaptors */
     
-EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(EnsPDatabaseadaptor dba);
+EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(
+    EnsPDatabaseadaptor dba);
 
 EnsPAssemblyexceptionadaptor ensRegistryGetAssemblyexceptionadaptor(
     EnsPDatabaseadaptor dba);
@@ -116,17 +121,20 @@ EnsPDitagfeatureadaptor ensRegistryGetDitagfeatureadaptor(
 EnsPDNAAlignFeatureadaptor ensRegistryGetDNAAlignFeatureadaptor(
     EnsPDatabaseadaptor dba);
 
-EnsPExonadaptor ensRegistryGetExonadaptor(EnsPDatabaseadaptor dba);
+EnsPExonadaptor ensRegistryGetExonadaptor(
+    EnsPDatabaseadaptor dba);
 
 EnsPExternaldatabaseadaptor ensRegistryGetExternaldatabaseadaptor(
     EnsPDatabaseadaptor dba);
 
-EnsPGeneadaptor ensRegistryGetGeneadaptor(EnsPDatabaseadaptor dba);
+EnsPGeneadaptor ensRegistryGetGeneadaptor(
+    EnsPDatabaseadaptor dba);
 
 EnsPKaryotypebandadaptor ensRegistryGetKaryotypebandadaptor(
     EnsPDatabaseadaptor dba);
 
-EnsPMarkeradaptor ensRegistryGetMarkeradaptor(EnsPDatabaseadaptor dba);
+EnsPMarkeradaptor ensRegistryGetMarkeradaptor(
+    EnsPDatabaseadaptor dba);
 
 EnsPMarkerfeatureadaptor ensRegistryGetMarkerfeatureadaptor(
     EnsPDatabaseadaptor dba);
@@ -161,23 +169,28 @@ EnsPRepeatfeatureadaptor ensRegistryGetRepeatfeatureadaptor(
 EnsPSeqregionadaptor ensRegistryGetSeqregionadaptor(
     EnsPDatabaseadaptor dba);
 
-EnsPSequenceadaptor ensRegistryGetSequenceadaptor(EnsPDatabaseadaptor dba);
+EnsPSequenceadaptor ensRegistryGetSequenceadaptor(
+    EnsPDatabaseadaptor dba);
 
 EnsPSimplefeatureadaptor ensRegistryGetSimplefeatureadaptor(
     EnsPDatabaseadaptor dba);
 
-EnsPSliceadaptor ensRegistryGetSliceadaptor(EnsPDatabaseadaptor dba);
+EnsPSliceadaptor ensRegistryGetSliceadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPTranscriptadaptor ensRegistryGetTranscriptadaptor(EnsPDatabaseadaptor dba);
+EnsPTranscriptadaptor ensRegistryGetTranscriptadaptor(
+    EnsPDatabaseadaptor dba);
 
 EnsPTranslationadaptor ensRegistryGetTranslationadaptor(
     EnsPDatabaseadaptor dba);
 
 /* Ensembl Quality Check Adaptors */
 
-EnsPQcdatabaseadaptor ensRegistryGetQcdatabaseadaptor(EnsPDatabaseadaptor dba);
+EnsPQcdatabaseadaptor ensRegistryGetQcdatabaseadaptor(
+    EnsPDatabaseadaptor dba);
 
-EnsPQcsequenceadaptor ensRegistryGetQcsequenceadaptor(EnsPDatabaseadaptor dba);
+EnsPQcsequenceadaptor ensRegistryGetQcsequenceadaptor(
+    EnsPDatabaseadaptor dba);
 
 EnsPQcalignmentadaptor ensRegistryGetQcalignmentadaptor(
     EnsPDatabaseadaptor dba);
@@ -193,12 +206,21 @@ EnsPQcsubmissionadaptor ensRegistryGetQcsubmissionadaptor(
 
 /* Ensembl Genetic Variation Adaptors */
 
+EnsPGvalleleadaptor ensRegistryGetGvalleleadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPGvgenotypeadaptor ensRegistryGetGvgenotypeadaptor(
+    EnsPDatabaseadaptor dba);
+
 EnsPGvindividualadaptor ensRegistryGetGvindividualadaptor(
     EnsPDatabaseadaptor dba);
 
 EnsPGvpopulationadaptor ensRegistryGetGvpopulationadaptor(
     EnsPDatabaseadaptor dba);
 
+EnsPGvsampleadaptor ensRegistryGetGvsampleadaptor(
+    EnsPDatabaseadaptor dba);
+    
 EnsPGvvariationadaptor ensRegistryGetGvvariationadaptor(
     EnsPDatabaseadaptor dba);
 
@@ -208,7 +230,7 @@ AjBool ensRegistryLoadIdentifiers(void);
 
 AjBool ensRegistryGetSpeciesGroup(const AjPStr identifier,
                                   AjPStr *Pspecies,
-                                  AjBool *Pgroup);
+                                  AjEnum *Pgroup);
 
 /*
 ** End of prototype definitions
