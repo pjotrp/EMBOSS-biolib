@@ -37,7 +37,6 @@ public class SequenceJPanel extends JPanel
                             implements ActionListener
 {
 
-  private Color col;
   /** sequence to display */
   protected Sequence seq;
   /** font size */
