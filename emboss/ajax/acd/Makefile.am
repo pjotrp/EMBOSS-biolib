@@ -26,7 +26,7 @@ include_HEADERS = ajacd.h
 
 libacd_la_SOURCES = $(ACDSRC)
 
-VERS_INF = -version-info 6:1:0
+VERS_INF = -version-info 6:2:0
 
 if ISCYGWIN
 LINKFLAGS = $(VERS_INF) $(CYGWIN_LDFLAGS) $(CYGWIN_LDACD)
