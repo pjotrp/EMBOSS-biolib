@@ -31,18 +31,16 @@ import org.emboss.jemboss.JembossParams;
  * Get the version of EMBOSS programs used by the Jemboss server connected
  * 
  */
-/**
- * @author uludag
- *
- */
+
 public class GetVersion {
 
 	private static String version = null;
 
 	/**
-	 * returns complete version string of EMBOSS connected Jemboss server is using
-	 * @param mysettings
-	 *            jemboss properties
+	 * returns the complete version string of the EMBOSS installation,
+	 * which is used by the Jemboss server current Jemboss client connected
+	 * 
+	 * @param mysettings    jemboss properties
 	 * 
 	 */
 	public static String getVersionComplete(JembossParams mysettings) {
@@ -70,7 +68,7 @@ public class GetVersion {
 	
 	
 	/**
-	 * returns firt two digits of EMBOSS version connected server has
+	 * returns the first two digits of the EMBOSS version number
 	 * @param mysettings
 	 * @return version of EMBOSS programs such as 5.0, or 6.1
 	 */
