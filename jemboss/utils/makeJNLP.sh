@@ -144,6 +144,7 @@ cp lib/*jar jnlp
 cp lib/axis/*jar jnlp
 cp images/Jemboss_logo_large.gif jnlp
 cp utils/template.html jnlp/index.html
+cp utils/jws-launch-button.png jnlp/jws-launch-button.jpg
 cd jnlp
 rm mail.jar activation.jar servlet.jar log4j-1.2.8.jar axis-ant.jar
 
