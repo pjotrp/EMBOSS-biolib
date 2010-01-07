@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -84,7 +84,7 @@
 
 /* @func ensTableCmpUint ******************************************************
 **
-** AJAX Table function to compare AJAX unsignud integer (ajuint)
+** AJAX Table function to compare AJAX unsigned integer (ajuint)
 ** hash key values.
 **
 ** @param [r] x [const void*] AJAX unsigned integer value address
