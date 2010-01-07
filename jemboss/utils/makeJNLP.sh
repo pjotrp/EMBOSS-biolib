@@ -213,24 +213,28 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'            > $JNLP
 echo '<jnlp'                                            >> $JNLP
 echo '        spec="1.0+"'                              >> $JNLP
 echo '        codebase="http://EDIT"'                   >> $JNLP
-echo '        href="'$JNLP'">'                          >> $JNLP 
-echo '         <information>'                           >> $JNLP  
-echo '           <title>Jemboss</title>'                >> $JNLP  
-echo '           <vendor>HGMP-RC</vendor> '             >> $JNLP  
+echo '        href="'$JNLP'">'                          >> $JNLP
+echo '         <information>'                           >> $JNLP
+echo '           <title>Jemboss</title>'                >> $JNLP
+echo '           <vendor>HGMP-RC</vendor> '             >> $JNLP
 echo '           <homepage href="http://emboss.sourceforge.net/Jemboss/"/>' \
                                                         >> $JNLP  
 echo '           <description>Jemboss</description>'    >> $JNLP  
 echo '           <description kind="short">A Java user interface to EMBOSS.' \
-                                                        >> $JNLP  
-echo '           </description>'                        >> $JNLP 
-echo '           <icon href="Jemboss_logo_large.gif"/>' >> $JNLP 
-echo '           <offline-allowed/>'                    >> $JNLP 
-echo '         </information>'                          >> $JNLP 
-echo '         <security>'                              >> $JNLP 
-echo '           <all-permissions/>'                    >> $JNLP 
-echo '         </security>'                             >> $JNLP 
-echo '         <resources>'                             >> $JNLP 
-echo '           <j2se version="1.3+"/>'                >> $JNLP 
+                                                        >> $JNLP
+echo '           </description>'                        >> $JNLP
+echo '           <icon href="Jemboss_logo_large.gif"/>' >> $JNLP
+echo '             <shortcut online="true">'            >> $JNLP
+echo '               <desktop/>'                        >> $JNLP
+echo '               <menu submenu="Jemboss"/>'         >> $JNLP
+echo '             </shortcut>'                         >> $JNLP
+echo '           <offline-allowed/>'                    >> $JNLP
+echo '         </information>'                          >> $JNLP
+echo '         <security>'                              >> $JNLP
+echo '           <all-permissions/>'                    >> $JNLP
+echo '         </security>'                             >> $JNLP
+echo '         <resources>'                             >> $JNLP
+echo '           <j2se version="1.3+"/>'                >> $JNLP
 
 echo '             <jar href="'sjaxrpc.jar'"/>'                 >> $JNLP
 echo '             <jar href="'saxis.jar'"/>'                   >> $JNLP
