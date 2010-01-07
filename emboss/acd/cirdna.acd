@@ -14,7 +14,7 @@ section: input [
     default: "inputfile"
     information: "Commands to the lindna drawing program file"
     knowntype: "lindna mapping commands"
-    relations:                                                 
+    relations: ""
   ]
 
 endsection: input

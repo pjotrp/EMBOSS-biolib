@@ -61,7 +61,7 @@ section: output [
     extension: "overlaps"
     nullok: "Y"
     nulldefault: "Y"
-    relations:                                                 
+    relations: ""
   ]
 
 endsection: output
