@@ -244,8 +244,11 @@ int main(int argc, char **argv)
 			    
 			    
 			    /* Call STAMP. */
-			    ajFmtPrintS(&exec,"stamp -l %S -s -n 2 -slide 5 -prefix "
-					"%S -d %S > %S\n", dom, name, set, out);
+			    ajFmtPrintS(&exec,
+                                        "%S -l %S -s -n 2 -slide 5 -prefix "
+					"%S -d %S > %S\n",
+                                        ajAcdGetpathC("stamp"),
+                                        dom, name, set, out);
 			    ajFmtPrint("%S\n", exec);
 			    system(ajStrGetPtr(exec));  
 

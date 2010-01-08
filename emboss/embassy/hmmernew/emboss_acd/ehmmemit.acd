@@ -1,0 +1,98 @@
+application: ehmmemit [
+  documentation: "Generate sequences from a profile HMM."
+  groups: "HMM"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+  embassy: "hmmernew"
+  external: "hmmemit HMMER 2.3.2 available from http://hmmer.wustl.edu/"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  infile: hmmfile [
+    parameter: "Y"
+    knowntype: "hmm"
+    information: "HMMER hidden markov model file"
+    help: "File containing one or more HMMs."
+    relations:  "EDAM: HMMER hidden Markov model"                      
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  integer: seed [
+    default: "0"
+    minimum: "0"
+    information: "Random seed"
+    help: "Set the random seed to <n>, where <n> is a positive
+           integer. The default is to use time() to generate a different seed
+           for each run, which means that two different runs of hmmemit on
+           the same HMM will give slightly different results. You can use
+           this option to generate reproducible results."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  boolean: a [
+    additional: "Y"
+    default: "N"
+    information: "Output in selex format"
+    help: "Write the generated sequences in an aligned format (SELEX)
+           rather than FASTA."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: c [
+    standard: "Y"
+    default: "N"
+    information: "Output consensus sequence"
+    help: "Predict a single majority-rule consensus sequence instead
+           of sampling sequences from the HMM's probability distribution.
+           Highly conserved residues (p >= 0.9 for DNA, p >= 0.5 for protein)
+           are shown in upper case; others are shown in lower case. Some
+           insert states may become part of the majority rule consensus,
+           because they are used in >= 50% of generated sequences; when this
+           happens, insert-generated residues are simply shown as 'x'."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  integer: nseq [
+    standard: "@(!$(c))"
+    default: "10"
+    information: "Number of sequences to produce"
+    help: "Generate <n> sequences. Default is 10."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  boolean: q [
+    additional: "Y"
+    default: "N"
+    information: "Suppress output except sequences."
+    help: "Quiet; suppress all output except for the sequences
+           themselves. Useful for piping or directing the output."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  outfile: o [
+    parameter: "Y"
+    knowntype: "hmmemit output"
+    information: "HMMER hmmemit program output file"
+    help: "File of synthetic sequences."
+    relations:  "EDAM: HMMER synthetic sequences record"               
+  ]
+
+endsection: output

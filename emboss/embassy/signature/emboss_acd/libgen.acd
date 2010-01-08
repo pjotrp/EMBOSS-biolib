@@ -6,6 +6,9 @@ application: libgen [
   batch: "yes"
   cpu: "medium"
   embassy: "signature"
+  external: "hmmbuild HMMER 2.3.2"
+  external: "blastpgp NCBI toolkit or blast executables"
+  external: "modelfromalign SAM-tools http://compbio.soe.ucsc.edu/sam.html"
 ]
 
 section: input [

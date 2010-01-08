@@ -103,7 +103,7 @@ int main(int argc, char **argv)
        iii.HMMER 'options' (that don't appear in ACD file)
        iv. HMMER & new parameters.
        */
-    ajFmtPrintS(&cmd, "hmmsearch");
+    ajStrAssignS(&cmd, ajAcdGetpathC("hmmsearch"));
     ajFmtPrintAppS(&cmd, " -A %d -E %f -T %f -Z %d", A, E, T, Z);
     if(compat)
 	ajStrAppendC(&cmd, " --compat ");

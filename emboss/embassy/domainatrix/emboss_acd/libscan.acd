@@ -1,0 +1,398 @@
+application: libscan [
+  documentation: "Diagnostic searches for protein families."
+
+  groups: "Protein:3D Structure"
+]
+
+
+list: mode  [
+  required: "Y"
+  default: "2"
+  minimum: "1"
+  maximum: "1"
+  delimiter: ","
+  codedelimiter: ":"
+  values: "1: Database search mode, 2: Library screen mode"
+  header: "The scanning modes"
+  information: "Select mode of operation "
+  button: "Y"
+  help: "libscan runs in one of two modes either (i) database search mode or (ii) library screen mode. In database search mode libscan reads one or more directories each containing a single type of discriminating element, the permitted types are sparse sequence signature, Gribskov profile, Henikoff profile or hidden Markov model.  In library screen mode, libscan reads a sequence set, screens each sequence against the library (directories of discriminating elements) and writes a library scan file (of top-scoring families) for each one."
+    relations: "EDAM: Generic string array"                                
+  external: "hmmsearch HMMER 2.3.2 available from http://hmmer.wustl.edu/"
+  external: "formatdb NCBI toolkit and blast executables"
+  external: "blastpgp NCBI toolkit and blast executables"
+  external: "rpsblast NCBI toolkit and blast executables"
+]
+
+boolean: grib
+[
+  required: "Y"
+  information: "Use Gribskov profile "
+  default: "N"
+    relations: "EDAM: Generic boolean"                                     
+]
+
+
+boolean: henik
+[
+  required: "Y"
+  information: "Use Henikoff profile "
+  default: "N"
+    relations: "EDAM: Generic boolean"                                     
+]
+
+boolean: hmm
+[
+  required: "Y"
+  information: "Use HMM profile "
+  default: "N"
+    relations: "EDAM: Generic boolean"                                     
+]
+
+boolean: sam
+[
+  required: "Y"
+  information: "Use SAM HMM profile "
+  default: "N"
+    relations: "EDAM: Generic boolean"                                     
+]
+
+boolean: pssm
+[
+  required: "Y"
+  information: "Use PSSM profile "
+  default: "Y"
+    relations: "EDAM: Generic boolean"                                     
+]
+
+boolean: sig
+[
+  required: "Y"
+  information: "Use signature "
+  default: "N"
+    relations: "EDAM: Generic boolean"                                     
+]
+
+
+
+# Hmm  parameters
+string: hmmpath
+[
+  required: "$(hmm)"
+  information: "Location of HMM profile files (input)"
+  default: "./lib/"
+    relations: "EDAM: Generic string"                                      
+]
+
+string: hmmextn 
+[
+  required: "$(hmm)"
+  information: "Extension of HMM profile files (input)"
+  default: ".hmm"
+    relations: "EDAM: Generic string"                                      
+]
+
+string: hmmoutpath 
+[
+  required: "$(hmm)"
+  information: "Location of signature hits/library scan files for hmm searches (output)"
+  default: "./"
+    relations: "EDAM: Generic string"                                      
+]
+
+string: hmmoutextn 
+[
+  required: "$(hmm)"
+  information: "Extension of signature hits/library scan files for hmm searches (output)"
+  default: ".hmmout"
+    relations: "EDAM: Generic string"                                      
+]
+
+
+
+# Sam  parameters
+string: sampath
+[
+  required: "$(sam)"
+  information: "Location of SAM HMM profile files (input)"
+  default: "./"
+    relations: "EDAM: Generic string"                                      
+]
+
+string: samextn 
+[
+  required: "$(sam)"
+  information: "Extension of SAM HMM profile files (input)"
+  default: ".mod"
+    relations: "EDAM: Generic string"                                      
+]
+
+string: samoutpath 
+[
+  required: "$(sam)"
+  information: "Location of signature hits/library scan files for sam hmm searches (output)"
+  default: "./"
+    relations: "EDAM: Generic string"                                      
+]
+
+string: samoutextn 
+[
+  required: "$(sam)"
+  information: "Extension of signature hits/library scan files for sam hmm searches (output)"
+  default: ".samout"
+    relations: "EDAM: Generic string"                                      
+]
+
+
+# pssm  parameters
+string: pssmpath
+[
+  required: "$(pssm)"
+  information: "Location of PSSM profile files (input)"
+  default: "/data/structure/lib/pssm/"
+    relations: "EDAM: Generic string"                                      
+]
+
+string: pssmextn 
+[
+  required: "$(pssm)"
+  information: "Extension of PSSM profile files (input)"
+  default: ".chk"
+    relations: "EDAM: Generic string"                                      
+]
+
+integer: niter
+[
+  required: "$(pssm)"
+  information: " No. of iterations (input)"
+  default: "1"
+    relations: "EDAM: Generic integer"                                     
+]
+
+float: thresh 
+[
+  required: "$(pssm)"
+  information: "E-value threshold (input)"
+  default: "100"
+    relations: "EDAM: Generic float"                                       
+]
+
+integer: maxhit 
+[
+  required: "$(pssm)"
+  information: "Maximum No. of hits to database (input)"
+  default: "1000"
+    relations: "EDAM: Generic integer"                                     
+]
+
+string: pssmoutpath 
+[
+  required: "$(pssm)"
+  information: "Location of signature hits/library scan files for pssm searches (output)"
+  default: "./"
+    relations: "EDAM: Generic string"                                      
+]
+
+string: pssmoutextn 
+[
+  required: "$(pssm)"
+  information: "Extension of signature hits/library scan files for pssm searches (output)"
+  default: ".pssmout"
+    relations: "EDAM: Generic string"                                      
+]
+
+
+
+# Gribskov  parameters
+string: gbvpath 
+[
+  required: "$(grib)"
+  information: "Location of Gribskov profile files (input)"
+  default: "./"
+    relations: "EDAM: Generic string"                                      
+]
+
+
+string: gbvextn 
+[
+  required: "$(grib)"
+  information: "Extension of Gribskov profile files (input)"
+  default: ".grib"
+
+    relations: "EDAM: Generic string"                                      
+]
+
+float: gbvgapo 
+[
+  required: "$(grib)"
+  default: "10.0"
+  information: "Gap insertion penalty "
+    relations: "EDAM: Generic float"                                       
+]
+
+float: gbvgape 
+[
+  required: "$(grib)"
+  default: "0.5"
+  information: "Gap extension penalty "
+    relations: "EDAM: Generic float"                                       
+]
+
+string: gbvoutpath 
+[
+  required: "$(grib)"
+  information: "Location of signature hits/library scan files for Gribskov profile searches (output)"
+  default: "./"
+    relations: "EDAM: Generic string"                                      
+]
+
+string: gbvoutextn 
+[
+  required: "$(grib)"
+  information: "Extension of signature hits/library scan files for Gribskov profile searches (output)"
+  default: ".gribout"
+    relations: "EDAM: Generic string"                                      
+]
+
+
+
+# Hennikoff  parameters
+string: hnfpath [
+  required: "$(henik)"
+  information: "Location of Hennikoff profile files (input)"
+  default: "./"
+    relations: "EDAM: Generic string"                                      
+]
+
+string: hnfextn [
+  required: "$(henik)"
+  information: "Extension of Hennikoff profile files (input)"
+  default: ".henik"
+    relations: "EDAM: Generic string"                                      
+]
+
+float: hnfgapo [
+  required: "$(henik)"
+  default: "10.0"
+  information: "Gap insertion penalty "
+    relations: "EDAM: Generic float"                                       
+]
+
+float: hnfgape 
+[
+  required: "$(henik)"
+  default: "0.5"
+
+  information: "Gap extension penalty "
+    relations: "EDAM: Generic float"                                       
+]
+
+string: hnfoutpath 
+[
+  required: "$(henik)"
+  information: "Location of signature hits/library scan files for Henikoff profile searches (output)"
+  default: "./"
+    relations: "EDAM: Generic string"                                      
+]
+
+string: hnfoutextn 
+[
+  required: "$(henik)"
+  information: "Extension of signature hits/library scan files for Henikoff profile searches (output)"
+  default: ".henikout"
+    relations: "EDAM: Generic string"                                      
+]
+
+
+
+# Signature parameters
+string: sigpath 
+[
+  required: "$(sig)"
+  information: "Location of signature files (input)"
+  default: "./"
+    relations: "EDAM: Generic string"                                      
+]
+
+string: sigextn 
+[
+   required: "$(sig)"
+  information: "Extension of signature files (input)"
+  default: ".sig"
+    relations: "EDAM: Generic string"                                      
+]
+
+list: nterm  
+[
+  required: "$(sig)"
+  default: "1"
+  minimum: "1"
+  maximum: "3"
+  values: "1: Align anywhere and allow only complete signature-sequence fit,2: Align anywhere and allow partial signature-sequence fit,3: Use empirical gaps only"
+  delimiter: ","
+  codedelimiter: ":"
+  header: "N-terminal matching options"
+  information: "Select number"
+    relations: "EDAM: Generic string array"                                
+]
+
+matrixf: sub  [
+  required: "$(sig)" 
+  information: "Residue substitution matrix"
+  default: "EBLOSUM62"
+    relations: "EDAM: Float comparison matrix"                             
+]
+
+float: siggapo 
+[
+  required: "$(sig)"
+
+  default: "10.0"
+  information: "Gap insertion penalty "
+    relations: "EDAM: Generic float"                                       
+]
+
+float: siggape 
+[
+  required: "$(sig)"
+  default: "0.5"
+  information: "Gap extension penalty "
+    relations: "EDAM: Generic float"                                       
+]
+
+string: sigoutpath 
+[
+  required: "$(sig)"
+  information: "Location of signature hits/library scan files for signature searches (output)"
+  default: "./"
+    relations: "EDAM: Generic string"                                      
+]
+
+string: sigoutextn 
+[
+  required: "$(sig)"
+  information: "Extension for signature hits/library scan files for signature searches (output)"
+  default: ".sigout"
+    relations: "EDAM: Generic string"                                      
+]
+
+
+# Database parameters
+seqset: db  [
+  required: "Y"
+  prompt: "File containing sequences to search or screen"
+  help: "In database search mode libscan scans each discriminating element against a sequence set.  In library screen mode, libscan reads a sequence set and screens each sequence against the library (directories of disciminating elements)"
+  default: "49142.vdhf"
+    relations: "EDAM: Sequence record"                                     
+]
+
+# other parameters
+infile: scopf  
+[
+  required: "Y"
+  prompt: "SCOP classification file (input)"
+  help: "In either mode, a 'scop classification file' is required as a source of family classification data.  A scop classification file contains classification and other data for domains from the scop database.  The file is in embl-like format and is generated by scopparse.  Domain sequence information can be added to the file by using scopseqs."
+default: "/data/structure/dcf/scop_raw.dcf"
+    relations: "EDAM: Free text file"                                      
+]
+

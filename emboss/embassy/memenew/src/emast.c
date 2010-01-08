@@ -128,9 +128,8 @@ int main(int argc, char **argv)
        ii. Original MAST options (in order they appear in ACD file)
        iii.Original MAST options (that don't appear in ACD file)
        iv. EMBASSY MAST new qualifiers and parameters.
-       */
-    if(!ajNamGetValueC("mast", &cmd))
-	ajStrAssignC(&cmd, "mast");
+    */
+    ajStrAssignS(&cmd, ajAcdGetpathC("mast"));
     ajFmtPrintAppS(&cmd, " %s ", ajFileGetNameC(mfile));
 
     /* Warn user if both d and isstdin are specified and use only d */

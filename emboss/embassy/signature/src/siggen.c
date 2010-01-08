@@ -2304,7 +2304,7 @@ static EmbPSignature  siggen_SigSelect(AjPScopalg alg,
         while(finish == ajFalse)
         {
             /* Generate random number. */
-            rn = ajRandomNumberD();
+            rn = ajRandomDouble();
             irn = (int) (rn * (double)num_aligned);
             already_done = ajFalse;
             
@@ -3328,7 +3328,7 @@ static EmbPSignature  siggen_SigSelectSeq(AjPScopalg alg,
         while(finish == ajFalse)
         {
             /* Generate random number. */
-            rn = ajRandomNumberD();
+            rn = ajRandomDouble();
 
 
 	    irn = (int) (rn * (double)rand_num);

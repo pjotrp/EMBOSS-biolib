@@ -249,12 +249,15 @@ int main(int argc, char **argv)
 
 
 	    if(modei==LIBGEN_HMMER)
-		ajFmtPrintS(&cmd,"hmmbuild -g %S %S",outname,seqsfname);
+		ajFmtPrintS(&cmd,"%S -g %S %S",
+                            ajAcdGetpathC("hmmbuild"),
+                            outname,seqsfname);
 	    else if(modei==LIBGEN_PSSM)
 		/* niter, evalue and database arg's have dummy values. */
 		ajFmtPrintS(&cmd,
-			    "blastpgp -i %S -B %S -j %d -e %f -d %S -C %S\n",
-			    seqfname, seqsfname, niter,evalue, database, 
+			    "%S -i %S -B %S -j %d -e %f -d %S -C %S\n",
+			    ajAcdGetpathC("blastpgp"),
+                            seqfname, seqsfname, niter,evalue, database, 
 			    outname);
 	    else if(modei==LIBGEN_SAM)
 	    {
@@ -263,8 +266,9 @@ int main(int argc, char **argv)
 
 
 		/* Run modelfromalign. */
-		ajFmtPrintS(&cmd,"modelfromalign %S -alignfile %S",tmpfname,
-			    seqsfname);
+		ajFmtPrintS(&cmd,"%S %S -alignfile %S",
+			    ajAcdGetpathC("modelfromalign"),
+                            tmpfname, seqsfname);
 		ajFmtPrint("%S\n", cmd);
 		system(ajStrGetPtr(cmd));
 

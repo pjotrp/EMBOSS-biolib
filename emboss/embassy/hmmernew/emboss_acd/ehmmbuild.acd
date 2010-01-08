@@ -1,0 +1,355 @@
+application: ehmmbuild [
+  documentation: "Build a profile HMM from an alignment."
+  groups: "HMM"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+  embassy: "hmmernew"
+  external: "hmmbuild HMMER 2.3.2 available from http://hmmer.wustl.edu/"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: alignfile [
+    parameter: "Y"
+    type: "gapstopprotein"
+    aligned: "Y"
+    relations: "EDAM: Protein sequence alignment data"                     
+  ]
+
+  infile: prior [
+    default: ""
+    knowntype: "dirichlet prior hmmer"
+    information: "HMMER dirichlet prior file (optional)"
+    nullok: "Y"
+    help: "Read a Dirichlet prior from file, replacing the default
+           mixture Dirichlet. The format of prior files is documented in the
+           User's Guide, and an example is given in the Demos directory of
+           the HMMER distribution."
+    relations:  "EDAM: HMMER Dirichlet prior record"                   
+  ]
+
+  infile: null [
+    default: ""
+    knowntype: "hmmer null model"
+    information: "HMMER null model file (optional)"
+    nullok: "Y"
+    help: "Read a null model from file. The default for protein is to
+           use average amino acid frequencies from Swissprot 34 and p1 =
+           350/351; for nucleic acid, the default is to use 0.25 for each
+           base and p1 = 1000/1001. For documentation of the format of the
+           null model file and further explanation of how the null model is
+           used, see the User's Guide."
+    relations:  "EDAM: HMMER NULL hidden Markov model"                 
+  ]
+
+  infile: pam [
+    default: ""
+    knowntype: "hmmer matrix"
+    information: "HMMER matrix file (optional)"
+    nullok: "Y"
+    help: "Apply a heuristic PAM- (substitution matrix-) based prior
+           on match emission probabilities instead of the default mixture
+           Dirichlet. The substitution matrix is read from file. See -pamwgt.
+           The default Dirichlet state transition prior and insert emission
+           prior are unaffected. Therefore in principle you could combine
+           -prior with -pam but this isn't recommended, as it hasn't been
+           tested. ( -pam itself hasn't been tested much!)"
+    relations:  "EDAM: Amino acid comparison matrix"                   
+  ]
+
+  float: pamwgt [
+    default: "20.0"
+    information: "Weighting for PAM."
+    help: "Controls the weight <x> on a PAM-based prior. Only has
+           effect if -pam option is also in use. <x> is a positive real
+           number, 20.0 by default. <x> is the number of 'pseudocounts'
+           contriubuted by the heuristic prior. Very high values of <x> can
+           force a scoring system that is entirely driven by the substitution
+           matrix, making HMMER somewhat approximate Gribskov profiles."
+    relations: "EDAM: Generic float"                                       
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  string: nhmm [
+    standard: "Y"
+    default: ""
+    information: "Name for this HMM."
+    help: "Name for this HMM. The name can be any string of
+           non-whitespace characters (e.g. one 'word'). There is no length
+           limit (at least not one imposed by HMMER; your shell will complain
+           about command line lengths frst)."
+    word: "Y"
+    knowntype: "name"
+    relations:  "EDAM: Generic string"                                 
+  ]
+
+  list: strategy [
+    standard: "Y"
+    default: "D"
+    minimum: "1"
+    maximum: "1"
+    values:
+             "D:global-multidomain,F:local-multidomain,G:global-singledomain,S:local-singledomain"
+    delimiter: ","
+    codedelimiter: ":"
+    header: "Alignment preference"
+    information: "Select preference"
+    button: "Y"
+    help: "All alignments are local with respect to the sequence and
+           are configured to be local (fragmentary) or global with respect to
+           the HMM. The model is also configured to find a single or
+           multiple domains (matches) to a sequence. The options for
+           configuring the model are as follows: (D): The default setting.
+           Multiple domains per sequence, global alignments with respect to
+           the HMM. (F): Multiple domains per sequence, local alignments with
+           respect to the HMM. Analogous to the old hmmfs program of HMMER
+           1. (G) Single domain per sequence, global alignment with respect
+           to the HMM. Analogous to the old hmms program of HMMER 1. (S)
+           Single domain per sequence, local alignments with respect to the
+           HMM. Analogous to the old hmmsw program of HMMER 1."
+    relations: "EDAM: Generic string array"                                
+  ]
+
+endsection: required
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  integer: pbswitch [
+    default: "1000"
+    information: "Threshold to switch to position-based
+                  weights."
+    help: "For alignments with a very large number of sequences, the
+           GSC, BLOSUM, and Voronoi weighting schemes are slow; they're
+           O(N^2) for N sequences. Henikoff position-based weights (PB
+           weights) are more effcient. At or above a certain threshold
+           sequence number <n> hmmbuild will switch from GSC, BLOSUM, or
+           Voronoi weights to PB weights. To disable this switching behavior
+           (at the cost of compute time, set <n> to be something larger than
+           the number of sequences in your alignment. <n> is a positive
+           integer; the default is 1000."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  float: archpri [
+    default: "0.85"
+    information: "Architecture prior"
+    help: "The value of the 'architecture prior' used by MAP
+           architecture construction. This value is a probability between 0
+           and 1. This parameter governs a geometric prior distribution over
+           model lengths. As 'archpri' increases, longer models are favored a
+           priori. As 'archpri' decreases, it takes more residue
+           conservation in a column to make a column a 'consensus' match
+           column in the model architecture. The 0.85 default has been chosen
+           empirically as a reasonable setting."
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  boolean: binary [
+    default: "N"
+    information: "Write HMM as binary."
+    help: "Write the HMM to file in HMMER binary format instead of
+           readable ASCII text."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: fast [
+    default: "N"
+    information: "Work in fast mode"
+    help: "Quickly and heuristically determine the architecture of the
+           model by assigning all columns with more than a certain fraction
+           of gap characters to insert states. By default this fraction is
+           0.5, and it can be changed using the --gapmax option. The default
+           construction algorithm is a maximum a posteriori (MAP) algorithm,
+           which is slower."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  float: gapmax [
+    default: "0.5"
+    information: "Fast mode control"
+    help: "Controls the -fast model construction algorithm, but if
+           -fast is not being used, has no effect. If a column has more than
+           a fraction <x> of gap symbols in it, it gets assigned to an insert
+           column. <x> is a frequency from 0 to 1, and by default is set to
+           0.5. Higher values of <x> mean more columns get assigned to
+           consensus, and models get longer; smaller values of <x> mean fewer
+           columns get assigned to consensus, and models get smaller."
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  boolean: hand [
+    default: "N"
+    information: "Specify model by hand."
+    help: "Specify the architecture of the model by hand: the
+           alignment file must be in SELEX or Stockholm format, and the
+           reference annotation line (RF in SELEX, GC RF in Stockholm) is
+           used to specify the architecture. Any column marked with a non-gap
+           symbol (such as an 'x', for instance) is assigned as a consensus
+           (match) column in the model."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  float: sidlevel [
+    default: "0.62"
+    information: "Cutoff ID threhold"
+    help: "Controls both the determination of effective sequence
+           number and the behavior of the -wblosum weighting option. The
+           sequence alignment is clustered by percent identity, and the
+           number of clusters at a cutoff threshold of <x> is used to
+           determine the effective sequence number. Higher values of <x> give
+           more clusters and higher effective sequence numbers; lower values
+           of <x> give fewer clusters and lower effective sequence numbers.
+           <x> is a fraction from 0 to 1, and by default is set to 0.62
+           (corresponding to the clustering level used in constructing the
+           BLOSUM62 substitution matrix)."
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  boolean: noeff [
+    default: "N"
+    information: "Turn off the effective sequence number
+                  calculation."
+    help: "Turn off the effective sequence number calculation, and use
+           the true number of sequences instead. This will usually reduce
+           the sensitivity of the final model (so don't do it without good
+           reason!)"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  float: swentry [
+    default: "0.5"
+    information: "Probability control for local entries"
+    help: "Controls the total probability that is distributed to local
+           entries into the model, versus starting at the beginning of the
+           model as in a global alignment. <x> is a probability from 0 to 1,
+           and by default is set to 0.5. Higher values of <x> mean that hits
+           that are fragments on their left (N or 5'-terminal) side will be
+           penalized less, but complete global alignments will be penalized
+           more. Lower values of <x> mean that fragments on the left will be
+           penalized more, and global alignments on this side will be
+           favored. This option only affects the confgurations that allow
+           local alignments, e.g. -s and -f; unless one of these options is
+           also activated, this option has no effect. You have independent
+           control over local/global alignment behavior for the N/C (5'/3')
+           termini of your target sequences using --swentry and --swexit."
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  float: swexit [
+    default: "0.5"
+    information: "Probability control for exits"
+    help: "Controls the total probability that is distributed to local
+           exits from the model, versus ending an alignment at the end of
+           the model as in a global alignment. <x> is a probability from 0 to
+           1, and by default is set to 0.5. Higher values of <x> mean that
+           hits that are fragments on their right (C or 3'-terminal) side
+           will be penalized less, but complete global alignments will be
+           penalized more. Lower values of <x> mean that fragments on the
+           right will be penalized more, and global alignments on this side
+           will be favored. This option only affects the confgurations that
+           allow local alignments, e.g. -s and -f; unless one of these
+           options is also activated, this option has no effect. You have
+           independent control over local/global alignment behavior for the
+           N/C (5'/3') termini of your target sequences using -swentry and
+           -swexit."
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  boolean: verbosity [
+    default: "N"
+    information: "Verbosity."
+    help: "Print more possibly useful stuff, such as the individual
+           scores for each sequence in the alignment."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  list: weighting [
+    default: "G"
+    minimum: "1"
+    maximum: "1"
+    values: "B:Blosum, G:Gerstein/Sonnhammer/Chothia,
+             K:Krogh/Mitchison, W:Henikoff, V:Sibbald/Argos Voronoi, N:None"
+    delimiter: ","
+    codedelimiter: ":"
+    header: "Weighting method"
+    information: "Select weighting"
+    button: "Y"
+    help: "Values (B)(-wblosum in HMMER) Use the BLOSUM filtering
+           algorithm to weight the sequences. Cluster the sequences at a
+           given percentage identity (see -idlevel); assign each cluster a
+           total weight of 1.0, distributed equally amongst the members of
+           that cluster. (G)(-wgsc in HMMER) Use the
+           Gerstein/Sonnhammer/Chothia ad hoc sequence weighting algorithm.
+           This is the default. (K)(-wme in HMMER) Use the Krogh/Mitchison
+           maximum entropy algorithm to 'weight' the sequences. This
+           supercedes the Eddy/Mitchison/Durbin maximum discrimination
+           algorithm, which gives almost identical weights but is less
+           robust. ME weighting seems to give a marginal increase in
+           sensitivity over the default GSC weights, but takes a fair amount
+           of time. (W) (-wpb in HMMER) Use the Henikoff position-based
+           weighting scheme. (V) (-wvoronoi in HMMER) Use the Sibbald/Argos
+           Voronoi sequence weighting algorithm in place of the default GSC
+           weighting. (N) (-wnone in HMMER) Turn off all sequence weighting."
+    relations: "EDAM: Generic string array"                                
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: hmmfile [
+    parameter: "Y"
+    knowntype: "hmm"
+    append: "Y"
+    information: "HMMER hidden markov model output file"
+    relations:  "EDAM: HMMER hidden Markov model"                      
+  ]
+
+  outfile: o [
+    nullok: "Yes"
+    nulldefault: "Yes"
+    knowntype: "selex"
+    information: "Selex alignment output file (optional)"
+    help: "Re-save the starting alignment to file, in Stockholm
+           format. The columns which were assigned to match states will be
+           marked with x's in an RF annotation line. If either the -hand or
+           -fast construction options were chosen, the alignment may have
+           been slightly altered to be compatible with Plan 7 transitions, so
+           saving the final alignment and comparing to the starting
+           alignment can let you view these alterations. See the User's Guide
+           for more information on this arcane side effect."
+    relations:  "EDAM: Multiple sequence alignment record"             
+  ]
+
+  outfile: cfile [
+    nullok: "Yes"
+    nulldefault: "Yes"
+    information: "HMMER emission and transition count output
+                  file (optional)"
+    knowntype: "hmmer count"
+    help: "Save the observed emission and transition counts to file
+           after the architecture has been determined (e.g. after
+           residues/gaps have been assigned to match, delete, and insert
+           states). This option is used in HMMER development for generating
+           data files useful for training new Dirichlet priors. The format of
+           count files is documented in the User's Guide."
+    relations:  "EDAM: HMMER emission and transition count report"     
+  ]
+
+endsection: output

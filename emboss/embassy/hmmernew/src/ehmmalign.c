@@ -100,7 +100,7 @@ int main(int argc, char **argv)
        iii.HMMER 'options' (that don't appear in ACD file)
        iv. HMMER & new parameters.
        */
-    ajFmtPrintS(&cmd, "hmmalign ");
+    ajFmtPrintS(&cmd, "%S ", ajAcdGetpathC("hmmalign"));
     if(mapali)
 	ajFmtPrintAppS(&cmd, " --mapali %s ", ajFileGetNameC(mapali));
     if(withali)

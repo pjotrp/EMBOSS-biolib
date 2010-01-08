@@ -1,0 +1,59 @@
+application: ehmmfetch [
+  documentation: "Retrieve an HMM from an HMM database."
+  groups: "HMM"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+  embassy: "hmmernew"
+  external: "hmmfetch HMMER 2.3.2 available from http://hmmer.wustl.edu/"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  infile: database [
+    parameter: "Y"
+    information: "HMMER hmm database file"
+    knowntype: "hmm database"
+    relations:  "EDAM: HMMER hidden Markov model database"             
+  ]
+
+  string: name [
+    parameter: "Y"
+    information: "Entry name"
+    knowntype: "hmm entry name"
+    relations:  "EDAM: HMMER hidden Markov model identifier"           
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: nhmm [
+    information: "Interpret name as an HMM number."
+    help: "Interpret name as an HMM number instead of a name.
+           Numbering starts at 0. For example, to fetch the frst HMM from an
+           HMM database called foo, you would do 'hmmfetch -n 0 foo'."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "hmm"
+    information: "HMMER hidden markov model output file"
+    relations:  "EDAM: HMMER hidden Markov model"                      
+  ]
+
+endsection: output

@@ -147,7 +147,7 @@ int main(int argc, char **argv)
        iii.HMMER 'options' (that don't appear in ACD file)
        iv. HMMER & new parameters.
        */
-    ajFmtPrintS(&cmd, "hmmbuild ");
+    ajStrAssignS(&cmd, ajAcdGetpathC("hmmbuild"));
     if(prior)
 	ajFmtPrintAppS(&cmd, " --prior %s ", ajFileGetNameC(prior));
     if(null)

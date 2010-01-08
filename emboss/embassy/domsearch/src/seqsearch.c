@@ -515,7 +515,8 @@ static AjPFile seqsearch_psialigned(AjPStr seqname,
     
     /* Run PSI-BLAST. */
     ajFmtPrintS(&temp,
-		"blastpgp -t 1 -i %S -B %S -j %d -e %f -b %d -v %d -d %S > %S\n",
+		"%S -t 1 -i %S -B %S -j %d -e %f -b %d -v %d -d %S > %S\n",
+                ajAcdGetpathC("blastpgp"),
                 seq_in, seqs_in, niter,evalue, maxhits, maxhits, database,
 		*psiname);
     ajFmtPrint("%S\n", temp);

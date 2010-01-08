@@ -1,0 +1,288 @@
+application: emast [
+  documentation: "Motif detection"
+  groups: "Protein:Motifs"
+  embassy: "memenew"
+  external: "mast MEME package http://meme.sdsc.edu/meme/"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  infile: mfile [
+    parameter: "Y"
+    information: "MEME program output file"
+    help: "If -d <database> is not given, MAST looks for database
+           specified inside of <mfile>."
+    knowntype: "meme output"
+    relations:  "EDAM: MEME sequence motif record"                     
+  ]
+
+  infile: dfile [
+    additional: "Y"
+    default: ""
+    nullok: "Y"
+    information: "MEME database file (optional)"
+    help: "If -d <database> is not given, MAST looks for database
+           specified inside of <mfile>."
+    knowntype: "meme database"
+    relations:  "EDAM: Sequence database"                              
+  ]
+
+  infile: afile [
+    additional: "Y"
+    default: ""
+    nullok: "Y"
+    information: "MEME motif alphabet file (optional)"
+    help: "Input file <mfile> is assumed to contain motifs in the
+           format output by bin/make_logodds and <a> is their alphabet; -d
+           <database> or -stdin must be specified when this option is used."
+    knowntype: "meme alphabet"
+    relations:  "EDAM: MEME motif alphabet"                            
+  ]
+
+  infile: bfile [
+    additional: "Y"
+    default: ""
+    nullok: "Y"
+    information: "MEME background frequencies file (optional)"
+    help: "The random model uses the letter frequencies given in
+           <bfile> instead of the non-redundant database frequencies. The
+           format of <bfile> is the same as that for the MEME -bfile opton;
+           see the MEME documentation for details. Sample files are given in
+           directory tests: tests/nt.freq and tests/na.freq in the MEME
+           distribution.)"
+    knowntype: "meme background frequencies"
+    relations:  "EDAM: MEME background frequencies file"               
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  float: ev [
+    standard: "Y"
+    default: "10"
+    information: "Print results for sequences with E-value"
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  float: mt [
+    standard: "Y"
+    default: "0.0001"
+    information: "Show motif matches with p-value < mt"
+    relations: "EDAM: Generic float"                                       
+  ]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  integer: smax [
+    additional: "Y"
+    default: "-1"
+    information: "Print results for no more than <smax>
+                  sequences"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  boolean: stdin [
+    additional: "Y"
+    default: "N"
+    information: "Read database from standard input"
+    help: "The default is to read the database specified inside
+           <mfile>."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: text [
+    additional: "Y"
+    default: "N"
+    information: "Output in text (ASCII) format"
+    help: "Default is hypertext (HTML) format"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: dna [
+    additional: "Y"
+    default: "N"
+    information: "Translate DNA sequences to protein"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: comp [
+    additional: "Y"
+    default: "N"
+    information: "Adjust p-values and E-values for sequence
+                  composition"
+    help: "The random model uses the letter frequencies in the current
+           target sequence instead of the non-redundant database
+           frequencies. This causes p-values and E-values to be compensated
+           individually for the actual composition of each sequence in the
+           database. This option can increase search time substantially due
+           to the need to compute a different score distribution for each
+           high-scoring sequence."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  integer: rank [
+    additional: "Y"
+    default: "-1"
+    information: "Print results starting with <rank> best"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  boolean: best [
+    additional: "Y"
+    default: "N"
+    information: "Include only the best motif in diagrams"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: remcorr [
+    additional: "Y"
+    default: "N"
+    information: "Remove highly correlated motifs from query"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: brief [
+    additional: "Y"
+    default: "N"
+    information: "Brief output: do not print documentation."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: b [
+    additional: "Y"
+    default: "N"
+    information: "Print only sections I and II"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: nostatus [
+    additional: "Y"
+    default: "N"
+    information: "Do not print progress report"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: hitlist [
+    additional: "Y"
+    default: "N"
+    information: "Print hit_list instead of diagram; implies
+                  -text"
+    help: "If you specify the -hitlist switch to MAST, the motif
+           'diagram' takes the form of a comma separated list of motif
+           occurrences ('hits'). Each 'hit' has the format: <strand><motif>
+           <start> <end> <p-value> where <strand> is the strand (+ or - for
+           DNA, blank for protein), <motif> is the motif number, <start> is
+           the starting position of the hit, <end> is the ending position of
+           the hit, and <p-value> is the position p-value of the hit."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+endsection: additional
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  integer: c [
+    default: "-1"
+    information: "Only use the first <c> motifs"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  boolean: sep [
+    default: "N"
+    information: "Score reverse complement DNA strand as a
+                  separate sequence"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: norc [
+    default: "N"
+    information: "Do not score reverse complement DNA strand"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: w [
+    default: "N"
+    information: "Show weak matches (mt<p-value<mt*10) in angle
+                  brackets"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: seqp [
+    default: "N"
+    information: "Use SEQUENCE p-values for motif thresholds"
+    help: "The default is to use POSITION p-values."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  string: mf [
+    default: ""
+    information: "Print <mf> as motif file name."
+    knowntype: "output identifier"
+    relations:  "EDAM: Generic string"                                 
+  ]
+
+  string: df [
+    default: ""
+    information: "Print <df> as database name."
+    knowntype: "string"
+    relations:  "EDAM: Generic string"                                 
+  ]
+
+  integer: minseqs [
+    default: "-1"
+    information: "Lower bound on number of sequences in db"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  float: mev [
+    default: "-1"
+    information: "Use only motifs with E-values less than
+                  <mev>"
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  integer: m [
+    default: "-1"
+    information: "Use only motif(s) number <m>"
+    help: "Overrides value set by using -mev."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  string: diag [
+    default: ""
+    information: "Nominal order and spacing of motifs"
+    help: "See on-line documentation for a valid example."
+    knowntype: "meme motif order"
+    relations:  "EDAM: MEME motifs directive file"                     
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    information: "MAST program output file"
+    knowntype: "mast output"
+    relations:  "EDAM: MAST alignment report"                          
+  ]
+
+endsection: output

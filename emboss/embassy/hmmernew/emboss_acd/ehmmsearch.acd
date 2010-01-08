@@ -1,0 +1,260 @@
+application: ehmmsearch [
+  documentation: "Search a sequence database with a profile
+                  HMM"
+  groups: "HMM"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+  embassy: "hmmernew"
+  external: "hmmsearch HMMER 2.3.2 available from http://hmmer.wustl.edu/"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  infile: hmmfile [
+    parameter: "Y"
+    knowntype: "hmm"
+    information: "HMMER hidden markov model file"
+    help: "File of HMMs."
+    relations:  "EDAM: HMMER hidden Markov model"                      
+  ]
+
+  seqall: seqfile [
+    parameter: "Y"
+    type: "gapstopprotein"
+    help: "File of input sequences."
+    relations: "EDAM: Protein sequence record"                             
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  integer: a [
+    standard: "Y"
+    information: "Number of alignments"
+    help: "Limits the alignment output to the <n> best scoring
+           domains. -A0 shuts off the alignment output and can be used to
+           reduce the size of output files."
+    default: "100"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  float: e [
+    additional: "Y"
+    default: "10."
+    information: "E-value cutoff"
+    help: "Set the E-value cutoff for the per-sequence ranked hit list
+           to <x>, where <x> is a positive real number. The default is 10.0.
+           Hits with E-values better than (less than) this threshold will be
+           shown."
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  float: t [
+    additional: "Y"
+    default: "-1000000."
+    information: "Bit score cutoff"
+    help: "Set the bit score cutoff for the per-sequence ranked hit
+           list to <x>, where <x> is a real number. The default is negative
+           infinity; by default, the threshold is controlled by E-value and
+           not by bit score. Hits with bit scores better than (greater than)
+           this threshold will be shown."
+    relations: "EDAM: Generic float"                                       
+  ]
+
+endsection: additional
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  integer: z [
+    information: "Calc E-value for fixed database size."
+    help: "Calculate the E-value scores as if we had seen a sequence
+           database of <n> sequences. The default is the number of sequences
+           seen in your database file <seqfile>."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  boolean: compat [
+    default: "N"
+    information: "Use HMMER 2.1.1 output format."
+    help: "Use the output format of HMMER 2.1.1, the 1998-2001 public
+           release; provided so 2.1.1 parsers don't have to be rewritten."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  integer: cpu [
+    information: "Number of CPUs"
+    help: "Sets the maximum number of CPUs that the program will run
+           on. The default is to use all CPUs in the machine. Overrides the
+           HMMER NCPU environment variable. Only affects threaded versions of
+           HMMER (the default on most systems)."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  boolean: cutga [
+    default: "N"
+    information: "Use Pfam GA (gathering threshold) score
+                  cutoffs."
+    help: "Use Pfam GA (gathering threshold) score cutoffs. Equivalent
+           to -globT <GA1> -domT <GA2>, but the GA1 and GA2 cutoffs are read
+           from each HMM in the input HMM database individually. hmmbuild
+           puts these cutoffs there if the alignment file was annotated in a
+           Pfam-friendly alignment format (extended SELEX or Stockholm
+           format) and the optional GA annotation line was present. If these
+           cutoffs are not set in the HMM file, -cut ga doesn't work."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: cuttc [
+    default: "N"
+    information: "Use Pfam TC (trusted cutoff) score cutoffs."
+    help: "Use Pfam TC (trusted cutoff) score cutoffs. Equivalent to
+           -globT <TC1> -domT <TC2>, but the TC1 and TC2 cutoffs are read
+           from each HMM in hmmfile individually. hmmbuild puts these cutoffs
+           there if the alignment file was annotated in a Pfam-friendly
+           alignment format (extended SELEX or Stockholm format) and the
+           optional TC annotation line was present. If these cutoffs are not
+           set in the HMM file, -cut tc doesn't work."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: cutnc [
+    default: "N"
+    information: "Use Pfam NC (noise cutoff) score cutoffs."
+    help: "Use Pfam NC (noise cutoff) score cutoffs. Equivalent to
+           -globT <NC1> -domT <NC2>, but the NC1 and NC2 cutoffs are read
+           from each HMM in hmmfile individually. hmmbuild puts these cutoffs
+           there if the alignment file was annotated in a Pfam-friendly
+           alignment format (extended SELEX or Stockholm format) and the
+           optional NC annotation line was present. If these cutoffs are not
+           set in the HMM file, -cut nc doesn't work."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  float: dome [
+    default: "1000000."
+    information: "E-value domain cutoff"
+    help: "Set the E-value cutoff for the per-domain ranked hit list
+           to <x>, where <x> is a positive real number. The default is
+           infinity; by default, all domains in the sequences that passed the
+           frst threshold will be reported in the second list, so that the
+           number of domains reported in the per-sequence list is consistent
+           with the number that appear in the per-domain list."
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  float: domt [
+    default: "-1000000."
+    information: "Bit score domain cutoff"
+    help: "Set the bit score cutoff for the per-domain ranked hit list
+           to <x>, where <x> is a real number. The default is negative
+           infinity; by default, all domains in the sequences that passed the
+           frst threshold will be reported in the second list, so that the
+           number of domains reported in the per-sequence list is consistent
+           with the number that appear in the per-domain list. Important
+           note: only one domain in a sequence is absolutely controlled by
+           this parameter, or by -domT. The second and subsequent domains in
+           a sequence have a de facto bit score threshold of 0 because of the
+           details of how HMMER works. HMMER requires at least one pass
+           through the main model per sequence; to do more than one pass
+           (more than one domain) the multidomain alignment must have a
+           better score than the single domain alignment, and hence the extra
+           domains must contribute positive score. See the Users' Guide for
+           more detail."
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  boolean: forward [
+    default: "N"
+    information: "Use forward algorithm"
+    help: "Use the Forward algorithm instead of the Viterbi algorithm
+           to determine the per-sequence scores. Per-domain scores are still
+           determined by the Viterbi algorithm. Some have argued that Forward
+           is a more sensitive algorithm for detecting remote sequence
+           homologues; my experiments with HMMER have not confrmed this,
+           however."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: nulltwo [
+    default: "N"
+    information: "Turn off second null model"
+    help: "Turn off the post hoc second null model. By default, each
+           alignment is rescored by a postprocessing step that takes into
+           account possible biased composition in either the HMM or the
+           target sequence. This is almost essential in database searches,
+           especially with local alignment models. There is a very small
+           chance that this postprocessing might remove real matches, and in
+           these cases --null2 may improve sensitivity at the expense of
+           reducing specifcity by letting biased composition hits through."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: pvm [
+    default: "N"
+    information: "Use parallel virtual machine"
+    help: "Run on a Parallel Virtual Machine (PVM). The PVM must
+           already be running. The client program hmmpfam-pvm must be
+           installed on all the PVM nodes. The HMM database hmmfile and an
+           associated GSI index file hmmfile.gsi must also be installed on
+           all the PVM nodes. (The GSI index is produced by the program
+           hmmindex.) Because the PVM implementation is I/O bound, it is
+           highly recommended that each node have a local copy of hmmfile
+           rather than NFS mounting a shared copy. Optional PVM support must
+           have been compiled into HMMER for -pvm to function."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: xnu [
+    default: "N"
+    information: "Use XNU filtering"
+    help: "Turn on XNU filtering of target protein sequences. Has no
+           effect on nucleic acid sequences. In trial experiments, -xnu
+           appears to perform less well than the default post hoc null2
+           model."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "hmmsearch output"
+    information: "HMMER hmmsearch program output file"
+    help: "The output consists of four sections: a ranked list of the
+           best scoring sequences, a ranked list of the best scoring domains,
+           alignments for all the best scoring domains, and a histogram of
+           the scores. A sequence score may be higher than a domain score for
+           the same sequence if there is more than one domain in the
+           sequence; the sequence score takes into account all the domains.
+           All sequences scoring above the -E and -T cutoffs are shown in the
+           frst list, then every domain found in this list is shown in the
+           second list of domain hits. If desired, E-value and bit score
+           thresholds may also be applied to the domain list using the -domE
+           and -domT options."
+    relations:  "EDAM: HMMER alignment report (HMM versus sequences)"  
+  ]
+
+endsection: output

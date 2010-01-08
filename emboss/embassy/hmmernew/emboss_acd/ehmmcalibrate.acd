@@ -1,0 +1,132 @@
+application: ehmmcalibrate [
+  documentation: "Calibrate HMM search statistics"
+  groups: "HMM"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+  embassy: "hmmernew"
+  external: "hmmcalibrate HMMER 2.3.2 available from http://hmmer.wustl.edu/"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  infile: inhmmfile [
+    parameter: "Y"
+    information: "HMMER hidden markov model file"
+    knowntype: "hmm"
+    help: "File containing an HMM."
+    relations:  "EDAM: HMMER hidden Markov model"                      
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  integer: cpu [
+    default: "0"
+    minimum: "0"
+    information: "Number of CPUs"
+    help: "Sets the maximum number of CPUs that the program will run
+           on. The default is to use all CPUs in the machine. Overrides the
+           HMMER NCPU environment variable. Only affects threaded versions of
+           HMMER (the default on most systems)."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  integer: fixed [
+    default: "0"
+    minimum: "0"
+    information: "Length fix for random sequences"
+    help: "Fix the length of the random sequences to <n>, where <n> is
+           a positive (and reasonably sized) integer. The default is instead
+           to generate sequences with a variety of different lengths,
+           controlled by a Gaussian (normal) distribution."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  float: mean [
+    default: "350.0"
+    information: "Mean length of synthetic sequences"
+    help: "Set the mean length of the synthetic sequences to <x>,
+           where <x> is a positive real number. The default is 350."
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  integer: num [
+    default: "5000"
+    minimum: "0"
+    information: "Number of synthetic sequences"
+    help: "Set the number of synthetic sequences to <n>, where <n> is
+           a positive integer. If <n> is less than about 1000, the ft to the
+           EVD may fail. Higher numbers of <n> will give better determined
+           EVD parameters. The default is 5000; it was empirically chosen as
+           a tradeoff between accuracy and computation time."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  boolean: pvm [
+    default: "N"
+    information: "Run on parallel virtual machines"
+    help: "Run on a Parallel Virtual Machine (PVM). The PVM must
+           already be running. The client program hmmcalibrate-pvm must be
+           installed on all the PVM nodes. Optional PVM support must have
+           been compiled into HMMER."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  float: sd [
+    default: "350.0"
+    minimum: "0"
+    information: "Standard deviation of syntheic sequences"
+    help: "Set the standard deviation of the synthetic sequence length
+           distribution to <x>, where <x> is a positive real number. The
+           default is 350. Note that the Gaussian is left-truncated so that
+           no sequences have lengths <= 0."
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  integer: seed [
+    default: "0"
+    minimum: "0"
+    information: "Random seed"
+    help: "Set the random seed to <n>, where <n> is a positive
+           integer. The default is to use time() to generate a different seed
+           for each run, which means that two different runs of hmmcalibrate
+           on the same HMM will give slightly different results. You can use
+           this option to generate reproducible results for different
+           hmmcalibrate runs on the same HMM."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outhmmfile [
+    parameter: "Y"
+    information: "HMMER hmmcalibrate program output file"
+    knowntype: "hmmcalibrate output"
+    help: "File containing an HMM with EVD parameters."
+    relations:  "EDAM: HMMER hidden Markov model"                      
+  ]
+
+  outfile: histfile [
+    nullok: "Yes"
+    nulldefault: "Yes"
+    information: "HMMER histogram output file (optional)"
+    knowntype: "hmmer histogram"
+    help: "Save a histogram of the scores and the fitted theoretical
+           curve to file."
+    relations:  "EDAM: Histogram graph data"                           
+  ]
+
+endsection: output

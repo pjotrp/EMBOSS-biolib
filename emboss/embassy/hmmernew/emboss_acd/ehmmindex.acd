@@ -1,0 +1,25 @@
+application: ehmmindex [
+  documentation: "Create a binary SSI index for an HMM
+                  database."
+  groups: "HMM"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+  embassy: "hmmernew"
+  external: "hmmindex HMMER 2.3.2 available from http://hmmer.wustl.edu/"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  infile: database [
+    parameter: "Y"
+    information: "HMMER hmm database file"
+    knowntype: "hmm database"
+    help: "HMM database."
+    relations:  "EDAM: HMMER hidden Markov model database"             
+  ]
+
+endsection: input
