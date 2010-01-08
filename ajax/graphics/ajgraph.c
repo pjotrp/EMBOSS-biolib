@@ -868,7 +868,9 @@ void ajGraphicsSetDevice(const AjPGraph graph)
 
 __deprecated void ajGraphSetDevice(const AjPGraph thys)
 {
-    return ajGraphicsSetDevice(thys);
+    ajGraphicsSetDevice(thys);
+
+    return;
 }
 
 /* @func ajGraphicsSetFgcolour ************************************************
