@@ -23,9 +23,8 @@
 /* wordmatch
 ** Create a word table for the sequences in the sequence set.
 ** Then iterate over the sequences in the seqall set
-** checking to see if the word matches.  If word matches then
-** check to see if the position lines up with the last position if it
-** does continue else stop.
+** to find word matches. When word matches are found then
+** it is checked whether the following characters do also match.
 **
 */
 
@@ -61,8 +60,16 @@ static ajulong radix =256;
 ** @attr locs [ajuint**] List of word start positions for each sequence
 ** @attr hash [ajulong] Hash value for the word
 ** @attr nseqs [ajuint] Number of sequences word has been seen
-** @attr minskip [ajuint] We can scan all other words to find out a minimum
-**                        skip when this word is matched (not yet used)
+** @attr minskip [ajuint] We can scan all other words (during preprocessing)
+**                        to find out a minimum length that can be skipped
+**                        safely when this word is matched (not yet used)
+** @attr nAllMatches [ajuint] Total number of all matches in all sequences
+** @attr nSeqMatches [ajuint] Number of sequences that at least one match
+** @attr lenAllMatches [ajulong] Total score/length of all the matches
+**                               in all sequences
+** @attr lenLongestMatches [ajulong] Total score/length of the longest matches
+**                                   in all sequences
+**
 ** @@
 ******************************************************************************/
 
@@ -75,6 +82,10 @@ typedef struct EmbSWordWrap {
     ajulong hash;
     ajuint nseqs;
     ajuint minskip;
+    ajuint nAllMatches;
+    ajuint nSeqMatches;
+    ajulong lenAllMatches;
+    ajulong lenLongestMatches;
 } EmbOWordWrap;
 
 #define EmbPWordWrap EmbOWordWrap*
@@ -84,7 +95,7 @@ typedef struct EmbSWordWrap {
 static ajuint wordmatch_embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
         const EmbPWordWrap* patterns,
         ajuint plen, ajuint nwords, AjPList* l,
-        ajuint* lastlocation);
+        ajuint* lastlocation, ajuint** nmatchesseqset, AjBool checkmode);
 
 static ajuint wordmatch_getWords(const AjPTable table,
                                  EmbPWordWrap**, ajuint wordlen,
@@ -108,11 +119,11 @@ int main(int argc, char **argv)
     AjPSeq seqofseqall;
     const AjPSeq seqofseqset;
     ajint wordlen;
-    AjPTable seq1MatchTable = 0;
+    AjPTable wordsTable = 0;
     AjPList* matchlist = NULL;
     AjPFile logfile;
-    AjPFeattable ftableofseqsetseq = NULL;
-    AjPFeattable ftableofseqallseq = NULL;
+    AjPFeattable* seqsetftables = NULL;
+    AjPFeattable seqallseqftable = NULL;
     AjPFeattabOut ftoutforseqsetseq = NULL;
     AjPFeattabOut ftoutforseqallseq = NULL;
     AjPAlign align = NULL;
@@ -125,14 +136,20 @@ int main(int argc, char **argv)
     ajulong sumAllScore = 0;
     AjBool dumpAlign = ajTrue;
     AjBool dumpFeature = ajTrue;
-    EmbPWordWrap* wordswrapped = NULL;
-    ajuint npatterns=0;
+    AjBool checkmode = ajFalse;
+    EmbPWordWrap* wordsw = NULL;
+    ajuint npatterns=0, seqsetsize;
+    ajuint* nmatchesseqset;
+    const char* header = "Pattern %S  #all-matches  #seq-matches"
+            "  avg-match-length  avg-longest-match-length\n";
+    char* paddedheader;
+    AjPStr padding = ajStrNew();
 
-    /** cursors for the current sequence being scanned
-     ** until which location it was scanned,
-     ** we have an entry for each sequence in the seqset
-     **
-     */
+
+    /* Cursors for the current sequence being scanned,
+    ** i.e., until which location it was scanned.
+    ** We have a cursor/location entry for each sequence in the seqset.
+    */
     ajuint* lastlocation;
 
 
@@ -145,50 +162,65 @@ int main(int argc, char **argv)
     dumpAlign = ajAcdGetToggle("dumpalign");
     dumpFeature = ajAcdGetToggle("dumpfeat");
 
-    ajSeqsetTrim(seqset);
-    AJCNEW0(matchlist, ajSeqsetGetSize(seqset));
-
     if(dumpAlign)
     {
         align = ajAcdGetAlign("outfile");
         ajAlignSetExternal(align, ajTrue);
     }
 
+    seqsetsize = ajSeqsetGetSize(seqset);
+    ajSeqsetTrim(seqset);
+    AJCNEW0(matchlist, seqsetsize);
+    AJCNEW0(seqsetftables, seqsetsize);
+    AJCNEW0(nmatchesseqset, seqsetsize);
+
     if (dumpFeature)
     {
         ftoutforseqsetseq =  ajAcdGetFeatout("aoutfeat");
         ftoutforseqallseq =  ajAcdGetFeatout("boutfeat");
     }
+
+    checkmode = !dumpFeature && !dumpAlign;
     embWordLength(wordlen);
 
-    for(i=0;i<ajSeqsetGetSize(seqset);i++)
+    ajFmtPrintF(logfile, "Sequence file for patterns: %S\n",
+            ajSeqsetGetFilename(seqset));
+    ajFmtPrintF(logfile, "Sequence file to be scanned for patterns: %S\n",
+            ajSeqallGetFilename(seqall));
+    ajFmtPrintF(logfile, "Number of sequences in the patterns file: %u\n",
+            seqsetsize);
+    ajFmtPrintF(logfile, "Pattern/word length: %u\n", wordlen);
+
+    for(i=0;i<seqsetsize;i++)
     {
         const AjPSeq seq;
         seq = ajSeqsetGetseqSeq(seqset, i);
-        embWordGetTable(&seq1MatchTable, seq);
+        embWordGetTable(&wordsTable, seq);
     }
     AJCNEW0(lastlocation, i);
 
-    if(ajTableGetLength(seq1MatchTable)>0)
+    if(ajTableGetLength(wordsTable)>0)
     {
-        npatterns = wordmatch_getWords(seq1MatchTable,
-                                       &wordswrapped, wordlen, seqset);
+        npatterns = wordmatch_getWords(wordsTable,
+                                       &wordsw, wordlen, seqset);
+        ajFmtPrintF(logfile, "Number of patterns/words: %u\n", npatterns);
 
         while(ajSeqallNext(seqall,&seqofseqall))
         {
             ajuint nmatches;
-            for(i=0;i<ajSeqsetGetSize(seqset);i++)
+            for(i=0;i<seqsetsize;i++)
             {
                 lastlocation[i]=0;
+                if (!checkmode)
                 matchlist[i] = ajListstrNew();
             }
             nmatches = wordmatch_embPatRabinKarpSearchMultiPattern(
                     ajSeqGetSeqS(seqofseqall),
-                    (const EmbPWordWrap*)wordswrapped, wordlen, npatterns,
-                    matchlist, lastlocation);
+                    (const EmbPWordWrap*)wordsw, wordlen, npatterns,
+                    matchlist, lastlocation, &nmatchesseqset, checkmode);
 
-
-            for(i=0;i<ajSeqsetGetSize(seqset);i++)
+            if (!checkmode)
+            for(i=0;i<seqsetsize;i++)
             {
                 if(nmatches>0)
                 {
@@ -214,20 +246,15 @@ int main(int argc, char **argv)
                             ajAlignWrite(align);
                             ajAlignReset(align);
                         }
-                        sumAllScore += len;
                     }
 
                     if(ajListGetLength(matchlist[i])>0 && dumpFeature)
                     {
-                        /*
-                         ** TODO: this section needs to be updated
-                         ** for multi sequence mode
-                         */
                         embWordMatchListConvToFeat(matchlist[i],
-                                &ftableofseqsetseq,&ftableofseqallseq,
-                                seqofseqset,seqofseqall);
-                        ajFeattableWrite(ftoutforseqsetseq, ftableofseqsetseq);
-                        ajFeattableWrite(ftoutforseqallseq, ftableofseqallseq);
+                                &seqsetftables[i], &seqallseqftable,
+                                seqofseqset, seqofseqall);
+                        ajFeattableWrite(ftoutforseqallseq, seqallseqftable);
+                        ajFeattableDel(&seqallseqftable);
                     }
 
                     ajListIterDel(&iter);
@@ -236,26 +263,71 @@ int main(int argc, char **argv)
             }
             nAllMatches += nmatches;
         }
-        ajFmtPrintF(logfile, "number of patterns = %u\n", npatterns);
-        ajFmtPrintF(logfile, "total number matches = %Lu\n", nAllMatches);
-        ajFmtPrintF(logfile, "sum of score values = %Lu\n", sumAllScore);
-    }
 
-    embWordFreeTable(&seq1MatchTable);	/* free table of words */
+        for(i=0;i<npatterns;i++)
+        {
+            sumAllScore += wordsw[i]->lenAllMatches;
+        }
+
+        ajFmtPrintF(logfile, "Number of sequences in the file scanned "
+                "for patterns: %u\n", ajSeqallGetCount(seqall));
+        ajFmtPrintF(logfile, "Number of all matches: %Lu"
+                " (wordmatch finds exact matches only)\n", nAllMatches);
+        ajFmtPrintF(logfile, "Sum of match lengths: %Lu\n", sumAllScore);
+        ajFmtPrintF(logfile, "Average match length: %.2f\n",
+                sumAllScore*1.0/nAllMatches);
+
+        ajFmtPrintF(logfile, "\nDistribution of the matches among pattern"
+                " sequences:\n");
+        ajFmtPrintF(logfile, "-----------------------------------------"
+                "-----------\n");
+
+        for(i=0;i<ajSeqsetGetSize(seqset);i++)
+        {
+            if (nmatchesseqset[i]>0)
+                ajFmtPrintF(logfile, "%-42s: %8u\n",
+                        ajSeqGetNameC(ajSeqsetGetseqSeq(seqset, i)),
+                        nmatchesseqset[i]);
+            ajFeattableWrite(ftoutforseqsetseq, seqsetftables[i]);
+            ajFeattableDel(&seqsetftables[i]);
+        }
+
+        ajFmtPrintF(logfile, "\nPattern statistics:\n");
+        ajFmtPrintF(logfile, "-------------------\n");
+        if(wordlen>7)
+            ajStrAppendCountK(&padding, ' ', wordlen-7);
+        paddedheader = ajFmtString(header,padding);
+        ajFmtPrintF(logfile, paddedheader);
+        for(i=0;i<npatterns;i++)
+        {
+            if (wordsw[i]->nAllMatches>0)
+                ajFmtPrintF(logfile, "%-7s: %12u  %12u %17.2f %25.2f\n",
+                        wordsw[i]->word->fword,
+                        wordsw[i]->nAllMatches,
+                        wordsw[i]->nSeqMatches,
+                        wordsw[i]->lenAllMatches*1.0/wordsw[i]->nAllMatches,
+                        wordsw[i]->lenLongestMatches*1.0/wordsw[i]->nSeqMatches
+                );
+        }
+    }
+    AJFREE(seqsetftables);
 
     for(i=0;i<npatterns;i++)
     {
-        AJFREE(wordswrapped[i]->seqindxs);
-        AJFREE(wordswrapped[i]->seqs);
-        for(j=0;j<wordswrapped[i]->nseqs;j++)
-            AJFREE(wordswrapped[i]->locs[j]);
-        AJFREE(wordswrapped[i]->nnseqlocs);
-        AJFREE(wordswrapped[i]->locs);
-        AJFREE(wordswrapped[i]);
+        AJFREE(wordsw[i]->seqindxs);
+        AJFREE(wordsw[i]->seqs);
+        for(j=0;j<wordsw[i]->nseqs;j++)
+            AJFREE(wordsw[i]->locs[j]);
+        AJFREE(wordsw[i]->nnseqlocs);
+        AJFREE(wordsw[i]->locs);
+        AJFREE(wordsw[i]);
     }
-    AJFREE(wordswrapped);
+
+    embWordFreeTable(&wordsTable);
+    AJFREE(wordsw);
     AJFREE(matchlist);
     AJFREE(lastlocation);
+    AJFREE(nmatchesseqset);
 
     if(dumpAlign)
     {
@@ -265,8 +337,6 @@ int main(int argc, char **argv)
 
     if(dumpFeature)
     {
-        ajFeattableDel(&ftableofseqsetseq);
-        ajFeattableDel(&ftableofseqallseq);
         ajFeattabOutDel(&ftoutforseqsetseq);
         ajFeattabOutDel(&ftoutforseqallseq);
     }
@@ -275,6 +345,8 @@ int main(int argc, char **argv)
     ajSeqallDel(&seqall);
     ajSeqsetDel(&seqset);
     ajSeqDel(&seqofseqall);
+    ajStrDel(&padding);
+    AJFREE(paddedheader);
 
     embExit();
 
@@ -352,13 +424,13 @@ static ajulong wordmatch_precomputeRM(ajuint m)
 static ajuint wordmatch_embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
     const EmbPWordWrap* patterns,
     ajuint plen, ajuint npatterns, AjPList* matchlist,
-    ajuint* lastlocation)
+    ajuint* lastlocation, ajuint** nmatchesseqset, AjBool checkmode)
 {
     const char *text;
     const AjPSeq seq;
-    ajuint i, j, tlen, ii, k, seqsetindx, indxloc, maxloc;
-    ajuint matches=0;
-    EmbPWordWrap* bsres;
+    ajuint i, matchlen, tlen, ii, k, seqsetindx, indxloc, maxloc;
+    ajuint nMatches=0;
+    EmbPWordWrap* bsres; /* match found using binary search */
     EmbPWordWrap cursor;
     ajulong rm;
     ajulong textHash = 0;
@@ -396,46 +468,55 @@ static ajuint wordmatch_embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
                     {
                         ajuint pos = (*bsres)->locs[k][indxloc];
                         const char* seq_ = ajSeqGetSeqC(seq);
-                        j=0;
+                        matchlen=0;
                         /* following loop is to make sure we never have
                          * false positives, after we are confident that
-                         * we don't get false hits we can delete this loop
+                         * we don't get false hits we can delete/disable it
                          */
-                        while(j<plen)
+                        while(matchlen<plen)
                         {
-                            if(seq_[pos+j] != text[i+j-plen])
+                            if(seq_[pos+matchlen] != text[i+matchlen-plen])
                             {
                                 char tmp[plen+1];
                                 tmp[plen] = '\0';
                                 memcpy(tmp, text+i-plen, plen);
                                 ajWarn("unexpected match:   pat:%s  pat-pos:%u,"
                                         " txt-pos:%u text:%s hash:%u\n",
-                                        (*bsres)->word->fword, pos, i+j-plen,
+                                        (*bsres)->word->fword, pos, i+matchlen-plen,
                                         tmp, textHash);
                                 break;
                             }
-                            j++;
+                            matchlen++;
                         }
 
-                        if(j<plen)
+                        if(matchlen<plen)
                             continue;
-
-                        j=0;
-                        ++matches;
+                        (*bsres)->nAllMatches++;
                         ii = seq2start+plen;
-                        while(ii<tlen  && pos+plen+j<ajSeqGetLen(seq))
+                        while(ii<tlen  && pos+matchlen<ajSeqGetLen(seq))
                         {
-                            if(seq_[pos+plen+j] != text[ii++])
+                            if(seq_[pos+matchlen] != text[ii++])
                                 break;
                             else
-                                ++j;
+                                ++matchlen;
                         }
+                        nMatches ++;
+                        if (!checkmode)
                         embWordMatchListAppend(matchlist[seqsetindx],
-                                seq, pos, seq2start, plen+j);
+                                seq, pos, seq2start, matchlen);
                         if ( ii > maxloc )
                             maxloc = ii;
+                        (*bsres)->lenAllMatches += matchlen;
+
+                        (*nmatchesseqset)[seqsetindx] ++;
+
                     }
-                    lastlocation[seqsetindx] = maxloc;
+                    if (maxloc>0)
+                    {
+                        lastlocation[seqsetindx] = maxloc;
+                        (*bsres)->nSeqMatches++;
+                        (*bsres)->lenLongestMatches += matchlen;
+                    }
                 }
             }
         }
@@ -443,7 +524,7 @@ static ajuint wordmatch_embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
         ++i;
     }
     AJFREE(cursor);
-    return matches;
+    return nMatches;
 }
 
 
