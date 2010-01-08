@@ -3803,7 +3803,7 @@ __deprecated void ajFileBuffClear(AjPFilebuff buff, ajint lines)
 ** @param [r] lastline [const AjPStr] Last line of input.
 **                            Used to count characters to be saved
 ** @param [r] dostore [AjBool] append if true
-** @param [w] Pstore [AjPStr*] string to append to
+** @param [w] Pstore [AjPStr*] Caller's record of the processed lines
 ** @return [void]
 ** @@
 ******************************************************************************/
