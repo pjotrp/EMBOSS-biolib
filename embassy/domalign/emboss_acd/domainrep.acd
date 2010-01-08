@@ -6,6 +6,7 @@ application: domainrep [
   batch: "yes"
   cpu: "medium"
   embassy: "domalign"
+  external: "stamp Modified stamp - contact Jon Ison jison@ebi.ac.uk"
 ]
 
 section: input [

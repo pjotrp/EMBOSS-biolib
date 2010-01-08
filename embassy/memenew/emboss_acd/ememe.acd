@@ -2,6 +2,7 @@ application: ememe [
   documentation: "Multiple EM for Motif Elicitation"
   groups: "Protein:Motifs"
   embassy: "memenew"
+  external: "meme MEME package http://meme.sdsc.edu/meme/"
 ]
 
 section: input [

@@ -123,7 +123,7 @@ int main(int argc, char **argv)
        iii.HMMER 'options' (that don't appear in ACD file)
        iv. HMMER & new parameters.
        */
-    ajFmtPrintS(&cmd, "hmmpfam");
+    ajStrAssignS(&cmd, ajAcdGetpathC("hmmpfam"));
     if(nuc)
 	ajStrAppendC(&cmd, " -n ");
     ajFmtPrintAppS(&cmd, " -A %d -E %f -T %f -Z %d", A, E, T, Z);

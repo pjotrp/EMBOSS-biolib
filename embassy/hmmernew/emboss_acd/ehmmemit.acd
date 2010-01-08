@@ -5,6 +5,7 @@ application: ehmmemit [
   batch: "yes"
   cpu: "medium"
   embassy: "hmmernew"
+  external: "hmmemit HMMER 2.3.2 available from http://hmmer.wustl.edu/"
 ]
 
 section: input [

@@ -2,6 +2,7 @@ application: emast [
   documentation: "Motif detection"
   groups: "Protein:Motifs"
   embassy: "memenew"
+  external: "mast MEME package http://meme.sdsc.edu/meme/"
 ]
 
 section: input [

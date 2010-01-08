@@ -6,6 +6,7 @@ application: seqalign [
   batch: "yes"
   cpu: "high"
   embassy: "domalign"
+  external: "clustalw"
 ]
 
 section: input [

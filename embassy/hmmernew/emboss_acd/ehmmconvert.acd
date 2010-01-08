@@ -2,6 +2,7 @@ application: ehmmconvert [
   documentation: "Convert between profile HMM file formats"
   groups: "HMM"
   embassy: "hmmernew"
+  external: "hmmconvert HMMER 2.3.2 available from http://hmmer.wustl.edu/"
 ]
 
 section: input [

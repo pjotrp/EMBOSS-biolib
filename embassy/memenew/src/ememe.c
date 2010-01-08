@@ -173,9 +173,7 @@ int main(int argc, char **argv)
        iii.Original MEME options (that don't appear in ACD file)
        iv. EMBASSY MEME new qualifiers and parameters.
        */
-    if(!ajNamGetValueC("meme", &cmd))
-	ajStrAssignC(&cmd, "meme");
-
+    ajStrAssignS(&cmd, ajAcdGetpathC("meme"));
     ajFmtPrintAppS(&cmd, " %S", outsname);
 
     if(bfile)

@@ -102,7 +102,7 @@ int main(int argc, char **argv)
        iii.HMMER 'options' (that don't appear in ACD file)
        iv. HMMER & new parameters.
        */
-    ajFmtPrintS(&cmd, "hmmcalibrate");
+    ajStrAssignS(&cmd, ajAcdGetpathC("hmmcalibrate"));
     if(cpu)
 	ajFmtPrintAppS(&cmd, " --cpu %d ", cpu);
     if(fixed)

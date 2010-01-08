@@ -75,7 +75,7 @@ int main(int argc, char **argv)
        iii.HMMER 'options' (that don't appear in ACD file)
        iv. HMMER & new parameters.
        */
-    ajFmtPrintS(&cmd, "hmmfetch");
+    ajStrAssignS(&cmd, ajAcdGetpathC("hmmfetch"));
     if(nhmm)
 	ajStrAppendC(&cmd, " -n ");
     /* Note the output redirected to outfile  */

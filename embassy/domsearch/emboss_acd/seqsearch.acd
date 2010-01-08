@@ -6,6 +6,7 @@ application: seqsearch [
   batch: "yes"
   cpu: "medium"
   embassy: "domsearch"
+  external: "blastpgp NCBI toolkit or blast executables"
 ]
 
 section: input [

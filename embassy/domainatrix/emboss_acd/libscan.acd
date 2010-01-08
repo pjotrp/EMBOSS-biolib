@@ -18,6 +18,10 @@ list: mode  [
   button: "Y"
   help: "libscan runs in one of two modes either (i) database search mode or (ii) library screen mode. In database search mode libscan reads one or more directories each containing a single type of discriminating element, the permitted types are sparse sequence signature, Gribskov profile, Henikoff profile or hidden Markov model.  In library screen mode, libscan reads a sequence set, screens each sequence against the library (directories of discriminating elements) and writes a library scan file (of top-scoring families) for each one."
     relations: "EDAM: Generic string array"                                
+  external: "hmmsearch HMMER 2.3.2 available from http://hmmer.wustl.edu/"
+  external: "formatdb NCBI toolkit and blast executables"
+  external: "blastpgp NCBI toolkit and blast executables"
+  external: "rpsblast NCBI toolkit and blast executables"
 ]
 
 boolean: grib

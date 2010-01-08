@@ -484,10 +484,11 @@ int main(int argc, char **argv)
 	if(modei==2)
 	{
 	    /* Alignment is available: do profile to sequence mode. */
-	    ajFmtPrintS(&cmd,"clustalw -type=protein -profile1=%S -sequences"
+	    ajFmtPrintS(&cmd,"%S -type=protein -profile1=%S -sequences"
 			" -profile2=%S -MATRIX=BLOSUM -GAPOPEN=10"
 			" -GAPEXT=0.5 -outfile=%S\n",
-			clustin1,clustin2,clustout);
+			ajAcdGetpathC("clustalw"),
+                        clustin1,clustin2,clustout);
 	}	
 	/* Such cases will now no longer occur ... but keep here for time
 	   being. */

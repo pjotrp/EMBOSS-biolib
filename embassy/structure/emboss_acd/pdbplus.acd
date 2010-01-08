@@ -6,6 +6,8 @@ application: pdbplus [
   batch: "yes"
   cpu: "medium"
   embassy: "structure"
+  external: "stride"
+  external: "naccess"
 ]
 
 section: input [
