@@ -149,8 +149,6 @@ AjBool        ajFeattableWriteEmbl (AjPFeattabOut ftout,
                                     const AjPFeattable features);
 AjBool        ajFeattableWriteGenbank (AjPFeattabOut ftout,
                                     const AjPFeattable features);
-AjBool        ajFeattableWriteGenpept (AjPFeattabOut ftout,
-                                    const AjPFeattable features);
 AjBool        ajFeattableWriteRefseq (AjPFeattabOut ftout,
                                       const AjPFeattable features);
 AjBool        ajFeattableWriteRefseqp (AjPFeattabOut ftout,
