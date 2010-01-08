@@ -269,7 +269,7 @@ double ajCvtGaussToProb(float mean, float sd, float score)
 
 
 /* @obsolete ajGaussProb
-** @rename ajCvtGaussProb
+** @rename ajCvtGaussToProb
 */
 
 __deprecated double ajGaussProb(float mean, float sd, float score)
