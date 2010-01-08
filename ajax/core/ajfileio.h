@@ -70,6 +70,11 @@ AjBool         ajBuffreadLinePosStore(AjPFilebuff buff, AjPStr* pdest,
                                       ajlong* Ppos, AjBool store, AjPStr *astr);
 AjBool         ajBuffreadLineTrim(AjPFilebuff buff, AjPStr* pdest);
 
+/*
+** End of prototype definitions
+*/
+
+
 __deprecated void    ajFileBuffLoad (AjPFilebuff thys);
 __deprecated AjBool  ajFileBuffGet  (AjPFilebuff thys, AjPStr *pdest);
 __deprecated AjBool  ajFileBuffGetL (AjPFilebuff thys, AjPStr *pdest,
@@ -98,10 +103,6 @@ __deprecated size_t  ajFileWrite(AjPFile file, const void* ptr,
                                  size_t element_size, size_t count);
 __deprecated ajint   ajFileWriteStr(AjPFile thys,
                                     const AjPStr str, ajuint len);
-
-/*
-** End of prototype definitions
-*/
 
 
 

@@ -385,6 +385,10 @@ AjPFile        ajOutfileGetFile(const AjPOutfile thys);
 FILE*          ajOutfileGetFileptr(const AjPOutfile thys);
 const AjPStr   ajOutfileGetFormat(const AjPOutfile thys);
 
+/*
+** End of prototype definitions
+*/
+
 __deprecated ajint          ajFileBuffSize(void);
 __deprecated void           ajFileBuffClearStore(AjPFilebuff buff, ajint lines,
                                                  const AjPStr rdline,
@@ -514,10 +518,6 @@ __deprecated AjPFile      ajFileNewDirF(const AjPDir dir,
 
 __deprecated void         ajFileUnbuffer (AjPFile thys);
 __deprecated AjPFile        ajFileNewInC(const char *name);
-
-/*
-** End of prototype definitions
-*/
 
 #define    MAJFILETELL(file) (file->fp ? ftell(file->fp) : 0L)
 

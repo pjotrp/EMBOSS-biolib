@@ -86,6 +86,10 @@ AjBool    ajRangeElementGetText(const AjPRange thys, ajuint element,
 AjBool    ajRangeElementGetValues(const AjPRange thys, ajuint element,
                                   ajuint *start, ajuint *end);
 
+/*
+** End of prototype definitions
+*/
+
 __deprecated AjPRange  ajRangeCopy(const AjPRange src);
 __deprecated AjPRange  ajRangeGet(const AjPStr s);
 __deprecated AjPRange  ajRangeGetLimits(const AjPStr str,
@@ -109,10 +113,6 @@ __deprecated ajuint	  ajRangeOverlapSingle (ajuint start, ajuint end,
 				ajuint pos, ajuint length);
 __deprecated AjBool    ajRangeOrdered (const AjPRange thys);
 __deprecated AjBool    ajRangeDefault(const AjPRange thys, const AjPSeq s);
-
-/*
-** End of prototype definitions
-*/
 
 #endif
 

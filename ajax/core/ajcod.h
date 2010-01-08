@@ -118,6 +118,10 @@ void 	     ajCodWriteOut( const AjPCod thys, AjPOutfile outf);
 ajint        ajCodOutFormat(const AjPStr name);
 void         ajCodPrintFormat(AjPFile outf, AjBool full);
 
+/*
+** End of prototype definitions
+*/
+
 __deprecated AjPCod       ajCodDup (const AjPCod thys);
 __deprecated AjPCod	  ajCodNewCode(ajint code);
 __deprecated void         ajCodAssCode(AjPCod thys, ajint geneticcode);
@@ -137,10 +141,6 @@ __deprecated void         ajCodCountTriplets(AjPCod thys,
                                              const AjPStr s, ajint *c);
 __deprecated double       ajCodCalcCai(const AjPCod cod, const AjPStr str);
 __deprecated void         ajCodCalculateUsage(AjPCod thys, ajint c);
-
-/*
-** End of prototype definitions
-*/
 
 #endif
 

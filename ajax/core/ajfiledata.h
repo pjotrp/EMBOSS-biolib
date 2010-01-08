@@ -26,6 +26,10 @@ const AjPStr ajDatafileValuePath(void);
 
 void        ajDatafileExit(void);
 
+/*
+** End of prototype definitions
+*/
+
 __deprecated void    ajFileDataDirNew(const AjPStr tfile,
                                       const AjPStr dir, AjPFile *fnew);
 __deprecated void    ajFileDataDirNewC (const char *s, const char* d,
@@ -37,10 +41,6 @@ __deprecated void    ajFileDataNewWrite (const AjPStr tfile, AjPFile *fnew);
 
 
 __deprecated AjBool  ajFilePathData(AjPStr *Ppath);
-
-/*
-** End of prototype definitions
-*/
 
 #ifdef __cplusplus
 }

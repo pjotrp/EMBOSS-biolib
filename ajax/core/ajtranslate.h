@@ -157,6 +157,10 @@ ajint         ajTrnCodonstrTypeS (const AjPTrn trnObj,
 AjPSeq        ajTrnSeqOrig (const AjPTrn trnObj, const AjPSeq seq,
 			    ajint frame);
 
+/*
+** End of prototype definitions
+*/
+
 __deprecated ajint         ajTrnStartStop (const AjPTrn trnObj,
                                            const AjPStr codon, char *aa);
 __deprecated ajint         ajTrnStartStopC (const AjPTrn trnObj,
@@ -195,10 +199,6 @@ __deprecated ajint   ajTrnCDangle (const AjPTrn trnObj, const char *seq,
                                    ajint len, ajint frame, AjPStr *pep);
 __deprecated ajint   ajTrnStrDangle (const AjPTrn trnObj, const AjPStr seq,
                                      ajint frame, AjPStr *pep);
-
-/*
-** End of prototype definitions
-*/
 
 #endif
 

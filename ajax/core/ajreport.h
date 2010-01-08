@@ -153,6 +153,10 @@ void         ajReportWriteHeader (AjPReport thys,
 void         ajReportWriteTail (AjPReport thys,
 				const AjPFeattable ftable, const AjPSeq seq);
 
+/*
+** End of prototype definitions
+*/
+
 __deprecated void     ajReportFileAdd (AjPReport thys,
                                        AjPFile file, const AjPStr type);
 __deprecated void     ajReportAppendSubHeader (AjPReport thys,
@@ -178,10 +182,6 @@ __deprecated ajint    ajReportLists (const AjPReport thys,
                                      AjPStr** types, AjPStr** names,
                                      AjPStr** prints, ajuint** tagsizes);
     
-/*
-** End of prototype definitions
-*/
-
 #endif
 
 #ifdef __cplusplus

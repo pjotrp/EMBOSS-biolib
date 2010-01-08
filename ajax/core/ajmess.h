@@ -183,6 +183,11 @@ const char*       ajMessGetMessageC (void) ;
 
 void              ajMessInvokeDebugger(void);
 
+/*
+** End of prototype definitions
+*/
+
+
 /* if a setjmp() stack context is set using ajMessCatch*() then rather than
 ** exiting or giving an error message, ajMessCrash() and messError() will
 ** longjmp() back to the context.
@@ -195,10 +200,6 @@ __deprecated ajint             ajMessErrorCount (void);
 __deprecated char*             ajMessCaughtMessage (void) ;
 __deprecated char*             ajMessSysErrorText (void) ;
 __deprecated FILE*             ajDebugFile (void);
-
-/*
-** End of prototype definitions
-*/
 
 #define ajMessCrash   ajMessSetErr(__FILE__, __LINE__), ajMessCrashFL
 #define ajMessCrashCode ajMessSetErr(__FILE__, __LINE__), ajMessCrashCodeFL

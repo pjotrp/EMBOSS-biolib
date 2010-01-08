@@ -42,6 +42,10 @@ AjBool        ajResidueExistsBin(ajint base);
 AjBool        ajResidueExistsChar(char c);
 
 /*
+** End of prototype definitions
+*/
+
+/*
 ** deprecated prototype  definitions
 */
 
@@ -56,10 +60,6 @@ __deprecated char          ajBinToAZ(ajint c);
 __deprecated ajint         ajIntToAZ(ajint n);
 __deprecated char          ajBaseComp(char base);
 __deprecated float         ajBaseProb(ajint base1, ajint base2);
-
-/*
-** End of prototype definitions
-*/
 
 #endif
 

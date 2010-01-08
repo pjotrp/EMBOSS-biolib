@@ -58,6 +58,10 @@ float ajMeltGC(const AjPStr strand, ajint len);
 float ajMeltTempProd(float gc, float saltconc, ajint len);
 float ajAnneal(float tmprimer, float tmproduct);
 
+/*
+** End of prototype definitions
+*/
+
 __deprecated float ajTm(const AjPStr strand, ajint len,
                         ajint shift, float saltconc,
                         float DNAconc, AjBool isDNA);
@@ -67,9 +71,6 @@ __deprecated float ajTm2(const char *strand, ajint pos,
                          float **saveentr, float **saveenth, float **saveener);
 __deprecated float ajProdTm(float gc, float saltconc, ajint len);
 
-/*
-** End of prototype definitions
-*/
 
 #endif
 
