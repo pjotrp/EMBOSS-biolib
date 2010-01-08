@@ -63,7 +63,7 @@ Replace or delete sequence sections
 Command line arguments
 
 Replace or delete sequence sections
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqall     (Gapped) sequence(s) filename and optional

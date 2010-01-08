@@ -1,0 +1,31 @@
+<b>Here is a sample session with ehmmindex</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ehmmindex myhmmso </b>
+Create a binary SSI index for an HMM database.
+
+hmmindex -- create SSI index for an HMM database
+HMMER 2.3.2 (Oct 2003)
+Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
+Freely distributed under the GNU General Public License (GPL)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+HMM file:                 ./myhmmso
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Determining offsets for ./myhmmso, please be patient...
+Complete.
+HMM file:       ./myhmmso
+SSI index:      ./myhmmso.ssi
+# of HMMS:      3
+HMM names:      3
+HMM accessions: 2
+
+/shared/software/bin/hmmindex ./myhmmso
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.1">Go to the output files for this example</a><p><p>

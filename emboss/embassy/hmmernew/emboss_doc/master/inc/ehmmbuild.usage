@@ -1,0 +1,203 @@
+<b>Here is a sample session with ehmmbuild</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ehmmbuild globins50.msf globin.hmm -nhmm globins50 -strategy D </b>
+Build a profile HMM from an alignment.
+
+hmmbuild - build a hidden Markov model from an alignment
+HMMER 2.3.2 (Oct 2003)
+Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
+Freely distributed under the GNU General Public License (GPL)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Alignment file:                    ../../data/hmmnew/globins50.msf
+File format:                       MSF
+Search algorithm configuration:    Multiple domain (hmmls)
+Model construction strategy:       MAP (gapmax hint: 0.50)
+Null model used:                   (default)
+Prior used:                        (default)
+Sequence weighting method:         G/S/C tree weights
+New HMM file:                      globin.hmm [appending]
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Alignment:           #1
+Number of sequences: 50
+Number of columns:   308
+
+Determining effective sequence number    ... done. [2]
+Weighting sequences heuristically        ... done.
+Constructing model architecture          ... done.
+Converting counts to probabilities       ... done.
+Setting model name, etc.                 ... done. [globins50]
+
+Constructed a profile HMM (length 143)
+Average score:      189.04 bits
+Minimum score:      -17.62 bits
+Maximum score:      234.09 bits
+Std. deviation:      53.18 bits
+
+Finalizing model configuration           ... done.
+Saving model to file                     ... done.
+//
+
+
+/shared/software/bin/hmmbuild -n globins50  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  --swentry 0.500000  --swexit 0.500000  --wgsc  -A -F  globin.hmm ../../data/hmmnew/globins50.msf
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 2</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ehmmbuild rrm.sto myhmms -nhmm rrm -strategy D </b>
+Build a profile HMM from an alignment.
+
+hmmbuild - build a hidden Markov model from an alignment
+HMMER 2.3.2 (Oct 2003)
+Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
+Freely distributed under the GNU General Public License (GPL)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Alignment file:                    ../../data/hmmnew/rrm.sto
+File format:                       Stockholm
+Search algorithm configuration:    Multiple domain (hmmls)
+Model construction strategy:       MAP (gapmax hint: 0.50)
+Null model used:                   (default)
+Prior used:                        (default)
+Sequence weighting method:         G/S/C tree weights
+New HMM file:                      myhmms [appending]
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Alignment:           #1
+Number of sequences: 90
+Number of columns:   104
+
+Determining effective sequence number    ... done. [88]
+Weighting sequences heuristically        ... done.
+Constructing model architecture          ... done.
+Converting counts to probabilities       ... done.
+Setting model name, etc.                 ... done. [rrm]
+
+Constructed a profile HMM (length 77)
+Average score:       75.37 bits
+Minimum score:       26.86 bits
+Maximum score:      119.83 bits
+Std. deviation:      21.78 bits
+
+Finalizing model configuration           ... done.
+Saving model to file                     ... done.
+//
+
+
+/shared/software/bin/hmmbuild -n rrm  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  --swentry 0.500000  --swexit 0.500000  --wgsc  -A -F  myhmms ../../data/hmmnew/rrm.sto
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.2">Go to the input files for this example</a><br><a href="#output.2">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 3</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ehmmbuild fn3.sto myhmms -nhmm fn3 -strategy D </b>
+Build a profile HMM from an alignment.
+
+hmmbuild - build a hidden Markov model from an alignment
+HMMER 2.3.2 (Oct 2003)
+Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
+Freely distributed under the GNU General Public License (GPL)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Alignment file:                    ../../data/hmmnew/fn3.sto
+File format:                       Stockholm
+Search algorithm configuration:    Multiple domain (hmmls)
+Model construction strategy:       MAP (gapmax hint: 0.50)
+Null model used:                   (default)
+Prior used:                        (default)
+Sequence weighting method:         G/S/C tree weights
+New HMM file:                      myhmms [appending]
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Alignment:           fn3
+Number of sequences: 108
+Number of columns:   119
+
+Determining effective sequence number    ... done. [108]
+Weighting sequences heuristically        ... done.
+Constructing model architecture          ... done.
+Converting counts to probabilities       ... done.
+Setting model name, etc.                 ... done. [fn3]
+
+Constructed a profile HMM (length 84)
+Average score:       67.54 bits
+Minimum score:       27.53 bits
+Maximum score:      105.77 bits
+Std. deviation:      17.07 bits
+
+Finalizing model configuration           ... done.
+Saving model to file                     ... done.
+//
+
+
+/shared/software/bin/hmmbuild -n fn3  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  --swentry 0.500000  --swexit 0.500000  --wgsc  -A -F  myhmms ../../data/hmmnew/fn3.sto
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.3">Go to the input files for this example</a><br><a href="#output.3">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 4</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ehmmbuild pkinase.sto myhmms -nhmm pkinase -strategy D </b>
+Build a profile HMM from an alignment.
+
+hmmbuild - build a hidden Markov model from an alignment
+HMMER 2.3.2 (Oct 2003)
+Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
+Freely distributed under the GNU General Public License (GPL)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Alignment file:                    ../../data/hmmnew/pkinase.sto
+File format:                       Stockholm
+Search algorithm configuration:    Multiple domain (hmmls)
+Model construction strategy:       MAP (gapmax hint: 0.50)
+Null model used:                   (default)
+Prior used:                        (default)
+Sequence weighting method:         G/S/C tree weights
+New HMM file:                      myhmms [appending]
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Alignment:           pkinase
+Number of sequences: 67
+Number of columns:   471
+
+Determining effective sequence number    ... done. [67]
+Weighting sequences heuristically        ... done.
+Constructing model architecture          ... done.
+Converting counts to probabilities       ... done.
+Setting model name, etc.                 ... done. [pkinase]
+
+Constructed a profile HMM (length 294)
+Average score:      312.79 bits
+Minimum score:      176.48 bits
+Maximum score:      390.44 bits
+Std. deviation:      44.60 bits
+
+Finalizing model configuration           ... done.
+Saving model to file                     ... done.
+//
+
+
+/shared/software/bin/hmmbuild -n pkinase  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  --swentry 0.500000  --swexit 0.500000  --wgsc  -A -F  myhmms ../../data/hmmnew/pkinase.sto
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.4">Go to the input files for this example</a><br><a href="#output.4">Go to the output files for this example</a><p><p>

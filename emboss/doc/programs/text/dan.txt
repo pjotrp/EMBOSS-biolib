@@ -79,7 +79,7 @@ Created dan.ps
 Command line arguments
 
 Calculates nucleic acid melting temperature
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
@@ -344,7 +344,7 @@ Output file format
 
 ########################################
 # Program: dan
-# Rundate: Wed 15 Jul 2009 12:00:00
+# Rundate: Fri 15 Jan 2010 12:00:00
 # Commandline: dan
 #    -sequence tembl:x13776
 # Report_format: seqtable

@@ -551,7 +551,7 @@ Command line arguments
    "advanced" options will never be prompted for.
 
 Multiple EM for Motif Elicitation
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-dataset]           seqset     User must provide the full filename of a set

@@ -17,7 +17,7 @@ Description
 
    vectorstrip reads one or more nucleotide sequences and writes them out
    again but with any of a specified set of vector sequences removed from
-   the 5' and 3' termini. An output file with a summary of the results if
+   the 5' and 3' termini. An output file with a summary of the results is
    also written. The vector sequences to strip out are (typically)
    provided in an input file. The pair of 5' and 3' vector sequences are
    searched against each input sequence allowing a specified maximum level
@@ -47,7 +47,7 @@ output sequence(s) [pbluescript.fasta]: vector.fasta
 Command line arguments
 
 Removes vectors from the ends of nucleotide sequence(s)
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional

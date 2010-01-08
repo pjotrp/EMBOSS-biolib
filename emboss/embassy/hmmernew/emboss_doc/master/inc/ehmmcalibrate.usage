@@ -26,7 +26,7 @@ lambda :     0.267496
 max    :    -8.753000
 //
 
-hmmcalibrate --mean 350.000000  --num 5000  --sd 350.000000  --seed 1 ../ehmmbuild-ex-keep/globin.hmm
+/shared/software/bin/hmmcalibrate --mean 350.000000  --num 5000  --sd 350.000000  --seed 1 ../ehmmbuild-ex-keep/globin.hmm
 
 
 </pre></td></tr></table><p>
@@ -71,7 +71,7 @@ lambda :     0.143557
 max    :  -157.132004
 //
 
-hmmcalibrate --mean 350.000000  --num 5000  --sd 350.000000  --seed 1 ../ehmmbuild-ex4-keep/myhmms
+/shared/software/bin/hmmcalibrate --mean 350.000000  --num 5000  --sd 350.000000  --seed 1 ../ehmmbuild-ex4-keep/myhmms
 
 
 </pre></td></tr></table><p>

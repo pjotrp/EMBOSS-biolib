@@ -75,7 +75,7 @@ Output report [z46957.fuzztran]:
 Command line arguments
 
 Search for patterns in protein sequences (translated)
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
@@ -354,7 +354,7 @@ Output file format
 
 ########################################
 # Program: fuzztran
-# Rundate: Wed 15 Jul 2009 12:00:00
+# Rundate: Fri 15 Jan 2010 12:00:00
 # Commandline: fuzztran
 #    -options
 #    -sequence tembl:Z46957

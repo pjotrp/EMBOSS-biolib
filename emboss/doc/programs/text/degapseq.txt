@@ -36,7 +36,7 @@ Removes non-alphabetic (e.g. gap) characters from sequences
 Command line arguments
 
 Removes non-alphabetic (e.g. gap) characters from sequences
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     (Gapped) sequence(s) filename and optional

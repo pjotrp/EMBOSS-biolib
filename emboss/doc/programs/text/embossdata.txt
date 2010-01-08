@@ -1564,7 +1564,7 @@ File /homes/pmr/local/share/EMBOSS/data/EPAM60                    Exists
 Command line arguments
 
 Find and retrieve EMBOSS data files
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-filename]          string     This specifies the name of the file that

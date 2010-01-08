@@ -39,7 +39,7 @@ HMMER hmmemit program output file [rrm.ohmmemit]:
 Command line arguments
 
 Extract HMM sequences
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-infile]            infile     HMMER hidden markov model file

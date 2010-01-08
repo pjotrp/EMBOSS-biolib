@@ -202,7 +202,7 @@ NVAAQLKDPRGNPVPLRVGLATGPVVAGVVGSRRFFYDVWGDAVNVASRMESTDSVGQIQVPDEVYERL
   6.1 COMMAND LINE ARGUMENTS
 
 Remove ambiguous classified sequences from DHF files.
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-dhfindir]          directory  [./] This option specifies the location of

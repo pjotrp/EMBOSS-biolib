@@ -176,7 +176,7 @@ Done.
 Command line arguments
 
 Distances between trees
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-intreefile]        tree       Phylip tree file

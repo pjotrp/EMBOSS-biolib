@@ -58,7 +58,7 @@ Output file [x65923.crystalball]:
 Command line arguments
 
 Answers every drug discovery question about a sequence.
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Sequence filename and optional format, or

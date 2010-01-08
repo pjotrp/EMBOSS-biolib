@@ -45,7 +45,7 @@ MEME program output file [carp_rhich.omeme]:
 Command line arguments
 
 Motif detection
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Sequence(s) filename and optional format, or

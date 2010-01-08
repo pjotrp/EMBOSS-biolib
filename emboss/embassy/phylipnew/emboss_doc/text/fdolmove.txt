@@ -92,7 +92,7 @@ Tree written to file "dolmove.treefile"
 Command line arguments
 
 Interactive Dollo or Polymorphism Parsimony
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-infile]            discretestates File containing data set

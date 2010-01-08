@@ -589,7 +589,7 @@ VE
   6.1 COMMAND LINE ARGUMENTS
 
 Removes fragment sequences from DHF files.
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-dhfinpath]         dirlist    [./] This option specifies the location of

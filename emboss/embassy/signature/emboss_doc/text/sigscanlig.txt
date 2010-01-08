@@ -1063,7 +1063,7 @@ FOK       1         1         -1000000.00
 6.0 USAGE
 
 Searches ligand-signature library & writes hits (LHF file)
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-siginfilesdir]     dirlist    [./] This option specifies the directory of

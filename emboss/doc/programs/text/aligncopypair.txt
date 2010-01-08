@@ -36,7 +36,7 @@ Output alignment [globins.aligncopypair]:
 Command line arguments
 
 Reads and writes pairs from alignments
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequences]         seqset     File containing a sequence alignment.
@@ -181,7 +181,7 @@ Output file format
 
 ########################################
 # Program: aligncopypair
-# Rundate: Wed 15 Jul 2009 12:00:00
+# Rundate: Fri 15 Jan 2010 12:00:00
 # Commandline: aligncopypair
 #    -sequences ../../data/globins.msf
 # Align_format: simple

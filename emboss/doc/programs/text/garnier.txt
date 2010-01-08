@@ -50,7 +50,7 @@ Output report [amic_pseae.garnier]:
 Command line arguments
 
 Predicts protein secondary structure using GOR method
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Protein sequence(s) filename and optional
@@ -260,7 +260,7 @@ Output file format
 
 ########################################
 # Program: garnier
-# Rundate: Wed 15 Jul 2009 12:00:00
+# Rundate: Fri 15 Jan 2010 12:00:00
 # Commandline: garnier
 #    -sequence tsw:amic_pseae
 # Report_format: tagseq

@@ -39,7 +39,7 @@ Vienna RNAfold output file [red.vrnaheat]:
 Command line arguments
 
 RNA melting
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional

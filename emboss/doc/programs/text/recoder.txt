@@ -43,7 +43,7 @@ Output report [x65923.recoder]:
 Command line arguments
 
 Find restriction sites to remove (mutate) with no translation change
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
@@ -203,7 +203,7 @@ Output file format
 
 ########################################
 # Program: recoder
-# Rundate: Wed 15 Jul 2009 12:00:00
+# Rundate: Fri 15 Jan 2010 12:00:00
 # Commandline: recoder
 #    -sequence tembl:x65923
 #    -enzymes EcoRII

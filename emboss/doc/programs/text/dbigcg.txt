@@ -51,7 +51,7 @@ General log output file [outfile.dbigcg]:
 Command line arguments
 
 Index a GCG formatted database
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-dbname]            string     Database name (Any string from 2 to 19
@@ -143,10 +143,10 @@ Output file format
 
 ########################################
 # Program: dbigcg
-# Rundate: Wed 15 Jul 2009 12:00:00
+# Rundate: Fri 15 Jan 2010 12:00:00
 # Dbname: EMBL
 # Release: 0.0
-# Date: 15/07/09
+# Date: 15/01/10
 # CurrentDirectory: /homes/user/test/qa/dbigcg-ex-keep/
 # IndexDirectory: ./
 # IndexDirectoryPath: /homes/user/test/qa/dbigcg-ex-keep/

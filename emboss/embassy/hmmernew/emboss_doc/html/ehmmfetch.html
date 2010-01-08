@@ -130,7 +130,7 @@ Please read the Userguide.pdf distributed with the original HMMER and included i
 Retrieve an HMM from an HMM database.
 
 
-hmmfetch ../ehmmindex-ex-keep/myhmmso pkinase > pkinase.ehmmfetch
+/shared/software/bin/hmmfetch ../ehmmindex-ex-keep/myhmmso pkinase > pkinase.ehmmfetch
 
 
 </pre></td></tr></table><p>
@@ -150,7 +150,7 @@ Where possible, the same command-line qualifier names and parameter order is use
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
 Retrieve an HMM from an HMM database.
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-database]          infile     HMMER hmm database file
@@ -413,10 +413,10 @@ ALPH  Amino
 RF    no
 CS    no
 MAP   yes
-COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
-COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex4-keep/myhmms
+COM   /shared/software/bin/hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
+COM   /shared/software/bin/hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex4-keep/myhmms
 NSEQ  90
-DATE  Tue Jul 15 12:00:00 2008
+DATE  Thu Jan  7 16:37:52 2010
 CKSUM 8325
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
 NULT      -4  -8455
@@ -555,10 +555,10 @@ ALPH  Amino
 RF    no
 CS    no
 MAP   yes
-COM   hmmbuild -n pkinase --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/pkinase.sto
-COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex4-keep/myhmms
+COM   /shared/software/bin/hmmbuild -n pkinase --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/pkinase.sto
+COM   /shared/software/bin/hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex4-keep/myhmms
 NSEQ  67
-DATE  Tue Jul 15 12:00:00 2008
+DATE  Thu Jan  7 16:37:53 2010
 CKSUM 4536
 GA    -57.9 -57.9
 TC    -57.7 -57.7

@@ -260,7 +260,7 @@ NO_ACCESSION_NUMBER
   6.1 COMMAND LINE ARGUMENTS
 
 Adds sequence records to a DCF file.
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-dcfinfile]         infile     This option specifies the name of DCF file

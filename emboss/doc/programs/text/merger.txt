@@ -72,7 +72,7 @@ output sequence [v00295.fasta]:
 Command line arguments
 
 Merge two overlapping sequences
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-asequence]         sequence   Sequence filename and optional format, or
@@ -401,7 +401,7 @@ Output file format
 
 ########################################
 # Program: merger
-# Rundate: Wed 15 Jul 2009 12:00:00
+# Rundate: Fri 15 Jan 2010 12:00:00
 # Commandline: merger
 #    -asequence tembl:v00295
 #    -bsequence tembl:x51872

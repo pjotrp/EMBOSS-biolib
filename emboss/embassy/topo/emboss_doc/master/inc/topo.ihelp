@@ -1,5 +1,5 @@
 Draws an image of a transmembrane protein
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          sequence   Protein sequence filename and optional
