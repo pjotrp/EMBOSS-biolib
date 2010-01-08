@@ -142,7 +142,7 @@ int main(int argc, char **argv)
     ajuint* nmatchesseqset;
     const char* header = "Pattern %S  #all-matches  #seq-matches"
             "  avg-match-length  avg-longest-match-length\n";
-    char* paddedheader;
+    char* paddedheader = NULL;
     AjPStr padding = ajStrNew();
 
 
