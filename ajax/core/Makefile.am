@@ -29,7 +29,8 @@ ajrange.c ajreg.c ajreport.c \
 ajseq.c ajseqabi.c ajseqread.c ajseqtype.c ajseqwrite.c \
 ajsort.c ajsql.c ajstr.c ajsys.c \
 ajtable.c ajtime.c ajtranslate.c ajtree.c \
-ajutil.c ajvector.c
+ajutil.c ajvector.c \
+samtoolsbgzf.c
 
 include_HEADERS = ajax.h ajarch.h ajdefine.h \
 ajalign.h ajarr.h ajassert.h \
@@ -42,7 +43,8 @@ ajpat.h ajpdb.h ajpdbio.h ajphylo.h \
 ajrange.h ajreg.h ajreport.h \
 ajseq.h ajseqabi.h ajseqdata.h ajseqread.h ajseqtype.h ajseqwrite.h \
 ajsort.h ajsql.h ajstr.h ajsys.h \
-ajtable.h ajtime.h ajtranslate.h ajtree.h ajutil.h ajvector.h
+ajtable.h ajtime.h ajtranslate.h ajtree.h ajutil.h ajvector.h \
+samtoolsbam.h samtoolsbgzf.h samtoolskhash.h samtoolskseq.h
 
 
 libajax_la_SOURCES = $(AJAXSRC)
