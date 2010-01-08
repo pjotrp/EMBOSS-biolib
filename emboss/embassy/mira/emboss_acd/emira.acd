@@ -5,7 +5,8 @@ application: emira [
   batch: "yes"
   cpu: "high"
   embassy: "mira"
-  external: "mira Whole genome shotgun assembler for Sanger, 454 and Solexa/Illumina http://www.chevreux.org/projects_mira.html"
+  external: "mira Whole genome shotgun assembler for Sanger, 454 and
+             Solexa/Illumina http://www.chevreux.org/projects_mira.html"
 ]
 
 section: input [
