@@ -18536,7 +18536,7 @@ FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 FI wordmatch.log
-FP /number of patterns/
+FP /Number of patterns\/words: 139/
 //
 
 ID wossname-ex
@@ -20024,7 +20024,8 @@ FI V00294.gff
 FZ = 186
 FP /^V00294\twordmatch\tsequence_feature\t1\t1113\t1\.000\t/
 FI wordmatch.log
-FP /number of patterns/
+FP /Number of patterns\/words: 1064/
+FP /Sum of match lengths: 1113/
 //
 
 ID align-wordmatch-pair
@@ -20052,7 +20053,7 @@ FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 FI wordmatch.log
-FP /number of patterns/
+FP /Number of all matches: 3/
 //
 
 ID align-wordmatch-srspair
@@ -20080,7 +20081,8 @@ FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 FI wordmatch.log
-FP /number of patterns/
+FP /^EFTP/
+FP /^HGKK/
 //
 
 ID align-wordmatch-markx0
@@ -20108,7 +20110,7 @@ FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 FI wordmatch.log
-FP /number of patterns/
+FP /^WGKV/
 //
 
 ID align-wordmatch-markx1
@@ -20137,7 +20139,7 @@ FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 FI wordmatch.log
-FP /number of patterns/
+FP /^HGKK.*5.0/
 //
 
 ID align-wordmatch-markx2
@@ -20165,7 +20167,7 @@ FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 FI wordmatch.log
-FP /number of patterns/
+FP /Average match length: 4.33/
 //
 
 ID align-wordmatch-markx3
@@ -20191,7 +20193,7 @@ FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 FI wordmatch.log
-FP /number of patterns/
+FP /^EFTP.*4.*4/
 //
 
 ID align-wordmatch-markx10
@@ -20226,7 +20228,7 @@ FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 FI wordmatch.log
-FP /number of patterns/
+FP /^HGKK.*5.*5/
 //
 
 ID align-merger-fasta
