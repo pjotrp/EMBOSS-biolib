@@ -83,9 +83,10 @@ LDADD = libmeme.la \
 	../../../ajax/ensembl/libensembl.la \
 	../../../ajax/graphics/libajaxg.la \
 	../../../ajax/core/libajax.la ../../../ajax/expat/libeexpat.la \
-	../../../ajax/pcre/libepcre.la ../../../plplot/libeplplot.la \
+	../../../ajax/pcre/libezlib.la ../../../ajax/pcre/libepcre.la \
+	../../../plplot/libeplplot.la \
 	$(XLIB)
 else
 LDADD = libmeme.la -L${embprefix}/lib -lnucleus -lacd -lajaxdb -lensembl \
-	-lajaxg -lajax -leexpat -lepcre -leplplot $(XLIB)
+	-lajaxg -lajax -leexpat -lepcre -lezlib -leplplot $(XLIB)
 endif
