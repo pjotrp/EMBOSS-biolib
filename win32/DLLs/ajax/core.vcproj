@@ -40,8 +40,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/D &quot;HAVE_JAVA&quot; /I &quot;k:\jdk32\include&quot; /I &quot;k:\jdk\include\win32&quot;"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\mysql\include\mysql;..\..\..\mysql\include;..\..\..\ajax\pcre"
+				AdditionalIncludeDirectories="..\..\..\mysql\include\mysql;..\..\..\mysql\include;..\..\..\ajax\pcre;..\..\..\ajax\zlib"
 				PreprocessorDefinitions="WIN32;_POSIX_;_DEBUG;_WINDOWS;_USRDLL;AJAXDLL_EXPORTS;PLD_png;HAVE_MEMMOVE;HAVE_MYSQL;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
@@ -123,10 +124,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/D &quot;HAVE_JAVA&quot; /I &quot;k:\jdk32\include&quot; /I &quot;k:\jdk\include\win32&quot;"
 				Optimization="4"
 				EnableIntrinsicFunctions="false"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="..\..\..\mysql\include\mysql;..\..\..\mysql\include;..\..\..\ajax\pcre"
+				AdditionalIncludeDirectories="..\..\..\mysql\include\mysql;..\..\..\mysql\include;..\..\..\ajax\pcre;..\..\..\ajax\zlib"
 				PreprocessorDefinitions="WIN32;_POSIX_;NDEBUG;_WINDOWS;_USRDLL;AJAXDLL_EXPORTS;PLD_png;HAVE_MEMMOVE;HAVE_MYSQL;_CRT_SECURE_NO_DEPRECATE"
 				ExceptionHandling="0"
 				RuntimeLibrary="2"
@@ -385,6 +387,10 @@
 				RelativePath="..\..\..\ajax\core\dirent_w32.c"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\ajax\core\samtoolsbgzf.c"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -601,6 +607,22 @@
 			</File>
 			<File
 				RelativePath="..\..\..\ajax\core\dirent_w32.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\core\samtoolsbam.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\core\samtoolsbgzf.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\core\samtoolskhash.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\core\samtoolskseq.h"
 				>
 			</File>
 			<File
