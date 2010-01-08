@@ -189,7 +189,7 @@ int main(int argc, char **argv)
 			ajFloatPut(&scores,j,ajFloat2dGet(rdat,rescode,k++));
 			if(k>7) k=1;
 		    }
-		    score = ajGeoMean(ajFloatFloat(scores),window);
+		    score = ajMathGmean(ajFloatFloat(scores),window);
 
 		    if(score>maxscore)
 		    {
@@ -537,9 +537,9 @@ static float pepcoil_probcoil(float score)
     float gg;
     double td;
     
-    td = ajGaussProb((float)1.63,(float)0.24,score);
+    td = ajCvtGaussToProb((float)1.63,(float)0.24,score);
     gcc = (float) td;
-    td  = ajGaussProb((float)0.77,(float)0.20,score);
+    td  = ajCvtGaussToProb((float)0.77,(float)0.20,score);
     gg  = (float) td;
 
     return gcc/((float)30.0*gg + gcc);
@@ -562,5 +562,5 @@ static float pepcoil_probcoil(float score)
 
 static ajint pepcoil_inframe(ajint start, ajint pos, ajint frame, ajint len)
 {
-    return 1+ajPosMod(frame-pos+start-1,len);
+    return 1+ajMathModulo(frame-pos+start-1,len);
 }

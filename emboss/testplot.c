@@ -66,7 +66,7 @@ int main(int argc, char **argv)
     for(i=0;i<ipoints; i++)
     {
 	graphdata->x[i] = (float)i;
-	graphdata->y[i] = sin(ajDegToRad(i));
+	graphdata->y[i] = sin(ajCvtDegToRad(i));
     }
 
     /* embGraphSetData(graphdata,&array[0][0]);*/
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
     for(i=0;i<ipoints; i++)
     {
 	graphdata->x[i] = (float)i;
-	graphdata->y[i] = cos(ajDegToRad((float)i));
+	graphdata->y[i] = cos(ajCvtDegToRad((float)i));
     }
 
     ajGraphdataSetXlabelC(graphdata,"degrees");
@@ -112,7 +112,7 @@ int main(int argc, char **argv)
     for(i=0;i<ipoints; i++)
     {
 	graphdata->x[i] = (float)i;
-	graphdata->y[i] = (tan(ajDegToRad(i))*0.2);
+	graphdata->y[i] = (tan(ajCvtDegToRad(i))*0.2);
     }
 
     ajGraphdataSetXlabelC(graphdata,"degrees");

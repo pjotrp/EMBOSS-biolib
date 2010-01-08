@@ -168,8 +168,8 @@ int main(int argc, char **argv)
 		{
 		    if(wheel)
 		    {
-			ajPolToRec(wradius-wheelgap,oldangle,&xx1,&yy1);
-			ajPolToRec(wradius,angle,&xx2,&yy2);
+			ajCvtPolToRec(wradius-wheelgap,oldangle,&xx1,&yy1);
+			ajCvtPolToRec(wradius,angle,&xx2,&yy2);
 			ajGraphicsDrawposLine(xx1,yy1,xx2,yy2);
 		    }
 		    startloop=ajFalse;
@@ -177,8 +177,8 @@ int main(int argc, char **argv)
 		else
 		    if(wheel)
 		    {
-			ajPolToRec(wradius,oldangle,&xx1,&yy1);
-			ajPolToRec(wradius,angle,&xx2,&yy2);
+			ajCvtPolToRec(wradius,oldangle,&xx1,&yy1);
+			ajCvtPolToRec(wradius,angle,&xx2,&yy2);
 			ajGraphicsDrawposLine(xx1,yy1,xx2,yy2);
 		    }
 	    }
@@ -281,7 +281,7 @@ static void pepwheel_plotresidue(char c, float r, float a, const char *squares,
     cs[1] = '\0';
     *cs   = c;
 
-    ajPolToRec(r, a, &x, &y);
+    ajCvtPolToRec(r, a, &x, &y);
 
     if(x<xmin+.1 || x>xmax-.1 || y<ymin+.2 || y>ymax-.2)
 	return;

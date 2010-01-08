@@ -155,11 +155,11 @@ int main(int argc, char **argv)
     errorf    = ajAcdGetOutfile("errorfile");
     width     = ajAcdGetInt("width");	/* not the same as awidth */
 
-    gapopen   = ajRoundF(gapopen, 8);
-    gapextend = ajRoundF(gapextend, 8);
+    gapopen   = ajRoundFloat(gapopen, 8);
+    gapextend = ajRoundFloat(gapextend, 8);
 
-    sub = ajMatrixfArray(matrix);
-    cvt = ajMatrixfCvt(matrix);
+    sub = ajMatrixfGetMatrix(matrix);
+    cvt = ajMatrixfGetCvt(matrix);
 
     embWordLength(wordlen);
 

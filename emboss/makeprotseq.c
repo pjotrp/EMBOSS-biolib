@@ -180,7 +180,7 @@ static AjPStr makeprotseq_random_sequence(AjPStr const * seqchar,
 
     while(len-- > 0)
     {
-	idx = (ajint) (ajRandomNumberD()*scmax);
+	idx = (ajint) (ajRandomDouble()*scmax);
 	ajStrAppendS(&seq,seqchar[idx]);
     }
 

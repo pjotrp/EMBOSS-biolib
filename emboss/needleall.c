@@ -104,8 +104,8 @@ int main(int argc, char **argv)
     align     = ajAcdGetAlign("outfile");
     errorf    = ajAcdGetOutfile("errorfile");
 
-    gapopen = ajRoundF(gapopen, 8);
-    gapextend = ajRoundF(gapextend, 8);
+    gapopen = ajRoundFloat(gapopen, 8);
+    gapextend = ajRoundFloat(gapextend, 8);
 
     AJCNEW(path, maxarr);
     AJCNEW(compass, maxarr);
@@ -117,8 +117,8 @@ int main(int argc, char **argv)
     algb  = ajStrNew();
     ss = ajStrNew();
 
-    sub = ajMatrixfArray(matrix);
-    cvt = ajMatrixfCvt(matrix);
+    sub = ajMatrixfGetMatrix(matrix);
+    cvt = ajMatrixfGetCvt(matrix);
 
     while(ajSeqallNext(seqall,&seqb))
     {
