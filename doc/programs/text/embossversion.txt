@@ -26,13 +26,13 @@ Usage
 % embossversion
 Reports the current EMBOSS version number
 
-6.1.0
+6.2.0
 
 
 Command line arguments
 
 Reports the current EMBOSS version number
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers: (none)
    Additional (Optional) qualifiers:

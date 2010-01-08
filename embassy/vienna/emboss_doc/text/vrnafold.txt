@@ -55,7 +55,7 @@ Vienna RNAfold output file [rna1.vrnafold]:
 Command line arguments
 
 Calculate secondary structures of RNAs
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional

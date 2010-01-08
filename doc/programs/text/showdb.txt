@@ -583,7 +583,7 @@ nBank in native format with EMBL CD-ROM index
 Command line arguments
 
 Displays information on configured databases
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers: (none)
    Additional (Optional) qualifiers:

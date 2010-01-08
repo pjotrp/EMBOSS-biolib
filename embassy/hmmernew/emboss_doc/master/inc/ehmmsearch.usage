@@ -8,7 +8,7 @@
 Search a sequence database with a profile HMM
 
 
-hmmsearch -A 100 -E 10.000000 -T -1000000.000000 -Z 0 --domE 1000000.000000 --domT -1000000.000000  ../ehmmcalibrate-ex-keep/globino.hmm ../../data/hmmnew/Artemia.fa > globino.ehmmsearch
+/shared/software/bin/hmmsearch -A 100 -E 10.000000 -T -1000000.000000 -Z 0 --domE 1000000.000000 --domT -1000000.000000  ../ehmmcalibrate-ex-keep/globino.hmm ../../data/hmmnew/Artemia.fa > globino.ehmmsearch
 
 
 </pre></td></tr></table><p>

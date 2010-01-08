@@ -57,9 +57,9 @@ Usage
 Search a sequence database with a profile HMM
 
 
-hmmsearch -A 100 -E 10.000000 -T -1000000.000000 -Z 0 --domE 1000000.000000 --do
-mT -1000000.000000  ../ehmmcalibrate-ex-keep/globino.hmm ../../data/hmmnew/Artem
-ia.fa > globino.ehmmsearch
+/shared/software/bin/hmmsearch -A 100 -E 10.000000 -T -1000000.000000 -Z 0 --dom
+E 1000000.000000 --domT -1000000.000000  ../ehmmcalibrate-ex-keep/globino.hmm ..
+/../data/hmmnew/Artemia.fa > globino.ehmmsearch
 
 
 
@@ -79,7 +79,7 @@ Command line arguments
    them).
 
 Search a sequence database with a profile HMM
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-hmmfile]           infile     File of HMMs.
@@ -310,13 +310,13 @@ ALPH  Amino
 RF    no
 CS    no
 MAP   yes
-COM   hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.62000
-0 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmnew
-/globins50.msf
-COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmm
-build-ex-keep/globin.hmm
+COM   /shared/software/bin/hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850
+000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.
+hmm ../../data/hmmnew/globins50.msf
+COM   /shared/software/bin/hmmcalibrate --mean 350.000000 --num 5000 --sd 350.00
+0000 --seed 1 ../ehmmbuild-ex-keep/globin.hmm
 NSEQ  50
-DATE  Tue Jul 15 12:00:00 2008
+DATE  Thu Jan  7 16:51:40 2010
 CKSUM 9858
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4
 NULT      -4  -8455

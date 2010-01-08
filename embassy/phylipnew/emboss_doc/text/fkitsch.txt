@@ -214,7 +214,7 @@ Done.
 Command line arguments
 
 Fitch-Margoliash method with contemporary tips
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-datafile]          distances  File containing one or more distance

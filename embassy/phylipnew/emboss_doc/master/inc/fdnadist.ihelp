@@ -1,5 +1,5 @@
 Nucleic acid sequence Distance Matrix program
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqsetall  File containing one or more sequence

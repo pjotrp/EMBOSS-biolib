@@ -47,7 +47,7 @@ General log output file [outfile.cutgextract]:
 Command line arguments
 
 Extract codon usage tables from CUTG database
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-directory]         dirlist    [.] Codon usage directories

@@ -89,9 +89,9 @@ Saving model to file                     ... done.
 //
 
 
-hmmbuild  -n globins50  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000
- --swentry 0.500000  --swexit 0.500000  --wgsc  -A -F  globin.hmm ../../data/hmm
-new/globins50.msf
+/shared/software/bin/hmmbuild -n globins50  --pbswitch 1000  --archpri 0.850000
+ --idlevel 0.620000  --swentry 0.500000  --swexit 0.500000  --wgsc  -A -F  globi
+n.hmm ../../data/hmmnew/globins50.msf
 
 
    Go to the input files for this example
@@ -139,9 +139,9 @@ Saving model to file                     ... done.
 //
 
 
-hmmbuild  -n rrm  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  --swe
-ntry 0.500000  --swexit 0.500000  --wgsc  -A -F  myhmms ../../data/hmmnew/rrm.st
-o
+/shared/software/bin/hmmbuild -n rrm  --pbswitch 1000  --archpri 0.850000  --idl
+evel 0.620000  --swentry 0.500000  --swexit 0.500000  --wgsc  -A -F  myhmms ../.
+./data/hmmnew/rrm.sto
 
 
    Go to the input files for this example
@@ -189,9 +189,9 @@ Saving model to file                     ... done.
 //
 
 
-hmmbuild  -n fn3  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  --swe
-ntry 0.500000  --swexit 0.500000  --wgsc  -A -F  myhmms ../../data/hmmnew/fn3.st
-o
+/shared/software/bin/hmmbuild -n fn3  --pbswitch 1000  --archpri 0.850000  --idl
+evel 0.620000  --swentry 0.500000  --swexit 0.500000  --wgsc  -A -F  myhmms ../.
+./data/hmmnew/fn3.sto
 
 
    Go to the input files for this example
@@ -239,9 +239,9 @@ Saving model to file                     ... done.
 //
 
 
-hmmbuild  -n pkinase  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  -
--swentry 0.500000  --swexit 0.500000  --wgsc  -A -F  myhmms ../../data/hmmnew/pk
-inase.sto
+/shared/software/bin/hmmbuild -n pkinase  --pbswitch 1000  --archpri 0.850000  -
+-idlevel 0.620000  --swentry 0.500000  --swexit 0.500000  --wgsc  -A -F  myhmms
+../../data/hmmnew/pkinase.sto
 
 
    Go to the input files for this example
@@ -260,7 +260,7 @@ Command line arguments
    them).
 
 Build a profile HMM from an alignment.
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-alignfile]         seqset     (Aligned) protein sequence set filename and
@@ -1067,11 +1067,11 @@ ALPH  Amino
 RF    no
 CS    no
 MAP   yes
-COM   hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.62000
-0 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmnew
-/globins50.msf
+COM   /shared/software/bin/hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850
+000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.
+hmm ../../data/hmmnew/globins50.msf
 NSEQ  50
-DATE  Tue Jul 15 12:00:00 2008
+DATE  Thu Jan  7 16:51:40 2010
 CKSUM 9858
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4
 NULT      -4  -8455
@@ -1236,10 +1236,11 @@ ALPH  Amino
 RF    no
 CS    no
 MAP   yes
-COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --sw
-entry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
+COM   /shared/software/bin/hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --
+idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../
+data/hmmnew/rrm.sto
 NSEQ  90
-DATE  Tue Jul 15 12:00:00 2008
+DATE  Thu Jan  7 16:51:40 2010
 CKSUM 8325
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4
 NULT      -4  -8455
@@ -1404,10 +1405,11 @@ ALPH  Amino
 RF    no
 CS    no
 MAP   yes
-COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --sw
-entry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
+COM   /shared/software/bin/hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --
+idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../
+data/hmmnew/rrm.sto
 NSEQ  90
-DATE  Tue Jul 15 12:00:00 2008
+DATE  Thu Jan  7 16:51:40 2010
 CKSUM 8325
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4
 NULT      -4  -8455
@@ -1572,10 +1574,11 @@ ALPH  Amino
 RF    no
 CS    no
 MAP   yes
-COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --sw
-entry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
+COM   /shared/software/bin/hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --
+idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../
+data/hmmnew/rrm.sto
 NSEQ  90
-DATE  Tue Jul 15 12:00:00 2008
+DATE  Thu Jan  7 16:51:40 2010
 CKSUM 8325
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4
 NULT      -4  -8455

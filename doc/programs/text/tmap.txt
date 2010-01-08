@@ -43,7 +43,7 @@ Created tmap.ps
 Command line arguments
 
 Predict and plot transmembrane segments in protein sequences
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequences]         seqset     File containing a sequence alignment
@@ -171,7 +171,7 @@ Output file format
 
 ########################################
 # Program: tmap
-# Rundate: Wed 15 Jul 2009 12:00:00
+# Rundate: Fri 15 Jan 2010 12:00:00
 # Commandline: tmap
 #    [-sequences] ../../data/opsd.msf
 #    -outfile tmap.res

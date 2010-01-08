@@ -19,7 +19,7 @@ Random seed:          0
 
 Output saved in file globino.ehmmemit
 
-hmmemit --seed 0  -n 10  -o globino.ehmmemit ../ehmmcalibrate-ex-keep/globino.hmm
+/shared/software/bin/hmmemit --seed 0  -n 10  -o globino.ehmmemit ../ehmmcalibrate-ex-keep/globino.hmm
 
 
 </pre></td></tr></table><p>

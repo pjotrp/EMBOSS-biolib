@@ -1,5 +1,5 @@
 MIRA fragment assembly program
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
    -project            string     [mira] Default is mira. Defines the project

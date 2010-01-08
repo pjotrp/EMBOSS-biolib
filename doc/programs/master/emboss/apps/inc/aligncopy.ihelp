@@ -1,5 +1,5 @@
 Reads and writes alignments
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequences]         seqset     File containing a sequence alignment.

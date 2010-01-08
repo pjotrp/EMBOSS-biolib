@@ -1,5 +1,5 @@
 Motif detection
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-mfile]             infile     If -d <database> is not given, MAST looks

@@ -44,7 +44,7 @@ Sim4 program output file [h45989.esim4]:
 Command line arguments
 
 Align an mRNA to a genomic DNA sequence
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-asequence]         sequence   Nucleotide sequence filename and optional

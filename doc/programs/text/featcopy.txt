@@ -35,7 +35,7 @@ Features output [paamir.gff]:
 Command line arguments
 
 Reads and writes a feature table
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-features]          features   (no help text) features value
@@ -136,9 +136,9 @@ Output file format
 
 ##gff-version 3
 ##sequence-region PAAMIR 1 2167
-#!Date 2009-07-15
+#!Date 2010-01-15
 #!Type DNA
-#!Source-version EMBOSS 6.1.0
+#!Source-version EMBOSS 6.2.0
 PAAMIR  EMBL    databank_entry  1       2167    0.000   +       .       ID="PAAM
 IR.1";db_xref="taxon:287";organism="Pseudomonas aeruginosa";strain="PAC";isolate
 ="PAC 1";map="38 min"

@@ -36,7 +36,7 @@ Output file [5h2a_crigr.elipop]:
 Command line arguments
 
 Prediction of lipoproteins
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqset     (Aligned) sequence set filename and optional

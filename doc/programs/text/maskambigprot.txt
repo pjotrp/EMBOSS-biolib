@@ -35,7 +35,7 @@ output sequence(s) [ambigprot.fasta]:
 Command line arguments
 
 Masks all ambiguity characters in protein sequences with X
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     (Gapped) protein sequence(s) filename and

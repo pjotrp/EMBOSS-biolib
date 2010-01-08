@@ -1,5 +1,5 @@
 Calibrate HMM search statistics
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-inhmmfile]         infile     File containing an HMM.

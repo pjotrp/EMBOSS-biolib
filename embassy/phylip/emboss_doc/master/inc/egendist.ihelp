@@ -1,5 +1,5 @@
 Genetic Distance Matrix program
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-infile]            infile     Phylip gendist program input file

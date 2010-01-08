@@ -21,7 +21,7 @@ Converting to:            GCG Profile .prf
 
 1 HMM(s) converted and written to globino.ehmmconvert
 
-hmmconvert -p  -F  ../ehmmcalibrate-ex-keep/globino.hmm globino.ehmmconvert
+/shared/software/bin/hmmconvert -p  -F  ../ehmmcalibrate-ex-keep/globino.hmm globino.ehmmconvert
 
 
 </pre></td></tr></table><p>

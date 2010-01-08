@@ -125,7 +125,7 @@ Trees also written onto file "mix.treefile"
 Command line arguments
 
 Mixed parsimony algorithm
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-infile]            discretestates File containing one or more data sets

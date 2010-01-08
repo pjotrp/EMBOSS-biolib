@@ -23,7 +23,7 @@ SSI index:      ./myhmmso.ssi
 HMM names:      3
 HMM accessions: 2
 
-hmmindex ./myhmmso
+/shared/software/bin/hmmindex ./myhmmso
 
 
 </pre></td></tr></table><p>

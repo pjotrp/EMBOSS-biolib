@@ -143,7 +143,7 @@ Random seed:          0
 
 Output saved in file globino.ehmmemit
 
-hmmemit --seed 0  -n 10  -o globino.ehmmemit ../ehmmcalibrate-ex-keep/globino.hmm
+/shared/software/bin/hmmemit --seed 0  -n 10  -o globino.ehmmemit ../ehmmcalibrate-ex-keep/globino.hmm
 
 
 </pre></td></tr></table><p>
@@ -163,7 +163,7 @@ Where possible, the same command-line qualifier names and parameter order is use
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
 Generate sequences from a profile HMM.
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-hmmfile]           infile     File containing one or more HMMs.
@@ -466,10 +466,10 @@ ALPH  Amino
 RF    no
 CS    no
 MAP   yes
-COM   hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmnew/globins50.msf
-COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex-keep/globin.hmm
+COM   /shared/software/bin/hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmnew/globins50.msf
+COM   /shared/software/bin/hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex-keep/globin.hmm
 NSEQ  50
-DATE  Tue Jul 15 12:00:00 2008
+DATE  Thu Jan  7 16:51:40 2010
 CKSUM 9858
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
 NULT      -4  -8455

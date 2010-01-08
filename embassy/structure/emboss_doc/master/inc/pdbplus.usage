@@ -21,14 +21,14 @@ Stride program log output file [stride.log]: <b></b>
 Naccess program log output file [naccess.log]: <b></b>
 
 Processing /homes/user/test/qa/pdbparse-keep/1cs4.ccf
-stride /homes/user/test/data/structure/1cs4.ent -f./pdbplus-1234567890.1234 >> stride.log 2>&1
-naccess /homes/user/test/data/structure/1cs4.ent  >> naccess.log 2>&1
+/shared/software/bin/stride /homes/user/test/data/structure/1cs4.ent -f./pdbplus-1234567890.1234 >> stride.log 2>&1
+/shared/software/bin/naccess /homes/user/test/data/structure/1cs4.ent  >> naccess.log 2>&1
 Processing /homes/user/test/qa/pdbparse-keep/1ii7.ccf
-stride /homes/user/test/data/structure/1ii7.ent -f./pdbplus-1234567890.1234 >> stride.log 2>&1
-naccess /homes/user/test/data/structure/1ii7.ent  >> naccess.log 2>&1
+/shared/software/bin/stride /homes/user/test/data/structure/1ii7.ent -f./pdbplus-1234567890.1234 >> stride.log 2>&1
+/shared/software/bin/naccess /homes/user/test/data/structure/1ii7.ent  >> naccess.log 2>&1
 Processing /homes/user/test/qa/pdbparse-keep/2hhb.ccf
-stride /homes/user/test/data/structure/2hhb.ent -f./pdbplus-1234567890.1234 >> stride.log 2>&1
-naccess /homes/user/test/data/structure/2hhb.ent  >> naccess.log 2>&1
+/shared/software/bin/stride /homes/user/test/data/structure/2hhb.ent -f./pdbplus-1234567890.1234 >> stride.log 2>&1
+/shared/software/bin/naccess /homes/user/test/data/structure/2hhb.ent  >> naccess.log 2>&1
 STRIDE  failures: 0
 NACCESS failures: 0
 

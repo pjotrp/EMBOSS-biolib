@@ -1,5 +1,5 @@
 Reports mucin type GalNAc O-glycosylation sites in mammalian proteins
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqset     (Aligned) sequence set filename and optional

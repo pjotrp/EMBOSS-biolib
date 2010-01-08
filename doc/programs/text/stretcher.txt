@@ -61,7 +61,7 @@ Output alignment [hba_human.stretcher]:
 Command line arguments
 
 Needleman-Wunsch rapid global alignment of two sequences
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-asequence]         sequence   Sequence filename and optional format, or
@@ -399,7 +399,7 @@ Output file format
 
 ########################################
 # Program: stretcher
-# Rundate: Wed 15 Jul 2009 12:00:00
+# Rundate: Fri 15 Jan 2010 12:00:00
 # Commandline: stretcher
 #    [-asequence] tsw:hba_human
 #    [-bsequence] tsw:hbb_human

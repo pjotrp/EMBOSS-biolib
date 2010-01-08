@@ -1,5 +1,5 @@
 Generates DCF file from raw CATH files.
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-listfile]          infile     [caths.list.v2.4] This option specifies the

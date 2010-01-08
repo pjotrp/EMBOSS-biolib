@@ -86,7 +86,7 @@ Output report [l46634.fuzznuc]:
 Command line arguments
 
 Search for patterns in nucleotide sequences
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
@@ -354,7 +354,7 @@ Output file format
 
 ########################################
 # Program: fuzznuc
-# Rundate: Wed 15 Jul 2009 12:00:00
+# Rundate: Fri 15 Jan 2010 12:00:00
 # Commandline: fuzznuc
 #    -sequence tembl:L46634
 #    -pattern AAGCTT
@@ -394,7 +394,7 @@ Output file format
 
 ########################################
 # Program: fuzznuc
-# Rundate: Wed 15 Jul 2009 12:00:00
+# Rundate: Fri 15 Jan 2010 12:00:00
 # Commandline: fuzznuc
 #    -sequence tembl:L46634
 #    -pattern @../../data/nucseq.pat
@@ -434,7 +434,7 @@ Output file format
 
 ########################################
 # Program: fuzznuc
-# Rundate: Wed 15 Jul 2009 12:00:00
+# Rundate: Fri 15 Jan 2010 12:00:00
 # Commandline: fuzznuc
 #    -pname test
 #    -sequence tembl:L46634
@@ -487,7 +487,7 @@ Output file format
 
 ########################################
 # Program: fuzznuc
-# Rundate: Wed 15 Jul 2009 12:00:00
+# Rundate: Fri 15 Jan 2010 12:00:00
 # Commandline: fuzznuc
 #    -sequence tembl:L46634
 #    -pattern @../../data/nuc.pat

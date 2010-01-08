@@ -46,7 +46,7 @@ Vienna RNAfold output file [red.vrnacofoldconc]:
 Command line arguments
 
 RNA cofolding with concentrations
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-asequence]         sequence   Nucleotide sequence filename and optional

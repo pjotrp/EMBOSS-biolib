@@ -40,7 +40,7 @@ Output report [1hmp_a.psiphi]:
 Command line arguments
 
 Calculates phi and psi torsion angles from protein coordinates
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-infile]            infile     Clean protein structure coordinates file
@@ -390,7 +390,7 @@ Output file format
 
 ########################################
 # Program: psiphi
-# Rundate: Wed 15 Jul 2009 12:00:00
+# Rundate: Fri 15 Jan 2010 12:00:00
 # Commandline: psiphi
 #    [-infile] ../../data/1hmp_a.ccf
 #    -chainnumber 1

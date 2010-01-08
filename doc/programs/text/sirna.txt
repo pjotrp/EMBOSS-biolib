@@ -97,7 +97,7 @@ output sequence(s) [x65923.fasta]:
 Command line arguments
 
 Finds siRNA duplexes in mRNA
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
@@ -335,7 +335,7 @@ Output file format
 
 ########################################
 # Program: sirna
-# Rundate: Wed 15 Jul 2009 12:00:00
+# Rundate: Fri 15 Jan 2010 12:00:00
 # Commandline: sirna
 #    -sequence tembl:x65923
 # Report_format: table
@@ -626,7 +626,7 @@ taaaaaagccacttagttcagtc
 
 ########################################
 # Program: sirna
-# Rundate: Wed 15 Jul 2009 12:00:00
+# Rundate: Fri 15 Jan 2010 12:00:00
 # Commandline: sirna
 #    -context
 #    -sequence tembl:x65923

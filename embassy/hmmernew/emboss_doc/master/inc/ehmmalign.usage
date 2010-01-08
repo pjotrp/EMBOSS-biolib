@@ -18,7 +18,7 @@ Sequence file:        ./ehmmalign-1234567890.1234
 
 Alignment saved in file globins630.ali
 
-hmmalign  --informat FASTA --outformat A2M  -o globins630.ali ../ehmmcalibrate-ex-keep/globino.hmm ./ehmmalign-1234567890.1234
+/shared/software/bin/hmmalign  --informat FASTA --outformat A2M  -o globins630.ali ../ehmmcalibrate-ex-keep/globino.hmm ./ehmmalign-1234567890.1234
 
 
 </pre></td></tr></table><p>

@@ -1,5 +1,5 @@
 Bootstrapped sequences algorithm
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-datafile]          infile     Phylip seqboot program input file

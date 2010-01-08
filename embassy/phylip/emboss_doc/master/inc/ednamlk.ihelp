@@ -1,5 +1,5 @@
 Phylogenies from nucleic acid Maximum Likelihood with clock
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqset     File containing a sequence alignment

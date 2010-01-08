@@ -114,7 +114,7 @@ Tree written to file "dnamove.treefile"
 Command line arguments
 
 Interactive DNA parsimony
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqsetall  (Aligned) nucleotide sequence set(s)

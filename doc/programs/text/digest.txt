@@ -54,7 +54,7 @@ Output report [opsd_human.digest]:
 Command line arguments
 
 Reports on protein proteolytic enzyme or reagent cleavage sites
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-seqall]            seqall     Protein sequence(s) filename and optional
@@ -285,7 +285,7 @@ Output file format
 
 ########################################
 # Program: digest
-# Rundate: Wed 15 Jul 2009 12:00:00
+# Rundate: Fri 15 Jan 2010 12:00:00
 # Commandline: digest
 #    -seqall tsw:opsd_human
 # Report_format: seqtable

@@ -1,5 +1,5 @@
 Restriction site Maximum Likelihood method
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-datafile]          infile     Phylip restml program input file

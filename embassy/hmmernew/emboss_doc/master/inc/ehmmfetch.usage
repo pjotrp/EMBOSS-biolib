@@ -8,7 +8,7 @@
 Retrieve an HMM from an HMM database.
 
 
-hmmfetch ../ehmmindex-ex-keep/myhmmso pkinase > pkinase.ehmmfetch
+/shared/software/bin/hmmfetch ../ehmmindex-ex-keep/myhmmso pkinase > pkinase.ehmmfetch
 
 
 </pre></td></tr></table><p>

@@ -43,7 +43,7 @@ Vienna RNAfold output file [ecoli6s.vrnaalifold]:
 Command line arguments
 
 RNA alignment folding
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqset     (Aligned) nucleotide sequence set filename

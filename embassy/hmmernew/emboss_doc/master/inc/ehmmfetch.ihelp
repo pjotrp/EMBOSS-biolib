@@ -1,5 +1,5 @@
 Retrieve an HMM from an HMM database.
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-database]          infile     HMMER hmm database file

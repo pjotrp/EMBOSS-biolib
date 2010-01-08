@@ -1,5 +1,5 @@
 Generate a 3D-1D scoring matrix from CCF files.
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers (* if not always prompted):
    -mode               menu       [1] This option specifies the amino acid

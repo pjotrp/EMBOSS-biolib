@@ -1,5 +1,5 @@
 Search a DCF file for secondary structure matches.
-Version: EMBOSS:6.1.0
+Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
   [-ssinfile]          infile     This option specifies the name of the file
