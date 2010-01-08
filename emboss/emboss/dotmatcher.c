@@ -153,8 +153,8 @@ int main(int argc, char **argv)
     ithresh    = ajAcdGetInt("threshold");
     matrix     = ajAcdGetMatrix("matrixfile");
     
-    sub = ajMatrixArray(matrix);
-    cvt = ajMatrixCvt(matrix);
+    sub = ajMatrixGetMatrix(matrix);
+    cvt = ajMatrixGetCvt(matrix);
     
     thresh = (float)ithresh;
 

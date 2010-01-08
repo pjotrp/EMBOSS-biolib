@@ -143,8 +143,8 @@ int main(int argc, char **argv)
     ajTimeSetLocal(&ajtime, tim);
     ajtime.format = 0;
 
-    matrix  = ajMatrixArray(cmpmatrix);
-    cvt     = ajMatrixCvt(cmpmatrix);	/* Returns conversion table */
+    matrix  = ajMatrixGetMatrix(cmpmatrix);
+    cvt     = ajMatrixGetCvt(cmpmatrix);	/* Returns conversion table */
 
 
     /****************** Memory allocation *****************/

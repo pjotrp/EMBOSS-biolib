@@ -260,9 +260,9 @@ int main(int argc, char **argv)
 
     ajStrToInt(altstr, &alternative);
 
-    matrix = ajMatrixArray(cmpmatrix);
-    cvt = ajMatrixCvt(cmpmatrix);
-    matsize = ajMatrixSize(cmpmatrix);
+    matrix = ajMatrixGetMatrix(cmpmatrix);
+    cvt = ajMatrixGetCvt(cmpmatrix);
+    matsize = ajMatrixGetSize(cmpmatrix);
 
     AJCNEW(identical,matsize);
     AJCNEW(matching,matsize);
