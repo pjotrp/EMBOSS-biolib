@@ -70,10 +70,9 @@ void ensGvsampleadaptorDel(EnsPGvsampleadaptor *Pgvsa);
 
 EnsPBaseadaptor ensGvsampleadaptorGetAdaptor(EnsPGvsampleadaptor gvsa);
 
-AjBool
-ensGvsampleadaptorFetchAllByDisplay(EnsPGvsampleadaptor gvsa,
-                                    AjEnum display,
-                                    AjPList gvss);
+AjBool ensGvsampleadaptorFetchAllByDisplay(EnsPGvsampleadaptor gvsa,
+                                           AjEnum display,
+                                           AjPList gvss);
 
 AjBool ensGvsampleadaptorFetchAllSynonymsByIdentifier(
     const EnsPGvsampleadaptor gvsa,
