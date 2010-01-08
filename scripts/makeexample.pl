@@ -809,8 +809,8 @@ sub writeUsage {
     $usage =~ s/seqsearch\-[0-9]+[.][0-9]+[.]/seqsearch-1234567890.1234./go;
     $usage =~ s/hmmalign\-[0-9]+[.][0-9]+/hmmalign-1234567890.1234/go;
     $usage =~ s/hmmpfam\-[0-9]+[.][0-9]+/hmmpfam-1234567890.1234/go;
-    $usage =~ s/Localtime: ... ... +\d+ [0-9:]+ 2[0-9][0-9][0-9]$/Localtime: Tue Jul 15 12:00:00 2008/gom;
-    $usage =~ s/SUBMITTED iprscan-\d+-\d+/SUBMITTED-iprscan-20080715-12345678/go;
+    $usage =~ s/Localtime: ... ... +\d+ [0-9:]+ 2[0-9][0-9][0-9]$/Localtime: Fri Jan 15 12:00:00 2010/gom;
+    $usage =~ s/SUBMITTED iprscan-\d+-\d+/SUBMITTED-iprscan-20100115-12345678/go;
     print OUT $usage;
     close(OUT);
     chmod 0664, $out;	# rw-rw-r--
@@ -827,7 +827,7 @@ sub writeInput {
 
     my $out = "$incdir/$application.input";
     open (OUT, "> $out") || die "Can't open $out";
-    $input =~ s/DATE  [A-Z][a-z][a-z] [A-Z][a-z][a-z] +[0-9]+ [0-9:]+ 200[5-9]/DATE  Tue Jul 15 12:00:00 2008/go;
+    $input =~ s/DATE  [A-Z][a-z][a-z] [A-Z][a-z][a-z] +[0-9]+ [0-9:]+ 200[5-9]/DATE  Fri Jan 15 12:00:00 2010/go;
     print OUT $input;
     close(OUT);
     chmod 0664, $out;	# rw-rw-r--
@@ -845,11 +845,11 @@ sub writeOutput {
     my $out = "$incdir/$application.output";
     open (OUT, "> $out") || die "Can't open $out";
     $output =~ s/\/homes\/pmr\/devemboss/\/homes\/user/go;
-    $output =~ s/DATE  [A-Z][a-z][a-z] [A-Z][a-z][a-z] +[0-9]+ [0-9:]+ 200[5-9]/DATE  Tue Jul 15 12:00:00 2008/go;
-    $output =~ s/CreationDate: ... ... +\d+ [0-9:]+ 2[0-9][0-9][0-9]$/CreationDate: Tue Jul 15 12:00:00 2008/gom;
-    $output =~ s/Rundate: ... ... +\d+ 2[0-9][0-9][0-9] [0-9:]+$/Rundate: Tue Jul 15 2008 12:00:00/gom;
-    $output =~ s/Localtime: ... ... +\d+ [0-9:]+ 2[0-9][0-9][0-9]$/Localtime: Tue Jul 15 12:00:00 2008/gom;
-    $output =~ s/\#\#date 2[0-9][0-9][0-9][-][0-9][0-9][-][0-9][0-9]$/\#\#date 2008-07-15/gom;
+    $output =~ s/DATE  [A-Z][a-z][a-z] [A-Z][a-z][a-z] +[0-9]+ [0-9:]+ 200[5-9]/DATE  Fri Jan 15 12:00:00 2010/go;
+    $output =~ s/CreationDate: ... ... +\d+ [0-9:]+ 2[0-9][0-9][0-9]$/CreationDate: Fri Jan 15 12:00:00 2010/gom;
+    $output =~ s/Rundate: ... ... +\d+ 2[0-9][0-9][0-9] [0-9:]+$/Rundate: Fri Jan 15 2010 12:00:00/gom;
+    $output =~ s/Localtime: ... ... +\d+ [0-9:]+ 2[0-9][0-9][0-9]$/Localtime: Fri Jan 15 12:00:00 2010/gom;
+    $output =~ s/\#\#date 2[0-9][0-9][0-9][-][0-9][0-9][-][0-9][0-9]$/\#\#date 2010-01-15/gom;
     $output =~ s/domainalign\-[0-9]+[.][0-9]+[.]/domainalign-1234567890.1234./go;
     $output =~ s/domainrep\-[0-9]+[.][0-9]+[.]/domainrep-1234567890.1234./go;
     $output =~ s/seqalign\-[0-9]+[.][0-9]+[.]/seqalign-1234567890.1234./go;
@@ -857,7 +857,9 @@ sub writeOutput {
     $output =~ s/hmmalign\-[0-9]+[.][0-9]+/hmmalign-1234567890.1234/go;
     $output =~ s/hmmpfam\-[0-9]+[.][0-9]+/hmmpfam-1234567890.1234/go;
     $output =~ s/Time 0\.00[1-5][0-9][0-9][0-9] secs\./Time 0.001999 secs./go;
-    $output =~ s/\%\%Creator: (\S+ [\d.]+) 2[0-9][0-9][0-9]\/[0-9[0-9]\/[0-9[0-9]/Creator: $1 2008\/07\/15/go;
+    $output =~ s/\%\%Creator: (\S+ [\d.]+) 2[0-9][0-9][0-9]\/[0-9[0-9]\/[0-9[0-9]/Creator: $1 2010\/01\/15/go;
+    $output =~ s/mse\.msf MSF: 120 Type: N \d+\/\d+\/\d+ CompCheck: 2784/mse.msf MSF: 120 Type: N 15\/07\/09 CompCheck: 2784/go;
+    $output =~ s/   \d+-[A-Z][a-z][a-z]-2[01][0-9][0-9]   /   15-Jan-2010   /go;
     print OUT $output;
     close(OUT);
     chmod 0664, $out;	# rw-rw-r--
