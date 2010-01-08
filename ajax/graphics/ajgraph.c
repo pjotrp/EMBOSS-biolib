@@ -387,6 +387,7 @@ PLPLOT CALLS *START*
 ** @nam4rule Defcharsize Character default height
 ** @nam4rule Device Set plplot device name from graph object
 ** @nam4rule Fgcolour Foreground plotting colour
+** @nam4rule Filename BaseName and extension
 ** @nam4rule Fillpat Fill pattern
 ** @nam4rule Labels Plot titles and axis labels
 ** @nam4rule Linestyle Line style
@@ -895,7 +896,7 @@ ajint ajGraphicsSetFgcolour(ajint colour)
 	col -= (MAXCOL+1);
 
     if(col < 0)
-	ajDebug("ajGraphicsSetColourFore give up and use "
+	ajDebug("ajGraphicsSetFgcolour give up and use "
                 "currentfgcolour %d '%s'\n",
 		 currentfgcolour, graphColourName[currentfgcolour]);
     if(col < 0)
@@ -912,7 +913,7 @@ ajint ajGraphicsSetFgcolour(ajint colour)
 	    col = 0;
     }
 
-    ajDebug("ajGraphicsSetColourFore (%d '%s') currentbgwhite: %B, "
+    ajDebug("ajGraphicsSetFgcolour (%d '%s') currentbgwhite: %B, "
 	    "oldcolour: %d '%s'\n",
 	    colour, graphColourName[colour], currentbgwhite,
 	    oldcolour, graphColourName[oldcolour]);
@@ -956,36 +957,6 @@ static void GraphDefCharSize(float size)
 
 
 
-/* @func ajGraphicsSetFilename ************************************************
-**
-** set BaseName and extension.
-**
-** @param [r] graph [const AjPGraph] Graph object.
-**
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphicsSetFilename(const AjPGraph graph)
-{
-    if(!ajCharMatchCaseC(graphType[graph->displaytype].Ext, "null"))
-        GraphSetName(graph, graph->outputfile,
-                     graphType[graph->displaytype].Ext);
-
-    return;
-}
-
-/* @obsolete ajGraphSetName
-** @rename ajGraphicsSetFilename
-*/
-__deprecated void ajGraphSetName(const AjPGraph thys)
-{
-    ajGraphicsSetFilename(thys);
-    return;
-}
-
-
-
 /* @funcstatic GraphSetName ***************************************************
 **
 ** Set BaseName and extension.
@@ -1014,6 +985,36 @@ static void GraphSetName(const AjPGraph thys,
     return;
 }
 
+
+
+
+/* @func ajGraphicsSetFilename *************************************************
+**
+** set BaseName and extension.
+**
+** @param [r] graph [const AjPGraph] Graph object.
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajGraphicsSetFilename(const AjPGraph graph)
+{
+    if(!ajCharMatchCaseC(graphType[graph->displaytype].Ext, "null"))
+        GraphSetName(graph, graph->outputfile,
+                     graphType[graph->displaytype].Ext);
+
+    return;
+}
+
+/* @obsolete ajGraphSetName
+** @rename ajGraphicsSetFilename
+*/
+__deprecated void ajGraphSetName(const AjPGraph thys)
+{
+    ajGraphicsSetFilename(thys);
+    return;
+}
 
 
 
@@ -6715,7 +6716,7 @@ void ajGraphxyShowUaxis(AjPGraph thys, AjBool set)
 
 
 /* @obsolete ajGraphxySetXTop
-** @rename ajGraphxyShowTaxis
+** @rename ajGraphxyShowUaxis
 */
 
 __deprecated void ajGraphxySetXTop(AjPGraph thys, AjBool set)
