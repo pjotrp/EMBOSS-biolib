@@ -4015,8 +4015,8 @@ void ajGraphOpenMm(AjPGraph thys, float * xmm, float * ymm)
 
     if(graphData)
     {
-	*xmm=255.9;
-	*ymm=191.9;
+	*xmm= (float) 255.9;
+	*ymm= (float) 191.9;
     }
     else
     {
