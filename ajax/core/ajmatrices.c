@@ -438,7 +438,7 @@ AjPMatrix ajMatrixNewFile(const AjPStr filename)
 	ajStrDel(&firststring);
 	ajListFree(&rlabel_list);
 
-	return ajFalse;
+	return NULL;
     }
     
     /* Read row labels */
@@ -626,7 +626,7 @@ AjPMatrixf ajMatrixfNewFile(const AjPStr filename)
 	ajStrDel(&firststring);
 	ajStrDel(&reststring);
 
-	return ajFalse;
+	return NULL;
     }
     
 
