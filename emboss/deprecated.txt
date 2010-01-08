@@ -267,7 +267,7 @@ ajRecToPol ajCvtRecToPol
 ajPolToRec ajCvtPolToRec
 ajDegToRad ajCvtDegToRad
 ajRadToDeg ajCvtRadToDeg
-ajGaussProb ajCvtGaussProb
+ajGaussProb ajCvtGaussToProb
 ajGeoMean ajMathGmean
 ajPosMod ajMathModulo
 ajRandomNumberD ajRandomDouble
@@ -766,6 +766,7 @@ ajAcdProgramS -
 ajAcdGetProgram ajUtilGetProgram
 ajAcdProgram -
 #ajvector
+#samtoolsbgzf
 #ajgraph
 ajGraphClose ajGraphicsClose
 ajGraphCloseWin ajGraphicsClose
@@ -871,7 +872,7 @@ ajGraphxySetOverLap ajGraphxySetflagOverlay
 ajGraphxySetCirclePoints ajGraphxyShowPointsCircle
 ajGraphxySetJoinPoints ajGraphxyShowPointsJoin
 ajGraphxySetYRight ajGraphxyShowRaxis
-ajGraphxySetXTop ajGraphxyShowTaxis
+ajGraphxySetXTop ajGraphxyShowUaxis
 ajGraphxySetXLabelTop ajGraphxyShowUnum
 ajGraphxySetXBottom ajGraphxyShowXaxis
 ajGraphxySetXGrid ajGraphxyShowXgrid
@@ -963,6 +964,9 @@ ajGraphInitPV ajAcdGraphicsInitPV
 #ensexternaldatabase
 #ensfeature
 #ensgene
+#ensgvindividual
+#ensgvpopulation
+#ensgvsample
 #ensintron
 #enskaryotype
 #ensmapper
