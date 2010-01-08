@@ -1,4 +1,9 @@
 Version 6.2.0 15-Jan-2010
+	Added code from samtools to read BAM (binary SAM) files.
+
+	Updated sequence format refseqp to handle features for proteins in
+	the latest release of refseq protein.gpff files.
+
 	A new function ajDebugTest can be used to turn on/off specific
 	debug calls. The only argument is a quoted string. A file
 	.debugtest in the current directory or the user's home directory
