@@ -256,7 +256,6 @@ void          ajGraphShowTitle (AjPGraph thys, AjBool set);
 void          ajGraphSetDescC(AjPGraph thys, const char* txt);
 void          ajGraphSetDescS(AjPGraph thys, const AjPStr str);
 
-void          ajGraphSetOutdirC(AjPGraph thys, const char* txt);
 void          ajGraphSetOutdirS(AjPGraph thys, const AjPStr str);
 void          ajGraphSetTitleC(AjPGraph thys, const char *title);
 void          ajGraphSetTitleS(AjPGraph thys, const AjPStr title);
