@@ -589,6 +589,10 @@ AjBool     ajStrTokenRestParse(AjPStrTok* Ptoken, AjPStr* Pstr);
 
 
 
+/*
+** End of prototype definitions
+*/
+
 
 /* =====================================================================
 ** Deprecated functions - renamed or replaced
@@ -778,10 +782,6 @@ __deprecated const char  *MAJSTRSTR(const AjPStr thys);
 __deprecated ajint  MAJSTRLEN(const AjPStr thys);
 __deprecated ajint  MAJSTRSIZE(const AjPStr thys);
 __deprecated ajint  MAJSTRREF(const AjPStr thys);
-
-/*
-** End of prototype definitions
-*/
 
 
 /*#define    MAJSTRREF(str) str->Use*/

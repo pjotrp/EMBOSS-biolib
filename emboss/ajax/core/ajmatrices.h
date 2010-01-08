@@ -102,7 +102,13 @@ AjPMatrixf    ajMatrixfNewFile (const AjPStr filename);
 AjBool        ajMatrixfSeqIndex (const AjPMatrixf thys, const AjPSeq seq,
                                  AjPStr* numseq);
 
-__deprecated void          ajMatrixfChar (const AjPMatrixf thys,
+
+/*
+** End of prototype definitions
+*/
+
+
+    __deprecated void          ajMatrixfChar (const AjPMatrixf thys,
                                           ajint i, AjPStr *label);
 __deprecated void          ajMatrixChar (const AjPMatrix thys,
                                          ajint i, AjPStr *label);
@@ -122,10 +128,6 @@ __deprecated AjBool        ajMatrixSeqNum (const AjPMatrix thys,
                                            const AjPSeq seq, AjPStr* numseq);
 __deprecated AjBool        ajMatrixfSeqNum (const AjPMatrixf thys,
                                            const AjPSeq seq, AjPStr* numseq);
-
-/*
-** End of prototype definitions
-*/
 
 #endif
 

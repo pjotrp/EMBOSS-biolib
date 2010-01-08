@@ -223,6 +223,10 @@ AjBool        ajFeattagIsNote(const AjPStr tag);
 
 void          ajFeatUnused(void);
 
+/*
+** End of prototype definitions
+*/
+
 __deprecated AjBool        ajFeatGetNoteI (const AjPFeature thys,
                                             const AjPStr name,
                                             ajint count, AjPStr* val);
@@ -245,10 +249,6 @@ __deprecated void          ajFeatDefName(AjPFeattable thys,
                                          const AjPStr setname);
 __deprecated AjBool        ajFeatGetNote (const AjPFeature thys,
                                           const AjPStr name, AjPStr* val);
-
-/*
-** End of prototype definitions
-*/
 
 
 /*
