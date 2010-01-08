@@ -263,6 +263,18 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\ajax\ensembl\ensgvindividual.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\ensembl\ensgvpopulation.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\ensembl\ensgvsample.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\ajax\ensembl\ensintron.c"
 				>
 			</File>
@@ -442,6 +454,22 @@
 			</File>
 			<File
 				RelativePath="..\..\..\ajax\ensembl\ensgene.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\ensembl\ensgvdata.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\ensembl\ensgvindividual.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\ensembl\ensgvpopulation.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\ajax\ensembl\ensgvsample.h"
 				>
 			</File>
 			<File
