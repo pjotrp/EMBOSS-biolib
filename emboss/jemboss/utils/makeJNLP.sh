@@ -241,11 +241,12 @@ echo '             <jar href="'sjaxrpc.jar'"/>'                 >> $JNLP
 echo '             <jar href="'saxis.jar'"/>'                   >> $JNLP
 echo '             <jar href="'scommons-logging.jar'"/>'        >> $JNLP
 echo '             <jar href="'scommons-discovery.jar'"/>'      >> $JNLP
-echo '             <jar href="'sJemboss.jar'"  main="'true'"/>' >> $JNLP
+echo '             <jar href="'sJemboss.jar'"/>'                >> $JNLP
+echo '             <jar href="'sjemboss.jar'"  main="'true'"/>' >> $JNLP
 for i in s*.jar; do
   if (test $i != "sJemboss.jar") && (test $i != "sjaxrpc.jar") && (test $i != "saxis.jar");then
     if (test $i != "scommons-logging.jar") && (test $i != "scommons-discovery.jar");then
-      if (test $i != "saaj.jar");then
+      if (test $i != "saaj.jar") && (test $i != "sjemboss.jar");then
         echo '             <jar href="'$i'"/>'          >> $JNLP
       fi
     fi
