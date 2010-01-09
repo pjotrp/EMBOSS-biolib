@@ -141,11 +141,18 @@ public class BuildProgramMenu
           return woss;
       }
 
-      private synchronized void  updateConnectionSettings(){      
+      private synchronized void  updateConnectionSettings(JembossSoapException ex){      
 		  splashing.doneSomething("Cannot connect!");
+		  JPanel p = new JPanel();
+		  JTextArea t = new JTextArea(ex.getMessage());
+		  t.setEditable(false);
+		  p.setLayout(new BoxLayout(p, BoxLayout.PAGE_AXIS));
+		  p.add(t);
 		  ServerSetup ss = new ServerSetup(mysettings);
+		  p.add(ss);
+		  ss.setToolTipText(ex.getMessage());
 		  splashThread.setInterval(100000);
-		  int sso = JOptionPane.showConfirmDialog(f,ss,
+		  int sso = JOptionPane.showConfirmDialog(f,p,
 				  "Check Settings",
 				  JOptionPane.OK_CANCEL_OPTION,
 				  JOptionPane.ERROR_MESSAGE,null);
@@ -192,7 +199,7 @@ public class BuildProgramMenu
         			  mainMenu.setEnableShowResults(true);
         		  }
         		  catch (JembossSoapException ex){
-        			  updateConnectionSettings();
+        			  updateConnectionSettings(ex);
         			  continue;
         		  }
         		  connectionmade = true;
@@ -220,7 +227,7 @@ public class BuildProgramMenu
         				  matrices = showdb.getMatrices();
         				  codons = showdb.getCodonUsage();
         			  } catch (JembossSoapException ex) {
-        				  updateConnectionSettings();
+        				  updateConnectionSettings(ex);
         				  continue;
         			  }
         			  connectionmade = true;
