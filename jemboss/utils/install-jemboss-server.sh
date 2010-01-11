@@ -76,7 +76,7 @@ getPrimerPath()
   echo
   echo "-------------------------- Primer3  --------------------------"
   echo
-  echo "To use eprimer3 (EMBOSS interface primer3 from the Whitehead"
+  echo "To use eprimer3 (EMBOSS interface to Primer3 from the Whitehead"
   echo "Institute) Jemboss needs to know the path to the primer3_core"
   echo "binary."
   echo
@@ -112,7 +112,7 @@ embassy_install()
   echo "EMBASSY packages can optionally be installed along with"
   echo "the EMBOSS applications, see:"
   echo "http://emboss.sourceforge.net/apps/release/version/embassy"
-  echo "where 'version' corresponds to the EMBOSS version e.g. 4.0"
+  echo "where 'version' corresponds to the EMBOSS version e.g. 6.0"
   echo
   echo "--------------------------------------------------------------"
   echo
@@ -272,7 +272,7 @@ ssl_print_notes()
    fi
  else
 
-   TCVERSION=`sed -n -e 's|\(.*\)Running The Apache Tomcat 6.0\(.*\)|6|p' RUNNING.txt`
+   TCVERSION=`sed -n -e 's|\(.*\)Running The Apache Tomcat 6.0\(.*\)|6|p' $TOMCAT_ROOT/RUNNING.txt`
 
    if [ "$TCVERSION" == "6" ]; then 
    #tomcat 6.x
@@ -676,7 +676,7 @@ echo "Note: any default values are given in square brackets []."
 echo " "
 echo "This script installs EMBOSS as well as Jemboss."
 echo "Jemboss is deployed as a Java web application in your tomcat server."
-echo "A script is prepared to run Jemboss client that by default uses the"
+echo "A script is prepared to run the Jemboss client that by default uses the"
 echo "above Jemboss web application."
 echo
 echo "For detailed information on installing Jemboss see: "
@@ -804,9 +804,9 @@ if [ $INSTALL_TYPE = "1" ]; then
 # localhost name
 #
   echo
-  echo "The IP address is needed by Jemboss to access"
-  echo "the Tomcat web server."
-  echo "Enter IP of server machine [localhost]:"
+  echo "The IP address or fully qualified domain name (e.g. emboss.company.com)"
+  echo "is needed by Jemboss to access the Tomcat web server."
+  echo "Enter IP address or fully qualified domain name of the server machine [localhost]:"
   read LOCALHOST
 
   if [ "$LOCALHOST" = "" ]; then
@@ -1120,7 +1120,7 @@ if [ $INSTALL_TYPE = "1" ]; then
 
   while [ ! -d "$SOAP_ROOT/webapps/axis" ]
   do
-    echo "Enter Apache AXIS (SOAP) root directory (e.g. /usr/local/axis-xx)"
+    echo "Enter Apache AXIS (SOAP) root directory (e.g. /usr/local/axis)"
     read SOAP_ROOT
   done
   echo "$SOAP_ROOT" >> $RECORD
