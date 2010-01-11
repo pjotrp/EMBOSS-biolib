@@ -144,7 +144,7 @@ cp lib/*jar jnlp
 cp lib/axis/*jar jnlp
 cp images/Jemboss_logo_large.gif jnlp
 cp utils/template.html jnlp/index.html
-cp utils/jws-launch-button.png jnlp/jws-launch-button.jpg
+cp utils/jws-launch-button.png jnlp/jws-launch-button.png
 cd jnlp
 rm mail.jar activation.jar servlet.jar log4j-1.2.8.jar axis-ant.jar
 
@@ -267,8 +267,7 @@ echo "*** The signed jar files, index.html and $JNLP have been"
 echo "*** created in the directory $CWPWD/jnlp."
 echo "*** "
 echo "*** Please edit the 'codebase' line in $JNLP."
-echo "*** Also, edit the 'Click here' line in index.html to point"
-echo "*** href at $JNLP."
+echo "*** "
 echo "*** The 'jnlp' directory will then need to be added to your HTTP"
 echo "*** server configuration file or moved into the www data"
 echo "*** directories."
