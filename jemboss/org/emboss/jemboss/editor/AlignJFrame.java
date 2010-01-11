@@ -295,6 +295,7 @@ public class AlignJFrame extends JFrame
         public void actionPerformed(ActionEvent e)
         {
           dispose();
+          findPattern.dispose();
         }
       });
       fileMenu.add(close);
