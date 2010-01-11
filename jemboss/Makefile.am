@@ -34,6 +34,7 @@ pkgdatadir=$(prefix)/share/$(PACKAGE)/jemboss
 
 dist-hook:
 if EHAVEANT
+	ant package -Demboss.data=../emboss/data -Dname=jemboss -Djar.dir=lib -Dnotformemboss=yes;
 	ant clean;
 endif
 	tar cBf - api | ( cd $(distdir); tar xBf - ; rm -rf api/CVS );
