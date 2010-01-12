@@ -1,6 +1,4 @@
 Version 6.2.0 15-Jan-2010
-	Added code from samtools to read BAM (binary SAM) files.
-
 	Updated sequence format refseqp to handle features for proteins in
 	the latest release of refseq protein.gpff files.
 
