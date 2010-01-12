@@ -24,15 +24,23 @@
 #ifndef __BGZF_H
 #define __BGZF_H
 
-#include <stdint.h>
 #include <stdio.h>
-#include <stdbool.h>
 #include "zlib.h"
 #ifdef _USE_KNETFILE
 #include "knetfile.h"
 #endif
 
-//typedef int8_t bool;
+#include "ajarch.h"
+
+#ifdef HAVE_STDBOOL_H
+#include <stdbool.h>
+#else
+#define bool	char
+#define true	1
+#define false	0
+#endif
+
+//typedef character bool;
 
 typedef struct {
     int file_descriptor;
@@ -51,7 +59,7 @@ typedef struct {
     int compressed_block_size;
     void* uncompressed_block;
     void* compressed_block;
-    int64_t block_address;
+    ajlong block_address;
     int block_length;
     int block_offset;
 	int cache_size;
@@ -108,7 +116,7 @@ int bgzf_write(BGZF* fp, const void* data, int length);
  * Return value is non-negative on success.
  * Returns -1 on error.
  */
-int64_t bgzf_tell(BGZF* fp);
+ajlong bgzf_tell(BGZF* fp);
 
 /*
  * Set the file to read from the location specified by pos, which must
@@ -118,7 +126,7 @@ int64_t bgzf_tell(BGZF* fp);
  * Seeking on a file opened for write is not supported.
  * Returns zero on success, -1 on error.
  */
-int64_t bgzf_seek(BGZF* fp, int64_t pos, int where);
+ajlong bgzf_seek(BGZF* fp, ajlong pos, int where);
 
 /*
  * Set the cache size. Zero to disable. By default, caching is
