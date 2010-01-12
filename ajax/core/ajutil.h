@@ -17,11 +17,14 @@ __noreturn void   ajExit (void);
 __noreturn void   ajExitAbort (void);
 __noreturn void   ajExitBad (void);
 
-void          ajByteRevLen2 (short* i);
+void          ajByteRevLen2 (ajshort* i);
 void          ajByteRevLen4 (ajint* i);
 void          ajByteRevLen8 (ajlong* i);
+void          ajByteRevLen2u (ajushort* i);
+void          ajByteRevLen4u (ajuint* i);
+void          ajByteRevLen8u (ajulong* i);
 void          ajByteRevInt(ajint* sval);
-void          ajByteRevShort(short* ival);
+void          ajByteRevShort(ajshort* ival);
 void          ajByteRevLong(ajlong* lval);
 void          ajByteRevUint(ajuint* ival);
 

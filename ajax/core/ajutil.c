@@ -218,15 +218,21 @@ void ajReset(void)
 ** @nam4rule  RevLen2      Reverse the byte order in a 2 byte integer.
 ** @nam4rule  RevLen4      Reverse the byte order in a 4 byte integer.
 ** @nam4rule  RevLen8      Reverse the byte order in a 8 byte integer.
+** @nam4rule  RevLen2u      Reverse the byte order in a 2 byte unsigned integer.
+** @nam4rule  RevLen4u      Reverse the byte order in a 4 byte unsigned integer.
+** @nam4rule  RevLen8u      Reverse the byte order in a 8 byte unsigned integer.
 ** @nam4rule  RevInt    Reverse the byte order in an integer.
 ** @nam4rule  RevShort  Reverse the byte order in a short integer.
 ** @nam4rule  RevLong   Reverse the byte order in a long.
 ** @nam4rule  RevUint    Reverse the byte order in an unsigned integer.
 **
-** @argrule   RevLen2  sval [short*] Short to be reversed
+** @argrule   RevLen2  sval [ajshort*] Short to be reversed
 ** @argrule   RevLen4  ival [ajint*] Integer to be reversed
 ** @argrule   RevLen8  lval [ajlong*] Long integer to be reversed
-** @argrule   RevShort sval [short*] Short to be reversed
+** @argrule   RevLen2u  sval [ajushort*] Unsigned short to be reversed
+** @argrule   RevLen4u  ival [ajuint*] Unsigned integer to be reversed
+** @argrule   RevLen8u  lval [ajulong*] Unsigned long integer to be reversed
+** @argrule   RevShort sval [ajshort*] Short to be reversed
 ** @argrule   RevInt   ival [ajint*] Integer to be reversed
 ** @argrule   RevLong  lval [ajlong*] Long integer to be reversed
 ** @argrule   RevUint  ival [ajuint*] Unsigned integer to be reversed
@@ -299,18 +305,18 @@ __deprecated void ajUtilRevInt(ajint* ival)
 ** Intended for cases where the number of bytes is known, for
 ** example when reading a binary file.
 **
-** @param [u] sval [short*] Short integer in wrong byte order.
+** @param [u] sval [ajshort*] Short integer in wrong byte order.
 **                          Returned in correct order.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajByteRevLen2(short* sval)
+void ajByteRevLen2(ajshort* sval)
 {
     union lbytes
     {
 	char chars[2];
-	short s;
+	ajshort s;
     } data, revdata;
 
     char* cs;
@@ -339,9 +345,52 @@ void ajByteRevLen2(short* sval)
 ** @rename ajByteRev2
 */
 
-__deprecated void ajUtilRev2(short* sval)
+__deprecated void ajUtilRev2(ajshort* sval)
 {
     ajByteRevLen2(sval);
+
+    return;
+}
+
+
+
+
+/* @func ajByteRevLen2u ********************************************************
+**
+** Reverses the byte order in a 2 byte integer.
+**
+** Intended for cases where the number of bytes is known, for
+** example when reading a binary file.
+**
+** @param [u] sval [ajushort*] Short integer in wrong byte order.
+**                          Returned in correct order.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajByteRevLen2u(ajushort* sval)
+{
+    union lbytes
+    {
+	char chars[2];
+	ajushort s;
+    } data, revdata;
+
+    char* cs;
+    char* cd;
+    ajint i;
+
+    data.s = *sval;
+    cs     = data.chars;
+    cd     = &revdata.chars[1];
+
+    for(i=0; i < 2; i++)
+    {
+	*cd = *cs++;
+	--cd;
+    }
+
+    *sval = revdata.s;
 
     return;
 }
@@ -406,6 +455,49 @@ __deprecated void ajUtilRev4(ajint* ival)
 
 
 
+/* @func ajByteRevLen4u ********************************************************
+**
+** Reverses the byte order in a 4 byte integer.
+**
+** Intended for cases where the number of bytes is known, for
+** example when reading a binary file.
+**
+** @param [u] ival [ajuint*] Integer in wrong byte order.
+**                        Returned in correct order.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajByteRevLen4u(ajuint* ival)
+{
+    union lbytes
+    {
+	char chars[4];
+	ajuint i;
+    } data, revdata;
+
+    char* cs;
+    char* cd;
+    ajint i;
+
+    data.i = *ival;
+    cs     = data.chars;
+    cd     = &revdata.chars[3];
+
+    for(i=0; i < 4; i++)
+    {
+	*cd = *cs++;
+	--cd;
+    }
+
+    *ival = revdata.i;
+
+    return;
+}
+
+
+
+
 /* @func ajByteRevLen8 ********************************************************
 **
 ** Reverses the byte order in an 8 byte long.
@@ -456,6 +548,49 @@ void ajByteRevLen8(ajlong* lval)
 __deprecated void ajUtilRev8(ajlong* lval)
 {
     ajByteRevLen8(lval);
+}
+
+
+
+
+/* @func ajByteRevLen8u ********************************************************
+**
+** Reverses the byte order in an 8 byte long.
+**
+** Intended for cases where the number of bytes is known, for
+** example when reading a binary file.
+**
+** @param [u] lval [ajulong*] Integer in wrong byte order.
+**                           Returned in correct order.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajByteRevLen8u(ajulong* lval)
+{
+    union lbytes
+    {
+	char chars[8];
+	ajulong l;
+    } data, revdata;
+
+    char* cs;
+    char* cd;
+    ajint i;
+    
+    data.l = *lval;
+    cs     = data.chars;
+    cd     = &revdata.chars[7];
+
+    for(i=0; i < 8; i++)
+    {
+	*cd = *cs++;
+	--cd;
+    }
+    
+    *lval = revdata.l;
+    
+    return;
 }
 
 
@@ -519,13 +654,13 @@ __deprecated void ajUtilRevLong(ajlong* lval)
 **
 ** Reverses the byte order in a short integer.
 **
-** @param [u] sval [short*] Short integer in wrong byte order.
+** @param [u] sval [ajshort*] Short integer in wrong byte order.
 **                          Returned in correct order.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajByteRevShort(short* sval)
+void ajByteRevShort(ajshort* sval)
 {
     union lbytes
     {
@@ -539,9 +674,9 @@ void ajByteRevShort(short* sval)
 
     data.s = *sval;
     cs     = data.chars;
-    cd     = &revdata.chars[sizeof(short)-1];
+    cd     = &revdata.chars[sizeof(ajshort)-1];
 
-    for(i=0; i < sizeof(short); i++)
+    for(i=0; i < sizeof(ajshort); i++)
     {
 	*cd = *cs++;
 	--cd;
@@ -559,7 +694,7 @@ void ajByteRevShort(short* sval)
 ** @rename ajByteRevShort
 */
 
-__deprecated void ajUtilRevShort(short* sval)
+__deprecated void ajUtilRevShort(ajshort* sval)
 {
     ajByteRevShort(sval);
 }
