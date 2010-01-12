@@ -118,11 +118,20 @@ Version 6.2.0 15-Jan-2010
 
 	SwissProt output formats now wrap long OS lines.
 
-	Needle was updated with end-gap penalties support allowing
-	complete global pairwise alignments. Three new options added are
-	endopen, endextend, and endweight. endopen and endextend options
-	are used to specify gap opening and extension penalties for end
-	gaps.  The endweight option turns on weighting of end gaps.
+	Needle has been updated with end-gap penalties support, allowing
+	complete global pairwise alignments. Three new options have been added;
+	the endopen and endextend options are used to specify
+	the gap opening and extension penalties for the end gaps,
+	while the endweight option turns on/off weighting of the end gaps.
+
+	New application needleall for all against all global/overlap
+	pairwise alignment of sequences in two multi-sequence files.
+
+	wordmatch updated for multi-sequence files using a modified version
+	of the Rabin-Karp algorithm for multi-pattern search. Also added is
+	a log file with statistical information on pattern matches.
+	The updated wordmatch can, for example, be used for efficiently
+	finding multiple patterns in large fastq files.
 
 	Application documentation has a new format HTML table for the
 	command line options. This is excluded from the text
