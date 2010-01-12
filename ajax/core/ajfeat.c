@@ -16238,6 +16238,7 @@ void ajFeatExit(void)
     ajStrDel(&featSourcePir);
     ajStrDel(&featSourceSwiss);
     ajStrDel(&featSourceEmbl);
+    ajStrDel(&featSourceRefseqp);
     ajStrDel(&featId);
     ajStrDel(&featLabel);
 

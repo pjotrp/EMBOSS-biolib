@@ -4491,6 +4491,10 @@ void ajFilebuffHtmlStrip(AjPFilebuff buff)
     AjPStr saveLine = NULL;
     AjPStr hexstr   = NULL;
     
+    /* first take out the HTTP header (HTTP 1.0 onwards) */
+    if(!buff->Size)
+	return;
+    
     tagexp   = ajRegCompC("^(.*)(<[!/A-Za-z][^>]*>)(.*)$");
     fullexp  = ajRegCompC("^(.*)(<([A-Za-z]+)[^>]*>.*</\\3>)(.*)$");
     httpexp  = ajRegCompC("^HTTP/");
@@ -4500,10 +4504,6 @@ void ajFilebuffHtmlStrip(AjPFilebuff buff)
     ncbiexp  = ajRegCompC("^Entrez Reports\r?\n$");
     ncbiexp2 = ajRegCompC("^----------------\r?\n$");
     srsdbexp = ajRegCompC("^([A-Za-z0-9_-]+)(:)([A-Za-z0-9_-]+)");
-    
-    /* first take out the HTTP header (HTTP 1.0 onwards) */
-    if(!buff->Size)
-	return;
     
     ajFilebuffTraceTitle(buff, "Before ajFileBuffStripHtml");
 
