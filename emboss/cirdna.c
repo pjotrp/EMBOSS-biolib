@@ -328,7 +328,7 @@ int main(int argc, char **argv)
     /* open the window in which the graphics will be drawn */
     ajGraphOpenMm(graph, &Width, &Height);
 
-    Border = 2.0 * (TickHeight+TextLength);
+    Border = (float) 2.0 * (TickHeight+TextLength);
     DrawLength = Height - 2*Border;
 
     /* coordinates of the circle's center */
@@ -941,7 +941,7 @@ static void cirdna_DrawTicks(float xDraw, float yDraw, float RealLength,
     float mmtolen;
 
     /* radius is 2pi*radius in mm, RealLength in bases */
-    mmtolen = RealLength/(Radius * 2.0 * 3.1416);
+    mmtolen = RealLength/(Radius * (float) 2.0 * (float) 3.1416);
 
     ajGraphicsSetFgcolour(Colour);
 
@@ -1109,7 +1109,7 @@ static void cirdna_DrawRanges(float xDraw, float yDraw, float RealLength,
     float mmtolen;
 
     /* radius is 2pi*radius in mm, RealLength in bases */
-    mmtolen = RealLength/(Radius * 2.0 * 3.1416);
+    mmtolen = RealLength/(Radius * (float) 2.0 * (float) 3.1416);
 
     rupper = rRanges+((float)1.0*RangeHeight/(float)2);
 
