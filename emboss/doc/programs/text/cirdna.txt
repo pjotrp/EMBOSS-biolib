@@ -34,7 +34,7 @@ Usage
 
 % cirdna -graph cps
 Draws circular maps of DNA constructs
-Commands to the lindna drawing program file [inputfile]: data.cirp
+Commands to the cirdna drawing program file [inputfile]: data.cirp
 Draw a ruler [Y]:
       Open : Open blocks
     Filled : Filled blocks
@@ -59,7 +59,7 @@ Draws circular maps of DNA constructs
 Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     [inputfile] Commands to the lindna drawing
+  [-infile]            infile     [inputfile] Commands to the cirdna drawing
                                   program file
    -[no]ruler          boolean    [Y] Draw a ruler
    -blocktype          menu       [Filled] Type of blocks (Values: Open (Open
