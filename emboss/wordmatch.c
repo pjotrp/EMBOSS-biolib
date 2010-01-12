@@ -53,9 +53,8 @@ static ajulong radix =256;
 ** data structure that wraps EmbPWord objects for efficient access
 **
 ** @attr word [const EmbPWord] Original word object
-** @attr seqs [const AjPSeq*] List of sequences word has been seen
 ** @attr seqindxs [ajuint*] Positions in the seqset
-**                          for each sequence in the seqs array
+**                          for each sequence the word has been seen
 ** @attr nnseqlocs [ajuint*] Number of word start positions for each sequence
 ** @attr locs [ajuint**] List of word start positions for each sequence
 ** @attr hash [ajulong] Hash value for the word
@@ -75,7 +74,6 @@ static ajulong radix =256;
 
 typedef struct EmbSWordWrap {
     const EmbPWord word;
-    const AjPSeq * seqs;
     ajuint* seqindxs;
     ajuint* nnseqlocs;
     ajuint** locs;
@@ -93,6 +91,7 @@ typedef struct EmbSWordWrap {
 
 
 static ajuint wordmatch_embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
+        AjPSeqset seqset,
         const EmbPWordWrap* patterns,
         ajuint plen, ajuint nwords, AjPList* l,
         ajuint* lastlocation, ajuint** nmatchesseqset, AjBool checkmode);
@@ -215,7 +214,7 @@ int main(int argc, char **argv)
                 matchlist[i] = ajListstrNew();
             }
             nmatches = wordmatch_embPatRabinKarpSearchMultiPattern(
-                    ajSeqGetSeqS(seqofseqall),
+                    ajSeqGetSeqS(seqofseqall), seqset,
                     (const EmbPWordWrap*)wordsw, wordlen, npatterns,
                     matchlist, lastlocation, &nmatchesseqset, checkmode);
 
@@ -315,7 +314,6 @@ int main(int argc, char **argv)
     for(i=0;i<npatterns;i++)
     {
         AJFREE(wordsw[i]->seqindxs);
-        AJFREE(wordsw[i]->seqs);
         for(j=0;j<wordsw[i]->nseqs;j++)
             AJFREE(wordsw[i]->locs[j]);
         AJFREE(wordsw[i]->nnseqlocs);
@@ -374,7 +372,13 @@ static ajint wordmatch_compEmbWordWrap(const void *a, const void *b)
     ww1 = *(const EmbPWordWrap const *) a;
     ww2 = *(const EmbPWordWrap const *) b;
 
-    return ww1->hash - ww2->hash;
+    if (ww1->hash > ww2->hash)
+        return 1;
+
+    if (ww1->hash < ww2->hash)
+        return -1;
+
+    return 0;
 }
 
 
@@ -410,6 +414,7 @@ static ajulong wordmatch_precomputeRM(ajuint m)
 ** Rabin Karp search for multiple patterns.
 **
 ** @param [r] sseq [const AjPStr] Sequence to be scanned for multiple patterns
+** @param [r] seqset [AjPSeqset] Sequence set patterns found
 ** @param [r] patterns [const EmbPWordWrap*] Patterns to be searched
 ** @param [r] plen [ajuint] Length of patterns
 ** @param [r] npatterns [ajuint] Number of patterns
@@ -425,6 +430,7 @@ static ajulong wordmatch_precomputeRM(ajuint m)
 ******************************************************************************/
 
 static ajuint wordmatch_embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
+    AjPSeqset seqset,
     const EmbPWordWrap* patterns,
     ajuint plen, ajuint npatterns, AjPList* matchlist,
     ajuint* lastlocation, ajuint** nmatchesseqset, AjBool checkmode)
@@ -438,6 +444,7 @@ static ajuint wordmatch_embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
     ajulong rm;
     ajulong textHash = 0;
     ajuint seq2start;
+    char* tmp;
 
     AJNEW0(cursor);
 
@@ -462,8 +469,8 @@ static ajuint wordmatch_embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
 
             for (k=0;k<(*bsres)->nseqs;k++)
             {
-                seq= (*bsres)->seqs[k];
                 seqsetindx = (*bsres)->seqindxs[k];
+                seq = ajSeqsetGetseqSeq(seqset, seqsetindx);
                 if (lastlocation[seqsetindx] < i)
                 {
                     maxloc = 0;
@@ -480,13 +487,14 @@ static ajuint wordmatch_embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
                         {
                             if(seq_[pos+matchlen] != text[i+matchlen-plen])
                             {
-                                char tmp[plen+1];
+                                AJCNEW0(tmp,plen+1);
                                 tmp[plen] = '\0';
                                 memcpy(tmp, text+i-plen, plen);
                                 ajWarn("unexpected match:   pat:%s  pat-pos:%u,"
                                         " txt-pos:%u text:%s hash:%u\n",
                                         (*bsres)->word->fword, pos, i+matchlen-plen,
                                         tmp, textHash);
+                                AJFREE(tmp);
                                 break;
                             }
                             matchlen++;
@@ -585,7 +593,6 @@ static ajuint wordmatch_getWords(const AjPTable table, EmbPWordWrap** newwords,
         newword->word = embword;
         AJCNEW(newword->seqindxs, nseqlocs);
         AJCNEW(newword->locs, nseqlocs);
-        AJCNEW(newword->seqs, nseqlocs);
         AJCNEW(newword->nnseqlocs, nseqlocs);
 
         for(j=0; j<nseqlocs; j++)
@@ -604,7 +611,6 @@ static ajuint wordmatch_getWords(const AjPTable table, EmbPWordWrap** newwords,
                 ajErr("something wrong, sequence not found in seqset");
                 ajExitBad();
             }
-            newword->seqs[j] = seq;
             iterp = ajListIterNewread(seqlocs[j]->locs);
             k=0;
             newword->nnseqlocs[j]= ajListGetLength(seqlocs[j]->locs);
