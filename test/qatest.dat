@@ -20192,7 +20192,7 @@ FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 FI wordmatch.log
-FP /^EFTP.*4.*4/
+FP /^EFTP.*4.0/
 //
 
 ID align-wordmatch-markx10
@@ -20227,7 +20227,7 @@ FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 FI wordmatch.log
-FP /^HGKK.*5.*5/
+FP /^HGKK.*5.0/
 //
 
 ID align-merger-fasta
