@@ -5136,7 +5136,8 @@ static AjPFeature featGffFromLine(AjPFeattable thys, const AjPStr line,
     ajint Start  = 0;
     ajint End    = 0;
     float fscore = 0.0;
-    
+    ajint itemp;
+
     char   strand;
     ajint   frame;
 
@@ -5180,7 +5181,7 @@ static AjPFeature featGffFromLine(AjPFeattable thys, const AjPStr line,
 	strand = '-';
     else
 	strand = '\0';		/* change to \0 later */
-	
+
     if(!ajStrTokenNextParse(&featGffSplit, &token)) /* frame   */
         goto Error;
 
@@ -5193,6 +5194,16 @@ static AjPFeature featGffFromLine(AjPFeattable thys, const AjPStr line,
     else
 	frame = 0;
 
+    if(strand == '-') 
+    {
+        if(Start < End) 
+        {
+            itemp = Start;
+            Start = End;
+            End = itemp;
+        }
+    }
+    
 	/* feature object construction
 	   and group tag */
     if(ajStrMatchC(thys->Type, "P"))
@@ -15592,16 +15603,27 @@ static void featDumpGff2(const AjPFeature thys, const AjPFeattable owner,
     
     /*ajDebug("Type '%S' => '%S'\n", thys->Type, outtyp);*/
     
-    ajFmtPrintF(file, "%S\t%S\t%S\t%d\t%d\t%.3f\t%c\t%c\t",
-		owner->Seqid,
-		thys->Source,
-		outtyp,
-		thys->Start,
-		thys->End,
-		thys->Score,
-		featStrand(thys->Strand),
-		featFrame(thys->Frame));
-    
+    if(featStrand(thys->Strand) == '-' && thys->End < thys->Start)
+        ajFmtPrintF(file, "%S\t%S\t%S\t%d\t%d\t%.3f\t%c\t%c\t",
+                    owner->Seqid,
+                    thys->Source,
+                    outtyp,
+                    thys->End,
+                    thys->Start,
+                    thys->Score,
+                    featStrand(thys->Strand),
+                    featFrame(thys->Frame));
+    else
+        ajFmtPrintF(file, "%S\t%S\t%S\t%d\t%d\t%.3f\t%c\t%c\t",
+                    owner->Seqid,
+                    thys->Source,
+                    outtyp,
+                    thys->Start,
+                    thys->End,
+                    thys->Score,
+                    featStrand(thys->Strand),
+                    featFrame(thys->Frame));
+
     if(thys->Flags)
 	ajFmtPrintS(&flagdata, "0x%x", thys->Flags);
 
@@ -15813,16 +15835,27 @@ static void featDumpGff3(const AjPFeature thys, const AjPFeattable owner,
     else
 	frame = featFrame(thys->Frame);
 
-    ajFmtPrintF(file, "%S\t%S\t%S\t%d\t%d\t%.3f\t%c\t%c\t",
-		owner->Seqid,
-		thys->Source,
-		outtyp,
-		thys->Start,
-		thys->End,
-		thys->Score,
-		featStrand(thys->Strand),
-		frame);
-    
+    if(featStrand(thys->Strand) == '-' && thys->End < thys->Start)
+        ajFmtPrintF(file, "%S\t%S\t%S\t%d\t%d\t%.3f\t%c\t%c\t",
+                    owner->Seqid,
+                    thys->Source,
+                    outtyp,
+                    thys->End,
+                    thys->Start,
+                    thys->Score,
+                    featStrand(thys->Strand),
+                    frame);
+    else
+        ajFmtPrintF(file, "%S\t%S\t%S\t%d\t%d\t%.3f\t%c\t%c\t",
+                    owner->Seqid,
+                    thys->Source,
+                    outtyp,
+                    thys->Start,
+                    thys->End,
+                    thys->Score,
+                    featStrand(thys->Strand),
+                    frame);
+        
     if(thys->Flags)
 	ajFmtPrintS(&flagdata, "0x%x", thys->Flags);
 
