@@ -166,6 +166,7 @@ void ajReset(void)
 #endif
     ajDebug("\nFinal Summary\n=============\n\n");
     /*    ajBtreeExit(); */
+    ajMatrixExit();
     ajTreeExit();
     ajPdbExit();
     ajDmxExit();
