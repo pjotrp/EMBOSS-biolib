@@ -139,8 +139,7 @@ int main(int argc, char **argv)
     EmbPWordWrap* wordsw = NULL;
     ajuint npatterns=0, seqsetsize;
     ajuint* nmatchesseqset;
-    const char* header = "Pattern %S  #all-matches  #seq-matches"
-            "  avg-match-length  avg-longest-match-length\n";
+    const char* header = "Pattern %S  #all-matches   avg-match-length\n";
     char* paddedheader = NULL;
     AjPStr padding = ajStrNew();
 
@@ -300,12 +299,10 @@ int main(int argc, char **argv)
         for(i=0;i<npatterns;i++)
         {
             if (wordsw[i]->nAllMatches>0)
-                ajFmtPrintF(logfile, "%-7s: %12u  %12u %17.2f %25.2f\n",
+                ajFmtPrintF(logfile, "%-7s: %12u  %17.2f\n",
                         wordsw[i]->word->fword,
                         wordsw[i]->nAllMatches,
-                        wordsw[i]->nSeqMatches,
-                        wordsw[i]->lenAllMatches*1.0/wordsw[i]->nAllMatches,
-                        wordsw[i]->lenLongestMatches*1.0/wordsw[i]->nSeqMatches
+                        wordsw[i]->lenAllMatches*1.0/wordsw[i]->nAllMatches
                 );
         }
     }
@@ -525,8 +522,6 @@ static ajuint wordmatch_embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
                     if (maxloc>0)
                     {
                         lastlocation[seqsetindx] = maxloc;
-                        (*bsres)->nSeqMatches++;
-                        (*bsres)->lenLongestMatches += matchlen;
                     }
                 }
             }
