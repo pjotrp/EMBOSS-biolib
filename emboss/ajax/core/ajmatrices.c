@@ -1239,3 +1239,19 @@ __deprecated  const AjPStr ajMatrixfName(const AjPMatrixf thys)
 }
 
 
+/* @func ajMatrixExit *********************************************************
+**
+** Cleans matrix processing internals
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajMatrixExit(void)
+{
+    ajStrDel(&matrixStrQuery);
+
+    return;
+}
+
+

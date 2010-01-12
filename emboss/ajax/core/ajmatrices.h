@@ -101,6 +101,7 @@ AjPMatrixf    ajMatrixfNewAsym(const AjPPStr codes, ajint n,
 AjPMatrixf    ajMatrixfNewFile (const AjPStr filename);
 AjBool        ajMatrixfSeqIndex (const AjPMatrixf thys, const AjPSeq seq,
                                  AjPStr* numseq);
+void          ajMatrixExit(void);
 
 
 /*
@@ -108,7 +109,7 @@ AjBool        ajMatrixfSeqIndex (const AjPMatrixf thys, const AjPSeq seq,
 */
 
 
-    __deprecated void          ajMatrixfChar (const AjPMatrixf thys,
+__deprecated void          ajMatrixfChar (const AjPMatrixf thys,
                                           ajint i, AjPStr *label);
 __deprecated void          ajMatrixChar (const AjPMatrix thys,
                                          ajint i, AjPStr *label);
