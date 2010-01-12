@@ -766,7 +766,12 @@ ajAcdProgramS -
 ajAcdGetProgram ajUtilGetProgram
 ajAcdProgram -
 #ajvector
+#samtoolsbam
+#samtoolsbam_aux
+#samtoolsbam_import
 #samtoolsbgzf
+#samtoolskstring
+#samtoolssam_header
 #ajgraph
 ajGraphClose ajGraphicsClose
 ajGraphCloseWin ajGraphicsClose
