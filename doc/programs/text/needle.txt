@@ -24,9 +24,9 @@ Description
    that contains values for every possible residue or nucleotide match.
    Needle finds the alignment with the maximum possible score where the
    score of an alignment is equal to the sum of the matches taken from the
-   scoring matrix, minus a penalties arising from opening and extending
-   gaps in the aligned sequences. The substitution matrix and gap opening
-   and extension penalties are user-specified.
+   scoring matrix, minus penalties arising from opening and extending gaps
+   in the aligned sequences. The substitution matrix and gap opening and
+   extension penalties are user-specified.
 
   Algorithm
 
@@ -46,14 +46,9 @@ Description
    extending a gap is set to be 5-10 times lower than the cost for opening
    a gap.
 
-   There are two ways to compute a penalty for a gap of n positions :
+   Penalty for a gap of n positions is calculated using the following
+   formula:
 gap opening penalty + (n - 1) * gap extension penalty
-gap penalty + n * gap length penalty
-
-   The two methods are basically equivalent. The first way is used by
-   EMBOSS and WU-BLAST. The second way is used by NCBI-BLAST, GCG, Staden
-   and CLUSTAL. Fasta for a long time used the first way, but recently
-   shifted to the second.
 
    In a Needleman-Wunsch global alignment, the entire length of each
    sequence is aligned. The sequences might be partially overlapping or

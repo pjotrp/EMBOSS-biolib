@@ -28,7 +28,7 @@ pkgdata2_DATA = lindna.txt listor.txt \
 	maskambignuc.txt maskambigprot.txt maskfeat.txt \
 	maskseq.txt matcher.txt megamerger.txt merger.txt msbar.txt \
 	mwcontam.txt mwfilter.txt \
-	needle.txt newcpgreport.txt newcpgseek.txt newseq.txt \
+	needle.txt needleall.txt newcpgreport.txt newcpgseek.txt newseq.txt \
 	nohtml.txt noreturn.txt notseq.txt nospace.txt notab.txt \
 	nthseq.txt nthseqset.txt \
 	octanol.txt oddcomp.txt \

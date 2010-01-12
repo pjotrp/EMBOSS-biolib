@@ -478,6 +478,13 @@ Warnings
    memory usage have been limited and if so, run unlimit, (e.g.: % unlimit
    stacksize).
 
+   supermatcher has two sequence inputs. The first (asequence) is a
+   database or large file which is read one sequence at a time. The second
+   (bsequence) is a "sequence set" which is loaded into memory. If one of
+   the inputs has more number of sequences than the other one, specifying
+   the file with many number of sequences first would be useful to
+   decrease the amount of memory used while supermatcher running.
+
    Because the alignment is made within a narrow area each side of the
    'best' diagonal identified by word-matching, if there are sufficient
    indels between the two sequences, then the path of the Smith & Waterman

@@ -142,7 +142,6 @@ Using quickmode switch -genomeaccurate :
 	    amgb=yes:amgbemc=yes:amgbnbs=yes
 	-ED:ace=no
 
--SB:bph is 16, but must be no more than 14. Setting to 14
 Using quickmode switch fasta : -GE:lj=fasta
 
 
@@ -216,7 +215,7 @@ Used parameter settings:
 	    Set minimum left clip to (smlc) : 30
 
   Parameters for SKIM algorithm (-SK):
-	Bases per hash (bph)             : 14
+	Bases per hash (bph)             : 16
 	Hash save stepping (hss)         : 4
 	Percent required (pr)            : 45
 	Maximum hashes in memory (mhim)  : 15000000
@@ -322,7 +321,7 @@ Used parameter settings:
 Creating directory cjejuni_demo_log ... done.
 Creating directory cjejuni_demo_results ... done.
 Creating directory cjejuni_demo_info ... done.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Loading data normal (probably Sanger type) from FASTA file cjejuni_demo_in.fasta
 Counting sequences in FASTA file:
@@ -334,7 +333,7 @@ Loading quality data from FASTA quality file:
 
 Done.
 There haven been 544 reads given, 544 of which have quality accounted for.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Checking SCF files (loading qualities only if needed):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
@@ -343,17 +342,17 @@ Done.
 544 SCF files were not found (see 'cjejuni_demo_log/cjejuni_demo_info_scfreadfail.0' for a list of names).
 
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Merging data from XML trace info file cjejuni_demo_traceinfo_in.xml ...Num reads: 496
 Building hash table ... done.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Generated 288 unique template ids for 544 valid reads.
 Done merging XML data, matched 496 reads.
 
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Checking SCF files (loading qualities only if needed):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
@@ -374,18 +373,18 @@ For the reads that are neither backbones nor rails:
 - 544 reads used for assembly.
 - 0 reads have no real quality (see miralog.noqualities).
 - mean length of good parts of used reads: 626
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Generated 288 unique template ids for 544 valid reads.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Generated 0 unique strain ids for 544 reads.
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 
 Searching for possible overlaps:
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 We will get 1 partitions.
 Progressend: 1088
 Now running partitioned skimmer with 1 partitions:
@@ -396,25 +395,25 @@ Will contain read IDs 0 to 543
 Total megahubs: 0
 
 Skim summary:
-	accepted: 4285
-	possible: 6294
+	accepted: 4243
+	possible: 4607
 	permbans: 0
 
-Hits chosen: 4285
+Hits chosen: 4243
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Pre-assembly alignment search for read extension and / or vector clipping:
 Making alignments.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Aligning possible forward matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Aligning possible complement matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Calculating possible vector leftovers ... done.
 
@@ -428,7 +427,7 @@ Generating clusters:
 
 Pre-assembly read extension:
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Searching possible read extensions:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
@@ -448,18 +447,18 @@ For the reads that are neither backbones nor rails:
 - 544 reads used for assembly.
 - 0 reads have no real quality (see miralog.noqualities).
 - mean length of good parts of used reads: 660
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Generated 288 unique template ids for 544 valid reads.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Generated 0 unique strain ids for 544 reads.
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 
 Searching for possible overlaps:
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 We will get 1 partitions.
 Progressend: 1088
 Now running partitioned skimmer with 1 partitions:
@@ -470,31 +469,31 @@ Will contain read IDs 0 to 543
 Total megahubs: 0
 
 Skim summary:
-	accepted: 4564
-	possible: 6739
+	accepted: 4512
+	possible: 4913
 	permbans: 0
 
-Hits chosen: 4564
+Hits chosen: 4512
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 
 
 Pass: 1
 Making alignments.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Aligning possible forward matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Aligning possible complement matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Calculating possible vector leftovers ... done.
 
-Loading confirmed overlaps from disk (will need approximately 1.2 M.):
+Loading confirmed overlaps from disk (will need approximately 1.3 M.):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
 
 Sorting confirmed overlaps (this may take a while) ... done.
@@ -502,10 +501,10 @@ Sorting confirmed overlaps (this may take a while) ... done.
 Generating clusters:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 1
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Unused reads: 544
 +[1] t+t++++a+aaaaar
 RL1
@@ -513,7 +512,7 @@ That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 1
@@ -526,13 +525,13 @@ Num reads: 7
 Avg. read length: 833
 Reads contain 5780 bases, 0 Ns and 55 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 2
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Unused reads: 537
 +[1] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 [61] ++++++++++++++++++++++++++++++++++++++++++++++++++++++t+++++
@@ -542,26 +541,26 @@ Unused reads: 537
 [296] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 [356] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 [416] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-[476] +++++++++++++++++a++++aa++++++++++a++++++++++++++++++++a
+[476] +++++a++++++++a+a++++++++++++++++a++++++++++++++++++++
 RL1
-[527] aaaThat's it for this contig.
+[526] aaaThat's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 2
-Contig length: 40448
-Avg. contig coverage: 8.59
-Consensus contains:	A: 13709	C: 5926	G: 7000	T: 13564	N: 0
-			IUPAC: 25	Funny: 0	*: 224
+Contig length: 40028
+Avg. contig coverage: 8.66
+Consensus contains:	A: 13590	C: 5845	G: 6941	T: 13404	N: 0
+			IUPAC: 24	Funny: 0	*: 224
 
-Num reads: 527
+Num reads: 526
 Avg. read length: 659
-Reads contain 344876 bases, 0 Ns and 2683 gaps.
+Reads contain 343983 bases, 0 Ns and 2661 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Marking possibly misassembled repeats ...done. Found
  - 1 Strong RMB
  - 3 Weak RMB
@@ -570,7 +569,7 @@ positions tagged.Transfering contig RMB permanent pair bans.
 Transfering tags to readpool.
 
 The previously assembled contig had grave misassemblies, rebuilding contig 2 now.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Unused reads: 537
 +[1] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 [61] ++++++++++++++++++++++++++++++++++++++++++++++++++++++t+++++
@@ -580,44 +579,44 @@ Unused reads: 537
 [294] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 [354] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 [414] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-[474] +++++++++a++++++ap+p+++++++++a++++a++++++++++++++++++++++a
+[474] +++++++++a++++p+a+p+++++++++a+++++a+++++++++++++++++++++
 RL1
-[525] aaapThat's it for this contig.
+[524] aaapThat's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 2
-Contig length: 40441
-Avg. contig coverage: 8.55
-Consensus contains:	A: 13709	C: 5926	G: 7010	T: 13564	N: 0
-			IUPAC: 15	Funny: 0	*: 217
+Contig length: 40021
+Avg. contig coverage: 8.62
+Consensus contains:	A: 13590	C: 5845	G: 6951	T: 13404	N: 0
+			IUPAC: 14	Funny: 0	*: 217
 
-Num reads: 525
-Avg. read length: 659
-Reads contain 343448 bases, 0 Ns and 2599 gaps.
+Num reads: 524
+Avg. read length: 658
+Reads contain 342555 bases, 0 Ns and 2577 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Marking possibly misassembled repeats ...done. Found
  - 0 Strong RMB
  - 3 Weak RMB
  - 0 SNP
 positions tagged.Transfering contig RMB permanent pair bans.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 3
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 12
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 13
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 3
@@ -630,22 +629,22 @@ Num reads: 1
 Avg. read length: 805
 Reads contain 805 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 4
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 11
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 12
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 4
@@ -658,22 +657,22 @@ Num reads: 1
 Avg. read length: 788
 Reads contain 788 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 5
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 10
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 11
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 5
@@ -686,52 +685,25 @@ Num reads: 1
 Avg. read length: 788
 Reads contain 788 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 6
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 9
-+[1] +
-RL1
-That's it for this contig.
-
-
-Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
-
--------------- Contig statistics ----------------
-Contig id: 6
-Contig length: 1273
-Avg. contig coverage: 1.12
-Consensus contains:	A: 462	C: 193	G: 180	T: 431	N: 0
-			IUPAC: 1	Funny: 0	*: 6
-
-Num reads: 2
-Avg. read length: 717
-Reads contain 1428 bases, 0 Ns and 7 gaps.
--------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
-Marking possibly misassembled repeats ...done. Found none.
-Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
-
-Building new contig 7
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 7
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 10
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
-Contig id: 7
+Contig id: 6
 Contig length: 786
 Avg. contig coverage: 1
 Consensus contains:	A: 281	C: 129	G: 138	T: 238	N: 0
@@ -741,22 +713,50 @@ Num reads: 1
 Avg. read length: 786
 Reads contain 786 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
-Building new contig 8
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 6
+Building new contig 7
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 9
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
+
+-------------- Contig statistics ----------------
+Contig id: 7
+Contig length: 865
+Avg. contig coverage: 1
+Consensus contains:	A: 314	C: 149	G: 103	T: 299	N: 0
+			IUPAC: 0	Funny: 0	*: 0
+
+Num reads: 1
+Avg. read length: 865
+Reads contain 865 bases, 0 Ns and 0 gaps.
+-------------------------------------------------
+Localtime: Fri Jan 15 12:00:00 2010
+Saving of extra temporary singlets disabled.
+Marking possibly misassembled repeats ...done. Found none.
+Transfering reads to readpool.
+Localtime: Fri Jan 15 12:00:00 2010
+
+Building new contig 8
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 8
++
+RL1
+That's it for this contig.
+
+
+Finished building the contig.
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 8
@@ -769,22 +769,22 @@ Num reads: 1
 Avg. read length: 963
 Reads contain 963 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 9
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 5
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 7
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 9
@@ -797,14 +797,70 @@ Num reads: 1
 Avg. read length: 1052
 Reads contain 1052 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 10
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 6
++
+RL1
+That's it for this contig.
+
+
+Finished building the contig.
+Localtime: Fri Jan 15 12:00:00 2010
+
+-------------- Contig statistics ----------------
+Contig id: 10
+Contig length: 563
+Avg. contig coverage: 1
+Consensus contains:	A: 195	C: 71	G: 110	T: 187	N: 0
+			IUPAC: 0	Funny: 0	*: 0
+
+Num reads: 1
+Avg. read length: 563
+Reads contain 563 bases, 0 Ns and 0 gaps.
+-------------------------------------------------
+Localtime: Fri Jan 15 12:00:00 2010
+Saving of extra temporary singlets disabled.
+Marking possibly misassembled repeats ...done. Found none.
+Transfering reads to readpool.
+Localtime: Fri Jan 15 12:00:00 2010
+
+Building new contig 11
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 5
++
+RL1
+That's it for this contig.
+
+
+Finished building the contig.
+Localtime: Fri Jan 15 12:00:00 2010
+
+-------------- Contig statistics ----------------
+Contig id: 11
+Contig length: 893
+Avg. contig coverage: 1
+Consensus contains:	A: 251	C: 177	G: 136	T: 329	N: 0
+			IUPAC: 0	Funny: 0	*: 0
+
+Num reads: 1
+Avg. read length: 893
+Reads contain 893 bases, 0 Ns and 0 gaps.
+-------------------------------------------------
+Localtime: Fri Jan 15 12:00:00 2010
+Saving of extra temporary singlets disabled.
+Marking possibly misassembled repeats ...done. Found none.
+Transfering reads to readpool.
+Localtime: Fri Jan 15 12:00:00 2010
+
+Building new contig 12
+Localtime: Fri Jan 15 12:00:00 2010
 Unused reads: 4
 +
 RL1
@@ -812,38 +868,10 @@ That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
-Contig id: 10
-Contig length: 972
-Avg. contig coverage: 1
-Consensus contains:	A: 284	C: 230	G: 123	T: 335	N: 0
-			IUPAC: 0	Funny: 0	*: 0
-
-Num reads: 1
-Avg. read length: 972
-Reads contain 972 bases, 0 Ns and 0 gaps.
--------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
-Saving of extra temporary singlets disabled.
-Marking possibly misassembled repeats ...done. Found none.
-Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
-
-Building new contig 11
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 3
-+
-RL1
-That's it for this contig.
-
-
-Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
-
--------------- Contig statistics ----------------
-Contig id: 11
+Contig id: 12
 Contig length: 478
 Avg. contig coverage: 1
 Consensus contains:	A: 116	C: 160	G: 101	T: 101	N: 0
@@ -853,25 +881,25 @@ Num reads: 1
 Avg. read length: 478
 Reads contain 478 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
-Building new contig 12
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 2
+Building new contig 13
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 3
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
-Contig id: 12
+Contig id: 13
 Contig length: 869
 Avg. contig coverage: 1
 Consensus contains:	A: 286	C: 245	G: 93	T: 245	N: 0
@@ -881,25 +909,25 @@ Num reads: 1
 Avg. read length: 869
 Reads contain 869 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
-Building new contig 13
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 1
+Building new contig 14
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 2
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
-Contig id: 13
+Contig id: 14
 Contig length: 973
 Avg. contig coverage: 1
 Consensus contains:	A: 266	C: 228	G: 254	T: 225	N: 0
@@ -909,11 +937,39 @@ Num reads: 1
 Avg. read length: 973
 Reads contain 973 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
+
+Building new contig 15
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 1
++
+RL1
+That's it for this contig.
+
+
+Finished building the contig.
+Localtime: Fri Jan 15 12:00:00 2010
+
+-------------- Contig statistics ----------------
+Contig id: 15
+Contig length: 972
+Avg. contig coverage: 1
+Consensus contains:	A: 284	C: 230	G: 123	T: 335	N: 0
+			IUPAC: 0	Funny: 0	*: 0
+
+Num reads: 1
+Avg. read length: 972
+Reads contain 972 bases, 0 Ns and 0 gaps.
+-------------------------------------------------
+Localtime: Fri Jan 15 12:00:00 2010
+Saving of extra temporary singlets disabled.
+Marking possibly misassembled repeats ...done. Found none.
+Transfering reads to readpool.
+Localtime: Fri Jan 15 12:00:00 2010
 
 Saving project statistics to file: cjejuni_demo_log/cjejuni_demo_info_contigstats_pass.1.txt
 Saving read tag list to file: cjejuni_demo_log/cjejuni_demo_info_readtaglist.1.txt
@@ -935,18 +991,18 @@ For the reads that are neither backbones nor rails:
 - 544 reads used for assembly.
 - 0 reads have no real quality (see miralog.noqualities).
 - mean length of good parts of used reads: 660
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Generated 288 unique template ids for 544 valid reads.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Generated 0 unique strain ids for 544 reads.
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 
 Searching for possible overlaps:
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 We will get 1 partitions.
 Progressend: 1088
 Now running partitioned skimmer with 1 partitions:
@@ -957,28 +1013,28 @@ Will contain read IDs 0 to 543
 Total megahubs: 0
 
 Skim summary:
-	accepted: 4564
-	possible: 6730
+	accepted: 4512
+	possible: 4913
 	permbans: 0
 
-Hits chosen: 4564
+Hits chosen: 4512
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Making alignments.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Aligning possible forward matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Aligning possible complement matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Calculating possible vector leftovers ... done.
 
-Loading confirmed overlaps from disk (will need approximately 1.2 M.):
+Loading confirmed overlaps from disk (will need approximately 1.3 M.):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
 
 Sorting confirmed overlaps (this may take a while) ... done.
@@ -986,10 +1042,10 @@ Sorting confirmed overlaps (this may take a while) ... done.
 Generating clusters:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 1
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Unused reads: 544
 +[1] t+t++++a+aaaaar
 RL1
@@ -997,7 +1053,7 @@ That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 1
@@ -1010,60 +1066,60 @@ Num reads: 7
 Avg. read length: 833
 Reads contain 5780 bases, 0 Ns and 55 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 2
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Unused reads: 537
 +[1] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 [61] +++++++++++++++++++++++++++++++++++++++++++++++++++t++++++++
 [120] ++++++++++++++++++++++++++++++++++++++a+a++++++aa+++++++++++
-[176] ++++++++++++++++++++++++++++++++++++p++p++++++++++++++++++++
+[176] +++++++++++++++++++++++++++++++++++++p++++++++++p+++++++++++
 [234] ++++++++++a+++++a+++++++++++++++++++++++++++++++++++++++++++
 [292] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 [352] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 [412] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-[472] +++++++++++++++++p+++++++++++a++++a+++++++++++++++++++++a
+[472] +++++++++++++++++p+++++++a+++a+++++++++++++++++++++++++
 RL1
-[525] aapaThat's it for this contig.
+[524] aapaThat's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 2
-Contig length: 40441
-Avg. contig coverage: 8.55
-Consensus contains:	A: 13709	C: 5926	G: 7010	T: 13564	N: 0
-			IUPAC: 15	Funny: 0	*: 217
+Contig length: 40021
+Avg. contig coverage: 8.62
+Consensus contains:	A: 13590	C: 5845	G: 6951	T: 13404	N: 0
+			IUPAC: 14	Funny: 0	*: 217
 
-Num reads: 525
-Avg. read length: 659
-Reads contain 343441 bases, 0 Ns and 2599 gaps.
+Num reads: 524
+Avg. read length: 658
+Reads contain 342548 bases, 0 Ns and 2577 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Marking possibly misassembled repeats ...done. Found
  - 0 Strong RMB
  - 3 Weak RMB
  - 0 SNP
 positions tagged.Transfering contig RMB permanent pair bans.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 3
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 12
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 13
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 3
@@ -1076,22 +1132,22 @@ Num reads: 1
 Avg. read length: 805
 Reads contain 805 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 4
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 11
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 12
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 4
@@ -1104,22 +1160,22 @@ Num reads: 1
 Avg. read length: 788
 Reads contain 788 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 5
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 10
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 11
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 5
@@ -1132,22 +1188,22 @@ Num reads: 1
 Avg. read length: 788
 Reads contain 788 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 6
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 9
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 10
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 6
@@ -1160,49 +1216,50 @@ Num reads: 1
 Avg. read length: 786
 Reads contain 786 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 7
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 8
-+[1] +
-RL1
-That's it for this contig.
-
-
-Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
-
--------------- Contig statistics ----------------
-Contig id: 7
-Contig length: 1273
-Avg. contig coverage: 1.12
-Consensus contains:	A: 462	C: 193	G: 180	T: 431	N: 0
-			IUPAC: 1	Funny: 0	*: 6
-
-Num reads: 2
-Avg. read length: 717
-Reads contain 1428 bases, 0 Ns and 7 gaps.
--------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
-Marking possibly misassembled repeats ...done. Found none.
-Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
-
-Building new contig 8
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 6
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 9
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
+
+-------------- Contig statistics ----------------
+Contig id: 7
+Contig length: 865
+Avg. contig coverage: 1
+Consensus contains:	A: 314	C: 149	G: 103	T: 299	N: 0
+			IUPAC: 0	Funny: 0	*: 0
+
+Num reads: 1
+Avg. read length: 865
+Reads contain 865 bases, 0 Ns and 0 gaps.
+-------------------------------------------------
+Localtime: Fri Jan 15 12:00:00 2010
+Saving of extra temporary singlets disabled.
+Marking possibly misassembled repeats ...done. Found none.
+Transfering reads to readpool.
+Localtime: Fri Jan 15 12:00:00 2010
+
+Building new contig 8
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 8
++
+RL1
+That's it for this contig.
+
+
+Finished building the contig.
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 8
@@ -1215,22 +1272,22 @@ Num reads: 1
 Avg. read length: 963
 Reads contain 963 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 9
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 5
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 7
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 9
@@ -1243,14 +1300,70 @@ Num reads: 1
 Avg. read length: 1052
 Reads contain 1052 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 10
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 6
++
+RL1
+That's it for this contig.
+
+
+Finished building the contig.
+Localtime: Fri Jan 15 12:00:00 2010
+
+-------------- Contig statistics ----------------
+Contig id: 10
+Contig length: 563
+Avg. contig coverage: 1
+Consensus contains:	A: 195	C: 71	G: 110	T: 187	N: 0
+			IUPAC: 0	Funny: 0	*: 0
+
+Num reads: 1
+Avg. read length: 563
+Reads contain 563 bases, 0 Ns and 0 gaps.
+-------------------------------------------------
+Localtime: Fri Jan 15 12:00:00 2010
+Saving of extra temporary singlets disabled.
+Marking possibly misassembled repeats ...done. Found none.
+Transfering reads to readpool.
+Localtime: Fri Jan 15 12:00:00 2010
+
+Building new contig 11
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 5
++
+RL1
+That's it for this contig.
+
+
+Finished building the contig.
+Localtime: Fri Jan 15 12:00:00 2010
+
+-------------- Contig statistics ----------------
+Contig id: 11
+Contig length: 893
+Avg. contig coverage: 1
+Consensus contains:	A: 251	C: 177	G: 136	T: 329	N: 0
+			IUPAC: 0	Funny: 0	*: 0
+
+Num reads: 1
+Avg. read length: 893
+Reads contain 893 bases, 0 Ns and 0 gaps.
+-------------------------------------------------
+Localtime: Fri Jan 15 12:00:00 2010
+Saving of extra temporary singlets disabled.
+Marking possibly misassembled repeats ...done. Found none.
+Transfering reads to readpool.
+Localtime: Fri Jan 15 12:00:00 2010
+
+Building new contig 12
+Localtime: Fri Jan 15 12:00:00 2010
 Unused reads: 4
 +
 RL1
@@ -1258,38 +1371,10 @@ That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
-Contig id: 10
-Contig length: 972
-Avg. contig coverage: 1
-Consensus contains:	A: 284	C: 230	G: 123	T: 335	N: 0
-			IUPAC: 0	Funny: 0	*: 0
-
-Num reads: 1
-Avg. read length: 972
-Reads contain 972 bases, 0 Ns and 0 gaps.
--------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
-Saving of extra temporary singlets disabled.
-Marking possibly misassembled repeats ...done. Found none.
-Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
-
-Building new contig 11
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 3
-+
-RL1
-That's it for this contig.
-
-
-Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
-
--------------- Contig statistics ----------------
-Contig id: 11
+Contig id: 12
 Contig length: 478
 Avg. contig coverage: 1
 Consensus contains:	A: 116	C: 160	G: 101	T: 101	N: 0
@@ -1299,25 +1384,25 @@ Num reads: 1
 Avg. read length: 478
 Reads contain 478 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
-Building new contig 12
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 2
+Building new contig 13
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 3
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
-Contig id: 12
+Contig id: 13
 Contig length: 869
 Avg. contig coverage: 1
 Consensus contains:	A: 286	C: 245	G: 93	T: 245	N: 0
@@ -1327,25 +1412,25 @@ Num reads: 1
 Avg. read length: 869
 Reads contain 869 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
-Building new contig 13
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 1
+Building new contig 14
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 2
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
-Contig id: 13
+Contig id: 14
 Contig length: 973
 Avg. contig coverage: 1
 Consensus contains:	A: 266	C: 228	G: 254	T: 225	N: 0
@@ -1355,11 +1440,39 @@ Num reads: 1
 Avg. read length: 973
 Reads contain 973 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
+
+Building new contig 15
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 1
++
+RL1
+That's it for this contig.
+
+
+Finished building the contig.
+Localtime: Fri Jan 15 12:00:00 2010
+
+-------------- Contig statistics ----------------
+Contig id: 15
+Contig length: 972
+Avg. contig coverage: 1
+Consensus contains:	A: 284	C: 230	G: 123	T: 335	N: 0
+			IUPAC: 0	Funny: 0	*: 0
+
+Num reads: 1
+Avg. read length: 972
+Reads contain 972 bases, 0 Ns and 0 gaps.
+-------------------------------------------------
+Localtime: Fri Jan 15 12:00:00 2010
+Saving of extra temporary singlets disabled.
+Marking possibly misassembled repeats ...done. Found none.
+Transfering reads to readpool.
+Localtime: Fri Jan 15 12:00:00 2010
 
 Saving project statistics to file: cjejuni_demo_log/cjejuni_demo_info_contigstats_pass.2.txt
 Saving read tag list to file: cjejuni_demo_log/cjejuni_demo_info_readtaglist.2.txt
@@ -1381,18 +1494,18 @@ For the reads that are neither backbones nor rails:
 - 544 reads used for assembly.
 - 0 reads have no real quality (see miralog.noqualities).
 - mean length of good parts of used reads: 660
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Generated 288 unique template ids for 544 valid reads.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Generated 0 unique strain ids for 544 reads.
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 
 Searching for possible overlaps:
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 We will get 1 partitions.
 Progressend: 1088
 Now running partitioned skimmer with 1 partitions:
@@ -1403,28 +1516,28 @@ Will contain read IDs 0 to 543
 Total megahubs: 0
 
 Skim summary:
-	accepted: 4547
-	possible: 6730
-	permbans: 17
+	accepted: 4498
+	possible: 4913
+	permbans: 14
 
-Hits chosen: 4547
+Hits chosen: 4498
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Making alignments.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Aligning possible forward matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Aligning possible complement matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Calculating possible vector leftovers ... done.
 
-Loading confirmed overlaps from disk (will need approximately 1.2 M.):
+Loading confirmed overlaps from disk (will need approximately 1.3 M.):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
 
 Sorting confirmed overlaps (this may take a while) ... done.
@@ -1432,10 +1545,10 @@ Sorting confirmed overlaps (this may take a while) ... done.
 Generating clusters:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 1
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Unused reads: 544
 +[1] t+t++++a+aaaaar
 RL1
@@ -1443,7 +1556,7 @@ That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 1
@@ -1456,60 +1569,60 @@ Num reads: 7
 Avg. read length: 833
 Reads contain 5780 bases, 0 Ns and 55 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 2
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Unused reads: 537
 +[1] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 [61] +++++++++++++++++++++++++++++++++++++++++++++++++++t++++++++
 [120] ++++++++++++++++++++++++++++++++++++++a+a++++++aa+++++++++++
-[176] ++++++++++++++++++++++++++++++++++++p++p++++++++++++++++++++
+[176] +++++++++++++++++++++++++++++++++++++p++++++++++p+++++++++++
 [234] ++++++++++a+++++a+++++++++++++++++++++++++++++++++++++++++++
 [292] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 [352] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 [412] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-[472] +++++++++++++++++p+++++++++++a++++a+++++++++++++++++++++a
+[472] +++++++++++++++++p+++++++a+++a+++++++++++++++++++++++++
 RL1
-[525] aapaThat's it for this contig.
+[524] aapaThat's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 2
-Contig length: 40441
-Avg. contig coverage: 8.55
-Consensus contains:	A: 13709	C: 5926	G: 7010	T: 13564	N: 0
-			IUPAC: 15	Funny: 0	*: 217
+Contig length: 40021
+Avg. contig coverage: 8.62
+Consensus contains:	A: 13590	C: 5845	G: 6951	T: 13404	N: 0
+			IUPAC: 14	Funny: 0	*: 217
 
-Num reads: 525
-Avg. read length: 659
-Reads contain 343441 bases, 0 Ns and 2599 gaps.
+Num reads: 524
+Avg. read length: 658
+Reads contain 342548 bases, 0 Ns and 2577 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Marking possibly misassembled repeats ...done. Found
  - 0 Strong RMB
  - 3 Weak RMB
  - 0 SNP
 positions tagged.Transfering contig RMB permanent pair bans.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 3
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 12
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 13
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 3
@@ -1522,22 +1635,22 @@ Num reads: 1
 Avg. read length: 805
 Reads contain 805 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 4
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 11
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 12
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 4
@@ -1550,22 +1663,22 @@ Num reads: 1
 Avg. read length: 788
 Reads contain 788 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 5
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 10
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 11
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 5
@@ -1578,22 +1691,22 @@ Num reads: 1
 Avg. read length: 788
 Reads contain 788 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 6
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 9
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 10
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 6
@@ -1606,49 +1719,50 @@ Num reads: 1
 Avg. read length: 786
 Reads contain 786 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 7
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 8
-+[1] +
-RL1
-That's it for this contig.
-
-
-Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
-
--------------- Contig statistics ----------------
-Contig id: 7
-Contig length: 1273
-Avg. contig coverage: 1.12
-Consensus contains:	A: 462	C: 193	G: 180	T: 431	N: 0
-			IUPAC: 1	Funny: 0	*: 6
-
-Num reads: 2
-Avg. read length: 717
-Reads contain 1428 bases, 0 Ns and 7 gaps.
--------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
-Marking possibly misassembled repeats ...done. Found none.
-Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
-
-Building new contig 8
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 6
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 9
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
+
+-------------- Contig statistics ----------------
+Contig id: 7
+Contig length: 865
+Avg. contig coverage: 1
+Consensus contains:	A: 314	C: 149	G: 103	T: 299	N: 0
+			IUPAC: 0	Funny: 0	*: 0
+
+Num reads: 1
+Avg. read length: 865
+Reads contain 865 bases, 0 Ns and 0 gaps.
+-------------------------------------------------
+Localtime: Fri Jan 15 12:00:00 2010
+Saving of extra temporary singlets disabled.
+Marking possibly misassembled repeats ...done. Found none.
+Transfering reads to readpool.
+Localtime: Fri Jan 15 12:00:00 2010
+
+Building new contig 8
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 8
++
+RL1
+That's it for this contig.
+
+
+Finished building the contig.
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 8
@@ -1661,22 +1775,22 @@ Num reads: 1
 Avg. read length: 963
 Reads contain 963 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 9
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 5
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 7
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 9
@@ -1689,14 +1803,70 @@ Num reads: 1
 Avg. read length: 1052
 Reads contain 1052 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 10
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 6
++
+RL1
+That's it for this contig.
+
+
+Finished building the contig.
+Localtime: Fri Jan 15 12:00:00 2010
+
+-------------- Contig statistics ----------------
+Contig id: 10
+Contig length: 563
+Avg. contig coverage: 1
+Consensus contains:	A: 195	C: 71	G: 110	T: 187	N: 0
+			IUPAC: 0	Funny: 0	*: 0
+
+Num reads: 1
+Avg. read length: 563
+Reads contain 563 bases, 0 Ns and 0 gaps.
+-------------------------------------------------
+Localtime: Fri Jan 15 12:00:00 2010
+Saving of extra temporary singlets disabled.
+Marking possibly misassembled repeats ...done. Found none.
+Transfering reads to readpool.
+Localtime: Fri Jan 15 12:00:00 2010
+
+Building new contig 11
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 5
++
+RL1
+That's it for this contig.
+
+
+Finished building the contig.
+Localtime: Fri Jan 15 12:00:00 2010
+
+-------------- Contig statistics ----------------
+Contig id: 11
+Contig length: 893
+Avg. contig coverage: 1
+Consensus contains:	A: 251	C: 177	G: 136	T: 329	N: 0
+			IUPAC: 0	Funny: 0	*: 0
+
+Num reads: 1
+Avg. read length: 893
+Reads contain 893 bases, 0 Ns and 0 gaps.
+-------------------------------------------------
+Localtime: Fri Jan 15 12:00:00 2010
+Saving of extra temporary singlets disabled.
+Marking possibly misassembled repeats ...done. Found none.
+Transfering reads to readpool.
+Localtime: Fri Jan 15 12:00:00 2010
+
+Building new contig 12
+Localtime: Fri Jan 15 12:00:00 2010
 Unused reads: 4
 +
 RL1
@@ -1704,38 +1874,10 @@ That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
-Contig id: 10
-Contig length: 972
-Avg. contig coverage: 1
-Consensus contains:	A: 284	C: 230	G: 123	T: 335	N: 0
-			IUPAC: 0	Funny: 0	*: 0
-
-Num reads: 1
-Avg. read length: 972
-Reads contain 972 bases, 0 Ns and 0 gaps.
--------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
-Saving of extra temporary singlets disabled.
-Marking possibly misassembled repeats ...done. Found none.
-Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
-
-Building new contig 11
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 3
-+
-RL1
-That's it for this contig.
-
-
-Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
-
--------------- Contig statistics ----------------
-Contig id: 11
+Contig id: 12
 Contig length: 478
 Avg. contig coverage: 1
 Consensus contains:	A: 116	C: 160	G: 101	T: 101	N: 0
@@ -1745,25 +1887,25 @@ Num reads: 1
 Avg. read length: 478
 Reads contain 478 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
-Building new contig 12
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 2
+Building new contig 13
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 3
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
-Contig id: 12
+Contig id: 13
 Contig length: 869
 Avg. contig coverage: 1
 Consensus contains:	A: 286	C: 245	G: 93	T: 245	N: 0
@@ -1773,25 +1915,25 @@ Num reads: 1
 Avg. read length: 869
 Reads contain 869 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
-Building new contig 13
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 1
+Building new contig 14
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 2
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
-Contig id: 13
+Contig id: 14
 Contig length: 973
 Avg. contig coverage: 1
 Consensus contains:	A: 266	C: 228	G: 254	T: 225	N: 0
@@ -1801,11 +1943,39 @@ Num reads: 1
 Avg. read length: 973
 Reads contain 973 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
+
+Building new contig 15
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 1
++
+RL1
+That's it for this contig.
+
+
+Finished building the contig.
+Localtime: Fri Jan 15 12:00:00 2010
+
+-------------- Contig statistics ----------------
+Contig id: 15
+Contig length: 972
+Avg. contig coverage: 1
+Consensus contains:	A: 284	C: 230	G: 123	T: 335	N: 0
+			IUPAC: 0	Funny: 0	*: 0
+
+Num reads: 1
+Avg. read length: 972
+Reads contain 972 bases, 0 Ns and 0 gaps.
+-------------------------------------------------
+Localtime: Fri Jan 15 12:00:00 2010
+Saving of extra temporary singlets disabled.
+Marking possibly misassembled repeats ...done. Found none.
+Transfering reads to readpool.
+Localtime: Fri Jan 15 12:00:00 2010
 
 Saving project statistics to file: cjejuni_demo_log/cjejuni_demo_info_contigstats_pass.3.txt
 Saving read tag list to file: cjejuni_demo_log/cjejuni_demo_info_readtaglist.3.txt
@@ -1813,9 +1983,9 @@ Saving contig tag list to file: cjejuni_demo_log/cjejuni_demo_info_consensustagl
 Saving project contig<->read list to file: cjejuni_demo_log/cjejuni_demo_info_contigreadlist_pass.3.txt
 
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Hunting contig join spoiler ... done.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 
 Pass: 4
@@ -1832,18 +2002,18 @@ For the reads that are neither backbones nor rails:
 - 544 reads used for assembly.
 - 0 reads have no real quality (see miralog.noqualities).
 - mean length of good parts of used reads: 660
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Generated 288 unique template ids for 544 valid reads.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Generated 0 unique strain ids for 544 reads.
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 
 Searching for possible overlaps:
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 We will get 1 partitions.
 Progressend: 1088
 Now running partitioned skimmer with 1 partitions:
@@ -1854,28 +2024,28 @@ Will contain read IDs 0 to 543
 Total megahubs: 0
 
 Skim summary:
-	accepted: 4547
-	possible: 6730
-	permbans: 17
+	accepted: 4498
+	possible: 4913
+	permbans: 14
 
-Hits chosen: 4547
+Hits chosen: 4498
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Making alignments.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Aligning possible forward matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Aligning possible complement matches:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Calculating possible vector leftovers ... done.
 
-Loading confirmed overlaps from disk (will need approximately 1.2 M.):
+Loading confirmed overlaps from disk (will need approximately 1.3 M.):
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
 
 Sorting confirmed overlaps (this may take a while) ... done.
@@ -1883,10 +2053,10 @@ Sorting confirmed overlaps (this may take a while) ... done.
 Generating clusters:
  [0%] ....|.... [10%] ....|.... [20%] ....|.... [30%] ....|.... [40%] ....|.... [50%] ....|.... [60%] ....|.... [70%] ....|.... [80%] ....|.... [90%] ....|.... [100%] 
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 1
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Unused reads: 544
 +[1] t+t++++a+aaaaar
 RL1
@@ -1894,7 +2064,7 @@ That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 1
@@ -1907,60 +2077,60 @@ Num reads: 7
 Avg. read length: 833
 Reads contain 5780 bases, 0 Ns and 55 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 2
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Unused reads: 537
 +[1] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 [61] +++++++++++++++++++++++++++++++++++++++++++++++++++t++++++++
 [120] ++++++++++++++++++++++++++++++++++++++a+a++++++aa+++++++++++
-[176] ++++++++++++++++++++++++++++++++++++p++p++++++++++++++++++++
+[176] +++++++++++++++++++++++++++++++++++++p++++++++++p+++++++++++
 [234] ++++++++++a+++++a+++++++++++++++++++++++++++++++++++++++++++
 [292] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 [352] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 [412] ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-[472] +++++++++++++++++p+++++++++++a++++a+++++++++++++++++++++a
+[472] +++++++++++++++++p+++++++a+++a+++++++++++++++++++++++++
 RL1
-[525] aapaThat's it for this contig.
+[524] aapaThat's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 2
-Contig length: 40441
-Avg. contig coverage: 8.55
-Consensus contains:	A: 13709	C: 5926	G: 7010	T: 13564	N: 0
-			IUPAC: 15	Funny: 0	*: 217
+Contig length: 40021
+Avg. contig coverage: 8.62
+Consensus contains:	A: 13590	C: 5845	G: 6951	T: 13404	N: 0
+			IUPAC: 14	Funny: 0	*: 217
 
-Num reads: 525
-Avg. read length: 659
-Reads contain 343441 bases, 0 Ns and 2599 gaps.
+Num reads: 524
+Avg. read length: 658
+Reads contain 342548 bases, 0 Ns and 2577 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Marking possibly misassembled repeats ...done. Found
  - 0 Strong RMB
  - 3 Weak RMB
  - 0 SNP
 positions tagged.Transfering contig RMB permanent pair bans.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 3
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 12
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 13
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 3
@@ -1973,22 +2143,22 @@ Num reads: 1
 Avg. read length: 805
 Reads contain 805 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 4
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 11
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 12
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 4
@@ -2001,22 +2171,22 @@ Num reads: 1
 Avg. read length: 788
 Reads contain 788 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 5
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 10
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 11
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 5
@@ -2029,22 +2199,22 @@ Num reads: 1
 Avg. read length: 788
 Reads contain 788 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 6
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 9
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 10
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 6
@@ -2057,49 +2227,50 @@ Num reads: 1
 Avg. read length: 786
 Reads contain 786 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 7
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 8
-+[1] +
-RL1
-That's it for this contig.
-
-
-Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
-
--------------- Contig statistics ----------------
-Contig id: 7
-Contig length: 1273
-Avg. contig coverage: 1.12
-Consensus contains:	A: 462	C: 193	G: 180	T: 431	N: 0
-			IUPAC: 1	Funny: 0	*: 6
-
-Num reads: 2
-Avg. read length: 717
-Reads contain 1428 bases, 0 Ns and 7 gaps.
--------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
-Marking possibly misassembled repeats ...done. Found none.
-Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
-
-Building new contig 8
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 6
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 9
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
+
+-------------- Contig statistics ----------------
+Contig id: 7
+Contig length: 865
+Avg. contig coverage: 1
+Consensus contains:	A: 314	C: 149	G: 103	T: 299	N: 0
+			IUPAC: 0	Funny: 0	*: 0
+
+Num reads: 1
+Avg. read length: 865
+Reads contain 865 bases, 0 Ns and 0 gaps.
+-------------------------------------------------
+Localtime: Fri Jan 15 12:00:00 2010
+Saving of extra temporary singlets disabled.
+Marking possibly misassembled repeats ...done. Found none.
+Transfering reads to readpool.
+Localtime: Fri Jan 15 12:00:00 2010
+
+Building new contig 8
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 8
++
+RL1
+That's it for this contig.
+
+
+Finished building the contig.
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 8
@@ -2112,22 +2283,22 @@ Num reads: 1
 Avg. read length: 963
 Reads contain 963 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 9
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 5
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 7
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
 Contig id: 9
@@ -2140,14 +2311,70 @@ Num reads: 1
 Avg. read length: 1052
 Reads contain 1052 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 Building new contig 10
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 6
++
+RL1
+That's it for this contig.
+
+
+Finished building the contig.
+Localtime: Fri Jan 15 12:00:00 2010
+
+-------------- Contig statistics ----------------
+Contig id: 10
+Contig length: 563
+Avg. contig coverage: 1
+Consensus contains:	A: 195	C: 71	G: 110	T: 187	N: 0
+			IUPAC: 0	Funny: 0	*: 0
+
+Num reads: 1
+Avg. read length: 563
+Reads contain 563 bases, 0 Ns and 0 gaps.
+-------------------------------------------------
+Localtime: Fri Jan 15 12:00:00 2010
+Saving of extra temporary singlets disabled.
+Marking possibly misassembled repeats ...done. Found none.
+Transfering reads to readpool.
+Localtime: Fri Jan 15 12:00:00 2010
+
+Building new contig 11
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 5
++
+RL1
+That's it for this contig.
+
+
+Finished building the contig.
+Localtime: Fri Jan 15 12:00:00 2010
+
+-------------- Contig statistics ----------------
+Contig id: 11
+Contig length: 893
+Avg. contig coverage: 1
+Consensus contains:	A: 251	C: 177	G: 136	T: 329	N: 0
+			IUPAC: 0	Funny: 0	*: 0
+
+Num reads: 1
+Avg. read length: 893
+Reads contain 893 bases, 0 Ns and 0 gaps.
+-------------------------------------------------
+Localtime: Fri Jan 15 12:00:00 2010
+Saving of extra temporary singlets disabled.
+Marking possibly misassembled repeats ...done. Found none.
+Transfering reads to readpool.
+Localtime: Fri Jan 15 12:00:00 2010
+
+Building new contig 12
+Localtime: Fri Jan 15 12:00:00 2010
 Unused reads: 4
 +
 RL1
@@ -2155,38 +2382,10 @@ That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
-Contig id: 10
-Contig length: 972
-Avg. contig coverage: 1
-Consensus contains:	A: 284	C: 230	G: 123	T: 335	N: 0
-			IUPAC: 0	Funny: 0	*: 0
-
-Num reads: 1
-Avg. read length: 972
-Reads contain 972 bases, 0 Ns and 0 gaps.
--------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
-Saving of extra temporary singlets disabled.
-Marking possibly misassembled repeats ...done. Found none.
-Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
-
-Building new contig 11
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 3
-+
-RL1
-That's it for this contig.
-
-
-Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
-
--------------- Contig statistics ----------------
-Contig id: 11
+Contig id: 12
 Contig length: 478
 Avg. contig coverage: 1
 Consensus contains:	A: 116	C: 160	G: 101	T: 101	N: 0
@@ -2196,25 +2395,25 @@ Num reads: 1
 Avg. read length: 478
 Reads contain 478 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
-Building new contig 12
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 2
+Building new contig 13
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 3
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
-Contig id: 12
+Contig id: 13
 Contig length: 869
 Avg. contig coverage: 1
 Consensus contains:	A: 286	C: 245	G: 93	T: 245	N: 0
@@ -2224,25 +2423,25 @@ Num reads: 1
 Avg. read length: 869
 Reads contain 869 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
-Building new contig 13
-Localtime: Tue Jul 15 12:00:00 2008
-Unused reads: 1
+Building new contig 14
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 2
 +
 RL1
 That's it for this contig.
 
 
 Finished building the contig.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 -------------- Contig statistics ----------------
-Contig id: 13
+Contig id: 14
 Contig length: 973
 Avg. contig coverage: 1
 Consensus contains:	A: 266	C: 228	G: 254	T: 225	N: 0
@@ -2252,11 +2451,39 @@ Num reads: 1
 Avg. read length: 973
 Reads contain 973 bases, 0 Ns and 0 gaps.
 -------------------------------------------------
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving of extra temporary singlets disabled.
 Marking possibly misassembled repeats ...done. Found none.
 Transfering reads to readpool.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
+
+Building new contig 15
+Localtime: Fri Jan 15 12:00:00 2010
+Unused reads: 1
++
+RL1
+That's it for this contig.
+
+
+Finished building the contig.
+Localtime: Fri Jan 15 12:00:00 2010
+
+-------------- Contig statistics ----------------
+Contig id: 15
+Contig length: 972
+Avg. contig coverage: 1
+Consensus contains:	A: 284	C: 230	G: 123	T: 335	N: 0
+			IUPAC: 0	Funny: 0	*: 0
+
+Num reads: 1
+Avg. read length: 972
+Reads contain 972 bases, 0 Ns and 0 gaps.
+-------------------------------------------------
+Localtime: Fri Jan 15 12:00:00 2010
+Saving of extra temporary singlets disabled.
+Marking possibly misassembled repeats ...done. Found none.
+Transfering reads to readpool.
+Localtime: Fri Jan 15 12:00:00 2010
 
 Saving project statistics to file: cjejuni_demo_log/cjejuni_demo_info_contigstats_pass.4.txt
 Saving read tag list to file: cjejuni_demo_log/cjejuni_demo_info_readtaglist.4.txt
@@ -2268,37 +2495,37 @@ Saving project contig<->read list to file: cjejuni_demo_log/cjejuni_demo_info_co
 Assembly finished, saving final results.
 
 
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving project statistics to file: cjejuni_demo_info/cjejuni_demo_info_contigstats.txt
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving read tag list to file: cjejuni_demo_info/cjejuni_demo_info_readtaglist.txt
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving contig tag list to file: cjejuni_demo_info/cjejuni_demo_info_consensustaglist.txt
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving project contig<->read list to file: cjejuni_demo_info/cjejuni_demo_info_contigreadlist.txt
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving contigs to file: cjejuni_demo_results/cjejuni_demo_out.caf
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving contigs to directory: cjejuni_demo_results/cjejuni_demo_out.gap4da
 (first deleting old directory)
 (now creating new directory)
 (saving contigs)
 Done.
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving contigs to FASTA file: cjejuni_demo_results/cjejuni_demo_out.unpadded.fasta
 Saving padded contigs to FASTA file: cjejuni_demo_results/cjejuni_demo_out.padded.fasta
 Saving contig qualities to FASTA quality file: cjejuni_demo_results/cjejuni_demo_out.unpadded.fasta.qual
 Saving padded contig qualities to FASTA quality file: cjejuni_demo_results/cjejuni_demo_out.padded.fasta.qual
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving contigs TCS to file: cjejuni_demo_results/cjejuni_demo_out.tcs
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving SNP analysis to file: cjejuni_demo_info/cjejuni_demo_info_snpanalysis.txt
 Saving contigs to file: cjejuni_demo_results/cjejuni_demo_out.txt
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving contigs to file: cjejuni_demo_results/cjejuni_demo_out.ace
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 Saving contigs to file: cjejuni_demo_results/cjejuni_demo_out.html
-Localtime: Tue Jul 15 12:00:00 2008
+Localtime: Fri Jan 15 12:00:00 2010
 
 
 End of assembly process, thank you for using MIRA.

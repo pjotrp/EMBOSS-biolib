@@ -404,7 +404,7 @@ Align_to_SCF 508 609 510 611
 
 
 DNA : default_c2
-TTAGCGTGGTCGCGGCCGAGGTGTGAGATTGGAGCAGAGACATGGCAAAGCAAAGGTGCG
+TTAGCGTGGTCGCGGCCGAGGTCGCGAAACAGCTGAAGAAAGGAAAGCTCAGTCCCAACT
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
@@ -417,17 +417,17 @@ TTAGCGTGGTCGCGGCCGAGGTGTGAGATTGGAGCAGAGACATGGCAAAGCAAAGGTGCG
 45 45 45 45 26 25 15 15 15 25 46 46 40 40 40 34 34 34 44 40 48 40 25 25 26 26 27 27 33 36 29
 30 36 36 36 36 46 46 36 41 41 30 30 30 
 
-Sequence : remain_s1043
+Sequence : remain_s1044
 Is_read
 Padded
 Insert_size 500 5000
-SCF_File "remain_s1043.scf"
+SCF_File "remain_s1044.scf"
 Clipping QUAL 1 323
 Align_to_SCF 1 323 1 323
 
 
 
-DNA : remain_s1044
+DNA : remain_s1045
 TTTCGAGCGGCCGCCCGGGCAGGTACAAGCCAATACTACACTCTAAAGTCGTGTCAGTGC
 GAGGTGAGCTTCGGAATAAGCCTGTATACCTCGGAAACAGACTTCGATTATCCGTGGAAA
 ATATTTGGCCTTTGCTGAACTCAGACAGTTGAGTTTAAGCTGTTATGGGTGAGGGAGACA
@@ -436,7 +436,7 @@ GGATAGGTAAGATGACTGACATCAACGGGCGAGATAAAAGAAGGGGAGCAGTGCGATGGA
 GTGAATGAAATGGAAGAGGATAACTCAGATGGTGTGGAAGTTGAGTGTCAGGATATGGAT
 GTTGTCACACAA
 
-BaseQuality : remain_s1044
+BaseQuality : remain_s1045
 29 29 29 23 19 9 9 9 21 21 46 46 22 22 22 45 30 40 40 40 40 40 45 29 19 19 17 20 17 17 14
 16 16 11 11 16 23 27 31 17 17 17 30 33 35 40 35 37 42 33 33 11 10 9 9 9 9 13 13 12 10 9
 9 9 19 20 39 35 35 33 29 23 26 19 19 19 29 24 28 24 22 21 23 16 15 8 8 9 17 13 16 15 16
@@ -451,11 +451,11 @@ BaseQuality : remain_s1044
 11 11 14 14 29 29 29 24 18 18 27 30 29 34 35 35 40 36 38 34 30 30 18 9 6 5 5 5 5 11 14
 
 
-Sequence : remain_s1044
+Sequence : remain_s1045
 Is_read
 Padded
 Insert_size 500 5000
-SCF_File "remain_s1044.scf"
+SCF_File "remain_s1045.scf"
 Clipping QUAL 1 372
 Align_to_SCF 1 372 1 372
 
@@ -519,7 +519,6 @@ default_c47	default
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-remain_s994	remain
 remain_s995	remain
 remain_s996	remain
 remain_s997	remain
@@ -570,6 +569,7 @@ remain_s1041	remain
 remain_s1042	remain
 remain_s1043	remain
 remain_s1044	remain
+remain_s1045	remain
 </pre>
 </td></tr></table><p>
 <p><h3>Directory: default_info</h3>

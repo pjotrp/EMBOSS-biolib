@@ -34,7 +34,7 @@ Description
    eprimer3 can also pick hybridisation oligos that are internal to the
    product.
 
-  ADVICE FOR PICKING PRIMERS
+  Advice for picking primers
 
    We suggest referring to: Wojciech Rychlik, "Selection of Primers for
    Polymerase Chain Reaction" in BA White, Ed., "Methods in Molecular
@@ -53,7 +53,7 @@ Description
    database searches using blast, fasta, or other similarity searching
    program to screen for vector contaminants and possible repeats. Repbase
    (J. Jurka, A.F.A. Smit, C. Pethiyagoda, and others, 1995-1996,
-   ftp://ncbi.nlm.nih.gov/repository/repbase) is an excellent source of
+   ftp://ftp.ncbi.nih.gov/repository/repbase) is an excellent source of
    repeat sequences and pointers to the literature. eprimer3 now allows
    you to screen candidate oligos against a Mispriming Library (or a
    Mishyb Library in the case of internal oligos).
@@ -86,7 +86,7 @@ Description
    your primer and use an oligo mixture containing all four bases at that
    position.
 
-   Try setting the '-explain' option.
+   Try setting the '-explainflag' option.
 
 Usage
 

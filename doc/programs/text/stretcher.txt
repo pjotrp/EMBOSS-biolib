@@ -31,7 +31,7 @@ Algorithm
    that is proportional to the shorter of the two sequences. So if a 1 kb
    and a 10 kb sequence take 10 Mega-words of memory and 10 minutes to
    align, you should expect that in order to align a 10 kb sequence and a
-   1 Mb sequence you will need appoximately 10 Giga-words of memory and
+   1 Mb sequence you will need approximately 10 Giga-words of memory and
    100 minutes. Computer memory will rapidly be exhausted as the size of
    the aligned sequences increases.
 
