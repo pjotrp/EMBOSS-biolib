@@ -417,6 +417,9 @@ static ajulong wordmatch_precomputeRM(ajuint m)
 **                                in the sequence set
 ** @param [u] lastlocation [ajuint*] Position of the search for each sequence
 **                                in the sequence set
+** @param [u] nmatchesseqset [ajuint] NUmber of matches to the sequence set
+** @param [r] checkmode [AjBool] If true, not writing features or alignments
+**                               running in check mode only
 ** @return [ajuint] number of matches
 ** @@
 ******************************************************************************/
