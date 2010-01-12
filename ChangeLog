@@ -1,4 +1,8 @@
 Version 6.2.0 15-Jan-2010
+	Fixed GFF2 and GFF3 feature formats to always have the start
+	position less than the end position for features on the '-'
+	strand.
+
 	Updated sequence format refseqp to handle features for proteins in
 	the latest release of refseq protein.gpff files.
 
