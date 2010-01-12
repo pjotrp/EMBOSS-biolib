@@ -46,7 +46,8 @@
 	typedef struct __kstream_t {				\
 		unsigned char *buf;						\
 		int begin, end, is_eof;					\
-		type_t f;								\
+                int padding;                                            \
+                type_t f;                                       \
 	} kstream_t;
 
 #define ks_eof(ks) ((ks)->is_eof && (ks)->begin >= (ks)->end)
@@ -119,7 +120,7 @@ typedef struct __kstring_t {
 				for (i = ks->begin; i < ks->end; ++i)					\
 					if (isspace(ks->buf[i]) && ks->buf[i] != ' ') break; \
 			} else i = 0; /* never come to here! */						\
-			if (str->m - str->l < i - ks->begin + 1) {					\
+			if (((int)(str->m - str->l)) < i - ks->begin + 1) { \
 				str->m = str->l + (i - ks->begin) + 1;					\
 				kroundup32(str->m);										\
 				str->s = (char*)realloc(str->s, str->m);				\

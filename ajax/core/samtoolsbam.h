@@ -40,14 +40,14 @@
   #copyright Genome Research Ltd.
  */
 
-#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "ajarch.h"
 
 #ifndef BAM_LITE
 #define BAM_VIRTUAL_OFFSET16
-#include "bgzf.h"
+#include "samtoolsbgzf.h"
 /*! #abstract BAM file handler */
 typedef BGZF *bamFile;
 #define bam_open(fn, mode) bgzf_open(fn, mode)
@@ -83,11 +83,11 @@ typedef gzFile bamFile;
   member.
  */
 typedef struct {
-	int32_t n_targets;
-	char **target_name;
-	uint32_t *target_len;
-	void *dict, *hash, *rg2lib;
+	ajint n_targets;
 	int l_text;
+	char **target_name;
+	ajuint *target_len;
+	void *dict, *hash, *rg2lib;
 	char *text;
 } bam_header_t;
 
@@ -160,14 +160,14 @@ typedef struct {
   #field  l_qseq  length of the query sequence (read)
  */
 typedef struct {
-	int32_t tid;
-	int32_t pos;
-	uint32_t bin:16, qual:8, l_qname:8;
-	uint32_t flag:16, n_cigar:16;
-	int32_t l_qseq;
-	int32_t mtid;
-	int32_t mpos;
-	int32_t isize;
+	ajint tid;
+	ajint pos;
+	ajuint bin:16, qual:8, l_qname:8;
+	ajuint flag:16, n_cigar:16;
+	ajint l_qseq;
+	ajint mtid;
+	ajint mpos;
+	ajint isize;
 } bam1_core_t;
 
 /*! #typedef
@@ -187,7 +187,8 @@ typedef struct {
 typedef struct {
 	bam1_core_t core;
 	int l_aux, data_len, m_data;
-	uint8_t *data;
+	int padding;
+	unsigned char *data;
 } bam1_t;
 
 #define bam1_strand(b) (((b)->core.flag&BAM_FREVERSE) != 0)
@@ -202,7 +203,7 @@ typedef struct {
   lower 4 bits gives a CIGAR operation and the higher 28 bits keep the
   length of a CIGAR.
  */
-#define bam1_cigar(b) ((uint32_t*)((b)->data + (b)->core.l_qname))
+#define bam1_cigar(b) ((ajuint*)((b)->data + (b)->core.l_qname))
 
 /*! #function
   #abstract  Get the name of the query
@@ -264,7 +265,7 @@ extern int bam_is_be;
 extern unsigned char bam_nt16_table[256];
 
 /*! #abstract Table for converting a 4-bit encoded nucleotide to a letter. */
-extern char *bam_nt16_rev_table;
+extern const char *bam_nt16_rev_table;
 
 extern char bam_nt16_nt4_table[];
 
@@ -339,7 +340,7 @@ extern "C" {
 	int bam_strmap_put(void *strmap, const char *rg, const char *lib);
 	const char *bam_strmap_get(const void *strmap, const char *rg);
 	void *bam_strmap_dup(const void*);
-	void *bam_strmap_init();
+	void *bam_strmap_init(void);
 	void bam_strmap_destroy(void *strmap);
 
 	/*!
@@ -349,7 +350,7 @@ extern "C" {
 	  #discussion This function also modifies the global variable
 	  bam_is_be.
 	 */
-	bam_header_t *bam_header_init();
+	bam_header_t *bam_header_init(void);
 
 	/*!
 	  #abstract        Destroy a header structure.
@@ -402,7 +403,7 @@ extern "C" {
 	  #discussion This function is not affected by the machine
 	  endianness.
 	 */
-	int bam_write1_core(bamFile fp, const bam1_core_t *c, int data_len, uint8_t *data);
+	int bam_write1_core(bamFile fp, const bam1_core_t *c, int data_len, unsigned char *data);
 
 	/*!
 	  #abstract   Write an alignment to BAM.
@@ -418,7 +419,7 @@ extern "C" {
 	/*! #function
 	  #abstract  Initiate a pointer to bam1_t struct
 	 */
-#define bam_init1() ((bam1_t*)calloc(1, sizeof(bam1_t)))
+#define bam_init1(void) ((bam1_t*)calloc(1, sizeof(bam1_t)))
 
 	/*! #function
 	  #abstract  Free the memory allocated for an alignment.
@@ -456,9 +457,10 @@ extern "C" {
 	 */
 	typedef struct {
 		bam1_t *b;
-		int32_t qpos;
+		ajint qpos;
 		int indel, level;
-		uint32_t is_del:1, is_head:1, is_tail:1;
+		ajuint is_del:1, is_head:1, is_tail:1;
+		ajuint padding:29;
 	} bam_pileup1_t;
 
 	struct __bam_plbuf_t;
@@ -476,7 +478,7 @@ extern "C" {
 	  #param  data user provided data
 	  #discussion  See also bam_plbuf_push(), bam_plbuf_init() and bam_pileup1_t.
 	 */
-	typedef int (*bam_pileup_f)(uint32_t tid, uint32_t pos, int n, const bam_pileup1_t *pl, void *data);
+	typedef int (*bam_pileup_f)(ajuint tid, ajuint pos, int n, const bam_pileup1_t *pl, void *data);
 
 	/*!
 	  #abstract     Reset a pileup buffer for another pileup process
@@ -605,17 +607,16 @@ extern "C" {
 	  #discussion  Use bam_aux2?() series to convert the returned data to
 	  the corresponding type.
 	*/
-	uint8_t *bam_aux_get(const bam1_t *b, const char tag[2]);
+	unsigned char *bam_aux_get(const bam1_t *b, const char tag[2]);
+	ajint bam_aux2i(const char *s);
+	float bam_aux2f(const unsigned char *s);
+	double bam_aux2d(const unsigned char *s);
+	char bam_aux2A(const unsigned char *s);
+	const char *bam_aux2Z(const unsigned char *s);
 
-	int32_t bam_aux2i(const uint8_t *s);
-	float bam_aux2f(const uint8_t *s);
-	double bam_aux2d(const uint8_t *s);
-	char bam_aux2A(const uint8_t *s);
-	char *bam_aux2Z(const uint8_t *s);
-
-	int bam_aux_del(bam1_t *b, uint8_t *s);
-	void bam_aux_append(bam1_t *b, const char tag[2], char type, int len, uint8_t *data);
-	uint8_t *bam_aux_get_core(bam1_t *b, const char tag[2]); // an alias of bam_aux_get()
+	int bam_aux_del(bam1_t *b, unsigned char *s);
+	void bam_aux_append(bam1_t *b, const char tag[2], char type, int len, unsigned char *data);
+	unsigned char *bam_aux_get_core(bam1_t *b, const char tag[2]); // an alias of bam_aux_get()
 
 	/*!  
 	  #abstract Calculate the rightmost coordinate of an alignment on the
@@ -625,7 +626,7 @@ extern "C" {
 	  #param  cigar  the corresponding CIGAR array (from bam1_t::cigar)
 	  #return        the rightmost coordinate, 0-based
 	*/
-	uint32_t bam_calend(const bam1_core_t *c, const uint32_t *cigar);
+	ajuint bam_calend(const bam1_core_t *c, const ajuint *cigar);
 
 	/*!
 	  #abstract      Calculate the length of the query sequence from CIGAR.
@@ -633,7 +634,7 @@ extern "C" {
 	  #param  cigar  the corresponding CIGAR array (from bam1_t::cigar)
 	  #return        length of the query sequence
 	*/
-	int32_t bam_cigar2qlen(const bam1_core_t *c, const uint32_t *cigar);
+	ajint bam_cigar2qlen(const bam1_core_t *c, const ajuint *cigar);
 
 #ifdef __cplusplus
 }
@@ -645,7 +646,7 @@ extern "C" {
   #param  end  end of the region, 0-based
   #return      bin
  */
-static inline int bam_reg2bin(uint32_t beg, uint32_t end)
+static inline int bam_reg2bin(ajuint beg, ajuint end)
 {
 	--end;
 	if (beg>>14 == end>>14) return 4681 + (beg>>14);
@@ -664,11 +665,11 @@ static inline int bam_reg2bin(uint32_t beg, uint32_t end)
  */
 static inline bam1_t *bam_copy1(bam1_t *bdst, const bam1_t *bsrc)
 {
-	uint8_t *data = bdst->data;
+	unsigned char *data = bdst->data;
 	int m_data = bdst->m_data;   // backup data and m_data
 	if (m_data < bsrc->m_data) { // double the capacity
 		m_data = bsrc->m_data; kroundup32(m_data);
-		data = (uint8_t*)realloc(data, m_data);
+		data = (unsigned char*)realloc(data, m_data);
 	}
 	memcpy(data, bsrc->data, bsrc->data_len); // copy var-len data
 	*bdst = *bsrc; // copy the rest
@@ -689,7 +690,7 @@ static inline bam1_t *bam_dup1(const bam1_t *src)
 	b = bam_init1();
 	*b = *src;
 	b->m_data = b->data_len;
-	b->data = (uint8_t*)calloc(b->data_len, 1);
+	b->data = (unsigned char*)calloc(b->data_len, 1);
 	memcpy(b->data, src->data, b->data_len);
 	return b;
 }

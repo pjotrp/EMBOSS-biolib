@@ -28,7 +28,7 @@
 /*
   An example:
 
-#include "khash.h"
+#include "samtoolskhash.h"
 KHASH_MAP_INIT_INT(32, char)
 int main() {
 	int ret, is_missing;
@@ -90,15 +90,16 @@ int main() {
 
 #define AC_VERSION_KHASH_H "0.2.2"
 
-#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include "ajarch.h"
 
-typedef uint32_t khint_t;
+typedef ajint khint_t;
+typedef ajuint khuint_t;
 typedef khint_t khiter_t;
 
 #define __ac_HASH_PRIME_SIZE 32
-static const uint32_t __ac_prime_list[__ac_HASH_PRIME_SIZE] =
+static const ajuint __ac_prime_list[__ac_HASH_PRIME_SIZE] =
 {
   0ul,          3ul,          11ul,         23ul,         53ul,
   97ul,         193ul,        389ul,        769ul,        1543ul,
@@ -122,7 +123,7 @@ static const double __ac_HASH_UPPER = 0.77;
 #define KHASH_INIT(name, khkey_t, khval_t, kh_is_map, __hash_func, __hash_equal) \
 	typedef struct {													\
 		khint_t n_buckets, size, n_occupied, upper_bound;				\
-		uint32_t *flags;												\
+		ajuint *flags;												\
 		khkey_t *keys;													\
 		khval_t *vals;													\
 	} kh_##name##_t;													\
@@ -140,7 +141,7 @@ static const double __ac_HASH_UPPER = 0.77;
 	static inline void kh_clear_##name(kh_##name##_t *h)				\
 	{																	\
 		if (h && h->flags) {											\
-			memset(h->flags, 0xaa, ((h->n_buckets>>4) + 1) * sizeof(uint32_t)); \
+			memset(h->flags, 0xaa, ((h->n_buckets>>4) + 1) * sizeof(ajuint)); \
 			h->size = h->n_occupied = 0;								\
 		}																\
 	}																	\
@@ -160,16 +161,16 @@ static const double __ac_HASH_UPPER = 0.77;
 	}																	\
 	static inline void kh_resize_##name(kh_##name##_t *h, khint_t new_n_buckets) \
 	{																	\
-		uint32_t *new_flags = 0;										\
+		ajuint *new_flags = 0;										\
 		khint_t j = 1;													\
 		{																\
 			khint_t t = __ac_HASH_PRIME_SIZE - 1;						\
-			while (__ac_prime_list[t] > new_n_buckets) --t;				\
+			while (__ac_prime_list[t] > (ajuint) new_n_buckets) --t; \
 			new_n_buckets = __ac_prime_list[t+1];						\
 			if (h->size >= (khint_t)(new_n_buckets * __ac_HASH_UPPER + 0.5)) j = 0;	\
 			else {														\
-				new_flags = (uint32_t*)malloc(((new_n_buckets>>4) + 1) * sizeof(uint32_t));	\
-				memset(new_flags, 0xaa, ((new_n_buckets>>4) + 1) * sizeof(uint32_t)); \
+				new_flags = (ajuint*)malloc(((new_n_buckets>>4) + 1) * sizeof(ajuint));	\
+				memset(new_flags, 0xaa, ((new_n_buckets>>4) + 1) * sizeof(ajuint)); \
 				if (h->n_buckets < new_n_buckets) {						\
 					h->keys = (khkey_t*)realloc(h->keys, new_n_buckets * sizeof(khkey_t)); \
 					if (kh_is_map)										\
@@ -268,20 +269,20 @@ static const double __ac_HASH_UPPER = 0.77;
 
 /*! #function
   #abstract     Integer hash function
-  #param  key   The integer [uint32_t]
+  #param  key   The integer [ajuint]
   #return       The hash value [khint_t]
  */
-#define kh_int_hash_func(key) (uint32_t)(key)
+#define kh_int_hash_func(key) (ajuint)(key)
 /*! #function
   #abstract     Integer comparison function
  */
 #define kh_int_hash_equal(a, b) ((a) == (b))
 /*! #function
   #abstract     64-bit integer hash function
-  #param  key   The integer [uint64_t]
+  #param  key   The integer [ajulong]
   #return       The hash value [khint_t]
  */
-#define kh_int64_hash_func(key) (uint32_t)((key)>>33^(key)^(key)<<11)
+#define kh_int64_hash_func(key) (ajuint)((key)>>33^(key)^(key)<<11)
 /*! #function
   #abstract     64-bit integer comparison function
  */
@@ -442,7 +443,7 @@ static inline khint_t __ac_X31_hash_string(const char *s)
   #param  name  Name of the hash table [symbol]
  */
 #define KHASH_SET_INIT_INT(name)										\
-	KHASH_INIT(name, uint32_t, char, 0, kh_int_hash_func, kh_int_hash_equal)
+	KHASH_INIT(name, ajuint, char, 0, kh_int_hash_func, kh_int_hash_equal)
 
 /*! #function
   #abstract     Instantiate a hash map containing integer keys
@@ -450,14 +451,14 @@ static inline khint_t __ac_X31_hash_string(const char *s)
   #param  khval_t  Type of values [type]
  */
 #define KHASH_MAP_INIT_INT(name, khval_t)								\
-	KHASH_INIT(name, uint32_t, khval_t, 1, kh_int_hash_func, kh_int_hash_equal)
+	KHASH_INIT(name, ajuint, khval_t, 1, kh_int_hash_func, kh_int_hash_equal)
 
 /*! #function
   #abstract     Instantiate a hash map containing 64-bit integer keys
   #param  name  Name of the hash table [symbol]
  */
 #define KHASH_SET_INIT_INT64(name)										\
-	KHASH_INIT(name, uint64_t, char, 0, kh_int64_hash_func, kh_int64_hash_equal)
+	KHASH_INIT(name, ajulong, char, 0, kh_int64_hash_func, kh_int64_hash_equal)
 
 /*! #function
   #abstract     Instantiate a hash map containing 64-bit integer keys
@@ -465,7 +466,7 @@ static inline khint_t __ac_X31_hash_string(const char *s)
   #param  khval_t  Type of values [type]
  */
 #define KHASH_MAP_INIT_INT64(name, khval_t)								\
-	KHASH_INIT(name, uint64_t, khval_t, 1, kh_int64_hash_func, kh_int64_hash_equal)
+	KHASH_INIT(name, ajulong, khval_t, 1, kh_int64_hash_func, kh_int64_hash_equal)
 
 typedef const char *kh_cstr_t;
 /*! #function

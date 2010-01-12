@@ -39,8 +39,8 @@
 typedef struct {
 	int size;
 	int padding;
-	uint8_t *block;
-	int64_t end_offset;
+	unsigned char *block;
+	ajlong end_offset;
 } cache_t;
 KHASH_MAP_INIT_INT64(cache, cache_t)
 
@@ -49,7 +49,7 @@ KHASH_MAP_INIT_INT64(cache, cache_t)
 #define fseeko(fp, offset, whence) fseek(fp, offset, whence)
 #endif
 
-typedef int8_t bgzf_byte_t;
+typedef char bgzf_byte_t;
 
 static const int DEFAULT_BLOCK_SIZE = 64 * 1024;
 static const int MAX_BLOCK_SIZE = 64 * 1024;
@@ -70,11 +70,11 @@ static const int BGZF_XLEN = 6; // BGZF_LEN+4
 static const int GZIP_WINDOW_BITS = -15; // no zlib header
 static const int Z_DEFAULT_MEM_LEVEL = 8;
 
-inline void packInt16(uint8_t* buffer, uint16_t value);
-inline int unpackInt16(const uint8_t* buffer);
-inline void packInt32(uint8_t* buffer, uint32_t value);
+inline void packInt16(unsigned char* buffer, ajushort value);
+inline int unpackInt16(const unsigned char* buffer);
+inline void packInt32(unsigned char* buffer, ajuint value);
 
-inline void packInt16(uint8_t* buffer, uint16_t value)
+inline void packInt16(unsigned char* buffer, ajushort value)
 {
     buffer[0] = value;
     buffer[1] = value >> 8;
@@ -85,14 +85,14 @@ bgzf_min(int x, int y);
 
 inline
 int
-unpackInt16(const uint8_t* buffer)
+unpackInt16(const unsigned char* buffer)
 {
     return (buffer[0] | (buffer[1] << 8));
 }
 
 inline
 void
-packInt32(uint8_t* buffer, uint32_t value)
+packInt32(unsigned char* buffer, ajuint value)
 {
     buffer[0] = value;
     buffer[1] = value >> 8;
@@ -238,7 +238,7 @@ deflate_block(BGZF* fp, int block_length)
     int compress_level;
     int status;
     z_stream zs;
-    uint32_t crc;
+    ajuint crc;
     int remaining;
 
     // Init gzip header
@@ -312,11 +312,11 @@ deflate_block(BGZF* fp, int block_length)
         break;
     }
 
-    packInt16((uint8_t*)&buffer[16], compressed_length-1);
+    packInt16((unsigned char*)&buffer[16], compressed_length-1);
     crc = crc32(0L, NULL, 0L);
     crc = crc32(crc, fp->uncompressed_block, input_length);
-    packInt32((uint8_t*)&buffer[compressed_length-8], crc);
-    packInt32((uint8_t*)&buffer[compressed_length-4], input_length);
+    packInt32((unsigned char*)&buffer[compressed_length-8], crc);
+    packInt32((unsigned char*)&buffer[compressed_length-4], input_length);
 
     remaining = block_length - input_length;
     if (remaining > 0) {
@@ -374,10 +374,10 @@ check_header(const bgzf_byte_t* header)
             header[1] == (bgzf_byte_t) GZIP_ID2 &&
             header[2] == Z_DEFLATED &&
             (header[3] & FLG_FEXTRA) != 0 &&
-            unpackInt16((const uint8_t*)&header[10]) == BGZF_XLEN &&
+            unpackInt16((const unsigned char*)&header[10]) == BGZF_XLEN &&
             header[12] == BGZF_ID1 &&
             header[13] == BGZF_ID2 &&
-            unpackInt16((const uint8_t*)&header[14]) == BGZF_LEN);
+            unpackInt16((const unsigned char*)&header[14]) == BGZF_LEN);
 }
 
 static void free_cache(BGZF *fp)
@@ -390,7 +390,7 @@ static void free_cache(BGZF *fp)
 	kh_destroy(cache, h);
 }
 
-static int load_block_from_cache(BGZF *fp, int64_t block_address)
+static int load_block_from_cache(BGZF *fp, ajlong block_address)
 {
 	khint_t k;
 	cache_t *p;
@@ -417,7 +417,7 @@ static void cache_block(BGZF *fp, int size)
 	cache_t *p;
 	khash_t(cache) *h = (khash_t(cache)*)fp->cache;
 	if (MAX_BLOCK_SIZE >= fp->cache_size) return;
-	if ((kh_size(h) + 1) * MAX_BLOCK_SIZE > (unsigned int) fp->cache_size) {
+	if ((kh_size(h) + 1) * MAX_BLOCK_SIZE > fp->cache_size) {
 		/* A better way would be to remove the oldest block in the
 		 * cache, but here we remove a random one for simplicity. This
 		 * should not have a big impact on performance. */
@@ -443,7 +443,7 @@ read_block(BGZF* fp)
 {
     bgzf_byte_t header[BLOCK_HEADER_LENGTH];
     int size = 0;
-    int64_t block_address;
+    ajlong block_address;
     int count;
     int block_length;
     bgzf_byte_t* compressed_block;
@@ -470,7 +470,7 @@ read_block(BGZF* fp)
         report_error(fp, "invalid block header");
         return -1;
     }
-    block_length = unpackInt16((uint8_t*)&header[16]) + 1;
+    block_length = unpackInt16((unsigned char*)&header[16]) + 1;
     compressed_block = (bgzf_byte_t*) fp->compressed_block;
     memcpy(compressed_block, header, BLOCK_HEADER_LENGTH);
     remaining = block_length - BLOCK_HEADER_LENGTH;
@@ -652,7 +652,7 @@ bgzf_close(BGZF* fp)
     return 0;
 }
 
-int64_t
+ajlong
 bgzf_tell(BGZF* fp)
 {
     return ((fp->block_address << 16) | (fp->block_offset & 0xFFFF));
@@ -665,8 +665,8 @@ void bgzf_set_cache_size(BGZF *fp, int cache_size)
 
 int bgzf_check_EOF(BGZF *fp)
 {
-	static uint8_t magic[28] = "\037\213\010\4\0\0\0\0\0\377\6\0\102\103\2\0\033\0\3\0\0\0\0\0\0\0\0\0";
-	uint8_t buf[28];
+	static unsigned char magic[28] = "\037\213\010\4\0\0\0\0\0\377\6\0\102\103\2\0\033\0\3\0\0\0\0\0\0\0\0\0";
+	unsigned char buf[28];
 	off_t offset;
 #ifdef _USE_KNETFILE
 	offset = knet_tell(fp->x.fpr);
@@ -682,11 +682,11 @@ int bgzf_check_EOF(BGZF *fp)
 	return (memcmp(magic, buf, 28) == 0)? 1 : 0;
 }
 
-int64_t
-bgzf_seek(BGZF* fp, int64_t pos, int where)
+ajlong
+bgzf_seek(BGZF* fp, ajlong pos, int where)
 {
     int block_offset;
-    int64_t block_address;
+    ajlong block_address;
 
     if (fp->open_mode != 'r') {
         report_error(fp, "file not open for read");
