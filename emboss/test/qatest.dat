@@ -11253,7 +11253,6 @@ AP needleall
 CL -minscore 40 -stdout -auto
 CL ../../data/illumina_adapter_primer.fa
 CL ../../data/test1_illumina.fastq
-IN
 FI stderr
 FI needleall.error
 FP /Alignment score \(21.5\) is less than minimum score/
@@ -26670,7 +26669,7 @@ IN
 FI rna3.vrnainverse
 FC = 3
 FP 3 /^[ACGU]{76}   [0-9][0-9](   d = [0-9\.]+)?\n/
-FP  /^UGUUUUAUUGGUCUCGUCGCUGA.*GCGGGUUCUAGGACACACU   28   d \= 1\.000000\n/
+FP  /^GUAGACUCUGAACAAGG.*GUGAGGUCUACACCC   26   d \= 1\.000000\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -26691,9 +26690,9 @@ IN
 FI rna3.vrnainverse
 FC = 3
 FP 3 /^[ACGU]{76}   [0-9][0-9]\n/
-FP  /^UAUGUGUGUCUGCUUUAAC.*ACAUGGUGA   25\n/
-FP  /^GUUGUGAAAGCACAACCUA.*GCGACCUGC   31\n/
-FP  /^GUGAAUUGAGGCGACGAGG.*UUCAUAUUA   21\n/
+FP  /^UUCUAGACCGGUCUGAUCUAUGG.*CCUUCUAGGAGCCU   25\n/
+FP  /^GCCUAAGACGAUCUGUACUGUGA.*UUCCUUAGGUCCCC   28\n/
+FP  /^CCCGGUCCUAGACUCCAGGUUGU.*CAAGACCGGGAUCU   29\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -26792,7 +26791,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 2186
+FC = 2413
 FP 4 /^Contig id: 13\n/
 FP 5 /^Contig id: 2\n/
 //
@@ -26819,21 +26818,21 @@ FI step1_in.fasta
 FC = 43967
 FP 2396 /^>/
 FI step1_nosnps_remain.caf
-FC = 107792
-FP 1594 /^BaseQuality : /
+FC = 107852
+FP 1595 /^BaseQuality : /
 FI step1_snpsinSTRAIN_default.caf
-FC = 47698
-FP 802 /^BaseQuality : /
+FC = 47668
+FP 801 /^BaseQuality : /
 FI step1_res_cafstrainnames.txt
 FC = 2
 FP /^step1_snpsinSTRAIN_default.caf\tdefault\n/
 FP /^step1_nosnps_remain.caf\tremain\n/
 FI step2_reads.caf
-FC = 50914
-FP 1424 /^BaseQuality : /
+FC = 50955
+FP 1426 /^BaseQuality : /
 FI step2_straindata.txt
-FC = 1427
-FP 307 /^default_c\d+\tdefault\n/
+FC = 1429
+FP 309 /^default_c\d+\tdefault\n/
 DI default_info
 DI default_log
 DI default_results
@@ -26850,7 +26849,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP 3 /Error while trying to load parameter file me_step[1-9]\.par/
 FI stdout
-FC = 123366
+FC = 123640
 FP 4 /^Contig id: 138\n/
 FP 2 /^Contig id: 1380\n/
 FP 1 /^Contig id: 1390\n/
