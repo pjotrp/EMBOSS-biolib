@@ -17,7 +17,7 @@ Description
 
    extractalign allows you to specify one or more regions of a sequence
    alignment to extract sub-sequences from to build up a resulting
-   sub-sequence alignment. extractakign reads in a sequence alignment and
+   sub-sequence alignment. extractalign reads in a sequence alignment and
    a set of regions of that alignment as specified by pairs of start and
    end positions (either on the command-line or contained in a file) using
    gapped alignment positions as the coordinates, and writes out the

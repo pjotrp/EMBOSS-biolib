@@ -342,7 +342,7 @@ Notes
 98    ttttgattccg    88
 
    einverted will not report this as its score is 33 (11 bases scoring 3
-   each, no mismatches or gaps) with is below the default score cutoff of
+   each, no mismatches or gaps) which is below the default score cutoff of
    50.
 
    If einverted is run as:
@@ -360,10 +360,6 @@ Score 33: 11/11 (100%) matches, 0 gaps
    threshold low enough!
 
    einverted does not report overlapping matches.
-
-   The original "inverted" program was written to annotate the nematode
-   genome. Excluding overlapping repeats saved problems with simple repeat
-   sequences in this genome.
 
 References
 

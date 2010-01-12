@@ -2,7 +2,7 @@
 
 <HEAD>
   <TITLE>
-  EMBOSS: needle
+  EMBOSS: needleall
   </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
@@ -13,7 +13,7 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-needle
+needleall
 </font></b>
 </td></tr>
 </table>
@@ -35,14 +35,14 @@ Please help by correcting and extending the Wiki pages.
 <H2>
     Function
 </H2>
-Needleman-Wunsch global alignment of two sequences
+Many-to-many pairwise alignments of two sequence sets
 
 <H2>
     Description
 </H2>
 
 
-<p><b>needle</b> reads two input sequences and writes their optimal global sequence alignment to file. It uses the Needleman-Wunsch alignment algorithm to find the optimum alignment (including gaps) of two sequences along their entire length. The algorithm uses a dynamic programming method to ensure the alignment is optimum, by exploring all possible alignments and choosing the best. A scoring matrix is read that contains values for every possible residue or nucleotide match. Needle finds the alignment with the maximum possible score where the score of an alignment is equal to the sum of the matches taken from the scoring matrix, minus penalties arising from opening and extending gaps in the aligned sequences.  The substitution matrix and gap opening and extension penalties are user-specified.</p>
+<p><b>needleall</b> reads a set of input sequences and compares them all to one or more sequences,  writing their optimal global sequence alignments to file. It uses the Needleman-Wunsch alignment algorithm to find the optimum alignment (including gaps) of two sequences along their entire length. The algorithm uses a dynamic programming method to ensure the alignment is optimum, by exploring all possible alignments and choosing the best. A scoring matrix is read that contains values for every possible residue or nucleotide match. Needleall finds the alignment with the maximum possible score where the score of an alignment is equal to the sum of the matches taken from the scoring matrix, minus penalties arising from opening and extending gaps in the aligned sequences.  The substitution matrix and gap opening and extension penalties are user-specified.</p>
 
 
 <H3>
@@ -66,17 +66,40 @@ Needleman-Wunsch global alignment of two sequences
 <H2>
     Usage
 </H2>
-<b>Here is a sample session with needle</b>
+<b>Here is a sample session with needleall</b>
 <p>
 
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>needle tsw:hba_human tsw:hbb_human </b>
-Needleman-Wunsch global alignment of two sequences
-Gap opening penalty [10.0]: <b></b>
-Gap extension penalty [0.5]: <b></b>
-Output alignment [hba_human.needle]: <b></b>
+% <b>needleall -minscore 40 -stdout -auto ../data/test1_illumina.fastq </b>
+
+Illumina_DpnII_Gex_PCR_Primer_2 FC12044_91407_8_200_406_24 45 (41.0)
+Illumina_NlaIII_Gex_PCR_Primer_2 FC12044_91407_8_200_406_24 45 (41.0)
+Illumina_Small_RNA_PCR_Primer_2 FC12044_91407_8_200_406_24 45 (41.0)
+Illumina_DpnII_Gex_Adapters1_1 FC12044_91407_8_200_106_131 35 (40.5)
+Illumina_Paired_End_DNA_Adapters1_1 FC12044_91407_8_200_57_85 35 (41.0)
+Illumina_DpnII_Gex_Adapters1_1 FC12044_91407_8_200_154_436 31 (42.0)
+Illumina_Genomic_DNA_PCR_Primers1_1 FC12044_91407_8_200_83_511 62 (42.0)
+Illumina_Paired_End_DNA_PCR_Primers1_1 FC12044_91407_8_200_83_511 62 (42.0)
+Illumina_DpnII_Gex_Adapters1_2 FC12044_91407_8_200_303_427 33 (40.5)
+Illumina_DpnII_Gex_PCR_Primer_2 FC12044_91407_8_200_303_427 51 (40.5)
+Illumina_DpnII_Gex_sequencing_primer FC12044_91407_8_200_303_427 37 (44.5)
+Illumina_NlaIII_Gex_Adapters1_2 FC12044_91407_8_200_303_427 36 (40.5)
+Illumina_NlaIII_Gex_PCR_Primer_2 FC12044_91407_8_200_303_427 51 (40.5)
+Illumina_NlaIII_Gex_sequencing_primer FC12044_91407_8_200_303_427 36 (40.5)
+Illumina_Small_RNA_5p_Adapter FC12044_91407_8_200_303_427 33 (40.5)
+Illumina_Small_RNA_PCR_Primer_2 FC12044_91407_8_200_303_427 51 (40.5)
+Illumina_Small_RNA_sequencing_primer FC12044_91407_8_200_303_427 37 (44.5)
+Illumina_Paired_End_DNA_Adapters1_1 FC12044_91407_8_200_553_135 33 (44.5)
+Illumina_DpnII_Gex_PCR_Primer_2 FC12044_91407_8_200_139_74 51 (46.0)
+Illumina_DpnII_Gex_sequencing_primer FC12044_91407_8_200_139_74 34 (42.0)
+Illumina_NlaIII_Gex_PCR_Primer_2 FC12044_91407_8_200_139_74 51 (46.0)
+Illumina_Small_RNA_PCR_Primer_2 FC12044_91407_8_200_139_74 51 (46.0)
+Illumina_Small_RNA_sequencing_primer FC12044_91407_8_200_139_74 34 (42.0)
+
+#---------------------------------------
+#---------------------------------------
 
 </pre></td></tr></table><p>
 <p>
@@ -87,12 +110,12 @@ Output alignment [hba_human.needle]: <b></b>
 </H2>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
-Needleman-Wunsch global alignment of two sequences
+Many-to-many pairwise alignments of two sequence sets
 Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
-  [-asequence]         sequence   Sequence filename and optional format, or
-                                  reference (input USA)
+  [-asequence]         seqset     Sequence set filename and optional format,
+                                  or reference (input USA)
   [-bsequence]         seqall     Sequence(s) filename and optional format, or
                                   reference (input USA)
    -gapopen            float      [10.0 for any sequence] The gap open penalty
@@ -118,7 +141,7 @@ Version: EMBOSS:6.2.0
                                   very low) and using the gap extension
                                   penalty to control gap scoring. (Floating
                                   point number from 0.0 to 10.0)
-  [-outfile]           align      [*.needle] Output alignment file name
+  [-outfile]           align      [*.needleall] Output alignment file name
 
    Additional (Optional) qualifiers:
    -datafile           matrixf    [EBLOSUM62 for protein, EDNAFULL for DNA]
@@ -140,9 +163,13 @@ Version: EMBOSS:6.2.0
    -endextend          float      [0.5 for any sequence] The end gap
                                   extension, penalty is added to the end gap
                                   penalty for each base or residue in the end
-                                  gap. This is how long end gaps are
-                                  penalized. (Floating point number from 0.0
-                                  to 10.0)
+                                  gap. (Floating point number from 0.0 to
+                                  10.0)
+   -minscore           float      [1.0 for any sequence] Minimum alignment
+                                  score to report an alignment. (Floating
+                                  point number from -10.0 to 100.0)
+   -errorfile          outfile    [needleall.error] Error file to be written
+                                  to
 
    Advanced (Unprompted) qualifiers:
    -[no]brief          boolean    [Y] Brief identity and similarity
@@ -150,8 +177,8 @@ Version: EMBOSS:6.2.0
    Associated qualifiers:
 
    "-asequence" associated qualifiers
-   -sbegin1            integer    Start of the sequence to be used
-   -send1              integer    End of the sequence to be used
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
    -sreverse1          boolean    Reverse (if DNA)
    -sask1              boolean    Ask for begin/end/reverse
    -snucleotide1       boolean    Sequence is nucleotide
@@ -192,6 +219,9 @@ Version: EMBOSS:6.2.0
    -ausashow3          boolean    Show the full USA in the alignment
    -aglobal3           boolean    Show the full sequence in alignment
 
+   "-errorfile" associated qualifiers
+   -odirectory         string     Output directory
+
    General qualifiers:
    -auto               boolean    Turn off prompts
    -stdout             boolean    Write first file to standard output
@@ -228,9 +258,9 @@ Version: EMBOSS:6.2.0
 
 <tr bgcolor="#FFFFCC">
 <td>[-asequence]<br>(Parameter 1)</td>
-<td>sequence</td>
-<td>Sequence filename and optional format, or reference (input USA)</td>
-<td>Readable sequence</td>
+<td>seqset</td>
+<td>Sequence set filename and optional format, or reference (input USA)</td>
+<td>Readable set of sequences</td>
 <td><b>Required</b></td>
 </tr>
 
@@ -263,7 +293,7 @@ Version: EMBOSS:6.2.0
 <td>align</td>
 <td>Output alignment file name</td>
 <td>Alignment output file</td>
-<td><i>&lt;*&gt;</i>.needle</td>
+<td><i>&lt;*&gt;</i>.needleall</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -297,9 +327,25 @@ Version: EMBOSS:6.2.0
 <tr bgcolor="#FFFFCC">
 <td>-endextend</td>
 <td>float</td>
-<td>The end gap extension, penalty is added to the end gap penalty for each base or residue in the end gap. This is how long end gaps are penalized.</td>
+<td>The end gap extension, penalty is added to the end gap penalty for each base or residue in the end gap.</td>
 <td>Floating point number from 0.0 to 10.0</td>
 <td>0.5 for any sequence</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-minscore</td>
+<td>float</td>
+<td>Minimum alignment score to report an alignment.</td>
+<td>Floating point number from -10.0 to 100.0</td>
+<td>1.0 for any sequence</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-errorfile</td>
+<td>outfile</td>
+<td>Error file to be written to</td>
+<td>Output file</td>
+<td>needleall.error</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -319,14 +365,14 @@ Version: EMBOSS:6.2.0
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=5>"-asequence" associated sequence qualifiers
+<th align="left" colspan=5>"-asequence" associated seqset qualifiers
 </td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
 <td> -sbegin1<br>-sbegin_asequence</td>
 <td>integer</td>
-<td>Start of the sequence to be used</td>
+<td>Start of each sequence to be used</td>
 <td>Any integer value</td>
 <td>0</td>
 </tr>
@@ -334,7 +380,7 @@ Version: EMBOSS:6.2.0
 <tr bgcolor="#FFFFCC">
 <td> -send1<br>-send_asequence</td>
 <td>integer</td>
-<td>End of the sequence to be used</td>
+<td>End of each sequence to be used</td>
 <td>Any integer value</td>
 <td>0</td>
 </tr>
@@ -562,7 +608,7 @@ Version: EMBOSS:6.2.0
 <td>string</td>
 <td>Alignment format</td>
 <td>Any string</td>
-<td>srspair</td>
+<td>score</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -627,6 +673,19 @@ Version: EMBOSS:6.2.0
 <td>Show the full sequence in alignment</td>
 <td>Boolean value Yes/No</td>
 <td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-errorfile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -736,234 +795,184 @@ Version: EMBOSS:6.2.0
     Input file format
 </H2>
 
-<b>needle</b> reads any 2 sequence USAs of the same type (DNA or protein).
+<b>needleall</b> reads any 2 sequence USAs of the same type (DNA or protein).
 
 <p>
 
 
 <a name="input.1"></a>
 <h3>Input files for usage example </h3>
-
-'tsw:hba_human' is a sequence entry in the example protein database 'tsw'
-<p>
-<p><h3>Database entry: tsw:hba_human</h3>
+<p><h3>File: illumina_adapter_primer.fa</h3>
 <table width="90%"><tr><td bgcolor="#FFCCFF">
 <pre>
-ID   HBA_HUMAN               Reviewed;         142 AA.
-AC   P69905; P01922; Q1HDT5; Q3MIF5; Q53F97; Q96KF1; Q9NYR7; Q9UCM0;
-DT   21-JUL-1986, integrated into UniProtKB/Swiss-Prot.
-DT   23-JAN-2007, sequence version 2.
-DT   16-JUN-2009, entry version 73.
-DE   RecName: Full=Hemoglobin subunit alpha;
-DE   AltName: Full=Hemoglobin alpha chain;
-DE   AltName: Full=Alpha-globin;
-GN   Name=HBA1;
-GN   and
-GN   Name=HBA2;
-OS   Homo sapiens (Human).
-OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
-OC   Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
-OC   Catarrhini; Hominidae; Homo.
-OX   NCBI_TaxID=9606;
-RN   [1]
-RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA] (HBA1).
-RX   MEDLINE=81088339; PubMed=7448866; DOI=10.1016/0092-8674(80)90347-5;
-RA   Michelson A.M., Orkin S.H.;
-RT   "The 3' untranslated regions of the duplicated human alpha-globin
-RT   genes are unexpectedly divergent.";
-RL   Cell 22:371-377(1980).
-RN   [2]
-RP   NUCLEOTIDE SEQUENCE [MRNA] (HBA2).
-RX   MEDLINE=80137531; PubMed=6244294;
-RA   Wilson J.T., Wilson L.B., Reddy V.B., Cavallesco C., Ghosh P.K.,
-RA   Deriel J.K., Forget B.G., Weissman S.M.;
-RT   "Nucleotide sequence of the coding portion of human alpha globin
-RT   messenger RNA.";
-RL   J. Biol. Chem. 255:2807-2815(1980).
-RN   [3]
-RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA] (HBA2).
-RX   MEDLINE=81175088; PubMed=6452630; DOI=10.1073/pnas.77.12.7054;
-RA   Liebhaber S.A., Goossens M.J., Kan Y.W.;
-RT   "Cloning and complete nucleotide sequence of human 5'-alpha-globin
-RT   gene.";
-RL   Proc. Natl. Acad. Sci. U.S.A. 77:7054-7058(1980).
-RN   [4]
-RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA].
-RX   PubMed=6946451; DOI=10.1073/pnas.78.8.5041;
-RA   Orkin S.H., Goff S.C., Hechtman R.L.;
-RT   "Mutation in an intervening sequence splice junction in man.";
-RL   Proc. Natl. Acad. Sci. U.S.A. 78:5041-5045(1981).
-RN   [5]
-RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA], AND VARIANT LYS-32.
-RX   MEDLINE=21303311; PubMed=11410421;
-RA   Zhao Y., Xu X.;
-RT   "Alpha2(CD31 AGG--&gt;AAG, Arg--&gt;Lys) causing non-deletional alpha-
-RT   thalassemia in a Chinese family with HbH disease.";
+&gt;Illumina_Genomici_DNA_Adapters1_1
+GATCGGAAGAGCTCGTATGCCGTCTTCTGCTTG
+&gt;Illumina_Genomic_DNA_Adapters1_2
+ACACTCTTTCCCTACACGACGCTCTTCCGATCT
+&gt;Illumina_Genomic_DNA_PCR_Primers1_1
+AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT
+&gt;Illumina_Genomic_DNA_PCR_Primers1_2
+CAAGCAGAAGACGGCATACGAGCTCTTCCGATCT
+&gt;Illumina_Genomic_DNA_sequencing_primer
+ACACTCTTTCCCTACACGACGCTCTTCCGATCT
+&gt;Illumina_Paired_End_DNA_Adapters1_1
+GATCGGAAGAGCGGTTCAGCAGGAATGCCGAG
+&gt;Illumina_Paired_End_DNA_Adapters1_2
+ACACTCTTTCCCTACACGACGCTCTTCCGATCT
+&gt;Illumina_Paired_End_DNA_PCR_Primers1_1
+AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT
+&gt;Illumina_Paired_End_DNA_PCR_Primers1_2
+CAAGCAGAAGACGGCATACGAGATCGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT
+&gt;Illumina_Paired_End_DNA_sequencing_primer_1
+ACACTCTTTCCCTACACGACGCTCTTCCGATCT
+&gt;Illumina_Paired_End_DNA_sequencing_primer_2
+CGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT
+&gt;Illumina_DpnII_Gex_Adapters1_1
+GATCGTCGGACTGTAGAACTCTGAAC
+&gt;Illumina_DpnII_Gex_Adapters1_2
+ACAGGTTCAGAGTTCTACAGTCCGAC
+&gt;Illumina_DpnII_Gex_Adapters2_1
+CAAGCAGAAGACGGCATACGA
+&gt;Illumina_DpnII_Gex_Adapters2_2
+TCGTATGCCGTCTTCTGCTTG
+&gt;Illumina_DpnII_Gex_PCR_Primer_1
+CAAGCAGAAGACGGCATACGA
+&gt;Illumina_DpnII_Gex_PCR_Primer_2
+AATGATACGGCGACCACCGACAGGTTCAGAGTTCTACAGTCCGA
+&gt;Illumina_DpnII_Gex_sequencing_primer
+CGACAGGTTCAGAGTTCTACAGTCCGACGATC
+&gt;Illumina_NlaIII_Gex_Adapters1_1
+TCGGACTGTAGAACTCTGAAC
+&gt;Illumina_NlaIII_Gex_Adapters1_2
+ACAGGTTCAGAGTTCTACAGTCCGACATG
+&gt;Illumina_NlaIII_Gex_Adapters2_1
+CAAGCAGAAGACGGCATACGANN
+&gt;Illumina_NlaIII_Gex_Adapters2_2
+TCGTATGCCGTCTTCTGCTTG
+&gt;Illumina_NlaIII_Gex_PCR_Primer_1
+CAAGCAGAAGACGGCATACGA
+&gt;Illumina_NlaIII_Gex_PCR_Primer_2
+AATGATACGGCGACCACCGACAGGTTCAGAGTTCTACAGTCCGA
+&gt;Illumina_NlaIII_Gex_sequencing_primer
+CCGACAGGTTCAGAGTTCTACAGTCCGACATG
+&gt;Illumina_Small_RNA_RT_Primer
+CAAGCAGAAGACGGCATACGA
+&gt;Illumina_Small_RNA_5p_Adapter
+GTTCAGAGTTCTACAGTCCGACGATC
+&gt;Illumina_Small_RNA_3p_Adapter
+TCGTATGCCGTCTTCTGCTTGT
+&gt;Illumina_Small_RNA_PCR_Primer_1
+CAAGCAGAAGACGGCATACGA
+&gt;Illumina_Small_RNA_PCR_Primer_2
+AATGATACGGCGACCACCGACAGGTTCAGAGTTCTACAGTCCGA
+&gt;Illumina_Small_RNA_sequencing_primer
+CGACAGGTTCAGAGTTCTACAGTCCGACGATC
 
-
-<font color=red>  [Part of this file has been deleted for brevity]</font>
-
-FT                                /FTId=VAR_002841.
-FT   VARIANT     132    132       S -&gt; P (in Questembert; highly unstable;
-FT                                causes alpha-thalassemia).
-FT                                /FTId=VAR_002843.
-FT   VARIANT     134    134       S -&gt; R (in Val de Marne; O(2) affinity
-FT                                up).
-FT                                /FTId=VAR_002844.
-FT   VARIANT     136    136       V -&gt; E (in Pavie).
-FT                                /FTId=VAR_002845.
-FT   VARIANT     137    137       L -&gt; M (in Chicago).
-FT                                /FTId=VAR_002846.
-FT   VARIANT     137    137       L -&gt; P (in Bibba; unstable; causes alpha-
-FT                                thalassemia).
-FT                                /FTId=VAR_002847.
-FT   VARIANT     137    137       L -&gt; R (in Toyama).
-FT                                /FTId=VAR_035242.
-FT   VARIANT     139    139       S -&gt; P (in Attleboro; O(2) affinity up).
-FT                                /FTId=VAR_002848.
-FT   VARIANT     140    140       K -&gt; E (in Hanamaki; O(2) affinity up).
-FT                                /FTId=VAR_002849.
-FT   VARIANT     140    140       K -&gt; T (in Tokoname; O(2) affinity up).
-FT                                /FTId=VAR_002850.
-FT   VARIANT     141    141       Y -&gt; H (in Rouen/Ethiopia; O(2) affinity
-FT                                up).
-FT                                /FTId=VAR_002851.
-FT   VARIANT     142    142       R -&gt; C (in Nunobiki; O(2) affinity up).
-FT                                /FTId=VAR_002852.
-FT   VARIANT     142    142       R -&gt; H (in Suresnes; O(2) affinity up).
-FT                                /FTId=VAR_002854.
-FT   VARIANT     142    142       R -&gt; L (in Legnano; O(2) affinity up).
-FT                                /FTId=VAR_002853.
-FT   VARIANT     142    142       R -&gt; P (in Singapore).
-FT                                /FTId=VAR_002855.
-FT   CONFLICT     10     10       N -&gt; H (in Ref. 13; BAD97112).
-FT   HELIX         5     16
-FT   HELIX        17     21
-FT   HELIX        22     36
-FT   HELIX        38     43
-FT   HELIX        54     72
-FT   HELIX        74     76
-FT   HELIX        77     80
-FT   HELIX        82     90
-FT   HELIX        97    113
-FT   TURN        115    117
-FT   HELIX       120    137
-FT   TURN        138    140
-SQ   SEQUENCE   142 AA;  15258 MW;  15E13666573BBBAE CRC64;
-     MVLSPADKTN VKAAWGKVGA HAGEYGAEAL ERMFLSFPTT KTYFPHFDLS HGSAQVKGHG
-     KKVADALTNA VAHVDDMPNA LSALSDLHAH KLRVDPVNFK LLSHCLLVTL AAHLPAEFTP
-     AVHASLDKFL ASVSTVLTSK YR
-//
 </pre>
 </td></tr></table><p>
-<p><h3>Database entry: tsw:hbb_human</h3>
+<p><h3>File: test1_illumina.fastq</h3>
 <table width="90%"><tr><td bgcolor="#FFCCFF">
 <pre>
-ID   HBB_HUMAN               Reviewed;         147 AA.
-AC   P68871; A4GX73; B2ZUE0; P02023; Q13852; Q14481; Q14510; Q45KT0;
-AC   Q549N7; Q6FI08; Q6R7N2; Q8IZI1; Q9BX96; Q9UCD6; Q9UCP8; Q9UCP9;
-DT   21-JUL-1986, integrated into UniProtKB/Swiss-Prot.
-DT   23-JAN-2007, sequence version 2.
-DT   16-JUN-2009, entry version 76.
-DE   RecName: Full=Hemoglobin subunit beta;
-DE   AltName: Full=Hemoglobin beta chain;
-DE   AltName: Full=Beta-globin;
-DE   Contains:
-DE     RecName: Full=LVV-hemorphin-7;
-GN   Name=HBB;
-OS   Homo sapiens (Human).
-OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
-OC   Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
-OC   Catarrhini; Hominidae; Homo.
-OX   NCBI_TaxID=9606;
-RN   [1]
-RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA].
-RX   MEDLINE=77126403; PubMed=1019344;
-RA   Marotta C., Forget B., Cohen-Solal M., Weissman S.M.;
-RT   "Nucleotide sequence analysis of coding and noncoding regions of human
-RT   beta-globin mRNA.";
-RL   Prog. Nucleic Acid Res. Mol. Biol. 19:165-175(1976).
-RN   [2]
-RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA].
-RX   MEDLINE=81064667; PubMed=6254664; DOI=10.1016/0092-8674(80)90428-6;
-RA   Lawn R.M., Efstratiadis A., O'Connell C., Maniatis T.;
-RT   "The nucleotide sequence of the human beta-globin gene.";
-RL   Cell 21:647-651(1980).
-RN   [3]
-RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA], AND VARIANT LYS-7.
-RX   PubMed=16175509; DOI=10.1086/491748;
-RA   Wood E.T., Stover D.A., Slatkin M., Nachman M.W., Hammer M.F.;
-RT   "The beta-globin recombinational hotspot reduces the effects of strong
-RT   selection around HbC, a recently arisen mutation providing resistance
-RT   to malaria.";
-RL   Am. J. Hum. Genet. 77:637-642(2005).
-RN   [4]
-RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA].
-RA   Lu L., Hu Z.H., Du C.S., Fu Y.S.;
-RT   "DNA sequence of the human beta-globin gene isolated from a healthy
-RT   Chinese.";
-RL   Submitted (JUN-1997) to the EMBL/GenBank/DDBJ databases.
-RN   [5]
-RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA], AND VARIANT ARG-113.
-RA   Cabeda J.M., Correia C., Estevinho A., Cardoso C., Amorim M.L.,
-RA   Cleto E., Vale L., Coimbra E., Pinho L., Justica B.;
-RT   "Unexpected patterns of globin mutations in thalassemia patients from
-RT   north of Portugal.";
-
-
-<font color=red>  [Part of this file has been deleted for brevity]</font>
-
-FT   VARIANT     141    141       A -&gt; V (in Puttelange; polycythemia; O(2)
-FT                                affinity up).
-FT                                /FTId=VAR_003082.
-FT   VARIANT     142    142       L -&gt; R (in Olmsted; unstable).
-FT                                /FTId=VAR_003083.
-FT   VARIANT     143    143       A -&gt; D (in Ohio; O(2) affinity up).
-FT                                /FTId=VAR_003084.
-FT   VARIANT     144    144       H -&gt; D (in Rancho Mirage).
-FT                                /FTId=VAR_003085.
-FT   VARIANT     144    144       H -&gt; P (in Syracuse; O(2) affinity up).
-FT                                /FTId=VAR_003087.
-FT   VARIANT     144    144       H -&gt; Q (in Little Rock; O(2) affinity
-FT                                up).
-FT                                /FTId=VAR_003086.
-FT   VARIANT     144    144       H -&gt; R (in Abruzzo; O(2) affinity up).
-FT                                /FTId=VAR_003088.
-FT   VARIANT     145    145       K -&gt; E (in Mito; O(2) affinity up).
-FT                                /FTId=VAR_003089.
-FT   VARIANT     146    146       Y -&gt; C (in Rainier; O(2) affinity up).
-FT                                /FTId=VAR_003090.
-FT   VARIANT     146    146       Y -&gt; H (in Bethesda; O(2) affinity up).
-FT                                /FTId=VAR_003091.
-FT   VARIANT     147    147       H -&gt; D (in Hiroshima; O(2) affinity up).
-FT                                /FTId=VAR_003092.
-FT   VARIANT     147    147       H -&gt; L (in Cowtown; O(2) affinity up).
-FT                                /FTId=VAR_003093.
-FT   VARIANT     147    147       H -&gt; P (in York; O(2) affinity up).
-FT                                /FTId=VAR_003094.
-FT   VARIANT     147    147       H -&gt; Q (in Kodaira; O(2) affinity up).
-FT                                /FTId=VAR_003095.
-FT   CONFLICT     26     26       Missing (in Ref. 15; ACD39349).
-FT   CONFLICT     42     42       F -&gt; L (in Ref. 13; AAR96398).
-FT   HELIX         6     16
-FT   TURN         21     23
-FT   HELIX        24     35
-FT   HELIX        37     42
-FT   HELIX        44     46
-FT   HELIX        52     57
-FT   HELIX        59     77
-FT   TURN         78     80
-FT   HELIX        82     94
-FT   TURN         95     97
-FT   HELIX       102    119
-FT   HELIX       120    122
-FT   HELIX       125    142
-FT   HELIX       144    146
-SQ   SEQUENCE   147 AA;  15998 MW;  A31F6D621C6556A1 CRC64;
-     MVHLTPEEKS AVTALWGKVN VDEVGGEALG RLLVVYPWTQ RFFESFGDLS TPDAVMGNPK
-     VKAHGKKVLG AFSDGLAHLD NLKGTFATLS ELHCDKLHVD PENFRLLGNV LVCVLAHHFG
-     KEFTPPVQAA YQKVVAGVAN ALAHKYH
-//
+@FC12044_91407_8_200_406_24
+GTTAGCTCCCACCTTAAGATGTTTA
++FC12044_91407_8_200_406_24
+SXXTXXXXXXXXXTTSUXSSXKTMQ
+@FC12044_91407_8_200_720_610
+CTCTGTGGCACCCCATCCCTCACTT
++FC12044_91407_8_200_720_610
+OXXXXXXXXXXXXXXXXXTSXQTXU
+@FC12044_91407_8_200_345_133
+GATTTTTTAACAATAAACGTACATA
++FC12044_91407_8_200_345_133
+OQTOOSFORTFFFIIOFFFFFFFFF
+@FC12044_91407_8_200_106_131
+GTTGCCCAGGCTCGTCTTGAACTCC
++FC12044_91407_8_200_106_131
+XXXXXXXXXXXXXXSXXXXISTXQS
+@FC12044_91407_8_200_916_471
+TGATTGAAGGTAGGGTAGCATACTG
++FC12044_91407_8_200_916_471
+XXXXXXXXXXXXXXXUXXUSXXTXW
+@FC12044_91407_8_200_57_85
+GCTCCAATAGCGCAGAGGAAACCTG
++FC12044_91407_8_200_57_85
+XFXMXSXXSXXXOSQROOSROFQIQ
+@FC12044_91407_8_200_10_437
+GCTGCTTGGGAGGCTGAGGCAGGAG
++FC12044_91407_8_200_10_437
+USXSXXXXXXUXXXSXQXXUQXXKS
+@FC12044_91407_8_200_154_436
+AGACCTTTGGATACAATGAACGACT
++FC12044_91407_8_200_154_436
+MKKMQTSRXMSQTOMRFOOIFFFFF
+@FC12044_91407_8_200_336_64
+AGGGAATTTTAGAGGAGGGCTGCCG
++FC12044_91407_8_200_336_64
+STQMOSXSXSQXQXXKXXXKFXFFK
+@FC12044_91407_8_200_620_233
+TCTCCATGTTGGTCAGGCTGGTCTC
++FC12044_91407_8_200_620_233
+XXXXXXXXXXXXXXXXXXXXXSXSW
+@FC12044_91407_8_200_902_349
+TGAACGTCGAGACGCAAGGCCCGCC
++FC12044_91407_8_200_902_349
+XMXSSXMXXSXQSXTSQXFKSKTOF
+@FC12044_91407_8_200_40_618
+CTGTCCCCACGGCGGGGGGGCCTGG
++FC12044_91407_8_200_40_618
+TXXXXSXXXXXXXXXXXXXRKFOXS
+@FC12044_91407_8_200_83_511
+GATGTACTCTTACACCCAGACTTTG
++FC12044_91407_8_200_83_511
+SOXXXXXUXXXXXXQKQKKROOQSU
+@FC12044_91407_8_200_76_246
+TCAAGGGTGGATCTTGGCTCCCAGT
++FC12044_91407_8_200_76_246
+XTXTUXXXXXRXXXTXXSUXSRFXQ
+@FC12044_91407_8_200_303_427
+TTGCGACAGAGTTTTGCTCTTGTCC
++FC12044_91407_8_200_303_427
+XXQROXXXXIXFQXXXOIQSSXUFF
+@FC12044_91407_8_200_31_299
+TCTGCTCCAGCTCCAAGACGCCGCC
++FC12044_91407_8_200_31_299
+XRXTSXXXRXXSXQQOXQTSQSXKQ
+@FC12044_91407_8_200_553_135
+TACGGAGCCGCGGGCGGGAAAGGCG
++FC12044_91407_8_200_553_135
+XSQQXXXXXXXXXXSXXMFFQXTKU
+@FC12044_91407_8_200_139_74
+CCTCCCAGGTTCAAGCGATTATCCT
++FC12044_91407_8_200_139_74
+RMXUSXTXXQXXQUXXXSQISISSO
+@FC12044_91407_8_200_108_33
+GTCATGGCGGCCCGCGCGGGGAGCG
++FC12044_91407_8_200_108_33
+OOOSSXXSXXOMKMOFMKFOKFFFF
+@FC12044_91407_8_200_980_965
+ACAGTGGGTTCTTAAAGAAGAGTCG
++FC12044_91407_8_200_980_965
+TOSSRXXXSSMSXMOMXIRXOXFFS
+@FC12044_91407_8_200_981_857
+AACGAGGGGCGCGACTTGACCTTGG
++FC12044_91407_8_200_981_857
+RXMSSXXXXSXQXQXFSXQFQKMXS
+@FC12044_91407_8_200_8_865
+TTTCCCACCCCAGGAAGCCTTGGAC
++FC12044_91407_8_200_8_865
+XXXFKOROMKOORMIMRIIKKORFF
+@FC12044_91407_8_200_292_484
+TCAGCCTCCGTGCCCAGCCCACTCC
++FC12044_91407_8_200_292_484
+XQXOSXXXXXUXXXXIXXXXQTOXF
+@FC12044_91407_8_200_675_16
+CTCGGGAGGCTGAGGCAGGGGGGTT
++FC12044_91407_8_200_675_16
+OXTXXXSXXQXXOXXKMXXMXOKQF
+@FC12044_91407_8_200_285_136
+CCAAATCTTGAATTGTAGCTCCCCT
++FC12044_91407_8_200_285_136
+OSXOQXXXXXSXXUXXTXXXXTRMS
 </pre>
 </td></tr></table><p>
 
@@ -1008,52 +1017,114 @@ for further information on alignment formats.
 
 <a name="output.1"></a>
 <h3>Output files for usage example </h3>
-<p><h3>File: hba_human.needle </h3>
+<p><h3>File: needleall.error</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-########################################
-# Program: needle
-# Rundate: Fri 15 Jan 2010 12:00:00
-# Commandline: needle
-#    [-asequence] tsw:hba_human
-#    [-bsequence] tsw:hbb_human
-# Align_format: srspair
-# Report_file: hba_human.needle
-########################################
+Alignment score (21.5) is less than minimum score(40.0) for sequences Illumina_Genomici_DNA_Adapters1_1 vs FC12044_91407_8_200_406_24
+Alignment score (24.5) is less than minimum score(40.0) for sequences Illumina_Genomic_DNA_Adapters1_2 vs FC12044_91407_8_200_406_24
+Alignment score (31.0) is less than minimum score(40.0) for sequences Illumina_Genomic_DNA_PCR_Primers1_1 vs FC12044_91407_8_200_406_24
+Alignment score (25.5) is less than minimum score(40.0) for sequences Illumina_Genomic_DNA_PCR_Primers1_2 vs FC12044_91407_8_200_406_24
+Alignment score (24.5) is less than minimum score(40.0) for sequences Illumina_Genomic_DNA_sequencing_primer vs FC12044_91407_8_200_406_24
+Alignment score (16.5) is less than minimum score(40.0) for sequences Illumina_Paired_End_DNA_Adapters1_1 vs FC12044_91407_8_200_406_24
+Alignment score (24.5) is less than minimum score(40.0) for sequences Illumina_Paired_End_DNA_Adapters1_2 vs FC12044_91407_8_200_406_24
+Alignment score (31.0) is less than minimum score(40.0) for sequences Illumina_Paired_End_DNA_PCR_Primers1_1 vs FC12044_91407_8_200_406_24
+Alignment score (21.0) is less than minimum score(40.0) for sequences Illumina_Paired_End_DNA_PCR_Primers1_2 vs FC12044_91407_8_200_406_24
+Alignment score (24.5) is less than minimum score(40.0) for sequences Illumina_Paired_End_DNA_sequencing_primer_1 vs FC12044_91407_8_200_406_24
+Alignment score (21.0) is less than minimum score(40.0) for sequences Illumina_Paired_End_DNA_sequencing_primer_2 vs FC12044_91407_8_200_406_24
+Alignment score (14.5) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_Adapters1_1 vs FC12044_91407_8_200_406_24
+Alignment score (24.5) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_Adapters1_2 vs FC12044_91407_8_200_406_24
+Alignment score (12.0) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_Adapters2_1 vs FC12044_91407_8_200_406_24
+Alignment score (12.0) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_Adapters2_2 vs FC12044_91407_8_200_406_24
+Alignment score (12.0) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_PCR_Primer_1 vs FC12044_91407_8_200_406_24
+Alignment score (23.5) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_sequencing_primer vs FC12044_91407_8_200_406_24
+Alignment score (12.5) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_Adapters1_1 vs FC12044_91407_8_200_406_24
+Alignment score (27.0) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_Adapters1_2 vs FC12044_91407_8_200_406_24
+Alignment score (12.0) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_Adapters2_1 vs FC12044_91407_8_200_406_24
+Alignment score (12.0) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_Adapters2_2 vs FC12044_91407_8_200_406_24
+Alignment score (12.0) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_PCR_Primer_1 vs FC12044_91407_8_200_406_24
+Alignment score (27.5) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_sequencing_primer vs FC12044_91407_8_200_406_24
+Alignment score (12.0) is less than minimum score(40.0) for sequences Illumina_Small_RNA_RT_Primer vs FC12044_91407_8_200_406_24
+Alignment score (23.5) is less than minimum score(40.0) for sequences Illumina_Small_RNA_5p_Adapter vs FC12044_91407_8_200_406_24
+Alignment score (13.0) is less than minimum score(40.0) for sequences Illumina_Small_RNA_3p_Adapter vs FC12044_91407_8_200_406_24
+Alignment score (12.0) is less than minimum score(40.0) for sequences Illumina_Small_RNA_PCR_Primer_1 vs FC12044_91407_8_200_406_24
+Alignment score (23.5) is less than minimum score(40.0) for sequences Illumina_Small_RNA_sequencing_primer vs FC12044_91407_8_200_406_24
+Alignment score (17.5) is less than minimum score(40.0) for sequences Illumina_Genomici_DNA_Adapters1_1 vs FC12044_91407_8_200_720_610
+Alignment score (31.5) is less than minimum score(40.0) for sequences Illumina_Genomic_DNA_Adapters1_2 vs FC12044_91407_8_200_720_610
+Alignment score (31.5) is less than minimum score(40.0) for sequences Illumina_Genomic_DNA_PCR_Primers1_1 vs FC12044_91407_8_200_720_610
+Alignment score (20.5) is less than minimum score(40.0) for sequences Illumina_Genomic_DNA_PCR_Primers1_2 vs FC12044_91407_8_200_720_610
+Alignment score (31.5) is less than minimum score(40.0) for sequences Illumina_Genomic_DNA_sequencing_primer vs FC12044_91407_8_200_720_610
+Alignment score (0.0) is less than minimum score(40.0) for sequences Illumina_Paired_End_DNA_Adapters1_1 vs FC12044_91407_8_200_720_610
+Alignment score (31.5) is less than minimum score(40.0) for sequences Illumina_Paired_End_DNA_Adapters1_2 vs FC12044_91407_8_200_720_610
+Alignment score (31.5) is less than minimum score(40.0) for sequences Illumina_Paired_End_DNA_PCR_Primers1_1 vs FC12044_91407_8_200_720_610
+Alignment score (33.5) is less than minimum score(40.0) for sequences Illumina_Paired_End_DNA_PCR_Primers1_2 vs FC12044_91407_8_200_720_610
+Alignment score (31.5) is less than minimum score(40.0) for sequences Illumina_Paired_End_DNA_sequencing_primer_1 vs FC12044_91407_8_200_720_610
+Alignment score (33.5) is less than minimum score(40.0) for sequences Illumina_Paired_End_DNA_sequencing_primer_2 vs FC12044_91407_8_200_720_610
+Alignment score (20.0) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_Adapters1_1 vs FC12044_91407_8_200_720_610
+Alignment score (9.0) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_Adapters1_2 vs FC12044_91407_8_200_720_610
+Alignment score (11.0) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_Adapters2_1 vs FC12044_91407_8_200_720_610
+Alignment score (15.5) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_Adapters2_2 vs FC12044_91407_8_200_720_610
+Alignment score (11.0) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_PCR_Primer_1 vs FC12044_91407_8_200_720_610
+Alignment score (10.0) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_PCR_Primer_2 vs FC12044_91407_8_200_720_610
+Alignment score (15.0) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_sequencing_primer vs FC12044_91407_8_200_720_610
+Alignment score (20.0) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_Adapters1_1 vs FC12044_91407_8_200_720_610
+Alignment score (9.5) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_Adapters1_2 vs FC12044_91407_8_200_720_610
+Alignment score (7.0) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_Adapters2_1 vs FC12044_91407_8_200_720_610
+Alignment score (15.5) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_Adapters2_2 vs FC12044_91407_8_200_720_610
 
-#=======================================
-#
-# Aligned_sequences: 2
-# 1: HBA_HUMAN
-# 2: HBB_HUMAN
-# Matrix: EBLOSUM62
-# Gap_penalty: 10.0
-# Extend_penalty: 0.5
-#
-# Length: 149
-# Identity:      65/149 (43.6%)
-# Similarity:    90/149 (60.4%)
-# Gaps:           9/149 ( 6.0%)
-# Score: 292.5
-# 
-#
-#=======================================
 
-HBA_HUMAN          1 MV-LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-D     48
-                     || |:|.:|:.|.|.||||  :..|.|.|||.|:.:.:|.|:.:|..| |
-HBB_HUMAN          1 MVHLTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGD     48
+<font color=red>  [Part of this file has been deleted for brevity]</font>
 
-HBA_HUMAN         49 LS-----HGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLR     93
-                     ||     .|:.:||.|||||..|.::.:||:|::....:.||:||..||.
-HBB_HUMAN         49 LSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLH     98
-
-HBA_HUMAN         94 VDPVNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKYR    142
-                     |||.||:||.:.|:..||.|...||||.|.|:..|.:|.|:..|..||.
-HBB_HUMAN         99 VDPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH    147
-
-
-#---------------------------------------
-#---------------------------------------
+Alignment score (13.0) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_Adapters1_1 vs FC12044_91407_8_200_675_16
+Alignment score (17.0) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_Adapters1_2 vs FC12044_91407_8_200_675_16
+Alignment score (13.5) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_Adapters2_1 vs FC12044_91407_8_200_675_16
+Alignment score (11.0) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_Adapters2_2 vs FC12044_91407_8_200_675_16
+Alignment score (13.5) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_PCR_Primer_1 vs FC12044_91407_8_200_675_16
+Alignment score (17.5) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_PCR_Primer_2 vs FC12044_91407_8_200_675_16
+Alignment score (22.0) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_sequencing_primer vs FC12044_91407_8_200_675_16
+Alignment score (13.0) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_Adapters1_1 vs FC12044_91407_8_200_675_16
+Alignment score (17.0) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_Adapters1_2 vs FC12044_91407_8_200_675_16
+Alignment score (13.5) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_Adapters2_1 vs FC12044_91407_8_200_675_16
+Alignment score (11.0) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_Adapters2_2 vs FC12044_91407_8_200_675_16
+Alignment score (13.5) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_PCR_Primer_1 vs FC12044_91407_8_200_675_16
+Alignment score (17.5) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_PCR_Primer_2 vs FC12044_91407_8_200_675_16
+Alignment score (21.5) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_sequencing_primer vs FC12044_91407_8_200_675_16
+Alignment score (13.5) is less than minimum score(40.0) for sequences Illumina_Small_RNA_RT_Primer vs FC12044_91407_8_200_675_16
+Alignment score (15.0) is less than minimum score(40.0) for sequences Illumina_Small_RNA_5p_Adapter vs FC12044_91407_8_200_675_16
+Alignment score (7.0) is less than minimum score(40.0) for sequences Illumina_Small_RNA_3p_Adapter vs FC12044_91407_8_200_675_16
+Alignment score (13.5) is less than minimum score(40.0) for sequences Illumina_Small_RNA_PCR_Primer_1 vs FC12044_91407_8_200_675_16
+Alignment score (17.5) is less than minimum score(40.0) for sequences Illumina_Small_RNA_PCR_Primer_2 vs FC12044_91407_8_200_675_16
+Alignment score (22.0) is less than minimum score(40.0) for sequences Illumina_Small_RNA_sequencing_primer vs FC12044_91407_8_200_675_16
+Alignment score (21.0) is less than minimum score(40.0) for sequences Illumina_Genomici_DNA_Adapters1_1 vs FC12044_91407_8_200_285_136
+Alignment score (17.5) is less than minimum score(40.0) for sequences Illumina_Genomic_DNA_Adapters1_2 vs FC12044_91407_8_200_285_136
+Alignment score (30.0) is less than minimum score(40.0) for sequences Illumina_Genomic_DNA_PCR_Primers1_1 vs FC12044_91407_8_200_285_136
+Alignment score (16.5) is less than minimum score(40.0) for sequences Illumina_Genomic_DNA_PCR_Primers1_2 vs FC12044_91407_8_200_285_136
+Alignment score (17.5) is less than minimum score(40.0) for sequences Illumina_Genomic_DNA_sequencing_primer vs FC12044_91407_8_200_285_136
+Alignment score (7.0) is less than minimum score(40.0) for sequences Illumina_Paired_End_DNA_Adapters1_1 vs FC12044_91407_8_200_285_136
+Alignment score (17.5) is less than minimum score(40.0) for sequences Illumina_Paired_End_DNA_Adapters1_2 vs FC12044_91407_8_200_285_136
+Alignment score (30.0) is less than minimum score(40.0) for sequences Illumina_Paired_End_DNA_PCR_Primers1_1 vs FC12044_91407_8_200_285_136
+Alignment score (21.0) is less than minimum score(40.0) for sequences Illumina_Paired_End_DNA_PCR_Primers1_2 vs FC12044_91407_8_200_285_136
+Alignment score (17.5) is less than minimum score(40.0) for sequences Illumina_Paired_End_DNA_sequencing_primer_1 vs FC12044_91407_8_200_285_136
+Alignment score (18.5) is less than minimum score(40.0) for sequences Illumina_Paired_End_DNA_sequencing_primer_2 vs FC12044_91407_8_200_285_136
+Alignment score (27.5) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_Adapters1_1 vs FC12044_91407_8_200_285_136
+Alignment score (13.5) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_Adapters1_2 vs FC12044_91407_8_200_285_136
+Alignment score (6.0) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_Adapters2_1 vs FC12044_91407_8_200_285_136
+Alignment score (17.5) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_Adapters2_2 vs FC12044_91407_8_200_285_136
+Alignment score (6.0) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_PCR_Primer_1 vs FC12044_91407_8_200_285_136
+Alignment score (12.0) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_PCR_Primer_2 vs FC12044_91407_8_200_285_136
+Alignment score (17.5) is less than minimum score(40.0) for sequences Illumina_DpnII_Gex_sequencing_primer vs FC12044_91407_8_200_285_136
+Alignment score (26.5) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_Adapters1_1 vs FC12044_91407_8_200_285_136
+Alignment score (14.5) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_Adapters1_2 vs FC12044_91407_8_200_285_136
+Alignment score (2.0) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_Adapters2_1 vs FC12044_91407_8_200_285_136
+Alignment score (17.5) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_Adapters2_2 vs FC12044_91407_8_200_285_136
+Alignment score (6.0) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_PCR_Primer_1 vs FC12044_91407_8_200_285_136
+Alignment score (12.0) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_PCR_Primer_2 vs FC12044_91407_8_200_285_136
+Alignment score (15.5) is less than minimum score(40.0) for sequences Illumina_NlaIII_Gex_sequencing_primer vs FC12044_91407_8_200_285_136
+Alignment score (6.0) is less than minimum score(40.0) for sequences Illumina_Small_RNA_RT_Primer vs FC12044_91407_8_200_285_136
+Alignment score (15.5) is less than minimum score(40.0) for sequences Illumina_Small_RNA_5p_Adapter vs FC12044_91407_8_200_285_136
+Alignment score (17.5) is less than minimum score(40.0) for sequences Illumina_Small_RNA_3p_Adapter vs FC12044_91407_8_200_285_136
+Alignment score (6.0) is less than minimum score(40.0) for sequences Illumina_Small_RNA_PCR_Primer_1 vs FC12044_91407_8_200_285_136
+Alignment score (12.0) is less than minimum score(40.0) for sequences Illumina_Small_RNA_PCR_Primer_2 vs FC12044_91407_8_200_285_136
+Alignment score (17.5) is less than minimum score(40.0) for sequences Illumina_Small_RNA_sequencing_primer vs FC12044_91407_8_200_285_136
 </pre>
 </td></tr></table><p>
 
@@ -1123,7 +1194,7 @@ The directories are searched in the following order:
     Notes
 </H2>
 
-<b>needle</b> is a true implementation of the Needleman-Wunsch
+<b>needleall</b> is a true implementation of the Needleman-Wunsch
 algorithm and so produces a full path matrix. It therefore cannot be
 used with genome sized sequences unless you've a lot of memory and a
 lot of time.
@@ -1151,14 +1222,14 @@ Wesley.
 </H2>
 
 
-<b>needle</b> is for aligning two sequences over their entire length.  This
-works best with closely related sequences.  If you use needle to align
+<b>needleall</b> is for aligning pairs of sequences over their entire length.  This
+works best with closely related sequences.  If you use needleall to align
 very distantly-related sequences, it will produce a result but much of
 the alignment may have little or no biological significance. 
 
 <p>
 
-A true Needleman Wunsch implementation like <b>needle</b> needs memory
+A true Needleman Wunsch implementation like <b>needleall</b> needs memory
 proportional to the product of the sequence lengths.  For two sequences
 of length 10,000,000 and 1,000 it therefore needs memory proportional to
 10,000,000,000 characters.  Two arrays of this size are produced, one of
@@ -1167,6 +1238,10 @@ usage in bytes.  That doesn't include other overheads.  Therefore only
 use water and needle for accurate alignment of reasonably short
 sequences.
 
+<p>
+The first input sequence USA is loaded completely into memory. When
+comparing large numbers (or lengths) of sequences, the smallest set
+should be the first input to make the most efficient use of memory.
 <p>
 
 If you run out of memory, try using 
@@ -1209,8 +1284,8 @@ None.
 </tr>
 
 <tr>
-<td><a href="needleall.html">needleall</a></td>
-<td>Many-to-many pairwise alignments of two sequence sets</td>
+<td><a href="needle.html">needle</a></td>
+<td>Needleman-Wunsch global alignment of two sequences</td>
 </tr>
 
 <tr>
@@ -1221,7 +1296,7 @@ None.
 </table>
 
 <P>
-When you want an alignment that covers the whole length of both
+When you want an alignment that covers the whole length of two
 sequences, use <a href="needle.html">needle. </A> 
 
 <p>
@@ -1236,7 +1311,7 @@ find global alignments of very long sequences.
 <H2>
     Author(s)
 </H2>
-Alan Bleasby (ajb&nbsp;&copy;&nbsp;ebi.ac.uk)
+Mahmut Uludag (uludag&nbsp;&copy;&nbsp;ebi.ac.uk)
 <br>
 European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
 
@@ -1246,11 +1321,6 @@ European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambri
     History
 </H2>
 
-Completed 8th July 1999.
-<p>
-Modified 26th July 1999 - scoring tweaked.
-<p>
-Modified 22 Oct 2000 - %ID and %Similarity scores added.
 
 <H2>
     Target users
