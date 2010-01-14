@@ -1071,11 +1071,11 @@ public class BuildJembossForm implements ActionListener
           }
           optionsA.add("-" + val);
           optionsA.add(fn);
-          fn = addQuote(fn);
           
           if(withSoap)
             options = filesForSoap(fn,options,val,filesToMove);
           else {
+            fn = addQuote(fn);
             options = options.concat(" -" + val + " " +  fn);
           }
 
