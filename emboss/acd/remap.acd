@@ -143,7 +143,7 @@ section: additional [
     default: "N"
     information: "Allow circular DNA"
     help: "If this is set then this allows searches for restriction
-           enzyme recognition site and cut postions that span the end of the
+           enzyme recognition site and cut positions that span the end of the
            sequence to be considered."
     relations: "EDAM: Generic boolean"                                     
   ]

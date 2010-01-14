@@ -31,7 +31,7 @@ section: required [
     help: "The percentage CG content and the Observed frequency of CG
            is calculated within a window whose size is set by this parameter.
            The window is moved down the sequence and these statistics are
-           calculated at each postition that the window is moved to."
+           calculated at each position that the window is moved to."
     relations: "EDAM: Generic integer"                                     
   ]
 

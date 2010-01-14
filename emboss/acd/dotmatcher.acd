@@ -41,7 +41,7 @@ section: additional [
 
   integer: windowsize [
     additional: "Y"
-    information: "Window size over which to test threshhold"
+    information: "Window size over which to test threshold"
     default: "10"
     minimum: "3"
     relations: "EDAM: Generic integer"                                     

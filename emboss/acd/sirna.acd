@@ -87,7 +87,7 @@ section: output [
            complete 23 base sequence, then either look at the sequence in the
            other output file, or use the qualifier '-context' which will
            display the 23 bases of the forward sequence in this report
-           withthe first two bases in brackets. These first two bases do not
+           with the first two bases in brackets. These first two bases do not
            form part of the siRNA probe to be ordered."
     rformat: "table"
     taglist: "float:gc=GC% string:forward=Sense_siRNA
