@@ -66,4 +66,9 @@
 #define zError ezError
 #define _tr_init _etr_init
 #define _tr_flush_block _etr_flush_block
+#define inflate_fast einflate_fast
+#define inflate_table einflate_table
+#define z_error ez_error
+#define zcalloc ezcalloc
+#define zcfree ezcfree
 #endif
