@@ -121,7 +121,12 @@ int main(int argc, char **argv)
         imrna = 0;
         itran = 0;
         irest = 0;
+
         feat = ajSeqGetFeat(seq);
+
+        if(!feat)
+            continue;
+
         if(seqoutrest)
         {
             copyseq = ajSeqGetSeqCopyS(seq);
