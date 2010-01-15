@@ -107,8 +107,6 @@ int main(int argc, char **argv)
     AjBool iscoil;
     AjPFloat2d rdat = NULL;
     AjPList framelist = NULL;
-    AjIList iter = NULL;
-
 
     embInit("pepcoil", argc, argv);
 
@@ -341,13 +339,10 @@ int main(int argc, char **argv)
 			ajFmtPrintS(&tmpstr, "*pos %d",
 				    coilpos);
 			ajFeatTagAdd(gf,  NULL, tmpstr);
-                        iter = ajListIterNew(framelist);
-                        while(!ajListIterDone(iter))
+                        while(ajListstrPop(framelist, &tmpframe))
                         {
-                            tmpframe = ajListstrIterGet(iter);
 			    ajFeatTagAdd(gf,  NULL, tmpframe);
                         }
-                        ajListIterDel(&iter);
 			/*
 			ajFmtPrintF(outf,
 			  "probable coiled-coil from %d to %d (%d residues)\n",
@@ -395,13 +390,10 @@ int main(int argc, char **argv)
 		ajFmtPrintS(&tmpstr, "*pos %d",
 			    coilpos);
 		ajFeatTagAdd(gf,  NULL, tmpstr);
-                iter = ajListIterNew(framelist);
-                while(!ajListIterDone(iter))
+                while(ajListstrPop(framelist, &tmpframe))
                 {
-                    tmpframe = ajListstrIterGet(iter);
                     ajFeatTagAdd(gf,  NULL, tmpframe);
                 }
-                ajListIterDel(&iter);
 	    /*
 		ajFmtPrintF(outf,
 			 "Probable coiled-coil from %d to %d (%d residues)\n",
