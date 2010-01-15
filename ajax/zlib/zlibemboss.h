@@ -64,4 +64,6 @@
 #define inflateSyncPoint einflateSyncPoint
 #define get_crc_table eget_crc_table
 #define zError ezError
+#define _tr_init _etr_init
+#define _tr_flush_block _etr_flush_block
 #endif
