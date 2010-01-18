@@ -777,8 +777,11 @@ static void remap_NoCutList(AjPFile outfile, const AjPTable hittable,
     /* push all enzyme names without the required criteria onto nocutlist */
 
     enz = embPatRestrictNew();
-    while(embPatRestrictReadEntry(enz, enzfile))
+    while(!ajFileIsEof(enzfile))
     {
+        if(!embPatRestrictReadEntry(enz, enzfile))
+	    continue;
+
          /* 
 	 ** If user entered explicit enzyme list, then check to see if
 	 ** this is one of that explicit list 
