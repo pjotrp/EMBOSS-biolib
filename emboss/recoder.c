@@ -445,8 +445,11 @@ static ajint recoder_readRE(AjPList *relist, const AjPStr enzymes)
 
     /* read RE data into AjPRestrict obj */
 
-    while(embPatRestrictReadEntry(rptr,fin))
+    while(!ajFileIsEof(fin))
     {
+        if(!embPatRestrictReadEntry(rptr,fin))
+	    continue;
+
      	if(!isall)           /* only select enzymes on command line */
 	{
 	     for(i=0;i<ne;++i)

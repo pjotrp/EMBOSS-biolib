@@ -800,8 +800,8 @@ void embPatRestrictDel(EmbPPatRestrict *thys)
 
 AjBool embPatRestrictReadEntry(EmbPPatRestrict re, AjPFile inf)
 {
-    AjPStr line;
-    AjBool ret;
+    AjPStr line = NULL;
+    AjBool ret = AJFALSE;
     const char *p = NULL;
     char *q = NULL;
     ajuint i;
@@ -825,25 +825,58 @@ AjBool embPatRestrictReadEntry(EmbPPatRestrict re, AjPFile inf)
 
 
     p = ajSysFuncStrtok(p,"\t \n");
+    if(!p)
+      return ajFalse;
     ajStrAssignC(&re->cod,p);
+
     p = ajSysFuncStrtok(NULL,"\t \n");
+    if(!p)
+      return ajFalse;
     ajStrAssignC(&re->pat,p);
     ajStrAssignC(&re->bin,p);
 
     p = ajSysFuncStrtok(NULL,"\t \n");
-    sscanf(p,"%d",&re->len);
+    if(!p)
+      return ajFalse;
+    if(!sscanf(p,"%d",&re->len))
+      return ajFalse;
+
     p = ajSysFuncStrtok(NULL,"\t \n");
-    sscanf(p,"%d",&re->ncuts);
+    if(!p)
+      return ajFalse;
+    if(!sscanf(p,"%d",&re->ncuts))
+      return ajFalse;
+
     p = ajSysFuncStrtok(NULL,"\t \n");
-    sscanf(p,"%d",&re->blunt);
+    if(!p)
+      return ajFalse;
+    if(!sscanf(p,"%d",&re->blunt))
+      return ajFalse;
+
     p = ajSysFuncStrtok(NULL,"\t \n");
-    sscanf(p,"%d",&re->cut1);
+    if(!p)
+      return ajFalse;
+    if(!sscanf(p,"%d",&re->cut1))
+      return ajFalse;
+
     p = ajSysFuncStrtok(NULL,"\t \n");
-    sscanf(p,"%d",&re->cut2);
+    if(!p)
+      return ajFalse;
+    if(!sscanf(p,"%d",&re->cut2))
+      return ajFalse;
+
     p = ajSysFuncStrtok(NULL,"\t \n");
-    sscanf(p,"%d",&re->cut3);
+    if(!p)
+      return ajFalse;
+    if(!sscanf(p,"%d",&re->cut3))
+      return ajFalse;
+
     p = ajSysFuncStrtok(NULL,"\t \n");
-    sscanf(p,"%d",&re->cut4);
+    if(!p)
+      return ajFalse;
+    if(!sscanf(p,"%d",&re->cut4))
+      return ajFalse;
+
 
     for(i=0,q=ajStrGetuniquePtr(&re->bin);i<re->len;++i)
 	*(q+i)=(char)ajBaseAlphaToBin((int)*(q+i));
@@ -4272,8 +4305,11 @@ ajuint embPatRestrictMatch(const AjPSeq seq, ajuint begin, ajuint end,
 
     hits = 0;
 
-    while(embPatRestrictReadEntry(enz,enzfile))
+    while(!ajFileIsEof(enzfile))
     {
+        if(!embPatRestrictReadEntry(enz,enzfile))
+	    continue;
+
 	if(!enz->ncuts)
 	    continue;
 

@@ -457,8 +457,11 @@ static ajint silent_restr_read(AjPList *relist,const AjPStr enzymes)
             isall = ajFalse;
     }
 
-    while(embPatRestrictReadEntry(rptr,fin))
+    while(!ajFileIsEof(fin))
     {
+        if(!embPatRestrictReadEntry(rptr,fin))
+	    continue;
+
      	if(!isall)
 	{
 		for(i=0;i<ne;++i)
