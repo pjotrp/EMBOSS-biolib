@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -373,7 +373,8 @@ AjBool ensSequenceadaptorFetchSubStrBySeqregion(const EnsPSequenceadaptor sa,
     ajuint chkmin = 0;
     ajuint chkmax = 0;
     ajuint posmin = 0;
-    ajuint posmax = 0;
+
+    /* ajuint posmax = 0; */
     
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;
@@ -531,8 +532,11 @@ AjBool ensSequenceadaptorFetchSubStrBySeqregion(const EnsPSequenceadaptor sa,
 	
 	posmin = (chkmin << sequenceChunkPower) + 1;
 	
-	posmax = (chkmax + 1) << sequenceChunkPower;
-	
+        /*
+        ** AJB: Removed as not used anywhere else in the function
+	**     posmax = (chkmax + 1) << sequenceChunkPower;
+	*/
+
 	ajStrAssignSubS(Psequence,
 			tmpstr,
 			start - posmin,

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** Bio::EnsEMBL::Karyotypeband CVS Revision: 1.6
@@ -788,6 +788,11 @@ static AjBool karyotypeBandadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 	return ajFalse;
     
     csa = ensRegistryGetCoordsystemadaptor(dba);
+
+    /*
+    ** AJB: The variable kba, set below, is not used elsewhere
+    ** in the function. Needs fixing appropriately.
+    */
     
     kba = ensRegistryGetKaryotypebandadaptor(dba);
     

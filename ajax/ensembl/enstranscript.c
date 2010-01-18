@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2882,6 +2882,11 @@ EnsPTranscript ensTranscriptTransform(EnsPTranscript transcript,
 		
 		lastnewstart = ensFeatureGetStart(newfeature);
 		
+                /*
+                ** AJB: The variable lastnewend, set below, is not used
+                ** elsewhere in the function. Needs fixing appropriately
+                */
+                
 		lastnewend = ensFeatureGetEnd(newfeature);
 		
 		lastnewstrand = ensFeatureGetStrand(newfeature);

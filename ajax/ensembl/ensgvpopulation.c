@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -852,6 +852,10 @@ static AjBool gvPopulationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                              esdisplay,
                              ssize);
 
+        /*
+        ** AJB: The variable gvp, set below, is not used elsewhere in
+        ** the function. Something needs doing here.
+        */
         gvp = ensGvpopulationNew(gvpa,
                                  identifier,
                                  gvs,

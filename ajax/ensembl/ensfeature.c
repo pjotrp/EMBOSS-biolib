@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -3655,6 +3655,11 @@ AjBool ensFeatureadaptorFetchAllBySliceConstraint(EnsPFeatureadaptor adaptor,
     ** could possibly just rely on the SQL server to have queries that have
     ** been run previously cached.
     ** Does that make sense?
+    */
+
+    /*
+    ** AJB: The variable 'list', set below, is not used elsewhere in the
+    ** function. So, something needs doing here.
     */
     
     list = (AjPList) ensCacheFetch(adaptor->Cache, (void *) key);
