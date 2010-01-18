@@ -7,7 +7,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2384,6 +2384,11 @@ AjBool ensPSliceProjectToSlice(EnsPSlice srcslice,
 	    
 	    if(ensMapperresultGetType(mr) == ensEMapperresultCoordinate)
 	    {
+                /*
+                ** AJB: The variable mrcs, set below, is not used
+                ** elsewhere. Needs fixing appropriately.
+                */
+                
 		mrcs = ensMapperresultGetCoordsystem(mr);
 		
 		/* Create a Slice for the target Coordinate System. */

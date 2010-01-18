@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -4567,7 +4567,7 @@ AjBool ensMapperMapInDel(EnsPMapper mapper,
     ajuint idxmid   = 0;
     
     ajint srcstart = 0;
-    ajint srcend   = 0;
+/*    ajint srcend   = 0; */
     
     AjEnum srctype = ensEMapperunitTypeNULL;
     AjEnum trgtype = ensEMapperunitTypeNULL;
@@ -4613,8 +4613,11 @@ AjBool ensMapperMapInDel(EnsPMapper mapper,
     /* Swap start and end and map the resulting 2 base pair coordinate. */
     
     srcstart = end;
-    
-    srcend = start;
+
+    /*
+    ** currently unused
+    **     srcend = start;
+    */
     
     if(!mapper->IsSorted)
         mapperSort(mapper);

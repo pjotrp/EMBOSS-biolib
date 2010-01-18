@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -5152,8 +5152,6 @@ AjBool ensDatabaseentryadaptorFetchAllGeneIdentifiersByExternalName(
     AjPStr dbname,
     AjPList idlist)
 {
-    AjBool value = AJFALSE;
-    
     AjPStr ensembltype = NULL;
     AjPStr extratype = NULL;
     
@@ -5173,30 +5171,30 @@ AjBool ensDatabaseentryadaptorFetchAllGeneIdentifiersByExternalName(
     
     extratype = ajStrNewC("gene");
     
-    value = databaseEntryadaptorFetchAllIdentifiersByExternalName(dbea,
-								  name,
-								  ensembltype,
-								  extratype,
-								  dbname,
-								  idlist);
+    databaseEntryadaptorFetchAllIdentifiersByExternalName(dbea,
+                                                          name,
+                                                          ensembltype,
+                                                          extratype,
+                                                          dbname,
+                                                          idlist);
     
     ajStrAssignC(&ensembltype, "Transcript");
     
-    value = databaseEntryadaptorFetchAllIdentifiersByExternalName(dbea,
-								  name,
-								  ensembltype,
-								  extratype,
-								  dbname,
-								  idlist);
+    databaseEntryadaptorFetchAllIdentifiersByExternalName(dbea,
+                                                          name,
+                                                          ensembltype,
+                                                          extratype,
+                                                          dbname,
+                                                          idlist);
     
     ajStrAssignC(&ensembltype, "Gene");
     
-    value = databaseEntryadaptorFetchAllIdentifiersByExternalName(dbea,
-								  name,
-								  ensembltype,
-								  (AjPStr) NULL,
-								  dbname,
-								  idlist);
+    databaseEntryadaptorFetchAllIdentifiersByExternalName(dbea,
+                                                          name,
+                                                          ensembltype,
+                                                          (AjPStr) NULL,
+                                                          dbname,
+                                                          idlist);
     
     /* FIXME: Should we test the return value here??? */
     
@@ -5237,8 +5235,6 @@ AjBool ensDatabaseentryadaptorFetchAllTranscriptIdentifiersByExternalName(
     AjPStr dbname,
     AjPList idlist)
 {
-    AjBool value = AJFALSE;
-    
     AjPStr ensembltype = NULL;
     AjPStr extratype = NULL;
     
@@ -5258,21 +5254,21 @@ AjBool ensDatabaseentryadaptorFetchAllTranscriptIdentifiersByExternalName(
     
     extratype = ajStrNewC("transcript");
     
-    value = databaseEntryadaptorFetchAllIdentifiersByExternalName(dbea,
-								  name,
-								  ensembltype,
-								  extratype,
-								  dbname,
-								  idlist);
+    databaseEntryadaptorFetchAllIdentifiersByExternalName(dbea,
+                                                          name,
+                                                          ensembltype,
+                                                          extratype,
+                                                          dbname,
+                                                          idlist);
     
     ajStrAssignC(&ensembltype, "Transcript");
     
-    value = databaseEntryadaptorFetchAllIdentifiersByExternalName(dbea,
-								  name,
-								  ensembltype,
-								  (AjPStr) NULL,
-								  dbname,
-								  idlist);
+    databaseEntryadaptorFetchAllIdentifiersByExternalName(dbea,
+                                                          name,
+                                                          ensembltype,
+                                                          (AjPStr) NULL,
+                                                          dbname,
+                                                          idlist);
     
     /* FIXME: Should we test the return value here??? */
     
@@ -5375,8 +5371,6 @@ AjBool ensDatabaseentryadaptorFetchAllGeneIdentifiersByExternaldatabaseName(
     AjPStr dbname,
     AjPList idlist)
 {
-    AjBool value = AJFALSE;
-    
     AjPStr ensembltype = NULL;
     AjPStr extratype = NULL;
     
@@ -5393,7 +5387,7 @@ AjBool ensDatabaseentryadaptorFetchAllGeneIdentifiersByExternaldatabaseName(
     
     extratype = ajStrNewC("gene");
     
-    value = databaseEntryadaptorFetchAllIdentifiersByExternaldatabaseName(
+    databaseEntryadaptorFetchAllIdentifiersByExternaldatabaseName(
         dbea,
         dbname,
         ensembltype,
@@ -5402,7 +5396,7 @@ AjBool ensDatabaseentryadaptorFetchAllGeneIdentifiersByExternaldatabaseName(
     
     ajStrAssignC(&ensembltype, "Transcript");
     
-    value = databaseEntryadaptorFetchAllIdentifiersByExternaldatabaseName(
+    databaseEntryadaptorFetchAllIdentifiersByExternaldatabaseName(
         dbea,
         dbname,
         ensembltype,
@@ -5411,7 +5405,7 @@ AjBool ensDatabaseentryadaptorFetchAllGeneIdentifiersByExternaldatabaseName(
     
     ajStrAssignC(&ensembltype, "Gene");
     
-    value = databaseEntryadaptorFetchAllIdentifiersByExternaldatabaseName(
+    databaseEntryadaptorFetchAllIdentifiersByExternaldatabaseName(
         dbea,
         dbname,
         ensembltype,
