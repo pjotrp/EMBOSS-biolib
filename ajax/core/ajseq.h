@@ -241,10 +241,10 @@ ajuint       ajSeqGetLenUngapped (const AjPSeq seq);
 const char*  ajSeqclsGetEmbl(const AjPStr cls);
 AjBool       ajSeqclsSetEmbl(AjPStr *cls, const AjPStr clsembl);
 AjBool       ajSeqclsSetGb(AjPStr *cls, const AjPStr clsembl);
-const char*  ajSeqdivGetEmbl(const AjPStr div);
-const char*  ajSeqdivGetGb(const AjPStr div);
-AjBool       ajSeqdivSetEmbl(AjPStr *div, const AjPStr divembl);
-AjBool       ajSeqdivSetGb(AjPStr *div, const AjPStr divembl);
+const char*  ajSeqdivGetEmbl(const AjPStr divi);
+const char*  ajSeqdivGetGb(const AjPStr divi);
+AjBool       ajSeqdivSetEmbl(AjPStr *Pdivi, const AjPStr divembl);
+AjBool       ajSeqdivSetGb(AjPStr *Pdivi, const AjPStr divembl);
 const char*  ajSeqmolGetEmbl(const AjPStr mol);
 const char*  ajSeqmolGetGb(const AjPStr mol);
 AjBool       ajSeqmolSetEmbl(AjPStr *mol, const AjPStr molembl);
@@ -336,8 +336,8 @@ ajint        ajSeqCalcTrueposMin (const AjPSeq thys, ajint imin, ajint ipos);
 **  go into the block above, otherwise the VC compilation will fail 
 */
 
-const char*  ajSeqdivGetDdbj(const AjPStr div);
-AjBool       ajSeqdivSetDdbj(AjPStr *div, const AjPStr divembl);
+const char*  ajSeqdivGetDdbj(const AjPStr divi);
+AjBool       ajSeqdivSetDdbj(AjPStr *Pdivi, const AjPStr divembl);
 const char*  ajSeqmolGetDdbj(const AjPStr mol);
 AjBool       ajSeqmolSetDdbj(AjPStr *mol, const AjPStr molddbj);
 
