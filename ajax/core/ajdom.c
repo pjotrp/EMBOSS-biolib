@@ -46,7 +46,7 @@ static void            domAddToMap(AjPDomNodeList list, AjPDomNode key,
 
 
 static AjPDomNode  domNodeListItemFiltered(const AjPDomNodeList list,
-					   ajint index, ajuint nodetype);
+					   ajint indx, ajuint nodetype);
 
 static void        domTraverse(AjPDomNodeList list, AjPDomNode node,
 			       const AjPStr tagname);

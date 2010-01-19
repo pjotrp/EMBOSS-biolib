@@ -353,7 +353,7 @@ void               ajDomDocumentDestroyNodeList(AjPDomDocument doc,
 AjPDomNode         ajDomNodeReplaceChild(AjPDomNode node, AjPDomNode newchild,
 					 AjPDomNode oldchild);
 AjPDomNode         ajDomNodeCloneNode(AjPDomNode node, AjBool deep);
-AjPDomNode         ajDomNodeListItem(const AjPDomNodeList list, ajint index);
+AjPDomNode         ajDomNodeListItem(const AjPDomNodeList list, ajint indexnum);
 AjBool             ajDomNodeListExists(AjPDomNodeList list,
 				       const AjPDomNode child);
 AjPDomNodeEntry    ajDomNodeListRemove(AjPDomNodeList list, AjPDomNode child);
@@ -369,7 +369,7 @@ AjPDomNode         ajDomNodeMapRemoveItem(AjPDomNodeMap map,
 			 		  const AjPStr name);
 AjPDomNode         ajDomNodeMapRemoveItemC(AjPDomNodeMap map,
 			 		   const char *name);
-AjPDomNode         ajDomNodeMapItem(const AjPDomNodeMap map, ajint index);
+AjPDomNode         ajDomNodeMapItem(const AjPDomNodeMap map, ajint indexnum);
 
 AjPDomNodeEntry  ajDomNodeListInsert(AjPDomNodeList list, AjPDomNode newchild,
 				     AjPDomNode refchild);
