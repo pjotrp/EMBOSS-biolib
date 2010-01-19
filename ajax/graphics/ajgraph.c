@@ -8854,7 +8854,7 @@ __deprecated ajint ajGraphInfo(AjPList* files)
 void ajGraphicsListDevices (AjPList list)
 {
     ajint i;
-    AjPStr devname;
+    AjPStr devicename;
 
     for(i=0;graphType[i].Name;i++)
     {
@@ -8863,8 +8863,8 @@ void ajGraphicsListDevices (AjPList list)
 
 	if(!graphType[i].Alias)
 	{
-	    devname = ajStrNewC(graphType[i].Name);
-	    ajListstrPushAppend(list, devname);
+	    devicename = ajStrNewC(graphType[i].Name);
+	    ajListstrPushAppend(list, devicename);
 	}
     }
 
@@ -9011,6 +9011,8 @@ void ajGraphicsxyDumpDevices(void)
 }
 
 
+
+
 /* @obsolete ajGraphxyDumpDevices
 ** @rename ajGraphicsxyDumpDevices
 */
@@ -9019,6 +9021,7 @@ __deprecated void ajGraphxyDumpDevices(void)
     ajGraphicsxyDumpDevices();
     return;
 }
+
 
 
 
@@ -9034,7 +9037,7 @@ __deprecated void ajGraphxyDumpDevices(void)
 void ajGraphicsxyListDevices (AjPList list)
 {
     ajint i;
-    AjPStr devname;
+    AjPStr devicename;
 
     for(i=0;graphType[i].Name;i++)
     {
@@ -9043,13 +9046,16 @@ void ajGraphicsxyListDevices (AjPList list)
 
 	if(!graphType[i].Alias)
 	{
-	    devname = ajStrNewC(graphType[i].Name);
-	    ajListstrPushAppend(list, devname);
+	    devicename = ajStrNewC(graphType[i].Name);
+	    ajListstrPushAppend(list, devicename);
 	}
     }
 
     return;
 }
+
+
+
 
 /* @obsolete ajGraphxyListDevices
 ** @rename ajGraphicsxyListDevices
@@ -9059,6 +9065,8 @@ __deprecated void ajGraphxyListDevices (AjPList list)
     ajGraphicsxyListDevices(list);
     return;
 }
+
+
 
 
 /* @funcstatic GraphCheckFlags ************************************************
