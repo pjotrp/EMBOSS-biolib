@@ -807,39 +807,39 @@ ajint       ajResidueCopy(AjPResidue *to, const AjPResidue from);
 AjBool      ajResidueListCopy(AjPList *to, const AjPList from);
 
 ajint       ajResidueEnv1(const AjPResidue res, char SEnv,
-		       AjPStr *OEnv, AjPFile logf);
+		       AjPStr *OEnv, AjPFile flog);
 ajint       ajResidueEnv2(const AjPResidue res, char SEnv,
-		       AjPStr *OEnv, AjPFile logf);
+		       AjPStr *OEnv, AjPFile flog);
 ajint       ajResidueEnv3(const AjPResidue res, char SEnv,
-		       AjPStr *OEnv, AjPFile logf);
+		       AjPStr *OEnv, AjPFile flog);
 ajint       ajResidueEnv4(const AjPResidue res, char SEnv,
-		       AjPStr *OEnv, AjPFile logf);
+		       AjPStr *OEnv, AjPFile flog);
 ajint       ajResidueEnv5(const AjPResidue res, char SEnv,
-		       AjPStr *OEnv, AjPFile logf);
+		       AjPStr *OEnv, AjPFile flog);
 ajint       ajResidueEnv6(const AjPResidue res, char SEnv,
-		       AjPStr *OEnv, AjPFile logf);
+		       AjPStr *OEnv, AjPFile flog);
 ajint       ajResidueEnv7(const AjPResidue res, char SEnv,
-		       AjPStr *OEnv, AjPFile logf);
+		       AjPStr *OEnv, AjPFile flog);
 ajint       ajResidueEnv8(const AjPResidue res, char SEnv,
-		       AjPStr *OEnv, AjPFile logf);
+		       AjPStr *OEnv, AjPFile flog);
 ajint       ajResidueEnv9(const AjPResidue res, char SEnv,
-		       AjPStr *OEnv, AjPFile logf);
+		       AjPStr *OEnv, AjPFile flog);
 ajint       ajResidueEnv10(const AjPResidue res, char SEnv,
-			AjPStr *OEnv, AjPFile logf);
+			AjPStr *OEnv, AjPFile flog);
 ajint       ajResidueEnv11(const AjPResidue res, char SEnv,
-			AjPStr *OEnv, AjPFile logf);
+			AjPStr *OEnv, AjPFile flog);
 ajint       ajResidueEnv12(const AjPResidue res, char SEnv,
-			AjPStr *OEnv, AjPFile logf);
+			AjPStr *OEnv, AjPFile flog);
 ajint       ajResidueEnv13(const AjPResidue res, char SEnv,
-			AjPStr *OEnv, AjPFile logf);
+			AjPStr *OEnv, AjPFile flog);
 ajint       ajResidueEnv14(const AjPResidue res, char SEnv,
-			AjPStr *OEnv, AjPFile logf);
+			AjPStr *OEnv, AjPFile flog);
 ajint       ajResidueEnv15(const AjPResidue res, char SEnv,
-			AjPStr *OEnv, AjPFile logf);
+			AjPStr *OEnv, AjPFile flog);
 ajint       ajResidueEnv16(const AjPResidue res, char SEnv,
-			AjPStr *OEnv, AjPFile logf);
+			AjPStr *OEnv, AjPFile flog);
 
-ajint       ajResidueSSEnv(const AjPResidue res, char *SEnv,AjPFile logf);
+ajint       ajResidueSSEnv(const AjPResidue res, char *SEnv,AjPFile flog);
 
 
 

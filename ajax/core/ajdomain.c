@@ -1128,14 +1128,14 @@ AjPList  ajCathReadAllNew(AjPFile inf)
 ** @param [u] cathf   [AjPFile] Cath class file
 ** @param [u] domf    [AjPFile] Cath domain file
 ** @param [u] namesf  [AjPFile] Output file
-** @param [u] logf    [AjPFile] Log file
+** @param [u] flog    [AjPFile] Log file
 **
 ** @return [AjPList] List of Scop objects.
 ** @@
 ****************************************************************************/
 
 AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf, 
-			       AjPFile logf)
+			       AjPFile flog)
 { 
     AjPList ret = NULL;
     AjPStr CathNameLine    = NULL;  /* String used to hold line from namesf*/
@@ -1589,7 +1589,7 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
 
 	/* Binary search using temp. variable in AjSCathName */
 	
-	ajFmtPrintF(logf, "%S\n", tmpNumString);
+	ajFmtPrintF(flog, "%S\n", tmpNumString);
 	
 	/* Binary search of tmpNumString over array of CathName objects */
         idxCathName = domainCathNameBinSearch(tmpNumString, CathNameArray, 
@@ -1620,7 +1620,7 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
         ajFmtPrintS(&tmpNumString, "%d.%d.%d", intC, intA, intT); 
 	
 	/* Binary search using temp. variable in AjSCathName */
-	ajFmtPrintF(logf, "%S\n", tmpNumString);
+	ajFmtPrintF(flog, "%S\n", tmpNumString);
 	/* Binary search of tmpNumString over array of CathName objects */
         idxCathName = domainCathNameBinSearch(tmpNumString, CathNameArray, 
 					   dimCathName); 
@@ -1676,7 +1676,7 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
         */ 
 	
 	/* Binary search using temp. variable in AjSCathName */
-	ajFmtPrintF(logf, "%S\n", tmpNumString);
+	ajFmtPrintF(flog, "%S\n", tmpNumString);
 	/* Binary search of tmpNumString over array of CathName objects */
         idxCathName = domainCathNameBinSearch(tmpNumString, CathNameArray, 
 					   dimCathName); 
@@ -1709,7 +1709,7 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
 
 
 	/* Binary search using temp. variable in AjSCathName */
-	ajFmtPrintF(logf, "%S\n", tmpNumString);
+	ajFmtPrintF(flog, "%S\n", tmpNumString);
 	/* Binary search of tmpNumString over array of CathName objects */
         idxCathName = domainCathNameBinSearch(tmpNumString, CathNameArray, 
 					   dimCathName); 

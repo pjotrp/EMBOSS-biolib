@@ -383,7 +383,7 @@ AjPCath   ajCathReadCNew(AjPFile inf, const char *entry);
 AjPCath   ajCathReadNew(AjPFile inf, const AjPStr entry);
 AjPList   ajCathReadAllNew(AjPFile inf); 
 AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, 
-			      AjPFile namesf, AjPFile logf);
+			      AjPFile namesf, AjPFile flog);
 AjBool    ajCathWrite(AjPFile outf, const AjPCath obj);
 
 
