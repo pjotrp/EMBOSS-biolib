@@ -292,22 +292,22 @@ AjPMatrixf ajMatrixfNewAsym(const AjPPStr codes, ajint n,
 
 void ajMatrixfDel(AjPMatrixf *thys)
 {
-    ajint isize = 0;
-    ajint jsize = 0;
-    ajint rsize = 0;
-    ajint ssize = 0;
-    ajint i     = 0;
+    ajint isize  = 0;
+    ajint iisize = 0;
+    ajint rsize  = 0;
+    ajint ssize  = 0;
+    ajint i      = 0;
 
 
     if(!*thys || !thys)
 	return;
     
     isize = (*thys)->Size;
-    jsize = isize - 1;
+    iisize = isize - 1;
     rsize = (*thys)->SizeRow;
     ssize = rsize - 1;
 
-    for(i=0; i<jsize; ++i)
+    for(i=0; i<iisize; ++i)
 	ajStrDel(&(*thys)->Codes[i]);
 
     AJFREE((*thys)->Codes);
@@ -344,23 +344,23 @@ void ajMatrixfDel(AjPMatrixf *thys)
 
 void ajMatrixDel(AjPMatrix *thys)
 {
-    ajint isize = 0;
-    ajint jsize = 0;
-    ajint rsize = 0;
-    ajint ssize = 0;
-    ajint i     = 0;
+    ajint isize  = 0;
+    ajint iisize = 0;
+    ajint rsize  = 0;
+    ajint ssize  = 0;
+    ajint i      = 0;
 
 
     if(!*thys || !thys)
 	return;
 
     isize = (*thys)->Size;
-    jsize = isize - 1;
+    iisize = isize - 1;
     rsize = (*thys)->SizeRow;
     ssize = rsize - 1;
     
 
-    for(i=0; i<jsize; ++i)
+    for(i=0; i<iisize; ++i)
 	ajStrDel(&(*thys)->Codes[i]);
 
     AJFREE((*thys)->Codes);
