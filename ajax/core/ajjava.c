@@ -215,7 +215,7 @@ static ajint java_seqset_attrib(int tchan,
 
 static void java_wait_for_term(int pid,AjPStr *outstd, AjPStr *errstd,
 			       int *outpipe, int *errpipe, char *buf);
-static void java_wait_for_file(int pid,AjPStr *outstd, AjPStr *errstd,
+static void java_wait_for_file(int pid, AjPStr *errstd,
 			       int *outpipe, int *errpipe, char *buf,
 			       unsigned char *fbuf,int size);
 
@@ -2519,7 +2519,6 @@ static void java_wait_for_term(int pid,AjPStr *outstd, AjPStr *errstd,
 ** Wait for jembossctl to terminate. Receive a file from stdout pipe
 **
 ** @param [r] pid [int] jembossctl pid
-** @param [w] outstd [AjPStr*] stdout from jembossctl
 ** @param [w] errstd [AjPStr*] stderr from jembossctl
 ** @param [w] outpipe [int*] stdout pipe
 ** @param [w] errpipe [int*] stderr pipe
@@ -2530,7 +2529,7 @@ static void java_wait_for_term(int pid,AjPStr *outstd, AjPStr *errstd,
 ** @return [void]
 ******************************************************************************/
 
-static void java_wait_for_file(int pid, AjPStr *outstd, AjPStr *errstd,
+static void java_wait_for_file(int pid, AjPStr *errstd,
 			       int *outpipe, int *errpipe, char *buf,
 			       unsigned char *fbuf, int size)
 {
@@ -2547,7 +2546,6 @@ static void java_wait_for_file(int pid, AjPStr *outstd, AjPStr *errstd,
     int retval = 0;
     unsigned char *ptr  = NULL;
     unsigned long block = 0;
-
 
     block = 1;
 
@@ -3026,7 +3024,7 @@ static int java_jembossctl(ajint command,
 	else
 	    *fsize = size;
 
-	java_wait_for_file(pid,outstd,errstd,outpipe,errpipe,buff,*fbuf,size);
+	java_wait_for_file(pid,errstd,outpipe,errpipe,buff,*fbuf,size);
 	break;
 
     case PUT_FILE:
