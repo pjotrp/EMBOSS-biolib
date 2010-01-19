@@ -582,7 +582,7 @@ static ajuint     seqAppendK(AjPStr* seq, char ch);
 static const AjPStr seqAppendWarn(AjPStr* seq, const AjPStr line);
 static ajuint     seqAppendCommented(AjPStr* seq, AjBool* incomment,
 				     const AjPStr line);
-static AjBool     seqClustalReadseq(const AjPStr seqReadLine,
+static AjBool     seqClustalReadseq(const AjPStr rdLine,
 				    const AjPTable msftable);
 static AjBool     seqDefine(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqFindInFormat(const AjPStr format, ajint *iformat);
@@ -594,9 +594,9 @@ static AjBool     seqGcgMsfDots(AjPSeq thys, const AjPSeqin seqin,
 				AjPStr* pline,
 				ajuint maxlines, ajuint *len);
 static AjBool     seqGcgMsfHeader(const AjPStr line, SeqPMsfItem* msfitem);
-static AjBool     seqGcgMsfReadseq(const AjPStr seqReadLine,
+static AjBool     seqGcgMsfReadseq(const AjPStr rdline,
 				   const AjPTable msftable);
-static AjBool     seqHennig86Readseq(const AjPStr seqReadLine,
+static AjBool     seqHennig86Readseq(const AjPStr rdline,
 				     const AjPTable msftable);
 static AjBool     seqinUfoLocal(const AjPSeqin thys);
 static void       seqListNoComment(AjPStr* text);
@@ -607,7 +607,7 @@ static void       seqMsfDataTrace(const SeqPMsfData thys);
 static void       seqMsfItemDel(SeqPMsfItem* pthys);
 static void       seqMsfTabDel(void **key, void **value, void *cl);
 static void       seqMsfTabList(const void *key, void **value, void *cl);
-static AjBool     seqPhylipReadseq(const AjPStr seqReadLine,
+static AjBool     seqPhylipReadseq(const AjPStr rdline,
 				   const AjPTable phytable,
 				   const AjPStr token,
 				   ajuint len, ajuint* ilen, AjBool* done);
