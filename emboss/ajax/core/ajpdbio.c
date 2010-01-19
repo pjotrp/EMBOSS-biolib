@@ -384,21 +384,21 @@ enum flags
 static void         PdbfileDel(AjPPdbfile *pthis);
 static AjPPdbfile   ReadLines(AjPFile inf);
 static AjPPdbfile   PdbfileNew(ajint nlines, ajint nchains);
-static AjBool       FirstPass(AjPPdbfile pdbfile, AjPFile logf, 
+static AjBool       FirstPass(AjPPdbfile pdbfile, AjPFile flog, 
 			      AjPElements *elms, AjBool camask);
-static AjBool       CheckChains(AjPPdbfile pdbfile, AjPFile logf, 
+static AjBool       CheckChains(AjPPdbfile pdbfile, AjPFile flog, 
 				ajint min_chain_size);
 static AjBool       SeqresToSequence(const AjPStr seqres, AjPStr *seq, 
 				     AjBool camask, ajint *len);
-static AjBool       CheckTer(AjPPdbfile pdbfile, AjPFile logf);
-static AjBool       NumberChains(AjPPdbfile pdbfile, AjPFile logf);
+static AjBool       CheckTer(AjPPdbfile pdbfile, AjPFile flog);
+static AjBool       NumberChains(AjPPdbfile pdbfile, AjPFile flog);
 static AjBool       NoMoreAtoms(AjPPdbfile pdbfile, ajint linen);
-static AjBool       MaskChains(AjPPdbfile pdbfile, AjPFile logf, 
+static AjBool       MaskChains(AjPPdbfile pdbfile, AjPFile flog, 
 			       ajint min_chain_size, AjBool camask, 
 			       AjBool camask1, AjBool atommask);
 static AjBool       StandardiseNumbering(AjPPdbfile pdbfile, 
-					 AjPFile logf);
-static AjBool       AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, 
+					 AjPFile flog);
+static AjBool       AlignNumbering(AjPPdbfile pdbfile, AjPFile flog, 
 				   ajuint lim, ajuint lim2);
 static AjBool       PdbfileToPdb(AjPPdb *ret, AjPPdbfile pdb);
 static ajint        PdbfileFindLine(const AjPPdbfile pdb, ajint chn, 
@@ -410,7 +410,7 @@ static void         ElementsDel(AjPElements *ptr);
 static AjPElement   ElementNew(void);
 static void         ElementDel(AjPElement *ptr);
 static AjBool       PdbfileChain(char id, const AjPPdbfile pdb, ajint *chn);
-static AjBool       WriteElementData(AjPPdbfile pdbfile, AjPFile logf, 
+static AjBool       WriteElementData(AjPPdbfile pdbfile, AjPFile flog, 
 				     const AjPElements elms);
 
 
@@ -2412,7 +2412,7 @@ static AjPPdbfile PdbfileNew(ajint nlines, ajint nchains)
 **
 **
 ** @param [w] pdbfile  [AjPPdbfile]  Pdbfile object
-** @param [u] logf     [AjPFile]       Log file (build diagnostics)
+** @param [u] flog     [AjPFile]       Log file (build diagnostics)
 ** @param [w] elms     [AjPElements*] Elements object pointer    
 ** @param [r] camask   [AjBool]        Whether to mask non-amino acid residues 
 **                                    within protein chains which do not
@@ -2422,7 +2422,7 @@ static AjPPdbfile PdbfileNew(ajint nlines, ajint nchains)
 ** @@
 ****************************************************************************/
 
-static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms, 
+static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile flog, AjPElements *elms, 
 			AjBool camask)
 {
     ajint    i=0;		       /* Loop counter */
@@ -2466,7 +2466,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 
 
     /* Check args */
-    if(!pdbfile || !logf || !(*elms))
+    if(!pdbfile || !flog || !(*elms))
     {
 	ajWarn("Bad args passed to FirstPass\n");
 
@@ -2503,7 +2503,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 	    {
 		if(!done_msg)
 		{
-		    ajFmtPrintF(logf, "%-15s%d\n", "DUPATOMRES", i+1); 
+		    ajFmtPrintF(flog, "%-15s%d\n", "DUPATOMRES", i+1); 
 		    done_msg=ajTrue;
 		}
 		
@@ -2518,7 +2518,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 		     ajStrGetCharPos(pdbfile->lines[i], 19)==' '))
 	    {
 
-		ajFmtPrintF(logf, "%-15s%d\n", "NOATOMRESID", i+1); 
+		ajFmtPrintF(flog, "%-15s%d\n", "NOATOMRESID", i+1); 
 
 	    }
 	    else 
@@ -2550,7 +2550,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 		if(!ajFmtScanS(pdbfile->pdbn[i], "%d", 
 			       &(pdbfile->resn1[i])))
 		{
-		    ajFmtPrintF(logf, "%-15s%d\n", "ATOMNONUM", i+1);
+		    ajFmtPrintF(flog, "%-15s%d\n", "ATOMNONUM", i+1);
 		    pdbfile->linetype[i]=PDBPARSE_IGNORE;		    
 		}
 		else
@@ -2576,7 +2576,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 	    ajStrAssignSubS(&seqres, pdbfile->lines[i], 14, 18);
 
 	    if(!ajFmtScanS(seqres, "%d", &seqreslen))
-		ajFmtPrintF(logf, "%-15s%d (%c)\n", "SEQRESLEN", 
+		ajFmtPrintF(flog, "%-15s%d (%c)\n", "SEQRESLEN", 
 			    pdbfile->nchains, 
 			    ajStrGetCharPos(pdbfile->lines[i], 11));
 
@@ -2633,7 +2633,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 			/* Check length of sequenece vs indicated length */
 			if(lenful != seqreslen)
 			{
-			    ajFmtPrintF(logf, "%-15s%d (%c)\n", 
+			    ajFmtPrintF(flog, "%-15s%d (%c)\n", 
 					"SEQRESLENDIF", 
 					pdbfile->nchains, 
 					last_id);
@@ -2649,7 +2649,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 			ajStrAssignSubS(&seqres, pdbfile->lines[i], 14, 18);
 
 			if(!ajFmtScanS(seqres, "%d", &seqreslen))
-			    ajFmtPrintF(logf, "%-15s%d (%c)\n", "SEQRESLEN", 
+			    ajFmtPrintF(flog, "%-15s%d (%c)\n", "SEQRESLEN", 
 					pdbfile->nchains, 
 					ajStrGetCharPos(pdbfile->lines[i],
 							11));
@@ -2702,7 +2702,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 		    /* Check length of sequenece vs indicated length */
 		    if(lenful != seqreslen)
                     {
-                        ajFmtPrintF(logf, "%-15s%d (%c)\n", 
+                        ajFmtPrintF(flog, "%-15s%d (%c)\n", 
                                     "SEQRESLENDIF", 
                                     pdbfile->nchains, 
                                     last_id);
@@ -2809,7 +2809,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 		    if( (ajFmtScanS(pdbfile->lines[i], 
 				    "%*s %*d %*s %f", 
 				    &(pdbfile->reso))) != 1)
-			ajFmtPrintF(logf, "%-15s\n", "RESOLUNK");
+			ajFmtPrintF(flog, "%-15s\n", "RESOLUNK");
 		    
 		    pdbfile->method=ajXRAY;
 		}
@@ -2855,7 +2855,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 	    
 	    if(elm->chainId != ajStrGetCharPos(pdbfile->lines[i], 31))
 	    {
-		ajFmtPrintF(logf, "%-15s%c %c\n", "SECTWOCHN", elm->chainId,
+		ajFmtPrintF(flog, "%-15s%c %c\n", "SECTWOCHN", elm->chainId,
 			    ajStrGetCharPos(pdbfile->lines[i], 31));
 		ElementDel(&elm);
 		continue;	
@@ -2879,7 +2879,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 	    }
 	    else	 
 	    {
-		ajFmtPrintF(logf, "%-15s%d\n", "SECMISS", i+1);
+		ajFmtPrintF(flog, "%-15s%d\n", "SECMISS", i+1);
 		ElementDel(&elm);
 		continue;	
 	    }
@@ -2917,7 +2917,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 
 	    if(elm->chainId != ajStrGetCharPos(pdbfile->lines[i], 32))
 	    {
-		ajFmtPrintF(logf, "%-15s%c %c\n", "SECTWOCHN", elm->chainId,
+		ajFmtPrintF(flog, "%-15s%c %c\n", "SECTWOCHN", elm->chainId,
 			    ajStrGetCharPos(pdbfile->lines[i], 32));
 		ElementDel(&elm);
 		continue;	
@@ -2951,7 +2951,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 	    }
 	    else
 	    {	
-		ajFmtPrintF(logf, "%-15s%d\n", "SECMISS", i+1);
+		ajFmtPrintF(flog, "%-15s%d\n", "SECMISS", i+1);
 		ElementDel(&elm);
 		continue;	
 
@@ -2992,7 +2992,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 
 	    if(elm->chainId != ajStrGetCharPos(pdbfile->lines[i], 30))
 	    {
-		ajFmtPrintF(logf, "%-15s%c %c\n", "SECTWOCHN", elm->chainId,
+		ajFmtPrintF(flog, "%-15s%c %c\n", "SECTWOCHN", elm->chainId,
 			    ajStrGetCharPos(pdbfile->lines[i], 30));
 		ElementDel(&elm);
 		continue;	
@@ -3009,7 +3009,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 	    }
 	    else	 
 	    {
-		ajFmtPrintF(logf, "%-15s%d\n", "SECMISS", i+1);
+		ajFmtPrintF(flog, "%-15s%d\n", "SECMISS", i+1);
 		ElementDel(&elm);
 		continue;	
 	    }
@@ -3027,22 +3027,22 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
     if((ajStrGetLen(pdbfile->compnd) == 0))
     {
 	ajStrAssignC(&pdbfile->compnd, ".");
-	ajFmtPrintF(logf, "%-15s\n", "NOCOMPND");  
+	ajFmtPrintF(flog, "%-15s\n", "NOCOMPND");  
     }
 
     if((ajStrGetLen(pdbfile->source) == 0))
     {
 	ajStrAssignC(&pdbfile->source, ".");
-	ajFmtPrintF(logf, "%-15s\n", "NOSOURCE");
+	ajFmtPrintF(flog, "%-15s\n", "NOSOURCE");
     }
     
     if((pdbfile->method==ajNMR) && (pdbfile->modcnt==0))
-	ajFmtPrintF(logf, "%-15s\n", "NOMODEL");
+	ajFmtPrintF(flog, "%-15s\n", "NOMODEL");
 
 
     if(pdbfile->reso && pdbfile->modcnt)
     {
-	ajFmtPrintF(logf, "%-15s\n", "RESOLMOD");
+	ajFmtPrintF(flog, "%-15s\n", "RESOLMOD");
 	pdbfile->method=ajNMR;
     }
     
@@ -3061,7 +3061,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
     {
 	pdbfile->reso=0;
 	pdbfile->method=ajNMR;
-	ajFmtPrintF(logf, "%-15s\n","NORESOLUTION");
+	ajFmtPrintF(flog, "%-15s\n","NORESOLUTION");
     }
 
 
@@ -3069,7 +3069,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
     if(!seqresfound)
     {
 	ajWarn("No SEQRES record found in raw pdb file");
-	ajFmtPrintF(logf, "%-15s\n", "NOSEQRES");
+	ajFmtPrintF(flog, "%-15s\n", "NOSEQRES");
 	
 	/* Free memory and return */
 	ajListFree(&listelms);
@@ -3086,7 +3086,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
     if(!donefirstatom)    
     {
 	ajWarn("No ATOM record found in raw pdb file");
-	ajFmtPrintF(logf, "%-15s\n", "NOATOM");
+	ajFmtPrintF(flog, "%-15s\n", "NOATOM");
 	
 	/* Free memory and return */
 	ajListFree(&listelms);
@@ -3206,7 +3206,7 @@ static AjBool SeqresToSequence(const AjPStr seqres,
 ** 
 **
 ** @param [w] pdbfile         [AjPPdbfile]   Pdbfile object
-** @param [u] logf            [AjPFile]      Pointer to log file (build 
+** @param [u] flog            [AjPFile]      Pointer to log file (build 
 **                                           diagnostics).
 ** @param [r] min_chain_size  [ajint]        Minimum number of amino acids in 
 **                                           a chain.
@@ -3216,7 +3216,7 @@ static AjBool SeqresToSequence(const AjPStr seqres,
 ** @@
 ****************************************************************************/
 
-static AjBool CheckChains(AjPPdbfile pdbfile, AjPFile logf, 
+static AjBool CheckChains(AjPPdbfile pdbfile, AjPFile flog, 
 			  ajint min_chain_size)
 {
     ajint    i=0;			/* Loop counter */
@@ -3240,7 +3240,7 @@ static AjBool CheckChains(AjPPdbfile pdbfile, AjPFile logf,
 
     
     /* Check args */
-    if(!pdbfile || !logf)
+    if(!pdbfile || !flog)
     {
 	ajWarn("Bad args passed to CheckChains\n");
 
@@ -3257,7 +3257,7 @@ static AjBool CheckChains(AjPPdbfile pdbfile, AjPFile logf,
 	{
 	    if(id1==(id2=ajChararrGet(pdbfile->chid, j)))
 	    {
-		ajFmtPrintF(logf, "%-15s%d (%c) %d (%c)\n", "CHAINIDS", i+1, 
+		ajFmtPrintF(flog, "%-15s%d (%c) %d (%c)\n", "CHAINIDS", i+1, 
 			    ajChararrGet(pdbfile->chid, i), j+1, 
 			    ajChararrGet(pdbfile->chid, j));
 		
@@ -3268,7 +3268,7 @@ static AjBool CheckChains(AjPPdbfile pdbfile, AjPFile logf,
 	    if((((id1 == ' ')&&(id2 != ' '))||((id2 == ' ')&&(id1 != ' '))) 
 	       && (!(iderr)))
 	    {
-		ajFmtPrintF(logf, "%-15s\n", "CHAINIDSPC");
+		ajFmtPrintF(flog, "%-15s\n", "CHAINIDSPC");
 		iderr=ajTrue;
 	    }
 	    
@@ -3299,13 +3299,13 @@ static AjBool CheckChains(AjPPdbfile pdbfile, AjPFile logf,
 	
 	if(aacnt==0)
 	{
-	    ajFmtPrintF(logf, "%-15s%d (%c)\n", "SEQRESNOAA", i+1, 
+	    ajFmtPrintF(flog, "%-15s%d (%c)\n", "SEQRESNOAA", i+1, 
 			ajChararrGet(pdbfile->chid, i));
 	    pdbfile->chainok[i] = ajFalse;
 	}
 	else if(aacnt < min_chain_size)
 	{	
-	    ajFmtPrintF(logf, "%-15s%d (%c)\n", "SEQRESFEWAA", i+1, 
+	    ajFmtPrintF(flog, "%-15s%d (%c)\n", "SEQRESFEWAA", i+1, 
 			ajChararrGet(pdbfile->chid, i));
 	    
 	    pdbfile->chainok[i] = ajFalse;
@@ -3322,7 +3322,7 @@ static AjBool CheckChains(AjPPdbfile pdbfile, AjPFile logf,
     if(!ok)
     {
 	ajWarn("No protein chains found in raw pdb file");
-	ajFmtPrintF(logf, "%-15s\n", "NOPROTEINS");
+	ajFmtPrintF(flog, "%-15s\n", "NOPROTEINS");
 
 	return ajFalse;
     }
@@ -3347,13 +3347,13 @@ static AjBool CheckChains(AjPPdbfile pdbfile, AjPFile logf,
 ** but this is not done for tercnt.
 **
 ** @param [w] pdbfile [AjPPdbfile] Pdbfile object
-** @param [u] logf    [AjPFile]     Pointer to log file (build diagnostics)
+** @param [u] flog    [AjPFile]     Pointer to log file (build diagnostics)
 ** 
 ** @return [AjBool]  True on success, False otherwise.
 ** @@
 ****************************************************************************/
 
-static AjBool CheckTer(AjPPdbfile pdbfile, AjPFile logf)
+static AjBool CheckTer(AjPPdbfile pdbfile, AjPFile flog)
 {
     AjBool toomany=ajFalse;
     AjBool toofew =ajFalse;
@@ -3367,7 +3367,7 @@ static AjBool CheckTer(AjPPdbfile pdbfile, AjPFile logf)
 
     
     /* Check args */
-    if(!pdbfile || !logf)
+    if(!pdbfile || !flog)
     {
 	ajWarn("Bad args passed to CheckTer\n");
 
@@ -3381,7 +3381,7 @@ static AjBool CheckTer(AjPPdbfile pdbfile, AjPFile logf)
     
     /* Report problems with TER records */
     if(!pdbfile->tercnt)
-	ajFmtPrintF(logf, "%-15s\n", "TERNONE");
+	ajFmtPrintF(flog, "%-15s\n", "TERNONE");
     else
     {
 	if(pdbfile->method==ajNMR)
@@ -3405,10 +3405,10 @@ static AjBool CheckTer(AjPPdbfile pdbfile, AjPFile logf)
 
     /* Report diagnostics */
     if(toomany)
-	ajFmtPrintF(logf, "%-15s\n", "TERTOOMANY");
+	ajFmtPrintF(flog, "%-15s\n", "TERTOOMANY");
     else if(toofew)
     {
-	ajFmtPrintF(logf, "%-15s\n", "TERTOOFEW");
+	ajFmtPrintF(flog, "%-15s\n", "TERTOOFEW");
 	pdbfile->toofewter=ajTrue;
     }
     
@@ -3456,7 +3456,7 @@ static AjBool CheckTer(AjPPdbfile pdbfile, AjPFile logf)
 	{
 	    pdbfile->linetype[i-1]=PDBPARSE_IGNORE;
 	    pdbfile->modcnt--;
-	    ajFmtPrintF(logf, "%-15s%d\n", "MODELDUP", i+1);
+	    ajFmtPrintF(flog, "%-15s%d\n", "MODELDUP", i+1);
 
 
 	}
@@ -3495,13 +3495,13 @@ static AjBool CheckTer(AjPPdbfile pdbfile, AjPFile logf)
 ** 
 **
 ** @param [w] pdbfile  [AjPPdbfile] Pdbfile object
-** @param [u] logf     [AjPFile]      Log file (build diagnostics)
+** @param [u] flog     [AjPFile]      Log file (build diagnostics)
 ** 
 ** @return [AjBool]  True on success, False otherwise
 ** @@
 ****************************************************************************/
 
-static AjBool NumberChains(AjPPdbfile pdbfile, AjPFile logf)
+static AjBool NumberChains(AjPPdbfile pdbfile, AjPFile flog)
 {
     ajint  i=0;			/* Loop counter */
     ajint  j=0;			/* Loop counter */
@@ -3528,7 +3528,7 @@ static AjBool NumberChains(AjPPdbfile pdbfile, AjPFile logf)
 
 
     /* Check args */
-    if(!pdbfile || !logf)
+    if(!pdbfile || !flog)
     {
 	ajWarn("Bad args passed to NumberChains\n");
 
@@ -3985,7 +3985,7 @@ static AjBool NoMoreAtoms(AjPPdbfile pdbfile, ajint linen)
 ** achieve this.
 ** 
 ** @param [w] pdbfile    [AjPPdbfile] Pdbfile object
-** @param [u] logf       [AjPFile]     Log file (build diagnostics)
+** @param [u] flog       [AjPFile]     Log file (build diagnostics)
 ** @param [r] min_chain_size  [ajint]  Min. no. of amino acids in a chain
 ** @param [r] camask          [AjBool] Whether to mask non-amino acid 
 **                                     residues within protein chains which 
@@ -4004,7 +4004,7 @@ static AjBool NoMoreAtoms(AjPPdbfile pdbfile, ajint linen)
 ** @@
 ****************************************************************************/
 
-static AjBool MaskChains(AjPPdbfile pdbfile, AjPFile logf, 
+static AjBool MaskChains(AjPPdbfile pdbfile, AjPFile flog, 
 			 ajint min_chain_size, 
 			 AjBool camask, AjBool camask1, 
 			 AjBool atommask)
@@ -4047,7 +4047,7 @@ static AjBool MaskChains(AjPPdbfile pdbfile, AjPFile logf,
 
 
     /* Check args */
-    if(!pdbfile || !logf)
+    if(!pdbfile || !flog)
     {
 	ajWarn("Bad args passed to MaskChains\n");
 
@@ -4105,7 +4105,7 @@ static AjBool MaskChains(AjPPdbfile pdbfile, AjPFile logf,
 		ajStrRemoveWhite(&pdbfile->atype[i]);
 		if(!msgdone)
 		{
-		    ajFmtPrintF(logf, "%-15s%d\n", "ATOMCOL12", i+1);
+		    ajFmtPrintF(flog, "%-15s%d\n", "ATOMCOL12", i+1);
 		    msgdone=ajTrue;
 		}
 	    }
@@ -4129,7 +4129,7 @@ static AjBool MaskChains(AjPPdbfile pdbfile, AjPFile logf,
 
 
 	    if(pdbfile->chnn[i]<lastchn)
-		ajFmtPrintF(logf, "%-15s%d\n", "CHAINORDER", i+1);
+		ajFmtPrintF(flog, "%-15s%d\n", "CHAINORDER", i+1);
 
 	    if(pdbfile->chnn[i]!=lastchn)
 	    {
@@ -4144,7 +4144,7 @@ static AjBool MaskChains(AjPPdbfile pdbfile, AjPFile logf,
 		/* Mask coordinate lines where there are only a single atom */
 		if(acnt==1)
 		{
-		    ajFmtPrintF(logf, "%-15s%d\n", "ATOMONEONLY", lastatm+1);
+		    ajFmtPrintF(flog, "%-15s%d\n", "ATOMONEONLY", lastatm+1);
 
 		    if(atommask)
 			    pdbfile->linetype[lastatm]=PDBPARSE_IGNORE;
@@ -4170,10 +4170,10 @@ static AjBool MaskChains(AjPPdbfile pdbfile, AjPFile logf,
 		    }
 		    
 		    if(firstatm == lastatm)
-                        ajFmtPrintF(logf, "%-15s%d\n", "ATOMNOCA", 
+                        ajFmtPrintF(flog, "%-15s%d\n", "ATOMNOCA", 
                                     firstatm+1);
 		    else
-			ajFmtPrintF(logf, "%-15s%d %d\n", "ATOMNOCA", 
+			ajFmtPrintF(flog, "%-15s%d %d\n", "ATOMNOCA", 
 				    firstatm+1, lastatm+1);
 		}
 		
@@ -4228,7 +4228,7 @@ static AjBool MaskChains(AjPPdbfile pdbfile, AjPFile logf,
 			if(!chainok[j])
 			{
 			    pdbfile->chainok[j]=chainok[j];
-			    ajFmtPrintF(logf, "%-15s%d (%c) %d\n", 
+			    ajFmtPrintF(flog, "%-15s%d (%c) %d\n", 
 					"ATOMFEWAA", j+1,
 					(ajChararrGet(pdbfile->chid, j)),
 					modcnt);
@@ -4265,11 +4265,11 @@ static AjBool MaskChains(AjPPdbfile pdbfile, AjPFile logf,
 	
 	if(firstatm == lastatm)
 	{		
-	    ajFmtPrintF(logf, "%-15s%d\n", "ATOMNOCA", firstatm+1);
+	    ajFmtPrintF(flog, "%-15s%d\n", "ATOMNOCA", firstatm+1);
 	}	
 
 	else
-	    ajFmtPrintF(logf, "%-15s%d %d\n", "ATOMNOCA", 
+	    ajFmtPrintF(flog, "%-15s%d %d\n", "ATOMNOCA", 
 			firstatm+1, lastatm+1);
     }
     
@@ -4319,7 +4319,7 @@ static AjBool MaskChains(AjPPdbfile pdbfile, AjPFile logf,
 	    if(!chainok[i])
 	    {
 		pdbfile->chainok[i]=chainok[i];
-		ajFmtPrintF(logf, "%-15s%d (%c) %d\n", "ATOMFEWAA", 
+		ajFmtPrintF(flog, "%-15s%d (%c) %d\n", "ATOMFEWAA", 
 			    i+1,(ajChararrGet(pdbfile->chid, i)),modcnt);
 
 	    }
@@ -4357,12 +4357,12 @@ static AjBool MaskChains(AjPPdbfile pdbfile, AjPFile logf,
 	if((pdbfile->linetype[i-1]==PDBPARSE_COORD) && 
 	   (pdbfile->linetype[i]==PDBPARSE_COORD) &&
 	   pdbfile->chnn[i-1] != pdbfile->chnn[i])
-	    ajFmtPrintF(logf, "%-15s%d %d\n", "TERMISSCHN", i, i+1);
+	    ajFmtPrintF(flog, "%-15s%d %d\n", "TERMISSCHN", i, i+1);
 	else if((pdbfile->linetype[i-1]==PDBPARSE_COORD) && 
 		((pdbfile->linetype[i]==PDBPARSE_COORDHET) || 
 		 (pdbfile->linetype[i]==PDBPARSE_COORDWAT))&&
 		pdbfile->chnn[i-1] == pdbfile->chnn[i])
-	    ajFmtPrintF(logf, "%-15s%d %d\n", "TERMISSHET", i, i+1);
+	    ajFmtPrintF(flog, "%-15s%d %d\n", "TERMISSHET", i, i+1);
     }
     
 
@@ -4385,7 +4385,7 @@ static AjBool MaskChains(AjPPdbfile pdbfile, AjPFile logf,
     if(!ok)
     {
 	ajWarn("No protein chains found in raw pdb file");
-	ajFmtPrintF(logf, "%-15s\n", "NOPROTEINS");
+	ajFmtPrintF(flog, "%-15s\n", "NOPROTEINS");
 	return ajFalse;
     }
     
@@ -4417,13 +4417,13 @@ static AjBool MaskChains(AjPPdbfile pdbfile, AjPFile logf,
 ** True for the second residue. 
 **
 ** @param [w] pdbfile [AjPPdbfile] Pdbfile object
-** @param [u] logf    [AjPFile]      Pointer to log file (build diagnostics)
+** @param [u] flog    [AjPFile]      Pointer to log file (build diagnostics)
 ** 
 ** @return [AjBool]  True on success, False otherwise
 ** @@
 ****************************************************************************/
 
-static AjBool StandardiseNumbering(AjPPdbfile pdbfile, AjPFile logf)
+static AjBool StandardiseNumbering(AjPPdbfile pdbfile, AjPFile flog)
 {	
     ajint   i=0;
     ajint   lastchn=-1;		    /* Chain number of last line read in */
@@ -4469,7 +4469,7 @@ static AjBool StandardiseNumbering(AjPPdbfile pdbfile, AjPFile logf)
     
  
     /* Check args */
-    if(!pdbfile || !logf)
+    if(!pdbfile || !flog)
     {
 	ajWarn("Bad args passed to StandardiseNumbering\n");
 
@@ -4510,7 +4510,7 @@ static AjBool StandardiseNumbering(AjPPdbfile pdbfile, AjPFile logf)
 	/* Otherwise flag an error for this chain and move to the 
 	   end of the chain */
 
-	ajFmtPrintF(logf, "%-15s%d (%c)\n", "BADINDEX",  
+	ajFmtPrintF(flog, "%-15s%d (%c)\n", "BADINDEX",  
 		    pdbfile->chnn[i], 
 		    ajChararrGet(pdbfile->chid,pdbfile->chnn[i]-1));
 	
@@ -4597,7 +4597,7 @@ static AjBool StandardiseNumbering(AjPPdbfile pdbfile, AjPFile logf)
 
 		if(!report_neg)
 		{
-		    ajFmtPrintF(logf, "%-15s%d (%c) %d\n", "NEGNUM", 
+		    ajFmtPrintF(flog, "%-15s%d (%c) %d\n", "NEGNUM", 
 				pdbfile->chnn[i], 
 				ajChararrGet(pdbfile->chid, 
 					     (pdbfile->chnn[i]-1)),i+1);
@@ -4615,7 +4615,7 @@ static AjBool StandardiseNumbering(AjPPdbfile pdbfile, AjPFile logf)
 
 		if(!report_zer)
 		{	
-		    ajFmtPrintF(logf, "%-15s%d (%c) %d\n", 
+		    ajFmtPrintF(flog, "%-15s%d (%c) %d\n", 
 				"ZERNUM", pdbfile->chnn[i], 
 				ajChararrGet(pdbfile->chid, 
 					     (pdbfile->chnn[i]-1)),i+1);
@@ -4705,7 +4705,7 @@ static AjBool StandardiseNumbering(AjPPdbfile pdbfile, AjPFile logf)
 
 		if(!report_nonstd)
 		{
-		    ajFmtPrintF(logf, "%-15s%d (%c) %d\n", "ODDNUM", 
+		    ajFmtPrintF(flog, "%-15s%d (%c) %d\n", "ODDNUM", 
 				pdbfile->chnn[i], 
 				ajChararrGet(pdbfile->chid, 
 					     (pdbfile->chnn[i]-1)),i+1);
@@ -4801,7 +4801,7 @@ static AjBool StandardiseNumbering(AjPPdbfile pdbfile, AjPFile logf)
 		
 		if(!report_nonsqt)
 		{
-		    ajFmtPrintF(logf, "%-15s%d (%c) %d\n", "NONSQNTL", 
+		    ajFmtPrintF(flog, "%-15s%d (%c) %d\n", "NONSQNTL", 
 				pdbfile->chnn[i], 
 				ajChararrGet(pdbfile->chid, 
 					     (pdbfile->chnn[i]-1)),i+1);
@@ -4907,7 +4907,7 @@ static AjBool StandardiseNumbering(AjPPdbfile pdbfile, AjPFile logf)
 ** sequence presuming heterogeneity).
 **
 ** @param [w] pdbfile [AjPPdbfile] Pdbfile object
-** @param [u] logf    [AjPFile]      Pointer to log file (build diagnostics)
+** @param [u] flog    [AjPFile]      Pointer to log file (build diagnostics)
 ** @param [r] lim     [ajuint]        Max. no. permissible mismatches between
 **                                   the ATOM & SEQRES sequences.
 ** @param [r] lim2     [ajuint]       Max. no. residues to trim when checking
@@ -4916,10 +4916,10 @@ static AjBool StandardiseNumbering(AjPPdbfile pdbfile, AjPFile logf)
 ** @return [AjBool]  True on success, False otherwise
 ** @@
 ** Must comment what diagnostics this writes!
-** This now writes its diagnostics to logf, rather than tempfile.
+** This now writes its diagnostics to flog, rather than tempfile.
 ****************************************************************************/
 
-static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim, 
+static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile flog, ajuint lim, 
 			     ajuint lim2)
 {
     /* Sequence and residue number data are given for each unique chain 
@@ -5040,7 +5040,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
     
     
     /* Check args */
-    if(!pdbfile || !logf)
+    if(!pdbfile || !flog)
     {
 	ajWarn("Bad args passed to AlignNumbering\n");
 
@@ -5208,7 +5208,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 
 
 		/* DIAGNOSTIC CODE  
-		ajFmtPrintF(logf, "\nChainMod %d"
+		ajFmtPrintF(flog, "\nChainMod %d"
 		   " (seq %d)\n%S\n%S\n\n\n", 
 		   i+1,x+1,
 		   seq[i], 
@@ -5220,24 +5220,24 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		/******************* STEP 1 ********************/
 		/***********************************************/
 		/*DIAGNOSTIC 
-		  ajFmtPrintF(logf, "STEP1 tmpseqres: %S\n", tmpseqres); 
+		  ajFmtPrintF(flog, "STEP1 tmpseqres: %S\n", tmpseqres); 
 		  
-		  ajFmtPrintF(logf, "chnn : %d\n"
+		  ajFmtPrintF(flog, "chnn : %d\n"
 		  "seq1 : %S\n"
 		  "seq2 : %S\n"
 		  "seqr : %S\n", i+1, seq1[i], seq2[i], 
 		  pdbfile->seqres[i]); 
-		 ajFmtPrintF(logf, "\n");
+		 ajFmtPrintF(flog, "\n");
 		  if(ajStrMatchS(seq1[i], seq2[i]))
-		 ajFmtPrintF(logf, "seq1 and seq2 match\n");
+		 ajFmtPrintF(flog, "seq1 and seq2 match\n");
 		  else
-		 ajFmtPrintF(logf, "seq1 and seq2 DO NOT match\n");
+		 ajFmtPrintF(flog, "seq1 and seq2 DO NOT match\n");
 		  
 		  if(ajStrMatchS(seq1[i], pdbfile->seqres[i]))
-		 ajFmtPrintF(logf, "seq1 and seqres match\n");
+		 ajFmtPrintF(flog, "seq1 and seqres match\n");
 		  else
-		 ajFmtPrintF(logf, "seq1 and seqres DO NOT match\n");
-		 ajFmtPrintF(logf, "\n");
+		 ajFmtPrintF(flog, "seq1 and seqres DO NOT match\n");
+		 ajFmtPrintF(flog, "\n");
 		*/
 
 		/* Check whether sequences are identical length*/
@@ -5257,7 +5257,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 			
 			done=ajTrue;
 
-			/* DIAGNOSTIC ajFmtPrintF(logf, "STEP1 OK\n");  */
+			/* DIAGNOSTIC ajFmtPrintF(flog, "STEP1 OK\n");  */
 			
 			break;
 		    }
@@ -5316,7 +5316,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 			if(nmismatches<=lim)
 			{
 			    if(nmismatches)
-				ajFmtPrintF(logf, "%-15s%d (%c) %d %S\n", 
+				ajFmtPrintF(flog, "%-15s%d (%c) %d %S\n", 
 					    "MISMATCH",  i+1,  
 					    ajChararrGet(pdbfile->chid, i),
 					    nmismatches, msgstr);
@@ -5332,7 +5332,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 			
 			    done=ajTrue;
 			    /*DIAGNOSTIC		 
-			   ajFmtPrintF(logf, "STEP1 OK %d mismatches\n",
+			   ajFmtPrintF(flog, "STEP1 OK %d mismatches\n",
                                        nmismatches); */
 
 			    break;
@@ -5345,7 +5345,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 			    ajStrAssignS(&(pdbfile->seqres[i]), tmpseqres);
 			   pdbfile->nres[i]=ajStrGetLen(pdbfile->seqres[i]);
 			    /*DIAGNOSTIC 
-			     ajFmtPrintF(logf,
+			     ajFmtPrintF(flog,
                                          "STEP1 **NOT** OK %d mismatches\n", 
 			                 nmismatches);  */
 			    
@@ -5360,24 +5360,24 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		/******************* STEP 2 ********************/
 		/***********************************************/
 		/*DIAGNOSTIC
-		ajFmtPrintF(logf, "STEP2 tmpseqres: %S\n", tmpseqres);
+		ajFmtPrintF(flog, "STEP2 tmpseqres: %S\n", tmpseqres);
 		
-		ajFmtPrintF(logf, "chnn : %d\n"
+		ajFmtPrintF(flog, "chnn : %d\n"
 			    "seq1 : %S\n"
 			    "seq2 : %S\n"
 			    "seqr : %S\n", i+1, seq1[i], seq2[i], 
 			    pdbfile->seqres[i]); 
-		ajFmtPrintF(logf, "\n");
+		ajFmtPrintF(flog, "\n");
 		if(ajStrMatchS(seq1[i], seq2[i]))
-		    ajFmtPrintF(logf, "seq1 and seq2 match\n");
+		    ajFmtPrintF(flog, "seq1 and seq2 match\n");
 		else
-		    ajFmtPrintF(logf, "seq1 and seq2 DO NOT match\n");
+		    ajFmtPrintF(flog, "seq1 and seq2 DO NOT match\n");
 		
 		if(ajStrMatchS(seq1[i], pdbfile->seqres[i]))
-		    ajFmtPrintF(logf, "seq1 and seqres match\n");
+		    ajFmtPrintF(flog, "seq1 and seqres match\n");
 		else
-		    ajFmtPrintF(logf, "seq1 and seqres DO NOT match\n");
-		ajFmtPrintF(logf, "\n");
+		    ajFmtPrintF(flog, "seq1 and seqres DO NOT match\n");
+		ajFmtPrintF(flog, "\n");
 		 */
 
 
@@ -5388,7 +5388,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		    maxb = MAJSTRGETLEN(seq[i]) - 1;
 
 		/*DIAGNOSTIC  
-		ajFmtPrintF(logf, "maxb = %d\nlim2 = %d\nstrlen: %d\n", 
+		ajFmtPrintF(flog, "maxb = %d\nlim2 = %d\nstrlen: %d\n", 
 			    maxb, lim2, MAJSTRGETLEN(seq[i]));*/
 		
 
@@ -5400,7 +5400,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		    ajStrAssignSubS(&bit, seq[i], (lenseqbit), -1);
 		    
 		    /*DIAGNOSTIC  
-		    ajFmtPrintF(logf, "Trying ATOM substring %S\n"
+		    ajFmtPrintF(flog, "Trying ATOM substring %S\n"
 				"versus SEQRES        %S\n",
                                 seqbit, pdbfile->seqres[i]);*/
 		    
@@ -5434,7 +5434,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
                            residues */
 			if(b)
 			{
-			    ajFmtPrintF(logf, "%-15s%d (%c) %d\n",
+			    ajFmtPrintF(flog, "%-15s%d (%c) %d\n",
 					"MISSCTERM", i+1,
 					 ajChararrGet(pdbfile->chid, i),b);
 			    
@@ -5444,7 +5444,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 			
 			done=ajTrue;
 			/*DIAGNOSTIC  
-			ajFmtPrintF(logf, "STEP2 OK\n");  */
+			ajFmtPrintF(flog, "STEP2 OK\n");  */
 			break;
 		    }
 		}
@@ -5455,7 +5455,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		{
 		    /* Otherwise, ATOM is NOT a substring of SEQRES sequence */
 		    /*DIAGNOSTIC
-		    ajFmtPrintF(logf, "STEP2 **NOT** OK\n"); 	*/ 	
+		    ajFmtPrintF(flog, "STEP2 **NOT** OK\n"); 	*/ 	
 		}
 		
 		    /* ORIGINAL
@@ -5470,7 +5470,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		       pdbfile->resn1ok[i]=ajFalse;		       
 		       
 		       done=ajTrue;
-		       ajFmtPrintF(logf, "STEP2 OK\n");  
+		       ajFmtPrintF(flog, "STEP2 OK\n");  
 		       break;
 		       }
 		       */
@@ -5481,24 +5481,24 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		/******************* STEP 3 ********************/
 		/***********************************************/
 		/*DIAGNOSTIC
-		  ajFmtPrintF(logf, "STEP3 tmpseqres: %S\n", tmpseqres);
+		  ajFmtPrintF(flog, "STEP3 tmpseqres: %S\n", tmpseqres);
 		  
-		  ajFmtPrintF(logf, "chnn : %d\n"
+		  ajFmtPrintF(flog, "chnn : %d\n"
 		  "seq1 : %S\n"
 		  "seq2 : %S\n"
 		  "seqr : %S\n", i+1, seq1[i], seq2[i], 
 		  pdbfile->seqres[i]); 
-		 ajFmtPrintF(logf, "\n");
+		 ajFmtPrintF(flog, "\n");
 		  if(ajStrMatchS(seq1[i], seq2[i]))
-		 ajFmtPrintF(logf, "seq1 and seq2 match\n");
+		 ajFmtPrintF(flog, "seq1 and seq2 match\n");
 		  else
-		 ajFmtPrintF(logf, "seq1 and seq2 DO NOT match\n");
+		 ajFmtPrintF(flog, "seq1 and seq2 DO NOT match\n");
 		  
 		  if(ajStrMatchS(seq1[i], pdbfile->seqres[i]))
-		 ajFmtPrintF(logf, "seq1 and seqres match\n");
+		 ajFmtPrintF(flog, "seq1 and seqres match\n");
 		  else
-		 ajFmtPrintF(logf, "seq1 and seqres DO NOT match\n");
-		 ajFmtPrintF(logf, "\n");
+		 ajFmtPrintF(flog, "seq1 and seqres DO NOT match\n");
+		 ajFmtPrintF(flog, "\n");
 		 */
 
 
@@ -5517,7 +5517,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		    /* N-terminal insertion needed*/
 		    if(loc!=0)
 		    {
-			ajFmtPrintF(logf, "%-15s%d (%c) %d\n", "MISSNTERM", 
+			ajFmtPrintF(flog, "%-15s%d (%c) %d\n", "MISSNTERM", 
 				    i+1, ajChararrGet(pdbfile->chid, i), 
 				    loc);
 						
@@ -5530,7 +5530,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		    /* C-terminal insertion needed */
 		    if(pdbfile->nres[i]!=nres[i])
 		    {
-			ajFmtPrintF(logf, "%-15s%d (%c) %d\n", "MISSCTERM", 
+			ajFmtPrintF(flog, "%-15s%d (%c) %d\n", "MISSCTERM", 
 				    i+1, ajChararrGet(pdbfile->chid, i),
 				    ( nres[i] - pdbfile->nres[i]));
 			
@@ -5549,7 +5549,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		    else
 			pdbfile->resn1ok[i]=ajFalse;		       
 
-		    /*DIAGNOSTIC   ajFmtPrintF(logf, "STEP3 OK\n");  */
+		    /*DIAGNOSTIC   ajFmtPrintF(flog, "STEP3 OK\n");  */
 
 		    done=ajTrue;
 		    break;
@@ -5557,7 +5557,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 
 		/* Otherwise, SEQRES is NOT a substring of the ATOM 
 		   sequence */
-		/* DIAGNOSTIC   ajFmtPrintF(logf, "STEP3 **NOT** OK\n");  */
+		/* DIAGNOSTIC   ajFmtPrintF(flog, "STEP3 **NOT** OK\n");  */
 
 		
 
@@ -5565,26 +5565,26 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		/******************* STEP 4 ********************/
 		/***********************************************/
 		/*DIAGNOSTIC 
-		  ajFmtPrintF(logf, "STEP4.1 tmpseqres: %S\n", tmpseqres);
+		  ajFmtPrintF(flog, "STEP4.1 tmpseqres: %S\n", tmpseqres);
 		  
-		  ajFmtPrintF(logf, "chnn : %d\n"
+		  ajFmtPrintF(flog, "chnn : %d\n"
 		  "seq1 : %S\n"
 		  "seq2 : %S\n"
 		  "seqr : %S\n", i+1, seq1[i], seq2[i], 
 		  pdbfile->seqres[i]); 
-		 ajFmtPrintF(logf, "\n");
+		 ajFmtPrintF(flog, "\n");
 		  if(ajStrMatchS(seq1[i], seq2[i]))
-		 ajFmtPrintF(logf, "seq1 and seq2 match\n");
+		 ajFmtPrintF(flog, "seq1 and seq2 match\n");
 		  else
-		 ajFmtPrintF(logf, "seq1 and seq2 DO NOT match\n");
+		 ajFmtPrintF(flog, "seq1 and seq2 DO NOT match\n");
 		  
 		  if(ajStrMatchS(seq1[i], pdbfile->seqres[i]))
-		 ajFmtPrintF(logf, "seq1 and seqres match\n");
+		 ajFmtPrintF(flog, "seq1 and seqres match\n");
 		  else
-		 ajFmtPrintF(logf, "seq1 and seqres DO NOT match\n");
-		 ajFmtPrintF(logf, "\n");
+		 ajFmtPrintF(flog, "seq1 and seqres DO NOT match\n");
+		 ajFmtPrintF(flog, "\n");
 		  
-		  ajFmtPrintF(logf, "STEP4.2 tmpseqres: %S\n", tmpseqres);
+		  ajFmtPrintF(flog, "STEP4.2 tmpseqres: %S\n", tmpseqres);
 		   */
 
 		/* Check whether residue numbering is correct (and count 
@@ -5642,7 +5642,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		
 
 		/*DIAGNOSTIC	
-		  ajFmtPrintF(logf, "STEP4.3 tmpseqres: %S\n", tmpseqres); */
+		  ajFmtPrintF(flog, "STEP4.3 tmpseqres: %S\n", tmpseqres); */
 
 		if(!err)
 		{
@@ -5651,7 +5651,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		    if(nmismatches<=lim)
 		    {
 			if(nmismatches)
-			    ajFmtPrintF(logf, "%-15s%d (%c) %d %S\n", 
+			    ajFmtPrintF(flog, "%-15s%d (%c) %d %S\n", 
 					"MISMATCH",
 					i+1,  
 					ajChararrGet(pdbfile->chid, i),
@@ -5671,7 +5671,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 			done=ajTrue;
 			
 			/*DIAGNOSTIC
-			 ajFmtPrintF(logf, "STEP4 OK %d mismatches\n",
+			 ajFmtPrintF(flog, "STEP4 OK %d mismatches\n",
 			  nmismatches);  	*/
 			
  			break;
@@ -5686,7 +5686,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 
 			
 			/*DIAGNOSTIC
-			 ajFmtPrintF(logf, "STEP4 **NOT** OK %d mismatches\n", 
+			 ajFmtPrintF(flog, "STEP4 **NOT** OK %d mismatches\n", 
 			  nmismatches); 		*/
 		    }
 		}
@@ -5701,7 +5701,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 
 
 		    /*DIAGNOSTIC
-		     ajFmtPrintF(logf, "STEP4 **NOT** OK out_of_range\n");
+		     ajFmtPrintF(flog, "STEP4 **NOT** OK out_of_range\n");
 		     */
 		}
 
@@ -5713,24 +5713,24 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		/******************* STEP 5 ********************/
 		/***********************************************/
 		/*DIAGNOSTIC
-		  ajFmtPrintF(logf, "STEP5 tmpseqres: %S\n", tmpseqres); 
+		  ajFmtPrintF(flog, "STEP5 tmpseqres: %S\n", tmpseqres); 
 		  
-		  ajFmtPrintF(logf, "chnn : %d\n"
+		  ajFmtPrintF(flog, "chnn : %d\n"
 		  "seq1 : %S\n"
 		  "seq2 : %S\n"
 		  "seqr : %S\n", i+1, seq1[i], seq2[i], 
 		  pdbfile->seqres[i]); 
-		 ajFmtPrintF(logf, "\n");
+		 ajFmtPrintF(flog, "\n");
 		  if(ajStrMatchS(seq1[i], seq2[i]))
-		 ajFmtPrintF(logf, "seq1 and seq2 match\n");
+		 ajFmtPrintF(flog, "seq1 and seq2 match\n");
 		  else
-		 ajFmtPrintF(logf, "seq1 and seq2 DO NOT match\n");
+		 ajFmtPrintF(flog, "seq1 and seq2 DO NOT match\n");
 		  
 		  if(ajStrMatchS(seq1[i], pdbfile->seqres[i]))
-		 ajFmtPrintF(logf, "seq1 and seqres match\n");
+		 ajFmtPrintF(flog, "seq1 and seqres match\n");
 		  else
-		 ajFmtPrintF(logf, "seq1 and seqres DO NOT match\n");
-		 ajFmtPrintF(logf, "\n");
+		 ajFmtPrintF(flog, "seq1 and seqres DO NOT match\n");
+		 ajFmtPrintF(flog, "\n");
 		 */
 
 
@@ -5804,22 +5804,22 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		if(done_end)
 		{
 		    
-		    /*DIAGNOSTIC		ajFmtPrintF(logf, "chnn : %d\n"
+		    /*DIAGNOSTIC		ajFmtPrintF(flog, "chnn : %d\n"
 		      "seq1 : %S\n"
 		      "seq2 : %S\n"
 		      "seqr : %S\n", i+1, seq1[i], seq2[i], 
 		      pdbfile->seqres[i]); 
-		     ajFmtPrintF(logf, "\n");
+		     ajFmtPrintF(flog, "\n");
 		      if(ajStrMatchS(seq1[i], seq2[i]))
-		     ajFmtPrintF(logf, "seq1 and seq2 match\n");
+		     ajFmtPrintF(flog, "seq1 and seq2 match\n");
 		      else
-		     ajFmtPrintF(logf, "seq1 and seq2 DO NOT match\n");
+		     ajFmtPrintF(flog, "seq1 and seq2 DO NOT match\n");
 		      
 		      if(ajStrMatchS(seq1[i], pdbfile->seqres[i]))
-		     ajFmtPrintF(logf, "seq1 and seqres match\n");
+		     ajFmtPrintF(flog, "seq1 and seqres match\n");
 		      else
-		     ajFmtPrintF(logf, "seq1 and seqres DO NOT match\n");
-		     ajFmtPrintF(logf, "\n");
+		     ajFmtPrintF(flog, "seq1 and seqres DO NOT match\n");
+		     ajFmtPrintF(flog, "\n");
 						*/
 
 		    /* Residue numbering is correct after alignment 
@@ -5829,13 +5829,13 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		    else
 			pdbfile->resn1ok[i]=ajFalse;		       
 
-		    ajFmtPrintF(logf, "%-15s%d (%c)\n", "GAPPEDOK", i+1,  
+		    ajFmtPrintF(flog, "%-15s%d (%c)\n", "GAPPEDOK", i+1,  
 				ajChararrGet(pdbfile->chid, i));
 		    		    
 		    
 
 		    /*DIAGNOSTIC
-		    ajFmtPrintF(logf, "STEP5 OK\n");  */
+		    ajFmtPrintF(flog, "STEP5 OK\n");  */
 		    
 		    done=ajTrue;
 		    break;
@@ -5843,7 +5843,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 
 
 		/*DIAGNOSTIC
-		  ajFmtPrintF(logf, "STEP5 **NOT** OK\n"); */
+		  ajFmtPrintF(flog, "STEP5 **NOT** OK\n"); */
 
 		/* Otherwise, agreement could not be found */
 
@@ -5858,25 +5858,25 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		/******************* STEP 6 ********************/
 		/***********************************************/
 		/*DIAGNOSTIC
-		  ajFmtPrintF(logf, "STEP6 tmpseqres: %S\n", 
+		  ajFmtPrintF(flog, "STEP6 tmpseqres: %S\n", 
 		  tmpseqres);
 		  
-		  ajFmtPrintF(logf, "chnn : %d\n"
+		  ajFmtPrintF(flog, "chnn : %d\n"
 		  "seq1 : %S\n"
 		  "seq2 : %S\n"
 		  "seqr : %S\n", i+1, seq1[i], seq2[i], 
 		  pdbfile->seqres[i]); 
-		 ajFmtPrintF(logf, "\n");
+		 ajFmtPrintF(flog, "\n");
 		  if(ajStrMatchS(seq1[i], seq2[i]))
-		 ajFmtPrintF(logf, "seq1 and seq2 match\n");
+		 ajFmtPrintF(flog, "seq1 and seq2 match\n");
 		  else
-		 ajFmtPrintF(logf, "seq1 and seq2 DO NOT match\n");
+		 ajFmtPrintF(flog, "seq1 and seq2 DO NOT match\n");
 		  
 		  if(ajStrMatchS(seq1[i], pdbfile->seqres[i]))
-		 ajFmtPrintF(logf, "seq1 and seqres match\n");
+		 ajFmtPrintF(flog, "seq1 and seqres match\n");
 		  else
-		 ajFmtPrintF(logf, "seq1 and seqres DO NOT match\n");
-		 ajFmtPrintF(logf, "\n");
+		 ajFmtPrintF(flog, "seq1 and seqres DO NOT match\n");
+		 ajFmtPrintF(flog, "\n");
 		  */
 
 
@@ -5909,7 +5909,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
       
 
 		    /*DIAGNOSTIC		
-		      ajFmtPrintF(logf, "\n***\n%12s\n%s\n%12s\n%s\n", 
+		      ajFmtPrintF(flog, "\n***\n%12s\n%s\n%12s\n%s\n", 
 		      "Aligning ", ajStrGetPtr(substr), "To ", seqres_ptr);  */
 		    
 		    
@@ -5940,7 +5940,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 
 
 			    /*DIAGNOSTIC
-			      ajFmtPrintF(logf, 
+			      ajFmtPrintF(flog, 
 			      "\n!!!\n%12s\n%s\n%12s\n%s\n", 
 			      "Aligning ", ajStrGetPtr(substr2), "To ", 
 			      seqres_ptr); */
@@ -5971,7 +5971,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 
 
 				/*DIAGNOSTIC 
-				  ajFmtPrintF(logf, "\n\n\nnmismatches = "
+				  ajFmtPrintF(flog, "\n\n\nnmismatches = "
 				  "%d\n%12s%s\n%12s%s\n%12s%s\n%12s%s\n", 
 				  nmismatches, 
 				  "atm_ptr:",
@@ -5985,7 +5985,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 
 			    
 				/*DIAGNOSTIC 
-				  ajFmtPrintF(logf, 
+				  ajFmtPrintF(flog, 
 				  "MISMATCH FOUND OK\n");  */
 
 				/* There is enough space to accommodate 
@@ -5998,7 +5998,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		    }
 		    /*DIAGNOSTIC 
 		    else
-			ajFmtPrintF(logf, "ALIGNMENT FOUND OK\n");  */
+			ajFmtPrintF(flog, "ALIGNMENT FOUND OK\n");  */
 		    
 		    
 		    /* atm_idx and seqres_idx are set to give the
@@ -6019,7 +6019,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 					   /sizeof(char));
 		    
 		    /*DIAGNOSTIC
-		      ajFmtPrintF(logf, "seqres_idx : %d\n", seqres_idx); */
+		      ajFmtPrintF(flog, "seqres_idx : %d\n", seqres_idx); */
 		    
 
 
@@ -6051,7 +6051,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		    if(founderr)
 		    {
 			/*DIAGNOSTIC 
-			ajFmtPrintF(logf,
+			ajFmtPrintF(flog,
 			            "About to try (seqres_idx_last: %d,  "
 				    "seqres_idx: %d) ...\n", seqres_idx_last, 
 				    seqres_idx); */
@@ -6062,7 +6062,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 			for(z=seqres_idx_last+1; z<seqres_idx; z++)
 			{
 			    /*DIAGNOSTIC 
-			     ajFmtPrintF(logf, "Trying ATOM:SEQRES  %c:%c\n", 
+			     ajFmtPrintF(flog, "Trying ATOM:SEQRES  %c:%c\n", 
 			      aa_last,pdbfile->seqres[i]->Ptr[z]);*/
 			    
 			    if(pdbfile->seqres[i]->Ptr[z] == aa_last)
@@ -6087,7 +6087,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		    if(!fixed)
 		    {
 			/*DIAGNOSTIC 
-			 ajFmtPrintF(logf, "FAILED TO FIX\n"); */
+			 ajFmtPrintF(flog, "FAILED TO FIX\n"); */
 			/* Assign residue number */
 			for(k=0, y=atm_idx,  z=seqres_idx; k<siz_substr; 
 			    k++,  y++,  z++)
@@ -6135,7 +6135,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 			   from 1 (rather than 0)*/
 			
 			/*DIAGNOSTIC 
-			  ajFmtPrintF(logf, "a : %d\npdbfile->rtype[a] : "
+			  ajFmtPrintF(flog, "a : %d\npdbfile->rtype[a] : "
 			  "%S\npdbfile->pdbn[a] : %S\n", 
 			  a, pdbfile->rtype[a], pdbfile->pdbn[a]); */
 			  
@@ -6198,12 +6198,12 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 
 		    
 		    if(nmismatches)
-			ajFmtPrintF(logf, "%-15s%d (%c) %d %S\n", "GAPPED", 
+			ajFmtPrintF(flog, "%-15s%d (%c) %d %S\n", "GAPPED", 
 				    i+1,  
 				    ajChararrGet(pdbfile->chid, i),
 				    nmismatches, msgstr);
 		    else
-			ajFmtPrintF(logf, "%-15s%d (%c)\n", "GAPPEDOK", i+1,  
+			ajFmtPrintF(flog, "%-15s%d (%c)\n", "GAPPEDOK", i+1,  
 				    ajChararrGet(pdbfile->chid, i));
 		    		    
 		    
@@ -6215,7 +6215,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 			pdbfile->resn1ok[i]=ajFalse;		       
 		    
 		    /*DIAGNOSTIC		 
-		     ajFmtPrintF(logf,
+		     ajFmtPrintF(flog,
 		     "STEP6 OK %d mismatches\n", nmismatches);   */
 
 		    done=ajTrue;
@@ -6224,7 +6224,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		
 		
 		/*DIAGNOSTIC	 
-		ajFmtPrintF(logf, "STEP6 **NOT** OK %d mismatches\n",
+		ajFmtPrintF(flog, "STEP6 **NOT** OK %d mismatches\n",
 		            nmismatches); */
 
 
@@ -6251,7 +6251,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 	   presume there are no missing residues.*/
 	if(!done)
 	{
-	    ajFmtPrintF(logf, "%-15s%d (%c)\n", "NOMATCH", i+1, 
+	    ajFmtPrintF(flog, "%-15s%d (%c)\n", "NOMATCH", i+1, 
 			ajChararrGet(pdbfile->chid, i));
 
 
@@ -6268,16 +6268,16 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 	else
 	{
 	    if(j)
-		ajFmtPrintF(logf, "%-15s%d (%c) %d\n", "MISSNTERM", i+1, 
+		ajFmtPrintF(flog, "%-15s%d (%c) %d\n", "MISSNTERM", i+1, 
 			    ajChararrGet(pdbfile->chid, i), j);
 	    
 
 	    if(!ajStrMatchS(seq1[i], seq2[i]))
 	    {  
 		if(x==0)
-		    ajFmtPrintF(logf, "%-15s%d\n", "ALTERNOK", i+1);   
+		    ajFmtPrintF(flog, "%-15s%d\n", "ALTERNOK", i+1);   
 		else	
-		    ajFmtPrintF(logf, "%-15s%d\n", "HETEROK", i+1);   
+		    ajFmtPrintF(flog, "%-15s%d\n", "HETEROK", i+1);   
 		
 	    }
 	}
@@ -6322,7 +6322,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		    ajIntGet(idx_full[pdbfile->chnn[i]-1], 
 			     pdbfile->resn1[i]);	
 		/*DIAGNOSTIC 
-		 ajFmtPrintF(logf, "Got position %d (%d) ok\n", 
+		 ajFmtPrintF(flog, "Got position %d (%d) ok\n", 
 		  pdbfile->resn1[i], 
 		  ajIntGet(idx_full[pdbfile->chnn[i]-1], 
 		  pdbfile->resn1[i]));  */
@@ -6334,7 +6334,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		pdbfile->resni[i]=
 		    ajIntGet(idx_full[pdbfile->chnn[i]-1], 
 			     pdbfile->resn2[i]);
-		/*DIAGNOSTIC ajFmtPrintF(logf, "Got position %d (%d) ok\n", 
+		/*DIAGNOSTIC ajFmtPrintF(flog, "Got position %d (%d) ok\n", 
 		  pdbfile->resn2[i], 
 		  ajIntGet(idx_full[pdbfile->chnn[i]-1], 
 		  pdbfile->resn2[i]));  */
@@ -6347,7 +6347,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
     
     /* DIAGNOSTIC 
        
-       ajFmtPrintF(logf, "\n\n\n"); 
+       ajFmtPrintF(flog, "\n\n\n"); 
        
        seq=seq1;
        
@@ -6355,7 +6355,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
        {
        if(!pdbfile->chainok[i])
        {
-       ajFmtPrintF(logf, 
+       ajFmtPrintF(flog, 
        "Chain %d\nSEQRES %S\nCHAIN NOT OK\n\n\n", 
        i+1,
        pdbfile->seqres[i]);
@@ -6363,7 +6363,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
        continue;
        }
        
-       ajFmtPrintF(logf, 
+       ajFmtPrintF(flog, 
        "Chain %d\nSEQRES %S\nSEQ__1 %S\nSEQ__2 %S\n\n\n", 
        i+1,
        pdbfile->seqres[i],
@@ -6383,11 +6383,11 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
        else
        max = nres2[i];
        
-       ajFmtPrintF(logf, "CHAIN %d\n", i+1);
-       ajFmtPrintF(logf, "seqres %S\n", pdbfile->seqres[i]);
+       ajFmtPrintF(flog, "CHAIN %d\n", i+1);
+       ajFmtPrintF(flog, "seqres %S\n", pdbfile->seqres[i]);
        
        
-       ajFmtPrintF(logf, "%-6s%-6s%-6s%-6s%-6s%-6s%-6s\n", 
+       ajFmtPrintF(flog, "%-6s%-6s%-6s%-6s%-6s%-6s%-6s\n", 
        "RES", "NUM", "SEQ1", "RESN1", "SEQ2", "RESN2", "IDX");
        
        for(j=0;j<max;j++)
@@ -6395,7 +6395,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
        if(j<nres1[i] && j<nres2[i])
        {
        
-       ajFmtPrintF(logf, "%-6s%-6d%-6c%-6d%-6c%-6d%-6d\n", 
+       ajFmtPrintF(flog, "%-6s%-6d%-6c%-6d%-6c%-6d%-6d\n", 
        "RES", 
        j+1,
        ajStrGetCharPos(seq1[i], j),
@@ -6407,7 +6407,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
        
        else if (j<nres1[i])
        {
-       ajFmtPrintF(logf, "%-6s%-6d%-6c%-6d%-6c%-6c", 
+       ajFmtPrintF(flog, "%-6s%-6d%-6c%-6d%-6c%-6c", 
        "RES", 
        j+1,
        ajStrGetCharPos(seq1[i], j), 
@@ -6417,12 +6417,12 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
        
        if(pdbfile->resn1ok[i])
        {
-       ajFmtPrintF(logf, "%-6d\n", ajIntGet(idx[i], j));
+       ajFmtPrintF(flog, "%-6d\n", ajIntGet(idx[i], j));
        }
        
        else
        {
-       ajFmtPrintF(logf, "%-6c\n", '.');
+       ajFmtPrintF(flog, "%-6c\n", '.');
        }
        
        
@@ -6430,7 +6430,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
        
        else 
        {
-       ajFmtPrintF(logf, "%-6s%-6d%-6c%-6c%-6c%-6d", 
+       ajFmtPrintF(flog, "%-6s%-6d%-6c%-6c%-6c%-6d", 
        "RES", 
        j+1,
        '.', '.',
@@ -6439,12 +6439,12 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
        
        if(!pdbfile->resn1ok[i])
        {
-       ajFmtPrintF(logf, "%-6d\n", ajIntGet(idx[i], j));
+       ajFmtPrintF(flog, "%-6d\n", ajIntGet(idx[i], j));
        }
        
        else
        {
-       ajFmtPrintF(logf, "%-6c\n", '.');
+       ajFmtPrintF(flog, "%-6c\n", '.');
        }
        
        
@@ -6933,14 +6933,14 @@ static AjBool PdbfileChain(char id, const AjPPdbfile pdb, ajint *chn)
 ** and writes equivalent variables in an Pdbfile object.
 ** 
 ** @param [w] pdbfile [AjPPdbfile] Pdbfile object
-** @param [u] logf    [AjPFile] Pointer to log file (build diagnostics)
+** @param [u] flog    [AjPFile] Pointer to log file (build diagnostics)
 ** @param [r] elms    [const AjPElements] Elements object pointer
 ** 
 ** @return [AjBool]  True on success, False otherwise
 ** @@
 ****************************************************************************/
 
-static AjBool WriteElementData(AjPPdbfile pdbfile, AjPFile logf, 
+static AjBool WriteElementData(AjPPdbfile pdbfile, AjPFile flog, 
 			       const AjPElements elms)
 {
     ajint x           =0;
@@ -6971,7 +6971,7 @@ static AjBool WriteElementData(AjPPdbfile pdbfile, AjPFile logf,
 
     
     /* Check args */
-    if(!pdbfile || !(elms) || !(logf))
+    if(!pdbfile || !(elms) || !(flog))
     {
 	ajWarn("NULL arg passed to WriteElementData");
 
@@ -7032,7 +7032,7 @@ static AjBool WriteElementData(AjPPdbfile pdbfile, AjPFile logf,
 		
 		    if(!found)
 		    {
-			ajFmtPrintF(logf, "%-15s%c %d\n", "SECCHAIN", 
+			ajFmtPrintF(flog, "%-15s%c %d\n", "SECCHAIN", 
 				    elms->elms[x]->chainId, idx);
 			ajChararrPut(&unknowns, n_unknown, 
 				     elms->elms[x]->chainId);
@@ -7173,7 +7173,7 @@ static AjBool WriteElementData(AjPPdbfile pdbfile, AjPFile logf,
 	    {
 		if(!found_start && !found_end)
 		{
-		    ajFmtPrintF(logf, "%-15s%d %d %S %S %S %S\n", "SECBOTH", 
+		    ajFmtPrintF(flog, "%-15s%d %d %S %S %S %S\n", "SECBOTH", 
 				chn, modn, elms->elms[x]->initResName, 
 				elms->elms[x]->initSeqNum, 
 				elms->elms[x]->endResName, 
@@ -7182,13 +7182,13 @@ static AjBool WriteElementData(AjPPdbfile pdbfile, AjPFile logf,
 		}
 		else if(!found_start)
 		{
-		    ajFmtPrintF(logf, "%-15s%d %d %S %S\n", "SECSTART", 
+		    ajFmtPrintF(flog, "%-15s%d %d %S %S\n", "SECSTART", 
 				chn, modn, elms->elms[x]->initResName, 
 				elms->elms[x]->initSeqNum);
 		}
 		else if(!found_end)
 		{
-		    ajFmtPrintF(logf, "%-15s%d %d %S %S\n", "SECEND", chn, 
+		    ajFmtPrintF(flog, "%-15s%d %d %S %S\n", "SECEND", chn, 
 				modn, elms->elms[x]->endResName, 
 				elms->elms[x]->endSeqNum);
 		}
@@ -7286,7 +7286,7 @@ static AjBool WriteElementData(AjPPdbfile pdbfile, AjPFile logf,
 ** within protein chains which do not have a C-alpha atom.
 ** @param [r] atommask       [AjBool]  Whether to mask residues or groups 
 ** in protein chains with a single atom only.
-** @param [u] logf           [AjPFile] Pointer to log file (build diagnostics)
+** @param [u] flog           [AjPFile] Pointer to log file (build diagnostics)
 **
 ** @return [AjPPdb] pdb object pointer, or NULL on failure.
 ** @@
@@ -7294,7 +7294,7 @@ static AjBool WriteElementData(AjPPdbfile pdbfile, AjPFile logf,
 
 AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size, 
 		       ajint max_mismatch, ajint max_trim, AjBool camask, 
-		       AjBool camask1, AjBool atommask, AjPFile logf)
+		       AjBool camask1, AjBool atommask, AjPFile flog)
 {
     AjPPdbfile pdbfile      =NULL; /* Pdbfile structure (for raw data)    */
     AjPPdb     ret          =NULL;  /* Pdb structure (for parsed data)     */
@@ -7302,7 +7302,7 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size,
 
     
 
-    if(!inf || !logf)
+    if(!inf || !flog)
     {
 	ajWarn("Null arg passed to ajPdbReadRawNew");
 
@@ -7327,7 +7327,7 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size,
        SEQRES records, mark lines up to ignore or as coordinate 
        lines, assigning initial residue numbers, read bibliographic
        information etc. */
-    if(!FirstPass(pdbfile, logf, &elms, camask))
+    if(!FirstPass(pdbfile, flog, &elms, camask))
     {
 	PdbfileDel(&pdbfile);
 	ElementsDel(&elms);
@@ -7342,7 +7342,7 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size,
     
     /* Check that SEQRES records contain protein chains. Check 
        that chain id's are unique */
-    if(!CheckChains(pdbfile, logf, min_chain_size))
+    if(!CheckChains(pdbfile, flog, min_chain_size))
     {
 	PdbfileDel(&pdbfile);
 	ElementsDel(&elms);
@@ -7353,7 +7353,7 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size,
 
     /* Check for correct number of TER records. Mask unwanted TER
        records */
-    if(!CheckTer(pdbfile, logf))
+    if(!CheckTer(pdbfile, flog))
     {
 	PdbfileDel(&pdbfile);
 	ElementsDel(&elms);
@@ -7364,7 +7364,7 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size,
 
     /* Assign model and chain number to each coordinate line. Mark
        up non-protein coordinates */
-    if(!NumberChains(pdbfile, logf))
+    if(!NumberChains(pdbfile, flog))
     {
 	PdbfileDel(&pdbfile);
 	ElementsDel(&elms);
@@ -7376,7 +7376,7 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size,
        non-proteins or chains that have non-unique id's (chainok==ajFalse).
        Check that ATOM records contain protein chains.
        */
-    if(!MaskChains(pdbfile, logf, min_chain_size, camask, 
+    if(!MaskChains(pdbfile, flog, min_chain_size, camask, 
 		   camask1, atommask))
     {
 	ElementsDel(&elms);
@@ -7393,7 +7393,7 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size,
     
    
     /* Standardise residue numbering */
-    if(!StandardiseNumbering(pdbfile, logf))
+    if(!StandardiseNumbering(pdbfile, flog))
     {
 	PdbfileDel(&pdbfile);
 	ElementsDel(&elms);
@@ -7403,14 +7403,14 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size,
 
 
     /* Find correct residue numbering */
-    if(!AlignNumbering(pdbfile, logf, max_mismatch, max_trim))
+    if(!AlignNumbering(pdbfile, flog, max_mismatch, max_trim))
     {
 	PdbfileDel(&pdbfile);
 	ElementsDel(&elms);
 	return NULL;
     }
 
-    if(!WriteElementData(pdbfile, logf, elms))
+    if(!WriteElementData(pdbfile, flog, elms))
     {
 	PdbfileDel(&pdbfile);
 	ElementsDel(&elms);

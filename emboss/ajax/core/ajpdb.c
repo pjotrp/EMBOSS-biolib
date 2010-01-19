@@ -3674,15 +3674,15 @@ AjBool ajPdbCopy(AjPPdb *to, const AjPPdb from)
 **
 ** @param  [r] res [const AjPResidue]    Residue object
 ** @param  [w] SEnv [char*] Character for the Secondary structure environment
-** @param  [w] logf [AjPFile] Log file
+** @param  [w] flog [AjPFile] Log file
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool   ajResidueSSEnv(const AjPResidue res, char *SEnv, AjPFile logf)
+AjBool   ajResidueSSEnv(const AjPResidue res, char *SEnv, AjPFile flog)
 {
     *SEnv='\0';
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f\n", res->Id1, res->Idx, 
+    ajFmtPrintF(flog, "R:%c-%d S:%c A:%.2f\n", res->Id1, res->Idx, 
 		res->eStrideType, res->side_rel);
   
     if(res->eStrideType == 'H' ||
@@ -3708,7 +3708,7 @@ AjBool   ajResidueSSEnv(const AjPResidue res, char *SEnv, AjPFile logf)
 	    *SEnv='C';
 	else if(res->eType == '.')
 	{
-	    ajFmtPrintF(logf, "SEnv unknown for residue %d\n", res->Idx);
+	    ajFmtPrintF(flog, "SEnv unknown for residue %d\n", res->Idx);
 	    /* *SEnv='C';  */
 	    *SEnv='\0';  
 	    return ajFalse;
@@ -3729,12 +3729,12 @@ AjBool   ajResidueSSEnv(const AjPResidue res, char *SEnv, AjPFile logf)
 ** @param [r] res [const AjPResidue] Residue object
 ** @param [r] SEnv [char]          Secondary structure environment code
 ** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
-** @param  [w] logf [AjPFile] Log file
+** @param  [w] flog [AjPFile] Log file
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
 
-ajint ajResidueEnv1(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint ajResidueEnv1(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile flog)
 {
     if(SEnv=='\0')
     {
@@ -3788,7 +3788,7 @@ ajint ajResidueEnv1(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx); 
+	ajFmtPrintF(flog, "OEnv unassigned for residue %d\n", res->Idx); 
 	return 0;
     }
 
@@ -3807,11 +3807,11 @@ ajint ajResidueEnv1(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
 ** @param [r] res [const AjPResidue] Residue object
 ** @param [r] SEnv [char]          Secondary structure environment code
 ** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
-** @param  [w] logf [AjPFile] Log file
+** @param  [w] flog [AjPFile] Log file
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint ajResidueEnv2(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint ajResidueEnv2(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile flog)
 {
     float BLimit=40; /* Upper limit for the relative solvent
 			accessible area for a buried residue */
@@ -3836,7 +3836,7 @@ ajint ajResidueEnv2(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     ajStrSetClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+    ajFmtPrintF(flog, "R:%c-%d S:%c A:%.2f f:%.2f\n",
 		res->Id1, res->Idx, res->eType,
 		res->side_rel, res->pol_rel);
   
@@ -3871,7 +3871,7 @@ ajint ajResidueEnv2(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "BEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
 	return 0;
     }
@@ -3916,7 +3916,7 @@ ajint ajResidueEnv2(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "OEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
 
 	return 0;
@@ -3939,11 +3939,11 @@ ajint ajResidueEnv2(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
 ** @param [r] res [const AjPResidue] Residue object
 ** @param [r] SEnv [char]          Secondary structure environment code
 ** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
-** @param  [w] logf [AjPFile] Log file
+** @param  [w] flog [AjPFile] Log file
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint ajResidueEnv3(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint ajResidueEnv3(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile flog)
 {
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
@@ -3968,7 +3968,7 @@ ajint ajResidueEnv3(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     ajStrSetClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+    ajFmtPrintF(flog, "R:%c-%d S:%c A:%.2f f:%.2f\n",
 		res->Id1, res->Idx, res->eType,
 		res->side_rel, res->pol_rel);
   
@@ -4010,7 +4010,7 @@ ajint ajResidueEnv3(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "BEnv unassigned for residue %d\n", res->Idx);
 
 	ajStrDel(&BEnv);
 	return 0;
@@ -4068,7 +4068,7 @@ ajint ajResidueEnv3(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "OEnv unassigned for residue %d\n", res->Idx);
 
 	ajStrDel(&BEnv);
 
@@ -4092,12 +4092,12 @@ ajint ajResidueEnv3(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
 ** @param [r] res [const AjPResidue] Residue object
 ** @param [r] SEnv [char]          Secondary structure environment code
 ** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
-** @param  [w] logf [AjPFile] Log file
+** @param  [w] flog [AjPFile] Log file
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
 
-ajint ajResidueEnv4(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint ajResidueEnv4(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile flog)
 {
     ajStrSetClear(OEnv);
 
@@ -4129,7 +4129,7 @@ ajint ajResidueEnv4(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     else
     {
 	ajStrSetClear(OEnv);
-	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx); 
+	ajFmtPrintF(flog, "OEnv unassigned for residue %d\n", res->Idx); 
 
 	return 0;
     }
@@ -4147,12 +4147,12 @@ ajint ajResidueEnv4(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
 ** @param [r] res [const AjPResidue] Residue object
 ** @param [r] SEnv [char]          Secondary structure environment code
 ** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
-** @param  [w] logf [AjPFile] Log file
+** @param  [w] flog [AjPFile] Log file
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
 
-ajint ajResidueEnv5(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint ajResidueEnv5(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile flog)
 {
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */ /* */
@@ -4177,7 +4177,7 @@ ajint ajResidueEnv5(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     ajStrSetClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+    ajFmtPrintF(flog, "R:%c-%d S:%c A:%.2f f:%.2f\n",
 		res->Id1, res->Idx, res->eType,
 		res->side_rel, res->pol_rel);
   
@@ -4223,7 +4223,7 @@ ajint ajResidueEnv5(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "BEnv unassigned for residue %d\n", res->Idx);
 
 	ajStrDel(&BEnv);
 
@@ -4282,7 +4282,7 @@ ajint ajResidueEnv5(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "OEnv unassigned for residue %d\n", res->Idx);
 
 	ajStrDel(&BEnv);
 	return 0;
@@ -4304,12 +4304,12 @@ ajint ajResidueEnv5(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
 ** @param [r] res [const AjPResidue] Residue object
 ** @param [r] SEnv [char]          Secondary structure environment code
 ** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
-** @param  [w] logf [AjPFile] Log file
+** @param  [w] flog [AjPFile] Log file
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
 
-ajint ajResidueEnv6(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint ajResidueEnv6(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile flog)
 {
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
@@ -4334,7 +4334,7 @@ ajint ajResidueEnv6(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     ajStrSetClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+    ajFmtPrintF(flog, "R:%c-%d S:%c A:%.2f f:%.2f\n",
 		res->Id1, res->Idx, res->eType,
 		res->side_rel, res->pol_rel);
   
@@ -4377,7 +4377,7 @@ ajint ajResidueEnv6(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "BEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
 
 	return 0;
@@ -4435,7 +4435,7 @@ ajint ajResidueEnv6(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "OEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
 
 	return 0;
@@ -4457,12 +4457,12 @@ ajint ajResidueEnv6(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
 ** @param [r] res [const AjPResidue] Residue object
 ** @param [r] SEnv [char]          Secondary structure environment code
 ** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
-** @param  [w] logf [AjPFile] Log file
+** @param  [w] flog [AjPFile] Log file
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
 
-ajint ajResidueEnv7(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint ajResidueEnv7(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile flog)
 {
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
@@ -4486,7 +4486,7 @@ ajint ajResidueEnv7(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     ajStrSetClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+    ajFmtPrintF(flog, "R:%c-%d S:%c A:%.2f f:%.2f\n",
 		res->Id1, res->Idx, res->eType,
 		res->side_rel, res->pol_rel);
   
@@ -4522,7 +4522,7 @@ ajint ajResidueEnv7(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "BEnv unassigned for residue %d\n", res->Idx);
 
 	ajStrDel(&BEnv);
 
@@ -4581,7 +4581,7 @@ ajint ajResidueEnv7(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "OEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
 
 	return 0;
@@ -4604,11 +4604,11 @@ ajint ajResidueEnv7(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
 ** @param [r] res [const AjPResidue] Residue object
 ** @param [r] SEnv [char]          Secondary structure environment code
 ** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
-** @param  [w] logf [AjPFile] Log file
+** @param  [w] flog [AjPFile] Log file
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
-ajint ajResidueEnv8(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint ajResidueEnv8(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile flog)
 {
     ajStrSetClear(OEnv);
 
@@ -4664,7 +4664,7 @@ ajint ajResidueEnv8(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx); 
+	ajFmtPrintF(flog, "OEnv unassigned for residue %d\n", res->Idx); 
 
 	return 0;
     }
@@ -4683,12 +4683,12 @@ ajint ajResidueEnv8(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
 ** @param [r] res [const AjPResidue] Residue object
 ** @param [r] SEnv [char]          Secondary structure environment code
 ** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
-** @param  [w] logf [AjPFile] Log file
+** @param  [w] flog [AjPFile] Log file
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
 
-ajint ajResidueEnv9(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
+ajint ajResidueEnv9(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile flog)
 {
     ajStrSetClear(OEnv);
 
@@ -4720,7 +4720,7 @@ ajint ajResidueEnv9(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
     else
     {
 	ajStrSetClear(OEnv);
-	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx); 
+	ajFmtPrintF(flog, "OEnv unassigned for residue %d\n", res->Idx); 
 	
 	return 0;
     }
@@ -4739,13 +4739,13 @@ ajint ajResidueEnv9(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile logf)
 ** @param [r] res [const AjPResidue] Residue object
 ** @param [r] SEnv [char]          Secondary structure environment code
 ** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
-** @param  [w] logf [AjPFile] Log file
+** @param  [w] flog [AjPFile] Log file
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
 
 ajint ajResidueEnv10(const AjPResidue res, char SEnv, AjPStr *OEnv,
-                     AjPFile logf)
+                     AjPFile flog)
 {
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
@@ -4769,7 +4769,7 @@ ajint ajResidueEnv10(const AjPResidue res, char SEnv, AjPStr *OEnv,
     ajStrSetClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+    ajFmtPrintF(flog, "R:%c-%d S:%c A:%.2f f:%.2f\n",
 		res->Id1, res->Idx, res->eType,
 		res->side_rel, res->pol_rel);
   
@@ -4814,7 +4814,7 @@ ajint ajResidueEnv10(const AjPResidue res, char SEnv, AjPStr *OEnv,
     else
     {
 	 ajStrSetClear(OEnv);
-	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "BEnv unassigned for residue %d\n", res->Idx);
 	
 	ajStrDel(&BEnv);
 
@@ -4873,7 +4873,7 @@ ajint ajResidueEnv10(const AjPResidue res, char SEnv, AjPStr *OEnv,
     else
     {
  	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "OEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
 
 	return 0;
@@ -4895,13 +4895,13 @@ ajint ajResidueEnv10(const AjPResidue res, char SEnv, AjPStr *OEnv,
 ** @param [r] res [const AjPResidue] Residue object
 ** @param [r] SEnv [char]          Secondary structure environment code
 ** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
-** @param  [w] logf [AjPFile] Log file
+** @param  [w] flog [AjPFile] Log file
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
 
 ajint ajResidueEnv11(const AjPResidue res, char SEnv, AjPStr *OEnv,
-                     AjPFile logf)
+                     AjPFile flog)
 {
     float BLimit=5; /*Upper limit for the relative solvent accessible
 		      area for a buried residue*/
@@ -4928,7 +4928,7 @@ ajint ajResidueEnv11(const AjPResidue res, char SEnv, AjPStr *OEnv,
     ajStrSetClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+    ajFmtPrintF(flog, "R:%c-%d S:%c A:%.2f f:%.2f\n",
 		res->Id1, res->Idx, res->eType,
 		res->side_rel, res->pol_rel);
   
@@ -4964,7 +4964,7 @@ ajint ajResidueEnv11(const AjPResidue res, char SEnv, AjPStr *OEnv,
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "BEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
 
 	return 0;
@@ -5022,7 +5022,7 @@ ajint ajResidueEnv11(const AjPResidue res, char SEnv, AjPStr *OEnv,
     else
     {
 	ajStrSetClear(OEnv);
-	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "OEnv unassigned for residue %d\n", res->Idx);
 
 	ajStrDel(&BEnv);
 	return 0;
@@ -5044,13 +5044,13 @@ ajint ajResidueEnv11(const AjPResidue res, char SEnv, AjPStr *OEnv,
 ** @param [r] res [const AjPResidue] Residue object
 ** @param [r] SEnv [char]          Secondary structure environment code
 ** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
-** @param  [w] logf [AjPFile] Log file
+** @param  [w] flog [AjPFile] Log file
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
 
 ajint ajResidueEnv12(const AjPResidue res, char SEnv, AjPStr *OEnv,
-                     AjPFile logf)
+                     AjPFile flog)
 {
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
@@ -5076,7 +5076,7 @@ ajint ajResidueEnv12(const AjPResidue res, char SEnv, AjPStr *OEnv,
     ajStrSetClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n", res->Id1, res->Idx,
+    ajFmtPrintF(flog, "R:%c-%d S:%c A:%.2f f:%.2f\n", res->Id1, res->Idx,
                 res->eType, res->side_rel, res->pol_rel);
   
     /*Assign the basic classes*/
@@ -5116,7 +5116,7 @@ ajint ajResidueEnv12(const AjPResidue res, char SEnv, AjPStr *OEnv,
     else
     {
 	ajStrSetClear(OEnv);
-	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "BEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
 
 	return 0;
@@ -5175,7 +5175,7 @@ ajint ajResidueEnv12(const AjPResidue res, char SEnv, AjPStr *OEnv,
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "OEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
 
 	return 0;
@@ -5197,13 +5197,13 @@ ajint ajResidueEnv12(const AjPResidue res, char SEnv, AjPStr *OEnv,
 ** @param [r] res [const AjPResidue] Residue object
 ** @param [r] SEnv [char]          Secondary structure environment code
 ** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
-** @param  [w] logf [AjPFile] Log file
+** @param  [w] flog [AjPFile] Log file
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
 
 ajint ajResidueEnv13(const AjPResidue res, char SEnv, AjPStr *OEnv,
-                     AjPFile logf)
+                     AjPFile flog)
 {
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
@@ -5228,7 +5228,7 @@ ajint ajResidueEnv13(const AjPResidue res, char SEnv, AjPStr *OEnv,
     ajStrSetClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+    ajFmtPrintF(flog, "R:%c-%d S:%c A:%.2f f:%.2f\n",
 		res->Id1, res->Idx, res->eType,
 		res->side_rel, res->pol_rel);
   
@@ -5263,7 +5263,7 @@ ajint ajResidueEnv13(const AjPResidue res, char SEnv, AjPStr *OEnv,
     else
     {
  	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "BEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
 
 	return 0;
@@ -5322,7 +5322,7 @@ ajint ajResidueEnv13(const AjPResidue res, char SEnv, AjPStr *OEnv,
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "OEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
 
 	return 0;
@@ -5344,13 +5344,13 @@ ajint ajResidueEnv13(const AjPResidue res, char SEnv, AjPStr *OEnv,
 ** @param [r] res [const AjPResidue] Residue object
 ** @param [r] SEnv [char]          Secondary structure environment code
 ** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
-** @param  [w] logf [AjPFile] Log file
+** @param  [w] flog [AjPFile] Log file
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
 
 ajint ajResidueEnv14(const AjPResidue res, char SEnv, AjPStr *OEnv,
-                     AjPFile logf)
+                     AjPFile flog)
 {
     float PBLimit=25; /* Upper limit for the relative solvent
   			accessible area for a Parially buried residue */
@@ -5375,7 +5375,7 @@ ajint ajResidueEnv14(const AjPResidue res, char SEnv, AjPStr *OEnv,
     ajStrSetClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+    ajFmtPrintF(flog, "R:%c-%d S:%c A:%.2f f:%.2f\n",
 		res->Id1, res->Idx, res->eType,
 		res->side_rel, res->pol_rel);
 
@@ -5410,7 +5410,7 @@ ajint ajResidueEnv14(const AjPResidue res, char SEnv, AjPStr *OEnv,
     else
     {
  	ajStrSetClear(OEnv);
-	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "BEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
 
 	return 0;
@@ -5468,7 +5468,7 @@ ajint ajResidueEnv14(const AjPResidue res, char SEnv, AjPStr *OEnv,
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "OEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
 
 	return 0;
@@ -5490,13 +5490,13 @@ ajint ajResidueEnv14(const AjPResidue res, char SEnv, AjPStr *OEnv,
 ** @param [r] res [const AjPResidue] Residue object
 ** @param [r] SEnv [char]          Secondary structure environment code
 ** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
-** @param  [w] logf [AjPFile] Log file
+** @param  [w] flog [AjPFile] Log file
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
 
 ajint ajResidueEnv15(const AjPResidue res, char SEnv, AjPStr *OEnv,
-                     AjPFile logf)
+                     AjPFile flog)
 {
     float PBLimit=25;			/* Upper limit for the
   					   relative solvent accessible
@@ -5523,7 +5523,7 @@ ajint ajResidueEnv15(const AjPResidue res, char SEnv, AjPStr *OEnv,
     ajStrSetClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+    ajFmtPrintF(flog, "R:%c-%d S:%c A:%.2f f:%.2f\n",
 		res->Id1, res->Idx, res->eType,
 		res->side_rel, res->pol_rel);
 
@@ -5557,7 +5557,7 @@ ajint ajResidueEnv15(const AjPResidue res, char SEnv, AjPStr *OEnv,
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "BEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
 
 	return 0;
@@ -5615,7 +5615,7 @@ ajint ajResidueEnv15(const AjPResidue res, char SEnv, AjPStr *OEnv,
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "OEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
 
 	return 0;
@@ -5637,12 +5637,12 @@ ajint ajResidueEnv15(const AjPResidue res, char SEnv, AjPStr *OEnv,
 ** @param [r] res [const AjPResidue] Residue object
 ** @param [r] SEnv [char]          Secondary structure environment code
 ** @param [w] OEnv [AjPStr*]       Character for the overall environment class 
-** @param  [w] logf [AjPFile] Log file
+** @param  [w] flog [AjPFile] Log file
 ** @return [ajint] Number of environments
 ** @@
 ******************************************************************************/
 ajint ajResidueEnv16(const AjPResidue res, char SEnv, AjPStr *OEnv,
-                     AjPFile logf)
+                     AjPFile flog)
 {
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
@@ -5667,7 +5667,7 @@ ajint ajResidueEnv16(const AjPResidue res, char SEnv, AjPStr *OEnv,
     ajStrSetClear(OEnv);
     BEnv=ajStrNew();
 
-    ajFmtPrintF(logf, "R:%c-%d S:%c A:%.2f f:%.2f\n",
+    ajFmtPrintF(flog, "R:%c-%d S:%c A:%.2f f:%.2f\n",
 		res->Id1, res->Idx, 
 		res->eType, res->side_rel, res->pol_rel);
 
@@ -5702,7 +5702,7 @@ ajint ajResidueEnv16(const AjPResidue res, char SEnv, AjPStr *OEnv,
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "BEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "BEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
 
 	return 0;
@@ -5760,7 +5760,7 @@ ajint ajResidueEnv16(const AjPResidue res, char SEnv, AjPStr *OEnv,
     else
     {
 	ajStrSetClear(OEnv); 
-	ajFmtPrintF(logf, "OEnv unassigned for residue %d\n", res->Idx);
+	ajFmtPrintF(flog, "OEnv unassigned for residue %d\n", res->Idx);
 	ajStrDel(&BEnv);
 
 	return 0;
