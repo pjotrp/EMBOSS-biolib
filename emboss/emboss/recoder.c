@@ -33,12 +33,12 @@
 
 
 
-/* @datastatic AjPRinfo *******************************************************
+/* @datastatic PRinfo *******************************************************
 **
 ** recoder internals for RE information
 **
-** @alias AjSRinfo
-** @alias AjORinfo
+** @alias SRinfo
+** @alias ORinfo
 **
 ** @attr code [AjPStr] Undocumented
 ** @attr site [AjPStr] Undocumented
@@ -50,7 +50,7 @@
 ** @attr Padding [char[4]] Padding to alignment boundary
 ******************************************************************************/
 
-typedef struct AjSRinfo
+typedef struct SRinfo
 {
     AjPStr code;
     AjPStr site;
@@ -60,18 +60,18 @@ typedef struct AjSRinfo
     ajint cut3;
     ajint cut4;
     char Padding[4];
-} AjORinfo;
-#define AjPRinfo AjORinfo*
+} ORinfo;
+#define PRinfo ORinfo*
 
 
 
 
-/* @datastatic Mutant *********************************************************
+/* @datastatic PMutant *********************************************************
 **
 ** recoder internals for mutation sites
 **
-** @alias AjSRinfo
-** @alias AjORinfo
+** @alias SMutant
+** @alias OMutant
 **
 ** @attr code [AjPStr] Undocumented
 ** @attr site [AjPStr] Undocumented
@@ -84,7 +84,7 @@ typedef struct AjSRinfo
 ** @attr Padding [char[6]] Padding to alignment boudnary
 ******************************************************************************/
 
-typedef struct Mutant
+typedef struct SMutant
 {
     AjPStr code;
     AjPStr site;
@@ -96,7 +96,7 @@ typedef struct Mutant
     char   nbase;
     char   Padding[6];
 } OMutant;
-#define Mutant OMutant*
+#define PMutant OMutant*
 
 
 static AjPTrn recoderTable = NULL;               /* translation table object */
@@ -109,14 +109,14 @@ static AjPList recoder_rematch(const AjPStr sstr, AjPList ressite,
 			       AjBool rev, ajint begin, ajint end,
 			       AjBool tshow);
 static AjPList recoder_checkTrans(const AjPStr seq,const EmbPMatMatch match,
-				  const AjPRinfo rlp, ajint begin, ajint radj,
+				  const PRinfo rlp, ajint begin, ajint radj,
 				  AjBool rev, ajint end, ajint pos,
 				  AjBool* empty);
 static AjBool recoder_checkPat(const EmbPMatMatch match,
-			       const AjPRinfo rlp, ajint radj, AjBool rev,
+			       const PRinfo rlp, ajint radj, AjBool rev,
 			       ajint begin, ajint end);
 static ajint recoder_changebase(char pbase, char* tbase);
-static void  recoder_mutFree(Mutant* mut);
+static void  recoder_mutFree(PMutant* mut);
 static ajint recoder_basecompare(const void *a, const void *b);
 
 static void recoder_fmt_seq(const char* title, const AjPStr seq,
@@ -155,7 +155,7 @@ int main(int argc, char **argv)
     AjPList relist = NULL;
     AjPList muts;
     AjPList nmuts;
-    AjPRinfo re;
+    PRinfo re;
     AjPStr tailstr = NULL;
 
     embInit("recoder", argc, argv);
@@ -297,7 +297,7 @@ static AjPList recoder_rematch(const AjPStr sstr, AjPList relist,
 
     AjPList patlist = NULL;            /* list for pattern matches of.. */
     EmbPMatMatch match;                /* ..AjMatMatch structures*/
-    AjPRinfo rlp = NULL;
+    PRinfo rlp = NULL;
 
     str   = ajStrNew();
     tstr  = ajStrNew();
@@ -410,7 +410,7 @@ static ajint recoder_readRE(AjPList *relist, const AjPStr enzymes)
     AjPFile fin = NULL;			/* file pointer to RE file data */
     AjPStr refilename = NULL;		/* .. & string for the filename */
     register ajint RStotal = 0;		/* counts no of RE */
-    AjPRinfo rinfo = NULL;
+    PRinfo rinfo = NULL;
     AjBool isall = ajFalse;
     ajint ne = 0;
     ajint i;
@@ -493,7 +493,7 @@ static ajint recoder_readRE(AjPList *relist, const AjPStr enzymes)
 ** Checks whether the RS pattern falls within the sequence string
 **
 ** @param [r] match [const EmbPMatMatch] Match data
-** @param [r] rlp [const AjPRinfo] Restriction site info
+** @param [r] rlp [const PRinfo] Restriction site info
 ** @param [r] radj [ajint] Adjustment for reversed sequence
 ** @param [r] rev [AjBool] Reverse sequence
 ** @param [r] begin [ajint] Start position
@@ -502,7 +502,7 @@ static ajint recoder_readRE(AjPList *relist, const AjPStr enzymes)
 **
 ******************************************************************************/
 static AjBool recoder_checkPat(const EmbPMatMatch match,
-			       const AjPRinfo rlp, ajint radj, AjBool rev,
+			       const PRinfo rlp, ajint radj, AjBool rev,
 			       ajint begin, ajint end)
 {
     ajint mpos;
@@ -553,7 +553,7 @@ static AjBool recoder_checkPat(const EmbPMatMatch match,
 **
 ** @param [r] dna [const AjPStr] Sequence as a string
 ** @param [r] match [const EmbPMatMatch] Match data
-** @param [r] rlp [const AjPRinfo] Restriction site info
+** @param [r] rlp [const PRinfo] Restriction site info
 ** @param [r] begin [ajint] Start position
 ** @param [r] radj [ajint] Adjustment for reversed sequence
 ** @param [r] rev [AjBool] Reverse sequence
@@ -566,7 +566,7 @@ static AjBool recoder_checkPat(const EmbPMatMatch match,
 ******************************************************************************/
 
 static AjPList recoder_checkTrans(const AjPStr dna, const EmbPMatMatch match,
-				  const AjPRinfo rlp, ajint begin, ajint radj,
+				  const PRinfo rlp, ajint begin, ajint radj,
 				  AjBool rev, ajint end, ajint pos,
 				  AjBool* empty)
 {
@@ -575,7 +575,7 @@ static AjPList recoder_checkTrans(const AjPStr dna, const EmbPMatMatch match,
     const char *prs;
     char *s;
 
-    Mutant  tresult;
+    PMutant  tresult;
     AjPList res;
 
     ajint mpos;
@@ -808,7 +808,7 @@ static void recoder_fmt_seq(const char* title, const AjPStr seq,
 
 static void recoder_fmt_muts(AjPList muts, AjPFeattable feat, AjBool rev)
 {
-    Mutant res;
+    PMutant res;
     AjPFeature sf = NULL;
     AjPStr tmpFeatStr = NULL;
 
@@ -860,7 +860,7 @@ static void recoder_fmt_muts(AjPList muts, AjPFeattable feat, AjBool rev)
 
 static ajint recoder_basecompare(const void *a, const void *b)
 {
-    return((*(Mutant const *)a)->base)-((*(Mutant const *)b)->base);
+    return((*(PMutant const *)a)->base)-((*(PMutant const *)b)->base);
 }
 
 
@@ -870,11 +870,11 @@ static ajint recoder_basecompare(const void *a, const void *b)
 **
 ** Free allocated memory for mutant structure
 **
-** @param [d] mut [Mutant*] Mutant structure to be deleted
+** @param [d] mut [PMutant*] Mutant structure to be deleted
 ** @return [void]
 ******************************************************************************/
 
-static void recoder_mutFree(Mutant* mut)
+static void recoder_mutFree(PMutant* mut)
 {
     ajStrDel(&(*mut)->code);
     ajStrDel(&(*mut)->site);

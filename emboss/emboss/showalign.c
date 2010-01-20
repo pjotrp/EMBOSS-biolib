@@ -46,12 +46,12 @@
 
 
 
-/* @datastatic AjPOrder *******************************************************
+/* @datastatic POrder *******************************************************
 **
 ** showalign internals
 **
-** @alias AjSOrder
-** @alias AjOOrder
+** @alias SOrder
+** @alias OOrder
 **
 ** @attr seq [AjPSeq] Sequence
 ** @attr similarity [ajint] total of similarity scores to consensus
@@ -61,15 +61,15 @@
 ** @attr Padding [char[4]] Padding to alignment boundary
 ******************************************************************************/
 
-typedef struct AjSOrder
+typedef struct SOrder
 {
     AjPSeq seq;
     ajint similarity;
     ajint idcount;
     ajint simcount;
     char Padding[4];
-} AjOOrder;
-#define AjPOrder AjOOrder*
+} OOrder;
+#define POrder OOrder*
 
 
 
@@ -100,12 +100,12 @@ static void showalign_Order(const AjPStr order, AjPSeq const * seqs,
 			    const AjPSeq consensus,
 			    ajint nrefseq,
 			    ajint * const *sub, const AjPSeqCvt cvt,
-			    AjOOrder *aorder);
+			    OOrder *aorder);
 static ajint showalign_Output(AjPFile outf, AjPSeq const * seqs, ajint nrefseq,
 			      ajint width, ajint margin,
 			      const AjPSeq consensus,
 			      AjBool docon, AjBool bottom,
-			      const AjOOrder * aorder,
+			      const OOrder * aorder,
 			      AjBool html, const AjPRange highlight,
 			      const AjPRange uppercase, AjBool number,
 			      AjBool ruler, ajint nseqs,
@@ -162,7 +162,7 @@ int main(int argc, char **argv)
      */
     AjBool bottom;
     AjPStr order;		/* input required order */
-    AjOOrder *aorder;		/* the output order array */
+    OOrder *aorder;		/* the output order array */
     AjBool number;		/* display number line */
     AjBool ruler;		/* display ruler line */
     AjPStr xxx = NULL;
@@ -731,7 +731,7 @@ static void showalign_MakeDissimilar(const AjPSeq ref, AjPSeq seq,
 ** @param [r] nrefseq [ajint] number of reference sequence
 ** @param [r] sub [ajint * const *] substitution matrix
 ** @param [r] cvt [const AjPSeqCvt] substitution conversion table
-** @param [u] aorder [AjOOrder *] output order to display the sequences
+** @param [u] aorder [OOrder *] output order to display the sequences
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -740,7 +740,7 @@ static void showalign_Order(const AjPStr order,
 			    AjPSeq const * seqs, const AjPSeq consensus,
 			    ajint nrefseq, ajint * const *sub,
 			    const AjPSeqCvt cvt,
-			    AjOOrder *aorder)
+			    OOrder *aorder)
 {
     char orderchar;
     const AjPSeq ref;
@@ -786,7 +786,7 @@ static void showalign_Order(const AjPStr order,
 	}
 
 	/* sort alphabetically by name */
-	qsort(aorder, j, sizeof(AjOOrder), showalign_CompareTwoSeqNames);
+	qsort(aorder, j, sizeof(OOrder), showalign_CompareTwoSeqNames);
 	break;
 
     case 'S':			/* Similarity to the reference sequence */
@@ -811,7 +811,7 @@ static void showalign_Order(const AjPStr order,
 	}
 
 	/* sort by similarity */
-	qsort(aorder, j, sizeof(AjOOrder),
+	qsort(aorder, j, sizeof(OOrder),
 	      showalign_CompareTwoSeqSimilarities);
 	break;
 
@@ -840,7 +840,7 @@ static void showalign_Order(const AjPStr order,
 ** @param [r] docon [AjBool] display consensus sequence at the bottom
 ** @param [r] bottom [AjBool] display refseq at the botton of the alignment
 **                            as well
-** @param [u] aorder [const AjOOrder *] order to display the sequences
+** @param [u] aorder [const OOrder *] order to display the sequences
 ** @param [r] html [AjBool] format for html display
 ** @param [r] highlight [const AjPRange] ranges to highlight
 ** @param [r] uppercase [const AjPRange] ranges to uppercase
@@ -858,7 +858,7 @@ static ajint showalign_Output(AjPFile outf, AjPSeq const * seqs,
 			      ajint width, ajint margin,
 			      const AjPSeq consensus,
 			      AjBool docon, AjBool bottom,
-			      const AjOOrder* aorder,
+			      const OOrder* aorder,
 			      AjBool html, const AjPRange highlight,
 			      const AjPRange uppercase,
 			      AjBool number, AjBool ruler,
@@ -1129,8 +1129,8 @@ static ajint showalign_OutputSeq(AjPFile outf, const AjPSeq seq, ajint pos,
 
 static ajint showalign_CompareTwoSeqNames(const void * a, const void * b)
 {
-    return strcmp(ajSeqGetNameC((*(AjOOrder const *)a).seq),
-		  ajSeqGetNameC((*(AjOOrder const *)b).seq));
+    return strcmp(ajSeqGetNameC((*(OOrder const *)a).seq),
+		  ajSeqGetNameC((*(OOrder const *)b).seq));
 }
 
 
@@ -1150,6 +1150,6 @@ static ajint showalign_CompareTwoSeqNames(const void * a, const void * b)
 static ajint showalign_CompareTwoSeqSimilarities(const void * a,
 						 const void * b)
 {
-    return (*(AjOOrder const *)b).similarity -
-	(*(AjOOrder const *)a).similarity;
+    return (*(OOrder const *)b).similarity -
+	(*(OOrder const *)a).similarity;
 }
