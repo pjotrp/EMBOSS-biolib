@@ -25,25 +25,25 @@
 
 
 
-/* @datastatic AjPIntarr ******************************************************
+/* @datastatic PIntarr ******************************************************
 **
 ** Integer array
 **
-** @alias AjSIntarr
-** @alias AjPIntarr
+** @alias SIntarr
+** @alias PIntarr
 **
 ** @attr Array [ajint*] Integer array
 ** @attr Size [ajint] Size
 ** @attr Padding [char[4]] Padding to alignment boundary
 ******************************************************************************/
 
-typedef struct AjSIntarr
+typedef struct SIntarr
 {
     ajint* Array;
     ajint Size;
     char Padding[4];
-} AjOIntarr;
-#define AjPIntarr AjOIntarr*
+} OIntarr;
+#define PIntarr OIntarr*
 
 
 
