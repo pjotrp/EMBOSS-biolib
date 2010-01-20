@@ -256,7 +256,7 @@ AjPSeqCvt cvt = NULL;
 
 static void  matcher_Sim(AjPAlign align,
 			const char A[], const char B[],
-			 const AjPSeq seq1, const AjPSeq seq2, ajuint K,
+			 const AjPSeq seq0, const AjPSeq seq1, ajuint K,
 			ajint Q, ajint R, ajint beg, ajint beg2, ajint nseq);
 static ajint matcher_BigPass(const char A[], const char B[],
 			     ajint M, ajint N, ajint K,
