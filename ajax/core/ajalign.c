@@ -1584,19 +1584,14 @@ static void alignWriteScore(AjPAlign thys)
 
 static void alignWriteSam(AjPAlign thys)
 {
-    AjPFile outf;
     ajint nali;
     ajint iali;
     AlignPData* pdata = NULL;
-    AlignPData data = NULL;
 
-
-    outf = thys->File;
     nali = ajListToarray(thys->Data, (void***) &pdata);
 
     for(iali=0; iali<nali; iali++)
     {
-	data = pdata[iali];
     }
 
     AJFREE(pdata);
@@ -1618,19 +1613,15 @@ static void alignWriteSam(AjPAlign thys)
 
 static void alignWriteBam(AjPAlign thys)
 {
-    AjPFile outf;
     ajint nali;
     ajint iali;
     AlignPData* pdata = NULL;
-    AlignPData data = NULL;
 
 
-    outf = thys->File;
     nali = ajListToarray(thys->Data, (void***) &pdata);
 
     for(iali=0; iali<nali; iali++)
     {
-	data = pdata[iali];
     }
 
     AJFREE(pdata);
@@ -4357,8 +4348,6 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     const AjPSeq* seqs;
     ajint numres;		 /* number of residues (not spaces) */
     AlignPData data = NULL;
-    const AjPStr debugstr1 = NULL;
-    const AjPStr debugstr2 = NULL;
     void *freeptr;
     
     
@@ -4631,9 +4620,9 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 	
 	if(thys->IMatrix)
 	{
-	    debugstr1 = ajMatrixGetLabelNum(thys->IMatrix, identicalmaxindex-1);
+/*	    debugstr1 = ajMatrixGetLabelNum(thys->IMatrix, identicalmaxindex-1);
 	    debugstr2 = ajMatrixGetLabelNum(thys->IMatrix, matchingmaxindex-1);
-	    
+*/
 
 	    /*ajDebug("index[%d] ident:%d '%S' %.1f matching:%d '%S' %.1f %.1f "
 		    "high:%d '%c' %.1f\n",
@@ -4650,8 +4639,8 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 	}
 	else
 	{
-	    debugstr1 = ajMatrixfGetLabelNum(thys->FMatrix,identicalmaxindex-1);
-	    debugstr2 = ajMatrixfGetLabelNum(thys->FMatrix, matchingmaxindex-1);
+	    /*debugstr1 = ajMatrixfGetLabelNum(thys->FMatrix,identicalmaxindex-1);
+              debugstr2 = ajMatrixfGetLabelNum(thys->FMatrix, matchingmaxindex-1);*/
 	    /* ajDebug("index[%d] ident:%d '%S' %.1f matching:%d '%S' %.1f "
                        "%.1f "
 		    "high:%d '%c' %.1f\n",
@@ -5400,8 +5389,6 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     AjBool isgap;
     const AjPSeq* seqs;
     ajint numres;		 /* number of residues (not spaces) */
-    const AjPStr debugstr1=NULL;
-    const AjPStr debugstr2=NULL;
     void *freeptr;
     
     if(mymatrix)
@@ -5614,9 +5601,6 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
 
 	khpos = kkpos;
 	himatch = matching[ajSeqcvtGetCodeK(cvt,seqcharptr[highindex][khpos])];
-	
-	debugstr1 = ajMatrixGetLabelNum(imatrix, identicalmaxindex-1);
-	debugstr2 = ajMatrixGetLabelNum(imatrix, matchingmaxindex-1);
 	
 	if(identical[identicalmaxindex] >= ident)
             isident=ajTrue;

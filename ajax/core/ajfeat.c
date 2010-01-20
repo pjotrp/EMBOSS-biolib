@@ -5697,7 +5697,6 @@ static AjPFeature featRefseqpProcess(AjPFeattable thys, const AjPStr feature,
     AjBool Order   = ajFalse;
     ajint Flags;
     ajint ExonFlags;
-    char Strand     = '+';
     AjBool Mother   = ajTrue;
     ajint Frame     = 0;
     float Score     = 0.0;
@@ -5857,10 +5856,6 @@ static AjPFeature featRefseqpProcess(AjPFeattable thys, const AjPStr feature,
 	/* location has been read in, now store it */
 	
 	Flags = ExonFlags = 0;
-	if(LocFwd)
-	    Strand = '+';
-	else
-	    Strand = '-';
 	
 	if(Simple)
 	    Flags |= FEATFLAG_POINT;
