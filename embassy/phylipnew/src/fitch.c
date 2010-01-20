@@ -65,7 +65,7 @@ AjPFile embossouttree;
 
 Char infilename[FNMLNGTH], intreename[FNMLNGTH];
 long nonodes2, outgrno, nums, col, datasets, ith, njumble, jumb=0, numtrees;
-long inseed, nummatrices=0;
+long inseed;
 vector *x;
 intvector *reps;
 boolean minev, global, jumble, lengths, usertree, lower, upper, negallowed,
@@ -115,8 +115,8 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
    
     phylodists = ajAcdGetDistances("datafile");
 
-    while (phylodists[nummatrices])
-    nummatrices++;
+    while (phylodists[datasets])
+    datasets++;
 
 
     minev = ajAcdGetBoolean("minev");
