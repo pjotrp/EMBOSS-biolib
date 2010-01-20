@@ -341,7 +341,7 @@ static SeqOOutFormat seqOutFormat[] =
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
 	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteRefseq},
     {"refseqp",    "Refseqp entry format",
-	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
+	 AJFALSE, AJFALSE, AJFALSE, AJFALSE, AJTRUE,
 	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteRefseqp},
     {"gff2",       "GFF2 feature file with sequence in the header",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
@@ -6332,7 +6332,6 @@ static void seqWriteRefseqp(AjPSeqout outseq)
     
     static SeqPSeqFormat sf = NULL;
     /*ajuint b[5];*/                /* was used for BASE COUNT line */
-    AjPStr ftfmt = NULL;
     AjPStr tmpstr = NULL;
     AjPStr tmpstr2 = NULL;
     const AjPStr tmpline = NULL;
@@ -6341,21 +6340,10 @@ static void seqWriteRefseqp(AjPSeqout outseq)
     AjPStr cur;
     ajuint ilen;
    
-    if(!ftfmt)
-	ajStrAssignC(&ftfmt, "refseqp");
-    
     ajSeqoutTrace(outseq);
     
-    ajFmtPrintF(outseq->File, "LOCUS       %-17S %10u bp   ",
+    ajFmtPrintF(outseq->File, "LOCUS       %-9S %7u aa                   ",
 		outseq->Name, ajStrGetLen(outseq->Seq));
-
-    ajFmtPrintF(outseq->File, " %-7s",
-		    ajSeqmolGetGb(outseq->Molecule));
-
-    if(outseq->Circular)
-       ajFmtPrintF(outseq->File, " %-8s", "circular");
-    else
-       ajFmtPrintF(outseq->File, " %-8s", "linear");
 
     if(ajStrGetLen(outseq->Division))
        ajFmtPrintF(outseq->File, " %-3s",ajSeqdivGetGb(outseq->Division));
@@ -6365,12 +6353,12 @@ static void seqWriteRefseqp(AjPSeqout outseq)
     if(outseq->Date)
     {
 	if(outseq->Date->ModDate)
-	    ajFmtPrintF(outseq->File, " %D", outseq->Date->ModDate);
+	    ajFmtPrintF(outseq->File, "       %D", outseq->Date->ModDate);
 	else if(outseq->Date->CreDate)
-	    ajFmtPrintF(outseq->File, " %D", outseq->Date->CreDate);
+	    ajFmtPrintF(outseq->File, "       %D", outseq->Date->CreDate);
     }
     else
-	ajFmtPrintF(outseq->File, " %D", ajTimeRefTodayFmt("dtline"));
+	ajFmtPrintF(outseq->File, "       %D", ajTimeRefTodayFmt("dtline"));
        
     ajWritebinNewline(outseq->File);
 
@@ -6517,7 +6505,7 @@ static void seqWriteRefseqp(AjPSeqout outseq)
 	    {
 		ajStrAssignS(&tmpstr, seqref->Position);
 		ajStrExchangeCC(&tmpstr, "-", " to ");
-		ajFmtPrintF(outseq->File, "  (bases %S)", tmpstr);
+		ajFmtPrintF(outseq->File, "  (residues %S)", tmpstr);
 	    }
 
 	    ajWritebinNewline(outseq->File);
@@ -6594,7 +6582,7 @@ static void seqWriteRefseqp(AjPSeqout outseq)
     if(seqoutUfoLocal(outseq))
     {
 	ajFeattabOutDel(&outseq->Ftquery);
-        outseq->Ftquery = ajFeattabOutNewSSF(ftfmt, outseq->Name,
+        outseq->Ftquery = ajFeattabOutNewCSF("refseqp", outseq->Name,
 					     ajStrGetPtr(outseq->Type),
 					     outseq->File);
 	if(!ajFeattableWrite(outseq->Ftquery, outseq->Fttable))
@@ -6602,19 +6590,18 @@ static void seqWriteRefseqp(AjPSeqout outseq)
 		   outseq->Ufo);
     }
 
-    ajFmtPrintF(outseq->File, "ORIGIN\n");
+    ajFmtPrintF(outseq->File, "ORIGIN      \n");
     
     seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
     strcpy(sf->endstr, "\n//");
-    sf->tab = 1;
+    sf->tab = 0;
     sf->spacer = 11;
     sf->width = 60;
     sf->numleft = ajTrue;
-    sf->numwidth = 8;
-    
+    sf->numwidth = 9;
+
     seqWriteSeq(outseq, sf);
     seqFormatDel(&sf);
-    ajStrDel(&ftfmt);
     ajStrDel(&tmpstr);
     ajStrDel(&tmpstr2);
 
@@ -7809,7 +7796,7 @@ static void seqWriteSeq(AjPSeqout outseq, const SeqPSeqFormat sf)
 		fputc(' ',outf);
 	}
 	
-	l1++;			     /* don't count spaces for width*/
+	l1++;			     /* don't count spaces for width */
 
 	if(sf->numline)
 	{
