@@ -155,7 +155,7 @@
 
 #define NFIELDS 6
 
-char *FIELDS[NFIELDS] =
+static const char *FIELDS[NFIELDS] =
 {
     "id:", 
     "name:", 
@@ -170,7 +170,7 @@ char *FIELDS[NFIELDS] =
 
 #define NRELATIONS 15
 
-char *RELATIONS[NRELATIONS] =
+static const char *RELATIONS[NRELATIONS] =
 {
     "is_a:",  
     "has_part:",
@@ -194,7 +194,7 @@ char *RELATIONS[NRELATIONS] =
 
 #define NNAMESPACES 7
 
-char *NAMESPACES[NNAMESPACES] =
+static const char *NAMESPACES[NNAMESPACES] =
 {
     "edam_term", 
     "edam_entity", 
@@ -224,7 +224,7 @@ enum _namespace
 
 #define NOTHER 12
 
-char *OTHER[NOTHER] =
+static const char *OTHER[NOTHER] =
 {
     "!", 
     "format-version:", 
@@ -260,6 +260,7 @@ char *OTHER[NOTHER] =
 ** @attr name [AjPStr]  Name of term
 ** @attr id   [AjPStr]  Id of term
 ** @attr line [ajint]   Line number of name: field for the term
+** @attr Padding [ajint]   Padding to alignment boundary
 ******************************************************************************/
 
 typedef struct STerm
@@ -267,6 +268,7 @@ typedef struct STerm
     AjPStr  name;
     AjPStr  id;
     ajint   line;
+    ajint   Padding;
 } OTerm;
  #define PTerm OTerm*
 
@@ -281,18 +283,20 @@ typedef struct STerm
 ** @alias SNamespace
 ** @alias ONamespace
 **
-** @attr name  [AjPStr]     Name of namespace
-** @attr terms [PTerm*]  Array of terms
-** @attr list  [AjPList]    List of terms
-** @attr n     [ajint]      Size of array / list
-******************************************************************************/
+** @attr name    [AjPStr]     Name of namespace
+** @attr terms   [PTerm*]     Array of terms
+** @attr list    [AjPList]    List of terms*
+** @attr n       [ajint]      Size of array / list
+** @attr Padding [ajint]      Padding to alignment boundary
+*****************************************************************************/
 
 typedef struct SNamespace
 {
     AjPStr   name;
-    PTerm *terms;
+    PTerm    *terms;
     AjPList  list;
     ajint    n;
+    ajint    Padding;
 } ONamespace;
  #define PNamespace ONamespace*
 
