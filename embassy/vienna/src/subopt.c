@@ -1,5 +1,8 @@
 /*
   $Log: subopt.c,v $
+  Revision 1.6  2010/01/20 10:47:33  ajb
+  Initialise tmpE
+
   Revision 1.5  2008/06/26 08:40:00  rice
   version 1.7.2 modes and ajfile deprecated functions renamed
 
@@ -103,7 +106,7 @@
 #define SAME_STRAND(I,J) (((I)>=cut_point)||((J)<cut_point))
 
 /*@unused@*/
-PRIVATE char UNUSED rcsid[] = "$Id: subopt.c,v 1.5 2008/06/26 08:40:00 rice Exp $";
+PRIVATE char UNUSED rcsid[] = "$Id: subopt.c,v 1.6 2010/01/20 10:47:33 ajb Exp $";
 
 /*Typedefinitions ---------------------------------------------------------- */
 
@@ -904,7 +907,7 @@ scan_interval(int i, int j, int array_flag, STATE * state)
       /* if we reach here, i should be 1 and j should be n respectively									 */
       for(k=i; k<j; k++)
 	for (l=k+turn+1; l <= j; l++){
-          int kl, type, u, new_c, tmpE, no_close;
+          int kl, type, u, new_c, tmpE=0, no_close;
 	  u = j-l + k-1;	/* get the hairpin loop length */
 	  if(u<turn) continue;
 
