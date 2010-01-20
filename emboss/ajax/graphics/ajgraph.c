@@ -2089,7 +2089,7 @@ void ajGraphicsDrawarcArc(PLFLT xcentre, PLFLT ycentre, PLFLT radius,
         stopangle += 360.0;
 
     if((stopangle-startangle)>=360.0)
-        stopangle = startangle+360.0;
+        stopangle = startangle + (float) 360.0;
 
     x[0] = xcentre + ( radius*(float)cos(ajCvtDegToRad(startangle)) );
     y[0] = ycentre + ( radius*(float)sin(ajCvtDegToRad(startangle)) );
@@ -2218,7 +2218,7 @@ void ajGraphicsDrawarcRectFill(PLFLT xcentre, PLFLT ycentre, PLFLT radius,
         stopangle += 360.0;
 
     if((stopangle-startangle)>=360.0)
-        stopangle = startangle+360.0;
+        stopangle = startangle + (float) 360.0;
 
     r1Blocks = radius;
     r2Blocks = r1Blocks+height;
