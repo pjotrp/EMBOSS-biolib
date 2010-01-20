@@ -1117,7 +1117,8 @@ void ajGraphicsSetLabelsS(const AjPStr strx, const AjPStr stry,
     fold = ajGraphicsSetCharscale(0.0);
     ajGraphicsSetCharscale(fold/(float)2.0);
 
-    ajDebug("=g= plmtex('t', 1.5, 0.5, 0.5, '%S') [subtitle]\n", strsubtitle);
+    ajDebug("=g= plmtex('t', 1.5, 0.5, 0.5, '%s') [subtitle]\n",
+            MAJSTRGETPTR(strsubtitle));
     plmtex("t", (PLFLT) 1.5, (PLFLT) 0.5, (PLFLT) 0.5,
            MAJSTRGETPTR(strsubtitle));
 
@@ -2087,6 +2088,9 @@ void ajGraphicsDrawarcArc(PLFLT xcentre, PLFLT ycentre, PLFLT radius,
     if(endangle < startangle)
         stopangle += 360.0;
 
+    if((stopangle-startangle)>=360.0)
+        stopangle = startangle+360.0;
+
     x[0] = xcentre + ( radius*(float)cos(ajCvtDegToRad(startangle)) );
     y[0] = ycentre + ( radius*(float)sin(ajCvtDegToRad(startangle)) );
 
@@ -2212,6 +2216,9 @@ void ajGraphicsDrawarcRectFill(PLFLT xcentre, PLFLT ycentre, PLFLT radius,
 
     if(endangle < startangle)
         stopangle += 360.0;
+
+    if((stopangle-startangle)>=360.0)
+        stopangle = startangle+360.0;
 
     r1Blocks = radius;
     r2Blocks = r1Blocks+height;
