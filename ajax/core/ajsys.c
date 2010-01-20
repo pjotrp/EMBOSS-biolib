@@ -387,8 +387,12 @@ AjBool ajSysFileWhich(AjPStr *Pfilename)
 
     while(1)
     {
+#ifndef WIN32
 	ajFmtPrintS(&sysFname,"%s%s%S",p,SLASH_STRING,sysTname);
-
+#else
+	ajFmtPrintS(&sysFname,"%s%s%S.exe",p,SLASH_STRING,sysTname);
+#endif
+        
 	if(ajFilenameExistsExec(sysFname))
 	{
 	    ajStrAssignS(Pfilename,sysFname);
