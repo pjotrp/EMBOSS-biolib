@@ -12648,30 +12648,23 @@ static AjBool seqReadRefseqp(AjPSeq thys, AjPSeqin seqin)
     {
 	switch(++i)
 	{
-            case 1:
+            case 1:             /* 'LOCUS' */
                 break;
-            case 2:
+            case 2:             /* locus name */
                 seqSetName(thys, token);
                 break;
-            case 3:
+            case 3:             /* length */
                 ajStrToUint(token, &seqlen);
                 break;
-            case 4:
+            case 4:             /* 'aa' */
                 if(!ajStrMatchC(token, "aa"))
                     ajWarn("bad RefseqP LOCUS line '%S'", seqReadLine);
                 break;
             case 5:
-                ajSeqmolSetGb(&thys->Molecule, token);
-                break;
-            case 6:
-                if(ajStrMatchC(token, "circular"))
-                    thys->Circular = ajTrue;
-                break;
-            case 7:
                 ajSeqdivSetGb(&thys->Division, token);
                 ajSeqclsSetGb(&thys->Class, token);
                 break;
-            case 8:
+            case 6:
                 if(!thys->Date)
                     thys->Date = ajSeqdateNew();
                 ajSeqdateSetModifyS(thys->Date, token);
@@ -12806,7 +12799,7 @@ static AjBool seqReadRefseqp(AjPSeq thys, AjPSeqin seqin)
 
 	    while (ajStrTokenNextParse(&handle, &token))
 	    {
-		if(ajStrMatchC(token, "(bases"))
+		if(ajStrMatchC(token, "(residues"))
                     continue;
 
 		if(ajStrMatchC(token, "to"))
