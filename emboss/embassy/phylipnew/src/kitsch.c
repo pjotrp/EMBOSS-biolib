@@ -57,7 +57,6 @@ AjPFile embossouttree;
 
 Char infilename[FNMLNGTH], intreename[FNMLNGTH];
 long nonodes, numtrees, col, datasets, ith, njumble, jumb;
-long nummatrices=0;
 /*   numtrees is used by usertree option part of maketree */
 long inseed;
 tree curtree, bestree;   /* pointers to all nodes in tree */
@@ -81,7 +80,6 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
 {
  
   AjPStr matrixtype = NULL;
-  ajint nummatrices=0;
   long inseed0;
   minev = false;
   jumble = false;
@@ -109,8 +107,8 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
    
     phylodists = ajAcdGetDistances("datafile");
 
-    while (phylodists[nummatrices])
-	nummatrices++;
+    while (phylodists[datasets])
+	datasets++;
 
 
     minev = ajAcdGetBoolean("minev");
@@ -173,7 +171,6 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
     printf("\n treeprint: %s",(treeprint ? "true" : "false"));
     printf("\n mulsets: %s",(mulsets ? "true" : "false"));
     printf("\n datasets: %s",(datasets ? "true" : "false"));
-    printf("\n nummatrices: %d",(nummatrices));
 
 */
 
