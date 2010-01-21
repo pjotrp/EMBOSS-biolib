@@ -6,4 +6,3 @@ libtool
 configure
 Makefile
 config.status
-autom4te.cache
