@@ -471,7 +471,7 @@ section: additional [
              percent of Gs and Cs in the sequence, and length is the length
              of the sequence. \
              A similar formula is used by the prime primer selection program
-             in GCG http://www.gcg.com), which instead uses 675.0/length in
+             in GCG, which instead uses 675.0/length in
              the last term (after F. Baldino, Jr, M.-F. Chesselet, and M.E.
              Lewis, Methods in Enzymology 168:766 (1989) eqn (1) on page 766
              without the mismatch and formamide terms). The formulas here and
