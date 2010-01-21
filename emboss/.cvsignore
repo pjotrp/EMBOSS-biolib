@@ -1,0 +1,5 @@
+local x autom4te.cache
+Makefile.in Makefile configure libtool
+.cproject .project
+aclocal.m4 config.cache config.guess config.log config.status config.sub eclipse.dic
+000todo.txt 000wrappers.txt INSTALL.auto depcomp install-sh x.x

@@ -32,6 +32,7 @@ AC_PROG_CPP
 
 
 dnl Test whether --with-sgiabi given for IRIX (n32m3 n32m4 64m3 64m4)
+
 if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64" ; then
 if test "$CC" != "gcc"; then
   CFLAGS="$CFLAGS"
@@ -41,6 +42,7 @@ fi
 
 
 dnl Test if --enable-64 is given
+
 if test "${enable_64+set}" != set; then
 enable_64=no
 fi
@@ -52,11 +54,13 @@ if test "${enable_64}" = "yes" ; then
 AC_MSG_CHECKING(for 64bit compilation support)
 
 dnl Test for Linux 64 bit
+
 if test "`uname`" = "Linux"; then
 CPPFLAGS="-DAJ_Linux64 $CPPFLAGS"
 fi
 
 dnl Test for FreeBSD 64 bit
+
 if test "`uname`" = "FreeBSD"; then
 CPPFLAGS="-DAJ_FreeBSD64 $CPPFLAGS"
 fi
@@ -67,16 +71,19 @@ dnl therefore switches off -xarch=v9 if it is given first.
 
 
 dnl Test for OSF1 64 bit (its always this anyway)
+
 if test "`uname`" = "OSF1"; then
 CPPFLAGS="-DAJ_OSF164 $CPPFLAGS"
 fi
 
 dnl Test for SGI 64 bit
+
 if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64"; then
 CPPFLAGS="-DAJ_IRIX64 $CPPFLAGS"
 fi
 
 dnl Test for AIX 64 bit
+
 if test "`uname`" = "AIX"; then
 CPPFLAGS="-DAJ_AIX64 $CPPFLAGS"
 if test "$CC" != "gcc"; then
@@ -87,6 +94,7 @@ AR="ar -X 64"
 fi
 
 dnl Test for HP-UX 64 bit
+
 if test "`uname`" = "HP-UX"; then
 if test "$CC" != "gcc"; then
 CC="$CC +DD64"
@@ -104,44 +112,54 @@ fi
 
 
 dnl Set optimisation flags
+
 if test "$CC" != "gcc"; then
 
 dnl Test for AIX optimisation
+
 if test "`uname`" = "AIX"; then
 CFLAGS="$CFLAGS -O3 -qstrict -qarch=auto -qtune=auto"
 fi
 
 dnl test for SGI optimisation
+
 if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64" ; then
 LD="/usr/bin/ld -IPA"
 CFLAGS="$CFLAGS -O3"
 fi
 
 dnl Test for HP-UX optimisation
+
 if test "`uname`" = "HP-UX"; then
 CFLAGS="$CFLAGS -fast"
 fi
 
 dnl Test for OSF1 optimisation
+
 if test "`uname`" = "OSF1"; then
 CFLAGS="$CFLAGS -fast -U_FASTMATH"
 fi
 
 dnl test for Solaris optimisation
+
 if test "`uname`" = "SunOS"; then
 CFLAGS="$CFLAGS -O"
+
 dnl test for 64 bit ptr here (see Solaris 64bit above)
+
 if test "${enable_64}" = "yes" ; then
 CFLAGS="$CFLAGS -xtarget=ultra -xarch=v9"
 fi
 fi
 
 dnl Test for Linux optimisation
+
 if test "`uname`" = "Linux"; then
 CFLAGS="$CFLAGS -O2"
 fi
 
 dnl Test for FreeBSD optimisation
+
 if test "`uname`" = "FreeBSD"; then
 CFLAGS="$CFLAGS -O2"
 fi
@@ -151,6 +169,7 @@ fi
 else
 
 dnl Intel MacOSX requires reduced optimisation for PCRE code
+
 if test "`uname -a | grep Darwin`"; then
   if test "`uname -a | grep i386`"; then
     CFLAGS="$CFLAGS -O1"
@@ -167,6 +186,7 @@ dnl End of Optimisation tests
 
 
 dnl Add extensions to Solaris for some reentrant functions
+
 if test "`uname`" = "SunOS"; then
 CFLAGS="$CFLAGS -D__EXTENSIONS__"
 fi
@@ -581,12 +601,14 @@ AC_SUBST(NEEDAJAX)
 
 
 dnl HP-UX needs -lsec for shadow passwords
+
 if test "`uname`" = "HP-UX"; then
 LDFLAGS="$LDFLAGS -lsec"
 fi
 
 
 dnl Test if --enable-mprobe is given
+
 if test "${enable_mprobe+set}" != set; then
 enable_mprobe=no
 fi
@@ -602,6 +624,7 @@ else
 fi
 
 dnl Test if --enable-savestats is given
+
 if test "${enable_savestats+set}" != set; then
 enable_savestats=no
 fi
