@@ -1,7 +1,7 @@
+autom4te.cache
+config.status
 configure
 aclocal.m4
-libtool
-config.status
 Makefile.in
+libtool
 Makefile
-autom4te.cache
