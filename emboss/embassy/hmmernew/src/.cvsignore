@@ -1,0 +1,13 @@
+.deps
+.libs
+ehmmsearch
+ehmmemit
+ehmmconvert
+Makefile
+ehmmpfam
+ehmmalign
+ehmmcalibrate
+Makefile.in
+ehmmindex
+ehmmfetch
+ehmmbuild

@@ -1,0 +1,9 @@
+aclocal.m4
+.project
+.cproject
+Makefile.in
+libtool
+configure
+Makefile
+config.status
+autom4te.cache
