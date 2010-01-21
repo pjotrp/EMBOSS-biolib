@@ -5,5 +5,3 @@ Makefile
 Makefile.in
 libtool
 aclocal.m4
-.project
-.cproject
