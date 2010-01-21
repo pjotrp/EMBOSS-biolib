@@ -47,9 +47,9 @@ section: additional [
     information: "Type of feature to display"
     help: "By default any feature type in the feature table is shown.
            You can set this to match any feature type you wish to show. \
-           See http://www3.ebi.ac.uk/Services/WebFeat/ for a list of the EMBL
+           See http://www.ebi.ac.uk/embl/WebFeat/ for a list of the EMBL
            feature types and see Appendix A of the Swissprot user manual in
-           http://www.expasy.ch/txt/userman.txt for a list of the Swissprot
+           http://www.expasy.org/sprot/userman.html for a list of the Swissprot
            feature types. \
            The type may be wildcarded by using '*'. \
            If you wish to show more than one type, separate their names with

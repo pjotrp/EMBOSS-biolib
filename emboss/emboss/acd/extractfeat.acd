@@ -83,7 +83,7 @@ section: additional [
     information: "Type of feature to extract"
     help: "By default every feature in the feature table is extracted.
            You can set this to be any feature type you wish to extract. \
-           See http://www.ebi.ac.uk/Services/WebFeat/ for a list of the EMBL
+           See http://www.ebi.ac.uk/embl/WebFeat/ for a list of the EMBL
            feature types and see the Uniprot user manual in
            http://www.uniprot.org/manual/sequence_annotation
            for a list of the Uniprot feature types. \
