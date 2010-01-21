@@ -1057,7 +1057,7 @@ static AcdOExpList explist[] =
 
 
 /* Dummy model routine for new data types - but these must not be static
-   and wil be defined in ajacd.h instead */
+   and will be defined in ajacd.h instead */
 
 /*static void*  ajAcdGetXxxx (const char *token);*/
 
@@ -1212,7 +1212,7 @@ static void acdSetTree(AcdPAcd thys);
 ** The first is global, and passes the results to the application.
 ** The other is static and are used in command line and user management
 **
-** The argument definiion is the same for each.
+** The argument definition is the same for each.
 ** Items have a type and undefined pointers to the actual data.
 ** Each function knows the structure they must use, and the validations
 ** needed.
@@ -1359,7 +1359,7 @@ AcdOAttr acdAttrAppl[] =
 AcdOAttr acdAttrAlign[] =
 {
     {"type", VT_STR, AJFALSE, "",
-	 "[P]rotein or [N]ucleotide"},
+	 "P:protein or N:nucleotide"},
     {"taglist", VT_STR, AJFALSE, "",
 	 "Extra tags to report"},
     {"minseqs", VT_INT, AJFALSE, "1",
@@ -1649,7 +1649,7 @@ AcdOAttr acdAttrList[] =
     {"maximum", VT_INT, AJFALSE, "1",
 	 "Maximum number of selections"},
     {"button", VT_BOOL, AJFALSE, "N",
-	 "(Not used by ACD) Prefer checkboxes in GUI"},
+	 "(Not used by ACD) Prefer check boxes in GUI"},
     {"casesensitive", VT_BOOL, AJFALSE, "N",
 	 "Case sensitive"},
     {"header", VT_STR, AJFALSE, "",
@@ -1962,7 +1962,7 @@ AcdOAttr acdAttrRel[] =
 AcdOAttr acdAttrReport[] =
 {
     {"type", VT_STR, AJFALSE, "",
-	 "[P]rotein or [N]ucleotide"},
+	 "P:protein or N:nucleotide"},
     {"taglist", VT_STR, AJFALSE, "",
 	 "Extra tag names to report"},
     {"multiple", VT_BOOL, AJFALSE, "N",
@@ -2014,7 +2014,7 @@ AcdOAttr acdAttrSelect[] =
     {"maximum", VT_INT, AJFALSE, "1",
 	 "Maximum number of selections"},
     {"button", VT_BOOL, AJFALSE, "N",
-	 "(Not used by ACD) Prefer radiobuttons in GUI"},
+	 "(Not used by ACD) Prefer radio buttons in GUI"},
     {"casesensitive", VT_BOOL, AJFALSE, "N",
 	 "Case sensitive matching"},
     {"header", VT_STR, AJFALSE, "",
@@ -2779,10 +2779,10 @@ AcdOQual acdQualReport[] =
 {
     {"rformat",    "",  "string",  "Report format"},
     {"rname",      "",  "string",  "Base file name"},
-    {"rextension", "",  "string",  "File name extension"},
-    {"rdirectory", "",  "string",  "Output directory"},
-    {"raccshow",   "N", "boolean", "Show accession number in the report"},
-    {"rdesshow",   "N", "boolean", "Show description in the report"},
+    {"Extension", "",  "string",  "File name extension"},
+    {"Directory", "",  "string",  "Output directory"},
+    {"Aaccshow",   "N", "boolean", "Show accession number in the report"},
+    {"Adesshow",   "N", "boolean", "Show description in the report"},
     {"rscoreshow", "Y", "boolean", "Show the score in the report"},
     {"rstrandshow","Y", "boolean", "Show the nucleotide strand in the report"},
     {"rusashow",   "N", "boolean", "Show the full USA in the report"},
@@ -5713,7 +5713,7 @@ static ajint acdFindKeyC(const char* key)
 	ajWarn("ambiguous keyword %s (%S)", key, ambigList);
     }
 
-    if(ifound != 1)		/* Fatal: but strings are hardcoded */
+    if(ifound != 1)		/* Fatal: but strings are hard coded */
 	acdError("unknown keyword: '%s'\n", key);
 
     ajStrDel(&ambigList);
@@ -6116,7 +6116,7 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @nam4rule  GetBoolean  ACD boolean datatype
 ** @nam4rule  GetCodon    ACD codon usage datatype
 ** @nam4rule  GetCpdb    ACD clean PDB data datatype
-** @nam4rule  GetDatafile    ACD Datafile datatype
+** @nam4rule  GetDatafile    ACD datafile datatype
 ** @nam4rule  GetDirectory    ACD directory datatype
 ** @nam4rule  GetDirlist    ACD directory list datatype
 ** @nam4rule  GetDiscretestates   ACD discrete states datatype
@@ -6125,7 +6125,7 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @nam4rule  GetFeatures   ACD features datatype
 ** @nam4rule  GetFilelist   ACD file list datatype
 ** @nam4rule  GetFloat    ACD floating point number datatype
-** @nam4rule  GetFrequencies    ACD frequenciesdatatype
+** @nam4rule  GetFrequencies    ACD frequencies datatype
 ** @nam4rule  GetGraph    ACD graphical output datatype
 ** @nam4rule  GetGraphxy   ACD XY plot graphical output datatype
 ** @nam4rule  GetInfile    ACD input file datatype
@@ -6156,7 +6156,7 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @nam4rule  GetScop   ACD SCOP data file datatype
 ** @nam4rule  GetSelect   ACD selection menu items datatype
 ** @nam4rule  GetSeq   ACD sequence input datatype
-** @nam4rule  GetSeqall   ACD sequence stream inputdatatype
+** @nam4rule  GetSeqall   ACD sequence stream input datatype
 ** @nam4rule  GetSeqout   ACD sequence output datatype
 ** @nam4rule  GetSeqoutall   ACD sequence stream output datatype
 ** @nam4rule  GetSeqoutset   ACD sequence set output datatype
@@ -6169,7 +6169,7 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @nam5rule  GetValueDefault   ACD datatype default value
 ** @nam5rule  Name    Name of ACD datatype value
 ** @nam5rule  Single  First in array of ACD datatype values
-** @nam3rule  Getpath  Return path for a program definied as external
+** @nam3rule  Getpath  Return path for a program defined as external
 ** @nam3rule  Is    Test value
 ** @nam4rule  IsUserdefined    Test value is defined by the user
 ** @suffix C Character string data
@@ -25432,7 +25432,7 @@ static void acdAmbigAppC(AjPStr* pambigList, const char* txt)
 ** programname.dat
 **
 ** @param [w] infname [AjPStr*] Resulting file name
-** @param [r] name [const AjPStr] Ffile name
+** @param [r] name [const AjPStr] File name
 ** @param [r] ext [const AjPStr] File extension
 ** @param [r] nullok [AjBool] Can set as an empty string if true
 ** @return [AjBool] ajTrue if a name was successfully set
