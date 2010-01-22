@@ -7507,8 +7507,7 @@ ajint ajFilelistAddListname(AjPList list, const AjPStr listname)
 
 /* @func ajFilelistAddPath ****************************************************
 **
-** Scan through a directory returning all filenames and directory names
-** except '.' and '..'
+** Scan through a directory returning all filenames excluding directory names
 **
 ** @param [u] list [AjPList] List for matching entries
 ** @param [r] path [const AjPStr] Directory to scan
