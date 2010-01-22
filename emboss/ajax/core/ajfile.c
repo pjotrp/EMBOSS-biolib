@@ -670,7 +670,7 @@ const AjPStr ajDiroutGetPath(const AjPDirout thys)
 
 /* @func ajDiroutExists ********************************************************
 **
-** Tests a directory output object is for an existing irectory
+** Tests a directory output object is for an existing directory
 **
 ** @param [u] thys [AjPDirout] Directory name
 ** @return [AjBool] True on success.
@@ -726,7 +726,7 @@ AjBool ajDiroutOpen(AjPDirout thys)
 
 /* @datasection [AjPFile] File object *****************************************
 **
-** Function is for manipulating uffered files and returns or takes at least
+** Function is for manipulating buffered files and returns or takes at least
 ** one AjSFileBuff argument.
 ** 
 ** Function is for manipulating file and file-related objects and usually
@@ -1775,7 +1775,7 @@ AjPFile ajFileNewOutNameDirS(const AjPStr name, const AjPDirout dir)
 	    ajStrAppendS(&fileDirfixTmp, name);
 	}
 
-	ajFilenameReplaceExtS(&fileDirfixTmp, dir->Extension);
+	ajFilenameSetExtS(&fileDirfixTmp, dir->Extension);
 
 	thys->fp = fopen(ajStrGetPtr(fileDirfixTmp), "wb");
 	ajDebug("ajFileNewOutNameDirS open dirfix '%S'\n", fileDirfixTmp);
@@ -2094,7 +2094,7 @@ static void fileClose(AjPFile thys)
 
 
 
-/* @section file reopen
+/* @section file reopen *******************************************************
 **
 ** @fdata [AjPFile]
 **
@@ -3055,7 +3055,7 @@ __deprecated AjPFilebuff ajFileBuffNewIn(const AjPStr name)
 
 /* @func ajFilebuffNewNamePathC ************************************************
 **
-** Opens directory "dir", finds and opend file "name"
+** Opens directory "dir", finds and opens file "name"
 **
 ** @param [r] name [const char*] Filename.
 ** @param [r] path [const AjPStr] Directory. If empty uses current directory.
@@ -3095,7 +3095,7 @@ __deprecated AjPFilebuff ajFileBuffNewDC(const AjPStr dir,
 
 /* @func ajFilebuffNewNamePathS ************************************************
 **
-** Opens directory "dir", finds and opend file "name"
+** Opens directory "dir", finds and opens file "name"
 **
 ** @param [r] name [const AjPStr] Filename.
 ** @param [r] path [const AjPStr] Directory. If empty uses current directory.
@@ -3391,7 +3391,7 @@ __deprecated AjPFilebuff ajFileBuffNewDWE(const AjPStr dir,
 
 /* @funcstatic fileBuffInit ***************************************************
 **
-** Initializes the data for a buffered file.
+** Initialises the data for a buffered file.
 **
 ** @param [u] thys [AjPFilebuff] Buffered file object.
 ** @return [void]
@@ -3413,7 +3413,7 @@ static void fileBuffInit(AjPFilebuff thys)
 **
 ** Runs 'opendir' on the specified directory. If the directory name
 ** has no trailing slash (on Unix) then one is added. This is why the
-** directory name must be writeable.
+** directory name must be writable.
 **
 ** @param [u] dir [AjPStr*] Directory name.
 ** @return [DIR*] result of the opendir call.
@@ -4129,7 +4129,7 @@ __deprecated AjBool ajFileBuffNobuff(AjPFilebuff buff)
 ** and update them.
 **
 ** @nam3rule Html Modify HTML tags in the buffer
-** @nam4rule HtmlPre Reduce to a preformatted section if found in HTML
+** @nam4rule HtmlPre Reduce to a pre-formatted section if found in HTML
 ** @nam4rule HtmlNoheader Remove HTML header in the buffer
 ** @nam4rule HtmlStrip Remove all HTML tags in the buffer
 ** @nam3rule Load Add text to the buffer
@@ -4296,7 +4296,7 @@ void ajFilebuffHtmlNoheader(AjPFilebuff buff)
 		if(ajStrGetLen(saveLine))
 		{
 		    ichunk = ajStrGetLen(buff->Curr->Line);
-		    /* preserve the line split by chunksize */
+		    /* preserve the line split by chunk size */
 		    ajStrInsertS(&buff->Curr->Line, 0, saveLine);
 
 		    if(ichunk < chunkSize)
@@ -4306,18 +4306,18 @@ void ajFilebuffHtmlNoheader(AjPFilebuff buff)
 		    }
 		    else
 		    {
-			/* we alrady have the whole chunk! */
+			/* we already have the whole chunk! */
 			ichunk -= ajStrGetLen(buff->Curr->Line);
 		    }
 		}
 		else
 		{
-		    /* just a chunksize, skip */
+		    /* just a chunk size, skip */
 		    if(buff->Curr && chunkSize)
 		    {
 			/*fileBuffLineDel(buff);*/
 		    }
-		    else if (chunkSize)/* final non-zero chunksize */
+		    else if (chunkSize)/* final non-zero chunk size */
 		    {
 			fileBuffLineDel(buff);
 		    }
@@ -4616,7 +4616,7 @@ void ajFilebuffHtmlStrip(AjPFilebuff buff)
 		if(ajStrGetLen(saveLine))
 		{
 		    ichunk = ajStrGetLen(buff->Curr->Line);
-		    /* preserve the line split by chunksize */
+		    /* preserve the line split by chunk size */
 		    ajStrInsertS(&buff->Curr->Line, 0, saveLine);
 
 		    if(ichunk < chunkSize)
@@ -4626,18 +4626,18 @@ void ajFilebuffHtmlStrip(AjPFilebuff buff)
 		    }
 		    else
 		    {
-			/* we alrady have the whole chunk! */
+			/* we already have the whole chunk! */
 			ichunk -= ajStrGetLen(buff->Curr->Line);
 		    }
 		}
 		else
 		{
-		    /* just a chunksize, skip */
+		    /* just a chunk size, skip */
 		    if(buff->Curr && chunkSize)
 		    {
 			/*fileBuffLineDel(buff);*/
 		    }
-		    else if (chunkSize)/* final non-zero chunksize */
+		    else if (chunkSize)/* final non-zero chunk size */
 		    {
 			fileBuffLineDel(buff);
 		    }
@@ -4755,7 +4755,7 @@ __deprecated void ajFileBuffStripHtml(AjPFilebuff buff)
 **
 ** Adds a line to the buffer.
 **
-** Intended for cases where the file data must be preprocessed before
+** Intended for cases where the file data must be pre-processed before
 ** being seen by the sequence reading routines. The first case was
 ** for stripping HTML tags after reading via HTTP.
 **
@@ -4799,7 +4799,7 @@ __deprecated void ajFileBuffLoadC(AjPFilebuff buff, const char* line)
 **
 ** Adds a copy of a line to the buffer.
 **
-** Intended for cases where the file data must be preprocessed before
+** Intended for cases where the file data must be pre processed before
 ** being seen by the sequence reading routines. The first case was
 ** for stripping HTML tags after reading via HTTP.
 **
@@ -4843,7 +4843,7 @@ __deprecated void ajFileBuffLoadS(AjPFilebuff buff, const AjPStr line)
 **
 ** Reads all input lines from a file into the buffer.
 **
-** Intended for cases where the file data must be preprocessed before
+** Intended for cases where the file data must be pre-processed before
 ** being seen by the sequence reading routines. The first case was
 ** for stripping HTML tags after reading via HTTP.
 **
@@ -5627,7 +5627,7 @@ __deprecated void ajOutfileDel(AjPOutfile* pthis)
 ** @argrule * file [const AjPOutfile] Output file object
 **
 ** @valrule GetFile [AjPFile] File object
-** @valrule GetFileptr [FILE*] C file opointer
+** @valrule GetFileptr [FILE*] C file pointer
 ** @valrule GetFormat [const AjPStr] C file pointer
 **
 ** @fcategory cast
@@ -5728,7 +5728,7 @@ __deprecated AjPStr ajOutfileFormat (const AjPOutfile thys)
 **
 ** @fdata [AjPStr]
 **
-** Tests on filenames and searching the filesystem
+** Tests on filenames and searching the file system
 **
 ** @nam3rule Exists tests whether file exists in current directory
 ** @nam4rule Dir Tests whether file exists and is a directory
@@ -6528,6 +6528,66 @@ __deprecated AjBool ajFileSetDir (AjPStr *pname, const AjPStr dir)
 
 
 
+/* @func ajFilenameSetExtC ****************************************************
+**
+** Sets the extension part of a filename
+**
+** @param [u] Pfilename [AjPStr*] Filename.
+** @param [r] txt [const char*] New file extension
+** @return [AjBool] ajTrue if the replacement succeeded.
+** @@
+******************************************************************************/
+
+AjBool ajFilenameSetExtC(AjPStr* Pfilename, const char* txt)
+{
+    char *p = NULL;
+
+    if(!txt || !*txt)
+        return ajFalse;
+
+    /*ajDebug("ajFilenameSetExtC '%S' '%s'\n", *Pfilename, txt);*/
+
+    ajStrAssignS(&fileTmpStr,*Pfilename);
+
+    /* Skip any directory path */
+    p = strrchr(ajStrGetuniquePtr(&fileTmpStr),SLASH_CHAR);
+
+    if (!p)
+        p = ajStrGetuniquePtr(&fileTmpStr);
+
+    ajStrAppendC(&fileTmpStr,".");
+    ajStrAppendC(&fileTmpStr,txt);
+
+    ajStrAssignS(Pfilename,fileTmpStr);
+
+    /*ajDebug("result '%S'\n", *Pfilename);*/
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ajFilenameSetExtS ****************************************************
+**
+** Sets the extension part of a base filename
+**
+** @param [u] Pfilename [AjPStr*] Filename.
+** @param [r] str [const AjPStr] New file extension
+** @return [AjBool] ajTrue if the replacement succeeded.
+** @@
+******************************************************************************/
+
+AjBool ajFilenameSetExtS(AjPStr* Pfilename, const AjPStr str)
+{
+    if(!str)
+        return;
+
+    return ajFilenameSetExtC(Pfilename, ajStrGetPtr(str));
+}
+
+
+
 /* @func ajFilenameSetTempname ************************************************
 **
 ** Returns an available temporary filename that can be opened for writing
@@ -7093,7 +7153,7 @@ __deprecated AjBool ajFileDirPath(AjPStr* dir)
 /* @func ajDirnameFix *********************************************************
 **
 ** If the directory name has no trailing slash (on Unix) then one is
-** added. This is why the directory name must be writeable.
+** added. This is why the directory name must be writable.
 **
 ** @param [u] Pdirname [AjPStr*] Directory name.
 ** @return [void]
@@ -7225,7 +7285,7 @@ __deprecated AjBool ajFileDirUp(AjPStr* dir)
 **
 ** Functions using a directory name
 **
-** @nam3rule Print Print dirctory or filenames
+** @nam3rule Print Print directory or filenames
 ** @nam4rule Recursive Step through subdirectories
 **
 ** @suffix Ignore Process list of sub directory names to ignore
@@ -7405,7 +7465,7 @@ void ajDirnamePrintRecursiveIgnore(const AjPStr path,
 
 
 
-/* @datasection [AjPlist] Lists of filenames
+/* @datasection [AjPlist] Lists of filenames *********************************
 **
 ** Functions building and managing lists of filenames
 **
@@ -7420,10 +7480,10 @@ void ajDirnamePrintRecursiveIgnore(const AjPStr path,
 **
 ** Functions that add filenames to a list
 **
-** @nam3rule Add Adds names to a ist
+** @nam3rule Add Adds names to a list
 ** @nam4rule Path Directory path provided
 ** @nam5rule Wild Wildcard filename provided
-** @suffix Recursive Process sibdirectories
+** @suffix Recursive Process subdirectories
 ** @suffix Ignore List of subdirectories to be ignored
 ** @suffix Dir Include directories in the list
 ** @nam4rule Listname List of files or lists
@@ -7966,7 +8026,7 @@ __deprecated ajint ajDirScan(const AjPStr path,
 ** Add a filename, expanded wildcard filenames and list file contents to
 ** a list
 **
-** @param [r] srcfile [const AjPStr] filename, wildfilename or listfilename
+** @param [r] srcfile [const AjPStr] filename, wild filename or list filename
 ** @param [u] list [AjPList] result filename list
 ** @param [u] recurs [ajint *] recursion level counter
 **
@@ -8209,7 +8269,7 @@ ajint ajFilelistAddPathWildRecursiveIgnore(AjPList list,
 
 
     
-/* @datasection [none] File internal values
+/* @datasection [none] File internal values **********************************
 **
 ** Functions returning internal values and system parameters
 **
