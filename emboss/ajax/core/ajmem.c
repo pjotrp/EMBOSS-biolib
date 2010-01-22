@@ -321,7 +321,7 @@ void ajMemSetZero(void* ptr, size_t count, size_t nbytes)
 /* @func ajMemFree ************************************************************
 **
 ** Frees memory using 'free' and zeroes the pointer. Ignores NULL
-** (uninitialized) pointers.
+** (uninitialised) pointers.
 **
 ** @param [u] ptr [void*] Pointer to memory previously allocated with 'malloc'
 ** @@
@@ -353,8 +353,8 @@ void ajMemFree(void* ptr)
 **
 ** If the pointer is new then new memory is allocated automatically.
 **
-** The C run-time library function realloc does preserves existing values
-** but does not initialize any memory after the old contents.
+** The C run-time library function realloc does preserve existing values
+** but does not initialise any memory after the old contents.
 **
 ** @param [u] ptr [void*] Pointer to memory previously allocated with 'malloc'
 ** @param [r] nbytes [size_t] Number of bytes required
@@ -423,7 +423,7 @@ void* ajMemResize(void* ptr, size_t nbytes,
 ** Memory beyond the previous contents is initialised to zero
 **
 ** The C run-time library function realloc does preserves existing values
-** but does not initialize any memory after the old contents. This is why
+** but does not initialise any memory after the old contents. This is why
 ** this function needs to be told what the old size was.
 **
 ** @param [u] ptr [void*] Pointer to memory previously allocated with 'malloc'

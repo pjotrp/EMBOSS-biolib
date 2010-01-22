@@ -290,8 +290,8 @@ AjPTable ajTableNewLen(ajuint size)
 **
 ** Retrieves values from a hash table
 **
-** @nam3rule Fetch Retrieval fuction
-** @nam4rule FetchKey Key retrieval fuction
+** @nam3rule Fetch Retrieval function
+** @nam4rule FetchKey Key retrieval function
 ** @nam3rule Get return attribute
 ** @nam4rule GetLength Table size
 ** @nam3rule Toarray Return keys and values as arrays
@@ -652,7 +652,7 @@ void ajTableTrace(const AjPTable table)
 ** @argrule Put key [void*] Key
 ** @argrule Put value [void*] Value
 ** @argrule Remove key [const void*] Key
-** @argrule RemoveKey truekey [void**] Removed key poiner - ready to be freed
+** @argrule RemoveKey truekey [void**] Removed key pointer - ready to be freed
 **
 ** @valrule * [void*] Previous value for key, or NULL
 **
@@ -1209,7 +1209,7 @@ AjPTable ajTablestrNewLen(ajuint size)
 **
 ** Retrieves values from a hash table
 **
-** @nam3rule Fetch Retrieval fuction
+** @nam3rule Fetch Retrieval function
 **
 ** @argrule Fetch table [const AjPTable] Hash table
 ** @argrule Fetch key [const AjPStr] Key
