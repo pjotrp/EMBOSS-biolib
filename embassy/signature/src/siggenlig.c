@@ -252,7 +252,6 @@ int main(ajint argc, char **argv)
 		ajStrAppendS(&sigfname, sig->Domid);
 	    else
 		ajStrAppendK(&sigfname, '#');
-	    ajStrAppendC(&sigfname, ".sig");
 	    
 	    sigoutf = ajFileNewOutNameDirS(sigfname, sigdir);
 	    embSignatureWrite(sigoutf, sig);
@@ -420,7 +419,6 @@ int main(ajint argc, char **argv)
 		    ajStrAppendS(&sigfname, sig->Domid);
 		else
 		    ajStrAppendK(&sigfname, '#');
-		ajStrAppendC(&sigfname, ".sig");
 
 		sigoutf = ajFileNewOutNameDirS(sigfname, sigdir);
 
