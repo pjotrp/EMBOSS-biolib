@@ -5,3 +5,4 @@ configure
 Makefile
 aclocal.m4
 libtool
+config.log

@@ -7,3 +7,4 @@ libtool
 configure
 .project
 aclocal.m4
+config.log

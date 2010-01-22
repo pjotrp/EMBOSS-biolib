@@ -5,3 +5,4 @@ config.status
 Makefile.in
 Makefile
 autom4te.cache
+config.log

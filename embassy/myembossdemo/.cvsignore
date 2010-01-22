@@ -5,3 +5,4 @@ configure
 libtool
 config.status
 aclocal.m4
+config.log

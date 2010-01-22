@@ -5,3 +5,4 @@ configure
 aclocal.m4
 Makefile.in
 config.status
+config.log

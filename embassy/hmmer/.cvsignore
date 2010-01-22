@@ -6,3 +6,4 @@ Makefile.in
 Makefile
 INSTALL
 aclocal.m4
+config.log
