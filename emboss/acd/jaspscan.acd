@@ -38,7 +38,7 @@ section: input [
     help: "The name 'all' reads in all matrix files from the selected \
            JASPAR matrix set. You can specify individual matrices by giving \
            their names with commas between then, such as: \
-           'ma0001,ma0015'. \
+           'ma0001.1,ma0015*'. \
            The case of the names is not important. You can specify a file of \
            matrix names to read in by giving the name of the file holding the \
            matrix names with a '@' character in front of it, for example, \
@@ -49,11 +49,11 @@ section: input [
            for. \
            An example of a file of matrix names is: \
            ! my matrices \
-           ma0001, ma0002 \
+           ma0001.1, ma0002.1 \
            ! other matrices \
-           ma0010 \
-           ma0032 \
-           ma0053"
+           ma0010.1 \
+           ma0032* \
+           ma0053.1"
     knowntype: "jaspar matrix id"
     relations:  "EDAM: JASPAR profile identifier"                      
   ]
