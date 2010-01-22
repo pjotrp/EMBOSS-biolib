@@ -6581,7 +6581,7 @@ AjBool ajFilenameSetExtC(AjPStr* Pfilename, const char* txt)
 AjBool ajFilenameSetExtS(AjPStr* Pfilename, const AjPStr str)
 {
     if(!str)
-        return;
+        return ajFalse;
 
     return ajFilenameSetExtC(Pfilename, ajStrGetPtr(str));
 }
