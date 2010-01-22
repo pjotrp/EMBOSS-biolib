@@ -498,7 +498,7 @@ __deprecated void ajListPushList(AjPList list, AjPList* pmore)
 ** @nam3rule Sort Apply function to each node
 ** @nam4rule Two Apply second function to each equal node
 ** @nam5rule Three Apply third function to each equal node
-** @suffix Unique Remove non-unique valukes from the list
+** @suffix Unique Remove non-unique values from the list
 **
 ** @argrule * list [AjPList] List
 ** @argrule Map apply [void function] Function to apply
@@ -1175,7 +1175,7 @@ __deprecated AjBool ajListPopEnd(AjPList list, void** x)
 ** @nam3rule Mapread Apply function to each node without modifying list or data
 ** @nam3rule Mapfind Apply function to each node without modifying list
 **                   or data
-** @nam3rule Peek Pointer to nextvalue
+** @nam3rule Peek Pointer to next value
 ** @nam4rule PeekFirst Pointer to first value
 ** @nam4rule PeekLast Pointer to last value
 ** @nam4rule PeekNumber Pointer to numbered value
@@ -3402,7 +3402,7 @@ __deprecated AjBool ajListstrPopEnd(AjPList list, AjPStr *x)
 ** @nam3rule Mapfind Apply function to each node without modifying list
 **                       or data
 ** @nam3rule Mapread Apply function to each node without modifying list or data
-** @nam3rule Peek Pointer to nextvalue
+** @nam3rule Peek Pointer to next value
 ** @nam4rule PeekFirst Pointer to first value
 ** @nam4rule PeekLast Pointer to last value
 ** @nam4rule PeekNumber Pointer to numbered value

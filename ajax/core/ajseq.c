@@ -206,7 +206,7 @@ static SeqOMolecule seqMolecule[] =
 
 /* @datastatic SeqOTaxon ******************************************************
 **
-** Known major taxons in the sequence databases
+** Known major taxa in the sequence databases
 **
 ** Reference for this is
 ** http://www.ncbi.nlm.nih.gov/Taxonomy/
@@ -1553,7 +1553,7 @@ void ajSeqAssignSeqC(AjPSeq seq, const char* txt)
 **
 ** @param [u] seq [AjPSeq] Sequence object.
 ** @param [r] txt [const char*] New sequence as a C character string.
-** @param [r] len [ajint] Numbur of characters to use
+** @param [r] len [ajint] Number of characters to use
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -4459,7 +4459,7 @@ __deprecated AjBool  ajSeqNum(const AjPSeq seq, const AjPSeqCvt cvt,
 ** @nam3rule Calc Calculate a value
 ** @nam4rule CalcCheckgcg Calculate GCG checksum
 ** @nam4rule CalcCount Count nucleotide bases
-** @nam4rule CalcCrc Calculate cyclic reduncancy checksum
+** @nam4rule CalcCrc Calculate cyclic redundancy checksum
 ** @nam4rule CalcMolwt Calculate molecular weight
 ** @nam4rule CalcTruepos Calculate sequence position
 ** @nam5rule CalcTrueposMin Calculate sequence position in range
@@ -4476,7 +4476,7 @@ __deprecated AjBool  ajSeqNum(const AjPSeq seq, const AjPSeqCvt cvt,
 ** @valrule CalcCrc [ajuint] Cyclic redundancy checksum
 ** @valrule CalcCount [void]
 ** @valrule CalcTruepos [ajint] Sequence position in original
-** @valrule CountGaps [ajuint] Number of gap chanacrters
+** @valrule CountGaps [ajuint] Number of gap characters
 ******************************************************************************/
 
 /* @func ajSeqCalcCheckgcg ****************************************************
@@ -5250,7 +5250,7 @@ void ajSeqallClearStats(AjPSeqall seq)
 
 
 /* @obsolete ajSeqallReverse
-** @remove sequence processed separately afetr ajSeqallNext
+** @remove sequence processed separately after ajSeqallNext
 */
 __deprecated void  ajSeqallReverse(AjPSeqall seq)
 {
@@ -7631,10 +7631,10 @@ __deprecated AjPSeqCvt  ajSeqCvtNewZeroS (const AjPPStr bases, ajint n)
 ** For use with asymmetrical matrices. 
 **
 ** @param [r] basearray [const AjPPStr] Allowed sequence character strings
-**                            (size specified by parameter n)
+**                                      (size specified by parameter n)
 ** @param [r] numbases [ajint] Number of strings
 ** @param [r] matchbases [const AjPPStr] Allowed sequence character strings for
-** rows (size specified by parameter rn)
+**                                       rows (size specified by parameter rn)
 ** @param [r] nummatch [ajint] Number of strings (rows)
 ** @return [AjPSeqCvt] Conversion table.
 ** @@
@@ -7783,7 +7783,7 @@ __deprecated void  ajSeqCvtDel (AjPSeqCvt* Pcvt)
 ** @fdata [AjPSeqCvt]
 ** @fcategory use
 **
-** @nam3rule Get Return sequence conversionattribute(s)
+** @nam3rule Get Return sequence conversion attribute(s)
 ** @nam4rule GetLen Return length (number of bases defined)
 ** @nam4rule GetCode Return conversion code
 ** @nam5rule GetCodeAsym Return conversion code from asymmetric table column
@@ -7929,7 +7929,7 @@ __deprecated ajint  ajSeqCvtKSColumn (const AjPSeqCvt cvt, const AjPStr ch)
 /* @func ajSeqcvtGetLen *******************************************************
 **
 ** Returns the length of a conversion table string (number of sequence
-** characterers explicitly included)
+** characters explicitly included)
 **
 ** @param [r] cvt [const AjPSeqCvt] Conversion table
 **
@@ -8557,7 +8557,7 @@ AjBool ajSeqdescSetName(AjPSeqDesc desc, const AjPStr str)
 
 /* @datasection [AjPList] Description list operations *************************
 **
-** Manipulating lists of desriptions
+** Manipulating lists of descriptions
 **
 ** @nam2rule Seqdesclist
 **
@@ -8613,15 +8613,15 @@ AjBool ajSeqdesclistClone(const AjPList src, AjPList dest)
 
 
 
-/* @datasection [AjPSeqSubdesc] sequence subdescriptions ***********************
+/* @datasection [AjPSeqSubdesc] sequence sub-descriptions **********************
 **
-** Functions handling complex subdescriptions (e.g. in UniProt)
+** Functions handling complex sub-descriptions (e.g. in UniProt)
 **
 ** @nam2rule Seqsubdesc
 **
 ******************************************************************************/
 
-/* @section subdescriptions constructors ************************************
+/* @section sub-descriptions constructors ************************************
 **
 ** @fdata [AjPSeqSubdesc]
 ** @fcategory new
@@ -8629,7 +8629,7 @@ AjBool ajSeqdesclistClone(const AjPList src, AjPList dest)
 ** @nam3rule New        Constructor
 ** @nam4rule NewSubdesc Copy constructor
 **
-** @argrule Subdesc desc [const AjPSeqSubdesc] Source subdescription object
+** @argrule Subdesc desc [const AjPSeqSubdesc] Source sub-description object
 **
 ** @valrule * [AjPSeqSubdesc]
 **
@@ -8637,9 +8637,9 @@ AjBool ajSeqdesclistClone(const AjPList src, AjPList dest)
 
 /* @func ajSeqsubdescNew ******************************************************
 **
-** Constructor for empty subsubdescription object
+** Constructor for empty sub-description object
 **
-** @return [AjPSeqSubdesc] Empty sequence subdescription object
+** @return [AjPSeqSubdesc] Empty sequence sub-description object
 ******************************************************************************/
 
 AjPSeqSubdesc ajSeqsubdescNew(void)
@@ -8662,10 +8662,10 @@ AjPSeqSubdesc ajSeqsubdescNew(void)
 
 /* @func ajSeqsubdescNewSubdesc ************************************************
 **
-** Constructor for copy of a subdescription object
+** Constructor for copy of a sub-description object
 **
-** @param [r] desc [const AjPSeqSubdesc] Subdescription object
-** @return [AjPSeqSubdesc] Copied subdescription object
+** @param [r] desc [const AjPSeqSubdesc] Sub-description object
+** @return [AjPSeqSubdesc] Copied sub-description object
 ******************************************************************************/
 
 AjPSeqSubdesc ajSeqsubdescNewSubdesc(const AjPSeqSubdesc desc)
@@ -8693,14 +8693,14 @@ AjPSeqSubdesc ajSeqsubdescNewSubdesc(const AjPSeqSubdesc desc)
 /* @section destructors **********************************************
 **
 ** Destruction destroys all internal data structures and frees the
-** memory allocated for a subdescription object
+** memory allocated for a sub-description object
 **
 ** @fdata [AjPSeqSubdesc]
 ** @fcategory delete
 **
-** @nam3rule Del Destroy (free) a subdescription object
+** @nam3rule Del Destroy (free) a sub-description object
 **
-** @argrule * Pdesc [AjPSeqSubdesc*] Subdescription object address
+** @argrule * Pdesc [AjPSeqSubdesc*] Sub-description object address
 **
 ** @valrule * [void]
 **
@@ -8711,9 +8711,9 @@ AjPSeqSubdesc ajSeqsubdescNewSubdesc(const AjPSeqSubdesc desc)
 
 /* @func ajSeqsubdescDel ******************************************************
 **
-** Deletes a subdescription object.
+** Deletes a sub-description object.
 **
-** @param [d] Pdesc [AjPSeqSubdesc*] Subdescription object
+** @param [d] Pdesc [AjPSeqSubdesc*] Sub-description object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -8748,18 +8748,18 @@ void ajSeqsubdescDel(AjPSeqSubdesc* Pdesc)
 
 /* @section modifiers ************************************************
 **
-** These functions update contents of a subdescription object.
+** These functions update contents of a sub-description object.
 **
 ** @fdata [AjPSeqSubdesc]
 ** @fcategory modify
 **
-** @nam3rule Append Append to a subdescription object
+** @nam3rule Append Append to a sub-description object
 ** @nam3rule Clear     Clear all contents
-** @nam3rule Set Set a subdescription object
-** @nam4rule AppendName Append to name of a subdescription object
-** @nam4rule SetName Set name of a subdescription object
+** @nam3rule Set Set a sub-description object
+** @nam4rule AppendName Append to name of a sub-description object
+** @nam4rule SetName Set name of a sub-description object
 **
-** @argrule *  desc [AjPSeqSubdesc] Subdescription object
+** @argrule *  desc [AjPSeqSubdesc] Sub-description object
 **
 ** @argrule Append str [const AjPStr] Text to append
 ** @argrule Set str [const AjPStr] Text to assign
@@ -8792,9 +8792,9 @@ AjBool ajSeqsubdescAppendName(AjPSeqSubdesc desc, const AjPStr str)
 
 /* @func ajSeqsubdescClear ****************************************************
 **
-** Resets data for a subdescription object.
+** Resets data for a sub-description object.
 **
-** @param [u] desc [AjPSeqSubdesc] Subdescription object
+** @param [u] desc [AjPSeqSubdesc] Sub-description object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -8831,9 +8831,9 @@ void ajSeqsubdescClear(AjPSeqSubdesc desc)
 
 /* @func ajSeqsubdescSetName **************************************************
 **
-** Set the name of a subdescription object
+** Set the name of a sub-description object
 **
-** @param [u] desc [AjPSeqSubdesc] Subdescription object
+** @param [u] desc [AjPSeqSubdesc] Sub-description object
 ** @param [r] str [const AjPStr] Synonyms string
 ** @return [AjBool] True on success
 ******************************************************************************/
@@ -8850,7 +8850,7 @@ AjBool ajSeqsubdescSetName(AjPSeqSubdesc desc, const AjPStr str)
 
 /* @datasection [AjPList] Description list operations *************************
 **
-** Manipulating lists of desriptions
+** Manipulating lists of sub-descriptions
 **
 ** @nam2rule Seqsubdesclist
 **
@@ -8858,15 +8858,15 @@ AjBool ajSeqsubdescSetName(AjPSeqSubdesc desc, const AjPStr str)
 
 /* @section Description list operations ****************************************
 **
-** Manipulating lists of descriptions
+** Manipulating lists of sub-descriptions
 **
 ** @fdata [AjPList]
 ** @fcategory use
 **
-** @nam3rule Clone Clone list of sequence descriptions
+** @nam3rule Clone Clone list of sequence sub-descriptions
 **
-** @argrule *     src  [const AjPList] List of sequence subdescription objects
-** @argrule Clone dest [AjPList] Empty list to hold sequence subdescription
+** @argrule *     src  [const AjPList] List of sequence sub-description objects
+** @argrule Clone dest [AjPList] Empty list to hold sequence sub-description
 **                               objects
 **
 ** @valrule * [AjBool] True on success
@@ -8875,10 +8875,10 @@ AjBool ajSeqsubdescSetName(AjPSeqSubdesc desc, const AjPStr str)
 
 /* @func ajSeqsubdesclistClone ************************************************
 **
-** Copy a list of subdescriptions to another list
+** Copy a list of sub-descriptions to another list
 **
-** @param [r] src [const AjPList] Source list of subdescriptions
-** @param [w] dest [AjPList] Destination list of subdescriptions
+** @param [r] src [const AjPList] Source list of sub-descriptions
+** @param [w] dest [AjPList] Destination list of sub-descriptions
 ** @return [AjBool] True on success
 ******************************************************************************/
 
@@ -9514,7 +9514,7 @@ void ajSeqxrefDel(AjPSeqXref* Pxref)
 
 /* @func ajSeqxreflistClone ****************************************************
 **
-** Copy a list of ciross-references to another list
+** Copy a list of cross-references to another list
 **
 ** @param [r] src [const AjPList] Source list of cross-references
 ** @param [w] dest [AjPList] Destination list of cross-references
@@ -9685,7 +9685,7 @@ void ajSeqrefDel(AjPSeqRef* Pref)
 ** @nam3rule Append Append to part of a citation
 ** @nam4rule AppendAuthors Append to authors part of a citation
 ** @nam4rule AppendComment Append to comment part of a citation
-** @nam4rule AppendGroupname Append to grouop name part of a citation
+** @nam4rule AppendGroupname Append to group name part of a citation
 ** @nam4rule AppendLocation Append to location part of a citation
 ** @nam4rule AppendPosition Append to position part of a citation
 ** @nam4rule AppendTitle Append to title part of a citation
@@ -9711,7 +9711,7 @@ void ajSeqrefDel(AjPSeqRef* Pref)
 ** @nam4rule SetXref Set cross-reference part of a citation
 ** @nam3rule Setnum Set numeric part of a citation
 ** @nam4rule SetnumNumber Set number of a citation
-** @nam3rule Standard Standardize internal representation of a citation
+** @nam3rule Standard Standardise internal representation of a citation
 **
 ** @argrule Append ref [AjPSeqRef] Sequence citation object
 ** @argrule Fmt ref [const AjPSeqRef] Sequence citation object
@@ -10353,7 +10353,7 @@ AjBool ajSeqreflistClone(const AjPList src, AjPList dest)
 ** @param [r] src [const AjPList] Source cross-reference list
 ** @param [w] Plist [AjPList*] Target list,
 **                             created if it does not already exist
-** @return [ajuint] numbver of cross-references copied
+** @return [ajuint] number of cross-references copied
 ******************************************************************************/
 
 ajuint ajSeqreflistGetXrefs(const AjPList src, AjPList *Plist)
@@ -10723,7 +10723,7 @@ __deprecated const AjPStr  ajIsSeqversion(const AjPStr sv)
 ** @argrule * seq [const AjPStr] Sequence string to be processed
 **
 ** @valrule CalcMolwt [float] Molecular weight
-** @valrule CountGaps [ajuint] Number of gap chanacrters
+** @valrule CountGaps [ajuint] Number of gap characters
 ******************************************************************************/
 
 /* @func ajSeqstrCalcMolwt ****************************************************
