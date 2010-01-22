@@ -5,3 +5,4 @@ Makefile.in
 config.status
 Makefile
 configure
+config.log

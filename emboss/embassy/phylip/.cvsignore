@@ -5,3 +5,4 @@ Makefile
 libtool
 configure
 Makefile.in
+config.log

@@ -5,3 +5,4 @@ aclocal.m4
 Makefile.in
 libtool
 Makefile
+config.log

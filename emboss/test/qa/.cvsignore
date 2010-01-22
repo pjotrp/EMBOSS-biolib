@@ -104,3 +104,4 @@ pepstats-keep
 qatest.summary
 qatest.cmd
 qatest.out
+qatest.log
