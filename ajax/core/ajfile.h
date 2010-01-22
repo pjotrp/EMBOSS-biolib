@@ -312,9 +312,12 @@ const char*    ajFileGetNameC(const AjPFile thys);
 const AjPStr   ajFileGetNameS(const AjPFile thys);
 AjBool         ajFilenameReplacePathS(AjPStr* filename, const AjPStr dir);
 AjBool         ajFilenameReplacePathC(AjPStr* filename, const char* dir);
+AjBool         ajFilenameReplaceExtC(AjPStr* filename, const char* extension);
 AjBool         ajFilenameReplaceExtS(AjPStr* filename,
                                      const AjPStr extension);
-AjBool         ajFilenameReplaceExtC(AjPStr* filename, const char* extension);
+AjBool         ajFilenameSetExtC(AjPStr* filename, const char* extension);
+AjBool         ajFilenameSetExtS(AjPStr* filename,
+                                 const AjPStr extension);
 AjPFile        ajFileNewOutappendNameS(const AjPStr name);
 AjPFile        ajFileNewListinList(AjPList list);
 AjPFile        ajFileNewListinDirPre(const AjPDir dir, const AjPStr prefix);
