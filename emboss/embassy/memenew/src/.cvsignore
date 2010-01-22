@@ -1,3 +1,7 @@
 .deps
 Makefile
 Makefile.in
+.libs
+ememetext
+emast
+ememe
