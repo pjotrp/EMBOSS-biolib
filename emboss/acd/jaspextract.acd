@@ -15,9 +15,8 @@ section: input [
   directory: directory [
     parameter: "Y"
     information: "JASPAR database directory"
-    help: "The directory containing the unzipped and untarred
-           JASPAR_CORE, JASPAR_FAM and JASPAR_PHYLOFACTS
-           subdirectories"
+    help: "The FlatFileDir directory containing the .pfm files
+           and the matrix_list.txt file"
     knowntype: "Jaspar database"
     relations: "EDAM: Directory"                                           
   ]
