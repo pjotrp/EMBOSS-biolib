@@ -1,3 +1,12 @@
 .deps
 Makefile
 Makefile.in
+.libs
+sites
+pdbplus
+hetparse
+pdbtosp
+domainer
+interface
+pdbparse
+contacts
