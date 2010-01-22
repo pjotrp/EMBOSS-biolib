@@ -4,9 +4,9 @@
 # DONE
 ##########################
 # Timeout (TI line to set) default 60secs, diffseq needs more
-# Preprocess (PP line) command
-# Postprocess (QQ line) command - e.g. testing database builds, reusing output
-# EMBOSS_RC variable to read an extra .embossrc file (for new test dbs)
+# Pre-process (PP line) command
+# Post-process (QQ line) command - e.g. testing database builds, reusing output
+# EMBOSS_RC variable to read an extra .embossrc file (for new test databases)
 #
 ##########################
 # THINGS TO DO
@@ -24,15 +24,15 @@
 # ER error return code
 # ## Comment (required double #)
 # CC Comment (used in commenting on failed tests, e.g. "Requires SRS"
-# DL success or all or keep - whether to delete the files afterways
+# DL success or all or keep - whether to delete the files afterwards
 # IN Line(s) of standard input
 # FI File name (stdout and stderr assumed to exist and be empty unless stated)
 # FK Keystrokes output File name (non-text)
 # FP File pattern - /regexp/ to be found. Optional count to check exact number.
 # FZ [<=>]number File size test. Implicit test for zero size stdout/stderr
 #                unless stated
-# FC [<=>]number File linecount test
-# UC Comment (used un documenting the usage)
+# FC [<=>]number File line count test
+# UC Comment (used in documenting the usage)
 # IC Comment (used in documenting the input files)
 # OC Comment (used in documenting the output files)
 # RQ Requires (e.g. SRS for tests that need a local getz working)
@@ -771,6 +771,7 @@ foreach $test (@ARGV) {
     elsif ($opt =~ /logfile=(\S+)/) {$logfile=">$1"} # append to logfile
     elsif ($opt =~ /testfile=(\S+)/) {$qatestfile="$1"}
     elsif ($opt =~ /acd=(\S+)/) {$acddir="$1"}
+    elsif ($opt =~ /embassy=(\S+)/) {$embassyonly="$1"}
     else {print STDERR "+++ unknown option '$opt'\n"; usage()}
   }
   else {
@@ -885,7 +886,8 @@ while (<IN>) {
     $ischeck = 0;
     $isembassy = 0;
   }
-  if (/^AA\s+/) {$isembassy = 1}
+  if (/^AA\s+(\S+)/) {$isembassy = 1}
+  if (/^AB\s+(\S+)/) {$embassypack = $1}
   if (/^AQ\s+/) {$ischeck = 1}
   $testdef .= $_;
 
@@ -894,7 +896,11 @@ while (<IN>) {
   if (/^\/\//) {
     if (($numtests > 0) && !$dowild && !$dotest{$id}) {next}
     if (($numtests > 0) && $dowild && $id !~ /$testwild/) {next}
-    if($isembassy && !$doembassy) {next}
+    if($isembassy){
+      if(!$doembassy) {next}
+      if(defined($embassyonly) && ($embassyonly ne $embassypack)){$testappname=0;next}
+    }
+    elsif(defined($embassyonly)){$testappname=0;next}
     if($ischeck && !$docheck) {next}
     $result = runtest ($testdef);
     $tcount++;
