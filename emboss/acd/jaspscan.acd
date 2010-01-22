@@ -21,7 +21,7 @@ section: input [
     default: "C"
     minimum: "1"
     maximum: "1"
-    values: "C:Core,F:Fam,P:Phylofacts,N:CNE,O:POLII,S:SPLICE"
+    values: "C:Core,F:Fam,P:Phylofacts,N:CNE,O:POLII,S:SPLICE,B:PBM,L:PBM_HLH,H:PBM_HOMEO"
     delimiter: ","
     codedelimiter: ":"
     header: "Jaspar matrix set"
@@ -115,9 +115,10 @@ section: output [
     multiple: "Y"
     taglist: "float:pc=Score_Percent
               str:id=ID str:name=Name str:species=Species str:class=Class
-              str:supergroup=Supergroup str:pseq=Protein_Seq
-              str:exp=Experiment str:pmid=Source_PMID float:info=Info_Content
-              str:jaspar=Closest_Jaspar str:transfac=Closest_Transfac
+              str:supergroup=Supergroup str:fam=Family str:paz=Pazar_TF_ID
+	      str:pseq=Protein_Seq str:exp=Experiment str:pmid=Source_PMID
+	      float:info=Info_Content str:jaspar=Closest_Jaspar
+	      str:transfac=Closest_Transfac
               float:mcs=MCS_Score str:built=Built_From"
     relations: "EDAM: EMBOSS report"                                       
   ]
