@@ -53,6 +53,7 @@ enum EnsEDatabaseadaptorGroup
 ** @attr Databaseconnection [EnsPDatabaseconnection] Ensembl Database
 **                                                   Connection
 ** @attr Species [AjPStr] Species
+** @attr SpeciesNames [AjPList] AJAX List of species name AJAX Strings
 ** @attr Group [AjEnum] Group
 ** @attr MultiSpecies [AjBool] Multi-species database
 ** @attr Identifier [ajuint] Species identifier, defaults to 1
@@ -64,6 +65,7 @@ typedef struct EnsSDatabaseadaptor
 {
     EnsPDatabaseconnection Databaseconnection;
     AjPStr Species;
+    AjPList SpeciesNames;
     AjEnum Group;
     AjBool MultiSpecies;
     ajuint Identifier;
@@ -106,7 +108,8 @@ AjBool ensDatabaseadaptorSetSpecies(EnsPDatabaseadaptor dba, AjPStr species);
 
 AjBool ensDatabaseadaptorSetGroup(EnsPDatabaseadaptor dba, AjEnum group);
 
-AjBool ensDatabaseadaptorSetMultiSpecies(EnsPDatabaseadaptor dba, AjBool multi);
+AjBool ensDatabaseadaptorSetMultiSpecies(EnsPDatabaseadaptor dba,
+                                         AjBool multi);
 
 AjBool ensDatabaseadaptorSetIdentifier(EnsPDatabaseadaptor dba,
                                        ajuint identifier);
@@ -116,7 +119,7 @@ AjEnum ensDatabaseadaptorGroupFromStr(const AjPStr group);
 const char *ensDatabaseadaptorGroupToChar(const AjEnum group);
 
 AjBool ensDatabaseadaptorMatch(const EnsPDatabaseadaptor dba1,
-			const EnsPDatabaseadaptor dba2);
+                               const EnsPDatabaseadaptor dba2);
 
 AjBool ensDatabaseadaptorMatchComponents(const EnsPDatabaseadaptor dba,
                                          const EnsPDatabaseconnection dbc,
@@ -129,17 +132,19 @@ AjPSqlstatement ensDatabaseadaptorSqlstatementNew(EnsPDatabaseadaptor dba,
                                                   const AjPStr statement);
 
 AjBool ensDatabaseadaptorEscapeC(EnsPDatabaseadaptor dba,
-                                  char **Ptxt,
-                                  const AjPStr str);
+                                 char **Ptxt,
+                                 const AjPStr str);
 
 AjBool ensDatabaseadaptorEscapeS(EnsPDatabaseadaptor dba,
-                                  AjPStr *Pstr,
-                                  const AjPStr str);
+                                 AjPStr *Pstr,
+                                 const AjPStr str);
 
 AjBool ensDatabaseadaptorTrace(const EnsPDatabaseadaptor dba, ajuint level);
 
 AjBool ensDatabaseadaptorGetSchemaBuild(const EnsPDatabaseadaptor dba,
                                         AjPStr *Pbuild);
+
+const AjPList ensDatabaseadaptorGetAllSpeciesNames(EnsPDatabaseadaptor dba);
 
 /*
 ** End of prototype definitions
@@ -148,7 +153,7 @@ AjBool ensDatabaseadaptorGetSchemaBuild(const EnsPDatabaseadaptor dba,
 
 
 
-#endif
+#endif /* ensdatabaseadaptor_h */
 
 #ifdef __cplusplus
 }
