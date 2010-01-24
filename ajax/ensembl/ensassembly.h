@@ -100,7 +100,7 @@ ajuint ensAssemblyGetMemSize(const EnsPAssembly assembly);
 
 
 
-#endif
+#endif /* ensassembly_h */
 
 #ifdef __cplusplus
 }
