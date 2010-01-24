@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** Bio::EnsEMBL::Registry CVS Revision:
@@ -3835,6 +3835,53 @@ EnsPProteinfeatureadaptor ensRegistryGetProteinfeatureadaptor(
         default:
 
             ajWarn("ensRegistryGetProteinfeatureadaptor got an "
+                   "Ensembl Database Adaptor "
+                   "with an unexpected group %d.\n",
+                   ensDatabaseadaptorGetGroup(dba));
+    }
+
+    return NULL;
+}
+
+
+
+
+/* @func ensRegistryGetRepeatconsensusadaptor *********************************
+**
+** Get an Ensembl Repeat Consensus Adaptor from the Ensembl Registry.
+** The Ensembl Repeat Consensus Adaptor is an alias for an
+** Ensembl Database Adaptor connected to an Ensembl Core-style database.
+**
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+**
+** @return [EnsPRepeatconsensusadaptor] Ensembl Repeat Consensus Adaptor
+**                                      or NULL
+** @@
+******************************************************************************/
+
+EnsPRepeatconsensusadaptor ensRegistryGetRepeatconsensusadaptor(
+    EnsPDatabaseadaptor dba)
+{
+    if(!dba)
+        return NULL;
+
+    switch(ensDatabaseadaptorGetGroup(dba))
+    {
+        case ensEDatabaseadaptorGroupCore:
+
+        case ensEDatabaseadaptorGroupVega:
+
+        case ensEDatabaseadaptorGroupOtherFeatures:
+
+        case ensEDatabaseadaptorGroupCopyDNA:
+
+            return dba;
+
+            break;
+
+        default:
+
+            ajWarn("ensRegistryGetRepeatconsensusadaptor got an "
                    "Ensembl Database Adaptor "
                    "with an unexpected group %d.\n",
                    ensDatabaseadaptorGetGroup(dba));
