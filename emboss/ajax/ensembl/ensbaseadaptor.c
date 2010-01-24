@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -56,7 +56,7 @@ const ajuint baseAdaptorFetchAllByIdentifiersMax = 2048;
 
 
 static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
-                                               AjPStr identifiers,
+                                               const AjPStr values,
                                                AjPList objects);
 
 
@@ -95,12 +95,8 @@ static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
 ** @fnote None
 **
 ** @nam3rule New Constructor
-** @nam4rule NewObj Constructor with existing object
-** @nam4rule NewRef Constructor by incrementing the reference counter
 **
 ** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPBaseadaptor] Ensembl Base Adaptor
-** @argrule Ref object [EnsPBaseadaptor] Ensembl Base Adaptor
 **
 ** @valrule * [EnsPBaseadaptor] Ensembl Base Adaptor
 **
@@ -165,7 +161,6 @@ EnsPBaseadaptor ensBaseadaptorNew(
 
     if(left_join)
         ba->LeftJoin = left_join;
-
     else
         ba->LeftJoin = baseAdaptorLeftJoin;
 
@@ -213,13 +208,17 @@ EnsPBaseadaptor ensBaseadaptorNew(
 
 void ensBaseadaptorDel(EnsPBaseadaptor *Pba)
 {
+    EnsPBaseadaptor pthis = NULL;
+
     if(!Pba)
         return;
 
     if(!*Pba)
         return;
 
-    AJFREE(*Pba);
+    pthis = *Pba;
+
+    AJFREE(pthis);
 
     *Pba = NULL;
 
@@ -868,10 +867,10 @@ void *ensBaseadaptorFetchByIdentifier(const EnsPBaseadaptor ba,
 ** AJAX List of SQL database-internal identifiers via an Ensembl Base Adaptor.
 **
 ** @param [r] ba [const EnsPBaseadaptor] Ensembl Base Adaptor
-** @param [r] identifiers [AjPStr] Comma-separated list of SQL database-
-**                                 internal identifiers used in an IN
-**                                 comparison function in a SQL SELECT
-**                                 statement
+** @param [r] values [const AjPStr] Comma-separated values of SQL database-
+**                                  internal identifiers used in an IN
+**                                  comparison function in a SQL SELECT
+**                                  statement
 ** @param [u] objects [AjPList] AJAX List of Ensembl Objects
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -879,7 +878,7 @@ void *ensBaseadaptorFetchByIdentifier(const EnsPBaseadaptor ba,
 ******************************************************************************/
 
 static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
-                                               AjPStr identifiers,
+                                               const AjPStr values,
                                                AjPList objects)
 {
     AjPStr constraint = NULL;
@@ -887,7 +886,7 @@ static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
     if(!ba)
         return ajFalse;
 
-    if(!identifiers)
+    if(!values)
         return ajFalse;
 
     if(!objects)
@@ -907,7 +906,7 @@ static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
     constraint = ajFmtStr("%s.%s_id IN (%S)",
                           ba->Tables[0],
                           ba->Tables[0],
-                          identifiers);
+                          values);
 
     ensBaseadaptorGenericFetch(ba,
                                constraint,
@@ -930,10 +929,10 @@ static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
 **
 ** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::fetch_all_by_dbID_list
 ** @param [r] ba [const EnsPBaseadaptor] Ensembl Base Adaptor.
-** @param [r] idlist [AjPList] AJAX List of AJAX unsigned integers of
-**                             SQL database-internal identifiers
-**                             used in an IN comparison function in a
-**                             SQL SELECT statement
+** @param [r] identifiers [const AjPList] AJAX List of AJAX unsigned integers
+**                                        of SQL database-internal identifiers
+**                                        used in an IN comparison function in
+**                                        a SQL SELECT statement
 ** @param [u] objects [AjPList] AJAX List of Ensembl Objects
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -941,7 +940,7 @@ static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
 ******************************************************************************/
 
 AjBool ensBaseadaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
-                                           AjPList idlist,
+                                           const AjPList identifiers,
                                            AjPList objects)
 {
     register ajuint i = 0;
@@ -950,26 +949,26 @@ AjBool ensBaseadaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
 
     AjIList iter = NULL;
 
-    AjPStr identifiers = NULL;
+    AjPStr values = NULL;
 
     if(!ba)
         return ajFalse;
 
-    if(!idlist)
+    if(!identifiers)
         return ajFalse;
 
     if(!objects)
         return ajFalse;
 
-    iter = ajListIterNew(idlist);
+    iter = ajListIterNewread(identifiers);
 
-    identifiers = ajStrNew();
+    values = ajStrNew();
 
     while(!ajListIterDone(iter))
     {
         Pidentifier = (ajuint *) ajListIterGet(iter);
 
-        ajFmtPrintAppS(&identifiers, "%u, ", *Pidentifier);
+        ajFmtPrintAppS(&values, "%u, ", *Pidentifier);
 
         i++;
 
@@ -979,11 +978,11 @@ AjBool ensBaseadaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
         {
             /* Remove the last comma and space. */
 
-            ajStrCutEnd(&identifiers, 2);
+            ajStrCutEnd(&values, 2);
 
-            baseAdaptorFetchAllByIdentifiers(ba, identifiers, objects);
+            baseAdaptorFetchAllByIdentifiers(ba, values, objects);
 
-            ajStrAssignClear(&identifiers);
+            ajStrAssignClear(&values);
 
             i = 0;
         }
@@ -995,11 +994,11 @@ AjBool ensBaseadaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
 
     /* Remove the last comma and space. */
 
-    ajStrCutEnd(&identifiers, 2);
+    ajStrCutEnd(&values, 2);
 
-    baseAdaptorFetchAllByIdentifiers(ba, identifiers, objects);
+    baseAdaptorFetchAllByIdentifiers(ba, values, objects);
 
-    ajStrDel(&identifiers);
+    ajStrDel(&values);
 
     return ajTrue;
 }
@@ -1049,36 +1048,39 @@ AjBool ensBaseadaptorFetchAll(const EnsPBaseadaptor ba, AjPList objects)
 **
 ** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::_list_dbIDs
 ** @param [r] ba [const EnsPBaseadaptor] Ensembl Base Adaptor
-** @param [r] table [AjPStr] SQL table name
-** @param [r] prikey [AjPStr] Primary key of the SQL table
-** @param [u] idlist [AjPList] AJAX List of AJAX unsigned integer
-**                             SQL database-internal identifiers
+** @param [r] table [const AjPStr] SQL table name
+** @param [rN] primary [const AjPStr] Primary key of the SQL table
+** @param [u] identifiers [AjPList] AJAX List of AJAX unsigned integer
+**                                  SQL database-internal identifiers
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
 AjBool ensBaseadaptorFetchAllIdentifiers(const EnsPBaseadaptor ba,
-                                         AjPStr table,
-                                         AjPStr prikey,
-                                         AjPList idlist)
+                                         const AjPStr table,
+                                         const AjPStr primary,
+                                         AjPList identifiers)
 {
     ajuint *Pid = NULL;
 
     AjPSqlstatement sqls = NULL;
-    AjISqlrow sqli = NULL;
-    AjPSqlrow sqlr = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
 
     AjPStr statement = NULL;
 
     if(!ba)
         return ajFalse;
 
-    if(!idlist)
+    if(!table)
         return ajFalse;
 
-    if(prikey && ajStrGetLen(prikey))
-        statement = ajFmtStr("SELECT %S.%S FROM %S", table, prikey, table);
+    if(!identifiers)
+        return ajFalse;
+
+    if(primary && ajStrGetLen(primary))
+        statement = ajFmtStr("SELECT %S.%S FROM %S", table, primary, table);
     else
         statement = ajFmtStr("SELECT %S.%S_id FROM %S", table, table, table);
 
@@ -1094,7 +1096,79 @@ AjBool ensBaseadaptorFetchAllIdentifiers(const EnsPBaseadaptor ba,
 
         ajSqlcolumnToUint(sqlr, Pid);
 
-        ajListPushAppend(idlist, (void *) Pid);
+        ajListPushAppend(identifiers, (void *) Pid);
+    }
+
+    ajSqlrowiterDel(&sqli);
+
+    ajSqlstatementDel(&sqls);
+
+    ajStrDel(&statement);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensBaseadaptorFetchAllStrings ****************************************
+**
+** Generic function to fetch SQL database-internal strings of
+** Ensembl Objects via an Ensembl Base Adaptor.
+**
+** The caller is responsible for deleting the AJAX Strings before
+** deleting the AJAX List.
+**
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::_list_dbIDs
+** @param [r] ba [const EnsPBaseadaptor] Ensembl Base Adaptor
+** @param [r] table [const AjPStr] SQL table name
+** @param [rN] primary [const AjPStr] Primary key of the SQL table
+** @param [u] strings [AjPList] AJAX List of AJAX String
+**                              SQL database-internal strings
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensBaseAdaptorFetchAllStrings(const EnsPBaseadaptor ba,
+                                     const AjPStr table,
+                                     const AjPStr primary,
+                                     AjPList strings)
+{
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
+
+    AjPStr statement = NULL;
+    AjPStr string    = NULL;
+
+    if(!ba)
+        return ajFalse;
+
+    if(!table)
+        return ajFalse;
+
+    if(!strings)
+        return ajFalse;
+
+    if(primary && ajStrGetLen(primary))
+        statement = ajFmtStr("SELECT %S.%S FROM %S", table, primary, table);
+    else
+        statement = ajFmtStr("SELECT %S.%S_id FROM %S", table, table, table);
+
+    sqls = ensDatabaseadaptorSqlstatementNew(ba->Adaptor, statement);
+
+    sqli = ajSqlrowiterNew(sqls);
+
+    while(!ajSqlrowiterDone(sqli))
+    {
+        string = ajStrNew();
+
+        sqlr = ajSqlrowiterGet(sqli);
+
+        ajSqlcolumnToStr(sqlr, &string);
+
+        ajListPushAppend(strings, (void *) string);
     }
 
     ajSqlrowiterDel(&sqli);
