@@ -80,7 +80,7 @@ AjBool ensBaseadaptorFetchAllIdentifiers(const EnsPBaseadaptor ba,
                                          const AjPStr primary,
                                          AjPList identifiers);
 
-AjBool ensBaseAdaptorFetchAllStrings(const EnsPBaseadaptor ba,
+AjBool ensBaseadaptorFetchAllStrings(const EnsPBaseadaptor ba,
                                      const AjPStr table,
                                      const AjPStr primary,
                                      AjPList strings);
