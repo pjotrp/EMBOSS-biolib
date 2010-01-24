@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -114,17 +114,17 @@ EnsPAssembly ensAssemblyNew(ajuint asmsrid,
                             ajint orientation)
 {
     EnsPAssembly assembly = NULL;
-    
+
     if(!asmsrid)
-	return NULL;
-    
+        return NULL;
+
     if(!cmpsrid)
-	return NULL;
-    
+        return NULL;
+
     AJNEW0(assembly);
-    
+
     assembly->Use = 1;
-    
+
     assembly->AssembledSeqregionId = asmsrid;
     assembly->AssembledStart       = asmstart;
     assembly->AssembledEnd         = asmend;
@@ -132,7 +132,7 @@ EnsPAssembly ensAssemblyNew(ajuint asmsrid,
     assembly->ComponentStart       = cmpstart;
     assembly->ComponentEnd         = cmpend;
     assembly->Orientation          = orientation;
-    
+
     return assembly;
 }
 
@@ -152,14 +152,14 @@ EnsPAssembly ensAssemblyNew(ajuint asmsrid,
 EnsPAssembly ensAssemblyNewObj(const EnsPAssembly object)
 {
     EnsPAssembly assembly = NULL;
-    
+
     if(!object)
-	return NULL;
-    
+        return NULL;
+
     AJNEW0(assembly);
-    
+
     assembly->Use = 1;
-    
+
     assembly->AssembledSeqregionId = object->AssembledSeqregionId;
     assembly->AssembledStart       = object->AssembledStart;
     assembly->AssembledEnd         = object->AssembledEnd;
@@ -167,7 +167,7 @@ EnsPAssembly ensAssemblyNewObj(const EnsPAssembly object)
     assembly->ComponentStart       = object->ComponentStart;
     assembly->ComponentEnd         = object->ComponentEnd;
     assembly->Orientation          = object->Orientation;
-    
+
     return assembly;
 }
 
@@ -188,10 +188,10 @@ EnsPAssembly ensAssemblyNewObj(const EnsPAssembly object)
 EnsPAssembly ensAssemblyNewRef(EnsPAssembly assembly)
 {
     if(!assembly)
-	return NULL;
-    
+        return NULL;
+
     assembly->Use++;
-    
+
     return assembly;
 }
 
@@ -231,26 +231,26 @@ EnsPAssembly ensAssemblyNewRef(EnsPAssembly assembly)
 void ensAssemblyDel(EnsPAssembly* Passembly)
 {
     EnsPAssembly pthis = NULL;
-    
+
     if(!Passembly)
-	return;
-    
+        return;
+
     if(!*Passembly)
-	return;
+        return;
 
     pthis = *Passembly;
-    
+
     pthis->Use--;
-    
+
     if(pthis->Use)
     {
-	*Passembly = NULL;
-	
-	return;
+        *Passembly = NULL;
+
+        return;
     }
-    
+
     AJFREE(*Passembly);
-    
+
     return;
 }
 
@@ -310,8 +310,8 @@ void ensAssemblyDel(EnsPAssembly* Passembly)
 ajuint ensAssemblyGetAssembledSeqregionId(const EnsPAssembly assembly)
 {
     if(!assembly)
-	return 0;
-    
+        return 0;
+
     return assembly->AssembledSeqregionId;
 }
 
@@ -332,8 +332,8 @@ ajuint ensAssemblyGetAssembledSeqregionId(const EnsPAssembly assembly)
 ajuint ensAssemblyGetAssembledStart(const EnsPAssembly assembly)
 {
     if(!assembly)
-	return 0;
-    
+        return 0;
+
     return assembly->AssembledStart;
 }
 
@@ -354,8 +354,8 @@ ajuint ensAssemblyGetAssembledStart(const EnsPAssembly assembly)
 ajuint ensAssemblyGetAssembledEnd(const EnsPAssembly assembly)
 {
     if(!assembly)
-	return 0;
-    
+        return 0;
+
     return assembly->AssembledEnd;
 }
 
@@ -376,8 +376,8 @@ ajuint ensAssemblyGetAssembledEnd(const EnsPAssembly assembly)
 ajuint ensAssemblyGetComponentSeqregionId(const EnsPAssembly assembly)
 {
     if(!assembly)
-	return 0;
-    
+        return 0;
+
     return assembly->ComponentSeqregionId;
 }
 
@@ -398,8 +398,8 @@ ajuint ensAssemblyGetComponentSeqregionId(const EnsPAssembly assembly)
 ajuint ensAssemblyGetComponentStart(const EnsPAssembly assembly)
 {
     if(!assembly)
-	return 0;
-    
+        return 0;
+
     return assembly->ComponentStart;
 }
 
@@ -420,8 +420,8 @@ ajuint ensAssemblyGetComponentStart(const EnsPAssembly assembly)
 ajuint ensAssemblyGetComponentEnd(const EnsPAssembly assembly)
 {
     if(!assembly)
-	return 0;
-    
+        return 0;
+
     return assembly->ComponentEnd;
 }
 
@@ -442,8 +442,8 @@ ajuint ensAssemblyGetComponentEnd(const EnsPAssembly assembly)
 ajint ensAssemblyGetOrientation(const EnsPAssembly assembly)
 {
     if(!assembly)
-	return 0;
-    
+        return 0;
+
     return assembly->Orientation;
 }
 
@@ -482,35 +482,35 @@ ajint ensAssemblyGetOrientation(const EnsPAssembly assembly)
 AjBool ensAssemblyTrace(const EnsPAssembly assembly, ajuint level)
 {
     AjPStr indent = NULL;
-    
+
     if(!assembly)
-	return ajFalse;
-    
+        return ajFalse;
+
     indent = ajStrNew();
-    
+
     ajStrAppendCountK(&indent, ' ', level * 2);
-    
+
     ajDebug("%SensAssemblyTrace %p\n"
-	    "%S  Use %u\n"
-	    "%S  AssembledSeqregionId %u\n"
-	    "%S  AssembledStart %u\n"
-	    "%S  AssembledEnd %u\n"
-	    "%S  ComponentSeqregionId %u\n"
-	    "%S  ComponentStart %u\n"
-	    "%S  ComponentEnd %u\n"
-	    "%S  Orientation %d\n",
-	    indent, assembly,
-	    indent, assembly->Use,
-	    indent, assembly->AssembledSeqregionId,
-	    indent, assembly->AssembledStart,
-	    indent, assembly->AssembledEnd,
-	    indent, assembly->ComponentSeqregionId,
-	    indent, assembly->ComponentStart,
-	    indent, assembly->ComponentEnd,
-	    indent, assembly->Orientation);
-    
+            "%S  Use %u\n"
+            "%S  AssembledSeqregionId %u\n"
+            "%S  AssembledStart %u\n"
+            "%S  AssembledEnd %u\n"
+            "%S  ComponentSeqregionId %u\n"
+            "%S  ComponentStart %u\n"
+            "%S  ComponentEnd %u\n"
+            "%S  Orientation %d\n",
+            indent, assembly,
+            indent, assembly->Use,
+            indent, assembly->AssembledSeqregionId,
+            indent, assembly->AssembledStart,
+            indent, assembly->AssembledEnd,
+            indent, assembly->ComponentSeqregionId,
+            indent, assembly->ComponentStart,
+            indent, assembly->ComponentEnd,
+            indent, assembly->Orientation);
+
     ajStrDel(&indent);
-    
+
     return ajTrue;
 }
 
@@ -530,11 +530,11 @@ AjBool ensAssemblyTrace(const EnsPAssembly assembly, ajuint level)
 ajuint ensAssemblyGetMemSize(const EnsPAssembly assembly)
 {
     ajuint size = 0;
-    
+
     if(!assembly)
-	return 0;
-    
+        return 0;
+
     size += (ajuint) sizeof (EnsOAssembly);
-    
+
     return size;
 }
