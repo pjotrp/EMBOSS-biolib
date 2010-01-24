@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -28,6 +28,7 @@
 /* ==================================================================== */
 
 #include "ensdatabaseadaptor.h"
+#include "ensmetainformation.h"
 
 
 
@@ -64,6 +65,9 @@ static const char *databaseAdaptorGroup[] =
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
+EnsPMetainformationadaptor ensRegistryGetMetainformationadaptor(
+    EnsPDatabaseadaptor dba);
+
 
 
 
@@ -80,7 +84,7 @@ static const char *databaseAdaptorGroup[] =
 **
 ** Functions for manipulating Ensembl Database Adaptor objects
 **
-** @cc Bio::EnsEMBL::DBSQL::DBAdaptor CVS Revision: 1.192
+** @cc Bio::EnsEMBL::DBSQL::DBAdaptor CVS Revision: 1.208
 **
 ** @nam2rule Databaseadaptor
 **
@@ -100,11 +104,13 @@ static const char *databaseAdaptorGroup[] =
 ** @fnote None
 **
 ** @nam3rule New Constructor
-** @nam4rule NewObj Constructor with existing object
-** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @argrule Ref object [EnsPDatabaseadaptor] Ensembl Database Adaptor
+** @argrule New dbc [EnsPDatabaseconnection] Ensembl Database Connection
+** @argrule New database [AjPStr] Database name
+** @argrule New species [AjPStr] Species
+** @argrule New group [AjEnum] Group
+** @argrule New multi [AjBool] Multiple species
+** @argrule New identifier [ajuint] Species identifier
 **
 ** @valrule * [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
@@ -151,47 +157,48 @@ EnsPDatabaseadaptor ensDatabaseadaptorNew(
     ajuint identifier)
 {
     EnsPDatabaseadaptor dba = NULL;
-    
-    /*
-     ajDebug("ensDatabaseadaptorNew\n"
-	     "  dbc %p\n"
-	     "  database '%S'\n"
-	     "  species '%S'\n"
-	     "  group %d\n"
-	     "  multi %B\n"
-	     "  identifier %u\n",
-	     dbc,
-	     database,
-	     species,
-	     group,
-	     multi,
-	     identifier);
-     
-     ensDatabaseconnectionTrace(dbc, 1);
-     */
-    
+
+    if(ajDebugTest("ensDatabaseadaptorNew"))
+    {
+        ajDebug("ensDatabaseadaptorNew\n"
+                "  dbc %p\n"
+                "  database '%S'\n"
+                "  species '%S'\n"
+                "  group %d\n"
+                "  multi %B\n"
+                "  identifier %u\n",
+                dbc,
+                database,
+                species,
+                group,
+                multi,
+                identifier);
+
+        ensDatabaseconnectionTrace(dbc, 1);
+    }
+
     if(!dbc)
         return NULL;
-    
+
     if(!species)
         return NULL;
-    
+
     if(!group)
         return NULL;
-    
+
     AJNEW0(dba);
-    
+
     dba->Databaseconnection = ensDatabaseconnectionNewC(dbc, database);
-    
+
     if(species)
-	dba->Species = ajStrNewRef(species);
-    
+        dba->Species = ajStrNewRef(species);
+
     dba->Group = group;
-    
+
     dba->MultiSpecies = multi;
-    
+
     dba->Identifier = identifier;
-    
+
     return dba;
 }
 
@@ -242,31 +249,34 @@ EnsPDatabaseadaptor ensDatabaseadaptorNew(
 void ensDatabaseadaptorDel(EnsPDatabaseadaptor* Pdba)
 {
     EnsPDatabaseadaptor pthis = NULL;
-    
+
     if(!Pdba)
         return;
-    
+
     if(!*Pdba)
         return;
 
+    if(ajDebugTest("ensDatabaseadaptorDel"))
+    {
+        ajDebug("ensDatabaseadaptorDel\n"
+                "  *Pdba %p\n",
+                *Pdba);
+
+        ensDatabaseadaptorTrace(*Pdba, 1);
+    }
+
     pthis = *Pdba;
-    
-    /*
-     ajDebug("ensDatabaseadaptorDel\n"
-	     "  *Pdba %p\n",
-	     *Pdba);
-     
-     ensDatabaseadaptorDebug(*Pdba, 1);
-     */
-    
+
     ensDatabaseconnectionDel(&pthis->Databaseconnection);
-    
+
     ajStrDel(&pthis->Species);
-    
+
+    ajListstrFreeData(&pthis->SpeciesNames);
+
     AJFREE(pthis);
 
     *Pdba = NULL;
-    
+
     return;
 }
 
@@ -318,7 +328,7 @@ EnsPDatabaseconnection ensDatabaseadaptorGetDatabaseconnection(
 {
     if(!dba)
         return NULL;
-    
+
     return dba->Databaseconnection;
 }
 
@@ -340,7 +350,7 @@ AjPStr ensDatabaseadaptorGetSpecies(const EnsPDatabaseadaptor dba)
 {
     if(!dba)
         return NULL;
-    
+
     return dba->Species;
 }
 
@@ -362,7 +372,7 @@ AjEnum ensDatabaseadaptorGetGroup(const EnsPDatabaseadaptor dba)
 {
     if(!dba)
         return ensEDatabaseadaptorGroupNULL;
-    
+
     return dba->Group;
 }
 
@@ -384,7 +394,7 @@ AjBool ensDatabaseadaptorGetMultiSpecies(const EnsPDatabaseadaptor dba)
 {
     if(!dba)
         return ajFalse;
-    
+
     return dba->MultiSpecies;
 }
 
@@ -406,10 +416,10 @@ ajuint ensDatabaseadaptorGetIdentifier(const EnsPDatabaseadaptor dba)
 {
     if(!dba)
         return 0;
-    
+
     if(!dba->Identifier)
-	return 1;
-    
+        return 1;
+
     return dba->Identifier;
 }
 
@@ -457,11 +467,11 @@ AjBool ensDatabaseadaptorSetDatabaseconnection(EnsPDatabaseadaptor dba,
 {
     if(!dba)
         return ajFalse;
-    
+
     ensDatabaseconnectionDel(&(dba->Databaseconnection));
-    
+
     dba->Databaseconnection = ensDatabaseconnectionNewRef(dbc);
-    
+
     return ajTrue;
 }
 
@@ -484,12 +494,12 @@ AjBool ensDatabaseadaptorSetSpecies(EnsPDatabaseadaptor dba, AjPStr species)
 {
     if(!dba)
         return ajFalse;
-    
+
     ajStrDel(&dba->Species);
-    
+
     if(species)
-	dba->Species = ajStrNewRef(species);
-    
+        dba->Species = ajStrNewRef(species);
+
     return ajTrue;
 }
 
@@ -512,9 +522,9 @@ AjBool ensDatabaseadaptorSetGroup(EnsPDatabaseadaptor dba, AjEnum group)
 {
     if(!dba)
         return ajFalse;
-    
+
     dba->Group = group;
-    
+
     return ajTrue;
 }
 
@@ -533,13 +543,14 @@ AjBool ensDatabaseadaptorSetGroup(EnsPDatabaseadaptor dba, AjEnum group)
 ** @@
 ******************************************************************************/
 
-AjBool ensDatabaseadaptorSetMultiSpecies(EnsPDatabaseadaptor dba, AjBool multi)
+AjBool ensDatabaseadaptorSetMultiSpecies(EnsPDatabaseadaptor dba,
+                                         AjBool multi)
 {
     if(!dba)
         return ajFalse;
-    
+
     dba->MultiSpecies = multi;
-    
+
     return ajTrue;
 }
 
@@ -563,9 +574,9 @@ AjBool ensDatabaseadaptorSetIdentifier(EnsPDatabaseadaptor dba,
 {
     if(!dba)
         return ajFalse;
-    
+
     dba->Identifier = identifier;
-    
+
     return ajTrue;
 }
 
@@ -586,17 +597,17 @@ AjBool ensDatabaseadaptorSetIdentifier(EnsPDatabaseadaptor dba,
 AjEnum ensDatabaseadaptorGroupFromStr(const AjPStr group)
 {
     register ajuint i = 0;
-    
+
     AjEnum egroup = ensEDatabaseadaptorGroupNULL;
-    
+
     for(i = 1; databaseAdaptorGroup[i]; i++)
-	if (ajStrMatchCaseC(group, databaseAdaptorGroup[i]))
-	    egroup = i;
-    
+        if(ajStrMatchCaseC(group, databaseAdaptorGroup[i]))
+            egroup = i;
+
     if(!egroup)
-	ajDebug("ensDatabaseadaptorGroupFromStr encountered "
-		"unexpected string '%S'.\n", group);
-    
+        ajDebug("ensDatabaseadaptorGroupFromStr encountered "
+                "unexpected string '%S'.\n", group);
+
     return egroup;
 }
 
@@ -617,16 +628,16 @@ AjEnum ensDatabaseadaptorGroupFromStr(const AjPStr group)
 const char* ensDatabaseadaptorGroupToChar(const AjEnum group)
 {
     register ajint i = 0;
-    
+
     if(!group)
-	return NULL;
-    
+        return NULL;
+
     for(i = 1; databaseAdaptorGroup[i] && (i < group); i++);
-    
+
     if(!databaseAdaptorGroup[i])
-	ajDebug("ensDatabaseadaptorGroupToChar encountered an "
-		"out of boundary error on group %d.\n", group);
-    
+        ajDebug("ensDatabaseadaptorGroupToChar encountered an "
+                "out of boundary error on group %d.\n", group);
+
     return databaseAdaptorGroup[i];
 }
 
@@ -652,29 +663,29 @@ AjBool ensDatabaseadaptorMatch(const EnsPDatabaseadaptor dba1,
 {
     if(!dba1)
         return ajFalse;
-    
+
     if(!dba2)
         return ajFalse;
-    
+
     if(dba1 == dba2)
-	return ajTrue;
-    
+        return ajTrue;
+
     if(!ensDatabaseconnectionMatch(dba1->Databaseconnection,
                                    dba2->Databaseconnection))
-	return ajFalse;
-    
+        return ajFalse;
+
     if(dba1->Group != dba2->Group)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(dba1->MultiSpecies != dba2->MultiSpecies)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(dba1->Identifier != dba2->Identifier)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!ajStrMatchCaseS(dba1->Species, dba2->Species))
-	return ajFalse;
-    
+        return ajFalse;
+
     return ajTrue;
 }
 
@@ -704,32 +715,32 @@ AjBool ensDatabaseadaptorMatchComponents(const EnsPDatabaseadaptor dba,
                                          ajuint identifier)
 {
     if(!dba)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!dbc)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!species)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!group)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(dba->Group != group)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(dba->MultiSpecies != multi)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(dba->Identifier != identifier)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!ensDatabaseconnectionMatch(dba->Databaseconnection, dbc))
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!ajStrMatchCaseS(dba->Species, species))
-	return ajFalse;
-    
+        return ajFalse;
+
     return ajTrue;
 }
 
@@ -751,13 +762,13 @@ AjPSqlstatement ensDatabaseadaptorSqlstatementNew(EnsPDatabaseadaptor dba,
                                                   const AjPStr statement)
 {
     if(!dba)
-	return NULL;
-    
+        return NULL;
+
     if(!statement)
-	return NULL;
-    
+        return NULL;
+
     return ensDatabaseconnectionSqlstatementNew(dba->Databaseconnection,
-						statement);
+                                                statement);
 }
 
 
@@ -777,27 +788,28 @@ AjPSqlstatement ensDatabaseadaptorSqlstatementNew(EnsPDatabaseadaptor dba,
 ******************************************************************************/
 
 AjBool ensDatabaseadaptorEscapeC(EnsPDatabaseadaptor dba,
-                                  char **Ptxt,
-                                  const AjPStr str)
+                                 char **Ptxt,
+                                 const AjPStr str)
 {
     if(!dba)
         return ajFalse;
-    
+
     if(!str)
-	return ajFalse;
-    
-    /*
-     ajDebug("ensDatabaseadaptorEscapeC\n"
-	     "  dba %p\n"
-	     "  Ptxt %p\n"
-	     "  str '%S'\n",
-	     dba,
-	     Ptxt,
-	     str);
-     
-     ensDatabaseadaptorTrace(dba, 1);
-     */
-    
+        return ajFalse;
+
+    if(ajDebugTest("ensDatabaseadaptorEscapeC"))
+    {
+        ajDebug("ensDatabaseadaptorEscapeC\n"
+                "  dba %p\n"
+                "  Ptxt %p\n"
+                "  str '%S'\n",
+                dba,
+                Ptxt,
+                str);
+
+        ensDatabaseadaptorTrace(dba, 1);
+    }
+
     return ensDatabaseconnectionEscapeC(dba->Databaseconnection, Ptxt, str);
 }
 
@@ -818,27 +830,28 @@ AjBool ensDatabaseadaptorEscapeC(EnsPDatabaseadaptor dba,
 ******************************************************************************/
 
 AjBool ensDatabaseadaptorEscapeS(EnsPDatabaseadaptor dba,
-                                  AjPStr *Pstr,
-                                  const AjPStr str)
+                                 AjPStr *Pstr,
+                                 const AjPStr str)
 {
     if(!dba)
         return ajFalse;
-    
+
     if(!str)
-	return ajFalse;
-    
-    /*
-     ajDebug("ensDatabaseadaptorEscapeS\n"
-	     "  dba %p\n"
-	     "  Pstr %p\n"
-	     "  str '%S'\n",
-	     dba,
-	     Pstr,
-	     str);
-     
-     ensDatabaseadaptorTrace(dba, 1);
-     */
-    
+        return ajFalse;
+
+    if(ajDebugTest("ensDatabaseadaptorEscapeS"))
+    {
+        ajDebug("ensDatabaseadaptorEscapeS\n"
+                "  dba %p\n"
+                "  Pstr %p\n"
+                "  str '%S'\n",
+                dba,
+                Pstr,
+                str);
+
+        ensDatabaseadaptorTrace(dba, 1);
+    }
+
     return ensDatabaseconnectionEscapeS(dba->Databaseconnection, Pstr, str);
 }
 
@@ -876,32 +889,56 @@ AjBool ensDatabaseadaptorEscapeS(EnsPDatabaseadaptor dba,
 
 AjBool ensDatabaseadaptorTrace(const EnsPDatabaseadaptor dba, ajuint level)
 {
+    AjIList iter = NULL;
+
     AjPStr indent = NULL;
-    
+    AjPStr name = NULL;
+
     if(!dba)
-	return ajFalse;
-    
+        return ajFalse;
+
     indent = ajStrNew();
-    
+
     ajStrAppendCountK(&indent, ' ', level * 2);
-    
+
     ajDebug("%SensDatabaseadaptorTrace %p\n"
-	    "%S  Databaseconnection %p\n"
-	    "%S  Species '%S'\n"
-	    "%S  Group '%s'\n"
-	    "%S  MultiSpecies %B\n"
-	    "%S  Identifier %u\n",
-	    indent, dba,
-	    indent, dba->Databaseconnection,
-	    indent, dba->Species,
-	    indent, ensDatabaseadaptorGroupToChar(dba->Group),
-	    indent, dba->MultiSpecies,
-	    indent, dba->Identifier);
-    
+            "%S  Databaseconnection %p\n"
+            "%S  Species '%S'\n"
+            "%S  SpeciesNames %p\n"
+            "%S  Group '%s'\n"
+            "%S  MultiSpecies %B\n"
+            "%S  Identifier %u\n",
+            indent, dba,
+            indent, dba->Databaseconnection,
+            indent, dba->Species,
+            indent, dba->SpeciesNames,
+            indent, ensDatabaseadaptorGroupToChar(dba->Group),
+            indent, dba->MultiSpecies,
+            indent, dba->Identifier);
+
     ensDatabaseconnectionTrace(dba->Databaseconnection, level + 1);
-    
+
+    /* Trace the AJAX List of species name AJAX Strings. */
+
+    if(dba->SpeciesNames)
+    {
+        ajDebug("%S    AJAX List %p of species name AJAX Strings\n",
+                indent, dba->SpeciesNames);
+
+        iter = ajListIterNewread(dba->SpeciesNames);
+
+        while(!ajListIterDone(iter))
+        {
+            name = (AjPStr) ajListIterGet(iter);
+
+            ajDebug("%S      %S\n", indent, name);
+        }
+
+        ajListIterDel(&iter);
+    }
+
     ajStrDel(&indent);
-    
+
     return ajTrue;
 }
 
@@ -926,40 +963,76 @@ AjBool ensDatabaseadaptorGetSchemaBuild(const EnsPDatabaseadaptor dba,
 {
     ajuint i = 0;
     ajuint tokens = 0;
-    
+
     AjPStr database = NULL;
     AjPStr temp = NULL;
     AjPStrTok token = NULL;
-    
+
     if(!dba)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Pbuild)
-	return ajFalse;
-    
+        return ajFalse;
+
     ajStrAssignClear(Pbuild);
-    
+
     database = ensDatabaseconnectionGetDatabaseName(dba->Databaseconnection);
-    
+
     tokens = ajStrParseCountC(database, "_");
-    
+
     if(tokens < 2)
-	return ajFalse;
-    
+        return ajFalse;
+
     token = ajStrTokenNewC(database, "_");
-    
+
     /* Parse all string tokens but the last two. */
-    
+
     temp = ajStrNew();
-    
+
     for(i = 0; i < (tokens - 2); i++)
-	ajStrTokenNextParse(&token, &temp);
-    
+        ajStrTokenNextParse(&token, &temp);
+
     ajStrDel(&temp);
-    
+
     ajStrTokenRestParse(&token, Pbuild);
-    
+
     ajStrTokenDel(&token);
-    
+
     return ajTrue;
+}
+
+
+
+
+/* @func ensDatabaseadaptorGetAllSpeciesNames *********************************
+**
+** Get the name of all species contained in the database this
+** Ensembl Database Adaptor is connected to.
+**
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+**
+** @return [const AjPList] AJAX List of AJAX Strings
+** @@
+******************************************************************************/
+
+const AjPList ensDatabaseadaptorGetAllSpeciesNames(EnsPDatabaseadaptor dba)
+{
+    EnsPMetainformationadaptor mia = NULL;
+
+    if(!dba)
+        return NULL;
+
+    if(dba->SpeciesNames)
+        return dba->SpeciesNames;
+    else
+        dba->SpeciesNames = ajListstrNew();
+
+    mia = ensRegistryGetMetainformationadaptor(dba);
+
+    if(dba->MultiSpecies)
+        ensMetainformationadaptorFetchAllSpeciesNames(mia, dba->SpeciesNames);
+    else
+        ajListPushAppend(dba->SpeciesNames, (void *) ajStrNewS(dba->Species));
+
+    return dba->SpeciesNames;
 }
