@@ -163,6 +163,9 @@ EnsPProteinalignfeatureadaptor ensRegistryGetProteinalignfeatureadaptor(
 EnsPProteinfeatureadaptor ensRegistryGetProteinfeatureadaptor(
     EnsPDatabaseadaptor dba);
 
+EnsPRepeatconsensusadaptor ensRegistryGetRepeatconsensusadaptor(
+    EnsPDatabaseadaptor dba);
+
 EnsPRepeatfeatureadaptor ensRegistryGetRepeatfeatureadaptor(
     EnsPDatabaseadaptor dba);
 
@@ -239,7 +242,7 @@ AjBool ensRegistryGetSpeciesGroup(const AjPStr identifier,
 
 
 
-#endif
+#endif /* ensregistry_h */
 
 #ifdef __cplusplus
 }
