@@ -6,7 +6,7 @@
 
 #ifndef __lint
 static const char rcsid[] =
-"$Id: misc.c,v 1.1 2002/02/25 09:33:49 hgmp Exp $";
+"$Id: misc.c,v 1.2 2010/01/25 18:19:10 rice Exp $";
 #endif
 
 /* fatal ---------------------------------------------- print message and die */
@@ -102,9 +102,6 @@ void *ckalloc(size_t amount)
 	if ((p = malloc(amount)) == NULL)
 		fatalf("Ran out of memory trying to allocate %lu.",
 			(unsigned long)amount);
-#if 0
-	memset(p, 0, amount); /* XXX */
-#endif
 	return p;
 }
 
