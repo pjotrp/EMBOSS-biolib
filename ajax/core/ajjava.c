@@ -1,5 +1,5 @@
 /******************************************************************************
-** @source AJAX Jave Native Interface (JNI) functions
+** @source AJAX Java Native Interface (JNI) functions
 **
 ** @author Copyright (C) 2001 Alan Bleasby
 ** @version 1.0
@@ -85,7 +85,7 @@
 #define AJ_OUTBUF 10000		/* pipe buffer size      */
 #define R_BUFFER  2048		/* Reentrant buffer size */
 
-#define TIMEOUT 30		/* Arbitrary timeout (secs) */
+#define TIMEOUT 30		/* Arbitrary timeout (seconds) */
 
 #if defined (__SVR4) && defined (__sun)
 #include <sys/filio.h>
@@ -2922,7 +2922,7 @@ static int java_jembossctl(ajint command,
 
 
 
-    /* Don't need the env or commline for the parent */
+    /* Don't need the env or cmdline for the parent */
     i = 0;
 
     while(argp[i])
@@ -5377,7 +5377,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqsetAttrib
 
 /* @funcstatic java_pipe_write ************************************************
 **
-** Write a byte stream down a file desriptor (unblocked)
+** Write a byte stream down a file descriptor (unblocked)
 **
 ** @param [r] tchan [int] file descriptor
 ** @param [r] buf [const char *] buffer to write
@@ -5440,7 +5440,7 @@ static int java_pipe_write(int tchan, const char *buf, int n, int seconds,
 	    return -1;
 	}
 
-	/* Check pipe is writeable */
+	/* Check pipe is writable */
 
 	ufds.fd = tchan;
 	ufds.events = POLLOUT;
@@ -5477,7 +5477,7 @@ static int java_pipe_write(int tchan, const char *buf, int n, int seconds,
 	    return -1;
 	}
 
-	/* Check pipe is writeable */
+	/* Check pipe is writable */
 	tfd.tv_sec  = 0;
 	tfd.tv_usec = 1000;
 	FD_ZERO(&fdw);
@@ -5522,7 +5522,7 @@ static int java_pipe_write(int tchan, const char *buf, int n, int seconds,
 
 /* @funcstatic java_pipe_read *************************************************
 **
-** Read a byte stream from a file desriptor (unblocked)
+** Read a byte stream from a file descriptor (unblocked)
 **
 ** @param [r] rchan [int] file descriptor
 ** @param [w] buf [char *] buffer for read

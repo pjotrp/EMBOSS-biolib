@@ -179,7 +179,7 @@ void ajPhyloDistDel(AjPPhyloDist* pthis)
 **
 ** Destructor for AjPPhyloFreq
 **
-** @param [d] pthis [AjPPhyloFreq*] fequency object
+** @param [d] pthis [AjPPhyloFreq*] frequency object
 ** @return [void]
 ******************************************************************************/
 
@@ -794,7 +794,7 @@ void ajPhyloDistTrace(const AjPPhyloDist thys)
 **
 ** @param [r] filename [const AjPStr] input filename
 ** @param [r] contchar [AjBool] Continuous character data expected
-** @param [r] genedata [AjBool] Gene frequence data expected
+** @param [r] genedata [AjBool] Gene frequency data expected
 ** @param [r] indiv [AjBool] Multiple individuals for one name
 **                           only for continuous character data.
 ** @return [AjPPhyloFreq] Phylogenetic frequencies object on success
@@ -1732,7 +1732,7 @@ void ajPhyloStateTrace(const AjPPhyloState thys)
 ** Packages PHYLIP, GARLI, MrBayes, PROTML, TREE-PUZZLE
 ** PAUP
 **
-** Tree fomrats include:
+** Tree formats include:
 **
 ** Newick (New Hampshire) is a simple string with parentheses
 ** see http://evolution.genetics.washington.edu/phylip/newicktree.html

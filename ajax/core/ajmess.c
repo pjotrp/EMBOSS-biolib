@@ -1256,7 +1256,7 @@ static char* messGetFilename(const char *path)
 /*
 ** When AJAX needs to crash because there has been an unrecoverable
 ** error the file and line number of the code that detected the error
-** need to be outputted. Here are the functions to do it.
+** need to be output. Here are the functions to do it.
 **
 ** Applications can optionally initialise the error handling section of the
 ** message package, currently the program name can be set (argv[0] in the

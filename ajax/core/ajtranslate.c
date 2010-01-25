@@ -386,7 +386,7 @@ void ajTrnReadFile(AjPTrn trnObj, AjPFile trnFile)
 
 
     /* positions of first use of a residue in the aa line */
-    /* ajint firstaa[256]; Now usused */
+    /* ajint firstaa[256]; Now unused */
 
     /*
     ** NB '-' and '*' are valid characters,
@@ -500,7 +500,7 @@ void ajTrnReadFile(AjPTrn trnObj, AjPFile trnFile)
     dlen = ajStrGetLen(aaline);
 
     /* initialise first use of aa array */
-    /* Now usused 
+    /* Now unused
     for(i=0; i<256; i++)
 	firstaa[i] = -1;
     */
@@ -540,7 +540,7 @@ void ajTrnReadFile(AjPTrn trnObj, AjPFile trnFile)
 
 /* @funcstatic trnNoComment ***************************************************
 **
-** Strips comments from a character string (a line from an trn file).
+** Strips comments from a character string (a line from a trn file).
 ** Comments are blank lines or any text following a "#" character.
 ** Whitespace characters can be included in a blank line.
 **
@@ -1270,9 +1270,9 @@ __deprecated void ajTrnAltRevSeq(const AjPTrn trnObj, const AjPSeq seq, AjPStr *
 ** (i.e.  if there are 1 or 2 bases extra at the end, they are ignored).
 **
 ** Frame -1 is defined as the translation of the reverse complement
-** sequence which matches the codons used in frame 1.  ie.  in the sequence
+** sequence which matches the codons used in frame 1.  i.e.  in the sequence
 ** ACGT, the first codon of frame 1 is ACG and the last codon of frame -1
-** is the reverse complement of ACG (ie.  CGT).
+** is the reverse complement of ACG (i.e.  CGT).
 **
 ** Frame -4 is defined as the translation from the last base to the first full
 ** triplet codon.
@@ -1348,9 +1348,9 @@ __deprecated void ajTrnCFrame(const AjPTrn trnObj, const char *seq, ajint len, a
 ** (i.e.  if there are 1 or 2 bases extra at the end, they are ignored).
 **
 ** Frame -1 is defined as the translation of the reverse complement
-** sequence which matches the codons used in frame 1.  ie.  in the sequence
+** sequence which matches the codons used in frame 1.  i.e.  in the sequence
 ** ACGT, the first codon of frame 1 is ACG and the last codon of frame -1
-** is the reverse complement of ACG (ie.  CGT).
+** is the reverse complement of ACG (i.e.  CGT).
 **
 ** Frame -4 is defined as the translation from the last base to the first full
 ** triplet codon.
@@ -1409,9 +1409,9 @@ __deprecated void ajTrnStrFrame(const AjPTrn trnObj,
 ** (i.e.  if there are 1 or 2 bases extra at the end, they are ignored).
 **
 ** Frame -1 is defined as the translation of the reverse complement
-** sequence which matches the codons used in frame 1.  ie.  in the sequence
+** sequence which matches the codons used in frame 1.  i.e.  in the sequence
 ** ACGT, the first codon of frame 1 is ACG and the last codon of frame -1
-** is the reverse complement of ACG (ie.  CGT).
+** is the reverse complement of ACG (i.e.  CGT).
 **
 ** Frame -4 is defined as the translation from the last base to the first full
 ** triplet codon.
@@ -1470,9 +1470,9 @@ __deprecated void ajTrnSeqFrame(const AjPTrn trnObj, const AjPSeq seq, ajint fra
 ** (i.e.  if there are 1 or 2 bases extra at the end, they are ignored).
 **
 ** Frame -1 is defined as the translation of the reverse complement
-** sequence which matches the codons used in frame 1.  ie.  in the sequence
+** sequence which matches the codons used in frame 1.  i.e.  in the sequence
 ** ACGT, the first codon of frame 1 is ACG and the last codon of frame -1
-** is the reverse complement of ACG (ie.  CGT).
+** is the reverse complement of ACG (i.e.  CGT).
 **
 ** Frame -4 is defined as the translation from the last base to the first full
 ** triplet codon.
@@ -1485,7 +1485,7 @@ __deprecated void ajTrnSeqFrame(const AjPTrn trnObj, const AjPSeq seq, ajint fra
 ** Frame 4 is the same as frame -1, 5 is -2, 6 is -3.
 **
 ** NB.  that the naming of the output sequence is always to take
-** the name of the input sequence (eg.  ECARGS) and to append an underscore
+** the name of the input sequence (e.g.  ECARGS) and to append an underscore
 ** character and the frame number 1 to 3 for forward frames and 4 to 6 for
 ** reverse frames regardless of the final orientation of the reverse
 ** frames.  (i.e.  frame -1 = ECARGS_4, frame -2 = ECARGS_5, -3 = ECARGS_6, 4 =
@@ -1672,15 +1672,15 @@ __deprecated ajint ajTrnStrDangle(const AjPTrn trnObj, const AjPStr seq,
 **
 ** Frames -3 to -1 give translations in the reverse sense.
 ** Frame -1 is defined as the translation of the reverse complement
-** sequence which matches the codons used in frame 1.  ie.  in the sequence
+** sequence which matches the codons used in frame 1.  i.e.  in the sequence
 ** ACGT, the first codon of frame 1 is ACG and the last codon of frame -1
-** is the reverse complement of ACG (ie.  CGT).
+** is the reverse complement of ACG (i.e.  CGT).
 **
 ** Frames -4 to -6 give translations in the reverse sense.
 ** Frame -4 is defined as the translation of the reverse complement,
 ** starting the translation in the first codon of the reversed sequence.
-** ie.  in the sequence ACGT, the last codon is CGT and so frame -4
-** translates from the reverse complement of CGT (ie.  ACG) - this is
+** i.e.  in the sequence ACGT, the last codon is CGT and so frame -4
+** translates from the reverse complement of CGT (i.e.  ACG) - this is
 ** for those people who define frame -1 as using the first codon when the
 ** sequence is reverse-complemented.
 **
@@ -1690,7 +1690,7 @@ __deprecated ajint ajTrnStrDangle(const AjPTrn trnObj, const AjPStr seq,
 **  displaying beneath the original DNA sequence.
 **
 ** NB.  that the naming of the output sequence is always to take
-** the name of the input sequence (eg.  ECARGS) and to append an underscore
+** the name of the input sequence (e.g.  ECARGS) and to append an underscore
 ** character and the frame number 1 to 3 for forward frames and 4 to 6 for
 ** reverse frames regardless of the final orientation of the reverse
 ** frames.  (i.e.  frame -1 = ECARGS_4, frame -2 = ECARGS_5, -3 = ECARGS_6, 4 =

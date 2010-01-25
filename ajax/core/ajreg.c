@@ -14,8 +14,8 @@
 ** string or the nth substring.
 **
 ** Possible extensions include a case-insensitive regcomp ... which
-** would be useful in many places. Also a regcomp for prefices,
-** suffices and exact matches which adds "^" and "$" to the pattern
+** would be useful in many places. Also a regcomp for prefixes,
+** suffixes and exact matches which adds "^" and "$" to the pattern
 ** string.
 **
 ** @author Copyright (C) 1998 Peter Rice

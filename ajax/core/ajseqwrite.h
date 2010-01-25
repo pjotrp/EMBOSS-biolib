@@ -50,7 +50,7 @@ extern "C"
 ** @attr EType [AjEnum] unused, obsolete
 ** @attr Format [AjEnum] Output format index
 ** @attr Filename [AjPStr] Output filename (if not in USA)
-** @attr Directory [AjPStr] Output firectory
+** @attr Directory [AjPStr] Output directory
 ** @attr Entryname [AjPStr] Entry name
 ** @attr Acclist [AjPList] Secondary accessions
 ** @attr Keylist [AjPList] Keyword list

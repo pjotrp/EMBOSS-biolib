@@ -145,7 +145,7 @@ typedef struct AjSSqlstatement
 ** @attr Values [AjPVoid] AJAX Character Array of SQL column values
 ** @attr Lengths [AjPLong] AJAX Long Integer Array of SQL column value lengths
 ** @attr Columns [ajuint] Number of columns per row
-** @attr Current [ajuint] Current column in column interations
+** @attr Current [ajuint] Current column in column interactions
 ** @@
 ******************************************************************************/
 

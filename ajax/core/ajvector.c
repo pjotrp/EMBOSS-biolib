@@ -12,8 +12,8 @@
 **  i, j, and k unit vectors in the x y and z directions respectively
 **
 ** @author Copyright (C) 2003 Damian Counsell
-** @version $Revision: 1.14 $
-** @modified $Date: 2009/12/29 16:42:41 $
+** @version $Revision: 1.15 $
+** @modified $Date: 2010/01/25 17:46:00 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -87,13 +87,13 @@ AjP3dVector aj3dVectorNew(void)
 
 /* @func aj3dVectorCreate ****************************************************
 **
-** Constructor for initialized AJAX 3D vectors.
+** Constructor for initialised AJAX 3D vectors.
 ** @param [r] fX [float] x component of 3D vector
 ** @param [r] fY [float] y component of 3D vector
 ** @param [r] fZ [float] z component of 3D vector
 **
-** @return [AjP3dVector] Pointer to an initialized 3D vector
-** @category new [AjP3dVector] constructor initializing values of
+** @return [AjP3dVector] Pointer to an initialised 3D vector
+** @category new [AjP3dVector] constructor initialising values of
 **                vector components
 ** @@
 ******************************************************************************/

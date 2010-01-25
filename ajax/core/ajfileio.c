@@ -456,7 +456,7 @@ __deprecated AjBool ajFileGetsTrimL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 ** @nam3rule Uint8 Binary read of an 8 byte unsigned integer
 ** @nam3rule Str Binary read of a string
 ** @suffix Endian Data in file is big-endian
-** @suffix Local Data in file  is in local endianness
+** @suffix Local Data in file  is in local endian-ness
 **
 ** @argrule Readbin file [AjPFile] File object
 ** @argrule Binary count [size_t] Number of elements to read
@@ -1678,7 +1678,7 @@ AjBool ajWritelineSpace(AjPFile file, const AjPStr line)
 
 /* @datasection [AjPFilebuff] Buffered file object *****************************
 **
-** Function is for manipulating ibuffered nput files and returns or
+** Function is for manipulating buffered input files and returns or
 ** takes at least one AjPFilebuff argument.
 ** 
 */

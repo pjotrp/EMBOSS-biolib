@@ -24,7 +24,7 @@ extern "C"
 ** @attr Size [ajint] Size - number of rows and number of columns
 ** @attr HasReplicates [AjBool] Has (some) replicates data in file
 ** @attr Names [AjPStr*] Row names, NULL at end
-** @attr Data [float*] Distance matrix Size*Size with diagnoal 0.0
+** @attr Data [float*] Distance matrix Size*Size with diagonal 0.0
 ** @attr Replicates [ajint*] Replicate count default=1 missing=0
 ** @attr HasMissing [AjBool] Has missing data in file
 ** @attr Padding [char[4]] Padding to alignment boundary
@@ -73,7 +73,7 @@ typedef struct AjSPhyloDist
 **                    1 or more per species
 **                    array size is Loci
 **
-** @cc column grouping - multiple frequence values for alleles of a locus
+** @cc column grouping - multiple frequency values for alleles of a locus
 **
 ** @attr Locus [ajint*] Locus number 1, 2, 3 for each value
 **                     array size is Len

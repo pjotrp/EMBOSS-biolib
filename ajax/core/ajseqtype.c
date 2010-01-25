@@ -76,7 +76,7 @@ static char* seqNewGapChars = NULL;
 
 /*
 ** gaps only allowed if it says so
-** gap conversion is a separate attribute, along with case convserion
+** gap conversion is a separate attribute, along with case conversion
 */
 
 static AjBool     seqFindType(const AjPStr type_name, ajint* typenum);
@@ -801,7 +801,7 @@ char ajSeqTypeDnaS(const AjPStr thys)
 
 /* @func ajSeqTypeRnaS *****************************************************
 **
-** Checks sequence type for Rna without gaps
+** Checks sequence type for RNA without gaps
 **
 ** RNA codes are accepted as is.
 **
@@ -855,7 +855,7 @@ char ajSeqTypeGapdnaS(const AjPStr thys)
 
 /* @func ajSeqTypeGaprnaS *****************************************************
 **
-** Checks sequence type for Rna with gaps
+** Checks sequence type for RNA with gaps
 **
 ** RNA codes are accepted as is.
 **

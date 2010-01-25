@@ -7399,7 +7399,7 @@ void ajDirnamePrintRecursiveIgnore(const AjPStr path,
 	if(ajFilenameExistsDir(s))
 	{
 	    /* Ignore selected directories */
-	  if(ajListGetLength(ignorelist))
+	    if(ajListGetLength(ignorelist))
 	    {
 		flag = ajFalse;
 		iter = ajListIterNewread(ignorelist);

@@ -909,7 +909,7 @@ static AjBool nexusBlockSave(AjPNexus thys, AjPList list,
 **
 ** @param [u] list [AjPList] List of block records
 ** @param [w] command [AjPStr*] Command name
-** @param [w] cmdstr [AjPStr*] Command kstring
+** @param [w] cmdstr [AjPStr*] Command string
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
@@ -2607,7 +2607,7 @@ static AjBool nexusSetSequences(AjPNexus thys)
 
 	if (!taxlabel || thys->Characters->Interleave ||
 	    (ajStrGetLen(seqstr) >= thys->Characters->Nchar))
-	{				/* next taxlabel */
+	{				/* next tax label */
 	    if (!ajRegExec(word, rdline))
 		continue;
 

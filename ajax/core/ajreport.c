@@ -591,7 +591,7 @@ static void reportWriteDbMotif(AjPReport thys,
 ** diffseq application. The report describes matches, usually short,
 ** between two sequences and features which overlap them.
 **
-** A number of tags are used. The rpeort makes little sense without them.
+** A number of tags are used. The report makes little sense without them.
 ** These tags are used to replicate features in a second sequence.
 **
 ** Format:<br>
@@ -1888,7 +1888,7 @@ static void reportWriteSeqTable(AjPReport thys, const AjPFeattable ftable,
 **
 ** Writes a report in SRS simple format This is a simple parsable format that
 ** does not include the feature sequence (see also SRS format)
-** for applicatins where features can be large.
+** for applications where features can be large.
 ** Missing tag values are reported as '.'
 **
 ** Format:<br>

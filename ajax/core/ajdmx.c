@@ -1309,7 +1309,7 @@ ajint ajDmxScopalgGetseqs(const AjPScopalg thys, AjPStr **arr)
 /* @func ajDmxScophitsWrite *************************************************
 **
 ** Write contents of a list of Scophits to an output file in embl-like format
-** Text for Class, Archhitecture, Topology, Fold, Superfamily and Family 
+** Text for Class, Architecture, Topology, Fold, Superfamily and Family
 ** is only written if the text is available.
 ** 
 ** @param [w] outf [AjPFile] Output file stream
@@ -1917,7 +1917,7 @@ AjBool ajDmxScopalgWriteClustal(const AjPScopalg align, AjPFile outf)
 	return ajFalse;
     }
     
-    /* remove i from the print statement before commiting */
+    /* remove i from the print statement before committing */
     ajFmtPrintF(outf,"CLUSTALW\n\n");
     ajFmtPrintF(outf, "\n"); 
 
@@ -1956,7 +1956,7 @@ AjBool ajDmxScopalgWriteClustal2(const AjPScopalg align, AjPFile outf)
 	return ajFalse;
     }
     
-    /* remove i from the print statement before commiting */
+    /* remove i from the print statement before committing */
     ajFmtPrintF(outf, "\n"); 
 
     for(i=0;i<align->N;++i)
@@ -1975,7 +1975,7 @@ AjBool ajDmxScopalgWriteClustal2(const AjPScopalg align, AjPFile outf)
 ** Writes a Scopalg object to a specified file in FASTA format (just the 
 ** alignment without the domain classification information).
 **
-** @param [r] align      [const AjPScopalg]  A list Hitlist structures.
+** @param [r] align      [const AjPScopalg]  A list of hit list structures.
 ** @param [u] outf       [AjPFile]     Outfile file pointer
 ** 
 ** @return [AjBool] True on success (a file has been written)
@@ -1993,7 +1993,7 @@ AjBool ajDmxScopalgWriteFasta(const AjPScopalg align, AjPFile outf)
 	return ajFalse;
     }
     
-    /* remove i from the print statement before commiting
+    /* remove i from the print statement before committing
     ajFmtPrintF(*outf,"CLUSTALW\n\n");
     ajFmtPrintF(*outf, "\n");*/ 
 

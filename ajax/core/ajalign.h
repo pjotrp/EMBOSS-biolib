@@ -37,7 +37,7 @@ extern "C"
 ** @attr SubTail [AjPStr] Text to add to subtail with newlines
 ** @attr Showacc [AjBool] Report accession number if ajTrue
 ** @attr Showdes [AjBool] Report sequence description if ajTrue
-** @attr Showusa [AjBool] Report full USA (-ausaqualifier) if ajTrue
+** @attr Showusa [AjBool] Report full USA (-ausa qualifier) if ajTrue
 **                        or only seqname if ajFalse
 ** @attr Multi [AjBool] if true, assume >1 alignment
 ** @attr Global [AjBool] if true, show full sequence beyond match
@@ -48,7 +48,7 @@ extern "C"
 ** @attr Nmax [ajint] Maximum number of sequences e.g. 2
 ** @attr Width [ajint] Output width (minimum 10)
 ** @attr IMatrix [AjPMatrix] Integer matrix (see also FMatrix)
-** @attr FMatrix [AjPMatrixf] Floating Pt matrix (see also IMatrix)
+** @attr FMatrix [AjPMatrixf] Floating point matrix (see also IMatrix)
 ** @attr Matrix [AjPStr] Matrix name
 ** @attr GapPen [AjPStr] Gap penalty (converted to string)
 ** @attr ExtPen [AjPStr] Gap extend penalty (converted to string)

@@ -761,7 +761,7 @@ static AjBool baseInit(void)
 ** @argrule To c [char] Base character code
 ** @argrule ToDoublet Pnuc2 [AjPStr*] Doublet base name
 **
-** @valrule * [AjBool] True if code was recognized.
+** @valrule * [AjBool] True if code was recognised.
 **
 ** @fcategory cast
 */
@@ -775,7 +775,7 @@ static AjBool baseInit(void)
 ** @param [r] nuc2 [const AjPStr]   AjPStr object (2 letter code)
 ** @param [w] Pc [char *] Resulting residue code
 **
-** @return [AjBool] True on success, false if doublet is not recognized
+** @return [AjBool] True on success, false if doublet is not recognised
 ** @@
 ******************************************************************************/
 
@@ -1237,7 +1237,7 @@ static AjBool residueInit(void)
 ** @argrule To c [char] Residue character code
 ** @argrule ToTriplet Paa3 [AjPStr*] Triplet residue name
 **
-** @valrule * [AjBool] True if code was recognized.
+** @valrule * [AjBool] True if code was recognised.
 **
 ** @fcategory cast
 */
@@ -1253,7 +1253,7 @@ static AjBool residueInit(void)
 ** @param [r] aa3 [const AjPStr]   AjPStr object (3 letter code)
 ** @param [w] Pc [char *] Resulting residue code
 **
-** @return [AjBool] True on success, false if triplet is not recognized
+** @return [AjBool] True on success, false if triplet is not recognised
 ** @@
 ****************************************************************************/
 
@@ -1303,7 +1303,7 @@ __deprecated AjBool  ajBaseAa3ToAa1(char *Paa1, const AjPStr aa3)
 ** @param [r] c [char] Single letter identifier of amino acid
 ** @param [w] Paa3  [AjPStr *] AjPStr object
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ******************************************************************************/
 

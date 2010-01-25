@@ -338,20 +338,20 @@ static AjBool namVarResolve(AjPStr* var);
 **
 ** Deletes a variable, database, or resource entry from the internal table.
 **
-** @param [d] pentry [NamPEntry*] The entry to be deleted.
+** @param [d] Pentry [NamPEntry*] The entry to be deleted.
 ** @param [r] which [ajint] Internal table entry type
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void namEntryDelete(NamPEntry* pentry, ajint which)	
+static void namEntryDelete(NamPEntry* Pentry, ajint which)
 {
 
     ajint j;
     AjPStr* attrs;
     NamPEntry entry;
 
-    entry = *pentry;
+    entry = *Pentry;
 
     ajStrDel(&entry->name);
     ajStrDel(&entry->value);
@@ -1031,7 +1031,7 @@ void ajNamDebugResources(void)
 
 /* @func ajNamDebugVariables *********************************************
 **
-** Writes a simple debug report of all envornment variables
+** Writes a simple debug report of all environment variables
 ** in the internal table.
 **
 ** @return [void]

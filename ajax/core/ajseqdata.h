@@ -109,8 +109,8 @@ typedef struct AjSSeqSubdesc {
 ** @alias AjOSeqGene
 **
 ** @attr Name [AjPStr] Gene standard name
-** @attr Synonyms [AjPStr] Accepted synonynms
-** @attr Orf [AjPStr] Recognized open reading frame (ORF) names
+** @attr Synonyms [AjPStr] Accepted synonyms
+** @attr Orf [AjPStr] Recognised open reading frame (ORF) names
 **                         usually for sequencing projects in progress
 ** @attr Oln [AjPStr] Ordered locus name(s) representing order on chromosome
 ** @@
@@ -183,7 +183,7 @@ typedef struct AjSSeqDate {
 ** @attr Loctype [AjPStr] Location type
 ** @attr Number [ajuint] Reference number. This may be used in the feature
 **                       table and references can disappear so the position
-**                       in the lst is not enough
+**                       in the list is not enough
 ** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
@@ -248,7 +248,7 @@ typedef struct AjSSeqXref {
 ** This can refer to an entry name (or "id"), and accession number or
 ** other queriable items.
 **
-** ajpseqquery is created with the entry specification part of a USA
+** AjPSeqQuery is created with the entry specification part of a USA
 ** (Uniform Sequence Address). The syntax is currently related to that
 ** used by SRS release 5.1.
 **

@@ -615,14 +615,14 @@ float ajMeltTempSave(const char *strand, ajint pos, ajint len, float saltconc,
 
     entropy = -10.8 - sumEntropy;
 
-    /* Added for santalucia */
+    /* Added for santa lucia */
     entropy += (len-1) * (log10((double) (saltconc/1000.0))) *
 	(float) 0.368;
 
 
     enthalpy = -sumEnthalpy;
 
-    /* logsalt removed for santalucia */
+    /* logsalt removed for santa lucia */
     dTm = ((enthalpy*1000.0) / (entropy+LogDNA)) + /*LogSalt*/ - To;
     Tm = (float) dTm; /* slight loss of precision here but no matter */
 

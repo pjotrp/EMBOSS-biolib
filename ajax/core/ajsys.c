@@ -259,7 +259,7 @@ __deprecated char ajSysItoC(ajint v)
 ** Needed for very fussy compilers i.e. Digital C
 **
 ** @param [r] v [ajint] integer
-** @return [unsigned char] Unisigned character cast
+** @return [unsigned char] Unsigned character cast
 ** @@
 ******************************************************************************/
 

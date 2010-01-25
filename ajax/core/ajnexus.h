@@ -58,8 +58,8 @@ typedef struct AjSNexusTaxa {
 ** @attr Interleave [AjBool] Interleaved input if true
 ** @attr Tokens [AjBool] If true, tokens set
 ** @attr Items [AjPStr] Character items
-** @attr StatesFormat [AjPStr] Statesformat string
-** @attr Eliminate [AjPStr] Elimioate string
+** @attr StatesFormat [AjPStr] States format string
+** @attr Eliminate [AjPStr] Eliminate string
 ** @attr CharStateLabels [AjPStr*] Character and state labels
 ** @attr CharLabels [AjPStr*] Character labels
 ** @attr StateLabels [AjPStr*] State labels
@@ -67,7 +67,7 @@ typedef struct AjSNexusTaxa {
 ** @attr Sequences [AjPStr*] Sequence data
 ** @attr Missing [char] Missing character in input data
 ** @attr Gap [char] Gap character in input data
-** @attr MatchChar [char] Matching charater in input
+** @attr MatchChar [char] Matching character in input
 ** @attr Padding [char[5]] Padding to alignment boundary
 ** @@
 ******************************************************************************/

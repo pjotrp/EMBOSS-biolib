@@ -20,7 +20,6 @@ extern "C"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-/*#include <malloc.h>*/
 
 #include "ajassert.h"
 #include "ajdefine.h"

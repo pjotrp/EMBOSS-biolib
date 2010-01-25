@@ -308,11 +308,11 @@ __deprecated AjPTime ajTimeTodayF(const char* timefmt)
 
 /* @section destructors *******************************************************
 **
-** Functions for destructing time objects.
+** Functions for destroying time objects.
 **
 ** @fdata [AjPTime]
 **
-** @nam3rule  Del         Destruct a time object.
+** @nam3rule  Del         Destroy a time object.
 **
 ** @argrule   *  Ptime [AjPTime*] Time object to be deleted
 **
@@ -399,7 +399,7 @@ __deprecated time_t ajTimeMake(const AjPTime thys)
 
 /* @section get reference to internals ****************************************
 **
-** Functions for retrieving references to tiome internals
+** Functions for retrieving references to time internals
 **
 ** @fdata [AjPTime]
 **
