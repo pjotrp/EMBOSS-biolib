@@ -489,7 +489,7 @@ static SeqOOutFormat seqOutFormat[] =
 **
 ** All constructors return a new sequence output object by pointer. It
 ** is the responsibility of the user to first destroy any previous
-** sequenceoutput object. The target pointer does not need to be
+** sequence output object. The target pointer does not need to be
 ** initialised to NULL, but it is good programming practice to do so
 ** anyway.
 **
@@ -592,7 +592,7 @@ AjPSeqout ajSeqoutNew(void)
 
 /* @func ajSeqoutNewFile ******************************************************
 **
-** Creates a new sequence output object using a preopened file.
+** Creates a new sequence output object using a pre-opened file.
 **
 ** @param [u] file [AjPFile] Open file object
 ** @return [AjPSeqout] New sequence output object.
@@ -3244,7 +3244,7 @@ static void seqWriteSelex(AjPSeqout outseq)
 	    {
 		p = ajStrGetPtr(seqs[0]->Selexdata->rf);
 		if(i+50>=len)
-		    ajFmtPrintF(outseq->File,"%S %s\n",rfstr,&p[i]);
+		    ajFmtPrintF(outseq->File,"%S %s\n",rfstr, &p[i]);
 		else
 		    ajFmtPrintF(outseq->File,"%S %-50.50s\n",rfstr,
 				&p[i]);
@@ -8340,7 +8340,7 @@ AjBool ajSeqoutOpenFilename(AjPSeqout seqout, const AjPStr name)
 	single = ajFalse;
 
     if(single)
-    {				     /* ok, but nothing to open yet */
+    {				     /* OK, but nothing to open yet */
 	ajStrAssignEmptyS(&seqout->Extension, seqout->Formatstr);
 
 	return ajTrue;
@@ -9039,12 +9039,12 @@ void ajSeqoutPrintwikiFormat(AjPFile outf)
 ** Initialises sequence output formatting parameters.
 **
 ** @param [r] seqlen [ajint] Sequence length
-** @param [u] psf [SeqPSeqFormat*] Sequence format object
+** @param [u] Psf [SeqPSeqFormat*] Sequence format object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void seqSeqFormat(ajint seqlen, SeqPSeqFormat* psf)
+static void seqSeqFormat(ajint seqlen, SeqPSeqFormat* Psf)
 {
     char numform[20];
     SeqPSeqFormat sf;
@@ -9059,9 +9059,9 @@ static void seqSeqFormat(ajint seqlen, SeqPSeqFormat* psf)
     sprintf(numform, "%d", seqlen);
     ajDebug("seqSeqFormat numwidth old: %d new: %d\n", strlen(numform)+1, j);
 
-    if(!*psf)
+    if(!*Psf)
     {
-	sf = AJNEW0(*psf);
+	sf = AJNEW0(*Psf);
 	sf->namewidth = 8;
 	sf->spacer    = 0;
 	sf->width     = 50;
@@ -9084,7 +9084,7 @@ static void seqSeqFormat(ajint seqlen, SeqPSeqFormat* psf)
 	/*sf->interline = 1;*/
     }
     else
-	sf = *psf;
+	sf = *Psf;
 
     sf->numwidth = j;		    /* or 8 as a reasonable minimum */
 
@@ -9111,7 +9111,7 @@ static void seqSeqFormat(ajint seqlen, SeqPSeqFormat* psf)
 ** @nam3rule Get Return an element or property
 ** @nam4rule Basecount Counts of nucleotide bases
 ** @nam4rule Checkgcg GCG checksum
-** @nam4rule Filename Ouptut filename
+** @nam4rule Filename Output filename
 **
 ** @argrule Get seqout [const AjPSeqout] Sequence output object
 ** @argrule Basecount bases [ajuint*] Base counts
@@ -9988,7 +9988,7 @@ AjBool ajSeqoutstrIsFormatExists(const AjPStr format)
 **
 ** Checks whether an output format should go to single files, rather than
 ** all sequences being written to one file. Some formats do not work when
-** more than one sequence is writte to a file. Obvious examples are plain
+** more than one sequence is written to a file. Obvious examples are plain
 ** text and GCG formats.
 **
 ** @param [r] format [const AjPStr] Output format required.

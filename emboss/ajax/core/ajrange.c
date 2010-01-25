@@ -771,7 +771,7 @@ __deprecated ajuint ajRangeNumber(const AjPRange thys)
 ** Return (as parameters) text value of a range element
 **
 ** The text value of a range is any non-digit after the pair of range numbers
-** eg. in a pair of range '10-20 potential exon 50-60 repeat'
+** e.g. in a pair of range '10-20 potential exon 50-60 repeat'
 ** the text values of the two ranges are: 'potential exon' and 'repeat'
 **
 ** @param [r] thys [const AjPRange] range object
@@ -851,7 +851,7 @@ AjBool ajRangeValues(const AjPRange thys, ajuint element,
 
 /* @func ajRangeElementSet *****************************************************
 **
-** Set the values of a start and end in a (preexisting) range element
+** Set the values of a start and end in a (pre-existing) range element
 **
 ** @param [w] thys [AjPRange] range object
 ** @param [r] element [ajuint] range element (0 to n-1)

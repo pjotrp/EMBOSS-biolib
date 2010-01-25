@@ -487,7 +487,7 @@ typedef struct FeatSInFormat
 ** Input feature formats
 **
 ** Includes the read function (featRead), and initialising (featInitReg)
-** and deletion (featDelReg) of parsing resular expression.
+** and deletion (featDelReg) of parsing regular expression.
 **
 ******************************************************************************/
 
@@ -1839,7 +1839,7 @@ static AjPFeature featFeatNew(AjPFeattable thys,
 /* @funcstatic featFeatNewProt ************************************************
 **
 ** Constructor for a new protein feature,
-** automatically added to the specififed table.
+** automatically added to the specified table.
 **
 ** @param  [u]   thys     [AjPFeattable] Pointer to the ajFeattable which
 **                         will own the feature
@@ -2312,7 +2312,7 @@ void ajFeattableAdd(AjPFeattable thys, AjPFeature feature)
 
 /* @funcstatic featTableInit **************************************************
 **
-** Initialize the components of a previously allocated AjPFeattable object.
+** Initialise the components of a previously allocated AjPFeattable object.
 **
 ** @param [u]   thys       [AjPFeattable]   Target feature table object
 ** @param [r]  name       [const AjPStr]   Name of the table (e.g.
@@ -2327,7 +2327,7 @@ static void featTableInit(AjPFeattable thys,
 {
     /*ajDebug("featTableInit Entering...\n");*/
 
-    /*ajDebug("featTableInit initializing seqid: '%S'\n", name);*/
+    /*ajDebug("featTableInit initialising seqid: '%S'\n", name);*/
     ajStrAssignS(&thys->Seqid,name) ;
     thys->DefFormat = 0;
 
@@ -3386,7 +3386,7 @@ static void featGffProcessTagval(AjPFeature gf, AjPFeattable table,
     /*
      *     Version 2 or greater: parse groupfield for semicolon ';'
      *     delimited tag-value structures, taking special care about
-     *     double quoted string context. rbskfirst version of code was
+     *     double quoted string context. rbsk first version of code was
      *     adapted from GFF.pm (th/rbsk), itself inherited from AceParse.pm,
      *     courtesy of James Gilbert
      */
@@ -3736,8 +3736,8 @@ static AjPFeature featSwissProcess(AjPFeattable thys, const AjPStr feature,
     {
 	ajRegSubI(SwRegexFtid, 1, &note);
 	ajRegSubI(SwRegexFtid, 2, &ftid);
-	/*ajDebug("Swiss ftid found\nftid: '%S'\n",
-		ftid);*/
+	/*ajDebug("Swiss ftid found\n");*/
+	/*ajDebug("ftid: '%S'\n",ftid);*/
 	ajStrAssignS(&tagstr, note);
 	ajStrTrimC(&tagstr, " .");
     }
@@ -3781,9 +3781,9 @@ static AjPFeature featSwissProcess(AjPFeattable thys, const AjPStr feature,
 **
 ** Converts an input EMBL format line into a feature.
 ** Starts a new feature by processing any existing feature data.
-** Creates or appends the type, location and tagvalue pairs.
+** Creates or appends the type, location and tag-value pairs.
 ** With a NULL as the input line, simply processes the type, location
-** and tagvalues.
+** and tag-values.
 **
 ** @param [u] thys     [AjPFeattable] Feature table
 ** @param [r] origline [const AjPStr] Input line (NULL to process last
@@ -4671,8 +4671,8 @@ static AjBool featEmblLocRange(const AjPStr loc, ajint* num1, ajint* num2)
 **
 ** Tests for a feature tag value next in the input string 
 **
-** @param [u] tags [AjPStr*] Feature tagvalues string, returned with
-**                           current tagvalue removed
+** @param [u] tags [AjPStr*] Feature tag-values string, returned with
+**                           current tag-value removed
 ** @param [w] name [AjPStr*] Feature tag name
 ** @param [w] value [AjPStr*] Feature tag value
 ** @return [AjBool] ajTrue if a match was found
@@ -4858,7 +4858,7 @@ static AjBool featEmblTvTagVal(AjPStr* tags, AjPStr* name, AjPStr* value)
 **
 ** Process bad tag-value text up to next qualifier
 **
-** @param [u] tags [AjPStr*] Feature tagvalues string, returned with
+** @param [u] tags [AjPStr*] Feature tag-values string, returned with
 **                          skipped text removed
 ** @param [w] skip [AjPStr*] Skipped text
 ** @return [AjBool] ajTrue if a match was found
@@ -5041,7 +5041,7 @@ static AjBool featFeatType(const AjPStr line, AjPStr* type,
 
     if(istag)
     {
-	/* /tagname */
+	/* /tag name */
 	cp++;
 	cq = cp;
 	i = 0;
@@ -5058,7 +5058,7 @@ static AjBool featFeatType(const AjPStr line, AjPStr* type,
     }
     else
     {
-	/* type internalid */
+	/* type internal id */
 	cq = cp;
 	i = 0;
 
@@ -5529,9 +5529,9 @@ static AjBool featReadGff3(AjPFeattable thys, AjPFilebuff file)
 **
 ** Converts an input RefSeq protein format line into a feature.
 ** Starts a new feature by processing any existing feature data.
-** Creates or appends the type, location and tagvalue pairs.
+** Creates or appends the type, location and tag-value pairs.
 ** With a NULL as the input line, simply processes the type, location
-** and tagvalues.
+** and tag-values.
 **
 ** @param [u] thys     [AjPFeattable] Feature table
 ** @param [r] origline [const AjPStr] Input line (NULL to process last
@@ -6088,7 +6088,7 @@ AjBool ajFeattableWriteGff3(AjPFeattabOut ftout, const AjPFeattable Feattab)
 
 /* @funcstatic featRegInitEmbl ************************************************
 **
-** Initialize regular expressions and data structures for
+** Initialise regular expressions and data structures for
 ** EMBL/GenBank/DDBJ format
 **
 ** @return [AjBool] ajTrue if successful
@@ -6117,7 +6117,7 @@ static AjBool featRegInitEmbl(void)
 
 /* @funcstatic featRegInitRefseqp *********************************************
 **
-** Initialize regular expressions and data structures for
+** Initialise regular expressions and data structures for
 ** RefSeq protein format
 **
 ** @return [AjBool] ajTrue if successful
@@ -6146,7 +6146,7 @@ static AjBool featRegInitRefseqp(void)
 
 /* @funcstatic featRegInitSwiss ***********************************************
 **
-** Initialize regular expressions and data structures for
+** Initialise regular expressions and data structures for
 ** SwissProt format
 **
 ** @return [AjBool] ajTrue if successful
@@ -6188,8 +6188,8 @@ static AjBool featRegInitSwiss(void)
 
 /* @funcstatic featRegInitPir *************************************************
 **
-** Initialize regular expressions and data structures for ajFeat#
-** Pir format
+** Initialise regular expressions and data structures for ajFeat in
+** PIR format
 **
 ** @return [AjBool] ajTrue if successful
 ** @@
@@ -6204,7 +6204,7 @@ static AjBool featRegInitPir(void)
 
     featVocabInitPir();
 
-    /*ajDebug("Tables pir Type: %x Tags: %x\n",
+    /*ajDebug("Tables PIR Type: %x Tags: %x\n",
 	    FeatTypeTablePir, FeatTagsTablePir);*/
 
     /*ajDebug("featRegInitPir Compiling regexps\n");*/
@@ -6230,7 +6230,7 @@ static AjBool featRegInitPir(void)
 
 /* @funcstatic featRegInitGff *************************************************
 **
-** Initialize regular expressions and data structures for ajFeat GFF format
+** Initialise regular expressions and data structures for ajFeat GFF format
 **
 ** @return [AjBool] ajTrue if successful
 ** @@
@@ -6273,7 +6273,7 @@ static AjBool featRegInitGff(void)
 
 /* @funcstatic featRegInitGff3 ************************************************
 **
-** Initialize regular expressions and data structures for ajFeat GFF3 format
+** Initialise regular expressions and data structures for ajFeat GFF3 format
 **
 ** @return [AjBool] ajTrue if successful
 ** @@
@@ -6317,7 +6317,7 @@ static AjBool featRegInitGff3(void)
 **
 ** Cleanup and exit routines. Free and destroy regular expressions
 **
-** @return [AjBool] ajFalse if unsuccesful
+** @return [AjBool] ajFalse if unsuccessful
 ** @@
 ******************************************************************************/
 
@@ -6341,7 +6341,7 @@ static AjBool featDelRegEmbl(void)
 **
 ** Cleanup and exit routines. Free and destroy regular expressions
 **
-** @return [AjBool] ajFalse if unsuccesful
+** @return [AjBool] ajFalse if unsuccessful
 ** @@
 ******************************************************************************/
 
@@ -6370,7 +6370,7 @@ static AjBool featDelRegPir(void)
 **
 ** Cleanup and exit routines. Free and destroy regular expressions
 **
-** @return [AjBool] ajFalse if unsuccesful
+** @return [AjBool] ajFalse if unsuccessful
 ** @@
 ******************************************************************************/
 
@@ -6394,7 +6394,7 @@ static AjBool featDelRegRefseqp(void)
 **
 ** Cleanup and exit routines. Free and destroy regular expressions
 **
-** @return [AjBool] ajFalse if unsuccesful
+** @return [AjBool] ajFalse if unsuccessful
 ** @@
 ******************************************************************************/
 
@@ -6423,7 +6423,7 @@ static AjBool featDelRegSwiss(void)
 **
 ** Cleanup and exit routines. Free and destroy regular expressions
 **
-** @return [AjBool] ajFalse if unsuccesful
+** @return [AjBool] ajFalse if unsuccessful
 ** @@
 ******************************************************************************/
 
@@ -6461,7 +6461,7 @@ static AjBool featDelRegGff(void)
 **
 ** Cleanup and exit routines. Free and destroy regular expressions
 **
-** @return [AjBool] ajFalse if unsuccesful
+** @return [AjBool] ajFalse if unsuccessful
 ** @@
 ******************************************************************************/
 
@@ -7843,7 +7843,7 @@ AjBool ajFeattableWriteDasgff(AjPFeattabOut ftout, const AjPFeattable thys)
     ** but note that any feature will appear in a DASGFF viewer
     ** unless there is some official dummy type available
     **
-    ** Common practice is to ignore the DTD and wriet an empty SEGMENT
+    ** Common practice is to ignore the DTD and write an empty SEGMENT
     ** so this section should not be needed. DAS 1.6 will correct the spec
     */
 
@@ -8176,7 +8176,7 @@ static char featStrand(ajint strand)
 
 /* @func ajFeattableIsNuc *****************************************************
 **
-** Returns ajTrue if a feature table is knucleotide protein
+** Returns ajTrue if a feature table is nucleotide
 **
 ** @param [r] thys [const AjPFeattable] Feature table
 ** @return [AjBool] ajTrue for a protein feature table
@@ -10466,7 +10466,7 @@ AjBool ajFeattabOutSetTypeC(AjPFeattabOut thys, const char* type)
 ** @param [r] tag [const char*] Feature tag
 ** @param [r] value [const AjPStr] Feature tag value
 ** @return [AjBool] ajTrue is value was valid
-**                  ajFalse if it was "corrceted"
+**                  ajFalse if it was "corrected"
 ** @@
 ******************************************************************************/
 
@@ -10494,7 +10494,7 @@ AjBool ajFeatTagSetC(AjPFeature thys, const char* tag, const AjPStr value)
 ** @param [r] tag [const AjPStr] Feature tag
 ** @param [r] value [const AjPStr] Feature tag value
 ** @return [AjBool] ajTrue is value was valid
-**                  ajFalse if it was "corrceted"
+**                  ajFalse if it was "corrected"
 ** @@
 ******************************************************************************/
 
@@ -10761,22 +10761,22 @@ AjBool ajFeatTagAdd(AjPFeature thys, const AjPStr tag, const AjPStr value)
 ** @param [u] thys [AjPFeature] Feature
 ** @param [r] tag [const AjPStr] Feature tag
 ** @param [r] value [const AjPStr] feature tag value
-** @param [w] pdeftag [AjPStr*] Default tag
-** @param [w] pdefval [AjPStr*] Default tag value as "*tag: value"
+** @param [w] Pdeftag [AjPStr*] Default tag
+** @param [w] Pdefval [AjPStr*] Default tag value as "*tag: value"
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void featTagSetDefault(AjPFeature thys,
 			      const AjPStr tag, const AjPStr value,
-			      AjPStr* pdeftag, AjPStr* pdefval)
+			      AjPStr* Pdeftag, AjPStr* Pdefval)
 {
     featInit();
 
     if(thys->Protein)
-	featTagSetDefaultDna(tag, value, pdeftag, pdefval);
+	featTagSetDefaultDna(tag, value, Pdeftag, Pdefval);
     else
-	featTagSetDefaultProt(tag, value, pdeftag, pdefval);
+	featTagSetDefaultProt(tag, value, Pdeftag, Pdefval);
 
     return;
 }
@@ -10790,19 +10790,19 @@ static void featTagSetDefault(AjPFeature thys,
 **
 ** @param [r] tag [const AjPStr] Feature tag
 ** @param [r] value [const AjPStr] feature tag value
-** @param [w] pdeftag [AjPStr*] Default tag
-** @param [w] pdefval [AjPStr*] Default tag value as "*tag: value"
+** @param [w] Pdeftag [AjPStr*] Default tag
+** @param [w] Pdefval [AjPStr*] Default tag value as "*tag: value"
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void featTagSetDefaultDna(const AjPStr tag, const AjPStr value,
-				  AjPStr* pdeftag, AjPStr* pdefval)
+				  AjPStr* Pdeftag, AjPStr* Pdefval)
 {
     featInit();
 
-    ajStrAssignS(pdeftag, (AjPStr) ajTableFetch(FeatTagsTableDna, ajStrNew()));
-    ajFmtPrintS(pdefval, "*%S: %S", tag, value);
+    ajStrAssignS(Pdeftag, (AjPStr) ajTableFetch(FeatTagsTableDna, ajStrNew()));
+    ajFmtPrintS(Pdefval, "*%S: %S", tag, value);
 
     return;
 }
@@ -10816,20 +10816,20 @@ static void featTagSetDefaultDna(const AjPStr tag, const AjPStr value,
 **
 ** @param [r] tag [const AjPStr] Feature tag
 ** @param [r] value [const AjPStr] feature tag value
-** @param [w] pdeftag [AjPStr*] Default tag
-** @param [w] pdefval [AjPStr*] Default tag value as "*tag: value"
+** @param [w] Pdeftag [AjPStr*] Default tag
+** @param [w] Pdefval [AjPStr*] Default tag value as "*tag: value"
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void featTagSetDefaultProt(const AjPStr tag, const AjPStr value,
-				   AjPStr* pdeftag, AjPStr* pdefval)
+				   AjPStr* Pdeftag, AjPStr* Pdefval)
 {
     featInit();
 
-    ajStrAssignS(pdeftag,
+    ajStrAssignS(Pdeftag,
 		 (AjPStr) ajTableFetch(FeatTagsTableProtein, ajStrNew()));
-    ajFmtPrintS(pdefval, "*%S: %S", tag, value);
+    ajFmtPrintS(Pdefval, "*%S: %S", tag, value);
 
     return;
 }
@@ -11886,13 +11886,13 @@ AjIList ajFeatTagIter(const AjPFeature thys)
 ** Returns the tag-value pairs of a feature object
 **
 ** @param [u]  iter  [AjIList] List iterator from ajFeatTagIter
-** @param [w] tagnam [AjPStr*] Tag name
-** @param [w] tagval [AjPStr*] Tag val
+** @param [w] Ptagnam [AjPStr*] Tag name
+** @param [w] Ptagval [AjPStr*] Tag val
 ** @return [AjBool] ajTrue if another tag-value pair was returned
 ** @@
 ******************************************************************************/
 
-AjBool ajFeatTagval(AjIList iter, AjPStr* tagnam, AjPStr* tagval)
+AjBool ajFeatTagval(AjIList iter, AjPStr* Ptagnam, AjPStr* Ptagval)
 {
     FeatPTagval tv = NULL;
 
@@ -11901,8 +11901,8 @@ AjBool ajFeatTagval(AjIList iter, AjPStr* tagnam, AjPStr* tagval)
     if(!tv)
 	return ajFalse;
 
-    ajStrAssignS(tagnam, tv->Tag);
-    ajStrAssignS(tagval, tv->Value);
+    ajStrAssignS(Ptagnam, tv->Tag);
+    ajStrAssignS(Ptagval, tv->Value);
 
     return ajTrue;
 }
@@ -12604,7 +12604,7 @@ static AjBool featTagSpecialAllBiomaterial(const AjPStr val)
 **
 ** Tests a string as a valid internal (EMBL) feature /anticodon tag
 **
-** The format is  (pos:<base_range>,aa:<amino_acid>)
+** The format is  (pos:base_range,aa:amino_acid)
 **
 ** @param  [r] val [const AjPStr] parameter value
 ** @return [AjBool] ajTrue for a valid value, possibly corrected
@@ -13392,7 +13392,7 @@ static AjBool featTagSpecialAllRptunitseq(const AjPStr val)
 ** FT 6.2 todo aa 3 letter codes, or Sec (U) or TERM or OTHER
 **
 ** FT 6.2 todo pos can be 1 or 2 bases for polyA-completed stops (TERM)
-** whcih should have a /note
+** which should have a /note
 **
 ** @param  [r] val [const AjPStr] parameter value
 ** @return [AjBool] ajTrue for a valid value, possibly corrected
@@ -14102,7 +14102,7 @@ static void featTagQuoteGff3(AjPStr* pval)
 ** Splits EMBL feature location at the last possible comma
 ** and adds the appropriate prefix (e.g. the EMBL FT line type)
 **
-** @param  [u] ploc [AjPStr*] location as a string
+** @param  [u] Ploc [AjPStr*] location as a string
 ** @param  [r] margin [ajuint] Right margin
 ** @param  [r] prefix [const char*] Left margin prefix string
 ** @param  [r] preftyp [const char*] Left margin prefix string for first line
@@ -14112,7 +14112,7 @@ static void featTagQuoteGff3(AjPStr* pval)
 ** @@
 ******************************************************************************/
 
-static void featLocEmblWrapC(AjPStr *ploc, ajuint margin,
+static void featLocEmblWrapC(AjPStr *Ploc, ajuint margin,
 			     const char* prefix, const char* preftyp,
 			     AjPStr* retstr)
 {
@@ -14127,12 +14127,12 @@ static void featLocEmblWrapC(AjPStr *ploc, ajuint margin,
     left = strlen(prefix);
     width = margin - left;	    /* available width for printing */
 
-    ajStrRemoveWhite(ploc);	     /* no white space in locations */
-    len = ajStrGetLen(*ploc);
+    ajStrRemoveWhite(Ploc);	     /* no white space in locations */
+    len = ajStrGetLen(*Ploc);
 
     k = width;			/* for safety - will be set in time */
 
-    /* ajDebug("featLocEmblWrapC %d <%d> '%S'\n", len, width, *ploc); */
+    /* ajDebug("featLocEmblWrapC %d <%d> '%S'\n", len, width, *Ploc); */
     for(i=0; i < len; i+= k)
     {
 	last = i + width - 1;
@@ -14141,13 +14141,13 @@ static void featLocEmblWrapC(AjPStr *ploc, ajuint margin,
 
 	if((last+1) >= len)		/* no need to split */
 	{
-	    ajStrAssignSubS(&featTmpStr, *ploc, i, len-1);
+	    ajStrAssignSubS(&featTmpStr, *Ploc, i, len-1);
 	    /* ajDebug("last %d >= len %d\n", last, len); */
 	    j = 0;
 	}
 	else
 	{
-	    ajStrAssignSubS(&featTmpStr, *ploc, i, last); /* save max string */
+	    ajStrAssignSubS(&featTmpStr, *Ploc, i, last); /* save max string */
 	    j = ajStrFindlastC(featTmpStr, ","); /* last comma in featTmpStr */
 	    /* ajDebug("comma at %d\n", j); */
 	}
@@ -17245,7 +17245,7 @@ void ajFeatPrintFormat(AjPFile outf, AjBool full)
 
 /* @func ajFeatPrintbookFormat ************************************************
 **
-** Reports the input feature format internals in wikitext format
+** Reports the input feature format internals in wiki text format
 **
 ** @param [u] outf [AjPFile] Output file
 ** @return [void]
@@ -17323,7 +17323,7 @@ void ajFeatPrintbookFormat(AjPFile outf)
 
 /* @func ajFeatPrintwikiFormat ************************************************
 **
-** Reports the input feature format internals in wikitext format
+** Reports the input feature format internals in wiki text format
 **
 ** @param [u] outf [AjPFile] Output file
 ** @return [void]
@@ -17460,7 +17460,7 @@ void ajFeatoutPrintbookFormat(AjPFile outf)
 
 /* @func ajFeatoutPrintwikiFormat *********************************************
 **
-** Reports the output feature format internals in wikitext format
+** Reports the output feature format internals in wiki text format
 **
 ** @param [u] outf [AjPFile] Output file
 ** @return [void]

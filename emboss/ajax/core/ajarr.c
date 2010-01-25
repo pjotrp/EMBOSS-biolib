@@ -493,7 +493,7 @@ void ajIntInc(AjPInt *thys, ajuint elem)
 
 /* @func ajIntDec *************************************************************
 **
-** Deccrement an integer array element.
+** Decrement an integer array element.
 **
 ** If the given array is a NULL pointer an error is generated.
 ** Negative indices generate an error.
@@ -715,7 +715,7 @@ void ajUintInc(AjPUint *thys, ajuint elem)
 
 /* @func ajUintDec ************************************************************
 **
-** Decrement an usigned integer array element.
+** Decrement an unsigned integer array element.
 **
 ** If the given array is a NULL pointer an error is generated.
 ** Negative indices generate an error.
@@ -977,7 +977,7 @@ ajuint* ajUintUint(const AjPUint thys)
 
 /* @func ajUintLen ************************************************************
 **
-** Get length of dynamic 1d ajunt array
+** Get length of dynamic 1d ajuint array
 **
 ** @param [r] thys [const AjPUint] Source array
 ** @return [ajuint] length
@@ -2701,7 +2701,7 @@ void ajInt2dLen(const AjPInt2d thys, ajuint* len1, ajuint* len2)
 **
 ** @param  [r] thys [const AjPInt2d] Pointer to the ajint array.
 **
-** @return [ajint**] coverted value.
+** @return [ajint**] converted value.
 ** @category cast [AjPInt2d] Retrieve internal pointer
 ** @@
 ******************************************************************************/
@@ -3433,7 +3433,7 @@ void ajUint2dLen(const AjPUint2d thys, ajuint* len1, ajuint* len2)
 **
 ** @param  [r] thys [const AjPUint2d] Pointer to the ajuint array.
 **
-** @return [ajuint**] coverted value.
+** @return [ajuint**] converted value.
 ** @category cast [AjPUint2d] Retrieve internal pointer
 ** @@
 ******************************************************************************/

@@ -115,7 +115,7 @@ static const char *nodeinfo[] =
 
 /* @funcstatic domRemoveFromMap **********************************************
 **
-** Remove a key/value pair from a DOM nodelist 
+** Remove a key/value pair from a DOM node list
 **
 ** @param [w] list [AjPDomNodeList] node list
 ** @param [r] key [const AjPDomNode] key
@@ -146,7 +146,7 @@ static void domRemoveFromMap(AjPDomNodeList list, const AjPDomNode key)
 
 /* @funcstatic domAddToMap ****************************************************
 **
-** Add a key/value pair to a DOM nodelist 
+** Add a key/value pair to a DOM node list
 **
 ** @param [w] list [AjPDomNodeList] node list
 ** @param [o] key [AjPDomNode] key
@@ -174,7 +174,7 @@ static void domAddToMap(AjPDomNodeList list, AjPDomNode key,
 
 /* @func ajDomNodeListAppend *************************************************
 **
-** Append a child node to a DOM nodelist 
+** Append a child node to a DOM node list
 **
 ** @param [w] list [AjPDomNodeList] node list
 ** @param [u] child [AjPDomNode] child
@@ -241,7 +241,7 @@ AjPDomNodeEntry ajDomNodeListAppend(AjPDomNodeList list,
 
 /* @func ajDomNodeAppendChild ************************************************
 **
-** Appends an extra child at the end of the childnodes list of a node.
+** Appends an extra child at the end of the child nodes list of a node.
 ** If extrachild is already in the list, it is first removed.  
 **
 ** @param [w] node [AjPDomNode] node
@@ -339,7 +339,7 @@ AjPDomNode ajDomNodeAppendChild(AjPDomNode node, AjPDomNode extrachild)
 
 /* @funcstatic domUpdateNode *************************************************
 **
-** Update the commonparent entry of a node 
+** Update the common parent entry of a node
 **
 ** @param [w] node [AjPDomNode] node
 ** @return [void]
@@ -435,7 +435,7 @@ AjPDomNode ajDomRemoveChild(AjPDomNode node, AjPDomNode child)
 
 /* @func ajDomNodeListExists *************************************************
 **
-** Check whether a child exists in a nodelist 
+** Check whether a child exists in a node list
 **
 ** @param [u] list [AjPDomNodeList] list
 ** @param [r] child [const AjPDomNode] child
@@ -463,7 +463,7 @@ AjBool ajDomNodeListExists(AjPDomNodeList list, const AjPDomNode child)
 
 /* @funcstatic domDoLookupNode ***********************************************
 **
-** Return a pointer to a given node of a nodelist
+** Return a pointer to a given node of a node list
 **
 ** @param [r] list [const AjPDomNodeList] list
 ** @param [r] node [const AjPDomNode] node
@@ -486,7 +486,7 @@ static AjPDomNodeEntry domDoLookupNode(const AjPDomNodeList list,
 
 /* @func ajDomNodeListRemove *************************************************
 **
-** Remove a child from a nodelist 
+** Remove a child from a node list
 **
 ** @param [w] list [AjPDomNodeList] list
 ** @param [u] child [AjPDomNode] child
@@ -692,7 +692,7 @@ void ajDomDocumentDestroyNode(AjPDomDocument doc, AjPDomNode node)
 
 /* @func ajDomDocumentDestroyNodeList ****************************************
 **
-** Frees a nodelist
+** Frees a node list
 **
 ** @param [w] doc [AjPDomDocument] document
 ** @param [w] list [AjPDomNodeList] list
@@ -740,7 +740,7 @@ void ajDomDocumentDestroyNodeList(AjPDomDocument doc, AjPDomNodeList list,
 
 /* @func ajDomCreateNodeList **************************************************
 **
-** Create a nodelist
+** Create a node list
 **
 ** @param [u] doc [AjPDomDocument] document
 ** @return [AjPDomNodeList] new list
@@ -988,7 +988,7 @@ AjPDomDocument ajDomImplementationCreateDocumentC(const char *uri,
 
 /* @func ajDomNodeMapGetItem ********************************************
 **
-** Returns the named node from a nodemap
+** Returns the named node from a node map
 **
 ** @param [r] map [const AjPDomNodeMap] map
 ** @param [r] name [const AjPStr] name
@@ -1011,7 +1011,7 @@ AjPDomNode ajDomNodeMapGetItem(const AjPDomNodeMap map, const AjPStr name)
 
 /* @func ajDomNodeMapGetItemC *******************************************
 **
-** Returns the named node from a nodemap
+** Returns the named node from a node map
 **
 ** @param [r] map [const AjPDomNodeMap] map
 ** @param [r] name [const char *] name
@@ -1102,7 +1102,7 @@ AjPStr ajDomElementGetAttributeC(const AjPDomElement element,
 
 /* @func ajDomNodeMapSetItem *******************************************
 **
-** Enter arg into the nodemap using name as the key.
+** Enter arg into the node map using name as the key.
 ** If a node with the same name already exists in the map it will be replaced
 ** with the new node and returned.
 ** The replaced node should usually be freed with DestroyNode.
@@ -1262,7 +1262,7 @@ AjPDomNode ajDomNodeMapItem(const AjPDomNodeMap map, ajint indexnum)
 
 /* @funcstatic domNodeListItemFiltered ***************************************
 **
-** Filter nodelist item
+** Filter node list item
 **
 ** @param [r] list [const AjPDomNodeList] list
 ** @param [r] indexnum [ajint] index
@@ -1578,7 +1578,7 @@ AjPDomNode ajDomElementRemoveAttributeNode(AjPDomElement element,
 
 /* @funcstatic domTraverse ***************************************************
 **
-** Preorder elements
+** Pre-order elements
 **
 ** @param [w] list [AjPDomNodeList] list
 ** @param [u] node [AjPDomNode] node
@@ -1609,7 +1609,7 @@ static void domTraverse(AjPDomNodeList list, AjPDomNode node,
 
 /* @funcstatic domTraverseC ***************************************************
 **
-** Preorder elements
+** Pre-order elements
 **
 ** @param [w] list [AjPDomNodeList] list
 ** @param [u] node [AjPDomNode] node
@@ -1640,13 +1640,13 @@ static void domTraverseC(AjPDomNodeList list, AjPDomNode node,
 
 /* @func ajDomElementGetElementsByTagName ************************************
 **
-** Perform a preorder traversal of the entire document.
-** Return a nodelist of the elements with the name tagname in the order
+** Perform a pre-order traversal of the entire document.
+** Return a node list of the elements with the name tagname in the order
 ** in which they are found.
 **
 ** @param [u] element [AjPDomElement] element
 ** @param [r] name [const AjPStr] name
-** @return [AjPDomNodeList] nodelist
+** @return [AjPDomNodeList] node list
 ** @@
 ******************************************************************************/
 
@@ -1665,13 +1665,13 @@ AjPDomNodeList ajDomElementGetElementsByTagName(AjPDomElement element,
 
 /* @func ajDomElementGetElementsByTagNameC ***********************************
 **
-** Perform a preorder traversal of the entire document.
-** Return a nodelist of the elements with the name tagname in the order
+** Perform a pre-order traversal of the entire document.
+** Return a node list of the elements with the name tagname in the order
 ** in which they are found.
 **
 ** @param [u] element [AjPDomElement] element
 ** @param [r] name [const char *] name
-** @return [AjPDomNodeList] nodelist
+** @return [AjPDomNodeList] node list
 ** @@
 ******************************************************************************/
 
@@ -2466,12 +2466,12 @@ AjPDomPi ajDomDocumentCreateProcessingInstructionC(AjPDomDocument doc,
 
 /* @func ajDomDocumentGetElementsByTagName ***********************************
 **
-** Perform a preorder traversal of the entire document. Return a nodelist
+** Perform a pre-order traversal of the entire document. Return a node list
 ** of the elements matching tagname in the order in which they are found.
 **
 ** @param [u] doc [AjPDomDocument] document
 ** @param [r] name [const AjPStr] name
-** @return [AjPDomNodeList] nodelist
+** @return [AjPDomNodeList] node list
 ** @@
 ******************************************************************************/
 
@@ -2495,12 +2495,12 @@ AjPDomNodeList ajDomDocumentGetElementsByTagName(AjPDomDocument doc,
 
 /* @func ajDomDocumentGetElementsByTagNameC **********************************
 **
-** Perform a preorder traversal of the entire document. Return a nodelist
+** Perform a pre-order traversal of the entire document. Return a node list
 ** of the elements matching tagname in the order in which they are found.
 **
 ** @param [u] doc [AjPDomDocument] document
 ** @param [r] name [const char *] name
-** @return [AjPDomNodeList] nodelist
+** @return [AjPDomNodeList] node list
 ** @@
 ******************************************************************************/
 
@@ -2543,7 +2543,7 @@ AjPDomDocumentType ajDomDocumentGetDoctype(const AjPDomDocument doc)
 /* @func ajDomDocumentGetDocumentElement *************************************
 **
 ** Get the root element of the document tree. The root element is also
-** accessible through the childnodes nodelist member, however the children
+** accessible through the child nodes node list member, however the children
 ** of a document may also be processing instructions, document type nodes,
 ** and comments which may precede the document element in the list. 
 **
@@ -2976,7 +2976,7 @@ AjPDomNode ajDomNodeReplaceChild(AjPDomNode node, AjPDomNode newchild,
 
 /* @func ajDomNodeListReplace *******************************************
 **
-** Replace oldchild with newchild in a nodelist.
+** Replace oldchild with newchild in a node list.
 **
 ** @param [u] list [AjPDomNodeList] list
 ** @param [u] newchild [AjPDomNode] node to insert

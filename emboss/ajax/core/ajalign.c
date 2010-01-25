@@ -666,7 +666,7 @@ static void alignWriteFasta(AjPAlign thys)
 **
 ** Writes an alignment in a sequence format.
 ** Usually called for only one alignment, ignoring any
-** subalignments as they would overwrite.
+** sub-alignments as they would overwrite.
 **
 ** @param [u] thys [AjPAlign] Alignment object
 ** @param [r] iali [ajint] Alignment number
@@ -1634,7 +1634,7 @@ static void alignWriteBam(AjPAlign thys)
 
 /* @funcstatic alignWriteSrs **************************************************
 **
-** Writes an alignment in Srs format
+** Writes an alignment in SRS format
 **
 ** @param [u] thys [AjPAlign] Alignment object
 ** @return [void]
@@ -1672,7 +1672,7 @@ static void alignWriteSrsPair(AjPAlign thys)
 
 /* @funcstatic alignWriteSrsAny ***********************************************
 **
-** Writes an alignment in Srs format (with switches for pairwise and general
+** Writes an alignment in SRS format (with switches for pairwise and general
 ** formatting)
 **
 ** @param [u] thys [AjPAlign] Alignment object
@@ -2259,7 +2259,7 @@ AjBool ajAlignFormatDefault(AjPStr* pformat)
 /* @func ajAlignGetLen ********************************************************
 **
 ** Returns the filename for an alignment. If the alignment has more than one
-** subalignment, returns the total.
+** sub-alignment, returns the total.
 **
 ** @param [r] thys [const AjPAlign] Alignment object.
 ** @return [ajint] Alignment length.
@@ -2886,7 +2886,7 @@ void ajAlignSetTailC(AjPAlign thys, const char* tail)
 
 /* @func ajAlignSetTailApp ****************************************************
 **
-** Apopends to an alignment tail
+** Appends to an alignment tail
 **
 ** @param [u] thys [AjPAlign] Alignment object
 ** @param [r] tail [const AjPStr] Align tail with embedded newlines
@@ -2955,7 +2955,7 @@ void ajAlignSetSubTailC(AjPAlign thys, const char* tail)
 
 /* @func ajAlignSetSubTailApp *************************************************
 **
-** Apopends to an alignment tail
+** Appends to an alignment tail
 **
 ** @param [u] thys [AjPAlign] Alignment object
 ** @param [r] tail [const AjPStr] Align tail with embedded newlines
@@ -4720,7 +4720,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 
 /* @funcstatic alignTotweight *************************************************
 **
-** Returns the total wight for all sequences in an alignment.
+** Returns the total weight for all sequences in an alignment.
 **
 ** @param [r] thys [const AjPAlign] Alignment object
 ** @param [r] iali [ajint] Alignment number

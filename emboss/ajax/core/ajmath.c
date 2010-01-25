@@ -137,10 +137,10 @@ __deprecated float ajRoundF(float a, ajint nbits)
 
 /* @func ajCvtRecToPol ********************************************************
 **
-** Converts cartesian co-ordinates to polar
+** Converts Cartesian coordinates to polar
 **
-** @param [r] x [float] X co-ordinate
-** @param [r] y [float] Y co-ordinate
+** @param [r] x [float] X coordinate
+** @param [r] y [float] Y coordinate
 ** @param [w] radius [float*] Radius
 ** @param [w] angle [float*] Angle
 ** @return [void]
@@ -168,12 +168,12 @@ __deprecated void ajRecToPol(float x, float y, float *radius, float *angle)
 
 /* @func ajCvtPolToRec  *******************************************************
 **
-** Converts polar co-ordinates to cartesian
+** Converts polar coordinates to Cartesian
 **
 ** @param [r] radius [float] Radius
 ** @param [r] angle [float] Angle
-** @param [w] x [float*] X co-ordinate
-** @param [w] y [float*] Y co-ordinate
+** @param [w] x [float*] X coordinate
+** @param [w] y [float*] Y coordinate
 ** @return [void]
 ******************************************************************************/
 
@@ -396,7 +396,7 @@ void ajRandomSeed(void)
 	gettimeofday(&tv,NULL);
 	seed = (tv.tv_usec % 9999)+1;
 #else
-	/* Needs looking at to try to get usec resolution */
+	/* Needs looking at to try to get micro second resolution */
 	seed = (ajint) ((time(0) % 9999) + 1);
 #endif
     }

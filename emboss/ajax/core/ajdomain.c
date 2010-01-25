@@ -60,7 +60,7 @@
 **
 **
 **
-** @attr Entry [AjPStr]      Domain identifer code. 
+** @attr Entry [AjPStr]      Domain identifier code.
 ** @attr Pdb [AjPStr]        Corresponding pdb identifier code.
 ** @attr Sccs [AjPStr]       Scop compact classification string.
 ** @attr Class [ajint]       SCOP sunid for class 
@@ -120,8 +120,8 @@ typedef struct AjSScopcla
 **                      'cf' (fold), 'sf' (superfamily), 'fa' (family), 'dm' 
 **                      (domain) or 'sp' (species).
 ** @attr Sccs [AjPStr]  Scop compact classification string.
-** @attr Entry [AjPStr] Domain identifer code (or '-' if Type!='px').
-** @attr Desc [AjPStr]  Description in english of the node.
+** @attr Entry [AjPStr] Domain identifier code (or '-' if Type!='px').
+** @attr Desc [AjPStr]  Description in English of the node.
 ** @attr Sunid [ajint]  SCOP sunid for node.
 ** @attr Padding [char[4]]  Padding to alignment boundary
 **
@@ -419,7 +419,7 @@ static AjPScopdes domainScopdesReadC(AjPFile inf, const char *entry)
     }
     
 
-    /* Read up to the correcty entry (line) */
+    /* Read up to the correct entry (line) */
     ajStrAssignC(&domainStrtentry,entry);
     ajStrFmtUpper(&domainStrtentry);
     
@@ -516,7 +516,7 @@ static AjPScopcla domainScopclaReadC(AjPFile inf, const char *entry)
     }
     
 
-    /* Read up to the correcty entry (line) */
+    /* Read up to the correct entry (line) */
     ajStrAssignC(&domainStrtentry,entry);
     ajStrFmtUpper(&domainStrtentry);
     
@@ -1188,7 +1188,7 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
     ajint intI  = 0;  /* Identical family number as int */  
     ajint d;          /*Declare int for looping through domains*/   
     ajint s;          /*Declare int for looping through segments*/ 
-    ajint single_seg = 1;   /* Number of segments when no match founf in 
+    ajint single_seg = 1;   /* Number of segments when no match found in
 			      CathDomList */
     
     
@@ -1205,7 +1205,7 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
     AjPStr    tmptok = NULL;
     
     
-    /* Intitialise strings */
+    /* Initialise strings */
     tmptok          = ajStrNew();
     CathNameLine    = ajStrNew();
     CathDomLine     = ajStrNew();
@@ -1358,7 +1358,7 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
             */
 	    
 
-	    /*Convert string containing no. of segs to int */
+	    /*Convert string containing no. of segments to int */
 	    ajStrToInt(StrTokPtr, &(tmpNSegment)); 
 	    
 	    /* Create CathDom object giving tmpNSegment as argument */
@@ -1532,20 +1532,13 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
 	    /* get Start and End residue numbers for each segment */ 
 	    ajStrAssignC(&(CathPtr->Start[0]), ".");
 	    ajStrAssignC(&(CathPtr->End[0]), ".");
-
-	    /*
-            ** Assign value of start to "." 
-	    ** urrggh! ((CathPtr->Start[0]) = ".");
-	    ** Assign value of end to "."
-	    ** yeek!	  ((CathPtr->End[0]) = ".");
-            */
 	}
 
 
 	/* Extract Pdb code from DomainId */
 	ajStrAssignSubS(&(CathPtr->Pdb), CathPtr->DomainID, 0,3);
 	
-	/* Extract chain identifer from DomainId */
+	/* Extract chain identifier from DomainId */
 	CathPtr->Chain=ajStrGetCharPos(CathPtr->DomainID, 4);
 		    
 	/*
@@ -1584,7 +1577,7 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
 	** Superfamily_Id and store in temp. variable (format X.XX.XX.XX)
         */ 
 	    
-	/* Make string containg CATH id numbers */ 
+	/* Make string containing CATH id numbers */
 	ajFmtPrintS(&tmpNumString, "%d.%d.%d.%d", intC, intA, intT, intH); 
 
 	/* Binary search using temp. variable in AjSCathName */
@@ -1616,7 +1609,7 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
 	** and store in temp. variable (format X.XX.XX)
         */ 
 
-	/* Make string containg CAT id numbers */
+	/* Make string containing CAT id numbers */
         ajFmtPrintS(&tmpNumString, "%d.%d.%d", intC, intA, intT); 
 	
 	/* Binary search using temp. variable in AjSCathName */
@@ -1671,7 +1664,7 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
 	
 
 	/*
-        ** Make string containg CA id numbers
+        ** Make string containing CA id numbers
 	**	ajFmtPrintS(&tmpNumString, "000%d.%d", intC, intA);
         */ 
 	
@@ -3831,7 +3824,7 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
       ajFatal("Bad args passed to ajPdbWriteDomain");
 
 
-    /* Intitialise strings */
+    /* Initialise strings */
     seq    = ajStrNew();
     tmpseq = ajStrNew();
     tmpstr = ajStrNew();
@@ -3890,7 +3883,7 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
 
 
     /* Start of main application loop */
-    /* Print out data up to co-ordinates list */
+    /* Print out data up to coordinates list */
     for(z=0;
 	z<scop->N;
 	z++,found_start=ajFalse, found_end=ajFalse, 
@@ -4724,7 +4717,7 @@ AjBool ajScopWrite(AjPFile outf, const AjPScop obj)
 /* @func ajDomainDCFType ****************************************************
 **
 ** Reads a DCF file (domain classification file; see documentation for 
-** DOMAINATRIX "scopparse" application) and assertains the type of domains 
+** DOMAINATRIX "scopparse" application) and ascertains the type of domains
 ** (ajSCOP or ajCATH) within.
 ** 
 **

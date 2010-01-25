@@ -193,7 +193,7 @@ AjOElements;
 **                            acids and has a  unique chain identifier
 ** @attr resn1ok [AjBool*]    Bool's for each chain which are TRUE if resn1
 **                            was used to derive resni, i.e. gave correct
-**                            alignment t seqres sequence.
+**                            alignment to seqres sequence.
 **                            If False then resn2 was used. 
 ** @attr nligands [ajint*]    Number of ligands for each chain.  A ligand is a
 **                            non-protein group associated with a chain 
@@ -212,9 +212,9 @@ AjOElements;
 **                            PDBPARSE_COORD (coordinate line (ATOM or HETATM
 **                            record) for protein atoms, PDBPARSE_COORDHET
 **                            (coordinate line for non-protein atoms), 
-**                            PDBPARSE_COORDGP (oordinate line for groups
+**                            PDBPARSE_COORDGP (coordinate line for groups
 **                            that could not be associated with a SEQRES
-                              chain), PDBPARSE_COORDWAT (oordinate line for 
+                              chain), PDBPARSE_COORDWAT (coordinate line for
 **                            water), PDBPARSE_TER (it is a TER record) or
 **                            PDBPARSE_MODEL (it is a MODEL record).
 ** @attr chnn [ajint*]        Array of chain numbers for each PDBPARSE_COORD & 
@@ -241,7 +241,7 @@ AjOElements;
 **	                      lines where line[26] is used (residues where
 **                            oddnum==True are ignored).
 ** @attr pdbn [AjPStr*]       Array with a residue number for each line
-**	                      for which <cooord> == ajTrue. This is the
+**	                      for which 'coord' == ajTrue. This is the
 **	                      original residue number string (including
 **                            insertion code) from the pdb file
 ** @attr oddnum [AjBool*]     Bool's for each line which are TRUE for
@@ -463,7 +463,7 @@ static AjBool       WriteText(AjPFile outf, const AjPStr str,
 ** @param [r] pdb  [const AjPPdb] Pdb object
 ** @param [r] chn  [ajint] chain number, beginning at 1
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
@@ -599,7 +599,7 @@ static AjBool WriteSeqresChain(AjPFile errf, AjPFile outf, const AjPPdb pdb,
 ** @param [r] pdb  [const AjPPdb] Pdb object
 ** @param [r] scop [const AjPScop] Scop object
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 static AjBool WriteSeqresDomain(AjPFile errf, AjPFile outf, const AjPPdb pdb, 
@@ -662,7 +662,7 @@ static AjBool WriteSeqresDomain(AjPFile errf, AjPFile outf, const AjPPdb pdb,
 	ajListToarray(pdb->Chains[chn-1]->Residues, (void ***) &resarr);  */
 
 
-	/* Intitialise iterator for list of atoms */
+	/* Initialise iterator for list of atoms */
 	iter=ajListIterNewread(pdb->Chains[chn-1]->Atoms);	
 	
 
@@ -928,7 +928,7 @@ static AjBool WriteSeqresDomain(AjPFile errf, AjPFile outf, const AjPPdb pdb,
 ** @param [r] mode [ajint]   Either ajPDB or ajIDX if the original or 
 **                           corrected residue number is to be used. 
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
@@ -960,7 +960,7 @@ static AjBool WriteAtomChain(AjPFile outf, const AjPPdb pdb,
   
     for(acnt=1; atm; atm=(AjPAtom)ajListIterGet(iter)) 	
     {
-	/* Break if ont a new model */
+	/* Break if on a new model */
 	if(atm->Mod!=mod)
 	    break;
 		
@@ -1084,7 +1084,7 @@ static AjBool WriteAtomChain(AjPFile outf, const AjPPdb pdb,
 ** @param [r] mode [ajint] Either ajPDB or ajIDX if the original or corrected
 **                         residue number is to be used. 
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
@@ -1146,7 +1146,7 @@ static AjBool WriteAtomDomain(AjPFile errf, AjPFile outf, const AjPPdb pdb,
 
 
 
-	/* Iteratre up to the correct model */
+	/* Iterate up to the correct model */
 	iter=ajListIterNewread(pdb->Chains[chn-1]->Atoms);	
 	
 	while((atm = (AjPAtom)ajListIterGet(iter)))
@@ -1370,7 +1370,7 @@ static AjBool WriteAtomDomain(AjPFile errf, AjPFile outf, const AjPPdb pdb,
 ** @param [r] scop [const AjPScop] Scop object
 ** @param [r] mod  [ajint] Model number, beginning at 1
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
@@ -1402,7 +1402,7 @@ static AjBool WriteAtomDomainPdb(AjPFile errf, AjPFile outf, const AjPPdb pdb,
 ** @param [r] scop [const AjPScop] Scop object
 ** @param [r] mod  [ajint]   Model number, beginning at 1
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
@@ -1429,7 +1429,7 @@ static AjBool WriteAtomDomainIdx(AjPFile errf, AjPFile outf,const  AjPPdb pdb,
 ** @param [r] pdb  [const AjPPdb]  Pdb object
 ** @param [r] mod  [ajint]   Model number, beginning at 1
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
@@ -1512,7 +1512,7 @@ static AjBool WriteHeterogen(AjPFile outf, const AjPPdb pdb, ajint mod)
 ** @param [r] prefix [const char *]  pdb record (e.g. "HEADER")
 **
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
@@ -1582,7 +1582,7 @@ static AjBool WriteText(AjPFile outf, const AjPStr str, const char *prefix)
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [r] pdb  [const AjPPdb] Pdb object
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
@@ -1611,7 +1611,7 @@ static AjBool WriteHeader(AjPFile outf, const AjPPdb pdb)
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [r] scop [const AjPScop] Scop object
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
@@ -1640,7 +1640,7 @@ static AjBool WriteHeaderScop(AjPFile outf, const AjPScop scop)
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [r] pdb  [const AjPPdb] Pdb object
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
@@ -1669,7 +1669,7 @@ static AjBool WriteTitle(AjPFile outf, const AjPPdb pdb)
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [r] pdb  [const AjPPdb] Pdb object
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 static AjBool WriteCompnd(AjPFile outf, const AjPPdb pdb)
@@ -1695,7 +1695,7 @@ static AjBool WriteCompnd(AjPFile outf, const AjPPdb pdb)
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [r] pdb  [const AjPPdb] Pdb object
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
@@ -1721,7 +1721,7 @@ static AjBool WriteSource(AjPFile outf, const AjPPdb pdb)
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [r] pdb  [const AjPPdb] Pdb object
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
@@ -1748,7 +1748,7 @@ static AjBool WriteEmptyRemark(AjPFile outf, const AjPPdb pdb)
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [r] pdb  [const AjPPdb] Pdb object
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
@@ -2361,7 +2361,7 @@ static AjPPdbfile PdbfileNew(ajint nlines, ajint nchains)
 ** determined and the sequences and chain ids from the SEQRES records are
 ** parsed. The line type (see below) of each line is determined, and for 
 ** lines with coordinates, the residue type is parsed. A count of the number
-** of TER records and the location of the first coordinte line is also 
+** of TER records and the location of the first coordinate line is also
 ** determined.
 ** Secondary structure information is also parsed and an AjPElements 
 ** object is written.
@@ -2630,7 +2630,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile flog, AjPElements *elms,
 
 			
 
-			/* Check length of sequenece vs indicated length */
+			/* Check length of sequence vs indicated length */
 			if(lenful != seqreslen)
 			{
 			    ajFmtPrintF(flog, "%-15s%d (%c)\n", 
@@ -2699,7 +2699,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile flog, AjPElements *elms,
 		    ajStrAssignS(&tmpseqful, seqres);
 
 
-		    /* Check length of sequenece vs indicated length */
+		    /* Check length of sequence vs indicated length */
 		    if(lenful != seqreslen)
                     {
                         ajFmtPrintF(flog, "%-15s%d (%c)\n", 
@@ -3339,7 +3339,7 @@ static AjBool CheckChains(AjPPdbfile pdbfile, AjPFile flog,
 ** Reads a Pdbfile object and checks whether the expected number of TER 
 ** and MODEL records are present. Any unwanted records (e.g. TER records that
 ** delimit fragments of chain digests and duplicate MODEL records) are 
-** discared (the linetype array for the lines are set to PDBPARSE_IGNORE).
+** discarded (the linetype array for the lines are set to PDBPARSE_IGNORE).
 ** 
 ** The linetype array and modcnt variable may be modified. The toofewter
 ** element is written.
@@ -3586,7 +3586,7 @@ static AjBool NumberChains(AjPPdbfile pdbfile, AjPFile flog)
 
 		    if(chndone[this-1])
 		    {
-			/* Mark up water coordintes */
+			/* Mark up water coordinates */
 			if(ajStrMatchC(pdbfile->rtype[i], "HOH"))
 			    pdbfile->linetype[i]=PDBPARSE_COORDWAT;
 			else
@@ -3626,9 +3626,9 @@ static AjBool NumberChains(AjPPdbfile pdbfile, AjPFile flog)
 	    if(!done)
 	    {		
 		/* Any ATOM or HETATM
-		   record with a whitspace as chain id and which has not 
+		   record with a whitespace as chain id and which has not
 		   already been assigned belongs to the chain immediately 
-		   preceeding it. Assign these lines as NON_PROTEIN_CHAIN 
+		   preceding it. Assign these lines as NON_PROTEIN_CHAIN
 		   lines.  */
 
 		if(id==' ')
@@ -3644,7 +3644,7 @@ static AjBool NumberChains(AjPPdbfile pdbfile, AjPFile flog)
 		    pdbfile->chnn[i]=this;
 		    chn=pdbfile->chnn[i]-1;
 		  
-		    /* Mark up water coordintes */
+		    /* Mark up water coordinates */
 		    if(ajStrMatchC(pdbfile->rtype[i], "HOH"))
 			pdbfile->linetype[i]=PDBPARSE_COORDWAT;
 		    else
@@ -3679,7 +3679,7 @@ static AjBool NumberChains(AjPPdbfile pdbfile, AjPFile flog)
 		       the chain id's used and assign a GROUP NUMBER 
 		       as appropriate.*/
 		{
-		    /* Mark up water coordintes */
+		    /* Mark up water coordinates */
 		    if(ajStrMatchC(pdbfile->rtype[i], "HOH"))
 			pdbfile->linetype[i]=PDBPARSE_COORDWAT;
 		    else
@@ -3772,7 +3772,7 @@ static AjBool NumberChains(AjPPdbfile pdbfile, AjPFile flog)
 	   (the chain id changes from line to line without an intervening TER 
 	   record and both chain id's are not whitespace).
 	   Where ATOM and HETATM groups are not separated 
-	   by TER records (a chain id is given on one line, a whitspace chain
+	   by TER records (a chain id is given on one line, a whitespace chain
 	   id is given on the next line, and there is no intervening TER 
 	   record).
 	   
@@ -3817,7 +3817,7 @@ static AjBool NumberChains(AjPPdbfile pdbfile, AjPFile flog)
        For files with less than the expected number of TER records, 
        check again for COORDHET lines, which are identified as 
        (i)  a line beginning with a HETATM record with the same chain 
-       identifier but lower residue number than the preceeding line, or
+       identifier but lower residue number than the preceding line, or
        JONNEW
        (ii) a line beginning with a HETATM record which is not followed
        anywhere in the file by an ATOM record with the same chain identifier 
@@ -3871,7 +3871,7 @@ static AjBool NumberChains(AjPPdbfile pdbfile, AjPFile flog)
 			}
 	}
     
-    /* For files with a single chain oly, set the number of groups
+    /* For files with a single chain only, set the number of groups
        that could not be associated with a chain to zero */
     if(pdbfile->nchains==1)
 	{
@@ -4346,7 +4346,7 @@ static AjBool MaskChains(AjPPdbfile pdbfile, AjPFile flog,
        (the chain id changes from line to line without an intervening TER 
        record and both chain id's are not whitespace).
        Where ATOM and HETATM groups are not separated 
-       by TER records (a chain id is given on one line, a whitspace chain
+       by TER records (a chain id is given on one line, a whitespace chain
        id is given on the next line, and there is no intervening TER 
        record) */
     
@@ -4540,7 +4540,7 @@ static AjBool StandardiseNumbering(AjPPdbfile pdbfile, AjPFile flog)
     
     for(first=ajFalse, i=pdbfile->idxfirst;i<pdbfile->nlines;i++)
     {
-	/* Co-ordinate line */
+	/* Coordinate line */
 	if(pdbfile->linetype[i]==PDBPARSE_COORD)
 	{
 	    /* New chain */
@@ -4653,7 +4653,7 @@ static AjBool StandardiseNumbering(AjPPdbfile pdbfile, AjPFile flog)
        This is done for resn1 array of a Pdbfile object only. */
     for(lastchn=-1, i=pdbfile->idxfirst;i<pdbfile->nlines;i++)
     {
-	/* Co-ordinate line */
+	/* Coordinate line */
 	if(pdbfile->linetype[i]==PDBPARSE_COORD)
 	{
 	    /* New chain */
@@ -4735,7 +4735,7 @@ static AjBool StandardiseNumbering(AjPPdbfile pdbfile, AjPFile flog)
        array of Pdbfile object*/
     for(lastchn=-1, i=pdbfile->idxfirst;i<pdbfile->nlines;i++)
     {
-	/* Co-ordinate line */
+	/* Coordinate line */
 	if(pdbfile->linetype[i]==PDBPARSE_COORD)
 	{
 	    /* New chain */
@@ -4827,7 +4827,7 @@ static AjBool StandardiseNumbering(AjPPdbfile pdbfile, AjPFile flog)
        heterogenous residues positions are ignored)*/
     for(lastchn=-1, i=pdbfile->idxfirst;i<pdbfile->nlines;i++)
     {
-	/* Co-ordinate line */
+	/* Coordinate line */
 	if((pdbfile->linetype[i]==PDBPARSE_COORD) && 
 	   (!pdbfile->oddnum[i]))
 	{
@@ -4929,7 +4929,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile flog, ajuint lim,
 
     /* Rather than use, e.g. seq1, seq2 & seq, we could use a
        single 2 dimensional array, but we would need new code for 2d
-       arrays of chararacters*/
+       arrays of characters*/
     
 
     ajuint       a=0;		/* Loop counter */
@@ -5093,7 +5093,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile flog, ajuint lim,
     /* Assign arrays */
     for(i=pdbfile->idxfirst;i<pdbfile->nlines;i++)
     {
-	/* Co-ordinate line */
+	/* Coordinate line */
 	if(pdbfile->linetype[i]==PDBPARSE_COORD)
 	{
 	    /* Break if we are no longer in the first model */
@@ -5195,7 +5195,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile flog, ajuint lim,
 		
 		
 		/* Modify the seqres sequence in the Pdbfile object 
-		   by adding the first <j> residues from the N-terminus 
+		   by adding the first j residues from the N-terminus
 		   of the ATOM sequence to the N-terminus of <seqres>. */
 		
 		for(k=0;(k<j)&&(k<nres[i]);k++)
@@ -5388,7 +5388,8 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile flog, ajuint lim,
 		    maxb = MAJSTRGETLEN(seq[i]) - 1;
 
 		/*DIAGNOSTIC  
-		ajFmtPrintF(flog, "maxb = %d\nlim2 = %d\nstrlen: %d\n", 
+		ajFmtPrintF(flog, "maxb = %d\nlim2 = %d\n");
+		ajDebug("strlen: %d\n",
 			    maxb, lim2, MAJSTRGETLEN(seq[i]));*/
 		
 
@@ -5505,7 +5506,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile flog, ajuint lim,
 		/* Check whether SEQRES is substring of ATOM sequence */
 		/* This will only find omissions from the SEQRES
 		   sequence where the ATOM sequence would align to it
-		   wihout gaps, and where the SEQRES sequence does not
+		   without gaps, and where the SEQRES sequence does not
 		   have extra N-terminal residues relative to ATOM
 		   (such cases are caught in STEP 2) */
 		if((loc=ajStrFindS(seq[i],pdbfile->seqres[i])) !=-1)
@@ -5913,7 +5914,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile flog, ajuint lim,
 		      "Aligning ", ajStrGetPtr(substr), "To ", seqres_ptr);  */
 		    
 		    
-		    /* Set loc_ptr to point to the first occurence of 
+		    /* Set loc_ptr to point to the first occurrence of
 		       substring1 in SEQRES sequence */
 		    /* If substring1 does not occur in SEQRES sequence */
 		    if( (loc_ptr = strstr(seqres_ptr, 
@@ -5922,7 +5923,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile flog, ajuint lim,
 			/*See if there is an error in the residue id at the 
 			  start of <substr> Create a new substring from the 
 			  ATOM records but omit the first character.
-			  There is a specical case if substr is only 1 
+			  There is a special case if substr is only 1
 			  character long.*/
 			
 			if(siz_substr == 1)
@@ -5946,7 +5947,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile flog, ajuint lim,
 			      seqres_ptr); */
 
 
-			    /* Set loc_ptr to point to the first occurence of 
+			    /* Set loc_ptr to point to the first occurrence of
 			       substring1 in SEQRES sequence */
 			    /* If substring2 does not occur in the SEQRES 
 			       sequence, continue with a smaller substring */
@@ -5960,7 +5961,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile flog, ajuint lim,
 			    /* substring2 is found in the SEQRES sequence */
 			    else
 			    {
-				/* If there is not enough space to accomodate 
+				/* If there is not enough space to accommodate
 				   the 'missing' residue continue (with a 
 				   smaller substring) */
 				if(loc_ptr == seqres_ptr)
@@ -5971,7 +5972,8 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile flog, ajuint lim,
 
 
 				/*DIAGNOSTIC 
-				  ajFmtPrintF(flog, "\n\n\nnmismatches = "
+				  ajFmtPrintF(flog, "\n\n\n";
+				  ajFmtPrintF(flog, "nmismatches = "
 				  "%d\n%12s%s\n%12s%s\n%12s%s\n%12s%s\n", 
 				  nmismatches, 
 				  "atm_ptr:",
@@ -6135,9 +6137,10 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile flog, ajuint lim,
 			   from 1 (rather than 0)*/
 			
 			/*DIAGNOSTIC 
-			  ajFmtPrintF(flog, "a : %d\npdbfile->rtype[a] : "
-			  "%S\npdbfile->pdbn[a] : %S\n", 
-			  a, pdbfile->rtype[a], pdbfile->pdbn[a]); */
+			  ajFmtPrintF(flog, "a : %d\n". a);
+			      ajFmtPrintF(flog, "pdbfile->rtype[a] : %S\n", pdbfile->rtype[a]);
+			      ajFmtPrintF(flog, "pdbfile->pdbn[a] : %S\n",
+					pdbfile->pdbn[a]); */
 			  
 			
 			ajFmtPrintS(&msgbit,  "%S %S %S %d;    ", 
@@ -6884,7 +6887,7 @@ static ajint  PdbfileFindLine(const AjPPdbfile pdb, ajint chn, ajint which,
 ** @param [r] pdb [const AjPPdbfile] Pdbfile object
 ** @param [w] chn [ajint *]     Chain number
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
@@ -7558,7 +7561,7 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size,
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [w] errf [AjPFile] Output file stream for error messages
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
@@ -7635,7 +7638,7 @@ AjBool  ajPdbWriteDomainRecordRaw(ajint mode, const AjPPdb pdb, ajint mod,
 ** @param [w] outf  [AjPFile] Output file stream
 ** @param [w] errf  [AjPFile] Output file stream for error messages
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
@@ -7720,7 +7723,7 @@ AjBool  ajPdbWriteRecordRaw(ajint mode, const AjPPdb pdb, ajint mod,
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [w] errf [AjPFile] Output file stream for error messages
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
@@ -7828,7 +7831,7 @@ AjBool ajPdbWriteAllRaw(ajint mode, const AjPPdb pdb,
 ** @param [w] outf [AjPFile] Output file stream
 ** @param [w] errf [AjPFile] Output file stream for error messages
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 

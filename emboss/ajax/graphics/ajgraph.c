@@ -3555,13 +3555,19 @@ void ajGraphicsCalcRange(const float *array,
 {
     ajuint i;
 
-    *min = 64000.;
-    *max = -64000.;
+    *min = FLT_MAX;
+    *max = FLT_MIN;
 
     for(i=0;i<npoints;++i)
     {
 	*min = (*min < array[i]) ? *min : array[i];
 	*max = (*max > array[i]) ? *max : array[i];
+    }
+
+    if(*min == *max)
+    {
+        *min *= 0.9;
+        *max *= 1.1;
     }
 
     return;

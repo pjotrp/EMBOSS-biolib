@@ -151,7 +151,7 @@ static CodOInFormat codInFormatDef[] =
 
 /* @datastatic CodPOutFormat **************************************************
 **
-** Codon usage ioutput formats data structure
+** Codon usage output formats data structure
 **
 ** @alias CodSOutFormat
 ** @alias CodOOutFormat
@@ -373,7 +373,7 @@ __deprecated AjPCod ajCodDup(const AjPCod thys)
 
 /* @section Codon Destructors ************************************************
 **
-** Desctuctor(s) for AjPCod objects
+** Destructor(s) for AjPCod objects
 **
 ******************************************************************************/
 
@@ -424,9 +424,9 @@ void ajCodDel(AjPCod *pthys)
 
 /* @func ajCodBacktranslate ***************************************************
 **
-** Backtranslate a string
+** Back translate a string
 **
-** @param [w] b [AjPStr *] backtranslated sequence
+** @param [w] b [AjPStr *] back translated sequence
 ** @param [r] a [const AjPStr] sequence
 ** @param [r] thys [const AjPCod] codon usage object
 **
@@ -487,9 +487,9 @@ void ajCodBacktranslate(AjPStr *b, const AjPStr a, const AjPCod thys)
 
 /* @func ajCodBacktranslateAmbig **********************************************
 **
-** Backtranslate a string to a fully ambiguous nucleotide sequence as a string
+** Back translate a string to a fully ambiguous nucleotide sequence as a string
 **
-** @param [w] b [AjPStr *] backtranslated sequence
+** @param [w] b [AjPStr *] back translated sequence
 ** @param [r] a [const AjPStr] sequence
 ** @param [r] thys [const AjPCod] codon usage object
 **
@@ -1114,7 +1114,7 @@ static AjBool codReadStaden(AjPCod thys, AjPFilebuff inbuff)
 	if(ajStrFindRestC(codReadLine, "=") == -1)
 	    continue;
 
-	if(icod > 63)			/* ignore second noncoding set */
+	if(icod > 63)			/* ignore second non-coding set */
 	    continue;
 
 	/* check record format */
@@ -1246,7 +1246,7 @@ static AjBool codReadSpsum(AjPCod thys, AjPFilebuff inbuff)
 
 /* @funcstatic codReadCutg **************************************************
 **
-** Read a codon index from a filename in CUTG website format
+** Read a codon index from a filename in CUTG web site format
 **
 ** @param [w] thys [AjPCod] Codon object
 ** @param [u] inbuff [AjPFilebuff] Input file buffer
@@ -1801,7 +1801,7 @@ static AjBool codCommentProcess(AjPCod thys, const AjPStr ccline)
 **
 ** @param [u] token [AjPStr*] String
 **
-** @return [AjBool] ajrue if string is a valid codon sequence
+** @return [AjBool] ajTrue if string is a valid codon sequence
 ** @@
 ******************************************************************************/
 
@@ -2601,7 +2601,7 @@ static void codWriteCutgaa(const AjPCod thys, AjPFile outf)
 
 /* @funcstatic codWriteCherry *************************************************
 **
-** Write codon structure to output file in Mike Cherry's codonusage database
+** Write codon structure to output file in Mike Cherry's codon usage database
 ** format.
 **
 ** Very similar to GCG format, has a structured header comment from
@@ -3575,7 +3575,7 @@ const AjPStr ajCodGetDesc(const AjPCod thys)
 **
 ** Returns the description of a codon table
 **
-** @param [r] thys [const AjPCod] Codon usgage object
+** @param [r] thys [const AjPCod] Codon usage object
 ** @return [const char*] Original filename
 ******************************************************************************/
 
@@ -3701,7 +3701,7 @@ ajint ajCodGetNumcodon(const AjPCod thys)
 
 /* @func ajCodGetNumcds *****************************************************
 **
-** Returns the numbers od CDSs in a codon table
+** Returns the numbers of CDSs in a codon table
 **
 ** @param [r] thys [const AjPCod] Codon usage object
 ** @return [ajint] Number of CDSs

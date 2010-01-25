@@ -217,7 +217,7 @@ int main(int argc, char **argv)
      /*
      ** plot is an XY graph definition object created by acdSetGraphxy
      ** something like this to plot the data:
-     ** sequence, startposition, increment, array, arraysize
+     ** sequence, start position, increment, array, array size
      ** Note: seq has Begin and End values which can limit the plot range
      **
      ** ioff = ibeg + iwin/2;

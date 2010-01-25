@@ -10,12 +10,12 @@ extern "C"
 
 /* @data AjPMelt **************************************************************
 **
-** Melting values for dinucleotides
+** Melting values for di-nucleotides
 **
 ** @alias AjSMelt
 ** @alias AjOMelt
 **
-** @attr pair [AjPStr] Dinucleotide
+** @attr pair [AjPStr] Di-nucleotide
 ** @attr enthalpy [float] Enthalpy
 ** @attr entropy [float] Entropy
 ** @attr energy [float] Free energy

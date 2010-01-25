@@ -1130,7 +1130,7 @@ AjPHet ajHetReadRawNew(AjPFile inf)
 **
 ** @return [AjPPdb] Pointer to Pdb object.
 ** @category new [AjPPdb] Pdb constructor from reading ccf format file
-**                         (retrive data for 1st model only).
+**                         (retrieve data for 1st model only).
 ** @@
 ****************************************************************************/
 
@@ -1173,7 +1173,7 @@ AjPPdb ajPdbReadAllModelsNew(AjPFile inf)
 **
 ** @return [AjPPdb] Pointer to Pdb object.
 ** @category new [AjPPdb] Pdb constructor from reading ccf format file
-**                         (retrive data for 1st model only).
+**                         (retrieve data for 1st model only).
 ** @@
 ****************************************************************************/
 
@@ -1207,7 +1207,7 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
 
     AjBool     fixReadAtoms = ajTrue;
 
-    /* Intitialise strings */
+    /* Initialise strings */
     line  = ajStrNew();
     token = ajStrNew();
     idstr = ajStrNew();
@@ -1587,27 +1587,27 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
             ajStrTokenNextParse(&handle,&token);
             ajStrToFloat(token,&residue->all_rel);
 	    
-	    /* Absolute accessibility, atoms in sidechain.  */
+	    /* Absolute accessibility, atoms in side chain.  */
             ajStrTokenNextParse(&handle,&token);
             ajStrToFloat(token,&residue->side_abs);
 
-	    /* Relative accessibility, atoms in sidechain.  */
+	    /* Relative accessibility, atoms in side chain.  */
             ajStrTokenNextParse(&handle,&token);
             ajStrToFloat(token,&residue->side_rel);
 
-	    /* Absolute accessibility, atoms in mainchain. */
+	    /* Absolute accessibility, atoms in main chain. */
             ajStrTokenNextParse(&handle,&token);
             ajStrToFloat(token,&residue->main_abs);
 
-	    /* Relative accessibility, atoms in mainchain. */
+	    /* Relative accessibility, atoms in main chain. */
             ajStrTokenNextParse(&handle,&token);
             ajStrToFloat(token,&residue->main_rel);
 
-	    /* Absolute accessibility, nonpolar atoms. */
+	    /* Absolute accessibility, non-polar atoms. */
             ajStrTokenNextParse(&handle,&token);
             ajStrToFloat(token,&residue->npol_abs);
 
-	    /* Relative accessibility, nonpolar atoms. */
+	    /* Relative accessibility, non-polar atoms. */
             ajStrTokenNextParse(&handle,&token);
             ajStrToFloat(token,&residue->npol_rel);
 
@@ -1838,7 +1838,7 @@ AjPPdb ajPdbReadoldNew(AjPFile inf)
     ajint      mn_last = -100000;
 
 
-    /* Intitialise strings */
+    /* Initialise strings */
     line  = ajStrNew();
     token = ajStrNew();
     idstr = ajStrNew();
@@ -2188,7 +2188,7 @@ AjPPdb ajPdbReadoldNew(AjPFile inf)
 **
 ** @return [AjPPdb] Pointer to Pdb object.
 ** @category new [AjPPdb] Pdb constructor from reading ccf format file
-**                         (retrive data for 1st model only).
+**                         (retrieve data for 1st model only).
 ** @@
 ****************************************************************************/
 
@@ -2219,7 +2219,7 @@ AjPPdb ajPdbReadoldFirstModelNew(AjPFile inf)
     ajint      rn_last = -100000;
     ajint      mn_last = -100000;
 
-    /* Intitialise strings */
+    /* Initialise strings */
     line  = ajStrNew();
     token = ajStrNew();
     idstr = ajStrNew();
@@ -2838,7 +2838,7 @@ AjPVdwres  ajVdwresNew(ajint n)
 ** function. Fore-knowledge of the dimension (number of residues) for the 
 ** contact map is required.
 **
-** @param  [r] n [ajint]   Dimenion of contact map
+** @param  [r] n [ajint]   Dimension of contact map
 **
 ** @return [AjPCmap] Pointer to a Cmap object
 ** 
@@ -3816,13 +3816,13 @@ ajint ajResidueEnv2(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile flog)
     float BLimit=40; /* Upper limit for the relative solvent
 			accessible area for a buried residue */
     float PBLimit=114; /* Upper limit for the relative solvent
-  			  accessible area for a Parially buried
+  			  accessible area for a Partially buried
   			  residue */
   
     float HLimit=45; /* Upper limit for the fraction polar measure of
 			a Hydrophobic residue */
     float MPLimit=67; /* Upper limit for the fraction polar measure of
-  			 a Moderately oplar residue */
+  			 a Moderately polar residue */
   
     AjPStr   BEnv=NULL;
 
@@ -3948,7 +3948,7 @@ ajint ajResidueEnv3(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile flog)
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
     float PBLimit=25; /* Upper limit for the relative solvent
-  			 accessible area for a Parially buried residue */
+  			 accessible area for a Partially buried residue */
   
     float PolLimit1=10;
     float PolLimit2=30;
@@ -4157,7 +4157,7 @@ ajint ajResidueEnv5(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile flog)
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */ /* */
     float PBLimit=25; /* Upper limit for the relative solvent
-  			 accessible area for a Parially buried residue */
+  			 accessible area for a Partially buried residue */
   
     float PolLimit1=10;
     float PolLimit2=30;
@@ -4314,7 +4314,7 @@ ajint ajResidueEnv6(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile flog)
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
     float PBLimit=25; /* Upper limit for the relative solvent
-  			 accessible area for a Parially buried residue */
+  			 accessible area for a Partially buried residue */
   
     float PolLimit1=10;
     float PolLimit2=30;
@@ -4467,7 +4467,7 @@ ajint ajResidueEnv7(const AjPResidue res, char SEnv, AjPStr *OEnv, AjPFile flog)
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
     float PBLimit=25; /* Upper limit for the relative solvent
-  			 accessible area for a Parially buried residue */
+  			 accessible area for a Partially buried residue */
   
     float PolLimit1=10;
     float PolLimit2=50;
@@ -4750,12 +4750,12 @@ ajint ajResidueEnv10(const AjPResidue res, char SEnv, AjPStr *OEnv,
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
     float PBLimit=25; /* Upper limit for the relative solvent
-  			 accessible area for a Parially buried residue */
+  			 accessible area for a Partially buried residue */
   
     float HLimit=5; /* Upper limit for the fraction polar measure of a
 		       Hydrophobic residue */
     float MPLimit=25; /* Upper limit for the fraction polar measure of
-  			 a Moderately oplar residue */
+  			 a Moderately polar residue */
   
     AjPStr   BEnv=NULL;
 
@@ -4906,7 +4906,7 @@ ajint ajResidueEnv11(const AjPResidue res, char SEnv, AjPStr *OEnv,
     float BLimit=5; /*Upper limit for the relative solvent accessible
 		      area for a buried residue*/
     float PBLimit=25; /*Upper limit for the relative solvent
-			accessible area for a Parially buried
+			accessible area for a Partially buried
 			residue*/
 
     float PolLimit1=10;
@@ -5055,7 +5055,7 @@ ajint ajResidueEnv12(const AjPResidue res, char SEnv, AjPStr *OEnv,
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
     float PBLimit=25; /* Upper limit for the relative solvent
-  			 accessible area for a Parially buried residue */
+  			 accessible area for a Partially buried residue */
   
     float PolLimit1=10;
     float PolLimit2=30;
@@ -5208,7 +5208,7 @@ ajint ajResidueEnv13(const AjPResidue res, char SEnv, AjPStr *OEnv,
     float BLimit=5; /* Upper limit for the relative solvent accessible
 		       area for a buried residue */
     float PBLimit=25; /* Upper limit for the relative solvent
-  			 accessible area for a Parially buried residue */
+  			 accessible area for a Partially buried residue */
   
     float PolLimit1=10;
     float PolLimit2=30;
@@ -5353,7 +5353,7 @@ ajint ajResidueEnv14(const AjPResidue res, char SEnv, AjPStr *OEnv,
                      AjPFile flog)
 {
     float PBLimit=25; /* Upper limit for the relative solvent
-  			accessible area for a Parially buried residue */
+  			accessible area for a Partially buried residue */
   
     float PolLimit1=5;
     float PolLimit2=15;
@@ -5500,7 +5500,7 @@ ajint ajResidueEnv15(const AjPResidue res, char SEnv, AjPStr *OEnv,
 {
     float PBLimit=25;			/* Upper limit for the
   					   relative solvent accessible
-  					   area for a Parially buried
+  					   area for a Partially buried
   					   residue */
   
     float PolLimit1=5;
@@ -5877,7 +5877,7 @@ ajint  ajPdbGetEStrideType(const AjPPdb obj, ajint chn, AjPStr *EStrideType)
 ** @param [r] pdb [const AjPPdb]  Pdb object
 ** @param [w] chn [ajint *] Chain number
 **
-** @return [AjBool] True on succcess
+** @return [AjBool] True on success
 ** @@
 ****************************************************************************/
 
@@ -6402,7 +6402,7 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
     ajFmtPrintF(outf, "XX\n");	
     
     
-    /* Write co-ordinates list to domain coordinate file */        
+    /* Write coordinates list to domain coordinate file */
     ajPdbChnidToNum(chnid, pdb, &chn);
     
     /* Initialise the iterator */
@@ -6564,7 +6564,7 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
 **
 ** @param [w] outf    [AjPFile]   Output file
 ** @param [r] obj     [const AjPHet]    Het object
-** @param [r] dogrep  [AjBool]    Flag (True if we are to write <cnt>
+** @param [r] dogrep  [AjBool]    Flag (True if we are to write 'cnt'
 **                                element of the Het object to file).
 **
 ** @return [AjBool] True on success
@@ -6659,7 +6659,7 @@ AjBool   ajPdbtospWrite(AjPFile outf, const AjPList list)
 ** @param [u] outf    [AjPFile]  Output file stream.
 ** @param [r] cmap    [const AjPCmap]  Cmap object pointer.
 **
-** @return [AjBool] True on success (object was written succesfully)
+** @return [AjBool] True on success (object was written successfully)
 ** @category output [AjPCmap] Write Cmap object to file in CON format.
 ** @@
 ****************************************************************************/
