@@ -28,7 +28,9 @@ section: additional [
     minimum: "1"
     maximum: "@($(sequence.end)/2)"
     information: "Window size"
-    relations: "EDAM: Generic integer"                                     
+    relations: "EDAM: Generic integer" 
+    trueminimum: "Y"                                    
+    warnrange: "N"                                  
   ]
 
   integer: shift [
@@ -38,6 +40,8 @@ section: additional [
     maximum: "@($(sequence.end)/10)"
     information: "Shift increment"
     relations: "EDAM: Generic integer"                                     
+    trueminimum: "Y"  
+    warnrange: "N"                                  
   ]
 
 endsection: additional
