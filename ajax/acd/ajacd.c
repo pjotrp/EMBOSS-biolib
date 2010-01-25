@@ -1394,7 +1394,9 @@ AcdOAttr acdAttrArray[] =
     {"sum", VT_FLOAT, AJFALSE, "1.0",
 	 "Total for all values"},
     {"sumtest", VT_BOOL, AJFALSE, "Y",
-	 "Test sum of all values"},
+         "Test sum of all values"},
+    {"trueminimum", VT_BOOL, AJFALSE, "N",
+         "If max/min overlap, use minimum"},
     {"tolerance", VT_FLOAT, AJFALSE, "0.01",
 	 "Tolerance (sum +/- tolerance) of the total"},
     {NULL, VT_NULL, AJFALSE, NULL,
@@ -1562,7 +1564,9 @@ AcdOAttr acdAttrFloat[] =
 	 "Warning if values are out of range"},
     {"large", VT_BOOL, AJFALSE, "N",
 	 "Large values returned as double"},
-    {NULL, VT_NULL, AJFALSE, NULL,
+	{"trueminimum", VT_BOOL, AJFALSE, "N",
+	 "If max/min overlap, use minimum"},
+   {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
 
@@ -1622,6 +1626,8 @@ AcdOAttr acdAttrInt[] =
 	 "Warning if values are out of range"},
     {"large", VT_BOOL, AJFALSE, "N",
 	 "Large values returned as long"},
+	{"trueminimum", VT_BOOL, AJFALSE, "N",
+	 "If max/min overlap, use minimum"},
     {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
@@ -6754,6 +6760,7 @@ static void acdSetArray(AcdPAcd thys)
     ajint itry;
     AjBool warnrange;
     AjBool sumtest;
+    AjBool truemin;
     
     float vfmin;
     float vfmax;
@@ -6787,6 +6794,8 @@ static void acdSetArray(AcdPAcd thys)
     acdLog("warnrange: %B\n", warnrange);
     acdAttrToBool(thys, "sumtest", ajTrue, &sumtest);
     acdLog("sumtest: %B\n", sumtest);
+    acdAttrToBool(thys, "trueminimum", ajFalse, &truemin);
+    acdLog("trueminimum: %B\n", truemin);
     
     acdAttrToUint(thys, "size", 1, &size);
     acdLog("size: %d\n", size);
@@ -6833,7 +6842,7 @@ static void acdSetArray(AcdPAcd thys)
 
 	for(i=0; i< size; i++)
 	{
-	    if(array[i] < vfmin)
+		if(!truemin && array[i] < vfmin)
 	    {				/* reset within limits */
 		if(warnrange)
 		    ajWarn("floating point value [%d] out of range %.*f "
@@ -6850,6 +6859,16 @@ static void acdSetArray(AcdPAcd thys)
 			   i+1, precision, array[i], precision, vfmax);
 		array[i] = vfmax;
 	    }
+
+		if(truemin && array[i] < vfmin)
+	    {				/* reset within limits */
+		if(warnrange)
+		    ajWarn("floating point value [%d] out of range %.*f "
+			   "less than (reset to) %.*f",
+			   i+1, precision, array[i], precision, vfmin);
+		array[i] = vfmin;
+	    }
+
 	    ftot += array[i];
 	}
 	
@@ -8509,6 +8528,7 @@ static void acdSetFloat(AcdPAcd thys)
     ajint itry;
     AjBool warnrange;
     AjBool isdouble;
+    AjBool truemin;
     
     double vfmin;
     double vfmax;
@@ -8528,6 +8548,9 @@ static void acdSetFloat(AcdPAcd thys)
     
     acdAttrToBool(thys, "large", AJFALSE, &isdouble);
     acdLog("large: %B\n", isdouble);
+
+    acdAttrToBool(thys, "trueminimum", AJFALSE, &truemin);
+    acdLog("trueminimum: %B\n", truemin);
 
     AJNEW0(val);		   /* create storage for the result */
     
@@ -8566,7 +8589,7 @@ static void acdSetFloat(AcdPAcd thys)
     if(isdouble && vfmax == FLT_MAX)
         vfmax = DBL_MAX;
     
-    if(*val < vfmin)
+    if(!truemin && *val < vfmin)
     {					/* reset within limits */
 	if(warnrange)
 	    ajWarn("floating point value out of range %.*f "
@@ -8584,7 +8607,16 @@ static void acdSetFloat(AcdPAcd thys)
 	*val = vfmax;
     }
     
-    thys->Value = val;
+    if(truemin && *val < vfmin)
+    {					/* reset within limits */
+	if(warnrange)
+	    ajWarn("floating point value out of range %.*f "
+		   "less than (reset to) %.*f",
+		   precision, *val, precision, vfmin);
+	*val = vfmin;
+    }
+
+   thys->Value = val;
     ajStrFromFloat(&thys->ValStr, (float) *val, precision);
     
     return;
@@ -9298,6 +9330,7 @@ static void acdSetInt(AcdPAcd thys)
     ajint itry;
     AjBool warnrange;
     AjBool islong;
+    AjBool truemin;
     
     ajlong imin;
     ajlong imax;
@@ -9314,6 +9347,9 @@ static void acdSetInt(AcdPAcd thys)
     acdAttrToBool(thys, "large", AJFALSE, &islong);
     acdLog("large: %B\n", islong);
     
+    acdAttrToBool(thys, "trueminimum", AJFALSE, &truemin);
+    acdLog("trueminimum: %B\n", truemin);
+
     AJNEW0(val);		   /* create storage for the result */
     
     *val = 0;				/* set the default value */
@@ -9360,7 +9396,7 @@ static void acdSetInt(AcdPAcd thys)
     if(islong && imax == INT_MAX)
         imax = LONG_MAX;
     
-    if(*val < imin)
+    if(!truemin && *val < imin)
     {					/* reset within limits */
 	if(warnrange)
 	    ajWarn("integer value out of range %Ld less than (reset to) %Ld",
@@ -9376,6 +9412,14 @@ static void acdSetInt(AcdPAcd thys)
 	*val = imax;
     }
     
+    if(truemin && *val < imin)
+    {					/* reset within limits */
+	if(warnrange)
+	    ajWarn("integer value out of range %Ld less than (reset to) %Ld",
+		   *val, imin);
+	*val = imin;
+    }
+
     thys->Value = val;
     ajStrFromLong(&thys->ValStr, *val);
     
@@ -12002,8 +12046,6 @@ static void acdSetSeq(AcdPAcd thys)
     val   = ajSeqNew();		        /* set the default value */
     seqin = ajSeqinNew();		/* set the default value */
     
-    /* seqin->multi = ajFalse; */       /* pmr: moved to ajSeqinNew */
-    
     acdQualToBool(thys, "snucleotide", ajFalse, &snuc, &acdReplyDef);
     acdQualToBool(thys, "sprotein", ajFalse, &sprot, &acdReplyDef);
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
@@ -13549,9 +13591,9 @@ static void acdSetSeqset(AcdPAcd thys)
     
     val   = ajSeqsetNew();		/* set the default value */
     seqin = ajSeqinNew();		/* set the default value */
-    
-    seqin->multi = ajTrue; /* pmr: moved to ajSeqinNew */ /* ajb added back */
-    
+
+    seqin->multi = ajTrue;
+
     acdQualToBool(thys, "snucleotide", ajFalse, &snuc, &acdReplyDef);
     acdQualToBool(thys, "sprotein", ajFalse, &sprot, &acdReplyDef);
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
@@ -13567,13 +13609,13 @@ static void acdSetSeqset(AcdPAcd thys)
     for(itry=acdPromptTry; itry && !ok; itry--)
     {
 	ok = ajTrue;	   /* accept the default if nothing changes */
-	
+
 	ajStrAssignS(&acdReply, acdReplyDef);
-	
+
 	if(required)
 	    acdUserGet(thys, &acdReply);
-	
-	
+
+
 	if(!ajStrGetLen(acdReply) && nullok)
         {
             ajSeqsetDel(&val);
@@ -13581,7 +13623,7 @@ static void acdSetSeqset(AcdPAcd thys)
         }
 
 	ajSeqinUsa(&seqin, acdReply);
-	
+
 	if(ajStrGetLen(typestr))
 	{
 	    ajStrAssignS(&seqin->Inputtype, typestr);
@@ -13589,18 +13631,18 @@ static void acdSetSeqset(AcdPAcd thys)
 	}
 	else
 	    acdInTypeSeqSave(NULL);
-	
+
 	acdAttrToBool(thys, "features", ajFalse, &seqin->Features);
 	
 	acdGetValueAssoc(thys, "sformat", &seqin->Formatstr);
 	acdGetValueAssoc(thys, "sdbname", &seqin->Db);
 /*	acdGetValueAssoc(thys, "sopenfile", &seqin->Filename);*/ /* obsolete */
 	acdGetValueAssoc(thys, "sid", &seqin->Entryname);
-	
+
 	acdGetValueAssoc(thys, "ufo", &seqin->Ufo);
 	acdGetValueAssoc(thys, "fformat", &seqin->Ftquery->Formatstr);
 	acdGetValueAssoc(thys, "fopenfile", &seqin->Ftquery->Filename);
-	
+
 	acdQualToBool(thys, "supper", ajFalse,
 		      &seqin->Upper, &acdTmpStr);
 	acdQualToBool(thys, "slower", ajFalse,
@@ -13611,16 +13653,16 @@ static void acdSetSeqset(AcdPAcd thys)
 				&seqin->End, &acdTmpStr);
 	okrev = acdQualToBool(thys, "sreverse", ajFalse,
 			      &sreverse, &acdTmpStr);
-	
+
 	if(snuc)
 	    ajSeqinSetNuc(seqin);
-	
+
 	if(sprot)
 	    ajSeqinSetProt(seqin);
-	
+
 	if(ajStrGetLen(seqin->Ufo))
 	    seqin->Features = ajTrue;
-	
+
 	ok = ajSeqsetRead(val, seqin);
 
 	if(!ok)
