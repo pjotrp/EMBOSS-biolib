@@ -195,7 +195,7 @@ typedef struct SeqSCdFile
 ** @alias SeqOCdHit
 **
 ** @attr HitList [ajuint*] Array of hits, as record numbers in the
-**                         entrynam file
+**                         entrynam.idx file
 ** @attr NHits [ajuint] Number of hits in HitList array
 ** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
@@ -244,7 +244,7 @@ typedef struct SeqSCdIdx
 
 /* @datastatic SeqPCdTrg ******************************************************
 **
-** EMBLCD target (,trg) file record structure
+** EMBLCD target (.trg) file record structure
 **
 ** @alias SeqSCdTrg
 ** @alias SeqOCdTrg
@@ -624,7 +624,7 @@ static char aa_btoa2[27]= {"-ABCDEFGHIKLMNPQRSTVWXYZ*"};
 
 /* @func ajSeqdbInit **********************************************************
 **
-** Initialise sequence database interbals
+** Initialise sequence database internals
 **
 ** @return [void]
 ******************************************************************************/
@@ -669,7 +669,7 @@ SeqPAccess ajSeqMethod(const AjPStr method)
 ** These functions manage the EMBL CD-ROM index access methods.
 ** These include the "efetch" indexing used at the Sanger Centre
 ** based on Erik Sonnhammer's indexseqlibs code
-** and a dirct copy of the database and index files from the
+** and a direct copy of the database and index files from the
 ** EMBL CD-RM distribution.
 **
 ** The index files start with a file "division.lkp" which contains
@@ -1750,7 +1750,7 @@ static AjBool seqAccessEntrez(AjPSeqin seqin)
 	seqin->Single = ajTrue;
 
 	iport     = 80;
-	proxyPort = 0;			/* port for proxy axxess */
+	proxyPort = 0;			/* port for proxy access */
 
 	if(!ajNamDbGetDbalias(qry->DbName, &searchdb))
 	    ajStrAssignS(&searchdb, qry->DbName);
@@ -2712,7 +2712,7 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
     qry = seqin->Query;
 
     iport     = 80;
-    proxyPort = 0;			/* port for proxy axxess */
+    proxyPort = 0;			/* port for proxy access */
 
     if(!ajNamDbGetDbalias(qry->DbName, &qry->DbAlias))
 	ajStrAssignS(&qry->DbAlias, qry->DbName);
@@ -6569,7 +6569,7 @@ static AjBool seqAccessDbfetch(AjPSeqin seqin)
     AjPStr qryid = NULL;
 
     iport = 80;
-    proxyPort = 0;			/* port for proxy axxess */
+    proxyPort = 0;			/* port for proxy access */
     qry = seqin->Query;
 
     if(!ajNamDbGetDbalias(qry->DbName, &searchdb))
@@ -6682,7 +6682,7 @@ static AjBool seqAccessMrs(AjPSeqin seqin)
     AjPStr qryid = NULL;
 
     iport = 80;
-    proxyPort = 0;			/* port for proxy axxess */
+    proxyPort = 0;			/* port for proxy access */
     qry = seqin->Query;
 
     if(!ajNamDbGetDbalias(qry->DbName, &searchdb))
@@ -6810,7 +6810,7 @@ static AjBool seqAccessMrs3(AjPSeqin seqin)
     AjPStr qryid = NULL;
 
     iport = 80;
-    proxyPort = 0;			/* port for proxy axxess */
+    proxyPort = 0;			/* port for proxy access */
     qry = seqin->Query;
 
     if(!ajNamDbGetDbalias(qry->DbName, &searchdb))
@@ -6931,7 +6931,7 @@ static AjBool seqAccessUrl(AjPSeqin seqin)
     AjPSeqQuery qry;
 
     iport = 80;
-    proxyPort = 0;			/* port for proxy axxess */
+    proxyPort = 0;			/* port for proxy access */
     qry = seqin->Query;
 
     if(!seqHttpUrl(qry, &iport, &host, &urlget))
@@ -7744,7 +7744,7 @@ static AjBool seqBlastReadTable(AjPSeqin seqin, AjPStr* hline,
     }
 
     if(qryd->type == 3)
-    {					/* BLAST 2 DNA ambuguities */
+    {					/* BLAST 2 DNA ambiguities */
 	ajFileSeek(qryd->libt, qryd->TopAmb + 4*(qryd->idnum), 0);
 	ajDebug("amb reading at %d\n", ajFileResetPos(qryd->libt));
         ajReadbinIntEndian(qryd->libt, &astart);
