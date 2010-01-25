@@ -210,7 +210,7 @@ AjPHist ajHistNew(ajuint numofsets, ajuint numofpoints)
 ** @param [r] numofsets [ajuint] Number of sets of data.
 ** @param [r] numofpoints [ajuint] Number of data points per set.
 ** @param [u] graph [AjPGraph] Graph object, device, multi and name are set.
-**                             The orignial AjPGraph object will be used
+**                             The original AjPGraph object will be used
 **                             by the AjPHist
 ** @return [AjPHist] histogram structure.
 ** @@
@@ -232,7 +232,7 @@ AjPHist ajHistNewG(ajuint numofsets, ajuint numofpoints, AjPGraph graph)
 
 /* @section Destructors *******************************************************
 **
-** Destriuctors for histogram objects
+** Destructors for histogram objects
 **
 ** @fdata [AjPHist]
 ** @fcategory delete

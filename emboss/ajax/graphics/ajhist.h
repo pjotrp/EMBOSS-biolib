@@ -91,7 +91,7 @@ typedef struct AjSHistdata {
 **
 ** @attr numofsets [ajuint] number of current sets
 ** @attr numofsetsmax [ajuint] maximum number of sets
-** @attr numofdatapoints [ajuint] numbr of data points
+** @attr numofdatapoints [ajuint] number of data points
 ** @attr xmin [float] Lowest x value
 ** @attr xmax [float] Highest x value
 ** @attr displaytype [ajuint] Display type index
