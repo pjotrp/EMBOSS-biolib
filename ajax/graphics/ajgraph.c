@@ -843,7 +843,7 @@ __deprecated float ajGraphSetDefCharSize(float size)
 **
 ** Set internal graph device to that selected for a graph object
 **
-** @param [r] graph [const AjPGraph] Graph object with displaytype set
+** @param [r] graph [const AjPGraph] Graph object with display type set
 **
 ** @return [void]
 ** @@
@@ -891,7 +891,7 @@ ajint ajGraphicsSetFgcolour(ajint colour)
     col = colour;
 
     /* in case of looping through colours */
-    /* start at the begining once past end */
+    /* start at the beginning once past end */
     while(col > MAXCOL)
 	col -= (MAXCOL+1);
 
@@ -1569,7 +1569,7 @@ static void GraphSetNumSubPage(ajuint numofsubpages)
 
 /* @func ajGraphicsBasecolourNewNuc ********************************************
 **
-** Initialize a base colours array for a string of nucleotide
+** Initialise a base colours array for a string of nucleotide
 ** sequence characters
 **
 ** @param [r] codes [const AjPStr] Residue codes for each numbered position
@@ -1636,7 +1636,7 @@ __deprecated ajint* ajGraphGetBaseColourNuc(const AjPStr codes)
 **
 ** Initialize a base colours array for a string of protein sequence characters
 ** according to the following colour scheme designed by Toby Gibson (EMBL
-** Heidelberg) to show the chemical propoerties important in sequence
+** Heidelberg) to show the chemical properties important in sequence
 ** and structure alignment and to be clear to those with common forms
 ** of colour blindness.
 **
@@ -2062,8 +2062,8 @@ __deprecated void ajGraphGetCharSize(float *defheight, float *currentheight)
 **
 ** Draw a portion of a circle (an arc).
 **
-** @param  [r] xcentre [PLFLT] x coor for centre.
-** @param  [r] ycentre [PLFLT] y coor for centre.
+** @param  [r] xcentre [PLFLT] x coord for centre.
+** @param  [r] ycentre [PLFLT] y coord for centre.
 ** @param  [r] radius  [PLFLT] radius of the circle.
 ** @param  [r] startangle [PLFLT] angle of the start of the arc.
 ** @param  [r] endangle [PLFLT] angle of the end of the arc.
@@ -2130,8 +2130,8 @@ __deprecated void ajGraphPartCircle(PLFLT xcentre, PLFLT ycentre, PLFLT Radius,
 **
 ** Draw a rectangle along a curve with the current pen colour/style.
 **
-** @param  [r] xcentre [PLFLT] x coor for centre.
-** @param  [r] ycentre [PLFLT] y coor for centre.
+** @param  [r] xcentre [PLFLT] x coord for centre.
+** @param  [r] ycentre [PLFLT] y coord for centre.
 ** @param  [r] radius  [PLFLT] radius of the circle.
 ** @param  [r] startangle [PLFLT] angle of the start of the rectangle.
 ** @param  [r] endangle [PLFLT] angle of the end of the rectangle.
@@ -2191,8 +2191,8 @@ __deprecated void ajGraphRectangleOnCurve(PLFLT xcentre, PLFLT ycentre,
 ** Draw a rectangle along a curve and fill it with the current pen
 ** colour/style.
 **
-** @param  [r] xcentre [PLFLT] x coor for centre.
-** @param  [r] ycentre [PLFLT] y coor for centre.
+** @param  [r] xcentre [PLFLT] x coord for centre.
+** @param  [r] ycentre [PLFLT] y coord for centre.
 ** @param  [r] radius  [PLFLT] radius of the circle.
 ** @param  [r] startangle [PLFLT] angle of the start of the rectangle.
 ** @param  [r] endangle [PLFLT] angle of the end of the rectangle.
@@ -2278,8 +2278,8 @@ __deprecated void ajGraphFillRectangleOnCurve(PLFLT xcentre, PLFLT ycentre,
 ** written character by character, forwards or backwards depending on
 ** the angle.
 **
-** @param  [r] xcentre [PLFLT] x coor for centre.
-** @param  [r] ycentre [PLFLT] y coor for centre.
+** @param  [r] xcentre [PLFLT] x coord for centre.
+** @param  [r] ycentre [PLFLT] y coord for centre.
 ** @param  [r] radius  [PLFLT] radius of the circle.
 ** @param  [r] startangle [PLFLT] angle of the start of the arc (in deg).
 ** @param  [r] endangle [PLFLT] angle of the end of the arc (in deg).
@@ -2527,8 +2527,8 @@ __deprecated void ajGraphBoxFill(PLFLT xx0, PLFLT yy0, PLFLT size)
 **
 ** Draw a circle.
 **
-** @param  [r] x [PLFLT] x coor for centre.
-** @param  [r] y [PLFLT] y coor for centre.
+** @param  [r] x [PLFLT] x coord for centre.
+** @param  [r] y [PLFLT] y coord for centre.
 ** @param  [r] radius  [float] radius of the circle.
 ** @return [void]
 ** @@
@@ -2717,10 +2717,10 @@ __deprecated void ajGraphLine(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2)
 **
 ** Draw a rectangle with the current pen colour/style.
 **
-** @param [r] x [PLFLT] xx0 coor.
-** @param [r] y [PLFLT] yy0 coor.
-** @param [r] x2 [PLFLT] xx1 coor.
-** @param [r] y2 [PLFLT] yy1 coor.
+** @param [r] x [PLFLT] xx0 coord.
+** @param [r] y [PLFLT] yy0 coord.
+** @param [r] x2 [PLFLT] xx1 coord.
+** @param [r] y2 [PLFLT] yy1 coord.
 ** @return [void]
 **
 ** @@
@@ -2775,10 +2775,10 @@ __deprecated void ajGraphRect(PLFLT xx0, PLFLT yy0,PLFLT xx1, PLFLT yy1)
 **
 ** Draw a rectangle and fill it with the current pen colour/style.
 **
-** @param [r] x [PLFLT] xx0 coor.
-** @param [r] y [PLFLT] yy0 coor.
-** @param [r] x2 [PLFLT] xx1 coor.
-** @param [r] y2 [PLFLT] yy1 coor.
+** @param [r] x [PLFLT] xx0 coord.
+** @param [r] y [PLFLT] yy0 coord.
+** @param [r] x2 [PLFLT] xx1 coord.
+** @param [r] y2 [PLFLT] yy1 coord.
 ** @return [void]
 **
 ** @@
@@ -2830,8 +2830,8 @@ __deprecated void ajGraphRectFill(PLFLT xx0, PLFLT yy0, PLFLT xx1, PLFLT yy1)
 **
 ** Draw text ending at position (xx1,yy1)
 **
-** @param [r] x [PLFLT] xx1 coor.
-** @param [r] y [PLFLT] yy1 coor.
+** @param [r] x [PLFLT] xx1 coord.
+** @param [r] y [PLFLT] yy1 coord.
 ** @param [r] txt [const char*] The text to be displayed.
 ** @return [void]
 **
@@ -2870,10 +2870,10 @@ __deprecated void ajGraphTextEnd(PLFLT x, PLFLT y, const char *text)
 **
 ** Draw text along a line.
 **
-** @param [r] x [PLFLT] x1 coor.
-** @param [r] y [PLFLT] y1 coor.
-** @param [r] x2 [PLFLT] x2 coor.
-** @param [r] y2 [PLFLT] y2 coor.
+** @param [r] x [PLFLT] x1 coord.
+** @param [r] y [PLFLT] y1 coord.
+** @param [r] x2 [PLFLT] x2 coord.
+** @param [r] y2 [PLFLT] y2 coord.
 ** @param [r] txt [const char*] The text to be displayed.
 ** @param [r] just [PLFLT] justification of the string.
 **                         (0=left,1=right,0.5=middle etc)
@@ -2919,8 +2919,8 @@ __deprecated void ajGraphTextLine(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
 **
 ** For graph data type, writes directly.
 **
-** @param [r] x [PLFLT] xx1 coor.
-** @param [r] y [PLFLT] yy1 coor.
+** @param [r] x [PLFLT] xx1 coord.
+** @param [r] y [PLFLT] yy1 coord.
 ** @param [r] txt [const char*] The text to be displayed.
 ** @return [void]
 **
@@ -3001,8 +3001,8 @@ __deprecated void ajGraphTextStart(PLFLT xx1, PLFLT yy1, const char *text)
 ** Draw text, positioning with respect to (xx1,yy1) by justified as
 ** defined by just.
 **
-** @param [r] x [PLFLT] xx1 coor.
-** @param [r] y [PLFLT] yy1 coor.
+** @param [r] x [PLFLT] xx1 coord.
+** @param [r] y [PLFLT] yy1 coord.
 ** @param [r] txt [const char*] The text to be displayed.
 ** @param [r] just [PLFLT] justification of the string.
 **                         (0=left,1=right,0.5=middle etc)
@@ -3363,14 +3363,14 @@ __deprecated void ajGraphSymbols( ajuint numofdots, PLFLT *xx1,PLFLT *yy1,
 ** @suffix C Character data
 ** @suffix S String object data
 **
-** @argrule Charsize xx1 [PLFLT] xx1 coor.
-** @argrule Charsize yy1 [PLFLT] yy1 coor.
-** @argrule Charsize xx2 [PLFLT] xx2 coor.
-** @argrule Charsize yy2 [PLFLT] yy2 coor.
+** @argrule Charsize xx1 [PLFLT] xx1 coord.
+** @argrule Charsize yy1 [PLFLT] yy1 coord.
+** @argrule Charsize xx2 [PLFLT] xx2 coord.
+** @argrule Charsize yy2 [PLFLT] yy2 coord.
 ** @argrule Charsize text [const char*] The text to be displayed.
 ** @argrule Charsize TextHeight [PLFLT] The height of the text (in user coord).
-** @argrule Coord x [PLFLT] x coor for centre.
-** @argrule Coord y [PLFLT] y coor for centre.
+** @argrule Coord x [PLFLT] x coord for centre.
+** @argrule Coord y [PLFLT] y coord for centre.
 ** @argrule Coord radius [PLFLT] Radius of the circle.
 ** @argrule Coord angle [PLFLT] angle at which the point is.
 ** @argrule Distance xx1 [PLFLT] x coord of point 1
@@ -3379,7 +3379,7 @@ __deprecated void ajGraphSymbols( ajuint numofdots, PLFLT *xx1,PLFLT *yy1,
 ** @argrule Distance yy2 [PLFLT] y coord of point 2
 ** @argrule Range array [const float*] array
 ** @argrule Range npoints [ajuint] Number of data points
-** @argrule Range min [float*] min. value ikn array
+** @argrule Range min [float*] min. value in array
 ** @argrule Range max [float*] max. value in array
 ** @argrule [r] C txt [const char*] Text
 ** @argrule [r] S str [const AjPStr] Text
@@ -3402,10 +3402,10 @@ __deprecated void ajGraphSymbols( ajuint numofdots, PLFLT *xx1,PLFLT *yy1,
 ** TextHeight.  If the default size is too large, characters are
 ** shrunk. If it is too small, characters are enlarged.
 **
-** @param [r] xx1 [PLFLT] xx1 coor.
-** @param [r] yy1 [PLFLT] yy1 coor.
-** @param [r] xx2 [PLFLT] xx2 coor.
-** @param [r] yy2 [PLFLT] yy2 coor.
+** @param [r] xx1 [PLFLT] xx1 coord.
+** @param [r] yy1 [PLFLT] yy1 coord.
+** @param [r] xx2 [PLFLT] xx2 coord.
+** @param [r] yy2 [PLFLT] yy2 coord.
 ** @param [r] text [const char*] The text to be displayed.
 ** @param [r] TextHeight [PLFLT] The height of the text (in user coord).
 ** @return [PLFLT] The character size (in mm) that fits the specified
@@ -3477,8 +3477,8 @@ __deprecated PLFLT ajGraphFitTextAtline(PLFLT xx1, PLFLT yy1,
 **
 ** compute the coordinates of a point on a circle knowing the angle.
 **
-** @param  [r] x [PLFLT] x coor for centre.
-** @param  [r] y [PLFLT] y coor for centre.
+** @param  [r] x [PLFLT] x coord for centre.
+** @param  [r] y [PLFLT] y coord for centre.
 ** @param  [r] radius  [PLFLT] Radius of the circle.
 ** @param  [r] angle [PLFLT] angle at which the point is.
 ** @return [PLFLT*] The x and y coordinates of the point.
@@ -3780,7 +3780,7 @@ AjPGraph ajGraphNew(void)
 ** @fdata [AjPGraph]
 ** @fcategory modify
 **
-** @nam3rule Init Initialise a grah object
+** @nam3rule Init Initialise a graph object
 ** @nam4rule InitSeq Initialises using default values based on a sequence.
 ** @nam3rule Open Open a plot
 ** @nam3rule Newpage Start a new plot page
@@ -6095,8 +6095,8 @@ void ajGraphxyDisplay(AjPGraph thys, AjBool closeit)
 ** @nam4rule Yaxis Set the graph is to display a Y axis.
 ** @nam4rule Xlabel Set whether the graph is to label the x axis.
 ** @nam4rule Ylabel Set whether the graph is to label the y axis.
-** @nam4rule Xtick Set whether the graph is to tickmark the x axis.
-** @nam4rule Ytick Set whether the graph is to tickmark the y axis.
+** @nam4rule Xtick Set whether the graph is to tick mark the x axis.
+** @nam4rule Ytick Set whether the graph is to tick mark the y axis.
 ** @nam4rule Xend Set the end position for X in the graph.
 ** @nam4rule Yend Set the end position for Y in the graph.
 ** @nam4rule Xgrid Whether the graph is to grid the tick marks on the x axis
@@ -7090,7 +7090,7 @@ __deprecated void ajGraphxySetYTick(AjPGraph thys, AjBool set)
     return;
 }
 
-/* @datasection [AjPGraphdata] Graph dataobject ********************************
+/* @datasection [AjPGraphdata] Graph data object ********************************
 **
 ** Function is for manipulating an AjPGraphdata object
 **
@@ -7106,7 +7106,7 @@ __deprecated void ajGraphxySetYTick(AjPGraph thys, AjBool set)
 **
 ** @nam3rule New Constructor
 ** @suffix I Number of points
-** @argrule I numofpoints [ajuint] Nuymber of points
+** @argrule I numofpoints [ajuint] Number of points
 **
 ** @valrule * [AjPGraphdata] New graphdata object
 **
@@ -7785,7 +7785,7 @@ static void GraphSetWin(float xmin, float xmax, float ymin, float ymax)
     {
 	/*
 	** Use the whole screen. User may add boundaries by
-	** modifying xmin, xmax et
+	** modifying xmin, xmax etc.
 	*/
 	GraphWind(xmin, xmax, ymin, ymax);
     }
@@ -9359,7 +9359,7 @@ static void GraphxyDisplayToDas(AjPGraph thys, AjBool closeit,
     **
     ** Test this output
     ** Check how it handles multiple sequences
-    ** Try to catch the sequnce information
+    ** Try to catch the sequence information
     **
     ** Do we want end=start or end=start+1
     **
@@ -9587,7 +9587,7 @@ static void GraphxyDisplayToData(AjPGraph thys, AjBool closeit,
 	    ajFmtPrintF(outf,"%f\t%f\n",graphdata->x[j],graphdata->y[j]);
 	
 	
-	/* Now for the Data graphobjs */
+	/* Now for the Data graph objects */
 	ajFmtPrintF(outf,"##DataObjects\n##Number %d\n",
 		    graphdata->numofobjects);
 	
@@ -9626,7 +9626,7 @@ static void GraphxyDisplayToData(AjPGraph thys, AjBool closeit,
 	}
 	
 	
-	/* Now for the Graph graphobjs */
+	/* Now for the Graph graph objects */
 	ajFmtPrintF(outf,"##GraphObjects\n##Number %d\n",
 		    thys->numofobjects);
 	
@@ -10079,8 +10079,8 @@ static float GraphDistPts(float xx1, float yy1, float xx2, float yy2)
 ** Draw text along a curve (i.e., an arc of a circle).
 ** The text is written character by character.
 **
-** @param  [r] xcentre [PLFLT] x coor for centre.
-** @param  [r] ycentre [PLFLT] y coor for centre.
+** @param  [r] xcentre [PLFLT] x coord for centre.
+** @param  [r] ycentre [PLFLT] y coord for centre.
 ** @param  [r] Radius  [PLFLT] Radius of the circle.
 ** @param  [r] Angle [PLFLT] angle at which a particular character
 **                           will be written (in deg).
