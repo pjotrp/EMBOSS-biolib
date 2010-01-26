@@ -18,7 +18,7 @@ extern "C"
 
 /* Ensembl Exon */
 
-EnsPExon ensExonNew(EnsPExonadaptor adaptor,
+EnsPExon ensExonNew(EnsPExonadaptor ea,
                     ajuint identifier,
                     EnsPFeature feature,
                     ajint sphase,
@@ -60,7 +60,7 @@ AjPStr ensExonGetModificationDate(const EnsPExon exon);
 
 const AjPList ensExonGetSupportingfeatures(EnsPExon exon);
 
-AjBool ensExonSetAdaptor(EnsPExon exon, EnsPExonadaptor adaptor);
+AjBool ensExonSetAdaptor(EnsPExon exon, EnsPExonadaptor ea);
 
 AjBool ensExonSetIdentifier(EnsPExon exon, ajuint identifier);
 
@@ -116,13 +116,13 @@ ajuint ensExonGetSliceCodingEnd(EnsPExon exon, EnsPTranscript transcript);
 
 EnsPExonadaptor ensExonadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensExonadaptorDel(EnsPExonadaptor *Padaptor);
+void ensExonadaptorDel(EnsPExonadaptor *Pea);
 
 EnsPFeatureadaptor ensExonadaptorGetFeatureadaptor(
-    const EnsPExonadaptor adaptor);
+    const EnsPExonadaptor ea);
 
 EnsPDatabaseadaptor ensExonadaptorGetDatabaseadaptor(
-    const EnsPExonadaptor adaptor);
+    const EnsPExonadaptor ea);
 
 AjBool ensExonadaptorFetchAll(const EnsPExonadaptor ea, AjPList exons);
 
@@ -130,7 +130,7 @@ AjBool ensExonadaptorFetchAllBySlice(const EnsPExonadaptor ea,
                                      EnsPSlice slice,
                                      AjPList exons);
 
-AjBool ensExonadaptorFetchByIdentifier(const EnsPExonadaptor adaptor,
+AjBool ensExonadaptorFetchByIdentifier(const EnsPExonadaptor ea,
                                        ajuint identifier,
                                        EnsPExon *Pexon);
 
@@ -139,7 +139,7 @@ AjBool ensExonadaptorFetchByStableIdentifier(const EnsPExonadaptor ea,
                                              ajuint version,
                                              EnsPExon *Pexon);
 
-AjBool ensExonadaptorFetchAllVersionsByStableId(const EnsPExonadaptor ea,
+AjBool ensExonadaptorFetchAllByStableIdentifier(const EnsPExonadaptor ea,
                                                 const AjPStr stableid,
                                                 AjPList exons);
 
@@ -147,10 +147,11 @@ AjBool ensExonadaptorFetchAllByTranscript(const EnsPExonadaptor ea,
                                           const EnsPTranscript transcript,
                                           AjPList exons);
 
-AjBool ensExonadaptorFetchAllIdentifiers(const EnsPExonadaptor ea, AjPList idlist);
+AjBool ensExonadaptorFetchAllIdentifiers(const EnsPExonadaptor ea,
+                                         AjPList identifiers);
 
 AjBool ensExonadaptorFetchAllStableIdentifiers(const EnsPExonadaptor ea,
-                                               AjPList idlist);
+                                               AjPList identifiers);
 
 /* Ensembl Supporting Feature Adaptor */
 
@@ -165,7 +166,7 @@ AjBool ensSupportingfeatureadaptorFetchAllByExon(EnsPDatabaseadaptor dba,
 
 
 
-#endif
+#endif /* ensexon_h */
 
 #ifdef __cplusplus
 }
