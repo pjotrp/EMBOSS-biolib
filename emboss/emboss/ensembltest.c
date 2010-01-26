@@ -94,10 +94,10 @@ int main(int argc, char **argv)
     
     AjPFile outfile = NULL;
     
-    AjIList iter         = NULL;
-    AjPList list         = NULL;
-    const AjPList exlist = NULL;
-    AjPList mrlist       = NULL;
+    AjIList iter        = NULL;
+    AjPList list        = NULL;
+    const AjPList exons = NULL;
+    AjPList mrlist      = NULL;
     
     AjPSeq seq = NULL;
     
@@ -233,35 +233,40 @@ int main(int argc, char **argv)
 	
 	mrlist = ajListNew();
 	
-	ensTranscriptMapperTranscript2Slice(transcript, 2, 3, mrlist);
+	ensTranscriptMapperTranscriptToSlice(transcript, 2, 3, mrlist);
 	
 	while(ajListPop(mrlist, (void **) &mr))
 	{
-	    if(ensMapperresultGetType(mr) == ensEMapperresultCoordinate)
-	    {
-		
-		ajFmtPrintF(outfile,
-			    "Ensembl Transcript Mapper map positions 2:3 to "
-			    "Slice %d:%d:%d\n",
-			    ensMapperresultGetStart(mr),
-			    ensMapperresultGetEnd(mr),
-			    ensMapperresultGetStrand(mr));
-	    }
-	    else if(ensMapperresultGetType(mr) == ensEMapperresultGap)
-	    {
-		ajFmtPrintF(outfile,
-			    "Ensembl Transcript Mapper 2:3 to Slice got "
-			    "Mapper Result of type Gap %d:%d. \n",
-			    ensMapperresultGetGapStart(mr),
-			    ensMapperresultGetGapEnd(mr));
-	    }
-	    else
-	    {
-		ajFmtPrintF(outfile,
-			    "Ensembl Transcript Mapper 2:3 to Slice got "
-			    "Mapper Result of other type?\n");	    
-		
-		ensMapperresultTrace(mr, 1);
+            switch(ensMapperresultGetType(mr))
+            {
+                case ensEMapperresultCoordinate:
+                    
+                    ajFmtPrintF(outfile,
+                                "Ensembl Transcript Mapper map positions 2:3 "
+                                "to Slice %d:%d:%d\n",
+                                ensMapperresultGetStart(mr),
+                                ensMapperresultGetEnd(mr),
+                                ensMapperresultGetStrand(mr));
+                    
+                    break;
+                    
+                case ensEMapperresultGap:
+                    
+                    ajFmtPrintF(outfile,
+                                "Ensembl Transcript Mapper 2:3 to Slice got "
+                                "Mapper Result of type Gap %d:%d. \n",
+                                ensMapperresultGetGapStart(mr),
+                                ensMapperresultGetGapEnd(mr));
+                    
+                    break;
+                    
+                default:
+                    
+                    ajFmtPrintF(outfile,
+                                "Ensembl Transcript Mapper 2:3 to Slice got "
+                                "Mapper Result of other type?\n");
+                    
+                    ensMapperresultTrace(mr, 1);
 	    }
 	    
 	    ensMapperresultDel(&mr);
@@ -284,7 +289,7 @@ int main(int argc, char **argv)
 	
 	ajSeqDel(&seq);
 	
-	translation = ensTranscriptFetchTranslation(transcript);
+        ensTranscriptFetchTranslation(transcript, &translation);
 	
 	if(translation)
 	{
@@ -300,9 +305,9 @@ int main(int argc, char **argv)
 	** coordinates.
 	*/
 	
-	exlist = ensTranscriptGetExons(transcript);
+	exons = ensTranscriptGetExons(transcript);
 	
-	iter = ajListIterNewread(exlist);
+	iter = ajListIterNewread(exons);
 	
 	while(!ajListIterDone(iter))
 	{
@@ -848,7 +853,7 @@ static AjBool ensembltest_assembly_exceptions(EnsPDatabaseadaptor dba,
 
 static AjBool ensembltest_features(EnsPDatabaseadaptor dba, AjPFile outfile)
 {
-    AjPList exlist = NULL;
+    AjPList exons = NULL;
     
     AjPStr csname    = NULL;
     AjPStr csversion = NULL;
@@ -917,11 +922,11 @@ static AjBool ensembltest_features(EnsPDatabaseadaptor dba, AjPFile outfile)
     
     ea = ensRegistryGetExonadaptor(dba);
     
-    exlist = ajListNew();
+    exons = ajListNew();
     
-    ensExonadaptorFetchAllBySlice(ea, slice, exlist);
+    ensExonadaptorFetchAllBySlice(ea, slice, exons);
     
-    while(ajListPop(exlist, (void **) &exon))
+    while(ajListPop(exons, (void **) &exon))
     {
 	ensSliceFetchName(slice, &name);
 	
@@ -950,7 +955,15 @@ static AjBool ensembltest_features(EnsPDatabaseadaptor dba, AjPFile outfile)
 	ensExonDel(&exon);
     }
     
-    ajListFree(&exlist);
+    ajListFree(&exons);
+
+    /* Fetch all Transcripts */
+
+    (void) transcript;
+
+    /* Fetch all Genes */
+
+    (void) gene;
     
     ensSliceDel(&slice);
     
@@ -981,8 +994,8 @@ static AjBool ensembltest_genes(EnsPDatabaseadaptor dba)
     ajint maxnum = 0;
     
     AjIList triter = NULL;
-    AjPList exlist = NULL;
-    AjPList gnlist = NULL;
+    AjPList exons  = NULL;
+    AjPList genes  = NULL;
 
     const AjPList trlist = NULL;
     
@@ -1014,11 +1027,11 @@ static AjBool ensembltest_genes(EnsPDatabaseadaptor dba)
     
     /* Fetch all Genes. */
     
-    gnlist = ajListNew();
+    genes = ajListNew();
     
-    ensGeneadaptorFetchAll(ga, gnlist);
+    ensGeneadaptorFetchAll(ga, genes);
     
-    while(ajListPop(gnlist, (void **) &gene))
+    while(ajListPop(genes, (void **) &gene))
     {
 	/* Check if a limit has been set and if it has not been exceeded. */
 	
@@ -1056,7 +1069,7 @@ static AjBool ensembltest_genes(EnsPDatabaseadaptor dba)
 		
 		/* Fetch the Translation of this Transcript. */
 		
-		translation = ensTranscriptFetchTranslation(transcript);
+		ensTranscriptFetchTranslation(transcript, &translation);
 		
 		/* Not every Transcript has a Translation. */
 		
@@ -1089,11 +1102,11 @@ static AjBool ensembltest_genes(EnsPDatabaseadaptor dba)
 	    
 	    /* Fetch all Exons of this Gene. */
 	    
-	    exlist = ajListNew();
+	    exons = ajListNew();
 	    
-	    ensGeneFetchAllExons(gene, exlist);
+	    ensGeneFetchAllExons(gene, exons);
 	    
-	    while(ajListPop(exlist, (void **) &exon))
+	    while(ajListPop(exons, (void **) &exon))
 	    {
 		/*
 		 ajDebug("ensembltest_genes "
@@ -1112,7 +1125,7 @@ static AjBool ensembltest_genes(EnsPDatabaseadaptor dba)
 		ensExonDel(&exon);
 	    }
 	    
-	    ajListFree(&exlist);
+	    ajListFree(&exons);
 	}
 	
 	ensGeneDel(&gene);
@@ -1120,7 +1133,7 @@ static AjBool ensembltest_genes(EnsPDatabaseadaptor dba)
 	i++;
     }
     
-    ajListFree(&gnlist);
+    ajListFree(&genes);
     
     ajSeqoutClose(exnoutseq);
     ajSeqoutClose(trcoutseq);
