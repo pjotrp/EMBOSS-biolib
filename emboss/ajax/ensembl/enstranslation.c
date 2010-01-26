@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -56,13 +56,23 @@ static const char *translationProteinfeatureDomainName[] =
 
 
 
+/******************************************************************************
+ **
+ ** Ensembl Sequence Edits for Ensembl Translations are a sub-set of
+ ** Ensembl Attributes that provide information about post-translational
+ ** modifications of the Translation sequence. Attributes with the following
+ ** codes are Sequence Edits on the Translation-level.
+ **
+ ** initial_met:     Set the first amino acid to methionine
+ ** _selenocysteine: Start and end position of a selenocysteine
+ ** amino_acid_sub:  Amino acid substitution mainly for FlyBase
+ **
+ ******************************************************************************/
+
 static const char *translationSequenceEditCode[] =
 {
-    /* Set the first amino acid to methionine. */
     "initial_met",
-    /* Start and end position of a selenocysteine in the translation. */
     "_selenocysteine",
-    /* Amino acid substitution mainly for FlyBase. */
     "amino_acid_sub",
     NULL
 };
@@ -92,7 +102,7 @@ static void translationCacheClear(void **key, void **value, void *cl);
 
 static AjBool translationAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
-                                              EnsPAssemblymapper mapper,
+                                              EnsPAssemblymapper am,
                                               EnsPSlice slice,
                                               AjPList translations);
 
@@ -105,7 +115,7 @@ static ajuint translationAdaptorCacheSize(const void *value);
 #endif
 
 static AjBool translationAdaptorFetchAllByIdentifiers(
-    const EnsPTranslationadaptor adaptor,
+    const EnsPTranslationadaptor tla,
     AjPStr identifiers,
     AjPList translations);
 
@@ -132,7 +142,7 @@ static AjBool translationAdaptorFetchAllByIdentifiers(
 void ensTranslationInit(void)
 {
     translationCache = MENSTABLEUINTNEW(0);
-    
+
     return;
 }
 
@@ -157,23 +167,23 @@ void ensTranslationInit(void)
 static void translationCacheClear(void **key, void **value, void *cl)
 {
     if(!key)
-	return;
-    
+        return;
+
     if(!*key)
-	return;
-    
+        return;
+
     if(!value)
-	return;
-    
+        return;
+
     if(!*value)
-	return;
-    
+        return;
+
     (void) cl;
-    
+
     AJFREE(*key);
-    
+
     ajTrnDel((AjPTrn *) value);
-    
+
     return;
 }
 
@@ -191,9 +201,9 @@ static void translationCacheClear(void **key, void **value, void *cl)
 void ensTranslationExit(void)
 {
     ajTableMapDel(translationCache, translationCacheClear, NULL);
-    
+
     ajTableFree(&translationCache);
-    
+
     return;
 }
 
@@ -218,28 +228,28 @@ void ensTranslationExit(void)
 AjPTrn ensTranslationCacheGetTranslation(ajint codontable)
 {
     ajint *Pcodontable = NULL;
-    
+
     AjPTrn translation = NULL;
-    
+
     translation = (AjPTrn)
-	ajTableFetch(translationCache, (const void *) &codontable);
-    
+        ajTableFetch(translationCache, (const void *) &codontable);
+
     if(translation)
-	return translation;
-    
+        return translation;
+
     translation = ajTrnNewI(codontable);
-    
+
     if(translation)
     {
-	AJNEW0(Pcodontable);
-	
-	*Pcodontable = codontable;
-	
-	ajTablePut(translationCache,
-		   (void *) Pcodontable,
-		   (void *) translation);
+        AJNEW0(Pcodontable);
+
+        *Pcodontable = codontable;
+
+        ajTablePut(translationCache,
+                   (void *) Pcodontable,
+                   (void *) translation);
     }
-    
+
     return translation;
 }
 
@@ -250,7 +260,7 @@ AjPTrn ensTranslationCacheGetTranslation(ajint codontable)
 **
 ** Functions for manipulating Ensembl Translation objects
 **
-** @cc Bio::EnsEMBL::Translation CVS Revision: 1.66
+** @cc Bio::EnsEMBL::Translation CVS Revision: 1.67
 **
 ** @nam2rule Translation
 **
@@ -289,7 +299,7 @@ AjPTrn ensTranslationCacheGetTranslation(ajint codontable)
 ** Default Ensembl Translation constructor.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] adaptor [EnsPTranslationadaptor] Ensembl Translation Adaptor
+** @param [r] tla [EnsPTranslationadaptor] Ensembl Translation Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::Translation::new
 ** @param [u] transcript [EnsPTranscript] Ensembl Transcript
@@ -309,7 +319,7 @@ AjPTrn ensTranslationCacheGetTranslation(ajint codontable)
 ** @@
 ******************************************************************************/
 
-EnsPTranslation ensTranslationNew(EnsPTranslationadaptor adaptor,
+EnsPTranslation ensTranslationNew(EnsPTranslationadaptor tla,
                                   ajuint identifier,
                                   EnsPTranscript transcript,
                                   EnsPExon startexon,
@@ -323,66 +333,66 @@ EnsPTranslation ensTranslationNew(EnsPTranslationadaptor adaptor,
                                   AjPStr mdate)
 {
     EnsPTranslation translation = NULL;
-    
+
     if(!transcript)
-	return NULL;
-    
+        return NULL;
+
     if(!startexon)
-	return NULL;
-    
+        return NULL;
+
     if(!endexon)
-	return NULL;
-    
+        return NULL;
+
     AJNEW0(translation);
-    
+
     translation->Use = 1;
-    
+
     translation->Identifier = identifier;
-    
-    translation->Adaptor = adaptor;
-    
+
+    translation->Adaptor = tla;
+
     translation->Transcript = ensTranscriptNewRef(transcript);
-    
+
     translation->StartExon = ensExonNewRef(startexon);
-    
+
     translation->EndExon = ensExonNewRef(endexon);
-    
+
     translation->Start = start;
-    
+
     translation->End = end;
-    
+
     if(stableid)
         translation->StableIdentifier = ajStrNewRef(stableid);
-    
+
     if(cdate)
         translation->CreationDate = ajStrNewRef(cdate);
-    
+
     if(mdate)
         translation->ModificationDate = ajStrNewRef(mdate);
-    
+
     translation->Version = version;
-    
+
     translation->Attributes = NULL;
-    
+
     translation->DatabaseEntries = NULL;
-    
+
     translation->Proteinfeatures = NULL;
-    
+
     if(sequence)
-	translation->Sequence = ajStrNewRef(sequence);
-    
+        translation->Sequence = ajStrNewRef(sequence);
+
     translation->TranscriptStart = 0;
-    
+
     translation->TranscriptEnd = 0;
-    
+
     translation->SliceStart = 0;
-    
+
     translation->SliceEnd = 0;
-    
+
     /* Link a weak reference from the Transcript to this Translation. */
-    
+
     ensTranscriptLinkTranslation(transcript, translation);
-    
+
     return translation;
 }
 
@@ -402,121 +412,121 @@ EnsPTranslation ensTranslationNew(EnsPTranslationadaptor adaptor,
 EnsPTranslation ensTranslationNewObj(const EnsPTranslation object)
 {
     AjIList iter = NULL;
-    
+
     EnsPAttribute attribute = NULL;
-    
+
     EnsPDatabaseentry dbe = NULL;
-    
+
     EnsPProteinfeature pf = NULL;
-    
+
     EnsPTranslation translation = NULL;
-    
+
     if(!object)
-	return NULL;
-    
+        return NULL;
+
     AJNEW0(translation);
-    
+
     translation->Use = 1;
-    
+
     translation->Identifier = object->Identifier;
-    
+
     translation->Adaptor = object->Adaptor;
-    
+
     translation->Transcript = ensTranscriptNewRef(object->Transcript);
-    
+
     translation->StartExon = ensExonNewRef(object->StartExon);
-    
+
     translation->EndExon = ensExonNewRef(object->EndExon);
-    
+
     translation->Start = object->Start;
-    
+
     translation->End = object->End;
-    
+
     if(object->CreationDate)
-	translation->CreationDate = ajStrNewRef(object->CreationDate);
-    
+        translation->CreationDate = ajStrNewRef(object->CreationDate);
+
     if(object->ModificationDate)
-	translation->ModificationDate = ajStrNewRef(object->ModificationDate);
-    
+        translation->ModificationDate = ajStrNewRef(object->ModificationDate);
+
     if(object->StableIdentifier)
-	translation->StableIdentifier = ajStrNewRef(object->StableIdentifier);
-    
+        translation->StableIdentifier = ajStrNewRef(object->StableIdentifier);
+
     translation->Version = object->Version;
-    
+
     /* Copy the List of Ensembl Attributes. */
-    
+
     if(object->Attributes && ajListGetLength(object->Attributes))
     {
-	translation->Attributes = ajListNew();
-	
-	iter = ajListIterNew(object->Attributes);
-	
-	while(!ajListIterDone(iter))
-	{
-	    attribute = (EnsPAttribute) ajListIterGet(iter);
-	    
-	    ajListPushAppend(translation->Attributes,
-			     (void *) ensAttributeNewRef(attribute));
-	}
-	
-	ajListIterDel(&iter);
+        translation->Attributes = ajListNew();
+
+        iter = ajListIterNew(object->Attributes);
+
+        while(!ajListIterDone(iter))
+        {
+            attribute = (EnsPAttribute) ajListIterGet(iter);
+
+            ajListPushAppend(translation->Attributes,
+                             (void *) ensAttributeNewRef(attribute));
+        }
+
+        ajListIterDel(&iter);
     }
     else
-	translation->Attributes = NULL;
-    
+        translation->Attributes = NULL;
+
     /* Copy the List of Ensembl Database Entries. */
-    
+
     if(object->DatabaseEntries && ajListGetLength(object->DatabaseEntries))
     {
-	translation->DatabaseEntries = ajListNew();
-	
-	iter = ajListIterNew(object->DatabaseEntries);
-	
-	while(!ajListIterDone(iter))
-	{
-	    dbe = (EnsPDatabaseentry) ajListIterGet(iter);
-	    
-	    ajListPushAppend(translation->DatabaseEntries,
-			     (void *) ensDatabaseentryNewRef(dbe));
-	}
-	
-	ajListIterDel(&iter);
+        translation->DatabaseEntries = ajListNew();
+
+        iter = ajListIterNew(object->DatabaseEntries);
+
+        while(!ajListIterDone(iter))
+        {
+            dbe = (EnsPDatabaseentry) ajListIterGet(iter);
+
+            ajListPushAppend(translation->DatabaseEntries,
+                             (void *) ensDatabaseentryNewRef(dbe));
+        }
+
+        ajListIterDel(&iter);
     }
     else
-	translation->DatabaseEntries = NULL;
-    
+        translation->DatabaseEntries = NULL;
+
     /* Copy the List of Ensembl Protein Features. */
-    
+
     if(object->Proteinfeatures && ajListGetLength(object->Proteinfeatures))
     {
-	translation->Proteinfeatures = ajListNew();
-	
-	iter = ajListIterNew(object->Proteinfeatures);
-	
-	while(!ajListIterDone(iter))
-	{
-	    pf = (EnsPProteinfeature) ajListIterGet(iter);
-	    
-	    ajListPushAppend(translation->Proteinfeatures,
-			     (void *) ensProteinfeatureNewRef(pf));
-	}
-	
-	ajListIterDel(&iter);
+        translation->Proteinfeatures = ajListNew();
+
+        iter = ajListIterNew(object->Proteinfeatures);
+
+        while(!ajListIterDone(iter))
+        {
+            pf = (EnsPProteinfeature) ajListIterGet(iter);
+
+            ajListPushAppend(translation->Proteinfeatures,
+                             (void *) ensProteinfeatureNewRef(pf));
+        }
+
+        ajListIterDel(&iter);
     }
     else
-	translation->Proteinfeatures = NULL;
-    
+        translation->Proteinfeatures = NULL;
+
     if(object->Sequence)
-	translation->Sequence = ajStrNewRef(object->Sequence);
-    
+        translation->Sequence = ajStrNewRef(object->Sequence);
+
     translation->TranscriptStart = object->TranscriptStart;
-    
+
     translation->TranscriptEnd = object->TranscriptEnd;
-    
+
     translation->SliceStart = object->SliceStart;
-    
+
     translation->SliceEnd = object->SliceEnd;
-    
+
     return translation;
 }
 
@@ -537,10 +547,10 @@ EnsPTranslation ensTranslationNewObj(const EnsPTranslation object)
 EnsPTranslation ensTranslationNewRef(EnsPTranslation translation)
 {
     if(!translation)
-	return NULL;
-    
+        return NULL;
+
     translation->Use++;
-    
+
     return translation;
 }
 
@@ -580,70 +590,70 @@ EnsPTranslation ensTranslationNewRef(EnsPTranslation translation)
 void ensTranslationDel(EnsPTranslation *Ptranslation)
 {
     EnsPTranslation pthis = NULL;
-    
+
     EnsPAttribute attribute = NULL;
-    
+
     EnsPDatabaseentry dbe = NULL;
-    
+
     EnsPProteinfeature pf = NULL;
-    
+
     if(!Ptranslation)
         return;
-    
+
     if(!*Ptranslation)
         return;
 
     pthis = *Ptranslation;
-    
+
     pthis->Use--;
-    
+
     if(pthis->Use)
     {
-	*Ptranslation = NULL;
-	
-	return;
+        *Ptranslation = NULL;
+
+        return;
     }
-    
+
     /* Unlink the weak reference from the Transcript to this Translation. */
-    
+
     ensTranscriptUnlinkTranslation(pthis->Transcript, *Ptranslation);
-    
+
     ensTranscriptDel(&pthis->Transcript);
-    
+
     ensExonDel(&pthis->StartExon);
     ensExonDel(&pthis->EndExon);
-    
+
     ajStrDel(&pthis->StableIdentifier);
     ajStrDel(&pthis->CreationDate);
     ajStrDel(&pthis->ModificationDate);
-    
+
     /* Clear and delete the AJAX List of Ensembl Attributes. */
-    
+
     while(ajListPop(pthis->Attributes, (void **) &attribute))
-	ensAttributeDel(&attribute);
-    
+        ensAttributeDel(&attribute);
+
     ajListFree(&pthis->Attributes);
-    
+
     /* Clear and delete the AJAX List of Ensembl Database Entries. */
-    
+
     while(ajListPop((*Ptranslation)->DatabaseEntries, (void **) &dbe))
-	ensDatabaseentryDel(&dbe);
-    
+        ensDatabaseentryDel(&dbe);
+
     ajListFree(&pthis->DatabaseEntries);
-    
+
     /* Clear and delete the AJAX List of Ensembl Protein Features. */
-    
+
     while(ajListPop(pthis->Proteinfeatures, (void **) &pf))
-	ensProteinfeatureDel(&pf);
-    
+        ensProteinfeatureDel(&pf);
+
     ajListFree(&pthis->Proteinfeatures);
-    
+
     ajStrDel(&pthis->Sequence);
-    
+
     AJFREE(pthis);
 
     *Ptranslation = NULL;
-    
+
     return;
 }
 
@@ -714,7 +724,7 @@ const EnsPTranslationadaptor ensTranslationGetAdaptor(
 {
     if(!translation)
         return NULL;
-    
+
     return translation->Adaptor;
 }
 
@@ -736,7 +746,7 @@ ajuint ensTranslationGetIdentifier(const EnsPTranslation translation)
 {
     if(!translation)
         return 0;
-    
+
     return translation->Identifier;
 }
 
@@ -757,8 +767,8 @@ ajuint ensTranslationGetIdentifier(const EnsPTranslation translation)
 EnsPTranscript ensTranslationGetTranscript(const EnsPTranslation translation)
 {
     if(!translation)
-	return 0;
-    
+        return 0;
+
     return translation->Transcript;
 }
 
@@ -779,8 +789,8 @@ EnsPTranscript ensTranslationGetTranscript(const EnsPTranslation translation)
 EnsPExon ensTranslationGetStartExon(const EnsPTranslation translation)
 {
     if(!translation)
-	return 0;
-    
+        return 0;
+
     return translation->StartExon;
 }
 
@@ -801,8 +811,8 @@ EnsPExon ensTranslationGetStartExon(const EnsPTranslation translation)
 EnsPExon ensTranslationGetEndExon(const EnsPTranslation translation)
 {
     if(!translation)
-	return 0;
-    
+        return 0;
+
     return translation->EndExon;
 }
 
@@ -824,8 +834,8 @@ EnsPExon ensTranslationGetEndExon(const EnsPTranslation translation)
 ajuint ensTranslationGetStart(const EnsPTranslation translation)
 {
     if(!translation)
-	return 0;
-    
+        return 0;
+
     return translation->Start;
 }
 
@@ -847,8 +857,8 @@ ajuint ensTranslationGetStart(const EnsPTranslation translation)
 ajuint ensTranslationGetEnd(const EnsPTranslation translation)
 {
     if(!translation)
-	return 0;
-    
+        return 0;
+
     return translation->End;
 }
 
@@ -870,7 +880,7 @@ AjPStr ensTranslationGetStableIdentifier(const EnsPTranslation translation)
 {
     if(!translation)
         return NULL;
-    
+
     return translation->StableIdentifier;
 }
 
@@ -892,7 +902,7 @@ ajuint ensTranslationGetVersion(const EnsPTranslation translation)
 {
     if(!translation)
         return 0;
-    
+
     return translation->Version;
 }
 
@@ -914,7 +924,7 @@ AjPStr ensTranslationGetCreationDate(const EnsPTranslation translation)
 {
     if(!translation)
         return NULL;
-    
+
     return translation->CreationDate;
 }
 
@@ -936,7 +946,7 @@ AjPStr ensTranslationGetModificationDate(const EnsPTranslation translation)
 {
     if(!translation)
         return NULL;
-    
+
     return translation->ModificationDate;
 }
 
@@ -960,46 +970,45 @@ AjPStr ensTranslationGetModificationDate(const EnsPTranslation translation)
 const AjPList ensTranslationGetAttributes(EnsPTranslation translation)
 {
     EnsPDatabaseadaptor dba = NULL;
-    
-#if AJFALSE
-    ajDebug("ensTranslationGetAttributes\n"
-            "  translation %p\n",
-            translation);
-#endif
-    
+
+    if(ajDebugTest("ensTranslationGetAttributes"))
+        ajDebug("ensTranslationGetAttributes\n"
+                "  translation %p\n",
+                translation);
+
     if(!translation)
-	return NULL;
-    
+        return NULL;
+
     if(translation->Attributes)
-	return translation->Attributes;
+        return translation->Attributes;
     else
-	translation->Attributes = ajListNew();
-    
+        translation->Attributes = ajListNew();
+
     if(!translation->Adaptor)
     {
-	ajDebug("ensTranslationGetAttributes cannot fetch "
-		"Ensembl Attributes for a Translation without a "
-		"Translation Adaptor.\n");
-	
-	return NULL;
+        ajDebug("ensTranslationGetAttributes cannot fetch "
+                "Ensembl Attributes for a Translation without a "
+                "Translation Adaptor.\n");
+
+        return NULL;
     }
-    
+
     dba = ensTranslationadaptorGetDatabaseadaptor(translation->Adaptor);
-    
+
     if(!dba)
     {
-	ajDebug("ensTranslationGetAttributes cannot fetch "
-		"Ensembl Attributes for a Translation without a "
-		"Database Adaptor set in the Translation Adaptor.\n");
-	
-	return NULL;
+        ajDebug("ensTranslationGetAttributes cannot fetch "
+                "Ensembl Attributes for a Translation without a "
+                "Database Adaptor set in the Translation Adaptor.\n");
+
+        return NULL;
     }
-    
+
     ensAttributeadaptorFetchAllByTranslation(dba,
-					     translation,
-					     (const AjPStr) NULL,
-					     translation->Attributes);
-    
+                                             translation,
+                                             (const AjPStr) NULL,
+                                             translation->Attributes);
+
     return translation->Attributes;
 }
 
@@ -1024,52 +1033,52 @@ const AjPList ensTranslationGetAttributes(EnsPTranslation translation)
 const AjPList ensTranslationGetDatabaseEntries(EnsPTranslation translation)
 {
     AjPStr objtype = NULL;
-    
+
     EnsPDatabaseadaptor dba = NULL;
-    
+
     EnsPDatabaseentryadaptor dbea = NULL;
-    
+
     if(!translation)
-	return NULL;
-    
+        return NULL;
+
     if(translation->DatabaseEntries)
-	return translation->DatabaseEntries;
+        return translation->DatabaseEntries;
     else
-	translation->DatabaseEntries = ajListNew();
-    
+        translation->DatabaseEntries = ajListNew();
+
     if(!translation->Adaptor)
     {
-	ajDebug("ensTranslationGetDatabaseEntries cannot fetch "
-		"Ensembl Database Entries for a Translation without a "
-		"Translation Adaptor.\n");
-	
-	return NULL;
+        ajDebug("ensTranslationGetDatabaseEntries cannot fetch "
+                "Ensembl Database Entries for a Translation without a "
+                "Translation Adaptor.\n");
+
+        return NULL;
     }
-    
+
     dba = ensTranslationadaptorGetDatabaseadaptor(translation->Adaptor);
-    
+
     if(!dba)
     {
-	ajDebug("ensTranslationGetDatabaseEntries cannot fetch "
-		"Ensembl Database Entries for a Translation without a "
-		"Database Adaptor set in the Translation Adaptor.\n");
-	
-	return NULL;
+        ajDebug("ensTranslationGetDatabaseEntries cannot fetch "
+                "Ensembl Database Entries for a Translation without a "
+                "Database Adaptor set in the Translation Adaptor.\n");
+
+        return NULL;
     }
-    
+
     dbea = ensRegistryGetDatabaseentryadaptor(dba);
-    
+
     objtype = ajStrNewC("Translation");
-    
+
     ensDatabaseentryadaptorFetchAllByObjectType(dbea,
-						translation->Identifier,
-						objtype,
-						(AjPStr) NULL,
-						ensEExternaldatabaseTypeNULL,
-						translation->DatabaseEntries);
-    
+                                                translation->Identifier,
+                                                objtype,
+                                                (AjPStr) NULL,
+                                                ensEExternaldatabaseTypeNULL,
+                                                translation->DatabaseEntries);
+
     ajStrDel(&objtype);
-    
+
     return translation->DatabaseEntries;
 }
 
@@ -1094,44 +1103,44 @@ const AjPList ensTranslationGetDatabaseEntries(EnsPTranslation translation)
 const AjPList ensTranslationGetProteinfeatures(EnsPTranslation translation)
 {
     EnsPDatabaseadaptor dba = NULL;
-    
+
     EnsPProteinfeatureadaptor pfa = NULL;
-    
+
     if(!translation)
-	return NULL;
-    
+        return NULL;
+
     if(translation->Proteinfeatures)
-	return translation->Proteinfeatures;
+        return translation->Proteinfeatures;
     else
-	translation->Proteinfeatures = ajListNew();
-    
+        translation->Proteinfeatures = ajListNew();
+
     if(!translation->Adaptor)
     {
-	ajDebug("ensTranslationGetDatabaseEntries cannot fetch "
-		"Ensembl Database Entries for a Translation without a "
-		"Translation Adaptor.\n");
-	
-	return NULL;
+        ajDebug("ensTranslationGetDatabaseEntries cannot fetch "
+                "Ensembl Database Entries for a Translation without a "
+                "Translation Adaptor.\n");
+
+        return NULL;
     }
-    
+
     dba = ensTranslationadaptorGetDatabaseadaptor(translation->Adaptor);
-    
+
     if(!dba)
     {
-	ajDebug("ensTranslationGetDatabaseEntries cannot fetch "
-		"Ensembl Database Entries for a Translation without a "
-		"Database Adaptor set in the Translation Adaptor.\n");
-	
-	return NULL;
+        ajDebug("ensTranslationGetDatabaseEntries cannot fetch "
+                "Ensembl Database Entries for a Translation without a "
+                "Database Adaptor set in the Translation Adaptor.\n");
+
+        return NULL;
     }
-    
+
     pfa = ensRegistryGetProteinfeatureadaptor(dba);
-    
+
     ensProteinfeatureadaptorFetchAllByTranslationIdentifier(
         pfa,
         translation->Identifier,
         translation->Proteinfeatures);
-    
+
     return translation->Proteinfeatures;
 }
 
@@ -1153,23 +1162,23 @@ const AjPList ensTranslationGetProteinfeatures(EnsPTranslation translation)
 ajuint ensTranslationGetTranscriptStart(EnsPTranslation translation)
 {
     if(!translation)
-	return 0;
-    
+        return 0;
+
     if(!translation->Transcript)
     {
-	ajDebug("ensTranslationGetTranscriptStart requires a Transcript to be "
-		"set in the Translation.\n");
-	
-	return 0;
+        ajDebug("ensTranslationGetTranscriptStart requires a Transcript to be "
+                "set in the Translation.\n");
+
+        return 0;
     }
-    
+
     if(!translation->TranscriptStart)
     {
-	translation->TranscriptStart =
+        translation->TranscriptStart =
             ensExonGetTranscriptCodingStart(translation->StartExon,
                                             translation->Transcript);
     }
-    
+
     return translation->TranscriptStart;
 }
 
@@ -1190,23 +1199,23 @@ ajuint ensTranslationGetTranscriptStart(EnsPTranslation translation)
 ajuint ensTranslationGetTranscriptEnd(EnsPTranslation translation)
 {
     if(!translation)
-	return 0;
-    
+        return 0;
+
     if(!translation->Transcript)
     {
-	ajDebug("ensTranslationGetTranscriptEnd requires a Transcript to be "
-		"set in the Translation.\n");
-	
-	return 0;
+        ajDebug("ensTranslationGetTranscriptEnd requires a Transcript to be "
+                "set in the Translation.\n");
+
+        return 0;
     }
-    
+
     if(!translation->TranscriptEnd)
     {
-	translation->TranscriptEnd =
+        translation->TranscriptEnd =
             ensExonGetTranscriptCodingEnd(translation->EndExon,
                                           translation->Transcript);
     }
-    
+
     return translation->TranscriptEnd;
 }
 
@@ -1227,28 +1236,28 @@ ajuint ensTranslationGetTranscriptEnd(EnsPTranslation translation)
 ajuint ensTranslationGetSliceStart(EnsPTranslation translation)
 {
     EnsPFeature feature = NULL;
-    
+
     if(!translation)
-	return 0;
-    
+        return 0;
+
     if(!translation->SliceStart)
     {
-	feature = ensExonGetFeature(translation->StartExon);
-	
-	if(ensFeatureGetStrand(feature) >= 0)
-	{
-	    translation->SliceStart =
+        feature = ensExonGetFeature(translation->StartExon);
+
+        if(ensFeatureGetStrand(feature) >= 0)
+        {
+            translation->SliceStart =
                 ensFeatureGetStart(feature) + (translation->Start - 1);
-	}
-	else
-	{
-	    feature = ensExonGetFeature(translation->EndExon);
-	    
-	    translation->SliceStart =
-		ensFeatureGetEnd(feature) - (translation->End - 1);
-	}
+        }
+        else
+        {
+            feature = ensExonGetFeature(translation->EndExon);
+
+            translation->SliceStart =
+                ensFeatureGetEnd(feature) - (translation->End - 1);
+        }
     }
-    
+
     return translation->SliceStart;
 }
 
@@ -1269,28 +1278,28 @@ ajuint ensTranslationGetSliceStart(EnsPTranslation translation)
 ajuint ensTranslationGetSliceEnd(EnsPTranslation translation)
 {
     EnsPFeature feature = NULL;
-    
+
     if(!translation)
-	return 0;
-    
+        return 0;
+
     if(!translation->SliceEnd)
     {
-	feature = ensExonGetFeature(translation->EndExon);
-	
-	if(ensFeatureGetStrand(feature) >= 0)
-	{
-	    translation->SliceEnd =
+        feature = ensExonGetFeature(translation->EndExon);
+
+        if(ensFeatureGetStrand(feature) >= 0)
+        {
+            translation->SliceEnd =
                 ensFeatureGetStart(feature) + (translation->End - 1);
-	}
-	else
-	{
-	    feature = ensExonGetFeature(translation->StartExon);
-	    
-	    translation->SliceEnd =
-		ensFeatureGetEnd(feature) - (translation->Start - 1);
-	}
+        }
+        else
+        {
+            feature = ensExonGetFeature(translation->StartExon);
+
+            translation->SliceEnd =
+                ensFeatureGetEnd(feature) - (translation->Start - 1);
+        }
     }
-    
+
     return translation->SliceEnd;
 }
 
@@ -1310,108 +1319,108 @@ ajuint ensTranslationGetSliceEnd(EnsPTranslation translation)
 ajuint ensTranslationGetMemSize(const EnsPTranslation translation)
 {
     ajuint size = 0;
-    
+
     AjIList iter = NULL;
-    
+
     EnsPAttribute attribute = NULL;
-    
+
     EnsPDatabaseentry dbe = NULL;
-    
+
     EnsPProteinfeature pf = NULL;
-    
+
     if(!translation)
-	return 0;
-    
+        return 0;
+
     size += (ajuint) sizeof (EnsOTranslation);
-    
+
     size += ensTranscriptGetMemSize(translation->Transcript);
-    
+
     size += ensExonGetMemSize(translation->StartExon);
-    
+
     size += ensExonGetMemSize(translation->EndExon);
-    
+
     if(translation->Sequence)
     {
-	size += (ajuint) sizeof (AjOStr);
-	
-	size += ajStrGetRes(translation->Sequence);
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(translation->Sequence);
     }
-    
+
     if(translation->StableIdentifier)
     {
-	size += (ajuint) sizeof (AjOStr);
-	
-	size += ajStrGetRes(translation->StableIdentifier);
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(translation->StableIdentifier);
     }
-    
+
     if(translation->CreationDate)
     {
-	size += (ajuint) sizeof (AjOStr);
-	
-	size += ajStrGetRes(translation->CreationDate);
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(translation->CreationDate);
     }
-    
+
     if(translation->ModificationDate)
     {
-	size += (ajuint) sizeof (AjOStr);
-	
-	size += ajStrGetRes(translation->ModificationDate);
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(translation->ModificationDate);
     }
-    
+
     /* Summarise the AJAX List of Ensembl Attributes. */
-    
+
     if(translation->Attributes)
     {
-	size += (ajuint) sizeof (AjOList);
-	
-	iter = ajListIterNewread(translation->Attributes);
-	
-	while(!ajListIterDone(iter))
-	{
-	    attribute = (EnsPAttribute) ajListIterGet(iter);
-	    
-	    size += ensAttributeGetMemSize(attribute);
-	}
-	
-	ajListIterDel(&iter);
+        size += (ajuint) sizeof (AjOList);
+
+        iter = ajListIterNewread(translation->Attributes);
+
+        while(!ajListIterDone(iter))
+        {
+            attribute = (EnsPAttribute) ajListIterGet(iter);
+
+            size += ensAttributeGetMemSize(attribute);
+        }
+
+        ajListIterDel(&iter);
     }
-    
+
     /* Summarise the AJAX List of Ensembl Database Entries. */
-    
+
     if(translation->DatabaseEntries)
     {
-	size += (ajuint) sizeof (AjOList);
-	
-	iter = ajListIterNewread(translation->DatabaseEntries);
-	
-	while(!ajListIterDone(iter))
-	{
-	    dbe = (EnsPDatabaseentry) ajListIterGet(iter);
-	    
-	    size += ensDatabaseentryGetMemSize(dbe);
-	}
-	
-	ajListIterDel(&iter);
+        size += (ajuint) sizeof (AjOList);
+
+        iter = ajListIterNewread(translation->DatabaseEntries);
+
+        while(!ajListIterDone(iter))
+        {
+            dbe = (EnsPDatabaseentry) ajListIterGet(iter);
+
+            size += ensDatabaseentryGetMemSize(dbe);
+        }
+
+        ajListIterDel(&iter);
     }
-    
+
     /* Summarise the AJAX List of Ensembl Protein Features. */
-    
+
     if(translation->Proteinfeatures)
     {
-	size += (ajuint) sizeof (AjOList);
-	
-	iter = ajListIterNewread(translation->Proteinfeatures);
-	
-	while(!ajListIterDone(iter))
-	{
-	    pf = (EnsPProteinfeature) ajListIterGet(iter);
-	    
-	    size += ensProteinfeatureGetMemSize(pf);
-	}
-	
-	ajListIterDel(&iter);
+        size += (ajuint) sizeof (AjOList);
+
+        iter = ajListIterNewread(translation->Proteinfeatures);
+
+        while(!ajListIterDone(iter))
+        {
+            pf = (EnsPProteinfeature) ajListIterGet(iter);
+
+            size += ensProteinfeatureGetMemSize(pf);
+        }
+
+        ajListIterDel(&iter);
     }
-    
+
     return size;
 }
 
@@ -1453,20 +1462,20 @@ ajuint ensTranslationGetMemSize(const EnsPTranslation translation)
 ** Set the Ensembl Translation Adaptor element of an Ensembl Translation.
 **
 ** @param [u] translation [EnsPTranslation] Ensembl Translation
-** @param [r] adaptor [EnsPTranslationadaptor] Ensembl Translation Adaptor
+** @param [u] tla [EnsPTranslationadaptor] Ensembl Translation Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
 AjBool ensTranslationSetAdaptor(EnsPTranslation translation,
-                                EnsPTranslationadaptor adaptor)
+                                EnsPTranslationadaptor tla)
 {
     if(!translation)
         return ajFalse;
-    
-    translation->Adaptor = adaptor;
-    
+
+    translation->Adaptor = tla;
+
     return ajTrue;
 }
 
@@ -1489,9 +1498,9 @@ AjBool ensTranslationSetIdentifier(EnsPTranslation translation,
 {
     if(!translation)
         return ajFalse;
-    
+
     translation->Identifier = identifier;
-    
+
     return ajTrue;
 }
 
@@ -1513,45 +1522,44 @@ AjBool ensTranslationSetIdentifier(EnsPTranslation translation,
 AjBool ensTranslationSetTranscript(EnsPTranslation translation,
                                    EnsPTranscript transcript)
 {
-#if AJFALSE
-    ajDebug("ensTranslationSetTranscript\n"
-            "  translation %p\n"
-            "  transcript %p\n",
-            translation,
-            transcript);
-    
-    ensTranslationTrace(translation, 1);
-    
-    ensTranscriptTrace(transcript, 1);
-#endif
-    
+    if(ajDebugTest("ensTranslationSetTranscript"))
+    {
+        ajDebug("ensTranslationSetTranscript\n"
+                "  translation %p\n"
+                "  transcript %p\n",
+                translation,
+                transcript);
+
+        ensTranslationTrace(translation, 1);
+
+        ensTranscriptTrace(transcript, 1);
+    }
+
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!transcript)
-	return ajFalse;
-    
+        return ajFalse;
+
     /* Replace the current Transcript. */
-    
+
     ensTranscriptUnlinkTranslation(translation->Transcript, translation);
-    
+
     ensTranscriptDel(&(translation->Transcript));
-    
+
     translation->Transcript = ensTranscriptNewRef(transcript);
-    
+
     ensTranscriptLinkTranslation(translation->Transcript, translation);
-    
+
     /* Clear internal caches that depend on Transcript coordinates. */
-    
-    /* FIXME: The Perl API does not clear the cached values, but it should! */
-    
+
     ajStrDel(&translation->Sequence);
-    
+
     translation->TranscriptStart = 0;
     translation->TranscriptEnd   = 0;
     translation->SliceStart      = 0;
     translation->SliceEnd        = 0;
-    
+
     return ajTrue;
 }
 
@@ -1572,42 +1580,41 @@ AjBool ensTranslationSetTranscript(EnsPTranslation translation,
 
 AjBool ensTranslationSetStartExon(EnsPTranslation translation, EnsPExon exon)
 {
-#if AJFALSE
-    ajDebug("ensTranslationSetStartExon\n"
-            "  translation %p\n"
-            "  exon %p\n",
-            translation,
-            exon);
-    
-    ensTranslationTrace(translation, 1);
-    
-    ensExonTrace(exon, 1);
-#endif
-    
+    if(ajDebugTest("ensTranslationSetStartExon"))
+    {
+        ajDebug("ensTranslationSetStartExon\n"
+                "  translation %p\n"
+                "  exon %p\n",
+                translation,
+                exon);
+
+        ensTranslationTrace(translation, 1);
+
+        ensExonTrace(exon, 1);
+    }
+
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!exon)
-	return ajFalse;
-    
+        return ajFalse;
+
     /* Replace the current Exon. */
-    
+
     if(translation->StartExon)
-	ensExonDel(&(translation->StartExon));
-    
+        ensExonDel(&(translation->StartExon));
+
     translation->StartExon = ensExonNewRef(exon);
-    
+
     /* Clear internal caches that depend on Exon coordinates. */
-    
-    /* FIXME: The Perl API does not clear the cached values, but it should! */
-    
+
     ajStrDel(&translation->Sequence);
-    
+
     translation->TranscriptStart = 0;
     translation->TranscriptEnd   = 0;
     translation->SliceStart      = 0;
     translation->SliceEnd        = 0;
-    
+
     return ajTrue;
 }
 
@@ -1628,42 +1635,41 @@ AjBool ensTranslationSetStartExon(EnsPTranslation translation, EnsPExon exon)
 
 AjBool ensTranslationSetEndExon(EnsPTranslation translation, EnsPExon exon)
 {
-#if AJFALSE
-    ajDebug("ensTranslationSetEndExon\n"
-            "  translation %p\n"
-            "  exon %p\n",
-            translation,
-            exon);
-    
-    ensTranslationTrace(translation, 1);
-    
-    ensExonTrace(exon, 1);
-#endif
-    
+    if(ajDebugTest("ensTranslationSetEndExon"))
+    {
+        ajDebug("ensTranslationSetEndExon\n"
+                "  translation %p\n"
+                "  exon %p\n",
+                translation,
+                exon);
+
+        ensTranslationTrace(translation, 1);
+
+        ensExonTrace(exon, 1);
+    }
+
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!exon)
-	return ajFalse;
-    
+        return ajFalse;
+
     /* Replace the current Exon. */
-    
+
     if(translation->EndExon)
-	ensExonDel(&(translation->EndExon));
-    
+        ensExonDel(&(translation->EndExon));
+
     translation->EndExon = ensExonNewRef(exon);
-    
+
     /* Clear internal caches that depend on Exon coordinates. */
-    
-    /* FIXME: The Perl API does not clear the cached values, but it should! */
-    
+
     ajStrDel(&translation->Sequence);
-    
+
     translation->TranscriptStart = 0;
     translation->TranscriptEnd   = 0;
     translation->SliceStart      = 0;
     translation->SliceEnd        = 0;
-    
+
     return ajTrue;
 }
 
@@ -1684,32 +1690,31 @@ AjBool ensTranslationSetEndExon(EnsPTranslation translation, EnsPExon exon)
 
 AjBool ensTranslationSetStart(EnsPTranslation translation, ajuint start)
 {
-#if AJFALSE
-    ajDebug("ensTranslationSetStart\n"
-            "  translation %p\n"
-            "  start %u\n",
-            translation,
-            start);
-    
-    ensTranslationTrace(translation, 1);
-#endif
-    
+    if(ajDebugTest("ensTranslationSetStart"))
+    {
+        ajDebug("ensTranslationSetStart\n"
+                "  translation %p\n"
+                "  start %u\n",
+                translation,
+                start);
+
+        ensTranslationTrace(translation, 1);
+    }
+
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     translation->Start = start;
-    
+
     /* Clear internal caches that depend on Exon coordinates. */
-    
-    /* FIXME: The Perl API does not clear the cached values, but it should! */
-    
+
     ajStrDel(&translation->Sequence);
-    
+
     translation->TranscriptStart = 0;
     translation->TranscriptEnd   = 0;
     translation->SliceStart      = 0;
     translation->SliceEnd        = 0;
-    
+
     return ajTrue;
 }
 
@@ -1730,32 +1735,31 @@ AjBool ensTranslationSetStart(EnsPTranslation translation, ajuint start)
 
 AjBool ensTranslationSetEnd(EnsPTranslation translation, ajuint end)
 {
-#if AJFALSE
-    ajDebug("ensTranslationSetEnd\n"
-            "  translation %p\n"
-            "  end %u\n",
-            translation,
-            end);
-    
-    ensTranslationTrace(translation, 1);
-#endif
-    
+    if(ajDebugTest("ensTranslationSetEnd"))
+    {
+        ajDebug("ensTranslationSetEnd\n"
+                "  translation %p\n"
+                "  end %u\n",
+                translation,
+                end);
+
+        ensTranslationTrace(translation, 1);
+    }
+
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     translation->End = end;
-    
+
     /* Clear internal caches that depend on Exon coordinates. */
-    
-    /* FIXME: The Perl API does not clear the cached values, but it should! */
-    
+
     ajStrDel(&translation->Sequence);
-    
+
     translation->TranscriptStart = 0;
     translation->TranscriptEnd   = 0;
     translation->SliceStart      = 0;
     translation->SliceEnd        = 0;
-    
+
     return ajTrue;
 }
 
@@ -1777,23 +1781,24 @@ AjBool ensTranslationSetEnd(EnsPTranslation translation, ajuint end)
 AjBool ensTranslationSetStableIdentifier(EnsPTranslation translation,
                                          AjPStr stableid)
 {
-#if AJFALSE
-    ajDebug("ensTranslationSetStableIdentifier\n"
-            "  translation %p\n"
-            "  stableid '%S'\n",
-            translation,
-            stableid);
-    
-    ensTranslationTrace(translation, 1);
-#endif
-    
+    if(ajDebugTest("ensTranslationSetStableIdentifier"))
+    {
+        ajDebug("ensTranslationSetStableIdentifier\n"
+                "  translation %p\n"
+                "  stableid '%S'\n",
+                translation,
+                stableid);
+
+        ensTranslationTrace(translation, 1);
+    }
+
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     ajStrDel(&translation->StableIdentifier);
-    
+
     translation->StableIdentifier = ajStrNewRef(stableid);
-    
+
     return ajTrue;
 }
 
@@ -1814,21 +1819,22 @@ AjBool ensTranslationSetStableIdentifier(EnsPTranslation translation,
 
 AjBool ensTranslationSetVersion(EnsPTranslation translation, ajuint version)
 {
-#if AJFALSE
-    ajDebug("ensTranslationSetVersion\n"
-            "  translation %p\n"
-            "  version %u\n",
-            translation,
-            version);
-    
-    ensTranslationTrace(translation, 1);
-#endif
-    
+    if(ajDebugTest("ensTranslationSetVersion"))
+    {
+        ajDebug("ensTranslationSetVersion\n"
+                "  translation %p\n"
+                "  version %u\n",
+                translation,
+                version);
+
+        ensTranslationTrace(translation, 1);
+    }
+
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     translation->Version = version;
-    
+
     return ajTrue;
 }
 
@@ -1849,23 +1855,24 @@ AjBool ensTranslationSetVersion(EnsPTranslation translation, ajuint version)
 
 AjBool ensTranslationSetCreationDate(EnsPTranslation translation, AjPStr cdate)
 {
-#if AJFALSE
-    ajDebug("ensTranslationSetCreationDate\n"
-            "  translation %p\n"
-            "  cdate '%S'\n",
-            translation,
-            cdate);
-    
-    ensTranslationTrace(translation, 1);
-#endif
-    
+    if(ajDebugTest("ensTranslationSetCreationDate"))
+    {
+        ajDebug("ensTranslationSetCreationDate\n"
+                "  translation %p\n"
+                "  cdate '%S'\n",
+                translation,
+                cdate);
+
+        ensTranslationTrace(translation, 1);
+    }
+
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     ajStrDel(&translation->CreationDate);
-    
+
     translation->CreationDate = ajStrNewRef(cdate);
-    
+
     return ajTrue;
 }
 
@@ -1887,23 +1894,24 @@ AjBool ensTranslationSetCreationDate(EnsPTranslation translation, AjPStr cdate)
 AjBool ensTranslationSetModificationDate(EnsPTranslation translation,
                                          AjPStr mdate)
 {
-#if AJFALSE
-    ajDebug("ensTranslationSetModificationDate\n"
-            "  translation %p\n"
-            "  mdate '%S'\n",
-            translation,
-            mdate);
-    
-    ensTranslationTrace(translation, 1);
-#endif
-    
+    if(ajDebugTest("ensTranslationSetModificationDate"))
+    {
+        ajDebug("ensTranslationSetModificationDate\n"
+                "  translation %p\n"
+                "  mdate '%S'\n",
+                translation,
+                mdate);
+
+        ensTranslationTrace(translation, 1);
+    }
+
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     ajStrDel(&translation->ModificationDate);
-    
+
     translation->ModificationDate = ajStrNewRef(mdate);
-    
+
     return ajTrue;
 }
 
@@ -1927,22 +1935,22 @@ AjBool ensTranslationAddAttribute(EnsPTranslation translation,
                                   EnsPAttribute attribute)
 {
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!attribute)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!translation->Attributes)
-	translation->Attributes = ajListNew();
-    
+        translation->Attributes = ajListNew();
+
     ajListPushAppend(translation->Attributes,
-		     (void *) ensAttributeNewRef(attribute));
-    
+                     (void *) ensAttributeNewRef(attribute));
+
     /* Clear the sequence cache. */
-    
+
     if(translation->Sequence)
-	ajStrDel(&translation->Sequence);
-    
+        ajStrDel(&translation->Sequence);
+
     return ajTrue;
 }
 
@@ -1965,17 +1973,17 @@ AjBool ensTranslationAddDatabaseentry(EnsPTranslation translation,
                                       EnsPDatabaseentry dbe)
 {
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!dbe)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!translation->DatabaseEntries)
-	translation->DatabaseEntries = ajListNew();
-    
+        translation->DatabaseEntries = ajListNew();
+
     ajListPushAppend(translation->DatabaseEntries,
-		     (void *) ensDatabaseentryNewRef(dbe));
-    
+                     (void *) ensDatabaseentryNewRef(dbe));
+
     return ajTrue;
 }
 
@@ -1998,17 +2006,17 @@ AjBool ensTranslationAddProteinfeature(EnsPTranslation translation,
                                        EnsPProteinfeature pf)
 {
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!pf)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!translation->Proteinfeatures)
-	translation->Proteinfeatures = ajListNew();
-    
+        translation->Proteinfeatures = ajListNew();
+
     ajListPushAppend(translation->Proteinfeatures,
-		     (void *) ensProteinfeatureNewRef(pf));
-    
+                     (void *) ensProteinfeatureNewRef(pf));
+
     return ajTrue;
 }
 
@@ -2047,130 +2055,130 @@ AjBool ensTranslationAddProteinfeature(EnsPTranslation translation,
 AjBool ensTranslationTrace(const EnsPTranslation translation, ajuint level)
 {
     AjIList iter = NULL;
-    
+
     AjPStr indent = NULL;
-    
+
     EnsPAttribute attribute = NULL;
-    
+
     EnsPDatabaseentry dbe = NULL;
-    
+
     EnsPProteinfeature pf = NULL;
-    
+
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     indent = ajStrNew();
-    
+
     ajStrAppendCountK(&indent, ' ', level * 2);
-    
+
     ajDebug("%SensTranslationTrace %p\n"
-	    "%S  Use %u\n"
-	    "%S  Identifier %u\n"
-	    "%S  Adaptor %p\n"
-	    "%S  Transcript %p\n"
-	    "%S  StartExon %p\n"
-	    "%S  EndExon %p\n"
-	    "%S  Start %u\n"
-	    "%S  End %u\n"
-	    "%S  StableIdentifier '%S'\n"
-	    "%S  CreationDate '%S'\n"
-	    "%S  ModificationDate '%S'\n"
-	    "%S  Version %u\n"
-	    "%S  Attributes %p\n"
-	    "%S  DatabaseEntries %p\n"
-	    "%S  Proteinfeatures %p\n"
-	    "%S  Sequence %p\n"
-	    "%S  TranscriptStart %u\n"
-	    "%S  TranscriptEnd %u\n"
-	    "%S  SliceStart %u\n"
-	    "%S  SliceEnd %u\n",
-	    indent, translation,
-	    indent, translation->Use,
-	    indent, translation->Identifier,
-	    indent, translation->Adaptor,
-	    indent, translation->Transcript,
-	    indent, translation->StartExon,
-	    indent, translation->EndExon,
-	    indent, translation->Start,
-	    indent, translation->End,
-	    indent, translation->StableIdentifier,
-	    indent, translation->CreationDate,
-	    indent, translation->ModificationDate,
-	    indent, translation->Version,
-	    indent, translation->Attributes,
-	    indent, translation->DatabaseEntries,
-	    indent, translation->Proteinfeatures,
-	    indent, translation->Sequence,
-	    indent, translation->TranscriptStart,
-	    indent, translation->TranscriptEnd,
-	    indent, translation->SliceStart,
-	    indent, translation->SliceEnd);
-    
+            "%S  Use %u\n"
+            "%S  Identifier %u\n"
+            "%S  Adaptor %p\n"
+            "%S  Transcript %p\n"
+            "%S  StartExon %p\n"
+            "%S  EndExon %p\n"
+            "%S  Start %u\n"
+            "%S  End %u\n"
+            "%S  StableIdentifier '%S'\n"
+            "%S  CreationDate '%S'\n"
+            "%S  ModificationDate '%S'\n"
+            "%S  Version %u\n"
+            "%S  Attributes %p\n"
+            "%S  DatabaseEntries %p\n"
+            "%S  Proteinfeatures %p\n"
+            "%S  Sequence %p\n"
+            "%S  TranscriptStart %u\n"
+            "%S  TranscriptEnd %u\n"
+            "%S  SliceStart %u\n"
+            "%S  SliceEnd %u\n",
+            indent, translation,
+            indent, translation->Use,
+            indent, translation->Identifier,
+            indent, translation->Adaptor,
+            indent, translation->Transcript,
+            indent, translation->StartExon,
+            indent, translation->EndExon,
+            indent, translation->Start,
+            indent, translation->End,
+            indent, translation->StableIdentifier,
+            indent, translation->CreationDate,
+            indent, translation->ModificationDate,
+            indent, translation->Version,
+            indent, translation->Attributes,
+            indent, translation->DatabaseEntries,
+            indent, translation->Proteinfeatures,
+            indent, translation->Sequence,
+            indent, translation->TranscriptStart,
+            indent, translation->TranscriptEnd,
+            indent, translation->SliceStart,
+            indent, translation->SliceEnd);
+
     ensTranscriptTrace(translation->Transcript, level + 1);
-    
+
     ensExonTrace(translation->StartExon, level + 1);
-    
+
     ensExonTrace(translation->EndExon, level + 1);
-    
+
     /* Trace the AJAX List of Ensembl Attributes. */
-    
+
     if(translation->Attributes)
     {
-	ajDebug("%S    AJAX List %p of Ensembl Attributes\n",
-		indent, translation->Attributes);
-	
-	iter = ajListIterNewread(translation->Attributes);
-	
-	while(!ajListIterDone(iter))
-	{
-	    attribute = (EnsPAttribute) ajListIterGet(iter);
-	    
-	    ensAttributeTrace(attribute, level + 2);
-	}
-	
-	ajListIterDel(&iter);
+        ajDebug("%S    AJAX List %p of Ensembl Attributes\n",
+                indent, translation->Attributes);
+
+        iter = ajListIterNewread(translation->Attributes);
+
+        while(!ajListIterDone(iter))
+        {
+            attribute = (EnsPAttribute) ajListIterGet(iter);
+
+            ensAttributeTrace(attribute, level + 2);
+        }
+
+        ajListIterDel(&iter);
     }
-    
+
     /* Trace the AJAX List of Ensembl Database Entries. */
-    
+
     if(translation->DatabaseEntries)
     {
-	ajDebug("%S    AJAX List %p of Ensembl Database Entries\n",
-		indent, translation->Attributes);
-	
-	iter = ajListIterNewread(translation->DatabaseEntries);
-	
-	while(!ajListIterDone(iter))
-	{
-	    dbe = (EnsPDatabaseentry) ajListIterGet(iter);
-	    
-	    ensDatabaseentryTrace(dbe, level + 2);
-	}
-	
-	ajListIterDel(&iter);
+        ajDebug("%S    AJAX List %p of Ensembl Database Entries\n",
+                indent, translation->Attributes);
+
+        iter = ajListIterNewread(translation->DatabaseEntries);
+
+        while(!ajListIterDone(iter))
+        {
+            dbe = (EnsPDatabaseentry) ajListIterGet(iter);
+
+            ensDatabaseentryTrace(dbe, level + 2);
+        }
+
+        ajListIterDel(&iter);
     }
-    
+
     /* Trace the AJAX List of Ensembl Protein Features. */
-    
+
     if(translation->Proteinfeatures)
     {
-	ajDebug("%S    AJAX List %p of Ensembl Protein Features\n",
-		indent, translation->Proteinfeatures);
-	
-	iter = ajListIterNewread(translation->Proteinfeatures);
-	
-	while(!ajListIterDone(iter))
-	{
-	    pf = (EnsPProteinfeature) ajListIterGet(iter);
-	    
-	    ensProteinfeatureTrace(pf, level + 2);
-	}
-	
-	ajListIterDel(&iter);
+        ajDebug("%S    AJAX List %p of Ensembl Protein Features\n",
+                indent, translation->Proteinfeatures);
+
+        iter = ajListIterNewread(translation->Proteinfeatures);
+
+        while(!ajListIterDone(iter))
+        {
+            pf = (EnsPProteinfeature) ajListIterGet(iter);
+
+            ensProteinfeatureTrace(pf, level + 2);
+        }
+
+        ajListIterDel(&iter);
     }
-    
+
     ajStrDel(&indent);
-    
+
     return ajTrue;
 }
 
@@ -2198,53 +2206,52 @@ AjBool ensTranslationFetchAllAttributes(EnsPTranslation translation,
                                         AjPList attributes)
 {
     AjBool match = AJFALSE;
-    
+
     const AjPList list = NULL;
     AjIList iter       = NULL;
-    
+
     EnsPAttribute attribute = NULL;
-    
-#if AJFALSE
-    ajDebug("ensTranslationFetchAllAttributes\n"
-            "  translation %p\n"
-            "  code '%S'\n"
-            "  attributes %p\n",
-            translation,
-            code,
-            attributes);
-#endif
-    
+
+    if(ajDebugTest("ensTranslationFetchAllAttributes"))
+        ajDebug("ensTranslationFetchAllAttributes\n"
+                "  translation %p\n"
+                "  code '%S'\n"
+                "  attributes %p\n",
+                translation,
+                code,
+                attributes);
+
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!attributes)
-	return ajFalse;
-    
+        return ajFalse;
+
     list = ensTranslationGetAttributes(translation);
-    
+
     iter = ajListIterNewread(list);
-    
+
     while(!ajListIterDone(iter))
     {
-	attribute = (EnsPAttribute) ajListIterGet(iter);
-	
-	if(code)
-	{
-	    if(ajStrMatchCaseS(code, ensAttributeGetCode(attribute)))
-		match = ajTrue;
-	    else
-		match = ajFalse;
-	}
-	else
-	    match = ajTrue;
-	
-	if(match)
-	    ajListPushAppend(attributes,
-			     (void *) ensAttributeNewRef(attribute));
+        attribute = (EnsPAttribute) ajListIterGet(iter);
+
+        if(code)
+        {
+            if(ajStrMatchCaseS(code, ensAttributeGetCode(attribute)))
+                match = ajTrue;
+            else
+                match = ajFalse;
+        }
+        else
+            match = ajTrue;
+
+        if(match)
+            ajListPushAppend(attributes,
+                             (void *) ensAttributeNewRef(attribute));
     }
-    
+
     ajListIterDel(&iter);
-    
+
     return ajTrue;
 }
 
@@ -2272,52 +2279,52 @@ AjBool ensTranslationFetchAllDatabaseEntries(EnsPTranslation translation,
 {
     AjBool namematch = AJFALSE;
     AjBool typematch = AJFALSE;
-    
+
     const AjPList list = NULL;
     AjIList iter       = NULL;
-    
+
     EnsPDatabaseentry dbe = NULL;
-    
+
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!dbes)
-	return ajFalse;
-    
+        return ajFalse;
+
     list = ensTranslationGetDatabaseEntries(translation);
-    
+
     iter = ajListIterNewread(list);
-    
+
     while(!ajListIterDone(iter))
     {
-	dbe = (EnsPDatabaseentry) ajListIterGet(iter);
-	
-	if(name)
-	{
-	    if(ajStrMatchCaseS(name, ensDatabaseentryGetDbName(dbe)))
-		namematch = ajTrue;
-	    else
-		namematch = ajFalse;
-	}
-	else
-	    namematch = ajTrue;
-	
-	if(type)
-	{
-	    if(type == ensDatabaseentryGetType(dbe))
-		typematch = ajTrue;
-	    else
-		typematch = ajFalse;
-	}
-	else
-	    typematch = ajTrue;
-	
-	if(namematch && typematch)
-	    ajListPushAppend(dbes, (void *) ensDatabaseentryNewRef(dbe));
+        dbe = (EnsPDatabaseentry) ajListIterGet(iter);
+
+        if(name)
+        {
+            if(ajStrMatchCaseS(name, ensDatabaseentryGetDbName(dbe)))
+                namematch = ajTrue;
+            else
+                namematch = ajFalse;
+        }
+        else
+            namematch = ajTrue;
+
+        if(type)
+        {
+            if(type == ensDatabaseentryGetType(dbe))
+                typematch = ajTrue;
+            else
+                typematch = ajFalse;
+        }
+        else
+            typematch = ajTrue;
+
+        if(namematch && typematch)
+            ajListPushAppend(dbes, (void *) ensDatabaseentryNewRef(dbe));
     }
-    
+
     ajListIterDel(&iter);
-    
+
     return ajTrue;
 }
 
@@ -2342,55 +2349,55 @@ AjBool ensTranslationFetchAllProteinfeatures(EnsPTranslation translation,
                                              AjPList pfs)
 {
     AjBool match = AJFALSE;
-    
+
     const AjPList list = NULL;
-    
+
     AjIList iter = NULL;
-    
+
     EnsPAnalysis analysis = NULL;
-    
+
     EnsPFeature feature = NULL;
-    
+
     EnsPFeaturepair fp = NULL;
-    
+
     EnsPProteinfeature pf = NULL;
-    
+
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!pfs)
-	return ajFalse;
-    
+        return ajFalse;
+
     list = ensTranslationGetProteinfeatures(translation);
-    
+
     iter = ajListIterNewread(list);
-    
+
     while(!ajListIterDone(iter))
     {
-	pf = (EnsPProteinfeature) ajListIterGet(iter);
-	
-	if(name)
-	{
-	    fp = ensProteinfeatureGetFeaturepair(pf);
-	    
-	    feature = ensFeaturepairGetSourceFeature(fp);
-	    
-	    analysis = ensFeatureGetAnalysis(feature);
-	    
-	    if(ajStrMatchCaseS(name, ensAnalysisGetName(analysis)))
-		match = ajTrue;
-	    else
-		match = ajFalse;
-	}
-	else
-	    match = ajTrue;
-	
-	if(match)
-	    ajListPushAppend(pfs, (void *) ensProteinfeatureNewRef(pf));
+        pf = (EnsPProteinfeature) ajListIterGet(iter);
+
+        if(name)
+        {
+            fp = ensProteinfeatureGetFeaturepair(pf);
+
+            feature = ensFeaturepairGetSourceFeature(fp);
+
+            analysis = ensFeatureGetAnalysis(feature);
+
+            if(ajStrMatchCaseS(name, ensAnalysisGetName(analysis)))
+                match = ajTrue;
+            else
+                match = ajFalse;
+        }
+        else
+            match = ajTrue;
+
+        if(match)
+            ajListPushAppend(pfs, (void *) ensProteinfeatureNewRef(pf));
     }
-    
+
     ajListIterDel(&iter);
-    
+
     return ajTrue;
 }
 
@@ -2418,26 +2425,26 @@ AjBool ensTranslationFetchAllProteinfeaturesDomain(EnsPTranslation translation,
                                                    AjPList pfs)
 {
     register ajuint i = 0;
-    
+
     AjPStr name = NULL;
-    
+
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!pfs)
-	return ajFalse;
-    
+        return ajFalse;
+
     name = ajStrNew();
-    
+
     for(i = 0; translationProteinfeatureDomainName[i]; i++)
     {
-	ajStrAssignC(&name, translationProteinfeatureDomainName[i]);
-	
-	ensTranslationFetchAllProteinfeatures(translation, name, pfs);
+        ajStrAssignC(&name, translationProteinfeatureDomainName[i]);
+
+        ensTranslationFetchAllProteinfeatures(translation, name, pfs);
     }
-    
+
     ajStrDel(&name);
-    
+
     return ajTrue;
 }
 
@@ -2456,55 +2463,55 @@ AjBool ensTranslationFetchAllProteinfeaturesDomain(EnsPTranslation translation,
 **
 ** @cc Bio::EnsEMBL::Translation::get_all_SeqEdits
 ** @param [u] translation [EnsPTranslation] Ensembl Translation
-** @param [r] selist [AjPList] AJAX List of Ensembl Sequence Edits
+** @param [r] ses [AjPList] AJAX List of Ensembl Sequence Edits
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
 AjBool ensTranslationFetchAllSequenceEdits(EnsPTranslation translation,
-                                           AjPList selist)
+                                           AjPList ses)
 {
     register ajuint i = 0;
-    
+
     AjPList attributes = NULL;
-    
+
     AjPStr code = NULL;
-    
+
     EnsPAttribute at = NULL;
-    
+
     EnsPSequenceEdit se = NULL;
-    
+
     if(!translation)
-	return ajFalse;
-    
-    if(!selist)
-	return ajFalse;
-    
+        return ajFalse;
+
+    if(!ses)
+        return ajFalse;
+
     code = ajStrNew();
-    
+
     attributes = ajListNew();
-    
+
     for(i = 0; translationSequenceEditCode[i]; i++)
     {
-	ajStrAssignC(&code, translationSequenceEditCode[i]);
-	
-	ensTranslationFetchAllAttributes(translation, code, attributes);
+        ajStrAssignC(&code, translationSequenceEditCode[i]);
+
+        ensTranslationFetchAllAttributes(translation, code, attributes);
     }
-    
+
     while(ajListPop(attributes, (void **) &at))
     {
-	se = ensSequenceEditNewA(at);
-	
-	ajListPushAppend(selist, (void *) se);
-	
-	ensAttributeDel(&at);
+        se = ensSequenceEditNewA(at);
+
+        ajListPushAppend(ses, (void *) se);
+
+        ensAttributeDel(&at);
     }
-    
+
     ajListFree(&attributes);
-    
+
     ajStrDel(&code);
-    
+
     return ajTrue;
 }
 
@@ -2530,76 +2537,19 @@ AjBool ensTranslationFetchDisplayIdentifier(const EnsPTranslation translation,
                                             AjPStr *Pidentifier)
 {
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Pidentifier)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(translation->StableIdentifier &&
        ajStrGetLen(translation->StableIdentifier))
-	*Pidentifier = ajStrNewS(translation->StableIdentifier);
+        *Pidentifier = ajStrNewS(translation->StableIdentifier);
     else if(translation->Identifier)
-	*Pidentifier = ajFmtStr("%u", translation->Identifier);
+        *Pidentifier = ajFmtStr("%u", translation->Identifier);
     else
-	*Pidentifier = ajFmtStr("%p", translation);
-    
-    return ajTrue;
-}
+        *Pidentifier = ajFmtStr("%p", translation);
 
-
-
-
-/* @func ensTranslationModify *************************************************
-**
-** Apply all Ensembl Sequence Edits for an Ensembl Translation.
-**
-** Transcript Sequence Edits are defined as Ensembl Attributes with codes
-** 'initial_met' and '_selenocysteine'.
-**
-** @cc Bio::EnsEMBL::Translation::modify_translation
-** @param [u] translation [EnsPTranslation] Ensembl Translation
-** @param [r] Psequence [AjPStr*] Sequence address
-** @see ensTranslationFetchAllSequenceEdits
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ensTranslationModify(EnsPTranslation translation, AjPStr *Psequence)
-{
-    AjPList selist = NULL;
-    
-    EnsPSequenceEdit se = NULL;
-    
-    if(!translation)
-	return ajFalse;
-    
-    if(!Psequence)
-	return ajFalse;
-    
-    if(!*Psequence)
-	return ajFalse;
-    
-    selist = ajListNew();
-    
-    ensTranslationFetchAllSequenceEdits(translation, selist);
-    
-    /*
-    ** Sort in reverse order to avoid adjustment of down-stream
-    ** Sequence Edits.
-    */
-    
-    ajListSort(selist, ensSequenceEditCompareStartDescending);
-    
-    while(ajListPop(selist, (void **) &se))
-    {
-	ensSequenceEditApplyEdit(se, Psequence);
-	
-	ensSequenceEditDel(&se);
-    }
-    
-    ajListFree(&selist);
-    
     return ajTrue;
 }
 
@@ -2610,41 +2560,53 @@ AjBool ensTranslationModify(EnsPTranslation translation, AjPStr *Psequence)
 **
 ** Fetch the sequence of an Ensembl Translation as AJAX String.
 **
+** The sequence is based on ensTranscriptFetchTranslatedSequence.
+**
+** The caller is responsible for deleting the AJAX String.
+**
 ** @cc Bio::EnsEMBL::Translation::seq
+** @cc Bio::EnsEMBL::Translation::modify_translation
 ** @param [u] translation [EnsPTranslation] Ensembl Translation
 ** @param [r] Psequence [AjPStr*] Sequence address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
+** NOTE: In this implementation, the Ensembl Translation object does not cache
+** the translated sequence, since Sequence Edits applied to Transcript objects
+** invalidate the sequence. Because Transcripts hold only weak references for
+** Translation objects, it would be difficult to propagate changes from
+** Transcripts to Translations. Nevertheless, Ensembl Exon sequences are
+** cached as are Transcript and Translation Attributes so that the sequence can
+** be recalculated quickly.
 ******************************************************************************/
 
 AjBool ensTranslationFetchSequenceStr(EnsPTranslation translation,
                                       AjPStr *Psequence)
 {
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Psequence)
-	return ajFalse;
-    
-    if(translation->Sequence)
-	ajStrAssignS(Psequence, translation->Sequence);
+        return ajFalse;
+
+    if(*Psequence)
+        ajStrAssignClear(Psequence);
     else
-	translation->Sequence = ajStrNew();
-    
+        *Psequence = ajStrNew();
+
+    if(translation->Sequence)
+        ajStrAssignS(Psequence, translation->Sequence);
+
     if(!translation->Transcript)
     {
-	ajDebug("ensTranslationFetchSequenceStr requires a Translation with a "
-		"Transcript.\n");
-	
-	return ajFalse;
+        ajDebug("ensTranslationFetchSequenceStr requires a Translation with a "
+                "Transcript.\n");
+
+        return ajFalse;
     }
-    
-    ensTranscriptTranslateStr(translation->Transcript,
-			      &(translation->Sequence));
-    
-    ajStrAssignS(Psequence, translation->Sequence);
-    
+
+    ensTranscriptFetchTranslatedSequence(translation->Transcript, Psequence);
+
     return ajTrue;
 }
 
@@ -2665,26 +2627,26 @@ AjBool ensTranslationFetchSequenceStr(EnsPTranslation translation,
 ******************************************************************************/
 
 AjBool ensTranslationFetchSequenceSeq(EnsPTranslation translation,
-                                      AjPSeq* Psequence)
+                                      AjPSeq *Psequence)
 {
     AjPStr name = NULL;
     AjPStr sequence = NULL;
-    
+
     if(!translation)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Psequence)
-	return ajFalse;
-    
+        return ajFalse;
+
     ensTranslationFetchSequenceStr(translation, &sequence);
-    
+
     ensTranslationFetchDisplayIdentifier(translation, &name);
-    
+
     *Psequence = ajSeqNewNameS(sequence, name);
-    
+
     ajStrDel(&name);
     ajStrDel(&sequence);
-    
+
     return ajTrue;
 }
 
@@ -2708,9 +2670,6 @@ static const char *translationAdaptorTables[] =
     NULL
 };
 
-
-
-
 static const char *translationAdaptorColumns[] =
 {
     "translation.translation_id",
@@ -2726,14 +2685,11 @@ static const char *translationAdaptorColumns[] =
     NULL
 };
 
-
-
-
 static EnsOBaseadaptorLeftJoin translationAdaptorLeftJoin[] =
 {
     {
-	"translation_stable_id",
-	"translation_stable_id.translation_id = translation.translation_id"
+        "translation_stable_id",
+        "translation_stable_id.translation_id = translation.translation_id"
     },
     {NULL, NULL}
 };
@@ -2751,8 +2707,8 @@ static const char *translationAdaptorFinalCondition = NULL;
 **
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
-** @param [r] mapper [EnsPAssemblymapper] Ensembl Assembly Mapper
-** @param [r] slice [EnsPSlice] Ensembl Slice
+** @param [uN] am [EnsPAssemblymapper] Ensembl Assembly Mapper
+** @param [uN] slice [EnsPSlice] Ensembl Slice
 ** @param [u] translations [AjPList] AJAX List of Ensembl Translations
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -2761,7 +2717,7 @@ static const char *translationAdaptorFinalCondition = NULL;
 
 static AjBool translationAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
-                                              EnsPAssemblymapper mapper,
+                                              EnsPAssemblymapper am,
                                               EnsPSlice slice,
                                               AjPList translations)
 {
@@ -2772,150 +2728,145 @@ static AjBool translationAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     ajuint endexonid    = 0;
     ajuint end          = 0;
     ajuint version      = 0;
-    
+
     AjIList iter = NULL;
     const AjPList exons = NULL;
-    
+
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;
     AjPSqlrow sqlr       = NULL;
-    
+
     AjPStr stableid = NULL;
     AjPStr cdate    = NULL;
     AjPStr mdate    = NULL;
-    
+
     EnsPExon exon      = NULL;
     EnsPExon startexon = NULL;
     EnsPExon endexon   = NULL;
-    
+
     EnsPTranscript transcript = NULL;
     EnsPTranscriptadaptor tra = NULL;
-    
+
     EnsPTranslation translation = NULL;
     EnsPTranslationadaptor tla = NULL;
-    
-#if AJFALSE
-    ajDebug("translationAdaptorFetchAllBySQL\n"
-            "  dba %p\n"
-            "  statement %p\n"
-            "  mapper %p\n"
-            "  slice %p\n"
-            "  translations %p\n",
-            dba,
-            statement,
-            mapper,
-            slice,
-            translations);
-#endif
-    
+
+    if(ajDebugTest("translationAdaptorFetchAllBySQL"))
+        ajDebug("translationAdaptorFetchAllBySQL\n"
+                "  dba %p\n"
+                "  statement %p\n"
+                "  am %p\n"
+                "  slice %p\n"
+                "  translations %p\n",
+                dba,
+                statement,
+                am,
+                slice,
+                translations);
+
     if(!dba)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!statement)
-	return ajFalse;
-    
-    (void) mapper;
-    
-    (void) slice;
-    
+        return ajFalse;
+
     if(!translations)
-	return ajFalse;
-    
+        return ajFalse;
+
     tla = ensRegistryGetTranslationadaptor(dba);
-    
+
     tra = ensRegistryGetTranscriptadaptor(dba);
-    
+
     sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
-    
+
     sqli = ajSqlrowiterNew(sqls);
-    
+
     while(!ajSqlrowiterDone(sqli))
     {
-	identifier   = 0;
-	transcriptid = 0;
-	start        = 0;
-	startexonid  = 0;
-	end          = 0;
-	endexonid    = 0;
-	stableid     = ajStrNew();
-	version      = 0;
-	cdate        = ajStrNew();
-	mdate        = ajStrNew();
-	
-	sqlr = ajSqlrowiterGet(sqli);
-	
-	ajSqlcolumnToUint(sqlr, &identifier);
-	ajSqlcolumnToUint(sqlr, &transcriptid);
-	ajSqlcolumnToUint(sqlr, &start);
-	ajSqlcolumnToUint(sqlr, &startexonid);
-	ajSqlcolumnToUint(sqlr, &end);
-	ajSqlcolumnToUint(sqlr, &endexonid);
+        identifier   = 0;
+        transcriptid = 0;
+        start        = 0;
+        startexonid  = 0;
+        end          = 0;
+        endexonid    = 0;
+        stableid     = ajStrNew();
+        version      = 0;
+        cdate        = ajStrNew();
+        mdate        = ajStrNew();
+
+        sqlr = ajSqlrowiterGet(sqli);
+
+        ajSqlcolumnToUint(sqlr, &identifier);
+        ajSqlcolumnToUint(sqlr, &transcriptid);
+        ajSqlcolumnToUint(sqlr, &start);
+        ajSqlcolumnToUint(sqlr, &startexonid);
+        ajSqlcolumnToUint(sqlr, &end);
+        ajSqlcolumnToUint(sqlr, &endexonid);
         ajSqlcolumnToStr(sqlr, &stableid);
-	ajSqlcolumnToUint(sqlr, &version);
+        ajSqlcolumnToUint(sqlr, &version);
         ajSqlcolumnToStr(sqlr, &cdate);
         ajSqlcolumnToStr(sqlr, &mdate);
-	
-	ensTranscriptadaptorFetchByIdentifier(tra, transcriptid, &transcript);
-	
-	if(!transcript)
-	    ajFatal("translationAdaptorFetchAllBySQL could not get "
-		    "Ensembl Transcript for identifier %u.\n", transcriptid);
-	
-	exons = ensTranscriptGetExons(transcript);
-	
-	iter = ajListIterNewread(exons);
-	
-	while(!ajListIterDone(iter))
-	{
-	    exon = (EnsPExon) ajListIterGet(iter);
-	    
-	    if(ensExonGetIdentifier(exon) == startexonid)
-		startexon = exon;
-	    
-	    if(ensExonGetIdentifier(exon) == endexonid)
-		endexon = exon;
-	}
-	
-	ajListIterDel(&iter);
-	
-	if(!startexon)
-	    ajFatal("translationAdaptorFetchAllBySQL could not get "
-		    "start Exon for transcript_id %u",
-		    ensTranscriptGetIdentifier(transcript));
-	
-	if(!endexon)
-	    ajFatal("translationAdaptorFetchAllBySQL could not get "
-		    "end Exon for transcript_id %u",
-		    ensTranscriptGetIdentifier(transcript));
-	
-	translation = ensTranslationNew(tla,
-					identifier,
-					transcript,
-					startexon,
-					endexon,
-					start,
-					end,
-					(AjPStr) NULL,
-					stableid,
-					version,
-					cdate,
-					mdate);
-	
-	ajListPushAppend(translations, (void *) translation);	
-	
-	ensTranscriptDel(&transcript);
-	
-	ajStrDel(&stableid);
-	
-	ajStrDel(&cdate);
-	
-	ajStrDel(&mdate);	
+
+        ensTranscriptadaptorFetchByIdentifier(tra, transcriptid, &transcript);
+
+        if(!transcript)
+            ajFatal("translationAdaptorFetchAllBySQL could not get "
+                    "Ensembl Transcript for identifier %u.\n", transcriptid);
+
+        exons = ensTranscriptGetExons(transcript);
+
+        iter = ajListIterNewread(exons);
+
+        while(!ajListIterDone(iter))
+        {
+            exon = (EnsPExon) ajListIterGet(iter);
+
+            if(ensExonGetIdentifier(exon) == startexonid)
+                startexon = exon;
+
+            if(ensExonGetIdentifier(exon) == endexonid)
+                endexon = exon;
+        }
+
+        ajListIterDel(&iter);
+
+        if(!startexon)
+            ajFatal("translationAdaptorFetchAllBySQL could not get "
+                    "start Exon for transcript_id %u",
+                    ensTranscriptGetIdentifier(transcript));
+
+        if(!endexon)
+            ajFatal("translationAdaptorFetchAllBySQL could not get "
+                    "end Exon for transcript_id %u",
+                    ensTranscriptGetIdentifier(transcript));
+
+        translation = ensTranslationNew(tla,
+                                        identifier,
+                                        transcript,
+                                        startexon,
+                                        endexon,
+                                        start,
+                                        end,
+                                        (AjPStr) NULL,
+                                        stableid,
+                                        version,
+                                        cdate,
+                                        mdate);
+
+        ajListPushAppend(translations, (void *) translation);	
+
+        ensTranscriptDel(&transcript);
+
+        ajStrDel(&stableid);
+
+        ajStrDel(&cdate);
+
+        ajStrDel(&mdate);	
     }
-    
+
     ajSqlrowiterDel(&sqli);
-    
+
     ajSqlstatementDel(&sqls);
-    
+
     return ajTrue;
 }
 
@@ -2938,8 +2889,8 @@ static AjBool translationAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 static void *translationAdaptorCacheReference(void *value)
 {
     if(!value)
-	return NULL;
-    
+        return NULL;
+
     return (void *) ensTranslationNewRef((EnsPTranslation) value);
 }
 
@@ -2960,10 +2911,10 @@ static void *translationAdaptorCacheReference(void *value)
 static void translationAdaptorCacheDelete(void **value)
 {
     if(!value)
-	return;
-    
+        return;
+
     ensTranslationDel((EnsPTranslation *) value);
-    
+
     return;
 }
 
@@ -2984,8 +2935,8 @@ static void translationAdaptorCacheDelete(void **value)
 static ajuint translationAdaptorCacheSize(const void *value)
 {
     if(!value)
-	return 0;
-    
+        return 0;
+
     return ensTranslationGetMemSize((EnsPTranslation) value);
 }
 
@@ -3005,12 +2956,8 @@ static ajuint translationAdaptorCacheSize(const void *value)
 ** @fnote None
 **
 ** @nam3rule New Constructor
-** @nam4rule NewObj Constructor with existing object
-** @nam4rule NewRef Constructor by incrementing the reference counter
 **
 ** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPTranslationadaptor] Ensembl Translation Adaptor
-** @argrule Ref object [EnsPTranslationadaptor] Ensembl Translation Adaptor
 **
 ** @valrule * [EnsPTranslationadaptor] Ensembl Translation Adaptor
 **
@@ -3032,22 +2979,23 @@ static ajuint translationAdaptorCacheSize(const void *value)
 
 EnsPTranslationadaptor ensTranslationadaptorNew(EnsPDatabaseadaptor dba)
 {
-    EnsPTranslationadaptor adaptor = NULL;
-    
+    EnsPTranslationadaptor tla = NULL;
+
     if(!dba)
-	return NULL;
-    
-    AJNEW0(adaptor);
-    
-    adaptor->Adaptor = ensBaseadaptorNew(dba,
-					 translationAdaptorTables,
-					 translationAdaptorColumns,
-					 translationAdaptorLeftJoin,
-					 translationAdaptorDefaultCondition,
-					 translationAdaptorFinalCondition,
-					 translationAdaptorFetchAllBySQL);
-    
-    return adaptor;
+        return NULL;
+
+    AJNEW0(tla);
+
+    tla->Adaptor = ensBaseadaptorNew(
+        dba,
+        translationAdaptorTables,
+        translationAdaptorColumns,
+        translationAdaptorLeftJoin,
+        translationAdaptorDefaultCondition,
+        translationAdaptorFinalCondition,
+        translationAdaptorFetchAllBySQL);
+
+    return tla;
 }
 
 
@@ -3063,8 +3011,8 @@ EnsPTranslationadaptor ensTranslationadaptorNew(EnsPDatabaseadaptor dba)
 **
 ** @nam3rule Del Destroy (free) an Ensembl Translation Adaptor object
 **
-** @argrule * Padaptor [EnsPTranslationadaptor*] Ensembl Translation Adaptor
-**                                               object address
+** @argrule * Ptla [EnsPTranslationadaptor*] Ensembl Translation Adaptor
+**                                           object address
 **
 ** @valrule * [void]
 **
@@ -3078,31 +3026,31 @@ EnsPTranslationadaptor ensTranslationadaptorNew(EnsPDatabaseadaptor dba)
 **
 ** Default destructor for an Ensembl Translation Adaptor.
 **
-** @param [d] Padaptor [EnsPTranslationadaptor*] Ensembl Translation Adaptor
-**                                               address
+** @param [d] Ptla [EnsPTranslationadaptor*] Ensembl Translation Adaptor
+**                                           address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensTranslationadaptorDel(EnsPTranslationadaptor *Padaptor)
+void ensTranslationadaptorDel(EnsPTranslationadaptor *Ptla)
 {
     EnsPTranslationadaptor pthis = NULL;
-    
-    if(!Padaptor)
-	return;
-    
-    if(!*Padaptor)
-	return;
 
-    pthis = *Padaptor;
-    
+    if(!Ptla)
+        return;
+
+    if(!*Ptla)
+        return;
+
+    pthis = *Ptla;
+
     ensBaseadaptorDel(&pthis->Adaptor);
-    
+
     AJFREE(pthis);
 
-    *Padaptor = NULL;
-    
+    *Ptla = NULL;
+
     return;
 }
 
@@ -3113,20 +3061,19 @@ void ensTranslationadaptorDel(EnsPTranslationadaptor *Padaptor)
 **
 ** Get the Ensembl Database Adaptor element of an Ensembl Translation Adaptor.
 **
-** @param [r] adaptor [const EnsPTranslationadaptor] Ensembl Translation
-**                                                   Adaptor
+** @param [r] tla [const EnsPTranslationadaptor] Ensembl Translation Adaptor
 **
 ** @return [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @@
 ******************************************************************************/
 
 EnsPDatabaseadaptor ensTranslationadaptorGetDatabaseadaptor(
-    const EnsPTranslationadaptor adaptor)
+    const EnsPTranslationadaptor tla)
 {
-    if(!adaptor)
-	return NULL;
-    
-    return ensBaseadaptorGetDatabaseadaptor(adaptor->Adaptor);
+    if(!tla)
+        return NULL;
+
+    return ensBaseadaptorGetDatabaseadaptor(tla->Adaptor);
 }
 
 
@@ -3137,7 +3084,7 @@ EnsPDatabaseadaptor ensTranslationadaptorGetDatabaseadaptor(
 ** Fetch an Ensembl Translation via its SQL database-internal identifier.
 ** The caller is responsible for deleting the Ensembl Translation.
 **
-** @param [r] adaptor [EnsPTranslationadaptor] Ensembl Translation Adaptor
+** @param [u] tla [EnsPTranslationadaptor] Ensembl Translation Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @param [wP] Ptranslation [EnsPTranslation*] Ensembl Translation address
 **
@@ -3145,22 +3092,22 @@ EnsPDatabaseadaptor ensTranslationadaptorGetDatabaseadaptor(
 ** @@
 ******************************************************************************/
 
-AjBool ensTranslationadaptorFetchByIdentifier(EnsPTranslationadaptor adaptor,
+AjBool ensTranslationadaptorFetchByIdentifier(EnsPTranslationadaptor tla,
                                               ajuint identifier,
                                               EnsPTranslation *Ptranslation)
 {
-    if(!adaptor)
-	return ajFalse;
-    
+    if(!tla)
+        return ajFalse;
+
     if(!identifier)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Ptranslation)
-	return ajFalse;
-    
+        return ajFalse;
+
     *Ptranslation = (EnsPTranslation)
-	ensBaseadaptorFetchByIdentifier(adaptor->Adaptor, identifier);
-    
+        ensBaseadaptorFetchByIdentifier(tla->Adaptor, identifier);
+
     return ajTrue;
 }
 
@@ -3174,7 +3121,7 @@ AjBool ensTranslationadaptorFetchByIdentifier(EnsPTranslationadaptor adaptor,
 ** will be returned.
 ** The caller is responsible for deleting the Ensembl Translation.
 **
-** @param [r] adaptor [EnsPTranslationadaptor] Ensembl Translation Adaptor
+** @param [r] tla [EnsPTranslationadaptor] Ensembl Translation Adaptor
 ** @param [r] stableid [const AjPStr] Stable identifier
 ** @param [r] version [ajuint] Version
 ** @param [wP] Ptranslation [EnsPTranslation*] Ensembl Translation address
@@ -3184,71 +3131,66 @@ AjBool ensTranslationadaptorFetchByIdentifier(EnsPTranslationadaptor adaptor,
 ******************************************************************************/
 
 AjBool ensTranslationadaptorFetchByStableIdentifier(
-    EnsPTranslationadaptor adaptor,
+    EnsPTranslationadaptor tla,
     const AjPStr stableid,
     ajuint version,
     EnsPTranslation *Ptranslation)
 {
     char *txtstableid = NULL;
-    
+
     AjPList translations = NULL;
-    
+
     AjPStr constraint = NULL;
-    
+
     EnsPTranslation translation = NULL;
-    
-    if(!adaptor)
-	return ajFalse;
-    
+
+    if(!tla)
+        return ajFalse;
+
     if(!stableid)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Ptranslation)
-	return ajFalse;
-    
-    ensBaseadaptorEscapeC(adaptor->Adaptor, &txtstableid, stableid);
-    
+        return ajFalse;
+
+    ensBaseadaptorEscapeC(tla->Adaptor, &txtstableid, stableid);
+
     if(version)
-	constraint = ajFmtStr("translation_stable_id.stable_id = '%s' "
-			      "AND "
-			      "translation_stable_id.version = %u",
-			      txtstableid,
-			      version);
+        constraint = ajFmtStr(
+            "translation_stable_id.stable_id = '%s' "
+            "AND "
+            "translation_stable_id.version = %u",
+            txtstableid,
+            version);
     else
-	constraint = ajFmtStr("translation_stable_id.stable_id = '%s'",
-			      txtstableid);
-    
+        constraint = ajFmtStr(
+            "translation_stable_id.stable_id = '%s'",
+            txtstableid);
+
     ajCharDel(&txtstableid);
-    
+
     translations = ajListNew();
-    
-    ensBaseadaptorGenericFetch(adaptor->Adaptor,
-			       constraint,
-			       (EnsPAssemblymapper) NULL,
-			       (EnsPSlice) NULL,
-			       translations);
-    
+
+    ensBaseadaptorGenericFetch(tla->Adaptor,
+                               constraint,
+                               (EnsPAssemblymapper) NULL,
+                               (EnsPSlice) NULL,
+                               translations);
+
     if(ajListGetLength(translations) > 1)
-	ajDebug("ensTranslationadaptorFetchByStableIdentifier got more than "
-		"one Translation for stable identifier '%S' and version %u.\n",
-		stableid, version);
-    
+        ajDebug("ensTranslationadaptorFetchByStableIdentifier got more than "
+                "one Translation for stable identifier '%S' and version %u.\n",
+                stableid, version);
+
     ajListPop(translations, (void **) Ptranslation);
-    
-#if AJFALSE
-    ajDebug("ensTranslationadaptorFetchByStableIdentifier "
-            "got Translation %p\n", *Ptranslation);
-    
-    ensTranslationTrace(*Ptranslation, 1);
-#endif
-    
+
     while(ajListPop(translations, (void **) &translation))
-	ensTranslationDel(&translation);
-    
+        ensTranslationDel(&translation);
+
     ajListFree(&translations);
-    
+
     ajStrDel(&constraint);
-    
+
     return ajTrue;
 }
 
@@ -3260,7 +3202,7 @@ AjBool ensTranslationadaptorFetchByStableIdentifier(
 ** Fetch an Ensembl Translation via an Ensembl Transcript.
 ** The caller is responsible for deleting the Ensembl Translation.
 **
-** @param [r] adaptor [EnsPTranslationadaptor] Ensembl Translation Adaptor
+** @param [r] tla [EnsPTranslationadaptor] Ensembl Translation Adaptor
 ** @param [r] transcript [EnsPTranscript] Ensembl Transcript
 ** @param [wP] Ptranslation [EnsPTranslation*] Ensembl Translation address
 **
@@ -3268,7 +3210,7 @@ AjBool ensTranslationadaptorFetchByStableIdentifier(
 ** @@
 ******************************************************************************/
 
-AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor adaptor,
+AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor tla,
                                               EnsPTranscript transcript,
                                               EnsPTranslation *Ptranslation)
 {
@@ -3279,168 +3221,177 @@ AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor adaptor,
     ajuint endexonid    = 0;
     ajuint end          = 0;
     ajuint version      = 0;
-    
+
     ajulong rows = 0;
-    
+
     AjIList iter        = NULL;
     const AjPList exons = NULL;
-    
+
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;
     AjPSqlrow sqlr       = NULL;
-    
+
     AjPStr stableid = NULL;
     AjPStr cdate    = NULL;
     AjPStr mdate    = NULL;
     AjPStr statement = NULL;
-    
+
     EnsPDatabaseadaptor dba = NULL;
-    
+
     EnsPExon exon      = NULL;
     EnsPExon startexon = NULL;
     EnsPExon endexon   = NULL;
-    
-    if(!adaptor)
-	return ajFalse;
-    
+
+    ajDebug("ensTranslationadaptorFetchByTranscript\n"
+            "  tla %p\n"
+            "  transcript %p\n"
+            "  Ptranslation %p\n",
+            tla,
+            transcript,
+            Ptranslation);
+
+    if(!tla)
+        return ajFalse;
+
     if(!transcript)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Ptranslation)
-	return ajFalse;
-    
-    dba = ensBaseadaptorGetDatabaseadaptor(adaptor->Adaptor);
-    
-    statement = ajFmtStr("SELECT "
-			 "translation.translation_id, "
-			 "translation.transcript_id, "
-			 "translation.seq_start, "
-			 "translation.start_exon_id, "
-			 "translation.seq_end, "
-			 "translation.end_exon_id, "
-			 "translation_stable_id.stable_id, "
-			 "translation_stable_id.version, "
-			 "translation_stable_id.created_date, "
-			 "translation_stable_id.modified_date "
-			 "FROM "
-			 "(translation) "
-			 "LEFT JOIN "
-			 "translation_stable_id "
-			 "ON "
-			 "translation_stable_id.translation_id = "
-			 "translation.translation_id "
-			 "WHERE "
-			 "translation.transcript_id = %u",
-			 ensTranscriptGetIdentifier(transcript));
-    
+        return ajFalse;
+
+    dba = ensBaseadaptorGetDatabaseadaptor(tla->Adaptor);
+
+    statement = ajFmtStr(
+        "SELECT "
+        "translation.translation_id, "
+        "translation.transcript_id, "
+        "translation.seq_start, "
+        "translation.start_exon_id, "
+        "translation.seq_end, "
+        "translation.end_exon_id, "
+        "translation_stable_id.stable_id, "
+        "translation_stable_id.version, "
+        "translation_stable_id.created_date, "
+        "translation_stable_id.modified_date "
+        "FROM "
+        "(translation) "
+        "LEFT JOIN "
+        "translation_stable_id "
+        "ON "
+        "translation_stable_id.translation_id = "
+        "translation.translation_id "
+        "WHERE "
+        "translation.transcript_id = %u",
+        ensTranscriptGetIdentifier(transcript));
+
     sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
-    
+
     /* Check first, how many rows were returned. */
-    
+
     rows = ajSqlstatementGetSelectedrows(sqls);
-    
+
     if(rows == 0)
     {
-	ajDebug("ensTranslationadaptorFetchByTranscript could not get "
-		"an Ensembl Translation for Ensembl Transcript %u.\n",
-		ensTranscriptGetIdentifier(transcript));
-	
-	ensTranscriptTrace(transcript, 1);
+        ajDebug("ensTranslationadaptorFetchByTranscript could not get "
+                "an Ensembl Translation for Ensembl Transcript %u.\n",
+                ensTranscriptGetIdentifier(transcript));
+
+        ensTranscriptTrace(transcript, 1);
     }
     else if(rows > 1)
     {
-	ajDebug("ensTranslationadaptorFetchByTranscript got more than one "
-		"Ensembl Translation for Ensembl Transcript %u.\n",
-		ensTranscriptGetIdentifier(transcript));
-	
-	ensTranscriptTrace(transcript, 1);
-	
-	ajSqlstatementDel(&sqls);
-	
-	ajStrDel(&statement);
-	
-	return ajFalse;
+        ajDebug("ensTranslationadaptorFetchByTranscript got more than one "
+                "Ensembl Translation for Ensembl Transcript %u.\n",
+                ensTranscriptGetIdentifier(transcript));
+
+        ensTranscriptTrace(transcript, 1);
+
+        ajSqlstatementDel(&sqls);
+
+        ajStrDel(&statement);
+
+        return ajFalse;
     }
-    
+
     sqli = ajSqlrowiterNew(sqls);
-    
+
     while(!ajSqlrowiterDone(sqli))
     {
-	identifier = 0;
-	transcriptid = 0;
-	start = 0;
-	startexonid = 0;
-	end = 0;
-	endexonid = 0;
-	stableid = ajStrNew();
-	version = 0;
-	cdate = ajStrNew();
-	mdate = ajStrNew();
-	
-	sqlr = ajSqlrowiterGet(sqli);
-	
-	ajSqlcolumnToUint(sqlr, &identifier);
-	ajSqlcolumnToUint(sqlr, &transcriptid);
-	ajSqlcolumnToUint(sqlr, &start);
-	ajSqlcolumnToUint(sqlr, &startexonid);
-	ajSqlcolumnToUint(sqlr, &end);
-	ajSqlcolumnToUint(sqlr, &endexonid);
+        identifier = 0;
+        transcriptid = 0;
+        start = 0;
+        startexonid = 0;
+        end = 0;
+        endexonid = 0;
+        stableid = ajStrNew();
+        version = 0;
+        cdate = ajStrNew();
+        mdate = ajStrNew();
+
+        sqlr = ajSqlrowiterGet(sqli);
+
+        ajSqlcolumnToUint(sqlr, &identifier);
+        ajSqlcolumnToUint(sqlr, &transcriptid);
+        ajSqlcolumnToUint(sqlr, &start);
+        ajSqlcolumnToUint(sqlr, &startexonid);
+        ajSqlcolumnToUint(sqlr, &end);
+        ajSqlcolumnToUint(sqlr, &endexonid);
         ajSqlcolumnToStr(sqlr, &stableid);
-	ajSqlcolumnToUint(sqlr, &version);
+        ajSqlcolumnToUint(sqlr, &version);
         ajSqlcolumnToStr(sqlr, &cdate);
         ajSqlcolumnToStr(sqlr, &mdate);
-	
-	exons = ensTranscriptGetExons(transcript);
-	
-	iter = ajListIterNewread(exons);
-	
-	while(!ajListIterDone(iter))
-	{
-	    exon = (EnsPExon) ajListIterGet(iter);
-	    
-	    if(ensExonGetIdentifier(exon) == startexonid)
-		startexon = exon;
-	    
-	    if(ensExonGetIdentifier(exon) == endexonid)
-		endexon = exon;
-	}
-	
-	ajListIterDel(&iter);
-	
-	if(!startexon)
-	    ajFatal("translationAdaptorFetchAllBySQL could not get "
-		    "start Exon for transcript_id %u.",
-		    ensTranscriptGetIdentifier(transcript));
-	
-	if(!endexon)
-	    ajFatal("translationAdaptorFetchAllBySQL could not get "
-		    "end Exon for transcript_id %u.",
-		    ensTranscriptGetIdentifier(transcript));
-	
-	*Ptranslation = ensTranslationNew(adaptor,
-					  identifier,
-					  transcript,
-					  startexon,
-					  endexon,
-					  start,
-					  end,
-					  (AjPStr) NULL, /* sequence */
-					  stableid,
-					  version,
-					  cdate,
-					  mdate);
-	
-	ajStrDel(&stableid);
-	ajStrDel(&cdate);
-	ajStrDel(&mdate);	
+
+        exons = ensTranscriptGetExons(transcript);
+
+        iter = ajListIterNewread(exons);
+
+        while(!ajListIterDone(iter))
+        {
+            exon = (EnsPExon) ajListIterGet(iter);
+
+            if(ensExonGetIdentifier(exon) == startexonid)
+                startexon = exon;
+
+            if(ensExonGetIdentifier(exon) == endexonid)
+                endexon = exon;
+        }
+
+        ajListIterDel(&iter);
+
+        if(!startexon)
+            ajFatal("ensTranslationadaptorFetchByTranscript could not get "
+                    "start Exon for transcript_id %u.",
+                    ensTranscriptGetIdentifier(transcript));
+
+        if(!endexon)
+            ajFatal("ensTranslationadaptorFetchByTranscript could not get "
+                    "end Exon for transcript_id %u.",
+                    ensTranscriptGetIdentifier(transcript));
+
+        *Ptranslation = ensTranslationNew(tla,
+                                          identifier,
+                                          transcript,
+                                          startexon,
+                                          endexon,
+                                          start,
+                                          end,
+                                          (AjPStr) NULL,
+                                          stableid,
+                                          version,
+                                          cdate,
+                                          mdate);
+
+        ajStrDel(&stableid);
+        ajStrDel(&cdate);
+        ajStrDel(&mdate);	
     }
-    
+
     ajSqlrowiterDel(&sqli);
-    
+
     ajSqlstatementDel(&sqls);
-    
+
     ajStrDel(&statement);
-    
+
     return ajTrue;
 }
 
@@ -3488,62 +3439,62 @@ AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor adaptor,
 ** propagates the Gene into the Transcript.
 */
 
-AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor adaptor,
+AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor tla,
                                               EnsPTranscript transcript,
                                               EnsPTranslation *Ptranslation)
 {
     AjPList translations = NULL;
-    
+
     AjPStr constraint = NULL;
-    
+
     EnsPTranslation translation = NULL;
-    
-    if(!adaptor)
-	return ajFalse;
-    
+
+    if(!tla)
+        return ajFalse;
+
     if(!transcript)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Ptranslation)
-	return ajFalse;
-    
+        return ajFalse;
+
     constraint = ajFmtStr("translation.transcript_id = %u",
-			  ensTranscriptGetIdentifier(transcript));
-    
+                          ensTranscriptGetIdentifier(transcript));
+
     translations = ajListNew();
-    
-    ensBaseadaptorGenericFetch(ta->Adaptor,
-			       constraint,
-			       (EnsPAssemblymapper) NULL,
-			       (EnsPSlice) NULL,
-			       translations);
-    
+
+    ensBaseadaptorGenericFetch(tla->Adaptor,
+                               constraint,
+                               (EnsPAssemblymapper) NULL,
+                               (EnsPSlice) NULL,
+                               translations);
+
     if(ajListGetLength(translations) == 0)
     {
-	ajDebug("ensTranslationadaptorFetchByTranscript could not get "
-		"an Ensembl Translation for Ensembl Transcript %u.\n",
-		ensTranscriptGetIdentifier(transcript));
-	
-	ensTranscriptTrace(transcript, 1);
+        ajDebug("ensTranslationadaptorFetchByTranscript could not get "
+                "an Ensembl Translation for Ensembl Transcript %u.\n",
+                ensTranscriptGetIdentifier(transcript));
+
+        ensTranscriptTrace(transcript, 1);
     }
     else if(ajListGetLength(translations) == 1)
-	ajListPop(translations, (void **) Ptranslation);
+        ajListPop(translations, (void **) Ptranslation);
     else if(ajListGetLength(translations) > 1)
     {
-	ajDebug("ensTranslationadaptorFetchByTranscript got more than one "
-		"Ensembl Translation for Ensembl Transcript %u.\n",
-		ensTranscriptGetIdentifier(transcript));
-	
-	ensTranscriptTrace(transcript, 1);
+        ajDebug("ensTranslationadaptorFetchByTranscript got more than one "
+                "Ensembl Translation for Ensembl Transcript %u.\n",
+                ensTranscriptGetIdentifier(transcript));
+
+        ensTranscriptTrace(transcript, 1);
     }
-    
+
     while(ajListPop(translations, (void **) &translation))
-	ensTranslationDel(&translation);
-    
+        ensTranslationDel(&translation);
+
     ajListFree(&translations);
-    
+
     ajStrDel(&constraint);
-    
+
     return ajTrue;
 }
 
@@ -3559,7 +3510,7 @@ AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor adaptor,
 ** The caller is responsible for deleting the Ensembl Translations before
 ** deleting the AJAX List.
 **
-** @param [r] adaptor [EnsPTranslationadaptor] Ensembl Translation Adaptor
+** @param [r] tla [EnsPTranslationadaptor] Ensembl Translation Adaptor
 ** @param [r] externalname [AjPStr] Ensembl Database Entry name
 ** @param [r] externaldbname [AjPStr] Ensembl External Database name
 ** @param [u] translations [AjPList] AJAX List of Ensembl Translations
@@ -3569,58 +3520,58 @@ AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor adaptor,
 ******************************************************************************/
 
 AjBool ensTranslationadaptorFetchAllByExternalName(
-    EnsPTranslationadaptor adaptor,
+    EnsPTranslationadaptor tla,
     AjPStr externalname,
     AjPStr externaldbname,
     AjPList translations)
 {
     ajuint *Pidentifier = NULL;
-    
+
     AjPList idlist = NULL;
-    
+
     EnsPDatabaseadaptor dba = NULL;
-    
+
     EnsPDatabaseentryadaptor dbea = NULL;
-    
+
     EnsPTranslation translation = NULL;
-    
-    if(!adaptor)
-	return ajFalse;
-    
+
+    if(!tla)
+        return ajFalse;
+
     if(!externalname)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!externaldbname)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!translations)
-	return ajFalse;
-    
-    dba = ensTranslationadaptorGetDatabaseadaptor(adaptor);
-    
+        return ajFalse;
+
+    dba = ensTranslationadaptorGetDatabaseadaptor(tla);
+
     dbea = ensRegistryGetDatabaseentryadaptor(dba);
-    
+
     idlist = ajListNew();
-    
+
     ensDatabaseentryadaptorFetchAllTranslationIdentifiersByExternalName(
         dbea,
         externalname,
         externaldbname,
         idlist);
-    
+
     while(ajListPop(idlist, (void **) &Pidentifier))
     {
-	ensTranslationadaptorFetchByIdentifier(adaptor,
-					       *Pidentifier,
-					       &translation);
-	
-	ajListPushAppend(translations, (void *) translation);
-	
-	AJFREE(Pidentifier);
+        ensTranslationadaptorFetchByIdentifier(tla,
+                                               *Pidentifier,
+                                               &translation);
+
+        ajListPushAppend(translations, (void *) translation);
+
+        AJFREE(Pidentifier);
     }
-    
+
     ajListFree(&idlist);
-    
+
     return ajTrue;
 }
 
@@ -3632,8 +3583,7 @@ AjBool ensTranslationadaptorFetchAllByExternalName(
 ** Helper function for the generic function to fetch Ensembl Translations by an
 ** AJAX List of Ensembl Transcripts.
 **
-** @param [r] adaptor [const EnsPTranslationadaptor] Ensembl Translation
-**                                                   Adaptor
+** @param [r] tla [const EnsPTranslationadaptor] Ensembl Translation Adaptor
 ** @param [r] identifiers [AjPStr] Comma-separated list of SQL database-
 **                                 internal identifiers used in an IN
 **                                 comparison function in a SQL SELECT
@@ -3645,31 +3595,31 @@ AjBool ensTranslationadaptorFetchAllByExternalName(
 ******************************************************************************/
 
 static AjBool translationAdaptorFetchAllByIdentifiers(
-    const EnsPTranslationadaptor adaptor,
+    const EnsPTranslationadaptor tla,
     AjPStr identifiers,
     AjPList translations)
 {
     AjPStr constraint = NULL;
-    
-    if(!adaptor)
-	return ajFalse;
-    
+
+    if(!tla)
+        return ajFalse;
+
     if(!identifiers)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!translations)
-	return ajFalse;
-    
+        return ajFalse;
+
     constraint = ajFmtStr("translation.transcript_id IN (%S)", identifiers);
-    
-    ensBaseadaptorGenericFetch(adaptor->Adaptor,
-			       constraint,
-			       (EnsPAssemblymapper) NULL,
-			       (EnsPSlice) NULL,
-			       translations);
-    
+
+    ensBaseadaptorGenericFetch(tla->Adaptor,
+                               constraint,
+                               (EnsPAssemblymapper) NULL,
+                               (EnsPSlice) NULL,
+                               translations);
+
     ajStrDel(&constraint);
-    
+
     return ajTrue;
 }
 
@@ -3682,7 +3632,7 @@ static AjBool translationAdaptorFetchAllByIdentifiers(
 ** The caller is responsible for deleting the Ensembl Translations before
 ** deleting the AJAX List.
 **
-** @param [r] adaptor [EnsPTranslationadaptor] Ensembl Translation Adaptor
+** @param [r] tla [EnsPTranslationadaptor] Ensembl Translation Adaptor
 ** @param [r] transcripts [AjPList] AJAX List of Ensembl Transcripts
 ** @param [u] translations [AjPList] AJAX List of Ensembl Translations
 **
@@ -3693,75 +3643,166 @@ static AjBool translationAdaptorFetchAllByIdentifiers(
 ******************************************************************************/
 
 AjBool ensTranslationadaptorFetchAllByTranscriptList(
-    EnsPTranslationadaptor adaptor,
+    EnsPTranslationadaptor tla,
     AjPList transcripts,
     AjPList translations)
 {
     register ajuint i = 0;
-    
+
     AjIList iter = NULL;
-    
+
     AjPStr identifiers = NULL;
-    
+
     EnsPTranscript transcript = NULL;
-    
-    if(!adaptor)
-	return ajFalse;
-    
+
+    if(!tla)
+        return ajFalse;
+
     if(!transcripts)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!translations)
-	return ajFalse;
-    
+        return ajFalse;
+
     iter = ajListIterNew(transcripts);
-    
+
     identifiers = ajStrNew();
-    
+
     while(!ajListIterDone(iter))
     {
-	transcript = (EnsPTranscript) ajListIterGet(iter);
-	
-	if(!transcript)
-	    continue;
-	
-	ajFmtPrintAppS(&identifiers,
-		       "%u, ",
-		       ensTranscriptGetIdentifier(transcript));
-	
-	i++;
-	
-	/* Run the statement if the maximum chunk size is exceed. */
-	
-	if(i >= 200)
-	{
-	    /* Remove the last comma and space. */
-	    
-	    ajStrCutEnd(&identifiers, 2);
-	    
-	    translationAdaptorFetchAllByIdentifiers(adaptor,
-						    identifiers,
-						    translations);
-	    
-	    ajStrAssignClear(&identifiers);
-	    
-	    i = 0;
-	}
+        transcript = (EnsPTranscript) ajListIterGet(iter);
+
+        if(!transcript)
+            continue;
+
+        ajFmtPrintAppS(&identifiers,
+                       "%u, ",
+                       ensTranscriptGetIdentifier(transcript));
+
+        i++;
+
+        /* Run the statement if the maximum chunk size is exceed. */
+
+        if(i >= 200)
+        {
+            /* Remove the last comma and space. */
+
+            ajStrCutEnd(&identifiers, 2);
+
+            translationAdaptorFetchAllByIdentifiers(tla,
+                                                    identifiers,
+                                                    translations);
+
+            ajStrAssignClear(&identifiers);
+
+            i = 0;
+        }
     }
-    
+
     ajListIterDel(&iter);
-    
+
     /* Run the final statement. */
-    
+
     /* Remove the last comma and space. */
-    
+
     ajStrCutEnd(&identifiers, 2);
-    
-    translationAdaptorFetchAllByIdentifiers(adaptor,
+
+    translationAdaptorFetchAllByIdentifiers(tla,
                                             identifiers,
                                             translations);
-    
+
     ajStrDel(&identifiers);
-    
+
     return ajTrue;
+}
+
+
+
+
+/* @func ensTranslationadaptorFetchAllIdentifiers *****************************
+**
+** Fetch all SQL database-internal identifiers of Ensembl Translations.
+**
+** The caller is responsible for deleting the AJAX unsigned integers before
+** deleting the AJAX List.
+**
+** @cc Bio::EnsEMBL::DBSQL::TranslationAdaptor::list_dbIDs
+** @param [u] tla [const EnsPTranslationadaptor] Ensembl Translation Adaptor
+** @param [u] identifiers [AjPList] AJAX List of AJAX unsigned integers
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensTranslationadaptorFetchAllIdentifiers(
+    const EnsPTranslationadaptor tla,
+    AjPList identifiers)
+{
+    AjBool value = AJFALSE;
+
+    AjPStr table = NULL;
+
+    if(!tla)
+        return ajFalse;
+
+    if(!identifiers)
+        return ajFalse;
+
+    table = ajStrNewC("translation");
+
+    value = ensBaseadaptorFetchAllIdentifiers(tla->Adaptor,
+                                              table,
+                                              (AjPStr) NULL,
+                                              identifiers);
+
+    ajStrDel(&table);
+
+    return value;
+}
+
+
+
+
+/* @func ensTranslationadaptorFetchAllStableIdentifiers ***********************
+**
+** Fetch all stable identifiers of Ensembl Translations.
+**
+** The caller is responsible for deleting the AJAX Strings before
+** deleting the AJAX List.
+**
+** @cc Bio::EnsEMBL::DBSQL::TranslationAdaptor::list_stable_ids
+** @param [u] tla [EnsPTranslationadaptor] Ensembl Translation Adaptor
+** @param [u] identifiers [AjPList] AJAX List of AJAX Strings
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensTranslationadaptorFetchAllStableIdentifiers(
+    const EnsPTranslationadaptor tla,
+    AjPList identifiers)
+{
+    AjBool value = AJFALSE;
+
+    AjPStr table   = NULL;
+    AjPStr primary = NULL;
+
+    if(!tla)
+        return ajFalse;
+
+    if(!identifiers)
+        return ajFalse;
+
+    table   = ajStrNewC("translation_stable_id");
+    primary = ajStrNewC("stable_id");
+
+    value = ensBaseadaptorFetchAllStrings(tla->Adaptor,
+                                          table,
+                                          primary,
+                                          identifiers);
+
+    ajStrDel(&table);
+    ajStrDel(&primary);
+
+    return value;
 }
