@@ -362,12 +362,12 @@ typedef struct EnsSToplevelassemblymapper {
 ** @attr Use [ajuint] Use counter.
 ** @attr Padding [ajuint] Padding to alignment boundary.
 ** @@
-** This object subsumes the following Perl objects all returned by the
-** Bio::EnsEMBL::DBSQL::Assemblymapperadaptor
+** NOTE: This object subsumes the following Perl objects all returned by the
+** Bio::EnsEMBL::DBSQL::AssemblyMapperAdaptor
 **
-** Bio::EnsEMBL::Assemblymapper (here Ensembl Generic Assembly Mapper)
-** Bio::EnsEMBL::Chainedassemblymapper
-** Bio::EnsEMBL::Toplevelassemblymapper
+** Bio::EnsEMBL::AssemblyMapper (here Ensembl Generic Assembly Mapper)
+** Bio::EnsEMBL::ChainedAssemblyMapper
+** Bio::EnsEMBL::TopLevelAssemblyMapper
 **
 ** The objects can be distinguished by their Type element.
 ******************************************************************************/
@@ -496,6 +496,7 @@ typedef struct EnsSAnalysisadaptor {
 ** @attr Identifier [ajuint] SQL database-internal identifier
 ** @attr Adaptor [EnsPAnalysisadaptor] Ensembl Analysis Adaptor
 ** @cc Bio::EnsEMBL::Analysis
+** @cc 'analysis' SQL table
 ** @attr CreationDate [AjPStr] Creation date
 ** @attr Name [AjPStr] Name
 ** @attr DatabaseName [AjPStr] Database name
@@ -623,7 +624,8 @@ enum EnsEExternaldatabaseType
 ** @attr Identifier [ajuint] Internal SQL database identifier (primary key).
 ** @attr Adaptor [EnsPExternaldatabaseadaptor] Ensembl External
 **                                             Database Adaptor
-** @cc 'external_db' table
+** @cc Bio::EnsEMBL::???
+** @cc 'external_db' SQL table
 ** @attr Name [AjPStr] Database name
 ** @attr Release [AjPStr] Database release
 ** @attr DisplayName [AjPStr] Database display name
@@ -696,7 +698,7 @@ enum EnsEExternalreferenceInfoType
 ** @cc Bio::EnsEMBL::Storable
 ** @attr Identifier [ajuint] Internal SQL database identifier (primary key)
 ** @attr Analysis [EnsPAnalysis] Ensembl Analysis
-** @cc 'xref' table
+** @cc 'xref' SQL table
 ** @attr Externaldatabase [EnsPExternaldatabase] Ensembl External Database
 ** @attr PrimaryIdentifier [AjPStr] Primary identifier
 ** @attr DisplayIdentifier [AjPStr] Display identifier
@@ -738,7 +740,7 @@ typedef struct EnsSExternalreference {
 ** @alias EnsOIdentityreference
 **
 ** @cc Bio::EnsEMBL::IdentityXref
-** @cc 'identity_xref' table
+** @cc 'identity_xref' SQL table
 ** @attr Cigar [AjPStr] Cigar line (See exonerate(1))
 ** @attr QueryStart [ajint] Query start
 ** @attr QueryEnd [ajint] Query end
@@ -804,11 +806,11 @@ typedef struct EnsSDatabaseentryadaptor {
 ** @attr Identifier [ajuint] Internal SQL database identifier (primary key)
 ** @attr Adaptor [EnsPDatabaseentryadaptor] Ensembl Database Entry Adaptor
 ** @cc Bio::EnsEMBL::DbEntry
-** @cc 'xref' table
+** @cc 'xref' SQL table
 ** @attr Externalreference [EnsPExternalreference] Ensembl External Reference
 ** @cc Bio::EnsEMBL::IdentityXref
 ** @attr Identityreference [EnsPIdentityreference] Ensembl Identity Reference
-** @cc 'external_synonym' table
+** @cc 'external_synonym' SQL table
 ** @attr Synonyms [AjPList] Synonyms
 ** @attr GoLinkageTypes [AjPList] Gene Ontology linkage types
 ** @@
@@ -836,7 +838,7 @@ typedef struct EnsSDatabaseentry {
 ** @alias EnsSGeneontologylinkage
 ** @alias EnsOGeneontologylinkage
 **
-** @cc 'go_xref' table
+** @cc 'go_xref' SQL table
 ** @attr LinkageType [AjPStr] Likage type (Gene Ontology Evidence Code)
 ** @attr Source [EnsPDatabaseentry] Source Ensembl Database Entry
 ** @attr Use [ajuint] Use counter
@@ -933,7 +935,7 @@ typedef struct EnsSFeatureadaptor {
 ** @alias EnsSExonadaptor
 ** @alias EnsOExonadaptor
 **
-** @cc Bio::EnsEMBL::DBSQL::BaseFeatureadaptor
+** @cc Bio::EnsEMBL::DBSQL::BaseFeatureAdaptor
 ** @attr Adaptor [EnsPFeatureadaptor] Ensembl Feature Adaptor
 ** @@
 ******************************************************************************/
@@ -972,7 +974,7 @@ typedef struct EnsSExonadaptor {
 ** @attr Padding [ajuint] Padding to alignment boundary
 ** @attr CreationDate [AjPStr] Creation date
 ** @attr ModificationDate [AjPStr] Modification date
-** @cc Additional elements
+** @cc Additional elements not in SQL tables
 ** @attr SequenceCache [AjPStr] Sequence Cache
 ** @attr Supportingfeatures [AjPList] AJAX List of Ensembl Base Align Features
 ** @attr Coordinates [AjPTable] Exon Coordinates indexed by
@@ -1041,7 +1043,7 @@ typedef struct EnsSIntron {
 ** @alias EnsSTranscriptadaptor
 ** @alias EnsOTranscriptadaptor
 **
-** @cc Bio::EnsEMBL::DBSQL::BaseFeatureadaptor
+** @cc Bio::EnsEMBL::DBSQL::BaseFeatureAdaptor
 ** @attr Adaptor [EnsPFeatureadaptor] Ensembl Feature Adaptor
 ** @@
 ******************************************************************************/
@@ -1099,7 +1101,7 @@ enum EnsETranscriptStatus
 ** @attr CreationDate [AjPStr] Creation date
 ** @attr ModificationDate [AjPStr] Modification date
 ** @attr Version [ajuint] Version
-** @cc Additional elements
+** @cc Additional elements not in SQL tables
 ** @attr GeneIdentifier [ajuint] Ensembl Gene identifier
 ** @attr Attributes [AjPList] AJAX List of Ensembl Attributes
 ** @attr DatabaseEntries [AjPList] AJAX List of Ensembl Database Entries
@@ -1110,7 +1112,7 @@ enum EnsETranscriptStatus
 ** @attr SliceCodingEnd [ajuint] Coding end in Slice coordinates
 ** @attr TranscriptCodingStart [ajuint] Coding start in Transcript coordinates
 ** @attr TranscriptCodingEnd [ajuint] Coding end in Transcript coordinates
-** @attr EditsEnabled [AjBool] Sequence Edits are enabled
+** @attr EnableSequenceEdits [AjBool] Enable Ensembl Sequence Edits
 ** @attr StartPhase [ajint] Start phase
 ** @cc Bio::EnsEMBL::TranscriptMapper
 ** @attr ExonCoordMapper [EnsPMapper] Ensembl Mapper
@@ -1143,7 +1145,7 @@ typedef struct EnsSTranscript {
     ajuint SliceCodingEnd;
     ajuint TranscriptCodingStart;
     ajuint TranscriptCodingEnd;
-    AjBool EditsEnabled;
+    AjBool EnableSequenceEdits;
     ajint StartPhase;
     EnsPMapper ExonCoordMapper;
 } EnsOTranscript;
@@ -1160,7 +1162,7 @@ typedef struct EnsSTranscript {
 ** @alias EnsSTranslationadaptor
 ** @alias EnsOTranslationadaptor
 **
-** @cc Bio::EnsEMBL::DBSQL::Baseadaptor
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor
 ** @attr Adaptor [EnsPBaseadaptor] Ensembl Base Adaptor
 ** @@
 ******************************************************************************/
@@ -1186,7 +1188,7 @@ typedef struct EnsSTranslationadaptor {
 ** @attr Identifier [ajuint] Internal SQL database identifier (primary key)
 ** @attr Adaptor [EnsPTranslationadaptor] Ensembl Translation Adaptor
 ** @cc Bio::EnsEMBL::Translation
-** @cc SQL table 'translation' elements
+** @cc 'translation' SQL table
 ** @attr Transcript [EnsPTranscript] Ensembl Transcript
 ** @attr StartExon [EnsPExon] Ensembl Exon in which the Translation
 **                            start coordinate is annotated
@@ -1194,13 +1196,13 @@ typedef struct EnsSTranslationadaptor {
 **                          end coordinate is annotated
 ** @attr Start [ajuint] Start coordinate relative to start Ensembl Exon
 ** @attr End [ajuint] End coordinate relative to end Ensembl Exon
-** @cc  SQL table 'translation_stable_id' elements
+** @cc 'translation_stable_id' SQL table
 ** @attr StableIdentifier [AjPStr] Stable identifier
 ** @attr CreationDate [AjPStr] Creation date
 ** @attr ModificationDate [AjPStr] Modification date
 ** @attr Version [ajuint] Version
 ** @attr Padding [ajuint] Padding to alignment boundary
-** @cc Additional elements
+** @cc Additional elements not in SQL tables
 ** @attr Attributes [AjPList] AJAX List of Ensembl Attributes
 ** @attr DatabaseEntries [AjPList] AJAX List of Ensembl Database Entries
 ** @attr Proteinfeatures [AjPList] AJAX List of Ensembl Protein Features
@@ -1250,7 +1252,7 @@ typedef struct EnsSTranslation {
 ** @alias EnsSGeneadaptor
 ** @alias EnsOGeneadaptor
 **
-** @cc Bio::EnsEMBL::DBSQL::BaseFeatureadaptor
+** @cc Bio::EnsEMBL::DBSQL::BaseFeatureAdaptor
 ** @attr Adaptor [EnsPFeatureadaptor] Ensembl Feature Adaptor
 ** @@
 ******************************************************************************/
@@ -1305,13 +1307,15 @@ enum EnsEGeneStatus
 ** @attr BioType [AjPStr] Biological type
 ** @attr Status [AjEnum] Status
 ** @attr Current [AjBool] Current attribute
+** @attr CanonicalAnnotation [AjPStr] Canonical annotation
+** @attr CanonicalTranscriptIdentifier [ajuint] Canonical Ensembl Transcript
+**                                              identifier
+** @attr Version [ajuint] Version
 ** @cc 'gene_stable_id' SQL table
 ** @attr StableIdentifier [AjPStr] Stable identifier
 ** @attr CreationDate [AjPStr] Creation date
 ** @attr ModificationDate [AjPStr] Modification date
-** @attr Version [ajuint] Version
-** @attr Padding [ajuint] Padding to alignment boundary
-** @cc
+** @cc Additional elements not in SQL tables
 ** @attr Attributes [AjPList] AJAX List of Ensembl Attributes
 ** @attr DatabaseEntries [AjPList] AJAX List of Ensembl Database Entries
 ** @attr Transcripts [AjPList] AJAX List of Ensembl Transcripts
@@ -1329,11 +1333,12 @@ typedef struct EnsSGene {
     AjPStr BioType;
     AjEnum Status;
     AjBool Current;
+    AjPStr CanonicalAnnotation;
+    ajuint CanonicalTranscriptIdentifier;
+    ajuint Version;
     AjPStr StableIdentifier;
     AjPStr CreationDate;
     AjPStr ModificationDate;
-    ajuint Version;
-    ajuint Padding;
     AjPList Attributes;
     AjPList DatabaseEntries;
     AjPList Transcripts;
@@ -1344,7 +1349,7 @@ typedef struct EnsSGene {
 
 
 
-#endif
+#endif /* ensdata_h */
 
 #ifdef __cplusplus
 }
