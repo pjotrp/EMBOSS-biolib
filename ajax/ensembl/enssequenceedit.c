@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -59,7 +59,7 @@
 **
 ** Functions for manipulating Ensembl Sequence Edit objects
 **
-** @cc Bio::EnsEMBL::SeqEdit CVS Revision: 1.3
+** @cc Bio::EnsEMBL::SeqEdit CVS Revision: 1.4
 **
 ** @nam2rule Sequence Edit
 **
@@ -118,51 +118,51 @@ EnsPSequenceEdit ensSequenceEditNew(AjPStr code,
                                     ajuint end)
 {
     AjPStr value = NULL;
-    
+
     EnsPSequenceEdit se = NULL;
-    
+
     if(!altseq)
     {
-	ajDebug("ensSequenceEditNew requires an alternate sequence.\n");
-	
-	return NULL;
+        ajDebug("ensSequenceEditNew requires an alternate sequence.\n");
+
+        return NULL;
     }
-    
+
     if(start > (end + 1))
     {
-	ajDebug("ensSequenceEditNew start %d must be less than or equal to "
-		"end %d + 1.\n", start, end);
-	
-	return NULL;
+        ajDebug("ensSequenceEditNew start %d must be less than or equal to "
+                "end %d + 1.\n", start, end);
+
+        return NULL;
     }
-    
+
     if(start < 1)
     {
-	ajDebug("ensSequenceEditNew start %d must be greater than or "
-		"equal to 1.\n", start);
-	
-	return NULL;
+        ajDebug("ensSequenceEditNew start %d must be greater than or "
+                "equal to 1.\n", start);
+
+        return NULL;
     }
-    
+
     value = ajFmtStr("%u %u %S", start, end, altseq);
-    
+
     AJNEW0(se);
-    
+
     se->Attribute = ensAttributeNew(code, name, description, value);
-    
+
     if(altseq)
-	se->AltSeq = ajStrNewRef(altseq);
+        se->AltSeq = ajStrNewRef(altseq);
     else
-	se->AltSeq = ajStrNew();
-    
+        se->AltSeq = ajStrNew();
+
     se->Start = start;
-    
+
     se->End = end;
-    
+
     se->Use = 1;
-    
+
     ajStrDel(&value);
-    
+
     return se;
 }
 
@@ -184,62 +184,62 @@ EnsPSequenceEdit ensSequenceEditNewA(EnsPAttribute attribute)
 {
     ajint start = 0;
     ajint end   = 0;
-    
+
     AjPStr altseq = NULL;
-    
+
     EnsPSequenceEdit se = NULL;
-    
+
     if(!attribute)
-	return NULL;
-    
+        return NULL;
+
     altseq = ajStrNew();
-    
+
     ajFmtScanS(attribute->Value, "%d %d %S", &start, &end, &altseq);
-    
+
     if(start > (end + 1))
     {
-	ajDebug("ensSequenceEditNewA start %d must be less than or equal to "
-		"end %d + 1 in Ensembl Attribute value element '%S'.\n",
-		start, end, attribute->Value);
-	
-	return NULL;
+        ajDebug("ensSequenceEditNewA start %d must be less than or equal to "
+                "end %d + 1 in Ensembl Attribute value element '%S'.\n",
+                start, end, attribute->Value);
+
+        return NULL;
     }
-    
+
     if(start < 1)
     {
-	ajDebug("ensSequenceEditNewA start %d in Ensembl Attribute value "
-		"element '%S' must be greater than or equal to 1.\n",
-		start, attribute->Value);
-	
-	return NULL;
+        ajDebug("ensSequenceEditNewA start %d in Ensembl Attribute value "
+                "element '%S' must be greater than or equal to 1.\n",
+                start, attribute->Value);
+
+        return NULL;
     }
-    
+
     if(end < 0)
     {
-	ajDebug("ensSequenceEditNewA end %d in Ensembl Attribute value "
-		"element '%S' must be greater than or equal to 0.\n",
-		end, attribute->Value);
-	
-	return NULL;
+        ajDebug("ensSequenceEditNewA end %d in Ensembl Attribute value "
+                "element '%S' must be greater than or equal to 0.\n",
+                end, attribute->Value);
+
+        return NULL;
     }
-    
+
     AJNEW0(se);
-    
+
     se->Attribute = ensAttributeNewRef(attribute);
-    
+
     if(altseq)
-	se->AltSeq = ajStrNewRef(altseq);
+        se->AltSeq = ajStrNewRef(altseq);
     else
-	se->AltSeq = ajStrNew();
-    
+        se->AltSeq = ajStrNew();
+
     se->Start = start;
-    
+
     se->End = end;
-    
+
     se->Use = 1;
-    
+
     ajStrDel(&altseq);
-    
+
     return se;
 }
 
@@ -279,32 +279,32 @@ EnsPSequenceEdit ensSequenceEditNewA(EnsPAttribute attribute)
 void ensSequenceEditDel(EnsPSequenceEdit *Pse)
 {
     EnsPSequenceEdit pthis = NULL;
-    
+
     if(!Pse)
-	return;
-    
+        return;
+
     if(!*Pse)
-	return;
+        return;
 
     pthis = *Pse;
-    
+
     pthis->Use--;
-    
+
     if(pthis->Use)
     {
-	*Pse = NULL;
-	
-	return;
+        *Pse = NULL;
+
+        return;
     }
-    
+
     ensAttributeDel(&pthis->Attribute);
-    
+
     ajStrDel(&pthis->AltSeq);
-    
+
     AJFREE(pthis);
 
     *Pse = NULL;
-    
+
     return;
 }
 
@@ -352,7 +352,7 @@ EnsPAttribute ensSequenceEditGetAttribute(const EnsPSequenceEdit se)
 {
     if(!se)
         return NULL;
-    
+
     return se->Attribute;
 }
 
@@ -362,6 +362,10 @@ EnsPAttribute ensSequenceEditGetAttribute(const EnsPSequenceEdit se)
 /* @func ensSequenceEditGetAltSeq *********************************************
 **
 ** Get the alternative sequence element of an Ensembl Sequence Edit.
+**
+** The sequence may either be a string of amino acids or nucleotides depending
+** on the context in which this Sequence Edit is used.
+** In the case of a deletion the replacement sequence is an empty string.
 **
 ** @cc Bio::EnsEMBL:SeqEdit::alt_seq
 ** @param [r] se [const EnsPSequenceEdit] Ensembl Sequence Edit
@@ -374,7 +378,7 @@ AjPStr ensSequenceEditGetAltSeq(const EnsPSequenceEdit se)
 {
     if(!se)
         return NULL;
-    
+
     return se->AltSeq;
 }
 
@@ -384,6 +388,11 @@ AjPStr ensSequenceEditGetAltSeq(const EnsPSequenceEdit se)
 /* @func ensSequenceEditGetStart **********************************************
 **
 ** Get the start coordinate element of an Ensembl Sequence Edit.
+**
+** Coordinates are inclusive and one-based, which means that inserts are
+** unusually represented by a start one base pair higher than the end. Hence,
+** start = 1, end = 1 is a replacement of the first base, but 
+** start = 1, end = 0 is an insert BEFORE the first base.
 **
 ** @cc Bio::EnsEMBL:SeqEdit::start
 ** @param [r] se [const EnsPSequenceEdit] Ensembl Sequence Edit
@@ -396,7 +405,7 @@ ajuint ensSequenceEditGetStart(const EnsPSequenceEdit se)
 {
     if(!se)
         return 0;
-    
+
     return se->Start;
 }
 
@@ -406,6 +415,11 @@ ajuint ensSequenceEditGetStart(const EnsPSequenceEdit se)
 /* @func ensSequenceEditGetEnd ************************************************
 **
 ** Get the end coordinate element of an Ensembl Sequence Edit.
+**
+** Coordinates are inclusive and one-based, which means that inserts are
+** unusually represented by a start one base pair higher than the end. Hence,
+** start = 1, end = 1 is a replacement of the first base, but 
+** start = 1, end = 0 is an insert BEFORE the first base.
 **
 ** @cc Bio::EnsEMBL:SeqEdit::end
 ** @param [r] se [const EnsPSequenceEdit] Ensembl Sequence Edit
@@ -418,7 +432,7 @@ ajuint ensSequenceEditGetEnd(const EnsPSequenceEdit se)
 {
     if(!se)
         return 0;
-    
+
     return se->End;
 }
 
@@ -432,16 +446,16 @@ ajuint ensSequenceEditGetEnd(const EnsPSequenceEdit se)
 ** @cc Bio::EnsEMBL:SeqEdit::length_diff
 ** @param [r] se [EnsPSequenceEdit] Ensembl Sequence Edit
 **
-** @return [ajuint] Length difference or 0
+** @return [ajint] Length difference or 0
 ** @@
 ******************************************************************************/
 
-ajuint ensSequenceEditGetLengthDifference(EnsPSequenceEdit se)
+ajint ensSequenceEditGetLengthDifference(EnsPSequenceEdit se)
 {
     if(!se)
-	return 0;
-    
-    return (ajStrGetLen(se->AltSeq) - (se->End - se->Start + 1));
+        return 0;
+
+    return ajStrGetLen(se->AltSeq) - (se->End - se->Start + 1);
 }
 
 
@@ -479,31 +493,31 @@ ajuint ensSequenceEditGetLengthDifference(EnsPSequenceEdit se)
 AjBool ensSequenceEditTrace(const EnsPSequenceEdit se, ajuint level)
 {
     AjPStr indent = NULL;
-    
+
     if(!se)
-	return ajFalse;
-    
+        return ajFalse;
+
     indent = ajStrNew();
-    
+
     ajStrAppendCountK(&indent, ' ', level * 2);
-    
+
     ajDebug("%SensSequenceEditTrace %p\n"
-	    "%S  Attribute %p\n"
-	    "%S  AltSeq '%S'\n"
-	    "%S  Start %u\n"
-	    "%S  End %u\n"
-	    "%S  Use %u\n",
-	    indent, se,
-	    indent, se->Attribute,
-	    indent, se->AltSeq,
-	    indent, se->Start,
-	    indent, se->End,
-	    indent, se->Use);
-    
+            "%S  Attribute %p\n"
+            "%S  AltSeq '%S'\n"
+            "%S  Start %u\n"
+            "%S  End %u\n"
+            "%S  Use %u\n",
+            indent, se,
+            indent, se->Attribute,
+            indent, se->AltSeq,
+            indent, se->Start,
+            indent, se->End,
+            indent, se->Use);
+
     ensAttributeTrace(se->Attribute, level + 1);
-    
+
     ajStrDel(&indent);
-    
+
     return ajTrue;
 }
 
@@ -525,28 +539,28 @@ AjBool ensSequenceEditTrace(const EnsPSequenceEdit se, ajuint level)
 AjBool ensSequenceEditApplyEdit(EnsPSequenceEdit se, AjPStr* Psequence)
 {
     if(!se)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Psequence)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!*Psequence)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(se->Start > ajStrGetLen(*Psequence))
     {
-	ajDebug("ensSequenceEditApplyEdit start position %u beyond "
-		"sequence length %u.\n",
-		se->Start,
-		ajStrGetLen(*Psequence));
-	
-	return ajFalse;
+        ajDebug("ensSequenceEditApplyEdit start position %u beyond "
+                "sequence length %u.\n",
+                se->Start,
+                ajStrGetLen(*Psequence));
+
+        return ajFalse;
     }
-    
+
     ajStrCutRange(Psequence, se->Start - 1, se->End - 1);
-    
+
     ajStrInsertS(Psequence, se->Start - 1, se->AltSeq);
-    
+
     return ajTrue;
 }
 
@@ -571,49 +585,48 @@ AjBool ensSequenceEditApplyEdit(EnsPSequenceEdit se, AjPStr* Psequence)
 int ensSequenceEditCompareStartAscending(const void* P1, const void* P2)
 {
     int value = 0;
-    
+
     const EnsPSequenceEdit se1 = NULL;
     const EnsPSequenceEdit se2 = NULL;
-    
+
     se1 = *(EnsPSequenceEdit const *) P1;
-    
     se2 = *(EnsPSequenceEdit const *) P2;
-    
+
+    if(ajDebugTest("ensSequenceEditCompareStartAscending"))
+    {
+        ajDebug("ensSequenceEditCompareStartAscending\n"
+                "  se1 %p\n"
+                "  se2 %p\n",
+                se1,
+                se2);
+
+        ensSequenceEditTrace(se1, 1);
+        ensSequenceEditTrace(se2, 1);
+    }
+
     if(!se1)
     {
-	ajDebug("ensSequenceEditCompareStartAscending got empty se1.\n");
-	
-	return 0;
+        ajDebug("ensSequenceEditCompareStartAscending got empty se1.\n");
+
+        return 0;
     }
-    
+
     if(!se2)
     {
-	ajDebug("ensSequenceEditCompareStartAscending got empty se2.\n");
-	
-	return 0;
+        ajDebug("ensSequenceEditCompareStartAscending got empty se2.\n");
+
+        return 0;
     }
-    
-    /*
-     ajDebug("ensSequenceEditCompareStartAscending\n"
-	     "  se1 %p\n"
-	     "  se2 %p\n",
-	     se1,
-	     se2);
-     
-     ensSequenceEditTrace(se1, 1);
-     
-     ensSequenceEditTrace(se2, 1);
-     */
-    
+
     if(se1->Start < se2->Start)
         value = -1;
-    
+
     if(se1->Start == se2->Start)
         value = 0;
-    
+
     if(se1->Start > se2->Start)
         value = +1;
-    
+
     return value;
 }
 
@@ -638,48 +651,47 @@ int ensSequenceEditCompareStartAscending(const void* P1, const void* P2)
 int ensSequenceEditCompareStartDescending(const void* P1, const void* P2)
 {
     int value = 0;
-    
+
     const EnsPSequenceEdit se1 = NULL;
     const EnsPSequenceEdit se2 = NULL;
-    
+
     se1 = *(EnsPSequenceEdit const *) P1;
-    
     se2 = *(EnsPSequenceEdit const *) P2;
-    
+
+    if(ajDebugTest("ensSequenceEditCompareStartDescending"))
+    {
+        ajDebug("ensSequenceEditCompareStartDescending\n"
+                "  se1 %p\n"
+                "  se2 %p\n",
+                se1,
+                se2);
+
+        ensSequenceEditTrace(se1, 1);
+        ensSequenceEditTrace(se2, 1);
+    }
+
     if(!se1)
     {
-	ajDebug("ensSequenceEditCompareStartDescending got empty se1.\n");
-	
-	return 0;
+        ajDebug("ensSequenceEditCompareStartDescending got empty se1.\n");
+
+        return 0;
     }
-    
+
     if(!se2)
     {
-	ajDebug("ensSequenceEditCompareStartDescending got empty se2.\n");
-	
-	return 0;
+        ajDebug("ensSequenceEditCompareStartDescending got empty se2.\n");
+
+        return 0;
     }
-    
-    /*
-     ajDebug("ensSequenceEditCompareStartDescending\n"
-	     "  se1 %p\n"
-	     "  se2 %p\n",
-	     se1,
-	     se2);
-     
-     ensSequenceEditTrace(se1, 1);
-     
-     ensSequenceEditTrace(se2, 1);
-     */
-    
+
     if(se1->Start < se2->Start)
         value = +1;
-    
+
     if(se1->Start == se2->Start)
         value = 0;
-    
+
     if(se1->Start > se2->Start)
         value = -1;
-    
+
     return value;
 }
