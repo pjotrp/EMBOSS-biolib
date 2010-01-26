@@ -17,7 +17,7 @@ extern "C"
 
 /* Ensembl Transcript */
 
-EnsPTranscript ensTranscriptNew(EnsPTranscriptadaptor adaptor,
+EnsPTranscript ensTranscriptNew(EnsPTranscriptadaptor tca,
                                 ajuint identifier,
                                 EnsPFeature feature,
                                 EnsPDatabaseentry displaydbe,
@@ -82,17 +82,52 @@ ajuint ensTranscriptGetSliceCodingStart(EnsPTranscript transcript);
 
 ajuint ensTranscriptGetSliceCodingEnd(EnsPTranscript transcript);
 
+AjBool ensTranscriptGetEnableSequenceEdits(EnsPTranscript transcript);
+
 ajuint ensTranscriptGetLength(EnsPTranscript transcript);
 
 ajuint ensTranscriptGetMemSize(const EnsPTranscript transcript);
 
 AjBool ensTranscriptSetAdaptor(EnsPTranscript transcript,
-                               EnsPTranscriptadaptor ta);
+                               EnsPTranscriptadaptor tca);
 
 AjBool ensTranscriptSetIdentifier(EnsPTranscript transcript,
                                   ajuint identifier);
 
 AjBool ensTranscriptSetFeature(EnsPTranscript transcript, EnsPFeature feature);
+
+AjBool ensTranscriptSetDisplayReference(EnsPTranscript transcript,
+                                        EnsPDatabaseentry displaydbe);
+
+AjBool ensTranscriptSetDescription(EnsPTranscript transcript,
+                                   AjPStr description);
+
+AjBool ensTranscriptSetBioType(EnsPTranscript transcript,
+                               AjPStr biotype);
+
+AjBool ensTranscriptSetStatus(EnsPTranscript transcript,
+                              AjEnum status);
+
+AjBool ensTranscriptSetGeneIdentifier(EnsPTranscript transcript,
+                                      ajuint geneid);
+
+AjBool ensTranscriptSetCurrent(EnsPTranscript transcript,
+                               AjBool current);
+
+AjBool ensTranscriptSetStableIdentifier(EnsPTranscript transcript,
+                                        AjPStr stableid);
+
+AjBool ensTranscriptSetVersion(EnsPTranscript transcript,
+                               ajuint version);
+
+AjBool ensTranscriptSetCreationDate(EnsPTranscript transcript,
+                                    AjPStr cdate);
+
+AjBool ensTranscriptSetModificationDate(EnsPTranscript transcript,
+                                        AjPStr mdate);
+
+AjBool ensTranscriptSetEnableSequenceEdits(EnsPTranscript transcript,
+                                           AjBool enablese);
 
 AjBool ensTranscriptAddAttribute(EnsPTranscript transcript,
                                  EnsPAttribute attribute);
@@ -125,6 +160,9 @@ AjBool ensTranscriptFetchAllAttributes(EnsPTranscript transcript,
                                        const AjPStr code,
                                        AjPList attributes);
 
+AjBool ensTranscriptFetchAllConstitutiveExons(EnsPTranscript transcript,
+                                              AjPList exons);
+
 AjBool ensTranscriptFetchAllDatabaseEntries(EnsPTranscript transcript,
                                             const AjPStr name,
                                             AjEnum type,
@@ -134,7 +172,7 @@ AjBool ensTranscriptFetchAllIntrons(EnsPTranscript transcript,
                                     AjPList introns);
 
 AjBool ensTranscriptFetchAllSequenceEdits(EnsPTranscript transcript,
-                                          AjPList selist);
+                                          AjPList ses);
 
 AjBool ensTranscriptFetchDisplayIdentifier(const EnsPTranscript transcript,
                                            AjPStr *Pidentifier);
@@ -142,87 +180,115 @@ AjBool ensTranscriptFetchDisplayIdentifier(const EnsPTranscript transcript,
 AjBool ensTranscriptFetchSequenceSeq(EnsPTranscript transcript,
                                      AjPSeq *Psequence);
 
-AjBool ensTranscriptTranslateStr(EnsPTranscript transcript, AjPStr *Psequence);
-
 AjBool ensTranscriptFetchSequenceStr(EnsPTranscript transcript,
                                      AjPStr *Psequence);
 
-AjBool ensTranscriptFetchTranslatableSequence(
-    EnsPTranscript transcript,
-    AjPStr* Psequence);
+AjBool ensTranscriptFetchTranslatableSequence(EnsPTranscript transcript,
+                                              AjPStr* Psequence);
 
-EnsPTranslation ensTranscriptFetchTranslation(EnsPTranscript transcript);
+AjBool ensTranscriptFetchTranslation(EnsPTranscript transcript,
+                                     EnsPTranslation *Ptranslation);
+
+AjBool ensTranscriptFetchTranslatedSequence(EnsPTranscript transcript,
+                                            AjPStr* Psequence);
 
 /* Ensembl Transcript Adaptor */
 
 EnsPTranscriptadaptor ensTranscriptadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensTranscriptadaptorDel(EnsPTranscriptadaptor *Padaptor);
+void ensTranscriptadaptorDel(EnsPTranscriptadaptor *Ptca);
 
 EnsPFeatureadaptor ensTranscriptadaptorGetFeatureadaptor(
-    const EnsPTranscriptadaptor adaptor);
+    const EnsPTranscriptadaptor tca);
 
 EnsPDatabaseadaptor ensTranscriptadaptorGetDatabaseadaptor(
-    const EnsPTranscriptadaptor adaptor);
+    const EnsPTranscriptadaptor tca);
 
-AjBool ensTranscriptadaptorFetchAll(EnsPTranscriptadaptor adaptor,
+AjBool ensTranscriptadaptorFetchAll(EnsPTranscriptadaptor tca,
                                     AjPList transcripts);
 
-AjBool ensTranscriptadaptorFetchAllByGene(EnsPTranscriptadaptor adaptor,
+AjBool ensTranscriptadaptorFetchAllByGene(EnsPTranscriptadaptor tca,
                                           EnsPGene gene,
                                           AjPList transcripts);
 
-AjBool ensTranscriptadaptorFetchByIdentifier(EnsPTranscriptadaptor adaptor,
+AjBool ensTranscriptadaptorFetchAllByStableIdentifier(
+    const EnsPTranscriptadaptor tca,
+    const AjPStr stableid,
+    AjPList transcripts);
+
+AjBool ensTranscriptadaptorFetchByIdentifier(EnsPTranscriptadaptor tca,
                                              ajuint identifier,
                                              EnsPTranscript *Ptranscript);
 
 AjBool ensTranscriptadaptorFetchByStableIdentifier(
-    EnsPTranscriptadaptor adaptor,
+    EnsPTranscriptadaptor tca,
     const AjPStr stableid,
     ajuint version,
     EnsPTranscript *Ptranscript);
 
+AjBool ensTranscriptadaptorFetchByExonIdentifier(
+    EnsPTranscriptadaptor tca,
+    ajuint identifier,
+    EnsPTranscript* Ptranscript);
+
+AjBool ensTranscriptadaptorFetchByExonStableIdentifier(
+    EnsPTranscriptadaptor tca,
+    const AjPStr stableid,
+    EnsPTranscript *Ptranscript);
+
 AjBool ensTranscriptadaptorFetchByTranslationIdentifier(
-    EnsPTranscriptadaptor adaptor,
+    EnsPTranscriptadaptor tca,
     ajuint identifier,
     EnsPTranscript* Ptranscript);
 
 AjBool ensTranscriptadaptorFetchByTranslationStableIdentifier(
-    EnsPTranscriptadaptor adaptor,
+    EnsPTranscriptadaptor tca,
     const AjPStr stableid,
     EnsPTranscript* Ptranscript);
+
+AjBool ensTranscriptadaptorFetchByDisplayLabel(EnsPTranscriptadaptor tca,
+                                               const AjPStr label,
+                                               EnsPTranscript *Ptranscript);
+
+AjBool ensTranscriptadaptorFetchAllIdentifiers(
+    const EnsPTranscriptadaptor tca,
+    AjPList identifiers);
+
+AjBool ensTranscriptadaptorFetchAllStableIdentifiers(
+    const EnsPTranscriptadaptor tca,
+    AjPList identifiers);
 
 /* Ensembl Transcript Mapper */
 
 AjBool ensTranscriptMapperInit(EnsPTranscript transcript);
 
-AjBool ensTranscriptMapperTranscript2Slice(EnsPTranscript transcript,
-                                           ajuint start,
-                                           ajuint end,
-                                           AjPList mrs);
-
-AjBool ensTranscriptMapperSlice2Transcript(EnsPTranscript transcript,
-                                           ajuint start,
-                                           ajuint end,
-                                           ajint strand,
-                                           AjPList mrs);
-
-AjBool ensTranscriptMapperTranslation2Slice(EnsPTranscript transcript,
+AjBool ensTranscriptMapperTranscriptToSlice(EnsPTranscript transcript,
                                             ajuint start,
                                             ajuint end,
                                             AjPList mrs);
 
-AjBool ensTranscriptMapperSlice2CDS(EnsPTranscript transcript,
-                                    ajuint start,
-                                    ajuint end,
-                                    ajint strand,
-                                    AjPList mrs);
-
-AjBool ensTranscriptMapperSlice2Translation(EnsPTranscript transcript,
+AjBool ensTranscriptMapperSliceToTranscript(EnsPTranscript transcript,
                                             ajuint start,
                                             ajuint end,
                                             ajint strand,
                                             AjPList mrs);
+
+AjBool ensTranscriptMapperTranslationToSlice(EnsPTranscript transcript,
+                                             ajuint start,
+                                             ajuint end,
+                                             AjPList mrs);
+
+AjBool ensTranscriptMapperSliceToCDS(EnsPTranscript transcript,
+                                     ajuint start,
+                                     ajuint end,
+                                     ajint strand,
+                                     AjPList mrs);
+
+AjBool ensTranscriptMapperSliceToTranslation(EnsPTranscript transcript,
+                                             ajuint start,
+                                             ajuint end,
+                                             ajint strand,
+                                             AjPList mrs);
 
 /* Ensembl Supporting Feature Adaptor */
 
@@ -238,7 +304,7 @@ AjBool ensSupportingfeatureadaptorFetchAllByTranscript(
 
 
 
-#endif
+#endif /* enstranscript_h */
 
 #ifdef __cplusplus
 }
