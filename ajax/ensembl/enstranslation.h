@@ -24,7 +24,7 @@ AjPTrn ensTranslationCacheGetTranslation(ajint codontable);
 
 /* Ensembl Translation */
 
-EnsPTranslation ensTranslationNew(EnsPTranslationadaptor adaptor,
+EnsPTranslation ensTranslationNew(EnsPTranslationadaptor tla,
                                   ajuint identifier,
                                   EnsPTranscript transcript,
                                   EnsPExon startexon,
@@ -83,7 +83,7 @@ ajuint ensTranslationGetSliceEnd(EnsPTranslation translation);
 ajuint ensTranslationGetMemSize(const EnsPTranslation translation);
 
 AjBool ensTranslationSetAdaptor(EnsPTranslation translation,
-                                EnsPTranslationadaptor adaptor);
+                                EnsPTranslationadaptor tla);
 
 AjBool ensTranslationSetIdentifier(EnsPTranslation translation,
                                    ajuint identifier);
@@ -135,54 +135,60 @@ AjBool ensTranslationFetchAllProteinfeaturesDomain(EnsPTranslation translation,
                                                    AjPList pfs);
 
 AjBool ensTranslationFetchAllSequenceEdits(EnsPTranslation translation,
-                                           AjPList selist);
+                                           AjPList ses);
 
 AjBool ensTranslationFetchDisplayIdentifier(const EnsPTranslation translation,
                                             AjPStr* Pidentifier);
     
-AjBool ensTranslationModify(EnsPTranslation translation, AjPStr* Psequence);
-
 AjBool ensTranslationTrace(const EnsPTranslation translation, ajuint level);
 
 AjBool ensTranslationFetchSequenceStr(EnsPTranslation translation,
                                       AjPStr *Psequence);
 
 AjBool ensTranslationFetchSequenceSeq(EnsPTranslation translation,
-                                      AjPSeq* Psequence);
+                                      AjPSeq *Psequence);
 
 /* Ensembl Translation Adaptor */
 
 EnsPTranslationadaptor ensTranslationadaptorNew(EnsPDatabaseadaptor dba);
 
-void ensTranslationadaptorDel(EnsPTranslationadaptor *Padaptor);
+void ensTranslationadaptorDel(EnsPTranslationadaptor *Ptla);
 
 EnsPDatabaseadaptor ensTranslationadaptorGetDatabaseadaptor(
-    const EnsPTranslationadaptor adaptor);
+    const EnsPTranslationadaptor tla);
 
-AjBool ensTranslationadaptorFetchByIdentifier(EnsPTranslationadaptor adaptor,
+AjBool ensTranslationadaptorFetchByIdentifier(EnsPTranslationadaptor tla,
                                               ajuint identifier,
                                               EnsPTranslation *Ptranslation);
 
 AjBool ensTranslationadaptorFetchByStableIdentifier(
-    EnsPTranslationadaptor adaptor,
+    EnsPTranslationadaptor tla,
     const AjPStr stableid,
     ajuint version,
     EnsPTranslation *Ptranslation);
 
-AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor adaptor,
+AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor tla,
                                               EnsPTranscript transcript,
                                               EnsPTranslation *Ptranslation);
 
 AjBool ensTranslationadaptorFetchAllByExternalName(
-    EnsPTranslationadaptor adaptor,
+    EnsPTranslationadaptor tla,
     AjPStr externalname,
     AjPStr externaldbname,
     AjPList translations);
 
 AjBool ensTranslationadaptorFetchAllByTranscriptList(
-    EnsPTranslationadaptor adaptor,
+    EnsPTranslationadaptor tla,
     AjPList transcripts,
     AjPList translations);
+
+AjBool ensTranslationadaptorFetchAllIdentifiers(
+    const EnsPTranslationadaptor tla,
+    AjPList identifiers);
+
+AjBool ensTranslationadaptorFetchAllStableIdentifiers(
+    const EnsPTranslationadaptor tla,
+    AjPList identifiers);
 
 /*
 ** End of prototype definitions
@@ -191,7 +197,7 @@ AjBool ensTranslationadaptorFetchAllByTranscriptList(
 
 
 
-#endif
+#endif /* enstranslation_h */
 
 #ifdef __cplusplus
 }
