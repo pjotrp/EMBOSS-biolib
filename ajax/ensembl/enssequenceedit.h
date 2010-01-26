@@ -68,7 +68,7 @@ ajuint ensSequenceEditGetStart(const EnsPSequenceEdit se);
 
 ajuint ensSequenceEditGetEnd(const EnsPSequenceEdit se);
 
-ajuint ensSequenceEditGetLengthDifference(EnsPSequenceEdit se);
+ajint ensSequenceEditGetLengthDifference(EnsPSequenceEdit se);
 
 AjBool ensSequenceEditTrace(const EnsPSequenceEdit se, ajuint level);
 
@@ -85,7 +85,7 @@ int ensSequenceEditCompareStartDescending(const void* P1, const void* P2);
 
 
 
-#endif
+#endif /* enssequenceedit_h */
 
 #ifdef __cplusplus
 }
