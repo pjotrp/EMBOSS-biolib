@@ -2969,8 +2969,17 @@ void embPatTUBInit(const AjPStr pat, ajuint **skipm, ajuint m, ajuint k,
     {
 	ready[i] = m;
 
+        /*
+        ** AJB: Note that if the mismatches are 1 less than the real
+        ** pattern length then the skip value can become 0 - hence
+        ** the use of AJMAX to ensure that the skip value is always
+        ** positive. This prevents a potential infinite loop in the
+        ** upcoming TUBSearch function. Need to check the original
+        ** algorithm to check that nothing is amiss here, then
+        ** delete this comment block.
+        */
 	for(j=m-k-1;j<(ajint)m;++j)
-	    skipm[j][i] = m-k-1;
+	    skipm[j][i] = AJMAX(m-k-1,1);
     }
 
     p += plen-1;
@@ -4773,6 +4782,10 @@ void embPatCompileII (AjPPatComp thys, ajuint mismatch)
 
 	break;
     case 6:
+        if(thys->m && mismatch >= thys->m)
+            ajFatal("embPatCompileII: Mismatches (%d) must be less than the "
+                    "real pattern length (%d)",mismatch,thys->m);
+
 	if (!thys->skipm)
 	{
 	    AJCNEW(thys->skipm,thys->m);
