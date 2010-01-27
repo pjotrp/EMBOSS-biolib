@@ -1228,9 +1228,13 @@ void ajPatCompDel (AjPPatComp *pthys)
       AJFREE(thys->sotable);
 
     if(thys->type==6)
+    {
 	for(i=0;i<thys->m;++i)
 	    AJFREE(thys->skipm[i]);
 
+        AJFREE(thys->skipm);
+    }
+    
     AJFREE(*pthys);
 
     return;
