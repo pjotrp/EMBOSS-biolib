@@ -130,6 +130,11 @@ AjBool ensExonadaptorFetchAllBySlice(const EnsPExonadaptor ea,
                                      EnsPSlice slice,
                                      AjPList exons);
 
+AjBool ensExonadaptorFetchAllBySliceConstraint(const EnsPExonadaptor ea,
+                                               EnsPSlice slice,
+                                               const AjPStr constraint,
+                                               AjPList exons);
+
 AjBool ensExonadaptorFetchByIdentifier(const EnsPExonadaptor ea,
                                        ajuint identifier,
                                        EnsPExon *Pexon);

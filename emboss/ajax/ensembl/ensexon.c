@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -3259,6 +3259,56 @@ AjBool ensExonadaptorFetchAllBySlice(const EnsPExonadaptor ea,
     fa = ensExonadaptorGetFeatureadaptor(ea);
 
     ensFeatureadaptorFetchAllBySlice(fa, slice, (AjPStr) NULL, exons);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensExonadaptorFetchAllBySliceConstraint ******************************
+**
+** Fetch all Ensembl Exons matching a SQL constraint on an Ensembl Slice.
+**
+** The caller is responsible for deleting the Ensembl Exons before
+** deleting the AJAX List.
+**
+** @cc Bio::EnsEMBL::DBSQL::BaseFeatureAdaptor::fetch_all_by_Slice_constraint
+** @param [r] ea [const EnsPExonadaptor] Ensembl Exon Adaptor
+** @param [r] slice [EnsPSlice] Ensembl Slice
+** @param [r] constraint [const AjPStr] SQL constraint
+** @param [u] exons [AjPList] AJAX List of Ensembl Exons
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensExonadaptorFetchAllBySliceConstraint(const EnsPExonadaptor ea,
+                                               EnsPSlice slice,
+                                               const AjPStr constraint,
+                                               AjPList exons)
+{
+    EnsPFeatureadaptor fa = NULL;
+
+    if(!ea)
+        return ajFalse;
+
+    if(!slice)
+        return ajFalse;
+
+    if(!constraint)
+        return ajFalse;
+
+    if(!exons)
+        return ajFalse;
+
+    fa = ensExonadaptorGetFeatureadaptor(ea);
+
+    ensFeatureadaptorFetchAllBySliceConstraint(fa,
+                                               slice,
+                                               constraint,
+                                               (AjPStr) NULL,
+                                               exons);
 
     return ajTrue;
 }
