@@ -7,7 +7,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.6 $
+** @version $Revision: 1.7 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -33,6 +33,7 @@
 #include "ensslice.h"
 #include "ensattribute.h"
 #include "enssequence.h"
+#include "enssequenceedit.h"
 #include "ensrepeat.h"
 
 
@@ -41,6 +42,23 @@
 /* ==================================================================== */
 /* ========================== private data ============================ */
 /* ==================================================================== */
+
+/* sliceSequenceEditCode ******************************************************
+**
+** Ensembl Sequence Edits for Ensembl Slices are a sub-set of
+** Ensembl Attributes that provide information about modifications of the
+** Slice sequence. Attributes with the following codes are Sequence Edits on
+** the Slice-level.
+**
+** _rna_edit: General sequence edit
+**
+******************************************************************************/
+
+static const char *sliceSequenceEditCode[] =
+{
+    "_rna_edit",
+    NULL
+};
 
 
 
@@ -149,75 +167,75 @@ EnsPSlice ensSliceNewS(EnsPSliceadaptor adaptor,
                        AjPStr sequence)
 {
     EnsPSlice slice = NULL;
-    
+
     if(!sr)
     {
         ajDebug("ensSliceNewS requires an Ensembl Sequence Region.\n");
-	
-	return NULL;
+
+        return NULL;
     }
-    
+
     if(ensCoordsystemIsTopLevel(ensSeqregionGetCoordsystem(sr)))
     {
-	ajDebug("ensSliceNewS cannot create a Slice on a Sequence Region "
-		"with a top-level Coordinate System.\n");
-	
-	return NULL;
+        ajDebug("ensSliceNewS cannot create a Slice on a Sequence Region "
+                "with a top-level Coordinate System.\n");
+
+        return NULL;
     }
-    
+
     if(!start)
-	start = 1;
-    
+        start = 1;
+
     if(!end)
-	end = ensSeqregionGetLength(sr);
-    
+        end = ensSeqregionGetLength(sr);
+
     if(start > (end + 1))
     {
         ajDebug("ensSliceNewS requires that the start coordinate %d is "
-		"less than or equal to the end coordinate %d + 1.\n",
-		start, end);
-	
+                "less than or equal to the end coordinate %d + 1.\n",
+                start, end);
+
         return NULL;
     }
-    
+
     if(!strand)
-	strand = 1;
-    
+        strand = 1;
+
     if((strand != 1) && (strand != -1))
     {
-	ajDebug("ensSliceNewS requires a strand of either 1 or -1 "
-		"not %d.\n", strand);
-	
-	return NULL;
+        ajDebug("ensSliceNewS requires a strand of either 1 or -1 "
+                "not %d.\n", strand);
+
+        return NULL;
     }
-    
+
     if(sequence &&
-	(ajStrGetLen(sequence) != (ajuint) ensSeqregionGetLength(sr)))
+       (ajStrGetLen(sequence) != (ajuint) ensSeqregionGetLength(sr)))
     {
-	ajDebug("ensSliceNewS requires that the Sequence Region length %d "
-		"matches the length of the Sequence string %u.\n",
-		ensSeqregionGetLength(sr), ajStrGetLen(sequence));
-	
-	return NULL;
+        ajDebug("ensSliceNewS requires that the Sequence Region length %d "
+                "matches the length of the Sequence string %u.\n",
+                ensSeqregionGetLength(sr), ajStrGetLen(sequence));
+
+        return NULL;
     }
-    
+
     AJNEW0(slice);
-    
+
     slice->Adaptor = adaptor;
-    
+
     slice->Seqregion = ensSeqregionNewRef(sr);
-    
+
     if(sequence)
-	slice->Sequence = ajStrNewRef(sequence);
-    
+        slice->Sequence = ajStrNewRef(sequence);
+
     slice->Start = start;
-    
+
     slice->End = end;
-    
+
     slice->Strand = strand;
-    
+
     slice->Use = 1;
-    
+
     return slice;
 }
 
@@ -246,64 +264,64 @@ EnsPSlice ensSliceNew(EnsPSliceadaptor adaptor,
                       ajint strand)
 {
     EnsPSlice slice = NULL;
-    
+
     if(!sr)
     {
         ajDebug("ensSliceNew requires an Ensembl Sequence Region.\n");
-	
-	return NULL;
+
+        return NULL;
     }
-    
+
     if(ensCoordsystemIsTopLevel(ensSeqregionGetCoordsystem(sr)))
     {
-	ajDebug("ensSliceNew cannot create a Slice on a Sequence Region "
-		"with a top-level Coordinate System.\n");
-	
-	return NULL;
+        ajDebug("ensSliceNew cannot create a Slice on a Sequence Region "
+                "with a top-level Coordinate System.\n");
+
+        return NULL;
     }
-    
+
     if(!start)
-	start = 1;
-    
+        start = 1;
+
     if(!end)
-	end = ensSeqregionGetLength(sr);
-    
+        end = ensSeqregionGetLength(sr);
+
     if(start > (end + 1))
     {
         ajDebug("ensSliceNew requires that the start coordinate %d is "
-		"less than or equal to the end coordinate %d + 1.\n",
-		start, end);
-	
+                "less than or equal to the end coordinate %d + 1.\n",
+                start, end);
+
         return NULL;
     }
-    
+
     if(!strand)
-	strand = 1;
-    
+        strand = 1;
+
     if((strand != 1) && (strand != -1))
     {
-	ajDebug("ensSliceNew requires a strand of either 1 or -1 "
-		"not %d.\n", strand);
-	
-	return NULL;
+        ajDebug("ensSliceNew requires a strand of either 1 or -1 "
+                "not %d.\n", strand);
+
+        return NULL;
     }
-    
+
     AJNEW0(slice);
-    
+
     slice->Adaptor = adaptor;
-    
+
     slice->Seqregion = ensSeqregionNewRef(sr);
-    
+
     slice->Sequence = (AjPStr) NULL;
-    
+
     slice->Start = start;
-    
+
     slice->End = end;
-    
+
     slice->Strand = strand;
-    
+
     slice->Use = 1;
-    
+
     return slice;
 }
 
@@ -323,27 +341,27 @@ EnsPSlice ensSliceNew(EnsPSliceadaptor adaptor,
 EnsPSlice ensSliceNewObj(EnsPSlice object)
 {
     EnsPSlice slice = NULL;
-    
+
     if(!object)
-	return NULL;
-    
+        return NULL;
+
     AJNEW0(slice);
-    
+
     slice->Adaptor = object->Adaptor;
-    
+
     slice->Seqregion = ensSeqregionNewRef(object->Seqregion);
-    
+
     if(object->Sequence)
-	slice->Sequence = ajStrNewRef(object->Sequence);
-    
+        slice->Sequence = ajStrNewRef(object->Sequence);
+
     slice->Start = object->Start;
-    
+
     slice->End = object->End;
-    
+
     slice->Strand = object->Strand;
-    
+
     slice->Use = 1;
-    
+
     return slice;
 }
 
@@ -364,10 +382,10 @@ EnsPSlice ensSliceNewObj(EnsPSlice object)
 EnsPSlice ensSliceNewRef(EnsPSlice slice)
 {
     if(!slice)
-	return NULL;
-    
+        return NULL;
+
     slice->Use++;
-    
+
     return slice;
 }
 
@@ -407,38 +425,38 @@ EnsPSlice ensSliceNewRef(EnsPSlice slice)
 void ensSliceDel(EnsPSlice *Pslice)
 {
     EnsPSlice pthis = NULL;
-    
+
     if(!Pslice)
         return;
-    
+
     if(!*Pslice)
         return;
 
     pthis = *Pslice;
-    
+
     /*
-     ajDebug("ensSliceDel\n"
-	     "  *Pslice %p\n",
-	     *Pslice);
-     */
-    
+      ajDebug("ensSliceDel\n"
+      "  *Pslice %p\n",
+      *Pslice);
+      */
+
     pthis->Use--;
-    
+
     if(pthis->Use)
     {
-	*Pslice = NULL;
-	
-	return;
+        *Pslice = NULL;
+
+        return;
     }
-    
+
     ensSeqregionDel(&pthis->Seqregion);
-    
+
     ajStrDel(&pthis->Sequence);
-    
+
     AJFREE(pthis);
 
     *Pslice = NULL;
-    
+
     return;
 }
 
@@ -490,7 +508,7 @@ EnsPSliceadaptor ensSliceGetAdaptor(const EnsPSlice slice)
 {
     if(!slice)
         return NULL;
-    
+
     return slice->Adaptor;
 }
 
@@ -511,7 +529,7 @@ EnsPSeqregion ensSliceGetSeqregion(const EnsPSlice slice)
 {
     if(!slice)
         return NULL;
-    
+
     return slice->Seqregion;
 }
 
@@ -531,8 +549,8 @@ EnsPSeqregion ensSliceGetSeqregion(const EnsPSlice slice)
 const AjPStr ensSliceGetSequence(const EnsPSlice slice)
 {
     if(!slice)
-	return NULL;
-    
+        return NULL;
+
     return slice->Sequence;
 }
 
@@ -553,8 +571,8 @@ const AjPStr ensSliceGetSequence(const EnsPSlice slice)
 ajint ensSliceGetStart(const EnsPSlice slice)
 {
     if(!slice)
-	return 0;
-    
+        return 0;
+
     return slice->Start;
 }
 
@@ -575,8 +593,8 @@ ajint ensSliceGetStart(const EnsPSlice slice)
 ajint ensSliceGetEnd(const EnsPSlice slice)
 {
     if(!slice)
-	return 0;
-    
+        return 0;
+
     return slice->End;
 }
 
@@ -597,8 +615,8 @@ ajint ensSliceGetEnd(const EnsPSlice slice)
 ajint ensSliceGetStrand(const EnsPSlice slice)
 {
     if(!slice)
-	return 0;
-    
+        return 0;
+
     return slice->Strand;
 }
 
@@ -642,9 +660,9 @@ AjBool ensSliceSetAdaptor(EnsPSlice slice, EnsPSliceadaptor adaptor)
 {
     if(!slice)
         return ajFalse;
-    
+
     slice->Adaptor = adaptor;
-    
+
     return ajTrue;
 }
 
@@ -666,20 +684,20 @@ AjBool ensSliceSetSequence(EnsPSlice slice, AjPStr sequence)
 {
     if(!slice)
         return ajFalse;
-    
+
     ajStrDel(&slice->Sequence);
-    
+
     if(sequence)
     {
-	if(ajStrGetLen(sequence) == ensSliceGetLength(slice))
-	    slice->Sequence = ajStrNewRef(sequence);
-	else
-	    ajFatal("ensSliceSetSequence got sequence of length %u, "
-		    "which does not match the length of the Slice %u.\n",
-		    ajStrGetLen(sequence),
-		    ensSliceGetLength(slice));
+        if(ajStrGetLen(sequence) == ensSliceGetLength(slice))
+            slice->Sequence = ajStrNewRef(sequence);
+        else
+            ajFatal("ensSliceSetSequence got sequence of length %u, "
+                    "which does not match the length of the Slice %u.\n",
+                    ajStrGetLen(sequence),
+                    ensSliceGetLength(slice));
     }
-    
+
     return ajTrue;
 }
 
@@ -718,35 +736,35 @@ AjBool ensSliceSetSequence(EnsPSlice slice, AjPStr sequence)
 AjBool ensSliceTrace(const EnsPSlice slice, ajuint level)
 {
     AjPStr indent = NULL;
-    
+
     if(!slice)
-	return ajFalse;
-    
+        return ajFalse;
+
     indent = ajStrNew();
-    
+
     ajStrAppendCountK(&indent, ' ', level * 2);
-    
+
     ajDebug("%SensSliceTrace %p\n"
-	    "%S  Adaptor %p\n"
-	    "%S  Seqregion %p\n"
-	    "%S  Sequence %p\n"
-	    "%S  Start %d\n"
-	    "%S  End %d\n"
-	    "%S  Strand %d\n"
-	    "%S  Use %u\n",
-	    indent, slice,
-	    indent, slice->Adaptor,
-	    indent, slice->Seqregion,
-	    indent, slice->Sequence,
-	    indent, slice->Start,
-	    indent, slice->End,
-	    indent, slice->Strand,
-	    indent, slice->Use);
-    
+            "%S  Adaptor %p\n"
+            "%S  Seqregion %p\n"
+            "%S  Sequence %p\n"
+            "%S  Start %d\n"
+            "%S  End %d\n"
+            "%S  Strand %d\n"
+            "%S  Use %u\n",
+            indent, slice,
+            indent, slice->Adaptor,
+            indent, slice->Seqregion,
+            indent, slice->Sequence,
+            indent, slice->Start,
+            indent, slice->End,
+            indent, slice->Strand,
+            indent, slice->Use);
+
     ensSeqregionTrace(slice->Seqregion, level + 1);
-    
+
     ajStrDel(&indent);
-    
+
     return ajTrue;
 }
 
@@ -767,8 +785,8 @@ AjBool ensSliceTrace(const EnsPSlice slice, ajuint level)
 ajuint ensSliceGetSeqregionIdentifier(const EnsPSlice slice)
 {
     if(!slice)
-	return 0;
-    
+        return 0;
+
     return ensSeqregionGetIdentifier(slice->Seqregion);
 }
 
@@ -790,7 +808,7 @@ const AjPStr ensSliceGetSeqregionName(const EnsPSlice slice)
 {
     if(!slice)
         return NULL;
-    
+
     return ensSeqregionGetName(slice->Seqregion);
 }
 
@@ -812,7 +830,7 @@ ajint ensSliceGetSeqregionLength(const EnsPSlice slice)
 {
     if(!slice)
         return 0;
-    
+
     return ensSeqregionGetLength(slice->Seqregion);
 }
 
@@ -834,16 +852,16 @@ ajint ensSliceGetSeqregionLength(const EnsPSlice slice)
 EnsPCoordsystem ensSliceGetCoordsystem(const EnsPSlice slice)
 {
     if(!slice)
-	return NULL;
-    
+        return NULL;
+
     if(!slice->Seqregion)
     {
-	ajDebug("ensSliceGetCoordsystem cannot get the Coordinate System of "
-		"a Slice without a Sequence Region.\n");
-	
-	return NULL;
+        ajDebug("ensSliceGetCoordsystem cannot get the Coordinate System of "
+                "a Slice without a Sequence Region.\n");
+
+        return NULL;
     }
-    
+
     return ensSeqregionGetCoordsystem(slice->Seqregion);
 }
 
@@ -866,15 +884,15 @@ const AjPStr ensSliceGetCoordsystemName(const EnsPSlice slice)
 {
     if(!slice)
         return NULL;
-    
+
     if(!slice->Seqregion)
     {
-	ajDebug("ensSliceGetCoordsystemName cannot get the Coordinate System "
-		"name of a Slice without a Sequence Region.\n");
-	
-	return NULL;
+        ajDebug("ensSliceGetCoordsystemName cannot get the Coordinate System "
+                "name of a Slice without a Sequence Region.\n");
+
+        return NULL;
     }
-    
+
     return ensCoordsystemGetName(ensSeqregionGetCoordsystem(slice->Seqregion));
 }
 
@@ -896,16 +914,16 @@ const AjPStr ensSliceGetCoordsystemVersion(const EnsPSlice slice)
 {
     if(!slice)
         return NULL;
-    
+
     if(!slice->Seqregion)
     {
-	ajDebug("ensSliceGetCoordsystemVersion cannot get the "
-		"Coordinate System version for a Slice without a "
-		"Sequence Region.\n");
-	
-	return NULL;
+        ajDebug("ensSliceGetCoordsystemVersion cannot get the "
+                "Coordinate System version for a Slice without a "
+                "Sequence Region.\n");
+
+        return NULL;
     }
-    
+
     return ensCoordsystemGetVersion(ensSeqregionGetCoordsystem(
                                         slice->Seqregion));
 }
@@ -928,7 +946,7 @@ ajint ensSliceGetCentrePoint(const EnsPSlice slice)
 {
     if(!slice)
         return 0;
-    
+
     return ((slice->Start + slice->End) / 2);
 }
 
@@ -950,7 +968,7 @@ ajuint ensSliceGetLength(const EnsPSlice slice)
 {
     if(!slice)
         return 0;
-    
+
     return (ajuint) (slice->End - slice->Start + 1);
 }
 
@@ -970,21 +988,21 @@ ajuint ensSliceGetLength(const EnsPSlice slice)
 ajuint ensSliceGetMemSize(const EnsPSlice slice)
 {
     ajuint size = 0;
-    
+
     if(!slice)
-	return 0;
-    
+        return 0;
+
     size += (ajuint) sizeof (EnsOSlice);
-    
+
     size += ensSeqregionGetMemSize(slice->Seqregion);
-    
+
     if(slice->Sequence)
     {
-	size += (ajuint) sizeof (AjOStr);
-	
-	size += ajStrGetRes(slice->Sequence);
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(slice->Sequence);
     }
-    
+
     return size;
 }
 
@@ -1006,23 +1024,23 @@ ajuint ensSliceGetMemSize(const EnsPSlice slice)
 AjBool ensSliceFetchName(const EnsPSlice slice, AjPStr* Pname)
 {
     EnsPCoordsystem cs = NULL;
-    
+
     if(!slice)
         return ajFalse;
-    
+
     if(!Pname)
         return ajFalse;
-    
+
     cs = ensSeqregionGetCoordsystem(slice->Seqregion);
-    
+
     *Pname = ajFmtStr("%S:%S:%S:%d:%d:%d",
-		      ensCoordsystemGetName(cs),
-		      ensCoordsystemGetVersion(cs),
-		      ensSeqregionGetName(slice->Seqregion),
-		      slice->Start,
-		      slice->End,
-		      slice->Strand);
-    
+                      ensCoordsystemGetName(cs),
+                      ensCoordsystemGetVersion(cs),
+                      ensSeqregionGetName(slice->Seqregion),
+                      slice->Start,
+                      slice->End,
+                      slice->Strand);
+
     return ajTrue;
 }
 
@@ -1047,44 +1065,44 @@ AjBool ensSliceFetchName(const EnsPSlice slice, AjPStr* Pname)
 AjBool ensSliceMatch(const EnsPSlice slice1, const EnsPSlice slice2)
 {
     /*
-     ajDebug("ensSliceMatch\n"
-	     "  slice1 %p\n"
-	     "  slice2 %p\n",
-	     slice1,
-	     slice2);
-     
-     ensSliceTrace(slice1, 1);
-     
-     ensSliceTrace(slice2, 1);
-     */
-    
+      ajDebug("ensSliceMatch\n"
+      "  slice1 %p\n"
+      "  slice2 %p\n",
+      slice1,
+      slice2);
+
+      ensSliceTrace(slice1, 1);
+
+      ensSliceTrace(slice2, 1);
+    */
+
     if(!slice1)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!slice2)
-	return ajFalse;
-    
+        return ajFalse;
+
     /* Try a direct pointer comparison first. */
-    
+
     if(slice1 == slice2)
-	return ajTrue;
-    
+        return ajTrue;
+
     if(!ensSeqregionMatch(slice1->Seqregion, slice2->Seqregion))
-	return ajFalse;
-    
+        return ajFalse;
+
     if(slice1->Start != slice2->Start)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(slice1->End != slice2->End)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(slice1->Strand != slice2->Strand)
-	return ajFalse;
-    
+        return ajFalse;
+
     if((slice1->Sequence || slice2->Sequence) &&
-	(!ajStrMatchS(slice1->Sequence, slice2->Sequence)))
-	return ajFalse;
-    
+       (!ajStrMatchS(slice1->Sequence, slice2->Sequence)))
+        return ajFalse;
+
     return ajTrue;
 }
 
@@ -1107,16 +1125,16 @@ AjBool ensSliceMatch(const EnsPSlice slice1, const EnsPSlice slice2)
 AjBool ensSliceIsTopLevel(EnsPSlice slice)
 {
     if(!slice)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!slice->Seqregion)
     {
-	ajDebug("ensSliceIsTopLevel requires the Ensembl Slice to have an "
-		"Ensembl Sequence region attached.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceIsTopLevel requires the Ensembl Slice to have an "
+                "Ensembl Sequence region attached.\n");
+
+        return ajFalse;
     }
-    
+
     return ensSeqregionIsTopLevel(slice->Seqregion);
 }
 
@@ -1138,30 +1156,30 @@ AjBool ensSliceFetchSequenceSeq(EnsPSlice slice, AjPSeq *Psequence)
 {
     AjPStr name     = NULL;
     AjPStr sequence = NULL;
-    
+
     if(!slice)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Psequence)
-	return ajFalse;
-    
+        return ajFalse;
+
     /* Fetch the Slice name. */
-    
+
     name = ajStrNew();
-    
+
     ensSliceFetchName(slice, &name);
-    
+
     /* Fetch the Slice sequence. */
-    
+
     sequence = ajStrNew();
-    
+
     ensSliceFetchSequenceStr(slice, &sequence);
-    
+
     *Psequence = ajSeqNewNameS(sequence, name);
-    
+
     ajStrDel(&sequence);
     ajStrDel(&name);
-    
+
     return ajTrue;
 }
 
@@ -1183,69 +1201,69 @@ AjBool ensSliceFetchSequenceSeq(EnsPSlice slice, AjPSeq *Psequence)
 AjBool ensSliceFetchSequenceStr(EnsPSlice slice, AjPStr *Psequence)
 {
     EnsPDatabaseadaptor dba = NULL;
-    
+
     EnsPSequenceadaptor sa = NULL;
-    
+
     if(!slice)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Psequence)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(*Psequence)
-	ajStrAssignClear(Psequence);
+        ajStrAssignClear(Psequence);
     else
-	*Psequence = ajStrNewRes(ensSliceGetLength(slice) + 1);
-    
+        *Psequence = ajStrNewRes(ensSliceGetLength(slice) + 1);
+
     /* Special case for "in-between" (insertion) coordinates. */
-    
+
     if(slice->Start == (slice->End + 1))
-	return ajTrue;
-    
+        return ajTrue;
+
     if(slice->Sequence)
     {
-	/*
-	** Since the Slice has sequence attached, check whether its
-	** Slice length matches its sequence length.
-	*/
-	
-	if(ajStrGetLen(slice->Sequence) != ensSliceGetLength(slice))
-	    ajFatal("ensSliceFetchSequenceStr got a Slice, "
-		    "which sequence length %u does not match its length %u.\n",
-		    ajStrGetLen(slice->Sequence),
-		    ensSliceGetLength(slice));
-	
-	ajStrAssignS(Psequence, slice->Sequence);
+        /*
+        ** Since the Slice has sequence attached, check whether its
+        ** Slice length matches its sequence length.
+        */
+
+        if(ajStrGetLen(slice->Sequence) != ensSliceGetLength(slice))
+            ajFatal("ensSliceFetchSequenceStr got a Slice, "
+                    "which sequence length %u does not match its length %u.\n",
+                    ajStrGetLen(slice->Sequence),
+                    ensSliceGetLength(slice));
+
+        ajStrAssignS(Psequence, slice->Sequence);
     }
     else if(slice->Adaptor)
     {
-	/*
-	** Since the Slice has a Slice Adaptor attached, it is possible to
-	** retrieve the sequence from the database.
-	*/
-	
-	dba = ensSliceadaptorGetDatabaseadaptor(slice->Adaptor);
-	
-	sa = ensRegistryGetSequenceadaptor(dba);
-	
-	ensSequenceadaptorFetchStrBySlice(sa, slice, Psequence);
+        /*
+        ** Since the Slice has a Slice Adaptor attached, it is possible to
+        ** retrieve the sequence from the database.
+        */
+
+        dba = ensSliceadaptorGetDatabaseadaptor(slice->Adaptor);
+
+        sa = ensRegistryGetSequenceadaptor(dba);
+
+        ensSequenceadaptorFetchStrBySlice(sa, slice, Psequence);
     }
     else
     {
-	/*
-	** The Slice has no sequence and no Slice Adaptor attached,
-	** so just return Ns.
-	*/
-	
-	ajStrAppendCountK(Psequence, 'N', ensSliceGetLength(slice));
+        /*
+        ** The Slice has no sequence and no Slice Adaptor attached,
+        ** so just return Ns.
+        */
+
+        ajStrAppendCountK(Psequence, 'N', ensSliceGetLength(slice));
     }
-    
+
     if(ajStrGetLen(*Psequence) != ensSliceGetLength(slice))
-	ajWarn("ensSliceFetchSequenceStr got sequence of length %u "
-	       "for Ensembl Slice of length %u.\n",
-	       ajStrGetLen(*Psequence),
-	       ensSliceGetLength(slice));
-    
+        ajWarn("ensSliceFetchSequenceStr got sequence of length %u "
+               "for Ensembl Slice of length %u.\n",
+               ajStrGetLen(*Psequence),
+               ensSliceGetLength(slice));
+
     return ajTrue;
 }
 
@@ -1275,58 +1293,56 @@ AjBool ensSliceFetchSubSequenceSeq(EnsPSlice slice,
     ajint srstart  = 0;
     ajint srend    = 0;
     ajint srstrand = 0;
-    
+
     AjPStr name     = NULL;
     AjPStr sequence = NULL;
-    
+
     if(!slice)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!strand)
-	strand = 1;
-    
+        strand = 1;
+
     if(!Psequence)
-	return ajFalse;
-    
+        return ajFalse;
+
     /*
     ** Construct the Slice name, but convert relative Slice coordinates into
     ** absolute Sequence Region coordinates.
     */
-    
+
     if(slice->Strand >= 0)
     {
-	srstart = slice->Start + start - 1;
-	
-	srend = slice->Start + end - 1;
+        srstart = slice->Start + start - 1;
+        srend   = slice->Start + end   - 1;
     }
     else
     {
-	srstart = slice->End - end + 1;
-	
-	srend = slice->End - start + 1;
+        srstart = slice->End - end   + 1;
+        srend   = slice->End - start + 1;
     }
-    
+
     srstrand = slice->Strand * strand;
-    
+
     name = ajFmtStr("%S:%S:%S:%d:%d:%d",
-		    ensSliceGetCoordsystemName(slice),
-		    ensSliceGetCoordsystemVersion(slice),
-		    ensSliceGetSeqregionName(slice),
-		    srstart,
-		    srend,
-		    srstrand);
-    
+                    ensSliceGetCoordsystemName(slice),
+                    ensSliceGetCoordsystemVersion(slice),
+                    ensSliceGetSeqregionName(slice),
+                    srstart,
+                    srend,
+                    srstrand);
+
     /* Fetch the Slice sequence. */
-    
+
     sequence = ajStrNew();
-    
+
     ensSliceFetchSubSequenceStr(slice, start, end, strand, &sequence);
-    
+
     *Psequence = ajSeqNewNameS(sequence, name);
-    
+
     ajStrDel(&sequence);
     ajStrDel(&name);
-    
+
     return ajTrue;
 }
 
@@ -1356,136 +1372,135 @@ AjBool ensSliceFetchSubSequenceStr(EnsPSlice slice,
                                    AjPStr *Psequence)
 {
     ajint length = 0;
-    
+
     EnsPDatabaseadaptor dba = NULL;
-    
+
     EnsPSequenceadaptor sa = NULL;
-    
+
     /*
-     ajDebug("ensSliceFetchSubSequenceStr\n"
-	     "  slice %p\n"
-	     "  start %d\n"
-	     "  end %d\n"
-	     "  strand %d\n"
-	     "  Psequence %p\n",
-	     slice,
-	     start,
-	     end,
-	     strand,
-	     Psequence);
-     */
-    
+      ajDebug("ensSliceFetchSubSequenceStr\n"
+      "  slice %p\n"
+      "  start %d\n"
+      "  end %d\n"
+      "  strand %d\n"
+      "  Psequence %p\n",
+      slice,
+      start,
+      end,
+      strand,
+      Psequence);
+    */
+
     if(!slice)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(start > (end + 1))
     {
-	ajDebug("ensSliceFetchSubSequenceStr requires the start coordinate %d "
-		"to be less than the end coordinate %d + 1.\n",
-		start, end);
-	
-	return ajFalse;
+        ajDebug("ensSliceFetchSubSequenceStr requires the start coordinate %d "
+                "to be less than the end coordinate %d + 1.\n",
+                start, end);
+
+        return ajFalse;
     }
-    
+
     if(!strand)
-	strand = 1;
-    
+        strand = 1;
+
     if(!Psequence)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(*Psequence)
-	ajStrAssignClear(Psequence);
+        ajStrAssignClear(Psequence);
     else
-	*Psequence = ajStrNewRes((ajuint) (end - start + 1));
-    
+        *Psequence = ajStrNewRes((ajuint) (end - start + 1));
+
     /* For "in-between" (insertion) coordinates return an empty string. */
-    
+
     if(start == (end + 1))
-	return ajTrue;
-    
+        return ajTrue;
+
     if(slice->Sequence)
     {
-	/*
-	** Since the Slice has sequence attached, check whether
-	** Slice length and sequence length match.
-	*/
-	
-	if(ajStrGetLen(slice->Sequence) != ensSliceGetLength(slice))
-	    ajFatal("ensSliceFetchSubSequenceStr got a Slice, "
-		    "which sequence length (%u) does not match its "
-		    "length (%u).\n",
-		    ajStrGetLen(slice->Sequence),
-		    ensSliceGetLength(slice));
-	
-	/* Relative Slice coordinates range from 1 to length. */
-	
-	/* Check for a gap at the beginning and pad it with Ns. */
-	
-	if(start < 1)
-	{
-	    ajStrAppendCountK(Psequence, 'N', 1 - start);
-	    
-	    start = 1;
-	}
-	
-	ajStrAppendSubS(Psequence,
-			slice->Sequence,
-			start - 1,
-			end - start + 1);
-	
-	/* Check that the Slice is within signed integer range. */
-	
-	if(ensSliceGetLength(slice) <= INT_MAX)
-	    length = (ajint) ensSliceGetLength(slice);
-	else
-	    ajFatal("ensSliceFetchSubSequenceStr got an "
-		    "Ensembl Slice, which length (%u) exceeds the "
-		    "maximum integer limit (%d).\n",
-		    ensSliceGetLength(slice), INT_MAX);
-	
-	/* Check for a gap at the end and pad it again with Ns. */
-	
-	if(end > length)
-	    ajStrAppendCountK(Psequence, 'N', (ajuint) (end - length));
-	
-	if(strand < 0)
-	    ajSeqstrReverse(Psequence);
+        /*
+        ** Since the Slice has sequence attached, check whether
+        ** Slice length and sequence length match.
+        */
+
+        if(ajStrGetLen(slice->Sequence) != ensSliceGetLength(slice))
+            ajFatal("ensSliceFetchSubSequenceStr got a Slice, "
+                    "which sequence length (%u) does not match its "
+                    "length (%u).\n",
+                    ajStrGetLen(slice->Sequence),
+                    ensSliceGetLength(slice));
+
+        /* Relative Slice coordinates range from 1 to length. */
+
+        /* Check for a gap at the beginning and pad it with Ns. */
+
+        if(start < 1)
+        {
+            ajStrAppendCountK(Psequence, 'N', 1 - start);
+
+            start = 1;
+        }
+
+        ajStrAppendSubS(Psequence,
+                        slice->Sequence,
+                        start - 1,
+                        end - start + 1);
+
+        /* Check that the Slice is within signed integer range. */
+
+        if(ensSliceGetLength(slice) <= INT_MAX)
+            length = (ajint) ensSliceGetLength(slice);
+        else
+            ajFatal("ensSliceFetchSubSequenceStr got an "
+                    "Ensembl Slice, which length (%u) exceeds the "
+                    "maximum integer limit (%d).\n",
+                    ensSliceGetLength(slice), INT_MAX);
+
+        /* Check for a gap at the end and pad it again with Ns. */
+
+        if(end > length)
+            ajStrAppendCountK(Psequence, 'N', (ajuint) (end - length));
+
+        if(strand < 0)
+            ajSeqstrReverse(Psequence);
     }
     else if(slice->Adaptor)
     {
-	/*
-	** Since the Slice has a Slice Adaptor attached, it is possible to
-	** retrieve the sequence from the database.
-	*/
-	
-	dba = ensSliceadaptorGetDatabaseadaptor(slice->Adaptor);
-	
-	sa = ensRegistryGetSequenceadaptor(dba);
-	
-	ensSequenceadaptorFetchSubStrBySlice(sa,
-					     slice,
-					     start,
-					     end,
-					     strand,
-					     Psequence);
+        /*
+        ** Since the Slice has a Slice Adaptor attached, it is possible to
+        ** retrieve the sequence from the database.
+        */
+
+        dba = ensSliceadaptorGetDatabaseadaptor(slice->Adaptor);
+
+        sa = ensRegistryGetSequenceadaptor(dba);
+
+        ensSequenceadaptorFetchSubStrBySlice(sa,
+                                             slice,
+                                             start,
+                                             end,
+                                             strand,
+                                             Psequence);
     }
-    
     else
     {
-	/*
-	** The Slice has no sequence and no Slice Adaptor attached,
-	** so just return Ns.
-	*/
-	
-	ajStrAppendCountK(Psequence, 'N', (ajuint) (end - start + 1));
+        /*
+        ** The Slice has no sequence and no Slice Adaptor attached,
+        ** so just return Ns.
+        */
+
+        ajStrAppendCountK(Psequence, 'N', (ajuint) (end - start + 1));
     }
-    
+
     if(ajStrGetLen(*Psequence) != (ajuint) (end - start + 1))
-	ajWarn("ensSliceFetchSubSequenceStr got sequence of length %u "
-	       "for region of length %u.\n",
-	       ajStrGetLen(*Psequence),
-	       (ajuint) (end - start + 1));
-    
+        ajWarn("ensSliceFetchSubSequenceStr got sequence of length %u "
+               "for region of length %u.\n",
+               ajStrGetLen(*Psequence),
+               (ajuint) (end - start + 1));
+
     return ajTrue;
 }
 
@@ -1507,13 +1522,13 @@ AjBool ensSliceFetchSubSequenceStr(EnsPSlice slice,
 AjBool ensSliceFetchInvertedSlice(EnsPSlice slice, EnsPSlice *Pslice)
 {
     AjPStr sequence = NULL;
-    
+
     if(!slice)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Pslice)
-	return ajFalse;
-    
+        return ajFalse;
+
     /*
     ** Retrieve the inverted Slice via the Slice Adaptor if one is attached.
     ** This will automatically register the new Slice in the
@@ -1521,42 +1536,42 @@ AjBool ensSliceFetchInvertedSlice(EnsPSlice slice, EnsPSlice *Pslice)
     ** an eventual Slice-internal sequence.
     ** Use relative Slice coordinates, which range from 1 to length.
     */
-    
+
     if(slice->Adaptor)
     {
-	ensSliceadaptorFetchBySlice(slice->Adaptor,
-				    slice,
-				    1,
-				    (ajint) ensSliceGetLength(slice),
-				    -1,
-				    Pslice);
-	return ajTrue;
+        ensSliceadaptorFetchBySlice(slice->Adaptor,
+                                    slice,
+                                    1,
+                                    (ajint) ensSliceGetLength(slice),
+                                    -1,
+                                    Pslice);
+        return ajTrue;
     }
-    
+
     if(slice->Sequence)
     {
-	/* Reverse (and complement) the sequence if one has been defined. */
-	
+        /* Reverse (and complement) the sequence if one has been defined. */
+
         sequence = ajStrNewS(slice->Sequence);
-	
-	ajSeqstrReverse(&sequence);
-	
-	*Pslice = ensSliceNewS(slice->Adaptor,
-			       slice->Seqregion,
-			       slice->Start,
-			       slice->End,
-			       slice->Strand * -1,
-			       sequence);
-	
-	ajStrDel(&sequence);
+
+        ajSeqstrReverse(&sequence);
+
+        *Pslice = ensSliceNewS(slice->Adaptor,
+                               slice->Seqregion,
+                               slice->Start,
+                               slice->End,
+                               slice->Strand * -1,
+                               sequence);
+
+        ajStrDel(&sequence);
     }
     else
-	*Pslice = ensSliceNew(slice->Adaptor,
-			      slice->Seqregion,
-			      slice->Start,
-			      slice->End,
-			      slice->Strand * -1);
-    
+        *Pslice = ensSliceNew(slice->Adaptor,
+                              slice->Seqregion,
+                              slice->Start,
+                              slice->End,
+                              slice->Strand * -1);
+
     return ajTrue;
 }
 
@@ -1587,102 +1602,100 @@ AjBool ensSliceFetchSubSlice(EnsPSlice slice,
     ajint srstart  = 0;
     ajint srend    = 0;
     ajint srstrand = 0;
-    
+
     AjPStr sequence = NULL;
-    
+
     if(!slice)
     {
-	ajDebug("ensSliceGetSubSlice requires an Ensembl Slice.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceGetSubSlice requires an Ensembl Slice.\n");
+
+        return ajFalse;
     }
-    
+
     if((start < 1) || (start > slice->End))
     {
-	ajDebug("ensSliceGetSubSlice requires the start coordinate %d "
-		"to be greater than or equal to 1 and less than or equal to "
-		"the end coordinate %d of the Ensembl Slice.\n",
-		start, slice->End);
-	
-	return ajFalse;
+        ajDebug("ensSliceGetSubSlice requires the start coordinate %d "
+                "to be greater than or equal to 1 and less than or equal to "
+                "the end coordinate %d of the Ensembl Slice.\n",
+                start, slice->End);
+
+        return ajFalse;
     }
-    
+
     if((end < start) || (end > slice->End))
     {
-	ajDebug("ensSliceGetSubSlice requires the end coordinate %d "
-		"to be less than or equal to the start coordinate %d "
-		"and to be less than or equal to the "
-		"end coordinate %d of the Ensembl Slice.\n",
-		end, start, slice->End);
-	
-	return ajFalse;
+        ajDebug("ensSliceGetSubSlice requires the end coordinate %d "
+                "to be less than or equal to the start coordinate %d "
+                "and to be less than or equal to the "
+                "end coordinate %d of the Ensembl Slice.\n",
+                end, start, slice->End);
+
+        return ajFalse;
     }
-    
+
     if(!strand)
-	strand = 1;
-    
+        strand = 1;
+
     /*
     ** Retrieve the Sub-Slice via the Slice Adaptor if one is attached.
     ** This will automatically register the new Slice in the
     ** Slice Adaptor-internal cache and will also take care of
     ** an eventual Slice-internal sequence.
     */
-    
+
     if(slice->Adaptor)
     {
-	ensSliceadaptorFetchBySlice(slice->Adaptor,
-				    slice,
-				    start,
-				    end,
-				    strand,
-				    Pslice);
-	
-	return ajTrue;
+        ensSliceadaptorFetchBySlice(slice->Adaptor,
+                                    slice,
+                                    start,
+                                    end,
+                                    strand,
+                                    Pslice);
+
+        return ajTrue;
     }
-    
+
     /* Transform relative into absolute Slice coordinates. */
-    
+
     if(slice->Strand >= 0)
     {
-	srstart = slice->Start + start - 1;
-	
-	srend = slice->Start + end - 1;
+        srstart = slice->Start + start - 1;
+        srend   = slice->Start + end   - 1;
     }
     else
     {
-	srstart = slice->End - end + 1;
-	
-	srend = slice->End - start + 1;
+        srstart = slice->End - end   + 1;
+        srend   = slice->End - start + 1;
     }
-    
+
     srstrand = slice->Strand * strand;
-    
+
     if(slice->Sequence)
     {
-	sequence = ajStrNewRes(end - start + 1);
-	
-	ensSliceFetchSubSequenceStr(slice,
-				    start,
-				    end,
-				    strand,
-				    &sequence);
-				    
-	*Pslice = ensSliceNewS(slice->Adaptor,
-			       slice->Seqregion,
-			       srstart,
-			       srend,
-			       srstrand,
-			       sequence);
-	
-	ajStrDel(&sequence);
+        sequence = ajStrNewRes(end - start + 1);
+
+        ensSliceFetchSubSequenceStr(slice,
+                                    start,
+                                    end,
+                                    strand,
+                                    &sequence);
+
+        *Pslice = ensSliceNewS(slice->Adaptor,
+                               slice->Seqregion,
+                               srstart,
+                               srend,
+                               srstrand,
+                               sequence);
+
+        ajStrDel(&sequence);
     }
     else
-	*Pslice = ensSliceNew(slice->Adaptor,
-			      slice->Seqregion,
-			      srstart,
-			      srend,
-			      srstrand);
-    
+        *Pslice = ensSliceNew(slice->Adaptor,
+                              slice->Seqregion,
+                              srstart,
+                              srend,
+                              srstrand);
+
     return ajTrue;
 }
 
@@ -1740,124 +1753,120 @@ AjBool ensSliceFetchExpandedSlice(const EnsPSlice slice,
 {
     ajint sshift = 0;
     ajint eshift = 0;
-    
+
     ajuint srid   = 0;
     ajint srstart = 0;
     ajint srend   = 0;
-    
+
     /*
-     ajDebug("ensSliceFetchExpandedSlice\n"
-	     "  slice %p\n"
-	     "  five %d\n"
-	     "  three %d\n"
-	     "  force '%B'\n"
-	     "  Pslice %p\n",
-	     slice,
-	     five,
-	     three,
-	     force,
-	     Pslice);
-     */
-    
+      ajDebug("ensSliceFetchExpandedSlice\n"
+      "  slice %p\n"
+      "  five %d\n"
+      "  three %d\n"
+      "  force '%B'\n"
+      "  Pslice %p\n",
+      slice,
+      five,
+      three,
+      force,
+      Pslice);
+    */
+
     if(!slice)
         return ajFalse;
-    
+
     if(!Pslice)
-	return ajFalse;
-    
+        return ajFalse;
+
     *Pslice = (EnsPSlice) NULL;
-    
+
     if(slice->Sequence)
     {
         ajDebug("ensSliceFetchExpandedSlice cannot expand an Ensembl Slice "
                 "with an attached sequence.\n");
-	
+
         return ajFalse;
     }
-    
+
     if(slice->Strand > 0)
     {
         sshift = five;
-	
         eshift = three;
     }
     else
     {
         sshift = three;
-	
         eshift = five;
     }
-    
+
     srid = ensSeqregionGetIdentifier(slice->Seqregion);
-    
+
     srstart = slice->Start - sshift;
-    
+
     srend = slice->End + eshift;
-    
+
     if(srstart > srend)
     {
         if(force)
         {
             /* Apply the maximal possible shift, if force is set. */
-	    
+
             if(sshift < 0)
-	    {
-		/*
-		** If we are contracting the slice from the start,
-		** move the start just before the end.
-		*/
-		
+            {
+                /*
+                ** If we are contracting the slice from the start,
+                ** move the start just before the end.
+                */
+
                 srstart = srend - 1;
-		
+
                 sshift = slice->Start - srstart;
             }
-
             else
             {
                 /*
-		** If the Slice still has a negative length,
-		** try to move the end.
-		*/
-		
+                ** If the Slice still has a negative length,
+                ** try to move the end.
+                */
+
                 if(eshift < 0)
                 {
                     srend = srstart + 1;
-		    
+
                     eshift = srend - slice->End;
                 }
-		
-                *Pfive = (slice->Strand >= 0) ? eshift : sshift;
-		
+
+                *Pfive  = (slice->Strand >= 0) ? eshift : sshift;
                 *Pthree = (slice->Strand >= 0) ? sshift : eshift;
             }
         }
-	
+
         if(srstart > srend)
         {
             /* If the Slice still has a negative length, return NULL. */
-	    
-	    ajDebug("ensSliceFetchExpandedSlice requires the Slice start %d "
-		    "to be less than the Slice end %d coordinate.\n",
-		    srstart, srend);
-	    
+
+            ajDebug("ensSliceFetchExpandedSlice requires the Slice start %d "
+                    "to be less than the Slice end %d coordinate.\n",
+                    srstart, srend);
+
             return ajFalse;
         }
     }
-    
+
     if(slice->Adaptor)
-	ensSliceadaptorFetchBySeqregionIdentifier(slice->Adaptor,
-						  srid,
-						  srstart,
-						  srend,
-						  slice->Strand,
-						  Pslice);
+        ensSliceadaptorFetchBySeqregionIdentifier(slice->Adaptor,
+                                                  srid,
+                                                  srstart,
+                                                  srend,
+                                                  slice->Strand,
+                                                  Pslice);
     else
-	*Pslice = ensSliceNew(slice->Adaptor,
-			      slice->Seqregion,
-			      srstart,
-			      srend,
-			      slice->Strand);
-    
+        *Pslice = ensSliceNew(slice->Adaptor,
+                              slice->Seqregion,
+                              srstart,
+                              srend,
+                              slice->Strand);
+
     return ajTrue;
 }
 
@@ -1885,56 +1894,56 @@ static EnsPProjectionsegment sliceConstrainToSeqregion(EnsPSlice slice)
 {
     ajint sshift = 0;
     ajint eshift = 0;
-    
+
     ajint *Pfive  = NULL;
     ajint *Pthree = NULL;
-    
+
     EnsPProjectionsegment ps = NULL;
-    
+
     EnsPSlice nslice = NULL;
-    
+
     if(!slice)
     {
         ajDebug("sliceConstrainToSeqregion requires an Ensembl Slice.\n");
-	
-	return NULL;
+
+        return NULL;
     }
-    
+
     /*
     ** If the Slice has negative coordinates or coordinates exceeding the
     ** length of the Sequence Region the Slice needs shrinking to the
     ** defined Sequence Region.
     */
-    
+
     /* Return NULL, if this Slice does not overlap with its Sequence Region. */
-    
+
     if((slice->Start > ensSeqregionGetLength(slice->Seqregion)) ||
-	(slice->End < 1))
-	return NULL;
-    
+       (slice->End < 1))
+        return NULL;
+
     if(slice->Start < 1)
-	sshift = slice->Start - 1;
-    
+        sshift = slice->Start - 1;
+
     if(slice->End > ensSeqregionGetLength(slice->Seqregion))
-	eshift = ensSeqregionGetLength(slice->Seqregion) - slice->End;
-    
+        eshift = ensSeqregionGetLength(slice->Seqregion) - slice->End;
+
     if(sshift || eshift)
-	ensSliceFetchExpandedSlice(slice,
-				   sshift,
-				   eshift,
-				   ajFalse,
-				   Pfive,
-				   Pthree,
-				   &nslice);
+        ensSliceFetchExpandedSlice(slice,
+                                   sshift,
+                                   eshift,
+                                   ajFalse,
+                                   Pfive,
+                                   Pthree,
+                                   &nslice);
     else
-	nslice = ensSliceNewRef(slice);
-    
+        nslice = ensSliceNewRef(slice);
+
     ps = ensProjectionsegmentNew(1 - sshift,
-				 ensSliceGetLength(slice) + eshift,
-				 nslice);
-    
+                                 ensSliceGetLength(slice) + eshift,
+                                 nslice);
+
     ensSliceDel(&nslice);
-    
+
     return ps;
 }
 
@@ -1954,7 +1963,7 @@ static EnsPProjectionsegment sliceConstrainToSeqregion(EnsPSlice slice)
 ** @cc Bio::EnsEMBL::Slice::project
 ** @param [u] slice [EnsPSlice] Ensembl Slice
 ** @param [r] csname [const AjPStr] Ensembl Coordinate System name
-** @param [r] csversion [const AjPStr] Ensembl Coordinate System version
+** @param [rN] csversion [const AjPStr] Ensembl Coordinate System version
 ** @param [u] pslist [AjPList] AJAX List of Ensembl Projection Segments
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -1969,272 +1978,277 @@ AjBool ensSliceProject(EnsPSlice slice,
     ajint start  = 0;
     ajint end    = 0;
     ajint length = 0;
-    
+
     AjPList nrmpslist = NULL;
     AjPList mrs       = NULL;
-    
+
     EnsPAssemblymapper am         = NULL;
     EnsPAssemblymapperadaptor ama = NULL;
-    
-    EnsPCoordsystem srccs     = NULL;
+
+    EnsPCoordsystem srccs      = NULL;
     EnsPCoordsystem trgcs      = NULL;
     EnsPCoordsystem nrmcs      = NULL;
     EnsPCoordsystem mrcs       = NULL;
     EnsPCoordsystemadaptor csa = NULL;
-    
+
     EnsPDatabaseadaptor dba = NULL;
-    
+
     EnsPProjectionsegment nrmps = NULL;
     EnsPProjectionsegment ps    = NULL;
-    
+
     EnsPMapperresult mr = NULL;
-    
+
     const EnsPSlice nrmslc = NULL;
-    EnsPSlice newslc = NULL;
-    
+    EnsPSlice newslc       = NULL;
+
     /*
-     ajDebug("ensSliceProject\n"
-	     "  slice %p\n"
-	     "  csname '%S'\n"
-	     "  cvsversion '%S'\n"
-	     "  pslist %p\n",
-	     slice,
-	     csname,
-	     csversion,
-	     pslist);
-     
-     ensSliceTrace(slice, 1);
-     */
-    
+      ajDebug("ensSliceProject\n"
+      "  slice %p\n"
+      "  csname '%S'\n"
+      "  cvsversion '%S'\n"
+      "  pslist %p\n",
+      slice,
+      csname,
+      csversion,
+      pslist);
+
+      ensSliceTrace(slice, 1);
+    */
+
     if(!slice)
     {
         ajDebug("ensSliceProject requires an Ensembl Slice.\n");
-	
-	return ajFalse;
+
+        return ajFalse;
     }
-    
+
     if(!csname)
     {
         ajDebug("ensSliceProject requires an "
                 "Ensembl Coordinate System name.\n");
-	
+
         return ajFalse;
     }
-    
-    if(!csversion)
+
+    /*
+    ** A Coordinate System version is not strictly required,
+    ** since ensCoordsystemadaptorFetchByName does not require one.
+    */
+
+    if(!pslist)
     {
-        ajDebug("ensSliceProject requires an "
-		"Ensembl Coordinate System version.\n");
-	
+        ajDebug("ensSliceProject requires an AJAX List of "
+                "Ensembl Projection Segments.\n");
+
         return ajFalse;
     }
-    
+
     if(!slice->Adaptor)
     {
-	ajDebug("ensSliceProject requires that an Ensembl Slice Adaptor has "
-		"been set in the Ensembl Slice.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceProject requires that an Ensembl Slice Adaptor has "
+                "been set in the Ensembl Slice.\n");
+
+        return ajFalse;
     }
-    
+
     if(!slice->Seqregion)
     {
-	ajDebug("ensSliceProject requires that an Ensembl Sequence Region "
-		"has been set in the Ensembl Slice.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceProject requires that an Ensembl Sequence Region "
+                "has been set in the Ensembl Slice.\n");
+
+        return ajFalse;
     }
-    
+
     dba = ensSliceadaptorGetDatabaseadaptor(slice->Adaptor);
-    
+
     ama = ensRegistryGetAssemblymapperadaptor(dba);
-    
+
     csa = ensRegistryGetCoordsystemadaptor(dba);
-    
+
     /*
     ** Get the source Coordinate System, which is the
     ** Ensembl Coordinate System element of the
     ** Ensembl Sequence Region element of this Ensembl Slice.
     */
-    
+
     srccs = ensSeqregionGetCoordsystem(slice->Seqregion);
-    
+
     if(!srccs)
     {
-	ajDebug("ensSliceProject requires that an Ensembl Coordinate System "
-		"element has been set in the Ensembl Sequence Region element "
-		"of the Ensembl Slice.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceProject requires that an Ensembl Coordinate System "
+                "element has been set in the Ensembl Sequence Region element "
+                "of the Ensembl Slice.\n");
+
+        return ajFalse;
     }
-    
+
     /* Fetch the target Coordinate System. */
-    
+
     ensCoordsystemadaptorFetchByName(csa, csname, csversion, &trgcs);
-    
+
     if(!trgcs)
     {
-	ajDebug("ensSliceProject cannot project to an unknown "
+        ajDebug("ensSliceProject cannot project to an unknown "
                 "Ensembl Coordinate System '%S:%S'.\n", csname, csversion);
-	
-	return ajFalse;
+
+        return ajFalse;
     }
-    
+
     /*
     ** No mapping is needed if the requested Ensembl Coordinate System is the
     ** one this Ensembl Slice is based upon, but we do need to check if some
     ** of the Slice is outside of defined regions.
     */
-    
+
     if(ensCoordsystemMatch(srccs, trgcs))
     {
         ajListPushAppend(pslist, (void *) sliceConstrainToSeqregion(slice));
-	
-	ensCoordsystemDel(&trgcs);
-	
-	return ajTrue;
+
+        ensCoordsystemDel(&trgcs);
+
+        return ajTrue;
     }
-    
+
     start = 1;
-    
+
     /*
     ** Decompose this Slice into its symlinked components, which allows
     ** handling of haplotypes (HAPs) and pseudo-autosomal region (PARs).
     */
-    
+
     nrmpslist = ajListNew();
-    
+
     ensSliceadaptorFetchNormalisedSliceProjection(slice->Adaptor,
-						  slice,
-						  nrmpslist);
-    
+                                                  slice,
+                                                  nrmpslist);
+
     while(ajListPop(nrmpslist, (void **) &nrmps))
     {
-	nrmslc = ensProjectionsegmentGetTrgSlice(nrmps);
-	
-	nrmcs = ensSeqregionGetCoordsystem(nrmslc->Seqregion);
-	
-	am = ensAssemblymapperadaptorFetchByCoordsystems(ama, nrmcs, trgcs);
-	
-	mrs = ajListNew();
-	
-	if(am)
-	    ensAssemblymapperMap(am,
-				 nrmslc->Seqregion,
-				 nrmslc->Start,
-				 nrmslc->End,
-				 nrmslc->Strand,
-				 mrs);
-	else
-	{
-	    ajDebug("ensSliceProject got no Assemblymapper -> gap\n");
-	    
-	    mr = MENSMAPPERGAPNEW(nrmslc->Start, nrmslc->End);
-	    
-	    ajListPushAppend(mrs, (void *) mr);
-	}
-	
-	ensAssemblymapperDel(&am);
-	
-	/* Construct a projection from the mapping results and return it. */
-	
-	while(ajListPop(mrs, (void **) &mr))
-	{
-	    length = ensMapperresultGetLength(mr);
-	    
-	    /* Skip gaps. */
-	    
-	    if(ensMapperresultGetType(mr) == ensEMapperresultCoordinate)
-	    {
-		mrcs = ensMapperresultGetCoordsystem(mr);
-		
-		/*
-		** If the normalised projection just ended up mapping to the
-		** same coordinate system we were already in then we should
-		** just return the original region. This can happen for
-		** example, if we were on a PAR region on Y which referred
-		** to X and a projection to 'toplevel' was requested.
-		*/
-		
-		if(ensCoordsystemMatch(mrcs, nrmcs))
-		{
-		    /* Trim off regions, which are not defined. */
-		    
-		    ajListPushAppend(pslist, (void *)
-				     sliceConstrainToSeqregion(slice));
-		    
-		    /*
-		    ** Delete this Ensembl Mapper Result and the rest of the
-		    ** Ensembl Mapper Results including the AJAX List.
-		    */
-		    
-		    ensMapperresultDel(&mr);
-		    
-		    while(ajListPop(mrs, (void **) &mr))
-			ensMapperresultDel(&mr);
-		    
-		    ajListFree(&mrs);
-		    
-		    /*
-		    ** Delete this normalised Projection Segment and the rest
-		    ** of the normalised Projection Segments including the
-		    ** AJAX List.
-		    */
-		    
-		    ensProjectionsegmentDel(&nrmps);
-		    
-		    while(ajListPop(nrmpslist, (void **) &nrmps))
-		    	ensProjectionsegmentDel(&nrmps);
-		    
-		    ajListFree(&nrmpslist);
-		    
-		    /* Finally, delete the target Coordinate System. */
-		    
-		    ensCoordsystemDel(&trgcs);
-		    
-		    return ajTrue;
-		}
-		else
-		{
-		    /* Create a Slice for the target Coordinate System. */
-		    
-		    ensSliceadaptorFetchBySeqregionIdentifier(
+        nrmslc = ensProjectionsegmentGetTrgSlice(nrmps);
+
+        nrmcs = ensSeqregionGetCoordsystem(nrmslc->Seqregion);
+
+        am = ensAssemblymapperadaptorFetchByCoordsystems(ama, nrmcs, trgcs);
+
+        mrs = ajListNew();
+
+        if(am)
+            ensAssemblymapperMap(am,
+                                 nrmslc->Seqregion,
+                                 nrmslc->Start,
+                                 nrmslc->End,
+                                 nrmslc->Strand,
+                                 mrs);
+        else
+        {
+            ajDebug("ensSliceProject got no Assemblymapper -> gap\n");
+
+            mr = MENSMAPPERGAPNEW(nrmslc->Start, nrmslc->End);
+
+            ajListPushAppend(mrs, (void *) mr);
+        }
+
+        ensAssemblymapperDel(&am);
+
+        /* Construct a projection from the mapping results and return it. */
+
+        while(ajListPop(mrs, (void **) &mr))
+        {
+            length = ensMapperresultGetLength(mr);
+
+            /* Skip gaps. */
+
+            if(ensMapperresultGetType(mr) == ensEMapperresultCoordinate)
+            {
+                mrcs = ensMapperresultGetCoordsystem(mr);
+
+                /*
+                ** If the normalised projection just ended up mapping to the
+                ** same coordinate system we were already in then we should
+                ** just return the original region. This can happen for
+                ** example, if we were on a PAR region on Y which referred
+                ** to X and a projection to 'toplevel' was requested.
+                */
+
+                if(ensCoordsystemMatch(mrcs, nrmcs))
+                {
+                    /* Trim off regions, which are not defined. */
+
+                    ajListPushAppend(pslist, (void *)
+                                     sliceConstrainToSeqregion(slice));
+
+                    /*
+                    ** Delete this Ensembl Mapper Result and the rest of the
+                    ** Ensembl Mapper Results including the AJAX List.
+                    */
+
+                    ensMapperresultDel(&mr);
+
+                    while(ajListPop(mrs, (void **) &mr))
+                        ensMapperresultDel(&mr);
+
+                    ajListFree(&mrs);
+
+                    /*
+                    ** Delete this normalised Projection Segment and the rest
+                    ** of the normalised Projection Segments including the
+                    ** AJAX List.
+                    */
+
+                    ensProjectionsegmentDel(&nrmps);
+
+                    while(ajListPop(nrmpslist, (void **) &nrmps))
+                        ensProjectionsegmentDel(&nrmps);
+
+                    ajListFree(&nrmpslist);
+
+                    /* Finally, delete the target Coordinate System. */
+
+                    ensCoordsystemDel(&trgcs);
+
+                    return ajTrue;
+                }
+                else
+                {
+                    /* Create a Slice for the target Coordinate System. */
+
+                    ensSliceadaptorFetchBySeqregionIdentifier(
                         slice->Adaptor,
                         ensMapperresultGetObjectIdentifier(mr),
                         ensMapperresultGetStart(mr),
                         ensMapperresultGetEnd(mr),
                         ensMapperresultGetStrand(mr),
                         &newslc);
-		    
-		    /*
-		    ** TODO: We could have a ensSliceadaptorFetchByMapperresult
-		    ** function to simplify this.
-		    */
-		    
-		    end = start + length - 1;
-		    
-		    ps = ensProjectionsegmentNew(start, end, newslc);
-		    
-		    ajListPushAppend(pslist, (void *) ps);
-		    
-		    ensSliceDel(&newslc);
-		}
-	    }
-	    
-	    start += length;
-	    
-	    ensMapperresultDel(&mr);
-	}
-	
-	ajListFree(&mrs);
-	
-	ensProjectionsegmentDel(&nrmps);
+
+                    /*
+                    ** TODO: We could have a ensSliceadaptorFetchByMapperresult
+                    ** function to simplify this.
+                    */
+
+                    end = start + length - 1;
+
+                    ps = ensProjectionsegmentNew(start, end, newslc);
+
+                    ajListPushAppend(pslist, (void *) ps);
+
+                    ensSliceDel(&newslc);
+                }
+            }
+
+            start += length;
+
+            ensMapperresultDel(&mr);
+        }
+
+        ajListFree(&mrs);
+
+        ensProjectionsegmentDel(&nrmps);
     }
-    
+
     ajListFree(&nrmpslist);
-    
+
     ensCoordsystemDel(&trgcs);
-    
+
     return ajTrue;
 }
 
@@ -2259,183 +2273,183 @@ AjBool ensSliceProject(EnsPSlice slice,
 ** @@
 ******************************************************************************/
 
-AjBool ensPSliceProjectToSlice(EnsPSlice srcslice,
-                               EnsPSlice trgslice,
-                               AjPList pslist)
+AjBool ensSliceProjectToSlice(EnsPSlice srcslice,
+                              EnsPSlice trgslice,
+                              AjPList pslist)
 {
     ajint start  = 0;
     ajint end    = 0;
     ajint length = 0;
-    
+
     AjPList nrmpslist = NULL;
     AjPList mrs       = NULL;
-    
+
     EnsPAssemblymapper am         = NULL;
     EnsPAssemblymapperadaptor ama = NULL;
-    
+
     EnsPCoordsystem srccs = NULL;
     EnsPCoordsystem trgcs = NULL;
     EnsPCoordsystem nrmcs = NULL;
     EnsPCoordsystem mrcs  = NULL;
-    
+
     EnsPDatabaseadaptor dba = NULL;
-    
+
     EnsPProjectionsegment nrmps = NULL;
     EnsPProjectionsegment ps    = NULL;
-    
+
     EnsPMapperresult mr = NULL;
-    
+
     const EnsPSlice nrmslc = NULL;
     EnsPSlice newslc       = NULL;
-    
+
     if(!srcslice)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!trgslice)
-	return ajFalse;
-    
+        return ajFalse;
+
     dba = ensSliceadaptorGetDatabaseadaptor(srcslice->Adaptor);
-    
+
     ama = ensRegistryGetAssemblymapperadaptor(dba);
-    
+
     /*
     ** Get the source Coordinate System, which is the
     ** Ensembl Coordinate System element of the
     ** Ensembl Sequence Region element of this Ensembl Slice.
     */
-    
+
     srccs = ensSeqregionGetCoordsystem(srcslice->Seqregion);
-    
+
     if(!srccs)
     {
-	ajDebug("ensSliceProjectToSlice requires that an "
-		"Ensembl Coordinate System element has been set in the "
-		"Ensembl Sequence Region element of the source "
-		"Ensembl Slice.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceProjectToSlice requires that an "
+                "Ensembl Coordinate System element has been set in the "
+                "Ensembl Sequence Region element of the source "
+                "Ensembl Slice.\n");
+
+        return ajFalse;
     }
-    
+
     /*
     ** Get the target Coordinate System, which is the
     ** Ensembl Coordinate System element of the
     ** Ensembl Sequence Region element of this Ensembl Slice.
     */
-    
+
     trgcs = ensSeqregionGetCoordsystem(trgslice->Seqregion);
-    
+
     if(!trgcs)
     {
-	ajDebug("ensSliceProjectToSlice requires that an "
-		"Ensembl Coordinate System element has been set in the "
-		"Ensembl Sequence Region element of the target "
-		"Ensembl Slice.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceProjectToSlice requires that an "
+                "Ensembl Coordinate System element has been set in the "
+                "Ensembl Sequence Region element of the target "
+                "Ensembl Slice.\n");
+
+        return ajFalse;
     }
-    
+
     /*
     ** Decompose this Slice into its symlinked components, which allows
     ** handling of haplotypes (HAPs) and pseudo-autosomal region (PARs).
     */
-    
+
     nrmpslist = ajListNew();
-    
+
     ensSliceadaptorFetchNormalisedSliceProjection(srcslice->Adaptor,
-						  srcslice,
-						  nrmpslist);
-    
+                                                  srcslice,
+                                                  nrmpslist);
+
     while(ajListPop(nrmpslist, (void **) &nrmps))
     {
-	nrmslc = ensProjectionsegmentGetTrgSlice(nrmps);
-	
-	nrmcs = ensSeqregionGetCoordsystem(nrmslc->Seqregion);
-	
-	am = ensAssemblymapperadaptorFetchByCoordsystems(ama, nrmcs, trgcs);
-	
-	mrs = ajListNew();
-	
-	if(am)
-	    ensAssemblymapperMapToSeqregion(am,
-					    nrmslc->Seqregion,
-					    nrmslc->Start,
-					    nrmslc->End,
-					    nrmslc->Strand,
-					    trgslice->Seqregion,
-					    mrs);
-	else
-	{
-	    ajDebug("ensSliceProject got no Assemblymapper -> gap\n");
-	    
-	    mr = MENSMAPPERGAPNEW(nrmslc->Start, nrmslc->End);
-	    
-	    ajListPushAppend(mrs, (void *) mr);
-	}
-	
-	ensAssemblymapperDel(&am);
-	
-	/* Construct a projection from the mapping results and return it. */
-	
-	while(ajListPop(mrs, (void **) &mr))
-	{
-	    length = ensMapperresultGetLength(mr);
-	    
-	    /* Skip gaps. */
-	    
-	    if(ensMapperresultGetType(mr) == ensEMapperresultCoordinate)
-	    {
+        nrmslc = ensProjectionsegmentGetTrgSlice(nrmps);
+
+        nrmcs = ensSeqregionGetCoordsystem(nrmslc->Seqregion);
+
+        am = ensAssemblymapperadaptorFetchByCoordsystems(ama, nrmcs, trgcs);
+
+        mrs = ajListNew();
+
+        if(am)
+            ensAssemblymapperMapToSeqregion(am,
+                                            nrmslc->Seqregion,
+                                            nrmslc->Start,
+                                            nrmslc->End,
+                                            nrmslc->Strand,
+                                            trgslice->Seqregion,
+                                            mrs);
+        else
+        {
+            ajDebug("ensSliceProject got no Assemblymapper -> gap\n");
+
+            mr = MENSMAPPERGAPNEW(nrmslc->Start, nrmslc->End);
+
+            ajListPushAppend(mrs, (void *) mr);
+        }
+
+        ensAssemblymapperDel(&am);
+
+        /* Construct a projection from the mapping results and return it. */
+
+        while(ajListPop(mrs, (void **) &mr))
+        {
+            length = ensMapperresultGetLength(mr);
+
+            /* Skip gaps. */
+
+            if(ensMapperresultGetType(mr) == ensEMapperresultCoordinate)
+            {
                 /*
                 ** AJB: The variable mrcs, set below, is not used
                 ** elsewhere. Needs fixing appropriately.
                 */
-                
-		mrcs = ensMapperresultGetCoordsystem(mr);
-		
-		/* Create a Slice for the target Coordinate System. */
-		
-		ensSliceadaptorFetchBySeqregionIdentifier(
+
+                mrcs = ensMapperresultGetCoordsystem(mr);
+
+                /* Create a Slice for the target Coordinate System. */
+
+                ensSliceadaptorFetchBySeqregionIdentifier(
                     srcslice->Adaptor,
                     ensMapperresultGetObjectIdentifier(mr),
                     ensMapperresultGetStart(mr),
                     ensMapperresultGetEnd(mr),
                     ensMapperresultGetStrand(mr),
                     &newslc);
-		
-		/*
-		** TODO: We could have a ensSliceadaptorFetchByMapperresult
-		** function to simplify this.
-	        */
-		
-		end = start + length - 1;
-		
-		ps = ensProjectionsegmentNew(start, end, newslc);
-		
-		ajListPushAppend(pslist, (void *) ps);
-		
-		ensSliceDel(&newslc);
-	    }
-	    
-	    start += length;
-	    
-	    ensMapperresultDel(&mr);
-	}
-	
-	ajListFree(&mrs);
-	
-	ensProjectionsegmentDel(&nrmps);
+
+                /*
+                ** TODO: We could have a ensSliceadaptorFetchByMapperresult
+                ** function to simplify this.
+                */
+
+                end = start + length - 1;
+
+                ps = ensProjectionsegmentNew(start, end, newslc);
+
+                ajListPushAppend(pslist, (void *) ps);
+
+                ensSliceDel(&newslc);
+            }
+
+            start += length;
+
+            ensMapperresultDel(&mr);
+        }
+
+        ajListFree(&mrs);
+
+        ensProjectionsegmentDel(&nrmps);
     }
-    
+
     ajListFree(&nrmpslist);
-    
+
     ensCoordsystemDel(&trgcs);
-    
+
     /*
     ** Delete the Ensembl Assembly Mapper Adaptor cache,
     ** as the next mapping may include a different set.
     */
-    
+
     ensAssemblymapperadaptorCacheClear(ama);
-    
+
     return ajTrue;
 }
 
@@ -2462,21 +2476,21 @@ AjBool ensSliceFetchAllAttributes(EnsPSlice slice,
                                   AjPList attributes)
 {
     if(!slice)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!attributes)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!slice->Seqregion)
     {
-	ajDebug("ensSliceFetchAllAttributes cannot fetch Ensembl Attributes "
-		"for a Slice without a Sequence Region.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceFetchAllAttributes cannot fetch Ensembl Attributes "
+                "for a Slice without a Sequence Region.\n");
+
+        return ajFalse;
     }
-    
+
     ensSeqregionFetchAllAttributes(slice->Seqregion, code, attributes);
-    
+
     return ajTrue;
 }
 
@@ -2508,36 +2522,36 @@ AjBool ensSliceFetchAllRepeatfeatures(EnsPSlice slice,
                                       AjPList rfs)
 {
     EnsPRepeatfeatureadaptor rfa = NULL;
-    
+
     /*
-     ajDebug("ensSliceFetchAllRepeatfeatures\n"
-	     "  slice %p\n"
-	     "  anname '%S'\n"
-	     "  rctype '%S'\n"
-	     "  rcclass '%S'\n"
-	     "  rcname '%S'\n"
-	     "  rfs %p\n",
-	     slice,
-	     anname,
-	     rctype,
-	     rcclass,
-	     rcname,
-	     rfs);
-     */
-    
+      ajDebug("ensSliceFetchAllRepeatfeatures\n"
+      "  slice %p\n"
+      "  anname '%S'\n"
+      "  rctype '%S'\n"
+      "  rcclass '%S'\n"
+      "  rcname '%S'\n"
+      "  rfs %p\n",
+      slice,
+      anname,
+      rctype,
+      rcclass,
+      rcname,
+      rfs);
+    */
+
     if(!slice)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!slice->Adaptor)
     {
-	ajDebug("ensSliceFetchAllRepeatfeatures cannot get Repeat Features "
-		"without a Slice Adaptor attached to the Slice.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceFetchAllRepeatfeatures cannot get Repeat Features "
+                "without a Slice Adaptor attached to the Slice.\n");
+
+        return ajFalse;
     }
-    
+
     rfa = ensRegistryGetRepeatfeatureadaptor(slice->Adaptor->Adaptor);
-    
+
     return ensRepeatfeatureadaptorFetchAllBySlice(
         rfa,
         slice,
@@ -2546,6 +2560,72 @@ AjBool ensSliceFetchAllRepeatfeatures(EnsPSlice slice,
         rcclass,
         rcname,
         rfs);
+}
+
+
+
+
+/* @func ensSliceFetchAllSequenceEdits ****************************************
+**
+** Fetch all Ensembl Sequence Edits of an Ensembl Slice.
+**
+** The caller is responsible for deleting the Ensembl Sequence Edits before
+** deleting the AJAX List.
+**
+** @cc Bio::EnsEMBL::DBSQL::SequenceAdaptor::_rna_edit
+** @param [u] slice [EnsPSlice] Ensembl Slice
+** @param [r] ses [AjPList] AJAX List of Ensembl Sequence Edits
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+** Ensembl Sequence Edits are Ensembl Attributes, which codes have to be
+** defined in the static const char *sliceSequenceEditCode array.
+******************************************************************************/
+
+AjBool ensSliceFetchAllSequenceEdits(EnsPSlice slice,
+                                     AjPList ses)
+{
+    register ajuint i = 0;
+
+    AjPList attributes = NULL;
+
+    AjPStr code = NULL;
+
+    EnsPAttribute at = NULL;
+
+    EnsPSequenceEdit se = NULL;
+
+    if(!slice)
+        return ajFalse;
+
+    if(!ses)
+        return ajFalse;
+
+    code = ajStrNew();
+
+    attributes = ajListNew();
+
+    for(i = 0; sliceSequenceEditCode[i]; i++)
+    {
+        ajStrAssignC(&code, sliceSequenceEditCode[i]);
+
+        ensSliceFetchAllAttributes(slice, code, attributes);
+    }
+
+    while(ajListPop(attributes, (void **) &at))
+    {
+        se = ensSequenceEditNewA(at);
+
+        ajListPushAppend(ses, (void *) se);
+
+        ensAttributeDel(&at);
+    }
+
+    ajListFree(&attributes);
+
+    ajStrDel(&code);
+
+    return ajTrue;
 }
 
 
@@ -2588,8 +2668,8 @@ static ajuint sliceAdaptorCacheMaxSize = 0;
 static void* sliceAdaptorCacheReference(void *value)
 {
     if(!value)
-	return NULL;
-    
+        return NULL;
+
     return (void *) ensSliceNewRef((EnsPSlice) value);
 }
 
@@ -2615,77 +2695,77 @@ static void sliceAdaptorCacheDelete(void **value)
     ajint start  = 0;
     ajint end    = 0;
     ajint strand = 0;
-    
+
     AjPStr newkey = NULL;
     AjPStr oldkey = NULL;
-    
+
     EnsPCoordsystem cs = NULL;
-    
+
     EnsPSlice oldslice = NULL;
     EnsPSlice *Pslice  = NULL;
-    
+
     if(!value)
-	return;
-    
+        return;
+
     /*
     ** Synchronise the deletion of this Sequence Region from the
     ** identifier cache, which is based on an Ensembl (LRU) Cache,
     ** with the name cache, based on a conventional AJAX Table,
     ** both in the Sequence Adaptor.
     */
-    
+
     Pslice = (EnsPSlice *) value;
-    
+
     if(!*Pslice)
-	return;
-    
+        return;
+
     if((*Pslice)->Adaptor && (*Pslice)->Adaptor->CacheByName)
     {
-	cs = ensSeqregionGetCoordsystem((*Pslice)->Seqregion);
-	
-	start = (*Pslice)->Start;
-	
-	end = (*Pslice)->End;
-	
-	strand = (*Pslice)->Strand;
-	
-	if((start == 1) &&
-	    (end == ensSeqregionGetLength((*Pslice)->Seqregion)) &&
-	    (strand == 1))
-	{
-	    start = 0;
-	    
-	    end = 0;
-	    
-	    strand = 0;
-	}
-	
-	/* Remove from the name cache. */
-	
-	newkey = ajFmtStr("%S:%S:%S:%d:%d:%d",
-			  ensCoordsystemGetName(cs),
-			  ensCoordsystemGetVersion(cs),
-			  ensSeqregionGetName((*Pslice)->Seqregion),
-			  start, end, strand);
-	
-	oldslice = (EnsPSlice)
-	    ajTableRemoveKey((*Pslice)->Adaptor->CacheByName,
-			     (const void *) newkey,
-			     (void **) &oldkey);
-	
-	/* Delete the old and new key data. */
-	
-	ajStrDel(&oldkey);
-	
-	ajStrDel(&newkey);
-	
-	/* Delete the value data. */
-	
-	ensSliceDel(&oldslice);
+        cs = ensSeqregionGetCoordsystem((*Pslice)->Seqregion);
+
+        start = (*Pslice)->Start;
+
+        end = (*Pslice)->End;
+
+        strand = (*Pslice)->Strand;
+
+        if((start == 1) &&
+           (end == ensSeqregionGetLength((*Pslice)->Seqregion)) &&
+           (strand == 1))
+        {
+            start = 0;
+
+            end = 0;
+
+            strand = 0;
+        }
+
+        /* Remove from the name cache. */
+
+        newkey = ajFmtStr("%S:%S:%S:%d:%d:%d",
+                          ensCoordsystemGetName(cs),
+                          ensCoordsystemGetVersion(cs),
+                          ensSeqregionGetName((*Pslice)->Seqregion),
+                          start, end, strand);
+
+        oldslice = (EnsPSlice)
+            ajTableRemoveKey((*Pslice)->Adaptor->CacheByName,
+                             (const void *) newkey,
+                             (void **) &oldkey);
+
+        /* Delete the old and new key data. */
+
+        ajStrDel(&oldkey);
+
+        ajStrDel(&newkey);
+
+        /* Delete the value data. */
+
+        ensSliceDel(&oldslice);
     }
-    
+
     ensSliceDel(Pslice);
-    
+
     return;
 }
 
@@ -2706,8 +2786,8 @@ static void sliceAdaptorCacheDelete(void **value)
 static ajuint sliceAdaptorCacheSize(const void* value)
 {
     if(!value)
-	return 0;
-    
+        return 0;
+
     return ensSliceGetMemSize((const EnsPSlice) value);
 }
 
@@ -2725,12 +2805,8 @@ static ajuint sliceAdaptorCacheSize(const void* value)
 ** @fnote None
 **
 ** @nam3rule New Constructor
-** @nam4rule NewObj Constructor with existing object
-** @nam4rule NewRef Constructor by incrementing the reference counter
 **
 ** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPSliceadaptor] Ensembl Slice Adaptor
-** @argrule Ref object [EnsPSliceadaptor] Ensembl Slice Adaptor
 **
 ** @valrule * [EnsPSliceadaptor] Ensembl Slice Adaptor
 **
@@ -2753,29 +2829,29 @@ static ajuint sliceAdaptorCacheSize(const void* value)
 EnsPSliceadaptor ensSliceadaptorNew(EnsPDatabaseadaptor dba)
 {
     EnsPSliceadaptor adaptor = NULL;
-    
+
     if(!dba)
         return NULL;
-    
+
     AJNEW0(adaptor);
-    
+
     adaptor->Adaptor = dba;
-    
+
     adaptor->CacheByIdentifier =
-	ensCacheNew(ensECacheTypeAlphaNumeric,
-		    sliceAdaptorCacheMaxBytes,
-		    sliceAdaptorCacheMaxCount,
-		    sliceAdaptorCacheMaxSize,
-		    sliceAdaptorCacheReference,
-		    sliceAdaptorCacheDelete,
-		    sliceAdaptorCacheSize,
-		    (void* (*)(const void* key)) NULL, /* Fread */
-		    (AjBool (*)(const void* value)) NULL, /* Fwrite */
-		    ajFalse,
-		    "Slice");
-    
+        ensCacheNew(ensECacheTypeAlphaNumeric,
+                    sliceAdaptorCacheMaxBytes,
+                    sliceAdaptorCacheMaxCount,
+                    sliceAdaptorCacheMaxSize,
+                    sliceAdaptorCacheReference,
+                    sliceAdaptorCacheDelete,
+                    sliceAdaptorCacheSize,
+                    (void* (*)(const void* key)) NULL, /* Fread */
+                    (AjBool (*)(const void* value)) NULL, /* Fwrite */
+                    ajFalse,
+                    "Slice");
+
     adaptor->CacheByName = ajTablestrNewLen(0);
-    
+
     return adaptor;
 }
 
@@ -2796,35 +2872,35 @@ EnsPSliceadaptor ensSliceadaptorNew(EnsPDatabaseadaptor dba)
 void ensSliceadaptorDel(EnsPSliceadaptor *Padaptor)
 {
     EnsPSliceadaptor pthis = NULL;
-    
+
     if(!Padaptor)
-	return;
-    
+        return;
+
     if(!*Padaptor)
-	return;
+        return;
 
     pthis = *Padaptor;
-    
+
     /*
-     ajDebug("ensSliceadaptorDel\n"
-	     "  *Padaptor %p\n",
-	     *Padaptor);
-     */
-    
+      ajDebug("ensSliceadaptorDel\n"
+      "  *Padaptor %p\n",
+      *Padaptor);
+      */
+
     /*
-     ** Clear the identifier cache, which is based on an Ensembl LRU Cache.
-     ** Clearing the Ensembl LRU Cache automatically clears the name cache
-     ** via sliceAdaptorCacheDelete.
-     */
-    
+    ** Clear the identifier cache, which is based on an Ensembl LRU Cache.
+    ** Clearing the Ensembl LRU Cache automatically clears the name cache
+    ** via sliceAdaptorCacheDelete.
+    */
+
     ensCacheDel(&pthis->CacheByIdentifier);
-    
+
     ajTableFree(&pthis->CacheByName);
-    
+
     AJFREE(pthis);
 
     *Padaptor = NULL;
-    
+
     return;
 }
 
@@ -2846,7 +2922,7 @@ EnsPDatabaseadaptor ensSliceadaptorGetDatabaseadaptor(
 {
     if(!adaptor)
         return NULL;
-    
+
     return adaptor->Adaptor;
 }
 
@@ -2869,124 +2945,124 @@ AjBool ensSliceadaptorCacheInsert(EnsPSliceadaptor adaptor, EnsPSlice* Pslice)
     ajint start  = 0;
     ajint end    = 0;
     ajint strand = 0;
-    
+
     AjPStr ikey = NULL;
     AjPStr nkey = NULL;
-    
+
     EnsPCoordsystem cs = NULL;
-    
+
     EnsPSlice slice1 = NULL;
     EnsPSlice slice2 = NULL;
-    
+
     /*
-     ajDebug("ensSliceadaptorCacheInsert\n"
-	     "  adaptor %p\n"
-	     "  *Pslice %p\n",
-	     adaptor,
-	     *Pslice);
-     
-     ensSliceTrace(*Pslice, 1);
-     */
-    
+      ajDebug("ensSliceadaptorCacheInsert\n"
+      "  adaptor %p\n"
+      "  *Pslice %p\n",
+      adaptor,
+      *Pslice);
+
+      ensSliceTrace(*Pslice, 1);
+    */
+
     if(!adaptor)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Pslice)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!*Pslice)
-	return ajFalse;
-    
+        return ajFalse;
+
     cs = ensSeqregionGetCoordsystem((*Pslice)->Seqregion);
-    
+
     start = (*Pslice)->Start;
-    
+
     end = (*Pslice)->End;
-    
+
     strand = (*Pslice)->Strand;
-    
+
     /* For Slices that cover entire Sequence Regions zero all coordinates. */
-    
+
     if((start == 1) &&
-	(end == ensSeqregionGetLength((*Pslice)->Seqregion)) &&
-	(strand == 1))
+       (end == ensSeqregionGetLength((*Pslice)->Seqregion)) &&
+       (strand == 1))
     {
-	start = 0;
-	
-	end = 0;
-	
-	strand = 0;
+        start = 0;
+
+        end = 0;
+
+        strand = 0;
     }
-    
+
     /* Search the identifier cache. */
-    
+
     ikey = ajFmtStr("%u:%d:%d:%d",
-		    ensSeqregionGetIdentifier((*Pslice)->Seqregion),
-		    start, end, strand);
-    
+                    ensSeqregionGetIdentifier((*Pslice)->Seqregion),
+                    start, end, strand);
+
     slice1 = (EnsPSlice)
-	ensCacheFetch(adaptor->CacheByIdentifier, (void *) ikey);
-    
+        ensCacheFetch(adaptor->CacheByIdentifier, (void *) ikey);
+
     /* Search the name cache. */
-    
+
     nkey = ajFmtStr("%S:%S:%S:%d:%d:%d",
-		    ensCoordsystemGetName(cs),
-		    ensCoordsystemGetVersion(cs),
-		    ensSeqregionGetName((*Pslice)->Seqregion),
-		    start, end, strand);
-    
+                    ensCoordsystemGetName(cs),
+                    ensCoordsystemGetVersion(cs),
+                    ensSeqregionGetName((*Pslice)->Seqregion),
+                    start, end, strand);
+
     slice2 = (EnsPSlice)
-	ajTableFetch(adaptor->CacheByName, (const void *) nkey);
-    
-    if((!slice1) && (! slice2))
+        ajTableFetch(adaptor->CacheByName, (const void *) nkey);
+
+    if((!slice1) && (!slice2))
     {
-	/*
-	** None of the caches returned an identical Ensembl Slice so add this
-	** one to both caches. The Ensembl LRU Cache automatically references
-	** the Ensembl Slice via the sliceAdaptorCacheReference function,
-	** while the AJAX Table-based cache needs manual referencing.
-	*/
-	
-	ensCacheStore(adaptor->CacheByIdentifier,
-		      (void *) ikey,
-		      (void **) Pslice);
-	
-	ajTablePut(adaptor->CacheByName,
-		   (void *) ajStrNewS(nkey),
-		   (void *) ensSliceNewRef(*Pslice));
+        /*
+        ** None of the caches returned an identical Ensembl Slice so add this
+        ** one to both caches. The Ensembl LRU Cache automatically references
+        ** the Ensembl Slice via the sliceAdaptorCacheReference function,
+        ** while the AJAX Table-based cache needs manual referencing.
+        */
+
+        ensCacheStore(adaptor->CacheByIdentifier,
+                      (void *) ikey,
+                      (void **) Pslice);
+
+        ajTablePut(adaptor->CacheByName,
+                   (void *) ajStrNewS(nkey),
+                   (void *) ensSliceNewRef(*Pslice));
     }
-    
+
     if(slice1 && slice2 && (slice1 == slice2))
     {
-	/*
-	** Both caches returned the same Ensembl Slice so delete it and
-	** return a pointer to the one already in the cache.
-	*/
-	
-	ensSliceDel(Pslice);
-	
-	*Pslice = ensSliceNewRef(slice2);
+        /*
+        ** Both caches returned the same Ensembl Slice so delete it and
+        ** return a pointer to the one already in the cache.
+        */
+
+        ensSliceDel(Pslice);
+
+        *Pslice = ensSliceNewRef(slice2);
     }
-    
+
     if(slice1 && slice2 && (slice1 != slice2))
-	ajDebug("ensSliceadaptorCacheInsert detected Slices in the "
-		"identifier '%S' and name '%S' cache with "
-		"different addresses (%p and %p).\n",
-		ikey, nkey, slice1, slice2);
-    
+        ajDebug("ensSliceadaptorCacheInsert detected Slices in the "
+                "identifier '%S' and name '%S' cache with "
+                "different addresses (%p and %p).\n",
+                ikey, nkey, slice1, slice2);
+
     if(slice1 && (!slice2))
-	ajDebug("ensSliceadaptorCacheInsert detected a Slice in "
-		"the identifier, but not in the name cache.\n");
-    
+        ajDebug("ensSliceadaptorCacheInsert detected a Slice in "
+                "the identifier, but not in the name cache.\n");
+
     if((!slice1) && slice2)
-	ajDebug("ensSliceadaptorCacheInsert detected a Slice in "
-		"the name, but not in the identifier cache.\n");
-    
+        ajDebug("ensSliceadaptorCacheInsert detected a Slice in "
+                "the name, but not in the identifier cache.\n");
+
     ensSliceDel(&slice1);
-    
+
     ajStrDel(&ikey);
     ajStrDel(&nkey);
-    
+
     return ajTrue;
 }
 
@@ -3017,89 +3093,89 @@ AjBool ensSliceadaptorFetchBySeqregionIdentifier(EnsPSliceadaptor adaptor,
                                                  EnsPSlice *Pslice)
 {
     AjPStr key = NULL;
-    
+
     EnsPSeqregion sr         = NULL;
     EnsPSeqregionadaptor sra = NULL;
-    
+
     /*
-     ajDebug("ensSliceadaptorFetchBySeqregionIdentifier\n"
-	     "  adaptor %p\n"
-	     "  srid %u\n"
-	     "  srstart %d\n"
-	     "  srend %d\n"
-	     "  srstrand %d\n"
-	     "  Pslice %p\n",
-	     adaptor,
-	     srid,
-	     srstart,
-	     srend,
-	     srstrand,
-	     Pslice);
-     */
-    
+      ajDebug("ensSliceadaptorFetchBySeqregionIdentifier\n"
+      "  adaptor %p\n"
+      "  srid %u\n"
+      "  srstart %d\n"
+      "  srend %d\n"
+      "  srstrand %d\n"
+      "  Pslice %p\n",
+      adaptor,
+      srid,
+      srstart,
+      srend,
+      srstrand,
+      Pslice);
+    */
+
     if(!adaptor)
     {
-	ajDebug("ensSliceadaptorFetchBySeqregionIdentifier requires an "
-		"Ensembl Slice Adaptor.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceadaptorFetchBySeqregionIdentifier requires an "
+                "Ensembl Slice Adaptor.\n");
+
+        return ajFalse;
     }
-    
+
     if(!srid)
     {
-	ajDebug("ensSliceadaptorFetchBySeqregionIdentifier requires an "
-		"Ensembl Sequence Region identifier.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceadaptorFetchBySeqregionIdentifier requires an "
+                "Ensembl Sequence Region identifier.\n");
+
+        return ajFalse;
     }
-    
+
     if(!Pslice)
-	return ajFalse;
-    
+        return ajFalse;
+
     /* Check the cache first. */
-    
+
     key = ajFmtStr("%u:%d:%d:%d", srid, srstart, srend, srstrand);
-    
+
     *Pslice = (EnsPSlice)
-	ensCacheFetch(adaptor->CacheByIdentifier, (void *) key);
-    
+        ensCacheFetch(adaptor->CacheByIdentifier, (void *) key);
+
     ajStrDel(&key);
-    
+
     if(*Pslice)
-	return ajTrue;
-    
+        return ajTrue;
+
     sra = ensRegistryGetSeqregionadaptor(adaptor->Adaptor);
-    
+
     ensSeqregionadaptorFetchByIdentifier(sra, srid, &sr);
-    
+
     if(!sr)
     {
-	ajDebug("ensSliceadaptorFetchBySeqregionIdentifier could not load an "
-		"Ensembl Sequence Region for identifier %d.\n", srid);
-	
-	return ajTrue;
+        ajDebug("ensSliceadaptorFetchBySeqregionIdentifier could not load an "
+                "Ensembl Sequence Region for identifier %d.\n", srid);
+
+        return ajTrue;
     }
-    
+
     if(!srstart)
-	srstart = 1;
-    
+        srstart = 1;
+
     if(!srend)
-	srend = ensSeqregionGetLength(sr);
-    
+        srend = ensSeqregionGetLength(sr);
+
     if(srstart > (srend + 1))
-	ajFatal("ensSliceadaptorFetchBySeqregionIdentifier requires the Slice "
-		"start %d to be less than or equal to the end %d + 1.",
-		srstart, srend);
-    
+        ajFatal("ensSliceadaptorFetchBySeqregionIdentifier requires the Slice "
+                "start %d to be less than or equal to the end %d + 1.",
+                srstart, srend);
+
     if(!srstrand)
-	srstrand = 1;
-    
+        srstrand = 1;
+
     *Pslice = ensSliceNew(adaptor, sr, srstart, srend, srstrand);
-    
+
     ensSliceadaptorCacheInsert(adaptor, Pslice);
-    
+
     ensSeqregionDel(&sr);
-    
+
     return ajTrue;
 }
 
@@ -3146,52 +3222,52 @@ AjBool ensSliceadaptorFetchByRegion(EnsPSliceadaptor adaptor,
                                     EnsPSlice *Pslice)
 {
     AjPStr key = NULL;
-    
+
     EnsPCoordsystem cs         = NULL;
     EnsPCoordsystemadaptor csa = NULL;
-    
+
     EnsPSeqregion sr         = NULL;
     EnsPSeqregionadaptor sra = NULL;
-    
+
     /*
-     ajDebug("ensSliceadaptorFetchByRegion\n"
-	     "  adaptor %p\n"
-	     "  csname '%S'\n"
-	     "  csversion '%S'\n"
-	     "  srname '%S'\n"
-	     "  srstart %d\n"
-	     "  srend %d\n"
-	     "  srstrand %d\n"
-	     "  Pslice %p\n",
-	     adaptor,
-	     csname,
-	     csversion,
-	     srname,
-	     srstart,
-	     srend,
-	     srstrand,
-	     Pslice);
-     */
-    
+      ajDebug("ensSliceadaptorFetchByRegion\n"
+      "  adaptor %p\n"
+      "  csname '%S'\n"
+      "  csversion '%S'\n"
+      "  srname '%S'\n"
+      "  srstart %d\n"
+      "  srend %d\n"
+      "  srstrand %d\n"
+      "  Pslice %p\n",
+      adaptor,
+      csname,
+      csversion,
+      srname,
+      srstart,
+      srend,
+      srstrand,
+      Pslice);
+    */
+
     if(!adaptor)
     {
-	ajDebug("ensSliceadaptorFetchByRegion requires an "
-		"Ensembl Slice Adaptor.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceadaptorFetchByRegion requires an "
+                "Ensembl Slice Adaptor.\n");
+
+        return ajFalse;
     }
-    
-    if((!srname) || (! ajStrGetLen(srname)))
+
+    if((!srname) || (!ajStrGetLen(srname)))
     {
-	ajDebug("ensSliceadaptorFetchByRegion requires an "
-		"Ensembl Sequence Region name.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceadaptorFetchByRegion requires an "
+                "Ensembl Sequence Region name.\n");
+
+        return ajFalse;
     }
-    
+
     if(!Pslice)
-	return ajFalse;
-    
+        return ajFalse;
+
     /*
     ** Initially, search the cache, which can only return an Ensembl Slice,
     ** which is associated with a name and version of a regular Ensembl
@@ -3205,86 +3281,86 @@ AjBool ensSliceadaptorFetchByRegion(EnsPSliceadaptor adaptor,
     ** For any object returned by the AJAX Table the reference counter needs
     ** to be incremented manually.
     */
-    
+
     key = ajFmtStr("%S:%S:%S:%d:%d:%d",
-		   csname,
-		   csversion,
-		   srname,
-		   srstart,
-		   srend,
-		   srstrand);
-    
+                   csname,
+                   csversion,
+                   srname,
+                   srstart,
+                   srend,
+                   srstrand);
+
     *Pslice = (EnsPSlice)
-	ajTableFetch(adaptor->CacheByName, (const void *) key);
-    
+        ajTableFetch(adaptor->CacheByName, (const void *) key);
+
     ajStrDel(&key);
-    
+
     if(*Pslice)
     {
-	ensSliceNewRef(*Pslice);
-	
-	return ajTrue;
+        ensSliceNewRef(*Pslice);
+
+        return ajTrue;
     }
-    
+
     /* Load the Ensembl Coordinate System if a name has been provided. */
-    
+
     if(csname && ajStrGetLen(csname))
     {
-	csa = ensRegistryGetCoordsystemadaptor(adaptor->Adaptor);
-	
-	ensCoordsystemadaptorFetchByName(csa, csname, csversion, &cs);
-	
-	if(!cs)
-	{
-	    ajDebug("ensSliceadaptorFetchByRegion could not load an Ensembl "
-		    "Coordinate System for name '%S' and version '%S'.\n",
-		    csname, csversion);
-	    
-	    return ajTrue;
-	}
+        csa = ensRegistryGetCoordsystemadaptor(adaptor->Adaptor);
+
+        ensCoordsystemadaptorFetchByName(csa, csname, csversion, &cs);
+
+        if(!cs)
+        {
+            ajDebug("ensSliceadaptorFetchByRegion could not load an Ensembl "
+                    "Coordinate System for name '%S' and version '%S'.\n",
+                    csname, csversion);
+
+            return ajTrue;
+        }
     }
-    
+
     /* Load the Ensembl Sequence Region. */
-    
+
     sra = ensRegistryGetSeqregionadaptor(adaptor->Adaptor);
-    
+
     ensSeqregionadaptorFetchByName(sra, cs, srname, &sr);
-    
+
     if(!sr)
     {
-	ajDebug("ensSliceadaptorFetchByRegion could not load an Ensembl "
-		"Sequence Region for name '%S' and Coordinate System "
-		"identifier %d.\n", srname, ensCoordsystemGetIdentifier(cs));
-	
-	ensCoordsystemTrace(cs, 1);
-	
-	ensCoordsystemDel(&cs);
-	
-	return ajTrue;
+        ajDebug("ensSliceadaptorFetchByRegion could not load an Ensembl "
+                "Sequence Region for name '%S' and Coordinate System "
+                "identifier %d.\n", srname, ensCoordsystemGetIdentifier(cs));
+
+        ensCoordsystemTrace(cs, 1);
+
+        ensCoordsystemDel(&cs);
+
+        return ajTrue;
     }
-    
+
     if(!srstart)
-	srstart = 1;
-    
+        srstart = 1;
+
     if(!srend)
-	srend = ensSeqregionGetLength(sr);
-    
+        srend = ensSeqregionGetLength(sr);
+
     if(srstart > (srend + 1))
-	ajFatal("ensSliceadaptorFetchByRegion requires the Slice start %d "
-		"to be less than or equal to the end coordinate %d + 1.",
-		srstart, srend);
-    
+        ajFatal("ensSliceadaptorFetchByRegion requires the Slice start %d "
+                "to be less than or equal to the end coordinate %d + 1.",
+                srstart, srend);
+
     if(!srstrand)
-	srstrand = 1;
-    
+        srstrand = 1;
+
     *Pslice = ensSliceNew(adaptor, sr, srstart, srend, srstrand);
-    
+
     ensSliceadaptorCacheInsert(adaptor, Pslice);
-    
+
     ensCoordsystemDel(&cs);
-    
+
     ensSeqregionDel(&sr);
-    
+
     return ajTrue;
 }
 
@@ -3314,28 +3390,28 @@ AjBool ensSliceadaptorFetchByName(EnsPSliceadaptor adaptor,
     ajint srstart  = 0;
     ajint srend    = 0;
     ajint srstrand = 0;
-    
+
     AjPStr csname    = NULL;
     AjPStr csversion = NULL;
     AjPStr srname    = NULL;
     AjPStr tmpstr    = NULL;
-    
+
     AjPStrTok token = NULL;
-    
+
     if(!adaptor)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!name)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!ajStrGetLen(name))
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Pslice)
-	return ajFalse;
-    
+        return ajFalse;
+
     token = ajStrTokenNewC(name, ":");
-    
+
     /*
     ** FIXME: This does not work for slice names like the following:
     ** "clone::AC120349.5:0:0:0".
@@ -3357,58 +3433,58 @@ AjBool ensSliceadaptorFetchByName(EnsPSliceadaptor adaptor,
     ** for the cache look up? This could save us the parsing and re-assigning
     ** steps.
     */
-    
+
     ajStrTokenNextParse(&token, &csname);
-    
+
     ajDebug("ensSliceadaptorFetchByName got csname '%S'\n", csname);
-    
+
     ajStrTokenNextParse(&token, &csversion);
-    
+
     ajDebug("ensSliceadaptorFetchByName got csversion '%S'\n", csversion);
-    
+
     ajStrTokenNextParse(&token, &srname);
-    
+
     ajDebug("ensSliceadaptorFetchByName got srname '%S'\n", srname);
-    
+
     ajStrTokenNextParse(&token, &tmpstr);
-    
+
     ajDebug("ensSliceadaptorFetchByName got srstart '%S'\n", tmpstr);
-    
+
     ajStrToInt(tmpstr, &srstart);
-    
+
     ajStrTokenNextParse(&token, &tmpstr);
-    
+
     ajDebug("ensSliceadaptorFetchByName got srend '%S'\n", tmpstr);
-    
+
     ajStrToInt(tmpstr, &srend);
-    
+
     if(ajStrTokenNextParse(&token, &tmpstr))
     {
-	ajDebug("ensSliceadaptorFetchByName got srstrand '%S'\n", tmpstr);
-	
-	ajStrToInt(tmpstr, &srstrand);
-	
-	ensSliceadaptorFetchByRegion(adaptor,
-				     csname,
-				     csversion,
-				     srname,
-				     srstart,
-				     srend,
-				     srstrand,
-				     Pslice);
+        ajDebug("ensSliceadaptorFetchByName got srstrand '%S'\n", tmpstr);
+
+        ajStrToInt(tmpstr, &srstrand);
+
+        ensSliceadaptorFetchByRegion(adaptor,
+                                     csname,
+                                     csversion,
+                                     srname,
+                                     srstart,
+                                     srend,
+                                     srstrand,
+                                     Pslice);
     }
     else
-	ajDebug("ensSliceadaptorFetchByName got malformed Ensembl Slice name "
-		"'%S', should be something like "
-		"chromosome:NCBI36:X:1000000:2000000:1\n", name);
-    
+        ajDebug("ensSliceadaptorFetchByName got malformed Ensembl Slice name "
+                "'%S', should be something like "
+                "chromosome:NCBI36:X:1000000:2000000:1\n", name);
+
     ajStrDel(&csname);
     ajStrDel(&csversion);
     ajStrDel(&srname);
     ajStrDel(&tmpstr);
-    
+
     ajStrTokenDel(&token);
-    
+
     return ajTrue;
 }
 
@@ -3446,80 +3522,78 @@ AjBool ensSliceadaptorFetchBySlice(EnsPSliceadaptor adaptor,
     ajint srstart  = 0;
     ajint srend    = 0;
     ajint srstrand = 0;
-    
+
     if(!adaptor)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!slice)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(start > (end + 1))
     {
-	ajDebug("ensSliceadaptorFetchBySlice requires the start coordinate %d "
-		"to be less than the end coordinate %d + 1.\n",
-		start, end);
-	
-	return ajFalse;
+        ajDebug("ensSliceadaptorFetchBySlice requires the start coordinate %d "
+                "to be less than the end coordinate %d + 1.\n",
+                start, end);
+
+        return ajFalse;
     }
-    
+
     if(!strand)
-	strand = 1;
-    
+        strand = 1;
+
     if(!Pslice)
-	return ajFalse;
-    
+        return ajFalse;
+
     /* Transform relative into absolute Sequence Region coordinates. */
-    
+
     /*
-     **
-     **           s           e
-     **     SS     \    +1   /     SE
-     **  1    \     |-------|     /    length
-     **   \    |------Slice------|    /
-     **    |--------Seqregion--------|
-     **        |------Slice------|
-     **       /     |-------|     \
-     **     SS     /    -1   \     SE
-     **           e           s
-     **
-     */
-    
+    **
+    **           s           e
+    **     SS     \    +1   /     SE
+    **  1    \     |-------|     /    length
+    **   \    |------Slice------|    /
+    **    |--------Seqregion--------|
+    **        |------Slice------|
+    **       /     |-------|     \
+    **     SS     /    -1   \     SE
+    **           e           s
+    **
+    */
+
     srid = ensSeqregionGetIdentifier(slice->Seqregion);
-    
+
     if(slice->Strand >= 0)
     {
-	srstart = slice->Start + start - 1;
-	
-	srend = slice->Start + end - 1;
+        srstart = slice->Start + start - 1;
+        srend   = slice->Start + end   - 1;
     }
     else
     {
-	srstart = slice->End - end + 1;
-	
-	srend = slice->End - start + 1;
+        srstart = slice->End - end   + 1;
+        srend   = slice->End - start + 1;
     }
-    
+
     srstrand = slice->Strand * strand;
-    
+
     ensSliceadaptorFetchBySeqregionIdentifier(adaptor,
-					      srid,
-					      srstart,
-					      srend,
-					      srstrand,
-					      Pslice);
-    
+                                              srid,
+                                              srstart,
+                                              srend,
+                                              srstrand,
+                                              Pslice);
+
     if(!*Pslice)
-	return ajFalse;
-    
+        return ajFalse;
+
     /* Adjust the sequence in case the Slice has one associated. */
-    
+
     if(slice->Sequence)
-	ensSliceFetchSubSequenceStr(slice,
-				    start,
-				    end,
-				    strand,
-				    &((*Pslice)->Sequence));
-    
+        ensSliceFetchSubSequenceStr(slice,
+                                    start,
+                                    end,
+                                    strand,
+                                    &((*Pslice)->Sequence));
+
     return ajTrue;
 }
 
@@ -3551,76 +3625,74 @@ AjBool ensSliceadaptorFetchByFeature(EnsPSliceadaptor adaptor,
     ajuint srid   = 0;
     ajint srstart = 0;
     ajint srend   = 0;
-    
+
     EnsPSlice slice = NULL;
-    
+
     /*
-     ajDebug("ensSliceadaptorFetchByFeature\n"
-	     "  adaptor %p\n"
-	     "  feature %p\n"
-	     "  flank %d\n"
-	     "  Pslice %p\n",
-	     adaptor,
-	     feature,
-	     flank,
-	     Pslice);
-     
-     ensFeatureTrace(feature, 1);
-     */
-    
+      ajDebug("ensSliceadaptorFetchByFeature\n"
+      "  adaptor %p\n"
+      "  feature %p\n"
+      "  flank %d\n"
+      "  Pslice %p\n",
+      adaptor,
+      feature,
+      flank,
+      Pslice);
+
+      ensFeatureTrace(feature, 1);
+    */
+
     if(!adaptor)
     {
-	ajDebug("ensSliceadaptorFetchByFeature requires an "
-		"Ensembl Slice Adaptor.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceadaptorFetchByFeature requires an "
+                "Ensembl Slice Adaptor.\n");
+
+        return ajFalse;
     }
-    
+
     if(!feature)
     {
-	ajDebug("ensSliceadaptorFetchByFeature requires an "
-		"Ensembl Feature.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceadaptorFetchByFeature requires an "
+                "Ensembl Feature.\n");
+
+        return ajFalse;
     }
-    
+
     if(!Pslice)
-	return ajFalse;
-    
+        return ajFalse;
+
     slice = ensFeatureGetSlice(feature);
-    
+
     if(!slice)
     {
-	ajDebug("ensSliceadaptorFetchByFeature requires an "
-		"Ensembl Slice attached to the Ensembl Feature.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceadaptorFetchByFeature requires an "
+                "Ensembl Slice attached to the Ensembl Feature.\n");
+
+        return ajFalse;
     }
-    
+
     srid = ensSliceGetSeqregionIdentifier(slice);
-    
+
     /* Convert the Feature Slice coordinates to Sequence Region coordinates. */
-    
+
     if(slice->Strand >= 0)
     {
-	srstart = slice->Start + ensFeatureGetStart(feature) - 1;
-	
-	srend = slice->Start + ensFeatureGetEnd(feature) - 1;
+        srstart = slice->Start + ensFeatureGetStart(feature) - 1;
+        srend   = slice->Start + ensFeatureGetEnd(feature)   - 1;
     }
     else
     {
-	srstart = slice->End - ensFeatureGetEnd(feature) + 1;
-	
-	srend = slice->End - ensFeatureGetStart(feature) + 1;
+        srstart = slice->End - ensFeatureGetEnd(feature)   + 1;
+        srend   = slice->End - ensFeatureGetStart(feature) + 1;
     }
-    
+
     ensSliceadaptorFetchBySeqregionIdentifier(adaptor,
-					      srid,
-					      srstart - flank,
-					      srend + flank,
-					      1,
-					      Pslice);
-    
+                                              srid,
+                                              srstart - flank,
+                                              srend + flank,
+                                              1,
+                                              Pslice);
+
     return ajTrue;
 }
 
@@ -3653,63 +3725,63 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
     ajuint maxlen = 0;
     ajuint diff   = 0;
     ajuint start  = 0;
-    
+
     AjEnum aetype = ensEAssemblyexceptionTypeNULL;
-    
+
     AjPList haps    = NULL;
     AjPList pars    = NULL;
     AjPList syms    = NULL;
     AjPList regions = NULL;
     AjPList linked  = NULL;
-    
+
     AjPStr source = NULL;
     AjPStr target = NULL;
-    
+
     EnsPAssemblyexception ae         = NULL;
     EnsPAssemblyexception tmpae      = NULL;
     EnsPAssemblyexceptionadaptor aea = NULL;
-    
+
     EnsPMapper mapper = NULL;
-    
+
     EnsPMapperresult mr = NULL;
-    
+
     EnsPProjectionsegment ps = NULL;
-    
+
     EnsPSlice srslice = NULL;
     EnsPSlice exslice = NULL;
-    
+
     /*
-     ajDebug("ensSliceadaptorFetchNormalisedSliceProjection\n"
-	     "  adaptor %p\n"
-	     "  slice %p\n"
-	     "  pslist %p\n",
-	     adaptor,
-	     slice,
-	     pslist);
-     */
-    
+      ajDebug("ensSliceadaptorFetchNormalisedSliceProjection\n"
+      "  adaptor %p\n"
+      "  slice %p\n"
+      "  pslist %p\n",
+      adaptor,
+      slice,
+      pslist);
+    */
+
     if(!adaptor)
     {
-	ajDebug("ensSliceadaptorFetchNormalisedSliceProjection requires an "
-		"Ensembl Slice Adaptor.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceadaptorFetchNormalisedSliceProjection requires an "
+                "Ensembl Slice Adaptor.\n");
+
+        return ajFalse;
     }
-    
+
     if(!slice)
     {
-	ajDebug("ensSliceadaptorFetchNormalisedSliceProjection requires an "
-		"Ensembl Slice.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceadaptorFetchNormalisedSliceProjection requires an "
+                "Ensembl Slice.\n");
+
+        return ajFalse;
     }
-    
+
     if(!pslist)
     {
-	ajDebug("ensSliceadaptorFetchNormalisedSliceProjection requires an "
-		"AJAX List.\n");
-	
-	return ajFalse;
+        ajDebug("ensSliceadaptorFetchNormalisedSliceProjection requires an "
+                "AJAX List of Ensembl Projection Segments.\n");
+
+        return ajFalse;
     }
 
     aea = ensRegistryGetAssemblyexceptionadaptor(adaptor->Adaptor);
@@ -3727,106 +3799,111 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
 
     while(ajListPop(regions, (void **) &ae))
     {
-	/*
-	** We need all overlapping pseudo-autosomal regions (PARs) and all
-	** haplotype regions (HAPs) if any.
-	*/
+        /*
+        ** We need all overlapping pseudo-autosomal regions (PARs) and all
+        ** haplotype regions (HAPs) if any.
+        */
 
-	if(ensAssemblyexceptionGetType(ae) == ensEAssemblyexceptionTypePAR)
-	{
-	    if(((ajint) ensAssemblyexceptionGetSeqregionStart(ae) <= slice->End) &&
-               ((ajint) ensAssemblyexceptionGetSeqregionEnd(ae) >= slice->Start))
-		ajListPushAppend(pars, (void *) ae);
-	    else
-		ensAssemblyexceptionDel(&ae);
-	}
-	else if(ensAssemblyexceptionGetType(ae) ==
-		 ensEAssemblyexceptionTypeHAP)
-	    ajListPushAppend(haps, (void *) ae);
-	else
-	    ajWarn("ensSliceadaptorFetchNormalisedSliceProjection got "
-		   "unexpected Assembly Exception type %d.\n",
-		   ensAssemblyexceptionGetType(ae));
+        switch(ensAssemblyexceptionGetType(ae))
+        {
+            case ensEAssemblyexceptionTypePAR:
+                if(((ajint) ensAssemblyexceptionGetSeqregionStart(ae)
+                    <= slice->End) &&
+                   ((ajint) ensAssemblyexceptionGetSeqregionEnd(ae)
+                    >= slice->Start))
+                    ajListPushAppend(pars, (void *) ae);
+                else
+                    ensAssemblyexceptionDel(&ae);
+                break;
+            case ensEAssemblyexceptionTypeHAP:
+                ajListPushAppend(haps, (void *) ae);
+                break;
+            default:
+                ajWarn("ensSliceadaptorFetchNormalisedSliceProjection got "
+                       "unexpected Assembly Exception type %d.\n",
+                       ensAssemblyexceptionGetType(ae));
+                ensAssemblyexceptionDel(&ae);
+        }
     }
-    
+
     ajListFree(&regions);
-    
-    if((!ajListGetLength(haps)) && (! ajListGetLength(pars)))
+
+    if((!ajListGetLength(haps)) && (!ajListGetLength(pars)))
     {
-	/*
-	** There are no haplotypes and no pseudo-autosomal regions,
-	** so return just this slice.
-	*/
-	
-	ajListFree(&haps);
-	ajListFree(&pars);
-	
-	ps = ensProjectionsegmentNew(1, ensSliceGetLength(slice), slice);
-	
-	ajListPushAppend(pslist, (void *) ps);
-	
-	return ajTrue;
+        /*
+        ** There are no haplotypes and no pseudo-autosomal regions,
+        ** so return just this slice.
+        */
+
+        ajListFree(&haps);
+        ajListFree(&pars);
+
+        ps = ensProjectionsegmentNew(1, ensSliceGetLength(slice), slice);
+
+        ajListPushAppend(pslist, (void *) ps);
+
+        return ajTrue;
     }
-    
+
     if(ajListGetLength(haps) > 1)
-	ajFatal("ensSliceadaptorFetchNormalisedSliceProjection does not "
-		"support more than one haplotypes yet.");
-    
+        ajFatal("ensSliceadaptorFetchNormalisedSliceProjection does not "
+                "support more than one haplotypes yet.");
+
     syms = ajListNew();
-    
+
     if(ajListGetLength(haps) == 1)
     {
-	ajListPop(haps, (void **) &ae);
-	
-	ensSliceadaptorFetchBySeqregionIdentifier(
+        ajListPop(haps, (void **) &ae);
+
+        ensSliceadaptorFetchBySeqregionIdentifier(
             adaptor,
             srid,
             0,
             0,
             0,
             &srslice);
-	
-	ensSliceadaptorFetchBySeqregionIdentifier(
+
+        ensSliceadaptorFetchBySeqregionIdentifier(
             adaptor,
             ensAssemblyexceptionGetExcRegionIdentifier(ae),
             0,
             0,
             0,
             &exslice);
-	
-	/*
-	** The lengths of haplotype and reference sequences in the database
-	** may be different. We want to use the maximum possible length for
-	** the mapping between the two Coordinate Systems.
-	*/
-	
-	srlen = ensSliceGetLength(srslice);
-	
-	exlen = ensSliceGetLength(exslice);
-	
-	maxlen = (srlen > exlen) ? srlen : exlen;
-	
-	/*
-	** The inserted Sequence Region can differ in length, but mapped
-	** sections need to be of same lengths.
-	*/
-	
-	diff = ensAssemblyexceptionGetExcRegionEnd(ae) -
-	    ensAssemblyexceptionGetSeqregionEnd(ae);
-	
-	aetype = ensEAssemblyexceptionTypeNULL;
-	
-	/*
-	** We want the region of the haplotype inverted, which means that we
-	** want the two regions of the Slice that are not covered by the
-	** haplotype as Projection Segments.
-	**
-	** Haplotype:                   *******
-	** Slice:                 -------------------
-	** Projection Segments:   ++++++       ++++++
-	*/
-	
-	tmpae = ensAssemblyexceptionNew(
+
+        /*
+        ** The lengths of haplotype and reference sequences in the database
+        ** may be different. We want to use the maximum possible length for
+        ** the mapping between the two Coordinate Systems.
+        */
+
+        srlen = ensSliceGetLength(srslice);
+
+        exlen = ensSliceGetLength(exslice);
+
+        maxlen = (srlen > exlen) ? srlen : exlen;
+
+        /*
+        ** The inserted Sequence Region can differ in length, but mapped
+        ** sections need to be of same lengths.
+        */
+
+        diff = ensAssemblyexceptionGetExcRegionEnd(ae) -
+            ensAssemblyexceptionGetSeqregionEnd(ae);
+
+        aetype = ensEAssemblyexceptionTypeNULL;
+
+        /*
+        ** We want the region of the haplotype inverted, which means that we
+        ** want the two regions of the Slice that are not covered by the
+        ** haplotype as Projection Segments.
+        **
+        ** Haplotype:                   *******
+        ** Slice:                 -------------------
+        ** Projection Segments:   ++++++       ++++++
+        */
+
+        tmpae = ensAssemblyexceptionNew(
             (EnsPAssemblyexceptionadaptor) NULL,
             0,
             srid,
@@ -3837,10 +3914,10 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
             ensAssemblyexceptionGetExcRegionStart(ae) - 1,
             1,
             aetype);
-	
-	ajListPushAppend(syms, (void *) tmpae);
-	
-	tmpae = ensAssemblyexceptionNew(
+
+        ajListPushAppend(syms, (void *) tmpae);
+
+        tmpae = ensAssemblyexceptionNew(
             (EnsPAssemblyexceptionadaptor) NULL,
             0,
             srid,
@@ -3851,28 +3928,28 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
             maxlen,
             1,
             aetype);
-	
-	ajListPushAppend(syms, (void *) tmpae);
-	
-	ensSliceDel(&srslice);
-	ensSliceDel(&exslice);
-	
-	ensAssemblyexceptionDel(&ae);
+
+        ajListPushAppend(syms, (void *) tmpae);
+
+        ensSliceDel(&srslice);
+        ensSliceDel(&exslice);
+
+        ensAssemblyexceptionDel(&ae);
     }
-    
+
     ajListFree(&haps);
-    
+
     /*
     ** The ajListPushlist function adds all nodes from the second list to
     ** the first and deletes the second list.
     */
-    
+
     ajListPushlist(syms, &pars);
-    
+
     source = ajStrNewC("sym");
-    
+
     target = ajStrNewC("org");
-    
+
     /*
     ** FIXME: The Perl API does not set Coordinate Systems for the Mapper,
     ** which leads to problems constructing a Mapper Result from the
@@ -3883,134 +3960,134 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
     ** mapper = ensMapperNew(source, target, (EnsPCoordsystem) NULL,
     **                       (EnsPCoordsystem) NULL);
     */
-    
+
     mapper = ensMapperNew(source,
-			  target,
-			  ensSeqregionGetCoordsystem(slice->Seqregion),
-			  ensSeqregionGetCoordsystem(slice->Seqregion));
-    
+                          target,
+                          ensSeqregionGetCoordsystem(slice->Seqregion),
+                          ensSeqregionGetCoordsystem(slice->Seqregion));
+
     while(ajListPop(syms, (void **) &ae))
     {
-	ensMapperAddCoordinates(mapper,
-				srid,
-				ensAssemblyexceptionGetSeqregionStart(ae),
-				ensAssemblyexceptionGetSeqregionEnd(ae),
-				1,
-				ensAssemblyexceptionGetExcRegionIdentifier(ae),
-				ensAssemblyexceptionGetExcRegionStart(ae),
-				ensAssemblyexceptionGetExcRegionEnd(ae));
-	
-	ensAssemblyexceptionDel(&ae);
+        ensMapperAddCoordinates(mapper,
+                                srid,
+                                ensAssemblyexceptionGetSeqregionStart(ae),
+                                ensAssemblyexceptionGetSeqregionEnd(ae),
+                                1,
+                                ensAssemblyexceptionGetExcRegionIdentifier(ae),
+                                ensAssemblyexceptionGetExcRegionStart(ae),
+                                ensAssemblyexceptionGetExcRegionEnd(ae));
+
+        ensAssemblyexceptionDel(&ae);
     }
-    
+
     ajListFree(&syms);
-    
+
     linked = ajListNew();
-    
+
     ensMapperMapCoordinates(mapper,
-			    srid,
-			    slice->Start,
-			    slice->End,
-			    slice->Strand,
-			    source,
-			    linked);
-    
+                            srid,
+                            slice->Start,
+                            slice->End,
+                            slice->Strand,
+                            source,
+                            linked);
+
     ajStrDel(&source);
     ajStrDel(&target);
-    
+
     if(ajListGetLength(linked) == 1)
     {
-	/*
-	** If there was only one Mapper Result and it is a gap, we know it is
-	** just the same Slice with no overlapping sym-links.
-	*/
-	
-	ajListPop(linked, (void **) &mr);
-	
-	if(ensMapperresultGetType(mr) == ensEMapperresultGap)
-	{
-	    ps = ensProjectionsegmentNew(1, ensSliceGetLength(slice), slice);
-	    
-	    ajListPushAppend(pslist, (void *) ps);
-	}
-	
-	ensMapperresultDel(&mr);
-	
-	ajListFree(&linked);
-	
-	ensMapperDel(&mapper);
-	
-	return ajTrue;
+        /*
+        ** If there was only one Mapper Result and it is a gap, we know it is
+        ** just the same Slice with no overlapping sym-links.
+        */
+
+        ajListPop(linked, (void **) &mr);
+
+        if(ensMapperresultGetType(mr) == ensEMapperresultGap)
+        {
+            ps = ensProjectionsegmentNew(1, ensSliceGetLength(slice), slice);
+
+            ajListPushAppend(pslist, (void *) ps);
+        }
+
+        ensMapperresultDel(&mr);
+
+        ajListFree(&linked);
+
+        ensMapperDel(&mapper);
+
+        return ajTrue;
     }
-    
+
     start = 1;
-    
+
     while(ajListPop(linked, (void **) &mr))
     {
-	if(ensMapperresultGetType(mr) == ensEMapperresultGap)
-	{
-	    exslice = ensSliceNew(adaptor,
-				  slice->Seqregion,
-				  ensMapperresultGetGapStart(mr),
-				  ensMapperresultGetGapEnd(mr),
-				  slice->Strand);
-	    
-	    ps = ensProjectionsegmentNew(start,
-					 ensMapperresultGetGapLength(mr)
-					 + start - 1,
-					 exslice);
-	    
-	    ajListPushAppend(pslist, (void *) ps);
-	    
-	    ensSliceDel(&exslice);
-	}
-	
-	else
-	{
-	    ensSliceadaptorFetchBySeqregionIdentifier(
+        if(ensMapperresultGetType(mr) == ensEMapperresultGap)
+        {
+            exslice = ensSliceNew(adaptor,
+                                  slice->Seqregion,
+                                  ensMapperresultGetGapStart(mr),
+                                  ensMapperresultGetGapEnd(mr),
+                                  slice->Strand);
+
+            ps = ensProjectionsegmentNew(start,
+                                         ensMapperresultGetGapLength(mr)
+                                         + start - 1,
+                                         exslice);
+
+            ajListPushAppend(pslist, (void *) ps);
+
+            ensSliceDel(&exslice);
+        }
+        else
+        {
+            ensSliceadaptorFetchBySeqregionIdentifier(
                 adaptor,
                 ensMapperresultGetObjectIdentifier(mr),
                 ensMapperresultGetStart(mr),
                 ensMapperresultGetEnd(mr),
                 ensMapperresultGetStrand(mr),
                 &exslice);
-	    
-	    ps = ensProjectionsegmentNew(start,
-					 ensMapperresultGetLength(mr)
-					 + start - 1,
-					 exslice);
-	    
-	    ajListPushAppend(pslist, (void *) ps);
-	    
-	    ensSliceDel(&exslice);
-	}
-	
-	start += ensMapperresultGetLength(mr);
-	
-	/*
-	** FIXME: The else case includes Mapper Result Coordinates and Indels.
-	** Is this desired? As MapperresultGetLength returns either the
-	** Coordinate or Gap Length, we could add the length to the start after
-	** the else case. We can also replace ensMapperresultGetGapLength with
-	** ensMapperresultGetLength for ensEMapperresultGap.
-	**
-	** FIXME: Should the Mapper Result also provide distinct
-	** GetCoordinateStart
-	** GetGapStart,
-	** GetCoordinateEnd
-	** GetGapEnd functions, as well as functions
-	** GetStart and
-	** GetEnd that return the coordinate for Coordinates and Indels and
-	** Gaps for Gap?
+
+            ps = ensProjectionsegmentNew(start,
+                                         ensMapperresultGetLength(mr)
+                                         + start - 1,
+                                         exslice);
+
+            ajListPushAppend(pslist, (void *) ps);
+
+            ensSliceDel(&exslice);
+        }
+
+        start += ensMapperresultGetLength(mr);
+
+        /*
+        ** FIXME: The else case includes Mapper Result Coordinates and Indels.
+        ** Is this desired? As MapperresultGetLength returns either the
+        ** Coordinate or Gap Length, we could add the length to the start after
+        ** the else case. We can also replace ensMapperresultGetGapLength with
+        ** ensMapperresultGetLength for ensEMapperresultGap.
+        ** Alternatively, use a switch statement here.
+        **
+        ** FIXME: Should the Mapper Result also provide distinct
+        ** GetCoordinateStart
+        ** GetGapStart,
+        ** GetCoordinateEnd
+        ** GetGapEnd functions, as well as functions
+        ** GetStart and
+        ** GetEnd that return the coordinate for Coordinates and Indels and
+        ** Gaps for Gap?
         */
-	
-	ensMapperresultDel(&mr);
+
+        ensMapperresultDel(&mr);
     }
-    
+
     ajListFree(&linked);
-    
+
     ensMapperDel(&mapper);
-    
+
     return ajTrue;
 }
 
@@ -4052,245 +4129,245 @@ AjBool ensSliceadaptorFetchAll(EnsPSliceadaptor adaptor,
                                AjPList slices)
 {
     register ajuint i = 0;
-    
+
     ajuint srid = 0;
-    
+
     void **keyarray = NULL;
     void **valarray = NULL;
-    
+
     ajuint *Psrid  = NULL;
-    
+
     AjBool *Pvalue = NULL;
-    
+
     AjPList aelist = NULL;
     AjPList pslist = NULL;
     AjPList srlist = NULL;
-    
+
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;
     AjPSqlrow sqlr       = NULL;
-    
+
     AjPStr statement = NULL;
-    
+
     AjPTable nonrefsr = NULL;
-    
+
     EnsPAssemblyexception ae         = NULL;
     EnsPAssemblyexceptionadaptor aea = NULL;
-    
+
     EnsPCoordsystem cs         = NULL;
     EnsPCoordsystemadaptor csa = NULL;
-    
+
     EnsPProjectionsegment ps = NULL;
-    
+
     EnsPSeqregion sr         = NULL;
     EnsPSeqregionadaptor sra = NULL;
-    
+
     EnsPSlice slice  = NULL;
     EnsPSlice nslice = NULL;
-    
+
     if(!adaptor)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!csname)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!csversion)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!slices)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!duplicates)
-	aea = ensRegistryGetAssemblyexceptionadaptor(adaptor->Adaptor);
-    
+        aea = ensRegistryGetAssemblyexceptionadaptor(adaptor->Adaptor);
+
     csa = ensRegistryGetCoordsystemadaptor(adaptor->Adaptor);
-    
+
     sra = ensRegistryGetSeqregionadaptor(adaptor->Adaptor);
-    
+
     ensCoordsystemadaptorFetchByName(csa, csname, csversion, &cs);
-    
+
     if(!cs)
     {
-	ajWarn("ensSliceadaptorFetchAll could not retrieve Coordinate System "
-	       "for name '%S' and version '%S'.\n", csname, csversion);
-	
-	return ajTrue;
+        ajWarn("ensSliceadaptorFetchAll could not retrieve Coordinate System "
+               "for name '%S' and version '%S'.\n", csname, csversion);
+
+        return ajTrue;
     }
-    
+
     /* Store non-reference Sequence Region identifiers in an AJAX Table. */
-    
+
     nonrefsr = MENSTABLEUINTNEW(0);
-    
+
     if(!nonref)
     {
-	/*
-	** FIXME: Should this be handled via the Sequence Region Adaptor?
-	** A function like ensSeqregionadaptorFetchAllByAttribute?
-	**
-	** There could be a Cache in the Seqregion Adaptor that holds all
-	** non-ref Sequence Regions so that we can have a function
-	** ensSeqregionadaptorFetchAllNonRef
-	*/
-	
-	statement = ajFmtStr("SELECT "
-			     "seq_region.seq_region_id "
-			     "FROM "
-			     "attrib_type, "
-			     "seq_region_attrib, "
-			     "seq_region, "
-			     "coord_system "
-			     "WHERE "
-			     "attribute_type.code = 'non_ref' "
-			     "AND "
-			     "attrib_type.attrib_type_id = "
-			     "seq_region_attrib.attrib_type_id"
-			     "AND "
-			     "seq_region_attrib.seq_region_id = "
-			     "seq_region.seq_region_id "
-			     "AND "
-			     "seq_region.coord_system_id = "
-			     "coord_system.coord_system_id "
-			     "AND "
-			     "coord_system.species_id = %u",
-			     ensDatabaseadaptorGetIdentifier(adaptor->Adaptor));
-	
-	sqls = ensDatabaseadaptorSqlstatementNew(adaptor->Adaptor, statement);
-	
-	sqli = ajSqlrowiterNew(sqls);
-	
-	while(!ajSqlrowiterDone(sqli))
-	{
-	    AJNEW0(Psrid);
-	    
-	    AJNEW0(Pvalue);
-	    
-	    sqlr = ajSqlrowiterGet(sqli);
-	    
-	    ajSqlcolumnToUint(sqlr, Psrid);
-	    
-	    *Pvalue = ajTrue;
-	    
-	    ajTablePut(nonrefsr, (void *) Psrid, (void *) Pvalue);
-	}
-	
-	ajSqlrowiterDel(&sqli);
-	
-	ajSqlstatementDel(&sqls);
-	
-	ajStrDel(&statement);
+        /*
+        ** FIXME: Should this be handled via the Sequence Region Adaptor?
+        ** A function like ensSeqregionadaptorFetchAllByAttribute?
+        **
+        ** There could be a Cache in the Seqregion Adaptor that holds all
+        ** non-ref Sequence Regions so that we can have a function
+        ** ensSeqregionadaptorFetchAllNonRef
+        */
+
+        statement = ajFmtStr("SELECT "
+                             "seq_region.seq_region_id "
+                             "FROM "
+                             "attrib_type, "
+                             "seq_region_attrib, "
+                             "seq_region, "
+                             "coord_system "
+                             "WHERE "
+                             "attribute_type.code = 'non_ref' "
+                             "AND "
+                             "attrib_type.attrib_type_id = "
+                             "seq_region_attrib.attrib_type_id"
+                             "AND "
+                             "seq_region_attrib.seq_region_id = "
+                             "seq_region.seq_region_id "
+                             "AND "
+                             "seq_region.coord_system_id = "
+                             "coord_system.coord_system_id "
+                             "AND "
+                             "coord_system.species_id = %u",
+                             ensDatabaseadaptorGetIdentifier(adaptor->Adaptor));
+
+        sqls = ensDatabaseadaptorSqlstatementNew(adaptor->Adaptor, statement);
+
+        sqli = ajSqlrowiterNew(sqls);
+
+        while(!ajSqlrowiterDone(sqli))
+        {
+            AJNEW0(Psrid);
+
+            AJNEW0(Pvalue);
+
+            sqlr = ajSqlrowiterGet(sqli);
+
+            ajSqlcolumnToUint(sqlr, Psrid);
+
+            *Pvalue = ajTrue;
+
+            ajTablePut(nonrefsr, (void *) Psrid, (void *) Pvalue);
+        }
+
+        ajSqlrowiterDel(&sqli);
+
+        ajSqlstatementDel(&sqls);
+
+        ajStrDel(&statement);
     }
-    
+
     /* Retrieve the Sequence Regions from the database. */
-    
+
     srlist = ajListNew();
-    
+
     ensSeqregionadaptorFetchAllByCoordsystem(sra, cs, srlist);
-    
+
     while(ajListPop(srlist, (void **) &sr))
     {
-	srid = ensSeqregionGetIdentifier(sr);
-	
-	Pvalue = (AjBool *) ajTableFetch(nonrefsr, (const void *) &srid);
-	
-	if(!Pvalue)
-	{
-	    /* Create a new Slice spanning the entire Sequence Region. */
-	    
-	    slice = ensSliceNew(adaptor, sr, 1, ensSeqregionGetLength(sr), 1);
-	    
-	    if(duplicates)
-	    {
-		/*
-		** Duplicate regions are allowed, so no further checks are
-		** required.
-		*/
-		
-		ajListPushAppend(slices, (void *) slice);
-	    }
-	    else
-	    {
-		/*
-		** Test if this Slice *could* have a duplicate region by
-		** checking for an Assembly Exception for the
-		** Ensembl Sequence Region element of this Ensembl Slice.
-		*/
-		
-		aelist = ajListNew();
-		
-		ensAssemblyexceptionadaptorFetchAllBySeqregionIdentifier(
+        srid = ensSeqregionGetIdentifier(sr);
+
+        Pvalue = (AjBool *) ajTableFetch(nonrefsr, (const void *) &srid);
+
+        if(!Pvalue)
+        {
+            /* Create a new Slice spanning the entire Sequence Region. */
+
+            slice = ensSliceNew(adaptor, sr, 1, ensSeqregionGetLength(sr), 1);
+
+            if(duplicates)
+            {
+                /*
+                ** Duplicate regions are allowed, so no further checks are
+                ** required.
+                */
+
+                ajListPushAppend(slices, (void *) slice);
+            }
+            else
+            {
+                /*
+                ** Test if this Slice *could* have a duplicate region by
+                ** checking for an Assembly Exception for the
+                ** Ensembl Sequence Region element of this Ensembl Slice.
+                */
+
+                aelist = ajListNew();
+
+                ensAssemblyexceptionadaptorFetchAllBySeqregionIdentifier(
                     aea,
                     srid,
                     aelist);
-		
-		if(ajListGetLength(aelist))
-		{
-		    /*
-		    ** This Slice may have duplicate regions, so de-reference
-		    ** symlinked assembly regions and remove any Slices,
-		    ** which have a symlink, because these are duplicates.
-		    ** Replace them with any symlinked Slices based on the
-		    ** same Sequence Region and Coordinate System as the
-		    ** original Slice.
-		    */
-		    
-		    pslist = ajListNew();
-		    
-		    ensSliceadaptorFetchNormalisedSliceProjection(adaptor,
-								  slice,
-								  pslist);
-		    
-		    while(ajListPop(pslist, (void **) &ps))
-		    {
-			nslice = ensProjectionsegmentGetTrgSlice(ps);
-			
-			if(ensSeqregionMatch(nslice->Seqregion,
-					      slice->Seqregion))
-			    ajListPushAppend(slices,
-					     (void *) ensSliceNewRef(nslice));
-			
-			ensProjectionsegmentDel(&ps);
-		    }
-		    
-		    ajListFree(&pslist);
-		    
-		    ensSliceDel(&slice);
-		}
-		else
-		{
-		    /* No duplicates for this Slice. */
-		    
-		    ajListPushAppend(slices, (void *) slice);		
-		}
-		
-		while(ajListPop(aelist, (void **) &ae))
-		    ensAssemblyexceptionDel(&ae);
-		
-		ajListFree(&aelist);
-	    }
-	}
-	
-	ensSeqregionDel(&sr);
+
+                if(ajListGetLength(aelist))
+                {
+                    /*
+                    ** This Slice may have duplicate regions, so de-reference
+                    ** symlinked assembly regions and remove any Slices,
+                    ** which have a symlink, because these are duplicates.
+                    ** Replace them with any symlinked Slices based on the
+                    ** same Sequence Region and Coordinate System as the
+                    ** original Slice.
+                    */
+
+                    pslist = ajListNew();
+
+                    ensSliceadaptorFetchNormalisedSliceProjection(adaptor,
+                                                                  slice,
+                                                                  pslist);
+
+                    while(ajListPop(pslist, (void **) &ps))
+                    {
+                        nslice = ensProjectionsegmentGetTrgSlice(ps);
+
+                        if(ensSeqregionMatch(nslice->Seqregion,
+                                             slice->Seqregion))
+                            ajListPushAppend(slices,
+                                             (void *) ensSliceNewRef(nslice));
+
+                        ensProjectionsegmentDel(&ps);
+                    }
+
+                    ajListFree(&pslist);
+
+                    ensSliceDel(&slice);
+                }
+                else
+                {
+                    /* No duplicates for this Slice. */
+
+                    ajListPushAppend(slices, (void *) slice);		
+                }
+
+                while(ajListPop(aelist, (void **) &ae))
+                    ensAssemblyexceptionDel(&ae);
+
+                ajListFree(&aelist);
+            }
+        }
+
+        ensSeqregionDel(&sr);
     }
-    
+
     ajListFree(&srlist);
-    
+
     ensCoordsystemDel(&cs);
-    
+
     /* Clear the AJAX Table of non-reference Sequence Region identifiers. */
-    
+
     ajTableToarrayKeysValues(nonrefsr, &keyarray, &valarray);
-    
+
     for(i = 0; keyarray[i]; i++)
     {
-	AJFREE(keyarray[i]);
-	AJFREE(valarray[i]);
+        AJFREE(keyarray[i]);
+        AJFREE(valarray[i]);
     }
-    
+
     AJFREE(keyarray);
     AJFREE(valarray);
-    
+
     ajTableFree(&nonrefsr);
-    
+
     return ajTrue;
 }
 
@@ -4354,79 +4431,79 @@ EnsPRepeatmaskedslice ensRepeatmaskedsliceNew(EnsPSlice slice,
 {
     void **keyarray = NULL;
     void **valarray = NULL;
-    
+
     register ajuint i = 0;
-    
+
     AjEnum *Pmsktyp = NULL;
-    
+
     AjIList iter = NULL;
-    
+
     AjPStr key = NULL;
-    
+
     EnsPRepeatmaskedslice rmslice = NULL;
-    
+
     /*
-     ajDebug("ensRepeatmaskedsliceNew\n"
-	     "  slice %p\n"
-	     "  annames %p\n"
-	     "  masking %p\n",
-	     slice,
-	     annames,
-	     masking);
-     
-     ensSliceTrace(slice, 1);
-     */
-    
+      ajDebug("ensRepeatmaskedsliceNew\n"
+      "  slice %p\n"
+      "  annames %p\n"
+      "  masking %p\n",
+      slice,
+      annames,
+      masking);
+
+      ensSliceTrace(slice, 1);
+    */
+
     if(!slice)
-	return NULL;
-    
+        return NULL;
+
     if(!annames)
-	return NULL;
-    
+        return NULL;
+
     if(!masking)
-	return NULL;
-    
+        return NULL;
+
     AJNEW0(rmslice);
-    
+
     rmslice->Slice = ensSliceNewRef(slice);
-    
+
     /* Copy the AJAX List of Ensembl Analysis name AJAX Strings. */
-    
+
     rmslice->AnalysisNames = ajListstrNew();
-    
+
     iter = ajListIterNew(annames);
-    
+
     while(!ajListIterDone(iter))
     {
-	key = (AjPStr) ajListIterGet(iter);
-	
-	ajListPushAppend(rmslice->AnalysisNames, (void *) ajStrNewRef(key));
+        key = (AjPStr) ajListIterGet(iter);
+
+        ajListPushAppend(rmslice->AnalysisNames, (void *) ajStrNewRef(key));
     }
-    
+
     ajListIterDel(&iter);
-    
+
     /* Copy the AJAX Table of AJAX String key and AJAX Enum masking types. */
-    
+
     rmslice->Masking = ajTablestrNewLen(0);
-    
+
     ajTableToarrayKeysValues(masking, &keyarray, &valarray);
-    
+
     for(i = 0; keyarray[i]; i++)
     {
-	key = ajStrNewS((AjPStr) keyarray[i]);
-	
-	AJNEW0(Pmsktyp);
-	
-	*Pmsktyp = *((AjEnum *) valarray[i]);
-	
-	ajTablePut(rmslice->Masking, (void *) key, (void *) Pmsktyp);
+        key = ajStrNewS((AjPStr) keyarray[i]);
+
+        AJNEW0(Pmsktyp);
+
+        *Pmsktyp = *((AjEnum *) valarray[i]);
+
+        ajTablePut(rmslice->Masking, (void *) key, (void *) Pmsktyp);
     }
-    
+
     AJFREE(keyarray);
     AJFREE(valarray);
-    
+
     rmslice->Use = 1;
-    
+
     return rmslice;
 }
 
@@ -4447,64 +4524,64 @@ EnsPRepeatmaskedslice ensRepeatmaskedsliceNewObj(EnsPRepeatmaskedslice object)
 {
     void **keyarray = NULL;
     void **valarray = NULL;
-    
+
     register ajuint i = 0;
-    
+
     AjEnum *Pmsktyp = NULL;
-    
+
     AjIList iter = NULL;
-    
+
     AjPStr key = NULL;
-    
+
     EnsPRepeatmaskedslice rmslice = NULL;
-    
+
     if(!object)
-	return NULL;
-    
+        return NULL;
+
     AJNEW0(rmslice);
-    
+
     rmslice->Slice = ensSliceNewRef(object->Slice);
-    
+
     /* Copy the AJAX List of Ensembl Analysis name AJAX Strings. */
-    
+
     if(object->AnalysisNames)
     {
-	rmslice->AnalysisNames = ajListstrNew();
-	
-	iter = ajListIterNew(object->AnalysisNames);
-	
-	while(!ajListIterDone(iter))
-	{
-	    key = (AjPStr) ajListIterGet(iter);
-	    
-	    ajListPushAppend(rmslice->AnalysisNames, ajStrNewRef(key));
-	}
-	
-	ajListIterDel(&iter);
+        rmslice->AnalysisNames = ajListstrNew();
+
+        iter = ajListIterNew(object->AnalysisNames);
+
+        while(!ajListIterDone(iter))
+        {
+            key = (AjPStr) ajListIterGet(iter);
+
+            ajListPushAppend(rmslice->AnalysisNames, ajStrNewRef(key));
+        }
+
+        ajListIterDel(&iter);
     }
-    
+
     /* Copy the AJAX Table of AJAX String key and AJAX Enum masking types. */
-    
+
     rmslice->Masking = ajTablestrNewLen(0);
-    
+
     ajTableToarrayKeysValues(object->Masking, &keyarray, &valarray);
-    
+
     for(i = 0; keyarray[i]; i++)
     {
-	key = ajStrNewS((AjPStr) keyarray[i]);
-	
-	AJNEW0(Pmsktyp);
-	
-	*Pmsktyp = *((AjEnum *) valarray[i]);
-	
-	ajTablePut(rmslice->Masking, (void *) key, (void *) Pmsktyp);
+        key = ajStrNewS((AjPStr) keyarray[i]);
+
+        AJNEW0(Pmsktyp);
+
+        *Pmsktyp = *((AjEnum *) valarray[i]);
+
+        ajTablePut(rmslice->Masking, (void *) key, (void *) Pmsktyp);
     }
-    
+
     AJFREE(keyarray);
     AJFREE(valarray);
-    
+
     rmslice->Use = 1;
-    
+
     return rmslice;
 }
 
@@ -4525,10 +4602,10 @@ EnsPRepeatmaskedslice ensRepeatmaskedsliceNewObj(EnsPRepeatmaskedslice object)
 EnsPRepeatmaskedslice ensRepeatmaskedsliceNewRef(EnsPRepeatmaskedslice rmslice)
 {
     if(!rmslice)
-	return NULL;
-    
+        return NULL;
+
     rmslice->Use++;
-    
+
     return rmslice;
 }
 
@@ -4572,54 +4649,54 @@ void ensRepeatmaskedsliceDel(EnsPRepeatmaskedslice *Prmslice)
     void **keyarray = NULL;
     void **valarray = NULL;
     EnsPRepeatmaskedslice pthis = NULL;
-    
+
     register ajuint i = 0;
-    
+
     if(!Prmslice)
-	return;
-    
+        return;
+
     if(!*Prmslice)
-	return;
+        return;
 
     pthis = *Prmslice;
-    
+
     pthis->Use--;
-    
+
     if(pthis->Use)
     {
-	*Prmslice = NULL;
-	
-	return;
+        *Prmslice = NULL;
+
+        return;
     }
-    
+
     ensSliceDel(&pthis->Slice);
-    
+
     /* Clear and delete the AJAX List of Ensembl Analysis name AJAX Strings. */
-    
+
     ajListstrFreeData(&pthis->AnalysisNames);
-    
+
     /* Clear and delete the AJAX Table. */
-    
+
     ajTableToarrayKeysValues(pthis->Masking, &keyarray, &valarray);
-    
+
     for(i = 0; keyarray[i]; i++)
     {
-	ajTableRemove(pthis->Masking, (const void *) keyarray[i]);
-	
-	ajStrDel((AjPStr *) &keyarray[i]);
-	
-	AJFREE(valarray[i]);
+        ajTableRemove(pthis->Masking, (const void *) keyarray[i]);
+
+        ajStrDel((AjPStr *) &keyarray[i]);
+
+        AJFREE(valarray[i]);
     }
-    
+
     AJFREE(keyarray);
     AJFREE(valarray);
-    
+
     ajTableFree(&pthis->Masking);
-    
+
     AJFREE(pthis);
 
     *Prmslice = NULL;
-    
+
     return;
 }
 
@@ -4645,26 +4722,26 @@ AjBool ensRepeatmaskedsliceFetchSequenceSeq(EnsPRepeatmaskedslice rmslice,
 {
     AjPStr name    = NULL;
     AjPStr sequence = NULL;
-    
+
     if(!rmslice)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Psequence)
-	return ajFalse;
-    
+        return ajFalse;
+
     name = ajStrNew();
-    
+
     ensSliceFetchName(rmslice->Slice, &name);
-    
+
     sequence = ajStrNew();
-    
+
     ensRepeatmaskedsliceFetchSequenceStr(rmslice, mtype, &sequence);
-    
+
     *Psequence = ajSeqNewNameS(sequence, name);
-    
+
     ajStrDel(&sequence);
     ajStrDel(&name);
-    
+
     return ajTrue;
 }
 
@@ -4704,201 +4781,206 @@ AjBool ensRepeatmaskedsliceFetchSequenceStr(EnsPRepeatmaskedslice rmslice,
 {
     ajint start = 0;
     ajint end   = 0;
-    
+
     AjEnum msktyp   = 0;
     AjEnum *Pmsktyp = NULL;
-    
+
     AjIList iter = NULL;
     AjPList rfs  = NULL;
-    
+
     AjPStr key = NULL;
-    
+
     EnsPDatabaseadaptor dba = NULL;
-    
+
     EnsPFeature feature = NULL;
-    
+
     EnsPRepeatconsensus rc = NULL;
-    
+
     EnsPRepeatfeature rf         = NULL;
     EnsPRepeatfeatureadaptor rfa = NULL;
-    
+
     EnsPSliceadaptor sa = NULL;
-    
+
     /*
-     ajDebug("ensRepeatmaskedsliceFetchSequenceStr\n"
-	     "  rmslice %p\n"
-	     "  *Psequence %p\n"
-	     "  mtype %d\n",
-	     rmslice,
-	     *Psequence,
-	     mtype);
-     */
-    
+      ajDebug("ensRepeatmaskedsliceFetchSequenceStr\n"
+      "  rmslice %p\n"
+      "  *Psequence %p\n"
+      "  mtype %d\n",
+      rmslice,
+      *Psequence,
+      mtype);
+    */
+
     if(!rmslice)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Psequence)
-	return ajFalse;
-    
+        return ajFalse;
+
     if((mtype <= 0) || (mtype > ensERepeatMaskTypeHard))
     {
-	ajDebug("ensRepeatmaskedsliceFetchSequenceStr got unsupported "
-		"masking type %d\n", mtype);
-	
-	return ajFalse;
+        ajDebug("ensRepeatmaskedsliceFetchSequenceStr got unsupported "
+                "masking type %d\n", mtype);
+
+        return ajFalse;
     }
-    
+
     if(!rmslice->Slice)
     {
-	ajDebug("ensRepeatmaskedsliceFetchSequenceStr got an "
-		"Ensembl Repeat-Masked Slice without an "
-		"Ensembl Slice.\n");
-	
-	return ajFalse;
+        ajDebug("ensRepeatmaskedsliceFetchSequenceStr got an "
+                "Ensembl Repeat-Masked Slice without an "
+                "Ensembl Slice.\n");
+
+        return ajFalse;
     }
-    
+
     ensSliceFetchSequenceStr(rmslice->Slice, Psequence);
-    
+
     /* Sanity check */
-    
+
     if(ensSliceGetLength(rmslice->Slice) != ajStrGetLen(*Psequence))
-	ajWarn("ensRepeatmaskedsliceFetchSequenceStr got Slice of length %u, "
-	       "but DNA sequence of length %u.\n",
-	       ensSliceGetLength(rmslice->Slice),
-	       ajStrGetLen(*Psequence));
-    
+        ajWarn("ensRepeatmaskedsliceFetchSequenceStr got Slice of length %u, "
+               "but DNA sequence of length %u.\n",
+               ensSliceGetLength(rmslice->Slice),
+               ajStrGetLen(*Psequence));
+
     sa = ensSliceGetAdaptor(rmslice->Slice);
-    
+
     dba = ensSliceadaptorGetDatabaseadaptor(sa);
-    
+
     rfa = ensRegistryGetRepeatfeatureadaptor(dba);
-    
+
     rfs = ajListNew();
-    
+
     iter = ajListIterNew(rmslice->AnalysisNames);
-    
+
     while(!ajListIterDone(iter))
     {
-	key = (AjPStr) ajListIterGet(iter);
-	
-	ensRepeatfeatureadaptorFetchAllBySlice(rfa,
-					       rmslice->Slice,
-					       key,
-					       (AjPStr) NULL,
-					       (AjPStr) NULL,
-					       (AjPStr) NULL,
-					       rfs);
+        key = (AjPStr) ajListIterGet(iter);
+
+        ensRepeatfeatureadaptorFetchAllBySlice(rfa,
+                                               rmslice->Slice,
+                                               key,
+                                               (AjPStr) NULL,
+                                               (AjPStr) NULL,
+                                               (AjPStr) NULL,
+                                               rfs);
     }
-    
+
     ajListIterDel(&iter);
-    
+
     /*
-     sliceMaskRepeatfeatures(rmslice->Slice,
-			     Psequence,
-			     rfs,
-			     mtype,
-			     rmslice->Masking);
-     */
-    
+      sliceMaskRepeatfeatures(rmslice->Slice,
+      Psequence,
+      rfs,
+      mtype,
+      rmslice->Masking);
+    */
+
     while(ajListPop(rfs, (void **) &rf))
     {
-	feature = ensRepeatfeatureGetFeature(rf);
-	
-	start = ensFeatureGetStart(feature);
-	
-	end = ensFeatureGetEnd(feature);
-	
-	/*
-	** Discard any Repeat Features that map completely outside the
-	** expected range.
-	*/
-	
-	/*
-	** FIXME: This should no longer be required as Features are
+        feature = ensRepeatfeatureGetFeature(rf);
+
+        start = ensFeatureGetStart(feature);
+
+        end = ensFeatureGetEnd(feature);
+
+        /*
+        ** Discard any Repeat Features that map completely outside the
+        ** expected range.
+        */
+
+        /*
+        ** FIXME: This should no longer be required as Features are
         ** already on this Slice!
-	 
-	 if((start > dnalen) || (end < 1))
-	 {
-	     ajDebug("sliceMaskRepeatfeatures got "
-		     "start %d > DNA sequence length %u or "
-		     "end %d < 1.\n", start, dnalen, end);
-	     
-	     ensFeatureDel(&newfeature);
-	     
-	     continue;
-	 }
-	*/
-	
-	/*
-	** For Repeat Features partly outside the Slice range correct the
-	** Repeat Feature start or end and length to the Slice size if
-	** neccessary.
-	*/
-	
-	if(start < 1)
-	    start = 1;
-	
-	if(end > (ajint) ensSliceGetLength(rmslice->Slice))
-	    end = ensSliceGetLength(rmslice->Slice);
-	
-	rc = ensRepeatfeatureGetRepeatconsensus(rf);
-	
-	/* Get the masking type for the Repeat Consensus Type if defined. */
-	
-	key = ajFmtStr("repeat_type_%S", ensRepeatconsensusGetType(rc));
-	
-	Pmsktyp = (AjEnum *)
-	    ajTableFetch(rmslice->Masking, (const void *) key);
-	
-	if(Pmsktyp)
-	    msktyp = *Pmsktyp;
-	
-	ajStrDel(&key);
-	
-	/* Get the masking type for the Repeat Consensus Class if defined. */
-	
-	key = ajFmtStr("repeat_class_%S", ensRepeatconsensusGetClass(rc));
-	
-	Pmsktyp = (AjEnum *)
-	    ajTableFetch(rmslice->Masking, (const void *) key);
-	
-	if(Pmsktyp)
-	    msktyp = *Pmsktyp;
-	
-	ajStrDel(&key);
-	
-	/* Get the masking type for the Repeat Consensus Name if defined. */
-	
-	key = ajFmtStr("repeat_name_%S", ensRepeatconsensusGetName(rc));
-	
-	Pmsktyp = (AjEnum *)
-	    ajTableFetch(rmslice->Masking, (const void *) key);
-	
-	if(Pmsktyp)
-	    msktyp = *Pmsktyp;
-	
-	ajStrDel(&key);
-	
-	/* Set the default masking type, if no other type has been defined. */
-	
-	if(!msktyp)
-	    msktyp = mtype;
-	
-	/* Mask the DNA sequence. */
-	
-	if(msktyp == ensERepeatMaskTypeSoft)
-	    ajStrFmtLowerSub(Psequence, start, end);
-	else if(msktyp == ensERepeatMaskTypeHard)
-	    ajStrMaskRange(Psequence, start, end, 'N');
-	else
-	    ajDebug("ensRepeatmaskedsliceFetchSequenceStr got unsupported "
-		    "masking type %d\n", msktyp);
-	
-	ensRepeatfeatureDel(&rf);
+
+        if((start > dnalen) || (end < 1))
+        {
+        ajDebug("sliceMaskRepeatfeatures got "
+        "start %d > DNA sequence length %u or "
+        "end %d < 1.\n", start, dnalen, end);
+
+        ensFeatureDel(&newfeature);
+
+        continue;
+        }
+        */
+
+        /*
+        ** For Repeat Features partly outside the Slice range correct the
+        ** Repeat Feature start or end and length to the Slice size if
+        ** neccessary.
+        */
+
+        if(start < 1)
+            start = 1;
+
+        if(end > (ajint) ensSliceGetLength(rmslice->Slice))
+            end = ensSliceGetLength(rmslice->Slice);
+
+        rc = ensRepeatfeatureGetRepeatconsensus(rf);
+
+        /* Get the masking type for the Repeat Consensus Type if defined. */
+
+        key = ajFmtStr("repeat_type_%S", ensRepeatconsensusGetType(rc));
+
+        Pmsktyp = (AjEnum *)
+            ajTableFetch(rmslice->Masking, (const void *) key);
+
+        if(Pmsktyp)
+            msktyp = *Pmsktyp;
+
+        ajStrDel(&key);
+
+        /* Get the masking type for the Repeat Consensus Class if defined. */
+
+        key = ajFmtStr("repeat_class_%S", ensRepeatconsensusGetClass(rc));
+
+        Pmsktyp = (AjEnum *)
+            ajTableFetch(rmslice->Masking, (const void *) key);
+
+        if(Pmsktyp)
+            msktyp = *Pmsktyp;
+
+        ajStrDel(&key);
+
+        /* Get the masking type for the Repeat Consensus Name if defined. */
+
+        key = ajFmtStr("repeat_name_%S", ensRepeatconsensusGetName(rc));
+
+        Pmsktyp = (AjEnum *)
+            ajTableFetch(rmslice->Masking, (const void *) key);
+
+        if(Pmsktyp)
+            msktyp = *Pmsktyp;
+
+        ajStrDel(&key);
+
+        /* Set the default masking type, if no other type has been defined. */
+
+        if(!msktyp)
+            msktyp = mtype;
+
+        /* Mask the DNA sequence. */
+
+        switch(msktyp)
+        {
+            case ensERepeatMaskTypeSoft:
+                ajStrFmtLowerSub(Psequence, start, end);
+                break;
+            case ensERepeatMaskTypeHard:
+                ajStrMaskRange(Psequence, start, end, 'N');
+                break;
+            default:
+                ajDebug("ensRepeatmaskedsliceFetchSequenceStr got unsupported "
+                        "masking type %d\n", msktyp);
+        }
+
+        ensRepeatfeatureDel(&rf);
     }
-    
+
     ajListFree(&rfs);
-    
+
     return ajTrue;
 }
 
@@ -4916,29 +4998,29 @@ AjBool ensRepeatmaskedsliceFetchSubSequenceStr(EnsPRepeatmaskedslice rmslice,
                                                AjPStr *Psequence)
 {
     if(!rmslice)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Psequence)
-	return ajFalse;
-    
+        return ajFalse;
+
     if((mtype <= 0) || (mtype > ensERepeatMaskTypeHard))
     {
-	ajDebug("ensRepeatmaskedsliceFetchSubSequenceStr got unsupported "
-		"masking type %d\n", mtype);
-	
-	return ajFalse;
+        ajDebug("ensRepeatmaskedsliceFetchSubSequenceStr got unsupported "
+                "masking type %d\n", mtype);
+
+        return ajFalse;
     }
-    
+
     if(!rmslice->Slice)
     {
-	ajDebug("ensRepeatmaskedsliceFetchSubSequenceStr got an "
-		"Ensembl Repeat-Masked Slice without an "
-		"Ensembl Slice.\n");
-	
-	return ajFalse;
+        ajDebug("ensRepeatmaskedsliceFetchSubSequenceStr got an "
+                "Ensembl Repeat-Masked Slice without an "
+                "Ensembl Slice.\n");
+
+        return ajFalse;
     }
-    
-    
+
+
 }
 
 #endif
