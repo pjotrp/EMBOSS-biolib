@@ -211,7 +211,7 @@ ajuint ensCoordsystemadaptorGetInternalSeqregionIdentifier(
 
 
 
-#endif
+#endif /* enscoordsystem_h */
 
 #ifdef __cplusplus
 }
