@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.6 $
+** @version $Revision: 1.7 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -285,14 +285,21 @@ EnsPCoordsystem ensCoordsystemNew(
 
     cs->Adaptor = adaptor;
 
-    if(name && (!toplevel))
-        cs->Name = ajStrNewRef(name);
-
     if(toplevel)
         cs->Name = ajStrNewC("toplevel");
+    else if (name)
+        cs->Name = ajStrNewRef(name);
+
+    /*
+    ** Although Coordinate System versions are optional, the AJAX String
+    ** should always be defined, since Ensembl Slice names are depending
+    ** on it.
+    */
 
     if(version)
         cs->Version = ajStrNewRef(version);
+    else
+        cs->Version = ajStrNew();
 
     cs->Rank = rank;
 
@@ -336,8 +343,16 @@ EnsPCoordsystem ensCoordsystemNewObj(EnsPCoordsystem object)
     if(object->Name)
         cs->Name = ajStrNewRef(object->Name);
 
+    /*
+    ** Although Coordinate System versions are optional, the AJAX String
+    ** should always be defined, since Ensembl Slice names are depending
+    ** on it.
+    */
+
     if(object->Version)
         cs->Version = ajStrNewRef(object->Version);
+    else
+        cs->Version = ajStrNew();
 
     cs->Default = object->Default;
 
@@ -1029,14 +1044,8 @@ AjPStr ensCoordsystemGetSpecies(EnsPCoordsystem cs)
 ** @fnote None
 **
 ** @nam3rule New Constructor
-** @nam4rule NewObj Constructor with existing object
-** @nam4rule NewRef Constructor by incrementing the reference counter
 **
 ** @argrule New dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @argrule Obj object [EnsPCoordsystemadaptor] Ensembl Coordinate
-**                                              System Adaptor
-** @argrule Ref object [EnsPCoordsystemadaptor] Ensembl Coordinate
-**                                              System Adaptor
 **
 ** @valrule * [EnsPCoordsystemadaptor] Ensembl Coordinate System Adaptor
 **
