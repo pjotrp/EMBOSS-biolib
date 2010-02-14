@@ -1036,6 +1036,94 @@ typedef struct EnsSIntron {
 
 
 
+/* @data EnsPTranslationadaptor ***********************************************
+**
+** Ensembl Translation Adaptor.
+**
+** @alias EnsSTranslationadaptor
+** @alias EnsOTranslationadaptor
+**
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor
+** @attr Adaptor [EnsPBaseadaptor] Ensembl Base Adaptor
+** @@
+******************************************************************************/
+
+typedef struct EnsSTranslationadaptor {
+    EnsPBaseadaptor Adaptor;
+} EnsOTranslationadaptor;
+
+#define EnsPTranslationadaptor EnsOTranslationadaptor*
+
+
+
+
+/* @data EnsPTranslation ******************************************************
+**
+** Ensembl Translation.
+**
+** @alias EnsSTranslation
+** @alias EnsOTranslation
+**
+** @attr Use [ajuint] Use counter
+** @cc Bio::EnsEMBL::Storable
+** @attr Identifier [ajuint] Internal SQL database identifier (primary key)
+** @attr Adaptor [EnsPTranslationadaptor] Ensembl Translation Adaptor
+** @cc Bio::EnsEMBL::Translation
+** @cc 'translation' SQL table
+** @attr StartExon [EnsPExon] Ensembl Exon in which the Translation
+**                            start coordinate is annotated
+** @attr EndExon [EnsPExon] Ensembl Exon in which the Translation
+**                          end coordinate is annotated
+** @attr Start [ajuint] Start coordinate relative to start Ensembl Exon
+** @attr End [ajuint] End coordinate relative to end Ensembl Exon
+** @cc 'translation_stable_id' SQL table
+** @attr StableIdentifier [AjPStr] Stable identifier
+** @attr CreationDate [AjPStr] Creation date
+** @attr ModificationDate [AjPStr] Modification date
+** @attr Version [ajuint] Version
+** @attr Padding [ajuint] Padding to alignment boundary
+** @cc Additional elements not in SQL tables
+** @attr Attributes [AjPList] AJAX List of Ensembl Attributes
+** @attr DatabaseEntries [AjPList] AJAX List of Ensembl Database Entries
+** @attr Proteinfeatures [AjPList] AJAX List of Ensembl Protein Features
+** @attr Sequence [AjPStr] Translation sequence
+** @attr TranscriptStart [ajuint] Start coordinate relative to
+**                                Ensembl Transcript (cDNA)
+** @attr TranscriptEnd [ajuint] End coordinate relative to
+**                              Ensembl Transcript (cDNA)
+** @attr SliceStart [ajuint] Start coordinate relative to the Slice
+** @attr SliceEnd [ajuint] End coordinate relative to the Slice
+** @@
+******************************************************************************/
+
+typedef struct EnsSTranslation {
+    ajuint Use;
+    ajuint Identifier;
+    EnsPTranslationadaptor Adaptor;
+    EnsPExon StartExon;
+    EnsPExon EndExon;
+    ajuint Start;
+    ajuint End;
+    AjPStr StableIdentifier;
+    AjPStr CreationDate;
+    AjPStr ModificationDate;
+    ajuint Version;
+    ajuint Padding;
+    AjPList Attributes;
+    AjPList DatabaseEntries;
+    AjPList Proteinfeatures;
+    AjPStr Sequence;
+    ajuint TranscriptStart;
+    ajuint TranscriptEnd;
+    ajuint SliceStart;
+    ajuint SliceEnd;
+} EnsOTranslation;
+
+#define EnsPTranslation EnsOTranslation*
+
+
+
+
 /* @data EnsPTranscriptadaptor ************************************************
 **
 ** Ensembl Transcript Adaptor.
@@ -1107,7 +1195,7 @@ enum EnsETranscriptStatus
 ** @attr DatabaseEntries [AjPList] AJAX List of Ensembl Database Entries
 ** @attr Exons [AjPList] AJAX List of Ensembl Exons
 ** @attr Supportingfeatures [AjPList] AJAX List of Ensembl Base Align Features
-** @attr Translations [AjPList] Ensembl Translations (weak references)
+** @attr Translation [EnsPTranslation] Ensembl Translation
 ** @attr SliceCodingStart [ajuint] Coding start in Slice coordinates
 ** @attr SliceCodingEnd [ajuint] Coding end in Slice coordinates
 ** @attr TranscriptCodingStart [ajuint] Coding start in Transcript coordinates
@@ -1117,8 +1205,6 @@ enum EnsETranscriptStatus
 ** @cc Bio::EnsEMBL::TranscriptMapper
 ** @attr ExonCoordMapper [EnsPMapper] Ensembl Mapper
 ** @@
-** The Attribute AJAX Table is a first-level Table of Ensembl Attribute code
-** AJAX String keys and AjPTable second-level AJAX Lists as value.
 ******************************************************************************/
 
 typedef struct EnsSTranscript {
@@ -1140,7 +1226,7 @@ typedef struct EnsSTranscript {
     AjPList DatabaseEntries;
     AjPList Exons;
     AjPList Supportingfeatures;
-    AjPList Translations;
+    EnsPTranslation Translation;
     ajuint SliceCodingStart;
     ajuint SliceCodingEnd;
     ajuint TranscriptCodingStart;
@@ -1151,96 +1237,6 @@ typedef struct EnsSTranscript {
 } EnsOTranscript;
 
 #define EnsPTranscript EnsOTranscript*
-
-
-
-
-/* @data EnsPTranslationadaptor ***********************************************
-**
-** Ensembl Translation Adaptor.
-**
-** @alias EnsSTranslationadaptor
-** @alias EnsOTranslationadaptor
-**
-** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor
-** @attr Adaptor [EnsPBaseadaptor] Ensembl Base Adaptor
-** @@
-******************************************************************************/
-
-typedef struct EnsSTranslationadaptor {
-    EnsPBaseadaptor Adaptor;
-} EnsOTranslationadaptor;
-
-#define EnsPTranslationadaptor EnsOTranslationadaptor*
-
-
-
-
-/* @data EnsPTranslation ******************************************************
-**
-** Ensembl Translation.
-**
-** @alias EnsSTranslation
-** @alias EnsOTranslation
-**
-** @attr Use [ajuint] Use counter
-** @cc Bio::EnsEMBL::Storable
-** @attr Identifier [ajuint] Internal SQL database identifier (primary key)
-** @attr Adaptor [EnsPTranslationadaptor] Ensembl Translation Adaptor
-** @cc Bio::EnsEMBL::Translation
-** @cc 'translation' SQL table
-** @attr Transcript [EnsPTranscript] Ensembl Transcript
-** @attr StartExon [EnsPExon] Ensembl Exon in which the Translation
-**                            start coordinate is annotated
-** @attr EndExon [EnsPExon] Ensembl Exon in which the Translation
-**                          end coordinate is annotated
-** @attr Start [ajuint] Start coordinate relative to start Ensembl Exon
-** @attr End [ajuint] End coordinate relative to end Ensembl Exon
-** @cc 'translation_stable_id' SQL table
-** @attr StableIdentifier [AjPStr] Stable identifier
-** @attr CreationDate [AjPStr] Creation date
-** @attr ModificationDate [AjPStr] Modification date
-** @attr Version [ajuint] Version
-** @attr Padding [ajuint] Padding to alignment boundary
-** @cc Additional elements not in SQL tables
-** @attr Attributes [AjPList] AJAX List of Ensembl Attributes
-** @attr DatabaseEntries [AjPList] AJAX List of Ensembl Database Entries
-** @attr Proteinfeatures [AjPList] AJAX List of Ensembl Protein Features
-** @attr Sequence [AjPStr] Translation sequence
-** @attr TranscriptStart [ajuint] Start coordinate relative to
-**                                Ensembl Transcript (cDNA)
-** @attr TranscriptEnd [ajuint] End coordinate relative to
-**                              Ensembl Transcript (cDNA)
-** @attr SliceStart [ajuint] Start coordinate relative to the Slice
-** @attr SliceEnd [ajuint] End coordinate relative to the Slice
-** @@
-******************************************************************************/
-
-typedef struct EnsSTranslation {
-    ajuint Use;
-    ajuint Identifier;
-    EnsPTranslationadaptor Adaptor;
-    EnsPTranscript Transcript;
-    EnsPExon StartExon;
-    EnsPExon EndExon;
-    ajuint Start;
-    ajuint End;
-    AjPStr StableIdentifier;
-    AjPStr CreationDate;
-    AjPStr ModificationDate;
-    ajuint Version;
-    ajuint Padding;
-    AjPList Attributes;
-    AjPList DatabaseEntries;
-    AjPList Proteinfeatures;
-    AjPStr Sequence;
-    ajuint TranscriptStart;
-    ajuint TranscriptEnd;
-    ajuint SliceStart;
-    ajuint SliceEnd;
-} EnsOTranslation;
-
-#define EnsPTranslation EnsOTranslation*
 
 
 
