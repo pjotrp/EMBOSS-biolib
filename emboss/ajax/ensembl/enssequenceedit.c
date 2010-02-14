@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -530,13 +530,16 @@ AjBool ensSequenceEditTrace(const EnsPSequenceEdit se, ajuint level)
 **
 ** @cc Bio::EnsEMBL:SeqEdit::apply_edit
 ** @param [r] se [EnsPSequenceEdit] Ensembl Sequence Edit
+** @param [rE] offset [ajint] Offset into sequence
 ** @param [r] PSequence [AjPStr*] Sequence AJAX String address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensSequenceEditApplyEdit(EnsPSequenceEdit se, AjPStr* Psequence)
+AjBool ensSequenceEditApplyEdit(EnsPSequenceEdit se,
+                                ajint offset,
+                                AjPStr* Psequence)
 {
     if(!se)
         return ajFalse;
@@ -547,19 +550,19 @@ AjBool ensSequenceEditApplyEdit(EnsPSequenceEdit se, AjPStr* Psequence)
     if(!*Psequence)
         return ajFalse;
 
-    if(se->Start > ajStrGetLen(*Psequence))
+    if((se->Start - offset) > ajStrGetLen(*Psequence))
     {
         ajDebug("ensSequenceEditApplyEdit start position %u beyond "
                 "sequence length %u.\n",
-                se->Start,
+                se->Start - offset,
                 ajStrGetLen(*Psequence));
 
         return ajFalse;
     }
 
-    ajStrCutRange(Psequence, se->Start - 1, se->End - 1);
+    ajStrCutRange(Psequence, se->Start - offset - 1, se->End - offset - 1);
 
-    ajStrInsertS(Psequence, se->Start - 1, se->AltSeq);
+    ajStrInsertS(Psequence, se->Start - offset - 1, se->AltSeq);
 
     return ajTrue;
 }

@@ -72,7 +72,9 @@ ajint ensSequenceEditGetLengthDifference(EnsPSequenceEdit se);
 
 AjBool ensSequenceEditTrace(const EnsPSequenceEdit se, ajuint level);
 
-AjBool ensSequenceEditApplyEdit(EnsPSequenceEdit se, AjPStr* Psequence);
+AjBool ensSequenceEditApplyEdit(EnsPSequenceEdit se,
+                                ajint offset,
+                                AjPStr* Psequence);
 
 int ensSequenceEditCompareStartAscending(const void* P1, const void* P2);
 
