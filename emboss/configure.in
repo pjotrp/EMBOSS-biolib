@@ -33,6 +33,8 @@ AC_PROG_CPP
 
 dnl Test whether --with-sgiabi given for IRIX (n32m3 n32m4 64m3 64m4)
 
+if test "$CC" != "gcc"; then
+
 if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64" ; then
 if test "$CC" != "gcc"; then
   CFLAGS="$CFLAGS"
@@ -70,7 +72,7 @@ dnl Another Solaris feature is that -fast implies -xarch=v8 and
 dnl therefore switches off -xarch=v9 if it is given first.
 
 
-dnl Test for OSF1 64 bit (its always this anyway)
+dnl Test for OSF1 64 bit (it's always this anyway)
 
 if test "`uname`" = "OSF1"; then
 CPPFLAGS="-DAJ_OSF164 $CPPFLAGS"
@@ -112,8 +114,6 @@ fi
 
 
 dnl Set optimisation flags
-
-if test "$CC" != "gcc"; then
 
 dnl Test for AIX optimisation
 
@@ -494,6 +494,17 @@ if test "$CC" = "cc"; then
   esac
 fi
 AM_CONDITIONAL(PURIFY, test "${enable_purify}" = "yes")
+
+
+dnl Set a gcc test flag for use in Makefile.am that can be used in modifiying
+dnl (dev) warnings in Makefile.am files.
+AM_CONDITIONAL(ISGCC, test "$CC" = "gcc")
+
+
+
+
+
+
 
 dnl Test if --enable-devwarnings given
 have_devwarnings=no

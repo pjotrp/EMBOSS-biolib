@@ -517,21 +517,12 @@ static void       seqGcgBinDecode(AjPStr *pthis, ajuint rdlen);
 static void       seqGcgLoadBuff(AjPSeqin seqin);
 static AjBool     seqGcgReadRef(AjPSeqin seqin);
 static AjBool     seqGcgReadSeq(AjPSeqin seqin);
-static FILE*      seqHttpGet(const AjPSeqQuery qry,
-			     const AjPStr host, ajint iport, const AjPStr get);
-static FILE*      seqHttpGetProxy(const AjPSeqQuery qry,
-				  const AjPStr proxyname, ajint proxyport,
-				  const AjPStr host, ajint iport,
-				  const AjPStr get);
-static AjBool     seqHttpProxy(const AjPSeqQuery qry,
-			       ajint* iport, AjPStr* proxyname);
 static AjBool     seqHttpUrl(const AjPSeqQuery qry,
 			     ajint* iport, AjPStr* host, AjPStr* urlget);
 static FILE*      seqHttpSocket(const AjPSeqQuery qry,
 				const struct hostent *hp, ajint hostport,
 				const AjPStr host, ajint iport,
 				const AjPStr get);
-static AjBool     seqHttpVersion(const AjPSeqQuery qry, AjPStr* httpver);
 static AjBool     seqSeqhoundQryNext(AjPSeqQuery qry, AjPSeqin seqin);
 static void       seqSocketTimeout(int sig);
 
@@ -1764,9 +1755,9 @@ static AjBool seqAccessEntrez(AjPSeqin seqin)
 
 	ajStrAssignC(&urlsearch, "/entrez/eutils/esearch.fcgi");
 
-	seqHttpVersion(qry, &httpver);
+	ajSeqHttpVersion(qry, &httpver);
 
-	if(seqHttpProxy(qry, &proxyPort, &proxyName))
+	if(ajSeqHttpProxy(qry, &proxyPort, &proxyName))
 	    ajFmtPrintS(&get, "GET http://%S:%d%S?",
 			host, iport, urlsearch);
 	else
@@ -1848,10 +1839,10 @@ static AjBool seqAccessEntrez(AjPSeqin seqin)
 	    ajDebug("host '%S' port %d get '%S'\n", host, iport, get);
 
 	    if(ajStrGetLen(proxyName))
-		fp = seqHttpGetProxy(qry, proxyName, proxyPort,
-				     host, iport, get);
+		fp = ajSeqHttpGetProxy(qry, proxyName, proxyPort,
+                                       host, iport, get);
 	    else
-		fp = seqHttpGet(qry, host, iport, get);
+		fp = ajSeqHttpGet(qry, host, iport, get);
 
 	    ajStrDel(&get);
 	    ajStrDel(&host);
@@ -2015,9 +2006,9 @@ static AjBool seqEntrezQryNext(AjPSeqQuery qry, AjPSeqin seqin)
     ajStrAssignS((AjPStr*)&qry->QryData, tmpstr);
     ajDebug("seqEntrezQryNext next gi '%S'\n", gistr);
 
-    seqHttpVersion(qry, &httpver);
+    ajSeqHttpVersion(qry, &httpver);
 
-    if(seqHttpProxy(qry, &proxyPort, &proxyName))
+    if(ajSeqHttpProxy(qry, &proxyPort, &proxyName))
 	ajFmtPrintS(&get,
 		    "GET http://%S:%d%S?", host, iport, urlfetch);
     else
@@ -2039,9 +2030,9 @@ static AjBool seqEntrezQryNext(AjPSeqQuery qry, AjPSeqin seqin)
     ajStrDel(&httpver);
 
     if(ajStrGetLen(proxyName))
-	sfp = seqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
+	sfp = ajSeqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
     else
-	sfp = seqHttpGet(qry, host, iport, get);
+	sfp = ajSeqHttpGet(qry, host, iport, get);
 
     if(!sfp)
 	return ajFalse;
@@ -2151,9 +2142,9 @@ static AjBool seqAccessSeqhound(AjPSeqin seqin)
 	    return ajFalse;
 	}
 
-	seqHttpVersion(qry, &httpver);
+	ajSeqHttpVersion(qry, &httpver);
 
-	if(seqHttpProxy(qry, &proxyPort, &proxyName))
+	if(ajSeqHttpProxy(qry, &proxyPort, &proxyName))
 	    ajFmtPrintS(&get, "GET http://%S:%d%S?",
 			host, iport, urlget);
 	else
@@ -2230,10 +2221,10 @@ static AjBool seqAccessSeqhound(AjPSeqin seqin)
 	    ajDebug("host '%S' port %d get '%S'\n", host, iport, get);
 
 	    if(ajStrGetLen(proxyName))
-		fp = seqHttpGetProxy(qry, proxyName, proxyPort,
-				     host, iport, get);
+		fp = ajSeqHttpGetProxy(qry, proxyName, proxyPort,
+                                       host, iport, get);
 	    else
-		fp = seqHttpGet(qry, host, iport, get);
+		fp = ajSeqHttpGet(qry, host, iport, get);
 
 	    if(!fp)
 	    {
@@ -2418,9 +2409,9 @@ static AjBool seqSeqhoundQryNext(AjPSeqQuery qry, AjPSeqin seqin)
 	return ajFalse;
     }
 
-    seqHttpVersion(qry, &httpver);
+    ajSeqHttpVersion(qry, &httpver);
 
-    if(seqHttpProxy(qry, &proxyPort, &proxyName))
+    if(ajSeqHttpProxy(qry, &proxyPort, &proxyName))
 	ajFmtPrintS(&get, "GET http://%S:%d%S?",
 		    host, iport, urlget);
     else
@@ -2440,13 +2431,13 @@ static AjBool seqSeqhoundQryNext(AjPSeqQuery qry, AjPSeqin seqin)
     ajStrDel(&gistr);
 
     if(ajStrGetLen(proxyName))
-	fp = seqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
+	fp = ajSeqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
     else
-	fp = seqHttpGet(qry, host, iport, get);
+	fp = ajSeqHttpGet(qry, host, iport, get);
 
     if(!fp)
     {
-	ajDebug("seqSeqhoundQryNext failed: seqHttpGet* failed "
+	ajDebug("seqSeqhoundQryNext failed: ajSeqHttpGet* failed "
 		"gilist '%S' QryData '%S'",
 		gilist, (AjPStr) qry->QryData);
 
@@ -2727,7 +2718,7 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
 	return ajFalse;
     }
 
-    if(seqHttpProxy(qry, &proxyPort, &proxyName))
+    if(ajSeqHttpProxy(qry, &proxyPort, &proxyName))
 	ajFmtPrintS(&get, "GET http://%S:%d%S?-e+-ascii",
 		    host, iport, urlget);
     else
@@ -2767,7 +2758,7 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
 
     ajDebug("searching with SRS url '%S'\n", get);
 
-    seqHttpVersion(qry, &httpver);
+    ajSeqHttpVersion(qry, &httpver);
     ajFmtPrintAppS(&get, " HTTP/%S\n", httpver);
     ajStrDel(&httpver);
 
@@ -2777,9 +2768,9 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
     ajDebug("host '%S' port %d get '%S'\n", host, iport, get);
 
     if(ajStrGetLen(proxyName))
-	fp = seqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
+	fp = ajSeqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
     else
-	fp = seqHttpGet(qry, host, iport, get);
+	fp = ajSeqHttpGet(qry, host, iport, get);
 
     ajStrDel(&proxyName);
     ajStrDel(&host);
@@ -6585,7 +6576,7 @@ static AjBool seqAccessDbfetch(AjPSeqin seqin)
 	return ajFalse;
     }
 
-    seqHttpVersion(qry, &httpver);
+    ajSeqHttpVersion(qry, &httpver);
 
     if(ajStrGetLen(qry->Id))
 	ajStrAssignS(&qryid, qry->Id);
@@ -6594,7 +6585,7 @@ static AjBool seqAccessDbfetch(AjPSeqin seqin)
     else
 	return ajFalse;
 
-    if(seqHttpProxy(qry, &proxyPort, &proxyName))
+    if(ajSeqHttpProxy(qry, &proxyPort, &proxyName))
 	ajFmtPrintS(&get, "GET http://%S:%d%S?db=%S&id=%S&style=raw\n",
 		    host, iport, urlget, searchdb, qryid);
     else
@@ -6605,9 +6596,9 @@ static AjBool seqAccessDbfetch(AjPSeqin seqin)
     ajDebug("host '%S' port %d get '%S'\n", host, iport, get);
 
     if(ajStrGetLen(proxyName))
-	fp = seqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
+	fp = ajSeqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
     else
-	fp = seqHttpGet(qry, host, iport, get);
+	fp = ajSeqHttpGet(qry, host, iport, get);
 
     if(!fp)
 	return ajFalse;
@@ -6698,9 +6689,9 @@ static AjBool seqAccessMrs(AjPSeqin seqin)
 	return ajFalse;
     }
 
-    seqHttpVersion(qry, &httpver);
+    ajSeqHttpVersion(qry, &httpver);
 
-    if(seqHttpProxy(qry, &proxyPort, &proxyName))
+    if(ajSeqHttpProxy(qry, &proxyPort, &proxyName))
 	ajFmtPrintS(&get, "GET http://%S:%d%S",
 		    host, iport, urlget);
     else
@@ -6733,9 +6724,9 @@ static AjBool seqAccessMrs(AjPSeqin seqin)
     ajDebug("host '%S' port %d get '%S'\n", host, iport, get);
 
     if(ajStrGetLen(proxyName))
-	fp = seqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
+	fp = ajSeqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
     else
-	fp = seqHttpGet(qry, host, iport, get);
+	fp = ajSeqHttpGet(qry, host, iport, get);
 
     if(!fp)
 	return ajFalse;
@@ -6826,9 +6817,9 @@ static AjBool seqAccessMrs3(AjPSeqin seqin)
 	return ajFalse;
     }
 
-    seqHttpVersion(qry, &httpver);
+    ajSeqHttpVersion(qry, &httpver);
 
-    if(seqHttpProxy(qry, &proxyPort, &proxyName))
+    if(ajSeqHttpProxy(qry, &proxyPort, &proxyName))
 	ajFmtPrintS(&get, "GET http://%S:%d%S",
 		    host, iport, urlget);
     else
@@ -6857,9 +6848,9 @@ static AjBool seqAccessMrs3(AjPSeqin seqin)
     ajDebug("host '%S' port %d get '%S'\n", host, iport, get);
 
     if(ajStrGetLen(proxyName))
-	fp = seqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
+	fp = ajSeqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
     else
-	fp = seqHttpGet(qry, host, iport, get);
+	fp = ajSeqHttpGet(qry, host, iport, get);
 
     if(!fp)
 	return ajFalse;
@@ -6942,9 +6933,9 @@ static AjBool seqAccessUrl(AjPSeqin seqin)
 	return ajFalse;
     }
 
-    seqHttpVersion(qry, &httpver);
+    ajSeqHttpVersion(qry, &httpver);
 
-    if(seqHttpProxy(qry, &proxyPort, &proxyName))
+    if(ajSeqHttpProxy(qry, &proxyPort, &proxyName))
 	ajFmtPrintS(&get, "GET http://%S:%d%S HTTP/%S\n",
 		    host, iport, urlget, httpver);
     else
@@ -6957,9 +6948,9 @@ static AjBool seqAccessUrl(AjPSeqin seqin)
     ajDebug("host '%S' port %d get '%S'\n", host, iport, get);
 
     if(ajStrGetLen(proxyName))
-	fp = seqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
+	fp = ajSeqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
     else
-	fp = seqHttpGet(qry, host, iport, get);
+	fp = ajSeqHttpGet(qry, host, iport, get);
 
     if(!fp)
 	return ajFalse;
@@ -7085,7 +7076,7 @@ static AjBool seqHttpUrl(const AjPSeqQuery qry, ajint* iport, AjPStr* host,
 
 
 
-/* @funcstatic seqHttpProxy ***************************************************
+/* @func ajSeqHttpProxy ******************************************************
 **
 ** Returns a proxy definition (if any)
 **
@@ -7096,8 +7087,8 @@ static AjBool seqHttpUrl(const AjPSeqQuery qry, ajint* iport, AjPStr* host,
 ** @@
 ******************************************************************************/
 
-static AjBool seqHttpProxy(const AjPSeqQuery qry, ajint* proxyport,
-			   AjPStr* proxyname)
+AjBool ajSeqHttpProxy(const AjPSeqQuery qry, ajint* proxyport,
+                      AjPStr* proxyname)
 {
     AjPStr proxyStr          = NULL;
     AjPStr proxy             = NULL;
@@ -7134,7 +7125,7 @@ static AjBool seqHttpProxy(const AjPSeqQuery qry, ajint* proxyport,
 
 
 
-/* @funcstatic seqHttpVersion *************************************************
+/* @func ajSeqHttpVersion ****************************************************
 **
 ** Returns the HTTP version
 **
@@ -7144,7 +7135,7 @@ static AjBool seqHttpProxy(const AjPSeqQuery qry, ajint* proxyport,
 ** @@
 ******************************************************************************/
 
-static AjBool seqHttpVersion(const AjPSeqQuery qry, AjPStr* httpver)
+AjBool ajSeqHttpVersion(const AjPSeqQuery qry, AjPStr* httpver)
 {
     ajNamGetValueC("httpversion", httpver);
     ajDebug("httpver getValueC '%S'\n", *httpver);
@@ -7177,7 +7168,7 @@ static AjBool seqHttpVersion(const AjPSeqQuery qry, AjPStr* httpver)
 
 
 
-/* @funcstatic seqHttpGetProxy ************************************************
+/* @func ajSeqHttpGetProxy ***************************************************
 **
 ** Opens an HTTP connection via a proxy
 **
@@ -7191,9 +7182,9 @@ static AjBool seqHttpVersion(const AjPSeqQuery qry, AjPStr* httpver)
 ** @@
 ******************************************************************************/
 
-static FILE* seqHttpGetProxy(const AjPSeqQuery qry,
-			     const AjPStr proxyname, ajint proxyport,
-			     const AjPStr host, ajint iport, const AjPStr get)
+FILE* ajSeqHttpGetProxy(const AjPSeqQuery qry,
+                        const AjPStr proxyname, ajint proxyport,
+                        const AjPStr host, ajint iport, const AjPStr get)
 {
     FILE* fp;
     struct hostent* hp;
@@ -7204,7 +7195,7 @@ static FILE* seqHttpGetProxy(const AjPSeqQuery qry,
 #endif
 
     /* herror("proxy error"); */
-    ajDebug("seqHttpGetProxy db: '%S' proxy '%S' host; %S get; '%S'\n",
+    ajDebug("ajSeqHttpGetProxy db: '%S' proxy '%S' host; %S get; '%S'\n",
 	    qry->DbName, proxyname, host, get);
     hp = gethostbyname(ajStrGetPtr(proxyname));
 
@@ -7237,7 +7228,7 @@ static FILE* seqHttpGetProxy(const AjPSeqQuery qry,
 
 
 
-/* @funcstatic seqHttpGet *****************************************************
+/* @func ajSeqHttpGet ********************************************************
 **
 ** Opens an HTTP connection
 **
@@ -7249,8 +7240,8 @@ static FILE* seqHttpGetProxy(const AjPSeqQuery qry,
 ** @@
 ******************************************************************************/
 
-static FILE* seqHttpGet(const AjPSeqQuery qry, const AjPStr host, ajint iport,
-			const AjPStr get)
+FILE* ajSeqHttpGet(const AjPSeqQuery qry, const AjPStr host, ajint iport,
+                   const AjPStr get)
 {
     FILE* fp;
     struct hostent* hp;
@@ -7260,7 +7251,7 @@ static FILE* seqHttpGet(const AjPSeqQuery qry, const AjPStr host, ajint iport,
     h_errno = 0;
 #endif
 
-    ajDebug("seqHttpGet db: '%S' host '%S' get: '%S'\n",
+    ajDebug("ajSeqHttpGet db: '%S' host '%S' get: '%S'\n",
 	    qry->DbName, host, get);
     hp = gethostbyname(ajStrGetPtr(host));
 

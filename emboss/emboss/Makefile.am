@@ -19,6 +19,7 @@ check_PROGRAMS = acdlog acdrelations acdxsd ajtest \
 complex corbatest edamclean ensembltest \
 entrails entrailsbook entrailshtml entrailswiki histogramtest intconv \
 origsplitter origunion \
+martattributes martdatasets martfilters martquery martregistry \
 newcoils \
 patmattest \
 prima primers \
@@ -173,6 +174,11 @@ jembossctl_SOURCES = jembossctl.c
 lindna_SOURCES = lindna.c
 listor_SOURCES = listor.c
 marscan_SOURCES = marscan.c
+martattributes_SOURCES = martattributes.c
+martdatasets_SOURCES = martdatasets.c
+martfilters_SOURCES = martfilters.c
+martquery_SOURCES = martquery.c
+martregistry_SOURCES = martregistry.c
 maskambignuc_SOURCES = maskambignuc.c
 maskambigprot_SOURCES = maskambigprot.c
 maskfeat_SOURCES = maskfeat.c

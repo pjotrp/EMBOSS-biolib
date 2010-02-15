@@ -1,0 +1,57 @@
+application: martdatasets [
+  documentation: "Return datasets from a mart from a registry"
+  groups: "Edit"
+  relations: "EDAM: Sequence file handling"  
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  string: mart [
+    standard: "Y"
+    default: "ensembl"
+    information: "Mart name"
+    relations: "EDAM: Generic string"
+  ]
+
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  string: host [
+    default: "www.biomart.org"
+    information: "Registry host location"
+    relations: "EDAM: Generic string"
+  ]
+
+  string: path [
+    default: "/biomart/martservice"
+    information: "Registry path on registry host"
+    relations: "EDAM: Generic string"
+  ]
+
+  integer: port [
+    default: "80"
+    information: "Registry port on registry host"
+    relations: "EDAM: Generic integer"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    relations: "EDAM: Free text"                                     
+  ]
+
+endsection: output
