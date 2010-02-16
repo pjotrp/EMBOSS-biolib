@@ -469,7 +469,8 @@ public class BuildJembossForm implements ActionListener
         {
           if(batchStart)
           {
-            BatchSoapProcess bsp = new BatchSoapProcess(embossCommand,filesToMove,mysettings);
+            BatchSoapProcess bsp = new BatchSoapProcess(embossCommand,
+                    filesToMove, mysettings, commandA);
             bsp.setWithSoap(false);
             bsp.start();
             if (prfs.getBoolean(DISPLAY_JOB_SUBMITTED_MSG, true)){
@@ -511,9 +512,11 @@ public class BuildJembossForm implements ActionListener
           else
           {
               JembossServer js = new JembossServer(mysettings.getResultsHome());
-              js.setEmbossCommandA((String[])commandA.toArray(new String[commandA.size()]));
-              Vector result = js.run_prog(embossCommand, 
-                      mysettings.getCurrentMode(), filesToMove);
+              // standalone jemboss, no files to move
+              Vector filesToMovev = new Vector();
+              Vector result = js.run_prog_array(
+                      new Vector(commandA), 
+                      mysettings.getCurrentMode(), filesToMovev, "");
               Hashtable r = convert(result,false);
               try {
                   resultSetFrame = new ShowResultSet(r,filesToMove,mysettings);
@@ -528,8 +531,10 @@ public class BuildJembossForm implements ActionListener
       }
       else
       {
+        List commandA = new ArrayList();
         Hashtable filesToMove = new Hashtable();
-        String embossCommand = getCommand(filesToMove);
+        Vector filesToMoveV = new Vector();
+        String embossCommand = getCommand(filesToMove, commandA);
 
         if(!embossCommand.equals("NOT OK"))
         {
@@ -541,23 +546,37 @@ public class BuildJembossForm implements ActionListener
           {
             if(batchStart)
             {
-              BatchSoapProcess bsp = new BatchSoapProcess(embossCommand,filesToMove,mysettings);
+              BatchSoapProcess bsp = new BatchSoapProcess(embossCommand,
+                      filesToMove, mysettings, commandA);
               bsp.start();
             }
             else
             {
-              JembossRun thisrun = new JembossRun(embossCommand,"",
-                                           filesToMove,mysettings);
-              resultSetFrame = new ShowResultSet(thisrun.hash(),filesToMove,mysettings);
+              JembossRun thisrun;
+              if(mysettings.getUseAuth())
+                thisrun = new JembossRun(embossCommand, "",filesToMove,
+                        mysettings);
+              else
+                thisrun = new JembossRun(commandA, "",filesToMove,mysettings);
+
+              resultSetFrame = new ShowResultSet(thisrun.hash(),filesToMove,
+                      mysettings);
             }
           }
           catch (JembossSoapException eae)
           {
+              if (mysettings.getUseAuth() == true)
+              {
             AuthPopup ap = new AuthPopup(mysettings,f);
             ap.setBottomPanel();
             ap.setSize(380,170);
             ap.pack();
             ap.setVisible(true);
+              }
+              else
+                  JOptionPane.showMessageDialog(f,eae.getMessage(),
+                          "Problem in executing server job",
+                          JOptionPane.ERROR_MESSAGE);
           }
         }
       }
@@ -839,7 +858,7 @@ public class BuildJembossForm implements ActionListener
         if(!(textf[h].getText()).equals("") && textf[h].isVisible()
                                             && textf[h].isEnabled()) 
         {
-          options = options.concat(" -" + val + " " + textf[h].getText());
+          options = options.concat(" -" + val + " \"" + textf[h].getText())+"\"";
           optionsA.add("-" + val);
           optionsA.add(textf[h].getText());
 
@@ -868,7 +887,8 @@ public class BuildJembossForm implements ActionListener
         
         if(textFields[0].getText() != null && !textFields[0].getText().trim().equals(""))
         {
-          options = options.concat(" -" + val + " " + textFields[0].getText());
+          options = options.concat(" -" + val + " \"" +
+                  textFields[0].getText()+ "\"");
           optionsA.add("-" + val);
           optionsA.add(textFields[0].getText());
         }
@@ -1262,16 +1282,15 @@ public class BuildJembossForm implements ActionListener
 
 /**
 *
-* Get the command line for the Standalone version.
-* @param Hashtable of the files to be transferrred
+* Get the command line for the standalone as well as the client jemboss
+* @param Hashtable of the files to be transferred
 * @return String command line to use
 *
 */
   private String getCommand(Hashtable filesToMove, List commandA)
   {
-	  String embossBin = mysettings.getEmbossBin();
 	  String command = applName;
-	  commandA.add(embossBin +(embossBin.endsWith(File.separator)?"":File.separator)+command);
+	  commandA.add(command);
 	  int numofFields = parseAcd.getNumofFields();
 
 	  String options = checkParameters(parseAcd, numofFields, filesToMove, commandA);
@@ -1279,36 +1298,18 @@ public class BuildJembossForm implements ActionListener
 	  if(options.equals("NOT OK"))
 		  command = "NOT OK";
 	  else {
-		  command = command.concat(options + " -auto");
+	      for (int i=0; i<commandA.size();i++){
+	          String s = (String)commandA.get(i);
+	          if(s.equals("stdout"))
+	          commandA.set(i, "stdoutfile");
+	      }
+		  command = command.concat(options.replaceAll("\"stdout\"", "stdoutfile") + " -auto");
 		  commandA.add("-auto");
 	  }
 
 	  return command;
   }
 
-
-/**
-*
-* Get the command line for the SOAP version.
-* @param Hashtable of the files to be transferrred
-* @return String command line to use
-*
-*/
-  private String getCommand(Hashtable filesToMove)
-  {
-	  String command = applName;
-	  int numofFields = parseAcd.getNumofFields();
-
-	  String options = checkParameters(parseAcd, numofFields, filesToMove, new ArrayList());
-
-	  if(options.equals("NOT OK"))
-		  command = "NOT OK";
-	  else {
-		  command = command.concat(options + " -auto");
-	  }
-
-	  return command;
-  }
 
 
 /**
@@ -1326,16 +1327,18 @@ public class BuildJembossForm implements ActionListener
   public class BatchSoapProcess extends Thread
   {
     private String embossCommand;
+    List command;
     private Hashtable filesToMove;
     private JembossParams mysettings;
     private boolean withSoap = true;
 
     public BatchSoapProcess(String embossCommand, Hashtable filesToMove,
-                            JembossParams mysettings)
+                            JembossParams mysettings, List command)
     {
       this.embossCommand = embossCommand;
       this.filesToMove   = filesToMove;
       this.mysettings    = mysettings;
+      this.command = command;
     }
 
     public void setWithSoap(boolean withSoap)
@@ -1364,15 +1367,23 @@ public class BuildJembossForm implements ActionListener
         final JembossProcess er;
         if(withSoap)
         {
-          JembossRun thisrun = new JembossRun(embossCommand,"",
-                                       filesToMove,mysettings);
+            JembossRun thisrun;
+            if (mysettings.getUseAuth() == true)
+                thisrun = new JembossRun(embossCommand,"",filesToMove,
+                        mysettings);
+            else
+                thisrun = new JembossRun(command,"",filesToMove,mysettings);
           er = new JembossProcess((String)thisrun.get("jobid"));
         }
         else
         {
           JembossServer js = new JembossServer(mysettings.getResultsHome());
-          Vector result = js.run_prog(embossCommand,mysettings.getCurrentMode(),
-                                        filesToMove);
+          // standalone jemboss, no files to move
+          Vector filesToMovev = new Vector();
+          Vector result = js.run_prog_array(
+                  new Vector(command),
+                  mysettings.getCurrentMode(),
+                                        filesToMovev, "");
           Hashtable resultHash = convert(result, false);
           er = new JembossProcess((String)resultHash.get("jobid"));
         }
