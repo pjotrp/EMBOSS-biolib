@@ -161,7 +161,7 @@ static void jaspextract_openoutdirs(void)
         {
             p = ajStrGetPtr(dir);
 #ifndef WIN32
-            mkdir(p,0644);
+            mkdir(p,0755);
 #else
             _mkdir(p);
 #endif
