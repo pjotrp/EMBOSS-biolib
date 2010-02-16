@@ -60,9 +60,9 @@ AjEnum ensGeneGetStatus(const EnsPGene gene);
 AjBool ensGeneGetCurrent(const EnsPGene gene);
 
 AjPStr ensGeneGetCanonicalAnnotation(const EnsPGene gene);
-    
+
 ajuint ensGeneGetCanonicalTranscriptIdentifier(const EnsPGene gene);
-    
+
 AjPStr ensGeneGetStableIdentifier(const EnsPGene gene);
 
 ajuint ensGeneGetVersion(const EnsPGene gene);
@@ -96,9 +96,9 @@ AjBool ensGeneSetStatus(EnsPGene gene, AjEnum status);
 AjBool ensGeneSetCurrent(EnsPGene gene, AjBool current);
 
 AjBool ensGeneSetCanonicalTranscript(EnsPGene gene, ajuint cantrcid);
-    
+
 AjBool ensGeneSetCanonicalAnnotation(EnsPGene gene, AjPStr canann);
-    
+
 AjBool ensGeneSetStableIdentifier(EnsPGene gene, AjPStr stableid);
 
 AjBool ensGeneSetVersion(EnsPGene gene, ajuint version);
@@ -159,6 +159,14 @@ AjBool ensGeneadaptorFetchAll(const EnsPGeneadaptor ga,
 AjBool ensGeneadaptorFetchAllByBiotype(EnsPGeneadaptor ga,
                                        const AjPStr biotype,
                                        AjPList genes);
+
+AjBool ensGeneadaptorFetchAllBySlice(EnsPGeneadaptor ga,
+                                     EnsPSlice slice,
+                                     const AjPStr anname,
+                                     const AjPStr source,
+                                     const AjPStr biotype,
+                                     AjBool loadtranscripts,
+                                     AjPList genes);
 
 AjBool ensGeneadaptorFetchAllByStableIdentifier(EnsPGeneadaptor ga,
                                                 const AjPStr stableid,
