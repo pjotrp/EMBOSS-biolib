@@ -896,7 +896,11 @@ static AjBool ensembltest_assembly_exceptions(EnsPDatabaseadaptor dba,
 
 static AjBool ensembltest_features(EnsPDatabaseadaptor dba, AjPFile outfile)
 {
-    AjPList list = NULL;
+    AjIList iter        = NULL;
+    AjPList exons       = NULL;
+    AjPList genes       = NULL;
+    AjPList transcripts = NULL;
+    const AjPList list  = NULL;
 
     AjPStr csname    = NULL;
     AjPStr csversion = NULL;
@@ -957,20 +961,20 @@ static AjBool ensembltest_features(EnsPDatabaseadaptor dba, AjPFile outfile)
 
     ensSliceFetchName(slice, &slname);
 
-    list = ajListNew();
-
     /* Fetch all Exons on this Slice. */
 
     ea = ensRegistryGetExonadaptor(dba);
 
-    ensExonadaptorFetchAllBySlice(ea, slice, list);
+    exons = ajListNew();
+
+    ensExonadaptorFetchAllBySlice(ea, slice, exons);
 
     ajFmtPrintF(outfile,
                 "  Ensembl Slice '%S' %u Exons\n\n",
                 slname,
-                ajListGetLength(list));
+                ajListGetLength(exons));
 
-    while(ajListPop(list, (void **) &exon))
+    while(ajListPop(exons, (void **) &exon))
     {
         feature = ensExonGetFeature(exon);
 
@@ -993,23 +997,27 @@ static AjBool ensembltest_features(EnsPDatabaseadaptor dba, AjPFile outfile)
         ensExonDel(&exon);
     }
 
+    ajListFree(&exons);
+
     /* Fetch all Transcripts on this Slice. */
 
     tca = ensRegistryGetTranscriptadaptor(dba);
+
+    transcripts = ajListNew();
 
     ensTranscriptadaptorFetchAllBySlice(tca,
                                         slice,
                                         (AjPStr) NULL,
                                         (AjPStr) NULL,
                                         ajTrue,
-                                        list);
+                                        transcripts);
 
     ajFmtPrintF(outfile,
                 "  Ensembl Slice '%S' %u Transcripts\n\n",
                 slname,
-                ajListGetLength(list));
+                ajListGetLength(transcripts));
 
-    while(ajListPop(list, (void **) &transcript))
+    while(ajListPop(transcripts, (void **) &transcript))
     {
         feature = ensTranscriptGetFeature(transcript);
 
@@ -1029,23 +1037,115 @@ static AjBool ensembltest_features(EnsPDatabaseadaptor dba, AjPFile outfile)
                     ensFeatureGetSeqregionEnd(feature),
                     ensFeatureGetSeqregionStrand(feature));
 
-        /*
-        ** TODO: List all Exons?
-        ** TODO: List the Translations?
-        */
+        list = ensTranscriptGetExons(transcript);
+
+        iter = ajListIterNewread(list);
+
+        while(!ajListIterDone(iter))
+        {
+            exon = (EnsPExon) ajListIterGet(iter);
+
+            feature = ensExonGetFeature(exon);
+
+            ajFmtPrintF(outfile,
+                        "      Exon Feature Slice coordinates "
+                        "'%S:%d:%d:%d'\n",
+                        ensExonGetStableIdentifier(exon),
+                        ensFeatureGetStart(feature),
+                        ensFeatureGetEnd(feature),
+                        ensFeatureGetStrand(feature));
+
+            ajFmtPrintF(outfile,
+                        "      Exon Sequence Region coordinates "
+                        "'%S:%d:%d:%d'\n\n",
+                        ensExonGetStableIdentifier(exon),
+                        ensFeatureGetSeqregionStart(feature),
+                        ensFeatureGetSeqregionEnd(feature),
+                        ensFeatureGetSeqregionStrand(feature));
+        }
+
+        ajListIterDel(&iter);
+
+        /* TODO: List the Translations? */
 
         ensTranscriptDel(&transcript);
     }
+
+    ajListFree(&transcripts);
 
     /* Fetch all Genes on this Slice. */
 
     ga = ensRegistryGetGeneadaptor(dba);
 
-    /* Fetch all Genes */
+    genes = ajListNew();
 
-    (void) gene;
+    ensGeneadaptorFetchAllBySlice(ga,
+                                  slice,
+                                  (AjPStr) NULL,
+                                  (AjPStr) NULL,
+                                  (AjPStr) NULL,
+                                  ajTrue,
+                                  genes);
 
-    ajListFree(&list);
+    ajFmtPrintF(outfile,
+                "  Ensembl Slice '%S' %u Genes\n\n",
+                slname,
+                ajListGetLength(genes));
+
+    while(ajListPop(genes, (void **) &gene))
+    {
+        feature = ensGeneGetFeature(gene);
+
+        ajFmtPrintF(outfile,
+                    "    Gene Feature Slice coordinates "
+                    "'%S:%d:%d:%d'\n",
+                    ensGeneGetStableIdentifier(gene),
+                    ensFeatureGetStart(feature),
+                    ensFeatureGetEnd(feature),
+                    ensFeatureGetStrand(feature));
+
+        ajFmtPrintF(outfile,
+                    "    Gene Sequence Region coordinates "
+                    "'%S:%d:%d:%d'\n\n",
+                    ensGeneGetStableIdentifier(gene),
+                    ensFeatureGetSeqregionStart(feature),
+                    ensFeatureGetSeqregionEnd(feature),
+                    ensFeatureGetSeqregionStrand(feature));
+
+        list = ensGeneGetTranscripts(gene);
+
+        iter = ajListIterNewread(list);
+
+        while(!ajListIterDone(iter))
+        {
+            transcript = (EnsPTranscript) ajListIterGet(iter);
+
+            feature = ensTranscriptGetFeature(transcript);
+
+            ajFmtPrintF(outfile,
+                        "      Transcript Feature Slice coordinates "
+                        "'%S:%d:%d:%d'\n",
+                        ensTranscriptGetStableIdentifier(transcript),
+                        ensFeatureGetStart(feature),
+                        ensFeatureGetEnd(feature),
+                        ensFeatureGetStrand(feature));
+
+            ajFmtPrintF(outfile,
+                        "      Transcript Sequence Region coordinates "
+                        "'%S:%d:%d:%d'\n\n",
+                        ensTranscriptGetStableIdentifier(transcript),
+                        ensFeatureGetSeqregionStart(feature),
+                        ensFeatureGetSeqregionEnd(feature),
+                        ensFeatureGetSeqregionStrand(feature));
+
+        }
+
+        ajListIterDel(&iter);
+
+        ensGeneDel(&gene);   
+    }
+
+    ajListFree(&genes);
 
     ajStrDel(&slname);
 
