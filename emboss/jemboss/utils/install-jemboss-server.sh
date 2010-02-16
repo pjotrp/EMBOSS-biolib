@@ -173,7 +173,7 @@ embassy_install()
           ./configure --with-thread=$PLATFORM \
               --prefix=$EMBOSS_INSTALL $USER_CONFIG
           make
-          make install
+          make -j install
         else
           echo
           echo "Did not install $dir cannot find"
@@ -1079,6 +1079,11 @@ if [ $INSTALL_TYPE = "1" ]; then
   read DATADIR
   echo "$DATADIR" >> $RECORD
 
+  if (test "$DATADIR" = ""); then
+    DATADIR="/tmp/SOAP/emboss"
+  fi
+
+
   echo
 
 #
@@ -1210,7 +1215,7 @@ echo "  ******* EMBOSS with Jemboss will be installed in $EMBOSS_INSTALL *******
 echo
 sleep 2
 
-make install
+make -j install
 
 #
 #
