@@ -428,16 +428,16 @@ public class JembossServer
       tmproot = tmproot.concat(userName+fs);
       embossCommandA = new String[cmdA.size()+hashInFiles.size()];
 
-      for (Object o: cmdA.toArray())
+      for (i=0; i<cmdA.size(); i++)
       {
-          String s = (String)o;
+          String s = (String)cmdA.get(i);
           cmd += (s.indexOf(' ')==-1 ? s : "\""+s+"\"")+" ";
           embossCommandA[i++] = s;
       }
-      
-      for (Object k: hashInFiles.keySet())
+      Object[] filenames = hashInFiles.keySet().toArray();
+      for (i=0; i<filenames.length; i++)
       {
-          String s = (String)k;
+          String s = (String)filenames[i];
           cmd += s+" ";
           embossCommandA[i++] = s;
       }
