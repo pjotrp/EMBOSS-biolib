@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -38,6 +38,14 @@
 /* ==================================================================== */
 /* ========================== private data ============================ */
 /* ==================================================================== */
+
+/* geneStatus *****************************************************************
+**
+** The Ensembl Gene status element is enumerated in both, the SQL table
+** definition and the data structure. The following strings are used for
+** conversion in database operations and correspond to EnsEGeneStatus.
+**
+******************************************************************************/
 
 static const char *geneStatus[] =
 {
@@ -116,7 +124,7 @@ static EnsPFeature geneAdaptorGetFeature(const void *value);
 **
 ** Functions for manipulating Ensembl Gene objects
 **
-** @cc Bio::EnsEMBL::Gene CVS Revision: 1.149
+** @cc Bio::EnsEMBL::Gene CVS Revision: 1.151
 **
 ** @nam2rule Gene
 **
@@ -3699,6 +3707,348 @@ AjBool ensGeneadaptorFetchAllByBiotype(EnsPGeneadaptor ga,
                                genes);
 
     ajStrDel(&constraint);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensGeneadaptorFetchAllBySlice ****************************************
+**
+** Fetch all Ensembl Genes via an Ensembl Slice.
+**
+** The caller is responsible for deleting the Ensembl Genes before
+** deleting the AJAX List.
+**
+** @cc Bio::EnsEMBL::DBSQL::GeneAdaptor::fetch_all_by_Slice
+** @param [r] ga [EnsPGeneadaptor] Ensembl Gene Adaptor
+** @param [r] slice [EnsPSlice] Ensembl Slice
+** @param [r] anname [const AjPStr] Ensembl Analysis name
+** @param [r] constraint [const AjPStr] SQL constraint
+** @param [r] loadtranscripts [AjBool] Load Ensembl Transcripts
+** @param [u] genes [AjPList] AJAX List of Ensembl Genes
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensGeneadaptorFetchAllBySlice(EnsPGeneadaptor ga,
+                                     EnsPSlice slice,
+                                     const AjPStr anname,
+                                     const AjPStr source,
+                                     const AjPStr biotype,
+                                     AjBool loadtranscripts,
+                                     AjPList genes)
+{
+    void **keyarray = NULL;
+    void **valarray = NULL;
+
+    char *txtsource  = NULL;
+    char *txtbiotype = NULL;
+
+    ajint start = INT_MAX;
+    ajint end   = INT_MIN;
+
+    register ajuint i = 0;
+
+    ajuint gnid = 0;
+    ajuint trid = 0;
+
+    ajuint *Pidentifier = NULL;
+
+    AjIList iter        = NULL;
+    AjPList transcripts = NULL;
+
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
+
+    AjPStr constraint = NULL;
+    AjPStr csv        = NULL;
+    AjPStr statement  = NULL;
+
+    AjPTable gntable = NULL;
+    AjPTable trtable = NULL;
+
+    EnsPDatabaseadaptor dba = NULL;
+
+    EnsPFeature feature = NULL;
+
+    EnsPGene gene = NULL;
+
+    EnsPSlice newslice  = NULL;
+    EnsPSliceadaptor sa = NULL;
+
+    EnsPTranscript oldtranscript = NULL;
+    EnsPTranscript newtranscript = NULL;
+    EnsPTranscriptadaptor tca    = NULL;
+
+    if(!ga)
+        return ajFalse;
+
+    if(!slice)
+        return ajFalse;
+
+    if(!genes)
+        return ajFalse;
+
+    dba = ensGeneadaptorGetDatabaseadaptor(ga);
+
+    constraint = ajStrNewC("gene.is_current = 1");
+
+    if(source && ajStrGetLen(source))
+    {
+        ensDatabaseadaptorEscapeC(dba, &txtsource, source);
+
+        ajFmtPrintAppS(&constraint, " AND gene.source = '%s'", txtsource);
+
+        ajCharDel(&txtsource);
+    }
+
+    if(biotype && ajStrGetLen(biotype))
+    {
+        ensDatabaseadaptorEscapeC(dba, &txtbiotype, biotype);
+
+        ajFmtPrintAppS(&constraint, " AND gene.biotype = '%s'", txtbiotype);
+
+        ajCharDel(&txtbiotype);
+    }
+
+    ensFeatureadaptorFetchAllBySliceConstraint(ga->Adaptor,
+                                               slice,
+                                               constraint,
+                                               anname,
+                                               genes);
+
+    ajStrDel(&constraint);
+
+    /* If there are less than two genes, still do lazy-loading. */
+
+    if(!loadtranscripts || ajListGetLength(genes) < 2)
+        return ajTrue;
+
+    /*
+    ** Preload all Transcripts now, instead of lazy loading later, which is
+    ** faster than one query per Transcript.
+    ** First check if Transcripts are already preloaded.
+    ** TODO: This should check all Transcripts.
+    */
+
+    ajListPeekFirst(genes, (void **) &gene);
+
+    if(gene->Transcripts)
+        return ajTrue;
+
+    tca = ensRegistryGetTranscriptadaptor(dba);
+
+    sa = ensRegistryGetSliceadaptor(dba);
+
+    /* Get the extent of the region spanned by Transcripts. */
+
+    csv = ajStrNew();
+
+    gntable = MENSTABLEUINTNEW(ajListGetLength(genes));
+    trtable = MENSTABLEUINTNEW(ajListGetLength(genes));
+
+    iter = ajListIterNew(genes);
+
+    while(!ajListIterDone(iter))
+    {
+        gene = (EnsPGene) ajListIterGet(iter);
+
+        feature = ensGeneGetFeature(gene);
+
+        start = (ensFeatureGetSeqregionStart(feature) < start) ?
+            ensFeatureGetSeqregionStart(feature) : start;
+
+        end = (ensFeatureGetSeqregionEnd(feature) > end) ?
+            ensFeatureGetSeqregionEnd(feature) : end;
+
+        ajFmtPrintAppS(&csv, "%u, ", ensGeneGetIdentifier(gene));
+
+        /*
+        ** Put all Ensembl Genes into an AJAX Table indexed by their
+        ** identifier.
+        */
+
+        AJNEW0(Pidentifier);
+
+        *Pidentifier = ensGeneGetIdentifier(gene);
+
+        ajTablePut(gntable,
+                   (void *) Pidentifier,
+                   (void *) ensGeneNewRef(gene));
+    }
+
+    ajListIterDel(&iter);
+
+    /* Remove the last comma and space from the comma-separated values. */
+
+    ajStrCutEnd(&csv, 2);
+
+    if((start >= ensSliceGetStart(slice)) && (end <= ensSliceGetEnd(slice)))
+        newslice = ensSliceNewRef(slice);
+    else
+        ensSliceadaptorFetchBySlice(sa,
+                                    slice,
+                                    start,
+                                    end,
+                                    ensSliceGetStrand(slice),
+                                    &newslice);
+
+    /* Associate Transcript identifiers with Genes. */
+
+    statement = ajFmtStr(
+        "SELECT "
+        "transcript.transcript_id "
+        "transcript.gene_id, "
+        "FROM "
+        "transcript "
+        "WHERE "
+        "transcript.gene_id IN (%S)",
+        csv);
+
+    ajStrAssignClear(&csv);
+
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
+
+    sqli = ajSqlrowiterNew(sqls);
+
+    while(!ajSqlrowiterDone(sqli))
+    {
+        trid = 0;
+        gnid = 0;
+
+        sqlr = ajSqlrowiterGet(sqli);
+
+        ajSqlcolumnToUint(sqlr, &trid);
+        ajSqlcolumnToUint(sqlr, &gnid);
+
+        gene = (EnsPGene) ajTableFetch(trtable, (void *) &trid);
+
+        if(gene)
+        {
+            ajDebug("ensGeneadaptorFetchAllBySlice got duplicate Transcript "
+                    "identifier %u.\n", trid);
+
+            continue;
+        }
+
+        AJNEW0(Pidentifier);
+
+        *Pidentifier = trid;
+
+        gene = (EnsPGene) ajTableFetch(gntable, (void *) &gnid);
+
+        if(!gene)
+        {
+            ajDebug("ensGeneadaptorFetchAllBySlice could not get Gene for "
+                    "identifier %u.\n", gnid);
+
+            continue;
+        }
+
+        ajTablePut(trtable,
+                   (void *) Pidentifier,
+                   (void *) ensGeneNewRef(gene));
+    }
+
+    ajSqlrowiterDel(&sqli);
+
+    ajSqlstatementDel(&sqls);
+
+    ajStrDel(&statement);
+
+    /* Get all Transcript identifiers as comma-separated values. */
+
+    ajTableToarrayKeys(trtable, &keyarray);
+
+    for(i = 0; keyarray[i]; i++)
+        ajFmtPrintAppS(&csv, "%u, ", *((ajuint *) keyarray[i]));
+
+    AJFREE(keyarray);
+
+    /* Remove the last comma and space from the comma-separated values. */
+
+    ajStrCutEnd(&csv, 2);
+
+    constraint = ajFmtStr("transcript.transcript_id IN (%S)", csv);
+
+    ajStrDel(&csv);
+
+    transcripts = ajListNew();
+
+    ensTranscriptadaptorFetchAllBySlice(tca,
+                                        newslice,
+                                        anname,
+                                        constraint,
+                                        ajTrue,
+                                        transcripts);
+
+    ajStrDel(&constraint);
+
+    /* Transfer Transcripts onto Gene Slice, and add them to Genes. */
+
+    while(ajListPop(transcripts, (void **) &oldtranscript))
+    {
+        newtranscript = ensTranscriptTransfer(oldtranscript, newslice);
+
+        if(!newtranscript)
+            ajFatal("ensGeneAdaptorFetchAllBySlice could not transfer "
+                    "Transcript onto new Slice.\n");
+
+        trid = ensTranscriptGetIdentifier(newtranscript);
+
+        gene = (EnsPGene) ajTableFetch(trtable, &trid);
+
+        ensGeneAddTranscript(gene, newtranscript);
+
+        ensTranscriptDel(&newtranscript);
+        ensTranscriptDel(&oldtranscript);
+    }
+
+    ajListFree(&transcripts);
+
+    /*
+    ** Clear and delete the AJAX Table of unsigned integer key and
+    ** Ensembl Gene value data.
+    */
+
+    ajTableToarrayKeysValues(gntable, &keyarray, &valarray);
+
+    for(i = 0; keyarray[i]; i++)
+    {
+        AJFREE(keyarray[i]);
+
+        ensGeneDel((EnsPGene *) &valarray[i]);
+    }
+
+    AJFREE(keyarray);
+    AJFREE(valarray);
+
+    ajTableFree(&gntable);
+
+    /*
+    ** Clear and detete the AJAX Table of unsigned integer key and
+    ** Ensembl Gene value data.
+    */
+
+    ajTableToarrayKeysValues(trtable, &keyarray, &valarray);
+
+    for(i = 0; keyarray[i]; i++)
+    {
+        AJFREE(keyarray[i]);
+
+        ensGeneDel((EnsPGene *) &valarray[i]);
+    }
+
+    AJFREE(keyarray);
+    AJFREE(valarray);
+
+    ajTableFree(&trtable);
+
+    ensSliceDel(&newslice);
 
     return ajTrue;
 }
