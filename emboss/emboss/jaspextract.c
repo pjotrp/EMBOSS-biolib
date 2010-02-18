@@ -72,7 +72,8 @@ static void jaspextract_openoutdirs(void);
 static void jaspextract_copyfiles(AjPStr directory);
 static void jaspextract_readmatrixlist(AjPTable mtable, const AjPStr directory);
 static void jaspextract_getjaspdirs(AjPList jdirlist);
-static void jaspextract_writematrixfile(const AjPTable mtable, const AjPStr directory);
+static void jaspextract_writematrixfile(const AjPTable mtable,
+                                        const AjPStr directory);
 
 
 
@@ -396,6 +397,7 @@ static void jaspextract_getjaspdirs(AjPList jdirlist)
     for(i=0; i < n; ++i)
     {
         ajListPop(jdirlist,(void **)&line);
+
         if(ajStrFindC(line,"JASPAR_") != -1)
             ajListPushAppend(jdirlist,(void *)line);
         else
@@ -419,7 +421,8 @@ static void jaspextract_getjaspdirs(AjPList jdirlist)
 ** @@
 ******************************************************************************/
 
-static void jaspextract_writematrixfile(const AjPTable mtable, const AjPStr directory)
+static void jaspextract_writematrixfile(const AjPTable mtable,
+                                        const AjPStr directory)
 {
     AjPStr wild   = NULL;
     AjPList flist = NULL;
@@ -456,7 +459,9 @@ static void jaspextract_writematrixfile(const AjPTable mtable, const AjPStr dire
         
         value = (AjPStr) ajTableFetch(mtable, (const void *)key);
 
-        ajFmtPrintF(outf,"%S",value);
+        if(value)
+            ajFmtPrintF(outf,"%S",value);
+
         ajStrDel(&fname);
     }
     
