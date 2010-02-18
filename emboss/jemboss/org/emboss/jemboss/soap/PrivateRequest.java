@@ -177,7 +177,7 @@ public class PrivateRequest
            String msg = (String)vans.get(j+1);
            if(msg.startsWith("Failed Authorisation"))
              throw new JembossSoapException("Authentication Failed");
-           else if(msg.startsWith("Error"))
+           else if(msg.contains("Error") || msg.contains("error"))
              JOptionPane.showMessageDialog(null, msg, "alert",
                                    JOptionPane.ERROR_MESSAGE);
          }
