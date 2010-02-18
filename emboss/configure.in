@@ -540,9 +540,6 @@ dnl comparing signed and unsigned values
   DEVWARN_CFLAGS="$DEVWARN_CFLAGS -Wmissing-noreturn -Wnested-externs"
 dnl useful messages
   DEVWARN_CFLAGS="$DEVWARN_CFLAGS -Wredundant-decls"
-dnl -Wpadded means moving char to end of structs - but also flags end of struct
-dnl  so need to add padding at end
-  DEVWARN_CFLAGS="$DEVWARN_CFLAGS -Wpadded"
 
 dnl -Wunsafe-loop-optimizations objects to loops with increments more than 1
 dnl because if the end is at INT_MAX it could run forever ... rarely
@@ -561,6 +558,23 @@ dnl -Wfloat-equal will not allow tests for values still 0.0
 dnl DEVWARN_CFLAGS="$DEVWARN_CFLAGS -Wfloat-equal"
   fi
 fi          
+
+
+dnl Test if --enable-devextrawarnings given
+dnl Will only have an effect if --enable-devwarnings also given
+AC_ARG_ENABLE(devextrawarnings,
+[  --enable-devextrawarnings    add extra warnings to devwarnings])
+if test "${enable_devextrawarnings}" = "yes" ; then
+  if test "$have_devwarnings" = "yes"; then
+
+dnl -Wpadded means moving char to end of structs - but also flags end of struct
+dnl  so need to add padding at end
+  DEVWARN_CFLAGS="$DEVWARN_CFLAGS -Wpadded"
+
+  fi
+fi
+
+
 AM_CONDITIONAL(DEVWARNINGS, test "$have_devwarnings" = "yes")
 AC_SUBST(DEVWARNINGS)
 
