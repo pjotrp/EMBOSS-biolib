@@ -192,10 +192,10 @@ NamOAttr namDbAttrs[] =
     {"appquery", "", "external commandline for 'methodquery' (APP, EXTERNAL)"},
 
     {"caseidmatch", "N", "match exact case of entry identifier"},
-    {"command", "", "command line to return entry/ies"},
+/*    {"command", "", "command line to return entry/ies"},*/
     {"comment", "", "text comment for the DB definition"},
     {"dbalias", "", "database name to be used by access method if different"},
-    {"description", "", "short database description"},
+/*    {"description", "", "short database description"},*/
     {"directory", "", "data directory"},
     {"exclude", "", "wildcard filenames to exclude from 'filename'"},
     {"fields", "", "extra database fields available, ID and ACC are standard"},
@@ -207,7 +207,7 @@ NamOAttr namDbAttrs[] =
 
     {"hasaccession", "Y", "database has an acc field as an alternate id"},
     {"httpversion", "", "HTTP version for GET requests (URL, SRSWWW)"},
-    {"identifier", "", "standard identifier (defaults to name)"},
+/*    {"identifier", "", "standard identifier (defaults to name)"},*/
     {"indexdirectory", "", "Index directory, defaults to data 'directory'"},
 
     {"methodall", "", "access method for all entries"},
@@ -225,7 +225,7 @@ NamOAttr namRsAttrs[] =
 {
     {"type", "", "resource type (required)"},
 
-    {"identifier", "", "standard identifier (defaults to name)"},
+/*    {"identifier", "", "standard identifier (defaults to name)"},*/
     {"release", "", "release of the resource"},
 
     {"idlen", "",  "maximum ID length"},
