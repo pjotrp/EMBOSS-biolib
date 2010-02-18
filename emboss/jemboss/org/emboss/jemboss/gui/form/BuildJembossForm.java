@@ -610,10 +610,10 @@ public class BuildJembossForm implements ActionListener
     for(int j=0;j<n;j+=2)
     {
       String s = (String)vans.get(j);
-      if(s.equals("msg"))
+      if(s.equals("msg") || s.equals("stderr"))
       {
         String msg = (String)vans.get(j+1);
-        if(msg.startsWith("Error"))
+        if(msg.contains("Error") || msg.contains("error"))
           JOptionPane.showMessageDialog(null, msg, "alert",
                                 JOptionPane.ERROR_MESSAGE);
       }
