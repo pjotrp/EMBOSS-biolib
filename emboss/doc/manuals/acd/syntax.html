@@ -1036,6 +1036,7 @@ warnrange: Y<br>
 size: 1<br>
 sum: 1.0<br>
 sumtest: Y<br>
+trueminimum: N<br>
 tolerance: 0.01<br>
 
  </p>
@@ -1100,6 +1101,7 @@ increment: 1.0<br>
 precision: 3<br>
 warnrange: Y<br>
 large: N<br>
+trueminimum: N<br>
 
  </p>
  </td>
@@ -1133,6 +1135,7 @@ maximum: <i>(INT_MAX)</i><br>
 increment: 0<br>
 warnrange: Y<br>
 large: N<br>
+trueminimum: N<br>
 
  </p>
  </td>
@@ -1483,7 +1486,7 @@ flength (integer)<br>
 fprotein (boolean)<br>
 fnucleic (boolean)<br>
 fname (string)<br>
-fsize (string)<br>
+fsize (integer)<br>
 
  </p>
  </td>
@@ -4249,6 +4252,18 @@ attributes, summarized in Table 1 and described in more detail below.</p>
   <p>&nbsp;</p>
   </td>
   <td>
+  <p>trueminimum: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>If max/min overlap, use minimum<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
   <p>tolerance: <i>float<i></p>
   </td>
   <td>
@@ -4330,6 +4345,18 @@ attributes, summarized in Table 1 and described in more detail below.</p>
 
  <tr>
   <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>trueminimum: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>If max/min overlap, use minimum<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>integer</p>
   </td>
   <td>
@@ -4385,6 +4412,18 @@ attributes, summarized in Table 1 and described in more detail below.</p>
   </td>
   <td>
   <p>Large values returned as long<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>trueminimum: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>If max/min overlap, use minimum<br>Default: N</p>
   </td>
  </tr>
 
@@ -4550,9 +4589,25 @@ they can fix the value, or provide parsers for each alternative.
 
 <h5>Float</h5>
 
+<p>The <i>large:</i> attribute defines values that can exceed the size
+or accuracy of a standard float value and will be passed as double
+precision to the application.</p>
+
 <p>The <i>minimum:</i> and <i>maximum:</i> attributes define the lower
 and upper value limits and default to the boundaries as specified by
 the systems set-up.</p>
+
+<p>The <i>warnrange:</i> attribute warns the user if an out of range
+value (below the minimum, or above the maximum) has been automatically
+adjusted to be valid. This includes adjusting a default value where
+the calculated range no longer includes it.</p>
+
+<p>Where one or both of the <i>minimum:</i> or <i>maximum</i> values
+are calculated there is a possibility that the maximum value will be
+defined lower than the minimum. In such cases by default the maximum
+is used. Where this is not ideal for the application,
+the <i>trueminimum:</i> attribute can be set true to use the minimum
+value as the only acceptable value.</p>
 
 <p>The <i>increment:</i> attribute defines the steps
 that this parameter is allowed to take, in case there is a need to
@@ -4565,11 +4620,29 @@ decimal places that will be taken into account for this value.</p>
 
 <h5>Integer</h5>
 
+<p>The <i>large:</i> attribute defines values that can exceed the size
+of a standard integer and will be passed as long integers to the
+application.</p>
+
 <p>The integer data type can hold simple integer values. The
 <i>minimum:</i> and <i>maximum:</i> attributes define the boundaries
-and default to the boundaries as specified by the systems setup. The
-<i>increment:</i> attribute defines the steps that this parameter is allowed to
-take, in case there is a need to iterate this parameter.</p>
+and default to the boundaries as specified by the systems setup.</p>
+
+<p>The <i>warnrange:</i> attribute warns the user if an out of range
+value (below the minimum, or above the maximum) has been automatically
+adjusted to be valid. This includes adjusting a default value where
+the calculated range no longer includes it.</p>
+
+<p>Where one or both of the <i>minimum:</i> or <i>maximum</i> values
+are calculated there is a possibility that the maximum value will be
+defined lower than the minimum. In such cases by default the maximum
+is used. Where this is not ideal for the application,
+the <i>trueminimum:</i> attribute can be set true to use the minimum
+value as the only acceptable value.</p>
+
+<p>The <i>increment:</i> attribute defines the steps that this
+parameter is allowed to take, in case there is a need to iterate this
+parameter.</p>
 
 <h5>Range</h5>
 
@@ -8258,7 +8331,7 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>hasmissing: <i>Y/N<i></p>
   </td>
   <td>
-  <p>Missing values found(replicates=N)<br>Default: </p>
+  <p>Missing values found (replicates=N)<br>Default: </p>
   </td>
  </tr>
 
@@ -8339,10 +8412,10 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>&nbsp;</p>
   </td>
   <td>
-  <p>fsize: <i>string<i></p>
+  <p>fsize: <i>integer<i></p>
   </td>
   <td>
-  <p>Integer, number of features<br>Default: ""</p>
+  <p>Number of features<br>Default: </p>
   </td>
  </tr>
 
@@ -8498,7 +8571,7 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>protein: <i>Y/N<i></p>
   </td>
   <td>
-  <p>Boolean, indicates if sequence is protein<br>Default: </p>
+  <p>Sequence is protein<br>Default: </p>
   </td>
  </tr>
 
@@ -8510,7 +8583,7 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>nucleic: <i>Y/N<i></p>
   </td>
   <td>
-  <p>Boolean, indicates if sequence is DNA<br>Default: </p>
+  <p>Sequence is nucleotide<br>Default: </p>
   </td>
  </tr>
 
@@ -8582,7 +8655,7 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>protein: <i>Y/N<i></p>
   </td>
   <td>
-  <p>Boolean, indicates if sequence set is protein<br>Default: </p>
+  <p>Sequence set is protein<br>Default: </p>
   </td>
  </tr>
 
@@ -8594,7 +8667,7 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>nucleic: <i>Y/N<i></p>
   </td>
   <td>
-  <p>Boolean, indicates if sequence set is DNA<br>Default: </p>
+  <p>Sequence set is nucleotide<br>Default: </p>
   </td>
  </tr>
 
@@ -8618,7 +8691,7 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>usa: <i>string<i></p>
   </td>
   <td>
-  <p>The USA of the sequence<br>Default: ""</p>
+  <p>The USA of the sequence set<br>Default: ""</p>
   </td>
  </tr>
 
@@ -8630,7 +8703,7 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>totweight: <i>float<i></p>
   </td>
   <td>
-  <p>Float, total sequence weight for a set<br>Default: </p>
+  <p>Total sequence weight for a set<br>Default: </p>
   </td>
  </tr>
 
@@ -8642,7 +8715,7 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>count: <i>integer<i></p>
   </td>
   <td>
-  <p>Integer, number of sequences in the set<br>Default: </p>
+  <p>Number of sequences in the set<br>Default: </p>
   </td>
  </tr>
 
@@ -8690,7 +8763,7 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>protein: <i>Y/N<i></p>
   </td>
   <td>
-  <p>Boolean, indicates if sequence set is protein<br>Default: </p>
+  <p>Sequence set is protein<br>Default: </p>
   </td>
  </tr>
 
@@ -8702,7 +8775,7 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>nucleic: <i>Y/N<i></p>
   </td>
   <td>
-  <p>Boolean, indicates if sequence set is DNA<br>Default: </p>
+  <p>Sequence set is nucleotide<br>Default: </p>
   </td>
  </tr>
 
@@ -8726,7 +8799,7 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>usa: <i>string<i></p>
   </td>
   <td>
-  <p>The USA of the sequence<br>Default: ""</p>
+  <p>The USA of the sequence set<br>Default: ""</p>
   </td>
  </tr>
 
@@ -8738,7 +8811,7 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>totweight: <i>float<i></p>
   </td>
   <td>
-  <p>Float, total sequence weight for each set<br>Default: </p>
+  <p>Total sequence weight for each set<br>Default: </p>
   </td>
  </tr>
 
@@ -8750,7 +8823,7 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>count: <i>integer<i></p>
   </td>
   <td>
-  <p>Integer, number of sequences in each set<br>Default: </p>
+  <p>Number of sequences in each set<br>Default: </p>
   </td>
  </tr>
 
@@ -8762,7 +8835,7 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>multicount: <i>integer<i></p>
   </td>
   <td>
-  <p>Integer, number of sets of sequences<br>Default: </p>
+  <p>Number of sets of sequences<br>Default: </p>
   </td>
  </tr>
 
@@ -8810,7 +8883,7 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>protein: <i>Y/N<i></p>
   </td>
   <td>
-  <p>Boolean, indicates if sequence is protein<br>Default: </p>
+  <p>Sequence is protein<br>Default: </p>
   </td>
  </tr>
 
@@ -8822,7 +8895,7 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
   <p>nucleic: <i>Y/N<i></p>
   </td>
   <td>
-  <p>Boolean, indicates if sequence is DNA<br>Default: </p>
+  <p>Sequence is nucleotide<br>Default: </p>
   </td>
  </tr>
 
@@ -12520,7 +12593,7 @@ a variable to be defined in this file.</p>
   <p>boolean</p>
   </td>
   <td>
-  <p>Log ACD processing to file program.acdlog<br>Default: N</p>
+  <p>Log ACD processing to file program.acdlog to debug ACD processing<br>Default: N</p>
   </td>
  </tr>
 
@@ -12532,7 +12605,7 @@ a variable to be defined in this file.</p>
   <p>integer</p>
   </td>
   <td>
-  <p>Number of times to prompt for a value when interactive<br>Default: 1</p>
+  <p>Number of times to prompt for a value interactively<br>Default: 1</p>
   </td>
  </tr>
 
@@ -12574,6 +12647,18 @@ a variable to be defined in this file.</p>
 
  <tr>
   <td>
+  <p>EMBOSS_CACHESIZE</p>
+  </td>
+  <td>
+  <p>integer</p>
+  </td>
+  <td>
+  <p>Cache size to use for database indexing<br>Default: 2048</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>EMBOSS_DATA</p>
   </td>
   <td>
@@ -12586,13 +12671,37 @@ a variable to be defined in this file.</p>
 
  <tr>
   <td>
+  <p>EMBOSS_DEBUG</p>
+  </td>
+  <td>
+  <p>boolean</p>
+  </td>
+  <td>
+  <p>Write debug output to program.dbg unless -nodebug is on the command line<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>EMBOSS_DEBUGBUFFER</p>
   </td>
   <td>
   <p>boolean</p>
   </td>
   <td>
-  <p>Buffer debug output to save I/O time but risk losing output<br>Default: N</p>
+  <p>Buffer debug output to save I/O time but risk losing output on a crash<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>EMBOSS_DOCROOT</p>
+  </td>
+  <td>
+  <p>string</p>
+  </td>
+  <td>
+  <p>EMBOSS directory for finding application documentation<br>Default: <i>(install directory)</i></p>
   </td>
  </tr>
 
@@ -12605,6 +12714,18 @@ a variable to be defined in this file.</p>
   </td>
   <td>
   <p>Print warning messages when parsing feature table input<br>Default: Y</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>EMBOSS_FILTER</p>
+  </td>
+  <td>
+  <p>boolean</p>
+  </td>
+  <td>
+  <p>By default read standard input and write to standard output unless -nofilter is on the command line<br>Default: Y</p>
   </td>
  </tr>
 
@@ -12670,6 +12791,18 @@ a variable to be defined in this file.</p>
 
  <tr>
   <td>
+  <p>EMBOSS_OPTIONS</p>
+  </td>
+  <td>
+  <p>boolean</p>
+  </td>
+  <td>
+  <p>Prompt for optional command line values unless -nooptions is on the command line<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>EMBOSS_OUTDIRECTORY</p>
   </td>
   <td>
@@ -12706,6 +12839,30 @@ a variable to be defined in this file.</p>
 
  <tr>
   <td>
+  <p>EMBOSS_PAGER</p>
+  </td>
+  <td>
+  <p>string</p>
+  </td>
+  <td>
+  <p>Application to use for pages output to screen<br>Default: "more"</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>EMBOSS_PAGESIZE</p>
+  </td>
+  <td>
+  <p>integer</p>
+  </td>
+  <td>
+  <p>Page size to use for database indexing<br>Default: 2048</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>EMBOSS_PROXY</p>
   </td>
   <td>
@@ -12730,13 +12887,25 @@ a variable to be defined in this file.</p>
 
  <tr>
   <td>
+  <p>EMBOSS_STDOUT</p>
+  </td>
+  <td>
+  <p>boolean</p>
+  </td>
+  <td>
+  <p>By default write to standard output unless -nostdout is on the command line<br>Default: Y</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>EMBOSS_TIMETODAY</p>
   </td>
   <td>
   <p>string</p>
   </td>
   <td>
-  <p>Date and time to override the current date - used to give a standard date and time for test runs<br>Default: "2006-07-15 12:00:00"</p>
+  <p>Date and time to override the current date - used to give a standard date and time for test runs<br>Default: "2010-07-15 12:00:00"</p>
   </td>
  </tr>
 
