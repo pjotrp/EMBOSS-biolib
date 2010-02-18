@@ -688,7 +688,14 @@ public class DragTree extends JTree implements DragGestureListener,
   public static void showFilePane(String filename, JembossParams mysettings)
   {
     Hashtable contents = new Hashtable();
-    contents.put(filename,readByteFile(filename));
+    byte[] content = readByteFile(filename);
+    if(content==null)
+    {
+        JOptionPane.showMessageDialog(null, "file \""+filename+"\" was empty",
+                "error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    contents.put(filename, content);
     ShowResultSet srs = new ShowResultSet(contents,mysettings);
     srs.setTitle("Local File");
   }
