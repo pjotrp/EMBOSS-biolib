@@ -71,17 +71,16 @@ public class JembossThread extends Thread
 
   /**
   *
-  * Creates a file named "stderr" in the project directory
+  * Creates a file named "stderrfile" in the project directory
   *
   */
   private void createStderrFile(String stderr)
   {
-    String fs = new String(System.getProperty("file.separator"));
-    File finished = new File(project + fs + "stderr");
+    File stderrfile = new File(project + File.separator + "stderrfile");
 
     try
     {
-      PrintWriter fout = new PrintWriter(new FileWriter(finished));
+      PrintWriter fout = new PrintWriter(new FileWriter(stderrfile));
       fout.println(stderr);
       fout.close();
     }
@@ -96,8 +95,7 @@ public class JembossThread extends Thread
   */
   private void createFinishedFile()
   {
-    String fs = new String(System.getProperty("file.separator"));
-    File finished = new File(project + fs + ".finished");
+    File finished = new File(project + File.separator + ".finished");
 
     try
     {
