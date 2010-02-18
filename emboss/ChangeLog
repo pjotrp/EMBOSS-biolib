@@ -1,4 +1,21 @@
+Version 6.3.0 15-Jul-2010
+	PNG graphics output had a plplot-defined margin limiting the
+	available plot space. This is now removed, allowing applicatins
+	such as prettyplot more space to display results.
+
+	Resource attribute identifier: is obsoleted. No code used it. It
+	is no longer allowed in resource definitions.
+
+	Database attributes identifier: description: and command: are
+	obsoleted. No code used them. They are no longer allowed in
+	database definitions.
+
 Version 6.2.0 15-Jan-2010
+	New application showpep displays protein sequences. Showseq is now
+	limited to nucleotide sequences. Many of the showseq options are
+	not appropriate for proteins. Showpep makes the remaining showseq
+	options available.
+
 	Fixed GFF2 and GFF3 feature formats to always have the start
 	position less than the end position for features on the '-'
 	strand.
@@ -476,6 +493,7 @@ Version 6.1.0 15-Jul-2009
 
 	Command line qualifiers are renamed where the first 5 characters
 	are the same. These were:
+	    eprimer3 major revision of all optoins
 	    est2genome -splice to -usesplace
 	    prettyplot -boxcolval to -boxuse
             octanol -*plot to -plot*
