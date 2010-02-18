@@ -808,7 +808,9 @@ sub writeUsage {
     $usage =~ s/seqalign\-[0-9]+[.][0-9]+[.]/seqalign-1234567890.1234./go;
     $usage =~ s/seqsearch\-[0-9]+[.][0-9]+[.]/seqsearch-1234567890.1234./go;
     $usage =~ s/hmmalign\-[0-9]+[.][0-9]+/hmmalign-1234567890.1234/go;
+    $usage =~ s/ehmmalign\-[0-9]+[.][0-9]+/ehmmalign-1234567890.1234/go;
     $usage =~ s/hmmpfam\-[0-9]+[.][0-9]+/hmmpfam-1234567890.1234/go;
+    $usage =~ s/ehmmpfam\-[0-9]+[.][0-9]+/ehmmpfam-1234567890.1234/go;
     $usage =~ s/Localtime: ... ... +\d+ [0-9:]+ 2[0-9][0-9][0-9]$/Localtime: Fri Jan 15 12:00:00 2010/gom;
     $usage =~ s/SUBMITTED iprscan-\d+-\d+/SUBMITTED-iprscan-20100115-12345678/go;
     print OUT $usage;
