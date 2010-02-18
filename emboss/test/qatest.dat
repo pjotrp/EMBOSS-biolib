@@ -375,7 +375,7 @@ IN
 FI actb1_fugru.antigenic
 FZ = 0
 FI antigenic.acdlog
-FC = 5626
+FC = 5646
 FP 51 /^acdProcess/
 FI stderr
 FC = 2
@@ -10757,9 +10757,6 @@ FP /^Created isochore\.ps\n/
 ID jaspextract-keep
 AP jaspextract
 DL keep
-PP mkdir ./JASPAR_CORE
-PP mkdir ./JASPAR_FAM
-PP mkdir ./JASPAR_PHYLOFACTS
 PP EMBOSS_DATA=./
 PP export EMBOSS_DATA
 IN ../../data/jaspar
@@ -10768,20 +10765,26 @@ FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
+DI JASPAR_CNE
 DI JASPAR_CORE
-DF MA0070.pfm
-DF MA0071.pfm
-DF MA0072.pfm
-DF MA0073.pfm
-DF MA0074.pfm
-DF MA0075.pfm
-DF MA0076.pfm
-DF MA0077.pfm
-DF MA0078.pfm
-DF MA0079.pfm
+DF MA0070.1.pfm
+DF MA0071.1.pfm
+DF MA0072.1.pfm
+DF MA0073.1.pfm
+DF MA0074.1.pfm
+DF MA0075.1.pfm
+DF MA0076.1.pfm
+DF MA0077.1.pfm
+DF MA0078.1.pfm
+DF MA0079.1.pfm
 DF matrix_list.txt
 DI JASPAR_FAM
+DI JASPAR_PBM
+DI JASPAR_PBM_HLH
+DI JASPAR_PBM_HOMEO
 DI JASPAR_PHYLOFACTS
+DI JASPAR_POLII
+DI JASPAR_SPLICE
 //
 
 ID jaspscan-ex
@@ -10791,17 +10794,17 @@ PP export EMBOSS_DATA
 CL -both
 IN tembl:m23100
 IN
-IN ma0079
+IN ma0079.1
 IN
 IN
 FI stderr
-FC = 9
+FC = 12
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI m23100.jaspscan 
 FC = 42
-FP /^ +117 +126 +[+] +82.143 +MA0079 +SP1 +Homo sapiens/
+FP /^ +117 +126 +[+] +82.143 +MA0079[.]1 +SP1 +9606 +Zinc-coordinating/
 FP 12 /^ +\d+ +\d+ +[+]/
 FP 6 /^ +\d+ +\d+ +[-]/
 //
@@ -12160,22 +12163,22 @@ FI prettyplot1.dat
 FC = 603
 FP /^##Maintitle Pretty plot of ..\/..\/data\/globins.msf\n/
 FP /^##Subtitle Fri 15 Jan 2010 12:00:00\n/
-FP /^Text1 x1 -10\.000000 y1 49\.[12][09][09][09][09][71] colour 0 size 8\.000000 LGB2_LUPLU\n/
-FP /^Text1 x1 -10\.000000 y1 42\.599998 colour 0 size 8\.000000 Consensus\n/
-FP /^Text1 x1 59\.000000 y1 52\.500000 colour 0 size 8\.000000 50\n/
-FP /^Text1 x1 9\.000000 y1 52\.500000 colour 0 size 8\.000000 A\n/
+FP /^Text1 x1 -10\.000000 y1 44\.714752 colour 0 size 10\.491803 LGB2_LUPLU\n/
+FP /^Text1 x1 -10\.000000 y1 36\.619671 colour 0 size 10\.491803 Consensus\n/
+FP /^Text1 x1 59\.000000 y1 36\.619671 colour 0 size 10\.491803 50\n/
+FP /^Text2 x1 18\.500000 y1 36\.619671 colour 0 size 10\.491803 S\n/
 FI prettyplot2.dat
 FC = 862
-FP /^Text1 x1 -10\.000000 y1 49\.[12][09][09][09][09][71] colour 0 size 8\.000000 LGB2_LUPLU\n/
-FP /^Text1 x1 1\.000000 y1 55\.799999 colour 0 size 8\.000000 K\n/
+FP /^Text1 x1 -10\.000000 y1 44\.714752 colour 0 size 10\.491803 LGB2_LUPLU\n/
+FP /^Text2 x1 1\.500000 y1 36\.619671 colour 0 size 10\.491803 F\n/
 FI prettyplot3.dat
 FC = 815
-FP /^Text1 x1 -10\.000000 y1 49\.[12][09][09][09][09][71] colour 0 size 8\.000000 LGB2_LUPLU\n/
-FP /^Text1 x1 2\.000000 y1 42\.599998 colour 0 size 8\.000000 H\n/
+FP /^Text1 x1 -10\.000000 y1 44\.714752 colour 0 size 10\.491803 LGB2_LUPLU\n/
+FP /^Text2 x1 2\.500000 y1 36\.619671 colour 0 size 10\.491803 H\n/
 FI prettyplot4.dat
 FC = 181
-FP /^Text1 x1 -10\.000000 y1 49\.[12][09][09][09][09][71] colour 0 size 8\.000000 LGB2_LUPLU\n/
-FP /^Text1 x1 1\.000000 y1 69\.000000 colour 0 size 8\.000000 N\n/
+FP /^Text1 x1 -10\.000000 y1 44\.714752 colour 0 size 10\.491803 LGB2_LUPLU\n/
+FP /^Text2 x1 3\.500000 y1 36\.619671 colour 0 size 10\.491803 L\n/
 //
 
 ID prettyseq-ex
@@ -22967,20 +22970,20 @@ FP 0 /Died: /
 FI stdout
 FC = 0
 DI lhf
-DF Q99396^.^262^473^.lhf   
-DF Q9DGG6^.^380^560^.lhf   
-DF Q9ERL9^.^480^631^.lhf   
-DF Q9WVI4^.^516^664^.lhf
+DF Q99396^.^262^473^.^55074^Alpha.lhf   
+DF Q9DGG6^.^380^560^.^55074^Alpha.lhf   
+DF Q9ERL9^.^480^631^.^55074^Alpha.lhf   
+DF Q9WVI4^.^516^664^.^55074^Alpha.lhf
 DI aln
-DF Q99396^.^262^473^.aln   
-DF Q9DGG6^.^380^560^.aln   
-DF Q9ERL9^.^480^631^.aln   
-DF Q9WVI4^.^516^664^.aln
+DF Q99396^.^262^473^.^55074^Alpha.aln   
+DF Q9DGG6^.^380^560^.^55074^Alpha.aln   
+DF Q9ERL9^.^480^631^.^55074^Alpha.aln   
+DF Q9WVI4^.^516^664^.^55074^Alpha.aln
 DI results
-DF Q99396^.^262^473^.results       
-DF Q9DGG6^.^380^560^.results       
-DF Q9ERL9^.^480^631^.results       
-DF Q9WVI4^.^516^664^.results
+DF Q99396^.^262^473^.^55074^Alpha.results       
+DF Q9DGG6^.^380^560^.^55074^Alpha.results       
+DF Q9ERL9^.^480^631^.^55074^Alpha.results       
+DF Q9WVI4^.^516^664^.^55074^Alpha.results
 //
 
 
