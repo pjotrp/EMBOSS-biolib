@@ -886,6 +886,8 @@ AjBool ajMartregistryParse(AjPSeqin seqin)
                    XML_ErrorString(XML_GetErrorCode(parser)),
                    XML_GetCurrentLineNumber(parser));
 
+            ajStrDel(&line);
+            
             return ajFalse;
         }
 
