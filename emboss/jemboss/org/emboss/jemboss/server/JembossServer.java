@@ -432,14 +432,14 @@ public class JembossServer
       {
           String s = (String)cmdA.get(i);
           cmd += (s.indexOf(' ')==-1 ? s : "\""+s+"\"")+" ";
-          embossCommandA[i++] = s;
+          embossCommandA[i] = s;
       }
       Object[] filenames = hashInFiles.keySet().toArray();
       for (i=0; i<filenames.length; i++)
       {
           String s = (String)filenames[i];
           cmd += s+" ";
-          embossCommandA[i++] = s;
+          embossCommandA[i] = s;
       }
 
       return run_prog(cmd,options, hashInFiles);
@@ -577,8 +577,9 @@ public class JembossServer
         
         if(!stderr.equals(""))
         {
-          result.add("stderr");
-          result.add(stderr);  
+          result.add("msg");
+          result.add(stderr);
+          createStderrFile(project, stderr);
         }
         createFinishedFile(project);
     }
@@ -620,6 +621,31 @@ public class JembossServer
     }
     catch (IOException ioe) {}
   }
+
+
+
+
+  /**
+  *
+  * Creates a file named "stderrfile" in the project directory
+  *
+  */
+  
+  private void createStderrFile(String project, String stderr)
+  {
+    File finished = new File(project + fs + "stderrfile");
+
+    try
+    {
+      PrintWriter fout = new PrintWriter(new FileWriter(finished));
+      fout.println(stderr);
+      fout.close();
+    }
+    catch (IOException ioe) {}
+  }
+
+
+
 
 
   /**
