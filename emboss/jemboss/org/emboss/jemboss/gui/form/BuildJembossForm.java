@@ -533,7 +533,6 @@ public class BuildJembossForm implements ActionListener
       {
         List commandA = new ArrayList();
         Hashtable filesToMove = new Hashtable();
-        Vector filesToMoveV = new Vector();
         String embossCommand = getCommand(filesToMove, commandA);
 
         if(!embossCommand.equals("NOT OK"))
