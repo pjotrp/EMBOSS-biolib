@@ -302,7 +302,7 @@ static GraphOType graphType[] =
 #endif
 
 #ifdef PLD_png          /* if png/gd/zlib libraries available for png driver */
-    {"png",        "png",     ".png",   640,  480,
+    {"png",        "png",     ".png",   800,  600,
      AJTRUE,  AJFALSE, AJFALSE, AJFALSE, AJFALSE,  AJFALSE,
      GraphxyDisplayToFile, GraphOpenFile,
      "PNG graphics files"},
@@ -7787,6 +7787,7 @@ static void GraphSetWin(float xmin, float xmax, float ymin, float ymax)
 	** Use the whole screen. User may add boundaries by
 	** modifying xmin, xmax etc.
 	*/
+        plvpor (0.0,1.0,0.0,1.0);
 	GraphWind(xmin, xmax, ymin, ymax);
     }
 
