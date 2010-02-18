@@ -79,7 +79,7 @@ Version: EMBOSS:6.2.0
                                   within a window whose size is set by this
                                   parameter. The window is moved down the
                                   sequence and these statistics are calculated
-                                  at each postition that the window is moved
+                                  at each position that the window is moved
                                   to. (Integer 1 or more)
    -minlen             integer    [200] This sets the minimum length that a
                                   CpG island has to be before it is reported.
@@ -412,9 +412,12 @@ See also
 
 Author(s)
 
-   Alan Bleasby (ajb (c) ebi.ac.uk)
+   Alan Bleasby
    European Bioinformatics Institute, Wellcome Trust Genome Campus,
    Hinxton, Cambridge CB10 1SD, UK
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
 History
 

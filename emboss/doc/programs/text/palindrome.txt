@@ -358,9 +358,11 @@ See also
 
 Author(s)
 
-   Mark             Faller (current e-mail address unknown)
-                    while he was with:
+   Mark             Faller formerly at:
    HGMP-RC,         Genome Campus, Hinxton, Cambridge CB10 1SB, UK
+
+                    Please report all bugs to the EMBOSS bug team
+                    (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
 History
 

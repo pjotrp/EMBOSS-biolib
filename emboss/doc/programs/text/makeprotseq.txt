@@ -474,6 +474,9 @@ Author(s)
    This application was contributed by Henrikki Almusa, Medicel, Helsinki,
    Finland
 
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
 History
 
 Target users

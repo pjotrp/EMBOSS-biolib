@@ -77,7 +77,7 @@ Version: EMBOSS:6.2.0
                                   files are found in the 'data' directory of
                                   the EMBOSS installation.
    -windowsize         integer    [10] Window size over which to test
-                                  threshhold (Integer 3 or more)
+                                  threshold (Integer 3 or more)
    -threshold          integer    [23] Threshold (Integer 0 or more)
 
    Advanced (Unprompted) qualifiers:
@@ -465,9 +465,12 @@ See also
 
 Author(s)
 
-   Ian              Longden (il (c) sanger.ac.uk)
+   Ian              Longden formerly at:
    Sanger           Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge,
                     CB10 1SA, UK.
+
+                    Please report all bugs to the EMBOSS bug team
+                    (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
 History
 

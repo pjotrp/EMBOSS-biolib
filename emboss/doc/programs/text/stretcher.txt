@@ -515,9 +515,12 @@ Author(s)
                     The original program was written by Gene Myers and Webb Miller in 1989.
 
                     This application was modified for inclusion in EMBOSS by Ian Longden
-                    (il (c) sanger.ac.uk)
+                    formerly at:
    Sanger           Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge,
                     CB10 1SA, UK.
+
+                    Please report all bugs to the EMBOSS bug team
+                    (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
 History
 

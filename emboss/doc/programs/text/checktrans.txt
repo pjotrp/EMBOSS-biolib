@@ -265,13 +265,20 @@ See also
 
 Author(s)
 
-   Rodrigo Lopez (rls (c) ebi.ac.uk)
+   Rodrigo Lopez
    European Bioinformatics Institute, Wellcome Trust Genome Campus,
-   Hinxton, Cambridge CB10 1SD, UK and modified by Gary Williams
-   (gwilliam (c) rfcgr.mrc.ac.uk)
+   Hinxton, Cambridge CB10 1SD, UK
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author. and
+   modified by Gary Williams formerly at:
    MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
-   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK to output the sequence
-   data to a single file in the conventional EMBOSS style.
+   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author. to
+   output the sequence data to a single file in the conventional EMBOSS
+   style.
 
 History
 

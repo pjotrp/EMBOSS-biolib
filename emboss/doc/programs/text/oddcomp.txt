@@ -261,7 +261,10 @@ See also
 
 Author(s)
 
-   David Martin (dmartin (c) rfcgr.mrc.ac.uk)
+   David Martin
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
 History
 

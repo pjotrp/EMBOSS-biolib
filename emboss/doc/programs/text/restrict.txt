@@ -149,7 +149,7 @@ Version: EMBOSS:6.2.0
                                   pattern to be considered
    -plasmid            boolean    [N] If this is set then this allows searches
                                   for restriction enzyme recognition site and
-                                  cut postions that span the end of the
+                                  cut positions that span the end of the
                                   sequence to be considered.
    -methylation        boolean    [N] If this is set then RE recognition sites
                                   will not match methylated bases.
@@ -333,7 +333,7 @@ Output file format
    The results can be output in one of several styles by using the
    command-line qualifier -rformat xxx, where 'xxx' is replaced by the
    name of the required format. The available format names are: embl,
-   genbank, gff, pir, swiss, trace, listfile, dbmotif, diffseq, excel,
+   genbank, gff, pir, swiss, debug, listfile, dbmotif, diffseq, excel,
    feattable, motif, regions, seqtable, simple, srs, table, tagseq
 
    See: http://emboss.sf.net/docs/themes/ReportFormats.html for further
@@ -892,9 +892,12 @@ See also
 
 Author(s)
 
-   Alan Bleasby (ajb (c) ebi.ac.uk)
+   Alan Bleasby
    European Bioinformatics Institute, Wellcome Trust Genome Campus,
    Hinxton, Cambridge CB10 1SD, UK
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
 History
 

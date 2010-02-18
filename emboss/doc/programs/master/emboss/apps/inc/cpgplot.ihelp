@@ -9,7 +9,7 @@ Version: EMBOSS:6.2.0
                                   within a window whose size is set by this
                                   parameter. The window is moved down the
                                   sequence and these statistics are calculated
-                                  at each postition that the window is moved
+                                  at each position that the window is moved
                                   to. (Integer 1 or more)
    -minlen             integer    [200] This sets the minimum length that a
                                   CpG island has to be before it is reported.

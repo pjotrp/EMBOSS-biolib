@@ -224,8 +224,11 @@ See also
 
 Author(s)
 
-   Michael          Schmitz (mschmitz (c) lbl.gov)
+   Michael          Schmitz formerly at:
    Lawrence         Berkeley Labs, USA
+
+                    Please report all bugs to the EMBOSS bug team
+                    (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
 History
 

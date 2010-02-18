@@ -408,6 +408,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/JASPAR_PHYLOFACTS
 DIRECTORY: /homes/pmr/local/share/EMBOSS/data/JASPAR_POLII
 
   dummyfile
+  matrix_list.txt
 
 
 DIRECTORY: /homes/pmr/local/share/EMBOSS/data/AAINDEX
@@ -1100,6 +1101,12 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/AAINDEX
   zimj680105
 
 
+DIRECTORY: /homes/pmr/local/share/EMBOSS/data/JASPAR_PBM_HLH
+
+  dummyfile
+  matrix_list.txt
+
+
 DIRECTORY: /homes/pmr/local/share/EMBOSS/data/CODONS
 
   Cut.index
@@ -1367,6 +1374,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/CODONS
 DIRECTORY: /homes/pmr/local/share/EMBOSS/data/JASPAR_SPLICE
 
   dummyfile
+  matrix_list.txt
 
 
 DIRECTORY: /homes/pmr/local/share/EMBOSS/data/JASPAR_FAM
@@ -1457,15 +1465,26 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/JASPAR_CORE
   MA0067.pfm
   MA0068.pfm
   MA0069.pfm
+  MA0070.1.pfm
   MA0070.pfm
+  MA0071.1.pfm
   MA0071.pfm
+  MA0072.1.pfm
   MA0072.pfm
+  MA0073.1.pfm
   MA0073.pfm
+  MA0074.1.pfm
   MA0074.pfm
+  MA0075.1.pfm
   MA0075.pfm
+  MA0076.1.pfm
   MA0076.pfm
+  MA0077.1.pfm
   MA0077.pfm
+  MA0078.1.pfm
   MA0078.pfm
+  MA0079.1.pfm
+  MA0079.2.pfm
   MA0079.pfm
   MA0080.pfm
   MA0081.pfm
@@ -1524,9 +1543,22 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/REBASE
   embossre.sup
 
 
+DIRECTORY: /homes/pmr/local/share/EMBOSS/data/JASPAR_PBM
+
+  dummyfile
+  matrix_list.txt
+
+
+DIRECTORY: /homes/pmr/local/share/EMBOSS/data/JASPAR_PBM_HOMEO
+
+  dummyfile
+  matrix_list.txt
+
+
 DIRECTORY: /homes/pmr/local/share/EMBOSS/data/JASPAR_CNE
 
   dummyfile
+  matrix_list.txt
 
 
    Example 3
@@ -1732,9 +1764,12 @@ See also
 
 Author(s)
 
-   Gary             Williams (gwilliam (c) rfcgr.mrc.ac.uk)
+   Gary             Williams formerly at:
    MRC              Rosalind Franklin Centre for Genomics Research Wellcome Trust
    Genome           Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+                    Please report all bugs to the EMBOSS bug team
+                    (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
 History
 

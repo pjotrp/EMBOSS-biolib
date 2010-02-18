@@ -377,19 +377,27 @@ See also
 
 Author(s)
 
-   This program was originally written by Gos Micklem (gos (c) ebi.ac.uk)
+   This program was originally written by Gos Micklem formerly at:
    Informatics Division, European Bioinformatics Institute, Wellcome Trust
    Genome Campus, Hinxton, Cambridge CB10 1SD, UK
 
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
    The algorithm was modified for inclusion in EGCG under the name
-   'CPGSPANS' by Rodrigo Lopez (rls (c) ebi.ac.uk)
+   'CPGSPANS' by Rodrigo Lopez
    European Bioinformatics Institute, Wellcome Trust Genome Campus,
    Hinxton, Cambridge CB10 1SD, UK
 
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
    This application was modified for inclusion in EMBOSS by Alan Bleasby
-   (ajb (c) ebi.ac.uk)
    European Bioinformatics Institute, Wellcome Trust Genome Campus,
    Hinxton, Cambridge CB10 1SD, UK
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
 History
 

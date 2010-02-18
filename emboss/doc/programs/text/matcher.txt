@@ -665,9 +665,12 @@ Author(s)
    FASTA package under the name 'lalign'.
 
    This application was modified for inclusion in EMBOSS by Ian Longden
-   (il (c) sanger.ac.uk)
+   formerly at:
    Sanger Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge,
    CB10 1SA, UK.
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
 History
 

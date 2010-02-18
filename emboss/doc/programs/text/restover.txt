@@ -367,10 +367,13 @@ See also
 
 Author(s)
 
-   Bernd Jagla (bernd (c) golgi.ski.mskcc.org)
+   Bernd Jagla formerly at:
    Cellular Biochemistry and Biophysics Program, Rockefeller Research
    Laboratories, Memorial Sloan-Kettering Cancer Center, 1275 York Avenue,
    Box 251,New York, NY 10021.
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
 History
 

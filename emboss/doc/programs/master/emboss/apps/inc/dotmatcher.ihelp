@@ -22,7 +22,7 @@ Version: EMBOSS:6.2.0
                                   files are found in the 'data' directory of
                                   the EMBOSS installation.
    -windowsize         integer    [10] Window size over which to test
-                                  threshhold (Integer 3 or more)
+                                  threshold (Integer 3 or more)
    -threshold          integer    [23] Threshold (Integer 0 or more)
 
    Advanced (Unprompted) qualifiers:

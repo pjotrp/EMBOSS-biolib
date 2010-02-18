@@ -2,9 +2,8 @@ Extract data from JASPAR
 Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:
-  [-directory]         directory  The directory containing the unzipped and
-                                  untarred JASPAR_CORE, JASPAR_FAM and
-                                  JASPAR_PHYLOFACTS subdirectories
+  [-directory]         directory  The FlatFileDir directory containing the
+                                  .pfm files and the matrix_list.txt file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

@@ -152,9 +152,9 @@ Version: EMBOSS:6.2.0
                                   sequence in the other output file, or use
                                   the qualifier '-context' which will display
                                   the 23 bases of the forward sequence in this
-                                  report withthe first two bases in brackets.
-                                  These first two bases do not form part of
-                                  the siRNA probe to be ordered.
+                                  report with the first two bases in
+                                  brackets. These first two bases do not form
+                                  part of the siRNA probe to be ordered.
   [-outseq]            seqoutall  [<sequence>.<format>] This is a file of the
                                   sequences of the 23 base regions that the
                                   siRNAs are selected from. You may use it to
@@ -289,7 +289,7 @@ Version: EMBOSS:6.2.0
 <tr bgcolor="#FFFFCC">
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>report</td>
-<td>The output is a table of the forward and reverse parts of the 21 base siRNA duplex. Both the forward and reverse sequences are written 5' to 3', ready to be ordered. The last two bases have been replaced by 'dTdT'. The starting position of the 23 base region and the %GC content is also given. If you wish to see the complete 23 base sequence, then either look at the sequence in the other output file, or use the qualifier '-context' which will display the 23 bases of the forward sequence in this report withthe first two bases in brackets. These first two bases do not form part of the siRNA probe to be ordered.</td>
+<td>The output is a table of the forward and reverse parts of the 21 base siRNA duplex. Both the forward and reverse sequences are written 5' to 3', ready to be ordered. The last two bases have been replaced by 'dTdT'. The starting position of the 23 base region and the %GC content is also given. If you wish to see the complete 23 base sequence, then either look at the sequence in the other output file, or use the qualifier '-context' which will display the 23 bases of the forward sequence in this report with the first two bases in brackets. These first two bases do not form part of the siRNA probe to be ordered.</td>
 <td>Report output file</td>
 <td><i>&lt;*&gt;</i>.sirna</td>
 </tr>
@@ -866,7 +866,7 @@ The output is a standard EMBOSS report file.
 The results can be output in one of several styles by using the
 command-line qualifier <b>-rformat xxx</b>, where 'xxx' is replaced by
 the name of the required format.  The available format names are: embl,
-genbank, gff, pir, swiss, trace, listfile, dbmotif, diffseq, excel,
+genbank, gff, pir, swiss, debug, listfile, dbmotif, diffseq, excel,
 feattable, motif, regions, seqtable, simple, srs, table, tagseq
 
 <p>
@@ -1396,11 +1396,13 @@ None.
     Author(s)
 </H2>
 
-Gary Williams (gwilliam&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+Gary Williams formerly at:
 <br>
 MRC Rosalind Franklin Centre for Genomics Research
 Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
+<p>
+Please report all bugs to the EMBOSS bug team (emboss-bug&nbsp;&copy;&nbsp;emboss.open-bio.org) not to the original author.
 
 <H2>
     History

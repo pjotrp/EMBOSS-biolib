@@ -532,7 +532,11 @@ prophet  Scan one or more sequences with a Gribskov or Henikoff profile
 TEST
 crystalball Answers every drug discovery question about a sequence
 ensembltest Demonstration of the Ensembl API to be
+mytest      Demonstration of sequence reading
 sqltest     Demonstration of SQL server access
+
+TESTING
+mytestb Testing
 
 UTILS DATABASE CREATION
 aaindexextract Extract amino acid property data from AAINDEX
@@ -793,6 +797,8 @@ msbar          Mutate a sequence
 mse            Multiple Sequence Editor
 mwcontam       Find weights common to multiple molecular weights files
 mwfilter       Filter noisy data from molecular weights file
+mytest         Demonstration of sequence reading
+mytestb        Testing
 needle         Needleman-Wunsch global alignment of two sequences
 needleall      Many-to-many pairwise alignments of two sequence sets
 newcpgreport   Identify CpG islands in nucleotide sequence(s)
@@ -994,6 +1000,7 @@ PROTEIN MOTIFS
 PROTEIN MUTATION
 PROTEIN PROFILES
 TEST
+TESTING
 UTILS DATABASE CREATION
 UTILS DATABASE INDEXING
 UTILS MISC
@@ -1239,9 +1246,12 @@ See also
 
 Author(s)
 
-   Gary             Williams (gwilliam (c) rfcgr.mrc.ac.uk)
+   Gary             Williams formerly at:
    MRC              Rosalind Franklin Centre for Genomics Research Wellcome Trust
    Genome           Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+                    Please report all bugs to the EMBOSS bug team
+                    (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
 History
 

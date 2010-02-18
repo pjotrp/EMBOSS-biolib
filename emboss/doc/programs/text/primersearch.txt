@@ -319,9 +319,12 @@ See also
 
 Author(s)
 
-   Val              Curwen (vac (c) sanger.ac.uk)
+   Val              Curwen formerly at:
    Sanger           Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge,
                     CB10 1SA, UK.
+
+                    Please report all bugs to the EMBOSS bug team
+                    (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
 History
 

@@ -455,11 +455,15 @@ Author(s)
    WSU.
 
    This application was modified for inclusion in EMBOSS by Ian Longden
-   (il@sanger.ac.uk) Informatics Division, The Sanger Centre, Wellcome
-   Trust Genome Campus, Hinxton, Cambridge, CB10 1SA, UK.
+   formerly at:
+   Informatics Division, The Sanger Centre, Wellcome Trust Genome Campus,
+   Hinxton, Cambridge, CB10 1SA, UK.
 
    Changes to the functionality in version 2 have been ported to the
    EMBOSS version.
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
 History
 

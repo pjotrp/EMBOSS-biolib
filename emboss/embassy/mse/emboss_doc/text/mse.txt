@@ -207,6 +207,9 @@ Author(s)
    This program is an EMBOSS conversion of a program written by Will
    Gilbert as part of his MSE package.
 
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
 History
 
 Target users

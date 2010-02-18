@@ -362,14 +362,20 @@ See also
 
 Author(s)
 
-   Ian Longden (il (c) sanger.ac.uk)
+   Ian Longden formerly at:
    Sanger Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge,
    CB10 1SA, UK.
 
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
    Many features were first implemented in the EGCG program "prettyplot"
-   by Peter Rice (pmr (c) ebi.ac.uk)
+   by Peter Rice
    European Bioinformatics Institute, Wellcome Trust Genome Campus,
    Hinxton, Cambridge CB10 1SD, UK
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
    The original suggestions for the PrettyPlot program were from Denis
    Duboule and Sigfried Labeit at EMBL. Gert Vriend added the star

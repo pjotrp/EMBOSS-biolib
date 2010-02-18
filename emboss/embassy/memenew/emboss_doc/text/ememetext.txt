@@ -1794,7 +1794,7 @@ problem with the MEME software.
 
 
 
-Time  0.07 secs.
+Time  0.08 secs.
 
 ********************************************************************************
 
@@ -2024,7 +2024,7 @@ TTCACATG[CG][CA][AGC][CA][CA][CT][CT]
 
 
 
-Time 10.43 secs.
+Time 10.44 secs.
 
 ********************************************************************************
 
@@ -2358,7 +2358,7 @@ Qx[EP][DE]GG[FL]G[GD]RP[GN]K[EL][VA][DH][GV]C[YH][TS]
 
 
 
-Time  1.53 secs.
+Time  1.52 secs.
 
 ********************************************************************************
 
@@ -2632,7 +2632,7 @@ INVEK[LV][IL][EQ][YF][ILV]LS
 
 
 
-Time  0.59 secs.
+Time  0.60 secs.
 
 ********************************************************************************
 
@@ -3111,9 +3111,12 @@ See also
 
 Author(s)
 
-   Jon Ison (jison (c) ebi.ac.uk)
+   Jon Ison
    European Bioinformatics Institute, Wellcome Trust Genome Campus,
    Hinxton, Cambridge CB10 1SD, UK
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
    This program is an EMBASSY wrapper to a program written by Timothy L.
    Bailey as part of his meme package.

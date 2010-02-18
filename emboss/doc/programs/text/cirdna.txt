@@ -310,8 +310,11 @@ See also
 
 Author(s)
 
-   Nicolas          Tourasse (nicolas.tourasse (c) biotek.uio.no)
+   Nicolas          Tourasse formerly at:
    Biotechnology    Center of Oslo
+
+                    Please report all bugs to the EMBOSS bug team
+                    (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
 History
 

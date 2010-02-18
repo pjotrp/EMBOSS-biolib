@@ -417,9 +417,12 @@ See also
 
 Author(s)
 
-   Alan             Bleasby (ajb (c) ebi.ac.uk)
+   Alan             Bleasby
    European         Bioinformatics Institute, Wellcome Trust Genome Campus,
    Hinxton,         Cambridge CB10 1SD, UK
+
+                    Please report all bugs to the EMBOSS bug team
+                    (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
 History
 

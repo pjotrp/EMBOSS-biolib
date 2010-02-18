@@ -328,13 +328,8 @@ Author(s)
    The original CBS group application must be licensed and installed to
    use this wrapper.
 
-   Although we take every care to ensure that the results of the EMBOSS
-   version are identical to those from the original package, we recommend
-   that you check your inputs give the same results in both versions
-   before publication.
-
-   Please report all bugs in the EMBOSS version to the EMBOSS bug team,
-   not to the original author.
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
 History
 

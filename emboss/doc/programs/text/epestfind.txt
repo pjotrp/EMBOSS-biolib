@@ -527,9 +527,11 @@ See also
 
 Author(s)
 
-   Michael K. Schuster and Martin Grabner
-   (martin.grabner (c) univie.ac.at)
-   from the Austrian National EMBnet node.
+   Michael K. Schuster and Martin Grabner formerly at:
+   Austrian National EMBnet node.
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
 
    Original program 'epestfind' by Scott Rogers and Martin Rechsteiner
    (C)1986.
