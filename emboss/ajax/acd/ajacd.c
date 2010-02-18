@@ -1323,7 +1323,7 @@ AcdOAttr acdAttrAppl[] =
     {"groups", VT_STR, AJTRUE, "",
 	 "Standard application group(s) for wossname and GUIs"},
     {"keywords", VT_STR, AJTRUE, "",
-	 "Standard application group(s) for wossname and GUIs"},
+	 "Standard application keyword(s) for wossname and GUIs"},
     {"gui", VT_STR, AJFALSE, "",
 	 "Suitability for launching in a GUI"},
     {"batch", VT_STR, AJFALSE,"",
@@ -2249,7 +2249,7 @@ static AcdOAttr acdCalcDistances[] =
     {"replicates", VT_BOOL, AJFALSE, "",
 	 "Replicates data found in input"},
     {"hasmissing", VT_BOOL, AJFALSE, "",
-	 "Missing values found(replicates=N)"},
+	 "Missing values found (replicates=N)"},
     {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
@@ -2269,8 +2269,8 @@ static AcdOAttr acdCalcFeat[] =
 	 "Feature table is nucleotide"},
     {"fname", VT_STR, AJFALSE, "",
 	 "The name of the feature table"},
-    {"fsize", VT_STR, AJFALSE, "",
-	 "Integer, number of features"},
+    {"fsize", VT_INT, AJFALSE, "",
+	 "Number of features"},
     {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
@@ -2324,9 +2324,9 @@ static AcdOAttr acdCalcSeq[] =
     {"length", VT_INT, AJFALSE, "",
 	  "Total length of the sequence"},
     {"protein", VT_BOOL, AJFALSE, "",
-	 "Boolean, indicates if sequence is protein"},
+	 "Sequence is protein"},
     {"nucleic", VT_BOOL, AJFALSE, "",
-	 "Boolean, indicates if sequence is DNA"},
+	 "Sequence is nucleotide"},
     {"name", VT_STR, AJFALSE, "",
 	 "The name/ID/accession of the sequence"},
     {"usa", VT_STR, AJFALSE, "",
@@ -2345,9 +2345,9 @@ static AcdOAttr acdCalcSeqall[] =
     {"length", VT_INT, AJFALSE, "",
 	 "Total length of the first sequence"},
     {"protein", VT_BOOL, AJFALSE, "",
-	 "Boolean, indicates if sequence is protein"},
+	 "Sequence is protein"},
     {"nucleic", VT_BOOL, AJFALSE, "",
-	 "Boolean, indicates if sequence is DNA"},
+	 "Sequence is nucleotide"},
     {"name", VT_STR, AJFALSE, "",
 	 "The name/ID/accession of the sequence"},
     {"usa", VT_STR, AJFALSE, "",
@@ -2366,17 +2366,17 @@ static AcdOAttr acdCalcSeqset[] =
     {"length", VT_INT, AJFALSE, "",
 	 "The maximum length of the sequence set"},
     {"protein", VT_BOOL, AJFALSE, "",
-	 "Boolean, indicates if sequence set is protein"},
+	 "Sequence set is protein"},
     {"nucleic", VT_BOOL, AJFALSE, "",
-	 "Boolean, indicates if sequence set is DNA"},
+	 "Sequence set is nucleotide"},
     {"name", VT_STR, AJFALSE, "",
 	 "The name of the sequence set"},
     {"usa", VT_STR, AJFALSE, "",
-	 "The USA of the sequence"},
+	 "The USA of the sequence set"},
     {"totweight", VT_FLOAT, AJFALSE, "",
-	 "Float, total sequence weight for a set"},
+	 "Total sequence weight for a set"},
     {"count", VT_INT, AJFALSE, "",
-	 "Integer, number of sequences in the set"},
+	 "Number of sequences in the set"},
     {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
@@ -2391,19 +2391,19 @@ static AcdOAttr acdCalcSeqsetall[] =
     {"length", VT_INT, AJFALSE, "",
 	 "The maximum length of the sequence set"},
     {"protein", VT_BOOL, AJFALSE, "",
-	 "Boolean, indicates if sequence set is protein"},
+	 "Sequence set is protein"},
     {"nucleic", VT_BOOL, AJFALSE, "",
-	 "Boolean, indicates if sequence set is DNA"},
+	 "Sequence set is nucleotide"},
     {"name", VT_STR, AJFALSE, "",
 	 "The name of the sequence set"},
     {"usa", VT_STR, AJFALSE, "",
-	 "The USA of the sequence"},
+	 "The USA of the sequence set"},
     {"totweight", VT_FLOAT, AJFALSE, "",
-	 "Float, total sequence weight for each set"},
+	 "Total sequence weight for each set"},
     {"count", VT_INT, AJFALSE, "",
-	 "Integer, number of sequences in each set"},
+	 "Number of sequences in each set"},
     {"multicount", VT_INT, AJFALSE, "",
-	 "Integer, number of sets of sequences"},
+	 "Number of sets of sequences"},
     {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
@@ -3587,7 +3587,7 @@ void ajAcdInitPV(const char *pgm, ajint argc, char * const argv[],
     
     ajListstrFreeData(&acdListWords);
     ajListFreeData(&acdListCount);
-    
+        
     if(acdDoVersion)
     {
         ajFmtPrintS(&versionstr, "EMBOSS:%s", VERSION);
