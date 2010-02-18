@@ -40,7 +40,7 @@
 ** @alias OJaspPrefix
 **
 ** @attr Prefix [const char*] Filename prefix of pfm files
-** @attr Directory [AjPStr] Directory name for files of a given prefix
+** @attr Directory [const char*] Directory name for files of a given prefix
 ** @@
 ******************************************************************************/
 
@@ -72,7 +72,7 @@ static void jaspextract_openoutdirs(void);
 static void jaspextract_copyfiles(AjPStr directory);
 static void jaspextract_readmatrixlist(AjPTable mtable, const AjPStr directory);
 static void jaspextract_getjaspdirs(AjPList jdirlist);
-static void jaspextract_writematrixfile(AjPTable mtable, AjPStr directory);
+static void jaspextract_writematrixfile(const AjPTable mtable, const AjPStr directory);
 
 
 
@@ -367,7 +367,7 @@ static void jaspextract_readmatrixlist(AjPTable mtable, const AjPStr directory)
 
 
 
-/* @funcstatic jaspextract_getjaspardirs **************************************
+/* @funcstatic jaspextract_getjaspdirs ****************************************
 **
 ** Construct a list of JASPAR_ directory locations in the EMBOSS data area
 **
@@ -412,14 +412,14 @@ static void jaspextract_getjaspdirs(AjPList jdirlist)
 **
 ** Writes a matrix_list.txt file in a JASPAR_ directory
 **
-** @param [r] mtable [AjPList] Table of matrix definitions 
-** @param [r] directory [AjPStr] JASPAR_ directory location
+** @param [r] mtable [const AjPTable] Table of matrix definitions 
+** @param [r] directory [const AjPStr] JASPAR_ directory location
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void jaspextract_writematrixfile(AjPTable mtable, AjPStr directory)
+static void jaspextract_writematrixfile(const AjPTable mtable, const AjPStr directory)
 {
     AjPStr wild   = NULL;
     AjPList flist = NULL;

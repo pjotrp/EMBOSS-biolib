@@ -91,7 +91,7 @@ typedef struct EmbSWordWrap {
 
 
 static ajuint wordmatch_embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
-        AjPSeqset seqset,
+        const AjPSeqset seqset,
         const EmbPWordWrap* patterns,
         ajuint plen, ajuint nwords, AjPList* l,
         ajuint* lastlocation, ajuint** nmatchesseqset, AjBool checkmode);
@@ -411,7 +411,7 @@ static ajulong wordmatch_precomputeRM(ajuint m)
 ** Rabin Karp search for multiple patterns.
 **
 ** @param [r] sseq [const AjPStr] Sequence to be scanned for multiple patterns
-** @param [r] seqset [AjPSeqset] Sequence set patterns found
+** @param [r] seqset [const AjPSeqset] Sequence set patterns found
 ** @param [r] patterns [const EmbPWordWrap*] Patterns to be searched
 ** @param [r] plen [ajuint] Length of patterns
 ** @param [r] npatterns [ajuint] Number of patterns
@@ -427,7 +427,7 @@ static ajulong wordmatch_precomputeRM(ajuint m)
 ******************************************************************************/
 
 static ajuint wordmatch_embPatRabinKarpSearchMultiPattern(const AjPStr sseq,
-    AjPSeqset seqset,
+    const AjPSeqset seqset,
     const EmbPWordWrap* patterns,
     ajuint plen, ajuint npatterns, AjPList* matchlist,
     ajuint* lastlocation, ajuint** nmatchesseqset, AjBool checkmode)
