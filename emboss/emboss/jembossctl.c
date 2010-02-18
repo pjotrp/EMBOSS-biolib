@@ -1278,7 +1278,11 @@ static AjBool jembossctl_do_batch(char *buf, int uid, int gid)
 	return ajFalse;
     }
 
-
+/*
+    fprintf(stdout,"%s",ajStrGetPtr(outstd));
+    fprintf(stderr,"%s",ajStrGetPtr(errstd));
+*/
+    
     close(errpipe[0]);
     close(errpipe[1]);
     close(outpipe[0]);
@@ -1342,6 +1346,25 @@ static AjBool jembossctl_do_batch(char *buf, int uid, int gid)
 	return ajFalse;
     }
 
+    if(ajStrGetLen(errstd))
+    {
+        if(!(fp=fopen("stderrfile","w")))
+        {
+            fprintf(stderr,"errfile fopen error (do_batch)\n");
+            jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+            return ajFalse;
+        }
+
+        fprintf(fp,"%s\n",ajStrGetPtr(errstd));
+    
+        if(fclose(fp))
+        {
+            fprintf(stderr,"errfile fclose error (do_batch)\n");
+            jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+            return ajFalse;
+        }
+    }
+    
     jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 
     return ajTrue;
