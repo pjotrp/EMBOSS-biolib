@@ -439,7 +439,7 @@ public class JembossServer
       {
           String s = (String)filenames[i];
           cmd += s+" ";
-          embossCommandA[i] = s;
+          embossCommandA[cmdA.size()+i] = s;
       }
 
       return run_prog(cmd,options, hashInFiles);
