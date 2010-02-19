@@ -427,18 +427,24 @@ public class JembossServer
       int i = 0;
       tmproot = tmproot.concat(userName+fs);
       embossCommandA = new String[cmdA.size()+hashInFiles.size()];
+      
+      if(cmdA.size()==0)
+          throw new RuntimeException("empty command line array");
+      
+      embossCommandA[0] = embossBin + cmdA.get(0);
+      cmd = (String)cmdA.get(0);
 
-      for (i=0; i<cmdA.size(); i++)
+      for (i=1; i<cmdA.size(); i++)
       {
           String s = (String)cmdA.get(i);
-          cmd += (s.indexOf(' ')==-1 ? s : "\""+s+"\"")+" ";
+          cmd += " "+(s.indexOf(' ')==-1 ? s : "\""+s+"\"");
           embossCommandA[i] = s;
       }
       Object[] filenames = hashInFiles.keySet().toArray();
       for (i=0; i<filenames.length; i++)
       {
           String s = (String)filenames[i];
-          cmd += s+" ";
+          cmd += " "+s;
           embossCommandA[cmdA.size()+i] = s;
       }
 
