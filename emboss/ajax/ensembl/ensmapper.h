@@ -42,7 +42,7 @@ typedef struct EnsSMapperunit
 
 
 
-/******************************************************************************
+/* EnsEMapperunitType *********************************************************
 **
 ** Ensembl Mapper Unit Type enumeration.
 **
@@ -93,7 +93,7 @@ typedef struct EnsSMapperpair
 
 
 
-/******************************************************************************
+/* EnsEMapperresultType *******************************************************
 **
 ** Ensembl Mapper Result Type enumeration.
 **
@@ -236,8 +236,8 @@ typedef struct EnsSMapperrangeregistry
 ** @alias EnsOMapper
 **
 ** @cc Bio::EnsEMBL::Mapper
-** @attr SourceType [AjPStr] Source mapping type
-** @attr TargetType [AjPStr] Target mapping type
+** @attr SourceType [AjPStr] Source type
+** @attr TargetType [AjPStr] Target type
 ** @attr SourceCoordsystem [EnsPCoordsystem] Source Ensembl Coordinate System
 ** @attr TargetCoordsystem [EnsPCoordsystem] Target Ensembl Coordinate System
 ** @attr Pairs [AjPTable] AJAX Table of AJAX Tables with Ensembl Mapper Pairs
@@ -247,10 +247,10 @@ typedef struct EnsSMapperrangeregistry
 ** @attr Padding [ajuint] Padding to alignment boundary
 ** @@
 ** The AJAX Table Pairs forms the top hierarchy of an Ensembl Mapper Pair
-** cache. The Table uses the contents of the SourceType and TargetType strings
-** as index and holds a second hierarchy of Tables, which use Ensembl Object
-** identifiers as index. Those second-level AJAX Tables then hold a
-** third-level of AJAX Lists of Ensembl Mapper Pairs.
+** cache. The AJAX Table uses the contents of the SourceType and TargetType
+** strings as index and holds a second hierarchy of AJAX Tables, which use
+** Ensembl Object identifiers as index. Those second-level AJAX Tables then
+** hold a third-level of AJAX Lists of Ensembl Mapper Pairs.
 ******************************************************************************/
 
 typedef struct EnsSMapper
@@ -509,26 +509,26 @@ AjBool ensMapperTrace(const EnsPMapper mapper, ajuint level);
 */
 
 
-#define MENSMAPPERINDELPAIRNEW(source, target, ori) \
+#define MENSMAPPERINDELPAIRNEW(source, target, ori)     \
 ensMapperpairNew(source, target, ori, AJTRUE);
 
-#define MENSMAPPERINDELPAIRDEL(Pmp) \
+#define MENSMAPPERINDELPAIRDEL(Pmp)             \
 ensMapperpairDel(Pmp);
 
-#define MENSMAPPERCOORDINATENEW(oid, start, end, strand, cs) \
+#define MENSMAPPERCOORDINATENEW(oid, start, end, strand, cs)            \
 ensMapperresultNew(ensEMapperresultCoordinate, oid, start, end, strand, cs, \
-		   0, 0)
+                   0, 0)
 
-#define MENSMAPPERGAPNEW(start, end) \
+#define MENSMAPPERGAPNEW(start, end)                                    \
 ensMapperresultNew(ensEMapperresultGap, 0, 0, 0, 0, (EnsPCoordsystem) NULL, \
-		   start, end)
+                   start, end)
 
-#define MENSMAPPERINDELNEW(oid, start, end, strand, cs, gstart, gend) \
+#define MENSMAPPERINDELNEW(oid, start, end, strand, cs, gstart, gend)   \
 ensMapperresultNew(ensEMapperresultInDel, oid, start, end, strand, cs, \
-		   gstart, gend)
+                   gstart, gend)
 
 
-#endif
+#endif /* ensmapper_h */
 
 #ifdef __cplusplus
 }
