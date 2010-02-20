@@ -85,11 +85,6 @@ typedef struct EnsSSeqregionadaptor {
 ** @@
 ******************************************************************************/
 
-/*
-** FIXME: The SQL table definition for seq_region.length specifies SIGNED.
-** Why? This should be safe to be UNSIGNED.
-*/
-
 typedef struct EnsSSeqregion {
     ajuint Use;
     ajuint Identifier;
@@ -447,10 +442,10 @@ typedef struct EnsSBaseadaptor {
     AjBool StraightJoin;
     ajuint Padding;
     AjBool (*Query)(EnsPDatabaseadaptor dba,
-		    const AjPStr sql,
-		    EnsPAssemblymapper mapper,
-		    EnsPSlice slice,
-		    AjPList objects);
+                    const AjPStr sql,
+                    EnsPAssemblymapper mapper,
+                    EnsPSlice slice,
+                    AjPList objects);
 } EnsOBaseadaptor;
 
 #define EnsPBaseadaptor EnsOBaseadaptor*
@@ -572,7 +567,7 @@ typedef struct EnsSExternaldatabaseadaptor {
 
 
 
-/******************************************************************************
+/* EnsEExternaldatabaseStatus *************************************************
 **
 ** Ensembl External Database Status enumeration.
 **
@@ -592,7 +587,7 @@ enum EnsEExternaldatabaseStatus
 
 
 
-/******************************************************************************
+/* EnsEExternaldatabaseType ***************************************************
 **
 ** Ensembl External Database Type enumeration.
 **
@@ -664,7 +659,7 @@ typedef struct EnsSExternaldatabase {
 
 
 
-/******************************************************************************
+/* EnsEExternalreferenceInfoType **********************************************
 **
 ** Ensembl External Reference InfoType enumeration.
 **
@@ -1144,7 +1139,7 @@ typedef struct EnsSTranscriptadaptor {
 
 
 
-/******************************************************************************
+/* EnsETranscriptStatus *******************************************************
 **
 ** Ensembl Transcript Status enumeration.
 **
@@ -1262,7 +1257,7 @@ typedef struct EnsSGeneadaptor {
 
 
 
-/******************************************************************************
+/* EnsEGeneStatus *************************************************************
 **
 ** Ensembl Gene Status enumeration.
 **
