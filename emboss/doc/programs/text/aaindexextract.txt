@@ -237,7 +237,7 @@ Notes
    and aaindex3 for the amino-acid pair-wise contact potentials. All data
    are derived from the published literature. The file aaindex1 is
    required by aaindexextract and can be downloaded from the AAINDEX site:
-   ftp://ftp.genome.ad.jp/pub/db/genomenet/aaindex/aaindex1.
+   ftp://ftp.genome.ad.jp/pub/db/community/aaindex/aaindex1.
 
    aaindexextract will write to the EMBOSS data directory data/AAINDEX. If
    you cannot find the output files then it is likely the data directory
