@@ -669,7 +669,7 @@ public class JembossAuthServer
       String stderr = aj.getErrStd();
       result.add("msg");
       result.add(stderr);
-      if (!stderr.isEmpty())
+      if (stderr.length()>0)
           createStderrFile(project, stderr);
       
 

@@ -59,7 +59,7 @@ public class JembossThread extends Thread
     try {
         stderr = rea.getProcessStderr();
 
-        if (!stderr.isEmpty())
+        if (stderr.length()>0)
             createStderrFile(stderr);
 
     } catch (Exception e) {
