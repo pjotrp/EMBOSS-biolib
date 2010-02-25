@@ -6350,7 +6350,8 @@ static void acdSetAppl(AcdPAcd thys)
     AjPStr message = NULL;
     AjPStr appname = NULL;      /* saved to table */
     AjPStr appfullname = NULL;  /* saved to table */
-
+    AjPStr appenvvar = NULL;
+    
     acdAttrResolve(thys, "documentation", &appldoc);
     acdAttrResolve(thys, "obsolete", &applobsolete);
     acdAttrResolve(thys, "external", &applexternal);
@@ -6371,6 +6372,8 @@ static void acdSetAppl(AcdPAcd thys)
         acdWarnObsolete(applobsolete);
     }
 
+    appenvvar = ajStrNew();
+    
     if(ajStrGetLen(applexternal))
     {
         ajStrTokenAssignC(&handle, applexternal, "|");
@@ -6378,8 +6381,13 @@ static void acdSetAppl(AcdPAcd thys)
         while(ajStrTokenNextParse(&handle, &token))
         {
             ajStrExtractFirst(token, &message, &appname);
-            ajStrAssignS(&appfullname, appname);
 
+            ajFmtPrintS(&appenvvar,"%S_%S",ajNamValuePackage(),appname);
+
+            if(!ajNamGetValueS(appenvvar,&appfullname))
+                ajStrAssignS(&appfullname, appname);
+            
+            
             if(!ajSysFileWhich(&appfullname))
             {
                 ajStrFmtWrapLeft(&message, 70, 5, 0);
@@ -6396,6 +6404,7 @@ static void acdSetAppl(AcdPAcd thys)
         
     }
 
+    ajStrDel(&appenvvar);
     ajStrDel(&appldoc);
     ajStrDel(&applobsolete);
     ajStrDel(&applexternal);
