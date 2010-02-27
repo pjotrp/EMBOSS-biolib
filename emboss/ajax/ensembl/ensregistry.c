@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** Bio::EnsEMBL::Registry CVS Revision:
@@ -2628,6 +2628,52 @@ EnsPAssemblymapperadaptor ensRegistryGetAssemblymapperadaptor(
 
 
 
+/* @func ensRegistryGetAttributedaptor ****************************************
+**
+** Get an Ensembl Attribute Adaptor from the Ensembl Registry.
+** The Ensembl Attribute Adaptor is an alias for an
+** Ensembl Database Adaptor connected to an Ensembl Core-style database.
+**
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+**
+** @return [EnsPAttributeadaptor] Ensembl Attribute Adaptor or NULL
+** @@
+******************************************************************************/
+
+EnsPAttributeadaptor ensRegistryGetAttributedaptor(
+    EnsPDatabaseadaptor dba)
+{
+    if(!dba)
+        return NULL;
+
+    switch(ensDatabaseadaptorGetGroup(dba))
+    {
+        case ensEDatabaseadaptorGroupCore:
+
+        case ensEDatabaseadaptorGroupVega:
+
+        case ensEDatabaseadaptorGroupOtherFeatures:
+
+        case ensEDatabaseadaptorGroupCopyDNA:
+
+            return dba;
+
+            break;
+
+        default:
+
+            ajWarn("ensRegistryGetAttributeadaptor got an "
+                   "Ensembl Database Adaptor "
+                   "with an unexpected group %d.\n",
+                   ensDatabaseadaptorGetGroup(dba));
+    }
+
+    return NULL;
+}
+
+
+
+
 /* @func ensRegistryGetCoordsystemadaptor *************************************
 **
 ** Get an Ensembl Coordinate System Adaptor from the Ensembl Registry.
@@ -2863,6 +2909,52 @@ EnsPDensitytypeadaptor ensRegistryGetDensitytypeadaptor(
                    ensDatabaseadaptorGetGroup(dba));
     }
 
+    return NULL;
+}
+
+
+
+
+/* @func ensRegistryGetDitagadaptor *******************************************
+**
+** Get an Ensembl Ditag Adaptor from the Ensembl Registry.
+** The Ensembl Ditag Adaptor is an alias for an
+** Ensembl Database Adaptor connected to an Ensembl Core-style database.
+**
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+**
+** @return [EnsPDitagadaptor] Ensembl Ditag Adaptor or NULL
+** @@
+******************************************************************************/
+
+EnsPDitagadaptor ensRegistryGetDitagadaptor(
+    EnsPDatabaseadaptor dba)
+{
+    if(!dba)
+        return NULL;
+    
+    switch(ensDatabaseadaptorGetGroup(dba))
+    {
+        case ensEDatabaseadaptorGroupCore:
+            
+        case ensEDatabaseadaptorGroupVega:
+            
+        case ensEDatabaseadaptorGroupOtherFeatures:
+            
+        case ensEDatabaseadaptorGroupCopyDNA:
+            
+            return dba;
+            
+            break;
+            
+        default:
+            
+            ajWarn("ensRegistryGetDitagadaptor got an "
+                   "Ensembl Database Adaptor "
+                   "with an unexpected group %d.\n",
+                   ensDatabaseadaptorGetGroup(dba));
+    }
+    
     return NULL;
 }
 

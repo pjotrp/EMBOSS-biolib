@@ -90,7 +90,7 @@ EnsPDatabaseadaptor ensRegistryGetDatabaseadaptor(AjEnum group,
 /* EnsPDatabaseadaptor ensRegistryGetDnaadaptor(EnsPDatabaseadaptor dba); */
 
 /* Ensembl Core-style Adaptors */
-    
+
 EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(
     EnsPDatabaseadaptor dba);
 
@@ -103,6 +103,9 @@ EnsPAssemblyexceptionfeatureadaptor ensRegistryGetAssemblyexceptionfeatureadapto
 EnsPAssemblymapperadaptor ensRegistryGetAssemblymapperadaptor(
     EnsPDatabaseadaptor dba);
 
+EnsPAttributeadaptor ensRegistryGetAttributedaptor(
+    EnsPDatabaseadaptor dba);
+
 EnsPCoordsystemadaptor ensRegistryGetCoordsystemadaptor(
     EnsPDatabaseadaptor dba);
 
@@ -113,6 +116,9 @@ EnsPDensityfeatureadaptor ensRegistryGetDensityfeatureadaptor(
     EnsPDatabaseadaptor dba);
 
 EnsPDensitytypeadaptor ensRegistryGetDensitytypeadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPDitagadaptor ensRegistryGetDitagadaptor(
     EnsPDatabaseadaptor dba);
 
 EnsPDitagfeatureadaptor ensRegistryGetDitagfeatureadaptor(
@@ -223,7 +229,7 @@ EnsPGvpopulationadaptor ensRegistryGetGvpopulationadaptor(
 
 EnsPGvsampleadaptor ensRegistryGetGvsampleadaptor(
     EnsPDatabaseadaptor dba);
-    
+
 EnsPGvvariationadaptor ensRegistryGetGvvariationadaptor(
     EnsPDatabaseadaptor dba);
 
