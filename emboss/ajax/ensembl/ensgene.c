@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -70,6 +70,9 @@ extern EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(
     EnsPDatabaseadaptor dba);
 
 extern EnsPAssemblymapperadaptor ensRegistryGetAssemblymapperadaptor(
+    EnsPDatabaseadaptor dba);
+
+extern EnsPAttributeadaptor ensRegistryGetAttributedaptor(
     EnsPDatabaseadaptor dba);
 
 extern EnsPCoordsystemadaptor ensRegistryGetCoordsystemadaptor(
@@ -989,6 +992,8 @@ AjPStr ensGeneGetModificationDate(const EnsPGene gene)
 
 const AjPList ensGeneGetAttributes(EnsPGene gene)
 {
+    EnsPAttributeadaptor ata = NULL;
+
     EnsPDatabaseadaptor dba = NULL;
 
     if(!gene)
@@ -1017,9 +1022,11 @@ const AjPList ensGeneGetAttributes(EnsPGene gene)
         return NULL;
     }
 
+    ata = ensRegistryGetAttributedaptor(dba);
+
     gene->Attributes = ajListNew();
 
-    ensAttributeadaptorFetchAllByGene(dba,
+    ensAttributeadaptorFetchAllByGene(ata,
                                       gene,
                                       (AjPStr) NULL,
                                       gene->Attributes);
@@ -3247,7 +3254,7 @@ static AjBool geneAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                       einfotype,
                                       erinfotext);
 
-            ensExternaldatabaseDel(&edb);	
+            ensExternaldatabaseDel(&edb);
         }
 
         ensAnalysisadaptorFetchByIdentifier(aa, analysisid, &analysis);
@@ -3288,7 +3295,7 @@ static AjBool geneAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
         ensFeatureDel(&feature);
 
-        ajListPushAppend(genes, (void *) gene);	
+        ajListPushAppend(genes, (void *) gene);
 
         ajStrDel(&description);
         ajStrDel(&source);

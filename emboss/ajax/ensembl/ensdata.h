@@ -13,6 +13,19 @@ extern "C"
 
 
 
+/* @data EnsPAttributeadaptor *************************************************
+**
+** Ensembl Attribute Adaptor.
+**
+** @alias EnsPDatabaseadaptor
+** @@
+******************************************************************************/
+
+#define EnsPAttributeadaptor EnsPDatabaseadaptor
+
+
+
+
 /* @data EnsPAttribute ********************************************************
 **
 ** Ensembl Attribute.

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -94,17 +94,20 @@ static AjPTable translationCache = NULL;
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-extern EnsPDatabaseentryadaptor
-ensRegistryGetDatabaseentryadaptor(EnsPDatabaseadaptor dba);
+extern EnsPAttributeadaptor ensRegistryGetAttributedaptor(
+    EnsPDatabaseadaptor dba);
 
-extern EnsPProteinfeatureadaptor
-ensRegistryGetProteinfeatureadaptor(EnsPDatabaseadaptor dba);
+extern EnsPDatabaseentryadaptor ensRegistryGetDatabaseentryadaptor(
+    EnsPDatabaseadaptor dba);
 
-extern EnsPTranscriptadaptor
-ensRegistryGetTranscriptadaptor(EnsPDatabaseadaptor dba);
+extern EnsPProteinfeatureadaptor ensRegistryGetProteinfeatureadaptor(
+    EnsPDatabaseadaptor dba);
 
-extern EnsPTranslationadaptor
-ensRegistryGetTranslationadaptor(EnsPDatabaseadaptor dba);
+extern EnsPTranscriptadaptor ensRegistryGetTranscriptadaptor(
+    EnsPDatabaseadaptor dba);
+
+extern EnsPTranslationadaptor ensRegistryGetTranslationadaptor(
+    EnsPDatabaseadaptor dba);
 
 static void translationCacheClear(void **key, void **value, void *cl);
 
@@ -930,6 +933,8 @@ AjPStr ensTranslationGetModificationDate(const EnsPTranslation translation)
 
 const AjPList ensTranslationGetAttributes(EnsPTranslation translation)
 {
+    EnsPAttributeadaptor ata = NULL;
+
     EnsPDatabaseadaptor dba = NULL;
 
     if(ajDebugTest("ensTranslationGetAttributes"))
@@ -965,7 +970,9 @@ const AjPList ensTranslationGetAttributes(EnsPTranslation translation)
         return NULL;
     }
 
-    ensAttributeadaptorFetchAllByTranslation(dba,
+    ata = ensRegistryGetAttributedaptor(dba);
+
+    ensAttributeadaptorFetchAllByTranslation(ata,
                                              translation,
                                              (const AjPStr) NULL,
                                              translation->Attributes);
@@ -2810,7 +2817,7 @@ static AjBool translationAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                         cdate,
                                         mdate);
 
-        ajListPushAppend(translations, (void *) translation);	
+        ajListPushAppend(translations, (void *) translation);
 
         ensTranscriptDel(&transcript);
 
@@ -2818,7 +2825,7 @@ static AjBool translationAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
         ajStrDel(&cdate);
 
-        ajStrDel(&mdate);	
+        ajStrDel(&mdate);
     }
 
     ajSqlrowiterDel(&sqli);
@@ -3265,7 +3272,7 @@ AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor tla,
 
         ajStrDel(&stableid);
         ajStrDel(&cdate);
-        ajStrDel(&mdate);	
+        ajStrDel(&mdate);
     }
 
     ajSqlrowiterDel(&sqli);
@@ -3531,7 +3538,7 @@ static AjBool translationAdaptorFetchAllByIdentifiers(
 
         ajStrDel(&stableid);
         ajStrDel(&cdate);
-        ajStrDel(&mdate);	
+        ajStrDel(&mdate);
     }
 
     ajSqlrowiterDel(&sqli);

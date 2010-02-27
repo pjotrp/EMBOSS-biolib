@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -120,6 +120,9 @@ extern EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(
     EnsPDatabaseadaptor dba);
 
 extern EnsPAssemblymapperadaptor ensRegistryGetAssemblymapperadaptor(
+    EnsPDatabaseadaptor dba);
+
+extern EnsPAttributeadaptor ensRegistryGetAttributedaptor(
     EnsPDatabaseadaptor dba);
 
 extern EnsPCoordsystemadaptor ensRegistryGetCoordsystemadaptor(
@@ -1101,6 +1104,8 @@ AjPStr ensTranscriptGetModificationDate(const EnsPTranscript transcript)
 
 const AjPList ensTranscriptGetAttributes(EnsPTranscript transcript)
 {
+    EnsPAttributeadaptor ata = NULL;
+
     EnsPDatabaseadaptor dba = NULL;
 
     if(!transcript)
@@ -1129,9 +1134,11 @@ const AjPList ensTranscriptGetAttributes(EnsPTranscript transcript)
         return NULL;
     }
 
+    ata = ensRegistryGetAttributedaptor(dba);
+
     transcript->Attributes = ajListNew();
 
-    ensAttributeadaptorFetchAllByTranscript(dba,
+    ensAttributeadaptorFetchAllByTranscript(ata,
                                             transcript,
                                             (const AjPStr) NULL,
                                             transcript->Attributes);
@@ -4212,7 +4219,7 @@ AjBool ensTranscriptFetchTranslationSequenceStr(EnsPTranscript transcript,
     ajuint codontable = 0;
 
     AjPList attributes = NULL;
-    AjPList ses = NULL;    
+    AjPList ses = NULL;
 
     AjPStr cdna  = NULL;
     AjPStr code  = NULL;
@@ -4867,7 +4874,7 @@ static AjBool transcriptAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                       einfotype,
                                       erinfotext);
 
-            ensExternaldatabaseDel(&edb);	
+            ensExternaldatabaseDel(&edb);
         }
         else
             dbe = NULL;
@@ -4905,7 +4912,7 @@ static AjBool transcriptAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                       mdate,
                                       (AjPList) NULL);
 
-        ajListPushAppend(transcripts, (void *) transcript);	
+        ajListPushAppend(transcripts, (void *) transcript);
 
         ensFeatureDel(&feature);
 
