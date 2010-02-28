@@ -101,7 +101,7 @@ AjBool ensGvpopulationadaptorFetchDefaultLDPopulation(
 
 
 
-#endif
+#endif /* ensgvpopulation_h */
 
 #ifdef __cplusplus
 }

@@ -79,7 +79,7 @@ AjBool ensGvsampleadaptorFetchAllSynonymsByIdentifier(
     ajuint identifier,
     const AjPStr source,
     AjPList synonyms);
-    
+
 AjBool ensGvsampleadaptorFetchAllIdentifiersBySynonym(
     const EnsPGvsampleadaptor gvsa,
     const AjPStr synonym,
@@ -97,7 +97,7 @@ AjBool ensGvsampleadaptorFetchByIdentifier(EnsPGvsampleadaptor gvsa,
 
 
 
-#endif
+#endif /* ensgvsample_h */
 
 #ifdef __cplusplus
 }

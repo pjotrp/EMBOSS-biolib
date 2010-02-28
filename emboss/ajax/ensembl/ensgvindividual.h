@@ -137,7 +137,7 @@ AjBool ensGvindividualadaptorFetchAllStrainsWithCoverage(
 
 
 
-#endif
+#endif /* ensgvindividual_h */
 
 #ifdef __cplusplus
 }
