@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -36,6 +36,15 @@
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
+/* gvSampleDisplay ************************************************************
+**
+** The Ensembl Genetic Variation Sample display element is enumerated in
+** both, the SQL table definition and the data structure. The following
+** strings are used for conversion in database operations and correspond to
+** EnsEGvsampleDisplay.
+**
+******************************************************************************/
+
 static const char *gvSampleDisplay[] =
 {
     "REFERENCE",
@@ -52,8 +61,8 @@ static const char *gvSampleDisplay[] =
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-extern EnsPGvsampleadaptor
-ensRegistryGetGvsampleadaptor(EnsPDatabaseadaptor dba);
+extern EnsPGvsampleadaptor ensRegistryGetGvsampleadaptor(
+    EnsPDatabaseadaptor dba);
 
 static AjBool gvSampleadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                            const AjPStr statement,
@@ -1044,10 +1053,9 @@ EnsPBaseadaptor ensGvsampleadaptorGetAdaptor(EnsPGvsampleadaptor gvsa)
 ** @@
 ******************************************************************************/
 
-AjBool
-ensGvsampleadaptorFetchAllByDisplay(EnsPGvsampleadaptor gvsa,
-                                    AjEnum display,
-                                    AjPList gvss)
+AjBool ensGvsampleadaptorFetchAllByDisplay(EnsPGvsampleadaptor gvsa,
+                                           AjEnum display,
+                                           AjPList gvss)
 {
     AjPStr constraint = NULL;
 
