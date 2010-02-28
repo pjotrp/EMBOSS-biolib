@@ -24,7 +24,7 @@ extern "C"
 
 
 
-/******************************************************************************
+/* EnsEGvsampleDisplay ********************************************************
 **
 ** Ensembl Genetic Variation Sample Display enumeration.
 **
@@ -91,7 +91,7 @@ typedef struct EnsSGvsample
 
 
 
-/******************************************************************************
+/* EnsEGvindividualGender *****************************************************
 **
 ** Ensembl Genetic Variation Individual Gender enumeration.
 **
@@ -108,7 +108,7 @@ enum EnsEGvindividualGender
 
 
 
-/******************************************************************************
+/* EnsEGvindividualType *******************************************************
 **
 ** Ensembl Genetic Variation Individual Type enumeration.
 **
@@ -215,7 +215,7 @@ typedef struct EnsSGvpopulation
 
 
 
-#endif
+#endif /* ensgvdata_h */
 
 #ifdef __cplusplus
 }
