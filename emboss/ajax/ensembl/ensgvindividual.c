@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.1 $
+** @version $Revision: 1.2 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -36,6 +36,15 @@
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
+/* gvIndividualGender *********************************************************
+**
+** The Ensembl Genetic Variation Individual gender element is enumerated in
+** both, the SQL table definition and the data structure. The following
+** strings are used for conversion in database operations and correspond to
+** EnsEGvindividualGender.
+**
+******************************************************************************/
+
 static const char *gvIndividualGender[] =
 {
     NULL,
@@ -44,6 +53,18 @@ static const char *gvIndividualGender[] =
     "Unknown",
     NULL
 };
+
+
+
+
+/* gvIndividualType ***********************************************************
+**
+** The Ensembl Genetic Variation Individual type element is enumerated in
+** both, the SQL table definition and the data structure. The following
+** strings are used for conversion in database operations and correspond to
+** EnsEGvindividualType.
+**
+******************************************************************************/
 
 static const char *gvIndividualType[] =
 {
@@ -63,11 +84,11 @@ static const char *gvIndividualType[] =
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-extern EnsPGvindividualadaptor
-ensRegistryGetGvindividualadaptor(EnsPDatabaseadaptor dba);
+extern EnsPGvindividualadaptor ensRegistryGetGvindividualadaptor(
+    EnsPDatabaseadaptor dba);
 
-extern EnsPGvsampleadaptor
-ensRegistryGetGvsampleadaptor(EnsPDatabaseadaptor dba);
+extern EnsPGvsampleadaptor ensRegistryGetGvsampleadaptor(
+    EnsPDatabaseadaptor dba);
 
 static AjBool gvIndividualadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
@@ -1033,7 +1054,7 @@ AjBool ensGvindividualTrace(const EnsPGvindividual gvi, ajuint level)
 ** Functions for manipulating Ensembl Genetic Variation Individual Adaptor
 ** objects
 **
-** @cc Bio::EnsEMBL::Variation::DBSQL::IndividualAdaptor CVS Revision: 1.14
+** @cc Bio::EnsEMBL::Variation::DBSQL::IndividualAdaptor CVS Revision: 1.15
 **
 ** @nam2rule Gvindividualadaptor
 **
@@ -1076,9 +1097,9 @@ static EnsOBaseadaptorLeftJoin gvIndividualadaptorLeftJoin[] =
 
 
 static const char *gvIndividualadaptorDefaultCondition =
-"sample.sample_id = individual.sample_id "
-"AND "
-"individual.individual_type_id = individual_type.individual_type_id";
+    "sample.sample_id = individual.sample_id "
+    "AND "
+    "individual.individual_type_id = individual_type.individual_type_id";
 
 
 
@@ -1265,7 +1286,7 @@ EnsPGvindividualadaptor ensGvindividualadaptorNew(EnsPDatabaseadaptor dba)
                              gvIndividualadaptorLeftJoin,
                              gvIndividualadaptorDefaultCondition,
                              gvIndividualadaptorFinalCondition,
-                             gvIndividualadaptorFetchAllBySQL);   
+                             gvIndividualadaptorFetchAllBySQL);
 }
 
 
