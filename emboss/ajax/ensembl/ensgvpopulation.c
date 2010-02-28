@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -44,14 +44,14 @@
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-extern EnsPMetainformationadaptor
-ensRegistryGetMetainformationadaptor(EnsPDatabaseadaptor dba);
+extern EnsPMetainformationadaptor ensRegistryGetMetainformationadaptor(
+    EnsPDatabaseadaptor dba);
 
-extern EnsPGvpopulationadaptor
-ensRegistryGetGvpopulationadaptor(EnsPDatabaseadaptor dba);
+extern EnsPGvpopulationadaptor ensRegistryGetGvpopulationadaptor(
+    EnsPDatabaseadaptor dba);
 
-extern EnsPGvsampleadaptor
-ensRegistryGetGvsampleadaptor(EnsPDatabaseadaptor dba);
+extern EnsPGvsampleadaptor ensRegistryGetGvsampleadaptor(
+    EnsPDatabaseadaptor dba);
 
 static AjBool gvPopulationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
@@ -343,7 +343,7 @@ void ensGvpopulationDel(EnsPGvpopulation *Pgvp)
 ** @nam4rule GetSubPopulation Return the AJAX List of Ensembl Genetic
 **                            Variation (sub-) Populations
 **
-** @argrule * population [const EnsPGvpopulation] Genetic Variation Population
+** @argrule * gvp [const EnsPGvpopulation] Genetic Variation Population
 **
 ** @valrule Adaptor [EnsPGvpopulationadaptor] Ensembl Genetic Variation
 **                                            Population Adaptor
@@ -363,6 +363,7 @@ void ensGvpopulationDel(EnsPGvpopulation *Pgvp)
 ** Get the Ensembl Genetic Variation Population Adaptor element of an
 ** Ensembl Genetic Variation Population.
 **
+** @cc Bio::EnsEMBL::Storable::adaptor
 ** @param [r] gvp [const EnsPGvpopulation] Ensembl Genetic Variation Population
 **
 ** @return [EnsPGvpopulationadaptor] Ensembl Genetic Variation
@@ -386,6 +387,7 @@ EnsPGvpopulationadaptor ensGvpopulationGetAdaptor(const EnsPGvpopulation gvp)
 ** Get the SQL database-internal identifier element of an
 ** Ensembl Genetic Variation Population.
 **
+** @cc Bio::EnsEMBL::Storable::dbID
 ** @param [r] gvp [const EnsPGvpopulation] Ensembl Genetic Variation Population
 **
 ** @return [ajuint] Internal database identifier
@@ -477,6 +479,7 @@ const AjPList ensGvpopulationGetSubPopulations(const EnsPGvpopulation gvp)
 ** Set the Ensembl Genetic Variation Population Adaptor element of an
 ** Ensembl Genetic Variation Population.
 **
+** @cc Bio::EnsEMBL::Storable::adaptor
 ** @param [u] gvp [EnsPGvpopulation] Ensembl Genetic Variation Population
 ** @param [r] gvpa [EnsPGvpopulationadaptor] Ensembl Genetic Variation
 **                                           Population Adaptor
@@ -504,6 +507,7 @@ AjBool ensGvpopulationSetAdaptor(EnsPGvpopulation gvp,
 ** Set the SQL database-internal identifier element of an
 ** Ensembl Genetic Variation Population.
 **
+** @cc Bio::EnsEMBL::Storable::dbID
 ** @param [u] gvp [EnsPGvpopulation] Ensembl Genetic Variation Population
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 **
@@ -726,6 +730,8 @@ AjBool ensGvpopulationTrace(const EnsPGvpopulation gvp, ajuint level)
 ** Functions for manipulating Ensembl Genetic Variation Population Adaptor
 ** objects
 **
+** @cc Bio::EnsEMBL::Variation::DBSQL::PopulationAdaptor CVS Revision: 1.20
+**
 ** @nam2rule Gvpopulationadaptor
 **
 ******************************************************************************/
@@ -753,7 +759,7 @@ static EnsOBaseadaptorLeftJoin gvPopulationadaptorLeftJoin[] =
 };
 
 static const char *gvPopulationadaptorDefaultCondition =
-"sample.sample_id = population.sample_id";
+    "sample.sample_id = population.sample_id";
 
 static const char *gvPopulationadaptorFinalCondition = NULL;
 
@@ -852,14 +858,12 @@ static AjBool gvPopulationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                              esdisplay,
                              ssize);
 
-        /*
-        ** AJB: The variable gvp, set below, is not used elsewhere in
-        ** the function. Something needs doing here.
-        */
         gvp = ensGvpopulationNew(gvpa,
                                  identifier,
                                  gvs,
                                  (AjPList) NULL);
+
+        ajListPushAppend(gvps, (void *) gvp);
 
         ensGvsampleDel(&gvs);
 
