@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -53,7 +53,7 @@
 **
 ******************************************************************************/
 
-/* @datasection [none] Ensembl Table **************************************
+/* @datasection [none] Ensembl Table ******************************************
 **
 ** Functions for Ensembl Tables
 **
@@ -98,14 +98,13 @@ ajint ensTableCmpUint(const void *x, const void *y)
 {
     const ajuint *a = NULL;
     const ajuint *b = NULL;
-    
+
     a = (const ajuint *) x;
     b = (const ajuint *) y;
-    
-    /*
-     ajDebug("ensTableCmpUint *a %u *b %u result %d\n", *a, *b, (*a != *b));
-     */
-    
+
+    if(ajDebugTest("ensTableCmpUint"))
+        ajDebug("ensTableCmpUint *a %u *b %u result %d\n", *a, *b, (*a != *b));
+
     return (*a != *b);
 }
 
@@ -127,18 +126,17 @@ ajint ensTableCmpUint(const void *x, const void *y)
 ajuint ensTableHashUint(const void *key, ajuint hashsize)
 {
     const ajuint *a = NULL;
-    
+
     if(!key)
-	return 0;
-    
+        return 0;
+
     if(!hashsize)
-	return 0;
-    
+        return 0;
+
     a = (const ajuint *) key;
-    
-    /*
-     ajDebug("ensTableHashUint result %u\n", ((*a >> 2) % hashsize));
-     */
-    
+
+    if(ajDebugTest("ensTableHashUint"))
+        ajDebug("ensTableHashUint result %u\n", ((*a >> 2) % hashsize));
+
     return ((*a >> 2) % hashsize);
 }
