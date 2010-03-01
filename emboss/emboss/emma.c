@@ -38,7 +38,7 @@ static AjPStr emma_getUniqueFileName(void);
 **
 ******************************************************************************/
 
-int main(int argc, char **argv, char **env)
+int main(int argc, char **argv)
 {
 
     AjPSeqall seqall = NULL;
