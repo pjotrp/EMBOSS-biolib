@@ -78,8 +78,8 @@ static ajint martTabToToken(AjPStr *token, const AjPStr s, ajint loc);
 static AjBool martParseTabbedDataset(AjPSeqin seqin);
 static AjBool martParseTabbedAttributes(AjPSeqin seqin);
 static AjBool martParseTabbedFilters(AjPSeqin seqin);
-static AjBool martTablePush(AjPTable table, const char *name,
-                            const AjPStr token);
+static void martTablePush(AjPTable table, const char *name,
+                          const AjPStr token);
 static void martStrdel(void** str, void* cl);
 static int martAttcmp(const void* str, const void* str2);
 static AjBool martHttpEncode(AjPStr *str);
@@ -794,7 +794,6 @@ static void martRegistryElementend(void *userData, const XML_Char *name)
 
 static void martConvertLocToArrays(AjPMartLoc loc)
 {
-    ajuint i;
     ajuint n;
 
     if(!loc)
@@ -844,7 +843,6 @@ AjBool ajMartregistryParse(AjPSeqin seqin)
     AjPMartquery mq = NULL;
     AjPMartLoc loc;
     
-    char buffer[MAXNAMLEN];
     int done;
     size_t len;
 
@@ -1309,8 +1307,8 @@ static AjBool martBuffIsXML(AjPFilebuff buff)
 ** @return [void]
 ******************************************************************************/
 
-static AjBool martTablePush(AjPTable table, const char *name,
-                            const AjPStr token)
+static void martTablePush(AjPTable table, const char *name,
+                          const AjPStr token)
 {
     AjPStr key   = NULL;
     AjPStr value = NULL;
@@ -1430,7 +1428,7 @@ static AjBool martParseTabbedDataset(AjPSeqin seqin)
     if(n != ds->Nsets)
     {
         ajWarn("martParseTabbedDataset: mismatching Set count");
-        return;
+        return ajFalse;
     }
 
     ajStrDel(&line);
@@ -3460,12 +3458,12 @@ void ajMartSetQueryDatasetName(AjPMartqinfo qinfo, const AjPStr name,
 ** Set a Qinfo dataset interface field
 **
 ** @param [u] qinfo [AjPMartqinfo] Seqin object
-** @param [r] interface [const char*] Interface
+** @param [r] iface [const char*] Interface
 ** @param [r] idx [ajuint] Dataset number (0->n-1)
 ** @return [void]
 ******************************************************************************/
 
-void ajMartSetQueryDatasetInterfaceC(AjPMartqinfo qinfo, const char *interface,
+void ajMartSetQueryDatasetInterfaceC(AjPMartqinfo qinfo, const char *iface,
                                      ajuint idx)
 {
     if(!qinfo)
@@ -3477,7 +3475,7 @@ void ajMartSetQueryDatasetInterfaceC(AjPMartqinfo qinfo, const char *interface,
     if(idx > qinfo->Dnsets - 1)
         return;
     
-    ajStrAssignC(&qinfo->Dsets[idx]->Interface, interface);
+    ajStrAssignC(&qinfo->Dsets[idx]->Interface, iface);
     
     return;
 }

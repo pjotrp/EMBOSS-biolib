@@ -354,7 +354,7 @@ void ajMartSetQueryVerify(AjPMartqinfo qinfo, AjBool verify);
 
 void ajMartSetQueryDatasetName(AjPMartqinfo qinfo, const AjPStr name,
                                ajuint idx);
-void ajMartSetQueryDatasetInterfaceC(AjPMartqinfo qinfo, const char *interface,
+void ajMartSetQueryDatasetInterfaceC(AjPMartqinfo qinfo, const char *iface,
                                      ajuint idx);
 
 
