@@ -13,7 +13,7 @@ section: input [
     parameter: "Y"
     default: "inputfile"
     information: "Commands to the cirdna drawing program file"
-    knowntype: "lindna mapping commands"
+    knowntype: "cirdna mapping commands"
     relations: ""
   ]
 

@@ -20,6 +20,7 @@ blast_nucleotide_dbname             | string         |  "EDAM: BLAST database na
 blast_protein_dbname                | string         |  "EDAM: BLAST database name"                            | Blast protein database name
 caf_project                         | file           |  "EDAM: Common Assembly Format (CAF) project file"      | CAF assembly project file
 cds_sequence                        | sequence       |  "EDAM: Nucleotide sequence"                            | Coding
+cirdna_mapping_commands             | file           |                                                 | Commands to the cirdna drawing program
 clique_input                        | file           |  "EDAM: PHYLIP discrete states file"                    | Phylip clique program input
 clique_output                       | file           |  "EDAM: PHYLIP cliques file"                            | Phylip clique program output
 codon_list                          | string         |  "EDAM: Codon string"                                   | Codon triplet(s)
