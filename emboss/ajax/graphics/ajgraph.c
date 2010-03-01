@@ -3566,8 +3566,8 @@ void ajGraphicsCalcRange(const float *array,
 
     if(*min == *max)
     {
-        *min *= 0.9;
-        *max *= 1.1;
+        *min *= (float) 0.9;
+        *max *= (float) 1.1;
     }
 
     return;
