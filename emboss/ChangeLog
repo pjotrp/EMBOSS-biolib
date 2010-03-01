@@ -1,4 +1,42 @@
 Version 6.3.0 15-Jul-2010
+	Showfeat failed to sort features with 'join' locations. The
+	sorting is corrected. A future internal change will improve
+	feature sorting in all cases.
+
+	Restriction mapping applications now process bad enzyme input
+	files without crashing.
+
+	PNG graphics output had an unwanted blank margin that did not
+	appear in other pouptut formats. This is now turned off through
+	plplot.
+
+	Prettyplot formatting is corrected to improve the centring of
+	characters within boxes.
+
+	Restriction mapping applications no longer have an upper limit on
+	the number of cuts.
+
+	Warning messages for EMBL format sequences created vby ENSEMBL
+	have been turned off.
+
+	Corrected references to the EMBL/GenBank feature table
+	documentation in ACD files and web pages
+
+	embossversion now reports the setting of debug options, and
+	corrects variable name warnrange to acdwarnrange.
+
+	Any numeric ACD type (integer, float, range or array) with
+	calculated values for the minimum or maximum attributes can
+	potentially have an impossible range (maximum less than minimum)
+	at run time. ACD processing now discovers these calculated vaules,
+	and requires a definition for a new attribute 'failrange' If this
+	is defined true, a 'failmessage' attribute must also be defined to
+	explain why the values are invalid (e.g. input sequece too short
+	for the algorithm). If 'failrange' is false, a value for another
+	new attribute 'trueminimum' must be set to define which of the
+	minimum or maximum values if to be used as the only accepted
+	value.
+
 	PNG graphics output had a plplot-defined margin limiting the
 	available plot space. This is now removed, allowing applicatins
 	such as prettyplot more space to display results.
@@ -11,10 +49,6 @@ Version 6.3.0 15-Jul-2010
 	database definitions.
 
 Version 6.2.0 15-Jan-2010
-	New application showpep displays protein sequences. Showseq is now
-	limited to nucleotide sequences. Many of the showseq options are
-	not appropriate for proteins. Showpep makes the remaining showseq
-	options available.
 
 	Fixed GFF2 and GFF3 feature formats to always have the start
 	position less than the end position for features on the '-'
@@ -211,6 +245,11 @@ Version 6.2.0 15-Jan-2010
 	by SoapLab.
 
 Version 6.1.0 15-Jul-2009
+
+	New application showpep displays protein sequences. Showseq is now
+	limited to nucleotide sequences. Many of the showseq options are
+	not appropriate for proteins. Showpep makes the remaining showseq
+	options available.
 
 	A new data structure AjPSeqXref holds details of cross-references
 	between a sequence object and any other data resource. The
