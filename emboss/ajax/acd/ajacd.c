@@ -160,7 +160,6 @@ static ajint acdUseMisc = 0;
 static AjPRegexp acdRegQualParse  = NULL;
 static AjPRegexp acdRegResolveVar = NULL;
 static AjPRegexp acdRegResolveFun = NULL;
-static AjPRegexp acdRegVarTest    = NULL;
 
 static AjPRegexp acdRegExpPlusI = NULL;
 static AjPRegexp acdRegExpPlusD = NULL;
@@ -198,6 +197,10 @@ static AjPRegexp acdRegExpFilename = NULL;
 static AjPRegexp acdRegExpFileExists = NULL;
 static AjPRegexp acdRegExpValue = NULL;
 
+static AjPRegexp acdRegVarname  = NULL;
+static AjPRegexp acdRegFunction = NULL;
+static AjPRegexp acdRegToggle   = NULL;
+
 static AjPStr acdParseReturn  = NULL;
 static AjPStr acdReply        = NULL;
 static AjPStr acdReplyDef     = NULL;
@@ -212,6 +215,7 @@ static AjPStr acdQualNameTmp  = NULL;
 static AjPStr acdQualNumTmp   = NULL;
 
 static AjBool acdParseQuotes = AJFALSE;
+static AjBool acdRegVarInit  = AJFALSE;
 
 /*
 static ajint acdLineCount = 0;
@@ -936,10 +940,12 @@ static AjBool    acdQualToSeqbegin(const AcdPAcd thys, const char *qual,
 static AjBool    acdQualToSeqend(const AcdPAcd thys, const char *qual,
 				 ajint defval, ajint *result,
 				 AjPStr* valstr);
+static AjBool     acdRangeTestCalc(const AcdPAcd thys);
 static AjPTable  acdReadGroups(void);
 static AjPTable  acdReadKeywords(void);
 static void      acdReadKnowntype(AjPTable* desctable, AjPTable* infotable);
 static void      acdReadSections(AjPTable* typetable, AjPTable* infotable);
+static void      acdRegVarDefine(void);
 static AjBool    acdReplyInitC(const AcdPAcd thys,
                                const char *defval, AjPStr* reply);
 static AjBool    acdReplyInitS(const AcdPAcd thys,
@@ -1397,6 +1403,10 @@ AcdOAttr acdAttrArray[] =
          "Test sum of all values"},
     {"trueminimum", VT_BOOL, AJFALSE, "N",
          "If max/min overlap, use minimum"},
+    {"failrange", VT_BOOL, AJTRUE, "",
+	 "Fail if (calculated) ranges overlap"},
+    {"rangemessage", VT_STR, AJFALSE, "",
+	 "Failure message if (calculated ranges) overlap"},
     {"tolerance", VT_FLOAT, AJFALSE, "0.01",
 	 "Tolerance (sum +/- tolerance) of the total"},
     {NULL, VT_NULL, AJFALSE, NULL,
@@ -1562,6 +1572,12 @@ AcdOAttr acdAttrFloat[] =
 	 "Precision for printing values"},
     {"warnrange", VT_BOOL, AJFALSE, "Y",
 	 "Warning if values are out of range"},
+    {"trueminimum", VT_BOOL, AJFALSE, "N",
+         "If max/min overlap, use minimum"},
+    {"failrange", VT_BOOL, AJTRUE, "",
+	 "Fail if calculated ranges overlap"},
+    {"rangemessage", VT_STR, AJFALSE, "",
+	 "Failure message if calculated ranges overlap"},
     {"large", VT_BOOL, AJFALSE, "N",
 	 "Large values returned as double"},
 	{"trueminimum", VT_BOOL, AJFALSE, "N",
@@ -1624,9 +1640,13 @@ AcdOAttr acdAttrInt[] =
 	 "(Not used by ACD) Increment for GUIs"},
     {"warnrange", VT_BOOL, AJFALSE, "Y",
 	 "Warning if values are out of range"},
+    {"failrange", VT_BOOL, AJTRUE, "",
+	 "Fail if calculated ranges overlap"},
+    {"rangemessage", VT_STR, AJFALSE, "",
+	 "Failure message if calculated ranges overlap"},
     {"large", VT_BOOL, AJFALSE, "N",
 	 "Large values returned as long"},
-	{"trueminimum", VT_BOOL, AJFALSE, "N",
+    {"trueminimum", VT_BOOL, AJFALSE, "N",
 	 "If max/min overlap, use minimum"},
     {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
@@ -1927,6 +1947,14 @@ AcdOAttr acdAttrRange[] =
 	 "Minimum value"},
     {"maximum", VT_INT, AJFALSE, "(INT_MAX)",
 	 "Maximum value"},
+    {"trueminimum", VT_BOOL, AJFALSE, "N",
+         "If max/min overlap, use minimum"},
+    {"warnrange", VT_BOOL, AJFALSE, "",
+	 "Warning if values are out of range"},
+    {"failrange", VT_BOOL, AJTRUE, "",
+	 "Fail if calculated ranges overlap"},
+    {"rangemessage", VT_STR, AJFALSE, "",
+	 "Failure message if calculated ranges overlap"},
     {"size", VT_INT, AJFALSE, "0",
 	 "Exact number of values required"},
     {"minsize", VT_INT, AJFALSE, "0",
@@ -6759,6 +6787,7 @@ static void acdSetArray(AcdPAcd thys)
 
     ajint itry;
     AjBool warnrange;
+    AjBool failrange;
     AjBool sumtest;
     AjBool truemin;
     
@@ -6774,7 +6803,10 @@ static void acdSetArray(AcdPAcd thys)
     AjPStr deflist = NULL;
     ajuint i;
     float* array;
-    
+    AjPStr failmsg = NULL;
+
+    acdRangeTestCalc(thys);
+
     acdAttrToFloat(thys, "minimum", -FLT_MAX, &vfmin);
     acdLog("minimum: %e\n", vfmin);
     
@@ -6790,6 +6822,21 @@ static void acdSetArray(AcdPAcd thys)
     acdAttrToInt(thys, "precision", 3, &precision);
     acdLog("precision: %d\n", precision);
     
+    acdAttrToBool(thys, "failrange", ajTrue, &failrange);
+    acdLog("failrange: %B\n", failrange);
+
+    if(failrange && (vfmin > vfmax))
+    {
+        acdAttrResolve(thys, "rangemessage", &failmsg);
+        if(ajStrGetLen(failmsg))
+            acdErrorAcd(thys, "Invalid range: %S", failmsg);
+        else
+            acdErrorAcd(thys,
+                        "Invalid range: "
+                        "minimum value %.3f more than maximum %.3f",
+                        vfmin, vfmax);
+    }
+
     acdAttrToBool(thys, "warnrange", acdDoWarnRange, &warnrange);
     acdLog("warnrange: %B\n", warnrange);
     acdAttrToBool(thys, "sumtest", ajTrue, &sumtest);
@@ -8527,13 +8574,17 @@ static void acdSetFloat(AcdPAcd thys)
 
     ajint itry;
     AjBool warnrange;
+    AjBool failrange;
     AjBool isdouble;
     AjBool truemin;
     
     double vfmin;
     double vfmax;
     ajint precision;
+    AjPStr failmsg = NULL;
     
+    acdRangeTestCalc(thys);
+
     acdAttrToDouble(thys, "minimum", -FLT_MAX, &vfmin);
     acdLog("minimum: %e\n", vfmin);
     
@@ -8543,6 +8594,9 @@ static void acdSetFloat(AcdPAcd thys)
     acdAttrToInt(thys, "precision", 3, &precision);
     acdLog("precision: %d\n", precision);
     
+    acdAttrToBool(thys, "failrange", ajTrue, &failrange);
+    acdLog("failrange: %B\n", failrange);
+    
     acdAttrToBool(thys, "warnrange", acdDoWarnRange, &warnrange);
     acdLog("warnrange: %B\n", warnrange);
     
@@ -8551,6 +8605,18 @@ static void acdSetFloat(AcdPAcd thys)
 
     acdAttrToBool(thys, "trueminimum", AJFALSE, &truemin);
     acdLog("trueminimum: %B\n", truemin);
+
+    if(failrange && (vfmin > vfmax))
+    {
+        acdAttrResolve(thys, "rangemessage", &failmsg);
+        if(ajStrGetLen(failmsg))
+            acdErrorAcd(thys, "Invalid range: %S", failmsg);
+        else
+            acdErrorAcd(thys,
+                        "Invalid range: "
+                        "minimum value %.3f more than maximum %.3f",
+                        vfmin, vfmax);
+    }
 
     AJNEW0(val);		   /* create storage for the result */
     
@@ -9328,18 +9394,26 @@ static void acdSetInt(AcdPAcd thys)
     AjBool ok       = ajFalse;
 
     ajint itry;
+    AjBool failrange;
     AjBool warnrange;
     AjBool islong;
     AjBool truemin;
     
     ajlong imin;
     ajlong imax;
-    
+    AjPStr failmsg = NULL;
+    AjBool iscalc = ajFalse;
+
+    acdRangeTestCalc(thys);
+
     acdAttrToLong(thys, "minimum", INT_MIN, &imin);
     acdLog("minimum: %Ld\n", imin);
     
     acdAttrToLong(thys, "maximum", INT_MAX, &imax);
     acdLog("maximum: %Ld\n", imax);
+    
+    acdAttrToBool(thys, "failrange", ajTrue, &failrange);
+    acdLog("warnrange: %B\n", warnrange);
     
     acdAttrToBool(thys, "warnrange", acdDoWarnRange, &warnrange);
     acdLog("warnrange: %B\n", warnrange);
@@ -9349,6 +9423,18 @@ static void acdSetInt(AcdPAcd thys)
     
     acdAttrToBool(thys, "trueminimum", AJFALSE, &truemin);
     acdLog("trueminimum: %B\n", truemin);
+
+    if(failrange && (imin > imax))
+    {
+        acdAttrResolve(thys, "rangemessage", &failmsg);
+        if(ajStrGetLen(failmsg))
+            acdErrorAcd(thys, "Invalid range: %S", failmsg);
+        else
+            acdErrorAcd(thys,
+                        "Invalid range: "
+                        "minimum value %d more than maximum %d",
+                        imin, imax);
+    }
 
     AJNEW0(val);		   /* create storage for the result */
     
@@ -9395,34 +9481,56 @@ static void acdSetInt(AcdPAcd thys)
 
     if(islong && imax == INT_MAX)
         imax = LONG_MAX;
+
+    if(iscalc) 
+    {
+        if(!truemin && *val < imin)
+        {					/* reset within limits */
+            if(warnrange)
+                ajWarn("integer value out of range %Ld less than (reset to) %Ld",
+                       *val, imin);
+            *val = imin;
+        }
+
+        if(*val > imax)
+        {
+            if(warnrange)
+                ajWarn("integer value out of range %Ld more than (reset to) %Ld",
+                       *val, imax);
+            *val = imax;
+        }
     
-    if(!truemin && *val < imin)
-    {					/* reset within limits */
-	if(warnrange)
-	    ajWarn("integer value out of range %Ld less than (reset to) %Ld",
-		   *val, imin);
-	*val = imin;
+        if(truemin && *val < imin)
+        {					/* reset within limits */
+            if(warnrange)
+                ajWarn("integer value out of range %Ld less than (reset to) %Ld",
+                       *val, imin);
+            *val = imin;
+        }
     }
 
-    if(*val > imax)
+    else
     {
-	if(warnrange)
-	    ajWarn("integer value out of range %Ld more than (reset to) %Ld",
-		   *val, imax);
-	*val = imax;
-    }
-    
-    if(truemin && *val < imin)
-    {					/* reset within limits */
-	if(warnrange)
-	    ajWarn("integer value out of range %Ld less than (reset to) %Ld",
-		   *val, imin);
-	*val = imin;
+        if(*val < imin)
+        {					/* reset within limits */
+            if(warnrange)
+                ajWarn("integer value out of range %Ld less than (reset to) %Ld",
+                       *val, imin);
+            *val = imin;
+        }
+
+        if(*val > imax)
+        {
+            if(warnrange)
+                ajWarn("integer value out of range %Ld more than (reset to) %Ld",
+                       *val, imax);
+            *val = imax;
+        }
     }
 
     thys->Value = val;
     ajStrFromLong(&thys->ValStr, *val);
-    
+
     return;
 }
 
@@ -11275,12 +11383,18 @@ static void acdSetRange(AcdPAcd thys)
     AjBool required = ajFalse;
     AjBool ok       = ajFalse;
 
+    AjBool warnrange;
+    AjBool failrange;
+
     ajint itry;
 
     ajuint imin;
     ajuint imax;
     ajuint isize;
     ajuint iminsize;
+    AjPStr failmsg = NULL;
+
+    acdRangeTestCalc(thys);
 
     acdAttrToUint(thys, "minimum", 1, &imin);
     acdLog("minimum: %d\n", imin);
@@ -11294,6 +11408,24 @@ static void acdSetRange(AcdPAcd thys)
     acdAttrToUint(thys, "size", 0, &isize);
     acdLog("size: %d\n", isize);
     
+    acdAttrToBool(thys, "failrange", ajTrue, &failrange);
+    acdLog("failrange: %B\n", failrange);
+    
+    acdAttrToBool(thys, "warnrange", acdDoWarnRange, &warnrange);
+    acdLog("warnrange: %B\n", warnrange);
+    
+    if(failrange && (imin > imax))
+    {
+        acdAttrResolve(thys, "rangemessage", &failmsg);
+        if(ajStrGetLen(failmsg))
+            acdErrorAcd(thys, "Invalid range: %S", failmsg);
+        else
+            acdErrorAcd(thys,
+                        "Invalid range: "
+                        "minimum value %d more than maximum %d",
+                        imin, imax);
+    }
+
     required = acdIsRequired(thys);
     acdReplyInitC(thys, "", &acdReplyDef);
 
@@ -18819,10 +18951,10 @@ static AjBool acdAttrResolve(const AcdPAcd thys, const char *attr,
 
 static AjBool acdVarTest(const AjPStr var)
 {
-    if(!acdRegVarTest)
-	acdRegVarTest = ajRegCompC("^(.*)\\$\\(([a-zA-Z0-9_.]+)\\)");
+    if(!acdRegVarInit)
+        acdRegVarDefine();
 
-    if(ajRegExec(acdRegVarTest, var))
+    if(ajRegExec(acdRegVarname, var))
 	return ajTrue;
   
     return ajFalse;
@@ -18846,20 +18978,17 @@ static AjBool acdVarTest(const AjPStr var)
 
 static AjBool acdVarTestValid(const AjPStr var, AjBool* toggle)
 {
-    static AjPRegexp varexp = NULL;
-    static AjPRegexp toggleexp = NULL;
     AjPStr varref = NULL;
     AjPStr varname = NULL;
     AcdPAcd acd = NULL;
 
-    if(!varexp)
-	varexp = ajRegCompC("^(.*)\\$\\([a-zA-Z0-9_.]+\\)");
-    if(!toggleexp)
-	toggleexp = ajRegCompC("^(@\\([!])?(\\$\\([a-zA-Z0-9_.]+\\))\\)?$");
+ 
+    if(!acdRegVarInit)
+        acdRegVarDefine();
 
     *toggle = ajFalse;
 
-    if(!ajRegExec(varexp, var))
+    if(!ajRegExec(acdRegVarname, var))
 	return ajFalse;
 
     /*
@@ -18869,9 +18998,9 @@ static AjBool acdVarTestValid(const AjPStr var, AjBool* toggle)
      */
 
     acdLog("acdVarTestValid variable '%S'\n", var);
-    if(ajRegExec(toggleexp, var))
+    if(ajRegExec(acdRegToggle, var))
     {
-	ajRegSubI(toggleexp, 2, &varref); /* returns $(varname) */
+	ajRegSubI(acdRegToggle, 2, &varref); /* returns $(varname) */
 	if(acdVarSimple(varref, &varname))
 	{
 	    acd = acdFindAcd(varname, varname);
@@ -18912,23 +19041,19 @@ static AjBool acdVarTestValid(const AjPStr var, AjBool* toggle)
 
 static AjBool acdVarSimple(AjPStr var, AjPStr* varname)
 {
-    static AjPStr attrname = NULL;
-    static AjPStr result   = NULL;
-    static AjPStr token    = NULL;
-    static AjPRegexp varexp = NULL;
-    static AjPRegexp funexp = NULL;
-    static AjPStr newvar    = NULL;
-    static AjPStr restvar   = NULL;
-    
-    if(!varexp)
-	varexp = ajRegCompC("^(.*)\\$\\(([a-zA-Z0-9_.]+)\\)");
+    AjPStr attrname = NULL;
+    AjPStr result   = NULL;
+    AjPStr token    = NULL;
+    AjPStr newvar    = NULL;
+    AjPStr restvar   = NULL;
+    AjBool ret = ajTrue;
 
-    if(!funexp)
-	funexp = ajRegCompC("^(.*)\\@\\(([^()]+)\\)");
+    if(!acdRegVarInit)
+        acdRegVarDefine();
 
-    if(ajRegExec(varexp, var))
+    if(ajRegExec(acdRegVarname, var))
     {
-	ajRegSubI(varexp, 2, &token);	/* variable name */
+	ajRegSubI(acdRegVarname, 2, &token);	/* variable name */
 	acdVarSplit(token, varname, &attrname);
 
 	if(!ajStrGetLen(attrname))
@@ -18941,26 +19066,30 @@ static AjBool acdVarSimple(AjPStr var, AjPStr* varname)
 	    ajStrAssignClear(&result);
 	}
 
-	ajRegSubI(varexp, 1, &newvar);
+	ajRegSubI(acdRegVarname, 1, &newvar);
 	ajStrAppendS(&newvar, result);
 
-	if(ajRegPost(varexp, &restvar)) /* any more? */
+	if(ajRegPost(acdRegVarname, &restvar)) /* any more? */
 	    ajStrAppendS(&newvar, restvar);
 
 	acdLog("acdVarSimple name %S resolaved to '%S'\n", *varname, newvar);
 
-	if(ajRegExec(varexp, newvar))
-	    return ajFalse;
+	if(ajRegExec(acdRegVarname, newvar))
+	    ret = ajFalse;
 
-	if(ajRegExec(funexp, newvar))
-	    return ajFalse;
-
-	return ajTrue;
+	else if(ajRegExec(acdRegFunction, newvar))
+	    ret = ajFalse;
     }
 
     /* else no variable reference at found */
 
-    return ajTrue;
+    ajStrDel(&token);
+    ajStrDel(&attrname);
+    ajStrDel(&result);
+    ajStrDel(&newvar);
+    ajStrDel(&restvar);
+
+    return ret;
 }
 
 
@@ -19061,12 +19190,12 @@ static AjBool acdVarResolve(AjPStr* var)
 		   savein, *var);
     }
     ajStrDel(&savein);
-    ajStrDel(&token);
     ajStrDel(&result);
-    ajStrDel(&attrname);
     ajStrDel(&varname);
     ajStrDel(&newvar);
     ajStrDel(&restvar);
+    ajStrDel(&token);
+    ajStrDel(&attrname);
     
     return ajTrue;
 }
@@ -19089,14 +19218,8 @@ static AjBool acdVarResolve(AjPStr* var)
 
 static AjBool acdHelpVarResolve(AjPStr* str, const AjPStr var)
 {
-    static AjPRegexp varexp = NULL;
-    static AjPRegexp funexp = NULL;
-
-    if(!varexp)
-	varexp = ajRegCompC("^(.*)\\$\\(([a-zA-Z0-9_.]+)\\)");
-
-    if(!funexp)
-	funexp = ajRegCompC("^(.*)\\@\\(([^()]+)\\)");
+    if(!acdRegVarInit)
+        acdRegVarDefine();
 
     if(!var)
     {
@@ -19106,7 +19229,7 @@ static AjBool acdHelpVarResolve(AjPStr* str, const AjPStr var)
     }
 
     /* reject variable references first to resolve internal parentheses */
-    if(ajRegExec(varexp, var))
+    if(ajRegExec(acdRegVarname, var))
     {
 	ajStrAssignClear(str);
 
@@ -19114,7 +19237,7 @@ static AjBool acdHelpVarResolve(AjPStr* str, const AjPStr var)
     }
 
     /* reject any function */
-    if(ajRegExec(funexp, var))
+    if(ajRegExec(acdRegFunction, var))
     {
 	ajStrAssignClear(str);
 
@@ -27295,7 +27418,9 @@ static void acdReset(void)
     ajStrDel(&acdQualNumTmp);
 
     ajRegFree(&acdRegQualParse);
-    ajRegFree(&acdRegVarTest);
+    ajRegFree(&acdRegVarname);
+    ajRegFree(&acdRegFunction);
+    ajRegFree(&acdRegToggle);
     ajRegFree(&acdRegResolveVar);
     ajRegFree(&acdRegResolveFun);
 
@@ -30509,3 +30634,93 @@ __deprecated void ajGraphInitPV(const char *pgm, ajint argc, char *const argv[],
 }
 
 
+
+/* @funcstatic acdRangeTestCalc ***********************************************
+**
+** Tests for calculated minimum and maximum attributes. If found, requires
+** other attributes to be defined to control the bahviour if the range
+** is impossible in the current case
+**
+** @param [r] thys [const AcdPAcd] Acd object
+** @return [AjBool] True if a calculated value was found
+**
+******************************************************************************/
+
+static AjBool acdRangeTestCalc(const AcdPAcd thys)
+{
+    const AjPStr tmpstr;
+    AjBool toggle = ajFalse;
+    AjBool iscalcmin = ajFalse;
+    AjBool iscalcmax = ajFalse;
+    AjBool iscalc = ajFalse;
+    AjBool failrange = ajFalse;
+    AjBool truemin = ajFalse;
+
+    tmpstr = acdAttrValue(thys, "minimum");
+    if(!MAJSTRGETLEN(tmpstr))
+        return ajFalse;
+
+    if(acdVarTestValid(tmpstr, &toggle))
+        iscalcmin = ajTrue;
+
+    tmpstr = acdAttrValue(thys, "maximum");
+    if(!MAJSTRGETLEN(tmpstr))
+        return ajFalse;
+
+    if(acdVarTestValid(tmpstr, &toggle))
+        iscalcmax = ajTrue;
+
+    if(iscalcmin || iscalcmax)
+    {
+        iscalc = ajTrue;
+        if(!acdAttrToBool(thys, "failrange", ajFalse, &failrange))
+        {
+            acdErrorAcd(thys,
+                        "Attribute %s: required with any calculated min/max",
+                        "failrange", acdType[thys->Type].Name);
+        }
+        else
+        {
+            if(failrange)
+            {
+                tmpstr = acdAttrValue(thys, "rangemessage");
+                if(!tmpstr)
+                    acdErrorAcd(thys,
+                                "Attribute %s: required for failrange: \"Y\"",
+                                "rangemessage", acdType[thys->Type].Name);
+            }
+            else 
+            {
+                if(!acdAttrToBool(thys, "trueminimum",ajFalse, &truemin))
+                    acdErrorAcd(thys,
+                                "Attribute %s: required for failrange: \"N\"",
+                                "trueminimum", acdType[thys->Type].Name);
+            }
+
+        }
+
+    }
+
+    return iscalc;
+}
+
+/* @funcstatic acdRegVarDefine ************************************************
+**
+** Define regular expressions for parsing variables and functions
+**
+** @return [void]
+******************************************************************************/
+
+static void acdRegVarDefine(void)
+{
+    if(!acdRegVarname)
+	acdRegVarname = ajRegCompC("^(.*)\\$\\(([a-zA-Z0-9_.]+)\\)");
+
+    if(!acdRegToggle)
+	acdRegToggle = ajRegCompC("^(@\\([!])?(\\$\\([a-zA-Z0-9_.]+\\))\\)?$");
+
+    if(!acdRegFunction)
+        acdRegFunction = ajRegCompC("^(.*)\\@\\(([^()]+)\\)");
+
+    return;
+}
