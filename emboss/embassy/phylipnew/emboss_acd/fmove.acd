@@ -1,0 +1,138 @@
+application: fmove [
+  documentation: "Interactive mixed method parsimony"
+  groups: "Phylogeny:Discrete characters"
+  batch: "no"
+  embassy: "phylipnew"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  discretestates: infile [
+    parameter: "Y"
+    characters: "01PB?"
+    help: "File containing data set"
+    knowntype: "discrete characters"
+    information: "Phylip character discrete states file"
+    relations:  "EDAM: PHYLIP discrete states file"                    
+  ]
+
+  tree: intreefile [
+    parameter: "Y"
+    nullok: "Y"
+    knowntype: "newick"
+    information: "Phylip tree file (optional)"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
+  ]
+
+  properties: weights [
+    additional: "Y"
+    characters: "01"
+    information: "Weights file"
+    help: "Weights file"
+    length: "$(infile.discretelength)"
+    size: "1"
+    nullok: "Y"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
+  ]
+
+  properties: ancfile [
+    additional: "Y"
+    characters: "01?"
+    information: "Ancestral states file"
+    nullok: "Y"
+    length: "$(infile.discretelength)"
+    size: "1"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
+  ]
+
+  properties: factorfile [
+    additional: "Y"
+    information: "Factors file"
+    nullok: "Y"
+    length: "$(infile.discretelength)"
+    size: "1"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
+  ]
+
+endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  list: method [
+    additional: "y"
+    minimum: "1"
+    maximum: "1"
+    header: "Method"
+    values: "w:Wagner; c:Camin-Sokal; m:Mixed;"
+    information: "Choose the method to use"
+    default: "Wagner"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  integer: outgrno [
+    additional: "Y"
+    minimum: "0"
+    maximum: "$(infile.discretesize)"
+    failrange: "N"
+    trueminimum: "Y"
+    default: "0"
+    information: "Species number to use as outgroup"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  float: threshold [
+    additional: "Y"
+    minimum: "0"
+    information: "Threshold value"
+    default: "$(infile.discretesize)"
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  list: initialtree [
+    additional: "Y"
+    minimum: "1"
+    maximum: "1"
+    header: "Initial tree"
+    values: "a:Arbitary; u:User; s:Specify"
+    information: "Initial tree"
+    default: "Arbitary"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  integer: screenwidth [
+    additional: "Y"
+    default: "80"
+    information: "Width of terminal screen in characters"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  integer: screenlines [
+    additional: "Y"
+    default: "24"
+    information: "Number of lines on screen"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outtreefile [
+    additional: "Y"
+    extension: "treefile"
+    knowntype: "newick tree"
+    nullok: "Y"
+    information: "Phylip tree output file (optional)"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
+  ]
+
+endsection: output

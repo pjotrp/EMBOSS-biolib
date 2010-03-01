@@ -1,0 +1,191 @@
+application: fdnapars [
+  documentation: "DNA parsimony algorithm"
+  groups: "Phylogeny:Molecular sequence"
+  embassy: "phylipnew"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqsetall: sequence [
+    parameter: "Y"
+    type: "gapdnaphylo"
+    aligned: "Y"
+    help: "File containing one or more sequence alignments"
+    relations: "EDAM: DNA sequence record"                                 
+  ]
+
+  tree: intreefile [
+    parameter: "Y"
+    nullok: "Y"
+    knowntype: "newick"
+    information: "Phylip tree file (optional)"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
+  ]
+
+  properties: weights [
+    additional: "Y"
+    characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    information: "Weights file"
+    nullok: "Y"
+    length: "$(sequence.length)"
+    size: "@(@($(sequence.multicount)>1) ? 1:0)"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
+  ]
+
+endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  integer: maxtrees [
+    additional: "Y"
+    information: "Number of trees to save"
+    default: "10000"
+    minimum: "1"
+    maximum: "1000000"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  toggle: thorough [
+    additional: "@(!$(intreefile.isdefined))"
+    information: "More thorough search"
+    default: "Y"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: rearrange [
+    additional: "$(thorough)"
+    default: "Y"
+    information: "Rearrange on just one best tree"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: transversion [
+    additional: "Y"
+    information: "Use transversion parsimony"
+    default: "N"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  integer: njumble [
+    additional: "@(!$(intreefile.isdefined))"
+    default: "0"
+    minimum: "0"
+    information: "Number of times to randomise"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  integer: seed [
+    additional: "$(njumble)"
+    default: "1"
+    minimum: "1"
+    maximum: "32767"
+    information: "Random number seed between 1 and 32767 (must
+                  be odd)"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  integer: outgrno [
+    additional: "Y"
+    minimum: "0"
+    maximum: "$(sequence.count)"
+    failrange: "N"
+    trueminimum: "Y"
+    default: "0"
+    information: "Species number to use as outgroup"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  toggle: thresh [
+    additional: "Y"
+    default: "N"
+    information: "Use threshold parsimony"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  float: threshold [
+    additional: "$(thresh)"
+    minimum: "1.0"
+    default: "1.0"
+    information: "Threshold value"
+    relations: "EDAM: Generic float"                                       
+  ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "dnapars output"
+    information: "Phylip dnapars program output file"
+    relations:  "EDAM: Phylip phylogenetic tree raw data"              
+  ]
+
+  toggle: trout [
+    additional: "Y"
+    default: "Y"
+    information: "Write out trees to tree file"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  outfile: outtreefile [
+    additional: "$(trout)"
+    extension: "treefile"
+    information: "Phylip tree output file (optional)"
+    knowntype: "newick tree"
+    nullok: "Y"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
+  ]
+
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print data at start of run"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: stepbox [
+    additional: "Y"
+    default: "N"
+    information: "Print out steps in each site"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: ancseq [
+    additional: "Y"
+    default: "N"
+    information: "Print sequences at all nodes of tree"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: treeprint [
+    additional: "Y"
+    default: "Y"
+    information: "Print out tree"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: dotdiff [
+    additional: "@($(ancseq) | $(printdata))"
+    default: "Y"
+    information: "Use dot differencing to display results"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+endsection: output

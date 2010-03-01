@@ -1,0 +1,172 @@
+application: ffitch [
+  documentation: "Fitch-Margoliash and Least-Squares Distance
+                  Methods"
+  groups: "Phylogeny:Distance matrix"
+  gui: "yes"
+  batch: "yes"
+  cpu: "high"
+  embassy: "phylipnew"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  distances: datafile [
+    parameter: "Y"
+    help: "File containing one or more distance matrices"
+    knowntype: "distance matrix"
+    information: "Phylip distance matrix file"
+    relations:  "EDAM: PHYLIP phylogenetic distance matrix file"       
+  ]
+
+  tree: intreefile [
+    parameter: "Y"
+    nullok: "Y"
+    knowntype: "newick"
+    information: "Phylip tree file (optional)"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
+  ]
+
+endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  list: matrixtype [
+    additional: "Y"
+    minimum: "1"
+    maximum: "1"
+    header: "Matrix type"
+    values: "s:Square; u:Upper triangular; l:Lower triangular"
+    information: "Type of input data matrix"
+    default: "s"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  boolean: minev [
+    additional: "Y"
+    information: "Minimum evolution"
+    default: "N"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  integer: njumble [
+    additional: "@(!$(intreefile.isdefined))"
+    default: "0"
+    minimum: "0"
+    information: "Number of times to randomise"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  integer: seed [
+    additional: "$(njumble)"
+    information: "Random number seed between 1 and 32767 (must
+                  be odd)"
+    minimum: "1"
+    maximum: "32767"
+    default: "1"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  integer: outgrno [
+    additional: "Y"
+    minimum: "0"
+    maximum: "$(datafile.distancesize)"
+    failrange: "N"
+    trueminimum: "Y"
+    default: "0"
+    information: "Species number to use as outgroup"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  float: power [
+    additional: "Y"
+    default: "2.0"
+    information: "Power"
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  boolean: lengths [
+    additional: "$(intreefile.isdefined)"
+    default: "N"
+    information: "Use branch lengths from user trees"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: negallowed [
+    additional: "@(!$(minev))"
+    default: "N"
+    information: "Negative branch lengths allowed"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: global [
+    additional: "@(!$(intreefile.isdefined))"
+    default: "N"
+    information: "Global rearrangements"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: replicates [
+    additional: "Y"
+    default: "N"
+    information: "Subreplicates"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "fitch output"
+    information: "Phylip fitch program output file"
+    relations:  "EDAM: Phylip phylogenetic tree raw data"              
+  ]
+
+  toggle: trout [
+    additional: "Y"
+    default: "Y"
+    information: "Write out trees to tree file"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  outfile: outtreefile [
+    additional: "$(trout)"
+    extension: "treefile"
+    information: "Phylip tree output file (optional)"
+    knowntype: "newick tree"
+    nullok: "Y"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
+  ]
+
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print data at start of run"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: treeprint [
+    additional: "Y"
+    default: "Y"
+    information: "Print out tree"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+endsection: output
