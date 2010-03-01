@@ -293,7 +293,6 @@ AjPMartLoc ajMartLocNew(void)
 void ajMartLocDel(AjPMartLoc *thys)
 {
     AjPMartLoc pthis;
-    AjPTable t = NULL;
     ajuint i;
     
     if(!thys)
@@ -370,7 +369,6 @@ AjPMartDataset ajMartDatasetNew(void)
 void ajMartDatasetDel(AjPMartDataset *thys)
 {
     AjPMartDataset pthis;
-    AjPTable t = NULL;
     ajuint i;
     
     if(!thys)
@@ -433,7 +431,6 @@ AjPMartAttribute ajMartAttributeNew(void)
 void ajMartAttributeDel(AjPMartAttribute *thys)
 {
     AjPMartAttribute pthis;
-    AjPTable t = NULL;
     ajuint i;
     
     if(!thys)
@@ -496,7 +493,6 @@ AjPMartFilter ajMartFilterNew(void)
 void ajMartFilterDel(AjPMartFilter *thys)
 {
     AjPMartFilter pthis;
-    AjPTable t = NULL;
     ajuint i;
     
     if(!thys)
@@ -1336,8 +1332,6 @@ static AjBool martParseTabbedDataset(AjPSeqin seqin)
     AjPFilebuff buff = NULL;
     AjPStr line  = NULL;
     AjPStr token = NULL;
-    AjPStr key   = NULL;
-    AjPStr value = NULL;
     AjPTable table = NULL;
     AjPMartDataset ds = NULL;
     AjPMartquery mq   = NULL;
@@ -1666,8 +1660,6 @@ static AjBool martParseTabbedAttributes(AjPSeqin seqin)
     AjPFilebuff buff = NULL;
     AjPStr line  = NULL;
     AjPStr token = NULL;
-    AjPStr key   = NULL;
-    AjPStr value = NULL;
     AjPStr tline = NULL;
     
     AjPTable table = NULL;
@@ -1930,8 +1922,6 @@ static AjBool martParseTabbedFilters(AjPSeqin seqin)
     AjPFilebuff buff = NULL;
     AjPStr line  = NULL;
     AjPStr token = NULL;
-    AjPStr key   = NULL;
-    AjPStr value = NULL;
     
     AjPTable table = NULL;
     AjPMartFilter filt = NULL;
@@ -3495,7 +3485,6 @@ void ajMartSetQueryDatasetInterfaceC(AjPMartqinfo qinfo, const char *iface,
 AjBool ajMartCheckQinfo(AjPSeqin seqin, AjPMartqinfo qinfo)
 {
     AjPMartquery mq = NULL;
-    AjPStr tabval  = NULL;
     AjPStr listval = NULL;
     AjPStr fname   = NULL;
     
