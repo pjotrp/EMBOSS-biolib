@@ -375,7 +375,7 @@ IN
 FI actb1_fugru.antigenic
 FZ = 0
 FI antigenic.acdlog
-FC = 5646
+FC = 5681
 FP 51 /^acdProcess/
 FI stderr
 FC = 2
