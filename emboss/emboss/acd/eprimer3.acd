@@ -275,6 +275,8 @@ section: additional [
       default: "27"
       minimum: "$(minsize)"
       maximum: "35"
+      failrange: "N"
+      trueminimum: "N"
       information: "Primer maximum size"
       help: "Maximum acceptable length (in bases) of a primer.
              Currently this parameter cannot be larger than 35. This limit is
@@ -551,6 +553,8 @@ section: additional [
       default: "27"
       minimum: "$(ominsize)"
       maximum: "35"
+      failrange: "N"
+      trueminimum: "N"
       information: "Internal oligo maximum size"
       help: "Maximum acceptable length (in bases) of an internal
              oligo. Currently this parameter cannot be larger than 35. This
@@ -670,6 +674,8 @@ section: additional [
       default: "12.00"
       minimum: "$(oanyself)"
       maximum: "9999.99"
+      failrange: "N"
+      trueminimum: "N"
       information: "Internal oligo maximum 3' self
                     complementarity"
       help: "The maximum allowable 3'-anchored global alignment score
@@ -826,6 +832,8 @@ section: advanced [
     default: "3.00"
     minimum: "0.00"
     maximum: "$(selfany)"
+    failrange: "N"
+    trueminimum: "Y"
     information: "Maximum 3' self complementarity"
     help: "The maximum allowable 3'-anchored global alignment score
            when testing a single primer for self-complementarity, and the

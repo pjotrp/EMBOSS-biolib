@@ -1,0 +1,84 @@
+application: pepinfo [
+  documentation: "Plot amino acid properties of a protein sequence in parallel."
+  groups: "Protein:Composition"
+  relations: "EDAM: Pretty sequence drawing"
+  relations: "EDAM: General protein properties calculation"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: sequence [
+    parameter: "Y"
+    type: "protein"
+    relations: "EDAM: Pure protein sequence"                               
+  ]
+
+  datafile: aaproperties [
+    additional: "Y"
+    default: "Eaa_properties.dat"
+    information: "Amino acid chemical classes data file"
+    knowntype: "amino acid classification"
+    relations:  "EDAM: Amino acid chemical classes data"               
+  ]
+
+  datafile: aahydropathy [
+    additional: "Y"
+    default: "Eaa_hydropathy.dat"
+    information: "Amino acid hydropathy values data file"
+    knowntype: "amino acid hydropathy"
+    relations:  "EDAM: Amino acid hydropathy data"                     
+  ]
+
+endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  integer: hwindow [
+    additional: "Y"
+    default: "9"
+    minimum: "1"
+    maximum: "$(sequence.length)"
+    failrange: "N"
+    trueminimum: "Y"
+    information: "Window size for hydropathy averaging"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  xygraph: graph [
+    standard: "Y"
+    multiple: "3"
+    relations: "EDAM: EMBOSS graph file"                                   
+  ]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "pepinfo output"
+    relations:  "EDAM:Protein sequence properties report"                  
+  ]
+
+  boolean: generalplot [
+    default: "Y"
+    information: "Plot histogram of general properties"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: hydropathyplot [
+    default: "Y"
+    information: "Plot graphs of hydropathy"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+endsection: output

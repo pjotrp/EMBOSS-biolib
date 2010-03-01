@@ -26,6 +26,8 @@ section: required [
     standard: "Y"
     minimum: "1"
     maximum: "$(sequence.end)"
+    failrange: "N"
+    trueminimum: "Y"
     default: "100"
     information: "Window size"
     help: "The percentage CG content and the Observed frequency of CG
@@ -39,6 +41,8 @@ section: required [
     standard: "Y"
     minimum: "1"
     maximum: "$(sequence.end)"
+    failrange: "N"
+    trueminimum: "N"
     default: "200"
     information: "Minimum length of an island"
     help: "This sets the minimum length that a CpG island has to be

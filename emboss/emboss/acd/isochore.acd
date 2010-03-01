@@ -27,6 +27,8 @@ section: additional [
     default: "1000"
     minimum: "1"
     maximum: "@($(sequence.end)/2)"
+    failrange: "N"
+    trueminimum: "Y"
     information: "Window size"
     relations: "EDAM: Generic integer" 
     trueminimum: "Y"                                    
@@ -40,6 +42,7 @@ section: additional [
     maximum: "@($(sequence.end)/10)"
     information: "Shift increment"
     relations: "EDAM: Generic integer"                                     
+    failrange: "N"
     trueminimum: "Y"  
     warnrange: "N"                                  
   ]

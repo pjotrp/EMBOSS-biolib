@@ -264,6 +264,8 @@ section: additional [
     integer: sensematch [
       additional: "Y"
       default: "0"
+      minimum: "-1"
+      maximum: "1"
       information: "Sense of feature to display"
       expected: "0 - any sense, 1 - forward sense, -1 - reverse
                  sense"
@@ -387,7 +389,6 @@ section: advanced [
 
     integer: maxcuts [
       minimum: "$(mincuts)"
-      maximum: "2000000000"
       default: "2000000000"
       information: "Maximum cuts per RE"
       help: "This sets the maximum number of cuts for any restriction

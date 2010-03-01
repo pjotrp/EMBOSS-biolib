@@ -97,7 +97,6 @@ section: advanced [
 
   integer: max [
     minimum: "$(min)"
-    maximum: "2000000000"
     default: "2000000000"
     information: "Maximum cuts per RE"
     help: "This sets the maximum number of cuts for any restriction

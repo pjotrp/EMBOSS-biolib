@@ -49,6 +49,7 @@ section: additional [
     additional: "Y"
     default: "18"
     minimum: "1"
+    maximum: "35"
     information: "Primer minimum size"
     help: "Minimum acceptable length of a primer. Must be greater than
            0 and less than or equal to MAX-SIZE."
@@ -58,8 +59,10 @@ section: additional [
   integer: maxsize [
     additional: "Y"
     default: "27"
-    minimum: "$(MinSize)"
+    minimum: "$(minsize)"
     maximum: "35"
+    failrange: "N"
+    trueminimum: "N"
     information: "Primer maximum size"
     help: "Maximum acceptable length (in bases) of a primer. Currently
            this parameter cannot be larger than 35. This limit is governed
