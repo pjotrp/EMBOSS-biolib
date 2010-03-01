@@ -1180,6 +1180,7 @@ __deprecated AjBool ajListPopEnd(AjPList list, void** x)
 ** @nam4rule PeekLast Pointer to last value
 ** @nam4rule PeekNumber Pointer to numbered value
 ** @nam3rule Toarray Build array of values
+** @nam3rule Toindex Sort index array by list node values
 **
 ** @argrule * list [const AjPList] List
 ** @argrule Mapfind apply [AjBool function] Function to apply
@@ -1189,12 +1190,15 @@ __deprecated AjBool ajListPopEnd(AjPList list, void** x)
 ** @argrule PeekNumber ipos [ajuint] Position in list
 ** @argrule Peek x [void**] Value
 ** @argrule Toarray array [void***] Array of values, ending with NULL
+** @argrule Toindex lind [ajuint*] Populated ndex array to be sorted
+** @argrule Toindex sort1 [int* function] Function to compare two list items.
 **
 ** @valrule * [AjBool] True on success
 ** @valrule *Length [ajuint] List length
 ** @valrule *Mapfind [AjBool] True if function returns true
 ** @valrule *Mapread [void]
 ** @valrule *Toarray [ajuint] Array size, excluding final NULL
+** @valrule *Toindex [ajuint] Array size, excluding final NULL
 **
 ** @fcategory cast
 **
@@ -1549,6 +1553,67 @@ static void listArrayTrace(void** array)
 	ajDebug("array[%d] %x\n", i++, *v++);
 
     return;
+}
+
+
+
+
+/* @func ajListToindex ********************************************************
+**
+** Create an array of the pointers to the data.
+**
+** @param [r] list [const AjPList] List
+** @param [w] lind [ajuint*] Populated ndex array to be sorted
+** @param [f] sort1 [int* function] Function to compare two list items.
+** @return [ajuint] Size of index array.
+** @@
+******************************************************************************/
+
+ajuint ajListToindex(const AjPList list, ajuint* lind,
+                     int (*sort1) (const void*, const void*))
+{
+    ajuint n;
+    ajuint s;
+    ajuint i;
+    ajint j;
+    ajuint t;
+
+    AjPListNode rest;
+    AjPListNode *nodes;
+    ajuint* idx = NULL;
+
+    n = list->Count;
+    rest = list->First;
+
+    if(!n)
+        return 0;
+
+    ajListToarray(list, (void***) &nodes);
+    AJCNEW0(idx, n);
+
+    for(i = 0; i < n; i++)
+        idx[i] = i;
+
+    for(s=n/2; s>0; s /= 2)
+	for(i=s; i<n; ++i)
+        {
+	    for(j=i-s;
+                j>=0 && (sort1(&nodes[idx[j]],&nodes[idx[j+s]]) < 0);
+                j-=s)
+	    {
+		t = lind[j];
+		lind[j] = lind[j+s];
+		lind[j+s] = t;
+		t = idx[j];
+		idx[j] = idx[j+s];
+		idx[j+s] = t;
+	    }
+        }
+            
+    AJFREE(nodes);
+    AJFREE(idx);
+
+    return n;
 }
 
 
