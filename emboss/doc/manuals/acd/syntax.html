@@ -1037,6 +1037,8 @@ size: 1<br>
 sum: 1.0<br>
 sumtest: Y<br>
 trueminimum: N<br>
+failrange: <br>
+rangemessage: ""<br>
 tolerance: 0.01<br>
 
  </p>
@@ -1100,6 +1102,9 @@ maximum: <i>(FLT_MAX)</i><br>
 increment: 1.0<br>
 precision: 3<br>
 warnrange: Y<br>
+trueminimum: N<br>
+failrange: <br>
+rangemessage: ""<br>
 large: N<br>
 trueminimum: N<br>
 
@@ -1134,6 +1139,8 @@ minimum: <i>(INT_MIN)</i><br>
 maximum: <i>(INT_MAX)</i><br>
 increment: 0<br>
 warnrange: Y<br>
+failrange: <br>
+rangemessage: ""<br>
 large: N<br>
 trueminimum: N<br>
 
@@ -1166,6 +1173,10 @@ trueminimum: N<br>
   <p>
 minimum: 1<br>
 maximum: <i>(INT_MAX)</i><br>
+trueminimum: N<br>
+warnrange: <br>
+failrange: <br>
+rangemessage: ""<br>
 size: 0<br>
 minsize: 0<br>
 
@@ -4264,6 +4275,30 @@ attributes, summarized in Table 1 and described in more detail below.</p>
   <p>&nbsp;</p>
   </td>
   <td>
+  <p>failrange: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Fail if (calculated) ranges overlap<br>Default: </p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>rangemessage: <i>string<i></p>
+  </td>
+  <td>
+  <p>Failure message if (calculated ranges) overlap<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
   <p>tolerance: <i>float<i></p>
   </td>
   <td>
@@ -4328,6 +4363,42 @@ attributes, summarized in Table 1 and described in more detail below.</p>
   </td>
   <td>
   <p>Warning if values are out of range<br>Default: Y</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>trueminimum: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>If max/min overlap, use minimum<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>failrange: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Fail if calculated ranges overlap<br>Default: </p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>rangemessage: <i>string<i></p>
+  </td>
+  <td>
+  <p>Failure message if calculated ranges overlap<br>Default: ""</p>
   </td>
  </tr>
 
@@ -4408,6 +4479,30 @@ attributes, summarized in Table 1 and described in more detail below.</p>
   <p>&nbsp;</p>
   </td>
   <td>
+  <p>failrange: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Fail if calculated ranges overlap<br>Default: </p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>rangemessage: <i>string<i></p>
+  </td>
+  <td>
+  <p>Failure message if calculated ranges overlap<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
   <p>large: <i>Y/N<i></p>
   </td>
   <td>
@@ -4448,6 +4543,54 @@ attributes, summarized in Table 1 and described in more detail below.</p>
   </td>
   <td>
   <p>Maximum value<br>Default: <i>(INT_MAX)</i></p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>trueminimum: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>If max/min overlap, use minimum<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>warnrange: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Warning if values are out of range<br>Default: </p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>failrange: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Fail if calculated ranges overlap<br>Default: </p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>rangemessage: <i>string<i></p>
+  </td>
+  <td>
+  <p>Failure message if calculated ranges overlap<br>Default: ""</p>
   </td>
  </tr>
 
@@ -4567,6 +4710,28 @@ the sum should match the total. Remember that most floating point
 fractions cannot be represented accurately in binary form.
 </p>
 
+<p>The <i>warnrange:</i> attribute warns the user if an out of range
+value (below the minimum, or above the maximum) has been automatically
+adjusted to be valid. This includes adjusting a default value where
+the calculated range no longer includes it.</p>
+
+<p>Where one or both of the <i>minimum:</i> or <i>maximum</i> values
+are calculated there is a possibility that the maximum value will be
+defined lower than the minimum. In such cases there is a
+requirement (an error message is generated if the definitions are
+missing) that the <i>failrange:</i> attribute is defined.</p>
+
+Where the maximum is lower than the minimum and <i>failrange:</i> is
+false, by default the maximum value is used. Where this is not ideal
+for the application, the <i>trueminimum:</i> attribute can be set true
+to use the minimum value as the only acceptable value.</p>
+
+<p>If <i>failrange:</i> is defined true, there must be
+a <i>failmessage:</i> attribute explaining to the user why there is no
+valid value between the defined minimum and maximum. An error message
+is generated if the <i>failmessage</i> attribute is absent in this
+case.</p>
+
 <h5>Boolean</h5>
 
 <p>Although there are (currently) no specific attributes for a boolean
@@ -4604,10 +4769,20 @@ the calculated range no longer includes it.</p>
 
 <p>Where one or both of the <i>minimum:</i> or <i>maximum</i> values
 are calculated there is a possibility that the maximum value will be
-defined lower than the minimum. In such cases by default the maximum
-is used. Where this is not ideal for the application,
-the <i>trueminimum:</i> attribute can be set true to use the minimum
-value as the only acceptable value.</p>
+defined lower than the minimum. In such cases there is a
+requirement (an error message is generated if the definitions are
+missing) that the <i>failrange:</i> attribute is defined.</p>
+
+Where the maximum is lower than the minimum and <i>failrange:</i> is
+false, by default the maximum value is used. Where this is not ideal
+for the application, the <i>trueminimum:</i> attribute can be set true
+to use the minimum value as the only acceptable value.</p>
+
+<p>If <i>failrange:</i> is defined true, there must be
+a <i>failmessage:</i> attribute explaining to the user why there is no
+valid value between the defined minimum and maximum. An error message
+is generated if the <i>failmessage</i> attribute is absent in this
+case.</p>
 
 <p>The <i>increment:</i> attribute defines the steps
 that this parameter is allowed to take, in case there is a need to
@@ -4635,10 +4810,20 @@ the calculated range no longer includes it.</p>
 
 <p>Where one or both of the <i>minimum:</i> or <i>maximum</i> values
 are calculated there is a possibility that the maximum value will be
-defined lower than the minimum. In such cases by default the maximum
-is used. Where this is not ideal for the application,
-the <i>trueminimum:</i> attribute can be set true to use the minimum
-value as the only acceptable value.</p>
+defined lower than the minimum. In such cases there is a
+requirement (an error message is generated if the definitions are
+missing) that the <i>failrange:</i> attribute is defined.</p>
+
+Where the maximum is lower than the minimum and <i>failrange:</i> is
+false, by default the maximum value is used. Where this is not ideal
+for the application, the <i>trueminimum:</i> attribute can be set true
+to use the minimum value as the only acceptable value.</p>
+
+<p>If <i>failrange:</i> is defined true, there must be
+a <i>failmessage:</i> attribute explaining to the user why there is no
+valid value between the defined minimum and maximum. An error message
+is generated if the <i>failmessage</i> attribute is absent in this
+case.</p>
 
 <p>The <i>increment:</i> attribute defines the steps that this
 parameter is allowed to take, in case there is a need to iterate this
@@ -4651,6 +4836,28 @@ parameter.</p>
 and default to the boundaries as specified by the systems setup. The
 <i>minlength:</i> attribute defines the minimum number of values
 required.</p>
+
+<p>The <i>warnrange:</i> attribute warns the user if an out of range
+value (below the minimum, or above the maximum) has been automatically
+adjusted to be valid. This includes adjusting a default value where
+the calculated range no longer includes it.</p>
+
+<p>Where one or both of the <i>minimum:</i> or <i>maximum</i> values
+are calculated there is a possibility that the maximum value will be
+defined lower than the minimum. In such cases there is a
+requirement (an error message is generated if the definitions are
+missing) that the <i>failrange:</i> attribute is defined.</p>
+
+Where the maximum is lower than the minimum and <i>failrange:</i> is
+false, by default the maximum value is used. Where this is not ideal
+for the application, the <i>trueminimum:</i> attribute can be set true
+to use the minimum value as the only acceptable value.</p>
+
+<p>If <i>failrange:</i> is defined true, there must be
+a <i>failmessage:</i> attribute explaining to the user why there is no
+valid value between the defined minimum and maximum. An error message
+is generated if the <i>failmessage</i> attribute is absent in this
+case.</p>
 
 <p>The <i>size:</i> attribute defines an exact number of values
 required. The <i>minsize:</i> attribute defines a minimum number of values
@@ -12869,7 +13076,7 @@ a variable to be defined in this file.</p>
   <p>string</p>
   </td>
   <td>
-  <p>HTTP proxy server address in the form proxy.ebi.ac.uk:8080<br>Default: ""</p>
+  <p>HTTP proxy server address in the form proxy.xyz.ac.uk:7890<br>Default: ""</p>
   </td>
  </tr>
 
