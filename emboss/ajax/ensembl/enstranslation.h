@@ -85,9 +85,6 @@ AjBool ensTranslationSetAdaptor(EnsPTranslation translation,
 AjBool ensTranslationSetIdentifier(EnsPTranslation translation,
                                    ajuint identifier);
 
-AjBool ensTranslationSetTranscript(EnsPTranslation translation,
-                                   EnsPTranscript transcript);
-
 AjBool ensTranslationSetStartExon(EnsPTranslation translation, EnsPExon exon);
 
 AjBool ensTranslationSetEndExon(EnsPTranslation translation, EnsPExon exon);
