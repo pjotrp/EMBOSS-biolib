@@ -13581,11 +13581,13 @@ static AjBool featTagSpecialAllProteinid(const AjPStr val)
 	    i++;
 	}
 
-	if(!*cp && i > 5)		/* ENSP then all numbers */
-	    ret = ajTrue;
+        /* ENSP then all numbers */
+	if(!*cp && i > 5)
+            ret = ajTrue;
 
-	if(ret)
-	    featWarn("ENSEMBL /protein_id value '%S'",   val);
+/*	if(ret)
+        featWarn("ENSEMBL /protein_id value '%S'",   val);*/
+
 	/*
 	if(saveit)
 	{
@@ -13677,7 +13679,7 @@ static AjBool featTagSpecialAllReplace(AjPStr* pval)
     /* and in misc_difference features */
     if(!featRegTagReplace)
 	featRegTagReplace =
-	    ajRegCompC("^([abcdghkmnrstuvwxyABCDGHKMNRSTUVWXY]*)$");
+	    ajRegCompC("^([abcdghkmnrstuvwxyABCDGHKMNRSTUVWXY/-]*)$");
 
     /* if(!featRegTagReplace)
        featRegTagReplace = ajRegCompC("^\"([acgt]*)\"$");*/
