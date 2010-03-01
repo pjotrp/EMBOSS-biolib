@@ -435,7 +435,7 @@ int main(int argc, char **argv)
     ajGraphicsGetCharsize(&defheight,&currentscale);
 
     ajGraphicsSetCharscale(((float)ixlen/((float)(numres+charlen+1)*
-                                          (currentscale*1.5)))/
+                                          (currentscale * (float) 1.5)))/
                                            currentscale);
 
 /*    ajGraphicsSetCharscale(((float)ixlen/((float)(numres+charlen)*
@@ -1273,7 +1273,7 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 	    res[0] = constr[k];
 
 	    /* start -> mid */
-            ajGraphicsDrawposTextAtmid(0.5 + (float)(count+gapcount),
+            ajGraphicsDrawposTextAtmid((float) 0.5 + (float)(count+gapcount),
                                        y-(yincr*((seqend-seqstart)+1)),res);
 	}
     }
@@ -1346,7 +1346,8 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 			else
 			    res[0] = '-';
 	    /* start -> mid */
-			ajGraphicsDrawposTextAtmid(0.5+(float)(count+gapcount),
+			ajGraphicsDrawposTextAtmid((float) 0.5 +
+                                                   (float) (count+gapcount),
                                                    y-(yincr*l),res);
 		    }
 		}
