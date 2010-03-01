@@ -294,7 +294,7 @@ I   A/L    R/K    N/M    D/F    C/P    Q/S    E/T    G/W    H/Y    I/V
    data from this database and makes it available for pepwindow.
 
    1. FTP the AAINDEX database from Japan:
-   ftp://ftp.genome.ad.jp/pub/db/genomenet/aaindex/aaindex1
+   ftp://ftp.genome.ad.jp/pub/db/community/aaindex/aaindex1
 
    2. Run aaindexextract with the aaindex1 file as input (or ask whoever
    installs EMBOSS to run it)

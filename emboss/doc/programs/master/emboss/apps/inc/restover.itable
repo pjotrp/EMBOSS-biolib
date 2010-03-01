@@ -20,36 +20,19 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td>-sitelen</td>
-<td>integer</td>
-<td>This sets the minimum length of the restriction enzyme recognition site. Any enzymes with sites shorter than this will be ignored.</td>
-<td>Integer from 2 to 20</td>
-<td>4</td>
-</tr>
-
-<tr bgcolor="#FFFFCC">
-<td>-enzymes</td>
+<td>[-seqcomp]<br>(Parameter 2)</td>
 <td>string</td>
-<td>The name 'all' reads in all enzyme names from the REBASE database. You can specify enzymes by giving their names with commas between then, such as: 'HincII,hinfI,ppiI,hindiii'.
-The case of the names is not important. You can specify a file of enzyme names to read in by giving the name of the file holding the enzyme names with a '@' character in front of it, for example, '@enz.list'.
-Blank lines and lines starting with a hash character or '!' are ignored and all other lines are concatenated together with a comma character ',' and then treated as the list of enzymes to search for.
-An example of a file of enzyme names is:
-! my enzymes
-HincII, ppiII
-! other enzymes
-hindiii
-HinfI
-PpiI</td>
+<td>Overlap sequence</td>
 <td>Any string</td>
-<td>all</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td>[-outfile]<br>(Parameter 2)</td>
-<td>report</td>
-<td>Output report file name</td>
-<td>Report output file</td>
-<td><i>&lt;*&gt;</i>.restrict</td>
+<td>[-outfile]<br>(Parameter 3)</td>
+<td>outfile</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.restover</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -75,7 +58,7 @@ PpiI</td>
 <tr bgcolor="#FFFFCC">
 <td>-mfile</td>
 <td>datafile</td>
-<td>Restriction enzyme methylation data file (optional)</td>
+<td>Restriction enzyme methylation data file</td>
 <td>Data file</td>
 <td>Emethylsites.dat</td>
 </tr>
@@ -83,7 +66,7 @@ PpiI</td>
 <tr bgcolor="#FFFFCC">
 <td>-min</td>
 <td>integer</td>
-<td>This sets the minimum number of cuts for any restriction enzyme that will be considered. Any enzymes that cut fewer times than this will be ignored.</td>
+<td>Minimum cuts per RE</td>
 <td>Integer from 1 to 1000</td>
 <td>1</td>
 </tr>
@@ -91,23 +74,23 @@ PpiI</td>
 <tr bgcolor="#FFFFCC">
 <td>-max</td>
 <td>integer</td>
-<td>This sets the maximum number of cuts for any restriction enzyme that will be considered. Any enzymes that cut more times than this will be ignored.</td>
+<td>Maximum cuts per RE</td>
 <td>Any integer value</td>
 <td>2000000000</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td>-solofragment</td>
+<td>-single</td>
 <td>boolean</td>
-<td>This gives the fragment lengths of the forward sense strand produced by complete restriction by each restriction enzyme on its own. Results are added to the tail section of the report.</td>
+<td>Force single site only cuts</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td>-single</td>
+<td>-threeprime</td>
 <td>boolean</td>
-<td>If this is set then this forces the values of the mincuts and maxcuts qualifiers to both be 1. Any other value you may have set them to will be ignored.</td>
+<td>Use 3' overhang e.g. BamHI has CTAG as a 5' overhang, and ApaI has CCGG as 3' overhang.</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
@@ -115,7 +98,7 @@ PpiI</td>
 <tr bgcolor="#FFFFCC">
 <td>-[no]blunt</td>
 <td>boolean</td>
-<td>This allows those enzymes which cut at the same position on the forward and reverse strands to be considered.</td>
+<td>Allow blunt end cutters</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>
@@ -123,7 +106,7 @@ PpiI</td>
 <tr bgcolor="#FFFFCC">
 <td>-[no]sticky</td>
 <td>boolean</td>
-<td>This allows those enzymes which cut at different positions on the forward and reverse strands, leaving an overhang, to be considered.</td>
+<td>Allow sticky end cutters</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>
@@ -131,7 +114,7 @@ PpiI</td>
 <tr bgcolor="#FFFFCC">
 <td>-[no]ambiguity</td>
 <td>boolean</td>
-<td>This allows those enzymes which have one or more 'N' ambiguity codes in their pattern to be considered</td>
+<td>Allow ambiguous matches</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>
@@ -139,7 +122,7 @@ PpiI</td>
 <tr bgcolor="#FFFFCC">
 <td>-plasmid</td>
 <td>boolean</td>
-<td>If this is set then this allows searches for restriction enzyme recognition site and cut positions that span the end of the sequence to be considered.</td>
+<td>Allow circular DNA</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
@@ -155,15 +138,23 @@ PpiI</td>
 <tr bgcolor="#FFFFCC">
 <td>-[no]commercial</td>
 <td>boolean</td>
-<td>If this is set, then only those enzymes with a commercial supplier will be searched for. This qualifier is ignored if you have specified an explicit list of enzymes to search for, rather than searching through 'all' the enzymes in the REBASE database. It is assumed that, if you are asking for an explicit enzyme, then you probably know where to get it from and so all enzymes names that you have asked to be searched for, and which cut, will be reported whether or not they have a commercial supplier.</td>
+<td>Only enzymes with suppliers</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
+<td>-html</td>
+<td>boolean</td>
+<td>Create HTML output</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
 <td>-[no]limit</td>
 <td>boolean</td>
-<td>This limits the reporting of enzymes to just one enzyme from each group of isoschizomers. The enzyme chosen to represent an isoschizomer group is the prototype indicated in the data file 'embossre.equ', which is created by the program 'rebaseextract'. If you prefer different prototypes to be used, make a copy of embossre.equ in your home directory and edit it. If this value is set to be false then all of the input enzymes will be reported. You might like to set this to false if you are supplying an explicit set of enzymes rather than searching 'all' of them.</td>
+<td>Limits reports to one isoschizomer</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>
@@ -179,15 +170,7 @@ PpiI</td>
 <tr bgcolor="#FFFFCC">
 <td>-fragments</td>
 <td>boolean</td>
-<td>This gives the fragment lengths of the forward sense strand produced by complete restriction using all of the input enzymes together. Results are added to the tail section of the report.</td>
-<td>Boolean value Yes/No</td>
-<td>No</td>
-</tr>
-
-<tr bgcolor="#FFFFCC">
-<td>-name</td>
-<td>boolean</td>
-<td>Show sequence name</td>
+<td>Show fragment lengths</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
@@ -314,96 +297,16 @@ PpiI</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<th align="left" colspan=5>"-outfile" associated report qualifiers
+<th align="left" colspan=5>"-outfile" associated outfile qualifiers
 </td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td> -rformat2<br>-rformat_outfile</td>
-<td>string</td>
-<td>Report format</td>
-<td>Any string</td>
-<td>table</td>
-</tr>
-
-<tr bgcolor="#FFFFCC">
-<td> -rname2<br>-rname_outfile</td>
-<td>string</td>
-<td>Base file name</td>
-<td>Any string</td>
-<td>&nbsp;</td>
-</tr>
-
-<tr bgcolor="#FFFFCC">
-<td> -rextension2<br>-rextension_outfile</td>
-<td>string</td>
-<td>File name extension</td>
-<td>Any string</td>
-<td>&nbsp;</td>
-</tr>
-
-<tr bgcolor="#FFFFCC">
-<td> -rdirectory2<br>-rdirectory_outfile</td>
+<td> -odirectory3<br>-odirectory_outfile</td>
 <td>string</td>
 <td>Output directory</td>
 <td>Any string</td>
 <td>&nbsp;</td>
-</tr>
-
-<tr bgcolor="#FFFFCC">
-<td> -raccshow2<br>-raccshow_outfile</td>
-<td>boolean</td>
-<td>Show accession number in the report</td>
-<td>Boolean value Yes/No</td>
-<td>N</td>
-</tr>
-
-<tr bgcolor="#FFFFCC">
-<td> -rdesshow2<br>-rdesshow_outfile</td>
-<td>boolean</td>
-<td>Show description in the report</td>
-<td>Boolean value Yes/No</td>
-<td>N</td>
-</tr>
-
-<tr bgcolor="#FFFFCC">
-<td> -rscoreshow2<br>-rscoreshow_outfile</td>
-<td>boolean</td>
-<td>Show the score in the report</td>
-<td>Boolean value Yes/No</td>
-<td>N</td>
-</tr>
-
-<tr bgcolor="#FFFFCC">
-<td> -rstrandshow2<br>-rstrandshow_outfile</td>
-<td>boolean</td>
-<td>Show the nucleotide strand in the report</td>
-<td>Boolean value Yes/No</td>
-<td>Y</td>
-</tr>
-
-<tr bgcolor="#FFFFCC">
-<td> -rusashow2<br>-rusashow_outfile</td>
-<td>boolean</td>
-<td>Show the full USA in the report</td>
-<td>Boolean value Yes/No</td>
-<td>N</td>
-</tr>
-
-<tr bgcolor="#FFFFCC">
-<td> -rmaxall2<br>-rmaxall_outfile</td>
-<td>integer</td>
-<td>Maximum total hits to report</td>
-<td>Any integer value</td>
-<td>0</td>
-</tr>
-
-<tr bgcolor="#FFFFCC">
-<td> -rmaxseq2<br>-rmaxseq_outfile</td>
-<td>integer</td>
-<td>Maximum hits to report for one sequence</td>
-<td>Any integer value</td>
-<td>0</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
