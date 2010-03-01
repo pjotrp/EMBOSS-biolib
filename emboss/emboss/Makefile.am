@@ -16,7 +16,9 @@ endif
 AM_CFLAGS =  $(AIX_CFLAGS) $(WARN_CFLAGS) $(DEVWARN_CFLAGS)
 
 check_PROGRAMS = acdlog acdrelations acdxsd ajtest \
-complex corbatest edamclean ensembltest \
+complex corbatest \
+domtesta domtestb domtestc domtestd \
+edamclean ensembltest \
 entrails entrailsbook entrailshtml entrailswiki histogramtest intconv \
 origsplitter origunion \
 martattributes martdatasets martfilters martquery martregistry \

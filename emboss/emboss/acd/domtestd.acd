@@ -1,0 +1,16 @@
+application: domtestd [
+  documentation: "Create some XML and search for an element"
+  groups: "Edit"
+]
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    information: "Element information file"
+  ]
+
+endsection: output

@@ -1,0 +1,16 @@
+application: domtestb [
+  documentation: "Create, manipulate and write out XML"
+  groups: "Edit"
+]
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    information: "XML output file"
+  ]
+
+endsection: output
