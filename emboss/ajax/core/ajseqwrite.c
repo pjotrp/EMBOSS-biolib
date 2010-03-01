@@ -382,7 +382,7 @@ static SeqOOutFormat seqOutFormat[] =
     {"fitch",      "Fitch program format",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteFitch},
-    {"msf",        "GCG MSF (mutiple sequence file) file format",
+    {"msf",        "GCG MSF (multiple sequence file) file format",
 	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteMsf},
     {"clustal",    "Clustalw multiple alignment format",
@@ -2154,7 +2154,7 @@ static void seqWriteHennig86(AjPSeqout outseq)
 	return;
     
     itest = ajListToarray(outseq->Savelist, (void***) &seqs);
-    ajDebug("ajListToArray listed %d items\n", itest);
+    ajDebug("ajListToarray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
 
     for(i=0; i < isize; i++)
@@ -2265,7 +2265,7 @@ static void seqWriteMega(AjPSeqout outseq)
 /* test for group description only when writing 2+ sequences (a set) */
     
     itest = ajListToarray(outseq->Savelist, (void***) &seqs);
-    ajDebug("ajListToArray listed %u items\n", itest);
+    ajDebug("ajListToarray listed %u items\n", itest);
     seqarr = (AjPSeq*) seqs;
 
     seqfirst = seqarr[0];
@@ -2433,7 +2433,7 @@ static void seqWriteMeganon(AjPSeqout outseq)
 	return;
 
     itest = ajListToarray(outseq->Savelist, (void***) &seqs);
-    ajDebug("ajListToArray listed %d items\n", itest);
+    ajDebug("ajListToarray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
 
     seqfirst = seqarr[0];
@@ -2584,7 +2584,7 @@ static void seqWriteNexus(AjPSeqout outseq)
 	return;
     
     itest = ajListToarray(outseq->Savelist, (void***) &seqs);
-    ajDebug("ajListToArray listed %d items\n", itest);
+    ajDebug("ajListToarray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
 
     for(i=0; i < isize; i++)
@@ -2692,7 +2692,7 @@ static void seqWriteNexusnon(AjPSeqout outseq)
 	return;
 
     itest = ajListToarray(outseq->Savelist, (void***) &seqs);
-    ajDebug("ajListToArray listed %d items\n", itest);
+    ajDebug("ajListToarray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
 
     for(i=0; i < isize; i++)
@@ -2788,7 +2788,7 @@ static void seqWriteJackknifer(AjPSeqout outseq)
 	return;
 
     itest = ajListToarray(outseq->Savelist, (void***) &seqs);
-    ajDebug("ajListToArray listed %d items\n", itest);
+    ajDebug("ajListToarray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
 
     for(i=0; i < isize; i++)
@@ -2866,7 +2866,7 @@ static void seqWriteJackknifernon(AjPSeqout outseq)
 	return;
 
     itest = ajListToarray(outseq->Savelist, (void***) &seqs);
-    ajDebug("ajListToArray listed %d items\n", itest);
+    ajDebug("ajListToarray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
 
     for(i=0; i < isize; i++)
@@ -2947,7 +2947,7 @@ static void seqWriteTreecon(AjPSeqout outseq)
 	return;
 
     itest = ajListToarray(outseq->Savelist, (void***) &seqs);
-    ajDebug("ajListToArray listed %d items\n", itest);
+    ajDebug("ajListToarray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
 
     for(i=0; i < isize; i++)
@@ -3014,7 +3014,7 @@ static void seqWriteClustal(AjPSeqout outseq)
 	return;
     
     itest = ajListToarray(outseq->Savelist, (void***) &seqs);
-    ajDebug("ajListToArray listed %d items\n", itest);
+    ajDebug("ajListToarray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
 
     for(i=0; i < isize; i++)
@@ -3123,7 +3123,7 @@ static void seqWriteSelex(AjPSeqout outseq)
 	return;
     
     test = ajListToarray(outseq->Savelist, (void***) &seqs);
-    ajDebug("ajListToArray listed %d items\n", test);
+    ajDebug("ajListToarray listed %d items\n", test);
     
     
     
@@ -3413,7 +3413,7 @@ static void seqWriteMsf(AjPSeqout outseq)
     
     itest = ajListToarray(outseq->Savelist, (void***) &seqs);
     
-    ajDebug("ajListToArray listed %d items\n", itest);
+    ajDebug("ajListToarray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
     maxnamelen = 10;
 
@@ -6935,7 +6935,7 @@ static void seqWritePhylip(AjPSeqout outseq)
 	return;
     
     itest = ajListToarray(outseq->Savelist, (void***) &seqs);
-    ajDebug("ajListToArray listed %d items\n", itest);
+    ajDebug("ajListToarray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
 
     for(i=0; i < isize; i++)
@@ -7031,7 +7031,7 @@ static void seqWritePhylipnon(AjPSeqout outseq)
 	return;
     
     itest = ajListToarray(outseq->Savelist, (void***) &seqs);
-    ajDebug("ajListToArray listed %d items\n", itest);
+    ajDebug("ajListToarray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
 
     for(i=0; i < isize; i++)

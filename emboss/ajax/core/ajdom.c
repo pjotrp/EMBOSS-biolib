@@ -3784,11 +3784,11 @@ static AjPDomUserdata domUserdataNew(void)
 
 
 
-/* @funcstatic domUserdataNew **********************************************
+/* @funcstatic domUserdataDel **********************************************
 **
-** Create userdata object
+** Destroy userdata object
 **
-** @param [u] thys [const AjPDomUserdata*] Userdata object pointer
+** @param [d] thys [AjPDomUserdata*] Userdata object pointer
 **
 ** @return [void]
 ** @@
@@ -4167,8 +4167,8 @@ static void domExpatXmlDecl(void *udata, const XML_Char *version,
 **
 ** @param [u] udata [void*] Userdata pointer
 ** @param [r] doctypename [const XML_Char*] Doctype name
-** @param [r] sysid [const XML_Char**] Sysid
-** @param [r] pubid [const XML_Char**] Sysid
+** @param [r] sysid [const XML_Char*] Sysid
+** @param [r] pubid [const XML_Char*] Sysid
 ** @param [r] hasinternalsubset [int] Internal subset flag
 **
 ** @return [void]
@@ -4261,7 +4261,7 @@ static void domExpatDoctypeEnd(void *udata)
 **
 ** @param [u] udata [void*] Userdata pointer
 ** @param [r] name [const XML_Char*] Name
-** @param [r] model [XML_Content*] Model
+** @param [d] model [XML_Content*] Model
 **
 ** @return [void]
 ** @@
@@ -4433,7 +4433,7 @@ static void domExpatNotation(void *udata, const XML_Char *notname,
 **
 ** Read XML into memory from a file pointer
 **
-** @param [r] node [AjPDomDocument] document to write
+** @param [u] node [AjPDomDocument] document to write
 ** @param [u] stream [FILE*] stream
 ** @return [ajint] zero OK, negative if error
 ** @@
@@ -4516,7 +4516,7 @@ ajint ajDomReadFp(AjPDomDocument node, FILE *stream)
 **
 ** Read XML into memory from a file pointer
 **
-** @param [r] node [AjPDomDocument] document to write
+** @param [u] node [AjPDomDocument] document to write
 ** @param [u] buff [AjPFilebuff] File buffer
 ** @return [ajint] zero OK, negative if error
 ** @@
@@ -4592,7 +4592,7 @@ ajint ajDomReadFilebuff(AjPDomDocument node, AjPFilebuff buff)
 **
 ** Read XML into memory from a string
 **
-** @param [r] node [AjPDomDocument] document to write
+** @param [u] node [AjPDomDocument] document to write
 ** @param [u] str [AjPStr] XML string
 ** @return [ajint] zero OK, negative if error
 ** @@

@@ -879,7 +879,7 @@ static SeqOInFormat seqInFormatDef[] =
        AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadDbId, AJFALSE, AJFALSE}, /* odd fasta with id as
                                                             second token */
-  {"msf",         "GCG MSF (mutiple sequence file) file format",
+  {"msf",         "GCG MSF (multiple sequence file) file format",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadMsf, AJFALSE, AJFALSE},
   {"hennig86",    "Hennig86 output format",

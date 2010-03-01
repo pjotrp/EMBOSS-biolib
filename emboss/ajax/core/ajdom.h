@@ -209,7 +209,7 @@ typedef struct AjSDomNodeList
 **
 ** @attr Buffer [AjPStr] Utility string
 ** @attr Stack [AjPList] Stack
-** @attr Cdata [ajint] Cdata
+** @attr Cdata [AjBool] Cdata
 **
 ******************************************************************************/
 
