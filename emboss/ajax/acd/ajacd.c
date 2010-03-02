@@ -9413,7 +9413,7 @@ static void acdSetInt(AcdPAcd thys)
     acdLog("maximum: %Ld\n", imax);
     
     acdAttrToBool(thys, "failrange", ajTrue, &failrange);
-    acdLog("warnrange: %B\n", warnrange);
+    acdLog("failrange: %B\n", failrange);
     
     acdAttrToBool(thys, "warnrange", acdDoWarnRange, &warnrange);
     acdLog("warnrange: %B\n", warnrange);
