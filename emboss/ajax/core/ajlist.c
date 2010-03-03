@@ -1598,7 +1598,7 @@ ajuint ajListToindex(const AjPList list, ajuint* lind,
 	for(i=s; i<n; ++i)
         {
 	    for(j=i-s;
-                j>=0 && (sort1(&nodes[idx[j]],&nodes[idx[j+s]]) < 0);
+                j>=0 && (sort1(&nodes[idx[j]],&nodes[idx[j+s]]) > 0);
                 j-=s)
 	    {
 		t = lind[j];
