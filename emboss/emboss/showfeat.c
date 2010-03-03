@@ -396,11 +396,13 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, const AjPSeq seq, ajint beg,
 	    if(!unknown && ajFeatGetStrand(gf) == '\0')
 		continue;
 
+            ajStrSetClear(&tagstmp);
 	    /* check that we want to output this match of source, type */
-	    if(!embMiscMatchPatternDelimC(ajFeatGetSource(gf),
-                                          matchsource,",;|") ||
-	       !showfeat_MatchPatternTags(gf, matchtag, matchvalue,
+	    if(!showfeat_MatchPatternTags(gf, matchtag, matchvalue,
 					  stricttags, &tagstmp, values))
+                continue;
+            if(!embMiscMatchPatternDelimC(ajFeatGetSource(gf),
+                                          matchsource,",;|"))
 		continue;
 
             if(ajStrGetLen(matchtype))
