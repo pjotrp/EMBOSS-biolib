@@ -1579,7 +1579,7 @@ ajuint ajListToindex(const AjPList list, ajuint* lind,
     ajuint t;
 
     AjPListNode rest;
-    AjPListNode *nodes;
+    AjPListNode *nodes = NULL;
     ajuint* idx = NULL;
 
     n = list->Count;
