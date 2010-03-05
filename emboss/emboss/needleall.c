@@ -107,11 +107,11 @@ int main(int argc, char **argv)
     gapopen = ajRoundFloat(gapopen, 8);
     gapextend = ajRoundFloat(gapextend, 8);
 
-    AJCNEW(path, maxarr);
-    AJCNEW(compass, maxarr);
-    AJCNEW(m, maxarr);
-    AJCNEW(ix, maxarr);
-    AJCNEW(iy, maxarr);
+    AJCNEW0(path, maxarr);
+    AJCNEW0(compass, maxarr);
+    AJCNEW0(m, maxarr);
+    AJCNEW0(ix, maxarr);
+    AJCNEW0(iy, maxarr);
 
     alga  = ajStrNew();
     algb  = ajStrNew();
@@ -139,13 +139,21 @@ int main(int argc, char **argv)
             if(len>maxarr)
             {
                 stlen = (size_t) len;
-                AJCRESIZETRY(path,stlen);
-                AJCRESIZETRY(compass,stlen);
-                AJCRESIZETRY(m,stlen);
-                AJCRESIZETRY(ix,stlen);
-                AJCRESIZETRY(iy,stlen);
-                if(!path || !compass || !m || !ix || !iy)
-                    ajDie("Sequences too big.");
+                AJCRESIZETRY0(path,maxarr,stlen);
+                if(!path)
+                    ajDie("Sequences too big, memory allocation failed");
+                AJCRESIZETRY0(compass,maxarr,stlen);
+                if(!compass)
+                    ajDie("Sequences too big, memory allocation failed");
+                AJCRESIZETRY0(m,maxarr,stlen);
+                if(!m)
+                    ajDie("Sequences too big, memory allocation failed");
+                AJCRESIZETRY0(ix,maxarr,stlen);
+                if(!ix)
+                    ajDie("Sequences too big, memory allocation failed");
+                AJCRESIZETRY0(iy,maxarr,stlen);
+                if(!iy)
+                    ajDie("Sequences too big, memory allocation failed");
                 maxarr=len;
             }
 
