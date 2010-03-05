@@ -246,7 +246,7 @@ void* ajMemCallocZero(size_t count, size_t nbytes,
 	if (nofail)
 	    return NULL;
 #ifdef HAVE_JAVA
-	fprintf(stderr,"Memory allocation failed in ajMemCalloc");
+	fprintf(stderr,"Memory allocation failed in ajMemCallocZero");
 	exit(-1);
 #else
 	if(file == NULL)
@@ -463,7 +463,7 @@ void* ajMemResizeZero(void* ptr, size_t oldbytes, size_t nbytes,
 	if (nofail)
 	    return NULL;
 #ifdef HAVE_JAVA
-	fprintf(stderr,"Memory allocation failed in ajMemResize");
+	fprintf(stderr,"Memory allocation failed in ajMemResizeZero");
 	exit(-1);
 #else
 	if(file == NULL)
