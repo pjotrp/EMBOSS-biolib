@@ -20859,7 +20859,7 @@ FP /^BFULL  +7 -----cccgtt      2\n/
 FC = 44
 //
 
-ID align-needle-noendweight
+ID needle-noendweight
 AP needle
 CL -gapopen=8 -gapextend=8 -stdout -datafile=EBLOSUM50 -endweight=no
 IN asis::PAWHEAE
@@ -20878,7 +20878,7 @@ FP /^asis               1 HEAGAWGHEE-     10\n/
 FC = 40
 //
 
-ID align-needle-withendweight
+ID needle-withendweight
 AP needle
 CL -gapopen=8 -gapextend=8 -endopen=8 -endextend=8 -stdout
 CL -datafile=EBLOSUM50 -endweight
@@ -20898,15 +20898,30 @@ FP /^asis               1 HEAGAWGHE-E     10\n/
 FC = 42
 //
 
-ID align-needleall-withendweight
+ID needle-traceback
+AP needle
+CL -auto -stdout -aformat simple -gapextend 1.0
+CL asis::acgtaggtacgttttacgtacgtacgtacgtaaacaggtg
+CL asis::acgtagaacgtacgtacgtacgtacacgcataagcggcag
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +28\/48 \(58\.3%\)/
+FP /^# Score: +94\.0\n/
+FP /^asis +1 acgtaggtacgttttacgtacgtacgtacgtaaac----aggtg----     40\n/
+FP /^asis +1 acgtag--------aacgtacgtacgtacgtacacgcataagcggcag     40\n/
+FC = 39
+//
+
+ID needleall-withendweight
 AP needleall
 CL -auto -stdout -endweight -aformat simple
 CL asis::DVDAKTPIVLISGGVGLTPMVSMLKVALQAPPRQVVFVHGARNSAVHAMRDRLREAAKTYENLDLFV\
 CL FYDQPLPEDVQGRDYDYPGLVDVKQIEKSILLPDADYYICGPIPFMRMQHDALKNLGIHEARIHYEV
 CL asis::RDDEERPMILIAGGTGFSYARSILLTALARNPNRDITIYWGGREEQHLYDLCELEALSLKHPGLQVV\
 CL PVVEQPEAGWRGRTGTVLTAVLQDHGTLAEHDIYIAGRFEMAKIARDLFCSERNAREDRLFGDA
-IN
-IN
 FI needleall.error
 FC = 0
 FP 0 /Warning: /
@@ -20915,20 +20930,18 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +31\/154 \(20\.1%\)/
 FP /^# Score: +62\.5\n/
-FP /^asis +43 ---R-------E-EQH-LYD--LCEL-EALSLKHPGLQVVPVVEQPEAGW     77\n/
+FP /^asis +44|3 ---R|-------E--EQH-LYD--LCEL-EALSLKHPGLQVVPVVEQPEAGW     77\n/
 FP /^asis +95 --K------S-IL----LPDADYYICGPIPFMRMQHDAL-KNLGIHEARI    130\n/
 FC = 51
 //
 
-ID align-needleall-noendweight
+ID needleall-noendweight
 AP needleall
 CL -auto -stdout -noendweight
 CL asis::DVDAKTPIVLISGGVGLTPMVSMLKVALQAPPRQVVFVHGARNSAVHAMRDRLREAAKTYENLDLFV\
 CL FYDQPLPEDVQGRDYDYPGLVDVKQIEKSILLPDADYYICGPIPFMRMQHDALKNLGIHEARIHYEV
 CL asis::RDDEERPMILIAGGTGFSYARSILLTALARNPNRDITIYWGGREEQHLYDLCELEALSLKHPGLQVV\
 CL PVVEQPEAGWRGRTGTVLTAVLQDHGTLAEHDIYIAGRFEMAKIARDLFCSERNAREDRLFGDA
-IN
-IN
 FI needleall.error
 FC = 0
 FP 0 /Warning: /
