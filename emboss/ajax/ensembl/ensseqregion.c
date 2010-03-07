@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -59,7 +59,7 @@ static ajuint seqRegionadaptorCacheSize(const void* value);
 
 static void seqRegionadaptorCacheInsert(void** x, void* cl);
 
-static AjBool seqRegionadaptorFetchAllBySQL(EnsPSeqregionadaptor adaptor,
+static AjBool seqRegionadaptorFetchAllBySQL(EnsPSeqregionadaptor sra,
                                             const AjPStr statement,
                                             AjPList srlist);
 
@@ -79,7 +79,7 @@ static AjBool seqRegionadaptorFetchAllBySQL(EnsPSeqregionadaptor adaptor,
 **
 ** Functions for manipulating Ensembl Sequence Region objects
 **
-** @cc Bio::EnsEMBL::Slice CVS Revision: 1.239
+** @cc Bio::EnsEMBL::Slice CVS Revision: 1.255
 **
 ** @nam2rule Seqregion
 **
@@ -118,7 +118,7 @@ static AjBool seqRegionadaptorFetchAllBySQL(EnsPSeqregionadaptor adaptor,
 ** Default constructor for an Ensembl Sequence Region.
 **
 ** @cc Bio::EnsEMBL::Storable
-** @param [rN] adaptor [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
+** @param [rN] sra [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
 ** @param [rE] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::???
 ** @param [r] cs [EnsPCoordsystem] Ensembl Coordinate System
@@ -129,7 +129,7 @@ static AjBool seqRegionadaptorFetchAllBySQL(EnsPSeqregionadaptor adaptor,
 ** @@
 ******************************************************************************/
 
-EnsPSeqregion ensSeqregionNew(EnsPSeqregionadaptor adaptor,
+EnsPSeqregion ensSeqregionNew(EnsPSeqregionadaptor sra,
                               ajuint identifier,
                               EnsPCoordsystem cs,
                               AjPStr name,
@@ -137,38 +137,31 @@ EnsPSeqregion ensSeqregionNew(EnsPSeqregionadaptor adaptor,
 {
     EnsPSeqregion sr = NULL;
 
-    /*
-     ajDebug("ensSeqregionNew\n"
-	     "  adaptor %p\n"
-	     "  identifier %u\n"
-	     "  cs %p\n"
-	     "  name '%S'\n"
-	     "  length %d\n",
-	     adaptor,
-	     identifier,
-	     name,
-	     cs,
-	     length);
+    if(ajDebugTest("ensSeqregionNew"))
+    {
+        ajDebug("ensSeqregionNew\n"
+                "  sra %p\n"
+                "  identifier %u\n"
+                "  cs %p\n"
+                "  name '%S'\n"
+                "  length %d\n",
+                sra,
+                identifier,
+                name,
+                cs,
+                length);
 
-     ensCoordsystemTrace(cs, 1);
-     */
+        ensCoordsystemTrace(cs, 1);
+    }
 
     if(!cs)
-	return NULL;
-
-    if(!name)
         return NULL;
 
-    if(!ajStrGetLen(name))
+    if(!(name && ajStrGetLen(name)))
         return NULL;
-
-    /*
-    ** FIXME: The length element is currently a signed integer to fit the
-    ** Ensembl Core database schema.
-    */
 
     if(length <= 0)
-	return NULL;
+        return NULL;
 
     AJNEW0(sr);
 
@@ -176,12 +169,12 @@ EnsPSeqregion ensSeqregionNew(EnsPSeqregionadaptor adaptor,
 
     sr->Identifier = identifier;
 
-    sr->Adaptor = adaptor;
+    sr->Adaptor = sra;
 
     sr->Coordsystem = ensCoordsystemNewRef(cs);
 
     if(name)
-	sr->Name = ajStrNewRef(name);
+        sr->Name = ajStrNewRef(name);
 
     sr->Attributes = NULL;
 
@@ -212,7 +205,7 @@ EnsPSeqregion ensSeqregionNewObj(EnsPSeqregion object)
     EnsPSeqregion sr = NULL;
 
     if(!object)
-	return NULL;
+        return NULL;
 
     AJNEW0(sr);
 
@@ -225,27 +218,27 @@ EnsPSeqregion ensSeqregionNewObj(EnsPSeqregion object)
     sr->Coordsystem = ensCoordsystemNewRef(object->Coordsystem);
 
     if(object->Name)
-	sr->Name = ajStrNewRef(object->Name);
+        sr->Name = ajStrNewRef(object->Name);
 
     /* Copy the AJAX List of Ensembl Attributes */
 
     if(object->Attributes && ajListGetLength(object->Attributes))
     {
-	sr->Attributes = ajListNew();
+        sr->Attributes = ajListNew();
 
-	iter = ajListIterNew(object->Attributes);
+        iter = ajListIterNew(object->Attributes);
 
-	while(!ajListIterDone(iter))
-	{
-	    attribute = (EnsPAttribute) ajListIterGet(iter);
+        while(!ajListIterDone(iter))
+        {
+            attribute = (EnsPAttribute) ajListIterGet(iter);
 
-	    ajListPushAppend(sr->Attributes, (void *) attribute);
-	}
+            ajListPushAppend(sr->Attributes, (void *) attribute);
+        }
 
-	ajListIterDel(&iter);
+        ajListIterDel(&iter);
     }
     else
-	sr->Attributes = NULL;
+        sr->Attributes = NULL;
 
     sr->Length = object->Length;
 
@@ -269,7 +262,7 @@ EnsPSeqregion ensSeqregionNewObj(EnsPSeqregion object)
 EnsPSeqregion ensSeqregionNewRef(EnsPSeqregion sr)
 {
     if(!sr)
-	return NULL;
+        return NULL;
 
     sr->Use++;
 
@@ -326,9 +319,9 @@ void ensSeqregionDel(EnsPSeqregion *Psr)
 
     if(pthis->Use)
     {
-	*Psr = NULL;
+        *Psr = NULL;
 
-	return;
+        return;
     }
 
     ensCoordsystemDel(&pthis->Coordsystem);
@@ -338,7 +331,7 @@ void ensSeqregionDel(EnsPSeqregion *Psr)
     /* Clear and delete the AJAX List of Ensembl Attributes. */
 
     while(ajListPop(pthis->Attributes, (void **) &attribute))
-	ensAttributeDel(&attribute);
+        ensAttributeDel(&attribute);
 
     ajListFree(&pthis->Attributes);
 
@@ -509,29 +502,29 @@ const AjPList ensSeqregionGetAttributes(EnsPSeqregion sr)
     EnsPDatabaseadaptor dba = NULL;
 
     if(!sr)
-	return NULL;
+        return NULL;
 
     if(sr->Attributes)
-	return sr->Attributes;
+        return sr->Attributes;
 
     if(!sr->Adaptor)
     {
-	ajDebug("ensSeqregionGetAttributes cannot fetch "
-		"Ensembl Attributes for a Sequence Region without a "
-		"Sequence Region Adaptor.\n");
+        ajDebug("ensSeqregionGetAttributes cannot fetch "
+                "Ensembl Attributes for a Sequence Region without a "
+                "Sequence Region Adaptor.\n");
 
-	return NULL;
+        return NULL;
     }
 
     dba = ensSeqregionadaptorGetDatabaseadaptor(sr->Adaptor);
 
     if(!dba)
     {
-	ajDebug("ensSeqregionGetAttributes cannot fetch "
-		"Ensembl Attributes for a Sequence Region without a "
-		"Database Adaptor set in the Sequence Region Adaptor.\n");
+        ajDebug("ensSeqregionGetAttributes cannot fetch "
+                "Ensembl Attributes for a Sequence Region without a "
+                "Database Adaptor set in the Sequence Region Adaptor.\n");
 
-	return NULL;
+        return NULL;
     }
 
     ata = ensRegistryGetAttributedaptor(dba);
@@ -539,9 +532,9 @@ const AjPList ensSeqregionGetAttributes(EnsPSeqregion sr)
     sr->Attributes = ajListNew();
 
     ensAttributeadaptorFetchAllBySeqregion(ata,
-					   sr,
-					   (const AjPStr) NULL,
-					   sr->Attributes);
+                                           sr,
+                                           (const AjPStr) NULL,
+                                           sr->Attributes);
 
     return sr->Attributes;
 }
@@ -579,18 +572,18 @@ const AjPList ensSeqregionGetAttributes(EnsPSeqregion sr)
 ** Ensembl Sequence Region.
 **
 ** @param [u] sr [EnsPSeqregion] Ensembl Sequence Region
-** @param [r] adaptor [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
+** @param [u] sra [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensSeqregionSetAdaptor(EnsPSeqregion sr, EnsPSeqregionadaptor adaptor)
+AjBool ensSeqregionSetAdaptor(EnsPSeqregion sr, EnsPSeqregionadaptor sra)
 {
-    if(!adaptor)
+    if(!sra)
         return ajFalse;
 
-    sr->Adaptor = adaptor;
+    sr->Adaptor = sra;
 
     return ajTrue;
 }
@@ -668,7 +661,7 @@ AjBool ensSeqregionSetName(EnsPSeqregion sr, AjPStr name)
     ajStrDel(&sr->Name);
 
     if(name)
-	sr->Name = ajStrNewRef(name);
+        sr->Name = ajStrNewRef(name);
 
     return ajTrue;
 }
@@ -714,16 +707,16 @@ AjBool ensSeqregionSetLength(EnsPSeqregion sr, ajint length)
 AjBool ensSeqregionAddAttribute(EnsPSeqregion sr, EnsPAttribute attribute)
 {
     if(!sr)
-	return ajFalse;
+        return ajFalse;
 
     if(!attribute)
-	return ajFalse;
+        return ajFalse;
 
     if(!sr->Attributes)
-	sr->Attributes = ajListNew();
+        sr->Attributes = ajListNew();
 
     ajListPushAppend(sr->Attributes,
-		     (void *) ensAttributeNewRef(attribute));
+                     (void *) ensAttributeNewRef(attribute));
 
     return ajTrue;
 }
@@ -765,28 +758,28 @@ AjBool ensSeqregionTrace(const EnsPSeqregion sr, ajuint level)
     AjPStr indent = NULL;
 
     if(!sr)
-	return ajFalse;
+        return ajFalse;
 
     indent = ajStrNew();
 
     ajStrAppendCountK(&indent, ' ', level * 2);
 
     ajDebug("%SensSeqregionTrace %p\n"
-	    "%S  Use %u\n"
-	    "%S  Identifier %u\n"
-	    "%S  Adaptor %p\n"
-	    "%S  Coordsystem %p\n"
-	    "%S  Name '%S'\n"
-	    "%S  Attributes %p\n"
-	    "%S  Length %u\n",
-	    indent, sr,
-	    indent, sr->Use,
-	    indent, sr->Identifier,
-	    indent, sr->Adaptor,
-	    indent, sr->Coordsystem,
-	    indent, sr->Name,
-	    indent, sr->Attributes,
-	    indent, sr->Length);
+            "%S  Use %u\n"
+            "%S  Identifier %u\n"
+            "%S  Adaptor %p\n"
+            "%S  Coordsystem %p\n"
+            "%S  Name '%S'\n"
+            "%S  Attributes %p\n"
+            "%S  Length %u\n",
+            indent, sr,
+            indent, sr->Use,
+            indent, sr->Identifier,
+            indent, sr->Adaptor,
+            indent, sr->Coordsystem,
+            indent, sr->Name,
+            indent, sr->Attributes,
+            indent, sr->Length);
 
     ensCoordsystemTrace(sr->Coordsystem, level + 1);
 
@@ -817,7 +810,7 @@ ajuint ensSeqregionGetMemSize(const EnsPSeqregion sr)
     EnsPAttribute attribute = NULL;
 
     if(!sr)
-	return 0;
+        return 0;
 
     size += (ajuint) sizeof (EnsOSeqregion);
 
@@ -825,23 +818,23 @@ ajuint ensSeqregionGetMemSize(const EnsPSeqregion sr)
 
     if(sr->Name)
     {
-	size += (ajuint) sizeof (AjOStr);
+        size += (ajuint) sizeof (AjOStr);
 
-	size += ajStrGetRes(sr->Name);
+        size += ajStrGetRes(sr->Name);
     }
 
     if(sr->Attributes)
     {
-	iter = ajListIterNewread(sr->Attributes);
+        iter = ajListIterNewread(sr->Attributes);
 
-	while(!ajListIterDone(iter))
-	{
-	    attribute = (EnsPAttribute) ajListIterGet(iter);
+        while(!ajListIterDone(iter))
+        {
+            attribute = (EnsPAttribute) ajListIterGet(iter);
 
-	    size += ensAttributeGetMemSize(attribute);
-	}
+            size += ensAttributeGetMemSize(attribute);
+        }
 
-	ajListIterDel(&iter);
+        ajListIterDel(&iter);
     }
 
     return size;
@@ -867,28 +860,28 @@ ajuint ensSeqregionGetMemSize(const EnsPSeqregion sr)
 AjBool ensSeqregionMatch(const EnsPSeqregion sr1, const EnsPSeqregion sr2)
 {
     if(!sr1)
-	return ajFalse;
+        return ajFalse;
 
     if(!sr2)
-	return ajFalse;
+        return ajFalse;
 
     if(sr1 == sr2)
-	return ajTrue;
+        return ajTrue;
 
     /* Compare identifiers only if they have been set. */
 
     if(sr1->Identifier && sr2->Identifier &&
-	(sr1->Identifier != sr2->Identifier))
-	return ajFalse;
+       (sr1->Identifier != sr2->Identifier))
+        return ajFalse;
 
     if(!ensCoordsystemMatch(sr1->Coordsystem, sr2->Coordsystem))
-	return ajFalse;
+        return ajFalse;
 
     if(!ajStrMatchS(sr1->Name, sr2->Name))
-	return ajFalse;
+        return ajFalse;
 
     if(sr1->Length != sr2->Length)
-	return ajFalse;
+        return ajFalse;
 
     return ajTrue;
 }
@@ -922,10 +915,10 @@ AjBool ensSeqregionFetchAllAttributes(EnsPSeqregion sr,
     EnsPAttribute attribute = NULL;
 
     if(!sr)
-	return ajFalse;
+        return ajFalse;
 
     if(!attributes)
-	return ajFalse;
+        return ajFalse;
 
     list = ensSeqregionGetAttributes(sr);
 
@@ -933,21 +926,21 @@ AjBool ensSeqregionFetchAllAttributes(EnsPSeqregion sr,
 
     while(!ajListIterDone(iter))
     {
-	attribute = (EnsPAttribute) ajListIterGet(iter);
+        attribute = (EnsPAttribute) ajListIterGet(iter);
 
-	if(code)
-	{
-	    if(ajStrMatchCaseS(code, ensAttributeGetCode(attribute)))
-		match = ajTrue;
-	    else
-		match = ajFalse;
-	}
-	else
-	    match = ajTrue;
+        if(code)
+        {
+            if(ajStrMatchCaseS(code, ensAttributeGetCode(attribute)))
+                match = ajTrue;
+            else
+                match = ajFalse;
+        }
+        else
+            match = ajTrue;
 
-	if(match)
-	    ajListPushAppend(attributes,
-			     (void *) ensAttributeNewRef(attribute));
+        if(match)
+            ajListPushAppend(attributes,
+                             (void *) ensAttributeNewRef(attribute));
     }
 
     ajListIterDel(&iter);
@@ -980,7 +973,7 @@ AjBool ensSeqregionIsTopLevel(EnsPSeqregion sr)
     EnsPAttribute attribute = NULL;
 
     if(!sr)
-	return ajFalse;
+        return ajFalse;
 
     list = ensSeqregionGetAttributes(sr);
 
@@ -988,14 +981,14 @@ AjBool ensSeqregionIsTopLevel(EnsPSeqregion sr)
 
     while(!ajListIterDone(iter))
     {
-	attribute = ajListIterGet(iter);
+        attribute = ajListIterGet(iter);
 
-	if(ajStrMatchC(ensAttributeGetCode(attribute), "toplevel"))
-	{
-	    value = ajTrue;
+        if(ajStrMatchC(ensAttributeGetCode(attribute), "toplevel"))
+        {
+            value = ajTrue;
 
-	    break;
-	}
+            break;
+        }
     }
 
     ajListIterDel(&iter);
@@ -1010,7 +1003,7 @@ AjBool ensSeqregionIsTopLevel(EnsPSeqregion sr)
 **
 ** Functions for manipulating Ensembl Sequence Region Adaptor objects
 **
-** @cc Bio::EnsEMBL::DBSQL::Sliceadaptor CVS Revision: 1.104
+** @cc Bio::EnsEMBL::DBSQL::Sliceadaptor CVS Revision: 1.107
 **
 ** @nam2rule Seqregionadaptor
 **
@@ -1043,7 +1036,7 @@ static ajuint seqRegionadaptorCacheMaxSize = 0;
 static void* seqRegionadaptorCacheReference(void *value)
 {
     if(!value)
-	return NULL;
+        return NULL;
 
     return (void *) ensSeqregionNewRef((EnsPSeqregion) value);
 }
@@ -1074,7 +1067,7 @@ static void seqRegionadaptorCacheDelete(void **value)
     EnsPSeqregion *Psr  = NULL;
 
     if(!value)
-	return;
+        return;
 
     /*
     ** Synchronise the deletion of this Sequence Region from the
@@ -1086,31 +1079,31 @@ static void seqRegionadaptorCacheDelete(void **value)
     Psr = (EnsPSeqregion *) value;
 
     if(!*Psr)
-	return;
+        return;
 
     if((*Psr)->Adaptor && (*Psr)->Adaptor->CacheByName)
     {
-	/* Remove from the name cache. */
+        /* Remove from the name cache. */
 
-	newkey =
-	ajFmtStr("%u:%S",
-		 ensCoordsystemGetIdentifier((*Psr)->Coordsystem),
-		 (*Psr)->Name);
+        newkey =
+            ajFmtStr("%u:%S",
+                     ensCoordsystemGetIdentifier((*Psr)->Coordsystem),
+                     (*Psr)->Name);
 
-	oldsr = (EnsPSeqregion)
-	    ajTableRemoveKey((*Psr)->Adaptor->CacheByName,
-			     (const void *) newkey,
-			     (void **) &oldkey);
+        oldsr = (EnsPSeqregion)
+            ajTableRemoveKey((*Psr)->Adaptor->CacheByName,
+                             (const void *) newkey,
+                             (void **) &oldkey);
 
-	/* Delete the old and new key data. */
+        /* Delete the old and new key data. */
 
-	ajStrDel(&oldkey);
+        ajStrDel(&oldkey);
 
-	ajStrDel(&newkey);
+        ajStrDel(&newkey);
 
-	/* Delete the value data. */
+        /* Delete the value data. */
 
-	ensSeqregionDel(&oldsr);
+        ensSeqregionDel(&oldsr);
     }
 
     ensSeqregionDel(Psr);
@@ -1134,7 +1127,7 @@ static void seqRegionadaptorCacheDelete(void **value)
 static ajuint seqRegionadaptorCacheSize(const void* value)
 {
     if(!value)
-	return 0;
+        return 0;
 
     return ensSeqregionGetMemSize((const EnsPSeqregion) value);
 }
@@ -1176,37 +1169,36 @@ static ajuint seqRegionadaptorCacheSize(const void* value)
 
 EnsPSeqregionadaptor ensSeqregionadaptorNew(EnsPDatabaseadaptor dba)
 {
-    EnsPSeqregionadaptor adaptor = NULL;
+    EnsPSeqregionadaptor sra = NULL;
 
-    /*
-     ajDebug("ensSeqregionadaptorNew\n"
-	     "  dba %p\n",
-	     dba);
-     */
+    if(ajDebugTest("ensSeqregionadaptorNew"))
+        ajDebug("ensSeqregionadaptorNew\n"
+                "  dba %p\n",
+                dba);
 
     if(!dba)
-	return NULL;
+        return NULL;
 
-    AJNEW0(adaptor);
+    AJNEW0(sra);
 
-    adaptor->Adaptor = dba;
+    sra->Adaptor = dba;
 
-    adaptor->CacheByIdentifier =
-	ensCacheNew(ensECacheTypeNumeric,
-		    seqRegionadaptorCacheMaxBytes,
-		    seqRegionadaptorCacheMaxCount,
-		    seqRegionadaptorCacheMaxSize,
-		    seqRegionadaptorCacheReference,
-		    seqRegionadaptorCacheDelete,
-		    seqRegionadaptorCacheSize,
-		    (void* (*)(const void* key)) NULL, /* Fread */
-		    (AjBool (*)(const void* value)) NULL, /* Fwrite */
-		    ajFalse,
-		    "Sequence Region");
+    sra->CacheByIdentifier = ensCacheNew(
+        ensECacheTypeNumeric,
+        seqRegionadaptorCacheMaxBytes,
+        seqRegionadaptorCacheMaxCount,
+        seqRegionadaptorCacheMaxSize,
+        seqRegionadaptorCacheReference,
+        seqRegionadaptorCacheDelete,
+        seqRegionadaptorCacheSize,
+        (void* (*)(const void* key)) NULL,
+        (AjBool (*)(const void* value)) NULL,
+        ajFalse,
+        "Sequence Region");
 
-    adaptor->CacheByName = ajTablestrNewLen(0);
+    sra->CacheByName = ajTablestrNewLen(0);
 
-    return adaptor;
+    return sra;
 }
 
 
@@ -1222,8 +1214,8 @@ EnsPSeqregionadaptor ensSeqregionadaptorNew(EnsPDatabaseadaptor dba)
 **
 ** @nam3rule Del Destroy (free) an Ensembl Sequence Region Adaptor object
 **
-** @argrule * Padaptor [EnsPSeqregionadaptor*] Ensembl Sequence Region Adaptor
-**                                            object address
+** @argrule * Psra [EnsPSeqregionadaptor*] Ensembl Sequence Region Adaptor
+**                                         object address
 **
 ** @valrule * [void]
 **
@@ -1237,30 +1229,29 @@ EnsPSeqregionadaptor ensSeqregionadaptorNew(EnsPDatabaseadaptor dba)
 **
 ** Default destructor for an Ensembl Sequence Region Adaptor.
 **
-** @param [d] Padaptor [EnsPSeqregionadaptor*] Ensembl Sequence Region Adaptor
-**                                             address
+** @param [d] Psra [EnsPSeqregionadaptor*] Ensembl Sequence Region Adaptor
+**                                         address
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ensSeqregionadaptorDel(EnsPSeqregionadaptor *Padaptor)
+void ensSeqregionadaptorDel(EnsPSeqregionadaptor *Psra)
 {
     EnsPSeqregionadaptor pthis = NULL;
 
-    if(!Padaptor)
-	return;
+    if(!Psra)
+        return;
 
-    if(!*Padaptor)
-	return;
+    if(!*Psra)
+        return;
 
-    pthis = *Padaptor;
+    if(ajDebugTest("ensSeqregionadaptorDel"))
+        ajDebug("ensSeqregionadaptorDel\n"
+                "  *Psra %p\n",
+                *Psra);
 
-    /*
-     ajDebug("ensSeqregionadaptorDel\n"
-	     "  *Padaptor %p\n",
-	     *Padaptor);
-     */
+    pthis = *Psra;
 
     /*
     ** Clear the identifier cache, which is based on an Ensembl LRU Cache.
@@ -1274,7 +1265,7 @@ void ensSeqregionadaptorDel(EnsPSeqregionadaptor *Padaptor)
 
     AJFREE(pthis);
 
-    *Padaptor = NULL;
+    *Psra = NULL;
 
     return;
 }
@@ -1293,8 +1284,7 @@ void ensSeqregionadaptorDel(EnsPSeqregionadaptor *Padaptor)
 ** @nam3rule Get Return Ensembl Sequence Region Adaptor attribute(s)
 ** @nam4rule GetDatabaseadaptor Return the Ensembl Database Adaptor
 **
-** @argrule * adaptor [const EnsPSeqregionadaptor] Ensembl Sequence
-**                                                 Region Adaptor
+** @argrule * sra [const EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
 **
 ** @valrule Databaseadaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
@@ -1309,19 +1299,19 @@ void ensSeqregionadaptorDel(EnsPSeqregionadaptor *Padaptor)
 ** Get the Ensembl Database Adaptor element of an
 ** Ensembl Sequence Region Adaptor.
 **
-** @param [r] adaptor [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
+** @param [r] sra [const EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
 **
 ** @return [EnsPDatabaseadaptor] Ensembl Database Adaptor or NULL
 ** @@
 ******************************************************************************/
 
 EnsPDatabaseadaptor ensSeqregionadaptorGetDatabaseadaptor(
-    EnsPSeqregionadaptor adaptor)
+    const EnsPSeqregionadaptor sra)
 {
-    if(!adaptor)
-	return NULL;
+    if(!sra)
+        return NULL;
 
-    return adaptor->Adaptor;
+    return sra->Adaptor;
 }
 
 
@@ -1332,14 +1322,14 @@ EnsPDatabaseadaptor ensSeqregionadaptorGetDatabaseadaptor(
 ** Insert an Ensembl Sequence Region into the Sequence Region Adaptor-internal
 ** cache.
 **
-** @param [u] adaptor [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
+** @param [u] sra [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
 ** @param [wP] Psr [EnsPSeqregion *] Ensembl Sequence Region address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensSeqregionadaptorCacheInsert(EnsPSeqregionadaptor adaptor,
+AjBool ensSeqregionadaptorCacheInsert(EnsPSeqregionadaptor sra,
                                       EnsPSeqregion *Psr)
 {
     ajuint *Pid = NULL;
@@ -1349,24 +1339,25 @@ AjBool ensSeqregionadaptorCacheInsert(EnsPSeqregionadaptor adaptor,
     EnsPSeqregion sr1 = NULL;
     EnsPSeqregion sr2 = NULL;
 
-    if(!adaptor)
-	return ajFalse;
+    if(!sra)
+        return ajFalse;
 
     if(!Psr)
-	return ajFalse;
+        return ajFalse;
 
     if(!*Psr)
-	return ajFalse;
+        return ajFalse;
 
-    /*
-     ajDebug("seqRegionadaptorCacheInsert\n"
-	     "  adaptor %p\n"
-	     "  *Psr %p\n",
-	     adaptor,
-	     *Psr);
+    if(ajDebugTest("ensSeqregionadaptorCacheInsert"))
+    {
+        ajDebug("seqRegionadaptorCacheInsert\n"
+                "  sra %p\n"
+                "  *Psr %p\n",
+                sra,
+                *Psr);
 
-     ensSeqregionTrace(*Psr, 1);
-     */
+        ensSeqregionTrace(*Psr, 1);
+    }
 
     /* Search the identifer cache. */
 
@@ -1374,61 +1365,59 @@ AjBool ensSeqregionadaptorCacheInsert(EnsPSeqregionadaptor adaptor,
 
     *Pid = (*Psr)->Identifier;
 
-    sr1 = (EnsPSeqregion)
-	ensCacheFetch(adaptor->CacheByIdentifier, (void *) Pid);
+    sr1 = (EnsPSeqregion) ensCacheFetch(sra->CacheByIdentifier, (void *) Pid);
 
     /* Search the name cache. */
 
     key = ajFmtStr("%u:%S",
-		   ensCoordsystemGetIdentifier((*Psr)->Coordsystem),
-		   (*Psr)->Name);
+                   ensCoordsystemGetIdentifier((*Psr)->Coordsystem),
+                   (*Psr)->Name);
 
-    sr2 = (EnsPSeqregion)
-	ajTableFetch(adaptor->CacheByName, (const void *) key);
+    sr2 = (EnsPSeqregion) ajTableFetch(sra->CacheByName, (const void *) key);
 
     if((!sr1) && (!sr2))
     {
-	/*
-	** None of the caches returned an identical Ensembl Sequence Region
-	** so add this one to both caches. The Ensembl LRU Cache automatically
-	** references the Sequence Region via the
-	** seqRegionadaptorCacheReference function, while the AJAX Table-
-	** based cache needs manual referencing.
-	*/
+        /*
+        ** None of the caches returned an identical Ensembl Sequence Region
+        ** so add this one to both caches. The Ensembl LRU Cache automatically
+        ** references the Sequence Region via the
+        ** seqRegionadaptorCacheReference function, while the AJAX Table-
+        ** based cache needs manual referencing.
+        */
 
-	ensCacheStore(adaptor->CacheByIdentifier,
-		      (void *) Pid,
-		      (void **) Psr);
+        ensCacheStore(sra->CacheByIdentifier,
+                      (void *) Pid,
+                      (void **) Psr);
 
-	ajTablePut(adaptor->CacheByName,
-		   (void *) ajStrNewS(key),
-		   (void *) ensSeqregionNewRef(*Psr));
+        ajTablePut(sra->CacheByName,
+                   (void *) ajStrNewS(key),
+                   (void *) ensSeqregionNewRef(*Psr));
     }
 
     if(sr1 && sr2 && (sr1 == sr2))
     {
-	/*
-	** Both caches returned the same Ensembl Sequence Region so delete
-	** it and return the address of the one already in the cache.
-	*/
+        /*
+        ** Both caches returned the same Ensembl Sequence Region so delete
+        ** it and return the address of the one already in the cache.
+        */
 
-	ensSeqregionDel(Psr);
+        ensSeqregionDel(Psr);
 
-	*Psr = ensSeqregionNewRef(sr2);
+        *Psr = ensSeqregionNewRef(sr2);
     }
 
     if(sr1 && sr2 && (sr1 != sr2))
-	ajDebug("ensSeqregionadaptorCacheInsert detected Sequence Regions in "
-		"the identifier and name cache with identical "
-		"Coordinate System identifiers and names "
-		"('%u:%S' and '%u:%S') but differnt addresses "
-		"(%p and %p).\n",
-		ensCoordsystemGetIdentifier(sr1->Coordsystem),
-		sr1->Name,
-		ensCoordsystemGetIdentifier(sr2->Coordsystem),
-		sr2->Name,
-		sr1,
-		sr2);
+        ajDebug("ensSeqregionadaptorCacheInsert detected Sequence Regions in "
+                "the identifier and name cache with identical "
+                "Coordinate System identifiers and names "
+                "('%u:%S' and '%u:%S') but differnt addresses "
+                "(%p and %p).\n",
+                ensCoordsystemGetIdentifier(sr1->Coordsystem),
+                sr1->Name,
+                ensCoordsystemGetIdentifier(sr2->Coordsystem),
+                sr2->Name,
+                sr1,
+                sr2);
 
     if(sr1 && (!sr2))
         ajDebug("ensSeqregionadaptorCacheInsert detected a Sequence Region in "
@@ -1467,13 +1456,13 @@ AjBool ensSeqregionadaptorCacheInsert(EnsPSeqregionadaptor adaptor,
 static void seqRegionadaptorCacheInsert(void** x, void* cl)
 {
     if(!x)
-	return;
+        return;
 
     if(!cl)
-	return;
+        return;
 
     ensSeqregionadaptorCacheInsert((EnsPSeqregionadaptor) cl,
-				   (EnsPSeqregion *) x);
+                                   (EnsPSeqregion *) x);
 
     return;
 }
@@ -1486,7 +1475,7 @@ static void seqRegionadaptorCacheInsert(void** x, void* cl)
 ** Remove an Ensembl Sequence Region from an Ensembl Sequence Region
 ** Adaptor-internal cache.
 **
-** @param [u] adaptor [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
+** @param [u] sra [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
 ** @param [r] sr [const EnsPSeqregion] Ensembl Sequence Region
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -1496,17 +1485,17 @@ static void seqRegionadaptorCacheInsert(void** x, void* cl)
 ** recently used Ensembl Sequence Regions.
 ******************************************************************************/
 
-AjBool ensSeqregionadaptorCacheRemove(EnsPSeqregionadaptor adaptor,
+AjBool ensSeqregionadaptorCacheRemove(EnsPSeqregionadaptor sra,
                                       const EnsPSeqregion sr)
 {
-    if(!adaptor)
-	return ajFalse;
+    if(!sra)
+        return ajFalse;
 
     if(!sr)
-	return ajFalse;
+        return ajFalse;
 
-    ensCacheRemove(adaptor->CacheByIdentifier,
-		   (const void *) &(sr->Identifier));
+    ensCacheRemove(sra->CacheByIdentifier,
+                   (const void *) &(sr->Identifier));
 
     return ajTrue;
 }
@@ -1529,8 +1518,7 @@ AjBool ensSeqregionadaptorCacheRemove(EnsPSeqregionadaptor adaptor,
 ** @nam4rule FetchBy Retrieve one Ensembl Sequence Region object
 **                   matching a criterion
 **
-** @argrule * adaptor [const EnsPSeqregionadaptor] Ensembl Sequence
-**                                                 Region Adaptor
+** @argrule * sra [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
 ** @argrule FetchAll [AjPList] AJAX List of Ensembl Sequence Region objects
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -1548,7 +1536,7 @@ AjBool ensSeqregionadaptorCacheRemove(EnsPSeqregionadaptor adaptor,
 ** The caller is responsible for deleting the Ensembl Sequence Regions before
 ** deleting the AJAX List.
 **
-** @param [r] adaptor [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
+** @param [r] sra [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
 ** @param [u] srlist [AjPList] AJAX List of Ensembl Sequence Regions
 **
@@ -1556,7 +1544,7 @@ AjBool ensSeqregionadaptorCacheRemove(EnsPSeqregionadaptor adaptor,
 ** @@
 ******************************************************************************/
 
-static AjBool seqRegionadaptorFetchAllBySQL(EnsPSeqregionadaptor adaptor,
+static AjBool seqRegionadaptorFetchAllBySQL(EnsPSeqregionadaptor sra,
                                             const AjPStr statement,
                                             AjPList srlist)
 {
@@ -1576,7 +1564,7 @@ static AjBool seqRegionadaptorFetchAllBySQL(EnsPSeqregionadaptor adaptor,
 
     EnsPSeqregion sr = NULL;
 
-    if(!adaptor)
+    if(!sra)
         return ajFalse;
 
     if(!statement)
@@ -1585,18 +1573,18 @@ static AjBool seqRegionadaptorFetchAllBySQL(EnsPSeqregionadaptor adaptor,
     if(!srlist)
         return ajFalse;
 
-    csa = ensRegistryGetCoordsystemadaptor(adaptor->Adaptor);
+    csa = ensRegistryGetCoordsystemadaptor(sra->Adaptor);
 
-    sqls = ensDatabaseadaptorSqlstatementNew(adaptor->Adaptor, statement);
+    sqls = ensDatabaseadaptorSqlstatementNew(sra->Adaptor, statement);
 
     sqli = ajSqlrowiterNew(sqls);
 
     while(!ajSqlrowiterDone(sqli))
     {
-	srid   = 0;
-	name   = ajStrNew();
-	csid   = 0;
-	length = 0;
+        srid   = 0;
+        name   = ajStrNew();
+        csid   = 0;
+        length = 0;
 
         sqlr = ajSqlrowiterGet(sqli);
 
@@ -1605,28 +1593,28 @@ static AjBool seqRegionadaptorFetchAllBySQL(EnsPSeqregionadaptor adaptor,
         ajSqlcolumnToUint(sqlr, &csid);
         ajSqlcolumnToInt(sqlr, &length);
 
-	ensCoordsystemadaptorFetchByIdentifier(csa, csid, &cs);
+        ensCoordsystemadaptorFetchByIdentifier(csa, csid, &cs);
 
-	if(!cs)
-	{
-	    ajDebug("seqRegionadaptorFetchAllBySQL got an "
-		    "Ensembl Sequence Region with identifier %u that "
-		    "references a non-existent Ensembl Coordinate System "
-		    "with identifier %u.", srid, csid);
+        if(!cs)
+        {
+            ajDebug("seqRegionadaptorFetchAllBySQL got an "
+                    "Ensembl Sequence Region with identifier %u that "
+                    "references a non-existent Ensembl Coordinate System "
+                    "with identifier %u.", srid, csid);
 
-	    ajWarn("seqRegionadaptorFetchAllBySQL got an "
-		   "Ensembl Sequence Region with identifier %u that "
-		   "references a non-existent Ensembl Coordinate System "
-		   "with identifier %u.", srid, csid);
-	}
+            ajWarn("seqRegionadaptorFetchAllBySQL got an "
+                   "Ensembl Sequence Region with identifier %u that "
+                   "references a non-existent Ensembl Coordinate System "
+                   "with identifier %u.", srid, csid);
+        }
 
-        sr = ensSeqregionNew(adaptor, srid, cs, name, length);
+        sr = ensSeqregionNew(sra, srid, cs, name, length);
 
         ajListPushAppend(srlist, (void *) sr);
 
-	ensCoordsystemDel(&cs);
+        ensCoordsystemDel(&cs);
 
-	ajStrDel(&name);
+        ajStrDel(&name);
     }
 
     ajSqlrowiterDel(&sqli);
@@ -1644,7 +1632,7 @@ static AjBool seqRegionadaptorFetchAllBySQL(EnsPSeqregionadaptor adaptor,
 ** Fetch an Ensembl Sequence Region by its SQL database-internal identifier.
 ** The caller is responsible for deleting the Ensembl Sequence Region.
 **
-** @param [u] adaptor [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
+** @param [u] sra [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @param [wP] Psr [EnsPSeqregion *] Ensembl Sequence Region address
 **
@@ -1652,7 +1640,7 @@ static AjBool seqRegionadaptorFetchAllBySQL(EnsPSeqregionadaptor adaptor,
 ** @@
 ******************************************************************************/
 
-AjBool ensSeqregionadaptorFetchByIdentifier(EnsPSeqregionadaptor adaptor,
+AjBool ensSeqregionadaptorFetchByIdentifier(EnsPSeqregionadaptor sra,
                                             ajuint identifier,
                                             EnsPSeqregion *Psr)
 {
@@ -1660,14 +1648,14 @@ AjBool ensSeqregionadaptorFetchByIdentifier(EnsPSeqregionadaptor adaptor,
 
     AjPStr statement = NULL;
 
-    if(!adaptor)
-	return ajFalse;
+    if(!sra)
+        return ajFalse;
 
     if(!identifier)
-	return ajFalse;
+        return ajFalse;
 
     if(!Psr)
-	return ajFalse;
+        return ajFalse;
 
     /*
     ** Initially, query the identifier cache.
@@ -1675,53 +1663,53 @@ AjBool ensSeqregionadaptorFetchByIdentifier(EnsPSeqregionadaptor adaptor,
     ** returned object.
     */
 
-    *Psr = (EnsPSeqregion) ensCacheFetch(adaptor->CacheByIdentifier,
-					 (void *) &identifier);
+    *Psr = (EnsPSeqregion) ensCacheFetch(sra->CacheByIdentifier,
+                                         (void *) &identifier);
 
     if(*Psr)
-	return ajTrue;
+        return ajTrue;
 
     /* Query the database in case no object was returned. */
 
     statement = ajFmtStr("SELECT "
-			 "seq_region.seq_region_id, "
-			 "seq_region.name, "
-			 "seq_region.coord_system_id, "
-			 "seq_region.length "
-			 "FROM "
-			 "seq_region "
-			 "WHERE "
-			 "seq_region.seq_region_id = %u",
-			 identifier);
+                         "seq_region.seq_region_id, "
+                         "seq_region.name, "
+                         "seq_region.coord_system_id, "
+                         "seq_region.length "
+                         "FROM "
+                         "seq_region "
+                         "WHERE "
+                         "seq_region.seq_region_id = %u",
+                         identifier);
 
     srlist = ajListNew();
 
-    seqRegionadaptorFetchAllBySQL(adaptor, statement, srlist);
+    seqRegionadaptorFetchAllBySQL(sra, statement, srlist);
 
     if(ajListGetLength(srlist) == 0)
-	ajDebug("ensSeqregionadaptorFetchByIdentifier got no "
-		"Ensembl Sequence Region for identifier %u.\n",
-		identifier);
+        ajDebug("ensSeqregionadaptorFetchByIdentifier got no "
+                "Ensembl Sequence Region for identifier %u.\n",
+                identifier);
     else if(ajListGetLength(srlist) == 1)
     {
-	ajListPop(srlist, (void **) Psr);
+        ajListPop(srlist, (void **) Psr);
 
-	ensSeqregionadaptorCacheInsert(adaptor, Psr);
+        ensSeqregionadaptorCacheInsert(sra, Psr);
     }
     else if(ajListGetLength(srlist) > 1)
     {
-	ajDebug("ensSeqregionadaptorFetchByIdentifier got more than one "
-		"Ensembl Sequence Region for identifier %u.\n",
-		identifier);
+        ajDebug("ensSeqregionadaptorFetchByIdentifier got more than one "
+                "Ensembl Sequence Region for identifier %u.\n",
+                identifier);
 
-	ajWarn("ensSeqregionadaptorFetchByIdentifier got more than one "
-	       "Ensembl Sequence Region for identifier %u.\n",
-	       identifier);
+        ajWarn("ensSeqregionadaptorFetchByIdentifier got more than one "
+               "Ensembl Sequence Region for identifier %u.\n",
+               identifier);
 
-	while(ajListPop(srlist, (void **) Psr))
-	    ensSeqregionDel(Psr);
+        while(ajListPop(srlist, (void **) Psr))
+            ensSeqregionDel(Psr);
 
-	Psr = (EnsPSeqregion *) NULL;
+        Psr = (EnsPSeqregion *) NULL;
     }
 
     ajListFree(&srlist);
@@ -1742,7 +1730,7 @@ AjBool ensSeqregionadaptorFetchByIdentifier(EnsPSeqregionadaptor adaptor,
 ** The caller is responsible for deleting the Ensembl Sequence Region.
 **
 ** @cc  Bio::EnsEMBL::DBSQL::Sliceadaptor::fetch_by_region
-** @param [u] adaptor [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
+** @param [u] sra [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
 ** @param [rN] cs [const EnsPCoordsystem] Ensembl Coordinate System
 ** @param [r] name [const AjPStr] Name
 ** @param [wP] Psr [EnsPSeqregion *] Ensembl Sequence Region address
@@ -1751,7 +1739,7 @@ AjBool ensSeqregionadaptorFetchByIdentifier(EnsPSeqregionadaptor adaptor,
 ** @@
 ******************************************************************************/
 
-AjBool ensSeqregionadaptorFetchByName(EnsPSeqregionadaptor adaptor,
+AjBool ensSeqregionadaptorFetchByName(EnsPSeqregionadaptor sra,
                                       const EnsPCoordsystem cs,
                                       const AjPStr name,
                                       EnsPSeqregion *Psr)
@@ -1765,26 +1753,25 @@ AjBool ensSeqregionadaptorFetchByName(EnsPSeqregionadaptor adaptor,
 
     EnsPSeqregion sr = NULL;
 
-    /*
-     ajDebug("ensSeqregionadaptorFetchByName\n"
-	     "  adaptor %p\n"
-	     "  cs %p\n"
-	     "  name '%S'\n"
-	     "  Psr %p",
-	     adaptor,
-	     cs,
-	     name,
-	     Psr);
-     */
+    if(ajDebugTest("ensSeqregionadaptorFetchByName"))
+        ajDebug("ensSeqregionadaptorFetchByName\n"
+                "  sra %p\n"
+                "  cs %p\n"
+                "  name '%S'\n"
+                "  Psr %p",
+                sra,
+                cs,
+                name,
+                Psr);
 
-    if(!adaptor)
-	return ajFalse;
+    if(!sra)
+        return ajFalse;
 
     if(!(name && ajStrGetLen(name)))
-	return ajFalse;
+        return ajFalse;
 
     if(!Psr)
-	return ajFalse;
+        return ajFalse;
 
     /*
     ** Initally, search the name cache, which can only return a Sequence Region
@@ -1801,19 +1788,18 @@ AjBool ensSeqregionadaptorFetchByName(EnsPSeqregionadaptor adaptor,
 
     key = ajFmtStr("%u:%S", ensCoordsystemGetIdentifier(cs), name);
 
-    *Psr = (EnsPSeqregion)
-	ajTableFetch(adaptor->CacheByName, (const void *) key);
+    *Psr = (EnsPSeqregion) ajTableFetch(sra->CacheByName, (const void *) key);
 
     ajStrDel(&key);
 
     if(*Psr)
     {
-	ensSeqregionNewRef(*Psr);
+        ensSeqregionNewRef(*Psr);
 
-	return ajTrue;
+        return ajTrue;
     }
 
-    ensDatabaseadaptorEscapeC(adaptor->Adaptor, &txtname, name);
+    ensDatabaseadaptorEscapeC(sra->Adaptor, &txtname, name);
 
     /*
     ** For top-level Coordinate Systems or in case no particular
@@ -1822,46 +1808,46 @@ AjBool ensSeqregionadaptorFetchByName(EnsPSeqregionadaptor adaptor,
     */
 
     if((!cs) || ensCoordsystemIsTopLevel(cs))
-	statement = ajFmtStr("SELECT "
-			     "seq_region.seq_region_id, "
-			     "seq_region.name, "
-			     "seq_region.coord_system_id, "
-			     "seq_region.length "
-			     "FROM "
-			     "coord_system, "
-			     "seq_region "
-			     "WHERE "
-			     "coord_system.species_id = %u "
-			     "AND "
-			     "coord_system.coord_system_id = "
-			     "seq_region.coord_system_id "
-			     "AND "
-			     "seq_region.name = '%s' "
-			     "ORDER BY "
-			     "coord_system.rank "
-			     "ASC",
-			     ensDatabaseadaptorGetIdentifier(adaptor->Adaptor),
-			     txtname);
+        statement = ajFmtStr("SELECT "
+                             "seq_region.seq_region_id, "
+                             "seq_region.name, "
+                             "seq_region.coord_system_id, "
+                             "seq_region.length "
+                             "FROM "
+                             "coord_system, "
+                             "seq_region "
+                             "WHERE "
+                             "coord_system.species_id = %u "
+                             "AND "
+                             "coord_system.coord_system_id = "
+                             "seq_region.coord_system_id "
+                             "AND "
+                             "seq_region.name = '%s' "
+                             "ORDER BY "
+                             "coord_system.rank "
+                             "ASC",
+                             ensDatabaseadaptorGetIdentifier(sra->Adaptor),
+                             txtname);
     else
-	statement = ajFmtStr("SELECT "
-			     "seq_region.seq_region_id, "
-			     "seq_region.name, "
-			     "seq_region.coord_system_id, "
-			     "seq_region.length "
-			     "FROM "
-			     "seq_region "
-			     "WHERE "
-			     "seq_region.coord_system_id = %u "
-			     "AND "
-			     "seq_region.name = '%s'",
-			     ensCoordsystemGetIdentifier(cs),
-			     txtname);
+        statement = ajFmtStr("SELECT "
+                             "seq_region.seq_region_id, "
+                             "seq_region.name, "
+                             "seq_region.coord_system_id, "
+                             "seq_region.length "
+                             "FROM "
+                             "seq_region "
+                             "WHERE "
+                             "seq_region.coord_system_id = %u "
+                             "AND "
+                             "seq_region.name = '%s'",
+                             ensCoordsystemGetIdentifier(cs),
+                             txtname);
 
     ajCharDel(&txtname);
 
     srlist = ajListNew();
 
-    seqRegionadaptorFetchAllBySQL(adaptor, statement, srlist);
+    seqRegionadaptorFetchAllBySQL(sra, statement, srlist);
 
     ajStrDel(&statement);
 
@@ -1874,9 +1860,9 @@ AjBool ensSeqregionadaptorFetchByName(EnsPSeqregionadaptor adaptor,
     */
 
     if(ajListGetLength(srlist) > 1)
-	ajDebug("ensSeqregionadaptorFetchByName got more than one "
-		"Ensembl Sequence Region for name '%S' and "
-		"selected the one with the lowest rank.\n", name);
+        ajDebug("ensSeqregionadaptorFetchByName got more than one "
+                "Ensembl Sequence Region for name '%S' and "
+                "selected the one with the lowest rank.\n", name);
 
     /*
     ** Keep only the first Sequence Region, which is associated with the
@@ -1885,13 +1871,13 @@ AjBool ensSeqregionadaptorFetchByName(EnsPSeqregionadaptor adaptor,
 
     ajListPop(srlist, (void **) Psr);
 
-    ensSeqregionadaptorCacheInsert(adaptor, Psr);
+    ensSeqregionadaptorCacheInsert(sra, Psr);
 
     while(ajListPop(srlist, (void **) &sr))
     {
-	ensSeqregionadaptorCacheInsert(adaptor, &sr);
+        ensSeqregionadaptorCacheInsert(sra, &sr);
 
-	ensSeqregionDel(&sr);
+        ensSeqregionDel(&sr);
     }
 
     ajListFree(&srlist);
@@ -1912,7 +1898,7 @@ AjBool ensSeqregionadaptorFetchByName(EnsPSeqregionadaptor adaptor,
 ** The caller is responsible for deleting the Ensembl Sequence Region.
 **
 ** @cc  Bio::EnsEMBL::DBSQL::Sliceadaptor::fetch_by_region
-** @param [u] adaptor [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
+** @param [u] sra [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
 ** @param [rN] cs [const EnsPCoordsystem] Ensembl Coordinate System
 ** @param [r] name [const AjPStr] Name
 ** @param [wP] Psr [EnsPSeqregion *] Ensembl Sequence Region address
@@ -1921,7 +1907,7 @@ AjBool ensSeqregionadaptorFetchByName(EnsPSeqregionadaptor adaptor,
 ** @@
 ******************************************************************************/
 
-AjBool ensSeqregionadaptorFetchByNameFuzzy(EnsPSeqregionadaptor adaptor,
+AjBool ensSeqregionadaptorFetchByNameFuzzy(EnsPSeqregionadaptor sra,
                                            const EnsPCoordsystem cs,
                                            const AjPStr name,
                                            EnsPSeqregion *Psr)
@@ -1950,33 +1936,32 @@ AjBool ensSeqregionadaptorFetchByNameFuzzy(EnsPSeqregionadaptor adaptor,
     EnsPSeqregion sr    = NULL;
     EnsPSeqregion maxsr = NULL;
 
-    /*
-     ajDebug("ensSeqregionadaptorFetchByNameFuzzy\n"
-	     "  adaptor %p\n"
-	     "  cs %p\n"
-	     "  name '%S'\n"
-	     "  Psr %p",
-	     adaptor,
-	     cs,
-	     name,
-	     Psr);
-     */
+    if(ajDebugTest("ensSeqregionadaptorFetchByNameFuzzy"))
+        ajDebug("ensSeqregionadaptorFetchByNameFuzzy\n"
+                "  sra %p\n"
+                "  cs %p\n"
+                "  name '%S'\n"
+                "  Psr %p",
+                sra,
+                cs,
+                name,
+                Psr);
 
-    if(!adaptor)
-	return ajFalse;
+    if(!sra)
+        return ajFalse;
 
     if(!(name && ajStrGetLen(name)))
     {
-	ajDebug("ensSeqregionadaptorFetchByNameFuzzy requires a "
-		"Sequence Region name.\n");
+        ajDebug("ensSeqregionadaptorFetchByNameFuzzy requires a "
+                "Sequence Region name.\n");
 
-	return ajFalse;
+        return ajFalse;
     }
 
     if(!Psr)
-	return ajFalse;
+        return ajFalse;
 
-    ensDatabaseadaptorEscapeC(adaptor->Adaptor, &txtname, name);
+    ensDatabaseadaptorEscapeC(sra->Adaptor, &txtname, name);
 
     /*
     ** For top-level Coordinate Systems or in case no particular
@@ -1985,46 +1970,46 @@ AjBool ensSeqregionadaptorFetchByNameFuzzy(EnsPSeqregionadaptor adaptor,
     */
 
     if((!cs) || ensCoordsystemIsTopLevel(cs))
-	statement = ajFmtStr("SELECT "
-			     "seq_region.seq_region_id, "
-			     "seq_region.name, "
-			     "seq_region.coord_system_id, "
-			     "seq_region.length "
-			     "FROM "
-			     "coord_system, "
-			     "seq_region "
-			     "WHERE "
-			     "coord_system.species_id = %u "
-			     "AND "
-			     "coord_system.coord_system_id = "
-			     "seq_region.coord_system "
-			     "AND "
-			     "seq_region.name LIKE '%s%%' "
-			     "ORDER BY "
-			     "coord_system.rank "
-			     "ASC",
-			     ensDatabaseadaptorGetIdentifier(adaptor->Adaptor),
-			     txtname);
+        statement = ajFmtStr("SELECT "
+                             "seq_region.seq_region_id, "
+                             "seq_region.name, "
+                             "seq_region.coord_system_id, "
+                             "seq_region.length "
+                             "FROM "
+                             "coord_system, "
+                             "seq_region "
+                             "WHERE "
+                             "coord_system.species_id = %u "
+                             "AND "
+                             "coord_system.coord_system_id = "
+                             "seq_region.coord_system "
+                             "AND "
+                             "seq_region.name LIKE '%s%%' "
+                             "ORDER BY "
+                             "coord_system.rank "
+                             "ASC",
+                             ensDatabaseadaptorGetIdentifier(sra->Adaptor),
+                             txtname);
     else
-	statement = ajFmtStr("SELECT "
-			     "seq_region.seq_region_id, "
-			     "seq_region.name, "
-			     "seq_region.coord_system_id, "
-			     "seq_region.length "
-			     "FROM "
-			     "seq_region "
-			     "WHERE "
-			     "seq_region.coord_system_id = %u "
-			     "AND "
-			     "seq_region.name LIKE '%s%%'",
-			     ensCoordsystemGetIdentifier(cs),
-			     txtname);
+        statement = ajFmtStr("SELECT "
+                             "seq_region.seq_region_id, "
+                             "seq_region.name, "
+                             "seq_region.coord_system_id, "
+                             "seq_region.length "
+                             "FROM "
+                             "seq_region "
+                             "WHERE "
+                             "seq_region.coord_system_id = %u "
+                             "AND "
+                             "seq_region.name LIKE '%s%%'",
+                             ensCoordsystemGetIdentifier(cs),
+                             txtname);
 
     ajCharDel(&txtname);
 
     srlist = ajListNew();
 
-    seqRegionadaptorFetchAllBySQL(adaptor, statement, srlist);
+    seqRegionadaptorFetchAllBySQL(sra, statement, srlist);
 
     ajStrDel(&statement);
 
@@ -2036,29 +2021,29 @@ AjBool ensSeqregionadaptorFetchByNameFuzzy(EnsPSeqregionadaptor adaptor,
 
     while(ajListPop(srlist, (void **) &sr))
     {
-	/*
-	** Add all Ensembl Sequence Regions into the
-	** Ensembl Sequence Region Adaptor-internal cache.
-	*/
+        /*
+        ** Add all Ensembl Sequence Regions into the
+        ** Ensembl Sequence Region Adaptor-internal cache.
+        */
 
-	ensSeqregionadaptorCacheInsert(adaptor, &sr);
+        ensSeqregionadaptorCacheInsert(sra, &sr);
 
-	/* Prioritise Sequence Regions which names match completely. */
+        /* Prioritise Sequence Regions which names match completely. */
 
-	if(ajStrMatchS(ensSeqregionGetName(sr), name))
-	    ajListPushAppend(complete, (void *) sr);
-	else if(ajStrPrefixS(ensSeqregionGetName(sr), name))
-	    ajListPushAppend(partial, (void *) sr);
-	else
-	{
-	    ajDebug("ensSeqregionadaptorFetchByNameFuzzy got a "
-		    "Sequence Region, which name '%S' does not start "
-		    "with the name '%S' that was provided.\n",
-		    ensSeqregionGetName(sr),
-		    name);
+        if(ajStrMatchS(ensSeqregionGetName(sr), name))
+            ajListPushAppend(complete, (void *) sr);
+        else if(ajStrPrefixS(ensSeqregionGetName(sr), name))
+            ajListPushAppend(partial, (void *) sr);
+        else
+        {
+            ajDebug("ensSeqregionadaptorFetchByNameFuzzy got a "
+                    "Sequence Region, which name '%S' does not start "
+                    "with the name '%S' that was provided.\n",
+                    ensSeqregionGetName(sr),
+                    name);
 
-	    ensSeqregionDel(&sr);
-	}
+            ensSeqregionDel(&sr);
+        }
     }
 
     ajListFree(&srlist);
@@ -2069,87 +2054,87 @@ AjBool ensSeqregionadaptorFetchByNameFuzzy(EnsPSeqregionadaptor adaptor,
     */
 
     if(ajListGetLength(complete))
-	ajListPop(complete, (void **) Psr);
+        ajListPop(complete, (void **) Psr);
     else
     {
-	tmpstr = ajStrNew();
+        tmpstr = ajStrNew();
 
-	tmpverstr = ajStrNew();
+        tmpverstr = ajStrNew();
 
-	expression = ajRegCompC("^\\.([0-9]+)$");
+        expression = ajRegCompC("^\\.([0-9]+)$");
 
-	while(ajListPop(partial, (void **) &sr))
-	{
-	    /* Get the sub-string with the non-matching suffix. */
+        while(ajListPop(partial, (void **) &sr))
+        {
+            /* Get the sub-string with the non-matching suffix. */
 
-	    ajStrAssignSubS(&tmpstr,
-			    ensSeqregionGetName(sr),
-			    ajStrGetLen(name),
-			    ajStrGetLen(ensSeqregionGetName(sr)));
+            ajStrAssignSubS(&tmpstr,
+                            ensSeqregionGetName(sr),
+                            ajStrGetLen(name),
+                            ajStrGetLen(ensSeqregionGetName(sr)));
 
-	    if(ajRegExec(expression, tmpstr))
-	    {
-		/*
-		** Find the Sequence Region with the highest sequence
-		** version and the highest Coordinate System rank.
-		*/
+            if(ajRegExec(expression, tmpstr))
+            {
+                /*
+                ** Find the Sequence Region with the highest sequence
+                ** version and the highest Coordinate System rank.
+                */
 
-		i = 0;
+                i = 0;
 
-		while(ajRegSubI(expression, i, &tmpverstr))
-		{
-		    ajStrToInt(tmpverstr, (ajint *) &tmpvernum);
+                while(ajRegSubI(expression, i, &tmpverstr))
+                {
+                    ajStrToInt(tmpverstr, (ajint *) &tmpvernum);
 
-		    tmpcsrank = ensCoordsystemGetRank(sr->Coordsystem);
+                    tmpcsrank = ensCoordsystemGetRank(sr->Coordsystem);
 
-		    if((!maxvernum) ||
-			(tmpvernum > maxvernum) ||
-			((tmpvernum == maxvernum) && (tmpcsrank < maxcsrank)))
-		    {
-			maxcsrank = tmpcsrank;
+                    if((!maxvernum) ||
+                       (tmpvernum > maxvernum) ||
+                       ((tmpvernum == maxvernum) && (tmpcsrank < maxcsrank)))
+                    {
+                        maxcsrank = tmpcsrank;
 
-			maxvernum = tmpvernum;
+                        maxvernum = tmpvernum;
 
-			ensSeqregionDel(&maxsr);
+                        ensSeqregionDel(&maxsr);
 
-			maxsr = sr;
-		    }
-		    else
-			ensSeqregionDel(&sr);
+                        maxsr = sr;
+                    }
+                    else
+                        ensSeqregionDel(&sr);
 
-		    i++;
-		}
-	    }
-	    else
-		ensSeqregionDel(&sr);
-	}
+                    i++;
+                }
+            }
+            else
+                ensSeqregionDel(&sr);
+        }
 
-	ajRegFree(&expression);
+        ajRegFree(&expression);
 
-	ajStrDel(&tmpverstr);
-	ajStrDel(&tmpstr);
+        ajStrDel(&tmpverstr);
+        ajStrDel(&tmpstr);
 
-	*Psr = maxsr;
+        *Psr = maxsr;
     }
 
     /* Delete all remaining Sequence Regions before deleting the AJAX Lists. */
 
     while(ajListPop(complete, (void **) &sr))
-	ensSeqregionDel(&sr);
+        ensSeqregionDel(&sr);
 
     ajListFree(&complete);
 
     while(ajListPop(partial, (void **) &sr))
-	ensSeqregionDel(&sr);
+        ensSeqregionDel(&sr);
 
     ajListFree(&partial);
 
     if(reslen > 1)
-	ajWarn("ensSeqregionadaptorFetchByNameFuzzy returned more than one "
-	       "Ensembl Sequence Region. "
-	       "You might want to check whether the returned "
-	       "Ensembl Sequence Region '%S' is the one you intended to "
-	       "fetch '%S'.\n", ensSeqregionGetName(*Psr), name);
+        ajWarn("ensSeqregionadaptorFetchByNameFuzzy returned more than one "
+               "Ensembl Sequence Region. "
+               "You might want to check whether the returned "
+               "Ensembl Sequence Region '%S' is the one you intended to "
+               "fetch '%S'.\n", ensSeqregionGetName(*Psr), name);
 
     return ajTrue;
 }
@@ -2163,7 +2148,7 @@ AjBool ensSeqregionadaptorFetchByNameFuzzy(EnsPSeqregionadaptor adaptor,
 ** The caller is responsible for deleting the Ensembl Sequence Regions before
 ** deleting the AJAX List.
 **
-** @param [u] adaptor [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
+** @param [u] sra [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
 ** @param [r] cs [const EnsPCoordsystem] Ensembl Coordinate System
 ** @param [u] srlist [AjPList] AJAX List of Ensembl Sequence Regions
 **
@@ -2171,65 +2156,65 @@ AjBool ensSeqregionadaptorFetchByNameFuzzy(EnsPSeqregionadaptor adaptor,
 ** @@
 ******************************************************************************/
 
-AjBool ensSeqregionadaptorFetchAllByCoordsystem(EnsPSeqregionadaptor adaptor,
+AjBool ensSeqregionadaptorFetchAllByCoordsystem(EnsPSeqregionadaptor sra,
                                                 const EnsPCoordsystem cs,
                                                 AjPList srlist)
 {
     AjPStr statement = NULL;
 
-    if(!adaptor)
-	return ajFalse;
+    if(!sra)
+        return ajFalse;
 
     if(!cs)
-	return ajFalse;
+        return ajFalse;
 
     if(!srlist)
-	return ajFalse;
+        return ajFalse;
 
     if(ensCoordsystemIsTopLevel(cs))
-	statement = ajFmtStr("SELECT "
-			     "seq_region.seq_region_id, "
-			     "seq_region.name, "
-			     "seq_region.coord_system_id, "
-			     "seq_region.length "
-			     "FROM "
-			     "attrib_type, "
-			     "seq_region_attrib, "
-			     "seq_region, "
-			     "coord_system "
-			     "WHERE "
-			     "attrib_type.code = 'toplevel' "
-			     "AND "
-			     "attrib_type.attrib_type_id = "
-			     "seq_region_attrib.attrib_type_id "
-			     "AND "
-			     "seq_region_attrib.seq_region_id = "
-			     "seq_region.seq_region_id "
-			     "AND "
-			     "seq_region.coord_system_id = "
-			     "coord_system.coord_system_id "
-			     "AND "
-			     "coord_system.species_id = %u",
-			     ensDatabaseadaptorGetIdentifier(adaptor->Adaptor));
+        statement = ajFmtStr("SELECT "
+                             "seq_region.seq_region_id, "
+                             "seq_region.name, "
+                             "seq_region.coord_system_id, "
+                             "seq_region.length "
+                             "FROM "
+                             "attrib_type, "
+                             "seq_region_attrib, "
+                             "seq_region, "
+                             "coord_system "
+                             "WHERE "
+                             "attrib_type.code = 'toplevel' "
+                             "AND "
+                             "attrib_type.attrib_type_id = "
+                             "seq_region_attrib.attrib_type_id "
+                             "AND "
+                             "seq_region_attrib.seq_region_id = "
+                             "seq_region.seq_region_id "
+                             "AND "
+                             "seq_region.coord_system_id = "
+                             "coord_system.coord_system_id "
+                             "AND "
+                             "coord_system.species_id = %u",
+                             ensDatabaseadaptorGetIdentifier(sra->Adaptor));
     else
-	statement = ajFmtStr("SELECT "
-			     "seq_region.seq_region_id, "
-			     "seq_region.name, "
-			     "seq_region.coord_system_id, "
-			     "seq_region.length "
-			     "FROM "
-			     "seq_region "
-			     "WHERE "
-			     "coord_system_id = %u",
-			     ensCoordsystemGetIdentifier(cs));
+        statement = ajFmtStr("SELECT "
+                             "seq_region.seq_region_id, "
+                             "seq_region.name, "
+                             "seq_region.coord_system_id, "
+                             "seq_region.length "
+                             "FROM "
+                             "seq_region "
+                             "WHERE "
+                             "coord_system_id = %u",
+                             ensCoordsystemGetIdentifier(cs));
 
-    seqRegionadaptorFetchAllBySQL(adaptor, statement, srlist);
+    seqRegionadaptorFetchAllBySQL(sra, statement, srlist);
 
     ajStrDel(&statement);
 
     /* Insert all Sequence Regions into the adaptor-internal cache. */
 
-    ajListMap(srlist, seqRegionadaptorCacheInsert, (void *) adaptor);
+    ajListMap(srlist, seqRegionadaptorCacheInsert, (void *) sra);
 
     return ajTrue;
 }
