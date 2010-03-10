@@ -10,7 +10,9 @@ INCLUDES = -I../../../nucleus -I../../../ajax/pcre -I../../../ajax/expat \
 	-I../../../ajax/ajaxdb -I../../../ajax/acd \
 	-I../../../plplot
 else
-INCLUDES = -I${embprefix}/include -I${embprefix}/include/eplplot
+INCLUDES = -I${embprefix}/include -I${embprefix}/include/eplplot \
+	-I${embprefix}/include/ezlib -I${embprefix}/include/eexpat \
+	-I${embprefix}/include/epcre
 endif
 
 if ISSHARED

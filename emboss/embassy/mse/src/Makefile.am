@@ -9,7 +9,8 @@ INCLUDES = -I../h \
 	-I../../../ajax/acd -I../../../plplot
 else
 INCLUDES = -I../h -I${embprefix}/include \
-	-I${embprefix}/include/eplplot
+	-I${embprefix}/include/eplplot 	-I${embprefix}/include/epcre \
+	-I${embprefix}/include/ezlib -I${embprefix}/include/eexpat
 endif
 
 if ISSHARED

@@ -27,7 +27,9 @@ INCLUDES = -IINCLUDE \
 	-I../../../ajax/acd -I../../../plplot
 else
 INCLUDES = -IINCLUDE -I${embprefix}/include \
-	-I${embprefix}/include/eplplot
+	-I${embprefix}/include/eplplot \
+	-I${embprefix}/include/ezlib -I${embprefix}/include/eexpat \
+	-I${embprefix}/include/epcre
 endif
 
 if ISSHARED

@@ -22,7 +22,9 @@ INCLUDES = -I../H -I../../../nucleus -I../../../ajax/pcre \
 	-I../../../ajax/ensembl -I../../../ajax/ajaxdb \
 	-I../../../ajax/acd -I../../../plplot
 else
-INCLUDES = -I../H -I${embprefix}/include -I${embprefix}/include/eplplot
+INCLUDES = -I../H -I${embprefix}/include -I${embprefix}/include/eplplot \
+	-I${embprefix}/include/ezlib -I${embprefix}/include/eexpat \
+	-I${embprefix}/include/epcre
 endif
 
 if ISSHARED
