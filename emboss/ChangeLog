@@ -1,4 +1,7 @@
 Version 6.3.0 15-Jul-2010
+	pcre, expat & zlib include files now install to separate
+	subdirectories.
+
 	Showfeat failed to sort features with 'join' locations. The
 	sorting is corrected. A future internal change will improve
 	feature sorting in all cases.
