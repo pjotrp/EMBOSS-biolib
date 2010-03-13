@@ -57,7 +57,7 @@ AjBool ensGenericassemblymapperSetMaxPairCount(EnsPGenericassemblymapper gam,
 
 AjBool ensGenericassemblymapperRegisterAssembled(EnsPGenericassemblymapper gam,
                                                  ajuint asmsrid,
-                                                 ajuint chunkid);
+                                                 ajint chunkid);
 
 AjBool ensGenericassemblymapperRegisterComponent(EnsPGenericassemblymapper gam,
                                                  ajuint cmpsrid);
@@ -65,7 +65,7 @@ AjBool ensGenericassemblymapperRegisterComponent(EnsPGenericassemblymapper gam,
 AjBool ensGenericassemblymapperHaveRegisteredAssembled(
     const EnsPGenericassemblymapper gam,
     ajuint asmsrid,
-    ajuint chunkid);
+    ajint chunkid);
 
 AjBool ensGenericassemblymapperHaveRegisteredComponent(
     const EnsPGenericassemblymapper gam,
@@ -298,7 +298,7 @@ ensChainedassemblymapperGetTargetCoordsystem(cam)
 #define MENSCHAINEDASSEMBLYMAPPERGETMAPPER(cam) \
 ensChainedassemblymapperGetSourceTargetMapper(cam)
 
-#endif
+#endif /* ensassemblymapper_h */
 
 #ifdef __cplusplus
 }
