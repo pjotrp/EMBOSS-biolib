@@ -36,7 +36,6 @@ int main(int argc, char **argv)
     AjPSeqin seqin  = NULL;
     AjPMartquery mq = NULL;
     AjPMartquery pmq = NULL;
-    AjPMartLoc locs = NULL;
     AjPMartFilter filt = NULL;
     
     AjPStr dataset = NULL;

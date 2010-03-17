@@ -35,10 +35,7 @@ int main(int argc, char **argv)
 {
     AjPSeqin seqin  = NULL;
     AjPMartquery mq = NULL;
-    AjPMartquery pmq = NULL;
-    AjPMartLoc locs = NULL;
-    AjPMartAttribute att = NULL;
-    
+
     AjPStr dataset = NULL;
     AjPStr host    = NULL;
     AjPStr path    = NULL;
@@ -50,7 +47,6 @@ int main(int argc, char **argv)
     AjPFile outf = NULL;
     ajint iport = 0;
 
-    ajuint i;
     AjPStr line   = NULL;
     
     
