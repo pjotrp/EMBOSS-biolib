@@ -234,6 +234,7 @@ typedef struct AjSMartqinfo
 ** @attr Dataset [AjPMartDataset] Mart datasets
 ** @attr Atts [AjPMartAttribute] Mart attributes
 ** @attr Filters [AjPMartFilter] Mart filters
+** @attr Config [AjPDomDocument] Configuration Information
 ** @attr Regport [ajuint] Registry host URL port
 ** @attr Martport [ajuint] Mart host URL port
 ** @attr Padding [char[4]] Padding to alignment boundary
@@ -252,6 +253,7 @@ typedef struct AjSMartquery
     AjPMartDataset Dataset;
     AjPMartAttribute Atts;
     AjPMartFilter Filters;
+    AjPDomDocument Config;
     ajuint Regport;
     ajuint Martport;
 /*    char Padding[4]; */
@@ -296,6 +298,8 @@ AjBool ajMartdatasetParse(AjPSeqin seqin);
 
 AjBool ajMartGetAttributes(AjPSeqin seqin, const AjPStr dataset);
 AjBool ajMartattributesParse(AjPSeqin seqin);
+AjBool ajMartGetAttributesSchema(AjPSeqin seqin, const AjPStr dataset,
+                                 const AjPStr schema);
 
 AjBool ajMartGetFilters(AjPSeqin seqin, const AjPStr dataset);
 AjBool ajMartfiltersParse(AjPSeqin seqin);
@@ -356,6 +360,10 @@ void ajMartSetQueryDatasetName(AjPMartqinfo qinfo, const AjPStr name,
                                ajuint idx);
 void ajMartSetQueryDatasetInterfaceC(AjPMartqinfo qinfo, const char *iface,
                                      ajuint idx);
+
+AjBool ajMartGetConfiguration(AjPSeqin seqin, const AjPStr dataset);
+AjBool ajMartconfigurationParse(AjPSeqin seqin);
+AjBool ajMartattributesPageSort(AjPSeqin seqin);
 
 
 

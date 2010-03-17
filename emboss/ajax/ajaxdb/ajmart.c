@@ -88,6 +88,9 @@ static AjBool martMatchAttribute(AjPStr name, AjPMartAttribute atts);
 static AjBool martMatchFilter(AjPStr name, AjPMartFilter filts);
 
 static const char *martGetVirtualSchema(const AjPStr dataset);
+static void martSpacesToHex(AjPStr *s);
+static int martAttributePageCompar(const void *a, const void *b);
+
 
 
 
@@ -104,6 +107,28 @@ static const char *martGetVirtualSchema(const AjPStr dataset);
 
 static const char *dataset_schemas[] =
 {
+    "dna",     "dictyMart",
+    "est",     "dictyMart",
+    "gene",    "dictyMart",
+    "dictygo", "dictyMart",
+    "COSMIC46", "cosmic",
+    "hm27_variation_yri", "rel27_NCBI_Build36",
+    "hm27_variation_tsi", "rel27_NCBI_Build36",
+    "hm27_gene",          "rel27_NCBI_Build36",
+    "hm27_variation_chd", "rel27_NCBI_Build36",
+    "hm27_variation",     "rel27_NCBI_Build36",
+    "hm27_variation_chb", "rel27_NCBI_Build36",
+    "hm27_variation_ceu", "rel27_NCBI_Build36",
+    "hm27_variation_asw", "rel27_NCBI_Build36",
+    "hm27_variation_mkk", "rel27_NCBI_Build36",
+    "hm27_variation_lwk", "rel27_NCBI_Build36",
+    "hm27_encode",        "rel27_NCBI_Build36",
+    "hm27_variation_jpt", "rel27_NCBI_Build36",
+    "hm27_variation_mex", "rel27_NCBI_Build36",
+    "hm27_variation_gih", "rel27_NCBI_Build36",
+    "phytozome_structure", "zome_mart",
+    "phytozome", "zome_mart",
+    "phytozome_clusters", "zome_mart",
     NULL, NULL
 };
     
@@ -129,7 +154,7 @@ static const char *martGetVirtualSchema(const AjPStr dataset)
     i = 0;
     while(dataset_schemas[i])
     {
-        if(ajStrMatchC(dataset,dataset_schemas[i+1]))
+        if(ajStrMatchC(dataset,dataset_schemas[i]))
         {
             ret = dataset_schemas[i+1];
             break;
@@ -167,6 +192,8 @@ AjPMartquery ajMartqueryNew(void)
     ret->Dataset = ajMartDatasetNew();
     ret->Atts    = ajMartAttributeNew();
     ret->Filters = ajMartFilterNew();
+
+    ret->Config = NULL;
     
     ret->Regport  =  80;
     ret->Martport  = 80;
@@ -201,6 +228,9 @@ void ajMartqueryDel(AjPMartquery *thys)
     ajMartDatasetDel(&pthis->Dataset);
     ajMartAttributeDel(&pthis->Atts);
     ajMartFilterDel(&pthis->Filters);
+
+    if(pthis->Config)
+        ajDomDocumentDestroyNode(pthis->Config,pthis->Config);
     
     ajStrDel(&pthis->Reghost);
     ajStrDel(&pthis->Regpath);
@@ -942,10 +972,10 @@ AjBool ajMartGetRegistry(AjPSeqin seqin)
     ajSeqHttpVersion(qry, &httpver);
 
     if(ajSeqHttpProxy(qry, &proxyport, &proxyname))
-        ajFmtPrintS(&get, "GET http://%S:%d%S?type=registry HTTP=%S",
+        ajFmtPrintS(&get, "GET http://%S:%d%S?type=registry HTTP/%S\r\n",
                     mq->Reghost, mq->Regport, mq->Regpath, httpver);
     else
-        ajFmtPrintS(&get, "GET %S?type=registry HTTP=%S", mq->Regpath, httpver);
+        ajFmtPrintS(&get, "GET %S?type=registry HTTP/%S\r\n", mq->Regpath, httpver);
 
 
     if(ajStrGetLen(proxyname))
@@ -1059,13 +1089,14 @@ AjBool ajMartGetDatasets(AjPSeqin seqin, const AjPStr mart)
 {
     AjPTable marttab = NULL;
 
-    AjPStr khost = NULL;
-    AjPStr kpath = NULL;
-    AjPStr kport = NULL;
-    AjPStr host  = NULL;
-    AjPStr path  = NULL;
-    AjPStr port  = NULL;
-
+    AjPStr spmart = NULL;
+    AjPStr khost  = NULL;
+    AjPStr kpath  = NULL;
+    AjPStr kport  = NULL;
+    AjPStr host   = NULL;
+    AjPStr path   = NULL;
+    AjPStr port   = NULL;
+    
     ajuint iport    = 0;
     ajint proxyport = 0;
     
@@ -1075,7 +1106,7 @@ AjBool ajMartGetDatasets(AjPSeqin seqin, const AjPStr mart)
 
     AjPMartquery mq = NULL;
     AjPSeqQuery qry = NULL;
-
+    
     FILE *fp = NULL;
     
     
@@ -1137,19 +1168,24 @@ AjBool ajMartGetDatasets(AjPSeqin seqin, const AjPStr mart)
     httpver   = ajStrNew();
     proxyname = ajStrNew();
     get       = ajStrNew();
-
+    spmart    = ajStrNew();
+    
     
     ajSeqHttpVersion(qry, &httpver);
 
+    ajStrAssignS(&spmart,mart);
+    martSpacesToHex(&spmart);
 
     if(ajSeqHttpProxy(qry, &proxyport, &proxyname))
-        ajFmtPrintS(&get, "GET http://%S:%S%S?type=datasets&mart=%S HTTP=%S",
-                    host, port, path, mart, httpver);
+        ajFmtPrintS(&get, "GET http://%S:%S%S?type=datasets&mart=%S "
+                    "HTTP/%S\r\n",
+                    host, port, path, spmart, httpver);
     else
-        ajFmtPrintS(&get, "GET %S?type=datasets&mart=%S HTTP=%S", path, mart,
-                    httpver);
+    ajFmtPrintS(&get, "GET %S?type=datasets&mart=%S HTTP/%S\r\n", path, spmart,
+                httpver);
 
-
+    ajStrDel(&spmart);
+    
     if(ajStrGetLen(proxyname))
         fp = ajSeqHttpGetProxy(qry, proxyname, proxyport,
                                host, iport, get);
@@ -1319,6 +1355,50 @@ static void martTablePush(AjPTable table, const char *name,
 
 
 
+/* @funcstatic martSpacesToHex ****************************************
+**
+** Replace any spaces in a string with %20
+**
+** @param [u] s [AjPStr*] String
+** @return [void]
+******************************************************************************/
+
+static void martSpacesToHex(AjPStr *s)
+{
+    AjPStr stmp = NULL;
+    const char *ptr = NULL;
+    char c;
+    
+    if(!s)
+        return;
+
+    if(!*s)
+        return;
+
+    ptr = ajStrGetPtr(*s);
+    
+    stmp = ajStrNew();
+
+    while((c = *ptr))
+    {
+        if(c == ' ')
+            ajStrAppendC(&stmp,"%20");
+        else
+            ajStrAppendK(&stmp,c);
+
+        ++ptr;
+    }
+
+    ajStrAssignS(s,stmp);
+
+    ajStrDel(&stmp);
+    
+    return;
+}
+
+
+
+
 /* @funcstatic martParseTabbedDataset ****************************************
 **
 ** Parse dataset information in the original tab-delimited format
@@ -1335,7 +1415,8 @@ static AjBool martParseTabbedDataset(AjPSeqin seqin)
     AjPTable table = NULL;
     AjPMartDataset ds = NULL;
     AjPMartquery mq   = NULL;
-
+    AjBool error = ajFalse;
+    
     ajuint n  = 0;
     ajint pos = 0;
 
@@ -1361,63 +1442,97 @@ static AjBool martParseTabbedDataset(AjPSeqin seqin)
 
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedDataset: missing tab field\n%S",line);
-
+        {
+            ajWarn("martParseTabbedDataset: missing tab field (1)1\n%S",line);
+            error = ajTrue;
+            break;
+        }
+        
         martTablePush(table,"type",token);
 
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedDataset: missing tab field\n%S",line);
-
+        {
+            ajWarn("martParseTabbedDataset: missing tab field (2)\n%S",line);
+            error = ajTrue;
+            break;
+        }
+        
         martTablePush(table,"name",token);
 
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedDataset: missing tab field\n%S",line);
-
+        {
+            ajWarn("martParseTabbedDataset: missing tab field (3)\n%S",line);
+            error = ajTrue;
+            break;
+        }
+        
         martTablePush(table,"displayName",token);
 
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedDataset: missing tab field\n%S",line);
-
+        {
+            ajWarn("martParseTabbedDataset: missing tab field (4)\n%S",line);
+            error = ajTrue;
+            break;
+        }
+        
         martTablePush(table,"visible",token);
 
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedDataset: missing tab field\n%S",line);
-
+        {
+            ajWarn("martParseTabbedDataset: missing tab field (5)\n%S",line);
+            error = ajTrue;
+            break;
+        }
+        
         martTablePush(table,"version",token);
 
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedDataset: missing tab field\n%S",line);
-
+        {
+            ajWarn("martParseTabbedDataset: missing tab field (6)\n%S",line);
+            error = ajTrue;
+            break;
+        }
+        
         martTablePush(table,"unk1",token);
 
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedDataset: missing tab field\n%S",line);
-
+        {
+            ajWarn("martParseTabbedDataset: missing tab field (7)\n%S",line);
+            error = ajTrue;
+            break;
+        }
+        
         martTablePush(table,"unk2",token);
 
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedDataset: missing tab field\n%S",line);
-
+            ajStrAssignC(&token,"");
+        
         martTablePush(table,"interface",token);
 
         pos = martTabToToken(&token,line,pos);
-        if(pos < 0)
-            ajWarn("martParseTabbedDataset: missing tab field\n%S",line);
 
+        if(pos < 0)
+            ajStrAssignC(&token,"");
+        
         martTablePush(table,"date",token);
         
         ajListPushAppend(ds->Set_read,(void *)table);
         ++ds->Nsets;
     }
     
+    ajStrDel(&line);
+    ajStrDel(&token);
 
+    if(error)
+        return ajFalse;
+    
     n = ajListToarray(ds->Set_read, (void ***) &ds->Sets);
     if(n != ds->Nsets)
     {
@@ -1425,8 +1540,6 @@ static AjBool martParseTabbedDataset(AjPSeqin seqin)
         return ajFalse;
     }
 
-    ajStrDel(&line);
-    ajStrDel(&token);
 
     
     return ajTrue;
@@ -1445,13 +1558,15 @@ static AjBool martParseTabbedDataset(AjPSeqin seqin)
 
 AjBool ajMartdatasetParse(AjPSeqin seqin)
 {
+    AjBool ret = ajTrue;
+    
     if(!martBuffIsXML(seqin->Filebuff))
-        martParseTabbedDataset(seqin);
+        ret = martParseTabbedDataset(seqin);
     else
         ajFatal("Looks like the new Biomart XML format for datasets "
                 "has just been implemented. New function needed");
 
-    return ajTrue;
+    return ret;
 }
 
 
@@ -1513,12 +1628,12 @@ AjBool ajMartGetAttributes(AjPSeqin seqin, const AjPStr dataset)
     if(ajSeqHttpProxy(qry, &proxyport, &proxyname))
         ajFmtPrintS(&get, "GET http://%S:%S%S?type=attributes&dataset=%S"
                     "&virtualSchema=%s"
-                    " HTTP=%S",
+                    " HTTP/%S\r\n",
                     mq->Marthost, mq->Martport, mq->Martpath, dataset,
                     vschema, httpver);
     else
         ajFmtPrintS(&get, "GET %S?type=attributes&dataset=%S&virtualSchema=%s"
-                    " HTTP=%S",
+                    " HTTP/%S\r\n",
                     mq->Martpath, dataset, vschema, httpver);
 
 
@@ -1538,7 +1653,6 @@ AjBool ajMartGetAttributes(AjPSeqin seqin, const AjPStr dataset)
         
 	return ajFalse;
     }
-
 
     /*
     ** The Filebuff needs deleting. It likely is non-NULL
@@ -1560,9 +1674,130 @@ AjBool ajMartGetAttributes(AjPSeqin seqin, const AjPStr dataset)
         return ajFalse;
     }
 
+
     ajFilebuffLoadAll(seqin->Filebuff);
     ajFilebuffHtmlNoheader(seqin->Filebuff);
 
+    ajStrDel(&get);
+    ajStrDel(&httpver);
+    ajStrDel(&proxyname);
+    
+    return ajTrue;
+}
+
+
+
+
+/* @func ajMartGetAttributesSchema ********************************************
+**
+** Return attributes given a mart dataset, a mart host/path/port and a
+** schemaname. This function will be deleted once virtual schemas
+** are phased out. Use with caution.
+**
+** @param [u] seqin [AjPSeqin] "Sequence" input object
+** @param [r] dataset [const AjPStr] "Sequence" mart dataset name
+** @return [AjBool] true on success
+******************************************************************************/
+
+AjBool ajMartGetAttributesSchema(AjPSeqin seqin, const AjPStr dataset,
+                                 const AjPStr schema)
+{
+    ajint proxyport = 0;
+    
+    AjPStr httpver   = NULL;
+    AjPStr proxyname = NULL;
+    AjPStr get       = NULL;
+
+    AjPMartquery mq = NULL;
+    AjPSeqQuery qry = NULL;
+
+    const char *vschema = NULL;
+    
+    FILE *fp = NULL;
+    
+    qry = seqin->Query;
+    mq  = ajMartGetMartqueryPtr(seqin);
+
+    if(!mq)
+        return ajFalse;
+
+    if(!mq->Marthost || !mq->Martpath)
+    {
+        ajWarn("ajMartGetAttributesSchema: Invalid Mart location "
+               "Host=%S Path=%S",
+               mq->Marthost,mq->Martpath);
+
+        return ajFalse;
+    }
+    
+
+    /*
+    ** Do the GET request
+    */
+    
+    httpver   = ajStrNew();
+    proxyname = ajStrNew();
+    get       = ajStrNew();
+
+    
+    ajSeqHttpVersion(qry, &httpver);
+
+
+    vschema = ajStrGetPtr(schema);
+    
+    if(ajSeqHttpProxy(qry, &proxyport, &proxyname))
+        ajFmtPrintS(&get, "GET http://%S:%S%S?type=attributes&dataset=%S"
+                    "&virtualSchema=%s"
+                    " HTTP/%S\r\n",
+                    mq->Marthost, mq->Martport, mq->Martpath, dataset,
+                    vschema, httpver);
+    else
+        ajFmtPrintS(&get, "GET %S?type=attributes&dataset=%S&virtualSchema=%s"
+                    " HTTP/%S\r\n",
+                    mq->Martpath, dataset, vschema, httpver);
+
+
+    if(ajStrGetLen(proxyname))
+        fp = ajSeqHttpGetProxy(qry, proxyname, proxyport,
+                               mq->Marthost, mq->Martport, get);
+    else
+        fp = ajSeqHttpGet(qry, mq->Marthost, mq->Martport, get);
+
+    if(!fp)
+    {
+        ajWarn("ajMartGetAttributesSchema: Cannot open fp\n");
+        
+        ajStrDel(&get);
+        ajStrDel(&httpver);
+        ajStrDel(&proxyname);
+        
+	return ajFalse;
+    }
+
+    /*
+    ** The Filebuff needs deleting. It likely is non-NULL
+    ** from previous use by (e.g.) a dataset query.
+    */
+    
+    ajFilebuffDel(&seqin->Filebuff);
+    seqin->Filebuff = ajFilebuffNewFromCfile(fp);
+
+    if(!seqin->Filebuff)
+    {
+	ajErr("ajMartGetAttributesSchema: socket buffer attach failed for "
+              "host '%S'",
+	      mq->Marthost);
+
+        ajStrDel(&get);
+        ajStrDel(&httpver);
+        ajStrDel(&proxyname);
+
+        return ajFalse;
+    }
+
+
+    ajFilebuffLoadAll(seqin->Filebuff);
+    ajFilebuffHtmlNoheader(seqin->Filebuff);
 
     ajStrDel(&get);
     ajStrDel(&httpver);
@@ -1665,7 +1900,8 @@ static AjBool martParseTabbedAttributes(AjPSeqin seqin)
     AjPTable table = NULL;
     AjPMartAttribute att = NULL;
     AjPMartquery mq   = NULL;
-
+    AjBool error = ajFalse;
+    
     ajuint n  = 0;
     ajint pos = 0;
     
@@ -1705,33 +1941,41 @@ static AjBool martParseTabbedAttributes(AjPSeqin seqin)
         
         pos = martTabToToken(&token,tline,pos);
         if(pos < 0)
-            ajWarn("A martParseTabbedAttributes: missing tab field\n%S",line);
-
+        {
+            ajWarn("martParseTabbedAttributes: missing tab field (1)\n%S",line);
+            error = ajTrue;
+            break;
+        }
+        
         martTablePush(table,"name",token);
 
         pos = martTabToToken(&token,tline,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedAttributes: missing tab field\n%S",line);
-
+        {
+            ajWarn("martParseTabbedAttributes: missing tab field (2)\n%S",line);
+            error = ajTrue;
+            break;
+        }
+        
         martTablePush(table,"displayName",token);
 
         pos = martTabToToken(&token,tline,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedAttributes: missing tab field\n%S",line);
+            ajStrAssignC(&token,"");
 
         martTablePush(table,"description",token);
 
         pos = martTabToToken(&token,tline,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedAttributes: missing tab field\n%S",line);
-
+            ajStrAssignC(&token,"");
+        
         martTablePush(table,"page",token);
 
 
         pos = martTabToToken(&token,tline,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedAttributes: missing tab field\n%S",line);
-
+            ajStrAssignC(&token,"");
+        
         martTablePush(table,"format",token);
 
         pos = martTabToToken(&token,tline,pos);
@@ -1753,6 +1997,12 @@ static AjBool martParseTabbedAttributes(AjPSeqin seqin)
         ajStrDel(&tline);
     }
 
+    ajStrDel(&line);
+    ajStrDel(&token);
+
+    if(error)
+        return ajFalse;
+    
     n = ajListToarray(att->Att_read, (void ***) &att->Attributes);
 
     if(n != att->Natts)
@@ -1761,8 +2011,6 @@ static AjBool martParseTabbedAttributes(AjPSeqin seqin)
         return ajFalse;
     }
 
-    ajStrDel(&line);
-    ajStrDel(&token);
     ajListFree(&ulist);
 
     return ajTrue;
@@ -1781,13 +2029,15 @@ static AjBool martParseTabbedAttributes(AjPSeqin seqin)
 
 AjBool ajMartattributesParse(AjPSeqin seqin)
 {
+    AjBool ret = ajTrue;
+    
     if(!martBuffIsXML(seqin->Filebuff))
-        martParseTabbedAttributes(seqin);
+        ret = martParseTabbedAttributes(seqin);
     else
         ajFatal("Looks like the new Biomart XML format for attributes "
                 "has just been implemented. New function needed");
     
-    return ajTrue;
+    return ret;
 }
 
 
@@ -1848,12 +2098,12 @@ AjBool ajMartGetFilters(AjPSeqin seqin, const AjPStr dataset)
     if(ajSeqHttpProxy(qry, &proxyport, &proxyname))
         ajFmtPrintS(&get, "GET http://%S:%S%S?type=filters&dataset=%S"
                     "&virtualSchema=%s"
-                    " HTTP=%S",
+                    " HTTP/%S\r\n",
                     mq->Marthost, mq->Martport, mq->Martpath, dataset,
                     vschema, httpver);
     else
         ajFmtPrintS(&get, "GET %S?type=filters&dataset=%S&virtualSchema=%s"
-                    " HTTP=%S",
+                    " HTTP/%S\r\n",
                     mq->Martpath, dataset, vschema, httpver);
 
 
@@ -1926,7 +2176,8 @@ static AjBool martParseTabbedFilters(AjPSeqin seqin)
     AjPTable table = NULL;
     AjPMartFilter filt = NULL;
     AjPMartquery mq   = NULL;
-
+    AjBool error = ajFalse;
+    
     ajint pos = 0;
     
     ajuint n = 0;
@@ -1953,56 +2204,92 @@ static AjBool martParseTabbedFilters(AjPSeqin seqin)
         
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedFilters: missing tab field\n%S",line);
-
+        {
+            ajWarn("martParseTabbedFilters: missing tab field (1)\n%S",line);
+            error = ajTrue;
+            break;
+        }
+        
         martTablePush(table,"name",token);
 
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedFilters: missing tab field\n%S",line);
-
+        {
+            ajWarn("martParseTabbedFilters: missing tab field (2)\n%S",line);
+            error = ajTrue;
+            break;
+        }
+        
         martTablePush(table,"displayName",token);
 
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedFilters: missing tab field\n%S",line);
-
+        {
+            ajWarn("martParseTabbedFilters: missing tab field (3)\n%S",line);
+            error = ajTrue;
+            break;
+        }
+        
         martTablePush(table,"allowedValues",token);
 
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedFilters: missing tab field\n%S",line);
-
+        {
+            ajWarn("martParseTabbedFilters: missing tab field (4)\n%S",line);
+            error = ajTrue;
+            break;
+        }
+        
         martTablePush(table,"unk",token);
 
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedFilters: missing tab field\n%S",line);
-
+        {
+            ajWarn("martParseTabbedFilters: missing tab field (5)\n%S",line);
+            error = ajTrue;
+            break;
+        }
+        
         martTablePush(table,"page",token);
 
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedFilters: missing tab field\n%S",line);
-
+        {
+            ajWarn("martParseTabbedFilters: missing tab field (6)\n%S",line);
+            error = ajTrue;
+            break;
+        }
+        
         martTablePush(table,"type",token);
 
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedFilters: missing tab field\n%S",line);
-
+        {
+            ajWarn("martParseTabbedFilters: missing tab field (7)\n%S",line);
+            error = ajTrue;
+            break;
+        }
+        
         martTablePush(table,"value",token);
 
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedFilters: missing tab field\n%S",line);
-
+        {
+            ajWarn("martParseTabbedFilters: missing tab field (8)\n%S",line);
+            error = ajTrue;
+            break;
+        }
+        
         martTablePush(table,"tableName",token);
 
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
-            ajWarn("martParseTabbedFilters: missing tab field\n%S",line);
-
+        {
+            ajWarn("martParseTabbedFilters: missing tab field (9)\n%S",line);
+            error = ajTrue;
+            break;
+        }
+        
         martTablePush(table,"columnName",token);
 
         ajListPushAppend(filt->Filter_read,(void *)table);
@@ -2010,7 +2297,12 @@ static AjBool martParseTabbedFilters(AjPSeqin seqin)
         ++filt->Nfilters;
     }
     
+    ajStrDel(&line);
+    ajStrDel(&token);
 
+    if(error)
+        return ajFalse;
+    
     n = ajListToarray(filt->Filter_read, (void ***) &filt->Filters);
     if(n != filt->Nfilters)
     {
@@ -2018,8 +2310,6 @@ static AjBool martParseTabbedFilters(AjPSeqin seqin)
         return ajFalse;
     }
 
-    ajStrDel(&line);
-    ajStrDel(&token);
     
     return ajTrue;
 }
@@ -2037,13 +2327,15 @@ static AjBool martParseTabbedFilters(AjPSeqin seqin)
 
 AjBool ajMartfiltersParse(AjPSeqin seqin)
 {
+    AjBool ret = ajTrue;
+    
     if(!martBuffIsXML(seqin->Filebuff))
-        martParseTabbedFilters(seqin);
+        ret = martParseTabbedFilters(seqin);
     else
         ajFatal("Looks like the new Biomart XML format for filters "
                 "has just been implemented. New function needed");
     
-    return ajTrue;
+    return ret;
 }
 
 
@@ -2361,11 +2653,11 @@ AjBool ajMartSendQuery(AjPSeqin seqin)
 
     if(ajSeqHttpProxy(qry, &proxyport, &proxyname))
         ajFmtPrintS(&get, "GET http://%S:%S%S?query=%S "
-                    "HTTP=%S",
+                    "HTTP/%S\r\n",
                     mq->Marthost, mq->Martport, mq->Martpath, mq->Query,
                     httpver);
     else
-        ajFmtPrintS(&get, "GET %S?query=%S HTTP=%S",
+        ajFmtPrintS(&get, "GET %S?query=%S HTTP/%S\r\n",
                     mq->Martpath, mq->Query, httpver);
 
 
@@ -3618,5 +3910,220 @@ AjBool ajMartCheckQinfo(AjPSeqin seqin, AjPMartqinfo qinfo)
     
     ajStrDel(&fname);
 
+    return ajTrue;
+}
+
+
+
+
+/* @func ajMartGetConfiguration **********************************************
+**
+** Return config info given a mart dataset and a mart host/path/port
+**
+** @param [u] seqin [AjPSeqin] "Sequence" input object
+** @param [r] dataset [const AjPStr] "Sequence" mart dataset name
+** @return [AjBool] true on success
+******************************************************************************/
+
+AjBool ajMartGetConfiguration(AjPSeqin seqin, const AjPStr dataset)
+{
+    ajint proxyport = 0;
+    
+    AjPStr httpver   = NULL;
+    AjPStr proxyname = NULL;
+    AjPStr get       = NULL;
+
+    AjPMartquery mq = NULL;
+    AjPSeqQuery qry = NULL;
+
+    const char *vschema = NULL;
+    
+    FILE *fp = NULL;
+    
+    qry = seqin->Query;
+    mq  = ajMartGetMartqueryPtr(seqin);
+
+    if(!mq)
+        return ajFalse;
+
+    if(!mq->Marthost || !mq->Martpath)
+    {
+        ajWarn("ajMartGetConfiguration: Invalid Mart location Host=%S Path=%S",
+               mq->Marthost,mq->Martpath);
+
+        return ajFalse;
+    }
+    
+
+    /*
+    ** Do the GET request
+    */
+    
+    httpver   = ajStrNew();
+    proxyname = ajStrNew();
+    get       = ajStrNew();
+
+    
+    ajSeqHttpVersion(qry, &httpver);
+
+
+    vschema = martGetVirtualSchema(dataset);
+    
+    if(ajSeqHttpProxy(qry, &proxyport, &proxyname))
+        ajFmtPrintS(&get, "GET http://%S:%S%S?type=configuration&dataset=%S"
+                    "&virtualSchema=%s"
+                    " HTTP/%S\r\n",
+                    mq->Marthost, mq->Martport, mq->Martpath, dataset,
+                    vschema, httpver);
+    else
+        ajFmtPrintS(&get, "GET %S?type=configuration&dataset=%S"
+                    "&virtualSchema=%s"
+                    " HTTP/%S\r\n",
+                    mq->Martpath, dataset, vschema, httpver);
+
+
+    if(ajStrGetLen(proxyname))
+        fp = ajSeqHttpGetProxy(qry, proxyname, proxyport,
+                               mq->Marthost, mq->Martport, get);
+    else
+        fp = ajSeqHttpGet(qry, mq->Marthost, mq->Martport, get);
+
+    if(!fp)
+    {
+        ajWarn("ajMartGetConfiguration: Cannot open fp\n");
+        
+        ajStrDel(&get);
+        ajStrDel(&httpver);
+        ajStrDel(&proxyname);
+        
+	return ajFalse;
+    }
+
+
+    /*
+    ** The Filebuff needs deleting. It likely is non-NULL
+    ** from previous use by (e.g.) a dataset query.
+    */
+    
+    ajFilebuffDel(&seqin->Filebuff);
+    seqin->Filebuff = ajFilebuffNewFromCfile(fp);
+
+    if(!seqin->Filebuff)
+    {
+	ajErr("ajMartGetConfiguration: socket buffer attach failed for "
+              "host '%S'",
+	      mq->Marthost);
+
+        ajStrDel(&get);
+        ajStrDel(&httpver);
+        ajStrDel(&proxyname);
+
+        return ajFalse;
+    }
+
+    ajFilebuffLoadAll(seqin->Filebuff);
+    ajFilebuffHtmlNoheader(seqin->Filebuff);
+
+
+    ajStrDel(&get);
+    ajStrDel(&httpver);
+    ajStrDel(&proxyname);
+    
+    return ajTrue;
+}
+
+
+
+
+/* @func ajMartconfigurationParse **************************************
+**
+** Parse a mart configuration buffer
+**
+** @param [u] loc [AjPSeqin] Seqin object holding mart info
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajMartconfigurationParse(AjPSeqin seqin)
+{
+    AjPMartquery pmq = NULL;
+    AjBool ret = ajFalse;
+    
+    if(!seqin)
+        return ajFalse;
+
+    pmq = ajMartGetMartqueryPtr(seqin);
+    
+    if(!pmq)
+        return ajFalse;
+
+    pmq->Config = ajDomImplementationCreateDocument(NULL,NULL,NULL);
+    if(!ajDomReadFilebuff(pmq->Config, seqin->Filebuff))
+        ret = ajTrue;
+    
+    return ret;
+}
+
+
+
+
+/* @funcstatic martAttributePageCompar ***************************************
+**
+** Sort function based on attribute page names
+**
+** @param [r] a [const void*] First table
+** @param [r] b [const void*] Second table
+** @return [int] comparison of page strings
+******************************************************************************/
+
+static int martAttributePageCompar(const void *a, const void *b)
+{
+    const AjPTable t1;
+    const AjPTable t2;
+
+    AjPStr key = NULL;
+
+    AjPStr v1 = NULL;
+    AjPStr v2 = NULL;
+    
+    t1 = *((AjPTable *) a);
+    t2 = *((AjPTable *) b);
+    
+    key = ajStrNewC("page");
+
+    v1 = ajTableFetch(t1,(void *)key);
+    v2 = ajTableFetch(t2,(void *)key);
+
+    ajStrDel(&key);
+
+    return strcmp(v1->Ptr,v2->Ptr);
+}
+
+
+
+
+
+/* @func ajMartattributesPageSort *****************************************
+**
+** Sort attributes based on page name
+**
+** @param [r] seqin [AjPSeqin] Seqin object holding attribute info
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajMartattributesPageSort(AjPSeqin seqin)
+{
+    AjPMartAttribute att = NULL;
+    AjPMartquery pmq = NULL;
+
+    pmq = ajMartGetMartqueryPtr(seqin);
+    
+    if(!pmq)
+        return ajFalse;
+
+    att = pmq->Atts;
+
+    qsort((void *)att->Attributes,att->Natts,sizeof(AjPTable),
+          martAttributePageCompar);
+    
     return ajTrue;
 }
