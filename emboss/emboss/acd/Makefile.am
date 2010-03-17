@@ -30,7 +30,7 @@ pkgdata_DATA = aaindexextract.acd abiview.acd acdc.acd acdlog.acd \
 	isochore.acd jaspextract.acd jaspscan.acd lindna.acd listor.acd \
 	makenucseq.acd makeprotseq.acd marscan.acd \
 	martattributes.acd martdatasets.acd martfilters.acd  martquery.acd \
-	martregistry.acd \
+	martregistry.acd martseqs.acd \
 	maskambignuc.acd maskambigprot.acd maskfeat.acd maskseq.acd \
 	matcher.acd megamerger.acd \
 	merger.acd msbar.acd mwcontam.acd mwfilter.acd

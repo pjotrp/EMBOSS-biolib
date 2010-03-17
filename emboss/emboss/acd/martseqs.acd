@@ -1,0 +1,45 @@
+application: martseqs [
+  documentation: "Show Biomart datasets that can return sequences"
+  groups: "Edit"
+  relations: "EDAM: Database information"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  string: host [
+    standard: "Y"
+    default: "www.biomart.org"
+    information: "Host location"
+    relations: "EDAM: Generic string"
+  ]
+
+  string: path [
+    standard: "Y"
+    default: "/biomart/martservice"
+    information: "Path to martservice"
+    relations: "EDAM: Generic string"
+  ]
+
+  integer: port [
+    default: "80"
+    information: "Port on host"
+    relations: "EDAM: Generic integer"
+  ]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    information: "Mart dataset output file"
+    relations: "EDAM: Free text file"
+  ]
+
+endsection: output

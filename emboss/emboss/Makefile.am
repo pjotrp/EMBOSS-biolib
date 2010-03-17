@@ -21,7 +21,7 @@ domtesta domtestb domtestc domtestd \
 edamclean ensembltest \
 entrails entrailsbook entrailshtml entrailswiki histogramtest intconv \
 origsplitter origunion \
-martattributes martdatasets martfilters martquery martregistry \
+martattributes martdatasets martfilters martquery martregistry martseqs \
 newcoils \
 patmattest \
 prima primers \
@@ -181,6 +181,7 @@ martdatasets_SOURCES = martdatasets.c
 martfilters_SOURCES = martfilters.c
 martquery_SOURCES = martquery.c
 martregistry_SOURCES = martregistry.c
+martseqs_SOURCES = martseqs.c
 maskambignuc_SOURCES = maskambignuc.c
 maskambigprot_SOURCES = maskambigprot.c
 maskfeat_SOURCES = maskfeat.c
