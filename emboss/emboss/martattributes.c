@@ -36,12 +36,16 @@ int main(int argc, char **argv)
     AjPSeqin seqin  = NULL;
     AjPMartquery mq = NULL;
     AjPMartquery pmq = NULL;
-    AjPMartLoc locs = NULL;
     AjPMartAttribute att = NULL;
     
     AjPStr dataset = NULL;
     AjPStr host = NULL;
     AjPStr path = NULL;
+
+    AjPStr pagekey  = NULL;
+    AjPStr currpage = NULL;
+    AjPStr pageval  = NULL;
+    AjBool firstpage = ajTrue;
     
     AjPFile outf = NULL;
     ajint iport = 0;
@@ -80,15 +84,32 @@ int main(int argc, char **argv)
     ajMartGetAttributes(seqin, dataset);
     ajMartattributesParse(seqin);
     
-
+    ajMartattributesPageSort(seqin);
+    
     key1  = ajStrNewC("name");
     key2  = ajStrNewC("displayName");
+
+    pagekey = ajStrNewC("page");
+    currpage = ajStrNewC("Dummy_page_value");
     
     pmq = ajMartGetMartqueryPtr(seqin);
     att = pmq->Atts;
 
     for(i=0; i < att->Natts; ++i)
     {
+        pageval = ajTableFetch(att->Attributes[i],(void *)pagekey);
+
+        if(!ajStrMatchS(currpage, pageval))
+        {
+            if(!firstpage)
+                ajFmtPrintF(outf,"\n\n");
+            else
+                firstpage = ajFalse;
+            
+            ajStrAssignS(&currpage,pageval);
+            ajFmtPrintF(outf,"PAGE TITLE %S\n\n",pageval);
+        }
+        
         value1 = ajTableFetch(att->Attributes[i],(void *)key1);
         value2 = ajTableFetch(att->Attributes[i],(void *)key2);
         ajFmtPrintF(outf,"%-40S %S\n",value1,value2);
@@ -97,7 +118,8 @@ int main(int argc, char **argv)
 
     ajStrDel(&key1);
     ajStrDel(&key2);
-
+    ajStrDel(&pagekey);
+    ajStrDel(&currpage);
     
     ajStrDel(&host);
     ajStrDel(&path);
