@@ -124,7 +124,9 @@ int main(int argc, char **argv)
     
     while(ajSeqallNext(seqall, &seq))
     {
-	orf_no = 1;		   /* number of the next ORF */
+        ajSeqTrim(seq);
+
+        orf_no = 1;		   /* number of the next ORF */
 	sense = ajTrue;		   /* forward sense initially */
 
 	/* get the length of the sequence */
