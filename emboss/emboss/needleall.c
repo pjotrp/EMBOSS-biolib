@@ -139,19 +139,19 @@ int main(int argc, char **argv)
             if(len>maxarr)
             {
                 stlen = (size_t) len;
-                AJCRESIZETRY0(path,maxarr,stlen);
+                AJCRESIZETRY0(path,(size_t)maxarr,stlen);
                 if(!path)
                     ajDie("Sequences too big, memory allocation failed");
-                AJCRESIZETRY0(compass,maxarr,stlen);
+                AJCRESIZETRY0(compass,(size_t)maxarr,stlen);
                 if(!compass)
                     ajDie("Sequences too big, memory allocation failed");
-                AJCRESIZETRY0(m,maxarr,stlen);
+                AJCRESIZETRY0(m,(size_t)maxarr,stlen);
                 if(!m)
                     ajDie("Sequences too big, memory allocation failed");
-                AJCRESIZETRY0(ix,maxarr,stlen);
+                AJCRESIZETRY0(ix,(size_t)maxarr,stlen);
                 if(!ix)
                     ajDie("Sequences too big, memory allocation failed");
-                AJCRESIZETRY0(iy,maxarr,stlen);
+                AJCRESIZETRY0(iy,(size_t)maxarr,stlen);
                 if(!iy)
                     ajDie("Sequences too big, memory allocation failed");
                 maxarr=len;
