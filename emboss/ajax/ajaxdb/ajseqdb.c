@@ -36,14 +36,14 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+
 #include <netdb.h>
+
 #include <dirent.h>
 #include <unistd.h>
 #else
 #include <winsock2.h>
-#include <io.h>
-#include <fcntl.h>
-extern int _open_osfhandle();
+#include <ws2tcpip.h>
 #endif
 #include <errno.h>
 #include <signal.h>
@@ -67,6 +67,8 @@ static AjPRegexp seqRegGi = NULL;
 
 static char* seqCdName = NULL;
 static ajuint seqCdMaxNameSize = 0;
+
+
 
 
 /* @datastatic SeqPCdDiv ******************************************************
@@ -519,12 +521,12 @@ static AjBool     seqGcgReadRef(AjPSeqin seqin);
 static AjBool     seqGcgReadSeq(AjPSeqin seqin);
 static AjBool     seqHttpUrl(const AjPSeqQuery qry,
 			     ajint* iport, AjPStr* host, AjPStr* urlget);
-static FILE*      seqHttpSocket(const AjPSeqQuery qry,
-				const struct hostent *hp, ajint hostport,
-				const AjPStr host, ajint iport,
-				const AjPStr get);
 static AjBool     seqSeqhoundQryNext(AjPSeqQuery qry, AjPSeqin seqin);
+static FILE*      seqHttpSend(const AjPSeqQuery qry, struct AJSOCKET sock,
+                              ajint hostport, const AjPStr host, ajint iport,
+                              const AjPStr get);
 static void       seqSocketTimeout(int sig);
+
 
 
 
@@ -7168,66 +7170,6 @@ AjBool ajSeqHttpVersion(const AjPSeqQuery qry, AjPStr* httpver)
 
 
 
-/* @func ajSeqHttpGetProxy ***************************************************
-**
-** Opens an HTTP connection via a proxy
-**
-** @param [r] qry [const AjPSeqQuery] Query object
-** @param [r] proxyname [const AjPStr] Proxy name
-** @param [r] proxyport [ajint] Proxy port
-** @param [r] host [const AjPStr] Host name
-** @param [r] iport [ajint] Port
-** @param [r] get [const AjPStr] GET string
-** @return [FILE*] Open file on success, NULL on failure
-** @@
-******************************************************************************/
-
-FILE* ajSeqHttpGetProxy(const AjPSeqQuery qry,
-                        const AjPStr proxyname, ajint proxyport,
-                        const AjPStr host, ajint iport, const AjPStr get)
-{
-    FILE* fp;
-    struct hostent* hp;
-    ajint i;
-
-#ifndef WIN32
-    h_errno = 0;
-#endif
-
-    /* herror("proxy error"); */
-    ajDebug("ajSeqHttpGetProxy db: '%S' proxy '%S' host; %S get; '%S'\n",
-	    qry->DbName, proxyname, host, get);
-    hp = gethostbyname(ajStrGetPtr(proxyname));
-
-    if(!hp)
-    {
-	ajErr("Failed to find proxy host '%S'", proxyname);
-
-	return NULL;
-    }
-
-#ifndef WIN32
-    ajDebug("gethostbyname proxyName '%S' returns '%s' errno %d hp_addr ",
-	    proxyname, hp->h_name, h_errno);
-#endif
-
-    for(i=0; i< hp->h_length; i++)
-    {
-	if(i)
-	    ajDebug(".");
-
-	ajDebug("%d", (unsigned char) hp->h_addr[i]);
-    }
-
-    ajDebug("\n");
-    fp = seqHttpSocket(qry, hp, proxyport, host, iport, get);
-
-    return fp;
-}
-
-
-
-
 /* @func ajSeqHttpGet ********************************************************
 **
 ** Opens an HTTP connection
@@ -7244,122 +7186,69 @@ FILE* ajSeqHttpGet(const AjPSeqQuery qry, const AjPStr host, ajint iport,
                    const AjPStr get)
 {
     FILE* fp;
-    struct hostent* hp;
-    ajint i;
+    struct addrinfo hints;
+    struct addrinfo *add;
+    struct addrinfo *addinit;
 
-#ifndef WIN32
-    h_errno = 0;
-#endif
+    AjPStr portstr = NULL;
 
-    ajDebug("ajSeqHttpGet db: '%S' host '%S' get: '%S'\n",
-	    qry->DbName, host, get);
-    hp = gethostbyname(ajStrGetPtr(host));
+    const char *phost = NULL;
+    const char *pport = NULL;
 
-    /* herror("host error"); */
-    if(!hp)
+    struct AJSOCKET sock;
+    
+    AjPStr errstr = NULL;
+    int ret;
+
+    phost = ajStrGetPtr(host);
+    ajDebug("ajSeqHttpGet db: '%S' host '%s' get: '%S'\n",
+	    qry->DbName, phost, get);
+
+    memset(&hints,0,sizeof(hints));
+
+    hints.ai_socktype = SOCK_STREAM;
+
+    portstr = ajStrNew();
+    ajFmtPrintS(&portstr,"%d",iport);
+    pport =  ajStrGetPtr(portstr);
+    
+    ret = getaddrinfo(phost, pport, &hints, &addinit);
+
+    ajStrDel(&portstr);
+    
+    if(ret)
     {
-	ajErr("Failed to find host '%S' for database '%S'",
-	      host, qry->DbName);
-	return NULL;
-    }
-
-#ifndef WIN32
-    ajDebug("gethostbyname host '%S' returns '%s' errno %d hp_addr ",
-	    host, hp->h_name, h_errno);
-#else
-    ajDebug("gethostbyname host '%S' returns '%s' errno %d hp_addr ",
-	    host, hp->h_name, WSAGetLastError());
-#endif
-
-
-    for(i=0; i< hp->h_length; i++)
-    {
-	if(i)
-	    ajDebug(".");
-
-	ajDebug("%d", (unsigned char) hp->h_addr[i]);
-    }
-
-    ajDebug("\n");
-
-    fp = seqHttpSocket(qry, hp, iport, host, iport, get);
-
-    return fp;
-}
-
-
-
-
-/* @funcstatic seqHttpSocket **************************************************
-**
-** Opens an HTTP socket
-**
-** @param [r] qry [const AjPSeqQuery] Query object
-** @param [r] hp [const struct hostent*] Host entry struct
-** @param [r] hostport [ajint] Host port
-** @param [r] host [const AjPStr] Host name for Host header line
-** @param [r] iport [ajint] Port for Host header line
-** @param [r] get [const AjPStr] GET string
-** @return [FILE*] Open file on success, NULL on failure
-** @@
-******************************************************************************/
-
-static FILE* seqHttpSocket(const AjPSeqQuery qry,
-			   const struct hostent *hp, ajint hostport,
-			   const AjPStr host, ajint iport, const AjPStr get)
-{
-    FILE* fp       = NULL;
-    AjPStr gethead = NULL;
-#ifndef WIN32
-    ajint sock;
-#else
-    SOCKET sock;
-#endif
-    ajint istatus;
-    ajuint isendlen;
-    struct sockaddr_in sin;
-    AjPStr errstr  = NULL;
- 
-    ajDebug("creating socket\n");
-
-#ifndef WIN32
-    sock = socket(AF_INET, SOCK_STREAM, 0);
-#else
-    /* Windows' socket() creates sockets in overlapped mode. */
-    /* Only WSASocket() can override this. */
-    sock = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, 0);
-
-    if(sock == INVALID_SOCKET)
-    {
-	ajErr ("Socket create failed for database '%S'", qry->DbName);
-
-	return NULL;
-    }
-#endif
-
-    if(sock < 0)
-    {
-	ajDebug("Socket create failed, sock: %d\n", sock);
-	ajErr("Socket create failed for database '%S'", qry->DbName);
+	ajErr("[%s] Failed to find host '%S' for database '%S'",
+	      gai_strerror(ret), host, qry->DbName);
 
 	return NULL;
     }
 
-    ajDebug("setup socket data \n");
-    memset(&sin, 0, sizeof(sin));
-    sin.sin_family = AF_INET;
-    sin.sin_port = htons(hostport);
-#ifndef __VMS
-    memcpy(&sin.sin_addr, hp->h_addr, hp->h_length);
-#endif
-
-    ajDebug("connecting to socket %d\n", sock);
-    ajDebug("sin sizeof %d\n", sizeof(sin));
-    istatus = connect(sock, (struct sockaddr*) &sin, sizeof(sin));
-
-    if(istatus < 0)
+    sock.sock = AJBADSOCK;
+    
+    for(add = addinit; add; add = add->ai_next)
     {
-	ajDebug("socket connect failed, status: %d\n", istatus);
+        sock.sock = ajSysFuncSocket(add->ai_family, add->ai_socktype,
+                                    add->ai_protocol);
+
+        if(sock.sock == AJBADSOCK)
+            continue;
+
+        if(connect(sock.sock, add->ai_addr, add->ai_addrlen))
+        {
+            ajSysSocketclose(sock);
+            sock.sock = AJBADSOCK;
+            continue;
+        }
+
+        break;
+    }
+
+    freeaddrinfo(addinit);
+    
+    if(sock.sock == AJBADSOCK)
+    {
+	ajDebug("Socket connect failed\n");
 	ajFmtPrintS(&errstr, "socket connect failed for database '%S'",
 		    qry->DbName);
 	ajErr("%S", errstr);
@@ -7369,74 +7258,200 @@ static FILE* seqHttpSocket(const AjPSeqQuery qry,
 	return NULL;
     }
 
-    ajDebug("connect status %d errno %d msg '%s'\n",
-	    istatus, errno, ajMessGetSysmessageC());
-    ajDebug("inet_ntoa '%s'\n", inet_ntoa(sin.sin_addr));
-    
+    fp = seqHttpSend(qry, sock, iport, host, iport, get);
 
-    isendlen = send(sock, ajStrGetPtr(get), ajStrGetLen(get), 0);
+    return fp;
+}
+
+
+
+
+/* @func ajSeqHttpGetProxy ***************************************************
+**
+** Opens an HTTP connection via a proxy
+**
+** @param [r] qry [const AjPSeqQuery] Query object
+** @param [r] proxyname [const AjPStr] Proxy name
+** @param [r] proxyport [ajint] Proxy port
+** @param [r] host [const AjPStr] Host name
+** @param [r] iport [ajint] Port
+** @param [r] get [const AjPStr] GET string
+** @return [FILE*] Open file on success, NULL on failure
+** @@
+******************************************************************************/
+
+FILE* ajSeqHttpGetProxy(const AjPSeqQuery qry, const AjPStr proxyname,
+                        ajint proxyport, const AjPStr host, ajint iport,
+                        const AjPStr get)
+{
+    FILE* fp;
+    struct addrinfo hints;
+    struct addrinfo *add;
+    struct addrinfo *addinit;
+
+    AjPStr portstr = NULL;
+
+    const char *phost = NULL;
+    const char *pport = NULL;
+
+    struct AJSOCKET sock;
+    
+    AjPStr errstr = NULL;
+    int ret;
+
+    phost = ajStrGetPtr(proxyname);
+    ajDebug("ajSeqHttpGetProxy db: '%S' host '%s' get: '%S'\n",
+	    qry->DbName, phost, get);
+
+    memset(&hints,0,sizeof(hints));
+
+    hints.ai_socktype = SOCK_STREAM;
+
+    portstr = ajStrNew();
+    ajFmtPrintS(&portstr,"%d",proxyport);
+    pport =  ajStrGetPtr(portstr);
+    
+    ret = getaddrinfo(phost, pport, &hints, &addinit);
+
+    ajStrDel(&portstr);
+    
+    if(ret)
+    {
+	ajErr("[%s] Failed to find host '%S' for database '%S'",
+	      gai_strerror(ret), host, qry->DbName);
+
+	return NULL;
+    }
+
+    sock.sock = AJBADSOCK;
+    
+    for(add = addinit; add; add = add->ai_next)
+    {
+        sock.sock = ajSysFuncSocket(add->ai_family, add->ai_socktype,
+                                    add->ai_protocol);
+
+        if(sock.sock == AJBADSOCK)
+            continue;
+
+        if(connect(sock.sock, add->ai_addr, add->ai_addrlen))
+        {
+            ajSysSocketclose(sock);
+            sock.sock = AJBADSOCK;
+            continue;
+        }
+
+        break;
+    }
+
+    freeaddrinfo(addinit);
+    
+    if(sock.sock == AJBADSOCK)
+    {
+	ajDebug("Socket connect failed\n");
+	ajFmtPrintS(&errstr, "socket connect failed for database '%S'",
+		    qry->DbName);
+	ajErr("%S", errstr);
+	perror(ajStrGetPtr(errstr));
+	ajStrDel(&errstr);
+
+	return NULL;
+    }
+
+
+    fp = seqHttpSend(qry, sock, proxyport, host, iport, get);
+
+    return fp;
+}
+
+
+
+
+/* @funcstatic seqHttpSend **************************************************
+**
+** Send HTTP GET request to an open socket
+**
+** @param [r] qry [const AjPSeqQuery] Query object
+** @param [r] sock [struct AJSOCKET] Socket structure
+** @param [r] hostport [ajint] Host port
+** @param [r] host [const AjPStr] Host name for Host header line
+** @param [r] iport [ajint] Port for Host header line
+** @param [r] get [const AjPStr] GET string
+** @return [FILE*] Open file on success, NULL on failure
+** @@
+******************************************************************************/
+
+static FILE* seqHttpSend(const AjPSeqQuery qry,
+                         struct AJSOCKET sock, ajint hostport,
+                         const AjPStr host, ajint iport,
+                         const AjPStr get)
+{
+    FILE* fp       = NULL;
+    AjPStr gethead = NULL;
+
+    ajuint isendlen;
+
+    ajDebug("seqHttpSend: Sending to socket\n");
+
+    gethead = ajStrNew();
+    
+    isendlen = send(sock.sock, ajStrGetPtr(get), ajStrGetLen(get), 0);
 
     if(isendlen != ajStrGetLen(get))
 	ajErr("send failure, expected %d bytes returned %d : %s\n",
-	      ajStrGetLen(get), istatus, ajMessGetSysmessageC());
-    ajDebug("sending: '%S' status: %d\n", get, istatus);
+	      ajStrGetLen(get), isendlen, ajMessGetSysmessageC());
+
+    ajDebug("sending: '%S'\n", get);
     ajDebug("send for GET errno %d msg '%s'\n",
 	    errno, ajMessGetSysmessageC());
 
     /*
        ajFmtPrintS(&gethead, "Accept: \n");
        ajDebug("sending: '%S'\n", gethead);
-       send(sock, ajStrGetPtr(gethead), ajStrGetLen(gethead), 0);
+       send(sock.sock, ajStrGetPtr(gethead), ajStrGetLen(gethead), 0);
        
     */
 
-    ajFmtPrintS(&gethead, "User-Agent: EMBOSS/%S (%S)\n",
+    ajFmtPrintS(&gethead, "User-Agent: EMBOSS/%S (%S)\r\n",
                 ajNamValueVersion(), ajNamValueSystem());
-    isendlen = send(sock, ajStrGetPtr(gethead), ajStrGetLen(gethead), 0);
+    isendlen = send(sock.sock, ajStrGetPtr(gethead), ajStrGetLen(gethead), 0);
 
     if(isendlen != ajStrGetLen(gethead))
 	ajErr("send failure, expected %d bytes returned %d : %s\n",
-	      ajStrGetLen(gethead), istatus, ajMessGetSysmessageC());
-    ajDebug("sending: '%S' status: %d\n", gethead, istatus);
+	      ajStrGetLen(gethead), isendlen, ajMessGetSysmessageC());
+    ajDebug("sending: '%S'\n", gethead);
 
-    ajFmtPrintS(&gethead, "Host: %S:%d\n", host, iport);
-    isendlen =  send(sock, ajStrGetPtr(gethead), ajStrGetLen(gethead), 0);
+
+    
+    ajFmtPrintS(&gethead, "Host: %S:%d\r\n", host, iport);
+    isendlen =  send(sock.sock, ajStrGetPtr(gethead), ajStrGetLen(gethead), 0);
 
     if(isendlen != ajStrGetLen(gethead))
 	ajErr("send failure, expected %d bytes returned %d : %s\n",
-	      ajStrGetLen(gethead), istatus, ajMessGetSysmessageC());
-    ajDebug("sending: '%S' status: %d\n", gethead, istatus);
+	      ajStrGetLen(gethead), isendlen, ajMessGetSysmessageC());
+    ajDebug("sending: '%S'\n", gethead);
     ajDebug("send for host errno %d msg '%s'\n",
 	    errno, ajMessGetSysmessageC());
 
-    ajFmtPrintS(&gethead, "\n");
-    isendlen =  send(sock, ajStrGetPtr(gethead), ajStrGetLen(gethead), 0);
+    
+    ajFmtPrintS(&gethead, "\r\n");
+    isendlen =  send(sock.sock, ajStrGetPtr(gethead), ajStrGetLen(gethead), 0);
 
     if(isendlen != ajStrGetLen(gethead))
 	ajErr("send failure, expected %d bytes returned %d : %s\n",
-	      ajStrGetLen(gethead), istatus, ajMessGetSysmessageC());
-    ajDebug("sending: '%S' status: %d\n", gethead, istatus);
+	      ajStrGetLen(gethead), isendlen, ajMessGetSysmessageC());
+    ajDebug("sending: '%S'\n", gethead);
     ajDebug("send for blankline errno %d msg '%s'\n",
 	    errno, ajMessGetSysmessageC());
 
     ajStrDel(&gethead);
 
-#ifndef WIN32
-    fp = ajSysFuncFdopen(sock, "r");
-#else
-    {
-        int fd = _open_osfhandle(sock, _O_RDONLY);
-	fp = ajSysFuncFdopen(fd, "r");
-    }
-#endif
 
-    ajDebug("fdopen errno %d msg '%s'\n",
-            errno, ajMessGetSysmessageC());
-
+    fp = ajSysFdFromSocket(sock, "r");
+    
     if(!fp)
     {
-	ajDebug("socket open failed sock: %d\n", sock);
-	ajErr("socket open failed for database '%S'", qry->DbName);
+	ajDebug("seqHttpSend socket open failed\n");
+	ajErr("seqHttpSend: socket open failed for database '%S'", qry->DbName);
 
 	return NULL;
     }
