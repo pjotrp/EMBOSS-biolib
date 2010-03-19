@@ -1,4 +1,7 @@
 Version 6.3.0 15-Jul-2010
+	Make ajaxdb code IPv6 compliant. Remove gethostbyname config
+	check.
+
 	pcre, expat & zlib include files now install to separate
 	subdirectories.
 
