@@ -33,6 +33,7 @@
 #include <unistd.h>
 #else
 #include "win32.h"
+extern int _open_osfhandle();
 #endif
 
 
@@ -42,6 +43,9 @@ static AjPStr sysTokRets = NULL;
 static AjPStr sysTokSou  = NULL;
 static const char *sysTokp = NULL;
 static AjPStr sysUserPath = NULL;
+
+
+
 
 /* @filesection ajutil ********************************************************
 **
@@ -155,6 +159,8 @@ AjBool ajSysArglistBuild(const AjPStr cmdline, char** Pname, char*** PParglist)
 }
 
 
+
+
 /* @obsolete ajSysArglist
 ** @rename ajSysArglistBuild
 */
@@ -164,6 +170,8 @@ __deprecated AjBool ajSysArglist(const AjPStr cmdline,
 {    
     return ajSysArglistBuild(cmdline, Pname, PParglist);
 }
+
+
 
 
 /* @func ajSysArglistFree *****************************************************
@@ -195,6 +203,8 @@ void ajSysArglistFree(char*** PParglist)
 }
 
 
+
+
 /* @obsolete ajSysArgListFree
 ** @rename ajSysArglistFree
 */
@@ -204,6 +214,9 @@ __deprecated void ajSysArgListFree(char*** PParglist)
     ajSysArglistFree(PParglist);
     return;
 }
+
+
+
 
 /* @section System cast functions *********************************************
 **
@@ -242,6 +255,8 @@ char ajSysCastItoc(ajint v)
 }
 
 
+
+
 /* @obsolete ajSysItoC
 ** @rename ajSysCastItoC
 */
@@ -250,6 +265,7 @@ __deprecated char ajSysItoC(ajint v)
 {
     return ajSysCastItoc(v);
 }
+
 
 
 
@@ -272,6 +288,8 @@ unsigned char ajSysCastItouc(ajint v)
 }
 
 
+
+
 /* @obsolete ajSysItoUC
 ** @rename ajSysCastItouc
 */
@@ -280,6 +298,9 @@ __deprecated unsigned char ajSysItoUC(ajint v)
 {
     return ajSysCastItouc(v);
 }
+
+
+
 
 /* @section System functions for files ****************************************
 **
@@ -326,6 +347,9 @@ AjBool ajSysFileUnlink(const AjPStr filename)
     return ajFalse;
 }
 
+
+
+
 /* @obsolete ajSysUnlink
 ** @rename ajSysFileUnlink
 */
@@ -334,8 +358,6 @@ __deprecated AjBool ajSysUnlink(const AjPStr s)
 {
     return ajSysFileUnlink(s);
 }
-
-
 
 
 
@@ -414,6 +436,8 @@ AjBool ajSysFileWhich(AjPStr *Pfilename)
 }
 
 
+
+
 /* @obsolete ajSysWhich
 ** @rename ajSysFileWhich
 */
@@ -422,6 +446,8 @@ __deprecated AjBool ajSysWhich(AjPStr *s)
 {
     return ajSysFileWhich(s);
 }
+
+
 
 
 /* @func ajSysFileWhichEnv ****************************************************
@@ -546,6 +572,7 @@ AjBool ajSysFileWhichEnv(AjPStr *Pfilename, char * const env[])
 
 
 
+
 /* @obsolete ajSysWhichEnv
 ** @rename ajSysFileWhichEnv
 */
@@ -554,6 +581,8 @@ __deprecated AjBool ajSysWhichEnv(AjPStr *Pfilename, char * const env[])
 {
     return ajSysFileWhichEnv(Pfilename, env);
 }
+
+
 
 
 /* @section Wrappers to C functions *******************************************
@@ -570,6 +599,7 @@ __deprecated AjBool ajSysWhichEnv(AjPStr *Pfilename, char * const env[])
 **                          files
 ** @nam4rule  FuncFopen    An fopen replacement to cope with cygwin and windows
 ** @nam4rule  FuncFdopen   Calls non-ANSI fdopen.
+** @nam4rule  FuncSocket   A socket function fore UNIX and Windows
 ** @nam4rule  FuncStrdup   Duplicate BSD strdup function for very strict ANSI 
 ** @nam3rule  System       Execute a command line as if from the C shell
 ** @nam4rule  SystemEnv    Execute command line and pass the environment 
@@ -625,6 +655,8 @@ FILE* ajSysFuncFdopen(ajint filedes, const char *mode)
 }
 
 
+
+
 /* @obsolete ajSysFdopen
 ** @rename ajSysFuncFdopen
 */
@@ -633,6 +665,9 @@ __deprecated FILE* ajSysFdopen(ajint filedes, const char *mode)
 {
     return ajSysFuncFdopen(filedes, mode);
 }
+
+
+
 
 /* @func ajSysFuncFgets *******************************************************
 **
@@ -697,6 +732,9 @@ char* ajSysFuncFgets(char *buf, int size, FILE *fp)
 #endif
 }
 
+
+
+
 /* @obsolete ajSysFgets
 ** @rename ajSysFuncFgets
 */
@@ -705,6 +743,9 @@ __deprecated char* ajSysFgets(char *buf, int size, FILE *fp)
 {
     return ajSysFuncFgets(buf, size, fp);
 }
+
+
+
 
 /* @func ajSysFuncFopen *******************************************************
 **
@@ -742,6 +783,8 @@ FILE* ajSysFuncFopen(const char *name, const char *flags)
 }
 
 
+
+
 /* @obsolete ajSysFopen
 ** @rename ajSysFuncFopen
 */
@@ -750,6 +793,35 @@ __deprecated FILE* ajSysFopen(const char *name, const char *flags)
 {
     return ajSysFuncFopen(name, flags);
 }
+
+
+
+
+/* @func ajSysFuncSocket ******************************************************
+**
+** Socket function coping with UNIX and WIN32
+**
+** @param [r] domain [int] Domain
+** @param [r] type [int] Type
+** @param [r] protocol [int] Protocol
+** @return [SOCKRET] Universal (UNIX/WIN32) socket value
+** @@
+******************************************************************************/
+
+SOCKRET ajSysFuncSocket(int domain, int type, int protocol)
+{
+    SOCKRET ret;
+
+#ifndef WIN32
+    ret = socket(domain, type, protocol);
+#else
+    ret = WSASocket(domain, type, protocol,NULL,0,0);
+#endif
+
+    return ret;
+}
+
+
 
 
 /* @func ajSysFuncStrdup ******************************************************
@@ -771,6 +843,9 @@ char* ajSysFuncStrdup(const char *dupstr)
     return p;
 }
 
+
+
+
 /* @obsolete ajSysStrdup
 ** @rename ajSysFuncStrdup
 */
@@ -778,6 +853,9 @@ __deprecated char* ajSysStrdup(const char *s)
 {
     return ajSysFuncStrdup(s);
 }
+
+
+
 
 /* @func ajSysFuncStrtok ******************************************************
 **
@@ -821,6 +899,8 @@ char* ajSysFuncStrtok(const char *srcstr, const char *delimstr)
 }
 
 
+
+
 /* @obsolete ajSysStrtok
 ** @rename ajSysFuncStrtok
 */
@@ -829,6 +909,9 @@ __deprecated char* ajSysStrtok(const char *s, const char *t)
 {
     return ajSysFuncStrtok(s, t);
 }
+
+
+
 
 /* @func ajSysFuncStrtokR *****************************************************
 **
@@ -875,6 +958,9 @@ char* ajSysFuncStrtokR(const char *srcstr, const char *delimstr,
     return ajStrGetuniquePtr(buf);
 }
 
+
+
+
 /* @obsolete ajSysStrtokR
 ** @rename ajSysFuncStrtokR
 */
@@ -886,6 +972,9 @@ __deprecated char* ajSysStrtokR(const char *s, const char *t,
 {
     return ajSysFuncStrtokR(s, t, ptrptr, buf);
 }
+
+
+
 
 /* @func ajSysSystem **********************************************************
 **
@@ -957,6 +1046,8 @@ void ajSysSystem(const AjPStr cmdline)
 }
 
 
+
+
 /* @obsolete ajSystem
 ** @rename ajSysSystem
 */
@@ -966,6 +1057,9 @@ __deprecated void ajSystem(const AjPStr cl)
     ajSysSystem(cl);
     return;
 }
+
+
+
 
 /* @func ajSysSystemEnv *******************************************************
 **
@@ -1048,6 +1142,9 @@ void ajSysSystemEnv(const AjPStr cmdline, char * const env[])
     return;
 }
 
+
+
+
 /* @obsolete ajSystemEnv
 ** @rename ajSysSystemEnv
 */
@@ -1057,6 +1154,8 @@ __deprecated void ajSystemEnv(const AjPStr cl, char * const env[])
     ajSysSystemEnv(cl, env);
     return;
 }
+
+
 
 
 /* @func ajSysSystemOut *******************************************************
@@ -1136,6 +1235,9 @@ void ajSysSystemOut(const AjPStr cmdline, const AjPStr outfname)
     return;
 }
 
+
+
+
 /* @obsolete ajSystemOut
 ** @rename ajSysSystemOut
 */
@@ -1146,6 +1248,9 @@ __deprecated void ajSystemOut(const AjPStr cl, const AjPStr outfname)
     return;
 }
 
+
+
+
 /* @section Miscellaneous system functions ************************************
 **
 ** Miscellaneous system functions
@@ -1153,8 +1258,9 @@ __deprecated void ajSystemOut(const AjPStr cl, const AjPStr outfname)
 ** @fdata [none]
 ** @fcategory misc
 **
-** @nam3rule  Canon   Sets or unsets TTY canonical mode
-** @nam3rule  Exit    Cleans up system internals memory
+** @nam3rule  Canon          Sets or unsets TTY canonical mode
+** @nam3rule  Socketclose    Closes a UNIX or WIN32 socket
+** @nam3rule  Exit           Cleans up system internals memory
 ** 
 ** @argrule Canon state [AjBool] Canonical mode set if true
 ** @valrule   *  [void]
@@ -1193,6 +1299,83 @@ void ajSysCanon(AjBool state)
     return;
 }
 
+
+
+
+/* @func ajSysFdFromSocket  ****************************************************
+**
+** return a file descriptor from a UNIX of Windows socket
+**
+** @param [r] sock [struct AJSOCKET] AJAX socket structure
+** @param [r] mode [const char*] Opening mode ("r" or "a")
+** @return [FILE*] File descriptor
+** @@
+******************************************************************************/
+
+FILE *ajSysFdFromSocket(struct AJSOCKET sock, const char *mode)
+{
+    FILE *ret;
+#ifdef WIN32
+    int fd;
+    int flags = 0;
+    char c;
+    
+#endif
+
+    if(!mode)
+        return NULL;
+    
+#ifndef WIN32
+    ret = ajSysFuncFdopen(sock.sock,mode);
+#else
+    c = *mode;
+    
+    switch(c)
+    {
+        case 'r':
+            flags = _O_RDONLY;
+            break;
+        case 'a':
+            flags = _O_APPEND;
+            break;
+        default:
+            ajErr("ajSysFdFromSocket: Illegal mode [%c]",c);
+            break;
+    }
+    
+    fd  = _open_osfhandle(sock.sock, _O_RDONLY);
+    ret = ajSysFuncFdopen(fd,mode);
+#endif
+
+    return ret;
+}
+
+
+
+
+/* @func ajSysSocketclose  ****************************************************
+**
+** Closes a UNIX or WIN32 socket
+**
+** @param [r] sock [struct AJSOCKET] AJAX socket structure
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSysSocketclose(struct AJSOCKET sock)
+{
+#ifndef WIN32
+    close(sock.sock);
+#else
+    closesocket(sock.sock);
+#endif
+
+    return;
+}
+
+
+
+
 /* @func ajSysExit ************************************************************
 **
 ** Cleans up system internals memory
@@ -1211,7 +1394,6 @@ void ajSysExit(void)
 
     return;
 }
-
 
 
 
@@ -1265,7 +1447,3 @@ __deprecated AjBool ajSysIsRegular(const char *s)
 
     return ret;
 }
-
-
-
-
