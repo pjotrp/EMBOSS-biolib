@@ -44,6 +44,12 @@ static AjPStr sysTokSou  = NULL;
 static const char *sysTokp = NULL;
 static AjPStr sysUserPath = NULL;
 
+#ifndef WIN32
+static void sysTimeoutAbort(int sig);
+#else
+static void CALLBACK sysTimeoutAbort(LPVOID arg, DWORD low, DWORD high);
+#endif
+
 
 
 
@@ -1396,6 +1402,112 @@ void ajSysExit(void)
 }
 
 
+
+
+/* @func ajSysTimeoutSet  ****************************************************
+**
+** Sets an alarm abort timeout for UNIX and Windows
+**
+** @param [u] ts [struct AJTIMEOUT*] AJAX timeout structure
+** @return [int] 0 = success -1 = error
+** @@
+******************************************************************************/
+
+int ajSysTimeoutSet(struct AJTIMEOUT *ts)
+{
+    int ret = 0;
+    
+#ifndef WIN32
+    sigemptyset( &ts->sa.sa_mask );
+    ts->sa.sa_flags = 0;
+    ts->sa.sa_handler = sysTimeoutAbort;
+    ret = sigaction( SIGALRM, &ts->sa, NULL );
+
+    alarm(ts->seconds);
+#else
+    PTIMERAPCROUTINE ptim = NULL;
+
+    ts->wtime.QuadPart = -10000000LL;
+    ts->wtime.QuadPart *= ts->seconds;
+
+    ts->thandle = CreateWaitableTimer(NULL, TRUE, NULL);
+    if(!ts->thandle)
+        return -1;
+
+    ptim = (PTIMERAPCROUTINE) sysTimeoutAbort;
+
+    if (!SetWaitableTimer(ts->thandle, &ts->wtime, 0, ptim, NULL, 0))
+        ret = -1;
+    
+#endif
+
+    return ret;
+}
+
+
+
+
+/* @func ajSysTimeoutUnset ***************************************************
+**
+** Unsets an alarm abort timeout for UNIX and Windows
+**
+** @param [u] ts [struct AJTIMEOUT*] AJAX timeout structure
+** @return [int] 0 = success -1 = error
+** @@
+******************************************************************************/
+
+int ajSysTimeoutUnset(struct AJTIMEOUT *ts)
+{
+    int ret = 0;
+    
+#ifndef WIN32
+    ret = sigemptyset(&ts->sa.sa_mask);
+
+    alarm(0);
+#else
+    if(!CancelWaitableTimer(ts->thandle))
+        return -1;
+
+    if(!CloseHandle(ts->thandle))
+      ret = -1;
+#endif
+
+    return ret;
+}
+
+
+
+
+/* @funcstatic sysTimeoutAbort ********************************************
+**
+** Fatal error if a socket read hangs
+**
+** @param [r] sig [int] Signal code - always SIGALRM but required by the
+**                      signal call
+** @return [void]
+** @@
+******************************************************************************/
+#ifndef WIN32
+static void sysTimeoutAbort(int sig)
+{
+    (void) sig;
+
+    ajDie("Alarm timeout");
+
+    return;
+}
+#else
+static void CALLBACK sysTimeoutAbort(LPVOID arg, DWORD low, DWORD high)
+{
+    (void) arg;
+    (void) low;
+    (void) high;
+    
+    ajDie("Timer timeout");
+
+    return;
+}
+#endif
 
 
 /* @obsolete ajSysBasename

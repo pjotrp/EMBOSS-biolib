@@ -59,6 +59,32 @@ struct AJSOCKET
 
 
 
+/*
+** Structure for use with alarm timeouts
+** UNIX uses SIGALRM, but Windows does not have that signal.
+** Windows requires setting up a timer. This structure is primarily
+** to allow a handle to the timer to be passed back for use
+** with the ajSysTimeoutUnset() timer cancellation function.
+** On the UNIX side it holds the sigaction structure to allow
+** The action handler to be set to SIG_IGN, for extra safety.
+** Not implemented as an EMBOSS-style typedef as it is really a
+** system thing, but could be if desired.
+*/
+
+struct AJTIMEOUT
+{
+    ajint seconds;
+#ifdef WIN32
+    HANDLE thandle;
+    LARGE_INTEGER wtime;
+#else
+    struct sigaction sa;
+#endif
+};
+
+
+
+
 #ifndef WIN32
 #define AJBADSOCK -1
 #define SOCKRET int
@@ -98,6 +124,9 @@ void          ajSysSocketclose(struct AJSOCKET sock);
 void          ajSysSystem(const AjPStr cl);
 void          ajSysSystemEnv(const AjPStr cl, char * const env[]);
 void          ajSysSystemOut(const AjPStr cl, const AjPStr outfname);
+
+int           ajSysTimeoutSet(struct AJTIMEOUT *ts);
+int           ajSysTimeoutUnset(struct AJTIMEOUT *ts);
     
 /*
 ** End of prototype definitions
