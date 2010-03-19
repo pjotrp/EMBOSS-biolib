@@ -30,30 +30,6 @@
 #include "ajmart.h"
 
 
-#include <limits.h>
-#include <stdarg.h>
-#include <sys/types.h>
-#ifndef WIN32
-#include <dirent.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <dirent.h>
-#include <unistd.h>
-#else
-#include <winsock2.h>
-#include <io.h>
-#include <fcntl.h>
-#include "win32.h"
-#include "dirent_w32.h"
-#include <direct.h>
-extern int _open_osfhandle();
-#endif
-#include <errno.h>
-#include <signal.h>
-
-
 #define REGTABGUESS 100
 #define MART_READ_AHEAD 5
 
@@ -131,7 +107,233 @@ static const char *dataset_schemas[] =
     "phytozome_clusters", "zome_mart",
     NULL, NULL
 };
+
+
+
+
+/* @func ajStrUrlNew *********************************************************
+**
+** Initialise a URL components object
+**
+** @return [AjPUrl] URL Components
+******************************************************************************/
+
+AjPUrl ajStrUrlNew(void)
+{
+    AjPUrl ret = NULL;
+
+    AJNEW0(ret);
     
+    ret->Method   = ajStrNew();
+    ret->Host     = ajStrNew();
+    ret->Port     = ajStrNew();
+    ret->Absolute = ajStrNew();
+    ret->Relative = ajStrNew();
+    ret->Fragment = ajStrNew();
+
+    return ret;
+}
+
+
+
+
+/* @func ajStrUrlDel *********************************************************
+**
+** Delete URL components object
+**
+** @param [u] thys [AjPUrl*] URL components object
+** @return [void]
+******************************************************************************/
+
+void ajStrUrlDel(AjPUrl *thys)
+{
+    AjPUrl pthis = NULL;
+
+    if(!thys)
+        return;
+
+    if(!*thys)
+        return;
+
+    pthis = *thys;
+
+    ajStrDel(&pthis->Method);
+    ajStrDel(&pthis->Host);
+    ajStrDel(&pthis->Port);
+    ajStrDel(&pthis->Absolute);
+    ajStrDel(&pthis->Relative);
+    ajStrDel(&pthis->Fragment);
+
+    AJFREE(pthis);
+    
+    *thys = NULL;
+    
+    return;
+}
+
+
+
+
+/* @func ajStrUrlParseC ******************************************************
+**
+** Parse an IPV4/6 URL into its components
+**
+** @param [u] parts [AjPUrl*] URL components object
+** @param [u] url [const char*] URL
+** @return [void]
+******************************************************************************/
+
+void ajStrUrlParseC(AjPUrl *parts, const char *url)
+{
+    char *ucopy = NULL;
+    char *p = NULL;
+    char *post = NULL;
+
+    char *dest = NULL;
+    char *src  = NULL;
+    
+    AjPUrl comp = NULL;
+    
+    char *pmethod = NULL;
+    char *phost   = NULL;
+    char *pabs    = NULL;
+    char *prel    = NULL;
+    
+    if(!parts || !url)
+        return;
+    
+    if(!*parts)
+        return;
+    
+    ucopy = ajCharNewC(url);
+
+    post = ucopy;
+    comp = *parts;
+    
+    /* Get any fragment */
+    if ((p = strchr(ucopy, '#')))
+    {
+	*p++ = '\0';
+        ajStrAssignC(&comp->Fragment,p);
+    }
+
+    if((p = strchr(ucopy, ' ')))
+        *p++ = '\0';
+
+
+    for(p = ucopy; *p; ++p)
+    {
+	if (isspace((int) *p))
+        {
+            dest = p;
+            src  = p+1;
+            
+	    while ((*dest++ = *src++));
+
+	    p = p-1;
+	}
+
+	if (*p == '/' || *p == '#' || *p == '?')
+	    break;
+
+	if (*p == ':')
+        {
+		*p = '\0';
+                pmethod = post;
+		post = p+1;
+
+                if(ajCharPrefixCaseC(pmethod,"URL"))
+                    pmethod = NULL;
+                else
+                    break;
+	}
+    }
+
+    p = post;
+
+    if(*p == '/')
+    {
+	if(p[1] == '/')
+        {
+	    phost = p+2;		/* Thre is a host   */
+	    *p = '\0';
+	    p = strchr(phost,'/');	/* Find end of host */
+
+	    if(p)
+            {
+	        *p=0;			/* and terminate it */
+	        pabs = p+1;		/* Path found */
+	    }
+	}
+        else
+	    pabs = p+1;		/* Path found but not host */
+    }
+    else
+        prel = (*post) ? post : NULL;
+
+
+    if(pmethod)
+        ajStrAssignC(&comp->Method,pmethod);
+
+    if(phost)
+        ajStrAssignC(&comp->Host,phost);
+
+    if(pabs)
+        ajStrAssignC(&comp->Absolute,pabs);
+
+    if(prel)
+        ajStrAssignC(&comp->Relative,prel);
+
+    AJFREE(ucopy);
+
+    return;
+}
+
+
+
+
+/* @func ajStrUrlSplitPort ***************************************************
+**
+** Separate any port from a host specification (IPV4/6)
+**
+** @param [u] urli [AjPUrl] URL components object
+** @return [void]
+******************************************************************************/
+
+void ajStrUrlSplitPort(AjPUrl urli)
+{
+    const char *p   = NULL;
+    const char *end = NULL;
+    const char *start = NULL;
+    
+    ajint len;
+
+    if(!(len = ajStrGetLen(urli->Host)))
+        return;
+
+    end = (start = ajStrGetPtr(urli->Host)) + len - 1;
+
+    p = end;
+
+    if(!isdigit((int) *p))
+        return;
+
+    while(isdigit((int) *p) && p != start)
+        --p;
+
+    if(p == start)
+        return;
+
+    if(*p != ':')
+        return;
+    
+    ajStrAssignC(&urli->Port,p+1);
+
+    ajStrAssignSubC(&urli->Host,start,0,p-start-1);
+    
+    return;
+}
+
 
 
 
@@ -948,7 +1150,6 @@ AjBool ajMartGetRegistry(AjPSeqin seqin)
     AjPMartquery mq = NULL;
     
     ajint proxyport = 0;
-    ajint iport     = 0;
 
     FILE *fp = NULL;
     
@@ -967,15 +1168,14 @@ AjBool ajMartGetRegistry(AjPSeqin seqin)
     if(!mq)
         return ajFalse;
     
-    iport = mq->Regport;
-
     ajSeqHttpVersion(qry, &httpver);
 
     if(ajSeqHttpProxy(qry, &proxyport, &proxyname))
         ajFmtPrintS(&get, "GET http://%S:%d%S?type=registry HTTP/%S\r\n",
                     mq->Reghost, mq->Regport, mq->Regpath, httpver);
     else
-        ajFmtPrintS(&get, "GET %S?type=registry HTTP/%S\r\n", mq->Regpath, httpver);
+        ajFmtPrintS(&get, "GET %S?type=registry HTTP/%S\r\n", mq->Regpath,
+                    httpver);
 
 
     if(ajStrGetLen(proxyname))
@@ -3393,7 +3593,6 @@ AjBool ajMartParseParameters(AjPMartqinfo qinfo, const AjPStr atts,
     static const char *delimstr=",\t\n";
     static const char *quotstr="\"'";
     const char *tokstr = NULL;
-    const char *tok = NULL;
     ajuint natts = 0;
     
     buf    = ajStrNew();
@@ -3402,7 +3601,7 @@ AjBool ajMartParseParameters(AjPMartqinfo qinfo, const AjPStr atts,
     
     tokstr = ajStrGetPtr(atts);
     
-    while((tok = ajStrtokQuotR(tokstr,delimstr,quotstr,&ptrsave,&buf)))
+    while(ajStrtokQuotR(tokstr,delimstr,quotstr,&ptrsave,&buf))
     {
         tokstr = NULL;
         pushstr = ajStrNewS(buf);
@@ -3427,7 +3626,7 @@ AjBool ajMartParseParameters(AjPMartqinfo qinfo, const AjPStr atts,
 
     tokstr = ajStrGetPtr(filts);
     
-    while((tok = ajStrtokQuotR(tokstr,delimstr,quotstr,&ptrsave,&buf)))
+    while(ajStrtokQuotR(tokstr,delimstr,quotstr,&ptrsave,&buf))
     {
         tokstr = NULL;
         ajStrTrimWhite(&buf);

@@ -264,10 +264,46 @@ typedef struct AjSMartquery
 
 
 
+/* @data AjUrl ******************************************************
+**
+** Structure to hold parts of a URL
+**
+** @alias AjSUrl
+** @alias AjOUrl
+**
+** @attr Method [AjPStr] Method of access (e.g. http)
+** @attr Host [AjPStr] host
+** @attr Port [AjPStr] Port
+** @attr Absolute [AjPStr] Absolute path
+** @attr Relative [AjPStr] Relative path
+** @attr Fragment [AjPStr] Fragment/section
+** @@
+******************************************************************************/
+
+typedef struct AjSUrl
+{
+    AjPStr Method;
+    AjPStr Host;
+    AjPStr Port;
+    AjPStr Absolute;
+    AjPStr Relative;
+    AjPStr Fragment;
+} AjOUrl;
+
+#define AjPUrl AjOUrl*
+
+
+
+
 /*
 ** Prototype definitions
 */
 
+AjPUrl ajStrUrlNew(void);
+void   ajStrUrlDel(AjPUrl *thys);
+void   ajStrUrlParseC(AjPUrl *parts, const char *url);
+void   ajStrUrlSplitPort(AjPUrl urli);
+    
 AjPMartLoc ajMartLocNew(void);
 void ajMartLocDel(AjPMartLoc *thys);
 
