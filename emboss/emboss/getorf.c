@@ -643,13 +643,13 @@ static void getorf_WriteORF(const AjPSeq seq,
     }
 
     /* the base before the stop codon (numbering bases from 1) */
-    ajStrFromInt(&value, s);	
+    ajStrFromInt(&value, s + ajSeqGetOffset(seq));	
 					   
     ajStrAppendS(&name, value);
     ajStrAppendC(&name, " - ");
 
     /* the base before the stop codon (numbering bases from 1) */
-    ajStrFromInt(&value, e);
+    ajStrFromInt(&value, e + ajSeqGetOffset(seq));
 					   
 
     ajStrAppendS(&name, value);
