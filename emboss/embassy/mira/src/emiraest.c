@@ -449,11 +449,11 @@ int main(int argc, char **argv)
     ajDebug("Constructed command line: %S\n",cl);
 
 #if 0
-   ajFmtPrint("%S\n",cl);
+    ajFmtPrint("%S\n",cl);
 #endif
 
 #if 1
-    system(ajStrGetPtr(cl));
+    ajSysExecS(cl);
 #endif
 
     ajStrDel(&stmp);

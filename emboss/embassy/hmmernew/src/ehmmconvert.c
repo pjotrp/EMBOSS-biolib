@@ -43,7 +43,6 @@ int main(int argc, char **argv)
 
     /* Housekeeping variables */
     AjPStr        cmd = NULL;
-    AjPStr        tmp = NULL;
     char       option;
     
 
@@ -63,7 +62,6 @@ int main(int argc, char **argv)
 
     /* MAIN APPLICATION CODE */
     cmd = ajStrNew();
-    tmp = ajStrNew();
 
 
     /* 1. Build hmmconvert command line */
@@ -104,12 +102,11 @@ int main(int argc, char **argv)
 
     /* 3. Call hmmconvert */
     ajFmtPrint("\n%S\n\n", cmd);
-    system(ajStrGetPtr(cmd));
+    ajSysExecS(cmd);
 
 
     /* 4. Exit cleanly */
     ajStrDel(&cmd);
-    ajStrDel(&tmp);
     ajStrDel(&format);
 
     embExit();

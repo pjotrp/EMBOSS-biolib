@@ -495,13 +495,13 @@ int main(int argc, char **argv)
 	else if(modei==1)
 	{
 	    /* Alignment is NOT available: multiple sequence mode. */
-	    ajFmtPrintS(&cmd,"clustalw -infile=%S -align"
+	    ajFmtPrintS(&cmd,"%S -infile=%S -align"
 			" -MATRIX=BLOSUM -GAPOPEN=10"
 			" -GAPEXT=0.5 -outfile=%S\n",
-			clustin2,clustout);
+			ajAcdGetpathC("clustalw"), clustin2,clustout);
 	}	
 	ajFmtPrint("\n%S\n", cmd);
-	system(ajStrGetPtr(cmd));
+	ajSysExecS(cmd);
 	    
 	    
 	/* Reformat output file into domain alignment format. */
@@ -586,11 +586,11 @@ int main(int argc, char **argv)
 	/* Clean up directory. */
 	if(modei==2)
 	    if(scopalign->N !=0)
-		ajSysFileUnlink(clustin1);
+		ajSysFileUnlinkS(clustin1);
 	
-	ajSysFileUnlink(clustin2);
-	ajSysFileUnlink(clustout);
-	ajSysFileUnlink(clustdnd);  
+	ajSysFileUnlinkS(clustin2);
+	ajSysFileUnlinkS(clustout);
+	ajSysFileUnlinkS(clustdnd);  
 	
 	
 	/* Free memory. */

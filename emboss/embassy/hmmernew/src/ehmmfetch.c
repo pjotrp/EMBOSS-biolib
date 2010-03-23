@@ -40,11 +40,10 @@ int main(int argc, char **argv)
     AjPFile database = NULL;
     AjPStr      name = NULL;
     AjBool      nhmm = ajFalse;
-    AjPFile  outfile = NULL;
+    AjPStr  outfname = NULL;
 
     /* Housekeeping variables */
     AjPStr        cmd = NULL;
-    AjPStr        tmp = NULL;
 
 
 
@@ -56,7 +55,7 @@ int main(int argc, char **argv)
     database   = ajAcdGetInfile("database");
     name       = ajAcdGetString("name");
     nhmm       = ajAcdGetBoolean("nhmm");
-    outfile    = ajAcdGetOutfile("outfile");
+    outfname   = ajAcdGetOutfileName("outfile");
     
 
     
@@ -65,7 +64,6 @@ int main(int argc, char **argv)
     /* MAIN APPLICATION CODE */
     /* 1. Housekeeping */
     cmd = ajStrNew();
-    tmp = ajStrNew();
 
 
     /* 2. Build hmmfetch command line */
@@ -78,28 +76,25 @@ int main(int argc, char **argv)
     ajStrAssignS(&cmd, ajAcdGetpathC("hmmfetch"));
     if(nhmm)
 	ajStrAppendC(&cmd, " -n ");
-    /* Note the output redirected to outfile  */
-    ajFmtPrintAppS(&cmd, " %s %S > %s", 
-		   ajFileGetNameC(database),
-		   name,
-		   ajFileGetNameC(outfile));
+    /* Note the output redirected to outfname  */
+    ajFmtPrintAppS(&cmd, " %S %S", 
+		   ajFileGetNameS(database),
+		   name);
 
 
     /* 3. Close ACD files. */
     ajFileClose(&database);
-    ajFileClose(&outfile);
 
 
     /* 4. Call hmmfetch.  Use C system call instead of ajSystem
        so that redirect in cmd works ok. */
-    ajFmtPrint("\n%S\n\n", cmd);
-    system(ajStrGetPtr(cmd));
+    ajFmtPrint("\n%S > %S\n\n", cmd, outfname);
+    ajSysExecOutnameAppendS(cmd, outfname);
     
-
     /* 5. Exit cleanly */
     ajStrDel(&name);
     ajStrDel(&cmd);
-    ajStrDel(&tmp);
+    ajStrDel(&outfname);
 
     embExit();
 

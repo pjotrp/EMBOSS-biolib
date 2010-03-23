@@ -50,7 +50,6 @@ int main(int argc, char **argv)
 
     /* Housekeeping variables */
     AjPStr         cmd = NULL;
-    AjPStr         tmp = NULL;
     AjPStr         rnd = NULL;
     AjPStr      inname = NULL;
     AjPStr     outname = NULL;
@@ -80,7 +79,6 @@ int main(int argc, char **argv)
     /* MAIN APPLICATION CODE */
     /* 1. Housekeeping */
     cmd     = ajStrNew();
-    tmp     = ajStrNew();
     rnd     = ajStrNew();
     inname  = ajStrNew();
     outname = ajStrNew();
@@ -90,10 +88,7 @@ int main(int argc, char **argv)
 
     /* 2. Copy the input file (HMMER will overwrite it) */
     ajFilenameSetTempname(&rnd);
-    ajFmtPrintS(&cmd, "cp %S %S", inname, rnd);
-    /* ajFmtPrint("\n%S\n", cmd); */
-    system(ajStrGetPtr(cmd));
-
+    ajSysCommandCopyS(inname, rnd);
 
     /* 3. Build hmmcalibrate command-line */
     /* Command line is built in this order: 
@@ -126,22 +121,21 @@ int main(int argc, char **argv)
 
     /* 5. Call hmmcalibrate */
     ajFmtPrint("\n%S\n\n", cmd);
-    ajSysSystem(cmd);
+    ajSysExecS(cmd);
     
 
     /* 6. Copy HMMER output (overwritten input file) to output file. 
        Restore original input file. */
     ajFmtPrintS(&cmd, "mv %S %S", inname, outname);
     /*    ajFmtPrint("\n%S\n\n", cmd);  */
-    ajSysSystem(cmd);
+    ajSysCommandRenameS(inname, outname);
     ajFmtPrintS(&cmd, "mv %S %S", rnd, inname);
     /*    ajFmtPrint("\n%S\n\n", cmd);  */
-    ajSysSystem(cmd);
+    ajSysCommandRenameS(rnd, inname);
     
 
     /* 7. Exit cleanly */
     ajStrDel(&cmd);
-    ajStrDel(&tmp);
     ajStrDel(&rnd);
     ajStrDel(&inname);
     ajStrDel(&outname);

@@ -246,11 +246,11 @@ int main(int argc, char **argv)
 			    /* Call STAMP. */
 			    ajFmtPrintS(&exec,
                                         "%S -l %S -s -n 2 -slide 5 -prefix "
-					"%S -d %S > %S\n",
+					"%S -d %S",
                                         ajAcdGetpathC("stamp"),
-                                        dom, name, set, out);
+                                        dom, name, set);
 			    ajFmtPrint("%S\n", exec);
-			    system(ajStrGetPtr(exec));  
+			    ajSysExecOutnameS(exec, out);
 
 			    
 			    /* Open stamp output file. */
@@ -258,7 +258,7 @@ int main(int argc, char **argv)
 			    outf = ajFileNewInNameS(out);
 			    
 
-			    /* Parse stamp output file and write scores array. */ 
+			    /* Parse stamp output file,  write scores array */ 
 			    domainrep_WriteRmsd(x, y, &scores, outf);
 			    
 			    
@@ -421,10 +421,12 @@ int main(int argc, char **argv)
 			    
 			    
 		/* Call STAMP. */
-		ajFmtPrintS(&exec,"stamp -l %S -s -n 2 -slide 5 -prefix "
-			    "%S -d %S > %S\n", dom, name, set, out);
+		ajFmtPrintS(&exec,
+                            "%S -l %S -s -n 2 -slide 5 -prefix %S -d %S",
+                            ajAcdGetpathC("stamp"),
+                            dom, name, set);
 		ajFmtPrint("%S\n", exec);
-		system(ajStrGetPtr(exec));  
+		ajSysExecOutnameS(exec, out);
 
 			    
 		/* Open stamp output file. */
@@ -524,34 +526,12 @@ int main(int argc, char **argv)
 
 
     /* Remove all temporary files. */
-/*    if(domf)
-    {
-	ajFmtPrintS(&temp, "rm %S", dom);
-	ajSysSystem(temp);
-    }
-    if(setf)
-    {
-	ajFmtPrintS(&temp, "rm %S", set);
-	ajSysSystem(temp);
-    }
-    if(outf)
-    {    
-	ajFmtPrintS(&temp, "rm %S", out);
-	ajSysSystem(temp);
-    } */
 
 
-    ajFmtPrintS(&temp, "rm %S", dom);
-    ajSysSystem(temp);
-
-    ajFmtPrintS(&temp, "rm %S", set);
-    ajSysSystem(temp);
-
-    ajFmtPrintS(&temp, "rm %S", out);
-    ajSysSystem(temp);
-
-    ajFmtPrintS(&temp, "rm %S", scan);
-    ajSysSystem(temp);
+    ajSysFileUnlinkS(dom);
+    ajSysFileUnlinkS(set);
+    ajSysFileUnlinkS(out);
+    ajSysFileUnlinkS(scan);
 
     
     /* Tidy up*/

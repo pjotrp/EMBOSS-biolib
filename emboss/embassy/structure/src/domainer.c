@@ -211,9 +211,7 @@ int main(int argc, char **argv)
 	    ajWarn(ajStrGetPtr(msg));
 
 	    ajFileClose(&pdbscop_outf);
-	    ajFmtPrintS(&temp, "rm %S", pdbscop_name);
-	    ajFmtPrint("%S\n", temp);
-	    ajSysSystem(temp);
+	    ajSysFileUnlinkS(pdbscop_name);
 	}
 
 
@@ -226,9 +224,7 @@ int main(int argc, char **argv)
 	    ajWarn(ajStrGetPtr(msg));
 
 	    ajFileClose(&cpdbscop_outf);
-	    ajFmtPrintS(&temp, "rm %S", cpdbscop_name);
-	    ajFmtPrint("%S\n", temp);
-	    ajSysSystem(temp);
+	    ajSysFileUnlinkS(cpdbscop_name);
 	}
 
 

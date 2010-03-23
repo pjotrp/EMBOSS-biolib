@@ -64,7 +64,6 @@ int main(int argc, char **argv)
     AjPStr          cmd = NULL;
     AjPStr         rnd1 = NULL;
     AjPStr         rnd2 = NULL;
-    AjPStr          tmp = NULL;
     AjPStr          fmt = NULL;
     char         option;
     AjBool        fmtok = ajFalse;
@@ -109,7 +108,6 @@ int main(int argc, char **argv)
     cmd  = ajStrNew();
     rnd1 = ajStrNew();
     rnd2 = ajStrNew();
-    tmp  = ajStrNew();
     fmt  = ajStrNew();
     hmmfilename = ajStrNew();
 
@@ -217,7 +215,7 @@ int main(int argc, char **argv)
 
     /* 5. Call hmmbuild */
     ajFmtPrint("\n%S\n", cmd); 
-    system(ajStrGetPtr(cmd));    
+    ajSysExecS(cmd);    
 
 
     /* 6. Exit cleanly */
@@ -225,7 +223,6 @@ int main(int argc, char **argv)
     ajStrDel(&cmd);
     ajStrDel(&rnd1);
     ajStrDel(&rnd2);
-    ajStrDel(&tmp);
     ajStrDel(&fmt);
     ajStrDel(&hmmfilename);
     ajStrDel(&strategy);

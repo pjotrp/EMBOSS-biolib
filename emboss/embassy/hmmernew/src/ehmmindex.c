@@ -41,7 +41,6 @@ int main(int argc, char **argv)
 
     /* Housekeeping variables */
     AjPStr        cmd = NULL;
-    AjPStr        tmp = NULL;
 
 
 
@@ -59,7 +58,6 @@ int main(int argc, char **argv)
     /* MAIN APPLICATION CODE */
     /* 1. Housekeeping */
     cmd = ajStrNew();
-    tmp = ajStrNew();
 
 
     /* 2. Build hmmindex command line */
@@ -79,11 +77,10 @@ int main(int argc, char **argv)
 
     /* 4. Call hmmindex */
     ajFmtPrint("\n%S\n\n", cmd);
-    system(ajStrGetPtr(cmd));
+    ajSysExecS(cmd);
 
     /* 5. Exit cleanly */
     ajStrDel(&cmd);
-    ajStrDel(&tmp);
     
     embExit();
 

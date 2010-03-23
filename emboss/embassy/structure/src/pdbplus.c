@@ -90,12 +90,12 @@ int main(ajint argc, char **argv)
     AjPStr  *mode        = NULL;   /* Mode of operation from acd.            */
 
     AjPFile  errf        = NULL;   /* pdbplus error file pointer.            */
-    AjPFile  serrf       = NULL;   /* stride error file pointer.             */
-    AjPFile  nerrf       = NULL;   /* stride error file pointer.             */
     AjPFile  tempf       = NULL;   /* Temp file for holding STRIDE output.   */
     AjPFile  ccf_inf     = NULL;   /* Protein coordinate input file.         */
     AjPFile  ccf_outf    = NULL;   /* Protein coordinate output file.        */
 
+    AjPStr   nerrname    = NULL;   /* naccess error file name */
+    AjPStr   serrname    = NULL;   /* stride error file name */
     AjIList  iter        = NULL; 
 
     AjBool   done_naccess= ajFalse;
@@ -163,12 +163,12 @@ int main(ajint argc, char **argv)
     mode         = ajAcdGetList("mode");
     errf         = ajAcdGetOutfile("logfile");
     if(ajStrGetCharFirst(*mode) != '2')
-	serrf    = ajAcdGetOutfile("slogfile");
+	serrname = ajAcdGetOutfileName("slogfile");
     if(ajStrGetCharFirst(*mode) != '1')
-	nerrf    = ajAcdGetOutfile("nlogfile");
+	nerrname = ajAcdGetOutfileName("nlogfile");
+
     tS           = ajAcdGetInt("thresholdsize");
  
-
     
 
 
@@ -253,16 +253,14 @@ int main(ajint argc, char **argv)
 	    /* 
 	     **  Create a string containing the STRIDE command line (it needs
 	     **  PDB file name & name of temp output file).
-	     **  Call STRIDE by using ajSystem.
+	     **  Call STRIDE by using ajSysExecOutnameErrS.
 	     */
 	    
-	    ajFmtPrintS(&syscmd, "%S %S -f%S >> %s 2>&1",  
+	    ajFmtPrintS(&syscmd, "%S %S -f%S",  
 			ajAcdGetpathC("stride"),
-                        pdb_name, randomname, ajFileGetNameC(serrf));
-	    ajFmtPrint("%S %S -f%S >> %s 2>&1\n",  
-		       ajAcdGetpathC("stride"),
-                       pdb_name, randomname,ajFileGetNameC(serrf));
-	    system(ajStrGetPtr(syscmd));  
+                        pdb_name, randomname);
+	    ajFmtPrint("%S\n", syscmd);
+	    ajSysExecOutnameAppendErrS(syscmd, serrname);
 
 	    
 	    /* Open the stride output file */
@@ -374,8 +372,7 @@ int main(ajint argc, char **argv)
 	    ajFileClose(&tempf);
 
 	    /* Remove temporary file (stride output file). */
-	    ajFmtPrintS(&exec, "rm %S", randomname); 
-	    ajSysSystem(exec); 
+	    ajSysCommandRemoveS(randomname); 
 	    
 	    /* 
 	     **  Calculate element serial numbers (eStrideNum)& ammend residue
@@ -397,13 +394,10 @@ int main(ajint argc, char **argv)
 	     **   use the .rsa file here). 
 	     */
 	    
-	    ajFmtPrintS(&syscmd, "%S %S  >> %s 2>&1",  
-			ajAcdGetpathC("naccess"), pdb_name, 
-			ajFileGetNameC(nerrf));
-	    ajFmtPrint("%S %S  >> %s 2>&1\n",  
-		       ajAcdGetpathC("naccess"), pdb_name, 
-		       ajFileGetNameC(nerrf));
-	    system(ajStrGetPtr(syscmd));  
+	    ajFmtPrintS(&syscmd, "%S %S",  
+			ajAcdGetpathC("naccess"), pdb_name);
+	    ajFmtPrint("%S\n", syscmd);
+	    ajSysExecOutnameAppendErrS(syscmd, nerrname);
 
 
 	    
@@ -529,20 +523,18 @@ int main(ajint argc, char **argv)
 	    /* Remove temporary file (naccess output files). */
 	    ajFileClose(&tempf);
 	    
-	    ajFmtPrintS(&exec, "rm %S", naccess_str); 
-	    ajSysSystem(exec); 
+	    ajSysCommandRemoveS(naccess_str); 
 
 	    ajStrAssignS(&naccess_str, pdbprefix);
 	    ajStrAppendS(&naccess_str, pdb->Pdb);
 	    ajStrAppendC(&naccess_str, ".asa");
-	    ajFmtPrintS(&exec, "rm %S", naccess_str);
-	    ajSysSystem(exec); 
+	    ajSysCommandRemoveS(naccess_str); 
 
 	    ajStrAssignS(&naccess_str, pdbprefix);
 	    ajStrAppendS(&naccess_str, pdb->Pdb);
 	    ajStrAppendC(&naccess_str, ".log");
 	    ajFmtPrintS(&exec, "rm %S", naccess_str);
-	    ajSysSystem(exec); 
+	    ajSysCommandRemoveS(naccess_str); 
 	}
 
         /* Open CCF (output) file. */
@@ -587,10 +579,6 @@ int main(ajint argc, char **argv)
     ajStrDel(&syscmd);
   
     ajFileClose(&errf);
-    if(ajStrGetCharFirst(*mode) != '2')
-	ajFileClose(&serrf);
-    if(ajStrGetCharFirst(*mode) != '1')
-	ajFileClose(&nerrf);
 
     ajStrDel(&mode[0]);
     AJFREE(mode);

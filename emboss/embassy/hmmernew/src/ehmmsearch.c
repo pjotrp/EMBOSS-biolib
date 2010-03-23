@@ -54,11 +54,10 @@ int main(int argc, char **argv)
     AjBool    nulltwo = ajFalse;
     AjBool        pvm = ajFalse;
     AjBool        xnu = ajFalse;
-    AjPFile   outfile = NULL;
+    AjPStr    outname = NULL;
 
     /* Housekeeping variables */
     AjPStr        cmd = NULL;
-    AjPStr        tmp = NULL;        
        
 
 
@@ -84,7 +83,7 @@ int main(int argc, char **argv)
     nulltwo = ajAcdGetBoolean("nulltwo");
         pvm = ajAcdGetBoolean("pvm");
         xnu = ajAcdGetBoolean("xnu");
-    outfile = ajAcdGetOutfile("outfile");
+    outname = ajAcdGetOutfileName("outfile");
 
 
 
@@ -93,7 +92,6 @@ int main(int argc, char **argv)
     /* MAIN APPLICATION CODE */
     /* 1. Housekeeping */
     cmd = ajStrNew();
-    tmp = ajStrNew();
 
 
     /* 2. Build hmmsearch command line */
@@ -108,7 +106,7 @@ int main(int argc, char **argv)
     if(compat)
 	ajStrAppendC(&cmd, " --compat ");
     if(cpu)
-	ajFmtPrintAppS(&cmd, " --cpu %d ", cpu);
+      ajFmtPrintAppS(&cmd, " --cpu %d ", cpu);
     if(cutga)
 	ajStrAppendC(&cmd, " --cutga ");
     if(cuttc)
@@ -124,27 +122,24 @@ int main(int argc, char **argv)
 	ajStrAppendC(&cmd, " --pvm ");
     if(xnu)
 	ajStrAppendC(&cmd, " --xnu ");
-    ajFmtPrintAppS(&cmd, " %s %S > %s", 
+    ajFmtPrintAppS(&cmd, " %s %S", 
 		   ajFileGetNameC(hmmfile),
-		   ajSeqallGetFilename(seqfile),
-		   ajFileGetNameC(outfile));
+		   ajSeqallGetFilename(seqfile));
 
 
     /* 3. Close ACD files. */
     ajFileClose(&hmmfile);
     ajSeqallDel(&seqfile);
-    ajFileClose(&outfile);
 
 
     /* 4. Call hmmsearch.  Use C system call instead of ajSystem
        so that redirect in cmd works ok. */
-    ajFmtPrint("\n%S\n\n", cmd);
-    system(ajStrGetPtr(cmd));
-
+    ajFmtPrint("\n%S > %S\n\n", cmd, outname);
+    ajSysExecOutnameAppendS(cmd, outname);
 
     /* 5. Exit cleanly */
     ajStrDel(&cmd);
-    ajStrDel(&tmp);
+    ajStrDel(&outname);
     
     embExit();
 

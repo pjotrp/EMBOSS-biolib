@@ -56,11 +56,10 @@ int main(int argc, char **argv)
     AjBool    nulltwo = ajFalse;
     AjBool        pvm = ajFalse;
     AjBool        xnu = ajFalse;
-    AjPFile   outfile = NULL;
+    AjPStr    outname = NULL;
 
     /* Housekeeping variables */
     AjPStr        cmd = NULL;
-    AjPStr        tmp = NULL;
     AjPStr        rnd = NULL;    
     AjPSeqout    rndo = NULL;    
     AjPSeq        seq = NULL;    
@@ -89,7 +88,7 @@ int main(int argc, char **argv)
     nulltwo = ajAcdGetBoolean("nulltwo");
         pvm = ajAcdGetBoolean("pvm");
         xnu = ajAcdGetBoolean("xnu");
-    outfile = ajAcdGetOutfile("outfile");
+    outname = ajAcdGetOutfileName("outfile");
 
 
 
@@ -98,7 +97,6 @@ int main(int argc, char **argv)
     /* MAIN APPLICATION CODE */
     /* 1. Housekeeping */
     cmd = ajStrNew();
-    tmp = ajStrNew();
     rnd = ajStrNew();
 
     /* 2. Re-write seqfile to a temporary file in a format (fasta) HMMER can understand.
@@ -132,7 +130,7 @@ int main(int argc, char **argv)
     if(compat)
 	ajStrAppendC(&cmd, " --compat ");
     if(cpu)
-	ajFmtPrintAppS(&tmp, " --cpu %d ", cpu);
+	ajFmtPrintAppS(&cmd, " --cpu %d ", cpu);
     if(cutga)
 	ajStrAppendC(&cmd, " --cutga ");
     if(cuttc)
@@ -149,34 +147,32 @@ int main(int argc, char **argv)
     if(xnu)
 	ajStrAppendC(&cmd, " --xnu ");
 
-    /* Note output redirected to outfile.
+    /* Note output redirected to outname.
        rnd is the name of the rewritten seqfile.  
        MUST specify FASTA format explicitly. */
-    ajFmtPrintAppS(&cmd, " --informat FASTA %s %S > %s", 
+    ajFmtPrintAppS(&cmd, " --informat FASTA %s %S", 
 		   ajFileGetNameC(hmmfile),
-		   rnd,
-		   ajFileGetNameC(outfile));
+		   rnd);
     
 
     /* 3. Close ACD files. */
     ajFileClose(&hmmfile);
     ajSeqallDel(&seqfile);
-    ajFileClose(&outfile);
 
 
     /* 4. Call hmmpfam.  Use C system call instead of ajSystem
        so that redirect in cmd works ok. */
     ajFmtPrint("\n%S\n\n", cmd);
-    system(ajStrGetPtr(cmd));
+    ajSysExecOutnameAppendS(cmd,outname);
 
 
     /* 5. Exit cleanly */
-    ajFmtPrintS(&tmp, "rm %S", rnd);
-    system(ajStrGetPtr(tmp)); 
+
+    ajSysFileUnlinkS(rnd);
 
     ajStrDel(&cmd);
-    ajStrDel(&tmp);
     ajStrDel(&rnd);
+    ajStrDel(&outname);
 
     embExit();
 

@@ -47,7 +47,6 @@ int main(int argc, char **argv)
 
     /* Housekeeping variables */
     AjPStr        cmd = NULL;
-    AjPStr        tmp = NULL;
     AjPStr        fmt = NULL;
     AjBool      fmtok = ajFalse;
     AjPStr        rnd = NULL;      
@@ -73,7 +72,6 @@ int main(int argc, char **argv)
     /* MAIN APPLICATION CODE */
     /* 1. Housekeeping */
     cmd  = ajStrNew();
-    tmp  = ajStrNew();
     fmt  = ajStrNew();
     rnd  = ajStrNew();
 
@@ -155,15 +153,13 @@ int main(int argc, char **argv)
     
     /* 5. Call hmmalign */
     ajFmtPrint("\n%S\n\n", cmd);
-    system(ajStrGetPtr(cmd));
+    ajSysExecS(cmd);
 
 
     /* 6. Exit cleanly */
-    ajFmtPrintS(&tmp, "rm %S", rnd);
-    system(ajStrGetPtr(tmp)); 
+    ajSysFileUnlinkS(rnd); 
     
     ajStrDel(&cmd);
-    ajStrDel(&tmp);
     ajStrDel(&fmt);
     ajStrDel(&rnd);
     embExit();

@@ -213,9 +213,7 @@ int main(int argc, char **argv)
         
 
         /* Delete psiblast output file*/
-	ajFmtPrintS(&temp, "rm %S", psiname);
-	system(ajStrGetPtr(temp));  
-	
+        ajSysFileUnlinkS(psiname);
 
 
 	/* Create hits output file name - the same name as the input file. */
@@ -515,19 +513,16 @@ static AjPFile seqsearch_psialigned(AjPStr seqname,
     
     /* Run PSI-BLAST. */
     ajFmtPrintS(&temp,
-		"%S -t 1 -i %S -B %S -j %d -e %f -b %d -v %d -d %S > %S\n",
+		"%S -t 1 -i %S -B %S -j %d -e %f -b %d -v %d -d %S",
                 ajAcdGetpathC("blastpgp"),
-                seq_in, seqs_in, niter,evalue, maxhits, maxhits, database,
-		*psiname);
+                seq_in, seqs_in, niter,evalue, maxhits, maxhits, database);
     ajFmtPrint("%S\n", temp);
-    system(ajStrGetPtr(temp));
+    ajSysExecOutnameS(temp, *psiname);
     
 
     /* Remove temp. files. */
-    ajFmtPrintS(&temp, "rm %S", seq_in);
-    system(ajStrGetPtr(temp));
-    ajFmtPrintS(&temp, "rm %S", seqs_in);
-    system(ajStrGetPtr(temp)); 
+    ajSysFileUnlinkS(seq_in);
+    ajSysFileUnlinkS(seqs_in);
 
 
     /* Tidy up. */
@@ -645,14 +640,14 @@ static AjPFile seqsearch_psisingle(AjPStr seqname,
 
     /* Run PSI-BLAST. */
     ajFmtPrintS(&temp,
-                "blastpgp -i %S -j %d -e %f -b %d -v %d -d %S > %S\n",
-                seq_in, niter,evalue, maxhits, maxhits, database, *psiname);
+                "%S -i %S -j %d -e %f -b %d -v %d -d %S",
+                ajAcdGetpathC("blastpgp"), seq_in, niter, evalue,
+                maxhits, maxhits, database);
     ajFmtPrint("%S\n", temp);
-    system(ajStrGetPtr(temp));
+    ajSysExecOutnameS(temp, *psiname);
 
     /* Remove temp. files. */
-    ajFmtPrintS(&temp, "rm %S", seq_in);
-    system(ajStrGetPtr(temp)); 
+    ajSysFileUnlinkS(seq_in);
 
     /* Tidy up. */
     ajFileClose(&dhfin);

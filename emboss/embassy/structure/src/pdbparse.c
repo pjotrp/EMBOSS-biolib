@@ -230,9 +230,7 @@ int main(ajint argc, char **argv)
 	    ajWarn(ajStrGetPtr(msg));
 	    ajFmtPrintF(logf, "%-15s%S\n//\n", "FILE_WRITE", ccf_name); 
 	    
-	    ajFmtPrintS(&temp, "rm %S", ccf_name);
-	    ajFmtPrint("%S", temp);
-	    ajSysSystem(temp);
+	    ajSysFileUnlinkS(ccf_name);
 
 	    ajFileClose(&pdb_inf);
 	    ajFileClose(&ccf_outf);

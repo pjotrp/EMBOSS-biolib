@@ -270,27 +270,24 @@ int main(int argc, char **argv)
 			    ajAcdGetpathC("modelfromalign"),
                             tmpfname, seqsfname);
 		ajFmtPrint("%S\n", cmd);
-		system(ajStrGetPtr(cmd));
+		ajSysExecS(cmd);
 
 		/* Could run buildmodel to refine the model 
-		//   ajFmtPrintS(&cmd,"buildmodel %S -train %S -alignfile %S",
-		//   outname,tmpfname,seqsfname);
+		//   ajFmtPrintS(&cmd,"%S %S -train %S -alignfile %S",
+		//   ajAcdGetpathC("buildmodel"),outname,tmpfname,seqsfname);
 		//   ajFmtPrint("%S\n", cmd);
-		//   system(ajStrGetPtr(cmd));
+		//   ajSysExecS(cmd);
                 */
 
-		ajFmtPrintS(&cmd,"rm %S",tmpfname);
-		system(ajStrGetPtr(cmd));
+		ajSysFileUnlinkS(tmpfname);
 	    }
 	    
 	    
 	    ajFmtPrint("%S\n", cmd);
-	    ajSysSystem(cmd);
-	    ajFmtPrintS(&cmd,"rm %S",seqsfname);
-	    ajSysSystem(cmd);
-	    ajFmtPrintS(&cmd,"rm %S",seqfname);
-	    ajSysSystem(cmd);
+	    ajSysExecS(cmd);
 
+	    ajSysFileUnlinkS(seqsfname);
+	    ajSysFileUnlinkS(seqfname);
 	}
 	else
 	{

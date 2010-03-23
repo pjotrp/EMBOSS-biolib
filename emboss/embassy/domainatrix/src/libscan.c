@@ -1469,10 +1469,12 @@ static AjBool libscan_SamSearch(AjPStr samdb, AjPStr samfile, AjPStr family,
     ajStrAppendC(&samoutfname, ".mstat");
     
     /* RUN SAMSEARCH */
-    ajFmtPrintS(&cmd,"/usr/local/sam/bin/hmmscore %S -i %S -db %S -nscoreseq dbsize -select_mdalign 8 -sw 3",sambasename,samfile,samdb);
+    ajFmtPrintS(&cmd,"%S %S -i %S -db %S -nscoreseq dbsize "
+                "-select_mdalign 8 -sw 3",
+                ajAcdGetPathC("hmmscore"). sambasename, samfile, samdb);
 
     /* execute the command line */
-    system(ajStrGetPtr(cmd));
+    ajSysCommandS(cmd);
         
     inf = ajFileNewInNameS(samoutfname);
     
@@ -1599,12 +1601,12 @@ static AjBool libscan_SamSearch(AjPStr samdb, AjPStr samfile, AjPStr family,
     ajRegFree(& rexp3);
     
     /* clean up directory */
-    ajFmtPrintS(&cmd,"rm %S.dist",sambasename);
-    system(ajStrGetPtr(cmd));
-    ajFmtPrintS(&cmd,"rm %S.mstat",sambasename);
-    system(ajStrGetPtr(cmd));
-    ajFmtPrintS(&cmd,"rm %S.mult",sambasename);
-    system(ajStrGetPtr(cmd));
+    ajFmtPrintS(&cmd,"%S.dist",sambasename);
+    ajSysFileUnlinkS(cmd);
+    ajFmtPrintS(&cmd,"%S.mstat",sambasename);
+    ajSysFileUnlinkS(cmd);
+    ajFmtPrintS(&cmd,"%S.mult",sambasename);
+    ajSysFileUnlinkS(cmd);
 
     ajStrDel(&tmp );
     ajStrDel(&srt_end_str);
@@ -1738,8 +1740,7 @@ static AjBool libscan_RunBlastpgpInModeOne(AjPStr db, AjPStr pssmpath,
 						       NULL,mode);
 
 		/* Delete tmp psiblast output file*/
-		ajFmtPrintS(&temp, "rm %S", psiname);
-		system(ajStrGetPtr(temp));
+		ajSysFileUnlinkS(psiname);
 
 		/* close outfile and clean up */
                 ajFileClose(&blastoutf);
@@ -2769,10 +2770,11 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
     ajStrAppendC(&samoutfname, ".mstat");
 
     /* RUN SAMSEARCH */
-    ajFmtPrintS(&cmd,"/usr/local/sam/bin/hmmscore %S -i %S -db %S -select_mdalign 8 -sw 3",sambasename,samfile,saminfname);
+    ajFmtPrintS(&cmd,"%S %S -i %S -db %S -select_mdalign 8 -sw 3",
+                ajAcdGetpathC("hmmscore"), sambasename,samfile,saminfname);
 
     /* execute the command line */
-    system(ajStrGetPtr(cmd));
+    ajSysExecS(cmd);
 
     /* open samsearch output file */
     if(!(inf = ajFileNewInNameS(samoutfname)))
@@ -2819,12 +2821,12 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
     ajFileClose(&inf);
 
     /* clean up directory */
-    ajFmtPrintS(&cmd,"rm %S.dist",sambasename);
-    system(ajStrGetPtr(cmd));
-    ajFmtPrintS(&cmd,"rm %S.mstat",sambasename);
-    system(ajStrGetPtr(cmd));
-    ajFmtPrintS(&cmd,"rm %S.mult",sambasename);
-    system(ajStrGetPtr(cmd));
+    ajFmtPrintS(&cmd,"%S.dist",sambasename);
+    ajSysFileUnlinkS(cmd);
+    ajFmtPrintS(&cmd,"%S.mstat",sambasename);
+    ajSysFileUnlinkS(cmd);
+    ajFmtPrintS(&cmd,"%S.mult",sambasename);
+    ajSysFileUnlinkS(cmd);
 
   }
   ajListIterDel(&iter);
@@ -2936,10 +2938,11 @@ AjBool libscan_RunHmmsearch(AjPStr filename, AjPStr db, AjPStr outfname)
     cmd = ajStrNew();
 
     /* construct command line for hmmsearch */
-    ajFmtPrintS(&cmd,"/usr/local/hmmer211/bin/hmmsearch %S %S > %S",filename,db,outfname);
+    ajFmtPrintS(&cmd,"%S %S %S",
+                ajAcdGetpathC("hmmsearch"), filename,db);
 
     /* execute the command line */
-    system(ajStrGetPtr(cmd));
+    ajSysExecOutnameS(cmd, outfname);
   
     /* clean up */
     ajStrDel(&cmd);
@@ -2977,11 +2980,14 @@ AjBool libscan_RunProphet(AjPStr profile, AjPStr db, float gapopen, float gapext
     cmd = ajStrNew();
 
     /* construct command line for hmmsearch */
-    ajFmtPrintS(&cmd,"/m1/rranasin/emboss/emboss/emboss/prophet -sequence %S -infile %S -gapopen %1f -gapextend %1f -outfile %S",
+    ajFmtPrintS(&cmd,
+                "%S -sequence %S -infile %S -gapopen %1f -gapextend %1f "
+                "-outfile %S",
+                ajAcdGetPathC("prophet"),
                 db,profile,gapopen,gapextend,outfname);
 
     /* execute the command line */
-    system(ajStrGetPtr(cmd));
+    ajSysExecS(cmd);
 
     /* clean up */
     ajStrDel(&cmd);
@@ -3715,15 +3721,17 @@ static AjPFile libscan_RunBlastpgp(AjPStr database, AjPStr masterseq,
     /* Run PSI-BLAST */
 
     /* create an index for the database */
-    ajFmtPrintS(&temp,"/usr/local/blast/formatdb -i %S -p T -o T",database);
+    ajFmtPrintS(&temp,"%S -i %S -p T -o T",
+                ajAcdGetpathC("formatdb"), database);
     ajFmtPrint("%S\n", temp);
-    system(ajStrGetPtr(temp));
+    ajSysExecS(temp);
     
     /* run psi-blast */
-    ajFmtPrintS(&temp,"/usr/local/blast/blastpgp -i %S -R %S -j %d -h %f -b %d -v %d -d %S > %S\n",
-                masterseq, pssmfile, niter,evalue, maxhit, maxhit, database, *psiname);
+    ajFmtPrintS(&temp,"%S -i %S -R %S -j %d -h %f -b %d -v %d -d %S\n",
+                ajAcdGetpathC("blastpgp"),
+                masterseq, pssmfile, niter,evalue, maxhit, maxhit, database);
     ajFmtPrint("%S\n", temp);
-    system(ajStrGetPtr(temp));
+    ajSysExecOutnameS(tep, *psiname);
     
     /* cleanup directory */
 
@@ -3814,10 +3822,11 @@ static AjBool libscan_RunRPSBlast(AjPSeqset set, AjPStr db, AjPStr *mode,
 	    ajFileClose(&pssminf);
             
             /* run rps_blast */
-	    ajFmtPrintS(&temp,"/usr/local/blast/rpsblast -i %S -e %f -d %S -o %S",
-			pssminfname,evalue, db, psiname);
+	    ajFmtPrintS(&temp,"%S -i %S -e %f -d %S -o %S",
+			ajAcdGetpathC("rpsblast"),
+                        pssminfname,evalue, db, psiname);
 	    ajFmtPrint("%S\n", temp);
-	    system(ajStrGetPtr(temp));
+	    ajSysExecS(temp);
 
 	    /* parse the output from search results */
 	    pssmoutf = ajFileNewInNameS(psiname);
@@ -3830,12 +3839,10 @@ static AjBool libscan_RunRPSBlast(AjPSeqset set, AjPStr db, AjPStr *mode,
 	    ajFileClose(&pssmoutf);
 
 	    /* Delete tmp rpsblast output file*/
-	    ajFmtPrintS(&temp, "rm %S", psiname);
-	    system(ajStrGetPtr(temp));
+	    ajSysFileUnlinkS(psiname);
 
 	    /* Delete tmp rpsblast input file */
-	    ajFmtPrintS(&temp, "rm %S", pssminfname);
-	    system(ajStrGetPtr(temp));	    
+	    ajSysFileUnlinkS(pssminfname);
 
 	    /* generate list for ease of use */
 	    for(i=0;i<blastlist->N;i++)
