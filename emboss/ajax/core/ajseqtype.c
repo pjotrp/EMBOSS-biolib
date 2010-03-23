@@ -625,7 +625,7 @@ AjBool ajSeqTypeCheckIn(AjPSeq thys, const AjPSeqin seqin)
     AjPStr Type;
     ajint i;
     
-    ajDebug("testing sequence '%s' '%S' type '%S' IsNuc %B IsProt %B\n",
+    ajDebug("testing sequence '%s' '%50.50S' type '%S' IsNuc %B IsProt %B\n",
 	    ajSeqGetNameC(thys), thys->Seq,
 	    seqin->Inputtype, seqin->IsNuc, seqin->IsProt);
 
