@@ -1,4 +1,4 @@
-Searches ligand-signature library & writes hits (LHF file)
+Searches ligand-signature library and writes hits (LHF file)
 Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:

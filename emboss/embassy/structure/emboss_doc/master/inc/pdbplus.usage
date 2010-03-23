@@ -5,7 +5,7 @@
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>pdbplus </b>
-Add accessibility & secondary structure to a CCF file.
+Add accessibility and secondary structure to a CCF file.
 Clean protein structure coordinates directories [./]: <b>../pdbparse-keep/</b>
 Pdb entry directory [./]: <b></b>
 File prefix of PDB files (if any): <b></b>
@@ -21,14 +21,14 @@ Stride program log output file [stride.log]: <b></b>
 Naccess program log output file [naccess.log]: <b></b>
 
 Processing /homes/user/test/qa/pdbparse-keep/1cs4.ccf
-/shared/software/bin/stride /homes/user/test/data/structure/1cs4.ent -f./pdbplus-1234567890.1234 >> stride.log 2>&1
-/shared/software/bin/naccess /homes/user/test/data/structure/1cs4.ent  >> naccess.log 2>&1
+/shared/software/bin/stride /homes/user/test/data/structure/1cs4.ent -f./pdbplus-1269354236.25929
+/shared/software/bin/naccess /homes/user/test/data/structure/1cs4.ent
 Processing /homes/user/test/qa/pdbparse-keep/1ii7.ccf
-/shared/software/bin/stride /homes/user/test/data/structure/1ii7.ent -f./pdbplus-1234567890.1234 >> stride.log 2>&1
-/shared/software/bin/naccess /homes/user/test/data/structure/1ii7.ent  >> naccess.log 2>&1
+/shared/software/bin/stride /homes/user/test/data/structure/1ii7.ent -f./pdbplus-1269354236.25929
+/shared/software/bin/naccess /homes/user/test/data/structure/1ii7.ent
 Processing /homes/user/test/qa/pdbparse-keep/2hhb.ccf
-/shared/software/bin/stride /homes/user/test/data/structure/2hhb.ent -f./pdbplus-1234567890.1234 >> stride.log 2>&1
-/shared/software/bin/naccess /homes/user/test/data/structure/2hhb.ent  >> naccess.log 2>&1
+/shared/software/bin/stride /homes/user/test/data/structure/2hhb.ent -f./pdbplus-1269354236.25929
+/shared/software/bin/naccess /homes/user/test/data/structure/2hhb.ent
 STRIDE  failures: 0
 NACCESS failures: 0
 

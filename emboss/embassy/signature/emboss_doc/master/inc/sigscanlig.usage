@@ -1,0 +1,29 @@
+<b>Here is a sample session with sigscanlig</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>sigscanlig </b>
+Searches ligand-signature library and writes hits (LHF file)
+Domainatrix signature directories [./]: <b>../siggenlig-keep</b>
+Database of query sequences.: <b>swtiny</b>
+Scoring matrix [EBLOSUM62]: <b></b>
+Available modes
+         1 : Patch score mode
+         2 : Site score mode
+Select mode of scoring ligands. [1]: <b>1</b>
+Gap insertion penalty [10]: <b></b>
+Gap extension penalty [0.5]: <b></b>
+N-terminal matching options
+         1 : Align anywhere and allow only complete signature-sequence fit
+         2 : Align anywhere and allow partial signature-sequence fit
+         3 : Use empirical gaps only
+Select number [1]: <b></b>
+Domainatrix LHF ligand hits file output directory [./]: <b>lhf</b>
+Domainatrix signature alignment file output directory [./]: <b>aln</b>
+Domainatrix sigscanlig program output file output directory [./]: <b>results</b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

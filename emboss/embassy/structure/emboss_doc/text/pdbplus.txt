@@ -723,7 +723,7 @@ AT   1    .    .    .    223   . HOH   W O         8.142   18.836    1.041    8.
 
 6.0 USAGE
 
-Add accessibility & secondary structure to a CCF file.
+Add accessibility and secondary structure to a CCF file.
 Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers (* if not always prompted):

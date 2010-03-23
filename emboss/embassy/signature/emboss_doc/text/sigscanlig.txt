@@ -21,7 +21,7 @@ CONTENTS
 
 1.0 SUMMARY
 
-   Searches ligand-signature library & writes hits (LHF file)
+   Searches ligand-signature library and writes hits (LHF file)
 
    Generates LHF files (ligand hits file) of hits from scanning sequences
    against a library of ligand-binding signatures.
@@ -1068,7 +1068,7 @@ FOK       1         1         -1000000.00
 
 6.0 USAGE
 
-Searches ligand-signature library & writes hits (LHF file)
+Searches ligand-signature library and writes hits (LHF file)
 Version: EMBOSS:6.2.0
 
    Standard (Mandatory) qualifiers:

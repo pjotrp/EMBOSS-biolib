@@ -1,0 +1,59 @@
+<h3><A NAME="signature">Applications</A> in the <a
+href="ftp://emboss.open-bio.org/pub/EMBOSS/">current signature release</a></h3>
+
+<table border cellpadding=4 bgcolor="#FFFFF0">
+
+<tr>
+<th>Program name</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td><a href="libgen.html">libgen</a></td>
+<td>
+Generate discriminating elements from alignments
+</td>
+</tr>
+<tr>
+<td><a href="matgen3d.html">matgen3d</a></td>
+<td>
+Generate a 3D-1D scoring matrix from CCF files
+</td>
+</tr>
+<tr>
+<td><a href="rocon.html">rocon</a></td>
+<td>
+Generates a hits file from comparing two DHF files
+</td>
+</tr>
+<tr>
+<td><a href="rocplot.html">rocplot</a></td>
+<td>
+Performs ROC analysis on hits files
+</td>
+</tr>
+<tr>
+<td><a href="siggen.html">siggen</a></td>
+<td>
+Generates a sparse protein signature from an alignment
+</td>
+</tr>
+<tr>
+<td><a href="siggenlig.html">siggenlig</a></td>
+<td>
+Generates ligand-binding signatures from a CON file
+</td>
+</tr>
+<tr>
+<td><a href="sigscan.html">sigscan</a></td>
+<td>
+Generates hits (DHF file) from a signature search
+</td>
+</tr>
+<tr>
+<td><a href="sigscanlig.html">sigscanlig</a></td>
+<td>
+Searches ligand-signature library and writes hits (LHF file)
+</td>
+</tr>
+</table>
