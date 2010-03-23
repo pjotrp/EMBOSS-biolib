@@ -108,7 +108,7 @@ int main(int argc, char **argv)
     AjPStr password = NULL;
     AjPStr host     = NULL;
     AjPStr port     = NULL;
-    AjPStr socket   = NULL;
+    AjPStr socketf  = NULL;
     AjPStr dbname   = NULL;
     AjPStr species  = NULL;
     AjPStr srname   = NULL;
@@ -138,7 +138,7 @@ int main(int argc, char **argv)
     password = ajStrNew();
     host     = ajStrNewC("ensembldb.ensembl.org");
     port     = ajStrNewC("5306");
-    socket   = ajStrNew();
+    socketf  = ajStrNew();
     dbname   = ajStrNew();
     species  = ajStrNewC("homo sapiens");
     srname   = ajStrNew();
@@ -163,7 +163,7 @@ int main(int argc, char **argv)
                                    password,
                                    host,
                                    port,
-                                   socket,
+                                   socketf,
                                    dbname);
 
     if(!dbc)
@@ -434,7 +434,7 @@ int main(int argc, char **argv)
     ajStrDel(&password);
     ajStrDel(&host);
     ajStrDel(&port);
-    ajStrDel(&socket);
+    ajStrDel(&socketf);
     ajStrDel(&dbname);
     ajStrDel(&species);
     ajStrDel(&srname);
