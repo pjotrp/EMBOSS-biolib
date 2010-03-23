@@ -954,26 +954,26 @@ The output is a text representation of the feature table.
 X65921
 H.sapiens fau 1 gene
 |==========================================================| 2016
-                                                        &gt;    polyA_signal
-                                                    |--&gt;     exon
-                                               |----&gt;        intron
-                                             |&gt;              exon
-                               |-------------&gt;               intron
-                           |---&gt;                             exon
-                        |--&gt;                                 intron
-                      |-&gt;                                    CDS
-                           |---&gt;                             CDS
-                                             |&gt;              CDS
-                                                    |--&gt;     CDS
-                      |-&gt;                                    exon
-              |-------&gt;                                      intron
+|----------------------------------------------------------&gt; source
+           |--&gt;                                              exon
            |--&gt;                                              mRNA
                       |-&gt;                                    mRNA
                            |---&gt;                             mRNA
                                              |&gt;              mRNA
                                                     |--&gt;     mRNA
-           |--&gt;                                              exon
-|----------------------------------------------------------&gt; source
+              |-------&gt;                                      intron
+                      |-&gt;                                    exon
+                      |-&gt;                                    CDS
+                           |---&gt;                             CDS
+                                             |&gt;              CDS
+                                                    |--&gt;     CDS
+                        |--&gt;                                 intron
+                           |---&gt;                             exon
+                               |-------------&gt;               intron
+                                             |&gt;              exon
+                                               |----&gt;        intron
+                                                    |--&gt;     exon
+                                                        &gt;    polyA_signal
 
 </pre>
 </td></tr></table><p>
@@ -986,19 +986,19 @@ H.sapiens fau 1 gene
 X65921
 H.sapiens fau 1 gene
 |==========================================================| 2016
-                                                        &gt;    1938-1943 polyA_signal
-                                                    |--&gt;     1787-1912 exon
-                                               |----&gt;        1613-1786 intron
-                                             |&gt;              1557-1612 exon
-                               |-------------&gt;               1096-1556 intron
-                           |---&gt;                             951-1095 exon
-                        |--&gt;                                 857-950 intron
-                      |-&gt;  |---&gt;             |&gt;     |--&gt;     782-856,951-1095,1557-1612,1787-1912 CDS
-                      |-&gt;                                    774-856 exon
-              |-------&gt;                                      505-773 intron
-           |--&gt;       |-&gt;  |---&gt;             |&gt;     |--&gt;     408-504,774-856,951-1095,1557-1612,1787-1912 mRNA
-           |--&gt;                                              408-504 exon
 |----------------------------------------------------------&gt; 1-2016 source
+           |--&gt;                                              408-504 exon
+           |--&gt;       |-&gt;  |---&gt;             |&gt;     |--&gt;     408-504,774-856,951-1095,1557-1612,1787-1912 mRNA
+              |-------&gt;                                      505-773 intron
+                      |-&gt;                                    774-856 exon
+                      |-&gt;  |---&gt;             |&gt;     |--&gt;     782-856,951-1095,1557-1612,1787-1912 CDS
+                        |--&gt;                                 857-950 intron
+                           |---&gt;                             951-1095 exon
+                               |-------------&gt;               1096-1556 intron
+                                             |&gt;              1557-1612 exon
+                                               |----&gt;        1613-1786 intron
+                                                    |--&gt;     1787-1912 exon
+                                                        &gt;    1938-1943 polyA_signal
 
 </pre>
 </td></tr></table><p>
