@@ -52,7 +52,7 @@
 
 sub usage () {
   print STDERR "Usage:\n";
-  print STDERR "  qatest.pl [-kk | -ks | -ka] [-t=60] [-wild] [-mcheck] [testnames...]\n";
+  print STDERR "  qatest.pl [-kk | -ks | -ka] [-t=60] [-wild] [-mcheck] [-noembassy] [-embassy=package] [testnames...]\n";
   print STDERR "            defaults: -kk -t=60\n";
 }
 
@@ -141,7 +141,7 @@ sub runtest ($) {
     elsif ($line =~ /^AP\s+(\S+)/) {
 	$testapp = $1;
 	$apcount{$testapp}++;
-	if (!defined($tfm{$testapp})) {
+	if (!$simple && !defined($tfm{$testapp})) {
 	    $tfm{$testapp}=0;
 	    $dtop = "../../doc/programs/";
 	    if (-e "$dtop/html/$testapp.html") {$tfm{$testapp}++}
@@ -735,7 +735,7 @@ $testappname=0;
 $misshtml=0;
 $misstext=0;
 $misssf=0;
-%without = ();
+%without = ("srs" => 1);
 %dotest = ();
 %tfm = ();
 %sf = ();
@@ -748,7 +748,19 @@ $testwild = "*";
 $doembassy=1;
 $docheck=1;
 $qatestfile = "../qatest.dat";
+
 $acddir=  "../../emboss/acd";
+$simple=0;
+
+open (VERSION, "embossversion -full -filter|") ||
+    die "Cannot run embossversion";
+while (<VERSION>){
+    if(/BaseDirectory: (\S+)/) {
+	$acddir = $1;
+	$qatestfile = "$acddir"."test/qatest.dat";
+    }
+}
+close VERSION;
 
 foreach $test (@ARGV) {
   if ($test =~ /^-(.*)/) {
@@ -759,6 +771,7 @@ foreach $test (@ARGV) {
     elsif ($opt eq "ka") {$defdelete="all"}
     elsif ($opt eq "noembassy") {$doembassy=0}
     elsif ($opt eq "nocheck") {$docheck=0}
+    elsif ($opt eq "simple") {$simple=1}
     elsif ($opt eq "wild") {
 	$dowild=1;
 	if(defined($testname)) {
@@ -767,6 +780,7 @@ foreach $test (@ARGV) {
     }
     elsif ($opt eq "mcheck") {$domcheck="MALLOC_CHECK_=3;export MALLOC_CHECK_;"}
     elsif ($opt =~ /without=(\S+)/) {$without{$1}=1}
+    elsif ($opt =~ /with=(\S+)/) {undef($without{$1})}
     elsif ($opt =~ /t=([0-9]+)/) {$timeoutdef=int($1)}
     elsif ($opt =~ /logfile=(\S+)/) {$logfile=">$1"} # append to logfile
     elsif ($opt =~ /testfile=(\S+)/) {$qatestfile="$1"}
@@ -1017,10 +1031,12 @@ foreach $x (sort(keys(%packfail))) {
     }
 }
 print STDERR "Tests total: $totall pass: $tpass fail: $tfail\n";
-print STDERR "Skipped: $totskip check: $skipcheck embassy: $skipembassy requirements: $skipreq\n";
+if(!$simple) {
+    print STDERR "Skipped: $totskip check: $skipcheck embassy: $skipembassy requirements: $skipreq\n";
 
-print STDERR "No tests: $tnotest\n";
-print STDERR "Missing documentation html: $misshtml text: $misstext sourceforge: $misssf\n";
+    print STDERR "No tests: $tnotest\n";
+    print STDERR "Missing documentation html: $misshtml text: $misstext sourceforge: $misssf\n";
+}
 print STDERR "Time: $alltime seconds\n";
 print LOG "Time: $alltime seconds\n";
 
