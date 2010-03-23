@@ -5,8 +5,8 @@ dnl Process this file with autoconf to produce a configure script.
 ## then uncomment the following line.
 #CC=cc
 
-AC_INIT(src/esignalp.c)
-AM_INIT_AUTOMAKE(CBSTOOLS, 1.0.0)
+AC_INIT(src/ohmmalign.c)
+AM_INIT_AUTOMAKE(HMMER, 2.1.1)
 
 dnl Make sure CFLAGS is defined to stop AC_PROC_CC adding -g
 CFLAGS="$CFLAGS "
@@ -415,6 +415,8 @@ AC_ARG_ENABLE(devwarnings,
 if test "${enable_devwarnings}" = "yes" ; then
 if test "$CC" = "gcc"; then
   CFLAGS="$CFLAGS -Wstrict-prototypes -Wmissing-prototypes"
+dnl catches things like index as a variable name
+  CFLAGS="$CFLAGS -Wshadow"
 fi
 fi          
 
@@ -465,6 +467,5 @@ dnl check and set compilation flags for Jemboss auth server code
 CHECK_THREADS
 
 
-AC_OUTPUT(Makefile src/Makefile emboss_acd/Makefile emboss_doc/Makefile
- emboss_doc/html/Makefile emboss_doc/text/Makefile)
-dnl emboss_doc/Makefile emboss_doc/html/Makefile emboss_doc/text/Makefile
+AC_OUTPUT(Makefile src/Makefile emboss_acd/Makefile
+emboss_doc/Makefile emboss_doc/html/Makefile emboss_doc/text/Makefile)

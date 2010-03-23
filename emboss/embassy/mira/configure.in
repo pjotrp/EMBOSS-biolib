@@ -222,7 +222,6 @@ LF_EMBOSS_PATH_XLIB
 fi
 
 dnl Library checks
-AC_CHECK_LIB(c, gethostbyname, LIBS="$LIBS", LIBS="$LIBS -lnsl")
 AC_CHECK_LIB(c, socket, LIBS="$LIBS" , LIBS="$LIBS -lsocket")
 AC_CHECK_LIB(m, main)
 

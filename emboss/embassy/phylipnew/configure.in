@@ -5,10 +5,10 @@ dnl Process this file with autoconf to produce a configure script.
 ## then uncomment the following line.
 #CC=cc
 
-AC_INIT(src/esignalp.c)
-AM_INIT_AUTOMAKE(CBSTOOLS, 1.0.0)
+AC_INIT(src/dnadist.c)
+AM_INIT_AUTOMAKE(PHYLIPNEW, 3.69)
 
-dnl Make sure CFLAGS is defined to stop AC_PROC_CC adding -g
+dnl Make sure CFLAGS is defined to stop LT_INIT adding -g
 CFLAGS="$CFLAGS "
 
 dnl Use libtool to make a shared library.
@@ -217,9 +217,43 @@ AC_FUNC_VPRINTF
 
 AC_CHECK_FUNCS(strdup strstr strchr erand48 memmove)
 
+dnl Phylipnew needs to test for both  X11 and Xaw/Xt
+
 if test "${with_x}" != "no" ; then
 LF_EMBOSS_PATH_XLIB
+
+
+havexawh=1
+AC_CHECK_HEADER(X11/Xaw/Label.h,[],[havexawh=0])
+if test $havexawh == 0; then
+  AC_MSG_NOTICE([You need to install the Xaw development files for your system])
+  exit $?
 fi
+
+havexawlib=1
+AC_CHECK_LIB(Xaw,XawInitializeWidgetSet,XLIB="$XLIB -lXaw",[havexawlib=0],${XLIB})
+if test $havexawlib == 0; then
+  AC_MSG_NOTICE([You need to install the Xaw library files for your system])
+  exit $?
+fi
+
+
+havextlib=1
+AC_CHECK_LIB(Xt,XtToolkitInitialize,XLIB="$XLIB -lXt",[havextlib=0],${XLIB})
+if test $havextlib == 0; then
+  AC_MSG_NOTICE([You need to install the Xt library files for your system])
+  exit $?
+fi
+
+AC_SUBST(XLIB)
+
+
+fi
+dnl End of X11/Xaw/Xt tests
+
+
+
+
 
 dnl Library checks
 AC_CHECK_LIB(c, socket, LIBS="$LIBS" , LIBS="$LIBS -lsocket")
@@ -465,6 +499,5 @@ dnl check and set compilation flags for Jemboss auth server code
 CHECK_THREADS
 
 
-AC_OUTPUT(Makefile src/Makefile emboss_acd/Makefile emboss_doc/Makefile
- emboss_doc/html/Makefile emboss_doc/text/Makefile)
-dnl emboss_doc/Makefile emboss_doc/html/Makefile emboss_doc/text/Makefile
+AC_OUTPUT(Makefile src/Makefile emboss_acd/Makefile data/Makefile
+emboss_doc/Makefile emboss_doc/html/Makefile emboss_doc/text/Makefile)
