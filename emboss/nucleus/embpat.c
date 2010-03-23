@@ -1832,6 +1832,8 @@ void embPatPushHit(AjPList l, const AjPStr name, ajuint pos, ajuint plen,
     hit->start = pos+begin;
     hit->mm = mm;
     hit->end = pos+begin+plen-1;
+    if(hit->start <= hit->end)
+        hit->forward = ajTrue;
     ajListPush(l,(void *) hit);
 
     return;
