@@ -1,0 +1,161 @@
+application: edolpenny [
+  documentation: "Penny algorithm Dollo or polymorphism"
+  groups: "Phylogeny:Discrete characters"
+  embassy: "phylip"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  infile: datafile [
+    parameter: "Y"
+    information: "Phylip dolpenny program input file"
+    knowntype: "dolpenny input"
+    relations:  "EDAM: PHYLIP discrete states file"                    
+  ]
+
+  boolean: ancest [
+    additional: "Y"
+    default: "N"
+    information: "Use ancestral states in input file"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  toggle: multsets [
+    additional: "Y"
+    default: "N"
+    information: "Analyze multiple data sets"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  integer: datasets [
+    standard: "$(multsets)"
+    minimum: "2"
+    default: "2"
+    information: "Number of sets"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  boolean: dollo [
+    standard: "Y"
+    default: "Y"
+    information: "Dollo Parsimony method (else Polymorphism)"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  toggle: thresh [
+    default: "N"
+    information: "Use Threshold parsimony"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  float: valthresh [
+    standard: "$(thresh)"
+    minimum: "1.0"
+    default: "1.0"
+    information: "Threshold value"
+    relations: "EDAM: Generic float"                                       
+  ]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  integer: numgroups [
+    additional: "Y"
+    information: "How many groups of 100 trees"
+    default: "1000"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  integer: howoften [
+    additional: "Y"
+    information: "How often to report, in trees"
+    default: "100"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  boolean: simple [
+    additional: "Y"
+    information: "Branch and bound is simple"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    default: "edolpenny.outfile"
+    knowntype: "dolpenny output"
+    information: "Phylip dolpenny program output file"
+    relations:  "EDAM: Phylip phylogenetic tree raw data"              
+  ]
+
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print out the data at start of run"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: progress [
+    additional: "Y"
+    default: "N"
+    information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: steps [
+    additional: "Y"
+    default: "N"
+    information: "Print out steps in each site"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: statesatnodes [
+    additional: "Y"
+    default: "N"
+    information: "Print states at all nodes of tree"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: drawtree [
+    additional: "Y"
+    default: "Y"
+    information: "Draw tree"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  toggle: trout [
+    standard: "Y"
+    default: "Y"
+    information: "Create a tree file"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  outfile: treefile [
+    standard: "$(trout)"
+    default: "edolpenny.treefile"
+    information: "Phylip tree output file"
+    knowntype: "newick tree"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
+  ]
+
+endsection: output

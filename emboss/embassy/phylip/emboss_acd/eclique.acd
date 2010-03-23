@@ -1,0 +1,128 @@
+application: eclique [
+  documentation: "Largest clique program"
+  groups: "Phylogeny:Discrete characters"
+  embassy: "phylip"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  infile: infile [
+    parameter: "Y"
+    information: "Phylip clique program input file"
+    knowntype: "clique input"
+    relations:  "EDAM: PHYLIP discrete states file"                    
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  toggle: minclique [
+    standard: "Y"
+    default: "N"
+    information: "Use minimum clique size"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  integer: cliqminnum [
+    standard: "$(minclique)"
+    default: "1"
+    information: "Minimum clique size"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  toggle: og [
+    standard: "Y"
+    information: "Outgroup root"
+    default: "N"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  integer: outgnum [
+    standard: "$(og)"
+    minimum: "1"
+    default: "1"
+    information: "Number of the outgroup"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  boolean: ancestral [
+    additional: "Y"
+    default: "N"
+    information: "Use ancestral states in input file"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    default: "eclique.outfile"
+    knowntype: "clique output"
+    information: "Phylip clique program output file"
+    relations:  "EDAM: PHYLIP cliques file"                            
+  ]
+
+  boolean: trout [
+    standard: "Y"
+    default: "Y"
+    information: "Create a tree file"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: drawtree [
+    additional: "Y"
+    default: "Y"
+    information: "Draw tree"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  outfile: treefile [
+    parameter: "Y"
+    default: "eclique.treefile"
+    information: "Phylip tree output file"
+    knowntype: "newick tree"
+    nullok: "Y"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
+  ]
+
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print out the data at start of run"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: progress [
+    additional: "Y"
+    default: "N"
+    information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: matrixout [
+    additional: "Y"
+    default: "N"
+    information: "Print out compatibility matrix"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+endsection: output
