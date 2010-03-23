@@ -523,7 +523,7 @@ static AjBool     seqHttpUrl(const AjPSeqQuery qry,
 			     ajint* iport, AjPStr* host, AjPStr* urlget);
 static AjBool     seqSeqhoundQryNext(AjPSeqQuery qry, AjPSeqin seqin);
 static FILE*      seqHttpSend(const AjPSeqQuery qry, struct AJSOCKET sock,
-                              ajint hostport, const AjPStr host, ajint iport,
+                              const AjPStr host, ajint iport,
                               const AjPStr get);
 static void       seqSocketTimeout(int sig);
 
@@ -3577,7 +3577,6 @@ static AjBool seqEmbossQryNext(AjPSeqQuery qry)
     ajFileSeek(qryd->libs, entry->offset, 0);
     if(qryd->reffiles)
 	ajFileSeek(qryd->libr, entry->refoffset, 0);
-
 
     ajBtreeIdDel(&entry);
 
@@ -7258,7 +7257,7 @@ FILE* ajSeqHttpGet(const AjPSeqQuery qry, const AjPStr host, ajint iport,
 	return NULL;
     }
 
-    fp = seqHttpSend(qry, sock, iport, host, iport, get);
+    fp = seqHttpSend(qry, sock, host, iport, get);
 
     return fp;
 }
@@ -7358,7 +7357,7 @@ FILE* ajSeqHttpGetProxy(const AjPSeqQuery qry, const AjPStr proxyname,
     }
 
 
-    fp = seqHttpSend(qry, sock, proxyport, host, iport, get);
+    fp = seqHttpSend(qry, sock, host, iport, get);
 
     return fp;
 }
@@ -7372,7 +7371,6 @@ FILE* ajSeqHttpGetProxy(const AjPSeqQuery qry, const AjPStr proxyname,
 **
 ** @param [r] qry [const AjPSeqQuery] Query object
 ** @param [r] sock [struct AJSOCKET] Socket structure
-** @param [r] hostport [ajint] Host port
 ** @param [r] host [const AjPStr] Host name for Host header line
 ** @param [r] iport [ajint] Port for Host header line
 ** @param [r] get [const AjPStr] GET string
@@ -7381,7 +7379,7 @@ FILE* ajSeqHttpGetProxy(const AjPSeqQuery qry, const AjPStr proxyname,
 ******************************************************************************/
 
 static FILE* seqHttpSend(const AjPSeqQuery qry,
-                         struct AJSOCKET sock, ajint hostport,
+                         struct AJSOCKET sock,
                          const AjPStr host, ajint iport,
                          const AjPStr get)
 {
