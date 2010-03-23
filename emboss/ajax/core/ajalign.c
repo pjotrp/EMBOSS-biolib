@@ -2234,7 +2234,7 @@ AjBool ajAlignOpen(AjPAlign thys, const AjPStr name)
 ** Sets the default format for an alignment
 **
 ** @param [w] pformat [AjPStr*] Default format returned
-** @return [AjBool] ajTrue is format was returned
+** @return [AjBool] ajTrue if format was returned
 ** @@
 ******************************************************************************/
 
