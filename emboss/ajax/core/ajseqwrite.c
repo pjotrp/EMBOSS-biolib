@@ -1537,6 +1537,7 @@ static void seqWriteFastqIllumina(AjPSeqout outseq)
 
     ajWritelineNewline(outseq->File, outseq->Seq);
     ajWritebinByte(outseq->File, '+');
+    ajWritebinNewline(outseq->File);
 
     ilen = ajStrGetLen(outseq->Seq);
 
@@ -3396,8 +3397,8 @@ static void seqWriteMsf(AjPSeqout outseq)
     ajuint checktot = 0;
     ajuint check;
     ajuint itest;
-    AjPStr sbeg = NULL;
-    AjPStr send = NULL;
+    AjPStr sqbeg = NULL;
+    AjPStr sqend = NULL;
     AjPStr sseq = NULL;
     ajuint ipos;
     ajuint iend;
@@ -3481,24 +3482,24 @@ static void seqWriteMsf(AjPSeqout outseq)
 	iend = ipos + 50 -1;
 	if(iend > ilen)
 	    iend = ilen;
-	ajFmtPrintS(&sbeg, "%d", ipos);
-	ajFmtPrintS(&send, "%d", iend);
+	ajFmtPrintS(&sqbeg, "%d", ipos);
+	ajFmtPrintS(&sqend, "%d", iend);
 
 	if(iend == ilen)
         {
-	    igap = iend - ipos - ajStrGetLen(sbeg);
-	    ajDebug("sbeg: %S send: %S ipos: %d iend: %d igap: %d len: %d\n",
-		    sbeg, send, ipos, iend, igap, ajStrGetLen(send));
+	    igap = iend - ipos - ajStrGetLen(sqbeg);
+	    ajDebug("sqbeg: %S sqend: %S ipos: %d iend: %d igap: %d len: %d\n",
+		    sqbeg, sqend, ipos, iend, igap, ajStrGetLen(sqend));
 
-	    if(igap >= ajStrGetLen(send))
+	    if(igap >= ajStrGetLen(sqend))
 		ajFmtPrintF(outseq->File,
-			    "%*s %S %*S\n", maxnamelen, " ", sbeg, igap, send);
+			    "%*s %S %*S\n", maxnamelen, " ", sqbeg, igap, sqend);
 	    else
-		ajFmtPrintF(outseq->File, "           %S\n", sbeg);
+		ajFmtPrintF(outseq->File, "           %S\n", sqbeg);
 	}
 	else
 	    ajFmtPrintF(outseq->File, "           %-25S%25S\n",
-			sbeg, send);
+			sqbeg, sqend);
 
 	for(i=0; i < isize; i++)
 	{
@@ -3518,8 +3519,8 @@ static void seqWriteMsf(AjPSeqout outseq)
 	ajSeqDel(&seq);
     ajListFree(&outseq->Savelist);
     
-    ajStrDel(&sbeg);
-    ajStrDel(&send);
+    ajStrDel(&sqbeg);
+    ajStrDel(&sqend);
     ajStrDel(&sseq);
     AJFREE(seqs);
     
