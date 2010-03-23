@@ -6251,6 +6251,7 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @valrule   Outdiscrete  [AjPOutfile]
 ** @valrule   Outdistance  [AjPOutfile]
 ** @valrule   Outfile  [AjPFile]
+** @valrule   *OutfileName  [AjPStr]
 ** @valrule   Outfileall  [AjPFile]
 ** @valrule   Outfreq  [AjPOutfile]
 ** @valrule   Outmatrix  [AjPOutfile]
@@ -10488,6 +10489,40 @@ AjPFile ajAcdGetOutfile(const char *token)
 
 
 
+/* @func ajAcdGetOutfileName **************************************************
+**
+** Returns the filename of an item of type Outfile as defined in a
+** named ACD item. The file is closed and can be reused. If the file
+** had the append attribute set it still has the original contents.
+**
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPStr] Filename.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPStr ajAcdGetOutfileName(const char *token)
+{
+    AjPStr ret;
+    AjPFile outfile;
+
+    outfile = acdGetValueRef(token, "outfile");
+
+    if(!outfile)
+        return NULL;
+    ret = ajStrNewS(ajFileGetNameS(outfile));
+
+    ajFileClose(&outfile);
+
+    return ret;
+}
+
+
+
+
 /* @funcstatic acdSetOutfile **************************************************
 **
 ** Using the definition in the ACD file, and any values for the
@@ -12164,8 +12199,8 @@ static void acdSetSeq(AcdPAcd thys)
     
     AjPStr infname = NULL;
     
-    ajint sbegin = 0;
-    ajint send   = 0;
+    ajint sqbegin = 0;
+    ajint sqend   = 0;
 
     AjBool sreverse = ajFalse;
     AjBool sprompt  = ajFalse;
@@ -12232,9 +12267,9 @@ static void acdSetSeq(AcdPAcd thys)
 	acdQualToBool(thys, "slower", ajFalse,
 		      &seqin->Lower, &acdTmpStr);
 	okbeg = acdQualToSeqbegin(thys, "sbegin", 0,
-				  &sbegin, &acdTmpStr);
+				  &sqbegin, &acdTmpStr);
 	okend = acdQualToSeqend(thys, "send", 0,
-				&send, &acdTmpStr);
+				&sqend, &acdTmpStr);
 	okrev = acdQualToBool(thys, "sreverse", ajFalse,
 			      &sreverse, &acdTmpStr);
 	
@@ -12292,7 +12327,7 @@ static void acdSetSeq(AcdPAcd thys)
             if(ajStrMatchCaseC(acdReplyPrompt, "start"))
                 ajStrAssignC(&acdReplyPrompt, "0");
 
-            okbeg = ajStrToInt(acdReplyPrompt, &sbegin);
+            okbeg = ajStrToInt(acdReplyPrompt, &sqbegin);
 
             if(!okbeg)
                 acdBadVal(thys, sprompt,
@@ -12302,11 +12337,11 @@ static void acdSetSeq(AcdPAcd thys)
         if(!okbeg)
             acdBadRetry(thys);
     
-        if(sbegin)
+        if(sqbegin)
         {
-            seqin->Begin = sbegin;
-            val->Begin = sbegin;
-            acdSetQualDefInt(thys, "sbegin", sbegin);
+            seqin->Begin = sqbegin;
+            val->Begin = sqbegin;
+            acdSetQualDefInt(thys, "sbegin", sqbegin);
         }
     
         if(seqin->End)
@@ -12322,7 +12357,7 @@ static void acdSetSeq(AcdPAcd thys)
             if(ajStrMatchCaseC(acdReplyPrompt, "end"))
                 ajStrAssignC(&acdReplyPrompt, "0");
 
-            okend = ajStrToInt(acdReplyPrompt, &send);
+            okend = ajStrToInt(acdReplyPrompt, &sqend);
 
             if(!okend)
                 acdBadVal(thys, sprompt,
@@ -12332,11 +12367,11 @@ static void acdSetSeq(AcdPAcd thys)
         if(!okend)
             acdBadRetry(thys);
     
-        if(send)
+        if(sqend)
         {
-            seqin->End = send;
-            val->End = send;
-            acdSetQualDefInt(thys, "send", send);
+            seqin->End = sqend;
+            val->End = sqend;
+            acdSetQualDefInt(thys, "send", sqend);
         }
 
         if(ajSeqIsNuc(val))
@@ -12368,7 +12403,7 @@ static void acdSetSeq(AcdPAcd thys)
         }
     
         acdLog("sbegin: %d, send: %d, sreverse: %B\n",
-               sbegin, send, sreverse);
+               sqbegin, sqend, sreverse);
     
         if(val->Rev)
             ajSeqReverseDo(val);
@@ -12487,8 +12522,8 @@ static void acdSetSeqall(AcdPAcd thys)
     
     AjPStr infname = NULL;
     
-    ajint sbegin = 0;
-    ajint send   = 0;
+    ajint sqbegin = 0;
+    ajint sqend   = 0;
     AjBool sreverse = ajFalse;
     AjBool sprompt  = ajFalse;
     AjBool snuc     = ajFalse;
@@ -12605,7 +12640,7 @@ static void acdSetSeqall(AcdPAcd thys)
             if(ajStrMatchCaseC(acdReplyPrompt, "start"))
                 ajStrAssignC(&acdReplyPrompt, "0");
 
-            okbeg = ajStrToInt(acdReplyPrompt, &sbegin);
+            okbeg = ajStrToInt(acdReplyPrompt, &sqbegin);
 
             if(!okbeg)
                 acdBadVal(thys, sprompt,
@@ -12615,12 +12650,12 @@ static void acdSetSeqall(AcdPAcd thys)
         if(!okbeg)
             acdBadRetry(thys);
     
-        if(sbegin)
+        if(sqbegin)
         {
-            seqin->Begin = sbegin;
-            seq->Begin = sbegin;
-            val->Begin = sbegin;
-            acdSetQualDefInt(thys, "sbegin", sbegin);
+            seqin->Begin = sqbegin;
+            seq->Begin = sqbegin;
+            val->Begin = sqbegin;
+            acdSetQualDefInt(thys, "sbegin", sqbegin);
         }
     
         if(seqin->End)
@@ -12639,7 +12674,7 @@ static void acdSetSeqall(AcdPAcd thys)
             if(ajStrMatchCaseC(acdReplyPrompt, "end"))
                 ajStrAssignC(&acdReplyPrompt, "0");
 
-            okend = ajStrToInt(acdReplyPrompt, &send);
+            okend = ajStrToInt(acdReplyPrompt, &sqend);
 
             if(!okend)
                 acdBadVal(thys, sprompt,
@@ -12649,12 +12684,12 @@ static void acdSetSeqall(AcdPAcd thys)
         if(!okend)
             acdBadRetry(thys);
     
-        if(send)
+        if(sqend)
         {
-            seqin->End = send;
-            seq->End = send;
-            val->End = send;
-            acdSetQualDefInt(thys, "send", send);
+            seqin->End = sqend;
+            seq->End = sqend;
+            val->End = sqend;
+            acdSetQualDefInt(thys, "send", sqend);
         }
 
         if(ajSeqIsNuc(seq))
@@ -12687,7 +12722,7 @@ static void acdSetSeqall(AcdPAcd thys)
 
 
         acdLog("sbegin: %d, send: %d, sreverse: %B\n",
-               sbegin, send, sreverse);
+               sqbegin, sqend, sreverse);
     
         /* sequences have special set attributes */
     
@@ -12777,8 +12812,8 @@ static void acdSetSeqsetall(AcdPAcd thys)
     
     AjPStr infname = NULL;
     
-    ajint sbegin = 0;
-    ajint send   = 0;
+    ajint sqbegin = 0;
+    ajint sqend   = 0;
     AjBool sreverse = ajFalse;
     AjBool sprompt  = ajFalse;
     AjBool snuc     = ajFalse;
@@ -12927,7 +12962,7 @@ static void acdSetSeqsetall(AcdPAcd thys)
             if(ajStrMatchCaseC(acdReplyPrompt, "start"))
                 ajStrAssignC(&acdReplyPrompt, "0");
 
-            okbeg = ajStrToInt(acdReplyPrompt, &sbegin);
+            okbeg = ajStrToInt(acdReplyPrompt, &sqbegin);
 
             if(!okbeg)
                 acdBadVal(thys, sprompt,
@@ -12937,14 +12972,14 @@ static void acdSetSeqsetall(AcdPAcd thys)
         if(!okbeg)
             acdBadRetry(thys);
     
-        if(sbegin)
+        if(sqbegin)
         {
-            seqin->Begin = sbegin;
+            seqin->Begin = sqbegin;
 
             for(iset=0;iset<nsets;iset++)
-                val[iset]->Begin = sbegin;
+                val[iset]->Begin = sqbegin;
 
-            acdSetQualDefInt(thys, "sbegin", sbegin);
+            acdSetQualDefInt(thys, "sbegin", sqbegin);
         }
     
         if(seqin->End)
@@ -12965,7 +13000,7 @@ static void acdSetSeqsetall(AcdPAcd thys)
             if(ajStrMatchCaseC(acdReplyPrompt, "end"))
                 ajStrAssignC(&acdReplyPrompt, "0");
 
-            okend = ajStrToInt(acdReplyPrompt, &send);
+            okend = ajStrToInt(acdReplyPrompt, &sqend);
 
             if(!okend)
                 acdBadVal(thys, sprompt,
@@ -12975,14 +13010,14 @@ static void acdSetSeqsetall(AcdPAcd thys)
         if(!okend)
             acdBadRetry(thys);
     
-        if(send)
+        if(sqend)
         {
-            seqin->End = send;
+            seqin->End = sqend;
 
             for(iset=0;iset<nsets;iset++)
-                val[iset]->End = send;
+                val[iset]->End = sqend;
 
-            acdSetQualDefInt(thys, "send", send);
+            acdSetQualDefInt(thys, "send", sqend);
         }
 
         if(ajSeqsetIsNuc(val[0]))
@@ -13017,7 +13052,7 @@ static void acdSetSeqsetall(AcdPAcd thys)
         }
     
         acdLog("sbegin: %d, send: %d, sreverse: Bs\n",
-               sbegin, send, sreverse);
+               sqbegin, sqend, sreverse);
     
         if(aligned)
             for(iset=0;iset<nsets;iset++)
@@ -13712,8 +13747,8 @@ static void acdSetSeqset(AcdPAcd thys)
     
     AjPStr infname = NULL;
     
-    ajint sbegin = 0;
-    ajint send   = 0;
+    ajint sqbegin = 0;
+    ajint sqend   = 0;
     AjBool sreverse = ajFalse;
     AjBool sprompt  = ajFalse;
     AjBool snuc     = ajFalse;
@@ -13831,7 +13866,7 @@ static void acdSetSeqset(AcdPAcd thys)
             if(ajStrMatchCaseC(acdReplyPrompt, "start"))
                 ajStrAssignC(&acdReplyPrompt, "0");
 
-            okbeg = ajStrToInt(acdReplyPrompt, &sbegin);
+            okbeg = ajStrToInt(acdReplyPrompt, &sqbegin);
 
             if(!okbeg)
                 acdBadVal(thys, sprompt,
@@ -13841,11 +13876,11 @@ static void acdSetSeqset(AcdPAcd thys)
         if(!okbeg)
             acdBadRetry(thys);
     
-        if(sbegin)
+        if(sqbegin)
         {
-            seqin->Begin = sbegin;
-            val->Begin = sbegin;
-            acdSetQualDefInt(thys, "sbegin", sbegin);
+            seqin->Begin = sqbegin;
+            val->Begin = sqbegin;
+            acdSetQualDefInt(thys, "sbegin", sqbegin);
         }
     
         if(seqin->End)
@@ -13865,7 +13900,7 @@ static void acdSetSeqset(AcdPAcd thys)
             if(ajStrMatchCaseC(acdReplyPrompt, "end"))
                 ajStrAssignC(&acdReplyPrompt, "0");
 
-            okend = ajStrToInt(acdReplyPrompt, &send);
+            okend = ajStrToInt(acdReplyPrompt, &sqend);
 
             if(!okend)
                 acdBadVal(thys, sprompt,
@@ -13875,11 +13910,11 @@ static void acdSetSeqset(AcdPAcd thys)
         if(!okend)
             acdBadRetry(thys);
     
-        if(send)
+        if(sqend)
         {
-            seqin->End = send;
-            val->End = send;
-            acdSetQualDefInt(thys, "send", send);
+            seqin->End = sqend;
+            val->End = sqend;
+            acdSetQualDefInt(thys, "send", sqend);
         }
 
         if(ajSeqsetGetSize(val) && ajSeqsetIsNuc(val))
@@ -13911,7 +13946,7 @@ static void acdSetSeqset(AcdPAcd thys)
         }
 
         acdLog("sbegin: %d, send: %d, sreverse: %B\n",
-               sbegin, send, sreverse);
+               sqbegin, sqend, sreverse);
 
         if(val && aligned)
             ajSeqsetFill(val);
