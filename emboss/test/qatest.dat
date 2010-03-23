@@ -96,7 +96,7 @@
 #                 e.g. database indexing)
 # ER error return code
 #	(Optional)
-# 	Error code expecte.
+# 	Error code expected.
 #       Used for tests that are test failure conditions.
 #       The test reports an error if the error code is not found
 # FC [<=>] number
@@ -6679,7 +6679,7 @@ IN ../../embl
 IN
 IN
 FI stderr
-FC = 12
+FC = 13
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -6814,7 +6814,7 @@ IN
 IN ../../embl
 IN
 FI stderr
-FC = 6
+FC = 7
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -7076,7 +7076,7 @@ IN
 IN
 IN
 FI stderr
-FC = 12
+FC = 13
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -15527,7 +15527,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww-ID:AB000095
 FI test.out
-FZ = 4703
+FZ = 4675
 FP /^ID   AB000095; /
 FP 1 /^ID /
 //
@@ -15537,7 +15537,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww-ACC:AB000095
 FI test.out
-FZ = 4703
+FZ = 4675
 FP /^ID   AB000095; /
 FP 1 /^ID /
 //
@@ -15547,7 +15547,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww-SV:AB000095.1
 FI test.out
-FZ = 4703
+FZ = 4675
 FP /^ID   AB000095; /
 FP 1 /^ID /
 //
@@ -15557,7 +15557,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww:AB000095
 FI test.out
-FZ = 4703
+FZ = 4675
 FP /^ID   AB000095; /
 FP 1 /^ID /
 //
@@ -17968,10 +17968,9 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI k00650.tfscan
-FZ = 624
-FC = 13
-FP /^MOUSE\$FCGR3A_02      R04413   3287  3292  ttcctc\n/
-FP /^ +T00702; PU\.1;Quality: 3; Species: mouse, Mus musculus\.\n/
+FZ = 1614
+FC = 34
+FP /^   3287    3292       \+ R04413    T00702; .* Mus musculus\.      ttcctc\n/
 //
 
 ID tmap-ex
@@ -21906,7 +21905,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
 FC = 11
-FP 3 /\.ent  \>\> naccess\.log/
+FP 3 /\S+naccess \S+\.ent/
 FP 2 /failures: 0\n/
 FI pdbplus.log
 FC = 28
@@ -22448,8 +22447,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 12
-FZ = 1008
+FC = 6
+FZ = 918
 FP 6 /stamp/
 FI all_rep1st.scop
 FC = 104
@@ -22481,7 +22480,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
 FC = 108
-FP 4 /^stamp/
+FP 4 /^\S+\/stamp/
 FI 54894.ent
 FC = 1461
 FZ = 117967
@@ -22576,7 +22575,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 6
+FC = 4
 FP 2 /^\S+blastpgp/
 FI 54894.dhf
 FC = 80
