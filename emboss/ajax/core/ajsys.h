@@ -100,15 +100,18 @@ struct AJTIMEOUT
 ** Prototype definitions
 */
 
-AjBool        ajSysArglistBuild (const AjPStr cmdline,
-				 char** Pname, char*** PParglist);
+AjBool        ajSysArglistBuildC (const char* cmdline,
+                                  char** Pname, char*** PParglist);
+AjBool        ajSysArglistBuildS (const AjPStr cmdline,
+                                  char** Pname, char*** PParglist);
 void          ajSysArglistFree (char*** arglist);
 void          ajSysCanon(AjBool state);
 char          ajSysCastItoc(ajint v);
 unsigned char ajSysCastItouc(ajint v);
 void          ajSysExit(void);
+AjBool        ajSysFileUnlinkC(const char* s);
+AjBool        ajSysFileUnlinkS(const AjPStr s);
 FILE*         ajSysFdFromSocket(struct AJSOCKET sock, const char *mode);
-AjBool        ajSysFileUnlink(const AjPStr s);
 AjBool        ajSysFileWhich(AjPStr *Pfilename);
 AjBool        ajSysFileWhichEnv(AjPStr *Pfilename, char * const env[]);
 FILE*         ajSysFuncFdopen(ajint filedes, const char *mode);
@@ -120,10 +123,39 @@ char*         ajSysFuncStrtokR(const char *s, const char *t,
 			       AjPStr *buf);
 char*         ajSysFuncStrtok(const char *s, const char *t);
 char*         ajSysFuncStrdup(const char *s);
+AjBool        ajSysCommandCopyC(const char* filename,
+                                const char* newfilename);
+AjBool        ajSysCommandCopyS(const AjPStr filename,
+                                const AjPStr newfilename);
+AjBool        ajSysCommandMakedirC(const char* dirname);
+AjBool        ajSysCommandMakedirS(const AjPStr dirname);
+AjBool        ajSysCommandRemoveC(const char* filename);
+AjBool        ajSysCommandRemoveS(const AjPStr filename);
+AjBool        ajSysCommandRemovedirC(const char* dirname);
+AjBool        ajSysCommandRemovedirS(const AjPStr dirname);
+AjBool        ajSysCommandRenameC(const char* filename,
+                                  const char* newfilename);
+AjBool        ajSysCommandRenameS(const AjPStr filename,
+                                  const AjPStr newfilename);
+ajint         ajSysExecC(const char* cl);
+void          ajSysExecPathC(const char* cl);
+void          ajSysExecS(const AjPStr clstr);
+void          ajSysExecPathS(const AjPStr clstr);
+void          ajSysExecEnvC(const char* cl, char * const env[]);
+void          ajSysExecEnvS(const AjPStr clstr, char * const env[]);
+void          ajSysExecOutnameC(const char* cl, const AjPStr outfname);
+void          ajSysExecOutnameS(const AjPStr clstr, const AjPStr outfname);
+void          ajSysExecOutnameAppendC(const char* cl,
+                                      const AjPStr outfname);
+void          ajSysExecOutnameAppendS(const AjPStr clstr,
+                                      const AjPStr outfname);
+void          ajSysExecOutnameErrC(const char* cl, const AjPStr outfname);
+void          ajSysExecOutnameErrS(const AjPStr clstr, const AjPStr outfname);
+void          ajSysExecOutnameAppendErrC(const char* cl,
+                                             const AjPStr outfname);
+void          ajSysExecOutnameAppendErrS(const AjPStr clstr,
+                                         const AjPStr outfname);
 void          ajSysSocketclose(struct AJSOCKET sock);
-void          ajSysSystem(const AjPStr cl);
-void          ajSysSystemEnv(const AjPStr cl, char * const env[]);
-void          ajSysSystemOut(const AjPStr cl, const AjPStr outfname);
 
 int           ajSysTimeoutSet(struct AJTIMEOUT *ts);
 int           ajSysTimeoutUnset(struct AJTIMEOUT *ts);
@@ -151,10 +183,17 @@ __deprecated AjBool        ajSysIsDirectory(const char *s);
 __deprecated AjBool        ajSysIsRegular(const char *s);
 __deprecated AjBool        ajSysArglist (const AjPStr cmdline,
 					 char** Pname, char*** PParglist);
+__deprecated AjBool        ajSysArglistBuild(const AjPStr cmdline,
+                                             char** Pname, char*** PParglist);
 __deprecated char          ajSysItoC(ajint v);
 __deprecated unsigned char ajSysItoUC(ajint v);
 __deprecated AjBool        ajSysUnlink(const AjPStr s);
+__deprecated AjBool        ajSysFileUnlink(const AjPStr s);
 
+__deprecated void          ajSysSystem(const AjPStr cl);
+__deprecated void          ajSysSystemEnv(const AjPStr cl, char * const env[]);
+__deprecated void          ajSysSystemOut(const AjPStr cl,
+                                          const AjPStr outfname);
 /*
 ** S_IFREG is non-ANSI therefore define it here
 ** At least keeps all the very dirty stuff in one place

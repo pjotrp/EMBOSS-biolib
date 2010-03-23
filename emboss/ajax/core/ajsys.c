@@ -27,6 +27,7 @@
 #ifndef __VMS
 #include <termios.h>
 #endif
+#include <sys/file.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <errno.h>
@@ -76,8 +77,11 @@ static void CALLBACK sysTimeoutAbort(LPVOID arg, DWORD low, DWORD high);
 **                         command line string.
 ** @nam4rule  ArglistFree   Free memory in an argument list allocated by 
 **                         ajSysArglistBuild.
+** @suffix    C            Accept C character string parameters
+** @suffix    S            Accept string object parameters
 ** 
-** @argrule Build   cmdline   [const AjPStr] Original command line
+** @argrule C   cmdline   [const char *] Original command line
+** @argrule S   cmdline   [const AjPStr] Original command line
 ** @argrule Build   Pname     [char**] Returned program name
 ** @argrule Arglist PParglist [char***] Returns argument array
 **
@@ -88,7 +92,7 @@ static void CALLBACK sysTimeoutAbort(LPVOID arg, DWORD low, DWORD high);
 **
 ******************************************************************************/
 
-/* @func ajSysArglistBuild ****************************************************
+/* @func ajSysArglistBuildC ****************************************************
 **
 ** Generates a program name and argument list from a command line string.
 **
@@ -99,7 +103,7 @@ static void CALLBACK sysTimeoutAbort(LPVOID arg, DWORD low, DWORD high);
 ** @@
 ******************************************************************************/
 
-AjBool ajSysArglistBuild(const AjPStr cmdline, char** Pname, char*** PParglist)
+AjBool ajSysArglistBuildC(const char* cmdline, char** Pname, char*** PParglist)
 {    
     static AjPRegexp argexp = NULL;
     AjPStr tmpline          = NULL;
@@ -114,7 +118,84 @@ AjBool ajSysArglistBuild(const AjPStr cmdline, char** Pname, char*** PParglist)
     if(!argexp)
 	argexp = ajRegCompC("^[ \t]*(\"([^\"]*)\"|'([^']*)'|([^ \t]+))");
     
-    ajDebug("ajSysArglistBuild '%S'\n", cmdline);
+    ajDebug("ajSysArglistBuildC '%s'\n", cmdline);
+    
+    ajStrAssignC(&tmpline, cmdline);
+    
+    cp   = cmdline;
+    ipos = 0;
+    while(ajRegExecC(argexp, &cp[ipos]))
+    {
+	ipos += ajRegLenI(argexp, 0);
+	iarg++;
+    }
+    
+    AJCNEW(*PParglist, iarg+1);
+    al   = *PParglist;
+    ipos = 0;
+    iarg = 0;
+    while(ajRegExecC(argexp, &cp[ipos]))
+    {
+	ilen = ajRegLenI(argexp, 0);
+	ajStrDelStatic(&argstr);
+	for(i=2;i<5;i++)
+	{
+	    if(ajRegLenI(argexp, i))
+	    {
+		ajRegSubI(argexp, i, &argstr);
+		/*ajDebug("parsed [%d] '%S'\n", i, argstr);*/
+		break;
+	    }
+	}
+	ipos += ilen;
+
+	if(!iarg)
+	    *Pname = ajCharNewS(argstr);
+
+	al[iarg] = ajCharNewS(argstr);
+	iarg++;
+    }
+
+    al[iarg] = NULL;
+    
+    ajRegFree(&argexp);
+    argexp = NULL;
+    ajStrDel(&tmpline);
+    ajStrDel(&argstr);
+    
+    ajDebug("ajSysArglistBuildC %d args for '%s'\n", iarg, *Pname);
+
+    return ajTrue;
+}
+
+
+/* @func ajSysArglistBuildS ****************************************************
+**
+** Generates a program name and argument list from a command line string.
+**
+** @param [r] cmdline [const AjPStr] Command line.
+** @param [w] Pname [char**] Program name.
+** @param [w] PParglist [char***] Argument list.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+AjBool ajSysArglistBuildS(const AjPStr cmdline, char** Pname, char*** PParglist)
+{    
+    static AjPRegexp argexp = NULL;
+    AjPStr tmpline          = NULL;
+    const char* cp;
+    ajint ipos = 0;
+    ajint iarg = 0;
+    ajint ilen = 0;
+    ajint i;
+    char** al;
+    AjPStr argstr = NULL;
+    
+    if(!argexp)
+	argexp = ajRegCompC("^[ \t]*(\"([^\"]*)\"|'([^']*)'|([^ \t]+))");
+    
+    ajDebug("ajSysArglistBuildS '%S'\n", cmdline);
     
     ajStrAssignS(&tmpline, cmdline);
     
@@ -159,22 +240,31 @@ AjBool ajSysArglistBuild(const AjPStr cmdline, char** Pname, char*** PParglist)
     ajStrDel(&tmpline);
     ajStrDel(&argstr);
     
-    ajDebug("ajSysArglistBuild %d args for '%s'\n", iarg, *Pname);
+    ajDebug("ajSysArglistBuildS %d args for '%s'\n", iarg, *Pname);
 
     return ajTrue;
 }
 
 
+/* @obsolete ajSysArglistBuild
+** @rename ajSysArglistBuildS
+*/
+
+__deprecated AjBool ajSysArglistBuild(const AjPStr cmdline,
+                                      char** Pname, char*** PParglist)
+{    
+    return ajSysArglistBuildS(cmdline, Pname, PParglist);
+}
 
 
 /* @obsolete ajSysArglist
-** @rename ajSysArglistBuild
+** @rename ajSysArglistBuildS
 */
 
 __deprecated AjBool ajSysArglist(const AjPStr cmdline,
 				 char** Pname, char*** PParglist)
 {    
-    return ajSysArglistBuild(cmdline, Pname, PParglist);
+    return ajSysArglistBuildS(cmdline, Pname, PParglist);
 }
 
 
@@ -329,7 +419,7 @@ __deprecated unsigned char ajSysItoUC(ajint v)
 ******************************************************************************/
 
 
-/* @func ajSysFileUnlink ******************************************************
+/* @func ajSysFileUnlinkC ******************************************************
 **
 ** Deletes a file or link
 **
@@ -338,31 +428,85 @@ __deprecated unsigned char ajSysItoUC(ajint v)
 ** @@
 ******************************************************************************/
 
-AjBool ajSysFileUnlink(const AjPStr filename)
+AjBool ajSysFileUnlinkC(const char* filename)
 {
-    ajDebug("ajSysFileUnlink '%S'\n", filename);
+    ajDebug("ajSysFileUnlinkC '%s'\n", filename);
 
 #ifndef WIN32
-    if(!unlink(ajStrGetPtr(filename)))
+    if(!unlink(filename))
 	return ajTrue;
+
+    ajErr("File '%s' remove failed, error:%d '%s'", filename,
+          errno, strerror(errno));
 #else
-    if(DeleteFile(ajStrGetPtr(filename)))
+    if(DeleteFile(filename))
 	return ajTrue;
 #endif
-    ajDebug("ajSysUnlink failed to delete '%S'\n", filename);
+    ajDebug("ajSysFileUnlinkC failed to delete '%s'\n", filename);
+
     return ajFalse;
 }
 
 
 
 
+/* @func ajSysFileUnlinkS ******************************************************
+**
+** Deletes a file or link
+**
+** @param [r] filename [const AjPStr] Filename in AjStr.
+** @return [AjBool] true if deleted false otherwise
+** @@
+******************************************************************************/
+
+AjBool ajSysFileUnlinkS(const AjPStr filename)
+{
+#ifdef WIN32
+    LPTSTR lpMsgBuf;
+    DWORD dwBufferLength;
+    DWORD dwBytesWritten;
+#endif
+    
+    ajDebug("ajSysFileUnlinkS '%S'\n", filename);
+
+#ifndef WIN32
+    if(!unlink(ajStrGetPtr(filename)))
+	return ajTrue;
+
+#else
+    if(DeleteFile(ajStrGetPtr(filename)))
+	return ajTrue;
+
+#endif
+
+    ajErr("File '%S' remove failed, error:%d '%s'",
+          filename, errno, strerror(errno));
+
+    ajDebug("ajSysFileUnlinkS failed to delete '%S'\n", filename);
+    return ajFalse;
+}
+
+
+
+
+
+/* @obsolete ajSysFileUnlink
+** @rename ajSysFileUnlinkS
+*/
+
+__deprecated AjBool ajSysFileUnlink(const AjPStr s)
+{
+    return ajSysFileUnlinkS(s);
+}
+
+
 /* @obsolete ajSysUnlink
-** @rename ajSysFileUnlink
+** @rename ajSysFileUnlinkS
 */
 
 __deprecated AjBool ajSysUnlink(const AjPStr s)
 {
-    return ajSysFileUnlink(s);
+    return ajSysFileUnlinkS(s);
 }
 
 
@@ -598,7 +742,15 @@ __deprecated AjBool ajSysWhichEnv(AjPStr *Pfilename, char * const env[])
 ** @fdata [none]
 ** @fcategory misc
 **
+** @nam3rule  Command          Execute the equivalent of a command
+** @nam4rule  CommandClear     Execute a clear screen command
+** @nam4rule  CommandCopy      Execute a copy command
+** @nam4rule  CommandMakedir   Execute a make directory command
+** @nam4rule  CommandRemove    Execute a remove file command
+** @nam4rule  CommandRemovedir Execute a remove directory command
+** @nam4rule  CommandRename    Execute a fle rename command
 ** @nam3rule  Func         Replacement for C-function.
+** @nam4rule  FuncSocket   A socket function for UNIX and Windows
 ** @nam4rule  FuncStrtok   strtok that doesn't corrupt the source string
 ** @nam5rule  FuncStrtokR  Reentrant version.
 ** @nam4rule  FuncFgets    An fgets replacement that will cope with Mac OSX
@@ -612,6 +764,8 @@ __deprecated AjBool ajSysWhichEnv(AjPStr *Pfilename, char * const env[])
 **                         received from main to extract the PATH list
 ** @nam4rule  SystemOut    Execute command line and write standard output to
 **                         a named file
+** @suffix    C            Accept CC character string parameters
+** @suffix    S            Accept string object parameters
 **
 ** @argrule Fdopen filedes [ajint] file descriptor
 ** @argrule Fdopen mode [const char*] file mode
@@ -639,6 +793,284 @@ __deprecated AjBool ajSysWhichEnv(AjPStr *Pfilename, char * const env[])
 ******************************************************************************/
 
 
+/* @func ajSysCommandCopyC **************************************************
+**
+** Copy a file
+**
+** @param [r] name  [const AjPStr] Source filename
+** @param [r] name2 [const AjPStr] Target filename
+** @return [AjBool] True on success
+**
+******************************************************************************/
+
+AjBool ajSysCommandCopyC(const char* name, const char* name2)
+{
+    int from;
+    int to;
+    int n;
+    char buf[1024];
+
+    from = open(name, O_RDONLY);
+    if(from < 0)
+    {
+        ajErr("Unable to copy '%s' error %d: %s",
+              name, errno, strerror(errno));
+        return ajFalse;
+    }
+    
+    to = open(name2, O_WRONLY|O_CREAT);
+    if(to < 0)
+    {
+        ajErr("Unable to copy to '%s' error %d: %s",
+              name2, errno, strerror(errno));
+        return ajFalse;
+    }
+
+    while((n = read(from, buf, sizeof(buf))) > 0)
+        write(to, buf, n);
+
+    close(from);
+    close(to);
+
+    return ajTrue;
+}
+
+
+/* @func ajSysCommandCopyS **************************************************
+**
+** Copy a file
+**
+** @param [r] strname  [const AjPStr] Source filename
+** @param [r] strname2 [const AjPStr] Target filename
+** @return [AjBool] True on success
+**
+******************************************************************************/
+
+AjBool ajSysCommandCopyS(const AjPStr strname, const AjPStr strname2)
+{
+    int from;
+    int to;
+    int n;
+    char buf[1024];
+    struct stat statbuf;
+
+    from = open(ajStrGetPtr(strname), O_RDONLY);
+    if(from < 0)
+    {
+        ajErr("Unable to copy '%S' error %d: %s",
+              strname, errno, strerror(errno));
+        return ajFalse;
+    }
+
+    fstat(from, &statbuf);
+    to = open(ajStrGetPtr(strname2), O_WRONLY|O_CREAT,
+              statbuf.st_mode);
+    if(to < 0)
+    {
+        ajErr("Unable to copy to '%S' error %d: %s",
+              strname2, errno, strerror(errno));
+        return ajFalse;
+    }
+
+    while((n = read(from, buf, sizeof(buf))) > 0)
+        write(to, buf, n);
+
+    close(from);
+    close(to);
+
+   return ajTrue;
+}
+
+
+
+/* @func ajSysCommandMakedirC *************************************************
+**
+** Delete a file
+**
+** @param [r] name [const char*] Directory
+** @return [AjBool] True on success
+**
+******************************************************************************/
+
+AjBool ajSysCommandMakedirC(const char* name)
+{
+    if(!mkdir(name, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH))
+       return ajTrue;
+
+    ajErr("Unable to make directory '%s' (%d): %s",
+          name, errno, strerror(errno));
+
+    return ajFalse;
+}
+
+
+
+/* @func ajSysCommandMakedirS *************************************************
+**
+** Delete a file
+**
+** @param [r] strname [const AjPStr] Directory
+** @return [AjBool] True on success
+**
+******************************************************************************/
+
+AjBool ajSysCommandMakedirS(const AjPStr strname)
+{
+    if(!mkdir(ajStrGetPtr(strname), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH))
+       return ajTrue;
+
+    ajErr("Unable to make directory '%S' (%d): %s",
+          strname, errno, strerror(errno));
+
+    return ajFalse;
+}
+
+
+
+
+/* @func ajSysCommandRemoveC **************************************************
+**
+** Delete a file
+**
+** @param [r] name [const char*] Filename
+** @return [AjBool] True on success
+**
+******************************************************************************/
+
+AjBool ajSysCommandRemoveC(const char* name)
+{
+    return ajSysFileUnlinkC(name);
+}
+
+
+
+/* @func ajSysCommandRemoveS **************************************************
+**
+** Delete a file
+**
+** @param [r] strname [const AjPStr] Filename
+** @return [AjBool] True on success
+**
+******************************************************************************/
+
+AjBool ajSysCommandRemoveS(const AjPStr strname)
+{
+    return ajSysFileUnlinkS(strname);
+}
+
+
+
+/* @func ajSysCommandRemovedirC ***********************************************
+**
+** Delete a file
+**
+** @param [r] name [const char*] Directory
+** @return [AjBool] True on success
+**
+******************************************************************************/
+
+AjBool ajSysCommandRemovedirC(const char* name)
+{
+    AjPStr cmdstr = NULL;
+
+    cmdstr = ajStrNewC(name);
+    if(!ajFilenameExistsDir(cmdstr))
+    {
+        if(!ajFilenameExists(cmdstr))
+            ajErr("Unable to remove directory '%S' not found", cmdstr);
+        else
+            ajErr("Unable to remove directory '%S' not a directory", cmdstr);
+        return ajFalse;
+    }
+    
+    ajFmtPrintS(&cmdstr, "rm -rf %s", name);
+    ajSysExecPathS(cmdstr);
+
+    ajStrDel(&cmdstr);
+
+    return ajTrue;
+}
+
+
+
+/* @func ajSysCommandRemovedirS ***********************************************
+**
+** Delete a file
+**
+** @param [r] strname [const AjPStr] Directory
+** @return [AjBool] True on success
+**
+******************************************************************************/
+
+AjBool ajSysCommandRemovedirS(const AjPStr strname)
+{
+    AjPStr cmdstr = NULL;
+
+    if(!ajFilenameExistsDir(strname))
+    {
+        if(!ajFilenameExists(strname))
+            ajErr("Unable to remove directory '%S' not found", strname);
+        else
+            ajErr("Unable to remove directory '%S' not a directory", strname);
+        return ajFalse;
+    }
+
+    ajFmtPrintS(&cmdstr, "rm -rf %S", strname);
+    system(ajStrGetPtr(cmdstr));
+
+    ajStrDel(&cmdstr);
+
+    return ajTrue;
+}
+
+
+
+/* @func ajSysCommandRenameC ************************************************
+**
+** Rename a file
+**
+** @param [r] name  [const AjPStr] Source filename
+** @param [r] name2 [const AjPStr] Target filename
+** @return [AjBool] True on success
+**
+******************************************************************************/
+
+AjBool ajSysCommandRenameC(const char* name, const char* name2)
+{
+    if(!rename(name, name2))
+        return ajTrue;
+
+    ajErr("File rename failed (%d): %s",
+          errno, strerror(errno));
+
+    return ajFalse;
+}
+
+
+
+/* @func ajSysCommandRenameS **************************************************
+**
+** Rename a file
+**
+** @param [r] strname  [const AjPStr] Source filename
+** @param [r] strname2 [const AjPStr] Target filename
+** @return [AjBool] True on success
+**
+******************************************************************************/
+
+AjBool ajSysCommandRenameS(const AjPStr strname, const AjPStr strname2)
+{
+    if(!rename(ajStrGetPtr(strname), ajStrGetPtr(strname2)))
+        return ajTrue;
+
+    ajErr("File rename failed (%d):%s",
+          errno, strerror(errno));
+
+    return ajFalse;
+}
+
+
+
 /* @func ajSysFuncFdopen ******************************************************
 **
 ** Place non-ANSI fdopen here
@@ -659,8 +1091,6 @@ FILE* ajSysFuncFdopen(ajint filedes, const char *mode)
 
     return ret;
 }
-
-
 
 
 /* @obsolete ajSysFdopen
@@ -738,9 +1168,6 @@ char* ajSysFuncFgets(char *buf, int size, FILE *fp)
 #endif
 }
 
-
-
-
 /* @obsolete ajSysFgets
 ** @rename ajSysFuncFgets
 */
@@ -749,6 +1176,7 @@ __deprecated char* ajSysFgets(char *buf, int size, FILE *fp)
 {
     return ajSysFuncFgets(buf, size, fp);
 }
+
 
 
 
@@ -789,8 +1217,6 @@ FILE* ajSysFuncFopen(const char *name, const char *flags)
 }
 
 
-
-
 /* @obsolete ajSysFopen
 ** @rename ajSysFuncFopen
 */
@@ -799,8 +1225,6 @@ __deprecated FILE* ajSysFopen(const char *name, const char *flags)
 {
     return ajSysFuncFopen(name, flags);
 }
-
-
 
 
 /* @func ajSysFuncSocket ******************************************************
@@ -826,7 +1250,6 @@ SOCKRET ajSysFuncSocket(int domain, int type, int protocol)
 
     return ret;
 }
-
 
 
 
@@ -905,8 +1328,6 @@ char* ajSysFuncStrtok(const char *srcstr, const char *delimstr)
 }
 
 
-
-
 /* @obsolete ajSysStrtok
 ** @rename ajSysFuncStrtok
 */
@@ -915,9 +1336,6 @@ __deprecated char* ajSysStrtok(const char *s, const char *t)
 {
     return ajSysFuncStrtok(s, t);
 }
-
-
-
 
 /* @func ajSysFuncStrtokR *****************************************************
 **
@@ -964,9 +1382,6 @@ char* ajSysFuncStrtokR(const char *srcstr, const char *delimstr,
     return ajStrGetuniquePtr(buf);
 }
 
-
-
-
 /* @obsolete ajSysStrtokR
 ** @rename ajSysFuncStrtokR
 */
@@ -981,39 +1396,33 @@ __deprecated char* ajSysStrtokR(const char *s, const char *t,
 
 
 
-
-/* @func ajSysSystem **********************************************************
+/* @func ajSysExecC ***********************************************************
 **
 ** Exec a command line as if from the C shell
 **
 ** The exec'd program is passed a new argv array in argptr
 **
-** @param [r] cmdline [const AjPStr] The command line
-** @return [void]
+** @param [r] cmdlinetxt [const char*] The command line
+** @return [ajint] Exit status
 ** @@
 ******************************************************************************/
 
-void ajSysSystem(const AjPStr cmdline)
+ajint ajSysExecC(const char* cmdlinetxt)
 {
 #ifndef WIN32
     pid_t pid;
     pid_t retval;
-    ajint status;
+    ajint status = 0;
     char *pgm;
     char **argptr;
     ajint i;
 
     AjPStr pname = NULL;
 
-    if(!ajSysArglistBuild(cmdline, &pgm, &argptr))
-	return;
+    if(!ajSysArglistBuildC(cmdlinetxt, &pgm, &argptr))
+	return -1;
 
-    pname = ajStrNew();
-
-    ajStrAssignC(&pname, pgm);
-
-    if(!ajSysFileWhich(&pname))
-	ajFatal("cannot find program '%S'", pname);
+    pname = ajStrNewC(pgm);
 
     pid=fork();
 
@@ -1047,11 +1456,187 @@ void ajSysSystem(const AjPStr cmdline)
 
     AJFREE(pgm);
 
+#else
+    PROCESS_INFORMATION procInfo;
+    STARTUPINFO startInfo;
+    
+    ajDebug ("Launching process '%s'\n", cmdlinetxt);
+    
+    ZeroMemory(&startInfo, sizeof(startInfo));
+    startInfo.cb = sizeof(startInfo);
+    
+    if (!CreateProcess(NULL, (char *)cmdlinetxt, NULL, NULL, FALSE,
+		       CREATE_NO_WINDOW, NULL, NULL, &startInfo, &procInfo))
+	ajFatal("CreateProcess failed");
+
+    WaitForSingleObject(procInfo.hProcess, INFINITE);
+
 #endif
+
+    return status;
+}
+
+
+/* @func ajSysExecS ***********************************************************
+**
+** Exec a command line as if from the C shell
+**
+** The exec'd program is passed a new argv array in argptr
+**
+** @param [r] cmdline [const AjPStr] The command line
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSysExecS(const AjPStr cmdline)
+{
+#ifndef WIN32
+    pid_t pid;
+    pid_t retval;
+    ajint status;
+    char *pgm;
+    char **argptr;
+    ajint i;
+
+    AjPStr pname = NULL;
+
+    if(!ajSysArglistBuildS(cmdline, &pgm, &argptr))
+	return;
+
+    pname = ajStrNewC(pgm);
+
+    pid=fork();
+
+    if(pid==-1)
+	ajFatal("System fork failed");
+
+    if(pid)
+    {
+	while((retval=waitpid(pid,&status,0))!=pid)
+	{
+	    if(retval == -1)
+		if(errno != EINTR)
+		    break;
+	}
+    }
+    else
+    {
+	execv(ajStrGetPtr(pname), argptr);
+	ajExitAbort();			/* just in case */
+    }
+
+    ajStrDel(&pname);
+
+    i = 0;
+    while(argptr[i])
+    {
+	AJFREE(argptr[i]);
+	++i;
+    }
+    AJFREE(argptr);
+
+    AJFREE(pgm);
+
+#else
+    PROCESS_INFORMATION procInfo;
+    STARTUPINFO startInfo;
+    
+    ajDebug ("Launching process '%S'\n", cmdline);
+    
+    ZeroMemory(&startInfo, sizeof(startInfo));
+    startInfo.cb = sizeof(startInfo);
+    
+    if (!CreateProcess(NULL, (char *)ajStrGetPtr(cmdline), NULL, NULL, FALSE,
+		       CREATE_NO_WINDOW, NULL, NULL, &startInfo, &procInfo))
+	ajFatal("CreateProcess failed");
+
+    WaitForSingleObject(procInfo.hProcess, INFINITE);
+
+#endif
+
     return;
 }
 
 
+/* @func ajSysExecPathS *******************************************************
+**
+** Exec a command line with a test for the program name in the current path
+**
+** The exec'd program is passed a new argv array in argptr
+**
+** @param [r] cmdline [const AjPStr] The command line
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSysExecPathS(const AjPStr cmdline)
+{
+#ifndef WIN32
+    pid_t pid;
+    pid_t retval;
+    ajint status;
+    char *pgm;
+    char **argptr;
+    ajint i;
+
+    AjPStr pname = NULL;
+
+    if(!ajSysArglistBuildS(cmdline, &pgm, &argptr))
+	return;
+
+    pname = ajStrNewC(pgm);
+
+    pid=fork();
+
+    if(pid==-1)
+	ajFatal("System fork failed");
+
+    if(pid)
+    {
+	while((retval=waitpid(pid,&status,0))!=pid)
+	{
+	    if(retval == -1)
+		if(errno != EINTR)
+		    break;
+	}
+    }
+    else
+    {
+	execvp(ajStrGetPtr(pname), argptr);
+	ajExitAbort();			/* just in case */
+    }
+
+    ajStrDel(&pname);
+
+    i = 0;
+    while(argptr[i])
+    {
+	AJFREE(argptr[i]);
+	++i;
+    }
+    AJFREE(argptr);
+
+    AJFREE(pgm);
+
+#else
+    PROCESS_INFORMATION procInfo;
+    STARTUPINFO startInfo;
+    
+    ajDebug ("Launching process '%S'\n", cmdline);
+    
+    ZeroMemory(&startInfo, sizeof(startInfo));
+    startInfo.cb = sizeof(startInfo);
+    
+    if (!CreateProcess(NULL, (char *)ajStrGetPtr(cmdline), NULL, NULL, FALSE,
+		       CREATE_NO_WINDOW, NULL, NULL, &startInfo, &procInfo))
+	ajFatal("CreateProcess failed");
+
+    WaitForSingleObject(procInfo.hProcess, INFINITE);
+
+#endif
+
+    return;
+}
 
 
 /* @obsolete ajSystem
@@ -1060,14 +1645,22 @@ void ajSysSystem(const AjPStr cmdline)
 
 __deprecated void ajSystem(const AjPStr cl)
 {
-    ajSysSystem(cl);
+    ajSysExecS(cl);
+    return;
+}
+
+/* @obsolete ajSysSystem
+** @rename ajSysExecS
+*/
+
+__deprecated void ajSysSystem(const AjPStr cmdline)
+{
+    ajSysExecS(cmdline);
     return;
 }
 
 
-
-
-/* @func ajSysSystemEnv *******************************************************
+/* @func ajSysExecEnvS ********************************************************
 **
 ** Exec a command line as if from the C shell
 **
@@ -1084,7 +1677,7 @@ __deprecated void ajSystem(const AjPStr cl)
 ** @@
 ******************************************************************************/
 
-void ajSysSystemEnv(const AjPStr cmdline, char * const env[])
+void ajSysExecEnvS(const AjPStr cmdline, char * const env[])
 {
 #ifndef WIN32
     pid_t pid;
@@ -1096,7 +1689,7 @@ void ajSysSystemEnv(const AjPStr cmdline, char * const env[])
 
     AjPStr pname = NULL;
 
-    if(!ajSysArglistBuild(cmdline, &pgm, &argptr))
+    if(!ajSysArglistBuildS(cmdline, &pgm, &argptr))
 	return;
 
     pname = ajStrNew();
@@ -1148,26 +1741,32 @@ void ajSysSystemEnv(const AjPStr cmdline, char * const env[])
     return;
 }
 
-
-
-
 /* @obsolete ajSystemEnv
-** @rename ajSysSystemEnv
+** @rename ajSysExecEnvS
 */
 
 __deprecated void ajSystemEnv(const AjPStr cl, char * const env[])
 {
-    ajSysSystemEnv(cl, env);
+    ajSysExecEnvS(cl, env);
     return;
 }
 
 
+/* @obsolete ajSystemEnv
+** @rename ajSysExecEnvS
+*/
+
+__deprecated void ajSysSystemEnv(const AjPStr cmdline, char * const env[])
+{
+    ajSysExecEnvS(cmdline, env);
+    return;
+}
 
 
-/* @func ajSysSystemOut *******************************************************
+/* @func ajSysExecOutnameS *************************************************
 **
 ** Exec a command line as if from the C shell with standard output redirected
-** to a named file
+** to and overwriting a named file
 **
 ** The exec'd program is passed a new argv array in argptr
 **
@@ -1177,7 +1776,7 @@ __deprecated void ajSystemEnv(const AjPStr cl, char * const env[])
 ** @@
 ******************************************************************************/
 
-void ajSysSystemOut(const AjPStr cmdline, const AjPStr outfname)
+void ajSysExecOutnameS(const AjPStr cmdline, const AjPStr outfname)
 {
 #ifndef WIN32
     pid_t pid;
@@ -1189,7 +1788,7 @@ void ajSysSystemOut(const AjPStr cmdline, const AjPStr outfname)
 
     AjPStr pname = NULL;
 
-    if(!ajSysArglistBuild(cmdline, &pgm, &argptr))
+    if(!ajSysArglistBuildS(cmdline, &pgm, &argptr))
 	return;
 
     pname = ajStrNew();
@@ -1238,6 +1837,172 @@ void ajSysSystemOut(const AjPStr cmdline, const AjPStr outfname)
     AJFREE(pgm);
 
 #endif
+
+    return;
+}
+
+
+
+
+
+/* @func ajSysExecOutnameAppendS **********************************************
+**
+** Exec a command line as if from the C shell with standard output redirected
+** and appended to a named file
+**
+** The exec'd program is passed a new argv array in argptr
+**
+** @param [r] cmdline [const AjPStr] The command line
+** @param [r] outfname [const AjPStr] The output file name
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSysExecOutnameAppendS(const AjPStr cmdline, const AjPStr outfname)
+{
+#ifndef WIN32
+    pid_t pid;
+    pid_t retval;
+    ajint status;
+    char *pgm;
+    char **argptr;
+    ajint i;
+
+    AjPStr pname = NULL;
+
+    if(!ajSysArglistBuildS(cmdline, &pgm, &argptr))
+	return;
+
+    pname = ajStrNew();
+
+    ajStrAssignC(&pname, pgm);
+
+    if(!ajSysFileWhich(&pname))
+	ajFatal("cannot find program '%S'", pname);
+
+    fflush(stdout);
+
+    pid=fork();
+
+    if(pid==-1)
+	ajFatal("System fork failed");
+
+    if(pid)
+    {
+	while((retval=waitpid(pid,&status,0))!=pid)
+	{
+	    if(retval == -1)
+		if(errno != EINTR)
+		    break;
+	}
+    }
+    else
+    {
+	/* this is the child process */
+
+	if(!freopen(MAJSTRGETPTR(outfname), "ab", stdout))
+	    ajErr("Failed to redirect standard output to '%S'", outfname);
+	execv(ajStrGetPtr(pname), argptr);
+	ajExitAbort();			/* just in case */
+    }
+
+    ajStrDel(&pname);
+
+    i = 0;
+    while(argptr[i])
+    {
+	AJFREE(argptr[i]);
+	++i;
+    }
+    AJFREE(argptr);
+
+    AJFREE(pgm);
+
+#endif
+
+    return;
+}
+
+
+
+
+
+/* @func ajSysExecOutnameErrS *************************************************
+**
+** Exec a command line as if from the C shell with standard output and
+** standard error redirected to and overwriting a named file
+**
+** The exec'd program is passed a new argv array in argptr
+**
+** @param [r] cmdline [const AjPStr] The command line
+** @param [r] outfname [const AjPStr] The output file name
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSysExecOutnameErrS(const AjPStr cmdline, const AjPStr outfname)
+{
+#ifndef WIN32
+    pid_t pid;
+    pid_t retval;
+    ajint status;
+    char *pgm;
+    char **argptr;
+    ajint i;
+
+    AjPStr pname = NULL;
+
+    if(!ajSysArglistBuildS(cmdline, &pgm, &argptr))
+	return;
+
+    pname = ajStrNew();
+
+    ajStrAssignC(&pname, pgm);
+
+    if(!ajSysFileWhich(&pname))
+	ajFatal("cannot find program '%S'", pname);
+
+    fflush(stdout);
+
+    pid=fork();
+
+    if(pid==-1)
+	ajFatal("System fork failed");
+
+    if(pid)
+    {
+	while((retval=waitpid(pid,&status,0))!=pid)
+	{
+	    if(retval == -1)
+		if(errno != EINTR)
+		    break;
+	}
+    }
+    else
+    {
+	/* this is the child process */
+
+	if(!freopen(MAJSTRGETPTR(outfname), "wb", stdout))
+	    ajErr("Failed to redirect standard output to '%S'", outfname);
+        close(STDERR_FILENO);
+        dup(fileno(stdout));
+	execv(ajStrGetPtr(pname), argptr);
+	ajExitAbort();			/* just in case */
+    }
+
+    ajStrDel(&pname);
+
+    i = 0;
+    while(argptr[i])
+    {
+	AJFREE(argptr[i]);
+	++i;
+    }
+    AJFREE(argptr);
+
+    AJFREE(pgm);
+
+#endif
     return;
 }
 
@@ -1245,12 +2010,103 @@ void ajSysSystemOut(const AjPStr cmdline, const AjPStr outfname)
 
 
 /* @obsolete ajSystemOut
-** @rename ajSysSystemOut
+** @rename ajSysExecOutnameS
 */
 
 __deprecated void ajSystemOut(const AjPStr cl, const AjPStr outfname)
 {
-    ajSysSystemOut(cl, outfname);
+    ajSysExecOutnameS(cl, outfname);
+    return;
+}
+
+
+/* @obsolete ajSysSystemOut
+** @rename ajSysExecOutnameS
+*/
+
+__deprecated void ajSysSystemOut(const AjPStr cmdline, const AjPStr outfname)
+{
+    ajSysExecOutnameS(cmdline, outfname);
+    return;
+}
+
+
+/* @func ajSysExecOutnameAppendErrS *******************************************
+**
+** Exec a command line as if from the C shell with standard output and
+** standard error redirected and appended to a named file
+**
+** The exec'd program is passed a new argv array in argptr
+**
+** @param [r] cmdline [const AjPStr] The command line
+** @param [r] outfname [const AjPStr] The output file name
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSysExecOutnameAppendErrS(const AjPStr cmdline, const AjPStr outfname)
+{
+#ifndef WIN32
+    pid_t pid;
+    pid_t retval;
+    ajint status;
+    char *pgm;
+    char **argptr;
+    ajint i;
+
+    AjPStr pname = NULL;
+
+    if(!ajSysArglistBuildS(cmdline, &pgm, &argptr))
+	return;
+
+    pname = ajStrNew();
+
+    ajStrAssignC(&pname, pgm);
+
+    if(!ajSysFileWhich(&pname))
+	ajFatal("cannot find program '%S'", pname);
+
+    fflush(stdout);
+
+    pid=fork();
+
+    if(pid==-1)
+	ajFatal("System fork failed");
+
+    if(pid)
+    {
+	while((retval=waitpid(pid,&status,0))!=pid)
+	{
+	    if(retval == -1)
+		if(errno != EINTR)
+		    break;
+	}
+    }
+    else
+    {
+	/* this is the child process */
+
+	if(!freopen(MAJSTRGETPTR(outfname), "ab", stdout))
+	    ajErr("Failed to redirect standard output to '%S'", outfname);
+        close(STDERR_FILENO);
+        dup(fileno(stdout));
+	execv(ajStrGetPtr(pname), argptr);
+	ajExitAbort();			/* just in case */
+    }
+
+    ajStrDel(&pname);
+
+    i = 0;
+    while(argptr[i])
+    {
+	AJFREE(argptr[i]);
+	++i;
+    }
+    AJFREE(argptr);
+
+    AJFREE(pgm);
+
+#endif
     return;
 }
 
@@ -1511,7 +2367,7 @@ static void CALLBACK sysTimeoutAbort(LPVOID arg, DWORD low, DWORD high)
 
 
 /* @obsolete ajSysBasename
-** @rename ajFileNameTrim
+** @rename ajFilenameTrimPath
 */
 
 __deprecated void ajSysBasename(AjPStr *s)
