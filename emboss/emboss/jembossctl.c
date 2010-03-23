@@ -2347,13 +2347,8 @@ static AjBool jembossctl_do_deletedir(char *buf, int uid, int gid)
 	return ajFalse;
     }
 
-
-    cmnd = ajStrNew();
-    ajFmtPrintS(&cmnd,"rm -rf %S",dir);
-
-
-#ifndef __ppc__
-    if(system(ajStrGetPtr(cmnd))==-1)
+    ajSysCommandRemovedirS(dir);
+    if(!ajFilenameExists(dir))
     {
 	fprintf(stderr,"system error (delete directory)\n");
 	ajStrDel(&cmnd);
@@ -2361,9 +2356,6 @@ static AjBool jembossctl_do_deletedir(char *buf, int uid, int gid)
 	return ajFalse;
     }
 
-#else
-    ajSysSystem(cmnd);
-#endif
 
     ajStrDel(&cmnd);
     ajStrDel(&dir);
