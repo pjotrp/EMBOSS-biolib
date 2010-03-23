@@ -1,5 +1,5 @@
 application: pdbplus [
-  documentation: "Add accessibility & secondary structure to
+  documentation: "Add accessibility and secondary structure to
                   a CCF file."
   groups: "Utils:Database creation"
   gui: "yes"
