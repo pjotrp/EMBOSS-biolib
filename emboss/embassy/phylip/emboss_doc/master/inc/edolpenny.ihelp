@@ -4,7 +4,7 @@ Version: EMBOSS:6.2.0
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-datafile]          infile     Phylip dolpenny program input file
 *  -datasets           integer    [2] Number of sets (Integer 2 or more)
-  [-[no]dollo]         boolean    [Y] Dollo Parsimony method (else
+   -[no]dollo          boolean    [Y] Dollo Parsimony method (else
                                   Polymorphism)
 *  -valthresh          float      [1.0] Threshold value (Number 1.000 or more)
   [-outfile]           outfile    [edolpenny.outfile] Phylip dolpenny program
@@ -32,7 +32,7 @@ Version: EMBOSS:6.2.0
    Associated qualifiers:
 
    "-outfile" associated qualifiers
-   -odirectory3        string     Output directory
+   -odirectory2        string     Output directory
 
    "-treefile" associated qualifiers
    -odirectory         string     Output directory

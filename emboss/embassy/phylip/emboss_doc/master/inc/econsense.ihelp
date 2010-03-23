@@ -8,7 +8,7 @@ Version: EMBOSS:6.2.0
                                   more)
   [-outfile]           outfile    [econsense.outfile] Phylip consense program
                                   output file
-  [-[no]trout]         boolean    [Y] Create a tree file
+   -[no]trout          boolean    [Y] Create a tree file
   [-treefile]          outfile    [*.econsense] Phylip tree output file
 
    Additional (Optional) qualifiers:
@@ -24,7 +24,7 @@ Version: EMBOSS:6.2.0
    -odirectory2        string     Output directory
 
    "-treefile" associated qualifiers
-   -odirectory4        string     Output directory
+   -odirectory3        string     Output directory
 
    General qualifiers:
    -auto               boolean    Turn off prompts
