@@ -1,4 +1,34 @@
 Version 6.3.0 15-Jul-2010
+	Ampersands in application descriptions have been removed. They
+	confuse HTML versions of documentation.
+
+	The QA test script qatest.pl has new options -simple to turn off
+	messages when running with a local test file, and -with to cancel
+	-without options
+
+	Output redirected to a file can now use ajSysExecOutname functions
+	to pass the filename to be used for standard output and possibly
+	standard error. The filename is most usefully picked up from a new
+	function ajAcdGetOutfileName which closes an ACD outfile and
+	returns the name of the file. Te file will be empty if simply
+	opened, or will have existing contents if the append attribute is
+	true in the ACD file.
+
+	The output from tfscan is now in report format, replacing the
+	undefined text file produced in previous releases.
+
+	Where a new string is created by ajStrAssignS (the standard string
+	copy functrions) the reserved space for the string is enough to
+	hold the current string value. In past releases the reserved
+	memory was the same size as the reserved memory of the string
+	being copied. This wasted memory where a large string had a short
+	value, especially when copying records read from a buffered input
+	file.
+
+	Sequence input formats now turn off buffering of input once they
+	can no longer fail (for example, FASTA format after the header
+	record will read everything until it finds another header).
+
 	Make ajaxdb code IPv6 compliant. Remove gethostbyname config
 	check.
 
