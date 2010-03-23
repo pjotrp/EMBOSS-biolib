@@ -1,0 +1,125 @@
+application: esignalp [
+  documentation: "Reports protein signal cleavage sites"
+  groups: "Protein:Motifs"
+  embassy: "cbstools"
+  external: "signalp CBStools website http://www.cbs.dtu.dk/services/"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: sequence [
+    parameter: "Y"
+    type: "any"
+    aligned: "Y"
+    relations: "EDAM: Sequence alignment data"                             
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  list: type [
+    standard: "Y"
+    header:   "Organism"
+    default: "euk"
+    minimum: "1"
+    maximum: "1"
+    values: "euk:euk, gramp:gram positive, gramn:gram negative"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Organism type to use"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  list: method [
+    standard: "Y"
+    header:   "Algorithm method"
+    default: "nn+hmm"
+    minimum: "1"
+    maximum: "1"
+    values: "nn+hmm:Neural net plus hmm, nn:Neural net, hmm:Hmm"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Method to use"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  list: format [
+    standard: "Y"
+    header:  "Text output format"
+    default: "full"
+    minimum: "1"
+    maximum: "1"
+    values: "full:Full, summary:Summary, short:Short"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Output format"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  list: gmode [
+    standard: "Y"
+    header: "Graphics mode"
+    default: "none"
+    minimum: "1"
+    maximum: "1"
+    values: "none:none, gif:gif, eps:eps, gif+eps:gif+eps, ps:ps"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Graphics output"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  list: synver [
+    standard: "Y"
+    default: "3.0"
+    minimum: "1"
+    maximum: "1"
+    values: "1.0:1.0, 1.1:1.1, 2.0:2.0, 3.0:3.0"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Signalp version weights"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+endsection: required
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  integer: truncate [
+    default: "0"
+    minimum: "0"
+    information: "Truncate sequence to n N-terminal residues (0=off)"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+
+  boolean: keepall [
+    default: "N"
+    information: "Keep all gnuplot files"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "esignalp output"
+    relations:  "EDAM:Signal peptide sequence map report"                  
+  ]
+
+endsection: output

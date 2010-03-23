@@ -1,0 +1,46 @@
+application: echlorop [
+  documentation: "Reports presence of chloroplast transit peptides"
+  groups: "Protein:Motifs"
+  embassy: "cbstools"
+  external: "chlorop CBStools website http://www.cbs.dtu.dk/services/"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: sequence [
+    parameter: "Y"
+    type: "any"
+    aligned: "Y"
+    relations: "EDAM: Sequence alignment data"                             
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: full [
+    default: "N"
+    information: "Show full output"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "echlorop output"
+    relations:  "EDAM:Signal peptide sequence map report"                  
+  ]
+
+endsection: output

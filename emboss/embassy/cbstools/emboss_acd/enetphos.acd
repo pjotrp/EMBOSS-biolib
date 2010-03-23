@@ -1,0 +1,109 @@
+application: enetphos [
+  documentation: "Reports ser, thr and tyr phosphorylation sites in eukaryotic proteins"
+  groups: "Protein:Motifs"
+  embassy: "cbstools"
+  external: "netphos CBStools website http://www.cbs.dtu.dk/services/"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: sequence [
+    parameter: "Y"
+    type: "any"
+    aligned: "Y"
+    relations: "EDAM: Sequence alignment data"                             
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  float: cutoff [
+    additional: "Y"
+    default: "0.0"
+    information: "Report only scores above this value"
+    relations: "EDAM: Generic float"                                       
+  ]
+
+endsection: additional
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: plot [
+    default: "N"
+    information: "Produce graphics"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: two [
+    default: "N"
+    information: "Run generic predictions only"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: kinase [
+    default: "N"
+    information: "Run kinase-specific only"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  list: residue [
+    header:   "Residue predictions"
+    default: "all"
+    minimum: "1"
+    maximum: "1"
+    values: "all:all, serine:serine, threonine:threonine, tyrosine:tyrosine"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Residues to predict with"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  boolean: gff [
+    default: "N"
+    information: "Produce gff output"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: best [
+    default: "N"
+    information: "Report only the highest score for each residue"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: addseq [
+    default: "N"
+    information: "Add sequence to gff output"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "enetphos output"
+    relations:  "EDAM:Protein post-translation modification site report"   
+  ]
+
+endsection: output

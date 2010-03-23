@@ -1,0 +1,85 @@
+application: elipop [
+  documentation: "Prediction of lipoproteins"
+  groups: "Protein:Motifs"
+  embassy: "cbstools"
+  external: "LipoP CBStools website http://www.cbs.dtu.dk/services/"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: sequence [
+    parameter: "Y"
+    type: "any"
+    aligned: "Y"
+    relations: "EDAM: Sequence alignment data"                             
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+
+endsection: additional
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: plot [
+    default: "N"
+    information: "Produce graphics"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: short [
+    default: "N"
+    information: "Short output"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: html [
+    default: "N"
+    information: "Html output"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: format [
+    default: "N"
+    information: "Run LipoPformat script"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  integer: cutoff [
+    default: "-3"
+    information: "Log-odds cutoff"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "elipop output"
+    relations:  "EDAM:Signal peptide sequence map report"                  
+  ]
+
+endsection: output

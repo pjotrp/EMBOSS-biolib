@@ -1,0 +1,151 @@
+application: eiprscan [
+  documentation: "Motif detection"
+  groups: "Protein:Motifs"
+  embassy: "iprscan"
+  external: "iprscan InterProSCAN
+             http://www.ebi.ac.uk/Tools/InterProScan/index.html"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: sequence [
+    parameter: "Y"
+    type: "gapany"
+    aligned: "N"
+    relations: "EDAM: Sequence record"                                     
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  list: appl [
+    standard: "Y"
+    default: "all"
+    minimum: "1"
+    maximum: "15"
+    header: "Applications to use"
+    values: "all:all, blastprodom:blastprodom, coils:coils,
+             gene3d:gene3d, hmmpanther:hmmpanther, hmmpir:hmmpir,
+	     hmmpfam:hmmpfam, hmmsmart:hmmsmart, hmmtigr:hmmtigr,
+	     fprintscan:fprintscan, scanregexp:scanregexp,
+	     profilescan:profilescan, superfamily:superfamily,
+	     seg:seg, signalp:signalp, tmhmm:tmhmm"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Application(s) to use"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  list: format [
+    standard: "Y"
+    default: "xml"
+    minimum: "1"
+    maximum: "1"
+    header: "Output Formats"
+    values: "raw:Raw, txt:Text, html:Html, xml:Xml, ebixml:EBIxml, gff:GFF"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Format to use"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  string: email [
+    additional: "Y"
+    default: ""
+    information: "Submitter email address"
+    knowntype: "email address"
+    relations:  "EDAM: Email address"                                  
+  ]
+
+ 
+ list: trtable [
+    additional: "Y"
+    default: "0"
+    minimum: "1"
+    maximum: "1"
+    header: "Genetic codes"
+    values: "0:Standard; 1:Standard (with alternative initiation
+             codons); 2:Vertebrate Mitochondrial; 3:Yeast Mitochondrial;
+             4:Mold, Protozoan, Coelenterate Mitochondrial and
+             Mycoplasma/Spiroplasma; 5:Invertebrate Mitochondrial; 6:Ciliate
+             Macronuclear and Dasycladacean; 9:Echinoderm Mitochondrial;
+             10:Euplotid Nuclear; 11:Bacterial; 12:Alternative Yeast Nuclear;
+             13:Ascidian Mitochondrial; 14:Flatworm Mitochondrial;
+             15:Blepharisma Macronuclear; 16:Chlorophycean Mitochondrial;
+             21:Trematode Mitochondrial; 22:Scenedesmus obliquus;
+             23:Thraustochytrium Mitochondrial"
+    delimiter: ";"
+    codedelimiter: ":"
+    information: "Code to use"
+    help: "Genetic codes used for translation"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  integer: trlen [
+    additional: "Y"
+    default: "1"
+    minimum: "1"
+    information: "Minimum size of ORFs"
+    help: "Minimum size of Open Reading Frames (ORFs) in
+           the translations."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  boolean: iprlookup [
+    additional: "Y"
+    default: "N"
+    information: "Turn on InterPro lookup for results"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: goterms [
+    additional: "$(iprlookup)"
+    default: "N"
+    information: "Show GO terms in InterPro lookup"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: crc [
+    additional: "Y"
+    default: "Y"
+    information: "Perform CRC64 check"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: altjobs [
+    additional: "Y"
+    default: "N"
+    information: "Launch jobs alternately (chunk after chunk)"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    information: "EIPRSCAN program output file"
+    knowntype: "eiprscan output"
+    relations:  "EDAM:Motif map report"                                    
+  ]
+
+endsection: output
