@@ -7787,6 +7787,7 @@ __deprecated void  ajSeqCvtDel (AjPSeqCvt* Pcvt)
 ** @nam4rule GetLen Return length (number of bases defined)
 ** @nam4rule GetCode Return conversion code
 ** @nam5rule GetCodeAsym Return conversion code from asymmetric table column
+** @nam5rule GetCodeAsymrow Return conversion code from asymmetric table row
 **
 ** @suffix K Single character code
 ** @suffix S String label code
@@ -7908,7 +7909,7 @@ ajint ajSeqcvtGetCodeAsymS (const AjPSeqCvt cvt, const AjPStr str)
        has all values of 0. */
 
 
-    ajWarn("Sequence character string not found in ajSeqCvtKSColumn");
+    ajWarn("Sequence character string not found in ajSeqcvtGetCodeAsymS");
     return 0;
 }
 
@@ -7921,6 +7922,38 @@ ajint ajSeqcvtGetCodeAsymS (const AjPSeqCvt cvt, const AjPStr str)
 __deprecated ajint  ajSeqCvtKSColumn (const AjPSeqCvt cvt, const AjPStr ch)
 {
     return ajSeqcvtGetCodeAsymS(cvt, ch);
+}
+
+
+
+
+/* @func ajSeqcvtGetCodeAsymrowS **********************************************
+**
+** Returns the integer code corresponding to a sequence character string
+** in a conversion table (for rows in asymmetrical matrices).
+**
+** @param [r] cvt [const AjPSeqCvt] Conversion table
+** @param [r] str [const AjPStr] Sequence character string
+**
+** @return [ajint] Conversion code
+** @@
+******************************************************************************/
+
+ajint ajSeqcvtGetCodeAsymrowS (const AjPSeqCvt cvt, const AjPStr str)
+{
+    ajint i=0;
+    
+    for(i=0;i<cvt->nrlabels;i++)
+	if(ajStrMatchS(str, cvt->rlabels[i]))
+	    return i+1;
+
+    /* i+1 is returned because the size of a matrix is always 1 bigger than
+       the number of labels. This is the "padding" first row/column which 
+       has all values of 0. */
+
+
+    ajWarn("Sequence character string not found in ajSeqcvtGetCodeAsymrowS");
+    return 0;
 }
 
 

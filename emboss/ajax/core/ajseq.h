@@ -125,6 +125,7 @@ void         ajSeqcvtDel (AjPSeqCvt* thys);
 ajint        ajSeqcvtGetCodeK (const AjPSeqCvt thys, char ch);
 ajint        ajSeqcvtGetCodeS (const AjPSeqCvt thys, const AjPStr ch);
 ajint        ajSeqcvtGetCodeAsymS (const AjPSeqCvt cvt, const AjPStr str);
+ajint        ajSeqcvtGetCodeAsymrowS (const AjPSeqCvt cvt, const AjPStr str);
 ajuint       ajSeqcvtGetLen (const AjPSeqCvt thys);
 AjPSeqCvt    ajSeqcvtNewC (const char* bases);
 AjPSeqCvt    ajSeqcvtNewNumberC (const char* bases);
