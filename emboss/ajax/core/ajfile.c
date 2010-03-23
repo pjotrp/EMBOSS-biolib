@@ -702,19 +702,12 @@ AjBool ajDiroutExists(AjPDirout thys)
 
 AjBool ajDiroutOpen(AjPDirout thys)
 {
-    AjPStr cmdstr = NULL;
-
     if(ajStrGetCharLast(thys->Name) != SLASH_CHAR)
 	ajStrAppendC(&thys->Name, SLASH_STRING);
 
     if(!ajFilenameExists(thys->Name))
-    {
-        ajFmtPrintS(&cmdstr, "mkdir %S", thys->Name);
-        ajSysSystem(cmdstr);
-        ajStrDel(&cmdstr);
-    }
-
-    
+        ajSysCommandMakedirS(thys->Name);
+   
     if(!ajFilenameExistsDir(thys->Name))
         return ajFalse;
 
@@ -1252,7 +1245,7 @@ AjPFile ajFileNewInPipe(const AjPStr command)
 
 	dup2(pipefds[1], 1);
 	close(pipefds[1]);
-	ajSysArglistBuild(fileNameTmp, &pgm, &arglist);
+	ajSysArglistBuildS(fileNameTmp, &pgm, &arglist);
 	ajDebug("execvp ('%S', NULL)\n", fileNameTmp);
 	execvp(pgm, arglist);
 	ajErr("execvp ('%S', NULL) failed: '%s'\n",
@@ -1966,7 +1959,7 @@ __deprecated AjPFile ajFileNewApp(const AjPStr name)
 **
 ** @argrule Close Pfile [AjPFile*] File to be closed and deleted
 **
-** @valrule * [void]
+** @valrule Close [void]
 **
 ** @fcategory delete
 **
