@@ -972,7 +972,7 @@ AjBool ajFeattabOutOpen(AjPFeattabOut thys, const AjPStr ufo)
 
 /* @func ajFeattabOutFile *****************************************************
 **
-** Returns the name of a feature output file
+** Returns the feature table output file object
 **
 ** @param [r] thys [const AjPFeattabOut] Features table output object
 ** @return [AjPFile] File object
@@ -990,7 +990,7 @@ AjPFile ajFeattabOutFile(const AjPFeattabOut thys)
 
 /* @func ajFeattabOutFilename *************************************************
 **
-** Returns the name of a feature output file
+** Returns the name of a feature table output file
 **
 ** @param [r] thys [const AjPFeattabOut] Features table output object
 ** @return [AjPStr] Filename
@@ -2655,9 +2655,8 @@ AjBool ajFeatOutFormatDefault(AjPStr* pformat)
 
 /* @func ajFeattableWrite *****************************************************
 **
-** Generic interface function for writing features from a file
-** given the file handle, class of map, data format of input
-** and possibly other associated data.
+** Generic interface function for writing features to a file
+** defined by a feature table output object.
 **
 ** @param  [u] ftout   [AjPFeattabOut]  Specifies the external source
 **                                       (file) of the features to be written
@@ -10867,8 +10866,7 @@ AjPFeattable ajFeattableNew(const AjPStr name )
 /* @func ajFeattableNewRead ****************************************************
 **
 ** Generic interface function for reading in features from a file
-** given the file handle, class of map, data format of input
-** and possibly other associated data.
+** given the file handle.
 **
 ** @param  [u] ftin   [AjPFeattabIn]  Specifies the external source (file)
 **                                     of the features to be read in
@@ -16902,6 +16900,67 @@ AjBool ajFeattableTrimOff(AjPFeattable thys, ajuint ioffset, ajuint ilen)
 
     ajListIterDel(&iter);
     thys->Offset = ioffset;
+
+    return ok;
+}
+
+
+
+
+/* @func ajFeattableTrim ******************************************************
+**
+** Trim a feature table using the Begin and Ends.
+**
+** @param [u] thys [AjPFeattable] Target feature table.
+** @return [AjBool] AjTrue returned if successful.
+** @@
+******************************************************************************/
+
+AjBool ajFeattableTrim(AjPFeattable thys)
+{
+    AjBool ok      = ajTrue;
+    AjBool dobegin = ajFalse;
+    AjBool doend   = ajFalse;
+    ajuint begin    = 0;
+    ajuint end      = 0;
+    AjIList     iter = NULL ;
+    AjPFeature  ft   = NULL ;
+    
+   /* ajDebug("ajFeattableTrim table Start %d End %d Len %d Features %d\n",
+	     thys->Start, thys->End, thys->Len,
+	     ajListGetLength(thys->Features));*/
+
+    begin = ajFeattablePos(thys, thys->Start);
+
+    if(thys->End)
+	end = ajFeattablePosI(thys, begin, thys->End);
+    else
+	end = thys->Len;
+    
+    if(begin > 1)
+	dobegin = ajTrue;
+
+    if(end < thys->Len)
+	doend = ajTrue;
+    
+    /*ajDebug("  ready to trim dobegin %B doend %B begin %d end %d\n",
+	     dobegin, doend, begin, end);*/
+    
+    iter = ajListIterNew(thys->Features) ;
+
+    while(!ajListIterDone(iter))
+    {
+	ft = (AjPFeature)ajListIterGet(iter);
+
+	if(!ajFeatTrimOffRange(ft, 0, begin, end, dobegin, doend))
+	{
+	    ajFeatDel(&ft);
+	    ajListIterRemove(iter);
+	}
+    }
+
+    ajListIterDel(&iter);
+    thys->Offset = 0;
 
     return ok;
 }
