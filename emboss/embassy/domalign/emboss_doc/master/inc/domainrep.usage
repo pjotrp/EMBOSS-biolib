@@ -1,0 +1,32 @@
+<b>Here is a sample session with domainrep</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>domainrep </b>
+Reorder DCF file to identify representative structures.
+Domain classification file: <b>all.scop2</b>
+Node at which to reorder
+         1 : Class (SCOP)
+         2 : Fold (SCOP)
+         3 : Superfamily (SCOP)
+         4 : Family (SCOP)
+         5 : Class (CATH)
+         6 : Architecture (CATH)
+         7 : Topology (CATH)
+         8 : Homologous Superfamily (CATH)
+         9 : Family (CATH)
+Select number. [1]: <b>2</b>
+Domain classification output file [test.scop]: <b>all_rep1st.scop</b>
+
+/shared/software/bin/stamp -l ./domainrep-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainrep-1234567890.1234 -d ./domainrep-1234567890.1234.set
+/shared/software/bin/stamp -l ./domainrep-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainrep-1234567890.1234 -d ./domainrep-1234567890.1234.set
+/shared/software/bin/stamp -l ./domainrep-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainrep-1234567890.1234 -d ./domainrep-1234567890.1234.set
+/shared/software/bin/stamp -l ./domainrep-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainrep-1234567890.1234 -d ./domainrep-1234567890.1234.set
+/shared/software/bin/stamp -l ./domainrep-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainrep-1234567890.1234 -d ./domainrep-1234567890.1234.set
+/shared/software/bin/stamp -l ./domainrep-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainrep-1234567890.1234 -d ./domainrep-1234567890.1234.set
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

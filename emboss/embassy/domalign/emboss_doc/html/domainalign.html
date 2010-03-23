@@ -1045,13 +1045,13 @@ Scan d1cs4a_         d1cs4a_            1   9.799   0.001  189  189  189  189  1
 Scan d1cs4a_         d1fx2a_            1   6.522   1.343  189  235  225  135  133    0  20.30 100.00 0.00017
 See the file ./domainalign-1234567890.1234.scan
 
-stamp -l ./domainalign-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainalign-1234567890.1234 -d ./domainalign-1234567890.1234.set
+/shared/software/bin/stamp -l ./domainalign-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainalign-1234567890.1234 -d ./domainalign-1234567890.1234.set
 
 
-sorttrans -f ./domainalign-1234567890.1234.scan -s Sc 2.5 > ./domainalign-1234567890.1234.sort
+/shared/software/bin/sorttrans -f ./domainalign-1234567890.1234.scan -s Sc 2.5 > ./domainalign-1234567890.1234.sort
 
 
-stamp -l ./domainalign-1234567890.1234.sort -prefix ./domainalign-1234567890.1234 > ./domainalign-1234567890.1234.log
+/shared/software/bin/stamp -l ./domainalign-1234567890.1234.sort -prefix ./domainalign-1234567890.1234 > ./domainalign-1234567890.1234.log
 
 TRANSFORM R.B. Russell, 1995
  Using PDB files
@@ -1076,11 +1076,11 @@ POSTSTAMP, R.B. Russell 1995
  Transforming coordinates...
  ...done.
 
-transform -f ./domainalign-1234567890.1234.sort -g  -o ./55074.ent
+/shared/software/bin/transform -f ./domainalign-1234567890.1234.sort -g  -o ./55074.ent
 
-poststamp -f ./domainalign-1234567890.1234.1 -min 0.5
+/shared/software/bin/poststamp -f ./domainalign-1234567890.1234.1 -min 0.5
 
-ver2hor -f ./domainalign-1234567890.1234.1.post > ./domainalign-1234567890.1234.out
+/shared/software/bin/ver2hor -f ./domainalign-1234567890.1234.1.post > ./domainalign-1234567890.1234.out
 
 
 STAMP Structural Alignment of Multiple Proteins
@@ -1100,13 +1100,13 @@ See the file ./domainalign-1234567890.1234.scan
 
 Processing node 54894
 
-stamp -l ./domainalign-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainalign-1234567890.1234 -d ./domainalign-1234567890.1234.set
+/shared/software/bin/stamp -l ./domainalign-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainalign-1234567890.1234 -d ./domainalign-1234567890.1234.set
 
 
-sorttrans -f ./domainalign-1234567890.1234.scan -s Sc 2.5 > ./domainalign-1234567890.1234.sort
+/shared/software/bin/sorttrans -f ./domainalign-1234567890.1234.scan -s Sc 2.5 > ./domainalign-1234567890.1234.sort
 
 
-stamp -l ./domainalign-1234567890.1234.sort -prefix ./domainalign-1234567890.1234 > ./domainalign-1234567890.1234.log
+/shared/software/bin/stamp -l ./domainalign-1234567890.1234.sort -prefix ./domainalign-1234567890.1234 > ./domainalign-1234567890.1234.log
 
 TRANSFORM R.B. Russell, 1995
  Using PDB files
@@ -1131,11 +1131,11 @@ POSTSTAMP, R.B. Russell 1995
  Transforming coordinates...
  ...done.
 
-transform -f ./domainalign-1234567890.1234.sort -g  -o ./54894.ent
+/shared/software/bin/transform -f ./domainalign-1234567890.1234.sort -g  -o ./54894.ent
 
-poststamp -f ./domainalign-1234567890.1234.1 -min 0.5
+/shared/software/bin/poststamp -f ./domainalign-1234567890.1234.1 -min 0.5
 
-ver2hor -f ./domainalign-1234567890.1234.1.post > ./domainalign-1234567890.1234.out
+/shared/software/bin/ver2hor -f ./domainalign-1234567890.1234.1.post > ./domainalign-1234567890.1234.out
 
 
 </pre></td></tr></table><p>
@@ -1587,7 +1587,7 @@ None
 
 <tr>
 <td><a href="/embassy/signature/sigscanlig.html">sigscanlig</a></td>
-<td>Searches ligand-signature library & writes hits (LHF file)</td>
+<td>Searches ligand-signature library and writes hits (LHF file)</td>
 </tr>
 
 </table>
