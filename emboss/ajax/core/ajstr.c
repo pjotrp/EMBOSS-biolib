@@ -89,6 +89,7 @@ static void   strCloneL(AjPStr* pthis, ajuint size);
 
 #ifdef AJ_SAVESTATS
 static ajlong strAlloc     = 0;
+static ajlong strExtra     = 0;
 static ajlong strFree      = 0;
 static ajlong strFreeCount = 0;
 static ajlong strCount     = 0;
@@ -2282,7 +2283,10 @@ AjPStr ajStrNewResS(const AjPStr str, ajuint size)
 {
     AjPStr thys;
 
-    thys = ajStrNewResLenC(str->Ptr, size, str->Len);
+    if(str)
+        thys = ajStrNewResLenC(str->Ptr, size, str->Len);
+    else
+        thys = ajStrNewResLenC("", size, 0);
 
     return thys;
 }
@@ -2823,10 +2827,20 @@ AjBool ajStrAssignS(AjPStr* Pstr, const AjPStr str)
 {
     AjBool ret = ajFalse;
     AjPStr thys;
+    ajuint size;
+    ajuint roundsize = STRSIZE;
 
     if(!*Pstr)
     {
-	*Pstr = ajStrNewS(str);
+        if(str) {
+            size = str->Len + 1;
+            if(size >= LONGSTR)
+                roundsize = ajRound(size, LONGSTR);
+            else
+                roundsize = ajRound(size, STRSIZE);
+        }
+
+	*Pstr = ajStrNewResS(str,roundsize);
 
 	return ajTrue;
     }
@@ -8716,6 +8730,9 @@ AjBool ajStrSetRes(AjPStr* Pstr, ajuint size)
 
     if(thys->Res < savesize)
     {
+#ifdef AJ_SAVESTATS
+        strExtra += savesize - thys->Res;
+#endif
 	AJRESIZE(thys->Ptr, savesize);
 	thys->Res = savesize;
 
@@ -8789,7 +8806,12 @@ AjBool ajStrSetResRound(AjPStr* Pstr, ajuint size)
 	else
 	  roundsize = ajRound(size, STRSIZE);
 
+#ifdef AJ_SAVESTATS
+        strExtra += roundsize - thys->Res;
+#endif
         AJRESIZE(thys->Ptr, roundsize);
+
+
         thys->Res = roundsize;
 
 	return ajTrue;
@@ -12490,19 +12512,22 @@ void ajStrStat(const char* title)
 {
 #ifdef AJ_SAVESTATS
     static ajlong statAlloc     = 0;
+    static ajlong statExtra     = 0;
     static ajlong statCount     = 0;
     static ajlong statFree      = 0;
     static ajlong statFreeCount = 0;
     static ajlong statTotal     = 0;
 
     ajDebug("String usage statistics since last call %s:\n", title);
-    ajDebug("String usage (bytes): %Ld allocated, %Ld freed\n",
-	    strAlloc - statAlloc, strFree - statFree);
+    ajDebug("String usage (bytes): %Ld allocated, %Ld resize, %Ld freed\n",
+	    strAlloc - statAlloc, strExtra - statExtra,
+            strFree - statFree);
     ajDebug("String usage (number): %Ld allocated, %Ld freed, %Ld in use\n",
 	    strTotal - statTotal, strFreeCount - statFreeCount,
 	    strCount - statCount);
 
     statAlloc     = strAlloc;
+    statExtra     = strExtra;
     statCount     = strCount;
     statFree      = strFree;
     statFreeCount = strFreeCount;
@@ -12656,9 +12681,10 @@ void ajStrTraceTitle(const AjPStr str, const char* title)
 void ajStrExit(void)
 {
 #ifdef AJ_SAVESTATS
-    ajDebug("String usage (bytes): %Ld allocated, %Ld freed, %Ld in use\n",
-	    strAlloc, strFree,
-	    (strAlloc - strFree));
+    ajDebug("String usage (bytes): %Ld allocated, %Ld resized, "
+            "%Ld freed, %Ld in use\n",
+	    strAlloc, strExtra, strFree,
+	    (strAlloc + strExtra - strFree));
     ajDebug("String usage (number): %Ld allocated, %Ld freed %Ld in use\n",
 	    strTotal, strFreeCount, strCount);
 #endif
