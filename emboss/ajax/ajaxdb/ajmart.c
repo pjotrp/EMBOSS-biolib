@@ -1001,6 +1001,8 @@ static void martRegistryElementend(void *userData, const XML_Char *name)
 {
     AjPMartLoc locptr = NULL;
 
+    (void) name;                /* make it used */
+
     locptr = (AjPMartLoc) userData;
 
     --locptr->Depth;
@@ -4284,8 +4286,8 @@ static int martAttributePageCompar(const void *a, const void *b)
     AjPStr v1 = NULL;
     AjPStr v2 = NULL;
     
-    t1 = *((AjPTable *) a);
-    t2 = *((AjPTable *) b);
+    t1 = *((AjPTable const *) a);
+    t2 = *((AjPTable const *) b);
     
     key = ajStrNewC("page");
 
