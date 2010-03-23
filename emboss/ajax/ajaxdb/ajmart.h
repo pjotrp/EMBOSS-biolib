@@ -193,7 +193,7 @@ typedef struct AjSMartdsinfo
 ** @attr Hheader [AjBool] Header flag for printing column names
 ** @attr Hstamp [AjBool] Header flag for completionStamp
 ** @attr Hunique [AjBool] Header flag for unique rows
-** @attr Dsets [AjPMartdsinfo] Mart attributes
+** @attr Dsets [AjPMartdsinfo*] Mart attributes
 ** @attr Dnsets [ajuint] Number of datasets
 ** @attr Verify [AjBool] Check attnames and filtnames
 ** @@
@@ -237,7 +237,6 @@ typedef struct AjSMartqinfo
 ** @attr Config [AjPDomDocument] Configuration Information
 ** @attr Regport [ajuint] Registry host URL port
 ** @attr Martport [ajuint] Mart host URL port
-** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -256,7 +255,6 @@ typedef struct AjSMartquery
     AjPDomDocument Config;
     ajuint Regport;
     ajuint Martport;
-/*    char Padding[4]; */
 } AjOMartquery;
 
 #define AjPMartquery AjOMartquery*
