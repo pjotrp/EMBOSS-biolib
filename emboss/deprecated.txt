@@ -677,11 +677,13 @@ ajStrCopyC =ajStrDel 1,n 1
 ajStrCopyC =ajStrAssignC 1,2 1,2
 ajStrCopyC @ajStrDel_or_@ajStrAssignC
 #ajsys
-ajSysArglist ajSysArglistBuild
+ajSysArglistBuild ajSysArglistBuildS
+ajSysArglist ajSysArglistBuildS
 ajSysArgListFree ajSysArglistFree
 ajSysItoC ajSysCastItoC
 ajSysItoUC ajSysCastItouc
-ajSysUnlink ajSysFileUnlink
+ajSysFileUnlink ajSysFileUnlinkS
+ajSysUnlink ajSysFileUnlinkS
 ajSysWhich ajSysFileWhich
 ajSysWhichEnv ajSysFileWhichEnv
 ajSysFdopen ajSysFuncFdopen
@@ -691,9 +693,12 @@ ajSysStrdup ajSysFuncStrdup
 ajSysStrtok ajSysFuncStrtok
 ajSysStrtokR ajSysFuncStrtokR
 ajSystem ajSysSystem
-ajSystemEnv ajSysSystemEnv
-ajSystemOut ajSysSystemOut
-ajSysBasename ajFileNameTrim
+ajSysSystem ajSysExecS
+ajSystemEnv ajSysExecEnvS
+ajSystemEnv ajSysExecEnvS
+ajSystemOut ajSysExecOutnameS
+ajSysSystemOut ajSysExecOutnameS
+ajSysBasename ajFilenameTrimPath
 ajSysIsDirectory -
 ajSysIsRegular -
 #ajtable
@@ -772,6 +777,7 @@ ajAcdProgram -
 #samtoolsbgzf
 #samtoolskstring
 #samtoolssam_header
+#template
 #ajgraph
 ajGraphClose ajGraphicsClose
 ajGraphCloseWin ajGraphicsClose
@@ -928,6 +934,7 @@ ajHistSetMultiYTitleC ajHistSetmultiYlabelC
 ajHistSetMultiYTitle ajHistSetmultiYlabelS
 ajHistSetPtrToData ajHistDataAdd
 ajHistCopyData ajHistDataCopy
+#ajmart
 #ajseqdb
 #ajacd
 ajAcdGetBool ajAcdGetBoolean
@@ -1079,6 +1086,10 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #diffseq
 #digest
 #distmat
+#domtesta
+#domtestb
+#domtestc
+#domtestd
 #dotmatcher
 #dotpath
 #dottup
@@ -1132,6 +1143,12 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #makenucseq
 #makeprotseq
 #marscan
+#martattributes
+#martdatasets
+#martfilters
+#martquery
+#martregistry
+#martseqs
 #maskambignuc
 #maskambigprot
 #maskfeat
