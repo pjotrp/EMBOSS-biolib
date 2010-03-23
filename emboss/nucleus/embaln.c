@@ -2872,8 +2872,6 @@ void embAlignCalcSimilarity(const AjPStr m, const AjPStr n,
 ** the specified path matrix for Needleman Wunsch
 **
 ** @param [w] path [float*] path matrix
-** @param [r] m [const float*] Match scores array, m(i,j) is the best score
-**                             up to (i,j) given that a(i) is aligned to b(j)
 ** @param [r] ix [const float*] Gap scores array, ix(i,j) is the best score
 **                              given that a(i) is aligned to a gap
 **                              (in an insertion with respect to b)
@@ -2881,6 +2879,8 @@ void embAlignCalcSimilarity(const AjPStr m, const AjPStr n,
 **                              given that b(i) is in an insertion
 **                              with respect to a
 **
+** @param [r] m [const float*] Match scores array, m(i,j) is the best score
+**                             up to (i,j) given that a(i) is aligned to b(j)
 ** @param [r] lena [ajint] length of first sequence
 ** @param [r] lenb [ajint] length of second sequence
 ** @param [w] start1 [ajint *] start of alignment in first sequence
