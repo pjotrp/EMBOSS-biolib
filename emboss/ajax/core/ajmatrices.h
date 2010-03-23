@@ -76,7 +76,8 @@ AjPSeqCvt     ajMatrixGetCvt (const AjPMatrix thys);
 const AjPStr  ajMatrixGetLabelNum (const AjPMatrix thys, ajint i);
 AjIntArray*   ajMatrixGetMatrix (const AjPMatrix thys);
 const AjPStr  ajMatrixGetName (const AjPMatrix thys);
-ajint         ajMatrixGetSize (const AjPMatrix thys);
+ajuint        ajMatrixGetRows (const AjPMatrix thys);
+ajuint        ajMatrixGetSize (const AjPMatrix thys);
 AjPMatrix     ajMatrixNew (const AjPPStr codes, ajint n,
 			   const AjPStr filename);
 AjPMatrix     ajMatrixNewAsym(const AjPPStr codes, ajint n, 
@@ -92,7 +93,8 @@ AjPSeqCvt     ajMatrixfGetCvt (const AjPMatrixf thys);
 const AjPStr  ajMatrixfGetLabelNum (const AjPMatrixf thys, ajint i);
 AjFloatArray* ajMatrixfGetMatrix (const AjPMatrixf thys);
 const AjPStr  ajMatrixfGetName (const AjPMatrixf thys);
-ajint         ajMatrixfGetSize (const AjPMatrixf thys);
+ajuint        ajMatrixfGetRows (const AjPMatrixf thys);
+ajuint        ajMatrixfGetSize (const AjPMatrixf thys);
 AjPMatrixf    ajMatrixfNew (const AjPPStr codes, ajint n,
 			    const AjPStr filename);
 AjPMatrixf    ajMatrixfNewAsym(const AjPPStr codes, ajint n, 

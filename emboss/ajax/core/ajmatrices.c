@@ -949,16 +949,34 @@ __deprecated AjFloatArray* ajMatrixfArray(const AjPMatrixf thys)
 
 
 
+/* @func ajMatrixGetRows ******************************************************
+**
+** Returns the comparison matrix row size.
+**
+** @param [r] thys [const AjPMatrix] Matrix object
+** @return [ajuint] .
+** @@
+******************************************************************************/
+
+ajuint ajMatrixGetRows(const AjPMatrix thys)
+{
+    if(thys)
+	return thys->SizeRow;
+
+    return 0;
+}
+
+
 /* @func ajMatrixGetSize ******************************************************
 **
 ** Returns the comparison matrix size.
 **
 ** @param [r] thys [const AjPMatrix] Matrix object
-** @return [ajint] .
+** @return [ajuint] .
 ** @@
 ******************************************************************************/
 
-ajint ajMatrixGetSize(const AjPMatrix thys)
+ajuint ajMatrixGetSize(const AjPMatrix thys)
 {
     if(thys)
 	return thys->Size;
@@ -981,16 +999,35 @@ __deprecated ajint ajMatrixSize(const AjPMatrix thys)
 
 
 
+/* @func ajMatrixfGetRows *****************************************************
+**
+** Returns the comparison matrix row size.
+**
+** @param [r] thys [const AjPMatrixf] Matrix object
+** @return [ajuint] .
+** @@
+******************************************************************************/
+
+ajuint ajMatrixfGetRows(const AjPMatrixf thys)
+{
+    if(thys)
+	return thys->SizeRow;
+
+    return 0;
+}
+
+
+
 /* @func ajMatrixfGetSize *****************************************************
 **
 ** Returns the comparison matrix size.
 **
 ** @param [r] thys [const AjPMatrixf] Matrix object
-** @return [ajint] .
+** @return [ajuint] .
 ** @@
 ******************************************************************************/
 
-ajint ajMatrixfGetSize(const AjPMatrixf thys)
+ajuint ajMatrixfGetSize(const AjPMatrixf thys)
 {
     if(thys)
 	return thys->Size;
@@ -1083,13 +1120,13 @@ __deprecated AjPSeqCvt ajMatrixfCvt(const AjPMatrixf thys)
 
 /* @func ajMatrixGetLabelNum **************************************************
 **
-** Returns the sequence character conversion table for a matrix.
-** This table converts any string defined in the matrix to a
-** positive integer, and any other string is converted to zero.
+** Returns the sequence character (or asymmetric matrix label)
+** for a matrix column.
 **
 ** @param [r] thys [const AjPMatrix] Matrix object
 ** @param [r] i [ajint] Character index
 ** @return [const AjPStr] Matrix label, e.g. sequence character code
+**                        or '?' if not found
 ** @@
 ******************************************************************************/
 
@@ -1127,13 +1164,13 @@ __deprecated void ajMatrixChar(const AjPMatrix thys, ajint i, AjPStr *label)
 
 /* @func ajMatrixfGetLabelNum *************************************************
 **
-** Returns the sequence character conversion table for a floating point matrix.
-** This table converts any character defined in the matrix to a
-** floating point number, and any other character is converted to zero.
+** Returns the sequence character (or asymmetric matrix label)
+** for a matrix column.
 **
 ** @param [r] thys [const AjPMatrixf] Matrix object
 ** @param [r] i [ajint] Character index
 ** @return [const AjPStr] Matrix label, e.g. sequence character code
+**                        or '?' if not found
 ** @@
 ******************************************************************************/
 
