@@ -829,7 +829,7 @@ sub writeInput {
 
     my $out = "$incdir/$application.input";
     open (OUT, "> $out") || die "Can't open $out";
-    $input =~ s/DATE  [A-Z][a-z][a-z] [A-Z][a-z][a-z] +[0-9]+ [0-9:]+ 200[5-9]/DATE  Fri Jan 15 12:00:00 2010/go;
+    $input =~ s/DATE  [A-Z][a-z][a-z] [A-Z][a-z][a-z] +[0-9]+ [0-9:]+ 20[01][0-9]/DATE  Fri Jan 15 12:00:00 2010/go;
     print OUT $input;
     close(OUT);
     chmod 0664, $out;	# rw-rw-r--
@@ -847,7 +847,7 @@ sub writeOutput {
     my $out = "$incdir/$application.output";
     open (OUT, "> $out") || die "Can't open $out";
     $output =~ s/\/homes\/pmr\/devemboss/\/homes\/user/go;
-    $output =~ s/DATE  [A-Z][a-z][a-z] [A-Z][a-z][a-z] +[0-9]+ [0-9:]+ 200[5-9]/DATE  Fri Jan 15 12:00:00 2010/go;
+    $output =~ s/DATE  [A-Z][a-z][a-z] [A-Z][a-z][a-z] +[0-9]+ [0-9:]+ 20[01][0-9]/DATE  Fri Jan 15 12:00:00 2010/go;
     $output =~ s/CreationDate: ... ... +\d+ [0-9:]+ 2[0-9][0-9][0-9]$/CreationDate: Fri Jan 15 12:00:00 2010/gom;
     $output =~ s/Rundate: ... ... +\d+ 2[0-9][0-9][0-9] [0-9:]+$/Rundate: Fri Jan 15 2010 12:00:00/gom;
     $output =~ s/Localtime: ... ... +\d+ [0-9:]+ 2[0-9][0-9][0-9]$/Localtime: Fri Jan 15 12:00:00 2010/gom;
