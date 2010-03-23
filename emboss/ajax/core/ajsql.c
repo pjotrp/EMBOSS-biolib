@@ -200,7 +200,7 @@ void ajSqlExit(void)
 ** @argrule NewData password [const AjPStr] Undocumented
 ** @argrule NewData host [const AjPStr] Undocumented
 ** @argrule NewData port [const AjPStr] Undocumented
-** @argrule NewData socket [const AjPStr] Undocumented
+** @argrule NewData socketfile [const AjPStr] Undocumented
 ** @argrule NewData database [const AjPStr] Undocumented
 ** @argrule NewRef  sqlc [AjPSqlconnection] Undocumented
 **
@@ -223,7 +223,7 @@ void ajSqlExit(void)
 ** @param [r] password [const AjPStr] SQL account password
 ** @param [r] host [const AjPStr] SQL server hostname or IP address
 ** @param [r] port [const AjPStr] SQL server port number
-** @param [r] socket [const AjPStr] SQL server UNIX socket file
+** @param [r] socketfile [const AjPStr] SQL server UNIX socket file
 **                   MySQL: Absolute path to the socket file.
 **                   PostgreSQL: Absolute path to the socket directory only.
 **                     Socket file names are then generated from this directory
@@ -241,7 +241,7 @@ AjPSqlconnection ajSqlconnectionNewData(const AjEnum client,
                                         const AjPStr password,
                                         const AjPStr host,
                                         const AjPStr port,
-                                        const AjPStr socket,
+                                        const AjPStr socketfile,
                                         const AjPStr database)
 {
     
@@ -283,7 +283,7 @@ AjPSqlconnection ajSqlconnectionNewData(const AjEnum client,
         (void) password;
         (void) host;
         (void) port;
-        (void) socket;
+        (void) socketfile;
         (void) database;
 #endif
 #endif
@@ -315,7 +315,7 @@ AjPSqlconnection ajSqlconnectionNewData(const AjEnum client,
                               ajStrGetPtr(password),
                               ajStrGetPtr(database),
                               (unsigned int) number,
-                              ajStrGetPtr(socket),
+                              ajStrGetPtr(socketfile),
                               flag)
 	    )
         {
@@ -402,9 +402,9 @@ AjPSqlconnection ajSqlconnectionNewData(const AjEnum client,
 	    ajFmtPrintAppS(&conninfo, "host = '%S' ", tmp);
         }
 	
-        if(ajStrGetLen(socket))
+        if(ajStrGetLen(socketfile))
         {
-            ajStrAssignS(&tmp, socket);
+            ajStrAssignS(&tmp, socketfile);
             ajStrExchangeCC(&tmp, "'", "\'");
             ajStrExchangeCC(&tmp, "\\", "\\\\");
 	    
