@@ -477,6 +477,28 @@ sub testmisc($\@\@) {
 #    }
 }
 
+sub testinternals($\@\@) {
+    my ($tdata, $tcast, $tcode) = @_;
+    my $ok = 0;
+    my $i = 0;
+#    if ($#{$tcast} < 0) {
+#	print "bad category misc - no parameters\n";
+#	return 0;
+#    }
+#    for ($i=0; $i <= $#{$tcast}; $i++) {
+#	$tc = ${$tcast}[$i];
+#	$tx = ${$tcode}[$i];
+#	if ($tc eq "$tdata" || $tc eq "const $tdata") {
+#	    if  ($tx =~ /[ru]/) {
+#		$ok = 1;
+#	    }
+#	}
+#    }
+#    if (!$ok) {
+#	print "bad category internals - no parameter (const) '$tdata' and code 'r' or 'u'\n";
+#    }
+}
+
 sub printsect($$) {
     my ($mysect,$mysrest) = @_;
     if ($mysect ne $lastfsect) {
@@ -1283,6 +1305,9 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    if ($code !~ /^[rwufdvo?][CENP]*$/) { # deleted OSU (all unused)
 		print "bad code <$code> var: <$var>\n";
 	    }
+	    elsif ($code =~ /^.([CENP]+)$/){
+		{$countcode{$1}++}
+	    }
 
 	    if($code =~ /^[rfv]/) {
 		if($code =~ /^r/) {$codename = "Input"}
@@ -1400,6 +1425,11 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 		}
 		elsif ($code !~ /r/) {
 		    print "bad \@param '$var' const but code '$code'\n";
+		}
+	    }
+	    elsif ($cast =~ /^struct /) {
+		if ($code !~ /r/) {
+		    print "bad \@param '$var' struct but code '$code'\n";
 		}
 	    }
 	    elsif ($cast =~ / const[^a-z]/) {
@@ -1644,6 +1674,9 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    }
 	    elsif  ($ctype eq "misc") {
 		testmisc($cdata,@savecast,@savecode);
+	    }
+	    elsif  ($ctype eq "internals") {
+		testinternals($cdata,@savecast,@savecode);
 	    }
 	    else {
 		print "bad category type '$ctype' - no validation\n";
@@ -2294,6 +2327,16 @@ close HTMLB;
 
 print BOOK "$bookstr\n";
 close BOOK;
+
+open (TESTLOG, ">>../embossdoc.log") || die "Cannot open embossdoc.log";
+
+$i=0;
+foreach $ccc (sort(keys(%countcode))) {
+    if(!$i++) {print TESTLOG "$pubout parameter codes:\n"}
+    print TESTLOG "  $ccc: $countcode{$ccc}\n";
+}
+
+close TESTLOG;
 
 exit ();
 
