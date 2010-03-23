@@ -1,6 +1,7 @@
 application: edamclean
 [
   documentation: "Validate and fix EDAM OBO ontology"
+  groups: "Ontology:EDAM"
 ]
 
 
