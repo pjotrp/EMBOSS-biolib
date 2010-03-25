@@ -1637,6 +1637,9 @@ __deprecated void ajStrTableTrace(const AjPTable table)
 
 void ajTablestrFree(AjPTable* Ptable)
 {
+    if(!Ptable)
+        return;
+
     if(!*Ptable)
 	return;
 
