@@ -206,6 +206,27 @@ static void domAddToMap(AjPDomNodeList list, AjPDomNode key,
 
 
 
+/* @func ajDomNodeListGetLen ************************************************
+**
+** Return the length of a DOM node list
+**
+** @param [r] list [const AjPDomNodeList] node list
+** @return [ajint] Length (-1 if error)
+** @@
+******************************************************************************/
+
+ajint ajDomNodeListGetLen(const AjPDomNodeList list)
+{
+
+    if(!list)
+        return -1;
+
+    return list->length;
+}
+
+
+
+
 /* @func ajDomNodeListAppend *************************************************
 **
 ** Append a child node to a DOM node list

@@ -264,6 +264,8 @@ AjPDomDocument ajDomImplementationCreateDocumentC(const char *uri,
 						  const char *qualname,
 						  AjPDomDocumentType doctype);
 
+ajint ajDomNodeListGetLen(const AjPDomNodeList list);
+
 AjPDomNodeEntry ajDomNodeListAppend(AjPDomNodeList list,
 				    AjPDomNode child);
 
