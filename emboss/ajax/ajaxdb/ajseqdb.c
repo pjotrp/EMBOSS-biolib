@@ -2701,7 +2701,8 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
     ajint proxyPort;
     FILE *fp;
     AjPSeqQuery qry;
-
+    struct AJTIMEOUT timo;
+    
     qry = seqin->Query;
 
     iport     = 80;
@@ -2792,16 +2793,12 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
 	return ajFalse;
     }
 
-#ifndef WIN32
-    signal(SIGALRM, seqSocketTimeout);
-    alarm(180);	    /* allow 180 seconds to read from the socket */
-#endif
-
+    timo.seconds = 180;
+    ajSysTimeoutSet(&timo);
+    
     ajFilebuffLoadAll(seqin->Filebuff);
 
-#ifndef WIN32
-    alarm(0);
-#endif
+    ajSysTimeoutUnset(&timo);
 
     ajFilebuffHtmlStrip(seqin->Filebuff);
 
@@ -6559,7 +6556,8 @@ static AjBool seqAccessDbfetch(AjPSeqin seqin)
     AjPSeqQuery qry;
     AjPStr searchdb = NULL;
     AjPStr qryid = NULL;
-
+    struct AJTIMEOUT timo;
+    
     iport = 80;
     proxyPort = 0;			/* port for proxy access */
     qry = seqin->Query;
@@ -6618,16 +6616,12 @@ static AjBool seqAccessDbfetch(AjPSeqin seqin)
     ajDebug("Ready to read errno %d msg '%s'\n",
 	    errno, ajMessGetSysmessageC());
 
-#ifndef WIN32
-    signal(SIGALRM, seqSocketTimeout);
-    alarm(180);	    /* we allow 180 seconds to read from the socket */
-#endif
+    timo.seconds = 180;
+    ajSysTimeoutSet(&timo);
 
     ajFilebuffLoadAll(seqin->Filebuff);
 
-#ifndef WIN32
-    alarm(0);
-#endif
+    ajSysTimeoutUnset(&timo);
 
     ajFilebuffHtmlStrip(seqin->Filebuff);
 
@@ -6672,7 +6666,8 @@ static AjBool seqAccessMrs(AjPSeqin seqin)
     AjPSeqQuery qry;
     AjPStr searchdb = NULL;
     AjPStr qryid = NULL;
-
+    struct AJTIMEOUT timo;
+    
     iport = 80;
     proxyPort = 0;			/* port for proxy access */
     qry = seqin->Query;
@@ -6746,16 +6741,12 @@ static AjBool seqAccessMrs(AjPSeqin seqin)
     ajDebug("Ready to read errno %d msg '%s'\n",
 	    errno, ajMessGetSysmessageC());
 
-#ifndef WIN32
-    signal(SIGALRM, seqSocketTimeout);
-    alarm(180);	    /* we allow 180 seconds to read from the socket */
-#endif
+    timo.seconds = 180;
+    ajSysTimeoutSet(&timo);
 
     ajFilebuffLoadAll(seqin->Filebuff);
 
-#ifndef WIN32
-    alarm(0);
-#endif
+    ajSysTimeoutUnset(&timo);
 
     ajFilebuffHtmlStrip(seqin->Filebuff);
 
@@ -6800,7 +6791,8 @@ static AjBool seqAccessMrs3(AjPSeqin seqin)
     AjPSeqQuery qry;
     AjPStr searchdb = NULL;
     AjPStr qryid = NULL;
-
+    struct AJTIMEOUT timo;
+    
     iport = 80;
     proxyPort = 0;			/* port for proxy access */
     qry = seqin->Query;
@@ -6870,16 +6862,12 @@ static AjBool seqAccessMrs3(AjPSeqin seqin)
     ajDebug("Ready to read errno %d msg '%s'\n",
 	    errno, ajMessGetSysmessageC());
 
-#ifndef WIN32
-    signal(SIGALRM, seqSocketTimeout);
-    alarm(180);	    /* we allow 180 seconds to read from the socket */
-#endif
-
+    timo.seconds = 180;
+    ajSysTimeoutSet(&timo);
+    
     ajFilebuffLoadAll(seqin->Filebuff);
 
-#ifndef WIN32
-    alarm(0);
-#endif
+    ajSysTimeoutUnset(&timo);
 
     ajFilebuffHtmlStrip(seqin->Filebuff);
 
@@ -6921,7 +6909,8 @@ static AjBool seqAccessUrl(AjPSeqin seqin)
     ajint proxyPort;
     FILE *fp;
     AjPSeqQuery qry;
-
+    struct AJTIMEOUT timo;
+    
     iport = 80;
     proxyPort = 0;			/* port for proxy access */
     qry = seqin->Query;
@@ -6970,16 +6959,12 @@ static AjBool seqAccessUrl(AjPSeqin seqin)
     ajDebug("Ready to read errno %d msg '%s'\n",
 	    errno, ajMessGetSysmessageC());
 
-#ifndef WIN32
-    signal(SIGALRM, seqSocketTimeout);
-    alarm(180);	    /* we allow 180 seconds to read from the socket */
-#endif
+    timo.seconds = 180;
+    ajSysTimeoutSet(&timo);
 
     ajFilebuffLoadAll(seqin->Filebuff);
 
-#ifndef WIN32
-    alarm(0);
-#endif
+    ajSysTimeoutUnset(&timo);
 
     ajFilebuffHtmlStrip(seqin->Filebuff);
 
