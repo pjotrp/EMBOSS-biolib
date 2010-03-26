@@ -138,21 +138,13 @@ AjBool        ajSysCommandRenameC(const char* filename,
 AjBool        ajSysCommandRenameS(const AjPStr filename,
                                   const AjPStr newfilename);
 ajint         ajSysExecC(const char* cl);
-void          ajSysExecPathC(const char* cl);
 void          ajSysExecS(const AjPStr clstr);
 void          ajSysExecPathS(const AjPStr clstr);
-void          ajSysExecEnvC(const char* cl, char * const env[]);
 void          ajSysExecEnvS(const AjPStr clstr, char * const env[]);
-void          ajSysExecOutnameC(const char* cl, const AjPStr outfname);
 void          ajSysExecOutnameS(const AjPStr clstr, const AjPStr outfname);
-void          ajSysExecOutnameAppendC(const char* cl,
-                                      const AjPStr outfname);
 void          ajSysExecOutnameAppendS(const AjPStr clstr,
                                       const AjPStr outfname);
-void          ajSysExecOutnameErrC(const char* cl, const AjPStr outfname);
 void          ajSysExecOutnameErrS(const AjPStr clstr, const AjPStr outfname);
-void          ajSysExecOutnameAppendErrC(const char* cl,
-                                             const AjPStr outfname);
 void          ajSysExecOutnameAppendErrS(const AjPStr clstr,
                                          const AjPStr outfname);
 void          ajSysSocketclose(struct AJSOCKET sock);

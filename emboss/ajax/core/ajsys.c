@@ -34,7 +34,13 @@
 #include <unistd.h>
 #else
 #include "win32.h"
-extern int _open_osfhandle();
+#include <direct.h>
+#define open     _open
+#define close    _close
+#define read     _read
+#define write    _write
+#define strnicmp _strnicmp
+#define fdopen   _fdopen
 #endif
 
 
@@ -900,8 +906,13 @@ AjBool ajSysCommandCopyS(const AjPStr strname, const AjPStr strname2)
 
 AjBool ajSysCommandMakedirC(const char* name)
 {
+#ifndef WIN32
     if(!mkdir(name, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH))
-       return ajTrue;
+        return ajTrue;
+#else
+    if(!_mkdir(name))
+        return ajTrue;
+#endif
 
     ajErr("Unable to make directory '%s' (%d): %s",
           name, errno, strerror(errno));
@@ -923,8 +934,13 @@ AjBool ajSysCommandMakedirC(const char* name)
 
 AjBool ajSysCommandMakedirS(const AjPStr strname)
 {
+#ifndef WIN32
     if(!mkdir(ajStrGetPtr(strname), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH))
        return ajTrue;
+#else
+    if(!_mkdir(ajStrGetPtr(strname)))
+        return ajTrue;
+#endif
 
     ajErr("Unable to make directory '%S' (%d): %s",
           strname, errno, strerror(errno));
@@ -1487,7 +1503,8 @@ ajint ajSysExecC(const char* cmdlinetxt)
 #else
     PROCESS_INFORMATION procInfo;
     STARTUPINFO startInfo;
-    
+    ajint status = 0;
+
     ajDebug ("Launching process '%s'\n", cmdlinetxt);
     
     ZeroMemory(&startInfo, sizeof(startInfo));
@@ -1497,7 +1514,10 @@ ajint ajSysExecC(const char* cmdlinetxt)
 		       CREATE_NO_WINDOW, NULL, NULL, &startInfo, &procInfo))
 	ajFatal("CreateProcess failed");
 
-    WaitForSingleObject(procInfo.hProcess, INFINITE);
+    if(!WaitForSingleObject(procInfo.hProcess, INFINITE))
+        status = 0;
+    else
+        status = -1;
 
 #endif
 

@@ -29,6 +29,8 @@
 #include "win32.h"
 #include "dirent_w32.h"
 #include <direct.h>
+#define PATH_MAX _MAX_PATH
+#define getcwd _getcwd
 #endif
 #include <sys/stat.h>
 #include <sys/types.h>
