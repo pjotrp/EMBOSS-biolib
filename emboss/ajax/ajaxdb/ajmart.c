@@ -4789,6 +4789,8 @@ AjBool ajMartTableNameIsNuc(const AjPTable t)
     key   = ajStrNewC("name");
     value = ajTableFetch(t,(void *)key);
 
+    ajStrDel(&key);
+
     if(value)
     {
         p = ajStrGetPtr(value);
@@ -4821,6 +4823,8 @@ AjBool ajMartTableNameIsProt(const AjPTable t)
     key   = ajStrNewC("name");
     value = ajTableFetch(t,(void *)key);
 
+    ajStrDel(&key);
+    
     if(value)
     {
         p = ajStrGetPtr(value);
