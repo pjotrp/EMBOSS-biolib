@@ -252,13 +252,13 @@ static void tfscan_print_hits(AjPList *l,
                 gf = ajFeatNew(ftable, ajUtilGetProgram(), type,
                                m->start,
                                m->start+m->len-1,
-                               m->score,
+                               (float) m->score,
                                '+',0);
             else
                 gf = ajFeatNew(ftable, ajUtilGetProgram(), type,
                                m->start,
                                m->start+m->len-1,
-                               m->score,
+                               (float) m->score,
                                '-',0);
             ajFmtPrintS(&tmpstr, "*acc %S", acc);
             ajFeatTagAdd(gf, NULL, tmpstr);
