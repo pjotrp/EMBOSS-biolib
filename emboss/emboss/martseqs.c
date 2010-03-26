@@ -116,13 +116,29 @@ int main(int argc, char **argv)
 
         for(j=0; j < ds->Nsets; ++j)
         {
+            ajStrAssignC(&key1,"visible");
+            value1 = ajTableFetch(ds->Sets[j],(void *)key1);
+            if(ajStrMatchC(value1,"0"))
+                continue;
+            
             ajStrAssignC(&key1,"name");
             value1 = ajTableFetch(ds->Sets[j],(void *)key1);
             ajStrAssignS(&dataset,value1);
             ajFmtPrintF(outf,"    Dataset = %S\n",dataset);
 
             ajMartGetAttributesSchema(seqin,dataset,vschema);
-            ajMartattributesParse(seqin);
+            if(!ajMartattributesParse(seqin))
+            {
+                ajMartGetAttributesRetry(seqin,dataset);
+
+                if(!ajMartattributesParse(seqin))
+                {
+                    ajWarn("Invalid attributes returned by server");
+                    ajMartAttributeDel(&pmq->Atts);
+                    pmq->Atts = ajMartAttributeNew();
+                    continue;
+                }
+            }
 
             att = pmq->Atts;
             for(k=0; k < att->Natts; ++k)
@@ -146,9 +162,7 @@ int main(int argc, char **argv)
                 value1 = ajTableFetch(att->Attributes[k],(void *)key1);
 
                 ajFmtPrintF(outf,"        Sequence Attribute = %S\n",value1);
-                
             }
-            
 
             ajMartAttributeDel(&pmq->Atts);
             pmq->Atts = ajMartAttributeNew();
