@@ -334,9 +334,15 @@ AjBool ajMartGetAttributes(AjPSeqin seqin, const AjPStr dataset);
 AjBool ajMartattributesParse(AjPSeqin seqin);
 AjBool ajMartGetAttributesSchema(AjPSeqin seqin, const AjPStr dataset,
                                  const AjPStr schema);
+AjBool ajMartGetAttributesRetry(AjPSeqin seqin, const AjPStr dataset);
+    
 
 AjBool ajMartGetFilters(AjPSeqin seqin, const AjPStr dataset);
 AjBool ajMartfiltersParse(AjPSeqin seqin);
+AjBool ajMartGetFiltersSchema(AjPSeqin seqin, const AjPStr dataset,
+                              const AjPStr schema);
+AjBool ajMartGetFiltersRetry(AjPSeqin seqin, const AjPStr dataset);
+    
 
 AjBool ajMartFilterMatch(AjPTable atab, AjPMartFilter filt);
 AjBool ajMartAssociate(AjPSeqin seqin);
@@ -399,7 +405,10 @@ AjBool ajMartGetConfiguration(AjPSeqin seqin, const AjPStr dataset);
 AjBool ajMartconfigurationParse(AjPSeqin seqin);
 AjBool ajMartattributesPageSort(AjPSeqin seqin);
 
-
+AjBool ajMartNameIsNucC(const char *name);
+AjBool ajMartNameIsProtC(const char *name);
+AjBool ajMartTableNameIsNuc(const AjPTable t);
+AjBool ajMartTableNameIsProt(const AjPTable t);
 
 
 /*

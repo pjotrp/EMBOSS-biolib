@@ -41,6 +41,21 @@
 #define DEFAULT_BIOMART_MART_PATH "/biomart/martservice"
 #define DEFAULT_BIOMART_MART_PORT 80
 
+static const char* martNucTerms[] =
+{
+    "3utr", "5utr", "cdna", "coding", "gene_exon", "gene_flank",
+    "upstream_flank", "downstream_flank", "gene_exon_intron",
+    "transcript_flank", "coding_gene_flank", "transcript_exon_intron",
+    "coding_transcript_flank", "snp", "upstream_intergenic_raw",
+    NULL
+};
+
+static const char* martProtTerms[] =
+{
+    "peptide",
+    NULL
+};
+
 
 
 
@@ -672,16 +687,19 @@ void ajMartAttributeDel(AjPMartAttribute *thys)
         return;
 
     pthis = *thys;
-    
-    for(i=0; i < pthis->Natts; ++i)
-        ajTablestrFree(&pthis->Attributes[i]);
+
+    if(pthis->Attributes)
+        for(i=0; i < pthis->Natts; ++i)
+            ajTablestrFree(&pthis->Attributes[i]);
 
     if(pthis->Natts)
-        AJFREE(pthis->Attributes);
-    
+        if(pthis->Attributes)
+            AJFREE(pthis->Attributes);
+
     ajListFree(&pthis->Att_read);
-    
+
     AJFREE(pthis);
+
     *thys = NULL;
 
     return;
@@ -735,11 +753,13 @@ void ajMartFilterDel(AjPMartFilter *thys)
 
     pthis = *thys;
     
-    for(i=0; i < pthis->Nfilters; ++i)
-        ajTablestrFree(&pthis->Filters[i]);
+    if(pthis->Filters)
+        for(i=0; i < pthis->Nfilters; ++i)
+            ajTablestrFree(&pthis->Filters[i]);
 
     if(pthis->Nfilters)
-        AJFREE(pthis->Filters);
+        if(pthis->Filters)
+            AJFREE(pthis->Filters);
     
     ajListFree(&pthis->Filter_read);
     
@@ -1154,6 +1174,7 @@ AjBool ajMartGetRegistry(AjPSeqin seqin)
     ajint proxyport = 0;
 
     FILE *fp = NULL;
+    struct AJTIMEOUT timo;
     
 
     httpver   = ajStrNew();
@@ -1213,7 +1234,13 @@ AjBool ajMartGetRegistry(AjPSeqin seqin)
         return ajFalse;
     }
 
+    timo.seconds = 180;
+    ajSysTimeoutSet(&timo);
+    
     ajFilebuffLoadAll(seqin->Filebuff);
+
+    ajSysTimeoutUnset(&timo);
+    
     ajFilebuffHtmlNoheader(seqin->Filebuff);
 
     ajStrDel(&get);
@@ -1310,6 +1337,7 @@ AjBool ajMartGetDatasets(AjPSeqin seqin, const AjPStr mart)
     AjPSeqQuery qry = NULL;
     
     FILE *fp = NULL;
+    struct AJTIMEOUT timo;
     
     
     marttab = martGetMarttable(seqin, mart);
@@ -1426,7 +1454,13 @@ AjBool ajMartGetDatasets(AjPSeqin seqin, const AjPStr mart)
         return ajFalse;
     }
 
+    timo.seconds = 180;
+    ajSysTimeoutSet(&timo);
+    
     ajFilebuffLoadAll(seqin->Filebuff);
+
+    ajSysTimeoutUnset(&timo);
+
     ajFilebuffHtmlNoheader(seqin->Filebuff);
 
     ajStrDel(&get);
@@ -1797,6 +1831,7 @@ AjBool ajMartGetAttributes(AjPSeqin seqin, const AjPStr dataset)
     const char *vschema = NULL;
     
     FILE *fp = NULL;
+    struct AJTIMEOUT timo;
     
     qry = seqin->Query;
     mq  = ajMartGetMartqueryPtr(seqin);
@@ -1877,7 +1912,13 @@ AjBool ajMartGetAttributes(AjPSeqin seqin, const AjPStr dataset)
     }
 
 
+    timo.seconds = 180;
+    ajSysTimeoutSet(&timo);
+    
     ajFilebuffLoadAll(seqin->Filebuff);
+
+    ajSysTimeoutUnset(&timo);
+ 
     ajFilebuffHtmlNoheader(seqin->Filebuff);
 
     ajStrDel(&get);
@@ -1885,6 +1926,79 @@ AjBool ajMartGetAttributes(AjPSeqin seqin, const AjPStr dataset)
     ajStrDel(&proxyname);
     
     return ajTrue;
+}
+
+
+
+
+/* @func ajMartGetAttributesRetry *********************************************
+**
+** Retry an attribute fetch using the main biomart registry site
+** This routine should only be called after an ajMartGetAttribute
+** call followed by a ajMartattributesParse has returned an error.
+** That typically means that an external server has not provided all
+** the attributes fields, possibly due to outdated biomart software.
+** As the main biomart registry site contains all the metadata for
+** external marts (but not the marts themselves) it can be
+** queried using the same dataset. The true mart server should always
+** be tried first to minimise load on the main biomart site
+**
+** @param [u] seqin [AjPSeqin] "Sequence" input object
+** @param [r] dataset [const AjPStr] "Sequence" mart dataset name
+** @return [AjBool] true on success
+******************************************************************************/
+
+AjBool ajMartGetAttributesRetry(AjPSeqin seqin, const AjPStr dataset)
+{
+    AjPMartquery mq = NULL;
+    AjPStr orighost = NULL;
+    AjPStr origpath = NULL;
+    AjPStr schema   = NULL;
+    
+    ajuint origport = 0;
+    AjBool ret = ajFalse;
+    
+    mq  = ajMartGetMartqueryPtr(seqin);
+
+    if(!mq)
+        return ajFalse;
+
+    if(!mq->Marthost || !mq->Martpath)
+    {
+        ajWarn("ajMartGetAttributesRetry: No previous Mart queried.\n"
+               "Invalid Mart location Host=%S Path=%S",
+               mq->Marthost,mq->Martpath);
+
+        return ajFalse;
+    }
+
+    ajMartAttributeDel(&mq->Atts);
+
+    mq->Atts = ajMartAttributeNew();
+
+    orighost = ajStrNew();
+    origpath = ajStrNew();
+ 
+    ajStrAssignS(&orighost, mq->Marthost);
+    ajStrAssignS(&origpath, mq->Martpath);
+    origport = mq->Martport;
+
+    ajStrAssignC(&mq->Marthost, DEFAULT_BIOMART_MART_HOST);
+    ajStrAssignC(&mq->Martpath, DEFAULT_BIOMART_MART_PATH);
+    mq->Martport = DEFAULT_BIOMART_MART_PORT;
+
+    schema = ajStrNewC("default");
+    ret = ajMartGetAttributesSchema(seqin,dataset,schema);
+
+    ajStrAssignS(&mq->Marthost, orighost);
+    ajStrAssignS(&mq->Martpath, origpath);
+    mq->Martport = origport;
+
+    ajStrDel(&orighost);
+    ajStrDel(&origpath);
+    ajStrDel(&schema);
+    
+    return ret;
 }
 
 
@@ -1916,6 +2030,7 @@ AjBool ajMartGetAttributesSchema(AjPSeqin seqin, const AjPStr dataset,
     const char *vschema = NULL;
     
     FILE *fp = NULL;
+    struct AJTIMEOUT timo;
     
     qry = seqin->Query;
     mq  = ajMartGetMartqueryPtr(seqin);
@@ -1998,7 +2113,13 @@ AjBool ajMartGetAttributesSchema(AjPSeqin seqin, const AjPStr dataset,
     }
 
 
+    timo.seconds = 180;
+    ajSysTimeoutSet(&timo);
+    
     ajFilebuffLoadAll(seqin->Filebuff);
+
+    ajSysTimeoutUnset(&timo);
+ 
     ajFilebuffHtmlNoheader(seqin->Filebuff);
 
     ajStrDel(&get);
@@ -2144,7 +2265,8 @@ static AjBool martParseTabbedAttributes(AjPSeqin seqin)
         pos = martTabToToken(&token,tline,pos);
         if(pos < 0)
         {
-            ajWarn("martParseTabbedAttributes: missing tab field (1)\n%S",line);
+            ajWarn("martParseTabbedAttributes: missing tab field (1)\n%S",
+                   tline);
             error = ajTrue;
             break;
         }
@@ -2154,41 +2276,76 @@ static AjBool martParseTabbedAttributes(AjPSeqin seqin)
         pos = martTabToToken(&token,tline,pos);
         if(pos < 0)
         {
-            ajWarn("martParseTabbedAttributes: missing tab field (2)\n%S",line);
+            ajWarn("martParseTabbedAttributes: missing tab field (2)\n%S",
+                   tline);
             error = ajTrue;
             break;
         }
         
         martTablePush(table,"displayName",token);
 
+        /*
+        ** Some mart servers only provide the first two fields so 
+        ** need to return some indication of an incomplete read
+        ** in case an attempt has to be made to get the metadata
+        ** from the main biomart (assuming the initial query has been
+        ** made to a satellite server
+        */
+
         pos = martTabToToken(&token,tline,pos);
         if(pos < 0)
+        {
+            error = ajTrue;
+            ajDebug("martParseTabbedAttributes: missing tab field (3)\n%S",
+                    tline);
             ajStrAssignC(&token,"");
+        }
+        
 
         martTablePush(table,"description",token);
 
         pos = martTabToToken(&token,tline,pos);
         if(pos < 0)
+        {
+            error = ajTrue;
+            ajDebug("martParseTabbedAttributes: missing tab field (4)\n%S",
+                    tline);
             ajStrAssignC(&token,"");
+        }
         
         martTablePush(table,"page",token);
 
 
         pos = martTabToToken(&token,tline,pos);
         if(pos < 0)
+        {
+            error = ajTrue;
+            ajDebug("martParseTabbedAttributes: missing tab field (5)\n%S",
+                    tline);
             ajStrAssignC(&token,"");
+        }
         
         martTablePush(table,"format",token);
 
         pos = martTabToToken(&token,tline,pos);
         if(pos < 0)
+        {
+            error = ajTrue;
+            ajDebug("martParseTabbedAttributes: missing tab field (6)\n%S",
+                    tline);
             ajStrAssignC(&token,"");
+        }
 
         martTablePush(table,"tableName",token);
 
         pos = martTabToToken(&token,tline,pos);
         if(pos < 0)
+        {
+            error = ajTrue;
+            ajDebug("martParseTabbedAttributes: missing tab field (7)\n%S",
+                    tline);
             ajStrAssignC(&token,"");
+        }
 
         martTablePush(table,"columnName",token);
 
@@ -2234,7 +2391,9 @@ AjBool ajMartattributesParse(AjPSeqin seqin)
     AjBool ret = ajTrue;
     
     if(!martBuffIsXML(seqin->Filebuff))
+    {
         ret = martParseTabbedAttributes(seqin);
+    }
     else
         ajFatal("Looks like the new Biomart XML format for attributes "
                 "has just been implemented. New function needed");
@@ -2268,6 +2427,7 @@ AjBool ajMartGetFilters(AjPSeqin seqin, const AjPStr dataset)
     const char *vschema = NULL;
     
     FILE *fp = NULL;
+    struct AJTIMEOUT timo;
     
     qry = seqin->Query;
     mq  = ajMartGetMartqueryPtr(seqin);
@@ -2347,7 +2507,13 @@ AjBool ajMartGetFilters(AjPSeqin seqin, const AjPStr dataset)
         return ajFalse;
     }
 
+    timo.seconds = 180;
+    ajSysTimeoutSet(&timo);
+    
     ajFilebuffLoadAll(seqin->Filebuff);
+
+    ajSysTimeoutUnset(&timo);
+ 
     ajFilebuffHtmlNoheader(seqin->Filebuff);
 
 
@@ -2356,6 +2522,205 @@ AjBool ajMartGetFilters(AjPSeqin seqin, const AjPStr dataset)
     ajStrDel(&proxyname);
     
     return ajTrue;
+}
+
+
+
+
+/* @func ajMartGetFiltersSchema ***********************************************
+**
+** Return filters given a mart dataset, a mart host/path/port and a schema
+**
+** @param [u] seqin [AjPSeqin] "Sequence" input object
+** @param [r] dataset [const AjPStr] "Sequence" mart dataset name
+** @param [r] schema [const AjPStr] "Sequence" mart schema name
+** @return [AjBool] true on success
+******************************************************************************/
+
+AjBool ajMartGetFiltersSchema(AjPSeqin seqin, const AjPStr dataset,
+                              const AjPStr schema)
+{
+    ajint proxyport = 0;
+    
+    AjPStr httpver   = NULL;
+    AjPStr proxyname = NULL;
+    AjPStr get       = NULL;
+
+    AjPMartquery mq = NULL;
+    AjPSeqQuery qry = NULL;
+
+    const char *vschema = NULL;
+    
+    FILE *fp = NULL;
+    struct AJTIMEOUT timo;
+    
+    qry = seqin->Query;
+    mq  = ajMartGetMartqueryPtr(seqin);
+    
+    if(!mq)
+        return ajFalse;
+
+    if(!mq->Marthost || !mq->Martpath)
+    {
+        ajWarn("ajMartGetFiltersSchema: Invalid Mart location "
+               "Host=%S Path=%S",
+               mq->Marthost,mq->Martpath);
+
+        return ajFalse;
+    }
+    
+
+    /*
+    ** Do the GET request
+    */
+    
+    httpver   = ajStrNew();
+    proxyname = ajStrNew();
+    get       = ajStrNew();
+
+    
+    ajSeqHttpVersion(qry, &httpver);
+
+    vschema = ajStrGetPtr(schema);
+    
+    if(ajSeqHttpProxy(qry, &proxyport, &proxyname))
+        ajFmtPrintS(&get, "GET http://%S:%S%S?type=filters&dataset=%S"
+                    "&virtualSchema=%s"
+                    " HTTP/%S\r\n",
+                    mq->Marthost, mq->Martport, mq->Martpath, dataset,
+                    vschema, httpver);
+    else
+        ajFmtPrintS(&get, "GET %S?type=filters&dataset=%S&virtualSchema=%s"
+                    " HTTP/%S\r\n",
+                    mq->Martpath, dataset, vschema, httpver);
+
+
+    if(ajStrGetLen(proxyname))
+        fp = ajSeqHttpGetProxy(qry, proxyname, proxyport,
+                               mq->Marthost, mq->Martport, get);
+    else
+        fp = ajSeqHttpGet(qry, mq->Marthost, mq->Martport, get);
+
+    if(!fp)
+    {
+        ajWarn("ajMartGetFiltersSchema: Cannot open fp\n");
+        
+        ajStrDel(&get);
+        ajStrDel(&httpver);
+        ajStrDel(&proxyname);
+        
+	return ajFalse;
+    }
+
+
+    /*
+    ** The Filebuff needs deleting. It likely is non-NULL
+    ** from previous use by (e.g.) a dataset query.
+    */
+    
+    ajFilebuffDel(&seqin->Filebuff);
+    seqin->Filebuff = ajFilebuffNewFromCfile(fp);
+
+    if(!seqin->Filebuff)
+    {
+	ajErr("ajMartGetFiltersSchema: socket buffer attach failed for "
+              "host '%S'", mq->Marthost);
+
+        ajStrDel(&get);
+        ajStrDel(&httpver);
+        ajStrDel(&proxyname);
+
+        return ajFalse;
+    }
+
+    timo.seconds = 180;
+    ajSysTimeoutSet(&timo);
+    
+    ajFilebuffLoadAll(seqin->Filebuff);
+
+    ajSysTimeoutUnset(&timo);
+ 
+    ajFilebuffHtmlNoheader(seqin->Filebuff);
+
+
+    ajStrDel(&get);
+    ajStrDel(&httpver);
+    ajStrDel(&proxyname);
+    
+    return ajTrue;
+}
+
+
+
+
+/* @func ajMartGetFiltersRetry ***********************************************
+**
+** Retry a filters fetch using the main biomart registry site
+** This routine should only be called after an ajMartGetFilters
+** call followed by a ajMartfiltersParse has returned an error.
+** That typically means that an external server has not provided all
+** the filters fields, possibly due to outdated biomart software.
+** As the main biomart registry site contains all the metadata for
+** external marts (but not the marts themselves) it can be
+** queried using the same dataset. The true mart server should always
+** be tried first to minimise load on the main biomart site
+**
+** @param [u] seqin [AjPSeqin] "Sequence" input object
+** @param [r] dataset [const AjPStr] "Sequence" mart dataset name
+** @return [AjBool] true on success
+******************************************************************************/
+
+AjBool ajMartGetFiltersRetry(AjPSeqin seqin, const AjPStr dataset)
+{
+    AjPMartquery mq = NULL;
+    AjPStr orighost = NULL;
+    AjPStr origpath = NULL;
+    AjPStr schema   = NULL;
+    
+    ajuint origport = 0;
+    AjBool ret = ajFalse;
+    
+    mq  = ajMartGetMartqueryPtr(seqin);
+
+    if(!mq)
+        return ajFalse;
+
+    if(!mq->Marthost || !mq->Martpath)
+    {
+        ajWarn("ajMartGetFiltersRetry: No previous Mart queried.\n"
+               "Invalid Mart location Host=%S Path=%S",
+               mq->Marthost,mq->Martpath);
+
+        return ajFalse;
+    }
+
+    ajMartFilterDel(&mq->Filters);
+
+    mq->Filters = ajMartFilterNew();
+
+    orighost = ajStrNew();
+    origpath = ajStrNew();
+ 
+    ajStrAssignS(&orighost, mq->Marthost);
+    ajStrAssignS(&origpath, mq->Martpath);
+    origport = mq->Martport;
+
+    ajStrAssignC(&mq->Marthost, DEFAULT_BIOMART_MART_HOST);
+    ajStrAssignC(&mq->Martpath, DEFAULT_BIOMART_MART_PATH);
+    mq->Martport = DEFAULT_BIOMART_MART_PORT;
+
+    schema = ajStrNewC("default");
+    ret = ajMartGetFiltersSchema(seqin,dataset,schema);
+
+    ajStrAssignS(&mq->Marthost, orighost);
+    ajStrAssignS(&mq->Martpath, origpath);
+    mq->Martport = origport;
+
+    ajStrDel(&orighost);
+    ajStrDel(&origpath);
+    ajStrDel(&schema);
+    
+    return ret;
 }
 
 
@@ -2427,7 +2792,7 @@ static AjBool martParseTabbedFilters(AjPSeqin seqin)
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
         {
-            ajWarn("martParseTabbedFilters: missing tab field (3)\n%S",line);
+            ajDebug("martParseTabbedFilters: missing tab field (3)\n%S",line);
             error = ajTrue;
             break;
         }
@@ -2437,7 +2802,7 @@ static AjBool martParseTabbedFilters(AjPSeqin seqin)
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
         {
-            ajWarn("martParseTabbedFilters: missing tab field (4)\n%S",line);
+            ajDebug("martParseTabbedFilters: missing tab field (4)\n%S",line);
             error = ajTrue;
             break;
         }
@@ -2447,7 +2812,7 @@ static AjBool martParseTabbedFilters(AjPSeqin seqin)
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
         {
-            ajWarn("martParseTabbedFilters: missing tab field (5)\n%S",line);
+            ajDebug("martParseTabbedFilters: missing tab field (5)\n%S",line);
             error = ajTrue;
             break;
         }
@@ -2457,7 +2822,7 @@ static AjBool martParseTabbedFilters(AjPSeqin seqin)
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
         {
-            ajWarn("martParseTabbedFilters: missing tab field (6)\n%S",line);
+            ajDebug("martParseTabbedFilters: missing tab field (6)\n%S",line);
             error = ajTrue;
             break;
         }
@@ -2467,7 +2832,7 @@ static AjBool martParseTabbedFilters(AjPSeqin seqin)
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
         {
-            ajWarn("martParseTabbedFilters: missing tab field (7)\n%S",line);
+            ajDebug("martParseTabbedFilters: missing tab field (7)\n%S",line);
             error = ajTrue;
             break;
         }
@@ -2477,7 +2842,7 @@ static AjBool martParseTabbedFilters(AjPSeqin seqin)
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
         {
-            ajWarn("martParseTabbedFilters: missing tab field (8)\n%S",line);
+            ajDebug("martParseTabbedFilters: missing tab field (8)\n%S",line);
             error = ajTrue;
             break;
         }
@@ -2487,7 +2852,7 @@ static AjBool martParseTabbedFilters(AjPSeqin seqin)
         pos = martTabToToken(&token,line,pos);
         if(pos < 0)
         {
-            ajWarn("martParseTabbedFilters: missing tab field (9)\n%S",line);
+            ajDebug("martParseTabbedFilters: missing tab field (9)\n%S",line);
             error = ajTrue;
             break;
         }
@@ -2817,6 +3182,7 @@ AjBool ajMartSendQuery(AjPSeqin seqin)
     AjPSeqQuery qry = NULL;
 
     FILE *fp = NULL;
+    struct AJTIMEOUT timo;
     
     qry = seqin->Query;
     mq  = ajMartGetMartqueryPtr(seqin);
@@ -2901,7 +3267,13 @@ AjBool ajMartSendQuery(AjPSeqin seqin)
         return ajFalse;
     }
 
+    timo.seconds = 180;
+    ajSysTimeoutSet(&timo);
+    
     ajFilebuffLoadAll(seqin->Filebuff);
+
+    ajSysTimeoutUnset(&timo);
+ 
     ajFilebuffHtmlNoheader(seqin->Filebuff);
 
 
@@ -4140,6 +4512,7 @@ AjBool ajMartGetConfiguration(AjPSeqin seqin, const AjPStr dataset)
     const char *vschema = NULL;
     
     FILE *fp = NULL;
+    struct AJTIMEOUT timo;
     
     qry = seqin->Query;
     mq  = ajMartGetMartqueryPtr(seqin);
@@ -4222,7 +4595,13 @@ AjBool ajMartGetConfiguration(AjPSeqin seqin, const AjPStr dataset)
         return ajFalse;
     }
 
+    timo.seconds = 180;
+    ajSysTimeoutSet(&timo);
+    
     ajFilebuffLoadAll(seqin->Filebuff);
+
+    ajSysTimeoutUnset(&timo);
+
     ajFilebuffHtmlNoheader(seqin->Filebuff);
 
 
@@ -4327,4 +4706,128 @@ AjBool ajMartattributesPageSort(AjPSeqin seqin)
           martAttributePageCompar);
     
     return ajTrue;
+}
+
+
+
+
+/* @func ajMartNameIsNucC ****************************************************
+**
+** Test whether name matches any of the set of known nucleic acid
+** biomart terms
+**
+** @param [r] name [const char *] Name
+** @return [AjBool] True if nucleic acid name match
+******************************************************************************/
+
+AjBool ajMartNameIsNucC(const char *name)
+{
+    ajuint i;
+    const char *p = NULL;
+    
+    i = 0;
+
+    while((p = martNucTerms[i]))
+    {
+        if(ajCharMatchCaseC(p, name))
+            return ajTrue;
+
+        ++i;
+    }
+
+    return ajFalse;
+}
+
+
+
+
+/* @func ajMartNameIsProtC ***************************************************
+**
+** Test whether name matches any of the set of known protein
+** biomart terms
+**
+** @param [r] name [const char *] Name
+** @return [AjBool] True if nucleic acid name match
+******************************************************************************/
+
+AjBool ajMartNameIsProtC(const char *name)
+{
+    ajuint i;
+    const char *p = NULL;
+    
+    i = 0;
+
+    while((p = martProtTerms[i]))
+    {
+        if(ajCharMatchCaseC(p, name))
+            return ajTrue;
+
+        ++i;
+    }
+
+    return ajFalse;
+}
+
+
+
+
+/* @func ajMartTableNameIsNuc ************************************************
+**
+** Test whether table 'name' value  matches any of the set of known nucleic
+** acid biomart terms
+**
+** @param [r] t [const AjPTable] Table
+** @return [AjBool] True if nucleic acid name match
+******************************************************************************/
+
+AjBool ajMartTableNameIsNuc(const AjPTable t)
+{
+    AjPStr key    = NULL;
+    AjPStr value  = NULL;
+    const char *p = NULL;
+    
+    key   = ajStrNewC("name");
+    value = ajTableFetch(t,(void *)key);
+
+    if(value)
+    {
+        p = ajStrGetPtr(value);
+
+        if(ajMartNameIsNucC(p))
+            return ajTrue;
+    }
+    
+    return ajFalse;
+}
+
+
+
+
+/* @func ajMartTableNameIsProt ***********************************************
+**
+** Test whether table 'name' value  matches any of the set of known protein
+** biomart terms
+**
+** @param [r] t [const AjPTable] Table
+** @return [AjBool] True if protein name match
+******************************************************************************/
+
+AjBool ajMartTableNameIsProt(const AjPTable t)
+{
+    AjPStr key    = NULL;
+    AjPStr value  = NULL;
+    const char *p = NULL;
+    
+    key   = ajStrNewC("name");
+    value = ajTableFetch(t,(void *)key);
+
+    if(value)
+    {
+        p = ajStrGetPtr(value);
+
+        if(ajMartNameIsProtC(p))
+            return ajTrue;
+    }
+    
+    return ajFalse;
 }
