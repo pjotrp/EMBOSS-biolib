@@ -41,6 +41,7 @@
 #define write    _write
 #define strnicmp _strnicmp
 #define fdopen   _fdopen
+#define rmdir    _rmdir
 #endif
 
 
@@ -418,6 +419,7 @@ __deprecated unsigned char ajSysItoUC(ajint v)
 ** @fcategory misc
 **
 ** @nam3rule  File           System functions for files.
+** @nam4rule  FileRmrf       Recursively deletes a directory tree 
 ** @nam4rule  FileWhich      Searches $PATH sequentially for a user-EXECUTABLE 
 **                           file.
 ** @nam5rule  FileWhichEnv   Uses environment to extract the PATH list.
@@ -429,6 +431,88 @@ __deprecated unsigned char ajSysItoUC(ajint v)
 ** @valrule   *  [AjBool]  True if operation is successful.
 **
 ******************************************************************************/
+
+
+/* @func ajSysFileRmrfC ******************************************************
+**
+** Forcibly delete a directory tree
+**
+** @param [r] path [const char *] Directory path
+** @return [AjBool] true if deleted false otherwise
+** @@
+******************************************************************************/
+
+AjBool ajSysFileRmrfC(const char *path)
+{
+    AjPList flist = NULL;
+
+    AjPStr wild  = NULL;
+    AjPStr fname = NULL;
+    AjPStr dirpath = NULL;
+    const char *pdir = NULL;
+    
+    AjBool ret;
+
+
+    if(ajCharMatchC(path,".") || ajCharMatchC(path,".."))
+        return ajFalse;
+    
+    flist =  ajListNew();
+    wild  =  ajStrNewC("*");
+
+    dirpath = ajStrNewC(path);
+
+    ret = ajTrue;
+    
+    if(!ajFilenameExistsDir(dirpath))
+    {
+        ajListFree(&flist);
+        ajStrDel(&wild);
+        ajStrDel(&dirpath);
+
+        return ajFalse;
+    }
+
+    ajFilelistAddPathWildDir(flist, dirpath, wild);
+    
+    while(ajListPop(flist, (void **) &fname))
+    {
+        if(ajFilenameExistsDir(fname))
+        {
+            pdir = ajStrGetPtr(fname);
+            ret = ajSysFileRmrfC(pdir);
+
+            if(!ret)
+                break;
+
+        }
+        else
+        {
+            ret = ajSysFileUnlinkS(fname);
+
+            if(!ret)
+                break;
+        }
+
+        ajStrDel(&fname);
+    }
+
+    if(!(ajCharMatchC(path,".") || ajCharMatchC(path,"..")))
+        if(rmdir(path))
+            ret  = ajFalse;
+    
+    while(ajListPop(flist, (void **) &fname))
+        ajStrDel(&fname);
+
+    ajStrDel(&wild);
+    ajStrDel(&dirpath);
+
+    ajListFree(&flist);
+    
+    return ret;
+}
+
+
 
 
 /* @func ajSysFileUnlinkC ******************************************************

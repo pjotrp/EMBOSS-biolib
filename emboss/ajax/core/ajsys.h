@@ -112,6 +112,7 @@ void          ajSysExit(void);
 AjBool        ajSysFileUnlinkC(const char* s);
 AjBool        ajSysFileUnlinkS(const AjPStr s);
 FILE*         ajSysFdFromSocket(struct AJSOCKET sock, const char *mode);
+AjBool        ajSysFileRmrfC(const char *path);
 AjBool        ajSysFileWhich(AjPStr *Pfilename);
 AjBool        ajSysFileWhichEnv(AjPStr *Pfilename, char * const env[]);
 FILE*         ajSysFuncFdopen(ajint filedes, const char *mode);
