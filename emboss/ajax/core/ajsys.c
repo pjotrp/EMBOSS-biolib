@@ -1081,7 +1081,10 @@ AjBool ajSysCommandRemoveS(const AjPStr strname)
 AjBool ajSysCommandRemovedirC(const char* name)
 {
     AjPStr cmdstr = NULL;
+    AjBool ret;
 
+    ret = ajTrue;
+    
     cmdstr = ajStrNewC(name);
     if(!ajFilenameExistsDir(cmdstr))
     {
@@ -1089,15 +1092,15 @@ AjBool ajSysCommandRemovedirC(const char* name)
             ajErr("Unable to remove directory '%S' not found", cmdstr);
         else
             ajErr("Unable to remove directory '%S' not a directory", cmdstr);
+
         return ajFalse;
     }
     
-    ajFmtPrintS(&cmdstr, "rm -rf %s", name);
-    ajSysExecPathS(cmdstr);
+    ret = ajSysFileRmrfC(name);
 
     ajStrDel(&cmdstr);
 
-    return ajTrue;
+    return ret;
 }
 
 
@@ -1114,21 +1117,21 @@ AjBool ajSysCommandRemovedirC(const char* name)
 
 AjBool ajSysCommandRemovedirS(const AjPStr strname)
 {
-    AjPStr cmdstr = NULL;
+    AjBool ret;
 
+    ret = ajTrue;
+    
     if(!ajFilenameExistsDir(strname))
     {
         if(!ajFilenameExists(strname))
             ajErr("Unable to remove directory '%S' not found", strname);
         else
             ajErr("Unable to remove directory '%S' not a directory", strname);
+
         return ajFalse;
     }
 
-    ajFmtPrintS(&cmdstr, "rm -rf %S", strname);
-    system(ajStrGetPtr(cmdstr));
-
-    ajStrDel(&cmdstr);
+    ajSysFileRmrfC(ajStrGetPtr(strname));
 
     return ajTrue;
 }
