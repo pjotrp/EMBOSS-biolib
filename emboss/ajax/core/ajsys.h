@@ -154,6 +154,8 @@ int           ajSysTimeoutSet(struct AJTIMEOUT *ts);
 int           ajSysTimeoutUnset(struct AJTIMEOUT *ts);
 
 AjPFile       ajSysCreateNewInPipe(const AjPStr command);
+AjBool        ajSysExecRedirectC(const char *command, int **pipeto,
+                                 int **pipefrom);
 
 /*
 ** End of prototype definitions

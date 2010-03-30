@@ -1597,8 +1597,8 @@ ajint ajSysExecC(const char* cmdlinetxt)
     ZeroMemory(&startInfo, sizeof(startInfo));
     startInfo.cb = sizeof(startInfo);
     
-    if (!CreateProcess(NULL, (char *)cmdlinetxt, NULL, NULL, FALSE,
-		       CREATE_NO_WINDOW, NULL, NULL, &startInfo, &procInfo))
+    if(!CreateProcess(NULL, (char *)cmdlinetxt, NULL, NULL, FALSE,
+                      CREATE_NO_WINDOW, NULL, NULL, &startInfo, &procInfo))
 	ajFatal("CreateProcess failed");
 
     if(!WaitForSingleObject(procInfo.hProcess, INFINITE))
@@ -2726,4 +2726,254 @@ AjPFile ajSysCreateNewInPipe(const AjPStr command)
     }
 
     return thys;
+}
+
+
+
+
+        
+
+/* @func ajSysExecRedirectC **************************************************
+**
+** Execute an application redirecting its stdin/out to pipe fds
+**
+** @param [r] command [const char *] Command string.
+**                    The string may end with a trailing pipe character.
+** @param [w] pipeto [int **] pipes to the process
+** @param [w] pipefrom [int **] pipes from the process
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+
+AjBool ajSysExecRedirectC(const char *command, int **pipeto, int **pipefrom)
+{
+    int *pipeout = NULL;
+    int *pipein  = NULL;
+#ifndef WIN32
+    pid_t pid;
+    char *pgm = NULL;
+    char **argptr = NULL;
+    ajint i;
+#else
+    HANDLE cstdinr;
+    HANDLE cstdinw;
+    HANDLE cstdoutr;
+    HANDLE cstdoutw;
+    HANDLE svstdin;
+    HANDLE svstdout;
+    BOOL ret;
+
+    HANDLE cstdinwdup;
+    HANDLE cstdoutrdup;
+
+    SECURITY_ATTRIBUTES sa;
+
+    PROCESS_INFORMATION pinf;
+    STARTUPINFO sinf;
+#endif
+    
+    if(!pipeto || !pipefrom)
+        return ajFalse;
+
+    if(!*pipeto || !*pipefrom)
+        return ajFalse;
+    
+    pipeout = *pipeto;
+    pipein  = *pipefrom;
+    
+#ifndef WIN32
+
+    if(!ajSysArglistBuildC(command, &pgm, &argptr))
+    {
+        ajDebug("ajSysExecWithRedirect: Cannot parse command line");
+        return ajFalse;
+    }
+
+    
+    if(pipe(pipeout))
+    {
+        ajDebug("ajSysExecWithRedirect: Cannot open pipeout");
+        return ajFalse;
+    }
+
+    if(pipe(pipein))
+    {
+        ajDebug("ajSysExecWithRedirect: Cannot open pipein");
+        return ajFalse;
+    }
+    
+    pid = fork();
+    if(pid < 0)
+    {
+        ajDebug("ajSysExecWithRedirect: fork failure");
+        return ajFalse;
+    }
+    else if(!pid)
+    {
+        /*
+        ** CHILD PROCESS
+        ** dup pipe read/write to stdin/stdout
+        */
+        dup2(pipeout[0],  fileno(stdin));
+        dup2(pipein[1], fileno(stdout));
+
+        /* close unnecessary pipe descriptors */
+        close(pipeout[0]);
+        close(pipeout[1]);
+        close(pipein[0]);
+        close(pipein[1]);
+
+	execv(pgm, argptr);
+        
+        ajDebug("ajSysExecWithRedirect: Problem executing application");
+        return ajFalse;
+    }
+
+    /*
+    ** PARENT PROCESS
+    ** Close unused pipe ends. This is especially important for the
+    ** pipein[1] write descriptor, otherwise reading will never
+    ** give an EOF.
+    */
+
+    ajDebug("ajSysExecWithRedirect: Within the PARENT process");
+    
+    close(pipeout[0]);
+    close(pipein[1]);
+
+    i = 0;
+
+    while(argptr[i])
+    {
+	AJFREE(argptr[i]);
+	++i;
+    }
+
+    AJFREE(argptr);
+    AJFREE(pgm);
+    
+#else	/* WIN32 */
+
+    
+    sa.nLength = sizeof(SECURITY_ATTRIBUTES);
+    sa.bInheritHandle = TRUE;
+    sa.lpSecurityDescriptor = NULL;
+		
+    /*
+    ** Redirect stdout by
+    **    Save stdout for later restoration
+    **    Create anonymous pipe as stdout for the child
+    **    Set stdout of parent to be write handle to  the pipe thereby
+    **       making it inherited by the child
+    **    Create non-inheritable duplicate of the read handle and close
+    **       the inheritable read handle
+    */
+
+    svstdout = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    if (!CreatePipe(&cstdoutr, &cstdoutw, &sa, 0))
+    {
+        ajDebug("ajSysExecWithRedirect: Couldn't open input pipe" );
+        return ajFalse;
+    }
+    
+    SetHandleInformation(cstdoutr,HANDLE_FLAG_INHERIT,0);
+
+    if (!SetStdHandle(STD_OUTPUT_HANDLE, cstdoutw))
+    {
+        ajDebug("ajSysExecWithRedirect: failure redirecting stdout");
+        return ajFalse;
+    }
+    
+    ret = DuplicateHandle(GetCurrentProcess(),
+                          cstdoutr,
+                          GetCurrentProcess(),
+                          &cstdoutrdup , 0,
+                          FALSE,
+                          DUPLICATE_SAME_ACCESS);
+    if(!ret)
+    {
+        ajDebug("ajSysExecWithRedirect: DuplicateHandle failed");
+        return ajFalse;
+    }
+
+    CloseHandle(cstdoutr);
+
+    /*
+    ** Redirect stdin by
+    **    Save stdin for later restoration
+    **    Create anonymous pipe as stdin for the child
+    **    Set stdin of parent to be read handle of the pipe thereby
+    **       making it inherited by the child
+    **    Create non-inheritable duplicate of the write handle and close
+    **       the inheritable write handle
+    */
+
+    svstdin = GetStdHandle(STD_INPUT_HANDLE);
+
+    if(!CreatePipe(&cstdinr, &cstdinw, &sa, 0)) 
+    {
+        ajDebug("ajSysExecWithRedirect: Cannot open pipeout");
+        return ajFalse;
+    }
+
+    if (!SetStdHandle(STD_INPUT_HANDLE, cstdinr)) 
+    {
+        ajDebug("ajSysExecWithRedirect: Cannot redirect stdin");
+        return ajFalse;
+    }
+
+    ret = DuplicateHandle(GetCurrentProcess(),
+                               cstdinw, 
+                               GetCurrentProcess(),
+                               &cstdinwdup, 0, 
+                               FALSE, 
+                               DUPLICATE_SAME_ACCESS); 
+    if(!ret) 
+    {
+        ajDebug("ajSysExecWithRedirect: DuplicateHandle failure");
+        return ajFalse;
+    }
+
+    CloseHandle(cstdinw);
+
+    ZeroMemory(&pinf, sizeof(PROCESS_INFORMATION));
+    ZeroMemory(&sinf, sizeof(STARTUPINFO));
+    sinf.cb = sizeof(STARTUPINFO);
+
+    ret = CreateProcess(NULL, (char *)command, NULL, NULL, TRUE, 0, NULL, NULL,
+                        &sinf, &pinf);
+
+    if(ret == 0)
+    {
+        ajDebug("ajSysExecWithRedirect: Cannot execute application");
+        return ajFalse;
+    }
+
+    CloseHandle(pinf.hProcess);
+    CloseHandle(pinf.hThread);
+
+
+    if(!SetStdHandle(STD_INPUT_HANDLE, svstdin))
+    {
+        ajDebug("ajSysExecWithRedirect: Error restoring stdin");
+        return ajFalse;
+    }
+
+    if(!SetStdHandle(STD_OUTPUT_HANDLE, svstdout))
+    {
+        ajDebug("ajSysExecWithRedirect: Error restoring stdout");
+        return ajFalse;
+    }
+
+    CloseHandle(cstdoutw);
+
+    pipeout[1] = _open_osfhandle((intptr_t) cstdinwdup,
+                                 _O_APPEND);
+
+    pipein[0]  = _open_osfhandle((intptr_t) cstdoutrdup,
+                                 _O_RDONLY);
+#endif
+
+    return ajTrue;
 }
