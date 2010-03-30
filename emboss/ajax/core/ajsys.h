@@ -152,7 +152,9 @@ void          ajSysSocketclose(struct AJSOCKET sock);
 
 int           ajSysTimeoutSet(struct AJTIMEOUT *ts);
 int           ajSysTimeoutUnset(struct AJTIMEOUT *ts);
-    
+
+AjPFile       ajSysCreateNewInPipe(const AjPStr command);
+
 /*
 ** End of prototype definitions
 */

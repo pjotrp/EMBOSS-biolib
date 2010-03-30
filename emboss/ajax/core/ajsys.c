@@ -2573,3 +2573,157 @@ __deprecated AjBool ajSysIsRegular(const char *s)
 
     return ret;
 }
+
+
+
+
+/* @func ajSysCreateNewInPipe *************************************************
+**
+** Return a new file object from which to read the output from a command.
+**
+** @param [r] command [const AjPStr] Command string.
+**                    The string may end with a trailing pipe character.
+** @return [AjPFile] New file object.
+** @@
+******************************************************************************/
+
+AjPFile ajSysCreateNewInPipe(const AjPStr command)
+{
+    AjPFile thys;
+    AjPStr cmdstr = NULL;
+
+#ifndef WIN32
+    ajint pipefds[2];		     /* file descriptors for a pipe */
+    char** arglist        = NULL;
+    char* pgm;
+#else
+    HANDLE cstdinr  = NULL;
+    HANDLE cstdinw  = NULL;
+    HANDLE cstdoutr = NULL;
+    HANDLE cstdoutw = NULL;
+    HANDLE svstdout = NULL;
+    HANDLE cstdoutrdup = NULL;
+
+    SECURITY_ATTRIBUTES sa;
+
+    PROCESS_INFORMATION pinf;
+    STARTUPINFO sinf;
+
+    BOOL ret =  FALSE;
+    
+    int fd;
+#endif
+
+    cmdstr = ajStrNew();
+    
+    AJNEW0(thys);
+    ajStrAssignS(&cmdstr, command);
+
+    ajDebug("ajSysCreateNewInPipe: '%S'\n", command);
+
+    /* pipe character at end */
+    if(ajStrGetCharLast(cmdstr) == '|')
+	ajStrCutEnd(&cmdstr, 1);
+
+
+#ifndef WIN32
+
+    if(pipe(pipefds) < 0)
+	ajFatal("ajSysCreateNewInPipe: pipe create failed");
+
+    /* negative return indicates failure */
+    thys->Pid = fork();
+
+    if(thys->Pid < 0)
+	ajFatal("ajSysCreateNewInPipe: fork create failed");
+
+    /* pid is zero in the child, but is the child PID in the parent */
+    
+    if(!thys->Pid)
+    {
+	/* this is the child process */
+	close(pipefds[0]);
+
+	dup2(pipefds[1], 1);
+	close(pipefds[1]);
+	ajSysArglistBuildS(cmdstr, &pgm, &arglist);
+	ajDebug("ajSysCreateNewInPipe: execvp ('%S', NULL)\n", cmdstr);
+	execvp(pgm, arglist);
+	ajErr("ajSysCreateNewInPipe: execvp ('%S', NULL) failed: '%s'\n",
+		cmdstr, strerror(errno));
+	ajExitAbort();
+    }
+    
+    ajDebug("ajSysCreateNewInPipe: pid %d, pipe '%d', '%d'\n",
+	    thys->Pid, pipefds[0], pipefds[1]);
+
+    /* fp is what we read from the pipe */
+    thys->fp = ajSysFuncFdopen(pipefds[0], "r");
+    close(pipefds[1]);
+
+#else
+    
+    sa.nLength = sizeof(SECURITY_ATTRIBUTES);
+    sa.bInheritHandle =  TRUE;
+    sa.lpSecurityDescriptor = NULL;
+
+    svstdout = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    if(!CreatePipe(&cstdoutr, &cstdoutw, &sa,  0))
+        ajFatal("ajSysCreateNewInPipe: pipe create failed");
+
+    if(!SetHandleInformation(cstdoutr, HANDLE_FLAG_INHERIT, 0))
+        ajFatal("ajSysCreateNewInPipe: Can't set no-inherit on child stdout "
+		"read handle");
+
+
+    if(!SetStdHandle(STD_OUTPUT_HANDLE, cstdoutw)) 
+        ajFatal("ajSysCreateNewInPipe: redirecting of STDOUT failed");
+
+    ret = DuplicateHandle(GetCurrentProcess(),
+			  cstdoutr,
+			  GetCurrentProcess(),
+			  &cstdoutrdup , 0,
+			  FALSE,
+			  DUPLICATE_SAME_ACCESS);
+    if(!ret)
+      ajFatal("ajSysCreateNewInPipe: Could not duplicate stdout read handle");
+
+    CloseHandle(cstdoutr);
+
+    /* Create Process here */
+
+    ZeroMemory(&pinf, sizeof(PROCESS_INFORMATION));
+    ZeroMemory(&sinf, sizeof(STARTUPINFO));
+    sinf.cb = sizeof(STARTUPINFO);
+
+    ret = CreateProcess(NULL, (char *)ajStrGetPtr(cmdstr), NULL, NULL, TRUE, 0,
+			NULL, NULL, &sinf, &pinf);
+
+    if(!ret)
+        ajFatal("ajSysCreateNewInPipe: CreateProcess failed");
+
+    thys->Process = pinf.hProcess;
+    thys->Thread  = pinf.hThread;
+
+    if(!SetStdHandle(STD_OUTPUT_HANDLE, svstdout))
+       ajFatal("restoring  stdout failed\n");
+    
+    CloseHandle(cstdoutw);
+
+    fd = _open_osfhandle((intptr_t) cstdoutrdup, _O_RDONLY);
+    thys->fp = ajSysFuncFdopen(fd, "r");
+#endif
+
+    ajStrDel(&cmdstr);
+
+    if(!thys->fp)
+    {
+	thys->Handle = 0;
+	ajFileClose(&thys);
+
+	return NULL;
+    }
+
+    return thys;
+}

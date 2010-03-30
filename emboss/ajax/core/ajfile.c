@@ -1213,63 +1213,13 @@ __deprecated AjPFile ajFileNewDF(const AjPStr dir, const AjPStr filename)
 
 AjPFile ajFileNewInPipe(const AjPStr command)
 {
-#ifndef WIN32
-    AjPFile thys;
+    AjPFile thys = NULL;
     
-    ajint pipefds[2];		     /* file descriptors for a pipe */
-    char** arglist        = NULL;
-    char* pgm;
-
-    AJNEW0(thys);
-    ajStrAssignS(&fileNameTmp, command);
-
-    ajDebug("ajFileNewInPipe '%S'\n", command);
-
-    /* pipe character at end */
-    if(ajStrGetCharLast(fileNameTmp) == '|')
-	ajStrCutEnd(&fileNameTmp, 1);
-
-    if(pipe(pipefds) < 0)
-	ajFatal("pipe create failed");
-
-    /* negative return indicates failure */
-    thys->Pid = fork();
-
-    if(thys->Pid < 0)
-	ajFatal("fork create failed");
-
-    /* pid is zero in the child, but is the child PID in the parent */
+    thys = ajSysCreateNewInPipe(command);
     
-    if(!thys->Pid)
-    {
-	/* this is the child process */
-	close(pipefds[0]);
-
-	dup2(pipefds[1], 1);
-	close(pipefds[1]);
-	ajSysArglistBuildS(fileNameTmp, &pgm, &arglist);
-	ajDebug("execvp ('%S', NULL)\n", fileNameTmp);
-	execvp(pgm, arglist);
-	ajErr("execvp ('%S', NULL) failed: '%s'\n",
-		fileNameTmp, strerror(errno));
-	ajExitAbort();
-    }
+    if(!thys)
+        return NULL;
     
-    ajDebug("pid %d, pipe '%d', '%d'\n",
-	    thys->Pid, pipefds[0], pipefds[1]);
-
-    /* fp is what we read from the pipe */
-    thys->fp = ajSysFuncFdopen(pipefds[0], "r");
-    close(pipefds[1]);
-    ajStrDelStatic(&fileNameTmp);
-
-    if(!thys->fp)
-    {
-	thys->Handle = 0;
-	ajFileClose(&thys);
-	return NULL;
-    }
-
     thys->Handle = ++fileHandle;
     ajStrAssignS(&thys->Name, command);
     thys->End = ajFalse;
@@ -1280,9 +1230,6 @@ AjPFile ajFileNewInPipe(const AjPStr command)
 	fileOpenMax = fileOpenCnt;
     
    return thys;
-#else /* WIN32 */
-    return NULL;
-#endif
 }
 
 
@@ -2050,6 +1997,14 @@ static void fileClose(AjPFile thys)
 	    status = 0;
 	}
     }
+#else
+    if(thys->Process && thys->End)
+    {
+        WaitForSingleObject(thys->Process,INFINITE);
+        CloseHandle(thys->Process);
+        CloseHandle(thys->Thread);
+    }
+    
 #endif
 
     if(thys->Handle)

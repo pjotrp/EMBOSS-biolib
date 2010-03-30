@@ -6,6 +6,10 @@ extern "C"
 #ifndef ajfile_h
 #define ajfile_h
 
+#ifdef WIN32
+#include "win32.h"
+#endif
+
 #include "ajlist.h"
 #include <sys/stat.h>
 
@@ -37,27 +41,34 @@ extern "C"
 ** @@
 ******************************************************************************/
 
-typedef struct AjSFile {
-  FILE *fp;
-  AjPStr Name;
-  AjPList List;
-  AjBool End;
-  AjBool App;
-  AjPStr Buff;
-  char *Workbuffer;
-  char *Readblock;
-  ajlong Filepos;
-  ajuint Blocksize;
-  ajuint Blockpos;
-  ajuint Blocklen;
-  ajuint Buffsize;
-  ajint Handle;
+typedef struct AjSFile
+{
+    FILE *fp;
+    AjPStr Name;
+    AjPList List;
+    AjBool End;
+    AjBool App;
+    AjPStr Buff;
+    char *Workbuffer;
+    char *Readblock;
+    ajlong Filepos;
+    ajuint Blocksize;
+    ajuint Blockpos;
+    ajuint Blocklen;
+    ajuint Buffsize;
+    ajint Handle;
 #ifndef WIN32
-  pid_t Pid;
+    pid_t Pid;
+#else
+    HANDLE Process;
+    HANDLE Thread;
 #endif
 } AjOFile;
 
 #define AjPFile AjOFile*
+
+
+
 
 /* @data AjPFilebufflist ******************************************************
 **
