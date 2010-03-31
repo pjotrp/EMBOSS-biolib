@@ -1392,11 +1392,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
 	    exit(-1);
 	}
 
-	if(execve(ajStrGetPtr(prog),argp,envp) == -1)
-	{
-	    fprintf(stderr,"execve failure");
-	    exit(-1);
-	}
+        ajSysExecProgArgEnvNowaitC(ajStrGetPtr(prog),argp,envp);
     }
 
     *buf = '\0';
@@ -2913,11 +2909,7 @@ static int java_jembossctl(ajint command,
 	dup2(outpipe[1],1);
 	dup2(errpipe[1],2);
 
-	if(execve(ajStrGetPtr(prog),argp,envp) == -1)
-	{
-	    fprintf(stderr,"execve failure\n");
-	    exit(-1);
-	}
+        ajSysExecProgArgEnvNowaitC(ajStrGetPtr(prog),argp,envp);
     }
 
 

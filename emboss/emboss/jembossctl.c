@@ -74,7 +74,7 @@
 
 
 
-static AjBool jembossctl_up(const char *buf,int *uid,int *gid,AjPStr *home);
+static AjBool jembossctl_up(char *buf,int *uid,int *gid,AjPStr *home);
 static AjBool jembossctl_do_fork(char *buf, int uid, int gid);
 static AjBool jembossctl_do_batch(char *buf, int uid, int gid);
 static AjBool jembossctl_do_directory(char *buf, int uid, int gid);
@@ -97,7 +97,7 @@ static void jembossctl_tidy_strings(AjPStr *tstr, AjPStr *home,
 				    char *buf);
 static void jembossctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
 				 AjPStr *dir, AjPStr *outstd, AjPStr *errstd);
-static AjBool jembossctl_check_buffer(const char *buf, int mlen);
+static AjBool jembossctl_check_buffer(char *buf, int mlen);
 static AjBool jembossctl_chdir(const char *file);
 static AjBool jembossctl_initgroups(const char *buf, int gid);
 static void jembossctl_zero(char *buf);
@@ -187,7 +187,7 @@ extern char *strptime(const char *s, const char *format, struct tm *tm);
 **
 ******************************************************************************/
 
-int main(int argc, char **argv)
+int main(void)
 {
     AjPStr message = NULL;
     char *cbuf = NULL;
@@ -274,7 +274,7 @@ int main(int argc, char **argv)
     case COMM_AUTH:
 	ajStrAssignC(&tstr,cbuf);
 	c='\0';
-	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(tstr->Ptr,&uid,&gid,&home);
 	if(ok)
 	    c=1;
 
@@ -291,7 +291,7 @@ int main(int argc, char **argv)
 
     case EMBOSS_FORK:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(tstr->Ptr,&uid,&gid,&home);
 
 	if(ok)
 	    ok = jembossctl_do_fork(cbuf,uid,gid);
@@ -299,28 +299,28 @@ int main(int argc, char **argv)
 
     case MAKE_DIRECTORY:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(tstr->Ptr,&uid,&gid,&home);
 	if(ok)
 	    ok = jembossctl_do_directory(cbuf,uid,gid);
 	break;
 
     case DELETE_FILE:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(tstr->Ptr,&uid,&gid,&home);
 	if(ok)
 	    ok = jembossctl_do_deletefile(cbuf,uid,gid);
 	break;
 
     case DELETE_DIR:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(tstr->Ptr,&uid,&gid,&home);
 	if(ok)
 	    ok = jembossctl_do_deletedir(cbuf,uid,gid);
 	break;
 
     case LIST_FILES:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(tstr->Ptr,&uid,&gid,&home);
 
 	if(ok)
 	    ok = jembossctl_do_listfiles(cbuf,uid,gid,&retlist);
@@ -330,7 +330,7 @@ int main(int argc, char **argv)
 
     case LIST_DIRS:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(tstr->Ptr,&uid,&gid,&home);
 	if(ok)
 	    ok = jembossctl_do_listdirs(cbuf,uid,gid,&retlist);
 
@@ -339,7 +339,7 @@ int main(int argc, char **argv)
 
     case GET_FILE:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(tstr->Ptr,&uid,&gid,&home);
 	if(ok)
 	    ok = jembossctl_do_getfile(cbuf,uid,gid,&fbuf,&size);
 
@@ -347,7 +347,7 @@ int main(int argc, char **argv)
 
     case PUT_FILE:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(tstr->Ptr,&uid,&gid,&home);
 	if(ok)
 	    ok = jembossctl_do_putfile(cbuf,uid,gid);
 
@@ -355,7 +355,7 @@ int main(int argc, char **argv)
 
     case BATCH_FORK:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(tstr->Ptr,&uid,&gid,&home);
 
 	if(ok)
 	    ok = jembossctl_do_batch(cbuf,uid,gid);
@@ -363,7 +363,7 @@ int main(int argc, char **argv)
 
     case RENAME_FILE:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(tstr->Ptr,&uid,&gid,&home);
 	if(ok)
 	    ok = jembossctl_do_renamefile(cbuf,uid,gid);
 	break;
@@ -371,14 +371,14 @@ int main(int argc, char **argv)
 
     case SEQ_ATTRIB:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(tstr->Ptr,&uid,&gid,&home);
 	if(ok)
 	    ok = jembossctl_do_seq(cbuf,uid,gid);
 	break;
 
     case SEQSET_ATTRIB:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(tstr->Ptr,&uid,&gid,&home);
 	if(ok)
 	    ok = jembossctl_do_seqset(cbuf,uid,gid);
 	break;
@@ -410,7 +410,7 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static void jembossctl_empty_core_dump()
+static void jembossctl_empty_core_dump(void)
 {
     struct rlimit limit;
 
@@ -875,7 +875,7 @@ static AjBool jembossctl_check_pass(AjPStr username,AjPStr password,ajint *uid,
 **
 ** Primary username/password check. Return uid/gid/homedir
 **
-** @param [w] buf [const char*] socket buffer
+** @param [w] buf [char*] socket buffer
 ** @param [w] uid [int*] uid
 ** @param [w] gid [int*] gid
 ** @param [w] home [AjPStr*] home
@@ -883,7 +883,7 @@ static AjBool jembossctl_check_pass(AjPStr username,AjPStr password,ajint *uid,
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jembossctl_up(const char *buf, int *uid, int *gid, AjPStr *home)
+static AjBool jembossctl_up(char *buf, int *uid, int *gid, AjPStr *home)
 {
     AjPStr username = NULL;
     AjPStr password = NULL;
@@ -900,9 +900,9 @@ static AjBool jembossctl_up(const char *buf, int *uid, int *gid, AjPStr *home)
     if(ajFmtScanS(cstr,"%d%S%S",&command,&username,&password)!=3)
     {
 	if(ajStrGetLen(username))
-	   bzero((void*)ajStrGetPtr(username),ajStrGetLen(username));
+	   bzero((void*)username->Ptr,ajStrGetLen(username));
 	if(ajStrGetLen(password))
-	   bzero((void*)ajStrGetPtr(password),ajStrGetLen(password));
+	   bzero((void*)password->Ptr,ajStrGetLen(password));
 	jembossctl_zero((char*)buf);
 
 	ajStrDel(&username);
@@ -924,11 +924,13 @@ static AjBool jembossctl_up(const char *buf, int *uid, int *gid, AjPStr *home)
 
 #ifndef NO_AUTH
     ok = jembossctl_check_pass(username,password,uid,gid,home);
+#else
+    (void) home;
 #endif
 
 
-    bzero((void*)ajStrGetPtr(username),ajStrGetLen(username));
-    bzero((void*)ajStrGetPtr(password),ajStrGetLen(password));
+    bzero((void*)username->Ptr,ajStrGetLen(username));
+    bzero((void*)password->Ptr,ajStrGetLen(password));
     jembossctl_zero((char*)buf);
 
     ajStrDel(&username);
@@ -1107,12 +1109,7 @@ static AjBool jembossctl_do_batch(char *buf, int uid, int gid)
 	    exit(-1);
 	}
 
-	if(execve(ajStrGetPtr(prog),argp,envp) == -1)
-	{
-	    fprintf(stderr,"execve failure");
-	    fflush(stderr);
-	    exit(-1);
-	}
+	ajSysExecProgArgEnvNowaitC(ajStrGetPtr(prog),argp,envp);
     }
 
 
@@ -1520,12 +1517,7 @@ static AjBool jembossctl_do_fork(char *buf, int uid, int gid)
 	    exit(-1);
 	}
 
-	if(execve(ajStrGetPtr(prog),argp,envp) == -1)
-	{
-	    fprintf(stderr,"execve failure");
-	    fflush(stderr);
-	    exit(-1);
-	}
+	ajSysExecProgArgEnvNowaitC(ajStrGetPtr(prog),argp,envp);
     }
 
 
@@ -1729,7 +1721,6 @@ static AjBool jembossctl_do_fork(char *buf, int uid, int gid)
 static char** jembossctl_make_array(const AjPStr str)
 {
     ajint n = 0;
-    ajint i = 0;
     ajint len = 0;
     
     char **ptr    = NULL;
@@ -3360,13 +3351,13 @@ static void jembossctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
 **
 ** Sanity check on socket commands
 **
-** @param [r] buf [const char*] socket buffer
+** @param [r] buf [char*] socket buffer
 ** @param [r] mlen [int] buffer length
 **
 ** @return [AjBool] true if sane
 ******************************************************************************/
 
-static AjBool jembossctl_check_buffer(const char *buf, int mlen)
+static AjBool jembossctl_check_buffer(char *buf, int mlen)
 {
     const char *p;
     int str1len;
@@ -3939,7 +3930,9 @@ static time_t jembossctl_Datestr(const AjPStr s)
 
     tmp = ajStrNew();
     ajStrAssignS(&tmp,s);
-    p = (char*)ajStrGetPtr(tmp);
+
+    p = tmp->Ptr;
+
     while(*p)
     {
 	if(*p == '_' || *p==':')
@@ -4006,13 +3999,13 @@ static time_t jembossctl_Datestr(const AjPStr s)
 
 static int jembossctl_date(const void* str1, const void* str2)
 {
-    AjPStr *a;
-    AjPStr *b;
+    AjPStr a;
+    AjPStr b;
 
-    a = (AjPStr*)str1;
-    b = (AjPStr*)str2;
+    a = *(AjPStr const *)str1;
+    b = *(AjPStr const *)str2;
 
-    return (int)(jembossctl_Datestr(*b) - jembossctl_Datestr(*a));
+    return (int)(jembossctl_Datestr(b) - jembossctl_Datestr(a));
 }
 
 
