@@ -1606,6 +1606,9 @@ ajint ajSysExecC(const char* cmdlinetxt)
     else
         status = -1;
 
+    CloseHandle(procInfo.hProcess);
+    CloseHandle(procInfo.hThread);
+
 #endif
 
     return status;
@@ -1688,6 +1691,9 @@ void ajSysExecS(const AjPStr cmdline)
 	ajFatal("CreateProcess failed");
 
     WaitForSingleObject(procInfo.hProcess, INFINITE);
+
+    CloseHandle(procInfo.hProcess);
+    CloseHandle(procInfo.hThread);
 
 #endif
 
@@ -2020,6 +2026,46 @@ void ajSysExecOutnameS(const AjPStr cmdline, const AjPStr outfname)
 
     AJFREE(pgm);
 
+#else
+
+    PROCESS_INFORMATION pinf;
+    STARTUPINFO si;
+    HANDLE fp;
+    SECURITY_ATTRIBUTES sa;
+
+    ajDebug ("Launching process '%S'\n", cmdline);
+    
+    ZeroMemory(&si, sizeof(si));
+    si.cb = sizeof(si);
+    si.dwFlags |= STARTF_USESTDHANDLES;
+
+
+    sa.nLength = sizeof(SECURITY_ATTRIBUTES);
+    sa.bInheritHandle = TRUE;
+    sa.lpSecurityDescriptor = NULL;
+
+    fp = CreateFile(TEXT(MAJSTRGETPTR(outfname)), GENERIC_WRITE, 0 , &sa,
+		    CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+    if(fp == INVALID_HANDLE_VALUE)
+        ajFatal("Cannot open file %S\n",outfname);
+
+
+    si.hStdOutput = fp;
+    si.hStdInput  = GetStdHandle(STD_INPUT_HANDLE);
+    si.hStdError  = GetStdHandle(STD_ERROR_HANDLE);
+
+    
+    if(!CreateProcess(NULL, cmdline->Ptr, NULL, NULL, TRUE,
+                      CREATE_NO_WINDOW, NULL, NULL, &si, &pinf))
+    {
+	ajFatal("CreateProcess failed");
+    }
+    
+    WaitForSingleObject(pinf.hProcess, INFINITE);
+
+    CloseHandle(pinf.hProcess);
+    CloseHandle(pinf.hThread);
 #endif
 
     return;
@@ -2100,6 +2146,48 @@ void ajSysExecOutnameAppendS(const AjPStr cmdline, const AjPStr outfname)
     AJFREE(argptr);
 
     AJFREE(pgm);
+
+#else
+
+    PROCESS_INFORMATION pinf;
+    STARTUPINFO si;
+    HANDLE fp;
+    SECURITY_ATTRIBUTES sa;
+
+    ajDebug ("Launching process '%S'\n", cmdline);
+    
+    ZeroMemory(&si, sizeof(si));
+    si.cb = sizeof(si);
+    si.dwFlags |= STARTF_USESTDHANDLES;
+
+
+    sa.nLength = sizeof(SECURITY_ATTRIBUTES);
+    sa.bInheritHandle = TRUE;
+    sa.lpSecurityDescriptor = NULL;
+
+    fp = CreateFile(TEXT(MAJSTRGETPTR(outfname)), GENERIC_WRITE, 0 , &sa,
+		    OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+    if(fp == INVALID_HANDLE_VALUE)
+        ajFatal("Cannot open file %S\n",outfname);
+
+    SetFilePointer(fp, 0, NULL, FILE_END);
+
+    si.hStdOutput = fp;
+    si.hStdInput  = GetStdHandle(STD_INPUT_HANDLE);
+    si.hStdError  = GetStdHandle(STD_ERROR_HANDLE);
+
+    
+    if(!CreateProcess(NULL, cmdline->Ptr, NULL, NULL, TRUE,
+                      CREATE_NO_WINDOW, NULL, NULL, &si, &pinf))
+    {
+	ajFatal("CreateProcess failed");
+    }
+    
+    WaitForSingleObject(pinf.hProcess, INFINITE);
+
+    CloseHandle(pinf.hProcess);
+    CloseHandle(pinf.hThread);
 
 #endif
 
@@ -2184,7 +2272,48 @@ void ajSysExecOutnameErrS(const AjPStr cmdline, const AjPStr outfname)
 
     AJFREE(pgm);
 
+#else
+
+    PROCESS_INFORMATION pinf;
+    STARTUPINFO si;
+    HANDLE fp;
+    SECURITY_ATTRIBUTES sa;
+
+    ajDebug ("Launching process '%S'\n", cmdline);
+    
+    ZeroMemory(&si, sizeof(si));
+    si.cb = sizeof(si);
+    si.dwFlags |= STARTF_USESTDHANDLES;
+
+
+    sa.nLength = sizeof(SECURITY_ATTRIBUTES);
+    sa.bInheritHandle = TRUE;
+    sa.lpSecurityDescriptor = NULL;
+
+    fp = CreateFile(TEXT(MAJSTRGETPTR(outfname)), GENERIC_WRITE, 0 , &sa,
+		    CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+    if(fp == INVALID_HANDLE_VALUE)
+        ajFatal("Cannot open file %S\n",outfname);
+
+
+    si.hStdOutput = fp;
+    si.hStdInput  = GetStdHandle(STD_INPUT_HANDLE);
+    si.hStdError  = fp;
+
+    
+    if(!CreateProcess(NULL, cmdline->Ptr, NULL, NULL, TRUE,
+                      CREATE_NO_WINDOW, NULL, NULL, &si, &pinf))
+    {
+	ajFatal("CreateProcess failed");
+    }
+    
+    WaitForSingleObject(pinf.hProcess, INFINITE);
+
+    CloseHandle(pinf.hProcess);
+    CloseHandle(pinf.hThread);
 #endif
+
     return;
 }
 
@@ -2292,7 +2421,49 @@ void ajSysExecOutnameAppendErrS(const AjPStr cmdline, const AjPStr outfname)
 
     AJFREE(pgm);
 
+#else
+
+    PROCESS_INFORMATION pinf;
+    STARTUPINFO si;
+    HANDLE fp;
+    SECURITY_ATTRIBUTES sa;
+
+    ajDebug ("Launching process '%S'\n", cmdline);
+    
+    ZeroMemory(&si, sizeof(si));
+    si.cb = sizeof(si);
+    si.dwFlags |= STARTF_USESTDHANDLES;
+
+
+    sa.nLength = sizeof(SECURITY_ATTRIBUTES);
+    sa.bInheritHandle = TRUE;
+    sa.lpSecurityDescriptor = NULL;
+
+    fp = CreateFile(TEXT(MAJSTRGETPTR(outfname)), GENERIC_WRITE, 0 , &sa,
+		    OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+    if(fp == INVALID_HANDLE_VALUE)
+        ajFatal("Cannot open file %S\n",outfname);
+
+    SetFilePointer(fp, 0, NULL, FILE_END);
+
+    si.hStdOutput = fp;
+    si.hStdInput  = GetStdHandle(STD_INPUT_HANDLE);
+    si.hStdError  = fp;
+
+    
+    if(!CreateProcess(NULL, cmdline->Ptr, NULL, NULL, TRUE,
+                      CREATE_NO_WINDOW, NULL, NULL, &si, &pinf))
+    {
+	ajFatal("CreateProcess failed");
+    }
+    
+    WaitForSingleObject(pinf.hProcess, INFINITE);
+
+    CloseHandle(pinf.hProcess);
+    CloseHandle(pinf.hThread);
 #endif
+
     return;
 }
 
