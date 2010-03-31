@@ -142,6 +142,8 @@ ajint         ajSysExecC(const char* cl);
 void          ajSysExecS(const AjPStr clstr);
 void          ajSysExecPathS(const AjPStr clstr);
 void          ajSysExecEnvS(const AjPStr clstr, char * const env[]);
+void          ajSysExecProgArgEnvNowaitC(const char *prog, char * const arg[],
+                                         char * const env[]);
 void          ajSysExecOutnameS(const AjPStr clstr, const AjPStr outfname);
 void          ajSysExecOutnameAppendS(const AjPStr clstr,
                                       const AjPStr outfname);

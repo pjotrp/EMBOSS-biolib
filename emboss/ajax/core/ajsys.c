@@ -1806,6 +1806,36 @@ __deprecated void ajSysSystem(const AjPStr cmdline)
 
 
 
+/* @func ajSysExecProgArgEnvNowaitC *******************************************
+**
+** Exec a command line with no parent wait
+**
+** This routine must be passed a program, an argument list and an environment.
+** The wait handling is performed by user-supplied parent process code and
+** is therefore used by the Java Native Interface software.
+**
+** @param [r] prog[const char *] The command line
+** @param [r] arg [char* const[]] Argument list
+** @param [r] env [char* const[]] An environment
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSysExecProgArgEnvNowaitC(const char *prog, char * const arg[],
+                                char * const env[])
+{
+#ifndef WIN32
+    if(execve(prog,arg,env) == -1)
+        ajFatal("ajSysExecProgArgEnvNowaitC: Cannot exec application %s",
+                prog);
+#endif
+
+    return;
+}
+
+
+
+
 /* @func ajSysExecEnvS ********************************************************
 **
 ** Exec a command line as if from the C shell
