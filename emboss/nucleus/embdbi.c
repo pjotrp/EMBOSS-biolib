@@ -792,7 +792,7 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
 		ajFmtPrintS(&dbiCmdStr, "%S%s -o %S %S",
 			    dir,prog,dbiOutFname,dbiInFname);
 
-	    ajSysExecC(dbiCmdStr);
+	    ajSysExecC(ajStrGetPtr(dbiCmdStr));
 	    embDbiRmFileI(dbname, ext1, i, cleanup);
 	}
 
@@ -811,7 +811,7 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
             for(i=1; i<=nfiles; i++)
                 ajFmtPrintAppS(&dbiCmdStr, " %S%03d.%s.srt", dbname, i, ext1);
 
-            ajSysExecC(dbiCmdStr);
+            ajSysExecC(ajStrGetPtr(dbiCmdStr));
             ajFmtPrintS(&dbiSortExt, "%s.srt", ext1);
 
             for(i=1; i<=nfiles; i++)
@@ -840,7 +840,7 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
                         ajFmtPrintAppS(&dbiCmdStr, " %S%03d.%s.srt",
                                        dbname, i+j, ext1);
 
-                ajSysExecC(dbiCmdStr);
+                ajSysExecC(ajStrGetPtr(dbiCmdStr));
                 ajFmtPrintS(&dbiSortExt, "%s.srt", ext1);
 
                 for(j=0; j<nsplit; j++)
@@ -849,7 +849,7 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
                                       cleanup);
             }
 
-            ajSysExecC(dbiCmdStr2);
+            ajSysExecC(ajStrGetPtr(dbiCmdStr2));
             ajFmtPrintS(&dbiSortExt, "%s.mrg1", ext2);
 
             for(j=1; j<=isplit; j++)
@@ -863,7 +863,7 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
 	ajFmtPrintS(&dbiCmdStr, "%S%s -o %S %S %S",
 		    dir,prog,dbiOutFname,sortopt,dbiInFname);
 
-	ajSysExecC(dbiCmdStr);
+	ajSysExecC(ajStrGetPtr(dbiCmdStr));
 	embDbiRmFile(dbname, ext1, 0, cleanup);
     }
 
