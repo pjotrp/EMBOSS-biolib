@@ -792,7 +792,7 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
 		ajFmtPrintS(&dbiCmdStr, "%S%s -o %S %S",
 			    dir,prog,dbiOutFname,dbiInFname);
 
-	    embDbiSysCmd(dbiCmdStr);
+	    ajSysExecC(dbiCmdStr);
 	    embDbiRmFileI(dbname, ext1, i, cleanup);
 	}
 
@@ -811,7 +811,7 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
             for(i=1; i<=nfiles; i++)
                 ajFmtPrintAppS(&dbiCmdStr, " %S%03d.%s.srt", dbname, i, ext1);
 
-            embDbiSysCmd(dbiCmdStr);
+            ajSysExecC(dbiCmdStr);
             ajFmtPrintS(&dbiSortExt, "%s.srt", ext1);
 
             for(i=1; i<=nfiles; i++)
@@ -840,7 +840,7 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
                         ajFmtPrintAppS(&dbiCmdStr, " %S%03d.%s.srt",
                                        dbname, i+j, ext1);
 
-                embDbiSysCmd(dbiCmdStr);
+                ajSysExecC(dbiCmdStr);
                 ajFmtPrintS(&dbiSortExt, "%s.srt", ext1);
 
                 for(j=0; j<nsplit; j++)
@@ -849,7 +849,7 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
                                       cleanup);
             }
 
-            embDbiSysCmd(dbiCmdStr2);
+            ajSysExecC(dbiCmdStr2);
             ajFmtPrintS(&dbiSortExt, "%s.mrg1", ext2);
 
             for(j=1; j<=isplit; j++)
@@ -863,76 +863,11 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
 	ajFmtPrintS(&dbiCmdStr, "%S%s -o %S %S %S",
 		    dir,prog,dbiOutFname,sortopt,dbiInFname);
 
-	embDbiSysCmd(dbiCmdStr);
+	ajSysExecC(dbiCmdStr);
 	embDbiRmFile(dbname, ext1, 0, cleanup);
     }
 
     ajStrDel(&dir);
-
-    return;
-}
-
-
-
-
-/* @func embDbiSysCmd *********************************************************
-**
-** Fork a system command
-**
-** @param [r] cmdstr [const AjPStr] Command line
-** @return [void]
-** @@
-******************************************************************************/
-
-void embDbiSysCmd(const AjPStr cmdstr)
-{
-#ifndef WIN32
-    char** arglist = NULL;
-    char* pgm;
-    pid_t pid;
-    pid_t retval;
-    ajint status;
-
-    ajDebug("forking '%S'", cmdstr);
-    ajSysArglistBuildS(cmdstr, &pgm, &arglist);
-
-    pid = fork();
-    if(pid==-1)
-	ajFatal("System fork failed");
-
-
-    if(!pid)
-    {
-	execvp(pgm, arglist);
-	ajExitAbort();			/* just in case */
-    }
-
-    while((retval=waitpid(pid,&status,0))!=pid)
-    {
-	if(retval == -1)
-	    if(errno != EINTR)
-		break;
-    }
-
-    ajSysArglistFree(&arglist);
-    ajCharDel(&pgm);
-
-#else
-    PROCESS_INFORMATION procInfo;
-    STARTUPINFO startInfo;
-    
-    ajDebug ("Launching process '%S'\n", cmdstr);
-    
-    ZeroMemory(&startInfo, sizeof(startInfo));
-    startInfo.cb = sizeof(startInfo);
-    
-    if (!CreateProcess(NULL, (char *)ajStrGetPtr(cmdstr), NULL, NULL, FALSE,
-		       CREATE_NO_WINDOW, NULL, NULL, &startInfo, &procInfo))
-	ajFatal("CreateProcess failed");
-
-    WaitForSingleObject(procInfo.hProcess, INFINITE);
-
-#endif	/* WIN32 */
 
     return;
 }
