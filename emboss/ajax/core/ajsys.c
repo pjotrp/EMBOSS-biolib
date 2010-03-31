@@ -2034,6 +2034,8 @@ void ajSysExecOutnameS(const AjPStr cmdline, const AjPStr outfname)
     SECURITY_ATTRIBUTES sa;
 
     ajDebug ("Launching process '%S'\n", cmdline);
+
+    fflush(stdout);
     
     ZeroMemory(&si, sizeof(si));
     si.cb = sizeof(si);
@@ -2102,6 +2104,8 @@ void ajSysExecOutnameAppendS(const AjPStr cmdline, const AjPStr outfname)
     if(!ajSysArglistBuildS(cmdline, &pgm, &argptr))
 	return;
 
+    fflush(stdout);
+    
     pname = ajStrNew();
 
     ajStrAssignC(&pname, pgm);
@@ -2155,6 +2159,8 @@ void ajSysExecOutnameAppendS(const AjPStr cmdline, const AjPStr outfname)
     SECURITY_ATTRIBUTES sa;
 
     ajDebug ("Launching process '%S'\n", cmdline);
+
+    fflush(stdout);
     
     ZeroMemory(&si, sizeof(si));
     si.cb = sizeof(si);
@@ -2233,6 +2239,7 @@ void ajSysExecOutnameErrS(const AjPStr cmdline, const AjPStr outfname)
 	ajFatal("cannot find program '%S'", pname);
 
     fflush(stdout);
+    fflush(stderr);
 
     pid=fork();
 
@@ -2280,6 +2287,9 @@ void ajSysExecOutnameErrS(const AjPStr cmdline, const AjPStr outfname)
     SECURITY_ATTRIBUTES sa;
 
     ajDebug ("Launching process '%S'\n", cmdline);
+
+    fflush(stdout);
+    fflush(stderr);
     
     ZeroMemory(&si, sizeof(si));
     si.cb = sizeof(si);
