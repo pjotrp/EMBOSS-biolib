@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -261,7 +261,7 @@ static AjBool qcSubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @param [u] ssequence [EnsPQcsequence] Segment Ensembl QC Sequence
 ** @param [r] segstart [ajuint] Segment start
 ** @param [r] segend [ajuint] Segment end
-** @param [r] sstrand [ajint] Segment strand
+** @param [r] segstrand [ajint] Segment strand
 ** @param [u] fsequence [EnsPQcsequence] Feature Ensembl QC Sequence
 ** @param [r] tstart [ajuint] Feature start
 ** @param [r] tend [ajuint] Feature end
@@ -280,7 +280,7 @@ EnsPQcdasfeature ensQcdasfeatureNew(EnsPQcdasfeatureadaptor qcdasfa,
                                     EnsPQcsequence segment,
                                     ajuint segstart,
                                     ajuint segend,
-                                    ajint sstrand,
+                                    ajint segstrand,
                                     EnsPQcsequence feature,
                                     ajuint fstart,
                                     ajuint fend,
@@ -320,7 +320,7 @@ EnsPQcdasfeature ensQcdasfeatureNew(EnsPQcdasfeatureadaptor qcdasfa,
 
     qcdasf->SegmentEnd = segend;
 
-    qcdasf->SegmentStrand = sstrand;
+    qcdasf->SegmentStrand = segstrand;
 
     qcdasf->FeatureSequence = ensQcsequenceNewRef(feature);
 
