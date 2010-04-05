@@ -207,7 +207,7 @@ AjPSqlconnection ajSqlconnectionNewData(const AjEnum client,
                                         const AjPStr password,
                                         const AjPStr host,
                                         const AjPStr port,
-                                        const AjPStr socket,
+                                        const AjPStr socketfile,
                                         const AjPStr database);
 
 AjPSqlconnection ajSqlconnectionNewRef(AjPSqlconnection sqlc);
