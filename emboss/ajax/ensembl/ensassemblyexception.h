@@ -121,9 +121,9 @@ EnsPAssemblyexception ensAssemblyexceptionNew(
     ajuint srid,
     ajuint srstart,
     ajuint srend,
-    ajuint exid,
-    ajuint exstart,
-    ajuint exend,
+    ajuint erid,
+    ajuint erstart,
+    ajuint erend,
     ajint ori,
     AjEnum type);
 
@@ -173,13 +173,13 @@ AjBool ensAssemblyexceptionSetSeqregionEnd(EnsPAssemblyexception ae,
                                            ajuint srend);
 
 AjBool ensAssemblyexceptionSetExcRegionIdentifier(EnsPAssemblyexception ae,
-                                                  ajuint exid);
+                                                  ajuint erid);
 
 AjBool ensAssemblyexceptionSetExcRegionStart(EnsPAssemblyexception ae,
-                                             ajuint exstart);
+                                             ajuint erstart);
 
 AjBool ensAssemblyexceptionSetExcRegionEnd(EnsPAssemblyexception ae,
-                                           ajuint exend);
+                                           ajuint erend);
 
 AjBool ensAssemblyexceptionSetOrientation(EnsPAssemblyexception ae,
                                           ajint orientation);

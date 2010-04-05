@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.6 $
+** @version $Revision: 1.7 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -101,7 +101,7 @@ static void assemblyExceptionadaptorFetchAll(const void *key,
 ** The Ensembl Assembly Exception class has been split out of the
 ** Bio::EnsEMBL::DBSQL::SliceAdaptor class.
 **
-** @cc Bio::EnsEMBL::Slice CVS Revision: 1.219
+** @cc Bio::EnsEMBL::Slice CVS Revision: 1.239
 ** @cc Bio::EnsEMBL::DBSQL::SliceAdaptor CVS Revision: 1.104
 **
 ** @nam2rule Assemblyexception
@@ -749,19 +749,19 @@ AjBool ensAssemblyexceptionSetSeqregionEnd(EnsPAssemblyexception ae,
 ** Ensembl Assembly Exception.
 **
 ** @param [u] ae [EnsPAssemblyexception] Ensembl Assembly Exception
-** @param [r] exid [ajuint] Exception Ensembl Sequence Region identifier
+** @param [r] erid [ajuint] Exception Ensembl Sequence Region identifier
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
 AjBool ensAssemblyexceptionSetExcRegionIdentifier(EnsPAssemblyexception ae,
-                                                  ajuint exid)
+                                                  ajuint erid)
 {
     if(!ae)
         return ajFalse;
 
-    ae->ExcRegionIdentifier = exid;
+    ae->ExcRegionIdentifier = erid;
 
     return ajTrue;
 }
@@ -775,19 +775,19 @@ AjBool ensAssemblyexceptionSetExcRegionIdentifier(EnsPAssemblyexception ae,
 ** Ensembl Assembly Exception.
 **
 ** @param [u] ae [EnsPAssemblyexception] Ensembl Assembly Exception
-** @param [r] exstart [ajuint] Exception Ensembl Sequence Region start
+** @param [r] erstart [ajuint] Exception Ensembl Sequence Region start
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
 AjBool ensAssemblyexceptionSetExcRegionStart(EnsPAssemblyexception ae,
-                                             ajuint exstart)
+                                             ajuint erstart)
 {
     if(!ae)
         return ajFalse;
 
-    ae->ExcRegionStart = exstart;
+    ae->ExcRegionStart = erstart;
 
     return ajTrue;
 }
@@ -801,19 +801,19 @@ AjBool ensAssemblyexceptionSetExcRegionStart(EnsPAssemblyexception ae,
 ** Ensembl Assembly Exception.
 **
 ** @param [u] ae [EnsPAssemblyexception] Ensembl Assembly Exception
-** @param [r] exend [ajuint] Exception Ensembl Sequence Region end
+** @param [r] erend [ajuint] Exception Ensembl Sequence Region end
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
 AjBool ensAssemblyexceptionSetExcRegionEnd(EnsPAssemblyexception ae,
-                                           ajuint exend)
+                                           ajuint erend)
 {
     if(!ae)
         return ajFalse;
 
-    ae->ExcRegionEnd = exend;
+    ae->ExcRegionEnd = erend;
 
     return ajTrue;
 }
@@ -1067,7 +1067,7 @@ const char* ensAssemblyexceptionTypeToChar(const AjEnum type)
 ** consolidate the results into an AJAX List of Ensembl Assembly Exception
 ** objects.
 **
-** @param [r] aea [EnsPAssemblyexceptionadaptor] Ensembl Assembly
+** @param [u] aea [EnsPAssemblyexceptionadaptor] Ensembl Assembly
 **                                               Exception Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
 ** @param [u] aes [AjPList] AJAX List of Ensembl Assembly Exceptions
@@ -1205,7 +1205,6 @@ static AjBool assemblyExceptionadaptorCacheInit(
 
     if(aea->CacheBySeqregionIdentifier)
         return ajTrue;
-
     else
         aea->CacheBySeqregionIdentifier =
             ajTableNewFunctionLen(0, ensTableCmpUint, ensTableHashUint);
@@ -1410,9 +1409,9 @@ static AjBool assemblyExceptionadaptorCacheExit(
 ** Default destructor for an Ensembl Assembly Exception Adaptor.
 ** This function also clears the internal Assembly Exception cache.
 **
-** @param [r] Paea [EnsPAssemblyexceptionadaptor*] Ensembl Assembly
+** @param [d] Paea [EnsPAssemblyexceptionadaptor*] Ensembl Assembly
 **                                                 Exception Adaptor
-**                                                     address
+**                                                 address
 **
 ** @return [void]
 ** @@
