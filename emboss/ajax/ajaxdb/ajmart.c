@@ -2063,7 +2063,7 @@ AjBool ajMartGetAttributesSchema(AjPSeqin seqin, const AjPStr dataset,
     vschema = ajStrGetPtr(schema);
     
     if(ajSeqHttpProxy(qry, &proxyport, &proxyname))
-        ajFmtPrintS(&get, "GET http://%S:%S%S?type=attributes&dataset=%S"
+        ajFmtPrintS(&get, "GET http://%S:%u%S?type=attributes&dataset=%S"
                     "&virtualSchema=%s"
                     " HTTP/%S\r\n",
                     mq->Marthost, mq->Martport, mq->Martpath, dataset,
