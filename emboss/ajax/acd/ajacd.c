@@ -280,11 +280,16 @@ static const char* acdValNames[] =
     NULL
 };
 
+
+
+
 /* @filesection ajacd ********************************************************
 **
 ** @nam1rule aj Function belongs to the AJAX library.
 **
 */
+
+
 
 
 /* @datasection [none] ACD internals ***********************************
@@ -296,6 +301,9 @@ static const char* acdValNames[] =
 ** @suffix    V  [char*]     Package version provided
 */
 
+
+
+
 /* @section data definitions **************************************************
 **
 ** Data definitions and function lists
@@ -304,6 +312,9 @@ static const char* acdValNames[] =
 ** @fcategory misc
 **
 ******************************************************************************/
+
+
+
 
 /* @datastatic AcdPAttrAlias **************************************************
 **
@@ -336,6 +347,9 @@ static AcdOAttrAlias acdAttrAlias[] =
     {"standardtype", "knowntype"},
     {NULL, NULL}
 };
+
+
+
 
 /* @datastatic AcdPAttr *******************************************************
 **
@@ -615,6 +629,8 @@ AcdPSection acdSections[] =
     acdSecOutput,
     NULL
 };
+
+
 
 
 /* @datastatic AcdPType *******************************************************
@@ -905,7 +921,6 @@ static const AjPStr acdPromptOutdir(AcdPAcd thys);
 static const AjPStr acdPromptOutdiscrete(AcdPAcd thys);
 static const AjPStr acdPromptOutdistance(AcdPAcd thys);
 static const AjPStr acdPromptOutfile(AcdPAcd thys);
-static const AjPStr acdPromptOutfileall(AcdPAcd thys);
 static const AjPStr acdPromptOutfreq(AcdPAcd thys);
 static const AjPStr acdPromptOutmatrix(AcdPAcd thys);
 static const AjPStr acdPromptOutproperties(AcdPAcd thys);
@@ -1007,6 +1022,8 @@ static void      acdWarnObsolete(const AjPStr str);
 static AjBool    acdWordNext(AjPList listwords, AjPStr* pword);
 static AjBool    acdWordNextLower(AjPList listwords, AjPStr* pword);
 static AjBool    acdWordNextName(AjPList listwords, AjPStr* pword);
+
+
 
 
 /* @datastatic AcdPExpList ****************************************************
@@ -1185,7 +1202,6 @@ static void acdSetOutdir(AcdPAcd thys);
 static void acdSetOutdiscrete(AcdPAcd thys);
 static void acdSetOutdistance(AcdPAcd thys);
 static void acdSetOutfile(AcdPAcd thys);
-static void acdSetOutfileall(AcdPAcd thys);
 static void acdSetOutfreq(AcdPAcd thys);
 static void acdSetOutmatrix(AcdPAcd thys);
 static void acdSetOutmatrixf(AcdPAcd thys);
@@ -1464,8 +1480,6 @@ AcdOAttr acdAttrDirectory[] =
 	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {"extension", VT_STR, AJFALSE, "",
-	 "Default file extension"},
     {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
@@ -1477,8 +1491,6 @@ AcdOAttr acdAttrDirlist[] =
 	 "Require full path in value"},
     {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {"extension", VT_STR, AJFALSE, "",
-	 "Default file extension"},
     {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
@@ -1766,8 +1778,6 @@ AcdOAttr acdAttrOutdir[] =
 	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, AJFALSE, "N",
 	 "Can accept a null filename as 'no file'"},
-    {"extension", VT_STR, AJFALSE, "",
-	 "Default file extension"},
     {"binary", VT_BOOL, AJFALSE, "N",
 	 "Files contain binary data"},
     {"create", VT_BOOL, AJFALSE, "N",
@@ -1815,23 +1825,6 @@ AcdOAttr acdAttrOutfile[] =
 	 "Can accept a null filename as 'no file'"},
     {"binary", VT_BOOL, AJFALSE, "N",
 	 "File contains binary data"},
-    {NULL, VT_NULL, AJFALSE, NULL,
-	 NULL}
-};
-
-
-AcdOAttr acdAttrOutfileall[] =
-{
-    {"name", VT_STR, AJFALSE, "",
-	 "Default file name"},
-    {"extension", VT_STR, AJFALSE, "",
-	 "Default file extension"},
-    {"nulldefault", VT_BOOL, AJFALSE, "N",
-	 "Defaults to 'no file'"},
-    {"nullok", VT_BOOL, AJFALSE, "N",
-	 "Can accept a null filename as 'no file'"},
-    {"binary", VT_BOOL, AJFALSE, "N",
-	 "Files contains binary data"},
     {NULL, VT_NULL, AJFALSE, NULL,
 	 NULL}
 };
@@ -2459,6 +2452,8 @@ static AcdOAttr acdCalcTree[] =
 };
 
 
+
+
 /* @datastatic AcdPKey ********************************************************
 **
 ** Keywords data structure for non-ACD types (application, variable, section,
@@ -2487,6 +2482,8 @@ typedef struct AcdSKey
 #define AcdPKey AcdOKey*
 
 
+
+
 /* @funclist acdKeywords ******************************************************
 **
 ** Processing predefined ACD keywords (application, variable, section,
@@ -2504,6 +2501,8 @@ AcdOKey acdKeywords[] =
     {"endsection",  ENDSEC_STAGE, 0,  acdAttrEndsec, acdSetEndsec},
     {NULL, BAD_STAGE, 0, NULL, NULL}
 };
+
+
 
 
 /* @datastatic AcdPOuttype ****************************************************
@@ -2535,6 +2534,8 @@ typedef struct AcdSOuttype
 } AcdOOuttype;
 
 #define AcdPOuttype AcdOOuttype*
+
+
 
 
 /* @funclist acdOuttype ******************************************************
@@ -2633,7 +2634,21 @@ AcdOQual acdQualCodon[] =
 
 AcdOQual acdQualCpdb[] =
 {
-    {"format",    "",  "string",   "Data format"},
+    {"format",     "",  "string",   "Data format"},
+    {NULL, NULL, NULL, NULL}
+};
+
+
+AcdOQual acdQualDirectory[] =
+{
+    {"extension",  "",  "string",    "Default file extension"},
+    {NULL, NULL, NULL, NULL}
+};
+
+
+AcdOQual acdQualDirlist[] =
+{
+    {"extension",  "",  "string",    "Default file extension"},
     {NULL, NULL, NULL, NULL}
 };
 
@@ -2714,6 +2729,13 @@ AcdOQual acdQualOutdata[] =
 };
 
 
+AcdOQual acdQualOutdir[] =
+{
+    {"extension",  "",  "string",    "Default file extension"},
+    {NULL, NULL, NULL, NULL}
+};
+
+
 AcdOQual acdQualOutdiscrete[] =
 {
     {"odirectory", "",  "string",  "Output directory"},
@@ -2731,13 +2753,6 @@ AcdOQual acdQualOutdistance[] =
 
 
 AcdOQual acdQualOutfile[] =
-{
-    {"odirectory", "",  "string",  "Output directory"},
-    {NULL, NULL, NULL, NULL}
-};
-
-
-AcdOQual acdQualOutfileall[] =
 {
     {"odirectory", "",  "string",  "Output directory"},
     {NULL, NULL, NULL, NULL}
@@ -2974,6 +2989,9 @@ AcdOQual acdQualSeqoutall[] =
    Qualifiers     "Help Text"
 */
 
+
+
+
 /* @funclist acdType **********************************************************
 **
 ** Processing for ACD types
@@ -3020,12 +3038,12 @@ AcdOType acdType[] =
 	 AJTRUE,  AJTRUE,  acdPromptDatafile,  &acdUseData, &acdUseIn,
 	 "Data file" },
     {"directory",      "input",     acdSecInput,
-	 acdAttrDirectory,      NULL,
+	 acdAttrDirectory,      acdQualDirectory,
 	 acdSetDirectory,       NULL,                  acdDelDir,
 	 AJTRUE,  AJTRUE,  acdPromptDirectory, &acdUseMisc, &acdUseIn,
 	 "Directory" },
     {"dirlist",	       "input",     acdSecInput,
-	 acdAttrDirlist,        NULL,
+	 acdAttrDirlist,        acdQualDirlist,
 	 acdSetDirlist,         NULL,                  acdDelList,
 	 AJTRUE,  AJTRUE,  acdPromptDirlist,   &acdUseMisc, &acdUseIn,
 	 "Directory with files" },
@@ -3110,7 +3128,7 @@ AcdOType acdType[] =
 	 AJTRUE,  AJTRUE,  acdPromptOutdata,   &acdUseOutfile, &acdUseOut,
 	 "Formatted output file" },
     {"outdir",         "output",    acdSecOutput,
-	 acdAttrOutdir,         NULL,
+	 acdAttrOutdir,         acdQualOutdir,
 	 acdSetOutdir,          NULL,                  acdDelDirout,
 	 AJTRUE,  AJTRUE,  acdPromptOutdir,    &acdUseMisc, &acdUseOut,
 	 "Output directory" },
@@ -3129,11 +3147,6 @@ AcdOType acdType[] =
 	 acdSetOutfile,         NULL,                  acdDelFile,
 	 AJTRUE,  AJTRUE,  acdPromptOutfile,     &acdUseOutfile, &acdUseOut,
 	 "Output file" },
-    {"outfileall",     "output",    acdSecOutput,
-	 acdAttrOutfileall,     acdQualOutfileall,
-	 acdSetOutfileall,      NULL,                  acdDelFile,
-	 AJTRUE,  AJTRUE,  acdPromptOutfileall,  &acdUseOutfile, &acdUseOut,
-	 "Multiple output files" },
     {"outfreq",        "output",    acdSecOutput,
 	 acdAttrOutfreq,        acdQualOutfreq,
 	 acdSetOutfreq,         NULL,                  acdDelOutfile,
@@ -3259,6 +3272,8 @@ AcdOType acdType[] =
 };
 
 
+
+
 /* @datastatic AcdPValid ******************************************************
 **
 ** ACD valid input structure. For each ACD type, stores functions
@@ -3336,6 +3351,9 @@ static const char* acdResource[] =
 
 /*** command line retrieval routines ***/
 
+
+
+
 /* @section initialisation ****************************************************
 **
 ** Initialises everything needed for ACD processing. 
@@ -3354,9 +3372,6 @@ static const char* acdResource[] =
 ** @fcategory misc
 **
 ******************************************************************************/
-
-
-
 
 
 
@@ -3687,6 +3702,9 @@ void ajAcdInitPV(const char *pgm, ajint argc, char * const argv[],
 /*===========================================================================*/
 /*========================= ACD File Parsing ================================*/
 /*===========================================================================*/
+
+
+
 
 /* @funcstatic acdStage *******************************************************
 **
@@ -5762,6 +5780,9 @@ static ajint acdFindKeyC(const char* key)
 /*======================== Talking to the User ==============================*/
 /*===========================================================================*/
 
+
+
+
 /* @funcstatic acdReplyInitC ***************************************************
 **
 ** Builds a default value for the reply first time around. Uses a default
@@ -6174,7 +6195,6 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @nam4rule  GetOutdiscrete    ACD discrete states output datatype
 ** @nam4rule  GetOutdistance    ACD distance output datatype
 ** @nam4rule  GetOutfile   ACD output file datatype
-** @nam4rule  GetOutfileall   ACD multiple output files datatype
 ** @nam4rule  GetOutfreq   ACD frequency output datatype
 ** @nam4rule  GetOutmatrix   ACD integer comparison matrix output datatype
 ** @nam4rule  GetOutmatrixf  ACD floating point comparison matrix output
@@ -6252,7 +6272,6 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @valrule   Outdistance  [AjPOutfile]
 ** @valrule   Outfile  [AjPFile]
 ** @valrule   *OutfileName  [AjPStr]
-** @valrule   Outfileall  [AjPFile]
 ** @valrule   Outfreq  [AjPOutfile]
 ** @valrule   Outmatrix  [AjPOutfile]
 ** @valrule   Outmatrixf  [AjPOutfile]
@@ -7455,7 +7474,7 @@ static void acdSetDirectory(AcdPAcd thys)
 
     acdAttrToBool(thys, "fullpath", ajFalse, &dopath);
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
-    acdAttrResolve(thys, "extension", &ext);
+    acdGetValueAssoc(thys, "extension", &ext);
 
     required = acdIsRequired(thys);
     acdReplyInitC(thys, ".", &acdReplyDef);
@@ -7567,7 +7586,7 @@ static void acdSetDirlist(AcdPAcd thys)
     
     acdAttrToBool(thys, "fullpath", ajFalse, &dopath);
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
-    acdAttrResolve(thys, "extension", &ext);
+    acdGetValueAssoc(thys, "extension", &ext);
 
     required = acdIsRequired(thys);
     acdReplyInitC(thys, ".", &acdReplyDef);
@@ -7582,7 +7601,7 @@ static void acdSetDirlist(AcdPAcd thys)
 	if(required)
 	    acdUserGet(thys, &acdReply);
 
-	if(ajStrGetLen(acdReply))
+        if(ajStrGetLen(acdReply))
 	{
 	    if(dopath)
 		ok = ajDirnameFillPath(&acdReply);
@@ -10215,7 +10234,7 @@ static void acdSetOutdata(AcdPAcd thys)
 
 
 
-    
+
 /* @func ajAcdGetOutdir *******************************************************
 **
 ** Returns an item of type AjPDirout which has been validated as an output
@@ -10299,7 +10318,7 @@ static void acdSetOutdir(AcdPAcd thys)
     acdAttrToBool(thys, "fullpath", ajFalse, &dopath);
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
     acdAttrToBool(thys, "create", ajFalse, &create);
-    acdAttrResolve(thys, "extension", &ext);
+    acdGetValueAssoc(thys, "extension", &ext);
 
     required = acdIsRequired(thys);
     acdReplyInitC(thys, ".", &acdReplyDef);
@@ -10467,7 +10486,7 @@ static void acdSetOutdistance(AcdPAcd thys)
 
 
 
-    
+
 /* @func ajAcdGetOutfile ******************************************************
 **
 ** Returns an item of type Outfile as defined in a named ACD item.
@@ -10642,146 +10661,6 @@ static void acdSetOutfile(AcdPAcd thys)
 
 
 
-/* @func ajAcdGetOutfileall ***************************************************
-**
-** Returns an item of type Outfile as defined in a named ACD item.
-** Called by the application after all ACD values have been set,
-** and simply returns what the ACD item already has.
-**
-** @param [r] token [const char*] Text token name
-** @return [AjPFile] File object. The file was already opened by
-**         acdSetOutfile so this just returns the pointer.
-** @cre failure to find an item with the right name and type aborts.
-** @@
-******************************************************************************/
-
-AjPFile ajAcdGetOutfileall(const char *token)
-{
-    return acdGetValueRef(token, "outfileall");
-}
-
-
-
-
-/* @funcstatic acdSetOutfileall ***********************************************
-**
-** Using the definition in the ACD file, and any values for the
-** item or its associated qualifiers provided on the command line,
-** prompts the user if necessary (and possible) and
-** sets the actual value for an ACD outfileall item.
-**
-** Understands all attributes and associated qualifiers for this item type.
-**
-** The default value, if stdout or filtering is on is "stdout" for the
-** first file.
-**
-** Otherwise an output file name is constructed.
-**
-** Various file naming options are defined, but not yet implemented here.
-**
-** @param [u] thys [AcdPAcd] ACD item.
-** @return [void]
-** @see ajFileNewOut
-** @@
-******************************************************************************/
-
-static void acdSetOutfileall(AcdPAcd thys)
-{
-    AjPFile val;
-    
-    AjBool required = ajFalse;
-    AjBool ok       = ajFalse;
-
-    ajint itry;
-    AjBool nullok;
-    AjBool nulldefault;
-    AjBool append = ajFalse;
-    
-    AjPStr name      = NULL;
-    AjPStr ext       = NULL;
-    AjPStr dir       = NULL;
-    
-    val = NULL;				/* set the default value */
-    
-    acdAttrResolve(thys, "name", &name);
-    acdAttrResolve(thys, "extension", &ext);
-    acdGetValueAssoc(thys, "odirectory", &dir);
-    
-    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
-    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
-    acdOutDirectory(&dir);
-    
-    required = acdIsRequired(thys);
-
-    if(nullok && nulldefault)
-    {
-	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
-	    acdOutFilename(&acdReplyDef, name, ext);
-	else				/* leave empty */
-	    acdReplyInitC(thys, "", &acdReplyDef);
-    }
-    else
-    {
-	acdOutFilename(&acdTmpOutFName, name, ext);
-	acdReplyInitS(thys, acdTmpOutFName, &acdReplyDef);
-    }
-
-    ajStrDel(&name);
-    ajStrDel(&ext);
-
-    acdPromptOutfile(thys);
-    
-    for(itry=acdPromptTry; itry && !ok; itry--)
-    {
-	ok = ajTrue;	   /* accept the default if nothing changes */
-	
-	ajStrAssignS(&acdReply, acdReplyDef);
-	
-	if(required)
-	    acdUserGet(thys, &acdReply);
-	
-	ajStrAssignS(&acdOutFullFName, acdReply);
-
-	if(ajStrGetLen(acdReply))
-	{
-	    ajFilenameReplacePathS(&acdOutFullFName, dir);
-
-	    if(append)
-		val = ajFileNewOutappendNameS(acdOutFullFName);
-	    else
-		val = ajFileNewOutNameS(acdOutFullFName);
-
-	    if(!val)
-	    {
-		acdBadVal(thys, required,
-			  "Unable to open file '%S' for output",
-			  acdOutFullFName);
-		ok = ajFalse;
-	    }
-	}
-	else
-	    if(!nullok)
-	    {
-		acdBadVal(thys, required,
-			  "Output file is required");
-		ok = ajFalse;
-	    }
-    }
-    
-    if(!ok)
-	acdBadRetry(thys);
-    
-    thys->Value = val;
-    ajStrAssignS(&thys->ValStr, acdOutFullFName);
-    
-    ajStrDel(&dir);
-
-    return;
-}
-
-
-
-
 /* @func ajAcdGetOutfreq ******************************************************
 **
 ** Returns an item of type Outfreq as defined in a named ACD item.
@@ -10832,7 +10711,7 @@ static void acdSetOutfreq(AcdPAcd thys)
 
 
 
-    
+
 /* @func ajAcdGetOutmatrix ****************************************************
 **
 ** Returns an item of type Outmatrix as defined in a named ACD item.
@@ -10935,7 +10814,7 @@ static void acdSetOutmatrixf(AcdPAcd thys)
 
 
 
-    
+
 /* @func ajAcdGetOutproperties ************************************************
 **
 ** Returns an item of type Outproperties as defined in a named ACD item.
@@ -14540,6 +14419,9 @@ const AjPStr ajAcdGetValue(const char *token)
     return acdGetValStr(token);
 }
 
+
+
+
 /* @obsolete ajAcdValue
 ** @rename ajAcdGetValue
 */
@@ -14661,6 +14543,9 @@ AjBool ajAcdIsUserdefinedC(const char *token)
     return acd->UserDefined;
 }
 
+
+
+
 /* @obsolete ajAcdIsUserdefined
 ** @rename ajAcdIsUserdefinedC
 */
@@ -14668,6 +14553,8 @@ __deprecated AjBool ajAcdIsUserdefined(const char *token)
 {
     return ajAcdIsUserdefinedC(token);
 }
+
+
 
 
 /* @func ajAcdIsUserdefinedS **************************************************
@@ -16605,6 +16492,8 @@ static void acdHelpExpectCodon(const AcdPAcd thys, AjBool table, AjPStr* str)
     
     return;
 }
+
+
 
 
 /* @funcstatic acdHelpExpectDirlist *******************************************
@@ -20812,6 +20701,8 @@ static AjBool acdAttrValueStr(const AcdPAcd thys,
 ******************************************************************************/
 
 
+
+
 /* @func ajAcdSetControl ******************************************************
 **
 ** Sets special qualifiers which were originally provided via the
@@ -21221,7 +21112,7 @@ static void acdArgsParse(ajint argc, char * const argv[])
 		    ajStrAppendK(&acdArgSave, '\"');
 		}
 	    }
-	    else		 /* missing value "." or "" ignored */
+	    else		 /* missing value "" ignored */
 	    {
 		acdLog("Parameter %d: %S = '%S' ** missing value **\n",
 		       iparam, acd->Name, param);
@@ -21261,9 +21152,6 @@ static void acdArgsParse(ajint argc, char * const argv[])
 
 static AjBool acdIsParamValue(const AjPStr pval)
 {
-    if(ajStrMatchC(pval, "."))
-	return ajFalse;
-
     if(!ajStrGetLen(pval))
 	return ajFalse;
 
@@ -21338,7 +21226,7 @@ static AjBool acdIsParam(const char* arg, AjPStr* param, ajint* iparam,
     (*iparam)++;
     *acd = acdFindParam(*iparam);
 
-    if(!strcmp(cp, "."))		/* missing value */
+    if(!*cp)                                    /* missing value */
     {
 	ajStrAssignClear(param);		/* clear the parameter */
 
@@ -21414,7 +21302,7 @@ static ajint acdIsQual(const char* arg, const char* arg2,
 
     if(!strcmp(cp, "-"))	       /* stdin or stdout parameter */
 	return 0;
-    if(!strcmp(cp, "."))		/* dummy parameter */
+    if(!*cp)                           /* dummy parameter */
 	return 0;
     
     if(!strcmp(cp, "--"))	       /* special -- to turn off processing */
@@ -21460,7 +21348,10 @@ static ajint acdIsQual(const char* arg, const char* arg2,
 
     if(i >= 0)
     {
-	ajStrAssignSubS(pvalue, *pqual, (i+1), -1);
+        if((i+1) == (ajint) ajStrGetLen(*pqual)) /* ended with '=' */
+            ajStrAssignC(pvalue, "");
+        else
+            ajStrAssignSubS(pvalue, *pqual, (i+1), -1);
 	
 	acdLog("qualifier value '%S' '%S' %d .. %d\n",
 	       *pvalue, *pqual, (i+1), -1);
@@ -22739,6 +22630,9 @@ static AjBool acdTestStdout(void)
     return acdStdout;
 }
 
+
+
+
 /* @obsolete ajAcdStdout
 ** @remove No longer public
 */
@@ -23006,6 +22900,7 @@ static const AjPStr acdPromptScop(AcdPAcd thys)
     
     return thys->StdPrompt;
 }
+
 
 
 
@@ -24108,6 +24003,7 @@ static void acdPromptStandardAlt(AcdPAcd thys, const char* firsttype,
 
 
 
+
 /* @funcstatic acdPromptStandardAppend ****************************************
 **
 ** Appends to the default prompt for this ACD object
@@ -24174,47 +24070,6 @@ static const AjPStr acdPromptOutfile(AcdPAcd thys)
     }
     else
 	acdPromptStandard(thys, "output file", &count);
-
-    if(!acdAttrTestDefined(thys, "default") &&
-       acdAttrTestDefined(thys, "nullok"))
-	acdPromptStandardAppend(thys, " (optional)");
-    
-    return thys->StdPrompt;
-}
-
-
-
-
-/* @funcstatic acdPromptOutfileall ********************************************
-**
-** Sets the default prompt for this ACD object to be a set of  output
-** file with "first", "second" etc. added.
-**
-** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [const AjPStr] Generated standard prompt
-** @@
-******************************************************************************/
-
-static const AjPStr acdPromptOutfileall(AcdPAcd thys)
-{
-    static ajint count = 0;
-
-    const AjPStr knowntype;
-
-    knowntype = acdKnowntypeDesc(thys);
-
-    if(ajStrGetLen(knowntype))
-    {
-	count++;
-	acdPromptStandardS(thys, knowntype);
-
-	if(ajStrSuffixC(knowntype, " output"))
-	   acdPromptStandardAppend(thys, " file(s)");
-	else
-	   acdPromptStandardAppend(thys, " output file(s)");
-    }
-    else
-	acdPromptStandard(thys, "output file(s)", &count);
 
     if(!acdAttrTestDefined(thys, "default") &&
        acdAttrTestDefined(thys, "nullok"))
@@ -26315,6 +26170,7 @@ static void acdPrettyClose(void)
 
 
 
+
 /* @funcstatic acdPrettyComment ***********************************************
 **
 ** Writes an indented one-line comment
@@ -27255,6 +27111,8 @@ __noreturn static void acdErrorAcd(const AcdPAcd thys, const char* fmt, ...)
 ** @fcategory misc
 **
 ******************************************************************************/
+
+
 
 
 /* @func ajAcdExit ************************************************************
@@ -29477,6 +29335,9 @@ static ajint acdOutFormatCpdb(const AjPStr name)
     return -1;
 }
 
+
+
+
 /* @funcstatic acdOutFormatData ********************************************
 **
 ** Tests the output format for an out ACD type
@@ -30316,6 +30177,7 @@ static void acdDelReg(void** PPval)
 
 
 
+
 /* @funcstatic acdDelReport ***************************************************
 **
 ** Function with void** prototype to delete ACD report data
@@ -30504,6 +30366,7 @@ static void acdFree(void** PPval)
 
 
 
+
 /* @section unused ************************************************************
 **
 ** @fdata [none]
@@ -30515,7 +30378,8 @@ static void acdFree(void** PPval)
 ** @fcategory misc
 **
 ******************************************************************************/
- 
+
+
 
 
 /* @func ajAcdUnused **********************************************************
@@ -30546,8 +30410,6 @@ void ajAcdUnused(void)
 
 
 
-
-
 /* @section deprecated ********************************************************
 **
 ** @fdata [none]
@@ -30566,6 +30428,9 @@ void ajAcdUnused(void)
 **
 ** @valrule * [void]
 ******************************************************************************/
+
+
+
 
 /* @func ajAcdGraphicsInit ****************************************************
 **
@@ -30594,6 +30459,8 @@ void ajAcdGraphicsInit(const char *pgm, ajint argc, char * const argv[])
 }
 
 
+
+
 /* @obsolete ajGraphicsInit
 ** @rename ajAcdGraphicsInit
 */
@@ -30604,6 +30471,9 @@ __deprecated void ajGraphicsInit(const char *pgm,
     return;
 }
 
+
+
+
 /* @obsolete ajGraphInit
 ** @rename ajAcdGraphicsInit
 */
@@ -30613,6 +30483,8 @@ __deprecated void ajGraphInit(const char *pgm, ajint argc, char * const argv[])
     ajAcdGraphicsInit(pgm, argc, argv);
     return;
 }
+
+
 
 
 /* @func ajAcdGraphicsInitPV *************************************************
@@ -30644,6 +30516,9 @@ void ajAcdGraphicsInitPV(const char *pgm, ajint argc, char *const argv[],
     return;
 }
 
+
+
+
 /* @obsolete ajGraphicsInitPV
 ** @rename ajAcdGraphicsInitPV
 */
@@ -30657,6 +30532,9 @@ __deprecated void ajGraphicsInitPV(const char *pgm,
     return;
 }
 
+
+
+
 /* @obsolete ajGraphInitPV
 ** @rename ajAcdGraphicsInitPV
 */
@@ -30667,6 +30545,7 @@ __deprecated void ajGraphInitPV(const char *pgm, ajint argc, char *const argv[],
     ajAcdGraphicsInitPV(pgm, argc, argv, package, packversion);
     return;
 }
+
 
 
 
@@ -30738,6 +30617,9 @@ static AjBool acdRangeTestCalc(const AcdPAcd thys)
 
     return iscalc;
 }
+
+
+
 
 /* @funcstatic acdRegVarDefine ************************************************
 **
