@@ -443,6 +443,7 @@ static AjBool featTableTypeTestWild(const AjPStr type,
 
 
 
+
 /* @datastatic FeatPInFormat **************************************************
 **
 ** Feature input format definition
@@ -764,6 +765,9 @@ static AjPRegexp featRegSpecialTransBad = NULL;
 static AjPRegexp featRegSpecialTransComp = NULL;
 static AjPRegexp featRegSpecialTransBadComp = NULL;
 
+
+
+
 /* @datastatic FeatPTypeIn ****************************************************
 **
 ** feature input types
@@ -904,6 +908,9 @@ static FeatOCategory featCategory[] =
 /* ==================================================================== */
 /* ========================= constructors ============================= */
 /* ==================================================================== */
+
+
+
 
 /* @section Feature Object Constructors ***************************************
 **
@@ -1706,6 +1713,8 @@ static ajint featCompByType(const void *a, const void *b)
 ******************************************************************************/
 
 
+
+
 /* @funcstatic featFeatNew ****************************************************
 **
 ** Constructor for a new feature,
@@ -1931,6 +1940,9 @@ static AjPFeature featFeatNewProt(AjPFeattable thys,
 /* =========================== destructor ============================= */
 /* ==================================================================== */
 
+
+
+
 /* @section Feature Object Destructors ****************************************
 **
 ** (Simple minded) object destruction by release of memory.
@@ -2107,9 +2119,14 @@ static void featClear(AjPFeature thys)
 /* ========================== Assignments ============================= */
 /* ==================================================================== */
 
+
+
+
 /* @section Feature Assignments ***********************************************
 **
 ******************************************************************************/
+
+
 
 
 /* @funcstatic featFormatSet **************************************************
@@ -2257,9 +2274,15 @@ void ajFeatSortByEnd(AjPFeattable Feattab)
 /* ========================== Modifiers ============================= */
 /* ==================================================================== */
 
+
+
+
 /* @section Feature Table Modifiers ******************************************
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajFeattableAdd *******************************************************
 **
@@ -2303,12 +2326,18 @@ void ajFeattableAdd(AjPFeattable thys, AjPFeature feature)
 /* ======================== Operators ==================================*/
 /* ==================================================================== */
 
+
+
+
 /* @section Feature Object Operators ******************************************
 **
 ** These functions use the contents of a feature object,
 ** but do not make any changes.
 **
 ******************************************************************************/
+
+
+
 
 /* @funcstatic featTableInit **************************************************
 **
@@ -2744,7 +2773,6 @@ __deprecated AjBool ajFeatWrite(AjPFeattabOut ftout,
 {
     return ajFeattableWrite(ftout, features);
 }
-
 
 
 
@@ -8250,6 +8278,7 @@ __deprecated ajint ajFeattableBegin(const AjPFeattable thys)
 
 
 
+
 /* @func ajFeattableGetEnd *****************************************************
 **
 ** Returns the features table end position, or the feature table length if
@@ -8279,6 +8308,7 @@ __deprecated ajint ajFeattableEnd(const AjPFeattable thys)
 {
     return ajFeattableGetEnd(thys);
 }
+
 
 
 
@@ -8361,6 +8391,7 @@ __deprecated ajint ajFeattableSize(const AjPFeattable thys)
 {
     return ajFeattableGetSize(thys);
 }
+
 
 
 
@@ -8886,6 +8917,8 @@ AjBool ajFeatGetNoteSI(const AjPFeature thys, const AjPStr name, ajint count,
 }
 
 
+
+
 /* @obsolete ajFeatGetNoteI
 ** @rename ajFeatGetNoteSI
 */
@@ -9192,6 +9225,9 @@ ajuint ajFeatGetEnd(const AjPFeature thys)
     return thys->End;
 }
 
+
+
+
 /* @func ajFeatGetLength ******************************************************
 **
 ** Returns the sequence length of a feature object.
@@ -9289,6 +9325,9 @@ AjBool ajFeatGetTranslation(const AjPFeature thys, AjPStr *Ptrans)
 /*========================================================================
 ======================= NEW FUNCTIONS ====================================
 ========================================================================*/
+
+
+
 
 /* @func ajFeatTest ***********************************************************
 **
@@ -11079,6 +11118,7 @@ __deprecated AjPFeattable ajFeatUfoRead(AjPFeattabIn featin,
 
 
 
+
 /* @func ajFeattableSetDefname *************************************************
 **
 ** Provides a unique (for this program run) name for a feature table.
@@ -11117,6 +11157,7 @@ __deprecated void ajFeatDefName(AjPFeattable thys, const AjPStr setname)
     ajFeattableSetDefname(thys, setname);
     return;
 }
+
 
 
 
@@ -11159,6 +11200,7 @@ void ajFeattableSetNuc(AjPFeattable thys)
 
     return;
 }
+
 
 
 
@@ -11607,6 +11649,7 @@ AjPFeattable ajFeattableNewFtable(const AjPFeattable orig)
 
 
 
+
 /* @obsolete ajFeattableCopy
 ** @rename ajFeattableNewFtable
 */
@@ -11665,6 +11708,7 @@ AjPFeattable ajFeattableNewFtableLimit(const AjPFeattable orig, ajint limit)
 
     return ret;
 }
+
 
 
 
@@ -11729,6 +11773,7 @@ AjPFeature ajFeatNewFeat(const AjPFeature orig)
 
     return ret;
 }
+
 
 
 
@@ -12113,7 +12158,6 @@ static AjBool featTypeTestProtWild(const AjPStr type, const AjPStr str)
 
     return featTableTypeTestWild(type, FeatTypeTableProtein, str);
 }
-
 
 
 
@@ -17323,6 +17367,15 @@ void ajFeatPrintbookFormat(AjPFile outf)
     AjPStr* names;
 
     fmtlist = ajListstrNew();
+
+    ajFmtPrintF(outf, "<para>The supported feature formats are summarised "
+                "in the table below. The columns are as follows: "
+                "<emphasis>Output format</emphasis> (format name), "
+                "<emphasis>Nuc</emphasis> (\"true\" indicates nucleotide "
+                "sequence data may be represented), <emphasis>Pro</emphasis> "
+                "(\"true\" indicates protein sequence data may be represented) "
+                "and <emphasis>Description</emphasis> (short description of "
+                "the format).</para>\n\n");
 
     ajFmtPrintF(outf, "<table frame=\"box\" rules=\"cols\">\n");
     ajFmtPrintF(outf, "  <caption>Input feature formats</caption>\n");
