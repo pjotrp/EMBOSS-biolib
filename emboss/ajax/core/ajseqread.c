@@ -13467,7 +13467,7 @@ static AjBool seqReadAbi(AjPSeq thys, AjPSeqin seqin)
     ok = ajFalse;
     
     pconO = ajSeqABIGetConfidOffset(fp);
-    if(numBases > thys->Qualsize)
+    if(numBases > (ajlong) thys->Qualsize)
     {
         AJCRESIZE(thys->Accuracy, numBases);
         thys->Qualsize = numBases;
