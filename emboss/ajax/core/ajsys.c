@@ -2082,10 +2082,11 @@ ajint  ajSysExecProgArgEnvNowaitC(const char *prog, char * const arg[],
 
 ajint ajSysExecEnvS(const AjPStr cmdline, char * const env[])
 {
+    ajint status = 0;
+
 #ifndef WIN32
     pid_t pid;
     pid_t retval;
-    ajint status;
     char *pgm = NULL;
     char **argptr = NULL;
     ajint i;
