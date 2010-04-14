@@ -346,7 +346,7 @@ void ajSeqABIGetSignal(AjPFile fp,ajlong fwo_,
     ajlong SIGNALtag;
 
     SIGNALtag    = ((ajlong) ((((('S'<<8)+'/')<<8)+'N')<<8)+'%');
-    ajDebug("getflag S/N\%\n");
+    ajDebug("getflag S/N%%\n");
 
     /* Get signal strength info */
     if (seqABIGetFlag(fp,SIGNALtag,1,5,&signalO))
