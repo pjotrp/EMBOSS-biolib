@@ -9,6 +9,9 @@ extern "C"
 #include "ajseqdata.h"
 #include "ajax.h"
 
+
+
+
 /* @data AjPSeqCvt ************************************************************
 **
 ** Sequence conversion data. Used to convert a sequence to binary.

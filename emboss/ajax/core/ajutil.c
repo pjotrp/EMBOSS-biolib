@@ -39,17 +39,25 @@ static AjBool utilBigendian;
 static ajint utilBigendCalled = 0;
 
 
+
+
 /* @filesection ajutil *******************************************************
 **
 ** @nam1rule aj Function belongs to the AJAX library.
 **
 */
 
+
+
+
 /* @datasection [none] Exit functions ****************************************
 **
 ** @nam2rule Exit Functions for exiting cleanly
 **
 */
+
+
+
 
 /* @section exit  *************************************************************
 **
@@ -66,6 +74,9 @@ static ajint utilBigendCalled = 0;
 ** @fcategory misc
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajExit ***************************************************************
 **
@@ -135,6 +146,9 @@ __noreturn void  ajExitBad(void)
 **
 */
 
+
+
+
 /* @section reset **************************************************************
 **
 ** Functions for memory cleanup
@@ -147,6 +161,9 @@ __noreturn void  ajExitBad(void)
 ** @fcategory misc
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajReset **************************************************************
 **
@@ -209,6 +226,7 @@ void ajReset(void)
 
 
 
+
 /* @section byte manipulation functions  **************************************
 **
 ** Functions for manipulating bytes.
@@ -243,6 +261,8 @@ void ajReset(void)
 ** @fcategory misc
 **
 ******************************************************************************/
+
+
 
 
 /* @func ajByteRevInt *********************************************************
@@ -791,6 +811,8 @@ __deprecated void ajUtilRevUint(ajuint* ival)
 ******************************************************************************/
 
 
+
+
 /* @func ajUtilCatch **********************************************************
 **
 ** Dummy function to be called in special cases so it can be used when
@@ -1001,6 +1023,8 @@ __deprecated void ajLogInfo(void)
 }
 
 
+
+
 /* @section provenance *******************************************************
 **
 ** Functions providing information about the run-time environment
@@ -1019,6 +1043,7 @@ __deprecated void ajLogInfo(void)
 
 
 
+
 /* @func ajUtilGetCmdline *****************************************************
 **
 ** Returns the original command line as qualifiers and values with newline
@@ -1033,6 +1058,9 @@ const AjPStr ajUtilGetCmdline (void)
     return acdArgSave;
 }
 
+
+
+
 /* @obsolete ajAcdGetCmdline
 ** @rename ajUtilGetCmdline
 */
@@ -1040,6 +1068,8 @@ __deprecated const AjPStr ajAcdGetCmdline (void)
 {
   return ajUtilGetCmdline();
 }
+
+
 
 
 /* @func ajUtilGetInputs ******************************************************
@@ -1056,6 +1086,8 @@ const AjPStr ajUtilGetInputs (void)
 }
 
 
+
+
 /* @obsolete ajAcdGetInputs
 ** @rename ajUtilGetInputs
 */
@@ -1064,6 +1096,9 @@ __deprecated const AjPStr ajAcdGetInputs (void)
 {
   return ajUtilGetInputs();
 }
+
+
+
 
 /* @obsolete ajAcdProgramS
 ** @remove Use ajAcdGetProgram
@@ -1092,6 +1127,8 @@ const AjPStr ajUtilGetProgram(void)
 }
 
 
+
+
 /* @obsolete ajAcdGetProgram
 ** @rename ajUtilGetProgram
 */
@@ -1099,6 +1136,9 @@ __deprecated const AjPStr ajAcdGetProgram(void)
 {
   return ajUtilGetProgram();
 }
+
+
+
 
 /* @obsolete ajAcdProgram
 ** @remove Use ajAcdGetProgram

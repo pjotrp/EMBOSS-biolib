@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -108,6 +108,7 @@ static AjBool databaseEntryadaptorFetchAllIdentifiersByExternaldatabaseName(
 ** @nam1rule ens Function belongs to the Ensembl library
 **
 ******************************************************************************/
+
 
 
 
@@ -2015,6 +2016,7 @@ ajuint ensIdentityreferenceGetMemSize(const EnsPIdentityreference ir)
 
 
 
+
 /* @section constructors ******************************************************
 **
 ** All constructors return a new Ensembl Gene Ontology Linkage by pointer.
@@ -2216,6 +2218,7 @@ void ensGeneontologylinkageDel(EnsPGeneontologylinkage *Pgol)
 ** @nam2rule Databaseentry
 **
 ******************************************************************************/
+
 
 
 
@@ -2527,6 +2530,9 @@ void ensDatabaseentryDel(EnsPDatabaseentry *Pdbe)
 ** These objects should be consolidated into two Externaldatabase and
 ** Externalreference?
 */
+
+
+
 
 /* @section element retrieval *************************************************
 **

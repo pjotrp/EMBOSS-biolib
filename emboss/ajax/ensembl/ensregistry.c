@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** Bio::EnsEMBL::Registry CVS Revision:
@@ -38,6 +38,9 @@
 /* ==================================================================== */
 /* ========================== private data ============================ */
 /* ==================================================================== */
+
+
+
 
 /* @datastatic RegistryPIdentifier ********************************************
 **
@@ -1035,6 +1038,9 @@ static void registryEntryDel(RegistryPEntry *Pentry)
 **
 ******************************************************************************/
 
+
+
+
 /* @datasection [none] Ensembl Registry ********************************
 **
 ** Functions for Ensembl Registry
@@ -1042,12 +1048,16 @@ static void registryEntryDel(RegistryPEntry *Pentry)
 **
 ******************************************************************************/
 
+
+
+
 /* @section functions *********************************************************
 **
 ** @fdata [none]
 ** @fcategory misc
 **
 ******************************************************************************/
+
 
 
 
@@ -2134,6 +2144,9 @@ AjBool ensRegistryGetAllDatabaseadaptors(AjEnum group,
 **
 **
 ******************************************************************************/
+
+
+
 
 /* @section element retrieval *************************************************
 **

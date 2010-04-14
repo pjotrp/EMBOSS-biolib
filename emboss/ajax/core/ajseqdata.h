@@ -26,6 +26,9 @@ enum AjEXrefType {
 
 typedef struct SeqSAccess SeqSAccess;
 
+
+
+
 /* @data AjPSeqDesc ***********************************************************
 **
 ** Ajax sequence description object.
@@ -63,7 +66,8 @@ typedef struct AjSSeqDesc {
 #define AjPSeqDesc AjOSeqDesc*
 
 
-    
+
+
 /* @data AjPSeqSubdesc *********************************************************
 **
 ** Ajax sequence sub-description object.
@@ -97,7 +101,8 @@ typedef struct AjSSeqSubdesc {
 #define AjPSeqSubdesc AjOSeqSubdesc*
 
 
-    
+
+
 /* @data AjPSeqGene ***********************************************************
 **
 ** Ajax genes object.
@@ -125,7 +130,8 @@ typedef struct AjSSeqGene {
 #define AjPSeqGene AjOSeqGene*
 
 
-    
+
+
 /* @data AjPSeqDate ***********************************************************
 **
 ** Ajax sequence dates object.
@@ -162,7 +168,8 @@ typedef struct AjSSeqDate {
 #define AjPSeqDate AjOSeqDate*
 
 
-    
+
+
 /* @data AjPSeqRef ***********************************************************
 **
 ** Ajax sequence citation object.
@@ -203,7 +210,8 @@ typedef struct AjSSeqRef {
 #define AjPSeqRef AjOSeqRef*
 
 
-    
+
+
 /* @data AjPSeqXref ***********************************************************
 **
 ** Ajax sequence cross-reference object.
@@ -238,6 +246,8 @@ typedef struct AjSSeqXref {
     char Padding[4];
 } AjOSeqXref;
 #define AjPSeqXref AjOSeqXref*
+
+
 
 
 /* @data AjPSeqQuery **********************************************************
@@ -502,7 +512,6 @@ typedef struct SeqSAccess {
 
 
 
-    
 
 /* @data AjPSeq ***************************************************************
 **
@@ -624,6 +633,7 @@ typedef struct AjSSeq {
 } AjOSeq;
 
 #define AjPSeq AjOSeq*
+
 
 
 

@@ -3,6 +3,9 @@ extern "C"
 {
 #endif
 
+
+
+
 /* @source ajhist.h
 **
 ** General Plot/Printing routines.
@@ -83,6 +86,9 @@ typedef struct AjSHistdata {
   char Padding[4];
 } AjOHistdata;
 #define AjPHistdata AjOHistdata*
+
+
+
 
 /* @data AjPHist **************************************************************
 **

@@ -40,6 +40,9 @@ static AjBool aj_melt_saveshift = 1;
 
 static float meltProbScore(const AjPStr seq1, const AjPStr seq2, ajint len);
 
+
+
+
 /* @func ajMeltInit **********************************************************
 **
 ** Initialises melt entropies, enthalpies and energies. Different data
@@ -50,7 +53,6 @@ static float meltProbScore(const AjPStr seq1, const AjPStr seq2, ajint len);
 ** @param  [r]  savesize [ajint] Size of array to save, or zero if none
 ** @return [void] Number of energies to save
 ******************************************************************************/
-
 
 void ajMeltInit(AjBool isdna, ajint savesize)
 {
@@ -439,6 +441,7 @@ float ajMeltTemp(const AjPStr strand, ajint len, ajint shift, float saltconc,
 
 
 
+
 /* @obsolete ajTm
 ** @rename ajMeltTemp
 */
@@ -649,7 +652,6 @@ __deprecated float ajTm2(const char *strand, ajint pos,
 
 
 
-
 /* @func ajMeltTempProd ********************************************************
 **
 ** Calculates product melt temperature of DNA
@@ -673,6 +675,7 @@ float ajMeltTempProd(float gc, float saltconc, ajint len)
 
     return ptm;
 }
+
 
 
 

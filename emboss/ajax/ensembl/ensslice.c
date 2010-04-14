@@ -7,7 +7,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1714,6 +1714,9 @@ AjBool ensSliceFetchSubSlice(EnsPSlice slice,
 ** but it is not possible to expand them without loosing information.
 */
 
+
+
+
 /* @func ensSliceFetchExpandedSlice *******************************************
 **
 ** Fetch an expanded Ensembl Slice.
@@ -1878,6 +1881,9 @@ AjBool ensSliceFetchExpandedSlice(const EnsPSlice slice,
 ** would be inserted into the Adaptor cache. Expanded Slices would then exist
 ** in memory only once.
 */
+
+
+
 
 /* @funcstatic sliceConstrainToSeqregion **************************************
 **
@@ -4759,6 +4765,9 @@ AjBool ensRepeatmaskedsliceFetchSequenceSeq(EnsPRepeatmaskedslice rmslice,
 ** Bio::EnsEMBL::Repeatmaskedslice::subseq.
 ** The old function is still available from the OldCode.c file.
 */
+
+
+
 
 /* @func ensRepeatmaskedsliceFetchSequenceStr *********************************
 **

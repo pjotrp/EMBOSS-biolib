@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -53,6 +53,9 @@
 **
 ******************************************************************************/
 
+
+
+
 /* @datasection [none] Ensembl Table ******************************************
 **
 ** Functions for Ensembl Tables
@@ -60,6 +63,9 @@
 ** @nam2rule Table Ensembl function for AJAX tables.
 **
 ******************************************************************************/
+
+
+
 
 /* @section functions *********************************************************
 **
@@ -79,6 +85,7 @@
 ** @valrule Hash [ajuint] Unsigned integer hash value
 **
 ******************************************************************************/
+
 
 
 

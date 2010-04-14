@@ -59,6 +59,9 @@ static AjPTable seqTableClsEmbl = NULL;
 static AjPTable seqTableClsDdbj = NULL;
 static AjPTable seqTableClsGb = NULL;
 
+
+
+
 /* @datastatic SeqOClass ******************************************************
 **
 ** Classes of entries in the sequence databases
@@ -204,6 +207,8 @@ static SeqOMolecule seqMolecule[] =
 };
 
 
+
+
 /* @datastatic SeqOTaxon ******************************************************
 **
 ** Known major taxa in the sequence databases
@@ -250,12 +255,15 @@ static SeqOTaxon seqTaxon[] =
     
 };
 
-    
+
+
+
 /* @filesection ajseq ********************************************************
 **
 ** @nam1rule aj Function belongs to the AJAX library.
 **
 ******************************************************************************/
+
 
 
 
@@ -266,6 +274,8 @@ static SeqOTaxon seqTaxon[] =
 ** @nam2rule Seq
 **
 ******************************************************************************/
+
+
 
 
 /* @section constructors *********************************************
@@ -2451,6 +2461,8 @@ static void seqMakeUsa(const AjPSeq thys, AjPStr* usa)
 ******************************************************************************/
 
 
+
+
 /* @func ajSeqComplement **************************************************
 **
 ** Complements but does not reverse a nucleotide sequence.
@@ -2544,6 +2556,7 @@ void ajSeqFmtUpper(AjPSeq seq)
 
     return;
 }
+
 
 
 
@@ -2971,6 +2984,9 @@ void ajSeqTrim(AjPSeq seq)
 ** @valrule *SeqCopyS [AjPStr] New sequence with original contents
 ** @valrule Taxid [ajuint] NCBI taxonomy ID
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqGetAccC *********************************************************
 **
@@ -3901,6 +3917,8 @@ AjPStr ajSeqGetSeqCopyS(const AjPSeq seq)
 }
 
 
+
+
 /* @obsolete ajSeqStrCopy
 ** @rename ajSeqGetSeqCopyS
 */
@@ -4157,6 +4175,9 @@ __deprecated const AjPStr  ajSeqGetUsa(const AjPSeq seq)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajSeqIsNuc ***********************************************************
 **
 ** Tests whether a sequence is nucleotide.
@@ -4403,6 +4424,8 @@ AjBool ajSeqIsTrimmed(const AjPSeq seq)
 ******************************************************************************/
 
 
+
+
 /* @func ajSeqConvertNum ******************************************************
 **
 ** Converts a string of sequence characters to numbers using
@@ -4478,6 +4501,9 @@ __deprecated AjBool  ajSeqNum(const AjPSeq seq, const AjPSeqCvt cvt,
 ** @valrule CalcTruepos [ajint] Sequence position in original
 ** @valrule CountGaps [ajuint] Number of gap characters
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqCalcCheckgcg ****************************************************
 **
@@ -4895,6 +4921,8 @@ void ajSeqExit(void)
 ******************************************************************************/
 
 
+
+
 /* @func ajSeqTrace ***********************************************************
 **
 ** Debug calls to trace the data in a sequence object.
@@ -5084,6 +5112,8 @@ __deprecated void  ajSeqTraceT(const AjPSeq seq, const char* title)
 ******************************************************************************/
 
 
+
+
 /* @section Sequence Stream Constructors **************************************
 **
 ** @fdata [AjPSeqall]
@@ -5100,6 +5130,7 @@ __deprecated void  ajSeqTraceT(const AjPSeq seq, const char* title)
 ** @fcategory new
 **
 ******************************************************************************/
+
 
 
 
@@ -5143,6 +5174,7 @@ AjPSeqall ajSeqallNew(void)
 ** @fcategory delete
 **
 ******************************************************************************/
+
 
 
 
@@ -5197,6 +5229,7 @@ void ajSeqallDel(AjPSeqall *Pseq)
 ** @valrule * [void]
 **
 ******************************************************************************/
+
 
 
 
@@ -5753,6 +5786,7 @@ __deprecated ajint  ajSeqallGetRange(const AjPSeqall seq,
 
 
 
+
 /* @section constructors *****************************************
 **
 ** All constructors return a new sequence set object by pointer. It is the
@@ -5829,6 +5863,7 @@ AjPSeqset ajSeqsetNew(void)
 ** @fcategory delete
 **
 ******************************************************************************/
+
 
 
 
@@ -6442,6 +6477,7 @@ void ajSeqsetTrim(AjPSeqset seq)
 
 
 
+
 /* @func ajSeqsetSetRange *****************************************************
 **
 ** Sets the start and end positions for a sequence set.
@@ -6828,6 +6864,8 @@ const char* ajSeqsetGetseqAccC(const AjPSeqset seq, ajuint i)
 }
 
 
+
+
 /* @func ajSeqsetGetseqAccS ***************************************************
 **
 ** Returns the accession number of a sequence in a sequence set
@@ -7199,6 +7237,8 @@ AjBool ajSeqsetIsRna(const AjPSeqset seq)
 ******************************************************************************/
 
 
+
+
 /* @section conversion *******************************************************
 **
 ** Convert sequence to numbers for efficient processing
@@ -7215,6 +7255,7 @@ AjBool ajSeqsetIsRna(const AjPSeqset seq)
 **
 ** @valrule * [AjBool] True on success
 ******************************************************************************/
+
 
 
 
@@ -7291,6 +7332,9 @@ __deprecated AjBool  ajSeqNumS(const AjPStr seqstr,
 ** @valrule * [void]
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqcvtTrace ********************************************************
 **
@@ -7720,6 +7764,8 @@ __deprecated AjPSeqCvt  ajSeqCvtNewZeroSS (const AjPPStr bases, int n,
 ******************************************************************************/
 
 
+
+
 /* @func ajSeqcvtDel **********************************************************
 **
 ** Delete a conversion table
@@ -7797,6 +7843,8 @@ __deprecated void  ajSeqCvtDel (AjPSeqCvt* Pcvt)
 ** @valrule GetLen [ajuint] Table length
 ** @valrule GetCode [ajint] Table code value
 ******************************************************************************/
+
+
 
 
 /* @func ajSeqcvtGetCodeK *****************************************************
@@ -7997,6 +8045,9 @@ __deprecated ajint  ajSeqCvtLen(const AjPSeqCvt cvt)
 **
 ******************************************************************************/
 
+
+
+
 /* @section sequence date constructors ****************************************
 **
 ** @fdata [AjPSeqDate]
@@ -8010,6 +8061,9 @@ __deprecated ajint  ajSeqCvtLen(const AjPSeqCvt cvt)
 ** @valrule * [AjPSeqDate]
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqdateNew *********************************************************
 **
@@ -8094,6 +8148,9 @@ AjPSeqDate ajSeqdateNewDate(const AjPSeqDate date)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajSeqdateDel *********************************************************
 **
 ** Deletes a sequence date object.
@@ -8160,6 +8217,9 @@ void ajSeqdateDel(AjPSeqDate* Pdate)
 ** @valrule *Clear [void]
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqdateClear ********************************************************
 **
@@ -8321,6 +8381,9 @@ static AjBool seqDateSet(AjPTime* date, const AjPStr datestr)
 **
 ******************************************************************************/
 
+
+
+
 /* @section descriptions constructors ************************************
 **
 ** @fdata [AjPSeqDesc]
@@ -8334,6 +8397,9 @@ static AjBool seqDateSet(AjPTime* date, const AjPStr datestr)
 ** @valrule * [AjPSeqDesc]
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqdescNew *********************************************************
 **
@@ -8501,6 +8567,8 @@ void ajSeqdescDel(AjPSeqDesc* Pdesc)
 ******************************************************************************/
 
 
+
+
 /* @func ajSeqdescAppendName **************************************************
 **
 ** Append to the name of a description
@@ -8596,6 +8664,9 @@ AjBool ajSeqdescSetName(AjPSeqDesc desc, const AjPStr str)
 **
 ******************************************************************************/
 
+
+
+
 /* @section Description list operations ****************************************
 **
 ** Manipulating lists of descriptions
@@ -8611,6 +8682,9 @@ AjBool ajSeqdescSetName(AjPSeqDesc desc, const AjPStr str)
 ** @valrule * [AjBool] True on success
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqdesclistClone ***************************************************
 **
@@ -8654,6 +8728,9 @@ AjBool ajSeqdesclistClone(const AjPList src, AjPList dest)
 **
 ******************************************************************************/
 
+
+
+
 /* @section sub-descriptions constructors ************************************
 **
 ** @fdata [AjPSeqSubdesc]
@@ -8667,6 +8744,9 @@ AjBool ajSeqdesclistClone(const AjPList src, AjPList dest)
 ** @valrule * [AjPSeqSubdesc]
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqsubdescNew ******************************************************
 **
@@ -8802,6 +8882,8 @@ void ajSeqsubdescDel(AjPSeqSubdesc* Pdesc)
 ******************************************************************************/
 
 
+
+
 /* @func ajSeqsubdescAppendName ************************************************
 **
 ** Append to the name of a description
@@ -8889,6 +8971,9 @@ AjBool ajSeqsubdescSetName(AjPSeqSubdesc desc, const AjPStr str)
 **
 ******************************************************************************/
 
+
+
+
 /* @section Description list operations ****************************************
 **
 ** Manipulating lists of sub-descriptions
@@ -8905,6 +8990,9 @@ AjBool ajSeqsubdescSetName(AjPSeqSubdesc desc, const AjPStr str)
 ** @valrule * [AjBool] True on success
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqsubdesclistClone ************************************************
 **
@@ -8948,6 +9036,9 @@ AjBool ajSeqsubdesclistClone(const AjPList src, AjPList dest)
 **
 ******************************************************************************/
 
+
+
+
 /* @section gene names constructors ************************************
 **
 ** @fdata [AjPSeqGene]
@@ -8963,6 +9054,9 @@ AjBool ajSeqsubdesclistClone(const AjPList src, AjPList dest)
 ** @valrule * [AjPSeqGene]
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqgeneNew *********************************************************
 **
@@ -9112,6 +9206,8 @@ void ajSeqgeneDel(AjPSeqGene* Pgene)
 **
 ** @valrule * [AjBool] True on success
 ******************************************************************************/
+
+
 
 
 /* @func ajSeqgeneAppendName **************************************************
@@ -9286,6 +9382,9 @@ AjBool ajSeqgeneSetSynonyms(AjPSeqGene gene, const AjPStr str)
 **
 ******************************************************************************/
 
+
+
+
 /* @section Reference list operations *****************************************
 **
 ** Manipulating lists of genes
@@ -9301,6 +9400,9 @@ AjBool ajSeqgeneSetSynonyms(AjPSeqGene gene, const AjPStr str)
 ** @valrule * [AjBool] True on success
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqgenelistClone ***************************************************
 **
@@ -9344,6 +9446,9 @@ AjBool ajSeqgenelistClone(const AjPList src, AjPList dest)
 **
 ******************************************************************************/
 
+
+
+
 /* @section sequence cross-reference constructors ******************************
 **
 ** @fdata [AjPSeqXref]
@@ -9364,6 +9469,9 @@ AjBool ajSeqgenelistClone(const AjPList src, AjPList dest)
 ** @valrule * [AjPSeqXref]
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqxrefNew *********************************************************
 **
@@ -9528,6 +9636,9 @@ void ajSeqxrefDel(AjPSeqXref* Pxref)
 **
 ******************************************************************************/
 
+
+
+
 /* @section Reference list operations *****************************************
 **
 ** Manipulating lists of sequence citations
@@ -9544,6 +9655,9 @@ void ajSeqxrefDel(AjPSeqXref* Pxref)
 ** @valrule * [AjBool] True on success
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqxreflistClone ****************************************************
 **
@@ -9587,6 +9701,9 @@ AjBool ajSeqxreflistClone(const AjPList src, AjPList dest)
 **
 ******************************************************************************/
 
+
+
+
 /* @section sequence citation constructors ************************************
 **
 ** @fdata [AjPSeqRef]
@@ -9600,6 +9717,9 @@ AjBool ajSeqxreflistClone(const AjPList src, AjPList dest)
 ** @valrule * [AjPSeqRef]
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqrefNew *********************************************************
 **
@@ -9760,6 +9880,9 @@ void ajSeqrefDel(AjPSeqRef* Pref)
 ** @valrule * [AjBool] True on success
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqrefAppendAuthors ***********************************************
 **
@@ -10312,6 +10435,9 @@ AjBool ajSeqrefStandard(AjPSeqRef ref)
 **
 ******************************************************************************/
 
+
+
+
 /* @section Reference list operations *****************************************
 **
 ** Manipulating lists of sequence citations
@@ -10327,6 +10453,9 @@ AjBool ajSeqrefStandard(AjPSeqRef ref)
 ** @valrule * [AjBool] True on success
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqreflistClone ****************************************************
 **
@@ -10378,6 +10507,9 @@ AjBool ajSeqreflistClone(const AjPList src, AjPList dest)
 ** @valrule GetXrefs [ajuint] Number of cross-references returned
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqreflistGetXrefs *************************************************
 **
@@ -10469,6 +10601,8 @@ ajuint ajSeqreflistGetXrefs(const AjPList src, AjPList *Plist)
 }
 
 
+
+
 /* @datasection [AjPStr] string tests *****************************************
 **
 ** Functions handling strings for specialist sequence-related tests
@@ -10476,6 +10610,9 @@ ajuint ajSeqreflistGetXrefs(const AjPList src, AjPList *Plist)
 ** @nam2rule Seqtest
 **
 ******************************************************************************/
+
+
+
 
 /* @section string tests ********************************************
 **
@@ -10493,6 +10630,8 @@ ajuint ajSeqreflistGetXrefs(const AjPList src, AjPList *Plist)
 ** @valrule IsAccession [AjBool] True if string passes the test
 ** @valrule IsSeqversion [const AjPStr] Accession number part of the version
 ******************************************************************************/
+
+
 
 
 /* @func ajSeqtestIsAccession ************************************************
@@ -10743,6 +10882,9 @@ __deprecated const AjPStr  ajIsSeqversion(const AjPStr sv)
 **
 ******************************************************************************/
 
+
+
+
 /* @section string properties
 **
 ** @fdata [AjPStr]
@@ -10758,6 +10900,9 @@ __deprecated const AjPStr  ajIsSeqversion(const AjPStr sv)
 ** @valrule CalcMolwt [float] Molecular weight
 ** @valrule CountGaps [ajuint] Number of gap characters
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqstrCalcMolwt ****************************************************
 **
@@ -10881,6 +11026,9 @@ __deprecated ajint  ajSeqGapCountS(const AjPStr str)
 **
 ** @valrule * [void]
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqstrComplement ***********************************************
 **
@@ -11052,6 +11200,9 @@ __deprecated ajuint  ajSeqCalcCrc(const AjPSeq seq)
 **
 ******************************************************************************/
 
+
+
+
 /* @section assignment ********************************************************
 **
 ** Assign values for sequence entry classes
@@ -11070,6 +11221,9 @@ __deprecated ajuint  ajSeqCalcCrc(const AjPSeq seq)
 ** @valrule * [AjBool] True on success
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqclsSetEmbl *****************************************************
 **
@@ -11155,6 +11309,9 @@ AjBool ajSeqclsSetGb(AjPStr* Pcls, const AjPStr clsgb)
 ** @valrule * [const char*] Databank-specific class name
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqclsGetEmbl ******************************************************
 **
@@ -11273,6 +11430,9 @@ static void seqclsInit(void)
 **
 ******************************************************************************/
 
+
+
+
 /* @section assignment ********************************************************
 **
 ** Assign values for sequence entry division
@@ -11291,6 +11451,9 @@ static void seqclsInit(void)
 ** @valrule * [AjBool] True on success
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqdivSetEmbl ******************************************************
 **
@@ -11379,6 +11542,9 @@ AjBool ajSeqdivSetGb(AjPStr* Pdivi, const AjPStr divgb)
 ** @valrule * [const char*] Databank-specific division name
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqdivGetEmbl ******************************************************
 **
@@ -11538,6 +11704,9 @@ static void seqdivInit(void)
 **
 ******************************************************************************/
 
+
+
+
 /* @section assignment ********************************************************
 **
 ** Assign values for sequence entry molecule types
@@ -11556,6 +11725,9 @@ static void seqdivInit(void)
 ** @valrule * [AjBool] True on success
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqmolSetEmbl *****************************************************
 **
@@ -11639,6 +11811,9 @@ AjBool ajSeqmolSetGb(AjPStr* Pmol, const AjPStr molgb)
 ** @valrule * [const char*] Databank-specific molecule type name
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqmolGetEmbl ******************************************************
 **

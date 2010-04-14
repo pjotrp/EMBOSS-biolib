@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -125,6 +125,7 @@ static EnsPFeature miscellaneousFeatureadaptorGetFeature(const void *value);
 ** @nam1rule ens Function belongs to the Ensembl library
 **
 ******************************************************************************/
+
 
 
 

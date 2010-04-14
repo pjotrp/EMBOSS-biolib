@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** Bio::EnsEMBL::Utils::Cache CVS Revision: 1.2
@@ -381,6 +381,9 @@ static AjBool cacheNodeRemove(EnsPCache cache, const CachePNode node)
 **
 ******************************************************************************/
 
+
+
+
 /* @datasection [EnsPCache] Ensembl Cache *************************************
 **
 ** Functions for Ensembl Caches
@@ -388,12 +391,18 @@ static AjBool cacheNodeRemove(EnsPCache cache, const CachePNode node)
 **
 ******************************************************************************/
 
+
+
+
 /* @section functions *********************************************************
 **
 ** @fdata [EnsPCache]
 ** @fcategory misc
 **
 ******************************************************************************/
+
+
+
 
 /* @func ensCacheNew **********************************************************
 **

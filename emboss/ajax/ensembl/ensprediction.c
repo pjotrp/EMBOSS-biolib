@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -89,7 +89,7 @@ static ajuint predictionTranscriptadaptorCacheSize(const void *value);
 
 static EnsPFeature predictionTranscriptadaptorGetFeature(const void *value);
 
-    
+
 
 
 /* @filesection ensprediction *************************************************
@@ -2392,6 +2392,9 @@ const AjPList ensPredictiontranscriptGetExons(EnsPPredictiontranscript pt)
 
 
 /* TODO: Some Prediction Transcript methods are missing! */
+
+
+
 
 /* @datasection [EnsPPredictiontranscriptadaptor] Prediction Transcript Adaptor
 **

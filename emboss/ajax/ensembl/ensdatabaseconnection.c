@@ -3,8 +3,8 @@
 **
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
-** @modified $Date: 2010/04/05 15:12:14 $ by $Author: mks $
-** @version $Revision: 1.5 $
+** @modified $Date: 2010/04/14 07:40:46 $ by $Author: rice $
+** @version $Revision: 1.6 $
 **
 ** This library is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU Library General Public
@@ -50,6 +50,7 @@
 ** @nam1rule ens Function belongs to the Ensembl library
 **
 ******************************************************************************/
+
 
 
 
