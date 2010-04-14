@@ -976,10 +976,40 @@ FP /Died: Unknown qualifier -a\n/
 
 ID acdc-missing
 AP acdc
-## . as a parameter is a missing value treated as an empty string
+## '' as a parameter is a missing value treated as an empty string
 PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
-CL qatest tembl:x13776 . x.x
+CL qatest tembl:x13776 '' x.x
+ER 1
+FI stderr
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
+FP /Error: Unable to read sequence ''\n/
+FP /Died: qatest terminated: Bad value for '-bsequence' and no prompt\n/
+//
+
+ID acdc-missing2
+AP acdc
+## '' as a qualifier value is a missing value treated as an empty string
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL qatest tembl:x13776 -bsequence='' x.x
+ER 1
+FI stderr
+FP 0 /Warning: /
+FP 1 /Error: /
+FP 1 /Died: /
+FP /Error: Unable to read sequence ''\n/
+FP /Died: qatest terminated: Bad value for '-bsequence' and no prompt\n/
+//
+
+ID acdc-missing3
+AP acdc
+## Empty qualifier value is a missing value treated as an empty string
+PP EMBOSS_ACDROOT=../../acd
+PP export EMBOSS_ACDROOT
+CL qatest tembl:x13776 -bsequence= x.x
 ER 1
 FI stderr
 FP 0 /Warning: /
