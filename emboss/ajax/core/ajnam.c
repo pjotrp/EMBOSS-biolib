@@ -2906,6 +2906,7 @@ static void namError(const char* fmt, ...)
 
 
 
+
 /* @func ajNamValueInstalldir *************************************************
 **
 ** Returns the install directory root for all file searches
@@ -2948,6 +2949,8 @@ const AjPStr ajNamValuePackage(void)
 {
     return namFixedPackageStr;
 }
+
+
 
 
 /* @obsolete ajNamRootPack
