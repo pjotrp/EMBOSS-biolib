@@ -230,7 +230,6 @@ int main(int argc, char **argv)
 
 
 #ifndef NO_PLOT
-
 /* @funcstatic dotpath_drawPlotlines ******************************************
 **
 ** Undocumented.

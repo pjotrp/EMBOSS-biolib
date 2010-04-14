@@ -30,6 +30,9 @@ static float* entropy = NULL;
 static float* enthalpy = NULL;
 static float* energy = NULL;
 
+
+
+
 /* @datastatic PPrimer ******************************************************
 **
 ** Definition of the primer object

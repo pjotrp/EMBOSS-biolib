@@ -499,6 +499,7 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
 
 
 
+
 /* @func embAlignPathCalcSW ***************************************************
 **
 ** Create path matrix for Smith-Waterman
@@ -1090,6 +1091,7 @@ void embAlignWalkNWMatrixUsingCompass(const char* p, const char* q,
     
     return;
 }
+
 
 
 

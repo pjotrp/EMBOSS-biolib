@@ -37,6 +37,9 @@ static AjBool dbxflat_NextEntry(EmbPBtreeEntry entry, AjPFile inf);
 
 int global = 0;
 
+
+
+
 /* @datastatic DbxflatPParser *************************************************
 **
 ** Parser definition structure
@@ -504,6 +507,7 @@ static AjBool dbxflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
     
     return ret;
 }
+
 
 
 

@@ -57,6 +57,8 @@ static AjBool remap_Ambiguous(const AjPStr str);
 static void remap_GetFrames(AjPStr const *framelist, AjBool *frames);
 
 
+
+
 /* @datastatic PValue *********************************************************
 **
 ** structure for counts and isoschizomers of a restriction enzyme hit
@@ -1316,6 +1318,9 @@ static void remap_RestrictPreferred(const AjPList l, const AjPTable t)
     return; 
 }
 
+
+
+
 /* @funcstatic remap_Ambiguous  ***************************************
 **
 ** Tests whether there are ambiguity base codes in a string
@@ -1344,6 +1349,9 @@ static AjBool remap_Ambiguous(const AjPStr str)
 
     return ajFalse;
 }
+
+
+
 
 /* @funcstatic remap_GetFrames **********************************************
 **

@@ -37,6 +37,8 @@ static PLFLT offset1;
 static PLFLT offset2;
 
 
+
+
 /* @prog dottup ***************************************************************
 **
 ** Displays a wordmatch dotplot of two sequences
@@ -248,7 +250,6 @@ int main(int argc, char **argv)
 
 
 #ifndef NO_PLOT
-
 /* @funcstatic dottup_drawPlotlines *******************************************
 **
 ** Undocumented.

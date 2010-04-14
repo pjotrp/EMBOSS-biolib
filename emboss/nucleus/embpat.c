@@ -25,6 +25,8 @@
 #include <limits.h>
 
 
+
+
 /* @datastatic PatPTypes ***************************************************
 **
 ** Prosite pattern types
@@ -57,6 +59,8 @@ static PatOTypes patTypes[] =
   {"OUB",     "Brute force processing"},
   {NULL, NULL}
 };
+
+
 
 
 /* @datastatic MethPData ***************************************************

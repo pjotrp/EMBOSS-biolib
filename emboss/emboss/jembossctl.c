@@ -749,6 +749,8 @@ struct ad_user
 };
 
 
+
+
 /* @header jembossctl_pam_conv ************************************************
 **
 ******************************************************************************/
@@ -4079,6 +4081,9 @@ static AjBool jembossctl_GetSeqsetFromUsa(const AjPStr thys, AjPSeqset *seq)
 
 #else
 #include <stdio.h>
+
+
+
 
 /* @header main ***************************************************************
 **

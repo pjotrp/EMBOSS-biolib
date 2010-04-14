@@ -35,6 +35,7 @@ static void coderet_put_rest(const AjPSeq seq, const AjPStr copyseq,
 
 
 
+
 /* @prog coderet **************************************************************
 **
 ** Extract CDS, mRNA and translations from feature tables

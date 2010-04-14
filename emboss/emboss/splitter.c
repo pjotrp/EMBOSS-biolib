@@ -232,6 +232,7 @@ static void splitter_ProcessChunk (AjPSeqout seqout, const AjPSeq seq,
 
 
 
+
 /* @funcstatic splitter_AddSubSeqFeat *****************************************
 **
 ** Undocumented

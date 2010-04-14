@@ -278,6 +278,7 @@ float sf_mat_thr = 0;
 
 
 
+
 /* @datastatic edialignPositionSet ********************************************
 **
 ** Dialign positionset structure
@@ -293,6 +294,7 @@ typedef struct
     ajint nbr;
     char Padding[4];
 } edialignPositionSet;
+
 
 
 
@@ -534,6 +536,7 @@ static void edialign_bubble_sort(ajint number, struct multi_frag *dp);
 #if 0
 static void regex_format_complain(void);
 #endif
+
 
 
 
@@ -2949,6 +2952,9 @@ static ajint edialign_alignedSegments(edialignCLOSURE *clos,
 
  /* on suppose que x!=y */
 
+
+
+
 /* @funcstatic edialign_predFrontier **********************************
 **
 ** edialign_predFrontier
@@ -2985,6 +2991,9 @@ static ajint edialign_predFrontier(edialignCLOSURE *clos,
 
 
  /* on suppose que x!=y */
+
+
+
 
 /* @funcstatic edialign_succFrontier ****************************************
 **
@@ -5130,7 +5139,7 @@ static void edialign_seq_shift(void)
     return;
 }
 
-     
+
 
 
 /* @funcstatic edialign_filter ********************************************
@@ -8528,7 +8537,7 @@ static void edialign_regex_parse(char *mot_regex)
 
 
 
- 
+
 /* @funcstatic edialign_seq_parse *****************************************
 **
 ** edialign_seq_parse
@@ -8637,7 +8646,7 @@ static void edialign_regex_format_complain(void)
 
 
 
- 
+
 /* @funcstatic edialign_mot_dist_factor *************************************
 **
 ** edialign_mot_dist_factor
@@ -8850,6 +8859,7 @@ static void edialign_wgt_prnt(void)
 
     return;
 }
+
 
 
 

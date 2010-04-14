@@ -105,6 +105,8 @@ static ajint wordmatch_compEmbWordWrap(const void *a, const void *b);
 static ajulong wordmatch_precomputeRM(ajuint m);
 
 
+
+
 /* @prog wordmatch ************************************************************
 **
 ** Finds all exact matches of a given size between 2 sequences

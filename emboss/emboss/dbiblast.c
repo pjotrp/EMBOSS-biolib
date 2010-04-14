@@ -97,6 +97,9 @@ static AjPStr tmpdb  = NULL;
 static EmbPEntry dbiblastEntry = NULL;
 static AjPList* fdl   = NULL;
 
+
+
+
 /* @datastatic PMemFile *******************************************************
 **
 ** DbiBlast in-memory file

@@ -52,6 +52,8 @@ static unsigned wordStrHash(const void *key, unsigned hashsize);
 static void     wordVFree(void **key, void **count, void *cl);
 
 
+
+
 /* @funcstatic wordCmpStr *****************************************************
 **
 ** Compare two words for first n chars. n set by embWordLength.
@@ -1117,6 +1119,9 @@ EmbPWordMatch embWordMatchListAppend(AjPList hitlist, const AjPSeq seq,
 }
 
 
+
+
+
 /* @funcstatic wordNewListTrace ***********************************************
 **
 ** Reports contents of a word list.
@@ -1602,6 +1607,7 @@ void embWordUnused(void)
 
     return;
 }
+
 
 
 

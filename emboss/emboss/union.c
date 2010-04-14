@@ -30,6 +30,9 @@ static void union_CopyFeatures (const AjPFeattable old_feattable,
                                 ajulong offset,
                                 const AjPFeature source_feature);
 
+
+
+
 /* @prog union *************************************************************
 **
 ** Reads sequence fragments and builds one sequence

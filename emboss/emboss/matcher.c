@@ -27,6 +27,7 @@
 
 
 
+
 /* @macro matchergap **********************************************************
 **
 ** sets k-symbol indel score

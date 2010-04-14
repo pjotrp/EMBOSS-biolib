@@ -249,6 +249,9 @@ static const char *OTHER[NOTHER] =
 **
 ******************************************************************************/
 
+
+
+
 /* @datastatic PTerm *******************************************************
 **
 ** Term object
@@ -271,6 +274,7 @@ typedef struct STerm
     ajint   Padding;
 } OTerm;
  #define PTerm OTerm*
+
 
 
 
@@ -323,6 +327,8 @@ AjPStr      FindTerm(ajint namespace, AjPStr termname, PNamespace *namespaces);
 ** FUNCTIONS  
 **
 ******************************************************************************/
+
+
 
 
 /* @funcstatic ajTermNew ***************************************************

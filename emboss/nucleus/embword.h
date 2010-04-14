@@ -55,6 +55,7 @@ typedef struct EmbSWord {
 
 
 
+
 /* @data EmbPWordSeqLocs ******************************************************
 **
 ** NUCLEUS data structure for word locations in a given sequence

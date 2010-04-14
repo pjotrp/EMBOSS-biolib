@@ -59,6 +59,7 @@ static void restrict_namecheck(const AjPStr enzymes, AjPFile enzfile);
 
 
 
+
 /* @prog restrict *************************************************************
 **
 ** Finds restriction enzyme cleavage sites
