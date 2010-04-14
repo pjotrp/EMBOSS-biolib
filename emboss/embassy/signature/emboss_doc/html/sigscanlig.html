@@ -928,6 +928,9 @@ Version: EMBOSS:6.2.0
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
+   "-siginfilesdir" associated qualifiers
+   -extension1         string     Default file extension
+
    "-dbseqall" associated qualifiers
    -sbegin2            integer    Start of each sequence to be used
    -send2              integer    End of each sequence to be used
@@ -943,6 +946,15 @@ Version: EMBOSS:6.2.0
    -ufo2               string     UFO features
    -fformat2           string     Features format
    -fopenfile2         string     Features file name
+
+   "-hitsoutdir" associated qualifiers
+   -extension3         string     Default file extension
+
+   "-alignoutdir" associated qualifiers
+   -extension4         string     Default file extension
+
+   "-resultsoutdir" associated qualifiers
+   -extension5         string     Default file extension
 
    General qualifiers:
    -auto               boolean    Turn off prompts
@@ -1100,6 +1112,19 @@ Version: EMBOSS:6.2.0
 </tr>
 
 <tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-siginfilesdir" associated dirlist qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -extension1<br>-extension_siginfilesdir</td>
+<td>string</td>
+<td>Default file extension</td>
+<td>Any string</td>
+<td>sig</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=5>"-dbseqall" associated seqall qualifiers
 </td>
 </tr>
@@ -1214,6 +1239,45 @@ Version: EMBOSS:6.2.0
 <td>Features file name</td>
 <td>Any string</td>
 <td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-hitsoutdir" associated outdir qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -extension3<br>-extension_hitsoutdir</td>
+<td>string</td>
+<td>Default file extension</td>
+<td>Any string</td>
+<td>lhf</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-alignoutdir" associated outdir qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -extension4<br>-extension_alignoutdir</td>
+<td>string</td>
+<td>Default file extension</td>
+<td>Any string</td>
+<td>aln</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-resultsoutdir" associated outdir qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -extension5<br>-extension_resultsoutdir</td>
+<td>string</td>
+<td>Default file extension</td>
+<td>Any string</td>
+<td>results</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

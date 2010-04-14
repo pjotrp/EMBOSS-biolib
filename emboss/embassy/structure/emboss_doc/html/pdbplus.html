@@ -574,6 +574,15 @@ Version: EMBOSS:6.2.0
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
+   "-ccfinpath" associated qualifiers
+   -extension1         string     Default file extension
+
+   "-pdbindir" associated qualifiers
+   -extension2         string     Default file extension
+
+   "-ccfoutdir" associated qualifiers
+   -extension3         string     Default file extension
+
    "-logfile" associated qualifiers
    -odirectory         string     Output directory
 
@@ -706,6 +715,45 @@ Version: EMBOSS:6.2.0
 
 <tr bgcolor="#FFFFCC">
 <th align="left" colspan=5>Associated qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-ccfinpath" associated dirlist qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -extension1<br>-extension_ccfinpath</td>
+<td>string</td>
+<td>Default file extension</td>
+<td>Any string</td>
+<td>ccf</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-pdbindir" associated directory qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -extension2<br>-extension_pdbindir</td>
+<td>string</td>
+<td>Default file extension</td>
+<td>Any string</td>
+<td>ent</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-ccfoutdir" associated outdir qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -extension3<br>-extension_ccfoutdir</td>
+<td>string</td>
+<td>Default file extension</td>
+<td>Any string</td>
+<td>ccf</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -876,13 +924,13 @@ Stride program log output file [stride.log]: <b></b>
 Naccess program log output file [naccess.log]: <b></b>
 
 Processing /homes/user/test/qa/pdbparse-keep/1cs4.ccf
-/shared/software/bin/stride /homes/user/test/data/structure/1cs4.ent -f./pdbplus-1269354236.25929
+/shared/software/bin/stride /homes/user/test/data/structure/1cs4.ent -f./pdbplus-1271166879.25929
 /shared/software/bin/naccess /homes/user/test/data/structure/1cs4.ent
 Processing /homes/user/test/qa/pdbparse-keep/1ii7.ccf
-/shared/software/bin/stride /homes/user/test/data/structure/1ii7.ent -f./pdbplus-1269354236.25929
+/shared/software/bin/stride /homes/user/test/data/structure/1ii7.ent -f./pdbplus-1271166879.25929
 /shared/software/bin/naccess /homes/user/test/data/structure/1ii7.ent
 Processing /homes/user/test/qa/pdbparse-keep/2hhb.ccf
-/shared/software/bin/stride /homes/user/test/data/structure/2hhb.ent -f./pdbplus-1269354236.25929
+/shared/software/bin/stride /homes/user/test/data/structure/2hhb.ent -f./pdbplus-1271166879.25929
 /shared/software/bin/naccess /homes/user/test/data/structure/2hhb.ent
 STRIDE  failures: 0
 NACCESS failures: 0

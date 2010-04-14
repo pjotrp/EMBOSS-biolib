@@ -52,7 +52,7 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
-<td>[-[no]trout]<br>(Parameter 3)</td>
+<td>-[no]trout</td>
 <td>toggle</td>
 <td>Create a tree file</td>
 <td>Toggle value Yes/No</td>

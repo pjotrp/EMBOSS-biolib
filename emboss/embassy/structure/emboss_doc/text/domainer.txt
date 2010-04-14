@@ -846,6 +846,15 @@ Version: EMBOSS:6.2.0
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
+   "-ccfpdir" associated qualifiers
+   -extension2         string     Default file extension
+
+   "-ccfoutdir" associated qualifiers
+   -extension3         string     Default file extension
+
+   "-pdboutdir" associated qualifiers
+   -extension4         string     Default file extension
+
    "-cpdblogfile" associated qualifiers
    -odirectory         string     Output directory
 

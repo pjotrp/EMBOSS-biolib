@@ -84,6 +84,12 @@ Version: EMBOSS:6.2.0
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
+   "-ccfddir" associated qualifiers
+   -extension1         string     Default file extension
+
+   "-ccfpdir" associated qualifiers
+   -extension          string     Default file extension
+
    "-scmatrixfile" associated qualifiers
    -odirectory2        string     Output directory
 

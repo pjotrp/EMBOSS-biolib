@@ -42,6 +42,9 @@ Version: EMBOSS:6.2.0
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
+   "-cpdbpath" associated qualifiers
+   -extension1         string     Default file extension
+
    "-dcfoutfile" associated qualifiers
    -odirectory3        string     Output directory
 

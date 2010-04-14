@@ -961,6 +961,12 @@ Version: EMBOSS:6.2.0
 
    Associated qualifiers:
 
+   "-hitsfilespath" associated qualifiers
+   -extension1         string     Default file extension
+
+   "-outdir" associated qualifiers
+   -extension2         string     Default file extension
+
    "-outfile" associated qualifiers
    -odirectory         string     Output directory
 

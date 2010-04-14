@@ -345,6 +345,12 @@ Version: EMBOSS:6.2.0
 
    Associated qualifiers:
 
+   "-protpath" associated qualifiers
+   -extension1         string     Default file extension
+
+   "-domaindir" associated qualifiers
+   -extension2         string     Default file extension
+
    "-outfile" associated qualifiers
    -odirectory4        string     Output directory
 

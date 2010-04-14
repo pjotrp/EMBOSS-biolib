@@ -88,6 +88,32 @@
 </tr>
 
 <tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-dhfindir" associated directory qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -extension1<br>-extension_dhfindir</td>
+<td>string</td>
+<td>Default file extension</td>
+<td>Any string</td>
+<td>dhf</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-dhfoutdir" associated outdir qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -extension2<br>-extension_dhfoutdir</td>
+<td>string</td>
+<td>Default file extension</td>
+<td>Any string</td>
+<td>dhf</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
 <th align="left" colspan=5>"-hitsfile" associated outfile qualifiers
 </td>
 </tr>

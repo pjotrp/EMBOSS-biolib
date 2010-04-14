@@ -364,7 +364,14 @@ Version: EMBOSS:6.2.0
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
-   Associated qualifiers: (none)
+   Associated qualifiers:
+
+   "-dhfinpath" associated qualifiers
+   -extension1         string     Default file extension
+
+   "-dhfoutdir" associated qualifiers
+   -extension2         string     Default file extension
+
    General qualifiers:
    -auto               boolean    Turn off prompts
    -stdout             boolean    Write first file to standard output
@@ -442,8 +449,30 @@ Version: EMBOSS:6.2.0
 <th align="left" colspan=5>Associated qualifiers</th>
 </tr>
 
-<tr>
-<td colspan=5>(none)</td>
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-dhfinpath" associated dirlist qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -extension1<br>-extension_dhfinpath</td>
+<td>string</td>
+<td>Default file extension</td>
+<td>Any string</td>
+<td>dhf</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-dhfoutdir" associated outdir qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -extension2<br>-extension_dhfoutdir</td>
+<td>string</td>
+<td>Default file extension</td>
+<td>Any string</td>
+<td>dhf</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

@@ -1166,6 +1166,9 @@ Version: EMBOSS:6.2.0
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
+   "-siginfilesdir" associated qualifiers
+   -extension1         string     Default file extension
+
    "-dbseqall" associated qualifiers
    -sbegin2            integer    Start of each sequence to be used
    -send2              integer    End of each sequence to be used
@@ -1181,6 +1184,15 @@ Version: EMBOSS:6.2.0
    -ufo2               string     UFO features
    -fformat2           string     Features format
    -fopenfile2         string     Features file name
+
+   "-hitsoutdir" associated qualifiers
+   -extension3         string     Default file extension
+
+   "-alignoutdir" associated qualifiers
+   -extension4         string     Default file extension
+
+   "-resultsoutdir" associated qualifiers
+   -extension5         string     Default file extension
 
    General qualifiers:
    -auto               boolean    Turn off prompts

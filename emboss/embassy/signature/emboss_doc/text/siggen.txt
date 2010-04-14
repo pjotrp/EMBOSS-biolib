@@ -431,7 +431,20 @@ Version: EMBOSS:6.2.0
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
-   Associated qualifiers: (none)
+   Associated qualifiers:
+
+   "-algpath" associated qualifiers
+   -extension1         string     Default file extension
+
+   "-conpath" associated qualifiers
+   -extension          string     Default file extension
+
+   "-cpdbpath" associated qualifiers
+   -extension          string     Default file extension
+
+   "-sigoutdir" associated qualifiers
+   -extension2         string     Default file extension
+
    General qualifiers:
    -auto               boolean    Turn off prompts
    -stdout             boolean    Write first file to standard output

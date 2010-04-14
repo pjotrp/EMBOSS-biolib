@@ -3390,7 +3390,14 @@ Version: EMBOSS:6.2.0
                                   format to save an assembled project to.
                                   Filename must end with '.caf'. (Any string)
 
-   Associated qualifiers: (none)
+   Associated qualifiers:
+
+   "-expdir" associated qualifiers
+   -extension          string     Default file extension
+
+   "-scfdir" associated qualifiers
+   -extension          string     Default file extension
+
    General qualifiers:
    -auto               boolean    Turn off prompts
    -stdout             boolean    Write first file to standard output

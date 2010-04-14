@@ -241,6 +241,9 @@ Version: EMBOSS:6.2.0
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
+   "-dirlistpath" associated qualifiers
+   -extension          string     Default file extension
+
    "-outfile" associated qualifiers
    -odirectory2        string     Output directory
 

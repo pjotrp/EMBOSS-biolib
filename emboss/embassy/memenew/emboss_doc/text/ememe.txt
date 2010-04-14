@@ -900,6 +900,9 @@ Version: EMBOSS:6.2.0
    -fformat1           string     Features format
    -fopenfile1         string     Features file name
 
+   "-outdir" associated qualifiers
+   -extension2         string     Default file extension
+
    General qualifiers:
    -auto               boolean    Turn off prompts
    -stdout             boolean    Write first file to standard output

@@ -496,6 +496,12 @@ Version: EMBOSS:6.2.0
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
+   "-cpdbdir" associated qualifiers
+   -extension1         string     Default file extension
+
+   "-conoutdir" associated qualifiers
+   -extension2         string     Default file extension
+
    "-conlogfile" associated qualifiers
    -odirectory         string     Output directory
 
