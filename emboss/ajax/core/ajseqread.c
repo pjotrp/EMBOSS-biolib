@@ -155,6 +155,7 @@ static float seqQualIllumina[] = {
 
 
 
+
 /* @datastatic SeqPInFormat ***************************************************
 **
 ** Sequence input formats data structure
@@ -278,6 +279,8 @@ typedef struct SeqSMsfItem
 } SeqOMsfItem;
 
 #define SeqPMsfItem SeqOMsfItem*
+
+
 
 
 /* @datastatic SeqPStockholm **************************************************
@@ -716,6 +719,9 @@ static SeqPSelexseq  selexseqNew(void);
 
 /* static data that needs the function definitions and so must come later */
 
+
+
+
 /* @funclist seqInFormatDef ***************************************************
 **
 ** Functions to read each sequence format
@@ -964,6 +970,9 @@ static SeqOInFormat seqInFormatDef[] =
 /* ========================= constructors ============================= */
 /* ==================================================================== */
 
+
+
+
 /* @section Sequence Input Constructors ***************************************
 **
 ** All constructors return a new sequence input object by pointer. It
@@ -973,6 +982,9 @@ static SeqOInFormat seqInFormatDef[] =
 ** anyway.
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqinNew ***********************************************************
 **
@@ -1036,6 +1048,9 @@ AjPSeqin ajSeqinNew(void)
 /* ==================================================================== */
 /* ========================== destructors ============================= */
 /* ==================================================================== */
+
+
+
 
 /* @section Sequence Input Destructors ****************************************
 **
@@ -1132,6 +1147,9 @@ void ajSeqinDel(AjPSeqin* pthis)
 /* ==================================================================== */
 /* =========================== Modifiers ============================== */
 /* ==================================================================== */
+
+
+
 
 /* @section Sequence Input Modifiers ******************************************
 **
@@ -1244,6 +1262,9 @@ void ajSeqinSetRange(AjPSeqin seqin, ajint ibegin, ajint iend)
 /* ========================== Assignments ============================= */
 /* ==================================================================== */
 
+
+
+
 /* @section Sequence Input Assignments ****************************************
 **
 ** These functions overwrite the sequence input object provided as the
@@ -1257,6 +1278,9 @@ void ajSeqinSetRange(AjPSeqin seqin, ajint ibegin, ajint iend)
 /* ==================================================================== */
 /* ======================== Operators ==================================*/
 /* ==================================================================== */
+
+
+
 
 /* @section Sequence Input Operators ******************************************
 **
@@ -1609,6 +1633,9 @@ void ajSeqinClear(AjPSeqin thys)
 /* ============================ Casts ==================================*/
 /* ==================================================================== */
 
+
+
+
 /* @section Sequence Input Casts **********************************************
 **
 ** These functions examine the contents of a sequence input object and
@@ -1624,6 +1651,9 @@ void ajSeqinClear(AjPSeqin thys)
 /* ==================================================================== */
 /* ========================== Assignments ============================= */
 /* ==================================================================== */
+
+
+
 
 /* @section Sequence inputs **********************************************
 **
@@ -1774,6 +1804,9 @@ AjBool ajSeqRead(AjPSeq thys, AjPSeqin seqin)
 /* ==================================================================== */
 /* ========================== Assignments ============================= */
 /* ==================================================================== */
+
+
+
 
 /* @section Sequence Set Inputs ******************************************
 **
@@ -3253,6 +3286,7 @@ static AjBool seqReadFastqInt(AjPSeq thys, AjPSeqin seqin)
     return ajTrue;
 }
 */
+
 
 
 
@@ -9031,6 +9065,7 @@ static AjBool seqReadMase(AjPSeq thys, AjPSeqin seqin)
 
 
 
+
 /* @funcstatic seqReadSam ****************************************************
 **
 ** Given data in a sequence structure, tries to read everything needed
@@ -9182,23 +9217,38 @@ static AjBool seqReadSam(AjPSeq thys, AjPSeqin seqin)
         thys->Accuracy[i++] = seqQualPhred[iqual];
     }
 
-    /* @HD header VN:
+
+
+
+/* @HD header VN:
     ** 
     */
 
-    /* @SQ sequence dictionary SN: LN:
+
+
+
+/* @SQ sequence dictionary SN: LN:
     **
     */
 
-    /* @RG read group ID: SM:
+
+
+
+/* @RG read group ID: SM:
     **
     */
 
-    /* @PG program name ID:
+
+
+
+/* @PG program name ID:
     **
     */
 
-    /* @CO comment
+
+
+
+/* @CO comment
     **
     */
 
@@ -13365,6 +13415,7 @@ static AjBool seqReadAbi(AjPSeq thys, AjPSeqin seqin)
     AjPFilebuff buff;
     AjBool  ok      = ajFalse;
     ajlong baseO    = 0L;
+    ajlong pconO    = 0L;
     ajlong numBases = 0L;
     AjPStr sample   = NULL;
     AjPStr smpl     = NULL;
@@ -13396,10 +13447,14 @@ static AjBool seqReadAbi(AjPSeq thys, AjPSeqin seqin)
     ajDebug("filestat %d\n", filestat);
 
     numBases = ajSeqABIGetNBase(fp);
+
+    ok = ajFalse;
+
     /* Find BASE tag & get offset                    */
     baseO = ajSeqABIGetBaseOffset(fp);
     /* Read in sequence         */
-    ok = ajSeqABIReadSeq(fp,baseO,numBases,&thys->Seq);
+    if(baseO)
+        ok = ajSeqABIReadSeq(fp,baseO,numBases,&thys->Seq);
 
     if(!ok)
     {
@@ -13408,6 +13463,17 @@ static AjBool seqReadAbi(AjPSeq thys, AjPSeqin seqin)
 
 	return ajFalse;
     }
+
+    ok = ajFalse;
+    
+    pconO = ajSeqABIGetConfidOffset(fp);
+    if(numBases > thys->Qualsize)
+    {
+        AJCRESIZE(thys->Accuracy, numBases);
+        thys->Qualsize = numBases;
+    }
+    if(pconO)
+        ok = ajSeqABIReadConfid(fp, pconO, numBases, thys->Accuracy);
 
     sample = ajStrNew();
     ajSeqABISampleName(fp, &sample);
@@ -13514,17 +13580,49 @@ void ajSeqPrintbookInFormat(AjPFile outf)
 
     fmtlist = ajListstrNew();
 
+    ajFmtPrintF(outf, "<para>The supported sequence formats are summarised "
+                "in the table below. "
+                "The columns are as follows: "
+                "<emphasis>Input format</emphasis> (format name), "
+                "<emphasis>Output format</emphasis> (format name), "
+                "<emphasis>Sngl</emphasis> "
+                "(indicates whether each sequence is written to a new file. "
+                "This behaviour is the default and can be set by the "
+                "<option>-ossingle</option> command line qualifier.  "
+                "<emphasis>Save</emphasis> (indicates that sequence data is "
+                "stored internally and written when the output is closed. "
+                "This is needed for 'interleaved' formats such as Phylip "
+                "and MSF), <emphasis>Try</emphasis> (indicates whether the "
+                "format can be detected automatically on input), "
+                "<emphasis>Nuc</emphasis> (\"true\" indicates nucleotide "
+                "sequence data may be represented), <emphasis>Pro</emphasis> "
+                "(\"true\" indicates protein sequence data may be represented, "
+                "<emphasis>Feat</emphasis> (whether the format includes "
+                "feature annotation data. "
+                "EMBOSS can also read feature data from a separate "
+                "feature file).  "
+                "<emphasis>Gap</emphasis> (whether the format supports "
+                "sequence data with gap characters, for example the results "
+                "of an alignment), "
+                "<emphasis>Mset</emphasis> (\"true\" indicates that more "
+                "than one set of sequences can be stored in a single file. "
+                "This is used by, for example, phylogenetic analysis "
+                "applications to store many versions of a multiple alignment "
+                "for statistical analysis) and "
+                "<emphasis>Description</emphasis> (short description of "
+                "the format).</para>\n\n");
+
     ajFmtPrintF(outf, "<table frame=\"box\" rules=\"cols\">\n");
     ajFmtPrintF(outf, "  <caption>Input sequence formats</caption>\n");
     ajFmtPrintF(outf, "  <thead>\n");
     ajFmtPrintF(outf, "    <tr align=\"center\">\n");
     ajFmtPrintF(outf, "      <th>Input Format</th>\n");
-    ajFmtPrintF(outf, "      <th>Auto</th>\n");
+    ajFmtPrintF(outf, "      <th>Try</th>\n");
     ajFmtPrintF(outf, "      <th>Nuc</th>\n");
     ajFmtPrintF(outf, "      <th>Pro</th>\n");
     ajFmtPrintF(outf, "      <th>Feat</th>\n");
     ajFmtPrintF(outf, "      <th>Gap</th>\n");
-    ajFmtPrintF(outf, "      <th>Multi</th>\n");
+    ajFmtPrintF(outf, "      <th>Mset</th>\n");
     ajFmtPrintF(outf, "      <th>Description</th>\n");
     ajFmtPrintF(outf, "    </tr>\n");
     ajFmtPrintF(outf, "  </thead>\n");
@@ -15597,6 +15695,9 @@ static void seqSvSave(AjPSeq thys, const AjPStr sv)
 /* ========================= constructors ============================= */
 /* ==================================================================== */
 
+
+
+
 /* @section Sequence Query Constructors ***************************************
 **
 ** All constructors return a new sequence query object by pointer. It
@@ -15661,6 +15762,9 @@ AjPSeqQuery ajSeqQueryNew(void)
 /* ==================================================================== */
 /* ========================== destructors ============================= */
 /* ==================================================================== */
+
+
+
 
 /* @section Sequence Query Destructors ****************************************
 **
@@ -15733,6 +15837,9 @@ void ajSeqQueryDel(AjPSeqQuery* pthis)
 /* ========================== Assignments ============================= */
 /* ==================================================================== */
 
+
+
+
 /* @section Sequence Query Assignments ****************************************
 **
 ** These functions overwrite the sequence query object provided as
@@ -15746,6 +15853,9 @@ void ajSeqQueryDel(AjPSeqQuery* pthis)
 /* ==================================================================== */
 /* =========================== Modifiers ============================== */
 /* ==================================================================== */
+
+
+
 
 /* @section Sequence Query Modifiers ******************************************
 **
@@ -15803,6 +15913,9 @@ void ajSeqQueryClear(AjPSeqQuery thys)
 /* ==================================================================== */
 /* ======================== Operators ==================================*/
 /* ==================================================================== */
+
+
+
 
 /* @section Sequence Query Operators ******************************************
 **
@@ -16350,6 +16463,9 @@ void ajSeqQueryTrace(const AjPSeqQuery thys)
 /* ==================================================================== */
 /* ============================ Casts ================================= */
 /* ==================================================================== */
+
+
+
 
 /* @section Sequence Query Casts **********************************************
 **
@@ -17724,6 +17840,9 @@ static AjBool seqDefine(AjPSeq thys, AjPSeqin seqin)
     return ajTrue;
 }
 
+
+
+
 /* @section ASIS Sequence Access **********************************************
 **
 ** These functions manage the ASIS sequence access methods.
@@ -17781,6 +17900,9 @@ AjBool ajSeqAccessAsis(AjPSeqin seqin)
 ** These functions manage the sequence file access methods.
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqAccessFile ******************************************************
 **

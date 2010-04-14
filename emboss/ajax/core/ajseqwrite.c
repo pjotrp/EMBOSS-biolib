@@ -57,12 +57,18 @@ static double seqQualIndexToSolexa[] = {       -FLT_MAX, /* 0 -5 */
  55.500012, 56.500010, 57.500008, 58.500006, 59.500005, /* 61-65 56-59 */
  60.500004, 61.500003, FLT_MAX, 999.999                 /* 66-67 61-62 */
                 };
-                         
+
+
+
+
 /* @filesection ajseqwrite ****************************************************
 **
 ** @nam1rule aj Function belongs to the AJAX library.
 **
 ******************************************************************************/
+
+
+
 
 /* @datastatic SeqPOutFormat **************************************************
 **
@@ -240,6 +246,7 @@ static void       seqWriteSwiss(AjPSeqout outseq);
 static void       seqWriteSwissnew(AjPSeqout outseq);
 static void       seqWriteText(AjPSeqout outseq);
 static void       seqWriteTreecon(AjPSeqout outseq);
+
 
 
 
@@ -485,6 +492,9 @@ static SeqOOutFormat seqOutFormat[] =
 **
 ******************************************************************************/
 
+
+
+
 /* @section Sequence Output Constructors **************************************
 **
 ** All constructors return a new sequence output object by pointer. It
@@ -687,6 +697,9 @@ AjPSeqout ajSeqoutNewFormatS(const AjPStr str)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajSeqoutDel **********************************************************
 **
 ** Destructor for AjPSeqout objects
@@ -839,6 +852,9 @@ void ajSeqoutDel(AjPSeqout* Pseqout)
 ** @nam2rule Seqall
 **
 ******************************************************************************/
+
+
+
 
 /* @section Sequence Stream output *****************************************
 **
@@ -1150,6 +1166,8 @@ __deprecated void  ajSeqsetWrite(AjPSeqout outseq, const AjPSeqset seq)
 **
 ** @valrule * [void]
 ******************************************************************************/
+
+
 
 
 /* @func ajSeqoutDumpSwisslike *************************************************
@@ -1769,6 +1787,7 @@ static void seqWriteFastqInt(AjPSeqout outseq)
     return;
 }
 */
+
 
 
 
@@ -8270,6 +8289,7 @@ void ajSeqoutFlush(AjPSeqout seqout)
 
 
 
+
 /* @func ajSeqoutOpen *********************************************************
 **
 ** If the file is not yet open, calls seqoutUsaProcess to convert the USA into
@@ -8489,6 +8509,9 @@ void ajSeqoutReset(AjPSeqout seqout)
 ** @valrule * [AjBool] True on success
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqoutSetFormatC ***************************************************
 **
@@ -8743,6 +8766,8 @@ static void seqDbName(AjPStr* name, const AjPStr db)
 ******************************************************************************/
 
 
+
+
 /* @func ajSeqoutPrintFormat **************************************************
 **
 ** Reports the internal data structures
@@ -8832,6 +8857,39 @@ void ajSeqoutPrintbookFormat(AjPFile outf)
     AjPStr* names;
 
     fmtlist = ajListstrNew();
+
+    ajFmtPrintF(outf, "<para>The supported sequence formats are summarised "
+                "in the table below. "
+                "The columns are as follows: "
+                "<emphasis>Input format</emphasis> (format name), "
+                "<emphasis>Output format</emphasis> (format name), "
+                "<emphasis>Sngl</emphasis> "
+                "(indicates whether each sequence is written to a new file. "
+                "This behaviour is the default and can be set by the "
+                "<option>-ossingle</option> command line qualifier.  "
+                "<emphasis>Save</emphasis> (indicates that sequence data is "
+                "stored internally and written when the output is closed. "
+                "This is needed for 'interleaved' formats such as Phylip "
+                "and MSF), <emphasis>Try</emphasis> (indicates whether the "
+                "format can be detected automatically on input), "
+                "<emphasis>Nuc</emphasis> (\"true\" indicates nucleotide "
+                "sequence data may be represented), <emphasis>Pro</emphasis> "
+                "(\"true\" indicates protein sequence data may be represented, "
+                "<emphasis>Feat</emphasis> (whether the format includes "
+                "feature annotation data. "
+                "EMBOSS can also read feature data from a separate "
+                "feature file).  "
+                "<emphasis>Gap</emphasis> (whether the format supports "
+                "sequence data with gap characters, for example the results "
+                "of an alignment), "
+                "<emphasis>Mset</emphasis> (\"true\" indicates that more "
+                "than one set of sequences can be stored in a single file. "
+                "This is used by, for example, phylogenetic analysis "
+                "applications to store many versions of a multiple alignment "
+                "for statistical analysis) and "
+                "<emphasis>Description</emphasis> (short description of "
+                "the format).</para> \n");
+
 
     ajFmtPrintF(outf, "<table frame=\"box\" rules=\"cols\">\n");
     ajFmtPrintF(outf, "  <caption>Output sequence formats</caption>\n");
@@ -9099,6 +9157,9 @@ static void seqSeqFormat(ajint seqlen, SeqPSeqFormat* Psf)
 /* ============================ Casts ================================= */
 /* ==================================================================== */
 
+
+
+
 /* @section Sequence Output Casts *********************************************
 **
 ** @fdata [AjPSeqout]
@@ -9124,6 +9185,9 @@ static void seqSeqFormat(ajint seqlen, SeqPSeqFormat* Psf)
 ** @fcategory cast
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSeqoutGetBasecount **************************************************
 **
@@ -9631,6 +9695,8 @@ static AjBool seqFileReopen(AjPSeqout outseq)
 */
 
 
+
+
 /* @func ajSeqoutTrace ********************************************************
 **
 ** Debug calls to trace the data in a sequence object.
@@ -9787,6 +9853,8 @@ static void seqFormatDel(SeqPSeqFormat* pformat)
 ******************************************************************************/
 
 
+
+
 /* @func ajSeqoutExit *******************************************************
 **
 ** Cleans up sequence output processing internal memory
@@ -9830,6 +9898,9 @@ __deprecated void ajSeqWriteExit(void)
 **
 ******************************************************************************/
 
+
+
+
 /* @section other *******************************************************
 **
 ** @fdata [AjPStr]
@@ -9850,6 +9921,8 @@ __deprecated void ajSeqWriteExit(void)
 ** @valrule FormatSingle [AjBool] True if single files are written
 **
 ******************************************************************************/
+
+
 
 
 /* @func ajSeqoutstrGetFormatDefault ******************************************

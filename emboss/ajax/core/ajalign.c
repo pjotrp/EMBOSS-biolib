@@ -34,6 +34,8 @@
 #include "ajax.h"
 
 
+
+
 /* @datastatic AlignPData *****************************************************
 **
 ** Ajax Align Data object.
@@ -621,6 +623,7 @@ static void alignWriteSelex(AjPAlign thys)
 
     return;
 }
+
 
 
 
@@ -2255,7 +2258,6 @@ AjBool ajAlignFormatDefault(AjPStr* pformat)
 
 
 
-
 /* @func ajAlignGetLen ********************************************************
 **
 ** Returns the filename for an alignment. If the alignment has more than one
@@ -2906,6 +2908,9 @@ void ajAlignSetTailApp(AjPAlign thys, const AjPStr tail)
 
     return;
 }
+
+
+
 
 /* @func ajAlignSetSubTail ****************************************************
 **
@@ -3752,7 +3757,6 @@ static ajint alignLen(const AjPAlign thys, ajint iali)
 
     return data->LenAli;
 }
-
 
 
 
@@ -4982,6 +4986,22 @@ void ajAlignPrintbookFormat(AjPFile outf)
     AjPStr* names;
 
     fmtlist = ajListstrNew();
+
+    ajFmtPrintF(outf, "<para>The supported alignment formats are summarised "
+                "in the table below. The columns are as follows: "
+                "<emphasis>Output format</emphasis> (format name), "
+                "<emphasis>Nuc</emphasis> (\"true\" indicates nucleotide "
+                "sequence data may be represented), "
+                "<emphasis>Pro</emphasis> (\"true\" indicates protein "
+                "sequence data may be represented, "
+                "<emphasis>Header</emphasis> (whether the standard EMBOSS "
+                "alignment header is included), "
+                "<emphasis>Minseq</emphasis> "
+                "(minimum sequences in alignment), "
+                "<emphasis>Maxseq</emphasis> "
+                "(maximum sequences in alignment) and "
+                "<emphasis>Description</emphasis> (short description of "
+                "the format).</para> \n\n");
 
     ajFmtPrintF(outf, "<table frame=\"box\" rules=\"cols\">\n");
     ajFmtPrintF(outf, "  <caption>Alignment formats</caption>\n");

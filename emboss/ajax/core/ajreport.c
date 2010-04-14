@@ -2729,6 +2729,7 @@ __deprecated AjBool ajReportSetTags(AjPReport thys, const AjPStr taglist)
 
 
 
+
 /* @func ajReportValid ********************************************************
 **
 ** Test for a report object.
@@ -3002,6 +3003,7 @@ static ajint reportGetTags(const AjPReport thys, AjPStr** types, AjPStr** names,
 
     return ntags;
 }
+
 
 
 
@@ -3313,6 +3315,8 @@ __deprecated void ajReportSetHeader(AjPReport thys, const AjPStr header)
 }
 
 
+
+
 /* @func ajReportSetHeaderC ***************************************************
 **
 ** Defines a feature report header
@@ -3424,6 +3428,7 @@ void ajReportSetSubheaderC(AjPReport thys, const char* header)
 
 
 
+
 /* @func ajReportSetSubheaderS *************************************************
 **
 ** Defines a feature report subheader
@@ -3456,6 +3461,8 @@ __deprecated void ajReportSetSubHeader(AjPReport thys, const AjPStr header)
 {
     ajReportSetSubheaderS(thys,header);
 }
+
+
 
 
 /* @func ajReportAppendSubheaderC **********************************************
@@ -3498,6 +3505,7 @@ __deprecated void ajReportAppendSubHeaderC(AjPReport thys, const char* header)
 
 
 
+
 /* @func ajReportAppendSubheaderS **********************************************
 **
 ** Defines a feature report subheader
@@ -3536,6 +3544,7 @@ __deprecated void ajReportAppendSubHeader(AjPReport thys, const AjPStr header)
     ajReportAppendSubheaderS(thys, header);
     return;
 }
+
 
 
 
@@ -3668,6 +3677,7 @@ __deprecated void ajReportSetTail(AjPReport thys, const AjPStr tail)
     ajReportSetTailS(thys, tail);
     return;
 }
+
 
 
 
@@ -3881,6 +3891,7 @@ void ajReportAppendSubtailS(AjPReport thys, const AjPStr tail)
 
 
 
+
 /* @obsolete ajReportAppendSubTail
 ** @rename ajReportAppendSubtailS
 */
@@ -3890,6 +3901,7 @@ __deprecated void ajReportAppendSubTail(AjPReport thys, const AjPStr tail)
     ajReportAppendSubtailS(thys, tail);
     return;
 }
+
 
 
 
@@ -4049,6 +4061,8 @@ __deprecated void ajReportFileAdd(AjPReport thys,
 }
 
 
+
+
 /* @func ajReportPrintFormat **************************************************
 **
 ** Reports the internal data structures
@@ -4117,6 +4131,25 @@ void ajReportPrintbookFormat(AjPFile outf)
     AjPStr* names;
 
     fmtlist = ajListstrNew();
+
+    ajFmtPrintF(outf, "<para>The supported report formats are summarised "
+                "in the table below. The columns are as follows: "
+                "<emphasis>Output format</emphasis> (format name), "
+                "<emphasis>Nuc</emphasis> "
+                "(\"true\" indicates nucleotide sequence data may be "
+                "represented), "
+                "<emphasis>Pro</emphasis> (\"true\" indicates protein "
+                "sequence data may be represented, "
+                "<emphasis>Header</emphasis> (whether the standard EMBOSS "
+                "report header is included), "
+                "<emphasis>Seq</emphasis> (whether the sequence corresponding "
+                "to the features is included), "
+                "<emphasis>Tags</emphasis> (number of specific tag-values "
+                "reported.  A non-zero value suggests a format is not "
+                "suitable for application output that does not generate "
+                "these specific tags.) "
+                "<emphasis>Description</emphasis> (short description of "
+                "the format).</para>\n\n");
 
     ajFmtPrintF(outf, "<table frame=\"box\" rules=\"cols\">\n");
     ajFmtPrintF(outf, "  <caption>Report formats</caption>\n");
