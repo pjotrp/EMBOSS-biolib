@@ -52,6 +52,8 @@ static void tableStrDelKey(void** key, void** value, void* cl);
 static void tableFreeSetExpand (void);
 
 
+
+
 /* @filesection ajtable ********************************************************
 **
 ** @nam1rule aj Function belongs to the AJAX library.
@@ -75,6 +77,7 @@ static void tableFreeSetExpand (void);
 
 
 
+
 /* @section Comparison functions **********************************************
 **
 ** @fdata [AjPTable]
@@ -95,6 +98,8 @@ static void tableFreeSetExpand (void);
 ** @fcategory misc
 **
 ******************************************************************************/
+
+
 
 
 /* @funcstatic tableCmpAtom ***************************************************
@@ -152,6 +157,9 @@ static ajuint tableHashAtom(const void *key, ajuint hashsize)
 ** @valrule * [AjPTable] New hash table
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajTableNewFunctionLen *************************************************
 **
@@ -310,6 +318,9 @@ AjPTable ajTableNewLen(ajuint size)
 ** @fcategory cast
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajTableFetch *********************************************************
 **
@@ -483,6 +494,9 @@ ajuint ajTableToarrayKeys(const AjPTable table,
     return table->length;
 }
 
+
+
+
 /* @obsolete ajTableToarray
 ** @rename ajTableToarrayKeysValues
 */
@@ -493,6 +507,8 @@ __deprecated ajuint ajTableToarray(const AjPTable table,
 
     return ajTableToarrayKeysValues(table, keyarray, valarray);
 }
+
+
 
 
 /* @func ajTableToarrayKeysValues *********************************************
@@ -542,6 +558,9 @@ ajuint ajTableToarrayKeysValues(const AjPTable table,
     return table->length;
 }
 
+
+
+
 /* @func ajTableToarrayValues *************************************************
 **
 ** creates two N+1 element arrays that holds the N values
@@ -582,6 +601,9 @@ ajuint ajTableToarrayValues(const AjPTable table,
     return table->length;
 }
 
+
+
+
 /* @section Trace functions ***************************************************
 **
 ** @fdata [AjPTable]
@@ -593,6 +615,8 @@ ajuint ajTableToarrayValues(const AjPTable table,
 ** @fcategory misc
 **
 ******************************************************************************/
+
+
 
 
 /* @func ajTableTrace *********************************************************
@@ -658,6 +682,8 @@ void ajTableTrace(const AjPTable table)
 **
 ** @fcategory modify
 ******************************************************************************/
+
+
 
 
 /* @func ajTablePut ***********************************************************
@@ -843,6 +869,8 @@ void * ajTableRemoveKey(AjPTable table, const void *key, void** truekey)
 ******************************************************************************/
 
 
+
+
 /* @func ajTableMap **********************************************************
 **
 ** calls function 'apply' for each key-value in table
@@ -962,6 +990,9 @@ void ajTableMapDel(AjPTable table,
 **
 ******************************************************************************/
 
+
+
+
 /* @funcstatic tableFreeSetExpand **********************************************
 **
 ** Expand the list of free structure bindings
@@ -991,8 +1022,9 @@ static void tableFreeSetExpand (void)
     return;
 }
 
-    
-    
+
+
+
 /* @func ajTableFree **********************************************************
 **
 ** Deallocates and clears a hash table. Does not clear keys or values.
@@ -1119,6 +1151,9 @@ void ajTableExit(void)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajTablestrNew ********************************************************
 **
 ** Creates, initialises, and returns a new, empty table that can hold an
@@ -1220,6 +1255,9 @@ AjPTable ajTablestrNewLen(ajuint size)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajTablestrFetch ******************************************************
 **
 ** returns the value associated with key in table, or null
@@ -1271,6 +1309,9 @@ const AjPStr ajTablestrFetch(const AjPTable table, const AjPStr key)
 ** @fcategory modify
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajTablestrFetchmod ***************************************************
 **
@@ -1328,6 +1369,8 @@ AjPStr* ajTablestrFetchmod(AjPTable table, const AjPStr key)
 ** @fcategory misc
 **
 ******************************************************************************/
+
+
 
 
 /* @func ajTablestrCmp ********************************************************
@@ -1502,6 +1545,8 @@ __deprecated ajuint ajStrTableHashCase(const void* key, ajuint hashsize)
 ******************************************************************************/
 
 
+
+
 /* @func ajTablestrPrint ******************************************************
 **
 ** Print function for a table with a string key.
@@ -1622,6 +1667,9 @@ __deprecated void ajStrTableTrace(const AjPTable table)
 ** @fcategory delete
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajTablestrFree *******************************************************
 **
@@ -1779,6 +1827,9 @@ static void tableStrDelKey(void** key, void** value, void* cl)
 **
 ******************************************************************************/
 
+
+
+
 /* @section Constructors ******************************************************
 **
 ** Constructors for hash tables
@@ -1794,6 +1845,7 @@ static void tableStrDelKey(void** key, void** value, void* cl)
 ** @valrule * [AjPTable] New hash table
 **
 ******************************************************************************/
+
 
 
 
@@ -1932,6 +1984,8 @@ __deprecated AjPTable ajStrTableNew(ajuint hint)
 ** @fcategory misc
 **
 ******************************************************************************/
+
+
 
 
 /* @func ajTablecharCmp *******************************************************
@@ -2100,6 +2154,8 @@ __deprecated ajuint ajStrTableHashCaseC(const void* key, ajuint hashsize)
 ** @fcategory misc
 **
 ******************************************************************************/
+
+
 
 
 /* @func ajTablecharPrint *****************************************************

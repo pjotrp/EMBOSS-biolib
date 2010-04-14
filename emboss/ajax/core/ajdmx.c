@@ -84,6 +84,9 @@ static void dmxTraceScophit(const AjPScophit scophit, const char* title);
 /* =========================== constructors ============================== */
 /* ======================================================================= */
 
+
+
+
 /* @section Constructors ****************************************************
 **
 ** All constructors return a pointer to a new instance. It is the 
@@ -92,6 +95,9 @@ static void dmxTraceScophit(const AjPScophit scophit, const char* title);
 ** programming practice to do so anyway.
 **
 ****************************************************************************/
+
+
+
 
 /* @func ajDmxScophitNew ****************************************************
 **
@@ -544,12 +550,18 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 /* =========================== destructors =============================== */
 /* ======================================================================= */
 
+
+
+
 /* @section Structure Destructors *******************************************
 **
 ** All destructor functions receive the address of the instance to be
 ** deleted.  The original pointer is set to NULL so is ready for re-use.
 **
 ****************************************************************************/
+
+
+
 
 /* @func ajDmxScophitDel ****************************************************
 **
@@ -667,6 +679,9 @@ void ajDmxScopalgDel(AjPScopalg *pthis)
 /* ============================ Assignments ============================== */
 /* ======================================================================= */
 
+
+
+
 /* @section Assignments ****************************************************
 **
 ** These functions overwrite the instance provided as the first argument
@@ -674,6 +689,9 @@ void ajDmxScopalgDel(AjPScopalg *pthis)
 ** create a new instance by assignment.
 **
 ****************************************************************************/
+
+
+
 
 /* @func ajDmxScophitListCopy ***********************************************
 **
@@ -783,11 +801,17 @@ AjBool ajDmxScophitCopy(AjPScophit *to, const AjPScophit from)
 /* ============================= Modifiers =============================== */
 /* ======================================================================= */
 
+
+
+
 /* @section Modifiers *******************************************************
 **
 ** These functions use the contents of an instance and update them.
 **
 ****************************************************************************/
+
+
+
 
 /* @func ajDmxScophitTargetLowPriority **************************************
 **
@@ -874,12 +898,18 @@ AjBool ajDmxScophitTarget(AjPScophit *h)
 /* ========================== Operators ===================================*/
 /* ======================================================================= */
 
+
+
+
 /* @section Operators *******************************************************
 **
 ** These functions use the contents of an instance but do not make any 
 ** changes.
 **
 ****************************************************************************/
+
+
+
 
 /* @func ajDmxScophitCheckTarget ********************************************
 **
@@ -904,6 +934,9 @@ AjBool ajDmxScophitCheckTarget(const AjPScophit ptr)
 /* ============================== Casts ===================================*/
 /* ======================================================================= */
 
+
+
+
 /* @section Casts ***********************************************************
 **
 ** These functions examine the contents of an instance and return some
@@ -919,6 +952,9 @@ AjBool ajDmxScophitCheckTarget(const AjPScophit ptr)
 /* ======================================================================= */
 /* =========================== Reporters ==================================*/
 /* ======================================================================= */
+
+
+
 
 /* @section Reporters *******************************************************
 **
@@ -1263,6 +1299,9 @@ ajint ajDmxScophitCompFold(const void *hit1, const void *hit2)
 /* ======================================================================= */
 /* ========================== Input & Output ============================= */
 /* ======================================================================= */
+
+
+
 
 /* @func ajDmxScopalgGetseqs ************************************************
 **
@@ -1928,7 +1967,7 @@ AjBool ajDmxScopalgWriteClustal(const AjPScopalg align, AjPFile outf)
     ajFmtPrintF(outf,"\n"); 
     
     return ajTrue;
-}	
+}
 
 
 
@@ -1965,7 +2004,8 @@ AjBool ajDmxScopalgWriteClustal2(const AjPScopalg align, AjPFile outf)
     ajFmtPrintF(outf,"\n");
     
     return ajTrue;
-}	
+}
+
 
 
 
@@ -2013,12 +2053,18 @@ AjBool ajDmxScopalgWriteFasta(const AjPScopalg align, AjPFile outf)
 /* ======================== Miscellaneous =================================*/
 /* ======================================================================= */
 
+
+
+
 /* @section Miscellaneous ***************************************************
 **
 ** These functions may have diverse functions that do not fit into the other
 ** categories. 
 **
 ****************************************************************************/
+
+
+
 
 /* @func ajDmxScopSeqFromSunid **********************************************
 **

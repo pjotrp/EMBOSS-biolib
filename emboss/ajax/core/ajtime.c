@@ -33,6 +33,8 @@ ajlong timeClockOverflow = 0L;
 ajlong timeClockMax = 0L;
 
 
+
+
 /* @datastatic TimePFormat ****************************************************
 **
 ** Internal structure for known Ajax time formats
@@ -84,6 +86,8 @@ static TimeOFormat timeFormat[] =  /* formats for strftime */
 static const char* TimeFormat(const char *timefmt, AjBool* makeupper);
 
 
+
+
 /* @filesection ajtime *******************************************************
 **
 ** @nam1rule aj Function belongs to the AJAX library.
@@ -91,11 +95,14 @@ static const char* TimeFormat(const char *timefmt, AjBool* makeupper);
 */
 
 
+
+
 /* @datasection [AjPTime] Time object ****************************************
 **
 ** @nam2rule Time     Function is for handling time and usually processes an
 **                    AjSTime object.
 */
+
 
 
 
@@ -322,6 +329,9 @@ __deprecated AjPTime ajTimeTodayF(const char* timefmt)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajTimeDel ************************************************************
 **
 ** Destructor for AjPTime object.
@@ -365,6 +375,9 @@ void ajTimeDel(AjPTime *Ptime)
 ** @fcategory use
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajTimeGetTimetype ****************************************************
 **
@@ -414,6 +427,9 @@ __deprecated time_t ajTimeMake(const AjPTime thys)
 ** @fcategory misc
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajTimeRefToday *******************************************************
 **
@@ -524,6 +540,9 @@ __deprecated const AjPTime ajTimeTodayRefF(const char* timefmt)
 ** @fcategory modify
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajTimeSetC ***********************************************************
 **
@@ -713,6 +732,8 @@ __deprecated AjBool ajTimeLocal(const time_t timer, AjPTime thys)
 ******************************************************************************/
 
 
+
+
 /* @func ajTimeDiff ***********************************************************
 **
 ** Difference between two time objects
@@ -800,6 +821,8 @@ static const char* TimeFormat(const char *timefmt, AjBool* makeupper)
 ******************************************************************************/
 
 
+
+
 /* @func ajTimeTrace **********************************************************
 **
 ** Debug report on the contents of an AjPTime object
@@ -836,6 +859,8 @@ void ajTimeTrace(const AjPTime thys)
 */
 
 
+
+
 /* @func ajTimeExit ***********************************************************
 **
 ** Cleans up time processing internal memory
@@ -865,6 +890,7 @@ void ajTimeExit(void)
 
 
 
+
 /* @section reset **************************************************************
 **
 ** Functions for memory cleanup
@@ -878,6 +904,9 @@ void ajTimeExit(void)
 ** @fcategory misc
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajTimeReset **********************************************************
 **
@@ -910,6 +939,9 @@ void ajTimeReset(void)
 **
 ******************************************************************************/
 
+
+
+
 /* @section get cpu time *******************************************************
 **
 ** Functions for retrieving CPU time
@@ -929,6 +961,9 @@ void ajTimeReset(void)
 ** @fcategory use
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajClockDiff ********************************************************
 **
@@ -1040,6 +1075,9 @@ double ajClockSeconds(void)
 ** @fcategory misc
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajClockReset **********************************************************
 **

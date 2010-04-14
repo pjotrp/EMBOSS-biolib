@@ -40,6 +40,9 @@
 /* ============================ private data ============================= */
 /* ======================================================================= */
 
+
+
+
 /* @datastatic AjPElement *****************************************************
 **
 ** Nucleus Element object.
@@ -452,6 +455,9 @@ static AjBool       WriteText(AjPFile outf, const AjPStr str,
 /* ======================================================================= */
 /* ========================== private functions ========================== */
 /* ======================================================================= */
+
+
+
 
 /* @funcstatic WriteSeqresChain *********************************************
 **
@@ -912,7 +918,7 @@ static AjBool WriteSeqresDomain(AjPFile errf, AjPFile outf, const AjPPdb pdb,
     return ajTrue;
 }
 
-       
+
 
 
 /* @funcstatic WriteAtomChain ***********************************************
@@ -7259,6 +7265,9 @@ static AjBool WriteElementData(AjPPdbfile pdbfile, AjPFile flog,
 /* =========================== constructors ============================== */
 /* ======================================================================= */
 
+
+
+
 /* @section Constructors ****************************************************
 **
 ** All constructors return a pointer to a new instance. It is the 
@@ -7267,6 +7276,9 @@ static AjBool WriteElementData(AjPPdbfile pdbfile, AjPFile flog,
 ** programming practice to do so anyway.
 **
 ****************************************************************************/
+
+
+
 
 /* @func  ajPdbReadRawNew **************************************************
 **
@@ -7447,6 +7459,9 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size,
 /* =========================== destructors =============================== */
 /* ======================================================================= */
 
+
+
+
 /* @section Structure Destructors *******************************************
 **
 ** All destructor functions receive the address of the instance to be
@@ -7460,6 +7475,9 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size,
 /* ======================================================================= */
 /* ============================ Assignments ============================== */
 /* ======================================================================= */
+
+
+
 
 /* @section Assignments *****************************************************
 **
@@ -7476,6 +7494,9 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size,
 /* ============================= Modifiers =============================== */
 /* ======================================================================= */
 
+
+
+
 /* @section Modifiers *******************************************************
 **
 ** These functions use the contents of an instance and update them.
@@ -7488,6 +7509,9 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size,
 /* ======================================================================= */
 /* ========================== Operators ===================================*/
 /* ======================================================================= */
+
+
+
 
 /* @section Operators *******************************************************
 **
@@ -7502,6 +7526,9 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size,
 /* ======================================================================= */
 /* ============================== Casts ===================================*/
 /* ======================================================================= */
+
+
+
 
 /* @section Casts ***********************************************************
 **
@@ -7519,6 +7546,9 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size,
 /* =========================== Reporters ==================================*/
 /* ======================================================================= */
 
+
+
+
 /* @section Reporters *******************************************************
 **
 ** These functions return the contents of an instance but do not make any 
@@ -7532,6 +7562,9 @@ AjPPdb ajPdbReadRawNew(AjPFile inf, const AjPStr pdbid, ajint min_chain_size,
 /* ======================================================================= */
 /* ========================== Input & Output ============================= */
 /* ======================================================================= */
+
+
+
 
 /* @section Input & output **************************************************
 **

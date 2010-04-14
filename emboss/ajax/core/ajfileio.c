@@ -27,6 +27,9 @@
 
 static void   filebuffLineAdd(AjPFilebuff thys, const AjPStr line);
 
+
+
+
 /* @filesection ajfile ********************************************************
 **
 ** @nam1rule aj Function belongs to the AJAX library.
@@ -67,6 +70,9 @@ static void   filebuffLineAdd(AjPFilebuff thys, const AjPStr line);
 **
 ** @fcategory input
 */
+
+
+
 
 /* @func ajReadline ***********************************************************
 **
@@ -479,6 +485,8 @@ __deprecated AjBool ajFileGetsTrimL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 ** @fcategory input
 **
 ******************************************************************************/
+
+
 
 
 /* @func ajReadbinBinary *****************************************************
@@ -1291,6 +1299,7 @@ size_t ajReadbinUint8Local(AjPFile file, ajulong *Pu8)
 
 
 
+
 /* @obsolete ajFileOutHeader
 ** @remove Not used
 */
@@ -1530,6 +1539,7 @@ size_t ajWritebinNewline(AjPFile file)
 
 
 
+
 /* @func ajWritebinStr *******************************************************
 **
 ** Writes a string to a binary file
@@ -1604,6 +1614,9 @@ __deprecated ajint ajFileWriteStr(AjPFile thys, const AjPStr str, ajuint len)
 ** @fcategory output
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajWriteline *******************************************************
 **
@@ -1710,6 +1723,9 @@ AjBool ajWritelineSpace(AjPFile file, const AjPStr line)
 **
 ** @fcategory input
 */
+
+
+
 
 /* @func ajBuffreadLine *******************************************************
 **

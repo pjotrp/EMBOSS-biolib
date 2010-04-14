@@ -435,7 +435,6 @@ static AjBool ajJavaGetSeqsetFromUsa(const AjPStr thys, AjPSeqset *seq)
 
 
 #ifndef WIN32
-
 /* @func Ajax.userInfo ********************************************************
 **
 ** Return the uid, gid and home directory of a user
@@ -895,6 +894,8 @@ struct ad_user
     char *username;
     char *password;
 };
+
+
 
 
 /* @header PAM_conv **********************************************************
@@ -4658,7 +4659,6 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_listDirs
 ** @return [jbyteArray] contents of file
 ** @@
 ******************************************************************************/
-
 
 JNIEXPORT jbyteArray JNICALL Java_org_emboss_jemboss_parser_Ajax_getFile
 (JNIEnv *env, jobject obj, jstring door, jbyteArray key,

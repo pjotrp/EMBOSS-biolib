@@ -676,6 +676,8 @@ char ajTrnCodonS(const AjPTrn trnObj, const AjPStr codon)
 }
 
 
+
+
 /* @obsolete ajTrnCodon
 ** @remove Use ajTrnCodonS
 */
@@ -697,6 +699,7 @@ __deprecated const AjPStr ajTrnCodon(const AjPTrn trnObj, const AjPStr codon)
 
     return trnResidue;
 }
+
 
 
 
@@ -890,6 +893,8 @@ void ajTrnSeqC(const AjPTrn trnObj, const char *str, ajint len, AjPStr *pep)
 }
 
 
+
+
 /* @obsolete ajTrnC
 ** @rename ajTrnSeqC
 */
@@ -956,6 +961,8 @@ void ajTrnSeqRevC(const AjPTrn trnObj, const char *str, ajint len, AjPStr *pep)
 }
 
 
+
+
 /* @obsolete ajTrnRevC
 ** @rename ajTrnSeqRevC
 */
@@ -1007,6 +1014,7 @@ void ajTrnSeqAltRevC(const AjPTrn trnObj, const char *str, ajint len,
 
 
 
+
 /* @obsolete ajTrnAltRevC
 ** @rename ajTrnSeqAltRevC
 */
@@ -1046,6 +1054,8 @@ void ajTrnSeqS(const AjPTrn trnObj, const AjPStr str, AjPStr *pep)
 
     return;
 }
+
+
 
 
 /* @obsolete ajTrnStr
@@ -1120,6 +1130,7 @@ void ajTrnSeqAltRevS(const AjPTrn trnObj, const AjPStr str, AjPStr *pep)
 
 
 
+
 /* @obsolete ajTrnAltRevStr
 ** @rename ajTrnSeqAltRevStr
 */
@@ -1162,6 +1173,8 @@ void ajTrnSeqSeq(const AjPTrn trnObj, const AjPSeq seq, AjPStr *pep)
 }
 
 
+
+
 /* @obsolete ajTrnSeq
 ** @rename ajTrnSeqSeq
 */
@@ -1171,6 +1184,7 @@ __deprecated void ajTrnSeq(const AjPTrn trnObj, const AjPSeq seq, AjPStr *pep)
     ajTrnSeqSeq(trnObj, seq, pep);
     return;
 }
+
 
 
 
@@ -1203,6 +1217,7 @@ void ajTrnSeqRevSeq(const AjPTrn trnObj, const AjPSeq seq, AjPStr *pep)
 
 
 
+
 /* @obsolete ajTrnRevSeq
 ** @rename ajTrnSeqRevSeq
 */
@@ -1212,6 +1227,7 @@ __deprecated void ajTrnRevSeq(const AjPTrn trnObj,
 {
     ajTrnSeqRevSeq(trnObj, seq, pep);
 }
+
 
 
 
@@ -1244,6 +1260,7 @@ void ajTrnSeqAltRevSeq(const AjPTrn trnObj, const AjPSeq seq, AjPStr *pep)
 
     return;
 }
+
 
 
 
@@ -1321,6 +1338,8 @@ void ajTrnSeqFrameC(const AjPTrn trnObj,
 
     return;
 }
+
+
 
 
 /* @obsolete ajTrnCFrame
@@ -1460,6 +1479,7 @@ __deprecated void ajTrnSeqFrame(const AjPTrn trnObj, const AjPSeq seq, ajint fra
 
 
 
+
 /* @func ajTrnSeqFramePep *****************************************************
 **
 ** Translates a sequence in a AjSeq in the specified frame and returns a
@@ -1577,6 +1597,8 @@ ajint ajTrnSeqDangleC(const AjPTrn trnObj, const char *seq,
 }
 
 
+
+
 /* @obsolete ajTrnCDangle
 ** @rename ajTrnSeqDangleC
 */
@@ -1652,6 +1674,8 @@ ajint ajTrnSeqDangleS(const AjPTrn trnObj, const AjPStr seq, ajint frame,
 }
 
 
+
+
 /* @obsolete ajTrnStrDangle
 ** @rename ajTrnDangleS
 */
@@ -1661,6 +1685,8 @@ __deprecated ajint ajTrnStrDangle(const AjPTrn trnObj, const AjPStr seq,
 {
     return ajTrnSeqDangleS(trnObj, seq, frame, pep);
 }
+
+
 
 
 /* @func ajTrnSeqOrig *********************************************************
@@ -1790,6 +1816,8 @@ __deprecated ajint ajTrnStartStopC(const AjPTrn trnObj,
 }
 
 
+
+
 /* @func ajTrnCodonstrTypeS ****************************************************
 **
 ** Checks whether the input codon is a Start codon, a Stop codon or
@@ -1831,6 +1859,8 @@ ajint ajTrnCodonstrTypeS(const AjPTrn trnObj, const AjPStr codon, char *aa)
 }
 
 
+
+
 /* @obsolete ajTrnStartStop
 ** @rename ajTrnCodonstrTypeS
 */
@@ -1839,6 +1869,8 @@ __deprecated ajint ajTrnStartStop(const AjPTrn trnObj,
 {
     return ajTrnCodonstrTypeS(trnObj, codon, aa);
 }
+
+
 
 
 /* @func ajTrnGetTitle ********************************************************
@@ -1883,6 +1915,8 @@ AjPStr ajTrnGetFilename(const AjPTrn thys)
 {
   return thys->FileName;
 }
+
+
 
 
 /* @obsolete ajTrnGetFileName

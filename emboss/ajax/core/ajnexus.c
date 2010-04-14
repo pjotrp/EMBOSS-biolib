@@ -771,6 +771,8 @@ static void nexusCodonsDel(AjPNexusCodons* pthys)
 }
 
 
+
+
 /* @funcstatic nexusTreesDel **************************************************
 **
 ** Destructor for AjPNexusTrees
@@ -1915,6 +1917,8 @@ static AjBool nexusVocab(const char* title, const AjPStr src,
 
     return ajFalse;
 }
+
+
 
 
 /* @func ajNexusTrace *********************************************************

@@ -70,6 +70,9 @@ static ajint  pdbSortPdbtospPdb(const void *ptr1, const void *ptr2);
 /* ========================== private functions ========================== */
 /* ======================================================================= */
 
+
+
+
 /* @funcstatic pdbSortPdbtospPdb **********************************************
 **
 ** Function to sort Pdbtosp objects by Pdb element. Usually called by 
@@ -103,6 +106,9 @@ static ajint pdbSortPdbtospPdb(const void *ptr1, const void *ptr2)
 /* =========================== constructors ============================== */
 /* ======================================================================= */
 
+
+
+
 /* @section Constructors ****************************************************
 **
 ** All constructors return a pointer to a new instance. It is the 
@@ -111,6 +117,8 @@ static ajint pdbSortPdbtospPdb(const void *ptr1, const void *ptr2)
 ** programming practice to do so anyway.
 **
 ****************************************************************************/
+
+
 
 
 /* @func ajPdbtospReadAllRawNew ********************************************
@@ -2929,12 +2937,17 @@ AjPPdbtosp ajPdbtospNew(ajint n)
 /* =========================== destructors =============================== */
 /* ======================================================================= */
 
+
+
+
 /* @section Destructors *****************************************************
 **
 ** All destructor functions receive the address of the instance to be
 ** deleted.  The original pointer is set to NULL so is ready for re-use.
 **
 ****************************************************************************/
+
+
 
 
 /* @func ajAtomDel **********************************************************
@@ -3335,6 +3348,9 @@ void ajPdbtospDel(AjPPdbtosp *ptr)
 /* ============================ Assignments ============================== */
 /* ======================================================================= */
 
+
+
+
 /* @section Assignments *****************************************************
 **
 ** These functions overwrite the instance provided as the first argument
@@ -3342,6 +3358,9 @@ void ajPdbtospDel(AjPPdbtosp *ptr)
 ** create a new instance by assignment.
 **
 ****************************************************************************/
+
+
+
 
 /* @func ajAtomCopy *********************************************************
 **
@@ -3646,6 +3665,9 @@ AjBool ajPdbCopy(AjPPdb *to, const AjPPdb from)
 /* ============================= Modifiers =============================== */
 /* ======================================================================= */
 
+
+
+
 /* @section Modifiers *******************************************************
 **
 ** These functions use the contents of an instance and update them.
@@ -3659,12 +3681,16 @@ AjBool ajPdbCopy(AjPPdb *to, const AjPPdb from)
 /* ========================== Operators ===================================*/
 /* ======================================================================= */
 
+
+
+
 /* @section Operators *******************************************************
 **
 ** These functions use the contents of an instance but do not make any 
 ** changes.
 **
 ****************************************************************************/
+
 
 
 
@@ -5846,6 +5872,9 @@ ajint  ajPdbGetEStrideType(const AjPPdb obj, ajint chn, AjPStr *EStrideType)
 /* ============================== Casts ===================================*/
 /* ======================================================================= */
 
+
+
+
 /* @section Casts ***********************************************************
 **
 ** These functions examine the contents of an instance and return some
@@ -5862,12 +5891,18 @@ ajint  ajPdbGetEStrideType(const AjPPdb obj, ajint chn, AjPStr *EStrideType)
 /* =========================== Reporters ==================================*/
 /* ======================================================================= */
 
+
+
+
 /* @section Reporters *******************************************************
 **
 ** These functions return the contents of an instance but do not make any 
 ** changes.
 **
 ****************************************************************************/
+
+
+
 
 /* @func ajPdbChnidToNum ****************************************************
 **
@@ -5971,11 +6006,17 @@ ajint ajPdbtospArrFindPdbid(AjPPdbtosp const *arr, ajint siz, const AjPStr id)
 /* ========================== Input & Output ============================= */
 /* ======================================================================= */
 
+
+
+
 /* @section Input & output **************************************************
 **
 ** These functions are used for formatted input and output to file.    
 **
 ****************************************************************************/
+
+
+
 
 /* @func ajPdbWriteAll *****************************************************
 **
@@ -6885,6 +6926,10 @@ void ajPdbExit(void)
 /* ======================================================================= */
 /* ======================== Miscellaneous =================================*/
 /* ======================================================================= */
+
+
+
+
 /* @section Miscellaneous ***************************************************
 **
 ** These functions may have diverse functions that do not fit into the other

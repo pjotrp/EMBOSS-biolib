@@ -1455,6 +1455,9 @@ static AjPRegexp seqTypeCharAny(void)
     return seqtypeRegAny;
 }
 
+
+
+
 /* @funcstatic seqTypeCharAnyGap **********************************************
 **
 ** Returns regular expression to test for type Any with gaps

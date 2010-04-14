@@ -56,6 +56,9 @@ static ajlong regTotal     = 0;
 
 /* constructors */
 
+
+
+
 /* @func ajRegComp ************************************************************
 **
 ** Compiles a regular expression.
@@ -111,6 +114,7 @@ AjPRegexp ajRegCompC(const char* rexp)
 
     return ret;
 }
+
 
 
 
@@ -175,6 +179,9 @@ AjPRegexp ajRegCompCaseC(const char* rexp)
 
 
 /* execute expression match */
+
+
+
 
 /* @func ajRegExec ************************************************************
 **
@@ -506,6 +513,9 @@ AjBool ajRegSubI(const AjPRegexp rp, ajint isub, AjPStr* dest)
 
 
 /* destructor */
+
+
+
 
 /* @func ajRegFree ************************************************************
 **

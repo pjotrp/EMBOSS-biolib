@@ -60,6 +60,9 @@ typedef void (*Fmt_S) (const char *fmt, const char **pos, VALIST ap, int width,
 
 /*static Fmt_T  fmtRegister(ajint code, Fmt_T cvt);*/
 
+
+
+
 /* @datastatic FmtPBuf ********************************************************
 **
 ** Format definitions
@@ -960,6 +963,9 @@ static void cvt_uF(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 
 
 static const Except_T Fmt_Overflow = { "Formatting Overflow" };
+
+
+
 
 /* @funclist Fmt_T ************************************************************
 **
@@ -1941,6 +1947,8 @@ void ajFmtVfmt(int put(int c, void* cl), void* cl, const char* fmt,
 //}
 //
 */
+
+
 
 
 /* @func ajFmtPutd ************************************************************

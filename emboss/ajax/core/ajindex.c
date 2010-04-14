@@ -5596,6 +5596,7 @@ AjPList ajBtreeDupFromKey(AjPBtcache cache, const char *key)
 
 
 
+
 /* @funcstatic btreePriBucketNew *********************************************
 **
 ** Construct a primary keyword bucket object
@@ -8555,6 +8556,7 @@ static AjBool btreeReorderSecBuckets(AjPBtcache cache, AjPBtpage leaf)
 
 
 
+
 #if 0
 /* @funcstatic btreeInsertIdOnly *****************************************
 **
@@ -11036,10 +11038,6 @@ static ajint btreeDbnoCompare(const void *a, const void *b)
 
 
 
-
-
-
-
 /* @func ajBtreeHybNew *********************************************
 **
 ** Constructor for index bucket ID information
@@ -11218,7 +11216,6 @@ static void btreeDeallocPriArray(AjPBtcache cache, AjPBtMem node)
 
     return;
 }
-
 
 
 
@@ -19108,8 +19105,6 @@ static ajlong btreeCollapseRootHybTwo(AjPBtcache cache, ajlong pageno)
 
 
 
-
-/* AJB: Pri tree deletion */
 
 /* @func ajBtreeDeletePriId *********************************************
 **

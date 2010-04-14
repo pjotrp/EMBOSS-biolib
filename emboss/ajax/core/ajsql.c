@@ -63,6 +63,9 @@ static AjBool arrVoidResize(AjPVoid *thys, ajuint size);
 **
 ******************************************************************************/
 
+
+
+
 /* @datasection [none] Internals **********************************************
 **
 ** Function is for setup or control of internals
@@ -83,6 +86,8 @@ static AjBool arrVoidResize(AjPVoid *thys, ajuint size);
 ** @valrule * [AjBool] True on success
 **
 ******************************************************************************/
+
+
 
 
 /* @func ajSqlInit ************************************************************
@@ -140,6 +145,8 @@ AjBool ajSqlInit(void)
 ** @valrule * [void]
 **
 ******************************************************************************/
+
+
 
 
 /* @func ajSqlExit ************************************************************
@@ -531,6 +538,7 @@ AjPSqlconnection ajSqlconnectionNewRef(AjPSqlconnection sqlc)
 
 
 
+
 /* @section destructors *******************************************************
 **
 ** Functions for destruction of AJAX SQL Connection objects.
@@ -652,6 +660,9 @@ void ajSqlconnectionDel(AjPSqlconnection *Psqlc)
 **
 ** @fcategory cast
 ******************************************************************************/
+
+
+
 
 /* @func ajSqlconnectionEscapeC **********************************************
 **
@@ -935,6 +946,7 @@ AjPSqlstatement ajSqlstatementNewRef(AjPSqlstatement sqls)
     
     return sqls;
 }
+
 
 
 
@@ -1371,6 +1383,8 @@ void ajSqlstatementDel(AjPSqlstatement *Psqls)
 ** @fcategory cast
 **
 ******************************************************************************/
+
+
 
 
 /* @func ajSqlstatementGetAffectedrows ****************************************
@@ -2748,6 +2762,8 @@ AjBool ajSqlcolumnNumberGetValue(const AjPSqlrow sqlr,
 */
 
 
+
+
 /* @func ajSqlcolumnNumberToBool **********************************************
 **
 ** Converts the value in a particular column of an AJAX SQL Row into an
@@ -2832,6 +2848,7 @@ AjBool ajSqlcolumnNumberToDouble(const AjPSqlrow sqlr, ajuint column,
     
     return bool;
 }
+
 
 
 
@@ -3177,6 +3194,9 @@ AjBool ajSqlcolumnNumberIsDefined(const AjPSqlrow sqlr, ajuint column)
 
 #define RESERVED_SIZE 32
 
+
+
+
 /* @datasection [AjPVoid] Void pointer *****************************************
 **
 ** Functions for void pointer arrays
@@ -3184,6 +3204,9 @@ AjBool ajSqlcolumnNumberIsDefined(const AjPSqlrow sqlr, ajuint column)
 ** @nam2rule Void Void pointer array function
 **
 ******************************************************************************/
+
+
+
 
 /* @section constructors *******************************************************
 **
@@ -3198,6 +3221,9 @@ AjBool ajSqlcolumnNumberIsDefined(const AjPSqlrow sqlr, ajuint column)
 ** @valrule * [AjPVoid] void pointer array
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajVoidNew ************************************************************
 **
@@ -3336,6 +3362,9 @@ void ajVoidDel(AjPVoid *thys)
 ** @fcategory cast
 ******************************************************************************/
 
+
+
+
 /* @func ajVoidGet ************************************************************
 **
 ** Retrieve an element from an AJAX Pointer Array.
@@ -3357,6 +3386,7 @@ void* ajVoidGet(const AjPVoid thys, ajuint elem)
     
     return thys->Ptr[elem];
 }
+
 
 
 

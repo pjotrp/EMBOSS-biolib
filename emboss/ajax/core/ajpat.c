@@ -25,6 +25,9 @@
 ******************************************************************************/
 #include "ajax.h"
 
+
+
+
 /* @datastatic PatPRegTypes ***************************************************
 **
 ** Regular expression pattern types
@@ -52,6 +55,9 @@ static PatORegTypes patRegTypes[] = {
   {"nucleotide",  "Nucleotide sequence pattern"},
   {NULL, NULL}
 };
+
+
+
 
 /* @datastatic PatPRegInformat ************************************************
 **
@@ -81,6 +87,9 @@ static PatORegInformat patRegInformat[] =
     {"fasta",      "Fasta sequence style with header"},
     {NULL, NULL}
 };
+
+
+
 
 /* @datastatic PatPSeqInformat ************************************************
 **

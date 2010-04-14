@@ -37,6 +37,10 @@
 
 #ifndef HAVE_MEMMOVE
 #include <sys/types.h>
+
+
+
+
 /* @header memmove ************************************************************
 **
 ******************************************************************************/
@@ -98,6 +102,7 @@ static ajlong strTotal     = 0;
 
 
 
+
 /* @filesection ajstr ********************************************************
 **
 ** @nam1rule aj Function belongs to the AJAX library.
@@ -143,6 +148,8 @@ static ajlong strTotal     = 0;
 ** @fcategory new
 **
 ******************************************************************************/
+
+
 
 
 /* @func ajCharNewC ***********************************************************
@@ -397,6 +404,8 @@ char* ajCharNull (void)
 ******************************************************************************/
 
 
+
+
 /* @func ajCharDel ***********************************************************
 **
 ** A text string destructor to free memory for a text string.
@@ -446,6 +455,9 @@ __deprecated void  ajCharFree(char** txt)
 ** @valrule   * [AjBool]
 ** @fcategory modify
 */
+
+
+
 
 /* @func ajCharFmtLower *******************************************************
 **
@@ -569,6 +581,8 @@ __deprecated void  ajCharToUpper(char* txt)
 ** @valrule   * [AjBool] True on success
 ** @fcategory use
 */
+
+
 
 
 /* @func ajCharMatchC *********************************************************
@@ -1590,6 +1604,8 @@ AjBool ajCharSuffixCaseS(const char* txt, const AjPStr str)
 */
 
 
+
+
 /* @func ajCharCmpCase ********************************************************
 **
 ** Finds the sort order of two text strings. 
@@ -1944,6 +1960,8 @@ __deprecated ajint  ajStrCmpWildCC(const char* str, const char* text)
 */
 
 
+
+
 /* @func ajCharParseC *********************************************************
 **
 ** Simple token parsing from text string using a specified set of delimiters.
@@ -2030,6 +2048,7 @@ __deprecated const AjPStr  ajStrTokCC (const char* txt, const char* delim)
 
 
 
+
 /* @section constructors ******************************************************
 **
 ** Functions for constructing string objects, possibly with a starting string. 
@@ -2052,6 +2071,8 @@ __deprecated const AjPStr  ajStrTokCC (const char* txt, const char* delim)
 ** @valrule   *     [AjPStr] New string
 ** @fcategory new
 */
+
+
 
 
 /* @func ajStrNew *************************************************************
@@ -2477,6 +2498,7 @@ static AjPStr strNew(ajuint size)
 
 
 
+
 /* @macro MAJSTRDEL ***********************************************************
 **
 ** Default string destructor which frees memory for a string.
@@ -2491,6 +2513,8 @@ static AjPStr strNew(ajuint size)
 ** @return [void]
 ** @@
 ******************************************************************************/
+
+
 
 
 /* @func ajStrDel *************************************************************
@@ -2692,6 +2716,8 @@ void ajStrDelarray(AjPStr** PPstr)
 **
 ** @fcategory assign
 */
+
+
 
 
 /* @func ajStrAssignC *********************************************************
@@ -3434,6 +3460,7 @@ __deprecated AjBool  ajStrAssSub(AjPStr* pthis, const AjPStr src,
 ** @fcategory modify
 ** @@
 */
+
 
 
 
@@ -4409,6 +4436,7 @@ __deprecated AjBool  ajStrReplace( AjPStr* pthis, ajint begin,
 
 
 
+
 /* @func ajStrCutComments *****************************************************
 **
 ** Removes comments from a string.
@@ -5356,6 +5384,8 @@ AjBool ajStrRemoveDupchar(AjPStr* Pstr)
 
     return ajTrue;
 }
+
+
 
 
 /* @func ajStrRemoveGap *******************************************************
@@ -6397,6 +6427,9 @@ __deprecated AjBool  ajStrTruncate(AjPStr* Pstr, ajint pos)
 ** @fcategory modify
 */
 
+
+
+
 /* @func ajStrExchangeCC ****************************************************
 **
 ** Replace all occurrences in a string of one substring with another.
@@ -6590,6 +6623,9 @@ AjBool ajStrExchangeSC(AjPStr* Pstr, const AjPStr str,
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajStrExchangeSS ******************************************************
 **
@@ -7031,6 +7067,8 @@ __deprecated AjBool  ajStrRev(AjPStr* pthis)
 */
 
 
+
+
 /* @func ajStrCalcCountC ******************************************************
 **
 ** Counts occurrences of set of characters in a string.
@@ -7380,6 +7418,8 @@ AjBool ajStrIsCharsetS(const AjPStr str, const AjPStr str2)
 
     return ajTrue;
 }
+
+
 
 
 /* @func ajStrIsCharsetCaseC **************************************************
@@ -7948,6 +7988,9 @@ AjBool ajStrWhole(const AjPStr str, ajint pos1, ajint pos2)
 ** @fcategory use
 */
 
+
+
+
 /* @func ajStrGetAsciiCommon ***************************************************
 **
 ** Returns the most common ASCII character code in a string.
@@ -8504,6 +8547,9 @@ AjBool ajStrGetValid(const AjPStr str)
 ** @fcategory modify
 */
 
+
+
+
 /* @func ajStrGetuniquePtr ****************************************************
 **
 ** Makes the string value unique by copying any string with a reference count
@@ -8564,6 +8610,8 @@ __deprecated char  *ajStrStrMod(AjPStr *pthis)
 ** @return [AjPStr] The new string pointer, or NULL for failure
 ** @@
 ******************************************************************************/
+
+
 
 
 /* @func ajStrGetuniqueStr ****************************************************
@@ -8645,6 +8693,9 @@ __deprecated AjBool  ajStrMod(AjPStr* pthis)
 **
 ** @fcategory modify
 */
+
+
+
 
 /* @func ajStrSetClear ********************************************************
 **
@@ -8971,6 +9022,9 @@ __deprecated void  ajStrFixI(AjPStr* pthis, ajint ilen)
 **
 ** @fcategory cast
 */
+
+
+
 
 /* @func ajStrToBool **********************************************************
 **
@@ -9380,6 +9434,9 @@ AjBool ajStrToUint(const AjPStr str, ajuint* Pval)
 ** @fcategory derive
 */
 
+
+
+
 /* @func ajStrFromBool ********************************************************
 **
 ** Converts a Boolean value into a 1-letter string. 
@@ -9664,6 +9721,9 @@ AjBool ajStrFromUint(AjPStr* Pstr, ajuint val)
 **
 ** @fcategory modify
 */
+
+
+
 
 /* @func ajStrFmtBlock ********************************************************
 **
@@ -10857,6 +10917,8 @@ AjBool ajStrPrefixCaseS(const AjPStr str, const AjPStr str2)
 }
 
 
+
+
 /* @obsolete ajStrPrefixCase
 ** @rename ajStrPrefixCaseS
 */
@@ -11018,6 +11080,7 @@ AjBool ajStrSuffixCaseS(const AjPStr str, const AjPStr str2)
 
 
 
+
 /* @macro MAJSTRCMPC **********************************************************
 **
 ** Finds the sort order of a string and a text string.
@@ -11031,6 +11094,9 @@ AjBool ajStrSuffixCaseS(const AjPStr str, const AjPStr str2)
 **         in length and content.
 ** @@
 ******************************************************************************/
+
+
+
 
 /* @func ajStrCmpC ************************************************************
 **
@@ -11099,6 +11165,9 @@ __deprecated int  ajStrNCmpC(const AjPStr str, const char* txt, ajint len)
 **         in length and content.
 ** @@
 ******************************************************************************/
+
+
+
 
 /* @func ajStrCmpS ************************************************************
 **
@@ -11379,6 +11448,7 @@ __deprecated int  ajStrCmp(const void* str, const void* str2)
 **
 ** @fcategory use
 */
+
 
 
 
@@ -11967,6 +12037,7 @@ ajint ajStrFindlastS(const AjPStr str, const AjPStr str2)
 
 
 
+
 /* @func ajStrExtractFirst ****************************************************
 **
 ** Returns a word from the start of a string, and the remainder of the string
@@ -12430,6 +12501,7 @@ const AjPStr ajStrParseWhite(const AjPStr str)
 
 
 
+
 /* @obsolete ajStrTok
 ** @rename ajStrParseWhite
 */
@@ -12462,6 +12534,9 @@ __deprecated const AjPStr  ajStrTok(const AjPStr str)
 **
 ** @fcategory misc
 */
+
+
+
 
 /* @func ajStrProbe ***********************************************************
 **
@@ -12670,6 +12745,9 @@ void ajStrTraceTitle(const AjPStr str, const char* title)
 ** @fcategory misc
 */
 
+
+
+
 /* @func ajStrExit ************************************************************
 **
 ** Prints a summary of string usage with debug calls.
@@ -12771,6 +12849,7 @@ __deprecated ajint  ajCharPos(const char* thys, ajint ipos)
 
 
 
+
 /* @section string constant constructors ***************************************
 **
 ** Functions for constructing string constant objects 
@@ -12786,6 +12865,9 @@ __deprecated ajint  ajCharPos(const char* thys, ajint ipos)
 ** @valrule   *     [const AjPStr] New string
 ** @fcategory new
 */
+
+
+
 
 /* @func ajStrConstS *******************************************************
 **
@@ -12831,6 +12913,9 @@ const AjPStr ajStrConstEmpty(void)
 **
 ******************************************************************************/
 
+
+
+
 /* @section constructors ******************************************************
 **
 ** @fdata [AjIStr]
@@ -12844,6 +12929,7 @@ const AjPStr ajStrConstEmpty(void)
 **
 ** @fcategory new
 ******************************************************************************/
+
 
 
 
@@ -12985,6 +13071,9 @@ __deprecated void  ajStrIterFree(AjIStr* iter)
 ** @fcategory use
 */
 
+
+
+
 /* @func ajStrIterDone ******************************************************
 **
 ** Tests whether a string iterator has completed yet.
@@ -13043,6 +13132,9 @@ __deprecated AjBool  ajStrIterBackDone(AjIStr iter)
 ** @fcategory modify
 */
 
+
+
+
 /* @func ajStrIterBegin *******************************************************
 **
 ** Sets a string iterator to its start condition,
@@ -13090,6 +13182,9 @@ void ajStrIterEnd(AjIStr iter)
 **
 ** @fcategory cast
 */
+
+
+
 
 /* @func ajStrIterGetC *******************************************************
 **
@@ -13139,6 +13234,9 @@ char ajStrIterGetK(const AjIStr iter)
 ** @fcategory modify
 */
 
+
+
+
 /* @func ajStrIterPutK ********************************************************
 **
 ** Replaces the character at the current string iterator position.
@@ -13172,6 +13270,8 @@ void ajStrIterPutK(AjIStr iter, char chr)
 **
 ** @fcategory modify
 */
+
+
 
 
 /* @func ajStrIterNext ********************************************************
@@ -13261,6 +13361,9 @@ __deprecated AjBool  ajStrIterMoreBack(AjIStr iter)
 **
 ******************************************************************************/
 
+
+
+
 /* @section constructors ******************************************************
 **
 ** @fdata [AjPStrTok]
@@ -13274,6 +13377,8 @@ __deprecated AjBool  ajStrIterMoreBack(AjIStr iter)
 **
 ** @fcategory new
 */
+
+
 
 
 /* @func ajStrTokenNewC *******************************************************
@@ -13359,6 +13464,9 @@ AjPStrTok ajStrTokenNewS(const AjPStr str, const AjPStr strdelim)
 ** @fcategory delete
 */
 
+
+
+
 /* @func ajStrTokenDel ******************************************************
 **
 ** String token parser destructor which frees memory for a string token 
@@ -13412,6 +13520,9 @@ __deprecated void  ajStrTokenClear(AjPStrTok* token)
 **
 ** @fcategory assign
 */
+
+
+
 
 /* @func ajStrTokenAssign ****************************************************
 **
@@ -13545,6 +13656,9 @@ AjBool ajStrTokenAssignS(AjPStrTok* Ptoken, const AjPStr str,
 ** @fcategory modify
 */
 
+
+
+
 /* @func ajStrTokenReset ******************************************************
 **
 ** Clears the strings from a string token parser object.
@@ -13587,6 +13701,9 @@ void ajStrTokenReset(AjPStrTok* Ptoken)
 **
 ** @fcategory misc
 */
+
+
+
 
 /* @func ajStrTokenTrace ******************************************************
 **
@@ -13635,6 +13752,9 @@ void ajStrTokenTrace(const AjPStrTok token)
 **
 ** @fcategory modify
 */
+
+
+
 
 /* @func ajStrTokenNextFind *************************************************
 **

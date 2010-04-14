@@ -71,8 +71,8 @@ static void* listNodeItem(const AjPListNode node);
 static void listArrayTrace(void** array);
 static void listFreeSetExpand (void);
 
-   
-  
+
+
 
 /* @filesection ajlist *********************************************************
 **
@@ -91,6 +91,7 @@ static void listFreeSetExpand (void);
 **
 ** @nam2rule List
 */
+
 
 
 
@@ -173,6 +174,9 @@ __deprecated AjPList ajListCopy(const AjPList list)
 {
     return ajListNewListref(list);
 }
+
+
+
 
 /* @obsolete ajListNewArgs
 ** @remove Use explicit ajListPush calls instead
@@ -515,6 +519,9 @@ __deprecated void ajListPushList(AjPList list, AjPList* pmore)
 ** @fcategory modify
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajListMap ************************************************************
 **
@@ -1014,6 +1021,9 @@ __deprecated void ajListUnique(AjPList list,
 **
 ******************************************************************************/
 
+
+
+
 /* @funcstatic listFreeSetExpand ***********************************************
 **
 ** Expand the list of free nodes
@@ -1045,7 +1055,7 @@ static void listFreeSetExpand (void)
 
 
 
-    
+
 /* @func ajListPop ************************************************************
 **
 ** remove the first node but set pointer to data first.
@@ -1203,6 +1213,9 @@ __deprecated AjBool ajListPopEnd(AjPList list, void** x)
 ** @fcategory cast
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajListGetLength ******************************************************
 **
@@ -1637,6 +1650,7 @@ ajuint ajListToindex(const AjPList list, ajuint* lind,
 
 
 
+
 /* @func ajListProbe ***********************************************************
 **
 ** Test list for memory allocation conflicts
@@ -1896,7 +1910,6 @@ static void* listNodeItem(const AjPListNode node)
 
 
 
-
 /* @section Destructors *******************************************************
 **
 ** @fdata [AjPList]
@@ -1914,6 +1927,8 @@ static void* listNodeItem(const AjPListNode node)
 ** @fcategory delete
 **
 ******************************************************************************/
+
+
 
 
 /* @func ajListFree ***********************************************************
@@ -2170,7 +2185,6 @@ static AjBool listNodeDel(AjPListNode * pnode)
 ** @fcategory misc
 **
 ******************************************************************************/
- 
 
 
 
@@ -2210,6 +2224,9 @@ void ajListUnused(void** array)
 ** @fcategory misc
 */
 
+
+
+
 /* @func ajListExit ***********************************************************
 **
 ** Prints a summary of list usage with debug calls
@@ -2241,6 +2258,8 @@ void ajListExit(void)
     
     return;
 }
+
+
 
 
 /* @datasection [AjIList] List iterators **************************************
@@ -2491,6 +2510,9 @@ __deprecated AjIList ajListIterBackRead(const AjPList list)
 ** @fcategory use
 */
 
+
+
+
 /* @func ajListIterDone *******************************************************
 **
 ** Tests whether an iterator has completed yet.
@@ -2601,6 +2623,7 @@ __deprecated AjBool ajListIterBackDone(const AjIList iter)
 
 
 
+
 /* @func ajListIterDel *******************************************************
 **
 ** Destructor for a list iterator.
@@ -2662,6 +2685,8 @@ __deprecated AjBool ajListIterBackMore(const AjIList iter)
 **
 ** @fcategory modify
 */
+
+
 
 
 /* @func ajListIterGet ********************************************************
@@ -2786,6 +2811,8 @@ __deprecated void* ajListIterBackNext(AjIList iter)
 **
 ** @fcategory modify
 */
+
+
 
 
 /* @func ajListIterInsert ******************************************************
@@ -2982,6 +3009,7 @@ void ajListIterRewind(AjIList iter)
 
 
 
+
 /* @func ajListIterTrace ******************************************************
 **
 ** Traces a list iterator and validates it.
@@ -3015,6 +3043,7 @@ void ajListIterTrace(const AjIList iter)
 
 
 
+
 /* @datasection [AjPList] String lists *****************************************
 **
 ** Functions working on lists of string values
@@ -3022,6 +3051,8 @@ void ajListIterTrace(const AjIList iter)
 ** @nam2rule Liststr
 **
 ******************************************************************************/
+
+
 
 
 /* @section Constructors ******************************************************
@@ -3042,6 +3073,9 @@ void ajListIterTrace(const AjIList iter)
 ** @valrule * [AjPList] New list
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajListstrNew *********************************************************
 **
@@ -3124,7 +3158,7 @@ __deprecated ajuint ajListstrClone(const AjPList list, AjPList newlist)
 }
 
 
-    
+
 
 /* @func ajListstrNewListref **************************************************
 **
@@ -3174,6 +3208,9 @@ __deprecated AjPList ajListstrCopy(const AjPList list)
 **
 ** @fcategory modify
 ******************************************************************************/
+
+
+
 
 /* @func ajListstrPush ********************************************************
 **
@@ -3284,6 +3321,9 @@ __deprecated void ajListstrPushList(AjPList list, AjPList* Plist)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajListstrMap *********************************************************
 **
 ** For each node in the list call function apply,
@@ -3346,6 +3386,8 @@ void ajListstrReverse(AjPList list)
 ** @fcategory cast
 **
 ******************************************************************************/
+
+
 
 
 /* @func ajListstrPop *********************************************************
@@ -3490,6 +3532,9 @@ __deprecated AjBool ajListstrPopEnd(AjPList list, AjPStr *x)
 ** @fcategory cast
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajListstrGetLength ***************************************************
 **
@@ -3777,6 +3822,7 @@ __deprecated ajuint ajListstrToArrayApp(const AjPList list, AjPStr** array)
 
 
 
+
 /* @func ajListstrTrace *******************************************************
 **
 ** Traces through a string list and validates it
@@ -3874,6 +3920,8 @@ __deprecated AjPList ajListstrNewArgs(AjPStr x, ...)
 ** @fcategory delete
 **
 ******************************************************************************/
+
+
 
 
 /* @func ajListstrFree *********************************************************
@@ -3998,6 +4046,7 @@ void ajListstrFreeData(AjPList* Plist)
 
 
 
+
 /* @section stepping **********************************************************
 **
 ** @fdata [AjIList]
@@ -4011,6 +4060,8 @@ void ajListstrFreeData(AjPList* Plist)
 **
 ** @fcategory modify
 */
+
+
 
 
 /* @func ajListstrIterGet *****************************************************
@@ -4110,8 +4161,6 @@ AjPStr ajListstrIterGetBack(AjIList iter)
 **
 ** @fcategory modify
 */
-
-
 
 
 
@@ -4276,6 +4325,7 @@ __deprecated void ajListstrRemove(AjIList iter)
 ** @fcategory misc
 **
 ******************************************************************************/
+
 
 
 

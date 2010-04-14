@@ -12,8 +12,8 @@
 **  i, j, and k unit vectors in the x y and z directions respectively
 **
 ** @author Copyright (C) 2003 Damian Counsell
-** @version $Revision: 1.15 $
-** @modified $Date: 2010/01/25 17:46:00 $
+** @version $Revision: 1.16 $
+** @modified $Date: 2010/04/14 08:08:50 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -55,6 +55,9 @@
 /* ========================= constructors ============================= */
 /* ==================================================================== */
 
+
+
+
 /* @section 3-D vector Constructors *******************************************
 **
 ** All constructors return a new vector by pointer. It is the responsibility
@@ -63,6 +66,9 @@
 ** to do so anyway.
 **
 ******************************************************************************/
+
+
+
 
 /* @func aj3dVectorNew *******************************************************
 **
@@ -118,12 +124,17 @@ AjP3dVector aj3dVectorCreate(float fX, float fY, float fZ)
 /* ==================================================================== */
 
 
+
+
 /* @section 3D Vector Destructors ********************************************
 **
 ** Destruction is achieved by deleting the pointer to the 3-D vector and
 **  freeing the associated memory
 **
 ******************************************************************************/
+
+
+
 
 /* @func aj3dVectorDel *******************************************************
 **
@@ -167,6 +178,9 @@ void aj3dVectorDel(AjP3dVector* pthis)
 ** General functions
 **
 ******************************************************************************/
+
+
+
 
 /* @func aj3dVectorCrossProduct **********************************************
 **

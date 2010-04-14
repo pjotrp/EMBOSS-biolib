@@ -430,7 +430,7 @@ static void domUpdateNode(AjPDomNode node)
     return;
 }
 
-    
+
 
 
 /* @funcstatic domIsAncestor *************************************************

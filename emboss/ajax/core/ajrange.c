@@ -130,6 +130,8 @@ AjPRange ajRangeNewFilename(const AjPStr name)
 }
 
 
+
+
 /* @obsolete ajRangeFile
 ** @rename ajRangeNewFilename
 */
@@ -138,6 +140,8 @@ __deprecated AjPRange ajRangeFile(const AjPStr name)
 {
     return ajRangeNewFilename(name);
 }
+
+
 
 
 /* @func ajRangeNewFilenameLimits **********************************************
@@ -339,6 +343,7 @@ AjPRange ajRangeNewFilenameLimits(const AjPStr name, ajuint imin, ajuint imax,
 
 
 
+
 /* @obsolete ajRangeFileLimits
 ** @rename ajRangeNewFilenameLimits
 */
@@ -394,6 +399,8 @@ AjPRange ajRangeNewRange(const AjPRange src)
 }
 
 
+
+
 /* @obsolete ajRangeCopy
 ** @rename ajRangeNewRange
 */
@@ -423,6 +430,8 @@ AjPRange ajRangeNewString(const AjPStr str)
 }
 
 
+
+
 /* @obsolete ajRangeGet
 ** @rename ajRangeNewString
 */
@@ -431,6 +440,8 @@ __deprecated AjPRange ajRangeGet(const AjPStr str)
 {
     return ajRangeNewString(str);
 }
+
+
 
 
 /* @func ajRangeNewStringLimits ***********************************************
@@ -673,6 +684,8 @@ AjPRange ajRangeNewStringLimits(const AjPStr str, ajuint imin, ajuint imax,
 }
 
 
+
+
 /* @obsolete ajRangeGetLimits
 ** @rename ajRangeNewStringLimits
 */
@@ -683,6 +696,8 @@ __deprecated AjPRange ajRangeGetLimits(const AjPStr str,
 {
     return ajRangeNewStringLimits(str, imin, imax, minsize, size);
 }
+
+
 
 
 /* @section Range Destructors ************************************************
@@ -756,6 +771,7 @@ ajuint ajRangeGetSize(const AjPRange thys)
 
 
 
+
 /* @obsolete ajRangeNumber
 ** @rename ajRangeGetSize
 */
@@ -764,6 +780,8 @@ __deprecated ajuint ajRangeNumber(const AjPRange thys)
 {
     return thys->n;
 }
+
+
 
 
 /* @func ajRangeElementGetText *************************************************
@@ -802,6 +820,8 @@ AjBool ajRangeText(const AjPRange thys, ajuint element, AjPStr * text)
 {
     return ajRangeElementGetText(thys, element, text);
 }
+
+
 
 
 /* @func ajRangeElementGetValues ***********************************************
@@ -849,6 +869,8 @@ AjBool ajRangeValues(const AjPRange thys, ajuint element,
 }
 
 
+
+
 /* @func ajRangeElementSet *****************************************************
 **
 ** Set the values of a start and end in a (pre-existing) range element
@@ -877,6 +899,8 @@ AjBool ajRangeElementSet(AjPRange thys, ajuint element,
 }
 
 
+
+
 /* @obsolete ajRangeChange
 ** @rename ajRangeElementSet
 */
@@ -885,6 +909,8 @@ __deprecated AjBool ajRangeChange(AjPRange thys, ajuint element,
 {
     return ajRangeElementSet(thys, element, start, end);
 }
+
+
 
 
 /* @func ajRangeSetOffset *****************************************************
@@ -941,6 +967,7 @@ __deprecated AjBool ajRangeBegin(AjPRange thys, ajuint begin)
 {
     return ajRangeSetOffset(thys, begin);
 }
+
 
 
 
@@ -1806,6 +1833,7 @@ ajuint ajRangeElementTypeOverlap(const AjPRange thys, ajuint element,
 
 
 
+
 /* @obsolete ajRangeOverlapSingle
 ** @remove Use ajRangeElementTypeOverlap
 */
@@ -1850,6 +1878,7 @@ __deprecated ajuint ajRangeOverlapSingle(ajuint start, ajuint end,
 
 
 
+
 /* @func ajRangeCountOverlaps **************************************************
 **
 ** Detect overlaps of a set of ranges to a region of a sequence
@@ -1879,6 +1908,7 @@ ajuint ajRangeCountOverlaps(const AjPRange thys, ajuint pos, ajuint length)
 
     return result;
 }
+
 
 
 
@@ -1933,6 +1963,7 @@ AjBool ajRangeIsOrdered(const AjPRange thys)
 
 
 
+
 /* @obsolete ajRangeOrdered
 ** @rename ajRangeIsOrdered
 */
@@ -1941,6 +1972,7 @@ __deprecated AjBool ajRangeOrdered(const AjPRange thys)
 {
     return ajRangeIsOrdered(thys);
 }
+
 
 
 
@@ -1983,6 +2015,7 @@ AjBool ajRangeIsWhole(const AjPRange thys, const AjPSeq s)
 
     return ajFalse;
 }
+
 
 
 
