@@ -6,6 +6,9 @@ extern "C"
 #ifndef ajseqalign_h
 #define ajseqalign_h
 
+
+
+
 /* @data AjPAlign *************************************************************
 **
 ** Ajax Align Output object.

@@ -6,6 +6,9 @@ extern "C"
 #ifndef ajmatrices_h
 #define ajmatrices_h
 
+
+
+
 /* @data AjPMatrix ************************************************************
 **
 ** AJAX data structure for sequence comparison matrices with integer values
@@ -33,6 +36,9 @@ typedef struct AjSMatrix {
   AjPSeqCvt Cvt;
 } AjOMatrix;
 #define AjPMatrix AjOMatrix*
+
+
+
 
 /* @data AjPMatrixf ***********************************************************
 **

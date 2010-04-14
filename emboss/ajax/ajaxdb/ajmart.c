@@ -383,7 +383,7 @@ static const char *martGetVirtualSchema(const AjPStr dataset)
     return ret;
 }
 
-    
+
 
 
 /* @func ajMartqueryNew ***************************************************

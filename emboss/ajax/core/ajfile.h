@@ -13,6 +13,9 @@ extern "C"
 #include "ajlist.h"
 #include <sys/stat.h>
 
+
+
+
 /* @data AjPFile **************************************************************
 **
 ** Ajax file object. Holds information for an open (unbuffered)
@@ -94,6 +97,9 @@ typedef struct AjSFilebufflist {
 
 #define AjPFilebufflist AjOFilebufflist*
 
+
+
+
 /* @data AjPFilebuff **********************************************************
 **
 ** Ajax buffered file object. Holds information for a buffered input file.
@@ -133,6 +139,9 @@ typedef struct AjSFilebuff {
 
 #define AjPFilebuff AjOFilebuff*
 
+
+
+
 /* @data AjPDir **************************************************************
 **
 ** Ajax directory object. Holds information for an open
@@ -155,6 +164,9 @@ typedef struct AjSDir {
 
 #define AjPDir AjODir*
 
+
+
+
 /* @data AjPDirout ***********************************************************
 **
 ** Ajax output directory object. Holds information for an open
@@ -174,6 +186,9 @@ typedef struct AjSDirout {
 } AjODirout;
 
 #define AjPDirout AjODirout*
+
+
+
 
 /* @data AjPOutfile ***********************************************************
 **
@@ -238,6 +253,8 @@ AjBool         ajDiroutExists(AjPDirout thys);
 AjPDirout      ajDiroutNewPath(const AjPStr name);
 AjPDirout      ajDiroutNewPathExt(const AjPStr name, const AjPStr ext);
 AjBool         ajDiroutOpen(AjPDirout thys);
+ajint          ajFilelistAddDirectory(AjPList list,
+                                      const AjPDir dir);
 ajint          ajFilelistAddPathWildRecursiveIgnore(AjPList list,
 						    const AjPStr path,
 						    const AjPStr wildname,

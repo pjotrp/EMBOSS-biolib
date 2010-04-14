@@ -96,7 +96,7 @@ extern "C"
  *  i.e. dbno + offset + refoffset
  */
 #define BT_DOFFROFF (sizeof(ajint) + sizeof(ajlong) + sizeof(ajlong))
-    
+
 
 
 
@@ -516,6 +516,8 @@ typedef struct AjSBtpage
     char Padding[4];
 } AjOBtpage;
 #define AjPBtpage AjOBtpage*
+
+
 
 
 /* @data AjPBtcache ***************************************************

@@ -10,6 +10,9 @@ extern "C"
 
 enum AjEListType {ajEListAny, ajEListStr};
 
+
+
+
 /* @data AjPListNode **********************************************************
 **
 ** Substructure of AjPList
@@ -30,6 +33,9 @@ typedef struct AjSListNode {
 } AjOListNode;
 
 #define AjPListNode AjOListNode*
+
+
+
 
 /* @data AjPList **************************************************************
 **
@@ -58,6 +64,9 @@ typedef struct AjSList {
 } AjOList;
 
 #define AjPList AjOList*
+
+
+
 
 /* @data AjIList **************************************************************
 **

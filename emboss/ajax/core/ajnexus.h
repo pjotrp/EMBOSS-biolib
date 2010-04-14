@@ -9,6 +9,9 @@ extern "C"
 #include "ajfile.h"
 #include "ajstr.h"
 
+
+
+
 /* @data AjPNexusTaxa *****************************************************
 **
 ** Ajax nexus data taxa block object.
@@ -32,6 +35,7 @@ typedef struct AjSNexusTaxa {
     char    Padding[4];
 } AjONexusTaxa;
 #define AjPNexusTaxa AjONexusTaxa*
+
 
 
 
@@ -102,6 +106,7 @@ typedef struct AjSNexusCharacters {
 
 
 
+
 /* @data AjPNexusUnaligned ****************************************************
 **
 ** Ajax nexus data unaligned block object.
@@ -145,6 +150,7 @@ typedef struct AjSNexusUnaligned {
 
 
 
+
 /* @data AjPNexusDistances ****************************************************
 **
 ** Ajax nexus data distances block object.
@@ -182,6 +188,7 @@ typedef struct AjSNexusDistances {
     char Padding[7];
 } AjONexusDistances;
 #define AjPNexusDistances AjONexusDistances*
+
 
 
 
@@ -223,6 +230,7 @@ typedef struct AjSNexusSets {
 
 
 
+
 /* @data AjPNexusAssumptions **************************************************
 **
 ** Ajax nexus data assumptions block object.
@@ -259,6 +267,7 @@ typedef struct AjSNexusAssumptions {
 
 
 
+
 /* @data AjPNexusCodons *******************************************************
 **
 ** Ajax nexus data codons block object.
@@ -282,6 +291,7 @@ typedef struct AjSNexusCodons {
     AjPStr* CodeSet;
 } AjONexusCodons;
 #define AjPNexusCodons AjONexusCodons*
+
 
 
 
@@ -309,6 +319,7 @@ typedef struct AjSNexusTrees {
 
 
 
+
 /* @data AjPNexusNotes *****************************************************
 **
 ** Ajax nexus data notes block object.
@@ -330,6 +341,7 @@ typedef struct AjSNexusNotes {
     AjPStr* Picture;
 } AjONexusNotes;
 #define AjPNexusNotes AjONexusNotes*
+
 
 
 

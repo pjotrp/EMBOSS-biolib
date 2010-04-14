@@ -7,6 +7,8 @@ extern "C"
 #define ajcod_h
 
 
+
+
 /* @data AjPCod ***************************************************************
 **
 ** Ajax codon object.
