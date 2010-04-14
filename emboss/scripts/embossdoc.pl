@@ -718,10 +718,11 @@ $datatitle = "";
 
 $fdata = "";
 
-while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
+while ($source =~ m"((\s+)([#]if[^\n]+\n)?)([/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])"gos) {
     $partnum=0;
     $mastertoken="undefined";
-    $ccfull = $&;
+    $prespace = $2;
+    $ccfull = $4;
     $rest = $POSTMATCH;
 
     ($cc) = ($ccfull =~ /^..\s*(.*\S)*\s*..$/gos);
@@ -754,7 +755,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
     $errtext = "See source code";
     $dependtext = "See source code";
     $othertext = "See other functions in this section";
-    $availtext = "In release 6.1.0";
+    $availtext = "In release 6.3.0";
     $ctype = "";
 
     while ($cc =~ m/\s@((\S+)\s+([^@]*[^@\s]))/gos) {
@@ -799,6 +800,22 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    $srest =~ s/{([^\}]+)}/<a href="#$1">$1<\/a>/gos;
 	    print "\nSection $sect\n";
 	    print "-----------------------------\n";
+
+	    if($prespace !~ /^\n\n\n\n\n$/) {
+		if($prespace =~ /^[\n]+$/) {
+		    $whitelen = length($&) - 1;
+		    print "bad whitespace $whitelen lines at start\n";
+		}
+		elsif ($prespace =~ / /) {
+		    print "bad whitespace has space(s) at start\n";
+		}
+		elsif ($prespace =~ /\t/) {
+		    print "bad whitespace has tab(s) at start\n";
+		}
+		else {
+		    print "bad whitespace at start\n";
+		}
+	    }
 
 	    $bookstr .= "\n  section: $sect\n";
 
@@ -881,6 +898,23 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    $datastr = "<p><b>Sections:</b> ";
 	    $datastrstatic = "<p><b>Sections:</b> ";
 
+	    if($prespace !~ /^\n\n\n\n\n$/) {
+		print "Datasection '$datatype' '$datadesc'\n";
+		if($prespace =~ /^[\n]+$/) {
+		    $whitelen = length($&) - 1;
+		    print "bad whitespace $whitelen lines at start\n";
+		}
+		elsif ($prespace =~ / /) {
+		    print "bad whitespace has space(s) at start\n";
+		}
+		elsif ($prespace =~ /\t/) {
+		    print "bad whitespace has tab(s) at start\n";
+		}
+		else {
+		    print "bad whitespace at start\n";
+		}
+	    }
+
 	    $bookstr .= "  $dataname\n $datadesc\n";
 	    splice(@namrules, 1+$namrulesfilecount);
 	    splice(@namdescs, 1+$namrulesfilecount);
@@ -893,8 +927,27 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    if($partnum != 1) {
 		print "bad syntax \@$token must be at start\n";
 	    }
+	    ($sname, $norest) =
+		($data =~ /\S+\s+(\S+)\s*(.*)/gos);
 	    $flastname = "";
 	    splice (@namrules, 0);
+
+	    if($prespace !~ /^\n\n\n\n\n$/) {
+		print "Filesection $sname\n";
+		if($prespace =~ /^[\n]+$/) {
+		    $whitelen = length($&) - 1;
+		    print "bad whitespace $whitelen lines at start\n";
+		}
+		elsif ($prespace =~ / /) {
+		    print "bad whitespace has space(s) at start\n";
+		}
+		elsif ($prespace =~ /\t/) {
+		    print "bad whitespace has tab(s) at start\n";
+		}
+		else {
+		    print "bad whitespace at start\n";
+		}
+	    }
 
 	}
 
@@ -1025,6 +1078,23 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    print "Function $name\n";
 	    ${$ostr} .= "<hr><h4><a name=\"$name\">\n";
 	    ${$ostr} .= "Function</a> ".srsref($name)."</h4>\n";
+
+	    if($prespace !~ /^\n\n\n\n\n$/) {
+		if($prespace =~ /^[\n]+$/) {
+		    $whitelen = length($&) - 1;
+		    print "bad whitespace $whitelen lines at start\n";
+		}
+		elsif ($prespace =~ / /) {
+		    print "bad whitespace has space(s) at start\n";
+		}
+		elsif ($prespace =~ /\t/) {
+		    print "bad whitespace has tab(s) at start\n";
+		}
+		else {
+		    print "bad whitespace at start\n";
+		}
+	    }
+
 	    if(!defined($fargs)) {
 		print "bad function prototype: not parsed\n";
 		$ftype = "unknown";
@@ -1115,6 +1185,17 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    ($unused,$ftype,$fname, $fargs) =
 		$rest =~ /^\s*(__noreturn\s*)?static\s+([^\(\)]*\S)\s+(\S+)\s*[\(]\s*([^{]*)[)]\s*[\{]/os;
 	    print "Static function $name\n";
+
+	    if($prespace !~ /^\n\n\n\n\n$/) {
+		if($prespace =~ /^[\n]+$/) {
+		    $whitelen = length($&) - 1;
+		    print "bad whitespace $whitelen lines at start\n";
+		}
+		 else {
+		     print "bad whitespace at start\n";
+		 }
+	    }
+
 	    $sectstrstatic .= " <a href=#$name>$name</a>";
 	    ${$ostr} .= "<hr><h4><a name=\"$name\">\n";
 	    ${$ostr} .= "Static function</a> ".srsref($name)."</h4>\n";
@@ -1188,6 +1269,17 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    ($name, $mrest) = ($data =~ /\S+\s+(\S+)\s*(.*)/gos);
 	    $fname = $name;
 	    print "Macro $name\n";
+
+	    if($prespace !~ /^\n\n\n\n\n$/) {
+		if($prespace =~ /^[\n]+$/) {
+		    $whitelen = length($&) - 1;
+		    print "bad whitespace $whitelen lines at start\n";
+		}
+		 else {
+		     print "bad whitespace at start\n";
+		 }
+	    }
+
 	    $sectstr .= " <a href=#$name>$name</a>";
 	    ### print "args '$margs'\n";
 	    ${$ostr} .= "<hr><h4><a name=\"$name\">\n";
@@ -1242,6 +1334,17 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    $type = $token;
 	    ($name, $mrest) = ($data =~ /\S+\s+(\S+)\s*(.*)/gos);
 	    print "Function list $name\n";
+
+	    if($prespace !~ /^\n\n\n\n\n$/) {
+		if($prespace =~ /^[\n]+$/) {
+		    $whitelen = length($&) - 1;
+		    print "bad whitespace $whitelen lines at start\n";
+		}
+		 else {
+		     print "bad whitespace at start\n";
+		 }
+	    }
+
 	    $sectstrstatic .= " <a href=#$name>$name</a>";
 	    ${$ostr} .= "<hr><h4><a name=\"$name\">\n";
 	    ${$ostr} .= "Function list</a> ".srsref($name)."</h4>\n";
@@ -1736,6 +1839,23 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    }
 	    ($oname, $norest) =
 		($data =~ /\S+\s+(\S+)\s*(.*)/gos);
+	    if($prespace !~ /^\n\n\n\n\n$/) {
+		print "Obsolete $oname\n";
+		if($prespace =~ /^[\n]+$/) {
+		    $whitelen = length($&) - 1;
+		    print "bad whitespace $whitelen lines at start\n";
+		}
+		elsif ($prespace =~ / /) {
+		    print "bad whitespace has space(s) at start\n";
+		}
+		elsif ($prespace =~ /\t/) {
+		    print "bad whitespace has tab(s) at start\n";
+		}
+		else {
+		    print "bad whitespace at start\n";
+		}
+	    }
+
 	    if($norest) {
 		print "bad obsolete $oname - extra text\n"
 	    }
