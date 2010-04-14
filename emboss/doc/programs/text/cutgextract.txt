@@ -68,6 +68,9 @@ Version: EMBOSS:6.2.0
 
    Associated qualifiers:
 
+   "-directory" associated qualifiers
+   -extension1         string     Default file extension
+
    "-outfile" associated qualifiers
    -odirectory2        string     Output directory
 

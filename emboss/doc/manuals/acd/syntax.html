@@ -705,6 +705,54 @@ Kinetics" which had to be created to hold 'findkm').</p>
 
  <tr>
   <td>
+  <p>Ontology</p>
+  </td>
+  <td>
+  <p>EDAM</p>
+  </td>
+  <td>
+  <p>EDAM ontology</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>GO</p>
+  </td>
+  <td>
+  <p>GO Gene ontology</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>SO</p>
+  </td>
+  <td>
+  <p>SO Sequence ontology</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>Taxonomy</p>
+  </td>
+  <td>
+  <p>NCBI Taxonomy</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>Phylogeny</p>
   </td>
   <td>
@@ -1372,14 +1420,13 @@ nullok: N<br>
 fullpath: N<br>
 nulldefault: N<br>
 nullok: N<br>
-extension: ""<br>
 
  </p>
  </td>
 
   <td>
   <p>
-&nbsp;
+extension: ""<br>
 
  </p>
  </td>
@@ -1403,14 +1450,13 @@ extension: ""<br>
   <p>
 fullpath: N<br>
 nullok: N<br>
-extension: ""<br>
 
  </p>
  </td>
 
   <td>
   <p>
-&nbsp;
+extension: ""<br>
 
  </p>
  </td>
@@ -2353,7 +2399,6 @@ oformat: ""<br>
 fullpath: N<br>
 nulldefault: N<br>
 nullok: N<br>
-extension: ""<br>
 binary: N<br>
 create: N<br>
 temporary: N<br>
@@ -2363,7 +2408,7 @@ temporary: N<br>
 
   <td>
   <p>
-&nbsp;
+extension: ""<br>
 
  </p>
  </td>
@@ -2449,39 +2494,6 @@ nullok: N<br>
 name: ""<br>
 extension: ""<br>
 append: N<br>
-nulldefault: N<br>
-nullok: N<br>
-binary: N<br>
-
- </p>
- </td>
-
-  <td>
-  <p>
-odirectory: ""<br>
-
- </p>
- </td>
-
- <tr>
-  <td>
-  <p><b>outfileall</b></p>
-  </td>
-  <td>
-  <p>Multiple output files</p>
-  </td>
-
-  <td>
-  <p>
-&nbsp;
-
- </p>
- </td>
-
-  <td>
-  <p>
-name: ""<br>
-extension: ""<br>
 nulldefault: N<br>
 nullok: N<br>
 binary: N<br>
@@ -3339,14 +3351,6 @@ which the <i>-oformat</i> associated qualifier can override.</p>
 
 <p>Non-sequence-related data file, usually plain
 text. This data type refers to files that are to be produced by the program and
-usually do not contain sequence data. The type of data can be identified by a
-"knowntype" attribute and matched to an Infile standard type for
-use as input to another program.</p>
-
-<h5>Outfileall</h5>
-
-<p>Non-sequence-related data files, usually plain
-text. This data type refers to files that are to be produced by the program and 
 usually do not contain sequence data. The type of data can be identified by a
 "knowntype" attribute and matched to an Infile standard type for
 use as input to another program.</p>
@@ -5046,18 +5050,6 @@ they can fix the value, or provide parsers for each alternative.
 
  <tr>
   <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>extension: <i>string<i></p>
-  </td>
-  <td>
-  <p>Default file extension<br>Default: ""</p>
-  </td>
- </tr>
-
- <tr>
-  <td>
   <p>dirlist</p>
   </td>
   <td>
@@ -5077,18 +5069,6 @@ they can fix the value, or provide parsers for each alternative.
   </td>
   <td>
   <p>Can accept a null filename as 'no file'<br>Default: N</p>
-  </td>
- </tr>
-
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>extension: <i>string<i></p>
-  </td>
-  <td>
-  <p>Default file extension<br>Default: ""</p>
   </td>
  </tr>
 
@@ -7068,18 +7048,6 @@ Select one [blosum] : PAM
   <p>&nbsp;</p>
   </td>
   <td>
-  <p>extension: <i>string<i></p>
-  </td>
-  <td>
-  <p>Default file extension<br>Default: ""</p>
-  </td>
- </tr>
-
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
   <p>binary: <i>Y/N<i></p>
   </td>
   <td>
@@ -7228,66 +7196,6 @@ Select one [blosum] : PAM
   </td>
   <td>
   <p>File contains binary data<br>Default: N</p>
-  </td>
- </tr>
-
- <tr>
-  <td>
-  <p>outfileall</p>
-  </td>
-  <td>
-  <p>name: <i>string<i></p>
-  </td>
-  <td>
-  <p>Default file name<br>Default: ""</p>
-  </td>
- </tr>
-
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>extension: <i>string<i></p>
-  </td>
-  <td>
-  <p>Default file extension<br>Default: ""</p>
-  </td>
- </tr>
-
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>nulldefault: <i>Y/N<i></p>
-  </td>
-  <td>
-  <p>Defaults to 'no file'<br>Default: N</p>
-  </td>
- </tr>
-
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>nullok: <i>Y/N<i></p>
-  </td>
-  <td>
-  <p>Can accept a null filename as 'no file'<br>Default: N</p>
-  </td>
- </tr>
-
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>binary: <i>Y/N<i></p>
-  </td>
-  <td>
-  <p>Files contains binary data<br>Default: N</p>
   </td>
  </tr>
 
@@ -8050,37 +7958,6 @@ recommended value.</p>
 <p>The <i>append:</i> attribute specifies that output is appended to
 the end of an existing output file. By default, the output file will
 be overwritten.</p>
-
-
-<h5>Outfileall</h5>
-
-<p>The output filename is constructed from the <i>name:</i>
-and <i>extension:</i> attributes in a $( <i>name</i>).$(<i>extension</i>)
-format. If the <i>name:</i> attribute is not defined in the ACD file, it will
-default to the calculated attribute <i>name:</i> of the FIRST sequence that is
-read in ($(asequence.name) if the sequence parameter is named asequence).</p>
-
-<p>The <i>extension:</i> attribute will default to the program name,
-and is usually left as the default value.</p>
-
-<p>The <i>nulldefault:</i> attribute overrides the default name
-generation, and uses an empty string (no output file) as the default
-for programs where an output file is only occasionally
-required. Examples include programs where the original output format
-is available, usually for users that still require it for parsing in
-automated scripts. In combination with the <i>nullok:</i> and
-<i>missing:</i> attributes, this allows qualifiers to be null by
-default, and turned on from the command line.</p>
-
-<p>The <i>nullok:</i> attribute allows a default value to be replaced
-by an empty string or by -noxxx on the command line if the application
-can run without an output file.
-</p>
-
-<p>The <i>knowntype:</i> attribute should always be defined. If the output
-is not of any special type, a knowntype of "(program) output" is the
-recommended value.</p>
-
 
 <h5>Outmatrix</h5>
 
@@ -10334,6 +10211,30 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
 
  <tr>
   <td>
+  <p>directory</p>
+  </td>
+  <td>
+  <p>-extension: <i>string<i></p>
+  </td>
+  <td>
+  <p>Default file extension<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>dirlist</p>
+  </td>
+  <td>
+  <p>-extension: <i>string<i></p>
+  </td>
+  <td>
+  <p>Default file extension<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>features</p>
   </td>
   <td>
@@ -11404,6 +11305,18 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
 
  <tr>
   <td>
+  <p>outdir</p>
+  </td>
+  <td>
+  <p>-extension: <i>string<i></p>
+  </td>
+  <td>
+  <p>Default file extension<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>outdiscrete</p>
   </td>
   <td>
@@ -11429,18 +11342,6 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
  <tr>
   <td>
   <p>outfile</p>
-  </td>
-  <td>
-  <p>-odirectory: <i>string<i></p>
-  </td>
-  <td>
-  <p>Output directory<br>Default: ""</p>
-  </td>
- </tr>
-
- <tr>
-  <td>
-  <p>outfileall</p>
   </td>
   <td>
   <p>-odirectory: <i>string<i></p>

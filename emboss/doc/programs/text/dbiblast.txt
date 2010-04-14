@@ -101,8 +101,14 @@ Version: EMBOSS:6.2.0
 
    Associated qualifiers:
 
+   "-directory" associated qualifiers
+   -extension          string     Default file extension
+
    "-outfile" associated qualifiers
    -odirectory         string     Output directory
+
+   "-indexoutdir" associated qualifiers
+   -extension          string     Default file extension
 
    General qualifiers:
    -auto               boolean    Turn off prompts

@@ -787,15 +787,6 @@ usually do not contain sequence data. The type of data can be identified by a
 "knowntype" attribute and matched to an Infile standard type for
 use as input to another program.</p>
 
-<!-- #acdtype-outfileall -->
-<h5>Outfileall</h5>
-
-<p>Non-sequence-related data files, usually plain
-text. This data type refers to files that are to be produced by the program and 
-usually do not contain sequence data. The type of data can be identified by a
-"knowntype" attribute and matched to an Infile standard type for
-use as input to another program.</p>
-
 <!-- #acdtype-outfreq -->
 <h5>Outfreq</h5>
 
@@ -2681,38 +2672,6 @@ recommended value.</p>
 <p>The <i>append:</i> attribute specifies that output is appended to
 the end of an existing output file. By default, the output file will
 be overwritten.</p>
-
-
-<!-- #acdattr-outfileall -->
-<h5>Outfileall</h5>
-
-<p>The output filename is constructed from the <i>name:</i>
-and <i>extension:</i> attributes in a $( <i>name</i>).$(<i>extension</i>)
-format. If the <i>name:</i> attribute is not defined in the ACD file, it will
-default to the calculated attribute <i>name:</i> of the FIRST sequence that is
-read in ($(asequence.name) if the sequence parameter is named asequence).</p>
-
-<p>The <i>extension:</i> attribute will default to the program name,
-and is usually left as the default value.</p>
-
-<p>The <i>nulldefault:</i> attribute overrides the default name
-generation, and uses an empty string (no output file) as the default
-for programs where an output file is only occasionally
-required. Examples include programs where the original output format
-is available, usually for users that still require it for parsing in
-automated scripts. In combination with the <i>nullok:</i> and
-<i>missing:</i> attributes, this allows qualifiers to be null by
-default, and turned on from the command line.</p>
-
-<p>The <i>nullok:</i> attribute allows a default value to be replaced
-by an empty string or by -noxxx on the command line if the application
-can run without an output file.
-</p>
-
-<p>The <i>knowntype:</i> attribute should always be defined. If the output
-is not of any special type, a knowntype of "(program) output" is the
-recommended value.</p>
-
 
 <!-- #acdattr-outmatrix -->
 <h5>Outmatrix</h5>
