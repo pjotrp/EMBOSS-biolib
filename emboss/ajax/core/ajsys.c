@@ -32,6 +32,7 @@
 #include <sys/wait.h>
 #include <errno.h>
 #include <unistd.h>
+#include <locale.h>
 #else
 #include "win32.h"
 #include <direct.h>
@@ -67,11 +68,17 @@ static void CALLBACK sysTimeoutAbort(LPVOID arg, DWORD low, DWORD high);
 **
 */
 
+
+
+
 /* @datasection [none] System utility functions *******************************
 **
 ** @nam2rule Sys  Function belongs to the AJAX ajsys library.
 **
 */
+
+
+
 
 /* @section Argument list manipulation functions ******************************
 **
@@ -98,6 +105,9 @@ static void CALLBACK sysTimeoutAbort(LPVOID arg, DWORD low, DWORD high);
 ** @fcategory misc
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSysArglistBuildC ****************************************************
 **
@@ -150,7 +160,7 @@ AjBool ajSysArglistBuildC(const char* cmdline, char** Pname, char*** PParglist)
 	    if(ajRegLenI(argexp, i))
 	    {
 		ajRegSubI(argexp, i, &argstr);
-		/*ajDebug("parsed [%d] '%S'\n", i, argstr);*/
+		ajDebug("parsed [%d] '%S'\n", i, argstr);
 		break;
 	    }
 	}
@@ -345,6 +355,9 @@ __deprecated void ajSysArgListFree(char*** PParglist)
 **
 ******************************************************************************/
 
+
+
+
 /* @func ajSysCastItoc ********************************************************
 **
 ** Convert Int to Char
@@ -431,6 +444,8 @@ __deprecated unsigned char ajSysItoUC(ajint v)
 ** @valrule   *  [AjBool]  True if operation is successful.
 **
 ******************************************************************************/
+
+
 
 
 /* @func ajSysFileRmrfC ******************************************************
@@ -557,7 +572,6 @@ AjBool ajSysFileUnlinkC(const char* filename)
 
 AjBool ajSysFileUnlinkS(const AjPStr filename)
 {
-    
     ajDebug("ajSysFileUnlinkS '%S'\n", filename);
 
 #ifndef WIN32
@@ -884,6 +898,8 @@ __deprecated AjBool ajSysWhichEnv(AjPStr *Pfilename, char * const env[])
 ** @valrule System [void]
 **
 ******************************************************************************/
+
+
 
 
 /* @func ajSysCommandCopyC **************************************************
@@ -1286,6 +1302,9 @@ char* ajSysFuncFgets(char *buf, int size, FILE *fp)
 #endif
 }
 
+
+
+
 /* @obsolete ajSysFgets
 ** @rename ajSysFuncFgets
 */
@@ -1550,6 +1569,8 @@ ajint ajSysExecC(const char* cmdlinetxt)
 
     AjPStr pname = NULL;
 
+    ajDebug("ajSysExecC '%s'\n", cmdlinetxt);
+
     if(!ajSysArglistBuildC(cmdlinetxt, &pgm, &argptr))
 	return -1;
 
@@ -1624,16 +1645,16 @@ ajint ajSysExecC(const char* cmdlinetxt)
 ** The exec'd program is passed a new argv array in argptr
 **
 ** @param [r] cmdline [const AjPStr] The command line
-** @return [void]
+** @return [ajint] Exit status
 ** @@
 ******************************************************************************/
 
-void ajSysExecS(const AjPStr cmdline)
+ajint ajSysExecS(const AjPStr cmdline)
 {
 #ifndef WIN32
     pid_t pid;
     pid_t retval;
-    ajint status;
+    ajint status = 0;
     char *pgm;
     char **argptr;
     ajint i;
@@ -1641,7 +1662,7 @@ void ajSysExecS(const AjPStr cmdline)
     AjPStr pname = NULL;
 
     if(!ajSysArglistBuildS(cmdline, &pgm, &argptr))
-	return;
+	return -1;
 
     pname = ajStrNewC(pgm);
 
@@ -1680,6 +1701,7 @@ void ajSysExecS(const AjPStr cmdline)
 #else
     PROCESS_INFORMATION procInfo;
     STARTUPINFO startInfo;
+    ajint status = 0;
     
     ajDebug ("Launching process '%S'\n", cmdline);
     
@@ -1690,14 +1712,207 @@ void ajSysExecS(const AjPStr cmdline)
 		       CREATE_NO_WINDOW, NULL, NULL, &startInfo, &procInfo))
 	ajFatal("CreateProcess failed");
 
-    WaitForSingleObject(procInfo.hProcess, INFINITE);
+    if(!WaitForSingleObject(procInfo.hProcess, INFINITE))
+        status = 0;
+    else
+        status = -1;
 
     CloseHandle(procInfo.hProcess);
     CloseHandle(procInfo.hThread);
 
 #endif
 
-    return;
+    return status;
+}
+
+
+
+
+/* @func ajSysExecLocaleC *****************************************************
+**
+** Exec a command line as if from the C shell with a defined locale
+** variable.
+**
+** The exec'd program is passed a new argv array in argptr
+**
+** @param [r] cmdlinetxt [const char*] The command line
+** @param [r] localetxt [const char*] The locale value
+** @return [ajint] Exit status
+** @@
+******************************************************************************/
+
+ajint ajSysExecLocaleC(const char* cmdlinetxt, const char* localetxt)
+{
+#ifndef WIN32
+    pid_t pid;
+    pid_t retval;
+    ajint status = 0;
+    char *pgm;
+    char **argptr;
+    ajint i;
+
+    AjPStr pname = NULL;
+
+    ajDebug("ajSysExecLocaleC '%s' '%s'\n", cmdlinetxt, localetxt);
+
+    if(!ajSysArglistBuildC(cmdlinetxt, &pgm, &argptr))
+	return -1;
+
+    pname = ajStrNewC(pgm);
+
+    pid=fork();
+
+    if(pid==-1)
+	ajFatal("System fork failed");
+
+    if(pid)
+    {
+	while((retval=waitpid(pid,&status,0))!=pid)
+	{
+	    if(retval == -1)
+		if(errno != EINTR)
+		    break;
+	}
+    }
+    else
+    {
+        setlocale(LC_ALL, localetxt);
+	execv(ajStrGetPtr(pname), argptr);
+	ajExitAbort();			/* just in case */
+    }
+
+    ajStrDel(&pname);
+
+    i = 0;
+    while(argptr[i])
+    {
+	AJFREE(argptr[i]);
+	++i;
+    }
+    AJFREE(argptr);
+
+    AJFREE(pgm);
+
+#else
+    PROCESS_INFORMATION procInfo;
+    STARTUPINFO startInfo;
+    ajint status = 0;
+
+    ajDebug ("Launching process '%s'\n", cmdlinetxt);
+    
+    ZeroMemory(&startInfo, sizeof(startInfo));
+    startInfo.cb = sizeof(startInfo);
+    
+    if(!CreateProcess(NULL, (char *)cmdlinetxt, NULL, NULL, FALSE,
+                      CREATE_NO_WINDOW, NULL, NULL, &startInfo, &procInfo))
+	ajFatal("CreateProcess failed");
+
+    if(!WaitForSingleObject(procInfo.hProcess, INFINITE))
+        status = 0;
+    else
+        status = -1;
+
+    CloseHandle(procInfo.hProcess);
+    CloseHandle(procInfo.hThread);
+
+#endif
+
+    return status;
+}
+
+
+
+
+/* @func ajSysExecLocaleS *****************************************************
+**
+** Exec a command line as if from the C shell with a defined locale
+** variable.
+**
+** The exec'd program is passed a new argv array in argptr
+**
+** @param [r] cmdline [const AjPStr] The command line
+** @param [r] localestr [const AjPStr] The locale value
+** @return [ajint] Exit status
+** @@
+******************************************************************************/
+
+ajint ajSysExecLocaleS(const AjPStr cmdline, const AjPStr localestr)
+{
+#ifndef WIN32
+    pid_t pid;
+    pid_t retval;
+    ajint status = 0;
+    char *pgm;
+    char **argptr;
+    ajint i;
+
+    AjPStr pname = NULL;
+
+    ajDebug("ajSysExecLocaleS '%S' '%S'\n", cmdline, localestr);
+
+    if(!ajSysArglistBuildS(cmdline, &pgm, &argptr))
+	return -1;
+
+    pname = ajStrNewC(pgm);
+
+    pid=fork();
+
+    if(pid==-1)
+	ajFatal("System fork failed");
+
+    if(pid)
+    {
+	while((retval=waitpid(pid,&status,0))!=pid)
+	{
+	    if(retval == -1)
+		if(errno != EINTR)
+		    break;
+	}
+    }
+    else
+    {
+        setlocale(LC_ALL, ajStrGetPtr(localestr));
+	execv(ajStrGetPtr(pname), argptr);
+	ajExitAbort();			/* just in case */
+    }
+
+    ajStrDel(&pname);
+
+    i = 0;
+    while(argptr[i])
+    {
+	AJFREE(argptr[i]);
+	++i;
+    }
+    AJFREE(argptr);
+
+    AJFREE(pgm);
+
+#else
+    PROCESS_INFORMATION procInfo;
+    STARTUPINFO startInfo;
+    ajint status = 0;
+   
+    ajDebug ("Launching process '%S'\n", cmdline);
+    
+    ZeroMemory(&startInfo, sizeof(startInfo));
+    startInfo.cb = sizeof(startInfo);
+    
+    if (!CreateProcess(NULL, (char *)ajStrGetPtr(cmdline), NULL, NULL, FALSE,
+		       CREATE_NO_WINDOW, NULL, NULL, &startInfo, &procInfo))
+	ajFatal("CreateProcess failed");
+
+    if(!WaitForSingleObject(procInfo.hProcess, INFINITE))
+        status = 0;
+    else
+        status = -1;
+
+    CloseHandle(procInfo.hProcess);
+    CloseHandle(procInfo.hThread);
+
+#endif
+
+    return status;
 }
 
 
@@ -1710,24 +1925,26 @@ void ajSysExecS(const AjPStr cmdline)
 ** The exec'd program is passed a new argv array in argptr
 **
 ** @param [r] cmdline [const AjPStr] The command line
-** @return [void]
+** @return [ajint Exit status
 ** @@
 ******************************************************************************/
 
-void ajSysExecPathS(const AjPStr cmdline)
+ajint ajSysExecPathS(const AjPStr cmdline)
 {
 #ifndef WIN32
     pid_t pid;
     pid_t retval;
-    ajint status;
+    ajint status = 0;
     char *pgm;
     char **argptr;
     ajint i;
 
     AjPStr pname = NULL;
 
+    ajDebug("ajSysExecPathS '%S'\n", cmdline);
+
     if(!ajSysArglistBuildS(cmdline, &pgm, &argptr))
-	return;
+	return -1;
 
     pname = ajStrNewC(pgm);
 
@@ -1766,7 +1983,8 @@ void ajSysExecPathS(const AjPStr cmdline)
 #else
     PROCESS_INFORMATION procInfo;
     STARTUPINFO startInfo;
-    
+    ajint status = 0;
+
     ajDebug ("Launching process '%S'\n", cmdline);
     
     ZeroMemory(&startInfo, sizeof(startInfo));
@@ -1776,11 +1994,14 @@ void ajSysExecPathS(const AjPStr cmdline)
 		       CREATE_NO_WINDOW, NULL, NULL, &startInfo, &procInfo))
 	ajFatal("CreateProcess failed");
 
-    WaitForSingleObject(procInfo.hProcess, INFINITE);
+    if(!WaitForSingleObject(procInfo.hProcess, INFINITE))
+        status = 0;
+    else
+        status = -1;
 
 #endif
 
-    return;
+    return status;
 }
 
 
@@ -1823,11 +2044,11 @@ __deprecated void ajSysSystem(const AjPStr cmdline)
 ** @param [r] prog[const char *] The command line
 ** @param [r] arg [char* const[]] Argument list
 ** @param [r] env [char* const[]] An environment
-** @return [void]
+** @return [ajint] Exit status
 ** @@
 ******************************************************************************/
 
-void ajSysExecProgArgEnvNowaitC(const char *prog, char * const arg[],
+ajint  ajSysExecProgArgEnvNowaitC(const char *prog, char * const arg[],
                                 char * const env[])
 {
 #ifndef WIN32
@@ -1836,7 +2057,7 @@ void ajSysExecProgArgEnvNowaitC(const char *prog, char * const arg[],
                 prog);
 #endif
 
-    return;
+    return 0;
 }
 
 
@@ -1855,11 +2076,11 @@ void ajSysExecProgArgEnvNowaitC(const char *prog, char * const arg[],
 **
 ** @param [r] cmdline [const AjPStr] The command line
 ** @param [r] env [char* const[]] The environment
-** @return [void]
+** @return [ajint] Exit status
 ** @@
 ******************************************************************************/
 
-void ajSysExecEnvS(const AjPStr cmdline, char * const env[])
+ajint ajSysExecEnvS(const AjPStr cmdline, char * const env[])
 {
 #ifndef WIN32
     pid_t pid;
@@ -1872,7 +2093,7 @@ void ajSysExecEnvS(const AjPStr cmdline, char * const env[])
     AjPStr pname = NULL;
 
     if(!ajSysArglistBuildS(cmdline, &pgm, &argptr))
-	return;
+	return -1;
 
     pname = ajStrNew();
 
@@ -1920,7 +2141,7 @@ void ajSysExecEnvS(const AjPStr cmdline, char * const env[])
 
 #endif
 
-    return;
+    return status;
 }
 
 
@@ -1962,11 +2183,11 @@ __deprecated void ajSysSystemEnv(const AjPStr cmdline, char * const env[])
 **
 ** @param [r] cmdline [const AjPStr] The command line
 ** @param [r] outfname [const AjPStr] The output file name
-** @return [void]
+** @return [ajint] Exit status
 ** @@
 ******************************************************************************/
 
-void ajSysExecOutnameS(const AjPStr cmdline, const AjPStr outfname)
+ajint ajSysExecOutnameS(const AjPStr cmdline, const AjPStr outfname)
 {
 #ifndef WIN32
     pid_t pid;
@@ -1979,7 +2200,7 @@ void ajSysExecOutnameS(const AjPStr cmdline, const AjPStr outfname)
     AjPStr pname = NULL;
 
     if(!ajSysArglistBuildS(cmdline, &pgm, &argptr))
-	return;
+	return -1;
 
     pname = ajStrNew();
 
@@ -2032,6 +2253,7 @@ void ajSysExecOutnameS(const AjPStr cmdline, const AjPStr outfname)
     STARTUPINFO si;
     HANDLE fp;
     SECURITY_ATTRIBUTES sa;
+    ajint status = 0;
 
     ajDebug ("Launching process '%S'\n", cmdline);
 
@@ -2064,13 +2286,16 @@ void ajSysExecOutnameS(const AjPStr cmdline, const AjPStr outfname)
 	ajFatal("CreateProcess failed");
     }
     
-    WaitForSingleObject(pinf.hProcess, INFINITE);
+    if(!WaitForSingleObject(pinf.hProcess, INFINITE))
+        status = 0;
+    else
+        status = -1;
 
     CloseHandle(pinf.hProcess);
     CloseHandle(pinf.hThread);
 #endif
 
-    return;
+    return status;
 }
 
 
@@ -2085,11 +2310,11 @@ void ajSysExecOutnameS(const AjPStr cmdline, const AjPStr outfname)
 **
 ** @param [r] cmdline [const AjPStr] The command line
 ** @param [r] outfname [const AjPStr] The output file name
-** @return [void]
+** @return [ajint] Exit status
 ** @@
 ******************************************************************************/
 
-void ajSysExecOutnameAppendS(const AjPStr cmdline, const AjPStr outfname)
+ajint ajSysExecOutnameAppendS(const AjPStr cmdline, const AjPStr outfname)
 {
 #ifndef WIN32
     pid_t pid;
@@ -2102,7 +2327,7 @@ void ajSysExecOutnameAppendS(const AjPStr cmdline, const AjPStr outfname)
     AjPStr pname = NULL;
 
     if(!ajSysArglistBuildS(cmdline, &pgm, &argptr))
-	return;
+	return -1;
 
     fflush(stdout);
     
@@ -2157,6 +2382,7 @@ void ajSysExecOutnameAppendS(const AjPStr cmdline, const AjPStr outfname)
     STARTUPINFO si;
     HANDLE fp;
     SECURITY_ATTRIBUTES sa;
+    ajint status = 0;
 
     ajDebug ("Launching process '%S'\n", cmdline);
 
@@ -2190,14 +2416,17 @@ void ajSysExecOutnameAppendS(const AjPStr cmdline, const AjPStr outfname)
 	ajFatal("CreateProcess failed");
     }
     
-    WaitForSingleObject(pinf.hProcess, INFINITE);
+    if(!WaitForSingleObject(pinf.hProcess, INFINITE))
+        status = 0;
+    else
+        status = -1;
 
     CloseHandle(pinf.hProcess);
     CloseHandle(pinf.hThread);
 
 #endif
 
-    return;
+    return status;
 }
 
 
@@ -2212,11 +2441,11 @@ void ajSysExecOutnameAppendS(const AjPStr cmdline, const AjPStr outfname)
 **
 ** @param [r] cmdline [const AjPStr] The command line
 ** @param [r] outfname [const AjPStr] The output file name
-** @return [void]
+** @return [ajint] Exit status
 ** @@
 ******************************************************************************/
 
-void ajSysExecOutnameErrS(const AjPStr cmdline, const AjPStr outfname)
+ajint ajSysExecOutnameErrS(const AjPStr cmdline, const AjPStr outfname)
 {
 #ifndef WIN32
     pid_t pid;
@@ -2229,7 +2458,7 @@ void ajSysExecOutnameErrS(const AjPStr cmdline, const AjPStr outfname)
     AjPStr pname = NULL;
 
     if(!ajSysArglistBuildS(cmdline, &pgm, &argptr))
-	return;
+	return -1;
 
     pname = ajStrNew();
 
@@ -2285,6 +2514,7 @@ void ajSysExecOutnameErrS(const AjPStr cmdline, const AjPStr outfname)
     STARTUPINFO si;
     HANDLE fp;
     SECURITY_ATTRIBUTES sa;
+    ajint status = 0;
 
     ajDebug ("Launching process '%S'\n", cmdline);
 
@@ -2318,13 +2548,16 @@ void ajSysExecOutnameErrS(const AjPStr cmdline, const AjPStr outfname)
 	ajFatal("CreateProcess failed");
     }
     
-    WaitForSingleObject(pinf.hProcess, INFINITE);
+    if(!WaitForSingleObject(pinf.hProcess, INFINITE))
+        status = 0;
+    else
+        status = -1;
 
     CloseHandle(pinf.hProcess);
     CloseHandle(pinf.hThread);
 #endif
 
-    return;
+    return status;
 }
 
 
@@ -2365,16 +2598,16 @@ __deprecated void ajSysSystemOut(const AjPStr cmdline, const AjPStr outfname)
 **
 ** @param [r] cmdline [const AjPStr] The command line
 ** @param [r] outfname [const AjPStr] The output file name
-** @return [void]
+** @return [ajint] Exit status
 ** @@
 ******************************************************************************/
 
-void ajSysExecOutnameAppendErrS(const AjPStr cmdline, const AjPStr outfname)
+ajint ajSysExecOutnameAppendErrS(const AjPStr cmdline, const AjPStr outfname)
 {
 #ifndef WIN32
     pid_t pid;
     pid_t retval;
-    ajint status;
+    ajint status = 0;
     char *pgm;
     char **argptr;
     ajint i;
@@ -2382,7 +2615,7 @@ void ajSysExecOutnameAppendErrS(const AjPStr cmdline, const AjPStr outfname)
     AjPStr pname = NULL;
 
     if(!ajSysArglistBuildS(cmdline, &pgm, &argptr))
-	return;
+	return -1;
 
     pname = ajStrNew();
 
@@ -2437,6 +2670,7 @@ void ajSysExecOutnameAppendErrS(const AjPStr cmdline, const AjPStr outfname)
     STARTUPINFO si;
     HANDLE fp;
     SECURITY_ATTRIBUTES sa;
+    ajint status = -1;
 
     ajDebug ("Launching process '%S'\n", cmdline);
     
@@ -2468,13 +2702,16 @@ void ajSysExecOutnameAppendErrS(const AjPStr cmdline, const AjPStr outfname)
 	ajFatal("CreateProcess failed");
     }
     
-    WaitForSingleObject(pinf.hProcess, INFINITE);
+    if(!WaitForSingleObject(pinf.hProcess, INFINITE))
+        status = 0;
+    else
+        status = -1;
 
     CloseHandle(pinf.hProcess);
     CloseHandle(pinf.hThread);
 #endif
 
-    return;
+    return status;
 }
 
 
@@ -2495,6 +2732,9 @@ void ajSysExecOutnameAppendErrS(const AjPStr cmdline, const AjPStr outfname)
 ** @valrule   *  [void]
 **
 ******************************************************************************/
+
+
+
 
 /* @func ajSysCanon  **********************************************************
 **
