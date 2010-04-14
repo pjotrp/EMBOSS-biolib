@@ -935,6 +935,7 @@ ajHistSetMultiYTitle ajHistSetmultiYlabelS
 ajHistSetPtrToData ajHistDataAdd
 ajHistCopyData ajHistDataCopy
 #ajmart
+#ajseqdb-no
 #ajseqdb
 #ajacd
 ajAcdGetBool ajAcdGetBoolean
