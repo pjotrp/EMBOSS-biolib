@@ -1,4 +1,35 @@
 Version 6.3.0 15-Jul-2010
+	When reading ABI trace files the quality scores can now be
+	read. They are undefined in ABI files, but assumed to be phred
+	scores. ABI files can have two sequences and sets of quality
+	scores. The first is from the instrument basecaloling. The second
+	is from a seond basecaller. Where two sets are found, EMBOSS now
+	reads the second set.
+
+	Application nospace has a new  -menu option to trim all, trailing, or
+	excess whitespace.
+
+	Output type outfileall is obsolete (it is essentially an outfile)
+	and has been deleted. No application was using it.
+
+	Input type filelist (comma-delimited list of filenames) now trims
+	excess whitespace from the beginning and end of each filename.
+
+	Command line qualifiers with an '=' but no value now have a
+	value of an empty string. Previous releases set the value to "="
+
+	The file extension for directory, dirlist and outdir ACD datatypes
+	is now a qualifier. This allows it to be defined as a default in
+	the ACD file but also substituted by the user. An empty srtring
+	means 'ignore the extension'. To specify 'no extension' a single
+	space can be used as the value.
+
+	On the command line, for a parameter (with no qualifier name
+	given) a single dot was used as a missing value in previous
+	versions. This causes problems when specifying the current
+	directory as a dot. On the command line an empty (missing) value
+	must now be an empty quoted string '' or "".
+
 	Ampersands in application descriptions have been removed. They
 	confuse HTML versions of documentation.
 
