@@ -33,6 +33,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include <locale.h>
+#include <pwd.h>
 #else
 #include "win32.h"
 #include <direct.h>
@@ -43,6 +44,10 @@
 #define strnicmp _strnicmp
 #define fdopen   _fdopen
 #define rmdir    _rmdir
+
+#pragma warning(disable:4142)    /* benign redefinition of type */
+#include <ShlObj.h>
+#include <Sddl.h>
 #endif
 
 
@@ -3428,4 +3433,156 @@ AjBool ajSysExecRedirectC(const char *command, int **pipeto, int **pipefrom)
 #endif
 
     return ajTrue;
+}
+
+
+
+
+/* @func ajSysGetHomedirFromName *********************************************
+**
+** Get a home directory location from  a username
+**
+** @param [r] username [const char *] Username
+** @return [char *] Home directory or NULL
+** @@
+******************************************************************************/
+
+char *ajSysGetHomedirFromName(const char *username)
+{
+    char *hdir = NULL;
+#ifndef WIN32
+    struct passwd *pass = NULL;
+    
+
+    pass = getpwnam(username);
+    
+    if(!pass)
+        return NULL;
+
+    hdir = ajCharNewC(pass->pw_dir);
+#else
+    LPTSTR domainname = NULL;
+    LPTSTR localsvr   = NULL;
+    DWORD dnsize  = 0;
+    PSID psid     = NULL;
+    DWORD sidsize = 0;
+
+    SID_NAME_USE sidtype;
+
+    LPTSTR strsid = NULL;
+    AjPStr subkey = NULL;
+
+    DWORD hdbuffsize = MAX_PATH;
+    char hdbuff[MAX_PATH];
+
+    LONG ret;
+
+    if(!LookupAccountName(localsvr, username, psid, &sidsize, domainname,
+			  &dnsize, &sidtype))
+    {
+        if(GetLastError() == ERROR_NONE_MAPPED)
+        {
+            ajWarn("No Windows username found for '%s'", username);
+            return NULL;
+        }
+        else if(GetLastError() == ERROR_INSUFFICIENT_BUFFER)
+        {
+            psid = (LPTSTR) LocalAlloc(LPTR,sidsize * sizeof(TCHAR));
+            if(!psid)
+            {
+                ajWarn("ajSysLookupAccount: SID allocation failure");
+                return NULL;
+            }
+
+            domainname = (LPTSTR) LocalAlloc(LPTR, dnsize * sizeof(TCHAR));
+            if(!domainname)
+            {
+                ajWarn("ajSysLookupAccount: Domain allocation failure");
+                LocalFree(psid);
+                return NULL;
+            }
+
+            if(!LookupAccountName(localsvr, username, psid, &sidsize,
+				  domainname, &dnsize, &sidtype))
+            {
+                ajWarn("LookupAccountName failed with %d", GetLastError());
+                LocalFree(psid);
+                LocalFree(domainname);
+                return NULL;
+            }
+        }
+        else
+        {
+            ajWarn("General LookupAccountName failure with %d", GetLastError());
+            return NULL;
+        }
+    }
+
+
+    if(!ConvertSidToStringSid(psid, &strsid))
+    {
+        LocalFree(psid);
+
+        return NULL;
+    }
+
+    LocalFree(psid);
+
+    subkey = ajStrNew();
+
+    ajFmtPrintS(&subkey,"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\"
+                "ProfileList\\%s",strsid);
+
+    LocalFree(strsid);
+
+    ret = RegGetValue(HKEY_LOCAL_MACHINE,ajStrGetPtr(subkey),"ProfileImagePath",
+                      RRF_RT_ANY,NULL,(PVOID)hdbuff,&hdbuffsize);
+
+    ajStrDel(&subkey);
+
+    if(ret != ERROR_SUCCESS)
+        return NULL;
+
+    hdir = ajCharNewC(hdbuff);
+#endif
+
+
+    return hdir;
+}
+
+
+
+
+/* @func ajSysGetHomedir *************************************************
+**
+** Get the home directory of the current user
+**
+** @return [char *] Home directory or NULL
+** @@
+******************************************************************************/
+
+char *ajSysGetHomedir(void)
+{
+    char *hdir = NULL;
+#ifndef WIN32
+    char *p = NULL;
+
+    if(!(p = getenv("HOME")))
+        return NULL;
+
+    hdir = ajCharNewC(p);
+#else
+    TCHAR wpath[MAX_PATH];
+    HRESULT ret;
+
+    /* Replace with SHGetKnownFolderPath when XP is no longer supported */
+    ret = SHGetFolderPath(NULL,CSIDL_PROFILE,NULL,0,wpath);
+
+    if(ret != S_OK)
+        return NULL;
+    
+    hdir = ajCharNewC(wpath);
+#endif
+
+    return hdir;
 }

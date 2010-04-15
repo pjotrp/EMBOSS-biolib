@@ -161,6 +161,9 @@ AjPFile       ajSysCreateNewInPipe(const AjPStr command);
 AjBool        ajSysExecRedirectC(const char *command, int **pipeto,
                                  int **pipefrom);
 
+char          *ajSysGetHomedirFromName(const char *username);
+char          *ajSysGetHomedir(void);
+
 /*
 ** End of prototype definitions
 */
