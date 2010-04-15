@@ -222,7 +222,7 @@ int main(int argc, char **argv)
             if (!checkmode)
             for(i=0;i<seqsetsize;i++)
             {
-                if(nmatches>0)
+                if(ajListGetLength(matchlist[i])>0)
                 {
                     iter = ajListIterNewread(matchlist[i]) ;
 
