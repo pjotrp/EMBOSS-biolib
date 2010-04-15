@@ -36,7 +36,6 @@
 #include <sys/types.h>
 #ifndef WIN32
 #include <sys/wait.h>
-#include <pwd.h>
 #endif
 #include <string.h>
 #include <errno.h>
@@ -1017,13 +1016,13 @@ AjPFile ajFileNewInNameS(const AjPStr name)
     AjPFile thys          = NULL;
     AjPStr userstr = NULL;
     AjPStr reststr = NULL;
-    struct passwd* pass   = NULL;
+
     AjPStr dirname        = NULL;
     AjPStr wildname       = NULL;
     AjPFile ptr;
-    
-    char   *p = NULL;
 
+    char *hdir = NULL;
+    
     ajDebug("ajFileNewInNameS '%S'\n", name);
     
     if(ajStrMatchC(name, "stdin"))
@@ -1036,7 +1035,6 @@ AjPFile ajFileNewInNameS(const AjPStr name)
 
     ajStrAssignS(&fileNameTmp, name);
     
-#ifndef WIN32
     if(ajStrGetCharLast(name) == '|')	/* pipe character at end */
 	return ajFileNewInPipe(name);
 
@@ -1045,7 +1043,7 @@ AjPFile ajFileNewInNameS(const AjPStr name)
 	ajDebug("starts with '~'\n");
 
 	if(!fileUserExp)
-            fileUserExp = ajRegCompC("^~([^/]*)");
+            fileUserExp = ajRegCompC("^~([^/\\\\]*)");
 
 	ajRegExec(fileUserExp, fileNameTmp);
 	ajRegSubI(fileUserExp, 1, &userstr);
@@ -1055,9 +1053,9 @@ AjPFile ajFileNewInNameS(const AjPStr name)
 	if(ajStrGetLen(userstr))
 	{
 	    /* username specified */
-	    pass = getpwnam(ajStrGetPtr(userstr));
-
-	    if(!pass)
+            hdir = ajSysGetHomedirFromName(ajStrGetPtr(userstr));
+            
+	    if(!hdir)
             {
 		ajStrDel(&userstr);
 		ajStrDelStatic(&fileNameTmp);
@@ -1066,14 +1064,21 @@ AjPFile ajFileNewInNameS(const AjPStr name)
 		return NULL;
 	    }
 
-	    ajFmtPrintS(&fileNameTmp, "%s%S", pass->pw_dir, reststr);
+	    ajFmtPrintS(&fileNameTmp, "%s%S", hdir, reststr);
+            AJFREE(hdir);
+            
 	    ajDebug("use getpwnam: '%S'\n", fileNameTmp);
 	}
 	else
 	{
 	    /* just ~/ */
-	    if((p = getenv("HOME")))
-		ajFmtPrintS(&fileNameTmp, "%s%S", p, reststr);
+            hdir = ajSysGetHomedir();
+            
+            if(hdir)
+            {
+		ajFmtPrintS(&fileNameTmp, "%s%S", hdir, reststr);
+                AJFREE(hdir);
+            }
 	    else
 		ajFmtPrintS(&fileNameTmp,"%S",reststr);
 
@@ -1083,7 +1088,6 @@ AjPFile ajFileNewInNameS(const AjPStr name)
 
     ajStrDel(&userstr);
     ajStrDel(&reststr);
-#endif
 
     if(!fileWildExp)
 	fileWildExp = ajRegCompC("(.*/)?([^/]*[*?][^/]*)$");
