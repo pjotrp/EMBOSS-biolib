@@ -50,7 +50,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalOptions>/D "HAVE_JAVA" /I "g:\jdk32\include" /I "g:\jdk32\include\win32" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/D "HAVE_JAVA" /I "%JAVA_HOME%\include" /I "%JAVA_HOME%\include\win32" %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\..\..\mysql\include\mysql;..\..\..\mysql\include;..\..\..\ajax\pcre;..\..\..\ajax\zlib;..\..\..\ajax\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;AJAXDLL_EXPORTS;PLD_png;HAVE_MEMMOVE;HAVE_MYSQL;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -81,7 +81,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalOptions>/D "HAVE_JAVA" /I "g:\jdk32\include" /I "g:\jdk32\include\win32" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/D "HAVE_JAVA" /I "%JAVA_HOME%\include" /I "%JAVA_HOME%\include\win32" %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
