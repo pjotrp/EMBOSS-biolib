@@ -229,7 +229,8 @@ int main(int argc, char **argv)
                     while(embWordMatchIter(iter, &start1, &start2, &len,
                             &seqofseqset))
                     {
-                        if (dumpAlign){
+                        if(dumpAlign)
+                        {
                             /* TODO: check any possible improvements using
                              * if(ajAlignFormatShowsSequences(align)
                              */
@@ -243,9 +244,13 @@ int main(int argc, char **argv)
                                     start2, 1, len,
                                     ajSeqIsReversed(seqofseqall),
                                     ajSeqGetLen(seqofseqall));
-                            ajAlignWrite(align);
-                            ajAlignReset(align);
                         }
+                    }
+
+                    if(dumpAlign)
+                    {
+                	ajAlignWrite(align);
+                	ajAlignReset(align);
                     }
 
                     if(ajListGetLength(matchlist[i])>0 && dumpFeature)
