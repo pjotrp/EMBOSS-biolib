@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -774,17 +774,16 @@ AjBool ensSequenceadaptorFetchSubStrBySlice(const EnsPSequenceadaptor sa,
                                             ajint strand,
                                             AjPStr *Psequence)
 {
-    ajint left  = 0;
-    ajint right = 0;
+    ajint five   = 0;
+    ajint three  = 0;
+    ajint fshift = 0;
+    ajint tshift = 0;
 
     ajuint srstart  = 0;
     ajuint srlength = 0;
 
     ajuint padding = 0;
     ajuint total   = 0;
-
-    ajint *Pfive  = NULL;
-    ajint *Pthree = NULL;
 
     AjBool debug = AJFALSE;
 
@@ -870,17 +869,17 @@ AjBool ensSequenceadaptorFetchSubStrBySlice(const EnsPSequenceadaptor sa,
 
     /* Relative Slice coordinates range from 1 to length. */
 
-    left = 1 - start;
+    five = 1 - start;
 
-    right = end - ensSliceGetLength(slice);
+    three = end - ensSliceGetLength(slice);
 
-    if(left || right)
+    if(five || three)
         ensSliceFetchExpandedSlice(slice,
-                                   left,
-                                   right,
+                                   five,
+                                   three,
                                    ajFalse,
-                                   Pfive,
-                                   Pthree,
+                                   &fshift,
+                                   &tshift,
                                    &eslice);
     else
         eslice = ensSliceNewRef(slice);
