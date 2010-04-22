@@ -133,11 +133,13 @@ enum EnsEMapperresultType
 ** @cc Bio::EnsEMBL::Mapper::IndelCoordinate
 ** @attr GapStart [ajint] Start coordinate of a gap
 ** @attr GapEnd [ajint] End coordinate of a gap
+** @attr Rank [ajuint] Rank
 ** @attr Use [ajuint] Use counter
+** @attr Padding [ajuint] Padding to alignment boundary
 ** @@
 **
-** This object subsumes the following Perl objects all returned by the
-** Bio::EnsEMBL::Mapper
+** NOTE: This object subsumes the following Perl objects returned by the
+** Bio::EnsEMBL::Mapper class.
 **
 ** Bio::EnsEMBL::Mapper::Coordinate
 ** Bio::EnsEMBL::Mapper::Gap
@@ -156,7 +158,9 @@ typedef struct EnsSMapperresult
     ajint Strand;
     ajint GapStart;
     ajint GapEnd;
+    ajuint Rank;
     ajuint Use;
+    ajuint Padding;
 } EnsOMapperresult;
 
 #define EnsPMapperresult EnsOMapperresult*
@@ -346,7 +350,8 @@ EnsPMapperresult ensMapperresultNew(AjEnum type,
                                     ajint strand,
                                     EnsPCoordsystem cs,
                                     ajint gapstart,
-                                    ajint gapend);
+                                    ajint gapend,
+                                    ajuint rank);
 
 EnsPMapperresult ensMapperresultNewObj(const EnsPMapperresult object);
 
@@ -369,6 +374,8 @@ EnsPCoordsystem ensMapperresultGetCoordsystem(const EnsPMapperresult mr);
 ajint ensMapperresultGetGapStart(const EnsPMapperresult mr);
 
 ajint ensMapperresultGetGapEnd(const EnsPMapperresult mr);
+
+ajint ensMapperresultGetRank(const EnsPMapperresult mr);
 
 ajuint ensMapperresultGetCoordinateLength(const EnsPMapperresult mr);
 
@@ -509,23 +516,23 @@ AjBool ensMapperTrace(const EnsPMapper mapper, ajuint level);
 */
 
 
-#define MENSMAPPERINDELPAIRNEW(source, target, ori)     \
+#define MENSMAPPERINDELPAIRNEW(source, target, ori) \
 ensMapperpairNew(source, target, ori, AJTRUE);
 
-#define MENSMAPPERINDELPAIRDEL(Pmp)             \
+#define MENSMAPPERINDELPAIRDEL(Pmp) \
 ensMapperpairDel(Pmp);
 
-#define MENSMAPPERCOORDINATENEW(oid, start, end, strand, cs)            \
+#define MENSMAPPERCOORDINATENEW(oid, start, end, strand, cs, rank) \
 ensMapperresultNew(ensEMapperresultCoordinate, oid, start, end, strand, cs, \
-                   0, 0)
+                   0, 0, rank)
 
-#define MENSMAPPERGAPNEW(start, end)                                    \
+#define MENSMAPPERGAPNEW(start, end, rank) \
 ensMapperresultNew(ensEMapperresultGap, 0, 0, 0, 0, (EnsPCoordsystem) NULL, \
-                   start, end)
+                   start, end, rank)
 
-#define MENSMAPPERINDELNEW(oid, start, end, strand, cs, gstart, gend)   \
+#define MENSMAPPERINDELNEW(oid, start, end, strand, cs, gstart, gend) \
 ensMapperresultNew(ensEMapperresultInDel, oid, start, end, strand, cs, \
-                   gstart, gend)
+                   gstart, gend, 0)
 
 
 #endif /* ensmapper_h */
