@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1490,7 +1490,7 @@ static AjBool coordSystemadaptorMapPathInit(EnsPCoordsystemadaptor csa)
 
                 cstoken = ajStrTokenNewC(cskey, ":");
 
-                csname = ajStrNew();
+                csname    = ajStrNew();
                 csversion = ajStrNew();
 
                 ajStrTokenNextParse(&cstoken, &csname);
@@ -1547,9 +1547,6 @@ static AjBool coordSystemadaptorMapPathInit(EnsPCoordsystemadaptor csa)
                             metaval);
             }
 
-            cs1 = NULL;
-            cs2 = NULL;
-
             /*
             ** Take the first and last Coordinate Systems from the AJAX List
             ** and generate name:version Coordinate System keys, before
@@ -1557,100 +1554,105 @@ static AjBool coordSystemadaptorMapPathInit(EnsPCoordsystemadaptor csa)
             */
 
             ajListPeekFirst(css, (void **) &cs1);
+            ajListPeekLast(css, (void **) &cs2);
 
             if(debug)
             {
                 ajDebug("coordSystemadaptorMapPathInit cs1 %p\n", cs1);
 
                 ensCoordsystemTrace(cs1, 1);
-            }
 
-            cs1key = ajFmtStr("%S:%S", cs1->Name, cs1->Version);
-
-            ajListPeekLast(css, (void **) &cs2);
-
-            if(debug)
-            {
                 ajDebug("coordSystemadaptorMapPathInit cs2 %p\n", cs2);
 
                 ensCoordsystemTrace(cs2, 1);
             }
 
-            cs2key = ajFmtStr("%S:%S", cs2->Name, cs2->Version);
-
-            mapkey = ajFmtStr("%S|%S", cs1key, cs2key);
-
-            if(debug)
-                ajDebug("coordSystemadaptorMapPathInit mapkey '%S'\n", mapkey);
-
-            /* Does a mapping path already exist? */
-
-            mappath = (AjPList) ajTableFetch(csa->MappingPaths,
-                                             (const void *) mapkey);
-
-            if(mappath)
+            if(cs1 && cs2)
             {
-                /* A similar map path exists already. */
+                cs1key = ajFmtStr("%S:%S", cs1->Name, cs1->Version);
+                cs2key = ajFmtStr("%S:%S", cs2->Name, cs2->Version);
+                mapkey = ajFmtStr("%S|%S", cs1key, cs2key);
 
-                ajDebug("coordSystemadaptorMapPathInit got multiple mapping "
-                        "paths between Ensembl Coordinate Systems "
-                        "'%S' and '%S' and chooses the shorter mapping path "
-                        "arbitrarily.\n", cs1key, cs2key);
+                if(debug)
+                    ajDebug("coordSystemadaptorMapPathInit mapkey '%S'\n",
+                            mapkey);
 
-                if(ajListGetLength(css) < ajListGetLength(mappath))
+                /* Does a mapping path already exist? */
+
+                mappath = (AjPList) ajTableFetch(csa->MappingPaths,
+                                                 (const void *) mapkey);
+
+                if(mappath)
                 {
-                    /*
-                    ** The current map path is shorter than the stored map
-                    ** path. Replace the stored List with the current List
-                    ** and delete the (longer) stored List. The Table key
-                    ** String remains in place.
-                    */
+                    /* A similar map path exists already. */
 
-                    mappath = (AjPList) ajTablePut(csa->MappingPaths,
-                                                   (void *) mapkey,
-                                                   (void *) css);
+                    ajDebug("coordSystemadaptorMapPathInit got multiple "
+                            "mapping paths between Ensembl Coordinate Systems "
+                            "'%S' and '%S' and chooses the shorter mapping "
+                            "path arbitrarily.\n",
+                            cs1key, cs2key);
 
-                    ajDebug("coordSystemadaptorMapPathInit "
-                            "deleted the longer, stored mapping path!\n");
+                    if(ajListGetLength(css) < ajListGetLength(mappath))
+                    {
+                        /*
+                        ** The current map path is shorter than the stored map
+                        ** path. Replace the stored List with the current List
+                        ** and delete the (longer) stored List. The Table key
+                        ** String remains in place.
+                        */
 
-                    while(ajListPop(mappath, (void **) &cs))
-                        ensCoordsystemDel(&cs);
+                        mappath = (AjPList) ajTablePut(csa->MappingPaths,
+                                                       (void *) mapkey,
+                                                       (void *) css);
 
-                    ajListFree(&mappath);
+                        ajDebug("coordSystemadaptorMapPathInit "
+                                "deleted the longer, stored mapping path!\n");
+
+                        while(ajListPop(mappath, (void **) &cs))
+                            ensCoordsystemDel(&cs);
+
+                        ajListFree(&mappath);
+                    }
+                    else
+                    {
+                        /*
+                        ** The current mapping path is longer than the stored
+                        ** mapping path. Delete this (longer) mapping path.
+                        */
+
+                        ajDebug("coordSystemadaptorMapPathInit "
+                                "deleted the longer, current mapping path!\n");
+
+                        while(ajListPop(css, (void **) &cs))
+                            ensCoordsystemDel(&cs);
+
+                        ajListFree(&css);
+                    }
                 }
                 else
                 {
-                    /*
-                    ** The current mapping path is longer than the stored
-                    ** mapping path. Delete this (longer) mapping path.
-                    */
+                    /* No similar mappath exists so store the new mappath. */
 
-                    ajDebug("coordSystemadaptorMapPathInit "
-                            "deleted the longer, current mapping path!\n");
+                    ajTablePut(csa->MappingPaths,
+                               (void *) ajStrNewS(mapkey),
+                               (void *) css);
 
-                    while(ajListPop(css, (void **) &cs))
-                        ensCoordsystemDel(&cs);
-
-                    ajListFree(&css);
+                    if(debug)
+                        ajDebug("coordSystemadaptorMapPathInit "
+                                "added a new mapping path '%S'.\n",
+                                mapkey);
                 }
+
+                ajStrDel(&cs1key);
+                ajStrDel(&cs2key);
+                ajStrDel(&mapkey);
             }
             else
-            {
-                /* No similar mappath exists so store the new mappath. */
-
-                ajTablePut(csa->MappingPaths,
-                           (void *) ajStrNewS(mapkey),
-                           (void *) css);
-
-                if(debug)
-                    ajDebug("coordSystemadaptorMapPathInit "
-                            "added a new mapping path '%S'.\n",
-                            mapkey);
-            }
-
-            ajStrDel(&cs1key);
-            ajStrDel(&cs2key);
-            ajStrDel(&mapkey);
+                ajWarn("coordSystemadaptorMapPathInit requires that both, "
+                       "first and last Ensembl Coordinate Systems of a "
+                       "mapping path are defined. "
+                       "See Ensembl Core 'meta.meta_value' '%S'.",
+                       metaval);
         }
 
         /*
@@ -2023,7 +2025,8 @@ static void coordSystemadaptorClearNameCacheL1(void **key,
     ajStrDel((AjPStr *) key);
 
     ajTableMapDel(*((AjPTable *) value),
-                  coordSystemadaptorClearNameCacheL2, NULL);
+                  coordSystemadaptorClearNameCacheL2,
+                  NULL);
 
     ajTableFree((AjPTable *) value);
 
@@ -2206,7 +2209,6 @@ static void coordSystemadaptorClearSeqregionMap(void **key,
     (void) cl;
 
     AJFREE(*key);
-
     AJFREE(*value);
 
     return;
