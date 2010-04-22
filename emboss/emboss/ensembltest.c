@@ -53,25 +53,51 @@ typedef struct EnsembltestSProjections
 
 
 
+
 static AjBool ensembltest_registry(AjPFile outfile);
-static AjBool ensembltest_analyses(EnsPDatabaseadaptor dba, AjPFile outfile);
-static AjBool ensembltest_meta(EnsPDatabaseadaptor dba, AjPFile outfile);
+
+static AjBool ensembltest_analyses(EnsPDatabaseadaptor dba,
+                                   AjPFile outfile);
+
+static AjBool ensembltest_meta(EnsPDatabaseadaptor dba,
+                               AjPFile outfile);
+
 static AjBool ensembltest_coordinate_systems(EnsPDatabaseadaptor dba,
                                              AjPFile outfile);
+
 static AjBool ensembltest_sequence_regions(EnsPDatabaseadaptor dba,
                                            AjPFile outfile);
+
 static AjBool ensembltest_assembly_exceptions(EnsPDatabaseadaptor dba,
                                               AjPFile outfile);
+
 static AjBool ensembltest_slice_projections(EnsPDatabaseadaptor dba,
                                             AjPFile outfile);
-static AjBool ensembltest_features(EnsPDatabaseadaptor dba, AjPFile outfile);
-static AjBool ensembltest_masking(EnsPDatabaseadaptor dba, AjPSeqout outseq);
-static AjBool ensembltest_sequence(EnsPDatabaseadaptor dba, AjPSeqout outseq);
-static AjBool ensembltest_markers(EnsPDatabaseadaptor dba,  AjPFile outfile);
-static AjBool ensembltest_ditags(EnsPDatabaseadaptor dba,  AjPFile outfile);
+
+static AjBool ensembltest_features(EnsPDatabaseadaptor dba,
+                                   AjPFile outfile);
+
+static AjBool ensembltest_masking(EnsPDatabaseadaptor dba,
+                                  AjPSeqout outseq);
+
+static AjBool ensembltest_sequence(EnsPDatabaseadaptor dba,
+                                   AjPSeqout outseq);
+
+static AjBool ensembltest_chromosome(EnsPDatabaseadaptor dba,
+                                     AjPSeqout outseq);
+
+static AjBool ensembltest_markers(EnsPDatabaseadaptor dba,
+                                  AjPFile outfile);
+
+static AjBool ensembltest_ditags(EnsPDatabaseadaptor dba,
+                                 AjPFile outfile);
+
 static AjBool ensembltest_transformations(EnsPDatabaseadaptor dba,
                                           AjPFile outfile);
-static AjBool ensembltest_density(EnsPDatabaseadaptor dba, AjPFile outfile);
+
+static AjBool ensembltest_density(EnsPDatabaseadaptor dba,
+                                  AjPFile outfile);
+
 static AjBool ensembltest_genes(EnsPDatabaseadaptor dba);
 
 
@@ -410,9 +436,9 @@ int main(int argc, char **argv)
     {
         ensembltest_genes(dba);
 
-        /* FIXME: Fetch sequence for human chromosome 21.
-           ensembltest_chromosome(dba, outseq);
-        */
+        /* Fetch sequence for human chromosome 21. */
+        if(0)
+            ensembltest_chromosome(dba, outseq);
     }
 
     /* Clean up and exit. */
@@ -441,7 +467,7 @@ int main(int argc, char **argv)
     ajStrDel(&srname);
 
     /* Get resource usage */
-#ifndef WIN32    
+#ifndef WIN32
     getrusage(RUSAGE_SELF, &ru);
 
     ajDebug("main resource usage\n"
@@ -463,10 +489,6 @@ int main(int argc, char **argv)
             "  signals received %ld\n"
             "  voluntary context switches %ld\n"
             "  involuntary context switches %ld\n",
-            /*
-              ru.ru_utime.tv_sec * 1.0E6 + ru.ru_utime.tv_usec,
-              ru.ru_stime.tv_sec * 1.0E6 + ru.ru_stime.tv_usec,
-            */
             ru.ru_utime.tv_sec,
             ru.ru_utime.tv_usec,
             ru.ru_stime.tv_sec,
@@ -515,11 +537,8 @@ int main(int argc, char **argv)
 ** for the mapping path 'chromosome' <-> 'contig' and the Chained Assembly
 ** Mapper for the mapping path 'chromosome' <-> 'contig' <-> 'clone'.
 **
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
-** @param [r] slname [AjPStr] Ensembl Slice name.
-** @param [r] csname [AjPStr] Ensembl Coordinate System name.
-** @param [r] csversion [AjPStr] Ensembl Coordinate System version.
-** @param [r] outfile [AjPFile] AJAX File.
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
+** @param [u] outfile [AjPFile] AJAX File.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
@@ -546,27 +565,36 @@ static AjBool ensembltest_slice_projections(EnsPDatabaseadaptor dba,
     EnsPSlice slice     = NULL;
     EnsPSliceadaptor sa = NULL;
 
-    /*
-    ** Map the clone:NCBI36:AC120349.5:1:148596:1 Slice back to the
-    ** 'chromosome' Coordinate System, which will use the Chained Assembly
-    ** Mapper for the mapping path 'clone' <-> 'contig' <-> 'chromosome'.
-    */
-
+    /* Perform the following Slice projections. */
+    
     EnsembltestOProjections ensembltestProjections[] =
         {
             /*
-            ** FIXME: These do not work, because AJAX does not cope well with
-            ** empty colons ::.
-            {"clone::AC120349.5:1:148596:1", "chromosome", "NCBI36"},
-            {"clone::AC120349.5:1:148596:1", "toplevel", ""},
+            ** Test the Ensembl Chained Assembly Mapper for the
+            ** mapping path 'clone' <-> 'contig' <-> 'chromosome'.
             */
             {"clone::AC120349.5:0:0:0", "chromosome", "GRCh37"},
+            /* Test the Ensembl Top-Level Assembly Mapper. */
             {"clone::AC120349.5:0:0:0", "toplevel", ""},
-            /* PAR region at X and Y p-telomere. */
+            /* Test the PAR regions at X and Y p-telomeres. */
             {"chromosome:GRCh37:X:1:3000000:1", "contig", ""},
             {"chromosome:GRCh37:X:1:3000000:1", "clone", ""},
             {"chromosome:GRCh37:Y:1:3000000:1", "contig", ""},
             {"chromosome:GRCh37:Y:1:3000000:1", "clone", ""},
+            /* Test a Slice projection inside a HAP region. */
+            {
+                "chromosome:GRCh37:HSCHR6_MHC_COX:29000000:32000000:1",
+                "clone",
+                ""
+            },
+            /* Test a Slice projection outside a HAP region. */
+            {
+                "chromosome:GRCh37:HSCHR6_MHC_COX:24000000:26000000:1",
+                "clone",
+                ""
+            },
+            /* Test for negative Slice coordinates. */
+            {"chromosome:GRCh37:22:-17000000:+18000000:1", "supercontig", ""},
             {NULL, NULL, NULL}
         };
 
@@ -579,17 +607,14 @@ static AjBool ensembltest_slice_projections(EnsPDatabaseadaptor dba,
         return ajFalse;
 
     ajFmtPrintF(outfile, "\n");
-
     ajFmtPrintF(outfile, "Ensembl Slice Projections\n");
 
     sa = ensRegistryGetSliceadaptor(dba);
 
     pslist = ajListNew();
 
-    slname = ajStrNew();
-
-    csname = ajStrNew();
-
+    slname    = ajStrNew();
+    csname    = ajStrNew();
     csversion = ajStrNew();
 
     for(i = 0; ensembltestProjections[i].SliceName; i++)
@@ -662,14 +687,15 @@ static AjBool ensembltest_slice_projections(EnsPDatabaseadaptor dba,
 **
 ** Ensembl Analysis tests.
 **
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
-** @param [r] outfile [AjPFile] AJAX File.
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
+** @param [u] outfile [AjPFile] AJAX File.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
 ******************************************************************************/
 
-static AjBool ensembltest_analyses(EnsPDatabaseadaptor dba, AjPFile outfile)
+static AjBool ensembltest_analyses(EnsPDatabaseadaptor dba,
+                                   AjPFile outfile)
 {
     AjPList as = NULL;
 
@@ -775,8 +801,8 @@ static AjBool ensembltest_analyses(EnsPDatabaseadaptor dba, AjPFile outfile)
 **
 ** Project Ensembl Slices crossing Assembly Exceptions.
 **
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
-** @param [r] outfile [AjPFile] AJAX File.
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
+** @param [u] outfile [AjPFile] AJAX File.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
@@ -888,14 +914,15 @@ static AjBool ensembltest_assembly_exceptions(EnsPDatabaseadaptor dba,
 **
 ** Ensembl Feature tests.
 **
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
-** @param [r] outfile [AjPFile] AJAX File.
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
+** @param [u] outfile [AjPFile] AJAX File.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
 ******************************************************************************/
 
-static AjBool ensembltest_features(EnsPDatabaseadaptor dba, AjPFile outfile)
+static AjBool ensembltest_features(EnsPDatabaseadaptor dba,
+                                   AjPFile outfile)
 {
     AjIList iter        = NULL;
     AjPList exons       = NULL;
@@ -1143,7 +1170,7 @@ static AjBool ensembltest_features(EnsPDatabaseadaptor dba, AjPFile outfile)
 
         ajListIterDel(&iter);
 
-        ensGeneDel(&gene);   
+        ensGeneDel(&gene);
     }
 
     ajListFree(&genes);
@@ -1167,7 +1194,7 @@ static AjBool ensembltest_features(EnsPDatabaseadaptor dba, AjPFile outfile)
 ** name. The sequences are written to FASTA files as specified by the
 ** exons, transcripts and translations ACD parameter names.
 **
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
@@ -1175,7 +1202,8 @@ static AjBool ensembltest_features(EnsPDatabaseadaptor dba, AjPFile outfile)
 
 static AjBool ensembltest_genes(EnsPDatabaseadaptor dba)
 {
-    ajint i      = 0;
+    register ajint i = 0;
+
     ajint maxnum = 0;
 
     AjBool debug = AJFALSE;
@@ -1335,14 +1363,15 @@ static AjBool ensembltest_genes(EnsPDatabaseadaptor dba)
 **
 ** Ensembl Marker and Ensembl Marker Feature tests.
 **
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
-** @param [r] outfile [AjPFile] AJAX File.
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
+** @param [u] outfile [AjPFile] AJAX File.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
 ******************************************************************************/
 
-static AjBool ensembltest_markers(EnsPDatabaseadaptor dba,  AjPFile outfile)
+static AjBool ensembltest_markers(EnsPDatabaseadaptor dba,
+                                  AjPFile outfile)
 {
     AjPList mflist = NULL;
 
@@ -1475,14 +1504,15 @@ static AjBool ensembltest_markers(EnsPDatabaseadaptor dba,  AjPFile outfile)
 **
 ** Ensembl Ditag and Ensembl Ditag Feature tests.
 **
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
-** @param [r] outfile [AjPFile] AJAX File.
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
+** @param [u] outfile [AjPFile] AJAX File.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
 ******************************************************************************/
 
-static AjBool ensembltest_ditags(EnsPDatabaseadaptor dba,  AjPFile outfile)
+static AjBool ensembltest_ditags(EnsPDatabaseadaptor dba,
+                                 AjPFile outfile)
 {
     AjPList dtfs = NULL;
 
@@ -1520,11 +1550,9 @@ static AjBool ensembltest_ditags(EnsPDatabaseadaptor dba,  AjPFile outfile)
     ** which is around SMAD2.
     */
 
-    csname = ajStrNewC("chromosome");
-
+    csname    = ajStrNewC("chromosome");
     csversion = ajStrNewC("GRCh37");
-
-    srname = ajStrNewC("18");
+    srname    = ajStrNewC("18");
 
     ensSliceadaptorFetchByRegion(sa,
                                  csname,
@@ -1612,14 +1640,15 @@ static AjBool ensembltest_ditags(EnsPDatabaseadaptor dba,  AjPFile outfile)
 **
 ** chromosome:GRCh37:22:16040001:16120000:1
 **
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
-** @param [r] outseq [AjPSeqout] AJAX Sequence Output.
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
+** @param [u] outseq [AjPSeqout] AJAX Sequence Output.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
 ******************************************************************************/
 
-static AjBool ensembltest_masking(EnsPDatabaseadaptor dba, AjPSeqout outseq)
+static AjBool ensembltest_masking(EnsPDatabaseadaptor dba,
+                                  AjPSeqout outseq)
 {
     AjEnum mtype = ensERepeatMaskTypeSoft;
 
@@ -1731,14 +1760,15 @@ static AjBool ensembltest_masking(EnsPDatabaseadaptor dba, AjPSeqout outseq)
 ** chromosome:GRCh37:21:9400001:9800000:1 and again, write a sub-sequence,
 ** which is longer than the Slice (i.e. -60 to +60).
 **
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
-** @param [r] outseq [AjPSeqout] AJAX Sequence Output.
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
+** @param [u] outseq [AjPSeqout] AJAX Sequence Output.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
 ******************************************************************************/
 
-static AjBool ensembltest_sequence(EnsPDatabaseadaptor dba, AjPSeqout outseq)
+static AjBool ensembltest_sequence(EnsPDatabaseadaptor dba,
+                                   AjPSeqout outseq)
 {
     AjPSeq seq = NULL;
 
@@ -1841,14 +1871,15 @@ static AjBool ensembltest_sequence(EnsPDatabaseadaptor dba, AjPSeqout outseq)
 **
 ** Fetch a Slice for chromosome:GRCh37:21:0:0:0 and write its sequence to disk.
 **
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
-** @param [r] outseq [AjPSeqout] AJAX Sequence Output.
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
+** @param [u] outseq [AjPSeqout] AJAX Sequence Output.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
 ******************************************************************************/
 
-static AjBool ensembltest_chromosome(EnsPDatabaseadaptor dba, AjPSeqout outseq)
+static AjBool ensembltest_chromosome(EnsPDatabaseadaptor dba,
+                                     AjPSeqout outseq)
 {
     AjPSeq seq = NULL;
 
@@ -1938,14 +1969,15 @@ static AjBool ensembltest_chromosome(EnsPDatabaseadaptor dba, AjPSeqout outseq)
 **
 ** Ensembl Meta-Information tests.
 **
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
-** @param [r] outfile [AjPFile] AJAX File.
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
+** @param [u] outfile [AjPFile] AJAX File.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
 ******************************************************************************/
 
-static AjBool ensembltest_meta(EnsPDatabaseadaptor dba, AjPFile outfile)
+static AjBool ensembltest_meta(EnsPDatabaseadaptor dba,
+                               AjPFile outfile)
 {
     AjPStr value = NULL;
 
@@ -1993,8 +2025,8 @@ static AjBool ensembltest_meta(EnsPDatabaseadaptor dba, AjPFile outfile)
 **
 ** Ensembl Coordinate System tests.
 **
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
-** @param [r] outfile [AjPFile] AJAX File.
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
+** @param [u] outfile [AjPFile] AJAX File.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
@@ -2298,8 +2330,8 @@ static AjBool ensembltest_coordinate_systems(EnsPDatabaseadaptor dba,
 **
 ** Ensembl Sequence Region tests.
 **
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
-** @param [r] outfile [AjPFile] AJAX File.
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
+** @param [u] outfile [AjPFile] AJAX File.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
@@ -2332,8 +2364,10 @@ static AjBool ensembltest_sequence_regions(EnsPDatabaseadaptor dba,
 
     sra = ensRegistryGetSeqregionadaptor(dba);
 
-    /* Fetch the human chromosome 1 via its identifier 226034. */
-    /* 223781 AC120349.5 */
+    /*
+    ** Fetch the human chromosome 1 via its identifier 226034.
+    ** 223781 AC120349.5
+    */
 
     ensSeqregionadaptorFetchByIdentifier(sra, 226034, &sr);
 
@@ -2378,8 +2412,8 @@ static AjBool ensembltest_sequence_regions(EnsPDatabaseadaptor dba,
 **
 ** Ensembl Feature transformation tests.
 **
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
-** @param [r] outfile [AjPFile] AJAX File.
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
+** @param [u] outfile [AjPFile] AJAX File.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
@@ -2484,7 +2518,7 @@ static AjBool ensembltest_transformations(EnsPDatabaseadaptor dba,
 **
 ** Ensembl Registry tests.
 **
-** @param [r] outfile [AjPFile] AJAX File.
+** @param [u] outfile [AjPFile] AJAX File.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
@@ -2556,14 +2590,15 @@ static AjBool ensembltest_registry(AjPFile outfile)
 **
 ** Ensembl Density Type and Ensembl Density Feature tests.
 **
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
-** @param [r] outfile [AjPFile] AJAX File.
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor.
+** @param [u] outfile [AjPFile] AJAX File.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise.
 ** @@
 ******************************************************************************/
 
-static AjBool ensembltest_density(EnsPDatabaseadaptor dba, AjPFile outfile)
+static AjBool ensembltest_density(EnsPDatabaseadaptor dba,
+                                  AjPFile outfile)
 {
     float maxratio = 0;
 
