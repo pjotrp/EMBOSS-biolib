@@ -67,6 +67,12 @@ typedef struct EnsSAttribute {
 ** @attr CacheByName [AjPTable] AJAX Table to cache Ensembl Sequence Regions
 **                              with 'SequenceRegionName:CoordinatesystemId'
 **                              AJAX Strings as index
+** @attr CacheNonReference [AjPTable] AJAX Table to cache Ensembl Sequence
+**                                    Regions, which are associated with an
+**                                    Ensembl Attribute of code 'non_ref' that
+**                                    is usually set for haplotype assembly
+**                                    paths. The Table uses AJAX unsigned
+**                                    integer key and AJAX Boolean value data.
 ** @@
 ******************************************************************************/
 
@@ -74,6 +80,7 @@ typedef struct EnsSSeqregionadaptor {
     EnsPDatabaseadaptor Adaptor;
     EnsPCache CacheByIdentifier;
     AjPTable CacheByName;
+    AjPTable CacheNonReference;
 } EnsOSeqregionadaptor;
 
 #define EnsPSeqregionadaptor EnsOSeqregionadaptor*
