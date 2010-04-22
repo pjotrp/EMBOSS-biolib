@@ -128,7 +128,7 @@ AjBool ensCacheTrace(const EnsPCache cache, ajuint level);
 
 
 
-#endif
+#endif /* enscache_h */
 
 #ifdef __cplusplus
 }

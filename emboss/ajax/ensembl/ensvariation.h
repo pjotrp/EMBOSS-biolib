@@ -557,7 +557,7 @@ AjBool ensGvvariationfeatureTrace(const EnsPGvvariationfeature gvvf,
 
 
 
-#endif
+#endif /* ensvariation_h */
 
 #ifdef __cplusplus
 }
