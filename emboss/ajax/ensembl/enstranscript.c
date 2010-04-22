@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -7047,7 +7047,7 @@ AjBool ensTranscriptMapperSliceToCDS(EnsPTranscript transcript,
 
     if(!transcript->TranscriptCodingStart)
     {
-        mr = MENSMAPPERGAPNEW(start, end);
+        mr = MENSMAPPERGAPNEW(start, end, 0);
 
         ajListPushAppend(mrs, (void *) mr);
 
@@ -7076,7 +7076,7 @@ AjBool ensTranscriptMapperSliceToCDS(EnsPTranscript transcript,
             {
                 /* All gap - does not map to peptide. */
 
-                mr = MENSMAPPERGAPNEW(start, end);
+                mr = MENSMAPPERGAPNEW(start, end, 0);
 
                 ajListPushAppend(mrs, (void *) mr);
             }
@@ -7094,7 +7094,8 @@ AjBool ensTranscriptMapperSliceToCDS(EnsPTranscript transcript,
 
                     mr = MENSMAPPERGAPNEW(
                         start,
-                        transcript->TranscriptCodingStart - 1);
+                        transcript->TranscriptCodingStart - 1,
+                        0);
 
                     ajListPushAppend(mrs, (void *) mr);
 
@@ -7111,7 +7112,8 @@ AjBool ensTranscriptMapperSliceToCDS(EnsPTranscript transcript,
 
                     endgap = MENSMAPPERGAPNEW(
                         transcript->TranscriptCodingEnd + 1,
-                        end);
+                        end,
+                        0);
 
                     /* Adjust end coordinate relative to CDS start. */
 
@@ -7129,7 +7131,8 @@ AjBool ensTranscriptMapperSliceToCDS(EnsPTranscript transcript,
                     cdsstart,
                     cdsend,
                     ensMapperresultGetStrand(gcmr),
-                    ensMapperresultGetCoordsystem(gcmr));
+                    ensMapperresultGetCoordsystem(gcmr),
+                    0);
 
                 ajListPushAppend(mrs, (void *) mr);
 
@@ -7245,7 +7248,8 @@ AjBool ensTranscriptMapperSliceToTranslation(EnsPTranscript transcript,
                 pepstart,
                 pepend,
                 ensMapperresultGetStrand(gcmr),
-                ensMapperresultGetCoordsystem(gcmr));
+                ensMapperresultGetCoordsystem(gcmr),
+                0);
 
             ajListPushAppend(mrs, (void *) mr);
 
