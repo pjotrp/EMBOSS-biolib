@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -939,7 +939,7 @@ EnsPMapperunit ensMapperpairGetUnit(const EnsPMapperpair mp, AjEnum type)
         case ensEMapperunitTypeTarget:
             return mp->Target;
         default:
-            ajWarn("ensMapperpairGetUnit got unexpected type %d.\n", type);   
+            ajWarn("ensMapperpairGetUnit got unexpected type %d.\n", type);
     }
 
     return NULL;
@@ -1044,8 +1044,8 @@ AjBool ensMapperpairTrace(const EnsPMapperpair mp, ajuint level)
 **
 ** Functions for manipulating Ensembl Mapper Result objects
 **
-** Bio::EnsEMBL::Mapper::Coordinate CVS Revision: 1.12
-** Bio::EnsEMBL::Mapper::Gap CVS Revision: 1.10
+** Bio::EnsEMBL::Mapper::Coordinate CVS Revision: 1.13
+** Bio::EnsEMBL::Mapper::Gap CVS Revision: 1.11
 ** Bio::EnsEMBL::Mapper::IndelCoordinate CVS Revision: 1.6
 **
 ** @nam2rule Mapperresult
@@ -1086,12 +1086,13 @@ AjBool ensMapperpairTrace(const EnsPMapperpair mp, ajuint level)
 **
 ** @param [r] type [AjEnum] Type
 ** @param [r] oid [ajuint] Ensembl Object identifier
-** @param [r] start [ajint] Start coordinate
-** @param [r] end [ajint] End coordinate
-** @param [r] strand [ajint] Strand information
+** @param [r] start [ajint] Start
+** @param [r] end [ajint] End
+** @param [r] strand [ajint] Strand
 ** @param [u] cs [EnsPCoordsystem] Ensembl Coordinate System
-** @param [r] gapstart [ajint] Gap start coordinate
-** @param [r] gapend [ajint] Gap end coordinate
+** @param [r] gapstart [ajint] Gap start
+** @param [r] gapend [ajint] Gap end
+** @param [r] rank [ajuint] Rank
 **
 ** @return [EnsPMapperresult] Ensembl Mapper Result or NULL
 ** @@
@@ -1104,7 +1105,8 @@ EnsPMapperresult ensMapperresultNew(AjEnum type,
                                     ajint strand,
                                     EnsPCoordsystem cs,
                                     ajint gapstart,
-                                    ajint gapend)
+                                    ajint gapend,
+                                    ajuint rank)
 {
     EnsPMapperresult mr = NULL;
 
@@ -1138,6 +1140,8 @@ EnsPMapperresult ensMapperresultNew(AjEnum type,
     mr->GapStart = gapstart;
 
     mr->GapEnd = gapend;
+
+    mr->Rank = rank;
 
     mr->Use = 1;
 
@@ -1181,6 +1185,8 @@ EnsPMapperresult ensMapperresultNewObj(const EnsPMapperresult object)
     mr->GapStart = object->GapStart;
 
     mr->GapEnd = object->GapEnd;
+
+    mr->Rank = object->Rank;
 
     mr->Use = 1;
 
@@ -1287,23 +1293,25 @@ void ensMapperresultDel(EnsPMapperresult *Pmr)
 ** @nam3rule Get Return Ensembl Mapper Result attribute(s)
 ** @nam4rule GetType Return the type
 ** @nam4rule GetObjectIdentifier Return the Ensembl Object identifier
-** @nam4rule GetStart Return the start coordinate
-** @nam4rule GetEnd Return the end coordinate
-** @nam4rule GetStrand Return the strand information
+** @nam4rule GetStart Return the start
+** @nam4rule GetEnd Return the end
+** @nam4rule GetStrand Return the strand
 ** @nam4rule GetCoordsystem Return the Ensembl Coordinate System
-** @nam4rule GetGapStart Return the gap start coordinate
-** @nam4rule GetGapEnd Return the gap end coordinate
+** @nam4rule GetGapStart Return the gap start
+** @nam4rule GetGapEnd Return the gap end
+** @nam4rule GetRank Return the rank
 **
 ** @argrule * mr [const EnsPMapperresult] Ensembl Mapper Result
 **
 ** @valrule Type [AjEnum] Type
 ** @valrule ObjectIdentifier [ajuint] Ensembl Object identifier
-** @valrule Start [ajint] Start coordinate
-** @valrule End [ajint] End coordinate
-** @valrule Strand [ajint] Strand information
+** @valrule Start [ajint] Start
+** @valrule End [ajint] End
+** @valrule Strand [ajint] Strand
 ** @valrule Coordsystem [EnsPCoordsystem] Ensembl Coordinate System
-** @valrule GapStart [ajint] Gap start coordinate
-** @valrule GapEnd [ajint] Gap end coordinate
+** @valrule GapStart [ajint] Gap start
+** @valrule GapEnd [ajint] Gap end
+** @valrule Rank [ajuint] Rank
 **
 ** @fcategory use
 ******************************************************************************/
@@ -1334,7 +1342,7 @@ AjEnum ensMapperresultGetType(const EnsPMapperresult mr)
 
 /* @func ensMapperresultGetObjectIdentifier ***********************************
 **
-** Get the Object identifier element of an Ensembl Mapper Result.
+** Get the Ensembl Object identifier element of an Ensembl Mapper Result.
 **
 ** @param [r] mr [const EnsPMapperresult] Ensembl Mapper Result
 **
@@ -1355,11 +1363,11 @@ ajuint ensMapperresultGetObjectIdentifier(const EnsPMapperresult mr)
 
 /* @func ensMapperresultGetStart **********************************************
 **
-** Get the start coordinate element of an Ensembl Mapper Result.
+** Get the start element of an Ensembl Mapper Result.
 **
 ** @param [r] mr [const EnsPMapperresult] Ensembl Mapper Result
 **
-** @return [ajint] Ensembl Mapper Result start coordinate
+** @return [ajint] Start
 ** @@
 ******************************************************************************/
 
@@ -1376,11 +1384,11 @@ ajint ensMapperresultGetStart(const EnsPMapperresult mr)
 
 /* @func ensMapperresultGetEnd ************************************************
 **
-** Get the end coordinate element of an Ensembl Mapper Result.
+** Get the end element of an Ensembl Mapper Result.
 **
 ** @param [r] mr [const EnsPMapperresult] Ensembl Mapper Result
 **
-** @return [ajint] Ensembl Mapper Result end coordinate
+** @return [ajint] End
 ** @@
 ******************************************************************************/
 
@@ -1401,7 +1409,7 @@ ajint ensMapperresultGetEnd(const EnsPMapperresult mr)
 **
 ** @param [r] mr [const EnsPMapperresult] Ensembl Mapper Result
 **
-** @return [ajint] Ensembl Mapper Result strand information
+** @return [ajint] Strand
 ** @@
 ******************************************************************************/
 
@@ -1439,7 +1447,7 @@ EnsPCoordsystem ensMapperresultGetCoordsystem(const EnsPMapperresult mr)
 
 /* @func ensMapperresultGetGapStart *******************************************
 **
-** Get the Gap Start element of an Ensembl Mapper Result.
+** Get the gap start element of an Ensembl Mapper Result.
 **
 ** @param [r] mr [const EnsPMapperresult] Ensembl Mapper Result
 **
@@ -1460,7 +1468,7 @@ ajint ensMapperresultGetGapStart(const EnsPMapperresult mr)
 
 /* @func ensMapperresultGetGapEnd *********************************************
 **
-** Get the Gap End element of an Ensembl Mapper Result.
+** Get the gap end element of an Ensembl Mapper Result.
 **
 ** @param [r] mr [const EnsPMapperresult] Ensembl Mapper Result
 **
@@ -1479,13 +1487,34 @@ ajint ensMapperresultGetGapEnd(const EnsPMapperresult mr)
 
 
 
-/* @func ensMapperresultGetCoordinateLength ***********************************
+/* @func ensMapperresultGetRank ***********************************************
 **
-** Get the coordinate length of an Ensembl Mapper Result.
+** Get the rank element of an Ensembl Mapper Result.
 **
 ** @param [r] mr [const EnsPMapperresult] Ensembl Mapper Result
 **
-** @return [ajuint] Ensembl Mapper Result coordinate length
+** @return [ajint] Rank
+** @@
+******************************************************************************/
+
+ajint ensMapperresultGetRank(const EnsPMapperresult mr)
+{
+    if(!mr)
+        return 0;
+
+    return mr->Rank;
+}
+
+
+
+
+/* @func ensMapperresultGetCoordinateLength ***********************************
+**
+** Get the coordinate (end - start + 1) length of an Ensembl Mapper Result.
+**
+** @param [r] mr [const EnsPMapperresult] Ensembl Mapper Result
+**
+** @return [ajuint] Coordinate length
 ** @@
 ******************************************************************************/
 
@@ -1502,11 +1531,11 @@ ajuint ensMapperresultGetCoordinateLength(const EnsPMapperresult mr)
 
 /* @func ensMapperresultGetGapLength ******************************************
 **
-** Get the gap length of an Ensembl Mapper Result.
+** Get the gap (gapend - gapstart + 1) length of an Ensembl Mapper Result.
 **
 ** @param [r] mr [const EnsPMapperresult] Ensembl Mapper Result
 **
-** @return [ajuint] Ensembl Mapper Result gap length
+** @return [ajuint] Gap length
 ** @@
 ******************************************************************************/
 
@@ -1607,6 +1636,7 @@ AjBool ensMapperresultTrace(const EnsPMapperresult mr, ajuint level)
             "%S  Coordsystem %p\n"
             "%S  GapStart %d\n"
             "%S  GapEnd %d\n"
+            "%S  Rank %u\n"
             "%S  Use %u\n",
             indent, mr,
             indent, mr->Type,
@@ -1617,6 +1647,7 @@ AjBool ensMapperresultTrace(const EnsPMapperresult mr, ajuint level)
             indent, mr->Coordsystem,
             indent, mr->GapStart,
             indent, mr->GapEnd,
+            indent, mr->Rank,
             indent, mr->Use);
 
     ensCoordsystemTrace(mr->Coordsystem, level + 1);
@@ -1669,8 +1700,8 @@ AjBool ensMapperresultTrace(const EnsPMapperresult mr, ajuint level)
 **
 ** Default constructor for an Ensembl Mapper Range.
 **
-** @param [r] start [ajint] Start coordinate
-** @param [r] end [ajint] End coordinate
+** @param [r] start [ajint] Start
+** @param [r] end [ajint] End
 **
 ** @return [EnsPMapperrange] Ensembl Mapper Range
 ** @@
@@ -1819,13 +1850,13 @@ void ensMapperrangeDel(EnsPMapperrange *Pmr)
 ** @fnote None
 **
 ** @nam3rule Get Return Ensembl Mapper Range attribute(s)
-** @nam4rule GetStart Return the start coordinate
-** @nam4rule GetEnd Return the end coordinate
+** @nam4rule GetStart Return the start
+** @nam4rule GetEnd Return the end
 **
 ** @argrule * mr [const EnsPMapperrange] Ensembl Mapper Range
 **
-** @valrule Start [ajint] Start coordinate
-** @valrule End [ajint] End coordinate
+** @valrule Start [ajint] Start
+** @valrule End [ajint] End
 **
 ** @fcategory use
 ******************************************************************************/
@@ -1835,11 +1866,11 @@ void ensMapperrangeDel(EnsPMapperrange *Pmr)
 
 /* @func ensMapperrangeGetStart ***********************************************
 **
-** Get the Start coordinate element of an Ensembl Mapper Range.
+** Get the start element of an Ensembl Mapper Range.
 **
 ** @param [r] mr [const EnsPMapperrange] Ensembl Mapper Range
 **
-** @return [ajint] Ensembl Mapper Range start coordinate
+** @return [ajint] Start
 ** @@
 ******************************************************************************/
 
@@ -1856,11 +1887,11 @@ ajint ensMapperrangeGetStart(const EnsPMapperrange mr)
 
 /* @func ensMapperrangeGetEnd *************************************************
 **
-** Get the End coordinate element of an Ensembl Mapper Range.
+** Get the end element of an Ensembl Mapper Range.
 **
 ** @param [r] mr [const EnsPMapperrange] Ensembl Mapper Range
 **
-** @return [ajint] Ensembl Mapper Range end coordinate
+** @return [ajint] End
 ** @@
 ******************************************************************************/
 
@@ -2187,7 +2218,7 @@ AjBool ensMapperrangeregistryCheckAndRegister(EnsPMapperrangeregistry mrr,
                 ranges);
 
     if(!mrr)
-    {	
+    {
         ajDebug("ensMapperrangeregistryCheckAndRegister requires an "
                 "Ensembl Range Registry.\n");
 
@@ -2590,7 +2621,7 @@ ajuint ensMapperrangeregistryOverlapSize(const EnsPMapperrangeregistry mrr,
 **
 ** Functions for manipulating Ensembl Mapper objects
 **
-** @cc Bio::EnsEMBL::Mapper CVS Revision: 1.47
+** @cc Bio::EnsEMBL::Mapper CVS Revision: 1.48
 **
 ** @nam2rule Mapper
 **
@@ -3998,6 +4029,7 @@ AjBool ensMapperMapCoordinates(EnsPMapper mapper,
     ajuint idxmid    = 0;
     ajuint idxend    = 0;
     ajuint idxlength = 0;
+    ajuint rank      = 0;
 
     ajint srcstart = 0;
     ajint srcend   = 0;
@@ -4108,7 +4140,7 @@ AjBool ensMapperMapCoordinates(EnsPMapper mapper,
                     "--> one big gap!\n",
                     oid);
 
-        mr = MENSMAPPERGAPNEW(start, end);
+        mr = MENSMAPPERGAPNEW(start, end, 0);
 
         ajListPushAppend(mrs, (void *) mr);
 
@@ -4160,6 +4192,13 @@ AjBool ensMapperMapCoordinates(EnsPMapper mapper,
                     srcmu->Start,
                     srcmu->End);
 
+        if(srcmu->Start < start)
+        {
+            srcstart = start;
+
+            rank++;
+        }
+
         /*
         ** Check for cases where the source Mapper Unit maps to more than one
         ** location.
@@ -4191,7 +4230,7 @@ AjBool ensMapperMapCoordinates(EnsPMapper mapper,
         {
             /* A gap has been detected. */
 
-            mr = MENSMAPPERGAPNEW(srcstart, srcmu->Start - 1);
+            mr = MENSMAPPERGAPNEW(srcstart, srcmu->Start - 1, rank);
 
             ajListPushAppend(mrs, (void *) mr);
 
@@ -4252,7 +4291,8 @@ AjBool ensMapperMapCoordinates(EnsPMapper mapper,
                                          trgstart,
                                          trgend,
                                          mp->Orientation * strand,
-                                         cs);
+                                         cs,
+                                         rank);
         }
 
         ajListPushAppend(mrs, (void *) mr);
@@ -4275,7 +4315,7 @@ AjBool ensMapperMapCoordinates(EnsPMapper mapper,
         {
             /* A gap at the end has been detected. */
 
-            mr = MENSMAPPERGAPNEW(srcmu->End + 1, srcend);
+            mr = MENSMAPPERGAPNEW(srcmu->End + 1, srcend, rank);
 
             ajListPushAppend(mrs, (void *) mr);
         }
@@ -4284,7 +4324,7 @@ AjBool ensMapperMapCoordinates(EnsPMapper mapper,
     {
         /* Since no Mapper Pair has been found the entire region is a gap. */
 
-        mr = MENSMAPPERGAPNEW(srcstart, srcend);
+        mr = MENSMAPPERGAPNEW(srcstart, srcend, 0);
 
         ajListPushAppend(mrs, (void *) mr);
     }
@@ -4452,13 +4492,15 @@ AjBool ensMapperFastMap(EnsPMapper mapper,
                                          trgmu->Start + (start - srcmu->Start),
                                          trgmu->Start + (end - srcmu->Start),
                                          +strand,
-                                         cs);
+                                         cs,
+                                         0);
         else
             mr = MENSMAPPERCOORDINATENEW(trgmu->ObjectIdentifier,
                                          trgmu->End - (end - srcmu->Start),
                                          trgmu->End - (start - srcmu->Start),
                                          -strand,
-                                         cs);
+                                         cs,
+                                         0);
 
         ajListPushAppend(mrs, (void *) mr);
 
@@ -4703,7 +4745,8 @@ AjBool ensMapperMapInDel(EnsPMapper mapper,
                                          trgmu->Start,
                                          trgmu->End,
                                          mp->Orientation * strand,
-                                         cs);
+                                         cs,
+                                         0);
 
             ajListPushAppend(mrs, (void *) mr);
 
