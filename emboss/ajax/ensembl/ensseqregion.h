@@ -65,7 +65,9 @@ AjBool ensSeqregionFetchAllAttributes(EnsPSeqregion sr,
                                       const AjPStr code,
                                       AjPList attributes);
 
-AjBool ensSeqregionIsTopLevel(EnsPSeqregion sr);
+AjBool ensSeqregionIsNonReference(EnsPSeqregion sr, AjBool *Presult);
+
+AjBool ensSeqregionIsTopLevel(EnsPSeqregion sr, AjBool *Presult);
 
 /* Ensembl Sequence Region Adaptor */
 
@@ -98,7 +100,17 @@ AjBool ensSeqregionadaptorFetchByNameFuzzy(EnsPSeqregionadaptor sra,
 
 AjBool ensSeqregionadaptorFetchAllByCoordsystem(EnsPSeqregionadaptor sra,
                                                 const EnsPCoordsystem cs,
-                                                AjPList srlist);
+                                                AjPList srs);
+
+AjBool ensSeqregionadaptorFetchAllByAttributeCodeValue(
+    EnsPSeqregionadaptor sra,
+    const AjPStr code,
+    const AjPStr value,
+    AjPList srs);
+
+AjBool ensSeqregionadaptorIsNonReference(EnsPSeqregionadaptor sra,
+                                         const EnsPSeqregion sr,
+                                         AjBool *Presult);
 
 /*
 ** End of prototype definitions
