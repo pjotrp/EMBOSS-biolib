@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2520,7 +2520,7 @@ AjBool ensSeqregionadaptorIsNonReference(EnsPSeqregionadaptor sra,
 
     identifier = ensSeqregionGetIdentifier(sr);
 
-    if(ajTableFetch(sra->CacheNonReference, (const void *) identifier))
+    if(ajTableFetch(sra->CacheNonReference, (const void *) &identifier))
         *Presult = ajFalse;
     else
         *Presult = ajTrue;
