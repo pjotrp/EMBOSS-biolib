@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -38,12 +38,24 @@
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
-const ajuint assemblyMapperMaxPairCount = 1000;
+/* assemblyMapperMaxPairCount *************************************************
+**
+** The maximum number of Ensembl Mapper Pairs an Ensembl Assembly Mapper
+** is allowed to register. 2 ^ 11 (2 ki) corresponds to about 2 x 10 ^ 3 pairs.
+**
+******************************************************************************/
 
-/*
-** The Assembly Mapper registers Sequence Regions in chunks of 2 ^ 20,
-** which corresponds to approximately 10 ^ 6 or 1 M base pairs.
-*/
+const ajuint assemblyMapperMaxPairCount = 1 << 11;
+
+
+
+
+/* assemblyMapperChunkFactor **************************************************
+**
+** The Assembly Mapper registers Sequence Regions in chunks of 2 ^ 20 (1 Mi),
+** which corresponds to approximately 1 x 10 ^ 6 or 1 M base pairs.
+**
+******************************************************************************/
 
 const ajuint assemblyMapperChunkFactor = 20;
 
@@ -2618,7 +2630,8 @@ AjBool ensToplevelassemblymapperMap(EnsPToplevelassemblymapper tlam,
                                  srstart,
                                  srend,
                                  srstrand,
-                                 tlam->OtherCoordsystem);
+                                 tlam->OtherCoordsystem,
+                                 0);
 
     ajListPushAppend(mrs, (void *) mr);
 
