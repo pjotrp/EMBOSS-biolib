@@ -102,18 +102,19 @@ static void showalign_Order(const AjPStr order, AjPSeq const * seqs,
 			    ajint * const *sub, const AjPSeqCvt cvt,
 			    OOrder *aorder);
 static ajint showalign_Output(AjPFile outf, AjPSeq const * seqs, ajint nrefseq,
-			      ajint width, ajint margin,
+			      ajuint width, ajuint margin,
 			      const AjPSeq consensus,
 			      AjBool docon, AjBool bottom,
 			      const OOrder * aorder,
 			      AjBool html, const AjPRange highlight,
 			      const AjPRange uppercase, AjBool number,
-			      AjBool ruler, ajint nseqs,
-			      ajint begin, ajint end);
-static ajint showalign_OutputNums(AjPFile outf, ajint pos, ajint width,
-				  ajint margin);
-static ajint showalign_OutputTicks(AjPFile outf, ajint pos, ajint width,
-				   ajint margin);
+			      AjBool ruler, ajuint nseqs,
+			      ajuint begin, ajuint end);
+static const AjPStr showalign_OutputNums(ajint nrefseq, const AjPSeq ref,
+                                         ajuint firstpos, ajuint lastpos,
+                                         ajuint margin);
+static const AjPStr showalign_OutputTicks(ajint nrefseq, const AjPSeq ref,
+                                          ajuint *firstpos, ajuint *lastpos);
 static ajint showalign_OutputSeq(AjPFile outf, const AjPSeq seq,
 				 ajint pos, ajint end, ajint width,
 				 ajint margin, AjBool html,
@@ -165,7 +166,6 @@ int main(int argc, char **argv)
     OOrder *aorder;		/* the output order array */
     AjBool number;		/* display number line */
     AjBool ruler;		/* display ruler line */
-    AjPStr xxx = NULL;
     AjPSeq* seqs;
     ajint nseqs;
     ajint begin;
@@ -228,7 +228,7 @@ int main(int argc, char **argv)
 
     /* name the sequence */
 
-    ajSeqAssignNameS(consensus,(xxx=ajStrNewC("Consensus")));
+    ajSeqAssignNameC(consensus,"Consensus");
 
     /* if margin is given as -1 ensure it is reset to a nice value */
     showalign_NiceMargin(seqset, &margin, docon, nrefseq);
@@ -256,8 +256,6 @@ int main(int argc, char **argv)
     ajFileClose(&outf);
     ajSeqDel(&consensus);
     AJFREE(aorder);
-
-    ajStrDel(&xxx);
 
     ajSeqsetDel(&seqset);
     ajStrDel(&refseq);
@@ -292,6 +290,8 @@ static ajint showalign_Getrefseq(const AjPStr refseq, const AjPSeqset seqset)
 {
     ajint i;
     const AjPSeq seq;
+    ajint ifound = 0;
+    ajint icase = 0;
 
     for(i=0; i<(ajint)ajSeqsetGetSize(seqset); i++)
     {
@@ -299,7 +299,15 @@ static ajint showalign_Getrefseq(const AjPStr refseq, const AjPSeqset seqset)
 
 	if(!ajStrCmpS(ajSeqGetNameS(seq), refseq))
 	    return i;
+	if(!ajStrCmpCaseS(ajSeqGetNameS(seq), refseq))
+        {
+            icase = i;
+            ifound++;
+        }
     }
+
+    if(ifound == 1)
+        return icase;
 
     /* not a name of a sequence, so it must be a number */
     if(ajStrToInt(refseq, &i))
@@ -834,11 +842,11 @@ static void showalign_Order(const AjPStr order,
 ** @param [u] outf [AjPFile] output file handle
 ** @param [r] seqs [AjPSeq const *] the sequences
 ** @param [r] nrefseq [ajint] number of the refseq
-** @param [r] width [ajint] width of displayed sequence line
-** @param [r] margin [ajint] width of margin on left side
+** @param [r] width [ajuint] width of displayed sequence line
+** @param [r] margin [ajuint] width of margin on left side
 ** @param [r] consensus [const AjPSeq] consensus sequence
 ** @param [r] docon [AjBool] display consensus sequence at the bottom
-** @param [r] bottom [AjBool] display refseq at the botton of the alignment
+** @param [r] bottom [AjBool] display refseq at the bottom of the alignment
 **                            as well
 ** @param [u] aorder [const OOrder *] order to display the sequences
 ** @param [r] html [AjBool] format for html display
@@ -846,29 +854,36 @@ static void showalign_Order(const AjPStr order,
 ** @param [r] uppercase [const AjPRange] ranges to uppercase
 ** @param [r] number [AjBool] display number line
 ** @param [r] ruler [AjBool] display ruler line
-** @param [r] nseqs [ajint] Number of sequences
-** @param [r] begin [ajint] Begin position
-** @param [r] end [ajint] End position
+** @param [r] nseqs [ajuint] Number of sequences
+** @param [r] begin [ajuint] Begin position
+** @param [r] end [ajuint] End position
 ** @return [ajint] Always 0
 ** @@
 ******************************************************************************/
 
 static ajint showalign_Output(AjPFile outf, AjPSeq const * seqs,
 			      ajint nrefseq,
-			      ajint width, ajint margin,
+			      ajuint width, ajuint margin,
 			      const AjPSeq consensus,
 			      AjBool docon, AjBool bottom,
 			      const OOrder* aorder,
 			      AjBool html, const AjPRange highlight,
 			      const AjPRange uppercase,
 			      AjBool number, AjBool ruler,
-			      ajint nseqs, ajint begin, ajint end)
+			      ajuint nseqs, ajuint begin, ajuint end)
 {
-    ajint pos;		/* start position in sequences of next line */
-    ajint i;
+    ajuint pos;		/* start position in sequences of next line */
+    ajuint i;
     const AjPSeq ref;			/* the reference sequence */
 
-
+    ajuint firstpos = 0;
+    ajuint lastpos = 0;
+    const AjPStr numline = NULL;
+    const AjPStr tickline = NULL;
+    AjPStr showstr = NULL;
+    ajuint istart = 0;
+    ajuint iend = 0;
+    ajuint imargin;
 
     /*
     **  if consensus line is the refseq, then aorder holds all the seqset
@@ -887,27 +902,67 @@ static ajint showalign_Output(AjPFile outf, AjPSeq const * seqs,
     if(html)
 	ajFmtPrintF(outf, "<pre>\n");
 
+    /* build the tick line for the consensus/reference sequence */
+    tickline = showalign_OutputTicks(nrefseq, ref, &firstpos, &lastpos);
+
+    /* build the number line for the consensus/reference sequence */
+    numline = showalign_OutputNums(nrefseq, ref, firstpos, lastpos, margin);
+
+    ajDebug("begin:%d end:%d width:%d\n",
+           begin, end, width);
+    ajDebug("first: %u last: %u len:%u %u %u\n",
+           firstpos, lastpos, ajSeqGetLen(ref),
+           ajStrGetLen(tickline), ajStrGetLen(numline));
+    ajDebug("'%S'\n", numline);
+    ajDebug("%*s'%S'\n", margin, "", tickline);
+
     /* get next set of lines to output */
     for(pos=begin; pos<=end; pos+=width)
     {
 	/* numbers line */
 	if(number)
-	    showalign_OutputNums(outf, pos, width, margin);
-
+        {
+            imargin = margin;
+            istart = pos+margin;
+            while(istart && ajStrGetCharPos(numline, istart-1) == ' ')
+            {
+                istart--;
+                if(imargin)
+                    imargin--;
+            }
+            
+            iend = pos+width+margin-1;
+            if(iend < (end+margin))
+            {
+                while(iend < end && ajStrGetCharPos(numline, iend+1) != ' ')
+                    iend++;
+            }
+            else
+            {
+                iend = end+margin;
+            }
+            
+            ajStrAssignSubS(&showstr, numline, istart, iend);
+            ajFmtPrintF(outf, "%*s%S\n", imargin, "", showstr);
+        }
+        
 	/* ruler/ticks line */
-	if(ruler)
-	    showalign_OutputTicks(outf, pos, width, margin);
-
-
+        if(ruler)
+        {
+	    ajStrAssignSubS(&showstr, tickline, pos, pos+width-1);
+	    ajFmtPrintF(outf, "%*s%S\n", margin, "", showstr);
+        }
+        
 	/* refseq is always displayed at the top if it is not the consensus */
         if(nrefseq != -1) 
         {
 	    showalign_OutputSeq(outf, ref, pos, end, width, margin, html,
 			    highlight, uppercase);
 	} 
-	else if(docon) 
+	else if(docon && !bottom) 
 	{
-	    /* if refseq is consensus and docon is true then display consensus */
+	    /* if refseq is consensus and docon is true,
+               and bottom is false, display consensus at the top */
 	    showalign_OutputSeq(outf, consensus, pos, end, width, margin,
 			html, highlight, uppercase);
 	}
@@ -918,17 +973,8 @@ static ajint showalign_Output(AjPFile outf, AjPSeq const * seqs,
 				html, highlight, uppercase);
 
 
-	/* refseq at the bottom also */
-        if(nrefseq != -1) 
-        {
-	    if(bottom)
-	        showalign_OutputSeq(outf, ref, pos, end, width, margin, html,
-				highlight, uppercase);
-            if(docon)
-	        showalign_OutputSeq(outf, consensus, pos, end, width, margin,
-			    html, highlight, uppercase);
-	} 
-	else if(docon && bottom)
+	/* consensus at the bottom */
+        if(docon && bottom)
 	    showalign_OutputSeq(outf, consensus, pos, end, width, margin,
 			html, highlight, uppercase);
 
@@ -942,6 +988,7 @@ static ajint showalign_Output(AjPFile outf, AjPSeq const * seqs,
     if(html)
 	ajFmtPrintF(outf, "</pre>\n");
 
+    ajStrDel(&showstr);
 
     return 0;
 }
@@ -953,55 +1000,95 @@ static ajint showalign_Output(AjPFile outf, AjPSeq const * seqs,
 **
 ** Writes the numbers line
 **
-** @param [u]  outf [AjPFile] output file handle
-** @param [r] pos [ajint] position in sequence to start line
-** @param [r] width [ajint] width of line
-** @param [r] margin [ajint] length of left hand margin
-** @return [ajint] Always 0
+** @param [r] nrefseq [ajint] the sequence being displayed
+**                            skip gaps if it is not -1 (consensus)
+** @param [r] ref [const AjPSeq] Reference sequence
+** @param [r] firstpos [ajuint] length of left hand margin
+** @param [r] lastpos [ajuint] length of left hand margin
+** @param [r] margin [ajuint] length of left hand margin
+** @return [const AjPStr] Numbers line with margin at start
 ** @@
 ******************************************************************************/
 
-static ajint showalign_OutputNums(AjPFile outf, ajint pos, ajint width,
-				  ajint margin)
+static const AjPStr showalign_OutputNums(ajint nrefseq, const AjPSeq ref,
+                                         ajuint firstpos, ajuint lastpos,
+                                         ajuint margin)
 {
-
     AjPStr line;
-    ajint i;
-    ajint firstpos;
+    ajuint i;
+    ajuint j;
     AjPStr marginfmt;
-    double xlog;
-    ajint poslimit;
+    const AjPStr refstr = ajSeqGetSeqS(ref);
+    ajint iwidth;
+    ajuint iend;
+    char ch;
+    AjPStr numstr = ajStrNewRes(10);
 
-    line      = ajStrNewRes(81);		/* line of ticks to print */
+    iend = ajStrGetLen(refstr);
+    
+    line      = ajStrNewRes(iend+margin+1); /* line of numbers to print */
     marginfmt = ajStrNewRes(10);
 
-    xlog = log10((double)pos);
-    poslimit = (ajint) xlog + 1;
-    /* margin and first number which may be partly in the margin */
-    if(pos>0 && poslimit > margin + 10-(pos%10))
+    if(nrefseq == -1)           /* simple consensus */
     {
-	/* number is too long to fit in the margin, so just write spaces */
-	ajStrAppendCountK(&line, ' ', margin+(10-(pos)%10));
-	firstpos = pos + 10-(pos%10);
+        iwidth = margin+10;
+        for(i=10; i<iend; i+=10)
+        {
+            ajFmtPrintAppS(&line, "%*d", iwidth, i);
+            iwidth = 10;
+        }
+        
+        iwidth = iend % 10;
     }
-    else
+    else                        /* reference sequence */
     {
-	ajFmtPrintS(&marginfmt, "%%%dd", margin+(10-(pos)%10));
-	firstpos = pos + 10-(pos%10);
-	ajFmtPrintF(outf, ajStrGetPtr(marginfmt), firstpos);
+        iwidth = margin;
+        j = firstpos;
+        for(i=1; i<firstpos; i++)
+        {
+            j--;
+            iwidth++;
+            if (!(j % 10))
+            {
+                ajFmtPrintS(&numstr, "-%d", j);
+                ajFmtPrintAppS(&line, "%*S", iwidth, numstr);
+                iwidth = 0;
+            }
+        }
+
+        j = 0;
+        for(i=firstpos-1; i<lastpos; i++)
+        {
+            iwidth++;
+            ch = ajStrGetCharPos(refstr, i);
+            if(ch != '-')
+            {
+                j++;
+                if (!(j % 10))
+                {
+                    ajFmtPrintAppS(&line, "%*d", iwidth, j);
+                    iwidth = 0;
+                }
+            }
+        }
+
+        j = 0;
+        for(i=lastpos; i<=iend; i++)
+        {
+            iwidth++;
+            j++;
+            if (!(j % 10))
+            {
+                ajFmtPrintS(&numstr, "+%d", j);
+                ajFmtPrintAppS(&line, "%*S", iwidth, numstr);
+                iwidth = 0;
+            }
+        }
     }
-
-    /* make the numbers line */
-    for(i=firstpos+10; i<=pos+width; i+=10)
-	ajFmtPrintAppS(&line, "%10d", i);
-
-    /* print the numbers */
-    ajFmtPrintF(outf, "%S\n", line);
-
-    ajStrDel(&line);
-    ajStrDel(&marginfmt);
-
-    return 0;
+    if(iwidth)
+        ajStrAppendCountK(&line, ' ', iwidth);
+    ajStrDel(&numstr);
+    return line;
 }
 
 
@@ -1011,44 +1098,109 @@ static ajint showalign_OutputNums(AjPFile outf, ajint pos, ajint width,
 **
 ** Writes the ticks line
 **
-** @param [u]  outf [AjPFile] output file handle
-** @param [r] pos [ajint] position in sequence to start line
-** @param [r] width [ajint] width of line
-** @param [r] margin [ajint] length of left hand margin
-** @return [ajint] Always 0
+** @param [r] nrefseq [ajint] the sequence being displayed
+**                            skip gaps if it is not -1 (consensus)
+** @param [r] ref [const AjPSeq] Reference sequence
+** @param [r] firstpos [ajuint*] length of left hand margin
+** @param [r] lastpos [ajuint*] length of left hand margin
+** @return [const AjPStr] Tick line matching reference sequence
 ** @@
 ******************************************************************************/
 
-static ajint showalign_OutputTicks(AjPFile outf, ajint pos, ajint width,
-				   ajint margin)
+static const AjPStr showalign_OutputTicks(ajint nrefseq, const AjPSeq ref,
+                                          ajuint* firstpos, ajuint* lastpos)
 {
-    AjPStr line;
-    ajint i;
+    AjPStr line = NULL;
+    const AjPStr refstr = ajSeqGetSeqS(ref);
+    ajuint i;
+    ajuint j;
+    ajuint iend;
+    ajuint ifirst = 0;
+    ajuint ilast = 0;
+    ajuint ipos = 0;
+    const char* cp;
+    char* cq;
 
-    line = ajStrNewRes(81);		/* line of ticks to print */
+    iend = ajStrGetLen(refstr);
 
-
-    /* margin */
-    ajStrAppendCountK(&line, ' ', margin);
+    line = ajStrNewRes(1+iend);	/* line of ticks to print */
 
     /* make the ticks line */
-    for(i=pos+1; i<pos+width+1; i++)
+    if(nrefseq == -1)
     {
-	if(!(i % 10))
-	    ajStrAppendC(&line, "|");
-	else if(!(i % 5))
-	    ajStrAppendC(&line, ":");
-	else
-	    ajStrAppendC(&line, "-");
+        for(i=1; i<=iend; i++)
+        {
+            if(!(i % 10))
+                ajStrAppendK(&line, '|');
+            else if(!(i % 5))
+                ajStrAppendK(&line, ':');
+            else
+                ajStrAppendK(&line, '-');
+        }
+        ifirst = 1;
+        ilast = iend;
+    }
+    else
+    {
+        i = 0;
+        ipos = 0;
+        cp = ajStrGetPtr(refstr);
+        while(*cp)
+        {
+            ipos++;
+            if(*cp == '-')
+                ajStrAppendK(&line, '.');
+            else
+            {
+                i++;
+                if(!(i % 10))
+                    ajStrAppendK(&line, '|');
+                else if(!(i % 5))
+                    ajStrAppendK(&line, ':');
+                else
+                    ajStrAppendK(&line, '-');
+
+                if(!ifirst) 
+                    ifirst = ajStrGetLen(line);
+
+                ilast = ipos;
+            }
+
+            cp++;           
+        }
     }
 
-    /* print the ticks */
-    ajFmtPrintF(outf, "%S\n", line);
+    cq = ajStrGetuniquePtr(&line);
+    j=0;
+    if (ifirst > 1)
+    {
+        for(i = ifirst-2; i>0; i--)
+        {
+            j++;
+            if(!(j%10))
+                cq[i] = 'V';
+            else if(!(j%5))
+                cq[i] = 'v';
+        }
+    }
 
-    /* tidy up */
-    ajStrDel(&line);
+    if(ilast < iend)
+    {
+        j = 0;
+        for(i=ilast; i<iend; i++)
+        {
+            j++;
+            if(!(j%10))
+                cq[i] = 'V';
+            else if(!(j%5))
+                cq[i] = 'v';
+        }
+    }
 
-    return 0;
+    *firstpos = ifirst;
+    *lastpos = ilast;
+
+    return line;
 }
 
 
@@ -1079,7 +1231,7 @@ static ajint showalign_OutputSeq(AjPFile outf, const AjPSeq seq, ajint pos,
     AjPStr line;
     AjPStr marginfmt;
 
-    line      = ajStrNew();		/* next line of sequence to print */
+    line = ajStrNewRes(margin+width+1); /* next line of sequence to print */
     marginfmt = ajStrNewRes(10);
 
     /* get end to display up to */
