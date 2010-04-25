@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2295,7 +2295,7 @@ void ensFeatureadaptorDel(EnsPFeatureadaptor *Pfa)
     if(pthis->Tables)
     {
         for(i = 0; pthis->Tables[i]; i++)
-            ajCharDel(&(pthis->Tables[i]));
+            ajCharDel(&pthis->Tables[i]);
 
         AJFREE(pthis->Tables);
     }
@@ -2518,7 +2518,7 @@ AjBool ensFeatureadaptorSetTables(EnsPFeatureadaptor fa,
         if(fa->Tables)
         {
             for(i = 0; fa->Tables[i]; i++)
-                ajCharDel(&(fa->Tables[i]));
+                ajCharDel(&fa->Tables[i]);
 
             AJFREE(fa->Tables);
         }
@@ -2608,7 +2608,7 @@ AjBool ensFeatureadaptorSetDefaultCondition(EnsPFeatureadaptor fa,
         /* Clear the default SQL condition. */
 
         if(fa->Condition)
-            ajCharDel(&(fa->Condition));
+            ajCharDel(&fa->Condition);
 
         /* Extend the default SQL condition. */
 
@@ -3536,9 +3536,9 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor fa,
 **
 ** @cc Bio::EnsEMBL::DBSQL::BaseFeatureAdaptor::fetch_all_by_Slice_constraint
 ** @param [u] fa [EnsPFeatureadaptor] Ensembl Feature Adaptor
-** @param [r] slice [EnsPSlice] Ensembl Slice
-** @param [r] constraint [const AjPStr] SQL constraint
-** @param [r] anname [const AjPStr] Ensembl Analysis name
+** @param [u] slice [EnsPSlice] Ensembl Slice
+** @param [rN] constraint [const AjPStr] SQL constraint
+** @param [rN] anname [const AjPStr] Ensembl Analysis name
 ** @param [u] objects [AjPList] AJAX List of Ensembl Objects based on
 **                              Ensembl Features
 **
@@ -3629,7 +3629,7 @@ AjBool ensFeatureadaptorFetchAllBySliceConstraint(EnsPFeatureadaptor fa,
         return ajFalse;
     }
 
-    if(constraint)
+    if(constraint && ajStrGetLen(constraint))
         constr = ajStrNewS(constraint);
     else
         constr = ajStrNew();
@@ -5581,9 +5581,9 @@ static AjBool baseAlignFeatureParseFeatures(EnsPBasealignfeature baf,
                 /* no need for a number if gap length is 1 */
 
                 if(srcgap == 1)
-                    ajStrAppendK(&(baf->Cigar), 'I');
+                    ajStrAppendK(&baf->Cigar, 'I');
                 else
-                    ajFmtPrintAppS(&(baf->Cigar), "%dI", srcgap);
+                    ajFmtPrintAppS(&baf->Cigar, "%dI", srcgap);
             }
 
             /* shift our position in the source sequence alignment */
@@ -5603,9 +5603,9 @@ static AjBool baseAlignFeatureParseFeatures(EnsPBasealignfeature baf,
                 /* no need for a number if gap length is 1 */
 
                 if(srcgap == 1)
-                    ajStrAppendK(&(baf->Cigar), 'I');
+                    ajStrAppendK(&baf->Cigar, 'I');
                 else
-                    ajFmtPrintAppS(&(baf->Cigar), "%dI", srcgap);
+                    ajFmtPrintAppS(&baf->Cigar, "%dI", srcgap);
             }
 
             /* shift our position in the source sequence alignment */
@@ -5632,9 +5632,9 @@ static AjBool baseAlignFeatureParseFeatures(EnsPBasealignfeature baf,
                 /* no need for a number if gap length is 1 */
 
                 if(trggap == 1)
-                    ajStrAppendK(&(baf->Cigar), 'D');
+                    ajStrAppendK(&baf->Cigar, 'D');
                 else
-                    ajFmtPrintAppS(&(baf->Cigar), "%dD", trggap);
+                    ajFmtPrintAppS(&baf->Cigar, "%dD", trggap);
 
                 /* sanity check,  should not be an insertion and deletion */
 
@@ -5668,9 +5668,9 @@ static AjBool baseAlignFeatureParseFeatures(EnsPBasealignfeature baf,
                 /* no need for a number if gap length is 1 */
 
                 if(trggap == 1)
-                    ajStrAppendK(&(baf->Cigar), 'D');
+                    ajStrAppendK(&baf->Cigar, 'D');
                 else
-                    ajFmtPrintAppS(&(baf->Cigar), "%dD", trggap);
+                    ajFmtPrintAppS(&baf->Cigar, "%dD", trggap);
 
                 /* sanity check,  should not be an insertion and deletion */
 
@@ -5700,14 +5700,14 @@ static AjBool baseAlignFeatureParseFeatures(EnsPBasealignfeature baf,
         match = fp->SourceFeature->End - fp->SourceFeature->Start + 1;
 
         if(match == 1)
-            ajStrAppendK(&(baf->Cigar), 'M');
+            ajStrAppendK(&baf->Cigar, 'M');
         else
-            ajFmtPrintAppS(&(baf->Cigar), "%dM", match);
+            ajFmtPrintAppS(&baf->Cigar, "%dM", match);
     }
 
     /* Replace the Feature Pair in the Base Align Feature. */
 
-    ensFeaturepairDel(&(baf->Featurepair));
+    ensFeaturepairDel(&baf->Featurepair);
 
     /* Clone the source Feature and set the new coordinates. */
 
@@ -6506,7 +6506,7 @@ AjBool ensBasealignfeatureSetFeaturepair(EnsPBasealignfeature baf,
     /* Replace the current Feature Pair. */
 
     if(baf->Featurepair)
-        ensFeaturepairDel(&(baf->Featurepair));
+        ensFeaturepairDel(&baf->Featurepair);
 
     baf->Featurepair = ensFeaturepairNewRef(fp);
 
