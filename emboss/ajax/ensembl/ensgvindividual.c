@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -666,7 +666,7 @@ AjBool ensGvindividualSetGvsample(EnsPGvindividual gvi, EnsPGvsample gvs)
     if(!gvi)
         return ajFalse;
 
-    ensGvsampleDel(&(gvi->Gvsample));
+    ensGvsampleDel(&gvi->Gvsample);
 
     gvi->Gvsample = ensGvsampleNewRef(gvs);
 
@@ -693,7 +693,7 @@ AjBool ensGvindividualSetFather(EnsPGvindividual gvi, EnsPGvindividual father)
     if(!gvi)
         return ajFalse;
 
-    ensGvindividualDel(&(gvi->Father));
+    ensGvindividualDel(&gvi->Father);
 
     gvi->Father = ensGvindividualNewRef(father);
 
@@ -720,7 +720,7 @@ AjBool ensGvindividualSetMother(EnsPGvindividual gvi, EnsPGvindividual mother)
     if(!gvi)
         return ajFalse;
 
-    ensGvindividualDel(&(gvi->Mother));
+    ensGvindividualDel(&gvi->Mother);
 
     gvi->Mother = ensGvindividualNewRef(mother);
 

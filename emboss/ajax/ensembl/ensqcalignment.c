@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.6 $
+** @version $Revision: 1.7 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -843,7 +843,7 @@ AjBool ensQcalignmentSetAnalysis(EnsPQcalignment qca,
     if(!qca)
         return ajFalse;
 
-    ensAnalysisDel(&(qca->Analysis));
+    ensAnalysisDel(&qca->Analysis);
 
     qca->Analysis = ensAnalysisNewRef(analysis);
 
@@ -870,7 +870,7 @@ AjBool ensQcalignmentSetQuerySequence(EnsPQcalignment qca,
     if(!qca)
         return ajFalse;
 
-    ensQcsequenceDel(&(qca->QuerySequence));
+    ensQcsequenceDel(&qca->QuerySequence);
 
     qca->QuerySequence = ensQcsequenceNewRef(qsequence);
 
@@ -972,7 +972,7 @@ AjBool ensQcalignmentSetTargetSequence(EnsPQcalignment qca,
     if(!qca)
         return ajFalse;
 
-    ensQcsequenceDel(&(qca->TargetSequence));
+    ensQcsequenceDel(&qca->TargetSequence);
 
     qca->TargetSequence = ensQcsequenceNewRef(tsequence);
 

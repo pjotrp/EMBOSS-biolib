@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1036,7 +1036,7 @@ AjBool ensAnalysisSetCreationDate(EnsPAnalysis analysis, AjPStr cdate)
     if(!analysis)
         return ajFalse;
 
-    ajStrDel(&(analysis->CreationDate));
+    ajStrDel(&analysis->CreationDate);
 
     analysis->CreationDate = ajStrNewRef(cdate);
 
@@ -1063,7 +1063,7 @@ AjBool ensAnalysisSetName(EnsPAnalysis analysis, AjPStr name)
     if(!analysis)
         return ajFalse;
 
-    ajStrDel(&(analysis->Name));
+    ajStrDel(&analysis->Name);
 
     analysis->Name = ajStrNewRef(name);
 
@@ -1090,7 +1090,7 @@ AjBool ensAnalysisSetDatabaseName(EnsPAnalysis analysis, AjPStr databasename)
     if(!analysis)
         return ajFalse;
 
-    ajStrDel(&(analysis->DatabaseName));
+    ajStrDel(&analysis->DatabaseName);
 
     analysis->DatabaseName = ajStrNewRef(databasename);
 
@@ -1118,7 +1118,7 @@ AjBool ensAnalysisSetDatabaseVersion(EnsPAnalysis analysis,
     if(!analysis)
         return ajFalse;
 
-    ajStrDel(&(analysis->DatabaseVersion));
+    ajStrDel(&analysis->DatabaseVersion);
 
     analysis->DatabaseVersion = ajStrNewRef(databaseversion);
 
@@ -1145,7 +1145,7 @@ AjBool ensAnalysisSetDatabaseFile(EnsPAnalysis analysis, AjPStr databasefile)
     if(!analysis)
         return ajFalse;
 
-    ajStrDel(&(analysis->DatabaseFile));
+    ajStrDel(&analysis->DatabaseFile);
 
     analysis->DatabaseFile = ajStrNewRef(databasefile);
 
@@ -1172,7 +1172,7 @@ AjBool ensAnalysisSetProgramName(EnsPAnalysis analysis, AjPStr programname)
     if(!analysis)
         return ajFalse;
 
-    ajStrDel(&(analysis->ProgramName));
+    ajStrDel(&analysis->ProgramName);
 
     analysis->ProgramName = ajStrNewRef(programname);
 
@@ -1200,7 +1200,7 @@ AjBool ensAnalysisSetProgramVersion(EnsPAnalysis analysis,
     if(!analysis)
         return ajFalse;
 
-    ajStrDel(&(analysis->ProgramVersion));
+    ajStrDel(&analysis->ProgramVersion);
 
     analysis->ProgramVersion = ajStrNewRef(programversion);
 
@@ -1227,7 +1227,7 @@ AjBool ensAnalysisSetProgramFile(EnsPAnalysis analysis, AjPStr programfile)
     if(!analysis)
         return ajFalse;
 
-    ajStrDel(&(analysis->ProgramFile));
+    ajStrDel(&analysis->ProgramFile);
 
     analysis->ProgramFile = ajStrNewRef(programfile);
 
@@ -1254,7 +1254,7 @@ AjBool ensAnalysisSetParameters(EnsPAnalysis analysis, AjPStr parameters)
     if(!analysis)
         return ajFalse;
 
-    ajStrDel(&(analysis->Parameters));
+    ajStrDel(&analysis->Parameters);
 
     analysis->Parameters = ajStrNewRef(parameters);
 
@@ -1281,7 +1281,7 @@ AjBool ensAnalysisSetModuleName(EnsPAnalysis analysis, AjPStr modulename)
     if(!analysis)
         return ajFalse;
 
-    ajStrDel(&(analysis->ModuleName));
+    ajStrDel(&analysis->ModuleName);
 
     analysis->ModuleName = ajStrNewRef(modulename);
 
@@ -1309,7 +1309,7 @@ AjBool ensAnalysisSetModuleVersion(EnsPAnalysis analysis,
     if(!analysis)
         return ajFalse;
 
-    ajStrDel(&(analysis->ModuleVersion));
+    ajStrDel(&analysis->ModuleVersion);
 
     analysis->ModuleVersion = ajStrNewRef(moduleversion);
 
@@ -1336,7 +1336,7 @@ AjBool ensAnalysisSetGFFSource(EnsPAnalysis analysis, AjPStr gffsource)
     if(!analysis)
         return ajFalse;
 
-    ajStrDel(&(analysis->GFFSource));
+    ajStrDel(&analysis->GFFSource);
 
     analysis->GFFSource = ajStrNewRef(gffsource);
 
@@ -1363,7 +1363,7 @@ AjBool ensAnalysisSetGFFFeature(EnsPAnalysis analysis, AjPStr gfffeature)
     if(!analysis)
         return ajFalse;
 
-    ajStrDel(&(analysis->GFFFeature));
+    ajStrDel(&analysis->GFFFeature);
 
     analysis->GFFFeature = ajStrNewRef(gfffeature);
 
@@ -1390,7 +1390,7 @@ AjBool ensAnalysisSetDescription(EnsPAnalysis analysis, AjPStr description)
     if(!analysis)
         return ajFalse;
 
-    ajStrDel(&(analysis->Description));
+    ajStrDel(&analysis->Description);
 
     analysis->Description = ajStrNewRef(description);
 
@@ -1417,7 +1417,7 @@ AjBool ensAnalysisSetDisplayLabel(EnsPAnalysis analysis, AjPStr displaylabel)
     if(!analysis)
         return ajFalse;
 
-    ajStrDel(&(analysis->DisplayLabel));
+    ajStrDel(&analysis->DisplayLabel);
 
     analysis->DisplayLabel = ajStrNewRef(displaylabel);
 
@@ -1444,7 +1444,7 @@ AjBool ensAnalysisSetWebData(EnsPAnalysis analysis, AjPStr webdata)
     if(!analysis)
         return ajFalse;
 
-    ajStrDel(&(analysis->WebData));
+    ajStrDel(&analysis->WebData);
 
     analysis->WebData = ajStrNewRef(webdata);
 
@@ -2115,14 +2115,15 @@ static AjBool analysisAdaptorCacheInsert(EnsPAnalysisadaptor aa,
 
     /* Search the identifer cache. */
 
-    analysis1 = (EnsPAnalysis)
-        ajTableFetch(aa->CacheByIdentifier,
-                     (const void *) &((*Panalysis)->Identifier));
+    analysis1 = (EnsPAnalysis) ajTableFetch(
+        aa->CacheByIdentifier,
+        (const void *) &((*Panalysis)->Identifier));
 
     /* Search the name cache. */
 
-    analysis2 = (EnsPAnalysis)
-        ajTableFetch(aa->CacheByName, (const void *) (*Panalysis)->Name);
+    analysis2 = (EnsPAnalysis) ajTableFetch(
+        aa->CacheByName,
+        (const void *) (*Panalysis)->Name);
 
     if((!analysis1) && (!analysis2))
     {
@@ -2209,7 +2210,7 @@ static AjBool analysisAdaptorCacheRemove(EnsPAnalysisadaptor aa,
 
     analysis1 = (EnsPAnalysis)
         ajTableRemoveKey(aa->CacheByIdentifier,
-                         (const void *) &(analysis->Identifier),
+                         (const void *) &analysis->Identifier,
                          (void **) &Pidentifier);
 
     analysis2 = (EnsPAnalysis)
@@ -2383,7 +2384,7 @@ EnsPAnalysisadaptor ensAnalysisadaptorNew(EnsPDatabaseadaptor dba)
     ** Adaptor has not been stored in the Registry. Therefore, each
     ** ensAnalysisadaptorFetch function has to test the presence of the
     ** adaptor-internal cache and eventually initialise before accessing it.
-    ** 
+    **
     **  analysisAdaptorCacheInit(aa);
     */
 

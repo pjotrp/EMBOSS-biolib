@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2059,7 +2059,7 @@ static AjBool coordSystemadaptorCacheExit(EnsPCoordsystemadaptor csa)
 
     /* Clear the Sequence-level cache */
 
-    ensCoordsystemDel((EnsPCoordsystem *) &(csa->SeqLevel));
+    ensCoordsystemDel((EnsPCoordsystem *) &csa->SeqLevel);
 
     /* Clear the identifier cache. */
 
@@ -2067,7 +2067,7 @@ static AjBool coordSystemadaptorCacheExit(EnsPCoordsystemadaptor csa)
                   coordSystemadaptorClearIdentifierCache,
                   NULL);
 
-    ajTableFree(&(csa->CacheByIdentifier));
+    ajTableFree(&csa->CacheByIdentifier);
 
     /* Clear the name cache. */
 
@@ -2075,7 +2075,7 @@ static AjBool coordSystemadaptorCacheExit(EnsPCoordsystemadaptor csa)
                   coordSystemadaptorClearNameCacheL1,
                   NULL);
 
-    ajTableFree(&(csa->CacheByName));
+    ajTableFree(&csa->CacheByName);
 
     /* Clear the rank cache. */
 
@@ -2083,7 +2083,7 @@ static AjBool coordSystemadaptorCacheExit(EnsPCoordsystemadaptor csa)
                   coordSystemadaptorClearIdentifierCache,
                   NULL);
 
-    ajTableFree(&(csa->CacheByRank));
+    ajTableFree(&csa->CacheByRank);
 
     /* Clear the defaults cache. */
 
@@ -2091,7 +2091,7 @@ static AjBool coordSystemadaptorCacheExit(EnsPCoordsystemadaptor csa)
                   coordSystemadaptorClearIdentifierCache,
                   NULL);
 
-    ajTableFree(&(csa->CacheByDefault));
+    ajTableFree(&csa->CacheByDefault);
 
     return ajTrue;
 }
@@ -2166,7 +2166,7 @@ static AjBool coordSystemadaptorMapPathExit(EnsPCoordsystemadaptor csa)
 
     ajTableMapDel(csa->MappingPaths, coordSystemadaptorClearMapPath, NULL);
 
-    ajTableFree(&(csa->MappingPaths));
+    ajTableFree(&csa->MappingPaths);
 
     return ajTrue;
 }
@@ -2237,13 +2237,13 @@ static AjBool coordSystemadaptorSeqregionMapExit(EnsPCoordsystemadaptor csa)
                   coordSystemadaptorClearSeqregionMap,
                   NULL);
 
-    ajTableFree(&(csa->ExternalToInternal));
+    ajTableFree(&csa->ExternalToInternal);
 
     ajTableMapDel(csa->InternalToExternal,
                   coordSystemadaptorClearSeqregionMap,
                   NULL);
 
-    ajTableFree(&(csa->InternalToExternal));
+    ajTableFree(&csa->InternalToExternal);
 
     return ajTrue;
 }

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1077,9 +1077,9 @@ static AjBool densityTypeadaptorCacheInsert(EnsPDensitytypeadaptor dta,
 
     /* Search the identifer cache. */
 
-    dt = (EnsPDensitytype)
-        ajTableFetch(dta->CacheByIdentifier,
-                     (const void *) &((*Pdt)->Identifier));
+    dt = (EnsPDensitytype) ajTableFetch(
+        dta->CacheByIdentifier,
+        (const void *) &((*Pdt)->Identifier));
 
     if(dt)
     {
@@ -1266,7 +1266,8 @@ EnsPDensitytypeadaptor ensDensitytypeadaptorNew(EnsPDatabaseadaptor dba)
 ** @@
 ******************************************************************************/
 
-static void densityTypeadaptorCacheClearIdentifier(void **key, void **value,
+static void densityTypeadaptorCacheClearIdentifier(void **key,
+                                                   void **value,
                                                    void *cl)
 {
     if(!key)
@@ -1317,7 +1318,7 @@ static AjBool densityTypeadaptorCacheExit(EnsPDensitytypeadaptor dta)
                   densityTypeadaptorCacheClearIdentifier,
                   NULL);
 
-    ajTableFree(&(dta->CacheByIdentifier));
+    ajTableFree(&dta->CacheByIdentifier);
 
     return ajTrue;
 }
@@ -2144,7 +2145,7 @@ AjBool ensDensityfeatureSetFeature(EnsPDensityfeature df, EnsPFeature feature)
     if(!df)
         return ajFalse;
 
-    ensFeatureDel(&(df->Feature));
+    ensFeatureDel(&df->Feature);
 
     df->Feature = ensFeatureNewRef(feature);
 
@@ -2172,7 +2173,7 @@ AjBool ensDensityfeatureSetDensitytype(EnsPDensityfeature df,
     if(!df)
         return ajFalse;
 
-    ensDensitytypeDel(&(df->Densitytype));
+    ensDensitytypeDel(&df->Densitytype);
 
     df->Densitytype = ensDensitytypeNewRef(dt);
 
@@ -2857,15 +2858,21 @@ EnsPDensityfeatureadaptor ensDensityfeatureadaptorNew(EnsPDatabaseadaptor dba)
 
 void ensDensityfeatureadaptorDel(EnsPDensityfeatureadaptor *Pdfa)
 {
+    EnsPDensityfeatureadaptor pthis = NULL;
+
     if(!Pdfa)
         return;
 
     if(!*Pdfa)
         return;
 
-    ensFeatureadaptorDel(&((*Pdfa)->Adaptor));
+    pthis = *Pdfa;
 
-    AJFREE(*Pdfa);
+    ensFeatureadaptorDel(&pthis->Adaptor);
+
+    AJFREE(pthis);
+
+    *Pdfa = NULL;
 
     return;
 }
@@ -3233,7 +3240,7 @@ AjBool ensDensityfeatureadaptorFetchAllBySlice(
     {
         while(ajListPop(dtrs, (void **) &dtr))
         {
-            ensDensitytypeDel(&(dtr->Densitytype));
+            ensDensitytypeDel(&dtr->Densitytype);
 
             AJFREE(dtr);
         }
@@ -3258,7 +3265,7 @@ AjBool ensDensityfeatureadaptorFetchAllBySlice(
     {
         while(ajListPop(dtrs, (void **) &dtr))
         {
-            ensDensitytypeDel(&(dtr->Densitytype));
+            ensDensitytypeDel(&dtr->Densitytype);
 
             AJFREE(dtr);
         }
@@ -3468,7 +3475,7 @@ AjBool ensDensityfeatureadaptorFetchAllBySlice(
 
     while(ajListPop(dtrs, (void **) &dtr))
     {
-        ensDensitytypeDel(&(dtr->Densitytype));
+        ensDensitytypeDel(&dtr->Densitytype);
 
         AJFREE(dtr);
     }

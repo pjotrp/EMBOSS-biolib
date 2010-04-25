@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1222,7 +1222,7 @@ AjBool ensMarkermaplocationSetMarkersynonym(EnsPMarkermaplocation mml,
     if(!mml)
         return ajFalse;
 
-    ensMarkersynonymDel(&(mml->Markersynonym));
+    ensMarkersynonymDel(&mml->Markersynonym);
 
     mml->Markersynonym = ensMarkersynonymNewRef(ms);
 
@@ -3492,7 +3492,6 @@ static void markerAdaptorClearIdentifierTable(void **key,
     (void) cl;
 
     AJFREE(*key);
-
     AJFREE(*value);
 
     return;
@@ -4303,7 +4302,7 @@ AjBool ensMarkerfeatureSetMarker(EnsPMarkerfeature mf, EnsPMarker marker)
     if(!mf)
         return ajFalse;
 
-    ensMarkerDel(&(mf->Marker));
+    ensMarkerDel(&mf->Marker);
 
     mf->Marker = ensMarkerNewRef(marker);
 

@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1906,16 +1906,17 @@ static AjBool qcDatabaseadaptorCacheInsert(EnsPQcdatabaseadaptor qcdba,
 
     /* Search the identifer cache. */
 
-    qcdb1 = (EnsPQcdatabase)
-        ajTableFetch(qcdba->CacheByIdentifier,
-                     (const void *) &((*Pqcdb)->Identifier));
+    qcdb1 = (EnsPQcdatabase) ajTableFetch(
+        qcdba->CacheByIdentifier,
+        (const void *) &((*Pqcdb)->Identifier));
 
     /* Search the name cache. */
 
     key = ajFmtStr("%S:%S", (*Pqcdb)->Name, (*Pqcdb)->Release);
 
-    qcdb2 = (EnsPQcdatabase)
-        ajTableFetch(qcdba->CacheByName, (const void *) key);
+    qcdb2 = (EnsPQcdatabase) ajTableFetch(
+        qcdba->CacheByName,
+        (const void *) key);
 
     if((!qcdb1) && (!qcdb2))
     {
@@ -2192,7 +2193,7 @@ static AjBool qcDatabaseadaptorCacheExit(EnsPQcdatabaseadaptor qcdba)
                   qcDatabaseadaptorCacheClearIdentifier,
                   NULL);
 
-    ajTableFree(&(qcdba->CacheByIdentifier));
+    ajTableFree(&qcdba->CacheByIdentifier);
 
     /* Clear and delete the name cache. */
 
@@ -2200,7 +2201,7 @@ static AjBool qcDatabaseadaptorCacheExit(EnsPQcdatabaseadaptor qcdba)
                   qcDatabaseadaptorCacheClearName,
                   NULL);
 
-    ajTableFree(&(qcdba->CacheByName));
+    ajTableFree(&qcdba->CacheByName);
 
     return ajTrue;
 }

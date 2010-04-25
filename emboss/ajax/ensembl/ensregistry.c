@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** Bio::EnsEMBL::Registry CVS Revision:
@@ -1858,7 +1858,7 @@ AjBool ensRegistryRemoveDatabaseadaptor(EnsPDatabaseadaptor *Pdba)
             {
                 if(ecs->Databaseadaptor == *Pdba)
                     registryCoreStyleDel((RegistryPCoreStyle*)
-                                         &(entry->Registry[group]));
+                                         &entry->Registry[group]);
             }
             else
                 ajWarn("ensRegistryRemoveDatabaseadaptor got "
@@ -1875,7 +1875,7 @@ AjBool ensRegistryRemoveDatabaseadaptor(EnsPDatabaseadaptor *Pdba)
             {
                 if(egv->Databaseadaptor == *Pdba)
                     registryGeneticVariationDel((RegistryPGeneticVariation *)
-                                                &(entry->Registry[group]));
+                                                &entry->Registry[group]);
             }
             else
                 ajWarn("ensRegistryRemoveDatabaseadaptor got "
@@ -1893,7 +1893,7 @@ AjBool ensRegistryRemoveDatabaseadaptor(EnsPDatabaseadaptor *Pdba)
                 if(efg->Databaseadaptor == *Pdba)
                     registryFunctionalGenomicsDel(
                         (RegistryPFunctionalGenomics *)
-                        &(entry->Registry[group]));
+                        &entry->Registry[group]);
             }
             else
                 ajWarn("ensRegistryRemoveDatabaseadaptor got "
@@ -1911,7 +1911,7 @@ AjBool ensRegistryRemoveDatabaseadaptor(EnsPDatabaseadaptor *Pdba)
                 if(ecg->Databaseadaptor == *Pdba)
                     registryComparativeGenomicsDel(
                         (RegistryPComparativeGenomics *)
-                        &(entry->Registry[group]));
+                        &entry->Registry[group]);
             }
             else
                 ajWarn("ensRegistryRemoveDatabaseadaptor got "
@@ -1928,7 +1928,7 @@ AjBool ensRegistryRemoveDatabaseadaptor(EnsPDatabaseadaptor *Pdba)
             {
                 if(ego->Databaseadaptor == *Pdba)
                     registryGeneOntologyDel((RegistryPGeneOntology *)
-                                            &(entry->Registry[group]));
+                                            &entry->Registry[group]);
             }
             else
                 ajWarn("ensRegistryRemoveDatabaseadaptor got "
@@ -2945,29 +2945,29 @@ EnsPDitagadaptor ensRegistryGetDitagadaptor(
 {
     if(!dba)
         return NULL;
-    
+
     switch(ensDatabaseadaptorGetGroup(dba))
     {
         case ensEDatabaseadaptorGroupCore:
-            
+
         case ensEDatabaseadaptorGroupVega:
-            
+
         case ensEDatabaseadaptorGroupOtherFeatures:
-            
+
         case ensEDatabaseadaptorGroupCopyDNA:
-            
+
             return dba;
-            
+
             break;
-            
+
         default:
-            
+
             ajWarn("ensRegistryGetDitagadaptor got an "
                    "Ensembl Database Adaptor "
                    "with an unexpected group %d.\n",
                    ensDatabaseadaptorGetGroup(dba));
     }
-    
+
     return NULL;
 }
 

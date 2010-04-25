@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1672,8 +1672,7 @@ AjBool ensSeqregionadaptorCacheRemove(EnsPSeqregionadaptor sra,
     if(!sr)
         return ajFalse;
 
-    ensCacheRemove(sra->CacheByIdentifier,
-                   (const void *) &(sr->Identifier));
+    ensCacheRemove(sra->CacheByIdentifier, (const void *) &sr->Identifier);
 
     return ajTrue;
 }

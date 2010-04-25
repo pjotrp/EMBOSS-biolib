@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2125,7 +2125,7 @@ AjBool ensTranscriptSetFeature(EnsPTranscript transcript, EnsPFeature feature)
     /* Replace the current Feature. */
 
     if(transcript->Feature)
-        ensFeatureDel(&(transcript->Feature));
+        ensFeatureDel(&transcript->Feature);
 
     transcript->Feature = ensFeatureNewRef(feature);
 
@@ -2225,7 +2225,7 @@ AjBool ensTranscriptSetFeature(EnsPTranscript transcript, EnsPFeature feature)
     transcript->TranscriptCodingStart = 0;
     transcript->TranscriptCodingEnd   = 0;
 
-    ensMapperDel(&(transcript->ExonCoordMapper));
+    ensMapperDel(&transcript->ExonCoordMapper);
 
     return ajTrue;
 }
@@ -2251,7 +2251,7 @@ AjBool ensTranscriptSetDisplayReference(EnsPTranscript transcript,
     if(!transcript)
         return ajFalse;
 
-    ensDatabaseentryDel(&(transcript->DisplayReference));
+    ensDatabaseentryDel(&transcript->DisplayReference);
 
     transcript->DisplayReference = ensDatabaseentryNewRef(displaydbe);
 
@@ -2279,7 +2279,7 @@ AjBool ensTranscriptSetDescription(EnsPTranscript transcript,
     if(!transcript)
         return ajFalse;
 
-    ajStrDel(&(transcript->Description));
+    ajStrDel(&transcript->Description);
 
     if(description)
         transcript->Description = ajStrNewRef(description);
@@ -2308,7 +2308,7 @@ AjBool ensTranscriptSetBioType(EnsPTranscript transcript,
     if(!transcript)
         return ajFalse;
 
-    ajStrDel(&(transcript->BioType));
+    ajStrDel(&transcript->BioType);
 
     if(biotype)
         transcript->Description = ajStrNewRef(biotype);
@@ -2415,7 +2415,7 @@ AjBool ensTranscriptSetStableIdentifier(EnsPTranscript transcript,
     if(!transcript)
         return ajFalse;
 
-    ajStrDel(&(transcript->StableIdentifier));
+    ajStrDel(&transcript->StableIdentifier);
 
     if(stableid)
         transcript->StableIdentifier = ajStrNewRef(stableid);
@@ -2470,7 +2470,7 @@ AjBool ensTranscriptSetCreationDate(EnsPTranscript transcript,
     if(!transcript)
         return ajFalse;
 
-    ajStrDel(&(transcript->CreationDate));
+    ajStrDel(&transcript->CreationDate);
 
     if(cdate)
         transcript->CreationDate = ajStrNewRef(cdate);
@@ -2499,7 +2499,7 @@ AjBool ensTranscriptSetModificationDate(EnsPTranscript transcript,
     if(!transcript)
         return ajFalse;
 
-    ajStrDel(&(transcript->ModificationDate));
+    ajStrDel(&transcript->ModificationDate);
 
     if(mdate)
         transcript->ModificationDate = ajStrNewRef(mdate);
@@ -2528,7 +2528,7 @@ AjBool ensTranscriptSetTranslation(EnsPTranscript transcript,
     if(!transcript)
         return ajFalse;
 
-    ensTranslationDel(&(transcript->Translation));
+    ensTranslationDel(&transcript->Translation);
 
     transcript->Translation = ensTranslationNewRef(translation);
 
@@ -2627,7 +2627,7 @@ AjBool ensTranscriptAddAttribute(EnsPTranscript transcript,
         transcript->TranscriptCodingStart = 0;
         transcript->TranscriptCodingEnd   = 0;
 
-        ensMapperDel(&(transcript->ExonCoordMapper));
+        ensMapperDel(&transcript->ExonCoordMapper);
     }
 
     return ajTrue;
@@ -5642,8 +5642,9 @@ AjBool ensTranscriptadaptorFetchAllBySlice(EnsPTranscriptadaptor tca,
         {
             trex = (TranscriptPExonRank) ajListIterGet(iter);
 
-            transcript = (EnsPTranscript)
-                ajTableFetch(trtable, &(trex->TranscriptIdentifier));
+            transcript = (EnsPTranscript) ajTableFetch(
+                trtable,
+                &trex->TranscriptIdentifier);
 
             ensTranscriptAddExon(transcript, newexon, trex->Rank);
         }

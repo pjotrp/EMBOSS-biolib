@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1547,7 +1547,7 @@ AjBool ensTranslationSetStartExon(EnsPTranslation translation, EnsPExon exon)
     if(!exon)
         return ajFalse;
 
-    ensExonDel(&(translation->StartExon));
+    ensExonDel(&translation->StartExon);
 
     translation->StartExon = ensExonNewRef(exon);
 
@@ -1599,7 +1599,7 @@ AjBool ensTranslationSetEndExon(EnsPTranslation translation, EnsPExon exon)
     if(!exon)
         return ajFalse;
 
-    ensExonDel(&(translation->EndExon));
+    ensExonDel(&translation->EndExon);
 
     translation->EndExon = ensExonNewRef(exon);
 

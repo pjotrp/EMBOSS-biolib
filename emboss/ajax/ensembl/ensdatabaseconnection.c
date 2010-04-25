@@ -3,8 +3,8 @@
 **
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
-** @modified $Date: 2010/04/14 07:40:46 $ by $Author: rice $
-** @version $Revision: 1.6 $
+** @modified $Date: 2010/04/25 11:40:06 $ by $Author: mks $
+** @version $Revision: 1.7 $
 **
 ** This library is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU Library General Public
@@ -686,7 +686,7 @@ void ensDatabaseconnectionDisconnect(EnsPDatabaseconnection dbc)
         ensDatabaseconnectionTrace(dbc, 1);
     }
 
-    ajSqlconnectionDel(&(dbc->Sqlconnection));
+    ajSqlconnectionDel(&dbc->Sqlconnection);
 
     return;
 }

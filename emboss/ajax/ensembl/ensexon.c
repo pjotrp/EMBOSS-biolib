@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1169,7 +1169,7 @@ AjBool ensExonSetFeature(EnsPExon exon, EnsPFeature feature)
     /* Replace the current Feature. */
 
     if(exon->Feature)
-        ensFeatureDel(&(exon->Feature));
+        ensFeatureDel(&exon->Feature);
 
     exon->Feature = ensFeatureNewRef(feature);
 
@@ -1918,7 +1918,7 @@ AjBool ensExonFetchSequenceStr(EnsPExon exon, AjPStr* Psequence)
                                     feature->Start,
                                     feature->End,
                                     feature->Strand,
-                                    &(exon->SequenceCache));
+                                    &exon->SequenceCache);
 
     *Psequence = ajStrNewRef(exon->SequenceCache);
 
@@ -3636,7 +3636,7 @@ AjBool ensExonadaptorFetchAllByTranscript(const EnsPExonadaptor ea,
             ensFeatureDel(&efeature);
         }
 
-        ajListIterDel(&iter);	
+        ajListIterDel(&iter);
     }
 
     ajStrDel(&constraint);

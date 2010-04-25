@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -3378,7 +3378,7 @@ static AjBool mapperMergePairs(EnsPMapper mapper)
                 srclist = (AjPList)
                     ajTableFetch(srctable,
                                  (const void *)
-                                 &(delpair->Source->ObjectIdentifier));
+                                 &delpair->Source->ObjectIdentifier);
 
                 srciter = ajListIterNew(srclist);
 
@@ -3668,9 +3668,9 @@ AjBool ensMapperAddMapperpair(EnsPMapper mapper, EnsPMapperpair mp)
         ** for the third-level AJAX List of Ensembl Mapper Pairs.
         */
 
-        list = (AjPList) ajTableFetch(table,
-                                      (const void *)
-                                      &(mp->Source->ObjectIdentifier));
+        list = (AjPList) ajTableFetch(
+            table,
+            (const void *) &mp->Source->ObjectIdentifier);
 
         if(!list)
         {
@@ -3707,9 +3707,9 @@ AjBool ensMapperAddMapperpair(EnsPMapper mapper, EnsPMapperpair mp)
         ** for the third-level AJAX List of Ensembl Mapper Pairs.
         */
 
-        list = (AjPList) ajTableFetch(table,
-                                      (const void *)
-                                      &(mp->Target->ObjectIdentifier));
+        list = (AjPList) ajTableFetch(
+            table,
+            (const void *) &mp->Target->ObjectIdentifier);
 
         if(!list)
         {

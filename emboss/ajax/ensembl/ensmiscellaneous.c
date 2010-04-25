@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -966,15 +966,15 @@ static AjBool miscellaneousSetAdaptorCacheInsert(
 
     /* Search the identifer cache. */
 
-    ms1 = (EnsPMiscellaneousset)
-        ajTableFetch(msa->CacheByIdentifier,
-                     (const void *) &((*Pms)->Identifier));
+    ms1 = (EnsPMiscellaneousset) ajTableFetch(
+        msa->CacheByIdentifier,
+        (const void *) &((*Pms)->Identifier));
 
     /* Search the code cache. */
 
-    ms2 = (EnsPMiscellaneousset)
-        ajTableFetch(msa->CacheByCode,
-                     (const void *) (*Pms)->Code);
+    ms2 = (EnsPMiscellaneousset) ajTableFetch(
+        msa->CacheByCode,
+        (const void *) (*Pms)->Code);
 
     if((!ms1) && (!ms2))
     {
@@ -1061,15 +1061,15 @@ static AjBool miscellaneousSetAdaptorCacheRemove(
 
     /* Remove the table nodes. */
 
-    ms1 = (EnsPMiscellaneousset)
-        ajTableRemoveKey(msa->CacheByIdentifier,
-                         (const void *) &(ms->Identifier),
-                         (void **) &Pidentifier);
+    ms1 = (EnsPMiscellaneousset) ajTableRemoveKey(
+        msa->CacheByIdentifier,
+        (const void *) &ms->Identifier,
+        (void **) &Pidentifier);
 
-    ms2 = (EnsPMiscellaneousset)
-        ajTableRemoveKey(msa->CacheByCode,
-                         (const void *) ms->Code,
-                         (void **) &key);
+    ms2 = (EnsPMiscellaneousset) ajTableRemoveKey(
+        msa->CacheByCode,
+        (const void *) ms->Code,
+        (void **) &key);
 
     if(ms1 && (!ms2))
         ajWarn("miscellaneousSetAdaptorCacheRemove could remove "
@@ -2265,7 +2265,7 @@ AjBool ensMiscellaneousfeatureSetFeature(EnsPMiscellaneousfeature mf,
     if(!mf)
         return ajFalse;
 
-    ensFeatureDel(&(mf->Feature));
+    ensFeatureDel(&mf->Feature);
 
     mf->Feature = ensFeatureNewRef(feature);
 

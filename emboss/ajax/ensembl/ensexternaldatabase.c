@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -43,12 +43,12 @@
 ** conversion in database operations and correspond to
 ** EnsEExternaldatabaseStatus.
 **
-** KNOWNXREF: 
-** KNOWN: 
-** XREF: 
-** PRED: 
-** ORTH: 
-** PSEUDO: 
+** KNOWNXREF:
+** KNOWN:
+** XREF:
+** PRED:
+** ORTH:
+** PSEUDO:
 **
 ******************************************************************************/
 
@@ -74,12 +74,12 @@ static const char *externalDatabaseStatus[] =
 ** conversion in database operations and correspond to
 ** EnsEExternaldatabaseType.
 **
-** ARRAY: 
-** ALT_TRANS: 
-** MISC: 
-** LIT: 
-** PRIMARY_DB_SYNONYM: 
-** ENSEMBL: 
+** ARRAY:
+** ALT_TRANS:
+** MISC:
+** LIT:
+** PRIMARY_DB_SYNONYM:
+** ENSEMBL:
 **
 ******************************************************************************/
 
@@ -215,40 +215,40 @@ EnsPExternaldatabase ensExternaldatabaseNew(EnsPExternaldatabaseadaptor edba,
                                             ajint priority)
 {
     EnsPExternaldatabase edb = NULL;
-    
+
     if(!name)
-	return NULL;
-    
+        return NULL;
+
     AJNEW0(edb);
-    
+
     edb->Use        = 1;
     edb->Identifier = identifier;
     edb->Adaptor    = edba;
-    
+
     if(name)
-	edb->Name = ajStrNewRef(name);
-    
+        edb->Name = ajStrNewRef(name);
+
     if(release)
-	edb->Release = ajStrNewRef(release);
-    
+        edb->Release = ajStrNewRef(release);
+
     if(displayname)
-	edb->DisplayName = ajStrNewRef(displayname);
-    
+        edb->DisplayName = ajStrNewRef(displayname);
+
     if(secondaryname)
-	edb->SecondaryName = ajStrNewRef(secondaryname);
-    
+        edb->SecondaryName = ajStrNewRef(secondaryname);
+
     if(secondarytable)
-	edb->SecondaryTable = ajStrNewRef(secondarytable);
-    
+        edb->SecondaryTable = ajStrNewRef(secondarytable);
+
     if(description)
-	edb->Description = ajStrNewRef(description);
-    
+        edb->Description = ajStrNewRef(description);
+
     edb->PrimaryIdIsLinkable = primarylinkable;
     edb->DisplayIdIsLinkable = displaylinkable;
     edb->Status              = status;
     edb->Type                = type;
     edb->Priority            = priority;
-    
+
     return edb;
 }
 
@@ -269,42 +269,42 @@ EnsPExternaldatabase ensExternaldatabaseNewObj(
     const EnsPExternaldatabase object)
 {
     EnsPExternaldatabase edb = NULL;
-    
+
     if(!object)
-	return NULL;
-    
+        return NULL;
+
     AJNEW0(edb);
-    
+
     edb->Use        = 1;
     edb->Identifier = object->Identifier;
     edb->Adaptor    = object->Adaptor;
-    
+
     if(object->Name)
-	edb->Name = ajStrNewRef(object->Name);
-    
+        edb->Name = ajStrNewRef(object->Name);
+
     if(object->Release)
-	edb->Release = ajStrNewRef(object->Release);
-    
+        edb->Release = ajStrNewRef(object->Release);
+
     if(object->DisplayName)
-	edb->DisplayName = ajStrNewRef(object->DisplayName);
-    
+        edb->DisplayName = ajStrNewRef(object->DisplayName);
+
     if(object->SecondaryName)
-	edb->SecondaryName = ajStrNewRef(object->SecondaryName);
-    
+        edb->SecondaryName = ajStrNewRef(object->SecondaryName);
+
     if(object->SecondaryTable)
-	edb->SecondaryTable = ajStrNewRef(object->SecondaryTable);
-    
+        edb->SecondaryTable = ajStrNewRef(object->SecondaryTable);
+
     if(object->Description)
-	edb->Description = ajStrNewRef(object->Description);
-    
+        edb->Description = ajStrNewRef(object->Description);
+
     edb->PrimaryIdIsLinkable = object->PrimaryIdIsLinkable;
     edb->DisplayIdIsLinkable = object->DisplayIdIsLinkable;
-    
+
     edb->Status = object->Status;
     edb->Type   = object->Type;
-    
+
     edb->Priority = object->Priority;
-    
+
     return edb;
 }
 
@@ -325,10 +325,10 @@ EnsPExternaldatabase ensExternaldatabaseNewObj(
 EnsPExternaldatabase ensExternaldatabaseNewRef(EnsPExternaldatabase edb)
 {
     if(!edb)
-	return NULL;
-    
+        return NULL;
+
     edb->Use++;
-    
+
     return edb;
 }
 
@@ -368,35 +368,35 @@ EnsPExternaldatabase ensExternaldatabaseNewRef(EnsPExternaldatabase edb)
 void ensExternaldatabaseDel(EnsPExternaldatabase *Pedb)
 {
     EnsPExternaldatabase pthis = NULL;
-    
+
     if(!Pedb)
-	return;
-    
+        return;
+
     if(!*Pedb)
-	return;
+        return;
 
     pthis = *Pedb;
-    
+
     pthis->Use--;
-    
+
     if(pthis->Use)
     {
-	*Pedb = NULL;
-	
-	return;
+        *Pedb = NULL;
+
+        return;
     }
-    
+
     ajStrDel(&pthis->Name);
     ajStrDel(&pthis->Release);
     ajStrDel(&pthis->DisplayName);
     ajStrDel(&pthis->SecondaryName);
     ajStrDel(&pthis->SecondaryTable);
     ajStrDel(&pthis->Description);
-    
+
     AJFREE(pthis);
 
     *Pedb = NULL;
-    
+
     return;
 }
 
@@ -463,7 +463,7 @@ const EnsPExternaldatabaseadaptor ensExternaldatabaseGetAdaptor(
 {
     if(!edb)
         return NULL;
-    
+
     return edb->Adaptor;
 }
 
@@ -485,7 +485,7 @@ ajuint ensExternaldatabaseGetIdentifier(const EnsPExternaldatabase edb)
 {
     if(!edb)
         return 0;
-    
+
     return edb->Identifier;
 }
 
@@ -506,7 +506,7 @@ AjPStr ensExternaldatabaseGetName(const EnsPExternaldatabase edb)
 {
     if(!edb)
         return NULL;
-    
+
     return edb->Name;
 }
 
@@ -527,7 +527,7 @@ AjPStr ensExternaldatabaseGetRelease(const EnsPExternaldatabase edb)
 {
     if(!edb)
         return NULL;
-    
+
     return edb->Release;
 }
 
@@ -548,7 +548,7 @@ AjPStr ensExternaldatabaseGetSecondaryName(const EnsPExternaldatabase edb)
 {
     if(!edb)
         return NULL;
-    
+
     return edb->SecondaryName;
 }
 
@@ -569,7 +569,7 @@ AjPStr ensExternaldatabaseGetSecondaryTable(const EnsPExternaldatabase edb)
 {
     if(!edb)
         return NULL;
-    
+
     return edb->SecondaryTable;
 }
 
@@ -590,7 +590,7 @@ AjPStr ensExternaldatabaseGetDescription(const EnsPExternaldatabase edb)
 {
     if(!edb)
         return NULL;
-    
+
     return edb->Description;
 }
 
@@ -611,7 +611,7 @@ AjBool ensExternaldatabaseGetPrimaryIdIsLinkable(const EnsPExternaldatabase edb)
 {
     if(!edb)
         return ajFalse;
-    
+
     return edb->PrimaryIdIsLinkable;
 }
 
@@ -632,7 +632,7 @@ AjBool ensExternaldatabaseGetDisplayIdIsLinkable(const EnsPExternaldatabase edb)
 {
     if(!edb)
         return ajFalse;
-    
+
     return edb->DisplayIdIsLinkable;
 }
 
@@ -653,7 +653,7 @@ AjEnum ensExternaldatabaseGetStatus(const EnsPExternaldatabase edb)
 {
     if(!edb)
         return ensEExternaldatabaseStatusNULL;
-    
+
     return edb->Status;
 }
 
@@ -674,7 +674,7 @@ AjEnum ensExternaldatabaseGetType(const EnsPExternaldatabase edb)
 {
     if(!edb)
         return ensEExternaldatabaseTypeNULL;
-    
+
     return edb->Type;
 }
 
@@ -695,7 +695,7 @@ ajint ensExternaldatabaseGetPriority(const EnsPExternaldatabase edb)
 {
     if(!edb)
         return 0;
-    
+
     return edb->Priority;
 }
 
@@ -751,9 +751,9 @@ AjBool ensExternaldatabaseSetAdaptor(EnsPExternaldatabase edb,
 {
     if(!edb)
         return ajFalse;
-    
+
     edb->Adaptor = edba;
-    
+
     return ajTrue;
 }
 
@@ -777,9 +777,9 @@ AjBool ensExternaldatabaseSetIdentifier(EnsPExternaldatabase edb,
 {
     if(!edb)
         return ajFalse;
-    
+
     edb->Identifier = identifier;
-    
+
     return ajTrue;
 }
 
@@ -801,11 +801,11 @@ AjBool ensExternaldatabaseSetName(EnsPExternaldatabase edb, AjPStr name)
 {
     if(!edb)
         return ajFalse;
-    
+
     ajStrDel(&edb->Name);
-    
+
     edb->Name = ajStrNewRef(name);
-    
+
     return ajTrue;
 }
 
@@ -827,11 +827,11 @@ AjBool ensExternaldatabaseSetRelease(EnsPExternaldatabase edb, AjPStr release)
 {
     if(!edb)
         return ajFalse;
-    
+
     ajStrDel(&edb->Release);
-    
+
     edb->Release = ajStrNewRef(release);
-    
+
     return ajTrue;
 }
 
@@ -854,11 +854,11 @@ AjBool ensExternaldatabaseSetSecondaryName(EnsPExternaldatabase edb,
 {
     if(!edb)
         return ajFalse;
-    
+
     ajStrDel(&edb->SecondaryName);
-    
+
     edb->SecondaryName = ajStrNewRef(secondaryname);
-    
+
     return ajTrue;
 }
 
@@ -881,11 +881,11 @@ AjBool ensExternaldatabaseSetSecondaryTable(EnsPExternaldatabase edb,
 {
     if(!edb)
         return ajFalse;
-    
+
     ajStrDel(&edb->SecondaryTable);
-    
+
     edb->SecondaryTable = ajStrNewRef(secondarytable);
-    
+
     return ajTrue;
 }
 
@@ -908,11 +908,11 @@ AjBool ensExternaldatabaseSetDescription(EnsPExternaldatabase edb,
 {
     if(!edb)
         return ajFalse;
-    
+
     ajStrDel(&edb->Description);
-    
+
     edb->Description = ajStrNewRef(description);
-    
+
     return ajTrue;
 }
 
@@ -936,9 +936,9 @@ AjBool ensExternaldatabaseSetPrimaryIdIsLinkable(EnsPExternaldatabase edb,
 {
     if(!edb)
         return ajFalse;
-    
+
     edb->PrimaryIdIsLinkable = primarylinkable;
-    
+
     return ajTrue;
 }
 
@@ -962,9 +962,9 @@ AjBool ensExternaldatabaseSetDisplayIdIsLinkable(EnsPExternaldatabase edb,
 {
     if(!edb)
         return ajFalse;
-    
+
     edb->DisplayIdIsLinkable = displaylinkable;
-    
+
     return ajTrue;
 }
 
@@ -986,9 +986,9 @@ AjBool ensExternaldatabaseSetStatus(EnsPExternaldatabase edb, AjEnum status)
 {
     if(!edb)
         return ajFalse;
-    
+
     edb->Status = status;
-    
+
     return ajTrue;
 }
 
@@ -1010,9 +1010,9 @@ AjBool ensExternaldatabaseSetType(EnsPExternaldatabase edb, AjEnum type)
 {
     if(!edb)
         return ajFalse;
-    
+
     edb->Type = type;
-    
+
     return ajTrue;
 }
 
@@ -1034,9 +1034,9 @@ AjBool ensExternaldatabaseSetPriority(EnsPExternaldatabase edb, ajint priority)
 {
     if(!edb)
         return ajFalse;
-    
+
     edb->Priority = priority;
-    
+
     return ajTrue;
 }
 
@@ -1075,45 +1075,45 @@ AjBool ensExternaldatabaseSetPriority(EnsPExternaldatabase edb, ajint priority)
 AjBool ensExternaldatabaseTrace(const EnsPExternaldatabase edb, ajuint level)
 {
     AjPStr indent = NULL;
-    
+
     if(!edb)
-	return ajFalse;
-    
+        return ajFalse;
+
     indent = ajStrNew();
-    
+
     ajStrAppendCountK(&indent, ' ', level * 2);
-    
+
     ajDebug("%SensExternaldatabaseTrace %p\n"
-	    "%S  Use %u\n"
-	    "%S  Identifier %u\n"
-	    "%S  Adaptor %p\n"
-	    "%S  Name '%S'\n"
-	    "%S  Release '%S'\n"
-	    "%S  DisplayName '%S'\n"
-	    "%S  SecondaryName '%S'\n"
-	    "%S  SecondaryTable '%S'\n"
-	    "%S  Description '%S'\n"
-	    "%S  PrimaryIdIsLinkable '%B'\n"
-	    "%S  DisplayIdIsLinkable '%B'\n"
-	    "%S  Status %d\n"
-	    "%S  Priority %d\n",
-	    indent, edb,
-	    indent, edb->Use,
-	    indent, edb->Identifier,
-	    indent, edb->Adaptor,
-	    indent, edb->Name,
-	    indent, edb->Release,
-	    indent, edb->DisplayName,
-	    indent, edb->SecondaryName,
-	    indent, edb->SecondaryTable,
-	    indent, edb->Description,
-	    indent, edb->PrimaryIdIsLinkable,
-	    indent, edb->DisplayIdIsLinkable,
-	    indent, edb->Status,
-	    indent, edb->Priority);
-    
+            "%S  Use %u\n"
+            "%S  Identifier %u\n"
+            "%S  Adaptor %p\n"
+            "%S  Name '%S'\n"
+            "%S  Release '%S'\n"
+            "%S  DisplayName '%S'\n"
+            "%S  SecondaryName '%S'\n"
+            "%S  SecondaryTable '%S'\n"
+            "%S  Description '%S'\n"
+            "%S  PrimaryIdIsLinkable '%B'\n"
+            "%S  DisplayIdIsLinkable '%B'\n"
+            "%S  Status %d\n"
+            "%S  Priority %d\n",
+            indent, edb,
+            indent, edb->Use,
+            indent, edb->Identifier,
+            indent, edb->Adaptor,
+            indent, edb->Name,
+            indent, edb->Release,
+            indent, edb->DisplayName,
+            indent, edb->SecondaryName,
+            indent, edb->SecondaryTable,
+            indent, edb->Description,
+            indent, edb->PrimaryIdIsLinkable,
+            indent, edb->DisplayIdIsLinkable,
+            indent, edb->Status,
+            indent, edb->Priority);
+
     ajStrDel(&indent);
-    
+
     return ajTrue;
 }
 
@@ -1157,17 +1157,17 @@ AjBool ensExternaldatabaseTrace(const EnsPExternaldatabase edb, ajuint level)
 AjEnum ensExternaldatabaseStatusFromStr(const AjPStr status)
 {
     register ajint i = 0;
-    
+
     AjEnum estatus = ensEExternaldatabaseStatusNULL;
-    
+
     for(i = 1; externalDatabaseStatus[i]; i++)
-	if(ajStrMatchC(status, externalDatabaseStatus[i]))
-	    estatus = i;
-    
+        if(ajStrMatchC(status, externalDatabaseStatus[i]))
+            estatus = i;
+
     if(!estatus)
-	ajDebug("ensExternaldatabaseStatusFromStr encountered "
-		"unexpected string '%S'.\n", status);
-    
+        ajDebug("ensExternaldatabaseStatusFromStr encountered "
+                "unexpected string '%S'.\n", status);
+
     return estatus;
 }
 
@@ -1188,17 +1188,17 @@ AjEnum ensExternaldatabaseStatusFromStr(const AjPStr status)
 AjEnum ensExternaldatabaseTypeFromStr(const AjPStr type)
 {
     register ajint i = 0;
-    
+
     AjEnum etype = ensEExternaldatabaseTypeNULL;
-    
+
     for(i = 1; externalDatabaseType[i]; i++)
-	if(ajStrMatchC(type, externalDatabaseType[i]))
-	    etype = i;
-    
+        if(ajStrMatchC(type, externalDatabaseType[i]))
+            etype = i;
+
     if(!etype)
-	ajDebug("ensExternaldatabaseTypeFromStr encountered "
-		"unexpected string '%S'.\n", type);
-    
+        ajDebug("ensExternaldatabaseTypeFromStr encountered "
+                "unexpected string '%S'.\n", type);
+
     return etype;
 }
 
@@ -1240,16 +1240,16 @@ AjEnum ensExternaldatabaseTypeFromStr(const AjPStr type)
 const char* ensExternaldatabaseStatusToChar(const AjEnum status)
 {
     register ajint i = 0;
-    
+
     if(!status)
-	return NULL;
-    
+        return NULL;
+
     for(i = 1; externalDatabaseStatus[i] && (i < status); i++);
-    
+
     if(!externalDatabaseStatus[i])
-	ajDebug("ensExternaldatabaseStatusToChar encountered an "
-		"out of boundary error on status %d.\n", status);
-    
+        ajDebug("ensExternaldatabaseStatusToChar encountered an "
+                "out of boundary error on status %d.\n", status);
+
     return externalDatabaseStatus[i];
 }
 
@@ -1270,16 +1270,16 @@ const char* ensExternaldatabaseStatusToChar(const AjEnum status)
 const char* ensExternaldatabaseTypeToChar(const AjEnum type)
 {
     register ajint i = 0;
-    
+
     if(!type)
-	return NULL;
-    
+        return NULL;
+
     for(i = 1; externalDatabaseType[i] && (i < type); i++);
-    
+
     if(!externalDatabaseType[i])
-	ajDebug("ensExternaldatabaseTypeToChar encountered an "
-		"out of boundary error on type %d.\n", type);
-    
+        ajDebug("ensExternaldatabaseTypeToChar encountered an "
+                "out of boundary error on type %d.\n", type);
+
     return externalDatabaseType[i];
 }
 
@@ -1299,54 +1299,54 @@ const char* ensExternaldatabaseTypeToChar(const AjEnum type)
 ajuint ensExternaldatabaseGetMemSize(const EnsPExternaldatabase edb)
 {
     ajuint size = 0;
-    
+
     if(!edb)
-	return 0;
-    
+        return 0;
+
     size += (ajuint) sizeof (EnsOExternaldatabase);
-    
+
     if(edb->Name)
     {
-	size += (ajuint) sizeof (AjOStr);
-	
-	size += ajStrGetRes(edb->Name);
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(edb->Name);
     }
-    
+
     if(edb->Release)
     {
-	size += (ajuint) sizeof (AjOStr);
-	
-	size += ajStrGetRes(edb->Release);
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(edb->Release);
     }
-    
+
     if(edb->DisplayName)
     {
-	size += (ajuint) sizeof (AjOStr);
-	
-	size += ajStrGetRes(edb->DisplayName);
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(edb->DisplayName);
     }
-    
+
     if(edb->SecondaryName)
     {
-	size += (ajuint) sizeof (AjOStr);
-	
-	size += ajStrGetRes(edb->SecondaryName);
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(edb->SecondaryName);
     }
-    
+
     if(edb->SecondaryTable)
     {
-	size += (ajuint) sizeof (AjOStr);
-	
-	size += ajStrGetRes(edb->SecondaryTable);
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(edb->SecondaryTable);
     }
-    
+
     if(edb->Description)
     {
-	size += (ajuint) sizeof (AjOStr);
-	
-	size += ajStrGetRes(edb->Description);
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(edb->Description);
     }
-    
+
     return size;
 }
 
@@ -1407,17 +1407,17 @@ static AjBool externalDatabaseadaptorFetchAllBySQL(
 {
     ajint priority    = 0;
     ajuint identifier = 0;
-    
+
     AjBool primarylinkable = AJFALSE;
     AjBool displaylinkable = AJFALSE;
-    
+
     AjEnum estatus = ensEExternaldatabaseStatusNULL;
     AjEnum etype   = ensEExternaldatabaseTypeNULL;
-    
+
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;
     AjPSqlrow sqlr       = NULL;
-    
+
     AjPStr name           = NULL;
     AjPStr release        = NULL;
     AjPStr displayname    = NULL;
@@ -1426,98 +1426,98 @@ static AjBool externalDatabaseadaptorFetchAllBySQL(
     AjPStr description    = NULL;
     AjPStr status         = NULL;
     AjPStr type           = NULL;
-    
+
     EnsPExternaldatabase edb = NULL;
-    
+
     if(!edba)
         return ajFalse;
-    
+
     if(!statement)
         return ajFalse;
-    
+
     if(!edbs)
         return ajFalse;
-    
+
     sqls = ensDatabaseadaptorSqlstatementNew(edba->Adaptor, statement);
-    
+
     sqli = ajSqlrowiterNew(sqls);
-    
+
     while(!ajSqlrowiterDone(sqli))
     {
-	identifier      = 0;
-	name            = ajStrNew();
-	release         = ajStrNew();
-	displayname     = ajStrNew();
-	secondaryname   = ajStrNew();
-	secondarytable  = ajStrNew();
-	description     = ajStrNew();
-	primarylinkable = ajFalse;
-	displaylinkable = ajFalse;
-	priority        = 0;
-	status          = ajStrNew();
-	type            = ajStrNew();
-	estatus         = ensEExternaldatabaseStatusNULL;
-	etype           = ensEExternaldatabaseTypeNULL;
-	
+        identifier      = 0;
+        name            = ajStrNew();
+        release         = ajStrNew();
+        displayname     = ajStrNew();
+        secondaryname   = ajStrNew();
+        secondarytable  = ajStrNew();
+        description     = ajStrNew();
+        primarylinkable = ajFalse;
+        displaylinkable = ajFalse;
+        priority        = 0;
+        status          = ajStrNew();
+        type            = ajStrNew();
+        estatus         = ensEExternaldatabaseStatusNULL;
+        etype           = ensEExternaldatabaseTypeNULL;
+
         sqlr = ajSqlrowiterGet(sqli);
-	
-	ajSqlcolumnToUint(sqlr, &identifier);
-	ajSqlcolumnToStr(sqlr, &name);
-	ajSqlcolumnToStr(sqlr, &release);
-	ajSqlcolumnToStr(sqlr, &displayname);
-	ajSqlcolumnToStr(sqlr, &secondaryname);
-	ajSqlcolumnToStr(sqlr, &secondarytable);
-	ajSqlcolumnToStr(sqlr, &description);
-	ajSqlcolumnToBool(sqlr, &primarylinkable);
-	ajSqlcolumnToBool(sqlr, &displaylinkable);
-	ajSqlcolumnToInt(sqlr, &priority);
-	ajSqlcolumnToStr(sqlr, &status);
-	ajSqlcolumnToStr(sqlr, &type);
-	
-	estatus = ensExternaldatabaseStatusFromStr(status);
-	
-	if(!estatus)
-	    ajFatal("externalDatabaseadaptorFetchAllBySQL encountered "
-		    "unexpected string '%S' in the "
-		    "'external_db.status' field.\n", status);
-	
-	etype = ensExternaldatabaseTypeFromStr(type);
-	
-	if(!etype)
-	    ajFatal("externalDatabaseadaptorFetchAllBySQL encountered "
-		    "unexpected string '%S' in the "
-		    "'external_db.type' field.\n", type);
-	
+
+        ajSqlcolumnToUint(sqlr, &identifier);
+        ajSqlcolumnToStr(sqlr, &name);
+        ajSqlcolumnToStr(sqlr, &release);
+        ajSqlcolumnToStr(sqlr, &displayname);
+        ajSqlcolumnToStr(sqlr, &secondaryname);
+        ajSqlcolumnToStr(sqlr, &secondarytable);
+        ajSqlcolumnToStr(sqlr, &description);
+        ajSqlcolumnToBool(sqlr, &primarylinkable);
+        ajSqlcolumnToBool(sqlr, &displaylinkable);
+        ajSqlcolumnToInt(sqlr, &priority);
+        ajSqlcolumnToStr(sqlr, &status);
+        ajSqlcolumnToStr(sqlr, &type);
+
+        estatus = ensExternaldatabaseStatusFromStr(status);
+
+        if(!estatus)
+            ajFatal("externalDatabaseadaptorFetchAllBySQL encountered "
+                    "unexpected string '%S' in the "
+                    "'external_db.status' field.\n", status);
+
+        etype = ensExternaldatabaseTypeFromStr(type);
+
+        if(!etype)
+            ajFatal("externalDatabaseadaptorFetchAllBySQL encountered "
+                    "unexpected string '%S' in the "
+                    "'external_db.type' field.\n", type);
+
         edb = ensExternaldatabaseNew(edba,
-				     identifier,
-				     name,
-				     release,
-				     displayname,
-				     secondaryname,
-				     secondarytable,
-				     description,
-				     primarylinkable,
-				     displaylinkable,
-				     estatus,
-				     etype,
-				     priority);
-	
+                                     identifier,
+                                     name,
+                                     release,
+                                     displayname,
+                                     secondaryname,
+                                     secondarytable,
+                                     description,
+                                     primarylinkable,
+                                     displaylinkable,
+                                     estatus,
+                                     etype,
+                                     priority);
+
         ajListPushAppend(edbs, (void *) edb);
-	
-	ajStrDel(&name);
-	ajStrDel(&release);
-	ajStrDel(&displayname);
-	ajStrDel(&secondaryname);
-	ajStrDel(&secondarytable);
-	ajStrDel(&description);
-	ajStrDel(&status);
-	ajStrDel(&type);
+
+        ajStrDel(&name);
+        ajStrDel(&release);
+        ajStrDel(&displayname);
+        ajStrDel(&secondaryname);
+        ajStrDel(&secondarytable);
+        ajStrDel(&description);
+        ajStrDel(&status);
+        ajStrDel(&type);
     }
-    
+
     ajSqlrowiterDel(&sqli);
-    
+
     ajSqlstatementDel(&sqls);
-    
+
     return ajTrue;
 }
 
@@ -1545,82 +1545,83 @@ static AjBool externalDatabaseadaptorCacheInsert(
     EnsPExternaldatabase *Pedb)
 {
     ajuint *Pidentifier = NULL;
-    
+
     EnsPExternaldatabase edb1 = NULL;
     EnsPExternaldatabase edb2 = NULL;
-    
+
     if(!edba)
         return ajFalse;
-    
+
     if(!edba->CacheByIdentifier)
         return ajFalse;
-    
+
     if(!edba->CacheByName)
         return ajFalse;
-    
+
     if(!Pedb)
         return ajFalse;
-    
+
     if(!*Pedb)
         return ajFalse;
-    
+
     /* Search the identifer cache. */
-    
-    edb1 = (EnsPExternaldatabase)
-	ajTableFetch(edba->CacheByIdentifier,
-		     (const void *) &((*Pedb)->Identifier));
-    
+
+    edb1 = (EnsPExternaldatabase) ajTableFetch(
+        edba->CacheByIdentifier,
+        (const void *) &((*Pedb)->Identifier));
+
     /* Search the name cache. */
-    
-    edb2 = (EnsPExternaldatabase)
-	ajTableFetch(edba->CacheByName, (const void *) (*Pedb)->Name);
-    
+
+    edb2 = (EnsPExternaldatabase) ajTableFetch(
+        edba->CacheByName,
+        (const void *) (*Pedb)->Name);
+
     if((!edb1) && (!edb2))
     {
-	/* Insert into the identifier cache. */
-	
-	AJNEW0(Pidentifier);
-	
-	*Pidentifier = (*Pedb)->Identifier;
-	
-	ajTablePut(edba->CacheByIdentifier,
-		   (void *) Pidentifier,
-		   (void *) ensExternaldatabaseNewRef(*Pedb));
-	
-	/* Insert into the name cache. */
-	
+        /* Insert into the identifier cache. */
+
+        AJNEW0(Pidentifier);
+
+        *Pidentifier = (*Pedb)->Identifier;
+
+        ajTablePut(edba->CacheByIdentifier,
+                   (void *) Pidentifier,
+                   (void *) ensExternaldatabaseNewRef(*Pedb));
+
+        /* Insert into the name cache. */
+
         ajTablePut(edba->CacheByName,
-		   (void *) ajStrNewS((*Pedb)->Name),
-		   (void *) ensExternaldatabaseNewRef(*Pedb));
+                   (void *) ajStrNewS((*Pedb)->Name),
+                   (void *) ensExternaldatabaseNewRef(*Pedb));
     }
-    
+
     if(edb1 && edb2 && (edb1 == edb2))
     {
         ajDebug("externaDatabaseadaptorCacheInsert replaced External Database "
-		"%p with one already cached %p\n", *Pedb, edb1);
-	
-	ensExternaldatabaseDel(Pedb);
-	
-	Pedb = &edb1;
+                "%p with one already cached %p\n", *Pedb, edb1);
+
+        ensExternaldatabaseDel(Pedb);
+
+        Pedb = &edb1;
     }
-    
+
     if(edb1 && edb2 && (edb1 != edb2))
-	ajDebug("externalDatabaseadaptorCacheInsert detected External "
-		"Databases in the identifier and name cache with identical "
-		"names ('%S' and '%S') but differnt addresses "
-		"(%p and %p).\n",
-		edb1->Name, edb2->Name, edb1, edb2);
-    
+        ajDebug("externalDatabaseadaptorCacheInsert detected External "
+                "Databases in the identifier and name cache with identical "
+                "names ('%S' and '%S') but differnt addresses "
+                "(%p and %p).\n",
+                edb1->Name, edb2->Name, edb1, edb2);
+
     if(edb1 && (!edb2))
-	ajDebug("externalDatabaseadaptorCacheInsert detected an "
-		"Ensembl External Database "
-		"in the identifier, but not in the name cache.\n");
-    
+        ajDebug("externalDatabaseadaptorCacheInsert detected an "
+                "Ensembl External Database "
+                "in the identifier, but not in the name cache.\n");
+
     if((!edb1) && edb2)
-	ajDebug("externalDatabaseadaptorCacheInsert detected and "
-		"Ensembl External Database "
-		"in the name, but not in the identifier cache.\n");
-    
+        ajDebug("externalDatabaseadaptorCacheInsert detected and "
+                "Ensembl External Database "
+                "in the name, but not in the identifier cache.\n");
+
     return ajTrue;
 }
 
@@ -1647,53 +1648,53 @@ static AjBool externalDatabaseadaptorCacheRemove(
     EnsPExternaldatabase edb)
 {
     ajuint *Pidentifier = NULL;
-    
+
     AjPStr key = NULL;
-    
+
     EnsPExternaldatabase edb1 = NULL;
     EnsPExternaldatabase edb2 = NULL;
-    
+
     if(!edba)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!edb)
-	return ajFalse;
-    
+        return ajFalse;
+
     /* Remove the table nodes. */
-    
-    edb1 = (EnsPExternaldatabase)
-	ajTableRemoveKey(edba->CacheByIdentifier,
-			 (const void *) &(edb->Identifier),
-			 (void **) &Pidentifier);
-    
-    edb2 = (EnsPExternaldatabase)
-	ajTableRemoveKey(edba->CacheByName,
-			 (const void *) edb->Name,
-			 (void **) &key);
-    
+
+    edb1 = (EnsPExternaldatabase) ajTableRemoveKey(
+        edba->CacheByIdentifier,
+        (const void *) &edb->Identifier,
+        (void **) &Pidentifier);
+
+    edb2 = (EnsPExternaldatabase) ajTableRemoveKey(
+        edba->CacheByName,
+        (const void *) edb->Name,
+        (void **) &key);
+
     if(edb1 && (!edb2))
-	ajWarn("externalDatabaseadaptorCacheRemove could remove "
-	       "External Database with identifier %u '%S' "
-	       "only from the identifier cache.\n",
-	       edb->Identifier, edb->Name);
-    
+        ajWarn("externalDatabaseadaptorCacheRemove could remove "
+               "External Database with identifier %u '%S' "
+               "only from the identifier cache.\n",
+               edb->Identifier, edb->Name);
+
     if((!edb1) && edb2)
-	ajWarn("externalDatabaseadaptorCacheRemove could remove "
-	       "External Database with identifier %u '%S' "
-	       "only from the name cache.\n",
-	       edb->Identifier, edb->Name);
-    
+        ajWarn("externalDatabaseadaptorCacheRemove could remove "
+               "External Database with identifier %u '%S' "
+               "only from the name cache.\n",
+               edb->Identifier, edb->Name);
+
     /* Delete the keys. */
-    
+
     AJFREE(Pidentifier);
-    
+
     ajStrDel(&key);
-    
+
     /* Delete (or at least de-reference) the Ensembl External Databases. */
-    
+
     ensExternaldatabaseDel(&edb1);
     ensExternaldatabaseDel(&edb2);
-    
+
     return ajTrue;
 }
 
@@ -1718,59 +1719,59 @@ static AjBool externalDatabaseadaptorCacheInit(EnsPExternaldatabaseadaptor edba)
 {
     AjPList edbs = NULL;
     AjPStr statement = NULL;
-    
+
     EnsPExternaldatabase edb = NULL;
-    
+
     if(!edba)
         return ajFalse;
-    
+
     if(edba->CacheByIdentifier)
         return ajFalse;
     else
         edba->CacheByIdentifier =
-	    ajTableNewFunctionLen(0, ensTableCmpUint, ensTableHashUint);
-    
+            ajTableNewFunctionLen(0, ensTableCmpUint, ensTableHashUint);
+
     if(edba->CacheByName)
         return ajFalse;
     else
         edba->CacheByName = ajTablestrNewLen(0);
-    
+
     statement = ajStrNewC("SELECT "
-			  "external_db.external_db_id, "
-			  "external_db.db_name, "
-			  "external_db.db_release, "
-			  "external_db.db_display_name, "
-			  "external_db.secondary_db_name, "
-			  "external_db.secondary_db_table, "
-			  "external_db.description, "
-			  "external_db.dbprimary_acc_linkable, "
-			  "external_db.display_label_linkable, "
-			  "external_db.priority, "
-			  "external_db.status, "
-			  "external_db.type "
-			  "FROM "
-			  "external_db");
-    
+                          "external_db.external_db_id, "
+                          "external_db.db_name, "
+                          "external_db.db_release, "
+                          "external_db.db_display_name, "
+                          "external_db.secondary_db_name, "
+                          "external_db.secondary_db_table, "
+                          "external_db.description, "
+                          "external_db.dbprimary_acc_linkable, "
+                          "external_db.display_label_linkable, "
+                          "external_db.priority, "
+                          "external_db.status, "
+                          "external_db.type "
+                          "FROM "
+                          "external_db");
+
     edbs = ajListNew();
-    
+
     externalDatabaseadaptorFetchAllBySQL(edba, statement, edbs);
-    
+
     while(ajListPop(edbs, (void **) &edb))
     {
         externalDatabaseadaptorCacheInsert(edba, &edb);
-	
-	/*
-	 ** Both caches hold internal references to the
-	 ** External Database objects.
-	 */
-	
-	ensExternaldatabaseDel(&edb);
+
+        /*
+        ** Both caches hold internal references to the
+        ** External Database objects.
+        */
+
+        ensExternaldatabaseDel(&edb);
     }
-    
+
     ajListFree(&edbs);
-    
+
     ajStrDel(&statement);
-    
+
     return ajTrue;
 }
 
@@ -1792,16 +1793,16 @@ EnsPExternaldatabaseadaptor ensExternaldatabaseadaptorNew(
     EnsPDatabaseadaptor dba)
 {
     EnsPExternaldatabaseadaptor edba = NULL;
-    
+
     if(!dba)
         return NULL;
-    
+
     AJNEW0(edba);
-    
+
     edba->Adaptor = dba;
-    
+
     externalDatabaseadaptorCacheInit(edba);
-    
+
     return edba;
 }
 
@@ -1849,23 +1850,23 @@ static void externalDatabaseadaptorCacheClearIdentifier(void **key,
                                                         void *cl)
 {
     if(!key)
-	return;
-    
+        return;
+
     if(!*key)
-	return;
-    
+        return;
+
     if(!value)
-	return;
-    
+        return;
+
     if(!*value)
-	return;
-    
+        return;
+
     (void) cl;
-    
+
     AJFREE(*key);
-    
+
     ensExternaldatabaseDel((EnsPExternaldatabase *) value);
-    
+
     return;
 }
 
@@ -1892,23 +1893,23 @@ static void externalDatabaseadaptorCacheClearName(void **key,
                                                   void *cl)
 {
     if(!key)
-	return;
-    
+        return;
+
     if(!*key)
-	return;
-    
+        return;
+
     if(!value)
-	return;
-    
+        return;
+
     if(!*value)
-	return;
-    
+        return;
+
     (void) cl;
-    
+
     ajStrDel((AjPStr *) key);
-    
+
     ensExternaldatabaseDel((EnsPExternaldatabase *) value);
-    
+
     return;
 }
 
@@ -1932,23 +1933,23 @@ static AjBool externalDatabaseadaptorCacheExit(
 {
     if(!edba)
         return ajFalse;
-    
+
     /* Clear and delete the identifier cache. */
-    
+
     ajTableMapDel(edba->CacheByIdentifier,
-		  externalDatabaseadaptorCacheClearIdentifier,
-		  NULL);
-    
-    ajTableFree(&(edba->CacheByIdentifier));
-    
+                  externalDatabaseadaptorCacheClearIdentifier,
+                  NULL);
+
+    ajTableFree(&edba->CacheByIdentifier);
+
     /* Clear and delete the name cache. */
-    
+
     ajTableMapDel(edba->CacheByName,
-		  externalDatabaseadaptorCacheClearName,
-		  NULL);
-    
-    ajTableFree(&(edba->CacheByName));
-    
+                  externalDatabaseadaptorCacheClearName,
+                  NULL);
+
+    ajTableFree(&edba->CacheByName);
+
     return ajTrue;
 }
 
@@ -1970,21 +1971,21 @@ static AjBool externalDatabaseadaptorCacheExit(
 void ensExternaldatabaseadaptorDel(EnsPExternaldatabaseadaptor *Pedba)
 {
     EnsPExternaldatabaseadaptor pthis = NULL;
-    
+
     if(!Pedba)
         return;
-    
+
     if(!*Pedba)
         return;
 
     pthis = *Pedba;
-    
+
     externalDatabaseadaptorCacheExit(pthis);
-    
+
     AJFREE(pthis);
 
     *Pedba = NULL;
-    
+
     return;
 }
 
@@ -2037,80 +2038,80 @@ AjBool ensExternaldatabaseadaptorFetchByIdentifier(
     EnsPExternaldatabase *Pedb)
 {
     AjPList edbs = NULL;
-    
+
     AjPStr statement = NULL;
-    
+
     EnsPExternaldatabase edb = NULL;
-    
+
     if(!edba)
         return ajFalse;
-    
+
     if(!identifier)
         return ajFalse;
-    
+
     if(!Pedb)
-	return ajFalse;
-    
+        return ajFalse;
+
     /*
     ** Initally, search the identifier cache.
     ** For any object returned by the AJAX Table the reference counter needs
     ** to be incremented manually.
     */
-    
+
     *Pedb = (EnsPExternaldatabase)
-	ajTableFetch(edba->CacheByIdentifier, (const void *) &identifier);
-    
+        ajTableFetch(edba->CacheByIdentifier, (const void *) &identifier);
+
     if(*Pedb)
     {
-	ensExternaldatabaseNewRef(*Pedb);
-	
-	return ajTrue;
+        ensExternaldatabaseNewRef(*Pedb);
+
+        return ajTrue;
     }
-    
+
     /* In case of a cache miss, re-query the database. */
-    
+
     statement = ajFmtStr("SELECT "
-			 "external_db.external_db_id, "
-			 "external_db.db_name, "
-			 "external_db.db_release, "
-			 "external_db.db_display_name, "
-			 "external_db.secondary_db_name, "
-			 "external_db.secondary_db_table, "
-			 "external_db.description, "
-			 "external_db.dbprimary_acc_linkable, "
-			 "external_db.display_label_linkable, "
-			 "external_db.priority, "
-			 "external_db.status, "
-			 "external_db.type "
-			 "FROM "
-			 "external_db "
-			 "WHERE "
-			 "external_db.external_db_id = %u",
-			 identifier);
-    
+                         "external_db.external_db_id, "
+                         "external_db.db_name, "
+                         "external_db.db_release, "
+                         "external_db.db_display_name, "
+                         "external_db.secondary_db_name, "
+                         "external_db.secondary_db_table, "
+                         "external_db.description, "
+                         "external_db.dbprimary_acc_linkable, "
+                         "external_db.display_label_linkable, "
+                         "external_db.priority, "
+                         "external_db.status, "
+                         "external_db.type "
+                         "FROM "
+                         "external_db "
+                         "WHERE "
+                         "external_db.external_db_id = %u",
+                         identifier);
+
     edbs = ajListNew();
-    
+
     externalDatabaseadaptorFetchAllBySQL(edba, statement, edbs);
-    
+
     if(ajListGetLength(edbs) > 1)
-	ajWarn("ensExternaldatabaseadaptorFetchByIdentifier got more "
-	       "than one Ensembl External Database for (PRIMARY KEY) "
-	       "identifier %u.\n", identifier);
-    
+        ajWarn("ensExternaldatabaseadaptorFetchByIdentifier got more "
+               "than one Ensembl External Database for (PRIMARY KEY) "
+               "identifier %u.\n", identifier);
+
     ajListPop(edbs, (void **) Pedb);
-    
+
     externalDatabaseadaptorCacheInsert(edba, Pedb);
-    
+
     while(ajListPop(edbs, (void **) &edb))
     {
-	externalDatabaseadaptorCacheInsert(edba, &edb);
-	
-	ensExternaldatabaseDel(&edb);
+        externalDatabaseadaptorCacheInsert(edba, &edb);
+
+        ensExternaldatabaseDel(&edb);
     }
-    
+
     ajListFree(&edbs);
-    
+
     ajStrDel(&statement);
-    
+
     return ajTrue;
 }
