@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1861,7 +1861,7 @@ AjBool ensRepeatfeatureSetFeature(EnsPRepeatfeature rf, EnsPFeature feature)
     if(!rf)
         return ajFalse;
 
-    ensFeatureDel(&(rf->Feature));
+    ensFeatureDel(&rf->Feature);
 
     rf->Feature = ensFeatureNewRef(feature);
 
@@ -1889,7 +1889,7 @@ AjBool ensRepeatfeatureSetRepeatconsensus(EnsPRepeatfeature rf,
     if(!rf)
         return ajFalse;
 
-    ensRepeatconsensusDel(&(rf->Repeatconsensus));
+    ensRepeatconsensusDel(&rf->Repeatconsensus);
 
     rf->Repeatconsensus = ensRepeatconsensusNewRef(rc);
 
@@ -2764,11 +2764,11 @@ void ensRepeatfeatureadaptorDel(EnsPRepeatfeatureadaptor *Prfa)
 ** @cc Bio::EnsEMBL::DBSQL::RepeatFeatureAdaptor::fetch_all_by_Slice
 ** @param [r] rfa [const EnsPRepeatfeatureadaptor] Ensembl Repeat
 **                                                 Feature Adaptor
-** @param [r] slice [EnsPSlice] Ensembl Slice
+** @param [u] slice [EnsPSlice] Ensembl Slice
 ** @param [r] anname [const AjPStr] Ensembl Analysis name
-** @param [r] rctype [const AjPStr] Ensembl Repeat Consensus type
-** @param [r] rcclass [const AjPStr] Ensembl Repeat Consensus class
-** @param [r] rcname [const AjPStr] Ensembl Repeat Consensus name
+** @param [rN] rctype [const AjPStr] Ensembl Repeat Consensus type
+** @param [rN] rcclass [const AjPStr] Ensembl Repeat Consensus class
+** @param [rN] rcname [const AjPStr] Ensembl Repeat Consensus name
 ** @param [u] rfs [AjPList] AJAX List of Ensembl Repeat Features
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -2858,9 +2858,6 @@ AjBool ensRepeatfeatureadaptorFetchAllBySlice(
 
         ajCharDel(&txtrcname);
     }
-
-    if(!constraint)
-        constraint = ajStrNew();
 
     ensFeatureadaptorFetchAllBySliceConstraint(rfa->Adaptor,
                                                slice,
