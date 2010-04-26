@@ -3476,6 +3476,7 @@ char *ajSysGetHomedirFromName(const char *username)
     char hdbuff[MAX_PATH];
 
     LONG ret;
+    HKEY hkey = NULL;
 
     if(!LookupAccountName(localsvr, username, psid, &sidsize, domainname,
 			  &dnsize, &sidtype))
@@ -3535,10 +3536,21 @@ char *ajSysGetHomedirFromName(const char *username)
 
     LocalFree(strsid);
 
-    ret = RegGetValue(HKEY_LOCAL_MACHINE,ajStrGetPtr(subkey),"ProfileImagePath",
-                      RRF_RT_ANY,NULL,(PVOID)hdbuff,&hdbuffsize);
+    ret = RegOpenKeyEx(HKEY_LOCAL_MACHINE,ajStrGetPtr(subkey),(DWORD) 0,
+		       KEY_QUERY_VALUE,&hkey);
 
     ajStrDel(&subkey);
+
+    if(ret != ERROR_SUCCESS)
+        return NULL;
+
+    ret = RegQueryValueEx(hkey,"ProfileImagePath",NULL,NULL,(LPBYTE)hdbuff,
+			  &hdbuffsize);
+
+    if(ret != ERROR_SUCCESS)
+        return NULL;
+
+    ret = RegCloseKey(hkey);
 
     if(ret != ERROR_SUCCESS)
         return NULL;
