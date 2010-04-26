@@ -570,14 +570,14 @@ typedef struct EnsSAnalysis {
 ** @alias EnsSExternaldatabaseadaptor
 ** @alias EnsOExternaldatabaseadaptor
 **
-** @attr Adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor
+** @attr Adaptor [EnsPBaseadaptor] Ensembl Base Adaptor
 ** @attr CacheByIdentifier [AjPTable] Identifier cache
 ** @attr CacheByName [AjPTable] Name cache
 ** @@
 ******************************************************************************/
 
 typedef struct EnsSExternaldatabaseadaptor {
-    EnsPDatabaseadaptor Adaptor;
+    EnsPBaseadaptor Adaptor;
     AjPTable CacheByIdentifier;
     AjPTable CacheByName;
 } EnsOExternaldatabaseadaptor;
