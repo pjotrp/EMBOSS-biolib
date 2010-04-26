@@ -85,7 +85,7 @@ AjBool ensExternaldatabaseSetDescription(EnsPExternaldatabase edb,
                                          AjPStr description);
 
 AjBool ensExternaldatabaseSetPrimaryIdIsLinkable(EnsPExternaldatabase edb,
-                                                  AjBool primarylinkable);
+                                                 AjBool primarylinkable);
 
 AjBool ensExternaldatabaseSetDisplayIdIsLinkable(EnsPExternaldatabase edb,
                                                  AjBool displaylinkable);
@@ -115,9 +115,24 @@ EnsPExternaldatabaseadaptor ensExternaldatabaseadaptorNew(
 
 void ensExternaldatabaseadaptorDel(EnsPExternaldatabaseadaptor* Pedba);
 
+EnsPBaseadaptor ensExternaldatabaseadaptorGetBaseadaptor(
+    const EnsPExternaldatabaseadaptor edba);
+
+EnsPDatabaseadaptor ensExternaldatabaseadaptorGetDatabaseadaptor(
+    const EnsPExternaldatabaseadaptor edba);
+
+AjBool ensExternaldatabaseadaptorFetchAll(
+    EnsPExternaldatabaseadaptor edba,
+    AjPList edbs);
+
 AjBool ensExternaldatabaseadaptorFetchByIdentifier(
     EnsPExternaldatabaseadaptor edba,
     ajuint identifier,
+    EnsPExternaldatabase *Pedb);
+
+AjBool ensExternaldatabaseadaptorFetchByName(
+    EnsPExternaldatabaseadaptor edba,
+    const AjPStr name,
     EnsPExternaldatabase *Pedb);
 
 /*
