@@ -109,7 +109,7 @@ static int file_exists(char *path);
 
 static void copy_ajax(char *path);
 static void copy_nucleus(char *path);
-static void copy_plplot_inc(char *basedir);
+static void copy_plplot(char *basedir);
 static void copy_DLLs(char *basedir);
 static int  copy_apps(char *basedir, listnode *head);
 static void copy_data(char *basedir);
@@ -185,7 +185,7 @@ int main(int argc, char **argv)
 
     copy_ajax(basedir);
     copy_nucleus(basedir);
-    copy_plplot_inc(basedir);
+    copy_plplot(basedir);
     copy_DLLs(basedir);
 
     /* Copy data files */
@@ -464,13 +464,21 @@ static void copy_ajax(char *basedir)
 
 
 
-static void copy_plplot_inc(char *basedir)
+static void copy_plplot(char *basedir)
 {
     char command[MAXNAMLEN];
 
 
-    sprintf(command,"cp -f %s/emboss//plplot/*.h "
-	    "%s/win32/plplot-inc/include/plplot",basedir,basedir);
+    sprintf(command,"cp -f %s/emboss/plplot/*.h "
+	    "%s/win32/plplot",basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -f %s/emboss/plplot/*.c "
+	    "%s/win32/plplot",basedir,basedir);
     if(system(command))
     {
 	fprintf(stderr,"Can't execute %s\n",command);
@@ -478,7 +486,15 @@ static void copy_plplot_inc(char *basedir)
     }
 
     sprintf(command,"cp -f %s/emboss/plplotwin/*.h "
-	    "%s/win32/plplot-inc/include/plplot",basedir,basedir);
+	    "%s/win32/plplot",basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -f %s/emboss/plplotwin/*.cpp "
+	    "%s/win32/plplot",basedir,basedir);
     if(system(command))
     {
 	fprintf(stderr,"Can't execute %s\n",command);
@@ -486,7 +502,7 @@ static void copy_plplot_inc(char *basedir)
     }
 
     sprintf(command,"cp -f %s/emboss/plplotwin/gd/include/*.h "
-	    "%s/win32/plplot-inc/include/plplot",basedir,basedir);
+	    "%s/win32/plplot",basedir,basedir);
     if(system(command))
     {
 	fprintf(stderr,"Can't execute %s\n",command);
@@ -494,26 +510,8 @@ static void copy_plplot_inc(char *basedir)
     }
 
 
-
-    sprintf(command,"cp -f %s/emboss/win32/plplot-inc/lib/Debug/plplot.lib "
-	    "%s/win32/plplot-inc/lib/Debug",basedir,basedir);
-    if(system(command))
-    {
-	fprintf(stderr,"Can't execute %s\n",command);
-	exit(-1);
-    }
-
-    sprintf(command,"cp -f %s/emboss/win32/plplot-inc/lib/Release/plplot.lib "
-	    "%s/win32/plplot-inc/lib/Release",basedir,basedir);
-    if(system(command))
-    {
-	fprintf(stderr,"Can't execute %s\n",command);
-	exit(-1);
-    }
-
-
-    sprintf(command,"cp -f %s/emboss/plplotwin/gd/lib/bgd.lib "
-	    "%s/win32/plplot-inc/lib/Debug",basedir,basedir);
+    sprintf(command,"cp -f %s/emboss/win32/DLLs/plplot/* "
+	    "%s/win32/DLLs/plplot",basedir,basedir);
     if(system(command))
     {
 	fprintf(stderr,"Can't execute %s\n",command);
@@ -521,7 +519,15 @@ static void copy_plplot_inc(char *basedir)
     }
 
     sprintf(command,"cp -f %s/emboss/plplotwin/gd/lib/bgd.lib "
-	    "%s/win32/plplot-inc/lib/Release",basedir,basedir);
+	    "%s/win32/plplot/lib/Debug",basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -f %s/emboss/plplotwin/gd/lib/bgd.lib "
+	    "%s/win32/plplot/lib/Release",basedir,basedir);
     if(system(command))
     {
 	fprintf(stderr,"Can't execute %s\n",command);
@@ -994,12 +1000,10 @@ static void create_directories(char *basedir)
 	"win32/acd",
 	"win32/DLLs",
         "win32/redist",
-	"win32/plplot-inc",
-	"win32/plplot-inc/include",
-	"win32/plplot-inc/include/plplot",
-	"win32/plplot-inc/lib",
-	"win32/plplot-inc/lib/Debug",
-	"win32/plplot-inc/lib/Release",
+	"win32/plplot",
+	"win32/plplot/lib",
+	"win32/plplot/lib/Debug",
+	"win32/plplot/lib/Release",
 	"win32/DLLs/ajax",
 	"win32/DLLs/ajax/pcre",
 	"win32/DLLs/ajax/expat",
@@ -1028,6 +1032,9 @@ static void create_directories(char *basedir)
 	"win32/DLLs/nucleus",
 	"win32/DLLs/nucleus/Debug",
 	"win32/DLLs/nucleus/Release",
+	"win32/DLLs/plplot",
+	"win32/DLLs/plplot/Debug",
+	"win32/DLLs/plplot/Release",
 	"win32/DLLs/Debug",
 	"win32/DLLs/Release",
 	"win32/DLLs/_UpgradeReport_Files",

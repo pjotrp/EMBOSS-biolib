@@ -48,7 +48,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../../ajax/core;../../../ajax/pcre;../../../ajax/expat;../../../ajax/graphics;../../../ajax/ensembl;../../../ajax/ajaxdb;../../../ajax/acd;../../../nucleus;../../../plplot-inc/include;../../../plplot-inc/include/plplot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../ajax/core;../../../ajax/pcre;../../../ajax/expat;../../../ajax/graphics;../../../ajax/ensembl;../../../ajax/ajaxdb;../../../ajax/acd;../../../nucleus;../../../plplot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>VERSION="6.2.0.2";WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -59,9 +59,9 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>eexpat.lib;ajax.lib;ajaxg.lib;ensembl.lib;ajaxdb.lib;acd.lib;nucleus.lib;plplot.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>eexpat.lib;ajax.lib;ajaxg.lib;ensembl.lib;ajaxdb.lib;acd.lib;nucleus.lib;eplplot.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)<PROGNAME>.exe</OutputFile>
-      <AdditionalLibraryDirectories>../../../DLLs/Debug;../../../DLLs/Debug;../../../plplot-inc/lib/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../DLLs/Debug;../../../DLLs/Debug;../../../DLLs/plplot/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)<PROGNAME>.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
@@ -73,7 +73,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../../ajax/core;../../../ajax/pcre;../../../ajax/expat;../../../ajax/graphics;../../../ajax/ensembl;../../../ajax/ajaxdb;../../../ajax/acd;../../../nucleus;../../../plplot-inc/include;../../../plplot-inc/include/plplot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../ajax/core;../../../ajax/pcre;../../../ajax/expat;../../../ajax/graphics;../../../ajax/ensembl;../../../ajax/ajaxdb;../../../ajax/acd;../../../nucleus;../../../plplot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>VERSION="6.2.0.2";WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -82,9 +82,9 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>eexpat.lib;ajax.lib;ajaxg.lib;ensembl.lib;ajaxdb.lib;acd.lib;nucleus.lib;plplot.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>eexpat.lib;ajax.lib;ajaxg.lib;ensembl.lib;ajaxdb.lib;acd.lib;nucleus.lib;eplplot.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)<PROGNAME>.exe</OutputFile>
-      <AdditionalLibraryDirectories>../../../DLLs/Release;../../../DLLs/Release;../../../plplot-inc/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../DLLs/Release;../../../DLLs/Release;../../../DLLs/plplot/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <HEAPSIZE>

@@ -49,7 +49,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\ajax\core;..\..\..\ajax\pcre;..\..\..\ajax\graphics;..\..\..\ajax\ajaxdb;..\..\..\plplot-inc\include\plplot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\ajax\core;..\..\..\ajax\pcre;..\..\..\ajax\graphics;..\..\..\ajax\ajaxdb;..\..\..\plplot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>VERSION="6.2.0.2";WIN32;_DEBUG;_WINDOWS;_USRDLL;ACD_EXPORTS;_POSIX_;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <ExceptionHandling>
@@ -81,7 +81,7 @@
       <Optimization>Disabled</Optimization>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>..\..\..\ajax\core;..\..\..\ajax\pcre;..\..\..\ajax\graphics;..\..\..\ajax\ajaxdb;..\..\..\plplot-inc\include\plplot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\ajax\core;..\..\..\ajax\pcre;..\..\..\ajax\graphics;..\..\..\ajax\ajaxdb;..\..\..\plplot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>VERSION="6.2.0.2";WIN32;NDEBUG;_WINDOWS;_USRDLL;ACD_EXPORTS;_POSIX_;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>
       </ExceptionHandling>
