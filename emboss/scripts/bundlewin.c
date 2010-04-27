@@ -510,7 +510,7 @@ static void copy_plplot(char *basedir)
     }
 
 
-    sprintf(command,"cp -f %s/emboss/win32/DLLs/plplot/* "
+    sprintf(command,"cp -f %s/emboss/win32/DLLs/plplot/eplplot* "
 	    "%s/win32/DLLs/plplot",basedir,basedir);
     if(system(command))
     {
