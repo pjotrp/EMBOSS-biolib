@@ -2067,7 +2067,7 @@ ajint ajSysExecOutnameC(const char* cmdlinetxt, const char* outfnametxt)
     si.hStdError  = GetStdHandle(STD_ERROR_HANDLE);
 
     
-    if(!CreateProcess(NULL, cmdlinetxt, NULL, NULL, TRUE,
+    if(!CreateProcess(NULL, (char *) cmdlinetxt, NULL, NULL, TRUE,
                       CREATE_NO_WINDOW, NULL, NULL, &si, &pinf))
     {
 	ajFatal("CreateProcess failed");
@@ -2218,7 +2218,7 @@ ajint ajSysExecOutnameAppendC(const char* cmdlinetxt, const char* outfnametxt)
     si.hStdError  = GetStdHandle(STD_ERROR_HANDLE);
 
     
-    if(!CreateProcess(NULL, cmdlinetxt, NULL, NULL, TRUE,
+    if(!CreateProcess(NULL, (char *) cmdlinetxt, NULL, NULL, TRUE,
                       CREATE_NO_WINDOW, NULL, NULL, &si, &pinf))
     {
 	ajFatal("CreateProcess failed");
@@ -2372,7 +2372,7 @@ ajint ajSysExecOutnameErrC(const char* cmdlinetxt, const char* outfnametxt)
     si.hStdError  = fp;
 
     
-    if(!CreateProcess(NULL, cmdlinetxt, NULL, NULL, TRUE,
+    if(!CreateProcess(NULL, (char *) cmdlinetxt, NULL, NULL, TRUE,
                       CREATE_NO_WINDOW, NULL, NULL, &si, &pinf))
     {
 	ajFatal("CreateProcess failed");
@@ -2549,7 +2549,7 @@ ajint ajSysExecOutnameAppendErrC(const char* cmdlinetxt,
     si.hStdError  = fp;
 
     
-    if(!CreateProcess(NULL, cmdlinetxt, NULL, NULL, TRUE,
+    if(!CreateProcess(NULL, (char *) cmdlinetxt, NULL, NULL, TRUE,
                       CREATE_NO_WINDOW, NULL, NULL, &si, &pinf))
     {
 	ajFatal("CreateProcess failed");
