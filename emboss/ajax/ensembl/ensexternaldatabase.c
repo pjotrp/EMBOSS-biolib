@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.6 $
+** @version $Revision: 1.7 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -189,8 +189,10 @@ static void externaldatabaseadaptorFetchAll(const void *key,
 **
 ** Default constructor for an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::Storable::new
 ** @param [r] edba [EnsPExternaldatabaseadaptor] External Database Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
+** @cc Bio::EnsEMBL::DBEntry::new
 ** @param [u] name [AjPStr] Database name
 ** @param [u] release [AjPStr] Database release
 ** @param [u] displayname [AjPStr] Database display name
@@ -458,6 +460,7 @@ void ensExternaldatabaseDel(EnsPExternaldatabase *Pedb)
 ** Get the Ensembl External Database Adaptor element of an
 ** Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::Storable::adaptor
 ** @param [r] edb [const EnsPExternaldatabase] Ensembl External Database
 **
 ** @return [const EnsPExternaldatabaseadaptor] Ensembl External Database
@@ -482,6 +485,7 @@ const EnsPExternaldatabaseadaptor ensExternaldatabaseGetAdaptor(
 ** Get the SQL database-internal identifier element of an
 ** Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::Storable::dbID
 ** @param [r] edb [const EnsPExternaldatabase] Ensembl External Database
 **
 ** @return [ajuint] Internal database identifier
@@ -503,6 +507,7 @@ ajuint ensExternaldatabaseGetIdentifier(const EnsPExternaldatabase edb)
 **
 ** Get the name element of an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::dbname
 ** @param [r] edb [const EnsPExternaldatabase] Ensembl External Database
 **
 ** @return [AjPStr] Name
@@ -524,6 +529,7 @@ AjPStr ensExternaldatabaseGetName(const EnsPExternaldatabase edb)
 **
 ** Get the release element of an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::release
 ** @param [r] edb [const EnsPExternaldatabase] Ensembl External Database
 **
 ** @return [AjPStr] Release
@@ -545,6 +551,7 @@ AjPStr ensExternaldatabaseGetRelease(const EnsPExternaldatabase edb)
 **
 ** Get the secondary name element of an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::secondary_db_name
 ** @param [r] edb [const EnsPExternaldatabase] Ensembl External Database
 **
 ** @return [AjPStr] Secondary name
@@ -566,6 +573,7 @@ AjPStr ensExternaldatabaseGetSecondaryName(const EnsPExternaldatabase edb)
 **
 ** Get the secondary table element of an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::secondary_db_table
 ** @param [r] edb [const EnsPExternaldatabase] Ensembl External Database
 **
 ** @return [AjPStr] Secondary table
@@ -587,6 +595,7 @@ AjPStr ensExternaldatabaseGetSecondaryTable(const EnsPExternaldatabase edb)
 **
 ** Get the description element of an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::description
 ** @param [r] edb [const EnsPExternaldatabase] Ensembl External Database
 **
 ** @return [AjPStr] Description
@@ -608,6 +617,7 @@ AjPStr ensExternaldatabaseGetDescription(const EnsPExternaldatabase edb)
 **
 ** Get the 'primary is linkable' element of an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::primary_id_linkable
 ** @param [r] edb [const EnsPExternaldatabase] Ensembl External Database
 **
 ** @return [AjBool] Primary identifier is linkable
@@ -629,6 +639,7 @@ AjBool ensExternaldatabaseGetPrimaryIdIsLinkable(const EnsPExternaldatabase edb)
 **
 ** Get the 'display is linkable' element of an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::display_id_linkable
 ** @param [r] edb [const EnsPExternaldatabase] Ensembl External Database
 **
 ** @return [AjBool] Display identifier is linkable
@@ -650,6 +661,7 @@ AjBool ensExternaldatabaseGetDisplayIdIsLinkable(const EnsPExternaldatabase edb)
 **
 ** Get the status element of an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::status
 ** @param [r] edb [const EnsPExternaldatabase] Ensembl External Database
 **
 ** @return [AjEnum] Status
@@ -671,6 +683,7 @@ AjEnum ensExternaldatabaseGetStatus(const EnsPExternaldatabase edb)
 **
 ** Get the type element of an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::type
 ** @param [r] edb [const EnsPExternaldatabase] Ensembl External Database
 **
 ** @return [AjEnum] Type
@@ -692,6 +705,7 @@ AjEnum ensExternaldatabaseGetType(const EnsPExternaldatabase edb)
 **
 ** Get the priority element of an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::priority
 ** @param [r] edb [const EnsPExternaldatabase] Ensembl External Database
 **
 ** @return [ajint] Priority
@@ -745,6 +759,7 @@ ajint ensExternaldatabaseGetPriority(const EnsPExternaldatabase edb)
 ** Set the Ensembl External Database Adaptor element of an
 ** Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::Storable::adaptor
 ** @param [u] edb [EnsPExternaldatabase] Ensembl External Database
 ** @param [r] edba [EnsPExternaldatabaseadaptor] Ensembl External
 **                                               Database Adaptor
@@ -772,6 +787,7 @@ AjBool ensExternaldatabaseSetAdaptor(EnsPExternaldatabase edb,
 ** Set the SQL database-internal identifier element of an
 ** Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::Storable::dbID
 ** @param [u] edb [EnsPExternaldatabase] Ensembl External Database
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 **
@@ -797,6 +813,7 @@ AjBool ensExternaldatabaseSetIdentifier(EnsPExternaldatabase edb,
 **
 ** Set the name element of an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::dbname
 ** @param [u] edb [EnsPExternaldatabase] Ensembl External Database
 ** @param [u] name [AjPStr] Name
 **
@@ -823,6 +840,7 @@ AjBool ensExternaldatabaseSetName(EnsPExternaldatabase edb, AjPStr name)
 **
 ** Set the release element of an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::release
 ** @param [u] edb [EnsPExternaldatabase] Ensembl External Database
 ** @param [u] release [AjPStr] Release
 **
@@ -849,6 +867,7 @@ AjBool ensExternaldatabaseSetRelease(EnsPExternaldatabase edb, AjPStr release)
 **
 ** Set the secondary name element of an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::secondary_db_name
 ** @param [u] edb [EnsPExternaldatabase] Ensembl External Database
 ** @param [u] secondaryname [AjPStr] Secondary name
 **
@@ -876,6 +895,7 @@ AjBool ensExternaldatabaseSetSecondaryName(EnsPExternaldatabase edb,
 **
 ** Set the secondary table element of an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::secondary_db_table
 ** @param [u] edb [EnsPExternaldatabase] Ensembl External Database
 ** @param [u] secondarytable [AjPStr] Secondary table
 **
@@ -903,6 +923,7 @@ AjBool ensExternaldatabaseSetSecondaryTable(EnsPExternaldatabase edb,
 **
 ** Set the description element of an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::description
 ** @param [u] edb [EnsPExternaldatabase] Ensembl External Database
 ** @param [u] description [AjPStr] Description
 **
@@ -931,6 +952,7 @@ AjBool ensExternaldatabaseSetDescription(EnsPExternaldatabase edb,
 ** Set the primary identifier is linkble element of an
 ** Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::primary_id_linkable
 ** @param [u] edb [EnsPExternaldatabase] Ensembl External Database
 ** @param [r] primarylinkable [AjBool] Primary identifier is linkable
 **
@@ -957,6 +979,7 @@ AjBool ensExternaldatabaseSetPrimaryIdIsLinkable(EnsPExternaldatabase edb,
 ** Set the display identifier is linkble element of an
 ** Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::display_id_linkable
 ** @param [u] edb [EnsPExternaldatabase] Ensembl External Database
 ** @param [r] displaylinkable [AjBool] Display identifier is linkable
 **
@@ -982,6 +1005,7 @@ AjBool ensExternaldatabaseSetDisplayIdIsLinkable(EnsPExternaldatabase edb,
 **
 ** Set the status element of an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::status
 ** @param [u] edb [EnsPExternaldatabase] Ensembl External Database
 ** @param [r] status [AjEnum] Status
 **
@@ -1006,6 +1030,7 @@ AjBool ensExternaldatabaseSetStatus(EnsPExternaldatabase edb, AjEnum status)
 **
 ** Set the type element of an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::type
 ** @param [u] edb [EnsPExternaldatabase] Ensembl External Database
 ** @param [r] type [AjEnum] Type
 **
@@ -1030,6 +1055,7 @@ AjBool ensExternaldatabaseSetType(EnsPExternaldatabase edb, AjEnum type)
 **
 ** Set the priority element of an Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBEntry::priority
 ** @param [u] edb [EnsPExternaldatabase] Ensembl External Database
 ** @param [r] priority [ajint] Priority
 **
@@ -1363,6 +1389,8 @@ ajuint ensExternaldatabaseGetMemSize(const EnsPExternaldatabase edb)
 /* @datasection [EnsPExternaldatabaseadaptor] External Database Adaptor *******
 **
 ** Functions for manipulating Ensembl External Database Adaptor objects
+**
+** @cc Bio::EnsEMBL::DBSQL::DBEntryAdaptor CVS Revision: 1.143
 **
 ** @nam2rule Externaldatabaseadaptor
 **
@@ -2200,6 +2228,7 @@ static void externaldatabaseadaptorFetchAll(const void *key,
 ** The caller is responsible for deleting the Ensembl External Databases
 ** before deleting the AJAX List.
 **
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::fetch_all
 ** @param [u] edba [EnsPExternaldatabaseadaptor] Ensembl External
 **                                               Database Adaptor
 ** @param [u] edbs [AjPList] AJAX List of Ensembl External Databases
@@ -2237,6 +2266,7 @@ AjBool ensExternaldatabaseadaptorFetchAll(
 **
 ** The caller is responsible for deleting the Ensembl External Database.
 **
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::fetch_by_dbID
 ** @param [r] edba [EnsPExternaldatabaseadaptor] Ensembl External Database
 **                                               Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
