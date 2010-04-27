@@ -186,6 +186,7 @@ NamOAttr namDbAttrs[] =
     {"method", "", "access method (required, at some level)"},
     {"type", "", "database type 'Nucleotide', 'Protein', etc (required)"},
 
+    {"accession", "", "secondary identifier field"},
     {"app", "", "external application commandline (APP, EXTERNAL)"},
     {"appall", "", "external commandline for 'methodall' (APP, EXTERNAL)"},
     {"appentry", "", "external commandline for 'methodentry' (APP, EXTERNAL)"},
@@ -198,7 +199,7 @@ NamOAttr namDbAttrs[] =
 /*    {"description", "", "short database description"},*/
     {"directory", "", "data directory"},
     {"exclude", "", "wildcard filenames to exclude from 'filename'"},
-    {"fields", "", "extra database fields available, ID and ACC are standard"},
+    {"fields", "", "extra database query fields, ID and ACC are standard"},
     {"filename", "", "(wildcard) database filename"},
 
     {"formatall", "", "database entry format for 'methodall' access"},
@@ -207,7 +208,7 @@ NamOAttr namDbAttrs[] =
 
     {"hasaccession", "Y", "database has an acc field as an alternate id"},
     {"httpversion", "", "HTTP version for GET requests (URL, SRSWWW)"},
-/*    {"identifier", "", "standard identifier (defaults to name)"},*/
+    {"identifier", "", "standard identifier field"},
     {"indexdirectory", "", "Index directory, defaults to data 'directory'"},
 
     {"methodall", "", "access method for all entries"},
@@ -217,6 +218,8 @@ NamOAttr namDbAttrs[] =
     {"proxy", "", "http proxy server, or ':' to cancel a global proxy "
 	          "(URL, SRSWWW)"},
     {"release", "", "release of the database, comment only"},
+    {"return", "", "names fields to be returned"},
+    {"sequence", "", "sequence field to be returned"},
     {"url", "", "URL skeleton for entry level access (URL, SRSWWW)"},
     {NULL, NULL, NULL}
 };
