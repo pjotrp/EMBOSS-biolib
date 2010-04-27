@@ -1,4 +1,13 @@
 Version 6.3.0 15-Jul-2010
+	The output of showalign has changed. The reference sequence now
+	appears at the top, of selected. The ticks and sequence position
+	numbering is relative to a selected reference sequence. Gaps
+	within the reference appear as '.' and are not counted in
+	numbering. End gaps appear as '.' with 'V' and 'v' as the major
+	and minor tick marks, and numbering from -1 before the start and
+	from +1 after the end of the reference. The additional copy of the
+	consensus is no longer reported.
+
 	When reading ABI trace files the quality scores can now be
 	read. They are undefined in ABI files, but assumed to be phred
 	scores. ABI files can have two sequences and sets of quality
