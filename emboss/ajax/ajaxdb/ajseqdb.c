@@ -28,6 +28,7 @@
 
 #include "ajax.h"
 #include "ajseqdb.h"
+#include "ajmart.h"
 
 #include <limits.h>
 #include <stdarg.h>
@@ -440,6 +441,7 @@ static AjBool     seqAccessEntrez(AjPSeqin seqin);
 static AjBool     seqAccessFreeEmblcd(void* qry);
 static AjBool     seqAccessFreeEmboss(void* qry);
 static AjBool     seqAccessGcg(AjPSeqin seqin);
+static AjBool     seqAccessMart(AjPSeqin seqin);
 static AjBool     seqAccessMrs(AjPSeqin seqin);
 static AjBool     seqAccessMrs3(AjPSeqin seqin);
 /* static AjBool     seqAccessNbrf(AjPSeqin seqin); */ /* obsolete */
@@ -601,6 +603,9 @@ static SeqOAccess seqAccess[] =
     {"blast",     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
 	 seqAccessBlast, NULL,
 	 "blast database format version 2 or 3"},
+    {"biomart",   AJFALSE, AJTRUE,  AJFALSE,  AJFALSE,  
+	 seqAccessMart, NULL,
+	 "retrieve a single entry from a BioMart server"},
     {NULL, AJFALSE, AJFALSE, AJFALSE, AJFALSE, NULL, NULL, NULL},
 
 /* after the NULL access method, and so unreachable.
@@ -637,6 +642,9 @@ void ajSeqdbInit(void)
 
     return;
 }
+
+
+
 
 /* @func ajSeqMethod **********************************************************
 **
@@ -1688,11 +1696,16 @@ static AjBool seqCdTrgClose(SeqPCdFile* ptrgfil, SeqPCdFile* phitfil)
 ** Entrez indexed database access
 **===========================================================================*/
 
+
+
+
 /* @section Entrez Database Indexing ****************************************
 **
 ** These functions manage the SeqHound remote web API access methods.
 **
 ******************************************************************************/
+
+
 
 
 /* @funcstatic seqAccessEntrez ************************************************
@@ -2078,11 +2091,16 @@ static AjBool seqEntrezQryNext(AjPSeqQuery qry, AjPSeqin seqin)
 ** SeqHound indexed database access
 **===========================================================================*/
 
+
+
+
 /* @section SeqHound Database Indexing ****************************************
 **
 ** These functions manage the SeqHound remote web API access methods.
 **
 ******************************************************************************/
+
+
 
 
 /* @funcstatic seqAccessSeqhound **********************************************
@@ -2508,11 +2526,17 @@ static AjBool seqSeqhoundQryNext(AjPSeqQuery qry, AjPSeqin seqin)
 ** SRS indexed database access
 **===========================================================================*/
 
+
+
+
 /* @section SRS Database Indexing *********************************************
 **
 ** These functions manage the SRS (getz) index access methods.
 **
 ******************************************************************************/
+
+
+
 
 /* @funcstatic seqAccessSrs ***************************************************
 **
@@ -2818,11 +2842,17 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
 ** ==========================================================================
 */
 
+
+
+
 /* @section B+tree Database Indexing *****************************************
 **
 ** These functions manage the B+tree index access methods.
 **
 ******************************************************************************/
+
+
+
 
 /* @funcstatic seqAccessEmboss ************************************************
 **
@@ -6642,6 +6672,128 @@ static AjBool seqAccessDbfetch(AjPSeqin seqin)
 
 
 
+/* @funcstatic seqAccessMart ***************************************************
+**
+** Reads sequence(s) using BioMart
+**
+** BioMart is accessed as a URL containging the server and post
+**
+** @param [u] seqin [AjPSeqin] Sequence input.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+static AjBool seqAccessMart(AjPSeqin seqin)
+{
+    AjPStr host      = NULL;
+    AjPStr path      = NULL;
+    AjPStr get       = NULL;
+    AjPStr proxyName = NULL;		/* host for proxy access.*/
+    AjPStr httpver   = NULL;	      /* HTTP version 1.0, 1.1, ... */
+    ajint iport;
+    ajint proxyPort;
+    AjPSeqQuery qry;
+    AjPStr searchdb = NULL;
+
+    AjPMartquery mq = NULL;
+    AjPMartqinfo qinfo = NULL;
+    AjPStr dataset = NULL;
+    AjPStr atts    = NULL;
+    AjPStr filts   = NULL;
+    AjPStr line = NULL;
+
+    /*
+    ** need to separate the server host, port and address
+    **
+    ** identifier to be used for entry level
+    **
+    ** filter(s) to be used for query level
+    **
+    ** method (if any) to returnall entries
+    **
+    ** attribute(s) to return as text or sequence data
+    **
+    ** format to return results (maybe some new way to store withn AjPSeqin)
+    */
+
+    iport = 80;
+    proxyPort = 0;			/* port for proxy access */
+    qry = seqin->Query;
+
+    if(!ajNamDbGetDbalias(qry->DbName, &searchdb))
+	ajStrAssignS(&searchdb, qry->DbName);
+
+    ajDebug("seqAccessMart %S:%S\n", qry->DbAlias, qry->Id);
+
+    if(!seqHttpUrl(qry, &iport, &host, &path))
+    {
+	ajStrDel(&host);
+	ajStrDel(&path);
+
+	return ajFalse;
+    }
+
+    mq    = ajMartqueryNew();
+    ajMartAttachMartquery(seqin,mq);
+    ajMartSetMarthostS(seqin,host);
+    ajMartSetMartpathS(seqin,path);
+    ajMartSetMartport(seqin,iport);
+
+    qinfo = ajMartQinfoNew(1);
+    if(!qinfo) ajErr("Unable to open BioMart '%S'", qry->DbName);
+
+    /*
+    ** Need to get filters from USA
+    ** standardize if needed to usual set
+    ** attributes should be ignored for now
+    */
+
+    ajMartParseParameters(qinfo,atts,filts,0);
+
+    ajMartSetQuerySchemaC(qinfo,"default");
+    ajMartSetQueryVersionC(qinfo,"");
+    ajMartSetQueryFormatC(qinfo,"TSV");
+    ajMartSetQueryCount(qinfo,ajFalse);
+    ajMartSetQueryHeader(qinfo,ajFalse);
+    ajMartSetQueryUnique(qinfo,ajFalse);
+    ajMartSetQueryStamp(qinfo,ajTrue);
+    ajMartSetQueryVerify(qinfo,ajTrue);
+
+    ajMartSetQueryDatasetName(qinfo,dataset,0);
+
+    ajMartSetQueryDatasetInterfaceC(qinfo,"default",0);
+    
+    ajMartCheckQinfo(seqin,qinfo);
+
+    ajMartMakeQueryXml(qinfo,seqin);
+
+
+    if(!ajMartSendQuery(seqin))
+        ajWarn("Query Failed");
+    else
+    {
+        while(ajBuffreadLine(seqin->Filebuff,&line)) 
+            {
+            }
+    }
+    
+    ajStrDel(&host);
+    ajStrDel(&path);
+    ajStrDel(&get);
+    ajStrDel(&proxyName);
+    ajStrDel(&httpver);
+
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
+
+    ajMartquerySeqinFree(seqin);
+
+    return ajTrue;
+}
+
+
+
+
 /* @funcstatic seqAccessMrs ***********************************************
 **
 ** Reads sequence(s) using CMBI Nijmegen's Maarten's Retrieval System.
@@ -7451,6 +7603,9 @@ static FILE* seqHttpSend(const AjPSeqQuery qry,
 **
 ******************************************************************************/
 
+
+
+
 /* @funcstatic seqAccessApp ***************************************************
 **
 ** Reads sequence data using an application which can accept a specification
@@ -7532,8 +7687,6 @@ static AjBool seqAccessApp(AjPSeqin seqin)
 
     return ajTrue;
 }
-
-
 
 
 
