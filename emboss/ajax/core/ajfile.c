@@ -1238,7 +1238,7 @@ AjPFile ajFileNewInPipe(const AjPStr command)
 {
     AjPFile thys = NULL;
     
-    thys = ajSysCreateNewInPipe(command);
+    thys = ajSysCreateNewInPipeS(command);
     
     if(!thys)
         return NULL;
