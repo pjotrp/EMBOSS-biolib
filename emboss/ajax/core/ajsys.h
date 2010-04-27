@@ -142,14 +142,25 @@ ajint         ajSysExecC(const char* cl);
 ajint         ajSysExecS(const AjPStr clstr);
 ajint         ajSysExecLocaleC(const char* cl, const char* localetxt);
 ajint         ajSysExecLocaleS(const AjPStr clstr, const AjPStr localestr);
+ajint         ajSysExecPathC(const char* cl);
 ajint         ajSysExecPathS(const AjPStr clstr);
+ajint         ajSysExecEnvC(const char* cls, char * const env[]);
 ajint         ajSysExecEnvS(const AjPStr clstr, char * const env[]);
 ajint         ajSysExecProgArgEnvNowaitC(const char *prog, char * const arg[],
                                          char * const env[]);
+ajint         ajSysExecProgArgEnvNowaitS(const AjPStr progstr,
+                                         char * const arg[],
+                                         char * const env[]);
+ajint         ajSysExecOutnameC(const char* cl, const char* outfnametxt);
 ajint         ajSysExecOutnameS(const AjPStr clstr, const AjPStr outfname);
+ajint         ajSysExecOutnameAppendC(const char* cl,
+                                      const char* outfnametxt);
 ajint         ajSysExecOutnameAppendS(const AjPStr clstr,
                                       const AjPStr outfname);
+ajint         ajSysExecOutnameErrC(const char* cl, const char* outfnametxt);
 ajint         ajSysExecOutnameErrS(const AjPStr clstr, const AjPStr outfname);
+ajint         ajSysExecOutnameAppendErrC(const char* cl,
+                                         const char* outfnametxt);
 ajint         ajSysExecOutnameAppendErrS(const AjPStr clstr,
                                          const AjPStr outfname);
 void          ajSysSocketclose(struct AJSOCKET sock);
@@ -157,7 +168,8 @@ void          ajSysSocketclose(struct AJSOCKET sock);
 int           ajSysTimeoutSet(struct AJTIMEOUT *ts);
 int           ajSysTimeoutUnset(struct AJTIMEOUT *ts);
 
-AjPFile       ajSysCreateNewInPipe(const AjPStr command);
+AjPFile       ajSysCreateNewInPipeC(const char* commandtxt);
+AjPFile       ajSysCreateNewInPipeS(const AjPStr command);
 AjBool        ajSysExecRedirectC(const char *command, int **pipeto,
                                  int **pipefrom);
 
