@@ -6697,10 +6697,21 @@ static AjBool seqAccessMart(AjPSeqin seqin)
 
     AjPMartquery mq = NULL;
     AjPMartqinfo qinfo = NULL;
-    AjPStr dataset = NULL;
+    AjPMartquery pmq = NULL;
+    AjPMartFilter filt = NULL;
+    AjPMartAttribute att = NULL;
+
     AjPStr atts    = NULL;
     AjPStr filts   = NULL;
-    AjPStr line = NULL;
+    AjPStr key1 = NULL;
+    AjPStr key2 = NULL;
+    AjPStr value1 = NULL;
+    AjPStr value2 = NULL;
+    AjPStr dbid = NULL;
+
+    AjBool dodebug = AJFALSE;
+
+    ajuint i;
 
     /*
     ** need to separate the server host, port and address
@@ -6709,7 +6720,7 @@ static AjBool seqAccessMart(AjPSeqin seqin)
     **
     ** filter(s) to be used for query level
     **
-    ** method (if any) to returnall entries
+    ** method (if any) to return all entries
     **
     ** attribute(s) to return as text or sequence data
     **
@@ -6739,14 +6750,88 @@ static AjBool seqAccessMart(AjPSeqin seqin)
     ajMartSetMartpathS(seqin,path);
     ajMartSetMartport(seqin,iport);
 
-    qinfo = ajMartQinfoNew(1);
-    if(!qinfo) ajErr("Unable to open BioMart '%S'", qry->DbName);
+
+    if(dodebug)
+    {
+        /* get list of filters for the mart (martfilters)*/
+
+        ajMartGetFilters(seqin, searchdb);
+        ajMartfiltersParse(seqin);
+
+        key1  = ajStrNewC("name");
+        key2  = ajStrNewC("displayName");
+    
+        pmq = ajMartGetMartqueryPtr(seqin);
+        filt = pmq->Filters;
+
+        /* match to the database definition, try to find standard terms */
+    
+        ajDebug("Filters\n=======\n");
+        for(i=0; i < filt->Nfilters; ++i)
+        {
+            value1 = ajTableFetch(filt->Filters[i],(void *)key1);
+            value2 = ajTableFetch(filt->Filters[i],(void *)key2);
+            ajDebug("%-40S %S\n",value1,value2);
+            if(ajStrMatchCaseS(value1, qry->DbIdentifier))
+                ajDebug("matched identifier '%S'\n", qry->DbIdentifier);
+            if(ajStrMatchCaseS(value1, qry->DbAccession))
+                ajDebug("matched accession '%S'\n", qry->DbAccession);
+        }
+
+        /* compare filters to USA query and build query string  AjPStr filts */
+
+        /* get list of attributes for the mart (martattributes) */
+
+        ajMartGetAttributes(seqin, searchdb);
+        ajMartattributesParse(seqin);
+
+        pmq = ajMartGetMartqueryPtr(seqin);
+        att = pmq->Atts;
+
+        /* match to the database definition  AjPStr atts */
+
+        ajDebug("Attributes\n=========\n");
+        for(i=0; i < att->Natts; ++i)
+        {
+            value1 = ajTableFetch(att->Attributes[i],(void *)key1);
+            value2 = ajTableFetch(att->Attributes[i],(void *)key2);
+            ajDebug("%-40S %S\n",value1,value2);
+            if(ajStrMatchCaseS(value1, qry->DbSequence))
+                ajDebug("matched sequence '%S'\n", qry->DbSequence);
+        }
+    
+    }
+
+    /* do the query, retrieve the attributes */
+
+    /* build the output - identifier, attributes, sequence */
 
     /*
     ** Need to get filters from USA
     ** standardize if needed to usual set
     ** attributes should be ignored for now
     */
+
+    /* mart queries are case-sensitive using uppercase
+    ** and have '%' as the RDBMS wildcard for '*'
+    */
+    dbid = ajStrNewS(qry->Id);
+    ajStrFmtUpper(&dbid);
+    
+    ajFmtPrintS(&filts, "%S=\"%S\"", qry->DbIdentifier, dbid);
+    if(ajStrGetLen(qry->DbFilter))
+        ajFmtPrintAppS(&filts, ",%S", qry->DbFilter);
+    ajFmtPrintS(&atts, "%S", qry->DbIdentifier);
+    if(ajStrGetLen(qry->DbReturn))
+        ajFmtPrintAppS(&atts, ",%S", qry->DbReturn);
+    ajFmtPrintAppS(&atts, ",%S", qry->DbSequence);
+
+    qinfo = ajMartQinfoNew(1);
+    if(!qinfo) ajErr("Unable to open BioMart '%S'", qry->DbName);
+
+    ajDebug("Parameters:\n");
+    ajDebug("atts: '%S'\n", atts);
+    ajDebug("filters: '%S'\n", filts);
 
     ajMartParseParameters(qinfo,atts,filts,0);
 
@@ -6759,7 +6844,7 @@ static AjBool seqAccessMart(AjPSeqin seqin)
     ajMartSetQueryStamp(qinfo,ajTrue);
     ajMartSetQueryVerify(qinfo,ajTrue);
 
-    ajMartSetQueryDatasetName(qinfo,dataset,0);
+    ajMartSetQueryDatasetName(qinfo,searchdb,0);
 
     ajMartSetQueryDatasetInterfaceC(qinfo,"default",0);
     
@@ -6767,15 +6852,10 @@ static AjBool seqAccessMart(AjPSeqin seqin)
 
     ajMartMakeQueryXml(qinfo,seqin);
 
+    ajDebug("Results\n=======\n");
 
     if(!ajMartSendQuery(seqin))
         ajWarn("Query Failed");
-    else
-    {
-        while(ajBuffreadLine(seqin->Filebuff,&line)) 
-            {
-            }
-    }
     
     ajStrDel(&host);
     ajStrDel(&path);
