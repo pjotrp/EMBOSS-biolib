@@ -509,6 +509,14 @@ static void copy_plplot(char *basedir)
 	exit(-1);
     }
 
+    sprintf(command,"cp -f %s/emboss/plplotwin/haru/include/*.h "
+	    "%s/win32/plplot",basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
 
     sprintf(command,"cp -f %s/emboss/win32/DLLs/plplot/eplplot* "
 	    "%s/win32/DLLs/plplot",basedir,basedir);
@@ -551,6 +559,40 @@ static void copy_plplot(char *basedir)
 	exit(-1);
     }
 
+
+    sprintf(command,"cp -f %s/emboss/plplotwin/haru/lib/libharu.lib "
+	    "%s/win32/plplot/lib/Debug",basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -f %s/emboss/plplotwin/haru/lib/libharu.lib "
+	    "%s/win32/plplot/lib/Release",basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+
+    sprintf(command,"cp -f %s/emboss/plplotwin/haru/lib/libharu.dll "
+	    "%s/win32/DLLs/Debug",basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -f %s/emboss/plplotwin/haru/lib/libharu.dll "
+	    "%s/win32/DLLs/Release",basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+    
     return;
 }
 
