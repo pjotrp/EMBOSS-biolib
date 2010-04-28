@@ -4177,7 +4177,7 @@ void ajFilebuffHtmlNoheader(AjPFilebuff buff)
     if(!buff->Size)
 	return;
     
-    ajFilebuffTraceTitle(buff, "Before ajFileBuffStripHtml");
+    /*ajFilebuffTraceTitle(buff, "Before ajFileBuffStripHtml");*/
 
 
     ajDebug("First line [%d] '%S' \n",
@@ -4229,9 +4229,9 @@ void ajFilebuffHtmlNoheader(AjPFilebuff buff)
 	    /* process the chunk */
 	    ichunk += ajStrGetLen(buff->Curr->Line);
 	    
-	    ajDebug("++input line [%d] ichunk=%d:%d %d:%S",
+	    /*ajDebug("++input line [%d] ichunk=%d:%d %d:%S",
 		    iline, ichunk, chunkSize,
-		    ajStrGetLen(buff->Curr->Line), buff->Curr->Line);
+		    ajStrGetLen(buff->Curr->Line), buff->Curr->Line);*/
 
 	    if(ichunk >= chunkSize)	/* end of chunk */
 	    {
@@ -4240,7 +4240,8 @@ void ajFilebuffHtmlNoheader(AjPFilebuff buff)
 		    /* end-of-chunk at end-of-line */
 		    fileBuffLineNext(buff);
 		    ajStrAssignClear(&saveLine);
-		    ajDebug("end-of-chunk at end-of-line: '%S'\n", saveLine);
+		    /*ajDebug("end-of-chunk at end-of-line: '%S'\n",
+                              saveLine);*/
 		}
 		else
 		{
@@ -4500,8 +4501,8 @@ void ajFilebuffHtmlStrip(AjPFilebuff buff)
 
     i = 0;
     
-    ajDebug("First line [%d] '%S' \n",
-	     ajStrGetUse(buff->Curr->Line), buff->Curr->Line);
+    /* ajDebug("First line [%d] '%S' \n",
+       ajStrGetUse(buff->Curr->Line), buff->Curr->Line);*/
     
     if(ajRegExec(httpexp, buff->Curr->Line))
     {
@@ -4512,7 +4513,7 @@ void ajFilebuffHtmlStrip(AjPFilebuff buff)
 	    /* to empty line */
 	    if(ajRegExec(chunkexp, buff->Curr->Line))
 	    {
-		ajDebug("Chunk encoding: %S", buff->Curr->Line);
+		/*ajDebug("Chunk encoding: %S", buff->Curr->Line);*/
 		/* chunked - see later */
 		doChunk = ajTrue;
 	    }
@@ -4536,7 +4537,7 @@ void ajFilebuffHtmlStrip(AjPFilebuff buff)
 	ajRegSubI(hexexp, 1, &hexstr);
 	ajStrToHex(hexstr, &chunkSize);
 	
-	ajDebug("chunkSize hex:%x %d\n", chunkSize, chunkSize);
+	/*ajDebug("chunkSize hex:%x %d\n", chunkSize, chunkSize);*/
 	fileBuffLineDel(buff);	/* chunk size */
 	
 	ichunk = 0;
@@ -4549,9 +4550,9 @@ void ajFilebuffHtmlStrip(AjPFilebuff buff)
 	    /* process the chunk */
 	    ichunk += ajStrGetLen(buff->Curr->Line);
 	    
-	    ajDebug("++input line [%d] ichunk=%d:%d %d:%S",
+	    /*ajDebug("++input line [%d] ichunk=%d:%d %d:%S",
 		    iline, ichunk, chunkSize,
-		    ajStrGetLen(buff->Curr->Line), buff->Curr->Line);
+		    ajStrGetLen(buff->Curr->Line), buff->Curr->Line);*/
 
 	    if(ichunk >= chunkSize)	/* end of chunk */
 	    {
@@ -4560,16 +4561,17 @@ void ajFilebuffHtmlStrip(AjPFilebuff buff)
 		    /* end-of-chunk at end-of-line */
 		    fileBuffLineNext(buff);
 		    ajStrAssignClear(&saveLine);
-		    ajDebug("end-of-chunk at end-of-line: '%S'\n", saveLine);
+		    /*ajDebug("end-of-chunk at end-of-line: '%S'\n",
+                      saveLine); */
 		}
 		else
 		{
 		    /* end-of-chunk in mid-line, patch up the input */
-		    ajDebug("end-of-chunk in mid-line, %d:%d have input: "
+		    /*ajDebug("end-of-chunk in mid-line, %d:%d have input: "
                             "%d '%S'\n",
 			    ichunk, chunkSize,
 			    ajStrGetLen(buff->Curr->Line),
-			    buff->Curr->Line);
+			    buff->Curr->Line);*/
 		    ajStrAssignSubS(&saveLine, buff->Curr->Line, 0,
 				-(ichunk-chunkSize+1));
 		    ajStrKeepRange(&buff->Curr->Line, -(ichunk-chunkSize), -1);
@@ -4851,7 +4853,7 @@ void ajFilebuffLoadAll(AjPFilebuff buff)
     while(status)
     {
 	status = ajBuffreadLine(buff, &rdline);
-	ajDebug("read: <%S>\n", rdline);
+     /* ajDebug("read: <%S>\n", rdline);*/
     }
 
     ajFilebuffReset(buff);

@@ -889,7 +889,7 @@ void ajListSortTwoUnique(AjPList list,
 	return;
 
     ajListSortTwo(list, sort1, sort2);
-    ajListTrace(list);
+    /*ajListTrace(list);*/
 
     iter = ajListIterNew(list);
 
@@ -910,7 +910,7 @@ void ajListSortTwoUnique(AjPList list,
     ajListIterDel(&iter);
 
     ajDebug("ajListUnique result %d items\n", list->Count);
-    ajListTrace(list);
+    /*ajListTrace(list);*/
 
     return;
 }
@@ -980,7 +980,7 @@ void ajListSortUnique(AjPList list,
     ajListIterDel(&iter);
 
     ajDebug("ajListSortUnique result %d items\n", list->Count);
-    ajListTrace(list);
+    /*ajListTrace(list);*/
 
     return;
 }
