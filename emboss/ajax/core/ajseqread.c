@@ -623,6 +623,7 @@ static AjBool     seqRead(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadAce(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadAcedb(AjPSeq thys, AjPSeqin seqin);
 /* static AjBool     seqReadBam(AjPSeq thys, AjPSeqin seqin); */
+static AjBool     seqReadBiomart(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadClustal(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadCodata(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadDbId(AjPSeq thys, AjPSeqin seqin);
@@ -946,6 +947,9 @@ static SeqOInFormat seqInFormatDef[] =
   {"fitch",       "Fitch program format",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadFitch, AJFALSE, AJFALSE},
+  {"biomart",       "Biomart tab-delimited results",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE,  seqReadBiomart, AJFALSE, AJFALSE},
   {"mase",        "Mase program format",
        AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadMase, AJFALSE, AJFALSE}, /* like ig - off by
@@ -8722,6 +8726,72 @@ static AjBool seqReadAcedb(AjPSeq thys, AjPSeqin seqin)
     ajStrTokenDel(&handle);
     ajStrDel(&token);
 
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic seqReadBiomart *************************************************
+**
+** Given data in a sequence structure, tries to read everything needed
+** using BioMart tab-delimited format.
+**
+** @param [w] thys [AjPSeq] Sequence object
+** @param [u] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+static AjBool seqReadBiomart(AjPSeq thys, AjPSeqin seqin)
+{
+    AjPStr token     = NULL;
+    AjPFilebuff buff;
+    AjPStrTok handle = NULL;
+    AjBool ok = ajTrue;
+    ajuint ifields = 0;
+    ajuint i;
+
+    buff = seqin->Filebuff;
+
+    ok = ajBuffreadLineStore(buff, &seqReadLine,
+			    seqin->Text, &thys->TextPtr);
+    if(!ok)
+        return ajFalse;
+
+    ajDebug("seqReadBiomart record '%S'%u\n",
+            seqReadLine);
+
+    ifields = ajStrCalcCountK(seqReadLine, '\t');
+    ajDebug("fields: %u\n", ifields);
+    if(ifields < 2) 
+        return ajFalse;
+
+    seqin->Records++;
+    
+    ajStrTokenAssignC(&handle, seqReadLine, "\t");
+    ajStrTokenNextParseNoskip(&handle,&token); /* identifier*/
+    seqSetName(thys, token);
+
+    for(i = 1; i < ifields; i++)
+    {
+        ajStrTokenNextParseNoskip(&handle,&token); /* non-sequence*/
+        if(ajStrGetLen(token))
+        {
+            if(i > 1)
+                ajStrAppendK(&thys->Desc, ' ');
+            ajStrAppendS(&thys->Desc, token);
+        }
+    }
+
+    ajStrTokenNextParseNoskip(&handle,&token); /* sequence */
+    seqAppend(&thys->Seq, token);
+
+    ajFilebuffClear(buff, 0);
+
+    ajStrTokenDel(&handle);
+    ajStrDel(&token);
+	   
     return ajTrue;
 }
 
