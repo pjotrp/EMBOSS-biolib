@@ -68,7 +68,7 @@
       <SubSystem>NotSet</SubSystem>
       <OutputFile>$(OutDir)eplplot.dll</OutputFile>
       <AdditionalLibraryDirectories>..\Debug;..\..\plplot\lib\Debug</AdditionalLibraryDirectories>
-      <AdditionalDependencies>bgd.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>bgd.lib;libharu.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProgramDatabaseFile>$(OutDir)eplplot.pdb</ProgramDatabaseFile>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
@@ -98,7 +98,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(OutDir)eplplot.dll</OutputFile>
       <AdditionalLibraryDirectories>..\Release;..\..\plplot\lib\Release</AdditionalLibraryDirectories>
-      <AdditionalDependencies>bgd.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>bgd.lib;libharu.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
@@ -112,6 +112,7 @@
     <ClCompile Include="..\..\plplot\hpgl.c" />
     <ClCompile Include="..\..\plplot\null.c" />
     <ClCompile Include="..\..\plplot\pbm.c" />
+    <ClCompile Include="..\..\plplot\pdf.c" />
     <ClCompile Include="..\..\plplot\pdfutils.c" />
     <ClCompile Include="..\..\plplot\plargs.c" />
     <ClCompile Include="..\..\plplot\plbox.c" />
@@ -141,6 +142,7 @@
     <ClCompile Include="..\..\plplot\plvpor.c" />
     <ClCompile Include="..\..\plplot\plwind.c" />
     <ClCompile Include="..\..\plplot\ps.c" />
+    <ClCompile Include="..\..\plplot\svg.c" />
     <ClCompile Include="..\..\plplot\win3.cpp" />
     <ClCompile Include="..\..\plplot\xfig.c" />
   </ItemGroup>
@@ -158,6 +160,35 @@
     <ClInclude Include="..\..\plplot\gdfx.h" />
     <ClInclude Include="..\..\plplot\gdhelpers.h" />
     <ClInclude Include="..\..\plplot\gd_io.h" />
+    <ClInclude Include="..\..\plplot\hpdf.h" />
+    <ClInclude Include="..\..\plplot\hpdf_annotation.h" />
+    <ClInclude Include="..\..\plplot\hpdf_catalog.h" />
+    <ClInclude Include="..\..\plplot\hpdf_conf.h" />
+    <ClInclude Include="..\..\plplot\hpdf_config.h" />
+    <ClInclude Include="..\..\plplot\hpdf_consts.h" />
+    <ClInclude Include="..\..\plplot\hpdf_destination.h" />
+    <ClInclude Include="..\..\plplot\hpdf_doc.h" />
+    <ClInclude Include="..\..\plplot\hpdf_encoder.h" />
+    <ClInclude Include="..\..\plplot\hpdf_encrypt.h" />
+    <ClInclude Include="..\..\plplot\hpdf_encryptdict.h" />
+    <ClInclude Include="..\..\plplot\hpdf_error.h" />
+    <ClInclude Include="..\..\plplot\hpdf_ext_gstate.h" />
+    <ClInclude Include="..\..\plplot\hpdf_font.h" />
+    <ClInclude Include="..\..\plplot\hpdf_fontdef.h" />
+    <ClInclude Include="..\..\plplot\hpdf_gstate.h" />
+    <ClInclude Include="..\..\plplot\hpdf_image.h" />
+    <ClInclude Include="..\..\plplot\hpdf_info.h" />
+    <ClInclude Include="..\..\plplot\hpdf_list.h" />
+    <ClInclude Include="..\..\plplot\hpdf_mmgr.h" />
+    <ClInclude Include="..\..\plplot\hpdf_objects.h" />
+    <ClInclude Include="..\..\plplot\hpdf_outline.h" />
+    <ClInclude Include="..\..\plplot\hpdf_pages.h" />
+    <ClInclude Include="..\..\plplot\hpdf_page_label.h" />
+    <ClInclude Include="..\..\plplot\hpdf_streams.h" />
+    <ClInclude Include="..\..\plplot\hpdf_types.h" />
+    <ClInclude Include="..\..\plplot\hpdf_u3d.h" />
+    <ClInclude Include="..\..\plplot\hpdf_utils.h" />
+    <ClInclude Include="..\..\plplot\hpdf_version.h" />
     <ClInclude Include="..\..\plplot\jisx0208.h" />
     <ClInclude Include="..\..\plplot\metadefs.h" />
     <ClInclude Include="..\..\plplot\pdf.h" />
