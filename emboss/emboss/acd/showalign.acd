@@ -42,7 +42,7 @@ section: additional [
                   sequence"
     help: "If you give the number in the alignment or the name of a
            sequence, it will be taken to be the reference sequence. The
-           reference sequence is always show in full and is the one against
+           reference sequence is always shown in full and is the one against
            which all the other sequences are compared. If this is set to 0
            then the consensus sequence will be used as the reference
            sequence. By default the consensus sequence is used as the
