@@ -321,6 +321,18 @@ static GraphOType graphType[] =
      "Windows screen graphics"},
 #endif
 
+#ifdef PLD_pdf          /* if png/gd/zlib libraries available for png driver */
+    {"pdf",        "pdf",     ".pdf",   800,  600,
+     AJTRUE,  AJFALSE, AJFALSE, AJFALSE, AJFALSE,  AJFALSE,
+     GraphxyDisplayToFile, GraphOpenFile,
+     "PDF graphics files"},
+#endif
+
+    {"svg",        "svg",     ".svg",   800,  600,
+     AJTRUE,  AJFALSE, AJFALSE, AJFALSE, AJFALSE,  AJFALSE,
+     GraphxyDisplayToFile, GraphOpenFile,
+     "SVG graphics files"},
+    
     {NULL, NULL, NULL, 0, 0,
      AJFALSE, AJFALSE, AJFALSE, AJFALSE, AJFALSE, AJFALSE,
      NULL, NULL,

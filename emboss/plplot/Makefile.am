@@ -29,7 +29,8 @@ plctrl.c plcvt.c pldtik.c plfill.c plhist.c plline.c plmap.c \
 plot3d.c plpage.c plsdef.c plshade.c plsym.c pltick.c \
 plvpor.c plwind.c plstripc.c hpgl.c impress.c \
 ljiip.c ljii.c null.c data.c pbm.c plbuf.c \
-plmeta.c ps.c tek.c xfig.c xwin.c gd.c plimage.c plstdio.c plvect.c
+plmeta.c ps.c tek.c xfig.c xwin.c gd.c pdf.c svg.c \
+plimage.c plstdio.c plvect.c
 
 # removed gdpng.c (replaced by gd.c) next.c gd300.c
 
