@@ -200,6 +200,7 @@ NamOAttr namDbAttrs[] =
     {"directory", "", "data directory"},
     {"exclude", "", "wildcard filenames to exclude from 'filename'"},
     {"fields", "", "extra database query fields, ID and ACC are standard"},
+    {"filters", "", "database query filters to apply to all retrievals"},
     {"filename", "", "(wildcard) database filename"},
 
     {"formatall", "", "database entry format for 'methodall' access"},
@@ -2633,6 +2634,11 @@ AjBool ajNamDbData(AjPSeqQuery qry)
     namDbSetAttrStr(dbattr, "fields", &qry->DbFields);
     namDbSetAttrStr(dbattr, "proxy", &qry->DbProxy);
     namDbSetAttrStr(dbattr, "httpversion", &qry->DbHttpVer);
+    namDbSetAttrStr(dbattr, "identifier", &qry->DbIdentifier);
+    namDbSetAttrStr(dbattr, "accession", &qry->DbAccession);
+    namDbSetAttrStr(dbattr, "sequence", &qry->DbSequence);
+    namDbSetAttrStr(dbattr, "return", &qry->DbReturn);
+    namDbSetAttrStr(dbattr, "filter", &qry->DbFilter);
     namDbSetAttrBool(dbattr, "caseidmatch", &qry->CaseId);
     namDbSetAttrBool(dbattr, "hasaccession", &qry->HasAcc);
     /*

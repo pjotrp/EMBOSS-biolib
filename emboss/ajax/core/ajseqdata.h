@@ -286,8 +286,13 @@ typedef struct AjSSeqXref {
 ** @attr Filename [AjPStr] Individual filename
 ** @attr Exclude [AjPStr] File wildcards to exclude (spaced)
 ** @attr DbFields [AjPStr] Query fields (plus id and acc)
+** @attr DbFilter [AjPStr] Additional query filter(s) to restrict results
 ** @attr DbProxy [AjPStr] Proxy host
 ** @attr DbHttpVer [AjPStr] HTTP Version
+** @attr DbIdentifier [AjPStr] Field name of unique identifier
+** @attr DbAccession [AjPStr] Field name of secondary identifier
+** @attr DbSequence [AjPStr] Field name of sequence string
+** @attr DbReturn [AjPStr] Comma separated field named to be returned
 ** @attr Field [AjPStr] Query field
 ** @attr QryString [AjPStr] Query term
 ** @attr Application [AjPStr] External application command
@@ -330,8 +335,13 @@ typedef struct AjSSeqQuery {
   AjPStr Filename;
   AjPStr Exclude;
   AjPStr DbFields;
+  AjPStr DbFilter;
   AjPStr DbProxy;
   AjPStr DbHttpVer;
+  AjPStr DbIdentifier;
+  AjPStr DbAccession;
+  AjPStr DbSequence;
+  AjPStr DbReturn;
   AjPStr Field;
   AjPStr QryString;
   AjPStr Application;
