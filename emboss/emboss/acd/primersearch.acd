@@ -1,0 +1,56 @@
+application: primersearch [
+  documentation: "Search DNA sequences for matches with primer pairs"
+  groups: "Nucleic:Primers"
+  relations: "/edam/topic/0000195 Polymerase chain reaction"
+  relations: "/edam/topic/0000090 Database search and retrieval"
+  relations: "/edam/operation/0000354 Sequence database search by sequence (primer sequences)"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: seqall [
+    parameter: "Y"
+    type: "dna"
+    relations: "/edam/data/0000850 Sequence set"                                 
+    relations: "/edam/data/0001215 Pure DNA sequence"
+  ]
+
+  infile: infile [
+    parameter: "Y"
+    information: "Primer pairs file"
+    knowntype: "primer pairs"
+    relations:  "/edam/data/ Primer pairs sequence record"                   
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  integer: mismatchpercent [
+    parameter: "Y"
+    default: "0"
+    information: "Allowed percent mismatch"
+    relations: "/edam/data/0002144 Threshold percentage"
+  ]
+
+endsection: required
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "primer3 output"
+    information: "Whitehead primer3_core program output file"
+    relations:  "/edam/data/ Primer3 primer report"                                 
+  ]
+
+endsection: output

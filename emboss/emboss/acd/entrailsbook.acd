@@ -1,0 +1,41 @@
+application: entrailsbook [
+  documentation: "Reports the internal structures in EMBOSS book format"
+  groups: "Utils:Misc"
+  relations: "/edam/topic/0000220 File handling"
+  relations: "/edam/operation/0000335 File reformatting"
+]
+
+section: required [
+  information: "required section"
+  type: "page"
+]
+
+  list: tables [
+    standard: "Y"
+    default: "all"
+    minimum: "1"
+    value: "all: All tables;
+           inseq: Input sequence formats;
+           outseq: Output sequence formats;
+           infeat: Input feature formats;
+           outfeat: Output feature formats;
+           report: Output report formats;
+           align: Output alignment formats"
+    information: "Tables to be written"
+    relations: "/edam/data/0001773 Tool-specific parameter"                                
+  ]
+
+endsection: required
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "docbook"
+    relations: "/edam/data/0000969 Free text"                                      
+  ]
+
+endsection: output

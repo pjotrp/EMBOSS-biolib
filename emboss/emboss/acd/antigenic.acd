@@ -1,0 +1,51 @@
+application: antigenic [
+  documentation: "Finds antigenic sites in proteins"
+  groups: "Protein:Motifs"
+  relations: "/edam/topic/0000201 Immunological analysis"
+  relations: "/edam/operation/0000416 Epitope mapping"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "proteinstandard"
+    relations: "/edam/data/0000850 Sequence set"                             
+    relations: "/edam/data/0001219 Pure protein sequence"
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  integer: minlen [
+    standard: "Y"
+    minimum: "1"
+    maximum: "50"
+    default: "6"
+    information: "Minimum length of antigenic region"
+    relations: "/edam/data/ Generic integer"                                     
+  ]
+
+endsection: required
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  report: outfile [
+    parameter: "Y"
+    rformat: "motif"
+    multiple: "Y"
+    taglist: "int:pos=Max_score_pos"
+    relations: "/edam/data/0002143 EMBOSS report"                                       
+  ]
+
+endsection: output

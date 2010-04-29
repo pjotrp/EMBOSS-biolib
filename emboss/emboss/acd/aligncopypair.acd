@@ -1,0 +1,113 @@
+application: aligncopypair
+[
+  documentation: "Reads and writes pairs from alignments"
+  groups: "Edit"
+  gui: "yes"
+  batch: "yes"
+  cpu: "low"
+  relations: "/edam/topic/0000220 File handling"
+  relations: "/edam/operation/0002122 Alignment file handling"
+]
+
+
+
+
+
+section: input 
+[
+  information: "Input section"
+  type: "page"
+]
+
+seqset: sequences
+[
+    parameter: "Y"
+    type: "gapany"
+    aligned: "Y"
+    help: "File containing a sequence alignment."
+    relations: "/edam/data/0002044 Sequence alignment data"                             
+]
+
+endsection: input
+
+
+
+
+
+section: required 
+[
+  information: "Required section"
+  type: "page"
+]
+endsection: required
+
+
+
+
+
+section: additional
+[
+  information: "Additional section"
+  type: "page"
+]
+  string: name 
+  [
+    additional: "Y"
+    default: ""
+    information: "Name of the alignment"
+    knowntype: "sequence id output"
+    relations:  "/edam/data/0002044 Sequence unique identifier"                     
+  ]
+
+  string: comment 
+  [
+    additional: "Y"
+    default: ""
+    information: "Comment on the alignment"
+    knowntype: "string"
+    relations:  "/edam/data/ Generic string"                                 
+  ]
+
+  boolean: append
+  [
+    additional: "Y"
+    default: "N"
+    information: "Append to the existing alignment header"
+    help: "This allows you to append the name and comments you have given 
+           on to the end of the existing alignment header."
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+endsection: additional
+
+
+
+
+
+section: advanced
+[
+  information: "Advanced section"
+  type: "page"
+]
+endsection: advanced
+
+
+
+
+
+section: output 
+[
+  information: "Output section"
+  type: "page"
+]
+
+align: outfile 
+[
+    parameter: "Y"
+    minseqs: "2"
+    maxseqs: "2"
+    aformat: "simple"
+    relations: "/edam/data/0001381 Pairwise sequence alignment"                    
+]
+
+endsection: output

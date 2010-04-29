@@ -1,0 +1,120 @@
+application: emowse [
+  documentation: "Search protein sequences by digest fragment molecular weight"
+  groups: "Protein:Composition"
+  relations: "/edam/topic/0000123 Protein physicochemical properties"
+  relations: "/edam/topic/0000141 Proteolysis and peptide mass"
+  relations: "/edam/operation/0000356 Sequence database search by isoelectric point"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "protein"
+    relations: "/edam/data/0000850 Sequence set"                             
+    relations: "/edam/data/0001219 Pure protein sequence"
+  ]
+
+  infile: infile [
+    parameter: "Y"
+    information: "Peptide molecular weight values file"
+    knowntype: "peptide molweights"
+    relations:  "/edam/data/ Peptide molecular weight data"                  
+  ]
+
+  datafile: mwdata [
+    information: "Molecular weights data file"
+    default: "Emolwt.dat"
+    knowntype: "molecular weights"
+    relations:  "/edam/data/ Amino acid molecular weight data"               
+  ]
+
+  datafile: frequencies [
+    default: "Efreqs.dat"
+    information: "Amino acid frequencies data file"
+    knowntype: "amino acid frequencies"
+    relations:  "/edam/data/ Peptide fragment molecular weight frequencies"  
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  integer: weight [
+    standard: "Y"
+    default: "0"
+    information: "Whole sequence molwt"
+    relations: "/edam/data/ Generic integer"                                     
+  ]
+
+  boolean: mono [
+    standard: "Y"
+    default: "N"
+    information: "Use monoisotopic weights"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+endsection: required
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  list: enzyme [
+    default: "1"
+    minimum: "1"
+    maximum: "1"
+    header: "Enzymes and reagents"
+    values: "1:Trypsin, 2:Lys-C, 3:Arg-C, 4:Asp-N, 5:V8-bicarb,
+             6:V8-phosph, 7:Chymotrypsin, 8:CNBr"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Enzyme or reagent"
+    relations: "/edam/data/0001773 Tool-specific parameter"                                
+  ]
+
+  integer: pcrange [
+    default: "25"
+    minimum: "0"
+    maximum: "75"
+    information: "Allowed whole sequence weight variability"
+    relations: "/edam/data/ Generic integer"                                     
+  ]
+
+  float: tolerance [
+    default: "0.1"
+    minimum: "0.1"
+    maximum: "1.0"
+    information: "Tolerance"
+relations: "/edam/data/0001773 Tool-specific parameter"
+  ]
+
+  float: partials [
+    default: "0.4"
+    minimum: "0.1"
+    maximum: "1.0"
+    information: "Partials factor"
+relations: "/edam/data/0001773 Tool-specific parameter"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "emowse output"
+    relations:  "EDAM:Peptide molecular weight hits report"                
+  ]
+
+endsection: output

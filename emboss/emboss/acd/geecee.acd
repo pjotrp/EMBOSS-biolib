@@ -1,0 +1,33 @@
+application: geecee [
+  documentation: "Calculate fractional GC content of nucleic acid sequences"
+  groups: "Nucleic:CpG Islands"
+  relations: "/edam/topic/0000157 Sequence composition"
+  relations: "/edam/operation/0000430 CpG island and isochores identification"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "dna"
+    relations: "/edam/data/0000850 Sequence set"                                 
+    relations: "/edam/data/0001215 Pure DNA sequence"
+  ]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "geecee output"
+    relations:  "EDAM:CpG island and isochore report"                      
+  ]
+
+endsection: output

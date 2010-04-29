@@ -1,0 +1,57 @@
+application: banana [
+  documentation: "Plot bending and curvature data for B-DNA"
+  groups: "Nucleic:Composition"
+  relations: "/edam/topic/0000097 Nucleic acid structure analysis"
+  relations: "/edam/operation/0000461 Nucleic acid curvature calculation"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: sequence [
+    parameter: "y"
+    type: "puredna"
+    relations: "/edam/data/ Unambiguous pure DNA sequence"                       
+  ]
+
+  datafile: anglesfile [
+    additional: "Y"
+    information: "DNA base trimer roll angles data file"
+    default: "Eangles_tri.dat"
+    knowntype: "base trimer roll angles"
+    relations:  "/edam/data/ DNA base trimer roll angles data"               
+  ]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  graph: graph [
+    standard: "Y"
+    gdesc: "Bending and curvature plot"
+    nullok: "Y"
+    relations: "/edam/data/0002142 EMBOSS graph"                                   
+  ]
+
+  integer: residuesperline [
+    additional: "Y"
+    default: "50"
+    information: "Number of residues to be displayed on each
+                  line"
+    relations: "/edam/data/ Generic integer"                                     
+  ]
+
+  outfile: outfile [
+    additional: "Y"
+    default: "banana.profile"
+    knowntype: "banana output"
+    nullok: "Y"
+    relations:  "EDAM:Nucleic acid conformation report"                    
+  ]
+
+endsection: output

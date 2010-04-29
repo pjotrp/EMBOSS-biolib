@@ -2,6 +2,8 @@ application: acdrelations
 [
   documentation: "Add relations: attribute to ACD files"
   groups: "Acd"
+  relations: "/edam/topic/0000220 File handling"
+  relations: "/edam/operation/0000335 File reformatting"
 ]
 
 

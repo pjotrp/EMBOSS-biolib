@@ -1,0 +1,96 @@
+application: etandem [
+  documentation: "Finds tandem repeats in a nucleotide sequence"
+  groups: "Nucleic:Repeats"
+  relations: "/edam/topic/0000157 Sequence composition"
+  relations: "/edam/operation/0000379 Repeat sequence identification"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: sequence [
+    parameter: "Y"
+    type: "dna"
+    relations: "/edam/data/0001215 Pure DNA sequence"                                   
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  integer: minrepeat [
+    standard: "Y"
+    default: "10"
+    minimum: "2"
+    information: "Minimum repeat size"
+    valid: "Integer, 2 or higher"
+    relations: "/edam/data/ Generic integer"                                     
+  ]
+
+  integer: maxrepeat [
+    standard: "Y"
+    default: "$(minrepeat)"
+    minimum: "$(minrepeat)"
+    information: "Maximum repeat size"
+    valid: "Integer, same as -minrepeat or higher"
+    expected: "Same as -minrepeat"
+    relations: "/edam/data/ Generic integer"                                     
+  ]
+
+endsection: required
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  integer: threshold [
+    default: "20"
+    information: "Threshold score"
+relations: "/edam/data/0002146 Threshold"
+  ]
+
+  boolean: mismatch [
+    information: "Allow N as a mismatch"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+  boolean: uniform [
+    information: "Allow uniform consensus"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  report: outfile [
+    parameter: "Y"
+    rformat: "table"
+    taglist: "int:rpt_size=Size int:rpt_count=Count
+              float:identity=Identity str:consensus=Consensus"
+    rextension: "tan"
+    precision: "0"
+    relations: "/edam/data/0002143 EMBOSS report"                                       
+  ]
+
+  outfile: origfile [
+    extension: "oldtan"
+    nullok: "Y"
+#    default: ""
+    nulldefault: "Y"
+    knowntype: "tandem output"
+    information: "Sanger Centre program tandem output file
+                  (optional)"
+    relations:  "/edam/data/ quicktandem repeat sequence map report"         
+  ]
+
+endsection: output

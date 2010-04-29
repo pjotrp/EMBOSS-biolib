@@ -1,0 +1,68 @@
+application: pepcoil [
+  documentation: "Predicts coiled coil regions in protein sequences"
+  groups: "Protein:2D Structure, Protein:Motifs"
+  relations: "/edam/topic/0000178 Protein secondary structure prediction"
+  relations: "/edam/operation/0000268 Protein super-secondary structure prediction"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "PureProtein"
+    relations: "/edam/data/0002044 Sequence record"                                     
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  integer: window [
+    standard: "Y"
+    minimum: "7"
+    maximum: "28"
+    default: "28"
+    information: "Window size"
+    relations: "/edam/data/0001251 Window size"
+  ]
+
+endsection: required
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  boolean: coil [
+    default: "Y"
+    information: "Report coiled coil regions"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+  boolean: frame [
+    default: "$(coil)"
+    information: "Show coil frameshifts"
+    expected: "Yes if -coil is true"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+  boolean: other [
+    default: "N"
+    information: "Report non coiled coil regions"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+  report: outfile [
+    parameter: "Y"
+    rformat: "motif"
+    taglist: "float:Probability str:Predict int:pos=Max_coil_pos str:Frames"
+    relations: "/edam/data/0002143 EMBOSS report"                                       
+  ]
+
+endsection: output

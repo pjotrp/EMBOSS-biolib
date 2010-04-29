@@ -1,0 +1,81 @@
+application: freak [
+  documentation: "Generate residue/base frequency table or plot"
+  groups: "Nucleic:Composition, Protein:Composition"
+  relations: "/edam/topic/0000157 Sequence composition"
+  relations: "/edam/operation/0000236 Sequence composition analysis"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: seqall [
+    parameter: "Y"
+    type: "any"
+    relations: "/edam/data/0002044 Sequence record"                                     
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  string: letters [
+    standard: "Y"
+    default: "gc"
+    information: "Residue letters"
+    knowntype: "nucleotide sequence"
+    relations:  "/edam/data/0001210 Pure nucleotide sequence"
+  ]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  integer: step [
+    additional: "Y"
+    default: "1"
+    information: "Stepping value"
+    relations: "/edam/data/ Generic integer"                                     
+  ]
+
+  integer: window [
+    additional: "Y"
+    default: "30"
+    information: "Averaging window"
+    relations: "/edam/data/0001251 Window size"
+  ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  toggle: plot [
+    default: "N"
+    information: "Produce graphic"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+  xygraph: graph [
+    standard: "$(plot)"
+    relations: "/edam/data/0002142 EMBOSS graph"                                   
+  ]
+
+  outfile: outfile [
+    standard: "@(!$(plot))"
+    knowntype: "freak output"
+    nullok: "$(plot)"
+    nulldefault: "$(plot)"
+    relations:  "EDAM:Sequence composition report"                         
+  ]
+
+endsection: output

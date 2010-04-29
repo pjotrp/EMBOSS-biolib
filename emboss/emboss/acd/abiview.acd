@@ -1,0 +1,96 @@
+application: abiview [
+  documentation: "Display the trace in an ABI sequencer file"
+  groups: "Display"
+  relations: "/edam/topic/0000102 Sequencing"
+  relations: "/edam/topic/0000337 Visualisation and rendering"
+  relations: "/edam/operation/0000564 Sequence visualisation"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  infile: infile [
+    parameter: "Y"
+    default: ""
+    binary: "Y"
+    knowntype: "abi trace"
+    information: "ABI sequencing trace file"
+    relations:  "/edam/data/ ABI sequencing trace"                           
+  ]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqout: outseq [
+    parameter: "Y"
+    type: "dna"
+    relations: "/edam/data/0001215 Pure DNA sequence"                                   
+  ]
+
+  xygraph: graph [
+    standard: "Y"
+    gxtitle: "Residue Position"
+    relations: "/edam/data/0002142 EMBOSS graph"                                   
+  ]
+
+  integer: startbase [
+    additional: "Y"
+    default: "0"
+    minimum: "0"
+    information: "First base to report or display"
+    relations: "/edam/data/ Generic integer"                                     
+  ]
+
+  integer: endbase [
+    additional: "Y"
+    default: "0"
+    information: "Last base to report or display"
+    help: "Last sequence base to report or display. If the default is
+           set to zero then the value of this is taken as the maximum number
+           of bases."
+    relations: "/edam/data/ Generic integer"                                     
+  ]
+
+  boolean: separate [
+    default: "N"
+    information: "Separate the trace graphs for the 4 bases"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+  boolean: yticks [
+    additional: "Y"
+    default: "N"
+    information: "Display y-axis ticks"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+  boolean: sequence [
+    additional: "Y"
+    default: "Y"
+    information: "Display the sequence on the graph"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+  integer: window [
+    additional: "Y"
+    default: "40"
+    information: "Sequence display window size"
+    relations: "/edam/data/0001251 Window size"
+  ]
+
+  string: bases [
+    additional: "Y"
+    default: "GATC"
+    information: "Base graphs to be displayed"
+    pattern: "[GATC]+"
+    knowntype: "nucleotide codes"
+    relations:  "/edam/data/0001007 Nucleotide code"                         
+  ]
+
+endsection: output

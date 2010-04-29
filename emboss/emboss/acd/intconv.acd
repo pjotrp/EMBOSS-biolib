@@ -2,7 +2,8 @@ application: intconv [
   documentation: "Convert ints to ajints and longs to
                   ajlongs"
   groups: "Test"
-  relations: "EDAM: File debugging"
+  relations: "/edam/topic/0000220 File handling"
+  relations: "/edam/operation/0000335 File reformatting"
 ]
 
 section: input [

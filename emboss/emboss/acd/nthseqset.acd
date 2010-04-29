@@ -1,0 +1,55 @@
+application: nthseqset [
+  documentation: "Reads and writes (returns) one set of
+                  sequences from many"
+  groups: "Edit"
+  relations: "/edam/topic/0000220 File handling"
+  relations: "/edam/operation/0002121 Sequence file handling"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  boolean: feature [
+    information: "Use feature information"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+  seqsetall: sequence [
+    parameter: "Y"
+    features: "$(feature)"
+    type: "gapany"
+    aligned: "N"
+    relations: "/edam/data/0002044 Sequence record"                                     
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  integer: number [
+    standard: "Y"
+    minimum: "1"
+    default: "1"
+    information: "The number of the sequence set to output"
+    relations: "/edam/data/ Generic integer"                                     
+  ]
+
+endsection: required
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqoutall: outseq [
+    parameter: "Y"
+    features: "$(feature)"
+    relations: "/edam/data/0002044 Sequence record"                                     
+  ]
+
+endsection: output

@@ -1,7 +1,8 @@
 application: union [
   documentation: "Concatenate multiple sequences into a single sequence"
   groups: "Edit"
-  relations: "EDAM: Sequence file handling"
+  relations: "/edam/topic/0000156 Sequence editing"
+  relations: "/edam/operation/0000232 Sequence merging"
 ]
 
 section: input [
@@ -12,14 +13,14 @@ section: input [
   boolean: feature [
     default: "N"
     information: "Use feature information"
-    relations: "EDAM: Generic boolean"                                     
+    relations: "/edam/data/0002135 Toggle"                                     
   ]
 
   seqall: sequence [
     parameter: "Y"
     type: "gapany"
     features: "$(feature)"
-    relations: "EDAM: Sequence record"                                     
+    relations: "/edam/data/0002044 Sequence record"                                     
   ]
 
 endsection: input
@@ -32,13 +33,13 @@ section: advanced [
   boolean: source [
     default: "N"
     information: "Create source features"
-    relations: "EDAM: Generic boolean"                                     
+    relations: "/edam/data/0002135 Toggle"                                     
   ]
 
   boolean: findoverlap [
     default: "N"
     information: "Look for overlaps when joining"
-    relations: "EDAM: Generic boolean"                                     
+    relations: "/edam/data/0002135 Toggle"                                     
   ]
 
 endsection: advanced
@@ -51,7 +52,7 @@ section: output [
   seqout: outseq [
     parameter: "Y"
     features: "$(feature)"
-    relations: "EDAM: Sequence"                                            
+    relations: "/edam/data/0002044 Sequence"                                            
   ]
 
   outfile: overlapfile [

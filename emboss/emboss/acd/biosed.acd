@@ -1,8 +1,9 @@
 application: biosed [
   documentation: "Replace or delete sequence sections"
   groups: "Edit"
-  relations: "EDAM: Sequence cutting"
-  relations: "EDAM: Sequence merging"
+  relations: "/edam/topic/0000156 Sequence editing"
+  relations: "/edam/operation/0000369 Sequence cutting"
+  relations: "/edam/operation/0000232 Sequence merging"
 ]
 
 section: input [
@@ -13,7 +14,7 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "gapany"
-    relations: "EDAM: Sequence record"                                     
+    relations: "/edam/data/0002044 Sequence record"                                     
   ]
 
 endsection: input
@@ -28,13 +29,13 @@ section: required [
     information: "Sequence section to match"
     default: "N"
     knowntype: "sequence"
-    relations:  "EDAM: Sequence"                                       
+    relations:  "/edam/data/0002044 Sequence"                                       
   ]
 
   toggle: delete [
     information: "Delete the target sequence sections"
     default: "N"
-    relations: "EDAM: Generic boolean"                                     
+    relations: "/edam/data/0002135 Toggle"                                     
   ]
 
   string: replace [
@@ -42,7 +43,7 @@ section: required [
     information: "Replacement sequence section"
     default: "A"
     knowntype: "sequence"
-    relations:  "EDAM: Sequence"                                       
+    relations:  "/edam/data/0002044 Sequence"                                       
   ]
 
 endsection: required
@@ -60,7 +61,7 @@ section: additional [
     maximum: "$(sequence.len)"
     failrange: "N"
     trueminimum: "N"
-    relations: "EDAM: Generic integer"                                     
+    relations: "/edam/data/0001016 Sequence position"
   ]
 
 endsection: additional
@@ -72,7 +73,7 @@ section: output [
 
   seqout: outseq [
     parameter: "Y"
-    relations: "EDAM: Sequence"                                            
+    relations: "/edam/data/0002044 Sequence"                                            
   ]
 
 endsection: output

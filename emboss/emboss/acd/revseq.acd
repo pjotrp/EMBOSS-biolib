@@ -1,0 +1,56 @@
+application: revseq [
+  documentation: "Reverse and complement a nucleotide sequence"
+  groups: "Edit"
+  relations: "/edam/topic/0000156 Sequence editing"
+  relations: "/edam/operation/0000363 Sequence reverse and complement"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "gapdna"
+    relations: "/edam/data/0000850 Sequence set"                                 
+    relations: "/edam/data/0001215 Pure DNA sequence"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: reverse [
+    default: "Y"
+    information: "Reverse sequence"
+    help: "Set this to be false if you do not wish to reverse the
+           output sequence"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+  boolean: complement [
+    default: "Y"
+    information: "Complement sequence"
+    help: "Set this to be false if you do not wish to complement the
+           output sequence"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqoutall: outseq [
+    parameter: "Y"
+    extension: "rev"
+    relations: "/edam/data/0002044 Sequence record"                                     
+  ]
+
+endsection: output

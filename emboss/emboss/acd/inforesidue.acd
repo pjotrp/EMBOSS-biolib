@@ -1,0 +1,101 @@
+application: inforesidue
+[
+  documentation: "Return information on a given amino acid residue"
+  groups: "Information"
+  gui: "yes"
+  batch: "yes"
+  cpu: "low"
+  relations: "/edam/topic/0000154 Small molecules analysis"
+  relations: "/edam/operation/0002123 Small molecule property calculation"
+]
+
+
+
+
+
+section: input 
+[
+  information: "Input section"
+  type: "page"
+]
+
+  string: code
+  [
+    parameter: "Y"
+    information: "Amino acid residue code"
+    help: "Enter IUPAC amino acids codes, e.g. A, C, D, E etc."
+    knowntype: "protein codes"
+    default: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    relations:  "/edam/data/ Amino acid code string"                         
+  ]
+
+  datafile: aadata [
+    information: "Amino acids properties and molecular weight data file"
+    help: "Amino acid properties"
+    default: "Eamino.dat"
+    knowntype: "amino acid properties"
+    relations:  "/edam/data/ Amino acid chemical classes data"               
+  ]
+
+  datafile: mwdata [
+    information: "Molecular weights data file"
+    help: "Molecular weight data for amino acids"
+    default: "Emolwt.dat"
+    knowntype: "molecular weights"
+    relations:  "/edam/data/ Amino acid molecular weight data"               
+  ]
+
+endsection: input
+
+
+
+
+
+section: required 
+[
+  information: "Required section"
+  type: "page"
+]
+endsection: required
+
+
+
+
+
+section: additional
+[
+  information: "Additional section"
+  type: "page"
+]
+endsection: additional
+
+
+
+
+
+section: advanced
+[
+  information: "Advanced section"
+  type: "page"
+]
+endsection: advanced
+
+
+
+
+
+section: output 
+[
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile
+  [
+    parameter: "Y"
+    knowntype: "inforesidue output"
+    relations:  "EDAM:Amino acid information report"                       
+  ]
+  
+
+endsection: output

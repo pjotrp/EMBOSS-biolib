@@ -1,0 +1,85 @@
+application: makeprotseq [
+  documentation: "Create random protein sequences"
+  groups: "Edit"
+  relations: "/edam/topic/0000156 Sequence editing"
+  relations: "/edam/operation/0000364 Random sequence generation"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  infile: pepstatsfile [
+    standard: "Y"
+    information: "Pepstats program output file (optional)"
+    help: "This file should be a pepstats output file. Protein
+           sequences will be created with the composition in the pepstats
+           output file."
+    nullok: "Y"
+    knowntype: "pepstats output"
+    relations:  "/edam/data/ Protein physicochemical profile"                
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  integer: amount [
+    standard: "Y"
+    default: "100"
+    minimum: "1"
+    information: "Number of sequences created"
+    relations: "/edam/data/ Generic integer"                                     
+  ]
+
+  integer: length [
+    standard: "Y"
+    default: "100"
+    minimum: "1"
+    information: "Length of each sequence"
+    relations: "/edam/data/ Generic integer"                                     
+  ]
+
+  toggle: useinsert [
+    additional: "Y"
+    information: "Do you want to make an insert"
+    default: "N"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+  string: insert [
+    standard: "$(useinsert)"
+    information: "Inserted string"
+    help: "String that is inserted into sequence"
+    knowntype: "sequence"
+    relations:  "/edam/data/0002044 Sequence"                                       
+  ]
+
+  integer: start [
+    standard: "$(useinsert)"
+    information: "Start point of inserted sequence"
+    minimum: "1"
+    default: "1"
+    relations: "/edam/data/ Generic integer"                                     
+  ]
+
+endsection: required
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqoutall: outseq [
+    parameter: "Y"
+    type: "protein"
+    name: "makeseq"
+    relations: "/edam/data/0000850 Sequence set"                             
+    relations: "/edam/data/0001219 Pure protein sequence"
+  ]
+
+endsection: output

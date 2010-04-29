@@ -1,0 +1,107 @@
+application: seqxrefall
+[
+  documentation: "Retrieve all cross-references for a sequence record"
+  groups: "Information"
+  gui: "yes"
+  batch: "yes"
+  cpu: "low"
+  relations: "/edam/topic/0000090 Database search and retrieval"
+  relations: "/edam/operation/0000225 Database cross-reference retrieval"
+]
+
+
+
+
+
+section: input 
+[
+  information: "Input section"
+  type: "page"
+]
+
+sequence: sequence
+[
+    parameter: "Y"
+    type: "any"
+    help: "The sequence for which cross-references will be retrieved."
+    relations: "/edam/data/0002044 Sequence"                                            
+]
+
+datafile: dbref
+[
+    information: "Database information datafile"
+    help: "File of database information including identifier, description, type, URL etc."
+    default: "dbref.dat"
+    knowntype: "database info"
+    relations:  "/edam/data/0000957 Database metadata "             
+]
+
+endsection: input
+
+
+
+
+
+section: required 
+[
+  information: "Required section"
+  type: "page"
+]
+
+selection: format
+[
+    default: "1"
+    minimum: "1"
+    maximum: "1"
+    values: "Text (plain), HTML"
+    delimiter: ","
+    header: "Output file format"
+    information: "Select format"
+    help: "This specifies the format of the output file"
+    button: "Y"
+    relations: "/edam/data/0002129 File format name"                                
+]
+
+endsection: required
+
+
+
+
+
+section: additional
+[
+  information: "Additional section"
+  type: "page"
+]
+endsection: additional
+
+
+
+
+
+section: advanced
+[
+  information: "Advanced section"
+  type: "page"
+]
+endsection: advanced
+
+
+
+
+
+section: output 
+[
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile 
+[
+    parameter: "Y"
+    knowntype: "database cross-reference list"
+    help: "Output file containing list of cross-references"
+    relations:  "/edam/data/0002093 Database cross-reference"      
+]
+
+endsection: output

@@ -1,0 +1,98 @@
+application: newcoils [
+  documentation: "Predicts coils protein secondary structure"
+  groups: "Protein:2D Structure"
+  relations: "/edam/topic/0000178 Protein secondary structure prediction"
+  relations: "/edam/operation/0000470 Protein secondary structure prediction (coils)"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "PureProtein"
+    relations: "/edam/data/0002044 Sequence record"                                     
+  ]
+
+  datafile: datafile [
+    information: "Program newcoils data file"
+    default: "Enewcoils.mat"
+    knowntype: "newcoils datafile"
+    relations:                                                 
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  integer: window [
+    standard: "Y"
+    minimum: "1"
+    maximum: "$(sequence.end)"
+    default: "21"
+    information: "Window size"
+    relations: "/edam/data/0001251 Window size"
+  ]
+
+  integer: weighted [
+    standard: "Y"
+    minimum: "0"
+    default: "0"
+    information: "Weighted value"
+    relations: "/edam/data/0001773 Tool-specific parameter"
+  ]
+
+  integer: verb [
+    standard: "Y"
+    minimum: "0"
+    default: "0"
+    information: "Verb - matrix file"
+    relations: "/edam/data/0001773 Tool-specific parameter"
+  ]
+
+  integer: mode [
+    standard: "Y"
+    minimum: "0"
+    maximum: "2"
+    default: "0"
+    information: "Display Mode"
+    relations: "/edam/data/0001773 Tool-specific parameter"
+  ]
+
+  integer: minseg [
+    standard: "Y"
+    minimum: "0"
+    maximum: "10"
+    default: "1"
+    information: "Minimum number of seqments"
+    relations: "/edam/data/0001773 Tool-specific parameter"
+  ]
+
+  float: minp [
+    standard: "Y"
+    minimum: "0."
+    maximum: "100."
+    default: "0.50"
+    information: "Minimum p"
+    relations: "/edam/data/0001773 Tool-specific parameter"
+  ]
+
+endsection: required
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "newcoils output"
+    relations:  "EDAM:Protein secondary structure record"                  
+  ]
+
+endsection: output

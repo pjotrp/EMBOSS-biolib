@@ -1,0 +1,81 @@
+application: coderet [
+  documentation: "Extract CDS, mRNA and translations from
+                  feature tables"
+  groups: "Feature tables, Nucleic:Translation"
+  relations: "/edam/topic/0000109 Gene finding"
+  relations: "/edam/operation/0000436 Coding region prediction"
+  relations: "/edam/operation/0000371 DNA translation"
+  relations: "/edam/operation/0000372 DNA transcription"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: seqall [
+    parameter: "Y"
+    type: "DNA"
+    features: "Y"
+    relations: "/edam/data/0002044 Sequence record"                                     
+  ]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    extension: "coderet"
+    knowntype: "coderet output"
+    relations:  "EDAM:Sequence record"                                     
+  ]
+
+  seqoutall: cdsoutseq [
+    parameter: "Y"
+    type: "nucleotide"
+    information: "Coding nucleotide output sequence(s)
+                  (optional)"
+    osextension: "cds"
+    nullok: "Y"
+    knowntype: "cds sequence"
+    relations:  "/edam/data/0001210 Pure nucleotide sequence"
+  ]
+
+  seqoutall: mrnaoutseq [
+    parameter: "Y"
+    type: "nucleotide"
+    information: "Messenger RNA nucleotide output sequence(s)
+                  (optional)"
+    osextension: "mrna"
+    nullok: "Y"
+    knowntype: "mrna sequence"
+    relations:  "/edam/data/ RNA sequence"                                   
+  ]
+
+  seqoutall: translationoutseq [
+    parameter: "Y"
+    type: "protein"
+    information: "Translated coding protein output sequence(s)
+                  (optional)"
+    osextension: "prot"
+    nullok: "Y"
+    knowntype: "translated cds sequence"
+    relations:  "/edam/data/ Protein sequence"                               
+  ]
+
+  seqoutall: restoutseq [
+    parameter: "Y"
+    type: "nucleotide"
+    information: "Non-coding nucleotide output sequence(s)
+                  (optional)"
+    osextension: "noncoding"
+    nullok: "Y"
+    knowntype: "non coding sequence"
+    relations:  "/edam/data/0001210 Pure nucleotide sequence"
+  ]
+
+endsection: output

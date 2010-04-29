@@ -1,7 +1,8 @@
 application: isochore [
   documentation: "Plots isochores in DNA sequences"
   groups: "Nucleic:Composition"
-  relations: "EDAM: CpG island and isochores identification"
+  relations: "/edam/topic/0000157 Sequence composition"
+  relations: "/edam/operation/0000430 CpG island and isochores identification"
 ]
 
 section: input [
@@ -12,7 +13,7 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "dna"
-    relations: "EDAM: Pure DNA sequence"                                   
+    relations: "/edam/data/0001215 Pure DNA sequence"                                   
   ]
 
 endsection: input
@@ -30,9 +31,9 @@ section: additional [
     failrange: "N"
     trueminimum: "Y"
     information: "Window size"
-    relations: "EDAM: Generic integer" 
     trueminimum: "Y"                                    
     warnrange: "N"                                  
+    relations: "/edam/data/0001251 Window size"
   ]
 
   integer: shift [
@@ -41,10 +42,10 @@ section: additional [
     minimum: "1"
     maximum: "@($(sequence.end)/10)"
     information: "Shift increment"
-    relations: "EDAM: Generic integer"                                     
     failrange: "N"
     trueminimum: "Y"  
     warnrange: "N"                                  
+    relations: "/edam/data/0002141 Window step size"
   ]
 
 endsection: additional
@@ -63,7 +64,7 @@ section: output [
 
   xygraph: graph [
     standard: "Y"
-    relations: "EDAM: EMBOSS graph file"                                   
+    relations: "/edam/data/0002142 EMBOSS graph"                                   
   ]
 
 endsection: output

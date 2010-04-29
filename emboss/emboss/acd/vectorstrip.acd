@@ -1,0 +1,108 @@
+application: vectorstrip [
+  documentation: "Removes vectors from the ends of nucleotide sequence(s)"
+  groups: "Edit"
+  relations: "/edam/topic/0000156 Sequence editing"
+  relations: "/edam/operation/0000369 Sequence cutting"
+  relations: "/edam/operation/0000266 Vector sequence identification"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "dna"
+    relations: "/edam/data/0000850 Sequence set"                                 
+    relations: "/edam/data/0001215 Pure DNA sequence"
+  ]
+
+  section: vectorfilesection [
+    information: "Vector input options"
+    type: "frame"
+  ]
+
+    toggle: readfile [
+      parameter: "Y"
+      default: "Y"
+      information: "Are your vector sequences in a file?"
+    relations: "/edam/data/0002135 Toggle"                                     
+    ]
+
+    infile: vectorsfile [
+      standard: "$(readfile)"
+      nullok: "Y"
+      default: ""
+      information: "Cloning vector definition file (optional)"
+      knowntype: "vector"
+    relations:  "/edam/data/0001241 vectorstrip cloning vector definition file"   
+    ]
+
+  endsection: vectorfilesection
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  integer: mismatch [
+    standard: "Y"
+    default: "10"
+    information: "Max allowed % mismatch"
+    relations: "/edam/data/0002144 Threshold percentage"                                     
+  ]
+
+  boolean: besthits [
+    standard: "Y"
+    default: "Y"
+    information: "Show only the best hits (minimise
+                  mismatches)?"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+  string: alinker [
+    standard: "@(!$(readfile))"
+    information: "The 5' sequence"
+    knowntype: "nucleotide sequence"
+    relations:  "/edam/data/0000848 Raw sequence"
+    relations:  "/edam/data/0001210 Pure nucleotide sequence"
+  ]
+
+  string: blinker [
+    standard: "@(!$(readfile))"
+    information: "The 3' sequence"
+    knowntype: "nucleotide sequence"
+    relations:  "/edam/data/0000848 Raw sequence"
+    relations:  "/edam/data/0001210 Pure nucleotide sequence"
+  ]
+
+endsection: required
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  boolean: allsequences [
+    additional: "Y"
+    information: "Show all sequences in output"
+    default: "N"
+    outputmodifier: "Y"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "vectorstrip output"
+    relations:  "/edam/data/0001678 Tool log"
+  ]
+
+  seqoutall: outseq [
+    parameter: "Y"
+    relations: "/edam/data/0002044 Sequence record"                                     
+  ]
+
+endsection: output

@@ -1,0 +1,43 @@
+application: tmap [
+  documentation: "Predict and plot transmembrane segments in protein sequences"
+  groups: "Protein:2D Structure"
+  relations: "/edam/topic/0000131 Transmembrane protein analysis"
+  relations: "/edam/operation/0000269 Transmembrane protein prediction"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: sequences [
+    parameter: "Y"
+    type: "gapprotein"
+    aligned: "Y"
+    help: "File containing a sequence alignment"
+    relations: "/edam/data/ Protein sequence alignment data"                     
+  ]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  xygraph: graph [
+    standard: "y"
+    multiple: "2"
+    gxtitle: "Residue number"
+    goutfile: "tmap"
+    relations: "/edam/data/0002142 EMBOSS graph"                                   
+  ]
+
+  report: outfile [
+    parameter: "Y"
+    rformat: "seqtable"
+    taglist: "int:TM=TransMem"
+    relations: "/edam/data/0002143 EMBOSS report"                                       
+  ]
+
+endsection: output

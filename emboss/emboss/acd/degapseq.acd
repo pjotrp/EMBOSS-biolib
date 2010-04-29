@@ -1,0 +1,31 @@
+application: degapseq [
+  documentation: "Removes non-alphabetic (e.g. gap) characters from sequences"
+  groups: "Edit"
+  relations: "/edam/topic/0000156 Sequence editing"
+  relations: "/edam/operation/0000369 Sequence cutting"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "gapany"
+    relations: "/edam/data/0002044 Sequence record"                                     
+  ]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqoutall: outseq [
+    parameter: "Y"
+    relations: "/edam/data/0002044 Sequence record"                                     
+  ]
+
+endsection: output

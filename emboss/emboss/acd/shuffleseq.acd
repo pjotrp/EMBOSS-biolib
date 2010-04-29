@@ -1,0 +1,45 @@
+application: shuffleseq [
+  documentation: "Shuffles a set of sequences maintaining
+                  composition"
+  groups: "Nucleic:Mutation, Protein:Mutation"
+  relations: "/edam/topic/0000156 Sequence editing"
+  relations: "/edam/operation/0000367 Sequence mutation and randomization"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "any"
+    relations: "/edam/data/0002044 Sequence record"                                     
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  integer: shuffle [
+    default: "1"
+    information: "Number of shuffles"
+    relations: "/edam/data/0001773 Tool-specific parameter"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqoutall: outseq [
+    parameter: "Y"
+    relations: "/edam/data/0002044 Sequence record"                                     
+  ]
+
+endsection: output

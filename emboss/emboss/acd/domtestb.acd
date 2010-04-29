@@ -1,6 +1,8 @@
 application: domtestb [
   documentation: "Create, manipulate and write out XML"
   groups: "Edit"
+  relations: "/edam/topic/0000220 File handling"
+  relations: "/edam/operation/0000336 File debugging"
 ]
 
 section: output [

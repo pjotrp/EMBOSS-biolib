@@ -1,0 +1,69 @@
+application: pepstats [
+  documentation: "Calculates statistics of protein properties"
+  groups: "Protein:Composition"
+  relations: "/edam/topic/0000123 Protein physicochemical properties"
+  relations: "/edam/operation/0000250 Protein physicochemical property calculation"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "protein"
+    relations: "/edam/data/0000850 Sequence set"                             
+    relations: "/edam/data/0001219 Pure protein sequence"
+  ]
+
+  datafile: aadata [
+    information: "Amino acids properties and molecular weight data file"
+    help: "Amino acid properties"
+    default: "Eamino.dat"
+    knowntype: "amino acid properties"
+    relations:  "/edam/data/ Amino acid chemical classes data"               
+  ]
+
+  datafile: mwdata [
+    information: "Molecular weights data file"
+    help: "Molecular weight data for amino acids"
+    default: "Emolwt.dat"
+    knowntype: "molecular weights"
+    relations:  "/edam/data/ Amino acid molecular weight data"               
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: termini [
+    default: "Y"
+    information: "Include charge at N and C terminus"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+  boolean: mono [
+    default: "N"
+    information: "Use monoisotopic weights"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "pepstats output"
+    information: "Pepstats program output file"
+    relations:  "/edam/data/ Protein physicochemical profile"                
+  ]
+
+endsection: output

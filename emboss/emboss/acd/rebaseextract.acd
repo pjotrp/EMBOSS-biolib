@@ -1,0 +1,41 @@
+application: rebaseextract [
+  documentation: "Process the REBASE database for use by
+                  restriction enzyme applications"
+  groups: "Utils:Database creation"
+  gui: "no"
+  batch: "no"
+  cpu: "low"
+  relations: "/edam/topic/0000100 Nucleic acid restriction"
+  relations: "/edam/topic/0000091 Database and file management"
+  relations: "/edam/operation/0001812 File loading"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  infile: infile [
+    parameter: "Y"
+    information: "REBASE database withrefm file"
+    knowntype: "rebase withrefm"
+    relations:  "/edam/data/ REBASE withrefm record"                         
+  ]
+
+  infile: protofile [
+    parameter: "Y"
+    information: "REBASE database proto file"
+    knowntype: "rebase proto"
+    relations:  "/edam/data/ REBASE proto record"                            
+  ]
+
+  boolean: equivalences [
+    additional: "Y"
+    default: "Y"
+    information: "Create prototype equivalence file"
+    help: "This option calculates an embossre.equ file using
+           restriction enzyme prototypes in the withrefm file."
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
+endsection: input

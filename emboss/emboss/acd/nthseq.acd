@@ -1,0 +1,47 @@
+application: nthseq [
+  documentation: "Write to file a single sequence from an input stream
+                  of sequences"
+  groups: "Edit"
+  relations: "/edam/topic/0000220 File handling"
+  relations: "/edam/operation/0002121 Sequence file handling"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "gapany"
+    relations: "/edam/data/0002044 Sequence record"                                     
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  integer: number [
+    standard: "Y"
+    minimum: "1"
+    default: "1"
+    information: "The number of the sequence to output"
+    relations: "/edam/data/ Generic integer"                                     
+  ]
+
+endsection: required
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqout: outseq [
+    parameter: "Y"
+    relations: "/edam/data/0002044 Sequence"                                            
+  ]
+
+endsection: output

@@ -1,0 +1,42 @@
+application: patmattest [
+  documentation: "Test of pattern matching"
+  groups: "Test"
+  relations: "/edam/topic/0000220 File handling"
+  relations: "/edam/operation/0000336 File debugging"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: sequence [
+    parameter: "Y"
+    type: "any"
+    relations: "/edam/data/0002044 Sequence"                                            
+  ]
+
+  string: expression [
+    parameter: "Y"
+    default: ""
+    minlength: "2"
+    information: "Regular expression to search sequence for."
+    knowntype: "regular expression"
+    relations:  "/edam/data/ Regular expression"                             
+  ]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    default: "stdout"
+    knowntype: "patmattest output"
+    relations: "/edam/data/0000969 Free text"                                      
+  ]
+
+endsection: output
