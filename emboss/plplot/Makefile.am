@@ -8,9 +8,16 @@ if ISSHARED
 if ISAIXIA64
 
 if AMPNG
-TESTPNG_CFLAGS = -Wl,-G -lgd -lpng -lz -lX11 -lm
+
+if AMPDF
+TESTPDF_CFLAGS = -Wl,-G -lhpdf
 else
-TESTPNG_CFLAGS = -Wl,-G -lX11
+TESTPDF_CFLAGS = -Wl,-G
+endif
+
+TESTPNG_CFLAGS = $(TESTPDF_CFLAGS) -lgd -lpng -lz -lX11 -lm
+else
+TESTPNG_CFLAGS = $(TESTPDF_CFLAGS) -lX11
 endif
 endif
 endif
