@@ -1,4 +1,12 @@
 Version 6.3.0 15-Jul-2010
+	Support for PDF and SVG graphic file output has been added. SVG
+	requires no additional libraries. PDF support requires the libhpdf
+	library (which, somewhat confusingly, is provided by the libharu
+	project). EMBOSS will attempt to find the library and development
+	files automatically and add PDF support (or not) appropriately.
+	However, if libhpdf is in a non-standard place, a --with-hpdf=DIR
+	configuration switch can be optionally used.
+
 	The output of showalign has changed. The reference sequence now
 	appears at the top, of selected. The ticks and sequence position
 	numbering is relative to a selected reference sequence. Gaps
