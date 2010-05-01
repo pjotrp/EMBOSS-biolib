@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2072,6 +2072,8 @@ void ensExternaldatabaseadaptorDel(EnsPExternaldatabaseadaptor *Pedba)
     pthis = *Pedba;
 
     externaldatabaseadaptorCacheExit(pthis);
+
+    ensBaseadaptorDel(&pthis->Adaptor);
 
     AJFREE(pthis);
 
