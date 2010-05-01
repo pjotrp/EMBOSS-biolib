@@ -115,6 +115,8 @@ ajuint ensSliceGetLength(const EnsPSlice slice);
 
 ajuint ensSliceGetMemSize(const EnsPSlice slice);
 
+const AjPTrn ensSliceGetTranslation(EnsPSlice slice);
+
 AjBool ensSliceFetchName(const EnsPSlice slice, AjPStr* Pname);
 
 AjBool ensSliceMatch(const EnsPSlice slice1, const EnsPSlice slice2);

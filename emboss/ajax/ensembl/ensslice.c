@@ -7,7 +7,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -35,6 +35,7 @@
 #include "enssequence.h"
 #include "enssequenceedit.h"
 #include "ensrepeat.h"
+#include "enstranslation.h"
 
 
 
@@ -1007,6 +1008,76 @@ ajuint ensSliceGetMemSize(const EnsPSlice slice)
     }
 
     return size;
+}
+
+
+
+
+/* @func ensSliceGetTranslation ***********************************************
+**
+** Get an AJAX Translation for an Ensembl Slice.
+**
+** The AJAX Translation will match the codon table defined as an
+** Ensembl Attribute of code 'codon_table' associated with an Ensembl Slice.
+** If no Attribute is associated with this Slice, an AJAX Translation based on
+** codon table 0, the standard code with translation start at AUG only,
+** will be returned.
+**
+** @param [r] slice [EnsPSlice] Ensembl Slice
+**
+** @return [const AjPTrn] AJAX Translation or NULL
+** @@
+******************************************************************************/
+
+const AjPTrn ensSliceGetTranslation(EnsPSlice slice)
+{
+    ajuint codontable = 0;
+
+    AjPList attributes = NULL;
+
+    AjPStr code  = NULL;
+    AjPStr value = NULL;
+
+    EnsPAttribute attribute = NULL;
+
+    if(!slice)
+        return NULL;
+
+    code = ajStrNewC("codon_table");
+
+    attributes = ajListNew();
+
+    ensSliceFetchAllAttributes(slice, code, attributes);
+
+    ajStrDel(&code);
+
+    while(ajListPop(attributes, (void **) &attribute))
+    {
+        value = ensAttributeGetValue(attribute);
+
+        if(value && ajStrGetLen(value))
+        {
+            if(!ajStrToUint(value, &codontable))
+                ajWarn("ensSliceGetTranslation Could not parse "
+                       "Ensembl Attribute value '%S' into an "
+                       "unsigned integer value.",
+                       value);
+        }
+        else
+        {
+            ajDebug("ensSliceGetTranslation got Ensembl Attribute %p with an "
+                    "empty value.",
+                    attribute);
+
+            ensAttributeTrace(attribute, 1);
+        }
+
+        ensAttributeDel(&attribute);
+    }
+
+    ajListFree(&attributes);
+
+    return ensTranslationCacheGetTranslation(codontable);
 }
 
 
