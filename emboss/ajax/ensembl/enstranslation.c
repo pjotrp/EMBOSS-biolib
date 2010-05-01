@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -39,6 +39,23 @@
 /* ==================================================================== */
 /* ========================== private data ============================ */
 /* ==================================================================== */
+
+/* translationCache ***********************************************************
+**
+** Upon each instantiation, AJAX Translation objects require a data file
+** (EGC.codon table number) to be read. To avoid unnecessary file system
+** operations, AJAX Translation objects are kept in a cache.
+** AJAX Translation objects returned by ensTranslationCacheGetTranslation can
+** be used directly and must not be deleted by the caller. Calling ensExit
+** will call ensTranslationExit and in turn free all AJAX Translation objects
+** from the cache.
+**
+******************************************************************************/
+
+static AjPTable translationCache = NULL;
+
+
+
 
 /* translationProteinfeatureDomainName ****************************************
 **
@@ -84,8 +101,6 @@ static const char *translationSequenceEditCode[] =
     "amino_acid_sub",
     NULL
 };
-
-static AjPTable translationCache = NULL;
 
 
 
@@ -140,7 +155,7 @@ static void translationadaptorClearTranscriptTable(void **key,
 
 /* @func ensTranslationInit ***************************************************
 **
-** Initialises the Ensembl Translation.
+** Initialises the Ensembl Translation module.
 **
 ** @return [void]
 ** @@
@@ -199,7 +214,7 @@ static void translationCacheClear(void **key, void **value, void *cl)
 
 /* @func ensTranslationExit ***************************************************
 **
-** Frees the Ensembl Translation.
+** Exits the Ensembl Translation module.
 **
 ** @return [void]
 ** @@
@@ -219,20 +234,23 @@ void ensTranslationExit(void)
 
 /* @func ensTranslationCacheGetTranslation ************************************
 **
-** Get an AJAX Translation from the internal Translation cache.
+** Get an AJAX Translation from the cache.
 **
-** AJAX Translation objects require a data file to be read upon each creation.
-** To avoid file system operations AJAX Translation objects are kept in a
-** cache and can be used directly. Calling ensTranslationExit will free all
-** AJAX Translation objects from the cache.
+** Upon each instantiation, AJAX Translation objects require a data file
+** (EGC.codon table number) to be read. To avoid unnecessary file system
+** operations, AJAX Translation objects are kept in a cache.
+** AJAX Translation objects returned by ensTranslationCacheGetTranslation can
+** be used directly and must not be deleted by the caller. Calling ensExit
+** will call ensTranslationExit and in turn free all AJAX Translation objects
+** from the cache.
 **
 ** @param [r] codontable [ajint] Codon table number
 **
-** @return [AjPTrn] AJAX Translation or NULL
+** @return [const AjPTrn] AJAX Translation or NULL
 ** @@
 ******************************************************************************/
 
-AjPTrn ensTranslationCacheGetTranslation(ajint codontable)
+const AjPTrn ensTranslationCacheGetTranslation(ajint codontable)
 {
     ajint *Pcodontable = NULL;
 
