@@ -20,7 +20,7 @@ void ensTranslationInit(void);
 
 void ensTranslationExit(void);
 
-AjPTrn ensTranslationCacheGetTranslation(ajint codontable);
+const AjPTrn ensTranslationCacheGetTranslation(ajint codontable);
 
 /* Ensembl Translation */
 
