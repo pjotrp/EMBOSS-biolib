@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
-/* assemblyExceptionType ******************************************************
+/* assemblyexceptionType ******************************************************
 **
 ** The Ensembl Assembly Exception type is enumerated in both, the SQL table
 ** definition and the data structure. The following strings are used for
@@ -48,7 +48,7 @@
 **
 ******************************************************************************/
 
-static const char *assemblyExceptionType[] =
+static const char *assemblyexceptionType[] =
 {
     (const char *) NULL,
     "HAP",
@@ -63,22 +63,22 @@ static const char *assemblyExceptionType[] =
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-static AjBool assemblyExceptionadaptorFetchAllBySQL(
+static AjBool assemblyexceptionadaptorFetchAllBySQL(
     EnsPAssemblyexceptionadaptor aea,
     const AjPStr statement,
     AjPList aes);
 
-static AjBool assemblyExceptionadaptorCacheInit(
+static AjBool assemblyexceptionadaptorCacheInit(
     EnsPAssemblyexceptionadaptor aea);
 
-static void assemblyExceptionadaptorClearIdentifierCache(void **key,
+static void assemblyexceptionadaptorClearIdentifierCache(void **key,
                                                          void **value,
                                                          void *cl);
 
-static AjBool assemblyExceptionadaptorCacheExit(
+static AjBool assemblyexceptionadaptorCacheExit(
     EnsPAssemblyexceptionadaptor aea);
 
-static void assemblyExceptionadaptorFetchAll(const void *key,
+static void assemblyexceptionadaptorFetchAll(const void *key,
                                              void **value,
                                              void *cl);
 
@@ -983,8 +983,8 @@ AjEnum ensAssemblyexceptionTypeFromStr(const AjPStr type)
 
     AjEnum etype = ensEAssemblyexceptionTypeNULL;
 
-    for(i = 1; assemblyExceptionType[i]; i++)
-        if(ajStrMatchC(type, assemblyExceptionType[i]))
+    for(i = 1; assemblyexceptionType[i]; i++)
+        if(ajStrMatchC(type, assemblyexceptionType[i]))
             etype = i;
 
     if(!etype)
@@ -1015,13 +1015,13 @@ const char* ensAssemblyexceptionTypeToChar(const AjEnum type)
     if(!type)
         return NULL;
 
-    for(i = 1; assemblyExceptionType[i] && (i < type); i++);
+    for(i = 1; assemblyexceptionType[i] && (i < type); i++);
 
-    if(!assemblyExceptionType[i])
+    if(!assemblyexceptionType[i])
         ajDebug("ensAssemblyexceptionTypeToChar encountered an "
                 "out of boundary error on status %d.\n", type);
 
-    return assemblyExceptionType[i];
+    return assemblyexceptionType[i];
 }
 
 
@@ -1062,7 +1062,7 @@ const char* ensAssemblyexceptionTypeToChar(const AjEnum type)
 
 
 
-/* @funcstatic assemblyExceptionadaptorFetchAllBySQL **************************
+/* @funcstatic assemblyexceptionadaptorFetchAllBySQL **************************
 **
 ** Run a SQL statement against an Ensembl Assembly Exception Adaptor and
 ** consolidate the results into an AJAX List of Ensembl Assembly Exception
@@ -1077,7 +1077,7 @@ const char* ensAssemblyexceptionTypeToChar(const AjEnum type)
 ** @@
 ******************************************************************************/
 
-static AjBool assemblyExceptionadaptorFetchAllBySQL(
+static AjBool assemblyexceptionadaptorFetchAllBySQL(
     EnsPAssemblyexceptionadaptor aea,
     const AjPStr statement,
     AjPList aes)
@@ -1146,7 +1146,7 @@ static AjBool assemblyExceptionadaptorFetchAllBySQL(
         type = ensAssemblyexceptionTypeFromStr(typestr);
 
         if(!type)
-            ajFatal("assemblyExceptionadaptorFetchAllBySQL "
+            ajFatal("assemblyexceptionadaptorFetchAllBySQL "
                     "got unexpected Assembly Exception type '%S' "
                     "from database.\n",
                     typestr);
@@ -1177,7 +1177,7 @@ static AjBool assemblyExceptionadaptorFetchAllBySQL(
 
 
 
-/* @funcstatic assemblyExceptionadaptorCacheInit ******************************
+/* @funcstatic assemblyexceptionadaptorCacheInit ******************************
 **
 ** Initialise the Ensembl Assembly Exception cache in the
 ** Assembly Exception Adaptor.
@@ -1189,7 +1189,7 @@ static AjBool assemblyExceptionadaptorFetchAllBySQL(
 ** @@
 ******************************************************************************/
 
-static AjBool assemblyExceptionadaptorCacheInit(
+static AjBool assemblyexceptionadaptorCacheInit(
     EnsPAssemblyexceptionadaptor aea)
 {
     ajuint *Pidentifier = NULL;
@@ -1237,7 +1237,7 @@ static AjBool assemblyExceptionadaptorCacheInit(
 
     aes = ajListNew();
 
-    assemblyExceptionadaptorFetchAllBySQL(aea, statement, aes);
+    assemblyexceptionadaptorFetchAllBySQL(aea, statement, aes);
 
     ajStrDel(&statement);
 
@@ -1294,7 +1294,7 @@ EnsPAssemblyexceptionadaptor ensAssemblyexceptionadaptorNew(
 
     aea->Adaptor = dba;
 
-    assemblyExceptionadaptorCacheInit(aea);
+    assemblyexceptionadaptorCacheInit(aea);
 
     return aea;
 }
@@ -1323,7 +1323,7 @@ EnsPAssemblyexceptionadaptor ensAssemblyexceptionadaptorNew(
 
 
 
-/* @funcstatic assemblyExceptionadaptorClearIdentifierCache *******************
+/* @funcstatic assemblyexceptionadaptorClearIdentifierCache *******************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Assembly Exception
 ** Adaptor-internal Ensembl Assembly Exception cache. This function clears the
@@ -1339,7 +1339,7 @@ EnsPAssemblyexceptionadaptor ensAssemblyexceptionadaptorNew(
 ** @@
 ******************************************************************************/
 
-static void assemblyExceptionadaptorClearIdentifierCache(void **key,
+static void assemblyexceptionadaptorClearIdentifierCache(void **key,
                                                          void **value,
                                                          void *cl)
 {
@@ -1372,7 +1372,7 @@ static void assemblyExceptionadaptorClearIdentifierCache(void **key,
 
 
 
-/* @funcstatic assemblyExceptionadaptorCacheExit ******************************
+/* @funcstatic assemblyexceptionadaptorCacheExit ******************************
 **
 ** Clears the Ensembl Assembly Exception cache in the
 ** Ensembl Assembly Exception Adaptor.
@@ -1384,7 +1384,7 @@ static void assemblyExceptionadaptorClearIdentifierCache(void **key,
 ** @@
 ******************************************************************************/
 
-static AjBool assemblyExceptionadaptorCacheExit(
+static AjBool assemblyexceptionadaptorCacheExit(
     EnsPAssemblyexceptionadaptor aea)
 {
     if(!aea)
@@ -1394,7 +1394,7 @@ static AjBool assemblyExceptionadaptorCacheExit(
         return ajTrue;
 
     ajTableMapDel(aea->CacheBySeqregionIdentifier,
-                  assemblyExceptionadaptorClearIdentifierCache,
+                  assemblyexceptionadaptorClearIdentifierCache,
                   NULL);
 
     ajTableFree(&aea->CacheBySeqregionIdentifier);
@@ -1426,7 +1426,7 @@ void ensAssemblyexceptionadaptorDel(EnsPAssemblyexceptionadaptor* Paea)
     if(!*Paea)
         return;
 
-    assemblyExceptionadaptorCacheExit(*Paea);
+    assemblyexceptionadaptorCacheExit(*Paea);
 
     AJFREE(*Paea);
 
@@ -1463,7 +1463,7 @@ void ensAssemblyexceptionadaptorDel(EnsPAssemblyexceptionadaptor* Paea)
 
 
 
-/* @funcstatic assemblyExceptionadaptorFetchAll *******************************
+/* @funcstatic assemblyexceptionadaptorFetchAll *******************************
 **
 ** An ajTableMap 'apply' function to return all Ensembl Assembly Exceptions
 ** from the Ensembl Assembly Exception Adaptor-internal cache.
@@ -1478,7 +1478,7 @@ void ensAssemblyexceptionadaptorDel(EnsPAssemblyexceptionadaptor* Paea)
 ** @@
 ******************************************************************************/
 
-static void assemblyExceptionadaptorFetchAll(const void *key,
+static void assemblyexceptionadaptorFetchAll(const void *key,
                                              void **value,
                                              void *cl)
 {
@@ -1542,7 +1542,7 @@ AjBool ensAssemblyexceptionadaptorFetchAll(
         return ajFalse;
 
     ajTableMap(aea->CacheBySeqregionIdentifier,
-               assemblyExceptionadaptorFetchAll,
+               assemblyexceptionadaptorFetchAll,
                (void *) aes);
 
     return ajTrue;

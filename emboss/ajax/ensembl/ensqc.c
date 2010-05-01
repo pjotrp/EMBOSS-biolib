@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.6 $
+** @version $Revision: 1.7 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
-/* qcDASFeatureCategory *******************************************************
+/* qcdasfeatureCategory *******************************************************
 **
 ** The Ensembl Quality Check DAS Feature category element is enumerated in
 ** both, the SQL table definition and the data structure. The following strings
@@ -45,7 +45,7 @@
 **
 ******************************************************************************/
 
-static const char *qcDASFeatureCategory[] =
+static const char *qcdasfeatureCategory[] =
 {
     (const char *) NULL,
     "unknown",
@@ -65,7 +65,7 @@ static const char *qcDASFeatureCategory[] =
 
 
 
-/* qcDASFeatureType ***********************************************************
+/* qcdasfeatureType ***********************************************************
 **
 ** The Ensembl Quality Check DAS Feature type element is enumerated in
 ** both, the SQL table definition and the data structure. The following strings
@@ -74,7 +74,7 @@ static const char *qcDASFeatureCategory[] =
 **
 ******************************************************************************/
 
-static const char *qcDASFeatureType[] =
+static const char *qcdasfeatureType[] =
 {
     (const char *) NULL,
     "unknown",
@@ -90,7 +90,7 @@ static const char *qcDASFeatureType[] =
 
 
 
-/* qcVariationClass ***********************************************************
+/* qcvariationClass ***********************************************************
 **
 ** The Ensembl Quality Check Variation class element is enumerated in
 ** both, the SQL table definition and the data structure. The following strings
@@ -99,7 +99,7 @@ static const char *qcDASFeatureType[] =
 **
 ******************************************************************************/
 
-static const char *qcVariationClass[] =
+static const char *qcvariationClass[] =
 {
     (const char *) NULL,
     "none",
@@ -112,7 +112,7 @@ static const char *qcVariationClass[] =
 
 
 
-/* qcVariationType ************************************************************
+/* qcvariationType ************************************************************
 **
 ** The Ensembl Quality Check Variation type element is enumerated in
 ** both, the SQL table definition and the data structure. The following strings
@@ -121,7 +121,7 @@ static const char *qcVariationClass[] =
 **
 ******************************************************************************/
 
-static const char *qcVariationType[] =
+static const char *qcvariationType[] =
 {
     (const char *) NULL,
     "none",
@@ -133,7 +133,7 @@ static const char *qcVariationType[] =
 
 
 
-/* qcVariationState ***********************************************************
+/* qcvariationState ***********************************************************
 **
 ** The Ensembl Quality Check Variation state element is enumerated in
 ** both, the SQL table definition and the data structure. The following strings
@@ -142,7 +142,7 @@ static const char *qcVariationType[] =
 **
 ******************************************************************************/
 
-static const char *qcVariationState[] =
+static const char *qcvariationState[] =
 {
     (const char *) NULL,
     "none",
@@ -180,19 +180,19 @@ extern EnsPQcsubmissionadaptor ensRegistryGetQcsubmissionadaptor(
 extern EnsPQcvariationadaptor ensRegistryGetQcvariationadaptor(
     EnsPDatabaseadaptor dba);
 
-static AjBool qcDASFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool qcdasfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
                                                EnsPAssemblymapper am,
                                                EnsPSlice slice,
                                                AjPList qcdasfs);
 
-static AjBool qcVariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool qcvariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
                                               EnsPAssemblymapper am,
                                               EnsPSlice slice,
                                               AjPList qcvs);
 
-static AjBool qcSubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool qcsubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
                                                EnsPAssemblymapper am,
                                                EnsPSlice slice,
@@ -1376,8 +1376,8 @@ AjEnum ensQcdasfeatureCategoryFromStr(const AjPStr category)
 
     AjEnum ecategory = ensEQcdasfeatureCategoryNULL;
 
-    for(i = 1; qcDASFeatureCategory[i]; i++)
-        if(ajStrMatchCaseC(category, qcDASFeatureCategory[i]))
+    for(i = 1; qcdasfeatureCategory[i]; i++)
+        if(ajStrMatchCaseC(category, qcdasfeatureCategory[i]))
             ecategory = i;
 
     if(!ecategory)
@@ -1407,8 +1407,8 @@ AjEnum ensQcdasfeatureTypeFromStr(const AjPStr type)
 
     AjEnum etype = ensEQcdasfeatureTypeNULL;
 
-    for(i = 1; qcDASFeatureType[i]; i++)
-        if(ajStrMatchCaseC(type, qcDASFeatureType[i]))
+    for(i = 1; qcdasfeatureType[i]; i++)
+        if(ajStrMatchCaseC(type, qcdasfeatureType[i]))
             etype = i;
 
     if(!etype)
@@ -1441,13 +1441,13 @@ const char* ensQcdasfeatureCategoryToChar(const AjEnum category)
     if(!category)
         return NULL;
 
-    for(i = 1; qcDASFeatureCategory[i] && (i < category); i++);
+    for(i = 1; qcdasfeatureCategory[i] && (i < category); i++);
 
-    if(!qcDASFeatureCategory[i])
+    if(!qcdasfeatureCategory[i])
         ajDebug("ensQcdasfeatureCategoryToChar encountered an "
                 "out of boundary error on group %d.\n", category);
 
-    return qcDASFeatureCategory[i];
+    return qcdasfeatureCategory[i];
 }
 
 
@@ -1472,13 +1472,13 @@ const char *ensQcdasfeatureTypeToChar(const AjEnum type)
     if(!type)
         return NULL;
 
-    for(i = 1; qcDASFeatureType[i] && (i < type); i++);
+    for(i = 1; qcdasfeatureType[i] && (i < type); i++);
 
-    if(!qcDASFeatureType[i])
+    if(!qcdasfeatureType[i])
         ajDebug("ensQcdasfeatureTypeToChar encountered an "
                 "out of boundary error on group %d.\n", type);
 
-    return qcDASFeatureType[i];
+    return qcdasfeatureType[i];
 }
 
 
@@ -1494,7 +1494,7 @@ const char *ensQcdasfeatureTypeToChar(const AjEnum type)
 **
 ******************************************************************************/
 
-static const char *qcDASFeatureadaptorTables[] =
+static const char *qcdasfeatureadaptorTables[] =
 {
     "das_feature",
     (const char *) NULL
@@ -1503,7 +1503,7 @@ static const char *qcDASFeatureadaptorTables[] =
 
 
 
-static const char *qcDASFeatureadaptorColumns[] =
+static const char *qcdasfeatureadaptorColumns[] =
 {
     "das_feature.das_feature_id",
     "das_feature.analysis_id",
@@ -1524,7 +1524,7 @@ static const char *qcDASFeatureadaptorColumns[] =
 
 
 
-static EnsOBaseadaptorLeftJoin qcDASFeatureadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin qcdasfeatureadaptorLeftJoin[] =
 {
     {(const char*) NULL, (const char*) NULL}
 };
@@ -1532,19 +1532,19 @@ static EnsOBaseadaptorLeftJoin qcDASFeatureadaptorLeftJoin[] =
 
 
 
-static const char *qcDASFeatureadaptorDefaultCondition =
+static const char *qcdasfeatureadaptorDefaultCondition =
     (const char*) NULL;
 
 
 
 
-static const char *qcDASFeatureadaptorFinalCondition =
+static const char *qcdasfeatureadaptorFinalCondition =
     (const char *) NULL;
 
 
 
 
-/* @funcstatic qcDASFeatureadaptorFetchAllBySQL *******************************
+/* @funcstatic qcdasfeatureadaptorFetchAllBySQL *******************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl QC DAS Feature objects.
@@ -1559,7 +1559,7 @@ static const char *qcDASFeatureadaptorFinalCondition =
 ** @@
 ******************************************************************************/
 
-static AjBool qcDASFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool qcdasfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
                                                EnsPAssemblymapper am,
                                                EnsPSlice slice,
@@ -1601,8 +1601,8 @@ static AjBool qcDASFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPQcsequence tsequence   = NULL;
     EnsPQcsequenceadaptor qcsa = NULL;
 
-    if(ajDebugTest("qcDASFeatureadaptorFetchAllBySQL"))
-        ajDebug("qcDASFeatureadaptorFetchAllBySQL\n"
+    if(ajDebugTest("qcdasfeatureadaptorFetchAllBySQL"))
+        ajDebug("qcdasfeatureadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -1757,12 +1757,12 @@ EnsPQcdasfeatureadaptor ensQcdasfeatureadaptorNew(EnsPDatabaseadaptor dba)
         return NULL;
 
     return ensBaseadaptorNew(dba,
-                             qcDASFeatureadaptorTables,
-                             qcDASFeatureadaptorColumns,
-                             qcDASFeatureadaptorLeftJoin,
-                             qcDASFeatureadaptorDefaultCondition,
-                             qcDASFeatureadaptorFinalCondition,
-                             qcDASFeatureadaptorFetchAllBySQL);
+                             qcdasfeatureadaptorTables,
+                             qcdasfeatureadaptorColumns,
+                             qcdasfeatureadaptorLeftJoin,
+                             qcdasfeatureadaptorDefaultCondition,
+                             qcdasfeatureadaptorFinalCondition,
+                             qcdasfeatureadaptorFetchAllBySQL);
 }
 
 
@@ -3604,8 +3604,8 @@ AjEnum ensQcvariationClassFromStr(const AjPStr vclass)
 
     AjEnum eclass = ensEQcvariationClassNULL;
 
-    for(i = 1; qcVariationClass[i]; i++)
-        if(ajStrMatchCaseC(vclass, qcVariationClass[i]))
+    for(i = 1; qcvariationClass[i]; i++)
+        if(ajStrMatchCaseC(vclass, qcvariationClass[i]))
             eclass = i;
 
     if(!eclass)
@@ -3635,8 +3635,8 @@ AjEnum ensQcvariationTypeFromStr(const AjPStr type)
 
     AjEnum etype = ensEQcvariationTypeNULL;
 
-    for(i = 1; qcVariationType[i]; i++)
-        if(ajStrMatchCaseC(type, qcVariationType[i]))
+    for(i = 1; qcvariationType[i]; i++)
+        if(ajStrMatchCaseC(type, qcvariationType[i]))
             etype = i;
 
     if(!etype)
@@ -3666,8 +3666,8 @@ AjEnum ensQcvariationStateFromStr(const AjPStr state)
 
     AjEnum estate = ensEQcvariationStateNULL;
 
-    for(i = 1; qcVariationState[i]; i++)
-        if(ajStrMatchCaseC(state, qcVariationState[i]))
+    for(i = 1; qcvariationState[i]; i++)
+        if(ajStrMatchCaseC(state, qcvariationState[i]))
             estate = i;
 
     if(!estate)
@@ -3697,13 +3697,13 @@ const char *ensQcvariationClassToChar(const AjEnum vclass)
     if(!vclass)
         return NULL;
 
-    for(i = 1; qcVariationClass[i] && (i < vclass); i++);
+    for(i = 1; qcvariationClass[i] && (i < vclass); i++);
 
-    if(!qcVariationClass[i])
+    if(!qcvariationClass[i])
         ajDebug("ensQcvariationClassToChar encountered an "
                 "out of boundary error on group %d.\n", vclass);
 
-    return qcVariationClass[i];
+    return qcvariationClass[i];
 }
 
 
@@ -3726,13 +3726,13 @@ const char *ensQcvariationTypeToChar(const AjEnum type)
     if(!type)
         return NULL;
 
-    for(i = 1; qcVariationType[i] && (i < type); i++);
+    for(i = 1; qcvariationType[i] && (i < type); i++);
 
-    if(!qcVariationType[i])
+    if(!qcvariationType[i])
         ajDebug("ensQcvariationTypeToChar encountered an "
                 "out of boundary error on group %d.\n", type);
 
-    return qcVariationType[i];
+    return qcvariationType[i];
 }
 
 
@@ -3755,13 +3755,13 @@ const char *ensQcvariationStateToChar(const AjEnum state)
     if(!state)
         return NULL;
 
-    for(i = 1; qcVariationState[i] && (i < state); i++);
+    for(i = 1; qcvariationState[i] && (i < state); i++);
 
-    if(!qcVariationState[i])
+    if(!qcvariationState[i])
         ajDebug("ensQcvariationStateToChar encountered an "
                 "out of boundary error on group %d.\n", state);
 
-    return qcVariationState[i];
+    return qcvariationState[i];
 }
 
 
@@ -3777,7 +3777,7 @@ const char *ensQcvariationStateToChar(const AjEnum state)
 **
 ******************************************************************************/
 
-static const char *qcVariationadaptorTables[] =
+static const char *qcvariationadaptorTables[] =
 {
     "variation",
     (const char *) NULL
@@ -3786,7 +3786,7 @@ static const char *qcVariationadaptorTables[] =
 
 
 
-static const char *qcVariationadaptorColumns[] =
+static const char *qcvariationadaptorColumns[] =
 {
     "variation.variation_id",
     "variation.analysis_id",
@@ -3810,7 +3810,7 @@ static const char *qcVariationadaptorColumns[] =
 
 
 
-static EnsOBaseadaptorLeftJoin qcVariationadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin qcvariationadaptorLeftJoin[] =
 {
     {(const char*) NULL, (const char*) NULL}
 };
@@ -3818,19 +3818,19 @@ static EnsOBaseadaptorLeftJoin qcVariationadaptorLeftJoin[] =
 
 
 
-static const char *qcVariationadaptorDefaultCondition =
+static const char *qcvariationadaptorDefaultCondition =
     (const char*) NULL;
 
 
 
 
-static const char *qcVariationadaptorFinalCondition =
+static const char *qcvariationadaptorFinalCondition =
     (const char *) NULL;
 
 
 
 
-/* @funcstatic qcVariationadaptorFetchAllBySQL ********************************
+/* @funcstatic qcvariationadaptorFetchAllBySQL ********************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl QC Variation objects.
@@ -3845,7 +3845,7 @@ static const char *qcVariationadaptorFinalCondition =
 ** @@
 ******************************************************************************/
 
-static AjBool qcVariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool qcvariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
                                               EnsPAssemblymapper am,
                                               EnsPSlice slice,
@@ -3891,8 +3891,8 @@ static AjBool qcVariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPQcvariation qcv         = NULL;
     EnsPQcvariationadaptor qcva = NULL;
 
-    if(ajDebugTest("qcVariationadaptorFetchAllBySQL"))
-        ajDebug("qcVariationadaptorFetchAllBySQL\n"
+    if(ajDebugTest("qcvariationadaptorFetchAllBySQL"))
+        ajDebug("qcvariationadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -4057,12 +4057,12 @@ EnsPQcvariationadaptor ensQcvariationadaptorNew(EnsPDatabaseadaptor dba)
         return NULL;
 
     return ensBaseadaptorNew(dba,
-                             qcVariationadaptorTables,
-                             qcVariationadaptorColumns,
-                             qcVariationadaptorLeftJoin,
-                             qcVariationadaptorDefaultCondition,
-                             qcVariationadaptorFinalCondition,
-                             qcVariationadaptorFetchAllBySQL);
+                             qcvariationadaptorTables,
+                             qcvariationadaptorColumns,
+                             qcvariationadaptorLeftJoin,
+                             qcvariationadaptorDefaultCondition,
+                             qcvariationadaptorFinalCondition,
+                             qcvariationadaptorFetchAllBySQL);
 }
 
 
@@ -5640,7 +5640,7 @@ AjBool ensQcsubmissionTrace(const EnsPQcsubmission qcsb, ajuint level)
 **
 ******************************************************************************/
 
-static const char *qcSubmissionadaptorTables[] =
+static const char *qcsubmissionadaptorTables[] =
 {
     "submission",
     (const char *) NULL
@@ -5649,7 +5649,7 @@ static const char *qcSubmissionadaptorTables[] =
 
 
 
-static const char *qcSubmissionadaptorColumns[] =
+static const char *qcsubmissionadaptorColumns[] =
 {
     "submission.submission_id",
     "submission.analysis_id",
@@ -5667,7 +5667,7 @@ static const char *qcSubmissionadaptorColumns[] =
 
 
 
-static EnsOBaseadaptorLeftJoin qcSubmissionadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin qcsubmissionadaptorLeftJoin[] =
 {
     {(const char*) NULL, (const char*) NULL}
 };
@@ -5675,19 +5675,19 @@ static EnsOBaseadaptorLeftJoin qcSubmissionadaptorLeftJoin[] =
 
 
 
-static const char *qcSubmissionadaptorDefaultCondition =
+static const char *qcsubmissionadaptorDefaultCondition =
     (const char*) NULL;
 
 
 
 
-static const char *qcSubmissionadaptorFinalCondition =
+static const char *qcsubmissionadaptorFinalCondition =
     (const char *) NULL;
 
 
 
 
-/* @funcstatic qcSubmissionadaptorFetchAllBySQL *******************************
+/* @funcstatic qcsubmissionadaptorFetchAllBySQL *******************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl QC Submission objects.
@@ -5702,7 +5702,7 @@ static const char *qcSubmissionadaptorFinalCondition =
 ** @@
 ******************************************************************************/
 
-static AjBool qcSubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool qcsubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
                                                EnsPAssemblymapper am,
                                                EnsPSlice slice,
@@ -5735,8 +5735,8 @@ static AjBool qcSubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPQcsubmission qcsb         = NULL;
     EnsPQcsubmissionadaptor qcsba = NULL;
 
-    if(ajDebugTest("qcSubmissionadaptorFetchAllBySQL"))
-        ajDebug("qcSubmissionadaptorFetchAllBySQL\n"
+    if(ajDebugTest("qcsubmissionadaptorFetchAllBySQL"))
+        ajDebug("qcsubmissionadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -5865,12 +5865,12 @@ EnsPQcsubmissionadaptor ensQcsubmissionadaptorNew(EnsPDatabaseadaptor dba)
         return NULL;
 
     return ensBaseadaptorNew(dba,
-                             qcSubmissionadaptorTables,
-                             qcSubmissionadaptorColumns,
-                             qcSubmissionadaptorLeftJoin,
-                             qcSubmissionadaptorDefaultCondition,
-                             qcSubmissionadaptorFinalCondition,
-                             qcSubmissionadaptorFetchAllBySQL);
+                             qcsubmissionadaptorTables,
+                             qcsubmissionadaptorColumns,
+                             qcsubmissionadaptorLeftJoin,
+                             qcsubmissionadaptorDefaultCondition,
+                             qcsubmissionadaptorFinalCondition,
+                             qcsubmissionadaptorFetchAllBySQL);
 }
 
 

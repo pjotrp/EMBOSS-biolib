@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
-static const char *metaInformationNonSpeciesKeys[] =
+static const char *metainformationNonSpeciesKeys[] =
 {
     "patch",
     "schema_version",
@@ -50,21 +50,21 @@ static const char *metaInformationNonSpeciesKeys[] =
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-static AjBool metaInformationkeyIsSpecieskey(const AjPStr key);
+static AjBool metainformationkeyIsSpecieskey(const AjPStr key);
 
-static AjBool metaInformationadaptorFetchAllBySQL(
+static AjBool metainformationadaptorFetchAllBySQL(
     EnsPMetainformationadaptor mia,
     const AjPStr statement,
     AjPList mis);
 
-static AjBool metaInformationadaptorCacheInit(
+static AjBool metainformationadaptorCacheInit(
     EnsPMetainformationadaptor mia);
 
-static void metaInformationadaptorClearIdentifierCache(void **key,
+static void metainformationadaptorClearIdentifierCache(void **key,
                                                        void **value,
                                                        void *cl);
 
-static void metaInformationadaptorClearKeyCache(void **key,
+static void metainformationadaptorClearKeyCache(void **key,
                                                 void **value,
                                                 void *cl);
 
@@ -683,7 +683,7 @@ ajuint ensMetainformationGetMemSize(const EnsPMetainformation mi)
 
 
 
-/* @funcstatic metaInformationkeyIsSpecieskey *********************************
+/* @funcstatic metainformationkeyIsSpecieskey *********************************
 **
 ** Check whether a Meta-Information key is species-specific.
 **
@@ -694,7 +694,7 @@ ajuint ensMetainformationGetMemSize(const EnsPMetainformation mi)
 ** @@
 ******************************************************************************/
 
-static AjBool metaInformationkeyIsSpecieskey(const AjPStr key)
+static AjBool metainformationkeyIsSpecieskey(const AjPStr key)
 {
     register ajuint i = 0;
 
@@ -703,8 +703,8 @@ static AjBool metaInformationkeyIsSpecieskey(const AjPStr key)
     if(!key)
         return ajFalse;
 
-    for(i = 0; metaInformationNonSpeciesKeys[i]; i++)
-        if(ajStrMatchCaseC(key, metaInformationNonSpeciesKeys[i]))
+    for(i = 0; metainformationNonSpeciesKeys[i]; i++)
+        if(ajStrMatchCaseC(key, metainformationNonSpeciesKeys[i]))
         {
             value = AJFALSE;
             break;
@@ -730,7 +730,7 @@ static AjBool metaInformationkeyIsSpecieskey(const AjPStr key)
 
 
 
-/* @funcstatic metaInformationadaptorFetchAllBySQL ****************************
+/* @funcstatic metainformationadaptorFetchAllBySQL ****************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl Meta-Information objects.
@@ -743,7 +743,7 @@ static AjBool metaInformationkeyIsSpecieskey(const AjPStr key)
 ** @@
 ******************************************************************************/
 
-static AjBool metaInformationadaptorFetchAllBySQL(
+static AjBool metainformationadaptorFetchAllBySQL(
     EnsPMetainformationadaptor mia,
     const AjPStr statement,
     AjPList mis)
@@ -760,8 +760,8 @@ static AjBool metaInformationadaptorFetchAllBySQL(
 
     EnsPMetainformation mi = NULL;
 
-    if(ajDebugTest("metaInformationadaptorFetchAllBySQL"))
-        ajDebug("metaInformationadaptorFetchAllByQuery\n"
+    if(ajDebugTest("metainformationadaptorFetchAllBySQL"))
+        ajDebug("metainformationadaptorFetchAllByQuery\n"
                 "  mia %p\n"
                 "  statement %p\n"
                 "  mis %p\n",
@@ -815,7 +815,7 @@ static AjBool metaInformationadaptorFetchAllBySQL(
 
 
 
-/* @funcstatic metaInformationadaptorCacheInit ********************************
+/* @funcstatic metainformationadaptorCacheInit ********************************
 **
 ** Initialise the Ensembl Meta-Information Adaptor-internal
 ** Meta-Information cache.
@@ -833,7 +833,7 @@ static AjBool metaInformationadaptorFetchAllBySQL(
 ** @@
 ******************************************************************************/
 
-static AjBool metaInformationadaptorCacheInit(
+static AjBool metainformationadaptorCacheInit(
     EnsPMetainformationadaptor mia)
 {
     ajuint *Pidentifier = NULL;
@@ -845,8 +845,8 @@ static AjBool metaInformationadaptorCacheInit(
     EnsPMetainformation mi   = NULL;
     EnsPMetainformation temp = NULL;
 
-    if(ajDebugTest("metaInformationadaptorCacheInit"))
-        ajDebug("metaInformationadaptorCacheInit\n"
+    if(ajDebugTest("metainformationadaptorCacheInit"))
+        ajDebug("metainformationadaptorCacheInit\n"
                 "  mia %p\n",
                 mia);
 
@@ -864,7 +864,7 @@ static AjBool metaInformationadaptorCacheInit(
 
     mis = ajListNew();
 
-    metaInformationadaptorFetchAllBySQL(mia, statement, mis);
+    metainformationadaptorFetchAllBySQL(mia, statement, mis);
 
     while(ajListPop(mis, (void **) &mi))
     {
@@ -880,7 +880,7 @@ static AjBool metaInformationadaptorCacheInit(
 
         if(temp)
         {
-            ajWarn("metaInformationCacheInit got more than one "
+            ajWarn("metainformationCacheInit got more than one "
                    "Ensembl Meta-Information with identifier %u.\n",
                    temp->Identifier);
 
@@ -967,7 +967,7 @@ EnsPMetainformationadaptor ensMetainformationadaptorNew(
 
     mia->CacheByKey = ajTablestrNewLen(0);
 
-    metaInformationadaptorCacheInit(mia);
+    metainformationadaptorCacheInit(mia);
 
     return mia;
 }
@@ -975,7 +975,7 @@ EnsPMetainformationadaptor ensMetainformationadaptorNew(
 
 
 
-/* @funcstatic metaInformationadaptorClearIdentifierCache *********************
+/* @funcstatic metainformationadaptorClearIdentifierCache *********************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Meta-Information
 ** Adaptor-internal Ensembl Meta-Information cache. This function deletes the
@@ -990,7 +990,7 @@ EnsPMetainformationadaptor ensMetainformationadaptorNew(
 ** @@
 ******************************************************************************/
 
-static void metaInformationadaptorClearIdentifierCache(void **key,
+static void metainformationadaptorClearIdentifierCache(void **key,
                                                        void **value,
                                                        void *cl)
 {
@@ -1018,7 +1018,7 @@ static void metaInformationadaptorClearIdentifierCache(void **key,
 
 
 
-/* @funcstatic metaInformationadaptorClearKeyCache ****************************
+/* @funcstatic metainformationadaptorClearKeyCache ****************************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Meta-Information
 ** Adaptor-internal Ensembl Meta-Information cache. This function deletes the
@@ -1034,7 +1034,7 @@ static void metaInformationadaptorClearIdentifierCache(void **key,
 ** @@
 ******************************************************************************/
 
-static void metaInformationadaptorClearKeyCache(void **key,
+static void metainformationadaptorClearKeyCache(void **key,
                                                 void **value,
                                                 void *cl)
 {
@@ -1115,7 +1115,7 @@ void ensMetainformationadaptorDel(EnsPMetainformationadaptor *Pmia)
     /* Clear and delete the identifier cache. */
 
     ajTableMapDel(pthis->CacheByIdentifier,
-                  metaInformationadaptorClearIdentifierCache,
+                  metainformationadaptorClearIdentifierCache,
                   NULL);
 
     ajTableFree(&pthis->CacheByIdentifier);
@@ -1123,7 +1123,7 @@ void ensMetainformationadaptorDel(EnsPMetainformationadaptor *Pmia)
     /* Clear and delete the key cache. */
 
     ajTableMapDel(pthis->CacheByKey,
-                  metaInformationadaptorClearKeyCache,
+                  metainformationadaptorClearKeyCache,
                   NULL);
 
     ajTableFree(&pthis->CacheByKey);
@@ -1181,7 +1181,7 @@ AjBool ensMetainformationadaptorFetchAllByKey(
     if(!list)
         return ajTrue;
 
-    specieskey = metaInformationkeyIsSpecieskey(key);
+    specieskey = metainformationkeyIsSpecieskey(key);
 
     iter = ajListIterNew(list);
 
@@ -1526,7 +1526,7 @@ AjBool ensMetainformationadaptorKeyValueExists(
     if(!list)
         return ajFalse;
 
-    specieskey = metaInformationkeyIsSpecieskey(key);
+    specieskey = metainformationkeyIsSpecieskey(key);
 
     iter = ajListIterNew(list);
 

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -58,64 +58,64 @@ extern EnsPMiscellaneoussetadaptor ensRegistryGetMiscellaneoussetadaptor(
 extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
     EnsPDatabaseadaptor dba);
 
-static AjBool miscellaneousSetAdaptorFetchAllBySQL(
+static AjBool miscellaneoussetadaptorFetchAllBySQL(
     EnsPMiscellaneoussetadaptor msa,
     const AjPStr statement,
     AjPList mss);
 
-static AjBool miscellaneousSetAdaptorCacheInsert(
+static AjBool miscellaneoussetadaptorCacheInsert(
     EnsPMiscellaneoussetadaptor msa,
     EnsPMiscellaneousset *Pms);
 
 #if AJFALSE
-static AjBool miscellaneousSetAdaptorCacheRemove(
+static AjBool miscellaneoussetadaptorCacheRemove(
     EnsPMiscellaneoussetadaptor msa,
     EnsPMiscellaneousset ms);
 #endif
 
-static AjBool miscellaneousSetAdaptorCacheInit(
+static AjBool miscellaneoussetadaptorCacheInit(
     EnsPMiscellaneoussetadaptor msa);
 
-static void miscellaneousSetAdaptorCacheClearIdentifier(void **key,
+static void miscellaneoussetadaptorCacheClearIdentifier(void **key,
                                                         void **value,
                                                         void *cl);
 
-static void miscellaneousSetAdaptorCacheClearCode(void **key,
+static void miscellaneoussetadaptorCacheClearCode(void **key,
                                                   void **value,
                                                   void *cl);
 
-static AjBool miscellaneousSetAdaptorCacheExit(
+static AjBool miscellaneoussetadaptorCacheExit(
     EnsPMiscellaneoussetadaptor msa);
 
-static void miscellaneousSetAdaptorFetchAll(const void *key,
+static void miscellaneoussetadaptorFetchAll(const void *key,
                                             void **value,
                                             void *cl);
 
-static AjBool miscellaneousFeatureadaptorHasAttribute(AjPTable attributes,
+static AjBool miscellaneousfeatureadaptorHasAttribute(AjPTable attributes,
                                                       const AjPStr code,
                                                       const AjPStr value);
 
-static AjBool miscellaneousFeatureadaptorClearAttributes(AjPTable attributes);
+static AjBool miscellaneousfeatureadaptorClearAttributes(AjPTable attributes);
 
-static AjBool miscellaneousFeatureadaptorHasMiscellaneousset(AjPTable sets,
+static AjBool miscellaneousfeatureadaptorHasMiscellaneousset(AjPTable sets,
                                                              ajuint msid);
 
-static AjBool miscellaneousFeatureadaptorClearMiscellaneoussets(AjPTable sets);
+static AjBool miscellaneousfeatureadaptorClearMiscellaneoussets(AjPTable sets);
 
-static AjBool miscellaneousFeatureadaptorFetchAllBySQL(
+static AjBool miscellaneousfeatureadaptorFetchAllBySQL(
     EnsPDatabaseadaptor dba,
     const AjPStr statement,
     EnsPAssemblymapper am,
     EnsPSlice slice,
     AjPList mfs);
 
-static void *miscellaneousFeatureadaptorCacheReference(void *value);
+static void *miscellaneousfeatureadaptorCacheReference(void *value);
 
-static void miscellaneousFeatureadaptorCacheDelete(void **value);
+static void miscellaneousfeatureadaptorCacheDelete(void **value);
 
-static ajuint miscellaneousFeatureadaptorCacheSize(const void *value);
+static ajuint miscellaneousfeatureadaptorCacheSize(const void *value);
 
-static EnsPFeature miscellaneousFeatureadaptorGetFeature(const void *value);
+static EnsPFeature miscellaneousfeatureadaptorGetFeature(const void *value);
 
 
 
@@ -839,7 +839,7 @@ ajuint ensMiscellaneoussetGetMemSize(const EnsPMiscellaneousset ms)
 
 
 
-/* @funcstatic miscellaneousSetAdaptorFetchAllBySQL ***************************
+/* @funcstatic miscellaneoussetadaptorFetchAllBySQL ***************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl Miscellaneous Set objects.
@@ -853,7 +853,7 @@ ajuint ensMiscellaneoussetGetMemSize(const EnsPMiscellaneousset ms)
 ** @@
 ******************************************************************************/
 
-static AjBool miscellaneousSetAdaptorFetchAllBySQL(
+static AjBool miscellaneoussetadaptorFetchAllBySQL(
     EnsPMiscellaneoussetadaptor msa,
     const AjPStr statement,
     AjPList mss)
@@ -924,7 +924,7 @@ static AjBool miscellaneousSetAdaptorFetchAllBySQL(
 
 
 
-/* @funcstatic miscellaneousSetAdaptorCacheInsert *****************************
+/* @funcstatic miscellaneoussetadaptorCacheInsert *****************************
 **
 ** Insert an Ensembl Miscellaneous Set into the
 ** Miscellaneous Set Adaptor-internal cache.
@@ -940,7 +940,7 @@ static AjBool miscellaneousSetAdaptorFetchAllBySQL(
 ** @@
 ******************************************************************************/
 
-static AjBool miscellaneousSetAdaptorCacheInsert(
+static AjBool miscellaneoussetadaptorCacheInsert(
     EnsPMiscellaneoussetadaptor msa,
     EnsPMiscellaneousset *Pms)
 {
@@ -997,8 +997,9 @@ static AjBool miscellaneousSetAdaptorCacheInsert(
 
     if(ms1 && ms2 && (ms1 == ms2))
     {
-        ajDebug("miscellaneousSetCacheInsert replaced Miscellaneous Set %p "
-                "with one already cached %p.\n", *Pms, ms1);
+        ajDebug("miscellaneoussetadaptorCacheInsert replaced "
+                "Miscellaneous Set %p with one already cached %p.\n",
+                *Pms, ms1);
 
         ensMiscellaneoussetDel(Pms);
 
@@ -1006,18 +1007,19 @@ static AjBool miscellaneousSetAdaptorCacheInsert(
     }
 
     if(ms1 && ms2 && (ms1 != ms2))
-        ajDebug("miscellaneousSetCacheInsert detected Miscellaneous Sets in "
-                "the identifier and code cache with identical codes "
-                "('%S' and '%S') but different addresses (%p and %p).\n",
+        ajDebug("miscellaneoussetadaptorCacheInsert detected "
+                "Miscellaneous Sets in the identifier and code cache with "
+                "identical codes ('%S' and '%S') but different addresses "
+                "(%p and %p).\n",
                 ms1->Code, ms2->Code, ms1, ms2);
 
     if(ms1 && (!ms2))
-        ajDebug("miscellaneousSetCacheInsert detected an "
+        ajDebug("miscellaneoussetadaptorCacheInsert detected an "
                 "Ensembl Miscellaneous Set "
                 "in the identifier, but not in the code cache.\n");
 
     if((!ms1) && ms2)
-        ajDebug("miscellaneousSetCacheInsert detected an "
+        ajDebug("miscellaneoussetadaptorCacheInsert detected an "
                 "Ensembl Miscellaneous Set "
                 "in the code, but not in the identifier cache.\n");
 
@@ -1027,7 +1029,7 @@ static AjBool miscellaneousSetAdaptorCacheInsert(
 
 
 
-/* @funcstatic miscellaneousSetAdaptorCacheRemove *****************************
+/* @funcstatic miscellaneoussetadaptorCacheRemove *****************************
 **
 ** Remove an Ensembl Miscellaneous Set from the
 ** Miscellaneous Set Adaptor-internal cache.
@@ -1042,7 +1044,7 @@ static AjBool miscellaneousSetAdaptorCacheInsert(
 
 #if AJFALSE
 
-static AjBool miscellaneousSetAdaptorCacheRemove(
+static AjBool miscellaneoussetadaptorCacheRemove(
     EnsPMiscellaneoussetadaptor msa,
     EnsPMiscellaneousset ms)
 {
@@ -1072,13 +1074,13 @@ static AjBool miscellaneousSetAdaptorCacheRemove(
         (void **) &key);
 
     if(ms1 && (!ms2))
-        ajWarn("miscellaneousSetAdaptorCacheRemove could remove "
+        ajWarn("miscellaneoussetadaptorCacheRemove could remove "
                "Miscellaneous Set '%S' (%u) "
                "only from the identifier cache.\n",
                ms->Code, ms->Identifier);
 
     if((!ms1) && ms2)
-        ajWarn("miscellaneousSetAdaptorCacheRemove could remove "
+        ajWarn("miscellaneoussetadaptorCacheRemove could remove "
                "Miscellaneous Set '%S' (%u) "
                "only from the code cache.\n",
                ms->Code, ms->Identifier);
@@ -1102,7 +1104,7 @@ static AjBool miscellaneousSetAdaptorCacheRemove(
 
 
 
-/* @funcstatic miscellaneousSetAdaptorCacheInit *******************************
+/* @funcstatic miscellaneoussetadaptorCacheInit *******************************
 **
 ** Initialise the internal Miscellaneous Set cache of an
 ** Ensembl Miscellaneous Set Adaptor.
@@ -1114,7 +1116,7 @@ static AjBool miscellaneousSetAdaptorCacheRemove(
 ** @@
 ******************************************************************************/
 
-static AjBool miscellaneousSetAdaptorCacheInit(
+static AjBool miscellaneoussetadaptorCacheInit(
     EnsPMiscellaneoussetadaptor msa)
 {
     AjPList mss      = NULL;
@@ -1148,11 +1150,11 @@ static AjBool miscellaneousSetAdaptorCacheInit(
 
     mss = ajListNew();
 
-    miscellaneousSetAdaptorFetchAllBySQL(msa, statement, mss);
+    miscellaneoussetadaptorFetchAllBySQL(msa, statement, mss);
 
     while(ajListPop(mss, (void **) &ms))
     {
-        miscellaneousSetAdaptorCacheInsert(msa, &ms);
+        miscellaneoussetadaptorCacheInsert(msa, &ms);
 
         /*
         ** Both caches hold internal references to the
@@ -1218,7 +1220,7 @@ EnsPMiscellaneoussetadaptor ensMiscellaneoussetadaptorNew(
 
     msa->Adaptor = dba;
 
-    miscellaneousSetAdaptorCacheInit(msa);
+    miscellaneoussetadaptorCacheInit(msa);
 
     return msa;
 }
@@ -1247,7 +1249,7 @@ EnsPMiscellaneoussetadaptor ensMiscellaneoussetadaptorNew(
 
 
 
-/* @funcstatic miscellaneousSetAdaptorCacheClearIdentifier ********************
+/* @funcstatic miscellaneoussetadaptorCacheClearIdentifier ********************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Miscellaneous Set
 ** Adaptor-internal Miscellaneous Set cache. This function deletes the
@@ -1263,7 +1265,7 @@ EnsPMiscellaneoussetadaptor ensMiscellaneoussetadaptorNew(
 ** @@
 ******************************************************************************/
 
-static void miscellaneousSetAdaptorCacheClearIdentifier(void **key,
+static void miscellaneoussetadaptorCacheClearIdentifier(void **key,
                                                         void **value,
                                                         void *cl)
 {
@@ -1291,7 +1293,7 @@ static void miscellaneousSetAdaptorCacheClearIdentifier(void **key,
 
 
 
-/* @funcstatic miscellaneousSetAdaptorCacheClearCode **************************
+/* @funcstatic miscellaneoussetadaptorCacheClearCode **************************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Miscellaneous Set
 ** Adaptor-internal Miscellaneous Set cache. This function deletes the code
@@ -1306,7 +1308,7 @@ static void miscellaneousSetAdaptorCacheClearIdentifier(void **key,
 ** @@
 ******************************************************************************/
 
-static void miscellaneousSetAdaptorCacheClearCode(void **key,
+static void miscellaneoussetadaptorCacheClearCode(void **key,
                                                   void **value,
                                                   void *cl)
 {
@@ -1334,7 +1336,7 @@ static void miscellaneousSetAdaptorCacheClearCode(void **key,
 
 
 
-/* @funcstatic miscellaneousSetAdaptorCacheExit *******************************
+/* @funcstatic miscellaneoussetadaptorCacheExit *******************************
 **
 ** Clears the internal Miscellaneous Set cache of an
 ** Ensembl Miscellaneous Set Adaptor.
@@ -1346,7 +1348,7 @@ static void miscellaneousSetAdaptorCacheClearCode(void **key,
 ** @@
 ******************************************************************************/
 
-static AjBool miscellaneousSetAdaptorCacheExit(
+static AjBool miscellaneoussetadaptorCacheExit(
     EnsPMiscellaneoussetadaptor msa)
 {
     if(!msa)
@@ -1355,7 +1357,7 @@ static AjBool miscellaneousSetAdaptorCacheExit(
     /* Clear and delete the identifier cache. */
 
     ajTableMapDel(msa->CacheByIdentifier,
-                  miscellaneousSetAdaptorCacheClearIdentifier,
+                  miscellaneoussetadaptorCacheClearIdentifier,
                   NULL);
 
     ajTableFree(&msa->CacheByIdentifier);
@@ -1363,7 +1365,7 @@ static AjBool miscellaneousSetAdaptorCacheExit(
     /* Clear and delete the code cache. */
 
     ajTableMapDel(msa->CacheByCode,
-                  miscellaneousSetAdaptorCacheClearCode,
+                  miscellaneoussetadaptorCacheClearCode,
                   NULL);
 
     ajTableFree(&msa->CacheByCode);
@@ -1398,7 +1400,7 @@ void ensMiscellaneoussetadaptorDel(EnsPMiscellaneoussetadaptor *Pmsa)
 
     pthis = *Pmsa;
 
-    miscellaneousSetAdaptorCacheExit(pthis);
+    miscellaneoussetadaptorCacheExit(pthis);
 
     AJFREE(pthis);
 
@@ -1483,7 +1485,7 @@ const EnsPDatabaseadaptor ensMiscellaneoussetadaptorGetDatabaseadaptor(
 
 
 
-/* @funcstatic miscellaneousSetAdaptorFetchAll ********************************
+/* @funcstatic miscellaneoussetadaptorFetchAll ********************************
 **
 ** An ajTableMap 'apply' function to return all Miscellaneous Set objects
 ** from the Ensembl Miscellaneous Set Adaptor-internal cache.
@@ -1498,7 +1500,7 @@ const EnsPDatabaseadaptor ensMiscellaneoussetadaptorGetDatabaseadaptor(
 ** @@
 ******************************************************************************/
 
-static void miscellaneousSetAdaptorFetchAll(const void *key,
+static void miscellaneoussetadaptorFetchAll(const void *key,
                                             void **value,
                                             void *cl)
 {
@@ -1550,7 +1552,7 @@ AjBool ensMiscellaneoussetadaptorFetchAll(
         return ajFalse;
 
     ajTableMap(msa->CacheByIdentifier,
-               miscellaneousSetAdaptorFetchAll,
+               miscellaneoussetadaptorFetchAll,
                (void *) mss);
 
     return ajTrue;
@@ -1626,7 +1628,7 @@ AjBool ensMiscellaneoussetadaptorFetchByIdentifier(
 
     mss = ajListNew();
 
-    miscellaneousSetAdaptorFetchAllBySQL(msa, statement, mss);
+    miscellaneoussetadaptorFetchAllBySQL(msa, statement, mss);
 
     if(ajListGetLength(mss) > 1)
         ajWarn("ensMiscellaneoussetadaptorFetchByIdentifier got more "
@@ -1635,11 +1637,11 @@ AjBool ensMiscellaneoussetadaptorFetchByIdentifier(
 
     ajListPop(mss, (void **) Pms);
 
-    miscellaneousSetAdaptorCacheInsert(msa, Pms);
+    miscellaneoussetadaptorCacheInsert(msa, Pms);
 
     while(ajListPop(mss, (void **) &ms))
     {
-        miscellaneousSetAdaptorCacheInsert(msa, &ms);
+        miscellaneoussetadaptorCacheInsert(msa, &ms);
 
         ensMiscellaneoussetDel(&ms);
     }
@@ -1727,7 +1729,7 @@ AjBool ensMiscellaneoussetadaptorFetchByCode(
 
     mss = ajListNew();
 
-    miscellaneousSetAdaptorFetchAllBySQL(msa, statement, mss);
+    miscellaneoussetadaptorFetchAllBySQL(msa, statement, mss);
 
     if(ajListGetLength(mss) > 1)
         ajWarn("ensMiscellaneoussetadaptorFetchByCode got more than one "
@@ -1736,11 +1738,11 @@ AjBool ensMiscellaneoussetadaptorFetchByCode(
 
     ajListPop(mss, (void **) Pms);
 
-    miscellaneousSetAdaptorCacheInsert(msa, Pms);
+    miscellaneoussetadaptorCacheInsert(msa, Pms);
 
     while(ajListPop(mss, (void **) &ms))
     {
-        miscellaneousSetAdaptorCacheInsert(msa, &ms);
+        miscellaneoussetadaptorCacheInsert(msa, &ms);
 
         ensMiscellaneoussetDel(&ms);
     }
@@ -2584,7 +2586,7 @@ AjBool ensMiscellaneousfeatureFetchAllMiscellaneoussets(
 **
 ******************************************************************************/
 
-static const char *miscellaneousFeatureadaptorTables[] =
+static const char *miscellaneousfeatureadaptorTables[] =
 {
     "misc_feature",
     "misc_feature_misc_set",
@@ -2596,7 +2598,7 @@ static const char *miscellaneousFeatureadaptorTables[] =
 
 
 
-static const char *miscellaneousFeatureadaptorColumns[] =
+static const char *miscellaneousfeatureadaptorColumns[] =
 {
     "misc_feature.misc_feature_id",
     "misc_feature.seq_region_id",
@@ -2614,7 +2616,7 @@ static const char *miscellaneousFeatureadaptorColumns[] =
 
 
 
-static EnsOBaseadaptorLeftJoin miscellaneousFeatureadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin miscellaneousfeatureadaptorLeftJoin[] =
 {
     {
         "misc_feature_misc_set",
@@ -2634,15 +2636,15 @@ static EnsOBaseadaptorLeftJoin miscellaneousFeatureadaptorLeftJoin[] =
 
 
 
-static const char *miscellaneousFeatureadaptorDefaultCondition = NULL;
+static const char *miscellaneousfeatureadaptorDefaultCondition = NULL;
 
-static const char *miscellaneousFeatureadaptorFinalCondition =
+static const char *miscellaneousfeatureadaptorFinalCondition =
     " ORDER BY misc_feature.misc_feature_id";
 
 
 
 
-/* @funcstatic miscellaneousFeatureadaptorHasAttribute ************************
+/* @funcstatic miscellaneousfeatureadaptorHasAttribute ************************
 **
 ** Check whether an Ensembl Attribute has already been indexed for a particular
 ** Ensembl Miscellaneous Feature.
@@ -2660,7 +2662,7 @@ static const char *miscellaneousFeatureadaptorFinalCondition =
 ** data and AjBool value data.
 ******************************************************************************/
 
-static AjBool miscellaneousFeatureadaptorHasAttribute(AjPTable attributes,
+static AjBool miscellaneousfeatureadaptorHasAttribute(AjPTable attributes,
                                                       const AjPStr code,
                                                       const AjPStr value)
 {
@@ -2691,7 +2693,7 @@ static AjBool miscellaneousFeatureadaptorHasAttribute(AjPTable attributes,
 
 
 
-/* @funcstatic miscellaneousFeatureadaptorClearAttributes *********************
+/* @funcstatic miscellaneousfeatureadaptorClearAttributes *********************
 **
 ** Clear an Ensembl Miscellaneous Feature Adaptor-internal
 ** Ensembl Attribute cache.
@@ -2705,7 +2707,7 @@ static AjBool miscellaneousFeatureadaptorHasAttribute(AjPTable attributes,
 ** @@
 ******************************************************************************/
 
-static AjBool miscellaneousFeatureadaptorClearAttributes(AjPTable attributes)
+static AjBool miscellaneousfeatureadaptorClearAttributes(AjPTable attributes)
 {
     void **keyarray = NULL;
     void **valarray = NULL;
@@ -2737,7 +2739,7 @@ static AjBool miscellaneousFeatureadaptorClearAttributes(AjPTable attributes)
 
 
 
-/* @funcstatic miscellaneousFeatureadaptorHasMiscellaneousset *****************
+/* @funcstatic miscellaneousfeatureadaptorHasMiscellaneousset *****************
 **
 ** Check whether an Ensembl Miscellaneous Set has already been indexed for a
 ** particular Ensembl Miscellaneous Feature.
@@ -2754,7 +2756,7 @@ static AjBool miscellaneousFeatureadaptorClearAttributes(AjPTable attributes)
 ** integer key data and AjBool value data.
 ******************************************************************************/
 
-static AjBool miscellaneousFeatureadaptorHasMiscellaneousset(AjPTable sets,
+static AjBool miscellaneousfeatureadaptorHasMiscellaneousset(AjPTable sets,
                                                              ajuint msid)
 {
     AjBool *Pbool = NULL;
@@ -2782,7 +2784,7 @@ static AjBool miscellaneousFeatureadaptorHasMiscellaneousset(AjPTable sets,
 
 
 
-/* @funcstatic miscellaneousFeatureadaptorClearMiscellaneoussets **************
+/* @funcstatic miscellaneousfeatureadaptorClearMiscellaneoussets **************
 **
 ** Clear an Ensembl Miscellaneous Feature Adaptor-internal
 ** Ensembl Miscellaneous Set cache.
@@ -2796,7 +2798,7 @@ static AjBool miscellaneousFeatureadaptorHasMiscellaneousset(AjPTable sets,
 ** @@
 ******************************************************************************/
 
-static AjBool miscellaneousFeatureadaptorClearMiscellaneoussets(AjPTable sets)
+static AjBool miscellaneousfeatureadaptorClearMiscellaneoussets(AjPTable sets)
 {
     void **keyarray = NULL;
     void **valarray = NULL;
@@ -2828,7 +2830,7 @@ static AjBool miscellaneousFeatureadaptorClearMiscellaneoussets(AjPTable sets)
 
 
 
-/* @funcstatic miscellaneousFeatureadaptorFetchAllBySQL ***********************
+/* @funcstatic miscellaneousfeatureadaptorFetchAllBySQL ***********************
 **
 ** Fetch all Ensembl Miscellaneous Feature objects via an SQL statement.
 **
@@ -2843,7 +2845,7 @@ static AjBool miscellaneousFeatureadaptorClearMiscellaneoussets(AjPTable sets)
 ** @@
 ******************************************************************************/
 
-static AjBool miscellaneousFeatureadaptorFetchAllBySQL(
+static AjBool miscellaneousfeatureadaptorFetchAllBySQL(
     EnsPDatabaseadaptor dba,
     const AjPStr statement,
     EnsPAssemblymapper am,
@@ -2899,8 +2901,8 @@ static AjBool miscellaneousFeatureadaptorFetchAllBySQL(
     EnsPSlice srslice   = NULL;
     EnsPSliceadaptor sa = NULL;
 
-    if(ajDebugTest("miscellaneousFeatureadaptorFetchAllBySQL"))
-        ajDebug("miscellaneousFeatureadaptorFetchAllBySQL\n"
+    if(ajDebugTest("miscellaneousfeatureadaptorFetchAllBySQL"))
+        ajDebug("miscellaneousfeatureadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -2992,7 +2994,7 @@ static AjBool miscellaneousFeatureadaptorFetchAllBySQL(
 
             if(ajStrGetLen(atcode) &&
                ajStrGetLen(avalue) &&
-               !miscellaneousFeatureadaptorHasAttribute(attributes,
+               !miscellaneousfeatureadaptorHasAttribute(attributes,
                                                         atcode,
                                                         avalue))
                 attribute =
@@ -3005,9 +3007,9 @@ static AjBool miscellaneousFeatureadaptorFetchAllBySQL(
             ** internal caches.
             */
 
-            miscellaneousFeatureadaptorClearAttributes(attributes);
+            miscellaneousfeatureadaptorClearAttributes(attributes);
 
-            miscellaneousFeatureadaptorClearMiscellaneoussets(sets);
+            miscellaneousfeatureadaptorClearMiscellaneoussets(sets);
 
             current = identifier;
 
@@ -3027,7 +3029,7 @@ static AjBool miscellaneousFeatureadaptorFetchAllBySQL(
             if(srstart <= INT_MAX)
                 slstart = (ajint) srstart;
             else
-                ajFatal("miscellaneousFeatureadaptorFetchAllBySQL got a "
+                ajFatal("miscellaneousfeatureadaptorFetchAllBySQL got a "
                         "Sequence Region start coordinate (%u) outside the "
                         "maximum integer limit (%d).",
                         srstart, INT_MAX);
@@ -3035,7 +3037,7 @@ static AjBool miscellaneousFeatureadaptorFetchAllBySQL(
             if(srend <= INT_MAX)
                 slend = (ajint) srend;
             else
-                ajFatal("miscellaneousFeatureadaptorFetchAllBySQL got a "
+                ajFatal("miscellaneousfeatureadaptorFetchAllBySQL got a "
                         "Sequence Region end coordinate (%u) outside the "
                         "maximum integer limit (%d).",
                         srend, INT_MAX);
@@ -3150,7 +3152,7 @@ static AjBool miscellaneousFeatureadaptorFetchAllBySQL(
                 if(ensSliceGetLength(slice) <= INT_MAX)
                     sllength = (ajint) ensSliceGetLength(slice);
                 else
-                    ajFatal("miscellaneousFeatureadaptorFetchAllBySQL "
+                    ajFatal("miscellaneousfeatureadaptorFetchAllBySQL "
                             "got a Slice, "
                             "whose length (%u) exceeds the "
                             "maximum integer limit (%d).",
@@ -3236,7 +3238,7 @@ static AjBool miscellaneousFeatureadaptorFetchAllBySQL(
                 attribute =
                     ensAttributeNew(atcode, atname, atdescription, avalue);
 
-                if(!miscellaneousFeatureadaptorHasAttribute(attributes,
+                if(!miscellaneousfeatureadaptorHasAttribute(attributes,
                                                             atcode,
                                                             avalue))
                     ensMiscellaneousfeatureAddAttribute(mf, attribute);
@@ -3248,7 +3250,7 @@ static AjBool miscellaneousFeatureadaptorFetchAllBySQL(
 
             if(msid)
             {
-                if(!miscellaneousFeatureadaptorHasMiscellaneousset(sets, msid))
+                if(!miscellaneousfeatureadaptorHasMiscellaneousset(sets, msid))
                 {
                     ensMiscellaneoussetadaptorFetchByIdentifier(msa,
                                                                 msid,
@@ -3279,11 +3281,11 @@ static AjBool miscellaneousFeatureadaptorFetchAllBySQL(
 
     ajListFree(&mrs);
 
-    miscellaneousFeatureadaptorClearAttributes(attributes);
+    miscellaneousfeatureadaptorClearAttributes(attributes);
 
     ajTableFree(&attributes);
 
-    miscellaneousFeatureadaptorClearMiscellaneoussets(sets);
+    miscellaneousfeatureadaptorClearMiscellaneoussets(sets);
 
     ajTableFree(&sets);
 
@@ -3293,7 +3295,7 @@ static AjBool miscellaneousFeatureadaptorFetchAllBySQL(
 
 
 
-/* @funcstatic miscellaneousFeatureadaptorCacheReference **********************
+/* @funcstatic miscellaneousfeatureadaptorCacheReference **********************
 **
 ** Wrapper function to reference an Ensembl Miscellaneous Feature
 ** from an Ensembl Cache.
@@ -3304,7 +3306,7 @@ static AjBool miscellaneousFeatureadaptorFetchAllBySQL(
 ** @@
 ******************************************************************************/
 
-static void *miscellaneousFeatureadaptorCacheReference(void *value)
+static void *miscellaneousfeatureadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -3316,7 +3318,7 @@ static void *miscellaneousFeatureadaptorCacheReference(void *value)
 
 
 
-/* @funcstatic miscellaneousFeatureadaptorCacheDelete *************************
+/* @funcstatic miscellaneousfeatureadaptorCacheDelete *************************
 **
 ** Wrapper function to delete an Ensembl Miscellaneous Feature
 ** from an Ensembl Cache.
@@ -3327,7 +3329,7 @@ static void *miscellaneousFeatureadaptorCacheReference(void *value)
 ** @@
 ******************************************************************************/
 
-static void miscellaneousFeatureadaptorCacheDelete(void **value)
+static void miscellaneousfeatureadaptorCacheDelete(void **value)
 {
     if(!value)
         return;
@@ -3340,7 +3342,7 @@ static void miscellaneousFeatureadaptorCacheDelete(void **value)
 
 
 
-/* @funcstatic miscellaneousFeatureadaptorCacheSize ***************************
+/* @funcstatic miscellaneousfeatureadaptorCacheSize ***************************
 **
 ** Wrapper function to determine the memory size of an
 ** Ensembl Miscellaneous Feature from an Ensembl Cache.
@@ -3351,7 +3353,7 @@ static void miscellaneousFeatureadaptorCacheDelete(void **value)
 ** @@
 ******************************************************************************/
 
-static ajuint miscellaneousFeatureadaptorCacheSize(const void *value)
+static ajuint miscellaneousfeatureadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;
@@ -3363,7 +3365,7 @@ static ajuint miscellaneousFeatureadaptorCacheSize(const void *value)
 
 
 
-/* @funcstatic miscellaneousFeatureadaptorGetFeature **************************
+/* @funcstatic miscellaneousfeatureadaptorGetFeature **************************
 **
 ** Wrapper function to get the Ensembl Feature of an
 ** Ensembl Miscellaneous Feature from an Ensembl Feature Adaptor.
@@ -3374,7 +3376,7 @@ static ajuint miscellaneousFeatureadaptorCacheSize(const void *value)
 ** @@
 ******************************************************************************/
 
-static EnsPFeature miscellaneousFeatureadaptorGetFeature(const void *value)
+static EnsPFeature miscellaneousfeatureadaptorGetFeature(const void *value)
 {
     if(!value)
         return NULL;
@@ -3434,18 +3436,18 @@ EnsPMiscellaneousfeatureadaptor ensMiscellaneousfeatureadaptorNew(
 
     mfa->Adaptor = ensFeatureadaptorNew(
         dba,
-        miscellaneousFeatureadaptorTables,
-        miscellaneousFeatureadaptorColumns,
-        miscellaneousFeatureadaptorLeftJoin,
-        miscellaneousFeatureadaptorDefaultCondition,
-        miscellaneousFeatureadaptorFinalCondition,
-        miscellaneousFeatureadaptorFetchAllBySQL,
+        miscellaneousfeatureadaptorTables,
+        miscellaneousfeatureadaptorColumns,
+        miscellaneousfeatureadaptorLeftJoin,
+        miscellaneousfeatureadaptorDefaultCondition,
+        miscellaneousfeatureadaptorFinalCondition,
+        miscellaneousfeatureadaptorFetchAllBySQL,
         (void* (*)(const void* key)) NULL,
-        miscellaneousFeatureadaptorCacheReference,
+        miscellaneousfeatureadaptorCacheReference,
         (AjBool (*)(const void* value)) NULL,
-        miscellaneousFeatureadaptorCacheDelete,
-        miscellaneousFeatureadaptorCacheSize,
-        miscellaneousFeatureadaptorGetFeature,
+        miscellaneousfeatureadaptorCacheDelete,
+        miscellaneousfeatureadaptorCacheSize,
+        miscellaneousfeatureadaptorGetFeature,
         "Miscellaneous Feature");
 
     return mfa;

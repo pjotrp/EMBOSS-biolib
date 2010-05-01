@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -75,81 +75,81 @@ extern EnsPSimplefeatureadaptor ensRegistryGetSimplefeatureadaptor(
 extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
     EnsPDatabaseadaptor dba);
 
-static AjBool featureAdaptorAnalysisNameToConstraint(
+static AjBool featureadaptorAnalysisNameToConstraint(
     const EnsPFeatureadaptor fa,
     AjPStr* Pconstraint,
     const AjPStr anname);
 
-static AjBool featureAdaptorRemap(EnsPFeatureadaptor fa,
+static AjBool featureadaptorRemap(EnsPFeatureadaptor fa,
                                   AjPList objects,
                                   EnsPAssemblymapper am,
                                   EnsPSlice slice);
 
-static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor fa,
+static AjBool featureadaptorSliceFetch(EnsPFeatureadaptor fa,
                                        EnsPSlice slice,
                                        AjPStr constraint,
                                        AjPList objects);
 
-static int baseAlignFeatureCompareSourceFeatureStart(const void* P1,
+static int basealignfeatureCompareSourceFeatureStart(const void* P1,
                                                      const void* P2);
 
-static AjBool baseAlignFeatureParseFeatures(EnsPBasealignfeature baf,
+static AjBool basealignfeatureParseFeatures(EnsPBasealignfeature baf,
                                             AjPList objects);
 
-static AjBool baseAlignFeatureParseCigar(const EnsPBasealignfeature baf,
+static AjBool basealignfeatureParseCigar(const EnsPBasealignfeature baf,
                                          AjPList fps);
 
-static void *baseAlignFeatureadaptorCacheReference(void *value);
+static void *basealignfeatureadaptorCacheReference(void *value);
 
-static void baseAlignFeatureadaptorCacheDelete(void **value);
+static void basealignfeatureadaptorCacheDelete(void **value);
 
-static ajuint baseAlignFeatureadaptorCacheSize(const void *value);
+static ajuint basealignfeatureadaptorCacheSize(const void *value);
 
-static EnsPFeature baseAlignFeatureadaptorGetFeature(const void *value);
+static EnsPFeature basealignfeatureadaptorGetFeature(const void *value);
 
-static AjBool dnaAlignFeatureadaptorFetchAllBySQL(
+static AjBool dnaalignfeatureadaptorFetchAllBySQL(
     EnsPDatabaseadaptor dba,
     const AjPStr statement,
     EnsPAssemblymapper am,
     EnsPSlice slice,
     AjPList bafs);
 
-static AjBool proteinAlignFeatureadaptorFetchAllBySQL(
+static AjBool proteinalignfeatureadaptorFetchAllBySQL(
     EnsPDatabaseadaptor dba,
     const AjPStr statement,
     EnsPAssemblymapper am,
     EnsPSlice slice,
     AjPList bafs);
 
-static AjBool proteinFeatureadaptorFetchAllBySQL(
+static AjBool proteinfeatureadaptorFetchAllBySQL(
     EnsPDatabaseadaptor dba,
     const AjPStr statement,
     EnsPAssemblymapper am,
     EnsPSlice slice,
     AjPList pfs);
 
-static AjBool simpleFeatureadaptorFetchAllBySQL(
+static AjBool simplefeatureadaptorFetchAllBySQL(
     EnsPDatabaseadaptor dba,
     const AjPStr statement,
     EnsPAssemblymapper am,
     EnsPSlice slice,
     AjPList sfs);
 
-static void *simpleFeatureadaptorCacheReference(void *value);
+static void *simplefeatureadaptorCacheReference(void *value);
 
-static void simpleFeatureadaptorCacheDelete(void **value);
+static void simplefeatureadaptorCacheDelete(void **value);
 
-static ajuint simpleFeatureadaptorCacheSize(const void *value);
+static ajuint simplefeatureadaptorCacheSize(const void *value);
 
-static EnsPFeature simpleFeatureadaptorGetFeature(const void *value);
+static EnsPFeature simplefeatureadaptorGetFeature(const void *value);
 
-static AjBool assemblyExceptionFeatureadaptorCacheInit(
+static AjBool assemblyexceptionfeatureadaptorCacheInit(
     EnsPAssemblyexceptionfeatureadaptor aefa);
 
-static AjBool assemblyExceptionFeatureadaptorCacheClear(
+static AjBool assemblyexceptionfeatureadaptorCacheClear(
     EnsPAssemblyexceptionfeatureadaptor eafa);
 
-static AjBool assemblyExceptionFeatureadaptorRemap(
+static AjBool assemblyexceptionfeatureadaptorRemap(
     EnsPAssemblyexceptionfeatureadaptor aefa,
     AjPList aefs,
     EnsPAssemblymapper am,
@@ -158,7 +158,7 @@ static AjBool assemblyExceptionFeatureadaptorRemap(
 
 
 
-static ajuint ensFeatureadaptorMaxSplitQuerySeqregions = 3;
+static ajuint featureadaptorMaxSplitQuerySeqregions = 3;
 
 
 
@@ -2049,12 +2049,12 @@ AjBool ensFeatureFetchSeqregionName(const EnsPFeature feature, AjPStr* Pname)
 ******************************************************************************/
 
 /* 1 << 26 = 64 Mi */
-static ajuint featureAdaptorCacheMaxBytes = 1 << 26;
+static ajuint featureadaptorCacheMaxBytes = 1 << 26;
 
 /* 1 << 16 = 64 ki */
-static ajuint featureAdaptorCacheMaxCount = 1 << 16;
+static ajuint featureadaptorCacheMaxCount = 1 << 16;
 
-static ajuint featureAdaptorCacheMaxSize = 0;
+static ajuint featureadaptorCacheMaxSize = 0;
 
 
 
@@ -2218,9 +2218,9 @@ EnsPFeatureadaptor ensFeatureadaptorNew(
                                     Fquery);
 
     fa->Cache = ensCacheNew(ensECacheTypeNumeric,
-                            featureAdaptorCacheMaxBytes,
-                            featureAdaptorCacheMaxCount,
-                            featureAdaptorCacheMaxSize,
+                            featureadaptorCacheMaxBytes,
+                            featureadaptorCacheMaxCount,
+                            featureadaptorCacheMaxSize,
                             Freference,
                             Fdelete,
                             Fsize,
@@ -2743,7 +2743,7 @@ AjBool ensFeatureadaptorEscapeS(EnsPFeatureadaptor fa,
 
 
 
-/* @funcstatic featureAdaptorAnalysisNameToConstraint *************************
+/* @funcstatic featureadaptorAnalysisNameToConstraint *************************
 **
 ** Build an SQL statement constraint from an Ensembl Analysis name.
 **
@@ -2762,7 +2762,7 @@ AjBool ensFeatureadaptorEscapeS(EnsPFeatureadaptor fa,
 ** constraint is added at all.
 ******************************************************************************/
 
-static AjBool featureAdaptorAnalysisNameToConstraint(
+static AjBool featureadaptorAnalysisNameToConstraint(
     const EnsPFeatureadaptor fa,
     AjPStr* Pconstraint,
     const AjPStr anname)
@@ -2788,8 +2788,8 @@ static AjBool featureAdaptorAnalysisNameToConstraint(
     if(!anname)
         return ajTrue;
 
-    if(ajDebugTest("featureAdaptorAnalysisNameToConstraint"))
-        ajDebug("featureAdaptorAnalysisNameToConstraint\n"
+    if(ajDebugTest("featureadaptorAnalysisNameToConstraint"))
+        ajDebug("featureadaptorAnalysisNameToConstraint\n"
                 "  fa %p\n"
                 "  *Pconstraint '%S'\n"
                 "  anname '%S'\n",
@@ -2818,7 +2818,7 @@ static AjBool featureAdaptorAnalysisNameToConstraint(
 
     if(!match)
     {
-        ajWarn("featureAdaptorAnalysisNameToConstraint this Ensembl Feature "
+        ajWarn("featureadaptorAnalysisNameToConstraint this Ensembl Feature "
                "is not associated with an Ensembl Analysis. "
                "Ignoring Analysis name argument '%S'.\n", anname);
 
@@ -2852,7 +2852,7 @@ static AjBool featureAdaptorAnalysisNameToConstraint(
 
 
 
-/* @funcstatic featureAdaptorRemap ********************************************
+/* @funcstatic featureadaptorRemap ********************************************
 **
 ** Remap Ensembl Objects based on Ensembl Features onto an Ensembl Slice.
 **
@@ -2867,7 +2867,7 @@ static AjBool featureAdaptorAnalysisNameToConstraint(
 ** @@
 ******************************************************************************/
 
-static AjBool featureAdaptorRemap(EnsPFeatureadaptor fa,
+static AjBool featureadaptorRemap(EnsPFeatureadaptor fa,
                                   AjPList objects,
                                   EnsPAssemblymapper am,
                                   EnsPSlice slice)
@@ -2889,10 +2889,10 @@ static AjBool featureAdaptorRemap(EnsPFeatureadaptor fa,
 
     EnsPMapperresult mr = NULL;
 
-    debug = ajDebugTest("featureAdaptorRemap");
+    debug = ajDebugTest("featureadaptorRemap");
 
     if(debug)
-        ajDebug("featureAdaptorRemap\n"
+        ajDebug("featureadaptorRemap\n"
                 "  fa %p\n"
                 "  objects %p\n"
                 "  am %p\n"
@@ -2945,7 +2945,7 @@ static AjBool featureAdaptorRemap(EnsPFeatureadaptor fa,
         */
 
         if(!feature->Slice)
-            ajFatal("featureAdaptorRemap got an Ensembl Feature (%p) "
+            ajFatal("featureadaptorRemap got an Ensembl Feature (%p) "
                     "without an Ensembl Slice.\n", feature);
 
         if(ensCoordsystemMatch(ensSliceGetCoordsystem(slice),
@@ -2971,7 +2971,7 @@ static AjBool featureAdaptorRemap(EnsPFeatureadaptor fa,
             */
 
             if(!am)
-                ajFatal("featureAdaptorRemap requires an "
+                ajFatal("featureadaptorRemap requires an "
                         "Ensembl Assembly Mapper, when "
                         "Coordinate Systems of Features and Slice differ.\n");
 
@@ -3005,7 +3005,7 @@ static AjBool featureAdaptorRemap(EnsPFeatureadaptor fa,
             {
                 if(debug)
                 {
-                    ajDebug("featureAdaptorRemap deleted Ensembl Object (%p), "
+                    ajDebug("featureadaptorRemap deleted Ensembl Object (%p), "
                             "which associated Ensembl Feature (%p) maps into "
                             "a gap.\n", Pobject, feature);
 
@@ -3032,7 +3032,7 @@ static AjBool featureAdaptorRemap(EnsPFeatureadaptor fa,
         {
             if(debug)
             {
-                ajDebug("featureAdaptorRemap deleted Ensembl Object (%p), "
+                ajDebug("featureadaptorRemap deleted Ensembl Object (%p), "
                         "which associated Ensembl Feature (%p:%u:%d:%d:%d) "
                         "maps outside the requested region %u:%d:%d:%d.\n",
                         Pobject, feature, srid, start, end, strand,
@@ -3077,7 +3077,7 @@ static AjBool featureAdaptorRemap(EnsPFeatureadaptor fa,
 
 
 
-/* @funcstatic featureAdaptorSliceFetch ***************************************
+/* @funcstatic featureadaptorSliceFetch ***************************************
 **
 ** Helper function used by ensFeatureadaptorFetchAllBySliceConstraint.
 **
@@ -3091,7 +3091,7 @@ static AjBool featureAdaptorRemap(EnsPFeatureadaptor fa,
 ** @@
 ******************************************************************************/
 
-static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor fa,
+static AjBool featureadaptorSliceFetch(EnsPFeatureadaptor fa,
                                        EnsPSlice slice,
                                        AjPStr constraint,
                                        AjPList objects)
@@ -3129,8 +3129,8 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor fa,
 
     EnsPMetacoordinateadaptor mca = NULL;
 
-    if(ajDebugTest("featureAdaptorSliceFetch"))
-        ajDebug("featureAdaptorSliceFetch\n"
+    if(ajDebugTest("featureadaptorSliceFetch"))
+        ajDebug("featureadaptorSliceFetch\n"
                 "  fa %p\n"
                 "  slice %p\n"
                 "  constraint '%S'\n"
@@ -3154,7 +3154,7 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor fa,
 
     if(!fa->Adaptor)
     {
-        ajDebug("featureAdaptorSliceFetch got Ensembl Feature Adaptor "
+        ajDebug("featureadaptorSliceFetch got Ensembl Feature Adaptor "
                 "without an Ensembl Base Adaptor.\n");
 
         return ajFalse;
@@ -3164,7 +3164,7 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor fa,
 
     if(!dba)
     {
-        ajDebug("featureAdaptorSliceFetch got Ensembl Feature Adaptor "
+        ajDebug("featureadaptorSliceFetch got Ensembl Feature Adaptor "
                 "without an Ensembl Database Adaptor.\n");
 
         return ajFalse;
@@ -3172,7 +3172,7 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor fa,
 
     if(!ensSliceIsTopLevel(slice, &toplevel))
     {
-        ajDebug("featureAdaptorSliceFetch could not call ensSliceIsTopLevel "
+        ajDebug("featureadaptorSliceFetch could not call ensSliceIsTopLevel "
                 "successfully.\n");
 
         ensSliceTrace(slice, 1);
@@ -3297,7 +3297,7 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor fa,
             ** required.
             */
 
-            featureAdaptorRemap(fa,
+            featureadaptorRemap(fa,
                                 pos,
                                 (EnsPAssemblymapper) NULL,
                                 slice);
@@ -3373,7 +3373,7 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor fa,
             ** are less than a specific number of regions covered.
             */
 
-            if(mrslength > ensFeatureadaptorMaxSplitQuerySeqregions)
+            if(mrslength > featureadaptorMaxSplitQuerySeqregions)
             {
                 tmpconstr = ajStrNewS(constraint);
 
@@ -3410,7 +3410,7 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor fa,
                                            slice,
                                            pos);
 
-                featureAdaptorRemap(fa, pos, am, slice);
+                featureadaptorRemap(fa, pos, am, slice);
 
                 ajListPushlist(objects, &pos);
 
@@ -3478,7 +3478,7 @@ static AjBool featureAdaptorSliceFetch(EnsPFeatureadaptor fa,
 
                     ajStrDel(&tmpconstr);
 
-                    featureAdaptorRemap(fa, pos, am, slice);
+                    featureadaptorRemap(fa, pos, am, slice);
 
                     ajListPushlist(objects, &pos);
 
@@ -3634,7 +3634,7 @@ AjBool ensFeatureadaptorFetchAllBySliceConstraint(EnsPFeatureadaptor fa,
     else
         constr = ajStrNew();
 
-    if(!featureAdaptorAnalysisNameToConstraint(fa, &constr, anname))
+    if(!featureadaptorAnalysisNameToConstraint(fa, &constr, anname))
     {
         ajStrDel(&constr);
 
@@ -3730,7 +3730,7 @@ AjBool ensFeatureadaptorFetchAllBySliceConstraint(EnsPFeatureadaptor fa,
 
     while(ajListPop(slpss, (void **) &slps))
     {
-        featureAdaptorSliceFetch(fa,
+        featureadaptorSliceFetch(fa,
                                  ensProjectionsegmentGetTrgSlice(slps),
                                  constr,
                                  objects);
@@ -3943,7 +3943,7 @@ AjBool ensFeatureadaptorFetchAllByAnalysisName(EnsPFeatureadaptor fa,
 
     constraint = ajStrNew();
 
-    if(!featureAdaptorAnalysisNameToConstraint(fa, &constraint, anname))
+    if(!featureadaptorAnalysisNameToConstraint(fa, &constraint, anname))
     {
         ajStrDel(&constraint);
 
@@ -5204,7 +5204,7 @@ EnsPFeaturepair ensFeaturepairTransfer(EnsPFeaturepair fp, EnsPSlice slice)
 
 
 
-/* @funcstatic baseAlignFeatureCompareSourceFeatureStart **********************
+/* @funcstatic basealignfeatureCompareSourceFeatureStart **********************
 **
 ** Comparison function to sort Ensembl Feature Pairs by the start ccordinate of
 ** their source Ensembl Feature elements in ascending order on the forward
@@ -5220,7 +5220,7 @@ EnsPFeaturepair ensFeaturepairTransfer(EnsPFeaturepair fp, EnsPSlice slice)
 ** @@
 ******************************************************************************/
 
-static int baseAlignFeatureCompareSourceFeatureStart(const void* P1,
+static int basealignfeatureCompareSourceFeatureStart(const void* P1,
                                                      const void* P2)
 {
     int value = 0;
@@ -5232,9 +5232,9 @@ static int baseAlignFeatureCompareSourceFeatureStart(const void* P1,
 
     fp2 = *(EnsPFeaturepair const *) P2;
 
-    if(ajDebugTest("baseAlignFeatureCompareSourceFeatureStart"))
+    if(ajDebugTest("basealignfeatureCompareSourceFeatureStart"))
     {
-        ajDebug("baseAlignFeatureCompareSourceFeatureStart\n"
+        ajDebug("basealignfeatureCompareSourceFeatureStart\n"
                 "  fp1 %p\n"
                 "  fp2 %p\n",
                 fp1,
@@ -5246,7 +5246,7 @@ static int baseAlignFeatureCompareSourceFeatureStart(const void* P1,
 
     if(!fp1)
     {
-        ajDebug("baseAlignFeatureCompareSourceFeatureStart got empty "
+        ajDebug("basealignfeatureCompareSourceFeatureStart got empty "
                 "Feature Pair 1.\n");
 
         return 0;
@@ -5254,7 +5254,7 @@ static int baseAlignFeatureCompareSourceFeatureStart(const void* P1,
 
     if(!fp2)
     {
-        ajDebug("baseAlignFeatureCompareSourceFeatureStart got empty "
+        ajDebug("basealignfeatureCompareSourceFeatureStart got empty "
                 "Feature Pair 2.\n");
 
         return 0;
@@ -5262,7 +5262,7 @@ static int baseAlignFeatureCompareSourceFeatureStart(const void* P1,
 
     if(!fp1->SourceFeature)
     {
-        ajDebug("baseAlignFeatureCompareSourceFeatureStart got a "
+        ajDebug("basealignfeatureCompareSourceFeatureStart got a "
                 "Feature Pair 1 without a source Feature.\n");
 
         return 0;
@@ -5270,7 +5270,7 @@ static int baseAlignFeatureCompareSourceFeatureStart(const void* P1,
 
     if(!fp2->SourceFeature)
     {
-        ajDebug("baseAlignFeatureCompareSourceFeatureStart got a "
+        ajDebug("basealignfeatureCompareSourceFeatureStart got a "
                 "Feature Pair 2 without a source Feature.\n");
 
         return 0;
@@ -5299,7 +5299,7 @@ static int baseAlignFeatureCompareSourceFeatureStart(const void* P1,
 
 
 
-/* @funcstatic baseAlignFeatureParseFeatures **********************************
+/* @funcstatic basealignfeatureParseFeatures **********************************
 **
 ** Parse Ensembl Base Align Features from an AJAX List of Ensembl Objects based
 ** upon Ensembl Feature Pairs. This creates an internal CIGAR string and sets
@@ -5318,7 +5318,7 @@ static int baseAlignFeatureCompareSourceFeatureStart(const void* P1,
 ** these values.
 */
 
-static AjBool baseAlignFeatureParseFeatures(EnsPBasealignfeature baf,
+static AjBool basealignfeatureParseFeatures(EnsPBasealignfeature baf,
                                             AjPList objects)
 {
     void *Pobject = NULL;
@@ -5392,7 +5392,7 @@ static AjBool baseAlignFeatureParseFeatures(EnsPBasealignfeature baf,
     ** ascending order on positive strand, descending on negative strand.
     */
 
-    ajListSort(fps, baseAlignFeatureCompareSourceFeatureStart);
+    ajListSort(fps, basealignfeatureCompareSourceFeatureStart);
 
     ajListPeekFirst(fps, (void **) &firstfp);
 
@@ -5745,7 +5745,7 @@ static AjBool baseAlignFeatureParseFeatures(EnsPBasealignfeature baf,
 
 
 
-/* @funcstatic baseAlignFeatureParseCigar *************************************
+/* @funcstatic basealignfeatureParseCigar *************************************
 **
 ** Convert an Ensembl Base Align Feature CIGAR line into a
 ** List of Ensembl Feature Pairs.
@@ -5757,7 +5757,7 @@ static AjBool baseAlignFeatureParseFeatures(EnsPBasealignfeature baf,
 ** @@
 ******************************************************************************/
 
-static AjBool baseAlignFeatureParseCigar(const EnsPBasealignfeature baf,
+static AjBool basealignfeatureParseCigar(const EnsPBasealignfeature baf,
                                          AjPList fps)
 {
     ajint fpsrcstart = 0;
@@ -5786,14 +5786,14 @@ static AjBool baseAlignFeatureParseCigar(const EnsPBasealignfeature baf,
         return ajFalse;
 
     if((!baf->Cigar) && (!ajStrGetLen(baf->Cigar)))
-        ajFatal("baseAlignFeatureParseCigar no CIGAR string defined!\n");
+        ajFatal("basealignfeatureParseCigar no CIGAR string defined!\n");
 
     if(!baf->Featurepair)
-        ajFatal("baseAlignFeatureParseCigar no Feature Pair defined in the "
+        ajFatal("basealignfeatureParseCigar no Feature Pair defined in the "
                 "Base Align Feature!\n");
 
     if(!baf->Featurepair->SourceFeature)
-        ajFatal("baseAlignFeatureParseCigar no Feature defined in the "
+        ajFatal("basealignfeatureParseCigar no Feature defined in the "
                 "Feature Pair of the Base Align Feature!\n");
 
     srcunit = ensBasealignfeatureGetSourceUnit(baf);
@@ -5825,7 +5825,7 @@ static AjBool baseAlignFeatureParseCigar(const EnsPBasealignfeature baf,
         else if((srcunit == 1) && (trgunit == 1))
             mlength = tlength;
         else
-            ajFatal("baseAlignFeatureParseCigar got "
+            ajFatal("basealignfeatureParseCigar got "
                     "Base Align Feature source unit %d "
                     "Base Align Feature target unit %d, "
                     "but currently only 1 or 3 are allowed.\n",
@@ -5925,7 +5925,7 @@ static AjBool baseAlignFeatureParseCigar(const EnsPBasealignfeature baf,
                 fptrgstart -= mlength;
         }
         else
-            ajFatal("baseAlignFeatureParseCigar "
+            ajFatal("basealignfeatureParseCigar "
                     "illegal CIGAR line token '%S'\n",
                     token);
     }
@@ -6139,7 +6139,7 @@ EnsPBasealignfeature ensBasealignfeatureNew(EnsPFeaturepair fp,
     {
         fps = ajListNew();
 
-        baseAlignFeatureParseFeatures(baf, fps);
+        basealignfeatureParseFeatures(baf, fps);
     }
     else
         ajDebug("ensBasealignfeatureNew requirs either a CIGAR String or a "
@@ -6419,7 +6419,7 @@ EnsPFeaturepair ensBasealignfeatureGetFeaturepair(
 
 /*
 ** FIXME: The alignment length could already be calculated when the CIGAR line
-** is parsed the first time in baseAlignFeatureParseCigar.
+** is parsed the first time in basealignfeatureParseCigar.
 */
 
 ajuint ensBasealignfeatureGetAlignmentLength(EnsPBasealignfeature baf)
@@ -6897,13 +6897,13 @@ AjBool ensBasealignfeatureFetchAllFeaturepairs(const EnsPBasealignfeature baf,
     if(!fps)
         return ajFalse;
 
-    return baseAlignFeatureParseCigar(baf, fps);
+    return basealignfeatureParseCigar(baf, fps);
 }
 
 
 
 
-/* @funcstatic baseAlignFeatureadaptorCacheReference **************************
+/* @funcstatic basealignfeatureadaptorCacheReference **************************
 **
 ** Wrapper function to reference an Ensembl Base Align Feature
 ** from an Ensembl Cache.
@@ -6914,7 +6914,7 @@ AjBool ensBasealignfeatureFetchAllFeaturepairs(const EnsPBasealignfeature baf,
 ** @@
 ******************************************************************************/
 
-static void *baseAlignFeatureadaptorCacheReference(void *value)
+static void *basealignfeatureadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -6925,7 +6925,7 @@ static void *baseAlignFeatureadaptorCacheReference(void *value)
 
 
 
-/* @funcstatic baseAlignFeatureadaptorCacheDelete *****************************
+/* @funcstatic basealignfeatureadaptorCacheDelete *****************************
 **
 ** Wrapper function to delete an Ensembl Base Align Feature
 ** from an Ensembl Cache.
@@ -6936,7 +6936,7 @@ static void *baseAlignFeatureadaptorCacheReference(void *value)
 ** @@
 ******************************************************************************/
 
-static void baseAlignFeatureadaptorCacheDelete(void **value)
+static void basealignfeatureadaptorCacheDelete(void **value)
 {
     if(!value)
         return;
@@ -6949,7 +6949,7 @@ static void baseAlignFeatureadaptorCacheDelete(void **value)
 
 
 
-/* @funcstatic baseAlignFeatureadaptorCacheSize *******************************
+/* @funcstatic basealignfeatureadaptorCacheSize *******************************
 **
 ** Wrapper function to determine the memory size of an
 ** Ensembl Base Align Feature from an Ensembl Cache.
@@ -6960,7 +6960,7 @@ static void baseAlignFeatureadaptorCacheDelete(void **value)
 ** @@
 ******************************************************************************/
 
-static ajuint baseAlignFeatureadaptorCacheSize(const void *value)
+static ajuint basealignfeatureadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;
@@ -6971,7 +6971,7 @@ static ajuint baseAlignFeatureadaptorCacheSize(const void *value)
 
 
 
-/* @funcstatic baseAlignFeatureadaptorGetFeature ******************************
+/* @funcstatic basealignfeatureadaptorGetFeature ******************************
 **
 ** Wrapper function to get the Ensembl Feature of an
 ** Ensembl Base Align Feature from an Ensembl Feature Adaptor.
@@ -6982,7 +6982,7 @@ static ajuint baseAlignFeatureadaptorCacheSize(const void *value)
 ** @@
 ******************************************************************************/
 
-static EnsPFeature baseAlignFeatureadaptorGetFeature(const void *value)
+static EnsPFeature basealignfeatureadaptorGetFeature(const void *value)
 {
     if(!value)
         return NULL;
@@ -7004,7 +7004,7 @@ static EnsPFeature baseAlignFeatureadaptorGetFeature(const void *value)
 **
 ******************************************************************************/
 
-static const char *dnaAlignFeatureadaptorTables[] =
+static const char *dnaalignfeatureadaptorTables[] =
 {
     "dna_align_feature",
     /* FIXME: The External Database Adaptor has an internal cache.
@@ -7016,7 +7016,7 @@ static const char *dnaAlignFeatureadaptorTables[] =
 
 
 
-static const char *dnaAlignFeatureadaptorColumns[] =
+static const char *dnaalignfeatureadaptorColumns[] =
 {
     "dna_align_feature.dna_align_feature_id",
     "dna_align_feature.seq_region_id",
@@ -7046,7 +7046,7 @@ static const char *dnaAlignFeatureadaptorColumns[] =
 
 
 
-static EnsOBaseadaptorLeftJoin dnaAlignFeatureadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin dnaalignfeatureadaptorLeftJoin[] =
 {
     /* FIXME: The Ensembl External Database Adaptor has an internal cache.
        {
@@ -7058,14 +7058,14 @@ static EnsOBaseadaptorLeftJoin dnaAlignFeatureadaptorLeftJoin[] =
     {NULL, NULL}
 };
 
-static const char *dnaAlignFeatureadaptorDefaultCondition = NULL;
+static const char *dnaalignfeatureadaptorDefaultCondition = NULL;
 
-static const char *dnaAlignFeatureadaptorFinalCondition = NULL;
-
-
+static const char *dnaalignfeatureadaptorFinalCondition = NULL;
 
 
-/* @funcstatic dnaAlignFeatureadaptorFetchAllBySQL ****************************
+
+
+/* @funcstatic dnaalignfeatureadaptorFetchAllBySQL ****************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl Base Align Features.
@@ -7083,7 +7083,7 @@ static const char *dnaAlignFeatureadaptorFinalCondition = NULL;
 ** @@
 ******************************************************************************/
 
-static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool dnaalignfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                   const AjPStr statement,
                                                   EnsPAssemblymapper am,
                                                   EnsPSlice slice,
@@ -7146,8 +7146,8 @@ static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPSlice srslice   = NULL;
     EnsPSliceadaptor sa = NULL;
 
-    if(ajDebugTest("dnaAlignFeatureadaptorFetchAllBySQL"))
-        ajDebug("dnaAlignFeatureadaptorFetchAllBySQL\n"
+    if(ajDebugTest("dnaalignfeatureadaptorFetchAllBySQL"))
+        ajDebug("dnaalignfeatureadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -7236,7 +7236,7 @@ static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         if(srstart <= INT_MAX)
             slstart = (ajint) srstart;
         else
-            ajFatal("dnaAlignFeatureadaptorFetchAllBySQL got a "
+            ajFatal("dnaalignfeatureadaptorFetchAllBySQL got a "
                     "Sequence Region start coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srstart, INT_MAX);
@@ -7244,7 +7244,7 @@ static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         if(srend <= INT_MAX)
             slend = (ajint) srend;
         else
-            ajFatal("dnaAlignFeatureadaptorFetchAllBySQL got a "
+            ajFatal("dnaalignfeatureadaptorFetchAllBySQL got a "
                     "Sequence Region end coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srend, INT_MAX);
@@ -7355,7 +7355,7 @@ static AjBool dnaAlignFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             if(ensSliceGetLength(slice) <= INT_MAX)
                 sllength = (ajint) ensSliceGetLength(slice);
             else
-                ajFatal("dnaAlignFeatureadaptorFetchAllBySQL got a Slice, "
+                ajFatal("dnaalignfeatureadaptorFetchAllBySQL got a Slice, "
                         "which length (%u) exceeds the "
                         "maximum integer limit (%d).",
                         ensSliceGetLength(slice), INT_MAX);
@@ -7528,18 +7528,18 @@ EnsPDNAAlignFeatureadaptor ensDNAAlignFeatureadaptorNew(
 
     dafa->Adaptor = ensFeatureadaptorNew(
         dba,
-        dnaAlignFeatureadaptorTables,
-        dnaAlignFeatureadaptorColumns,
-        dnaAlignFeatureadaptorLeftJoin,
-        dnaAlignFeatureadaptorDefaultCondition,
-        dnaAlignFeatureadaptorFinalCondition,
-        dnaAlignFeatureadaptorFetchAllBySQL,
+        dnaalignfeatureadaptorTables,
+        dnaalignfeatureadaptorColumns,
+        dnaalignfeatureadaptorLeftJoin,
+        dnaalignfeatureadaptorDefaultCondition,
+        dnaalignfeatureadaptorFinalCondition,
+        dnaalignfeatureadaptorFetchAllBySQL,
         (void* (*)(const void* key)) NULL,
-        baseAlignFeatureadaptorCacheReference,
+        basealignfeatureadaptorCacheReference,
         (AjBool (*)(const void* value)) NULL,
-        baseAlignFeatureadaptorCacheDelete,
-        baseAlignFeatureadaptorCacheSize,
-        baseAlignFeatureadaptorGetFeature,
+        basealignfeatureadaptorCacheDelete,
+        basealignfeatureadaptorCacheSize,
+        basealignfeatureadaptorGetFeature,
         "DNA Align Feature");
 
     return dafa;
@@ -7886,7 +7886,7 @@ AjBool ensDNAAlignFeatureadaptorFetchAllByHitName(
     /* Add the Ensembl Analysis name constraint. */
 
     if(anname && ajStrGetLen(anname))
-        featureAdaptorAnalysisNameToConstraint(dafa->Adaptor,
+        featureadaptorAnalysisNameToConstraint(dafa->Adaptor,
                                                &constraint,
                                                anname);
 
@@ -7954,7 +7954,7 @@ AjBool ensDNAAlignFeatureadaptorFetchAllByHitUnversioned(
     /* Add the Ensembl Analysis name constraint. */
 
     if(anname && ajStrGetLen(anname))
-        featureAdaptorAnalysisNameToConstraint(dafa->Adaptor,
+        featureadaptorAnalysisNameToConstraint(dafa->Adaptor,
                                                &constraint,
                                                anname);
 
@@ -8028,7 +8028,7 @@ AjBool ensDNAAlignFeatureadaptorFetchAllIdentifiers(
 **
 ******************************************************************************/
 
-static const char *proteinAlignFeatureadaptorTables[] =
+static const char *proteinalignfeatureadaptorTables[] =
 {
     "protein_align_feature",
     /* FIXME: The External Database Adaptor has an internal cache.
@@ -8040,7 +8040,7 @@ static const char *proteinAlignFeatureadaptorTables[] =
 
 
 
-static const char *proteinAlignFeatureadaptorColumns[] =
+static const char *proteinalignfeatureadaptorColumns[] =
 {
     "protein_align_feature.protein_align_feature_id",
     "protein_align_feature.seq_region_id",
@@ -8071,7 +8071,7 @@ static const char *proteinAlignFeatureadaptorColumns[] =
 
 
 
-static EnsOBaseadaptorLeftJoin proteinAlignFeatureadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin proteinalignfeatureadaptorLeftJoin[] =
 {
     /* FIXME: The External Database Adaptor has an internal cache.
        {
@@ -8086,14 +8086,14 @@ static EnsOBaseadaptorLeftJoin proteinAlignFeatureadaptorLeftJoin[] =
 
 
 
-static const char *proteinAlignFeatureadaptorDefaultCondition = NULL;
+static const char *proteinalignfeatureadaptorDefaultCondition = NULL;
 
-static const char *proteinAlignFeatureadaptorFinalCondition = NULL;
-
-
+static const char *proteinalignfeatureadaptorFinalCondition = NULL;
 
 
-/* @funcstatic proteinAlignFeatureadaptorFetchAllBySQL ************************
+
+
+/* @funcstatic proteinalignfeatureadaptorFetchAllBySQL ************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl Protein Align Features.
@@ -8108,7 +8108,7 @@ static const char *proteinAlignFeatureadaptorFinalCondition = NULL;
 ** @@
 ******************************************************************************/
 
-static AjBool proteinAlignFeatureadaptorFetchAllBySQL(
+static AjBool proteinalignfeatureadaptorFetchAllBySQL(
     EnsPDatabaseadaptor dba,
     const AjPStr statement,
     EnsPAssemblymapper am,
@@ -8169,8 +8169,8 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(
     EnsPSlice srslice   = NULL;
     EnsPSliceadaptor sa = NULL;
 
-    if(ajDebugTest("proteinAlignFeatureadaptorFetchAllBySQL"))
-        ajDebug("proteinAlignFeatureadaptorFetchAllBySQL\n"
+    if(ajDebugTest("proteinalignfeatureadaptorFetchAllBySQL"))
+        ajDebug("proteinalignfeatureadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -8251,7 +8251,7 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(
         if(srstart <= INT_MAX)
             slstart = (ajint) srstart;
         else
-            ajFatal("proteinAlignFeatureadaptorFetchAllBySQL got a "
+            ajFatal("proteinalignfeatureadaptorFetchAllBySQL got a "
                     "Sequence Region start coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srstart, INT_MAX);
@@ -8259,7 +8259,7 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(
         if(srend <= INT_MAX)
             slend = (ajint) srend;
         else
-            ajFatal("proteinAlignFeatureadaptorFetchAllBySQL got a "
+            ajFatal("proteinalignfeatureadaptorFetchAllBySQL got a "
                     "Sequence Region end coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srend, INT_MAX);
@@ -8370,7 +8370,7 @@ static AjBool proteinAlignFeatureadaptorFetchAllBySQL(
             if(ensSliceGetLength(slice) <= INT_MAX)
                 sllength = (ajint) ensSliceGetLength(slice);
             else
-                ajFatal("proteinAlignFeatureadaptorFetchAllBySQL got a Slice, "
+                ajFatal("proteinalignfeatureadaptorFetchAllBySQL got a Slice, "
                         "which length (%u) exceeds the "
                         "maximum integer limit (%d).",
                         ensSliceGetLength(slice), INT_MAX);
@@ -8544,18 +8544,18 @@ EnsPProteinalignfeatureadaptor ensProteinalignfeatureadaptorNew(
 
     pafa->Adaptor = ensFeatureadaptorNew(
         dba,
-        proteinAlignFeatureadaptorTables,
-        proteinAlignFeatureadaptorColumns,
-        proteinAlignFeatureadaptorLeftJoin,
-        proteinAlignFeatureadaptorDefaultCondition,
-        proteinAlignFeatureadaptorFinalCondition,
-        proteinAlignFeatureadaptorFetchAllBySQL,
+        proteinalignfeatureadaptorTables,
+        proteinalignfeatureadaptorColumns,
+        proteinalignfeatureadaptorLeftJoin,
+        proteinalignfeatureadaptorDefaultCondition,
+        proteinalignfeatureadaptorFinalCondition,
+        proteinalignfeatureadaptorFetchAllBySQL,
         (void* (*)(const void* key)) NULL,
-        baseAlignFeatureadaptorCacheReference,
+        basealignfeatureadaptorCacheReference,
         (AjBool (*)(const void* value)) NULL,
-        baseAlignFeatureadaptorCacheDelete,
-        baseAlignFeatureadaptorCacheSize,
-        baseAlignFeatureadaptorGetFeature,
+        basealignfeatureadaptorCacheDelete,
+        basealignfeatureadaptorCacheSize,
+        basealignfeatureadaptorGetFeature,
         "Protein Align Feature");
 
     return pafa;
@@ -8879,7 +8879,7 @@ AjBool ensProteinalignfeatureadaptorFetchAllByHitName(
     /* Add the Ensembl Analysis name constraint. */
 
     if(anname && ajStrGetLen(anname))
-        featureAdaptorAnalysisNameToConstraint(pafa->Adaptor,
+        featureadaptorAnalysisNameToConstraint(pafa->Adaptor,
                                                &constraint,
                                                anname);
 
@@ -8947,7 +8947,7 @@ AjBool ensProteinalignfeatureadaptorFetchAllByHitUnversioned(
     /* Add the Ensembl Analysis name constraint. */
 
     if(anname && ajStrGetLen(anname))
-        featureAdaptorAnalysisNameToConstraint(pafa->Adaptor,
+        featureadaptorAnalysisNameToConstraint(pafa->Adaptor,
                                                &constraint,
                                                anname);
 
@@ -9634,7 +9634,7 @@ ajuint ensProteinfeatureGetMemSize(const EnsPProteinfeature pf)
 **
 ******************************************************************************/
 
-static const char *proteinFeatureadaptorTables[] =
+static const char *proteinfeatureadaptorTables[] =
 {
     "protein_feature",
     NULL
@@ -9643,7 +9643,7 @@ static const char *proteinFeatureadaptorTables[] =
 
 
 
-static const char *proteinFeatureadaptorColumns[] =
+static const char *proteinfeatureadaptorColumns[] =
 {
     "protein_feature.protein_feature_id",
     "protein_feature.translation_id",
@@ -9664,7 +9664,7 @@ static const char *proteinFeatureadaptorColumns[] =
 
 
 
-static EnsOBaseadaptorLeftJoin proteinFeatureadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin proteinfeatureadaptorLeftJoin[] =
 {
     {"interpro", "protein_feature.hit_name = interpro.id"},
     {"xref", "interpro.interpro_ac = xref.dbprimary_acc"},
@@ -9674,14 +9674,14 @@ static EnsOBaseadaptorLeftJoin proteinFeatureadaptorLeftJoin[] =
 
 
 
-static const char *proteinFeatureadaptorDefaultCondition = NULL;
+static const char *proteinfeatureadaptorDefaultCondition = NULL;
 
-static const char *proteinFeatureadaptorFinalCondition = NULL;
-
-
+static const char *proteinfeatureadaptorFinalCondition = NULL;
 
 
-/* @funcstatic proteinFeatureadaptorFetchAllBySQL *****************************
+
+
+/* @funcstatic proteinfeatureadaptorFetchAllBySQL *****************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl Protein Features.
@@ -9696,7 +9696,7 @@ static const char *proteinFeatureadaptorFinalCondition = NULL;
 ** @@
 ******************************************************************************/
 
-static AjBool proteinFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool proteinfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                  const AjPStr statement,
                                                  EnsPAssemblymapper am,
                                                  EnsPSlice slice,
@@ -9733,8 +9733,8 @@ static AjBool proteinFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPProteinfeature pf         = NULL;
     EnsPProteinfeatureadaptor pfa = NULL;
 
-    if(ajDebugTest("proteinFeatureadaptorFetchAllBySQL"))
-        ajDebug("proteinFeatureadaptorFetchAllBySQL\n"
+    if(ajDebugTest("proteinfeatureadaptorFetchAllBySQL"))
+        ajDebug("proteinfeatureadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -9897,12 +9897,12 @@ EnsPProteinfeatureadaptor ensProteinfeatureadaptorNew(EnsPDatabaseadaptor dba)
 
     pfa->Adaptor = ensBaseadaptorNew(
         dba,
-        proteinFeatureadaptorTables,
-        proteinFeatureadaptorColumns,
-        proteinFeatureadaptorLeftJoin,
-        proteinFeatureadaptorDefaultCondition,
-        proteinFeatureadaptorFinalCondition,
-        proteinFeatureadaptorFetchAllBySQL);
+        proteinfeatureadaptorTables,
+        proteinfeatureadaptorColumns,
+        proteinfeatureadaptorLeftJoin,
+        proteinfeatureadaptorDefaultCondition,
+        proteinfeatureadaptorFinalCondition,
+        proteinfeatureadaptorFetchAllBySQL);
 
     return pfa;
 }
@@ -10681,7 +10681,7 @@ ajuint ensSimplefeatureGetMemSize(const EnsPSimplefeature sf)
 **
 ******************************************************************************/
 
-static const char *simpleFeatureadaptorTables[] =
+static const char *simplefeatureadaptorTables[] =
 {
     "simple_feature",
     NULL
@@ -10690,7 +10690,7 @@ static const char *simpleFeatureadaptorTables[] =
 
 
 
-static const char *simpleFeatureadaptorColumns[] =
+static const char *simplefeatureadaptorColumns[] =
 {
     "simple_feature.simple_feature_id",
     "simple_feature.seq_region_id",
@@ -10707,7 +10707,7 @@ static const char *simpleFeatureadaptorColumns[] =
 
 
 
-static EnsOBaseadaptorLeftJoin simpleFeatureadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin simplefeatureadaptorLeftJoin[] =
 {
     {NULL, NULL}
 };
@@ -10716,14 +10716,14 @@ static EnsOBaseadaptorLeftJoin simpleFeatureadaptorLeftJoin[] =
 
 
 
-static const char *simpleFeatureadaptorDefaultCondition = NULL;
+static const char *simplefeatureadaptorDefaultCondition = NULL;
 
-static const char *simpleFeatureadaptorFinalCondition = NULL;
-
-
+static const char *simplefeatureadaptorFinalCondition = NULL;
 
 
-/* @funcstatic simpleFeatureadaptorFetchAllBySQL ******************************
+
+
+/* @funcstatic simplefeatureadaptorFetchAllBySQL ******************************
 **
 ** Fetch all Ensembl Simple Feature objects via an SQL statement.
 **
@@ -10738,7 +10738,7 @@ static const char *simpleFeatureadaptorFinalCondition = NULL;
 ** @@
 ******************************************************************************/
 
-static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool simplefeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                 const AjPStr statement,
                                                 EnsPAssemblymapper am,
                                                 EnsPSlice slice,
@@ -10785,8 +10785,8 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPSlice srslice   = NULL;
     EnsPSliceadaptor sa = NULL;
 
-    if(ajDebugTest("simpleFeatureadaptorFetchAllBySQL"))
-        ajDebug("simpleFeatureadaptorFetchAllBySQL\n"
+    if(ajDebugTest("simplefeatureadaptorFetchAllBySQL"))
+        ajDebug("simplefeatureadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -10858,7 +10858,7 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         if(srstart <= INT_MAX)
             slstart = (ajint) srstart;
         else
-            ajFatal("simpleFeatureadaptorFetchAllBySQL got a "
+            ajFatal("simplefeatureadaptorFetchAllBySQL got a "
                     "Sequence Region start coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srstart, INT_MAX);
@@ -10866,7 +10866,7 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         if(srend <= INT_MAX)
             slend = (ajint) srend;
         else
-            ajFatal("simpleFeatureadaptorFetchAllBySQL got a "
+            ajFatal("simplefeatureadaptorFetchAllBySQL got a "
                     "Sequence Region end coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srend, INT_MAX);
@@ -10967,7 +10967,7 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             if(ensSliceGetLength(slice) <= INT_MAX)
                 sllength = (ajint) ensSliceGetLength(slice);
             else
-                ajFatal("simpleFeatureadaptorFetchAllBySQL got a Slice, "
+                ajFatal("simplefeatureadaptorFetchAllBySQL got a Slice, "
                         "which length (%u) exceeds the "
                         "maximum integer limit (%d).",
                         ensSliceGetLength(slice), INT_MAX);
@@ -11060,7 +11060,7 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @funcstatic simpleFeatureadaptorCacheReference *****************************
+/* @funcstatic simplefeatureadaptorCacheReference *****************************
 **
 ** Wrapper function to reference an Ensembl Simple Feature
 ** from an Ensembl Cache.
@@ -11071,7 +11071,7 @@ static AjBool simpleFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @@
 ******************************************************************************/
 
-static void *simpleFeatureadaptorCacheReference(void *value)
+static void *simplefeatureadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -11082,7 +11082,7 @@ static void *simpleFeatureadaptorCacheReference(void *value)
 
 
 
-/* @funcstatic simpleFeatureadaptorCacheDelete ********************************
+/* @funcstatic simplefeatureadaptorCacheDelete ********************************
 **
 ** Wrapper function to delete an Ensembl Simple Feature
 ** from an Ensembl Cache.
@@ -11093,7 +11093,7 @@ static void *simpleFeatureadaptorCacheReference(void *value)
 ** @@
 ******************************************************************************/
 
-static void simpleFeatureadaptorCacheDelete(void **value)
+static void simplefeatureadaptorCacheDelete(void **value)
 {
     if(!value)
         return;
@@ -11106,7 +11106,7 @@ static void simpleFeatureadaptorCacheDelete(void **value)
 
 
 
-/* @funcstatic simpleFeatureadaptorCacheSize **********************************
+/* @funcstatic simplefeatureadaptorCacheSize **********************************
 **
 ** Wrapper function to determine the memory size of an Ensembl Simple Feature
 ** from an Ensembl Cache.
@@ -11117,7 +11117,7 @@ static void simpleFeatureadaptorCacheDelete(void **value)
 ** @@
 ******************************************************************************/
 
-static ajuint simpleFeatureadaptorCacheSize(const void *value)
+static ajuint simplefeatureadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;
@@ -11128,7 +11128,7 @@ static ajuint simpleFeatureadaptorCacheSize(const void *value)
 
 
 
-/* @funcstatic simpleFeatureadaptorGetFeature *********************************
+/* @funcstatic simplefeatureadaptorGetFeature *********************************
 **
 ** Wrapper function to get the Ensembl Feature of an Ensembl Simple Feature
 ** from an Ensembl Feature Adaptor.
@@ -11139,7 +11139,7 @@ static ajuint simpleFeatureadaptorCacheSize(const void *value)
 ** @@
 ******************************************************************************/
 
-static EnsPFeature simpleFeatureadaptorGetFeature(const void *value)
+static EnsPFeature simplefeatureadaptorGetFeature(const void *value)
 {
     if(!value)
         return NULL;
@@ -11194,18 +11194,18 @@ EnsPSimplefeatureadaptor ensSimplefeatureadaptorNew(EnsPDatabaseadaptor dba)
 
     sfa->Adaptor = ensFeatureadaptorNew(
         dba,
-        simpleFeatureadaptorTables,
-        simpleFeatureadaptorColumns,
-        simpleFeatureadaptorLeftJoin,
-        simpleFeatureadaptorDefaultCondition,
-        simpleFeatureadaptorFinalCondition,
-        simpleFeatureadaptorFetchAllBySQL,
+        simplefeatureadaptorTables,
+        simplefeatureadaptorColumns,
+        simplefeatureadaptorLeftJoin,
+        simplefeatureadaptorDefaultCondition,
+        simplefeatureadaptorFinalCondition,
+        simplefeatureadaptorFetchAllBySQL,
         (void* (*)(const void* key)) NULL,
-        simpleFeatureadaptorCacheReference,
+        simplefeatureadaptorCacheReference,
         (AjBool (*)(const void* value)) NULL,
-        simpleFeatureadaptorCacheDelete,
-        simpleFeatureadaptorCacheSize,
-        simpleFeatureadaptorGetFeature,
+        simplefeatureadaptorCacheDelete,
+        simplefeatureadaptorCacheSize,
+        simplefeatureadaptorGetFeature,
         "Simple Feature");
 
     return sfa;
@@ -12043,16 +12043,16 @@ AjBool ensAssemblyexceptionfeatureFetchDisplayIdentifier(
 **
 ******************************************************************************/
 
-static ajuint assemblyExceptionFeatureadaptorCacheMaxBytes = 1 << 26;
+static ajuint assemblyexceptionfeatureadaptorCacheMaxBytes = 1 << 26;
 
-static ajuint assemblyExceptionFeatureadaptorCacheMaxCount = 1 << 16;
+static ajuint assemblyexceptionfeatureadaptorCacheMaxCount = 1 << 16;
 
-static ajuint assemblyExceptionFeatureadaptorCacheMaxSize = 0;
-
-
+static ajuint assemblyexceptionfeatureadaptorCacheMaxSize = 0;
 
 
-/* @funcstatic assemblyExceptionFeatureadaptorCacheInit ***********************
+
+
+/* @funcstatic assemblyexceptionfeatureadaptorCacheInit ***********************
 **
 ** Initialise an Ensembl Assembly Exception Feature Adaptor-internal
 ** Ensembl Assembly Exception Feature cache.
@@ -12065,7 +12065,7 @@ static ajuint assemblyExceptionFeatureadaptorCacheMaxSize = 0;
 ** @@
 ******************************************************************************/
 
-static AjBool assemblyExceptionFeatureadaptorCacheInit(
+static AjBool assemblyexceptionfeatureadaptorCacheInit(
     EnsPAssemblyexceptionfeatureadaptor aefa)
 {
     ajuint erid    = 0;
@@ -12096,7 +12096,7 @@ static AjBool assemblyExceptionFeatureadaptorCacheInit(
 
     if(!aefa->CacheByIdentifier)
     {
-        ajDebug("assemblyExceptionFeatureadaptorCacheInit CacheByIdentifier "
+        ajDebug("assemblyexceptionfeatureadaptorCacheInit CacheByIdentifier "
                 "not initialised!\n");
 
         return ajFalse;
@@ -12290,9 +12290,9 @@ EnsPAssemblyexceptionfeatureadaptor ensAssemblyexceptionfeatureadaptorNew(
 
     aefa->CacheBySlice = ensCacheNew(
         ensECacheTypeAlphaNumeric,
-        assemblyExceptionFeatureadaptorCacheMaxBytes,
-        assemblyExceptionFeatureadaptorCacheMaxCount,
-        assemblyExceptionFeatureadaptorCacheMaxSize,
+        assemblyexceptionfeatureadaptorCacheMaxBytes,
+        assemblyexceptionfeatureadaptorCacheMaxCount,
+        assemblyexceptionfeatureadaptorCacheMaxSize,
         (void* (*)(void* value)) NULL,
         (void (*)(void** value)) NULL,
         (ajuint (*)(const void* value)) NULL,
@@ -12301,7 +12301,7 @@ EnsPAssemblyexceptionfeatureadaptor ensAssemblyexceptionfeatureadaptorNew(
         ajFalse,
         "Assembly Exception Feature");
 
-    assemblyExceptionFeatureadaptorCacheInit(aefa);
+    assemblyexceptionfeatureadaptorCacheInit(aefa);
 
     return aefa;
 }
@@ -12309,7 +12309,7 @@ EnsPAssemblyexceptionfeatureadaptor ensAssemblyexceptionfeatureadaptorNew(
 
 
 
-/* @funcstatic assemblyExceptionFeatureadaptorCacheClear **********************
+/* @funcstatic assemblyexceptionfeatureadaptorCacheClear **********************
 **
 ** Clear an Ensembl Assembly Exception Feature Adaptor-internal
 ** Ensembl Assembly Exception Feature cache.
@@ -12322,7 +12322,7 @@ EnsPAssemblyexceptionfeatureadaptor ensAssemblyexceptionfeatureadaptorNew(
 ** @@
 ******************************************************************************/
 
-static AjBool assemblyExceptionFeatureadaptorCacheClear(
+static AjBool assemblyexceptionfeatureadaptorCacheClear(
     EnsPAssemblyexceptionfeatureadaptor aefa)
 {
     void **keyarray = NULL;
@@ -12410,7 +12410,7 @@ void ensAssemblyexceptionfeatureadaptorDel(
 
     pthis = *Paefa;
 
-    assemblyExceptionFeatureadaptorCacheClear(pthis);
+    assemblyexceptionfeatureadaptorCacheClear(pthis);
 
     AJFREE(pthis);
 
@@ -12529,7 +12529,7 @@ AjBool ensAssemblyexceptionfeatureadaptorFetchByIdentifier(
 
 
 
-/* @funcstatic assemblyExceptionFeatureadaptorRemap ***************************
+/* @funcstatic assemblyexceptionfeatureadaptorRemap ***************************
 **
 ** Remap Ensembl Assembly Exception Features onto an Ensembl Slice.
 **
@@ -12545,7 +12545,7 @@ AjBool ensAssemblyexceptionfeatureadaptorFetchByIdentifier(
 ** @@
 ******************************************************************************/
 
-static AjBool assemblyExceptionFeatureadaptorRemap(
+static AjBool assemblyexceptionfeatureadaptorRemap(
     EnsPAssemblyexceptionfeatureadaptor aefa,
     AjPList aefs,
     EnsPAssemblymapper am,
@@ -12609,7 +12609,7 @@ static AjBool assemblyExceptionFeatureadaptorRemap(
         */
 
         if(!feature->Slice)
-            ajFatal("assemblyExceptionFeatureadaptorRemap got an "
+            ajFatal("assemblyexceptionfeatureadaptorRemap got an "
                     "Ensembl Feature (%p) without an Ensembl Slice.\n",
                     feature);
 
@@ -12636,7 +12636,7 @@ static AjBool assemblyExceptionFeatureadaptorRemap(
             */
 
             if(!am)
-                ajFatal("assemblyExceptionFeatureadaptorRemap requires an "
+                ajFatal("assemblyexceptionfeatureadaptorRemap requires an "
                         "Ensembl Assembly Mapper, when "
                         "Coordinate Systems of Features and Slice differ.\n");
 
@@ -12814,10 +12814,10 @@ AjBool ensAssemblyexceptionfeatureadaptorFetchAllBySlice(
             am = ensAssemblymapperadaptorFetchByCoordsystems(ama, mcs, scs);
 
         /*
-        ** FIXME: assemblyExceptionFeatureadaptorRemap is completely identical
-        ** to featureAdaptorRemap.
+        ** FIXME: assemblyexceptionfeatureadaptorRemap is completely identical
+        ** to featureadaptorRemap.
         */
-        assemblyExceptionFeatureadaptorRemap(aefa, aefs, am, slice);
+        assemblyexceptionfeatureadaptorRemap(aefa, aefs, am, slice);
 
         ensCoordsystemDel(&mcs);
     }

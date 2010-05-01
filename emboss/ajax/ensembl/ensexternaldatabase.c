@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
-/* externalDatabaseStatus *****************************************************
+/* externaldatabaseStatus *****************************************************
 **
 ** The Ensembl External Database status is enumerated in both, the SQL table
 ** definition and the data structure. The following strings are used for
@@ -53,7 +53,7 @@
 **
 ******************************************************************************/
 
-static const char *externalDatabaseStatus[] =
+static const char *externaldatabaseStatus[] =
 {
     NULL,
     "KNOWNXREF",
@@ -68,7 +68,7 @@ static const char *externalDatabaseStatus[] =
 
 
 
-/* externalDatabaseType *******************************************************
+/* externaldatabaseType *******************************************************
 **
 ** The Ensembl External Database type is enumerated in both, the SQL table
 ** definition and the data structure. The following strings are used for
@@ -84,7 +84,7 @@ static const char *externalDatabaseStatus[] =
 **
 ******************************************************************************/
 
-static const char *externalDatabaseType[] =
+static const char *externaldatabaseType[] =
 {
     NULL,
     "ARRAY",
@@ -1193,8 +1193,8 @@ AjEnum ensExternaldatabaseStatusFromStr(const AjPStr status)
 
     AjEnum estatus = ensEExternaldatabaseStatusNULL;
 
-    for(i = 1; externalDatabaseStatus[i]; i++)
-        if(ajStrMatchC(status, externalDatabaseStatus[i]))
+    for(i = 1; externaldatabaseStatus[i]; i++)
+        if(ajStrMatchC(status, externaldatabaseStatus[i]))
             estatus = i;
 
     if(!estatus)
@@ -1224,8 +1224,8 @@ AjEnum ensExternaldatabaseTypeFromStr(const AjPStr type)
 
     AjEnum etype = ensEExternaldatabaseTypeNULL;
 
-    for(i = 1; externalDatabaseType[i]; i++)
-        if(ajStrMatchC(type, externalDatabaseType[i]))
+    for(i = 1; externaldatabaseType[i]; i++)
+        if(ajStrMatchC(type, externaldatabaseType[i]))
             etype = i;
 
     if(!etype)
@@ -1277,13 +1277,13 @@ const char* ensExternaldatabaseStatusToChar(const AjEnum status)
     if(!status)
         return NULL;
 
-    for(i = 1; externalDatabaseStatus[i] && (i < status); i++);
+    for(i = 1; externaldatabaseStatus[i] && (i < status); i++);
 
-    if(!externalDatabaseStatus[i])
+    if(!externaldatabaseStatus[i])
         ajDebug("ensExternaldatabaseStatusToChar encountered an "
                 "out of boundary error on status %d.\n", status);
 
-    return externalDatabaseStatus[i];
+    return externaldatabaseStatus[i];
 }
 
 
@@ -1307,13 +1307,13 @@ const char* ensExternaldatabaseTypeToChar(const AjEnum type)
     if(!type)
         return NULL;
 
-    for(i = 1; externalDatabaseType[i] && (i < type); i++);
+    for(i = 1; externaldatabaseType[i] && (i < type); i++);
 
-    if(!externalDatabaseType[i])
+    if(!externaldatabaseType[i])
         ajDebug("ensExternaldatabaseTypeToChar encountered an "
                 "out of boundary error on type %d.\n", type);
 
-    return externalDatabaseType[i];
+    return externaldatabaseType[i];
 }
 
 
@@ -1564,14 +1564,14 @@ static AjBool externaldatabaseadaptorFetchAllBySQL(
         estatus = ensExternaldatabaseStatusFromStr(status);
 
         if(!estatus)
-            ajFatal("externalDatabaseadaptorFetchAllBySQL encountered "
+            ajFatal("externaldatabaseadaptorFetchAllBySQL encountered "
                     "unexpected string '%S' in the "
                     "'external_db.status' field.\n", status);
 
         etype = ensExternaldatabaseTypeFromStr(type);
 
         if(!etype)
-            ajFatal("externalDatabaseadaptorFetchAllBySQL encountered "
+            ajFatal("externaldatabaseadaptorFetchAllBySQL encountered "
                     "unexpected string '%S' in the "
                     "'external_db.type' field.\n", type);
 

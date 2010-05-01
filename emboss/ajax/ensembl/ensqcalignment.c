@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -52,7 +52,7 @@ extern EnsPQcalignmentadaptor ensRegistryGetQcalignmentadaptor(
 extern EnsPQcsequenceadaptor ensRegistryGetQcsequenceadaptor(
     EnsPDatabaseadaptor dba);
 
-static AjBool qcAlignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool qcalignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
                                               EnsPAssemblymapper am,
                                               EnsPSlice slice,
@@ -1633,7 +1633,7 @@ AjBool ensQcalignmentCalculateQueryCoverage(
 **
 ******************************************************************************/
 
-static const char *qcAlignmentProteinToProteinQueryCoverageProperties[] =
+static const char *qcalignmentProteinToProteinQueryCoverageProperties[] =
 {
     "No Alignment",
     "Alignment",
@@ -1883,7 +1883,7 @@ AjBool ensQcalignmentCalculateProteinToProteinQueryCoverage(
 **
 ******************************************************************************/
 
-static const char *qcAlignmentProteinToGenomeQueryCoverageProperties[] =
+static const char *qcalignmentProteinToGenomeQueryCoverageProperties[] =
 {
     "No Alignment",
     "Alignment",
@@ -2033,7 +2033,7 @@ AjBool ensQcalignmentCalculateProteinToGenomeQueryCoverage(
 **
 ******************************************************************************/
 
-static const char *qcAlignmentDNAToDNAQueryCoverageProperties[] =
+static const char *qcalignmentDNAToDNAQueryCoverageProperties[] =
 {
     "No Alignment",
     "Alignment",
@@ -2305,7 +2305,7 @@ AjBool ensQcalignmentCalculateDNAToDNAQueryCoverage(
 **
 ******************************************************************************/
 
-static const char *qcAlignmentDNAToGenomeQueryCoverageProperties[] =
+static const char *qcalignmentDNAToGenomeQueryCoverageProperties[] =
 {
     "No Alignment",
     "Alignment",
@@ -2469,7 +2469,7 @@ AjBool ensQcalignmentCalculateDNAToGenomeQueryCoverage(
 **
 ******************************************************************************/
 
-static const char* qcAlignmentQueryToQueryCoverageProperties[] =
+static const char* qcalignmentQueryToQueryCoverageProperties[] =
 {
     "No Alignment",
     "Genome Alignment",
@@ -2869,7 +2869,7 @@ AjBool ensQcalignmentReport(const EnsPQcalignment qca,
 **
 ******************************************************************************/
 
-static const char *qcAlignmentadaptorTables[] =
+static const char *qcalignmentadaptorTables[] =
 {
     "alignment",
     (const char *) NULL
@@ -2878,7 +2878,7 @@ static const char *qcAlignmentadaptorTables[] =
 
 
 
-static const char *qcAlignmentadaptorColumns[] =
+static const char *qcalignmentadaptorColumns[] =
 {
     "alignment.alignment_id",
     "alignment.analysis_id",
@@ -2903,7 +2903,7 @@ static const char *qcAlignmentadaptorColumns[] =
 
 
 
-static EnsOBaseadaptorLeftJoin qcAlignmentadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin qcalignmentadaptorLeftJoin[] =
 {
     {(const char*) NULL, (const char*) NULL}
 };
@@ -2911,16 +2911,16 @@ static EnsOBaseadaptorLeftJoin qcAlignmentadaptorLeftJoin[] =
 
 
 
-static const char *qcAlignmentadaptorDefaultCondition =
+static const char *qcalignmentadaptorDefaultCondition =
     (const char*) NULL;
 
-static const char *qcAlignmentadaptorFinalCondition =
+static const char *qcalignmentadaptorFinalCondition =
     (const char *) NULL;
 
 
 
 
-/* @funcstatic qcAlignmentadaptorFetchAllBySQL ********************************
+/* @funcstatic qcalignmentadaptorFetchAllBySQL ********************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl QC Alignment objects.
@@ -2935,7 +2935,7 @@ static const char *qcAlignmentadaptorFinalCondition =
 ** @@
 ******************************************************************************/
 
-static AjBool qcAlignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool qcalignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
                                               EnsPAssemblymapper am,
                                               EnsPSlice slice,
@@ -2977,8 +2977,8 @@ static AjBool qcAlignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPQcsequence tsequence   = NULL;
     EnsPQcsequenceadaptor qcsa = NULL;
 
-    if(ajDebugTest("qcAlignmentadaptorFetchAllBySQL"))
-        ajDebug("qcAlignmentadaptorFetchAllBySQL\n"
+    if(ajDebugTest("qcalignmentadaptorFetchAllBySQL"))
+        ajDebug("qcalignmentadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -3131,12 +3131,12 @@ EnsPQcalignmentadaptor ensQcalignmentadaptorNew(EnsPDatabaseadaptor dba)
         return NULL;
 
     return ensBaseadaptorNew(dba,
-                             qcAlignmentadaptorTables,
-                             qcAlignmentadaptorColumns,
-                             qcAlignmentadaptorLeftJoin,
-                             qcAlignmentadaptorDefaultCondition,
-                             qcAlignmentadaptorFinalCondition,
-                             qcAlignmentadaptorFetchAllBySQL);
+                             qcalignmentadaptorTables,
+                             qcalignmentadaptorColumns,
+                             qcalignmentadaptorLeftJoin,
+                             qcalignmentadaptorDefaultCondition,
+                             qcalignmentadaptorFinalCondition,
+                             qcalignmentadaptorFetchAllBySQL);
 }
 
 
@@ -3850,11 +3850,11 @@ AjBool ensQcalignmentadaptorDelete(EnsPQcalignmentadaptor qcaa,
 
 void endQcalignmentDummyFunction(void)
 {
-    (void) qcAlignmentProteinToProteinQueryCoverageProperties[0];
-    (void) qcAlignmentProteinToGenomeQueryCoverageProperties[0];
-    (void) qcAlignmentDNAToDNAQueryCoverageProperties[0];
-    (void) qcAlignmentDNAToGenomeQueryCoverageProperties[0];
-    (void) qcAlignmentQueryToQueryCoverageProperties[0];
+    (void) qcalignmentProteinToProteinQueryCoverageProperties[0];
+    (void) qcalignmentProteinToGenomeQueryCoverageProperties[0];
+    (void) qcalignmentDNAToDNAQueryCoverageProperties[0];
+    (void) qcalignmentDNAToGenomeQueryCoverageProperties[0];
+    (void) qcalignmentQueryToQueryCoverageProperties[0];
 
     return;
 }

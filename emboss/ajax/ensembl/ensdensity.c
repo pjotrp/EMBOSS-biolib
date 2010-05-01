@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -92,7 +92,7 @@ typedef struct DensitySLengthValue
 
 
 
-/* densityTypeValueType *******************************************************
+/* densitytypeValueType *******************************************************
 **
 ** The Density Type value type is enumerated in both, the SQL table
 ** definition and the data structure. The following strings are used for
@@ -104,7 +104,7 @@ typedef struct DensitySLengthValue
 **
 ******************************************************************************/
 
-static const char *densityTypeValueType[] =
+static const char *densitytypeValueType[] =
 {
     NULL,
     "sum",
@@ -137,24 +137,24 @@ extern EnsPDensitytypeadaptor ensRegistryGetDensitytypeadaptor(
 extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
     EnsPDatabaseadaptor dba);
 
-static AjBool densityTypeadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool densitytypeadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
                                               EnsPAssemblymapper am,
                                               EnsPSlice slice,
                                               AjPList dts);
 
-static AjBool densityTypeadaptorCacheInsert(EnsPDensitytypeadaptor dta,
+static AjBool densitytypeadaptorCacheInsert(EnsPDensitytypeadaptor dta,
                                             EnsPDensitytype *Pdt);
 
-static AjBool densityTypeadaptorCacheInit(EnsPDensitytypeadaptor dta);
+static AjBool densitytypeadaptorCacheInit(EnsPDensitytypeadaptor dta);
 
-static void densityTypeadaptorCacheClearIdentifier(void **key,
+static void densitytypeadaptorCacheClearIdentifier(void **key,
                                                    void **value,
                                                    void *cl);
 
-static AjBool densityTypeadaptorCacheExit(EnsPDensitytypeadaptor dta);
+static AjBool densitytypeadaptorCacheExit(EnsPDensitytypeadaptor dta);
 
-static void densityTypeadaptorFetchAll(const void *key,
+static void densitytypeadaptorFetchAll(const void *key,
                                        void **value,
                                        void *cl);
 
@@ -172,7 +172,7 @@ static ajuint densityFeatureadaptorCacheSize(const void *value);
 
 static EnsPFeature densityFeatureadaptorGetFeature(const void *value);
 
-static int densityTypeRatioCompareRatio(const void* P1, const void* P2);
+static int densitytypeRatioCompareRatio(const void* P1, const void* P2);
 
 static int densityFeatureCompareStart(const void* P1, const void* P2);
 
@@ -845,8 +845,8 @@ AjEnum ensDensitytypeValeTypeFromStr(const AjPStr type)
 
     AjEnum etype = ensEDensitytypeValueTypeNULL;
 
-    for(i = 1; densityTypeValueType[i]; i++)
-        if(ajStrMatchC(type, densityTypeValueType[i]))
+    for(i = 1; densitytypeValueType[i]; i++)
+        if(ajStrMatchC(type, densitytypeValueType[i]))
             etype = i;
 
     if(!etype)
@@ -877,13 +877,13 @@ const char* ensDensitytypeValeTypeToChar(const AjEnum type)
     if(!type)
         return NULL;
 
-    for(i = 1; densityTypeValueType[i] && (i < type); i++);
+    for(i = 1; densitytypeValueType[i] && (i < type); i++);
 
-    if(!densityTypeValueType[i])
+    if(!densitytypeValueType[i])
         ajDebug("ensDensitytypeValeTypeToChar encountered an "
                 "out of boundary error on gender %d.\n", type);
 
-    return densityTypeValueType[i];
+    return densitytypeValueType[i];
 }
 
 
@@ -899,13 +899,13 @@ const char* ensDensitytypeValeTypeToChar(const AjEnum type)
 **
 ******************************************************************************/
 
-static const char *densityTypeadaptorTables[] =
+static const char *densitytypeadaptorTables[] =
 {
     "density_type",
     NULL
 };
 
-static const char *densityTypeadaptorColumns[] =
+static const char *densitytypeadaptorColumns[] =
 {
     "density_type.density_type_id",
     "density_type.analysis_id",
@@ -915,19 +915,19 @@ static const char *densityTypeadaptorColumns[] =
     NULL
 };
 
-static EnsOBaseadaptorLeftJoin densityTypeadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin densitytypeadaptorLeftJoin[] =
 {
     {NULL, NULL}
 };
 
-static const char *densityTypeadaptorDefaultCondition = NULL;
+static const char *densitytypeadaptorDefaultCondition = NULL;
 
-static const char *densityTypeadaptorFinalCondition = NULL;
-
-
+static const char *densitytypeadaptorFinalCondition = NULL;
 
 
-/* @funcstatic densityTypeadaptorFetchAllBySQL ********************************
+
+
+/* @funcstatic densitytypeadaptorFetchAllBySQL ********************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl Density Type objects.
@@ -942,7 +942,7 @@ static const char *densityTypeadaptorFinalCondition = NULL;
 ** @@
 ******************************************************************************/
 
-static AjBool densityTypeadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool densitytypeadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
                                               EnsPAssemblymapper am,
                                               EnsPSlice slice,
@@ -967,8 +967,8 @@ static AjBool densityTypeadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPDensitytype dt         = NULL;
     EnsPDensitytypeadaptor dta = NULL;
 
-    if(ajDebugTest("densityTypeadaptorFetchAllBySQL"))
-        ajDebug("densityTypeadaptorFetchAllBySQL\n"
+    if(ajDebugTest("densitytypeadaptorFetchAllBySQL"))
+        ajDebug("densitytypeadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -1042,7 +1042,7 @@ static AjBool densityTypeadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @funcstatic densityTypeadaptorCacheInsert **********************************
+/* @funcstatic densitytypeadaptorCacheInsert **********************************
 **
 ** Insert an Ensembl Density Type into the Density Type Adaptor-internal cache.
 ** If a Density Type with the same identifier element is already present in the
@@ -1056,7 +1056,7 @@ static AjBool densityTypeadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @@
 ******************************************************************************/
 
-static AjBool densityTypeadaptorCacheInsert(EnsPDensitytypeadaptor dta,
+static AjBool densitytypeadaptorCacheInsert(EnsPDensitytypeadaptor dta,
                                             EnsPDensitytype *Pdt)
 {
     ajuint *Pidentifier = NULL;
@@ -1083,7 +1083,7 @@ static AjBool densityTypeadaptorCacheInsert(EnsPDensitytypeadaptor dta,
 
     if(dt)
     {
-        ajDebug("densityTypeadaptorCacheInsert replaced Density Type %p with "
+        ajDebug("densitytypeadaptorCacheInsert replaced Density Type %p with "
                 "one already cached %p.\n",
                 *Pdt, dt);
 
@@ -1112,7 +1112,7 @@ static AjBool densityTypeadaptorCacheInsert(EnsPDensitytypeadaptor dta,
 
 
 
-/* @funcstatic densityTypeadaptorCacheInit ************************************
+/* @funcstatic densitytypeadaptorCacheInit ************************************
 **
 ** Initialise the internal Density Type cache of an
 ** Ensembl Density Type Adaptor.
@@ -1123,14 +1123,14 @@ static AjBool densityTypeadaptorCacheInsert(EnsPDensitytypeadaptor dta,
 ** @@
 ******************************************************************************/
 
-static AjBool densityTypeadaptorCacheInit(EnsPDensitytypeadaptor dta)
+static AjBool densitytypeadaptorCacheInit(EnsPDensitytypeadaptor dta)
 {
     AjPList dts = NULL;
 
     EnsPDensitytype dt = NULL;
 
-    if(ajDebugTest("densityTypeadaptorCacheInit"))
-        ajDebug("densityTypeadaptorCacheInit\n"
+    if(ajDebugTest("densitytypeadaptorCacheInit"))
+        ajDebug("densitytypeadaptorCacheInit\n"
                 "  dta %p\n",
                 dta);
 
@@ -1153,7 +1153,7 @@ static AjBool densityTypeadaptorCacheInit(EnsPDensitytypeadaptor dta)
 
     while(ajListPop(dts, (void **) &dt))
     {
-        densityTypeadaptorCacheInsert(dta, &dt);
+        densitytypeadaptorCacheInsert(dta, &dt);
 
         ensDensitytypeDel(&dt);
     }
@@ -1225,24 +1225,24 @@ EnsPDensitytypeadaptor ensDensitytypeadaptorNew(EnsPDatabaseadaptor dba)
 
     dta->Adaptor = ensBaseadaptorNew(
         dba,
-        densityTypeadaptorTables,
-        densityTypeadaptorColumns,
-        densityTypeadaptorLeftJoin,
-        densityTypeadaptorDefaultCondition,
-        densityTypeadaptorFinalCondition,
-        densityTypeadaptorFetchAllBySQL);
+        densitytypeadaptorTables,
+        densitytypeadaptorColumns,
+        densitytypeadaptorLeftJoin,
+        densitytypeadaptorDefaultCondition,
+        densitytypeadaptorFinalCondition,
+        densitytypeadaptorFetchAllBySQL);
 
     /*
     ** NOTE: The cache cannot be initialised here because the
-    ** densityTypeadaptorCacheInit function calls ensBaseadaptorGenericFetch,
-    ** which calls densityTypeadaptorFetchAllBySQL, which calls
+    ** densitytypeadaptorCacheInit function calls ensBaseadaptorGenericFetch,
+    ** which calls densitytypeadaptorFetchAllBySQL, which calls
     ** ensRegistryGetDensitytypeadaptor. At that point, however, the
     ** Density Type Adaptor has not been stored in the Registry. Therefore,
     ** each ensDensitytypeadaptorFetch function has to test the presence of
     ** the adaptor-internal cache and eventually initialise before accessing
     ** it.
     **
-    ** densityTypeadaptorCacheInit(dta);
+    ** densitytypeadaptorCacheInit(dta);
     */
 
     return dta;
@@ -1251,7 +1251,7 @@ EnsPDensitytypeadaptor ensDensitytypeadaptorNew(EnsPDatabaseadaptor dba)
 
 
 
-/* @funcstatic densityTypeadaptorCacheClearIdentifier *************************
+/* @funcstatic densitytypeadaptorCacheClearIdentifier *************************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Density Type
 ** Adaptor-internal Density Type cache. This function deletes the
@@ -1266,7 +1266,7 @@ EnsPDensitytypeadaptor ensDensitytypeadaptorNew(EnsPDatabaseadaptor dba)
 ** @@
 ******************************************************************************/
 
-static void densityTypeadaptorCacheClearIdentifier(void **key,
+static void densitytypeadaptorCacheClearIdentifier(void **key,
                                                    void **value,
                                                    void *cl)
 {
@@ -1297,7 +1297,7 @@ static void densityTypeadaptorCacheClearIdentifier(void **key,
 
 
 
-/* @funcstatic densityTypeadaptorCacheExit ************************************
+/* @funcstatic densitytypeadaptorCacheExit ************************************
 **
 ** Clears the internal Density Type cache of an Ensembl Density Type Adaptor.
 **
@@ -1307,7 +1307,7 @@ static void densityTypeadaptorCacheClearIdentifier(void **key,
 ** @@
 ******************************************************************************/
 
-static AjBool densityTypeadaptorCacheExit(EnsPDensitytypeadaptor dta)
+static AjBool densitytypeadaptorCacheExit(EnsPDensitytypeadaptor dta)
 {
     if(!dta)
         return ajFalse;
@@ -1315,7 +1315,7 @@ static AjBool densityTypeadaptorCacheExit(EnsPDensitytypeadaptor dta)
     /* Clear and delete the identifier cache. */
 
     ajTableMapDel(dta->CacheByIdentifier,
-                  densityTypeadaptorCacheClearIdentifier,
+                  densitytypeadaptorCacheClearIdentifier,
                   NULL);
 
     ajTableFree(&dta->CacheByIdentifier);
@@ -1382,7 +1382,7 @@ void ensDensitytypeadaptorDel(EnsPDensitytypeadaptor* Pdta)
 
     pthis = *Pdta;
 
-    densityTypeadaptorCacheExit(pthis);
+    densitytypeadaptorCacheExit(pthis);
 
     ensBaseadaptorDel(&pthis->Adaptor);
 
@@ -1486,7 +1486,7 @@ EnsPDatabaseadaptor ensDensitytypeadaptorGetDatabaseadaptor(
 
 
 
-/* @funcstatic densityTypeadaptorFetchAll *************************************
+/* @funcstatic densitytypeadaptorFetchAll *************************************
 **
 ** An ajTableMap 'apply' function to return all Density Type objects from the
 ** Ensembl Density Type Adaptor-internal cache.
@@ -1501,7 +1501,7 @@ EnsPDatabaseadaptor ensDensitytypeadaptorGetDatabaseadaptor(
 ** @@
 ******************************************************************************/
 
-static void densityTypeadaptorFetchAll(const void *key,
+static void densitytypeadaptorFetchAll(const void *key,
                                        void **value,
                                        void *cl)
 {
@@ -1551,10 +1551,10 @@ AjBool ensDensitytypeadaptorFetchAll(EnsPDensitytypeadaptor dta,
         return ajFalse;
 
     if(!dta->CacheByIdentifier)
-        densityTypeadaptorCacheInit(dta);
+        densitytypeadaptorCacheInit(dta);
 
     ajTableMap(dta->CacheByIdentifier,
-               densityTypeadaptorFetchAll,
+               densitytypeadaptorFetchAll,
                (void *) dts);
 
     return ajTrue;
@@ -1602,7 +1602,7 @@ AjBool ensDensitytypeadaptorFetchByIdentifier(EnsPDensitytypeadaptor dta,
     */
 
     if(!dta->CacheByIdentifier)
-        densityTypeadaptorCacheInit(dta);
+        densitytypeadaptorCacheInit(dta);
 
     *Pdt = (EnsPDensitytype)
         ajTableFetch(dta->CacheByIdentifier, (const void *) &identifier);
@@ -1633,11 +1633,11 @@ AjBool ensDensitytypeadaptorFetchByIdentifier(EnsPDensitytypeadaptor dta,
 
     ajListPop(dts, (void **) Pdt);
 
-    densityTypeadaptorCacheInsert(dta, Pdt);
+    densitytypeadaptorCacheInsert(dta, Pdt);
 
     while(ajListPop(dts, (void **) &dt))
     {
-        densityTypeadaptorCacheInsert(dta, &dt);
+        densitytypeadaptorCacheInsert(dta, &dt);
 
         ensDensitytypeDel(&dt);
     }
@@ -1688,7 +1688,7 @@ AjBool ensDensitytypeadaptorFetchAllByAnalysisName(
         return ajFalse;
 
     if(!dta->CacheByIdentifier)
-        densityTypeadaptorCacheInit(dta);
+        densitytypeadaptorCacheInit(dta);
 
     ajTableToarrayKeysValues(dta->CacheByIdentifier, &keyarray, &valarray);
 
@@ -2880,7 +2880,7 @@ void ensDensityfeatureadaptorDel(EnsPDensityfeatureadaptor *Pdfa)
 
 
 
-/* @funcstatic densityTypeRatioCompareRatio ***********************************
+/* @funcstatic densitytypeRatioCompareRatio ***********************************
 **
 ** Comparison function to sort Density Ratios by their ratio
 ** in ascending order.
@@ -2895,7 +2895,7 @@ void ensDensityfeatureadaptorDel(EnsPDensityfeatureadaptor *Pdfa)
 ** @@
 ******************************************************************************/
 
-static int densityTypeRatioCompareRatio(const void* P1, const void* P2)
+static int densitytypeRatioCompareRatio(const void* P1, const void* P2)
 {
     int value = 0;
 
@@ -2906,8 +2906,8 @@ static int densityTypeRatioCompareRatio(const void* P1, const void* P2)
 
     dtr2 = *(DensityPTypeRatio const *) P2;
 
-    if(ajDebugTest("densityTypeRatioCompareRatio"))
-        ajDebug("densityTypeRatioCompareRatio\n"
+    if(ajDebugTest("densitytypeRatioCompareRatio"))
+        ajDebug("densitytypeRatioCompareRatio\n"
                 "  dtr1 %p\n"
                 "  dtr2 %p\n",
                 dtr1,
@@ -2915,14 +2915,14 @@ static int densityTypeRatioCompareRatio(const void* P1, const void* P2)
 
     if(!dtr1)
     {
-        ajDebug("densityTypeRatioCompareRatio got empty dtr1.\n");
+        ajDebug("densitytypeRatioCompareRatio got empty dtr1.\n");
 
         return 0;
     }
 
     if(!dtr2)
     {
-        ajDebug("densityTypeRatioCompareRatio got empty dtr2.\n");
+        ajDebug("densitytypeRatioCompareRatio got empty dtr2.\n");
 
         return 0;
     }
@@ -3221,7 +3221,7 @@ AjBool ensDensityfeatureadaptorFetchAllBySlice(
     ** and get the best one.
     */
 
-    ajListSort(dtrs, densityTypeRatioCompareRatio);
+    ajListSort(dtrs, densitytypeRatioCompareRatio);
 
     ajListPeekFirst(dtrs, (void **) &dtr);
 

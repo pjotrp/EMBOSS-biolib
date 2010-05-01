@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -46,17 +46,17 @@
 extern EnsPCoordsystemadaptor ensRegistryGetCoordsystemadaptor(
     EnsPDatabaseadaptor dba);
 
-static AjBool metaCoordinateadaptorCacheInit(EnsPMetacoordinateadaptor mca);
+static AjBool metacoordinateadaptorCacheInit(EnsPMetacoordinateadaptor mca);
 
-static void metaCoordinateadaptorClearNameCache(void **key,
+static void metacoordinateadaptorClearNameCache(void **key,
                                                 void **value,
                                                 void *cl);
 
-static void metaCoordinateadaptorClearLengthCacheL2(void **key,
+static void metacoordinateadaptorClearLengthCacheL2(void **key,
                                                     void **value,
                                                     void *cl);
 
-static void metaCoordinateadaptorClearLengthCacheL1(void **key,
+static void metacoordinateadaptorClearLengthCacheL1(void **key,
                                                     void **value,
                                                     void *cl);
 
@@ -85,7 +85,7 @@ static void metaCoordinateadaptorClearLengthCacheL1(void **key,
 
 
 
-/* @funcstatic metaCoordinateadaptorCacheInit *********************************
+/* @funcstatic metacoordinateadaptorCacheInit *********************************
 **
 ** Initialise the internal Meta-Coordinate cache of an
 ** Ensembl Meta-Coordinate Adaptor.
@@ -96,7 +96,7 @@ static void metaCoordinateadaptorClearLengthCacheL1(void **key,
 ** @@
 ******************************************************************************/
 
-static AjBool metaCoordinateadaptorCacheInit(EnsPMetacoordinateadaptor mca)
+static AjBool metacoordinateadaptorCacheInit(EnsPMetacoordinateadaptor mca)
 {
     ajuint csid   = 0;
     ajuint length = 0;
@@ -283,7 +283,7 @@ EnsPMetacoordinateadaptor ensMetacoordinateadaptorNew(EnsPDatabaseadaptor dba)
 
     mca->CacheByLength = MENSTABLEUINTNEW(0);
 
-    metaCoordinateadaptorCacheInit(mca);
+    metacoordinateadaptorCacheInit(mca);
 
     return mca;
 }
@@ -291,7 +291,7 @@ EnsPMetacoordinateadaptor ensMetacoordinateadaptorNew(EnsPDatabaseadaptor dba)
 
 
 
-/* @funcstatic metaCoordinateadaptorClearNameCache ****************************
+/* @funcstatic metacoordinateadaptorClearNameCache ****************************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Meta-Coordinate
 ** Adaptor-internal cache. This function deletes the AJAX String Feature name
@@ -307,7 +307,7 @@ EnsPMetacoordinateadaptor ensMetacoordinateadaptorNew(EnsPDatabaseadaptor dba)
 ** @@
 ******************************************************************************/
 
-static void metaCoordinateadaptorClearNameCache(void **key,
+static void metacoordinateadaptorClearNameCache(void **key,
                                                 void **value,
                                                 void *cl)
 {
@@ -340,7 +340,7 @@ static void metaCoordinateadaptorClearNameCache(void **key,
 
 
 
-/* @funcstatic metaCoordinateadaptorClearLengthCacheL2 ************************
+/* @funcstatic metacoordinateadaptorClearLengthCacheL2 ************************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Meta-Coordinate
 ** Adaptor-internal maximum length cache. This function clears the
@@ -356,7 +356,7 @@ static void metaCoordinateadaptorClearNameCache(void **key,
 ** @@
 ******************************************************************************/
 
-static void metaCoordinateadaptorClearLengthCacheL2(void **key,
+static void metacoordinateadaptorClearLengthCacheL2(void **key,
                                                     void **value,
                                                     void *cl)
 {
@@ -384,7 +384,7 @@ static void metaCoordinateadaptorClearLengthCacheL2(void **key,
 
 
 
-/* @funcstatic metaCoordinateadaptorClearLengthCacheL1 ************************
+/* @funcstatic metacoordinateadaptorClearLengthCacheL1 ************************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Meta-Coordinate
 ** Adaptor-internal maximum length cache. This function clears the
@@ -400,7 +400,7 @@ static void metaCoordinateadaptorClearLengthCacheL2(void **key,
 ** @@
 ******************************************************************************/
 
-static void metaCoordinateadaptorClearLengthCacheL1(void **key,
+static void metacoordinateadaptorClearLengthCacheL1(void **key,
                                                     void **value,
                                                     void *cl)
 {
@@ -421,7 +421,7 @@ static void metaCoordinateadaptorClearLengthCacheL1(void **key,
     AJFREE(*key);
 
     ajTableMapDel(*((AjPTable *) value),
-                  metaCoordinateadaptorClearLengthCacheL2,
+                  metacoordinateadaptorClearLengthCacheL2,
                   NULL);
 
     ajTableFree((AjPTable *) value);
@@ -479,13 +479,13 @@ void ensMetacoordinateadaptorDel(EnsPMetacoordinateadaptor *Pmca)
     pthis = *Pmca;
 
     ajTableMapDel(pthis->CacheByName,
-                  metaCoordinateadaptorClearNameCache,
+                  metacoordinateadaptorClearNameCache,
                   NULL);
 
     ajTableFree(&pthis->CacheByName);
 
     ajTableMapDel(pthis->CacheByLength,
-                  metaCoordinateadaptorClearLengthCacheL1,
+                  metacoordinateadaptorClearLengthCacheL1,
                   NULL);
 
     ajTableFree(&pthis->CacheByLength);

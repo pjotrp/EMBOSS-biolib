@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
-/* gvIndividualGender *********************************************************
+/* gvindividualGender *********************************************************
 **
 ** The Ensembl Genetic Variation Individual gender element is enumerated in
 ** both, the SQL table definition and the data structure. The following
@@ -45,7 +45,7 @@
 **
 ******************************************************************************/
 
-static const char *gvIndividualGender[] =
+static const char *gvindividualGender[] =
 {
     NULL,
     "Male",
@@ -57,7 +57,7 @@ static const char *gvIndividualGender[] =
 
 
 
-/* gvIndividualType ***********************************************************
+/* gvindividualType ***********************************************************
 **
 ** The Ensembl Genetic Variation Individual type element is enumerated in
 ** both, the SQL table definition and the data structure. The following
@@ -66,7 +66,7 @@ static const char *gvIndividualGender[] =
 **
 ******************************************************************************/
 
-static const char *gvIndividualType[] =
+static const char *gvindividualType[] =
 {
     NULL,
     "Fully_inbred",
@@ -90,7 +90,7 @@ extern EnsPGvindividualadaptor ensRegistryGetGvindividualadaptor(
 extern EnsPGvsampleadaptor ensRegistryGetGvsampleadaptor(
     EnsPDatabaseadaptor dba);
 
-static AjBool gvIndividualadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool gvindividualadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
                                                EnsPAssemblymapper am,
                                                EnsPSlice slice,
@@ -823,8 +823,8 @@ AjEnum ensGvindividualGenderFromStr(const AjPStr gender)
 
     AjEnum egender = ensEGvindividualGenderNULL;
 
-    for(i = 1; gvIndividualGender[i]; i++)
-        if(ajStrMatchC(gender, gvIndividualGender[i]))
+    for(i = 1; gvindividualGender[i]; i++)
+        if(ajStrMatchC(gender, gvindividualGender[i]))
             egender = i;
 
     if(!egender)
@@ -855,8 +855,8 @@ AjEnum ensGvindividualTypeFromStr(const AjPStr type)
 
     AjEnum etype = ensEGvindividualTypeNULL;
 
-    for(i = 1; gvIndividualType[i]; i++)
-        if(ajStrMatchC(type, gvIndividualType[i]))
+    for(i = 1; gvindividualType[i]; i++)
+        if(ajStrMatchC(type, gvindividualType[i]))
             etype = i;
 
     if(!etype)
@@ -889,13 +889,13 @@ const char* ensGvindividualGenderToChar(const AjEnum gender)
     if(!gender)
         return NULL;
 
-    for(i = 1; gvIndividualGender[i] && (i < gender); i++);
+    for(i = 1; gvindividualGender[i] && (i < gender); i++);
 
-    if(!gvIndividualGender[i])
+    if(!gvindividualGender[i])
         ajDebug("ensGvindividualGenderToChar encountered an "
                 "out of boundary error on gender %d.\n", gender);
 
-    return gvIndividualGender[i];
+    return gvindividualGender[i];
 }
 
 
@@ -921,13 +921,13 @@ const char* ensGvindividualTypeToChar(const AjEnum type)
     if(!type)
         return NULL;
 
-    for(i = 1; gvIndividualType[i] && (i < type); i++);
+    for(i = 1; gvindividualType[i] && (i < type); i++);
 
-    if(!gvIndividualType[i])
+    if(!gvindividualType[i])
         ajDebug("ensGvindividualTypeToChar encountered an "
                 "out of boundary error on type %d.\n", type);
 
-    return gvIndividualType[i];
+    return gvindividualType[i];
 }
 
 
@@ -1060,7 +1060,7 @@ AjBool ensGvindividualTrace(const EnsPGvindividual gvi, ajuint level)
 **
 ******************************************************************************/
 
-static const char *gvIndividualadaptorTables[] =
+static const char *gvindividualadaptorTables[] =
 {
     "sample",
     "individual",
@@ -1071,7 +1071,7 @@ static const char *gvIndividualadaptorTables[] =
 
 
 
-static const char *gvIndividualadaptorColumns[] =
+static const char *gvindividualadaptorColumns[] =
 {
     "sample.sample_id",
     "sample.name",
@@ -1088,7 +1088,7 @@ static const char *gvIndividualadaptorColumns[] =
 
 
 
-static EnsOBaseadaptorLeftJoin gvIndividualadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin gvindividualadaptorLeftJoin[] =
 {
     {NULL, NULL}
 };
@@ -1096,7 +1096,7 @@ static EnsOBaseadaptorLeftJoin gvIndividualadaptorLeftJoin[] =
 
 
 
-static const char *gvIndividualadaptorDefaultCondition =
+static const char *gvindividualadaptorDefaultCondition =
     "sample.sample_id = individual.sample_id "
     "AND "
     "individual.individual_type_id = individual_type.individual_type_id";
@@ -1104,12 +1104,12 @@ static const char *gvIndividualadaptorDefaultCondition =
 
 
 
-static const char *gvIndividualadaptorFinalCondition = NULL;
+static const char *gvindividualadaptorFinalCondition = NULL;
 
 
 
 
-/* @funcstatic gvIndividualadaptorFetchAllBySQL *******************************
+/* @funcstatic gvindividualadaptorFetchAllBySQL *******************************
 **
 ** Fetch all Ensembl Genetic Variation Individual objects via an SQL statement.
 **
@@ -1124,7 +1124,7 @@ static const char *gvIndividualadaptorFinalCondition = NULL;
 ** @@
 ******************************************************************************/
 
-static AjBool gvIndividualadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool gvindividualadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
                                                EnsPAssemblymapper am,
                                                EnsPSlice slice,
@@ -1158,8 +1158,8 @@ static AjBool gvIndividualadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPGvsample gvs         = NULL;
     EnsPGvsampleadaptor gvsa = NULL;
 
-    if(ajDebugTest("gvIndividualadaptorFetchAllBySQL"))
-        ajDebug("gvIndividualadaptorFetchAllBySQL\n"
+    if(ajDebugTest("gvindividualadaptorFetchAllBySQL"))
+        ajDebug("gvindividualadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -1281,12 +1281,12 @@ EnsPGvindividualadaptor ensGvindividualadaptorNew(EnsPDatabaseadaptor dba)
         return NULL;
 
     return ensBaseadaptorNew(dba,
-                             gvIndividualadaptorTables,
-                             gvIndividualadaptorColumns,
-                             gvIndividualadaptorLeftJoin,
-                             gvIndividualadaptorDefaultCondition,
-                             gvIndividualadaptorFinalCondition,
-                             gvIndividualadaptorFetchAllBySQL);
+                             gvindividualadaptorTables,
+                             gvindividualadaptorColumns,
+                             gvindividualadaptorLeftJoin,
+                             gvindividualadaptorDefaultCondition,
+                             gvindividualadaptorFinalCondition,
+                             gvindividualadaptorFetchAllBySQL);
 }
 
 
@@ -1606,7 +1606,7 @@ AjBool ensGvindividualadaptorFetchAllByPopulation(
 
     dba = ensBaseadaptorGetDatabaseadaptor(gvia);
 
-    gvIndividualadaptorFetchAllBySQL(dba,
+    gvindividualadaptorFetchAllBySQL(dba,
                                      statement,
                                      (EnsPAssemblymapper) NULL,
                                      (EnsPSlice) NULL,

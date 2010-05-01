@@ -7,7 +7,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -87,11 +87,11 @@ extern EnsPSeqregionadaptor ensRegistryGetSeqregionadaptor(
 
 static EnsPProjectionsegment sliceConstrainToSeqregion(EnsPSlice slice);
 
-static void* sliceAdaptorCacheReference(void *value);
+static void* sliceadaptorCacheReference(void *value);
 
-static void sliceAdaptorCacheDelete(void **value);
+static void sliceadaptorCacheDelete(void **value);
 
-static ajuint sliceAdaptorCacheSize(const void* value);
+static ajuint sliceadaptorCacheSize(const void* value);
 
 
 
@@ -2655,18 +2655,18 @@ AjBool ensSliceFetchAllSequenceEdits(EnsPSlice slice,
 
 /* 1 << 26 = 64 MiB */
 
-static ajuint sliceAdaptorCacheMaxBytes = 1 << 26;
+static ajuint sliceadaptorCacheMaxBytes = 1 << 26;
 
 /* 1 << 16 = 64 Ki  */
 
-static ajuint sliceAdaptorCacheMaxCount = 1 << 16;
+static ajuint sliceadaptorCacheMaxCount = 1 << 16;
 
-static ajuint sliceAdaptorCacheMaxSize = 0;
-
-
+static ajuint sliceadaptorCacheMaxSize = 0;
 
 
-/* @funcstatic sliceAdaptorCacheReference *************************************
+
+
+/* @funcstatic sliceadaptorCacheReference *************************************
 **
 ** Wrapper function to reference an Ensembl Slice
 ** from an Ensembl Cache.
@@ -2677,7 +2677,7 @@ static ajuint sliceAdaptorCacheMaxSize = 0;
 ** @@
 ******************************************************************************/
 
-static void* sliceAdaptorCacheReference(void *value)
+static void* sliceadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -2688,7 +2688,7 @@ static void* sliceAdaptorCacheReference(void *value)
 
 
 
-/* @funcstatic sliceAdaptorCacheDelete ****************************************
+/* @funcstatic sliceadaptorCacheDelete ****************************************
 **
 ** Wrapper function to delete (or de-reference) an Ensembl Slice
 ** from an Ensembl Cache.
@@ -2702,7 +2702,7 @@ static void* sliceAdaptorCacheReference(void *value)
 ** conventional AJAX Table.
 ******************************************************************************/
 
-static void sliceAdaptorCacheDelete(void **value)
+static void sliceadaptorCacheDelete(void **value)
 {
     ajint start  = 0;
     ajint end    = 0;
@@ -2779,7 +2779,7 @@ static void sliceAdaptorCacheDelete(void **value)
 
 
 
-/* @funcstatic sliceAdaptorCacheSize ******************************************
+/* @funcstatic sliceadaptorCacheSize ******************************************
 **
 ** Wrapper function to determine the memory size of an Ensembl Slice
 ** from an Ensembl Cache.
@@ -2790,7 +2790,7 @@ static void sliceAdaptorCacheDelete(void **value)
 ** @@
 ******************************************************************************/
 
-static ajuint sliceAdaptorCacheSize(const void* value)
+static ajuint sliceadaptorCacheSize(const void* value)
 {
     if(!value)
         return 0;
@@ -2846,12 +2846,12 @@ EnsPSliceadaptor ensSliceadaptorNew(EnsPDatabaseadaptor dba)
 
     adaptor->CacheByIdentifier = ensCacheNew(
         ensECacheTypeAlphaNumeric,
-        sliceAdaptorCacheMaxBytes,
-        sliceAdaptorCacheMaxCount,
-        sliceAdaptorCacheMaxSize,
-        sliceAdaptorCacheReference,
-        sliceAdaptorCacheDelete,
-        sliceAdaptorCacheSize,
+        sliceadaptorCacheMaxBytes,
+        sliceadaptorCacheMaxCount,
+        sliceadaptorCacheMaxSize,
+        sliceadaptorCacheReference,
+        sliceadaptorCacheDelete,
+        sliceadaptorCacheSize,
         (void* (*)(const void* key)) NULL,
         (AjBool (*)(const void* value)) NULL,
         ajFalse,
@@ -2896,7 +2896,7 @@ void ensSliceadaptorDel(EnsPSliceadaptor *Padaptor)
     /*
     ** Clear the identifier cache, which is based on an Ensembl LRU Cache.
     ** Clearing the Ensembl LRU Cache automatically clears the name cache
-    ** via sliceAdaptorCacheDelete.
+    ** via sliceadaptorCacheDelete.
     */
 
     ensCacheDel(&pthis->CacheByIdentifier);
@@ -3022,7 +3022,7 @@ AjBool ensSliceadaptorCacheInsert(EnsPSliceadaptor adaptor, EnsPSlice* Pslice)
         /*
         ** None of the caches returned an identical Ensembl Slice so add this
         ** one to both caches. The Ensembl LRU Cache automatically references
-        ** the Ensembl Slice via the sliceAdaptorCacheReference function,
+        ** the Ensembl Slice via the sliceadaptorCacheReference function,
         ** while the AJAX Table-based cache needs manual referencing.
         */
 

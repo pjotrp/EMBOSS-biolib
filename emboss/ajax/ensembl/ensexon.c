@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -111,19 +111,19 @@ static AjBool exonCoordinatesClear(EnsPExon exon);
 static ExonPCoordinates exonGetExonCoodinates(EnsPExon exon,
                                               EnsPTranscript transcript);
 
-static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool exonadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                        const AjPStr statement,
                                        EnsPAssemblymapper am,
                                        EnsPSlice slice,
                                        AjPList exons);
 
-static void *exonAdaptorCacheReference(void *value);
+static void *exonadaptorCacheReference(void *value);
 
-static void exonAdaptorCacheDelete(void **value);
+static void exonadaptorCacheDelete(void **value);
 
-static ajuint exonAdaptorCacheSize(const void *value);
+static ajuint exonadaptorCacheSize(const void *value);
 
-static EnsPFeature exonAdaptorGetFeature(const void *value);
+static EnsPFeature exonadaptorGetFeature(const void *value);
 
 
 
@@ -2482,7 +2482,7 @@ ajuint ensExonGetSliceCodingEnd(EnsPExon exon, EnsPTranscript transcript)
 **
 ******************************************************************************/
 
-static const char *exonAdaptorTables[] =
+static const char *exonadaptorTables[] =
 {
     "exon",
     "exon_stable_id",
@@ -2497,7 +2497,7 @@ static const char *exonTranscriptadaptorTables[] =
     NULL
 };
 
-static const char *exonAdaptorColumns[] =
+static const char *exonadaptorColumns[] =
 {
     "exon.exon_id",
     "exon.seq_region_id",
@@ -2515,15 +2515,15 @@ static const char *exonAdaptorColumns[] =
     NULL
 };
 
-static EnsOBaseadaptorLeftJoin exonAdaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin exonadaptorLeftJoin[] =
 {
     {"exon_stable_id", "exon_stable_id.exon_id = exon.exon_id"},
     {NULL, NULL}
 };
 
-static const char *exonAdaptorDefaultCondition = NULL;
+static const char *exonadaptorDefaultCondition = NULL;
 
-static const char *exonAdaptorFinalCondition = NULL;
+static const char *exonadaptorFinalCondition = NULL;
 
 static const char *exonTranscriptadaptorFinalCondition =
     "ORDER BY "
@@ -2533,7 +2533,7 @@ static const char *exonTranscriptadaptorFinalCondition =
 
 
 
-/* @funcstatic exonAdaptorFetchAllBySQL ***************************************
+/* @funcstatic exonadaptorFetchAllBySQL ***************************************
 **
 ** Fetch all Ensembl Exon objects via an SQL statement.
 **
@@ -2548,7 +2548,7 @@ static const char *exonTranscriptadaptorFinalCondition =
 ** @@
 ******************************************************************************/
 
-static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool exonadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                        const AjPStr statement,
                                        EnsPAssemblymapper am,
                                        EnsPSlice slice,
@@ -2596,8 +2596,8 @@ static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPSlice srslice   = NULL;
     EnsPSliceadaptor sa = NULL;
 
-    if(ajDebugTest("exonAdaptorFetchAllBySQL"))
-        ajDebug("exonAdaptorFetchAllBySQL\n"
+    if(ajDebugTest("exonadaptorFetchAllBySQL"))
+        ajDebug("exonadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -2678,7 +2678,7 @@ static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         if(srstart <= INT_MAX)
             slstart = (ajint) srstart;
         else
-            ajFatal("exonAdaptorFetchAllBySQL got a "
+            ajFatal("exonadaptorFetchAllBySQL got a "
                     "Sequence Region start coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srstart, INT_MAX);
@@ -2686,7 +2686,7 @@ static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         if(srend <= INT_MAX)
             slend = (ajint) srend;
         else
-            ajFatal("exonAdaptorFetchAllBySQL got a "
+            ajFatal("exonadaptorFetchAllBySQL got a "
                     "Sequence Region end coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srend, INT_MAX);
@@ -2790,7 +2790,7 @@ static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             if(ensSliceGetLength(slice) <= INT_MAX)
                 sllength = (ajint) ensSliceGetLength(slice);
             else
-                ajFatal("exonAdaptorFetchAllBySQL got a Slice, "
+                ajFatal("exonadaptorFetchAllBySQL got a Slice, "
                         "which length (%u) exceeds the "
                         "maximum integer limit (%d).",
                         ensSliceGetLength(slice), INT_MAX);
@@ -2893,7 +2893,7 @@ static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @funcstatic exonAdaptorCacheReference **************************************
+/* @funcstatic exonadaptorCacheReference **************************************
 **
 ** Wrapper function to reference an Ensembl Exon from an Ensembl Cache.
 **
@@ -2903,7 +2903,7 @@ static AjBool exonAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @@
 ******************************************************************************/
 
-static void *exonAdaptorCacheReference(void *value)
+static void *exonadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -2914,7 +2914,7 @@ static void *exonAdaptorCacheReference(void *value)
 
 
 
-/* @funcstatic exonAdaptorCacheDelete *****************************************
+/* @funcstatic exonadaptorCacheDelete *****************************************
 **
 ** Wrapper function to delete an Ensembl Exon from an Ensembl Cache.
 **
@@ -2924,7 +2924,7 @@ static void *exonAdaptorCacheReference(void *value)
 ** @@
 ******************************************************************************/
 
-static void exonAdaptorCacheDelete(void **value)
+static void exonadaptorCacheDelete(void **value)
 {
     if(!value)
         return;
@@ -2937,7 +2937,7 @@ static void exonAdaptorCacheDelete(void **value)
 
 
 
-/* @funcstatic exonAdaptorCacheSize *******************************************
+/* @funcstatic exonadaptorCacheSize *******************************************
 **
 ** Wrapper function to determine the memory size of an Ensembl Exon
 ** from an Ensembl Cache.
@@ -2948,7 +2948,7 @@ static void exonAdaptorCacheDelete(void **value)
 ** @@
 ******************************************************************************/
 
-static ajuint exonAdaptorCacheSize(const void *value)
+static ajuint exonadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;
@@ -2959,7 +2959,7 @@ static ajuint exonAdaptorCacheSize(const void *value)
 
 
 
-/* @funcstatic exonAdaptorGetFeature ******************************************
+/* @funcstatic exonadaptorGetFeature ******************************************
 **
 ** Wrapper function to get the Ensembl Feature of an Ensembl Exon
 ** from an Ensembl Feature Adaptor.
@@ -2970,7 +2970,7 @@ static ajuint exonAdaptorCacheSize(const void *value)
 ** @@
 ******************************************************************************/
 
-static EnsPFeature exonAdaptorGetFeature(const void *value)
+static EnsPFeature exonadaptorGetFeature(const void *value)
 {
     if(!value)
         return NULL;
@@ -3024,20 +3024,18 @@ EnsPExonadaptor ensExonadaptorNew(EnsPDatabaseadaptor dba)
     AJNEW0(ea);
 
     ea->Adaptor = ensFeatureadaptorNew(dba,
-                                       exonAdaptorTables,
-                                       exonAdaptorColumns,
-                                       exonAdaptorLeftJoin,
-                                       exonAdaptorDefaultCondition,
-                                       exonAdaptorFinalCondition,
-                                       exonAdaptorFetchAllBySQL,
-                                       /* Fread */
+                                       exonadaptorTables,
+                                       exonadaptorColumns,
+                                       exonadaptorLeftJoin,
+                                       exonadaptorDefaultCondition,
+                                       exonadaptorFinalCondition,
+                                       exonadaptorFetchAllBySQL,
                                        (void * (*)(const void *key)) NULL,
-                                       exonAdaptorCacheReference,
-                                       /* Fwrite */
+                                       exonadaptorCacheReference,
                                        (AjBool (*)(const void* value)) NULL,
-                                       exonAdaptorCacheDelete,
-                                       exonAdaptorCacheSize,
-                                       exonAdaptorGetFeature,
+                                       exonadaptorCacheDelete,
+                                       exonadaptorCacheSize,
+                                       exonadaptorGetFeature,
                                        "Exon");
 
     return ea;
@@ -3608,10 +3606,10 @@ AjBool ensExonadaptorFetchAllByTranscript(const EnsPExonadaptor ea,
     ** Ensembl Feature Adaptor this Exon Adaptor is based upon.
     */
 
-    ensFeatureadaptorSetTables(ea->Adaptor, exonAdaptorTables);
+    ensFeatureadaptorSetTables(ea->Adaptor, exonadaptorTables);
 
     ensFeatureadaptorSetFinalCondition(ea->Adaptor,
-                                       exonAdaptorFinalCondition);
+                                       exonadaptorFinalCondition);
 
     /* Remap Exon coordinates if neccessary. */
 

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.2 $
+** @version $Revision: 1.3 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
-/* gvSampleDisplay ************************************************************
+/* gvsampleDisplay ************************************************************
 **
 ** The Ensembl Genetic Variation Sample display element is enumerated in
 ** both, the SQL table definition and the data structure. The following
@@ -45,7 +45,7 @@
 **
 ******************************************************************************/
 
-static const char *gvSampleDisplay[] =
+static const char *gvsampleDisplay[] =
 {
     "REFERENCE",
     "DEFAULT",
@@ -64,7 +64,7 @@ static const char *gvSampleDisplay[] =
 extern EnsPGvsampleadaptor ensRegistryGetGvsampleadaptor(
     EnsPDatabaseadaptor dba);
 
-static AjBool gvSampleadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool gvsampleadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                            const AjPStr statement,
                                            EnsPAssemblymapper am,
                                            EnsPSlice slice,
@@ -774,8 +774,8 @@ ensGvsampleDisplayFromStr(const AjPStr display)
 
     AjEnum edisplay = ensEGvsampleDisplayNULL;
 
-    for(i = 1; gvSampleDisplay[i]; i++)
-        if(ajStrMatchC(display, gvSampleDisplay[i]))
+    for(i = 1; gvsampleDisplay[i]; i++)
+        if(ajStrMatchC(display, gvsampleDisplay[i]))
             edisplay = i;
 
     if(!edisplay)
@@ -809,13 +809,13 @@ ensGvsampleDisplayToChar(const AjEnum display)
     if(!display)
         return NULL;
 
-    for(i = 1; gvSampleDisplay[i] && (i < display); i++);
+    for(i = 1; gvsampleDisplay[i] && (i < display); i++);
 
-    if(!gvSampleDisplay[i])
+    if(!gvsampleDisplay[i])
         ajDebug("ensGvsampleDisplayToChar encountered an "
                 "out of boundary error on display %d.\n", display);
 
-    return gvSampleDisplay[i];
+    return gvsampleDisplay[i];
 }
 
 
@@ -832,13 +832,13 @@ ensGvsampleDisplayToChar(const AjEnum display)
 **
 ******************************************************************************/
 
-static const char *gvSampleadaptorTables[] =
+static const char *gvsampleadaptorTables[] =
 {
     "sample",
     NULL
 };
 
-static const char *gvSampleadaptorColumns[] =
+static const char *gvsampleadaptorColumns[] =
 {
     "sample.sample_id",
     "sample.name",
@@ -848,19 +848,19 @@ static const char *gvSampleadaptorColumns[] =
     NULL
 };
 
-static EnsOBaseadaptorLeftJoin gvSampleadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin gvsampleadaptorLeftJoin[] =
 {
     {NULL, NULL}
 };
 
-static const char *gvSampleadaptorDefaultCondition = NULL;
+static const char *gvsampleadaptorDefaultCondition = NULL;
 
-static const char *gvSampleadaptorFinalCondition = NULL;
-
-
+static const char *gvsampleadaptorFinalCondition = NULL;
 
 
-/* @funcstatic gvSampleAdaptorFetchAllBySQL ***********************************
+
+
+/* @funcstatic gvsampleadaptorFetchAllBySQL ***********************************
 **
 ** Fetch all Ensembl Genetic Variation Sample objects via an SQL statement.
 **
@@ -875,7 +875,7 @@ static const char *gvSampleadaptorFinalCondition = NULL;
 ** @@
 ******************************************************************************/
 
-static AjBool gvSampleadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool gvsampleadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                            const AjPStr statement,
                                            EnsPAssemblymapper am,
                                            EnsPSlice slice,
@@ -897,8 +897,8 @@ static AjBool gvSampleadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPGvsample gvs         = NULL;
     EnsPGvsampleadaptor gvsa = NULL;
 
-    if(ajDebugTest("gvSampleadaptorFetchAllBySQL"))
-        ajDebug("gvSampleadaptorFetchAllBySQL\n"
+    if(ajDebugTest("gvsampleadaptorFetchAllBySQL"))
+        ajDebug("gvsampleadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -982,12 +982,12 @@ static AjBool gvSampleadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 EnsPGvsampleadaptor ensGvsampleadaptorNew(EnsPDatabaseadaptor dba)
 {
     return ensBaseadaptorNew(dba,
-                             gvSampleadaptorTables,
-                             gvSampleadaptorColumns,
-                             gvSampleadaptorLeftJoin,
-                             gvSampleadaptorDefaultCondition,
-                             gvSampleadaptorFinalCondition,
-                             gvSampleadaptorFetchAllBySQL);
+                             gvsampleadaptorTables,
+                             gvsampleadaptorColumns,
+                             gvsampleadaptorLeftJoin,
+                             gvsampleadaptorDefaultCondition,
+                             gvsampleadaptorFinalCondition,
+                             gvsampleadaptorFetchAllBySQL);
 }
 
 

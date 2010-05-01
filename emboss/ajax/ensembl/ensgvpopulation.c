@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -53,7 +53,7 @@ extern EnsPGvpopulationadaptor ensRegistryGetGvpopulationadaptor(
 extern EnsPGvsampleadaptor ensRegistryGetGvsampleadaptor(
     EnsPDatabaseadaptor dba);
 
-static AjBool gvPopulationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool gvpopulationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
                                                EnsPAssemblymapper am,
                                                EnsPSlice slice,
@@ -736,14 +736,14 @@ AjBool ensGvpopulationTrace(const EnsPGvpopulation gvp, ajuint level)
 **
 ******************************************************************************/
 
-static const char *gvPopulationadaptorTables[] =
+static const char *gvpopulationadaptorTables[] =
 {
     "sample",
     "population",
     NULL
 };
 
-static const char *gvPopulationadaptorColumns[] =
+static const char *gvpopulationadaptorColumns[] =
 {
     "sample.sample_id",
     "sample.name",
@@ -753,20 +753,20 @@ static const char *gvPopulationadaptorColumns[] =
     NULL
 };
 
-static EnsOBaseadaptorLeftJoin gvPopulationadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin gvpopulationadaptorLeftJoin[] =
 {
     {NULL, NULL}
 };
 
-static const char *gvPopulationadaptorDefaultCondition =
+static const char *gvpopulationadaptorDefaultCondition =
     "sample.sample_id = population.sample_id";
 
-static const char *gvPopulationadaptorFinalCondition = NULL;
+static const char *gvpopulationadaptorFinalCondition = NULL;
 
 
 
 
-/* @funcstatic gvPopulationadaptorFetchAllBySQL *******************************
+/* @funcstatic gvpopulationadaptorFetchAllBySQL *******************************
 **
 ** Fetch all Ensembl Genetic Variation Population objects via an SQL statement.
 **
@@ -781,7 +781,7 @@ static const char *gvPopulationadaptorFinalCondition = NULL;
 ** @@
 ******************************************************************************/
 
-static AjBool gvPopulationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool gvpopulationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
                                                EnsPAssemblymapper am,
                                                EnsPSlice slice,
@@ -806,8 +806,8 @@ static AjBool gvPopulationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPGvsample gvs         = NULL;
     EnsPGvsampleadaptor gvsa = NULL;
 
-    if(ajDebugTest("gvPopulationadaptorFetchAllBySQL"))
-        ajDebug("gvPopulationadaptorFetchAllBySQL\n"
+    if(ajDebugTest("gvpopulationadaptorFetchAllBySQL"))
+        ajDebug("gvpopulationadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -900,12 +900,12 @@ EnsPGvpopulationadaptor ensGvpopulationadaptorNew(EnsPDatabaseadaptor dba)
         return NULL;
 
     return ensBaseadaptorNew(dba,
-                             gvPopulationadaptorTables,
-                             gvPopulationadaptorColumns,
-                             gvPopulationadaptorLeftJoin,
-                             gvPopulationadaptorDefaultCondition,
-                             gvPopulationadaptorFinalCondition,
-                             gvPopulationadaptorFetchAllBySQL);
+                             gvpopulationadaptorTables,
+                             gvpopulationadaptorColumns,
+                             gvpopulationadaptorLeftJoin,
+                             gvpopulationadaptorDefaultCondition,
+                             gvpopulationadaptorFinalCondition,
+                             gvpopulationadaptorFetchAllBySQL);
 }
 
 
@@ -1240,7 +1240,7 @@ AjBool ensGvpopulationadaptorFetchAllBySuperPopulation(
 
     dba = ensBaseadaptorGetDatabaseadaptor(gvpa);
 
-    gvPopulationadaptorFetchAllBySQL(dba,
+    gvpopulationadaptorFetchAllBySQL(dba,
                                      statement,
                                      (EnsPAssemblymapper) NULL,
                                      (EnsPSlice) NULL,
@@ -1323,7 +1323,7 @@ AjBool ensGvpopulationadaptorFetchAllBySubPopulation(
 
     dba = ensBaseadaptorGetDatabaseadaptor(gvpa);
 
-    gvPopulationadaptorFetchAllBySQL(dba,
+    gvpopulationadaptorFetchAllBySQL(dba,
                                      statement,
                                      (EnsPAssemblymapper) NULL,
                                      (EnsPSlice) NULL,
@@ -1407,7 +1407,7 @@ AjBool ensGvpopulationadaptorFetchAllByIndvividual(
 
     dba = ensBaseadaptorGetDatabaseadaptor(gvpa);
 
-    gvPopulationadaptorFetchAllBySQL(dba,
+    gvpopulationadaptorFetchAllBySQL(dba,
                                      statement,
                                      (EnsPAssemblymapper) NULL,
                                      (EnsPSlice) NULL,

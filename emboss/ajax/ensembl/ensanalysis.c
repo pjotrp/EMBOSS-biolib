@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -48,28 +48,28 @@ extern EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(
     EnsPDatabaseadaptor dba);
 
 
-static AjBool analysisAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool analysisadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                            const AjPStr statement,
                                            EnsPAssemblymapper am,
                                            EnsPSlice slice,
                                            AjPList analyses);
 
-static AjBool analysisAdaptorCacheInsert(EnsPAnalysisadaptor aa,
+static AjBool analysisadaptorCacheInsert(EnsPAnalysisadaptor aa,
                                          EnsPAnalysis *Panalysis);
 
-static AjBool analysisAdaptorCacheInit(EnsPAnalysisadaptor aa);
+static AjBool analysisadaptorCacheInit(EnsPAnalysisadaptor aa);
 
-static void analysisAdaptorCacheClearIdentifier(void **key,
+static void analysisadaptorCacheClearIdentifier(void **key,
                                                 void **value,
                                                 void *cl);
 
-static void analysisAdaptorCacheClearName(void **key,
+static void analysisadaptorCacheClearName(void **key,
                                           void **value,
                                           void *cl);
 
-static AjBool analysisAdaptorCacheExit(EnsPAnalysisadaptor aa);
+static AjBool analysisadaptorCacheExit(EnsPAnalysisadaptor aa);
 
-static void analysisAdaptorFetchAll(const void *key, void **value, void *cl);
+static void analysisadaptorFetchAll(const void *key, void **value, void *cl);
 
 
 
@@ -1860,14 +1860,14 @@ ajuint ensAnalysisGetMemSize(const EnsPAnalysis analysis)
 **
 ******************************************************************************/
 
-static const char *analysisAdaptorTables[] =
+static const char *analysisadaptorTables[] =
 {
     "analysis",
     "analysis_description",
     NULL
 };
 
-static const char *analysisAdaptorColumns[] =
+static const char *analysisadaptorColumns[] =
 {
     "analysis.analysis_id",
     "analysis.created",
@@ -1890,7 +1890,7 @@ static const char *analysisAdaptorColumns[] =
     NULL
 };
 
-static EnsOBaseadaptorLeftJoin analysisAdaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin analysisadaptorLeftJoin[] =
 {
     {
         "analysis_description",
@@ -1899,14 +1899,14 @@ static EnsOBaseadaptorLeftJoin analysisAdaptorLeftJoin[] =
     {NULL, NULL}
 };
 
-static const char *analysisAdaptorDefaultCondition = NULL;
+static const char *analysisadaptorDefaultCondition = NULL;
 
-static const char *analysisAdaptorFinalCondition = NULL;
-
-
+static const char *analysisadaptorFinalCondition = NULL;
 
 
-/* @funcstatic analysisAdaptorFetchAllBySQL ***********************************
+
+
+/* @funcstatic analysisadaptorFetchAllBySQL ***********************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl Analysis objects.
@@ -1922,7 +1922,7 @@ static const char *analysisAdaptorFinalCondition = NULL;
 ** @@
 ******************************************************************************/
 
-static AjBool analysisAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool analysisadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                            const AjPStr statement,
                                            EnsPAssemblymapper am,
                                            EnsPSlice slice,
@@ -1956,8 +1956,8 @@ static AjBool analysisAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPAnalysis analysis  = NULL;
     EnsPAnalysisadaptor aa = NULL;
 
-    if(ajDebugTest("analysisAdaptorFetchAllBySQL"))
-        ajDebug("analysisAdaptorFetchAllBySQL\n"
+    if(ajDebugTest("analysisadaptorFetchAllBySQL"))
+        ajDebug("analysisadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -2076,7 +2076,7 @@ static AjBool analysisAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @funcstatic analysisAdaptorCacheInsert *************************************
+/* @funcstatic analysisadaptorCacheInsert *************************************
 **
 ** Insert an Ensembl Analysis into the Analysis Adaptor-internal cache.
 ** If an Analysis with the same name element is already present in the
@@ -2090,7 +2090,7 @@ static AjBool analysisAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @@
 ******************************************************************************/
 
-static AjBool analysisAdaptorCacheInsert(EnsPAnalysisadaptor aa,
+static AjBool analysisadaptorCacheInsert(EnsPAnalysisadaptor aa,
                                          EnsPAnalysis *Panalysis)
 {
     ajuint *Pidentifier = NULL;
@@ -2146,7 +2146,7 @@ static AjBool analysisAdaptorCacheInsert(EnsPAnalysisadaptor aa,
 
     if(analysis1 && analysis2 && (analysis1 == analysis2))
     {
-        ajDebug("analysisAdaptorCacheInsert replaced Analysis %p with "
+        ajDebug("analysisadaptorCacheInsert replaced Analysis %p with "
                 "one already cached %p.\n",
                 *Panalysis, analysis1);
 
@@ -2158,17 +2158,17 @@ static AjBool analysisAdaptorCacheInsert(EnsPAnalysisadaptor aa,
     }
 
     if(analysis1 && analysis2 && (analysis1 != analysis2))
-        ajDebug("analysisAdaptorCacheInsert detected Analyses in the "
+        ajDebug("analysisadaptorCacheInsert detected Analyses in the "
                 "identifier and name cache with identical names "
                 "('%S' and '%S') but different addresses (%p and %p).\n",
                 analysis1->Name, analysis2->Name, analysis1, analysis2);
 
     if(analysis1 && (!analysis2))
-        ajDebug("analysisAdaptorCacheInsert detected an Ensembl Analysis "
+        ajDebug("analysisadaptorCacheInsert detected an Ensembl Analysis "
                 "in the identifier, but not in the name cache.\n");
 
     if((!analysis1) && analysis2)
-        ajDebug("analysisAdaptorCacheInsert detected an Ensembl Analysis "
+        ajDebug("analysisadaptorCacheInsert detected an Ensembl Analysis "
                 "in the name, but not in the identifier cache.\n");
 
     return ajTrue;
@@ -2177,7 +2177,7 @@ static AjBool analysisAdaptorCacheInsert(EnsPAnalysisadaptor aa,
 
 
 
-/* @funcstatic analysisAdaptorCacheRemove *************************************
+/* @funcstatic analysisadaptorCacheRemove *************************************
 **
 ** Remove an Ensembl Analysis from the Analysis Adaptor-internal cache.
 **
@@ -2190,7 +2190,7 @@ static AjBool analysisAdaptorCacheInsert(EnsPAnalysisadaptor aa,
 
 #if AJFALSE
 
-static AjBool analysisAdaptorCacheRemove(EnsPAnalysisadaptor aa,
+static AjBool analysisadaptorCacheRemove(EnsPAnalysisadaptor aa,
                                          EnsPAnalysis analysis)
 {
     ajuint *Pidentifier = NULL;
@@ -2219,13 +2219,13 @@ static AjBool analysisAdaptorCacheRemove(EnsPAnalysisadaptor aa,
                          (void **) &key);
 
     if(analysis1 && (!analysis2))
-        ajWarn("analysisAdaptorCacheRemove could remove Analysis with "
+        ajWarn("analysisadaptorCacheRemove could remove Analysis with "
                "identifier %u and name '%S' only from the identifier cache.\n",
                analysis->Identifier,
                analysis->Name);
 
     if((!analysis1) && analysis2)
-        ajWarn("analysisAdaptorCacheRemove could remove Analysis with "
+        ajWarn("analysisadaptorCacheRemove could remove Analysis with "
                "identifier %u and name '%S' only from the name cache.\n",
                analysis->Identifier,
                analysis->Name);
@@ -2249,7 +2249,7 @@ static AjBool analysisAdaptorCacheRemove(EnsPAnalysisadaptor aa,
 
 
 
-/* @funcstatic analysisAdaptorCacheInit ***************************************
+/* @funcstatic analysisadaptorCacheInit ***************************************
 **
 ** Initialise the internal Analysis cache of an Ensembl Analysis Adaptor.
 **
@@ -2259,14 +2259,14 @@ static AjBool analysisAdaptorCacheRemove(EnsPAnalysisadaptor aa,
 ** @@
 ******************************************************************************/
 
-static AjBool analysisAdaptorCacheInit(EnsPAnalysisadaptor aa)
+static AjBool analysisadaptorCacheInit(EnsPAnalysisadaptor aa)
 {
     AjPList analyses = NULL;
 
     EnsPAnalysis analysis = NULL;
 
-    if(ajDebugTest("analysisAdaptorCacheInit"))
-        ajDebug("analysisAdaptorCacheInit\n"
+    if(ajDebugTest("analysisadaptorCacheInit"))
+        ajDebug("analysisadaptorCacheInit\n"
                 "  aa %p\n",
                 aa);
 
@@ -2294,7 +2294,7 @@ static AjBool analysisAdaptorCacheInit(EnsPAnalysisadaptor aa)
 
     while(ajListPop(analyses, (void **) &analysis))
     {
-        analysisAdaptorCacheInsert(aa, &analysis);
+        analysisadaptorCacheInsert(aa, &analysis);
 
         /* Both caches hold internal references to the Analysis objects. */
 
@@ -2369,23 +2369,23 @@ EnsPAnalysisadaptor ensAnalysisadaptorNew(EnsPDatabaseadaptor dba)
 
     aa->Adaptor = ensBaseadaptorNew(
         dba,
-        analysisAdaptorTables,
-        analysisAdaptorColumns,
-        analysisAdaptorLeftJoin,
-        analysisAdaptorDefaultCondition,
-        analysisAdaptorFinalCondition,
-        analysisAdaptorFetchAllBySQL);
+        analysisadaptorTables,
+        analysisadaptorColumns,
+        analysisadaptorLeftJoin,
+        analysisadaptorDefaultCondition,
+        analysisadaptorFinalCondition,
+        analysisadaptorFetchAllBySQL);
 
     /*
     ** NOTE: The cache cannot be initialised here because the
-    ** analysisAdaptorCacheInit function calls ensBaseadaptorGenericFetch,
-    ** which calls analysisAdaptorFetchAllBySQL, which calls
+    ** analysisadaptorCacheInit function calls ensBaseadaptorGenericFetch,
+    ** which calls analysisadaptorFetchAllBySQL, which calls
     ** ensRegistryGetAnalysisadaptor. At that point, however, the Analysis
     ** Adaptor has not been stored in the Registry. Therefore, each
     ** ensAnalysisadaptorFetch function has to test the presence of the
     ** adaptor-internal cache and eventually initialise before accessing it.
     **
-    **  analysisAdaptorCacheInit(aa);
+    **  analysisadaptorCacheInit(aa);
     */
 
     return aa;
@@ -2394,7 +2394,7 @@ EnsPAnalysisadaptor ensAnalysisadaptorNew(EnsPDatabaseadaptor dba)
 
 
 
-/* @funcstatic analysisAdaptorCacheClearIdentifier ****************************
+/* @funcstatic analysisadaptorCacheClearIdentifier ****************************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Analysis
 ** Adaptor-internal Analysis cache. This function deletes the unsigned integer
@@ -2409,7 +2409,7 @@ EnsPAnalysisadaptor ensAnalysisadaptorNew(EnsPDatabaseadaptor dba)
 ** @@
 ******************************************************************************/
 
-static void analysisAdaptorCacheClearIdentifier(void **key,
+static void analysisadaptorCacheClearIdentifier(void **key,
                                                 void **value,
                                                 void *cl)
 {
@@ -2437,7 +2437,7 @@ static void analysisAdaptorCacheClearIdentifier(void **key,
 
 
 
-/* @funcstatic analysisAdaptorCacheClearName **********************************
+/* @funcstatic analysisadaptorCacheClearName **********************************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Analysis
 ** Adaptor-internal Analysis cache. This function deletes the
@@ -2452,7 +2452,7 @@ static void analysisAdaptorCacheClearIdentifier(void **key,
 ** @@
 ******************************************************************************/
 
-static void analysisAdaptorCacheClearName(void **key,
+static void analysisadaptorCacheClearName(void **key,
                                           void **value,
                                           void *cl)
 {
@@ -2480,7 +2480,7 @@ static void analysisAdaptorCacheClearName(void **key,
 
 
 
-/* @funcstatic analysisAdaptorCacheExit ***************************************
+/* @funcstatic analysisadaptorCacheExit ***************************************
 **
 ** Clears the internal Analysis cache of an Ensembl Analysis Adaptor.
 **
@@ -2490,7 +2490,7 @@ static void analysisAdaptorCacheClearName(void **key,
 ** @@
 ******************************************************************************/
 
-static AjBool analysisAdaptorCacheExit(EnsPAnalysisadaptor aa)
+static AjBool analysisadaptorCacheExit(EnsPAnalysisadaptor aa)
 {
     if(!aa)
         return ajFalse;
@@ -2498,7 +2498,7 @@ static AjBool analysisAdaptorCacheExit(EnsPAnalysisadaptor aa)
     /* Clear and delete the identifier cache. */
 
     ajTableMapDel(aa->CacheByIdentifier,
-                  analysisAdaptorCacheClearIdentifier,
+                  analysisadaptorCacheClearIdentifier,
                   NULL);
 
     ajTableFree(&aa->CacheByIdentifier);
@@ -2506,7 +2506,7 @@ static AjBool analysisAdaptorCacheExit(EnsPAnalysisadaptor aa)
     /* Clear and delete the name cache. */
 
     ajTableMapDel(aa->CacheByName,
-                  analysisAdaptorCacheClearName,
+                  analysisadaptorCacheClearName,
                   NULL);
 
     ajTableFree(&aa->CacheByName);
@@ -2567,7 +2567,7 @@ void ensAnalysisadaptorDel(EnsPAnalysisadaptor* Paa)
 
     pthis = *Paa;
 
-    analysisAdaptorCacheExit(pthis);
+    analysisadaptorCacheExit(pthis);
 
     ensBaseadaptorDel(&pthis->Adaptor);
 
@@ -2671,7 +2671,7 @@ EnsPDatabaseadaptor ensAnalysisadaptorGetDatabaseadaptor(
 
 
 
-/* @funcstatic analysisAdaptorFetchAll ****************************************
+/* @funcstatic analysisadaptorFetchAll ****************************************
 **
 ** An ajTableMap 'apply' function to return all Analysis objects from the
 ** Ensembl Analysis Adaptor-internal cache.
@@ -2686,7 +2686,7 @@ EnsPDatabaseadaptor ensAnalysisadaptorGetDatabaseadaptor(
 ** @@
 ******************************************************************************/
 
-static void analysisAdaptorFetchAll(const void *key, void **value, void *cl)
+static void analysisadaptorFetchAll(const void *key, void **value, void *cl)
 {
     if(!key)
         return;
@@ -2734,10 +2734,10 @@ AjBool ensAnalysisadaptorFetchAll(EnsPAnalysisadaptor aa,
         return ajFalse;
 
     if(!aa->CacheByIdentifier)
-        analysisAdaptorCacheInit(aa);
+        analysisadaptorCacheInit(aa);
 
     ajTableMap(aa->CacheByIdentifier,
-               analysisAdaptorFetchAll,
+               analysisadaptorFetchAll,
                (void *) analyses);
 
     return ajTrue;
@@ -2786,7 +2786,7 @@ AjBool ensAnalysisadaptorFetchByIdentifier(EnsPAnalysisadaptor aa,
     */
 
     if(!aa->CacheByIdentifier)
-        analysisAdaptorCacheInit(aa);
+        analysisadaptorCacheInit(aa);
 
     *Panalysis = (EnsPAnalysis)
         ajTableFetch(aa->CacheByIdentifier, (const void *) &identifier);
@@ -2817,11 +2817,11 @@ AjBool ensAnalysisadaptorFetchByIdentifier(EnsPAnalysisadaptor aa,
 
     ajListPop(analyses, (void **) Panalysis);
 
-    analysisAdaptorCacheInsert(aa, Panalysis);
+    analysisadaptorCacheInsert(aa, Panalysis);
 
     while(ajListPop(analyses, (void **) &analysis))
     {
-        analysisAdaptorCacheInsert(aa, &analysis);
+        analysisadaptorCacheInsert(aa, &analysis);
 
         ensAnalysisDel(&analysis);
     }
@@ -2878,7 +2878,7 @@ AjBool ensAnalysisadaptorFetchByName(EnsPAnalysisadaptor aa,
     */
 
     if(!aa->CacheByName)
-        analysisAdaptorCacheInit(aa);
+        analysisadaptorCacheInit(aa);
 
     *Panalysis = (EnsPAnalysis)
         ajTableFetch(aa->CacheByName, (const void *) name);
@@ -2913,11 +2913,11 @@ AjBool ensAnalysisadaptorFetchByName(EnsPAnalysisadaptor aa,
 
     ajListPop(analyses, (void **) Panalysis);
 
-    analysisAdaptorCacheInsert(aa, Panalysis);
+    analysisadaptorCacheInsert(aa, Panalysis);
 
     while(ajListPop(analyses, (void **) &analysis))
     {
-        analysisAdaptorCacheInsert(aa, &analysis);
+        analysisadaptorCacheInsert(aa, &analysis);
 
         ensAnalysisDel(&analysis);
     }
@@ -2932,7 +2932,7 @@ AjBool ensAnalysisadaptorFetchByName(EnsPAnalysisadaptor aa,
 
 
 
-static const char* analysisAdaptorFeatureClasses[] =
+static const char* analysisadaptorFeatureClasses[] =
 {
     "AffyFeature", "affy_feature",
     "Densityfeature", "density_type", /* density_type.analysis_id */
@@ -2956,7 +2956,7 @@ static const char* analysisAdaptorFeatureClasses[] =
 **
 ** Fetch all Ensembl Analyses referenced by an Ensembl Feature Class.
 **
-** Please see the analysisAdaptorFeatureClasses array for a list of valid
+** Please see the analysisadaptorFeatureClasses array for a list of valid
 ** Feature classes that reference Analyses.
 **
 ** The caller is responsible for deleting the Ensembl Analyses before
@@ -2998,8 +2998,8 @@ AjBool ensAnalysisadaptorFetchAllByFeatureClass(EnsPAnalysisadaptor aa,
     if(!analyses)
         return ajFalse;
 
-    for(i = 0; analysisAdaptorFeatureClasses[i]; i += 2)
-        if(ajStrMatchC(class, analysisAdaptorFeatureClasses[i]))
+    for(i = 0; analysisadaptorFeatureClasses[i]; i += 2)
+        if(ajStrMatchC(class, analysisadaptorFeatureClasses[i]))
             match = i + 1;
 
     if(match)
@@ -3008,8 +3008,8 @@ AjBool ensAnalysisadaptorFetchAllByFeatureClass(EnsPAnalysisadaptor aa,
 
         statement =
             ajFmtStr("SELECT DISTINCT %s.analysis_id FROM %s",
-                     analysisAdaptorFeatureClasses[match],
-                     analysisAdaptorFeatureClasses[match]);
+                     analysisadaptorFeatureClasses[match],
+                     analysisadaptorFeatureClasses[match]);
 
         sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
 
@@ -3034,7 +3034,7 @@ AjBool ensAnalysisadaptorFetchAllByFeatureClass(EnsPAnalysisadaptor aa,
                        "Ensembl Analysis identifier %u in the '%s' table, "
                        "which is not referenced in the 'analysis' table.\n",
                        identifier,
-                       analysisAdaptorFeatureClasses[match]);
+                       analysisadaptorFeatureClasses[match]);
         }
 
         ajSqlrowiterDel(&sqli);

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -61,21 +61,21 @@ ensRegistryGetGvvariationadaptor(EnsPDatabaseadaptor dba);
 extern EnsPSliceadaptor
 ensRegistryGetSliceadaptor(EnsPDatabaseadaptor dba);
 
-static void gvVariationadaptorClearAlleles(void **key, void **value, void *cl);
+static void gvvariationadaptorClearAlleles(void **key, void **value, void *cl);
 
-static void gvVariationadaptorClearPopulations(void **key,
+static void gvvariationadaptorClearPopulations(void **key,
                                                void **value,
                                                void *cl);
 
-static void gvVariationadaptorClearSynonyms(void **key,
+static void gvvariationadaptorClearSynonyms(void **key,
                                             void **value,
                                             void *cl);
 
-static AjBool gvVariationadaptorFetchAllBySQL(EnsPGvvariationadaptor gvva,
+static AjBool gvvariationadaptorFetchAllBySQL(EnsPGvvariationadaptor gvva,
                                               const AjPStr statement,
                                               AjPList gvvs);
 
-static AjBool gvVariationadaptorFetchFlankFromCore(EnsPGvvariationadaptor gvva,
+static AjBool gvvariationadaptorFetchFlankFromCore(EnsPGvvariationadaptor gvva,
                                                    ajuint srid,
                                                    ajint srstart,
                                                    ajint srend,
@@ -1340,7 +1340,7 @@ AjBool ensGvgenotypeTrace(const EnsPGvgenotype gvg, ajuint level)
 **
 ******************************************************************************/
 
-static const char *gvVariationValidationState[] =
+static const char *gvvariationValidationState[] =
 {
     "cluster",
     "freq",
@@ -2719,8 +2719,8 @@ AjEnum ensGvvariationValidationStateFromStr(const AjPStr state)
 
     AjEnum estate = ensEGvvariationValidationStateNULL;
 
-    for(i = 1; gvVariationValidationState[i]; i++)
-        if(ajStrMatchC(state, gvVariationValidationState[i]))
+    for(i = 1; gvvariationValidationState[i]; i++)
+        if(ajStrMatchC(state, gvvariationValidationState[i]))
             estate = i;
 
     if(!estate)
@@ -2753,13 +2753,13 @@ const char* ensGvvariationValidationStateToChar(const AjEnum state)
     if(!state)
         return NULL;
 
-    for(i = 1; gvVariationValidationState[i] && (i < state); i++);
+    for(i = 1; gvvariationValidationState[i] && (i < state); i++);
 
-    if(!gvVariationValidationState[i])
+    if(!gvvariationValidationState[i])
         ajDebug("ensGvvariationValidationStateToChar encountered an "
                 "out of boundary error on gender %d.\n", state);
 
-    return gvVariationValidationState[i];
+    return gvvariationValidationState[i];
 }
 
 
@@ -2952,7 +2952,7 @@ ensGvvariationFetchHandleBySynonym(EnsPGvvariation gvv,
 
 
 
-/* @funcstatic gvVariationadaptorClearAlleles *********************************
+/* @funcstatic gvvariationadaptorClearAlleles *********************************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Genetic Variation
 ** Variation Adaptor-internal Genetic Variation Alleles cache. This function
@@ -2969,7 +2969,7 @@ ensGvvariationFetchHandleBySynonym(EnsPGvvariation gvv,
 ** @@
 ******************************************************************************/
 
-static void gvVariationadaptorClearAlleles(void **key, void **value, void *cl)
+static void gvvariationadaptorClearAlleles(void **key, void **value, void *cl)
 {
     if(!key)
         return;
@@ -2995,7 +2995,7 @@ static void gvVariationadaptorClearAlleles(void **key, void **value, void *cl)
 
 
 
-/* @funcstatic gvVariationadaptorClearPopulations *****************************
+/* @funcstatic gvvariationadaptorClearPopulations *****************************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Genetic Variation
 ** Variation Adaptor-internal Genetic Variation Population cache. This function
@@ -3012,7 +3012,7 @@ static void gvVariationadaptorClearAlleles(void **key, void **value, void *cl)
 ** @@
 ******************************************************************************/
 
-static void gvVariationadaptorClearPopulations(void **key, void **value,
+static void gvvariationadaptorClearPopulations(void **key, void **value,
                                                void *cl)
 {
     if(!key)
@@ -3039,7 +3039,7 @@ static void gvVariationadaptorClearPopulations(void **key, void **value,
 
 
 
-/* @funcstatic gvVariationadaptorClearSynonyms ********************************
+/* @funcstatic gvvariationadaptorClearSynonyms ********************************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Genetic Variation
 ** Variation Adaptor-internal synonym cache. This function deletes the
@@ -3054,7 +3054,7 @@ static void gvVariationadaptorClearPopulations(void **key, void **value,
 ** @@
 ******************************************************************************/
 
-static void gvVariationadaptorClearSynonyms(void **key, void **value, void *cl)
+static void gvvariationadaptorClearSynonyms(void **key, void **value, void *cl)
 {
     if(!key)
         return;
@@ -3080,7 +3080,7 @@ static void gvVariationadaptorClearSynonyms(void **key, void **value, void *cl)
 
 
 
-/* @funcstatic gvVariationadaptorFetchAllBySQL ********************************
+/* @funcstatic gvvariationadaptorFetchAllBySQL ********************************
 **
 ** Fetch all Ensembl Genetic Variation Variation objects via an SQL statement.
 **
@@ -3094,7 +3094,7 @@ static void gvVariationadaptorClearSynonyms(void **key, void **value, void *cl)
 ** @@
 ******************************************************************************/
 
-static AjBool gvVariationadaptorFetchAllBySQL(EnsPGvvariationadaptor gvva,
+static AjBool gvvariationadaptorFetchAllBySQL(EnsPGvvariationadaptor gvva,
                                               const AjPStr statement,
                                               AjPList gvvs)
 {
@@ -3321,19 +3321,19 @@ static AjBool gvVariationadaptorFetchAllBySQL(EnsPGvvariationadaptor gvva,
 
     /* Clear the AJAX Table of Ensembl Genetic Variation Populations. */
 
-    ajTableMapDel(populations, gvVariationadaptorClearPopulations, NULL);
+    ajTableMapDel(populations, gvvariationadaptorClearPopulations, NULL);
 
     ajTableFree(&populations);
 
     /* Clear the AJAX Table of Ensembl Genetic Variation Alleles. */
 
-    ajTableMapDel(alleles, gvVariationadaptorClearAlleles, NULL);
+    ajTableMapDel(alleles, gvvariationadaptorClearAlleles, NULL);
 
     ajTableFree(&alleles);
 
     /* Clear the AJAX Table of Synonyms. */
 
-    ajTableMapDel(synonyms, gvVariationadaptorClearSynonyms, NULL);
+    ajTableMapDel(synonyms, gvvariationadaptorClearSynonyms, NULL);
 
     ajTableFree(&synonyms);
 
@@ -3435,7 +3435,7 @@ AjBool ensGvvariationadaptorFetchByIdentifier(EnsPGvvariationadaptor gvva,
 
     variations = ajListNew();
 
-    gvVariationadaptorFetchAllBySQL(gvva, statement, variations);
+    gvvariationadaptorFetchAllBySQL(gvva, statement, variations);
 
     if(ajListGetLength(variations) > 1)
         ajWarn("ensGvvariationadaptorFetchByIdentifier go more than one "
@@ -3594,7 +3594,7 @@ AjBool ensGvvariationadaptorFetchByName(EnsPGvvariationadaptor gvva,
 
     gvvs = ajListNew();
 
-    gvVariationadaptorFetchAllBySQL(gvva, statement, gvvs);
+    gvvariationadaptorFetchAllBySQL(gvva, statement, gvvs);
 
     ajStrDel(&statement);
 
@@ -3658,7 +3658,7 @@ AjBool ensGvvariationadaptorFetchByName(EnsPGvvariationadaptor gvva,
             Ptxtname,
             extra);
 
-        gvVariationadaptorFetchAllBySQL(gvva, statement, gvvs);
+        gvvariationadaptorFetchAllBySQL(gvva, statement, gvvs);
 
         ajStrDel(&statement);
     }
@@ -3778,7 +3778,7 @@ AjBool ensGvvariationadaptorFetchAllBySource(EnsPGvvariationadaptor gvva,
         "source1.name = '%s'",
         Ptxtsource);
 
-    gvVariationadaptorFetchAllBySQL(gvva, statement, gvvs);
+    gvvariationadaptorFetchAllBySQL(gvva, statement, gvvs);
 
     ajStrDel(&statement);
 
@@ -3839,7 +3839,7 @@ AjBool ensGvvariationadaptorFetchAllBySource(EnsPGvvariationadaptor gvva,
 
         /* need to merge both lists, trying to avoid duplicates. */
 
-        gvVariationadaptorFetchAllBySQL(gvva, statement, gvvs);
+        gvvariationadaptorFetchAllBySQL(gvva, statement, gvvs);
 
         ajStrDel(&statement);
     }
@@ -3938,7 +3938,7 @@ AjBool ensGvvariationAdaptorFetchAllByGvpopulation(EnsPGvvariationadaptor gvva,
         "allele.smaple_id = %u",
         ensGvpopulationGetIdentifier(gvp));
 
-    gvVariationadaptorFetchAllBySQL(gvva, statement, gvvs);
+    gvvariationadaptorFetchAllBySQL(gvva, statement, gvvs);
 
     ajStrDel(&statement);
 
@@ -4144,7 +4144,7 @@ AjBool ensGvvariationadaptorFetchDefaultSource(EnsPGvvariationadaptor gvva,
 
 
 
-static AjBool gvVariationadaptorFetchFlankFromCore(EnsPGvvariationadaptor gvva,
+static AjBool gvvariationadaptorFetchFlankFromCore(EnsPGvvariationadaptor gvva,
                                                    ajuint srid,
                                                    ajint srstart,
                                                    ajint srend,
@@ -4189,7 +4189,7 @@ static AjBool gvVariationadaptorFetchFlankFromCore(EnsPGvvariationadaptor gvva,
         ensSliceadaptorFetchBySeqregionIdentifier(sla, srid, 0, 0, 0, &slice);
 
         if(!slice)
-            ajWarn("gvVariationadaptorFetchFlankFromCore could not get an "
+            ajWarn("gvvariationadaptorFetchFlankFromCore could not get an "
                    "Ensembl Slice for Ensembl Sequence region identifier %u.",
                    srid);
 
@@ -4291,7 +4291,7 @@ AjBool ensGvvariationadaptorFetchFlankingSequence(EnsPGvvariationadaptor gvva,
         if(!ajStrGetLen(useq))
         {
             if(srid)
-                gvVariationadaptorFetchFlankFromCore(gvva,
+                gvvariationadaptorFetchFlankFromCore(gvva,
                                                      srid,
                                                      usrstart,
                                                      usrend,
@@ -4310,7 +4310,7 @@ AjBool ensGvvariationadaptorFetchFlankingSequence(EnsPGvvariationadaptor gvva,
         if(!ajStrGetLen(dseq))
         {
             if(srid)
-                gvVariationadaptorFetchFlankFromCore(gvva,
+                gvvariationadaptorFetchFlankFromCore(gvva,
                                                      srid,
                                                      dsrstart,
                                                      dsrend,

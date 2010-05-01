@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -51,23 +51,23 @@ extern EnsPAttributeadaptor ensRegistryGetAttributedaptor(
 extern EnsPCoordsystemadaptor ensRegistryGetCoordsystemadaptor(
     EnsPDatabaseadaptor dba);
 
-static void* seqRegionadaptorCacheReference(void *value);
+static void* seqregionadaptorCacheReference(void *value);
 
-static void seqRegionadaptorCacheDelete(void **value);
+static void seqregionadaptorCacheDelete(void **value);
 
-static ajuint seqRegionadaptorCacheSize(const void* value);
+static ajuint seqregionadaptorCacheSize(const void* value);
 
-static void seqRegionadaptorCacheInsert(void** x, void* cl);
+static void seqregionadaptorCacheInsert(void** x, void* cl);
 
-static AjBool seqRegionadaptorCacheNonReferenceInit(EnsPSeqregionadaptor sra);
+static AjBool seqregionadaptorCacheNonReferenceInit(EnsPSeqregionadaptor sra);
 
-static AjBool seqRegionadaptorCacheNonReferenceClear(EnsPSeqregionadaptor sra);
+static AjBool seqregionadaptorCacheNonReferenceClear(EnsPSeqregionadaptor sra);
 
-static void seqRegionadaptorCacheNonReferenceDelete(void **key,
+static void seqregionadaptorCacheNonReferenceDelete(void **key,
                                                     void **value,
                                                     void *cl);
 
-static AjBool seqRegionadaptorFetchAllBySQL(EnsPSeqregionadaptor sra,
+static AjBool seqregionadaptorFetchAllBySQL(EnsPSeqregionadaptor sra,
                                             const AjPStr statement,
                                             AjPList srs);
 
@@ -1051,18 +1051,18 @@ AjBool ensSeqregionIsTopLevel(EnsPSeqregion sr, AjBool *Presult)
 
 /* 1 << 26 = 64 MiB */
 
-static ajuint seqRegionadaptorCacheMaxBytes = 1 << 26;
+static ajuint seqregionadaptorCacheMaxBytes = 1 << 26;
 
 /* 1 << 16 = 64 Ki  */
 
-static ajuint seqRegionadaptorCacheMaxCount = 1 << 16;
+static ajuint seqregionadaptorCacheMaxCount = 1 << 16;
 
-static ajuint seqRegionadaptorCacheMaxSize = 0;
-
-
+static ajuint seqregionadaptorCacheMaxSize = 0;
 
 
-/* @funcstatic seqRegionadaptorCacheReference *********************************
+
+
+/* @funcstatic seqregionadaptorCacheReference *********************************
 **
 ** Wrapper function to reference an Ensembl Sequence Region
 ** from an Ensembl Cache.
@@ -1073,7 +1073,7 @@ static ajuint seqRegionadaptorCacheMaxSize = 0;
 ** @@
 ******************************************************************************/
 
-static void* seqRegionadaptorCacheReference(void *value)
+static void* seqregionadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -1084,7 +1084,7 @@ static void* seqRegionadaptorCacheReference(void *value)
 
 
 
-/* @funcstatic seqRegionadaptorCacheDelete ************************************
+/* @funcstatic seqregionadaptorCacheDelete ************************************
 **
 ** Wrapper function to delete (or de-reference) an Ensembl Sequence Region
 ** from an Ensembl Cache.
@@ -1098,7 +1098,7 @@ static void* seqRegionadaptorCacheReference(void *value)
 ** conventional AJAX Table.
 ******************************************************************************/
 
-static void seqRegionadaptorCacheDelete(void **value)
+static void seqregionadaptorCacheDelete(void **value)
 {
     AjPStr newkey = NULL;
     AjPStr oldkey = NULL;
@@ -1154,7 +1154,7 @@ static void seqRegionadaptorCacheDelete(void **value)
 
 
 
-/* @funcstatic seqRegionadaptorCacheSize **************************************
+/* @funcstatic seqregionadaptorCacheSize **************************************
 **
 ** Wrapper function to determine the memory size of an Ensembl Sequence Region
 ** from an Ensembl Cache.
@@ -1165,7 +1165,7 @@ static void seqRegionadaptorCacheDelete(void **value)
 ** @@
 ******************************************************************************/
 
-static ajuint seqRegionadaptorCacheSize(const void* value)
+static ajuint seqregionadaptorCacheSize(const void* value)
 {
     if(!value)
         return 0;
@@ -1176,7 +1176,7 @@ static ajuint seqRegionadaptorCacheSize(const void* value)
 
 
 
-/* @funcstatic seqRegionadaptorCacheNonReferenceInit **************************
+/* @funcstatic seqregionadaptorCacheNonReferenceInit **************************
 **
 ** Initialises an Ensembl Sequence Region Adaptor-internal AJAX Table of
 ** non-reference (i.e. haplotype) Ensembl Sequence Region identifier key and
@@ -1188,7 +1188,7 @@ static ajuint seqRegionadaptorCacheSize(const void* value)
 ** @@
 ******************************************************************************/
 
-static AjBool seqRegionadaptorCacheNonReferenceInit(EnsPSeqregionadaptor sra)
+static AjBool seqregionadaptorCacheNonReferenceInit(EnsPSeqregionadaptor sra)
 {
     ajuint *Pidentifier = NULL;
 
@@ -1288,12 +1288,12 @@ EnsPSeqregionadaptor ensSeqregionadaptorNew(EnsPDatabaseadaptor dba)
 
     sra->CacheByIdentifier = ensCacheNew(
         ensECacheTypeNumeric,
-        seqRegionadaptorCacheMaxBytes,
-        seqRegionadaptorCacheMaxCount,
-        seqRegionadaptorCacheMaxSize,
-        seqRegionadaptorCacheReference,
-        seqRegionadaptorCacheDelete,
-        seqRegionadaptorCacheSize,
+        seqregionadaptorCacheMaxBytes,
+        seqregionadaptorCacheMaxCount,
+        seqregionadaptorCacheMaxSize,
+        seqregionadaptorCacheReference,
+        seqregionadaptorCacheDelete,
+        seqregionadaptorCacheSize,
         (void* (*)(const void* key)) NULL,
         (AjBool (*)(const void* value)) NULL,
         ajFalse,
@@ -1307,7 +1307,7 @@ EnsPSeqregionadaptor ensSeqregionadaptorNew(EnsPDatabaseadaptor dba)
 
 
 
-/* @funcstatic seqRegionadaptorCacheNonReferenceClear *************************
+/* @funcstatic seqregionadaptorCacheNonReferenceClear *************************
 **
 ** Clears the Sequence Region Adaptor-internal AJAX Table of non-reference
 ** (i.e. haplotype) Ensembl Sequence Regions.
@@ -1318,13 +1318,13 @@ EnsPSeqregionadaptor ensSeqregionadaptorNew(EnsPDatabaseadaptor dba)
 ** @@
 ******************************************************************************/
 
-static AjBool seqRegionadaptorCacheNonReferenceClear(EnsPSeqregionadaptor sra)
+static AjBool seqregionadaptorCacheNonReferenceClear(EnsPSeqregionadaptor sra)
 {
     if(!sra)
         return ajFalse;
 
     ajTableMapDel(sra->CacheNonReference,
-                  seqRegionadaptorCacheNonReferenceDelete,
+                  seqregionadaptorCacheNonReferenceDelete,
                   NULL);
 
     return ajTrue;
@@ -1333,7 +1333,7 @@ static AjBool seqRegionadaptorCacheNonReferenceClear(EnsPSeqregionadaptor sra)
 
 
 
-/* @funcstatic seqRegionadaptorCacheNonReferenceDelete ************************
+/* @funcstatic seqregionadaptorCacheNonReferenceDelete ************************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Sequence Region
 ** Adaptor-internal AJAX Table of non-reference Sequence Region identifiers.
@@ -1349,7 +1349,7 @@ static AjBool seqRegionadaptorCacheNonReferenceClear(EnsPSeqregionadaptor sra)
 ** @@
 ******************************************************************************/
 
-static void seqRegionadaptorCacheNonReferenceDelete(void **key,
+static void seqregionadaptorCacheNonReferenceDelete(void **key,
                                                     void **value,
                                                     void *cl)
 {
@@ -1428,7 +1428,7 @@ void ensSeqregionadaptorDel(EnsPSeqregionadaptor *Psra)
     /*
     ** Clear the identifier cache, which is based on an Ensembl LRU Cache.
     ** Clearing the Ensembl LRU Cache automatically clears the name cache via
-    ** seqRegionCacheDelete.
+    ** seqregionCacheDelete.
     */
 
     ensCacheDel(&pthis->CacheByIdentifier);
@@ -1437,7 +1437,7 @@ void ensSeqregionadaptorDel(EnsPSeqregionadaptor *Psra)
 
     /* Clear the cache of non-refrence Ensembl Sequence Region identifiers. */
 
-    seqRegionadaptorCacheNonReferenceClear(pthis);
+    seqregionadaptorCacheNonReferenceClear(pthis);
 
     ajTableFree(&pthis->CacheNonReference);
 
@@ -1528,7 +1528,7 @@ AjBool ensSeqregionadaptorCacheInsert(EnsPSeqregionadaptor sra,
 
     if(ajDebugTest("ensSeqregionadaptorCacheInsert"))
     {
-        ajDebug("seqRegionadaptorCacheInsert\n"
+        ajDebug("seqregionadaptorCacheInsert\n"
                 "  sra %p\n"
                 "  *Psr %p\n",
                 sra,
@@ -1559,7 +1559,7 @@ AjBool ensSeqregionadaptorCacheInsert(EnsPSeqregionadaptor sra,
         ** None of the caches returned an identical Ensembl Sequence Region
         ** so add this one to both caches. The Ensembl LRU Cache automatically
         ** references the Sequence Region via the
-        ** seqRegionadaptorCacheReference function, while the AJAX Table-
+        ** seqregionadaptorCacheReference function, while the AJAX Table-
         ** based cache needs manual referencing.
         */
 
@@ -1617,7 +1617,7 @@ AjBool ensSeqregionadaptorCacheInsert(EnsPSeqregionadaptor sra,
 
 
 
-/* @funcstatic seqRegionadaptorCacheInsert ************************************
+/* @funcstatic seqregionadaptorCacheInsert ************************************
 **
 ** An ajListMap 'apply' function to insert Ensembl Sequence Regions into the
 ** Ensembl Sequence Region Adaptor-internal cache.
@@ -1631,7 +1631,7 @@ AjBool ensSeqregionadaptorCacheInsert(EnsPSeqregionadaptor sra,
 ** @@
 ******************************************************************************/
 
-static void seqRegionadaptorCacheInsert(void** x, void* cl)
+static void seqregionadaptorCacheInsert(void** x, void* cl)
 {
     if(!x)
         return;
@@ -1706,7 +1706,7 @@ AjBool ensSeqregionadaptorCacheRemove(EnsPSeqregionadaptor sra,
 
 
 
-/* @funcstatic seqRegionadaptorFetchAllBySQL **********************************
+/* @funcstatic seqregionadaptorFetchAllBySQL **********************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl Sequence Regions.
@@ -1721,7 +1721,7 @@ AjBool ensSeqregionadaptorCacheRemove(EnsPSeqregionadaptor sra,
 ** @@
 ******************************************************************************/
 
-static AjBool seqRegionadaptorFetchAllBySQL(EnsPSeqregionadaptor sra,
+static AjBool seqregionadaptorFetchAllBySQL(EnsPSeqregionadaptor sra,
                                             const AjPStr statement,
                                             AjPList srs)
 {
@@ -1774,12 +1774,12 @@ static AjBool seqRegionadaptorFetchAllBySQL(EnsPSeqregionadaptor sra,
 
         if(!cs)
         {
-            ajDebug("seqRegionadaptorFetchAllBySQL got an "
+            ajDebug("seqregionadaptorFetchAllBySQL got an "
                     "Ensembl Sequence Region with identifier %u that "
                     "references a non-existent Ensembl Coordinate System "
                     "with identifier %u.", srid, csid);
 
-            ajWarn("seqRegionadaptorFetchAllBySQL got an "
+            ajWarn("seqregionadaptorFetchAllBySQL got an "
                    "Ensembl Sequence Region with identifier %u that "
                    "references a non-existent Ensembl Coordinate System "
                    "with identifier %u.", srid, csid);
@@ -1862,7 +1862,7 @@ AjBool ensSeqregionadaptorFetchByIdentifier(EnsPSeqregionadaptor sra,
 
     srs = ajListNew();
 
-    seqRegionadaptorFetchAllBySQL(sra, statement, srs);
+    seqregionadaptorFetchAllBySQL(sra, statement, srs);
 
     if(ajListGetLength(srs) == 0)
         ajDebug("ensSeqregionadaptorFetchByIdentifier got no "
@@ -2026,7 +2026,7 @@ AjBool ensSeqregionadaptorFetchByName(EnsPSeqregionadaptor sra,
 
     srs = ajListNew();
 
-    seqRegionadaptorFetchAllBySQL(sra, statement, srs);
+    seqregionadaptorFetchAllBySQL(sra, statement, srs);
 
     ajStrDel(&statement);
 
@@ -2189,7 +2189,7 @@ AjBool ensSeqregionadaptorFetchByNameFuzzy(EnsPSeqregionadaptor sra,
 
     srs = ajListNew();
 
-    seqRegionadaptorFetchAllBySQL(sra, statement, srs);
+    seqregionadaptorFetchAllBySQL(sra, statement, srs);
 
     ajStrDel(&statement);
 
@@ -2386,13 +2386,13 @@ AjBool ensSeqregionadaptorFetchAllByCoordsystem(EnsPSeqregionadaptor sra,
             "coord_system_id = %u",
             ensCoordsystemGetIdentifier(cs));
 
-    seqRegionadaptorFetchAllBySQL(sra, statement, srs);
+    seqregionadaptorFetchAllBySQL(sra, statement, srs);
 
     ajStrDel(&statement);
 
     /* Insert all Sequence Regions into the adaptor-internal cache. */
 
-    ajListMap(srs, seqRegionadaptorCacheInsert, (void *) sra);
+    ajListMap(srs, seqregionadaptorCacheInsert, (void *) sra);
 
     return ajTrue;
 }
@@ -2471,7 +2471,7 @@ AjBool ensSeqregionadaptorFetchAllByAttributeCodeValue(
         ajCharDel(&txtvalue);
     }
 
-    seqRegionadaptorFetchAllBySQL(sra, statement, srs);
+    seqregionadaptorFetchAllBySQL(sra, statement, srs);
 
     ajStrDel(&statement);
 
@@ -2515,7 +2515,7 @@ AjBool ensSeqregionadaptorIsNonReference(EnsPSeqregionadaptor sra,
         return ajFalse;
 
     if(!sra->CacheNonReference)
-        seqRegionadaptorCacheNonReferenceInit(sra);
+        seqregionadaptorCacheNonReferenceInit(sra);
 
     identifier = ensSeqregionGetIdentifier(sr);
 

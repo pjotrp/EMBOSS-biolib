@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
-static const char *databaseAdaptorGroup[] =
+static const char *databaseadaptorGroup[] =
 {
     NULL,
     "core",
@@ -600,8 +600,8 @@ AjEnum ensDatabaseadaptorGroupFromStr(const AjPStr group)
 
     AjEnum egroup = ensEDatabaseadaptorGroupNULL;
 
-    for(i = 1; databaseAdaptorGroup[i]; i++)
-        if(ajStrMatchCaseC(group, databaseAdaptorGroup[i]))
+    for(i = 1; databaseadaptorGroup[i]; i++)
+        if(ajStrMatchCaseC(group, databaseadaptorGroup[i]))
             egroup = i;
 
     if(!egroup)
@@ -632,13 +632,13 @@ const char* ensDatabaseadaptorGroupToChar(const AjEnum group)
     if(!group)
         return NULL;
 
-    for(i = 1; databaseAdaptorGroup[i] && (i < group); i++);
+    for(i = 1; databaseadaptorGroup[i] && (i < group); i++);
 
-    if(!databaseAdaptorGroup[i])
+    if(!databaseadaptorGroup[i])
         ajDebug("ensDatabaseadaptorGroupToChar encountered an "
                 "out of boundary error on group %d.\n", group);
 
-    return databaseAdaptorGroup[i];
+    return databaseadaptorGroup[i];
 }
 
 

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.6 $
+** @version $Revision: 1.7 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -61,19 +61,19 @@ extern EnsPRepeatfeatureadaptor ensRegistryGetRepeatfeatureadaptor(
 extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
     EnsPDatabaseadaptor dba);
 
-static AjBool repeatConsensusadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool repeatconsensusadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                   const AjPStr statement,
                                                   AjPList rci);
 
-static void *repeatFeatureadaptorCacheReference(void *value);
+static void *repeatfeatureadaptorCacheReference(void *value);
 
-static void repeatFeatureadaptorCacheDelete(void **value);
+static void repeatfeatureadaptorCacheDelete(void **value);
 
-static ajuint repeatFeatureadaptorCacheSize(const void *value);
+static ajuint repeatfeatureadaptorCacheSize(const void *value);
 
-static EnsPFeature repeatFeatureadaptorGetFeature(const void *rf);
+static EnsPFeature repeatfeatureadaptorGetFeature(const void *rf);
 
-static AjBool repeatFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool repeatfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                 const AjPStr statement,
                                                 EnsPAssemblymapper am,
                                                 EnsPSlice slice,
@@ -861,7 +861,7 @@ ajuint ensRepeatconsensusGetMemSize(const EnsPRepeatconsensus rc)
 
 
 
-/* @funcstatic repeatConsensusadaptorFetchAllBySQL ****************************
+/* @funcstatic repeatconsensusadaptorFetchAllBySQL ****************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl Repeat Consensus objects.
@@ -877,7 +877,7 @@ ajuint ensRepeatconsensusGetMemSize(const EnsPRepeatconsensus rc)
 ** @@
 ******************************************************************************/
 
-static AjBool repeatConsensusadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool repeatconsensusadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                   const AjPStr statement,
                                                   AjPList rci)
 {
@@ -1059,7 +1059,7 @@ AjBool ensRepeatconsensusadaptorFetchByIdentifier(
 
     rci = ajListNew();
 
-    repeatConsensusadaptorFetchAllBySQL(dba, statement, rci);
+    repeatconsensusadaptorFetchAllBySQL(dba, statement, rci);
 
     if(ajListGetLength(rci) > 1)
         ajFatal("ensRepeatconsensusadaptorFetchByIdentifier got more than one "
@@ -1140,7 +1140,7 @@ AjBool ensRepeatconsensusadaptorFetchByName(
 
     rci = ajListNew();
 
-    repeatConsensusadaptorFetchAllBySQL(dba, statement, rci);
+    repeatconsensusadaptorFetchAllBySQL(dba, statement, rci);
 
     if(ajListGetLength(rci) > 1)
         ajFatal("ensRepeatconsensusadaptorFetchByName got more than one "
@@ -1233,7 +1233,7 @@ AjBool ensRepeatconsensusadaptorFetchByNameClass(
 
     rci = ajListNew();
 
-    repeatConsensusadaptorFetchAllBySQL(dba, statement, rci);
+    repeatconsensusadaptorFetchAllBySQL(dba, statement, rci);
 
     if(ajListGetLength(rci) > 1)
         ajFatal("ensRepeatconsensusadaptorFetchByNameClass got more than one "
@@ -1321,7 +1321,7 @@ AjBool ensRepeatconsensusadaptorFetchAllByClassConsensus(
     ajCharDel(&txtclass);
     ajCharDel(&txtconsensus);
 
-    repeatConsensusadaptorFetchAllBySQL(dba, statement, rci);
+    repeatconsensusadaptorFetchAllBySQL(dba, statement, rci);
 
     ajStrDel(&statement);
 
@@ -2087,7 +2087,7 @@ ajuint ensRepeatfeatureGetMemSize(const EnsPRepeatfeature rf)
 
 
 
-/* @funcstatic repeatFeatureadaptorCacheReference *****************************
+/* @funcstatic repeatfeatureadaptorCacheReference *****************************
 **
 ** Wrapper function to reference an Ensembl Repeat Feature
 ** from an Ensembl Cache.
@@ -2098,10 +2098,10 @@ ajuint ensRepeatfeatureGetMemSize(const EnsPRepeatfeature rf)
 ** @@
 ******************************************************************************/
 
-static void *repeatFeatureadaptorCacheReference(void *value)
+static void *repeatfeatureadaptorCacheReference(void *value)
 {
-    if(ajDebugTest("repeatFeatureadaptorCacheReference"))
-        ajDebug("repeatFeatureadaptorCacheReference\n"
+    if(ajDebugTest("repeatfeatureadaptorCacheReference"))
+        ajDebug("repeatfeatureadaptorCacheReference\n"
                 "  value %p\n",
                 value);
 
@@ -2114,7 +2114,7 @@ static void *repeatFeatureadaptorCacheReference(void *value)
 
 
 
-/* @funcstatic repeatFeatureadaptorCacheDelete ********************************
+/* @funcstatic repeatfeatureadaptorCacheDelete ********************************
 **
 ** Wrapper function to delete or de-reference an Ensembl Repeat Feature
 ** from an Ensembl Cache.
@@ -2125,10 +2125,10 @@ static void *repeatFeatureadaptorCacheReference(void *value)
 ** @@
 ******************************************************************************/
 
-static void repeatFeatureadaptorCacheDelete(void **value)
+static void repeatfeatureadaptorCacheDelete(void **value)
 {
-    if(ajDebugTest("repeatFeatureadaptorCacheDelete"))
-        ajDebug("repeatFeatureadaptorCacheDelete\n"
+    if(ajDebugTest("repeatfeatureadaptorCacheDelete"))
+        ajDebug("repeatfeatureadaptorCacheDelete\n"
                 "  value %p\n",
                 value);
 
@@ -2143,7 +2143,7 @@ static void repeatFeatureadaptorCacheDelete(void **value)
 
 
 
-/* @funcstatic repeatFeatureadaptorCacheSize **********************************
+/* @funcstatic repeatfeatureadaptorCacheSize **********************************
 **
 ** Wrapper function to determine the memory size of an Ensembl Repeat Feature
 ** from an Ensembl Cache.
@@ -2154,7 +2154,7 @@ static void repeatFeatureadaptorCacheDelete(void **value)
 ** @@
 ******************************************************************************/
 
-static ajuint repeatFeatureadaptorCacheSize(const void *value)
+static ajuint repeatfeatureadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;
@@ -2165,7 +2165,7 @@ static ajuint repeatFeatureadaptorCacheSize(const void *value)
 
 
 
-/* @funcstatic repeatFeatureadaptorGetFeature *********************************
+/* @funcstatic repeatfeatureadaptorGetFeature *********************************
 **
 ** Wrapper function to get the Ensembl Feature of an
 ** Ensembl Repeat Feature from an Ensembl Feature Adaptor.
@@ -2176,7 +2176,7 @@ static ajuint repeatFeatureadaptorCacheSize(const void *value)
 ** @@
 ******************************************************************************/
 
-static EnsPFeature repeatFeatureadaptorGetFeature(const void *rf)
+static EnsPFeature repeatfeatureadaptorGetFeature(const void *rf)
 {
     if(!rf)
         return 0;
@@ -2187,7 +2187,7 @@ static EnsPFeature repeatFeatureadaptorGetFeature(const void *rf)
 
 
 
-static const char *repeatFeatureadaptorTables[] =
+static const char *repeatfeatureadaptorTables[] =
 {
     "repeat_feature",
     "repeat_consensus",
@@ -2197,7 +2197,7 @@ static const char *repeatFeatureadaptorTables[] =
 
 
 
-static const char *repeatFeatureadaptorColumns[] =
+static const char *repeatfeatureadaptorColumns[] =
 {
     "repeat_feature.repeat_feature_id",
     "repeat_feature.seq_region_id",
@@ -2219,7 +2219,7 @@ static const char *repeatFeatureadaptorColumns[] =
 
 
 
-static EnsOBaseadaptorLeftJoin repeatFeatureadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin repeatfeatureadaptorLeftJoin[] =
 {
     {NULL, NULL}
 };
@@ -2227,19 +2227,19 @@ static EnsOBaseadaptorLeftJoin repeatFeatureadaptorLeftJoin[] =
 
 
 
-static const char *repeatFeatureadaptorDefaultCondition =
+static const char *repeatfeatureadaptorDefaultCondition =
     "repeat_feature.repeat_consensus_id = "
     "repeat_consensus.repeat_consensus_id";
 
 
 
 
-static const char *repeatFeatureadaptorFinalCondition = NULL;
+static const char *repeatfeatureadaptorFinalCondition = NULL;
 
 
 
 
-/* @funcstatic repeatFeatureadaptorFetchAllBySQL ******************************
+/* @funcstatic repeatfeatureadaptorFetchAllBySQL ******************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl Repeat Features.
@@ -2257,7 +2257,7 @@ static const char *repeatFeatureadaptorFinalCondition = NULL;
 ** @@
 ******************************************************************************/
 
-static AjBool repeatFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool repeatfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                 const AjPStr statement,
                                                 EnsPAssemblymapper am,
                                                 EnsPSlice slice,
@@ -2314,10 +2314,10 @@ static AjBool repeatFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPSlice srslice   = NULL;
     EnsPSliceadaptor sa = NULL;
 
-    debug = ajDebugTest("repeatFeatureadaptorFetchAllBySQL");
+    debug = ajDebugTest("repeatfeatureadaptorFetchAllBySQL");
 
     if(debug)
-        ajDebug("repeatFeatureadaptorFetchAllBySQL\n"
+        ajDebug("repeatfeatureadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -2404,7 +2404,7 @@ static AjBool repeatFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         if(srstart <= INT_MAX)
             slstart = (ajint) srstart;
         else
-            ajFatal("repeatFeatureadaptorFetchAllBySQL got a "
+            ajFatal("repeatfeatureadaptorFetchAllBySQL got a "
                     "Sequence Region start coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srstart, INT_MAX);
@@ -2412,7 +2412,7 @@ static AjBool repeatFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         if(srend <= INT_MAX)
             slend = (ajint) srend;
         else
-            ajFatal("repeatFeatureadaptorFetchAllBySQL got a "
+            ajFatal("repeatfeatureadaptorFetchAllBySQL got a "
                     "Sequence Region end coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srend, INT_MAX);
@@ -2497,7 +2497,7 @@ static AjBool repeatFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             {
                 if(debug)
                 {
-                    ajDebug("repeatFeatureadaptorFetchAllBySQL mapped "
+                    ajDebug("repeatfeatureadaptorFetchAllBySQL mapped "
                             "Repeat Feature %u on Sequence Region %u "
                             "start %u end %u strand %d to gap.\n",
                             rfid,
@@ -2559,7 +2559,7 @@ static AjBool repeatFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             if(ensSliceGetLength(slice) <= INT_MAX)
                 sllength = (ajint) ensSliceGetLength(slice);
             else
-                ajFatal("repeatFeatureadaptorFetchAllBySQL got a Slice, "
+                ajFatal("repeatfeatureadaptorFetchAllBySQL got a Slice, "
                         "which length (%u) exceeds the "
                         "maximum integer limit (%d).",
                         ensSliceGetLength(slice), INT_MAX);
@@ -2700,18 +2700,18 @@ EnsPRepeatfeatureadaptor ensRepeatfeatureadaptorNew(EnsPDatabaseadaptor dba)
 
     rfa->Adaptor = ensFeatureadaptorNew(
         dba,
-        repeatFeatureadaptorTables,
-        repeatFeatureadaptorColumns,
-        repeatFeatureadaptorLeftJoin,
-        repeatFeatureadaptorDefaultCondition,
-        repeatFeatureadaptorFinalCondition,
-        repeatFeatureadaptorFetchAllBySQL,
+        repeatfeatureadaptorTables,
+        repeatfeatureadaptorColumns,
+        repeatfeatureadaptorLeftJoin,
+        repeatfeatureadaptorDefaultCondition,
+        repeatfeatureadaptorFinalCondition,
+        repeatfeatureadaptorFetchAllBySQL,
         (void* (*)(const void* key)) NULL,
-        repeatFeatureadaptorCacheReference,
+        repeatfeatureadaptorCacheReference,
         (AjBool (*)(const void* value)) NULL,
-        repeatFeatureadaptorCacheDelete,
-        repeatFeatureadaptorCacheSize,
-        repeatFeatureadaptorGetFeature,
+        repeatfeatureadaptorCacheDelete,
+        repeatfeatureadaptorCacheSize,
+        repeatfeatureadaptorGetFeature,
         "Repeatfeature");
 
     return rfa;

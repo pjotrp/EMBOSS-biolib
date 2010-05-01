@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -49,7 +49,7 @@
 extern EnsPAttributeadaptor ensRegistryGetAttributedaptor(
     EnsPDatabaseadaptor dba);
 
-static AjBool attributeAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool attributeadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                             const AjPStr statement,
                                             AjPList attributes);
 
@@ -516,7 +516,7 @@ AjBool ensAttributeTrace(const EnsPAttribute attribute, ajuint level)
 
 
 
-/* @funcstatic attributeAdaptorFetchAllBySQL **********************************
+/* @funcstatic attributeadaptorFetchAllBySQL **********************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl Attributes.
@@ -532,7 +532,7 @@ AjBool ensAttributeTrace(const EnsPAttribute attribute, ajuint level)
 ** @@
 ******************************************************************************/
 
-static AjBool attributeAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool attributeadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                             const AjPStr statement,
                                             AjPList attributes)
 {
@@ -730,7 +730,7 @@ AjBool ensAttributeadaptorFetchAllByGene(EnsPAttributeadaptor ata,
         ajCharDel(&txtcode);
     }
 
-    attributeAdaptorFetchAllBySQL(ata, statement, attributes);
+    attributeadaptorFetchAllBySQL(ata, statement, attributes);
 
     ajStrDel(&statement);
 
@@ -805,7 +805,7 @@ AjBool ensAttributeadaptorFetchAllBySeqregion(EnsPAttributeadaptor ata,
         ajCharDel(&txtcode);
     }
 
-    attributeAdaptorFetchAllBySQL(ata, statement, attributes);
+    attributeadaptorFetchAllBySQL(ata, statement, attributes);
 
     ajStrDel(&statement);
 
@@ -933,7 +933,7 @@ AjBool ensAttributeadaptorFetchAllByTranscript(EnsPAttributeadaptor ata,
         ajCharDel(&txtcode);
     }
 
-    attributeAdaptorFetchAllBySQL(ata, statement, attributes);
+    attributeadaptorFetchAllBySQL(ata, statement, attributes);
 
     ajStrDel(&statement);
 
@@ -1009,7 +1009,7 @@ AjBool ensAttributeadaptorFetchAllByTranslation(
         ajCharDel(&txtcode);
     }
 
-    attributeAdaptorFetchAllBySQL(ata, statement, attributes);
+    attributeadaptorFetchAllBySQL(ata, statement, attributes);
 
     ajStrDel(&statement);
 

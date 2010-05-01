@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -38,26 +38,26 @@
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
-/* assemblyMapperMaxPairCount *************************************************
+/* assemblymapperMaxPairCount *************************************************
 **
 ** The maximum number of Ensembl Mapper Pairs an Ensembl Assembly Mapper
 ** is allowed to register. 2 ^ 11 (2 ki) corresponds to about 2 x 10 ^ 3 pairs.
 **
 ******************************************************************************/
 
-const ajuint assemblyMapperMaxPairCount = 1 << 11;
+const ajuint assemblymapperMaxPairCount = 1 << 11;
 
 
 
 
-/* assemblyMapperChunkFactor **************************************************
+/* assemblymapperChunkFactor **************************************************
 **
 ** The Assembly Mapper registers Sequence Regions in chunks of 2 ^ 20 (1 Mi),
 ** which corresponds to approximately 1 x 10 ^ 6 or 1 M base pairs.
 **
 ******************************************************************************/
 
-const ajuint assemblyMapperChunkFactor = 20;
+const ajuint assemblymapperChunkFactor = 20;
 
 
 
@@ -72,19 +72,19 @@ extern EnsPCoordsystemadaptor ensRegistryGetCoordsystemadaptor(
 extern EnsPSeqregionadaptor ensRegistryGetSeqregionadaptor(
     EnsPDatabaseadaptor dba);
 
-static AjBool assemblyMapperadaptorHasMultipleMappings(
+static AjBool assemblymapperadaptorHasMultipleMappings(
     const EnsPAssemblymapperadaptor ama,
     ajuint srid);
 
-static AjBool assemblyMapperadaptorMultipleMappingsInit(
+static AjBool assemblymapperadaptorMultipleMappingsInit(
     EnsPAssemblymapperadaptor ama);
 
-static AjBool assemblyMapperadaptorMultipleMappingsExit(
+static AjBool assemblymapperadaptorMultipleMappingsExit(
     EnsPAssemblymapperadaptor ama);
 
-static AjBool assemblyMapperadaptorMappingPath(const AjPList mappath);
+static AjBool assemblymapperadaptorMappingPath(const AjPList mappath);
 
-static AjBool assemblyMapperadaptorBuildCombinedMapper(
+static AjBool assemblymapperadaptorBuildCombinedMapper(
     EnsPAssemblymapperadaptor ama,
     AjPList ranges,
     EnsPMapper srcmidmapper,
@@ -207,7 +207,7 @@ EnsPGenericassemblymapper ensGenericassemblymapperNew(
         ajTableNewFunctionLen(0, ensTableCmpUint, ensTableHashUint);
 
     gam->Mapper       = ensMapperNew(srcname, trgname, asmcs, cmpcs);
-    gam->MaxPairCount = assemblyMapperMaxPairCount;
+    gam->MaxPairCount = assemblymapperMaxPairCount;
 
     gam->Use = 1;
 
@@ -1255,7 +1255,7 @@ EnsPChainedassemblymapper ensChainedassemblymapperNew(
     cam->SourceTargetMapper = ensMapperNew(srctype, trgtype, srccs, trgcs);
     cam->SourceRegistry     = ensMapperrangeregistryNew();
     cam->TargetRegistry     = ensMapperrangeregistryNew();
-    cam->MaxPairCount       = assemblyMapperMaxPairCount;
+    cam->MaxPairCount       = assemblymapperMaxPairCount;
 
     cam->Use = 1;
 
@@ -1935,19 +1935,19 @@ AjBool ensChainedassemblymapperMap(EnsPChainedassemblymapper cam,
 
     if(isinsert)
     {
-        regstart = ((srend >> assemblyMapperChunkFactor)
-                    << assemblyMapperChunkFactor);
+        regstart = ((srend >> assemblymapperChunkFactor)
+                    << assemblymapperChunkFactor);
 
-        regend = (((srstart >> assemblyMapperChunkFactor) + 1)
-                  << assemblyMapperChunkFactor) - 1 ;
+        regend = (((srstart >> assemblymapperChunkFactor) + 1)
+                  << assemblymapperChunkFactor) - 1 ;
     }
     else
     {
-        regstart = ((srstart >> assemblyMapperChunkFactor)
-                    << assemblyMapperChunkFactor);
+        regstart = ((srstart >> assemblymapperChunkFactor)
+                    << assemblymapperChunkFactor);
 
-        regend = (((srend >> assemblyMapperChunkFactor) + 1)
-                  << assemblyMapperChunkFactor) - 1 ;
+        regend = (((srend >> assemblymapperChunkFactor) + 1)
+                  << assemblymapperChunkFactor) - 1 ;
     }
 
     /*
@@ -3026,7 +3026,7 @@ AjBool ensAssemblymapperMapToSeqregion(EnsPAssemblymapper am,
 
 
 
-/* @funcstatic assemblyMapperadaptorHasMultipleMappings ***********************
+/* @funcstatic assemblymapperadaptorHasMultipleMappings ***********************
 **
 ** Check whether an Ensembl Sequence Region maps to more than one location.
 **
@@ -3038,7 +3038,7 @@ AjBool ensAssemblymapperMapToSeqregion(EnsPAssemblymapper am,
 ** @@
 ******************************************************************************/
 
-static AjBool assemblyMapperadaptorHasMultipleMappings(
+static AjBool assemblymapperadaptorHasMultipleMappings(
     const EnsPAssemblymapperadaptor ama,
     ajuint srid)
 {
@@ -3049,7 +3049,7 @@ static AjBool assemblyMapperadaptorHasMultipleMappings(
         return ajFalse;
 
     if(!ama->MultipleMappings)
-        ajFatal("assemblyMapperadaptorHasMultipleMappings AJAX Table for "
+        ajFatal("assemblymapperadaptorHasMultipleMappings AJAX Table for "
                 "multiple Sequence Region mappings has not been "
                 "initialised!\n");
 
@@ -3084,7 +3084,7 @@ static AjBool assemblyMapperadaptorHasMultipleMappings(
 
 
 
-/* @funcstatic assemblyMapperadaptorMultipleMappingsInit **********************
+/* @funcstatic assemblymapperadaptorMultipleMappingsInit **********************
 **
 ** Initialise Ensembl Assembly Mapper Adaptor-internal cache of
 ** Ensembl Sequence Regions that map to more than one location.
@@ -3097,7 +3097,7 @@ static AjBool assemblyMapperadaptorHasMultipleMappings(
 ** @@
 ******************************************************************************/
 
-static AjBool assemblyMapperadaptorMultipleMappingsInit(
+static AjBool assemblymapperadaptorMultipleMappingsInit(
     EnsPAssemblymapperadaptor ama)
 {
     ajuint identifier = 0;
@@ -3114,8 +3114,8 @@ static AjBool assemblyMapperadaptorMultipleMappingsInit(
 
     EnsPDatabaseadaptor dba = NULL;
 
-    if(ajDebugTest("assemblyMapperadaptorMultipleMappingsInit"))
-        ajDebug("assemblyMapperadaptorMultipleMappingsInit\n"
+    if(ajDebugTest("assemblymapperadaptorMultipleMappingsInit"))
+        ajDebug("assemblymapperadaptorMultipleMappingsInit\n"
                 "  ama %p\n",
                 ama);
 
@@ -3171,7 +3171,7 @@ static AjBool assemblyMapperadaptorMultipleMappingsInit(
 
         if(ajTableFetch(ama->MultipleMappings, (const void *) Pidentifier))
         {
-            ajWarn("assemblyMapperadaptorMultipleMappingsInit already "
+            ajWarn("assemblymapperadaptorMultipleMappingsInit already "
                    "cached Ensembl Sequence region with identifier %u.\n",
                    *Pidentifier);
 
@@ -3225,7 +3225,7 @@ EnsPAssemblymapperadaptor ensAssemblymapperadaptorNew(EnsPDatabaseadaptor dba)
 
     ama->AsmMapperCache = ajTablestrNewLen(0);
 
-    assemblyMapperadaptorMultipleMappingsInit(ama);
+    assemblymapperadaptorMultipleMappingsInit(ama);
 
     return ama;
 }
@@ -3254,7 +3254,7 @@ EnsPAssemblymapperadaptor ensAssemblymapperadaptorNew(EnsPDatabaseadaptor dba)
 
 
 
-/* @funcstatic assemblyMapperadaptorMultipleMappingsExit **********************
+/* @funcstatic assemblymapperadaptorMultipleMappingsExit **********************
 **
 ** Clears the Ensembl Assembly Mapper Adaptor-internal cache of
 ** Ensembl Sequence Regions that map to more than one location.
@@ -3265,7 +3265,7 @@ EnsPAssemblymapperadaptor ensAssemblymapperadaptorNew(EnsPDatabaseadaptor dba)
 ** @@
 ******************************************************************************/
 
-static AjBool assemblyMapperadaptorMultipleMappingsExit(
+static AjBool assemblymapperadaptorMultipleMappingsExit(
     EnsPAssemblymapperadaptor ama)
 {
     void **keyarray = NULL;
@@ -3273,7 +3273,7 @@ static AjBool assemblyMapperadaptorMultipleMappingsExit(
 
     register ajint i = 0;
 
-    if(ajDebugTest("assemblyMapperadaptorMultipleMappingsExit"))
+    if(ajDebugTest("assemblymapperadaptorMultipleMappingsExit"))
         ajDebug("ensAsemblyMapperadaptorMultipleMappingsExit\n"
                 "  ama %p\n",
                 ama);
@@ -3394,7 +3394,7 @@ void ensAssemblymapperadaptorDel(EnsPAssemblymapperadaptor* Pama)
 
     /* Clear the Multiple Mappings AJAX Table. */
 
-    assemblyMapperadaptorMultipleMappingsExit(pthis);
+    assemblymapperadaptorMultipleMappingsExit(pthis);
 
     ajTableFree(&pthis->MultipleMappings);
 
@@ -4049,8 +4049,8 @@ AjBool ensAssemblymapperadaptorRegisterAssembled(
 
     chunkregions = ajListNew();
 
-    chunkstart = regstart >> assemblyMapperChunkFactor;
-    chunkend   = regend   >> assemblyMapperChunkFactor;
+    chunkstart = regstart >> assemblymapperChunkFactor;
+    chunkend   = regend   >> assemblymapperChunkFactor;
 
     /*
     ** Inserts have start == end + 1, on boundary condition start chunk
@@ -4077,8 +4077,8 @@ AjBool ensAssemblymapperadaptorRegisterAssembled(
                 /* This is the end of an unregistered region. */
 
                 chunkregion = ensMapperrangeNew(
-                    chunkregionstart << assemblyMapperChunkFactor,
-                    ((chunkregionend + 1) << assemblyMapperChunkFactor) - 1);
+                    chunkregionstart << assemblymapperChunkFactor,
+                    ((chunkregionend + 1) << assemblymapperChunkFactor) - 1);
 
                 ajListPushAppend(chunkregions, (void *) chunkregion);
 
@@ -4102,8 +4102,8 @@ AjBool ensAssemblymapperadaptorRegisterAssembled(
     if(chunkregionstart != INT_MIN)
     {
         chunkregion = ensMapperrangeNew(
-            chunkregionstart << assemblyMapperChunkFactor,
-            ((chunkregionend + 1) << assemblyMapperChunkFactor) - 1);
+            chunkregionstart << assemblymapperChunkFactor,
+            ((chunkregionend + 1) << assemblymapperChunkFactor) - 1);
 
         ajListPushAppend(chunkregions, (void *) chunkregion);
     }
@@ -4127,8 +4127,8 @@ AjBool ensAssemblymapperadaptorRegisterAssembled(
         /* After clearing the cache, everything needs to be re-registered. */
 
         chunkregion = ensMapperrangeNew(
-            chunkstart << assemblyMapperChunkFactor,
-            ((chunkend + 1) << assemblyMapperChunkFactor) - 1);
+            chunkstart << assemblymapperChunkFactor,
+            ((chunkend + 1) << assemblymapperChunkFactor) - 1);
 
         ajListPushAppend(chunkregions, (void *) chunkregion);
 
@@ -4208,7 +4208,7 @@ AjBool ensAssemblymapperadaptorRegisterAssembled(
 
             if(!(ensGenericassemblymapperHaveRegisteredComponent(gam, cmpsrid)
                  &&
-                 (!assemblyMapperadaptorHasMultipleMappings(ama, cmpsrid))))
+                 (!assemblymapperadaptorHasMultipleMappings(ama, cmpsrid))))
             {
                 ensGenericassemblymapperRegisterComponent(gam, cmpsrid);
 
@@ -4316,7 +4316,7 @@ AjBool ensAssemblymapperadaptorRegisterComponent(
         return ajFalse;
 
     if(ensGenericassemblymapperHaveRegisteredComponent(gam, cmpsrid) &&
-       (!assemblyMapperadaptorHasMultipleMappings(ama, cmpsrid)))
+       (!assemblymapperadaptorHasMultipleMappings(ama, cmpsrid)))
         return ajTrue;
 
     /*
@@ -4566,7 +4566,7 @@ AjBool ensAssemblymapperadaptorRegisterAll(EnsPAssemblymapperadaptor ama,
         ** assembled Sequence Region.
         */
 
-        chunkend = asmsrlength >> assemblyMapperChunkFactor;
+        chunkend = asmsrlength >> assemblymapperChunkFactor;
 
         for(i = 0; i <= chunkend; i++)
             ensGenericassemblymapperRegisterAssembled(gam, asmsrid, i);
@@ -4617,7 +4617,7 @@ AjBool ensAssemblymapperadaptorRegisterAll(EnsPAssemblymapperadaptor ama,
 
 
 
-/* @funcstatic assemblyMapperadaptorBuildCombinedMapper ***********************
+/* @funcstatic assemblymapperadaptorBuildCombinedMapper ***********************
 **
 ** Build a combined Mapper after both halves of an
 ** Ensembl Chained Assembly Mapper have been loaded.
@@ -4641,7 +4641,7 @@ AjBool ensAssemblymapperadaptorRegisterAll(EnsPAssemblymapperadaptor ama,
 ** Ensembl Mapper Results into the combined (srctrgmapper) Ensembl Mapper.
 ******************************************************************************/
 
-static AjBool assemblyMapperadaptorBuildCombinedMapper(
+static AjBool assemblymapperadaptorBuildCombinedMapper(
     EnsPAssemblymapperadaptor ama,
     AjPList ranges,
     EnsPMapper srcmidmapper,
@@ -4665,9 +4665,9 @@ static AjBool assemblyMapperadaptorBuildCombinedMapper(
 
     EnsPMapperunit mu = NULL;
 
-    if(ajDebugTest("assemblyMapperadaptorBuildCombinedMapper"))
+    if(ajDebugTest("assemblymapperadaptorBuildCombinedMapper"))
     {
-        ajDebug("assemblyMapperadaptorBuildCombinedMapper\n"
+        ajDebug("assemblymapperadaptorBuildCombinedMapper\n"
                 "  ama %p\n"
                 "  ranges %p\n"
                 "  srcmidmapper %p\n"
@@ -4801,7 +4801,7 @@ static AjBool assemblyMapperadaptorBuildCombinedMapper(
 
 
 
-/* @funcstatic assemblyMapperadaptorMappingPath *******************************
+/* @funcstatic assemblymapperadaptorMappingPath *******************************
 **
 ** Check if an Assembly Mapper has an acceptable mapping path.
 **
@@ -4823,7 +4823,7 @@ static AjBool assemblyMapperadaptorBuildCombinedMapper(
 ** @@
 ******************************************************************************/
 
-static AjBool assemblyMapperadaptorMappingPath(const AjPList mappath)
+static AjBool assemblymapperadaptorMappingPath(const AjPList mappath)
 {
     ajuint length = 0;
 
@@ -4845,7 +4845,7 @@ static AjBool assemblyMapperadaptorMappingPath(const AjPList mappath)
             return ajTrue;
     }
 
-    ajDebug("assemblyMapperadaptorMappingPath got inacceptable "
+    ajDebug("assemblymapperadaptorMappingPath got inacceptable "
             "assembly mapping path.\n");
 
     ensCoordsystemMappingPathTrace(mappath, 1);
@@ -5056,7 +5056,7 @@ AjBool ensAssemblymapperadaptorRegisterChained(EnsPAssemblymapperadaptor ama,
 
     /* Test for an acceptable two- or multi-component mapping path. */
 
-    if(!assemblyMapperadaptorMappingPath(mappath))
+    if(!assemblymapperadaptorMappingPath(mappath))
         ajFatal("ensAssemblymapperadaptorRegisterChained "
                 "unexpected mapping between source and middle "
                 "Coordinate Systems '%S:%S' and '%S:%S'. "
@@ -5335,7 +5335,7 @@ AjBool ensAssemblymapperadaptorRegisterChained(EnsPAssemblymapperadaptor ama,
 
     /* Test for an acceptable two- or multi-component mapping path. */
 
-    if(!assemblyMapperadaptorMappingPath(mappath))
+    if(!assemblymapperadaptorMappingPath(mappath))
         ajFatal("ensAssemblymapperadaptorRegisterChained "
                 "unexpected mapping between intermediate and target "
                 "Coordinate Systems '%S:%S' and '%S:%S'. "
@@ -5444,7 +5444,7 @@ AjBool ensAssemblymapperadaptorRegisterChained(EnsPAssemblymapperadaptor ama,
     ** the loaded Mappers to load the final source <-> target Mapper.
     */
 
-    assemblyMapperadaptorBuildCombinedMapper(ama,
+    assemblymapperadaptorBuildCombinedMapper(ama,
                                              srcranges,
                                              srcmidmapper,
                                              trgmidmapper,
@@ -5646,7 +5646,7 @@ AjBool ensAssemblymapperadaptorRegisterChainedSpecial(
 
     /* Test for an acceptable two- or multi-component mapping path. */
 
-    if(!assemblyMapperadaptorMappingPath(mappath))
+    if(!assemblymapperadaptorMappingPath(mappath))
         ajFatal("ensAssemblymapperadaptorRegisterChainedSpecial "
                 "unexpected mapping between start and intermediate "
                 "Coordinate Systems '%S:%S' and '%S:%S'. "
@@ -6061,7 +6061,7 @@ AjBool ensAssemblymapperadaptorRegisterAllChained(
 
     /* Test for an acceptable two- or multi-component mapping path. */
 
-    if(!assemblyMapperadaptorMappingPath(mappath))
+    if(!assemblymapperadaptorMappingPath(mappath))
         ajFatal("ensAssemblymapperadaptorRegisterAllChained "
                 "unexpected mapping between source and intermediate "
                 "Coordinate Systems '%S:%S' and '%S:%S'. "
@@ -6230,7 +6230,7 @@ AjBool ensAssemblymapperadaptorRegisterAllChained(
 
     /* Test for an acceptable two- or multi-component mapping path. */
 
-    if(!assemblyMapperadaptorMappingPath(mappath))
+    if(!assemblymapperadaptorMappingPath(mappath))
         ajFatal("ensAssemblymapperadaptorRegisterAllChained "
                 "unexpected mapping between target and intermediate "
                 "Coordinate Systems '%S:%S' and '%S:%S'. "
@@ -6348,7 +6348,7 @@ AjBool ensAssemblymapperadaptorRegisterAllChained(
 
     srctype = ajStrNewC("source");
 
-    assemblyMapperadaptorBuildCombinedMapper(ama,
+    assemblymapperadaptorBuildCombinedMapper(ama,
                                              ranges,
                                              srcmidmapper,
                                              trgmidmapper,

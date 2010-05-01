@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
-/* qcDatabaseClass ************************************************************
+/* qcdatabaseClass ************************************************************
 **
 ** The Ensembl Quality Check Database class element is enumerated in
 ** both, the SQL table definition and the data structure. The following strings
@@ -46,7 +46,7 @@
 **
 ******************************************************************************/
 
-static const char *qcDatabaseClass[] =
+static const char *qcdatabaseClass[] =
 {
     (const char *) NULL,
     "unknown",
@@ -60,7 +60,7 @@ static const char *qcDatabaseClass[] =
 
 
 
-/* qcDatabaseType *************************************************************
+/* qcdatabaseType *************************************************************
 **
 ** The Ensembl Quality Check Database type element is enumerated in
 ** both, the SQL table definition and the data structure. The following strings
@@ -69,7 +69,7 @@ static const char *qcDatabaseClass[] =
 **
 ******************************************************************************/
 
-static const char *qcDatabaseType[] =
+static const char *qcdatabaseType[] =
 {
     (const char *) NULL,
     "unknown",
@@ -91,26 +91,26 @@ extern EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(
 extern EnsPQcdatabaseadaptor ensRegistryGetQcdatabaseadaptor(
     EnsPDatabaseadaptor dba);
 
-static AjBool qcDatabaseadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool qcdatabaseadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                              const AjPStr statement,
                                              EnsPAssemblymapper am,
                                              EnsPSlice slice,
                                              AjPList qcdbs);
 
-static AjBool qcDatabaseadaptorCacheInsert(EnsPQcdatabaseadaptor qcdba,
+static AjBool qcdatabaseadaptorCacheInsert(EnsPQcdatabaseadaptor qcdba,
                                            EnsPQcdatabase *Pqcdb);
 
-static AjBool qcDatabaseadaptorCacheInit(EnsPQcdatabaseadaptor qcdba);
+static AjBool qcdatabaseadaptorCacheInit(EnsPQcdatabaseadaptor qcdba);
 
-static void qcDatabaseadaptorCacheClearIdentifier(void **key,
+static void qcdatabaseadaptorCacheClearIdentifier(void **key,
                                                   void **value,
                                                   void *cl);
 
-static void qcDatabaseadaptorCacheClearName(void **key,
+static void qcdatabaseadaptorCacheClearName(void **key,
                                             void **value,
                                             void *cl);
 
-static AjBool qcDatabaseadaptorCacheExit(EnsPQcdatabaseadaptor qcdba);
+static AjBool qcdatabaseadaptorCacheExit(EnsPQcdatabaseadaptor qcdba);
 
 
 
@@ -1457,8 +1457,8 @@ AjEnum ensQcdatabaseClassFromStr(const AjPStr class)
 
     AjEnum eclass = ensEQcdatabaseClassNULL;
 
-    for(i = 1; qcDatabaseClass[i]; i++)
-        if(ajStrMatchCaseC(class, qcDatabaseClass[i]))
+    for(i = 1; qcdatabaseClass[i]; i++)
+        if(ajStrMatchCaseC(class, qcdatabaseClass[i]))
             eclass = i;
 
     if(!eclass)
@@ -1488,8 +1488,8 @@ AjEnum ensQcdatabaseTypeFromStr(const AjPStr type)
 
     AjEnum etype = ensEQcdatabaseTypeNULL;
 
-    for(i = 1; qcDatabaseType[i]; i++)
-        if(ajStrMatchCaseC(type, qcDatabaseType[i]))
+    for(i = 1; qcdatabaseType[i]; i++)
+        if(ajStrMatchCaseC(type, qcdatabaseType[i]))
             etype = i;
 
     if(!etype)
@@ -1519,13 +1519,13 @@ const char* ensQcdatabaseClassToChar(const AjEnum class)
     if(!class)
         return NULL;
 
-    for(i = 1; qcDatabaseClass[i] && (i < class); i++);
+    for(i = 1; qcdatabaseClass[i] && (i < class); i++);
 
-    if(!qcDatabaseClass[i])
+    if(!qcdatabaseClass[i])
         ajDebug("ensQcdatabaseClassToChar encountered an "
                 "out of boundary error on group %d.\n", class);
 
-    return qcDatabaseClass[i];
+    return qcdatabaseClass[i];
 }
 
 
@@ -1548,13 +1548,13 @@ const char* ensQcdatabaseTypeToChar(const AjEnum type)
     if(!type)
         return NULL;
 
-    for(i = 1; qcDatabaseType[i] && (i < type); i++);
+    for(i = 1; qcdatabaseType[i] && (i < type); i++);
 
-    if(!qcDatabaseType[i])
+    if(!qcdatabaseType[i])
         ajDebug("ensQcdatabaseTypeToChar encountered an "
                 "out of boundary error on group %d.\n", type);
 
-    return qcDatabaseType[i];
+    return qcdatabaseType[i];
 }
 
 
@@ -1647,7 +1647,7 @@ AjBool ensQcdatabaseMatch(const EnsPQcdatabase qcdb1,
 **
 ******************************************************************************/
 
-static const char *qcDatabaseadaptorTables[] =
+static const char *qcdatabaseadaptorTables[] =
 {
     "sequence_db",
     (const char *) NULL
@@ -1656,7 +1656,7 @@ static const char *qcDatabaseadaptorTables[] =
 
 
 
-static const char *qcDatabaseadaptorColumns[] =
+static const char *qcdatabaseadaptorColumns[] =
 {
     "sequence_db.sequence_db_id",
     "sequence_db.analysis_id",
@@ -1678,7 +1678,7 @@ static const char *qcDatabaseadaptorColumns[] =
 
 
 
-static EnsOBaseadaptorLeftJoin qcDatabaseadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin qcdatabaseadaptorLeftJoin[] =
 {
     {(const char*) NULL, (const char*) NULL}
 };
@@ -1686,19 +1686,19 @@ static EnsOBaseadaptorLeftJoin qcDatabaseadaptorLeftJoin[] =
 
 
 
-static const char *qcDatabaseadaptorDefaultCondition =
+static const char *qcdatabaseadaptorDefaultCondition =
     (const char*) NULL;
 
 
 
 
-static const char *qcDatabaseadaptorFinalCondition =
+static const char *qcdatabaseadaptorFinalCondition =
     (const char *) NULL;
 
 
 
 
-/* @funcstatic qcDatabaseadaptorFetchAllBySQL *********************************
+/* @funcstatic qcdatabaseadaptorFetchAllBySQL *********************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl QC Database objects.
@@ -1713,7 +1713,7 @@ static const char *qcDatabaseadaptorFinalCondition =
 ** @@
 ******************************************************************************/
 
-static AjBool qcDatabaseadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool qcdatabaseadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                              const AjPStr statement,
                                              EnsPAssemblymapper am,
                                              EnsPSlice slice,
@@ -1749,8 +1749,8 @@ static AjBool qcDatabaseadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPQcdatabase qcdb         = NULL;
     EnsPQcdatabaseadaptor qcdba = NULL;
 
-    if(ajDebugTest("qcDatabaseadaptorFetchAllBySQL"))
-        ajDebug("qcDatabaseadaptorFetchAllBySQL\n"
+    if(ajDebugTest("qcdatabaseadaptorFetchAllBySQL"))
+        ajDebug("qcdatabaseadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -1865,7 +1865,7 @@ static AjBool qcDatabaseadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @funcstatic qcDatabaseadaptorCacheInsert ***********************************
+/* @funcstatic qcdatabaseadaptorCacheInsert ***********************************
 **
 ** Insert an Ensembl QC Database into the QC Database Adaptor-internal cache.
 ** If a QC Database with the same name element is already present in the
@@ -1879,7 +1879,7 @@ static AjBool qcDatabaseadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @@
 ******************************************************************************/
 
-static AjBool qcDatabaseadaptorCacheInsert(EnsPQcdatabaseadaptor qcdba,
+static AjBool qcdatabaseadaptorCacheInsert(EnsPQcdatabaseadaptor qcdba,
                                            EnsPQcdatabase *Pqcdb)
 {
     ajuint *Pidentifier = NULL;
@@ -1939,7 +1939,7 @@ static AjBool qcDatabaseadaptorCacheInsert(EnsPQcdatabaseadaptor qcdba,
 
     if(qcdb1 && qcdb2 && (qcdb1 == qcdb2))
     {
-        ajDebug("qcDatabaseadaptorCacheInsert replaced "
+        ajDebug("qcdatabaseadaptorCacheInsert replaced "
                 "Ensembl QC Database %p with "
                 "one already cached %p.\n",
                 *Pqcdb, qcdb1);
@@ -1950,19 +1950,19 @@ static AjBool qcDatabaseadaptorCacheInsert(EnsPQcdatabaseadaptor qcdba,
     }
 
     if(qcdb1 && qcdb2 && (qcdb1 != qcdb2))
-        ajDebug("qcDatabaseadaptorCacheInsert detected "
+        ajDebug("qcdatabaseadaptorCacheInsert detected "
                 "Ensembl QC Databases in the "
                 "identifier and name cache with identical names "
                 "('%S' and '%S') but different addresses (%p and %p).\n",
                 qcdb1->Name, qcdb2->Name, qcdb1, qcdb2);
 
     if(qcdb1 && (!qcdb2))
-        ajDebug("qcDatabaseadaptorCacheInsert detected an "
+        ajDebug("qcdatabaseadaptorCacheInsert detected an "
                 "Ensembl QC Database "
                 "in the identifier, but not in the name cache.\n");
 
     if((!qcdb1) && qcdb2)
-        ajDebug("qcDatabaseadaptorCacheInsert detected an "
+        ajDebug("qcdatabaseadaptorCacheInsert detected an "
                 "Ensembl QC Database "
                 "in the name, but not in the identifier cache.\n");
 
@@ -1974,7 +1974,7 @@ static AjBool qcDatabaseadaptorCacheInsert(EnsPQcdatabaseadaptor qcdba,
 
 
 
-/* @funcstatic qcDatabaseadaptorCacheInit *************************************
+/* @funcstatic qcdatabaseadaptorCacheInit *************************************
 **
 ** Initialise the internal QC Database cache of an Ensembl QC Database Adaptor.
 **
@@ -1984,7 +1984,7 @@ static AjBool qcDatabaseadaptorCacheInsert(EnsPQcdatabaseadaptor qcdba,
 ** @@
 ******************************************************************************/
 
-static AjBool qcDatabaseadaptorCacheInit(EnsPQcdatabaseadaptor qcdba)
+static AjBool qcdatabaseadaptorCacheInit(EnsPQcdatabaseadaptor qcdba)
 {
     AjPList qcdbs = NULL;
 
@@ -2014,7 +2014,7 @@ static AjBool qcDatabaseadaptorCacheInit(EnsPQcdatabaseadaptor qcdba)
 
     while(ajListPop(qcdbs, (void **) &qcdb))
     {
-        qcDatabaseadaptorCacheInsert(qcdba, &qcdb);
+        qcdatabaseadaptorCacheInsert(qcdba, &qcdb);
 
         ensQcdatabaseDel(&qcdb);
     }
@@ -2070,14 +2070,14 @@ EnsPQcdatabaseadaptor ensQcdatabaseadaptorNew(EnsPDatabaseadaptor dba)
 
     qcdba->Adaptor = ensBaseadaptorNew(
         dba,
-        qcDatabaseadaptorTables,
-        qcDatabaseadaptorColumns,
-        qcDatabaseadaptorLeftJoin,
-        qcDatabaseadaptorDefaultCondition,
-        qcDatabaseadaptorFinalCondition,
-        qcDatabaseadaptorFetchAllBySQL);
+        qcdatabaseadaptorTables,
+        qcdatabaseadaptorColumns,
+        qcdatabaseadaptorLeftJoin,
+        qcdatabaseadaptorDefaultCondition,
+        qcdatabaseadaptorFinalCondition,
+        qcdatabaseadaptorFetchAllBySQL);
 
-    qcDatabaseadaptorCacheInit(qcdba);
+    qcdatabaseadaptorCacheInit(qcdba);
 
     return qcdba;
 }
@@ -2085,7 +2085,7 @@ EnsPQcdatabaseadaptor ensQcdatabaseadaptorNew(EnsPDatabaseadaptor dba)
 
 
 
-/* @funcstatic qcDatabaseadaptorCacheClearIdentifier **************************
+/* @funcstatic qcdatabaseadaptorCacheClearIdentifier **************************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl QC Database
 ** Adaptor-internal QC Database cache. This function deletes the
@@ -2101,7 +2101,7 @@ EnsPQcdatabaseadaptor ensQcdatabaseadaptorNew(EnsPDatabaseadaptor dba)
 ** @@
 ******************************************************************************/
 
-static void qcDatabaseadaptorCacheClearIdentifier(void **key,
+static void qcdatabaseadaptorCacheClearIdentifier(void **key,
                                                   void **value,
                                                   void *cl)
 {
@@ -2129,7 +2129,7 @@ static void qcDatabaseadaptorCacheClearIdentifier(void **key,
 
 
 
-/* @funcstatic qcDatabaseadaptorCacheClearName ********************************
+/* @funcstatic qcdatabaseadaptorCacheClearName ********************************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl QC Database
 ** Adaptor-internal QC Database cache. This function deletes the name
@@ -2144,7 +2144,7 @@ static void qcDatabaseadaptorCacheClearIdentifier(void **key,
 ** @@
 ******************************************************************************/
 
-static void qcDatabaseadaptorCacheClearName(void **key,
+static void qcdatabaseadaptorCacheClearName(void **key,
                                             void **value,
                                             void *cl)
 {
@@ -2172,7 +2172,7 @@ static void qcDatabaseadaptorCacheClearName(void **key,
 
 
 
-/* @funcstatic qcDatabaseadaptorCacheExit *************************************
+/* @funcstatic qcdatabaseadaptorCacheExit *************************************
 **
 ** Clears the internal QC Database cache of an Ensembl QC Database Adaptor.
 **
@@ -2182,7 +2182,7 @@ static void qcDatabaseadaptorCacheClearName(void **key,
 ** @@
 ******************************************************************************/
 
-static AjBool qcDatabaseadaptorCacheExit(EnsPQcdatabaseadaptor qcdba)
+static AjBool qcdatabaseadaptorCacheExit(EnsPQcdatabaseadaptor qcdba)
 {
     if(!qcdba)
         return ajFalse;
@@ -2190,7 +2190,7 @@ static AjBool qcDatabaseadaptorCacheExit(EnsPQcdatabaseadaptor qcdba)
     /* Clear and delete the identifier cache. */
 
     ajTableMapDel(qcdba->CacheByIdentifier,
-                  qcDatabaseadaptorCacheClearIdentifier,
+                  qcdatabaseadaptorCacheClearIdentifier,
                   NULL);
 
     ajTableFree(&qcdba->CacheByIdentifier);
@@ -2198,7 +2198,7 @@ static AjBool qcDatabaseadaptorCacheExit(EnsPQcdatabaseadaptor qcdba)
     /* Clear and delete the name cache. */
 
     ajTableMapDel(qcdba->CacheByName,
-                  qcDatabaseadaptorCacheClearName,
+                  qcdatabaseadaptorCacheClearName,
                   NULL);
 
     ajTableFree(&qcdba->CacheByName);
@@ -2258,7 +2258,7 @@ void ensQcdatabaseadaptorDel(EnsPQcdatabaseadaptor *Pqcdba)
 
     pthis = *Pqcdba;
 
-    qcDatabaseadaptorCacheExit(pthis);
+    qcdatabaseadaptorCacheExit(pthis);
 
     ensBaseadaptorDel(&pthis->Adaptor);
 
@@ -2316,7 +2316,7 @@ AjBool ensQcdatabaseadaptorFetchByIdentifier(EnsPQcdatabaseadaptor qcdba,
     ** *Pqcdb = (EnsPQcdatabase)
     ** ensBaseadaptorFetchByIdentifier(adaptor->Adaptor, identifier);
     **
-    ** qcDatabaseadaptorCacheInsert(adaptor, Pqcdb);
+    ** qcdatabaseadaptorCacheInsert(adaptor, Pqcdb);
     */
 
     return ajTrue;
@@ -2416,11 +2416,11 @@ AjBool ensQcdatabaseadaptorFetchByName(EnsPQcdatabaseadaptor qcdba,
 
     ajListPop(qcdbs, (void **) Pqcdb);
 
-    qcDatabaseadaptorCacheInsert(qcdba, Pqcdb);
+    qcdatabaseadaptorCacheInsert(qcdba, Pqcdb);
 
     while(ajListPop(qcdbs, (void **) &qcdb))
     {
-        qcDatabaseadaptorCacheInsert(qcdba, &qcdb);
+        qcdatabaseadaptorCacheInsert(qcdba, &qcdb);
 
         ensQcdatabaseDel(&qcdb);
     }

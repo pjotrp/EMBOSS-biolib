@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -111,18 +111,18 @@ extern EnsPTranslationadaptor ensRegistryGetTranslationadaptor(
 
 static void translationCacheClear(void **key, void **value, void *cl);
 
-static AjBool translationAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool translationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
                                               EnsPAssemblymapper am,
                                               EnsPSlice slice,
                                               AjPList translations);
 
-static AjBool translationAdaptorFetchAllByIdentifiers(
+static AjBool translationadaptorFetchAllByIdentifiers(
     EnsPTranslationadaptor tla,
     const AjPStr identifiers,
     AjPTable transcripts);
 
-static void translationAdaptorClearTranscriptTable(void **key,
+static void translationadaptorClearTranscriptTable(void **key,
                                                    void **value,
                                                    void *cl);
 
@@ -2629,14 +2629,14 @@ AjBool ensTranslationFetchSequenceSeq(EnsPTranslation translation,
 **
 ******************************************************************************/
 
-static const char *translationAdaptorTables[] =
+static const char *translationadaptorTables[] =
 {
     "translation",
     "translation_stable_id",
     NULL
 };
 
-static const char *translationAdaptorColumns[] =
+static const char *translationadaptorColumns[] =
 {
     "translation.translation_id",
     "translation.transcript_id",
@@ -2651,7 +2651,7 @@ static const char *translationAdaptorColumns[] =
     NULL
 };
 
-static EnsOBaseadaptorLeftJoin translationAdaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin translationadaptorLeftJoin[] =
 {
     {
         "translation_stable_id",
@@ -2660,14 +2660,14 @@ static EnsOBaseadaptorLeftJoin translationAdaptorLeftJoin[] =
     {NULL, NULL}
 };
 
-static const char *translationAdaptorDefaultCondition = NULL;
+static const char *translationadaptorDefaultCondition = NULL;
 
-static const char *translationAdaptorFinalCondition = NULL;
-
-
+static const char *translationadaptorFinalCondition = NULL;
 
 
-/* @funcstatic translationAdaptorFetchAllBySQL ********************************
+
+
+/* @funcstatic translationadaptorFetchAllBySQL ********************************
 **
 ** Fetch all Ensembl Translation objects via an SQL statement.
 **
@@ -2681,7 +2681,7 @@ static const char *translationAdaptorFinalCondition = NULL;
 ** @@
 ******************************************************************************/
 
-static AjBool translationAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool translationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
                                               EnsPAssemblymapper am,
                                               EnsPSlice slice,
@@ -2716,8 +2716,8 @@ static AjBool translationAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPTranslation translation = NULL;
     EnsPTranslationadaptor tla = NULL;
 
-    if(ajDebugTest("translationAdaptorFetchAllBySQL"))
-        ajDebug("translationAdaptorFetchAllBySQL\n"
+    if(ajDebugTest("translationadaptorFetchAllBySQL"))
+        ajDebug("translationadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -2775,7 +2775,7 @@ static AjBool translationAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         ensTranscriptadaptorFetchByIdentifier(tca, transcriptid, &transcript);
 
         if(!transcript)
-            ajFatal("translationAdaptorFetchAllBySQL could not get "
+            ajFatal("translationadaptorFetchAllBySQL could not get "
                     "Ensembl Transcript for identifier %u.\n", transcriptid);
 
         exons = ensTranscriptGetExons(transcript);
@@ -2796,12 +2796,12 @@ static AjBool translationAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         ajListIterDel(&iter);
 
         if(!startexon)
-            ajFatal("translationAdaptorFetchAllBySQL could not get "
+            ajFatal("translationadaptorFetchAllBySQL could not get "
                     "start Exon for transcript_id %u",
                     ensTranscriptGetIdentifier(transcript));
 
         if(!endexon)
-            ajFatal("translationAdaptorFetchAllBySQL could not get "
+            ajFatal("translationadaptorFetchAllBySQL could not get "
                     "end Exon for transcript_id %u",
                     ensTranscriptGetIdentifier(transcript));
 
@@ -2881,12 +2881,12 @@ EnsPTranslationadaptor ensTranslationadaptorNew(EnsPDatabaseadaptor dba)
 
     tla->Adaptor = ensBaseadaptorNew(
         dba,
-        translationAdaptorTables,
-        translationAdaptorColumns,
-        translationAdaptorLeftJoin,
-        translationAdaptorDefaultCondition,
-        translationAdaptorFinalCondition,
-        translationAdaptorFetchAllBySQL);
+        translationadaptorTables,
+        translationadaptorColumns,
+        translationadaptorLeftJoin,
+        translationadaptorDefaultCondition,
+        translationadaptorFinalCondition,
+        translationadaptorFetchAllBySQL);
 
     return tla;
 }
@@ -3362,7 +3362,7 @@ AjBool ensTranslationadaptorFetchAllByExternalName(
 
 
 
-/* @funcstatic translationAdaptorFetchAllByIdentifiers ************************
+/* @funcstatic translationadaptorFetchAllByIdentifiers ************************
 **
 ** Helper function for the generic function to fetch Ensembl Translations by an
 ** AJAX List of Ensembl Transcripts.
@@ -3378,7 +3378,7 @@ AjBool ensTranslationadaptorFetchAllByExternalName(
 ** @@
 ******************************************************************************/
 
-static AjBool translationAdaptorFetchAllByIdentifiers(
+static AjBool translationadaptorFetchAllByIdentifiers(
     EnsPTranslationadaptor tla,
     const AjPStr identifiers,
     AjPTable transcripts)
@@ -3482,7 +3482,7 @@ static AjBool translationAdaptorFetchAllByIdentifiers(
 
         if(!transcript)
         {
-            ajDebug("translationAdaptorFetchAllByIdentifiers could not get "
+            ajDebug("translationadaptorFetchAllByIdentifiers could not get "
                     "Transcript with identifier %u from the AJAX Table of "
                     "Ensembl Transcripts.\n");
 
@@ -3553,7 +3553,7 @@ static AjBool translationAdaptorFetchAllByIdentifiers(
 
 
 
-/* @funcstatic translationAdaptorClearTranscriptTable *************************
+/* @funcstatic translationadaptorClearTranscriptTable *************************
 **
 ** An ajTableMapDel 'apply' function to clear the temporary AJAX Table used by
 ** the ensTranslationadaptorFetchAllByTranscripts function. This function
@@ -3569,7 +3569,7 @@ static AjBool translationAdaptorFetchAllByIdentifiers(
 ** @@
 ******************************************************************************/
 
-static void translationAdaptorClearTranscriptTable(void **key,
+static void translationadaptorClearTranscriptTable(void **key,
                                                    void **value,
                                                    void *cl)
 {
@@ -3669,7 +3669,7 @@ AjBool ensTranslationadaptorFetchAllByTranscriptList(
 
     ensTranslationadaptorFetchAllByTranscriptTable(tla, table);
 
-    ajTableMapDel(table, translationAdaptorClearTranscriptTable, NULL);
+    ajTableMapDel(table, translationadaptorClearTranscriptTable, NULL);
 
     ajTableFree(&table);
 
@@ -3726,7 +3726,7 @@ AjBool ensTranslationadaptorFetchAllByTranscriptTable(
 
             ajStrCutEnd(&identifiers, 2);
 
-            translationAdaptorFetchAllByIdentifiers(tla,
+            translationadaptorFetchAllByIdentifiers(tla,
                                                     identifiers,
                                                     transcripts);
 
@@ -3740,7 +3740,7 @@ AjBool ensTranslationadaptorFetchAllByTranscriptTable(
 
     ajStrCutEnd(&identifiers, 2);
 
-    translationAdaptorFetchAllByIdentifiers(tla, identifiers, transcripts);
+    translationadaptorFetchAllByIdentifiers(tla, identifiers, transcripts);
 
     ajStrDel(&identifiers);
 

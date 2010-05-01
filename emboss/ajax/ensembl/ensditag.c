@@ -1,10 +1,10 @@
 /******************************************************************************
-** @source Ensembl diTag functions
+** @source Ensembl Di-Tag functions
 **
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.6 $
+** @version $Revision: 1.7 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
-/* diTagFeatureSide ***********************************************************
+/* ditagfeatureSide ***********************************************************
 **
 ** The Ditag Feature side is enumerated in both, the SQL table
 ** definition and the data structure. The following strings are used for
@@ -49,7 +49,7 @@
 **
 ******************************************************************************/
 
-static const char *diTagFeatureSide[] =
+static const char *ditagfeatureSide[] =
 {
     NULL,
     "L",
@@ -80,23 +80,23 @@ extern EnsPDitagfeatureadaptor ensRegistryGetDitagfeatureadaptor(
 extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
     EnsPDatabaseadaptor dba);
 
-static AjBool diTagadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool ditagadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                         const AjPStr statement,
                                         AjPList list);
 
-static AjBool diTagFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool ditagfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
                                                EnsPAssemblymapper am,
                                                EnsPSlice slice,
                                                AjPList dtfs);
 
-static void *diTagFeatureadaptorCacheReference(void *value);
+static void *ditagfeatureadaptorCacheReference(void *value);
 
-static void diTagFeatureadaptorCacheDelete(void **value);
+static void ditagfeatureadaptorCacheDelete(void **value);
 
-static ajuint diTagFeatureadaptorCacheSize(const void *value);
+static ajuint ditagfeatureadaptorCacheSize(const void *value);
 
-static EnsPFeature diTagFeatureadaptorGetFeature(const void *value);
+static EnsPFeature ditagfeatureadaptorGetFeature(const void *value);
 
 
 
@@ -801,7 +801,7 @@ ajuint ensDitagGetMemSize(const EnsPDitag dt)
 
 
 
-/* @funcstatic diTagadaptorFetchAllBySQL **************************************
+/* @funcstatic ditagadaptorFetchAllBySQL **************************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl Ditag objects.
@@ -815,7 +815,7 @@ ajuint ensDitagGetMemSize(const EnsPDitag dt)
 ** @@
 ******************************************************************************/
 
-static AjBool diTagadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool ditagadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                         const AjPStr statement,
                                         AjPList list)
 {
@@ -1005,7 +1005,7 @@ AjBool ensDitagadaptorFetchByIdentifier(EnsPDitagadaptor dta,
 
     dts = ajListNew();
 
-    value = diTagadaptorFetchAllBySQL(dta, statement, dts);
+    value = ditagadaptorFetchAllBySQL(dta, statement, dts);
 
     if(ajListGetLength(dts) == 0)
         ajDebug("ensDitagadaptorFetchByIdentifier got no Ensembl Ditag "
@@ -1105,7 +1105,7 @@ AjBool ensDitagadaptorFetchAll(EnsPDitagadaptor dta,
 
     ajCharDel(&txttype);
 
-    value = diTagadaptorFetchAllBySQL(dta, statement, dts);
+    value = ditagadaptorFetchAllBySQL(dta, statement, dts);
 
     ajStrDel(&statement);
 
@@ -1171,7 +1171,7 @@ AjBool ensDitagadaptorFetchAllByName(EnsPDitagadaptor dta,
 
     ajCharDel(&txtname);
 
-    value = diTagadaptorFetchAllBySQL(dta, statement, dts);
+    value = ditagadaptorFetchAllBySQL(dta, statement, dts);
 
     ajStrDel(&statement);
 
@@ -1237,7 +1237,7 @@ AjBool ensDitagadaptorFetchAllByType(EnsPDitagadaptor dta,
 
     ajCharDel(&txttype);
 
-    value = diTagadaptorFetchAllBySQL(dta, statement, dts);
+    value = ditagadaptorFetchAllBySQL(dta, statement, dts);
 
     ajStrDel(&statement);
 
@@ -2166,8 +2166,8 @@ AjEnum ensDitagfeatureSideFromStr(const AjPStr side)
 
     AjEnum eside = ensEDitagfeatureSideNULL;
 
-    for(i = 1; diTagFeatureSide[i]; i++)
-        if(ajStrMatchC(side, diTagFeatureSide[i]))
+    for(i = 1; ditagfeatureSide[i]; i++)
+        if(ajStrMatchC(side, ditagfeatureSide[i]))
             eside = i;
 
     if(!eside)
@@ -2197,13 +2197,13 @@ const char* ensDitagfeatureSideToChar(const AjEnum side)
     if(!side)
         return NULL;
 
-    for(i = 1; diTagFeatureSide[i] && (i < side); i++);
+    for(i = 1; ditagfeatureSide[i] && (i < side); i++);
 
-    if(!diTagFeatureSide[i])
+    if(!ditagfeatureSide[i])
         ajDebug("ensDitagfeatureSideToChar encountered an "
                 "out of boundary error on gender %d.\n", side);
 
-    return diTagFeatureSide[i];
+    return ditagfeatureSide[i];
 }
 
 
@@ -2224,14 +2224,14 @@ const char* ensDitagfeatureSideToChar(const AjEnum side)
 ** allow for selection of Ditag Features on the basis of a Ditag type.
 */
 
-static const char *diTagFeatureadaptorTables[] =
+static const char *ditagfeatureadaptorTables[] =
 {
     "ditag_feature",
     "ditag",
     (const char *) NULL
 };
 
-static const char *diTagFeatureadaptorColumns[] =
+static const char *ditagfeatureadaptorColumns[] =
 {
     "ditag_feature.ditag_feature_id",
     "ditag_feature.seq_region_id",
@@ -2249,20 +2249,20 @@ static const char *diTagFeatureadaptorColumns[] =
     (const char *) NULL
 };
 
-static EnsOBaseadaptorLeftJoin diTagFeatureadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin ditagfeatureadaptorLeftJoin[] =
 {
     {(const char *) NULL, (const char *) NULL}
 };
 
-static const char *diTagFeatureadaptorDefaultCondition =
+static const char *ditagfeatureadaptorDefaultCondition =
     "ditag_feature.ditag_id = ditag.ditag_id";
 
-static const char *diTagFeatureadaptorFinalCondition = NULL;
+static const char *ditagfeatureadaptorFinalCondition = NULL;
 
 
 
 
-/* @funcstatic diTagFeatureadaptorFetchAllBySQL *******************************
+/* @funcstatic ditagfeatureadaptorFetchAllBySQL *******************************
 **
 ** Fetch all Ensembl Ditag Feature objects via an SQL statement.
 **
@@ -2277,7 +2277,7 @@ static const char *diTagFeatureadaptorFinalCondition = NULL;
 ** @@
 ******************************************************************************/
 
-static AjBool diTagFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool ditagfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
                                                EnsPAssemblymapper am,
                                                EnsPSlice slice,
@@ -2329,8 +2329,8 @@ static AjBool diTagFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPSlice srslice   = NULL;
     EnsPSliceadaptor sa = NULL;
 
-    if(ajDebugTest("diTagFeatureadaptorFetchAllBySQL"))
-        ajDebug("diTagFeatureadaptorFetchAllBySQL\n"
+    if(ajDebugTest("ditagfeatureadaptorFetchAllBySQL"))
+        ajDebug("ditagfeatureadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -2409,7 +2409,7 @@ static AjBool diTagFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         if(srstart <= INT_MAX)
             slstart = (ajint) srstart;
         else
-            ajFatal("diTagFeatureadaptorFetchAllBySQL got a "
+            ajFatal("ditagfeatureadaptorFetchAllBySQL got a "
                     "Sequence Region start coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srstart, INT_MAX);
@@ -2417,7 +2417,7 @@ static AjBool diTagFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         if(srend <= INT_MAX)
             slend = (ajint) srend;
         else
-            ajFatal("diTagFeatureadaptorFetchAllBySQL got a "
+            ajFatal("ditagfeatureadaptorFetchAllBySQL got a "
                     "Sequence Region end coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srend, INT_MAX);
@@ -2522,7 +2522,7 @@ static AjBool diTagFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             if(ensSliceGetLength(slice) <= INT_MAX)
                 sllength = (ajint) ensSliceGetLength(slice);
             else
-                ajFatal("diTagFeatureadaptorFetchAllBySQL got a Slice, "
+                ajFatal("ditagfeatureadaptorFetchAllBySQL got a Slice, "
                         "which length (%u) exceeds the "
                         "maximum integer limit (%d).",
                         ensSliceGetLength(slice), INT_MAX);
@@ -2626,7 +2626,7 @@ static AjBool diTagFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @funcstatic diTagFeatureadaptorCacheReference ******************************
+/* @funcstatic ditagfeatureadaptorCacheReference ******************************
 **
 ** Wrapper function to reference an Ensembl Ditag Feature
 ** from an Ensembl Cache.
@@ -2637,7 +2637,7 @@ static AjBool diTagFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @@
 ******************************************************************************/
 
-static void *diTagFeatureadaptorCacheReference(void *value)
+static void *ditagfeatureadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -2648,7 +2648,7 @@ static void *diTagFeatureadaptorCacheReference(void *value)
 
 
 
-/* @funcstatic diTagFeatureadaptorCacheDelete *********************************
+/* @funcstatic ditagfeatureadaptorCacheDelete *********************************
 **
 ** Wrapper function to delete an Ensembl Ditag Feature
 ** from an Ensembl Cache.
@@ -2659,7 +2659,7 @@ static void *diTagFeatureadaptorCacheReference(void *value)
 ** @@
 ******************************************************************************/
 
-static void diTagFeatureadaptorCacheDelete(void **value)
+static void ditagfeatureadaptorCacheDelete(void **value)
 {
     if(!value)
         return;
@@ -2683,7 +2683,7 @@ static void diTagFeatureadaptorCacheDelete(void **value)
 ** @@
 ******************************************************************************/
 
-static ajuint diTagFeatureadaptorCacheSize(const void *value)
+static ajuint ditagfeatureadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;
@@ -2694,7 +2694,7 @@ static ajuint diTagFeatureadaptorCacheSize(const void *value)
 
 
 
-/* @funcstatic diTagFeatureadaptorGetFeature **********************************
+/* @funcstatic ditagfeatureadaptorGetFeature **********************************
 **
 ** Wrapper function to get the Ensembl Feature of an
 ** Ensembl Ditag Feature from an Ensembl Feature Adaptor.
@@ -2705,7 +2705,7 @@ static ajuint diTagFeatureadaptorCacheSize(const void *value)
 ** @@
 ******************************************************************************/
 
-static EnsPFeature diTagFeatureadaptorGetFeature(const void *value)
+static EnsPFeature ditagfeatureadaptorGetFeature(const void *value)
 {
     if(!value)
         return NULL;
@@ -2760,18 +2760,18 @@ EnsPDitagfeatureadaptor ensDitagfeatureadaptorNew(EnsPDatabaseadaptor dba)
 
     dtfa->Adaptor = ensFeatureadaptorNew(
         dba,
-        diTagFeatureadaptorTables,
-        diTagFeatureadaptorColumns,
-        diTagFeatureadaptorLeftJoin,
-        diTagFeatureadaptorDefaultCondition,
-        diTagFeatureadaptorFinalCondition,
-        diTagFeatureadaptorFetchAllBySQL,
+        ditagfeatureadaptorTables,
+        ditagfeatureadaptorColumns,
+        ditagfeatureadaptorLeftJoin,
+        ditagfeatureadaptorDefaultCondition,
+        ditagfeatureadaptorFinalCondition,
+        ditagfeatureadaptorFetchAllBySQL,
         (void* (*)(const void* key)) NULL,
-        diTagFeatureadaptorCacheReference,
+        ditagfeatureadaptorCacheReference,
         (AjBool (*)(const void* value)) NULL,
-        diTagFeatureadaptorCacheDelete,
-        diTagFeatureadaptorCacheSize,
-        diTagFeatureadaptorGetFeature,
+        ditagfeatureadaptorCacheDelete,
+        ditagfeatureadaptorCacheSize,
+        ditagfeatureadaptorGetFeature,
         "Ditag Feature");
 
     return dtfa;

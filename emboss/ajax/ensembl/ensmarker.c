@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -66,41 +66,41 @@ extern EnsPMarkerfeatureadaptor ensRegistryGetMarkerfeatureadaptor(
 extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
     EnsPDatabaseadaptor dba);
 
-static AjBool markerSynonymadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool markersynonymadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                 const AjPStr statement,
                                                 AjPList mss);
 
-static AjBool markerMapLocationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool markermaplocationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                     const AjPStr statement,
                                                     AjPList mmls);
 
-static AjBool markerAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool markeradaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                          const AjPStr statement,
                                          EnsPAssemblymapper am,
                                          EnsPSlice slice,
                                          AjPList markers);
 
-static void markerAdaptorClearIdentifierTable(void **key,
+static void markeradaptorClearIdentifierTable(void **key,
                                               void **value,
                                               void *cl);
 
-static void markerFeatureadaptorClearMarkerTable(void **key,
+static void markerfeatureadaptorClearMarkerTable(void **key,
                                                  void **value,
                                                  void *cl);
 
-static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool markerfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                 const AjPStr statement,
                                                 EnsPAssemblymapper am,
                                                 EnsPSlice slice,
                                                 AjPList mfs);
 
-static void *markerFeatureadaptorCacheReference(void *value);
+static void *markerfeatureadaptorCacheReference(void *value);
 
-static void markerFeatureadaptorCacheDelete(void **value);
+static void markerfeatureadaptorCacheDelete(void **value);
 
-static ajuint markerFeatureadaptorCacheSize(const void *value);
+static ajuint markerfeatureadaptorCacheSize(const void *value);
 
-static EnsPFeature markerFeatureadaptorGetFeature(const void *value);
+static EnsPFeature markerfeatureadaptorGetFeature(const void *value);
 
 
 
@@ -623,7 +623,7 @@ ajuint ensMarkersynonymGetMemSize(const EnsPMarkersynonym ms)
 
 
 
-/* @funcstatic markerSynonymadaptorFetchAllBySQL ******************************
+/* @funcstatic markersynonymadaptorFetchAllBySQL ******************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl Marker Synonym objects.
@@ -636,7 +636,7 @@ ajuint ensMarkersynonymGetMemSize(const EnsPMarkersynonym ms)
 ** @@
 ******************************************************************************/
 
-static AjBool markerSynonymadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool markersynonymadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                 const AjPStr statement,
                                                 AjPList mss)
 {
@@ -742,7 +742,7 @@ AjBool ensMarkersynonymadaptorFetchByIdentifier(EnsPDatabaseadaptor dba,
 
     mss = ajListNew();
 
-    markerSynonymadaptorFetchAllBySQL(dba, statement, mss);
+    markersynonymadaptorFetchAllBySQL(dba, statement, mss);
 
     if(ajListGetLength(mss) > 1)
         ajWarn("ensMarkersynonymadaptorFetchByIdentifier got more than one "
@@ -805,7 +805,7 @@ AjBool ensMarkersynonymadaptorFetchAllByMarkerIdentifier(
         "marker_synonym.marker_id = %u",
         markerid);
 
-    value = markerSynonymadaptorFetchAllBySQL(dba, statement, mss);
+    value = markersynonymadaptorFetchAllBySQL(dba, statement, mss);
 
     ajStrDel(&statement);
 
@@ -1466,7 +1466,7 @@ ajuint ensMarkermaplocationGetMemSize(const EnsPMarkermaplocation mml)
 
 
 
-/* @funcstatic markerMapLocationadaptorFetchAllBySQL **************************
+/* @funcstatic markermaplocationadaptorFetchAllBySQL **************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl Marker Map Location objects.
@@ -1479,7 +1479,7 @@ ajuint ensMarkermaplocationGetMemSize(const EnsPMarkermaplocation mml)
 ** @@
 ******************************************************************************/
 
-static AjBool markerMapLocationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool markermaplocationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                     const AjPStr statement,
                                                     AjPList mmls)
 {
@@ -1618,7 +1618,7 @@ AjBool ensMarkermaplocationadaptorFetchAllByMarkerIdentifier(
         "marker_synonym.marker_synonym_id",
         markerid);
 
-    value = markerMapLocationadaptorFetchAllBySQL(dba, statement, mmls);
+    value = markermaplocationadaptorFetchAllBySQL(dba, statement, mmls);
 
     ajStrDel(&statement);
 
@@ -2978,14 +2978,14 @@ AjBool ensMarkerClearMarkermaplocations(EnsPMarker marker)
 **
 ******************************************************************************/
 
-static const char *markerAdaptorTables[] =
+static const char *markeradaptorTables[] =
 {
     "marker",
     "marker_synonym",
     (const char *) NULL
 };
 
-static const char *markerAdaptorColumns[] =
+static const char *markeradaptorColumns[] =
 {
     "marker.marker_id",
     "marker.display_marker_synonym_id",
@@ -3001,7 +3001,7 @@ static const char *markerAdaptorColumns[] =
     (const char *) NULL
 };
 
-static EnsOBaseadaptorLeftJoin markerAdaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin markeradaptorLeftJoin[] =
 {
     {
         "marker_synonym",
@@ -3010,14 +3010,14 @@ static EnsOBaseadaptorLeftJoin markerAdaptorLeftJoin[] =
     {(const char *) NULL, (const char *) NULL}
 };
 
-static const char *markerAdaptorDefaultCondition = NULL;
+static const char *markeradaptorDefaultCondition = NULL;
 
-static const char *markerAdaptorFinalCondition = NULL;
-
-
+static const char *markeradaptorFinalCondition = NULL;
 
 
-/* @funcstatic markerAdaptorFetchAllBySQL *************************************
+
+
+/* @funcstatic markeradaptorFetchAllBySQL *************************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl Marker objects.
@@ -3041,7 +3041,7 @@ static const char *markerAdaptorFinalCondition = NULL;
 ** Bio::EnsEMBL::Map::DBSQL::MarkerAdaptor::fetch_attributes method.
 ******************************************************************************/
 
-static AjBool markerAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool markeradaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                          const AjPStr statement,
                                          EnsPAssemblymapper am,
                                          EnsPSlice slice,
@@ -3073,8 +3073,8 @@ static AjBool markerAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
     EnsPMarkersynonym ms = NULL;
 
-    if(ajDebugTest("markerAdaptorFetchAllBySQL"))
-        ajDebug("markerAdaptorFetchAllBySQL\n"
+    if(ajDebugTest("markeradaptorFetchAllBySQL"))
+        ajDebug("markeradaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -3222,12 +3222,12 @@ EnsPMarkeradaptor ensMarkeradaptorNew(EnsPDatabaseadaptor dba)
 
     ma->Adaptor = ensBaseadaptorNew(
         dba,
-        markerAdaptorTables,
-        markerAdaptorColumns,
-        markerAdaptorLeftJoin,
-        markerAdaptorDefaultCondition,
-        markerAdaptorFinalCondition,
-        markerAdaptorFetchAllBySQL);
+        markeradaptorTables,
+        markeradaptorColumns,
+        markeradaptorLeftJoin,
+        markeradaptorDefaultCondition,
+        markeradaptorFinalCondition,
+        markeradaptorFetchAllBySQL);
 
     return ma;
 }
@@ -3458,7 +3458,7 @@ AjBool ensMarkeradaptorFetchByIdentifier(const EnsPMarkeradaptor ma,
 
 
 
-/* @funcstatic markerAdaptorClearIdentifierTable ******************************
+/* @funcstatic markeradaptorClearIdentifierTable ******************************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Marker Adaptor-
 ** internal table. This function deletes the AJAX unsigned integer key and
@@ -3473,7 +3473,7 @@ AjBool ensMarkeradaptorFetchByIdentifier(const EnsPMarkeradaptor ma,
 ** @@
 ******************************************************************************/
 
-static void markerAdaptorClearIdentifierTable(void **key,
+static void markeradaptorClearIdentifierTable(void **key,
                                               void **value,
                                               void *cl)
 {
@@ -3618,7 +3618,7 @@ AjBool ensMarkeradaptorFetchAllBySynonym(const EnsPMarkeradaptor ma,
 
     ajStrDel(&statement);
 
-    ajTableMapDel(table, markerAdaptorClearIdentifierTable, NULL);
+    ajTableMapDel(table, markeradaptorClearIdentifierTable, NULL);
 
     ajTableFree(&table);
 
@@ -4442,7 +4442,7 @@ ajuint ensMarkerfeatureGetMemSize(const EnsPMarkerfeature mf)
 **
 ******************************************************************************/
 
-static const char *markerFeatureadaptorTables[] =
+static const char *markerfeatureadaptorTables[] =
 {
     "marker_feature",
     "marker",
@@ -4453,7 +4453,7 @@ static const char *markerFeatureadaptorTables[] =
 
 
 
-static const char *markerFeatureadaptorColumns[] =
+static const char *markerfeatureadaptorColumns[] =
 {
     "marker_feature.marker_feature_id",
     "marker_feature.seq_region_id",
@@ -4477,7 +4477,7 @@ static const char *markerFeatureadaptorColumns[] =
 
 
 
-static EnsOBaseadaptorLeftJoin markerFeatureadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin markerfeatureadaptorLeftJoin[] =
 {
     {
         "marker_synonym",
@@ -4489,15 +4489,15 @@ static EnsOBaseadaptorLeftJoin markerFeatureadaptorLeftJoin[] =
 
 
 
-static const char *markerFeatureadaptorDefaultCondition =
+static const char *markerfeatureadaptorDefaultCondition =
     "marker_feature.marker_id = marker.marker_id";
 
-static const char *markerFeatureadaptorFinalCondition = NULL;
+static const char *markerfeatureadaptorFinalCondition = NULL;
 
 
 
 
-/* @funcstatic markerFeatureadaptorClearMarkerTable ***************************
+/* @funcstatic markerfeatureadaptorClearMarkerTable ***************************
 **
 ** An ajTableMapDel 'apply' function to clear the Ensembl Marker table.
 ** This function deletes the AJAX unsigned integer key and the
@@ -4512,7 +4512,7 @@ static const char *markerFeatureadaptorFinalCondition = NULL;
 ** @@
 ******************************************************************************/
 
-static void markerFeatureadaptorClearMarkerTable(void **key,
+static void markerfeatureadaptorClearMarkerTable(void **key,
                                                  void **value,
                                                  void *cl)
 {
@@ -4540,7 +4540,7 @@ static void markerFeatureadaptorClearMarkerTable(void **key,
 
 
 
-/* @funcstatic markerFeatureadaptorFetchAllBySQL ******************************
+/* @funcstatic markerfeatureadaptorFetchAllBySQL ******************************
 **
 ** Fetch all Ensembl Marker Feature objects via an SQL statement.
 **
@@ -4554,7 +4554,7 @@ static void markerFeatureadaptorClearMarkerTable(void **key,
 ** @@
 ******************************************************************************/
 
-static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool markerfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                 const AjPStr statement,
                                                 EnsPAssemblymapper am,
                                                 EnsPSlice slice,
@@ -4615,8 +4615,8 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPSlice srslice   = NULL;
     EnsPSliceadaptor sa = NULL;
 
-    if(ajDebugTest("markerFeatureadaptorFetchAllBySQL"))
-        ajDebug("markerFeatureadaptorFetchAllBySQL\n"
+    if(ajDebugTest("markerfeatureadaptorFetchAllBySQL"))
+        ajDebug("markerfeatureadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -4704,7 +4704,7 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         if(srstart <= INT_MAX)
             slstart = (ajint) srstart;
         else
-            ajFatal("markerFeatureadaptorFetchAllBySQL got a "
+            ajFatal("markerfeatureadaptorFetchAllBySQL got a "
                     "Sequence Region start coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srstart, INT_MAX);
@@ -4712,7 +4712,7 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         if(srend <= INT_MAX)
             slend = (ajint) srend;
         else
-            ajFatal("markerFeatureadaptorFetchAllBySQL got a "
+            ajFatal("markerfeatureadaptorFetchAllBySQL got a "
                     "Sequence Region end coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srend, INT_MAX);
@@ -4818,7 +4818,7 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             if(ensSliceGetLength(slice) <= INT_MAX)
                 sllength = (ajint) ensSliceGetLength(slice);
             else
-                ajFatal("markerFeatureadaptorFetchAllBySQL got a Slice, "
+                ajFatal("markerfeatureadaptorFetchAllBySQL got a Slice, "
                         "whose length (%u) exceeds the "
                         "maximum integer limit (%d).",
                         ensSliceGetLength(slice), INT_MAX);
@@ -4937,7 +4937,7 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
     ajListFree(&mrs);
 
-    ajTableMapDel(table, markerFeatureadaptorClearMarkerTable, NULL);
+    ajTableMapDel(table, markerfeatureadaptorClearMarkerTable, NULL);
 
     ajTableFree(&table);
 
@@ -4947,7 +4947,7 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @funcstatic markerFeatureadaptorCacheReference *****************************
+/* @funcstatic markerfeatureadaptorCacheReference *****************************
 **
 ** Wrapper function to reference an Ensembl Marker Feature
 ** from an Ensembl Cache.
@@ -4958,7 +4958,7 @@ static AjBool markerFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @@
 ******************************************************************************/
 
-static void *markerFeatureadaptorCacheReference(void *value)
+static void *markerfeatureadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -4969,7 +4969,7 @@ static void *markerFeatureadaptorCacheReference(void *value)
 
 
 
-/* @funcstatic markerFeatureadaptorCacheDelete ********************************
+/* @funcstatic markerfeatureadaptorCacheDelete ********************************
 **
 ** Wrapper function to delete an Ensembl Marker Feature
 ** from an Ensembl Cache.
@@ -4980,7 +4980,7 @@ static void *markerFeatureadaptorCacheReference(void *value)
 ** @@
 ******************************************************************************/
 
-static void markerFeatureadaptorCacheDelete(void **value)
+static void markerfeatureadaptorCacheDelete(void **value)
 {
     if(!value)
         return;
@@ -4993,7 +4993,7 @@ static void markerFeatureadaptorCacheDelete(void **value)
 
 
 
-/* @funcstatic markerFeatureadaptorCacheSize **********************************
+/* @funcstatic markerfeatureadaptorCacheSize **********************************
 **
 ** Wrapper function to determine the memory size of an Ensembl Marker Feature
 ** via an Ensembl Cache.
@@ -5004,7 +5004,7 @@ static void markerFeatureadaptorCacheDelete(void **value)
 ** @@
 ******************************************************************************/
 
-static ajuint markerFeatureadaptorCacheSize(const void *value)
+static ajuint markerfeatureadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;
@@ -5015,7 +5015,7 @@ static ajuint markerFeatureadaptorCacheSize(const void *value)
 
 
 
-/* @funcstatic markerFeatureadaptorGetFeature *********************************
+/* @funcstatic markerfeatureadaptorGetFeature *********************************
 **
 ** Wrapper function to get the Ensembl Feature of an
 ** Ensembl Marker Feature from an Ensembl Feature Adaptor.
@@ -5026,7 +5026,7 @@ static ajuint markerFeatureadaptorCacheSize(const void *value)
 ** @@
 ******************************************************************************/
 
-static EnsPFeature markerFeatureadaptorGetFeature(const void *value)
+static EnsPFeature markerfeatureadaptorGetFeature(const void *value)
 {
     if(!value)
         return NULL;
@@ -5080,18 +5080,18 @@ EnsPMarkerfeatureadaptor ensMarkerfeatureadaptorNew(EnsPDatabaseadaptor dba)
 
     mfa->Adaptor = ensFeatureadaptorNew(
         dba,
-        markerFeatureadaptorTables,
-        markerFeatureadaptorColumns,
-        markerFeatureadaptorLeftJoin,
-        markerFeatureadaptorDefaultCondition,
-        markerFeatureadaptorFinalCondition,
-        markerFeatureadaptorFetchAllBySQL,
-        (void* (*)(const void* key)) NULL, /* Fread */
-        markerFeatureadaptorCacheReference,
-        (AjBool (*)(const void* value)) NULL, /* Fwrite */
-        markerFeatureadaptorCacheDelete,
-        markerFeatureadaptorCacheSize,
-        markerFeatureadaptorGetFeature,
+        markerfeatureadaptorTables,
+        markerfeatureadaptorColumns,
+        markerfeatureadaptorLeftJoin,
+        markerfeatureadaptorDefaultCondition,
+        markerfeatureadaptorFinalCondition,
+        markerfeatureadaptorFetchAllBySQL,
+        (void* (*)(const void* key)) NULL,
+        markerfeatureadaptorCacheReference,
+        (AjBool (*)(const void* value)) NULL,
+        markerfeatureadaptorCacheDelete,
+        markerfeatureadaptorCacheSize,
+        markerfeatureadaptorGetFeature,
         "Marker Feature");
 
     return mfa;

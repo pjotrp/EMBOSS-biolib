@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.6 $
+** @version $Revision: 1.7 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -53,11 +53,11 @@ extern EnsPCoordsystemadaptor ensRegistryGetCoordsystemadaptor(
 extern EnsPSeqregionadaptor ensRegistryGetSeqregionadaptor(
     EnsPDatabaseadaptor dba);
 
-static void* sequenceAdaptorCacheReference(void *value);
+static void* sequenceadaptorCacheReference(void *value);
 
-static void sequenceAdaptorCacheDelete(void **value);
+static void sequenceadaptorCacheDelete(void **value);
 
-static ajuint sequenceAdaptorCacheSize(const void *value);
+static ajuint sequenceadaptorCacheSize(const void *value);
 
 
 
@@ -87,22 +87,22 @@ static ajuint sequenceChunkPower = 18;
 
 /* 1 << 26 =  64 MiB */
 
-static ajuint sequenceAdaptorCacheMaxBytes = 1 << 26;
+static ajuint sequenceadaptorCacheMaxBytes = 1 << 26;
 
 /* 1 << 16 =  64 Ki  */
 
-static ajuint sequenceAdaptorCacheMaxCount = 1 << 16;
+static ajuint sequenceadaptorCacheMaxCount = 1 << 16;
 
-static ajuint sequenceAdaptorCacheMaxSize = 0;
+static ajuint sequenceadaptorCacheMaxSize = 0;
 
 /* 1 << 18 = 256 Ki * 5, or about 5 BAC clones */
 
-static ajuint sequenceAdaptorCacheMaximum = (1 << 18) * 5;
+static ajuint sequenceadaptorCacheMaximum = (1 << 18) * 5;
 
 
 
 
-/* @funcstatic sequenceAdaptorCacheReference **********************************
+/* @funcstatic sequenceadaptorCacheReference **********************************
 **
 ** Wrapper function to reference an Ensembl Sequence (i.e. an AJAX String)
 ** from an Ensembl Cache.
@@ -113,7 +113,7 @@ static ajuint sequenceAdaptorCacheMaximum = (1 << 18) * 5;
 ** @@
 ******************************************************************************/
 
-static void* sequenceAdaptorCacheReference(void *value)
+static void* sequenceadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -124,7 +124,7 @@ static void* sequenceAdaptorCacheReference(void *value)
 
 
 
-/* @funcstatic sequenceAdaptorCacheDelete *************************************
+/* @funcstatic sequenceadaptorCacheDelete *************************************
 **
 ** Wrapper function to delete (or de-reference) an Ensembl Sequence
 ** (i.e. an AJAX String) from an Ensembl Cache.
@@ -135,7 +135,7 @@ static void* sequenceAdaptorCacheReference(void *value)
 ** @@
 ******************************************************************************/
 
-static void sequenceAdaptorCacheDelete(void **value)
+static void sequenceadaptorCacheDelete(void **value)
 {
     if(!value)
         return;
@@ -150,7 +150,7 @@ static void sequenceAdaptorCacheDelete(void **value)
 
 
 
-/* @funcstatic sequenceAdaptorCacheSize ***************************************
+/* @funcstatic sequenceadaptorCacheSize ***************************************
 **
 ** Wrapper function to calculate the memory size of an Ensembl Sequence
 ** (i.e. an AJAX String) from an Ensembl Cache.
@@ -161,7 +161,7 @@ static void sequenceAdaptorCacheDelete(void **value)
 ** @@
 ******************************************************************************/
 
-static ajuint sequenceAdaptorCacheSize(const void *value)
+static ajuint sequenceadaptorCacheSize(const void *value)
 {
     ajuint size = 0;
 
@@ -230,12 +230,12 @@ EnsPSequenceadaptor ensSequenceadaptorNew(EnsPDatabaseadaptor dba)
     sa->Adaptor = dba;
 
     sa->Cache = ensCacheNew(ensECacheTypeAlphaNumeric,
-                            sequenceAdaptorCacheMaxBytes,
-                            sequenceAdaptorCacheMaxCount,
-                            sequenceAdaptorCacheMaxSize,
-                            sequenceAdaptorCacheReference,
-                            sequenceAdaptorCacheDelete,
-                            sequenceAdaptorCacheSize,
+                            sequenceadaptorCacheMaxBytes,
+                            sequenceadaptorCacheMaxCount,
+                            sequenceadaptorCacheMaxSize,
+                            sequenceadaptorCacheReference,
+                            sequenceadaptorCacheDelete,
+                            sequenceadaptorCacheSize,
                             (void* (*)(const void* key)) NULL,
                             (AjBool (*)(const void* value)) NULL,
                             ajFalse,
@@ -418,7 +418,7 @@ AjBool ensSequenceadaptorFetchSubStrBySeqregion(const EnsPSequenceadaptor sa,
         *Psequence = ajStrNewRes((((length + 1) >> sequenceChunkPower) + 1)
                                  << sequenceChunkPower);
 
-    if(length < sequenceAdaptorCacheMaximum)
+    if(length < sequenceadaptorCacheMaximum)
     {
         chkmin = (start - 1) >> sequenceChunkPower;
 

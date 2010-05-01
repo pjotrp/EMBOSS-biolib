@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.6 $
+** @version $Revision: 1.7 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -52,19 +52,19 @@ extern EnsPKaryotypebandadaptor ensRegistryGetKaryotypebandadaptor(
 extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
     EnsPDatabaseadaptor dba);
 
-static AjBool karyotypeBandadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool karyotypebandadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                 const AjPStr statement,
                                                 EnsPAssemblymapper am,
                                                 EnsPSlice slice,
                                                 AjPList kblist);
 
-static void *karyotypeBandadaptorCacheReference(void *value);
+static void *karyotypebandadaptorCacheReference(void *value);
 
-static void karyotypeBandadaptorCacheDelete(void **value);
+static void karyotypebandadaptorCacheDelete(void **value);
 
-static ajuint karyotypeBandadaptorCacheSize(const void *value);
+static ajuint karyotypebandadaptorCacheSize(const void *value);
 
-static EnsPFeature karyotypeBandadaptorGetFeature(const void *value);
+static EnsPFeature karyotypebandadaptorGetFeature(const void *value);
 
 
 
@@ -693,7 +693,7 @@ ajuint ensKaryotypebandGetMemSize(const EnsPKaryotypeband kb)
 **
 ******************************************************************************/
 
-static const char *karyotypeBandadaptorTables[] =
+static const char *karyotypebandadaptorTables[] =
 {
     "karyotype",
     NULL
@@ -702,7 +702,7 @@ static const char *karyotypeBandadaptorTables[] =
 
 
 
-static const char *karyotypeBandadaptorColumns[] =
+static const char *karyotypebandadaptorColumns[] =
 {
     "karyotype.karyotype_id",
     "karyotype.seq_region_id",
@@ -716,7 +716,7 @@ static const char *karyotypeBandadaptorColumns[] =
 
 
 
-static EnsOBaseadaptorLeftJoin karyotypeBandadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin karyotypebandadaptorLeftJoin[] =
 {
     {NULL, NULL}
 };
@@ -724,14 +724,14 @@ static EnsOBaseadaptorLeftJoin karyotypeBandadaptorLeftJoin[] =
 
 
 
-static const char *karyotypeBandadaptorDefaultCondition = NULL;
+static const char *karyotypebandadaptorDefaultCondition = NULL;
 
-static const char *karyotypeBandadaptorFinalCondition = NULL;
-
-
+static const char *karyotypebandadaptorFinalCondition = NULL;
 
 
-/* @funcstatic karyotypeBandadaptorFetchAllBySQL ******************************
+
+
+/* @funcstatic karyotypebandadaptorFetchAllBySQL ******************************
 **
 ** Fetch all Ensembl Karyotype Band objects via an SQL statement.
 **
@@ -745,7 +745,7 @@ static const char *karyotypeBandadaptorFinalCondition = NULL;
 ** @@
 ******************************************************************************/
 
-static AjBool karyotypeBandadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool karyotypebandadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                 const AjPStr statement,
                                                 EnsPAssemblymapper am,
                                                 EnsPSlice slice,
@@ -774,8 +774,8 @@ static AjBool karyotypeBandadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPSlice srslice   = NULL;
     EnsPSliceadaptor sa = NULL;
 
-    if(ajDebugTest("karyotypeBandadaptorFetchAllBySQL"))
-        ajDebug("karyotypeBandadaptorFetchAllBySQL\n"
+    if(ajDebugTest("karyotypebandadaptorFetchAllBySQL"))
+        ajDebug("karyotypebandadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -862,7 +862,7 @@ static AjBool karyotypeBandadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @funcstatic karyotypeBandadaptorCacheReference *****************************
+/* @funcstatic karyotypebandadaptorCacheReference *****************************
 **
 ** Wrapper function to reference an Ensembl Karyotype Band
 ** from an Ensembl Cache.
@@ -873,7 +873,7 @@ static AjBool karyotypeBandadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @@
 ******************************************************************************/
 
-static void *karyotypeBandadaptorCacheReference(void *value)
+static void *karyotypebandadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -884,7 +884,7 @@ static void *karyotypeBandadaptorCacheReference(void *value)
 
 
 
-/* @funcstatic karyotypeBandadaptorCacheDelete ********************************
+/* @funcstatic karyotypebandadaptorCacheDelete ********************************
 **
 ** Wrapper function to delete (de-reference) an Ensembl Karyotype Band
 ** from an Ensembl Cache.
@@ -895,7 +895,7 @@ static void *karyotypeBandadaptorCacheReference(void *value)
 ** @@
 ******************************************************************************/
 
-static void karyotypeBandadaptorCacheDelete(void **value)
+static void karyotypebandadaptorCacheDelete(void **value)
 {
     if(!value)
         return;
@@ -908,7 +908,7 @@ static void karyotypeBandadaptorCacheDelete(void **value)
 
 
 
-/* @funcstatic karyotypeBandadaptorCacheSize **********************************
+/* @funcstatic karyotypebandadaptorCacheSize **********************************
 **
 ** Wrapper function to determine the memory size of an Ensembl Karyotype Band
 ** from an Ensembl Cache.
@@ -919,7 +919,7 @@ static void karyotypeBandadaptorCacheDelete(void **value)
 ** @@
 ******************************************************************************/
 
-static ajuint karyotypeBandadaptorCacheSize(const void *value)
+static ajuint karyotypebandadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;
@@ -930,7 +930,7 @@ static ajuint karyotypeBandadaptorCacheSize(const void *value)
 
 
 
-/* @funcstatic karyotypeBandadaptorGetFeature *********************************
+/* @funcstatic karyotypebandadaptorGetFeature *********************************
 **
 ** Wrapper function to get the Ensembl Feature element from an
 ** Ensembl Karyotype Band.
@@ -941,7 +941,7 @@ static ajuint karyotypeBandadaptorCacheSize(const void *value)
 ** @@
 ******************************************************************************/
 
-static EnsPFeature karyotypeBandadaptorGetFeature(const void *value)
+static EnsPFeature karyotypebandadaptorGetFeature(const void *value)
 {
     if(!value)
         return NULL;
@@ -995,18 +995,18 @@ EnsPKaryotypebandadaptor ensKaryotypebandadaptorNew(EnsPDatabaseadaptor dba)
 
     kba->Adaptor = ensFeatureadaptorNew(
         dba,
-        karyotypeBandadaptorTables,
-        karyotypeBandadaptorColumns,
-        karyotypeBandadaptorLeftJoin,
-        karyotypeBandadaptorDefaultCondition,
-        karyotypeBandadaptorFinalCondition,
-        karyotypeBandadaptorFetchAllBySQL,
+        karyotypebandadaptorTables,
+        karyotypebandadaptorColumns,
+        karyotypebandadaptorLeftJoin,
+        karyotypebandadaptorDefaultCondition,
+        karyotypebandadaptorFinalCondition,
+        karyotypebandadaptorFetchAllBySQL,
         (void* (*)(const void* key)) NULL,
-        karyotypeBandadaptorCacheReference,
+        karyotypebandadaptorCacheReference,
         (AjBool (*)(const void* value)) NULL,
-        karyotypeBandadaptorCacheDelete,
-        karyotypeBandadaptorCacheSize,
-        karyotypeBandadaptorGetFeature,
+        karyotypebandadaptorCacheDelete,
+        karyotypebandadaptorCacheSize,
+        karyotypebandadaptorGetFeature,
         "Karyotype Band");
 
     return kba;

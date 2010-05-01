@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -97,19 +97,19 @@ static int geneCompareExon(const void *P1, const void *P2);
 
 static void geneDeleteExon(void **PP1, void *cl);
 
-static AjBool geneAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool geneadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                        const AjPStr statement,
                                        EnsPAssemblymapper am,
                                        EnsPSlice slice,
                                        AjPList genes);
 
-static void *geneAdaptorCacheReference(void *value);
+static void *geneadaptorCacheReference(void *value);
 
-static void geneAdaptorCacheDelete(void **value);
+static void geneadaptorCacheDelete(void **value);
 
-static ajuint geneAdaptorCacheSize(const void *value);
+static ajuint geneadaptorCacheSize(const void *value);
 
-static EnsPFeature geneAdaptorGetFeature(const void *value);
+static EnsPFeature geneadaptorGetFeature(const void *value);
 
 
 
@@ -2783,7 +2783,7 @@ EnsPGene ensGeneTransfer(EnsPGene gene, EnsPSlice slice)
 **
 ******************************************************************************/
 
-static const char *geneAdaptorTables[] =
+static const char *geneadaptorTables[] =
 {
     "gene",
     "gene_stable_id",
@@ -2791,7 +2791,7 @@ static const char *geneAdaptorTables[] =
     NULL
 };
 
-static const char *geneAdaptorColumns[] =
+static const char *geneadaptorColumns[] =
 {
     "gene.gene_id",
     "gene.seq_region_id",
@@ -2821,21 +2821,21 @@ static const char *geneAdaptorColumns[] =
     NULL
 };
 
-static EnsOBaseadaptorLeftJoin geneAdaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin geneadaptorLeftJoin[] =
 {
     {"gene_stable_id", "gene.gene_id = gene_stable_id.gene_id"},
     {"xref", "gene.display_xref_id = xref.xref_id"},
     {NULL, NULL}
 };
 
-static const char *geneAdaptorDefaultCondition = NULL;
+static const char *geneadaptorDefaultCondition = NULL;
 
-static const char *geneAdaptorFinalCondition = NULL;
-
-
+static const char *geneadaptorFinalCondition = NULL;
 
 
-/* @funcstatic geneAdaptorFetchAllBySQL ***************************************
+
+
+/* @funcstatic geneadaptorFetchAllBySQL ***************************************
 **
 ** Fetch all Ensembl Gene objects via an SQL statement.
 **
@@ -2854,7 +2854,7 @@ static const char *geneAdaptorFinalCondition = NULL;
 ** Reference objects, all External Database objects are cached in the adaptor.
 ******************************************************************************/
 
-static AjBool geneAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool geneadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                        const AjPStr statement,
                                        EnsPAssemblymapper am,
                                        EnsPSlice slice,
@@ -2926,8 +2926,8 @@ static AjBool geneAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPSlice srslice   = NULL;
     EnsPSliceadaptor sa = NULL;
 
-    if(ajDebugTest("geneAdaptorFetchAllBySQL"))
-        ajDebug("geneAdaptorFetchAllBySQL\n"
+    if(ajDebugTest("geneadaptorFetchAllBySQL"))
+        ajDebug("geneadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -3039,7 +3039,7 @@ static AjBool geneAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         if(srstart <= INT_MAX)
             slstart = (ajint) srstart;
         else
-            ajFatal("geneAdaptorFetchAllBySQL got a "
+            ajFatal("geneadaptorFetchAllBySQL got a "
                     "Sequence Region start coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srstart, INT_MAX);
@@ -3047,7 +3047,7 @@ static AjBool geneAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         if(srend <= INT_MAX)
             slend = (ajint) srend;
         else
-            ajFatal("geneAdaptorFetchAllBySQL got a "
+            ajFatal("geneadaptorFetchAllBySQL got a "
                     "Sequence Region end coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srend, INT_MAX);
@@ -3162,7 +3162,7 @@ static AjBool geneAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             if(ensSliceGetLength(slice) <= INT_MAX)
                 sllength = (ajint) ensSliceGetLength(slice);
             else
-                ajFatal("geneAdaptorFetchAllBySQL got a Slice, "
+                ajFatal("geneadaptorFetchAllBySQL got a Slice, "
                         "which length (%u) exceeds the "
                         "maximum integer limit (%d).",
                         ensSliceGetLength(slice), INT_MAX);
@@ -3238,7 +3238,7 @@ static AjBool geneAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             einfotype = ensExternalreferenceInfoTypeFromStr(erinfotype);
 
             if(!einfotype)
-                ajDebug("geneAdaptorFetchAllBySQL encountered "
+                ajDebug("geneadaptorFetchAllBySQL encountered "
                         "unexpected string '%S' in the "
                         "'xref.infotype' field.\n", erinfotype);
 
@@ -3264,7 +3264,7 @@ static AjBool geneAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         estatus = ensGeneStatusFromStr(status);
 
         if(!estatus)
-            ajDebug("geneAdaptorFetchAllBySQL encountered "
+            ajDebug("geneadaptorFetchAllBySQL encountered "
                     "unexpected string '%S' in the "
                     "'gene.status' field.\n", status);
 
@@ -3333,7 +3333,7 @@ static AjBool geneAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @funcstatic geneAdaptorCacheReference **************************************
+/* @funcstatic geneadaptorCacheReference **************************************
 **
 ** Wrapper function to reference an Ensembl Gene from an Ensembl Cache.
 **
@@ -3343,7 +3343,7 @@ static AjBool geneAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @@
 ******************************************************************************/
 
-static void *geneAdaptorCacheReference(void *value)
+static void *geneadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -3354,7 +3354,7 @@ static void *geneAdaptorCacheReference(void *value)
 
 
 
-/* @funcstatic geneAdaptorCacheDelete *****************************************
+/* @funcstatic geneadaptorCacheDelete *****************************************
 **
 ** Wrapper function to delete an Ensembl Gene from an Ensembl Cache.
 **
@@ -3364,7 +3364,7 @@ static void *geneAdaptorCacheReference(void *value)
 ** @@
 ******************************************************************************/
 
-static void geneAdaptorCacheDelete(void **value)
+static void geneadaptorCacheDelete(void **value)
 {
     if(!value)
         return;
@@ -3377,7 +3377,7 @@ static void geneAdaptorCacheDelete(void **value)
 
 
 
-/* @funcstatic geneAdaptorCacheSize *******************************************
+/* @funcstatic geneadaptorCacheSize *******************************************
 **
 ** Wrapper function to determine the memory size of an Ensembl Gene
 ** from an Ensembl Cache.
@@ -3388,7 +3388,7 @@ static void geneAdaptorCacheDelete(void **value)
 ** @@
 ******************************************************************************/
 
-static ajuint geneAdaptorCacheSize(const void *value)
+static ajuint geneadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;
@@ -3399,7 +3399,7 @@ static ajuint geneAdaptorCacheSize(const void *value)
 
 
 
-/* @funcstatic geneAdaptorGetFeature ******************************************
+/* @funcstatic geneadaptorGetFeature ******************************************
 **
 ** Wrapper function to get the Ensembl Feature of an Ensembl Gene
 ** from an Ensembl Feature Adaptor.
@@ -3410,7 +3410,7 @@ static ajuint geneAdaptorCacheSize(const void *value)
 ** @@
 ******************************************************************************/
 
-static EnsPFeature geneAdaptorGetFeature(const void *value)
+static EnsPFeature geneadaptorGetFeature(const void *value)
 {
     if(!value)
         return NULL;
@@ -3465,18 +3465,18 @@ EnsPGeneadaptor ensGeneadaptorNew(EnsPDatabaseadaptor dba)
 
     ga->Adaptor = ensFeatureadaptorNew(
         dba,
-        geneAdaptorTables,
-        geneAdaptorColumns,
-        geneAdaptorLeftJoin,
-        geneAdaptorDefaultCondition,
-        geneAdaptorFinalCondition,
-        geneAdaptorFetchAllBySQL,
+        geneadaptorTables,
+        geneadaptorColumns,
+        geneadaptorLeftJoin,
+        geneadaptorDefaultCondition,
+        geneadaptorFinalCondition,
+        geneadaptorFetchAllBySQL,
         (void* (*)(const void* key)) NULL,
-        geneAdaptorCacheReference,
+        geneadaptorCacheReference,
         (AjBool (*)(const void* value)) NULL,
-        geneAdaptorCacheDelete,
-        geneAdaptorCacheSize,
-        geneAdaptorGetFeature,
+        geneadaptorCacheDelete,
+        geneadaptorCacheSize,
+        geneadaptorGetFeature,
         "Gene");
 
     return ga;

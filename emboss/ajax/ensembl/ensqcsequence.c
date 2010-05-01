@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -49,7 +49,7 @@ extern EnsPQcdatabaseadaptor ensRegistryGetQcdatabaseadaptor(
 extern EnsPQcsequenceadaptor ensRegistryGetQcsequenceadaptor(
     EnsPDatabaseadaptor dba);
 
-static AjBool qcSequenceadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool qcsequenceadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                              const AjPStr statement,
                                              EnsPAssemblymapper am,
                                              EnsPSlice slice,
@@ -1542,7 +1542,7 @@ AjBool ensQcsequenceFetchInternalAnchor(const EnsPQcsequence qcs,
 **
 ******************************************************************************/
 
-static const char *qcSequenceadaptorTables[] =
+static const char *qcsequenceadaptorTables[] =
 {
     "sequence",
     (const char *) NULL
@@ -1551,7 +1551,7 @@ static const char *qcSequenceadaptorTables[] =
 
 
 
-static const char *qcSequenceadaptorColumns[] =
+static const char *qcsequenceadaptorColumns[] =
 {
     "sequence.sequence_id",
     "sequence.sequence_db_id",
@@ -1571,7 +1571,7 @@ static const char *qcSequenceadaptorColumns[] =
 
 
 
-static EnsOBaseadaptorLeftJoin qcSequenceadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin qcsequenceadaptorLeftJoin[] =
 {
     {(const char*) NULL, (const char*) NULL}
 };
@@ -1579,19 +1579,19 @@ static EnsOBaseadaptorLeftJoin qcSequenceadaptorLeftJoin[] =
 
 
 
-static const char *qcSequenceadaptorDefaultCondition =
+static const char *qcsequenceadaptorDefaultCondition =
     (const char*) NULL;
 
 
 
 
-static const char *qcSequenceadaptorFinalCondition =
+static const char *qcsequenceadaptorFinalCondition =
     (const char *) NULL;
 
 
 
 
-/* @funcstatic qcSequenceadaptorFetchAllBySQL *********************************
+/* @funcstatic qcsequenceadaptorFetchAllBySQL *********************************
 **
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl QC Sequence objects.
@@ -1606,7 +1606,7 @@ static const char *qcSequenceadaptorFinalCondition =
 ** @@
 ******************************************************************************/
 
-static AjBool qcSequenceadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool qcsequenceadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                              const AjPStr statement,
                                              EnsPAssemblymapper am,
                                              EnsPSlice slice,
@@ -1636,8 +1636,8 @@ static AjBool qcSequenceadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPQcdatabase qcdb         = NULL;
     EnsPQcdatabaseadaptor qcdba = NULL;
 
-    if(ajDebugTest("qcSequenceadaptorFetchAllBySQL"))
-        ajDebug("qcSequenceadaptorFetchAllBySQL\n"
+    if(ajDebugTest("qcsequenceadaptorFetchAllBySQL"))
+        ajDebug("qcsequenceadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -1777,12 +1777,12 @@ EnsPQcsequenceadaptor ensQcsequenceadaptorNew(EnsPDatabaseadaptor dba)
 
     qcsa->Adaptor = ensBaseadaptorNew(
         dba,
-        qcSequenceadaptorTables,
-        qcSequenceadaptorColumns,
-        qcSequenceadaptorLeftJoin,
-        qcSequenceadaptorDefaultCondition,
-        qcSequenceadaptorFinalCondition,
-        qcSequenceadaptorFetchAllBySQL);
+        qcsequenceadaptorTables,
+        qcsequenceadaptorColumns,
+        qcsequenceadaptorLeftJoin,
+        qcsequenceadaptorDefaultCondition,
+        qcsequenceadaptorFinalCondition,
+        qcsequenceadaptorFetchAllBySQL);
 
     return qcsa;
 }
@@ -1949,14 +1949,14 @@ AjBool ensQcsequenceadaptorFetchByAccession(EnsPQcsequenceadaptor qcsa,
 
     /*
     ** TODO: To implement?
-    ** qcSequenceadaptorCacheInsert(qcsa, Pqcs);
+    ** qcsequenceadaptorCacheInsert(qcsa, Pqcs);
     */
 
     while(ajListPop(qcss, (void **) &qcs))
     {
         /*
         ** TODO: To implement?
-        ** qcSequenceadaptorCacheInsert(qcsa, &qcs);
+        ** qcsequenceadaptorCacheInsert(qcsa, &qcs);
         */
 
         ensQcsequenceDel(&qcs);
@@ -2041,7 +2041,7 @@ AjBool ensQcsequenceadaptorFetchByAccessionVersion(EnsPQcsequenceadaptor qcsa,
 
     /*
     ** TODO: To implement?
-    ** qcSequenceadaptorCacheInsert(qcsa, Pqcs);
+    ** qcsequenceadaptorCacheInsert(qcsa, Pqcs);
     */
 
     while(ajListPop(qcss, (void **) &qcs))
@@ -2049,7 +2049,7 @@ AjBool ensQcsequenceadaptorFetchByAccessionVersion(EnsPQcsequenceadaptor qcsa,
 
         /*
         ** TODO: To implement?
-        ** qcSequenceadaptorCacheInsert(qcsa, &qcs);
+        ** qcsequenceadaptorCacheInsert(qcsa, &qcs);
         */
 
         ensQcsequenceDel(&qcs);
@@ -2129,14 +2129,14 @@ AjBool ensQcsequenceadaptorFetchByName(EnsPQcsequenceadaptor qcsa,
 
     /*
     ** TODO: To implement?
-    ** qcSequenceadaptorCacheInsert(qcsa, Pqcs);
+    ** qcsequenceadaptorCacheInsert(qcsa, Pqcs);
     */
 
     while(ajListPop(qcss, (void **) &qcs))
     {
         /*
         ** TODO: To implement?
-        ** qcSequenceadaptorCacheInsert(qcsa, &qcs);
+        ** qcsequenceadaptorCacheInsert(qcsa, &qcs);
         */
 
         ensQcsequenceDel(&qcs);

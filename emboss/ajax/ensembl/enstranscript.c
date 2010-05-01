@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -210,19 +210,19 @@ static void transcriptExonRankDel(TranscriptPExonRank *Ptrex)
 
 
 
-static AjBool transcriptAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool transcriptadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                              const AjPStr statement,
                                              EnsPAssemblymapper am,
                                              EnsPSlice slice,
                                              AjPList transcripts);
 
-static void *transcriptAdaptorCacheReference(void *value);
+static void *transcriptadaptorCacheReference(void *value);
 
-static void transcriptAdaptorCacheDelete(void **value);
+static void transcriptadaptorCacheDelete(void **value);
 
-static ajuint transcriptAdaptorCacheSize(const void *value);
+static ajuint transcriptadaptorCacheSize(const void *value);
 
-static EnsPFeature transcriptAdaptorGetFeature(const void *value);
+static EnsPFeature transcriptadaptorGetFeature(const void *value);
 
 
 
@@ -4418,7 +4418,7 @@ AjBool ensTranscriptFetchTranslationSequenceSeq(EnsPTranscript transcript,
 **
 ******************************************************************************/
 
-static const char *transcriptAdaptorTables[] =
+static const char *transcriptadaptorTables[] =
 {
     "transcript",
     "transcript_stable_id",
@@ -4427,7 +4427,7 @@ static const char *transcriptAdaptorTables[] =
     NULL
 };
 
-static const char *transcriptAdaptorColumns[] =
+static const char *transcriptadaptorColumns[] =
 {
     "transcript.transcript_id",
     "transcript.seq_region_id",
@@ -4455,7 +4455,7 @@ static const char *transcriptAdaptorColumns[] =
     NULL
 };
 
-static EnsOBaseadaptorLeftJoin transcriptAdaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin transcriptadaptorLeftJoin[] =
 {
     {
         "transcript_stable_id",
@@ -4466,14 +4466,14 @@ static EnsOBaseadaptorLeftJoin transcriptAdaptorLeftJoin[] =
     {NULL, NULL}
 };
 
-static const char *transcriptAdaptorDefaultCondition = NULL;
+static const char *transcriptadaptorDefaultCondition = NULL;
 
-static const char *transcriptAdaptorFinalCondition = NULL;
-
-
+static const char *transcriptadaptorFinalCondition = NULL;
 
 
-/* @funcstatic transcriptAdaptorFetchAllBySQL *********************************
+
+
+/* @funcstatic transcriptadaptorFetchAllBySQL *********************************
 **
 ** Fetch all Ensembl Transcript objects via an SQL statement.
 **
@@ -4487,7 +4487,7 @@ static const char *transcriptAdaptorFinalCondition = NULL;
 ** @@
 ******************************************************************************/
 
-static AjBool transcriptAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool transcriptadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                              const AjPStr statement,
                                              EnsPAssemblymapper am,
                                              EnsPSlice slice,
@@ -4557,8 +4557,8 @@ static AjBool transcriptAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPSlice srslice   = NULL;
     EnsPSliceadaptor sa = NULL;
 
-    if(ajDebugTest("transcriptAdaptorFetchAllBySQL"))
-        ajDebug("transcriptAdaptorFetchAllBySQL\n"
+    if(ajDebugTest("transcriptadaptorFetchAllBySQL"))
+        ajDebug("transcriptadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -4667,7 +4667,7 @@ static AjBool transcriptAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         if(srstart <= INT_MAX)
             slstart = (ajint) srstart;
         else
-            ajFatal("transcriptAdaptorFetchAllBySQL got a "
+            ajFatal("transcriptadaptorFetchAllBySQL got a "
                     "Sequence Region start coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srstart, INT_MAX);
@@ -4675,7 +4675,7 @@ static AjBool transcriptAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         if(srend <= INT_MAX)
             slend = (ajint) srend;
         else
-            ajFatal("transcriptAdaptorFetchAllBySQL got a "
+            ajFatal("transcriptadaptorFetchAllBySQL got a "
                     "Sequence Region end coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srend, INT_MAX);
@@ -4788,7 +4788,7 @@ static AjBool transcriptAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             if(ensSliceGetLength(slice) <= INT_MAX)
                 sllength = (ajint) ensSliceGetLength(slice);
             else
-                ajFatal("transcriptAdaptorFetchAllBySQL got a Slice, "
+                ajFatal("transcriptadaptorFetchAllBySQL got a Slice, "
                         "which length (%u) exceeds the "
                         "maximum integer limit (%d).",
                         ensSliceGetLength(slice), INT_MAX);
@@ -4862,7 +4862,7 @@ static AjBool transcriptAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             einfotype = ensExternalreferenceInfoTypeFromStr(erinfotype);
 
             if(!einfotype)
-                ajDebug("transcriptAdaptorFetchAllBySQL encountered "
+                ajDebug("transcriptadaptorFetchAllBySQL encountered "
                         "unexpected string '%S' in the "
                         "'xref.infotype' field.\n", erinfotype);
 
@@ -4890,7 +4890,7 @@ static AjBool transcriptAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         estatus = ensTranscriptStatusFromStr(status);
 
         if(!estatus)
-            ajFatal("transcriptAdaptorFetchAllBySQL encountered "
+            ajFatal("transcriptadaptorFetchAllBySQL encountered "
                     "unexpected string '%S' in the "
                     "'transcript.status' field.\n", status);
 
@@ -4954,7 +4954,7 @@ static AjBool transcriptAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @funcstatic transcriptAdaptorCacheReference ********************************
+/* @funcstatic transcriptadaptorCacheReference ********************************
 **
 ** Wrapper function to reference an Ensembl Transcript
 ** from an Ensembl Cache.
@@ -4965,7 +4965,7 @@ static AjBool transcriptAdaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @@
 ******************************************************************************/
 
-static void *transcriptAdaptorCacheReference(void *value)
+static void *transcriptadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -4976,7 +4976,7 @@ static void *transcriptAdaptorCacheReference(void *value)
 
 
 
-/* @funcstatic transcriptAdaptorCacheDelete ***********************************
+/* @funcstatic transcriptadaptorCacheDelete ***********************************
 **
 ** Wrapper function to delete an Ensembl Transcript
 ** from an Ensembl Cache.
@@ -4987,7 +4987,7 @@ static void *transcriptAdaptorCacheReference(void *value)
 ** @@
 ******************************************************************************/
 
-static void transcriptAdaptorCacheDelete(void **value)
+static void transcriptadaptorCacheDelete(void **value)
 {
     if(!value)
         return;
@@ -5000,7 +5000,7 @@ static void transcriptAdaptorCacheDelete(void **value)
 
 
 
-/* @funcstatic transcriptAdaptorCacheSize *************************************
+/* @funcstatic transcriptadaptorCacheSize *************************************
 **
 ** Wrapper function to determine the memory size of an Ensembl Transcript
 ** via an Ensembl Cache.
@@ -5011,7 +5011,7 @@ static void transcriptAdaptorCacheDelete(void **value)
 ** @@
 ******************************************************************************/
 
-static ajuint transcriptAdaptorCacheSize(const void *value)
+static ajuint transcriptadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;
@@ -5022,7 +5022,7 @@ static ajuint transcriptAdaptorCacheSize(const void *value)
 
 
 
-/* @funcstatic transcriptAdaptorGetFeature ************************************
+/* @funcstatic transcriptadaptorGetFeature ************************************
 **
 ** Wrapper function to get the Ensembl Feature of an
 ** Ensembl Transcript from an Ensembl Feature Adaptor.
@@ -5033,7 +5033,7 @@ static ajuint transcriptAdaptorCacheSize(const void *value)
 ** @@
 ******************************************************************************/
 
-static EnsPFeature transcriptAdaptorGetFeature(const void *value)
+static EnsPFeature transcriptadaptorGetFeature(const void *value)
 {
     if(!value)
         return NULL;
@@ -5087,18 +5087,18 @@ EnsPTranscriptadaptor ensTranscriptadaptorNew(EnsPDatabaseadaptor dba)
 
     tca->Adaptor = ensFeatureadaptorNew(
         dba,
-        transcriptAdaptorTables,
-        transcriptAdaptorColumns,
-        transcriptAdaptorLeftJoin,
-        transcriptAdaptorDefaultCondition,
-        transcriptAdaptorFinalCondition,
-        transcriptAdaptorFetchAllBySQL,
+        transcriptadaptorTables,
+        transcriptadaptorColumns,
+        transcriptadaptorLeftJoin,
+        transcriptadaptorDefaultCondition,
+        transcriptadaptorFinalCondition,
+        transcriptadaptorFetchAllBySQL,
         (void* (*)(const void* key)) NULL,
-        transcriptAdaptorCacheReference,
+        transcriptadaptorCacheReference,
         (AjBool (*)(const void* value)) NULL,
-        transcriptAdaptorCacheDelete,
-        transcriptAdaptorCacheSize,
-        transcriptAdaptorGetFeature,
+        transcriptadaptorCacheDelete,
+        transcriptadaptorCacheSize,
+        transcriptadaptorGetFeature,
         "Transcript");
 
     return tca;
