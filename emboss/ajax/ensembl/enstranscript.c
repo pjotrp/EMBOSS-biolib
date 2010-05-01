@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -4220,18 +4220,11 @@ AjBool ensTranscriptFetchTranslatableSequence(EnsPTranscript transcript,
 AjBool ensTranscriptFetchTranslationSequenceStr(EnsPTranscript transcript,
                                                 AjPStr *Psequence)
 {
-    ajuint codontable = 0;
-
-    AjPList attributes = NULL;
     AjPList ses = NULL;
 
-    AjPStr cdna  = NULL;
-    AjPStr code  = NULL;
-    AjPStr value = NULL;
+    AjPStr cdna = NULL;
 
-    AjPTrn atranslation = NULL;
-
-    EnsPAttribute attribute = NULL;
+    const AjPTrn atranslation = NULL;
 
     EnsPSequenceEdit se = NULL;
 
@@ -4282,24 +4275,7 @@ AjBool ensTranscriptFetchTranslationSequenceStr(EnsPTranscript transcript,
 
     slice = ensFeatureGetSlice(transcript->Feature);
 
-    code = ajStrNewC("codon_table");
-
-    ensSliceFetchAllAttributes(slice, code, attributes);
-
-    ajStrDel(&code);
-
-    while(ajListPop(attributes, (void **) &attribute))
-    {
-        value = ensAttributeGetValue(attribute);
-
-        ajStrToUint(value, &codontable);
-
-        ensAttributeDel(&attribute);
-    }
-
-    ajListFree(&attributes);
-
-    atranslation = ensTranslationCacheGetTranslation(codontable);
+    atranslation = ensSliceGetTranslation(slice);
 
     ajTrnSeqS(atranslation, cdna, Psequence);
 
