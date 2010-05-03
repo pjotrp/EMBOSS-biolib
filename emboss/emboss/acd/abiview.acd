@@ -17,7 +17,7 @@ section: input [
     binary: "Y"
     knowntype: "abi trace"
     information: "ABI sequencing trace file"
-    relations:  "/edam/data/ ABI sequencing trace"                           
+    relations:  "/edam/data/0000849 Sequence record"                           
   ]
 
 endsection: input
@@ -36,7 +36,7 @@ section: output [
   xygraph: graph [
     standard: "Y"
     gxtitle: "Residue Position"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0002168 Sequence trace image"                                   
   ]
 
   integer: startbase [
@@ -44,7 +44,7 @@ section: output [
     default: "0"
     minimum: "0"
     information: "First base to report or display"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001016 Sequence position"                                     
   ]
 
   integer: endbase [
@@ -54,7 +54,7 @@ section: output [
     help: "Last sequence base to report or display. If the default is
            set to zero then the value of this is taken as the maximum number
            of bases."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001016 Sequence position"                                     
   ]
 
   boolean: separate [

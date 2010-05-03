@@ -59,7 +59,7 @@ section: advanced [
     help: "Set a cut-off for the % of positive scoring matches below
            which there is no consensus. The default plurality is taken as 50%
            of the total weight of all the sequences in the alignment."
-    relations: "/edam/data/ Generic float"                                       
+    relations: "/edam/data/0002144 Threshold percentage"                                       
   ]
 
   float: identity [
@@ -72,7 +72,7 @@ section: advanced [
            identities at a position for it to give a consensus. Therefore, if
            this is set to 100% only columns of identities contribute to the
            consensus."
-    relations: "/edam/data/ Generic float"                                       
+    relations: "/edam/data/0002144 Threshold percentage"                                       
   ]
 
 endsection: advanced
@@ -88,7 +88,7 @@ section: output [
     knowntype: "infoalign output"
     help: "If you enter the name of a file here then this program will
            write the sequence details into that file."
-    relations:  "EDAM:Sequence alignment information report"               
+    relations:  "/edam/data/0000867 Sequence alignment annotation"               
   ]
 
   boolean: html [

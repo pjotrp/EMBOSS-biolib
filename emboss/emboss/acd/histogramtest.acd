@@ -16,7 +16,7 @@ section: input [
     minimum: "1"
     maximum: "10"
     information: "Number of sets of data"
-relations: "/edam/data/0001773 Tool-specific parameter"
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
   integer: points [
@@ -25,7 +25,7 @@ relations: "/edam/data/0001773 Tool-specific parameter"
     minimum: "1"
     maximum: "200"
     information: "Number of data points per set"
-relations: "/edam/data/0001773 Tool-specific parameter"
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
   integer: bins [
@@ -36,14 +36,14 @@ relations: "/edam/data/0001773 Tool-specific parameter"
     failrange: "N"
     trueminimum: "Y"
     information: "Number of bars"
-relations: "/edam/data/0001773 Tool-specific parameter"
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
   integer: xstart [
     additional: "y"
     default: "0"
     information: "Start value for x axis"
-relations: "/edam/data/0001773 Tool-specific parameter"
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
   integer: xend [
@@ -54,7 +54,7 @@ relations: "/edam/data/0001773 Tool-specific parameter"
     trueminimum: "Y"
     information: "End value for x axis"
     expected: "Start value plus number of data points"
-relations: "/edam/data/0001773 Tool-specific parameter"
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
 endsection: input

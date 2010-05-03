@@ -30,7 +30,7 @@ section: required [
     maximum: "50"
     default: "6"
     information: "Minimum length of antigenic region"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"                                     
   ]
 
 endsection: required
@@ -45,7 +45,7 @@ section: output [
     rformat: "motif"
     multiple: "Y"
     taglist: "int:pos=Max_score_pos"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0001534 Peptide immunogenicity report"                                       
   ]
 
 endsection: output

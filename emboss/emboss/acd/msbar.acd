@@ -122,14 +122,14 @@ section: advanced [
     default: "1"
     minimum: "0"
     information: "Minimum size for a block mutation"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
   integer: maximum [
     default: "10"
     minimum: "$(minimum)"
     information: "Maximum size for a block mutation"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
 endsection: advanced

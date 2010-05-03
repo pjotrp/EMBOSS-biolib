@@ -103,7 +103,7 @@ section: output [
     additional: "Y"
     default: "stdout"
     knowntype: "seealso output"
-    relations:  "EDAM:Application information report"                      
+    relations:  "/edam/data/0000958 Tool metadata"                      
   ]
 
   section: htmlsection [

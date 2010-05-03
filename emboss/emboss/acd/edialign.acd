@@ -67,7 +67,7 @@ section: additional [
     information: "Maximum fragment length"
     minimum: "0"
     default: "40"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"                                     
   ]
 
   boolean: fragmat [
@@ -84,7 +84,7 @@ section: additional [
                   acid or codon pair has similarity score of at least n"
     minimum: "0"
     default: "4"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001773 Tool-specific parameter"                                     
   ]
 
   boolean: itscore [
@@ -134,7 +134,7 @@ relations: "/edam/data/0001773 Tool-specific parameter"
   outfile: outfile [
     parameter: "Y"
     knowntype: "edialign output"
-    relations:  "EDAM:DIALIGN sequence alignment file"                     
+    relations:  "/edam/data/0001382 Multiple sequence alignment"                     
   ]
 
   seqoutall: outseq [

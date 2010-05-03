@@ -22,7 +22,7 @@ section: required [
            report: Output report formats;
            align: Output alignment formats"
     information: "Tables to be written"
-    relations: "/edam/data/0001773 Tool-specific parameter"                                
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
 endsection: required

@@ -18,7 +18,7 @@ section: input [
     parameter: "Y"
     information: "Codon usage directories"
     knowntype: "codon usage"
-    relations:  "/edam/data/ Codon usage table file"                         
+    relations:  "/edam/data/0001597 Codon usage table file"                         
   ]
 
 endsection: input
@@ -39,21 +39,21 @@ section: advanced [
     default: ""
     information: "CUTG release"
     knowntype: "database release"
-    relations:  "/edam/data/ Database version information"                   
+    relations:  "/edam/data/0001670 Database version information"                   
   ]
 
   string: wildspec [
     default: "*.codon"
     information: "Type of codon file"
     knowntype: "filename wildcard"
-    relations:  "/edam/data/ File name"                                      
+    relations:  "/edam/data/0001050 File name"                                      
   ]
 
   string: species [
     default: "*"
     information: "Species wildcard"
     knowntype: "wildcard string"
-    relations:  "/edam/data/ Wildcard string"                                
+    relations:  "/edam/data/0000968 Wildcard string"                                
   ]
 
   boolean: allrecords [
@@ -84,7 +84,7 @@ section: output [
            each species. Leave blank to generate the filenames. Specify a
            filename to combine several species into one file."
     knowntype: "output filename"
-    relations:  "/edam/data/ File name"                                      
+    relations:  "/edam/data/0001050 File name"                                      
   ]
 
 endsection: output

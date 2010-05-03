@@ -15,7 +15,7 @@ section: input [
     help: "File containing a sequence alignment"
     type: "gapprotein"
     aligned: "Y"
-    relations: "/edam/data/ Protein sequence alignment data"                     
+    relations: "/edam/data/0001384 Protein sequence alignment"                     
   ]
 
   datafile: datafile [
@@ -24,7 +24,7 @@ section: input [
     directory: "AAINDEX"
     default: "Enakai.dat"
     knowntype: "aaindex data"
-    relations:  "/edam/data/ Amino acid index"                               
+    relations:  "/edam/data/0001501 Amino acid index"                               
   ]
 
 endsection: input
@@ -63,7 +63,7 @@ section: output [
     multiple: "$(sequences.count)"
     gytitle: "Hydropathy"
     gtitle: "Kyte-Doolittle Plot"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0001522 Protein sequence hydropathy plot"                                   
   ]
 
 endsection: output

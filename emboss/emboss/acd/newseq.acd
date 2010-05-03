@@ -17,7 +17,7 @@ section: input [
            you will use to identify the sequence. It should have no (or few)
            punctuation characters in it."
     knowntype: "name"
-    relations:  "/edam/data/ Generic string"                                 
+    relations:  "/edam/data/0002154 Sequence name"
   ]
 
   string: description [
@@ -25,7 +25,7 @@ section: input [
     information: "Description of the sequence"
     help: "Enter any description of the sequence that you require."
     knowntype: "string"
-    relations:  "/edam/data/ Generic string"                                 
+    relations:  "/edam/data/0000969 Free text"                                 
   ]
 
   list: type [

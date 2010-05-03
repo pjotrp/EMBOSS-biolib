@@ -37,7 +37,7 @@ section: additional [
     default: ""
     information: "Description of the sequence"
     knowntype: "string"
-    relations:  "/edam/data/ Generic string"                                 
+    relations:  "/edam/data/0000969 Free text"
   ]
 
 endsection: additional

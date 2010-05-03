@@ -399,7 +399,7 @@ section: output [
     parameter: "Y"
     taglist: "int:starta int:enda int:startb int:endb"
     rformat: "table"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0001271 Sequence feature report"                                       
   ]
 
 endsection: output

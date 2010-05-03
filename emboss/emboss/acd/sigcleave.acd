@@ -31,7 +31,7 @@ section: required [
     information: "Minimum weight"
     help: "Minimum scoring weight value for the predicted cleavage
            site"
-    relations: "/edam/data/ Generic float"                                       
+    relations: "/edam/data/0002146 Threshold"
   ]
 
 endsection: required
@@ -62,7 +62,7 @@ section: output [
     rformat: "motif"
     multiple: "Y"
     taglist: "str:mature_peptide"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0001322 Signal peptide sequence report"                                       
   ]
 
 endsection: output

@@ -27,7 +27,7 @@ section: output [
   graph: graph [
     standard: "Y"
     gdesc: "Chaos game representation"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0002166 Sequence composition plot"                                   
   ]
 
 endsection: output

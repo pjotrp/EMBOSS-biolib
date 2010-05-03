@@ -61,7 +61,7 @@ section: required [
     maximum: "2"
     default: "0"
     information: "Display Mode"
-    relations: "/edam/data/0001773 Tool-specific parameter"
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
   integer: minseg [
@@ -92,7 +92,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "newcoils output"
-    relations:  "EDAM:Protein secondary structure record"                  
+    relations:  "/edam/data/0000876 Protein secondary structure record"                  
   ]
 
 endsection: output

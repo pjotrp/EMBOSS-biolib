@@ -41,7 +41,7 @@ section: required [
       default: "$(sequence.begin)"
       information: "Target start position."
       expected: "Start of sequence"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001016 Sequence position"
     ]
 
     integer: targetend [
@@ -49,7 +49,7 @@ section: required [
       default: "$(sequence.length)"
       information: "Target end position."
       expected: "End of sequence"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001016 Sequence position"
     ]
 
   endsection: targetsection
@@ -84,14 +84,14 @@ section: additional [
       additional: "@(!$(targetrange))"
       default: "100"
       information: "Minimum product length"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
     ]
 
     integer: maxplen [
       additional: "@(!$(targetrange))"
       default: "300"
       information: "Maximum product length"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
     ]
 
     float: minpgccont [
@@ -131,14 +131,14 @@ section: additional [
       additional: "$(primer)"
       default: "18"
       information: "Minimum primer length"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
     ]
 
     integer: maxprimerlen [
       additional: "$(primer)"
       default: "22"
       information: "Maximum primer length"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
     ]
 
     float: minpmgccont [
@@ -171,7 +171,7 @@ section: advanced [
   integer: overlap [
     default: "50"
     information: "Minimum overlap of sequences"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
   float: saltconc [
@@ -206,7 +206,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "prima output"
-    relations:  "EDAM:Primer report"                                       
+    relations:  "/edam/data/0000922 Primer report"                                       
   ]
 
 endsection: output

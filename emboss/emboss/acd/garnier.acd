@@ -36,7 +36,7 @@ section: advanced [
            weights for the helix and sheet (extend) terms. So, idc=0 says
            don't use the decision constant offsets, and idc=1 to 6 indicates
            that various combinations of dch,dcs offsets should be used."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001773 Tool-specific parameter"                                     
   ]
 
 endsection: advanced
@@ -50,7 +50,7 @@ section: output [
     parameter: "Y"
     rformat: "tagseq"
     taglist: "str:garnier"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0000876 Protein secondary structure"                                       
   ]
 
 endsection: output

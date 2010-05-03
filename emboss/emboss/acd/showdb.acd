@@ -16,7 +16,7 @@ section: input [
     information: "Name of a single database to give information
                   on"
     knowntype: "emboss database name"
-    relations:  "/edam/data/ Generic database name"                          
+    relations:  "/edam/data/0001056 Database name"                          
   ]
 
 endsection: input
@@ -155,7 +155,7 @@ section: output [
     additional: "Y"
     default: "stdout"
     knowntype: "showdb output"
-    relations:  "EDAM:Database information report"                         
+    relations:  "/edam/data/0000957 Database metadata"                         
   ]
 
 endsection: output

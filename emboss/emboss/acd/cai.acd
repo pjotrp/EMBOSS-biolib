@@ -19,7 +19,7 @@ section: input [
   codon: cfile [
     standard: "Y"
     default: "Eyeast_cai.cut"
-    relations: "/edam/data/ Codon usage table"                                   
+    relations: "/edam/data/0001597 Codon usage table"                                   
   ]
 
 endsection: input
@@ -32,7 +32,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "cai output"
-    relations:  "EDAM:Codon adaptation index "                             
+    relations:  "/edam/data/0001599 Codon adaptation index "                             
   ]
 
 endsection: output

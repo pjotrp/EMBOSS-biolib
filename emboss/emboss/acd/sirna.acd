@@ -93,7 +93,7 @@ section: output [
     rformat: "table"
     taglist: "float:gc=GC% string:forward=Sense_siRNA
               string:reverse=Antisense_siRNA"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0002169 siRNA report"                                       
   ]
 
   seqoutall: outseq [

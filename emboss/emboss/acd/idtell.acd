@@ -21,7 +21,7 @@ section: input
       additional: "Y"
       information: "Identifier to identify."
       knowntype: "database category name"
-    relations: "/edam/data/ Generic string"                                      
+    relations: "/edam/data/0000842 Identifier"                                      
   ]
 
   datafile: dbref

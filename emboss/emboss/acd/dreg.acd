@@ -22,7 +22,7 @@ section: input [
     parameter: "Y"
     upper: "Y"
     information: "Regular expression pattern"
-    relations: "/edam/data/ Regular expression"                                  
+    relations: "/edam/data/0001352 Regular expression"                                  
   ]
 
 endsection: input
@@ -36,7 +36,7 @@ section: output [
     parameter: "Y"
     taglist: "str:pat=Pattern_name"
     rformat: "seqtable"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0001298 Sequence motif report"
   ]
 
 endsection: output

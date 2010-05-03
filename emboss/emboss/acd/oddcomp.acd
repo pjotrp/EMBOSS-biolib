@@ -85,7 +85,7 @@ section: output [
     extension: "oddcomp"
     help: "This is the results file."
     knowntype: "oddcomp output"
-    relations:  "EDAM:List of sequence accession numbers"                  
+    relations:  "/edam/data/0001111 EMBOSS listfile"                  
   ]
 
 endsection: output

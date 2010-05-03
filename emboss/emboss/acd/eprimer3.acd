@@ -439,7 +439,7 @@ section: additional [
              regardless the value of the objective function for these pairs.
              Only if there are an insufficient number of primers in the first
              range will EPrimer3 return primers in a subsequent range."
-    relations: "/edam/data/ Generic integer range"
+    relations: "/edam/data/0001017 Sequence range"
     ]
 
     float: ptmopt [

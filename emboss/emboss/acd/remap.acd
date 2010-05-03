@@ -22,7 +22,7 @@ section: input [
     default: "Emethylsites.dat"
     information: "Restriction enzyme methylation data file"
     knowntype: "restriction enzyme methylation data"
-    relations:  "/edam/data/ Restriction enzyme reference data"        
+    relations:  "/edam/data/0001517 Restriction enzyme information"        
   ]
 
 endsection: input
@@ -55,7 +55,7 @@ section: required [
            HinfI \
            PpiI"
     knowntype: "enzyme list"
-    relations:  "/edam/data/ Restriction enzyme name"                        
+    relations:  "/edam/data/0001013 Restriction enzyme name"                        
   ]
 
   integer: sitelen [
@@ -67,7 +67,7 @@ section: required [
     help: "This sets the minimum length of the restriction enzyme
            recognition site. Any enzymes with sites shorter than this will be
            ignored."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"                                     
   ]
 
 endsection: required
@@ -223,7 +223,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "remap output"
-    relations:  "EDAM:Restriction map report"                              
+    relations:  "/edam/data/0001305 Restriction site report" 
   ]
 
   boolean: cutlist [
@@ -290,7 +290,7 @@ section: output [
            masked by changing the amino acids to '-' characters."
     expected: "If this value is left as 0 then all of the
                translation is shown."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
   range: uppercase [
@@ -351,14 +351,14 @@ section: output [
     default: "0"
     minimum: "0"
     information: "Line length of page (0 for indefinite)"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
   integer: margin [
     default: "10"
     minimum: "0"
     information: "Margin around sequence for numbering"
-    relations: "/edam/data/0001773 Tool-specific parameter"
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
   boolean: name [

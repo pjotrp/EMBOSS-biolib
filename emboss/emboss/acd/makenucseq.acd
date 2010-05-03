@@ -18,7 +18,7 @@ section: input [
            end trimmed to be in the correct reading frame."
     nullok: "Y"
     knowntype: "codon usage"
-    relations:  "/edam/data/ Codon usage table file"                         
+    relations:  "/edam/data/0001597 Codon usage table file"                         
   ]
 
 endsection: input
@@ -33,7 +33,7 @@ section: required [
     default: "100"
     minimum: "1"
     information: "Number of sequences created"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001694 Number of output entities"                                     
   ]
 
   integer: length [
@@ -41,7 +41,7 @@ section: required [
     default: "100"
     minimum: "1"
     information: "Length of each sequence"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"                                     
   ]
 
   toggle: useinsert [
@@ -64,7 +64,7 @@ section: required [
     information: "Start point of inserted sequence"
     minimum: "1"
     default: "1"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001016 Sequence position"                                     
   ]
 
 endsection: required

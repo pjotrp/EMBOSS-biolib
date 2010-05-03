@@ -44,7 +44,7 @@ section: output [
     nullok: "$(get)"
     nulldefault: "$(get)"
     knowntype: "whichdb output"
-    relations:  "EDAM:Database information report"                         
+    relations:  "/edam/data/0000957 Database metadata"                         
   ]
 
 endsection: output

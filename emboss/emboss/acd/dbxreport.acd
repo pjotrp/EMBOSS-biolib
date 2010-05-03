@@ -20,7 +20,7 @@ section: input [
     information: "Basename for index files"
     knowntype: "emboss database name"
     pattern: "[A-z][A-z0-9_]+"
-    relations:  "/edam/data/ Generic database name"                          
+    relations:  "/edam/data/0001056 Database name"                          
   ]
 
   directory: indexdir [
@@ -28,7 +28,7 @@ section: input [
     default: "."
     information: "Index directory"
     knowntype: "emboss database index"
-    relations:  "/edam/data/ Directory name"                                 
+    relations:  "/edam/data/0001049 Directory name"                                 
   ]
 
   list: idtype [
@@ -74,7 +74,7 @@ section: output [
   outfile: outfile [
     standard: "y"
     knowntype: "dbxreport output"
-    relations:  "EDAM:Database index"                                      
+    relations:  "/edam/data/0000955 Database index"
   ]
 
 endsection: output

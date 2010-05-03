@@ -42,7 +42,7 @@ section: output [
     help: "By default the aliphatic residues ILVM are marked with
            squares."
     knowntype: "protein codes"
-    relations:  "/edam/data/ Amino acid code string"                         
+    relations:  "/edam/data/0001006 Amino acid code"                         
   ]
 
   string: diamonds [
@@ -51,7 +51,7 @@ section: output [
     information: "Mark as diamonds"
     help: "By default the residues DENQST are marked with diamonds."
     knowntype: "protein codes"
-    relations:  "/edam/data/ Amino acid code string"                         
+    relations:  "/edam/data/0001006 Amino acid code"                         
   ]
 
   string: octags [
@@ -61,13 +61,13 @@ section: output [
     help: "By default the positively charged residues HKR are marked
            with octagons."
     knowntype: "protein codes"
-    relations:  "/edam/data/ Amino acid code string"                         
+    relations:  "/edam/data/0001006 Amino acid code"                         
   ]
 
   graph: graph [
     standard: "Y"
     gdesc: "Helical net"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0002163 Helical net"                                   
   ]
 
 endsection: output

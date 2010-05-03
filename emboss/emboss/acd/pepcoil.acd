@@ -62,7 +62,7 @@ section: output [
     parameter: "Y"
     rformat: "motif"
     taglist: "float:Probability str:Predict int:pos=Max_coil_pos str:Frames"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0000877 Protein super-secondary structure"                                       
   ]
 
 endsection: output

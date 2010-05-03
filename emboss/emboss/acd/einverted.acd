@@ -69,7 +69,7 @@ section: additional [
     information: "Maximum extent of repeats"
     help: "Maximum separation between the start of repeat and the end
            of the inverted repeat (the default is 2000 bases)."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"                                     
   ]
 
 endsection: additional

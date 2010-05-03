@@ -30,7 +30,7 @@ section: required [
     maximum: "200"
     default: "17"
     information: "CpG score"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001772 Score"                                     
   ]
 
 endsection: required
@@ -43,7 +43,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "newcpgseek output"
-    relations:  "EDAM:CpG island and isochore report"                      
+    relations:  "/edam/data/0001304 CpG island and isochore report"                      
   ]
 
 endsection: output

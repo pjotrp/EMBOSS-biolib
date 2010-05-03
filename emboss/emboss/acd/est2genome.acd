@@ -63,7 +63,7 @@ section: additional [
     default: "40"
     information: "Intron penalty"
     help: "Cost for an intron, independent of length."
-    relations: "/edam/data/0001773 Tool-specific parameter"
+    relations: "/edam/data/0002138 Penalty"
   ]
 
   integer: splicepenalty [
@@ -160,7 +160,7 @@ section: output [
   outfile: outfile [
     parameter: "y"
     knowntype: "est2genome output"
-    relations:  "EDAM:Coding region report"                                
+    relations:  "/edam/data/0001313 Coding region report"                                
   ]
 
   boolean: align [

@@ -100,7 +100,7 @@ section: output [
 
   xygraph: graph [
     standard: "$(plot)"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0002165 Protein ionization curve"
   ]
 
   outfile: outfile [
@@ -108,7 +108,7 @@ section: output [
     knowntype: "iep output"
     nullok: "@(!$(report))"
     nulldefault: "@(!$(report))"
-    relations:  "EDAM:Protein isoelectric point report"                    
+    relations:  "/edam/data/0001528 Protein isoelectric point"                    
   ]
 
 endsection: output

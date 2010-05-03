@@ -36,7 +36,7 @@ section: input [
     nullok: "@($(menu)!=C)"
     knowntype: "transfac data"
     default: ""
-    relations:  "/edam/data/ TRANSFAC database"                              
+    relations:  "/edam/data/0002147 Transcription factor binding sites"                              
   ]
 
 endsection: input
@@ -67,7 +67,7 @@ section: additional [
     minimum: "1"
     information: "Display matches equal to or above this
                   length"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
 endsection: additional
@@ -81,7 +81,7 @@ section: output [
     parameter: "Y"
     rformat: "seqtable"
     taglist: "str:acc=Accession str:factor=Factor"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0001315 Transcription factor binding site report"                                       
   ]
 
 endsection: output

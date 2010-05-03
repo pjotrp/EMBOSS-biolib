@@ -109,7 +109,7 @@ section: output [
               str:translation=Translation"
     rformat: "table"
     precision: "0"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0001298 Sequence motif report"                                       
   ]
 
 endsection: output

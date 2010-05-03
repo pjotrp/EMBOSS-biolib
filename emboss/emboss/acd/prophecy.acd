@@ -53,7 +53,7 @@ section: required [
     default: "mymatrix"
     information: "Enter a name for the profile"
     knowntype: "name"
-    relations:  "/edam/data/ Generic string"                                 
+    relations:  "/edam/data/0002150 Sequence profile name"                                 
   ]
 
   section: profiletypesection [
@@ -81,14 +81,14 @@ section: required [
       standard: "@($(type) != F)"
       information: "Gap opening penalty"
       default: "3.0"
-    relations: "/edam/data/ Generic float"                                       
+    relations: "/edam/data/0001397 Gap opening penalty"
     ]
 
     float: extension [
       standard: "@($(type) != F)"
       information: "Gap extension penalty"
       default: "0.3"
-    relations: "/edam/data/ Generic float"                                       
+    relations: "/edam/data/0001398 Gap extension penalty"
     ]
 
   endsection: gapsection
@@ -103,7 +103,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "prophecy output"
-    relations:  "EDAM:Sequence profile record"                             
+    relations:  "/edam/data/0001354 Sequence profile"
   ]
 
 endsection: output

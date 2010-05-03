@@ -91,7 +91,7 @@ relations: "/edam/data/0001773 Tool-specific parameter"
     help: "Choose base positions to analyse in each codon i.e. 123
            (all bases), 12 (the first two bases), 1, 2, or 3 individual
            bases."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001016 Sequence position"
   ]
 
   boolean: calculatea [
@@ -126,7 +126,7 @@ section: output [
     parameter: "Y"
     knowntype: "distance matrix"
     information: "Phylip distance matrix output file"
-    relations:  "/edam/data/ PHYLIP phylogenetic distance matrix file"       
+    relations:  "/edam/data/0000289 Sequence distance matrix"       
   ]
 
 endsection: output

@@ -23,7 +23,7 @@ section: input [
            acids"
     default: "Emolwt.dat"
     knowntype: "molecular weights"
-    relations:  "/edam/data/ Amino acid molecular weight data"               
+    relations:  "/edam/data/0001505 Amino acid molecular weight data"               
   ]
 
 endsection: input
@@ -140,7 +140,7 @@ section: output [
     multiple: "Y"
     taglist: "float:molwt=Mol_Weight
               str:cterm=Cterm str:nterm=Nterm"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0001323 Protein cleavage site report"
   ]
 
 endsection: output

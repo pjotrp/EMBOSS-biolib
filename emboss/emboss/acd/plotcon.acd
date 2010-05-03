@@ -55,7 +55,7 @@ section: output [
   xygraph: graph [
     standard: "Y"
     gxtitle: "Relative Residue Position"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0002161 Sequence similarity plot"                                   
   ]
 
 endsection: output

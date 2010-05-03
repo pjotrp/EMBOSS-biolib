@@ -16,7 +16,7 @@ section: required [
     minimum: "2"
     maximum: "360"
     information: "Number of degrees to plot"
-    relations: "/edam/data/0001773 Tool-specific parameter"
+    relations: "/edam/data/0002151 Rendering parameter"
   ]
 
 endsection: required

@@ -51,14 +51,14 @@ section: additional [
     additional: "Y"
     default: "30"
     information: "Minimum nucleotide size of ORF to report"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
   integer: maxsize [
     additional: "Y"
     default: "1000000"
     information: "Maximum nucleotide size of ORF to report"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
   list: find [
@@ -86,7 +86,7 @@ section: additional [
            investigate the statistical properties of the regions around
            potential START or STOP codons. The last option assumes that ORF
            lengths are calculated between two STOP codons."
-    relations: "/edam/data/0001773 Tool-specific parameter"                                
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
 endsection: additional
@@ -129,7 +129,7 @@ section: advanced [
            either side of that codon to output. If the region of flanking
            nucleotides crosses the start or end of the sequence, no output is
            given for this codon."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
 endsection: advanced

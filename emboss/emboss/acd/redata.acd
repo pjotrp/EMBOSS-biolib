@@ -19,7 +19,7 @@ section: input [
            capital 'i', not a '1' or an 'l'. The names are case-independent
            ('AaeI' is the same as 'aaei')"
     knowntype: "enzyme name"
-    relations:  "/edam/data/ Restriction enzyme name"                        
+    relations:  "/edam/data/0001013 Restriction enzyme name"                        
   ]
 
 endsection: input
@@ -51,7 +51,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "redata output"
-    relations:  "EDAM:Restriction enzyme report"                           
+    relations:  "/edam/data/0001517 Restriction enzyme information"                           
   ]
 
 endsection: output

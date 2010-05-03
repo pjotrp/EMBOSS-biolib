@@ -59,7 +59,7 @@ section: output [
     information: "Temporary working file output directory"
     default: "/tmp"
     knowntype: "temporary"
-    relations:  "/edam/data/ Generic file"                                   
+    relations:  "/edam/data/0001049 Directory name"                                   
   ]
 
 endsection: output

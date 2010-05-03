@@ -19,14 +19,14 @@ section: input [
     parameter: "Y"
     information: "REBASE database withrefm file"
     knowntype: "rebase withrefm"
-    relations:  "/edam/data/ REBASE withrefm record"                         
+    relations:  "/edam/data/0001517 Restriction enzyme information"                         
   ]
 
   infile: protofile [
     parameter: "Y"
     information: "REBASE database proto file"
     knowntype: "rebase proto"
-    relations:  "/edam/data/ REBASE proto record"                            
+    relations:  "/edam/data/0001518 Restriction enzyme pattern data"                            
   ]
 
   boolean: equivalences [

@@ -26,7 +26,7 @@ section: input
     help: "Enter IUPAC amino acids codes, e.g. A, C, D, E etc."
     knowntype: "protein codes"
     default: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    relations:  "/edam/data/ Amino acid code string"                         
+    relations:  "/edam/data/0001006 Amino acid code"                         
   ]
 
   datafile: aadata [
@@ -34,7 +34,7 @@ section: input
     help: "Amino acid properties"
     default: "Eamino.dat"
     knowntype: "amino acid properties"
-    relations:  "/edam/data/ Amino acid chemical classes data"               
+    relations:  "/edam/data/0001502 Amino acid chemical classes data"               
   ]
 
   datafile: mwdata [
@@ -42,7 +42,7 @@ section: input
     help: "Molecular weight data for amino acids"
     default: "Emolwt.dat"
     knowntype: "molecular weights"
-    relations:  "/edam/data/ Amino acid molecular weight data"               
+    relations:  "/edam/data/0001505 Amino acid molecular weight data"               
   ]
 
 endsection: input
@@ -94,7 +94,7 @@ section: output
   [
     parameter: "Y"
     knowntype: "inforesidue output"
-    relations:  "EDAM:Amino acid information report"                       
+    relations:  "/edam/data/0000894 Amino acid"                       
   ]
   
 

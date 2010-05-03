@@ -40,7 +40,7 @@ section: required [
            a file containing a list of sequence names can be specified by
            giving the file name preceeded by a '@', eg: '@names.dat'"
     knowntype: "sequence id list"
-    relations:  "/edam/data/ List of sequence unique identifiers"            
+    relations:  "/edam/data/0001063 Sequence identifier"            
   ]
 
 endsection: required

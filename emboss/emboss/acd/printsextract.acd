@@ -18,7 +18,7 @@ section: input [
     parameter: "Y"
     information: "PRINTS database file"
     knowntype: "prints database"
-    relations:  "/edam/data/ PRINTS database"                                
+    relations:  "/edam/data/0001365 Fingerprint"                                
   ]
 
 endsection: input

@@ -22,7 +22,7 @@ section: input [
     information: "Amino acids properties and molecular weight
                   data file"
     knowntype: "amino acid properties"
-    relations:  "/edam/data/ Amino acid chemical classes data"               
+    relations:  "/edam/data/0001502 Amino acid chemical classes data"               
   ]
 
 endsection: input
@@ -55,7 +55,7 @@ section: output [
 
   xygraph: graph [
     standard: "$(plot)"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0001523 Protein charge plot"                                   
   ]
 
   outfile: outfile [
@@ -63,7 +63,7 @@ section: output [
     knowntype: "charge output"
     nullok: "Y"
     nulldefault: "$(plot)"
-    relations:  "EDAM:Protein charge plot"                                 
+    relations:  "/edam/data/0001523 Protein charge plot"                                 
   ]
 
 endsection: output

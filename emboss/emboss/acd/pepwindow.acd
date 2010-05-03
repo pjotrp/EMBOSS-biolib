@@ -22,7 +22,7 @@ section: input [
     directory: "AAINDEX"
     default: "Enakai.dat"
     knowntype: "aaindex data"
-    relations:  "/edam/data/ Amino acid index"                               
+    relations:  "/edam/data/0001501 Amino acid index"                               
   ]
 
 endsection: input
@@ -62,7 +62,7 @@ section: output [
     gxtitle: "$(sequence.name)"
     gytitle: "Hydropathy"
     gtitle: "Hydropathy Plot"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0001522 Protein sequence hydropathy plot"                                   
   ]
 
 endsection: output

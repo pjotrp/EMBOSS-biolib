@@ -15,7 +15,7 @@ section: input [
     information: "Enzyme kinetics data (application-specific)
                   file"
     knowntype: "enzyme data"
-    relations:  "/edam/data/ Enzymatic reaction data"                        
+    relations:  "/edam/data/0002024 Enzyme kinetics data"
   ]
 
 endsection: input
@@ -41,13 +41,14 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "findkm output"
-    relations:  "EDAM:Enzyme kinetics report"                              
+    relations:  "/edam/data/0000908 Enzyme kinetics report"                              
   ]
 
   xygraph: graphlb [
     standard: "Y"
     multiple: "2"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0002025 Michaelis Menten plot"
+    relations: "/edam/data/0002026 Hanes Woolf plot"
   ]
 
 endsection: output

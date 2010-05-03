@@ -27,7 +27,7 @@ section: required [
     standard: "Y"
     default: "600"
     information: "Maximum repeat size"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"                                     
   ]
 
   integer: threshold [
@@ -50,7 +50,7 @@ section: output [
     taglist: "int:rpt_size=Size int:rpt_count=Count"
     rextension: "qtan"
     precision: "0"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0001299 Repeat sequence report"                                       
   ]
 
   outfile: origfile [
@@ -59,7 +59,7 @@ section: output [
     knowntype: "quicktandem output"
     information: "Sanger Centre program quicktandem output file
                   (optional)"
-    relations:  "/edam/data/ quicktandem repeat sequence map report"         
+    relations:  "/edam/data/0001282 Repeat sequence map"         
   ]
 
 endsection: output

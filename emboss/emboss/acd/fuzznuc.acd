@@ -76,7 +76,7 @@ section: output [
     taglist: "str:pat=Pattern_name int:mismatch=Mismatch"
     rformat: "seqtable"
     precision: "0"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0001298 Sequence motif report"
   ]
 
 endsection: output

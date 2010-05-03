@@ -55,7 +55,7 @@ section: advanced [
   float: baseline [
     default: "0.35"
     information: "Graph marker line"
-relations: "/edam/data/0001773 Tool-specific parameter"
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
 endsection: advanced
@@ -79,7 +79,7 @@ section: output [
 
   xygraph: graph [
     standard: "$(plot)"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0001520 Peptide hydrophobic moment"                                   
   ]
 
   outfile: outfile [
@@ -87,7 +87,7 @@ section: output [
     knowntype: "hmoment output"
     nullok: "$(plot)"
     nulldefault: "$(plot)"
-    relations:  "EDAM:Peptide hydrophobic moment report"                   
+    relations:  "/edam/data/0001520 Peptide hydrophobic moment"                   
   ]
 
 endsection: output

@@ -20,7 +20,7 @@ section: input [
   codon: cfile [
     additional: "Y"
     default: "Ehuman.cut"
-    relations: "/edam/data/ Codon usage table"                                   
+    relations: "/edam/data/0001597 Codon usage table"                                   
   ]
 
 endsection: input

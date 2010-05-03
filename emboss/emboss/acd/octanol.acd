@@ -13,7 +13,7 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "protein"
-    relations: "/edam/data/ Pure protein sequence"                               
+    relations: "/edam/data/0001219 Pure protein sequence"                               
   ]
 
   datafile: datafile [
@@ -21,7 +21,7 @@ section: input [
     default: "Ewhite-wimley.dat"
     information: "White-Wimley data file"
     knowntype: "white wimley datafile"
-    relations:  "/edam/data/ Amino acid White-Wimley data"                   
+    relations:  "/edam/data/0001507 Amino acid White-Wimley data"                   
   ]
 
 endsection: input
@@ -53,7 +53,7 @@ section: output [
     gxtitle: "$(sequence.name)"
     gytitle: "Total Free Energy (Kcal/mol)"
     gtitle: "White-Wimley Plot"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0001522 Protein sequence hydropathy plot"                                   
   ]
 
   boolean: plotoctanol [

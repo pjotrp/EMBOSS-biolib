@@ -26,7 +26,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "cusp output"
-    relations:  "EDAM:Codon usage table file"                              
+    relations:  "/edam/data/0001597 Codon usage table"                              
   ]
 
 endsection: output

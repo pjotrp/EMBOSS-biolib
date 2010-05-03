@@ -85,7 +85,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "sixpack output"
-    relations:  "EDAM:Nucleotide sequence translation report"              
+    relations:  "/edam/data/0001317 Nucleotide sequence translation report"              
   ]
 
   seqoutall: outseq [
@@ -110,7 +110,7 @@ section: output [
     information: "Minimum size of ORFs"
     help: "Minimum size of Open Reading Frames (ORFs) to display in
            the translations."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
   range: uppercase [
@@ -167,14 +167,14 @@ section: output [
     default: "0"
     minimum: "0"
     information: "Line length of page (0 for indefinite)"
-    relations: "/edam/data/0001773 Tool-specific parameter"
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
   integer: margin [
     default: "10"
     minimum: "0"
     information: "Margin around sequence for numbering."
-    relations: "/edam/data/0001773 Tool-specific parameter"
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
   boolean: name [

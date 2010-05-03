@@ -20,7 +20,7 @@ section: input [
     information: "Basename for index files"
     knowntype: "emboss database name"
     pattern: "[A-z][A-z0-9_]+"
-    relations:  "/edam/data/ Generic database name"                          
+    relations:  "/edam/data/0001056 Database name"                          
   ]
 
   string: dbresource [
@@ -30,7 +30,7 @@ section: input [
     information: "Resource name"
     knowntype: "emboss resource name"
     pattern: "[A-z][A-z0-9_]+"
-    relations:  "/edam/data/ EMBOSS database resource definition"            
+    relations:  "/edam/data/0001056 Database name"            
   ]
 
   list: idformat [
@@ -49,7 +49,7 @@ section: input [
     default: "."
     information: "Database directory"
     knowntype: "emboss database directory"
-    relations:  "/edam/data/ Directory name"                                 
+    relations:  "/edam/data/0001049 Directory name"                                 
   ]
 
   string: filenames [
@@ -57,7 +57,7 @@ section: input [
     default: "*.seq"
     information: "Wildcard database filename"
     knowntype: "emboss database wildcard filename"
-    relations:  "/edam/data/ Generic database name"                          
+    relations:  "/edam/data/0001056 Database name"                          
   ]
 
 endsection: input
@@ -90,7 +90,7 @@ section: advanced [
     maxlength: "9"
     information: "Release number"
     knowntype: "emboss database release"
-    relations:  "/edam/data/ Database version information"                   
+    relations:  "/edam/data/0001670 Database version information"                   
   ]
 
   string: date [
@@ -99,13 +99,13 @@ section: advanced [
     information: "Index date"
     pattern: "^([0-9]+.[0-9]+.[0-9]+)?$"
     knowntype: "date"
-    relations:  "/edam/data/ Date"                                           
+    relations:  "/edam/data/0002156 Date"                                           
   ]
 
   string: exclude [
     information: "Wildcard filename(s) to exclude"
     knowntype: "filename wildcard"
-    relations:  "/edam/data/ File name"                                      
+    relations:  "/edam/data/0001050 File name"                                      
   ]
 
 endsection: advanced
@@ -119,7 +119,7 @@ section: output [
     default: "."
     information: "Index file output directory"
     knowntype: "emboss database index"
-    relations:  "/edam/data/ Directory name"                                 
+    relations:  "/edam/data/0001049 Directory name"                                 
   ]
 
   outfile: outfile [

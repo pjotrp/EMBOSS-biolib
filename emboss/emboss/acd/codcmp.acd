@@ -13,13 +13,13 @@ section: input [
   codon: first [
     parameter: "Y"
     help: "First codon usage file"
-    relations: "/edam/data/ Codon usage table"                                   
+    relations: "/edam/data/0001597 Codon usage table"                                   
   ]
 
   codon: second [
     parameter: "Y"
     help: "Second codon usage file for comparison"
-    relations: "/edam/data/ Codon usage table"                                   
+    relations: "/edam/data/0001597 Codon usage table"                                   
   ]
 
 endsection: input
@@ -32,7 +32,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "codcmp output"
-    relations:  "EDAM:Codon usage fraction difference"                     
+    relations:  "/edam/data/0001602 Codon usage fraction difference"                     
   ]
 
 endsection: output

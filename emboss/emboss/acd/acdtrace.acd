@@ -15,7 +15,7 @@ section: required [
     parameter: "Y"
     information: "Program name, followed by command line"
     knowntype: "Program name"
-    relations: "/edam/data/ Generic string"                                      
+    relations: "/edam/data/0001190 Tool name"                                      
   ]
 
 endsection: required

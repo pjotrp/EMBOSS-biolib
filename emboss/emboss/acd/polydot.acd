@@ -48,7 +48,7 @@ section: output [
     help: "This specifies the size of the gap that is used to separate
            the individual dotplots in the display. The size is measured in
            residues, as displayed in the output."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
   boolean: boxit [
@@ -75,7 +75,7 @@ section: output [
   graph: graph [
     standard: "Y"
     gdesc: "Poly dotplot"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0000862 Dotplot"                                   
   ]
 
 endsection: output

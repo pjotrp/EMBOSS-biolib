@@ -41,7 +41,7 @@ section: input [
     knowntype: "dendrogram"
     information: "Dendrogram (tree file) from clustalw file
                   (optional)"
-    relations:  "/edam/data/ clustalw tree report"                           
+    relations:  "/edam/data/0000872 Phylogenetic tree"                           
   ]
 
   toggle: slow [
@@ -130,7 +130,7 @@ section: input [
       nullok: "@(!$(usermatrix))"
       information: "Comparison matrix file (optional)"
       knowntype: "comparison matrix"
-    relations:  "/edam/data/ Comparison matrix file"                         
+    relations:  "/edam/data/0000874 Comparison matrix"                         
     ]
 
   endsection: pairwisealignsection
@@ -210,7 +210,7 @@ section: input [
       nullok: "@($(usermamatrix)?@(!$(umamatrix)):True)"
       information: "Comparison matrix file (optional)"
       knowntype: "comparison matrix"
-    relations:  "/edam/data/ Comparison matrix file"                         
+    relations:  "/edam/data/0000874 Comparison matrix"                         
     ]
 
   endsection: matrixsection
@@ -283,7 +283,7 @@ relations: "/edam/data/0001773 Tool-specific parameter"
       help: "This is a penalty for each gap in the fast alignments. It
              has little affect on the speed or sensitivity except for
              extreme values."
-relations: "/edam/data/0001773 Tool-specific parameter"
+relations: "/edam/data/0002137 Gap penalty"
     ]
 
     integer: topdiags [
@@ -379,7 +379,7 @@ relations: "/edam/data/0001773 Tool-specific parameter"
              this distance apart are penalised more than other gaps. This
              does not prevent close gaps; it makes them less frequent,
              promoting a block-like appearance of the alignment."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"                                     
     ]
 
     boolean: norgap [
@@ -456,7 +456,7 @@ section: output [
     information: "Dendrogram (tree file) from clustalw output
                   file"
     knowntype: "dendrogram"
-    relations:  "/edam/data/ clustalw tree report"                           
+    relations:  "/edam/data/0000872 Phylogenetic tree"                           
   ]
 
 endsection: output

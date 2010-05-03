@@ -31,7 +31,7 @@ section: additional [
     maximum: "10000."
     default: "238.71"
     information: "Mean value"
-    relations: "/edam/data/ Generic float"                                       
+    relations: "/edam/data/0001773 Tool-specific parameter"
   ]
 
   float: sd [
@@ -40,7 +40,7 @@ section: additional [
     maximum: "10000."
     default: "293.61"
     information: "Standard Deviation value"
-    relations: "/edam/data/ Generic float"                                       
+    relations: "/edam/data/0001773 Tool-specific parameter"
   ]
 
   float: minsd [
@@ -49,7 +49,7 @@ section: additional [
     maximum: "100."
     default: "2.5"
     information: "Minimum SD"
-    relations: "/edam/data/ Generic float"                                       
+    relations: "/edam/data/0001773 Tool-specific parameter"
   ]
 
   boolean: eightyseven [
@@ -71,7 +71,7 @@ section: output [
     rextension: "hth"
     taglist: "int:pos=Maximum_score_at
               float:sd=Standard_deviations"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0001328 Protein-nucleic acid binding site report"                                       
   ]
 
 endsection: output

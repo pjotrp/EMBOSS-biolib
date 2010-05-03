@@ -37,7 +37,7 @@ section: required [
     delimiter: ","
     codedelimiter: ":"
     information: "Display format"
-    relations: "/edam/data/0001773 Tool-specific parameter"                                
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
   list: things [
@@ -56,7 +56,7 @@ section: required [
            the page. For example if you wish to see things displayed in the
            order: sequence, ticks line, blank line; then you should enter
            'S,T,B'."
-    relations: "/edam/data/0001773 Tool-specific parameter"                                
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
 endsection: required
@@ -214,7 +214,7 @@ section: additional [
              names with the character '|', eg: \
              pax* | 10"
       knowntype: "feature tagvalue list"
-    relations:  "/edam/data/ Generic string"                                 
+    relations:  "/edam/data/0001021 Sequence feature qualifier"                                 
     ]
 
     boolean: stricttags [
@@ -262,14 +262,14 @@ section: advanced [
     default: "0"
     minimum: "0"
     information: "Line length of page (0 for indefinite)"
-    relations: "/edam/data/0001773 Tool-specific parameter"
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
   integer: margin [
     default: "10"
     minimum: "0"
     information: "Margin around sequence for numbering"
-    relations: "/edam/data/0001773 Tool-specific parameter"
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
   boolean: name [
@@ -311,7 +311,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "showpep output"
-    relations:  "EDAM:Protein sequence features report"                    
+    relations:  "/edam/data/0001277 Protein sequence feature report"                    
   ]
 
 endsection: output

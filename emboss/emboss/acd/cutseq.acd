@@ -34,7 +34,7 @@ section: required [
     help: "This is the start position (inclusive) of the section of
            the sequence that you wish to remove."
     expected: "Start of sequence (0)"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001016 Sequence position"                                     
   ]
 
   integer: to [
@@ -48,7 +48,7 @@ section: required [
     help: "This is the end position (inclusive) of the section of the
            sequence that you wish to remove."
     expected: "End of sequence (0)"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001016 Sequence position"                                     
   ]
 
 endsection: required

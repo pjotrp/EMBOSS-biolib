@@ -33,7 +33,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "profit output"
-    relations:  "EDAM:Sequence-profile alignment report"                   
+    relations:  "/edam/data/0000300 Sequence-profile alignment"                   
   ]
 
 endsection: output

@@ -59,12 +59,12 @@ section: output [
     parameter: "Y"
     extension: "iso"
     knowntype: "isochore output"
-    relations:  "EDAM:CpG island and isochore report"                      
+    relations:  "/edam/data/0001304 CpG island and isochore report"                      
   ]
 
   xygraph: graph [
     standard: "Y"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0001304 CpG island and isochore report"                                   
   ]
 
 endsection: output

@@ -22,21 +22,21 @@ section: input [
     parameter: "Y"
     information: "Peptide molecular weight values file"
     knowntype: "peptide molweights"
-    relations:  "/edam/data/ Peptide molecular weight data"                  
+    relations:  "/edam/data/0001519 Peptide molecular weights"                  
   ]
 
   datafile: mwdata [
     information: "Molecular weights data file"
     default: "Emolwt.dat"
     knowntype: "molecular weights"
-    relations:  "/edam/data/ Amino acid molecular weight data"               
+    relations:  "/edam/data/0001505 Amino acid molecular weight data"               
   ]
 
   datafile: frequencies [
     default: "Efreqs.dat"
     information: "Amino acid frequencies data file"
     knowntype: "amino acid frequencies"
-    relations:  "/edam/data/ Peptide fragment molecular weight frequencies"  
+    relations:  "/edam/data/0001535 Peptide fragment molecular weight frequencies"  
   ]
 
 endsection: input
@@ -50,7 +50,7 @@ section: required [
     standard: "Y"
     default: "0"
     information: "Whole sequence molwt"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0000844 Molecular mass"                                     
   ]
 
   boolean: mono [
@@ -85,7 +85,7 @@ section: advanced [
     minimum: "0"
     maximum: "75"
     information: "Allowed whole sequence weight variability"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0000844 Molecular mass"
   ]
 
   float: tolerance [
@@ -114,7 +114,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "emowse output"
-    relations:  "EDAM:Peptide molecular weight hits report"                
+    relations:  "/edam/data/0001262 Peptide molecular weight hits"                
   ]
 
 endsection: output

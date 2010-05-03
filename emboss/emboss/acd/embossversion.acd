@@ -27,7 +27,7 @@ section: output [
     additional: "Y"
     default: "stdout"
     knowntype: "embossversion output"
-    relations:  "EDAM:Application version information"                     
+    relations:  "/edam/data/0001671 Tool version information"                     
   ]
 
 endsection: output

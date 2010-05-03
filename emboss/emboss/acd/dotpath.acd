@@ -69,7 +69,7 @@ section: output [
     gtitle: "Dotpath: $(asequence.usa) vs $(bsequence.usa)"
     gxtitle: "$(bsequence.name)"
     gytitle: "$(asequence.name)"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0000862 Dotplot"                                   
   ]
 
 endsection: output

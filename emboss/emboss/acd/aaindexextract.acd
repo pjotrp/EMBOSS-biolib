@@ -18,7 +18,7 @@ section: input [
     information: "AAINDEX database file"
     parameter: "Y"
     knowntype: "aaindex database"
-    relations:  "/edam/data/ AAindex database"                               
+    relations:  "/edam/data/0001501 Amino acid index"                               
   ]
 
 endsection: input

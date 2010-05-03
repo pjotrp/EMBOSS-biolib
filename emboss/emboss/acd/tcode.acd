@@ -25,7 +25,7 @@ section: input [
            probabilities for each base. The probabilities are for both
            positional and compositional information."
     knowntype: "testcode data"
-    relations:  "/edam/data/ EMBOSS data file"                               
+    relations:  "/edam/data/0000914 Codon usage data"                               
   ]
 
 endsection: input
@@ -96,13 +96,13 @@ section: output [
     taglist: "str:Estimation"
     nullok: "$(plot)"
     nulldefault: "$(plot)"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0001313 Coding region report"
   ]
 
   xygraph: graph [
     standard: "$(plot)"
     gdesc: "Fickett testcode plot"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0002160 Fickett testcode plot"                                   
   ]
 
 endsection: output

@@ -21,14 +21,14 @@ section: input [
     information: "Restriction enzyme data file (optional)"
     knowntype: "restriction enzyme data"
     nullok: "Y"
-    relations:  "/edam/data/ Restriction enzyme pattern data"                
+    relations:  "/edam/data/0001518 Restriction enzyme pattern data"                
   ]
 
   datafile: mfile [
     default: "Emethylsites.dat"
     information: "Restriction enzyme methylation data file"
     knowntype: "restriction enzyme methylation data"
-    relations:  "/edam/data/ Restriction enzyme reference data"        
+    relations:  "/edam/data/0001517 Restriction enzyme information"        
   ]
 
 endsection: input
@@ -153,7 +153,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "restover output"
-    relations:  "EDAM:EMBOSS restover recognition site report"             
+    relations:  "/edam/data/0001305 Restriction site report" 
   ]
 
 endsection: output

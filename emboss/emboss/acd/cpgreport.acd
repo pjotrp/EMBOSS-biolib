@@ -33,7 +33,7 @@ section: required [
     help: "This sets the score for each CG sequence found. A value of
            17 is more sensitive, but 28 has also been used with some
            success."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0002146 Score"                                     
   ]
 
 endsection: required
@@ -46,14 +46,14 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "cpgreport output"
-    relations:  "EDAM:CpG island and isochore report"                      
+    relations:  "/edam/data/0001304 CpG island and isochore report"                      
   ]
 
   featout: outfeat [
     parameter: "Y"
     help: "File for output features"
     type: "nucleotide"
-    relations: "/edam/data/ Nucleotide sequence feature table"                   
+    relations: "/edam/data/0001273 Nucleotide sequence feature table"                   
   ]
 
 endsection: output

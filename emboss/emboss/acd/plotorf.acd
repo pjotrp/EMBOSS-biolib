@@ -27,14 +27,14 @@ section: advanced [
     default: "ATG"
     information: "Start codons"
     knowntype: "codon list"
-    relations:  "/edam/data/ Codon string"                                   
+    relations:  "/edam/data/0002116 Codon"                                   
   ]
 
   string: stop [
     default: "TAA,TAG,TGA"
     information: "Stop codons"
     knowntype: "codon list"
-    relations:  "/edam/data/ Codon string"                                   
+    relations:  "/edam/data/0002116 Codon"                                   
   ]
 
 endsection: advanced
@@ -47,7 +47,7 @@ section: output [
   xygraph: graph [
     standard: "Y"
     multiple: "6"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0001313 Coding region report"                                   
   ]
 
 endsection: output

@@ -22,14 +22,14 @@ relations: "/edam/data/0001773 Tool-specific parameter"
     standard: "Y"
     default: "ensembl_gene_id,ensembl_transcript_id"
     information: "Attribute(s) to return"
-    relations: "/edam/data/ Generic string"
+    relations: "/edam/data/0001773 Tool-specific parameter"
 ]
 
   string: filters [
     standard: "Y"
     default: "with_transmembrane_domain"
     information: "Filter(s) to return"
-    relations: "/edam/data/ Generic string"
+    relations: "/edam/data/0001773 Tool-specific parameter"
 ]
 
 endsection: input
@@ -45,13 +45,13 @@ section: advanced [
   string: host [
     default: "www.biomart.org"
     information: "Mart host location"
-    relations: "/edam/data/ Generic string"
+    relations: "/edam/data/0001047 URI"
   ]
 
   string: path [
     default: "/biomart/martservice"
     information: "Mart path on mart host"
-    relations: "/edam/data/ Generic string"
+    relations: "/edam/data/0001049 Directory name"
   ]
 
   integer: port [
@@ -69,7 +69,7 @@ section: output [
 
   outfile: outfile [
     parameter: "Y"
-    relations: "/edam/data/ Free text"                                     
+    relations: "/edam/data/0000957 Database metadata"                                     
   ]
 
 endsection: output

@@ -49,7 +49,7 @@ section: required [
     information: "Minimum length of an island"
     help: "This sets the minimum length that a CpG island has to be
            before it is reported."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"                                     
   ]
 
   float: minoe [
@@ -88,7 +88,7 @@ section: output [
            input sequence name, CpG island parameters and the output details
            of any CpG islands that are found."
     knowntype: "cpgplot output"
-    relations:  "EDAM:CpG island and isochore report"                      
+    relations:  "/edam/data/0001304 CpG island and isochore report"                      
   ]
 
   toggle: plot [
@@ -131,7 +131,7 @@ section: output [
     parameter: "Y"
     help: "File for output features"
     type: "nucleotide"
-    relations: "/edam/data/ Nucleotide sequence feature table"                   
+    relations: "/edam/data/0001273 Nucleotide sequence feature table"                   
   ]
 
 endsection: output

@@ -14,20 +14,20 @@ section: input [
     standard: "Y"
     default: "www.biomart.org"
     information: "Host location"
-    relations: "/edam/data/ Generic string"
+    relations: "/edam/data/0001047 URI"
   ]
 
   string: path [
     standard: "Y"
     default: "/biomart/martservice"
     information: "Path to martservice"
-    relations: "/edam/data/ Generic string"
+    relations: "/edam/data/0001049 Directory name"
   ]
 
   integer: port [
     default: "80"
     information: "Port on host"
-    relations: "/edam/data/ Generic integer"
+    relations: "/edam/data/0001773 Tool-specific parameter"
   ]
 
 endsection: input

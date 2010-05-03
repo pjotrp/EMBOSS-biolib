@@ -23,7 +23,7 @@ section: input [
     parameter: "Y"
     information: "Primer pairs file"
     knowntype: "primer pairs"
-    relations:  "/edam/data/ Primer pairs sequence record"                   
+    relations:  "/edam/data/0001240 PCR primers"                   
   ]
 
 endsection: input
@@ -36,7 +36,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "stssearch output"
-    relations:  "EDAM:Primer match report"                                 
+    relations:  "/edam/data/0000922 Primer report"                                 
   ]
 
 endsection: output

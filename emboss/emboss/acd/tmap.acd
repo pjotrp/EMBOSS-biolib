@@ -15,7 +15,7 @@ section: input [
     type: "gapprotein"
     aligned: "Y"
     help: "File containing a sequence alignment"
-    relations: "/edam/data/ Protein sequence alignment data"                     
+    relations: "/edam/data/0001384 Protein sequence alignment"                     
   ]
 
 endsection: input
@@ -30,14 +30,14 @@ section: output [
     multiple: "2"
     gxtitle: "Residue number"
     goutfile: "tmap"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0001456 Transmembrane protein secondary structure"
   ]
 
   report: outfile [
     parameter: "Y"
     rformat: "seqtable"
     taglist: "int:TM=TransMem"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0001456 Transmembrane protein secondary structure"
   ]
 
 endsection: output

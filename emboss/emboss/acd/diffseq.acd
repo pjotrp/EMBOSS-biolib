@@ -87,7 +87,7 @@ section: output [
     rformat: "diffseq"
     taglist: "int:start int:end int:length str:name str:sequence
               str:first_feature str:second_feature"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0001256 Sequence feature comparison report"
   ]
 
   featout: aoutfeat [

@@ -75,7 +75,7 @@ section: output [
     gtitle: "Dotmatcher: $(asequence.usa) vs $(bsequence.usa)"
     gxtitle: "$(asequence.name)"
     gytitle: "$(bsequence.name)"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0000862 Dotplot"  
   ]
 
   xygraph: xygraph [
@@ -83,7 +83,7 @@ section: output [
     gtitle: "Dotmatcher: $(asequence.usa) vs $(bsequence.usa)"
     gxtitle: "$(asequence.name)"
     gytitle: "$(bsequence.name)"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0000862 Dotplot"  
   ]
 
 endsection: output

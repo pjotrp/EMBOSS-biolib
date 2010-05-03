@@ -65,7 +65,7 @@ section: additional
     default: ""
     information: "Comment on the alignment"
     knowntype: "string"
-    relations:  "/edam/data/ Generic string"                                 
+    relations:  "/edam/data/0000969 Free text"                                 
   ]
 
   boolean: append

@@ -43,7 +43,7 @@ section: advanced [
            could be a space character, a tab character, a pipe character or
            any other character or string."
     knowntype: "output delimiter"
-    relations: "/edam/data/0001773 Tool-specific parameter"
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
 endsection: advanced
@@ -59,7 +59,7 @@ section: output [
     knowntype: "infoseq output"
     help: "If you enter the name of a file here then this program will
            write the sequence details into that file."
-    relations:  "EDAM:Sequence information report"                         
+    relations:  "/edam/data/0000855 Sequence annotation"                         
   ]
 
   boolean: html [

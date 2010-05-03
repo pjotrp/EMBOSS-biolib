@@ -27,7 +27,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "geecee output"
-    relations:  "EDAM:CpG island and isochore report"                      
+    relations:  "/edam/data/0001304 CpG island and isochore report"                      
   ]
 
 endsection: output

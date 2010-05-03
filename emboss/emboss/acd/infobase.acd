@@ -78,7 +78,7 @@ section: output
   [
     parameter: "Y"
     knowntype: "infobase output"
-    relations:  "EDAM:Nucleotide base information report"                  
+    relations:  "/edam/data/0000911 Nucleotide base"                  
   ]
   
 

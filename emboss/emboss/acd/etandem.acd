@@ -29,7 +29,7 @@ section: required [
     minimum: "2"
     information: "Minimum repeat size"
     valid: "Integer, 2 or higher"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
   integer: maxrepeat [
@@ -39,7 +39,7 @@ section: required [
     information: "Maximum repeat size"
     valid: "Integer, same as -minrepeat or higher"
     expected: "Same as -minrepeat"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
 endsection: required
@@ -79,7 +79,7 @@ section: output [
               float:identity=Identity str:consensus=Consensus"
     rextension: "tan"
     precision: "0"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations:  "/edam/data/0001282 Repeat sequence map"
   ]
 
   outfile: origfile [
@@ -90,7 +90,7 @@ section: output [
     knowntype: "tandem output"
     information: "Sanger Centre program tandem output file
                   (optional)"
-    relations:  "/edam/data/ quicktandem repeat sequence map report"         
+    relations:  "/edam/data/0001282 Repeat sequence map"         
   ]
 
 endsection: output

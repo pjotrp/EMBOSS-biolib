@@ -21,7 +21,7 @@ section: input [
   codon: cfile [
     standard: "Y"
     help: "Codon usage file"
-    relations: "/edam/data/ Codon usage table"                                   
+    relations: "/edam/data/0001597 Codon usage table"                                   
   ]
 
 endsection: input
@@ -68,7 +68,7 @@ section: output [
     standard: "$(plot)"
     multiple: "3"
     gdesc: "Gribskov Codon Plot"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0001600 Synonymous codon usage statictic plot"                                   
   ]
 
   outfile: outfile [
@@ -76,7 +76,7 @@ section: output [
     knowntype: "syco output"
     nullok: "$(plot)"
     nulldefault: "$(plot)"
-    relations:  "EDAM:Synonymous codon usage statictic plot"               
+    relations: "/edam/data/0001600 Synonymous codon usage statictic plot"       
   ]
 
 endsection: output

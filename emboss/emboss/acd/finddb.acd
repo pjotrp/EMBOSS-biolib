@@ -18,7 +18,7 @@ section: input
       additional: "Y"
       information: "Keyword(s) to search for in database information"
       knowntype: "emboss database name"
-    relations:  "/edam/data/ Generic database name"                          
+    relations:  "/edam/data/0001056 Database name"                          
   ]
 
 endsection: input

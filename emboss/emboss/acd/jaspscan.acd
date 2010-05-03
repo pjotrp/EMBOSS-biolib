@@ -56,7 +56,7 @@ section: input [
            ma0032* \
            ma0053.1"
     knowntype: "jaspar matrix id"
-    relations:  "/edam/data/ JASPAR profile identifier"                      
+    relations:  "/edam/data/0001119 JASPAR profile identifier"                      
   ]
 
 
@@ -92,7 +92,7 @@ section: additional [
            list. Matrices are specified in the same way as for the \
            selection list."
     knowntype: "jaspar matrix id"
-    relations:  "/edam/data/ JASPAR profile identifier"                      
+    relations:  "/edam/data/0001119 JASPAR profile identifier"
   ]
 
   boolean: both [
@@ -121,7 +121,7 @@ section: output [
 	      float:info=Info_Content str:jaspar=Closest_Jaspar
 	      str:transfac=Closest_Transfac
               float:mcs=MCS_Score str:built=Built_From"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0001315 Transcription factor binding site report"                                       
   ]
 
 endsection: output

@@ -23,7 +23,7 @@ section: input [
     parameter: "Y"
     type: "gapprotein"
     aligned: "Y"
-    relations: "/edam/data/ Protein sequence alignment data"                     
+    relations: "/edam/data/0001384 Protein sequence alignment"                     
   ]
 
 endsection: input

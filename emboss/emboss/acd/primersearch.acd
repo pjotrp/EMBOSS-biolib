@@ -22,7 +22,7 @@ section: input [
     parameter: "Y"
     information: "Primer pairs file"
     knowntype: "primer pairs"
-    relations:  "/edam/data/ Primer pairs sequence record"                   
+    relations:  "/edam/data/0001240 PCR primers"                   
   ]
 
 endsection: input
@@ -50,7 +50,7 @@ section: output [
     parameter: "Y"
     knowntype: "primer3 output"
     information: "Whitehead primer3_core program output file"
-    relations:  "/edam/data/ Primer3 primer report"                                 
+    relations:  "/edam/data/0000922 Primer report"                                 
   ]
 
 endsection: output

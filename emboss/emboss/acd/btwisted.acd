@@ -20,14 +20,14 @@ section: input [
     default: "Eangles.dat"
     information: "DNA base pair twist angle data file"
     knowntype: "base pair twist angles"
-    relations:  "/edam/data/ DNA base pair twist angle data"                 
+    relations:  "/edam/data/0001589 DNA base pair twist angle data"                 
   ]
 
   datafile: energydata [
     default: "Eenergy.dat"
     information: "DNA base pair stacking energies data file"
     knowntype: "base pair stacking energies"
-    relations:  "/edam/data/ DNA base pair stacking energies data"           
+    relations:  "/edam/data/0001588 DNA base pair stacking energies data"           
   ]
 
 endsection: input
@@ -40,7 +40,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "btwisted output"
-    relations:  "EDAM:Nucleic acid conformation report"                    
+    relations:  "/edam/data/0000913 Nucleic acid structural property"                    
   ]
 
 endsection: output

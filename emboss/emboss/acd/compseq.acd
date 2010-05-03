@@ -76,7 +76,7 @@ section: additional [
            word by setting this value to a number other than zero. \
            If you set it to 1 it will only count the words in frame 1, 2 will
            only count the words in frame 2 and so on."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0002126 Translation frame specification"                                     
   ]
 
   boolean: ignorebz [

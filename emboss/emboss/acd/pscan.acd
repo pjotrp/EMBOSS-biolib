@@ -56,7 +56,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "pscan output"
-    relations:  "EDAM:Fingerprint alignment report"                        
+    relations:  "/edam/data/0001420 Sequence-fingerprint alignment"                        
   ]
 
 endsection: output

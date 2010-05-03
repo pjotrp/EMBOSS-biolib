@@ -55,13 +55,13 @@ section: output [
   xygraph: graph [
     standard: "Y"
     multiple: "6"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0001263 Base position variability"
   ]
 
   outfile: outfile [
     parameter: "Y"
     knowntype: "wobble output"
-    relations:  "EDAM:Base position variability report"                    
+    relations: "/edam/data/0001263 Base position variability"
   ]
 
 endsection: output

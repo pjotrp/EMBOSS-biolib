@@ -31,7 +31,7 @@ section: output [
     parameter: "Y"
     extension: "coderet"
     knowntype: "coderet output"
-    relations:  "EDAM:Sequence record"                                     
+    relations:  "/edam/data/0000849 Sequence record"                                     
   ]
 
   seqoutall: cdsoutseq [
@@ -53,7 +53,7 @@ section: output [
     osextension: "mrna"
     nullok: "Y"
     knowntype: "mrna sequence"
-    relations:  "/edam/data/ RNA sequence"                                   
+    relations:  "/edam/data/0001213 RNA sequence"                                   
   ]
 
   seqoutall: translationoutseq [
@@ -64,7 +64,7 @@ section: output [
     osextension: "prot"
     nullok: "Y"
     knowntype: "translated cds sequence"
-    relations:  "/edam/data/ Protein sequence"                               
+    relations:  "/edam/data/0001208 Protein sequence"                               
   ]
 
   seqoutall: restoutseq [

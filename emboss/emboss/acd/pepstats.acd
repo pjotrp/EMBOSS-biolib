@@ -22,7 +22,7 @@ section: input [
     help: "Amino acid properties"
     default: "Eamino.dat"
     knowntype: "amino acid properties"
-    relations:  "/edam/data/ Amino acid chemical classes data"               
+    relations:  "/edam/data/0001502 Amino acid chemical classes data"               
   ]
 
   datafile: mwdata [
@@ -30,7 +30,7 @@ section: input [
     help: "Molecular weight data for amino acids"
     default: "Emolwt.dat"
     knowntype: "molecular weights"
-    relations:  "/edam/data/ Amino acid molecular weight data"               
+    relations:  "/edam/data/0001505 Amino acid molecular weight data"               
   ]
 
 endsection: input
@@ -63,7 +63,7 @@ section: output [
     parameter: "Y"
     knowntype: "pepstats output"
     information: "Pepstats program output file"
-    relations:  "/edam/data/ Protein physicochemical profile"                
+    relations:  "/edam/data/0000897 Protein physicochemical property"                
   ]
 
 endsection: output

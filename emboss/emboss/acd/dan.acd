@@ -109,7 +109,7 @@ relations: "/edam/data/0001773 Tool-specific parameter"
       information: "Enter percent mismatch"
       help: "This specifies the percent mismatch to be used in
              calculations (it is ignored unless -product is used)."
-    relations: "/edam/data/ Generic float"                                       
+    relations: "/edam/data/0002144 Threshold percentage"                                       
     ]
 
     integer: prodlen [
@@ -120,7 +120,7 @@ relations: "/edam/data/0001773 Tool-specific parameter"
       expected: "Window size (20)"
       help: "This specifies the product length to be used in
              calculations (it is ignored unless -product is used)."
-    relations: "/edam/data/ Generic integer"                                     
+    relations:  "/edam/data/0001249 Sequence length"  
     ]
 
   endsection: productsection
@@ -209,7 +209,7 @@ section: output [
               float:dh=DeltaH float:ds=DeltaS float:tmprod=TmProd"
     nullok: "$(plot)"
     nulldefault: "$(plot)"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0001583 Nucleic acid melting profile"                                       
   ]
 
 endsection: output

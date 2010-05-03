@@ -15,7 +15,7 @@ section: input [
     information: "Sequence type"
     valid: "valid value test"
     knowntype: "sequence type"
-    relations:  "/edam/data/ EMBOSS sequence type"                           
+    relations:  "/edam/data/0001110 EMBOSS sequence type"                           
   ]
 
   sequence: sequence [
@@ -32,7 +32,7 @@ section: input [
 
   codon: cod [
     name: "eco"
-    relations: "/edam/data/ Codon usage table"                                   
+    relations: "/edam/data/0001597 Codon usage table"                                   
   ]
 
 endsection: input
@@ -48,7 +48,7 @@ section: required [
     expected: "expected value"
     information: "Second type"
     knowntype: "sequence type"
-    relations:  "/edam/data/ EMBOSS sequence type"                           
+    relations:  "/edam/data/0001110 EMBOSS sequence type"                           
   ]
 
   string: date [
@@ -58,7 +58,7 @@ section: required [
     information: "Index date"
     pattern: "^([0-9]+.[0-9]+.[0-9]+)?$"
     knowntype: "date"
-    relations:  "/edam/data/ Date"                                           
+relations: "/edam/data/0002156 Date"
   ]
 
 endsection: required

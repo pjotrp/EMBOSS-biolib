@@ -43,7 +43,7 @@ section: additional [
     header: "Graph type"
     information: "Select graph type"
     button: "Y"
-    relations: "/edam/data/0001773 Tool-specific parameter"                                
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
 endsection: additional
@@ -62,7 +62,7 @@ variable: isdual "@($(display) == D)"
     information: "Density graph"
     nullok: "Y"
     nulldefault: "@($(display) == none)"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0002167 Nucleic acid density plot"
   ]
 
   report: outfile [
@@ -72,7 +72,7 @@ variable: isdual "@($(display) == D)"
     knowntype: "density output"
     nullok: "Y"
     nulldefault: "@($(display) != none)"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0002167 Nucleic acid density plot"
   ]
 
 endsection: output

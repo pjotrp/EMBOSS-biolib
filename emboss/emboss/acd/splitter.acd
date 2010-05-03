@@ -35,7 +35,7 @@ section: additional [
     minimum: "1"
     default: "10000"
     information: "Size to split at"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
   integer: overlap [
@@ -46,7 +46,7 @@ section: additional [
     failrange: "N"
     trueminimum: "Y"
     information: "Overlap between split sequences"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
 endsection: additional

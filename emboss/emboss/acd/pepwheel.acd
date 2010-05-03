@@ -38,7 +38,7 @@ section: output [
     information: "Number of steps"
     help: "The number of residues plotted per turn is this value
            divided by the 'turns' value."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001773 Tool-specific parameter"                                     
   ]
 
   integer: turns [
@@ -49,14 +49,14 @@ section: output [
     information: "Number of turns"
     help: "The number of residues plotted per turn is the 'steps'
            value divided by this value."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001773 Tool-specific parameter"                                     
   ]
 
   graph: graph [
     standard: "Y"
     gdesc: "Helical wheel"
     gxtitle: "$(sequence.name)"
-    relations: "/edam/data/0002142 EMBOSS graph"                                   
+    relations: "/edam/data/0002162 Helical wheel"                                   
   ]
 
   section: markupsection [
@@ -80,7 +80,7 @@ section: output [
       help: "By default the aliphatic residues ILVM are marked with
              squares."
       knowntype: "protein codes"
-    relations:  "/edam/data/ Amino acid code string"                         
+    relations: "/edam/data/0002152 Rendering parameter"
     ]
 
     string: diamonds [
@@ -89,7 +89,7 @@ section: output [
       information: "Mark as diamonds"
       help: "By default the residues DENQST are marked with diamonds."
       knowntype: "protein codes"
-    relations:  "/edam/data/ Amino acid code string"                         
+    relations: "/edam/data/0002152 Rendering parameter"
     ]
 
     string: octags [
@@ -99,7 +99,7 @@ section: output [
       help: "By default the positively charged residues HKR are marked
              with octagons."
       knowntype: "protein codes"
-    relations:  "/edam/data/ Amino acid code string"                         
+    relations: "/edam/data/0002152 Rendering parameter"
     ]
 
   endsection: markupsection

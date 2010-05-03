@@ -40,7 +40,7 @@ section: additional [
            of the feature. The output sequence will be padded with 'N' or 'X'
            characters if the sequence starts after the required start of the
            extraction."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"                                     
   ]
 
   integer: after [
@@ -57,7 +57,7 @@ section: additional [
            extraction 10 bases/residues after the start of the feature. The
            output sequence will be padded with 'N' or 'X' characters if the
            sequence ends before the required end of the extraction."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"                                     
   ]
 
   string: source [
@@ -105,7 +105,7 @@ section: additional [
     help: "By default any feature type in the feature table is
            extracted. You can set this to match any feature sense you wish. 0
            - any sense, 1 - forward sense, -1 - reverse sense"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0000853 DNA sense specification"
   ]
 
   float: minscore [
@@ -169,7 +169,7 @@ section: additional [
            with a space or the character '|', eg: \
            pax* | 10"
     knowntype: "feature tagvalue list"
-    relations:  "/edam/data/ Generic string"                                 
+    relations:  "/edam/data/0001021 Sequence feature qualifier"                                 
   ]
 
 endsection: additional

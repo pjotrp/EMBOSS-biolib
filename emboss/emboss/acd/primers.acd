@@ -57,7 +57,7 @@ section: additional [
     information: "Primer minimum size"
     help: "Minimum acceptable length of a primer. Must be greater than
            0 and less than or equal to MAX-SIZE."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
   integer: maxsize [
@@ -72,7 +72,7 @@ section: additional [
            this parameter cannot be larger than 35. This limit is governed
            by the maximum oligo size for which Primer3's melting-temperature
            is valid."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
   float: maxdifftm [
@@ -112,14 +112,14 @@ section: output [
            value of the objective function (where a lower number indicates a
            better primer pair). Caution: setting this parameter to a large
            value will increase running time."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001694 Number of output entities"
   ]
 
   outfile: outfile [
     parameter: "Y"
     knowntype: "primer3 output"
     information: "Whitehead primer3_core program output file"
-    relations:  "/edam/data/ Primer3 primer report"                                 
+    relations:  "/edam/data/0000922 Primer report"                                 
   ]
 
 endsection: output

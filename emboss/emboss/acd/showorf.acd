@@ -79,7 +79,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "showorf output"
-    relations:  "EDAM:Nucleotide sequence translation report"              
+    relations:  "/edam/data/0001317 Nucleotide sequence translation report"              
   ]
 
   boolean: ruler [
@@ -107,7 +107,7 @@ section: output [
     minimum: "10"
     default: "50"
     information: "Width of screen"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"                                     
   ]
 
 endsection: output

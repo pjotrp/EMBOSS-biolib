@@ -29,7 +29,7 @@ section: required [
     default: "all"
     information: "Comma separated enzyme list"
     knowntype: "enzyme list"
-    relations:  "/edam/data/ Restriction enzyme name"                        
+    relations:  "/edam/data/0001013 Restriction enzyme name"                        
   ]
 
 endsection: required
@@ -64,7 +64,7 @@ section: output [
     	      int:baseposn=Base-Posn rstr:aa=AAs
               rstr:silent=Silent rstr:mutation=Mutation"
     rscoreshow: "N"
-    relations: "/edam/data/0002143 EMBOSS report"                                       
+    relations: "/edam/data/0001305 Restriction site report"                                       
   ]
 
 endsection: output

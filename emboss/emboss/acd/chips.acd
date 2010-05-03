@@ -39,7 +39,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "chips output"
-    relations:  "EDAM:Nc statistic"                                        
+    relations:  "/edam/data/0001601 Nc statistic"                                        
   ]
 
 endsection: output

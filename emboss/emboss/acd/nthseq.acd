@@ -29,7 +29,7 @@ section: required [
     minimum: "1"
     default: "1"
     information: "The number of the sequence to output"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001694 Number of output entities"
   ]
 
 endsection: required

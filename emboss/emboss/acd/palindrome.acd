@@ -32,7 +32,7 @@ section: required [
     failrange: "N"
     trueminimum: "Y"
     information: "Enter minimum length of palindrome"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
   integer: maxpallen [
@@ -43,7 +43,7 @@ section: required [
     failrange: "N"
     trueminimum: "Y"
     information: "Enter maximum length of palindrome"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
   integer: gaplimit [
@@ -54,7 +54,7 @@ section: required [
     failrange: "N"
     trueminimum: "Y"
     information: "Enter maximum gap between repeated regions"
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0001249 Sequence length"
   ]
 
   integer: nummismatches [
@@ -77,7 +77,7 @@ section: output [
     parameter: "Y"
     extension: "pal"
     knowntype: "palindrome output"
-    relations:  "EDAM:Repeat sequence map report"                          
+    relations:  "/edam/data/0001299 Repeat sequence report"                          
   ]
 
   boolean: overlap [

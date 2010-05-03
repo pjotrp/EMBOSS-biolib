@@ -174,7 +174,7 @@ section: advanced [
            then the minimum margin width that will allow all the sequence
            names to be displayed in full plus a space at the end of the name
            will automatically be selected."
-    relations: "/edam/data/0001773 Tool-specific parameter"
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
   boolean: html [
@@ -209,7 +209,7 @@ section: advanced [
     help: "Set a cut-off for the % of positive scoring matches below
            which there is no consensus. The default plurality is taken as 50%
            of the total weight of all the sequences in the alignment."
-    relations: "/edam/data/ Generic float"                                       
+    relations: "/edam/data/0002144 Threshold percentage"                                       
   ]
 
   float: setcase [
@@ -220,7 +220,7 @@ section: advanced [
            above which the consensus is in upper-case and below which the
            consensus is in lower-case. By default this is set to be half of
            the (weight-adjusted) number of sequences in the alignment."
-    relations: "/edam/data/0001773 Tool-specific parameter"
+    relations: "/edam/data/0002146 Threshold"
   ]
 
   float: identity [
@@ -233,7 +233,7 @@ section: advanced [
            identities at a position for it to give a consensus. Therefore, if
            this is set to 100% only columns of identities contribute to the
            consensus."
-    relations: "/edam/data/ Generic float"                                       
+    relations: "/edam/data/0002144 Threshold percentage"                                       
   ]
 
   boolean: gaps [
@@ -255,7 +255,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "showalign output"
-    relations:  "EDAM:Multiple sequence alignment record"                  
+    relations:  "/edam/data/0001382 Multiple sequence alignment"                  
   ]
 
 endsection: output

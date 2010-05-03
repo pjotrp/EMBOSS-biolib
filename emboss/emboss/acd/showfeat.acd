@@ -104,7 +104,7 @@ section: additional [
            with the character '|', eg: \
            pax* | 10"
     knowntype: "feature tagvalue list"
-    relations:  "/edam/data/ Generic string"                                 
+    relations:  "/edam/data/0001021 Sequence feature qualifier"
   ]
 
   list: sort [
@@ -202,7 +202,7 @@ section: advanced [
            width and a width a 10 characters would be nearly unreadable. \
            If the width is set to less than 4, the graphics lines and the
            scale line will not be displayed."
-    relations: "/edam/data/ Generic integer"                                     
+    relations: "/edam/data/0002152 Rendering parameter"                                     
   ]
 
   boolean: collapse [
@@ -326,7 +326,7 @@ section: output [
     parameter: "Y"
     extension: "showfeat"
     knowntype: "showfeat output"
-    relations:  "EDAM:General sequence features report"                    
+    relations:  "/edam/data/0001275 General sequence feature report"                    
   ]
 
 endsection: output

@@ -18,7 +18,7 @@ section: input [
     parameter: "Y"
     information: "PROSITE database directory"
     knowntype: "prosite database"
-    relations:  "/edam/data/ Prosite database"                               
+    relations:  "/edam/data/0001356 Prosite pattern"                               
   ]
 
 endsection: input
