@@ -182,6 +182,10 @@ AjBool ensPredictionexonFetchSequenceStr(EnsPPredictionexon pe,
 AjBool ensPredictionexonFetchSequenceSeq(EnsPPredictionexon pe,
                                          AjPSeq* Psequence);
 
+AjBool ensPredictionexonSortByStartAscending(AjPList pes);
+
+AjBool ensPredictionexonSortByStartDescending(AjPList pes);
+
 /* Ensembl Prediction Exon Adaptor */
 
 EnsPPredictionexonadaptor ensPredictionexonadaptorNew(EnsPDatabaseadaptor dba);
@@ -275,6 +279,10 @@ AjBool ensPredictiontranscriptFetchTranslationSequenceStr(
 AjBool ensPredictiontranscriptFetchTranslationSequenceSeq(
     EnsPPredictiontranscript pt,
     AjPSeq *Psequence);
+
+AjBool ensPredictiontranscriptSortByStartAscending(AjPList pts);
+
+AjBool ensPredictiontranscriptSortByStartDescending(AjPList pts);
 
 /* Ensembl Prediction Transcript Adaptor */
 
