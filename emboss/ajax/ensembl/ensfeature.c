@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -75,6 +75,10 @@ extern EnsPSimplefeatureadaptor ensRegistryGetSimplefeatureadaptor(
 extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
     EnsPDatabaseadaptor dba);
 
+static int featureCompareStartAscending(const void* P1, const void* P2);
+
+static int featureCompareStartDescending(const void* P1, const void* P2);
+
 static AjBool featureadaptorAnalysisNameToConstraint(
     const EnsPFeatureadaptor fa,
     AjPStr* Pconstraint,
@@ -90,14 +94,17 @@ static AjBool featureadaptorSliceFetch(EnsPFeatureadaptor fa,
                                        AjPStr constraint,
                                        AjPList objects);
 
-static int basealignfeatureCompareSourceFeatureStart(const void* P1,
-                                                     const void* P2);
-
 static AjBool basealignfeatureParseFeatures(EnsPBasealignfeature baf,
                                             AjPList objects);
 
 static AjBool basealignfeatureParseCigar(const EnsPBasealignfeature baf,
                                          AjPList fps);
+
+static int basealignfeatureCompareSourceFeatureStartAscending(const void* P1,
+                                                              const void* P2);
+
+static int basealignfeatureCompareSourceFeatureStartDescending(const void* P1,
+                                                               const void* P2);
 
 static void *basealignfeatureadaptorCacheReference(void *value);
 
@@ -127,6 +134,10 @@ static AjBool proteinfeatureadaptorFetchAllBySQL(
     EnsPAssemblymapper am,
     EnsPSlice slice,
     AjPList pfs);
+
+static int simplefeatureCompareStartAscending(const void* P1, const void* P2);
+
+static int simplefeatureCompareStartDescending(const void* P1, const void* P2);
 
 static AjBool simplefeatureadaptorFetchAllBySQL(
     EnsPDatabaseadaptor dba,
@@ -1946,6 +1957,362 @@ AjBool ensFeatureFetchAllAlternativeLocations(EnsPFeature feature,
     ajListFree(&alts);
 
     ensSliceDel(&fslice);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensFeatureCompareStartAscending **************************************
+**
+** Comparison function to sort Ensembl Features by their start coordinate
+** in ascending order.
+**
+** Ensembl Features based on Ensembl Slices sort before Ensembl Features
+** based on sequence names. Ensembl Features without Ensembl Slices or
+** sequence names sort towards the end of the AJAX List.
+**
+** @param [r] feature1 [const EnsPFeature] Ensembl Feature 1
+** @param [r] feature2 [const EnsPFeature] Ensembl Feature 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+int ensFeatureCompareStartAscending(const EnsPFeature feature1,
+                                    const EnsPFeature feature2)
+{
+    int value = 0;
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(feature1 && (!feature2))
+        return -1;
+
+    if((!feature1) && (!feature2))
+        return 0;
+
+    if((!feature1) && feature2)
+        return +1;
+
+    /*
+    ** Ensembl Features based on Ensembl Slices sort before Ensembl Features
+    ** based on sequence names. For Features based on identical Slices or
+    ** sequence names evaluate start coordinates.
+    */
+
+    if(feature1->Slice && feature2->SequenceName)
+        return -1;
+
+    if(feature1->Slice && feature2->Slice)
+        value = ensSliceCompareIdentifierAscending(feature1->Slice,
+                                                   feature2->Slice);
+
+    if(feature1->SequenceName && feature2->SequenceName)
+        value = ajStrCmpS(feature1->SequenceName,
+                          feature2->SequenceName);
+
+    if(feature1->SequenceName && feature2->Slice)
+        return +1;
+
+    if(value)
+        return value;
+
+    /* Evaluate Feature start coordinates. */
+
+    if(feature1->Start < feature2->Start)
+        value = -1;
+
+    if(feature1->Start == feature2->Start)
+        value = 0;
+
+    if(feature1->Start > feature2->Start)
+        value = +1;
+
+    return value;
+}
+
+
+
+
+/* @func ensFeatureCompareStartDescending *************************************
+**
+** Comparison function to sort Ensembl Features by their start coordinate
+** in descending order.
+**
+** Ensembl Features based on Ensembl Slices sort before Ensembl Features
+** based on sequence names. Ensembl Features without Ensembl Slices or
+** sequence names sort towards the end of the AJAX List.
+**
+** @param [r] feature1 [const EnsPFeature] Ensembl Feature 1
+** @param [r] feature2 [const EnsPFeature] Ensembl Feature 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+int ensFeatureCompareStartDescending(const EnsPFeature feature1,
+                                     const EnsPFeature feature2)
+{
+    int value = 0;
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(feature1 && (!feature2))
+        return -1;
+
+    if((!feature1) && (!feature2))
+        return 0;
+
+    if((!feature1) && feature2)
+        return +1;
+
+    /*
+    ** Ensembl Features based on Ensembl Slices sort before Ensembl Features
+    ** based on sequence names. For Features based on identical Slices or
+    ** sequence names evaluate start coordinates.
+    */
+
+    if(feature1->Slice && feature2->SequenceName)
+        return -1;
+
+    if(feature1->Slice && feature2->Slice)
+        value = ensSliceCompareIdentifierAscending(feature1->Slice,
+                                                   feature2->Slice);
+
+    if(feature1->SequenceName && feature2->SequenceName)
+        value = ajStrCmpS(feature1->SequenceName,
+                          feature2->SequenceName);
+
+    if(feature1->SequenceName && feature2->Slice)
+        return +1;
+
+    if(value)
+        return value;
+
+    /* Evaluate Feature start coordinates. */
+
+    if(feature1->Start < feature2->Start)
+        value = +1;
+
+    if(feature1->Start == feature2->Start)
+        value = 0;
+
+    if(feature1->Start > feature2->Start)
+        value = -1;
+
+    return value;
+}
+
+
+
+
+/* @funcstatic featureCompareStartAscending ***********************************
+**
+** Comparison function to sort Ensembl Features by their
+** start coordinate in ascending order.
+**
+** @param [r] P1 [const void*] Ensembl Feature address 1
+** @param [r] P2 [const void*] Ensembl Feature address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int featureCompareStartAscending(const void* P1, const void* P2)
+{
+    EnsPFeature feature1 = NULL;
+    EnsPFeature feature2 = NULL;
+
+    feature1 = *(EnsPFeature const *) P1;
+    feature2 = *(EnsPFeature const *) P2;
+
+    if(ajDebugTest("featureCompareStartAscending"))
+    {
+        ajDebug("featureCompareStartAscending\n"
+                "  feature1 %p\n"
+                "  feature2 %p\n",
+                feature1,
+                feature2);
+
+        ensFeatureTrace(feature1, 1);
+        ensFeatureTrace(feature2, 1);
+    }
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(feature1 && (!feature2))
+        return -1;
+
+    if((!feature1) && (!feature2))
+        return 0;
+
+    if((!feature1) && feature2)
+        return +1;
+
+    return ensFeatureCompareStartAscending(feature1, feature2);
+}
+
+
+
+
+/* @func ensFeatureSortByStartAscending ***************************************
+**
+** Sort Ensembl Features by their start coordinate in ascending order.
+**
+** @param [u] features [AjPList] AJAX List of Ensembl Features
+** @see ensFeatureCompareStartAscending
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensFeatureSortByStartAscending(AjPList features)
+{
+    if(!features)
+        return ajFalse;
+
+    ajListSort(features, featureCompareStartAscending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic featureCompareStartDescending **********************************
+**
+** Comparison function to sort Ensembl Features by their
+** start coordinate in descending order.
+**
+** @param [r] P1 [const void*] Ensembl Feature address 1
+** @param [r] P2 [const void*] Ensembl Feature address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int featureCompareStartDescending(const void* P1, const void* P2)
+{
+    EnsPFeature feature1 = NULL;
+    EnsPFeature feature2 = NULL;
+
+    feature1 = *(EnsPFeature const *) P1;
+    feature2 = *(EnsPFeature const *) P2;
+
+    if(ajDebugTest("featureCompareStartDescending"))
+    {
+        ajDebug("featureCompareStartDescending\n"
+                "  feature1 %p\n"
+                "  feature2 %p\n",
+                feature1,
+                feature2);
+
+        ensFeatureTrace(feature1, 1);
+        ensFeatureTrace(feature2, 1);
+    }
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(feature1 && (!feature2))
+        return -1;
+
+    if((!feature1) && (!feature2))
+        return 0;
+
+    if((!feature1) && feature2)
+        return +1;
+
+    return ensFeatureCompareStartDescending(feature1, feature2);
+}
+
+
+
+
+/* @func ensFeatureSortByStartDescending **************************************
+**
+** Sort Ensembl Features by their start coordinate in descending order.
+**
+** @param [u] features [AjPList] AJAX List of Ensembl Features
+** @see ensFeatureCompareStartDescending
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensFeatureSortByStartDescending(AjPList features)
+{
+    if(!features)
+        return ajFalse;
+
+    ajListSort(features, featureCompareStartDescending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensFeatureMatch ******************************************************
+**
+** Test for matching two Ensembl Features.
+**
+** @param [r] feature1 [const EnsPFeature] First Ensembl Feature
+** @param [r] feature2 [const EnsPFeature] Second Ensembl Feature
+**
+** @return [AjBool] ajTrue if the Ensembl Features are equal
+** @@
+** The comparison is based on an initial pointer equality test and if that
+** fails, a case-sensitive string comparison of the sequence name and
+** comparisons of other elements are performed.
+******************************************************************************/
+
+AjBool ensFeatureMatch(const EnsPFeature feature1,
+                       const EnsPFeature feature2)
+{
+    if(!feature1)
+        return ajFalse;
+
+    if(!feature2)
+        return ajFalse;
+
+    if(feature1 == feature2)
+        return ajTrue;
+
+    if(!ensAnalysisMatch(feature1->Analysis, feature2->Analysis))
+        return ajFalse;
+
+    if(!ensSliceMatch(feature1->Slice, feature2->Slice))
+        return ajFalse;
+
+    if(!ajStrMatchS(feature1->SequenceName, feature2->SequenceName))
+        return ajFalse;
+
+    if(feature1->Start != feature2->Start)
+        return ajFalse;
+
+    if(feature1->End != feature2->End)
+        return ajFalse;
+
+    if(feature1->Strand != feature2->Strand)
+        return ajFalse;
 
     return ajTrue;
 }
@@ -5188,6 +5555,172 @@ EnsPFeaturepair ensFeaturepairTransfer(EnsPFeaturepair fp, EnsPSlice slice)
 
 
 
+/* @func ensFeaturepairCompareSourceFeatureStartAscending *********************
+**
+** Comparison function to sort Ensembl Feature Pairs by the start coordinate
+** of their source Ensembl Feature elements in ascending order.
+**
+** Ensembl Feature Pairs without a source Feature sort towards the end of the
+** AJAX List.
+**
+** @param [r] P1 [const void*] Ensembl Feature Pair address 1
+** @param [r] P2 [const void*] Ensembl Feature Pair address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+int ensFeaturepairCompareSourceFeatureStartAscending(const void* P1,
+                                                     const void* P2)
+{
+    EnsPFeaturepair fp1 = NULL;
+    EnsPFeaturepair fp2 = NULL;
+
+    fp1 = *(EnsPFeaturepair const *) P1;
+    fp2 = *(EnsPFeaturepair const *) P2;
+
+    if(ajDebugTest("ensFeaturepairCompareSourceFeatureStartAscending"))
+    {
+        ajDebug("ensFeaturepairCompareSourceFeatureStartAscending\n"
+                "  fp1 %p\n"
+                "  fp2 %p\n",
+                fp1,
+                fp2);
+
+        ensFeaturepairTrace(fp1, 1);
+        ensFeaturepairTrace(fp2, 1);
+    }
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(fp1 && (!fp2))
+        return -1;
+
+    if((!fp1) && (!fp2))
+        return 0;
+
+    if((!fp1) && fp2)
+        return +1;
+
+    return ensFeatureCompareStartAscending(fp1->SourceFeature,
+                                           fp2->SourceFeature);
+}
+
+
+
+
+/* @func ensFeaturepairCompareSourceFeatureStartDescending ********************
+**
+** Comparison function to sort Ensembl Feature Pairs by the start coordinate
+** of their source Ensembl Feature elements in descending order.
+**
+** Ensembl Feature Pairs without a source Feature sort towards the end of the
+** AJAX List.
+**
+** @param [r] P1 [const void*] Ensembl Feature Pair address 1
+** @param [r] P2 [const void*] Ensembl Feature Pair address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+int ensFeaturepairCompareSourceFeatureStartDescending(const void* P1,
+                                                      const void* P2)
+{
+    EnsPFeaturepair fp1 = NULL;
+    EnsPFeaturepair fp2 = NULL;
+
+    fp1 = *(EnsPFeaturepair const *) P1;
+    fp2 = *(EnsPFeaturepair const *) P2;
+
+    if(ajDebugTest("ensFeaturepairCompareSourceFeatureStartDescending"))
+    {
+        ajDebug("ensFeaturepairCompareSourceFeatureStartDescending\n"
+                "  fp1 %p\n"
+                "  fp2 %p\n",
+                fp1,
+                fp2);
+
+        ensFeaturepairTrace(fp1, 1);
+        ensFeaturepairTrace(fp2, 1);
+    }
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(fp1 && (!fp2))
+        return -1;
+
+    if((!fp1) && (!fp2))
+        return 0;
+
+    if((!fp1) && fp2)
+        return +1;
+
+    return ensFeatureCompareStartDescending(fp1->SourceFeature,
+                                            fp2->SourceFeature);
+}
+
+
+
+
+/* @func ensFeaturepairSortBySourceFeatureStartAscending **********************
+**
+** Sort Ensembl Feature Pairs by their source Ensembl Feature start coordinate
+** in ascending order.
+**
+** @param [u] fps [AjPList] AJAX List of Ensembl Feature Pairs
+** @see ensFeaturepairCompareSourceFeatureStartAscending
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensFeaturepairSortBySourceFeatureStartAscending(AjPList fps)
+{
+    if(!fps)
+        return ajFalse;
+
+    ajListSort(fps, ensFeaturepairCompareSourceFeatureStartAscending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensFeaturepairSortBySourceFeatureStartDescending *********************
+**
+** Sort Ensembl Feature Pairs by their source Ensembl Feature start coordinate
+** in descending order.
+**
+** @param [u] fps [AjPList] AJAX List of Ensembl Feature Pairs
+** @see ensFeaturepairCompareSourceFeatureStartDescending
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensFeaturepairSortBySourceFeatureStartDescending(AjPList fps)
+{
+    if(!fps)
+        return ajFalse;
+
+    ajListSort(fps, ensFeaturepairCompareSourceFeatureStartDescending);
+
+    return ajTrue;
+}
+
+
+
+
 /* @datasection [EnsPBasealignfeature] Base Align Feature *********************
 **
 ** Functions for manipulating Ensembl Base Align Feature objects
@@ -5200,101 +5733,6 @@ EnsPFeaturepair ensFeaturepairTransfer(EnsPFeaturepair fp, EnsPSlice slice)
 ** @nam2rule Basealignfeature
 **
 ******************************************************************************/
-
-
-
-
-/* @funcstatic basealignfeatureCompareSourceFeatureStart **********************
-**
-** Comparison function to sort Ensembl Feature Pairs by the start ccordinate of
-** their source Ensembl Feature elements in ascending order on the forward
-** strand and descending order on the reverse strand.
-**
-** @param [r] P1 [const void*] Ensembl Base Align Feature address 1
-** @param [r] P2 [const void*] Ensembl Base Align Feature address 2
-**
-** @return [int] The comparison function returns an integer less than,
-**               equal to, or greater than zero if the first argument is
-**               considered to be respectively less than, equal to, or
-**               greater than the second.
-** @@
-******************************************************************************/
-
-static int basealignfeatureCompareSourceFeatureStart(const void* P1,
-                                                     const void* P2)
-{
-    int value = 0;
-
-    EnsPFeaturepair fp1 = NULL;
-    EnsPFeaturepair fp2 = NULL;
-
-    fp1 = *(EnsPFeaturepair const *) P1;
-
-    fp2 = *(EnsPFeaturepair const *) P2;
-
-    if(ajDebugTest("basealignfeatureCompareSourceFeatureStart"))
-    {
-        ajDebug("basealignfeatureCompareSourceFeatureStart\n"
-                "  fp1 %p\n"
-                "  fp2 %p\n",
-                fp1,
-                fp2);
-
-        ensFeaturepairTrace(fp1, 1);
-        ensFeaturepairTrace(fp2, 1);
-    }
-
-    if(!fp1)
-    {
-        ajDebug("basealignfeatureCompareSourceFeatureStart got empty "
-                "Feature Pair 1.\n");
-
-        return 0;
-    }
-
-    if(!fp2)
-    {
-        ajDebug("basealignfeatureCompareSourceFeatureStart got empty "
-                "Feature Pair 2.\n");
-
-        return 0;
-    }
-
-    if(!fp1->SourceFeature)
-    {
-        ajDebug("basealignfeatureCompareSourceFeatureStart got a "
-                "Feature Pair 1 without a source Feature.\n");
-
-        return 0;
-    }
-
-    if(!fp2->SourceFeature)
-    {
-        ajDebug("basealignfeatureCompareSourceFeatureStart got a "
-                "Feature Pair 2 without a source Feature.\n");
-
-        return 0;
-    }
-
-    if(fp1->SourceFeature->Start < fp2->SourceFeature->Start)
-        value = -1;
-
-    if(fp1->SourceFeature->Start == fp2->SourceFeature->Start)
-        value = 0;
-
-    if(fp1->SourceFeature->Start > fp2->SourceFeature->Start)
-        value = +1;
-
-    /*
-    ** For Feature Pairs with a Feature on the reverse strand,
-    ** reverse also the sorting order.
-    */
-
-    if(fp1->SourceFeature->Strand < 0)
-        value *= -1;
-
-    return value;
-}
 
 
 
@@ -5366,7 +5804,6 @@ static AjBool basealignfeatureParseFeatures(EnsPBasealignfeature baf,
         return ajTrue;
 
     srcunit = ensBasealignfeatureGetSourceUnit(baf);
-
     trgunit = ensBasealignfeatureGetTargetUnit(baf);
 
     if(baf->Cigar)
@@ -5388,11 +5825,17 @@ static AjBool basealignfeatureParseFeatures(EnsPBasealignfeature baf,
     ajListIterDel(&iter);
 
     /*
-    ** Sort the Ensembl Feature Pairs on their Feature start position in
-    ** ascending order on positive strand, descending on negative strand.
+    ** Sort the AJAX List of Ensembl Feature Pairs on their source Feature
+    ** start coordinate in ascending order on the positive strand and
+    ** descending order on the negative strand.
     */
 
-    ajListSort(fps, basealignfeatureCompareSourceFeatureStart);
+    ajListPeekFirst(fps, (void **) &firstfp);
+
+    if(firstfp->SourceFeature->Strand >= 0)
+        ensFeaturepairSortBySourceFeatureStartAscending(fps);
+    else
+        ensFeaturepairSortBySourceFeatureStartDescending(fps);
 
     ajListPeekFirst(fps, (void **) &firstfp);
 
@@ -5636,7 +6079,7 @@ static AjBool basealignfeatureParseFeatures(EnsPBasealignfeature baf,
                 else
                     ajFmtPrintAppS(&baf->Cigar, "%dD", trggap);
 
-                /* sanity check,  should not be an insertion and deletion */
+                /* sanity check, should not be an insertion and deletion */
 
                 if(insertion)
                 {
@@ -5730,13 +6173,11 @@ static AjBool basealignfeatureParseFeatures(EnsPBasealignfeature baf,
     baf->Featurepair = ensFeaturepairNewObj(firstfp);
 
     ensFeaturepairSetSourceFeature(baf->Featurepair, srcfeature);
-
     ensFeaturepairSetTargetFeature(baf->Featurepair, trgfeature);
 
-    /* Delete the source and target Features. */
+    /* Delete the cloned source and target Features. */
 
     ensFeatureDel(&srcfeature);
-
     ensFeatureDel(&trgfeature);
 
     return ajTrue;
@@ -6898,6 +7339,168 @@ AjBool ensBasealignfeatureFetchAllFeaturepairs(const EnsPBasealignfeature baf,
         return ajFalse;
 
     return basealignfeatureParseCigar(baf, fps);
+}
+
+
+
+
+/* @funcstatic basealignfeatureCompareSourceFeatureStartAscending *************
+**
+** Comparison function to sort Ensembl Base Align Features by the start
+** cooridnate of their source Ensembl Feature of the Ensembl Feature Pair in
+** ascending order.
+**
+** @param [r] P1 [const void*] Ensembl Base Align Feature address 1
+** @param [r] P2 [const void*] Ensembl Base Align Feature address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int basealignfeatureCompareSourceFeatureStartAscending(const void* P1,
+                                                              const void* P2)
+{
+    EnsPBasealignfeature baf1 = NULL;
+    EnsPBasealignfeature baf2 = NULL;
+
+    baf1 = *(EnsPBasealignfeature const *) P1;
+    baf2 = *(EnsPBasealignfeature const *) P2;
+
+    if(ajDebugTest("basealignfeatureCompareSourceFeatureStartAscending"))
+    {
+        ajDebug("basealignfeatureCompareSourceFeatureStartAscending\n"
+                "  baf1 %p\n"
+                "  baf2 %p\n",
+                baf1,
+                baf2);
+
+        ensBasealignfeatureTrace(baf1, 1);
+        ensBasealignfeatureTrace(baf2, 1);
+    }
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(baf1 && (!baf2))
+        return -1;
+
+    if((!baf1) && (!baf2))
+        return 0;
+
+    if((!baf1) && baf2)
+        return +1;
+
+    return ensFeaturepairCompareSourceFeatureStartAscending(
+        baf1->Featurepair,
+        baf2->Featurepair);
+}
+
+
+
+
+/* @funcstatic basealignfeatureCompareSourceFeatureStartDescending ************
+**
+** Comparison function to sort Ensembl Base Align Features by the start
+** cooridnate of their source Ensembl Feature of the Ensembl Feature Pair in
+** descending order.
+**
+** @param [r] P1 [const void*] Ensembl Base Align Feature address 1
+** @param [r] P2 [const void*] Ensembl Base Align Feature address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int basealignfeatureCompareSourceFeatureStartDescending(const void* P1,
+                                                               const void* P2)
+{
+    EnsPBasealignfeature baf1 = NULL;
+    EnsPBasealignfeature baf2 = NULL;
+
+    baf1 = *(EnsPBasealignfeature const *) P1;
+    baf2 = *(EnsPBasealignfeature const *) P2;
+
+    if(ajDebugTest("basealignfeatureCompareSourceFeatureStartDescending"))
+    {
+        ajDebug("basealignfeatureCompareSourceFeatureStartDescending\n"
+                "  baf1 %p\n"
+                "  baf2 %p\n",
+                baf1,
+                baf2);
+
+        ensBasealignfeatureTrace(baf1, 1);
+        ensBasealignfeatureTrace(baf2, 1);
+    }
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(baf1 && (!baf2))
+        return -1;
+
+    if((!baf1) && (!baf2))
+        return 0;
+
+    if((!baf1) && baf2)
+        return +1;
+
+    return ensFeaturepairCompareSourceFeatureStartDescending(
+        baf1->Featurepair,
+        baf2->Featurepair);
+}
+
+
+
+
+/* @func ensBasealignfeatureSortBySourceFeatureStartAscending *****************
+**
+** Sort Ensembl Base Align Features by the start cooridnate of their
+** source Ensembl Feature of the Ensembl Feature Pair in ascending order.
+**
+** @param [u] bafs [AjPList] AJAX List of Ensembl Base Align Features
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensBasealignfeatureSortBySourceFeatureStartAscending(AjPList bafs)
+{
+    if(!bafs)
+        return ajFalse;
+
+    ajListSort(bafs, basealignfeatureCompareSourceFeatureStartAscending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensBasealignfeatureSortBySourceFeatureStartDescending ****************
+**
+** Sort Ensembl Base Align Features by the start cooridnate of their
+** source Ensembl Feature of the Ensembl Feature Pair in descending order.
+**
+** @param [u] bafs [AjPList] AJAX List of Ensembl Base Align Features
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensBasealignfeatureSortBySourceFeatureStartDescending(AjPList bafs)
+{
+    if(!bafs)
+        return ajFalse;
+
+    ajListSort(bafs, basealignfeatureCompareSourceFeatureStartDescending);
+
+    return ajTrue;
 }
 
 
@@ -10666,6 +11269,155 @@ ajuint ensSimplefeatureGetMemSize(const EnsPSimplefeature sf)
     }
 
     return size;
+}
+
+
+
+
+/* @funcstatic simplefeatureCompareStartAscending *****************************
+**
+** Comparison function to sort Ensembl Simple Features by their
+** start coordinate in ascending order.
+**
+** @param [r] P1 [const void*] Ensembl Simple Feature address 1
+** @param [r] P2 [const void*] Ensembl Simple Feature address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int simplefeatureCompareStartAscending(const void* P1, const void* P2)
+{
+    EnsPSimplefeature sf1 = NULL;
+    EnsPSimplefeature sf2 = NULL;
+
+    sf1 = *(EnsPSimplefeature const *) P1;
+    sf2 = *(EnsPSimplefeature const *) P2;
+
+    if(ajDebugTest("simplefeatureCompareStartAscending"))
+    {
+        ajDebug("simplefeatureCompareStartAscending\n"
+                "  sf1 %p\n"
+                "  sf2 %p\n",
+                sf1,
+                sf2);
+
+        ensSimplefeatureTrace(sf1, 1);
+        ensSimplefeatureTrace(sf2, 1);
+    }
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(sf1 && (!sf2))
+        return -1;
+
+    if((!sf1) && (!sf2))
+        return 0;
+
+    if((!sf1) && sf2)
+        return +1;
+
+    return ensFeatureCompareStartAscending(sf1->Feature, sf2->Feature);
+}
+
+
+
+
+/* @func ensSimplefeatureSortByStartAscending *********************************
+**
+** Sort Ensembl Simple Features by their Ensembl Feature start coordinate
+** in ascending order.
+**
+** @param [u] sfs [AjPList] AJAX List of Ensembl Simple Features
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensSimplefeatureSortByStartAscending(AjPList sfs)
+{
+    if(!sfs)
+        return ajFalse;
+
+    ajListSort(sfs, simplefeatureCompareStartAscending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic simplefeatureCompareStartDescending ****************************
+**
+** Comparison function to sort Ensembl Simple Features by their
+** Ensembl Feature start coordinate in descending order.
+**
+** @param [r] P1 [const void*] Ensembl Simple Feature address 1
+** @param [r] P2 [const void*] Ensembl Simple Feature address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int simplefeatureCompareStartDescending(const void* P1, const void* P2)
+{
+    const EnsPSimplefeature sf1 = NULL;
+    const EnsPSimplefeature sf2 = NULL;
+
+    sf1 = *(EnsPSimplefeature const *) P1;
+    sf2 = *(EnsPSimplefeature const *) P2;
+
+    if(ajDebugTest("simplefeatureCompareStartDescending"))
+        ajDebug("simplefeatureCompareStartDescending\n"
+                "  sf1 %p\n"
+                "  sf2 %p\n",
+                sf1,
+                sf2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(sf1 && (!sf2))
+        return -1;
+
+    if((!sf1) && (!sf2))
+        return 0;
+
+    if((!sf1) && sf2)
+        return +1;
+
+    return ensFeatureCompareStartDescending(sf1->Feature, sf2->Feature);
+}
+
+
+
+
+/* @func ensSimplefeatureSortByStartDescending ********************************
+**
+** Sort Ensembl Simple Features by their Ensembl Feature start coordinate
+** in descending order.
+**
+** @param [u] sfs [AjPList] AJAX List of Ensembl Simple Features
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensSimplefeatureSortByStartDescending(AjPList sfs)
+{
+    if(!sfs)
+        return ajFalse;
+
+    ajListSort(sfs, simplefeatureCompareStartDescending);
+
+    return ajTrue;
 }
 
 
