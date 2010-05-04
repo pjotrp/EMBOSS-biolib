@@ -448,6 +448,10 @@ AjBool ensMarkerfeatureTrace(const EnsPMarkerfeature mf, ajuint level);
 
 ajuint ensMarkerfeatureGetMemSize(const EnsPMarkerfeature mf);
 
+AjBool ensMarkerfeatureSortByStartAscending(AjPList mfs);
+
+AjBool ensMarkerfeatureSortByStartDescending(AjPList mfs);
+
 /* Ensembl Marker Feature Adaptor */
 
 EnsPMarkerfeatureadaptor ensMarkerfeatureadaptorNew(EnsPDatabaseadaptor dba);
