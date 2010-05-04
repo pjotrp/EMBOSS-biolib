@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -64,6 +64,10 @@ extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
 static AjBool repeatconsensusadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                   const AjPStr statement,
                                                   AjPList rci);
+
+static int repeatfeatureCompareStartAscending(const void* P1, const void* P2);
+
+static int repeatfeatureCompareStartDescending(const void* P1, const void* P2);
 
 static void *repeatfeatureadaptorCacheReference(void *value);
 
@@ -2069,6 +2073,150 @@ ajuint ensRepeatfeatureGetMemSize(const EnsPRepeatfeature rf)
     size += ensRepeatconsensusGetMemSize(rf->Repeatconsensus);
 
     return size;
+}
+
+
+
+
+/* @funcstatic repeatfeatureCompareStartAscending *****************************
+**
+** Comparison function to sort Ensembl Repeat Features by their
+** Ensembl Feature start coordinate in ascending order.
+**
+** @param [r] P1 [const void*] Ensembl Repeat Feature address 1
+** @param [r] P2 [const void*] Ensembl Repeat Feature address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int repeatfeatureCompareStartAscending(const void* P1, const void* P2)
+{
+    const EnsPRepeatfeature rf1 = NULL;
+    const EnsPRepeatfeature rf2 = NULL;
+
+    rf1 = *(EnsPRepeatfeature const *) P1;
+    rf2 = *(EnsPRepeatfeature const *) P2;
+
+    if(ajDebugTest("repeatfeatureCompareStartAscending"))
+        ajDebug("repeatfeatureCompareStartAscending\n"
+                "  rf1 %p\n"
+                "  rf2 %p\n",
+                rf1,
+                rf2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(rf1 && (!rf2))
+        return -1;
+
+    if((!rf1) && (!rf2))
+        return 0;
+
+    if((!rf1) && rf2)
+        return +1;
+
+    return ensFeatureCompareStartAscending(rf1->Feature, rf2->Feature);
+}
+
+
+
+
+/* @func ensRepeatfeatureSortByStartAscending *********************************
+**
+** Sort Ensembl Repeat Features by their Ensembl Feature start coordinate
+** in ascending order.
+**
+** @param [u] rfs [AjPList] AJAX List of Ensembl Repeat Features
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensRepeatfeatureSortByStartAscending(AjPList rfs)
+{
+    if(!rfs)
+        return ajFalse;
+
+    ajListSort(rfs, repeatfeatureCompareStartAscending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic repeatfeatureCompareStartDescending ****************************
+**
+** Comparison function to sort Ensembl Repeat Features by their
+** Ensembl Feature start coordinate in descending order.
+**
+** @param [r] P1 [const void*] Ensembl Repeat Feature address 1
+** @param [r] P2 [const void*] Ensembl Repeat Feature address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int repeatfeatureCompareStartDescending(const void* P1, const void* P2)
+{
+    const EnsPRepeatfeature rf1 = NULL;
+    const EnsPRepeatfeature rf2 = NULL;
+
+    rf1 = *(EnsPRepeatfeature const *) P1;
+    rf2 = *(EnsPRepeatfeature const *) P2;
+
+    if(ajDebugTest("repeatfeatureCompareStartDescending"))
+        ajDebug("repeatfeatureCompareStartDescending\n"
+                "  rf1 %p\n"
+                "  rf2 %p\n",
+                rf1,
+                rf2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(rf1 && (!rf2))
+        return -1;
+
+    if((!rf1) && (!rf2))
+        return 0;
+
+    if((!rf1) && rf2)
+        return +1;
+
+    return ensFeatureCompareStartDescending(rf1->Feature, rf2->Feature);
+}
+
+
+
+
+/* @func ensRepeatfeatureSortByStartDescending ********************************
+**
+** Sort Ensembl Repeat Features by their Ensembl Feature start coordinate
+** in descending order.
+**
+** @param [u] rfs [AjPList] AJAX List of Ensembl Repeat Features
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensRepeatfeatureSortByStartDescending(AjPList rfs)
+{
+    if(!rfs)
+        return ajFalse;
+
+    ajListSort(rfs, repeatfeatureCompareStartDescending);
+
+    return ajTrue;
 }
 
 
