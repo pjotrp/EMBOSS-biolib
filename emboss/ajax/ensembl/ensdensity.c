@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -137,6 +137,15 @@ extern EnsPDensitytypeadaptor ensRegistryGetDensitytypeadaptor(
 extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
     EnsPDatabaseadaptor dba);
 
+static int densitytyperatioCompareRatioAscending(const void* P1,
+                                                 const void* P2);
+
+static int densityfeatureCompareStartAscending(const void* P1,
+                                               const void* P2);
+
+static int densityfeatureCompareStartDescending(const void* P1,
+                                                const void* P2);
+
 static AjBool densitytypeadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                               const AjPStr statement,
                                               EnsPAssemblymapper am,
@@ -158,23 +167,81 @@ static void densitytypeadaptorFetchAll(const void *key,
                                        void **value,
                                        void *cl);
 
-static AjBool densityFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool densityfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                  const AjPStr statement,
                                                  EnsPAssemblymapper am,
                                                  EnsPSlice slice,
                                                  AjPList dfs);
 
-static void *densityFeatureadaptorCacheReference(void *value);
+static void *densityfeatureadaptorCacheReference(void *value);
 
-static void densityFeatureadaptorCacheDelete(void **value);
+static void densityfeatureadaptorCacheDelete(void **value);
 
-static ajuint densityFeatureadaptorCacheSize(const void *value);
+static ajuint densityfeatureadaptorCacheSize(const void *value);
 
-static EnsPFeature densityFeatureadaptorGetFeature(const void *value);
+static EnsPFeature densityfeatureadaptorGetFeature(const void *value);
 
-static int densitytypeRatioCompareRatio(const void* P1, const void* P2);
 
-static int densityFeatureCompareStart(const void* P1, const void* P2);
+
+
+/* @funcstatic densitytyperatioCompareRatioAscending **************************
+**
+** Comparison function to sort Density Type Ratios by their ratio
+** in ascending order.
+**
+** @param [r] P1 [const void*] Density Type Ratio address 1
+** @param [r] P2 [const void*] Density Type Ratio address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int densitytyperatioCompareRatioAscending(const void* P1,
+                                                 const void* P2)
+{
+    int value = 0;
+
+    const DensityPTypeRatio dtr1 = NULL;
+    const DensityPTypeRatio dtr2 = NULL;
+
+    dtr1 = *(DensityPTypeRatio const *) P1;
+    dtr2 = *(DensityPTypeRatio const *) P2;
+
+    if(ajDebugTest("densitytyperatioCompareRatioAscending"))
+        ajDebug("densitytyperatioCompareRatioAscending\n"
+                "  dtr1 %p\n"
+                "  dtr2 %p\n",
+                dtr1,
+                dtr2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(dtr1 && (!dtr2))
+        return -1;
+
+    if((!dtr1) && (!dtr2))
+        return 0;
+
+    if((!dtr1) && dtr2)
+        return +1;
+
+    /* Evaluate Density Type ratios. */
+
+    if(dtr1->Ratio < dtr2->Ratio)
+        value = -1;
+
+    if(dtr1->Ratio == dtr2->Ratio)
+        value = 0;
+
+    if(dtr1->Ratio > dtr2->Ratio)
+        value = +1;
+
+    return value;
+}
 
 
 
@@ -2116,7 +2183,8 @@ AjBool ensDensityfeatureSetAdaptor(EnsPDensityfeature df,
 ** @@
 ******************************************************************************/
 
-AjBool ensDensityfeatureSetIdentifier(EnsPDensityfeature df, ajuint identifier)
+AjBool ensDensityfeatureSetIdentifier(EnsPDensityfeature df,
+                                      ajuint identifier)
 {
     if(!df)
         return ajFalse;
@@ -2140,7 +2208,8 @@ AjBool ensDensityfeatureSetIdentifier(EnsPDensityfeature df, ajuint identifier)
 ** @@
 ******************************************************************************/
 
-AjBool ensDensityfeatureSetFeature(EnsPDensityfeature df, EnsPFeature feature)
+AjBool ensDensityfeatureSetFeature(EnsPDensityfeature df,
+                                   EnsPFeature feature)
 {
     if(!df)
         return ajFalse;
@@ -2195,7 +2264,8 @@ AjBool ensDensityfeatureSetDensitytype(EnsPDensityfeature df,
 ** @@
 ******************************************************************************/
 
-AjBool ensDensityfeatureSetDensityValue(EnsPDensityfeature df, float value)
+AjBool ensDensityfeatureSetDensityValue(EnsPDensityfeature df,
+                                        float value)
 {
     if(!df)
         return ajFalse;
@@ -2304,6 +2374,152 @@ ajuint ensDensityfeatureGetMemSize(const EnsPDensityfeature df)
 
 
 
+/* @funcstatic densityfeatureCompareStartAscending ****************************
+**
+** Comparison function to sort Ensembl Density Features by their
+** Ensembl Feature start coordinate in ascending order.
+**
+** @param [r] P1 [const void*] Ensembl Density Feature address 1
+** @param [r] P2 [const void*] Ensembl Density Feature address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int densityfeatureCompareStartAscending(const void* P1,
+                                               const void* P2)
+{
+    const EnsPDensityfeature df1 = NULL;
+    const EnsPDensityfeature df2 = NULL;
+
+    df1 = *(EnsPDensityfeature const *) P1;
+    df2 = *(EnsPDensityfeature const *) P2;
+
+    if(ajDebugTest("densityfeatureCompareStartAscending"))
+        ajDebug("densityfeatureCompareStartAscending\n"
+                "  df1 %p\n"
+                "  df2 %p\n",
+                df1,
+                df2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(df1 && (!df2))
+        return -1;
+
+    if((!df1) && (!df2))
+        return 0;
+
+    if((!df1) && df2)
+        return +1;
+
+    return ensFeatureCompareStartAscending(df1->Feature, df2->Feature);
+}
+
+
+
+
+/* @func ensDensityfeatureSortByStartAscending ********************************
+**
+** Sort Ensembl Density Features by their Ensembl Feature start coordinate
+** in ascending order.
+**
+** @param [u] dfs [AjPList] AJAX List of Ensembl Density Fatures
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensDensityfeatureSortByStartAscending(AjPList dfs)
+{
+    if(!dfs)
+        return ajFalse;
+
+    ajListSort(dfs, densityfeatureCompareStartAscending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic densityfeatureCompareStartDescending ***************************
+**
+** Comparison function to sort Ensembl Density Features by their
+** Ensembl Feature start coordinate in descending order.
+**
+** @param [r] P1 [const void*] Ensembl Density Feature address 1
+** @param [r] P2 [const void*] Ensembl Density Feature address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int densityfeatureCompareStartDescending(const void* P1,
+                                                const void* P2)
+{
+    const EnsPDensityfeature df1 = NULL;
+    const EnsPDensityfeature df2 = NULL;
+
+    df1 = *(EnsPDensityfeature const *) P1;
+    df2 = *(EnsPDensityfeature const *) P2;
+
+    if(ajDebugTest("densityfeatureCompareStartDescending"))
+        ajDebug("densityfeatureCompareStartDescending\n"
+                "  df1 %p\n"
+                "  df2 %p\n",
+                df1,
+                df2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(df1 && (!df2))
+        return -1;
+
+    if((!df1) && (!df2))
+        return 0;
+
+    if((!df1) && df2)
+        return +1;
+
+    return ensFeatureCompareStartDescending(df1->Feature, df2->Feature);
+}
+
+
+
+
+/* @func ensDensityfeatureSortByStartDescending *******************************
+**
+** Sort Ensembl Density Features by their Ensembl Feature start coordinate
+** in descending order.
+**
+** @param [u] dfs [AjPList] AJAX List of Ensembl Density Fatures
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensDensityfeatureSortByStartDescending(AjPList dfs)
+{
+    if(!dfs)
+        return ajFalse;
+
+    ajListSort(dfs, densityfeatureCompareStartDescending);
+
+    return ajTrue;
+}
+
+
+
+
 /* @datasection [EnsPDensityfeatureadaptor] Density Feature Adaptor ***********
 **
 ** Functions for manipulating Ensembl Density Feature Adaptor objects
@@ -2314,7 +2530,7 @@ ajuint ensDensityfeatureGetMemSize(const EnsPDensityfeature df)
 **
 ******************************************************************************/
 
-static const char *densityFeatureadaptorTables[] =
+static const char *densityfeatureadaptorTables[] =
 {
     "density_feature",
     NULL
@@ -2323,7 +2539,7 @@ static const char *densityFeatureadaptorTables[] =
 
 
 
-static const char *densityFeatureadaptorColumns[] =
+static const char *densityfeatureadaptorColumns[] =
 {
     "density_feature.density_feature_id",
     "density_feature.seq_region_id",
@@ -2334,19 +2550,19 @@ static const char *densityFeatureadaptorColumns[] =
     NULL
 };
 
-static EnsOBaseadaptorLeftJoin densityFeatureadaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin densityfeatureadaptorLeftJoin[] =
 {
     {NULL, NULL}
 };
 
-static const char *densityFeatureadaptorDefaultCondition = NULL;
+static const char *densityfeatureadaptorDefaultCondition = NULL;
 
-static const char *densityFeatureadaptorFinalCondition = NULL;
-
-
+static const char *densityfeatureadaptorFinalCondition = NULL;
 
 
-/* @funcstatic densityFeatureadaptorFetchAllBySQL *****************************
+
+
+/* @funcstatic densityfeatureadaptorFetchAllBySQL *****************************
 **
 ** Fetch all Ensembl Density Feature objects via an SQL statement.
 **
@@ -2361,7 +2577,7 @@ static const char *densityFeatureadaptorFinalCondition = NULL;
 ** @@
 ******************************************************************************/
 
-static AjBool densityFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+static AjBool densityfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                  const AjPStr statement,
                                                  EnsPAssemblymapper am,
                                                  EnsPSlice slice,
@@ -2404,8 +2620,8 @@ static AjBool densityFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     EnsPSlice srslice   = NULL;
     EnsPSliceadaptor sa = NULL;
 
-    if(ajDebugTest("densityFeatureadaptorFetchAllBySQL"))
-        ajDebug("densityFeatureadaptorFetchAllBySQL\n"
+    if(ajDebugTest("densityfeatureadaptorFetchAllBySQL"))
+        ajDebug("densityfeatureadaptorFetchAllBySQL\n"
                 "  dba %p\n"
                 "  statement %p\n"
                 "  am %p\n"
@@ -2474,7 +2690,7 @@ static AjBool densityFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         if(srstart <= INT_MAX)
             slstart = (ajint) srstart;
         else
-            ajFatal("densityFeatureadaptorFetchAllBySQL got a "
+            ajFatal("densityfeatureadaptorFetchAllBySQL got a "
                     "Sequence Region start coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srstart, INT_MAX);
@@ -2482,7 +2698,7 @@ static AjBool densityFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         if(srend <= INT_MAX)
             slend = (ajint) srend;
         else
-            ajFatal("densityFeatureadaptorFetchAllBySQL got a "
+            ajFatal("densityfeatureadaptorFetchAllBySQL got a "
                     "Sequence Region end coordinate (%u) outside the "
                     "maximum integer limit (%d).",
                     srend, INT_MAX);
@@ -2581,7 +2797,7 @@ static AjBool densityFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             if(ensSliceGetLength(slice) <= INT_MAX)
                 sllength = (ajint) ensSliceGetLength(slice);
             else
-                ajFatal("densityFeatureadaptorFetchAllBySQL got a Slice, "
+                ajFatal("densityfeatureadaptorFetchAllBySQL got a Slice, "
                         "which length (%u) exceeds the "
                         "maximum integer limit (%d).",
                         ensSliceGetLength(slice), INT_MAX);
@@ -2670,7 +2886,7 @@ static AjBool densityFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
-/* @funcstatic densityFeatureadaptorCacheReference ****************************
+/* @funcstatic densityfeatureadaptorCacheReference ****************************
 **
 ** Wrapper function to reference an Ensembl Density Feature
 ** from an Ensembl Cache.
@@ -2681,7 +2897,7 @@ static AjBool densityFeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @@
 ******************************************************************************/
 
-static void *densityFeatureadaptorCacheReference(void *value)
+static void *densityfeatureadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -2692,7 +2908,7 @@ static void *densityFeatureadaptorCacheReference(void *value)
 
 
 
-/* @funcstatic densityFeatureadaptorCacheDelete *******************************
+/* @funcstatic densityfeatureadaptorCacheDelete *******************************
 **
 ** Wrapper function to delete an Ensembl Density Feature
 ** from an Ensembl Cache.
@@ -2703,7 +2919,7 @@ static void *densityFeatureadaptorCacheReference(void *value)
 ** @@
 ******************************************************************************/
 
-static void densityFeatureadaptorCacheDelete(void **value)
+static void densityfeatureadaptorCacheDelete(void **value)
 {
     if(!value)
         return;
@@ -2716,7 +2932,7 @@ static void densityFeatureadaptorCacheDelete(void **value)
 
 
 
-/* @funcstatic densityFeatureadaptorCacheSize *********************************
+/* @funcstatic densityfeatureadaptorCacheSize *********************************
 **
 ** Wrapper function to determine the memory size of an Ensembl Density Feature
 ** from an Ensembl Cache.
@@ -2727,7 +2943,7 @@ static void densityFeatureadaptorCacheDelete(void **value)
 ** @@
 ******************************************************************************/
 
-static ajuint densityFeatureadaptorCacheSize(const void *value)
+static ajuint densityfeatureadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;
@@ -2738,7 +2954,7 @@ static ajuint densityFeatureadaptorCacheSize(const void *value)
 
 
 
-/* @funcstatic densityFeatureadaptorGetFeature ********************************
+/* @funcstatic densityfeatureadaptorGetFeature ********************************
 **
 ** Wrapper function to get the Ensembl Feature of an Ensembl Density Feature
 ** from an Ensembl Feature Adaptor.
@@ -2749,7 +2965,7 @@ static ajuint densityFeatureadaptorCacheSize(const void *value)
 ** @@
 ******************************************************************************/
 
-static EnsPFeature densityFeatureadaptorGetFeature(const void *value)
+static EnsPFeature densityfeatureadaptorGetFeature(const void *value)
 {
     if(!value)
         return NULL;
@@ -2804,18 +3020,18 @@ EnsPDensityfeatureadaptor ensDensityfeatureadaptorNew(EnsPDatabaseadaptor dba)
 
     dfa->Adaptor = ensFeatureadaptorNew(
         dba,
-        densityFeatureadaptorTables,
-        densityFeatureadaptorColumns,
-        densityFeatureadaptorLeftJoin,
-        densityFeatureadaptorDefaultCondition,
-        densityFeatureadaptorFinalCondition,
-        densityFeatureadaptorFetchAllBySQL,
+        densityfeatureadaptorTables,
+        densityfeatureadaptorColumns,
+        densityfeatureadaptorLeftJoin,
+        densityfeatureadaptorDefaultCondition,
+        densityfeatureadaptorFinalCondition,
+        densityfeatureadaptorFetchAllBySQL,
         (void* (*)(const void* key)) NULL,
-        densityFeatureadaptorCacheReference,
+        densityfeatureadaptorCacheReference,
         (AjBool (*)(const void* value)) NULL,
-        densityFeatureadaptorCacheDelete,
-        densityFeatureadaptorCacheSize,
-        densityFeatureadaptorGetFeature,
+        densityfeatureadaptorCacheDelete,
+        densityfeatureadaptorCacheSize,
+        densityfeatureadaptorGetFeature,
         "Density Feature");
 
     return dfa;
@@ -2875,137 +3091,6 @@ void ensDensityfeatureadaptorDel(EnsPDensityfeatureadaptor *Pdfa)
     *Pdfa = NULL;
 
     return;
-}
-
-
-
-
-/* @funcstatic densitytypeRatioCompareRatio ***********************************
-**
-** Comparison function to sort Density Ratios by their ratio
-** in ascending order.
-**
-** @param [r] P1 [const void*] Density Ratio address 1
-** @param [r] P2 [const void*] Density Ratio address 2
-**
-** @return [int] The comparison function returns an integer less than,
-**               equal to, or greater than zero if the first argument is
-**               considered to be respectively less than, equal to, or
-**               greater than the second.
-** @@
-******************************************************************************/
-
-static int densitytypeRatioCompareRatio(const void* P1, const void* P2)
-{
-    int value = 0;
-
-    const DensityPTypeRatio dtr1 = NULL;
-    const DensityPTypeRatio dtr2 = NULL;
-
-    dtr1 = *(DensityPTypeRatio const *) P1;
-
-    dtr2 = *(DensityPTypeRatio const *) P2;
-
-    if(ajDebugTest("densitytypeRatioCompareRatio"))
-        ajDebug("densitytypeRatioCompareRatio\n"
-                "  dtr1 %p\n"
-                "  dtr2 %p\n",
-                dtr1,
-                dtr2);
-
-    if(!dtr1)
-    {
-        ajDebug("densitytypeRatioCompareRatio got empty dtr1.\n");
-
-        return 0;
-    }
-
-    if(!dtr2)
-    {
-        ajDebug("densitytypeRatioCompareRatio got empty dtr2.\n");
-
-        return 0;
-    }
-
-    if(dtr1->Ratio < dtr2->Ratio)
-        value = -1;
-
-    if(dtr1->Ratio == dtr2->Ratio)
-        value = 0;
-
-    if(dtr1->Ratio > dtr2->Ratio)
-        value = +1;
-
-    return value;
-}
-
-
-
-
-/* @funcstatic densityFeatureCompareStart *************************************
-**
-** Comparison function to sort Density Features by their Feature start
-** in ascending order.
-**
-** @param [r] P1 [const void*] Density Feature address 1
-** @param [r] P2 [const void*] Density Feature address 2
-**
-** @return [int] The comparison function returns an integer less than,
-**               equal to, or greater than zero if the first argument is
-**               considered to be respectively less than, equal to, or
-**               greater than the second.
-** @@
-******************************************************************************/
-
-static int densityFeatureCompareStart(const void* P1, const void* P2)
-{
-    int value = 0;
-
-    const EnsPDensityfeature df1 = NULL;
-    const EnsPDensityfeature df2 = NULL;
-
-    EnsPFeature feature1 = NULL;
-    EnsPFeature feature2 = NULL;
-
-    df1 = *(EnsPDensityfeature const *) P1;
-
-    df2 = *(EnsPDensityfeature const *) P2;
-
-    if(ajDebugTest("densityFeatureCompareStart"))
-        ajDebug("densityFeatureCompareStart\n"
-                "  df1 %p\n"
-                "  df2 %p\n",
-                df1,
-                df2);
-
-    if(!df1)
-    {
-        ajDebug("densityFeatureCompareStart got empty df1.\n");
-
-        return 0;
-    }
-
-    if(!df2)
-    {
-        ajDebug("densityFeatureCompareStart got empty df2.\n");
-
-        return 0;
-    }
-
-    feature1 = ensDensityfeatureGetFeature(df1);
-
-    feature2 = ensDensityfeatureGetFeature(df2);
-
-    if(feature1->Start < feature2->Start)
-        value = -1;
-
-    if(feature1->Start == feature2->Start)
-        value = 0;
-
-    if(feature1->Start > feature2->Start)
-        value = +1;
-
-    return value;
 }
 
 
@@ -3221,7 +3306,7 @@ AjBool ensDensityfeatureadaptorFetchAllBySlice(
     ** and get the best one.
     */
 
-    ajListSort(dtrs, densitytypeRatioCompareRatio);
+    ajListSort(dtrs, densitytyperatioCompareRatioAscending);
 
     ajListPeekFirst(dtrs, (void **) &dtr);
 
@@ -3286,7 +3371,7 @@ AjBool ensDensityfeatureadaptorFetchAllBySlice(
     while(ajListPop(dfs, (void **) &df))
         ajListPushAppend(dfeatures, (void *) df);
 
-    ajListSort(dfeatures, densityFeatureCompareStart);
+    ensDensityfeatureSortByStartAscending(dfeatures);
 
     /* Resize the Features that were returned. */
 
