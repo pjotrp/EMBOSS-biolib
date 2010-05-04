@@ -7,7 +7,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1116,6 +1116,62 @@ AjBool ensSliceFetchName(const EnsPSlice slice, AjPStr* Pname)
                       slice->Strand);
 
     return ajTrue;
+}
+
+
+
+
+/* @func ensSliceCompareIdentifierAscending ***********************************
+**
+** Comparison function to sort Ensembl Slices by their Ensembl Sequence Region
+** identifier in ascending order.
+**
+** Ensembl Slices without Ensembl Sequence Region objects sort towards the
+** end of the AJAX List.
+**
+** @param [r] slice1 [const EnsPSlice] Ensembl Slice 1
+** @param [r] slice2 [const EnsPSlice] Ensembl Slice 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+int ensSliceCompareIdentifierAscending(const EnsPSlice slice1,
+                                       const EnsPSlice slice2)
+{
+    int value = 0;
+
+    ajuint srid1 = 0;
+    ajuint srid2 = 0;
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(slice1 && (!slice2))
+        return -1;
+
+    if((!slice1) && (!slice2))
+        return 0;
+
+    if((!slice1) && slice2)
+        return +1;
+
+    srid1 = ensSliceGetSeqregionIdentifier(slice1);
+    srid2 = ensSliceGetSeqregionIdentifier(slice2);
+
+    if(srid1 < srid2)
+        value = -1;
+
+    if(srid1 == srid2)
+        value = 0;
+
+    if(srid1 > srid2)
+        value = +1;
+
+    return value;
 }
 
 

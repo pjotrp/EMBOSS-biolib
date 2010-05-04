@@ -119,6 +119,9 @@ const AjPTrn ensSliceGetTranslation(EnsPSlice slice);
 
 AjBool ensSliceFetchName(const EnsPSlice slice, AjPStr* Pname);
 
+int ensSliceCompareIdentifierAscending(const EnsPSlice slice1,
+                                       const EnsPSlice slice2);
+
 AjBool ensSliceMatch(const EnsPSlice slice1, const EnsPSlice slice2);
 
 AjBool ensSliceIsTopLevel(EnsPSlice slice, AjBool* Presult);
