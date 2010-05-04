@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -110,6 +110,10 @@ static AjBool exonCoordinatesClear(EnsPExon exon);
 
 static ExonPCoordinates exonGetExonCoodinates(EnsPExon exon,
                                               EnsPTranscript transcript);
+
+static int exonCompareStartAscending(const void* P1, const void* P2);
+
+static int exonCompareStartDescending(const void* P1, const void* P2);
 
 static AjBool exonadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                        const AjPStr statement,
@@ -2467,6 +2471,150 @@ ajuint ensExonGetSliceCodingEnd(EnsPExon exon, EnsPTranscript transcript)
         return ec->SliceCodingEnd;
 
     return 0;
+}
+
+
+
+
+/* @funcstatic exonCompareStartAscending **************************************
+**
+** Comparison function to sort Ensembl Exons by their Ensembl Feature start
+** coordinate in ascending order.
+**
+** @param [r] P1 [const void*] Ensembl Exon address 1
+** @param [r] P2 [const void*] Ensembl Exon address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int exonCompareStartAscending(const void* P1, const void* P2)
+{
+    const EnsPExon exon1 = NULL;
+    const EnsPExon exon2 = NULL;
+
+    exon1 = *(EnsPExon const *) P1;
+    exon2 = *(EnsPExon const *) P2;
+
+    if(ajDebugTest("exonCompareStartAscending"))
+        ajDebug("exonCompareStartAscending\n"
+                "  exon1 %p\n"
+                "  exon2 %p\n",
+                exon1,
+                exon2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(exon1 && (!exon2))
+        return -1;
+
+    if((!exon1) && (!exon2))
+        return 0;
+
+    if((!exon1) && exon2)
+        return +1;
+
+    return ensFeatureCompareStartAscending(exon1->Feature, exon2->Feature);
+}
+
+
+
+
+/* @func ensExonSortByStartAscending ******************************************
+**
+** Sort Ensembl Exons by their Ensembl Feature start coordinate
+** in ascending order.
+**
+** @param [u] exons [AjPList] AJAX List of Ensembl Exons
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensExonSortByStartAscending(AjPList exons)
+{
+    if(!exons)
+        return ajFalse;
+
+    ajListSort(exons, exonCompareStartAscending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic exonCompareStartDescending *************************************
+**
+** Comparison function to sort Ensembl Exons by their Ensembl Feature start
+** coordinate in descending order.
+**
+** @param [r] P1 [const void*] Ensembl Exon address 1
+** @param [r] P2 [const void*] Ensembl Exon address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int exonCompareStartDescending(const void* P1, const void* P2)
+{
+    const EnsPExon exon1 = NULL;
+    const EnsPExon exon2 = NULL;
+
+    exon1 = *(EnsPExon const *) P1;
+    exon2 = *(EnsPExon const *) P2;
+
+    if(ajDebugTest("exonCompareStartDescending"))
+        ajDebug("exonCompareStartDescending\n"
+                "  exon1 %p\n"
+                "  exon2 %p\n",
+                exon1,
+                exon2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(exon1 && (!exon2))
+        return -1;
+
+    if((!exon1) && (!exon2))
+        return 0;
+
+    if((!exon1) && exon2)
+        return +1;
+
+    return ensFeatureCompareStartDescending(exon1->Feature, exon2->Feature);
+}
+
+
+
+
+/* @func ensExonSortByStartDescending *****************************************
+**
+** Sort Ensembl Exons by their Ensembl Feature start coordinate
+** in descending order.
+**
+** @param [u] exons [AjPList] AJAX List of Ensembl Exons
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensExonSortByStartDescending(AjPList exons)
+{
+    if(!exons)
+        return ajFalse;
+
+    ajListSort(exons, exonCompareStartDescending);
+
+    return ajTrue;
 }
 
 
