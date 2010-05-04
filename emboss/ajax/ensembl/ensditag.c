@@ -1,10 +1,10 @@
 /******************************************************************************
-** @source Ensembl Di-Tag functions
+** @source Ensembl Ditag functions
 **
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -83,6 +83,10 @@ extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
 static AjBool ditagadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                         const AjPStr statement,
                                         AjPList list);
+
+static int ditagfeatureCompareStartAscending(const void* P1, const void* P2);
+
+static int ditagfeatureCompareStartDescending(const void* P1, const void* P2);
 
 static AjBool ditagfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
@@ -2204,6 +2208,150 @@ const char* ensDitagfeatureSideToChar(const AjEnum side)
                 "out of boundary error on gender %d.\n", side);
 
     return ditagfeatureSide[i];
+}
+
+
+
+
+/* @funcstatic ditagfeatureCompareStartAscending ******************************
+**
+** Comparison function to sort Ensembl Ditag Features by their
+** Ensembl Feature start coordinate in ascending order.
+**
+** @param [r] P1 [const void*] Ensembl Ditag Feature address 1
+** @param [r] P2 [const void*] Ensembl Ditag Feature address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int ditagfeatureCompareStartAscending(const void* P1, const void* P2)
+{
+    const EnsPDitagfeature dtf1 = NULL;
+    const EnsPDitagfeature dtf2 = NULL;
+
+    dtf1 = *(EnsPDitagfeature const *) P1;
+    dtf2 = *(EnsPDitagfeature const *) P2;
+
+    if(ajDebugTest("ditagfeatureCompareStartAscending"))
+        ajDebug("ditagfeatureCompareStartAscending\n"
+                "  dtf1 %p\n"
+                "  dtf2 %p\n",
+                dtf1,
+                dtf2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(dtf1 && (!dtf2))
+        return -1;
+
+    if((!dtf1) && (!dtf2))
+        return 0;
+
+    if((!dtf1) && dtf2)
+        return +1;
+
+    return ensFeatureCompareStartAscending(dtf1->Feature, dtf2->Feature);
+}
+
+
+
+
+/* @func ensDitagfeatureSortByStartAscending **********************************
+**
+** Sort Ensembl Ditag Features by their Ensembl Feature start coordinate
+** in ascending order.
+**
+** @param [u] dtfs [AjPList] AJAX List of Ensembl Ditag Fatures
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensDitagfeatureSortByStartAscending(AjPList dtfs)
+{
+    if(!dtfs)
+        return ajFalse;
+
+    ajListSort(dtfs, ditagfeatureCompareStartAscending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic ditagfeatureCompareStartDescending *****************************
+**
+** Comparison function to sort Ensembl Ditag Features by their
+** Ensembl Feature start coordinate in descending order.
+**
+** @param [r] P1 [const void*] Ensembl Ditag Feature address 1
+** @param [r] P2 [const void*] Ensembl Ditag Feature address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int ditagfeatureCompareStartDescending(const void* P1, const void* P2)
+{
+    const EnsPDitagfeature dtf1 = NULL;
+    const EnsPDitagfeature dtf2 = NULL;
+
+    dtf1 = *(EnsPDitagfeature const *) P1;
+    dtf2 = *(EnsPDitagfeature const *) P2;
+
+    if(ajDebugTest("ditagfeatureCompareStartDescending"))
+        ajDebug("ditagfeatureCompareStartDescending\n"
+                "  dtf1 %p\n"
+                "  dtf2 %p\n",
+                dtf1,
+                dtf2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(dtf1 && (!dtf2))
+        return -1;
+
+    if((!dtf1) && (!dtf2))
+        return 0;
+
+    if((!dtf1) && dtf2)
+        return +1;
+
+    return ensFeatureCompareStartDescending(dtf1->Feature, dtf2->Feature);
+}
+
+
+
+
+/* @func ensDitagfeatureSortByStartDescending *********************************
+**
+** Sort Ensembl Ditag Features by their Ensembl Feature start coordinate
+** in descending order.
+**
+** @param [u] dtfs [AjPList] AJAX List of Ensembl Ditag Fatures
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensDitagfeatureSortByStartDescending(AjPList dtfs)
+{
+    if(!dtfs)
+        return ajFalse;
+
+    ajListSort(dtfs, ditagfeatureCompareStartDescending);
+
+    return ajTrue;
 }
 
 
