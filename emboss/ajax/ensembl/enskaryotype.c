@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -51,6 +51,10 @@ extern EnsPKaryotypebandadaptor ensRegistryGetKaryotypebandadaptor(
 
 extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
     EnsPDatabaseadaptor dba);
+
+static int karyotypebandCompareStartAscending(const void* P1, const void* P2);
+
+static int karyotypebandCompareStartDescending(const void* P1, const void* P2);
 
 static AjBool karyotypebandadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                 const AjPStr statement,
@@ -678,6 +682,150 @@ ajuint ensKaryotypebandGetMemSize(const EnsPKaryotypeband kb)
     }
 
     return size;
+}
+
+
+
+
+/* @funcstatic karyotypebandCompareStartAscending *****************************
+**
+** Comparison function to sort Ensembl Karyotype Band by their
+** Ensembl Feature start coordinate in ascending order.
+**
+** @param [r] P1 [const void*] Ensembl Karyotype Band address 1
+** @param [r] P2 [const void*] Ensembl Karyotype Band address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int karyotypebandCompareStartAscending(const void* P1, const void* P2)
+{
+    const EnsPKaryotypeband kb1 = NULL;
+    const EnsPKaryotypeband kb2 = NULL;
+
+    kb1 = *(EnsPKaryotypeband const *) P1;
+    kb2 = *(EnsPKaryotypeband const *) P2;
+
+    if(ajDebugTest("karyotypebandCompareStartAscending"))
+        ajDebug("karyotypebandCompareStartAscending\n"
+                "  kb1 %p\n"
+                "  kb2 %p\n",
+                kb1,
+                kb2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(kb1 && (!kb2))
+        return -1;
+
+    if((!kb1) && (!kb2))
+        return 0;
+
+    if((!kb1) && kb2)
+        return +1;
+
+    return ensFeatureCompareStartAscending(kb1->Feature, kb2->Feature);
+}
+
+
+
+
+/* @func ensKaryotypebandSortByStartAscending *********************************
+**
+** Sort Ensembl Karyotype Bands by their Ensembl Feature start coordinate
+** in ascending order.
+**
+** @param [u] kbs [AjPList] AJAX List of Ensembl Karyotype Bands
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensKaryotypebandSortByStartAscending(AjPList kbs)
+{
+    if(!kbs)
+        return ajFalse;
+
+    ajListSort(kbs, karyotypebandCompareStartAscending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic karyotypebandCompareStartDescending ****************************
+**
+** Comparison function to sort Ensembl Karyotype Bands by their
+** Ensembl Feature start coordinate in descending order.
+**
+** @param [r] P1 [const void*] Ensembl Karyotype Band address 1
+** @param [r] P2 [const void*] Ensembl Karyotype Band address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int karyotypebandCompareStartDescending(const void* P1, const void* P2)
+{
+    const EnsPKaryotypeband kb1 = NULL;
+    const EnsPKaryotypeband kb2 = NULL;
+
+    kb1 = *(EnsPKaryotypeband const *) P1;
+    kb2 = *(EnsPKaryotypeband const *) P2;
+
+    if(ajDebugTest("karyotypebandCompareStartDescending"))
+        ajDebug("karyotypebandCompareStartDescending\n"
+                "  kb1 %p\n"
+                "  kb2 %p\n",
+                kb1,
+                kb2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(kb1 && (!kb2))
+        return -1;
+
+    if((!kb1) && (!kb2))
+        return 0;
+
+    if((!kb1) && kb2)
+        return +1;
+
+    return ensFeatureCompareStartDescending(kb1->Feature, kb2->Feature);
+}
+
+
+
+
+/* @func enskaryotypebandSortByStartDescending ********************************
+**
+** Sort Ensembl Karyotype Band by their Ensembl Feature start coordinate
+** in descending order.
+**
+** @param [u] kbs [AjPList] AJAX List of Ensembl Karyotype bands
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensKaryotypebandSortByStartDescending(AjPList kbs)
+{
+    if(!kbs)
+        return ajFalse;
+
+    ajListSort(kbs, karyotypebandCompareStartDescending);
+
+    return ajTrue;
 }
 
 
