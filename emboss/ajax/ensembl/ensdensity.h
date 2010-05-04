@@ -249,18 +249,27 @@ float ensDensityfeatureGetDensityValue(const EnsPDensityfeature df);
 AjBool ensDensityfeatureSetAdaptor(EnsPDensityfeature df,
                                    EnsPDensityfeatureadaptor dfa);
 
-AjBool ensDensityfeatureSetIdentifier(EnsPDensityfeature df, ajuint identifier);
+AjBool ensDensityfeatureSetIdentifier(EnsPDensityfeature df,
+                                      ajuint identifier);
 
-AjBool ensDensityfeatureSetFeature(EnsPDensityfeature df, EnsPFeature feature);
+AjBool ensDensityfeatureSetFeature(EnsPDensityfeature df,
+                                   EnsPFeature feature);
 
 AjBool ensDensityfeatureSetDensitytype(EnsPDensityfeature df,
                                        EnsPDensitytype dt);
 
-AjBool ensDensityfeatureSetDensityValue(EnsPDensityfeature df, float value);
+AjBool ensDensityfeatureSetDensityValue(EnsPDensityfeature df,
+                                        float value);
 
 AjBool ensDensityfeatureTrace(const EnsPDensityfeature df, ajuint level);
 
 ajuint ensDensityfeatureGetMemSize(const EnsPDensityfeature df);
+
+AjBool ensDensityfeatureSortByStartAscending(AjPList dfs);
+
+AjBool ensDensityfeatureSortByStartDescending(AjPList dfs);
+
+/* Ensembl Density Feature Adaptor */
 
 EnsPDensityfeatureadaptor ensDensityfeatureadaptorNew(EnsPDatabaseadaptor dba);
 
