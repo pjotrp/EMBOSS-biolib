@@ -193,6 +193,10 @@ AjBool ensTranscriptFetchTranslationSequenceStr(EnsPTranscript transcript,
 AjBool ensTranscriptFetchTranslationSequenceSeq(EnsPTranscript transcript,
                                                 AjPSeq *Psequence);
 
+AjBool ensTranscriptSortByStartAscending(AjPList transcripts);
+
+AjBool ensTranscriptSortByStartDescending(AjPList transcripts);
+
 /* Ensembl Transcript Adaptor */
 
 EnsPTranscriptadaptor ensTranscriptadaptorNew(EnsPDatabaseadaptor dba);
