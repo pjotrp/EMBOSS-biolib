@@ -341,6 +341,10 @@ ajuint ensMapperpairGetMemSize(const EnsPMapperpair mp);
 
 AjBool ensMapperpairTrace(const EnsPMapperpair mp, ajuint level);
 
+AjBool ensMapperpairSortBySourceStartAscending(AjPList mps);
+
+AjBool ensMapperpairSortByTargetStartAscending(AjPList mps);
+
 /* Ensembl Mapper Result */
 
 EnsPMapperresult ensMapperresultNew(AjEnum type,
@@ -515,7 +519,6 @@ AjBool ensMapperTrace(const EnsPMapper mapper, ajuint level);
 ** End of prototype definitions
 */
 
-
 #define MENSMAPPERINDELPAIRNEW(source, target, ori) \
 ensMapperpairNew(source, target, ori, AJTRUE);
 
@@ -533,7 +536,6 @@ ensMapperresultNew(ensEMapperresultGap, 0, 0, 0, 0, (EnsPCoordsystem) NULL, \
 #define MENSMAPPERINDELNEW(oid, start, end, strand, cs, gstart, gend) \
 ensMapperresultNew(ensEMapperresultInDel, oid, start, end, strand, cs, \
                    gstart, gend, 0)
-
 
 #endif /* ensmapper_h */
 
