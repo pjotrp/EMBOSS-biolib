@@ -804,15 +804,6 @@ static void copy_mysql(char *basedir)
 {
     char command[MAXNAMLEN];
 
-    sprintf(command,"cp %s/emboss/win32/mysql/Debug/*.dll "
-            "%s/win32/mysql/Debug",basedir,
-	    basedir);
-    if(system(command))
-    {
-	fprintf(stderr,"Can't execute %s\n",command);
-	exit(-1);
-    }
-
     sprintf(command,"cp %s/emboss/win32/mysql/Debug/*.lib "
             "%s/win32/mysql/Debug",basedir,
 	    basedir);
@@ -830,16 +821,6 @@ static void copy_mysql(char *basedir)
 	fprintf(stderr,"Can't execute %s\n",command);
 	exit(-1);
     }
-
-    sprintf(command,"cp %s/emboss/win32/mysql/Release/*.dll "
-            "%s/win32/mysql/Release",basedir,
-	    basedir);
-    if(system(command))
-    {
-	fprintf(stderr,"Can't execute %s\n",command);
-	exit(-1);
-    }
-
 
     sprintf(command,"cp %s/emboss/win32/mysql/Release/*.lib "
             "%s/win32/mysql/Release",basedir,
@@ -882,6 +863,25 @@ static void copy_mysql(char *basedir)
     sprintf(command,"cp %s/emboss/win32/mysql/include/mysql/*.h "
             "%s/win32/mysql/include/mysql",basedir,
 	    basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+
+    /* Copy dlls to top Release/Debug dirs for in-place testing */
+    
+    sprintf(command,"cp -f %s/emboss/win32/mysql/Release/libmysql.dll "
+	    "%s/win32/DLLs/Release",basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -f %s/emboss/win32/mysql/Debug/libmysql.dll "
+	    "%s/win32/DLLs/Debug",basedir,basedir);
     if(system(command))
     {
 	fprintf(stderr,"Can't execute %s\n",command);
