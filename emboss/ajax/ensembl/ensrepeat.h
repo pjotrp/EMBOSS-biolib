@@ -277,6 +277,10 @@ AjBool ensRepeatfeatureTrace(const EnsPRepeatfeature rf, ajuint level);
 
 ajuint ensRepeatfeatureGetMemSize(const EnsPRepeatfeature rf);
 
+AjBool ensRepeatfeatureSortByStartAscending(AjPList rfs);
+
+AjBool ensRepeatfeatureSortByStartDescending(AjPList rfs);
+
 /* Ensembl Repeat Feature Adaptor */
 
 EnsPRepeatfeatureadaptor ensRepeatfeatureadaptorNew(EnsPDatabaseadaptor dba);
