@@ -112,6 +112,10 @@ ajuint ensExonGetSliceCodingStart(EnsPExon exon, EnsPTranscript transcript);
 
 ajuint ensExonGetSliceCodingEnd(EnsPExon exon, EnsPTranscript transcript);
 
+AjBool ensExonSortByStartAscending(AjPList exons);
+
+AjBool ensExonSortByStartDescending(AjPList exons);
+
 /* Ensembl Exon Adaptor */
 
 EnsPExonadaptor ensExonadaptorNew(EnsPDatabaseadaptor dba);
