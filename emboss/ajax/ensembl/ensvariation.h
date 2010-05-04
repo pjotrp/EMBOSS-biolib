@@ -550,6 +550,10 @@ ajuint ensGvvariationfeatureGetMemSize(const EnsPGvvariationfeature gvvf);
 AjBool ensGvvariationfeatureTrace(const EnsPGvvariationfeature gvvf,
                                   ajuint level);
 
+AjBool ensGvvariationfeatureSortByStartAscending(AjPList gvvfs);
+
+AjBool ensGvvariationfeatureSortByStartDescending(AjPList gvvfs);
+
 /*
 ** End of prototype definitions
 */
