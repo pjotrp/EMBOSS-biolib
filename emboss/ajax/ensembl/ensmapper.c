@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -43,9 +43,11 @@
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-static int mapperCompareMapperpairSources(const void* P1, const void* P2);
+static int mapperpairCompareSourceStartAscending(const void* P1,
+                                                 const void* P2);
 
-static int mapperCompareMapperpairTargets(const void* P1, const void* P2);
+static int mapperpairCompareTargetStartAscending(const void* P1,
+                                                 const void* P2);
 
 static AjBool mapperMergePairs(EnsPMapper mapper);
 
@@ -1033,6 +1035,216 @@ AjBool ensMapperpairTrace(const EnsPMapperpair mp, ajuint level)
     ensMapperunitTrace(mp->Target, level + 1);
 
     ajStrDel(&indent);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic mapperpairCompareSourceStartAscending **************************
+**
+** Comparison function to sort Ensembl Mapper Pairs by the start coordinate of
+** their source Ensembl Mapper Unit in ascending order.
+**
+** @param [r] P1 [const void*] Ensembl Mapper Pair address 1
+** @param [r] P2 [const void*] Ensembl Mapper Pair address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int mapperpairCompareSourceStartAscending(const void* P1,
+                                                 const void* P2)
+{
+    int value = 0;
+
+    const EnsPMapperpair mp1 = NULL;
+    const EnsPMapperpair mp2 = NULL;
+
+    mp1 = *(EnsPMapperpair const *) P1;
+    mp2 = *(EnsPMapperpair const *) P2;
+
+    if(ajDebugTest("mapperpairCompareSourceStartAscending"))
+    {
+        ajDebug("mapperpairCompareSourceStartAscending\n"
+                "  mp1 %p\n"
+                "  mp2 %p\n",
+                mp1,
+                mp2);
+
+        ensMapperpairTrace(mp1, 1);
+        ensMapperpairTrace(mp2, 1);
+    }
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(mp1 && (!mp2))
+        return -1;
+
+    if((!mp1) && (!mp2))
+        return 0;
+
+    if((!mp1) && mp2)
+        return +1;
+
+    /*
+    ** Sort Ensembl Mapper Pairs with empty source Ensembl Mapper Units
+    ** towards the end of the AJAX List.
+    */
+
+    if(mp1->Source && (!mp2->Source))
+        return -1;
+
+    if((!mp1->Source) && (!mp2->Source))
+        return 0;
+
+    if((!mp1->Source) && mp2->Source)
+        return +1;
+
+    /* Evaluate the Start coordinates of source Ensembl Mapper Units. */
+
+    if(mp1->Source->Start < mp2->Source->Start)
+        value = -1;
+
+    if(mp1->Source->Start == mp2->Source->Start)
+        value = 0;
+
+    if(mp1->Source->Start > mp2->Source->Start)
+        value = +1;
+
+    return value;
+}
+
+
+
+
+/* @func ensMapperpairSortBySourceStartAscending ******************************
+**
+** Sort Ensembl Mapper Pairs by their source Ensembl Mapper Unit
+** start coordinate in ascending order.
+**
+** @param [u] mps [AjPList] AJAX List of Ensembl Mapper Pairs
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensMapperpairSortBySourceStartAscending(AjPList mps)
+{
+    if(!mps)
+        return ajFalse;
+
+    ajListSort(mps, mapperpairCompareSourceStartAscending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic mapperpairCompareTargetStartAscending **************************
+**
+** Comparison function to sort Ensembl Mapper Pairs by the start coordinate of
+** their target Ensembl Mapper Unit in ascending order.
+**
+** @param [r] P1 [const void*] Ensembl Mapper Pair address 1
+** @param [r] P2 [const void*] Ensembl Mapper Pair address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int mapperpairCompareTargetStartAscending(const void* P1,
+                                                 const void* P2)
+{
+    int value = 0;
+
+    const EnsPMapperpair mp1 = NULL;
+    const EnsPMapperpair mp2 = NULL;
+
+    mp1 = *(EnsPMapperpair const *) P1;
+    mp2 = *(EnsPMapperpair const *) P2;
+
+    if(ajDebugTest("mapperpairCompareTargetStartAscending"))
+    {
+        ajDebug("mapperpairCompareTargetStartAscending\n"
+                "  mp1 %p\n"
+                "  mp2 %p\n",
+                mp1,
+                mp2);
+
+        ensMapperpairTrace(mp1, 1);
+        ensMapperpairTrace(mp2, 1);
+    }
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(mp1 && (!mp2))
+        return -1;
+
+    if((!mp1) && (!mp2))
+        return 0;
+
+    if((!mp1) && mp2)
+        return +1;
+
+    /*
+    ** Sort Ensembl Mapper Pairs with empty target Ensembl Mapper Units
+    ** towards the end of the AJAX List.
+    */
+
+    if(mp1->Target && (!mp2->Target))
+        return -1;
+
+    if((!mp1->Target) && (!mp2->Target))
+        return 0;
+
+    if((!mp1->Target) && mp2->Target)
+        return +1;
+
+    /* Evaluate the Start coordinates of target Ensembl Mapper Units. */
+
+    if(mp1->Target->Start < mp2->Target->Start)
+        value = -1;
+
+    if(mp1->Target->Start == mp2->Target->Start)
+        value = 0;
+
+    if(mp1->Target->Start > mp2->Target->Start)
+        value = +1;
+
+    return value;
+}
+
+
+
+
+/* @func ensMapperpairSortByTargetStartAscending ******************************
+**
+** Sort Ensembl Mapper Pairs by their target Ensembl Mapper Unit
+** start coordinate in ascending order.
+**
+** @param [u] mps [AjPList] AJAX List of Ensembl Mapper Pairs
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensMapperpairSortByTargetStartAscending(AjPList mps)
+{
+    if(!mps)
+        return ajFalse;
+
+    ajListSort(mps, mapperpairCompareTargetStartAscending);
 
     return ajTrue;
 }
@@ -3056,170 +3268,6 @@ AjBool ensMapperIsSorted(const EnsPMapper mapper)
 
 
 
-/* @funcstatic mapperCompareMapperpairSources *********************************
-**
-** Comparison function to sort source Ensembl Mapper Units of
-** Ensembl Mapper Pairs by their Start Coordinates in ascending order.
-**
-** @param [r] P1 [const void*] Ensembl Mapper Pair address 1
-** @param [r] P2 [const void*] Ensembl Mapper Pair address 2
-**
-** @return [int] The comparison function returns an integer less than,
-**               equal to, or greater than zero if the first argument is
-**               considered to be respectively less than, equal to, or
-**               greater than the second.
-** @@
-******************************************************************************/
-
-static int mapperCompareMapperpairSources(const void* P1, const void* P2)
-{
-    int value = 0;
-
-    const EnsPMapperpair mp1 = NULL;
-    const EnsPMapperpair mp2 = NULL;
-
-    mp1 = *(EnsPMapperpair const *) P1;
-    mp2 = *(EnsPMapperpair const *) P2;
-
-    if(ajDebugTest("mapperCompareMapperpairSources"))
-    {
-        ajDebug("mapperCompareMapperpairSources\n"
-                "  mp1 %p\n"
-                "  mp2 %p\n",
-                mp1,
-                mp2);
-
-        ensMapperpairTrace(mp1, 1);
-        ensMapperpairTrace(mp2, 1);
-    }
-
-    if(!mp1)
-    {
-        ajDebug("mapperCompareMapperpairSources got empty mp1.\n");
-
-        return 0;
-    }
-
-    if(!mp2)
-    {
-        ajDebug("mapperCompareMapperpairSources got empty mp2.\n");
-
-        return 0;
-    }
-
-    if(!mp1->Source)
-    {
-        ajDebug("mapperCompareMapperpairSources got Mapper Pair 1 without a "
-                "source Mapper Unit.\n");
-
-        return 0;
-    }
-
-    if(!mp2->Source)
-    {
-        ajDebug("mapperCompareMapperpairSources got Mapper Pair 2 without a "
-                "source Mapper Unit.\n");
-
-        return 0;
-    }
-
-    if(mp1->Source->Start < mp2->Source->Start)
-        value = -1;
-
-    if(mp1->Source->Start == mp2->Source->Start)
-        value = 0;
-
-    if(mp1->Source->Start > mp2->Source->Start)
-        value = +1;
-
-    return value;
-}
-
-
-
-
-/* @funcstatic mapperCompareMapperpairTargets *********************************
-**
-** Comparison function to sort target Ensembl Mapper Units of
-** Ensembl Mapper Pairs by their Start Coordinates in ascending order.
-**
-** @param [r] P1 [const void*] Ensembl Mapper Pair address 1
-** @param [r] P2 [const void*] Ensembl Mapper Pair address 2
-**
-** @return [int] The comparison function returns an integer less than,
-**               equal to, or greater than zero if the first argument is
-**               considered to be respectively less than, equal to, or
-**               greater than the second.
-** @@
-******************************************************************************/
-
-static int mapperCompareMapperpairTargets(const void* P1, const void* P2)
-{
-    int value = 0;
-
-    const EnsPMapperpair mp1 = NULL;
-    const EnsPMapperpair mp2 = NULL;
-
-    mp1 = *(EnsPMapperpair const *) P1;
-    mp2 = *(EnsPMapperpair const *) P2;
-
-    if(ajDebugTest("mapperCompareMapperpairTargets"))
-    {
-        ajDebug("mapperCompareMapperpairTargets\n"
-                "  mp1 %p\n"
-                "  mp2 %p\n",
-                mp1,
-                mp2);
-
-        ensMapperpairTrace(mp1, 1);
-        ensMapperpairTrace(mp2, 1);
-    }
-
-    if(!mp1)
-    {
-        ajDebug("mapperCompareMapperpairTargets got empty mp1.\n");
-
-        return 0;
-    }
-
-    if(!mp2)
-    {
-        ajDebug("mapperCompareMapperpairTargets got empty mp2.\n");
-
-        return 0;
-    }
-
-    if(!mp1->Target)
-    {
-        ajDebug("mapperCompareMapperpairTargets got Mapper Pair 1 without a "
-                "target Mapper Unit.\n");
-
-        return 0;
-    }
-
-    if(!mp2->Target)
-    {
-        ajDebug("mapperCompareMapperpairTargets got Mapper Pair 2 without a "
-                "target Mapper Unit.\n");
-
-        return 0;
-    }
-
-    if(mp1->Target->Start < mp2->Target->Start)
-        value = -1;
-
-    if(mp1->Target->Start == mp2->Target->Start)
-        value = 0;
-
-    if(mp1->Target->Start > mp2->Target->Start)
-        value = +1;
-
-    return value;
-}
-
-
-
-
 /* @funcstatic mapperMergePairs ***********************************************
 **
 ** Merge adjacent Ensembl Mapper Pairs in an Ensembl Mapper into one.
@@ -3450,7 +3498,7 @@ static AjBool mapperSort(EnsPMapper mapper)
     ajTableToarrayValues(table, &valarray);
 
     for(i = 0; valarray[i]; i++)
-        ajListSort((AjPList) valarray[i], mapperCompareMapperpairSources);
+        ensMapperpairSortBySourceStartAscending((AjPList) valarray[i]);
 
     AJFREE(valarray);
 
@@ -3460,7 +3508,7 @@ static AjBool mapperSort(EnsPMapper mapper)
     ajTableToarrayValues(table, &valarray);
 
     for(i = 0; valarray[i]; i++)
-        ajListSort((AjPList) valarray[i], mapperCompareMapperpairTargets);
+        ensMapperpairSortByTargetStartAscending((AjPList) valarray[i]);
 
     AJFREE(valarray);
 
