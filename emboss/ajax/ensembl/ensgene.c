@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -96,6 +96,10 @@ extern EnsPTranscriptadaptor ensRegistryGetTranscriptadaptor(
 static int geneCompareExon(const void *P1, const void *P2);
 
 static void geneDeleteExon(void **PP1, void *cl);
+
+static int geneCompareStartAscending(const void* P1, const void* P2);
+
+static int geneCompareStartDescending(const void* P1, const void* P2);
 
 static AjBool geneadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                        const AjPStr statement,
@@ -2377,6 +2381,7 @@ AjBool ensGeneFetchAllDatabaseEntries(EnsPGene gene,
 **
 ** @param [r] P1 [const void*] Ensembl Exon 1
 ** @param [r] P2 [const void*] Ensembl Exon 2
+** @see ajListSortUnique
 **
 ** @return [int] The comparison function returns an integer less than,
 **               equal to, or greater than zero if the first argument is
@@ -2431,6 +2436,7 @@ static int geneCompareExon(const void *P1, const void *P2)
 **
 ** @param [r] PP1 [void**] Ensembl Exon address 1
 ** @param [r] cl [void*] Standard, passed in from ajListSortUnique
+** @see ajListSortUnique
 **
 ** @return [void]
 ** @@
@@ -2768,6 +2774,150 @@ EnsPGene ensGeneTransfer(EnsPGene gene, EnsPSlice slice)
     ensFeatureDel(&newfeature);
 
     return newgene;
+}
+
+
+
+
+/* @funcstatic geneCompareStartAscending **************************************
+**
+** Comparison function to sort Ensembl Genes by their Ensembl Feature start
+** coordinate in ascending order.
+**
+** @param [r] P1 [const void*] Ensembl Gene address 1
+** @param [r] P2 [const void*] Ensembl Gene address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int geneCompareStartAscending(const void* P1, const void* P2)
+{
+    const EnsPGene gene1 = NULL;
+    const EnsPGene gene2 = NULL;
+
+    gene1 = *(EnsPGene const *) P1;
+    gene2 = *(EnsPGene const *) P2;
+
+    if(ajDebugTest("geneCompareStartAscending"))
+        ajDebug("geneCompareStartAscending\n"
+                "  gene1 %p\n"
+                "  gene2 %p\n",
+                gene1,
+                gene2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(gene1 && (!gene2))
+        return -1;
+
+    if((!gene1) && (!gene2))
+        return 0;
+
+    if((!gene1) && gene2)
+        return +1;
+
+    return ensFeatureCompareStartAscending(gene1->Feature, gene2->Feature);
+}
+
+
+
+
+/* @func ensGeneSortByStartAscending ******************************************
+**
+** Sort Ensembl Genes by their Ensembl Feature start coordinate
+** in ascending order.
+**
+** @param [u] genes [AjPList] AJAX List of Ensembl Genes
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensGeneSortByStartAscending(AjPList genes)
+{
+    if(!genes)
+        return ajFalse;
+
+    ajListSort(genes, geneCompareStartAscending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic geneCompareStartDescending *************************************
+**
+** Comparison function to sort Ensembl Genes by their Ensembl Feature start
+** coordinate in descending order.
+**
+** @param [r] P1 [const void*] Ensembl Gene address 1
+** @param [r] P2 [const void*] Ensembl Gene address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int geneCompareStartDescending(const void* P1, const void* P2)
+{
+    const EnsPGene gene1 = NULL;
+    const EnsPGene gene2 = NULL;
+
+    gene1 = *(EnsPGene const *) P1;
+    gene2 = *(EnsPGene const *) P2;
+
+    if(ajDebugTest("geneCompareStartDescending"))
+        ajDebug("geneCompareStartDescending\n"
+                "  gene1 %p\n"
+                "  gene2 %p\n",
+                gene1,
+                gene2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(gene1 && (!gene2))
+        return -1;
+
+    if((!gene1) && (!gene2))
+        return 0;
+
+    if((!gene1) && gene2)
+        return +1;
+
+    return ensFeatureCompareStartDescending(gene1->Feature, gene2->Feature);
+}
+
+
+
+
+/* @func ensGeneSortByStartDescending *****************************************
+**
+** Sort Ensembl Genes by their Ensembl Feature start coordinate
+** in descending order.
+**
+** @param [u] genes [AjPList] AJAX List of Ensembl Genes
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensGeneSortByStartDescending(AjPList genes)
+{
+    if(!genes)
+        return ajFalse;
+
+    ajListSort(genes, geneCompareStartDescending);
+
+    return ajTrue;
 }
 
 
