@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.14 $
+** @version $Revision: 1.15 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -209,6 +209,10 @@ static void transcriptExonRankDel(TranscriptPExonRank *Ptrex)
 
 
 
+
+static int transcriptCompareStartAscending(const void* P1, const void* P2);
+
+static int transcriptCompareStartDescending(const void* P1, const void* P2);
 
 static AjBool transcriptadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                              const AjPStr statement,
@@ -1476,7 +1480,7 @@ ajuint ensTranscriptGetTranscriptCodingStart(EnsPTranscript transcript)
         ** Sequence Edits.
         */
 
-        ajListSort(ses, ensSequenceEditCompareStartDescending);
+        ensSequenceEditSortByStartDescending(ses);
 
         while(ajListPop(ses, (void **) &se))
         {
@@ -1597,7 +1601,7 @@ ajuint ensTranscriptGetTranscriptCodingEnd(EnsPTranscript transcript)
         ** Sequence Edits.
         */
 
-        ajListSort(ses, ensSequenceEditCompareStartDescending);
+        ensSequenceEditSortByStartDescending(ses);
 
         while(ajListPop(ses, (void **) &se))
         {
@@ -4093,7 +4097,7 @@ AjBool ensTranscriptFetchSequenceStr(EnsPTranscript transcript,
         ** adjusting down-stream Sequence Edit coordinates.
         */
 
-        ajListSort(ses, ensSequenceEditCompareStartDescending);
+        ensSequenceEditSortByStartDescending(ses);
 
         while(ajListPop(ses, (void **) &se))
         {
@@ -4307,7 +4311,7 @@ AjBool ensTranscriptFetchTranslationSequenceStr(EnsPTranscript transcript,
         ** adjusting down-stream Sequence Edit coordinates.
         */
 
-        ajListSort(ses, ensSequenceEditCompareStartDescending);
+        ensSequenceEditSortByStartDescending(ses);
 
         while(ajListPop(ses, (void **) &se))
         {
@@ -4377,6 +4381,152 @@ AjBool ensTranscriptFetchTranslationSequenceSeq(EnsPTranscript transcript,
 
     ajStrDel(&name);
     ajStrDel(&sequence);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic transcriptCompareStartAscending ********************************
+**
+** Comparison function to sort Ensembl Transcripts by their Ensembl Feature
+** start coordinate in ascending order.
+**
+** @param [r] P1 [const void*] Ensembl Transcript address 1
+** @param [r] P2 [const void*] Ensembl Transcript address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int transcriptCompareStartAscending(const void* P1, const void* P2)
+{
+    const EnsPTranscript transcript1 = NULL;
+    const EnsPTranscript transcript2 = NULL;
+
+    transcript1 = *(EnsPTranscript const *) P1;
+    transcript2 = *(EnsPTranscript const *) P2;
+
+    if(ajDebugTest("transcriptCompareStartAscending"))
+        ajDebug("transcriptCompareStartAscending\n"
+                "  transcript1 %p\n"
+                "  transcript2 %p\n",
+                transcript1,
+                transcript2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(transcript1 && (!transcript2))
+        return -1;
+
+    if((!transcript1) && (!transcript2))
+        return 0;
+
+    if((!transcript1) && transcript2)
+        return +1;
+
+    return ensFeatureCompareStartAscending(transcript1->Feature,
+                                           transcript2->Feature);
+}
+
+
+
+
+/* @func ensTranscriptSortByStartAscending ************************************
+**
+** Sort Ensembl Transcripts by their Ensembl Feature start coordinate
+** in ascending order.
+**
+** @param [u] transcripts [AjPList] AJAX List of Ensembl Transcripts
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensTranscriptSortByStartAscending(AjPList transcripts)
+{
+    if(!transcripts)
+        return ajFalse;
+
+    ajListSort(transcripts, transcriptCompareStartAscending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic transcriptCompareStartDescending *******************************
+**
+** Comparison function to sort Ensembl Transcripts by their Ensembl Feature
+** start coordinate in descending order.
+**
+** @param [r] P1 [const void*] Ensembl Transcript address 1
+** @param [r] P2 [const void*] Ensembl Transcript address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int transcriptCompareStartDescending(const void* P1, const void* P2)
+{
+    const EnsPTranscript transcript1 = NULL;
+    const EnsPTranscript transcript2 = NULL;
+
+    transcript1 = *(EnsPTranscript const *) P1;
+    transcript2 = *(EnsPTranscript const *) P2;
+
+    if(ajDebugTest("transcriptCompareStartDescending"))
+        ajDebug("transcriptCompareStartDescending\n"
+                "  transcript1 %p\n"
+                "  transcript2 %p\n",
+                transcript1,
+                transcript2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(transcript1 && (!transcript2))
+        return -1;
+
+    if((!transcript1) && (!transcript2))
+        return 0;
+
+    if((!transcript1) && transcript2)
+        return +1;
+
+    return ensFeatureCompareStartDescending(transcript1->Feature,
+                                            transcript2->Feature);
+}
+
+
+
+
+/* @func ensTranscriptSortByStartDescending ***********************************
+**
+** Sort Ensembl Transcripts by their Ensembl Feature start coordinate
+** in descending order.
+**
+** @param [u] transcripts [AjPList] AJAX List of Ensembl Transcripts
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensTranscriptSortByStartDescending(AjPList transcripts)
+{
+    if(!transcripts)
+        return ajFalse;
+
+    ajListSort(transcripts, transcriptCompareStartDescending);
 
     return ajTrue;
 }
@@ -6569,7 +6719,7 @@ AjBool ensTranscriptMapperInit(EnsPTranscript transcript)
     {
         ensTranscriptFetchAllSequenceEdits(transcript, ses);
 
-        ajListSort(ses, ensSequenceEditCompareStartAscending);
+        ensSequenceEditSortByStartAscending(ses);
     }
 
     iter = ajListIterNewread(exons);
