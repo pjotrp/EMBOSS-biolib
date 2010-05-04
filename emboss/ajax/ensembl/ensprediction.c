@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -61,6 +61,12 @@ extern EnsPPredictiontranscriptadaptor ensRegistryGetPredictiontranscriptadaptor
 extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
     EnsPDatabaseadaptor dba);
 
+static int predictionexonCompareStartAscending(const void* P1,
+                                               const void* P2);
+
+static int predictionexonCompareStartDescending(const void* P1,
+                                                const void* P2);
+
 static AjBool predictionexonadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                  const AjPStr statement,
                                                  EnsPAssemblymapper am,
@@ -74,6 +80,12 @@ static void predictionexonadaptorCacheDelete(void **value);
 static ajuint predictionexonadaptorCacheSize(const void *value);
 
 static EnsPFeature predictionexonadaptorGetFeature(const void *value);
+
+static int predictiontranscriptCompareStartAscending(const void* P1,
+                                                     const void* P2);
+
+static int predictiontranscriptCompareStartDescending(const void* P1,
+                                                      const void* P2);
 
 static AjBool predictiontranscriptadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                        const AjPStr statement,
@@ -1018,6 +1030,152 @@ AjBool ensPredictionexonFetchSequenceSeq(EnsPPredictionexon pe,
 
     ajStrDel(&name);
     ajStrDel(&sequence);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic predictionexonCompareStartAscending ****************************
+**
+** Comparison function to sort Ensembl Prediction Exons by their
+** Ensembl Feature start coordinate in ascending order.
+**
+** @param [r] P1 [const void*] Ensembl Prediction Exon address 1
+** @param [r] P2 [const void*] Ensembl Prediction Exon address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int predictionexonCompareStartAscending(const void* P1,
+                                               const void* P2)
+{
+    const EnsPPredictionexon pe1 = NULL;
+    const EnsPPredictionexon pe2 = NULL;
+
+    pe1 = *(EnsPPredictionexon const *) P1;
+    pe2 = *(EnsPPredictionexon const *) P2;
+
+    if(ajDebugTest("predictionexonCompareStartAscending"))
+        ajDebug("predictionexonCompareStartAscending\n"
+                "  pe1 %p\n"
+                "  pe2 %p\n",
+                pe1,
+                pe2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(pe1 && (!pe2))
+        return -1;
+
+    if((!pe1) && (!pe2))
+        return 0;
+
+    if((!pe1) && pe2)
+        return +1;
+
+    return ensFeatureCompareStartAscending(pe1->Feature, pe2->Feature);
+}
+
+
+
+
+/* @func ensPredictionexonSortByStartAscending ********************************
+**
+** Sort Ensembl Prediction Exons by their Ensembl Feature start coordinate
+** in ascending order.
+**
+** @param [u] pes [AjPList] AJAX List of Ensembl Prediction Exons
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensPredictionexonSortByStartAscending(AjPList pes)
+{
+    if(!pes)
+        return ajFalse;
+
+    ajListSort(pes, predictionexonCompareStartAscending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic predictionexonCompareStartDescending ***************************
+**
+** Comparison function to sort Ensembl Prediction Exons by their
+** Ensembl Feature start coordinate in descending order.
+**
+** @param [r] P1 [const void*] Ensembl Prediction Exon address 1
+** @param [r] P2 [const void*] Ensembl Prediction Exon address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int predictionexonCompareStartDescending(const void* P1,
+                                                const void* P2)
+{
+    const EnsPPredictionexon pe1 = NULL;
+    const EnsPPredictionexon pe2 = NULL;
+
+    pe1 = *(EnsPPredictionexon const *) P1;
+    pe2 = *(EnsPPredictionexon const *) P2;
+
+    if(ajDebugTest("predictionexonCompareStartDescending"))
+        ajDebug("predictionexonCompareStartDescending\n"
+                "  pe1 %p\n"
+                "  pe2 %p\n",
+                pe1,
+                pe2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(pe1 && (!pe2))
+        return -1;
+
+    if((!pe1) && (!pe2))
+        return 0;
+
+    if((!pe1) && pe2)
+        return +1;
+
+    return ensFeatureCompareStartDescending(pe1->Feature, pe2->Feature);
+}
+
+
+
+
+/* @func ensPredictionexonSortByStartDescending *******************************
+**
+** Sort Ensembl Prediction Exons by their Ensembl Feature start coordinate
+** in descending order.
+**
+** @param [u] pes [AjPList] AJAX List of Ensembl Prediction Exons
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensPredictionexonSortByStartDescending(AjPList pes)
+{
+    if(!pes)
+        return ajFalse;
+
+    ajListSort(pes, predictionexonCompareStartDescending);
 
     return ajTrue;
 }
@@ -2796,6 +2954,152 @@ AjBool ensPredictiontranscriptFetchTranslationSequenceSeq(
     *Psequence = ajSeqNewNameS(sequence, pt->DisplayLabel);
 
     ajStrDel(&sequence);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic predictiontranscriptCompareStartAscending **********************
+**
+** Comparison function to sort Ensembl Prediction Transcripts by their
+** Ensembl Feature start coordinate in ascending order.
+**
+** @param [r] P1 [const void*] Ensembl Prediction Transcript address 1
+** @param [r] P2 [const void*] Ensembl Prediction Transcript address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int predictiontranscriptCompareStartAscending(const void* P1,
+                                                     const void* P2)
+{
+    const EnsPPredictiontranscript pt1 = NULL;
+    const EnsPPredictiontranscript pt2 = NULL;
+
+    pt1 = *(EnsPPredictiontranscript const *) P1;
+    pt2 = *(EnsPPredictiontranscript const *) P2;
+
+    if(ajDebugTest("predictiontranscriptCompareStartAscending"))
+        ajDebug("predictiontranscriptCompareStartAscending\n"
+                "  pt1 %p\n"
+                "  pt2 %p\n",
+                pt1,
+                pt2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(pt1 && (!pt2))
+        return -1;
+
+    if((!pt1) && (!pt2))
+        return 0;
+
+    if((!pt1) && pt2)
+        return +1;
+
+    return ensFeatureCompareStartAscending(pt1->Feature, pt2->Feature);
+}
+
+
+
+
+/* @func ensPredictiontranscriptSortByStartAscending **************************
+**
+** Sort Ensembl Prediction Transcripts by their Ensembl Feature start
+** coordinate in ascending order.
+**
+** @param [u] pts [AjPList] AJAX List of Ensembl Prediction Transcripts
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensPredictiontranscriptSortByStartAscending(AjPList pts)
+{
+    if(!pts)
+        return ajFalse;
+
+    ajListSort(pts, predictiontranscriptCompareStartAscending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic predictiontranscriptCompareStartDescending *********************
+**
+** Comparison function to sort Ensembl Prediction Transcripts by their
+** Ensembl Feature start coordinate in descending order.
+**
+** @param [r] P1 [const void*] Ensembl Prediction Transcript address 1
+** @param [r] P2 [const void*] Ensembl Prediction Transcript address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int predictiontranscriptCompareStartDescending(const void* P1,
+                                                      const void* P2)
+{
+    const EnsPPredictiontranscript pt1 = NULL;
+    const EnsPPredictiontranscript pt2 = NULL;
+
+    pt1 = *(EnsPPredictiontranscript const *) P1;
+    pt2 = *(EnsPPredictiontranscript const *) P2;
+
+    if(ajDebugTest("predictiontranscriptCompareStartDescending"))
+        ajDebug("predictionCompareStartDescending\n"
+                "  pt1 %p\n"
+                "  pt2 %p\n",
+                pt1,
+                pt2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(pt1 && (!pt2))
+        return -1;
+
+    if((!pt1) && (!pt2))
+        return 0;
+
+    if((!pt1) && pt2)
+        return +1;
+
+    return ensFeatureCompareStartDescending(pt1->Feature, pt2->Feature);
+}
+
+
+
+
+/* @func ensPredictiontranscriptSortByStartDescending *************************
+**
+** Sort Ensembl Prediction Transcripts by their Ensembl Feature start
+** coordinate in descending order.
+**
+** @param [u] pts [AjPList] AJAX List of Ensembl Prediction Transcripts
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensPredictiontranscriptSortByStartDescending(AjPList pts)
+{
+    if(!pts)
+        return ajFalse;
+
+    ajListSort(pts, predictiontranscriptCompareStartDescending);
 
     return ajTrue;
 }
