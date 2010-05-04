@@ -106,7 +106,7 @@ typedef struct EnsSProteinalignfeatureadaptor
 
 
 
-/******************************************************************************
+/* EnsEBasealignfeatureType ***************************************************
 **
 ** Ensembl Base Align Feature Type enumeration.
 **
@@ -430,6 +430,19 @@ AjBool ensFeatureFetchAllAlternativeLocations(EnsPFeature feature,
                                               AjBool all,
                                               AjPList features);
 
+int ensFeatureCompareStartAscending(const EnsPFeature feature1,
+                                    const EnsPFeature feature2);
+
+int ensFeatureCompareStartDescending(const EnsPFeature feature1,
+                                     const EnsPFeature feature2);
+
+AjBool ensFeatureSortByStartAscending(AjPList features);
+
+AjBool ensFeatureSortByStartDescending(AjPList features);
+
+AjBool ensFeatureMatch(const EnsPFeature feature1,
+                       const EnsPFeature feature2);
+
 AjBool ensFeatureOverlap(const EnsPFeature feature1,
                          const EnsPFeature feature2);
 
@@ -598,6 +611,16 @@ EnsPFeaturepair ensFeaturepairTransform(const EnsPFeaturepair fp,
 
 EnsPFeaturepair ensFeaturepairTransfer(EnsPFeaturepair fp, EnsPSlice slice);
 
+int ensFeaturepairCompareSourceFeatureStartAscending(const void* P1,
+                                                     const void* P2);
+
+int ensFeaturepairCompareSourceFeatureStartDescending(const void* P1,
+                                                      const void* P2);
+
+AjBool ensFeaturepairSortBySourceFeatureStartAscending(AjPList fps);
+
+AjBool ensFeaturepairSortBySourceFeatureStartDescending(AjPList fps);
+
 /* Ensembl Base Align Feature */
 
 EnsPBasealignfeature ensBasealignfeatureNewD(
@@ -665,6 +688,10 @@ AjBool ensBasealignfeatureTrace(const EnsPBasealignfeature baf, ajuint level);
 
 AjBool ensBasealignfeatureFetchAllFeaturepairs(const EnsPBasealignfeature baf,
                                                AjPList fps);
+
+AjBool ensBasealignfeatureSortBySourceFeatureStartAscending(AjPList bafs);
+
+AjBool ensBasealignfeatureSortBySourceFeatureStartDescending(AjPList bafs);
 
 /* Ensembl DNA Align Feature Adaptor */
 
@@ -861,6 +888,10 @@ AjBool ensSimplefeatureSetScore(EnsPSimplefeature sf, double score);
 AjBool ensSimplefeatureTrace(const EnsPSimplefeature sf, ajuint level);
 
 ajuint ensSimplefeatureGetMemSize(const EnsPSimplefeature sf);
+
+AjBool ensSimplefeatureSortByStartAscending(AjPList sfs);
+
+AjBool ensSimplefeatureSortByStartDescending(AjPList sfs);
 
 /* Ensembl Simple Feature Adaptor */
 
