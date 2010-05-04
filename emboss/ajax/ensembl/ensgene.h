@@ -143,6 +143,10 @@ EnsPGene ensGeneTransform(EnsPGene gene,
 
 EnsPGene ensGeneTransfer(EnsPGene gene, EnsPSlice slice);
 
+AjBool ensGeneSortByStartAscending(AjPList genes);
+
+AjBool ensGeneSortByStartDescending(AjPList genes);
+
 /* Ensembl Gene Adaptor */
 
 EnsPGeneadaptor ensGeneadaptorNew(EnsPDatabaseadaptor dba);
