@@ -109,6 +109,10 @@ AjBool ensKaryotypebandTrace(const EnsPKaryotypeband kb, ajuint level);
 
 ajuint ensKaryotypebandGetMemSize(const EnsPKaryotypeband kb);
 
+AjBool ensKaryotypebandSortByStartAscending(AjPList kbs);
+
+AjBool ensKaryotypebandSortByStartDescending(AjPList kbs);
+
 /* Ensembl Karyoptype Band Adaptor */
 
 EnsPKaryotypebandadaptor ensKaryotypebandadaptorNew(EnsPDatabaseadaptor dba);
