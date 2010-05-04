@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.6 $
+** @version $Revision: 1.7 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -81,6 +81,12 @@ static AjBool gvvariationadaptorFetchFlankFromCore(EnsPGvvariationadaptor gvva,
                                                    ajint srend,
                                                    ajint srstrand,
                                                    AjPStr *Psequence);
+
+static int gvvariationfeatureCompareStartAscending(const void* P1,
+                                                   const void* P2);
+
+static int gvvariationfeatureCompareStartDescending(const void* P1,
+                                                    const void* P2);
 
 
 
@@ -4321,7 +4327,7 @@ AjBool ensGvvariationadaptorFetchFlankingSequence(EnsPGvvariationadaptor gvva,
                        "could not get "
                        "Ensembl Sequence Region identifier for "
                        "Ensembl Genetic Variation Variation %u.",
-                       variationid);    
+                       variationid);
         }
 
         ajStrAssignS(Pthreeseq, dseq);
@@ -5277,6 +5283,158 @@ AjBool ensGvvariationfeatureTrace(const EnsPGvvariationfeature gvvf,
     ensFeatureTrace(gvvf->Feature, level + 1);
 
     ensGvvariationTrace(gvvf->Gvvariation, level + 1);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic gvvariationfeatureCompareStartAscending ************************
+**
+** Comparison function to sort Ensembl Genetic Variation Variation Feature by
+** their Ensembl Feature start coordinate in ascending order.
+**
+** @param [r] P1 [const void*] Ensembl Genetic Variation
+**                             Variation Feature address 1
+** @param [r] P2 [const void*] Ensembl Genetic Variation
+**                             Variation Feature address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int gvvariationfeatureCompareStartAscending(const void* P1,
+                                                   const void* P2)
+{
+    const EnsPGvvariationfeature gvvf1 = NULL;
+    const EnsPGvvariationfeature gvvf2 = NULL;
+
+    gvvf1 = *(EnsPGvvariationfeature const *) P1;
+    gvvf2 = *(EnsPGvvariationfeature const *) P2;
+
+    if(ajDebugTest("gvvariationfeatureCompareStartAscending"))
+        ajDebug("gvvariationfeatureCompareStartAscending\n"
+                "  gvvf1 %p\n"
+                "  gvvf2 %p\n",
+                gvvf1,
+                gvvf2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(gvvf1 && (!gvvf2))
+        return -1;
+
+    if((!gvvf1) && (!gvvf2))
+        return 0;
+
+    if((!gvvf1) && gvvf2)
+        return +1;
+
+    return ensFeatureCompareStartAscending(gvvf1->Feature, gvvf2->Feature);
+}
+
+
+
+
+/* @func ensGvvariationfeatureSortByStartAscending ****************************
+**
+** Sort Ensembl Genetic Variation Variation Feature by their
+** Ensembl Feature start coordinate in ascending order.
+**
+** @param [u] gvvfs [AjPList] AJAX List of Ensembl Genetic Variation
+**                            Variation Features
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensGvvariationfeatureSortByStartAscending(AjPList gvvfs)
+{
+    if(!gvvfs)
+        return ajFalse;
+
+    ajListSort(gvvfs, gvvariationfeatureCompareStartAscending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic gvvariationfeatureCompareStartDescending ***********************
+**
+** Comparison function to sort Ensembl Genetic Variation Variation Feature by
+** their Ensembl Feature start coordinate in descending order.
+**
+** @param [r] P1 [const void*] Ensembl Genetic Variation
+**                             Variation Feature address 1
+** @param [r] P2 [const void*] Ensembl Genetic Variation
+**                             Variation Feature address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int gvvariationfeatureCompareStartDescending(const void* P1,
+                                                    const void* P2)
+{
+    const EnsPGvvariationfeature gvvf1 = NULL;
+    const EnsPGvvariationfeature gvvf2 = NULL;
+
+    gvvf1 = *(EnsPGvvariationfeature const *) P1;
+    gvvf2 = *(EnsPGvvariationfeature const *) P2;
+
+    if(ajDebugTest("gvvariationfeatureCompareStartDescending"))
+        ajDebug("gvvariationfeatureCompareStartDescending\n"
+                "  gvvf1 %p\n"
+                "  gvvf2 %p\n",
+                gvvf1,
+                gvvf2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(gvvf1 && (!gvvf2))
+        return -1;
+
+    if((!gvvf1) && (!gvvf2))
+        return 0;
+
+    if((!gvvf1) && gvvf2)
+        return +1;
+
+    return ensFeatureCompareStartDescending(gvvf1->Feature, gvvf2->Feature);
+}
+
+
+
+
+/* @func ensGvvariationfeatureSortByStartDescending ***************************
+**
+** Sort Ensembl Genetic Variation Variation Feature by their
+** Ensembl Feature start coordinate in descending order.
+**
+** @param [u] gvvfs [AjPList] AJAX List of Ensembl Genetic Variation
+**                            Variation Features
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensGvvariationfeatureSortByStartDescending(AjPList gvvfs)
+{
+    if(!gvvfs)
+        return ajFalse;
+
+    ajListSort(gvvfs, gvvariationfeatureCompareStartDescending);
 
     return ajTrue;
 }
