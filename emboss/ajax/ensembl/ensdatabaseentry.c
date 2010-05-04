@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -4741,6 +4741,7 @@ AjBool ensDatabaseentryadaptorFetchAllByTranslation(
 **
 ** @param [r] P1 [const void*] Unsigned integer address 1
 ** @param [r] P2 [const void*] Unsigned integer address 2
+** @see ajListSortUnique
 **
 ** @return [int] The comparison function returns an integer less than,
 **               equal to, or greater than zero if the first argument is
@@ -4757,12 +4758,6 @@ static int databaseentryadaptorCompareIdentifier(const void *P1,
     const ajuint *Pidentifier1 = NULL;
     const ajuint *Pidentifier2 = NULL;
 
-    if(!P1)
-        return 0;
-
-    if(!P2)
-        return 0;
-
     Pidentifier1 = *(ajuint * const *) P1;
     Pidentifier2 = *(ajuint * const *) P2;
 
@@ -4772,6 +4767,19 @@ static int databaseentryadaptorCompareIdentifier(const void *P1,
                 "  identifier2 %u\n",
                 *Pidentifier1,
                 *Pidentifier2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(Pidentifier1 && (!Pidentifier2))
+        return -1;
+
+    if((!Pidentifier1) && (!Pidentifier2))
+        return 0;
+
+    if((!Pidentifier1) && Pidentifier2)
+        return +1;
+
+    /* Evaluate identifiers */
 
     if(*Pidentifier1 < *Pidentifier2)
         value = -1;
@@ -4795,6 +4803,7 @@ static int databaseentryadaptorCompareIdentifier(const void *P1,
 **
 ** @param [r] PP1 [void**] Unsigned integer pointer address 1
 ** @param [r] cl [void*] Standard. Passed in from ajListSortUnique
+** @see ajListSortUnique
 **
 ** @return [void]
 ** @@
