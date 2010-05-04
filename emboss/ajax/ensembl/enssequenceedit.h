@@ -76,9 +76,9 @@ AjBool ensSequenceEditApplyEdit(EnsPSequenceEdit se,
                                 ajint offset,
                                 AjPStr* Psequence);
 
-int ensSequenceEditCompareStartAscending(const void* P1, const void* P2);
+AjBool ensSequenceEditSortByStartAscending(AjPList ses);
 
-int ensSequenceEditCompareStartDescending(const void* P1, const void* P2);
+AjBool ensSequenceEditSortByStartDescending(AjPList ses);
 
 /*
 ** End of prototype definitions
