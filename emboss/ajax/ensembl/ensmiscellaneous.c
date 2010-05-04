@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -90,6 +90,12 @@ static AjBool miscellaneoussetadaptorCacheExit(
 static void miscellaneoussetadaptorFetchAll(const void *key,
                                             void **value,
                                             void *cl);
+
+static int miscellaneousfeatureCompareStartAscending(const void* P1,
+                                                     const void* P2);
+
+static int miscellaneousfeatureCompareStartDescending(const void* P1,
+                                                      const void* P2);
 
 static AjBool miscellaneousfeatureadaptorHasAttribute(AjPTable attributes,
                                                       const AjPStr code,
@@ -2569,6 +2575,152 @@ AjBool ensMiscellaneousfeatureFetchAllMiscellaneoussets(
     }
 
     ajListIterDel(&iter);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic miscellaneousfeatureCompareStartAscending **********************
+**
+** Comparison function to sort Ensembl Miscellaneous Features by their
+** Ensembl Feature start coordinate in ascending order.
+**
+** @param [r] P1 [const void*] Ensembl Miscellaneous Feature address 1
+** @param [r] P2 [const void*] Ensembl Miscellaneous Feature address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int miscellaneousfeatureCompareStartAscending(const void* P1,
+                                                     const void* P2)
+{
+    const EnsPMiscellaneousfeature mf1 = NULL;
+    const EnsPMiscellaneousfeature mf2 = NULL;
+
+    mf1 = *(EnsPMiscellaneousfeature const *) P1;
+    mf2 = *(EnsPMiscellaneousfeature const *) P2;
+
+    if(ajDebugTest("miscellaneousfeatureCompareStartAscending"))
+        ajDebug("miscellaneousfeatureCompareStartAscending\n"
+                "  mf1 %p\n"
+                "  mf2 %p\n",
+                mf1,
+                mf2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(mf1 && (!mf2))
+        return -1;
+
+    if((!mf1) && (!mf2))
+        return 0;
+
+    if((!mf1) && mf2)
+        return +1;
+
+    return ensFeatureCompareStartAscending(mf1->Feature, mf2->Feature);
+}
+
+
+
+
+/* @func ensMiscellaneousfeatureSortByStartAscending **************************
+**
+** Sort Ensembl Miscellaneous Features by their Ensembl Feature start
+** coordinate in ascending order.
+**
+** @param [u] mfs [AjPList] AJAX List of Ensembl Miscellaneous Features
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensMiscellaneousfeatureSortByStartAscending(AjPList mfs)
+{
+    if(!mfs)
+        return ajFalse;
+
+    ajListSort(mfs, miscellaneousfeatureCompareStartAscending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic miscellaneousfeatureCompareStartDescending *********************
+**
+** Comparison function to sort Ensembl Miscellaneous Features by their
+** Ensembl Feature start coordinate in descending order.
+**
+** @param [r] P1 [const void*] Ensembl Miscellaneous Feature address 1
+** @param [r] P2 [const void*] Ensembl Miscellaneous Feature address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int miscellaneousfeatureCompareStartDescending(const void* P1,
+                                                      const void* P2)
+{
+    const EnsPMiscellaneousfeature mf1 = NULL;
+    const EnsPMiscellaneousfeature mf2 = NULL;
+
+    mf1 = *(EnsPMiscellaneousfeature const *) P1;
+    mf2 = *(EnsPMiscellaneousfeature const *) P2;
+
+    if(ajDebugTest("miscellaneousfeatureCompareStartDescending"))
+        ajDebug("miscellaneousfeatureCompareStartDescending\n"
+                "  mf1 %p\n"
+                "  mf2 %p\n",
+                mf1,
+                mf2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(mf1 && (!mf2))
+        return -1;
+
+    if((!mf1) && (!mf2))
+        return 0;
+
+    if((!mf1) && mf2)
+        return +1;
+
+    return ensFeatureCompareStartDescending(mf1->Feature, mf2->Feature);
+}
+
+
+
+
+/* @func ensMiscellaneousfeatureSortByStartDescending *************************
+**
+** Sort Ensembl Miscellaneous Features by their Ensembl Feature start
+** coordinate in descending order.
+**
+** @param [u] mfs [AjPList] AJAX List of Ensembl Miscellaneous Features
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensMiscellaneousfeatureSortByStartDescending(AjPList mfs)
+{
+    if(!mfs)
+        return ajFalse;
+
+    ajListSort(mfs, miscellaneousfeatureCompareStartDescending);
 
     return ajTrue;
 }
