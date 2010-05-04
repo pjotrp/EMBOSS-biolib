@@ -282,6 +282,10 @@ AjEnum ensDitagfeatureSideFromStr(const AjPStr side);
 
 const char *ensDitagfeatureSideToChar(const AjEnum side);
 
+AjBool ensDitagfeatureSortByStartAscending(AjPList dtfs);
+
+AjBool ensDitagfeatureSortByStartDescending(AjPList dtfs);
+
 /* Ensembl Ditag Feature Adaptor */
 
 EnsPDitagfeatureadaptor ensDitagfeatureadaptorNew(EnsPDatabaseadaptor dba);
