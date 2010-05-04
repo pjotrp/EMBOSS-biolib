@@ -269,6 +269,10 @@ AjBool ensMiscellaneousfeatureFetchAllMiscellaneoussets(
     const AjPStr code,
     AjPList mslist);
 
+AjBool ensMiscellaneousfeatureSortByStartAscending(AjPList mfs);
+
+AjBool ensMiscellaneousfeatureSortByStartDescending(AjPList mfs);
+
 /* Ensembl Miscellaneous Feature Adaptor */
 
 EnsPMiscellaneousfeatureadaptor ensMiscellaneousfeatureadaptorNew(
