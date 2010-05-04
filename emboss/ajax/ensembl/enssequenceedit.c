@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -42,6 +42,10 @@
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
+
+static int sequenceeditCompareStartAscending(const void* P1, const void* P2);
+
+static int sequenceeditCompareStartDescending(const void* P1, const void* P2);
 
 
 
@@ -391,7 +395,7 @@ AjPStr ensSequenceEditGetAltSeq(const EnsPSequenceEdit se)
 **
 ** Coordinates are inclusive and one-based, which means that inserts are
 ** unusually represented by a start one base pair higher than the end. Hence,
-** start = 1, end = 1 is a replacement of the first base, but 
+** start = 1, end = 1 is a replacement of the first base, but
 ** start = 1, end = 0 is an insert BEFORE the first base.
 **
 ** @cc Bio::EnsEMBL:SeqEdit::start
@@ -418,7 +422,7 @@ ajuint ensSequenceEditGetStart(const EnsPSequenceEdit se)
 **
 ** Coordinates are inclusive and one-based, which means that inserts are
 ** unusually represented by a start one base pair higher than the end. Hence,
-** start = 1, end = 1 is a replacement of the first base, but 
+** start = 1, end = 1 is a replacement of the first base, but
 ** start = 1, end = 0 is an insert BEFORE the first base.
 **
 ** @cc Bio::EnsEMBL:SeqEdit::end
@@ -570,10 +574,10 @@ AjBool ensSequenceEditApplyEdit(EnsPSequenceEdit se,
 
 
 
-/* @func ensSequenceEditCompareStartAscending *********************************
+/* @funcstatic sequenceeditCompareStartAscending ******************************
 **
 ** Comparison function to sort Ensembl Sequence Edits by their
-** Start Coordinates in ascending order.
+** start coordinates in ascending order.
 **
 ** @param [r] P1 [const void*] Ensembl Sequence Edit address 1
 ** @param [r] P2 [const void*] Ensembl Sequence Edit address 2
@@ -585,7 +589,7 @@ AjBool ensSequenceEditApplyEdit(EnsPSequenceEdit se,
 ** @@
 ******************************************************************************/
 
-int ensSequenceEditCompareStartAscending(const void* P1, const void* P2)
+static int sequenceeditCompareStartAscending(const void* P1, const void* P2)
 {
     int value = 0;
 
@@ -595,9 +599,9 @@ int ensSequenceEditCompareStartAscending(const void* P1, const void* P2)
     se1 = *(EnsPSequenceEdit const *) P1;
     se2 = *(EnsPSequenceEdit const *) P2;
 
-    if(ajDebugTest("ensSequenceEditCompareStartAscending"))
+    if(ajDebugTest("sequenceeditCompareStartAscending"))
     {
-        ajDebug("ensSequenceEditCompareStartAscending\n"
+        ajDebug("sequenceeditCompareStartAscending\n"
                 "  se1 %p\n"
                 "  se2 %p\n",
                 se1,
@@ -607,19 +611,16 @@ int ensSequenceEditCompareStartAscending(const void* P1, const void* P2)
         ensSequenceEditTrace(se2, 1);
     }
 
-    if(!se1)
-    {
-        ajDebug("ensSequenceEditCompareStartAscending got empty se1.\n");
+    /* Sort empty values towards the end of the AJAX list. */
 
+    if(se1 && (!se2))
+        return -1;
+
+    if((!se1) && (!se2))
         return 0;
-    }
 
-    if(!se2)
-    {
-        ajDebug("ensSequenceEditCompareStartAscending got empty se2.\n");
-
-        return 0;
-    }
+    if((!se1) && se2)
+        return +1;
 
     if(se1->Start < se2->Start)
         value = -1;
@@ -636,10 +637,33 @@ int ensSequenceEditCompareStartAscending(const void* P1, const void* P2)
 
 
 
-/* @func ensSequenceEditCompareStartDescending ********************************
+/* @func ensSequenceEditSortByStartAscending **********************************
+**
+** Sort Ensembl Sequence Edits by their start coordinate in ascending order.
+**
+** @param [u] ses [AjPList] AJAX List of Ensembl Sequence Edits
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensSequenceEditSortByStartAscending(AjPList ses)
+{
+    if(!ses)
+        return ajFalse;
+
+    ajListSort(ses, sequenceeditCompareStartAscending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic sequenceeditCompareStartDescending *****************************
 **
 ** Comparison function to sort Ensembl Sequence Edits by their
-** Start Coordinates in descending order.
+** start coordinates in descending order.
 **
 ** @param [r] P1 [const void*] Ensembl Sequence Edit address 1
 ** @param [r] P2 [const void*] Ensembl Sequence Edit address 2
@@ -651,7 +675,7 @@ int ensSequenceEditCompareStartAscending(const void* P1, const void* P2)
 ** @@
 ******************************************************************************/
 
-int ensSequenceEditCompareStartDescending(const void* P1, const void* P2)
+static int sequenceeditCompareStartDescending(const void* P1, const void* P2)
 {
     int value = 0;
 
@@ -661,9 +685,9 @@ int ensSequenceEditCompareStartDescending(const void* P1, const void* P2)
     se1 = *(EnsPSequenceEdit const *) P1;
     se2 = *(EnsPSequenceEdit const *) P2;
 
-    if(ajDebugTest("ensSequenceEditCompareStartDescending"))
+    if(ajDebugTest("sequenceeditCompareStartDescending"))
     {
-        ajDebug("ensSequenceEditCompareStartDescending\n"
+        ajDebug("sequenceeditCompareStartDescending\n"
                 "  se1 %p\n"
                 "  se2 %p\n",
                 se1,
@@ -673,19 +697,16 @@ int ensSequenceEditCompareStartDescending(const void* P1, const void* P2)
         ensSequenceEditTrace(se2, 1);
     }
 
-    if(!se1)
-    {
-        ajDebug("ensSequenceEditCompareStartDescending got empty se1.\n");
+    /* Sort empty values towards the end of the AJAX list. */
 
+    if(se1 && (!se2))
+        return -1;
+
+    if((!se1) && (!se2))
         return 0;
-    }
 
-    if(!se2)
-    {
-        ajDebug("ensSequenceEditCompareStartDescending got empty se2.\n");
-
-        return 0;
-    }
+    if((!se1) && se2)
+        return +1;
 
     if(se1->Start < se2->Start)
         value = +1;
@@ -697,4 +718,27 @@ int ensSequenceEditCompareStartDescending(const void* P1, const void* P2)
         value = -1;
 
     return value;
+}
+
+
+
+
+/* @func ensSequenceEditSortByStartDescending *********************************
+**
+** Sort Ensembl Sequence Edits by their start coordinate in descending order.
+**
+** @param [u] ses [AjPList] AJAX List of Ensembl Sequence Edits
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensSequenceEditSortByStartDescending(AjPList ses)
+{
+    if(!ses)
+        return ajFalse;
+
+    ajListSort(ses, sequenceeditCompareStartDescending);
+
+    return ajTrue;
 }
