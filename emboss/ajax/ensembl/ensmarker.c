@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.6 $
+** @version $Revision: 1.7 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -83,6 +83,10 @@ static AjBool markeradaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 static void markeradaptorClearIdentifierTable(void **key,
                                               void **value,
                                               void *cl);
+
+static int markerfeatureCompareStartAscending(const void* P1, const void* P2);
+
+static int markerfeatureCompareStartDescending(const void* P1, const void* P2);
 
 static void markerfeatureadaptorClearMarkerTable(void **key,
                                                  void **value,
@@ -4427,6 +4431,150 @@ ajuint ensMarkerfeatureGetMemSize(const EnsPMarkerfeature mf)
     size += ensMarkerGetMemSize(mf->Marker);
 
     return size;
+}
+
+
+
+
+/* @funcstatic markerfeatureCompareStartAscending *****************************
+**
+** Comparison function to sort Ensembl Marker Features by their
+** Ensembl Feature start coordinate in ascending order.
+**
+** @param [r] P1 [const void*] Ensembl Marker Feature address 1
+** @param [r] P2 [const void*] Ensembl Marker Feature address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int markerfeatureCompareStartAscending(const void* P1, const void* P2)
+{
+    const EnsPMarkerfeature mf1 = NULL;
+    const EnsPMarkerfeature mf2 = NULL;
+
+    mf1 = *(EnsPMarkerfeature const *) P1;
+    mf2 = *(EnsPMarkerfeature const *) P2;
+
+    if(ajDebugTest("markerfeatureCompareStartAscending"))
+        ajDebug("markerfeatureCompareStartAscending\n"
+                "  mf1 %p\n"
+                "  mf2 %p\n",
+                mf1,
+                mf2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(mf1 && (!mf2))
+        return -1;
+
+    if((!mf1) && (!mf2))
+        return 0;
+
+    if((!mf1) && mf2)
+        return +1;
+
+    return ensFeatureCompareStartAscending(mf1->Feature, mf2->Feature);
+}
+
+
+
+
+/* @func ensMarkerfeatureSortByStartAscending *********************************
+**
+** Sort Ensembl Marker Features by their Ensembl Feature start coordinate
+** in ascending order.
+**
+** @param [u] mfs [AjPList] AJAX List of Ensembl Marker Features
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensMarkerfeatureSortByStartAscending(AjPList mfs)
+{
+    if(!mfs)
+        return ajFalse;
+
+    ajListSort(mfs, markerfeatureCompareStartAscending);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic markerfeatureCompareStartDescending ****************************
+**
+** Comparison function to sort Ensembl Marker Features by their
+** Ensembl Feature start coordinate in descending order.
+**
+** @param [r] P1 [const void*] Ensembl Marker Feature address 1
+** @param [r] P2 [const void*] Ensembl Marker Feature address 2
+** @see ajListSort
+**
+** @return [int] The comparison function returns an integer less than,
+**               equal to, or greater than zero if the first argument is
+**               considered to be respectively less than, equal to, or
+**               greater than the second.
+** @@
+******************************************************************************/
+
+static int markerfeatureCompareStartDescending(const void* P1, const void* P2)
+{
+    const EnsPMarkerfeature mf1 = NULL;
+    const EnsPMarkerfeature mf2 = NULL;
+
+    mf1 = *(EnsPMarkerfeature const *) P1;
+    mf2 = *(EnsPMarkerfeature const *) P2;
+
+    if(ajDebugTest("markerfeatureCompareStartDescending"))
+        ajDebug("markerfeatureCompareStartDescending\n"
+                "  mf1 %p\n"
+                "  mf2 %p\n",
+                mf1,
+                mf2);
+
+    /* Sort empty values towards the end of the AJAX List. */
+
+    if(mf1 && (!mf2))
+        return -1;
+
+    if((!mf1) && (!mf2))
+        return 0;
+
+    if((!mf1) && mf2)
+        return +1;
+
+    return ensFeatureCompareStartDescending(mf1->Feature, mf2->Feature);
+}
+
+
+
+
+/* @func ensMarkerfeatureSortByStartDescending ********************************
+**
+** Sort Ensembl Marker Features by their Ensembl Feature start coordinate
+** in descending order.
+**
+** @param [u] mfs [AjPList] AJAX List of Ensembl Marker Features
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensMarkerfeatureSortByStartDescending(AjPList mfs)
+{
+    if(!mfs)
+        return ajFalse;
+
+    ajListSort(mfs, markerfeatureCompareStartDescending);
+
+    return ajTrue;
 }
 
 
