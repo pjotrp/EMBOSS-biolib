@@ -20786,7 +20786,7 @@ FI stdout
 FP /^# Identity: +4[4,6]\/6[6,7] \(6[6,8]\.7%\)/
 FP /^# Score: +162\.0\n/
 FP /^AFULL +1[6,7] g+tttaaccggttacgt      1\n/
-FP /^      +   [\|]{10,12}    \n/
+FP /^      +   [\|]{10,13}    \n/
 FP /^APART +1[2,3] g+tttaaccggtt----      1\n/
 FC = 44
 //
@@ -20927,7 +20927,7 @@ FP /^asis               1 HEAGAWGHE-E     10\n/
 FC = 42
 //
 
-ID needle-traceback
+ID needle-traceback1
 AP needle
 CL -auto -stdout -aformat simple -gapextend 1.0
 CL asis::acgtaggtacgttttacgtacgtacgtacgtaaacaggtg
@@ -20944,6 +20944,23 @@ FP /^asis +1 acgtag--------aacgtacgtacgtacgtacacgcataagcggcag     40\n/
 FC = 39
 //
 
+ID needle-traceback2
+AP needle
+CL -auto -stdout -aformat simple -gapextend 0.5
+CL asis::tgcgcaggatgtccttccaa
+CL asis::caatagactggtccgttcgc
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +12\/28 \(42\.9%\)/
+FP /^# Score: +17\.0\n/
+FP /^asis +1 tgcgcaggat------gtcc-ttc-caa/
+FP /^asis +1 ----ca--atagactggtccgttcgc--/
+FC = 39
+//
+
 ID needleall-withendweight
 AP needleall
 CL -auto -stdout -endweight -aformat simple
@@ -20957,10 +20974,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /^# Identity: +31\/154 \(20\.1%\)/
+FP /^# Identity: +32\/155 \(20\.6%\)/
 FP /^# Score: +62\.5\n/
-FP /^asis +44|3 ---R|-------E--EQH-LYD--LCEL-EALSLKHPGLQVVPVVEQPEAGW     77\n/
-FP /^asis +95 --K------S-IL----LPDADYYICGPIPFMRMQHDAL-KNLGIHEARI    130\n/
+FP /^asis +43 ----REEQHLYDLCEL------------EALSLKHPGLQVVPVVEQPEAG/
+FP /^asis +96 ------SIL---------LPDADYYICGPIPFMRMQHDAL-KNLGIHEAR/
 FC = 51
 //
 
@@ -20977,7 +20994,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /^asis asis 155 \(63.5\)\n/
+FP /^asis asis 156 \(63.5\)\n/
 FC = 4
 //
 
