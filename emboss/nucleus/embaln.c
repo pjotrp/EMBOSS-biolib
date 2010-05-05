@@ -434,7 +434,7 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
     xpos = *start2;
     ypos = *start1;
 
-    /* In the following loop the three matrices are traced back
+    /* In the following loop the three matrices (m, ix, iy) are traced back
      * and path/alignment decision/selection is made.
      * 0 means match: go up and left in the matrix
      * 1 means: go left in the matrix, i.e. gap in the first sequence(seq a)
@@ -444,7 +444,18 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
     while (xpos != 0 || ypos != 0){
 	cursor = ypos * lenb + xpos;
 	mp = m[cursor];
-	if(mp >= ix[cursor] && mp>= iy[cursor])
+
+	if(gapextend == (ix[cursor]-ix[cursor+1]) && cursorp == 1)
+	{
+	    compass[cursor] = 1;
+	    xpos--;
+	}
+	else if(gapextend == (iy[cursor]-iy[cursor+lenb]) && cursorp== 2)
+	{
+	    compass[cursor] = 2;
+	    ypos--;
+	}
+	else if(mp >= ix[cursor] && mp>= iy[cursor])
 	{
 	    path[cursor] = mp;
 	    compass[cursor] = 0;
