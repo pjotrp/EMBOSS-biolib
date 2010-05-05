@@ -19,8 +19,8 @@ section: input [
     type: "dna"
     help: "The sequence from which to choose primers. The sequence
            must be presented 5' to 3'"
-    relations: "/edam/data/0000850 Sequence set"                                 
     relations: "/edam/data/0001215 Pure DNA sequence"
+    relations: "/edam/data/0002173 Sequence set (stream)" 
   ]
 
   toggle: primer [
@@ -92,7 +92,8 @@ section: input [
            'N'). There are no restrictions on line length. \
            An empty value for this parameter indicates that no library should
            be used."
-    relations:  "/edam/data/0001242 Primer3 internal oligo mishybridizing library"  
+    relations: "/edam/data/0001215 Pure DNA sequence"
+    relations:  "/edam/data/0000850 Sequence set"  
   ]
 
   infile: mispriminglibraryfile [
@@ -127,7 +128,8 @@ section: input [
            'N'). There are no restrictions on line length. \
            An empty value for this parameter indicates that no repeat library
            should be used."
-    relations:  "/edam/data/0001243 Primer3 mispriming library file"                
+    relations: "/edam/data/0001215 Pure DNA sequence"
+    relations:  "/edam/data/0000850 Sequence set"  
   ]
 
 endsection: input

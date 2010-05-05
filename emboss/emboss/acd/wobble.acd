@@ -13,7 +13,8 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "dna"
-    relations: "/edam/data/0001215 Pure DNA sequence"                                   
+    relations: "/edam/data/0001215 Pure DNA sequence"                  
+    relations: "/edam/data/0000849 Sequence record"                  
   ]
 
 endsection: input

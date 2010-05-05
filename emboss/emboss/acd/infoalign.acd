@@ -15,7 +15,7 @@ section: input [
     type: "gapany"
     aligned: "Y"
     help: "The sequence alignment to be displayed."
-    relations: "/edam/data/0002044 Sequence alignment data"                             
+    relations: "/edam/data/0000848 Sequence alignment data"                             
   ]
 
   matrix: matrix [
@@ -41,7 +41,7 @@ section: input [
            sequence will be used as the reference sequence. By default the
            consensus sequence is used as the reference sequence."
     knowntype: "sequence id input"
-    relations:  "/edam/data/0002044 Sequence unique identifier"                     
+    relations:  "/edam/data/0000848 Sequence unique identifier"                     
   ]
 
 endsection: input
@@ -59,7 +59,7 @@ section: advanced [
     help: "Set a cut-off for the % of positive scoring matches below
            which there is no consensus. The default plurality is taken as 50%
            of the total weight of all the sequences in the alignment."
-    relations: "/edam/data/0002144 Threshold percentage"                                       
+    relations: "/edam/data/0002146 Threshold"                                       
   ]
 
   float: identity [
@@ -72,7 +72,7 @@ section: advanced [
            identities at a position for it to give a consensus. Therefore, if
            this is set to 100% only columns of identities contribute to the
            consensus."
-    relations: "/edam/data/0002144 Threshold percentage"                                       
+    relations: "/edam/data/0002146 Threshold"                                       
   ]
 
 endsection: advanced

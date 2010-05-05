@@ -14,7 +14,8 @@ section: input [
     parameter: "Y"
     type: "DNA"
     features: "Y"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0001215 Pure DNA sequence"                                     
+    relations: "/edam/data/0002173 Sequence set (stream)" 
   ]
 
   section: seqinsection [
@@ -102,7 +103,8 @@ section: output [
            the siRNAs are selected from. You may use it to do searches of
            mRNA databases (e.g. REFSEQ) to confirm that the probes are unique
            to the gene you wish to use it on."
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0001215 Pure DNA sequence"                                     
+    relations: "/edam/data/0000850 Sequence set"
   ]
 
   boolean: context [

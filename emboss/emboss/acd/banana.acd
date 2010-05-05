@@ -14,6 +14,7 @@ section: input [
     parameter: "y"
     type: "puredna"
     relations: "/edam/data/0001214 Unambiguous pure DNA sequence"                       
+    relations: "/edam/data/0000849 Sequence record" 
   ]
 
   datafile: anglesfile [

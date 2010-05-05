@@ -14,7 +14,8 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "DNA"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0002173 Sequence set (stream)" 
   ]
 
   list: menu [
@@ -73,7 +74,7 @@ section: required [
     information: "Threshold percentage"
     help: "If the matrix score is greater than or equal to this percentage \
              then a hit will be reported"
-    relations: "/edam/data/0002144 Threshold percentage"
+    relations: "/edam/data/0002146 Threshold"
   ]
 
 endsection: required

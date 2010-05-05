@@ -21,13 +21,15 @@ section: input [
   sequence: sequence [
     parameter: "y"
     type: "$(typea)"
-    relations: "/edam/data/0002044 Sequence"                                            
+    relations: "/edam/data/0000848 Sequence"                                            
+    relations: "/edam/data/0000849 Sequence record" 
   ]
 
   sequence: bsequence [
     parameter: "y"
     type: "$(seqa.type)"
-    relations: "/edam/data/0002044 Sequence"                                            
+    relations: "/edam/data/0000848 Sequence"                                            
+    relations: "/edam/data/0000849 Sequence record" 
   ]
 
   codon: cod [

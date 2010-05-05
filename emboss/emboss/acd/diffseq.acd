@@ -17,14 +17,16 @@ section: input [
     parameter: "Y"
     type: "any"
     features: "Y"
-    relations: "/edam/data/0002044 Sequence"                                            
+    relations: "/edam/data/0000848 Sequence"          
+    relations: "/edam/data/0000849 Sequence record"                                   
   ]
 
   sequence: bsequence [
     parameter: "Y"
     type: "@($(acdprotein) ? stopprotein : nucleotide)"
     features: "Y"
-    relations: "/edam/data/0002044 Sequence"                                            
+    relations: "/edam/data/0000848 Sequence"        
+    relations: "/edam/data/0000849 Sequence record"                                     
   ]
 
 endsection: input
@@ -95,7 +97,7 @@ section: output [
     default: "$(asequence.name).diffgff"
     help: "File for output of first sequence's features"
     type: "@($(acdprotein) ? protein : nucleotide)"
-    relations: "/edam/data/0002044 Sequence feature table"                              
+    relations: "/edam/data/0000848 Sequence feature table"                              
   ]
 
   featout: boutfeat [
@@ -103,7 +105,7 @@ section: output [
     default: "$(bsequence.name).diffgff"
     help: "File for output of second sequence's features"
     type: "@($(acdprotein) ? protein : nucleotide)"
-    relations: "/edam/data/0002044 Sequence feature table"                              
+    relations: "/edam/data/0000848 Sequence feature table"                              
   ]
 
 endsection: output

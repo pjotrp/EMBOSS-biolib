@@ -34,7 +34,8 @@ seqset: sequences
     type: "gapany"
     features: "$(feature)"
     aligned: "N"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0000850 Sequence set"
 ]
 
 matrixf: datafile 
@@ -100,7 +101,7 @@ float: threshold
            achieve greater than this threshold the shortest sequence is
            discarded."
     default: "95.0"
-    relations: "/edam/data/0002144 Threshold percentage"
+    relations: "/edam/data/0002146 Threshold"
 
 ]
 
@@ -115,7 +116,7 @@ float: minthreshold
            proteins have a percentage sequence similarity that lies outside
            an acceptable range the shortest sequence is discarded."
     default: "30.0"
-    relations: "/edam/data/0002144 Threshold percentage"
+    relations: "/edam/data/0002146 Threshold"
 ]
 
 float: maxthreshold
@@ -129,7 +130,7 @@ float: maxthreshold
            proteins have a percentage sequence similarity that lies outside
            an acceptable range the shortest sequence is discarded."
     default: "90.0"
-    relations: "/edam/data/0002144 Threshold percentage"
+    relations: "/edam/data/0002146 Threshold"
 ]
 
 float: gapopen 
@@ -198,7 +199,8 @@ seqoutall: outseq
     parameter: "Y"
     features:  "$(feature)"
     extension: "keep"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0000850 Sequence set"
 ]
 
 seqoutall: redundantoutseq
@@ -209,7 +211,8 @@ seqoutall: redundantoutseq
     features:  "$(feature)"
     extension: "redundant"
     information: "Redundant sequences (optional)"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0000850 Sequence set"
 ]
 
 endsection: output

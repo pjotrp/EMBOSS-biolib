@@ -38,7 +38,7 @@ section: input [
     delimiter: ","
     codedelimiter: ":"
     information: "Type of sequence"
-    relations: "/edam/data/0001094 Sequence type"                                
+    relations: "/edam/data/0001094 Sequence type name"                                
   ]
 
   string: sequence [
@@ -52,7 +52,7 @@ section: input [
            you will not be able to press the RETURN/ENTER key until you have
            deleted a few characters."
     knowntype: "sequence"
-    relations:  "/edam/data/0002044 Sequence"                                       
+    relations:  "/edam/data/0000848 Sequence"                                       
   ]
 
 endsection: input
@@ -65,7 +65,8 @@ section: output [
   seqout: outseq [
     parameter: "Y"
     type: "@(@($(type) == P) ? gapprotein : gapnucleotide)"
-    relations: "/edam/data/0002044 Sequence"                                            
+    relations: "/edam/data/0000848 Sequence"                                            
+    relations: "/edam/data/0000849 Sequence record" 
   ]
 
 endsection: output

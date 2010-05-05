@@ -14,8 +14,8 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "dna"
-    relations: "/edam/data/0000850 Sequence set"                                 
     relations: "/edam/data/0001215 Pure DNA sequence"
+    relations: "/edam/data/0002173 Sequence set (stream)" 
   ]
 
   integer: lwin [
@@ -110,7 +110,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "complex output"
-    relations:  "/edam/data/0002044 Sequence complexity report"                     
+    relations:  "/edam/data/0000848 Sequence complexity report"                     
   ]
 
   outfile: ujtablefile [
@@ -125,7 +125,8 @@ section: output [
   seqoutall: outseq [
     standard: "$(omnia)"
     nullok: "Y"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0000850 Sequence set"
   ]
 
 endsection: output

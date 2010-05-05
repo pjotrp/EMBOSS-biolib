@@ -14,7 +14,8 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "gapany"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0002173 Sequence set (stream)"
   ]
 
 endsection: input
@@ -41,7 +42,8 @@ section: output [
 
   seqout: outseq [
     parameter: "Y"
-    relations: "/edam/data/0002044 Sequence"                                            
+    relations: "/edam/data/0000848 Sequence"                                            
+    relations: "/edam/data/0000850 Sequence set" 
   ]
 
 endsection: output

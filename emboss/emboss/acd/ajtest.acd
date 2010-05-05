@@ -13,14 +13,16 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "any"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0002173 Sequence set (stream)" 
   ]
 
   seqset: bsequence [
     parameter: "Y"
     type: "any"
     aligned: "N"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0000850 Sequence set"
   ]
 
 endsection: input
@@ -44,7 +46,8 @@ section: output [
     nullok: "Y"
     nulldefault: "Y"
     type: "any"
-    relations: "/edam/data/0002044 Sequence"                                            
+    relations: "/edam/data/0000848 Sequence"                                            
+    relations: "/edam/data/0000850 Sequence set" 
   ]
 
   featout: outfeat [
@@ -52,7 +55,7 @@ section: output [
     nullok: "Y"
     nulldefault: "Y"
     type: "any"
-    relations: "/edam/data/0002044 Sequence feature table"                              
+    relations: "/edam/data/0000848 Sequence feature table"                              
   ]
 
   outdir: outdir [

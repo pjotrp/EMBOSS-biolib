@@ -13,7 +13,7 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "gapdna"
-    relations: "/edam/data/0000850 Sequence set"                                 
+    relations: "/edam/data/0002173 Sequence set (stream)" 
     relations: "/edam/data/0001215 Pure DNA sequence"
   ]
 
@@ -50,7 +50,8 @@ section: output [
   seqoutall: outseq [
     parameter: "Y"
     extension: "rev"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0001215 Pure DNA sequence"
+    relations: "/edam/data/0000850 Sequence set"
   ]
 
 endsection: output

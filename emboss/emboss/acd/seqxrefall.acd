@@ -24,7 +24,8 @@ sequence: sequence
     parameter: "Y"
     type: "any"
     help: "The sequence for which cross-references will be retrieved."
-    relations: "/edam/data/0002044 Sequence"                                            
+    relations: "/edam/data/0000848 Sequence"                                            
+    relations: "/edam/data/0000849 Sequence record" 
 ]
 
 datafile: dbref

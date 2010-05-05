@@ -18,7 +18,8 @@ section: input [
     type: "dna"
     information: "Spliced EST nucleotide sequence(s)"
     knowntype: "est sequence"
-    relations:  "/edam/data/0001215 Pure DNA sequence"                            
+    relations:  "/edam/data/0001215 Pure DNA sequence"                
+    relations: "/edam/data/0002173 Sequence set (stream)"             
   ]
 
   sequence: genomesequence [
@@ -26,7 +27,8 @@ section: input [
     type: "dna"
     information: "Unspliced genomic nucleotide sequence"
     knowntype: "genomic sequence"
-    relations:  "/edam/data/0001215 Pure DNA sequence"                             ]
+    relations:  "/edam/data/0001215 Pure DNA sequence"                   
+    relations: "/edam/data/0000849 Sequence record"           ]
 
 endsection: input
 

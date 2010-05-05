@@ -14,15 +14,16 @@ section: input [
   seqall: seqall [
     parameter: "Y"
     type: "dna"
-    relations: "/edam/data/0000850 Sequence set"                                 
     relations: "/edam/data/0001215 Pure DNA sequence"
+    relations: "/edam/data/0002173 Sequence set (stream)" 
   ]
 
   infile: infile [
     parameter: "Y"
     information: "Primer pairs file"
     knowntype: "primer pairs"
-    relations:  "/edam/data/0001240 PCR primers"                   
+    relations: "/edam/data/0001215 Pure DNA sequence"
+    relations:  "/edam/data/0000850 Sequence set"  
   ]
 
 endsection: input
@@ -36,7 +37,7 @@ section: required [
     parameter: "Y"
     default: "0"
     information: "Allowed percent mismatch"
-    relations: "/edam/data/0002144 Threshold percentage"
+    relations: "/edam/data/0002146 Threshold"
   ]
 
 endsection: required

@@ -14,12 +14,13 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "any"
-    relations: "/edam/data/0002044 Sequence"                                            
+    relations: "/edam/data/0000848 Sequence"                                            
+    relations: "/edam/data/0000849 Sequence record" 
   ]
 
   features: features [
     parameter: "Y"
-    relations: "/edam/data/0002044 Sequence feature table"                              
+    relations: "/edam/data/0000848 Sequence feature table"                              
   ]
 
 endsection: input
@@ -32,7 +33,7 @@ section: output [
   report: outfile [
     parameter: "Y"
     rformat: "gff"
-    relations: "/edam/data/0002044 Sequence feature table"                              
+    relations: "/edam/data/0000848 Sequence feature table"                              
   ]
 
 endsection: output

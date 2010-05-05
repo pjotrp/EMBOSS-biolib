@@ -73,7 +73,7 @@ section: required [
     maximum: "1"
     minimum: "1"
     default: "unknown"
-    relations: "/edam/data/0001094 Sequence type"                                
+    relations: "/edam/data/0001094 Sequence type name"                                
   ]
 
   list: blastversion [

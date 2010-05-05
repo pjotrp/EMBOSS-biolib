@@ -13,7 +13,8 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "any"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0002173 Sequence set (stream)" 
   ]
 
   seqall: othersequence [
@@ -34,7 +35,8 @@ section: input [
            still a match to the set of sequence given here, then the matching
            mutated sequence is written with a warning message."
     nullok: "Y"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0002173 Sequence set (stream)" 
   ]
 
 endsection: input
@@ -141,7 +143,8 @@ section: output [
 
   seqoutall: outseq [
     parameter: "Y"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0000850 Sequence set"
   ]
 
 endsection: output

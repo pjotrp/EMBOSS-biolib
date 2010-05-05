@@ -14,8 +14,8 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "dna"
-    relations: "/edam/data/0000850 Sequence set"                                 
     relations: "/edam/data/0001215 Pure DNA sequence"
+    relations: "/edam/data/0002173 Sequence set (stream)" 
   ]
 
 endsection: input
@@ -35,7 +35,7 @@ section: output [
            The MRS consists of two recognition sites, one of 8 bp and one of
            16 bp on either sense strand of the genomic DNA, within 200 bp of
            each other."
-    relations: "/edam/data/0002044 Sequence feature table"                              
+    relations: "/edam/data/0000848 Sequence feature table"                              
   ]
 
 endsection: output

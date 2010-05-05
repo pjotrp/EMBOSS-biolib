@@ -32,7 +32,8 @@ seqset: sequences
     type: "gapany"
     features: "$(feature)"
     aligned: "N"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0000850 Sequence set"
 ]
 
 endsection: input
@@ -94,7 +95,8 @@ seqoutall: outseq
 [
     parameter: "Y"
     features: "$(feature)"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0000850 Sequence set"
 ]
 
 endsection: output

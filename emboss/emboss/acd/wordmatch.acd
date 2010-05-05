@@ -12,15 +12,17 @@ section: input [
 
   seqset: asequence [
     parameter: "Y"
-    relations: "/edam/data/0002044 Sequence" 
     aligned: "N"  
     type: "any"                                         
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0000850 Sequence set" 
   ]
 
   seqall: bsequence [
     parameter: "Y"
-    relations: "/edam/data/0002044 Sequence"                                            
     type: "@($(acdprotein) ? stopprotein : nucleotide)"
+    relations: "/edam/data/0000848 Sequence"                                            
+    relations: "/edam/data/0002173 Sequence set (stream)" 
   ]
 
 endsection: input
@@ -83,7 +85,7 @@ section: output [
     standard: "$(dumpfeat)"
     nullok: "@(!$(dumpfeat))"
     offormat: "gff"
-    relations: "/edam/data/0002044 Sequence feature table"                              
+    relations: "/edam/data/0000848 Sequence feature table"                              
   ]
 
   featout: boutfeat [
@@ -91,7 +93,7 @@ section: output [
     nullok: "@(!$(dumpfeat))"
     ofname: "$(bsequence.name)"
     offormat: "gff"
-    relations: "/edam/data/0002044 Sequence feature table"                              
+    relations: "/edam/data/0000848 Sequence feature table"                              
   ]
 
 endsection: output

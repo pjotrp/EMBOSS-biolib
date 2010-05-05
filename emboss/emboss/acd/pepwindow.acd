@@ -13,7 +13,8 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "protein"
-    relations: "/edam/data/0001219 Pure protein sequence"                               
+    relations: "/edam/data/0001219 Pure protein sequence"     
+    relations: "/edam/data/0000849 Sequence record"                           
   ]
 
   datafile: datafile [

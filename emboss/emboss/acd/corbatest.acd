@@ -15,7 +15,7 @@ section: input [
     information: "Enter an EMBL ID or ACCNO"
     default: "hsfau"
     knowntype: "sequence id input"
-    relations:  "/edam/data/0002044 Sequence unique identifier"                     
+    relations:  "/edam/data/0000848 Sequence unique identifier"                     
   ]
 
 endsection: input

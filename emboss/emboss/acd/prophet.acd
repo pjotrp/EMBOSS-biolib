@@ -17,14 +17,15 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "any"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0002173 Sequence set (stream)" 
   ]
 
   infile: infile [
     parameter: "Y"
     information: "Profile or weight matrix file"
     knowntype: "profile or matrix"
-    relations:  "/edam/data/0002044 Sequence profile"                               
+    relations:  "/edam/data/0000848 Sequence profile"                               
   ]
 
 endsection: input
@@ -62,7 +63,7 @@ section: output [
   align: outfile [
     parameter: "Y"
     aformat: "simple"
-    relations: "/edam/data/0002044 Sequence alignment data"                             
+    relations: "/edam/data/0000848 Sequence alignment data"                             
   ]
 
 endsection: output

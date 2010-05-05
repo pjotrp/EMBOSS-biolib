@@ -14,7 +14,9 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "DNA"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0001215 Pure DNA sequence"
+    relations: "/edam/data/0000850 Sequence set"
+
   ]
 
 endsection: input

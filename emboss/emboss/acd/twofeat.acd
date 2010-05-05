@@ -14,7 +14,8 @@ section: input [
     parameter: "Y"
     type: "any"
     features: "Y"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0002173 Sequence set (stream)" 
   ]
 
   section: afeaturesection [
@@ -392,7 +393,7 @@ section: output [
            feature types. If you specify an invalid feature type name, then
            the default name 'misc_feature' is used."
     knowntype: "feature key"
-    relations:  "/edam/data/0002044 Sequence feature type"                          
+    relations:  "/edam/data/0000848 Sequence feature type"                          
   ]
 
   report: outfile [

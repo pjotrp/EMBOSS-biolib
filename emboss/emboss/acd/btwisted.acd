@@ -13,7 +13,8 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "PureDNA"
-    relations: "/edam/data/0002044 Sequence"                                            
+    relations: "/edam/data/0000848 Sequence"                            
+    relations: "/edam/data/0000849 Sequence record"                 
   ]
 
   datafile: angledata [

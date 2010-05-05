@@ -14,13 +14,14 @@ section: input [
     parameter: "Y"
     information: "Profile or weight matrix file"
     knowntype: "profile or matrix"
-    relations:  "/edam/data/0002044 Sequence profile"                               
+    relations:  "/edam/data/0000848 Sequence profile"                               
   ]
 
   seqall: sequence [
     parameter: "Y"
     type: "any"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0002173 Sequence set (stream)" 
   ]
 
 endsection: input

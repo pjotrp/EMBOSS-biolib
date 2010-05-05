@@ -17,8 +17,8 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "dna"
-    relations: "/edam/data/0000850 Sequence set"                                 
     relations: "/edam/data/0001215 Pure DNA sequence"
+    relations: "/edam/data/0002173 Sequence set (stream)"
   ]
 
 endsection: input
@@ -94,7 +94,8 @@ section: output [
                   repeats."
     help: "The sequence of the inverted repeat regions without gap
            characters."
-    relations: "/edam/data/0002044 Sequence"                                            
+    relations: "/edam/data/0000848 Sequence"                 
+    relations: "/edam/data/0000849 Sequence record"                            
   ]
 
 endsection: output

@@ -13,7 +13,8 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "DNA"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0001215 Pure DNA sequence"
+    relations: "/edam/data/0002173 Sequence set (stream)"
   ]
 
 endsection: input
@@ -109,7 +110,7 @@ relations: "/edam/data/0001773 Tool-specific parameter"
       information: "Enter percent mismatch"
       help: "This specifies the percent mismatch to be used in
              calculations (it is ignored unless -product is used)."
-    relations: "/edam/data/0002144 Threshold percentage"                                       
+    relations: "/edam/data/0002146 Threshold"                                       
     ]
 
     integer: prodlen [

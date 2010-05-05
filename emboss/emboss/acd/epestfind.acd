@@ -15,7 +15,8 @@ section: input [
     parameter: "Y"
     type: "protein"
     help: "Protein sequence USA to be analysed."
-    relations: "/edam/data/0001219 Pure protein sequence"                               
+    relations: "/edam/data/0001219 Pure protein sequence"  
+    relations: "/edam/data/0000849 Sequence record"                              
   ]
 
   datafile: mwdata [

@@ -15,7 +15,7 @@ section: input [
     type: "gapany"
     aligned: "Y"
     minseqs: "2"
-    relations: "/edam/data/0002044 Sequence alignment data"                             
+    relations: "/edam/data/0000848 Sequence alignment data"                             
   ]
 
   list: type [
@@ -67,7 +67,7 @@ section: required [
       minimum: "1"
       maximum: "100"
       information: "Enter threshold reporting percentage"
-    relations: "/edam/data/0002144 Threshold percentage"
+    relations: "/edam/data/0002146 Threshold"
     ]
 
   endsection: profiletypesection

@@ -16,7 +16,8 @@ section: input [
     type: "any"
     help: "File containing a sequence alignment"
     aligned: "N"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence"
+    relations: "/edam/data/0000850 Sequence set"
   ]
 
 endsection: input
@@ -69,7 +70,7 @@ section: output [
     standard: "$(dumpfeat)"
     nullok: "@(!$(dumpfeat))"
     nulldefault: "@(!$(dumpfeat))"
-    relations: "/edam/data/0002044 Sequence feature table"                              
+    relations: "/edam/data/0000848 Sequence feature table"                              
   ]
 
   graph: graph [

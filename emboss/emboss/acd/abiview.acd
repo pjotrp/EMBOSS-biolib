@@ -17,7 +17,8 @@ section: input [
     binary: "Y"
     knowntype: "abi trace"
     information: "ABI sequencing trace file"
-    relations:  "/edam/data/0000849 Sequence record"                           
+    relations: "/edam/data/0000924 Sequence read data"
+    relations: "/edam/data/0001207 Nucleotide sequence"
   ]
 
 endsection: input
@@ -31,6 +32,7 @@ section: output [
     parameter: "Y"
     type: "dna"
     relations: "/edam/data/0001215 Pure DNA sequence"                                   
+    relations: "/edam/data/0000849 Sequence record" 
   ]
 
   xygraph: graph [

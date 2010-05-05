@@ -16,7 +16,8 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "DNA"
-    relations: "/edam/data/0002044 Sequence"                                            
+    relations: "/edam/data/0000848 Sequence"                                            
+    relations: "/edam/data/0000849 Sequence record" 
   ]
 
 endsection: input
@@ -92,8 +93,8 @@ section: output [
     standard: "Y"
     type: "stopprotein"
     help: "ORF sequence output"
-    relations: "/edam/data/0000850 Sequence set"                             
     relations: "/edam/data/0001208 Protein sequence"
+    relations: "/edam/data/0000850 Sequence set"                             
   ]
 
   boolean: reverse [

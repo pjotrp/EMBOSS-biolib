@@ -16,7 +16,7 @@ section: input [
     type: "gapany"
     aligned: "Y"
     help: "File containing a sequence alignment."
-    relations: "/edam/data/0002044 Sequence alignment data"                             
+    relations: "/edam/data/0000848 Sequence alignment data"                             
   ]
 
 endsection: input
@@ -35,7 +35,8 @@ section: output [
 
   seqout: outseq [
     parameter: "Y"
-    relations: "/edam/data/0002044 Sequence"                                            
+    relations: "/edam/data/0000848 Sequence"                                            
+    relations: "/edam/data/0000849 Sequence record" 
   ]
 
   string: name [
@@ -43,7 +44,7 @@ section: output [
     default: ""
     information: "Name of the consensus sequence"
     knowntype: "sequence id output"
-    relations:  "/edam/data/0002044 Sequence unique identifier"                     
+    relations:  "/edam/data/0000848 Sequence unique identifier"                     
   ]
 
 endsection: output

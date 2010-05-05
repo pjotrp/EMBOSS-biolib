@@ -17,7 +17,8 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "gapany"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0000850 Sequence set"
   ]
 
   toggle: onlydend [
@@ -447,7 +448,8 @@ section: output [
     parameter: "Y"
     extension: "aln"
     aligned: "Y"
-    relations: "/edam/data/0002044 Sequence record"                                     
+    relations: "/edam/data/0000848 Sequence" 
+    relations: "/edam/data/0000850 Sequence set"
   ]
 
   outfile: dendoutfile [

@@ -14,13 +14,15 @@ section: input [
   sequence: asequence [
     parameter: "Y"
     type: "any"
-    relations: "/edam/data/0002044 Sequence"                                            
+    relations: "/edam/data/0000848 Sequence"                                            
+    relations: "/edam/data/0000849 Sequence record" 
   ]
 
   sequence: bsequence [
     parameter: "Y"
     type: "@($(acdprotein) ? stopprotein : nucleotide)"
-    relations: "/edam/data/0002044 Sequence"                                            
+    relations: "/edam/data/0000848 Sequence"        
+    relations: "/edam/data/0000849 Sequence record"                                     
   ]
 
   matrixf: datafile [
@@ -77,7 +79,8 @@ section: output [
 
   seqout: outseq [
     parameter: "Y"
-    relations: "/edam/data/0002044 Sequence"                                            
+    relations: "/edam/data/0000848 Sequence"                                            
+    relations: "/edam/data/0000849 Sequence record" 
   ]
 
 endsection: output
