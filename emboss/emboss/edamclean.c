@@ -84,6 +84,9 @@
 **   def:
 **   comment:
 **   synonym:
+**   xref:
+**   is_obsolete:
+**   consider:
 **
 ** Relations
 **   is_a
@@ -101,15 +104,16 @@
 **   is_identifier_of
 **   has_attribute
 **   is_attribute_of
+**   has_syntax
+**   is_syntax_of
 **
 ** Namespace
-**   edam_term
-**   edam_entity
-**   edam_field
-**   edam_function
-**   edam_resource
-**   edam_datatype
-**   edam_identifier 
+**   entity
+**   topic
+**   operation
+**   resource
+**   data
+**   syntax 
 **
 **
 ** Tokens to ignore
@@ -119,6 +123,7 @@
 **   format-version
 **   date
 **   data-version
+**   xref
 **
 ** 
 ** Rules
@@ -139,6 +144,15 @@
 ** 2. All [Term] definitions in the input file *must* appear before the
 ** first [Typedef] definition - terms appearing after are *not* validated
 ** fully. 
+**
+** Known Issues
+** edamclean does not detect the fact that the root term of each branch does
+** not need to have an is_a relation.  Disregard the messages in the lof file
+** to that effect (this could fairly easily be fixed).
+**
+** edamclean will identify (and warn about) identical term names in cases
+** where one of the terms has been made obsolete.  Arguably this is the
+** the correct behaviour.
 ******************************************************************************/
 
  #include "emboss.h"
@@ -153,7 +167,7 @@
 **
 ******************************************************************************/
 
-#define NFIELDS 6
+#define NFIELDS 9
 
 static const char *FIELDS[NFIELDS] =
 {
@@ -162,13 +176,18 @@ static const char *FIELDS[NFIELDS] =
     "namespace:", 
     "def:", 
     "comment:", 
-    "synonym:"
+    "synonym:",
+    "xref:",
+    "is_obsolete:",
+    "consider:"
 };
 
 
 
 
-#define NRELATIONS 15
+
+#define NRELATIONS 18
+/* 'consider' field is treated as a relation */
 
 static const char *RELATIONS[NRELATIONS] =
 {
@@ -186,23 +205,25 @@ static const char *RELATIONS[NRELATIONS] =
     "has_identifier:",
     "is_identifier_of:",
     "has_attribute:",
-    "is_attribute_of:"
+    "is_attribute_of:",
+    "has_syntax:",
+    "is_syntax_of:",
+    "consider:"
 };
 
 
 
 
-#define NNAMESPACES 7
+#define NNAMESPACES 6
 
 static const char *NAMESPACES[NNAMESPACES] =
 {
-    "edam_term", 
-    "edam_entity", 
-    "edam_field", 
-    "edam_function", 
-    "edam_resource", 
-    "edam_datatype", 
-    "edam_identifier"
+    "entity", 
+    "topic", 
+    "operation", 
+    "resource", 
+    "data", 
+    "syntax"
 };
 
 
@@ -210,13 +231,12 @@ static const char *NAMESPACES[NNAMESPACES] =
 
 enum _namespace
 {
-    edam_term, 
-    edam_entity, 
-    edam_field, 
-    edam_function, 
-    edam_resource, 
-    edam_datatype, 
-    edam_identifier
+    entity, 
+    topic, 
+    operation, 
+    resource, 
+    data, 
+    syntax
 };
 
 
@@ -526,6 +546,9 @@ int main(ajint argc, char **argv)
     AjBool    found_def              = ajFalse;
     AjBool    found_comment          = ajFalse;
     AjBool    found_synonym          = ajFalse;
+    AjBool    found_xref             = ajFalse;
+    AjBool    found_is_obsolete      = ajFalse;
+    AjBool    found_consider         = ajFalse;
     AjBool    found_isa              = ajFalse;
     AjBool    found_concerns         = ajFalse;
     AjBool    found_is_concern_of    = ajFalse;
@@ -541,6 +564,8 @@ int main(ajint argc, char **argv)
     AjBool    found_is_attribute_of  = ajFalse;
     AjBool    found_has_part         = ajFalse;
     AjBool    found_is_part_of       = ajFalse;
+    AjBool    found_has_syntax       = ajFalse;
+    AjBool    found_is_syntax_of     = ajFalse;
 
 
 
@@ -606,6 +631,8 @@ int main(ajint argc, char **argv)
 
     ajFmtPrintF(ouf_log, "1. FIRST TOKEN IN LINES\n");          
 
+    
+    
     for(linecnt=0; ajReadline(inf_edam, &line); linecnt++)
     {
         ajStrAssignClear(&tok); 
@@ -651,6 +678,8 @@ int main(ajint argc, char **argv)
 
     }
 
+
+    
     ajFmtPrintF(ouf_log, "\n\n");
     ajFileSeek(inf_edam, 0, 0);    /* Rewind file */
 
@@ -661,14 +690,25 @@ int main(ajint argc, char **argv)
 
     for(linecnt=0; ajReadline(inf_edam, &line); linecnt++)
     {
-        if(ajStrPrefixC(line, "comment:") || ajStrPrefixC(line, "synonym:"))
+        if(ajStrPrefixC(line, "comment:"))
             if(ajStrFindAnyK(line, '\"') != -1)
                 ajFmtPrintF(ouf_log, "Line %6d : Invalid quote in line "
                             "(%S)\n", linecnt+1, line);          
     }
-
     ajFmtPrintF(ouf_log, "\n\n");
     ajFileSeek(inf_edam, 0, 0);    /* Rewind file */
+
+
+    for(linecnt=0; ajReadline(inf_edam, &line); linecnt++)
+    {
+        if(ajStrPrefixC(line, "synonym:"))
+            if(ajStrCalcCountK(line, '\"') != 2)
+                ajFmtPrintF(ouf_log, "Line %6d : Wrong number of quotes in line "
+                            "(%S)\n", linecnt+1, line);          
+    }
+    ajFmtPrintF(ouf_log, "\n\n");
+    ajFileSeek(inf_edam, 0, 0);    /* Rewind file */
+
 
 
 
@@ -703,8 +743,11 @@ int main(ajint argc, char **argv)
                 if(ajStrGetLen(tok) != 7)
                     ajFmtPrintF(ouf_log, "Line %6d : Invalid id: line format "
                                 "- id number wrong (%S)\n", linecnt+1, line);
+
+                tmp_str = ajStrNew();
+                ajStrAssignS(&tmp_str, tok);
                 
-                ajListstrPushAppend(list_tmp, tok);
+                ajListstrPushAppend(list_tmp, tmp_str);
             }
         }
     }
@@ -745,9 +788,12 @@ int main(ajint argc, char **argv)
                 ajStrAssignS(&tok, ajStrParseC(NULL, "["));   
                 ajStrRemoveLastNewline(&tok);
                 ajStrRemoveWhiteExcess(&tok);
-                           
+
+/*                   (!ajStrMatchC(tok, "EDAM:EBI \"EMBRACE definition\"]"))) */
+                
                 /* Check for line suffix */
-                if(!ajStrMatchC(tok, "EDAM:EBI \"EMBRACE definition\"]"))
+                if((!ajStrPrefixC(tok, "EDAM:")) ||
+                   (!ajStrSuffixC(tok, "\"EMBRACE definition\"]")))
                     ajFmtPrintF(ouf_log, "Line %6d : Invalid def: line "
                                 "format - invalid suffix (%S)\n",
                                 linecnt+1, line);
@@ -761,9 +807,11 @@ int main(ajint argc, char **argv)
 
     /*  Check for relations line format */
     ajFmtPrintF(ouf_log, "6. RELATIONS LINE FORMAT\n");          
+
     for(linecnt=0; ajReadline(inf_edam, &line); linecnt++)
     {
         for(x=0; x<NRELATIONS; x++)
+        {
             if(ajStrPrefixC(line, RELATIONS[x]))
             {
                 if(ajStrCalcCountC(line, "!:")!=3)
@@ -771,7 +819,6 @@ int main(ajint argc, char **argv)
                                 "format (%S)\n", linecnt+1, line);
                 else
                 {
-
                     ajStrParseC(line, ":!");
                     ajStrAssignS(&tok, ajStrParseC(NULL, ":!"));
                     ajStrRemoveWhite(&tok);
@@ -796,14 +843,16 @@ int main(ajint argc, char **argv)
                         ajFmtPrintF(ouf_log, "Line %6d : Invalid relations "
                                     "line format (%S)\n", linecnt+1, line);
                     break;
+
                 }
             }
+        }
     }
     ajFmtPrintF(ouf_log, "\n\n");
     ajFileSeek(inf_edam, 0, 0);    /* Rewind file */
-
-
-
+    
+    
+    
     /*  Check for unique ids */
     ajFmtPrintF(ouf_log, "7. UNIQUE IDS\n");          
     for(linecnt=0; ajReadline(inf_edam, &line); linecnt++)
@@ -811,7 +860,7 @@ int main(ajint argc, char **argv)
         /* Stop checking once first [Typedef] line is found. */ 
         if(ajStrPrefixC(line, "[Typedef]"))
             break;
-       
+        
         if(ajStrPrefixC(line, "id:"))
         {
             ajStrParseC(line, ":");
@@ -819,17 +868,22 @@ int main(ajint argc, char **argv)
             ajStrAssignClear(&tok);
             ajStrAssignS(&tok, ajStrParseC(NULL, ":"));
 
+            ajStrRemoveWhite(&tok);
+            
             for(x=0, y=0; x<nids; x++)
+            {
                 if(ajStrMatchS(tok, ids[x]))
                 {
                     y++;
                     if(y>1)
                     {
                         ajFmtPrintF(ouf_log, "Line %6d : Non-unique id: %S "
-                                    "(%S)\n", linecnt+1, tok, line);
+                                    "%S\n", linecnt+1, tok, line);
                         break;
                     }
                 }
+            }
+            
         }
     }
 
@@ -867,28 +921,29 @@ int main(ajint argc, char **argv)
                 if(!found_def)
                     ajFmtPrintF(ouf_log, "Line %6d : No def: field in "
                                 "term\n", tmp_line);
-                /* No is_a needed for first term in file */
-                if((!found_isa) && (!first))
+                /* No is_a needed for first term in file or for obsolete terms*/
+                if((!found_isa) && (!first)  && (!found_is_obsolete))
                     ajFmtPrintF(ouf_log, "Line %6d : No is_a: field in "
                                 "term\n", tmp_line);
 
                 first = ajFalse;
                
                
-                /* edam_entity */
-                if(ajStrMatchC(namespace, NAMESPACES[1]))
+                /* entity */
+                if(ajStrMatchC(namespace, NAMESPACES[0]))
                 {
                     if(found_concerns || found_has_input ||
                        found_is_input_of || found_has_output ||
                        found_is_output_of || found_has_source ||
                        found_is_source_of || found_is_identifier_of ||
+                       found_is_syntax_of || found_has_syntax ||
                        found_is_attribute_of)
                         ajFmtPrintF(ouf_log, "Line %6d : Relation not allowed "
                                     "for term in this namespace\n", tmp_line);   
 
                 }
-                /* edam_field */
-                else if(ajStrMatchC(namespace, NAMESPACES[2]))
+                /* topic */
+                else if(ajStrMatchC(namespace, NAMESPACES[1]))
                 {
                     if(!found_concerns) 
                         ajFmtPrintF(ouf_log, "Line %6d : No concerns: relation in term\n", tmp_line);
@@ -899,12 +954,13 @@ int main(ajint argc, char **argv)
                        found_is_source_of || found_has_identifier ||
                        found_is_identifier_of || found_has_attribute ||
                        found_is_attribute_of || found_has_part ||
+                       found_is_syntax_of || found_has_syntax ||
                        found_is_part_of)
                         ajFmtPrintF(ouf_log, "Line %6d : Relation not allowed "
                                     "for term in this namespace\n", tmp_line);   
                 }
-                /* edam_function */
-                else if(ajStrMatchC(namespace, NAMESPACES[3]))
+                /* operation */
+                else if(ajStrMatchC(namespace, NAMESPACES[2]))
                 {
                     if(!found_is_concern_of) 
                         ajFmtPrintF(ouf_log, "Line %6d : No is_concern_of: relation in term\n", tmp_line);
@@ -914,12 +970,13 @@ int main(ajint argc, char **argv)
                        found_is_source_of || found_has_identifier ||
                        found_is_identifier_of || found_has_attribute ||
                        found_is_attribute_of || found_has_part ||
+                       found_is_syntax_of || found_has_syntax ||
                        found_is_part_of)
                         ajFmtPrintF(ouf_log, "Line %6d : Relation not allowed "
                                     "for term in this namespace\n", tmp_line);
                 }
-                /* edam_resource */
-                else if(ajStrMatchC(namespace, NAMESPACES[4]))
+                /* resource */
+                else if(ajStrMatchC(namespace, NAMESPACES[3]))
                 {
                     if(!found_is_source_of) 
                         ajFmtPrintF(ouf_log, "Line %6d : No is_source_of: "
@@ -929,20 +986,49 @@ int main(ajint argc, char **argv)
                        found_is_input_of || found_has_output ||
                        found_is_output_of || found_has_source ||
                        found_is_identifier_of || found_has_attribute ||
+                       found_is_syntax_of || found_has_syntax ||
                        found_is_attribute_of)
                         ajFmtPrintF(ouf_log, "Line %6d : Relation not allowed "
                                     "for term in this namespace\n", tmp_line);   
                 }
-                /* edam_datatype */
-                else if(ajStrMatchC(namespace, NAMESPACES[5]))
+                /* data */
+                else if(ajStrMatchC(namespace, NAMESPACES[4]))
                 {
                     if(found_concerns || found_is_concern_of ||
                        found_has_input || found_has_output ||
-                       found_is_source_of || found_has_attribute)
+                       found_is_source_of || found_has_attribute ||
+                       found_is_syntax_of)
                         ajFmtPrintF(ouf_log, "Line %6d : Relation not allowed "
                                     "for term in this namespace\n", tmp_line);
                 }
+
+                /* syntax */
+                else if(ajStrMatchC(namespace, NAMESPACES[5]))
+                {
+                    if(found_concerns         ||
+                       found_is_concern_of    ||
+                       found_has_input        ||
+                       found_is_input_of      ||
+                       found_has_output       ||
+                       found_is_output_of     ||
+                       found_has_source       ||
+                       found_is_source_of     ||
+                       found_has_identifier   ||
+                       found_is_identifier_of ||
+                       found_has_attribute    ||
+                       found_is_attribute_of  ||
+                       found_has_part         ||
+                       found_is_part_of       ||
+                       found_has_syntax  )
+                        ajFmtPrintF(ouf_log, "Line %6d : Relation not allowed "
+                                    "for term in this namespace\n", tmp_line);
+
+     
+
+                    
+                }
                 /* edam_identifier */
+                /*
                 else if(ajStrMatchC(namespace, NAMESPACES[6]))
                 {
                     if(!found_is_identifier_of) 
@@ -953,10 +1039,12 @@ int main(ajint argc, char **argv)
                        found_has_input || found_has_output ||
                        found_is_source_of || found_has_identifier ||
                        found_has_attribute || found_is_attribute_of ||
+                       found_is_syntax_of || found_has_syntax ||
                        found_has_part || found_is_part_of)
                         ajFmtPrintF(ouf_log, "Line %6d : Relation not allowed "
                                     "for term in this namespace\n", tmp_line);
                 }
+                */
             }
 
 
@@ -968,6 +1056,9 @@ int main(ajint argc, char **argv)
             found_def              = ajFalse;
             found_comment          = ajFalse;
             found_synonym          = ajFalse;
+            found_xref             = ajFalse;
+            found_is_obsolete      = ajFalse;
+            found_consider         = ajFalse;
             found_isa              = ajFalse;
             found_concerns         = ajFalse;
             found_is_concern_of    = ajFalse;
@@ -983,6 +1074,9 @@ int main(ajint argc, char **argv)
             found_is_attribute_of  = ajFalse;
             found_has_part         = ajFalse;
             found_is_part_of       = ajFalse;
+            found_has_syntax       = ajFalse;
+            found_is_syntax_of     = ajFalse;
+
           
             done_first = ajTrue;
         }
@@ -991,7 +1085,8 @@ int main(ajint argc, char **argv)
             found_id = ajTrue;
 
             if(found_name || found_namespace || found_def || found_comment ||
-               found_synonym || found_isa)
+               found_synonym || found_isa || found_xref || found_is_obsolete
+               || found_consider)
                 ajFmtPrintF(ouf_log, "Line %6d : id: field in wrong order "
                             "(%S)\n", linecnt+1, line);
         }
@@ -1000,7 +1095,8 @@ int main(ajint argc, char **argv)
         {
             found_name = ajTrue;
             if( (!found_id) || found_namespace || found_def || found_comment ||
-                found_synonym || found_isa)
+                found_synonym || found_isa || found_xref || found_is_obsolete
+                || found_consider)
                 ajFmtPrintF(ouf_log, "Line %6d : name: field in wrong order "
                             "(%S)\n", linecnt+1, line);
         }
@@ -1010,7 +1106,8 @@ int main(ajint argc, char **argv)
             ajFmtScanS(line, "%*s %S", &namespace);
                     
             if((!found_id) || (!found_name) || found_def || found_comment ||
-               found_synonym || found_isa)
+               found_synonym || found_isa || found_xref || found_is_obsolete
+               || found_consider)
                 ajFmtPrintF(ouf_log, "Line %6d : namespace: field in wrong "
                             "order (%S)\n", linecnt+1, line);
         }
@@ -1019,7 +1116,8 @@ int main(ajint argc, char **argv)
             found_def = ajTrue;
 
             if((!found_id) || (!found_name) || (!found_namespace) ||
-               found_comment || found_synonym || found_isa)
+               found_comment || found_synonym || found_isa || found_xref
+               || found_is_obsolete || found_consider)
                 ajFmtPrintF(ouf_log, "Line %6d : def: field in wrong order "
                             "(%S)\n", linecnt+1, line);
         }
@@ -1028,7 +1126,8 @@ int main(ajint argc, char **argv)
             found_comment = ajTrue;
 
             if((!found_id) || (!found_name) || (!found_namespace) ||
-               (!found_def) || found_synonym || found_isa)
+               (!found_def) || found_synonym || found_isa || found_xref
+               || found_is_obsolete || found_consider)
                 ajFmtPrintF(ouf_log, "Line %6d : comment: field in wrong "
                             "order (%S)\n", linecnt+1, line);
         }
@@ -1036,7 +1135,8 @@ int main(ajint argc, char **argv)
         {
             found_synonym = ajTrue;
             if((!found_id) || (!found_name) || (!found_namespace) ||
-               (!found_def) || found_isa)
+               (!found_def) || found_isa || found_xref || found_is_obsolete
+               || found_consider)
                 ajFmtPrintF(ouf_log, "Line %6d : synonym: field in wrong "
                             "order (%S)\n", linecnt+1, line);
         }
@@ -1044,7 +1144,8 @@ int main(ajint argc, char **argv)
         {
             found_isa = ajTrue;
             if((!found_id) || (!found_name) || (!found_namespace) ||
-               (!found_def))
+               (!found_def) || found_is_obsolete
+               || found_consider)
                 ajFmtPrintF(ouf_log, "Line %6d : is_a: field in wrong order "
                             "(%S)\n", linecnt+1, line);
         }
@@ -1076,8 +1177,16 @@ int main(ajint argc, char **argv)
             found_has_part         = ajTrue;
         else if(ajStrPrefixC(line, "is_part_of:"))
             found_is_part_of       = ajTrue;
-           
-
+        else if(ajStrPrefixC(line, "has_syntax:"))
+            found_has_syntax       = ajTrue;
+        else if(ajStrPrefixC(line, "is_syntax_of:"))
+            found_is_syntax_of     = ajTrue;
+        else if(ajStrPrefixC(line, "xref:"))
+            found_xref             = ajTrue;
+        else if(ajStrPrefixC(line, "is_obsolete:"))
+            found_is_obsolete      = ajTrue;
+        else if(ajStrPrefixC(line, "consider:"))
+            found_consider         = ajTrue;
     }
     ajFmtPrintF(ouf_log, "\n\n");
     ajFileSeek(inf_edam, 0, 0);    /* Rewind file */
@@ -1141,7 +1250,7 @@ int main(ajint argc, char **argv)
     ajFileSeek(inf_edam, 0, 0);    /* Rewind file */
   
   
-    /*  Check for unique names within each namespace */
+    /*  Check for valid end-points of relations */
     ajFmtPrintF(ouf_log, "10. VALID END-POINTS OF RELATIONS\n");          
 
     for(linecnt=0; ajReadline(inf_edam, &line); linecnt++)
@@ -1203,20 +1312,25 @@ int main(ajint argc, char **argv)
                 if(ajStrPrefixC(line, "is_a:"))
                 {
                     if(!(id=FindTerm(idx, tmp_name, namespaces)))
+
+                   
+                        /*
+                        ** Must also check children of root node where
+                        ** start/end-points of is_a relation are in
+                        ** different namespaces
+                        */
+                        /*
                         if(!(id=FindTerm(edam_term, tmp_name, namespaces)))
-                            /*
-                            ** Must also check children of root node where
-                            ** start/end-points of is_a relation are in
-                            ** different namespaces
-                            */
                         {
+                        */
+                            /*
+                            ** Must also check in "data" namespace
+                            ** for identifiers
+                            */
+                            /*
                             if(idx==edam_identifier)
-                            {
-                                /*
-                                ** Must also check in "edam_datatype" namespace
-                                ** for identifiers
-                                */
-                                if(!(id=FindTerm(edam_datatype, tmp_name,
+                            { 
+                                if(!(id=FindTerm(data, tmp_name,
                                                  namespaces)))  
                                     ajFmtPrintF(ouf_log,
                                                 "Line %6d : End-point term of "
@@ -1224,12 +1338,13 @@ int main(ajint argc, char **argv)
                                                 "\n",
                                                 linecnt+1, line);
                             }
-                            else
+                            else */
+                            
                                 ajFmtPrintF(ouf_log,
                                             "Line %6d : End-point term of "
                                             "relation does not exist (%S)\n",
                                             linecnt+1, line);
-                        }
+/*                        } */
                   
                   
 /*                  if(ajStrMatchC(tmp_name, "Protein secondary database"))
@@ -1251,9 +1366,9 @@ int main(ajint argc, char **argv)
                 }
                 else if (ajStrPrefixC(line, "concerns:"))
                 {
-                    if(!(id=FindTerm(edam_entity, tmp_name, namespaces)))
-                        if(!(id=FindTerm(edam_function, tmp_name, namespaces)))
-                            if(!(id=FindTerm(edam_resource, tmp_name,
+                    if(!(id=FindTerm(entity, tmp_name, namespaces)))
+                        if(!(id=FindTerm(operation, tmp_name, namespaces)))
+                            if(!(id=FindTerm(resource, tmp_name,
                                              namespaces)))
                                 ajFmtPrintF(ouf_log,
                                             "Line %6d : End-point term of "
@@ -1262,7 +1377,7 @@ int main(ajint argc, char **argv)
                 }
                 else if (ajStrPrefixC(line, "is_concern_of:"))
                 {
-                    if(!(id=FindTerm(edam_field, tmp_name, namespaces)))
+                    if(!(id=FindTerm(topic, tmp_name, namespaces)))
                         ajFmtPrintF(ouf_log,
                                     "Line %6d : End-point term of relation "
                                     "does not exist (%S)\n",
@@ -1271,9 +1386,10 @@ int main(ajint argc, char **argv)
                 else if (ajStrPrefixC(line, "has_input:") ||
                          ajStrPrefixC(line, "has_output:") ||
                          ajStrPrefixC(line, "has_attribute:") ||
-                         ajStrPrefixC(line, "is_source_of:"))
+                         ajStrPrefixC(line, "is_source_of:") ||
+                         ajStrPrefixC(line, "is_syntax_of:"))
                 {
-                    if(!(id=FindTerm(edam_datatype, tmp_name, namespaces)))
+                    if(!(id=FindTerm(data, tmp_name, namespaces)))
                         ajFmtPrintF(ouf_log,
                                     "Line %6d : End-point term of relation "
                                     "does not exist (%S)\n",
@@ -1282,7 +1398,7 @@ int main(ajint argc, char **argv)
                 else if (ajStrPrefixC(line, "is_input_of:") ||
                          ajStrPrefixC(line, "is_output_of:"))
                 {
-                    if(!(id=FindTerm(edam_function, tmp_name, namespaces)))
+                    if(!(id=FindTerm(operation, tmp_name, namespaces)))
                         ajFmtPrintF(ouf_log,
                                     "Line %6d : End-point term of relation "
                                     "does not exist (%S)\n",
@@ -1290,13 +1406,14 @@ int main(ajint argc, char **argv)
                 }
                 else if (ajStrPrefixC(line, "has_source:"))
                 {
-                    if(!(id=FindTerm(edam_resource, tmp_name, namespaces)))
+                    if(!(id=FindTerm(resource, tmp_name, namespaces)))
                         ajFmtPrintF(ouf_log, "Line %6d : End-point term of relation does not exist (%S)\n",
                                     linecnt+1, line);
                 }
                 else if (ajStrPrefixC(line, "has_identifier:"))
                 {
-                    if(!(id=FindTerm(edam_identifier, tmp_name, namespaces)))
+                    /* if(!(id=FindTerm(edam_identifier, tmp_name, namespaces))) */
+                    if(!(id=FindTerm(data, tmp_name, namespaces)))
                         ajFmtPrintF(ouf_log,
                                     "Line %6d : End-point term of relation "
                                     "does not exist (%S)\n",
@@ -1304,9 +1421,9 @@ int main(ajint argc, char **argv)
                 }
                 else if (ajStrPrefixC(line, "is_identifier_of:"))
                 {
-                    if(!(id=FindTerm(edam_entity, tmp_name, namespaces)))
-                        if(!(id=FindTerm(edam_resource, tmp_name, namespaces)))
-                            if(!(id=FindTerm(edam_datatype, tmp_name,
+                    if(!(id=FindTerm(entity, tmp_name, namespaces)))
+                        if(!(id=FindTerm(resource, tmp_name, namespaces)))
+                            if(!(id=FindTerm(data, tmp_name,
                                              namespaces)))
                                 ajFmtPrintF(ouf_log, "Line %6d : End-point "
                                             "term of relation does not "
@@ -1315,11 +1432,33 @@ int main(ajint argc, char **argv)
                 }
                 else if (ajStrPrefixC(line,  "is_attribute_of:"))
                 {
-                    if(!(id=FindTerm(edam_entity, tmp_name, namespaces)))
+                    if(!(id=FindTerm(entity, tmp_name, namespaces)))
                         ajFmtPrintF(ouf_log, "Line %6d : End-point term of "
                                     "relation does not exist (%S)\n",
                                     linecnt+1, line);
                 }
+                else if (ajStrPrefixC(line,  "has_syntax:"))
+                {
+                    if(!(id=FindTerm(syntax, tmp_name, namespaces)))
+                        ajFmtPrintF(ouf_log, "Line %6d : End-point term of "
+                                    "relation does not exist (%S)\n",
+                                    linecnt+1, line);
+                }
+                /* Check all namespaces for 'consider' field */
+                else if (ajStrPrefixC(line, "consider:"))
+                {
+                    if(!(id=FindTerm(entity, tmp_name, namespaces)))
+                        if(!(id=FindTerm(topic, tmp_name, namespaces)))
+                            if(!(id=FindTerm(operation, tmp_name, namespaces)))
+                                if(!(id=FindTerm(resource, tmp_name, namespaces)))
+                                    if(!(id=FindTerm(data, tmp_name, namespaces)))
+                                        if(!(id=FindTerm(syntax, tmp_name, namespaces)))
+                                            ajFmtPrintF(ouf_log,
+                                                        "Line %6d : End-point term of "
+                                                        "relation does not exist (%S)\n",
+                                                        linecnt+1, line);
+                }
+                
                 else
                     ajFatal("Unknown relation");
 
