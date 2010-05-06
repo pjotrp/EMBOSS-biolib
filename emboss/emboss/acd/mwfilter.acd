@@ -21,7 +21,7 @@ section: input [
     default: "Emwfilter.dat"
     information: "Molecular weight standards data file"
     knowntype: "standard molecular weights"
-    relations:  "/edam/data/0001646 Molecular weights standard fingerprint""         
+    relations:  "/edam/data/0001646 Molecular weights standard fingerprint"
   ]
 
 endsection: input
