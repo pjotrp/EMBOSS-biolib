@@ -39,7 +39,7 @@
 static void printPathMatrix(const float* path, const ajint* compass,
                             ajuint lena, ajuint lenb);
 
-static float embAlignGetScoreNWMatrix(float *path,
+static float embAlignGetScoreNWMatrix(
 	const float *ix, const float *iy, const float *m, ajint lena,
         ajint lenb, ajint *xpos, ajint *ypos, AjBool endweight);
 
@@ -246,10 +246,6 @@ float embAlignPathCalc(const char *a, const char *b,
 ** @param [r] endgapextend [float] end gap extension penalty
 ** @param [w] start1 [ajint *] start of alignment in first sequence
 ** @param [w] start2 [ajint *] start of alignment in second sequence
-** @param [w] path [float *] path matrix (can share the memory with other
-**                           score matrices, since the other matrices will
-**                           have cells with no further use as the path matrix
-**                           is calculated)
 ** @param [r] sub [float * const *] substitution matrix from AjPMatrixf
 ** @param [r] cvt [const AjPSeqCvt] Conversion array for AjPMatrixf
 ** @param [w] m [float*] Match scores array, m(i,j) is the best score
@@ -273,7 +269,7 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
                        float gapopen, float gapextend,
                        float endgapopen, float endgapextend,
                        ajint *start1, ajint *start2,
-                       float *path, float * const *sub, const AjPSeqCvt cvt,
+                       float * const *sub, const AjPSeqCvt cvt,
                        float *m, float *ix, float *iy,
                        ajint *compass, AjBool show,
                        AjBool endweight)
@@ -427,14 +423,7 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
         ++xpos;
     }
 
-    if(show)
-    {
-        printPathMatrix(m, compass, lena, lenb);
-        printPathMatrix(ix, compass, lena, lenb);
-        printPathMatrix(iy, compass, lena, lenb);
-    }
-
-    score = embAlignGetScoreNWMatrix(path, ix, iy, m, lena, lenb,
+    score = embAlignGetScoreNWMatrix(ix, iy, m, lena, lenb,
             start1, start2, endweight);
 
     xpos = *start2;
@@ -463,7 +452,6 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
 	}
 	else if(mp >= ix[cursor] && mp>= iy[cursor])
 	{
-	    path[cursor] = mp;
 	    compass[cursor] = 0;
 
 	    if(mp == ix[cursor] && cursorp == 1)
@@ -487,24 +475,22 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
 	}
 	else if(ix[cursor]>=iy[cursor] && xpos!=0)
 	{
-	    path[cursor] = ix[cursor];
 	    compass[cursor] = 1;
 	    xpos--;
-	    cursorp = 1;
 	}
 	else if(ypos!=0)
 	{
-	    path[cursor] = iy[cursor];
 	    compass[cursor] = 2;
 	    ypos--;
-	    cursorp = 2;
 	}
 	cursorp = compass[cursor];
     }
 
     if(show)
     {
-        printPathMatrix(path, compass, lena, lenb);
+        printPathMatrix(m, compass, lena, lenb);
+        printPathMatrix(ix, compass, lena, lenb);
+        printPathMatrix(iy, compass, lena, lenb);
     }
 
     
@@ -2887,7 +2873,6 @@ void embAlignCalcSimilarity(const AjPStr m, const AjPStr n,
 ** Returns score of the optimal global or overlap alignment for
 ** the specified path matrix for Needleman Wunsch
 **
-** @param [w] path [float*] path matrix
 ** @param [r] ix [const float*] Gap scores array, ix(i,j) is the best score
 **                              given that a(i) is aligned to a gap
 **                              (in an insertion with respect to b)
@@ -2897,8 +2882,8 @@ void embAlignCalcSimilarity(const AjPStr m, const AjPStr n,
 **
 ** @param [r] m [const float*] Match scores array, m(i,j) is the best score
 **                             up to (i,j) given that a(i) is aligned to b(j)
-** @param [r] lena [ajint] length of first sequence
-** @param [r] lenb [ajint] length of second sequence
+** @param [r] lena [ajint] length of the first sequence
+** @param [r] lenb [ajint] length of the second sequence
 ** @param [w] start1 [ajint *] start of alignment in first sequence
 ** @param [w] start2 [ajint *] start of alignment in second sequence
 ** @param [r] endweight [AjBool] whether the matrix was built for
@@ -2907,93 +2892,73 @@ void embAlignCalcSimilarity(const AjPStr m, const AjPStr n,
 ** @return [float] optimal score
 ******************************************************************************/
 
-static float embAlignGetScoreNWMatrix(float *path,
+static float embAlignGetScoreNWMatrix(
 	const float *ix, const float *iy, const float *m,
         ajint lena, ajint lenb,
         ajint *start1, ajint *start2,
         AjBool endweight)
 {
-    ajint i,j, xpos, ypos, cursor;
+    ajint i,j, cursor;
     float score = FLT_MIN;
-    float mp;
     *start1 = lena-1;
     *start2 = lenb-1;
     
-    /* The following two for-loops sets last column and row of the
-     * path matrix.
-     */
-
-    ypos = lena-1;
-
-    for (xpos=0; xpos<lenb; xpos++){
-	cursor = ypos * lenb + xpos;
-	mp = m[cursor];
-
-	if(mp >= ix[cursor] && mp>= iy[cursor])
-	{
-	    /*
-	    ** since the path matrix shares memory with the m matrix
-	    ** we can avoid the following assignment
-	    */
-	    path[cursor] = mp;
-	}
-	else if(ix[cursor]>=iy[cursor])
-	{
-	    path[cursor] = ix[cursor];
-	}
-	else
-	{
-	    path[cursor] = iy[cursor];
-	}
-    }
-
-    xpos=lenb-1;
-
-    for (ypos=0; ypos<lena; ypos++){
-	cursor = ypos * lenb + xpos;
-	mp = m[cursor];
-
-	if(mp >= ix[cursor] && mp>= iy[cursor])
-	{
-	    /*
-	    ** since the path matrix shares memory with the m matrix
-	    ** we can avoid the following assignment
-	    */
-	    path[cursor] = mp;
-	}
-	else if(ix[cursor]>=iy[cursor])
-	{
-	    path[cursor] = ix[cursor];
-	}
-	else
-	{
-	    path[cursor] = iy[cursor];
-	}
-    }
-
-
     if(endweight)
     {
         /* when using end gap penalties the score of the optimal global
          * alignment is stored in the final cell of the path matrix */
-        score = path[lena * lenb - 1];
+	cursor = lena * lenb - 1;
+	if(m[cursor]>ix[cursor]&&m[cursor]>iy[cursor])
+	    score = m[cursor];
+	else if(ix[cursor]>iy[cursor])
+	    score = ix[cursor];
+	else
+	    score = iy[cursor];
     }
     else {
 
         for (i = 0; i < lenb; ++i)
-            if(path[(lena - 1) * lenb + i] > score)
+        {
+            cursor = (lena - 1) * lenb + i;
+            if(m[cursor]>score)
             {
-                *start2 = i;
-                score = path[(lena - 1) * lenb + i];
+        	*start2 = i;
+        	score = m[cursor];
             }
+            if(ix[cursor]>score)
+            {
+        	score = ix[cursor];
+        	*start2 = i;
+            }
+            if(iy[cursor]>score)
+            {
+        	score = iy[cursor];
+        	*start2 = i;
+            }
+        }
 
         for (j = 0; j < lena; ++j)
-            if(path[j * lenb + lenb - 1] > score)
+        {
+            cursor = j * lenb + lenb - 1;
+            if(m[cursor]>score)
             {
-                *start1 = j;
-                *start2 = lenb-1;
-                score = path[j * lenb + lenb - 1];
+        	*start1 = j;
+        	*start2 = lenb-1;
+        	score = m[cursor];
             }
+            if(ix[cursor]>score)
+            {
+        	score = ix[cursor];
+        	*start1 = j;
+        	*start2 = lenb-1;
+            }
+            if(iy[cursor]>score)
+            {
+        	score = iy[cursor];
+        	*start1 = j;
+        	*start2 = lenb-1;
+            }
+        }
     }
     return score;
 }
