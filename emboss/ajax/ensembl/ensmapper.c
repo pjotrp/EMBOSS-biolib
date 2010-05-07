@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1111,9 +1111,6 @@ static int mapperpairCompareSourceStartAscending(const void* P1,
     if(mp1->Source->Start < mp2->Source->Start)
         value = -1;
 
-    if(mp1->Source->Start == mp2->Source->Start)
-        value = 0;
-
     if(mp1->Source->Start > mp2->Source->Start)
         value = +1;
 
@@ -1215,9 +1212,6 @@ static int mapperpairCompareTargetStartAscending(const void* P1,
 
     if(mp1->Target->Start < mp2->Target->Start)
         value = -1;
-
-    if(mp1->Target->Start == mp2->Target->Start)
-        value = 0;
 
     if(mp1->Target->Start > mp2->Target->Start)
         value = +1;
@@ -3329,7 +3323,6 @@ static AjBool mapperMergePairs(EnsPMapper mapper)
         while(!ajListIterDone(trgiter))
         {
             trgpair1 = (EnsPMapperpair) ajListIterGet(trgiter);
-
             trgpair2 = (EnsPMapperpair) ajListIterGet(trgiter);
 
             /*
