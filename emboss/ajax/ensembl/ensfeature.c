@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -35,45 +35,6 @@
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
-
-extern EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPAssemblyexceptionadaptor ensRegistryGetAssemblyexceptionadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPAssemblyexceptionfeatureadaptor ensRegistryGetAssemblyexceptionfeatureadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPAssemblymapperadaptor ensRegistryGetAssemblymapperadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPCoordsystemadaptor ensRegistryGetCoordsystemadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPDNAAlignFeatureadaptor ensRegistryGetDNAAlignFeatureadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPExternaldatabaseadaptor ensRegistryGetExternaldatabaseadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPMetainformationadaptor ensRegistryGetMetainformationadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPMetacoordinateadaptor ensRegistryGetMetacoordinateadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPProteinalignfeatureadaptor ensRegistryGetProteinalignfeatureadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPProteinfeatureadaptor ensRegistryGetProteinfeatureadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPSimplefeatureadaptor ensRegistryGetSimplefeatureadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
-    EnsPDatabaseadaptor dba);
 
 static int featureCompareStartAscending(const void* P1, const void* P2);
 
@@ -2028,9 +1989,6 @@ int ensFeatureCompareStartAscending(const EnsPFeature feature1,
     if(feature1->Start < feature2->Start)
         value = -1;
 
-    if(feature1->Start == feature2->Start)
-        value = 0;
-
     if(feature1->Start > feature2->Start)
         value = +1;
 
@@ -2103,9 +2061,6 @@ int ensFeatureCompareStartDescending(const EnsPFeature feature1,
 
     if(feature1->Start < feature2->Start)
         value = +1;
-
-    if(feature1->Start == feature2->Start)
-        value = 0;
 
     if(feature1->Start > feature2->Start)
         value = -1;
@@ -2576,25 +2531,27 @@ EnsPFeatureadaptor ensFeatureadaptorNew(
         condition = fa->Condition;
     }
 
-    fa->Adaptor = ensBaseadaptorNew(dba,
-                                    Ptables,
-                                    Pcolumns,
-                                    leftjoin,
-                                    condition,
-                                    final,
-                                    Fquery);
+    fa->Adaptor = ensBaseadaptorNew(
+        dba,
+        Ptables,
+        Pcolumns,
+        leftjoin,
+        condition,
+        final,
+        Fquery);
 
-    fa->Cache = ensCacheNew(ensECacheTypeNumeric,
-                            featureadaptorCacheMaxBytes,
-                            featureadaptorCacheMaxCount,
-                            featureadaptorCacheMaxSize,
-                            Freference,
-                            Fdelete,
-                            Fsize,
-                            Fread,
-                            Fwrite,
-                            ajFalse,
-                            label);
+    fa->Cache = ensCacheNew(
+        ensECacheTypeNumeric,
+        featureadaptorCacheMaxBytes,
+        featureadaptorCacheMaxCount,
+        featureadaptorCacheMaxSize,
+        Freference,
+        Fdelete,
+        Fsize,
+        Fread,
+        Fwrite,
+        ajFalse,
+        label);
 
     fa->MaxFeatureLength = 0;
 
@@ -8112,6 +8069,17 @@ static AjBool dnaalignfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 **
 ** Default Ensembl DNA Align Feature Adaptor constructor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetDNAAlignFeatureadaptor
+**
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
 ** @return [EnsPDNAAlignFeatureadaptor] Ensembl DNA Align Feature Adaptor
@@ -8175,6 +8143,12 @@ EnsPDNAAlignFeatureadaptor ensDNAAlignFeatureadaptorNew(
 /* @func ensDNAAlignFeatureadaptorDel *****************************************
 **
 ** Default destructor for an Ensembl DNA Align Feature Adaptor.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Pdafa [EnsPDNAAlignFeatureadaptor*] Ensembl DNA Align Feature
 **                                                Adaptor address
@@ -9128,6 +9102,17 @@ static AjBool proteinalignfeatureadaptorFetchAllBySQL(
 **
 ** Default Ensembl Protein Align Feature Adaptor constructor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetProteinalignfeatureadaptor
+**
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
 ** @return [EnsPProteinalignfeatureadaptor] Ensembl Protein Align Feature
@@ -9192,6 +9177,12 @@ EnsPProteinalignfeatureadaptor ensProteinalignfeatureadaptorNew(
 /* @func ensProteinalignfeatureadaptorDel *************************************
 **
 ** Default destructor for an Ensembl Protein Align Feature Adaptor.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Ppafa [EnsPProteinalignfeatureadaptor*] Ensembl Protein Align
 **                                                    Feature Adaptor address
@@ -10483,13 +10474,25 @@ static AjBool proteinfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 **
 ** Default Ensembl Protein Feature Adaptor constructor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetProteinfeatureadaptor
+**
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
 ** @return [EnsPProteinfeatureadaptor] Ensembl Protein Feature Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPProteinfeatureadaptor ensProteinfeatureadaptorNew(EnsPDatabaseadaptor dba)
+EnsPProteinfeatureadaptor ensProteinfeatureadaptorNew(
+    EnsPDatabaseadaptor dba)
 {
     EnsPProteinfeatureadaptor pfa = NULL;
 
@@ -10537,6 +10540,12 @@ EnsPProteinfeatureadaptor ensProteinfeatureadaptorNew(EnsPDatabaseadaptor dba)
 /* @func ensProteinfeatureadaptorDel ******************************************
 **
 ** Default destructor for an Ensembl Protein Feature Adaptor.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Ppfa [EnsPProteinfeatureadaptor*] Ensembl Protein Feature Adaptor
 **                                              address
@@ -11928,6 +11937,17 @@ static EnsPFeature simplefeatureadaptorGetFeature(const void *value)
 **
 ** Default Ensembl Simple Feature Adaptor constructor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetSimplefeatureadaptor
+**
 ** @cc Bio::EnsEMBL::DBSQL::SimpleFeatureAdaptor::new
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
@@ -11935,7 +11955,8 @@ static EnsPFeature simplefeatureadaptorGetFeature(const void *value)
 ** @@
 ******************************************************************************/
 
-EnsPSimplefeatureadaptor ensSimplefeatureadaptorNew(EnsPDatabaseadaptor dba)
+EnsPSimplefeatureadaptor ensSimplefeatureadaptorNew(
+    EnsPDatabaseadaptor dba)
 {
     EnsPSimplefeatureadaptor sfa = NULL;
 
@@ -11990,6 +12011,12 @@ EnsPSimplefeatureadaptor ensSimplefeatureadaptorNew(EnsPDatabaseadaptor dba)
 /* @func ensSimplefeatureadaptorDel *******************************************
 **
 ** Default destructor for an Ensembl Simple Feature Adaptor.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Psfa [EnsPSimplefeatureadaptor*] Ensembl Simple Feature Adaptor
 **                                             address
@@ -13015,6 +13042,17 @@ static AjBool assemblyexceptionfeatureadaptorCacheInit(
 **
 ** Default Ensembl Assembly Exception Feature Adaptor constructor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetAssemblyexceptionfeatureadaptor
+**
 ** @cc Bio::EnsEMBL::DBSQL::AssemblyExceptionFeatureAdaptor::new
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
@@ -13140,6 +13178,12 @@ static AjBool assemblyexceptionfeatureadaptorCacheClear(
 /* @func ensAssemblyexceptionfeatureadaptorDel ********************************
 **
 ** Default destructor for an Ensembl Assembly Exception Feature Adaptor.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Paefa [EnsPAssemblyexceptionfeatureadaptor*] Ensembl Assembly
 **                                                         Exception Feature

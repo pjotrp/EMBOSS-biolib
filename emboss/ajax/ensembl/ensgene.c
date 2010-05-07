@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -65,33 +65,6 @@ static const char *geneStatus[] =
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
-
-extern EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPAssemblymapperadaptor ensRegistryGetAssemblymapperadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPAttributeadaptor ensRegistryGetAttributedaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPCoordsystemadaptor ensRegistryGetCoordsystemadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPDatabaseentryadaptor ensRegistryGetDatabaseentryadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPExternaldatabaseadaptor ensRegistryGetExternaldatabaseadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPGeneadaptor ensRegistryGetGeneadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPTranscriptadaptor ensRegistryGetTranscriptadaptor(
-    EnsPDatabaseadaptor dba);
 
 static int geneCompareExon(const void *P1, const void *P2);
 
@@ -1026,7 +999,7 @@ const AjPList ensGeneGetAttributes(EnsPGene gene)
         return NULL;
     }
 
-    ata = ensRegistryGetAttributedaptor(dba);
+    ata = ensRegistryGetAttributeadaptor(dba);
 
     gene->Attributes = ajListNew();
 
@@ -2397,14 +2370,7 @@ static int geneCompareExon(const void *P1, const void *P2)
     const EnsPExon exon1 = NULL;
     const EnsPExon exon2 = NULL;
 
-    if(!P1)
-        return 0;
-
-    if(!P2)
-        return 0;
-
     exon1 = *(EnsPExon const *) P1;
-
     exon2 = *(EnsPExon const *) P2;
 
     if(ajDebugTest("geneCompareExon"))
@@ -2416,9 +2382,6 @@ static int geneCompareExon(const void *P1, const void *P2)
 
     if(exon1 < exon2)
         value = -1;
-
-    if(exon1 == exon2)
-        value = 0;
 
     if(exon1 > exon2)
         value = +1;
@@ -3597,6 +3560,17 @@ static EnsPFeature geneadaptorGetFeature(const void *value)
 **
 ** Default Ensembl Gene Adaptor constructor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetGeneadaptor
+**
 ** @cc Bio::EnsEMBL::DBSQL::GeneAdaptor::new
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
@@ -3604,7 +3578,8 @@ static EnsPFeature geneadaptorGetFeature(const void *value)
 ** @@
 ******************************************************************************/
 
-EnsPGeneadaptor ensGeneadaptorNew(EnsPDatabaseadaptor dba)
+EnsPGeneadaptor ensGeneadaptorNew(
+    EnsPDatabaseadaptor dba)
 {
     EnsPGeneadaptor ga = NULL;
 
@@ -3658,6 +3633,12 @@ EnsPGeneadaptor ensGeneadaptorNew(EnsPDatabaseadaptor dba)
 /* @func ensGeneadaptorDel ****************************************************
 **
 ** Default destructor for an Ensembl Gene Adaptor.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Pga [EnsPGeneadaptor*] Ensembl Gene Adaptor address
 **

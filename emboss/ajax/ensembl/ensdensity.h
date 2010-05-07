@@ -199,7 +199,11 @@ const char* ensDensitytypeValeTypeToChar(const AjEnum type);
 
 /* Ensembl Density Type Adaptor */
 
-EnsPDensitytypeadaptor ensDensitytypeadaptorNew(EnsPDatabaseadaptor dba);
+EnsPDensitytypeadaptor ensRegistryGetDensitytypeadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPDensitytypeadaptor ensDensitytypeadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensDensitytypeadaptorDel(EnsPDensitytypeadaptor* Pdta);
 
@@ -271,7 +275,11 @@ AjBool ensDensityfeatureSortByStartDescending(AjPList dfs);
 
 /* Ensembl Density Feature Adaptor */
 
-EnsPDensityfeatureadaptor ensDensityfeatureadaptorNew(EnsPDatabaseadaptor dba);
+EnsPDensityfeatureadaptor ensRegistryGetDensityfeatureadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPDensityfeatureadaptor ensDensityfeatureadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensDensityfeatureadaptorDel(EnsPDensityfeatureadaptor *Pdfa);
 

@@ -7,7 +7,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -67,24 +67,6 @@ static const char *sliceSequenceEditCode[] =
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
-
-extern EnsPAssemblyexceptionadaptor ensRegistryGetAssemblyexceptionadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPAssemblymapperadaptor ensRegistryGetAssemblymapperadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPCoordsystemadaptor ensRegistryGetCoordsystemadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPRepeatfeatureadaptor ensRegistryGetRepeatfeatureadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPSequenceadaptor ensRegistryGetSequenceadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPSeqregionadaptor ensRegistryGetSeqregionadaptor(
-    EnsPDatabaseadaptor dba);
 
 static EnsPProjectionsegment sliceConstrainToSeqregion(EnsPSlice slice);
 
@@ -1164,9 +1146,6 @@ int ensSliceCompareIdentifierAscending(const EnsPSlice slice1,
 
     if(srid1 < srid2)
         value = -1;
-
-    if(srid1 == srid2)
-        value = 0;
 
     if(srid1 > srid2)
         value = +1;
@@ -2954,13 +2933,25 @@ static ajuint sliceadaptorCacheSize(const void* value)
 **
 ** Default constructor for an Ensembl Slice Adaptor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetSliceadaptor
+**
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
 ** @return [EnsPSliceadaptor] Ensembl Slice Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPSliceadaptor ensSliceadaptorNew(EnsPDatabaseadaptor dba)
+EnsPSliceadaptor ensSliceadaptorNew(
+    EnsPDatabaseadaptor dba)
 {
     EnsPSliceadaptor adaptor = NULL;
 
@@ -2996,6 +2987,12 @@ EnsPSliceadaptor ensSliceadaptorNew(EnsPDatabaseadaptor dba)
 **
 ** Default destructor for an Ensembl Slice Adaptor.
 ** This function also clears the internal Sequence Region caches.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Padaptor [EnsPSliceadaptor*] Ensembl Slice Adaptor address
 **

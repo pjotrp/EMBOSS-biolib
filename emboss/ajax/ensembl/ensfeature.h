@@ -695,6 +695,9 @@ AjBool ensBasealignfeatureSortBySourceFeatureStartDescending(AjPList bafs);
 
 /* Ensembl DNA Align Feature Adaptor */
 
+EnsPDNAAlignFeatureadaptor ensRegistryGetDNAAlignFeatureadaptor(
+    EnsPDatabaseadaptor dba);
+
 EnsPDNAAlignFeatureadaptor ensDNAAlignFeatureadaptorNew(
     EnsPDatabaseadaptor dba);
 
@@ -743,6 +746,9 @@ AjBool ensDNAAlignFeatureadaptorFetchAllIdentifiers(
     AjPList idlist);
 
 /* Ensembl Protein Align Feature Adaptor */
+
+EnsPProteinalignfeatureadaptor ensRegistryGetProteinalignfeatureadaptor(
+    EnsPDatabaseadaptor dba);
 
 EnsPProteinalignfeatureadaptor ensProteinalignfeatureadaptorNew(
     EnsPDatabaseadaptor dba);
@@ -836,7 +842,11 @@ ajuint ensProteinfeatureGetMemSize(const EnsPProteinfeature pf);
 
 /* Ensembl Protein Feature Adaptor */
 
-EnsPProteinfeatureadaptor ensProteinfeatureadaptorNew(EnsPDatabaseadaptor dba);
+EnsPProteinfeatureadaptor ensRegistryGetProteinfeatureadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPProteinfeatureadaptor ensProteinfeatureadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensProteinfeatureadaptorDel(EnsPProteinfeatureadaptor *Ppfa);
 
@@ -895,7 +905,11 @@ AjBool ensSimplefeatureSortByStartDescending(AjPList sfs);
 
 /* Ensembl Simple Feature Adaptor */
 
-EnsPSimplefeatureadaptor ensSimplefeatureadaptorNew(EnsPDatabaseadaptor dba);
+EnsPSimplefeatureadaptor ensRegistryGetSimplefeatureadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPSimplefeatureadaptor ensSimplefeatureadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensSimplefeatureadaptorDel(EnsPSimplefeatureadaptor *Psfa);
 
@@ -974,6 +988,9 @@ AjBool ensAssemblyexceptionfeatureTrace(const EnsPAssemblyexceptionfeature aef,
                                         ajuint level);
 
 /* Ensembl Assembly Exception Feature Adaptor */
+
+EnsPAssemblyexceptionfeatureadaptor ensRegistryGetAssemblyexceptionfeatureadaptor(
+    EnsPDatabaseadaptor dba);
 
 EnsPAssemblyexceptionfeatureadaptor ensAssemblyexceptionfeatureadaptorNew(
     EnsPDatabaseadaptor dba);

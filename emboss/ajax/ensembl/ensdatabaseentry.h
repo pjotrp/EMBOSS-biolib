@@ -248,7 +248,11 @@ AjBool EnsDatabaseentryClearGeneontologylinkageTypes(EnsPDatabaseentry dbe);
 
 /* Ensembl Database Entry Adaptor */
 
-EnsPDatabaseentryadaptor ensDatabaseentryadaptorNew(EnsPDatabaseadaptor dba);
+EnsPDatabaseentryadaptor ensRegistryGetDatabaseentryadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPDatabaseentryadaptor ensDatabaseentryadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensDatabaseentryadaptorDel(EnsPDatabaseentryadaptor *Pdbea);
 

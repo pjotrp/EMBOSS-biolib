@@ -149,7 +149,11 @@ AjBool ensGeneSortByStartDescending(AjPList genes);
 
 /* Ensembl Gene Adaptor */
 
-EnsPGeneadaptor ensGeneadaptorNew(EnsPDatabaseadaptor dba);
+EnsPGeneadaptor ensRegistryGetGeneadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPGeneadaptor ensGeneadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensGeneadaptorDel(EnsPGeneadaptor *Pga);
 

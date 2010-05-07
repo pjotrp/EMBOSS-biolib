@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -119,24 +119,6 @@ static const char *densitytypeValueType[] =
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-extern EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPAssemblymapperadaptor ensRegistryGetAssemblymapperadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPCoordsystemadaptor ensRegistryGetCoordsystemadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPDensityfeatureadaptor ensRegistryGetDensityfeatureadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPDensitytypeadaptor ensRegistryGetDensitytypeadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
-    EnsPDatabaseadaptor dba);
-
 static int densitytyperatioCompareRatioAscending(const void* P1,
                                                  const void* P2);
 
@@ -233,9 +215,6 @@ static int densitytyperatioCompareRatioAscending(const void* P1,
 
     if(dtr1->Ratio < dtr2->Ratio)
         value = -1;
-
-    if(dtr1->Ratio == dtr2->Ratio)
-        value = 0;
 
     if(dtr1->Ratio > dtr2->Ratio)
         value = +1;
@@ -1276,7 +1255,8 @@ static AjBool densitytypeadaptorCacheInit(EnsPDensitytypeadaptor dta)
 ** @@
 ******************************************************************************/
 
-EnsPDensitytypeadaptor ensDensitytypeadaptorNew(EnsPDatabaseadaptor dba)
+EnsPDensitytypeadaptor ensDensitytypeadaptorNew(
+    EnsPDatabaseadaptor dba)
 {
     EnsPDensitytypeadaptor dta = NULL;
 
@@ -3002,6 +2982,17 @@ static EnsPFeature densityfeatureadaptorGetFeature(const void *value)
 **
 ** Default Ensembl Density Feature Adaptor constructor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetDensityfeatureadaptor
+**
 ** @cc Bio::EnsEMBL::DBSQL::DensityFeatureAdaptor::new
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
@@ -3009,7 +3000,8 @@ static EnsPFeature densityfeatureadaptorGetFeature(const void *value)
 ** @@
 ******************************************************************************/
 
-EnsPDensityfeatureadaptor ensDensityfeatureadaptorNew(EnsPDatabaseadaptor dba)
+EnsPDensityfeatureadaptor ensDensityfeatureadaptorNew(
+    EnsPDatabaseadaptor dba)
 {
     EnsPDensityfeatureadaptor dfa = NULL;
 
@@ -3064,6 +3056,12 @@ EnsPDensityfeatureadaptor ensDensityfeatureadaptorNew(EnsPDatabaseadaptor dba)
 /* @func ensDensityfeatureadaptorDel ******************************************
 **
 ** Default destructor for an Ensembl Density Feature Adaptor.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Pdfa [EnsPDensityfeatureadaptor*] Ensembl Density Feature Adaptor
 **                                              address

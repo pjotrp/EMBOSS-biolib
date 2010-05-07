@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -60,12 +60,6 @@ static const char *externalreferenceInfoType[] =
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
-
-extern EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPExternaldatabaseadaptor ensRegistryGetExternaldatabaseadaptor(
-    EnsPDatabaseadaptor dba);
 
 static AjBool databaseentryadaptorHasLinkage(AjPTable linkages,
                                              ajuint xrefid,
@@ -4091,6 +4085,17 @@ static AjBool databaseentryadaptorFetchAllBySQL(EnsPDatabaseentryadaptor dbea,
 **
 ** Default Ensembl Database Entry Adaptor constructor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetDatabaseentryadaptor
+**
 ** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::new
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
@@ -4098,7 +4103,8 @@ static AjBool databaseentryadaptorFetchAllBySQL(EnsPDatabaseentryadaptor dbea,
 ** @@
 ******************************************************************************/
 
-EnsPDatabaseentryadaptor ensDatabaseentryadaptorNew(EnsPDatabaseadaptor dba)
+EnsPDatabaseentryadaptor ensDatabaseentryadaptorNew(
+    EnsPDatabaseadaptor dba)
 {
     EnsPDatabaseentryadaptor dbea = NULL;
 
@@ -4139,6 +4145,12 @@ EnsPDatabaseentryadaptor ensDatabaseentryadaptorNew(EnsPDatabaseadaptor dba)
 /* @func ensDatabaseentryadaptorDel *******************************************
 **
 ** Default destructor for an Ensembl Database Entry Adaptor.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Pdbea [EnsPDatabaseentryadaptor*] Ensembl Database Entry Adaptor
 **                                              address
@@ -4783,9 +4795,6 @@ static int databaseentryadaptorCompareIdentifier(const void *P1,
 
     if(*Pidentifier1 < *Pidentifier2)
         value = -1;
-
-    if(*Pidentifier1 == *Pidentifier2)
-        value = 0;
 
     if(*Pidentifier1 > *Pidentifier2)
         value = +1;

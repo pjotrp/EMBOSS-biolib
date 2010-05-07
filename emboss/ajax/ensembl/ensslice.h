@@ -183,7 +183,11 @@ AjBool ensSliceFetchAllSequenceEdits(EnsPSlice slice,
 
 /* Ensembl Slice Adaptor */
 
-EnsPSliceadaptor ensSliceadaptorNew(EnsPDatabaseadaptor dba);
+EnsPSliceadaptor ensRegistryGetSliceadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPSliceadaptor ensSliceadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensSliceadaptorDel(EnsPSliceadaptor* Padaptor);
 
