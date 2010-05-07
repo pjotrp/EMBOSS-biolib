@@ -385,7 +385,8 @@ public class BuildJembossForm implements ActionListener
 //  }
 
 
-    graphics = new JComboBox( new String[]{ "PNG","Jemboss Graphics"} );
+    graphics = new JComboBox( new String[]{ "PNG","PDF","SVG",
+            "Jemboss Graphics"} );
 
     for(int j=0;j<nsection;j++)
     {
@@ -842,11 +843,21 @@ public class BuildJembossForm implements ActionListener
         if(((String)graphics.getSelectedItem()).equals("PNG") )
         { 
           options = options.concat(" -" + val + " png");
-          optionsA.add("png");          
+          optionsA.add("png");
+        }
+        else if(((String)graphics.getSelectedItem()).equals("PDF") )
+        { 
+          options = options.concat(" -" + val + " pdf");
+          optionsA.add("pdf");
+        }
+        else if(((String)graphics.getSelectedItem()).equals("SVG") )
+        { 
+          options = options.concat(" -" + val + " svg");
+          optionsA.add("svg");
         }
         else {
           options = options.concat(" -" + val + " data");
-          optionsA.add("data");                    
+          optionsA.add("data");
         }
       }
       if ( att.startsWith("dirlist") || att.startsWith("featout") ||
