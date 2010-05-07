@@ -153,6 +153,9 @@
 ** edamclean will identify (and warn about) identical term names in cases
 ** where one of the terms has been made obsolete.  Arguably this is the
 ** the correct behaviour.
+**
+** The code that checks for "field in wrong order" does not make all the checks
+** it might, e.g. does not check whether other relations appear before is_a.
 ******************************************************************************/
 
  #include "emboss.h"
