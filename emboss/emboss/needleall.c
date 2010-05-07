@@ -56,7 +56,6 @@ int main(int argc, char **argv)
     ajint start1 = 0;
     ajint start2 = 0;
 
-    float *path;
     ajint *compass;
     float* ix;
     float* iy;
@@ -107,7 +106,6 @@ int main(int argc, char **argv)
     gapopen = ajRoundFloat(gapopen, 8);
     gapextend = ajRoundFloat(gapextend, 8);
 
-    AJCNEW0(path, maxarr);
     AJCNEW0(compass, maxarr);
     AJCNEW0(m, maxarr);
     AJCNEW0(ix, maxarr);
@@ -139,9 +137,6 @@ int main(int argc, char **argv)
             if(len>maxarr)
             {
                 stlen = (size_t) len;
-                AJCRESIZETRY0(path,(size_t)maxarr,stlen);
-                if(!path)
-                    ajDie("Sequences too big, memory allocation failed");
                 AJCRESIZETRY0(compass,(size_t)maxarr,stlen);
                 if(!compass)
                     ajDie("Sequences too big, memory allocation failed");
@@ -166,7 +161,7 @@ int main(int argc, char **argv)
 
             score = embAlignPathCalcWithEndGapPenalties(p, q, lena, lenb,
                     gapopen, gapextend, endgapopen, endgapextend,
-                    &start1, &start2, path, sub, cvt, m, ix, iy,
+                    &start1, &start2, sub, cvt, m, ix, iy,
                     compass, ajFalse, endweight);
 
             embAlignWalkNWMatrixUsingCompass(p, q, &alga, &algb,
@@ -231,7 +226,6 @@ int main(int argc, char **argv)
     ajSeqDel(&seqb);
 
     AJFREE(compass);
-    AJFREE(path);
     AJFREE(ix);
     AJFREE(iy);
     AJFREE(m);
