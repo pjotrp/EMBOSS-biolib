@@ -149,7 +149,7 @@ int main(int argc, char **argv)
 	score = embAlignPathCalcWithEndGapPenalties(p, q, lena, lenb,
 	        gapopen, gapextend, endgapopen, endgapextend,
 	        &start1, &start2, sub, cvt,
-	        m, ix, iy, compass, ajTrue, endweight);
+	        m, ix, iy, compass, ajFalse, endweight);
 
 
 
