@@ -246,7 +246,10 @@ float embAlignPathCalc(const char *a, const char *b,
 ** @param [r] endgapextend [float] end gap extension penalty
 ** @param [w] start1 [ajint *] start of alignment in first sequence
 ** @param [w] start2 [ajint *] start of alignment in second sequence
-** @param [w] path [float *] path matrix
+** @param [w] path [float *] path matrix (can share the memory with other
+**                           score matrices, since the other matrices will
+**                           have cells with no further use as the path matrix
+**                           is calculated)
 ** @param [r] sub [float * const *] substitution matrix from AjPMatrixf
 ** @param [r] cvt [const AjPSeqCvt] Conversion array for AjPMatrixf
 ** @param [w] m [float*] Match scores array, m(i,j) is the best score
@@ -296,10 +299,6 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
     
     match = sub[ajSeqcvtGetCodeK(cvt, a[0])][ajSeqcvtGetCodeK(cvt, b[0])];
     compass[0] = 0;
-    path[0] = (float) match;
-
-    if(endweight && -endgapopen > match)
-        path[0] = endgapopen;
 
     ix[0] = INT_MIN;
     iy[0] = INT_MIN;
@@ -428,6 +427,13 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
         ++xpos;
     }
 
+    if(show)
+    {
+        printPathMatrix(m, compass, lena, lenb);
+        printPathMatrix(ix, compass, lena, lenb);
+        printPathMatrix(iy, compass, lena, lenb);
+    }
+
     score = embAlignGetScoreNWMatrix(path, ix, iy, m, lena, lenb,
             start1, start2, endweight);
 
@@ -499,9 +505,6 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
     if(show)
     {
         printPathMatrix(path, compass, lena, lenb);
-        printPathMatrix(m, compass, lena, lenb);
-        printPathMatrix(ix, compass, lena, lenb);
-        printPathMatrix(iy, compass, lena, lenb);
     }
 
     
@@ -2928,6 +2931,10 @@ static float embAlignGetScoreNWMatrix(float *path,
 
 	if(mp >= ix[cursor] && mp>= iy[cursor])
 	{
+	    /*
+	    ** since the path matrix shares memory with the m matrix
+	    ** we can avoid the following assignment
+	    */
 	    path[cursor] = mp;
 	}
 	else if(ix[cursor]>=iy[cursor])
@@ -2948,6 +2955,10 @@ static float embAlignGetScoreNWMatrix(float *path,
 
 	if(mp >= ix[cursor] && mp>= iy[cursor])
 	{
+	    /*
+	    ** since the path matrix shares memory with the m matrix
+	    ** we can avoid the following assignment
+	    */
 	    path[cursor] = mp;
 	}
 	else if(ix[cursor]>=iy[cursor])
