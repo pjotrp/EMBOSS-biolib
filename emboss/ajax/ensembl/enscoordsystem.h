@@ -153,7 +153,11 @@ AjPStr ensCoordsystemGetSpecies(EnsPCoordsystem cs);
 
 /* Ensembl Coordinate System Adaptor */
 
-EnsPCoordsystemadaptor ensCoordsystemadaptorNew(EnsPDatabaseadaptor dba);
+EnsPCoordsystemadaptor ensRegistryGetCoordsystemadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPCoordsystemadaptor ensCoordsystemadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensCoordsystemadaptorDel(EnsPCoordsystemadaptor* Pcsa);
 

@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.15 $
+** @version $Revision: 1.16 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -118,45 +118,6 @@ static const char *transcriptSequenceEditCode[] =
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
-
-extern EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPAssemblymapperadaptor ensRegistryGetAssemblymapperadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPAttributeadaptor ensRegistryGetAttributedaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPCoordsystemadaptor ensRegistryGetCoordsystemadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPDatabaseentryadaptor ensRegistryGetDatabaseentryadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPDNAAlignFeatureadaptor ensRegistryGetDNAAlignFeatureadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPExternaldatabaseadaptor ensRegistryGetExternaldatabaseadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPExonadaptor ensRegistryGetExonadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPProteinalignfeatureadaptor ensRegistryGetProteinalignfeatureadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPTranscriptadaptor ensRegistryGetTranscriptadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPTranslationadaptor ensRegistryGetTranslationadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
-    EnsPDatabaseadaptor dba);
-
-
-
 
 /* @funcstatic transcriptExonRankNew **********************************
 **
@@ -1142,7 +1103,7 @@ const AjPList ensTranscriptGetAttributes(EnsPTranscript transcript)
         return NULL;
     }
 
-    ata = ensRegistryGetAttributedaptor(dba);
+    ata = ensRegistryGetAttributeadaptor(dba);
 
     transcript->Attributes = ajListNew();
 
@@ -5196,13 +5157,25 @@ static EnsPFeature transcriptadaptorGetFeature(const void *value)
 **
 ** Default Ensembl Transcript Adaptor constructor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetTranscriptadaptor
+**
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
 ** @return [EnsPTranscriptadaptor] Ensembl Transcript Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPTranscriptadaptor ensTranscriptadaptorNew(EnsPDatabaseadaptor dba)
+EnsPTranscriptadaptor ensTranscriptadaptorNew(
+    EnsPDatabaseadaptor dba)
 {
     EnsPTranscriptadaptor tca = NULL;
 
@@ -5257,6 +5230,12 @@ EnsPTranscriptadaptor ensTranscriptadaptorNew(EnsPDatabaseadaptor dba)
 /* @func ensTranscriptadaptorDel **********************************************
 **
 ** Default destructor for an Ensembl Transcript Adaptor.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Ptca [EnsPTranscriptadaptor*] Ensembl Transcript Adaptor address
 **

@@ -199,7 +199,11 @@ AjBool ensTranscriptSortByStartDescending(AjPList transcripts);
 
 /* Ensembl Transcript Adaptor */
 
-EnsPTranscriptadaptor ensTranscriptadaptorNew(EnsPDatabaseadaptor dba);
+EnsPTranscriptadaptor ensRegistryGetTranscriptadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPTranscriptadaptor ensTranscriptadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensTranscriptadaptorDel(EnsPTranscriptadaptor *Ptca);
 

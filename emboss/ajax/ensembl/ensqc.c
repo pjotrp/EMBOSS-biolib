@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -161,24 +161,6 @@ static const char *qcvariationState[] =
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
-
-extern EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPQcalignmentadaptor ensRegistryGetQcalignmentadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPQcdasfeatureadaptor ensRegistryGetQcdasfeatureadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPQcsequenceadaptor ensRegistryGetQcsequenceadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPQcsubmissionadaptor ensRegistryGetQcsubmissionadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPQcvariationadaptor ensRegistryGetQcvariationadaptor(
-    EnsPDatabaseadaptor dba);
 
 static AjBool qcdasfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
@@ -1745,24 +1727,37 @@ static AjBool qcdasfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 **
 ** Default constructor for an Ensembl QC DAS Feature Adaptor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetQcdasfeatureadaptor
+**
 ** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
 ** @return [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQcdasfeatureadaptor ensQcdasfeatureadaptorNew(EnsPDatabaseadaptor dba)
+EnsPQcdasfeatureadaptor ensQcdasfeatureadaptorNew(
+    EnsPDatabaseadaptor dba)
 {
     if(!dba)
         return NULL;
 
-    return ensBaseadaptorNew(dba,
-                             qcdasfeatureadaptorTables,
-                             qcdasfeatureadaptorColumns,
-                             qcdasfeatureadaptorLeftJoin,
-                             qcdasfeatureadaptorDefaultCondition,
-                             qcdasfeatureadaptorFinalCondition,
-                             qcdasfeatureadaptorFetchAllBySQL);
+    return ensBaseadaptorNew(
+        dba,
+        qcdasfeatureadaptorTables,
+        qcdasfeatureadaptorColumns,
+        qcdasfeatureadaptorLeftJoin,
+        qcdasfeatureadaptorDefaultCondition,
+        qcdasfeatureadaptorFinalCondition,
+        qcdasfeatureadaptorFetchAllBySQL);
 }
 
 
@@ -1792,6 +1787,12 @@ EnsPQcdasfeatureadaptor ensQcdasfeatureadaptorNew(EnsPDatabaseadaptor dba)
 /* @func ensQcdasfeatureadaptorDel ********************************************
 **
 ** Default destructor for an Ensembl QC DAS Feature Adaptor.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Pqcfasfa [EnsPQcdasfeatureadaptor*] Ensembl QC DAS Feature
 **                                                Adaptor address
@@ -4045,24 +4046,37 @@ static AjBool qcvariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 **
 ** Default constructor for an Ensembl QC Variation Adaptor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetQcvariationadaptor
+**
 ** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
 ** @return [EnsPQcvariationadaptor] Ensembl QC Variation Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQcvariationadaptor ensQcvariationadaptorNew(EnsPDatabaseadaptor dba)
+EnsPQcvariationadaptor ensQcvariationadaptorNew(
+    EnsPDatabaseadaptor dba)
 {
     if(!dba)
         return NULL;
 
-    return ensBaseadaptorNew(dba,
-                             qcvariationadaptorTables,
-                             qcvariationadaptorColumns,
-                             qcvariationadaptorLeftJoin,
-                             qcvariationadaptorDefaultCondition,
-                             qcvariationadaptorFinalCondition,
-                             qcvariationadaptorFetchAllBySQL);
+    return ensBaseadaptorNew(
+        dba,
+        qcvariationadaptorTables,
+        qcvariationadaptorColumns,
+        qcvariationadaptorLeftJoin,
+        qcvariationadaptorDefaultCondition,
+        qcvariationadaptorFinalCondition,
+        qcvariationadaptorFetchAllBySQL);
 }
 
 
@@ -4092,6 +4106,12 @@ EnsPQcvariationadaptor ensQcvariationadaptorNew(EnsPDatabaseadaptor dba)
 /* @func ensQcvariationadaptorDel *********************************************
 **
 ** Default destructor for an Ensembl QC Variation Adaptor.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Pqcva [EnsPQcvariationadaptor*] Ensembl QC Variation Adaptor
 **                                            address
@@ -4829,6 +4849,12 @@ EnsPQcsubmission ensQcsubmissionNewRef(EnsPQcsubmission qcsb)
 /* @func ensQcsubmissionDel ***************************************************
 **
 ** Default destructor for an Ensembl QC Submission.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Pqcsb [EnsPQcsubmission*] Ensembl QC Submission address
 **
@@ -5800,14 +5826,14 @@ static AjBool qcsubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         ensQcsequenceadaptorFetchByIdentifier(qcsa, tsid, &tsequence);
 
         qcsb = ensQcsubmissionNew(qcsba,
-                                 identifier,
-                                 analysis,
-                                 qsequence,
-                                 tsequence,
-                                 tstart,
-                                 tend,
-                                 tstrand,
-                                 analysisjobid);
+                                  identifier,
+                                  analysis,
+                                  qsequence,
+                                  tsequence,
+                                  tstart,
+                                  tend,
+                                  tstrand,
+                                  analysisjobid);
 
         ajListPushAppend(qcsbs, (void *) qcsb);
 
@@ -5853,24 +5879,37 @@ static AjBool qcsubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 **
 ** Default constructor for an Ensembl QC Submission Adaptor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetQcsubmissionadaptor
+**
 ** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
 ** @return [EnsPQcsubmissionadaptor] Ensembl QC Submission Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQcsubmissionadaptor ensQcsubmissionadaptorNew(EnsPDatabaseadaptor dba)
+EnsPQcsubmissionadaptor ensQcsubmissionadaptorNew(
+    EnsPDatabaseadaptor dba)
 {
     if(!dba)
         return NULL;
 
-    return ensBaseadaptorNew(dba,
-                             qcsubmissionadaptorTables,
-                             qcsubmissionadaptorColumns,
-                             qcsubmissionadaptorLeftJoin,
-                             qcsubmissionadaptorDefaultCondition,
-                             qcsubmissionadaptorFinalCondition,
-                             qcsubmissionadaptorFetchAllBySQL);
+    return ensBaseadaptorNew(
+        dba,
+        qcsubmissionadaptorTables,
+        qcsubmissionadaptorColumns,
+        qcsubmissionadaptorLeftJoin,
+        qcsubmissionadaptorDefaultCondition,
+        qcsubmissionadaptorFinalCondition,
+        qcsubmissionadaptorFetchAllBySQL);
 }
 
 

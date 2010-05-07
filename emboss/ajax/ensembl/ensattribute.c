@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -45,9 +45,6 @@
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
-
-extern EnsPAttributeadaptor ensRegistryGetAttributedaptor(
-    EnsPDatabaseadaptor dba);
 
 static AjBool attributeadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                             const AjPStr statement,
@@ -693,7 +690,7 @@ AjBool ensAttributeadaptorFetchAllByGene(EnsPAttributeadaptor ata,
     AjPStr statement = NULL;
 
     EnsPDatabaseadaptor dba = NULL;
-    
+
     if(!ata)
         return ajFalse;
 
@@ -722,7 +719,7 @@ AjBool ensAttributeadaptorFetchAllByGene(EnsPAttributeadaptor ata,
     if(code && ajStrGetLen(code))
     {
         dba = ensAttributeadaptorGetDatabaseadaptor(ata);
-        
+
         ensDatabaseadaptorEscapeC(dba, &txtcode, code);
 
         ajFmtPrintAppS(&statement, " AND attrib_type.code = '%s'", txtcode);
@@ -768,7 +765,7 @@ AjBool ensAttributeadaptorFetchAllBySeqregion(EnsPAttributeadaptor ata,
     AjPStr statement = NULL;
 
     EnsPDatabaseadaptor dba = NULL;
-    
+
     if(!ata)
         return ajFalse;
 
@@ -797,7 +794,7 @@ AjBool ensAttributeadaptorFetchAllBySeqregion(EnsPAttributeadaptor ata,
     if(code && ajStrGetLen(code))
     {
         dba = ensAttributeadaptorGetDatabaseadaptor(ata);
-        
+
         ensDatabaseadaptorEscapeC(dba, &txtcode, code);
 
         ajFmtPrintAppS(&statement, " AND attrib_type.code = '%s'", txtcode);
@@ -896,7 +893,7 @@ AjBool ensAttributeadaptorFetchAllByTranscript(EnsPAttributeadaptor ata,
     AjPStr statement = NULL;
 
     EnsPDatabaseadaptor dba = NULL;
-    
+
     if(!ata)
         return ajFalse;
 
@@ -925,7 +922,7 @@ AjBool ensAttributeadaptorFetchAllByTranscript(EnsPAttributeadaptor ata,
     if(code && ajStrGetLen(code))
     {
         dba = ensAttributeadaptorGetDatabaseadaptor(ata);
-        
+
         ensDatabaseadaptorEscapeC(dba, &txtcode, code);
 
         ajFmtPrintAppS(&statement, " AND attrib_type.code = '%s'", txtcode);
@@ -972,7 +969,7 @@ AjBool ensAttributeadaptorFetchAllByTranslation(
     AjPStr statement = NULL;
 
     EnsPDatabaseadaptor dba = NULL;
-    
+
     if(!ata)
         return ajFalse;
 
@@ -1001,7 +998,7 @@ AjBool ensAttributeadaptorFetchAllByTranslation(
     if(code && ajStrGetLen(code))
     {
         dba = ensAttributeadaptorGetDatabaseadaptor(ata);
-        
+
         ensDatabaseadaptorEscapeC(dba, &txtcode, code);
 
         ajFmtPrintAppS(&statement, " AND attrib_type.code = '%s'", txtcode);

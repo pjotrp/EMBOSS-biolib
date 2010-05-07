@@ -196,6 +196,9 @@ const char* ensAssemblyexceptionTypeToChar(const AjEnum type);
 
 /* Ensembl Assembly Exception Adaptor */
 
+EnsPAssemblyexceptionadaptor ensRegistryGetAssemblyexceptionadaptor(
+    EnsPDatabaseadaptor dba);
+
 EnsPAssemblyexceptionadaptor ensAssemblyexceptionadaptorNew(
     EnsPDatabaseadaptor dba);
 

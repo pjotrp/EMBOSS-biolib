@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -42,21 +42,6 @@
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
-
-extern EnsPAssemblymapperadaptor ensRegistryGetAssemblymapperadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPCoordsystemadaptor ensRegistryGetCoordsystemadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPMiscellaneousfeatureadaptor ensRegistryGetMiscellaneousfeatureadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPMiscellaneoussetadaptor ensRegistryGetMiscellaneoussetadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
-    EnsPDatabaseadaptor dba);
 
 static AjBool miscellaneoussetadaptorFetchAllBySQL(
     EnsPMiscellaneoussetadaptor msa,
@@ -1206,6 +1191,17 @@ static AjBool miscellaneoussetadaptorCacheInit(
 **
 ** Default constructor for an Ensembl Miscellaneous Set Adaptor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetMiscellaneoussetadaptor
+**
 ** @cc Bio::EnsEMBL::DBSQL::MiscSetAdaptor::new
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
@@ -1386,6 +1382,12 @@ static AjBool miscellaneoussetadaptorCacheExit(
 **
 ** Default destructor for an Ensembl Miscellaneous Set Adaptor.
 ** This function also clears the internal caches.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Pmsa [EnsPMiscellaneoussetadaptor*] Ensembl Miscellaneous
 **                                                Set Adaptor address
@@ -3568,6 +3570,18 @@ static EnsPFeature miscellaneousfeatureadaptorGetFeature(const void *value)
 **
 ** Default Ensembl Miscellaneous Feature Adaptor constructor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetMiscellaneousfeatureadaptor
+**
+** @cc Bio::EnsEMBL::DBSQL::MiscSetAdaptor::new
 ** @cc Bio::EnsEMBL::DBSQL::MiscFeatureAdaptor::new
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
@@ -3632,6 +3646,12 @@ EnsPMiscellaneousfeatureadaptor ensMiscellaneousfeatureadaptorNew(
 /* @func ensMiscellaneousfeatureadaptorDel ************************************
 **
 ** Default destructor for an Ensembl Miscellaneous Feature Adaptor.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Pmfa [EnsPMiscellaneousfeatureadaptor*] Ensembl Miscellaneous
 **                                                    Feature Adaptor address

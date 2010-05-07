@@ -43,7 +43,11 @@ typedef struct EnsSMetacoordinateadaptor
 
 /* Ensembl Meta-Coordinate Adaptor */
 
-EnsPMetacoordinateadaptor ensMetacoordinateadaptorNew(EnsPDatabaseadaptor dba);
+EnsPMetacoordinateadaptor ensRegistryGetMetacoordinateadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPMetacoordinateadaptor ensMetacoordinateadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensMetacoordinateadaptorDel(EnsPMetacoordinateadaptor *Pmca);
 

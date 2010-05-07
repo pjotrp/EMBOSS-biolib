@@ -189,7 +189,11 @@ AjBool ensQcsequenceFetchInternalAnchor(const EnsPQcsequence qcs,
 
 /* Ensembl Quality Check Sequence Adaptor */
 
-EnsPQcsequenceadaptor ensQcsequenceadaptorNew(EnsPDatabaseadaptor dba);
+EnsPQcsequenceadaptor ensRegistryGetQcsequenceadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPQcsequenceadaptor ensQcsequenceadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensQcsequenceadaptorDel(EnsPQcsequenceadaptor* Pqcsa);
 

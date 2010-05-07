@@ -188,6 +188,9 @@ AjBool ensMiscellaneoussetTrace(const EnsPMiscellaneousset ms, ajuint level);
 
 /* Ensembl Miscellaneous Set Adaptor */
 
+EnsPMiscellaneoussetadaptor ensRegistryGetMiscellaneoussetadaptor(
+    EnsPDatabaseadaptor dba);
+
 EnsPMiscellaneoussetadaptor ensMiscellaneoussetadaptorNew(
     EnsPDatabaseadaptor dba);
 
@@ -274,6 +277,9 @@ AjBool ensMiscellaneousfeatureSortByStartAscending(AjPList mfs);
 AjBool ensMiscellaneousfeatureSortByStartDescending(AjPList mfs);
 
 /* Ensembl Miscellaneous Feature Adaptor */
+
+EnsPMiscellaneousfeatureadaptor ensRegistryGetMiscellaneousfeatureadaptor(
+    EnsPDatabaseadaptor dba);
 
 EnsPMiscellaneousfeatureadaptor ensMiscellaneousfeatureadaptorNew(
     EnsPDatabaseadaptor dba);

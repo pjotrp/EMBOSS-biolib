@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** Bio::EnsEMBL::Registry CVS Revision:
@@ -2437,7 +2437,8 @@ EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(EnsPDatabaseadaptor dba)
                 entry->Registry[ensDatabaseadaptorGetGroup(dba)];
 
             if(!ecs->Analysisadaptor)
-                ecs->Analysisadaptor = ensAnalysisadaptorNew(dba);
+                ecs->Analysisadaptor =
+                    ensAnalysisadaptorNew(dba);
 
             return ecs->Analysisadaptor;
 
@@ -2621,7 +2622,8 @@ EnsPAssemblymapperadaptor ensRegistryGetAssemblymapperadaptor(
                 entry->Registry[ensDatabaseadaptorGetGroup(dba)];
 
             if(!ecs->Assemblymapperadaptor)
-                ecs->Assemblymapperadaptor = ensAssemblymapperadaptorNew(dba);
+                ecs->Assemblymapperadaptor =
+                    ensAssemblymapperadaptorNew(dba);
 
             return ecs->Assemblymapperadaptor;
 
@@ -2641,7 +2643,7 @@ EnsPAssemblymapperadaptor ensRegistryGetAssemblymapperadaptor(
 
 
 
-/* @func ensRegistryGetAttributedaptor ****************************************
+/* @func ensRegistryGetAttributeadaptor ***************************************
 **
 ** Get an Ensembl Attribute Adaptor from the Ensembl Registry.
 ** The Ensembl Attribute Adaptor is an alias for an
@@ -2653,7 +2655,7 @@ EnsPAssemblymapperadaptor ensRegistryGetAssemblymapperadaptor(
 ** @@
 ******************************************************************************/
 
-EnsPAttributeadaptor ensRegistryGetAttributedaptor(
+EnsPAttributeadaptor ensRegistryGetAttributeadaptor(
     EnsPDatabaseadaptor dba)
 {
     if(!dba)
@@ -2788,7 +2790,8 @@ EnsPDatabaseentryadaptor ensRegistryGetDatabaseentryadaptor(
                 entry->Registry[ensDatabaseadaptorGetGroup(dba)];
 
             if(!ecs->Databaseentryadaptor)
-                ecs->Databaseentryadaptor = ensDatabaseentryadaptorNew(dba);
+                ecs->Databaseentryadaptor =
+                    ensDatabaseentryadaptorNew(dba);
 
             return ecs->Databaseentryadaptor;
 
@@ -2848,7 +2851,8 @@ EnsPDensityfeatureadaptor ensRegistryGetDensityfeatureadaptor(
                 entry->Registry[ensDatabaseadaptorGetGroup(dba)];
 
             if(!ecs->Densityfeatureadaptor)
-                ecs->Densityfeatureadaptor = ensDensityfeatureadaptorNew(dba);
+                ecs->Densityfeatureadaptor =
+                    ensDensityfeatureadaptorNew(dba);
 
             return ecs->Densityfeatureadaptor;
 
@@ -2908,7 +2912,8 @@ EnsPDensitytypeadaptor ensRegistryGetDensitytypeadaptor(
                 entry->Registry[ensDatabaseadaptorGetGroup(dba)];
 
             if(!ecs->Densitytypeadaptor)
-                ecs->Densitytypeadaptor = ensDensitytypeadaptorNew(dba);
+                ecs->Densitytypeadaptor =
+                    ensDensitytypeadaptorNew(dba);
 
             return ecs->Densitytypeadaptor;
 
@@ -3014,7 +3019,8 @@ EnsPDitagfeatureadaptor ensRegistryGetDitagfeatureadaptor(
                 entry->Registry[ensDatabaseadaptorGetGroup(dba)];
 
             if(!ecs->Ditagfeatureadaptor)
-                ecs->Ditagfeatureadaptor = ensDitagfeatureadaptorNew(dba);
+                ecs->Ditagfeatureadaptor =
+                    ensDitagfeatureadaptorNew(dba);
 
             return ecs->Ditagfeatureadaptor;
 
@@ -3136,7 +3142,8 @@ EnsPExonadaptor ensRegistryGetExonadaptor(
                 entry->Registry[ensDatabaseadaptorGetGroup(dba)];
 
             if(!ecs->Exonadaptor)
-                ecs->Exonadaptor = ensExonadaptorNew(dba);
+                ecs->Exonadaptor =
+                    ensExonadaptorNew(dba);
 
             return ecs->Exonadaptor;
 
@@ -3258,7 +3265,8 @@ EnsPGeneadaptor ensRegistryGetGeneadaptor(
                 entry->Registry[ensDatabaseadaptorGetGroup(dba)];
 
             if(!ecs->Geneadaptor)
-                ecs->Geneadaptor = ensGeneadaptorNew(dba);
+                ecs->Geneadaptor =
+                    ensGeneadaptorNew(dba);
 
             return ecs->Geneadaptor;
 
@@ -3318,7 +3326,8 @@ EnsPKaryotypebandadaptor ensRegistryGetKaryotypebandadaptor(
                 entry->Registry[ensDatabaseadaptorGetGroup(dba)];
 
             if(!ecs->Karyotypebandadaptor)
-                ecs->Karyotypebandadaptor = ensKaryotypebandadaptorNew(dba);
+                ecs->Karyotypebandadaptor =
+                    ensKaryotypebandadaptorNew(dba);
 
             return ecs->Karyotypebandadaptor;
 
@@ -3562,7 +3571,8 @@ EnsPMetacoordinateadaptor ensRegistryGetMetacoordinateadaptor(
                 entry->Registry[ensDatabaseadaptorGetGroup(dba)];
 
             if(!ecs->Metacoordinateadaptor)
-                ecs->Metacoordinateadaptor = ensMetacoordinateadaptorNew(dba);
+                ecs->Metacoordinateadaptor =
+                    ensMetacoordinateadaptorNew(dba);
 
             return ecs->Metacoordinateadaptor;
 
@@ -3931,7 +3941,8 @@ EnsPProteinfeatureadaptor ensRegistryGetProteinfeatureadaptor(
                 entry->Registry[ensDatabaseadaptorGetGroup(dba)];
 
             if(!ecs->Proteinfeatureadaptor)
-                ecs->Proteinfeatureadaptor = ensProteinfeatureadaptorNew(dba);
+                ecs->Proteinfeatureadaptor =
+                    ensProteinfeatureadaptorNew(dba);
 
             return ecs->Proteinfeatureadaptor;
 
@@ -4038,7 +4049,8 @@ EnsPRepeatfeatureadaptor ensRegistryGetRepeatfeatureadaptor(
                 entry->Registry[ensDatabaseadaptorGetGroup(dba)];
 
             if(!ecs->Repeatfeatureadaptor)
-                ecs->Repeatfeatureadaptor = ensRepeatfeatureadaptorNew(dba);
+                ecs->Repeatfeatureadaptor =
+                    ensRepeatfeatureadaptorNew(dba);
 
             return ecs->Repeatfeatureadaptor;
 
@@ -4098,7 +4110,8 @@ EnsPSeqregionadaptor ensRegistryGetSeqregionadaptor(
                 entry->Registry[ensDatabaseadaptorGetGroup(dba)];
 
             if(!ecs->Seqregionadaptor)
-                ecs->Seqregionadaptor = ensSeqregionadaptorNew(dba);
+                ecs->Seqregionadaptor =
+                    ensSeqregionadaptorNew(dba);
 
             return ecs->Seqregionadaptor;
 
@@ -4158,7 +4171,8 @@ EnsPSimplefeatureadaptor ensRegistryGetSimplefeatureadaptor(
                 entry->Registry[ensDatabaseadaptorGetGroup(dba)];
 
             if(!ecs->Simplefeatureadaptor)
-                ecs->Simplefeatureadaptor = ensSimplefeatureadaptorNew(dba);
+                ecs->Simplefeatureadaptor =
+                    ensSimplefeatureadaptorNew(dba);
 
             return ecs->Simplefeatureadaptor;
 
@@ -4218,7 +4232,8 @@ EnsPSequenceadaptor ensRegistryGetSequenceadaptor(
                 entry->Registry[ensDatabaseadaptorGetGroup(dba)];
 
             if(!ecs->Sequenceadaptor)
-                ecs->Sequenceadaptor = ensSequenceadaptorNew(dba);
+                ecs->Sequenceadaptor =
+                    ensSequenceadaptorNew(dba);
 
             return ecs->Sequenceadaptor;
 
@@ -4278,7 +4293,8 @@ EnsPSliceadaptor ensRegistryGetSliceadaptor(
                 entry->Registry[ensDatabaseadaptorGetGroup(dba)];
 
             if(!ecs->Sliceadaptor)
-                ecs->Sliceadaptor = ensSliceadaptorNew(dba);
+                ecs->Sliceadaptor =
+                    ensSliceadaptorNew(dba);
 
             return ecs->Sliceadaptor;
 
@@ -4338,7 +4354,8 @@ EnsPTranscriptadaptor ensRegistryGetTranscriptadaptor(
                 entry->Registry[ensDatabaseadaptorGetGroup(dba)];
 
             if(!ecs->Transcriptadaptor)
-                ecs->Transcriptadaptor = ensTranscriptadaptorNew(dba);
+                ecs->Transcriptadaptor =
+                    ensTranscriptadaptorNew(dba);
 
             return ecs->Transcriptadaptor;
 
@@ -4398,7 +4415,8 @@ EnsPTranslationadaptor ensRegistryGetTranslationadaptor(
                 entry->Registry[ensDatabaseadaptorGetGroup(dba)];
 
             if(!ecs->Translationadaptor)
-                ecs->Translationadaptor = ensTranslationadaptorNew(dba);
+                ecs->Translationadaptor =
+                    ensTranslationadaptorNew(dba);
 
             return ecs->Translationadaptor;
 

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.6 $
+** @version $Revision: 1.7 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -65,9 +65,6 @@ static const char *databaseadaptorGroup[] =
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-EnsPMetainformationadaptor ensRegistryGetMetainformationadaptor(
-    EnsPDatabaseadaptor dba);
-
 
 
 
@@ -124,10 +121,16 @@ EnsPMetainformationadaptor ensRegistryGetMetainformationadaptor(
 **
 ** Default Ensembl Database Adaptor constructor.
 **
-** This function should not be called directly, rather the
-** ensRegistryAddDatabaseadaptor and ensRegistryGetDatabaseadaptor functions
-** should be used to instantiate an Ensembl Database Adaptor in the
-** Ensembl Registry and subsequently return it for use.
+** Ensembl Database Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Database Adaptor connected to a particular database
+** is sufficient to instantiate any number of Ensembl Object Adaptors from the
+** database. Each Ensembl Object Adaptor will have a weak reference to the
+** Ensembl Database Adaptor that instantiated it. Therefore, Ensembl Database
+** Adaptors should not be instantiated directly, but rather obtained from the
+** Ensembl Registry, which will in turn call this function if neccessary.
+**
+** @see ensRegistryAddDatabaseadaptor
+** @see ensRegistryGetDatabaseadaptor
 **
 ** @cc Bio::EnsEMBL::DBSQL::DBAdaptor::new
 ** @param [r] dbc [EnsPDatabaseconnection] Ensembl Database Connection
@@ -230,11 +233,11 @@ EnsPDatabaseadaptor ensDatabaseadaptorNew(
 **
 ** Default Ensembl Database Adaptor destructor.
 **
-** This function should only be called for Ensembl Database Adaptors that have
-** been instantiated outside the ensRegistryAddDatabaseadaptor function.
-** For all other Database Adaptors ensRegistryRemoveDatabaseadaptor can be
-** used to destroy a particular Ensembl Database Adaptor. All remaining
-** Database Adaptors will be automatically cleared from the Registry upon exit.
+** Ensembl Database Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Object Adaptors that have
+** been instantiated by it. Therefore, Ensembl Database Adaptors should never
+** be destroyed directly. Upon exit, the Ensembl Registry will call this
+** function if required.
 **
 ** @param [d] Pdba [EnsPDatabaseadaptor*] Ensembl Database Adaptor address
 **

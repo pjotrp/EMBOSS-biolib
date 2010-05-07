@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -44,9 +44,6 @@
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
-
-extern EnsPMetainformationadaptor ensRegistryGetMetainformationadaptor(
-    EnsPDatabaseadaptor dba);
 
 static AjBool coordsystemadaptorFetchAllBySQL(EnsPCoordsystemadaptor csa,
                                               const AjPStr statement,
@@ -1841,6 +1838,17 @@ static AjBool coordsystemadaptorSeqregionMapInit(EnsPCoordsystemadaptor csa)
 **
 ** Default constructor for an Ensembl Coordinate System Adaptor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetCoordsystemadaptor
+**
 ** @cc Bio::EnsEMBL::DBSQL::CoordSystemAdaptor::new
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
@@ -1848,7 +1856,8 @@ static AjBool coordsystemadaptorSeqregionMapInit(EnsPCoordsystemadaptor csa)
 ** @@
 ******************************************************************************/
 
-EnsPCoordsystemadaptor ensCoordsystemadaptorNew(EnsPDatabaseadaptor dba)
+EnsPCoordsystemadaptor ensCoordsystemadaptorNew(
+    EnsPDatabaseadaptor dba)
 {
     EnsPCoordsystemadaptor csa = NULL;
 
@@ -2256,6 +2265,12 @@ static AjBool coordsystemadaptorSeqregionMapExit(EnsPCoordsystemadaptor csa)
 ** Default destructor for an Ensembl Coordinate System Adaptor.
 ** This function also clears the internal cordinate system and mapping path
 ** caches.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Pcsa [EnsPCoordsystemadaptor*] Ensembl Coordinate System Adaptor
 **                                           address

@@ -240,7 +240,11 @@ AjBool ensQcdatabaseMatch(const EnsPQcdatabase qcdb1,
 
 /* Ensembl Quality Check Database Adaptor */
 
-EnsPQcdatabaseadaptor ensQcdatabaseadaptorNew(EnsPDatabaseadaptor dba);
+EnsPQcdatabaseadaptor ensRegistryGetQcdatabaseadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPQcdatabaseadaptor ensQcdatabaseadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensQcdatabaseadaptorDel(EnsPQcdatabaseadaptor* Pqcdba);
 

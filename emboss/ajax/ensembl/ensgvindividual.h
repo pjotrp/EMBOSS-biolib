@@ -79,7 +79,11 @@ AjBool ensGvindividualTrace(const EnsPGvindividual gvi, ajuint level);
 
 /* Ensembl Genetic Variation Individual Adaptor */
 
-EnsPGvindividualadaptor ensGvindividualadaptorNew(EnsPDatabaseadaptor dba);
+EnsPGvindividualadaptor ensRegistryGetGvindividualadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPGvindividualadaptor ensGvindividualadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensGvindividualadaptorDel(EnsPGvindividualadaptor *Pgvia);
 

@@ -387,7 +387,11 @@ AjBool ensMarkerClearMarkermaplocations(EnsPMarker marker);
 
 /* Ensembl Marker Adaptor */
 
-EnsPMarkeradaptor ensMarkeradaptorNew(EnsPDatabaseadaptor dba);
+EnsPMarkeradaptor ensRegistryGetMarkeradaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPMarkeradaptor ensMarkeradaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensMarkeradaptorDel(EnsPMarkeradaptor* Pma);
 
@@ -454,7 +458,11 @@ AjBool ensMarkerfeatureSortByStartDescending(AjPList mfs);
 
 /* Ensembl Marker Feature Adaptor */
 
-EnsPMarkerfeatureadaptor ensMarkerfeatureadaptorNew(EnsPDatabaseadaptor dba);
+EnsPMarkerfeatureadaptor ensRegistryGetMarkerfeatureadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPMarkerfeatureadaptor ensMarkerfeatureadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensMarkerfeatureadaptorDel(EnsPMarkerfeatureadaptor *Pmfa);
 

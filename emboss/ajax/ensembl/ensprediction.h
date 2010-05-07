@@ -188,7 +188,11 @@ AjBool ensPredictionexonSortByStartDescending(AjPList pes);
 
 /* Ensembl Prediction Exon Adaptor */
 
-EnsPPredictionexonadaptor ensPredictionexonadaptorNew(EnsPDatabaseadaptor dba);
+EnsPPredictionexonadaptor ensRegistryGetPredictionexonadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPPredictionexonadaptor ensPredictionexonadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensPredictionexonadaptorDel(EnsPPredictionexonadaptor *Ppea);
 
@@ -285,6 +289,9 @@ AjBool ensPredictiontranscriptSortByStartAscending(AjPList pts);
 AjBool ensPredictiontranscriptSortByStartDescending(AjPList pts);
 
 /* Ensembl Prediction Transcript Adaptor */
+
+EnsPPredictiontranscriptadaptor ensRegistryGetPredictiontranscriptadaptor(
+    EnsPDatabaseadaptor dba);
 
 EnsPPredictiontranscriptadaptor ensPredictiontranscriptadaptorNew(
     EnsPDatabaseadaptor dba);

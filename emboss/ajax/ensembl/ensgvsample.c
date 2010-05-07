@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -60,9 +60,6 @@ static const char *gvsampleDisplay[] =
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
-
-extern EnsPGvsampleadaptor ensRegistryGetGvsampleadaptor(
-    EnsPDatabaseadaptor dba);
 
 static AjBool gvsampleadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                            const AjPStr statement,
@@ -971,6 +968,17 @@ static AjBool gvsampleadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 **
 ** Default constructor for an Ensembl Genetic Variation Sample Adaptor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetGvsampleadaptor
+**
 ** @cc Bio::EnsEMBL::DBSQL::Baseadaptor::new
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
@@ -979,15 +987,17 @@ static AjBool gvsampleadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @@
 ******************************************************************************/
 
-EnsPGvsampleadaptor ensGvsampleadaptorNew(EnsPDatabaseadaptor dba)
+EnsPGvsampleadaptor ensGvsampleadaptorNew(
+    EnsPDatabaseadaptor dba)
 {
-    return ensBaseadaptorNew(dba,
-                             gvsampleadaptorTables,
-                             gvsampleadaptorColumns,
-                             gvsampleadaptorLeftJoin,
-                             gvsampleadaptorDefaultCondition,
-                             gvsampleadaptorFinalCondition,
-                             gvsampleadaptorFetchAllBySQL);
+    return ensBaseadaptorNew(
+        dba,
+        gvsampleadaptorTables,
+        gvsampleadaptorColumns,
+        gvsampleadaptorLeftJoin,
+        gvsampleadaptorDefaultCondition,
+        gvsampleadaptorFinalCondition,
+        gvsampleadaptorFetchAllBySQL);
 }
 
 
@@ -996,6 +1006,12 @@ EnsPGvsampleadaptor ensGvsampleadaptorNew(EnsPDatabaseadaptor dba)
 /* @func ensGvsampleadaptorDel ************************************************
 **
 ** Default destructor for an Ensembl Gentic Variation Sample Adaptor.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Pgvsa [EnsPGvsampleadaptor*] Ensembl Genetic Variation
 **                                         Sample Adaptor address

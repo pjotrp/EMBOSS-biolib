@@ -144,7 +144,11 @@ AjBool ensTranslationFetchSequenceSeq(EnsPTranslation translation,
 
 /* Ensembl Translation Adaptor */
 
-EnsPTranslationadaptor ensTranslationadaptorNew(EnsPDatabaseadaptor dba);
+EnsPTranslationadaptor ensRegistryGetTranslationadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPTranslationadaptor ensTranslationadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensTranslationadaptorDel(EnsPTranslationadaptor *Ptla);
 

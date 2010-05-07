@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -42,9 +42,6 @@
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
-
-extern EnsPCoordsystemadaptor ensRegistryGetCoordsystemadaptor(
-    EnsPDatabaseadaptor dba);
 
 static AjBool metacoordinateadaptorCacheInit(EnsPMetacoordinateadaptor mca);
 
@@ -261,6 +258,17 @@ static AjBool metacoordinateadaptorCacheInit(EnsPMetacoordinateadaptor mca)
 **
 ** Default constructor for an Ensembl Meta-Coordinate Adaptor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetMetacoordinateadaptor
+**
 ** @cc Bio::EnsEMBL::DBSQL::MetaCoordContainer::new
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
@@ -268,7 +276,8 @@ static AjBool metacoordinateadaptorCacheInit(EnsPMetacoordinateadaptor mca)
 ** @@
 ******************************************************************************/
 
-EnsPMetacoordinateadaptor ensMetacoordinateadaptorNew(EnsPDatabaseadaptor dba)
+EnsPMetacoordinateadaptor ensMetacoordinateadaptorNew(
+    EnsPDatabaseadaptor dba)
 {
     EnsPMetacoordinateadaptor mca = NULL;
 
@@ -458,6 +467,12 @@ static void metacoordinateadaptorClearLengthCacheL1(void **key,
 ** Default destructor for an Ensembl Meta-Coordinate Adaptor.
 ** This function also clears the internal cordinate system identifer and
 ** maximum length caches.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Pmca [EnsPMetacoordinateadaptor*] Ensembl Meta-Coordinate
 **                                              Adaptor address

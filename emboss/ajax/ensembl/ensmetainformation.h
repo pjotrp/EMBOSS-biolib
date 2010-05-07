@@ -119,6 +119,9 @@ ajuint ensMetainformationGetMemSize(const EnsPMetainformation mi);
 
 /* Ensembl Meta-Information Adaptor */
 
+EnsPMetainformationadaptor ensRegistryGetMetainformationadaptor(
+    EnsPDatabaseadaptor dba);
+
 EnsPMetainformationadaptor ensMetainformationadaptorNew(
     EnsPDatabaseadaptor dba);
 

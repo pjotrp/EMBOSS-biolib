@@ -420,7 +420,11 @@ const char *ensQcdasfeatureTypeToChar(const AjEnum type);
 
 /* Ensembl Quality Check DAS Feature Adaptor */
 
-EnsPQcdasfeatureadaptor ensQcdasfeatureadaptorNew(EnsPDatabaseadaptor dba);
+EnsPQcdasfeatureadaptor ensRegistryGetQcdasfeatureadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPQcdasfeatureadaptor ensQcdasfeatureadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensQcdasfeatureadaptorDel(EnsPQcdasfeatureadaptor *Pqcdasfa);
 
@@ -587,7 +591,11 @@ const char *ensQcvariationStateToChar(const AjEnum state);
 
 /* Ensembl Quality Check Variation Adaptor */
 
-EnsPQcvariationadaptor ensQcvariationadaptorNew(EnsPDatabaseadaptor dba);
+EnsPQcvariationadaptor ensRegistryGetQcvariationadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPQcvariationadaptor ensQcvariationadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensQcvariationadaptorDel(EnsPQcvariationadaptor* Pqcva);
 
@@ -713,7 +721,11 @@ AjBool ensQcsubmissionTrace(const EnsPQcsubmission qcsb, ajuint level);
 
 /* Ensembl Quality Check Submission Adaptor */
 
-EnsPQcsubmissionadaptor ensQcsubmissionadaptorNew(EnsPDatabaseadaptor dba);
+EnsPQcsubmissionadaptor ensRegistryGetQcsubmissionadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPQcsubmissionadaptor ensQcsubmissionadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensQcsubmissionadaptorDel(EnsPQcsubmissionadaptor* Pqcsba);
 

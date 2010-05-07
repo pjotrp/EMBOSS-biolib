@@ -11,7 +11,7 @@ extern "C"
 
 
 
-/******************************************************************************
+/* EnsEDatabaseadaptorGroup ***************************************************
 **
 ** Ensembl Database Adaptor group enumeration.
 **
@@ -80,6 +80,11 @@ typedef struct EnsSDatabaseadaptor
 /*
 ** Prototype definitions
 */
+
+/* Ensembl Database Adaptor */
+
+EnsPDatabaseadaptor ensRegistryGetDatabaseadaptor(AjEnum group,
+                                                  const AjPStr alias);
 
 EnsPDatabaseadaptor ensDatabaseadaptorNew(EnsPDatabaseconnection dbc,
                                           AjPStr database,

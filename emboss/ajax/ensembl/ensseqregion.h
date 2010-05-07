@@ -71,7 +71,11 @@ AjBool ensSeqregionIsTopLevel(EnsPSeqregion sr, AjBool *Presult);
 
 /* Ensembl Sequence Region Adaptor */
 
-EnsPSeqregionadaptor ensSeqregionadaptorNew(EnsPDatabaseadaptor dba);
+EnsPSeqregionadaptor ensRegistryGetSeqregionadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPSeqregionadaptor ensSeqregionadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensSeqregionadaptorDel(EnsPSeqregionadaptor *Psra);
 

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -42,24 +42,6 @@
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
-
-extern EnsPMetainformationadaptor
-ensRegistryGetMetainformationadaptor(EnsPDatabaseadaptor dba);
-
-extern EnsPGvindividualadaptor
-ensRegistryGetGvindividualadaptor(EnsPDatabaseadaptor dba);
-
-extern EnsPGvpopulationadaptor
-ensRegistryGetGvpopulationadaptor(EnsPDatabaseadaptor dba);
-
-extern EnsPGvsampleadaptor
-ensRegistryGetGvsampleadaptor(EnsPDatabaseadaptor dba);
-
-extern EnsPGvvariationadaptor
-ensRegistryGetGvvariationadaptor(EnsPDatabaseadaptor dba);
-
-extern EnsPSliceadaptor
-ensRegistryGetSliceadaptor(EnsPDatabaseadaptor dba);
 
 static void gvvariationadaptorClearAlleles(void **key, void **value, void *cl);
 

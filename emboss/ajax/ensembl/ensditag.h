@@ -195,6 +195,9 @@ ajuint ensDitagGetMemSize(const EnsPDitag dt);
 
 /* Ensembl Ditag Adaptor */
 
+EnsPDitagadaptor ensRegistryGetDitagadaptor(
+    EnsPDatabaseadaptor dba);
+
 EnsPDatabaseadaptor ensDitagadaptorGetDatabaseadaptor(EnsPDitagadaptor dta);
 
 AjBool ensDitagadaptorFetchByIdentifier(EnsPDitagadaptor dta,
@@ -288,7 +291,11 @@ AjBool ensDitagfeatureSortByStartDescending(AjPList dtfs);
 
 /* Ensembl Ditag Feature Adaptor */
 
-EnsPDitagfeatureadaptor ensDitagfeatureadaptorNew(EnsPDatabaseadaptor dba);
+EnsPDitagfeatureadaptor ensRegistryGetDitagfeatureadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPDitagfeatureadaptor ensDitagfeatureadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensDitagfeatureadaptorDel(EnsPDitagfeatureadaptor *Pdtfa);
 

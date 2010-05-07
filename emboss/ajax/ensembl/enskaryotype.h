@@ -115,7 +115,11 @@ AjBool ensKaryotypebandSortByStartDescending(AjPList kbs);
 
 /* Ensembl Karyoptype Band Adaptor */
 
-EnsPKaryotypebandadaptor ensKaryotypebandadaptorNew(EnsPDatabaseadaptor dba);
+EnsPKaryotypebandadaptor ensRegistryGetKaryotypebandadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPKaryotypebandadaptor ensKaryotypebandadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensKaryotypebandadaptorDel(EnsPKaryotypebandadaptor* Padaptor);
 

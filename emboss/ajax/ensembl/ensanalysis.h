@@ -77,7 +77,7 @@ const AjPStr ensAnalysisGetDescription(const EnsPAnalysis analysis);
 
 const AjPStr ensAnalysisGetDisplayLabel(const EnsPAnalysis analysis);
 
-extern const AjPStr ensAnalysisGetWebData(const EnsPAnalysis analysis);
+const AjPStr ensAnalysisGetWebData(const EnsPAnalysis analysis);
 
 AjBool ensAnalysisGetDisplayable(const EnsPAnalysis analysis);
 
@@ -134,7 +134,11 @@ ajuint ensAnalysisGetMemSize(const EnsPAnalysis analysis);
 
 /* Ensembl Analysis Adaptor */
 
-EnsPAnalysisadaptor ensAnalysisadaptorNew(EnsPDatabaseadaptor dba);
+EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPAnalysisadaptor ensAnalysisadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensAnalysisadaptorDel(EnsPAnalysisadaptor* Paa);
 

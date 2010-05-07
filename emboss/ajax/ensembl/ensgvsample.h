@@ -64,7 +64,11 @@ const char* ensGvsampleDisplayToChar(const AjEnum display);
 
 /* Ensembl Genetic Variation Sample Adaptor */
 
-EnsPGvsampleadaptor ensGvsampleadaptorNew(EnsPDatabaseadaptor dba);
+EnsPGvsampleadaptor ensRegistryGetGvsampleadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPGvsampleadaptor ensGvsampleadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensGvsampleadaptorDel(EnsPGvsampleadaptor *Pgvsa);
 

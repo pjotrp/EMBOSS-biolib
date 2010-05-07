@@ -110,6 +110,9 @@ ajuint ensExternaldatabaseGetMemSize(const EnsPExternaldatabase edb);
 
 /* Ensembl External Database Adaptor */
 
+EnsPExternaldatabaseadaptor ensRegistryGetExternaldatabaseadaptor(
+    EnsPDatabaseadaptor dba);
+
 EnsPExternaldatabaseadaptor ensExternaldatabaseadaptorNew(
     EnsPDatabaseadaptor dba);
 

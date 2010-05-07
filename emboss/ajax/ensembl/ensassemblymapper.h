@@ -217,10 +217,14 @@ AjBool ensAssemblymapperMapToSeqregion(EnsPAssemblymapper am,
                                        ajint srstrand,
                                        const EnsPSeqregion optsr,
                                        AjPList mrs);
-		     
+
 /* Ensembl Assembly Mapper Adaptor */
 
-EnsPAssemblymapperadaptor ensAssemblymapperadaptorNew(EnsPDatabaseadaptor dba);
+EnsPAssemblymapperadaptor ensRegistryGetAssemblymapperadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPAssemblymapperadaptor ensAssemblymapperadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 AjBool ensAssemblymapperadaptorCacheClear(EnsPAssemblymapperadaptor ama);
 
@@ -289,13 +293,13 @@ AjBool ensAssemblymapperadaptorRegisterAllChained(
 ** End of prototype definitions
 */
 
-#define MENSCHAINEDASSEMBLYMAPPERADAPTORGETASSEMBLEDCOORDSYSTEM(cam) \
+#define MENSCHAINEDASSEMBLYMAPPERADAPTORGETASSEMBLEDCOORDSYSTEM(cam)    \
 ensChainedassemblymapperGetSourceCoordsystem(cam)
 
-#define MENSCHAINEDASSEMBLYMAPPERADAPTORGETCOMPONENTCOORDSYSTEM(cam) \
+#define MENSCHAINEDASSEMBLYMAPPERADAPTORGETCOMPONENTCOORDSYSTEM(cam)    \
 ensChainedassemblymapperGetTargetCoordsystem(cam)
 
-#define MENSCHAINEDASSEMBLYMAPPERGETMAPPER(cam) \
+#define MENSCHAINEDASSEMBLYMAPPERGETMAPPER(cam)         \
 ensChainedassemblymapperGetSourceTargetMapper(cam)
 
 #endif /* ensassemblymapper_h */

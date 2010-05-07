@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -43,15 +43,6 @@
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
-
-extern EnsPMetainformationadaptor ensRegistryGetMetainformationadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPGvpopulationadaptor ensRegistryGetGvpopulationadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPGvsampleadaptor ensRegistryGetGvsampleadaptor(
-    EnsPDatabaseadaptor dba);
 
 static AjBool gvpopulationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
@@ -886,6 +877,17 @@ static AjBool gvpopulationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 **
 ** Default constructor for an Ensembl Genetic Variation Population Adaptor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetGvpopulationadaptor
+**
 ** @cc Bio::EnsEMBL::Variation::DBSQL::PopulationAdaptor::new
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
@@ -894,18 +896,20 @@ static AjBool gvpopulationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @@
 ******************************************************************************/
 
-EnsPGvpopulationadaptor ensGvpopulationadaptorNew(EnsPDatabaseadaptor dba)
+EnsPGvpopulationadaptor ensGvpopulationadaptorNew(
+    EnsPDatabaseadaptor dba)
 {
     if(!dba)
         return NULL;
 
-    return ensBaseadaptorNew(dba,
-                             gvpopulationadaptorTables,
-                             gvpopulationadaptorColumns,
-                             gvpopulationadaptorLeftJoin,
-                             gvpopulationadaptorDefaultCondition,
-                             gvpopulationadaptorFinalCondition,
-                             gvpopulationadaptorFetchAllBySQL);
+    return ensBaseadaptorNew(
+        dba,
+        gvpopulationadaptorTables,
+        gvpopulationadaptorColumns,
+        gvpopulationadaptorLeftJoin,
+        gvpopulationadaptorDefaultCondition,
+        gvpopulationadaptorFinalCondition,
+        gvpopulationadaptorFetchAllBySQL);
 }
 
 
@@ -914,6 +918,12 @@ EnsPGvpopulationadaptor ensGvpopulationadaptorNew(EnsPDatabaseadaptor dba)
 /* @func ensGvpopulationadaptorDel ********************************************
 **
 ** Default destructor for an Ensembl Gentic Variation Population Adaptor.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Pgvpa [EnsPGvpopulationadaptor*] Ensembl Genetic Variation
 **                                             Population Adaptor address

@@ -53,7 +53,11 @@ AjBool ensGvpopulationTrace(const EnsPGvpopulation gvp, ajuint level);
 
 /* Ensembl Genetic Variation Population Adaptor */
 
-EnsPGvpopulationadaptor ensGvpopulationadaptorNew(EnsPDatabaseadaptor dba);
+EnsPGvpopulationadaptor ensRegistryGetGvpopulationadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPGvpopulationadaptor ensGvpopulationadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensGvpopulationadaptorDel(EnsPGvpopulationadaptor *Pgvpa);
 

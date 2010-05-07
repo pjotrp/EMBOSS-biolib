@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -42,24 +42,6 @@
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
-
-extern EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPAssemblymapperadaptor ensRegistryGetAssemblymapperadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPCoordsystemadaptor ensRegistryGetCoordsystemadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPPredictionexonadaptor ensRegistryGetPredictionexonadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPPredictiontranscriptadaptor ensRegistryGetPredictiontranscriptadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPSliceadaptor ensRegistryGetSliceadaptor(
-    EnsPDatabaseadaptor dba);
 
 static int predictionexonCompareStartAscending(const void* P1,
                                                const void* P2);
@@ -1676,13 +1658,25 @@ static EnsPFeature predictionexonadaptorGetFeature(const void *value)
 **
 ** Default Ensembl Prediction Exon Adaptor constructor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetPredictionexonadaptor
+**
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
 ** @return [EnsPPredictionexonadaptor] Ensembl Prediction Exon Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPPredictionexonadaptor ensPredictionexonadaptorNew(EnsPDatabaseadaptor dba)
+EnsPPredictionexonadaptor ensPredictionexonadaptorNew(
+    EnsPDatabaseadaptor dba)
 {
     return ensFeatureadaptorNew(
         dba,
@@ -1728,6 +1722,12 @@ EnsPPredictionexonadaptor ensPredictionexonadaptorNew(EnsPDatabaseadaptor dba)
 /* @func ensPredictionexonadaptorDel ******************************************
 **
 ** Default destructor for an Ensembl Prediction Exon Adaptor.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Ppea [EnsPPredictionexonadaptor*] Ensembl Prediction Exon Adaptor
 **                                              address
@@ -3613,6 +3613,17 @@ static EnsPFeature predictiontranscriptadaptorGetFeature(const void *value)
 **
 ** Default Ensembl Prediction Transcript Adaptor constructor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetPredictiontranscriptadaptor
+**
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
 ** @return [EnsPPredictiontranscriptadaptor] Ensembl Prediction
@@ -3672,6 +3683,12 @@ EnsPPredictiontranscriptadaptor ensPredictiontranscriptadaptorNew(
 /* @func ensPredictiontranscriptadaptorDel ************************************
 **
 ** Default destructor for an Ensembl Prediction Transcript Adaptor.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Ppta [EnsPPredictiontranscriptadaptor*] Ensembl Prediction
 **                                                    Transcript Adaptor

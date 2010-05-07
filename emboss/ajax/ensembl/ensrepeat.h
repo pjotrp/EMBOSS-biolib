@@ -12,7 +12,7 @@ extern "C"
 
 
 
-/******************************************************************************
+/*EnsERepeatMaskType **********************************************************
 **
 ** Ensembl Repeat Mask Type enumeration.
 **
@@ -198,6 +198,9 @@ AjBool ensRepeatconsensusTrace(const EnsPRepeatconsensus rc, ajuint level);
 
 /* Ensembl Repeat Consensus Adaptor */
 
+EnsPRepeatconsensusadaptor ensRegistryGetRepeatconsensusadaptor(
+    EnsPDatabaseadaptor dba);
+
 EnsPDatabaseadaptor ensRepeatconsensusadaptorGetAdaptor(
     EnsPRepeatconsensusadaptor rca);
 
@@ -283,7 +286,11 @@ AjBool ensRepeatfeatureSortByStartDescending(AjPList rfs);
 
 /* Ensembl Repeat Feature Adaptor */
 
-EnsPRepeatfeatureadaptor ensRepeatfeatureadaptorNew(EnsPDatabaseadaptor dba);
+EnsPRepeatfeatureadaptor ensRegistryGetRepeatfeatureadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPRepeatfeatureadaptor ensRepeatfeatureadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensRepeatfeatureadaptorDel(EnsPRepeatfeatureadaptor *Prfa);
 

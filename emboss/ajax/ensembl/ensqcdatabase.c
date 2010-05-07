@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 ** License along with this library; if not, write to the
 ** Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ** Boston, MA  02111-1307, USA.
-*****************************************************************************/
+******************************************************************************/
 
 /* ==================================================================== */
 /* ========================== include files =========================== */
@@ -84,12 +84,6 @@ static const char *qcdatabaseType[] =
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
-
-extern EnsPAnalysisadaptor ensRegistryGetAnalysisadaptor(
-    EnsPDatabaseadaptor dba);
-
-extern EnsPQcdatabaseadaptor ensRegistryGetQcdatabaseadaptor(
-    EnsPDatabaseadaptor dba);
 
 static AjBool qcdatabaseadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                              const AjPStr statement,
@@ -2053,13 +2047,25 @@ static AjBool qcdatabaseadaptorCacheInit(EnsPQcdatabaseadaptor qcdba)
 **
 ** Default constructor for an Ensembl QC Database Adaptor.
 **
+** Ensembl Object Adaptors are singleton objects in the sense that a single
+** instance of an Ensembl Object Adaptor connected to a particular database is
+** sufficient to instantiate any number of Ensembl Objects from the database.
+** Each Ensembl Object will have a weak reference to the Object Adaptor that
+** instantiated it. Therefore, Ensembl Object Adaptors should not be
+** instantiated directly, but rather obtained from the Ensembl Registry,
+** which will in turn call this function if neccessary.
+**
+** @see ensRegistryGetDatabaseadaptor
+** @see ensRegistryGetQcdatabaseadaptor
+**
 ** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
 ** @return [EnsPQcdatabaseadaptor] Ensembl QC Database Adaptor or NULL
 ** @@
 ******************************************************************************/
 
-EnsPQcdatabaseadaptor ensQcdatabaseadaptorNew(EnsPDatabaseadaptor dba)
+EnsPQcdatabaseadaptor ensQcdatabaseadaptorNew(
+    EnsPDatabaseadaptor dba)
 {
     EnsPQcdatabaseadaptor qcdba = NULL;
 
@@ -2233,6 +2239,12 @@ static AjBool qcdatabaseadaptorCacheExit(EnsPQcdatabaseadaptor qcdba)
 /* @func ensQcdatabaseadaptorDel **********************************************
 **
 ** Default destructor for an Ensembl QC Database Adaptor.
+**
+** Ensembl Object Adaptors are singleton objects that are registered in the
+** Ensembl Registry and weakly referenced by Ensembl Objects that have been
+** instantiated by it. Therefore, Ensembl Object Adaptors should never be
+** destroyed directly. Upon exit, the Ensembl Registry will call this function
+** if required.
 **
 ** @param [d] Pqcdba [EnsPQcdatabaseadaptor*] Ensembl QC Database Adaptor
 **                                            address

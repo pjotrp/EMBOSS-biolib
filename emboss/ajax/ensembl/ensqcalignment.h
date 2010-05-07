@@ -244,7 +244,11 @@ AjBool ensQcalignmentReport(const EnsPQcalignment qca,
 
 /* Ensembl Quality Check Alignment Adaptor */
 
-EnsPQcalignmentadaptor ensQcalignmentadaptorNew(EnsPDatabaseadaptor dba);
+EnsPQcalignmentadaptor ensRegistryGetQcalignmentadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPQcalignmentadaptor ensQcalignmentadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensQcalignmentadaptorDel(EnsPQcalignmentadaptor* Pqcaa);
 

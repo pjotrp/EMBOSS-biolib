@@ -118,7 +118,11 @@ AjBool ensExonSortByStartDescending(AjPList exons);
 
 /* Ensembl Exon Adaptor */
 
-EnsPExonadaptor ensExonadaptorNew(EnsPDatabaseadaptor dba);
+EnsPExonadaptor ensRegistryGetExonadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPExonadaptor ensExonadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensExonadaptorDel(EnsPExonadaptor *Pea);
 

@@ -315,6 +315,12 @@ ajuint ensGvalleleGetMemSize(const EnsPGvallele gva);
 
 AjBool ensGvalleleTrace(const EnsPGvallele gva, ajuint level);
 
+/* Ensembl Genetic Variation Allele Adaptor */
+
+EnsPGvalleleadaptor ensRegistryGetGvalleleadaptor(
+    EnsPDatabaseadaptor dba);
+
+
 /* Ensembl Genetic Variation Genotype */
 
 EnsPGvgenotype ensGvgenotypeNew(EnsPGvgenotypeadaptor gvga,
@@ -347,6 +353,11 @@ AjBool ensGvgenotypeSetAllele2(EnsPGvgenotype gvg, AjPStr allele2);
 ajuint ensGvgenotypeGetMemSize(const EnsPGvgenotype gvg);
 
 AjBool ensGvgenotypeTrace(const EnsPGvgenotype gvg, ajuint level);
+
+/* Ensembl Genetic Variation Genotype Adaptor */
+
+EnsPGvgenotypeadaptor ensRegistryGetGvgenotypeadaptor(
+    EnsPDatabaseadaptor dba);
 
 /* Ensembl Genetic Variation Variation */
 
@@ -443,6 +454,9 @@ AjBool ensGvvariationFetchHandleBySynonym(EnsPGvvariation gvv,
                                           AjPStr *Phandle);
 
 /* Ensembl Genetic Variation Variation Adaptor */
+
+EnsPGvvariationadaptor ensRegistryGetGvvariationadaptor(
+    EnsPDatabaseadaptor dba);
 
 AjBool ensGvvariationadaptorFetchByIdentifier(EnsPGvvariationadaptor gvva,
                                               ajuint identifier,

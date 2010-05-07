@@ -42,6 +42,9 @@ AjBool ensAttributeTrace(const EnsPAttribute attribute, ajuint level);
 
 /* Ensembl Attribute Adaptor */
 
+EnsPAttributeadaptor ensRegistryGetAttributeadaptor(
+    EnsPDatabaseadaptor dba);
+
 EnsPDatabaseadaptor ensAttributeadaptorGetDatabaseadaptor(
     EnsPAttributeadaptor ata);
 

@@ -41,7 +41,11 @@ typedef struct EnsSSequenceadaptor
 
 /* Ensembl Sequence Adaptor */
 
-EnsPSequenceadaptor ensSequenceadaptorNew(EnsPDatabaseadaptor dba);
+EnsPSequenceadaptor ensRegistryGetSequenceadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPSequenceadaptor ensSequenceadaptorNew(
+    EnsPDatabaseadaptor dba);
 
 void ensSequenceadaptorDel(EnsPSequenceadaptor* Psa);
 
