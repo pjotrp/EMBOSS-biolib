@@ -20907,7 +20907,7 @@ FP /^asis               1 HEAGAWGHEE-     10\n/
 FC = 40
 //
 
-ID needle-withendweight
+ID needle-endweight1
 AP needle
 CL -gapopen=8 -gapextend=8 -endopen=8 -endextend=8 -stdout
 CL -datafile=EBLOSUM50 -endweight
@@ -20925,6 +20925,51 @@ FP /^# Score: +1\.0\n/
 FP /^asis               1 -(-P)|(P-)-AW-HEAE      7\n/
 FP /^asis               1 HEAGAWGHE-E     10\n/
 FC = 42
+//
+
+ID needle-endweight2
+AP needle
+CL asis:actggatatataatat asis:actaatat stdout -auto -endweight
+CL -gapopen 20
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +8\/16/
+FP /^# Score: +16\.5/
+FP /^asis +1 ac--------taatat/
+FC = 39
+//
+
+ID needle-endweight3
+AP needle
+CL asis:actggatatataatat asis:actaatat stdout -auto -endweight
+CL -gapopen 20 -gapextend 2 -endextend 1
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +8\/16/
+FP /^# Score: +6\.0/
+FP /^asis +1 ac--------taatat/
+FC = 41
+//
+
+ID needle-endweight4
+AP needle
+CL asis:actggatatataatat asis:actaatat stdout -auto -endweight
+CL -gapopen 20 -gapextend 2 -endextend 0
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +6\/16/
+FP /^# Score: +12\.0/
+FP /^asis +1 --------actaatat/
+FC = 41
 //
 
 ID needle-traceback1
