@@ -111,7 +111,8 @@
 **   entity
 **   topic
 **   operation
-**   resource
+**   database
+**   ontology
 **   data
 **   syntax 
 **
@@ -156,6 +157,10 @@
 **
 ** The code that checks for "field in wrong order" does not make all the checks
 ** it might, e.g. does not check whether other relations appear before is_a.
+**
+** It does not check for multiple (erroneous) comment: lines
+**
+** It does not suppress (irrelevant) error messages for obsolete terms.
 ******************************************************************************/
 
  #include "emboss.h"
@@ -217,14 +222,15 @@ static const char *RELATIONS[NRELATIONS] =
 
 
 
-#define NNAMESPACES 6
+#define NNAMESPACES 7
 
 static const char *NAMESPACES[NNAMESPACES] =
 {
     "entity", 
     "topic", 
     "operation", 
-    "resource", 
+    "database",
+    "ontology", 
     "data", 
     "syntax"
 };
@@ -237,7 +243,8 @@ enum _namespace
     entity, 
     topic, 
     operation, 
-    resource, 
+    database,
+    ontology, 
     data, 
     syntax
 };
@@ -978,8 +985,9 @@ int main(ajint argc, char **argv)
                         ajFmtPrintF(ouf_log, "Line %6d : Relation not allowed "
                                     "for term in this namespace\n", tmp_line);
                 }
-                /* resource */
-                else if(ajStrMatchC(namespace, NAMESPACES[3]))
+                /* database or ontology */
+                else if(ajStrMatchC(namespace, NAMESPACES[3])  ||
+                        ajStrMatchC(namespace, NAMESPACES[4]))
                 {
                     if(!found_is_source_of) 
                         ajFmtPrintF(ouf_log, "Line %6d : No is_source_of: "
@@ -995,7 +1003,7 @@ int main(ajint argc, char **argv)
                                     "for term in this namespace\n", tmp_line);   
                 }
                 /* data */
-                else if(ajStrMatchC(namespace, NAMESPACES[4]))
+                else if(ajStrMatchC(namespace, NAMESPACES[5]))
                 {
                     if(found_concerns || found_is_concern_of ||
                        found_has_input || found_has_output ||
@@ -1006,7 +1014,7 @@ int main(ajint argc, char **argv)
                 }
 
                 /* syntax */
-                else if(ajStrMatchC(namespace, NAMESPACES[5]))
+                else if(ajStrMatchC(namespace, NAMESPACES[6]))
                 {
                     if(found_concerns         ||
                        found_is_concern_of    ||
@@ -1371,8 +1379,8 @@ int main(ajint argc, char **argv)
                 {
                     if(!(id=FindTerm(entity, tmp_name, namespaces)))
                         if(!(id=FindTerm(operation, tmp_name, namespaces)))
-                            if(!(id=FindTerm(resource, tmp_name,
-                                             namespaces)))
+                            if(!(id=FindTerm(database, tmp_name, namespaces)))
+                                if(!(id=FindTerm(ontology, tmp_name, namespaces)))
                                 ajFmtPrintF(ouf_log,
                                             "Line %6d : End-point term of "
                                             "relation does not exist (%S)\n",
@@ -1409,9 +1417,10 @@ int main(ajint argc, char **argv)
                 }
                 else if (ajStrPrefixC(line, "has_source:"))
                 {
-                    if(!(id=FindTerm(resource, tmp_name, namespaces)))
-                        ajFmtPrintF(ouf_log, "Line %6d : End-point term of relation does not exist (%S)\n",
-                                    linecnt+1, line);
+                    if(!(id=FindTerm(database, tmp_name, namespaces)))
+                        if(!(id=FindTerm(ontology, tmp_name, namespaces)))
+                            ajFmtPrintF(ouf_log, "Line %6d : End-point term of relation does not exist (%S)\n",
+                                        linecnt+1, line);
                 }
                 else if (ajStrPrefixC(line, "has_identifier:"))
                 {
@@ -1425,13 +1434,14 @@ int main(ajint argc, char **argv)
                 else if (ajStrPrefixC(line, "is_identifier_of:"))
                 {
                     if(!(id=FindTerm(entity, tmp_name, namespaces)))
-                        if(!(id=FindTerm(resource, tmp_name, namespaces)))
-                            if(!(id=FindTerm(data, tmp_name,
-                                             namespaces)))
-                                ajFmtPrintF(ouf_log, "Line %6d : End-point "
-                                            "term of relation does not "
-                                            "exist (%S)\n",
-                                            linecnt+1, line);
+                        if(!(id=FindTerm(database, tmp_name, namespaces)))
+                            if(!(id=FindTerm(ontology, tmp_name, namespaces)))
+                                if(!(id=FindTerm(data, tmp_name,
+                                                 namespaces)))
+                                    ajFmtPrintF(ouf_log, "Line %6d : End-point "
+                                                "term of relation does not "
+                                                "exist (%S)\n",
+                                                linecnt+1, line);
                 }
                 else if (ajStrPrefixC(line,  "is_attribute_of:"))
                 {
@@ -1453,13 +1463,14 @@ int main(ajint argc, char **argv)
                     if(!(id=FindTerm(entity, tmp_name, namespaces)))
                         if(!(id=FindTerm(topic, tmp_name, namespaces)))
                             if(!(id=FindTerm(operation, tmp_name, namespaces)))
-                                if(!(id=FindTerm(resource, tmp_name, namespaces)))
-                                    if(!(id=FindTerm(data, tmp_name, namespaces)))
-                                        if(!(id=FindTerm(syntax, tmp_name, namespaces)))
-                                            ajFmtPrintF(ouf_log,
-                                                        "Line %6d : End-point term of "
-                                                        "relation does not exist (%S)\n",
-                                                        linecnt+1, line);
+                                if(!(id=FindTerm(database, tmp_name, namespaces)))
+                                    if(!(id=FindTerm(ontology, tmp_name, namespaces)))
+                                        if(!(id=FindTerm(data, tmp_name, namespaces)))
+                                            if(!(id=FindTerm(syntax, tmp_name, namespaces)))
+                                                ajFmtPrintF(ouf_log,
+                                                            "Line %6d : End-point term of "
+                                                            "relation does not exist (%S)\n",
+                                                            linecnt+1, line);
                 }
                 
                 else
