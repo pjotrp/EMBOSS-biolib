@@ -134,15 +134,9 @@ typedef float* AjFloatArray;
 #define AJAXLONGDOUBLE double
 
 #define AJBOOL(b) (b ? "TRUE" : "FALSE")
-static const ajint ajFltDig = 3;
 
 static const ajint ajFalse = 0;
 static const ajint ajTrue = 1;
-static const ajint ajStatusOK = 0;
-static const ajint ajStatusInfo = 1;
-static const ajint ajStatusWarn = 2;
-static const ajint ajStatusError = 4;
-static const ajint ajStatusFatal = 8;
 
 #define AJFALSE 0
 #define AJTRUE 1
@@ -150,11 +144,6 @@ static const ajint ajStatusFatal = 8;
 #ifdef commentedout
 #define ajFalse 0
 #define ajTrue 1
-#define ajStatusOK 0
-#define ajStatusInfo 1
-#define ajStatusWarn 2
-#define ajStatusError 4
-#define ajStatusFatal 8
 #endif
 
 #define CASE2(a,b) ((a << 8) + b)
@@ -163,10 +152,11 @@ static const ajint ajStatusFatal = 8;
 
 #define STRCASE2(a) ((a[0] << 8) + a[1])
 
-static const ajint ajXRAY = 0;    /* Structure was determined by X-ray crystallography */
-static const ajint ajNMR  = 1;    /* Structure was determined by NMR or is a model     */
-static const ajint ajPDB  = 0;    /* Use original PDB residue numbering                */
-static const ajint ajIDX  = 1;    /* Use corrected residue numbering                   */
+#define ajXRAY 0    /* Structure was determined by X-ray crystallography */
+#define ajNMR  1    /* Structure was determined by NMR or is a model     */
+#define ajPDB  0    /* Use original PDB residue numbering                */
+#define ajIDX  1    /* Use corrected residue numbering                   */
+
 #define ajESCOP "Escop.dat"       /* Scop data file */
 #define ajSCOP   1                /* Type of domain */
 #define ajCATH   2                /* Type of domain */
