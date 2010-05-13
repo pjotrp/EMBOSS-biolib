@@ -16,6 +16,23 @@ extern "C"
 
 
 
+/* EnsERepeatMaskType *********************************************************
+**
+** Ensembl Repeat Mask Type enumeration.
+**
+******************************************************************************/
+
+typedef enum EnsORepeatMaskType
+{
+    ensERepeatMaskTypeNULL,
+    ensERepeatMaskTypeNone,
+    ensERepeatMaskTypeSoft,
+    ensERepeatMaskTypeHard
+} EnsERepeatMaskType;
+
+
+
+
 /* @data EnsPRepeatmaskedslice ************************************************
 **
 ** Ensembl Repeat-Masked Slice.
@@ -254,11 +271,11 @@ EnsPRepeatmaskedslice ensRepeatmaskedsliceNewRef(
 void ensRepeatmaskedsliceDel(EnsPRepeatmaskedslice* Prmslice);
 
 AjBool ensRepeatmaskedsliceFetchSequenceSeq(EnsPRepeatmaskedslice rmslice,
-                                            AjEnum mtype,
+                                            EnsERepeatMaskType mtype,
                                             AjPSeq *Psequence);
 
 AjBool ensRepeatmaskedsliceFetchSequenceStr(EnsPRepeatmaskedslice rmslice,
-                                            AjEnum mtype,
+                                            EnsERepeatMaskType mtype,
                                             AjPStr *Psequence);
 
 /*
