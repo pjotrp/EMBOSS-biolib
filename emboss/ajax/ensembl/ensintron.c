@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -60,7 +60,7 @@
 **
 ** Functions for manipulating Ensembl Intron objects
 **
-** Bio::EnsEMBL::Intron CVS Revision: 1.12
+** Bio::EnsEMBL::Intron CVS Revision: 1.13
 **
 ** @nam2rule Intron
 **
@@ -157,21 +157,23 @@ EnsPIntron ensIntronNewExons(EnsPExon exon1, EnsPExon exon2)
 
     /* Both Exons have to be on the same Slice or sequence name. */
 
+    if(!((slice1 && slice2) || (seqname1 && seqname2)))
+    {
+        ajDebug("ensIntronNewExons got Exons on Slice and sequence names.\n");
+
+        return NULL;
+    }
+
     if(slice1 && slice2 && (!ensSliceMatch(slice1, slice2)))
     {
         ajDebug("ensIntronNewExons got Exons on different Slices.\n");
 
         return NULL;
     }
-    else if(seqname1 && seqname2 && (!ajStrMatchCaseS(seqname1, seqname2)))
+
+    if(seqname1 && seqname2 && (!ajStrMatchCaseS(seqname1, seqname2)))
     {
         ajDebug("ensIntronNewExons got Exons on different sequence names.\n");
-
-        return NULL;
-    }
-    else
-    {
-        ajDebug("ensIntronNewExons got Exons on Slice and sequence names.\n");
 
         return NULL;
     }
@@ -185,15 +187,13 @@ EnsPIntron ensIntronNewExons(EnsPExon exon1, EnsPExon exon2)
 
     if(ensFeatureGetStrand(feature1) >= 0)
     {
-        start = ensFeatureGetEnd(feature1) + 1;
-
-        end = ensFeatureGetStart(feature2) - 1;
+        start = ensFeatureGetEnd(feature1)   + 1;
+        end   = ensFeatureGetStart(feature2) - 1;
     }
     else
     {
-        start = ensFeatureGetEnd(feature2) + 1;
-
-        end = ensFeatureGetStart(feature1) - 1;
+        start = ensFeatureGetEnd(feature2)   + 1;
+        end   = ensFeatureGetStart(feature1) - 1;
     }
 
     if(start > (end + 1))
@@ -230,7 +230,7 @@ EnsPIntron ensIntronNewExons(EnsPExon exon1, EnsPExon exon2)
 
         intron->NextExon = ensExonNewRef(exon2);
 
-        intron->Use = 1;	
+        intron->Use = 1;
     }
     else
         ajDebug("ensIntronNewExons could not create an Ensembl Feature.\n");
