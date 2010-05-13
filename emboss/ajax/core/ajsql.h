@@ -47,18 +47,18 @@ typedef struct AjSVoid
 
 
 
-/******************************************************************************
+/* AjESqlClient ***************************************************************
 **
 ** AJAX SQL Client enumeration.
 **
 ******************************************************************************/
 
-enum AjESqlClient
+typedef enum AjOSqlClient
 {
     ajESqlClientNULL,
     ajESqlClientMySQL,
     ajESqlClientPostgreSQL
-};
+} AjESqlClient;
 
 
 
@@ -76,7 +76,7 @@ enum AjESqlClient
 ** @attr Pconnection [void*]  SQL client library-specific connection object
 **                            (MYSQL*) for the MySQL client library
 **                            (PGconn*) for the PostgreSQL client library
-** @attr Client [AjEnum] SQL client type (ajESqlMySQL, ajESqlPostgreSQL, ...)
+** @attr Client [AjESqlClient] SQL client type
 ** @attr Use [ajuint] Use counter
 ** @@
 ******************************************************************************/
@@ -84,7 +84,7 @@ enum AjESqlClient
 typedef struct AjSSqlconnection
 {
     void *Pconnection;
-    AjEnum Client;
+    AjESqlClient Client;
     ajuint Use;
 } AjOSqlconnection;
 
@@ -202,7 +202,7 @@ void ajSqlExit(void);
 
 /* AJAX SQL Connection */
 
-AjPSqlconnection ajSqlconnectionNewData(const AjEnum client,
+AjPSqlconnection ajSqlconnectionNewData(AjESqlClient client,
                                         const AjPStr user,
                                         const AjPStr password,
                                         const AjPStr host,
@@ -214,7 +214,7 @@ AjPSqlconnection ajSqlconnectionNewRef(AjPSqlconnection sqlc);
 
 void ajSqlconnectionDel(AjPSqlconnection* Psqlc);
 
-AjEnum ajSqlconnectionGetClient(const AjPSqlconnection sqlc);
+AjESqlClient ajSqlconnectionGetClient(const AjPSqlconnection sqlc);
 
 AjBool ajSqlconnectionTrace(const AjPSqlconnection sqlc, ajuint level);
 

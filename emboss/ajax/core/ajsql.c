@@ -202,14 +202,20 @@ void ajSqlExit(void)
 ** @nam4rule NewData Constructor with set of initial values
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule NewData client [const AjEnum] Undocumented
-** @argrule NewData user [const AjPStr] Undocumented
-** @argrule NewData password [const AjPStr] Undocumented
-** @argrule NewData host [const AjPStr] Undocumented
-** @argrule NewData port [const AjPStr] Undocumented
-** @argrule NewData socketfile [const AjPStr] Undocumented
-** @argrule NewData database [const AjPStr] Undocumented
-** @argrule NewRef  sqlc [AjPSqlconnection] Undocumented
+** @argrule NewData client [AjESqlClient] SQL client
+** @argrule NewData user [const AjPStr] SQL account user name
+** @argrule NewData password [const AjPStr] SQL account password
+** @argrule NewData host [const AjPStr] SQL server hostname or IP address
+** @argrule NewData port [const AjPStr] SQL server port number
+** @argrule NewData socketfile [const AjPStr] SQL server UNIX socket file
+**                   MySQL: Absolute path to the socket file.
+**                   PostgreSQL: Absolute path to the socket directory only.
+**                     Socket file names are then generated from this directory
+**                     information and the port number above.
+**                     See "%s/.s.PGSQL.%d" in macro UNIXSOCK_PATH in source
+**                     file pgsql/src/include/libpq/pqcomm.h
+** @argrule NewData database [const AjPStr] SQL database name
+** @argrule NewRef  sqlc [AjPSqlconnection] AJAX SQL Connection
 **
 ** @valrule * [AjPSqlconnection] AJAX SQL Connection
 **
@@ -225,7 +231,7 @@ void ajSqlExit(void)
 ** library-specific connection object.
 ** A connection to an SQL server is established.
 **
-** @param [r] client [const AjEnum] SQL client enumerator
+** @param [r] client [AjESqlClient] SQL client
 ** @param [r] user [const AjPStr] SQL account user name
 ** @param [r] password [const AjPStr] SQL account password
 ** @param [r] host [const AjPStr] SQL server hostname or IP address
@@ -243,7 +249,7 @@ void ajSqlExit(void)
 ** @@
 ******************************************************************************/
 
-AjPSqlconnection ajSqlconnectionNewData(const AjEnum client,
+AjPSqlconnection ajSqlconnectionNewData(AjESqlClient client,
                                         const AjPStr user,
                                         const AjPStr password,
                                         const AjPStr host,
@@ -655,7 +661,7 @@ void ajSqlconnectionDel(AjPSqlconnection *Psqlc)
 ** @argrule S Pstr [AjPStr*] Address of the (new) SQL-escaped AJAX String
 ** @argrule Escape str [const AjPStr] AJAX String to be escaped
 **
-** @valrule Client [AjEnum] Client enumeration
+** @valrule Client [AjESqlClient] Client enumeration
 ** @valrule Escape [AjBool] True on success
 **
 ** @fcategory cast
@@ -821,11 +827,11 @@ AjBool ajSqlconnectionEscapeS(const AjPSqlconnection sqlc,
 **
 ** @param [r] sqlc [const AjPSqlconnection] AJAX SQL Connection
 **
-** @return [AjEnum] SQL client enumerator
+** @return [AjESqlClient] SQL client or ajESqlClientNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ajSqlconnectionGetClient(const AjPSqlconnection sqlc)
+AjESqlClient ajSqlconnectionGetClient(const AjPSqlconnection sqlc)
 {
     if(!sqlc)
         return ajESqlClientNULL;
