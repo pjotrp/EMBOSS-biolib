@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1976,11 +1976,22 @@ static ExonPCoordinates exonGetExonCoodinates(EnsPExon exon,
 
     ajuint *Pidentifier = NULL;
 
+    AjBool debug = AJFALSE;
+
     AjPList mrs = NULL;
 
     EnsPFeature feature = NULL;
     EnsPMapperresult mr = NULL;
     ExonPCoordinates ec = NULL;
+
+    debug = ajDebugTest("exonGetExonCoodinates");
+
+    if(debug)
+        ajDebug("exonGetExonCoodinates\n"
+                "  exon %p\n"
+                "  transcript %p\n",
+                exon,
+                transcript);
 
     if(!exon)
         return NULL;
@@ -2033,22 +2044,27 @@ static ExonPCoordinates exonGetExonCoodinates(EnsPExon exon,
             ec->TranscriptStart = ensMapperresultGetStart(mr);
             ec->TranscriptEnd   = ensMapperresultGetEnd(mr);
 
-            ajDebug("exonGetExonCoodinates Exon '%S' Transcript '%S:%d:%d'.\n",
-                    ensExonGetStableIdentifier(exon),
-                    ensTranscriptGetStableIdentifier(transcript),
-                    ec->TranscriptStart,
-                    ec->TranscriptEnd);
+            if(debug)
+                ajDebug("exonGetExonCoodinates Exon '%S' "
+                        "Transcript '%S:%d:%d'.\n",
+                        ensExonGetStableIdentifier(exon),
+                        ensTranscriptGetStableIdentifier(transcript),
+                        ec->TranscriptStart,
+                        ec->TranscriptEnd);
 
             break;
 
         case ensEMapperresultGap:
 
-            ajDebug("exonGetExonCoodinates maps the first part of the "
-                    "Exon into a gap %d:%d.\n",
-                    ensMapperresultGetGapStart(mr),
-                    ensMapperresultGetGapEnd(mr));
+            if(debug)
+            {
+                ajDebug("exonGetExonCoodinates maps the first part of the "
+                        "Exon into a gap %d:%d.\n",
+                        ensMapperresultGetGapStart(mr),
+                        ensMapperresultGetGapEnd(mr));
 
-            ensExonTrace(exon, 1);
+                ensExonTrace(exon, 1);
+            }
 
             break;
 
@@ -2072,7 +2088,9 @@ static ExonPCoordinates exonGetExonCoodinates(EnsPExon exon,
 
     tcend = ensTranscriptGetTranscriptCodingEnd(transcript);
 
-    ajDebug("exonGetExonCoodinates Transcript Coding %d:%d\n", tcstart, tcend);
+    if(debug)
+        ajDebug("exonGetExonCoodinates Transcript Coding %d:%d\n",
+                tcstart, tcend);
 
     if(!tcstart)
     {
