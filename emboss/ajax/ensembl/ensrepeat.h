@@ -12,23 +12,6 @@ extern "C"
 
 
 
-/*EnsERepeatMaskType **********************************************************
-**
-** Ensembl Repeat Mask Type enumeration.
-**
-******************************************************************************/
-
-enum EnsERepeatMaskType
-{
-    ensERepeatMaskTypeNULL,
-    ensERepeatMaskTypeNone,
-    ensERepeatMaskTypeSoft,
-    ensERepeatMaskTypeHard
-};
-
-
-
-
 /* @data EnsPRepeatconsensusadaptor *******************************************
 **
 ** Ensembl Repeat Consensus Adaptor.
