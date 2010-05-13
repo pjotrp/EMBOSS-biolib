@@ -18,12 +18,12 @@ extern "C"
 **
 ******************************************************************************/
 
-enum EnsEStorableType
+typedef enum EnsOStorableType
 {
     ensEStorableTypeNULL,
     ensEStorableTypeAnalysis,
     ensEStorableTypeRepeatconsensus
-};
+} EnsEStorableType;
 
 
 
@@ -38,7 +38,7 @@ enum EnsEStorableType
 ** @attr Use [ajuint] Use counter.
 ** @attr Identifier [ajuint] Internal SQL database identifier (primary key).
 ** @attr Adaptor [void*] Ensembl Object Adaptor.
-** @attr Type [AjEnum] Ensembl Storable Object Type.
+** @attr Type [EnsEStorableType] Ensembl Storable Object Type.
 ** @attr Padding [ajuint] Padding to alignment boundary.
 **
 ** @@
@@ -49,7 +49,7 @@ typedef struct EnsSStorable
     ajuint Use;
     ajuint Identifier;
     void *Adaptor;
-    AjEnum Type;
+    EnsEStorableType Type;
     ajuint Padding;
 } EnsOStorable;
 
@@ -62,7 +62,9 @@ typedef struct EnsSStorable
 ** Prototype definitions
 */
 
-EnsPStorable ensStorableNew(AjEnum type, ajuint identifier, void* adaptor);
+EnsPStorable ensStorableNew(EnsEStorableType type,
+                            ajuint identifier,
+                            void* adaptor);
 
 EnsPStorable ensStorableNewObj(const EnsPStorable object);
 
@@ -70,7 +72,7 @@ EnsPStorable ensStorableNewRef(EnsPStorable storable);
 
 void ensStorableDel(EnsPStorable* Pstorable);
 
-AjEnum ensStorableGetType(const EnsPStorable storable);
+EnsEStorableType ensStorableGetType(const EnsPStorable storable);
 
 void *ensStorableGetAdaptor(const EnsPStorable storable);
 

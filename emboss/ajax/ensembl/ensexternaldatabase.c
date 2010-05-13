@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -198,27 +198,28 @@ static void externaldatabaseadaptorFetchAll(const void *key,
 ** @param [u] description [AjPStr] Description
 ** @param [r] primarylinkable [AjBool] Primary identifier is linkable
 ** @param [r] displaylinkable [AjBool] Display identifier is linkable
-** @param [r] status [AjEnum] Status
-** @param [r] type [AjEnum] Type
+** @param [r] status [EnsEExternaldatabaseStatus] Status
+** @param [r] type [EnsEExternaldatabaseType] Type
 ** @param [r] prority [ajint] Display priority
 **
 ** @return [EnsPExternaldatabase] Ensembl External Database or NULL
 ** @@
 ******************************************************************************/
 
-EnsPExternaldatabase ensExternaldatabaseNew(EnsPExternaldatabaseadaptor edba,
-                                            ajuint identifier,
-                                            AjPStr name,
-                                            AjPStr release,
-                                            AjPStr displayname,
-                                            AjPStr secondaryname,
-                                            AjPStr secondarytable,
-                                            AjPStr description,
-                                            AjBool primarylinkable,
-                                            AjBool displaylinkable,
-                                            AjEnum status,
-                                            AjEnum type,
-                                            ajint priority)
+EnsPExternaldatabase ensExternaldatabaseNew(
+    EnsPExternaldatabaseadaptor edba,
+    ajuint identifier,
+    AjPStr name,
+    AjPStr release,
+    AjPStr displayname,
+    AjPStr secondaryname,
+    AjPStr secondarytable,
+    AjPStr description,
+    AjBool primarylinkable,
+    AjBool displaylinkable,
+    EnsEExternaldatabaseStatus status,
+    EnsEExternaldatabaseType type,
+    ajint priority)
 {
     EnsPExternaldatabase edb = NULL;
 
@@ -442,8 +443,8 @@ void ensExternaldatabaseDel(EnsPExternaldatabase *Pedb)
 ** @valrule Description [AjPStr] Description
 ** @valrule PrimaryIdIsLinkable [AjBool] Primary identifier is linkable
 ** @valrule DisplayIdIsLinkable [AjBool] Display identifier is linkable
-** @valrule Status [AjEnum] Status
-** @valrule Type [AjEnum] Type
+** @valrule Status [EnsEExternaldatabaseStatus] Status
+** @valrule Type [EnsEExternaldatabaseType] Type
 ** @valrule Priority [ajint] Priority
 **
 ** @fcategory use
@@ -489,7 +490,8 @@ const EnsPExternaldatabaseadaptor ensExternaldatabaseGetAdaptor(
 ** @@
 ******************************************************************************/
 
-ajuint ensExternaldatabaseGetIdentifier(const EnsPExternaldatabase edb)
+ajuint ensExternaldatabaseGetIdentifier(
+    const EnsPExternaldatabase edb)
 {
     if(!edb)
         return 0;
@@ -511,7 +513,8 @@ ajuint ensExternaldatabaseGetIdentifier(const EnsPExternaldatabase edb)
 ** @@
 ******************************************************************************/
 
-AjPStr ensExternaldatabaseGetName(const EnsPExternaldatabase edb)
+AjPStr ensExternaldatabaseGetName(
+    const EnsPExternaldatabase edb)
 {
     if(!edb)
         return NULL;
@@ -533,7 +536,8 @@ AjPStr ensExternaldatabaseGetName(const EnsPExternaldatabase edb)
 ** @@
 ******************************************************************************/
 
-AjPStr ensExternaldatabaseGetRelease(const EnsPExternaldatabase edb)
+AjPStr ensExternaldatabaseGetRelease(
+    const EnsPExternaldatabase edb)
 {
     if(!edb)
         return NULL;
@@ -555,7 +559,8 @@ AjPStr ensExternaldatabaseGetRelease(const EnsPExternaldatabase edb)
 ** @@
 ******************************************************************************/
 
-AjPStr ensExternaldatabaseGetSecondaryName(const EnsPExternaldatabase edb)
+AjPStr ensExternaldatabaseGetSecondaryName(
+    const EnsPExternaldatabase edb)
 {
     if(!edb)
         return NULL;
@@ -577,7 +582,8 @@ AjPStr ensExternaldatabaseGetSecondaryName(const EnsPExternaldatabase edb)
 ** @@
 ******************************************************************************/
 
-AjPStr ensExternaldatabaseGetSecondaryTable(const EnsPExternaldatabase edb)
+AjPStr ensExternaldatabaseGetSecondaryTable(
+    const EnsPExternaldatabase edb)
 {
     if(!edb)
         return NULL;
@@ -599,7 +605,8 @@ AjPStr ensExternaldatabaseGetSecondaryTable(const EnsPExternaldatabase edb)
 ** @@
 ******************************************************************************/
 
-AjPStr ensExternaldatabaseGetDescription(const EnsPExternaldatabase edb)
+AjPStr ensExternaldatabaseGetDescription(
+    const EnsPExternaldatabase edb)
 {
     if(!edb)
         return NULL;
@@ -621,7 +628,8 @@ AjPStr ensExternaldatabaseGetDescription(const EnsPExternaldatabase edb)
 ** @@
 ******************************************************************************/
 
-AjBool ensExternaldatabaseGetPrimaryIdIsLinkable(const EnsPExternaldatabase edb)
+AjBool ensExternaldatabaseGetPrimaryIdIsLinkable(
+    const EnsPExternaldatabase edb)
 {
     if(!edb)
         return ajFalse;
@@ -643,7 +651,8 @@ AjBool ensExternaldatabaseGetPrimaryIdIsLinkable(const EnsPExternaldatabase edb)
 ** @@
 ******************************************************************************/
 
-AjBool ensExternaldatabaseGetDisplayIdIsLinkable(const EnsPExternaldatabase edb)
+AjBool ensExternaldatabaseGetDisplayIdIsLinkable(
+    const EnsPExternaldatabase edb)
 {
     if(!edb)
         return ajFalse;
@@ -661,11 +670,13 @@ AjBool ensExternaldatabaseGetDisplayIdIsLinkable(const EnsPExternaldatabase edb)
 ** @cc Bio::EnsEMBL::DBEntry::status
 ** @param [r] edb [const EnsPExternaldatabase] Ensembl External Database
 **
-** @return [AjEnum] Status
+** @return [EnsEExternaldatabaseStatus] Status or
+**                                      ensEExternaldatabaseStatusNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensExternaldatabaseGetStatus(const EnsPExternaldatabase edb)
+EnsEExternaldatabaseStatus ensExternaldatabaseGetStatus(
+    const EnsPExternaldatabase edb)
 {
     if(!edb)
         return ensEExternaldatabaseStatusNULL;
@@ -683,11 +694,12 @@ AjEnum ensExternaldatabaseGetStatus(const EnsPExternaldatabase edb)
 ** @cc Bio::EnsEMBL::DBEntry::type
 ** @param [r] edb [const EnsPExternaldatabase] Ensembl External Database
 **
-** @return [AjEnum] Type
+** @return [EnsEExternaldatabaseType] Type or ensEExternaldatabaseTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensExternaldatabaseGetType(const EnsPExternaldatabase edb)
+EnsEExternaldatabaseType ensExternaldatabaseGetType(
+    const EnsPExternaldatabase edb)
 {
     if(!edb)
         return ensEExternaldatabaseTypeNULL;
@@ -818,7 +830,8 @@ AjBool ensExternaldatabaseSetIdentifier(EnsPExternaldatabase edb,
 ** @@
 ******************************************************************************/
 
-AjBool ensExternaldatabaseSetName(EnsPExternaldatabase edb, AjPStr name)
+AjBool ensExternaldatabaseSetName(EnsPExternaldatabase edb,
+                                  AjPStr name)
 {
     if(!edb)
         return ajFalse;
@@ -845,7 +858,8 @@ AjBool ensExternaldatabaseSetName(EnsPExternaldatabase edb, AjPStr name)
 ** @@
 ******************************************************************************/
 
-AjBool ensExternaldatabaseSetRelease(EnsPExternaldatabase edb, AjPStr release)
+AjBool ensExternaldatabaseSetRelease(EnsPExternaldatabase edb,
+                                     AjPStr release)
 {
     if(!edb)
         return ajFalse;
@@ -1004,13 +1018,14 @@ AjBool ensExternaldatabaseSetDisplayIdIsLinkable(EnsPExternaldatabase edb,
 **
 ** @cc Bio::EnsEMBL::DBEntry::status
 ** @param [u] edb [EnsPExternaldatabase] Ensembl External Database
-** @param [r] status [AjEnum] Status
+** @param [r] status [EnsEExternaldatabaseStatus] Status
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensExternaldatabaseSetStatus(EnsPExternaldatabase edb, AjEnum status)
+AjBool ensExternaldatabaseSetStatus(EnsPExternaldatabase edb,
+                                    EnsEExternaldatabaseStatus status)
 {
     if(!edb)
         return ajFalse;
@@ -1029,13 +1044,14 @@ AjBool ensExternaldatabaseSetStatus(EnsPExternaldatabase edb, AjEnum status)
 **
 ** @cc Bio::EnsEMBL::DBEntry::type
 ** @param [u] edb [EnsPExternaldatabase] Ensembl External Database
-** @param [r] type [AjEnum] Type
+** @param [r] type [EnsEExternaldatabaseType] Type
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensExternaldatabaseSetType(EnsPExternaldatabase edb, AjEnum type)
+AjBool ensExternaldatabaseSetType(EnsPExternaldatabase edb,
+                                  EnsEExternaldatabaseType type)
 {
     if(!edb)
         return ajFalse;
@@ -1060,7 +1076,8 @@ AjBool ensExternaldatabaseSetType(EnsPExternaldatabase edb, AjEnum type)
 ** @@
 ******************************************************************************/
 
-AjBool ensExternaldatabaseSetPriority(EnsPExternaldatabase edb, ajint priority)
+AjBool ensExternaldatabaseSetPriority(EnsPExternaldatabase edb,
+                                      ajint priority)
 {
     if(!edb)
         return ajFalse;
@@ -1166,7 +1183,9 @@ AjBool ensExternaldatabaseTrace(const EnsPExternaldatabase edb, ajuint level)
 ** @argrule Status status [const AjPStr] Status as string
 ** @argrule Type   type   [const AjPStr] Type as string
 **
-** @valrule * [AjEnum] Enumeration
+** @valrule Status [EnsEExternaldatabaseStatus] Ensembl External Database
+**                                              Status
+** @valrule Status [EnsEExternaldatabaseType] Ensembl External Database Type
 ** @fcategory cast
 ******************************************************************************/
 
@@ -1179,16 +1198,17 @@ AjBool ensExternaldatabaseTrace(const EnsPExternaldatabase edb, ajuint level)
 **
 ** @param [r] status [const AjPStr] Status string
 **
-** @return [AjEnum] Ensembl External Database status element or
-**                  ensEExternaldatabaseStatusNULL
+** @return [EnsEExternaldatabaseStatus] Ensembl External Database status or
+**                                      ensEExternaldatabaseStatusNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensExternaldatabaseStatusFromStr(const AjPStr status)
+EnsEExternaldatabaseStatus ensExternaldatabaseStatusFromStr(
+    const AjPStr status)
 {
-    register ajint i = 0;
+    register EnsEExternaldatabaseStatus i = ensEExternaldatabaseStatusNULL;
 
-    AjEnum estatus = ensEExternaldatabaseStatusNULL;
+    EnsEExternaldatabaseStatus estatus = ensEExternaldatabaseStatusNULL;
 
     for(i = 1; externaldatabaseStatus[i]; i++)
         if(ajStrMatchC(status, externaldatabaseStatus[i]))
@@ -1210,16 +1230,17 @@ AjEnum ensExternaldatabaseStatusFromStr(const AjPStr status)
 **
 ** @param [r] type [const AjPStr] Type string
 **
-** @return [AjEnum] Ensembl External Database type element or
-**                  ensEExtenalDatabaseTypeNULL
+** @return [EnsEExternaldatabaseType] Ensembl External Database type or
+**                                    ensEExternalDatabaseTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensExternaldatabaseTypeFromStr(const AjPStr type)
+EnsEExternaldatabaseType ensExternaldatabaseTypeFromStr(
+    const AjPStr type)
 {
-    register ajint i = 0;
+    register EnsEExternaldatabaseType i = 0;
 
-    AjEnum etype = ensEExternaldatabaseTypeNULL;
+    EnsEExternaldatabaseType etype = ensEExternaldatabaseTypeNULL;
 
     for(i = 1; externaldatabaseType[i]; i++)
         if(ajStrMatchC(type, externaldatabaseType[i]))
@@ -1239,13 +1260,15 @@ AjEnum ensExternaldatabaseTypeFromStr(const AjPStr type)
 **
 ** Functions for converting External Database elements to other datatypes.
 **
-** @fdata [AjEnum]
+** @fdata None
 ** @fnote None
 **
 ** @nam3rule To Convert string value to a different datatype
 ** @nam4rule ToChar Convert to char*
 **
-** @argrule * status [AjEnum] Enumeration
+** @argrule * status [EnsEExternaldatabaseStatus] Ensembl External Database
+**                                                Status
+** @argrule * type [EnsEExternaldatabaseType] Ensembl External Database Type
 ** @argrule ToChar val [char*] C-type (char*)  string
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
@@ -1261,15 +1284,15 @@ AjEnum ensExternaldatabaseTypeFromStr(const AjPStr type)
 ** Convert an Ensembl External Database status element into a
 ** C-type (char*) string.
 **
-** @param [r] status [const AjEnum] External Database status enumerator
+** @param [r] status [EnsEExternaldatabaseStatus] External Database status
 **
 ** @return [const char*] External Database status C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char* ensExternaldatabaseStatusToChar(const AjEnum status)
+const char* ensExternaldatabaseStatusToChar(EnsEExternaldatabaseStatus status)
 {
-    register ajint i = 0;
+    register EnsEExternaldatabaseStatus i = ensEExternaldatabaseStatusNULL;
 
     if(!status)
         return NULL;
@@ -1291,15 +1314,15 @@ const char* ensExternaldatabaseStatusToChar(const AjEnum status)
 ** Convert an Ensembl External Database type element into a
 ** C-type (char*) string.
 **
-** @param [r] type [const AjEnum] External Database type enumerator
+** @param [r] type [EnsEExternaldatabaseType] External Database type
 **
 ** @return [const char*] External Database type C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char* ensExternaldatabaseTypeToChar(const AjEnum type)
+const char* ensExternaldatabaseTypeToChar(EnsEExternaldatabaseType type)
 {
-    register ajint i = 0;
+    register EnsEExternaldatabaseType i = ensEExternaldatabaseTypeNULL;
 
     if(!type)
         return NULL;
@@ -1479,8 +1502,8 @@ static AjBool externaldatabaseadaptorFetchAllBySQL(
     AjBool primarylinkable = AJFALSE;
     AjBool displaylinkable = AJFALSE;
 
-    AjEnum estatus = ensEExternaldatabaseStatusNULL;
-    AjEnum etype   = ensEExternaldatabaseTypeNULL;
+    EnsEExternaldatabaseStatus estatus = ensEExternaldatabaseStatusNULL;
+    EnsEExternaldatabaseType etype     = ensEExternaldatabaseTypeNULL;
 
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;
@@ -2073,7 +2096,8 @@ static AjBool externaldatabaseadaptorCacheExit(
 ** @@
 ******************************************************************************/
 
-void ensExternaldatabaseadaptorDel(EnsPExternaldatabaseadaptor *Pedba)
+void ensExternaldatabaseadaptorDel(
+    EnsPExternaldatabaseadaptor *Pedba)
 {
     EnsPExternaldatabaseadaptor pthis = NULL;
 

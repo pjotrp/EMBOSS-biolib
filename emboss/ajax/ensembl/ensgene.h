@@ -25,7 +25,7 @@ EnsPGene ensGeneNew(EnsPGeneadaptor ga,
                     AjPStr description,
                     AjPStr source,
                     AjPStr biotype,
-                    AjEnum status,
+                    EnsEGeneStatus status,
                     AjBool current,
                     ajuint cantrcid,
                     AjPStr canann,
@@ -55,7 +55,7 @@ AjPStr ensGeneGetSource(const EnsPGene gene);
 
 AjPStr ensGeneGetBioType(const EnsPGene gene);
 
-AjEnum ensGeneGetStatus(const EnsPGene gene);
+EnsEGeneStatus ensGeneGetStatus(const EnsPGene gene);
 
 AjBool ensGeneGetCurrent(const EnsPGene gene);
 
@@ -91,7 +91,7 @@ AjBool ensGeneSetSource(EnsPGene gene, AjPStr source);
 
 AjBool ensGeneSetBioType(EnsPGene gene, AjPStr biotype);
 
-AjBool ensGeneSetStatus(EnsPGene gene, AjEnum status);
+AjBool ensGeneSetStatus(EnsPGene gene, EnsEGeneStatus status);
 
 AjBool ensGeneSetCurrent(EnsPGene gene, AjBool current);
 
@@ -117,9 +117,9 @@ AjBool ensGeneAddDatabaseentry(EnsPGene gene, EnsPDatabaseentry dbe);
 
 AjBool ensGeneAddTranscript(EnsPGene gene, EnsPTranscript transcript);
 
-AjEnum ensGeneStatusFromStr(const AjPStr status);
+EnsEGeneStatus ensGeneStatusFromStr(const AjPStr status);
 
-const char* ensGeneStatusToChar(const AjEnum status);
+const char* ensGeneStatusToChar(EnsEGeneStatus status);
 
 AjBool ensGeneCalculateCoordinates(EnsPGene gene);
 
@@ -129,7 +129,7 @@ AjBool ensGeneFetchAllAttributes(EnsPGene gene,
 
 AjBool ensGeneFetchAllDatabaseEntries(EnsPGene gene,
                                       const AjPStr name,
-                                      AjEnum type,
+                                      EnsEExternaldatabaseType type,
                                       AjPList dbes);
 
 AjBool ensGeneFetchAllExons(EnsPGene gene, AjPList exons);

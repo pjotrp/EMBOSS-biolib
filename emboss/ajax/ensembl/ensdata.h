@@ -593,7 +593,7 @@ typedef struct EnsSExternaldatabaseadaptor {
 **
 ******************************************************************************/
 
-enum EnsEExternaldatabaseStatus
+typedef enum EnsOExternaldatabaseStatus
 {
     ensEExternaldatabaseStatusNULL,
     ensEExternaldatabaseStatusKnownXref,
@@ -602,7 +602,7 @@ enum EnsEExternaldatabaseStatus
     ensEExternaldatabaseStatusPred,
     ensEExternaldatabaseStatusOrth,
     ensEExternaldatabaseStatusPseudo
-};
+} EnsEExternaldatabaseStatus;
 
 
 
@@ -613,7 +613,7 @@ enum EnsEExternaldatabaseStatus
 **
 ******************************************************************************/
 
-enum EnsEExternaldatabaseType
+typedef enum EnsOExternaldatabaseType
 {
     ensEExternaldatabaseTypeNULL,
     ensEExternaldatabaseTypeArray,
@@ -622,7 +622,7 @@ enum EnsEExternaldatabaseType
     ensEExternaldatabaseTypeLit,
     ensEExternaldatabaseTypePrimaryDbSynonym,
     ensEExternaldatabaseTypeEnsembl
-};
+} EnsEExternaldatabaseType;
 
 
 
@@ -649,8 +649,8 @@ enum EnsEExternaldatabaseType
 ** @attr Description [AjPStr] Description
 ** @attr PrimaryIdIsLinkable [AjBool] Primary identifier is linkable
 ** @attr DisplayIdIsLinkable [AjBool] Display identifier is linkable
-** @attr Status [AjEnum] Status
-** @attr Type [AjEnum] Type
+** @attr Status [EnsEExternaldatabaseStatus] Status
+** @attr Type [EnsEExternaldatabaseType] Type
 ** @attr Priority [ajint] Priority
 ** @attr Padding [ajuint] Padding to alignment boundary
 ** @@
@@ -668,8 +668,8 @@ typedef struct EnsSExternaldatabase {
     AjPStr Description;
     AjBool PrimaryIdIsLinkable;
     AjBool DisplayIdIsLinkable;
-    AjEnum Status;
-    AjEnum Type;
+    EnsEExternaldatabaseStatus Status;
+    EnsEExternaldatabaseType Type;
     ajint Priority;
     ajuint Padding;
 } EnsOExternaldatabase;
@@ -685,7 +685,7 @@ typedef struct EnsSExternaldatabase {
 **
 ******************************************************************************/
 
-enum EnsEExternalreferenceInfoType
+typedef enum EnsOExternalreferenceInfoType
 {
     ensEExternalreferenceInfoTypeNULL,
     ensEExternalreferenceInfoTypeProjection,
@@ -697,7 +697,7 @@ enum EnsEExternalreferenceInfoType
     ensEExternalreferenceInfoTypeProbe,
     ensEExternalreferenceInfoTypeUnmapped,
     ensEExternalreferenceInfoTypeCoordinateOverlap
-};
+} EnsEExternalreferenceInfoType;
 
 
 
@@ -721,7 +721,7 @@ enum EnsEExternalreferenceInfoType
 ** @attr Description [AjPStr] Description
 ** @attr LinkageAnnotation [AjPStr] Linkage annotation
 ** @attr InfoText [AjPStr] Information text
-** @attr InfoType [AjEnum] Information type
+** @attr InfoType [EnsEExternalreferenceInfoType] Information type
 ** @attr Padding [ajuint] Padding to alignment boundary
 ** @@
 ******************************************************************************/
@@ -737,7 +737,7 @@ typedef struct EnsSExternalreference {
     AjPStr Description;
     AjPStr LinkageAnnotation;
     AjPStr InfoText;
-    AjEnum InfoType;
+    EnsEExternalreferenceInfoType InfoType;
     ajuint Padding;
 } EnsOExternalreference;
 
@@ -1165,7 +1165,7 @@ typedef struct EnsSTranscriptadaptor {
 **
 ******************************************************************************/
 
-enum EnsETranscriptStatus
+typedef enum EnsOTranscriptStatus
 {
     ensETranscriptStatusNULL,
     ensETranscriptStatusKnown,
@@ -1174,7 +1174,7 @@ enum EnsETranscriptStatus
     ensETranscriptStatusPredicted,
     ensETranscriptStatusKnownByProjection,
     ensETranscriptStatusUnknown
-};
+} EnsETranscriptStatus;
 
 
 
@@ -1197,7 +1197,7 @@ enum EnsETranscriptStatus
 ** @attr DisplayReference [EnsPDatabaseentry] Display External Reference
 ** @attr Description [AjPStr] Description
 ** @attr BioType [AjPStr] Biological type
-** @attr Status [AjEnum] Status
+** @attr Status [EnsETranscriptStatus] Status
 ** @attr Current [AjBool] Current attribute
 ** @cc 'transcript_stable_id' SQL table
 ** @attr StableIdentifier [AjPStr] Stable identifier
@@ -1230,7 +1230,7 @@ typedef struct EnsSTranscript {
     EnsPDatabaseentry DisplayReference;
     AjPStr Description;
     AjPStr BioType;
-    AjEnum Status;
+    EnsETranscriptStatus Status;
     AjBool Current;
     AjPStr StableIdentifier;
     AjPStr CreationDate;
@@ -1283,7 +1283,7 @@ typedef struct EnsSGeneadaptor {
 **
 ******************************************************************************/
 
-enum EnsEGeneStatus
+typedef enum EnsOGeneStatus
 {
     ensEGeneStatusNULL,
     ensEGeneStatusKnown,
@@ -1292,7 +1292,7 @@ enum EnsEGeneStatus
     ensEGeneStatusPredicted,
     ensEGeneStatusKnownByProjection,
     ensEGeneStatusUnknown
-};
+} EnsEGeneStatus;
 
 
 
@@ -1316,7 +1316,7 @@ enum EnsEGeneStatus
 ** @attr Description [AjPStr] Description
 ** @attr Source [AjPStr] Source
 ** @attr BioType [AjPStr] Biological type
-** @attr Status [AjEnum] Status
+** @attr Status [EnsEGeneStatus] Status
 ** @attr Current [AjBool] Current attribute
 ** @attr CanonicalAnnotation [AjPStr] Canonical annotation
 ** @attr CanonicalTranscriptIdentifier [ajuint] Canonical Ensembl Transcript
@@ -1342,7 +1342,7 @@ typedef struct EnsSGene {
     AjPStr Description;
     AjPStr Source;
     AjPStr BioType;
-    AjEnum Status;
+    EnsEGeneStatus Status;
     AjBool Current;
     AjPStr CanonicalAnnotation;
     ajuint CanonicalTranscriptIdentifier;

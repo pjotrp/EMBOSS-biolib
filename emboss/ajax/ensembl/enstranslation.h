@@ -118,7 +118,7 @@ AjBool ensTranslationFetchAllAttributes( EnsPTranslation translation,
 
 AjBool ensTranslationFetchAllDatabaseEntries(EnsPTranslation translation,
                                              const AjPStr name,
-                                             AjEnum type,
+                                             EnsEExternaldatabaseType type,
                                              AjPList dbes);
 
 AjBool ensTranslationFetchAllProteinfeatures(EnsPTranslation translation,

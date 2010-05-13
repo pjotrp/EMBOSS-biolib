@@ -12,18 +12,18 @@ extern "C"
 
 
 
-/******************************************************************************
+/* EnsECacheType **************************************************************
 **
 ** Ensembl Cache Type enumeration.
 **
 ******************************************************************************/
 
-enum EnsECacheType
+typedef enum EnsOCacheType
 {
     ensECacheTypeNULL,
     ensECacheTypeNumeric,
     ensECacheTypeAlphaNumeric
-};
+} EnsECacheType;
 
 
 
@@ -43,7 +43,7 @@ enum EnsECacheType
 ** @attr Size [(ajuint*)] Object-specific memory sizing function
 ** @attr Read [(void**)] Object-specific reading function
 ** @attr Write [(AjBool*)] Object-specific writing function
-** @attr Type [AjEnum] Ensembl Cache type (EnsECacheNumeric, ...)
+** @attr Type [EnsECacheType] Ensembl Cache type
 ** @attr Synchron [AjBool] ajTrue: Immediately write-back value data
 **                         ajFalse: Write-back value data later
 ** @cc Cache limits
@@ -72,7 +72,7 @@ typedef struct EnsSCache
     ajuint (*Size)(const void *);
     void* (*Read)(const void *key);
     AjBool (*Write)(const void *);
-    AjEnum Type;
+    EnsECacheType Type;
     AjBool Synchron;
     ajuint MaxBytes;
     ajuint MaxCount;
@@ -97,7 +97,7 @@ typedef struct EnsSCache
 
 /* Ensembl Cache */
 
-EnsPCache ensCacheNew(AjEnum type,
+EnsPCache ensCacheNew(EnsECacheType type,
                       ajuint maxbytes,
                       ajuint maxcount,
                       ajuint maxsize,

@@ -23,7 +23,7 @@ EnsPTranscript ensTranscriptNew(EnsPTranscriptadaptor tca,
                                 EnsPDatabaseentry displaydbe,
                                 AjPStr description,
                                 AjPStr biotype,
-                                AjEnum status,
+                                EnsETranscriptStatus status,
                                 AjBool current,
                                 AjPStr stableid,
                                 ajuint version,
@@ -50,7 +50,7 @@ AjPStr ensTranscriptGetDescription(const EnsPTranscript transcript);
 
 AjPStr ensTranscriptGetBioType(const EnsPTranscript transcript);
 
-AjEnum ensTranscriptGetStatus(const EnsPTranscript transcript);
+EnsETranscriptStatus ensTranscriptGetStatus(const EnsPTranscript transcript);
 
 ajuint ensTranscriptGetGeneIdentifier(const EnsPTranscript transcript);
 
@@ -106,7 +106,7 @@ AjBool ensTranscriptSetBioType(EnsPTranscript transcript,
                                AjPStr biotype);
 
 AjBool ensTranscriptSetStatus(EnsPTranscript transcript,
-                              AjEnum status);
+                              EnsETranscriptStatus status);
 
 AjBool ensTranscriptSetGeneIdentifier(EnsPTranscript transcript,
                                       ajuint geneid);
@@ -144,9 +144,9 @@ AjBool ensTranscriptAddExon(EnsPTranscript transcript,
 
 AjBool ensTranscriptTrace(const EnsPTranscript transcript, ajuint level);
 
-AjEnum ensTranscriptStatusFromStr(const AjPStr status);
+EnsETranscriptStatus ensTranscriptStatusFromStr(const AjPStr status);
 
-const char *ensTranscriptStatusToChar(const AjEnum status);
+const char *ensTranscriptStatusToChar(EnsETranscriptStatus status);
 
 AjBool ensTranscriptCalculateCoordinates(EnsPTranscript transcript);
 
@@ -166,7 +166,7 @@ AjBool ensTranscriptFetchAllConstitutiveExons(EnsPTranscript transcript,
 
 AjBool ensTranscriptFetchAllDatabaseEntries(EnsPTranscript transcript,
                                             const AjPStr name,
-                                            AjEnum type,
+                                            EnsEExternaldatabaseType type,
                                             AjPList dbes);
 
 AjBool ensTranscriptFetchAllIntrons(EnsPTranscript transcript,

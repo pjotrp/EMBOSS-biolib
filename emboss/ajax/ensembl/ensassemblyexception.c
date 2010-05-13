@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -150,7 +150,7 @@ static void assemblyexceptionadaptorFetchAll(const void *key,
 ** @param [r] erstart [ajuint] Exception Ensembl Sequence Region start
 ** @param [r] erend [ajuint] Exception Ensembl Sequence Region end
 ** @param [r] ori [ajint] Orientation
-** @param [r] type [AjEnum] Type
+** @param [r] type [EnsEAssemblyexceptionType] Type
 **
 ** @return [EnsPAssemblyexception] Ensembl Assembl Exception or NULL
 ** @@
@@ -166,7 +166,7 @@ EnsPAssemblyexception ensAssemblyexceptionNew(
     ajuint erstart,
     ajuint erend,
     ajint ori,
-    AjEnum type)
+    EnsEAssemblyexceptionType type)
 {
     EnsPAssemblyexception ae = NULL;
 
@@ -353,7 +353,7 @@ void ensAssemblyexceptionDel(EnsPAssemblyexception* Pae)
 ** @valrule ExcRegionStart [ajuint] Exception Sequence Region start
 ** @valrule ExcRegionEnd [ajuint] Exception Sequence Region end
 ** @valrule Orientation [ajuint] Orientation
-** @valrule Type [AjEnum] Type
+** @valrule Type [EnsEAssemblyexceptionType] Type
 **
 ** @fcategory use
 ******************************************************************************/
@@ -395,7 +395,8 @@ EnsPAssemblyexceptionadaptor ensAssemblyexceptionGetAdaptor(
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyexceptionGetIdentifier(const EnsPAssemblyexception ae)
+ajuint ensAssemblyexceptionGetIdentifier(
+    const EnsPAssemblyexception ae)
 {
     if(!ae)
         return 0;
@@ -440,7 +441,8 @@ ajuint ensAssemblyexceptionGetSeqregionIdentifier(
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyexceptionGetSeqregionStart(const EnsPAssemblyexception ae)
+ajuint ensAssemblyexceptionGetSeqregionStart(
+    const EnsPAssemblyexception ae)
 {
     if(!ae)
         return 0;
@@ -462,7 +464,8 @@ ajuint ensAssemblyexceptionGetSeqregionStart(const EnsPAssemblyexception ae)
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyexceptionGetSeqregionEnd(const EnsPAssemblyexception ae)
+ajuint ensAssemblyexceptionGetSeqregionEnd(
+    const EnsPAssemblyexception ae)
 {
     if(!ae)
         return 0;
@@ -507,7 +510,8 @@ ajuint ensAssemblyexceptionGetExcRegionIdentifier(
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyexceptionGetExcRegionStart(const EnsPAssemblyexception ae)
+ajuint ensAssemblyexceptionGetExcRegionStart(
+    const EnsPAssemblyexception ae)
 {
     if(!ae)
         return 0;
@@ -529,7 +533,8 @@ ajuint ensAssemblyexceptionGetExcRegionStart(const EnsPAssemblyexception ae)
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyexceptionGetExcRegionEnd(const EnsPAssemblyexception ae)
+ajuint ensAssemblyexceptionGetExcRegionEnd(
+    const EnsPAssemblyexception ae)
 {
     if(!ae)
         return 0;
@@ -550,7 +555,8 @@ ajuint ensAssemblyexceptionGetExcRegionEnd(const EnsPAssemblyexception ae)
 ** @@
 ******************************************************************************/
 
-ajint ensAssemblyexceptionGetOrientation(const EnsPAssemblyexception ae)
+ajint ensAssemblyexceptionGetOrientation(
+    const EnsPAssemblyexception ae)
 {
     if(!ae)
         return 0;
@@ -567,11 +573,12 @@ ajint ensAssemblyexceptionGetOrientation(const EnsPAssemblyexception ae)
 **
 ** @param [r] ae [const EnsPAssemblyexception] Ensembl Assembly Exception
 **
-** @return [AjEnum] Type
+** @return [EnsEAssemblyexceptionType] Type or ensEAssemblyexceptionTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensAssemblyexceptionGetType(const EnsPAssemblyexception ae)
+EnsEAssemblyexceptionType ensAssemblyexceptionGetType(
+    const EnsPAssemblyexception ae)
 {
     if(!ae)
         return 0;
@@ -851,13 +858,14 @@ AjBool ensAssemblyexceptionSetOrientation(EnsPAssemblyexception ae,
 ** Set the type element of an Ensembl Assembly Exception.
 **
 ** @param [u] ae [EnsPAssemblyexception] Ensembl Assembly Exception
-** @param [r] type [AjEnum] Type
+** @param [r] type [EnsEAssemblyexceptionType] Type
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensAssemblyexceptionSetType(EnsPAssemblyexception ae, AjEnum type)
+AjBool ensAssemblyexceptionSetType(EnsPAssemblyexception ae,
+                                   EnsEAssemblyexceptionType type)
 {
     if(!ae)
         return ajFalse;
@@ -972,16 +980,16 @@ ajuint ensAssemblyexceptionGetMemSize(const EnsPAssemblyexception ae)
 **
 ** @param [r] type [const AjPStr] Type string
 **
-** @return [AjEnum] Ensembl Assembly Exception type element or
-**                  ensEAssemblyexceptionTypeNULL
+** @return [EnsEAssemblyexceptionType] Ensembl Assembly Exception type or
+**                                     ensEAssemblyexceptionTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensAssemblyexceptionTypeFromStr(const AjPStr type)
+EnsEAssemblyexceptionType ensAssemblyexceptionTypeFromStr(const AjPStr type)
 {
-    register ajint i = 0;
+    register EnsEAssemblyexceptionType i = ensEAssemblyexceptionTypeNULL;
 
-    AjEnum etype = ensEAssemblyexceptionTypeNULL;
+    EnsEAssemblyexceptionType etype = ensEAssemblyexceptionTypeNULL;
 
     for(i = 1; assemblyexceptionType[i]; i++)
         if(ajStrMatchC(type, assemblyexceptionType[i]))
@@ -1002,15 +1010,15 @@ AjEnum ensAssemblyexceptionTypeFromStr(const AjPStr type)
 ** Convert an Ensembl Assembly Exception type element into a
 ** C-type (char*) string.
 **
-** @param [r] type [const AjEnum] Assembly Exception type enumerator
+** @param [r] type [EnsEAssemblyexceptionType] Assembly Exception type
 **
 ** @return [const char*] Assembly Exception status C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char* ensAssemblyexceptionTypeToChar(const AjEnum type)
+const char* ensAssemblyexceptionTypeToChar(EnsEAssemblyexceptionType type)
 {
-    register ajint i = 0;
+    register EnsEAssemblyexceptionType i = ensEAssemblyexceptionTypeNULL;
 
     if(!type)
         return NULL;
@@ -1092,7 +1100,7 @@ static AjBool assemblyexceptionadaptorFetchAllBySQL(
     ajuint erend      = 0;
     ajuint srend      = 0;
 
-    AjEnum type = ensEAssemblyexceptionTypeNULL;
+    EnsEAssemblyexceptionType type = ensEAssemblyexceptionTypeNULL;
 
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;

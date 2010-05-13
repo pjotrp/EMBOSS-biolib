@@ -130,7 +130,7 @@ typedef struct EnsSGvgenotype
 **
 ******************************************************************************/
 
-enum EnsEGvvariationValidationState
+typedef enum EnsOGvvariationValidationState
 {
     ensEGvvariationValidationStateNULL,
     ensEGvvariationValidationStateCluster,
@@ -142,7 +142,7 @@ enum EnsEGvvariationValidationState
     ensEGvvariationValidationStateNonPolymorphic,
     ensEGvvariationValidationStateObserved,
     ensEGvvariationValidationStateUnknown
-};
+} EnsEGvvariationValidationState;
 
 
 
@@ -438,9 +438,11 @@ AjBool ensGvvariationAddSynonym(EnsPGvvariation gvv,
 
 AjBool ensGvvariationAddGvallele(EnsPGvvariation gvv, EnsPGvallele gva);
 
-AjEnum ensGvvariationValidationStateFromStr(const AjPStr state);
+EnsEGvvariationValidationState ensGvvariationValidationStateFromStr(
+    const AjPStr state);
 
-const char *ensGvvariationValidationStateToChar(const AjEnum state);
+const char *ensGvvariationValidationStateToChar(
+    EnsEGvvariationValidationState state);
 
 AjBool ensGvvariationFetchAllSynonyms(const EnsPGvvariation gvv,
                                       const AjPStr source,

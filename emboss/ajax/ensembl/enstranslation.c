@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2209,7 +2209,7 @@ AjBool ensTranslationFetchAllAttributes(EnsPTranslation translation,
 ** @cc Bio::EnsEMBL::Translation::get_all_DBEntries
 ** @param [u] translation [EnsPTranslation] Ensembl Translation
 ** @param [r] name [const AjPStr] Ensembl External Database name
-** @param [r] type [AjEnum] Ensembl External Database type
+** @param [r] type [EnsEExternaldatabaseType] Ensembl External Database type
 ** @param [u] dbes [AjPList] AJAX List of Ensembl Database Entries
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -2218,7 +2218,7 @@ AjBool ensTranslationFetchAllAttributes(EnsPTranslation translation,
 
 AjBool ensTranslationFetchAllDatabaseEntries(EnsPTranslation translation,
                                              const AjPStr name,
-                                             AjEnum type,
+                                             EnsEExternaldatabaseType type,
                                              AjPList dbes)
 {
     AjBool namematch = AJFALSE;
@@ -3137,6 +3137,8 @@ AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor tla,
 
     ajulong rows = 0;
 
+    AjBool debug = AJFALSE;
+
     AjIList iter        = NULL;
     const AjPList exons = NULL;
 
@@ -3157,11 +3159,14 @@ AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor tla,
 
     EnsPTranslation translation = NULL;
 
-    ajDebug("ensTranslationadaptorFetchByTranscript\n"
-            "  tla %p\n"
-            "  transcript %p\n",
-            tla,
-            transcript);
+    debug = ajDebugTest("ensTranslationadaptorFetchByTranscript");
+
+    if(debug)
+        ajDebug("ensTranslationadaptorFetchByTranscript\n"
+                "  tla %p\n"
+                "  transcript %p\n",
+                tla,
+                transcript);
 
     if(!tla)
         return ajFalse;
@@ -3201,19 +3206,25 @@ AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor tla,
 
     if(rows == 0)
     {
-        ajDebug("ensTranslationadaptorFetchByTranscript could not get "
-                "an Ensembl Translation for Ensembl Transcript %u.\n",
-                ensTranscriptGetIdentifier(transcript));
+        if(debug)
+        {
+            ajDebug("ensTranslationadaptorFetchByTranscript could not get "
+                    "an Ensembl Translation for Ensembl Transcript %u.\n",
+                    ensTranscriptGetIdentifier(transcript));
 
-        ensTranscriptTrace(transcript, 1);
+            ensTranscriptTrace(transcript, 1);
+        }
     }
     else if(rows > 1)
     {
-        ajDebug("ensTranslationadaptorFetchByTranscript got more than one "
-                "Ensembl Translation for Ensembl Transcript %u.\n",
-                ensTranscriptGetIdentifier(transcript));
+        if(debug)
+        {
+            ajDebug("ensTranslationadaptorFetchByTranscript got more than one "
+                    "Ensembl Translation for Ensembl Transcript %u.\n",
+                    ensTranscriptGetIdentifier(transcript));
 
-        ensTranscriptTrace(transcript, 1);
+            ensTranscriptTrace(transcript, 1);
+        }
 
         ajSqlstatementDel(&sqls);
 

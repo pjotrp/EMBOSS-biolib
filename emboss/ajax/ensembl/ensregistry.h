@@ -71,15 +71,15 @@ AjBool ensRegistryTraceEntries(ajuint level);
 AjBool ensRegistryAddDatabaseadaptor(EnsPDatabaseconnection dbc,
                                      AjPStr database,
                                      AjPStr alias,
-                                     AjEnum group,
+                                     EnsEDatabaseadaptorGroup group,
                                      AjBool multi,
                                      ajuint identifier);
 
 AjBool ensRegistryRemoveDatabaseadaptor(EnsPDatabaseadaptor *Pdba);
 
-AjBool ensRegistryGetAllDatabaseadaptors(AjEnum group,
+AjBool ensRegistryGetAllDatabaseadaptors(EnsEDatabaseadaptorGroup group,
                                          const AjPStr alias,
-                                         AjPList list);
+                                         AjPList dbas);
 
 AjBool ensRegistryLoadFromServer(EnsPDatabaseconnection dbc);
 
@@ -87,7 +87,7 @@ AjBool ensRegistryLoadIdentifiers(void);
 
 AjBool ensRegistryGetSpeciesGroup(const AjPStr identifier,
                                   AjPStr *Pspecies,
-                                  AjEnum *Pgroup);
+                                  EnsEDatabaseadaptorGroup *Pgroup);
 
 /*
 ** End of prototype definitions

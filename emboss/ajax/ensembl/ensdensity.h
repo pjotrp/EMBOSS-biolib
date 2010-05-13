@@ -40,12 +40,12 @@ typedef struct EnsSDensitytypeadaptor
 **
 ******************************************************************************/
 
-enum EnsEDensitytypeValueType
+typedef enum EnsODensitytypeValueType
 {
     ensEDensitytypeValueTypeNULL,
     ensEDensitytypeValueTypeSum,
     ensEDensitytypeValueTypeRatio
-};
+} EnsEDensitytypeValueType;
 
 
 
@@ -63,7 +63,7 @@ enum EnsEDensitytypeValueType
 ** @attr Adaptor [EnsPDensitytypeadaptor] Ensembl Density Type Adaptor
 ** @cc Bio::EnsEMBL::Densitytype
 ** @attr Analysis [EnsPAnalysis] Ensembl Analysis
-** @attr ValueType [AjEnum] Value type enumeration
+** @attr ValueType [EnsEDensitytypeValueType] Value type enumeration
 ** @attr BlockSize [ajuint] Block size
 ** @attr RegionFeatures [ajuint] Number of Features per Sequence Region in
 **                               this Density Type
@@ -77,7 +77,7 @@ typedef struct EnsSDensitytype
     ajuint Identifier;
     EnsPDensitytypeadaptor Adaptor;
     EnsPAnalysis Analysis;
-    AjEnum ValueType;
+    EnsEDensitytypeValueType ValueType;
     ajuint BlockSize;
     ajuint RegionFeatures;
     ajuint Padding;
@@ -154,7 +154,7 @@ typedef struct EnsSDensityfeature
 EnsPDensitytype ensDensitytypeNew(EnsPDensitytypeadaptor dta,
                                   ajuint identifier,
                                   EnsPAnalysis analysis,
-                                  AjEnum type,
+                                  EnsEDensitytypeValueType type,
                                   ajuint size,
                                   ajuint features);
 
@@ -170,7 +170,7 @@ ajuint ensDensitytypeGetIdentifier(const EnsPDensitytype dt);
 
 EnsPAnalysis ensDensitytypeGetAnalysis(const EnsPDensitytype dt);
 
-AjEnum ensDensitytypeGetValueType(const EnsPDensitytype dt);
+EnsEDensitytypeValueType ensDensitytypeGetValueType(const EnsPDensitytype dt);
 
 ajuint ensDensitytypeGetBlockSize(const EnsPDensitytype dt);
 
@@ -179,23 +179,28 @@ ajuint ensDensitytypeGetRegionFeatures(const EnsPDensitytype dt);
 AjBool ensDensitytypeSetAdaptor(EnsPDensitytype dt,
                                 EnsPDensitytypeadaptor dta);
 
-AjBool ensDensitytypeSetIdentifier(EnsPDensitytype dt, ajuint identifier);
+AjBool ensDensitytypeSetIdentifier(EnsPDensitytype dt,
+                                   ajuint identifier);
 
-AjBool ensDensitytypeSetAnalysis(EnsPDensitytype dt, EnsPAnalysis analysis);
+AjBool ensDensitytypeSetAnalysis(EnsPDensitytype dt,
+                                 EnsPAnalysis analysis);
 
-AjBool ensDensitytypeSetValueType(EnsPDensitytype dt, AjEnum type);
+AjBool ensDensitytypeSetValueType(EnsPDensitytype dt,
+                                  EnsEDensitytypeValueType type);
 
-AjBool ensDensitytypeSetBlockSize(EnsPDensitytype dt, ajuint size);
+AjBool ensDensitytypeSetBlockSize(EnsPDensitytype dt,
+                                  ajuint size);
 
-AjBool ensDensitytypeSetRegionFeatures(EnsPDensitytype dt, ajuint features);
+AjBool ensDensitytypeSetRegionFeatures(EnsPDensitytype dt,
+                                       ajuint features);
 
 AjBool ensDensitytypeTrace(const EnsPDensitytype dt, ajuint level);
 
 ajuint ensDensitytypeGetMemSize(const EnsPDensitytype dt);
 
-AjEnum ensDensitytypeValeTypeFromStr(const AjPStr type);
+EnsEDensitytypeValueType ensDensitytypeValeTypeFromStr(const AjPStr type);
 
-const char* ensDensitytypeValeTypeToChar(const AjEnum type);
+const char* ensDensitytypeValeTypeToChar(const EnsEDensitytypeValueType type);
 
 /* Ensembl Density Type Adaptor */
 
@@ -213,12 +218,14 @@ EnsPBaseadaptor ensDensitytypeadaptorGetBaseadaptor(
 EnsPDatabaseadaptor ensDensitytypeadaptorGetDatabaseadaptor(
     const EnsPDensitytypeadaptor dta);
 
-AjBool ensDensitytypeadaptorFetchAll(EnsPDensitytypeadaptor dta,
-                                     AjPList dts);
+AjBool ensDensitytypeadaptorFetchAll(
+    EnsPDensitytypeadaptor dta,
+    AjPList dts);
 
-AjBool ensDensitytypeadaptorFetchByIdentifier(EnsPDensitytypeadaptor dta,
-                                              ajuint identifier,
-                                              EnsPDensitytype *Pdt);
+AjBool ensDensitytypeadaptorFetchByIdentifier(
+    EnsPDensitytypeadaptor dta,
+    ajuint identifier,
+    EnsPDensitytype *Pdt);
 
 AjBool ensDensitytypeadaptorFetchAllByAnalysisName(
     EnsPDensitytypeadaptor dta,

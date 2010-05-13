@@ -18,44 +18,56 @@ extern "C"
 
 /* Ensembl External Reference */
 
-EnsPExternalreference ensExternalreferenceNew(ajuint identifier,
-                                              EnsPAnalysis analysis,
-                                              EnsPExternaldatabase edb,
-                                              AjPStr primaryid,
-                                              AjPStr displayid,
-                                              AjPStr version,
-                                              AjPStr description,
-                                              AjPStr linkageannotation,
-                                              AjPStr infotext,
-                                              AjEnum infotype);
+EnsPExternalreference ensExternalreferenceNew(
+    ajuint identifier,
+    EnsPAnalysis analysis,
+    EnsPExternaldatabase edb,
+    AjPStr primaryid,
+    AjPStr displayid,
+    AjPStr version,
+    AjPStr description,
+    AjPStr linkageannotation,
+    AjPStr infotext,
+    EnsEExternalreferenceInfoType infotype);
 
 EnsPExternalreference ensExternalreferenceNewObj(
     const EnsPExternalreference object);
 
-EnsPExternalreference ensExternalreferenceNewRef(EnsPExternalreference er);
+EnsPExternalreference ensExternalreferenceNewRef(
+    EnsPExternalreference er);
 
-void ensExternalreferenceDel(EnsPExternalreference *Per);
+void ensExternalreferenceDel(
+    EnsPExternalreference *Per);
 
-ajuint ensExternalreferenceGetIdentifier(const EnsPExternalreference er);
+ajuint ensExternalreferenceGetIdentifier(
+    const EnsPExternalreference er);
 
-EnsPAnalysis ensExternalreferenceGetAnalysis(const EnsPExternalreference er);
+EnsPAnalysis ensExternalreferenceGetAnalysis(
+    const EnsPExternalreference er);
 
 EnsPExternaldatabase ensExternalreferenceGetExternaldatabase(
     const EnsPExternalreference er);
 
-AjPStr ensExternalreferenceGetPrimaryIdentifier(const EnsPExternalreference er);
+AjPStr ensExternalreferenceGetPrimaryIdentifier(
+    const EnsPExternalreference er);
 
-AjPStr ensExternalreferenceGetDisplayIdentifier(const EnsPExternalreference er);
+AjPStr ensExternalreferenceGetDisplayIdentifier(
+    const EnsPExternalreference er);
 
-AjPStr ensExternalreferenceGetVersion(const EnsPExternalreference er);
+AjPStr ensExternalreferenceGetVersion(
+    const EnsPExternalreference er);
 
-AjPStr ensExternalreferenceGetDescription(const EnsPExternalreference er);
+AjPStr ensExternalreferenceGetDescription(
+    const EnsPExternalreference er);
 
-AjPStr ensExternalreferenceGetLinkageAnnotation(const EnsPExternalreference er);
+AjPStr ensExternalreferenceGetLinkageAnnotation(
+    const EnsPExternalreference er);
 
-AjPStr ensExternalreferenceGetInfoText(const EnsPExternalreference er);
+AjPStr ensExternalreferenceGetInfoText(
+    const EnsPExternalreference er);
 
-AjEnum ensExternalreferenceGetInfoType(const EnsPExternalreference er);
+EnsEExternalreferenceInfoType ensExternalreferenceGetInfoType(
+    const EnsPExternalreference er);
 
 AjBool ensExternalreferenceSetIdentifier(EnsPExternalreference er,
                                          ajuint identifier);
@@ -72,7 +84,8 @@ AjBool ensExternalreferenceSetPrimaryIdentifier(EnsPExternalreference er,
 AjBool ensExternalreferenceSetDisplayIdentifier(EnsPExternalreference er,
                                                 AjPStr displayid);
 
-AjBool ensExternalreferenceSetVersion(EnsPExternalreference er, AjPStr version);
+AjBool ensExternalreferenceSetVersion(EnsPExternalreference er,
+                                      AjPStr version);
 
 AjBool ensExternalreferenceSetDescription(EnsPExternalreference er,
                                           AjPStr description);
@@ -84,13 +97,15 @@ AjBool ensExternalreferenceSetInfoText(EnsPExternalreference er,
                                        AjPStr infotext);
 
 AjBool ensExternalreferenceSetInfoType(EnsPExternalreference er,
-                                       AjEnum infotype);
+                                       EnsEExternalreferenceInfoType infotype);
 
 AjBool ensExternalreferenceTrace(const EnsPExternalreference er, ajuint level);
 
-AjEnum ensExternalreferenceInfoTypeFromStr(const AjPStr infotype);
+EnsEExternalreferenceInfoType ensExternalreferenceInfoTypeFromStr(
+    const AjPStr infotype);
 
-const char *ensExternalreferenceInfoTypeToChar(const AjEnum type);
+const char *ensExternalreferenceInfoTypeToChar(
+    EnsEExternalreferenceInfoType type);
 
 ajuint ensExternalreferenceGetMemSize(const EnsPExternalreference er);
 
@@ -184,7 +199,7 @@ EnsPDatabaseentry ensDatabaseentryNew(EnsPDatabaseentryadaptor dbea,
                                       AjPStr version,
                                       AjPStr description,
                                       AjPStr linkageannotation,
-                                      AjEnum infotype,
+                                      EnsEExternalreferenceInfoType infotype,
                                       AjPStr infotext);
 
 EnsPDatabaseentry ensDatabaseentryNewObj(const EnsPDatabaseentry object);
@@ -210,7 +225,8 @@ AjPStr ensDatabaseentryGetLinkageAnnotation(const EnsPDatabaseentry dbe);
 
 AjPStr ensDatabaseentryGetInfoText(const EnsPDatabaseentry dbe);
 
-AjEnum ensDatabaseentryGetInfoType(const EnsPDatabaseentry dbe);
+EnsEExternalreferenceInfoType ensDatabaseentryGetInfoType(
+    const EnsPDatabaseentry dbe);
 
 AjPStr ensDatabaseentryGetDbName(const EnsPDatabaseentry dbe);
 
@@ -224,9 +240,10 @@ AjBool ensDatabaseentryGetDisplayIdIsLinkable(const EnsPDatabaseentry dbe);
 
 ajint ensDatabaseentryGetPriority(const EnsPDatabaseentry dbe);
 
-AjEnum ensDatabaseentryGetStatus(const EnsPDatabaseentry dbe);
+EnsEExternaldatabaseStatus ensDatabaseentryGetStatus(
+    const EnsPDatabaseentry dbe);
 
-AjEnum ensDatabaseentryGetType(const EnsPDatabaseentry dbe);
+EnsEExternaldatabaseType ensDatabaseentryGetType(const EnsPDatabaseentry dbe);
 
 AjPList ensDatabaseentryGetSynonyms(const EnsPDatabaseentry dbe);
 
@@ -275,28 +292,28 @@ AjBool ensDatabaseentryadaptorFetchAllByObjectType(
     ajuint objid,
     const AjPStr objtype,
     const AjPStr dbname,
-    AjEnum dbtype,
+    EnsEExternaldatabaseType dbtype,
     AjPList dbes);
 
 AjBool ensDatabaseentryadaptorFetchAllByGene(
     EnsPDatabaseentryadaptor dbea,
     const EnsPGene gene,
     const AjPStr dbname,
-    AjEnum dbtype,
+    EnsEExternaldatabaseType dbtype,
     AjPList dbes);
 
 AjBool ensDatabaseentryadaptorFetchAllByTranscript(
     EnsPDatabaseentryadaptor dbea,
     const EnsPTranscript transcript,
     const AjPStr dbname,
-    AjEnum dbtype,
+    EnsEExternaldatabaseType dbtype,
     AjPList dbes);
 
 AjBool ensDatabaseentryadaptorFetchAllByTranslation(
     EnsPDatabaseentryadaptor dbea,
     const EnsPTranslation translation,
     const AjPStr dbname,
-    AjEnum dbtype,
+    EnsEExternaldatabaseType dbtype,
     AjPList dbes);
 
 AjBool ensDatabaseentryadaptorFetchAllGeneIdentifiersByExternalName(

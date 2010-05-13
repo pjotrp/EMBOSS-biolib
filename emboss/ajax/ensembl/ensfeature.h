@@ -112,12 +112,12 @@ typedef struct EnsSProteinalignfeatureadaptor
 **
 ******************************************************************************/
 
-enum EnsEBasealignfeatureType
+typedef enum EnsOBasealignfeatureType
 {
     ensEBasealignfeatureTypeNULL,
     ensEBasealignfeatureTypeDNA,
     ensEBasealignfeatureTypeProtein
-};
+} EnsEBasealignfeatureType;
 
 
 
@@ -141,7 +141,7 @@ enum EnsEBasealignfeatureType
 ** @cc Bio::EnsEMBL::Basealignfeature
 ** @attr GetFeaturepair [(EnsPFeaturepair*)] Get Ensembl Feature Pair function
 ** @attr Cigar [AjPStr] CIGAR line
-** @attr Type [AjEnum] Type (ensEBasealignfeatureTypeDNA, ...)
+** @attr Type [EnsEBasealignfeatureType] Type
 ** @attr AlignmentLength [ajuint] Target component alignment length
 ** @attr PairDNAAlignFeatureIdentifier [ajuint] Pair DNA Align Feature
 **                                              identifier
@@ -158,7 +158,7 @@ typedef struct EnsSBasealignfeature
     EnsPFeaturepair Featurepair;
     EnsPFeaturepair (*GetFeaturepair)(void* object);
     AjPStr Cigar;
-    AjEnum Type;
+    EnsEBasealignfeatureType Type;
     ajuint AlignmentLength;
     ajuint PairDNAAlignFeatureIdentifier;
     ajuint Padding;
@@ -323,7 +323,7 @@ typedef struct EnsSAssemblyexceptionfeatureadaptor
 ** @attr Feature [EnsPFeature] Ensembl Feature
 ** @cc Bio::EnsEMBL::Assemblyexceptionfeature
 ** @attr AlternateSlice [EnsPSlice] Alternate Ensembl Slice
-** @attr Type [AjEnum] Ensembl Assembly Exception Feature type
+** @attr Type [EnsEAssemblyexceptionType] Ensembl Assembly Exception type
 ** @attr Padding [ajuint] Padding to alignment boundary
 ** @@
 ******************************************************************************/
@@ -335,7 +335,7 @@ typedef struct EnsSAssemblyexceptionfeature
     EnsPAssemblyexceptionfeatureadaptor Adaptor;
     EnsPFeature Feature;
     EnsPSlice AlternateSlice;
-    AjEnum Type;
+    EnsEAssemblyexceptionType Type;
     ajuint Padding;
 } EnsOAssemblyexceptionfeature;
 
@@ -640,7 +640,7 @@ EnsPBasealignfeature ensBasealignfeatureNew(
     EnsPFeaturepair fp,
     AjPStr cigar,
     AjPList fps,
-    AjEnum type,
+    EnsEBasealignfeatureType type,
     ajuint pair);
 
 EnsPBasealignfeature ensBasealignfeatureNewObj(
@@ -937,7 +937,7 @@ EnsPAssemblyexceptionfeature ensAssemblyexceptionfeatureNew(
     ajuint identifier,
     EnsPFeature feature,
     EnsPSlice slice,
-    AjEnum type);
+    EnsEAssemblyexceptionType type);
 
 EnsPAssemblyexceptionfeature ensAssemblyexceptionfeatureNewObj(
     const EnsPAssemblyexceptionfeature object);
@@ -959,7 +959,7 @@ EnsPFeature ensAssemblyexceptionfeatureGetFeature(
 EnsPSlice ensAssemblyexceptionfeatureGetAlternateSlice(
     const EnsPAssemblyexceptionfeature aef);
 
-AjEnum ensAssemblyexceptionfeatureGetType(
+EnsEAssemblyexceptionType ensAssemblyexceptionfeatureGetType(
     const EnsPAssemblyexceptionfeature aef);
 
 AjBool ensAssemblyexceptionfeatureSetAdaptor(
@@ -978,7 +978,7 @@ AjBool ensAssemblyexceptionfeatureSetAlternateSlice(
     EnsPSlice altslice);
 
 AjBool ensAssemblyexceptionfeatureSetType(EnsPAssemblyexceptionfeature aef,
-                                          AjEnum type);
+                                          EnsEAssemblyexceptionType type);
 
 AjBool ensAssemblyexceptionfeatureFetchDisplayIdentifier(
     const EnsPAssemblyexceptionfeature aef,

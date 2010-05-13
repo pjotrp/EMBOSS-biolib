@@ -3,8 +3,8 @@
 **
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
-** @modified $Date: 2010/04/25 11:40:06 $ by $Author: mks $
-** @version $Revision: 1.7 $
+** @modified $Date: 2010/05/13 20:39:08 $ by $Author: mks $
+** @version $Revision: 1.8 $
 **
 ** This library is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU Library General Public
@@ -97,7 +97,7 @@
 ** Default Ensembl Database Connection constructor.
 **
 ** @cc Bio::EnsEMBL::DBSQL::DBConnection::new
-** @param [r] client [AjEnum] AJAX SQL client type
+** @param [r] client [AjESqlClient] AJAX SQL client type
 ** @param [u] user [AjPStr] User name
 ** @param [u] password [AjPStr] Password
 ** @param [u] host [AjPStr] Host name or IP address
@@ -109,7 +109,7 @@
 ** @@
 ******************************************************************************/
 
-EnsPDatabaseconnection ensDatabaseconnectionNew(AjEnum client,
+EnsPDatabaseconnection ensDatabaseconnectionNew(AjESqlClient client,
                                                 AjPStr user,
                                                 AjPStr password,
                                                 AjPStr host,
@@ -369,7 +369,7 @@ void ensDatabaseconnectionDel(EnsPDatabaseconnection* Pdbc)
 ** @valrule HostPort [AjPStr] Host port
 ** @valrule SocketFile [AjPStr] UNIX socket file
 ** @valrule DatabaseName [AjPStr] Database name
-** @valrule SqlClientType [AjEnum] SQL client type
+** @valrule SqlClientType [AjESqlClient] SQL client type
 **
 ** @fcategory use
 ******************************************************************************/
@@ -537,11 +537,12 @@ AjPStr ensDatabaseconnectionGetDatabaseName(const EnsPDatabaseconnection dbc)
 ** @cc Bio::EnsEMBL::DBSQL::DBConnection::driver
 ** @param [r] dbc [const EnsPDatabaseconnection] Ensembl Database Connection
 **
-** @return [AjEnum] SQL client type
+** @return [AjESqlClient] SQL client type
 ** @@
 ******************************************************************************/
 
-AjEnum ensDatabaseconnectionGetSqlClientType(const EnsPDatabaseconnection dbc)
+AjESqlClient ensDatabaseconnectionGetSqlClientType(
+    const EnsPDatabaseconnection dbc)
 {
     if(!dbc)
         return ajESqlClientNULL;
@@ -833,7 +834,7 @@ AjBool ensDatabaseconnectionEscapeS(EnsPDatabaseconnection dbc,
     if(!str)
         return ajFalse;
 
-    if("ensDatabaseconnectionEscapeS")
+    if(ajDebugTest("ensDatabaseconnectionEscapeS"))
     {
         ajDebug("ensDatabaseconnectionEscapeS\n"
                 "  dbc %p\n"

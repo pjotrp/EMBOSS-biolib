@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1286,7 +1286,7 @@ AjBool ensDitagadaptorFetchAllByType(EnsPDitagadaptor dta,
 ** @cc Bio::EnsEMBL::Map::DitagFeature::new
 ** @param [u] dt [EnsPDitag] Ensembl Ditag
 ** @param [u] cigar [AjPStr] CIGAR line
-** @param [r] side [AjEnum] Side
+** @param [r] side [EnsEDitagfeatureSide] Side
 ** @param [r] tstart [ajint] Target start
 ** @param [r] tend [ajint] Target end
 ** @param [r] tstrand [ajint] Target strand
@@ -1301,7 +1301,7 @@ EnsPDitagfeature ensDitagfeatureNew(EnsPDitagfeatureadaptor dtfa,
                                     EnsPFeature feature,
                                     EnsPDitag dt,
                                     AjPStr cigar,
-                                    AjEnum side,
+                                    EnsEDitagfeatureSide side,
                                     ajint tstart,
                                     ajint tend,
                                     ajint tstrand,
@@ -1508,7 +1508,7 @@ void ensDitagfeatureDel(EnsPDitagfeature *Pdtf)
 ** @valrule Feature [EnsPFeature] Ensembl Feature
 ** @valrule Ditag [EnsPDitag] Ensembl Ditag
 ** @valrule Cigar [AjPStr] CIGAR line
-** @valrule Side [AjEnum] Side
+** @valrule Side [EnsEDitagfeatureSide] Side
 ** @valrule TargetStart [ajint] Target start
 ** @valrule TargetEnd [ajint] Target end
 ** @valrule TargetStrand [ajint] Target strand
@@ -1637,11 +1637,11 @@ AjPStr ensDitagfeatureGetCigar(const EnsPDitagfeature dtf)
 ** @cc Bio::EnsEMBL::Map::DitagFeature::ditag_side
 ** @param [r] dtf [const EnsPDitagfeature] Ensembl Ditag Feature
 **
-** @return [AjEnum] Side
+** @return [EnsEDitagfeatureSide] Side or ensEDitagfeatureSideNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensDitagfeatureGetSide(const EnsPDitagfeature dtf)
+EnsEDitagfeatureSide ensDitagfeatureGetSide(const EnsPDitagfeature dtf)
 {
     if(!dtf)
         return ensEDitagfeatureSideNULL;
@@ -1906,13 +1906,13 @@ AjBool ensDitagfeatureSetCigar(EnsPDitagfeature dtf, AjPStr cigar)
 **
 ** @cc Bio::EnsEMBL::Map::DitagFeature::ditag_side
 ** @param [u] dtf [EnsPDitagfeature] Ensembl Ditag Feature
-** @param [r] side [AjEnum] Side
+** @param [r] side [EnsEDitagfeatureSide] Side
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensDitagfeatureSetSide(EnsPDitagfeature dtf, AjEnum side)
+AjBool ensDitagfeatureSetSide(EnsPDitagfeature dtf, EnsEDitagfeatureSide side)
 {
     if(!dtf)
         return ajFalse;
@@ -2144,16 +2144,16 @@ ajuint ensDitagfeatureGetMemSize(const EnsPDitagfeature dtf)
 **
 ** @param [r] side [const AjPStr] Ensembl Ditag Feature side string
 **
-** @return [AjEnum] Ensembl Ditag Feature side element or
-**                  ensEDitagfeatureSideNULL
+** @return [EnsEDitagfeatureSide] Ensembl Ditag Feature side or
+**                                ensEDitagfeatureSideNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensDitagfeatureSideFromStr(const AjPStr side)
+EnsEDitagfeatureSide ensDitagfeatureSideFromStr(const AjPStr side)
 {
-    register ajint i = 0;
+    register EnsEDitagfeatureSide i = ensEDitagfeatureSideNULL;
 
-    AjEnum eside = ensEDitagfeatureSideNULL;
+    EnsEDitagfeatureSide eside = ensEDitagfeatureSideNULL;
 
     for(i = 1; ditagfeatureSide[i]; i++)
         if(ajStrMatchC(side, ditagfeatureSide[i]))
@@ -2173,15 +2173,15 @@ AjEnum ensDitagfeatureSideFromStr(const AjPStr side)
 **
 ** Convert an Ensembl Ditag Feature side element into a C-type (char*) string.
 **
-** @param [r] side [const AjEnum] Ensembl Ditag Feature side enumerator
+** @param [r] side [EnsEDitagfeatureSide] Ensembl Ditag Feature side
 **
 ** @return [const char*] Ensembl Ditag Feature side C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char* ensDitagfeatureSideToChar(const AjEnum side)
+const char* ensDitagfeatureSideToChar(EnsEDitagfeatureSide side)
 {
-    register ajint i = 0;
+    register EnsEDitagfeatureSide i = ensEDitagfeatureSideNULL;
 
     if(!side)
         return NULL;
@@ -2433,7 +2433,7 @@ static AjBool ditagfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     ajuint dtend      = 0;
     ajuint dtpairid   = 0;
 
-    AjEnum eside = ensEDitagfeatureSideNULL;
+    EnsEDitagfeatureSide eside = ensEDitagfeatureSideNULL;
 
     AjPList mrs = NULL;
 

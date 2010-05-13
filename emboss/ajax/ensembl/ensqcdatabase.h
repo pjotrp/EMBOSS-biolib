@@ -42,7 +42,7 @@ typedef struct EnsSQcdatabaseadaptor
 **
 ******************************************************************************/
 
-enum EnsEQcdatabaseClass
+typedef enum EnsOQcdatabaseClass
 {
     ensEQcdatabaseClassNULL,
     ensEQcdatabaseClassUnknown,
@@ -50,7 +50,7 @@ enum EnsEQcdatabaseClass
     ensEQcdatabaseClassTest,
     ensEQcdatabaseClassBoth,
     ensEQcdatabaseClassGenome
-};
+} EnsEQcdatabaseClass;
 
 
 
@@ -61,13 +61,13 @@ enum EnsEQcdatabaseClass
 **
 ******************************************************************************/
 
-enum EnsEQcdatabaseType
+typedef enum EnsOQcdatabaseType
 {
     ensEQcdatabaseTypeNULL,
     ensEQcdatabaseTypeUnknown,
     ensEQcdatabaseTypeDNA,
     ensEQcdatabaseTypeProtein
-};
+} EnsEQcdatabaseType;
 
 
 
@@ -90,10 +90,10 @@ enum EnsEQcdatabaseType
 ** @attr Release [AjPStr] Release
 ** @attr Date [AjPStr] Date
 ** @attr Format [AjPStr] Format
-** @attr Class [AjEnum] Class
-** @attr Type [AjEnum] Type
+** @attr Class [EnsEQcdatabaseClass] Class
+** @attr Type [EnsEQcdatabaseType] Type
 ** @attr Species [AjPStr] Registry species
-** @attr Group [AjEnum] Ensembl Database Adaptor group
+** @attr Group [EnsEDatabaseadaptorGroup] Ensembl Database Adaptor group
 ** @attr Padding [ajuint] Padding to alignment boundary
 ** @attr Host [AjPStr] Host
 ** @attr Directory [AjPStr] Directory
@@ -113,10 +113,10 @@ typedef struct EnsSQcdatabase
     AjPStr Release;
     AjPStr Date;
     AjPStr Format;
-    AjEnum Class;
-    AjEnum Type;
+    EnsEQcdatabaseClass Class;
+    EnsEQcdatabaseType Type;
     AjPStr Species;
-    AjEnum Group;
+    EnsEDatabaseadaptorGroup Group;
     ajuint Padding;
     AjPStr Host;
     AjPStr Directory;
@@ -143,10 +143,10 @@ EnsPQcdatabase ensQcdatabaseNew(EnsPQcdatabaseadaptor qcdba,
                                 AjPStr release,
                                 AjPStr date,
                                 AjPStr format,
-                                AjEnum class,
-                                AjEnum type,
+                                EnsEQcdatabaseClass class,
+                                EnsEQcdatabaseType type,
                                 AjPStr species,
-                                AjEnum group,
+                                EnsEDatabaseadaptorGroup group,
                                 AjPStr host,
                                 AjPStr directory,
                                 AjPStr file,
@@ -172,13 +172,13 @@ AjPStr ensQcdatabaseGetDate(const EnsPQcdatabase qcdb);
 
 AjPStr ensQcdatabaseGetFormat(const EnsPQcdatabase qcdb);
 
-AjEnum ensQcdatabaseGetClass(const EnsPQcdatabase qcdb);
+EnsEQcdatabaseClass ensQcdatabaseGetClass(const EnsPQcdatabase qcdb);
 
-AjEnum ensQcdatabaseGetType(const EnsPQcdatabase qcdb);
+EnsEQcdatabaseType ensQcdatabaseGetType(const EnsPQcdatabase qcdb);
 
 AjPStr ensQcdatabaseGetSpecies(const EnsPQcdatabase qcdb);
 
-AjEnum ensQcdatabaseGetGroup(const EnsPQcdatabase qcdb);
+EnsEDatabaseadaptorGroup ensQcdatabaseGetGroup(const EnsPQcdatabase qcdb);
 
 AjPStr ensQcdatabaseGetHost(const EnsPQcdatabase qcdb);
 
@@ -205,13 +205,14 @@ AjBool ensQcdatabaseSetDate(EnsPQcdatabase qcdb, AjPStr date);
 
 AjBool ensQcdatabaseSetFormat(EnsPQcdatabase qcdb, AjPStr format);
 
-AjBool ensQcdatabaseSetClass(EnsPQcdatabase qcdb, AjEnum class);
+AjBool ensQcdatabaseSetClass(EnsPQcdatabase qcdb, EnsEQcdatabaseClass class);
 
-AjBool ensQcdatabaseSetType(EnsPQcdatabase qcdb, AjEnum type);
+AjBool ensQcdatabaseSetType(EnsPQcdatabase qcdb, EnsEQcdatabaseType type);
 
 AjBool ensQcdatabaseSetSpecies(EnsPQcdatabase qcdb, AjPStr species);
 
-AjBool ensQcdatabaseSetGroup(EnsPQcdatabase qcdb, AjEnum group);
+AjBool ensQcdatabaseSetGroup(EnsPQcdatabase qcdb,
+                             EnsEDatabaseadaptorGroup group);
 
 AjBool ensQcdatabaseSetHost(EnsPQcdatabase qcdb, AjPStr host);
 
@@ -227,13 +228,13 @@ ajuint ensQcdatabaseGetMemSize(const EnsPQcdatabase qcdb);
 
 AjBool ensQcdatabaseTrace(const EnsPQcdatabase qcdb, ajuint level);
 
-AjEnum ensQcdatabaseClassFromStr(const AjPStr class);
+EnsEQcdatabaseClass ensQcdatabaseClassFromStr(const AjPStr class);
 
-AjEnum ensQcdatabaseTypeFromStr(const AjPStr type);
+EnsEQcdatabaseType ensQcdatabaseTypeFromStr(const AjPStr type);
 
-const char *ensQcdatabaseClassToChar(const AjEnum class);
+const char *ensQcdatabaseClassToChar(EnsEQcdatabaseClass class);
 
-const char *ensQcdatabaseTypeToChar(const AjEnum type);
+const char *ensQcdatabaseTypeToChar(EnsEQcdatabaseType type);
 
 AjBool ensQcdatabaseMatch(const EnsPQcdatabase qcdb1,
                           const EnsPQcdatabase qcdb2);
@@ -258,8 +259,8 @@ AjBool ensQcdatabaseadaptorFetchByName(EnsPQcdatabaseadaptor qcdba,
                                        EnsPQcdatabase *Pqcdb);
 
 AjBool ensQcdatabaseadaptorFetchAllByClassType(EnsPQcdatabaseadaptor qcdba,
-                                               AjEnum class,
-                                               AjEnum type,
+                                               EnsEQcdatabaseClass class,
+                                               EnsEQcdatabaseType type,
                                                AjPList qcdbs);
 
 AjBool ensQcdatabaseadaptorStore(EnsPQcdatabaseadaptor qcdba,

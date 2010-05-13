@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -920,13 +920,14 @@ AjBool ensMapperpairGetInsertionDeletion(const EnsPMapperpair mp)
 ** @cc Bio::EnsEMBL::Mapper::Pair::from
 ** @cc Bio::EnsEMBL::Mapper::Pair::to
 ** @param [r] mu [const EnsPMapperpair] Ensembl Mapper Pair
-** @param [r] type [AjEnum] Ensembl Mapper Unit Type
+** @param [r] type [EnsEMapperunitType] Ensembl Mapper Unit Type
 **
 ** @return [EnsPMapperunit] Source or Target Ensembl Mapper Unit or NULL
 ** @@
 ******************************************************************************/
 
-EnsPMapperunit ensMapperpairGetUnit(const EnsPMapperpair mp, AjEnum type)
+EnsPMapperunit ensMapperpairGetUnit(const EnsPMapperpair mp,
+                                    EnsEMapperunitType type)
 {
     if(!mp)
         return NULL;
@@ -1290,7 +1291,7 @@ AjBool ensMapperpairSortByTargetStartAscending(AjPList mps)
 **
 ** Default constructor for an Ensembl Mapper Result.
 **
-** @param [r] type [AjEnum] Type
+** @param [r] type [EnsEMapperunitType] Type
 ** @param [r] oid [ajuint] Ensembl Object identifier
 ** @param [r] start [ajint] Start
 ** @param [r] end [ajint] End
@@ -1304,7 +1305,7 @@ AjBool ensMapperpairSortByTargetStartAscending(AjPList mps)
 ** @@
 ******************************************************************************/
 
-EnsPMapperresult ensMapperresultNew(AjEnum type,
+EnsPMapperresult ensMapperresultNew(EnsEMapperunitType type,
                                     ajuint oid,
                                     ajint start,
                                     ajint end,
@@ -1509,7 +1510,7 @@ void ensMapperresultDel(EnsPMapperresult *Pmr)
 **
 ** @argrule * mr [const EnsPMapperresult] Ensembl Mapper Result
 **
-** @valrule Type [AjEnum] Type
+** @valrule Type [EnsEMapperunitType] Type
 ** @valrule ObjectIdentifier [ajuint] Ensembl Object identifier
 ** @valrule Start [ajint] Start
 ** @valrule End [ajint] End
@@ -1531,11 +1532,11 @@ void ensMapperresultDel(EnsPMapperresult *Pmr)
 **
 ** @param [r] mr [const EnsPMapperresult] Ensembl Mapper Result
 **
-** @return [AjEnum] Type
+** @return [EnsEMapperunitType] Type or ensEMapperresultNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensMapperresultGetType(const EnsPMapperresult mr)
+EnsEMapperunitType ensMapperresultGetType(const EnsPMapperresult mr)
 {
     if(!mr)
         return ensEMapperresultNULL;
@@ -3805,7 +3806,7 @@ AjBool ensMapperListPairs(EnsPMapper mapper,
                           const AjPStr type,
                           AjPList mps)
 {
-    AjEnum mutype = ensEMapperunitTypeNULL;
+    EnsEMapperunitType mutype = ensEMapperunitTypeNULL;
 
     AjPList list = NULL;
     AjIList iter = NULL;
@@ -4081,8 +4082,8 @@ AjBool ensMapperMapCoordinates(EnsPMapper mapper,
 
     AjBool debug = AJFALSE;
 
-    AjEnum srctype = ensEMapperunitTypeNULL;
-    AjEnum trgtype = ensEMapperunitTypeNULL;
+    EnsEMapperunitType srctype = ensEMapperunitTypeNULL;
+    EnsEMapperunitType trgtype = ensEMapperunitTypeNULL;
 
     AjPList list = NULL;
 
@@ -4410,8 +4411,8 @@ AjBool ensMapperFastMap(EnsPMapper mapper,
 {
     AjBool debug = AJFALSE;
 
-    AjEnum srctype = ensEMapperunitTypeNULL;
-    AjEnum trgtype = ensEMapperunitTypeNULL;
+    EnsEMapperunitType srctype = ensEMapperunitTypeNULL;
+    EnsEMapperunitType trgtype = ensEMapperunitTypeNULL;
 
     AjIList iter = NULL;
     AjPList list = NULL;
@@ -4646,8 +4647,8 @@ AjBool ensMapperMapInDel(EnsPMapper mapper,
 
     AjBool debug = AJFALSE;
 
-    AjEnum srctype = ensEMapperunitTypeNULL;
-    AjEnum trgtype = ensEMapperunitTypeNULL;
+    EnsEMapperunitType srctype = ensEMapperunitTypeNULL;
+    EnsEMapperunitType trgtype = ensEMapperunitTypeNULL;
 
     AjPList list = NULL;
 

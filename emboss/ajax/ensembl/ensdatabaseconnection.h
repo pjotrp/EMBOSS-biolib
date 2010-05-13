@@ -28,7 +28,7 @@ extern "C"
 ** @attr HostPort [AjPStr] Host TCP/IP port
 ** @attr SocketFile [AjPStr] UNIX socket file
 ** @attr DatabaseName [AjPStr] SQL database name
-** @attr SqlClientType [AjEnum] AJAX SQL client type
+** @attr SqlClientType [AjESqlClient] AJAX SQL client type
 ** @attr Use [ajuint] Use counter
 **
 ** @@
@@ -43,7 +43,7 @@ typedef struct EnsSDatabaseconnection
     AjPStr HostPort;
     AjPStr SocketFile;
     AjPStr DatabaseName;
-    AjEnum SqlClientType;
+    AjESqlClient SqlClientType;
     ajuint Use;
 } EnsODatabaseconnection;
 
@@ -56,7 +56,7 @@ typedef struct EnsSDatabaseconnection
 ** Prototype definitions
 */
 
-EnsPDatabaseconnection ensDatabaseconnectionNew(AjEnum client,
+EnsPDatabaseconnection ensDatabaseconnectionNew(AjESqlClient client,
                                                 AjPStr user,
                                                 AjPStr password,
                                                 AjPStr host,
@@ -86,7 +86,8 @@ AjPStr ensDatabaseconnectionGetSocketFile(const EnsPDatabaseconnection dbc);
 
 AjPStr ensDatabaseconnectionGetDatabaseName(const EnsPDatabaseconnection dbc);
 
-AjEnum ensDatabaseconnectionGetSqlClientType(const EnsPDatabaseconnection dbc);
+AjESqlClient ensDatabaseconnectionGetSqlClientType(
+    const EnsPDatabaseconnection dbc);
 
 AjBool ensDatabaseconnectionMatch(const EnsPDatabaseconnection dbc1,
                                   const EnsPDatabaseconnection dbc2);

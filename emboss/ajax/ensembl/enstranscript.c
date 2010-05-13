@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.16 $
+** @version $Revision: 1.17 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -252,7 +252,7 @@ static EnsPFeature transcriptadaptorGetFeature(const void *value);
 ** @param [u] displaydbe [EnsPDatabaseentry] Ensembl Database Entry
 ** @param [u] description [AjPStr] Description
 ** @param [u] biotype [AjPStr] Biotype
-** @param [r] status [AjEnum] Status
+** @param [r] status [EnsETranscriptStatus] Status
 ** @param [r] current [AjBool] Current attribute
 ** @param [u] stableid [AjPStr] Stable identifier
 ** @param [r] version [ajuint] Version
@@ -270,7 +270,7 @@ EnsPTranscript ensTranscriptNew(EnsPTranscriptadaptor tca,
                                 EnsPDatabaseentry displaydbe,
                                 AjPStr description,
                                 AjPStr biotype,
-                                AjEnum status,
+                                EnsETranscriptStatus status,
                                 AjBool current,
                                 AjPStr stableid,
                                 ajuint version,
@@ -737,7 +737,7 @@ void ensTranscriptDel(EnsPTranscript *Ptranscript)
 ** @valrule DisplayReference [EnsPDatabaseentry] Ensembl Database Entry
 ** @valrule Description [AjPStr] Description
 ** @valrule BioType [ajuint] Biological type
-** @valrule Status [AjEnum] Status
+** @valrule Status [EnsETranscriptStatus] Status
 ** @valrule GeneIdentifier [ajuint] Ensembl Gene identifier
 ** @valrule Current [AjBool] Current attribute
 ** @valrule StableIdentifier [AjPStr] Stable identifier
@@ -903,11 +903,11 @@ AjPStr ensTranscriptGetBioType(const EnsPTranscript transcript)
 ** @cc Bio::EnsEMBL::Transcript::status
 ** @param [r] transcript [const EnsPTranscript] Ensembl Transcript
 **
-** @return [AjEnum] Status
+** @return [EnsETranscriptStatus] Status or ensETranscriptStatusNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensTranscriptGetStatus(const EnsPTranscript transcript)
+EnsETranscriptStatus ensTranscriptGetStatus(const EnsPTranscript transcript)
 {
     if(!transcript)
         return ensETranscriptStatusNULL;
@@ -2290,14 +2290,14 @@ AjBool ensTranscriptSetBioType(EnsPTranscript transcript,
 **
 ** @cc Bio::EnsEMBL::Transcript::status
 ** @param [u] transcript [EnsPTranscript] Ensembl Transcript
-** @param [r] status [AjEnum] Status
+** @param [r] status [EnsETranscriptStatus] Status
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
 AjBool ensTranscriptSetStatus(EnsPTranscript transcript,
-                              AjEnum status)
+                              EnsETranscriptStatus status)
 {
     if(!transcript)
         return ajFalse;
@@ -3072,16 +3072,16 @@ AjBool ensTranscriptTrace(const EnsPTranscript transcript, ajuint level)
 **
 ** @param [r] status [const AjPStr] Status string
 **
-** @return [AjEnum] Ensembl Transcript status element or
-**                  ensETranscriptStatusNULL
+** @return [EnsETranscriptStatus] Ensembl Transcript status or
+**                                ensETranscriptStatusNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensTranscriptStatusFromStr(const AjPStr status)
+EnsETranscriptStatus ensTranscriptStatusFromStr(const AjPStr status)
 {
-    register ajint i = 0;
+    register EnsETranscriptStatus i = ensETranscriptStatusNULL;
 
-    AjEnum estatus = ensETranscriptStatusNULL;
+    EnsETranscriptStatus estatus = ensETranscriptStatusNULL;
 
     for(i = 1; transcriptStatus[i]; i++)
         if(ajStrMatchC(status, transcriptStatus[i]))
@@ -3101,15 +3101,15 @@ AjEnum ensTranscriptStatusFromStr(const AjPStr status)
 **
 ** Convert an Ensembl Transcript status element into a C-type (char*) string.
 **
-** @param [r] status [const AjEnum] Transcript status enumerator
+** @param [r] status [EnsETranscriptStatus] Transcript status
 **
 ** @return [const char*] Transcript status C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char *ensTranscriptStatusToChar(const AjEnum status)
+const char *ensTranscriptStatusToChar(EnsETranscriptStatus status)
 {
-    register ajint i = 0;
+    register EnsETranscriptStatus i = ensETranscriptStatusNULL;
 
     if(!status)
         return NULL;
@@ -3710,7 +3710,7 @@ AjBool ensTranscriptFetchAllConstitutiveExons(EnsPTranscript transcript,
 ** @cc Bio::EnsEMBL::Transcript::get_all_DBEntries
 ** @param [u] transcript [EnsPTranscript] Ensembl Transcript
 ** @param [r] name [const AjPStr] Ensembl External Database name
-** @param [r] type [AjEnum] Ensembl External Database type
+** @param [r] type [EnsEExternaldatabaseType] Ensembl External Database type
 ** @param [u] dbes [AjPList] AJAX List of Ensembl Database Entries
 ** @see ensTranscriptGetDatabaseEntries
 **
@@ -3720,7 +3720,7 @@ AjBool ensTranscriptFetchAllConstitutiveExons(EnsPTranscript transcript,
 
 AjBool ensTranscriptFetchAllDatabaseEntries(EnsPTranscript transcript,
                                             const AjPStr name,
-                                            AjEnum type,
+                                            EnsEExternaldatabaseType type,
                                             AjPList dbes)
 {
     AjBool namematch = AJFALSE;
@@ -4600,8 +4600,11 @@ static AjBool transcriptadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
     AjBool current = AJFALSE;
 
-    AjEnum estatus   = ensETranscriptStatusNULL;
-    AjEnum einfotype = ensEExternalreferenceInfoTypeNULL;
+    EnsETranscriptStatus estatus =
+        ensETranscriptStatusNULL;
+
+    EnsEExternalreferenceInfoType einfotype =
+        ensEExternalreferenceInfoTypeNULL;
 
     AjPList mrs = NULL;
 
@@ -4712,7 +4715,7 @@ static AjBool transcriptadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         erinfotype    = ajStrNew();
         erinfotext    = ajStrNew();
 
-        estatus = ensETranscriptStatusNULL;
+        estatus   = ensETranscriptStatusNULL;
         einfotype = ensEExternalreferenceInfoTypeNULL;
 
         sqlr = ajSqlrowiterGet(sqli);

@@ -89,13 +89,13 @@ typedef struct EnsSDitagfeatureadaptor
 **
 ******************************************************************************/
 
-enum EnsEDitagfeatureSide
+typedef enum EnsODitagfeatureSide
 {
     ensEDitagfeatureSideNULL,
     ensEDitagfeatureSideLeft,
     ensEDitagfeatureSideRight,
     ensEDitagfeatureSideFull
-};
+} EnsEDitagfeatureSide;
 
 
 
@@ -116,7 +116,7 @@ enum EnsEDitagfeatureSide
 ** @cc Bio::EnsEMBL::Map::DitagFeature
 ** @attr Ditag [EnsPDitag] Ditag
 ** @attr Cigar [AjPStr] CIGAR line
-** @attr Side [AjEnum] Side
+** @attr Side [EnsEDitagfeatureSide] Side
 ** @attr TargetStart [ajint] Target start
 ** @attr TargetEnd [ajint] Target end
 ** @attr TargetStrand [ajint] Target strand
@@ -133,7 +133,7 @@ typedef struct EnsSDitagfeature
     EnsPFeature Feature;
     EnsPDitag Ditag;
     AjPStr Cigar;
-    AjEnum Side;
+    EnsEDitagfeatureSide Side;
     ajint TargetStart;
     ajint TargetEnd;
     ajint TargetStrand;
@@ -224,7 +224,7 @@ EnsPDitagfeature ensDitagfeatureNew(EnsPDitagfeatureadaptor dtfa,
                                     EnsPFeature feature,
                                     EnsPDitag dt,
                                     AjPStr cigar,
-                                    AjEnum side,
+                                    EnsEDitagfeatureSide side,
                                     ajint tstart,
                                     ajint tend,
                                     ajint tstrand,
@@ -246,7 +246,7 @@ EnsPDitag ensDitagfeatureGetDitag(const EnsPDitagfeature dtf);
 
 AjPStr ensDitagfeatureGetCigar(const EnsPDitagfeature dtf);
 
-AjEnum ensDitagfeatureGetSide(const EnsPDitagfeature dtf);
+EnsEDitagfeatureSide ensDitagfeatureGetSide(const EnsPDitagfeature dtf);
 
 ajint ensDitagfeatureGetTargetStart(const EnsPDitagfeature dtf);
 
@@ -267,7 +267,7 @@ AjBool ensDitagfeatureSetDitag(EnsPDitagfeature dtf, EnsPDitag dt);
 
 AjBool ensDitagfeatureSetCigar(EnsPDitagfeature dtf, AjPStr cigar);
 
-AjBool ensDitagfeatureSetSide(EnsPDitagfeature dtf, AjEnum side);
+AjBool ensDitagfeatureSetSide(EnsPDitagfeature dtf, EnsEDitagfeatureSide side);
 
 AjBool ensDitagfeatureSetTargetStart(EnsPDitagfeature dtf, ajint tstart);
 
@@ -281,9 +281,9 @@ AjBool ensDitagfeatureTrace(const EnsPDitagfeature dtf, ajuint level);
 
 ajuint ensDitagfeatureGetMemSize(const EnsPDitagfeature dtf);
 
-AjEnum ensDitagfeatureSideFromStr(const AjPStr side);
+EnsEDitagfeatureSide ensDitagfeatureSideFromStr(const AjPStr side);
 
-const char *ensDitagfeatureSideToChar(const AjEnum side);
+const char *ensDitagfeatureSideToChar(const EnsEDitagfeatureSide side);
 
 AjBool ensDitagfeatureSortByStartAscending(AjPList dtfs);
 

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1670,7 +1670,7 @@ AjBool ensMarkermaplocationadaptorFetchAllByMarkerIdentifier(
 ** @param [r] mmls [AjPList] AJAX List of Ensembl Marker Map Locations
 ** @param [r] mindistance [ajuint] Minimum primer distance
 ** @param [r] maxdistance [ajuint] Maximum primer distance
-** @param [r] type [AjEnum] Type
+** @param [r] type [EnsEMarkerType] Type
 ** @param [r] priority [ajint] Priority
 **
 ** @return [EnsPMarker] Ensembl Marker or NULL
@@ -1686,7 +1686,7 @@ EnsPMarker ensMarkerNew(EnsPMarkeradaptor ma,
                         AjPList mmls,
                         ajuint mindistance,
                         ajuint maxdistance,
-                        AjEnum type,
+                        EnsEMarkerType type,
                         ajint priority)
 {
     AjIList iter = NULL;
@@ -2014,7 +2014,7 @@ void ensMarkerDel(EnsPMarker *Pmarker)
 **                                             Map Locations
 ** @valrule MinimumDistance [ajuint] Minimum distance
 ** @valrule MaximumDistance [ajuint] Maximum distance
-** @valrule Type [AjEnum] Type
+** @valrule Type [EnsEMarkerType] Type
 ** @valrule Priority [ajuint] Priority
 **
 ** @fcategory use
@@ -2297,11 +2297,11 @@ ajuint ensMarkerGetMaximumDistance(const EnsPMarker marker)
 ** @cc Bio::EnsEMBL::Map::Marker::type
 ** @param [r] marker [const EnsPMarker] Ensembl Marker
 **
-** @return [AjEnum] Type
+** @return [EnsEMarkerType] Type or ensEMarkerTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensMarkerGetType(const EnsPMarker marker)
+EnsEMarkerType ensMarkerGetType(const EnsPMarker marker)
 {
     if(!marker)
         return ensEMarkerTypeNULL;
@@ -2553,13 +2553,13 @@ AjBool ensMarkerSetMaximumDistance(EnsPMarker marker, ajuint maxdistance)
 **
 ** @cc Bio::EnsEMBL::Map::Marker::type
 ** @param [u] marker [EnsPMarker] Ensembl Marker
-** @param [u] type [AjEnum] Type
+** @param [u] type [EnsEMarkerType] Type
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensMarkerSetType(EnsPMarker marker, AjEnum type)
+AjBool ensMarkerSetType(EnsPMarker marker, EnsEMarkerType type)
 {
     if(!marker)
         return ajFalse;
@@ -2850,15 +2850,15 @@ AjBool ensMarkerAddMarkermaplocation(EnsPMarker marker,
 **
 ** @param [r] type [const AjPStr] Marker type string
 **
-** @return [AjEnum] Ensembl Marker type element or ensEMarkerTypeNULL
+** @return [EnsEMarkerType] Ensembl Marker type or ensEMarkerTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensMarkerTypeFromStr(const AjPStr type)
+EnsEMarkerType ensMarkerTypeFromStr(const AjPStr type)
 {
-    register ajint i = 0;
+    register EnsEMarkerType i = ensEMarkerTypeNULL;
 
-    AjEnum etype = ensEMarkerTypeNULL;
+    EnsEMarkerType etype = ensEMarkerTypeNULL;
 
     for(i = 1; markerType[i]; i++)
         if(ajStrMatchC(type, markerType[i]))
@@ -2878,15 +2878,15 @@ AjEnum ensMarkerTypeFromStr(const AjPStr type)
 **
 ** Convert an Ensembl Marker type element into a C-type (char*) string.
 **
-** @param [r] type [const AjEnum] Ensembl Marker type enumerator
+** @param [r] type [EnsEMarkerType] Ensembl Marker type
 **
 ** @return [const char*] Ensembl Marker type C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char* ensMarkerTypeToChar(const AjEnum type)
+const char* ensMarkerTypeToChar(EnsEMarkerType type)
 {
-    register ajint i = 0;
+    register EnsEMarkerType i = ensEMarkerTypeNULL;
 
     if(!type)
         return NULL;
@@ -3045,7 +3045,7 @@ static AjBool markeradaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     ajuint maxdistance = 0;
     ajuint msid = 0;
 
-    AjEnum etype = ensEMarkerTypeNULL;
+    EnsEMarkerType etype = ensEMarkerTypeNULL;
 
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;
@@ -4730,7 +4730,7 @@ static AjBool markerfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
     ajuint *Pidentifier = NULL;
 
-    AjEnum etype = ensEMarkerTypeNULL;
+    EnsEMarkerType etype = ensEMarkerTypeNULL;
 
     AjPList mrs = NULL;
 

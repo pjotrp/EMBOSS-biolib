@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -162,7 +162,7 @@ static AjBool databaseentryadaptorFetchAllIdentifiersByExternaldatabaseName(
 ** @param [u] description [AjPStr] Description
 ** @param [u] linkageannotation [AjPStr] Linkage annotation
 ** @param [u] infotext [AjPStr] Information text
-** @param [r] infotype [AjEnum] Information type
+** @param [r] infotype [EnsEExternalreferenceInfoType] Information type
 **
 ** @return [EnsPExternalreference] Ensembl External Reference or NULL
 ** @@
@@ -178,7 +178,7 @@ EnsPExternalreference ensExternalreferenceNew(
     AjPStr description,
     AjPStr linkageannotation,
     AjPStr infotext,
-    AjEnum infotype)
+    EnsEExternalreferenceInfoType infotype)
 {
     EnsPExternalreference er = NULL;
 
@@ -322,7 +322,8 @@ EnsPExternalreference ensExternalreferenceNewObj(
 ** @@
 ******************************************************************************/
 
-EnsPExternalreference ensExternalreferenceNewRef(EnsPExternalreference er)
+EnsPExternalreference ensExternalreferenceNewRef(
+    EnsPExternalreference er)
 {
     if(!er)
         return NULL;
@@ -365,7 +366,8 @@ EnsPExternalreference ensExternalreferenceNewRef(EnsPExternalreference er)
 ** @@
 ******************************************************************************/
 
-void ensExternalreferenceDel(EnsPExternalreference *Per)
+void ensExternalreferenceDel(
+    EnsPExternalreference *Per)
 {
     EnsPExternalreference pthis = NULL;
 
@@ -440,7 +442,7 @@ void ensExternalreferenceDel(EnsPExternalreference *Per)
 ** @valrule Description [AjPStr] Description
 ** @valrule LinkageAnnotation [AjPStr] Linkage annotation
 ** @valrule InfoText [AjPStr] Information text
-** @valrule InfoType [AjEnum] Information type
+** @valrule InfoType [EnsEExternalreferenceInfoType] Information type
 **
 ** @fcategory use
 ******************************************************************************/
@@ -489,7 +491,8 @@ const EnsPExternalreferenceadaptor ensExternalreferenceGetAdaptor(
 ** @@
 ******************************************************************************/
 
-ajuint ensExternalreferenceGetIdentifier(const EnsPExternalreference er)
+ajuint ensExternalreferenceGetIdentifier(
+    const EnsPExternalreference er)
 {
     if(!er)
         return 0;
@@ -510,7 +513,8 @@ ajuint ensExternalreferenceGetIdentifier(const EnsPExternalreference er)
 ** @@
 ******************************************************************************/
 
-EnsPAnalysis ensExternalreferenceGetAnalysis(const EnsPExternalreference er)
+EnsPAnalysis ensExternalreferenceGetAnalysis(
+    const EnsPExternalreference er)
 {
     if(!er)
         return 0;
@@ -565,7 +569,8 @@ EnsPExternaldatabase ensExternalreferenceGetExternaldatabase(
 ** @@
 ******************************************************************************/
 
-AjPStr ensExternalreferenceGetPrimaryIdentifier(const EnsPExternalreference er)
+AjPStr ensExternalreferenceGetPrimaryIdentifier(
+    const EnsPExternalreference er)
 {
     if(!er)
         return 0;
@@ -587,7 +592,8 @@ AjPStr ensExternalreferenceGetPrimaryIdentifier(const EnsPExternalreference er)
 ** @@
 ******************************************************************************/
 
-AjPStr ensExternalreferenceGetDisplayIdentifier(const EnsPExternalreference er)
+AjPStr ensExternalreferenceGetDisplayIdentifier(
+    const EnsPExternalreference er)
 {
     if(!er)
         return 0;
@@ -609,7 +615,8 @@ AjPStr ensExternalreferenceGetDisplayIdentifier(const EnsPExternalreference er)
 ** @@
 ******************************************************************************/
 
-AjPStr ensExternalreferenceGetVersion(const EnsPExternalreference er)
+AjPStr ensExternalreferenceGetVersion(
+    const EnsPExternalreference er)
 {
     if(!er)
         return 0;
@@ -631,7 +638,8 @@ AjPStr ensExternalreferenceGetVersion(const EnsPExternalreference er)
 ** @@
 ******************************************************************************/
 
-AjPStr ensExternalreferenceGetDescription(const EnsPExternalreference er)
+AjPStr ensExternalreferenceGetDescription(
+    const EnsPExternalreference er)
 {
     if(!er)
         return 0;
@@ -653,7 +661,8 @@ AjPStr ensExternalreferenceGetDescription(const EnsPExternalreference er)
 ** @@
 ******************************************************************************/
 
-AjPStr ensExternalreferenceGetLinkageAnnotation(const EnsPExternalreference er)
+AjPStr ensExternalreferenceGetLinkageAnnotation(
+    const EnsPExternalreference er)
 {
     if(!er)
         return NULL;
@@ -675,7 +684,8 @@ AjPStr ensExternalreferenceGetLinkageAnnotation(const EnsPExternalreference er)
 ** @@
 ******************************************************************************/
 
-AjPStr ensExternalreferenceGetInfoText(const EnsPExternalreference er)
+AjPStr ensExternalreferenceGetInfoText(
+    const EnsPExternalreference er)
 {
     if(!er)
         return 0;
@@ -693,11 +703,12 @@ AjPStr ensExternalreferenceGetInfoText(const EnsPExternalreference er)
 ** @cc Bio::EnsEMBL::DBEntry::info_type
 ** @param [r] er [const EnsPExternalreference] Ensembl External Reference
 **
-** @return [AjEnum] Information type
+** @return [EnsEExternalreferenceInfoType] Information type
 ** @@
 ******************************************************************************/
 
-AjEnum ensExternalreferenceGetInfoType(const EnsPExternalreference er)
+EnsEExternalreferenceInfoType ensExternalreferenceGetInfoType(
+    const EnsPExternalreference er)
 {
     if(!er)
         return 0;
@@ -930,7 +941,8 @@ AjBool ensExternalreferenceSetDisplayIdentifier(EnsPExternalreference er,
 ** @@
 ******************************************************************************/
 
-AjBool ensExternalreferenceSetVersion(EnsPExternalreference er, AjPStr version)
+AjBool ensExternalreferenceSetVersion(EnsPExternalreference er,
+                                      AjPStr version)
 {
     if(!er)
         return ajFalse;
@@ -1035,14 +1047,14 @@ AjBool ensExternalreferenceSetInfoText(EnsPExternalreference er,
 **
 ** @cc Bio::EnsEMBL::DBEntry::info_type
 ** @param [u] er [EnsPExternalreference] Ensembl External Reference
-** @param [r] infotype [AjEnum] Information type
+** @param [r] infotype [EnsEExternalreferenceInfoType] Information type
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
 AjBool ensExternalreferenceSetInfoType(EnsPExternalreference er,
-                                       AjEnum infotype)
+                                       EnsEExternalreferenceInfoType infotype)
 {
     if(!er)
         return ajFalse;
@@ -1144,16 +1156,19 @@ AjBool ensExternalreferenceTrace(const EnsPExternalreference er, ajuint level)
 **
 ** @param [r] infotype [const AjPStr] Info type string
 **
-** @return [AjEnum] Ensembl External Reference info type element or
-**                  ensEExternalreferenceInfoTypeNULL
+** @return [EnsEExternalreferenceInfoType] Ensembl External Reference info type
+**                                         or ensEExternalreferenceInfoTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensExternalreferenceInfoTypeFromStr(const AjPStr infotype)
+EnsEExternalreferenceInfoType ensExternalreferenceInfoTypeFromStr(
+    const AjPStr infotype)
 {
-    register ajint i = 0;
+    register EnsEExternalreferenceInfoType i =
+        ensEExternalreferenceInfoTypeNULL;
 
-    AjEnum einfotype = ensEExternalreferenceInfoTypeNULL;
+    EnsEExternalreferenceInfoType einfotype =
+        ensEExternalreferenceInfoTypeNULL;
 
     for(i = 1; externalreferenceInfoType[i]; i++)
         if(ajStrMatchC(infotype, externalreferenceInfoType[i]))
@@ -1174,17 +1189,19 @@ AjEnum ensExternalreferenceInfoTypeFromStr(const AjPStr infotype)
 ** Convert an Ensembl External Reference information type element into a
 ** C-type (char*) string.
 **
-** @param [r] type [const AjEnum] External Reference information type
-**                                enumerator
+** @param [r] type [EnsEExternalreferenceInfoType] External Reference
+**                                                 information type
 **
 ** @return [const char*] External Reference information type
 **                       C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char* ensExternalreferenceInfoTypeToChar(const AjEnum type)
+const char* ensExternalreferenceInfoTypeToChar(
+    EnsEExternalreferenceInfoType type)
 {
-    register ajint i = 0;
+    register EnsEExternalreferenceInfoType i =
+        ensEExternalreferenceInfoTypeNULL;
 
     if(!type)
         return NULL;
@@ -2326,7 +2343,7 @@ void ensGeneontologylinkageDel(EnsPGeneontologylinkage *Pgol)
 ** @param [u] version [AjPStr] Version
 ** @param [u] description [AjPStr] Description
 ** @param [u] linkageannotation [AjPStr] Linkage annotation
-** @param [r] infotype [AjEnum] Information type
+** @param [r] infotype [EnsEExternalreferenceInfoType] Information type
 ** @param [u] infotext [AjPStr] Information text
 **
 ** @return [EnsPDatabaseentry] Ensembl Database Entry or NULL
@@ -2342,7 +2359,7 @@ EnsPDatabaseentry ensDatabaseentryNew(EnsPDatabaseentryadaptor dbea,
                                       AjPStr version,
                                       AjPStr description,
                                       AjPStr linkageannotation,
-                                      AjEnum infotype,
+                                      EnsEExternalreferenceInfoType infotype,
                                       AjPStr infotext)
 {
     EnsPDatabaseentry dbe = NULL;
@@ -2618,8 +2635,8 @@ void ensDatabaseentryDel(EnsPDatabaseentry *Pdbe)
 ** @valrule SecondaryTable [AjPStr] Secondary table
 ** @valrule PrimaryIdIsLinkable [AjBool] Primary identifier is linkable
 ** @valrule DisplayIdIsLinkable [AjBool] Display identifier is linkable
-** @valrule Status [AjEnum] Status
-** @valrule Type [AjEnum] Type
+** @valrule Status [EnsEExternaldatabaseStatus] Status
+** @valrule Type [EnsEExternaldatabaseType] Type
 ** @valrule Priority [ajint] Priority
 **
 ** @fcategory use
@@ -2833,11 +2850,13 @@ AjPStr ensDatabaseentryGetInfoText(const EnsPDatabaseentry dbe)
 ** @cc Bio::EnsEMBL::DBEntry::info_type
 ** @param [r] dbe [const EnsPDatabaseentry] Ensembl Database Entry
 **
-** @return [AjEnum] Information type
+** @return [EnsEExternalreferenceInfoType] Information type or
+**                                         ensEExternalreferenceInfoTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensDatabaseentryGetInfoType(const EnsPDatabaseentry dbe)
+EnsEExternalreferenceInfoType ensDatabaseentryGetInfoType(
+    const EnsPDatabaseentry dbe)
 {
     if(!dbe)
         return 0;
@@ -3028,11 +3047,13 @@ ajint ensDatabaseentryGetPriority(const EnsPDatabaseentry dbe)
 ** @cc Bio::EnsEMBL::DBEntry::status
 ** @param [r] dbe [const EnsPDatabaseentry] Ensembl Database Entry
 **
-** @return [AjEnum] Status
+** @return [EnsEExternaldatabaseStatus] Status or
+**                                      ensEExternaldatabaseStatusNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensDatabaseentryGetStatus(const EnsPDatabaseentry dbe)
+EnsEExternaldatabaseStatus ensDatabaseentryGetStatus(
+    const EnsPDatabaseentry dbe)
 {
     if(!dbe)
         return ensEExternaldatabaseStatusNULL;
@@ -3056,11 +3077,11 @@ AjEnum ensDatabaseentryGetStatus(const EnsPDatabaseentry dbe)
 ** @cc Bio::EnsEMBL::DBEntry::type
 ** @param [r] dbe [const EnsPDatabaseentry] Ensembl Database Entry
 **
-** @return [AjEnum] Type
+** @return [EnsEExternaldatabaseType] Type or ensEExternaldatabaseTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensDatabaseentryGetType(const EnsPDatabaseentry dbe)
+EnsEExternaldatabaseType ensDatabaseentryGetType(const EnsPDatabaseentry dbe)
 {
     if(!dbe)
         return ensEExternaldatabaseTypeNULL;
@@ -3828,7 +3849,8 @@ static AjBool databaseentryadaptorFetchAllBySQL(EnsPDatabaseentryadaptor dbea,
 
     ajuint *Pidentifier = NULL;
 
-    AjEnum einfotype = ensEExternalreferenceInfoTypeNULL;
+    EnsEExternalreferenceInfoType einfotype =
+        ensEExternalreferenceInfoTypeNULL;
 
     AjPTable detable  = NULL;
     AjPTable linkages = NULL;
@@ -4476,7 +4498,7 @@ AjBool ensDatabaseentryadaptorFetchByDbNameAccession(
 ** @param [r] objid [ajuint] Ensembl Object identifier
 ** @param [r] objtype [const AjPStr] Ensembl Object type
 ** @param [rN] dbname [const AjPStr] Ensembl External Database name
-** @param [rN] dbtype [AjEnum] Ensembl External Database type
+** @param [rN] dbtype [EnsEExternaldatabaseType] Ensembl External Database type
 ** @param [u] dbes [AjPList] AJAX List of Ensembl Database Entries
 **
 ** @return [AjBool] ajTrue upon sucess, ajFalse otherwise
@@ -4488,7 +4510,7 @@ AjBool ensDatabaseentryadaptorFetchAllByObjectType(
     ajuint objid,
     const AjPStr objtype,
     const AjPStr dbname,
-    AjEnum dbtype,
+    EnsEExternaldatabaseType dbtype,
     AjPList dbes)
 {
     char *txtobjtype = NULL;
@@ -4595,7 +4617,7 @@ AjBool ensDatabaseentryadaptorFetchAllByObjectType(
 ** @param [u] dbea [EnsPDatabaseentryadaptor] Ensembl Database Entry Adaptor
 ** @param [r] gene [const EnsPGene] Ensembl Gene
 ** @param [rN] dbname [const AjPStr] Ensembl External Database name
-** @param [rN] dbtype [AjEnum] Ensembl External Database type
+** @param [rN] dbtype [EnsEExternaldatabaseType] Ensembl External Database type
 ** @param [u] dbes [AjPList] AJAX List of Ensembl Database Entries
 **
 ** @return [AjBool] ajTrue upon sucess, ajFalse otherwise
@@ -4606,7 +4628,7 @@ AjBool ensDatabaseentryadaptorFetchAllByGene(
     EnsPDatabaseentryadaptor dbea,
     const EnsPGene gene,
     const AjPStr dbname,
-    AjEnum dbtype,
+    EnsEExternaldatabaseType dbtype,
     AjPList dbes)
 {
     AjBool value = AJFALSE;
@@ -4648,7 +4670,7 @@ AjBool ensDatabaseentryadaptorFetchAllByGene(
 ** @param [u] dbea [EnsPDatabaseentryadaptor] Ensembl Database Entry Adaptor
 ** @param [r] transcript [const EnsPTranscript] Ensembl Transcript
 ** @param [rN] dbname [const AjPStr] Ensembl External Database name
-** @param [rN] dbtype [AjEnum] Ensembl External Database type
+** @param [rN] dbtype [EnsEExternaldatabaseType] Ensembl External Database type
 ** @param [u] dbes [AjPList] AJAX List of Ensembl Database Entries
 **
 ** @return [AjBool] ajTrue upon sucess, ajFalse otherwise
@@ -4659,7 +4681,7 @@ AjBool ensDatabaseentryadaptorFetchAllByTranscript(
     EnsPDatabaseentryadaptor dbea,
     const EnsPTranscript transcript,
     const AjPStr dbname,
-    AjEnum dbtype,
+    EnsEExternaldatabaseType dbtype,
     AjPList dbes)
 {
     AjBool value = AJFALSE;
@@ -4701,7 +4723,7 @@ AjBool ensDatabaseentryadaptorFetchAllByTranscript(
 ** @param [u] dbea [EnsPDatabaseentryadaptor] Ensembl Database Entry Adaptor
 ** @param [r] translation [const EnsPTranslation] Ensembl Translation
 ** @param [rN] dbname [const AjPStr] Ensembl External Database name
-** @param [rN] dbtype [AjEnum] Ensembl External Database type
+** @param [rN] dbtype [EnsEExternaldatabaseType] Ensembl External Database type
 ** @param [u] dbes [AjPList] AJAX List of Ensembl Database Entries
 **
 ** @return [AjBool] ajTrue upon sucess, ajFalse otherwise
@@ -4712,7 +4734,7 @@ AjBool ensDatabaseentryadaptorFetchAllByTranslation(
     EnsPDatabaseentryadaptor dbea,
     const EnsPTranslation translation,
     const AjPStr dbname,
-    AjEnum dbtype,
+    EnsEExternaldatabaseType dbtype,
     AjPList dbes)
 {
     AjBool value = AJFALSE;
@@ -5468,7 +5490,7 @@ AjBool ensDatabaseentryadaptorFetchAllTranscriptIdentifiersByExternalName(
                      databaseentryadaptorCompareIdentifier,
                      databaseentryadaptorDeleteIdentifier);
 
-    return ajTrue;
+    return value;
 }
 
 
@@ -5606,7 +5628,7 @@ AjBool ensDatabaseentryadaptorFetchAllGeneIdentifiersByExternaldatabaseName(
                      databaseentryadaptorCompareIdentifier,
                      databaseentryadaptorDeleteIdentifier);
 
-    return ajTrue;
+    return value;
 }
 
 
@@ -5678,7 +5700,7 @@ AjBool ensDatabaseentryadaptorFetchAllTranscriptIdentifiersByExternaldatabaseNam
                      databaseentryadaptorCompareIdentifier,
                      databaseentryadaptorDeleteIdentifier);
 
-    return ajTrue;
+    return value;
 }
 
 
@@ -5733,7 +5755,7 @@ AjBool ensDatabaseentryadaptorFetchAllTranslationIdentifiersByExternaldatabaseNa
 
     ajStrDel(&ensembltype);
 
-    return ajTrue;
+    return value;
 }
 
 

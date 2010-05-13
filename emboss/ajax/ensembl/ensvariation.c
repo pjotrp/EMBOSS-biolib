@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2696,16 +2696,20 @@ AjBool ensGvvariationAddGvallele(EnsPGvvariation gvv, EnsPGvallele gva)
 **
 ** @param [r] state [const AjPStr] Validation state string
 **
-** @return [AjEnum] Ensembl Genetic Variation validation state element or
-**                  ensEGvvariationValidationStateNULL
+** @return [EnsEGvvariationValidationState] Ensembl Genetic Variation
+**                                          Variation validation state or
+**                                          ensEGvvariationValidationStateNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensGvvariationValidationStateFromStr(const AjPStr state)
+EnsEGvvariationValidationState ensGvvariationValidationStateFromStr(
+    const AjPStr state)
 {
-    register ajint i = 0;
+    register EnsEGvvariationValidationState i =
+        ensEGvvariationValidationStateNULL;
 
-    AjEnum estate = ensEGvvariationValidationStateNULL;
+    EnsEGvvariationValidationState estate =
+        ensEGvvariationValidationStateNULL;
 
     for(i = 1; gvvariationValidationState[i]; i++)
         if(ajStrMatchC(state, gvvariationValidationState[i]))
@@ -2726,17 +2730,19 @@ AjEnum ensGvvariationValidationStateFromStr(const AjPStr state)
 ** Convert an Ensembl Genetic Variation Variation validation state element
 ** into a C-type (char*) string.
 **
-** @param [r] state [const AjEnum] Ensembl Genetic Variation Variation
-**                                 validation state enumerator
+** @param [r] state [EnsEGvvariationValidationState] Ensembl Genetic Variation
+**                                                   Variation validation state
 **
 ** @return [const char*] Ensembl Genetic Variation Variation validation state
 **                       C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char* ensGvvariationValidationStateToChar(const AjEnum state)
+const char* ensGvvariationValidationStateToChar(
+    EnsEGvvariationValidationState state)
 {
-    register ajint i = 0;
+    register EnsEGvvariationValidationState i =
+        ensEGvvariationValidationStateNULL;
 
     if(!state)
         return NULL;

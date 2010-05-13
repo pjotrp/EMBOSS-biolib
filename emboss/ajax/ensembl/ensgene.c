@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -150,10 +150,10 @@ static EnsPFeature geneadaptorGetFeature(const void *value);
 ** @cc Bio::EnsEMBL::Gene::new
 ** @param [u] displaydbe [EnsPDatabaseentry] Ensembl display Database Entry
 ** @param [u] description [AjPStr] Description
-** @param [r] source [AjBool] Source attribute
-** @param [u] biotype [AjPStr] Biotypee attribute
-** @param [r] status [AjEnum] Status attribute
-** @param [r] current [AjBool] Current attribute
+** @param [r] source [AjBool] Source
+** @param [u] biotype [AjPStr] Biotype
+** @param [r] status [EnsEGeneStatus] Status
+** @param [r] current [AjBool] Current
 ** @param [u] cantrcid [ajuint] Canonical Ensembl Transcript identfier
 ** @param [u] canann [AjPStr] Canonical annotation
 ** @param [u] stableid [AjPStr] Stable identifier
@@ -173,7 +173,7 @@ EnsPGene ensGeneNew(EnsPGeneadaptor ga,
                     AjPStr description,
                     AjPStr source,
                     AjPStr biotype,
-                    AjEnum status,
+                    EnsEGeneStatus status,
                     AjBool current,
                     ajuint cantrcid,
                     AjPStr canann,
@@ -603,7 +603,7 @@ void ensGeneDel(EnsPGene *Pgene)
 ** @valrule Description [AjPStr] Description
 ** @valrule Source [AjPStr] Source
 ** @valrule BioType [AjPStr] Biological type
-** @valrule Status [AjEnum] Status
+** @valrule Status [EnsEGeneStatus] Status
 ** @valrule Current [AjBool] Current element
 ** @valrule CanonicalTranscriptIdentifier [ajuint] Canonical Ensembl
 **                                                Transcript identifier
@@ -783,11 +783,11 @@ AjPStr ensGeneGetBioType(const EnsPGene gene)
 ** @cc Bio::EnsEMBL::Gene::status
 ** @param [r] gene [const EnsPGene] Ensembl Gene
 **
-** @return [AjEnum] Status
+** @return [EnsEGeneStatus] Status or ensEGeneStatusNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensGeneGetStatus(const EnsPGene gene)
+EnsEGeneStatus ensGeneGetStatus(const EnsPGene gene)
 {
     if(!gene)
         return ensEGeneStatusNULL;
@@ -1272,11 +1272,6 @@ AjBool ensGeneSetFeature(EnsPGene gene, EnsPFeature feature)
 
         newtranscript = ensTranscriptTransfer(oldtranscript, slice);
 
-        ajDebug("  oldtranscript %p\n"
-                "  newtranscript %p\n",
-                oldtranscript,
-                newtranscript);
-
         if(!newtranscript)
         {
             ajDebug("ensGeneSetFeature could not transfer "
@@ -1424,13 +1419,13 @@ AjBool ensGeneSetBioType(EnsPGene gene, AjPStr biotype)
 **
 ** @cc Bio::EnsEMBL::Gene::status
 ** @param [u] gene [EnsPGene] Ensembl Gene
-** @param [r] status [AjEnum] Status
+** @param [r] status [EnsEGeneStatus] Status
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensGeneSetStatus(EnsPGene gene, AjEnum status)
+AjBool ensGeneSetStatus(EnsPGene gene, EnsEGeneStatus status)
 {
     if(!gene)
         return ajFalse;
@@ -1449,7 +1444,7 @@ AjBool ensGeneSetStatus(EnsPGene gene, AjEnum status)
 **
 ** @cc Bio::EnsEMBL::Gene::is_current
 ** @param [u] gene [EnsPGene] Ensembl Gene
-** @param [r] current [AjBool] Current attribute
+** @param [r] current [AjBool] Current
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
@@ -2028,16 +2023,16 @@ AjBool ensGeneAddTranscript(EnsPGene gene, EnsPTranscript transcript)
 **
 ** @param [r] status [const AjPStr] Status string
 **
-** @return [AjEnum] Ensembl Gene status element or
-**                  ensEGeneStatusNULL
+** @return [EnsEGeneStatus] Ensembl Gene status or
+**                          ensEGeneStatusNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensGeneStatusFromStr(const AjPStr status)
+EnsEGeneStatus ensGeneStatusFromStr(const AjPStr status)
 {
-    register ajint i = 0;
+    register EnsEGeneStatus i = ensEGeneStatusNULL;
 
-    AjEnum estatus = ensEGeneStatusNULL;
+    EnsEGeneStatus estatus = ensEGeneStatusNULL;
 
     for(i = 1; geneStatus[i]; i++)
         if(ajStrMatchC(status, geneStatus[i]))
@@ -2057,15 +2052,15 @@ AjEnum ensGeneStatusFromStr(const AjPStr status)
 **
 ** Convert an Ensembl Gene status element into a C-type (char*) string.
 **
-** @param [r] status [const AjEnum] Gene status enumerator
+** @param [r] status [EnsEGeneStatus] Gene status
 **
 ** @return [const char*] Gene status C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char* ensGeneStatusToChar(const AjEnum status)
+const char* ensGeneStatusToChar(EnsEGeneStatus status)
 {
-    register ajint i = 0;
+    register EnsEGeneStatus i = ensEGeneStatusNULL;
 
     if(!status)
         return NULL;
@@ -2282,7 +2277,7 @@ AjBool ensGeneFetchAllAttributes(EnsPGene gene,
 ** @cc Bio::EnsEMBL::Gene::get_all_DBEntries
 ** @param [u] gene [EnsPGene] Ensembl Gene
 ** @param [r] name [const AjPStr] Ensembl External Database name
-** @param [r] type [AjEnum] Ensembl External Database type
+** @param [r] type [EnsEExternaldatabaseType] Ensembl External Database type
 ** @param [u] dbes [AjPList] AJAX List of Ensembl Database Entries
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -2291,7 +2286,7 @@ AjBool ensGeneFetchAllAttributes(EnsPGene gene,
 
 AjBool ensGeneFetchAllDatabaseEntries(EnsPGene gene,
                                       const AjPStr name,
-                                      AjEnum type,
+                                      EnsEExternaldatabaseType type,
                                       AjPList dbes)
 {
     AjBool namematch = AJFALSE;
@@ -2993,8 +2988,11 @@ static AjBool geneadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
     AjBool current = AJFALSE;
 
-    AjEnum estatus   = ensEGeneStatusNULL;
-    AjEnum einfotype = ensEExternalreferenceInfoTypeNULL;
+    EnsEGeneStatus estatus =
+        ensEGeneStatusNULL;
+
+    EnsEExternalreferenceInfoType einfotype =
+        ensEExternalreferenceInfoTypeNULL;
 
     AjPList mrs = NULL;
 

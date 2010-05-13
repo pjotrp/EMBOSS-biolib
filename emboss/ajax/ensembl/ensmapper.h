@@ -48,12 +48,12 @@ typedef struct EnsSMapperunit
 **
 ******************************************************************************/
 
-enum EnsEMapperunitType
+typedef enum EnsOMapperunitType
 {
     ensEMapperunitTypeNULL,
     ensEMapperunitTypeSource,
     ensEMapperunitTypeTarget
-};
+} EnsEMapperunitType;
 
 
 
@@ -122,7 +122,7 @@ enum EnsEMapperresultType
 ** @alias EnsOMapperresult
 **
 ** @attr Coordsystem [EnsPCoordsystem] Ensembl Coordinate System
-** @attr Type [AjEnum] Result type (ensEMapperresultCoordinate, ...)
+** @attr Type [EnsEMapperunitType] Result type
 ** @cc Bio::EnsEMBL::Mapper::Coordinate
 ** @cc Bio::EnsEMBL::Mapper::IndelCoordinate
 ** @attr ObjectIdentifier [ajuint] Ensembl Object identifier
@@ -151,7 +151,7 @@ enum EnsEMapperresultType
 typedef struct EnsSMapperresult
 {
     EnsPCoordsystem Coordsystem;
-    AjEnum Type;
+    EnsEMapperunitType Type;
     ajuint ObjectIdentifier;
     ajint Start;
     ajint End;
@@ -335,7 +335,8 @@ ajint ensMapperpairGetOrientation(const EnsPMapperpair mp);
 
 AjBool ensMapperpairGetInsertionDeletion(const EnsPMapperpair mp);
 
-EnsPMapperunit ensMapperpairGetUnit(const EnsPMapperpair mp, AjEnum type);
+EnsPMapperunit ensMapperpairGetUnit(const EnsPMapperpair mp,
+                                    EnsEMapperunitType type);
 
 ajuint ensMapperpairGetMemSize(const EnsPMapperpair mp);
 
@@ -347,7 +348,7 @@ AjBool ensMapperpairSortByTargetStartAscending(AjPList mps);
 
 /* Ensembl Mapper Result */
 
-EnsPMapperresult ensMapperresultNew(AjEnum type,
+EnsPMapperresult ensMapperresultNew(EnsEMapperunitType type,
                                     ajuint oid,
                                     ajint start,
                                     ajint end,
@@ -363,7 +364,7 @@ EnsPMapperresult ensMapperresultNewRef(EnsPMapperresult mr);
 
 void ensMapperresultDel(EnsPMapperresult* Pmr);
 
-AjEnum ensMapperresultGetType(const EnsPMapperresult mr);
+EnsEMapperunitType ensMapperresultGetType(const EnsPMapperresult mr);
 
 ajuint ensMapperresultGetObjectIdentifier(const EnsPMapperresult mr);
 
@@ -519,21 +520,21 @@ AjBool ensMapperTrace(const EnsPMapper mapper, ajuint level);
 ** End of prototype definitions
 */
 
-#define MENSMAPPERINDELPAIRNEW(source, target, ori) \
+#define MENSMAPPERINDELPAIRNEW(source, target, ori)     \
 ensMapperpairNew(source, target, ori, AJTRUE);
 
-#define MENSMAPPERINDELPAIRDEL(Pmp) \
+#define MENSMAPPERINDELPAIRDEL(Pmp)             \
 ensMapperpairDel(Pmp);
 
-#define MENSMAPPERCOORDINATENEW(oid, start, end, strand, cs, rank) \
+#define MENSMAPPERCOORDINATENEW(oid, start, end, strand, cs, rank)      \
 ensMapperresultNew(ensEMapperresultCoordinate, oid, start, end, strand, cs, \
                    0, 0, rank)
 
-#define MENSMAPPERGAPNEW(start, end, rank) \
+#define MENSMAPPERGAPNEW(start, end, rank)                              \
 ensMapperresultNew(ensEMapperresultGap, 0, 0, 0, 0, (EnsPCoordsystem) NULL, \
                    start, end, rank)
 
-#define MENSMAPPERINDELNEW(oid, start, end, strand, cs, gstart, gend) \
+#define MENSMAPPERINDELNEW(oid, start, end, strand, cs, gstart, gend)   \
 ensMapperresultNew(ensEMapperresultInDel, oid, start, end, strand, cs, \
                    gstart, gend, 0)
 

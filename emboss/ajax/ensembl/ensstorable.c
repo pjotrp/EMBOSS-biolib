@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -68,7 +68,7 @@
 **
 ** Default Ensembl Storable constructor.
 **
-** @param [r] type [AjEnum] Ensembl Storable Object Type
+** @param [r] type [EnsEStorableType] Ensembl Storable Object Type
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @param [r] adaptor [void*] Corresponding Ensembl Object Adaptor
 **
@@ -76,7 +76,9 @@
 ** @@
 ******************************************************************************/
 
-EnsPStorable ensStorableNew(AjEnum type, ajuint identifier, void* adaptor)
+EnsPStorable ensStorableNew(EnsEStorableType type,
+                            ajuint identifier,
+                            void* adaptor)
 {
     EnsPStorable storable = NULL;
 
@@ -197,11 +199,11 @@ void ensStorableDel(EnsPStorable *Pstorable)
 **
 ** @param [r] storable [const EnsPStorable] Ensembl Storable
 **
-** @return [AjEnum] Ensembl Storable Object type
+** @return [EnsEStorableType] Ensembl Storable Object type
 ** @@
 ******************************************************************************/
 
-AjEnum ensStorableGetType(const EnsPStorable storable)
+EnsEStorableType ensStorableGetType(const EnsPStorable storable)
 {
     if(!storable)
         return ensEStorableTypeNULL;

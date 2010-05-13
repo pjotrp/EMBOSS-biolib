@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -169,10 +169,10 @@ static AjBool qcdatabaseadaptorCacheExit(EnsPQcdatabaseadaptor qcdba);
 ** @param [u] release [AjPStr] Release
 ** @param [u] date [AjPStr] Date
 ** @param [u] format [AjPStr] Format
-** @param [r] class [AjEnum] Class
-** @param [r] type [AjEnum] Type
-** @param [u] species [AjPStr] Ensembl Database Adaptor species element
-** @param [r] group [AjEnum] Ensembl Database Adaptor group element
+** @param [r] class [EnsEQcdatabaseClass] Class
+** @param [r] type [EnsEQcdatabaseType] Type
+** @param [u] species [AjPStr] Ensembl Database Adaptor species
+** @param [r] group [EnsEDatabaseadaptorGroup] Ensembl Database Adaptor group
 ** @param [u] host [AjPStr] Host
 ** @param [u] directory [AjPStr] Directory
 ** @param [u] file [AjPStr] File
@@ -190,10 +190,10 @@ EnsPQcdatabase ensQcdatabaseNew(EnsPQcdatabaseadaptor qcdba,
                                 AjPStr release,
                                 AjPStr date,
                                 AjPStr format,
-                                AjEnum class,
-                                AjEnum type,
+                                EnsEQcdatabaseClass class,
+                                EnsEQcdatabaseType type,
                                 AjPStr species,
-                                AjEnum group,
+                                EnsEDatabaseadaptorGroup group,
                                 AjPStr host,
                                 AjPStr directory,
                                 AjPStr file,
@@ -458,10 +458,10 @@ void ensQcdatabaseDel(EnsPQcdatabase *Pqcdb)
 ** @valrule Release [AjPStr] Release
 ** @valrule Date [AjPStr] Date
 ** @valrule Format [AjPStr] Format
-** @valrule Class [AjEnum] Class
-** @valrule Type [AjEnum] Type
-** @valrule Species [AjPStr] Ensembl Database Adaptor species element
-** @valrule Group [AjEnum] Ensembl Database Adaptor group element
+** @valrule Class [EnsEQcdatabaseClass] Class
+** @valrule Type [EnsEQcdatabaseType] Type
+** @valrule Species [AjPStr] Ensembl Database Adaptor species
+** @valrule Group [EnsEDatabaseadaptorGroup] Ensembl Database Adaptor group
 ** @valrule Host [AjPStr] Host
 ** @valrule Directory [AjPStr] Directory
 ** @valrule File [AjPStr] File
@@ -627,11 +627,11 @@ AjPStr ensQcdatabaseGetFormat(const EnsPQcdatabase qcdb)
 **
 ** @param [r] qcdb [const EnsPQcdatabase] Ensembl QC Database
 **
-** @return [AjEnum] Class
+** @return [EnsEQcdatabaseClass] Class or ensEQcdatabaseClassNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQcdatabaseGetClass(const EnsPQcdatabase qcdb)
+EnsEQcdatabaseClass ensQcdatabaseGetClass(const EnsPQcdatabase qcdb)
 {
     if(!qcdb)
         return ensEQcdatabaseClassNULL;
@@ -648,11 +648,11 @@ AjEnum ensQcdatabaseGetClass(const EnsPQcdatabase qcdb)
 **
 ** @param [r] qcdb [const EnsPQcdatabase] Ensembl QC Database
 **
-** @return [AjEnum] Type
+** @return [EnsEQcdatabaseType] Type or ensEQcdasfeatureTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQcdatabaseGetType(const EnsPQcdatabase qcdb)
+EnsEQcdatabaseType ensQcdatabaseGetType(const EnsPQcdatabase qcdb)
 {
     if(!qcdb)
         return ensEQcdatabaseTypeNULL;
@@ -690,11 +690,12 @@ AjPStr ensQcdatabaseGetSpecies(const EnsPQcdatabase qcdb)
 **
 ** @param [r] qcdb [const EnsPQcdatabase] Ensembl QC Database
 **
-** @return [AjEnum] Ensembl Database Adaptor group
+** @return [EnsEDatabaseadaptorGroup] Ensembl Database Adaptor group or
+**                                    ensEDatabaseadaptorGroupNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQcdatabaseGetGroup(const EnsPQcdatabase qcdb)
+EnsEDatabaseadaptorGroup ensQcdatabaseGetGroup(const EnsPQcdatabase qcdb)
 {
     if(!qcdb)
         return ensEDatabaseadaptorGroupNULL;
@@ -1027,13 +1028,13 @@ AjBool ensQcdatabaseSetFormat(EnsPQcdatabase qcdb, AjPStr format)
 ** Set the class element of an Ensembl QC Database.
 **
 ** @param [u] qcdb [EnsPQcdatabase] Ensembl QC Database
-** @param [r] class [AjEnum] Class
+** @param [r] class [EnsEQcdatabaseClass] Class
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQcdatabaseSetClass(EnsPQcdatabase qcdb, AjEnum class)
+AjBool ensQcdatabaseSetClass(EnsPQcdatabase qcdb, EnsEQcdatabaseClass class)
 {
     if(!qcdb)
         return ajFalse;
@@ -1051,13 +1052,13 @@ AjBool ensQcdatabaseSetClass(EnsPQcdatabase qcdb, AjEnum class)
 ** Set the type element of an Ensembl QC Database.
 **
 ** @param [u] qcdb [EnsPQcdatabase] Ensembl QC Database
-** @param [r] type [AjEnum] Type
+** @param [r] type [EnsEQcdatabaseType] Type
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQcdatabaseSetType(EnsPQcdatabase qcdb, AjEnum type)
+AjBool ensQcdatabaseSetType(EnsPQcdatabase qcdb, EnsEQcdatabaseType type)
 {
     if(!qcdb)
         return ajFalse;
@@ -1101,13 +1102,14 @@ AjBool ensQcdatabaseSetSpecies(EnsPQcdatabase qcdb, AjPStr species)
 ** Set the Ensembl Database Adaptor group element of an Ensembl QC Database.
 **
 ** @param [u] qcdb [EnsPQcdatabase] Ensembl QC Database
-** @param [u] group [AjEnum] Ensembl Database Adaptor group element
+** @param [u] group [EnsEDatabaseadaptorGroup] Ensembl Database Adaptor group
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensQcdatabaseSetGroup(EnsPQcdatabase qcdb, AjEnum group)
+AjBool ensQcdatabaseSetGroup(EnsPQcdatabase qcdb,
+                             EnsEDatabaseadaptorGroup group)
 {
     if(!qcdb)
         return ajFalse;
@@ -1440,16 +1442,16 @@ AjBool ensQcdatabaseTrace(const EnsPQcdatabase qcdb, ajuint level)
 **
 ** @param [r] class [const AjPStr] Class string
 **
-** @return [AjEnum] Ensembl QC Database class element or
-**                  ensEQcdatabaseClassNULL
+** @return [EnsEQcdatabaseClass] Ensembl QC Database class or
+**                               ensEQcdatabaseClassNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQcdatabaseClassFromStr(const AjPStr class)
+EnsEQcdatabaseClass ensQcdatabaseClassFromStr(const AjPStr class)
 {
-    register ajuint i = 0;
+    register EnsEQcdatabaseClass i = ensEQcdatabaseClassNULL;
 
-    AjEnum eclass = ensEQcdatabaseClassNULL;
+    EnsEQcdatabaseClass eclass = ensEQcdatabaseClassNULL;
 
     for(i = 1; qcdatabaseClass[i]; i++)
         if(ajStrMatchCaseC(class, qcdatabaseClass[i]))
@@ -1471,16 +1473,16 @@ AjEnum ensQcdatabaseClassFromStr(const AjPStr class)
 **
 ** @param [r] type [const AjPStr] Type string
 **
-** @return [AjEnum] Ensembl QC Database type element or
-**                  ensEQcdatabaseTypeNULL
+** @return [EnsEQcdatabaseType] Ensembl QC Database type or
+**                              ensEQcdatabaseTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQcdatabaseTypeFromStr(const AjPStr type)
+EnsEQcdatabaseType ensQcdatabaseTypeFromStr(const AjPStr type)
 {
-    register ajuint i = 0;
+    register EnsEQcdatabaseType i = ensEQcdatabaseTypeNULL;
 
-    AjEnum etype = ensEQcdatabaseTypeNULL;
+    EnsEQcdatabaseType etype = ensEQcdatabaseTypeNULL;
 
     for(i = 1; qcdatabaseType[i]; i++)
         if(ajStrMatchCaseC(type, qcdatabaseType[i]))
@@ -1500,15 +1502,15 @@ AjEnum ensQcdatabaseTypeFromStr(const AjPStr type)
 **
 ** Convert an Ensembl QC Database class element into a C-type (char*) string.
 **
-** @param [r] class [const AjEnum] Ensembl QC Database class enumerator
+** @param [r] class [EnsEQcdatabaseClass] Ensembl QC Database class
 **
 ** @return [const char*] Ensembl QC Database class C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char* ensQcdatabaseClassToChar(const AjEnum class)
+const char* ensQcdatabaseClassToChar(EnsEQcdatabaseClass class)
 {
-    register ajint i = 0;
+    register EnsEQcdatabaseClass i = ensEQcdatabaseClassNULL;
 
     if(!class)
         return NULL;
@@ -1529,15 +1531,15 @@ const char* ensQcdatabaseClassToChar(const AjEnum class)
 **
 ** Convert an Ensembl QC Database type element into a C-type (char*) string.
 **
-** @param [r] type [const AjEnum] Ensembl QC Database type enumerator
+** @param [r] type [EnsEQcdatabaseType] Ensembl QC Database type
 **
 ** @return [const char*] Ensembl QC Database type C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char* ensQcdatabaseTypeToChar(const AjEnum type)
+const char* ensQcdatabaseTypeToChar(EnsEQcdatabaseType type)
 {
-    register ajint i = 0;
+    register EnsEQcdatabaseType i = ensEQcdatabaseTypeNULL;
 
     if(!type)
         return NULL;
@@ -1716,9 +1718,9 @@ static AjBool qcdatabaseadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     ajuint identifier = 0;
     ajuint analysisid = 0;
 
-    AjEnum egroup = ensEDatabaseadaptorGroupNULL;
-    AjEnum eclass = ensEQcdatabaseClassNULL;
-    AjEnum etype  = ensEQcdatabaseTypeNULL;
+    EnsEDatabaseadaptorGroup egroup = ensEDatabaseadaptorGroupNULL;
+    EnsEQcdatabaseClass eclass      = ensEQcdatabaseClassNULL;
+    EnsEQcdatabaseType etype        = ensEQcdatabaseTypeNULL;
 
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;
@@ -2452,8 +2454,8 @@ AjBool ensQcdatabaseadaptorFetchByName(EnsPQcdatabaseadaptor qcdba,
 ** Fetch an Ensembl QC Database by its class and type.
 **
 ** @param [u] qcdba [EnsPQcdatabaseadaptor] Ensembl QC Database Adaptor
-** @param [r] class [AjEnum] Ensembl QC Database class
-** @param [r] type [AjEnum] Ensembl QC Database type
+** @param [r] class [EnsEQcdatabaseClass] Ensembl QC Database class
+** @param [r] type [EnsEQcdatabaseType] Ensembl QC Database type
 ** @param [u] qcdbs [AjPList] AJAX List of Ensembl QC Databases
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -2461,8 +2463,8 @@ AjBool ensQcdatabaseadaptorFetchByName(EnsPQcdatabaseadaptor qcdba,
 ******************************************************************************/
 
 AjBool ensQcdatabaseadaptorFetchAllByClassType(EnsPQcdatabaseadaptor qcdba,
-                                               AjEnum class,
-                                               AjEnum type,
+                                               EnsEQcdatabaseClass class,
+                                               EnsEQcdatabaseType type,
                                                AjPList qcdbs)
 {
     void **keyarray = NULL;

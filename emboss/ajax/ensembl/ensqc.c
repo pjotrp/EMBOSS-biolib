@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
 ** License along with this library; if not, write to the
 ** Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ** Boston, MA  02111-1307, USA.
-*****************************************************************************/
+******************************************************************************/
 
 /* ==================================================================== */
 /* ========================== include files =========================== */
@@ -248,8 +248,8 @@ static AjBool qcsubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @param [r] tstart [ajuint] Feature start
 ** @param [r] tend [ajuint] Feature end
 ** @param [r] phase [ajint] Phase
-** @param [r] category [AjEnum] Category
-** @param [r] type [AjEnum] Type
+** @param [r] category [EnsEQcdasfeatureCategory] Category
+** @param [r] type [EnsEQcdasfeatureType] Type
 **
 ** @return [EnsPQcdasfeature] Ensembl QC DAS Feature or NULL
 ** @@
@@ -267,8 +267,8 @@ EnsPQcdasfeature ensQcdasfeatureNew(EnsPQcdasfeatureadaptor qcdasfa,
                                     ajuint fstart,
                                     ajuint fend,
                                     ajint phase,
-                                    AjEnum category,
-                                    AjEnum type)
+                                    EnsEQcdasfeatureCategory category,
+                                    EnsEQcdasfeatureType type)
 {
     EnsPQcdasfeature qcdasf = NULL;
 
@@ -520,8 +520,8 @@ void ensQcdasfeatureDel(EnsPQcdasfeature *Pqcdasf)
 ** @valrule FeatureStart [ajuint] Feature start
 ** @valrule FeatureEnd [ajuint] Feature end
 ** @valrule Phase [ajint] Phase
-** @valrule Category [AjEnum] Category
-** @valrule Type [AjEnum] Type
+** @valrule Category [EnsEQcdasfeatureCategory] Category
+** @valrule Type [EnsEQcdasfeatureType] Type
 **
 ** @fcategory use
 ******************************************************************************/
@@ -562,7 +562,8 @@ EnsPQcdasfeatureadaptor ensQcdasfeatureGetAdaptor(
 ** @@
 ******************************************************************************/
 
-ajuint ensQcdasfeatureGetIdentifier(const EnsPQcdasfeature qcdasf)
+ajuint ensQcdasfeatureGetIdentifier(
+    const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return 0;
@@ -583,7 +584,8 @@ ajuint ensQcdasfeatureGetIdentifier(const EnsPQcdasfeature qcdasf)
 ** @@
 ******************************************************************************/
 
-EnsPQcalignment ensQcdasfeatureGetQcalignment(const EnsPQcdasfeature qcdasf)
+EnsPQcalignment ensQcdasfeatureGetQcalignment(
+    const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return NULL;
@@ -604,7 +606,8 @@ EnsPQcalignment ensQcdasfeatureGetQcalignment(const EnsPQcdasfeature qcdasf)
 ** @@
 ******************************************************************************/
 
-EnsPAnalysis ensQcdasfeatureGetAnalysis(const EnsPQcdasfeature qcdasf)
+EnsPAnalysis ensQcdasfeatureGetAnalysis(
+    const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return NULL;
@@ -669,7 +672,8 @@ EnsPQcsequence ensQcdasfeatureGetFeatureSequence(
 ** @@
 ******************************************************************************/
 
-ajuint ensQcdasfeatureGetSegmentStart(const EnsPQcdasfeature qcdasf)
+ajuint ensQcdasfeatureGetSegmentStart(
+    const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return 0;
@@ -690,7 +694,8 @@ ajuint ensQcdasfeatureGetSegmentStart(const EnsPQcdasfeature qcdasf)
 ** @@
 ******************************************************************************/
 
-ajuint ensQcdasfeatureGetSegmentEnd(const EnsPQcdasfeature qcdasf)
+ajuint ensQcdasfeatureGetSegmentEnd(
+    const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return 0;
@@ -711,7 +716,8 @@ ajuint ensQcdasfeatureGetSegmentEnd(const EnsPQcdasfeature qcdasf)
 ** @@
 ******************************************************************************/
 
-ajint ensQcdasfeatureGetSegmentStrand(const EnsPQcdasfeature qcdasf)
+ajint ensQcdasfeatureGetSegmentStrand(
+    const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return 0;
@@ -732,7 +738,8 @@ ajint ensQcdasfeatureGetSegmentStrand(const EnsPQcdasfeature qcdasf)
 ** @@
 ******************************************************************************/
 
-ajuint ensQcdasfeatureGetFeatureStart(const EnsPQcdasfeature qcdasf)
+ajuint ensQcdasfeatureGetFeatureStart(
+    const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return 0;
@@ -753,7 +760,8 @@ ajuint ensQcdasfeatureGetFeatureStart(const EnsPQcdasfeature qcdasf)
 ** @@
 ******************************************************************************/
 
-ajuint ensQcdasfeatureGetFeatureEnd(const EnsPQcdasfeature qcdasf)
+ajuint ensQcdasfeatureGetFeatureEnd(
+    const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return 0;
@@ -774,7 +782,8 @@ ajuint ensQcdasfeatureGetFeatureEnd(const EnsPQcdasfeature qcdasf)
 ** @@
 ******************************************************************************/
 
-ajint ensQcdasfeatureGetPhase(const EnsPQcdasfeature qcdasf)
+ajint ensQcdasfeatureGetPhase(
+    const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return 0;
@@ -791,11 +800,12 @@ ajint ensQcdasfeatureGetPhase(const EnsPQcdasfeature qcdasf)
 **
 ** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
-** @return [AjEnum] Category
+** @return [EnsEQcdasfeatureCategory] Category or ensEQcdasfeatureCategoryNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQcdasfeatureGetCategory(const EnsPQcdasfeature qcdasf)
+EnsEQcdasfeatureCategory ensQcdasfeatureGetCategory(
+    const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return ensEQcdasfeatureCategoryNULL;
@@ -812,11 +822,12 @@ AjEnum ensQcdasfeatureGetCategory(const EnsPQcdasfeature qcdasf)
 **
 ** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
-** @return [AjEnum] Type
+** @return [EnsEQcdasfeatureType] Type or ensEQcdasfeatureTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQcdasfeatureGetType(const EnsPQcdasfeature qcdasf)
+EnsEQcdasfeatureType ensQcdasfeatureGetType(
+    const EnsPQcdasfeature qcdasf)
 {
     if(!qcdasf)
         return ensEQcdasfeatureTypeNULL;
@@ -1174,14 +1185,14 @@ AjBool ensQcdasfeatureSetPhase(EnsPQcdasfeature qcdasf,
 ** Set the category element of an Ensembl QC DAS Feature.
 **
 ** @param [u] qcdasf [EnsPQcdasfeature] Ensembl QC DAS Feature
-** @param [r] category [AjEnum] Category
+** @param [r] category [EnsEQcdasfeatureCategory] Category
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
 AjBool ensQcdasfeatureSetCategory(EnsPQcdasfeature qcdasf,
-                                  AjEnum category)
+                                  EnsEQcdasfeatureCategory category)
 {
     if(!qcdasf)
         return ajFalse;
@@ -1199,14 +1210,14 @@ AjBool ensQcdasfeatureSetCategory(EnsPQcdasfeature qcdasf,
 ** Set the type element of an Ensembl QC DAS Feature.
 **
 ** @param [u] qcdasf [EnsPQcdasfeature] Ensembl QC DAS Feature
-** @param [r] type [AjEnum] Type
+** @param [r] type [EnsEQcdasfeatureType] Type
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
 AjBool ensQcdasfeatureSetType(EnsPQcdasfeature qcdasf,
-                              AjEnum type)
+                              EnsEQcdasfeatureType type)
 {
     if(!qcdasf)
         return ajFalse;
@@ -1347,16 +1358,16 @@ AjBool ensQcdasfeatureTrace(const EnsPQcdasfeature qcdasf, ajuint level)
 **
 ** @param [r] category [const AjPStr] Category string
 **
-** @return [AjEnum] Ensembl QC DAS Feature category element or
-**                  ensEQcdasfeatureCategoryNULL
+** @return [EnsEQcdasfeatureCategory] Ensembl QC DAS Feature category or
+**                                    ensEQcdasfeatureCategoryNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQcdasfeatureCategoryFromStr(const AjPStr category)
+EnsEQcdasfeatureCategory ensQcdasfeatureCategoryFromStr(const AjPStr category)
 {
-    register ajint i = 0;
+    register EnsEQcdasfeatureCategory i = ensEQcdasfeatureCategoryNULL;
 
-    AjEnum ecategory = ensEQcdasfeatureCategoryNULL;
+    EnsEQcdasfeatureCategory ecategory = ensEQcdasfeatureCategoryNULL;
 
     for(i = 1; qcdasfeatureCategory[i]; i++)
         if(ajStrMatchCaseC(category, qcdasfeatureCategory[i]))
@@ -1378,16 +1389,16 @@ AjEnum ensQcdasfeatureCategoryFromStr(const AjPStr category)
 **
 ** @param [r] type [const AjPStr] Type string
 **
-** @return [AjEnum] Ensembl QC DAS Feature type element or
-**                  ensEQcdasfeatureTypeNULL
+** @return [EnsEQcdasfeatureType] Ensembl QC DAS Feature type or
+**                                ensEQcdasfeatureTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQcdasfeatureTypeFromStr(const AjPStr type)
+EnsEQcdasfeatureType ensQcdasfeatureTypeFromStr(const AjPStr type)
 {
-    register ajint i = 0;
+    register EnsEQcdasfeatureType i = ensEQcdasfeatureTypeNULL;
 
-    AjEnum etype = ensEQcdasfeatureTypeNULL;
+    EnsEQcdasfeatureType etype = ensEQcdasfeatureTypeNULL;
 
     for(i = 1; qcdasfeatureType[i]; i++)
         if(ajStrMatchCaseC(type, qcdasfeatureType[i]))
@@ -1408,17 +1419,17 @@ AjEnum ensQcdasfeatureTypeFromStr(const AjPStr type)
 ** Convert an Ensembl QC DAS Feature category element into a
 ** C-type (char*) string.
 **
-** @param [r] category [const AjEnum] Ensembl QC DAS Feature category
-**                                    enumerator
+** @param [r] category [EnsEQcdasfeatureCategory] Ensembl QC DAS Feature
+**                                                category
 **
 ** @return [const char*] Ensembl QC DAS Feature category
 **                       C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char* ensQcdasfeatureCategoryToChar(const AjEnum category)
+const char* ensQcdasfeatureCategoryToChar(EnsEQcdasfeatureCategory category)
 {
-    register ajint i = 0;
+    register EnsEQcdasfeatureCategory i = ensEQcdasfeatureCategoryNULL;
 
     if(!category)
         return NULL;
@@ -1440,16 +1451,16 @@ const char* ensQcdasfeatureCategoryToChar(const AjEnum category)
 ** Convert an Ensembl QC DAS Feature type element into a
 ** C-type (char*) string.
 **
-** @param [r] type [const AjEnum] Ensembl QC DAS Feature type enumerator
+** @param [r] type [EnsEQcdasfeatureType] Ensembl QC DAS Feature type
 **
 ** @return [const char*] Ensembl QC DAS Feature type
 **                       C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char *ensQcdasfeatureTypeToChar(const AjEnum type)
+const char *ensQcdasfeatureTypeToChar(EnsEQcdasfeatureType type)
 {
-    register ajint i = 0;
+    register EnsEQcdasfeatureType i = ensEQcdasfeatureTypeNULL;
 
     if(!type)
         return NULL;
@@ -1560,8 +1571,8 @@ static AjBool qcdasfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     ajuint tstart = 0;
     ajuint tend   = 0;
 
-    AjEnum ecategory = ensEQcdasfeatureCategoryNULL;
-    AjEnum etype     = ensEQcdasfeatureTypeNULL;
+    EnsEQcdasfeatureCategory ecategory = ensEQcdasfeatureCategoryNULL;
+    EnsEQcdasfeatureType etype         = ensEQcdasfeatureTypeNULL;
 
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;
@@ -2433,9 +2444,9 @@ AjBool ensQcdasfeatureadaptorDelete(EnsPQcdasfeatureadaptor qcdasfa,
 ** @param [r] tstart [ajuint] Target start
 ** @param [r] tend [ajuint] Target end
 ** @param [r] tstring [AjPStr] Target string
-** @param [r] class [AjEnum] Class
-** @param [r] type [AjEnum] Type
-** @param [r] state [AjEnum] State
+** @param [r] class [EnsEQcvariationClass] Class
+** @param [r] type [EnsEQcvariationType] Type
+** @param [r] state [EnsEQcvariationState] State
 **
 ** @return [EnsPQcvariation] Ensembl QC Variation or NULL
 ** @@
@@ -2453,9 +2464,9 @@ EnsPQcvariation ensQcvariationNew(EnsPQcvariationadaptor qcva,
                                   ajuint tstart,
                                   ajuint tend,
                                   AjPStr tstring,
-                                  AjEnum class,
-                                  AjEnum type,
-                                  AjEnum state)
+                                  EnsEQcvariationClass class,
+                                  EnsEQcvariationType type,
+                                  EnsEQcvariationState state)
 {
     EnsPQcvariation qcv = NULL;
 
@@ -2702,9 +2713,9 @@ void ensQcvariationDel(EnsPQcvariation *Pqcv)
 ** @valrule TargetStart [ajuint] Target start
 ** @valrule TargetEnd [ajuint] Target end
 ** @valrule TargetString [AjPStr] Target string
-** @valrule Class [AjEnum] Class
-** @valrule Type [AjEnum] Type
-** @valrule State [AjEnum] State
+** @valrule Class [EnsEQcvariationClass] Class
+** @valrule Type [EnsEQcvariationType] Type
+** @valrule State [EnsEQcvariationState] State
 **
 ** @fcategory use
 ******************************************************************************/
@@ -2971,11 +2982,11 @@ AjPStr ensQcvariationGetTargetString(const EnsPQcvariation qcv)
 **
 ** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
-** @return [AjEnum] Class
+** @return [EnsEQcvariationClass] Class or ensEQcvariationClassNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQcvariationGetClass(const EnsPQcvariation qcv)
+EnsEQcvariationClass ensQcvariationGetClass(const EnsPQcvariation qcv)
 {
     if(!qcv)
         return ensEQcvariationClassNULL;
@@ -2992,11 +3003,11 @@ AjEnum ensQcvariationGetClass(const EnsPQcvariation qcv)
 **
 ** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
-** @return [AjEnum] Type
+** @return [EnsEQcvariationType] Type or ensEQcvariationTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQcvariationGetType(const EnsPQcvariation qcv)
+EnsEQcvariationType ensQcvariationGetType(const EnsPQcvariation qcv)
 {
     if(!qcv)
         return ensEQcvariationTypeNULL;
@@ -3013,11 +3024,11 @@ AjEnum ensQcvariationGetType(const EnsPQcvariation qcv)
 **
 ** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
-** @return [AjEnum] State
+** @return [EnsEQcvariationState] State or ensEQcvariationStateNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQcvariationGetState(const EnsPQcvariation qcv)
+EnsEQcvariationState ensQcvariationGetState(const EnsPQcvariation qcv)
 {
     if(!qcv)
         return ensEQcvariationStateNULL;
@@ -3382,14 +3393,14 @@ AjBool ensQcvariationSetTargetString(EnsPQcvariation qcv,
 ** Set the class element of an Ensembl QC Variation.
 **
 ** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
-** @param [r] class [AjEnum] Class
+** @param [r] class [EnsEQcvariationClass] Class
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
 AjBool ensQcvariationSetClass(EnsPQcvariation qcv,
-                              AjEnum class)
+                              EnsEQcvariationClass class)
 {
     if(!qcv)
         return ajFalse;
@@ -3407,14 +3418,14 @@ AjBool ensQcvariationSetClass(EnsPQcvariation qcv,
 ** Set the type element of an Ensembl QC Variation.
 **
 ** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
-** @param [r] type [AjEnum] Type
+** @param [r] type [EnsEQcvariationType] Type
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
 AjBool ensQcvariationSetType(EnsPQcvariation qcv,
-                             AjEnum type)
+                             EnsEQcvariationType type)
 {
     if(!qcv)
         return ajFalse;
@@ -3432,14 +3443,14 @@ AjBool ensQcvariationSetType(EnsPQcvariation qcv,
 ** Set the state element of an Ensembl QC Variation.
 **
 ** @param [u] qcv [EnsPQcvariation] Ensembl QC Variation
-** @param [r] state [AjEnum] State
+** @param [r] state [EnsEQcvariationState] State
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
 AjBool ensQcvariationSetState(EnsPQcvariation qcv,
-                              AjEnum state)
+                              EnsEQcvariationState state)
 {
     if(!qcv)
         return ajFalse;
@@ -3594,16 +3605,16 @@ AjBool ensQcvariationTrace(const EnsPQcvariation qcv, ajuint level)
 **
 ** @param [r] vclass [const AjPStr] Class string
 **
-** @return [AjEnum] Ensembl QC Variation class element or
-**                  ensEQcvariationClassNULL
+** @return [EnsEQcvariationClass] Ensembl QC Variation class or
+**                                ensEQcvariationClassNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQcvariationClassFromStr(const AjPStr vclass)
+EnsEQcvariationClass ensQcvariationClassFromStr(const AjPStr vclass)
 {
-    register ajint i = 0;
+    register EnsEQcvariationClass i = ensEQcvariationClassNULL;
 
-    AjEnum eclass = ensEQcvariationClassNULL;
+    EnsEQcvariationClass eclass = ensEQcvariationClassNULL;
 
     for(i = 1; qcvariationClass[i]; i++)
         if(ajStrMatchCaseC(vclass, qcvariationClass[i]))
@@ -3625,16 +3636,16 @@ AjEnum ensQcvariationClassFromStr(const AjPStr vclass)
 **
 ** @param [r] type [const AjPStr] Type string
 **
-** @return [AjEnum] Ensembl QC Variation type element or
-**                  ensEQcvariationTypeNULL
+** @return [EnsEQcvariationType] Ensembl QC Variation type or
+**                               ensEQcvariationTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQcvariationTypeFromStr(const AjPStr type)
+EnsEQcvariationType ensQcvariationTypeFromStr(const AjPStr type)
 {
-    register ajint i = 0;
+    register EnsEQcvariationType i = ensEQcvariationTypeNULL;
 
-    AjEnum etype = ensEQcvariationTypeNULL;
+    EnsEQcvariationType etype = ensEQcvariationTypeNULL;
 
     for(i = 1; qcvariationType[i]; i++)
         if(ajStrMatchCaseC(type, qcvariationType[i]))
@@ -3656,16 +3667,16 @@ AjEnum ensQcvariationTypeFromStr(const AjPStr type)
 **
 ** @param [r] state [const AjPStr] State string
 **
-** @return [AjEnum] Ensembl QC Variation state element or
-**                  ensEQcvariationStateNULL
+** @return [EnsEQcvariationState] Ensembl QC Variation state or
+**                                ensEQcvariationStateNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensQcvariationStateFromStr(const AjPStr state)
+EnsEQcvariationState ensQcvariationStateFromStr(const AjPStr state)
 {
-    register ajint i = 0;
+    register EnsEQcvariationState i = ensEQcvariationStateNULL;
 
-    AjEnum estate = ensEQcvariationStateNULL;
+    EnsEQcvariationState estate = ensEQcvariationStateNULL;
 
     for(i = 1; qcvariationState[i]; i++)
         if(ajStrMatchCaseC(state, qcvariationState[i]))
@@ -3685,15 +3696,15 @@ AjEnum ensQcvariationStateFromStr(const AjPStr state)
 **
 ** Convert an Ensembl QC Variation class element into a C-type (char*) string.
 **
-** @param [r] class [const AjEnum] Ensembl QC Variation class enumerator
+** @param [r] class [EnsEQcvariationClass] Ensembl QC Variation class
 **
 ** @return [const char*] Ensembl QC Variation class C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char *ensQcvariationClassToChar(const AjEnum vclass)
+const char *ensQcvariationClassToChar(EnsEQcvariationClass vclass)
 {
-    register ajint i = 0;
+    register EnsEQcvariationClass i = ensEQcvariationClassNULL;
 
     if(!vclass)
         return NULL;
@@ -3714,15 +3725,15 @@ const char *ensQcvariationClassToChar(const AjEnum vclass)
 **
 ** Convert an Ensembl QC Variation type element into a C-type (char*) string.
 **
-** @param [r] type [const AjEnum] Ensembl QC Variation type enumerator
+** @param [r] type [EnsEQcvariationType] Ensembl QC Variation type
 **
 ** @return [const char*] Ensembl QC Variation type C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char *ensQcvariationTypeToChar(const AjEnum type)
+const char *ensQcvariationTypeToChar(EnsEQcvariationType type)
 {
-    register ajint i = 0;
+    register EnsEQcvariationType i = ensEQcvariationTypeNULL;
 
     if(!type)
         return NULL;
@@ -3743,15 +3754,15 @@ const char *ensQcvariationTypeToChar(const AjEnum type)
 **
 ** Convert an Ensembl QC Variation state element into a C-type (char*) string.
 **
-** @param [r] state [const AjEnum] Ensembl QC Variation state enumerator
+** @param [r] state [EnsEQcvariationState] Ensembl QC Variation state
 **
 ** @return [const char*] Ensembl QC Variation state C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char *ensQcvariationStateToChar(const AjEnum state)
+const char *ensQcvariationStateToChar(EnsEQcvariationState state)
 {
-    register ajint i = 0;
+    register EnsEQcvariationState i = ensEQcvariationStateNULL;
 
     if(!state)
         return NULL;
@@ -3865,9 +3876,9 @@ static AjBool qcvariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     ajuint tstart = 0;
     ajuint tend   = 0;
 
-    AjEnum eclass = ensEQcvariationClassNULL;
-    AjEnum etype  = ensEQcvariationTypeNULL;
-    AjEnum estate = ensEQcvariationStateNULL;
+    EnsEQcvariationClass eclass = ensEQcvariationClassNULL;
+    EnsEQcvariationType etype   = ensEQcvariationTypeNULL;
+    EnsEQcvariationState estate = ensEQcvariationStateNULL;
 
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;

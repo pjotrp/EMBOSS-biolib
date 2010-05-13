@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.14 $
+** @version $Revision: 1.15 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -281,7 +281,7 @@ static int densitytyperatioCompareRatioAscending(const void* P1,
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::DensityType::new
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [r] type [AjEnum] Value type
+** @param [r] type [EnsEDensitytypeValueType] Value type
 ** @param [r] size [ajuint] Block size
 ** @param [r] features [ajuint] Number of Features
 **
@@ -292,7 +292,7 @@ static int densitytyperatioCompareRatioAscending(const void* P1,
 EnsPDensitytype ensDensitytypeNew(EnsPDensitytypeadaptor dta,
                                   ajuint identifier,
                                   EnsPAnalysis analysis,
-                                  AjEnum type,
+                                  EnsEDensitytypeValueType type,
                                   ajuint size,
                                   ajuint features)
 {
@@ -457,7 +457,7 @@ void ensDensitytypeDel(EnsPDensitytype *Pdt)
 ** @valrule Adaptor [EnsPDensitytypeadaptor] Ensembl Density Type Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule Analysis [EnsPAnalysis] Ensembl Analysis
-** @valrule ValueType [AjEnum] Value type
+** @valrule ValueType [EnsEDensitytypeValueType] Value type
 ** @valrule BlockSize [ajuint] Block size
 ** @valrule RegionFeatures [ajuint] Region features
 **
@@ -541,11 +541,12 @@ EnsPAnalysis ensDensitytypeGetAnalysis(const EnsPDensitytype dt)
 ** @cc Bio::EnsEMBL::DensityType::value_type
 ** @param [r] dt [const EnsPDensitytype] Ensembl Density Type
 **
-** @return [AjEnum] Value type or ensEDensitytypeValueTypeNULL
+** @return [EnsEDensitytypeValueType] Value type or
+**                                    ensEDensitytypeValueTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensDensitytypeGetValueType(const EnsPDensitytype dt)
+EnsEDensitytypeValueType ensDensitytypeGetValueType(const EnsPDensitytype dt)
 {
     if(!dt)
         return ensEDensitytypeValueTypeNULL;
@@ -690,7 +691,8 @@ AjBool ensDensitytypeSetIdentifier(EnsPDensitytype dt,
 ** @@
 ******************************************************************************/
 
-AjBool ensDensitytypeSetAnalysis(EnsPDensitytype dt, EnsPAnalysis analysis)
+AjBool ensDensitytypeSetAnalysis(EnsPDensitytype dt,
+                                 EnsPAnalysis analysis)
 {
     if(!dt)
         return ajFalse;
@@ -711,13 +713,14 @@ AjBool ensDensitytypeSetAnalysis(EnsPDensitytype dt, EnsPAnalysis analysis)
 **
 ** @cc Bio::EnsEMBL::DensityType::value_type
 ** @param [u] dt [EnsPDensitytype] Ensembl Density Type
-** @param [r] type [AjEnum] Value type
+** @param [r] type [EnsEDensitytypeValueType] Value type
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensDensitytypeSetValueType(EnsPDensitytype dt, AjEnum type)
+AjBool ensDensitytypeSetValueType(EnsPDensitytype dt,
+                                  EnsEDensitytypeValueType type)
 {
     if(!dt)
         return ajFalse;
@@ -742,7 +745,8 @@ AjBool ensDensitytypeSetValueType(EnsPDensitytype dt, AjEnum type)
 ** @@
 ******************************************************************************/
 
-AjBool ensDensitytypeSetBlockSize(EnsPDensitytype dt, ajuint size)
+AjBool ensDensitytypeSetBlockSize(EnsPDensitytype dt,
+                                  ajuint size)
 {
     if(!dt)
         return ajFalse;
@@ -767,7 +771,8 @@ AjBool ensDensitytypeSetBlockSize(EnsPDensitytype dt, ajuint size)
 ** @@
 ******************************************************************************/
 
-AjBool ensDensitytypeSetRegionFeatures(EnsPDensitytype dt, ajuint features)
+AjBool ensDensitytypeSetRegionFeatures(EnsPDensitytype dt,
+                                       ajuint features)
 {
     if(!dt)
         return ajFalse;
@@ -880,16 +885,16 @@ ajuint ensDensitytypeGetMemSize(const EnsPDensitytype dt)
 **
 ** @param [r] type [const AjPStr] Value type string
 **
-** @return [AjEnum] Ensembl Density Type value type element or
-**                  ensEDensitytypeValueTypeNULL
+** @return [EnsEDensitytypeValueType] Ensembl Density Type value type or
+**                                    ensEDensitytypeValueTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensDensitytypeValeTypeFromStr(const AjPStr type)
+EnsEDensitytypeValueType ensDensitytypeValeTypeFromStr(const AjPStr type)
 {
-    register ajint i = 0;
+    register EnsEDensitytypeValueType i = ensEDensitytypeValueTypeNULL;
 
-    AjEnum etype = ensEDensitytypeValueTypeNULL;
+    EnsEDensitytypeValueType etype = ensEDensitytypeValueTypeNULL;
 
     for(i = 1; densitytypeValueType[i]; i++)
         if(ajStrMatchC(type, densitytypeValueType[i]))
@@ -910,15 +915,15 @@ AjEnum ensDensitytypeValeTypeFromStr(const AjPStr type)
 ** Convert an Ensembl Density Type value type element
 ** into a C-type (char*) string.
 **
-** @param [r] type [const AjEnum] Ensembl Density Type value type enumerator
+** @param [r] type [EnsEDensitytypeValueType] Ensembl Density Type value type
 **
 ** @return [const char*] Ensembl Density Type value type C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char* ensDensitytypeValeTypeToChar(const AjEnum type)
+const char* ensDensitytypeValeTypeToChar(EnsEDensitytypeValueType type)
 {
-    register ajint i = 0;
+    register EnsEDensitytypeValueType i = ensEDensitytypeValueTypeNULL;
 
     if(!type)
         return NULL;
@@ -999,7 +1004,7 @@ static AjBool densitytypeadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     ajuint size       = 0;
     ajuint features   = 0;
 
-    AjEnum etype = ensEDensitytypeValueTypeNULL;
+    EnsEDensitytypeValueType etype = ensEDensitytypeValueTypeNULL;
 
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;
@@ -1588,8 +1593,9 @@ static void densitytypeadaptorFetchAll(const void *key,
 ** @@
 ******************************************************************************/
 
-AjBool ensDensitytypeadaptorFetchAll(EnsPDensitytypeadaptor dta,
-                                     AjPList dts)
+AjBool ensDensitytypeadaptorFetchAll(
+    EnsPDensitytypeadaptor dta,
+    AjPList dts)
 {
     if(!dta)
         return ajFalse;
@@ -1623,9 +1629,10 @@ AjBool ensDensitytypeadaptorFetchAll(EnsPDensitytypeadaptor dta,
 ** @@
 ******************************************************************************/
 
-AjBool ensDensitytypeadaptorFetchByIdentifier(EnsPDensitytypeadaptor dta,
-                                              ajuint identifier,
-                                              EnsPDensitytype *Pdt)
+AjBool ensDensitytypeadaptorFetchByIdentifier(
+    EnsPDensitytypeadaptor dta,
+    ajuint identifier,
+    EnsPDensitytype *Pdt)
 {
     AjPList dts = NULL;
 
@@ -3151,6 +3158,8 @@ AjBool ensDensityfeatureadaptorFetchAllBySlice(
 
     ajint bsize = 0;
 
+    AjBool debug = AJFALSE;
+
     AjPList dts       = NULL;
     AjPList dlvs      = NULL;
     AjPList dtrs      = NULL;
@@ -3177,7 +3186,9 @@ AjBool ensDensityfeatureadaptorFetchAllBySlice(
 
     DensityPTypeRatio dtr = NULL;
 
-    if(ajDebugTest("ensDensityfeatureadaptorFetchAllBySlice"))
+    debug = ajDebugTest("ensDensityfeatureadaptorFetchAllBySlice");
+
+    if(debug)
         ajDebug("ensDensityfeatureadaptorFetchAllBySlice\n"
                 "  dfa %p\n"
                 "  slice %p\n"
@@ -3308,11 +3319,14 @@ AjBool ensDensityfeatureadaptorFetchAllBySlice(
 
     ajListPeekFirst(dtrs, (void **) &dtr);
 
-    if(dtr)
-        ajDebug("ensDensityfeatureadaptorFetchAllBySlice got ratio %f "
-                "and maxratio %f.\n", dtr->Ratio, maxratio);
-    else
-        ajDebug("ensDensityfeatureadaptorFetchAllBySlice got no ratio.\n");
+    if(debug)
+    {
+        if(dtr)
+            ajDebug("ensDensityfeatureadaptorFetchAllBySlice got ratio %f "
+                    "and maxratio %f.\n", dtr->Ratio, maxratio);
+        else
+            ajDebug("ensDensityfeatureadaptorFetchAllBySlice got no ratio.\n");
+    }
 
     /*
     ** The ratio was not good enough, or the Ensembl Analysis name was not
@@ -3394,9 +3408,10 @@ AjBool ensDensityfeatureadaptorFetchAllBySlice(
     {
         value = 0.0;
 
-        ajDebug("ensDensityfeatureadaptorFetchAllBySlice "
-                "bstart %d bend %d value %f\n",
-                bstart, bend, value);
+        if(debug)
+            ajDebug("ensDensityfeatureadaptorFetchAllBySlice "
+                    "bstart %d bend %d value %f\n",
+                    bstart, bend, value);
 
         /*
         ** Construct a new Ensembl Density Feature using all the old
@@ -3427,11 +3442,12 @@ AjBool ensDensityfeatureadaptorFetchAllBySlice(
             fend = (fend > (ajint) ensSliceGetLength(slice))
                 ? (ajint) ensSliceGetLength(slice) : fend;
 
-            ajDebug("ensDensityfeatureadaptorFetchAllBySlice "
-                    "bstart %d bend %d fstart %d fend %d id %u value %f\n",
-                    bstart, bend, fstart, fend,
-                    ensDensityfeatureGetIdentifier(df),
-                    ensDensityfeatureGetDensityValue(df));
+            if(debug)
+                ajDebug("ensDensityfeatureadaptorFetchAllBySlice "
+                        "bstart %d bend %d fstart %d fend %d id %u value %f\n",
+                        bstart, bend, fstart, fend,
+                        ensDensityfeatureGetIdentifier(df),
+                        ensDensityfeatureGetDensityValue(df));
 
             switch(ensDensitytypeGetValueType(newdt))
             {
@@ -3470,7 +3486,7 @@ AjBool ensDensityfeatureadaptorFetchAllBySlice(
                 default:
 
                     ajWarn("ensDensityfeatureadaptorFetchAllBySlice got an "
-                           "Ensembl Density Type with an unknown type (%d).",
+                           "Ensembl Density Type with unknown type %d.",
                            ensDensitytypeGetValueType(newdt));
             }
 
@@ -3500,13 +3516,14 @@ AjBool ensDensityfeatureadaptorFetchAllBySlice(
                     value += dlv->Value * (float) dlv->Length /
                         (float) blength;
 
-                ajDebug("ensDensityfeatureadaptorFetchAllBySlice "
-                        "bstart %d bend %d blength %u "
-                        "DLV Length %u DLV Value %f "
-                        "value %f \n",
-                        bstart, bend, blength,
-                        dlv->Length, dlv->Value,
-                        value);
+                if(debug)
+                    ajDebug("ensDensityfeatureadaptorFetchAllBySlice "
+                            "bstart %d bend %d blength %u "
+                            "DLV Length %u DLV Value %f "
+                            "value %f \n",
+                            bstart, bend, blength,
+                            dlv->Length, dlv->Value,
+                            value);
 
                 AJFREE(dlv);
             }

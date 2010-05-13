@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.4 $
+** @version $Revision: 1.5 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -128,7 +128,7 @@ static AjBool gvsampleadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @cc Bio::EnsEMBL::Variation::Sample::new
 ** @param [u] name [AjPStr] Name
 ** @param [u] description [AjPStr] Description
-** @param [r] display [AjEnum] Display
+** @param [r] display [EnsEGvsampleDisplay] Display
 ** @param [r] size [ajuint] Size
 **
 ** @return [EnsPGvsample] Ensembl Genetic Variation Sample or NULL
@@ -139,7 +139,7 @@ EnsPGvsample ensGvsampleNew(EnsPGvsampleadaptor gvsa,
                             ajuint identifier,
                             AjPStr name,
                             AjPStr description,
-                            AjEnum display,
+                            EnsEGvsampleDisplay display,
                             ajuint size)
 {
     EnsPGvsample gvs = NULL;
@@ -329,7 +329,7 @@ void ensGvsampleDel(EnsPGvsample *Pgvs)
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule Name [AjPStr] Name
 ** @valrule Description [AjPStr] Description
-** @valrule Display [AjEnum] Display
+** @valrule Display [EnsEGvsampleDisplay] Display
 ** @valrule Size [ajuint] Size
 **
 ** @fcategory use
@@ -430,12 +430,11 @@ AjPStr ensGvsampleGetDescription(const EnsPGvsample gvs)
 **
 ** @param  [r] gvs [const EnsPGvsample] Ensembl Genetic Variation Sample
 **
-** @return [AjEnum] Display
+** @return [EnsEGvsampleDisplay] Display or ensEGvsampleDisplayNULL
 ** @@
 ******************************************************************************/
 
-AjEnum
-ensGvsampleGetDisplay(const EnsPGvsample gvs)
+EnsEGvsampleDisplay ensGvsampleGetDisplay(const EnsPGvsample gvs)
 {
     if(!gvs)
         return ensEGvsampleDisplayNULL;
@@ -603,14 +602,13 @@ AjBool ensGvsampleSetDescription(EnsPGvsample gvs, AjPStr description)
 ** Set the display element of an Ensembl Genetic Variation Sample.
 **
 ** @param [u] gvs [EnsPGvsample] Ensembl Genetic Variation Sample
-** @param [r] display [AjEnum] Display
+** @param [r] display [EnsEGvsampleDisplay] Display
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool
-ensGvsampleSetDisplay(EnsPGvsample gvs, AjEnum display)
+AjBool ensGvsampleSetDisplay(EnsPGvsample gvs, EnsEGvsampleDisplay display)
 {
     if(!gvs)
         return ajFalse;
@@ -759,17 +757,16 @@ AjBool ensGvsampleTrace(const EnsPGvsample gvs, ajuint level)
 **
 ** @param [r] display [const AjPStr] Display string
 **
-** @return [AjEnum] Ensembl Genetic Variation Sample display element or
-**                  ensEGvsampleDisplayNULL
+** @return [EnsEGvsampleDisplay] Ensembl Genetic Variation Sample display or
+**                               ensEGvsampleDisplayNULL
 ** @@
 ******************************************************************************/
 
-AjEnum
-ensGvsampleDisplayFromStr(const AjPStr display)
+EnsEGvsampleDisplay ensGvsampleDisplayFromStr(const AjPStr display)
 {
-    register ajint i = 0;
+    register EnsEGvsampleDisplay i = ensEGvsampleDisplayNULL;
 
-    AjEnum edisplay = ensEGvsampleDisplayNULL;
+    EnsEGvsampleDisplay edisplay = ensEGvsampleDisplayNULL;
 
     for(i = 1; gvsampleDisplay[i]; i++)
         if(ajStrMatchC(display, gvsampleDisplay[i]))
@@ -790,8 +787,8 @@ ensGvsampleDisplayFromStr(const AjPStr display)
 ** Convert an Ensembl Genetic Variation Sample display element into a
 ** C-type (char*) string.
 **
-** @param [r] display [const AjEnum] Ensembl Genetic Variation Sample
-**                                   display enumerator
+** @param [r] display [EnsEGvsampleDisplay] Ensembl Genetic Variation Sample
+**                                          display
 **
 ** @return [const char*] Ensembl Genetic Variation Sample display
 **                       C-type (char*) string
@@ -799,9 +796,9 @@ ensGvsampleDisplayFromStr(const AjPStr display)
 ******************************************************************************/
 
 const char*
-ensGvsampleDisplayToChar(const AjEnum display)
+ensGvsampleDisplayToChar(EnsEGvsampleDisplay display)
 {
-    register ajint i = 0;
+    register EnsEGvsampleDisplay i = ensEGvsampleDisplayNULL;
 
     if(!display)
         return NULL;
@@ -881,7 +878,7 @@ static AjBool gvsampleadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     ajuint identifier = 0;
     ajuint size       = 0;
 
-    AjEnum edisplay = ensEGvsampleDisplayNULL;
+    EnsEGvsampleDisplay edisplay = ensEGvsampleDisplayNULL;
 
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;
@@ -1062,7 +1059,7 @@ EnsPBaseadaptor ensGvsampleadaptorGetAdaptor(EnsPGvsampleadaptor gvsa)
 **
 ** @param [r] gvsa [const EnsPGvsampleAdaptor] Ensembl Genetic Variation
 **                                             Sample Adaptor
-** @param [r] display [AjEnum] Display
+** @param [r] display [EnsEGvsampleDisplay] Display
 ** @param [u] gvss [AjPList] AJAX List of Ensembl Genetic Variation Samples
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -1070,7 +1067,7 @@ EnsPBaseadaptor ensGvsampleadaptorGetAdaptor(EnsPGvsampleadaptor gvsa)
 ******************************************************************************/
 
 AjBool ensGvsampleadaptorFetchAllByDisplay(EnsPGvsampleadaptor gvsa,
-                                           AjEnum display,
+                                           EnsEGvsampleDisplay display,
                                            AjPList gvss)
 {
     AjPStr constraint = NULL;

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -154,8 +154,8 @@ static AjBool gvindividualadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @cc Bio::EnsEMBL::Variation::Individual::new
 ** @param [u] father [EnsPGvindividual] Father
 ** @param [u] mother [EnsPGvindividual] Mother
-** @param [r] gender [AjEnum] Gender
-** @param [r] type [AjEnum] Type
+** @param [r] gender [EnsEGvindividualGender] Gender
+** @param [r] type [EnsEGvindividualType] Type
 ** @param [u] description [AjPStr] Description
 **
 ** @return [EnsPGvindividual] Ensembl Genetic Variation Individual or NULL
@@ -167,8 +167,8 @@ EnsPGvindividual ensGvindividualNew(EnsPGvindividualadaptor gvia,
                                     EnsPGvsample gvs,
                                     EnsPGvindividual father,
                                     EnsPGvindividual mother,
-                                    AjEnum gender,
-                                    AjEnum type,
+                                    EnsEGvindividualGender gender,
+                                    EnsEGvindividualType type,
                                     AjPStr description)
 {
     EnsPGvindividual gvi = NULL;
@@ -377,8 +377,8 @@ void ensGvindividualDel(EnsPGvindividual *Pgvi)
 ** @valrule Gvsample [EnsPGvsample] Ensembl Genetic Variation Sample
 ** @valrule Father [EnsPGvindividual] Ensembl Genetic Variation Individual
 ** @valrule Mother [EnsPGvindividual] Ensembl Genetic Variation Individual
-** @valrule Gender [AjEnum] Gender
-** @valrule Type [AjEnum] Type
+** @valrule Gender [EnsEGvindividualGender] Gender
+** @valrule Type [EnsEGvindividualType] Type
 ** @valrule Description [AjPStr] Description
 **
 ** @fcategory use
@@ -504,11 +504,11 @@ EnsPGvindividual ensGvindividualGetMother(const EnsPGvindividual gvi)
 **
 ** @param [r] gvi [const EnsPGvindividual] Ensembl Genetic Variation Individual
 **
-** @return [AjEnum] Gender or ensEGvindividualGenderNULL
+** @return [EnsEGvindividualGender] Gender or ensEGvindividualGenderNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensGvindividualGetGender(const EnsPGvindividual gvi)
+EnsEGvindividualGender ensGvindividualGetGender(const EnsPGvindividual gvi)
 {
     if(!gvi)
         return ensEGvindividualGenderNULL;
@@ -525,11 +525,11 @@ AjEnum ensGvindividualGetGender(const EnsPGvindividual gvi)
 **
 ** @param [r] gvi [const EnsPGvindividual] Ensembl Genetic Variation Individual
 **
-** @return [AjEnum] Type or ensEGvindividualTypeNULL
+** @return [EnsEGvindividualType] Type or ensEGvindividualTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensGvindividualGetType(const EnsPGvindividual gvi)
+EnsEGvindividualType ensGvindividualGetType(const EnsPGvindividual gvi)
 {
     if(!gvi)
         return ensEGvindividualTypeNULL;
@@ -630,7 +630,8 @@ AjBool ensGvindividualSetAdaptor(EnsPGvindividual gvi,
 ** @@
 ******************************************************************************/
 
-AjBool ensGvindividualSetIdentifier(EnsPGvindividual gvi, ajuint identifier)
+AjBool ensGvindividualSetIdentifier(EnsPGvindividual gvi,
+                                    ajuint identifier)
 {
     if(!gvi)
         return ajFalse;
@@ -655,7 +656,8 @@ AjBool ensGvindividualSetIdentifier(EnsPGvindividual gvi, ajuint identifier)
 ** @@
 ******************************************************************************/
 
-AjBool ensGvindividualSetGvsample(EnsPGvindividual gvi, EnsPGvsample gvs)
+AjBool ensGvindividualSetGvsample(EnsPGvindividual gvi,
+                                  EnsPGvsample gvs)
 {
     if(!gvi)
         return ajFalse;
@@ -682,7 +684,8 @@ AjBool ensGvindividualSetGvsample(EnsPGvindividual gvi, EnsPGvsample gvs)
 ** @@
 ******************************************************************************/
 
-AjBool ensGvindividualSetFather(EnsPGvindividual gvi, EnsPGvindividual father)
+AjBool ensGvindividualSetFather(EnsPGvindividual gvi,
+                                EnsPGvindividual father)
 {
     if(!gvi)
         return ajFalse;
@@ -709,7 +712,8 @@ AjBool ensGvindividualSetFather(EnsPGvindividual gvi, EnsPGvindividual father)
 ** @@
 ******************************************************************************/
 
-AjBool ensGvindividualSetMother(EnsPGvindividual gvi, EnsPGvindividual mother)
+AjBool ensGvindividualSetMother(EnsPGvindividual gvi,
+                                EnsPGvindividual mother)
 {
     if(!gvi)
         return ajFalse;
@@ -729,13 +733,14 @@ AjBool ensGvindividualSetMother(EnsPGvindividual gvi, EnsPGvindividual mother)
 ** Set the gender element of an Ensembl Genetic Variation Individual.
 **
 ** @param [u] gvi [EnsPGvindividual] Ensembl Genetic Variation Individual
-** @param [r] gender [AjEnum] Gender
+** @param [r] gender [EnsEGvindividualGender] Gender
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensGvindividualSetGender(EnsPGvindividual gvi, AjEnum gender)
+AjBool ensGvindividualSetGender(EnsPGvindividual gvi,
+                                EnsEGvindividualGender gender)
 {
     if(!gvi)
         return ajFalse;
@@ -753,13 +758,14 @@ AjBool ensGvindividualSetGender(EnsPGvindividual gvi, AjEnum gender)
 ** Set the type element of an Ensembl Genetic Variation Individual.
 **
 ** @param [u] gvi [EnsPGvindividual] Ensembl Genetic Variation Individual
-** @param [r] type [AjEnum] Type
+** @param [r] type [EnsEGvindividualType] Type
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensGvindividualSetType(EnsPGvindividual gvi, AjEnum type)
+AjBool ensGvindividualSetType(EnsPGvindividual gvi,
+                              EnsEGvindividualType type)
 {
     if(!gvi)
         return ajFalse;
@@ -783,7 +789,8 @@ AjBool ensGvindividualSetType(EnsPGvindividual gvi, AjEnum type)
 ** @@
 ******************************************************************************/
 
-AjBool ensGvindividualSetDescription(EnsPGvindividual gvi, AjPStr description)
+AjBool ensGvindividualSetDescription(EnsPGvindividual gvi,
+                                     AjPStr description)
 {
     if(!gvi)
         return ajFalse;
@@ -806,16 +813,16 @@ AjBool ensGvindividualSetDescription(EnsPGvindividual gvi, AjPStr description)
 **
 ** @param [r] gender [const AjPStr] Gender string
 **
-** @return [AjEnum] Ensembl Genetic Variation Individual gender element or
-**                  ensEGvindividualGenderNULL
+** @return [EnsEGvindividualGender] Ensembl Genetic Variation Individual gender
+**                                  or ensEGvindividualGenderNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensGvindividualGenderFromStr(const AjPStr gender)
+EnsEGvindividualGender ensGvindividualGenderFromStr(const AjPStr gender)
 {
-    register ajint i = 0;
+    register EnsEGvindividualGender i = ensEGvindividualGenderNULL;
 
-    AjEnum egender = ensEGvindividualGenderNULL;
+    EnsEGvindividualGender egender = ensEGvindividualGenderNULL;
 
     for(i = 1; gvindividualGender[i]; i++)
         if(ajStrMatchC(gender, gvindividualGender[i]))
@@ -838,16 +845,16 @@ AjEnum ensGvindividualGenderFromStr(const AjPStr gender)
 **
 ** @param [r] type [const AjPStr] Type string
 **
-** @return [AjEnum] Ensembl Genetic Variation Individual type element or
-**                  ensEGvindividualTypeNULL
+** @return [EnsEGvindividualType] Ensembl Genetic Variation Individual type
+**                                or ensEGvindividualTypeNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensGvindividualTypeFromStr(const AjPStr type)
+EnsEGvindividualType ensGvindividualTypeFromStr(const AjPStr type)
 {
-    register ajint i = 0;
+    register EnsEGvindividualType i = ensEGvindividualTypeNULL;
 
-    AjEnum etype = ensEGvindividualTypeNULL;
+    EnsEGvindividualType etype = ensEGvindividualTypeNULL;
 
     for(i = 1; gvindividualType[i]; i++)
         if(ajStrMatchC(type, gvindividualType[i]))
@@ -868,17 +875,17 @@ AjEnum ensGvindividualTypeFromStr(const AjPStr type)
 ** Convert an Ensembl Genetic Variation Individual gender element into a
 ** C-type (char*) string.
 **
-** @param [r] gender [const AjEnum] Ensembl Genetic Variation Individual
-**                                  gender enumerator
+** @param [r] gender [EnsEGvindividualGender] Ensembl Genetic Variation
+**                                            Individual gender
 **
 ** @return [const char*] Ensembl Genetic Variation Individual gender
 **                       C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char* ensGvindividualGenderToChar(const AjEnum gender)
+const char* ensGvindividualGenderToChar(EnsEGvindividualGender gender)
 {
-    register ajint i = 0;
+    register EnsEGvindividualGender i = ensEGvindividualGenderNULL;
 
     if(!gender)
         return NULL;
@@ -900,17 +907,17 @@ const char* ensGvindividualGenderToChar(const AjEnum gender)
 ** Convert an Ensembl Genetic Variation Individual type element into a
 ** C-type (char*) string.
 **
-** @param [r] type [const AjEnum] Ensembl Genetic Variation Individual
-**                                type enumerator
+** @param [r] type [EnsEGvindividualType] Ensembl Genetic Variation
+**                                        Individual type
 **
 ** @return [const char*] Ensembl Genetic Variation Individual type
 **                       C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char* ensGvindividualTypeToChar(const AjEnum type)
+const char* ensGvindividualTypeToChar(EnsEGvindividualType type)
 {
-    register ajint i = 0;
+    register EnsEGvindividualType i = ensEGvindividualTypeNULL;
 
     if(!type)
         return NULL;
@@ -1129,9 +1136,9 @@ static AjBool gvindividualadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     ajuint motherid    = 0;
     ajuint ssize       = 0;
 
-    AjEnum esdisplay = ensEGvsampleDisplayNULL;
-    AjEnum egender   = ensEGvindividualGenderNULL;
-    AjEnum etype     = ensEGvindividualTypeNULL;
+    EnsEGvsampleDisplay esdisplay  = ensEGvsampleDisplayNULL;
+    EnsEGvindividualGender egender = ensEGvindividualGenderNULL;
+    EnsEGvindividualType etype     = ensEGvindividualTypeNULL;
 
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;

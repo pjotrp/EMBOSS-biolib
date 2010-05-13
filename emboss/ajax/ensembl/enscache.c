@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.6 $
+** @version $Revision: 1.7 $
 ** @@
 **
 ** Bio::EnsEMBL::Utils::Cache CVS Revision: 1.2
@@ -408,8 +408,8 @@ static AjBool cacheNodeRemove(EnsPCache cache, const CachePNode node)
 **
 ** Default constructor for an Ensembl Cache.
 **
-** @param [r] type [AjEnum] Ensembl Cache type
-**                          (ensECacheTypeNumeric or ensECacheTypeAlphaNumeric)
+** @param [r] type [EnsECacheType] Ensembl Cache type
+**                 (ensECacheTypeNumeric or ensECacheTypeAlphaNumeric)
 ** @param [r] maxbytes [ajuint] Maximum number of bytes held in the cache
 ** @param [r] maxcount [ajuint] Maximum number of objects to be cached
 ** @param [r] maxsize [ajuint] Maximum size of an object to be cached
@@ -433,7 +433,7 @@ static AjBool cacheNodeRemove(EnsPCache cache, const CachePNode node)
 ** functions and object-specific read and write back functions.
 ******************************************************************************/
 
-EnsPCache ensCacheNew(AjEnum type,
+EnsPCache ensCacheNew(EnsECacheType type,
                       ajuint maxbytes,
                       ajuint maxcount,
                       ajuint maxsize,

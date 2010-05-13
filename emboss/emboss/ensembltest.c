@@ -36,9 +36,9 @@
 ** @alias EnsembltestSProjections
 ** @alias EnsembltestOProjections
 **
-** @attr SliceName [const char*] Ensembl Slice name.
-** @attr CoordsystemName [const char*] Ensembl Coordinate System name.
-** @attr CoordsystemVersion [const char*] Ensembl Coordinate System version.
+** @attr SliceName [const char*] Ensembl Slice name
+** @attr CoordsystemName [const char*] Ensembl Coordinate System name
+** @attr CoordsystemVersion [const char*] Ensembl Coordinate System version
 ** @@
 ******************************************************************************/
 
@@ -103,7 +103,7 @@ static AjBool ensembltest_genes(EnsPDatabaseadaptor dba);
 
 
 
-/* @prog testensembl **********************************************************
+/* @prog ensembltest **********************************************************
 **
 ** Demonstration of the Ensembl API to be.
 **
@@ -117,8 +117,9 @@ int main(int argc, char **argv)
 
     AjBool large = AJFALSE;
 
-    AjEnum client = ajESqlClientMySQL;
-    AjEnum group  = ensEDatabaseadaptorGroupCore;
+    AjESqlClient client = ajESqlClientMySQL;
+    
+    EnsEDatabaseadaptorGroup group  = ensEDatabaseadaptorGroupCore;
 
     AjPFile outfile = NULL;
 
@@ -178,7 +179,10 @@ int main(int argc, char **argv)
 
     /* AJAX SQL test. */
 
-    /* The next two statements need moving into Ensembl Init and AJAX init. */
+    /*
+     ** TODO: The next two statements need moving into embInit and ensInit,
+     ** respectively.
+     */
 
     if(!ajSqlInit())
         ajFatal("main Library initialisation failed.");
@@ -202,16 +206,6 @@ int main(int argc, char **argv)
     ensRegistryLoadFromServer(dbc);
 
     ensDatabaseconnectionDel(&dbc);
-
-    /*
-    ** FIXME: For debugging only!
-    ** TODO: This could move into ensRegistryLoadFromServer.
-    ensRegistryTraceAliases(0);
-
-    ensRegistryTraceEntries(0);
-
-    ajDebug("main ensRegistryLoadFromServer finished.\n");
-    */
 
     dba = ensRegistryGetDatabaseadaptor(group, species);
 
@@ -297,22 +291,14 @@ int main(int argc, char **argv)
 
                     ajFmtPrintF(outfile,
                                 "Ensembl Transcript Mapper 2:3 to Slice got "
-                                "Mapper Result of other type?\n");
-
-                    ensMapperresultTrace(mr, 1);
+                                "Mapper Result of unexpected type %d.\n",
+                                ensMapperresultGetType(mr));
             }
 
             ensMapperresultDel(&mr);
         }
 
         ajListFree(&mrlist);
-
-        /* Trace the Transcript Mapper */
-
-        /*
-        ** FIXME: For debugging only!
-        ensMapperTrace(transcript->ExonCoordMapper, 1);
-        */
 
         /* Fetch the Transcript sequence. */
 
@@ -437,7 +423,7 @@ int main(int argc, char **argv)
         ensembltest_genes(dba);
 
         /* Fetch sequence for human chromosome 21. */
-        if(0)
+        if(AJFALSE)
             ensembltest_chromosome(dba, outseq);
     }
 
@@ -635,7 +621,7 @@ static AjBool ensembltest_slice_projections(EnsPDatabaseadaptor dba,
                     "\n", sename, csname, csversion);
 
         if(debug)
-            ajDebug("ensembltest_assembly_exceptions begin ensSliceProject "
+            ajDebug("ensembltest_slice_projections begin ensSliceProject "
                     "for Ensembl Slice '%S' and "
                     "Ensembl Coordinate System '%S:%S'.\n",
                     sename, csname, csversion);
@@ -643,7 +629,7 @@ static AjBool ensembltest_slice_projections(EnsPDatabaseadaptor dba,
         ensSliceProject(slice, csname, csversion, pslist);
 
         if(debug)
-            ajDebug("ensembltest_assembly_exceptions finished "
+            ajDebug("ensembltest_slice_projections finished "
                     "ensSliceProject.\n");
 
         while(ajListPop(pslist, (void **) &ps))
@@ -842,12 +828,10 @@ static AjBool ensembltest_assembly_exceptions(EnsPDatabaseadaptor dba,
 
     sa = ensRegistryGetSliceadaptor(dba);
 
-    csname = ajStrNewC("toplevel");
-
+    csname    = ajStrNewC("toplevel");
     csversion = ajStrNew();
 
     pslist = ajListNew();
-
     sllist = ajListNew();
 
     ensSliceadaptorFetchAll(sa, csname, csversion, nonref, duplicates, sllist);
@@ -966,11 +950,9 @@ static AjBool ensembltest_features(EnsPDatabaseadaptor dba,
     ** which is inside SMAD2.
     */
 
-    csname = ajStrNewC("chromosome");
-
+    csname    = ajStrNewC("chromosome");
     csversion = ajStrNewC("GRCh37");
-
-    srname = ajStrNewC("18");
+    srname    = ajStrNewC("18");
 
     ensSliceadaptorFetchByRegion(sa,
                                  csname,
@@ -1248,6 +1230,13 @@ static AjBool ensembltest_genes(EnsPDatabaseadaptor dba)
     genes = ajListNew();
 
     ensGeneadaptorFetchAll(ga, genes);
+    
+    /*
+    ** Although Genes have not been retrieved from a Slice, the following
+    ** function can still sort them by Slices and then Slice start coordinates.
+    */
+    
+    ensGeneSortByStartAscending(genes);
 
     while(ajListPop(genes, (void **) &gene))
     {
@@ -1411,11 +1400,9 @@ static AjBool ensembltest_markers(EnsPDatabaseadaptor dba,
     ** which is around SMAD2.
     */
 
-    csname = ajStrNewC("chromosome");
-
+    csname    = ajStrNewC("chromosome");
     csversion = ajStrNewC("GRCh37");
-
-    srname = ajStrNewC("18");
+    srname    = ajStrNewC("18");
 
     ensSliceadaptorFetchByRegion(sa,
                                  csname,
@@ -1650,7 +1637,7 @@ static AjBool ensembltest_ditags(EnsPDatabaseadaptor dba,
 static AjBool ensembltest_masking(EnsPDatabaseadaptor dba,
                                   AjPSeqout outseq)
 {
-    AjEnum mtype = ensERepeatMaskTypeSoft;
+    EnsERepeatMaskType mtype = ensERepeatMaskTypeSoft;
 
     AjPList names = NULL;
 
@@ -2462,8 +2449,6 @@ static AjBool ensembltest_transformations(EnsPDatabaseadaptor dba,
 
     ensGeneGetTranscripts(oldgene);
 
-    ensGeneTrace(oldgene, 1);
-
     feature = ensGeneGetFeature(oldgene);
 
     ajFmtPrintF(outfile, "\n");
@@ -2482,11 +2467,7 @@ static AjBool ensembltest_transformations(EnsPDatabaseadaptor dba,
 
     ensSliceadaptorFetchByName(sa, name, &slice);
 
-    ensSliceTrace(slice, 1);
-
     newgene = ensGeneTransfer(oldgene, slice);
-
-    ensGeneTrace(newgene, 1);
 
     feature = ensGeneGetFeature(newgene);
 
@@ -2546,7 +2527,7 @@ static AjBool ensembltest_registry(AjPFile outfile)
 
     register ajuint i = 0;
 
-    AjEnum group = ensEDatabaseadaptorGroupNULL;
+    EnsEDatabaseadaptorGroup group = ensEDatabaseadaptorGroupNULL;
 
     AjPStr identifier = NULL;
     AjPStr species    = NULL;

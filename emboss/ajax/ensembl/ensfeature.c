@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -6490,7 +6490,7 @@ EnsPBasealignfeature ensBasealignfeatureNewP(
 ** @cc Bio::EnsEMBL::BaseAlignFeature
 ** @param [u] cigar [AjPStr] CIGAR line
 ** @param [r] fps [AjPList] AJAX List of Ensembl Feature Pairs
-** @param [r] type [AjEnum] Ensembl Base Align Feature type
+** @param [r] type [EnsEBasealignfeatureType] Ensembl Base Align Feature type
 ** @param [r] pair [ajuint] Pair DNA Align Feature identifier
 **
 ** @return [EnsPBasealignfeature] Ensembl Base Align Feature or NULL
@@ -6500,7 +6500,7 @@ EnsPBasealignfeature ensBasealignfeatureNewP(
 EnsPBasealignfeature ensBasealignfeatureNew(EnsPFeaturepair fp,
                                             AjPStr cigar,
                                             AjPList fps,
-                                            AjEnum type,
+                                            EnsEBasealignfeatureType type,
                                             ajuint pair)
 {
     EnsPBasealignfeature baf = NULL;
@@ -6710,7 +6710,7 @@ void ensBasealignfeatureDel(EnsPBasealignfeature *Pbaf)
 ** @valrule Identifier [ajuint] SQL database-internal identifier
 ** @valrule Featurepair [EnsPFeaturepair] Ensembl Feature Pair
 ** @valrule Cigar [AjPStr] CIGAR line
-** @valrule Type [AjEnum] Type
+** @valrule Type [EnsEBasealignfeatureType] Type
 ** @valrule AlignmentLength [ajuint] Alignment length
 ** @valrule PairDNAAlignFeatureIdentifier [ajuint] Pair DNA Align Feature
 **                                                 identifier
@@ -12216,7 +12216,7 @@ AjBool ensSimplefeatureadaptorFetchAllByAnalysisName(
 ** @param [u] feature [EnsPFeature] Ensembl Feature
 ** @cc Bio::EnsEMBL::AssemblyExceptionFeature::new
 ** @param [u] slice [EnsPSlice] Alternative Slice
-** @param [r] type [AjEnum] Assembly Exception Feature type
+** @param [r] type [EnsEAssemblyexceptionType] Assembly Exception type
 **
 ** @return [EnsPAssemblyexceptionfeature] Ensembl Assembly Exception Feature
 **                                        or NULL
@@ -12228,7 +12228,7 @@ EnsPAssemblyexceptionfeature ensAssemblyexceptionfeatureNew(
     ajuint identifier,
     EnsPFeature feature,
     EnsPSlice slice,
-    AjEnum type)
+    EnsEAssemblyexceptionType type)
 {
     EnsPAssemblyexceptionfeature aef = NULL;
 
@@ -12403,7 +12403,7 @@ void ensAssemblyexceptionfeatureDel(EnsPAssemblyexceptionfeature *Paef)
 **                                                        Adaptor
 ** @valrule Feature [EnsPFeature] Ensembl Feature
 ** @valrule AlternatSlice [EnsPSlice] Alternative Ensembl Slice
-** @valrule Type [AjEnum] Assembly Exception Feature type
+** @valrule Type [EnsEAssemblyexceptionType] Assembly Exception type
 **
 ** @fcategory use
 ******************************************************************************/
@@ -12512,18 +12512,18 @@ EnsPSlice ensAssemblyexceptionfeatureGetAlternateSlice(
 
 /* @func ensAssemblyexceptionfeatureGetType ***********************************
 **
-** Get the Ensembl Assembly Exception Feature type element of an
+** Get the Ensembl Assembly Exception type element of an
 ** Ensembl Assembly Exception Feature.
 **
 ** @cc Bio::EnsEMBL::AssemblyExceptionFeature::type
 ** @param [r] aef [const EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                                     Exception Feature
 **
-** @return [AjEnum] Ensembl Assembly Exception Feature type
+** @return [EnsEAssemblyexceptionType] Ensembl Assembly Exception type
 ** @@
 ******************************************************************************/
 
-AjEnum ensAssemblyexceptionfeatureGetType(
+EnsEAssemblyexceptionType ensAssemblyexceptionfeatureGetType(
     const EnsPAssemblyexceptionfeature aef)
 {
     if(!aef)
@@ -12682,19 +12682,19 @@ AjBool ensAssemblyexceptionfeatureSetAlternateSlice(
 
 /* @func ensAssemblyexceptionfeatureSetType ***********************************
 **
-** Set the Ensembl Assembly Exception Feature type element of an
+** Set the Ensembl Assembly Exception type element of an
 ** Ensembl Assembly Exception Feature.
 **
 ** @param [u] aef [EnsPAssemblyexceptionfeature] Ensembl Assembly
 **                                               Exception Feature
-** @param [r] type [AjEnum] Ensembl Assembly Exception Feature type
+** @param [r] type [EnsEAssemblyexceptionType] Ensembl Assembly Exception type
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
 AjBool ensAssemblyexceptionfeatureSetType(EnsPAssemblyexceptionfeature aef,
-                                          AjEnum type)
+                                          EnsEAssemblyexceptionType type)
 {
     if(!aef)
         return ajFalse;

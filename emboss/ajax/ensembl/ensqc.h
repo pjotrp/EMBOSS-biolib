@@ -30,7 +30,7 @@ extern "C"
 **
 ******************************************************************************/
 
-enum EnsEQcdasfeatureCategory
+typedef enum EnsOQcdasfeatureCategory
 {
     ensEQcdasfeatureCategoryNULL,
     ensEQcdasfeatureCategoryUnknown,
@@ -44,7 +44,7 @@ enum EnsEQcdasfeatureCategory
     ensEQcdasfeatureCategoryTranslationPartial,
     ensEQcdasfeatureCategoryTranslationMissing,
     ensEQcdasfeatureCategoryTranslation
-};
+} EnsEQcdasfeatureCategory;
 
 
 
@@ -55,7 +55,7 @@ enum EnsEQcdasfeatureCategory
 **
 ******************************************************************************/
 
-enum EnsEQcdasfeatureType
+typedef enum EnsOQcdasfeatureType
 {
     ensEQcdasfeatureTypeNULL,
     ensEQcdasfeatureTypeUnknown,
@@ -65,7 +65,7 @@ enum EnsEQcdasfeatureType
     ensEQcdasfeatureTypeExonFrameshift,
     ensEQcdasfeatureTypeExonGap,
     ensEQcdasfeatureTypeExon
-};
+} EnsEQcdasfeatureType;
 
 
 
@@ -93,8 +93,8 @@ enum EnsEQcdasfeatureType
 ** @attr FeatureStart [ajuint] Feature start
 ** @attr FeatureEnd [ajuint] Feature end
 ** @attr Phase [ajint] Phase
-** @attr Category [AjEnum] Category
-** @attr Type [AjEnum] Type
+** @attr Category [EnsEQcdasfeatureCategory] Category
+** @attr Type [EnsEQcdasfeatureType] Type
 ** @@
 ******************************************************************************/
 
@@ -113,8 +113,8 @@ typedef struct EnsSQcdasfeature
     ajuint FeatureStart;
     ajuint FeatureEnd;
     ajint Phase;
-    AjEnum Category;
-    AjEnum Type;
+    EnsEQcdasfeatureCategory Category;
+    EnsEQcdasfeatureType Type;
 } EnsOQcdasfeature;
 
 #define EnsPQcdasfeature EnsOQcdasfeature*
@@ -139,14 +139,14 @@ typedef struct EnsSQcdasfeature
 **
 ******************************************************************************/
 
-enum EnsEQcvariationClass
+typedef enum EnsOQcvariationClass
 {
     ensEQcvariationClassNULL,
     ensEQcvariationClassNone,
     ensEQcvariationClassSimple,
     ensEQcvariationClassSplice,
     ensEQcvariationClassExon
-};
+} EnsEQcvariationClass;
 
 
 
@@ -157,13 +157,13 @@ enum EnsEQcvariationClass
 **
 ******************************************************************************/
 
-enum EnsEQcvariationType
+typedef enum EnsOQcvariationType
 {
     ensEQcvariationTypeNULL,
     ensEQcvariationTypeNone,
     ensEQcvariationTypeSingle,
     ensEQcvariationTypeMulti
-};
+} EnsEQcvariationType;
 
 
 
@@ -174,7 +174,7 @@ enum EnsEQcvariationType
 **
 ******************************************************************************/
 
-enum EnsEQcvariationState
+typedef enum EnsOQcvariationState
 {
     ensEQcvariationStateNULL,
     ensEQcvariationStateNone,
@@ -184,7 +184,7 @@ enum EnsEQcvariationState
     ensEQcvariationState5ss,
     ensEQcvariationState3ss,
     EnsEQcvariationStateSplit
-};
+} EnsEQcvariationState;
 
 
 
@@ -212,9 +212,9 @@ enum EnsEQcvariationState
 ** @attr TargetStart [ajuint] Target start
 ** @attr TargetEnd [ajuint] Target end
 ** @attr TargetString [AjPStr] Target string
-** @attr Class [AjEnum] Class
-** @attr Type [AjEnum] Type
-** @attr State [AjEnum] State
+** @attr Class [EnsEQcvariationClass] Class
+** @attr Type [EnsEQcvariationType] Type
+** @attr State [EnsEQcvariationState] State
 ** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
@@ -234,9 +234,9 @@ typedef struct EnsSQcvariation
     ajuint TargetStart;
     ajuint TargetEnd;
     AjPStr TargetString;
-    AjEnum Class;
-    AjEnum Type;
-    AjEnum State;
+    EnsEQcvariationClass Class;
+    EnsEQcvariationType Type;
+    EnsEQcvariationState State;
     char Padding[4];
 } EnsOQcvariation;
 
@@ -324,8 +324,8 @@ EnsPQcdasfeature ensQcdasfeatureNew(EnsPQcdasfeatureadaptor qcdasfa,
                                     ajuint fstart,
                                     ajuint fend,
                                     ajint phase,
-                                    AjEnum category,
-                                    AjEnum type);
+                                    EnsEQcdasfeatureCategory category,
+                                    EnsEQcdasfeatureType type);
 
 EnsPQcdasfeature ensQcdasfeatureNewObj(const EnsPQcdasfeature object);
 
@@ -336,11 +336,14 @@ void ensQcdasfeatureDel(EnsPQcdasfeature* Pqcdasf);
 EnsPQcdasfeatureadaptor ensQcdasfeatureGetAdaptor(
     const EnsPQcdasfeature qcdasf);
 
-ajuint ensQcdasfeatureGetIdentifier(const EnsPQcdasfeature qcdasf);
+ajuint ensQcdasfeatureGetIdentifier(
+    const EnsPQcdasfeature qcdasf);
 
-EnsPQcalignment ensQcdasfeatureGetQcalignment(const EnsPQcdasfeature qcdasf);
+EnsPQcalignment ensQcdasfeatureGetQcalignment(
+    const EnsPQcdasfeature qcdasf);
 
-EnsPAnalysis ensQcdasfeatureGetAnalysis(const EnsPQcdasfeature qcdasf);
+EnsPAnalysis ensQcdasfeatureGetAnalysis(
+    const EnsPQcdasfeature qcdasf);
 
 EnsPQcsequence ensQcdasfeatureGetSegmentSequence(
     const EnsPQcdasfeature qcdasf);
@@ -348,21 +351,28 @@ EnsPQcsequence ensQcdasfeatureGetSegmentSequence(
 EnsPQcsequence ensQcdasfeatureGetFeatureSequence(
     const EnsPQcdasfeature qcdasf);
 
-ajuint ensQcdasfeatureGetSegmentStart(const EnsPQcdasfeature qcdasf);
+ajuint ensQcdasfeatureGetSegmentStart(
+    const EnsPQcdasfeature qcdasf);
 
-ajuint ensQcdasfeatureGetSegmentEnd(const EnsPQcdasfeature qcdasf);
+ajuint ensQcdasfeatureGetSegmentEnd(
+    const EnsPQcdasfeature qcdasf);
 
-ajint ensQcdasfeatureGetSegmentStrand(const EnsPQcdasfeature qcdasf);
+ajint ensQcdasfeatureGetSegmentStrand(
+    const EnsPQcdasfeature qcdasf);
 
-ajuint ensQcdasfeatureGetFeatureStart(const EnsPQcdasfeature qcdasf);
+ajuint ensQcdasfeatureGetFeatureStart(
+    const EnsPQcdasfeature qcdasf);
 
-ajuint ensQcdasfeatureGetFeatureEnd(const EnsPQcdasfeature qcdasf);
+ajuint ensQcdasfeatureGetFeatureEnd(
+    const EnsPQcdasfeature qcdasf);
 
-ajint ensQcdasfeatureGetPhase(const EnsPQcdasfeature qcdasf);
+ajint ensQcdasfeatureGetPhase(
+    const EnsPQcdasfeature qcdasf);
 
-AjEnum ensQcdasfeatureGetCategory(const EnsPQcdasfeature qcdasf);
+EnsEQcdasfeatureCategory ensQcdasfeatureGetCategory(
+    const EnsPQcdasfeature qcdasf);
 
-AjEnum ensQcdasfeatureGetType(const EnsPQcdasfeature qcdasf);
+EnsEQcdasfeatureType ensQcdasfeatureGetType(const EnsPQcdasfeature qcdasf);
 
 AjBool ensQcdasfeatureSetAdaptor(EnsPQcdasfeature qcdasf,
                                  EnsPQcdasfeatureadaptor qcdasfa);
@@ -401,22 +411,22 @@ AjBool ensQcdasfeatureSetPhase(EnsPQcdasfeature qcdasf,
                                ajint phase);
 
 AjBool ensQcdasfeatureSetCategory(EnsPQcdasfeature qcdasf,
-                                  AjEnum category);
+                                  EnsEQcdasfeatureCategory category);
 
 AjBool ensQcdasfeatureSetType(EnsPQcdasfeature qcdasf,
-                              AjEnum type);
+                              EnsEQcdasfeatureType type);
 
 ajuint ensQcdasfeatureGetMemSize(const EnsPQcdasfeature qcdasf);
 
 AjBool ensQcdasfeatureTrace(const EnsPQcdasfeature qcdasf, ajuint level);
 
-AjEnum ensQcdasfeatureCategoryFromStr(const AjPStr category);
+EnsEQcdasfeatureCategory ensQcdasfeatureCategoryFromStr(const AjPStr category);
 
-AjEnum ensQcdasfeatureTypeFromStr(const AjPStr type);
+EnsEQcdasfeatureType ensQcdasfeatureTypeFromStr(const AjPStr type);
 
-const char *ensQcdasfeatureCategoryToChar(const AjEnum category);
+const char *ensQcdasfeatureCategoryToChar(EnsEQcdasfeatureCategory category);
 
-const char *ensQcdasfeatureTypeToChar(const AjEnum type);
+const char *ensQcdasfeatureTypeToChar(EnsEQcdasfeatureType type);
 
 /* Ensembl Quality Check DAS Feature Adaptor */
 
@@ -488,9 +498,9 @@ EnsPQcvariation ensQcvariationNew(EnsPQcvariationadaptor adaptor,
                                   ajuint tstart,
                                   ajuint tend,
                                   AjPStr tstring,
-                                  AjEnum class,
-                                  AjEnum type,
-                                  AjEnum state);
+                                  EnsEQcvariationClass class,
+                                  EnsEQcvariationType type,
+                                  EnsEQcvariationState state);
 
 EnsPQcvariation ensQcvariationNewObj(const EnsPQcvariation object);
 
@@ -522,11 +532,11 @@ ajuint ensQcvariationGetTargetEnd(const EnsPQcvariation qcv);
 
 AjPStr ensQcvariationGetTargetString(const EnsPQcvariation qcv);
 
-AjEnum ensQcvariationGetClass(const EnsPQcvariation qcv);
+EnsEQcvariationClass ensQcvariationGetClass(const EnsPQcvariation qcv);
 
-AjEnum ensQcvariationGetType(const EnsPQcvariation qcv);
+EnsEQcvariationType ensQcvariationGetType(const EnsPQcvariation qcv);
 
-AjEnum ensQcvariationGetState(const EnsPQcvariation qcv);
+EnsEQcvariationState ensQcvariationGetState(const EnsPQcvariation qcv);
 
 AjBool ensQcvariationSetAdaptor(EnsPQcvariation qcv,
                                 EnsPQcvariationadaptor qcva);
@@ -565,29 +575,29 @@ AjBool ensQcvariationSetTargetString(EnsPQcvariation qcv,
                                      AjPStr tstring);
 
 AjBool ensQcvariationSetClass(EnsPQcvariation qcv,
-                              AjEnum class);
+                              EnsEQcvariationClass class);
 
 AjBool ensQcvariationSetType(EnsPQcvariation qcv,
-                             AjEnum type);
+                             EnsEQcvariationType type);
 
 AjBool ensQcvariationSetState(EnsPQcvariation qcv,
-                              AjEnum state);
+                              EnsEQcvariationState state);
 
 ajuint ensQcvariationGetMemSize(const EnsPQcvariation qcv);
 
 AjBool ensQcvariationTrace(const EnsPQcvariation qcv, ajuint level);
 
-AjEnum ensQcvariationClassFromStr(const AjPStr vclass);
+EnsEQcvariationClass ensQcvariationClassFromStr(const AjPStr vclass);
 
-AjEnum ensQcvariationTypeFromStr(const AjPStr type);
+EnsEQcvariationType ensQcvariationTypeFromStr(const AjPStr type);
 
-AjEnum ensQcvariationStateFromStr(const AjPStr state);
+EnsEQcvariationState ensQcvariationStateFromStr(const AjPStr state);
 
-const char *ensQcvariationClassToChar(const AjEnum vclass);
+const char *ensQcvariationClassToChar(EnsEQcvariationClass vclass);
 
-const char *ensQcvariationTypeToChar(const AjEnum type);
+const char *ensQcvariationTypeToChar(EnsEQcvariationType type);
 
-const char *ensQcvariationStateToChar(const AjEnum state);
+const char *ensQcvariationStateToChar(EnsEQcvariationState state);
 
 /* Ensembl Quality Check Variation Adaptor */
 

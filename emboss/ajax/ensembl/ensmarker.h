@@ -98,12 +98,12 @@ typedef struct EnsSMarkeradaptor
 **
 ******************************************************************************/
 
-enum EnsEMarkerType
+typedef enum EnsOMarkerType
 {
     ensEMarkerTypeNULL,
     ensEMarkerTypeEST,
     ensEMarkerTypeMicroSatellite
-};
+} EnsEMarkerType;
 
 
 
@@ -127,7 +127,7 @@ enum EnsEMarkerType
 ** @attr Markermaplocations [AjPList] AJAX List of Ensembl Marker Map Locations
 ** @attr MinimumDistance [ajuint] Minimum primer distance
 ** @attr MaximumDistance [ajuint] Maximum primer distance
-** @attr Type [AjEnum] Type
+** @attr Type [EnsEMarkerType] Type
 ** @attr Priority [ajint] Priority
 ** @@
 ******************************************************************************/
@@ -144,7 +144,7 @@ typedef struct EnsSMarker
     AjPList Markermaplocations;
     ajuint MinimumDistance;
     ajuint MaximumDistance;
-    AjEnum Type;
+    EnsEMarkerType Type;
     ajint Priority;
 } EnsOMarker;
 
@@ -318,7 +318,7 @@ EnsPMarker ensMarkerNew(EnsPMarkeradaptor adaptor,
                         AjPList mmls,
                         ajuint mindistance,
                         ajuint maxdistance,
-                        AjEnum type,
+                        EnsEMarkerType type,
                         ajint priority);
 
 EnsPMarker ensMarkerNewObj(const EnsPMarker object);
@@ -345,7 +345,7 @@ ajuint ensMarkerGetMinimumDistance(const EnsPMarker marker);
 
 ajuint ensMarkerGetMaximumDistance(const EnsPMarker marker);
 
-AjEnum ensMarkerGetType(const EnsPMarker marker);
+EnsEMarkerType ensMarkerGetType(const EnsPMarker marker);
 
 ajint ensMarkerGetPriority(const EnsPMarker marker);
 
@@ -364,7 +364,7 @@ AjBool ensMarkerSetMinimumDistance(EnsPMarker marker, ajuint mindistance);
 
 AjBool ensMarkerSetMaximumDistance(EnsPMarker marker, ajuint maxdistance);
 
-AjBool ensMarkerSetType(EnsPMarker marker, AjEnum type);
+AjBool ensMarkerSetType(EnsPMarker marker, EnsEMarkerType type);
 
 AjBool ensMarkerSetPriority(EnsPMarker marker, ajint priority);
 
@@ -377,9 +377,9 @@ AjBool ensMarkerAddMarkersynonym(EnsPMarker marker, EnsPMarkersynonym ms);
 AjBool ensMarkerAddMarkermaplocation(EnsPMarker marker,
                                      EnsPMarkermaplocation mml);
 
-AjEnum ensMarkerTypeFromStr(const AjPStr type);
+EnsEMarkerType ensMarkerTypeFromStr(const AjPStr type);
 
-const char *ensMarkerTypeToChar(const AjEnum type);
+const char *ensMarkerTypeToChar(EnsEMarkerType type);
 
 AjBool ensMarkerClearMarkersynonyms(EnsPMarker marker);
 

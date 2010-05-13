@@ -7,7 +7,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -4535,7 +4535,7 @@ EnsPRepeatmaskedslice ensRepeatmaskedsliceNew(EnsPSlice slice,
 
     register ajuint i = 0;
 
-    AjEnum *Pmsktyp = NULL;
+    EnsERepeatMaskType *Pmsktyp = NULL;
 
     AjIList iter = NULL;
 
@@ -4596,7 +4596,7 @@ EnsPRepeatmaskedslice ensRepeatmaskedsliceNew(EnsPSlice slice,
 
         AJNEW0(Pmsktyp);
 
-        *Pmsktyp = *((AjEnum *) valarray[i]);
+        *Pmsktyp = *((EnsERepeatMaskType *) valarray[i]);
 
         ajTablePut(rmslice->Masking, (void *) key, (void *) Pmsktyp);
     }
@@ -4630,7 +4630,7 @@ EnsPRepeatmaskedslice ensRepeatmaskedsliceNewObj(
 
     register ajuint i = 0;
 
-    AjEnum *Pmsktyp = NULL;
+    EnsERepeatMaskType *Pmsktyp = NULL;
 
     AjIList iter = NULL;
 
@@ -4675,7 +4675,7 @@ EnsPRepeatmaskedslice ensRepeatmaskedsliceNewObj(
 
         AJNEW0(Pmsktyp);
 
-        *Pmsktyp = *((AjEnum *) valarray[i]);
+        *Pmsktyp = *((EnsERepeatMaskType *) valarray[i]);
 
         ajTablePut(rmslice->Masking, (void *) key, (void *) Pmsktyp);
     }
@@ -4840,7 +4840,7 @@ void ensRepeatmaskedsliceDel(EnsPRepeatmaskedslice *Prmslice)
 ** AJAX Sequence.
 **
 ** @param [u] rmslice [EnsPRepeatmaskedslice] Ensembl Repeat-Masked Slice
-** @param [r] mtype [AjEnum] Repeat masking type, i.e. none, soft, hard
+** @param [r] mtype [EnsERepeatMaskType] Repeat masking type
 ** @param [wP] Psequence [AjPSeq*] Sequence address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -4848,7 +4848,7 @@ void ensRepeatmaskedsliceDel(EnsPRepeatmaskedslice *Prmslice)
 ******************************************************************************/
 
 AjBool ensRepeatmaskedsliceFetchSequenceSeq(EnsPRepeatmaskedslice rmslice,
-                                            AjEnum mtype,
+                                            EnsERepeatMaskType mtype,
                                             AjPSeq *Psequence)
 {
     AjPStr name     = NULL;
@@ -4887,7 +4887,7 @@ AjBool ensRepeatmaskedsliceFetchSequenceSeq(EnsPRepeatmaskedslice rmslice,
 ** @cc Bio::EnsEMBL::RepeatMaskedSlice::seq
 ** @cc Bio::EnsEMBL::Slice::_mask_features
 ** @param [u] rmslice [EnsPRepeatmaskedslice] Ensembl Repeat-Masked Slice
-** @param [r] mtype [AjEnum] Repeat masking type, i.e. none, soft, hard
+** @param [r] mtype [EnsERepeatMaskType] Repeat masking type
 ** @param [wP] Psequence [AjPStr*] Sequence String address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -4911,14 +4911,14 @@ AjBool ensRepeatmaskedsliceFetchSequenceSeq(EnsPRepeatmaskedslice rmslice,
 ******************************************************************************/
 
 AjBool ensRepeatmaskedsliceFetchSequenceStr(EnsPRepeatmaskedslice rmslice,
-                                            AjEnum mtype,
+                                            EnsERepeatMaskType mtype,
                                             AjPStr *Psequence)
 {
     ajint start = 0;
     ajint end   = 0;
 
-    AjEnum msktyp   = ensERepeatMaskTypeNULL;
-    AjEnum *Pmsktyp = NULL;
+    EnsERepeatMaskType msktyp   = ensERepeatMaskTypeNULL;
+    EnsERepeatMaskType *Pmsktyp = NULL;
 
     AjIList iter = NULL;
     AjPList rfs  = NULL;
@@ -5031,8 +5031,8 @@ AjBool ensRepeatmaskedsliceFetchSequenceStr(EnsPRepeatmaskedslice rmslice,
 
         key = ajFmtStr("repeat_type_%S", ensRepeatconsensusGetType(rc));
 
-        Pmsktyp = (AjEnum *) ajTableFetch(rmslice->Masking,
-                                          (const void *) key);
+        Pmsktyp = (EnsERepeatMaskType *) ajTableFetch(rmslice->Masking,
+                                                      (const void *) key);
 
         if(Pmsktyp)
             msktyp = *Pmsktyp;
@@ -5043,8 +5043,8 @@ AjBool ensRepeatmaskedsliceFetchSequenceStr(EnsPRepeatmaskedslice rmslice,
 
         key = ajFmtStr("repeat_class_%S", ensRepeatconsensusGetClass(rc));
 
-        Pmsktyp = (AjEnum *) ajTableFetch(rmslice->Masking,
-                                          (const void *) key);
+        Pmsktyp = (EnsERepeatMaskType *) ajTableFetch(rmslice->Masking,
+                                                      (const void *) key);
 
         if(Pmsktyp)
             msktyp = *Pmsktyp;
@@ -5055,8 +5055,8 @@ AjBool ensRepeatmaskedsliceFetchSequenceStr(EnsPRepeatmaskedslice rmslice,
 
         key = ajFmtStr("repeat_name_%S", ensRepeatconsensusGetName(rc));
 
-        Pmsktyp = (AjEnum *) ajTableFetch(rmslice->Masking,
-                                          (const void *) key);
+        Pmsktyp = (EnsERepeatMaskType *) ajTableFetch(rmslice->Masking,
+                                                      (const void *) key);
 
         if(Pmsktyp)
             msktyp = *Pmsktyp;
