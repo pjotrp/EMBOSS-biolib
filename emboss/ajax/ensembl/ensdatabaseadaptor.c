@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@ static const char *databaseadaptorGroup[] =
     "variation",
     "funcgen",
     "compara",
-    "go",
+    "ontology",
     "qc",
     "pipeline",
     "hive",
@@ -105,7 +105,7 @@ static const char *databaseadaptorGroup[] =
 ** @argrule New dbc [EnsPDatabaseconnection] Ensembl Database Connection
 ** @argrule New database [AjPStr] Database name
 ** @argrule New species [AjPStr] Species
-** @argrule New group [AjEnum] Group
+** @argrule New group [EnsEDatabaseadaptorGroup] Group
 ** @argrule New multi [AjBool] Multiple species
 ** @argrule New identifier [ajuint] Species identifier
 **
@@ -138,7 +138,7 @@ static const char *databaseadaptorGroup[] =
 **                              database name in the Database Connection will
 **                              be used.
 ** @param [u] species [AjPStr] Species
-** @param [r] group [AjEnum] Group
+** @param [r] group [EnsEDatabaseadaptorGroup] Group
 ** @param [r] multi [AjBool] Multiple species
 ** @param [r] identifier [ajuint] Species identifier
 **
@@ -155,7 +155,7 @@ EnsPDatabaseadaptor ensDatabaseadaptorNew(
     EnsPDatabaseconnection dbc,
     AjPStr database,
     AjPStr species,
-    AjEnum group,
+    EnsEDatabaseadaptorGroup group,
     AjBool multi,
     ajuint identifier)
 {
@@ -305,7 +305,7 @@ void ensDatabaseadaptorDel(EnsPDatabaseadaptor* Pdba)
 ** @valrule Databaseconnection [EnsPDatabaseconnection] Ensembl Database
 **                                                      Connection
 ** @valrule Species [AjPStr] Species
-** @valrule Group [AjEnum] Group
+** @valrule Group [EnsEDatabaseadaptorGroup] Group
 ** @valrule MultiSpecies [AjBool] Multiple species
 ** @valrule Identifier [ajuint] Species identifier
 **
@@ -367,11 +367,12 @@ AjPStr ensDatabaseadaptorGetSpecies(const EnsPDatabaseadaptor dba)
 ** @cc Bio::EnsEMBL::DBSQL::DBAdaptor::group
 ** @param [r] dba [const EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
-** @return [AjPStr] Group or ensEDatabaseadaptorGroupNULL
+** @return [EnsEDatabaseadaptorGroup] Group or ensEDatabaseadaptorGroupNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensDatabaseadaptorGetGroup(const EnsPDatabaseadaptor dba)
+EnsEDatabaseadaptorGroup ensDatabaseadaptorGetGroup(
+    const EnsPDatabaseadaptor dba)
 {
     if(!dba)
         return ensEDatabaseadaptorGroupNULL;
@@ -515,13 +516,14 @@ AjBool ensDatabaseadaptorSetSpecies(EnsPDatabaseadaptor dba, AjPStr species)
 **
 ** @cc Bio::EnsEMBL::DBSQL::DBAdaptor::group
 ** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @param [r] group [AjEnum] Group
+** @param [r] group [EnsEDatabaseadaptorGroup] Group
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensDatabaseadaptorSetGroup(EnsPDatabaseadaptor dba, AjEnum group)
+AjBool ensDatabaseadaptorSetGroup(EnsPDatabaseadaptor dba,
+                                  EnsEDatabaseadaptorGroup group)
 {
     if(!dba)
         return ajFalse;
@@ -592,16 +594,16 @@ AjBool ensDatabaseadaptorSetIdentifier(EnsPDatabaseadaptor dba,
 **
 ** @param [r] group [const AjPStr] Group string
 **
-** @return [AjEnum] Ensembl Database Adaptor group element or
-**                  ensEDatabaseadaptorGroupNULL
+** @return [EnsEDatabaseadaptorGroup] Ensembl Database Adaptor group element or
+**                                    ensEDatabaseadaptorGroupNULL
 ** @@
 ******************************************************************************/
 
-AjEnum ensDatabaseadaptorGroupFromStr(const AjPStr group)
+EnsEDatabaseadaptorGroup ensDatabaseadaptorGroupFromStr(const AjPStr group)
 {
-    register ajuint i = 0;
+    register EnsEDatabaseadaptorGroup i = ensEDatabaseadaptorGroupNULL;
 
-    AjEnum egroup = ensEDatabaseadaptorGroupNULL;
+    EnsEDatabaseadaptorGroup egroup = ensEDatabaseadaptorGroupNULL;
 
     for(i = 1; databaseadaptorGroup[i]; i++)
         if(ajStrMatchCaseC(group, databaseadaptorGroup[i]))
@@ -622,15 +624,15 @@ AjEnum ensDatabaseadaptorGroupFromStr(const AjPStr group)
 ** Convert an Ensembl Database Adaptor group element into a
 ** C-type (char*) string.
 **
-** @param [r] group [const AjEnum] Database Adaptor group enumerator
+** @param [r] group [EnsEDatabaseadaptorGroup] Database Adaptor group
 **
 ** @return [const char*] Database Adaptor group C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char* ensDatabaseadaptorGroupToChar(const AjEnum group)
+const char* ensDatabaseadaptorGroupToChar(EnsEDatabaseadaptorGroup group)
 {
-    register ajint i = 0;
+    register EnsEDatabaseadaptorGroup i = ensEDatabaseadaptorGroupNULL;
 
     if(!group)
         return NULL;
@@ -702,7 +704,7 @@ AjBool ensDatabaseadaptorMatch(const EnsPDatabaseadaptor dba1,
 ** @param [r] dba [const EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] dbc [const EnsPDatabaseconnection] Ensembl Database Connection
 ** @param [r] species [const AjPStr] Species
-** @param [r] group [AjEnum] Group
+** @param [r] group [EnsEDatabaseadaptorGroup] Group
 ** @param [r] multi [AjBool] Multiple species
 ** @param [r] identifier [ajuint] Species identifier
 **
@@ -713,7 +715,7 @@ AjBool ensDatabaseadaptorMatch(const EnsPDatabaseadaptor dba1,
 AjBool ensDatabaseadaptorMatchComponents(const EnsPDatabaseadaptor dba,
                                          const EnsPDatabaseconnection dbc,
                                          const AjPStr species,
-                                         AjEnum group,
+                                         EnsEDatabaseadaptorGroup group,
                                          AjBool multi,
                                          ajuint identifier)
 {
