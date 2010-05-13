@@ -1610,7 +1610,7 @@ void ajTablestrTrace(const AjPTable table)
     ajDebug("(string) table trace: ");
     ajDebug(" length: %d", table->length);
     ajDebug(" size: %d", table->size);
-    ajDebug(" timestamp: %u", table->timestamp);
+    ajDebug(" timestamp: %u\n", table->timestamp);
 
     for(i = 0; i < table->size; i++)
 	if(table->buckets[i])
