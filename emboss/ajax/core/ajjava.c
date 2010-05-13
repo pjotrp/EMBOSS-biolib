@@ -52,9 +52,7 @@
 #include <fcntl.h>
 #include <ctype.h>
 
-
 #ifdef HAVE_JAVA
-#include <jni.h>
 
 #ifdef __hpux
 #include <signal.h>
