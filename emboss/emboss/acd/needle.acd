@@ -80,6 +80,12 @@ section: required [
            gap extension penalty to control gap scoring."
     relations: "/edam/data/0001398 Gap extension penalty"
   ]
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
 
   boolean: endweight [
     additional: "Y"
@@ -117,8 +123,8 @@ section: required [
            are penalized."
     relations: "/edam/data/0001411 Terminal gap extension penalty"                                       
   ]
+endsection: additional
 
-endsection: required
 
 section: output [
   information: "Output section"
