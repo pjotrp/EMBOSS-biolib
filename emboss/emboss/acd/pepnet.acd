@@ -4,7 +4,7 @@ application: pepnet [
   relations: "/edam/topic/0000137 Protein hydropathy"
   relations: "/edam/topic/0000092 Visualisation and rendering"
   relations: "/edam/topic/0002124 Protein secondary structure analysis"
-  relations: "/edam/operation/0000569 Protein secondary structure visualisation"
+  relations: "/edam/operation/0000569 Protein secondary structure visualization"
   relations: "/edam/operation/0000401 Protein sequence hydropathy calculation"
 ]
 

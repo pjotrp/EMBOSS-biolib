@@ -3,7 +3,7 @@ application: pepwheel [
   groups: "Display, Protein:2D Structure"
   relations: "/edam/topic/0000092 Visualisation and rendering"
   relations: "/edam/topic/0002124 Protein secondary structure analysis"
-  relations: "/edam/operation/0000569 Protein secondary structure visualisation"
+  relations: "/edam/operation/0000569 Protein secondary structure visualization"
 ]
 
 section: input [
