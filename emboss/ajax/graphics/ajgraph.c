@@ -320,12 +320,12 @@ static GraphOType graphType[] =
 #endif
 #endif
 
-    {"pdf",        "pdf",     ".pdf",   800,  600,
+    {"pdf",        "pdf",     ".pdf",  1683, 1190,
      AJTRUE,  AJFALSE, AJFALSE, AJFALSE, AJFALSE,  AJFALSE,
      GraphxyDisplayToFile, GraphOpenFile,
      "Adobe PDF"},
 
-    {"svg",        "svg",     ".svg",   800,  600,
+    {"svg",        "svg",     ".svg",   720,  540, /* see plplot/svg.c */
      AJTRUE,  AJFALSE, AJFALSE, AJFALSE, AJFALSE,  AJFALSE,
      GraphxyDisplayToFile, GraphOpenFile,
      "Scalable vector graphics"},
