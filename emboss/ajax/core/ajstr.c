@@ -11675,7 +11675,7 @@ __deprecated ajint  ajStrFindCase(const AjPStr str, const AjPStr str2)
 
 /* @func ajStrFindNextC *******************************************************
 **
-** Finds the next occurrence in a string of any character in a second 
+** Finds the next occurrence in a string of a second 
 ** (text) string.
 **
 ** @param [r] str [const AjPStr] String
@@ -11690,13 +11690,14 @@ ajint ajStrFindNextC(const AjPStr str, ajint pos1, const char* txt2)
 {
     ajuint i;
     ajuint jpos;
+    char *cp;
 
     jpos = ajCvtSposToPosStart(str->Len, 0, pos1);
+    cp = strstr(&str->Ptr[jpos], txt2);
+    if(!cp)
+        return -1;
 
-    i = jpos + strcspn(&str->Ptr[jpos], txt2);
-
-    if(i == str->Len)
-	return -1;
+    i = cp - str->Ptr;
 
     return i;
 }
@@ -11751,13 +11752,16 @@ ajint ajStrFindNextS(const AjPStr str, ajint pos1, const AjPStr str2)
 {
     ajuint i;
     ajuint jpos;
+    char *cp;
 
     jpos = ajCvtSposToPosStart(str->Len, 0, pos1);
 
-    i = jpos + strcspn(&str->Ptr[jpos], str2->Ptr);
+    cp = strstr(&str->Ptr[jpos], str2->Ptr);
 
-    if(i == str->Len)
-	return -1;
+    if(!cp)
+        return -1;
+
+    i = cp - str->Ptr;
 
     return i;
 }
