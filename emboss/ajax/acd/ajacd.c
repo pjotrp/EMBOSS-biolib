@@ -27821,8 +27821,10 @@ static void acdValidAppl(const AcdPAcd thys)
     acdValidApplKeywords(thys->AttrStr[i]);
 
     /* for now, skip EMBASSY applications */
-    i = acdFindAttrC(acdAttrAppl, "embassy");
-    if(acdEdam && !ajStrGetLen(thys->AttrStr[i]))
+    if(acdFindAttrC(acdAttrAppl, "embassy"))
+        acdEdam = NULL;
+
+    if(acdEdam)
     {
 
         i = acdFindAttrC(acdAttrAppl, "relations");
