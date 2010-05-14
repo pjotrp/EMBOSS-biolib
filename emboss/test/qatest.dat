@@ -20972,6 +20972,21 @@ FP /^asis +1 --------actaatat/
 FC = 41
 //
 
+ID needle-endweight5
+AP needle
+CL asis:MVL asis:MVHLLL stdout -aformat simple -endweight -auto
+CL -gapopen 12 -gapextend 2
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +3\/6/
+FP /^# Score: +-3\.0/
+FP /^asis +1 MV---L /
+FC = 41
+//
+
 ID needle-traceback1
 AP needle
 CL -auto -stdout -aformat simple -gapextend 1.0
