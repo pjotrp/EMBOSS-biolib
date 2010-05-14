@@ -74,6 +74,7 @@ static AjBool acdDoPretty = AJFALSE;
 static AjBool acdDoTable = AJFALSE;
 static AjBool acdDoTrace = AJFALSE;
 static AjBool acdDoValid = AJFALSE;
+static AjBool acdDoGalaxy = AJFALSE;
 static AjBool acdDoXsd = AJFALSE;
 static AjBool acdDoVersion = AJFALSE;
 static AjBool acdVerbose = AJFALSE;
@@ -217,6 +218,9 @@ static AjPStr acdQualNumTmp   = NULL;
 static AjBool acdParseQuotes = AJFALSE;
 static AjBool acdRegVarInit  = AJFALSE;
 
+static AjPStr  acdEdamPath = NULL;
+static AjPFile acdEdamFile = NULL;
+static AjPObo  acdEdam = NULL;
 /*
 static ajint acdLineCount = 0;
 static AjPList acdListCount = NULL;
@@ -447,6 +451,7 @@ typedef struct AcdSTableItem
 ** @attr Qual [AjPStr] Qualifier name
 ** @attr Type [AjPStr] Qualifier type
 ** @attr Annotation [AjPStr] Annotation text
+** @attr Relation [AjPStr] Relation attributes text
 ** @attr Valid [AjPStr] Valid input
 ** @attr Expect [AjPStr] Expected value(s)
 ** @attr Required [AjBool] True if a required value
@@ -459,12 +464,47 @@ typedef struct AcdSXsdItem
     AjPStr Qual;
     AjPStr Type;
     AjPStr Annotation;
+    AjPStr Relation;
     AjPStr Valid;
     AjPStr Expect;
     AjBool Required;
     AjBool Optional;
 } AcdOXsdItem;
 #define AcdPXsdItem AcdOXsdItem*
+
+
+
+
+/* @datastatic AcdPGalaxyItem *************************************************
+**
+** Galaxy data structure
+**
+** @alias AcdSGalaxyItem
+** @alias AcdOGalaxyItem
+**
+** @attr Qual [AjPStr] Qualifier name
+** @attr Type [AjPStr] Qualifier type
+** @attr Annotation [AjPStr] Annotation text
+** @attr Relation [AjPStr] Relation attributes text
+** @attr Valid [AjPStr] Valid input
+** @attr Expect [AjPStr] Expected value(s)
+** @attr Required [AjBool] True if a required value
+** @attr Optional[AjBool] True if an optional value
+** @@
+******************************************************************************/
+
+typedef struct AcdSGalaxyItem
+{
+    AjPStr Qual;
+    AjPStr Type;
+    AjPStr Annotation;
+    AjPStr Relation;
+    AjPStr Valid;
+    AjPStr Expect;
+    AjBool Required;
+    AjBool Optional;
+} AcdOGalaxyItem;
+#define AcdPGalaxyItem AcdOGalaxyItem*
 
 
 
@@ -751,6 +791,7 @@ static AjBool    acdDataFilename(AjPStr* datafname,
 static AjBool    acdDef(AcdPAcd thys, const AjPStr value);
 static void      acdDel(AcdPAcd *Pacd);
 static AjBool    acdDefinedEmpty (const AcdPAcd thys);
+static const AjPStr acdEdamTest(const AjPStr relation);
 
 __noreturn static void      acdError(const char* fmt, ...);
 __noreturn static void      acdErrorAcd(const AcdPAcd thys,
@@ -819,6 +860,8 @@ static void      acdHelpAssoc(const AcdPAcd thys, AjPStr *str,
 static void      acdHelpAssocTable(const AcdPAcd thys, AjPList tablist);
 static AjBool    acdHelpCodeDef(const AcdPAcd thys, AjPStr *msg);
 static void      acdHelpExpect(const AcdPAcd thys, AjBool table, AjPStr *str);
+static void      acdHelpGalaxy(const AcdPAcd thys, AjPList tablist);
+static void      acdHelpGalaxyShow(const AjPList inlist, const AjPList outlist);
 static void      acdHelpShow(const AjPStr str, const char* title);
 static void      acdHelpTable(const AcdPAcd thys, AjPList tablist);
 static void      acdHelpTableShow(const AjPList tablist, const char* title);
@@ -1407,7 +1450,7 @@ AcdOAttr acdAttrArray[] =
 	 "Maximum value"},
     {"increment", VT_FLOAT, AJFALSE, "0",
 	 "(Not used by ACD) Increment for GUIs"},
-    {"precision", VT_INT, AJFALSE, "0",
+    {"precision", VT_INT, AJFALSE, "3",
 	 "(Not used by ACD) Floating precision for GUIs"},
     {"warnrange", VT_BOOL, AJFALSE, "Y",
 	 "Warning if values are out of range"},
@@ -3674,7 +3717,7 @@ void ajAcdInitPV(const char *pgm, ajint argc, char * const argv[],
     
     /* set the true values and prompt for missing standard values */
 
-    if(acdDoTable || acdDoXsd)
+    if(acdDoTable || acdDoXsd || acdDoGalaxy)
 	acdHelp();
 
     acdSetAll();
@@ -3809,6 +3852,16 @@ static void acdParse(AjPList listwords, AjPList listcount)
 
     /* initialise the global line number counter to zero */
     acdLineNum = 0;
+
+    if(acdDoValid)
+    {
+        if(ajNamGetValueC("edam", &acdEdamPath))
+        {
+            acdEdamFile = ajFileNewInNameS(acdEdamPath);
+            if(acdEdamFile)
+                acdEdam = ajOboParseObo(acdEdamFile, "none");
+        }
+    }
 
     while(ajListGetLength(acdListCommentsCount) && !acdCmtWord)
     {
@@ -15090,7 +15143,7 @@ static void acdHelp(void)
 	/* was #f5f5ff */
     }
 
-    if(acdDoXsd)
+    if(acdDoXsd || acdDoGalaxy)
     {
         inlist = ajListNew();
         outlist = ajListNew();
@@ -15172,6 +15225,12 @@ static void acdHelp(void)
                 ajStrExchangeKK(&groupname, ':', '_');
                 ajStrExchangeKK(&groupname, ' ', '_');
 
+                if(acdDoGalaxy)
+                {
+                    ajUserDumpC("");
+                    ajUser("",
+                           acdProgram);
+                }
                 if(acdDoXsd)
                 {
                     ajUserDumpC("<?xml version=\"1.0\" encoding=\"UTF-8\" "
@@ -15207,9 +15266,19 @@ static void acdHelp(void)
 	}
 
 	if(acdType[pa->Type].Section == acdSecOutput)
-            acdHelpXsd(pa, outlist);
+        {
+            if(acdDoXsd)
+                acdHelpXsd(pa, outlist);
+            else if(acdDoGalaxy)
+                acdHelpGalaxy(pa, outlist);
+        }
         else if(pa->Level != ACD_APPL)
-            acdHelpXsd(pa, inlist);
+        {
+            if(acdDoXsd)
+                acdHelpXsd(pa, inlist);
+            else if(acdDoGalaxy)
+                acdHelpGalaxy(pa, outlist);
+        }
 
 	if(pa->AssocQuals)
 	{
@@ -15233,7 +15302,7 @@ static void acdHelp(void)
 	}
     }
 
-    if(!acdDoXsd)
+    if(!acdDoXsd && !acdDoGalaxy)
     {
         /*
         ** report 1-line documentation
@@ -15303,6 +15372,11 @@ static void acdHelp(void)
     {
         acdHelpXsdShow(inlist, outlist);
         ajUserDumpC("</xs:schema>");
+    }
+    else if(acdDoGalaxy)
+    {
+        acdHelpGalaxyShow(inlist, outlist);
+        ajUserDumpC("");
     }
     else if(acdDoTable)
         ajUserDumpC("</table>");
@@ -17022,6 +17096,10 @@ static void acdHelpXsdShow(const AjPList inlist, const AjPList outlist)
 {
     AcdPXsdItem item;
     AjIList iter = NULL;
+    AjPStrTok handle = NULL;
+    AjPStr rest = NULL;
+    AjPStr word = NULL;
+    AjPStr tmpstr = NULL;
 
     if(!acdDoXsd)
 	return;
@@ -17037,7 +17115,6 @@ static void acdHelpXsdShow(const AjPList inlist, const AjPList outlist)
         while((item = ajListIterGet(iter)))
         {
             acdTextTrim(&item->Annotation);
-
 
             /* Need specific strings for each datatype */
             /* add a block here as a temporary solution */
@@ -17067,8 +17144,20 @@ static void acdHelpXsdShow(const AjPList inlist, const AjPList outlist)
 
             if (ajStrMatchC(item->Type, "long"))
             {
-                ajUser("      <xs:element name=\"%S\" minOccurs=\"1\">",
+                ajUser("      <xs:element name=\"%S\"",
                        item->Qual);
+                if(ajStrGetLen(item->Relation))
+                {
+                    handle = ajStrTokenNewC(item->Relation, "|");
+                    while(ajStrTokenNextParse(&handle, &tmpstr))
+                    {
+                        ajStrExtractWord(tmpstr, &rest, &word);
+                        ajUser("    sawsdl:modelReference=\"http://purl.org%S\"",
+                               word);
+                    }
+                    ajStrTokenDel(&handle);
+                }
+                ajUser("        minOccurs=\"1\">");
                 ajUser("        <xs:annotation>");
                 ajUser("          <xs:documentation>");
                 ajUser("            %S", item->Annotation);
@@ -17084,8 +17173,20 @@ static void acdHelpXsdShow(const AjPList inlist, const AjPList outlist)
             }
             else if (ajStrMatchC(item->Type, "seqall")){
                 ajUser("      <xs:element name=\"%S\" type=\"emboss:"
-                       "sequenceInput\" minOccurs=\"1\">",
+                       "sequenceInput\"",
                         item->Qual);
+                if(ajStrGetLen(item->Relation))
+                {
+                    handle = ajStrTokenNewC(item->Relation, "|");
+                    while(ajStrTokenNextParse(&handle, &tmpstr))
+                    {
+                        ajStrExtractWord(tmpstr, &rest, &word);
+                        ajUser("    sawsdl:modelReference=\"http://purl.org%S\"",
+                               word);
+                    }
+                    ajStrTokenDel(&handle);
+                }
+                ajUser("        minOccurs=\"1\">");
                 ajUser("        <xs:annotation>");
                 ajUser("          <xs:documentation>");
                 ajUser("            %S", item->Annotation);
@@ -17094,9 +17195,21 @@ static void acdHelpXsdShow(const AjPList inlist, const AjPList outlist)
             }
             else
             {
-                ajUser("      <xs:element name=\"%S\" type=\"xs:%S\" "
-                       "minOccurs=\"1\">",
-                        item->Qual, item->Type);
+                ajUser("      <xs:element name=\"%S\" type=\"xs:%S\"",
+                       item->Qual, item->Type);
+                        
+                if(ajStrGetLen(item->Relation))
+                {
+                    handle = ajStrTokenNewC(item->Relation, "|");
+                    while(ajStrTokenNextParse(&handle, &tmpstr))
+                    {
+                        ajStrExtractWord(tmpstr, &rest, &word);
+                        ajUser("    sawsdl:modelReference=\"http://purl.org%S\"",
+                               word);
+                    }
+                    ajStrTokenDel(&handle);
+                }
+                ajUser("        minOccurs=\"1\">");
                 ajUser("        <xs:annotation>");
                 ajUser("          <xs:documentation>");
                 ajUser("            %S", item->Annotation);
@@ -17122,15 +17235,28 @@ static void acdHelpXsdShow(const AjPList inlist, const AjPList outlist)
         {
             if (ajStrMatchC(item->Type, "seqoutall"))
             {
-                ajUser("      <xs:element name=\"%S\" type=\"xs:string\" "
-                       "minOccurs=\"1\">",item->Qual, item->Type);
+                ajUser("      <xs:element name=\"%S\" type=\"xs:string\"",
+                       item->Qual, item->Type);
             }
             else
             {
-                ajUser("      <xs:element name=\"%S\" type=\"xs:%S\" "
-                       "minOccurs=\"1\">",item->Qual, item->Type);
+                ajUser("      <xs:element name=\"%S\" type=\"xs:%S\"",
+                       item->Qual, item->Type);
             }
 
+            if(ajStrGetLen(item->Relation))
+            {
+                ajUser("relation: '%S'", item->Relation);
+                handle = ajStrTokenNewC(item->Relation, "|");
+                while(ajStrTokenNextParse(&handle, &tmpstr))
+                {
+                    ajStrExtractWord(tmpstr, &rest, &word);
+                    ajUser("    sawsdl:modelReference=\"http://purl.org%S\"",
+                           word);
+                }
+                ajStrTokenDel(&handle);
+            }
+            ajUser("        minOccurs=\"1\">");
             ajUser("        <xs:annotation>");
             ajUser("          <xs:documentation>");
             ajUser("            %S", item->Annotation);
@@ -17144,6 +17270,109 @@ static void acdHelpXsdShow(const AjPList inlist, const AjPList outlist)
     ajUserDumpC("  </xs:complexType>");
 
     ajListIterDel(&iter);
+    ajStrDel(&tmpstr);
+    ajStrDel(&rest);
+    ajStrDel(&word);
+
+    return;
+}
+
+
+
+
+/* @funcstatic acdHelpGalaxyShow **********************************************
+**
+** Prints the qualifier category and the help for any
+** qualifiers in that category (or "(none)" if there are none).
+**
+** @param [r] inlist [const AjPList] Help text (if any).
+** @param [r] outlist [const AjPList] Help text (if any).
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdHelpGalaxyShow(const AjPList inlist, const AjPList outlist)
+{
+    AcdPGalaxyItem item;
+    AjIList iter = NULL;
+    AjPStrTok handle = NULL;
+    AjPStr rest = NULL;
+    AjPStr word = NULL;
+    AjPStr tmpstr = NULL;
+
+    if(!acdDoGalaxy)
+	return;
+
+    ajUserDumpC("");
+
+    if(ajListGetLength(inlist))
+    {
+        iter = ajListIterNewread(inlist);
+        while((item = ajListIterGet(iter)))
+        {
+            acdTextTrim(&item->Annotation);
+
+            /* Need specific strings for each datatype */
+            /* add a block here as a temporary solution */
+
+            /*
+            ** sequences: 1 for required values - e.g. parameters - 0 for
+            ** others
+            */            
+
+            if (ajStrMatchC(item->Type, "long"))
+            {
+                ajUserDumpC("");
+            }
+            else if (ajStrMatchC(item->Type, "seqall")){
+                ajUserDumpC("");                
+            }
+            else
+            {
+                ajUserDumpC("");
+            }
+            ajUserDumpC("");
+        }
+    }
+
+    ajListIterDel(&iter);
+    ajUserDumpC("");
+
+    if(ajListGetLength(outlist))
+    {
+        iter = ajListIterNewread(outlist);
+
+        while((item = ajListIterGet(iter)))
+        {
+            if (ajStrMatchC(item->Type, "seqoutall"))
+            {
+                ajUserDumpC("");
+            }
+            else
+            {
+                 ajUserDumpC("");
+            }
+
+            if(ajStrGetLen(item->Relation))
+            {
+                handle = ajStrTokenNewC(item->Relation, "|");
+                while(ajStrTokenNextParse(&handle, &tmpstr))
+                {
+                    ajStrExtractWord(tmpstr, &rest, &word);
+                    ajUserDumpC("");
+                }
+                ajStrTokenDel(&handle);
+            }
+            ajUserDumpC("");
+        }
+    }
+
+    ajUserDumpC("");
+
+    ajListIterDel(&iter);
+    ajStrDel(&tmpstr);
+    ajStrDel(&rest);
+    ajStrDel(&word);
 
     return;
 }
@@ -17408,7 +17637,123 @@ static void acdHelpXsd(const AcdPAcd thys, AjPList tablist)
     
     acdHelpValid(thys, ajTrue, &item->Valid);
     acdHelpText(thys, &item->Annotation);
+    acdAttrToStr(thys, "relation", "", &item->Relation);
+    ajListPushAppend(tablist, item);
+    ajStrDel (&helpStr);
+
+    return;
+}
+
+
+
+
+/* @funcstatic acdHelpGalaxy **************************************************
+**
+** Appends a qualifier and its help text to the Galaxy list.
+**
+** @param [r] thys [const AcdPAcd]  ACD object
+** @param [u] tablist [AjPList] Galaxy list being built
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdHelpGalaxy(const AcdPAcd thys, AjPList tablist)
+{    
+    AcdPGalaxyItem item;
     
+    static AjPStr nostr   = NULL;
+    static AjPStr nullstr = NULL;
+    AjBool boolval;
+    AjBool tmpBool;
+    AjPStr helpStr = NULL;
+
+    AjPStr defstr = NULL;
+    AjPStr* def = NULL;
+
+    if(!acdDoGalaxy)
+	return;
+
+    /* associated qualifiers:
+       if(thys->Assoc)
+           return;
+    
+    */
+
+    AJNEW0(item);
+    if(!nullstr)
+	nullstr = ajStrNew();
+    
+    if(thys->DefStr)
+	defstr = thys->OrigStr;
+    else
+	defstr = nullstr;
+    
+    ajStrAssignClear(&nostr);
+    if(acdIsQtype(thys))
+    {
+        if((ajCharMatchC("boolean", acdType[thys->Type].Name) ||
+            ajCharMatchC("toggle", acdType[thys->Type].Name) ))
+        {
+            if(ajStrToBool(defstr, &boolval))
+            {
+                if(boolval)
+                    ajStrAssignC(&nostr, "no");
+
+                ajFmtPrintS(&item->Expect, "%B", boolval);
+            }
+            else
+                if(!ajStrGetLen(defstr))
+                    ajFmtPrintS(&item->Expect, "%B", ajFalse);
+        }
+    
+	def = thys->DefStr;
+	
+	if(def && ajStrGetLen(def[DEF_ADDITIONAL]))
+	{
+	    if(acdHelpVarResolve(&helpStr, def[DEF_ADDITIONAL]))
+	    {
+		if(!ajStrToBool(helpStr, &tmpBool))
+		    acdErrorAcd(thys, "Bad additional flag %S\n",
+				def[DEF_ADDITIONAL]);
+	    }
+	    else
+	    {
+		tmpBool = ajTrue;
+	    }
+
+	    if(tmpBool)
+		item->Optional = ajTrue;
+	}
+	
+	if(def && ajStrGetLen(def[DEF_STANDARD]))
+	{
+	    if(acdHelpVarResolve(&helpStr, def[DEF_STANDARD]))
+	    {
+		if(!ajStrToBool( helpStr, &tmpBool))
+		    acdErrorAcd(thys, "Bad standard flag %S\n",
+				def[DEF_STANDARD]);
+	    }
+	    else
+		tmpBool = ajTrue;
+
+	    if(tmpBool)
+		item->Required = ajTrue;
+	}
+	
+    }
+
+    ajStrAssignC(&item->Type, acdType[thys->Type].Name);
+    ajStrAssignS(&item->Qual, thys->Name);
+    acdHelpExpect(thys, ajTrue, &item->Expect);
+    
+    /*
+     **  warning - don't try acdVarResolve here because we have not yet
+     **  read in the data and things like calculated attributes do not exist
+     */
+    
+    acdHelpValid(thys, ajTrue, &item->Valid);
+    acdHelpText(thys, &item->Annotation);
+    acdAttrToStr(thys, "relation", "", &item->Relation);
     ajListPushAppend(tablist, item);
     ajStrDel (&helpStr);
 
@@ -20776,6 +21121,12 @@ AjBool ajAcdSetControl(const char* optionName)
 	return ajTrue;
     }
 
+    if(!ajCharCmpCase(optionName, "acdgalaxy"))
+    {
+	acdDoGalaxy = ajTrue;
+
+	return ajTrue;
+    }
     if(!ajCharCmpCase(optionName, "acdxsd"))
     {
 	acdDoXsd = ajTrue;
@@ -27426,6 +27777,12 @@ static void acdValidAppl(const AcdPAcd thys)
     ajuint idocmax = 70;			/* maximum length of
 					   documentation string */
 
+    AjPStrTok tokenhandle = NULL;
+    AjPStr relation = NULL;
+    const AjPStr namespace;
+    ajuint ireloper = 0;
+    ajuint ireltopic = 0;
+
     if(!acdDoValid)
 	return;
 
@@ -27462,6 +27819,38 @@ static void acdValidAppl(const AcdPAcd thys)
 
     i = acdFindAttrC(acdAttrAppl, "keywords");
     acdValidApplKeywords(thys->AttrStr[i]);
+
+    /* for now, skip EMBASSY applications */
+    i = acdFindAttrC(acdAttrAppl, "embassy");
+    if(acdEdam && !ajStrGetLen(thys->AttrStr[i]))
+    {
+
+        i = acdFindAttrC(acdAttrAppl, "relations");
+        tokenhandle = ajStrTokenNewC(thys->AttrStr[i], "|");
+        while(ajStrTokenNextParse(&tokenhandle, &relation))
+        {
+            namespace = acdEdamTest(relation);
+            if(!namespace)
+                acdErrorValid("Application relation '%S' not found",
+                              relation);
+            else if(ajStrMatchC(namespace, "operation"))
+                ireloper++;
+            else if(ajStrMatchC(namespace, "topic"))
+                ireltopic++;
+            else
+                acdErrorValid("Application has relation with namespace '%S'",
+                              namespace);
+        }
+
+        if(!ireltopic)
+            acdErrorValid("Application has no 'topic' relation");
+        if(!ireloper)
+            acdErrorValid("Application has no 'operation' relation");
+
+        ajStrDel(&relation);
+        ajStrTokenDel(&tokenhandle);
+    }
+    
 
     return;
 }
@@ -27653,6 +28042,7 @@ static void acdValidQual(AcdPAcd thys)
     AjBool isToggle = ajFalse;
 
     static AjPStr secname   = NULL;
+    const AjPStr relstr    = NULL;
     const AjPStr tmpstr    = NULL;
     const AjPStr tmpinfo   = NULL;
     const AjPStr tmpprompt = NULL;
@@ -27679,9 +28069,37 @@ static void acdValidQual(AcdPAcd thys)
     static AjBool seqoutMulti  = AJFALSE;
     static AjBool featMulti    = AJFALSE;
     static AjBool featoutMulti = AJFALSE;
+    const AjPStr namespace = NULL;
+    AjPStr relation = NULL;
+    AjPStrTok tokenhandle = NULL;
+    ajuint ireldata = 0;
+    ajuint irelmisc = 0;
 
     if(!acdDoValid)
 	return;
+
+    if(acdEdam)
+    {
+        relstr = acdAttrValue(thys, "relations");
+        tokenhandle = ajStrTokenNewC(relstr, "|");
+        while(ajStrTokenNextParse(&tokenhandle, &relation))
+        {
+            namespace = acdEdamTest(relation);
+            if(!namespace)
+                acdErrorValid("Qualifier relation '%S' not found",
+                              relation);
+            else if(ajStrMatchC(namespace, "data"))
+                ireldata++;
+            else if(ajStrMatchC(namespace, "muggle"))
+                irelmisc++;
+            else
+                acdErrorValid("Qualifier has relation '%S' with namespace '%S'",
+                              relation, namespace);
+        }
+
+        ajStrDel(&relation);
+        ajStrTokenDel(&tokenhandle);
+    }
 
     if(ajListGetLength(acdSecList))
     {
@@ -30640,4 +31058,68 @@ static void acdRegVarDefine(void)
         acdRegFunction = ajRegCompC("^(.*)\\@\\(([^()]+)\\)");
 
     return;
+}
+
+
+
+/* @funcstatic acdEdamTest ****************************************************
+**
+** Test an EDAM term from a relations attribute
+**
+** @param [r] relation [const AjPStr] Relation single attribute value
+** @return [const AjPStr] Namespace
+**
+******************************************************************************/
+
+static const AjPStr acdEdamTest(const AjPStr relation)
+{
+    AjPStr term = NULL;
+    AjPStr name = NULL;
+    AjPStr id = NULL;
+    AjPStrTok handle = NULL;
+    AjPStr token = NULL;
+    AjPStr namespace = NULL;
+    AjPOboTerm oboterm = NULL;
+
+    if(!acdEdam)
+        return NULL;
+
+    if(!ajStrPrefixC(relation, "/edam/"))
+        acdErrorValid("Not an EDAM term in relation '%S'", relation);
+
+    ajStrExtractFirst(relation, &name, &term);
+
+    handle = ajStrTokenNewC(term, "/");
+    if(!ajStrTokenNextParse(&handle, &token)) /* empty */
+        acdErrorValid("Bad relation term '%S'", term);
+
+    if(!ajStrTokenNextParse(&handle, &token)) /* "edam" */
+        acdErrorValid("Bad relation term '%S'", term);
+
+    if(!ajStrTokenNextParse(&handle, &namespace))
+        acdErrorValid("Bad relation term '%S'", term);
+
+    if(!ajStrTokenNextParse(&handle, &token))
+        acdErrorValid("Bad relation term '%S'", term);
+
+    ajFmtPrintS(&id, "EDAM:%S", token);
+
+    oboterm =  ajOboFetchTerm(acdEdam, id);
+
+    if(!oboterm)
+        return NULL;
+
+    if(!ajStrMatchS(id, oboterm->Id))
+        acdErrorValid("Relation term '%S' bad id, expected '%S'",
+                    term, oboterm->Id);
+       
+    if(!ajStrMatchS(name, oboterm->Name))
+        acdErrorValid("Relation term '%S' bad name, expected '%S'",
+                    term, oboterm->Name);
+       
+    if(!ajStrMatchS(namespace, oboterm->Namespace))
+        acdErrorValid("Relation term '%S' bad namespace, expected '%S'",
+                    term, oboterm->Namespace);
+       
+    return oboterm->Namespace;
 }
