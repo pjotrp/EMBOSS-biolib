@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.15 $
+** @version $Revision: 1.16 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -896,7 +896,7 @@ EnsEDensitytypeValueType ensDensitytypeValeTypeFromStr(const AjPStr type)
 
     EnsEDensitytypeValueType etype = ensEDensitytypeValueTypeNULL;
 
-    for(i = 1; densitytypeValueType[i]; i++)
+    for(i = ensEDensitytypeValueTypeSum; densitytypeValueType[i]; i++)
         if(ajStrMatchC(type, densitytypeValueType[i]))
             etype = i;
 
@@ -928,7 +928,9 @@ const char* ensDensitytypeValeTypeToChar(EnsEDensitytypeValueType type)
     if(!type)
         return NULL;
 
-    for(i = 1; densitytypeValueType[i] && (i < type); i++);
+    for(i = ensEDensitytypeValueTypeSum;
+        densitytypeValueType[i] && (i < type);
+        i++);
 
     if(!densitytypeValueType[i])
         ajDebug("ensDensitytypeValeTypeToChar encountered an "

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1210,7 +1210,9 @@ EnsEExternaldatabaseStatus ensExternaldatabaseStatusFromStr(
 
     EnsEExternaldatabaseStatus estatus = ensEExternaldatabaseStatusNULL;
 
-    for(i = 1; externaldatabaseStatus[i]; i++)
+    for(i = ensEExternaldatabaseStatusKnownXref;
+        externaldatabaseStatus[i];
+        i++)
         if(ajStrMatchC(status, externaldatabaseStatus[i]))
             estatus = i;
 
@@ -1238,11 +1240,13 @@ EnsEExternaldatabaseStatus ensExternaldatabaseStatusFromStr(
 EnsEExternaldatabaseType ensExternaldatabaseTypeFromStr(
     const AjPStr type)
 {
-    register EnsEExternaldatabaseType i = 0;
+    register EnsEExternaldatabaseType i = ensEExternaldatabaseTypeNULL;
 
     EnsEExternaldatabaseType etype = ensEExternaldatabaseTypeNULL;
 
-    for(i = 1; externaldatabaseType[i]; i++)
+    for(i = ensEExternaldatabaseTypeArray;
+        externaldatabaseType[i];
+        i++)
         if(ajStrMatchC(type, externaldatabaseType[i]))
             etype = i;
 
@@ -1297,7 +1301,9 @@ const char* ensExternaldatabaseStatusToChar(EnsEExternaldatabaseStatus status)
     if(!status)
         return NULL;
 
-    for(i = 1; externaldatabaseStatus[i] && (i < status); i++);
+    for(i = ensEExternaldatabaseStatusKnownXref;
+        externaldatabaseStatus[i] && (i < status);
+        i++);
 
     if(!externaldatabaseStatus[i])
         ajDebug("ensExternaldatabaseStatusToChar encountered an "
@@ -1327,7 +1333,9 @@ const char* ensExternaldatabaseTypeToChar(EnsEExternaldatabaseType type)
     if(!type)
         return NULL;
 
-    for(i = 1; externaldatabaseType[i] && (i < type); i++);
+    for(i = ensEExternaldatabaseTypeArray;
+        externaldatabaseType[i] && (i < type);
+        i++);
 
     if(!externaldatabaseType[i])
         ajDebug("ensExternaldatabaseTypeToChar encountered an "

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2860,7 +2860,7 @@ EnsEMarkerType ensMarkerTypeFromStr(const AjPStr type)
 
     EnsEMarkerType etype = ensEMarkerTypeNULL;
 
-    for(i = 1; markerType[i]; i++)
+    for(i = ensEMarkerTypeEST; markerType[i]; i++)
         if(ajStrMatchC(type, markerType[i]))
             etype = i;
 
@@ -2891,7 +2891,9 @@ const char* ensMarkerTypeToChar(EnsEMarkerType type)
     if(!type)
         return NULL;
 
-    for(i = 1; markerType[i] && (i < type); i++);
+    for(i = ensEMarkerTypeEST;
+        markerType[i] && (i < type);
+        i++);
 
     if(!markerType[i])
         ajDebug("ensMarkerTypeToChar encountered an "

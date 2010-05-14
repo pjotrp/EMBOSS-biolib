@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -711,7 +711,7 @@ EnsEExternalreferenceInfoType ensExternalreferenceGetInfoType(
     const EnsPExternalreference er)
 {
     if(!er)
-        return 0;
+        return ensEExternalreferenceInfoTypeNULL;
 
     return er->InfoType;
 }
@@ -1170,7 +1170,9 @@ EnsEExternalreferenceInfoType ensExternalreferenceInfoTypeFromStr(
     EnsEExternalreferenceInfoType einfotype =
         ensEExternalreferenceInfoTypeNULL;
 
-    for(i = 1; externalreferenceInfoType[i]; i++)
+    for(i = ensEExternalreferenceInfoTypeProjection;
+        externalreferenceInfoType[i];
+        i++)
         if(ajStrMatchC(infotype, externalreferenceInfoType[i]))
             einfotype = i;
 
@@ -1206,7 +1208,9 @@ const char* ensExternalreferenceInfoTypeToChar(
     if(!type)
         return NULL;
 
-    for(i = 1; externalreferenceInfoType[i] && (i < type); i++);
+    for(i = ensEExternalreferenceInfoTypeProjection;
+        externalreferenceInfoType[i] && (i < type);
+        i++);
 
     if(!externalreferenceInfoType[i])
         ajDebug("ensExternalreferenceInfoTypeToChar encountered an "
@@ -2859,10 +2863,10 @@ EnsEExternalreferenceInfoType ensDatabaseentryGetInfoType(
     const EnsPDatabaseentry dbe)
 {
     if(!dbe)
-        return 0;
+        return ensEExternalreferenceInfoTypeNULL;
 
     if(!dbe->Externalreference)
-        return 0;
+        return ensEExternalreferenceInfoTypeNULL;
 
     return dbe->Externalreference->InfoType;
 }
@@ -3090,7 +3094,7 @@ EnsEExternaldatabaseType ensDatabaseentryGetType(const EnsPDatabaseentry dbe)
         return ensEExternaldatabaseTypeNULL;
 
     if(!dbe->Externalreference->Externaldatabase)
-        return ensEExternaldatabaseStatusNULL;
+        return ensEExternaldatabaseTypeNULL;
 
     return dbe->Externalreference->Externaldatabase->Type;
 }

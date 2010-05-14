@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** Bio::EnsEMBL::Registry CVS Revision:
@@ -2032,7 +2032,9 @@ AjBool ensRegistryGetAllDatabaseadaptors(EnsEDatabaseadaptorGroup group,
 
     for(i = 0; keyarray[i]; i++)
     {
-        for(j = 1; j <= EnsMDatabaseadaptorGroups; j++)
+        for(j = ensEDatabaseadaptorGroupCore;
+            j <= EnsMDatabaseadaptorGroups;
+            j++)
         {
             if(group && (group != j))
                 continue;

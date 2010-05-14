@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -581,7 +581,7 @@ EnsEAssemblyexceptionType ensAssemblyexceptionGetType(
     const EnsPAssemblyexception ae)
 {
     if(!ae)
-        return 0;
+        return ensEAssemblyexceptionTypeNULL;
 
     return ae->Type;
 }
@@ -991,7 +991,7 @@ EnsEAssemblyexceptionType ensAssemblyexceptionTypeFromStr(const AjPStr type)
 
     EnsEAssemblyexceptionType etype = ensEAssemblyexceptionTypeNULL;
 
-    for(i = 1; assemblyexceptionType[i]; i++)
+    for(i = ensEAssemblyexceptionTypeHAP; assemblyexceptionType[i]; i++)
         if(ajStrMatchC(type, assemblyexceptionType[i]))
             etype = i;
 
@@ -1023,7 +1023,9 @@ const char* ensAssemblyexceptionTypeToChar(EnsEAssemblyexceptionType type)
     if(!type)
         return NULL;
 
-    for(i = 1; assemblyexceptionType[i] && (i < type); i++);
+    for(i = ensEAssemblyexceptionTypeHAP;
+        assemblyexceptionType[i] && (i < type);
+        i++);
 
     if(!assemblyexceptionType[i])
         ajDebug("ensAssemblyexceptionTypeToChar encountered an "

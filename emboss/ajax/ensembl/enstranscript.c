@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.17 $
+** @version $Revision: 1.18 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1181,7 +1181,7 @@ const AjPList ensTranscriptGetDatabaseEntries(EnsPTranscript transcript)
                                                 transcript->Identifier,
                                                 objtype,
                                                 (AjPStr) NULL,
-                                                0,
+                                                ensEExternaldatabaseTypeNULL,
                                                 transcript->DatabaseEntries);
 
     ajStrDel(&objtype);
@@ -3083,7 +3083,7 @@ EnsETranscriptStatus ensTranscriptStatusFromStr(const AjPStr status)
 
     EnsETranscriptStatus estatus = ensETranscriptStatusNULL;
 
-    for(i = 1; transcriptStatus[i]; i++)
+    for(i = ensETranscriptStatusKnown; transcriptStatus[i]; i++)
         if(ajStrMatchC(status, transcriptStatus[i]))
             estatus = i;
 
@@ -3114,7 +3114,9 @@ const char *ensTranscriptStatusToChar(EnsETranscriptStatus status)
     if(!status)
         return NULL;
 
-    for(i = 1; transcriptStatus[i] && (i < status); i++);
+    for(i = ensETranscriptStatusKnown;
+        transcriptStatus[i] && (i < status);
+        i++);
 
     if(!transcriptStatus[i])
         ajDebug("ensTranscriptStatusToChar encountered an "

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2034,7 +2034,7 @@ EnsEGeneStatus ensGeneStatusFromStr(const AjPStr status)
 
     EnsEGeneStatus estatus = ensEGeneStatusNULL;
 
-    for(i = 1; geneStatus[i]; i++)
+    for(i = ensEGeneStatusKnown; geneStatus[i]; i++)
         if(ajStrMatchC(status, geneStatus[i]))
             estatus = i;
 
@@ -2065,7 +2065,7 @@ const char* ensGeneStatusToChar(EnsEGeneStatus status)
     if(!status)
         return NULL;
 
-    for(i = 1; geneStatus[i] && (i < status); i++);
+    for(i = ensEGeneStatusKnown; geneStatus[i] && (i < status); i++);
 
     if(!geneStatus[i])
         ajDebug("ensGeneStatusToChar encountered an "

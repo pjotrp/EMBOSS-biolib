@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2711,7 +2711,9 @@ EnsEGvvariationValidationState ensGvvariationValidationStateFromStr(
     EnsEGvvariationValidationState estate =
         ensEGvvariationValidationStateNULL;
 
-    for(i = 1; gvvariationValidationState[i]; i++)
+    for(i = ensEGvvariationValidationStateCluster;
+        gvvariationValidationState[i];
+        i++)
         if(ajStrMatchC(state, gvvariationValidationState[i]))
             estate = i;
 
@@ -2747,7 +2749,9 @@ const char* ensGvvariationValidationStateToChar(
     if(!state)
         return NULL;
 
-    for(i = 1; gvvariationValidationState[i] && (i < state); i++);
+    for(i = ensEGvvariationValidationStateCluster;
+        gvvariationValidationState[i] && (i < state);
+        i++);
 
     if(!gvvariationValidationState[i])
         ajDebug("ensGvvariationValidationStateToChar encountered an "

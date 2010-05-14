@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1369,7 +1369,7 @@ EnsEQcdasfeatureCategory ensQcdasfeatureCategoryFromStr(const AjPStr category)
 
     EnsEQcdasfeatureCategory ecategory = ensEQcdasfeatureCategoryNULL;
 
-    for(i = 1; qcdasfeatureCategory[i]; i++)
+    for(i = ensEQcdasfeatureCategoryUnknown; qcdasfeatureCategory[i]; i++)
         if(ajStrMatchCaseC(category, qcdasfeatureCategory[i]))
             ecategory = i;
 
@@ -1400,7 +1400,7 @@ EnsEQcdasfeatureType ensQcdasfeatureTypeFromStr(const AjPStr type)
 
     EnsEQcdasfeatureType etype = ensEQcdasfeatureTypeNULL;
 
-    for(i = 1; qcdasfeatureType[i]; i++)
+    for(i = ensEQcdasfeatureTypeUnknown; qcdasfeatureType[i]; i++)
         if(ajStrMatchCaseC(type, qcdasfeatureType[i]))
             etype = i;
 
@@ -1434,7 +1434,9 @@ const char* ensQcdasfeatureCategoryToChar(EnsEQcdasfeatureCategory category)
     if(!category)
         return NULL;
 
-    for(i = 1; qcdasfeatureCategory[i] && (i < category); i++);
+    for(i = ensEQcdasfeatureCategoryUnknown;
+        qcdasfeatureCategory[i] && (i < category);
+        i++);
 
     if(!qcdasfeatureCategory[i])
         ajDebug("ensQcdasfeatureCategoryToChar encountered an "
@@ -1465,7 +1467,9 @@ const char *ensQcdasfeatureTypeToChar(EnsEQcdasfeatureType type)
     if(!type)
         return NULL;
 
-    for(i = 1; qcdasfeatureType[i] && (i < type); i++);
+    for(i = ensEQcdasfeatureTypeUnknown;
+        qcdasfeatureType[i] && (i < type);
+        i++);
 
     if(!qcdasfeatureType[i])
         ajDebug("ensQcdasfeatureTypeToChar encountered an "
@@ -3616,7 +3620,7 @@ EnsEQcvariationClass ensQcvariationClassFromStr(const AjPStr vclass)
 
     EnsEQcvariationClass eclass = ensEQcvariationClassNULL;
 
-    for(i = 1; qcvariationClass[i]; i++)
+    for(i = ensEQcvariationClassNone; qcvariationClass[i]; i++)
         if(ajStrMatchCaseC(vclass, qcvariationClass[i]))
             eclass = i;
 
@@ -3647,7 +3651,7 @@ EnsEQcvariationType ensQcvariationTypeFromStr(const AjPStr type)
 
     EnsEQcvariationType etype = ensEQcvariationTypeNULL;
 
-    for(i = 1; qcvariationType[i]; i++)
+    for(i = ensEQcvariationTypeNone; qcvariationType[i]; i++)
         if(ajStrMatchCaseC(type, qcvariationType[i]))
             etype = i;
 
@@ -3678,7 +3682,7 @@ EnsEQcvariationState ensQcvariationStateFromStr(const AjPStr state)
 
     EnsEQcvariationState estate = ensEQcvariationStateNULL;
 
-    for(i = 1; qcvariationState[i]; i++)
+    for(i = ensEQcvariationStateNone; qcvariationState[i]; i++)
         if(ajStrMatchCaseC(state, qcvariationState[i]))
             estate = i;
 
@@ -3709,7 +3713,9 @@ const char *ensQcvariationClassToChar(EnsEQcvariationClass vclass)
     if(!vclass)
         return NULL;
 
-    for(i = 1; qcvariationClass[i] && (i < vclass); i++);
+    for(i = ensEQcvariationClassNone;
+        qcvariationClass[i] && (i < vclass);
+        i++);
 
     if(!qcvariationClass[i])
         ajDebug("ensQcvariationClassToChar encountered an "
@@ -3738,7 +3744,9 @@ const char *ensQcvariationTypeToChar(EnsEQcvariationType type)
     if(!type)
         return NULL;
 
-    for(i = 1; qcvariationType[i] && (i < type); i++);
+    for(i = ensEQcvariationTypeNone;
+        qcvariationType[i] && (i < type);
+        i++);
 
     if(!qcvariationType[i])
         ajDebug("ensQcvariationTypeToChar encountered an "
@@ -3767,7 +3775,9 @@ const char *ensQcvariationStateToChar(EnsEQcvariationState state)
     if(!state)
         return NULL;
 
-    for(i = 1; qcvariationState[i] && (i < state); i++);
+    for(i = ensEQcvariationStateNone;
+        qcvariationState[i] && (i < state);
+        i++);
 
     if(!qcvariationState[i])
         ajDebug("ensQcvariationStateToChar encountered an "
@@ -3987,7 +3997,7 @@ static AjBool qcvariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
         etype = ensQcvariationTypeFromStr(type);
 
-        estate = ensQcvariationClassFromStr(class);
+        estate = ensQcvariationStateFromStr(state);
 
         qcv = ensQcvariationNew(qcva,
                                 identifier,

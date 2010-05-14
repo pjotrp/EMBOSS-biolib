@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1453,7 +1453,7 @@ EnsEQcdatabaseClass ensQcdatabaseClassFromStr(const AjPStr class)
 
     EnsEQcdatabaseClass eclass = ensEQcdatabaseClassNULL;
 
-    for(i = 1; qcdatabaseClass[i]; i++)
+    for(i = ensEQcdatabaseClassUnknown; qcdatabaseClass[i]; i++)
         if(ajStrMatchCaseC(class, qcdatabaseClass[i]))
             eclass = i;
 
@@ -1484,7 +1484,7 @@ EnsEQcdatabaseType ensQcdatabaseTypeFromStr(const AjPStr type)
 
     EnsEQcdatabaseType etype = ensEQcdatabaseTypeNULL;
 
-    for(i = 1; qcdatabaseType[i]; i++)
+    for(i = ensEQcdatabaseTypeUnknown; qcdatabaseType[i]; i++)
         if(ajStrMatchCaseC(type, qcdatabaseType[i]))
             etype = i;
 
@@ -1515,7 +1515,9 @@ const char* ensQcdatabaseClassToChar(EnsEQcdatabaseClass class)
     if(!class)
         return NULL;
 
-    for(i = 1; qcdatabaseClass[i] && (i < class); i++);
+    for(i = ensEQcdatabaseClassUnknown;
+        qcdatabaseClass[i] && (i < class);
+        i++);
 
     if(!qcdatabaseClass[i])
         ajDebug("ensQcdatabaseClassToChar encountered an "
@@ -1544,7 +1546,9 @@ const char* ensQcdatabaseTypeToChar(EnsEQcdatabaseType type)
     if(!type)
         return NULL;
 
-    for(i = 1; qcdatabaseType[i] && (i < type); i++);
+    for(i = ensEQcdatabaseTypeUnknown;
+        qcdatabaseType[i] && (i < type);
+        i++);
 
     if(!qcdatabaseType[i])
         ajDebug("ensQcdatabaseTypeToChar encountered an "
@@ -1718,10 +1722,6 @@ static AjBool qcdatabaseadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     ajuint identifier = 0;
     ajuint analysisid = 0;
 
-    EnsEDatabaseadaptorGroup egroup = ensEDatabaseadaptorGroupNULL;
-    EnsEQcdatabaseClass eclass      = ensEQcdatabaseClassNULL;
-    EnsEQcdatabaseType etype        = ensEQcdatabaseTypeNULL;
-
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;
     AjPSqlrow sqlr       = NULL;
@@ -1738,6 +1738,10 @@ static AjBool qcdatabaseadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
     AjPStr directory   = NULL;
     AjPStr file        = NULL;
     AjPStr externalurl = NULL;
+
+    EnsEDatabaseadaptorGroup egroup = ensEDatabaseadaptorGroupNULL;
+    EnsEQcdatabaseClass eclass      = ensEQcdatabaseClassNULL;
+    EnsEQcdatabaseType etype        = ensEQcdatabaseTypeNULL;
 
     EnsPAnalysis analysis  = NULL;
     EnsPAnalysisadaptor aa = NULL;
@@ -1824,8 +1828,8 @@ static AjBool qcdatabaseadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                 release,
                                 date,
                                 format,
-                                etype,
                                 eclass,
+                                etype,
                                 species,
                                 egroup,
                                 host,

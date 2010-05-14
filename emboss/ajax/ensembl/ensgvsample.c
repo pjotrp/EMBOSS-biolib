@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -768,7 +768,7 @@ EnsEGvsampleDisplay ensGvsampleDisplayFromStr(const AjPStr display)
 
     EnsEGvsampleDisplay edisplay = ensEGvsampleDisplayNULL;
 
-    for(i = 1; gvsampleDisplay[i]; i++)
+    for(i = ensEGvsampleDisplayReference; gvsampleDisplay[i]; i++)
         if(ajStrMatchC(display, gvsampleDisplay[i]))
             edisplay = i;
 
@@ -803,7 +803,9 @@ ensGvsampleDisplayToChar(EnsEGvsampleDisplay display)
     if(!display)
         return NULL;
 
-    for(i = 1; gvsampleDisplay[i] && (i < display); i++);
+    for(i = ensEGvsampleDisplayReference;
+        gvsampleDisplay[i] && (i < display);
+        i++);
 
     if(!gvsampleDisplay[i])
         ajDebug("ensGvsampleDisplayToChar encountered an "

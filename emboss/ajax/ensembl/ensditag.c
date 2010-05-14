@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2155,7 +2155,7 @@ EnsEDitagfeatureSide ensDitagfeatureSideFromStr(const AjPStr side)
 
     EnsEDitagfeatureSide eside = ensEDitagfeatureSideNULL;
 
-    for(i = 1; ditagfeatureSide[i]; i++)
+    for(i = ensEDitagfeatureSideLeft; ditagfeatureSide[i]; i++)
         if(ajStrMatchC(side, ditagfeatureSide[i]))
             eside = i;
 
@@ -2186,7 +2186,9 @@ const char* ensDitagfeatureSideToChar(EnsEDitagfeatureSide side)
     if(!side)
         return NULL;
 
-    for(i = 1; ditagfeatureSide[i] && (i < side); i++);
+    for(i = ensEDitagfeatureSideLeft;
+        ditagfeatureSide[i] && (i < side);
+        i++);
 
     if(!ditagfeatureSide[i])
         ajDebug("ensDitagfeatureSideToChar encountered an "

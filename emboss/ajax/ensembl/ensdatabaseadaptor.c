@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -605,7 +605,7 @@ EnsEDatabaseadaptorGroup ensDatabaseadaptorGroupFromStr(const AjPStr group)
 
     EnsEDatabaseadaptorGroup egroup = ensEDatabaseadaptorGroupNULL;
 
-    for(i = 1; databaseadaptorGroup[i]; i++)
+    for(i = ensEDatabaseadaptorGroupCore; databaseadaptorGroup[i]; i++)
         if(ajStrMatchCaseC(group, databaseadaptorGroup[i]))
             egroup = i;
 
@@ -637,7 +637,9 @@ const char* ensDatabaseadaptorGroupToChar(EnsEDatabaseadaptorGroup group)
     if(!group)
         return NULL;
 
-    for(i = 1; databaseadaptorGroup[i] && (i < group); i++);
+    for(i = ensEDatabaseadaptorGroupCore;
+        databaseadaptorGroup[i] && (i < group);
+        i++);
 
     if(!databaseadaptorGroup[i])
         ajDebug("ensDatabaseadaptorGroupToChar encountered an "

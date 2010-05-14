@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1291,7 +1291,7 @@ AjBool ensMapperpairSortByTargetStartAscending(AjPList mps)
 **
 ** Default constructor for an Ensembl Mapper Result.
 **
-** @param [r] type [EnsEMapperunitType] Type
+** @param [r] type [EnsEMapperresultType] Type
 ** @param [r] oid [ajuint] Ensembl Object identifier
 ** @param [r] start [ajint] Start
 ** @param [r] end [ajint] End
@@ -1305,7 +1305,7 @@ AjBool ensMapperpairSortByTargetStartAscending(AjPList mps)
 ** @@
 ******************************************************************************/
 
-EnsPMapperresult ensMapperresultNew(EnsEMapperunitType type,
+EnsPMapperresult ensMapperresultNew(EnsEMapperresultType type,
                                     ajuint oid,
                                     ajint start,
                                     ajint end,
@@ -1510,7 +1510,7 @@ void ensMapperresultDel(EnsPMapperresult *Pmr)
 **
 ** @argrule * mr [const EnsPMapperresult] Ensembl Mapper Result
 **
-** @valrule Type [EnsEMapperunitType] Type
+** @valrule Type [EnsEMapperresultType] Type
 ** @valrule ObjectIdentifier [ajuint] Ensembl Object identifier
 ** @valrule Start [ajint] Start
 ** @valrule End [ajint] End
@@ -1532,11 +1532,11 @@ void ensMapperresultDel(EnsPMapperresult *Pmr)
 **
 ** @param [r] mr [const EnsPMapperresult] Ensembl Mapper Result
 **
-** @return [EnsEMapperunitType] Type or ensEMapperresultNULL
+** @return [EnsEMapperresultType] Type or ensEMapperresultNULL
 ** @@
 ******************************************************************************/
 
-EnsEMapperunitType ensMapperresultGetType(const EnsPMapperresult mr)
+EnsEMapperresultType ensMapperresultGetType(const EnsPMapperresult mr)
 {
     if(!mr)
         return ensEMapperresultNULL;

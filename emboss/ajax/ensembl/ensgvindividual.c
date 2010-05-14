@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.6 $
+** @version $Revision: 1.7 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -824,7 +824,7 @@ EnsEGvindividualGender ensGvindividualGenderFromStr(const AjPStr gender)
 
     EnsEGvindividualGender egender = ensEGvindividualGenderNULL;
 
-    for(i = 1; gvindividualGender[i]; i++)
+    for(i = ensEGvindividualGenderMale; gvindividualGender[i]; i++)
         if(ajStrMatchC(gender, gvindividualGender[i]))
             egender = i;
 
@@ -856,7 +856,7 @@ EnsEGvindividualType ensGvindividualTypeFromStr(const AjPStr type)
 
     EnsEGvindividualType etype = ensEGvindividualTypeNULL;
 
-    for(i = 1; gvindividualType[i]; i++)
+    for(i = ensEGvindividualTypeFullyInbred; gvindividualType[i]; i++)
         if(ajStrMatchC(type, gvindividualType[i]))
             etype = i;
 
@@ -890,7 +890,9 @@ const char* ensGvindividualGenderToChar(EnsEGvindividualGender gender)
     if(!gender)
         return NULL;
 
-    for(i = 1; gvindividualGender[i] && (i < gender); i++);
+    for(i = ensEGvindividualGenderMale;
+        gvindividualGender[i] && (i < gender);
+        i++);
 
     if(!gvindividualGender[i])
         ajDebug("ensGvindividualGenderToChar encountered an "
@@ -922,7 +924,9 @@ const char* ensGvindividualTypeToChar(EnsEGvindividualType type)
     if(!type)
         return NULL;
 
-    for(i = 1; gvindividualType[i] && (i < type); i++);
+    for(i = ensEGvindividualTypeFullyInbred;
+        gvindividualType[i] && (i < type);
+        i++);
 
     if(!gvindividualType[i])
         ajDebug("ensGvindividualTypeToChar encountered an "

@@ -99,13 +99,13 @@ typedef struct EnsSMapperpair
 **
 ******************************************************************************/
 
-enum EnsEMapperresultType
+typedef enum EnsOMapperresultType
 {
     ensEMapperresultNULL,
     ensEMapperresultCoordinate,
     ensEMapperresultGap,
     ensEMapperresultInDel
-};
+} EnsEMapperresultType;
 
 
 
@@ -122,7 +122,7 @@ enum EnsEMapperresultType
 ** @alias EnsOMapperresult
 **
 ** @attr Coordsystem [EnsPCoordsystem] Ensembl Coordinate System
-** @attr Type [EnsEMapperunitType] Result type
+** @attr Type [EnsEMapperresultType] Result type
 ** @cc Bio::EnsEMBL::Mapper::Coordinate
 ** @cc Bio::EnsEMBL::Mapper::IndelCoordinate
 ** @attr ObjectIdentifier [ajuint] Ensembl Object identifier
@@ -151,7 +151,7 @@ enum EnsEMapperresultType
 typedef struct EnsSMapperresult
 {
     EnsPCoordsystem Coordsystem;
-    EnsEMapperunitType Type;
+    EnsEMapperresultType Type;
     ajuint ObjectIdentifier;
     ajint Start;
     ajint End;
@@ -348,7 +348,7 @@ AjBool ensMapperpairSortByTargetStartAscending(AjPList mps);
 
 /* Ensembl Mapper Result */
 
-EnsPMapperresult ensMapperresultNew(EnsEMapperunitType type,
+EnsPMapperresult ensMapperresultNew(EnsEMapperresultType type,
                                     ajuint oid,
                                     ajint start,
                                     ajint end,
@@ -364,7 +364,7 @@ EnsPMapperresult ensMapperresultNewRef(EnsPMapperresult mr);
 
 void ensMapperresultDel(EnsPMapperresult* Pmr);
 
-EnsEMapperunitType ensMapperresultGetType(const EnsPMapperresult mr);
+EnsEMapperresultType ensMapperresultGetType(const EnsPMapperresult mr);
 
 ajuint ensMapperresultGetObjectIdentifier(const EnsPMapperresult mr);
 
