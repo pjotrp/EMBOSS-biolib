@@ -73,6 +73,8 @@ extern "C"
 #include "ajvector.h"
 #include "ajdom.h"
 #include "ajsql.h"
+#include "ajobo.h"
+#include "ajtax.h"
     
 #endif
 

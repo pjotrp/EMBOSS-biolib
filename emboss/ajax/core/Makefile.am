@@ -22,13 +22,13 @@ ajdan.c ajdmx.c ajdom.c ajdomain.c \
 ajexcept.c \
 ajfeat.c ajfile.c ajfiledata.c ajfileio.c ajfmt.c \
 ajindex.c ajjava.c ajlist.c \
-ajmath.c ajmatrices.c ajmem.c ajmess.c ajnam.c \
-ajnexus.c \
+ajmath.c ajmatrices.c ajmem.c ajmess.c \
+ajnam.c ajnexus.c ajobo.c \
 ajpat.c ajpdb.c ajpdbio.c ajphylo.c \
 ajrange.c ajreg.c ajreport.c \
 ajseq.c ajseqabi.c ajseqread.c ajseqtype.c ajseqwrite.c \
 ajsort.c ajsql.c ajstr.c ajsys.c \
-ajtable.c ajtime.c ajtranslate.c ajtree.c \
+ajtable.c ajtax.c ajtime.c ajtranslate.c ajtree.c \
 ajutil.c ajvector.c
 
 # samtoolsbam.c samtoolsbam_aux.c samtoolsbam_import.c samtoolsbgzf.c \
@@ -40,12 +40,13 @@ ajbase.h ajcall.h ajcod.h \
 ajdan.h ajdmx.h ajdom.h ajdomain.h ajexcept.h \
 ajfeat.h ajfeatdata.h ajfile.h ajfiledata.h ajfileio.h ajfmt.h \
 ajindex.h ajjava.h ajlist.h \
-ajmath.h ajmatrices.h ajmem.h ajmess.h ajnam.h ajnexus.h \
+ajmath.h ajmatrices.h ajmem.h ajmess.h \
+ajnam.h ajnexus.h ajobo.h \
 ajpat.h ajpdb.h ajpdbio.h ajphylo.h \
 ajrange.h ajreg.h ajreport.h \
 ajseq.h ajseqabi.h ajseqdata.h ajseqread.h ajseqtype.h ajseqwrite.h \
 ajsort.h ajsql.h ajstr.h ajsys.h \
-ajtable.h ajtime.h ajtranslate.h ajtree.h ajutil.h ajvector.h
+ajtable.h ajtax.h ajtime.h ajtranslate.h ajtree.h ajutil.h ajvector.h
 
 #samtoolsbam.h samtoolsbgzf.h samtoolskhash.h samtoolskseq.h \
 #samtoolskstring.h samtoolssam_header.h
