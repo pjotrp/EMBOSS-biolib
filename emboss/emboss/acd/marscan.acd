@@ -2,7 +2,7 @@ application: marscan [
   documentation: "Finds matrix/scaffold recognition (MRS) signatures
                   in DNA sequences"
   groups: "Nucleic:Gene finding, Nucleic:Motifs"
-  relations: "/edam/topic/0000438 Transcription regulatory sequence prediction"
+  relations: "/edam/topic/0000110 Transcription regulatory sequence analysis"
   relations: "/edam/operation/0000444 Matrix/scaffold attachment site prediction"
 ]
 
