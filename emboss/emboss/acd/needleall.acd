@@ -4,7 +4,7 @@ application: needleall [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
-  relations: "/edam/topic/ Pairwise sequence alignment"
+  relations: "/edam/topic/0000185 Pairwise sequence alignment"
   relations: "/edam/operation/0000494 Global pairwise sequence alignment"
 ]
 
