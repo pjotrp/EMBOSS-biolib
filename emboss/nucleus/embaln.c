@@ -324,8 +324,8 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
         }
         else
         {
-            testog = m[cursorp] - (i==0?endgapopen:gapopen);
-            testeg = iy[cursorp] - endgapextend;
+            testog = m[cursorp] - gapopen;
+            testeg = iy[cursorp] - gapextend;
 
             if(testog >= testeg)
                 iy[cursor] = testog;
@@ -359,8 +359,8 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
         }
         else
         {
-            testog = m[cursorp] - (j==0?endgapopen:gapopen);
-            testeg = ix[cursorp] - endgapextend;
+            testog = m[cursorp] - gapopen;
+            testeg = ix[cursorp] - gapextend;
 
             if(testog >= testeg)
                 ix[cursor] = testog;
@@ -452,20 +452,20 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
 	}
 	else if(mp >= ix[cursor] && mp>= iy[cursor])
 	{
-	    compass[cursor] = 0;
 
-	    if(mp == ix[cursor] && cursorp == 1)
+	    if(cursorp == 1 && mp == ix[cursor])
 	    {
 		compass[cursor] = 1;
 		xpos--;
 	    }
-	    else if(mp == iy[cursor] && cursorp== 2)
+	    else if(cursorp == 2 && mp == iy[cursor])
 	    {
 		compass[cursor] = 2;
 		ypos--;
 	    }
 	    else
 	    {
+		compass[cursor] = 0;
 		if (ypos>0)
 		    ypos--;
 		if (xpos>0)
@@ -482,6 +482,10 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
 	{
 	    compass[cursor] = 2;
 	    ypos--;
+	}
+	else
+	{
+	    ajFatal("something is seriously wrong in the traceback algorithm");
 	}
 	cursorp = compass[cursor];
     }
