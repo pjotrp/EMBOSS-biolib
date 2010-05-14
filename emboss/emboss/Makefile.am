@@ -30,7 +30,7 @@ seqretset seqretsingle seqrettype sqltest \
 testplot treetypedisplay
 
 bin_PROGRAMS = aaindexextract abiview \
-acdc acdpretty acdtable acdtrace acdvalid \
+acdc acdgalaxy acdpretty acdtable acdtrace acdvalid \
 aligncopy aligncopypair antigenic \
 backtranambig backtranseq banana biosed btwisted \
 cai chaos charge checktrans chips \
@@ -89,6 +89,7 @@ INCLUDES = -I$(top_srcdir)/nucleus -I$(top_srcdir)/ajax/pcre \
 aaindexextract_SOURCES = aaindexextract.c
 abiview_SOURCES = abiview.c
 acdc_SOURCES = acdc.c
+acdgalaxy_SOURCES = acdgalaxy.c
 acdpretty_SOURCES = acdpretty.c
 acdtable_SOURCES = acdtable.c
 acdtrace_SOURCES = acdtrace.c
