@@ -1,4 +1,26 @@
 Version 6.3.0 15-Jul-2010
+	The acdvalid application now reads the EDAM (EMBRACE Data and
+	Methods) ontology to validate EDAM references in relations
+	attributes. All applications are expected to have at least one
+	topic and at least one operation term. Other qualifiers can have
+	any number of data terms.
+
+	New source file ajtax.c provides parsing and validation for the
+	NCBI taxonomy in its .dmp file form. The parser reads all taxonomy
+	data into memory. This takes up too much space for practical use,
+	so is only intended for subsets. The parser will be reused to
+	develop indexing applications to provide fast lookup of taxon
+	identifiers.
+
+	New source file ajobo.c provides parsing and validation for OBO
+	format ontology files. The parser includes strict warnings
+	according to the OBO format documentation, but these can be turned
+	off as in many cases the OBO foundry ontologies do not follow the
+	exact standard. Examples include terms not in sorted order, and
+	Typedef stanzzas following Term stanzas, and dbxrefs to
+	non-existent terms (e.g. GO:ma in the gene ontology to cite a
+	curator).
+
 	Support for PDF and SVG graphic file output has been added. SVG
 	requires no additional libraries. PDF support requires the libhpdf
 	library (which, somewhat confusingly, is provided by the libharu
