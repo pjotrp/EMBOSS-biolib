@@ -3,7 +3,7 @@ application: showseq [
   groups: "Display, Nucleic:Translation, Nucleic:Restriction"
   relations: "/edam/topic/0000108 Transcription and translation"
   relations: "/edam/operation/0000371 DNA translation"
-  relations: "/edam/operation/0000575 Restriction site visualisation"
+  relations: "/edam/operation/0000575 Restriction site visualization"
   relations: "/edam/operation/0000564 Sequence visualisation"
 ]
 

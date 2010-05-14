@@ -4,7 +4,7 @@ application: remap [
   groups: "Display, Nucleic:Restriction, Nucleic:Translation"
   relations: "/edam/topic/0000100 Nucleic acid restriction"
   relations: "/edam/operation/0000431 Restriction site identification"
-  relations: "/edam/operation/0000575 Restriction site visualisation"
+  relations: "/edam/operation/0000575 Restriction site visualization"
 ]
 
 section: input [
