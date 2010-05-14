@@ -15,7 +15,8 @@ section: input [
     parameter: "Y"
     type: "protein"
     relations: "/edam/data/0001219 Pure protein sequence"
-    relations: "/edam/data/0002173 Sequence set (stream)" 
+    relations: "/edam/data/0000849 Sequence record" 
+    relations: "/edam/data/0002178 1 or more" 
   ]
 
   regexp: pattern [

@@ -19,7 +19,8 @@ section: input [
     features: "Y"
     type: "gapany"
     relations: "/edam/data/0000848 Sequence" 
-    relations: "/edam/data/0002173 Sequence set (stream)" 
+    relations: "/edam/data/0000849 Sequence record" 
+    relations: "/edam/data/0002178 1 or more" 
   ]
 
 endsection: input
@@ -33,7 +34,8 @@ section: output [
     parameter: "Y"
     features: "Y"
     relations: "/edam/data/0000848 Sequence" 
-    relations: "/edam/data/0000850 Sequence set"
+    relations: "/edam/data/0000849 Sequence record" 
+    relations: "/edam/data/0002178 1 or more"
   ]
 
 endsection: output

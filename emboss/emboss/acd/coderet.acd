@@ -18,7 +18,8 @@ section: input [
     type: "DNA"
     features: "Y"
     relations: "/edam/data/0001215 Pure DNA sequence"
-    relations: "/edam/data/0002173 Sequence set (stream)" 
+    relations: "/edam/data/0000849 Sequence record" 
+    relations: "/edam/data/0002178 1 or more" 
   ]
 
 endsection: input
@@ -45,7 +46,8 @@ section: output [
     nullok: "Y"
     knowntype: "cds sequence"
     relations:  "/edam/data/0001210 Pure nucleotide sequence"
-    relations: "/edam/data/0000850 Sequence set" 
+    relations: "/edam/data/0000849 Sequence record" 
+    relations: "/edam/data/0002178 1 or more" 
   ]
 
   seqoutall: mrnaoutseq [
@@ -57,7 +59,8 @@ section: output [
     nullok: "Y"
     knowntype: "mrna sequence"
     relations:  "/edam/data/0001213 RNA sequence"                                   
-    relations: "/edam/data/0000850 Sequence set" 
+    relations: "/edam/data/0000849 Sequence record" 
+    relations: "/edam/data/0002178 1 or more" 
   ]
 
   seqoutall: translationoutseq [
@@ -69,7 +72,8 @@ section: output [
     nullok: "Y"
     knowntype: "translated cds sequence"
     relations:  "/edam/data/0001208 Protein sequence"                               
-    relations: "/edam/data/0000850 Sequence set" 
+    relations: "/edam/data/0000849 Sequence record" 
+    relations: "/edam/data/0002178 1 or more" 
   ]
 
   seqoutall: restoutseq [
@@ -81,7 +85,8 @@ section: output [
     nullok: "Y"
     knowntype: "non coding sequence"
     relations:  "/edam/data/0001210 Pure nucleotide sequence"
-    relations: "/edam/data/0000850 Sequence set" 
+    relations: "/edam/data/0000849 Sequence record" 
+    relations: "/edam/data/0002178 1 or more" 
   ]
 
 endsection: output

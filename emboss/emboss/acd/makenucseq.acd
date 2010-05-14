@@ -78,7 +78,8 @@ section: output [
     parameter: "Y"
     type: "nucleotide"
     name: "makeseq"
-    relations: "/edam/data/0000850 Sequence set"
+    relations: "/edam/data/0000849 Sequence record" 
+    relations: "/edam/data/0002178 1 or more"
     relations: "/edam/data/0001210 Pure nucleotide sequence"                          
 
   ]

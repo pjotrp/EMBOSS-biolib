@@ -94,7 +94,8 @@ section: output [
     type: "stopprotein"
     help: "ORF sequence output"
     relations: "/edam/data/0001208 Protein sequence"
-    relations: "/edam/data/0000850 Sequence set"                             
+    relations: "/edam/data/0000849 Sequence record" 
+    relations: "/edam/data/0002178 1 or more"                             
   ]
 
   boolean: reverse [

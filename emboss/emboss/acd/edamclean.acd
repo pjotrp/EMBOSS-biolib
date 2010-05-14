@@ -20,7 +20,7 @@ section: input
   [
     parameter: "Y"
     information: "EDAM input file"
-    default: "/homes/jison/Ontologies/EDAM_beta02.obo"
+    default: "/homes/jison/Ontologies/EDAM_beta03.obo"
   ]
 
 endsection: input
@@ -78,6 +78,7 @@ section: output
     parameter: "Y"
     information: "edamclean log file"
     relations:  "/edam/data/0001678 Tool log"
+    default: "EDAM_out.log"
   ]
 
 endsection: output
