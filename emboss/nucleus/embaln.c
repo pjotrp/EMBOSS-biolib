@@ -380,14 +380,16 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
         ypos = 1;
         bconvcode = ajSeqcvtGetCodeK(cvt, *++b);
 
+        /* coordinates of the cells being processed */
+        cursorp = xpos-1;
+        cursor = xpos++;
+
         while (ypos < lena)
         {
             /* get match for current xpos/ypos */
-            match = sub[ajSeqcvtGetCodeK(cvt, a[ypos])][bconvcode];
+            match = sub[ajSeqcvtGetCodeK(cvt, a[ypos++])][bconvcode];
 
-            /* coordinates of the cells being processed */
-            cursorp = (ypos-1) * lenb + xpos-1;
-            cursor = ypos * lenb + xpos;
+            cursor += lenb;
             
             mp = m[cursorp];
             ixp = ix[cursorp];
@@ -400,8 +402,16 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
             else
                 m[cursor] = iyp+match;
 
-            testog = m[++cursorp] - gapopen;
-            testeg = iy[cursorp] - gapextend;
+            if(endweight && xpos==lenb)
+            {
+        	testog = m[++cursorp] - endgapopen;
+        	testeg = iy[cursorp] - endgapextend;
+            }
+            else
+            {
+        	testog = m[++cursorp] - gapopen;
+        	testeg = iy[cursorp] - gapextend;
+            }
             
             if(testog > testeg)
                 iy[cursor] = testog;
@@ -410,17 +420,23 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
 
             cursorp += lenb;
             
-            testog = m[--cursorp] - gapopen;
-            testeg = ix[cursorp] - gapextend;
+            if(endweight && ypos==lena)
+            {
+        	testog = m[--cursorp] - endgapopen;
+        	testeg = ix[cursorp] - endgapextend;
+            }
+            else
+            {
+        	testog = m[--cursorp] - gapopen;
+        	testeg = ix[cursorp] - gapextend;
+            }
             
             if(testog > testeg )
                 ix[cursor] = testog;
             else
         	ix[cursor] = testeg;
 
-            ++ypos;
         }
-        ++xpos;
     }
 
     score = embAlignGetScoreNWMatrix(ix, iy, m, lena, lenb,
@@ -440,12 +456,12 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
 	cursor = ypos * lenb + xpos;
 	mp = m[cursor];
 
-	if(gapextend == (ix[cursor]-ix[cursor+1]) && cursorp == 1)
+	if(cursorp == 1 && gapextend == (ix[cursor]-ix[cursor+1]))
 	{
 	    compass[cursor] = 1;
 	    xpos--;
 	}
-	else if(gapextend == (iy[cursor]-iy[cursor+lenb]) && cursorp== 2)
+	else if(cursorp== 2 && gapextend == (iy[cursor]-iy[cursor+lenb]))
 	{
 	    compass[cursor] = 2;
 	    ypos--;
@@ -3323,13 +3339,12 @@ static void printPathMatrix(const float* path, const ajint* compass,
     char compasschar;
     ajuint i;
     ajuint j;
-    AjPStr outstr = NULL;
 
-    ajDebug("path matrix:\n%S\n", outstr);
+    ajDebug("path matrix:\n");
 
     for(i = 0; i < lena; i++)
     {
-        ajFmtPrintS(&outstr, "%6d ", i);
+        ajDebug("%6d ", i);
 
         for(j = 0; j < lenb; j++)
         {
@@ -3340,20 +3355,19 @@ static void printPathMatrix(const float* path, const ajint* compass,
             else
                 compasschar = ' ';
 
-            ajFmtPrintAppS(&outstr, "%6.2f%c ", path[i * lenb + j],
+            ajDebug("%6.2f%c ", path[i * lenb + j],
                     compasschar);
         }
 
-        ajDebug("%S\n", outstr);
+        ajDebug("\n");
     }
 
-    ajFmtPrintS(&outstr, "       ");
+    ajDebug("       ");
 
     for (j = 0; j < lenb; ++j)
-        ajFmtPrintAppS(&outstr, "%6d  ", j);
+        ajDebug("%6d  ", j);
 
-    ajDebug("%S\n", outstr);
-    ajStrDel(&outstr);
+    ajDebug("\n");
 
     return;
 }
