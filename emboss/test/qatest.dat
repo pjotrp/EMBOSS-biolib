@@ -20987,6 +20987,36 @@ FP /^asis +1 MV---L /
 FC = 41
 //
 
+ID needle-endweight6
+AP needle
+CL asis:MGQMQIV  asis:IVPPLKP stdout -aformat simple -endweight -auto
+CL -endopen 0 -endextend 0
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +2\/12/
+FP /^# Score: +8\.0/
+FP /^asis +1 -----IVPPLKP /
+FC = 41
+//
+
+ID needle-endweight7
+AP needle
+CL asis:IVPPLKP  asis:MGQMQIV stdout -aformat simple -endweight -auto
+CL -endopen 0 -endextend 0
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +2\/12/
+FP /^# Score: +8\.0/
+FP /^asis +1 MGQMQIV----- /
+FC = 41
+//
+
 ID needle-traceback1
 AP needle
 CL -auto -stdout -aformat simple -gapextend 1.0
