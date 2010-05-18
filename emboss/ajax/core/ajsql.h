@@ -38,9 +38,9 @@ extern "C"
 
 typedef struct AjSVoid
 {
-  ajuint Res;
-  ajuint Len;
-  void **Ptr;
+    ajuint Res;
+    ajuint Len;
+    void **Ptr;
 } AjOVoid;
 #define AjPVoid AjOVoid*
 
@@ -215,6 +215,8 @@ AjPSqlconnection ajSqlconnectionNewRef(AjPSqlconnection sqlc);
 void ajSqlconnectionDel(AjPSqlconnection* Psqlc);
 
 AjESqlClient ajSqlconnectionGetClient(const AjPSqlconnection sqlc);
+
+ajuint ajSqlconnectionGetUse(const AjPSqlconnection sqlc);
 
 AjBool ajSqlconnectionTrace(const AjPSqlconnection sqlc, ajuint level);
 
