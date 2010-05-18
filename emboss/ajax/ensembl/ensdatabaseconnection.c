@@ -3,8 +3,8 @@
 **
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
-** @modified $Date: 2010/05/13 20:39:08 $ by $Author: mks $
-** @version $Revision: 1.8 $
+** @modified $Date: 2010/05/18 21:49:15 $ by $Author: mks $
+** @version $Revision: 1.9 $
 **
 ** This library is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU Library General Public
@@ -530,6 +530,33 @@ AjPStr ensDatabaseconnectionGetDatabaseName(const EnsPDatabaseconnection dbc)
 
 
 
+/* @func ensDatabaseconnectionGetAutoDisconnect *******************************
+**
+** Get the auto disconnect element of an Ensembl Database Connection.
+**
+** @cc Bio::EnsEMBL::DBSQL::DBConnection::disconnect_when_inactive
+** @param [r] dbc [const EnsPDatabaseconnection] Ensembl Database Connection
+**
+** @return [AjBool] Auto disconnect flag
+**                  ajTrue: The Ensembl Database Connection will automatically
+**                          disconnect, i.e. delete the AJAX SQL Connection,
+**                          if no AJAX SQL Statement is active.
+**                  ajFalse: No automatic disconnects will occur.
+** @@
+******************************************************************************/
+
+AjBool ensDatabaseconnectionGetAutoDisconnect(
+    const EnsPDatabaseconnection dbc)
+{
+    if(!dbc)
+        return ajFalse;
+
+    return dbc->AutoDisconnect;
+}
+
+
+
+
 /* @func ensDatabaseconnectionGetSqlClientType ********************************
 **
 ** Get the SQL client type element of an Ensembl Database Connection.
@@ -548,6 +575,56 @@ AjESqlClient ensDatabaseconnectionGetSqlClientType(
         return ajESqlClientNULL;
 
     return dbc->SqlClientType;
+}
+
+
+
+
+/* @section element assignment ************************************************
+**
+** Functions for assigning elements of an Ensembl Database Connection object.
+**
+** @fdata [EnsPDatabaseconnection]
+** @fnote None
+**
+** @nam3rule Set Set one element of an Ensembl Database Connection
+** @nam4rule SetAutoDisconnect Set the automatic disconnect flag
+**
+** @argrule * dbc [EnsPDatabaseconnection] Ensembl Database Connection object
+**
+** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
+**
+** @fcategory modify
+******************************************************************************/
+
+
+
+
+/* @func ensDatabaseconnectionSetAutoDisconnect *******************************
+**
+** Set the auto disconnect element of an Ensembl Database Connection.
+**
+** @cc Bio::EnsEMBL::DBSQL::DBConnection::disconnect_when_inactive
+** @param [u] dbc [EnsPDatabaseconnection] Ensembl Database Connection
+** @param [AjBool] Auto disconnect flag
+**                  ajTrue: The Ensembl Database Connection will automatically
+**                          disconnect, i.e. delete the AJAX SQL Connection,
+**                          if no AJAX SQL Statement is active.
+**                  ajFalse: No automatic disconnects will occur.
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensDatabaseconnectionSetAutoDisconnect(EnsPDatabaseconnection dbc,
+                                              AjBool autodisconnect)
+{
+    if(!dbc)
+        return ajFalse;
+
+    dbc->AutoDisconnect = autodisconnect;
+
+    return ajTrue;
 }
 
 
@@ -666,6 +743,9 @@ AjBool ensDatabaseconnectionConnect(EnsPDatabaseconnection dbc)
 **
 ** Disconnect an Ensembl Database Connection from its SQL database.
 **
+** This function will only disconnect, if no other AJAX SQL Statement holds a
+** reference to the AJAX SQL Connection, i.e. no AJAX SQL Statement is active.
+**
 ** @cc Bio::EnsEMBL::DBSQL::DBConnection::disconnect_if_idle
 ** @param [u] Pdbc [EnsPDatabaseconnection] Ensembl Database Connection
 **
@@ -675,9 +755,6 @@ AjBool ensDatabaseconnectionConnect(EnsPDatabaseconnection dbc)
 
 void ensDatabaseconnectionDisconnect(EnsPDatabaseconnection dbc)
 {
-    if(!dbc)
-        return;
-
     if(ajDebugTest("ensDatabaseconnectionDisconnect"))
     {
         ajDebug("ensDatabaseconnectionDisconnect\n"
@@ -687,7 +764,19 @@ void ensDatabaseconnectionDisconnect(EnsPDatabaseconnection dbc)
         ensDatabaseconnectionTrace(dbc, 1);
     }
 
-    ajSqlconnectionDel(&dbc->Sqlconnection);
+    if(!dbc)
+        return;
+
+    if(!dbc->Sqlconnection)
+        return;
+
+    /*
+    ** Disconnect if no other AJAX SQL Statement has a reference to the
+    ** AJAX SQL Connection, except this Ensembl Database Connection object.
+    */
+
+    if(ajSqlconnectionGetUse(dbc->Sqlconnection) == 1)
+        ajSqlconnectionDel(&dbc->Sqlconnection);
 
     return;
 }
@@ -739,9 +828,6 @@ AjPSqlstatement ensDatabaseconnectionSqlstatementNew(
     EnsPDatabaseconnection dbc,
     const AjPStr statement)
 {
-    if(!dbc)
-        return NULL;
-
     if(ajDebugTest("ensDatabaseconnectionSqlstatementNew"))
     {
         ajDebug("ensDatabaseconnectionSqlstatementNew\n"
@@ -753,11 +839,56 @@ AjPSqlstatement ensDatabaseconnectionSqlstatementNew(
         ensDatabaseconnectionTrace(dbc, 1);
     }
 
+    if(!dbc)
+        return NULL;
+
     if(!ensDatabaseconnectionIsConnected(dbc))
         if(!ensDatabaseconnectionConnect(dbc))
             return NULL;
 
     return ajSqlstatementNewRun(dbc->Sqlconnection, statement);
+}
+
+
+
+
+/* @func ensDatabaseconnectionSqlstatementDel *********************************
+**
+** Delete an AJAX SQL Statement associated with an
+** Ensembl Database Connection.
+**
+** @param [u] dbc [EnsPDatabaseconnection] Ensembl Database Connection
+** @param [d] Psqls [AjPSqlstatement*] AJAX SQL Statement address
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensDatabaseconnectionSqlstatementDel(
+    EnsPDatabaseconnection dbc,
+    AjPSqlstatement *Psqls)
+{
+    if(!dbc)
+        return ajFalse;
+
+    if(!Psqls)
+        return ajFalse;
+
+    if(ajDebugTest("ensDatabaseconnectionSqlstatementDel"))
+        ajDebug("ensDatabaseconnectionSqlstatementDel\n"
+                "  dbc %p\n"
+                "  Psqls %p\n",
+                dbc,
+                Psqls);
+
+    ajSqlstatementDel(Psqls);
+
+    *Psqls = NULL;
+
+    if(dbc->AutoDisconnect)
+        ensDatabaseconnectionDisconnect(dbc);
+
+    return ajTrue;
 }
 
 
@@ -782,6 +913,9 @@ AjBool ensDatabaseconnectionEscapeC(EnsPDatabaseconnection dbc,
                                     const AjPStr str)
 {
     if(!dbc)
+        return ajFalse;
+
+    if(!Ptxt)
         return ajFalse;
 
     if(!str)
@@ -829,6 +963,9 @@ AjBool ensDatabaseconnectionEscapeS(EnsPDatabaseconnection dbc,
                                     const AjPStr str)
 {
     if(!dbc)
+        return ajFalse;
+
+    if(!Pstr)
         return ajFalse;
 
     if(!str)
