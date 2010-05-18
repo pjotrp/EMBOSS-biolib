@@ -30,13 +30,13 @@
 #ifdef HAVE_MYSQL
 #ifdef WIN32
 #include <windows.h>
-#endif
+#endif /* WIN32 */
 #include "mysql.h"
-#endif
+#endif /* HAVE_MYSQL */
 
 #ifdef HAVE_POSTGRESQL
 #include "libpq-fe.h"
-#endif
+#endif /* HAVE_POSTGRESQL */
 
 
 
@@ -45,11 +45,49 @@
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-static ajlong sqlConnectionTotalCount = 0;
-static ajlong sqlConnectionFreeCount  = 0;
-static ajlong sqlStatementTotalCount  = 0;
-static ajlong sqlStatementFreeCount   = 0;
+#ifdef AJ_SAVESTATS
 
+static ajlong sqlconnectionTotalCount = 0;
+static ajlong sqlconnectionFreeCount  = 0;
+static ajlong sqlstatementTotalCount  = 0;
+static ajlong sqlstatementFreeCount   = 0;
+static ajlong sqlstatementErrorCount  = 0;
+
+#endif /* AJ_SAVESTATS */
+
+#ifdef HAVE_MYSQL
+
+static AjPSqlconnection sqlconnectionMysqlNewData(
+    const AjPStr user,
+    const AjPStr password,
+    const AjPStr host,
+    const AjPStr port,
+    const AjPStr socketfile,
+    const AjPStr database,
+    AjBool debug);
+
+static AjPSqlstatement sqlstatementMysqlNewRun(AjPSqlconnection sqlc,
+                                               const AjPStr statement,
+                                               AjBool debug);
+
+#endif /* HAVE_MYSQL */
+
+#ifdef HAVE_POSTGRESQL
+
+static AjPSqlconnection sqlconnectionPostgresqlNewData(
+    const AjPStr user,
+    const AjPStr password,
+    const AjPStr host,
+    const AjPStr port,
+    const AjPStr socketfile,
+    const AjPStr database,
+    AjBool debug);
+
+AjPSqlstatement sqlstatementPostgresqlNewRun(AjPSqlconnection sqlc,
+                                             const AjPstr statement,
+                                             AjBool debug);
+
+#endif /* HAVE_POSTGRESQL */
 
 static AjBool arrVoidResize(AjPVoid *thys, ajuint size);
 
@@ -101,34 +139,24 @@ static AjBool arrVoidResize(AjPVoid *thys, ajuint size);
 AjBool ajSqlInit(void)
 {
 #ifdef HAVE_MYSQL
-    
+
     int argc = 0;
-    
+
     char **argv   = NULL;
     char **groups = NULL;
-    
+
     if(mysql_library_init(argc, argv, groups))
     {
         ajDebug("ajSqlInit MySQL initialisation failed.\n");
-	
-	return ajFalse;
+
+        return ajFalse;
     }
     else
         ajDebug("ajSqlInit MySQL client library %s\n",
                 mysql_get_client_info());
-#else
-    ajDebug("ajSqlInit EMBOSS AJAX library built without "
-            "MySQL client support.\n");
-    
-#endif
-    
-#ifdef HAVE_POSTGRESQL
-    /* PostgreSQL does not require library initialisation. */
-#else
-    ajDebug("ajSqlInit EMBOSS AJAX library built without "
-            "PostgreSQL client support.\n");
-#endif
-    
+
+#endif /* HAVE_MYSQL */
+
     return ajTrue;
 }
 
@@ -160,21 +188,26 @@ AjBool ajSqlInit(void)
 void ajSqlExit(void)
 {
 #ifdef HAVE_MYSQL
+
     mysql_library_end();
-#endif
-    
-#ifdef HAVE_POSTGRESQL
-    /* PostgreSQL does not require library finalisation. */
-#endif
-    
-    ajDebug("SQL Connection usage: %Ld opened, %Ld closed, %Ld in use\n",
-            sqlConnectionTotalCount, sqlConnectionFreeCount,
-            sqlConnectionTotalCount - sqlConnectionFreeCount);
-    
-    ajDebug("SQL Statement usage: %Ld opened, %Ld closed, %Ld in use\n",
-            sqlStatementTotalCount, sqlStatementFreeCount,
-            sqlStatementTotalCount - sqlStatementFreeCount);
-    
+
+#endif /* HAVE_MYSQL */
+
+#ifdef AJ_SAVESTATS
+
+    ajDebug("SQL Connection usage: "
+            "%Ld opened, %Ld closed, %Ld in use\n",
+            sqlconnectionTotalCount,  sqlconnectionFreeCount,
+            sqlconnectionTotalCount - sqlconnectionFreeCount);
+
+    ajDebug("SQL Statement usage: "
+            "%Ld opened, %Ld closed, %Ld in use, %Ld failed\n",
+            sqlstatementTotalCount,  sqlstatementFreeCount,
+            sqlstatementTotalCount - sqlstatementFreeCount,
+            sqlstatementErrorCount);
+
+#endif /* AJ_SAVESTATS */
+
     return;
 }
 
@@ -188,6 +221,297 @@ void ajSqlExit(void)
 ** @nam2rule Sqlconnection Functions for manipulating AJAX SQL Connections.
 **
 ******************************************************************************/
+
+
+
+
+#ifdef HAVE_MYSQL
+
+/* @funcstatic sqlconnectionMysqlNewData **************************************
+**
+** MySQL client library-specific AJAX SQL Connection constructor, which also
+** constructs a client library-specific (MYSQL *) connection object.
+**
+** Configuration options will be read from the [client] and [EMBOSS] groups
+** of the default my.cnf options file.
+**
+** A connection to a MySQL server is established.
+**
+** @param [r] user [const AjPStr] SQL account user name
+** @param [r] password [const AjPStr] SQL account password
+** @param [r] host [const AjPStr] SQL server hostname or IP address
+** @param [r] port [const AjPStr] SQL server port number
+** @param [r] socketfile [const AjPStr] SQL server UNIX socket file name
+** @param [r] database [const AjPStr] SQL database name
+** @param [r] debug [AjBool] Debug mode
+**
+** @return [AjPSqlconnection] AJAX SQL Connection or NULL
+** @@
+******************************************************************************/
+
+static AjPSqlconnection sqlconnectionMysqlNewData(
+    const AjPStr user,
+    const AjPStr password,
+    const AjPStr host,
+    const AjPStr port,
+    const AjPStr socketfile,
+    const AjPStr database,
+    AjBool debug)
+{
+    unsigned long clientflag = 0;
+
+    ajuint portnumber = 0;
+
+    AjPSqlconnection sqlc = NULL;
+
+    MYSQL *Pmysql = NULL;
+
+    debug |= ajDebugTest("sqlconnectionMysqlNewData");
+
+    if(!ajStrToUint(port, &portnumber))
+    {
+        ajWarn("sqlconnectionMysqlNewData could not parse port '%S' into an "
+               "AJAX unsigned integer value.", port);
+
+        return NULL;
+    }
+
+    Pmysql = mysql_init(Pmysql);
+
+    if(Pmysql == NULL)
+    {
+        ajDebug("sqlconnectionMysqlNewData MySQL connection object "
+                "initialisation via mysql_init failed.\n");
+
+        return NULL;
+    }
+
+    /*
+    ** Read options from the [client] and [EMBOSS] groups of the
+    ** default my.cnf options file.
+    */
+
+    mysql_options(Pmysql, MYSQL_READ_DEFAULT_GROUP, "EMBOSS");
+
+    if(mysql_real_connect(Pmysql,
+                          ajStrGetPtr(host),
+                          ajStrGetPtr(user),
+                          ajStrGetPtr(password),
+                          ajStrGetPtr(database),
+                          (unsigned int) portnumber,
+                          ajStrGetPtr(socketfile),
+                          clientflag))
+    {
+        /* The connection was successful. */
+
+        AJNEW0(sqlc);
+
+        sqlc->Pconnection = (void *) Pmysql;
+
+        sqlc->Client = ajESqlClientMySQL;
+
+        sqlc->Use = 1;
+
+        if(debug)
+            ajDebug("sqlconnectionMysqlNewData established a "
+                    "MySQL connection to server '%S' on port '%S' (%d) "
+                    "as user '%S' for database '%S'.\n",
+                    host, port, portnumber, user, database);
+    }
+    else
+    {
+        /* The connection was not successful. */
+
+        ajDebug("sqlconnectionMysqlNewData could not establish a "
+                "MySQL connection to server '%S' on port '%S' (%d) "
+                "as user '%S' for database '%S'.\n"
+                "  MySQL error: %s\n",
+                host, port, portnumber, user, database,
+                mysql_error(Pmysql));
+
+        mysql_close(Pmysql);
+    }
+
+    return sqlc;
+}
+
+#endif /* HAVE_MYSQL */
+
+
+
+
+#ifdef HAVE_POSTGRESQL
+
+/* @funcstatic sqlconnectionPostgresqlNewData *********************************
+**
+** PostgreSQL client library-specific AJAX SQL Connection constructor, which
+** also constructs a client library-specific (PGconn *) connection object.
+**
+** A connection to a PostgreSQL server is established.
+**
+** @param [r] user [const AjPStr] SQL account user name
+** @param [r] password [const AjPStr] SQL account password
+** @param [r] host [const AjPStr] SQL server hostname or IP address
+** @param [r] port [const AjPStr] SQL server port number
+** @param [r] socketfile [const AjPStr] SQL server UNIX socket file
+**                   PostgreSQL: Absolute path to the socket directory only.
+**                     Socket file names are then generated from this directory
+**                     information and the port number above.
+**                     See "%s/.s.PGSQL.%d" in macro UNIXSOCK_PATH in source
+**                     file pgsql/src/include/libpq/pqcomm.h
+** @param [r] database [const AjPStr] SQL database name
+** @param [r] debug [AjBool] Debug mode
+**
+** @return [AjPSqlconnection] AJAX SQL Connection or NULL
+** @@
+******************************************************************************/
+
+static AjPSqlconnection sqlconnectionPostgresqlNewData(
+    const AjPStr user,
+    const AjPStr password,
+    const AjPStr host,
+    const AjPStr port,
+    const AjPStr socketfile,
+    const AjPStr database,
+    AjBool debug)
+{
+    AjPSqlconnection sqlc = NULL;
+
+    AjPStr conninfo = NULL;
+    AjPStr safeinfo = NULL;
+
+    PGconn *Ppgconn = NULL;
+
+    debug |= ajDebugTest("sqlconnectionPostgresqlNewData");
+
+    conninfo = ajStrNew();
+    safeinfo = ajStrNew();
+
+    /* PostgreSQL needs escaping of ' and \ to \' and \\. */
+
+    if(ajStrGetLen(user))
+    {
+        ajStrAssignS(&safeinfo, user);
+        ajStrExchangeCC(&safeinfo, "'", "\'");
+        ajStrExchangeCC(&safeinfo, "\\", "\\\\");
+
+        ajFmtPrintAppS(&conninfo, "user = '%S' ", safeinfo);
+    }
+
+    if(ajStrGetLen(password))
+    {
+        ajStrAssignS(&safeinfo, password);
+        ajStrExchangeCC(&safeinfo, "'", "\'");
+        ajStrExchangeCC(&safeinfo, "\\", "\\\\");
+
+        ajFmtPrintAppS(&conninfo, "password = '%S' ", safeinfo);
+    }
+
+    if(ajStrGetLen(host))
+    {
+        ajStrAssignS(&safeinfo, host);
+        ajStrExchangeCC(&safeinfo, "'", "\'");
+        ajStrExchangeCC(&safeinfo, "\\", "\\\\");
+
+        ajFmtPrintAppS(&conninfo, "host = '%S' ", safeinfo);
+    }
+
+    if(ajStrGetLen(socketfile))
+    {
+        ajStrAssignS(&safeinfo, socketfile);
+        ajStrExchangeCC(&safeinfo, "'", "\'");
+        ajStrExchangeCC(&safeinfo, "\\", "\\\\");
+
+        ajFmtPrintAppS(&conninfo, "host = '%S' ", safeinfo);
+    }
+
+    if(ajStrGetLen(port))
+    {
+        ajStrAssignS(&safeinfo, port);
+        ajStrExchangeCC(&safeinfo, "'", "\'");
+        ajStrExchangeCC(&safeinfo, "\\", "\\\\");
+
+        ajFmtPrintAppS(&conninfo, "port = '%S' ", safeinfo);
+    }
+
+    if(ajStrGetLen(database))
+    {
+        ajStrAssignS(&safeinfo, database);
+        ajStrExchangeCC(&safeinfo, "'", "\'");
+        ajStrExchangeCC(&safeinfo, "\\", "\\\\");
+
+        ajFmtPrintAppS(&conninfo, "dbname = '%S' ", safeinfo);
+    }
+
+    /*
+    ** Other PQconnectdb conninfo parameters:
+    **
+    ** hostaddr:        Numeric IPv4 or IPv6 address of host to connect to.
+    ** connect_timeout: Maximum wait for connection, in seconds.
+    ** options:         Command line options to be sent to the server.
+    ** sslmode:         disable, allow, prefer, require
+    ** requiressl:      Deprecated use sslmode option instead.
+    ** krbsrvname:      Kerberos5 service name.
+    ** service:         Service name to use for additional parameters.
+    */
+
+    ajStrDel(&safeinfo);
+
+    Ppgconn = PQconnectdb(ajStrGetPtr(conninfo));
+
+    ajStrDel(&conninfo);
+
+    if(Ppgconn == NULL)
+    {
+        ajDebug("sqlconnectionPostgresqlNewData PostgreSQL connection object "
+                "initialisation via PQconnectdb failed.\n");
+
+        return NULL;
+    }
+
+    switch(PQstatus(Ppgconn))
+    {
+        case CONNECTION_OK:
+
+            AJNEW0(sqlc);
+
+            sqlc->Pconnection = (void *) Ppgconn;
+
+            sqlc->Client = ajESqlClientPostgreSQL;
+
+            sqlc->Use = 1;
+
+            if(debug)
+                ajDebug("sqlconnectionPostgresqlNewData established a "
+                        "PostgreSQL connection to server '%S' on port '%S' "
+                        "as user '%S' for database '%S'\n",
+                        host, port, user, database);
+
+            break;
+
+        case CONNECTION_BAD:
+
+            ajDebug("sqlconnectionPostgresqlNewData could not establish a "
+                    "PostgreSQL connection to server '%S' on port '%S' "
+                    "as user '%S' for database '%S'.\n"
+                    "  PostgreSQL error: %s\n",
+                    host, port, user, database,
+                    PQerrorMessage(Ppgconn));
+
+            PQfinish(Ppgconn);
+
+            break;
+
+        default:
+
+            ajDebug("sqlconnectionPostgresqlNewData got unexpected "
+                    "PQstatus return value %d.\n", PQstatus(Ppgconn));
+    }
+
+    return sqlc;
+}
+
+#endif /* HAVE_POSTGRESQL */
 
 
 
@@ -229,7 +553,11 @@ void ajSqlExit(void)
 **
 ** Default AJAX SQL Connection constructor, which also allocates a client
 ** library-specific connection object.
+**
 ** A connection to an SQL server is established.
+**
+** For MySQL clients options will be read from the [client] and [EMBOSS] groups
+** of the default my.cnf options file.
 **
 ** @param [r] client [AjESqlClient] SQL client
 ** @param [r] user [const AjPStr] SQL account user name
@@ -257,265 +585,97 @@ AjPSqlconnection ajSqlconnectionNewData(AjESqlClient client,
                                         const AjPStr socketfile,
                                         const AjPStr database)
 {
-    
-#ifdef HAVE_MYSQL
-    MYSQL *Pmysql = NULL;
-    
-    unsigned long flag = 0;
-    ajint number = 0;
-#endif
-    
-#ifdef HAVE_POSTGRESQL
-    PGconn *Ppgconn = NULL;
-    
-    AjPStr conninfo = NULL;
-    AjPStr tmp = NULL;
-#endif
-    
-#if defined(HAVE_MYSQL) || defined(HAVE_POSTGRESQL)
-    
+    AjBool debug = AJFALSE;
+
     AjPSqlconnection sqlc = NULL;
-    
-#endif
-    
-    /*
-    ** TODO: Data checking?
-    ** The host and socket parameters are mutually exclusive.
-    ** The host parameter must be NULL or localhost to connect to the local
-    ** machine. The connection could be TCP or via a socket if specified.
-    ** If the driver is ajESqlClientPostgreSQL then a port number is mandatory
-    ** as it is part of the socket filename ("%s/.s.PGSQL.%d").
-    */
-    
-    if(client == ajESqlClientMySQL)
-    {
 
-#ifndef HAVE_MYSQL
-#ifndef HAVE_POSTGRESQL
-        (void) user;
-        (void) password;
-        (void) host;
-        (void) port;
-        (void) socketfile;
-        (void) database;
-#endif
-#endif
+    debug = ajDebugTest("ajSqlconnectionNewData");
+
+    if(debug)
+        ajDebug("ajSqlconnectionNewData\n"
+                "  client %d\n"
+                "  user '%S'\n"
+                "  password '***'\n"
+                "  host '%S'\n"
+                "  port '%S'\n"
+                "  socketfile '%S'\n"
+                "  database '%S'\n",
+                client,
+                user,
+                host,
+                port,
+                socketfile,
+                database);
+
+    (void) password;
+
+    switch(client)
+    {
+        case ajESqlClientMySQL:
 
 #ifdef HAVE_MYSQL
-	
-	Pmysql = mysql_init((MYSQL *) NULL);
-	
-        if(Pmysql == NULL)
-        {
-            ajDebug("ajSqlconnectionNewData MySQL connection object "
-                    "initialisation via mysql_init failed.\n");
-	    
-            return NULL;
-        }
-	
-	/*
-	** Read options from the [client] and [EMBOSS] groups of the
-	** default my.cnf options file.
-	*/
-	
-	mysql_options(Pmysql, MYSQL_READ_DEFAULT_GROUP, "EMBOSS");
-	
-        ajStrToInt(port, &number);
-	
-        if(mysql_real_connect(Pmysql,
-                              ajStrGetPtr(host),
-                              ajStrGetPtr(user),
-                              ajStrGetPtr(password),
-                              ajStrGetPtr(database),
-                              (unsigned int) number,
-                              ajStrGetPtr(socketfile),
-                              flag)
-	    )
-        {
-	    /* The connection was successful. */
-	    
-	    AJNEW0(sqlc);
-	    
-	    sqlc->Pconnection = (void *) Pmysql;
-	    
-	    sqlc->Client = client;
-	    
-	    sqlc->Use = 1;
-	    
-            ajDebug("ajSqlconnectionNewData established a MySQL connection "
-                    "to server '%S' on port '%S' (%d) as user '%S' "
-                    "for database '%S'.\n",
-		    host, port, number, user, database);
-	    
-            sqlConnectionTotalCount++;
-	    
-            return sqlc;
-        }
-        else
-        {
-            /* The connection was not successful. */
-	    
-	    ajDebug("ajSqlconnectionNewData could not establish a "
-		    "MySQL connection to server '%S' on port '%S' (%d) "
-                    "as user '%S' for database '%S'.\n",
-		    host, port, number, user, database);
-	    
-            ajDebug("ajSqlconnectionNewData MySQL error: %s\n",
-		    mysql_error(Pmysql));
-	    
-	    mysql_close(Pmysql);
-	    
-            return NULL;
-        }
-	
+
+            sqlc = sqlconnectionMysqlNewData(user,
+                                             password,
+                                             host,
+                                             port,
+                                             socketfile,
+                                             database,
+                                             debug);
+
 #else
-        ajDebug("ajSqlconnectionNewData EMBOSS AJAX library built without "
-                "MySQL client support.\n");
-	
-        return NULL;
-#endif
-	
-    }
-    
-    if(client == ajESqlClientPostgreSQL)
-    {
-	
+
+            ajDebug("ajSqlconnectionNewData EMBOSS AJAX library built without "
+                    "MySQL client support.\n");
+
+#endif /* HAVE_MYSQL */
+
+            break;
+
+        case ajESqlClientPostgreSQL:
+
 #ifdef HAVE_POSTGRESQL
-	
-        conninfo = ajStrNew();
-	
-        tmp = ajStrNew();
-	
-        /* PostgreSQL needs escaping of ' and \ to \' and \\. */
-	
-        if(ajStrGetLen(user))
-        {
-            ajStrAssignS(&tmp, user);
-            ajStrExchangeCC(&tmp, "'", "\'");
-            ajStrExchangeCC(&tmp, "\\", "\\\\");
-	    
-	    ajFmtPrintAppS(&conninfo, "user = '%S' ", tmp);
-        }
-	
-        if(ajStrGetLen(password))
-        {
-            ajStrAssignS(&tmp, password);
-            ajStrExchangeCC(&tmp, "'", "\'");
-            ajStrExchangeCC(&tmp, "\\", "\\\\");
-	    
-	    ajFmtPrintAppS(&conninfo, "password = '%S' ", tmp);
-        }
-	
-        if(ajStrGetLen(host))
-        {
-            ajStrAssignS(&tmp, host);
-            ajStrExchangeCC(&tmp, "'", "\'");
-            ajStrExchangeCC(&tmp, "\\", "\\\\");
-	    
-	    ajFmtPrintAppS(&conninfo, "host = '%S' ", tmp);
-        }
-	
-        if(ajStrGetLen(socketfile))
-        {
-            ajStrAssignS(&tmp, socketfile);
-            ajStrExchangeCC(&tmp, "'", "\'");
-            ajStrExchangeCC(&tmp, "\\", "\\\\");
-	    
-	    ajFmtPrintAppS(&conninfo, "host = '%S' ", tmp);
-        }
-	
-        if(ajStrGetLen(port))
-        {
-            ajStrAssignS(&tmp, port);
-            ajStrExchangeCC(&tmp, "'", "\'");
-            ajStrExchangeCC(&tmp, "\\", "\\\\");
-	    
-	    ajFmtPrintAppS(&conninfo, "port = '%S' ", tmp);
-        }
-	
-        if(ajStrGetLen(database))
-        {
-            ajStrAssignS(&tmp, database);
-            ajStrExchangeCC(&tmp, "'", "\'");
-            ajStrExchangeCC(&tmp, "\\", "\\\\");
-	    
-	    ajFmtPrintAppS(&conninfo, "dbname = '%S' ", tmp);
-        }
-	
-        /* hostaddr:        Numeric IP address of host to connect to. */
-        /* connect_timeout: Maximum wait for connection, in seconds. */
-        /* options:         Command line options to be sent to the server. */
-        /* sslmode:         disable, allow, prefer, require */
-        /* requiressl:      Deprecated use sslmode option instead. */
-        /* krbsrvname:      Kerberos5 service name. */
-        /* service:         Service name to use for additional parameters. */
-	
-        Ppgconn = PQconnectdb(ajStrGetPtr(conninfo));
-	
-        ajStrDel(&conninfo);
-	ajStrDel(&tmp);
-	
-        if(Ppgconn == NULL)
-        {
-            ajDebug("ajSqlconnectionNewData PostgreSQL connection object "
-                    "initialisation via PQconnectdb failed.\n");
-	    
-            return NULL;
-        }
-	
-        if(PQstatus(Ppgconn) == CONNECTION_OK)
-        {
-	    /* CONNECTION_OK */
-	    
-	    AJNEW0(sqlc);
-	    
-	    sqlc->Pconnection = (void *) Ppgconn;
-	    
-	    sqlc->Client = client;
-	    
-	    sqlc->Use = 1;
-	    
-            ajDebug("ajSqlconnectionNewData established a PostgreSQL connection "
-                    "to server '%S' on port '%S' as user '%S' "
-		    "for database '%S'\n",
-		    host, port, user, database);
-	    
-            sqlConnectionTotalCount++;
-	    
-            return sqlc;
-        }
-        else
-        {
-	    /* CONNECTION_BAD */
-	    
-            ajDebug("ajSqlconnectionNewData could not establish a "
-                    "PostgreSQL connection to server '%S' on port '%S' "
-                    "as user '%S' for database '%S'.\n",
-		    host, port, user, database);
-	    
-            ajDebug("ajSqlconnectionNewData PostgreSQL error: %s\n",
-                    PQerrorMessage(Ppgconn));
-	    
-            PQfinish(Ppgconn);
-	    
-            return NULL;
-        }
-	
+
+            sqlc = sqlconnectionMysqlNewData(user,
+                                             password,
+                                             host,
+                                             port,
+                                             socketfile,
+                                             database,
+                                             debug);
+
 #else
-	
-        ajDebug("ajSqlconnectionNewData EMBOSS AJAX library built without "
-                "PostgreSQL client support.\n");
-	
-        return NULL;
-	
-#endif
-	
+
+            ajDebug("ajSqlconnectionNewData EMBOSS AJAX library built without "
+                    "PostgreSQL client support.\n");
+
+#endif /* HAVE_POSTGRESQL */
+
+            break;
+
+        default:
+
+            ajDebug("ajSqlconnectionNewData SQL Connection client %d "
+                    "not supported.\n",
+                    client);
     }
-    
-    ajDebug("ajSqlconnectionNewData SQL client identifier %d not supported.\n",
-	    client);
-    
-    return NULL;
+
+#ifdef AJ_SAVESTATS
+
+    if(sqlc)
+        sqlconnectionTotalCount++;
+
+#endif /* AJ_SAVESTATS */
+
+    if(debug)
+    {
+        if(sqlc)
+            ajDebug("ajSqlconnectionNewData connected.\n");
+        else
+            ajDebug("ajSqlconnectionNewData not connected.\n");
+    }
+
+    return sqlc;
 }
 
 
@@ -535,10 +695,10 @@ AjPSqlconnection ajSqlconnectionNewData(AjESqlClient client,
 AjPSqlconnection ajSqlconnectionNewRef(AjPSqlconnection sqlc)
 {
     if(!sqlc)
-	return NULL;
-    
+        return NULL;
+
     sqlc->Use++;
-    
+
     return sqlc;
 }
 
@@ -577,67 +737,93 @@ AjPSqlconnection ajSqlconnectionNewRef(AjPSqlconnection sqlc)
 
 void ajSqlconnectionDel(AjPSqlconnection *Psqlc)
 {
+    AjBool debug = AJFALSE;
+
     AjPSqlconnection pthis = NULL;
-    
+
     if(!Psqlc)
         return;
-    
+
     if(!*Psqlc)
         return;
 
+    debug = ajDebugTest("ajSqlconnectionDel");
+
+    if(debug)
+        ajDebug("ajSqlconnectionDel"
+                "  *Psqlc %p\n",
+                *Psqlc);
+
     pthis = *Psqlc;
-    
+
     pthis->Use--;
-    
+
     if(pthis->Use)
     {
-	*Psqlc = NULL;
-	
-	return;
+        *Psqlc = NULL;
+
+        return;
     }
-    
-    if(pthis->Client == ajESqlClientMySQL)
+
+    switch(pthis->Client)
     {
-	
+        case ajESqlClientMySQL:
+
 #ifdef HAVE_MYSQL
-	
-        mysql_close((MYSQL *) pthis->Pconnection);
-	
-        ajDebug("ajSqlconnectionDel MySQL connection deleted.\n");
-	
+
+            mysql_close((MYSQL *) pthis->Pconnection);
+
+            if(debug)
+                ajDebug("ajSqlconnectionDel deleted MySQL connection.\n");
+
 #else
-	
-        ajDebug("ajSqlconnectionDel MySQL client support not built, "
-                "but object claims MySQL connection.\n");
-	
-#endif
-	
-    }
-    
-    if(pthis->Client == ajESqlClientPostgreSQL)
-    {
-	
+
+            ajDebug("ajSqlconnectionDel got an AJAX SQL Connection, "
+                    "which claims a MySQL connection, but support "
+                    "for this client has not been built into the "
+                    "EMBOSS AJAX library.\n");
+
+#endif /* HAVE_MYSQL */
+
+            break;
+
+        case ajESqlClientPostgreSQL:
+
 #ifdef HAVE_POSTGRESQL
-	
-        PQfinish((PGconn *) pthis->Pconnection);
-	
-        ajDebug("ajSqlconnectionDel PostgreSQL connection deleted.\n");
-	
+
+            PQfinish((PGconn *) pthis->Pconnection);
+
+            if(debug)
+                ajDebug("ajSqlconnectionDel deleted PostgreSQL connection.\n");
+
 #else
-	
-        ajDebug("ajSqlconnectionDel PostgreSQL client support not built, "
-                "but object claims PostgreSQL connection.\n");
-	
-#endif
-	
+
+            ajDebug("ajSqlconnectionDel got an AJAX SQL Connection, "
+                    "which claims a PostgreSQL connection, but support "
+                    "for this client has not been built into the "
+                    "EMBOSS AJAX library.\n");
+
+#endif /* HAVE_POSTGRESQL */
+
+            break;
+
+        default:
+
+            ajDebug("ajSqlconnectionDel SQL Connection client %d "
+                    "not supported.\n",
+                    pthis->Client);
     }
-    
+
     AJFREE(pthis);
 
     *Psqlc = NULL;
-    
-    sqlConnectionFreeCount++;
-    
+
+#ifdef AJ_SAVESTATS
+
+    sqlconnectionFreeCount++;
+
+#endif /* AJ_SAVESTATS */
+
     return;
 }
 
@@ -652,6 +838,7 @@ void ajSqlconnectionDel(AjPSqlconnection *Psqlc)
 **
 ** @nam3rule Get Return AJAX SQL Connection elements
 ** @nam4rule Client Return client element
+** @nam4rule Use Return the use counter element
 ** @nam3rule Escape Escape an AJAX String based on an AJAX SQL Connection
 ** @suffix C Return a char* escaped string
 ** @suffix S Return an AjPStr escaped string
@@ -662,6 +849,7 @@ void ajSqlconnectionDel(AjPSqlconnection *Psqlc)
 ** @argrule Escape str [const AjPStr] AJAX String to be escaped
 **
 ** @valrule Client [AjESqlClient] Client enumeration
+** @valrule Use [ajuint] Use counter
 ** @valrule Escape [AjBool] True on success
 **
 ** @fcategory cast
@@ -674,7 +862,7 @@ void ajSqlconnectionDel(AjPSqlconnection *Psqlc)
 **
 ** Escape an AJAX String based on an AJAX SQL Connection.
 ** The caller is responsible for deleting the C-type char string at the
-** returned address. 
+** returned address.
 **
 ** @param [r] sqlc [const AjPSqlconnection] AJAX SQL Connection
 ** @param [w] Ptxt [char**] Address of the (new) SQL-escaped C-type string
@@ -688,95 +876,116 @@ AjBool ajSqlconnectionEscapeC(const AjPSqlconnection sqlc,
                               char **Ptxt,
                               const AjPStr str)
 {
-    
+
 #ifdef HAVE_POSTGRESQL
-    
+
     int error = 0;
-    
-#endif
-    
+
+#endif /* HAVE_POSTGRESQL */
+
 #if defined(HAVE_MYSQL) || defined(HAVE_POSTGRESQL)
-    
+
     ajuint length = 0;
-    
-#endif
-    
+
+#endif /* defined(HAVE_MYSQL) || defined(HAVE_POSTGRESQL) */
+
     if(!sqlc)
-	return ajFalse;
-    
-    if(Ptxt)
-	ajCharDel(Ptxt);
-    
+        return ajFalse;
+
+    if(!Ptxt)
+        return ajFalse;
+
     if(!str)
-	return ajFalse;
-    
-    if(sqlc->Client == ajESqlClientMySQL)
+        return ajFalse;
+
+    switch(sqlc->Client)
     {
-	
+        case ajESqlClientMySQL:
+
 #ifdef HAVE_MYSQL
-	
-	/* At maximum the escaped string could be 2 * n + 1 characters long. */
-	
-	/*
-	** FIXME: MySQL uses unsigned long. It is necessary to test, whether
-	** the maximum unsigned integer value has been exceeded.
-	*/
-	
-	length = ajStrGetLen(str);
-	
-	*Ptxt = ajCharNewRes(2 * length + 1);
-	
-	length = (ajuint)
-	    mysql_real_escape_string((MYSQL *) sqlc->Pconnection,
-				     *Ptxt,
-				     ajStrGetPtr(str),
-				     (unsigned long) length);
-	
+
+            /*
+            ** At maximum the escaped string could be 2 * n + 1
+            ** characters long.
+            */
+
+            /*
+            ** FIXME: Type mismatch, since MySQL uses unsigned long.
+            ** It is necessary to test, whether the maximum unsigned integer
+            ** value (UINT_MAX) has been exceeded.
+            */
+
+            length = ajStrGetLen(str);
+
+            *Ptxt = ajCharNewRes(2 * length + 1);
+
+            length = (ajuint)
+                mysql_real_escape_string((MYSQL *) sqlc->Pconnection,
+                                         *Ptxt,
+                                         ajStrGetPtr(str),
+                                         (unsigned long) length);
+
 #else
-	
-        ajDebug("ajSqlconnectionEscapeC MySQL client support not built, "
-                "but object claims MySQL connection.\n");
-	
-#endif
-	
-    }
-    
-    if(sqlc->Client == ajESqlClientPostgreSQL)
-    {
-	
+
+            ajDebug("ajSqlconnectionEscapeC got an AJAX SQL Connection, "
+                    "which claims a MySQL connection, but support "
+                    "for this client has not been built into the "
+                    "EMBOSS AJAX library.\n");
+
+#endif /* HAVE_MYSQL */
+
+            break;
+
+        case ajESqlClientPostgreSQL:
+
 #ifdef HAVE_POSTGRESQL
-	
-	/* At maximum the escaped string could be 2 * n + 1 characters long. */
-	
-	/*
-	** FIXME: PostgeSQL uses size_t. It is necessary to test, whether
-	** the maximum unsigned integer value has been exceeded.
-	*/
-	
-	length = ajStrGetLen(str);
-	
-	*Ptxt = ajCharNewRes(2 * length + 1);
-	
-	length = (ajuint)
-	    PQescapeStringConn((PGconn *) sqlc->Pconnection,
-			       *Ptxt,
-			       ajStrGetPtr(str),
-			       (size_t) length,
-			       &error);
-	
-	if(error)
-	    ajDebug("ajSqlconnectionEscapeC PostgreSQL client encountered an "
-		    "error during string escaping.\n");
-	
+
+            /*
+            ** At maximum the escaped string could be 2 * n + 1
+            ** characters long.
+            */
+
+            /*
+            ** FIXME: Tpye mismatch, since PostgeSQL uses size_t.
+            ** It is necessary to test, whether the maximum unsigned integer
+            ** value (UINT_MAX) has been exceeded.
+            */
+
+            length = ajStrGetLen(str);
+
+            *Ptxt = ajCharNewRes(2 * length + 1);
+
+            length = (ajuint)
+                PQescapeStringConn((PGconn *) sqlc->Pconnection,
+                                   *Ptxt,
+                                   ajStrGetPtr(str),
+                                   (size_t) length,
+                                   &error);
+
+            if(error)
+                ajDebug("ajSqlconnectionEscapeC PostgreSQL client encountered "
+                        "an error calling PQescapeStringConn.\n"
+                        "  PostgreSQL error: %s",
+                        PQerrorMessage((PGconn *) sqlc->Pconnection));
+
 #else
-	
-        ajDebug("ajSqlconnectionEscapeC PostgreSQL client support not built, "
-                "but object claims PostgreSQL connection.\n");
-	
-#endif
-	
+
+            ajDebug("ajSqlconnectionEscapeC got an AJAX SQL Connection, "
+                    "which claims a PostgreSQL connection, but support "
+                    "for this client has not been built into the "
+                    "EMBOSS AJAX library.\n");
+
+#endif /* HAVE_POSTGRESQL */
+
+            break;
+
+        default:
+
+            ajDebug("ajSqlconnectionEscapeC SQL Connection client %d "
+                    "not supported.\n",
+                    sqlc->Client);
     }
-    
+
     return ajTrue;
 }
 
@@ -787,7 +996,7 @@ AjBool ajSqlconnectionEscapeC(const AjPSqlconnection sqlc,
 **
 ** Escape an AJAX String based on an AJAX SQL Connection.
 ** The caller is responsible for deleting the AJAX String at the returned
-** address. 
+** address.
 **
 ** @param [r] sqlc [const AjPSqlconnection] AJAX SQL Connection
 ** @param [w] Pstr [AjPStr*] Address of the (new) SQL-escaped AJAX String
@@ -802,19 +1011,27 @@ AjBool ajSqlconnectionEscapeS(const AjPSqlconnection sqlc,
                               const AjPStr str)
 {
     char *Ptxt = NULL;
-    
+
     if(!sqlc)
-	return ajFalse;
-    
+        return ajFalse;
+
+    if(!Pstr)
+        return ajFalse;
+
     if(!str)
-	return ajFalse;
-    
+        return ajFalse;
+
+    if(*Pstr)
+        ajStrAssignClear(Pstr);
+    else
+        *Pstr = ajStrNew();
+
     ajSqlconnectionEscapeC(sqlc, &Ptxt, str);
-    
+
     ajStrAssignC(Pstr, Ptxt);
-    
+
     ajCharDel(&Ptxt);
-    
+
     return ajTrue;
 }
 
@@ -835,8 +1052,29 @@ AjESqlClient ajSqlconnectionGetClient(const AjPSqlconnection sqlc)
 {
     if(!sqlc)
         return ajESqlClientNULL;
-    
+
     return sqlc->Client;
+}
+
+
+
+
+/* @func ajSqlconnectionGetUse ************************************************
+**
+** Get the use counter element of an AJAX SQL Connection.
+**
+** @param [r] sqlc [const AjPSqlconnection] AJAX SQL Connection
+**
+** @return [ajuint] Use counter
+** @@
+******************************************************************************/
+
+ajuint ajSqlconnectionGetUse(const AjPSqlconnection sqlc)
+{
+    if(!sqlc)
+        return 0;
+
+    return sqlc->Use;
 }
 
 
@@ -847,7 +1085,7 @@ AjESqlClient ajSqlconnectionGetClient(const AjPSqlconnection sqlc)
 ** Functions for reporting of an AJAX SQL Connection object.
 **
 ** @fdata [AjPSqlconnection]
-** @nam3rule Trace Report AJAX SQL Connection elements to debug file 
+** @nam3rule Trace Report AJAX SQL Connection elements to debug file
 **
 ** @argrule Trace sqlc [const AjPSqlconnection] AJAX SQL Connection
 ** @argrule Trace level [ajuint] Indentation level
@@ -874,25 +1112,25 @@ AjESqlClient ajSqlconnectionGetClient(const AjPSqlconnection sqlc)
 AjBool ajSqlconnectionTrace(const AjPSqlconnection sqlc, ajuint level)
 {
     AjPStr indent = NULL;
-    
+
     if(!sqlc)
-	return ajFalse;
-    
+        return ajFalse;
+
     indent = ajStrNew();
-    
+
     ajStrAppendCountK(&indent, ' ', level * 2);
-    
+
     ajDebug("%SajSqlconnectionTrace %p\n"
-	    "%S  Pconnection %p\n"
-	    "%S  Client %d\n"
-	    "%S  Use %u\n",
-	    indent, sqlc,
-	    indent, sqlc->Pconnection,
-	    indent, sqlc->Client,
-	    indent, sqlc->Use);
-    
+            "%S  Pconnection %p\n"
+            "%S  Client %d\n"
+            "%S  Use %u\n",
+            indent, sqlc,
+            indent, sqlc->Pconnection,
+            indent, sqlc->Client,
+            indent, sqlc->Use);
+
     ajStrDel(&indent);
-    
+
     return ajTrue;
 }
 
@@ -906,6 +1144,329 @@ AjBool ajSqlconnectionTrace(const AjPSqlconnection sqlc, ajuint level)
 ** @nam2rule Sqlstatement Functions for manipulating AJAX SQL Statements.
 **
 ******************************************************************************/
+
+
+
+
+#ifdef HAVE_MYSQL
+
+/* @funcstatic sqlstatementMysqlNewRun ****************************************
+**
+** MySQL client library-specific AJAX SQL Statement constructor.
+** Upon construction the SQL Statement is run against the MySQL server
+** specified in the AJAX SQL Connection.
+** Eventual results of the SQL Statement are then stored inside this object.
+**
+** @param [u] sqlc [AjPSqlconnection] AJAX SQL Connection
+** @param [r] statement [const AjPStr] SQL statement
+** @param [r] debug [AjBool] Debug mode
+**
+** @return [AjPSqlstatement] AJAX SQL Statement or NULL
+** @@
+******************************************************************************/
+
+static AjPSqlstatement sqlstatementMysqlNewRun(AjPSqlconnection sqlc,
+                                               const AjPStr statement,
+                                               AjBool debug)
+{
+    AjPSqlstatement sqls = NULL;
+
+    MYSQL *Pmysql        = NULL;
+    MYSQL_RES *Pmysqlres = NULL;
+
+    debug |= ajDebugTest("sqlstatementMysqlNewRun");
+
+    if(!sqlc)
+        return NULL;
+
+    if(!statement)
+        return NULL;
+
+    Pmysql = (MYSQL *) sqlc->Pconnection;
+
+    if(!Pmysql)
+        ajFatal("sqlstatementMysqlNewRun got an AJAX SQL Connection without "
+                "a MYSQL client library-specific (MYSQL *) connection "
+                "object.");
+
+    if(mysql_real_query(Pmysql,
+                        ajStrGetPtr(statement),
+                        (unsigned long) ajStrGetLen(statement)))
+    {
+        ajDebug("sqlstatementMysqlNewRun encountered an error upon "
+                "calling mysql_real_query.\n"
+                "  statement: %S\n"
+                "  MySQL error: %s\n",
+                statement,
+                mysql_error(Pmysql));
+
+        sqlstatementErrorCount++;
+
+        return NULL;
+    }
+
+    /*
+    ** The SQL statement was successful, now process any data returned.
+    ** The mysql_store_result function retrieves all rows from the
+    ** server and stores them in the client immediately. This is can be
+    ** memory intensive, but reduces the server load.
+    **/
+
+    Pmysqlres = mysql_store_result(Pmysql);
+
+    if(Pmysqlres)
+    {
+        /*
+        ** The SQL statement has returned a (MYSQL_RES*) result, hence
+        ** create an AJAX SQL Statement object and set the number of rows
+        ** selected by the SQL statement.
+        */
+
+        AJNEW0(sqls);
+
+        sqls->Sqlconnection = ajSqlconnectionNewRef(sqlc);
+
+        sqls->Presult = (void *) Pmysqlres;
+
+        sqls->AffectedRows = 0;
+
+        sqls->SelectedRows = (ajulong) mysql_num_rows(Pmysqlres);
+
+        sqls->Columns = (ajuint) mysql_num_fields(Pmysqlres);
+
+        sqls->Use = 1;
+
+        if(debug)
+            ajDebug("ajSqlstatementNewRun MySQL selected rows %Lu "
+                    "columns %u\n",
+                    sqls->SelectedRows,
+                    sqls->Columns);
+    }
+    else
+    {
+        /*
+        ** Since the SQL statement has not returnd a (MYSQL_RES*) result,
+        ** check whether it should have returned one.
+        */
+
+        if(mysql_field_count(Pmysql))
+        {
+            /*
+            ** The SQL statement was expected to return a (MYSQL_RES*)
+            ** result.
+            */
+
+            ajDebug("ajSqlstatementNewRun encountered an error upon "
+                    "calling mysql_store_result.\n"
+                    "  statement: %S\n"
+                    "  MySQL error: %s\n",
+                    statement,
+                    mysql_error(Pmysql));
+
+            sqlstatementErrorCount++;
+        }
+        else
+        {
+            /*
+            ** The SQL statement was not expected to return a (MYSQL_RES*)
+            ** result, hence create an AJAX SQL Statement object and set the
+            ** number rows affected by teh SQL statement.
+            */
+
+            AJNEW0(sqls);
+
+            sqls->Sqlconnection = ajSqlconnectionNewRef(sqlc);
+
+            sqls->Presult = NULL;
+
+            sqls->AffectedRows = (ajulong) mysql_affected_rows(Pmysql);
+
+            sqls->SelectedRows = 0;
+
+            sqls->Columns = 0;
+
+            sqls->Use = 1;
+
+            if(debug)
+                ajDebug("ajSqlstatementNewRun MySQL affected rows %Lu\n",
+                        sqls->AffectedRows);
+        }
+    }
+
+    return sqls;
+}
+
+#endif /* HAVE_MYSQL */
+
+
+
+
+#ifdef HAVE_POSTGRESQL
+
+/* @funcstatic sqlstatementPostgresqlNewRun ***********************************
+**
+** PostgreSQL client library-specific AJAX SQL Statement constructor.
+** Upon construction, the SQL Statement is run against the PostgreSQL server
+** specified in the AJAX SQL Connection.
+** Eventual results of the SQL Statement are then stored inside this object.
+**
+** @param [u] sqlc [AjPSqlconnection] AJAX SQL Connection
+** @param [r] statement [const AjPStr] SQL statement
+** @param [r] debug [AjBool] Debug mode
+**
+** @return [AjPSqlstatement] AJAX SQL Statement or NULL
+** @@
+******************************************************************************/
+
+AjPSqlstatement sqlstatementPostgresqlNewRun(AjPSqlconnection sqlc,
+                                             const AjPstr statement,
+                                             AjBool debug)
+{
+    AjPSqlstatement sqls = NULL;
+
+    AjPStr affected = NULL;
+
+    PGconn *Ppgconn     = NULL;
+    PGresult *Ppgresult = NULL;
+
+    debug |= ajDebugTest("sqlstatementPostgresqlNewRun");
+
+    if(!sqlc)
+        return NULL;
+
+    if(!statement)
+        return NULL;
+
+    Ppgconn = (PGconn *) sqlc->Pconnection;
+
+    if(!Ppgconn)
+        ajFatal("ajSqlstatementNewRun got AJAX SQL Connection without "
+                "PostgreSQL client library-specific connection object.");
+
+    Ppgresult = PQexec(Ppgconn, ajStrGetPtr(statement));
+
+    if(Ppgresult)
+    {
+        switch (PQresultStatus(Ppgresult))
+        {
+            case PGRES_EMPTY_QUERY:
+
+                ajDebug("ajSqlstatementNewRun PostgreSQL reported empty "
+                        "statement string.\n");
+
+                PQclear(Ppgresult);
+
+                sqlstatementErrorCount++;
+
+                break;
+
+            case PGRES_COMMAND_OK:
+
+                /*
+                ** PGRES_COMMAND_OK for statements that return no result
+                ** rows but do affect rows.
+                */
+
+                affected = ajStrNewC(PQcmdTuples(Ppgresult));
+
+                AJNEW0(sqls);
+
+                sqls->Sqlconnection = ajSqlconnectionNewRef(sqlc);
+
+                sqls->Presult = NULL;
+
+                /* FIXME: An ajStrToUlong function is missing from AJAX. */
+
+                if(ajStrToLong(affected, (ajlong *) &sqls->AffectedRows))
+                {
+                    sqls->SelectedRows = 0;
+
+                    sqls->Columns = 0;
+
+                    sqls->Use = 1;
+
+                    if(debug)
+                        ajDebug("ajSqlstatementNewRun PostgreSQL affected "
+                                "rows %Lu\n",
+                                sqls->AffectedRows);
+                }
+                else
+                    ajWarn("sqlstatementPostgresqlNewRun could not parse "
+                           "'%S' into an AJAX unsigned long integer.",
+                           affected);
+
+                ajStrDel(&affected);
+
+                break;
+
+            case PGRES_TUPLES_OK:
+
+                /* PGRES_TUPLES_OK for commands that return result rows. */
+
+                AJNEW0(sqls);
+
+                sqls->Sqlconnection = ajSqlconnectionNewRef(sqlc);
+
+                sqls->Presult = (void *) Ppgresult;
+
+                sqls->AffectedRows = 0;
+
+                sqls->SelectedRows = (ajulong) PQntuples(Ppgresult);
+
+                sqls->Columns = (ajuint) PQnfields(Ppgresult);
+
+                sqls->Use = 1;
+
+                if(debug)
+                    ajDebug("ajSqlstatementNewRun PostgreSQL selected "
+                            "rows %Lu columns %u\n",
+                            sqls->SelectedRows,
+                            sqls->Columns);
+
+                break;
+
+            case PGRES_FATAL_ERROR:
+
+                ajDebug("ajSqlstatementNewRun encountered an error upon "
+                        "calling PQexec.\n"
+                        "  statement: %S\n"
+                        "  PostgreSQL error: %s\n",
+                        statement,
+                        PQresultErrorMessage(Ppgresult));
+
+                PQclear(Ppgresult);
+
+                sqlstatementErrorCount++;
+
+                break;
+
+            default:
+
+                ajDebug("ajSqlstatementNewRun PostgreSQL returned an "
+                        "unexpected status: %s\n",
+                        PQresStatus(PQresultStatus(Ppgresult)));
+
+                PQclear(Ppgresult);
+
+                sqlstatementErrorCount++;
+        }
+    }
+    else
+    {
+        ajDebug("ajSqlstatementNewRun encountered an error upon "
+                "calling PQexec.\n"
+                "  statement: %S"
+                "  PostgreSQL error: %s\n",
+                statement,
+                PQerrorMessage(Ppgconn));
+
+        sqlstatementErrorCount++;
+    }
+
+    return sqls;
+}
+
+#endif /* HAVE_POSTGRESQL */
 
 
 
@@ -946,10 +1507,10 @@ AjBool ajSqlconnectionTrace(const AjPSqlconnection sqlc, ajuint level)
 AjPSqlstatement ajSqlstatementNewRef(AjPSqlstatement sqls)
 {
     if(!sqls)
-	return NULL;
-    
+        return NULL;
+
     sqls->Use++;
-    
+
     return sqls;
 }
 
@@ -972,294 +1533,73 @@ AjPSqlstatement ajSqlstatementNewRef(AjPSqlstatement sqls)
 AjPSqlstatement ajSqlstatementNewRun(AjPSqlconnection sqlc,
                                      const AjPStr statement)
 {
-    
-#ifdef HAVE_MYSQL
-    
-    MYSQL *Pmysql        = NULL;
-    MYSQL_RES *Pmysqlres = NULL;
-    
-#endif
-    
-#ifdef HAVE_POSTGRESQL
-    
-    PGconn *Ppgconn     = NULL;
-    PGresult *Ppgresult = NULL;
-    
-    AjPStr affected = NULL;
-    
-#endif
-    
-#if defined(HAVE_MYSQL) || defined(HAVE_POSTGRESQL)
-    
+    AjBool debug = AJFALSE;
+
     AjPSqlstatement sqls = NULL;
-    
-#endif
-    
+
+    debug = ajDebugTest("ajSqlstatementNewRun");
+
     if(!sqlc)
         return NULL;
-    
+
     if(!statement)
         return NULL;
-    
-    ajDebug("ajSqlstatementNewRun %S\n", statement);
-    
-    if(sqlc->Client == ajESqlClientMySQL)
-    {
-	
-#ifdef HAVE_MYSQL
-	
-	Pmysql = (MYSQL *) sqlc->Pconnection;
-	
-	if(!Pmysql)
-	    ajFatal("ajSqlstatementNewRun got AJAX SQL Connection without "
-		    "MYSQL client library-specific connection object.");
-	
-        if(mysql_real_query(Pmysql,
-			     ajStrGetPtr(statement),
-                             (unsigned long) ajStrGetLen(statement))
-	    )
-        {
-            /* An error occured. */
-	    
-	    ajDebug("ajSqlstatementNewRun MySQL error: %s\n",
-		    mysql_error(Pmysql));
-	    
-            return NULL;
-        }
-        else
-        {
-            /*
-            * The SQL statement was successful, now process any data returned.
-            * The mysql_store_result function retrieves all rows from the
-            * server and stores them in the client immediately. This is
-            * memory intensive, but reduces the server load.
-            */
-	    
-            Pmysqlres = mysql_store_result(Pmysql);
-	    
-            if(Pmysqlres)
-            {
-                /*
-		** A result was returned for this SQL statement hence
-		** create an AJAX SQL Statement object.
-		*/
-		
-		AJNEW0(sqls);
-		
-		sqls->Sqlconnection = ajSqlconnectionNewRef(sqlc);
-		
-		sqls->Presult = (void *) Pmysqlres;
-		
-		sqls->AffectedRows = 0;
-		
-		sqls->SelectedRows = (ajulong) mysql_num_rows(Pmysqlres);
-		
-                sqls->Columns = (ajuint) mysql_num_fields(Pmysqlres);
-                
-		sqls->Use = 1;
-		
-                ajDebug("ajSqlstatementNewRun MySQL selected rows %Lu "
-			"columns %u\n",
-                        sqls->SelectedRows,
-			sqls->Columns);
-		
-                sqlStatementTotalCount++;
-		
-                return sqls;
-            }
-            else
-            {
-                /*
-		** No result has been returned, so check whether the
-		** SQL statement should have returned rows.
-		*/
-		
-		if(mysql_field_count(Pmysql))
-                {
-                    /* The statement should have returned rows. */
-		    
-                    ajDebug("ajSqlstatementNewRun MySQL error: %s\n",
-                            mysql_error(Pmysql));
-		    
-                    return NULL;
-                }
-                else
-                {
-                    /* The statement should not have returned rows. */
-		    
-		    AJNEW0(sqls);
-		    
-		    sqls->Sqlconnection = ajSqlconnectionNewRef(sqlc);
-		    
-		    sqls->Presult = NULL;
-		    
-                    sqls->AffectedRows = (ajulong) mysql_affected_rows(Pmysql);
-		    
-                    sqls->SelectedRows = 0;
-		    
-                    sqls->Columns = 0;
-		    
-		    sqls->Use = 1;
-		    
-                    ajDebug("ajSqlstatementNewRun MySQL affected rows %Lu\n",
-                            sqls->AffectedRows);
-		    
-                    sqlStatementTotalCount++;
-		    
-                    return sqls;
-                }
-            }
-        }
-	
-#else
-	
-        ajDebug("ajSqlstatementNewRun EMBOSS AJAX library built without "
-                "MySQL client library support.\n");
-	
-        return NULL;
-	
-#endif
-	
-    }
-    
-    if(sqlc->Client == ajESqlClientPostgreSQL)
-    {
-	
-#ifdef HAVE_POSTGRESQL
-	
-	Ppgconn = (PGconn *) sqlc->Pconnection;
-	
-	if(!Ppgconn)
-	    ajFatal("ajSqlstatementNewRun got AJAX SQL Connection without "
-		    "PostgreSQL client library-specific connection object.");
-	
-	Ppgresult = PQexec(Ppgconn, ajStrGetPtr(statement));
-	
-        if(Ppgresult)
-        {
-            switch (PQresultStatus(Ppgresult))
-            {
-		case PGRES_EMPTY_QUERY:
-		    
-		    ajDebug("ajSqlstatementNewRun PostgreSQL reported empty "
-			    "statement string.\n");
-		    
-		    PQclear(Ppgresult);
-		    
-		    return NULL;
-		    
-		    break;
-		    
-		case PGRES_COMMAND_OK:
-		    
-		    /*
-		    ** PGRES_COMMAND_OK for statements that return no result
-		    ** rows but do affect rows.
-		    */
-		    
-		    affected = ajStrNewC(PQcmdTuples(Ppgresult));
-		    
-		    AJNEW0(sqls);
-		    
-		    sqls->Sqlconnection = ajSqlconnectionNewRef(sqlc);
-		    
-		    sqls->Presult = NULL;
-		    
-		    ajStrToLong(affected, (ajlong *) &(sqls->AffectedRows));
-		    
-		    sqls->SelectedRows = 0;
-		    
-		    sqls->Columns = 0;
-		    
-		    sqls->Use = 1;
-		    
-		    ajDebug("ajSqlstatementNewRun PostgreSQL affected rows %Lu\n",
-			    sqls->AffectedRows);
-		    
-		    ajStrDel(&affected);
-		    
-		    sqlStatementTotalCount++;
-		    
-		    return sqls;
-		    
-		    break;
-		    
-		case PGRES_TUPLES_OK:
-		    
-		    /* PGRES_TUPLES_OK for commands that return result rows. */
-		    
-		    AJNEW0(sqls);
-		    
-		    sqls->Sqlconnection = ajSqlconnectionNewRef(sqlc);
-		    
-		    sqls->Presult = (void *) Ppgresult;
-		    
-		    sqls->AffectedRows = 0;
-		    
-		    sqls->SelectedRows = (ajulong) PQntuples(Ppgresult);
-		    
-		    sqls->Columns = (ajuint) PQnfields(Ppgresult);
-		    
-		    sqls->Use = 1;
-		    
-		    ajDebug("ajSqlstatementNewRun PostgreSQL selected rows %Lu "
-			    "columns %u\n",
-			    sqls->SelectedRows,
-			    sqls->Columns);
-		    
-		    sqlStatementTotalCount++;
-		    
-		    return sqls;
-		    
-		    break;
-		    
-		case PGRES_FATAL_ERROR:
-		    
-		    ajDebug("ajSqlstatementNewRun PostgreSQL fatal error: %s\n",
-			    PQresultErrorMessage(Ppgresult));
-		    
-		    PQclear(Ppgresult);
-		    
-		    return NULL;
-		    
-		    break;
-		    
-		default:
-		    
-		    ajDebug("ajSqlstatementNewRun PostgreSQL returned an "
-			    "unexpected status: %s\n",
-			    PQresStatus(PQresultStatus(Ppgresult)));
-		    
-		    PQclear(Ppgresult);
-		    
-		    return NULL;
-	    }
-        }
-	else
-	{
-	    ajDebug("ajSqlstatementNewRun PostgreSQL error: %s\n",
-		    PQerrorMessage(Ppgconn));
-	    
-	    return NULL;
-        }
-	
-#else
-	
-	ajDebug("ajSqlstatementNewRun EMBOSS AJAX library built without "
-		"PostgreSQL client library support.\n");
-	
-	return NULL;
-	
-#endif
-	
-    }
-    
-    ajDebug("ajSqlstatementNewRun AJAX SQL Connection client identifier %d "
-	    "not supported.\n", sqlc->Client);
-    
-    return NULL;
-}
 
+    if(debug)
+        ajDebug("ajSqlstatementNewRun %S\n", statement);
+
+    switch(sqlc->Client)
+    {
+        case ajESqlClientMySQL:
+
+#ifdef HAVE_MYSQL
+
+            sqls = sqlstatementMysqlNewRun(sqlc, statement, debug);
+
+#else
+
+            ajDebug("ajSqlstatementNewRun got an AJAX SQL Connection, "
+                    "which claims a MySQL connection, but support "
+                    "for this client has not been built into the "
+                    "EMBOSS AJAX library.\n");
+
+#endif /* HAVE_MYSQL */
+
+            break;
+
+        case ajESqlClientPostgreSQL:
+
+#ifdef HAVE_POSTGRESQL
+
+            sqls = sqlstatementPostgresqlNewRun(sqlc, statement, debug);
+
+#else
+
+            ajDebug("ajSqlstatementNewRun got an AJAX SQL Connection, "
+                    "which claims a PostgreSQL connection, but support "
+                    "for this client has not been built into the "
+                    "EMBOSS AJAX library.\n");
+
+#endif /* HAVE_POSTGRESQL */
+
+            break;
+
+        default:
+
+            ajDebug("ajSqlstatementNewRun AJAX SQL Connection client %d "
+                    "not supported.\n",
+                    sqlc->Client);
+    }
+
+#ifdef AJ_SAVESTATS
+
+    if(sqls)
+        sqlstatementTotalCount++;
+
+#endif /* AJ_SAVESTATS */
+
+    return sqls;
+}
 
 
 
@@ -1296,72 +1636,80 @@ AjPSqlstatement ajSqlstatementNewRun(AjPSqlconnection sqlc,
 void ajSqlstatementDel(AjPSqlstatement *Psqls)
 {
     AjPSqlstatement pthis = NULL;
-    
+
     if(!Psqls)
         return;
-    
+
     if(!*Psqls)
         return;
 
     pthis = *Psqls;
-    
+
     pthis->Use--;
-    
+
     if(pthis->Use)
     {
-	*Psqls = NULL;
-	
-	return;
+        *Psqls = NULL;
+
+        return;
     }
-    
-    if(pthis->Sqlconnection->Client == ajESqlClientMySQL)
+
+    switch(pthis->Sqlconnection->Client)
     {
-	
+        case ajESqlClientMySQL:
+
 #ifdef HAVE_MYSQL
-	
-        mysql_free_result((MYSQL_RES *) pthis->Presult);
-	
-	/*
-	 ajDebug("ajSqlstatementDel MySQL Statement deleted.\n");
-	 */
-	
+
+            mysql_free_result((MYSQL_RES *) pthis->Presult);
+
 #else
-	
-        ajDebug("ajSqlstatementDel MySQL client library support not built, "
-                "but object claims MySQL connection?\n");
-	
-#endif
-	
-    }
-    
-    if(pthis->Sqlconnection->Client == ajESqlClientPostgreSQL)
-    {
-	
+
+            ajDebug("ajSqlstatementDel got an AJAX SQL Connection, "
+                    "which claims a MySQL connection, but support "
+                    "for this client has not been built into the "
+                    "EMBOSS AJAX library.\n");
+
+#endif /* HAVE_MYSQL */
+
+            break;
+
+        case ajESqlClientPostgreSQL:
+
 #ifdef HAVE_POSTGRESQL
-	
-        PQclear((PGresult *) pthis->Presult);
-	
-	/*
-	 ajDebug("ajSqlstatementDel PostgreSQL Statement deleted.\n");
-	 */
-	
+
+            PQclear((PGresult *) pthis->Presult);
+
 #else
-	
-        ajDebug("ajSqlstatementDel PostgreSQL client library support not "
-                "built, but object claims PostgreSQL connection?\n");
-	
-#endif
-	
+
+            ajDebug("ajSqlstatementDel got an AJAX SQL Connection, "
+                    "which claims a PostgreSQL connection, but support "
+                    "for this client has not been built into the "
+                    "EMBOSS AJAX library.\n");
+
+#endif /* HAVE_POSTGRESQL */
+
+            break;
+
+        default:
+
+            ajDebug("ajSqlstatementDel AJAX SQL Connection client %d "
+                    "not supported.\n",
+                    pthis->Sqlconnection->Client);
+
     }
-    
+
     ajSqlconnectionDel(&pthis->Sqlconnection);
-    
+
     AJFREE(pthis);
 
     *Psqls = NULL;
-    
-    sqlStatementFreeCount++;
-    
+
+#ifdef AJ_SAVESTATS
+
+    sqlstatementFreeCount++;
+
+#endif /* AJ_SAVESTATS */
+
     return;
 }
 
@@ -1407,7 +1755,7 @@ ajulong ajSqlstatementGetAffectedrows(const AjPSqlstatement sqls)
 {
     if(!sqls)
         return 0;
-    
+
     return sqls->AffectedRows;
 }
 
@@ -1428,7 +1776,7 @@ ajuint ajSqlstatementGetColumns(const AjPSqlstatement sqls)
 {
     if(!sqls)
         return 0;
-    
+
     return sqls->Columns;
 }
 
@@ -1448,58 +1796,68 @@ ajuint ajSqlstatementGetColumns(const AjPSqlstatement sqls)
 ajuint ajSqlstatementGetIdentifier(const AjPSqlstatement sqls)
 {
     ajuint identifier = 0;
-    
+
 #ifdef HAVE_MYSQL
-    
+
     MYSQL *Pmysql = NULL;
-    
-#endif
-    
+
+#endif /* HAVE_MYSQL */
+
 #ifdef HAVE_POSTGRESQL
-    
+
     PGresult *Ppgresult = NULL;
-    
-#endif
-    
+
+#endif /* HAVE_POSTGRESQL */
+
     if(!sqls)
-	return 0;
-    
-    if(sqls->Sqlconnection->Client == ajESqlClientMySQL)
+        return 0;
+
+    switch(sqls->Sqlconnection->Client)
     {
-	
+        case ajESqlClientMySQL:
+
 #ifdef HAVE_MYSQL
-	
-	Pmysql = (MYSQL *) sqls->Sqlconnection->Pconnection;
-	
-	identifier = (ajuint) mysql_insert_id(Pmysql);
-	
+
+            Pmysql = (MYSQL *) sqls->Sqlconnection->Pconnection;
+
+            identifier = (ajuint) mysql_insert_id(Pmysql);
+
 #else
-	
-        ajDebug("ajSqlstatementDel MySQL client library support not built, "
-                "but object claims MySQL connection?\n");
-	
+
+            ajDebug("ajSqlstatementGetIdentifier got an AJAX SQL Connection, "
+                    "which claims a MySQL connection, but support "
+                    "for this client has not been built into the "
+                    "EMBOSS AJAX library.\n");
+
 #endif
-	
-    }
-    
-    if(sqls->Sqlconnection->Client == ajESqlClientPostgreSQL)
-    {
-	
+
+            break;
+
+        case ajESqlClientPostgreSQL:
+
 #ifdef HAVE_POSTGRESQL
-	
-	Ppgresult = (PGresult *) sqls->Presult;
-	
-	identifier = (ajuint) PQoidValue(Ppgresult);
-	
+
+            Ppgresult = (PGresult *) sqls->Presult;
+
+            identifier = (ajuint) PQoidValue(Ppgresult);
+
 #else
-	
-        ajDebug("ajSqlstatementDel PostgreSQL client library support not "
-                "built, but object claims PostgreSQL connection?\n");
-	
+
+            ajDebug("ajSqlstatementGetIdentifier got an AJAX SQL Connection, "
+                    "which claims a PostgreSQL connection, but support "
+                    "for this client has not been built into the "
+                    "EMBOSS AJAX library.\n");
+
 #endif
-	
+            break;
+
+        default:
+
+            ajDebug("ajSqlstatementNewRun AJAX SQL Connection client %d "
+                    "not supported.\n",
+                    sqls->Sqlconnection->Client);
     }
-    
+
     return identifier;
 }
 
@@ -1520,7 +1878,7 @@ ajulong ajSqlstatementGetSelectedrows(const AjPSqlstatement sqls)
 {
     if(!sqls)
         return 0;
-    
+
     return sqls->SelectedRows;
 }
 
@@ -1570,24 +1928,24 @@ ajulong ajSqlstatementGetSelectedrows(const AjPSqlstatement sqls)
 AjISqlrow ajSqlrowiterNew(AjPSqlstatement sqls)
 {
     AjISqlrow sqli = NULL;
-    
+
     if(!sqls)
         return NULL;
-    
+
     if(!sqls->SelectedRows)
         return NULL;
-    
+
     if(!sqls->Columns)
         return NULL;
-    
+
     AJNEW0(sqli);
-    
+
     sqli->Sqlstatement = ajSqlstatementNewRef(sqls);
-    
+
     sqli->Sqlrow = ajSqlrowNew(sqls->Columns);
-    
+
     sqli->Current = 0;
-    
+
     return sqli;
 }
 
@@ -1625,23 +1983,23 @@ AjISqlrow ajSqlrowiterNew(AjPSqlstatement sqls)
 void ajSqlrowiterDel(AjISqlrow *Psqli)
 {
     AjISqlrow pthis = NULL;
-    
+
     if(!Psqli)
         return;
-    
+
     if(!*Psqli)
         return;
 
     pthis = *Psqli;
-    
+
     ajSqlstatementDel(&pthis->Sqlstatement);
-    
+
     ajSqlrowDel(&pthis->Sqlrow);
-    
+
     AJFREE(pthis);
 
     *Psqli = NULL;
-    
+
     return;
 }
 
@@ -1678,10 +2036,10 @@ AjBool ajSqlrowiterDone(const AjISqlrow sqli)
 {
     if(!sqli)
         return ajTrue;
-    
+
     if(sqli->Current < sqli->Sqlstatement->SelectedRows)
-	return ajFalse;
-    
+        return ajFalse;
+
 
     return ajTrue;
 }
@@ -1717,131 +2075,140 @@ AjBool ajSqlrowiterDone(const AjISqlrow sqli)
 
 AjPSqlrow ajSqlrowiterGet(AjISqlrow sqli)
 {
-    
-#if defined(HAVE_MYSQL) || defined(HAVE_POSTGRESQL)
-    
     register ajuint i = 0;
-    
-#endif
-    
+
+    AjBool debug = AJFALSE;
+
+    AjPSqlrow sqlr = NULL;
+
 #ifdef HAVE_MYSQL
-    
+
     unsigned long *lengths;
-    
+
     MYSQL *Pmysql = NULL;
     MYSQL_ROW mysqlrow;
-    
+
 #endif
-    
+
+    debug = ajDebugTest("ajSqlrowiterGet");
+
     if(!sqli)
         return NULL;
-    
-    /*
-     ajDebug("ajSqlrowiterGet current row %Lu\n", iter->Current);
-     */
-    
+
+    (void) i;
+
     /* Check that the Iterator is within a valid range. */
-    
+
     if(sqli->Current >= sqli->Sqlstatement->SelectedRows)
     {
-	ajDebug("ajSqlrowiterGet No more AJAX SQL Rows to fetch.\n");
-	
-	return NULL;
+        if(debug)
+            ajDebug("ajSqlrowiterGet got no more AJAX SQL Rows to fetch.\n");
+
+        return NULL;
     }
-    
+
     /*
-    ** If a SQl Row already exits, reset the current column value,
+    ** If an AJAX SQL Row already exits, reset the current column value,
     ** which can be used for iterating over columns of a row, otherwise
-    ** construct a new SQL Row with the correct number of columns.
+    ** construct a new AJAX SQL Row with the correct number of columns.
     */
-    
+
     if(sqli->Sqlrow)
-	sqli->Sqlrow->Current = 0;
+        sqli->Sqlrow->Current = 0;
     else
-	sqli->Sqlrow = ajSqlrowNew(sqli->Sqlstatement->Columns);
-    
-    if(sqli->Sqlstatement->Sqlconnection->Client == ajESqlClientMySQL)
+        sqli->Sqlrow = ajSqlrowNew(sqli->Sqlstatement->Columns);
+
+    switch(sqli->Sqlstatement->Sqlconnection->Client)
     {
-	
+        case ajESqlClientMySQL:
+
 #ifdef HAVE_MYSQL
-	
-        mysqlrow = mysql_fetch_row((MYSQL_RES *) sqli->Sqlstatement->Presult);
-	
-        if(mysqlrow)
-        {
-            lengths =
-	    mysql_fetch_lengths((MYSQL_RES *) sqli->Sqlstatement->Presult);
-	    
+
+            mysqlrow = mysql_fetch_row(
+                (MYSQL_RES *) sqli->Sqlstatement->Presult);
+
+            if(mysqlrow)
+            {
+                lengths = mysql_fetch_lengths(
+                    (MYSQL_RES *) sqli->Sqlstatement->Presult);
+
+                for(i = 0; i < sqli->Sqlstatement->Columns; i++)
+                {
+                    ajVoidPut(&sqli->Sqlrow->Values, i, (void *) mysqlrow[i]);
+
+                    ajLongPut(&sqli->Sqlrow->Lengths, i, (ajlong) lengths[i]);
+                }
+
+                sqli->Current++;
+
+                sqlr = sqli->Sqlrow;
+            }
+            else
+            {
+                Pmysql =
+                    (MYSQL *) sqli->Sqlstatement->Sqlconnection->Pconnection;
+
+                if(mysql_errno(Pmysql))
+                    ajDebug("ajSqlrowiterGet encountered an error.\n"
+                            "  MySQL error: %s", mysql_error(Pmysql));
+                else
+                    ajDebug("ajSqlrowiterGet got no more MySQL rows "
+                            "to fetch?\n");
+            }
+
+#else
+
+            ajDebug("ajSqlrowiterGet got an AJAX SQL Connection, "
+                    "which claims a MySQL connection, but support "
+                    "for this client has not been built into the "
+                    "EMBOSS AJAX library.\n");
+
+#endif
+
+            break;
+
+        case ajESqlClientPostgreSQL:
+
+#ifdef HAVE_POSTGRESQL
+
             for(i = 0; i < sqli->Sqlstatement->Columns; i++)
             {
-                ajVoidPut(&(sqli->Sqlrow->Values), i, (void *) mysqlrow[i]);
-		
-                ajLongPut(&(sqli->Sqlrow->Lengths), i, (ajlong) lengths[i]);
+                ajVoidPut(&sqli->Sqlrow->Values, i,
+                          (void *) PQgetvalue(
+                              (PGresult *) sqli->Sqlstatement->Presult,
+                              (int) sqli->Current,
+                              (int) i));
+
+                ajLongPut(&sqli->Sqlrow->Lengths, i,
+                          (ajlong) PQgetlength(
+                              (PGresult *) sqli->Sqlstatement->Presult,
+                              (int) sqli->Current,
+                              (int) i));
             }
-	    
+
             sqli->Current++;
-	    
-            return sqli->Sqlrow;
-        }
-        else
-        {
-	    Pmysql = (MYSQL *) sqli->Sqlstatement->Sqlconnection->Pconnection;
-	    
-	    if(mysql_errno(Pmysql))
-		ajDebug("ajSqlrowiterGet MySQL error %s", mysql_error(Pmysql));
-	    else
-		ajDebug("ajSqlrowiterGet No more MySQL rows to fetch?\n");
-	    
-            return NULL;
-        }
-	
+
+            sqlr = sqli->Sqlrow;
+
 #else
-	
-        ajDebug("ajSqlrowiterGet EMBOSS AJAX library built without "
-                "MySQL client library support.\n");
-	
-        return NULL;
-	
+
+            ajDebug("ajSqlrowiterGet got an AJAX SQL Connection, "
+                    "which claims a PostgreSQL connection, but support "
+                    "for this client has not been built into the "
+                    "EMBOSS AJAX library.\n");
+
 #endif
-	
+
+            break;
+
+        default:
+
+            ajDebug("ajSqlrowiterGet AJAX SQL Connection client %d "
+                    "not supported.\n",
+                    sqli->Sqlstatement->Sqlconnection->Client);
     }
-    
-    if(sqli->Sqlstatement->Sqlconnection->Client == ajESqlClientPostgreSQL)
-    {
-	
-#ifdef HAVE_POSTGRESQL
-	
-	for(i = 0; i < sqli->Sqlstatement->Columns; i++)
-	{
-	    ajVoidPut(&(sqli->Sqlrow->Values), i,
-		      (void *) PQgetvalue((PGresult *)
-					  sqli->Sqlstatement->Presult,
-					  (int) sqli->Current,
-					  (int) i));
-	    
-	    ajLongPut(&(sqli->Sqlrow->Lengths), i,
-		      (ajlong) PQgetlength((PGresult *)
-					   sqli->Sqlstatement->Presult,
-					   (int) sqli->Current,
-					   (int) i));
-	}
-	
-	sqli->Current++;
-	
-	return sqli->Sqlrow;
-	
-#else
-	
-        ajDebug("ajSqlrowiterGet EMBOSS AJAX library built without "
-                "PostgreSQL client library support.\n");
-	
-        return NULL;
-	
-#endif
-	
-    }
-    
-    return NULL;
+
+    return sqlr;
 }
 
 
@@ -1875,57 +2242,65 @@ AjPSqlrow ajSqlrowiterGet(AjISqlrow sqli)
 
 AjBool ajSqlrowiterRewind(AjISqlrow sqli)
 {
+    AjBool value = AJFALSE;
+
     if(!sqli)
-	return ajFalse;
-    
-    
-    if(sqli->Sqlstatement->Sqlconnection->Client == ajESqlClientMySQL)
+        return ajFalse;
+
+
+    switch(sqli->Sqlstatement->Sqlconnection->Client)
     {
-	
+        case ajESqlClientMySQL:
+
 #ifdef HAVE_MYSQL
-	
-	/* For MySQL the MySQL cursor and the current row needs restting. */
-	
-	sqli->Current = 0;
-	
-	mysql_data_seek((MYSQL_RES *) sqli->Sqlstatement->Presult, 0);
-	
-	return ajTrue;
-	
+
+            /* For MySQL, the cursor and the current row need resetting. */
+
+            sqli->Current = 0;
+
+            mysql_data_seek((MYSQL_RES *) sqli->Sqlstatement->Presult, 0);
+
+            value = ajTrue;
+
 #else
-	
-        ajDebug("ajSqlrowiterGet EMBOSS AJAX library built without "
-                "MySQL client library support.\n");
-	
-        return ajFalse;
-	
+
+            ajDebug("ajSqlrowiterRewind got an AJAX SQL Connection, "
+                    "which claims a MySQL connection, but support "
+                    "for this client has not been built into the "
+                    "EMBOSS AJAX library.\n");
+
 #endif
-	
-    }
-    
-    if(sqli->Sqlstatement->Sqlconnection->Client == ajESqlClientPostgreSQL)
-    {
-	
+
+            break;
+
+        case ajESqlClientPostgreSQL:
+
 #ifdef HAVE_POSTGRESQL
-	
-	/* For PostgreSQL just the current row needs resetting. */
-	
-	sqli->Current = 0;
-	
-	return ajTrue;
-	
+
+            /* For PostgreSQL, just the current row needs resetting. */
+
+            sqli->Current = 0;
+
+            value = ajTrue;
+
 #else
-	
-        ajDebug("ajSqlrowiterGet EMBOSS AJAX library built without "
-                "PostgreSQL client library support.\n");
-	
-        return ajFalse;
-	
+
+            ajDebug("ajSqlrowiterRewind got an AJAX SQL Connection, "
+                    "which claims a PostgreSQL connection, but support "
+                    "for this client has not been built into the "
+                    "EMBOSS AJAX library.\n");
+
 #endif
-	
+
+            break;
+
+        default:
+            ajDebug("ajSqlrowiterRewind AJAX SQL Connection client %d "
+                    "not supported.\n",
+                    sqli->Sqlstatement->Sqlconnection->Client);
     }
-    
-    return ajFalse;
+
+    return value;
 }
 
 
@@ -1974,17 +2349,17 @@ AjBool ajSqlrowiterRewind(AjISqlrow sqli)
 AjPSqlrow ajSqlrowNew(ajuint columns)
 {
     AjPSqlrow sqlr = NULL;
-    
+
     AJNEW0(sqlr);
-    
+
     sqlr->Values = ajVoidNewRes(columns);
-    
+
     sqlr->Lengths = ajLongNewRes(columns);
-    
+
     sqlr->Columns = columns;
-    
+
     sqlr->Current = 0;
-    
+
     return sqlr;
 }
 
@@ -2022,23 +2397,23 @@ AjPSqlrow ajSqlrowNew(ajuint columns)
 void ajSqlrowDel(AjPSqlrow *Psqlr)
 {
     AjPSqlrow pthis = NULL;
-    
+
     if(!Psqlr)
         return;
-    
+
     if(!*Psqlr)
         return;
 
     pthis = *Psqlr;
-    
+
     ajVoidDel(&pthis->Values);
-    
+
     ajLongDel(&pthis->Lengths);
-    
+
     AJFREE(pthis);
 
     *Psqlr = NULL;
-    
+
     return;
 }
 
@@ -2085,7 +2460,7 @@ ajuint ajSqlrowGetColumns(const AjPSqlrow sqlr)
 {
     if(!sqlr)
         return 0;
-    
+
     return sqlr->Columns;
 }
 
@@ -2107,7 +2482,7 @@ ajuint ajSqlrowGetCurrent(const AjPSqlrow sqlr)
 {
     if(!sqlr)
         return 0;
-    
+
     return sqlr->Current;
 }
 
@@ -2128,7 +2503,7 @@ AjPLong ajSqlrowGetLengths(const AjPSqlrow sqlr)
 {
     if(!sqlr)
         return NULL;
-    
+
     return sqlr->Lengths;
 }
 
@@ -2149,7 +2524,7 @@ AjPVoid ajSqlrowGetValues(const AjPSqlrow sqlr)
 {
     if(!sqlr)
         return NULL;
-    
+
     return sqlr->Values;
 }
 
@@ -2197,9 +2572,9 @@ AjBool ajSqlcolumnRewind(AjPSqlrow sqlr)
 {
     if(!sqlr)
         return ajFalse;
-    
+
     sqlr->Current = 0;
-    
+
     return ajTrue;
 }
 
@@ -2239,26 +2614,26 @@ AjBool ajSqlcolumnRewind(AjPSqlrow sqlr)
 ******************************************************************************/
 
 AjBool ajSqlcolumnGetValue( AjPSqlrow sqlr,
-                           void **Pvalue, ajulong *Plength)
+                            void **Pvalue, ajulong *Plength)
 {
     if(!sqlr)
         return ajFalse;
-    
+
     if(!Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Plength)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(sqlr->Current >= sqlr->Columns)
         return ajFalse;
-    
+
     *Pvalue = ajVoidGet(sqlr->Values, sqlr->Current);
-    
+
     *Plength = ajLongGet(sqlr->Lengths, sqlr->Current);
-    
+
     sqlr->Current++;
-    
+
     return ajTrue;
 }
 
@@ -2306,6 +2681,7 @@ AjBool ajSqlcolumnGetValue( AjPSqlrow sqlr,
 **
 ** Converts the value in the next column of an AJAX SQL Row into an
 ** AJAX Boolean value.
+**
 ** This function uses ajStrToBool to convert the AJAX String representing the
 ** column value into an AJAX boolean value. The function converts 'yes' and
 ** 'true', as well as 'no' and 'false' into its corresponding AJAX Bool values.
@@ -2313,6 +2689,7 @@ AjBool ajSqlcolumnGetValue( AjPSqlrow sqlr,
 **
 ** @param [u] sqlr [AjPSqlrow] AJAX SQL Row
 ** @param [w] Pvalue [AjBool*] AJAX Boolean address
+** @see ajStrToBool
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
@@ -2321,27 +2698,27 @@ AjBool ajSqlcolumnGetValue( AjPSqlrow sqlr,
 AjBool ajSqlcolumnToBool(AjPSqlrow sqlr, AjBool *Pvalue)
 {
     AjBool bool = ajFalse;
-    
+
     AjPStr str = NULL;
-    
+
     if(!sqlr)
         return ajFalse;
-    
+
     if(!Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(sqlr->Current >= sqlr->Columns)
         return ajFalse;
-    
+
     str = ajStrNew();
-    
+
     bool = ajSqlcolumnToStr(sqlr, &str);
-    
+
     if(bool)
-	ajStrToBool(str, Pvalue);
-    
+        ajStrToBool(str, Pvalue);
+
     ajStrDel(&str);
-    
+
     return bool;
 }
 
@@ -2363,27 +2740,27 @@ AjBool ajSqlcolumnToBool(AjPSqlrow sqlr, AjBool *Pvalue)
 AjBool ajSqlcolumnToDouble(AjPSqlrow sqlr, double *Pvalue)
 {
     AjBool bool = ajFalse;
-    
+
     AjPStr str = NULL;
-    
+
     if(!sqlr)
         return ajFalse;
-    
+
     if(!Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(sqlr->Current >= sqlr->Columns)
         return ajFalse;
-    
+
     str = ajStrNew();
-    
+
     bool = ajSqlcolumnToStr(sqlr, &str);
-    
+
     if(bool)
-	ajStrToDouble(str, Pvalue);
-    
+        ajStrToDouble(str, Pvalue);
+
     ajStrDel(&str);
-    
+
     return bool;
 }
 
@@ -2405,27 +2782,27 @@ AjBool ajSqlcolumnToDouble(AjPSqlrow sqlr, double *Pvalue)
 AjBool ajSqlcolumnToFloat(AjPSqlrow sqlr, float *Pvalue)
 {
     AjBool bool = ajFalse;
-    
+
     AjPStr str = NULL;
-    
+
     if(!sqlr)
         return ajFalse;
-    
+
     if(!Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(sqlr->Current >= sqlr->Columns)
         return ajFalse;
-    
+
     str = ajStrNew();
-    
+
     bool = ajSqlcolumnToStr(sqlr, &str);
-    
+
     if(bool)
-	ajStrToFloat(str, Pvalue);
-    
+        ajStrToFloat(str, Pvalue);
+
     ajStrDel(&str);
-    
+
     return bool;
 }
 
@@ -2447,27 +2824,27 @@ AjBool ajSqlcolumnToFloat(AjPSqlrow sqlr, float *Pvalue)
 AjBool ajSqlcolumnToInt(AjPSqlrow sqlr, ajint *Pvalue)
 {
     AjBool bool = ajFalse;
-    
+
     AjPStr str = NULL;
-    
+
     if(!sqlr)
         return ajFalse;
-    
+
     if(!Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(sqlr->Current >= sqlr->Columns)
         return ajFalse;
-    
+
     str = ajStrNew();
-    
+
     bool = ajSqlcolumnToStr(sqlr, &str);
-    
+
     if(bool)
-	ajStrToInt(str, Pvalue);
-    
+        ajStrToInt(str, Pvalue);
+
     ajStrDel(&str);
-    
+
     return bool;
 }
 
@@ -2489,27 +2866,27 @@ AjBool ajSqlcolumnToInt(AjPSqlrow sqlr, ajint *Pvalue)
 AjBool ajSqlcolumnToLong(AjPSqlrow sqlr, ajlong *Pvalue)
 {
     AjBool bool = ajFalse;
-    
+
     AjPStr str = NULL;
-    
+
     if(!sqlr)
         return ajFalse;
-    
+
     if(!Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(sqlr->Current >= sqlr->Columns)
         return ajFalse;
-    
+
     str = ajStrNew();
-    
+
     bool = ajSqlcolumnToStr(sqlr, &str);
-    
+
     if(bool)
-	ajStrToLong(str, Pvalue);
-    
+        ajStrToLong(str, Pvalue);
+
     ajStrDel(&str);
-    
+
     return bool;
 }
 
@@ -2539,33 +2916,33 @@ AjBool ajSqlcolumnToLong(AjPSqlrow sqlr, ajlong *Pvalue)
 AjBool ajSqlcolumnToStr(AjPSqlrow sqlr, AjPStr *Pvalue)
 {
     void *value = NULL;
-    
+
     ajulong length = 0;
-    
+
     if(!sqlr)
         return ajFalse;
-    
+
     if(!Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(sqlr->Current >= sqlr->Columns)
         return ajFalse;
-    
+
     ajStrAssignClear(Pvalue);
-    
+
     if(ajSqlcolumnGetValue(sqlr, &value, &length))
     {
-	if(value == NULL)
-	    return ajFalse;
-	
-	if(length > UINT_MAX)
-	    return ajFalse;
-	
-	ajStrAssignLenC(Pvalue, (char *) value, (ajuint) length);
-	
-	return ajTrue;
+        if(value == NULL)
+            return ajFalse;
+
+        if(length > UINT_MAX)
+            return ajFalse;
+
+        ajStrAssignLenC(Pvalue, (char *) value, (ajuint) length);
+
+        return ajTrue;
     }
-    
+
     return ajFalse;
 }
 
@@ -2587,30 +2964,30 @@ AjBool ajSqlcolumnToStr(AjPSqlrow sqlr, AjPStr *Pvalue)
 AjBool ajSqlcolumnToTime(AjPSqlrow sqlr, AjPTime *Pvalue)
 {
     AjBool bool = ajFalse;
-    
+
     AjPStr str = NULL;
-    
+
     if(!sqlr)
         return ajFalse;
-    
+
     if(!Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!*Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(sqlr->Current >= sqlr->Columns)
         return ajFalse;
-    
+
     str = ajStrNew();
-    
+
     bool = ajSqlcolumnToStr(sqlr, &str);
-    
+
     if(bool)
-	ajTimeSetS(*Pvalue, str);
-    
+        ajTimeSetS(*Pvalue, str);
+
     ajStrDel(&str);
-    
+
     return bool;
 }
 
@@ -2632,27 +3009,27 @@ AjBool ajSqlcolumnToTime(AjPSqlrow sqlr, AjPTime *Pvalue)
 AjBool ajSqlcolumnToUint(AjPSqlrow sqlr, ajuint *Pvalue)
 {
     AjBool bool = ajFalse;
-    
+
     AjPStr str = NULL;
-    
+
     if(!sqlr)
         return ajFalse;
-    
+
     if(!Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(sqlr->Current >= sqlr->Columns)
         return ajFalse;
-    
+
     str = ajStrNew();
-    
+
     bool = ajSqlcolumnToStr(sqlr, &str);
-    
+
     if(bool)
-	ajStrToUint(str, Pvalue);
-    
+        ajStrToUint(str, Pvalue);
+
     ajStrDel(&str);
-    
+
     return bool;
 }
 
@@ -2701,20 +3078,20 @@ AjBool ajSqlcolumnNumberGetValue(const AjPSqlrow sqlr,
 {
     if(!sqlr)
         return ajFalse;
-    
+
     if(column >= sqlr->Columns)
         return ajFalse;
-    
+
     if(!Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!Plength)
-	return ajFalse;
-    
+        return ajFalse;
+
     *Pvalue = ajVoidGet(sqlr->Values, column);
-    
+
     *Plength = ajLongGet(sqlr->Lengths, column);
-    
+
     return ajTrue;
 }
 
@@ -2760,24 +3137,20 @@ AjBool ajSqlcolumnNumberGetValue(const AjPSqlrow sqlr,
 
 
 
-/*
-** FIXME: This function uses ajStrToBool to set the value. It is necessary
-** to test what the AJAX function expects for the string representation. If
-** it expects yes and no or y and n, then it should not be used for Ensembl
-** library functions, as the database stores Boolean values as TINYINT values.
-*/
-
-
-
-
 /* @func ajSqlcolumnNumberToBool **********************************************
 **
 ** Converts the value in a particular column of an AJAX SQL Row into an
 ** AJAX Boolean value.
 **
+** This function uses ajStrToBool to convert the AJAX String representing the
+** column value into an AJAX boolean value. The function converts 'yes' and
+** 'true', as well as 'no' and 'false' into its corresponding AJAX Bool values.
+** It also assumes any numeric value as true and 0 as false.
+**
 ** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
 ** @param [r] column [ajuint] Column number
 ** @param [w] Pvalue [AjBool*] AJAX Boolean address
+** @see ajStrToBool
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
@@ -2787,27 +3160,27 @@ AjBool ajSqlcolumnNumberToBool(const AjPSqlrow sqlr, ajuint column,
                                AjBool *Pvalue)
 {
     AjBool bool = ajFalse;
-    
+
     AjPStr str = NULL;
-    
+
     if(!sqlr)
         return ajFalse;
-    
+
     if(!Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(column >= sqlr->Columns)
         return ajFalse;
-    
+
     str = ajStrNew();
-    
+
     bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
-    
+
     if(bool)
-	ajStrToBool(str, Pvalue);
-    
+        ajStrToBool(str, Pvalue);
+
     ajStrDel(&str);
-    
+
     return bool;
 }
 
@@ -2831,27 +3204,27 @@ AjBool ajSqlcolumnNumberToDouble(const AjPSqlrow sqlr, ajuint column,
                                  double *Pvalue)
 {
     AjBool bool = ajFalse;
-    
+
     AjPStr str = NULL;
-    
+
     if(!sqlr)
         return ajFalse;
-    
+
     if(!Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(column >= sqlr->Columns)
         return ajFalse;
-    
+
     str = ajStrNew();
-    
+
     bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
-    
+
     if(bool)
-	ajStrToDouble(str, Pvalue);
-    
+        ajStrToDouble(str, Pvalue);
+
     ajStrDel(&str);
-    
+
     return bool;
 }
 
@@ -2875,27 +3248,27 @@ AjBool ajSqlcolumnNumberToFloat(const AjPSqlrow sqlr, ajuint column,
                                 float *Pvalue)
 {
     AjBool bool = ajFalse;
-    
+
     AjPStr str = NULL;
-    
+
     if(!sqlr)
         return ajFalse;
-    
+
     if(!Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(column >= sqlr->Columns)
         return ajFalse;
-    
+
     str = ajStrNew();
-    
+
     bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
-    
+
     if(bool)
-	ajStrToFloat(str, Pvalue);
-    
+        ajStrToFloat(str, Pvalue);
+
     ajStrDel(&str);
-    
+
     return bool;
 }
 
@@ -2919,27 +3292,27 @@ AjBool ajSqlcolumnNumberToInt(const AjPSqlrow sqlr, ajuint column,
                               ajint *Pvalue)
 {
     AjBool bool = ajFalse;
-    
+
     AjPStr str = NULL;
-    
+
     if(!sqlr)
         return ajFalse;
-    
+
     if(!Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(column >= sqlr->Columns)
         return ajFalse;
-    
+
     str = ajStrNew();
-    
+
     bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
-    
+
     if(bool)
-	ajStrToInt(str, Pvalue);
-    
+        ajStrToInt(str, Pvalue);
+
     ajStrDel(&str);
-    
+
     return bool;
 }
 
@@ -2963,27 +3336,27 @@ AjBool ajSqlcolumnNumberToLong(const AjPSqlrow sqlr, ajuint column,
                                ajlong *Pvalue)
 {
     AjBool bool = ajFalse;
-    
+
     AjPStr str = NULL;
-    
+
     if(!sqlr)
         return ajFalse;
-    
+
     if(!Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(column >= sqlr->Columns)
         return ajFalse;
-    
+
     str = ajStrNew();
-    
+
     bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
-    
+
     if(bool)
-	ajStrToLong(str, Pvalue);
-    
+        ajStrToLong(str, Pvalue);
+
     ajStrDel(&str);
-    
+
     return bool;
 }
 
@@ -3007,34 +3380,34 @@ AjBool ajSqlcolumnNumberToStr(const AjPSqlrow sqlr, ajuint column,
                               AjPStr *Pvalue)
 {
     void *value = NULL;
-    
+
     ajulong length = 0;
-    
+
     if(!sqlr)
         return ajFalse;
-    
+
     if(!Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(column >= sqlr->Columns)
         return ajFalse;
-    
+
     ajStrAssignClear(Pvalue);
-    
+
     if(ajSqlcolumnNumberGetValue(sqlr, column, &value, &length))
     {
-	
-	if(value == NULL)
-	    return ajFalse;
-	
-	if(length > UINT_MAX)
-	    return ajFalse;
-	
-	ajStrAssignLenC(Pvalue, (char *) value, (ajuint) length);
-	
-	return ajTrue;
+
+        if(value == NULL)
+            return ajFalse;
+
+        if(length > UINT_MAX)
+            return ajFalse;
+
+        ajStrAssignLenC(Pvalue, (char *) value, (ajuint) length);
+
+        return ajTrue;
     }
-    
+
     return ajFalse;
 }
 
@@ -3058,30 +3431,30 @@ AjBool ajSqlcolumnNumberToTime(const AjPSqlrow sqlr, ajuint column,
                                AjPTime *Pvalue)
 {
     AjBool bool = ajFalse;
-    
+
     AjPStr str = NULL;
-    
+
     if(!sqlr)
         return ajFalse;
-    
+
     if(!Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(!*Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(column >= sqlr->Columns)
         return ajFalse;
-    
+
     str = ajStrNew();
-    
+
     bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
-    
+
     if(bool)
-	ajTimeSetS(*Pvalue, str);
-    
+        ajTimeSetS(*Pvalue, str);
+
     ajStrDel(&str);
-    
+
     return bool;
 }
 
@@ -3105,27 +3478,27 @@ AjBool ajSqlcolumnNumberToUint(const AjPSqlrow sqlr, ajuint column,
                                ajuint *Pvalue)
 {
     AjBool bool = ajFalse;
-    
+
     AjPStr str = NULL;
-    
+
     if(!sqlr)
         return ajFalse;
-    
+
     if(!Pvalue)
-	return ajFalse;
-    
+        return ajFalse;
+
     if(column >= sqlr->Columns)
         return ajFalse;
-    
+
     str = ajStrNew();
-    
+
     bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
-    
+
     if(bool)
-	ajStrToUint(str, Pvalue);
-    
+        ajStrToUint(str, Pvalue);
+
     ajStrDel(&str);
-    
+
     return bool;
 }
 
@@ -3176,15 +3549,14 @@ AjBool ajSqlcolumnNumberIsDefined(const AjPSqlrow sqlr, ajuint column)
 {
     if(!sqlr)
         return ajFalse;
-    
+
     if(column >= sqlr->Columns)
         return ajFalse;
-    
+
     if(ajVoidGet(sqlr->Values, column) == NULL)
-	return ajFalse;
-    
-    else
-	return ajTrue;
+        return ajFalse;
+
+    return ajTrue;
 }
 
 
@@ -3195,7 +3567,7 @@ AjBool ajSqlcolumnNumberIsDefined(const AjPSqlrow sqlr, ajuint column)
 **
 ** FIXME: Should we rename this to AjPArrayVoid? All the other arrays should be
 ** renamed as well? AjPLong should be an alias for ajlong *, while
-** AjPArrayLong would be the AJAX Array holding AJAX Long Integer values?? 
+** AjPArrayLong would be the AJAX Array holding AJAX Long Integer values??
 */
 
 #define RESERVED_SIZE 32
@@ -3243,19 +3615,19 @@ AjBool ajSqlcolumnNumberIsDefined(const AjPSqlrow sqlr, ajuint column)
 AjPVoid ajVoidNew(void)
 {
     AjPVoid thys = NULL;
-    
+
     AJNEW0(thys);
-    
+
     thys->Ptr = AJALLOC0(RESERVED_SIZE * sizeof(void *));
     thys->Len = 0;
     thys->Res = RESERVED_SIZE;
-    
+
     /*
     ** FIXME: This works only in ajarr.c
     arrTotal++;
     arrAlloc += RESERVED_SIZE * sizeof(void *);
     */
-    
+
     return thys;
 }
 
@@ -3276,21 +3648,21 @@ AjPVoid ajVoidNew(void)
 AjPVoid ajVoidNewRes(ajuint size)
 {
     AjPVoid thys = NULL;
-    
+
     size = ajRound(size, RESERVED_SIZE);
-    
+
     AJNEW0(thys);
-    
+
     thys->Ptr = AJALLOC0(size * sizeof(void *));
     thys->Len = 0;
     thys->Res = size;
-    
+
     /*
     ** FIXME: This works only in ajarr.c
     arrTotal++;
     arrAlloc += size * sizeof(void *);
     */
-    
+
     return thys;
 }
 
@@ -3331,21 +3703,21 @@ AjPVoid ajVoidNewRes(ajuint size)
 void ajVoidDel(AjPVoid *thys)
 {
     if(!thys || !*thys)
-	return;
-    
+        return;
+
     /*ajDebug("ajVoidDel Len %u Res %u\n",
-    (*thys)->Len, (*thys)->Res);*/
-    
+      (*thys)->Len, (*thys)->Res);*/
+
     AJFREE((*thys)->Ptr);
     AJFREE(*thys);
-    
+
     *thys = NULL;
-    
+
     /*
     ** FIXME: This works only in ajarr.c
     arrFreeCount++;
     */
-    
+
     return;
 }
 
@@ -3388,8 +3760,8 @@ void ajVoidDel(AjPVoid *thys)
 void* ajVoidGet(const AjPVoid thys, ajuint elem)
 {
     if(!thys || elem >= thys->Len)
-	ajErr("Attempt to access bad Pointer array index %d\n", elem);
-    
+        ajErr("Attempt to access bad Pointer array index %d\n", elem);
+
     return thys->Ptr[elem];
 }
 
@@ -3436,22 +3808,22 @@ void* ajVoidGet(const AjPVoid thys, ajuint elem)
 AjBool ajVoidPut(AjPVoid *thys, ajuint elem, void *v)
 {
     if(!thys || !*thys)
-	ajErr("Attempt to write to illegal array value %d\n", elem);
-    
+        ajErr("Attempt to write to illegal array value %d\n", elem);
+
     if(elem < (*thys)->Res)
     {
-	if(elem >= (*thys)->Len)
-	    (*thys)->Len = elem + 1;
-	
-	(*thys)->Ptr[elem] = v;
+        if(elem >= (*thys)->Len)
+            (*thys)->Len = elem + 1;
 
-	return ajFalse;
+        (*thys)->Ptr[elem] = v;
+
+        return ajFalse;
     }
-    
+
     arrVoidResize(thys, elem);
-    
+
     (*thys)->Ptr[elem] = v;
-    
+
     return ajTrue;
 }
 
@@ -3479,38 +3851,38 @@ static AjBool arrVoidResize(AjPVoid *thys, ajuint size)
     ajuint    s;
     ajuint    clen;
     ajuint    limit;
-    
-    
+
+
     if(!thys || !*thys)
-	ajErr("Illegal attempt to resize void pointer array");
-    
+        ajErr("Illegal attempt to resize void pointer array");
+
     clen = ajRound((*thys)->Len - 1, RESERVED_SIZE);
     s = ajRound(size + 1, RESERVED_SIZE);
     if(s <= clen)
-	return ajFalse;
-    
+        return ajFalse;
+
     /*ajDebug("ajVoidResize %d (%d) -> %d (%d)\n",
-	(*thys)->Len, clen, size, s);*/
-    
+      (*thys)->Len, clen, size, s);*/
+
     p = *thys;
-    
+
     *thys = ajVoidNewRes(s);
-    
+
     if(size < p->Len)
-	limit = size + 1;
+        limit = size + 1;
     else
-	limit = p->Len;
-    
+        limit = p->Len;
+
     memmove((*thys)->Ptr, p->Ptr, limit * sizeof(void *));
-    
+
     (*thys)->Len = size + 1;
-    
+
     ajVoidDel(&p);
-    
+
     /*
     ** FIXME: This works only in ajarr.c
     arrResize++;
     */
-    
+
     return ajTrue;
 }
