@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -776,6 +776,41 @@ AjPSqlstatement ensDatabaseadaptorSqlstatementNew(EnsPDatabaseadaptor dba,
 
     return ensDatabaseconnectionSqlstatementNew(dba->Databaseconnection,
                                                 statement);
+}
+
+
+
+
+/* @func ensDatabaseadaptorSqlstatementDel ************************************
+**
+** Delete an AJAX SQL Statement associated with an
+** Ensembl Database Adaptor.
+**
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+** @param [d] Psqls [AjPSqlstatement*] AJAX SQL Statement address
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensDatabaseadaptorSqlstatementDel(EnsPDatabaseadaptor dba,
+                                         AjPSqlstatement *Psqls)
+{
+    if(!dba)
+        return ajFalse;
+
+    if(!Psqls)
+        return ajFalse;
+
+    if(ajDebugTest("ensDatabaseadaptorSqlstatementDel"))
+        ajDebug("ensDatabaseadaptorSqlstatementDel\n"
+                "  dba %p\n"
+                "  PSqls %p\n",
+                dba,
+                Psqls);
+
+    return ensDatabaseconnectionSqlstatementDel(dba->Databaseconnection,
+                                                Psqls);
 }
 
 

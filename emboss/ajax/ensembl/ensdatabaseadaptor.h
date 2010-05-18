@@ -157,6 +157,9 @@ AjBool ensDatabaseadaptorMatchComponents(const EnsPDatabaseadaptor dba,
 AjPSqlstatement ensDatabaseadaptorSqlstatementNew(EnsPDatabaseadaptor dba,
                                                   const AjPStr statement);
 
+AjBool ensDatabaseadaptorSqlstatementDel(EnsPDatabaseadaptor dba,
+                                         AjPSqlstatement *Psqls);
+
 AjBool ensDatabaseadaptorEscapeC(EnsPDatabaseadaptor dba,
                                  char **Ptxt,
                                  const AjPStr str);
