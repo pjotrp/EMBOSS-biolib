@@ -28,8 +28,10 @@ extern "C"
 ** @attr HostPort [AjPStr] Host TCP/IP port
 ** @attr SocketFile [AjPStr] UNIX socket file
 ** @attr DatabaseName [AjPStr] SQL database name
+** @attr AutoDisconnect [AjBool] Automatic disconnections
 ** @attr SqlClientType [AjESqlClient] AJAX SQL client type
 ** @attr Use [ajuint] Use counter
+** @attr Padding [ajuint] Padding to alignment boundary
 **
 ** @@
 ******************************************************************************/
@@ -43,8 +45,10 @@ typedef struct EnsSDatabaseconnection
     AjPStr HostPort;
     AjPStr SocketFile;
     AjPStr DatabaseName;
+    AjBool AutoDisconnect;
     AjESqlClient SqlClientType;
     ajuint Use;
+    ajuint Padding;
 } EnsODatabaseconnection;
 
 #define EnsPDatabaseconnection EnsODatabaseconnection*
@@ -86,8 +90,14 @@ AjPStr ensDatabaseconnectionGetSocketFile(const EnsPDatabaseconnection dbc);
 
 AjPStr ensDatabaseconnectionGetDatabaseName(const EnsPDatabaseconnection dbc);
 
+AjBool ensDatabaseconnectionGetAutoDisconnect(
+    const EnsPDatabaseconnection dbc);
+
 AjESqlClient ensDatabaseconnectionGetSqlClientType(
     const EnsPDatabaseconnection dbc);
+
+AjBool ensDatabaseconnectionSetAutoDisconnect(EnsPDatabaseconnection dbc,
+                                              AjBool autodisconnect);
 
 AjBool ensDatabaseconnectionMatch(const EnsPDatabaseconnection dbc1,
                                   const EnsPDatabaseconnection dbc2);
@@ -98,8 +108,13 @@ void ensDatabaseconnectionDisconnect(EnsPDatabaseconnection dbc);
 
 AjBool ensDatabaseconnectionIsConnected(const EnsPDatabaseconnection dbc);
 
-AjPSqlstatement ensDatabaseconnectionSqlstatementNew(EnsPDatabaseconnection dbc,
-                                                     const AjPStr statement);
+AjPSqlstatement ensDatabaseconnectionSqlstatementNew(
+    EnsPDatabaseconnection dbc,
+    const AjPStr statement);
+
+AjBool ensDatabaseconnectionSqlstatementDel(
+    EnsPDatabaseconnection dbc,
+    AjPSqlstatement *Psqls);
 
 AjBool ensDatabaseconnectionEscapeC(EnsPDatabaseconnection dbc,
                                     char **Ptxt,
