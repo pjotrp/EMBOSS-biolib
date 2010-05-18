@@ -84,7 +84,7 @@ static AjPSqlconnection sqlconnectionPostgresqlNewData(
     AjBool debug);
 
 AjPSqlstatement sqlstatementPostgresqlNewRun(AjPSqlconnection sqlc,
-                                             const AjPstr statement,
+                                             const AjPStr statement,
                                              AjBool debug);
 
 #endif /* HAVE_POSTGRESQL */
@@ -1319,7 +1319,7 @@ static AjPSqlstatement sqlstatementMysqlNewRun(AjPSqlconnection sqlc,
 ******************************************************************************/
 
 AjPSqlstatement sqlstatementPostgresqlNewRun(AjPSqlconnection sqlc,
-                                             const AjPstr statement,
+                                             const AjPStr statement,
                                              AjBool debug)
 {
     AjPSqlstatement sqls = NULL;
