@@ -636,13 +636,13 @@ AjPSqlconnection ajSqlconnectionNewData(AjESqlClient client,
 
 #ifdef HAVE_POSTGRESQL
 
-            sqlc = sqlconnectionMysqlNewData(user,
-                                             password,
-                                             host,
-                                             port,
-                                             socketfile,
-                                             database,
-                                             debug);
+            sqlc = sqlconnectionPostgresqlNewData(user,
+                                                  password,
+                                                  host,
+                                                  port,
+                                                  socketfile,
+                                                  database,
+                                                  debug);
 
 #else
 
