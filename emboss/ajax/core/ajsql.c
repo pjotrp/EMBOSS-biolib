@@ -49,6 +49,7 @@
 
 static ajlong sqlconnectionTotalCount = 0;
 static ajlong sqlconnectionFreeCount  = 0;
+static ajlong sqlconnectionErrorCount = 0;
 static ajlong sqlstatementTotalCount  = 0;
 static ajlong sqlstatementFreeCount   = 0;
 static ajlong sqlstatementErrorCount  = 0;
@@ -83,9 +84,9 @@ static AjPSqlconnection sqlconnectionPostgresqlNewData(
     const AjPStr database,
     AjBool debug);
 
-AjPSqlstatement sqlstatementPostgresqlNewRun(AjPSqlconnection sqlc,
-                                             const AjPStr statement,
-                                             AjBool debug);
+static AjPSqlstatement sqlstatementPostgresqlNewRun(AjPSqlconnection sqlc,
+                                                    const AjPStr statement,
+                                                    AjBool debug);
 
 #endif /* HAVE_POSTGRESQL */
 
@@ -196,9 +197,10 @@ void ajSqlExit(void)
 #ifdef AJ_SAVESTATS
 
     ajDebug("SQL Connection usage: "
-            "%Ld opened, %Ld closed, %Ld in use\n",
+            "%Ld opened, %Ld closed, %Ld in use, %Ld failed\n",
             sqlconnectionTotalCount,  sqlconnectionFreeCount,
-            sqlconnectionTotalCount - sqlconnectionFreeCount);
+            sqlconnectionTotalCount - sqlconnectionFreeCount,
+            sqlconnectionErrorCount);
 
     ajDebug("SQL Statement usage: "
             "%Ld opened, %Ld closed, %Ld in use, %Ld failed\n",
@@ -280,8 +282,8 @@ static AjPSqlconnection sqlconnectionMysqlNewData(
 
     if(Pmysql == NULL)
     {
-        ajDebug("sqlconnectionMysqlNewData MySQL connection object "
-                "initialisation via mysql_init failed.\n");
+        ajWarn("sqlconnectionMysqlNewData MySQL connection object "
+               "initialisation via mysql_init failed.\n");
 
         return NULL;
     }
@@ -330,6 +332,12 @@ static AjPSqlconnection sqlconnectionMysqlNewData(
                 mysql_error(Pmysql));
 
         mysql_close(Pmysql);
+
+#if AJ_SAVESTATS
+
+        sqlconnectionErrorCount++;
+
+#endif /* AJ_SAVESTATS */
     }
 
     return sqlc;
@@ -463,8 +471,8 @@ static AjPSqlconnection sqlconnectionPostgresqlNewData(
 
     if(Ppgconn == NULL)
     {
-        ajDebug("sqlconnectionPostgresqlNewData PostgreSQL connection object "
-                "initialisation via PQconnectdb failed.\n");
+        ajWarn("sqlconnectionPostgresqlNewData PostgreSQL connection object "
+               "initialisation via PQconnectdb failed.\n");
 
         return NULL;
     }
@@ -499,6 +507,12 @@ static AjPSqlconnection sqlconnectionPostgresqlNewData(
                     PQerrorMessage(Ppgconn));
 
             PQfinish(Ppgconn);
+
+#if AJ_SAVESTATS
+
+            sqlconnectionErrorCount++;
+
+#endif /* AJ_SAVESTATS */
 
             break;
 
@@ -1193,14 +1207,18 @@ static AjPSqlstatement sqlstatementMysqlNewRun(AjPSqlconnection sqlc,
                         ajStrGetPtr(statement),
                         (unsigned long) ajStrGetLen(statement)))
     {
-        ajDebug("sqlstatementMysqlNewRun encountered an error upon "
-                "calling mysql_real_query.\n"
-                "  statement: %S\n"
-                "  MySQL error: %s\n",
-                statement,
-                mysql_error(Pmysql));
+        ajWarn("sqlstatementMysqlNewRun encountered an "
+               "error upon calling mysql_real_query.\n"
+               "  statement: %S\n"
+               "  MySQL error: %s\n",
+               statement,
+               mysql_error(Pmysql));
+
+#if AJ_SAVESTATS
 
         sqlstatementErrorCount++;
+
+#endif /* AJ_SAVESTATS */
 
         return NULL;
     }
@@ -1237,8 +1255,8 @@ static AjPSqlstatement sqlstatementMysqlNewRun(AjPSqlconnection sqlc,
         sqls->Use = 1;
 
         if(debug)
-            ajDebug("ajSqlstatementNewRun MySQL selected rows %Lu "
-                    "columns %u\n",
+            ajDebug("ajSqlstatementNewRun MySQL selected "
+                    "%Lu rows and %u columns.\n",
                     sqls->SelectedRows,
                     sqls->Columns);
     }
@@ -1256,21 +1274,25 @@ static AjPSqlstatement sqlstatementMysqlNewRun(AjPSqlconnection sqlc,
             ** result.
             */
 
-            ajDebug("ajSqlstatementNewRun encountered an error upon "
-                    "calling mysql_store_result.\n"
-                    "  statement: %S\n"
-                    "  MySQL error: %s\n",
-                    statement,
-                    mysql_error(Pmysql));
+            ajWarn("sqlstatementMysqlNewRun encountered an "
+                   "error upon calling mysql_store_result.\n"
+                   "  statement: %S\n"
+                   "  MySQL error: %s\n",
+                   statement,
+                   mysql_error(Pmysql));
+
+#if AJ_SAVESTATS
 
             sqlstatementErrorCount++;
+
+#endif /* AJ_SAVESTATS */
         }
         else
         {
             /*
             ** The SQL statement was not expected to return a (MYSQL_RES*)
             ** result, hence create an AJAX SQL Statement object and set the
-            ** number rows affected by teh SQL statement.
+            ** number rows affected by the SQL statement.
             */
 
             AJNEW0(sqls);
@@ -1288,7 +1310,8 @@ static AjPSqlstatement sqlstatementMysqlNewRun(AjPSqlconnection sqlc,
             sqls->Use = 1;
 
             if(debug)
-                ajDebug("ajSqlstatementNewRun MySQL affected rows %Lu\n",
+                ajDebug("ajSqlstatementNewRun MySQL affected "
+                        "%Lu rows.\n",
                         sqls->AffectedRows);
         }
     }
@@ -1318,9 +1341,9 @@ static AjPSqlstatement sqlstatementMysqlNewRun(AjPSqlconnection sqlc,
 ** @@
 ******************************************************************************/
 
-AjPSqlstatement sqlstatementPostgresqlNewRun(AjPSqlconnection sqlc,
-                                             const AjPStr statement,
-                                             AjBool debug)
+static AjPSqlstatement sqlstatementPostgresqlNewRun(AjPSqlconnection sqlc,
+                                                    const AjPStr statement,
+                                                    AjBool debug)
 {
     AjPSqlstatement sqls = NULL;
 
@@ -1340,8 +1363,9 @@ AjPSqlstatement sqlstatementPostgresqlNewRun(AjPSqlconnection sqlc,
     Ppgconn = (PGconn *) sqlc->Pconnection;
 
     if(!Ppgconn)
-        ajFatal("ajSqlstatementNewRun got AJAX SQL Connection without "
-                "PostgreSQL client library-specific connection object.");
+        ajFatal("sqlstatementPostgresqlNewRun got AJAX SQL Connection without "
+                "PostgreSQL client library-specific (PGconn *) connection "
+                "object.");
 
     Ppgresult = PQexec(Ppgconn, ajStrGetPtr(statement));
 
@@ -1351,12 +1375,18 @@ AjPSqlstatement sqlstatementPostgresqlNewRun(AjPSqlconnection sqlc,
         {
             case PGRES_EMPTY_QUERY:
 
-                ajDebug("ajSqlstatementNewRun PostgreSQL reported empty "
-                        "statement string.\n");
+                ajDebug("sqlstatementPostgresqlNewRun PostgreSQL reported an "
+                        "empty statement string.\n"
+                        "  statement: %S\n",
+                        statement);
 
                 PQclear(Ppgresult);
 
+#if AJ_SAVESTATS
+
                 sqlstatementErrorCount++;
+
+#endif /* AJ_SAVESTATS */
 
                 break;
 
@@ -1373,29 +1403,27 @@ AjPSqlstatement sqlstatementPostgresqlNewRun(AjPSqlconnection sqlc,
 
                 sqls->Sqlconnection = ajSqlconnectionNewRef(sqlc);
 
-                sqls->Presult = NULL;
+                sqls->Presult = (void *) Ppgresult;
 
                 /* FIXME: An ajStrToUlong function is missing from AJAX. */
 
-                if(ajStrToLong(affected, (ajlong *) &sqls->AffectedRows))
-                {
-                    sqls->SelectedRows = 0;
-
-                    sqls->Columns = 0;
-
-                    sqls->Use = 1;
-
-                    if(debug)
-                        ajDebug("ajSqlstatementNewRun PostgreSQL affected "
-                                "rows %Lu\n",
-                                sqls->AffectedRows);
-                }
-                else
+                if(!ajStrToLong(affected, (ajlong *) &sqls->AffectedRows))
                     ajWarn("sqlstatementPostgresqlNewRun could not parse "
                            "'%S' into an AJAX unsigned long integer.",
                            affected);
 
+                sqls->SelectedRows = 0;
+
+                sqls->Columns = 0;
+
+                sqls->Use = 1;
+
                 ajStrDel(&affected);
+
+                if(debug)
+                    ajDebug("ajSqlstatementNewRun PostgreSQL affected "
+                            "%Lu rows.\n",
+                            sqls->AffectedRows);
 
                 break;
 
@@ -1419,7 +1447,7 @@ AjPSqlstatement sqlstatementPostgresqlNewRun(AjPSqlconnection sqlc,
 
                 if(debug)
                     ajDebug("ajSqlstatementNewRun PostgreSQL selected "
-                            "rows %Lu columns %u\n",
+                            "%Lu rows and %u columns.\n",
                             sqls->SelectedRows,
                             sqls->Columns);
 
@@ -1427,40 +1455,53 @@ AjPSqlstatement sqlstatementPostgresqlNewRun(AjPSqlconnection sqlc,
 
             case PGRES_FATAL_ERROR:
 
-                ajDebug("ajSqlstatementNewRun encountered an error upon "
-                        "calling PQexec.\n"
-                        "  statement: %S\n"
-                        "  PostgreSQL error: %s\n",
-                        statement,
-                        PQresultErrorMessage(Ppgresult));
+                ajWarn("sqlstatementPostgresqlNewRun encountered an "
+                       "error upon calling PQexec.\n"
+                       "  statement: %S\n"
+                       "  PostgreSQL error: %s\n",
+                       statement,
+                       PQresultErrorMessage(Ppgresult));
 
                 PQclear(Ppgresult);
 
+#if AJ_SAVESTATS
+
                 sqlstatementErrorCount++;
+
+#endif /* AJ_SAVESTATS */
 
                 break;
 
             default:
 
-                ajDebug("ajSqlstatementNewRun PostgreSQL returned an "
-                        "unexpected status: %s\n",
+                ajDebug("sqlstatementPostgresqlNewRun encountered an "
+                        "unexpected status upon calling PQexec.\n"
+                        "  PostgreSQL status: %s\n",
                         PQresStatus(PQresultStatus(Ppgresult)));
 
                 PQclear(Ppgresult);
 
+#if AJ_SAVESTATS
+
                 sqlstatementErrorCount++;
+
+#endif /* AJ_SAVESTATS */
         }
     }
     else
     {
-        ajDebug("ajSqlstatementNewRun encountered an error upon "
-                "calling PQexec.\n"
-                "  statement: %S"
-                "  PostgreSQL error: %s\n",
-                statement,
-                PQerrorMessage(Ppgconn));
+        ajWarn("sqlstatementPostgresqlNewRun encountered an "
+               "error upon calling PQexec.\n"
+               "  statement: %S"
+               "  PostgreSQL error: %s\n",
+               statement,
+               PQerrorMessage(Ppgconn));
+
+#if AJ_SAVESTATS
 
         sqlstatementErrorCount++;
+
+#endif /* AJ_SAVESTATS */
     }
 
     return sqls;
@@ -2295,6 +2336,7 @@ AjBool ajSqlrowiterRewind(AjISqlrow sqli)
             break;
 
         default:
+
             ajDebug("ajSqlrowiterRewind AJAX SQL Connection client %d "
                     "not supported.\n",
                     sqli->Sqlstatement->Sqlconnection->Client);
