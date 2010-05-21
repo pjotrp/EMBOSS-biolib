@@ -835,7 +835,7 @@ AjBool ajTaxLoad(AjPDir taxdir)
             if(!ajStrToUint(idstr, &taxid))
             ajWarn("%F line %u: invalid taxid '%S'",
                    infile, linecnt, idstr);
-            tax =  (AjPTax) ajTableFetch(taxidtable, (const void*)((ajlong)taxid));
+            tax =  ajTableFetch(taxidtable, (const void*) taxid);
             if(!tax)
                 ajWarn("%F line %u: unknown taxon id '%u' '%S' '%S''",
                        infile, linecnt, taxid, idstr, tmpstr);
