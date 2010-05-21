@@ -8534,7 +8534,6 @@ static AjBool seqReadAce(AjPSeq thys, AjPSeqin seqin)
     ajuint iseq;
     AjPTable acetable        = NULL;
     SeqPMsfItem aceitem      = NULL;
-    AjPList acelist          = NULL;
     SeqPMsfData acedata      = NULL;
     ajuint i;
 
@@ -8570,7 +8569,6 @@ static AjBool seqReadAce(AjPSeq thys, AjPSeqin seqin)
 
         seqin->Data = AJNEW0(acedata);
         acedata->Table = acetable = ajTablestrNew();
-        acelist = ajListstrNew();
         seqin->Filecount = 0;
 
         /*
@@ -9812,7 +9810,6 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
     AjPSeqDesc descmaster = NULL;
     AjPSeqSubdesc subdesc = NULL;
     AjBool descistop = ajTrue;
-    AjBool subdescalt = ajFalse;
     AjBool isdescflag = ajFalse;
     AjPStr *Pdescstr = NULL;
     AjPStr newdescstr = NULL;
@@ -9820,7 +9817,6 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
     ajuint refnum;
     AjBool isnewgene = ajFalse;
     AjBool isgenetoken = ajFalse;
-    ajuint taxid;
     AjIList iter;
     AjIList itb;
     AjIList itc;
@@ -9943,7 +9939,6 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
                     {
                         subdesc = ajSeqsubdescNew();
                         descistop = ajFalse;
-                        subdescalt = ajTrue;
                         Pdescstr = &subdesc->Name;
                         ajListPushAppend(descmaster->AltNames, subdesc);
                     }
@@ -9951,7 +9946,6 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
                     {
                         subdesc = ajSeqsubdescNew();
                         descistop = ajFalse;
-                        subdescalt = ajFalse;
                         Pdescstr = &subdesc->Name;
                         ajListPushAppend(descmaster->SubNames, subdesc);
                    }
@@ -10869,8 +10863,6 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
 
     ajSeqreflistGetXrefs(thys->Reflist, &thys->Xreflist);
 
-    taxid = ajSeqGetTaxid(thys);
-
     ajFilebuffClear(buff, 0);
     ajStrDel(&token);
     ajStrDel(&datestr);
@@ -11538,7 +11530,6 @@ static AjBool seqReadExperiment(AjPSeq thys, AjPSeqin seqin)
     ajuint i;
     ajint  ja;
     ajuint ilen;
-    AjBool avok;
 
     buff = seqin->Filebuff;
 
@@ -11744,7 +11735,6 @@ static AjBool seqReadExperiment(AjPSeq thys, AjPSeqin seqin)
         }
 
 	ajStrTokenAssignC(&handle, accvalstr, " ");
-	avok = ajTrue;
 
 	for(i=0;i<ilen;i++)
 	{
@@ -11753,7 +11743,6 @@ static AjBool seqReadExperiment(AjPSeq thys, AjPSeqin seqin)
 	    {
 		ajWarn("Missing accuracy for base %d in experiment format\n",
 		       i+1);
-		avok = ajFalse;
 		break;
 	    }
 
@@ -11771,7 +11760,6 @@ static AjBool seqReadExperiment(AjPSeq thys, AjPSeqin seqin)
 		    ajWarn("Bad accuracy '%S' for base %d "
 			   "in experiment format\n",
 			   token, i+1);
-		    avok = ajFalse;
 		    break;
 		}
 	    }

@@ -157,20 +157,16 @@ static const char *nodeinfo[] =
 static void domRemoveFromMap(AjPDomNodeList list, const AjPDomNode key)
 {
     AjPDomNode trukey;
-    AjPDomNodeEntry val;
+
     if(!list->table)
 	return;
-
-    val = ajTableRemoveKey(list->table,key, (void**) &trukey);
 
     /*
     ** don't free the values, just remove them from the map
     ** if(val)
-    ** {
-    ** 	   AJFREE(val);
-    **     AJFREE(trukey);
-    ** }
     */
+    
+    ajTableRemoveKey(list->table, key, (void**) &trukey);
 
     return;
 }
@@ -553,7 +549,6 @@ AjPDomNodeEntry ajDomNodeListRemove(AjPDomNodeList list, AjPDomNode child)
 {
     AjPDomNodeEntry e;
     AjPDomNode trukey;
-    AjPDomNodeEntry val;
 
     if(!list)
     {
@@ -572,15 +567,12 @@ AjPDomNodeEntry ajDomNodeListRemove(AjPDomNodeList list, AjPDomNode child)
     if(!e)
 	return NULL;
 
-    val = ajTableRemoveKey(list->table,child, (void**) &trukey);
-
     /*
     ** Don't delete the key/value - just remove them from the lookup
     ** table. The value is still required
-    **
-    **    AJFREE(val);
-    **    AJFREE(trukey);
     */
+
+    ajTableRemoveKey(list->table,child, (void**) &trukey);
 
     if(list->first == list->last)
     {
@@ -1045,7 +1037,7 @@ AjPDomDocument ajDomImplementationCreateDocumentC(const char *uri,
     AjPDomDocument doc     = NULL;
     AjPDomElement  element = NULL;
 
-    uri = NULL;
+    (void) uri;
 
     if(!(doc = ajDomDocumentCreateNode(NULL,AJDOM_DOCUMENT_NODE)))
     {
@@ -3921,7 +3913,7 @@ static void domExpatEnd(void *udata, const XML_Char *name)
     
     ajListPop(userdata->Stack, (void **)&node);
 
-    name = NULL;
+    (void) name;
     
     return;
 }
@@ -4204,7 +4196,7 @@ static void domExpatDoctypeStart(void *udata, const XML_Char *doctypename,
     AjPDomDocument doc      = NULL;
     AjPDomDocumentType type = NULL;
 
-    hasinternalsubset = 0;
+    (void) hasinternalsubset;
 
 
     if(!udata)
@@ -4321,12 +4313,12 @@ static void domExpatAttlist(void *udata, const XML_Char *name,
                             const XML_Char *attname, const XML_Char *atttype,
                             const XML_Char *deflt, int isrequired)
 {
-    udata = NULL;
-    name  = NULL;
-    attname = NULL;
-    atttype = NULL;
-    deflt = NULL;
-    isrequired = 0;
+    (void) udata;
+    (void) name;
+    (void) attname;
+    (void) atttype;
+    (void) deflt;
+    (void) isrequired;
 
     return;
 }
@@ -4361,7 +4353,7 @@ static void domExpatEntity(void *udata, const XML_Char *entityname, int isparam,
     AjPDomDocumentType doctype = NULL;
     AjPDomEntity entity = NULL;
 
-    base = NULL;
+    (void) base;
     
     if(isparam)
         return;
@@ -4421,7 +4413,7 @@ static void domExpatNotation(void *udata, const XML_Char *notname,
     AjPDomDocumentType doctype = NULL;
     AjPDomNotation notation = NULL;
 
-    base = NULL;
+    (void) base;
     
     if(!udata)
         return;

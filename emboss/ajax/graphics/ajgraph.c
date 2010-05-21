@@ -3635,7 +3635,6 @@ PLFLT ajGraphicsCalcCharsize(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
     PLFLT origcharsize;
     PLFLT origcharht;
     PLFLT newcharsize;
-    ajint loopcount = 0;
     PLFLT wx1 = 0.0;
     PLFLT wx2 = 0.0;
     PLFLT wy1 = 0.0;
@@ -3662,8 +3661,6 @@ PLFLT ajGraphicsCalcCharsize(PLFLT xx1, PLFLT yy1, PLFLT xx2, PLFLT yy2,
 
     if(origStringLength > distpts)
         newcharsize = newcharsize * distpts/origStringLength;
-
-    loopcount = 0;
 
     ajDebug("ajGraphicsCalcCharsize returns charsize %f\n", newcharsize);
     ajGraphicsSetCharsize(origcharsize);
