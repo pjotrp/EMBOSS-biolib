@@ -544,7 +544,7 @@ AjPRange ajRangeNewStringLimits(const AjPStr str, ajuint imin, ajuint imax,
 	    cp = ajStrGetPtr(c2);
 	    p = ajSysFuncStrtok(cp, nondigit);
 
-	    if(!sscanf(p,"%d",&f))
+	    if(!sscanf(p,"%u",&f))
 	    {
 		ajWarn("Bad range value [%s]",p);
 		ajRangeDel(&ret);
@@ -554,7 +554,7 @@ AjPRange ajRangeNewStringLimits(const AjPStr str, ajuint imin, ajuint imax,
 
 	    p = ajSysFuncStrtok(NULL, nondigit);
 
-	    if(!sscanf(p,"%d",&t))
+	    if(!sscanf(p,"%u",&t))
 	    {
 		ajWarn("Bad range value [%s]",p);
 		ajRangeDel(&ret);
@@ -593,7 +593,7 @@ AjPRange ajRangeNewStringLimits(const AjPStr str, ajuint imin, ajuint imax,
 	    {
 		p = ajSysFuncStrtok(NULL, nondigit);
 
-		if(!sscanf(p,"%d",&f))
+		if(!sscanf(p,"%u",&f))
 		{
 		    ajWarn("Bad range value [%s]",p);
 		    ajRangeDel(&ret);
@@ -603,7 +603,7 @@ AjPRange ajRangeNewStringLimits(const AjPStr str, ajuint imin, ajuint imax,
 
 		p = ajSysFuncStrtok(NULL, nondigit);
 
-		if(!sscanf(p,"%d",&t))
+		if(!sscanf(p,"%u",&t))
 		{
 		    ajWarn("Bad range value [%s]",p);
 		    ajRangeDel(&ret);

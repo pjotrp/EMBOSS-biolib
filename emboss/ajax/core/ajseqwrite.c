@@ -7752,12 +7752,12 @@ static void seqWriteSeq(AjPSeqout outseq, const SeqPSeqFormat sf)
     /* if(sf->numline) numline = 1;*/
     
     if(sf->nameleft || sf->nameright)
-	sprintf(nameform, "%%%d.%ds ",sf->namewidth,sf->namewidth);
+	sprintf(nameform, "%%%u.%us ",sf->namewidth,sf->namewidth);
 
     if(sf->numline)
-	sprintf(numform, "%%%ds ",sf->numwidth);
+	sprintf(numform, "%%%us ",sf->numwidth);
     else
-	sprintf(numform, "%%%dd",sf->numwidth);
+	sprintf(numform, "%%%ud",sf->numwidth);
     
     strcpy( nocountsymbols, defNocountSymbols);
 
@@ -7832,7 +7832,7 @@ static void seqWriteSeq(AjPSeqout outseq, const SeqPSeqFormat sf)
 	    if(l1 % 10 == 1 || l1 == width)
 	    {
 		if(sf->numline)
-                    fprintf(outf,"%-9d ",i+1);
+                    fprintf(outf,"%-9u ",i+1);
 
 		s[l++]= '|';		/* == put a number here */
 	    }

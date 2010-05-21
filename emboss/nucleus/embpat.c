@@ -842,13 +842,13 @@ AjBool embPatRestrictReadEntry(EmbPPatRestrict re, AjPFile inf)
     p = ajSysFuncStrtok(NULL,"\t \n");
     if(!p)
       return ajFalse;
-    if(!sscanf(p,"%d",&re->len))
+    if(!sscanf(p,"%u",&re->len))
       return ajFalse;
 
     p = ajSysFuncStrtok(NULL,"\t \n");
     if(!p)
       return ajFalse;
-    if(!sscanf(p,"%d",&re->ncuts))
+    if(!sscanf(p,"%u",&re->ncuts))
       return ajFalse;
 
     p = ajSysFuncStrtok(NULL,"\t \n");
@@ -2011,7 +2011,7 @@ static AjBool patParenTest(const char *p, AjBool *repeat, AjBool *range)
     *repeat = ajTrue;
     p = p+2;
 
-    if(sscanf(p,"%d",&i)!=1)
+    if(sscanf(p,"%u",&i)!=1)
     {
 	ajWarn("Illegal pattern. Missing repeat number");
 
@@ -2036,7 +2036,7 @@ static AjBool patParenTest(const char *p, AjBool *repeat, AjBool *range)
 	    *range = ajTrue;
 	    ++p;
 
-	    if(sscanf(p,"%d",&i)!=1)
+	    if(sscanf(p,"%u",&i)!=1)
 	    {
 		ajWarn("Illegal pattern. Missing range number");
 
@@ -2094,7 +2094,7 @@ static AjBool patExpandRepeat(AjPStr *s)
 	    if(*(p+1)!='(')
 		count = 1;
 	    else
-		sscanf(p+2,"%d",&count);
+		sscanf(p+2,"%u",&count);
 
 	    if(count<=0)
 	    {
@@ -2126,7 +2126,7 @@ static AjBool patExpandRepeat(AjPStr *s)
 
 	if(*p=='(')
 	{
-	    sscanf(p+1,"%d",&count);
+	    sscanf(p+1,"%u",&count);
 
 	    if(count<=0)
 	    {
@@ -3280,9 +3280,9 @@ static AjBool patBruteIsRange(const char *t, ajuint *x, ajuint *y)
     {
 	if(*(t+1)=='(')
 	{
-	    if(sscanf(t+2,"%d,%d",x,y)!=2)
+	    if(sscanf(t+2,"%u,%u",x,y)!=2)
 	    {
-		sscanf(t+2,"%d",x);
+		sscanf(t+2,"%u",x);
 		*y=*x;
 	    }
 
@@ -3301,9 +3301,9 @@ static AjBool patBruteIsRange(const char *t, ajuint *x, ajuint *y)
 
 	if(*(u+1)=='(')
 	{
-	    if(sscanf(u+2,"%d,%d",x,y)!=2)
+	    if(sscanf(u+2,"%u,%u",x,y)!=2)
 	    {
-		sscanf(u+2,"%d",x);
+		sscanf(u+2,"%u",x);
 		*y = *x;
 	    }
 
@@ -3317,9 +3317,9 @@ static AjBool patBruteIsRange(const char *t, ajuint *x, ajuint *y)
 
     if(*(u+1)=='(')
     {
-	if(sscanf(u+2,"%d,%d",x,y)!=2)
+	if(sscanf(u+2,"%u,%u",x,y)!=2)
 	{
-	    sscanf(u+2,"%d",x);
+	    sscanf(u+2,"%u",x);
 	    *y = *x;
 	}
 
