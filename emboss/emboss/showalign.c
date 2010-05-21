@@ -1017,7 +1017,6 @@ static const AjPStr showalign_OutputNums(ajint nrefseq, const AjPSeq ref,
     AjPStr line;
     ajuint i;
     ajuint j;
-    AjPStr marginfmt;
     const AjPStr refstr = ajSeqGetSeqS(ref);
     ajint iwidth;
     ajuint iend;
@@ -1027,7 +1026,6 @@ static const AjPStr showalign_OutputNums(ajint nrefseq, const AjPSeq ref,
     iend = ajStrGetLen(refstr);
     
     line      = ajStrNewRes(iend+margin+1); /* line of numbers to print */
-    marginfmt = ajStrNewRes(10);
 
     if(nrefseq == -1)           /* simple consensus */
     {
@@ -1085,9 +1083,12 @@ static const AjPStr showalign_OutputNums(ajint nrefseq, const AjPSeq ref,
             }
         }
     }
+
     if(iwidth)
         ajStrAppendCountK(&line, ' ', iwidth);
+
     ajStrDel(&numstr);
+
     return line;
 }
 

@@ -6691,7 +6691,6 @@ static AjBool seqAccessMart(AjPSeqin seqin)
     AjPStr proxyName = NULL;		/* host for proxy access.*/
     AjPStr httpver   = NULL;	      /* HTTP version 1.0, 1.1, ... */
     ajint iport;
-    ajint proxyPort;
     AjPSeqQuery qry;
     AjPStr searchdb = NULL;
 
@@ -6728,7 +6727,6 @@ static AjBool seqAccessMart(AjPSeqin seqin)
     */
 
     iport = 80;
-    proxyPort = 0;			/* port for proxy access */
     qry = seqin->Query;
 
     if(!ajNamDbGetDbalias(qry->DbName, &searchdb))

@@ -365,7 +365,10 @@ static ajuint currentfgcolour = BLACK; /* Change with ajGraphicsSetFgcolour */
 static AjBool currentbgwhite = AJTRUE; /* By default white background */
 static PLFLT  currentcharsize   = 4.0; /* ajGraphicsSetCharSize to change */
 static PLFLT  currentcharscale  = 1.0; /* ajGraphicsSetCharscale to change */
+
+/* AJB: This variable is set quite a lot, but never used */
 static PLFLT  currentcharht  = 4.0;    /* ajGraphicsSetCharscale to change */
+
 static PLINT  currentlinestyle = 1;    /* ajGraphicsSetLinestyle to change*/
 static PLINT  currentfillpattern = 1;  /* ajGraphicsSetFillpat to change*/
 
