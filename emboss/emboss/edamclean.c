@@ -343,11 +343,12 @@ typedef struct SNamespace
 **
 ******************************************************************************/
 
-PTerm       ajTermNew(void);
-PNamespace  ajNamespaceNew(void);
-void        ajTermDel(PTerm *P);
-void        ajNamespaceDel(PNamespace *P);
-AjPStr      FindTerm(ajint namespace, AjPStr termname, PNamespace *namespaces);
+static PTerm       ajTermNew(void);
+static PNamespace  ajNamespaceNew(void);
+static void        ajTermDel(PTerm *P);
+static void        ajNamespaceDel(PNamespace *P);
+static AjPStr      FindTerm(ajint namespace, AjPStr termname,
+                            PNamespace *namespaces);
 
 
 
@@ -369,7 +370,7 @@ AjPStr      FindTerm(ajint namespace, AjPStr termname, PNamespace *namespaces);
 ** @@
 ******************************************************************************/
 
-PTerm ajTermNew(void)
+static PTerm ajTermNew(void)
 {
     PTerm ret;
 
@@ -393,7 +394,7 @@ PTerm ajTermNew(void)
 ** @@
 ******************************************************************************/
 
-PNamespace ajNamespaceNew(void)
+static PNamespace ajNamespaceNew(void)
 {
     PNamespace ret;
 
@@ -418,7 +419,7 @@ PNamespace ajNamespaceNew(void)
 ** @@
 ******************************************************************************/
 
-void ajTermDel(PTerm *P)
+static void ajTermDel(PTerm *P)
 {
     if(!P)
         ajFatal("Null arg error 1 in ajTermDel");
@@ -446,7 +447,7 @@ void ajTermDel(PTerm *P)
 ** @@
 ******************************************************************************/
 
-void ajNamespaceDel(PNamespace *P)
+static void ajNamespaceDel(PNamespace *P)
 {
     int i;
 
@@ -488,7 +489,7 @@ void ajNamespaceDel(PNamespace *P)
 ** @@
 ******************************************************************************/
 
-AjPStr FindTerm(ajint namespace, AjPStr termname, PNamespace *namespaces)
+static AjPStr FindTerm(ajint namespace, AjPStr termname, PNamespace *namespaces)
 {
     ajint x;
 
@@ -536,11 +537,9 @@ int main(ajint argc, char **argv)
     ajint      y               = 0;       /* Housekeeping  */
     ajint      z               = 0;       /* Housekeeping  */
     ajint      idx             = 0;       /* Housekeeping  */
-    AjPStr     name            = NULL;    /* Name of a term */
     AjPStr     namespace       = NULL;    /* Namespace of a term */
     AjPStr     relation        = NULL;    /* Relationship name, e.g. "is_a" */
     AjPStr     tmp_name        = NULL;    /* Temp. name of a term */
-    AjPStr     tmp_id          = NULL;    /* Temp. id of a term */
     AjPStr     tmp_str         = NULL;    /* Temp. string */
     PTerm      tmp_term        = NULL;    /* Temp. term pointer */
     ajint      tmp_line        = 0;       /* Temp. line number */  
@@ -597,11 +596,9 @@ int main(ajint argc, char **argv)
     /* Memory allocation */
     line       = ajStrNew();
     tok        = ajStrNew();
-    name       = ajStrNew();
     namespace  = ajStrNew();
     relation   = ajStrNew();
     tmp_name = ajStrNew();
-    tmp_id   = ajStrNew();
 
     for(x=0; x<NNAMESPACES; x++)
     {
@@ -1544,11 +1541,9 @@ int main(ajint argc, char **argv)
   ajFileClose(&ouf_log);
   ajStrDel(&line);
   ajStrDel(&tok);
-  ajStrDel(&name);
   ajStrDel(&namespace);
   ajStrDel(&relation);
   ajStrDel(&tmp_name);
-  ajStrDel(&tmp_id);
 
   
   for(x=0; x<NNAMESPACES; x++)
