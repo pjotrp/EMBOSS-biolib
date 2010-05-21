@@ -31,7 +31,7 @@
 /* ======================================================================= */
 
 #include "ajax.h"
-
+#include <math.h>
 
 
 
@@ -3046,7 +3046,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile flog, AjPElements *elms,
 	ajFmtPrintF(flog, "%-15s\n", "NOMODEL");
 
 
-    if(pdbfile->reso && pdbfile->modcnt)
+    if(!E_FPZERO(pdbfile->reso,U_FEPS) && pdbfile->modcnt)
     {
 	ajFmtPrintF(flog, "%-15s\n", "RESOLMOD");
 	pdbfile->method=ajNMR;

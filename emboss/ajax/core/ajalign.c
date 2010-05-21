@@ -4531,8 +4531,8 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 		m1 = 0;
 	    }
 
-	    if(!matching[m1]) /* first time we have met this character */
-	    {
+	    if(E_FPZERO(matching[m1],U_FEPS))
+	    {   /* first time we have met this character */
 		for(jseq=0;jseq<nseqs;jseq++) /* all (other) sequences */
 		{
 		    kjpos = kkpos + data->SubOffset[jseq];
@@ -4602,7 +4602,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 
 	    if(matching[m1] > matching[matchingmaxindex])
 		matchingmaxindex= m1;
-	    else if(matching[m1] ==  matching[matchingmaxindex])
+	    else if(E_FPEQ(matching[m1],matching[matchingmaxindex],U_FEPS))
 	    {
 		if(identical[m1] > identical[matchingmaxindex])
 		    matchingmaxindex= m1;
@@ -4672,7 +4672,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 		res = toupper((int)seqcharptr[highindex][khpos]);
 
 
-	if(himatch == seqs[highindex]->Weight)
+	if(E_FPEQ(himatch,seqs[highindex]->Weight,U_FEPS))
 	{
 	    if(numres > 1)
 		res = nocon;
@@ -5561,8 +5561,8 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
 	    kipos = kkpos;
 	    m1 = ajSeqcvtGetCodeK(cvt, seqcharptr[iseq][kipos]);
 
-	    if(!matching[m1]) /* first time we have met this character */
-	    {
+	    if(E_FPZERO(matching[m1],U_FEPS))
+	    {   /* first time we have met this character */
 		for(jseq=0;jseq<nseqs;jseq++) /* all (other) sequences */
 		{
 		    kjpos = kkpos;
@@ -5608,7 +5608,7 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
 	    {
 		matchingmaxindex= m1;
 	    }
-	    else if(matching[m1] ==  matching[matchingmaxindex])
+	    else if(E_FPEQ(matching[m1],matching[matchingmaxindex],U_FEPS))
 	    {
 		if(identical[m1] > identical[matchingmaxindex])
 		    matchingmaxindex= m1;
@@ -5634,7 +5634,7 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
 	    if(seqcharptr[highindex][khpos] != '-')
 		res = toupper((int)seqcharptr[highindex][khpos]);
 
-	if(nseqs > 1 && himatch == seqs[highindex]->Weight)
+	if(nseqs > 1 && E_FPEQ(himatch,seqs[highindex]->Weight,U_FEPS))
 	{
 	    if(numres > 1)
 		res = nocon;

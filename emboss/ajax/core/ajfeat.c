@@ -3401,7 +3401,7 @@ static void featGffProcessTagval(AjPFeature gf, AjPFeattable table,
     if(!ajStrGetLen(groupfield))	/* no tags, must be new */
 	return;
     
-    if(version == 1.0)
+    if(E_FPEQ(version,1.0F,U_FEPS))
     {
 	featGroupSet(gf, table, groupfield) ;
 	/*ajDebug("V1.0 group: '%S'\n", groupfield);*/

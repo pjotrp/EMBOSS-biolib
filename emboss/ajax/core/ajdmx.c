@@ -988,7 +988,7 @@ ajint ajDmxScophitCompScore(const void *hit1, const void *hit2)
     
     if(p->Score < q->Score)
         return -1;
-    else if (p->Score == q->Score)
+    else if(E_FPEQ(p->Score,q->Score,U_FEPS))
         return 0;
 
     return 1;
@@ -1019,7 +1019,7 @@ ajint ajDmxScophitCompPval(const void *hit1, const void *hit2)
     
     if(p->Pval < q->Pval)
         return -1;
-    else if (p->Pval == q->Pval)
+    else if(E_FPEQ(p->Pval,q->Pval,U_FEPS))
         return 0;
 
     return 1;

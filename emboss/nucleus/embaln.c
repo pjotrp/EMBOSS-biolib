@@ -456,12 +456,13 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
 	cursor = ypos * lenb + xpos;
 	mp = m[cursor];
 
-	if(cursorp == 1 && gapextend == (ix[cursor]-ix[cursor+1]))
+	if(cursorp == 1 && E_FPEQ(gapextend,(ix[cursor]-ix[cursor+1]),U_FEPS))
 	{
 	    compass[cursor] = 1;
 	    xpos--;
 	}
-	else if(cursorp== 2 && gapextend == (iy[cursor]-iy[cursor+lenb]))
+	else if(cursorp== 2 && E_FPEQ(gapextend,(iy[cursor]-iy[cursor+lenb]),
+                                      U_FEPS))
 	{
 	    compass[cursor] = 2;
 	    ypos--;
@@ -469,12 +470,12 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
 	else if(mp >= ix[cursor] && mp>= iy[cursor])
 	{
 
-	    if(cursorp == 1 && mp == ix[cursor])
+	    if(cursorp == 1 && E_FPEQ(mp,ix[cursor],U_FEPS))
 	    {
 		compass[cursor] = 1;
 		xpos--;
 	    }
-	    else if(cursorp == 2 && mp == iy[cursor])
+	    else if(cursorp == 2 && E_FPEQ(mp,iy[cursor],U_FEPS))
 	    {
 		compass[cursor] = 2;
 		ypos--;

@@ -567,7 +567,7 @@ double ajRandomDouble(void)
         y = 37.0*aj_rand_other+offset;
         aj_rand_other = y-floor(y);
     }
-    while(!aj_rand_other);
+    while(E_FPZERO(aj_rand_other,U_DEPS));
 
     if((x = x/AjRandomXmod+aj_rand_other) >= 1.0)
 	x -= 1.0;

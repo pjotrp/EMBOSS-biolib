@@ -1,5 +1,5 @@
 /******************************************************************************
-** @source AJAX OBO handling functions
+** @Source AJAX OBO handling functions
 **
 ** @author Copyright (C) 2010 Jon Ison
 ** @version 1.0
@@ -835,7 +835,7 @@ AjBool ajTaxLoad(AjPDir taxdir)
             if(!ajStrToUint(idstr, &taxid))
             ajWarn("%F line %u: invalid taxid '%S'",
                    infile, linecnt, idstr);
-            tax =  ajTableFetch(taxidtable, (const void*)taxid);
+            tax =  (AjPTax) ajTableFetch(taxidtable, (const void*)((ajlong)taxid));
             if(!tax)
                 ajWarn("%F line %u: unknown taxon id '%u' '%S' '%S''",
                        infile, linecnt, taxid, idstr, tmpstr);

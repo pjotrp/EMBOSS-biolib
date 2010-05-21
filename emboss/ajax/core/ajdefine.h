@@ -135,16 +135,11 @@ typedef float* AjFloatArray;
 
 #define AJBOOL(b) (b ? "TRUE" : "FALSE")
 
-static const ajint ajFalse = 0;
-static const ajint ajTrue = 1;
-
 #define AJFALSE 0
 #define AJTRUE 1
 
-#ifdef commentedout
 #define ajFalse 0
 #define ajTrue 1
-#endif
 
 #define CASE2(a,b) ((a << 8) + b)
 #define CASE3(a,b,c) ((a << 16) + (b << 8) + c)
@@ -166,8 +161,13 @@ static const ajint ajTrue = 1;
 #define aj1D     1                /* Type of signature */
 #define aj3D     2                /* Type of signature */
 
+#define U_FEPS 1.192e-7F         /* 1.0F + E_FEPS != 1.0F */
+#define U_DEPS 2.22e-16          /* 1.0 +  E_DEPS != 1.0  */
 
+#define E_FPEQ(a,b,e) (((b - e) < a) && (a < (b + e)))
 
+#define E_FPZERO(a,e) (fabs((double)a) <= (double) e)
+    
 #endif
 
 #ifdef __cplusplus

@@ -28,6 +28,7 @@
 #include "ajax.h"
 #include <limits.h>
 #include <float.h>
+#include <math.h>
 
 static AjPStr seqVersionAccnum = NULL;
 
@@ -5055,7 +5056,7 @@ void ajSeqTrace(const AjPSeq seq)
     if(ajStrGetLen(seq->Entryname))
 	ajDebug( "  Entryname: '%S'\n", seq->Entryname);
 
-    if(seq->Weight)
+    if(!E_FPZERO(seq->Weight,U_FEPS))
 	ajDebug( "  Weight: %.3f\n", seq->Weight);
 
     if(ajStrGetLen(seq->Doc))

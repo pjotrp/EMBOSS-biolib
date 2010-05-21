@@ -2044,7 +2044,8 @@ static void codCalcFraction(AjPCod thys)
 
 	for(j=0;j<icount;j++)
 	{
-	    if(thys->tcount[count[j]])	/* so we know we have fsum > 0.0 */
+            /* so we know we have fsum > 0.0 */
+	    if(!E_FPZERO(thys->tcount[count[j]],U_DEPS))
 		thys->fraction[count[j]] = thys->tcount[count[j]]/fsum;
 	    else
 		thys->fraction[count[j]] = 0.0;
@@ -3120,7 +3121,7 @@ static double* codGetWstat(const AjPCod thys)
 	for(j=0;j<AJCODSTART;++j)
 	    if(thys->aa[j]==thisaa)
 		aamax = aamax > thys->tcount[j] ? aamax : thys->tcount[j];
-	if(aamax)
+	if(!E_FPZERO(aamax,U_DEPS))
 	    wk[i] = thys->tcount[i] / aamax;
     }
 
@@ -3169,7 +3170,7 @@ double ajCodCalcCaiCod(const AjPCod thys)
 
 	sum = (double)0.;
 
-	for(k=0;k<AJCODSTART && max;++k)
+	for(k=0;k<AJCODSTART && !E_FPZERO(max,U_DEPS);++k)
 	{
 	    if(thys->aa[k]==27)
 		continue;
@@ -3178,7 +3179,7 @@ double ajCodCalcCaiCod(const AjPCod thys)
 	    {
 		xij = thys->fraction[k];
 
-		if(xij)
+		if(!E_FPZERO(xij,U_DEPS))
 		{
 		    res = thys->tcount[k] * log(xij/max);
 		    sum += res;
@@ -3233,7 +3234,7 @@ double ajCodCalcCaiSeq(const AjPCod thys, const AjPStr str)
     {
 	idx = ajCodIndexC(p);
 
-	if(wk[idx])
+	if(!E_FPZERO(wk[idx],U_DEPS))
 	    total += log(wk[idx]);
     }
 
@@ -3430,13 +3431,13 @@ double ajCodCalcNc(const AjPCod thys)
 	if(nt[i])
 	    Fbar[i] /= (double)nt[i];
 
-    if(!Fbar[2])				/* Ile fix */
+    if(E_FPZERO(Fbar[2],U_DEPS))				/* Ile fix */
 	Fbar[2] = (Fbar[1]+Fbar[3]) / 2.0;
 
 
     for(i=1,sum=2.0;i<max;++i)
     {
-	if(!Fbar[i])
+	if(E_FPZERO(Fbar[i],U_DEPS))
 	    continue;
 
 	if(i==1)
@@ -4244,7 +4245,7 @@ static void codFix(AjPCod thys)
     else
 	thys->CodonCount = totnum;
 
-    if(!totfreq)
+    if(E_FPZERO(totfreq,U_DEPS))
     {
 	for(i=0;i<64;i++)
 	{
@@ -4257,7 +4258,7 @@ static void codFix(AjPCod thys)
 	ajDebug("Codon usage file '%S' has total frequency/1000 of %.2f\n",
 	       thys->Name, totfreq);
 
-    if(!totfrac)
+    if(E_FPZERO(totfrac,U_DEPS))
     {
 	for(i=0;i<64;i++)
 	{
