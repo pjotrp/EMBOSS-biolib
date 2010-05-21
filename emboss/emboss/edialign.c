@@ -931,7 +931,7 @@ int main(int argc, char **argv)
 	if( seqlen[i] == 0 )
 	{
 	    printf("\n \n \n                       WARNING: \n \n");
-	    printf("          Sequence %d contains no residues.\n",i+1);
+	    printf("          Sequence %u contains no residues.\n",i+1);
 	    printf("          Please inspect the sequence file.\n \n ");
 	    printf("\n \n          Program terminated \n \n \n " );     
 
@@ -1038,7 +1038,7 @@ int main(int argc, char **argv)
 	    if((amino[i] = (int *) calloc((seqlen[i]+5), sizeof(int))) == NULL)
 	    {
 		printf(" problems with memory allocation");
-		printf(" for `amino[%d]' !  \n \n", i);
+		printf(" for `amino[%u]' !  \n \n", i);
 		embExitBad();
 	    }
 
@@ -1057,7 +1057,7 @@ int main(int argc, char **argv)
 					     sizeof(int) ) ) == NULL)
 	    {
 		printf(" problems with memory allocation");
-		printf(" for `amino_c[%d]' !  \n \n", i);
+		printf(" for `amino_c[%u]' !  \n \n", i);
 		embExitBad();
 	    }
     }
@@ -3327,7 +3327,7 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
 	    fprintf(fp_st,"      aligning seq %d /", n1 + 1 );
 	    fprintf(fp_st," seq %d\n", n2 + 1);
 	    fprintf(fp_st,"      total number of");
-	    fprintf(fp_st," sequences: %d\n\n", seqnum);
+	    fprintf(fp_st," sequences: %u\n\n", seqnum);
 	    fprintf(fp_st,"\n\n\n" );
 
 	    fclose(fp_st);
@@ -3942,7 +3942,7 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
 			fprintf(fp_st,"      aligning seq %d /", n1 + 1 );
 			fprintf(fp_st," seq %d\n", n2 + 1);
 			fprintf(fp_st,"      total number of");
-			fprintf(fp_st," sequences: %d\n\n", seqnum);
+			fprintf(fp_st," sequences: %u\n\n", seqnum);
 		    }
 		    fprintf(fp_st,"      current position in");
 		    fprintf(fp_st," sequence %d:  %8d\n", n1 + 1, i);
@@ -4135,7 +4135,7 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
     {
 	printf("Seq. %3d -%3d: ", n1+1, n2+1);
 	printf("T = %2.2f,", threshold); 
-	printf(" %3d D. in alignment,", *number);
+	printf(" %3u D. in alignment,", *number);
 	printf("%6d D. in matrix", mnum);
 	printf("\n");
     } 
@@ -5767,7 +5767,7 @@ static void edialign_print_log(struct multi_frag *d,FILE *fp_l,FILE *fp_fs)
 	    if(long_output) {
 		if( seqnum > 2 ) {
 		    fprintf(fp_l, "\n \n \n \n  Pairwise alignment ");
-		    fprintf(fp_l, "%d/%d", i + 1, j + 1); 
+		    fprintf(fp_l, "%u/%u", i + 1, j + 1); 
 		    fprintf(fp_l, " (%s / %s) \n" ,seq_name[i],seq_name[j] );
 		    fprintf(fp_l, "  =========================");
 		    fprintf(fp_l, "===================== ");
@@ -5832,7 +5832,7 @@ static void edialign_print_log(struct multi_frag *d,FILE *fp_l,FILE *fp_fs)
 			fprintf(fp_fs,"name: %s %s ",
 				seq_name[i] , seq_name[j] ) ;  
  
-			fprintf(fp_fs,"seq: %d %d ", i + 1 , j + 1 ) ;  
+			fprintf(fp_fs,"seq: %u %u ", i + 1 , j + 1 ) ;  
 			fprintf(fp_fs,"beg: %d %d ", diagonal->b[0],
 				diagonal->b[1]); 
 			fprintf(fp_fs,"len: %d ", diagonal->ext);
@@ -5859,7 +5859,7 @@ static void edialign_print_log(struct multi_frag *d,FILE *fp_l,FILE *fp_fs)
 		    { 
 			if( diagonal->sel )
 			{
-			    fprintf(fp_fs," %d %d ", i + 1 , j + 1 ) ;  
+			    fprintf(fp_fs," %u %u ", i + 1 , j + 1 ) ;  
 			    fprintf(fp_fs," %d %d ", diagonal->b[0],
 				    diagonal->b[1]); 
 			    fprintf(fp_fs," %d \n", diagonal->ext);
@@ -6032,21 +6032,21 @@ static void edialign_exclude_frg_read( char *file_name , int ***exclude_list)
     {
 	if( strlen( line ) > 4 )
 	{   
-	    sscanf(line,"%d %d %d %d %d", &seq1, &seq2, &beg1, &beg2 , &len);
+	    sscanf(line,"%u %u %d %d %d", &seq1, &seq2, &beg1, &beg2 , &len);
 
 	    if( seq1 > seqnum )
 	    {
 		printf ("\n\n exclueded fragment makes no sense!\n\n");
-		printf (" wrong sequence no %d in fragment\n\n", seq1 );
-		printf ("%d %d %d %d %d \n\n ", seq1, seq2, beg1, beg2 , len);
+		printf (" wrong sequence no %u in fragment\n\n", seq1 );
+		printf ("%u %u %d %d %d \n\n ", seq1, seq2, beg1, beg2 , len);
 		embExitBad() ;
 	    }
  
 	    if( seq2 > seqnum )
 	    {
 		printf ("\n\n    excluded fragment makes no sense!\n\n");
-		printf ("    wrong sequence no %d in fragment\n\n", seq2 );
-		printf ("    %d %d %d %d %d \n\n", seq1, seq2, beg1, beg2,
+		printf ("    wrong sequence no %u in fragment\n\n", seq2 );
+		printf ("    %u %u %d %d %d \n\n", seq1, seq2, beg1, beg2,
 			len );
 		embExitBad() ;
 	    }
@@ -6061,8 +6061,8 @@ static void edialign_exclude_frg_read( char *file_name , int ***exclude_list)
 		printf ("    fragment");
 		printf ("     \" %d %d %d %d %d \"\n", seq1, seq2, beg1,
 			beg2 , len );
-		printf ("    doesn't fit into sequence %d:\n", seq1 );
-		printf ("    sequence %d has length =  %d\n\n", seq1 ,
+		printf ("    doesn't fit into sequence %u:\n", seq1 );
+		printf ("    sequence %u has length =  %d\n\n", seq1 ,
 			seqlen[ seq1 - 1 ] );
 		embExitBad() ;
 	    }
@@ -6571,13 +6571,13 @@ static void edialign_subst_mat( char *file_name, int fragno ,
     }
 
 
-    fprintf( fp_mat, "taxanumber: %d ;\n", seqnum) ;
+    fprintf( fp_mat, "taxanumber: %u ;\n", seqnum) ;
     fprintf( fp_mat, "description: DIALIGN alignment ;\n" ) ;
     fprintf( fp_mat, "description: %s;\n", input_line ) ;
 
 
     for( i = 0 ; i < seqnum ; i++ ) 
-	fprintf( fp_mat, "taxon: %.3d  name: %s  ;\n", i + 1 , full_name[i] ) ;
+	fprintf( fp_mat, "taxon: %.3u  name: %s  ;\n", i + 1 , full_name[i] ) ;
 
 
     for( s0 = 0 ; s0 < seqnum ; s0++ )
@@ -6585,7 +6585,7 @@ static void edialign_subst_mat( char *file_name, int fragno ,
 	    for ( a0 = 1 ; a0 <= 20 ; a0++ ) 
 		for( a1 = 1 ; a1 < 21 ; a1++ )
 		{    
-		    fprintf( fp_mat, "pair: %.3d %.3d ", s0 + 1, s1 + 1 );  
+		    fprintf( fp_mat, "pair: %.3u %.3u ", s0 + 1, s1 + 1 );  
 		    fprintf( fp_mat, " acids: %c%c ", amino_acid[a0] ,
 			    amino_acid[a1] );  
 		    fprintf( fp_mat, " number: %d ;\n", sbsmt[s0][s1][a0][a1]);
@@ -7065,7 +7065,7 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 
 	if( col_score )
 	{
-	    fprintf(fp_col_score , "# 1 %d \n" , endlen  );
+	    fprintf(fp_col_score , "# 1 %u \n" , endlen  );
 	    fprintf(fp_col_score,"# %s \n", upg_str);
 	}
 
@@ -7347,7 +7347,7 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
           
 
 	    fprintf(fp3,"DIALIGN 2\n\n\n");
-	    fprintf(fp3,"   MSF: %d \n\n", endlen);
+	    fprintf(fp3,"   MSF: %u \n\n", endlen);
 
 	    for( sv = 0 ; sv < seqnum ; sv++ )
 		fprintf(fp3," Name: %s    Len: %d \n", seq_name[sv],
@@ -7553,7 +7553,7 @@ static void edialign_para_print( char *s_f, FILE *fpi )
        
     for(hv=0;hv<seqnum;hv++)
     {
-	fprintf(fpi, " %3d) ", hv + 1 );
+	fprintf(fpi, " %3u) ", hv + 1 );
 	fprintf(fpi, "%s", seq_name[hv] );
 	fprintf(fpi, "         %9d\n",seqlen[hv]);
     }
@@ -8463,7 +8463,7 @@ static void edialign_regex_parse(char *mot_regex)
 					   sizeof(short))) == NULL)
 	{
 	    printf(" problems with memory allocation");
-	    printf(" for `mot_pos[%d]' !  \n \n", i);
+	    printf(" for `mot_pos[%u]' !  \n \n", i);
 	    embExitBad();
 	}
 
@@ -8585,7 +8585,7 @@ static void edialign_seq_parse(char *mot_regex_unused)
 
 	    if( ok )
 	    { 
-		printf( " motif in seq %d at pos %d  \n",sn + 1 ,sp + 1);
+		printf( " motif in seq %u at pos %d  \n",sn + 1 ,sp + 1);
 		mot_pos[ sn ][ sp + 1 ] = 1 ;  
 	    }
 	    else 
