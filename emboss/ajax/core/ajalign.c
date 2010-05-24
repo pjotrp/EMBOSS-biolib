@@ -1580,6 +1580,8 @@ static void alignWriteScore(AjPAlign thys)
 **
 ** Writes an alignment in sequence alignment/map (SAM) format
 **
+** specification: http://samtools.sourceforge.net/SAM1.pdf
+**
 ** @param [u] thys [AjPAlign] Alignment object
 ** @return [void]
 ** @@
@@ -1587,17 +1589,101 @@ static void alignWriteScore(AjPAlign thys)
 
 static void alignWriteSam(AjPAlign thys)
 {
+    AjPFile outf;
     ajint nali;
-    ajint iali;
+    ajint iali, iseq;
+    ajint nseq = 2; /* pairwise alignment ??? should we throw an error
+                       for multiple alignments? */
     AlignPData* pdata = NULL;
+    AlignPData data = NULL;
+    const AjPSeq seq;
+    ajint j;
+    char qchar;
 
+    ajint* ipos   = NULL;
+    ajint* incs = NULL;
+
+    const AjPSeq seq1;
+    const AjPSeq seq2;
+    AjPStr seqacc = NULL;
+
+    ajuint flag = 0;     /* bitwise flag, section 2.2.2 in SAM specification */
+    ajuint mapq = 0;     /* mapping quality */
+    AjPStr cigar = NULL; /* extended CIGAR string */
+    AjPStr mrnm = NULL;  /* mate reference sequence name */
+    ajuint mpos = 0;     /* leftmost mate position of the clipped sequence */
+    ajuint isize = 0;    /* inferred insert size */
+    const AjPStr qseq;   /* query sequence */
+    AjPStr mseq = NULL;  /* match region of the query sequence */
+
+    AJCNEW0(ipos, 2);
+    AJCNEW0(incs, 2);
+    cigar = ajStrNewC("CIGAR"); /* TODO: CIGAR function not yet written */
+    mrnm = ajStrNewC("*");      /* TODO: mate sequences not supported yet ? */
+
+    outf = thys->File;
     nali = ajListToarray(thys->Data, (void***) &pdata);
 
     for(iali=0; iali<nali; iali++)
     {
+	data = pdata[iali];
+	seq1 = data->Seq[0];
+	seq2 = data->Seq[1];
+
+	for(iseq=0; iseq < nseq; iseq++)
+	{
+	    incs[iseq] = alignSeqIncrement(data, iseq);
+	    ipos[iseq] = alignSeqBegin(data, iseq)-incs[iseq];
+	}
+	iseq=1;
+	seq = seq1; /* query sequence */
+
+	if(ajSeqIsReversed(seq))
+	    flag |= 0x0010;
+
+	if(seq->Accuracy) /* TODO: accuracy values are not copied
+	into the sequence objects used in alignments */
+	{
+	    ajStrAssignClear(&seqacc);
+
+	    for(j=data->Start[iseq]-1;j< data->End[iseq];j++)
+	    {
+		qchar = 64 + (int) (0.5 + seq->Accuracy[j]);
+		if(qchar > 126)
+		    qchar = 126;
+		else if(qchar < 33)
+		    qchar = 33;
+		ajStrAppendK(&seqacc, (char) qchar);
+	    }
+	}
+	else
+	    seqacc = ajStrNewC("*");
+
+	qseq = ajSeqGetSeqS(seq);
+	ajStrAssignSubS(&mseq, qseq, data->Start[iseq]-1, data->End[iseq]);
+
+	ajFmtPrintF(outf, "%S\t%u\t%S\t%d\t\%d\t%S\t%S\t%u\t%u\t%S\t%S\tAS:i:%S\n",
+		alignSeqName(thys, seq1),
+		flag,
+		alignSeqName(thys, seq2),
+		ipos[iseq]+incs[iseq],
+		mapq,
+		cigar,
+		mrnm,
+		mpos,
+		isize,
+		qseq,
+		seqacc,
+		data->Score);
     }
 
     AJFREE(pdata);
+    AJFREE(ipos);
+    AJFREE(incs);
+    ajStrDel(&cigar);
+    ajStrDel(&mrnm);
+    ajStrDel(&seqacc);
+    ajStrDel(&mseq);
 
     return;
 }
