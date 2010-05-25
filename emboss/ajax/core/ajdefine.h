@@ -161,8 +161,8 @@ typedef float* AjFloatArray;
 #define aj1D     1                /* Type of signature */
 #define aj3D     2                /* Type of signature */
 
-#define U_FEPS 1.192e-7F         /* 1.0F + E_FEPS != 1.0F */
-#define U_DEPS 2.22e-16          /* 1.0 +  E_DEPS != 1.0  */
+#define U_FEPS 1.192e-6F         /* 1.0F + E_FEPS != 1.0F */
+#define U_DEPS 2.22e-15          /* 1.0 +  E_DEPS != 1.0  */
 
 #define E_FPEQ(a,b,e) (((b - e) < a) && (a < (b + e)))
 
