@@ -42,6 +42,15 @@ section: input [
     relations: "/edam/data/0001447 Comparison matrix (floats)"                             
   ]
 
+  float: minscore [
+    additional: "Y"
+    information: "Minimum alignment score"
+    minimum: "0"
+    default: "0"
+    help: "Minimum alignment score to report an alignment."
+    relations: "EDAM: Generic float"                                       
+  ]
+  
 endsection: input
 
 section: required [

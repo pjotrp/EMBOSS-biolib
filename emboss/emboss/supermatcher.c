@@ -101,21 +101,18 @@ ajint maxgap   = 0;
 
 int main(int argc, char **argv)
 {
-    AjPSeqall seq1;
-    AjPSeqset seq2;
-    AjPSeq a;
-    const AjPSeq b;
-    AjPStr m = 0;
-    AjPStr n = 0;
+    AjPSeqall queryseqs;
+    AjPSeqset targetseqs;
+    AjPSeq queryseq;
+    const AjPSeq targetseq;
+    AjPStr queryaln = 0;
+    AjPStr targetaln = 0;
 
     AjPFile errorf;
     AjBool show = ajFalse;
 
-    ajint    lena = 0;
-    ajint    lenb = 0;
-
-    const char   *p;
-    const char   *q;
+    const char   *queryseqc;
+    const char   *targetseqc;
 
     AjPMatrixf matrix;
     AjPSeqCvt cvt = 0;
@@ -126,34 +123,34 @@ int main(int argc, char **argv)
     float gapopen;
     float gapextend;
     float score;
+    float minscore;
 
-
-    ajint begina;
-    ajint i;
     ajuint k;
-    ajint beginb;
-    ajint start1 = 0;
-    ajint start2 = 0;
-    ajint end1   = 0;
-    ajint end2   = 0;
+    ajint targetbegin;
+    ajint querystart = 0;
+    ajint targetstart = 0;
+    ajint queryend   = 0;
+    ajint targetend   = 0;
     ajint width  = 0;
     AjPTable seq1MatchTable = 0;
     ajint wordlen = 6;
     ajint oldmax = 0;
+    ajint newmax = 0;
 
     AjPAlign align = NULL;
 
     embInit("supermatcher", argc, argv);
 
     matrix    = ajAcdGetMatrixf("datafile");
-    seq1      = ajAcdGetSeqall("asequence");
-    seq2      = ajAcdGetSeqset("bsequence");
+    queryseqs      = ajAcdGetSeqall("asequence");
+    targetseqs      = ajAcdGetSeqset("bsequence");
     gapopen   = ajAcdGetFloat("gapopen");
     gapextend = ajAcdGetFloat("gapextend");
     wordlen   = ajAcdGetInt("wordlen");
     align     = ajAcdGetAlign("outfile");
     errorf    = ajAcdGetOutfile("errorfile");
-    width     = ajAcdGetInt("width");	/* not the same as awidth */
+    width     = ajAcdGetInt("width");	/* width for banded Smith-Waterman */
+    minscore  = ajAcdGetFloat("minscore");
 
     gapopen   = ajRoundFloat(gapopen, 8);
     gapextend = ajRoundFloat(gapextend, 8);
@@ -163,103 +160,114 @@ int main(int argc, char **argv)
 
     embWordLength(wordlen);
 
-    ajSeqsetTrim(seq2);
+    ajSeqsetTrim(targetseqs);
 
-    while(ajSeqallNext(seq1,&a))
+    while(ajSeqallNext(queryseqs,&queryseq))
     {
-        ajSeqTrim(a);
-	begina = 1 + ajSeqGetOffset(a);
+        ajSeqTrim(queryseq);
 
-	m = ajStrNewRes(1+ajSeqGetLen(a));
+	queryaln = ajStrNewRes(1+ajSeqGetLen(queryseq));
 
-	lena = ajSeqGetLen(a);
+	ajDebug("Read '%S'\n", ajSeqGetNameS(queryseq));
 
-	ajDebug("Read '%S'\n", ajSeqGetNameS(a));
-
-	if(!embWordGetTable(&seq1MatchTable, a)) /* get table of words */
+	if(!embWordGetTable(&seq1MatchTable, queryseq)) /* get table of words */
 	    ajErr("Could not generate table for %s\n",
-		  ajSeqGetNameC(a));
+		  ajSeqGetNameC(queryseq));
 
-	for(k=0;k<ajSeqsetGetSize(seq2);k++)
+	for(k=0;k<ajSeqsetGetSize(targetseqs);k++)
 	{
-	    b      = ajSeqsetGetseqSeq(seq2, k);
-	    lenb   = ajSeqGetLen(b);
-	    beginb = 1 + ajSeqGetOffset(b);
+	    targetseq      = ajSeqsetGetseqSeq(targetseqs, k);
+	    targetbegin = 1 + ajSeqGetOffset(targetseq);
 
-	    ajDebug("Processing '%S'\n", ajSeqGetNameS(b));
-	    p = ajSeqGetSeqC(a);
-	    q = ajSeqGetSeqC(b);
+	    ajDebug("Processing '%S'\n", ajSeqGetNameS(targetseq));
 
-	    if(!supermatcher_findstartpoints(seq1MatchTable,b,a,
-					     &start1, &start2,
-					     &end1, &end2))
+	    if(!supermatcher_findstartpoints(seq1MatchTable,targetseq,queryseq,
+	                                     &querystart, &targetstart,
+	                                     &queryend, &targetend))
 	    {
 		ajFmtPrintF(errorf,
 			    "No wordmatch start points for "
 			    "%s vs %s. No alignment\n",
-			    ajSeqGetNameC(a),ajSeqGetNameC(b));
+			    ajSeqGetNameC(queryseq),ajSeqGetNameC(targetseq));
 		continue;
 	    }
 	    
-        n=ajStrNewRes(1+ajSeqGetLen(b));
-        ajStrAssignC(&m,"");
-        ajStrAssignC(&n,"");
+	    targetaln=ajStrNewRes(1+ajSeqGetLen(targetseq));
+	    queryseqc = ajSeqGetSeqC(queryseq);
+	    targetseqc = ajSeqGetSeqC(targetseq);
+
+	    ajStrAssignC(&queryaln,"");
+	    ajStrAssignC(&targetaln,"");
 
 	    ajDebug("++ %S v %S start:%d %d end:%d %d\n",
-		    ajSeqGetNameS(a), ajSeqGetNameS(b),
-		    start1, start2, end1, end2);
+			ajSeqGetNameS(targetseq), ajSeqGetNameS(queryseq),
+			targetstart, querystart, targetend, queryend);
 
-	    if(end1-start1+1 > oldmax)
+	    newmax = (targetend-targetstart+1)*width;
+	    if(newmax > oldmax)
 	    {
-		oldmax = ((end1-start1)+1);
-		AJRESIZE(path,oldmax*width*sizeof(float));
-		AJRESIZE(compass,oldmax*width*sizeof(ajint));
-		ajDebug("++ resize to oldmax: %d\n", oldmax);
+		AJCRESIZE0(path,oldmax,newmax);
+		AJCRESIZE0(compass,oldmax,newmax);
+		oldmax=newmax;
+		ajDebug("++ memory re/allocation for path/compass arrays"
+			" to size: %d\n", newmax);
 	    }
 
-	    for(i=0;i<((end1-start1)+1)*width;i++)
-		path[i] = 0.0;
+	    ajDebug("Calling embAlignPathCalcSWFast "
+		    "%d..%d [%d/%d] %d..%d [%d/%d] width:%d\n",
+		    querystart, queryend, (queryend - querystart + 1),
+		    ajSeqGetLen(queryseq),
+		    targetstart, targetend, (targetend - targetstart + 1),
+		    ajSeqGetLen(targetseq),
+		    width);
 
-	    ajDebug("Calling embAlignPathCalcFast "
-		     "%d..%d [%d/%d] %d..%d [%d/%d]\n",
-		     start1, end1, (end1 - start1 + 1), lena,
-		     start2, end2, (end2 - start2 + 1), lenb);
-
-	    score = embAlignPathCalcSWFast(&p[start1],&q[start2],
-                                           end1-start1+1,end2-start2+1,
-                                           0,width,
-                                           gapopen,gapextend,
-                                           path,sub,cvt,
-                                           compass,show);
-
-	    embAlignWalkSWMatrixFast(path,compass,gapopen,gapextend,a,b,
-					 &m,&n,end1-start1+1,end2-start2+1,
-					 0,width,
-                                         &start1,&start2);
+		score = embAlignPathCalcSWFast(&targetseqc[targetstart],
+		                               &queryseqc[querystart],
+		                               targetend-targetstart+1,
+		                               queryend-querystart+1,
+		                               0,width,
+		                               gapopen,gapextend,
+		                               path,sub,cvt,
+		                               compass,show);
+		if(score>minscore)
+		{
+		    embAlignWalkSWMatrixFast(path,compass,gapopen,gapextend,
+		                             targetseq,queryseq,
+		                             &targetaln,&queryaln,
+		                             targetend-targetstart+1,
+		                             queryend-querystart+1,
+		                             0,width,
+		                             &targetstart,&querystart);
 
 		if(!ajAlignFormatShowsSequences(align))
 		{
-		    ajAlignDefineCC(align, ajStrGetPtr(m),
-		            ajStrGetPtr(n), ajSeqGetNameC(a),
-		            ajSeqGetNameC(b));
+		    ajAlignDefineCC(align, ajStrGetPtr(targetaln),
+		                    ajStrGetPtr(queryaln),
+		                    ajSeqGetNameC(targetseq),
+		                    ajSeqGetNameC(queryseq));
 		    ajAlignSetScoreR(align, score);
 		}
 		else
 		{
-		    embAlignReportLocal(align, a, b,
-		            m,n,start1,start2,
-		            gapopen, gapextend,
-		            score,matrix, begina, beginb);
+		    embAlignReportLocal(align,
+                        queryseq, targetseq,
+                        queryaln,targetaln,
+                        querystart,targetstart,
+                        gapopen, gapextend,
+                        score,matrix,
+                        1 + ajSeqGetOffset(queryseq),
+                        targetbegin);
 		}
 		ajAlignWrite(align);
 		ajAlignReset(align);
-	    ajStrDel(&n);
+	    }
+	    ajStrDel(&targetaln);
 	}
 
 	embWordFreeTable(&seq1MatchTable); /* free table of words */
 	seq1MatchTable=0;
 
-	ajStrDel(&m);
+	ajStrDel(&queryaln);
 
     }
 
@@ -273,9 +281,9 @@ int main(int argc, char **argv)
 
     ajAlignClose(align);
     ajAlignDel(&align);
-    ajSeqallDel(&seq1);
-    ajSeqDel(&a);
-    ajSeqsetDel(&seq2);
+    ajSeqallDel(&queryseqs);
+    ajSeqDel(&queryseq);
+    ajSeqsetDel(&targetseqs);
     ajFileClose(&errorf);
 
     embExit();
