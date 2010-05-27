@@ -137,6 +137,7 @@ int main(int argc, char **argv)
     AjPTable seq1MatchTable = 0;
     ajint wordlen = 6;
     ajint oldmax = 0;
+    ajint newmax = 0;
 
     AjPAlign align = NULL;
     ajint imatches = 0;
@@ -224,11 +225,12 @@ int main(int argc, char **argv)
 			qrystart, trgstart, qryend, trgend);
 		imatches++;
 
-		if(trgend-trgstart > oldmax)
+		newmax = (trgend-trgstart+1)*width;
+		if(newmax > oldmax)
 		{
-		    oldmax = ((trgend-trgstart)+1)*width;
-		    AJRESIZE(path,oldmax*width*sizeof(float));
-		    AJRESIZE(compass,oldmax*width*sizeof(ajint));
+		    AJCRESIZE0(path,oldmax, newmax);
+		    AJCRESIZE0(compass,oldmax,newmax);
+		    oldmax = newmax;
 		    ajDebug("++ resize to oldmax: %d\n", oldmax);
 		}
 
