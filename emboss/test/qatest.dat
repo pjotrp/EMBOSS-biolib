@@ -21467,7 +21467,7 @@ FP /^X51872 +32 [acgt]+ +1\n/
 FP 2 /^J01636 +127 [acgt]+ +101\n/
 //
 
-ID align-supermatcher-simple
+ID supermatcher-simple
 AP supermatcher
 CL -gapopen 10 -gapextend 1 -wordlen 3 -aformat simple -outfile align.simple
 CL asis:GATCGGAAGAGCTCGTATGCCGTCTTCTGCTTGGGGGGG asis:TCGTTT -auto
@@ -21477,6 +21477,186 @@ FI align.simple
 FC = 41
 FP /^# Score: 21\.0/
 FP /TCGTAT/
+//
+
+ID supermatcher-minwidth
+AP supermatcher
+CL ../../data/aligna.dna ../../data/tropomyosin.fasta
+CL -width 1 -gapopen 1 -gapextend 1 -aformat score -outfile align.score -auto
+FI supermatcher.error
+FP /.*BG089808.*/
+FZ = 62
+FI align.score
+FZ = 372
+FP /BF056441.* 12 \(33.0\)/
+FP /BE848719.* 7 \(35.0\)/
+FP /BF022813.* 5 \(25.0\)/
+FP /BF452255.* 5 \(25.0\)/
+FP /BG147728.* 5 \(25.0\)/
+FP /BI817778.* 7 \(35.0\)/
+FP /AF186109.* 6 \(30.0\)/
+FP /AF186110.* 9 \(36.0\)/
+FP /AF310722.* 9 \(36.0\)/
+FP /AF362886.* 6 \(30.0\)/
+FP /AF362887.* 6 \(30.0\)/
+FP /AF087679.* 6 \(30.0\)/
+//
+
+ID supermatcher-minscore1
+AP supermatcher
+CL ../../data/aligna.dna ../../data/tropomyosin.fasta
+CL -minscore 120 -gapopen 1 -gapextend 1 -aformat score -outfile align.score -auto
+FI supermatcher.error
+FP /.*BG089808.*/
+FZ = 62
+FI align.score
+FZ = 343
+FP /BF056441.* 84 \(132.0\)/
+FP /BF022813.* 88 \(128.0\)/
+FP /BF452255.* 88 \(128.0\)/
+FP /BG147728.* 88 \(128.0\)/
+FP /AF186109.* 83 \(139.0\)/
+FP /AF186110.* 83 \(151.0\)/
+FP /AF310722.* 83 \(151.0\)/
+FP /AF362886.* 86 \(136.0\)/
+FP /AF362887.* 85 \(125.0\)/
+FP /AF087679.* 83 \(139.0\)/
+//
+
+ID supermatcher-minscore2
+AP supermatcher
+CL ../../data/aligna.dna ../../data/tropomyosin.fasta -minscore 35
+CL -outfile align -auto  -gapextend 1 -width 12 -send2 172 -send1 50
+FI supermatcher.error
+FP /.*BG089808/
+FP /.*BG147728/
+FI align
+FZ = 1844
+FP /Score: 38.0/
+FP /BF056441          30 tattccattgcacaatttg     48/
+FP /                     |.||||    || ||||||/
+FP /AFULL             37 ttttcc----ca-aatttg     50/
+FP /Score: 40.0/
+FP /BE848719         102 ggtgttaaaac    112/
+FP /                     ||| |||||||/
+FP /AFULL             20 ggt-ttaaaac     29/
+FP /Score: 41.0/
+FP /BI817778           1 ccgggg--taccctaa     14/
+FP /                     ||||||  |.|||.||/
+FP /AFULL             31 ccggggttttcccaaa     46/
+//
+
+ID supermatcher-wordlen7
+AP supermatcher
+CL ../../data/tropomyosin.fasta ../../data/aligna.dna
+CL -gapextend 1 -wordlen 7 -outfile align -auto
+FI supermatcher.error
+FP /.*BG089808/
+FP /.*BG147728/
+FI align
+FZ = 2850
+FP /Score: 41.0/
+FP /BE848719         102 ggtgttaaaacagtactcttctggttt-----agttt    133/
+FP /                     ||| |||||||      |....|||||     |.|||/
+FP /AFULL             20 ggt-ttaaaac------cccggggttttcccaaattt     49/
+FP /Score: 42.0/
+FP /AFULL             31 ccggggttttcccaaatttgggcc     54/
+FP /                     ||||||  |.|||.||     |||/
+FP /BI817778           1 ccgggg--taccctaa-----gcc     17/
+FP /Score: 55.0/
+FP /.*   3 gtaacc-------ggttaaacccg-ggtttaaaaccccggggttttccca     44/
+FP /.*     ||.|||       |||    .||| ||   ||||.|      .|..|||./
+FP /.* 740 gtgacctgaaggaggt----gccgcgg---aaaaac------atcaccct    776/
+FP /AFULL             45 aatt-------tgggccaattggc     61/
+FP /                     .|||       |||||||  ||||/
+FP /AF310722         852 cattcggggtctgggcca--tggc    873/
+//
+
+ID wordfinder-simple
+AP wordfinder
+CL -gapopen 10 -gapextend 1 -wordlen 3 -aformat simple -outfile align.simple
+CL asis:GATCGGAAGAGCTCGTATGCCGTCTTCTGCTTGGGGGGG asis:TCGTTT -auto
+FI wordfinder.error
+FP /.*matches 1/
+FZ = 24
+FI align.simple
+FC = 43
+FP /^# Score: 21\.0/
+FP /TCGTAT/
+//
+
+ID wordfinder-minwidth
+AP wordfinder
+CL ../../data/tropomyosin.fasta ../../data/aligna.dna
+CL -width 1 -gapopen 1 -gapextend 1 -aformat score -outfile align.score -auto
+FI wordfinder.error
+FP /matches 12/
+FC = 1
+FI align.score
+FZ = 373
+FP /AFULL BF056441 17 \(31.0\)/
+FP /.+BE848719 11 \(37.0\)/
+FP /.+BF022813 5 \(25.0\)/
+FP /.+BF452255 5 \(25.0\)/
+FP /.+BG147728 5 \(25.0\)/
+FP /.+BI817778 7 \(35.0\)/
+FP /.+AF186109 6 \(30.0\)/
+FP /.+AF186110 9 \(36.0\)/
+FP /.+AF310722 9 \(36.0\)/
+FP /.+AF362886 6 \(30.0\)/
+FP /.+AF362887 6 \(30.0\)/
+FP /.+AF087679 6 \(30.0\)/
+//
+
+ID wordfinder-minalinglen1
+AP wordfinder
+CL ../../data/tropomyosin.fasta ../../data/aligna.dna -auto
+CL -lowalign 80 -gapopen 1 -gapextend 1 -aformat score -outfile align.score
+FI wordfinder.error
+FP /.*excludes 'BI817778'/
+FC = 2
+FI align.score
+FC = 14
+FP /.+BF056441 86 \(118.0\)/
+FP /.+BE848719 88 \(146.0\)/
+FP /.+BF022813 88 \(128.0\)/
+FP /.+BF452255 88 \(128.0\)/
+FP /.+BG147728 88 \(128.0\)/
+FP /.+AF186109 84 \(138.0\)/
+FP /.+AF186110 83 \(151.0\)/
+FP /.+AF310722 83 \(151.0\)/
+FP /.+AF362886 86 \(136.0\)/
+FP /.+AF362887 87 \(147.0\)/
+FP /.+AF087679 84 \(138.0\)/
+//
+
+ID wordfinder-minalignlen2
+AP wordfinder
+CL ../../data/tropomyosin.fasta ../../data/aligna.dna -lowalign 10
+CL -outfile align -auto  -gapextend 1 -width 12 -send2 172 -send1 50
+FI wordfinder.error
+FP /.*matches 1/
+FI align
+FC = 44
+FP /Score: 33.0/
+FP /BF056441          37 ttgcacaatttg     48/
+FP /                     ||.|..||||||/
+FP /AFULL             39 ttcccaaatttg     50/
+//
+
+ID wordfinder-wordlen7
+AP wordfinder
+CL ../../data/aligna.dna ../../data/tropomyosin.fasta
+CL -gapextend 1 -wordlen 7 -outfile align -auto
+FI wordfinder.error
+FP /.*BE848719 matches 1/
+FC = 4
+FI align
+FC = 116
+FP /Score: 35.0/
+FP /AFULL             57 ttggcat     63/
+FP /                     |||||||/
+FP /BE848719          15 ttggcat     21/
 //
 
 #######################################
