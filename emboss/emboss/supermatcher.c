@@ -132,7 +132,7 @@ int main(int argc, char **argv)
     ajint queryend   = 0;
     ajint targetend   = 0;
     ajint width  = 0;
-    AjPTable seq1MatchTable = 0;
+    AjPTable* targetseqswords = 0;
     ajint wordlen = 6;
     ajint oldmax = 0;
     ajint newmax = 0;
@@ -162,6 +162,18 @@ int main(int argc, char **argv)
 
     ajSeqsetTrim(targetseqs);
 
+    AJCNEW0(targetseqswords,ajSeqsetGetSize(targetseqs));
+
+    /* get tables of words */
+    for(k=0;k<ajSeqsetGetSize(targetseqs);k++)
+    {
+	targetseq = ajSeqsetGetseqSeq(targetseqs, k);
+	embWordGetTable(&targetseqswords[k], targetseq);
+	ajDebug("Number of distinct words found in target sequences: %d\n",
+		ajTableGetLength(targetseqswords[k]));
+    }
+
+
     while(ajSeqallNext(queryseqs,&queryseq))
     {
         ajSeqTrim(queryseq);
@@ -170,10 +182,6 @@ int main(int argc, char **argv)
 
 	ajDebug("Read '%S'\n", ajSeqGetNameS(queryseq));
 
-	if(!embWordGetTable(&seq1MatchTable, queryseq)) /* get table of words */
-	    ajErr("Could not generate table for %s\n",
-		  ajSeqGetNameC(queryseq));
-
 	for(k=0;k<ajSeqsetGetSize(targetseqs);k++)
 	{
 	    targetseq      = ajSeqsetGetseqSeq(targetseqs, k);
@@ -181,9 +189,9 @@ int main(int argc, char **argv)
 
 	    ajDebug("Processing '%S'\n", ajSeqGetNameS(targetseq));
 
-	    if(!supermatcher_findstartpoints(seq1MatchTable,targetseq,queryseq,
-	                                     &querystart, &targetstart,
-	                                     &queryend, &targetend))
+	    if(!supermatcher_findstartpoints(targetseqswords[k],queryseq,targetseq,
+	                                     &targetstart, &querystart,
+	                                     &targetend, &queryend))
 	    {
 		ajFmtPrintF(errorf,
 			    "No wordmatch start points for "
@@ -264,12 +272,12 @@ int main(int argc, char **argv)
 	    ajStrDel(&targetaln);
 	}
 
-	embWordFreeTable(&seq1MatchTable); /* free table of words */
-	seq1MatchTable=0;
-
 	ajStrDel(&queryaln);
-
     }
+
+    /* free tables of words */
+    for(k=0;k<ajSeqsetGetSize(targetseqs);k++)
+	embWordFreeTable(&targetseqswords[k]);
 
     if(!ajAlignFormatShowsSequences(align))
     {
@@ -278,6 +286,7 @@ int main(int argc, char **argv)
     
     AJFREE(path);
     AJFREE(compass);
+    AJFREE(targetseqswords);
 
     ajAlignClose(align);
     ajAlignDel(&align);
