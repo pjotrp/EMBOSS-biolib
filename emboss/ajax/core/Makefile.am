@@ -26,13 +26,10 @@ ajmath.c ajmatrices.c ajmem.c ajmess.c \
 ajnam.c ajnexus.c ajobo.c \
 ajpat.c ajpdb.c ajpdbio.c ajphylo.c \
 ajrange.c ajreg.c ajreport.c \
-ajseq.c ajseqabi.c ajseqread.c ajseqtype.c ajseqwrite.c \
+ajseq.c ajseqabi.c ajseqbam.c ajseqread.c ajseqtype.c ajseqwrite.c \
 ajsort.c ajsql.c ajstr.c ajsys.c \
 ajtable.c ajtax.c ajtime.c ajtranslate.c ajtree.c \
 ajutil.c ajvector.c
-
-# samtoolsbam.c samtoolsbam_aux.c samtoolsbam_import.c samtoolsbgzf.c \
-# samtoolskstring.c samtoolssam_header.c
 
 include_HEADERS = ajax.h ajarch.h ajdefine.h \
 ajalign.h ajarr.h ajassert.h \
@@ -44,12 +41,9 @@ ajmath.h ajmatrices.h ajmem.h ajmess.h \
 ajnam.h ajnexus.h ajobo.h \
 ajpat.h ajpdb.h ajpdbio.h ajphylo.h \
 ajrange.h ajreg.h ajreport.h \
-ajseq.h ajseqabi.h ajseqdata.h ajseqread.h ajseqtype.h ajseqwrite.h \
+ajseq.h ajseqabi.h ajseqbam.h ajseqdata.h ajseqread.h ajseqtype.h ajseqwrite.h \
 ajsort.h ajsql.h ajstr.h ajsys.h \
 ajtable.h ajtax.h ajtime.h ajtranslate.h ajtree.h ajutil.h ajvector.h
-
-#samtoolsbam.h samtoolsbgzf.h samtoolskhash.h samtoolskseq.h \
-#samtoolskstring.h samtoolssam_header.h
 
 
 libajax_la_SOURCES = $(AJAXSRC)
