@@ -7,7 +7,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.14 $
+** @version $Revision: 1.15 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1086,6 +1086,9 @@ AjBool ensSliceFetchName(const EnsPSlice slice, AjPStr* Pname)
 
     if(!Pname)
         return ajFalse;
+
+    if(*Pname)
+        ajStrDel(Pname);
 
     cs = ensSeqregionGetCoordsystem(slice->Seqregion);
 
@@ -4518,9 +4521,9 @@ AjBool ensSliceadaptorFetchAll(EnsPSliceadaptor adaptor,
 ** Default constructor for an Ensembl Repeat-Masked Slice.
 **
 ** @param [u] slice [EnsPSlice] Ensembl Slice
-** @param [u] annames [AjPList] AJAX List of Ensembl Analysis name
-**                              AJAX Strings
-** @param [u] masking [AjPTable] AJAX Table to override masking types
+** @param [uN] annames [AjPList] AJAX List of Ensembl Analysis name
+**                               AJAX Strings
+** @param [uN] masking [AjPTable] AJAX Table to override masking types
 **
 ** @return [EnsPRepeatmaskedslice] Ensembl Repeat-Masked Slice or NULL
 ** @@
@@ -4559,50 +4562,52 @@ EnsPRepeatmaskedslice ensRepeatmaskedsliceNew(EnsPSlice slice,
     if(!slice)
         return NULL;
 
-    if(!annames)
-        return NULL;
-
-    if(!masking)
-        return NULL;
-
     AJNEW0(rmslice);
 
     rmslice->Slice = ensSliceNewRef(slice);
 
     /* Copy the AJAX List of Ensembl Analysis name AJAX Strings. */
 
-    rmslice->AnalysisNames = ajListstrNew();
-
-    iter = ajListIterNew(annames);
-
-    while(!ajListIterDone(iter))
+    if(annames)
     {
-        key = (AjPStr) ajListIterGet(iter);
+        rmslice->AnalysisNames = ajListstrNew();
 
-        ajListPushAppend(rmslice->AnalysisNames, (void *) ajStrNewRef(key));
+        iter = ajListIterNew(annames);
+
+        while(!ajListIterDone(iter))
+        {
+            key = (AjPStr) ajListIterGet(iter);
+
+            if(key && ajStrGetLen(key))
+                ajListPushAppend(rmslice->AnalysisNames,
+                                 (void *) ajStrNewS(key));
+        }
+
+        ajListIterDel(&iter);
     }
-
-    ajListIterDel(&iter);
 
     /* Copy the AJAX Table of AJAX String key and AJAX Enum masking types. */
 
-    rmslice->Masking = ajTablestrNewLen(0);
-
-    ajTableToarrayKeysValues(masking, &keyarray, &valarray);
-
-    for(i = 0; keyarray[i]; i++)
+    if(masking)
     {
-        key = ajStrNewS((AjPStr) keyarray[i]);
+        rmslice->Masking = ajTablestrNewLen(0);
 
-        AJNEW0(Pmsktyp);
+        ajTableToarrayKeysValues(masking, &keyarray, &valarray);
 
-        *Pmsktyp = *((EnsERepeatMaskType *) valarray[i]);
+        for(i = 0; keyarray[i]; i++)
+        {
+            key = ajStrNewS((AjPStr) keyarray[i]);
 
-        ajTablePut(rmslice->Masking, (void *) key, (void *) Pmsktyp);
+            AJNEW0(Pmsktyp);
+
+            *Pmsktyp = *((EnsERepeatMaskType *) valarray[i]);
+
+            ajTablePut(rmslice->Masking, (void *) key, (void *) Pmsktyp);
+        }
+
+        AJFREE(keyarray);
+        AJFREE(valarray);
     }
-
-    AJFREE(keyarray);
-    AJFREE(valarray);
 
     rmslice->Use = 1;
 
@@ -4657,7 +4662,8 @@ EnsPRepeatmaskedslice ensRepeatmaskedsliceNewObj(
         {
             key = (AjPStr) ajListIterGet(iter);
 
-            ajListPushAppend(rmslice->AnalysisNames, ajStrNewRef(key));
+            if(key && ajStrGetLen(key))
+                ajListPushAppend(rmslice->AnalysisNames, ajStrNewS(key));
         }
 
         ajListIterDel(&iter);
@@ -4665,23 +4671,26 @@ EnsPRepeatmaskedslice ensRepeatmaskedsliceNewObj(
 
     /* Copy the AJAX Table of AJAX String key and AJAX Enum masking types. */
 
-    rmslice->Masking = ajTablestrNewLen(0);
-
-    ajTableToarrayKeysValues(object->Masking, &keyarray, &valarray);
-
-    for(i = 0; keyarray[i]; i++)
+    if(object->Masking)
     {
-        key = ajStrNewS((AjPStr) keyarray[i]);
+        rmslice->Masking = ajTablestrNewLen(0);
 
-        AJNEW0(Pmsktyp);
+        ajTableToarrayKeysValues(object->Masking, &keyarray, &valarray);
 
-        *Pmsktyp = *((EnsERepeatMaskType *) valarray[i]);
+        for(i = 0; keyarray[i]; i++)
+        {
+            key = ajStrNewS((AjPStr) keyarray[i]);
 
-        ajTablePut(rmslice->Masking, (void *) key, (void *) Pmsktyp);
+            AJNEW0(Pmsktyp);
+
+            *Pmsktyp = *((EnsERepeatMaskType *) valarray[i]);
+
+            ajTablePut(rmslice->Masking, (void *) key, (void *) Pmsktyp);
+        }
+
+        AJFREE(keyarray);
+        AJFREE(valarray);
     }
-
-    AJFREE(keyarray);
-    AJFREE(valarray);
 
     rmslice->Use = 1;
 
@@ -4820,9 +4829,12 @@ void ensRepeatmaskedsliceDel(EnsPRepeatmaskedslice *Prmslice)
 
     /* Clear and delete the AJAX Table. */
 
-    ajTableMapDel(pthis->Masking, repeatmaskedsliceClearMasking, NULL);
+    if(pthis->Masking)
+    {
+        ajTableMapDel(pthis->Masking, repeatmaskedsliceClearMasking, NULL);
 
-    ajTableFree(&pthis->Masking);
+        ajTableFree(&pthis->Masking);
+    }
 
     AJFREE(pthis);
 
@@ -4986,22 +4998,33 @@ AjBool ensRepeatmaskedsliceFetchSequenceStr(EnsPRepeatmaskedslice rmslice,
 
     rfs = ajListNew();
 
-    iter = ajListIterNew(rmslice->AnalysisNames);
-
-    while(!ajListIterDone(iter))
+    if(rmslice->AnalysisNames)
     {
-        key = (AjPStr) ajListIterGet(iter);
+        iter = ajListIterNew(rmslice->AnalysisNames);
 
+        while(!ajListIterDone(iter))
+        {
+            key = (AjPStr) ajListIterGet(iter);
+
+            ensRepeatfeatureadaptorFetchAllBySlice(rfa,
+                                                   rmslice->Slice,
+                                                   key,
+                                                   (AjPStr) NULL,
+                                                   (AjPStr) NULL,
+                                                   (AjPStr) NULL,
+                                                   rfs);
+        }
+
+        ajListIterDel(&iter);
+    }
+    else
         ensRepeatfeatureadaptorFetchAllBySlice(rfa,
                                                rmslice->Slice,
-                                               key,
+                                               (AjPStr) NULL,
                                                (AjPStr) NULL,
                                                (AjPStr) NULL,
                                                (AjPStr) NULL,
                                                rfs);
-    }
-
-    ajListIterDel(&iter);
 
     while(ajListPop(rfs, (void **) &rf))
     {
@@ -5019,49 +5042,54 @@ AjBool ensRepeatmaskedsliceFetchSequenceStr(EnsPRepeatmaskedslice rmslice,
         feature = ensRepeatfeatureGetFeature(rf);
 
         start = (ensFeatureGetStart(feature) >= 1) ?
-            ensFeatureGetStart(feature) : 1;
+            ensFeatureGetStart(feature) :
+            1;
 
         end = (ensFeatureGetEnd(feature) <=
                (ajint) ensSliceGetLength(rmslice->Slice)) ?
-            ensFeatureGetEnd(feature) : (ajint) ensSliceGetLength(rmslice->Slice);
+            ensFeatureGetEnd(feature) :
+            (ajint) ensSliceGetLength(rmslice->Slice);
 
-        rc = ensRepeatfeatureGetRepeatconsensus(rf);
+        if(rmslice->Masking)
+        {
+            rc = ensRepeatfeatureGetRepeatconsensus(rf);
 
-        /* Get the masking type for the Repeat Consensus type if defined. */
+            /* Get the masking type for the Repeat Consensus type. */
 
-        key = ajFmtStr("repeat_type_%S", ensRepeatconsensusGetType(rc));
+            key = ajFmtStr("repeat_type_%S", ensRepeatconsensusGetType(rc));
 
-        Pmsktyp = (EnsERepeatMaskType *) ajTableFetch(rmslice->Masking,
-                                                      (const void *) key);
+            Pmsktyp = (EnsERepeatMaskType *) ajTableFetch(rmslice->Masking,
+                                                          (const void *) key);
 
-        if(Pmsktyp)
-            msktyp = *Pmsktyp;
+            if(Pmsktyp)
+                msktyp = *Pmsktyp;
 
-        ajStrDel(&key);
+            ajStrDel(&key);
 
-        /* Get the masking type for the Repeat Consensus class if defined. */
+            /* Get the masking type for the Repeat Consensus class. */
 
-        key = ajFmtStr("repeat_class_%S", ensRepeatconsensusGetClass(rc));
+            key = ajFmtStr("repeat_class_%S", ensRepeatconsensusGetClass(rc));
 
-        Pmsktyp = (EnsERepeatMaskType *) ajTableFetch(rmslice->Masking,
-                                                      (const void *) key);
+            Pmsktyp = (EnsERepeatMaskType *) ajTableFetch(rmslice->Masking,
+                                                          (const void *) key);
 
-        if(Pmsktyp)
-            msktyp = *Pmsktyp;
+            if(Pmsktyp)
+                msktyp = *Pmsktyp;
 
-        ajStrDel(&key);
+            ajStrDel(&key);
 
-        /* Get the masking type for the Repeat Consensus name if defined. */
+            /* Get the masking type for the Repeat Consensus name. */
 
-        key = ajFmtStr("repeat_name_%S", ensRepeatconsensusGetName(rc));
+            key = ajFmtStr("repeat_name_%S", ensRepeatconsensusGetName(rc));
 
-        Pmsktyp = (EnsERepeatMaskType *) ajTableFetch(rmslice->Masking,
-                                                      (const void *) key);
+            Pmsktyp = (EnsERepeatMaskType *) ajTableFetch(rmslice->Masking,
+                                                          (const void *) key);
 
-        if(Pmsktyp)
-            msktyp = *Pmsktyp;
+            if(Pmsktyp)
+                msktyp = *Pmsktyp;
 
-        ajStrDel(&key);
+            ajStrDel(&key);
+        }
 
         /* Set the default masking type, if no other type has been defined. */
 
@@ -5072,13 +5100,24 @@ AjBool ensRepeatmaskedsliceFetchSequenceStr(EnsPRepeatmaskedslice rmslice,
 
         switch(msktyp)
         {
+            case ensERepeatMaskTypeNULL:
+
+                break;
+
             case ensERepeatMaskTypeSoft:
+
                 ajStrFmtLowerSub(Psequence, start, end);
+
                 break;
+
             case ensERepeatMaskTypeHard:
+
                 ajStrMaskRange(Psequence, start, end, 'N');
+
                 break;
+
             default:
+
                 ajDebug("ensRepeatmaskedsliceFetchSequenceStr got unsupported "
                         "masking type %d\n", msktyp);
         }
