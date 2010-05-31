@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -36,9 +36,9 @@
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-/* Default empty SQL SELECT LEFT_JOIN statement. */
+/* Default empty SQL SELECT LEFT JOIN statement. */
 
-static EnsOBaseadaptorLeftJoin baseAdaptorLeftJoin[] =
+static EnsOBaseadaptorLeftJoin baseadaptorLeftJoin[] =
 {
     {NULL, NULL}
 };
@@ -51,11 +51,11 @@ static EnsOBaseadaptorLeftJoin baseAdaptorLeftJoin[] =
 ** length of 16, this means a maximum of 2048 identifiers in each statement.
 */
 
-const ajuint baseAdaptorFetchAllByIdentifiersMax = 2048;
+const ajuint baseadaptorFetchAllByIdentifiersMax = 2048;
 
 
 
-static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
+static AjBool baseadaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
                                                const AjPStr values,
                                                AjPList objects);
 
@@ -114,8 +114,9 @@ static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
 ** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] Ptables [const char**] Array of char strings of table names
 ** @param [r] Pcolumns [const char**] Array of char strings of column names
-** @param [r] left_join [EnsOBaseadaptorLeftJoin*] Address of an array of
-**                                   Ensembl Base Adaptor Left Join Statements
+** @param [r] leftjoin [EnsOBaseadaptorLeftJoin*] Address of an array of
+**                                                Ensembl Base Adaptor
+**                                                LEFT JOIN statements
 ** @param [r] condition [const char *] Default WHERE condition in a
 **                                     SQL SELECT statement
 ** @param [r] final [const char *] Final condition in a
@@ -131,7 +132,7 @@ EnsPBaseadaptor ensBaseadaptorNew(
     EnsPDatabaseadaptor dba,
     const char **Ptables,
     const char **Pcolumns,
-    EnsOBaseadaptorLeftJoin *left_join,
+    EnsOBaseadaptorLeftJoin *leftjoin,
     const char *condition,
     const char *final,
     AjBool Fquery(EnsPDatabaseadaptor dba,
@@ -159,10 +160,10 @@ EnsPBaseadaptor ensBaseadaptorNew(
 
     ba->Columns = Pcolumns;
 
-    if(left_join)
-        ba->LeftJoin = left_join;
+    if(leftjoin)
+        ba->LeftJoin = leftjoin;
     else
-        ba->LeftJoin = baseAdaptorLeftJoin;
+        ba->LeftJoin = baseadaptorLeftJoin;
 
     ba->DefaultCondition = condition;
 
@@ -671,7 +672,7 @@ AjBool ensBaseadaptorGenericFetch(const EnsPBaseadaptor ba,
     ** features in multi-species databases to the seq_region and coord_system
     ** tables.
     ** The problem is to find out that the query is for a Feature sub class and
-    ** not just for an Object fetched via the Base Adaptor like Anaylsis, which
+    ** not just for an Object fetched via the Base Adaptor like Analysis, which
     ** is not a Feature.
     **
     ** Maybe this functionality should just move into the Feature Adaptor?
@@ -861,7 +862,7 @@ void *ensBaseadaptorFetchByIdentifier(const EnsPBaseadaptor ba,
 
 
 
-/* @funcstatic baseAdaptorFetchAllByIdentifiers *******************************
+/* @funcstatic baseadaptorFetchAllByIdentifiers *******************************
 **
 ** Helper function for the generic function to fetch Ensembl Objects by an
 ** AJAX List of SQL database-internal identifiers via an Ensembl Base Adaptor.
@@ -877,7 +878,7 @@ void *ensBaseadaptorFetchByIdentifier(const EnsPBaseadaptor ba,
 ** @@
 ******************************************************************************/
 
-static AjBool baseAdaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
+static AjBool baseadaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
                                                const AjPStr values,
                                                AjPList objects)
 {
@@ -974,13 +975,13 @@ AjBool ensBaseadaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
 
         /* Run the statement if we exceed the maximum chunk size. */
 
-        if(i >= baseAdaptorFetchAllByIdentifiersMax)
+        if(i >= baseadaptorFetchAllByIdentifiersMax)
         {
             /* Remove the last comma and space. */
 
             ajStrCutEnd(&values, 2);
 
-            baseAdaptorFetchAllByIdentifiers(ba, values, objects);
+            baseadaptorFetchAllByIdentifiers(ba, values, objects);
 
             ajStrAssignClear(&values);
 
@@ -996,7 +997,7 @@ AjBool ensBaseadaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
 
     ajStrCutEnd(&values, 2);
 
-    baseAdaptorFetchAllByIdentifiers(ba, values, objects);
+    baseadaptorFetchAllByIdentifiers(ba, values, objects);
 
     ajStrDel(&values);
 
@@ -1101,7 +1102,7 @@ AjBool ensBaseadaptorFetchAllIdentifiers(const EnsPBaseadaptor ba,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(ba->Adaptor, &sqls);
 
     ajStrDel(&statement);
 
@@ -1173,7 +1174,7 @@ AjBool ensBaseadaptorFetchAllStrings(const EnsPBaseadaptor ba,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(ba->Adaptor, &sqls);
 
     ajStrDel(&statement);
 
