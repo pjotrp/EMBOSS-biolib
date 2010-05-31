@@ -160,6 +160,8 @@ AjPSqlstatement ensDatabaseadaptorSqlstatementNew(EnsPDatabaseadaptor dba,
 AjBool ensDatabaseadaptorSqlstatementDel(EnsPDatabaseadaptor dba,
                                          AjPSqlstatement *Psqls);
 
+AjBool ensDatabaseadaptorDisconnect(EnsPDatabaseadaptor dba);
+
 AjBool ensDatabaseadaptorEscapeC(EnsPDatabaseadaptor dba,
                                  char **Ptxt,
                                  const AjPStr str);

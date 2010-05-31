@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -129,7 +129,7 @@ static const char *databaseadaptorGroup[] =
 ** Adaptors should not be instantiated directly, but rather obtained from the
 ** Ensembl Registry, which will in turn call this function if neccessary.
 **
-** @see ensRegistryAddDatabaseadaptor
+** @see ensRegistryNewDatabaseadaptor
 ** @see ensRegistryGetDatabaseadaptor
 **
 ** @cc Bio::EnsEMBL::DBSQL::DBAdaptor::new
@@ -238,6 +238,9 @@ EnsPDatabaseadaptor ensDatabaseadaptorNew(
 ** been instantiated by it. Therefore, Ensembl Database Adaptors should never
 ** be destroyed directly. Upon exit, the Ensembl Registry will call this
 ** function if required.
+**
+** @see ensExit
+** @see ensRegistryExit
 **
 ** @param [d] Pdba [EnsPDatabaseadaptor*] Ensembl Database Adaptor address
 **
@@ -811,6 +814,28 @@ AjBool ensDatabaseadaptorSqlstatementDel(EnsPDatabaseadaptor dba,
 
     return ensDatabaseconnectionSqlstatementDel(dba->Databaseconnection,
                                                 Psqls);
+}
+
+
+
+
+/* @func ensDatabaseadaptorDisconnect *****************************************
+**
+** Disconnect the Ensembl Database Connection this Ensembl Database Adaptor
+** is based on.
+**
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensDatabaseadaptorDisconnect(EnsPDatabaseadaptor dba)
+{
+    if(!dba)
+        return ajFalse;
+
+    return ensDatabaseconnectionDisconnect(dba->Databaseconnection);
 }
 
 
