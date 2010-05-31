@@ -45,6 +45,15 @@
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
+/* sqlInit ********************************************************************
+**
+** Private boolean variable to ascertain that ajSqlInit has been called once
+** and only once.
+**
+******************************************************************************/
+
+static AjBool sqlInit = AJFALSE;
+
 #ifdef AJ_SAVESTATS
 
 static ajlong sqlconnectionTotalCount = 0;
@@ -139,14 +148,12 @@ static AjBool arrVoidResize(AjPVoid *thys, ajuint size);
 
 AjBool ajSqlInit(void)
 {
+    if(sqlInit)
+        return ajTrue;
+
 #ifdef HAVE_MYSQL
 
-    int argc = 0;
-
-    char **argv   = NULL;
-    char **groups = NULL;
-
-    if(mysql_library_init(argc, argv, groups))
+    if(mysql_library_init(0, (char **) NULL, (char **) NULL))
     {
         ajDebug("ajSqlInit MySQL initialisation failed.\n");
 
@@ -157,6 +164,8 @@ AjBool ajSqlInit(void)
                 mysql_get_client_info());
 
 #endif /* HAVE_MYSQL */
+
+    sqlInit = ajTrue;
 
     return ajTrue;
 }
@@ -188,6 +197,9 @@ AjBool ajSqlInit(void)
 
 void ajSqlExit(void)
 {
+    if(!sqlInit)
+        return;
+
 #ifdef HAVE_MYSQL
 
     mysql_library_end();
@@ -209,6 +221,8 @@ void ajSqlExit(void)
             sqlstatementErrorCount);
 
 #endif /* AJ_SAVESTATS */
+
+    sqlInit = ajFalse;
 
     return;
 }
@@ -623,6 +637,8 @@ AjPSqlconnection ajSqlconnectionNewData(AjESqlClient client,
 
     (void) password;
 
+    ajSqlInit();
+
     switch(client)
     {
         case ajESqlClientMySQL:
@@ -960,7 +976,7 @@ AjBool ajSqlconnectionEscapeC(const AjPSqlconnection sqlc,
             */
 
             /*
-            ** FIXME: Tpye mismatch, since PostgeSQL uses size_t.
+            ** FIXME: Type mismatch, since PostgeSQL uses size_t.
             ** It is necessary to test, whether the maximum unsigned integer
             ** value (UINT_MAX) has been exceeded.
             */
@@ -2080,7 +2096,6 @@ AjBool ajSqlrowiterDone(const AjISqlrow sqli)
 
     if(sqli->Current < sqli->Sqlstatement->SelectedRows)
         return ajFalse;
-
 
     return ajTrue;
 }
