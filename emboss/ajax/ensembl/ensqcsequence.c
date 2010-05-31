@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1260,7 +1260,7 @@ AjBool ensQcsequenceMatch(const EnsPQcsequence qcs1,
 
 AjBool ensHTMLEncodeSGMLID(AjPStr *Pstr)
 {
-    const char *Pchar = NULL;
+    const char *txtstr = NULL;
 
     if(!Pstr)
         return ajFalse;
@@ -1274,11 +1274,11 @@ AjBool ensHTMLEncodeSGMLID(AjPStr *Pstr)
                            "abcdefghijklmnopqrstuvwxyz",
                            '_');
 
-    Pchar = ajStrGetPtr(*Pstr);
+    txtstr = ajStrGetPtr(*Pstr);
 
     if(!
-       ((*Pchar >= 'A' && *Pchar <= 'Z') ||
-        (*Pchar >= 'a' && *Pchar <= 'z')))
+       ((*txtstr >= 'A' && *txtstr <= 'Z') ||
+        (*txtstr >= 'a' && *txtstr <= 'z')))
         ajStrInsertC(Pstr, 0, "ID_");
 
     return ajTrue;
@@ -1720,7 +1720,7 @@ static AjBool qcsequenceadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     return ajTrue;
 }
@@ -2296,7 +2296,7 @@ AjBool ensQcsequenceadaptorStore(EnsPQcsequenceadaptor qcsa,
         value = ajTrue;
     }
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -2388,7 +2388,7 @@ AjBool ensQcsequenceadaptorUpdate(EnsPQcsequenceadaptor qcsa,
     if(ajSqlstatementGetAffectedrows(sqls))
         value = ajTrue;
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -2447,7 +2447,7 @@ AjBool ensQcsequenceadaptorDelete(EnsPQcsequenceadaptor qcsa,
         value = ajTrue;
     }
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 

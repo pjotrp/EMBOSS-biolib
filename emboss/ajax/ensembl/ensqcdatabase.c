@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1857,7 +1857,7 @@ static AjBool qcdatabaseadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     return ajTrue;
 }
@@ -2632,7 +2632,7 @@ AjBool ensQcdatabaseadaptorStore(EnsPQcdatabaseadaptor qcdba,
         value = ajTrue;
     }
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -2743,7 +2743,7 @@ AjBool ensQcdatabaseadaptorUpdate(EnsPQcdatabaseadaptor qcdba,
     if(ajSqlstatementGetAffectedrows(sqls))
         value = ajTrue;
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -2802,7 +2802,7 @@ AjBool ensQcdatabaseadaptorDelete(EnsPQcdatabaseadaptor qcdba,
         value = ajTrue;
     }
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 

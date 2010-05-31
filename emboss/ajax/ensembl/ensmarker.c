@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -675,7 +675,7 @@ static AjBool markersynonymadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     return ajTrue;
 }
@@ -1544,7 +1544,7 @@ static AjBool markermaplocationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     return ajTrue;
 }
@@ -3164,7 +3164,7 @@ static AjBool markeradaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     return ajTrue;
 }
@@ -3623,7 +3623,7 @@ AjBool ensMarkeradaptorFetchAllBySynonym(const EnsPMarkeradaptor ma,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -3745,7 +3745,7 @@ __deprecated AjBool ensMarkeradaptorFetchAttributes(const EnsPMarkeradaptor ma,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -3825,7 +3825,7 @@ __deprecated AjBool ensMarkeradaptorFetchAttributes(const EnsPMarkeradaptor ma,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -5086,7 +5086,7 @@ static AjBool markerfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajListFree(&mrs);
 

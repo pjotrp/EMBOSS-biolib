@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -3315,7 +3315,7 @@ static AjBool gvvariationadaptorFetchAllBySQL(EnsPGvvariationadaptor gvva,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(gvva, &sqls);
 
     /* Clear the AJAX Table of Ensembl Genetic Variation Populations. */
 
@@ -3478,8 +3478,8 @@ AjBool ensGvvariationadaptorFetchByName(EnsPGvvariationadaptor gvva,
                                         const AjPStr source,
                                         EnsPGvvariation *Pgvv)
 {
-    char *Ptxtname   = NULL;
-    char *Ptxtsource = NULL;
+    char *txtname   = NULL;
+    char *txtsource = NULL;
 
     AjPList gvvs = NULL;
 
@@ -3497,15 +3497,15 @@ AjBool ensGvvariationadaptorFetchByName(EnsPGvvariationadaptor gvva,
     if(!Pgvv)
         return ajFalse;
 
-    ensDatabaseadaptorEscapeC(gvva, &Ptxtname, name);
+    ensDatabaseadaptorEscapeC(gvva, &txtname, name);
 
     if(source && ajStrGetLen(source))
     {
-        ensDatabaseadaptorEscapeC(gvva, &Ptxtsource, source);
+        ensDatabaseadaptorEscapeC(gvva, &txtsource, source);
 
-        extra = ajFmtStr("AND source1.name = '%s' ", Ptxtsource);
+        extra = ajFmtStr("AND source1.name = '%s' ", txtsource);
 
-        ajCharDel(&Ptxtsource);
+        ajCharDel(&txtsource);
     }
     else
         extra = ajStrNew();
@@ -3587,7 +3587,7 @@ AjBool ensGvvariationadaptorFetchByName(EnsPGvvariationadaptor gvva,
         "%S "
         "ORDER BY "
         "allele.allele_id",
-        Ptxtname,
+        txtname,
         extra);
 
     gvvs = ajListNew();
@@ -3653,7 +3653,7 @@ AjBool ensGvvariationadaptorFetchByName(EnsPGvvariationadaptor gvva,
             "%S "
             "ORDER BY "
             "allele.allele_id",
-            Ptxtname,
+            txtname,
             extra);
 
         gvvariationadaptorFetchAllBySQL(gvva, statement, gvvs);
@@ -3673,7 +3673,7 @@ AjBool ensGvvariationadaptorFetchByName(EnsPGvvariationadaptor gvva,
 
     ajListFree(&gvvs);
 
-    ajCharDel(&Ptxtname);
+    ajCharDel(&txtname);
 
     ajStrDel(&extra);
 
@@ -3705,7 +3705,7 @@ AjBool ensGvvariationadaptorFetchAllBySource(EnsPGvvariationadaptor gvva,
                                              AjBool primary,
                                              AjPList gvvs)
 {
-    char *Ptxtsource = NULL;
+    char *txtsource = NULL;
 
     AjPStr statement = NULL;
 
@@ -3718,7 +3718,7 @@ AjBool ensGvvariationadaptorFetchAllBySource(EnsPGvvariationadaptor gvva,
     if(!gvvs)
         return ajFalse;
 
-    ensDatabaseadaptorEscapeC(gvva, &Ptxtsource, source);
+    ensDatabaseadaptorEscapeC(gvva, &txtsource, source);
 
     statement = ajFmtStr(
         "SELECT "
@@ -3774,7 +3774,7 @@ AjBool ensGvvariationadaptorFetchAllBySource(EnsPGvvariationadaptor gvva,
         "source1.source_id "
         "AND "
         "source1.name = '%s'",
-        Ptxtsource);
+        txtsource);
 
     gvvariationadaptorFetchAllBySQL(gvva, statement, gvvs);
 
@@ -3833,7 +3833,7 @@ AjBool ensGvvariationadaptorFetchAllBySource(EnsPGvvariationadaptor gvva,
             "source2.name = '%s' "
             "ORDER BY "
             "variation.variation_id",
-            Ptxtsource);
+            txtsource);
 
         /* need to merge both lists, trying to avoid duplicates. */
 
@@ -3842,7 +3842,7 @@ AjBool ensGvvariationadaptorFetchAllBySource(EnsPGvvariationadaptor gvva,
         ajStrDel(&statement);
     }
 
-    ajCharDel(&Ptxtsource);
+    ajCharDel(&txtsource);
 
     return ajTrue;
 }
@@ -3998,7 +3998,7 @@ AjBool ensGvvariationadaptorFetchAllSources(EnsPGvvariationadaptor gvva,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(gvva, &sqls);
 
     ajStrDel(&statement);
 
@@ -4027,7 +4027,7 @@ AjBool ensGvvariationadaptorFetchSourceVersion(EnsPGvvariationadaptor gvva,
                                                const AjPStr source,
                                                AjPStr *Pversion)
 {
-    char *Ptxtsource = NULL;
+    char *txtsource = NULL;
 
     AjPSqlstatement sqls = NULL;
     AjISqlrow sqli       = NULL;
@@ -4045,13 +4045,13 @@ AjBool ensGvvariationadaptorFetchSourceVersion(EnsPGvvariationadaptor gvva,
     if(!Pversion)
         return ajFalse;
 
-    ensDatabaseadaptorEscapeC(gvva, &Ptxtsource, source);
+    ensDatabaseadaptorEscapeC(gvva, &txtsource, source);
 
     statement = ajFmtStr(
         "SELECT version from source where name ='%s'",
-        Ptxtsource);
+        txtsource);
 
-    ajCharDel(&Ptxtsource);
+    ajCharDel(&txtsource);
 
     sqls = ensDatabaseadaptorSqlstatementNew(gvva, statement);
 
@@ -4072,7 +4072,7 @@ AjBool ensGvvariationadaptorFetchSourceVersion(EnsPGvvariationadaptor gvva,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(gvva, &sqls);
 
     ajStrDel(&statement);
 
@@ -4330,7 +4330,7 @@ AjBool ensGvvariationadaptorFetchFlankingSequence(EnsPGvvariationadaptor gvva,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(gvva, &sqls);
 
     ajStrDel(&statement);
 

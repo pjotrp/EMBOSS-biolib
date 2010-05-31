@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -4068,7 +4068,7 @@ static AjBool databaseentryadaptorFetchAllBySQL(EnsPDatabaseentryadaptor dbea,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dbea->Adaptor, &sqls);
 
     databaseentryadaptorCacheClear(linkages);
     databaseentryadaptorCacheClear(synonyms);
@@ -5051,7 +5051,7 @@ static AjBool databaseentryadaptorFetchAllIdentifiersByExternalName(
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dbea->Adaptor, &sqls);
 
     ajStrDel(&statement);
 
@@ -5123,7 +5123,7 @@ static AjBool databaseentryadaptorFetchAllIdentifiersByExternalName(
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dbea->Adaptor, &sqls);
 
     ajStrDel(&statement);
 
@@ -5318,7 +5318,7 @@ static AjBool databaseentryadaptorFetchAllIdentifiersByExternaldatabaseName(
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dbea->Adaptor, &sqls);
 
     ajStrDel(&statement);
     ajStrDel(&sqlselect);

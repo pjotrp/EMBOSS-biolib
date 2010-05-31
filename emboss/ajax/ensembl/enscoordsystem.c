@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1160,7 +1160,7 @@ static AjBool coordsystemadaptorFetchAllBySQL(EnsPCoordsystemadaptor csa,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(csa->Adaptor, &sqls);
 
     return ajTrue;
 }
@@ -1824,7 +1824,7 @@ static AjBool coordsystemadaptorSeqregionMapInit(EnsPCoordsystemadaptor csa)
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(csa->Adaptor, &sqls);
 
     ajStrDel(&statement);
 

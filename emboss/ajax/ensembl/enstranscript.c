@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.18 $
+** @version $Revision: 1.19 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -5036,7 +5036,7 @@ static AjBool transcriptadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajListFree(&mrs);
 
@@ -5705,7 +5705,7 @@ AjBool ensTranscriptadaptorFetchAllBySlice(EnsPTranscriptadaptor tca,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -6078,7 +6078,7 @@ AjBool ensTranscriptadaptorFetchByExonIdentifier(
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -6181,7 +6181,7 @@ AjBool ensTranscriptadaptorFetchByExonStableIdentifier(
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -6270,7 +6270,7 @@ AjBool ensTranscriptadaptorFetchByTranslationIdentifier(
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -6374,7 +6374,7 @@ AjBool ensTranscriptadaptorFetchByTranslationStableIdentifier(
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -7506,7 +7506,7 @@ AjBool ensSupportingfeatureadaptorFetchAllByTranscript(
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2833,7 +2833,7 @@ static AjBool translationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     return ajTrue;
 }
@@ -3226,7 +3226,7 @@ AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor tla,
             ensTranscriptTrace(transcript, 1);
         }
 
-        ajSqlstatementDel(&sqls);
+        ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
         ajStrDel(&statement);
 
@@ -3309,7 +3309,7 @@ AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor tla,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -3575,7 +3575,7 @@ static AjBool translationadaptorFetchAllByIdentifiers(
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 

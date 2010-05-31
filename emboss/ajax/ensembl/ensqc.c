@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1708,7 +1708,7 @@ static AjBool qcdasfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     return ajTrue;
 }
@@ -2242,7 +2242,7 @@ AjBool ensQcdasfeatureadaptorStore(EnsPQcdasfeatureadaptor qcdasfa,
         value = ajTrue;
     }
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -2322,7 +2322,7 @@ AjBool ensQcdasfeatureadaptorUpdate(EnsPQcdasfeatureadaptor qcdasfa,
     if(ajSqlstatementGetAffectedrows(sqls))
         value = ajTrue;
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -2382,7 +2382,7 @@ AjBool ensQcdasfeatureadaptorDelete(EnsPQcdasfeatureadaptor qcdasfa,
         value = ajTrue;
     }
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -4033,7 +4033,7 @@ static AjBool qcvariationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     return ajTrue;
 }
@@ -4506,7 +4506,7 @@ AjBool ensQcvariationadaptorStore(EnsPQcvariationadaptor qcva,
         value = ajTrue;
     }
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -4602,7 +4602,7 @@ AjBool ensQcvariationadaptorUpdate(EnsPQcvariationadaptor qcva,
     if(ajSqlstatementGetAffectedrows(sqls))
         value = ajTrue;
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -4662,7 +4662,7 @@ AjBool ensQcvariationadaptorDelete(EnsPQcvariationadaptor qcva,
         value = ajTrue;
     }
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -5866,7 +5866,7 @@ static AjBool qcsubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     return ajTrue;
 }
@@ -6357,7 +6357,7 @@ AjBool ensQcsubmissionadaptorStore(EnsPQcsubmissionadaptor qcsba,
         value = ajTrue;
     }
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -6430,7 +6430,7 @@ AjBool ensQcsubmissionadaptorUpdate(EnsPQcsubmissionadaptor qcsba,
     if(ajSqlstatementGetAffectedrows(sqls))
         value = ajTrue;
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -6490,7 +6490,7 @@ AjBool ensQcsubmissionadaptorDelete(EnsPQcsubmissionadaptor qcsba,
         value = ajTrue;
     }
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 

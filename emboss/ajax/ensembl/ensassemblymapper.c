@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -3180,7 +3180,7 @@ static AjBool assemblymapperadaptorMultipleMappingsInit(
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
 
     ajStrDel(&statement);
 
@@ -4254,7 +4254,7 @@ AjBool ensAssemblymapperadaptorRegisterAssembled(
 
         ajSqlrowiterDel(&sqli);
 
-        ajSqlstatementDel(&sqls);
+        ensDatabaseadaptorSqlstatementDel(ama->Adaptor, &sqls);
 
         ajStrDel(&statement);
 
@@ -4362,7 +4362,7 @@ AjBool ensAssemblymapperadaptorRegisterComponent(
 
         ensGenericassemblymapperRegisterComponent(gam, cmpsrid);
 
-        ajSqlstatementDel(&sqls);
+        ensDatabaseadaptorSqlstatementDel(ama->Adaptor, &sqls);
 
         ajStrDel(&statement);
 
@@ -4430,7 +4430,7 @@ AjBool ensAssemblymapperadaptorRegisterComponent(
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(ama->Adaptor, &sqls);
 
     ajStrDel(&statement);
 
@@ -4619,7 +4619,7 @@ AjBool ensAssemblymapperadaptorRegisterAll(EnsPAssemblymapperadaptor ama,
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(ama->Adaptor, &sqls);
 
     ajStrDel(&statement);
 
@@ -5283,7 +5283,7 @@ AjBool ensAssemblymapperadaptorRegisterChained(EnsPAssemblymapperadaptor ama,
 
         ajSqlrowiterDel(&sqli);
 
-        ajSqlstatementDel(&sqls);
+        ensDatabaseadaptorSqlstatementDel(ama->Adaptor, &sqls);
 
         ajStrDel(&statement);
     }
@@ -5442,7 +5442,7 @@ AjBool ensAssemblymapperadaptorRegisterChained(EnsPAssemblymapperadaptor ama,
 
         ajSqlrowiterDel(&sqli);
 
-        ajSqlstatementDel(&sqls);
+        ensDatabaseadaptorSqlstatementDel(ama->Adaptor, &sqls);
 
         ajStrDel(&statement);
 
@@ -5869,7 +5869,7 @@ AjBool ensAssemblymapperadaptorRegisterChainedSpecial(
 
             ajSqlrowiterDel(&sqli);
 
-            ajSqlstatementDel(&sqls);
+            ensDatabaseadaptorSqlstatementDel(ama->Adaptor, &sqls);
 
             ajStrDel(&statement);
         }
@@ -6220,7 +6220,7 @@ AjBool ensAssemblymapperadaptorRegisterAllChained(
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(ama->Adaptor, &sqls);
 
     ajStrDel(&statement);
 
@@ -6354,7 +6354,7 @@ AjBool ensAssemblymapperadaptorRegisterAllChained(
 
     ajSqlrowiterDel(&sqli);
 
-    ajSqlstatementDel(&sqls);
+    ensDatabaseadaptorSqlstatementDel(ama->Adaptor, &sqls);
 
     ajStrDel(&statement);
 
