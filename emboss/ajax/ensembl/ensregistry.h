@@ -60,7 +60,7 @@ AjBool ensRegistryRemoveAlias(const AjPStr alias);
 
 AjPStr ensRegistryGetSpecies(const AjPStr alias);
 
-AjBool ensRegistryLoadAliases(void);
+AjBool ensRegistryLoadAliasesFromFile(const AjPStr filename);
 
 AjBool ensRegistryTraceAliases(ajuint level);
 
@@ -68,12 +68,27 @@ AjBool ensRegistryTraceEntries(ajuint level);
 
 /* Ensembl Registry Database Adaptor */
 
-AjBool ensRegistryAddDatabaseadaptor(EnsPDatabaseconnection dbc,
-                                     AjPStr database,
-                                     AjPStr alias,
-                                     EnsEDatabaseadaptorGroup group,
-                                     AjBool multi,
-                                     ajuint identifier);
+AjBool ensRegistryAddDatabaseadaptor(EnsPDatabaseadaptor dba);
+
+AjBool ensRegistryAddReferenceadaptor(EnsPDatabaseadaptor dba,
+                                      EnsPDatabaseadaptor rsa);
+
+EnsPDatabaseadaptor ensRegistryNewDatabaseadaptor(
+    EnsPDatabaseconnection dbc,
+    AjPStr database,
+    AjPStr alias,
+    EnsEDatabaseadaptorGroup group,
+    AjBool multi,
+    ajuint identifier);
+
+EnsPDatabaseadaptor ensRegistryNewReferencedaptor(
+    EnsPDatabaseadaptor dba,
+    EnsPDatabaseconnection dbc,
+    AjPStr database,
+    AjPStr alias,
+    EnsEDatabaseadaptorGroup group,
+    AjBool multi,
+    ajuint identifier);
 
 AjBool ensRegistryRemoveDatabaseadaptor(EnsPDatabaseadaptor *Pdba);
 
