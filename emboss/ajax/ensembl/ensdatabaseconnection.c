@@ -3,8 +3,8 @@
 **
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
-** @modified $Date: 2010/05/18 21:49:15 $ by $Author: mks $
-** @version $Revision: 1.9 $
+** @modified $Date: 2010/05/31 19:55:44 $ by $Author: mks $
+** @version $Revision: 1.10 $
 **
 ** This library is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU Library General Public
@@ -749,11 +749,11 @@ AjBool ensDatabaseconnectionConnect(EnsPDatabaseconnection dbc)
 ** @cc Bio::EnsEMBL::DBSQL::DBConnection::disconnect_if_idle
 ** @param [u] Pdbc [EnsPDatabaseconnection] Ensembl Database Connection
 **
-** @return [void]
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-void ensDatabaseconnectionDisconnect(EnsPDatabaseconnection dbc)
+AjBool ensDatabaseconnectionDisconnect(EnsPDatabaseconnection dbc)
 {
     if(ajDebugTest("ensDatabaseconnectionDisconnect"))
     {
@@ -765,10 +765,10 @@ void ensDatabaseconnectionDisconnect(EnsPDatabaseconnection dbc)
     }
 
     if(!dbc)
-        return;
+        return ajFalse;
 
     if(!dbc->Sqlconnection)
-        return;
+        return ajTrue;
 
     /*
     ** Disconnect if no other AJAX SQL Statement has a reference to the
@@ -778,7 +778,7 @@ void ensDatabaseconnectionDisconnect(EnsPDatabaseconnection dbc)
     if(ajSqlconnectionGetUse(dbc->Sqlconnection) == 1)
         ajSqlconnectionDel(&dbc->Sqlconnection);
 
-    return;
+    return ajTrue;
 }
 
 

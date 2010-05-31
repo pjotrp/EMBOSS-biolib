@@ -104,7 +104,7 @@ AjBool ensDatabaseconnectionMatch(const EnsPDatabaseconnection dbc1,
 
 AjBool ensDatabaseconnectionConnect(EnsPDatabaseconnection dbc);
 
-void ensDatabaseconnectionDisconnect(EnsPDatabaseconnection dbc);
+AjBool ensDatabaseconnectionDisconnect(EnsPDatabaseconnection dbc);
 
 AjBool ensDatabaseconnectionIsConnected(const EnsPDatabaseconnection dbc);
 
