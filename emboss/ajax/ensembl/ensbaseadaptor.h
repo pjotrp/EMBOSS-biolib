@@ -22,7 +22,7 @@ EnsPBaseadaptor ensBaseadaptorNew(
     EnsPDatabaseadaptor dba,
     const char **Ptables,
     const char **Pcolumns,
-    EnsOBaseadaptorLeftJoin *left_join,
+    EnsOBaseadaptorLeftJoin *leftjoin,
     const char *condition,
     const char *final,
     AjBool Fquery(EnsPDatabaseadaptor dba,
