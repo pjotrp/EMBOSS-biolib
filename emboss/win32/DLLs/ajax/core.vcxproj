@@ -140,6 +140,7 @@
     <ClCompile Include="..\..\..\ajax\core\ajmess.c" />
     <ClCompile Include="..\..\..\ajax\core\ajnam.c" />
     <ClCompile Include="..\..\..\ajax\core\ajnexus.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajobo.c" />
     <ClCompile Include="..\..\..\ajax\core\ajpat.c" />
     <ClCompile Include="..\..\..\ajax\core\ajpdb.c" />
     <ClCompile Include="..\..\..\ajax\core\ajpdbio.c" />
@@ -157,6 +158,7 @@
     <ClCompile Include="..\..\..\ajax\core\ajstr.c" />
     <ClCompile Include="..\..\..\ajax\core\ajsys.c" />
     <ClCompile Include="..\..\..\ajax\core\ajtable.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajtax.c" />
     <ClCompile Include="..\..\..\ajax\core\ajtime.c" />
     <ClCompile Include="..\..\..\ajax\core\ajtranslate.c" />
     <ClCompile Include="..\..\..\ajax\core\ajtree.c" />
@@ -194,6 +196,7 @@
     <ClInclude Include="..\..\..\ajax\core\ajmess.h" />
     <ClInclude Include="..\..\..\ajax\core\ajnam.h" />
     <ClInclude Include="..\..\..\ajax\core\ajnexus.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajobo.h" />
     <ClInclude Include="..\..\..\ajax\core\ajpat.h" />
     <ClInclude Include="..\..\..\ajax\core\ajpdb.h" />
     <ClInclude Include="..\..\..\ajax\core\ajpdbio.h" />
@@ -212,6 +215,7 @@
     <ClInclude Include="..\..\..\ajax\core\ajstr.h" />
     <ClInclude Include="..\..\..\ajax\core\ajsys.h" />
     <ClInclude Include="..\..\..\ajax\core\ajtable.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajtax.h" />
     <ClInclude Include="..\..\..\ajax\core\ajtime.h" />
     <ClInclude Include="..\..\..\ajax\core\ajtranslate.h" />
     <ClInclude Include="..\..\..\ajax\core\ajtree.h" />
