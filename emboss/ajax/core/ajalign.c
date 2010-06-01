@@ -1662,7 +1662,8 @@ static void alignWriteSam(AjPAlign thys)
 	qseq = ajSeqGetSeqS(seq);
 	ajStrAssignSubS(&mseq, qseq, data->Start[iseq]-1, data->End[iseq]);
 
-	ajFmtPrintF(outf, "%S\t%u\t%S\t%d\t\%d\t%S\t%S\t%u\t%u\t%S\t%S\tAS:i:%S\n",
+	ajFmtPrintF(outf, "%S\t%u\t%S\t%d\t%d\t%S\t%S\t%u\t%u\t%S\t%S\t"
+                    "AS:i:%S\n",
 		alignSeqName(thys, seq1),
 		flag,
 		alignSeqName(thys, seq2),
