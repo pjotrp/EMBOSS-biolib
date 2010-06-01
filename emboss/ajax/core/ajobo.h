@@ -8,6 +8,9 @@ extern "C"
 
 #include "ajax.h"
 
+
+
+
 /* @data AjPObo ***************************************************************
 **
 ** OBO parsed data
@@ -21,7 +24,8 @@ extern "C"
 ** @@
 ******************************************************************************/
 
-typedef struct AjSObo {
+typedef struct AjSObo
+{
     AjPTable Termtable;
     AjPTable Typedeftable;
     AjPTable Instancetable;
@@ -46,7 +50,8 @@ typedef struct AjSObo {
 ** @@
 ******************************************************************************/
 
-typedef struct AjSOboTag {
+typedef struct AjSOboTag
+{
     AjPStr Name;
     AjPStr Value;
     AjPStr Modifier;
@@ -55,6 +60,9 @@ typedef struct AjSOboTag {
     ajuint Padding;
 } AjOOboTag;
 #define AjPOboTag AjOOboTag*
+
+
+
 
 /* @data AjPOboTerm ***********************************************************
 **
@@ -89,6 +97,9 @@ typedef struct AjSOboTerm
 } AjOOboTerm;
 #define AjPOboTerm AjOOboTerm*
 
+
+
+
 /* @data AjPOboAlias *********************************************************
 **
 ** Alias name for an OBO identifier
@@ -108,6 +119,12 @@ typedef struct AjSOboAlias
 #define AjPOboAlias AjOOboAlias*
 
 
+
+
+/*
+** Prototype definitions
+*/
+
 AjPObo           ajOboNew(void);
 
 AjPOboTerm       ajOboTermNew(void);
@@ -118,6 +135,10 @@ AjPOboTag        ajOboTagNew(const AjPStr name, const AjPStr value,
                              ajuint linenum);
 void             ajOboTagDel(AjPOboTag* Ptag);
 AjPOboTerm       ajOboFetchTerm(const AjPObo thys, const AjPStr query);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

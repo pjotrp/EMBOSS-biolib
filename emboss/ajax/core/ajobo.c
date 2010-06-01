@@ -24,6 +24,9 @@
 
 #include "ajax.h"
 
+
+
+
 /******************************************************************************
 **
 ** To Do:
@@ -67,6 +70,9 @@ static const char *oboBuiltin[] =
     NULL
 };
 
+
+
+
 static const char *oboStanza[] =
 {
     "Typedef", 
@@ -77,9 +83,15 @@ static const char *oboStanza[] =
     NULL
 };
 
+
+
+
 enum tagtype {
     TAG_ANY, TAG_BOOL, TAG_QTEXT, TAG_DBX, TAG_QXREF, TAG_ID, TAG_NAME
 };
+
+
+
 
 /*
 ** dbxrefs are comma-separated ids and possible "comment"
@@ -103,6 +115,9 @@ typedef struct OboSTagdef
     ajint       Type;
     const char* Obsolete;
 } OboOTagdef;
+
+
+
 
 static OboOTagdef oboTermTags[] =
 {
@@ -135,6 +150,9 @@ static OboOTagdef oboTermTags[] =
     {"creation_date",   TAG_ANY, 0, 1, NULL},            /* new in 1.3 */
     {NULL, 0, 0, 0, NULL}
 };
+
+
+
 
 static const char *oboTypedefTags[] =
 {
@@ -177,6 +195,9 @@ static const char *oboTypedefTags[] =
     NULL
 };
 
+
+
+
 static const char *oboInstanceTags[] =
 {
     "id", 
@@ -194,6 +215,9 @@ static const char *oboInstanceTags[] =
     "consider", 
     NULL
 };
+
+
+
 
 static const char *oboAnnotationTags[] =             /* new in 1.3 */
 {
@@ -224,6 +248,8 @@ static const char *oboAnnotationTags[] =             /* new in 1.3 */
 };
 
 
+
+
 static const char *oboFormulaTags[] =      /* new and undocumented in 1.3 */
 {
     "id", 
@@ -235,6 +261,8 @@ static const char *oboFormulaTags[] =      /* new and undocumented in 1.3 */
     "formula",
     NULL
 };
+
+
 
 
 static const char *oboHeaderTags[] =
@@ -266,7 +294,6 @@ static const char *oboHeaderTags[] =
 
 
 
-
 static AjBool     oboInitDone = AJFALSE;
 static ajuint     oboErrorCount = 0;
 
@@ -277,8 +304,6 @@ static AjBool oboCutDbxref(AjPStr *Pline, AjPStr *Pdbxref);
 static AjBool oboEscape(AjPStr *Pline);
 static void   oboWarn(const AjPFile obofile, ajuint linecnt,
                       const char* fmt, ...);
-
-
 
 
 
@@ -299,8 +324,6 @@ AjPObo ajOboNew(void)
 
     return ret;
 }
-
-
 
 
 
@@ -380,7 +403,7 @@ void ajOboTagDel(AjPOboTag *Ptag)
     ajStrDel(&(*Ptag)->Comment);
 
     AJFREE(*Ptag);
-    *Ptag=NULL;
+    *Ptag = NULL;
 
     return;
 }
@@ -422,7 +445,7 @@ void ajOboTermDel(AjPOboTerm *Pterm)
     ajListFree(&term->Taglist);
 
     AJFREE(*Pterm);
-    *Pterm=NULL;
+    *Pterm = NULL;
 
     return;
 }
@@ -441,12 +464,16 @@ void ajOboTermDel(AjPOboTerm *Pterm)
 static AjBool oboInit(void)
 {
 
-    if(oboInitDone) return ajTrue;
+    if(oboInitDone)
+        return ajTrue;
 
     oboInitDone = ajTrue;
 
     return ajTrue;
 }
+
+
+
 
 /* @func ajOboParseObo ********************************************************
 **
@@ -462,20 +489,20 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
     AjPObo ret;
     AjPList idprefixlist = NULL;
     ajuint linecnt = 0;
-    AjPStr line = NULL;
+    AjPStr line     = NULL;
     AjPStr saveline = NULL;
-    AjBool isstanza = ajFalse;
+    AjBool isstanza   = ajFalse;
     AjBool incomplete = ajFalse;
     AjPStr token = NULL;
-    AjPStr rest = NULL;
-    AjPStr stanzatype = NULL;
+    AjPStr rest  = NULL;
+    AjPStr stanzatype     = NULL;
     AjPStr laststanzatype = NULL;
-    AjPStr id = NULL;
-    AjPStr altid = NULL;
+    AjPStr id     = NULL;
+    AjPStr altid  = NULL;
     AjPStr lastid = NULL;
-    AjPStr name = NULL;
+    AjPStr name   = NULL;
     AjPStr modifier = NULL;
-    AjPStr comment = NULL;
+    AjPStr comment  = NULL;
     AjBool ok = ajFalse;
     ajuint i;
     ajuint j;
@@ -483,20 +510,20 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
     ajint icolon;
     AjBool found;
     AjBool isterm = AJFALSE;
-    AjPOboTerm term = NULL;
+    AjPOboTerm term    = NULL;
     AjPOboTerm altterm = NULL;
     AjPOboTerm oldterm = NULL;
     AjPList stanzalist = NULL;
-    AjPList oldlist = NULL;
-    AjPOboTag obotag = NULL;
+    AjPList oldlist    = NULL;
+    AjPOboTag obotag   = NULL;
     ajuint ntypes = 0;
-    AjPStr *typeids = NULL;
-    AjPList *typetags = NULL;
+    AjPStr *typeids    = NULL;
+    AjPList *typetags  = NULL;
     ajuint nterms = 0;
-    AjPStr *termids = NULL;
-    AjPOboTerm *terms = NULL;
-    AjIList iter = NULL;
-    AjIList iterpref = NULL;
+    AjPStr *termids    = NULL;
+    AjPOboTerm *terms  = NULL;
+    AjIList iter       = NULL;
+    AjIList iterpref   = NULL;
     ajuint s;
     ajint k;
     AjPStr t;
@@ -505,15 +532,15 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
     ajuint jsave;
     ajuint jj;
     ajuint jjsave;
-    AjPStr idprefix = NULL;
-    AjPStr tmpstr = NULL;
-    AjPStr tmppref = NULL;
-    AjPStrTok idsplit  = NULL;
+    AjPStr idprefix       = NULL;
+    AjPStr tmpstr         = NULL;
+    AjPStr tmppref        = NULL;
+    AjPStrTok idsplit     = NULL;
     AjPStrTok validsplit  = NULL;
-    AjPStr validstr = NULL;
-    AjBool obovalid = ajTrue;
+    AjPStr validstr       = NULL;
+    AjBool obovalid        = ajTrue;
     AjBool obovalididorder = ajTrue;
-    AjBool obovalididunk = ajTrue;
+    AjBool obovalididunk   = ajTrue;
 
     ret = ajOboNew();
 
@@ -521,6 +548,7 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
     {
         validstr = ajStrNewC(validations);
         ajStrTokenAssignC(&validsplit, validstr, ",");
+
         while(ajStrTokenNextParse(&validsplit, &tmpstr))
         {
             if(ajStrMatchC(tmpstr, "none"))
@@ -703,16 +731,19 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
 
             /* parse name: value ! comment */
             ajStrExtractWord(line, &rest, &token);
+
             if(!ajStrGetLen(rest))
                 oboWarn(obofile, linecnt,
                         "missing value for tag '%S' in %S '%S'",
                         token, stanzatype, id);
             ajStrAssignS(&name, token);
+
             if(ajStrGetCharLast(name) != ':')
                 oboWarn(obofile, linecnt,
                         "bad name '%S'",
                         token);
             ajStrCutEnd(&name, 1);
+
             if(ajStrMatchC(name, "id"))
             {
                 ajStrAssignS(&id, rest);
@@ -720,20 +751,25 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
                 if(icolon > 0)
                 {
                     ajStrAssignSubS(&tmpstr, id, 0, icolon);
+
                     if(!ajStrMatchS(idprefix, tmpstr))
                     {
                         iterpref = ajListIterNew(idprefixlist);
                         found = ajFalse;
+
                         while(!ajListIterDone(iterpref))
                         {
                             tmppref = ajListstrIterGet(iterpref);
+
                             if(ajStrMatchS(tmppref, tmpstr))
                             {
                                 found = ajTrue;
                                 break;
                             }
                         }
+
                         ajListIterDel(&iterpref);
+
                         if(!found)
                         {
                             ajStrAssignS(&idprefix, tmpstr);
@@ -748,6 +784,7 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
                     if(ajStrMatchS(stanzatype, laststanzatype))
                     {
                         icmp = MAJSTRCMPS(id, lastid);
+
                         if(!icmp)
                             oboWarn(obofile, linecnt,
                                     "duplicate of previous ID '%S'",
@@ -760,11 +797,13 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
                 }
                 ajStrAssignS(&lastid, id);
             }
+
             if(isstanza)
             {
                 obotag = ajOboTagNew(name, rest, modifier, comment, linecnt);
                 ajListPushAppend(stanzalist, obotag);
                 obotag = NULL;
+
                 if(isterm)
                 {
                     if(ajStrMatchC(name, "id"))
@@ -845,6 +884,7 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
                         altid = ajStrNewS(rest);
                         oldterm = ajTablePut(ret->Termtable, altid, altterm);
                         altid = NULL;
+
                         if(oldterm)
                         {
                             oboWarn(obofile, linecnt,
@@ -858,6 +898,7 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
             else                /* processing header tags */
             {
                 ok =  ajFalse;
+
                 for(i=0;oboHeaderTags[i];i++)
                 {
                     if(ajStrMatchC(name, oboHeaderTags[i]))
@@ -866,6 +907,7 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
                         break;
                     }
                 }
+
                 if(!ok)
                     oboWarn(obofile, linecnt,
                             "unknown header name '%S'",
@@ -884,6 +926,7 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
             {
                 ajListPushlist(term->Taglist, &stanzalist);
                 oldterm = ajTablePut(ret->Termtable, id, term);            
+
                 if(oldterm)
                 {
                     oboWarn(obofile, linecnt,
@@ -891,6 +934,7 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
                             stanzatype, id);
                     ajOboTermDel(&oldterm);
                 }
+
                 term = NULL;
             }
         }
@@ -906,6 +950,7 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
                 oldlist = ajTablePut(ret->Formulatable, id, stanzalist);
             else 
                 oldlist = ajTablePut(ret->Misctable, id, stanzalist);
+
             if(oldlist)
             {
                 oboWarn(obofile, linecnt,
@@ -955,12 +1000,15 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
         iter = ajListIterNewread(typetags[i]);
         j = 0;
         jsave = 0;
+
         while(!ajListIterDone(iter))
         {
             obotag = ajListIterGet(iter);
+
             while(oboTypedefTags[j] &&
                   !ajStrMatchC(obotag->Name, oboTypedefTags[j]))
                 j++;
+
             if(oboTypedefTags[j])
                 jsave = j;
             else
@@ -970,7 +1018,8 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
                     if(obovalididorder &&
                        ajStrMatchC(obotag->Name, oboTypedefTags[jj]))
                     {
-                        ajUser("type tag out of order '%S' after '%s' for id '%S'",
+                        ajUser("type tag out of order '%S' after '%s' "
+                               "for id '%S'",
                                obotag->Name, oboTypedefTags[jsave], id);
                         j = jj;
                         break;
@@ -980,6 +1029,7 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
             }
             /* check for IDs */
             ajStrTokenAssignC(&idsplit, obotag->Value, " \t,;[]{}()'\"");
+
             while (ajStrTokenNextParse(&idsplit, &tmpstr))
             {
                 if(ajStrPrefixS(tmpstr, idprefix))
@@ -1015,18 +1065,22 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
     for(i=0; i<nterms; i++)
     {
         id = termids[i];
+
         if(ajStrGetLen(terms[i]->Trueid))
         {
             ajStrTokenAssignC(&idsplit, terms[i]->Trueid, " \t,;[]{}()'\"");
+
             while (ajStrTokenNextParse(&idsplit, &tmpstr))
             {
                 ajStrTrimEndC(&tmpstr, ".");
+
                 if(ajStrPrefixS(tmpstr, idprefix))
                     if(obovalididunk && !ajTableFetch(ret->Termtable, tmpstr))
                         oboWarn(obofile, 0,
                                 "Unknown id '%S' for tag alt_id in term '%S'",
                                 tmpstr, terms[i]->Trueid);
             }
+
             continue;
         }
 
@@ -1052,11 +1106,13 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
         jj = 0;
         jsave = 0;
         jjsave = 0;
+
         while(!ajListIterDone(iter))
         {
             obotag = ajListIterGet(iter);
 
             j = 0;
+
             while(oboTermTags[j].Tag &&
                   !ajStrMatchC(obotag->Name, oboTermTags[j].Tag))
                 j++;
@@ -1066,6 +1122,7 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
             else
             {
                 jj = 0;
+
                 while(typeids[jj] &&
                       !ajStrMatchS(obotag->Name, typeids[jj]))
                     jj++;
@@ -1079,9 +1136,11 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
             }
             /* check for IDs */
             ajStrTokenAssignC(&idsplit, obotag->Value, " \t,;[]{}()'\"");
+
             while (ajStrTokenNextParse(&idsplit, &tmpstr))
             {
                 ajStrTrimEndC(&tmpstr, ".");
+
                 if(ajStrPrefixS(tmpstr, idprefix))
                     if(obovalididunk && !ajTableFetch(ret->Termtable, tmpstr))
                         oboWarn(obofile, obotag->Linenumber,
@@ -1097,15 +1156,19 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
 
     iterpref = ajListIterNew(idprefixlist);
     found = ajFalse;
+
     while(!ajListIterDone(iterpref))
     {
         tmppref = ajListstrIterGet(iterpref);
         ajDebug("   '%S'\n", tmppref);
     }
+
     ajListIterDel(&iterpref);
 
     return ret; 
 }
+
+
 
 
 /* @funcstatic oboEscape ******************************************************
@@ -1121,8 +1184,10 @@ static AjBool oboEscape(AjPStr *Pline)
 {
     const char* cp;
     ajuint ilen = 0;
+
     AjPStr tmpstr = NULL;
     char lastchar = '\0';
+
     AjBool ret = ajFalse;
 
     ilen = ajStrGetLen(*Pline);
@@ -1134,6 +1199,7 @@ static AjBool oboEscape(AjPStr *Pline)
         if(lastchar == '\\')
         {
             ret = ajTrue;
+
             switch (*cp)
             {
                 case '\"':      /* keep it for now */
@@ -1171,6 +1237,8 @@ static AjBool oboEscape(AjPStr *Pline)
 }
 
 
+
+
 /* @funcstatic oboCutComment **************************************************
 **
 ** Remove comments starting with an unescaped '!'
@@ -1183,9 +1251,9 @@ static AjBool oboEscape(AjPStr *Pline)
 static AjBool oboCutComment(AjPStr *Pline, AjPStr *Pcomment)
 {
     const char* cp;
-    ajuint i = 0;
+    ajuint i      = 0;
     ajuint spaces = 0;
-    ajuint ilen = 0;
+    ajuint ilen   = 0;
     AjBool doescape = ajFalse;
 
     ilen = ajStrGetLen(*Pline);
@@ -1216,6 +1284,7 @@ static AjBool oboCutComment(AjPStr *Pline, AjPStr *Pcomment)
         else
         {
             doescape = ajFalse;
+
             if(isspace(*cp))
                 spaces++;
             else
@@ -1245,7 +1314,9 @@ static AjBool oboCutComment(AjPStr *Pline, AjPStr *Pcomment)
 static AjBool oboCutDbxref(AjPStr *Pline, AjPStr *Pdbxref)
 {
     ajint i = 0;
-    ajuint ilen = ajStrGetLen(*Pline);
+    ajuint ilen;
+
+    ilen = ajStrGetLen(*Pline);
 
     if(ajStrGetCharLast(*Pline) != ']')
         return ajFalse;
@@ -1295,6 +1366,7 @@ static AjBool oboCutModifier(AjPStr *Pline, AjPStr *Pmodifier)
         return ajFalse;
 
     i = ajStrFindlastK(*Pline, '{');
+
     if(i < 0)
     {
         ajUser("Failed to complete trailing modifier: '%S'",
@@ -1369,10 +1441,12 @@ AjPOboTerm ajOboFetchTerm(const AjPObo thys, const AjPStr query)
         return NULL;
 
     ret = ajTableFetch(thys->Termtable, query);
+
     while(ret && ajStrGetLen(ret->Trueid))
     {
         if(++irecurs > 256)
             return NULL;
+
         ret = ajTableFetch(thys->Termtable, ret->Trueid);
     }
 

@@ -55,6 +55,8 @@ typedef struct AjSTax
 #define AjPTax AjOTax*
 
 
+
+
 /* @data AjPTaxName *********************************************************
 **
 ** NCBI taxonomy node name, listed within AjPTax
@@ -75,6 +77,7 @@ typedef struct AjSTaxName
     AjPStr NameClass;
 } AjOTaxName;
 #define AjPTaxName AjOTaxName*
+
 
 
 
@@ -100,6 +103,7 @@ typedef struct AjSTaxDiv
     AjPStr Comments;
 } AjOTaxDiv;
 #define AjPTaxDiv AjOTaxDiv*
+
 
 
 
@@ -130,6 +134,7 @@ typedef struct AjSTaxCode
 
 
 
+
 /* @data AjPTaxDel *********************************************************
 **
 ** NCBI taxonomy deleted node
@@ -146,6 +151,7 @@ typedef struct AjSTaxDel
     ajuint Taxid;
 } AjOTaxDel;
 #define AjPTaxDel AjOTaxDel*
+
 
 
 
@@ -167,6 +173,7 @@ typedef struct AjSTaxMerge
     ajuint Mergeid;
 } AjOTaxMerge;
 #define AjPTaxMerge AjOTaxMerge*
+
 
 
 
@@ -201,6 +208,11 @@ typedef struct AjSTaxCit
 
 
 
+
+/*
+** Prototype definitions
+*/
+
 AjPTax       ajTaxNew(void);
 AjPTaxCit    ajTaxCitNew(void);
 AjPTaxCode   ajTaxCodeNew(void);
@@ -212,6 +224,9 @@ void         ajTaxDel(AjPTax *Ptax);
 AjBool       ajTaxParse(AjPFile taxfile);
 AjBool       ajTaxLoad(AjPDir taxdir);
 
+/*
+** End of prototype definitions
+*/
 
 #endif
 
