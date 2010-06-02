@@ -73,6 +73,49 @@ typedef struct EmbSWordSeqLocs {
 
 
 
+/* @datastatic EmbPWordRK *****************************************************
+**
+** Data structure that extends EmbPWord objects for efficient access
+** by Rabin-Karp search. It is constructed using embWordInitRabinKarpSearch
+** method for a given sequence-set.
+**
+** Possible improvements could be achieved by scanning all other words
+** during preprocessing to find out a minimum length that can be skipped
+** safely when a word is matched.
+**
+** @attr word [const EmbPWord] Original word object
+** @attr seqindxs [ajuint*] Positions in the seqset
+**                          for each sequence the word has been seen
+** @attr nnseqlocs [ajuint*] Number of word start positions for each sequence
+** @attr locs [ajuint**] List of word start positions for each sequence
+** @attr hash [ajulong] Hash value for the word
+** @attr nseqs [ajuint] Number of sequences word has been seen
+** @attr nAllMatches [ajuint] Total number of all matches in all sequences
+** @attr nSeqMatches [ajuint] Number of sequences with at least one match
+** @attr lenAllMatches [ajulong] Total score/length of all the matches
+**                               in all sequences
+** @attr Padding [char[8]] Padding to alignment boundary
+** @@
+******************************************************************************/
+
+typedef struct EmbSWordRK {
+    const EmbPWord word;
+    ajuint* seqindxs;
+    ajuint* nnseqlocs;
+    ajuint** locs;
+    ajulong hash;
+    ajuint nseqs;
+    ajuint nAllMatches;
+    ajuint nSeqMatches;
+    ajulong lenAllMatches;
+    char Padding[8];
+} EmbOWordRK;
+
+#define EmbPWordRK EmbOWordRK*
+
+
+
+
 /*
 ** Prototype definitions
 */
@@ -100,6 +143,20 @@ void    embWordMatchListConvToFeat(const AjPList list,
 
 void    embWordMatchMin(AjPList matchlist);
 void    embWordUnused(void);
+
+EmbPWordMatch embWordMatchFirstMax(AjPList matches);
+
+ajuint embWordRabinKarpSearch(const AjPStr sseq,
+                              const AjPSeqset seqset,
+                              const EmbPWordRK* patterns,
+                              ajuint plen, ajuint nwords,
+                              AjPList* l, ajuint* lastlocation,
+                              AjBool checkmode);
+
+ajuint embWordRabinKarpInit(const AjPTable table,
+	                    EmbPWordRK**, ajuint wordlen,
+	                    const AjPSeqset seqset);
+
 
 /*
 ** End of prototype definitions
