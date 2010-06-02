@@ -225,7 +225,7 @@ int main(int argc, char **argv)
 			qrystart, trgstart, qryend, trgend);
 		imatches++;
 
-		newmax = (trgend-trgstart+1)*width;
+		newmax = (trgend-trgstart+2)*width;
 		if(newmax > oldmax)
 		{
 		    AJCRESIZE0(path,oldmax, newmax);
