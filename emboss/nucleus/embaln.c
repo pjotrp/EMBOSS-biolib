@@ -1792,7 +1792,7 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
     else
         ymin = -offset;
 
-    ymax = lenb + leftwidth-1 - offset;
+    ymax = lenb + leftwidth - offset;
 
     if(ymax > lena)
         ymax = lena;
@@ -1802,7 +1802,7 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
     else
         xmin = offset - leftwidth;
 
-    xmax = lena + rightwidth-1 + offset;
+    xmax = lena + rightwidth + offset;
 
     if(xmax > lenb)
         xmax = lenb;
@@ -1815,11 +1815,10 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
             pathwidth, width, leftwidth, rightwidth);
     ajDebug("a: '%s'\n", a);
     ajDebug("b: '%s'\n", b);
-    ajDebug("FLT_MIN: %6.1f\n", -FLT_MAX);
     
 
     /* Create stores for the maximum values in a row or column */
-    maxa = AJALLOC((xmax)*sizeof(float));
+    maxa = AJALLOC((xmax+1)*sizeof(float));
 
     /* TODO: in the following 2 loops we miss the cases when it is possible
      * to have gaps just after the first base
@@ -1870,16 +1869,12 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
     
     while (++irow < ymax)
     {
-        ip = irow*width;
+        ip = irow*width-1;
         icol = xmin++;
-        bx = path[irow]-gapopen;
-        ip--;
 
         for(i=0;i<width;i++)
         {
-            ip++;
-
-            compass[ip] = 0;
+            compass[++ip] = DIAG;
 
             if(icol++ < 0)
                 continue;
@@ -1924,31 +1919,35 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
 		{
 		    mscore = maxa[icol];
 		    path[ip] = mscore;
-		    compass[ip] = 2; /* Score comes from bottom */
+		    compass[ip] = DOWN; /* Score comes from bottom */
 		}
 	    }
             
             if(irow > 0 && i!=0)
             {
-        	if(i == width-1)
+        	if(i == 1 || icol==1)
         	{
-        	    bx = match - gapopen;
+        	    bx = path[ip-1]-gapopen;
         	}
         	else
         	{
         	    bx -= gapextend;
-        	    fnew=path[ip-1];
-        	    fnew-=gapopen;
 
-        	    if(fnew > bx)
-        		bx = fnew;
+        	    if(compass[ip-1]!=1)
+        	    {
+        		fnew=path[ip-1];
+        		fnew-=gapopen;
+
+        		if(fnew > bx)
+        		    bx = fnew;
+        	    }
         	}
 
         	if(bx > mscore)
         	{
         	    mscore = bx;
         	    path[ip] = mscore;
-        	    compass[ip] = 1; /* Score comes from left */
+        	    compass[ip] = LEFT; /* Score comes from left */
         	}
             }
 
@@ -1964,7 +1963,7 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
     if(show)
     {
 
-	for(i=ymax;i>=ymin;--i)
+	for(i=ymax-1;i>=ymin;--i)
 	{
             ajDebug("%5d %c", i, a[i]);
 
@@ -1973,9 +1972,9 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
 
 	    for(j=0;j<width;++j)
             {
-                if(compass[i*width+j] == 1)
+                if(compass[i*width+j] == LEFT)
                     compasschar = '<';
-                else if(compass[i*width+j] == 2)
+                else if(compass[i*width+j] == DOWN)
                     compasschar = 'v';
                 else
                 compasschar = ' ';
@@ -2066,7 +2065,7 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
     ajint rightwidth;
 
     ajint ymin;
-    ajint xmax;                 /* last x position for this row */
+    ajint xmax;                 /* last x position */
     ajint ymax;
 
     ajDebug("embAlignWalkSWMatrixFast\n");
@@ -2147,7 +2146,7 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
 
 	    continue;
 	}
-	else if(compass[ip]==1) /* Left, horizontal gap(s): step through xpos */
+	else if(compass[ip]==LEFT) /* Horizontal gap(s): step through xpos */
 	{
 	    score  = path[ip];
 	    gapcnt = 0;
@@ -2179,7 +2178,7 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
                     ix, ip, ip, path[ip], gapcnt);
 	    continue;
 	}
-	else if(compass[ip]==2) /* Down, vertical gap(s): step through ypos */
+	else if(compass[ip]==DOWN) /* Vertical gap(s): step through ypos */
 	{
 	    score  = path[ip];
 	    gapcnt = 0;
@@ -3221,10 +3220,26 @@ void embAlignReportLocal(AjPAlign align,
 	+ ajStrCalcCountK(m, '.')
 	+ ajStrCalcCountK(m, '-')
 	    + ajStrCalcCountK(m, ' ');
+
+    ajDebug("embAlignReportLocal lenseqa: %d lenm: %d start1: %d "
+	    ".count:%d -count: %d spacecount:%d\n",
+	    ajSeqGetLen(seqa),ajStrGetLen(m),start1,
+	    	 ajStrCalcCountK(m, '.'),
+	    	ajStrCalcCountK(m, '-'),
+	    	    ajStrCalcCountK(m, ' '));
+
     offend2 = ajSeqGetLen(seqb) - ajStrGetLen(n) - start2
 	+ ajStrCalcCountK(n, '.')
 	+ ajStrCalcCountK(n, '-')
 	    + ajStrCalcCountK(n, ' ');
+
+    ajDebug("embAlignReportLocal lenseqb: %d lenn: %d start2: %d "
+	    ".count:%d -count: %d spacecount:%d\n",
+	    ajSeqGetLen(seqb),ajStrGetLen(n),start2,
+	    	 ajStrCalcCountK(n, '.'),
+	    	ajStrCalcCountK(n, '-'),
+	    	    ajStrCalcCountK(n, ' '));
+
     ajDebug("embAlignReportLocal start: %d %d offset: %d %d offend: %d %d "
 	    "len:%d %d seqlen: %d %d Offset:%d %d Offend:%d %d\n",
 	    start1, start2,
