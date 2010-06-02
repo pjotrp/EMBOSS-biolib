@@ -21,8 +21,9 @@
 ******************************************************************************/
 
 /* supermatcher
-** Create a word table for the first sequence.
-** Then go down second sequence checking to see if the word matches.
+** Create a word table for the sequence set.
+** Then iterates over the sequence stream first checking any possible word
+** matches.
 ** If word matches then check to see if the position lines up with the last
 ** position if it does continue else stop.
 ** This gives us the start (offset) for the smith-waterman match by finding
@@ -31,57 +32,19 @@
 
 
 /*
-** possible speedup. The matching function is iterating through a
-** list of hits just to find the one with the right offset. Could we
-** use a table instead with the offset (as a string) as the key?
- */
+** Word matching function was re-implemented using Rabin-Karp multi-pattern
+** search algorithm. May 2010.
+*/
 
 #include "emboss.h"
-#include <limits.h>
-#include <math.h>
 
 
 
 
-/* @datastatic concat *********************************************************
-**
-** supermatcher internals
-**
-** @alias concatS
-**
-** @attr offset [ajint] Undocumented
-** @attr count [ajint] Undocumented
-** @attr list [AjPList] Undocumented
-** @attr total [ajint] Undocumented
-** @attr Padding [char[4]] Padding to alignment boundary
-******************************************************************************/
-
-typedef struct concatS
-{
-    ajint offset;
-    ajint count;
-    AjPList list;
-    ajint total;
-    char  Padding[4];
-} concat;
-
-
-
-
-static void supermatcher_matchListOrder(void **x,void *cl);
-static void supermatcher_orderandconcat(AjPList list,AjPList ordered);
-static void supermatcher_removelists(void **x,void *cl);
-static ajint supermatcher_findstartpoints(AjPTable seq1MatchTable,
-					  const AjPSeq b, const AjPSeq a,
-					  ajint *start1, ajint *start2,
-					  ajint *end1, ajint *end2);
-static void supermatcher_findmax(void **x,void *cl);
-
-
-
-
-concat *conmax = NULL;
-ajint maxgap   = 0;
+static void supermatcher_findendpoints(const EmbPWordMatch max,
+	const AjPSeq trgseq, const AjPSeq qryseq,
+	ajint *trgstart, ajint *qrystart,
+	ajint *trgend, ajint *qryend);
 
 
 
@@ -125,25 +88,37 @@ int main(int argc, char **argv)
     float score;
     float minscore;
 
-    ajuint k;
-    ajint targetbegin;
+    ajuint j, k;
     ajint querystart = 0;
     ajint targetstart = 0;
     ajint queryend   = 0;
     ajint targetend   = 0;
     ajint width  = 0;
-    AjPTable* targetseqswords = 0;
+    AjPTable kmers = 0;
     ajint wordlen = 6;
     ajint oldmax = 0;
     ajint newmax = 0;
 
+    ajuint ntargetseqs;
+    ajuint nkmers;
+
     AjPAlign align = NULL;
+    EmbPWordMatch maxmatch; /* match with maximum score */
+
+    /* Cursors for the current sequence being scanned,
+    ** i.e., until which location it was scanned.
+    ** Separate cursor/location entries for each sequence in the seqset.
+    */
+    ajuint* lastlocation;
+
+    EmbPWordRK* wordsw = NULL;
+    AjPList* matchlist = NULL;
 
     embInit("supermatcher", argc, argv);
 
     matrix    = ajAcdGetMatrixf("datafile");
-    queryseqs      = ajAcdGetSeqall("asequence");
-    targetseqs      = ajAcdGetSeqset("bsequence");
+    queryseqs = ajAcdGetSeqall("asequence");
+    targetseqs= ajAcdGetSeqset("bsequence");
     gapopen   = ajAcdGetFloat("gapopen");
     gapextend = ajAcdGetFloat("gapextend");
     wordlen   = ajAcdGetInt("wordlen");
@@ -162,44 +137,71 @@ int main(int argc, char **argv)
 
     ajSeqsetTrim(targetseqs);
 
-    AJCNEW0(targetseqswords,ajSeqsetGetSize(targetseqs));
+    ntargetseqs = ajSeqsetGetSize(targetseqs);
+
+    AJCNEW0(matchlist, ntargetseqs);
 
     /* get tables of words */
-    for(k=0;k<ajSeqsetGetSize(targetseqs);k++)
+    for(k=0;k<ntargetseqs;k++)
     {
 	targetseq = ajSeqsetGetseqSeq(targetseqs, k);
-	embWordGetTable(&targetseqswords[k], targetseq);
-	ajDebug("Number of distinct words found in target sequences: %d\n",
-		ajTableGetLength(targetseqswords[k]));
+	embWordGetTable(&kmers, targetseq);
+	ajDebug("Number of distinct kmers found so far: %d\n",
+		ajTableGetLength(kmers));
     }
+    AJCNEW0(lastlocation, ntargetseqs);
 
+    if(ajTableGetLength(kmers)<1)
+	ajErr("no kmers found");
+
+    nkmers = embWordRabinKarpInit(kmers, &wordsw, wordlen, targetseqs);
 
     while(ajSeqallNext(queryseqs,&queryseq))
     {
-        ajSeqTrim(queryseq);
+	ajSeqTrim(queryseq);
 
 	queryaln = ajStrNewRes(1+ajSeqGetLen(queryseq));
 
 	ajDebug("Read '%S'\n", ajSeqGetNameS(queryseq));
 
+	for(k=0;k<ntargetseqs;k++)
+	{
+	    lastlocation[k]=0;
+	    matchlist[k] = ajListstrNew();
+	}
+
+	embWordRabinKarpSearch(ajSeqGetSeqS(queryseq), targetseqs,
+		(const EmbPWordRK*)wordsw, wordlen, nkmers,
+		matchlist, lastlocation, ajFalse);
+
+
 	for(k=0;k<ajSeqsetGetSize(targetseqs);k++)
 	{
 	    targetseq      = ajSeqsetGetseqSeq(targetseqs, k);
-	    targetbegin = 1 + ajSeqGetOffset(targetseq);
 
 	    ajDebug("Processing '%S'\n", ajSeqGetNameS(targetseq));
 
-	    if(!supermatcher_findstartpoints(targetseqswords[k],queryseq,targetseq,
-	                                     &targetstart, &querystart,
-	                                     &targetend, &queryend))
+	    if(ajListGetLength(matchlist[k])==0)
 	    {
 		ajFmtPrintF(errorf,
-			    "No wordmatch start points for "
-			    "%s vs %s. No alignment\n",
-			    ajSeqGetNameC(queryseq),ajSeqGetNameC(targetseq));
+		            "No wordmatch start points for "
+		            "%s vs %s. No alignment\n",
+		            ajSeqGetNameC(queryseq),ajSeqGetNameC(targetseq));
+		embWordMatchListDelete(&matchlist[k]);
 		continue;
 	    }
-	    
+
+
+	    /* only the maximum match is used as seed
+	     * if there is more than one location with the maximum match
+	     * only the first one is used
+	     */
+	    maxmatch = embWordMatchFirstMax(matchlist[k]);
+
+	    supermatcher_findendpoints(maxmatch,targetseq, queryseq,
+		    &targetstart, &querystart,
+		    &targetend, &queryend);
+
 	    targetaln=ajStrNewRes(1+ajSeqGetLen(targetseq));
 	    queryseqc = ajSeqGetSeqC(queryseq);
 	    targetseqc = ajSeqGetSeqC(targetseq);
@@ -208,10 +210,11 @@ int main(int argc, char **argv)
 	    ajStrAssignC(&targetaln,"");
 
 	    ajDebug("++ %S v %S start:%d %d end:%d %d\n",
-			ajSeqGetNameS(targetseq), ajSeqGetNameS(queryseq),
-			targetstart, querystart, targetend, queryend);
+		    ajSeqGetNameS(targetseq), ajSeqGetNameS(queryseq),
+		    targetstart, querystart, targetend, queryend);
 
-	    newmax = (targetend-targetstart+1)*width;
+	    newmax = (targetend-targetstart+2)*width;
+
 	    if(newmax > oldmax)
 	    {
 		AJCRESIZE0(path,oldmax,newmax);
@@ -229,23 +232,23 @@ int main(int argc, char **argv)
 		    ajSeqGetLen(targetseq),
 		    width);
 
-		score = embAlignPathCalcSWFast(&targetseqc[targetstart],
-		                               &queryseqc[querystart],
-		                               targetend-targetstart+1,
-		                               queryend-querystart+1,
-		                               0,width,
-		                               gapopen,gapextend,
-		                               path,sub,cvt,
-		                               compass,show);
-		if(score>minscore)
-		{
-		    embAlignWalkSWMatrixFast(path,compass,gapopen,gapextend,
-		                             targetseq,queryseq,
-		                             &targetaln,&queryaln,
-		                             targetend-targetstart+1,
-		                             queryend-querystart+1,
-		                             0,width,
-		                             &targetstart,&querystart);
+	    score = embAlignPathCalcSWFast(&targetseqc[targetstart],
+	                                   &queryseqc[querystart],
+	                                   targetend-targetstart+1,
+	                                   queryend-querystart+1,
+	                                   0,width,
+	                                   gapopen,gapextend,
+	                                   path,sub,cvt,
+	                                   compass,show);
+	    if(score>minscore)
+	    {
+		embAlignWalkSWMatrixFast(path,compass,gapopen,gapextend,
+		                         targetseq,queryseq,
+		                         &targetaln,&queryaln,
+		                         targetend-targetstart+1,
+		                         queryend-querystart+1,
+		                         0,width,
+		                         &targetstart,&querystart);
 
 		if(!ajAlignFormatShowsSequences(align))
 		{
@@ -257,36 +260,54 @@ int main(int argc, char **argv)
 		}
 		else
 		{
+		    ajDebug("queryaln:%S \n  targetaln:%S\n",
+		            queryaln,targetaln);
 		    embAlignReportLocal(align,
-                        queryseq, targetseq,
-                        queryaln,targetaln,
-                        querystart,targetstart,
-                        gapopen, gapextend,
-                        score,matrix,
-                        1 + ajSeqGetOffset(queryseq),
-                        targetbegin);
+			    queryseq, targetseq,
+			    queryaln, targetaln,
+			    querystart, targetstart,
+			    gapopen, gapextend,
+			    score, matrix,
+			    1 + ajSeqGetOffset(queryseq),
+			    1 + ajSeqGetOffset(targetseq)
+		    );
 		}
 		ajAlignWrite(align);
 		ajAlignReset(align);
 	    }
 	    ajStrDel(&targetaln);
+
+	    embWordMatchListDelete(&matchlist[k]);
 	}
 
 	ajStrDel(&queryaln);
     }
 
-    /* free tables of words */
-    for(k=0;k<ajSeqsetGetSize(targetseqs);k++)
-	embWordFreeTable(&targetseqswords[k]);
+
+    for(k=0;k<nkmers;k++)
+    {
+	AJFREE(wordsw[k]->seqindxs);
+
+	for(j=0;j<wordsw[k]->nseqs;j++)
+	    AJFREE(wordsw[k]->locs[j]);
+
+	AJFREE(wordsw[k]->nnseqlocs);
+	AJFREE(wordsw[k]->locs);
+	AJFREE(wordsw[k]);
+    }
+
+    embWordFreeTable(&kmers);
 
     if(!ajAlignFormatShowsSequences(align))
-    {
-        ajMatrixfDel(&matrix);        
-    }
+	ajMatrixfDel(&matrix);
     
     AJFREE(path);
     AJFREE(compass);
-    AJFREE(targetseqswords);
+    AJFREE(kmers);
+    AJFREE(wordsw);
+
+    AJFREE(matchlist);
+    AJFREE(lastlocation);
 
     ajAlignClose(align);
     ajAlignDel(&align);
@@ -303,241 +324,65 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic supermatcher_matchListOrder ************************************
+/* @funcstatic supermatcher_findendpoints ***********************************
 **
-** Calculates the offset for the current match.
+** Calculate end points for banded Smith-Waterman alignment.
 **
-** Steps through the ordered output list to find one item with the same offset.
-** Adds to it if found, otherwise creates a new item at the end.
-**
-** @param [r] x [void**] Word match item
-** @param [r] cl [void*] Ordered output lists
+** @param [r] max [const EmbPWordMatch] match with maximum similarity
+** @param [r] trgseq [const AjPSeq] target sequence
+** @param [r] qryseq [const AjPSeq] query sequence
+** @param [r] trgstart [ajint] start in target sequence
+** @param [r] qrystart [ajint] start in query sequence
+** @param [w] trgend [ajint*] end in target sequence
+** @param [w] qryend [ajint*] end in query sequence
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void supermatcher_matchListOrder(void **x,void *cl)
+static void supermatcher_findendpoints(const EmbPWordMatch max,
+	const AjPSeq trgseq, const AjPSeq qryseq,
+	ajint *trgstart, ajint *qrystart,
+	ajint *trgend, ajint *qryend)
 {
-    EmbPWordMatch p;
-    AjPList ordered;
-    ajint offset;
-    AjIList listIter;
-    concat *con;
-    concat *c=NULL;
-
-    p = (EmbPWordMatch)*x;
-    ordered = (AjPList) cl;
-
-    offset = (*p).seq1start-(*p).seq2start;
-
-    /* iterate through ordered list to find if it exists already*/
-    listIter = ajListIterNewread(ordered);
-
-    while(!ajListIterDone( listIter))
-    {
-	con = ajListIterGet(listIter);
-	if(con->offset == offset)
-	{
-	    /* found so add count and set offset to the new value */
-	    con->offset = offset;
-	    con->total+= (*p).length;
-	    con->count++;
-	    ajListPushAppend(con->list,p);
-	    ajListIterDel(&listIter);
-	    return;
-	}
-    }
-    ajListIterDel(&listIter);
-
-    /* not found so add it */
-    AJNEW(c);
-    c->offset = offset;
-    c->total  = (*p).length;
-    c->count  = 1;
-    c->list   = ajListNew();
-    ajListPushAppend(c->list,p);
-    ajListPushAppend(ordered, c);
-
-    return;
-}
-
-
-
-
-/* @funcstatic supermatcher_orderandconcat ************************************
-**
-** Undocumented.
-**
-** @param [u] list [AjPList] unordered input list - elements added to the
-**                           ordered list, but apparently not deleted.
-** @param [w] ordered [AjPList] ordered output list
-** @return [void]
-** @@
-******************************************************************************/
-
-static void supermatcher_orderandconcat(AjPList list,AjPList ordered)
-{
-    ajListMap(list,supermatcher_matchListOrder, ordered);
-
-    return;
-}
-
-
-
-
-/* @funcstatic supermatcher_removelists ***************************************
-**
-** Undocumented.
-**
-** @param [r] x [void**] Undocumented
-** @param [r] cl [void*] Undocumented
-** @return [void]
-** @@
-******************************************************************************/
-
-static void supermatcher_removelists(void **x,void *cl)
-{
-    concat *p;
-
-    (void) cl;				/* make it used */
-
-    p = (concat *)*x;
-
-    ajListFree(&(p)->list);
-    AJFREE(p);
-
-    return;
-}
-
-
-
-
-/* @funcstatic supermatcher_findmax *******************************************
-**
-** Undocumented.
-**
-** @param [r] x [void**] Undocumented
-** @param [r] cl [void*] Undocumented
-** @return [void]
-** @@
-******************************************************************************/
-
-static void supermatcher_findmax(void **x,void *cl)
-{
-    concat *p;
-    ajint *max;
-
-    p   = (concat *)*x;
-    max = (ajint *) cl;
-
-    if(p->total > *max)
-    {
-	*max = p->total;
-	conmax = p;
-    }
-
-    return;
-}
-
-
-
-
-/* @funcstatic supermatcher_findstartpoints ***********************************
-**
-** Undocumented.
-**
-** @param [w] seq1MatchTable [AjPTable] match table
-** @param [r] b [const AjPSeq] second sequence
-** @param [r] a [const AjPSeq] first sequence
-** @param [w] start1 [ajint*] start in sequence 1
-** @param [w] start2 [ajint*] start in sequence 2
-** @param [w] end1 [ajint*] end in sequence 1
-** @param [w] end2 [ajint*] end in sequence 2
-** @return [ajint] Undocumented
-** @@
-******************************************************************************/
-
-static ajint supermatcher_findstartpoints(AjPTable seq1MatchTable,
-					  const AjPSeq b,
-					  const AjPSeq a, ajint *start1,
-					  ajint *start2, ajint *end1,
-					  ajint *end2)
-{
-    ajint max = -10;
-    ajint offset = 0;
-    AjPList matchlist = NULL;
-    AjPList ordered = NULL;
     ajint amax;
     ajint bmax;
-    ajint bega;
-    ajint begb;
+    ajint offset;
 
-    amax = ajSeqGetLen(a)-1;
-    bmax = ajSeqGetLen(b)-1;
-    bega = ajSeqGetOffset(a);
-    begb = ajSeqGetOffset(b);
+    *trgstart = max->seq1start;
+    *qrystart = max->seq2start;
 
-
-    ajDebug("supermatcher_findstartpoints len %d %d off %d %d\n",
-	     amax, bmax, bega, begb);
-    matchlist = embWordBuildMatchTable(seq1MatchTable, b, ajTrue);
-
-    if(!matchlist)
-	return 0;
-    else if(!matchlist->Count)
-    {
-        embWordMatchListDelete(&matchlist);
-	return 0;
-    }
-
-
-    /* order and add if the gap is gapmax or less */
-
-    /* create list header bit*/
-    ordered = ajListNew();
-
-    supermatcher_orderandconcat(matchlist, ordered);
-
-    /* this sets global structure conmax to point to a matchlist element */
-    ajListMap(ordered,supermatcher_findmax, &max);
-
-    ajDebug("findstart conmax off:%d count:%d total:%d\n",
-	    conmax->offset, conmax->count, conmax->total,
-	    ajListGetLength(conmax->list));
-    offset = conmax->offset;
-
-    /* the offset is all we needed! we can delete everything */
-
-    ajListMap(ordered,supermatcher_removelists, NULL);
-    ajListFree(&ordered);
-    embWordMatchListDelete(&matchlist);	/* free the match structures */
-
+    offset = *trgstart - *qrystart;
 
     if(offset > 0)
     {
-	*start1 = offset;
-	*start2 = 0;
+	*trgstart = offset;
+	*qrystart = 0;
     }
     else
     {
-	*start2 = 0-offset;
-	*start1 = 0;
+	*qrystart = 0-offset;
+	*trgstart = 0;
     }
-    *end1 = *start1;
-    *end2 = *start2;
 
-    ajDebug("++ end1 %d -> %d end2 %d -> %d\n", *end1, amax, *end2, bmax);
-    while(*end1<amax && *end2<bmax)
+    amax = ajSeqGetLen(trgseq)-1;
+    bmax = ajSeqGetLen(qryseq)-1;
+
+    *trgend = *trgstart;
+    *qryend = *qrystart;
+
+    ajDebug("++ end1 %d -> %d end2 %d -> %d\n", *trgend, amax, *qryend, bmax);
+
+    while(*trgend<amax && *qryend<bmax)
     {
-	(*end1)++;
-	(*end2)++;
+	(*trgend)++;
+	(*qryend)++;
     }
 
-    ajDebug("++ end1 %d end2 %d\n", *end1, *end2);
-    
-    
-    ajDebug("supermatcher_findstartpoints has %d..%d [%d] %d..%d [%d]\n",
-	    *start1, *end1, ajSeqGetLen(a), *start2, *end2, ajSeqGetLen(b));
+    ajDebug("++ end1 %d end2 %d\n", *trgend, *qryend);
 
-    return 1;
+    ajDebug("supermatcher_findendpoints: %d..%d [%d] %d..%d [%d]\n",
+	    trgstart, *trgend, ajSeqGetLen(trgseq), qrystart, *qryend,
+	    ajSeqGetLen(qryseq));
+
+    return;
 }
