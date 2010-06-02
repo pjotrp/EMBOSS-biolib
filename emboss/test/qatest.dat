@@ -21490,9 +21490,9 @@ FI align.score
 FZ = 372
 FP /BF056441.* 12 \(33.0\)/
 FP /BE848719.* 7 \(35.0\)/
-FP /BF022813.* 5 \(25.0\)/
-FP /BF452255.* 5 \(25.0\)/
-FP /BG147728.* 5 \(25.0\)/
+FP /BF022813.* 6 \(30.0\)/
+FP /BF452255.* 6 \(30.0\)/
+FP /BG147728.* 6 \(30.0\)/
 FP /BI817778.* 7 \(35.0\)/
 FP /AF186109.* 6 \(30.0\)/
 FP /AF186110.* 9 \(36.0\)/
@@ -21504,8 +21504,8 @@ FP /AF087679.* 6 \(30.0\)/
 
 ID supermatcher-minscore1
 AP supermatcher
-CL ../../data/aligna.dna ../../data/tropomyosin.fasta
-CL -minscore 120 -gapopen 1 -gapextend 1 -aformat score -outfile align.score -auto
+CL ../../data/aligna.dna ../../data/tropomyosin.fasta -auto
+CL -minscore 120 -gapopen 1 -gapextend 1 -aformat score -outfile align.score
 FI supermatcher.error
 FP /.*BG089808.*/
 FZ = 62
@@ -21515,12 +21515,12 @@ FP /BF056441.* 84 \(132.0\)/
 FP /BF022813.* 88 \(128.0\)/
 FP /BF452255.* 88 \(128.0\)/
 FP /BG147728.* 88 \(128.0\)/
-FP /AF186109.* 83 \(139.0\)/
+FP /AF186109.* 82 \(146.0\)/
 FP /AF186110.* 83 \(151.0\)/
 FP /AF310722.* 83 \(151.0\)/
 FP /AF362886.* 86 \(136.0\)/
 FP /AF362887.* 85 \(125.0\)/
-FP /AF087679.* 83 \(139.0\)/
+FP /AF087679.* 82 \(146.0\)/
 //
 
 ID supermatcher-minscore2
@@ -21531,7 +21531,7 @@ FI supermatcher.error
 FP /.*BG089808/
 FP /.*BG147728/
 FI align
-FZ = 1844
+FC = 88
 FP /Score: 38.0/
 FP /BF056441          30 tattccattgcacaatttg     48/
 FP /                     |.||||    || ||||||/
@@ -21596,9 +21596,9 @@ FI align.score
 FZ = 373
 FP /AFULL BF056441 17 \(31.0\)/
 FP /.+BE848719 11 \(37.0\)/
-FP /.+BF022813 5 \(25.0\)/
-FP /.+BF452255 5 \(25.0\)/
-FP /.+BG147728 5 \(25.0\)/
+FP /.+BF022813 6 \(30.0\)/
+FP /.+BF452255 6 \(30.0\)/
+FP /.+BG147728 6 \(30.0\)/
 FP /.+BI817778 7 \(35.0\)/
 FP /.+AF186109 6 \(30.0\)/
 FP /.+AF186110 9 \(36.0\)/
@@ -21608,7 +21608,7 @@ FP /.+AF362887 6 \(30.0\)/
 FP /.+AF087679 6 \(30.0\)/
 //
 
-ID wordfinder-minalinglen1
+ID wordfinder-minalignlen1
 AP wordfinder
 CL ../../data/tropomyosin.fasta ../../data/aligna.dna -auto
 CL -lowalign 80 -gapopen 1 -gapextend 1 -aformat score -outfile align.score
@@ -21617,7 +21617,7 @@ FP /.*excludes 'BI817778'/
 FC = 2
 FI align.score
 FC = 14
-FP /.+BF056441 86 \(118.0\)/
+FP /.+BF056441 83 \(121.0\)/
 FP /.+BE848719 88 \(146.0\)/
 FP /.+BF022813 88 \(128.0\)/
 FP /.+BF452255 88 \(128.0\)/
