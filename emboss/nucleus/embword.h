@@ -107,8 +107,8 @@ typedef struct EmbSWordRK {
     ajuint nseqs;
     ajuint nAllMatches;
     ajuint nSeqMatches;
+    char Padding[4];
     ajulong lenAllMatches;
-    char Padding[8];
 } EmbOWordRK;
 
 #define EmbPWordRK EmbOWordRK*
