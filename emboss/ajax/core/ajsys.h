@@ -73,13 +73,15 @@ struct AJSOCKET
 
 struct AJTIMEOUT
 {
-    ajint seconds;
+
 #ifdef WIN32
     HANDLE thandle;
     LARGE_INTEGER wtime;
 #else
     struct sigaction sa;
+    ajint Padding;
 #endif
+    ajint seconds;
 };
 
 

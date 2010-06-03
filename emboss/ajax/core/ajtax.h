@@ -88,19 +88,21 @@ typedef struct AjSTaxName
 ** @alias AjSTaxDiv
 ** @alias AjOTaxDiv
 **
-** @attr Divid        [ajuint] Taxonmy division id
 ** @attr GbCode       [AjPStr] GenBank division code (three characters)
 ** @attr GbName       [AjPStr] GenBank division name
 ** @attr Comments     [AjPStr] Comments
+** @attr Divid        [ajuint] Taxonomy division id
+** @attr Padding      [ajuint] Padding to alignment boundary
 **
 ******************************************************************************/
 
 typedef struct AjSTaxDiv
 {
-    ajuint Divid;
     AjPStr GbCode;
     AjPStr GbName;
     AjPStr Comments;
+    ajuint Divid;
+    ajuint Padding;
 } AjOTaxDiv;
 #define AjPTaxDiv AjOTaxDiv*
 
@@ -114,21 +116,24 @@ typedef struct AjSTaxDiv
 ** @alias AjSTaxCode
 ** @alias AjOTaxCode
 **
-** @attr Gencode    [ajuint]  NCBI genetic code id
 ** @attr Abbrev     [AjPStr] Genetic code name abbreviation
 ** @attr Name       [AjPStr] Genetic code full name
 ** @attr Trans      [AjPStr] Amino acids for each codon
 ** @attr Starts     [AjPStr] Start codons
+** @attr Gencode    [ajuint]  NCBI genetic code id
+** @attr Padding    [ajuint]  Padding to alignment boundary
 **
 ******************************************************************************/
 
 typedef struct AjSTaxCode
 {
-    ajuint Gencode;
+
     AjPStr Abbrev;
     AjPStr Name;
     AjPStr Trans;
     AjPStr Starts;
+    ajuint Gencode;
+    ajuint Padding;
 } AjOTaxCode;
 #define AjPTaxCode AjOTaxCode*
 

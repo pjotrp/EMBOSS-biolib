@@ -210,6 +210,7 @@ typedef struct AjSDomNodeList
 ** @attr Buffer [AjPStr] Utility string
 ** @attr Stack [AjPList] Stack
 ** @attr Cdata [AjBool] Cdata
+** @attr Padding [AjBool] Pad to alignment boundary
 **
 ******************************************************************************/
 
@@ -218,6 +219,7 @@ typedef struct AjSDomUserdata
     AjPStr  Buffer;
     AjPList Stack;
     AjBool  Cdata;
+    AjBool  Padding;
 } AjODomUserdata;
 
 #define AjPDomUserdata AjODomUserdata*
