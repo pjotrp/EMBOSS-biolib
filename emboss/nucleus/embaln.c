@@ -1758,7 +1758,7 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
     float mscore;
     float fnew;
     float *maxa;
-    float bx;
+    float bx = 0.0F;
 
     ajint width;
     ajint leftwidth;
@@ -2046,7 +2046,7 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
     ajint gapcnt;
     double pmax;
     double score;
-    double bimble;
+    double bimble = 0.;
 
     ajint ix;
     ajint iy;
