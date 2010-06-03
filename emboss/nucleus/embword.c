@@ -33,7 +33,8 @@ static AjPList wordCurList = NULL;
 
 /*
 ** Rabin-Karp multi-pattern search parameters.
-** Modulus (a large prime) and radix are used in calculating hash values efficiently.
+** Modulus (a large prime) and radix are used in calculating hash values
+** efficiently.
 **
 ** Note: we should be able to replace binary search in Rabin-Karp search
 ** algorithm with direct search by selecting a small q, however in this case
@@ -1509,25 +1510,29 @@ void embWordMatchMin(AjPList matchlist)
 
 EmbPWordMatch embWordMatchFirstMax(AjPList matchlist)
 {
-    ajint maxmatch =0;
+    ajint maxmatch = 0;
     EmbPWordMatch p;
-    EmbPWordMatch max=NULL;
+    EmbPWordMatch max = NULL;
 
-    AjIList iter = ajListIterNewread(matchlist);
+    AjIList iter;
+    
+    iter = ajListIterNewread(matchlist);
 
     while(!ajListIterDone(iter))
     {
 	p = (EmbPWordMatch) ajListIterGet(iter);
-	if (p->length>maxmatch)
+
+	if(p->length>maxmatch)
 	{
 	    max = p;
 	    maxmatch = p->length;
 	}
-	else if (p->length==maxmatch)
+	else if(p->length==maxmatch)
 	{
 	    ajDebug("possible max match position start1:%d start2:%d"
 		    " length:%d\n",p->seq1start, p->seq2start, p->length);
-	    if (p->seq1start<max->seq1start)
+
+	    if(p->seq1start<max->seq1start)
 		max =p;
 	}
     }
@@ -1539,6 +1544,8 @@ EmbPWordMatch embWordMatchFirstMax(AjPList matchlist)
 
     return max;
 }
+
+
 
 
 /* @funcstatic wordRabinKarpConstant *****************************************
@@ -1555,11 +1562,12 @@ static ajulong wordRabinKarpConstant(ajuint m)
 {
     ajulong rm;
     ajuint i;
+
     rm = 1;
-    for (i = 1; i <= m-1; i++)
-    {
+
+    for(i = 1; i <= m-1; i++)
         rm = (RK_RADIX * rm) % RK_MODULUS;
-    }
+
     return rm;
 }
 
@@ -1584,10 +1592,10 @@ static ajint wordRabinKarpCmp(const void *trgseq, const void *qryseq)
     ww1 = *(const EmbPWordRK const *) trgseq;
     ww2 = *(const EmbPWordRK const *) qryseq;
 
-    if (ww1->hash > ww2->hash)
+    if(ww1->hash > ww2->hash)
         return 1;
 
-    if (ww1->hash < ww2->hash)
+    if(ww1->hash < ww2->hash)
         return -1;
 
     return 0;
@@ -1612,25 +1620,31 @@ static ajint wordRabinKarpCmp(const void *trgseq, const void *qryseq)
 ** @@
 ******************************************************************************/
 
-ajuint embWordRabinKarpInit(const AjPTable table,
-	EmbPWordRK** newwords, ajuint wordlen, const AjPSeqset seqset)
+ajuint embWordRabinKarpInit(const AjPTable table, EmbPWordRK** newwords,
+                            ajuint wordlen, const AjPSeqset seqset)
 {
-    ajuint i, j, k, l;
+    ajuint i;
+    ajuint j;
+    ajuint k;
+    ajuint l;
     EmbPWord* embwords = NULL;
-    const EmbPWord embword;
+    const EmbPWord embword = NULL;
     ajulong patternHash;
-    EmbPWordRK newword;
+    EmbPWordRK newword = NULL;
     AjIList iterp;
-    EmbPWordSeqLocs* seqlocs;
+    EmbPWordSeqLocs* seqlocs = NULL;
     ajuint nseqlocs;
-    const AjPSeq seq;
+    const AjPSeq seq = NULL;
     const char* word;
-    ajuint nseqs = ajSeqsetGetSize(seqset);
-    ajuint nwords = ajTableToarrayValues(table, (void***)&embwords);
-
+    ajuint nseqs;
+    ajuint nwords;
+    ajuint pos;
+    
+    nseqs = ajSeqsetGetSize(seqset);
+    nwords = ajTableToarrayValues(table, (void***)&embwords);
     AJCNEW(*newwords, nwords);
 
-    for (i=0; i<nwords; i++)
+    for(i=0; i<nwords; i++)
     {
         seqlocs=NULL;
         embword = embwords[i];
@@ -1639,10 +1653,9 @@ ajuint embWordRabinKarpInit(const AjPTable table,
         AJNEW0(newword);
 
         patternHash = 0;
-        for (j=0; j<wordlen; j++)
-        {
+
+        for(j=0; j<wordlen; j++)
             patternHash = (RK_RADIX * patternHash + word[j])% RK_MODULUS;
-        }
 
         nseqlocs = ajTableToarrayValues(embword->seqlocs, (void***)&seqlocs);
         newword->nseqs = nseqlocs;
@@ -1657,30 +1670,29 @@ ajuint embWordRabinKarpInit(const AjPTable table,
             seq= seqlocs[j]->seq;
 
             for(l=0;l<nseqs;l++)
-            {
                 if (seq == ajSeqsetGetseqSeq(seqset,l))
                 {
                     newword->seqindxs[j] = l;
                     break;
                 }
-            }
 
-            if (l==nseqs)
+            if(l == nseqs)
             {
                 ajErr("something wrong, sequence not found in seqset");
                 ajExitBad();
             }
 
             iterp = ajListIterNewread(seqlocs[j]->locs);
-            k=0;
+            k = 0;
             newword->nnseqlocs[j]= ajListGetLength(seqlocs[j]->locs);
             AJCNEW(newword->locs[j],newword->nnseqlocs[j]);
 
             while(!ajListIterDone(iterp))
             {
-                ajuint pos = *(ajuint *) ajListIterGet(iterp);
+                pos = *(ajuint *) ajListIterGet(iterp);
                 newword->locs[j][k++] = pos;
             }
+
             ajListIterDel(&iterp);
         }
 
@@ -1715,20 +1727,29 @@ ajuint embWordRabinKarpInit(const AjPTable table,
 ** @param [u] lastlocation [ajuint*] Position of the search for each sequence
 **                                   in the sequence set
 ** @param [r] checkmode [AjBool] If true, not writing features or alignments
-**                               but running to produce some statistics only
+**                               but running to produce match statistics only
 ** @return [ajuint] total number of matches
 ** @@
 ******************************************************************************/
 
 ajuint embWordRabinKarpSearch(const AjPStr sseq,
-    const AjPSeqset seqset, const EmbPWordRK* patterns,
-    ajuint plen, ajuint npatterns, AjPList* matchlist,
-    ajuint* lastlocation, AjBool checkmode)
+                              const AjPSeqset seqset,
+                              const EmbPWordRK* patterns,
+                              ajuint plen, ajuint npatterns,
+                              AjPList* matchlist,
+                              ajuint* lastlocation, AjBool checkmode)
 {
     const char *text;
     const AjPSeq seq;
-    ajuint i, matchlen, tlen, ii, k, seqsetindx, indxloc, maxloc;
-    ajuint nMatches=0;
+    ajuint i;
+    ajuint matchlen;
+    ajuint tlen;
+    ajuint ii;
+    ajuint k;
+    ajuint seqsetindx;
+    ajuint indxloc;
+    ajuint maxloc;
+    ajuint nMatches = 0;
     EmbPWordRK* bsres; /* match found using binary search */
     EmbPWordRK cursor;
     ajulong rm;
@@ -1736,16 +1757,17 @@ ajuint embWordRabinKarpSearch(const AjPStr sseq,
     ajuint seq2start;
     char* tmp;
 
+    ajuint pos;
+    const char *seq_;
+    
     AJNEW0(cursor);
 
     rm = wordRabinKarpConstant(plen);
     text = ajStrGetPtr(sseq);
     tlen  = ajStrGetLen(sseq);
 
-    for (i=0; i<plen; i++)
-    {
-        textHash    = (ajulong)(RK_RADIX * textHash   + text[i]) % RK_MODULUS;
-    }
+    for(i=0; i<plen; i++)
+        textHash = (ajulong)(RK_RADIX * textHash   + text[i]) % RK_MODULUS;
 
     /* Scan the input sequence sseq for all patterns */
     for (i=plen; i<=tlen; i++)
@@ -1758,19 +1780,19 @@ ajuint embWordRabinKarpSearch(const AjPStr sseq,
         {
             seq2start = i-plen;
 
-            for (k=0;k<(*bsres)->nseqs;k++)
+            for(k=0;k<(*bsres)->nseqs;k++)
             {
                 seqsetindx = (*bsres)->seqindxs[k];
                 seq = ajSeqsetGetseqSeq(seqset, seqsetindx);
 
-                if (lastlocation[seqsetindx] < i)
+                if(lastlocation[seqsetindx] < i)
                 {
                     maxloc = 0;
 
                     for(indxloc=0; indxloc < (*bsres)->nnseqlocs[k]; indxloc++)
                     {
-                        ajuint pos = (*bsres)->locs[k][indxloc];
-                        const char* seq_ = ajSeqGetSeqC(seq);
+                        pos = (*bsres)->locs[k][indxloc];
+                        seq_ = ajSeqGetSeqC(seq);
                         matchlen=0;
 
                         /* following loop is to make sure we never have
@@ -1791,6 +1813,7 @@ ajuint embWordRabinKarpSearch(const AjPStr sseq,
                                 AJFREE(tmp);
                                 break;
                             }
+
                             matchlen++;
                         }
 
@@ -1798,6 +1821,7 @@ ajuint embWordRabinKarpSearch(const AjPStr sseq,
 
                         /* this is where we extend matches */
                         ii = seq2start+plen;
+
                         while(ii<tlen  && pos+matchlen<ajSeqGetLen(seq))
                         {
                             if(seq_[pos+matchlen] != text[ii++])
@@ -1807,16 +1831,18 @@ ajuint embWordRabinKarpSearch(const AjPStr sseq,
                         }
 
                         nMatches ++;
-                        if (!checkmode)
+
+                        if(!checkmode)
                         embWordMatchListAppend(matchlist[seqsetindx],
                                 seq, pos, seq2start, matchlen);
-                        if ( ii > maxloc )
+
+                        if(ii > maxloc)
                             maxloc = ii;
                         (*bsres)->lenAllMatches += matchlen;
 
                     }
 
-                    if (maxloc>0)
+                    if(maxloc>0)
                     {
                         lastlocation[seqsetindx] = maxloc;
                         (*bsres)->nSeqMatches++;
@@ -1824,6 +1850,7 @@ ajuint embWordRabinKarpSearch(const AjPStr sseq,
                 }
             }
         }
+
         textHash = ((textHash +text[i-plen] *(RK_MODULUS-rm))
         	*RK_RADIX+ text[i]) % RK_MODULUS;
     }
