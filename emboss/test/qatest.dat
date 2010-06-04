@@ -16983,8 +16983,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /^tsw\s+P\s+OK\s+OK\s+OK/
-FP /^tembl\s+N\s+OK\s+OK\s+OK/
+FP /^tsw\s+Protein\s+OK\s+OK\s+OK/
+FP /^tembl\s+Nucleotide\s+OK\s+OK\s+OK/
 //
 
 ID showdb-ex2
@@ -16999,8 +16999,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI showdb.out
-FP /^tsw\s+P\s+OK\s+OK\s+OK/
-FP /^tembl\s+N\s+OK\s+OK\s+OK/
+FP /^tsw\s+Protein\s+OK\s+OK\s+OK/
+FP /^tembl\s+Nucleotide\s+OK\s+OK\s+OK/
 //
 
 ID showdb-ex3
@@ -17015,7 +17015,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /^tsw\s+P\s+OK\s+OK\s+OK/
+FP /^tsw\s+Protein\s+OK\s+OK\s+OK/
 FP 0 /^tembl/
 //
 
@@ -17031,8 +17031,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /^<tr><td>tsw</td><td>P</td><td>OK/
-FP /^<tr><td>tembl</td><td>N</td><td>OK/
+FP /^<tr><td>tsw</td><td>Protein</td><td>OK/
+FP /^<tr><td>tembl</td><td>Nucleotide</td><td>OK/
 //
 
 ID showdb-ex5
@@ -17047,8 +17047,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /^tsw\s+P\s+OK\s+OK\s+OK/
-FP 0 /^[^#]\S*\s+N/
+FP /^tsw\s+Protein\s+OK\s+OK\s+OK/
+FP 0 /^[^#]\S*\s+Nucleotide/
 //
 
 ID showdb-ex6
@@ -17063,7 +17063,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /\A\S+\s+[PN]\s+/
+FP /\A\S+\s+[PN][a-z]+\s+/
 FP 0 /\A#/
 //
 
@@ -17090,8 +17090,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /^tsw\s+P\s+\n/
-FP /^tembl\s+N\s+\n/
+FP /^tsw\s+Protein\s+\n/
+FP /^tembl\s+Nucleotide\s+\n/
 //
 
 ID showdb-ex9
@@ -17106,7 +17106,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP /^tsw\s+P\s+OK\s+OK\s+OK\s+emblcd\s+sv,des,org,key\s+special\s+\S+\s+Swissprot native format with EMBL CD-ROM index\n/
+FP /^tsw\s+Protein\s+OK\s+OK\s+OK\s+emblcd\s+sv,des,org,key\s+special\s+\S+\s+Swissprot native format with EMBL CD-ROM index\n/
 //
 
 ID showfeat-ex
@@ -22765,7 +22765,6 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
 FC = 6
-FZ = 918
 FP 6 /stamp/
 FI all_rep1st.scop
 FC = 104
@@ -24291,22 +24290,25 @@ FP 0 /Died: /
 FP /^Multiple EM for Motif Elicitation\n/
 FI stdout
 FC = 0
+FI help.gif
+FZ = 70
+FP /GIF89a/
 FI logo1.eps
 FZ = 13332
 FP /^%%Pages: 0\n/
 FI logo1.png
 FZ > 11786
 FP /PNG/
-FI logo_ssc1.eps
-FZ = 13310
+FI logo_rc1.eps
+FZ = 13332
 FP /^%%Pages: 0\n/
-FI logo_ssc1.png
-FZ > 12600
+FI logo_rc1.png
+FZ > 11000
 FP /PNG/
 FI meme.html
-FC = 1416
+FC = 2249
 FP /^ce1cg 1\.74e-03 1 105 [+]1 63 1\.91e-05 \n/
-FP /^ce1cg  \( 63\) TTTGATCGTTTTCAC 1 \n/
+FP /^ce1cg  \( 63\) TTTGATCGTTTTCAC 1\n/
 FI meme.fasta
 FC = 54
 FP 18 /^>/
@@ -24314,12 +24316,9 @@ FI meme.txt
 FC = 272
 FP /^ce1cg +1\.0000    105  ara +1\.0000    105  \n/
 FI meme.xml
-FC = 860
-FP /^<contributing_site sequence_id="sequence_ce1cg" position="63" strand="plus" pvalue="1.91e-05" >\n/
-FP /^<scanned_sites sequence_id="sequence_ce1cg" pvalue="1.74e-03" num_sites="1"><scanned_site motif_id="motif_1" strand="plus" position="63" pvalue="1.91e-05"/>\n/
-FI meme.xsl
-FC = 1652
-FP 486 /<xsl:/
+FC = 859
+FP /^<contributing_site sequence_id="sequence_0" position="63" strand="plus" pvalue="1.91e-05" >\n/
+FP /^<scanned_sites sequence_id="sequence_0" pvalue="1.74e-03" num_sites="1"><scanned_site motif_id="motif_1" strand="plus" position="63" pvalue="1.91e-05"/>\n/
 //
 
 ID ememetext-ex
