@@ -1145,7 +1145,6 @@ __deprecated void ajTrnAltRevStr(const AjPTrn trnObj,
 
 
 
-    
 /* @func ajTrnSeqSeq **********************************************************
 **
 ** Translates a sequence in a AjPSeq
