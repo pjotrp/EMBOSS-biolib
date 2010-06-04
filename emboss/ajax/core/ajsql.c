@@ -242,7 +242,6 @@ void ajSqlExit(void)
 
 
 #ifdef HAVE_MYSQL
-
 /* @funcstatic sqlconnectionMysqlNewData **************************************
 **
 ** MySQL client library-specific AJAX SQL Connection constructor, which also
@@ -347,7 +346,7 @@ static AjPSqlconnection sqlconnectionMysqlNewData(
 
         mysql_close(Pmysql);
 
-#if AJ_SAVESTATS
+#ifdef AJ_SAVESTATS
 
         sqlconnectionErrorCount++;
 
@@ -363,7 +362,6 @@ static AjPSqlconnection sqlconnectionMysqlNewData(
 
 
 #ifdef HAVE_POSTGRESQL
-
 /* @funcstatic sqlconnectionPostgresqlNewData *********************************
 **
 ** PostgreSQL client library-specific AJAX SQL Connection constructor, which
@@ -522,7 +520,7 @@ static AjPSqlconnection sqlconnectionPostgresqlNewData(
 
             PQfinish(Ppgconn);
 
-#if AJ_SAVESTATS
+#ifdef AJ_SAVESTATS
 
             sqlconnectionErrorCount++;
 
@@ -587,7 +585,7 @@ static AjPSqlconnection sqlconnectionPostgresqlNewData(
 ** For MySQL clients options will be read from the [client] and [EMBOSS] groups
 ** of the default my.cnf options file.
 **
-** @param [r] client [AjESqlClient] SQL client
+** @param [u] client [AjESqlClient] SQL client
 ** @param [r] user [const AjPStr] SQL account user name
 ** @param [r] password [const AjPStr] SQL account password
 ** @param [r] host [const AjPStr] SQL server hostname or IP address
@@ -1179,7 +1177,6 @@ AjBool ajSqlconnectionTrace(const AjPSqlconnection sqlc, ajuint level)
 
 
 #ifdef HAVE_MYSQL
-
 /* @funcstatic sqlstatementMysqlNewRun ****************************************
 **
 ** MySQL client library-specific AJAX SQL Statement constructor.
@@ -1230,7 +1227,7 @@ static AjPSqlstatement sqlstatementMysqlNewRun(AjPSqlconnection sqlc,
                statement,
                mysql_error(Pmysql));
 
-#if AJ_SAVESTATS
+#ifdef AJ_SAVESTATS
 
         sqlstatementErrorCount++;
 
@@ -1297,7 +1294,7 @@ static AjPSqlstatement sqlstatementMysqlNewRun(AjPSqlconnection sqlc,
                    statement,
                    mysql_error(Pmysql));
 
-#if AJ_SAVESTATS
+#ifdef AJ_SAVESTATS
 
             sqlstatementErrorCount++;
 
@@ -1341,7 +1338,6 @@ static AjPSqlstatement sqlstatementMysqlNewRun(AjPSqlconnection sqlc,
 
 
 #ifdef HAVE_POSTGRESQL
-
 /* @funcstatic sqlstatementPostgresqlNewRun ***********************************
 **
 ** PostgreSQL client library-specific AJAX SQL Statement constructor.
@@ -1398,7 +1394,7 @@ static AjPSqlstatement sqlstatementPostgresqlNewRun(AjPSqlconnection sqlc,
 
                 PQclear(Ppgresult);
 
-#if AJ_SAVESTATS
+#ifdef AJ_SAVESTATS
 
                 sqlstatementErrorCount++;
 
@@ -1480,7 +1476,7 @@ static AjPSqlstatement sqlstatementPostgresqlNewRun(AjPSqlconnection sqlc,
 
                 PQclear(Ppgresult);
 
-#if AJ_SAVESTATS
+#ifdef AJ_SAVESTATS
 
                 sqlstatementErrorCount++;
 
@@ -1497,7 +1493,7 @@ static AjPSqlstatement sqlstatementPostgresqlNewRun(AjPSqlconnection sqlc,
 
                 PQclear(Ppgresult);
 
-#if AJ_SAVESTATS
+#ifdef AJ_SAVESTATS
 
                 sqlstatementErrorCount++;
 
@@ -1513,7 +1509,7 @@ static AjPSqlstatement sqlstatementPostgresqlNewRun(AjPSqlconnection sqlc,
                statement,
                PQerrorMessage(Ppgconn));
 
-#if AJ_SAVESTATS
+#ifdef AJ_SAVESTATS
 
         sqlstatementErrorCount++;
 
