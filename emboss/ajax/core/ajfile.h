@@ -13,8 +13,11 @@ extern "C"
 #include "ajlist.h"
 #include <sys/stat.h>
 
-
-
+#ifdef WIN32
+#define pid_t void*
+#else
+#define HANDLE void*
+#endif
 
 /* @data AjPFile **************************************************************
 **
@@ -40,7 +43,9 @@ extern "C"
 ** @attr Blocklen [ajuint] Read block length used
 ** @attr Buffsize [ajuint] Buffer size (zero for default size)
 ** @attr Handle [ajint] AJAX file number 0 if unused
-** @attr Pid [pid_t] Process PID if any
+** @attr Pid [pid_t] Process PID if any (non-WIN32 only)
+** @attr Process [HANDLE] Process handle (WIN32 only)
+** @attr Thread [HANDLE] Thread handle (WIN32 only)
 ** @@
 ******************************************************************************/
 
@@ -60,12 +65,9 @@ typedef struct AjSFile
     ajuint Blocklen;
     ajuint Buffsize;
     ajint Handle;
-#ifndef WIN32
     pid_t Pid;
-#else
     HANDLE Process;
     HANDLE Thread;
-#endif
 } AjOFile;
 
 #define AjPFile AjOFile*
