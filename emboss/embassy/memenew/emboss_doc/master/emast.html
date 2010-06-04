@@ -1,0 +1,784 @@
+<!--START OF HEADER - DON'T ALTER -->
+
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBOSS: emast
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+
+
+<!--#include virtual="/apps/header1.inc" -->
+emast
+<!--#include virtual="/apps/header2.inc" -->
+
+<!--END OF HEADER-->
+
+
+
+
+
+
+<H2>
+    Function
+</H2>
+<!--#include file="inc/emast.ione" -->
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+<!-- 
+	This is the main part of the document.
+        This is what the user looks at to find out if this program will do what he wants. 
+        Long description.
+        Why it is useful.
+        When it should/shouldn't be used.
+  -->
+EMBASSY MEME is a suite of application wrappers to the original meme v3.0.14 applications written by  Timothy Bailey. meme v3.0.14 must be installed on the same system as EMBOSS and the location of the meme executables must be defined in your path for EMBASSY MEME to work.
+
+<p><b>Usage:</b>
+<br>ememe [options] mfile outfile
+<p>The outfile parameter is new to EMBASSY MEME. The output is always written to <outfile>. 
+
+<p>  MAST: Motif Alignment and Search Tool
+  
+<p>  MAST is a tool for searching biological sequence databases for sequences
+  that contain one or more of a group of known motifs. 
+  
+<p>  A motif is a sequence pattern that occurs repeatedly in a group of related
+  protein or DNA sequences. Motifs are represented as position-dependent
+  scoring matrices that describe the score of each possible letter at each
+  position in the pattern. Individual motifs may not contain gaps. Patterns with
+  variable-length gaps must be split into two or more separate motifs before
+  being submitted as input to MAST. 
+  
+<p>  MAST takes as input a file containing the descriptions of one or more motifs
+  and searches a sequence database that you select for sequences that match
+  the motifs. The motif file can be the output of the MEME motif discovery tool 
+  or any file in the appropriate format. 
+  
+<p>  MAST outputs three things: 
+<ul>  
+<li>    1. The names of the high-scoring sequences sorted by the strength of the
+       combined match of the sequence to all of the motifs in the group. 
+<li>    2. Motif diagrams showing the order and spacing of the motifs within each
+       matching sequence. 
+<li>    3. Detailed annotation of each matching sequence showing the sequence
+       and the locations and strengths of matches to the motifs. 
+</ul>
+  
+<p>  MAST works by calculating match scores for each sequence in the database
+  compared with each of the motifs in the group of motifs you provide. For each
+  sequence, the match scores are converted into various types of p-values and
+  these are used to determine the overall match of the sequence to the group of
+  motifs and the probable order and spacing of occurrences of the motifs in the
+  sequence. 
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Algorithm
+</H2>
+
+<!-- 
+        Algorithms
+	  Pseudocode/Vague description/Handwaving/web links to useful pages
+  -->
+
+Please read the file README distributed with the original MEME. 
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+<!--#include file="inc/emast.usage" -->
+
+
+
+<h3>  EXAMPLES:</h3>
+<p><b>Please note</b> the examples below are unedited excerpts of the original MEME documentation.  Bear in mind the EMBASSY and original MEME options may differ in practice (see "1. Command-line arguments").
+  
+<p>  The following examples assume that file "meme.results" is the
+  output of a MEME run containing at least 3 motifs and file
+  SwissProt is a copy of the Swiss-Prot database on your local disk.
+  DNA_DB is a copy of a DNA database on your local disk.
+   
+<p>  1) Annotate the training set: 
+<br>  	mast meme.results
+   
+<p>  2) Find sequences matching the motif and annotate them in the SwissProt database:</b>
+<br>  	mast meme.results -d SwissProt
+   
+<p>  3) Show sequences with weaker combined matches to motifs.</b>
+<br>  	mast meme.results -d SwissProt -ev 200
+   
+<p>  4) Indicate weaker matches to single motifs in the annotation so that sequences with weak matches to the motifs (but perhaps with the "correct" order and spacing) can be seen:
+<br>  	mast meme.results -d SwissProt -w
+   
+<p>  5) Include a nominal order and spacing of the first three motifs in the calculation of the sequence p-values to increase the sensitivity of the search for matching sequences:
+<br>  	mast meme.results -d SwissProt -diag "9-[2]-61-[1]-62-[3]-91"
+   
+<p>  6) Use only the first and third motifs in the search:
+<br>  	mast meme.results -d SwissProt -m 1 -m 3
+   
+<p>  7) Use only the first two motifs in the search:
+<br>  	mast meme.results -d SwissProt -c 2
+  
+<p>  8) Search DNA sequences using protein motifs, adjusting p-values and E-values for each sequence by that sequence's composition:
+<br> 	mast meme.results -d DNA_DB -dna -comp
+
+
+
+<H2>
+    Command line arguments
+</H2>
+Where possible, the same command-line qualifier names and parameter order is used as in the original mast. There are however several unavoidable differences and these are clearly documented in the "Notes" section below.
+
+<p>Most of the options in the original mast are given in ACD as "advanced" or
+"additional" options. -options must be specified on the command-line in order 
+to be prompted for a value for "additional" options but "advanced" options 
+will never be prompted for.  
+
+<p> Please note that one only of -stdin or -d should be specified.  If you set both, then -d will be used.   This behaviour could have been enforced at the level of the ACD file by using an ACD select: or list: type but this would have been inconsistent with the original meme, which has two separate options.
+<p>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+<!--#include file="inc/emast.ihelp" -->
+</pre>
+</td></tr></table>
+<P>
+<!--#include file="inc/emast.itable" -->
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+
+
+<!-- 
+        This includes example input file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null input, etc. 
+   -->
+
+
+<p>
+<pre>
+
+
+<!--#include file="inc/emast.input" -->
+
+</pre>
+
+<h3>  MOTIF FORMAT  </h3>
+  
+  MAST can search using (multiple) motifs contained in 
+<ul>  
+<li>      a MEME output file, 
+<li>      a GCG profile file, 
+<li>      two or more GCG profile filess concatenated together, or 
+<li>      a file with the following format. 
+</ul>  
+
+<h3>                    Motif file format </h3>
+<pre>  
+       ALPHABET= alphabet
+       log-odds matrix: alength= alength w= w
+       row_1
+       row_2
+       ...
+       row_w  
+</pre>  
+  
+  
+<p>      A motif is represented by a position-dependent scoring matrix. 
+<p>      A scoring matrix is preceded by a line starting with the words
+      log-odds matrix: and specifying alength, the length of
+      the alphabet (number of columns in the scoring matrix), and the w, the
+      width of the motif (number of rows in the scoring matrix). 
+<p>      The following w lines (no blank lines allowed) contain the rows of the
+      scoring matrix. Row i, column j of the matrix gives the score for the j-th
+      letter in alphabet appearing at position i in an occurrence of the
+      motif. 
+
+<p>      The spaces after the equals signs and the colon are required. 
+<p>      The number of letters in alphabet must equal alength. 
+<p>      Any number of additional motifs may follow the first one. 
+<p>      The motif file must contain a line starting with 
+  <pre>
+              ALPHABET= 
+</pre>  
+      followed by alphabet, a list containing the letters used in the motifs. 
+
+<p>      The order of the letters in alphabet must be the same as the order of the
+      columns of scores in the motifs. The order need not be alphabetical
+      and case does not matter, but there should be no spaces in alphabet.
+<p>      The letters in alphabet must be a subset of either the IUB/IUPAC DNA
+      (ABCDGHKMNRSTUVWY) or protein
+      (ABCDEFGHIKLMNPQRSTUVWXYZ) alphabets. DNA alphabets
+      must contain at least the letters ACGT. Protein alphabets must contain
+      at least the letters ACDEFGHIKLMNPQRSTVWY. All other letters in
+      the alphabets are optional. If any of the optional letters are missing 
+      from alphabet, MAST automatically generates scores for them by taking the
+      weighted average of the scores for the letters which the missing letter
+      could match. (The weights are the frequencies of the replaced letters in
+      the appropriate non-redundant database.) Replacements for the
+      optional letters are given in the following table. 
+  
+<h3>             LETTERS MATCHED BY OPTIONAL LETTERS </h3>
+<pre>
+      =================================================
+      optional          matches 
+      letter      DNA             protein 
+      =================================================
+       B          CGT             DN 
+       D          AGT
+       H          ACT
+       K          GT
+       M          AC
+       N          ACGT
+       R          AG
+       S          CG
+       U          T               ACDEFGHIKLMNPQRSTVWY 
+       V          CAG
+       W          AT
+       X                          ACDEFGHIKLMNPQRSTVWY 
+       Y          CT
+       Z                          EQ 
+       *          ACGT            ACDEFGHIKLMNPQRSTVWY
+       -          ACGT            ACDEFGHIKLMNPQRSTVWY
+      =================================================
+</pre>
+
+<h3>  EXAMPLE <h3>
+  
+  Here is an example of a DNA motif file that contains two motifs. 
+  
+<h3>                    Sample motif file <h3>
+<pre>  
+          ALPHABET= ACGT
+          log-odds matrix: alength= 4 w= 9
+           -4.275  -0.182  -4.195   1.408
+           -4.296  -1.487   1.880  -0.816
+           -2.160  -1.492  -4.171   1.474
+           -0.810  -4.076   1.872  -2.164
+            1.537  -1.487  -4.195  -4.205
+            0.113   0.340  -0.237  -0.209
+           -0.454   0.923   0.390  -0.834
+           -1.336  -0.082   0.905   0.100
+            0.674  -4.183   0.130  -0.201
+          log-odds matrix: alength= 4 w= 6
+           -2.032   0.324   1.371  -0.781
+           -0.409   0.560  -0.250   0.119
+           -4.274  -0.519  -0.260   1.167
+           -2.188   2.300  -4.191  -2.465
+            1.265  -4.111  -0.267  -2.180
+           -1.977   2.158  -1.661  -2.071 
+</pre>
+  
+  
+  In the example above, because the order of the letters in alphabet is
+  ACGT, the first column of each motif gives the scores for the letter A at each
+  position in the motif, the second column gives the scores for C and so forth.
+  
+<p>  Note: If -d <database> is not given, MAST looks for database
+  	specified inside of < mfile >
+  
+<p>  Creates file (unless [-stdout] given) after stripping ".html" from the end of
+  < mfile >:
+<p>  	mast.< mfile >[.< database >][.c< count >][.m< motif >]+[.rank< rank >][.ev< ev >][.mt< mt >][.b]
+
+
+
+
+
+
+<H2>
+    Output file format
+</H2>
+
+<!-- 
+        This includes example output file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null output, errors etc. 
+
+        If you wish to include the standard description of the avalable
+	report formats, use:
+include file="inc/reportformats.ihtml"
+   -->
+
+<p>
+
+<!--#include file="inc/emast.output" -->
+
+
+<p>  MAST outputs a file containing:
+<ul>  
+<li>      * the version of MAST and the date it was built, 
+<li>      * the reference to cite if you use MAST in your research, 
+<li>       * a description of the database and motifs used in the search, 
+<li>       * an explanation of the results,
+<li>       * high-scoring sequences--sequences matching the group of motifs above a stated level of statistical significance, 
+<li>       * motif diagrams showing the order and spacing of occurrences of the motifs in the high-scoring sequences and 
+<li>       * annotated sequences showing the positions and p-values of all motif occurrences in each of the high-scoring sequences. 
+</ul>  
+
+<p>  Each section of the results file contains an explanation of how to interpret
+  them. 
+  
+<h3>    Match Scores <h3>
+  
+  The match score of a motif to a position in a sequence is the sum of the
+  score from each column of the position-dependent scoring matrix
+  corresponding to the letter at that position in the sequence. For example, if
+  the sequence is 
+
+<pre>  
+  TAATGTTGGTGCTGGTTTTTGTGGCATCGGGCGAGAATAGCGC
+     ========
+ </pre>
+
+  and the motif is represented by the position-dependent scoring matrix (where
+  each row of the matrix corresponds to a position in the motif) 
+
+<pre>  
+  =========|=================================
+  POSITION |   A        C        G        T
+  =========|=================================
+    1      | 1.447    0.188   -4.025   -4.095 
+    2      | 0.739    1.339   -3.945   -2.325 
+    3      | 1.764   -3.562   -4.197   -3.895 
+    4      | 1.574   -3.784   -1.594   -1.994 
+    5      | 1.602   -3.935   -4.054   -1.370 
+    6      | 0.797   -3.647   -0.814    0.215 
+    7      |-1.280    1.873   -0.607   -1.933 
+    8      |-3.076    1.035    1.414   -3.913 
+  =========|=================================
+</pre>  
+
+  then the match score of the fourth position in the sequence (underlined)
+  would be found by summing the score for T in position 1, G in position 2 and
+  so on until G in position 8. So the match score would be 
+  
+<pre>
+    score = -4.095 + -3.945 + -3.895 + -1.994
+            + -4.054 + -0.814 + -1.933 + 1.414 
+          = -19.316
+  </pre>
+  The match scores for other positions in the sequence are calculated in the
+  same way. Match scores are only calculated if the match completely fits within
+  the sequence. Match scores are not calculated if the motif would overhang
+  either end of the sequence. 
+  
+<h3>    P-values </h3>
+  
+  MAST reports all matches of a sequence to a motif or group of motifs in terms
+  of the p-value of the match. MAST considers the p-values of four types of
+  events: 
+<ul>
+<li>  position p-value: the match of a single position within a sequence to
+      	a given motif, 
+<li>      sequence p-value: the best match of any position within a sequence
+      	to a given motif, 
+<li>      combined p-value: the combined best matches of a sequence to a
+      	group of motifs, and 
+<li>      E-value: observing a combined p-value at least as small in a random
+      	database of the same size. 
+</ul>
+  
+  All p-values are based on a random sequence model that assumes each
+  position in a random sequence is generated according to the average letter
+  frequencies of all sequences in the the appropriate (peptide or nucleotide)
+  non-redundant database (ftp://ncbi.nlm.nih.gov/blast/db/) on September 22,
+  1996.  This can be overridden in two ways:
+  
+<h3>  	1) -bfile < bfile > </h3>
+  	The random model uses the letter frequencies given in < bfile > 
+  	instead of the non-redundant database frequencies.
+  	The format of < bfile > is the same as that for the MEME -bfile opton; 
+  	see the MEME documentation for details.  Sample files are given in 
+  	directory tests: tests/nt.freq and tests/na.freq.) 
+  	
+<h3>  	2) -comp </h3>
+  	The random model uses the letter frequencies in the current target
+  	sequence instead of the non-redundant database frequencies.  This
+  	causes p-values and E-values to be compensated individually for the 
+  	actual composition of each sequence in the database.  This option
+  	can increase search time substantially due to the need to compute
+  	a different score distribution for each high-scoring sequence.
+  
+  
+<h3>      Position p-value </h3>
+  
+      The p-value of a match of a given position within a sequence to a
+      motif is defined as the probability of a randomly selected position in a
+      randomly generated sequence having a match score at least as large
+      as that of the given position. 
+  
+<h3>      Sequence p-value </h3>
+  
+      The p-value of a match of a sequence to a motif is defined as the
+      probability of a randomly generated sequence of the same length
+      having a match score at least as large as the largest match score of
+      any position in the sequence. 
+  
+<h3>      Combined p-value </h3>
+  
+      The p-value of a match of a sequence to a group of motifs is defined
+      as the probability of a randomly generated sequence of the same
+      length having sequence p-values whose product is at least as small
+      as the product of the sequence p-values of the matches of the motifs
+      to the given sequence. 
+  
+<h3>      E-value </h3>
+  
+      The E-value of the match of a sequence in a database to a a group
+      of motifs is defined as the expected number of sequences in a random
+      database of the same size that would match the motifs as well as the
+      sequence does and is equal to the combined p-value of the sequence
+      times the number of sequences in the database. 
+  
+<h3>    High-scoring Sequences </h3>
+  
+  MAST lists the names and part of the descriptive text of all sequences
+  whose E-value is less than E. Sequences shorter than one or more of the
+  motifs are skipped. The sequences are sorted by increasing E-value. The
+  value of E is set to 10 for the WEB server but is user-selectable in the
+  down-loadable version of MAST. 
+  
+<h3>    Motif Diagrams </h3>
+  
+  Motif diagrams show the order and spacing of non-overlapping matches to
+  the motifs in each high-scoring sequence. Motif occurrences are determined
+  based on the position p-value of matches to the motif. Strong matches
+  (p-value < M) are shown in square brackets (`[ ]'), weak matches (M <
+  p-value < M × 10) are shown in angle brackets (`< >') and the length of
+  non-motif sequence ("spacer") is shown between dashes (`-'). For example, 
+<pre>  
+          27-[3]-44-< 4 >-99-[1]-7
+</pre>  
+  shows an initial spacer of length 27, followed by a strong match to motif 3, a
+  spacer of length 44, a weak match to motif 4, a spacer of length 99, a strong
+  match to motif 1 and a final non-motif sequence of length 7. The value of M is
+  0.0001 for the WEB server but is user-selectable in the down-loadable
+  version of MAST. 
+  
+<p>
+  Note: If you specify the -hit_list switch to MAST, the motif "diagram" takes the form
+  of a comma separated list of motif occurrences ("hits").  Each "hit" has the format:
+  	< strand >< motif > < start > < end > < p-value >
+  where 
+<ul>
+<li>          < strand >        is the strand (+ or - for DNA, blank for protein),
+<li>          < motif >         is the motif number,
+<li>          < start >         is the starting position of the hit,
+<li>          < end >           is the ending position of the hit, and
+<li>          < p-value >       is the position p-value of the hit.
+</ul>  
+
+
+<h3>    Annotated Sequences </h3>
+  
+  MAST annotates each high-scoring sequence by printing the sequence
+  along with the position and strength of all the non-overlapping motif
+  occurrences. The four lines above each motif occurrence contain,
+  respectively, 
+<ul>  
+<li>      the motif number of the occurrence, 
+<li>      the position p-value of the occurence, 
+<li>      the best possible match to the motif, and 
+<li>      a plus sign (`+') above each letter in the occurrence that has a positive
+<li>      match score to the motif. 
+</ul>  
+  The best possible match to a motif is the sequence of letters which would
+  acheive the highest match score. 
+
+
+
+
+
+<H2>
+    Data files
+</H2>
+
+<!-- 
+        Any data files used (e.g. translation table file)
+        This includes example data file formats if they are
+        not obvious.
+
+	If you wish to include the standard description of what data
+	files are and how to use embossdata to inspect and retrieve
+	them, use:
+include file="inc/localfiles.ihtml"
+   -->
+
+None.
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+<H3>1. Command-line arguments</H3>
+The following original MEME options are not supported:
+<br><pre>
+-stdout       : The output is always written to file.
+-hit_list     : Use -hitlist instead. 
+</pre>
+
+<p>
+The following additional options are provided:
+<br><pre>
+outfile       : Application output that was normally written to stdout.
+</pre>
+
+
+
+<H3>2. Installing EMBASSY MEMENEW</H3>
+The EMBASSY MEMENEW package contains "wrapper" applications providing an EMBOSS-style interface to the applications in the original MEME package version 4.4.0 developed by Timothy L. Bailey.  Please read the file README in the EMBASSY MEMENEW package distribution for installation instructions.
+
+
+
+<H3>3. Installing original MEME</H3>
+To use EMBASSY MEMENEW, you will first need to download and install the original MEME package:
+<pre>
+WWW home:       http://meme.sdsc.edu/meme/
+Distribution:   http://meme.nbcr.net/downloads/old_versions/  
+</pre>
+Please read the file README in the the original MEME package distribution for installation instructions.
+
+
+<H3>4. Setting up MEME</H3>
+For the EMBASSY MEMENEW package to work, the directory containing the original MEME executables *must* be in your path. For example if you executables were installed to "/usr/local/meme/bin", then type:
+<pre>
+set path=(/usr/local/meme/bin/ $path)
+rehash
+</pre>
+
+<H3> 5. Getting help </H3>
+Once you have installed the original MEME, type
+<pre>
+meme > meme.txt 
+mast > mast.txt 
+</pre>
+to retrieve the meme and mast documentation into text files. The same documentation is given here and in the ememe documentation.
+
+<p>Please read the 'Notes' section below for a description of the differences between the original and EMBASSY MEMENEW, particularly which application command line options are supported. 
+
+
+
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+
+<p>(MEME) Timothy L. Bailey and Charles Elkan, "Fitting a mixture model by expectation maximization to discover motifs in biopolymers", Proceedings of the Second International Conference on Intelligent Systems for Molecular Biology, pp. 28-36, AAAI Press, Menlo Park, California, 1994.
+<p>(MAST) Timothy L. Bailey and Michael Gribskov, "Combining evidence using p-values: application to sequence homology searches", Bioinformatics, Vol. 14, pp. 48-54, 1998. 
+
+
+
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+<!--#include file="inc/emast.isee" -->
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+
+<!--#include virtual="/apps/inc/seddy.address" -->
+<!--#include virtual="/apps/inc/jison.address" -->
+
+<p>This program is an EMBASSY wrapper to a program written by Timothy L. Bailey as part of his meme package.
+<p>Please report any bugs to the EMBOSS bug team in the first instance, not to Timothy L. Bailey.
+
+<H2>
+    History
+</H2>
+
+<!--#include file="inc/emast.history" -->
+
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+<!--#include virtual="/apps/inc/target.itxt" -->
+
+
+
+
+
+
+
+
+
+
+
+</BODY>
+</HTML>
+
