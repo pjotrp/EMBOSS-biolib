@@ -1,4 +1,14 @@
 Version 6.3.0 15-Jul-2010
+	Database types, originally defined as simply "N" for nucleotide
+	and "P" for protein, should now be named in full. The names are
+	expanded automatically when reading the definitions in the
+	emboss.default and .embossrc files. Expanding the types allows for
+	new database types to be added in the near future.
+
+	EMBOSS can now read BAM (binary SAM) sequence files to extract all
+	sequences and quality scores, for example to write them out in
+	FASTQ format.
+
 	The acdvalid application now reads the EDAM (EMBRACE Data and
 	Methods) ontology to validate EDAM references in relations
 	attributes. All applications are expected to have at least one
