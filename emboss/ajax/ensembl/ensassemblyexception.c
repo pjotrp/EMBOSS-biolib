@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.14 $
+** @version $Revision: 1.15 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -203,7 +203,7 @@ EnsPAssemblyexception ensAssemblyexceptionNew(
 **
 ** @param [r] object [const EnsPAssemblyexception] Ensembl Assembly Exception
 **
-** @return [EnsPAssembly] Ensembl Assembly Exception or NULL
+** @return [EnsPAssemblyexception] Ensembl Assembly Exception or NULL
 ** @@
 ******************************************************************************/
 
@@ -331,7 +331,7 @@ void ensAssemblyexceptionDel(EnsPAssemblyexception* Pae)
 ** @nam4rule GetAdaptor Return the Ensembl Assembly Excepton Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
 ** @nam4rule GetSeqregion Return reference Ensembl Sequence Region attribute(s)
-** @nam5rule GetSeqregionIdentfier Return the identifier
+** @nam5rule GetSeqregionIdentifier Return the identifier
 ** @nam5rule GetSeqregionStart Return the start
 ** @nam5rule GetSeqregionEnd Return the end
 ** @nam4rule GetExcRegion Return exception Ensembl Sequence Region attribute(s)
@@ -346,7 +346,7 @@ void ensAssemblyexceptionDel(EnsPAssemblyexception* Pae)
 ** @valrule Adaptor [EnsPAssemblyexceptionadaptor] Ensembl Assembly
 **                                                 Exception Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
-** @valrule SeqregionIdentfier [ajuint] Reference Sequence Region identifier
+** @valrule SeqregionIdentifier [ajuint] Reference Sequence Region identifier
 ** @valrule SeqregionStart [ajuint] Reference Sequence Region start
 ** @valrule SeqregionEnd [ajuint] Reference Sequence Region end
 ** @valrule ExcRegionIdentifier [ajuint] Exception Sequence Region identifier
@@ -407,7 +407,7 @@ ajuint ensAssemblyexceptionGetIdentifier(
 
 
 
-/* @func ensAssemblyexceptionGetSeqregionIdentfier ****************************
+/* @func ensAssemblyexceptionGetSeqregionIdentifier ***************************
 **
 ** Get the reference Ensembl Sequence Region identifier element of an
 ** Ensembl Assembly Exception.
@@ -600,7 +600,7 @@ EnsEAssemblyexceptionType ensAssemblyexceptionGetType(
 ** @nam4rule SetAdaptor Set the Ensembl Assembly Excepton Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
 ** @nam4rule SetSeqregion Set reference Ensembl Sequence Region attribute(s)
-** @nam5rule SetSeqregionIdentfier Set the identifier
+** @nam5rule SetSeqregionIdentifier Set the identifier
 ** @nam5rule SetSeqregionStart Set the start
 ** @nam5rule SetSeqregionEnd Set the end
 ** @nam4rule SetExcRegion Set exception Ensembl Sequence Region attribute(s)
@@ -647,7 +647,7 @@ AjBool ensAssemblyexceptionSetAdaptor(EnsPAssemblyexception ae,
 
 
 
-/* @func ensAssemblyexceptionSetIdentfier *************************************
+/* @func ensAssemblyexceptionSetIdentifier ************************************
 **
 ** Set the SQL database identifier element of an Ensembl Assembly Exception.
 **
@@ -919,8 +919,8 @@ AjBool ensAssemblyexceptionTrace(const EnsPAssemblyexception ae, ajuint level)
     ajStrAppendCountK(&indent, ' ', level * 2);
 
     ajDebug("%SensAssemblyexceptionTrace %p\n"
-            "%S  Identfier %u\n"
-            "%S  SeqregionIdentfier %u\n"
+            "%S  Identifier %u\n"
+            "%S  SeqregionIdentifier %u\n"
             "%S  SeqregionStart %u\n"
             "%S  SeqregionEnd %u\n"
             "%S  ExcSeqregionIdentifier %u\n"
@@ -949,7 +949,7 @@ AjBool ensAssemblyexceptionTrace(const EnsPAssemblyexception ae, ajuint level)
 
 
 
-/* @func ensAssemblyexceptionGetMemSize ***************************************
+/* @func ensAssemblyexceptionGetMemsize ***************************************
 **
 ** Get the memory size in bytes of an Ensembl Assembly Exception.
 **
@@ -959,7 +959,7 @@ AjBool ensAssemblyexceptionTrace(const EnsPAssemblyexception ae, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyexceptionGetMemSize(const EnsPAssemblyexception ae)
+ajuint ensAssemblyexceptionGetMemsize(const EnsPAssemblyexception ae)
 {
     ajuint size = 0;
 

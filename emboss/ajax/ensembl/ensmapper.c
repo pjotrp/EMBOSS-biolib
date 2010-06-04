@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -452,7 +452,7 @@ AjBool ensMapperunitSetEnd(EnsPMapperunit mu, ajint end)
 
 
 
-/* @func ensMapperunitGetMemSize **********************************************
+/* @func ensMapperunitGetMemsize **********************************************
 **
 ** Get the memory size in bytes of an Ensembl Mapper Unit.
 **
@@ -462,7 +462,7 @@ AjBool ensMapperunitSetEnd(EnsPMapperunit mu, ajint end)
 ** @@
 ******************************************************************************/
 
-ajuint ensMapperunitGetMemSize(const EnsPMapperunit mu)
+ajuint ensMapperunitGetMemsize(const EnsPMapperunit mu)
 {
     ajuint size = 0;
 
@@ -499,7 +499,7 @@ ajuint ensMapperunitGetMemSize(const EnsPMapperunit mu)
 **
 ** Trace an Ensembl Mapper Unit.
 **
-** @param [r] mr [const EnsPMapperunit] Ensembl Mapper Unit
+** @param [r] mu [const EnsPMapperunit] Ensembl Mapper Unit
 ** @param [r] level [ajuint] Indentation level
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -828,7 +828,7 @@ void ensMapperpairDel(EnsPMapperpair *Pmp)
 ** Get the source Ensembl Mapper Unit element of an Ensembl Mapper Pair.
 **
 ** @cc Bio::EnsEMBL::Mapper::Pair::from
-** @param [r] mu [const EnsPMapperpair] Ensembl Mapper Pair
+** @param [r] mp [const EnsPMapperpair] Ensembl Mapper Pair
 **
 ** @return [EnsPMapperunit] Source Ensembl Mapper Unit
 ** @@
@@ -850,7 +850,7 @@ EnsPMapperunit ensMapperpairGetSource(const EnsPMapperpair mp)
 ** Get the Target Ensembl Mapper Unit element of an Ensembl Mapper Pair.
 **
 ** @cc Bio::EnsEMBL::Mapper::Pair::to
-** @param [r] mu [const EnsPMapperpair] Ensembl Mapper Pair
+** @param [r] mp [const EnsPMapperpair] Ensembl Mapper Pair
 **
 ** @return [EnsPMapperunit] Target Ensembl Mapper Unit
 ** @@
@@ -872,7 +872,7 @@ EnsPMapperunit ensMapperpairGetTarget(const EnsPMapperpair mp)
 ** Get the relative orientation element of an Ensembl Mapper Pair.
 **
 ** @cc Bio::EnsEMBL::Mapper::Pair::ori
-** @param [r] mu [const EnsPMapperpair] Ensembl Mapper Pair
+** @param [r] mp [const EnsPMapperpair] Ensembl Mapper Pair
 **
 ** @return [ajint] Relative orientation
 ** @@
@@ -894,7 +894,7 @@ ajint ensMapperpairGetOrientation(const EnsPMapperpair mp)
 ** Test whether this Ensembl Mapper Pair represents an insertion-deletion.
 **
 ** @cc Bio::EnsEMBL::Mapper::IndelPair::???
-** @param [r] mu [const EnsPMapperpair] Ensembl Mapper Pair
+** @param [r] mp [const EnsPMapperpair] Ensembl Mapper Pair
 **
 ** @return [AjBool] ajTrue if this Mapper Pair represents an
 **                  insertion-deletion
@@ -919,7 +919,7 @@ AjBool ensMapperpairGetInsertionDeletion(const EnsPMapperpair mp)
 **
 ** @cc Bio::EnsEMBL::Mapper::Pair::from
 ** @cc Bio::EnsEMBL::Mapper::Pair::to
-** @param [r] mu [const EnsPMapperpair] Ensembl Mapper Pair
+** @param [r] mp [const EnsPMapperpair] Ensembl Mapper Pair
 ** @param [r] type [EnsEMapperunitType] Ensembl Mapper Unit Type
 **
 ** @return [EnsPMapperunit] Source or Target Ensembl Mapper Unit or NULL
@@ -951,7 +951,7 @@ EnsPMapperunit ensMapperpairGetUnit(const EnsPMapperpair mp,
 
 
 
-/* @func ensMapperpairGetMemSize **********************************************
+/* @func ensMapperpairGetMemsize **********************************************
 **
 ** Get the memory size in bytes of an Ensembl Mapper Pair.
 **
@@ -961,7 +961,7 @@ EnsPMapperunit ensMapperpairGetUnit(const EnsPMapperpair mp,
 ** @@
 ******************************************************************************/
 
-ajuint ensMapperpairGetMemSize(const EnsPMapperpair mp)
+ajuint ensMapperpairGetMemsize(const EnsPMapperpair mp)
 {
     ajuint size = 0;
 
@@ -970,8 +970,8 @@ ajuint ensMapperpairGetMemSize(const EnsPMapperpair mp)
 
     size += (ajuint) sizeof (EnsOMapperpair);
 
-    size += ensMapperunitGetMemSize(mp->Source);
-    size += ensMapperunitGetMemSize(mp->Target);
+    size += ensMapperunitGetMemsize(mp->Source);
+    size += ensMapperunitGetMemsize(mp->Target);
 
     return size;
 }
@@ -3457,8 +3457,8 @@ static AjBool mapperMergePairs(EnsPMapper mapper)
 
 /* @funcstatic mapperSort *****************************************************
 **
-** @cc Bio::EnsEMBL::Mapper::_sort
 ** Sort Ensembl Mapper Pairs in an Ensembl Mapper.
+** @cc Bio::EnsEMBL::Mapper::_sort
 **
 ** @param [r] mapper [EnsPMapper] Ensembl Mapper
 **
@@ -4986,7 +4986,7 @@ AjBool ensMapperAddMapper(EnsPMapper mapper1, EnsPMapper mapper2)
 
 
 
-/* @func ensMapperGetMemSize **************************************************
+/* @func ensMapperGetMemsize **************************************************
 **
 ** Get the memory size in bytes of an Ensembl Mapper.
 **
@@ -4996,7 +4996,7 @@ AjBool ensMapperAddMapper(EnsPMapper mapper1, EnsPMapper mapper2)
 ** @@
 ******************************************************************************/
 
-ajuint ensMapperGetMemSize(const EnsPMapper mapper)
+ajuint ensMapperGetMemsize(const EnsPMapper mapper)
 {
     void **keyarray1 = NULL;
     void **valarray1 = NULL;
@@ -5031,8 +5031,8 @@ ajuint ensMapperGetMemSize(const EnsPMapper mapper)
         size += ajStrGetRes(mapper->TargetType);
     }
 
-    size += ensCoordsystemGetMemSize(mapper->SourceCoordsystem);
-    size += ensCoordsystemGetMemSize(mapper->TargetCoordsystem);
+    size += ensCoordsystemGetMemsize(mapper->SourceCoordsystem);
+    size += ensCoordsystemGetMemsize(mapper->TargetCoordsystem);
 
     /* Level 0 data (AjOTable). */
 
@@ -5072,7 +5072,7 @@ ajuint ensMapperGetMemSize(const EnsPMapper mapper)
 
                 mp = (EnsPMapperpair) ajListIterGet(iter);
 
-                size += ensMapperpairGetMemSize(mp);
+                size += ensMapperpairGetMemsize(mp);
             }
 
             ajListIterDel(&iter);
@@ -5112,7 +5112,7 @@ ajuint ensMapperGetMemSize(const EnsPMapper mapper)
 **
 ** Trace an Ensembl Mapper.
 **
-** @param [r] mp [const EnsPMapper] Ensembl Mapper
+** @param [r] mapper [const EnsPMapper] Ensembl Mapper
 ** @param [r] level [ajuint] Indentation level
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise

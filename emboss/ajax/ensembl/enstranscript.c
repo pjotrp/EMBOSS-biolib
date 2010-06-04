@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.19 $
+** @version $Revision: 1.20 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -118,6 +118,9 @@ static const char *transcriptSequenceEditCode[] =
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
+
+
+
 
 /* @funcstatic transcriptExonRankNew **********************************
 **
@@ -1302,7 +1305,7 @@ const AjPList ensTranscriptGetSupportingfeatures(EnsPTranscript transcript)
 ** with the Transcript Adaptor.
 **
 ** @cc Bio::EnsEMBL::Transcript::translation
-** @param [u] transcript [const EnsPTranscript] Ensembl Transcript
+** @param [u] transcript [EnsPTranscript] Ensembl Transcript
 **
 ** @return [EnsPTranslation] Ensembl Translations or NULL
 ** @@
@@ -1809,7 +1812,7 @@ ajuint ensTranscriptGetLength(EnsPTranscript transcript)
 
 
 
-/* @func ensTranscriptGetMemSize **********************************************
+/* @func ensTranscriptGetMemsize **********************************************
 **
 ** Get the memory size in bytes of an Ensembl Transcript.
 **
@@ -1819,7 +1822,7 @@ ajuint ensTranscriptGetLength(EnsPTranscript transcript)
 ** @@
 ******************************************************************************/
 
-ajuint ensTranscriptGetMemSize(const EnsPTranscript transcript)
+ajuint ensTranscriptGetMemsize(const EnsPTranscript transcript)
 {
     ajuint size = 0;
 
@@ -1838,9 +1841,9 @@ ajuint ensTranscriptGetMemSize(const EnsPTranscript transcript)
 
     size += (ajuint) sizeof (EnsOTranscript);
 
-    size += ensFeatureGetMemSize(transcript->Feature);
+    size += ensFeatureGetMemsize(transcript->Feature);
 
-    size += ensDatabaseentryGetMemSize(transcript->DisplayReference);
+    size += ensDatabaseentryGetMemsize(transcript->DisplayReference);
 
     if(transcript->Description)
     {
@@ -1889,7 +1892,7 @@ ajuint ensTranscriptGetMemSize(const EnsPTranscript transcript)
         {
             attribute = (EnsPAttribute) ajListIterGet(iter);
 
-            size += ensAttributeGetMemSize(attribute);
+            size += ensAttributeGetMemsize(attribute);
         }
 
         ajListIterDel(&iter);
@@ -1907,7 +1910,7 @@ ajuint ensTranscriptGetMemSize(const EnsPTranscript transcript)
         {
             dbe = (EnsPDatabaseentry) ajListIterGet(iter);
 
-            size += ensDatabaseentryGetMemSize(dbe);
+            size += ensDatabaseentryGetMemsize(dbe);
         }
 
         ajListIterDel(&iter);
@@ -1925,7 +1928,7 @@ ajuint ensTranscriptGetMemSize(const EnsPTranscript transcript)
         {
             exon = (EnsPExon) ajListIterGet(iter);
 
-            size += ensExonGetMemSize(exon);
+            size += ensExonGetMemsize(exon);
         }
 
         ajListIterDel(&iter);
@@ -1943,15 +1946,15 @@ ajuint ensTranscriptGetMemSize(const EnsPTranscript transcript)
         {
             baf = (EnsPBasealignfeature) ajListIterGet(iter);
 
-            size += ensBasealignfeatureGetMemSize(baf);
+            size += ensBasealignfeatureGetMemsize(baf);
         }
 
         ajListIterDel(&iter);
     }
 
-    size += ensTranslationGetMemSize(transcript->Translation);
+    size += ensTranslationGetMemsize(transcript->Translation);
 
-    size += ensMapperGetMemSize(transcript->ExonCoordMapper);
+    size += ensMapperGetMemsize(transcript->ExonCoordMapper);
 
     return size;
 }
@@ -3107,7 +3110,7 @@ EnsETranscriptStatus ensTranscriptStatusFromStr(const AjPStr status)
 ** @@
 ******************************************************************************/
 
-const char *ensTranscriptStatusToChar(EnsETranscriptStatus status)
+const char* ensTranscriptStatusToChar(EnsETranscriptStatus status)
 {
     register EnsETranscriptStatus i = ensETranscriptStatusNULL;
 
@@ -4497,16 +4500,6 @@ AjBool ensTranscriptSortByStartDescending(AjPList transcripts)
 
 
 
-/* @datasection [EnsPTranscriptadaptor] Transcript Adaptor ********************
-**
-** Functions for manipulating Ensembl Transcript Adaptor objects
-**
-** @cc Bio::EnsEMBL::DBSQL::TranscriptAdaptor CVS Revision: 1.101
-**
-** @nam2rule Transcriptadaptor
-**
-******************************************************************************/
-
 static const char *transcriptadaptorTables[] =
 {
     "transcript",
@@ -5051,13 +5044,13 @@ static AjBool transcriptadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** Wrapper function to reference an Ensembl Transcript
 ** from an Ensembl Cache.
 **
-** @param [r] value [void *] Ensembl Transcript
+** @param [r] value [void*] Ensembl Transcript
 **
-** @return [void *] Ensembl Transcript or NULL
+** @return [void*] Ensembl Transcript or NULL
 ** @@
 ******************************************************************************/
 
-static void *transcriptadaptorCacheReference(void *value)
+static void* transcriptadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -5108,7 +5101,7 @@ static ajuint transcriptadaptorCacheSize(const void *value)
     if(!value)
         return 0;
 
-    return ensTranscriptGetMemSize((const EnsPTranscript) value);
+    return ensTranscriptGetMemsize((const EnsPTranscript) value);
 }
 
 
@@ -5132,6 +5125,965 @@ static EnsPFeature transcriptadaptorGetFeature(const void *value)
 
     return ensTranscriptGetFeature((const EnsPTranscript) value);
 }
+
+
+
+
+/* @section mapper ************************************************************
+**
+** Ensembl Transcript Mapper functions.
+**
+** @fdata [EnsPTranscript]
+** @fnote None
+**
+** @cc Bio::EnsEMBL::TranscriptMapper CVS Revision: 1.6
+**
+** @nam3rule Mapper Ensembl Transcript Mapper functions
+**
+** @argrule * transcript [EnsPTranscript] Ensembl Transcript
+**
+** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
+**
+** @fcategory new
+******************************************************************************/
+
+
+
+
+/* @func ensTranscriptMapperInit **********************************************
+**
+** Initialise the Ensembl Transcript Mapper of an Ensembl Transcript.
+**
+** @cc Bio::EnsEMBL::TranscriptMapper::new
+** @cc Bio::EnsEMBL::TranscriptMapper::_load_mapper
+** @param [r] transcript [EnsPTranscript] Ensembl Transcript
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+** Initialises a Transcript Mapper object which can be used to perform
+** various coordinate transformations relating to Transcripts.
+** Since the Transcript Mapper uses the Transcript state at the time of
+** initialisation to perform the conversions, it must be re-initialised if the
+** underlying Transcript is altered.
+** 'Genomic' coordinates are in fact relative to the Slice that the Transcript
+** is annotated on.
+******************************************************************************/
+
+AjBool ensTranscriptMapperInit(EnsPTranscript transcript)
+{
+    ajuint srid = 0;
+
+    /* Current and previous Feature (Exon) Slice coordinates */
+
+    ajuint curftrstart = 0;
+    ajuint curftrend   = 0;
+    ajint curftrstrand = 0;
+
+    ajuint prvftrstart = 0;
+    ajuint prvftrend   = 0;
+
+    /* Current and previous Transcript (cDNA) coordinates */
+
+    ajuint curtrcstart = 0;
+    ajuint curtrcend   = 0;
+
+    ajuint prvtrcstart  = 0;
+    ajuint prvtrcend    = 0;
+    ajuint prvtrclength = 0;
+
+    ajuint editshift = 0;
+
+    AjIList iter        = NULL;
+    const AjPList exons = NULL;
+    AjPList ses         = NULL;
+
+    AjPStr src = NULL;
+    AjPStr trg = NULL;
+
+    EnsPCoordsystem cs = NULL;
+
+    EnsPExon exon = NULL;
+
+    EnsPFeature feature = NULL;
+
+    EnsPSequenceEdit se = NULL;
+
+    EnsPSlice slice = NULL;
+
+    if(ajDebugTest("ensTranscriptMapperInit"))
+        ajDebug("ensTranscriptMapperInit\n"
+                "  transcript %p\n",
+                transcript);
+
+    if(!transcript)
+        return ajFalse;
+
+    if(transcript->ExonCoordMapper)
+        ensMapperClear(transcript->ExonCoordMapper);
+    else
+    {
+        src = ajStrNewC("transcript");
+        trg = ajStrNewC("slice");
+
+        cs = ensSliceGetCoordsystem(ensFeatureGetSlice(transcript->Feature));
+
+        transcript->ExonCoordMapper = ensMapperNew(src, trg, cs, cs);
+
+        ajStrDel(&src);
+        ajStrDel(&trg);
+    }
+
+    /* Get the Sequence Region Identifier for this Transcript. */
+
+    feature = ensTranscriptGetFeature(transcript);
+
+    slice = ensFeatureGetSlice(feature);
+
+    srid = ensSliceGetSeqregionIdentifier(slice);
+
+    /* Get all Exons of this Transcript. */
+
+    exons = ensTranscriptGetExons(transcript);
+
+    if(ajListGetLength(exons))
+    {
+        ajListPeekFirst(exons, (void **) &exon);
+
+        transcript->StartPhase = ensExonGetStartPhase(exon);
+    }
+    else
+        transcript->StartPhase = -1;
+
+    /* Load Mapper Bio::EnsEMBL::TranscriptMapper::_load_mapper */
+
+    ses = ajListNew();
+
+    if(transcript->EnableSequenceEdits)
+    {
+        ensTranscriptFetchAllSequenceEdits(transcript, ses);
+
+        ensSequenceEditSortByStartAscending(ses);
+    }
+
+    iter = ajListIterNewread(exons);
+
+    while(!ajListIterDone(iter))
+    {
+        exon = (EnsPExon) ajListIterGet(iter);
+
+        feature = ensExonGetFeature(exon);
+
+        curftrstart = ensFeatureGetStart(feature);
+
+        curftrend = ensFeatureGetEnd(feature);
+
+        curftrstrand = ensFeatureGetStrand(feature);
+
+        curtrcstart = curtrcend + 1;
+
+        curtrcend = curtrcstart + ensFeatureGetLength(feature) - 1;
+
+        /*
+        ** Add deletions and insertions into Mapper Pairs when Sequence Edits
+        ** are turned on and ignore mismatches, i.e. treat them as matches.
+        */
+
+        if(transcript->EnableSequenceEdits)
+        {
+            while(ajListPeekFirst(ses, (void **) &se) &&
+                  (ensSequenceEditGetStart(se) + editshift <= curtrcend))
+            {
+                if(ensSequenceEditGetLengthDifference(se))
+                {
+                    /*
+                    ** Break the Mapper Pair into two parts, finish the
+                    ** first Mapper Pair just before the Sequence Edit.
+                    */
+
+                    prvtrcend = ensSequenceEditGetStart(se) + editshift - 1;
+
+                    prvtrcstart = curtrcstart;
+
+                    prvtrclength = prvtrcend - prvtrcstart + 1;
+
+                    if(curftrstrand >= 0)
+                    {
+                        prvftrstart = curftrstart;
+
+                        prvftrend = curftrstart + prvtrclength - 1;
+                    }
+                    else
+                    {
+                        prvftrstart = curftrend - prvtrclength + 1;
+
+                        prvftrend = curftrend;
+                    }
+
+                    /*
+                    ** Only create a Mapper Pair if this is not a boundary
+                    ** case. Set the Ensembl Transcript identifier as source
+                    ** object identifier and the Sequence Region identifier
+                    ** of the Slice on which this Transcript is annotated
+                    ** as the target object identifier.
+                    */
+
+                    if(prvtrclength > 0)
+                        ensMapperAddCoordinates(transcript->ExonCoordMapper,
+                                                transcript->Identifier,
+                                                prvtrcstart,
+                                                prvtrcend,
+                                                curftrstrand,
+                                                srid,
+                                                prvftrstart,
+                                                prvftrend);
+
+                    curtrcstart = prvtrcend + 1;
+
+                    if(curftrstrand >= 0)
+                        curftrstart = prvftrend + 1;
+                    else
+                        curftrend = prvftrstart - 1;
+
+                    curtrcend += ensSequenceEditGetLengthDifference(se);
+
+                    if(ensSequenceEditGetLengthDifference(se) >= 0)
+                    {
+                        /*
+                        ** Positive length difference means insertion into
+                        ** Transcript.
+                        ** Shift Transcript coordinates along.
+                        */
+
+                        curtrcstart += ensSequenceEditGetLengthDifference(se);
+                    }
+                    else
+                    {
+                        /*
+                        ** Negative length difference means deletion from
+                        ** Transcript and insertion into Slice.
+                        ** Shift Slice coordinates along.
+                        */
+
+                        if(curftrstrand >= 0)
+                            curftrstart -=
+                                ensSequenceEditGetLengthDifference(se);
+                        else
+                            curftrend +=
+                                ensSequenceEditGetLengthDifference(se);
+                    }
+
+                    editshift += ensSequenceEditGetLengthDifference(se);
+                }
+
+                /* At this stage remove the Sequence Edit from the List. */
+
+                ajListPop(ses, (void **) &se);
+
+                ensSequenceEditDel(&se);
+            }
+        }
+
+        /*
+        ** Set the Transcript identifier as the source object identifier and
+        ** the Sequence Region identifier of the Slice on which this Transcript
+        ** is annotated as the target object identifier.
+        */
+
+        if((curtrcend - curtrcstart + 1) > 0)
+            ensMapperAddCoordinates(transcript->ExonCoordMapper,
+                                    transcript->Identifier,
+                                    curtrcstart,
+                                    curtrcend,
+                                    curftrstrand,
+                                    srid,
+                                    curftrstart,
+                                    curftrend);
+    }
+
+    ajListIterDel(&iter);
+
+    /* Delete any remaining Sequence Edits before deleting the List. */
+
+    while(ajListPop(ses, (void **) &se))
+        ensSequenceEditDel(&se);
+
+    ajListFree(&ses);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensTranscriptMapperTranscriptToSlice *********************************
+**
+** Map Transcript (cDNA) coordinates of an Ensembl Transcript into Slice
+** (genome) coordinates.
+**
+** @cc Bio::EnsEMBL::TranscriptMapper::cdna2genomic
+** @param [r] transcript [EnsPTranscript] Ensembl Transcript
+** @param [r] start [ajuint] Transcript start coordinate
+** @param [r] end [ajuint] Transcript end coordinate
+** @param [u] mrs [AjPList] AJAX List of Ensembl Mapper Results
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensTranscriptMapperTranscriptToSlice(EnsPTranscript transcript,
+                                            ajuint start,
+                                            ajuint end,
+                                            AjPList mrs)
+{
+    AjPStr src = NULL;
+
+    if(!transcript)
+        return ajFalse;
+
+    if(!start)
+    {
+        ajDebug("ensTranscriptMapperTranscriptToSlice "
+                "requires a start coordinate.\n");
+
+        return ajFalse;
+    }
+
+    if(!end)
+    {
+        ajDebug("ensTranscriptMapperTranscriptToSlice "
+                "requires an end coordinate.\n");
+
+        return ajFalse;
+    }
+
+    if(!mrs)
+    {
+        ajDebug("ensTranscriptMapperTranscriptToSlice "
+                "requires an AJAX List of Ensembl Mapper Results.\n");
+
+        return ajFalse;
+    }
+
+    if(!transcript->ExonCoordMapper)
+        ensTranscriptMapperInit(transcript);
+
+    src = ajStrNewC("transcript");
+
+    ensMapperMapCoordinates(transcript->ExonCoordMapper,
+                            transcript->Identifier,
+                            start,
+                            end,
+                            1,
+                            src,
+                            mrs);
+
+    ajStrDel(&src);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensTranscriptMapperSliceToTranscript *********************************
+**
+** Map Slice (genome) coordinates of an Ensembl Transcript into
+** Transcript (cDNA) coordinates.
+**
+** @cc Bio::EnsEMBL::TranscriptMapper::genomic2cdna
+** @param [r] transcript [EnsPTranscript] Ensembl Transcript
+** @param [r] start [ajuint] Slice start coordinate
+** @param [r] end [ajuint] Slice end coordinate
+** @param [r] strand [ajint] Slice strand information
+** @param [u] mrs [AjPList] AJAX List of Ensembl Mapper Results
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+** Converts Slice coordinates to Transcript coordinates. The return value is an
+** AJAX List of Mapper Result coordinates and gaps. Gaps represent intronic
+** or upstream/downstream regions which do not comprise this transcript's
+** cDNA. Mapper Result Coordinate objects represent Slice regions which map
+** to Exons (UTRs included).
+******************************************************************************/
+
+AjBool ensTranscriptMapperSliceToTranscript(EnsPTranscript transcript,
+                                            ajuint start,
+                                            ajuint end,
+                                            ajint strand,
+                                            AjPList mrs)
+{
+    ajuint srid = 0;
+
+    AjPStr src = NULL;
+
+    EnsPSlice slice = NULL;
+
+    if(!transcript)
+        return ajFalse;
+
+    if(!start)
+    {
+        ajDebug("ensTranscriptMapperSliceToTranscript "
+                "requires a start coordinate.\n");
+
+        return ajFalse;
+    }
+
+    if(!end)
+    {
+        ajDebug("ensTranscriptMapperSliceToTranscript "
+                "requires an end coordinate.\n");
+
+        return ajFalse;
+    }
+
+    if(!strand)
+    {
+        ajDebug("ensTranscriptMapperSliceToTranscript "
+                "requires strand information.\n");
+
+        return ajFalse;
+    }
+
+    if(!mrs)
+    {
+        ajDebug("ensTranscriptMapperSliceToTranscript "
+                "requires an AJAX List of Ensembl Mapper Results.\n");
+
+        return ajFalse;
+    }
+
+    if(!transcript->ExonCoordMapper)
+        ensTranscriptMapperInit(transcript);
+
+    slice = ensFeatureGetSlice(transcript->Feature);
+
+    srid = ensSliceGetSeqregionIdentifier(slice);
+
+    src = ajStrNewC("slice");
+
+    ensMapperMapCoordinates(transcript->ExonCoordMapper,
+                            srid,
+                            start,
+                            end,
+                            strand,
+                            src,
+                            mrs);
+
+    ajStrDel(&src);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensTranscriptMapperTranslationToSlice ********************************
+**
+** Map Translation (Peptide) coordinates of an Ensembl Transcript into Slice
+** (genome) coordinates.
+**
+** @cc Bio::EnsEMBL::TranscriptMapper::pep2genomic
+** @param [r] transcript [EnsPTranscript] Ensembl Transcript
+** @param [r] start [ajuint] Transcript start coordinate
+** @param [r] end [ajuint] Transcript end coordinate
+** @param [u] mrs [AjPList] AJAX List of Ensembl Mapper Results
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+** Converts Translation coordinates into Slice coordinates. The Mapper Result
+** Coordinates returned are relative to the same slice that the Transcript
+** used to initialise this Transcript Mapper was on.
+******************************************************************************/
+
+AjBool ensTranscriptMapperTranslationToSlice(EnsPTranscript transcript,
+                                             ajuint start,
+                                             ajuint end,
+                                             AjPList mrs)
+{
+    if(!transcript)
+        return ajFalse;
+
+    if(!start)
+    {
+        ajDebug("ensTranscriptMapperTranslationToSlice "
+                "requires a start coordinate.\n");
+
+        return ajFalse;
+    }
+
+    if(!end)
+    {
+        ajDebug("ensTranscriptMapperTranslationToSlice "
+                "requires an end coordinate.\n");
+
+        return ajFalse;
+    }
+
+    if(!mrs)
+    {
+        ajDebug("ensTranscriptMapperTranslationToSlice "
+                "requires an AJAX List of Ensembl Mapper Results.\n");
+
+        return ajFalse;
+    }
+
+    /* Move start and end into cDNA coordinates. */
+
+    start = 3 * start - 2 + (transcript->TranscriptCodingStart - 1);
+
+    end = 3 * end + (transcript->TranscriptCodingStart - 1);
+
+    return ensTranscriptMapperTranscriptToSlice(transcript, start, end, mrs);
+}
+
+
+
+
+/* @func ensTranscriptMapperSliceToCDS ****************************************
+**
+** Map Translation (Peptide) coordinates of an Ensembl Transcript into coding
+** sequence coordinates.
+**
+** @cc Bio::EnsEMBL::TranscriptMapper::genomic2cds
+** @param [r] transcript [EnsPTranscript] Ensembl Transcript
+** @param [r] start  [ajuint] Transcript start coordinate
+** @param [r] end    [ajuint] Transcript end coordinate
+** @param [r] strand [ajint] Transcript strand
+** @param [u] mrs    [AjPList] AJAX List of Ensembl Mapper Results
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensTranscriptMapperSliceToCDS(EnsPTranscript transcript,
+                                     ajuint start,
+                                     ajuint end,
+                                     ajint strand,
+                                     AjPList mrs)
+{
+    ajuint cdsstart = 0;
+    ajuint cdsend   = 0;
+
+    AjPList result = NULL;
+
+    EnsPMapperresult mr     = NULL;
+    EnsPMapperresult gcmr   = NULL;
+    EnsPMapperresult endgap = NULL;
+
+    if(!transcript)
+        return ajFalse;
+
+    if(!start)
+    {
+        ajDebug("ensTranscriptMapperSliceToCDS "
+                "requires a start coordinate.\n");
+
+        return ajFalse;
+    }
+
+    if(!end)
+    {
+        ajDebug("ensTranscriptMapperSliceToCDS "
+                "requires an end coordinate.\n");
+
+        return ajFalse;
+    }
+
+    if(!strand)
+    {
+        ajDebug("ensTranscriptMapperSliceToCDS "
+                "requires strand information.\n");
+
+        return ajFalse;
+    }
+
+    if(!mrs)
+    {
+        ajDebug("ensTranscriptMapperSliceToCDS "
+                "requires an AJAX List of Ensembl Mapper Results.\n");
+
+        return ajFalse;
+    }
+
+    if(start > (end + 1))
+        ajFatal("ensTranscriptMapperSliceToCDS requires start %u to be "
+                "less than end %u + 1.\n", start, end);
+
+    /*
+    ** For non-cooding Transcripts return a Mapper Result Gap as there is no
+    ** coding sequence.
+    */
+
+    if(!transcript->TranscriptCodingStart)
+    {
+        mr = MENSMAPPERGAPNEW(start, end, 0);
+
+        ajListPushAppend(mrs, (void *) mr);
+
+        return ajTrue;
+    }
+
+    result = ajListNew();
+
+    ensTranscriptMapperSliceToTranscript(transcript,
+                                         start,
+                                         end,
+                                         strand,
+                                         result);
+
+    while(ajListPop(result, (void **) &gcmr))
+    {
+        if(ensMapperresultGetType(gcmr) == ensEMapperresultGap)
+            ajListPushAppend(mrs, (void *) gcmr);
+        else
+        {
+            if((ensMapperresultGetStrand(gcmr) < 0) ||
+               (ensMapperresultGetEnd(gcmr) <
+                (ajint) transcript->TranscriptCodingStart) ||
+               (ensMapperresultGetStart(gcmr) >
+                (ajint) transcript->TranscriptCodingEnd))
+            {
+                /* All gap - does not map to peptide. */
+
+                mr = MENSMAPPERGAPNEW(start, end, 0);
+
+                ajListPushAppend(mrs, (void *) mr);
+            }
+            else
+            {
+                /* We know area is at least partially overlapping CDS. */
+
+                cdsstart = start - transcript->TranscriptCodingStart + 1;
+
+                cdsend = end - transcript->TranscriptCodingStart + 1;
+
+                if(start < transcript->TranscriptCodingStart)
+                {
+                    /* Start coordinate is in the 5' UTR. */
+
+                    mr = MENSMAPPERGAPNEW(
+                        start,
+                        transcript->TranscriptCodingStart - 1,
+                        0);
+
+                    ajListPushAppend(mrs, (void *) mr);
+
+                    /* Start is now relative to start of CDS. */
+
+                    cdsstart = 1;
+                }
+
+                endgap = NULL;
+
+                if(end > transcript->TranscriptCodingEnd)
+                {
+                    /* End coordinate is in the 3' UTR. */
+
+                    endgap = MENSMAPPERGAPNEW(
+                        transcript->TranscriptCodingEnd + 1,
+                        end,
+                        0);
+
+                    /* Adjust end coordinate relative to CDS start. */
+
+                    cdsend = transcript->TranscriptCodingEnd -
+                        transcript->TranscriptCodingStart + 1;
+                }
+
+                /*
+                ** Start and end are now entirely in CDS and relative
+                ** to CDS start.
+                */
+
+                mr = MENSMAPPERCOORDINATENEW(
+                    ensMapperresultGetObjectIdentifier(gcmr),
+                    cdsstart,
+                    cdsend,
+                    ensMapperresultGetStrand(gcmr),
+                    ensMapperresultGetCoordsystem(gcmr),
+                    0);
+
+                ajListPushAppend(mrs, (void *) mr);
+
+                if(endgap)
+                    ajListPushAppend(mrs, (void *) endgap);
+            }
+
+            ensMapperresultDel(&gcmr);
+        }
+    }
+
+    ajListFree(&result);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensTranscriptMapperSliceToTranslation ********************************
+**
+** Map Slice (genome) coordinates of an Ensembl Transcript into
+** Translation (peptide) coordinates.
+**
+** @cc Bio::EnsEMBL::TranscriptMapper::genomic2pep
+** @param [r] transcript [EnsPTranscript] Ensembl Transcript
+** @param [r] start [ajuint] Slice start coordinate
+** @param [r] end [ajuint] Slice end coordinate
+** @param [r] strand [ajint] Slice strand information
+** @param [u] mrs [AjPList] AJAX List of Ensembl Mapper Results
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensTranscriptMapperSliceToTranslation(EnsPTranscript transcript,
+                                             ajuint start,
+                                             ajuint end,
+                                             ajint strand,
+                                             AjPList mrs)
+{
+    ajuint pepstart = 0;
+    ajuint pepend   = 0;
+    ajuint shift    = 0;
+
+    AjPList result = NULL;
+
+    EnsPMapperresult mr   = NULL;
+    EnsPMapperresult gcmr = NULL;
+
+    if(!transcript)
+        return ajFalse;
+
+    if(!start)
+    {
+        ajDebug("ensTranscriptMapperSliceToTranslation "
+                "requires a start coordinate.\n");
+
+        return ajFalse;
+    }
+
+    if(!end)
+    {
+        ajDebug("ensTranscriptMapperSliceToTranslation "
+                "requires an end coordinate.\n");
+
+        return ajFalse;
+    }
+
+    if(!strand)
+    {
+        ajDebug("ensTranscriptMapperSliceToTranslation "
+                "requires strand information.\n");
+
+        return ajFalse;
+    }
+
+    if(!mrs)
+    {
+        ajDebug("ensTranscriptMapperSliceToTranslation "
+                "requires an AJAX List of Ensembl Mapper Results.\n");
+
+        return ajFalse;
+    }
+
+    result = ajListNew();
+
+    ensTranscriptMapperSliceToCDS(transcript, start, end, strand, result);
+
+    /* Take possible N padding at beginning of CDS. */
+
+    shift = (transcript->StartPhase > 0) ? transcript->StartPhase : 0;
+
+    while(ajListPop(result, (void **) &gcmr))
+    {
+        if(ensMapperresultGetType(gcmr) == ensEMapperresultGap)
+            ajListPushAppend(mrs, (void *) gcmr);
+        else
+        {
+            /*
+            ** Start and end coordinates are now entirely in CDS and
+            ** relative to CDS start.
+            ** Convert to peptide coordinates.
+            */
+
+            pepstart = (ajuint)
+                ((ensMapperresultGetStart(gcmr) + shift + 2) / 3);
+
+            pepend = (ajuint) ((ensMapperresultGetEnd(gcmr) + shift + 2) / 3);
+
+            mr = MENSMAPPERCOORDINATENEW(
+                ensMapperresultGetObjectIdentifier(gcmr),
+                pepstart,
+                pepend,
+                ensMapperresultGetStrand(gcmr),
+                ensMapperresultGetCoordsystem(gcmr),
+                0);
+
+            ajListPushAppend(mrs, (void *) mr);
+
+            ensMapperresultDel(&gcmr);
+        }
+
+    }
+
+    ajListFree(&result);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensSupportingfeatureadaptorFetchAllByTranscript **********************
+**
+** Fetch Ensembl Supporting Features via an Ensembl Transcript.
+**
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+** @param [r] transcript [EnsPTranscript] Ensembl Transcript
+** @param [u] bafs [AjPList] AJAX List of Ensembl Base Align Features
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensSupportingfeatureadaptorFetchAllByTranscript(
+    EnsPDatabaseadaptor dba,
+    EnsPTranscript transcript,
+    AjPList bafs)
+{
+    ajuint identifier = 0;
+
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
+
+    AjPStr statement = NULL;
+    AjPStr type      = NULL;
+
+    EnsPFeature tfeature = NULL;
+    EnsPFeature nfeature = NULL;
+    EnsPFeature ofeature = NULL;
+
+    EnsPSlice tslice = NULL;
+
+    EnsPBasealignfeature baf = NULL;
+
+    EnsPDNAAlignFeatureadaptor dafa = NULL;
+
+    EnsPProteinalignfeatureadaptor pafa = NULL;
+
+    if(!dba)
+        return ajFalse;
+
+    if(!transcript)
+        return ajFalse;
+
+    if(!bafs)
+        return ajFalse;
+
+    if(!ensTranscriptGetIdentifier(transcript))
+    {
+        ajDebug("ensSupportingfeatureadaptorFetchAllByTranscript cannot get "
+                "Supporting Features for a Transcript without an "
+                "identifier.\n");
+
+        return ajFalse;
+    }
+
+    tfeature = ensTranscriptGetFeature(transcript);
+
+    tslice = ensFeatureGetSlice(tfeature);
+
+    dafa = ensRegistryGetDNAAlignFeatureadaptor(dba);
+
+    pafa = ensRegistryGetProteinalignfeatureadaptor(dba);
+
+    statement = ajFmtStr(
+        "SELECT "
+        "transcript_supporting_feature.feature_type, "
+        "transcript_supporting_feature.feature_id "
+        "FROM "
+        "transcript_supporting_feature "
+        "WHERE "
+        "transcript_supporting_feature.transcript_id = %u",
+        ensTranscriptGetIdentifier(transcript));
+
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
+
+    sqli = ajSqlrowiterNew(sqls);
+
+    while(!ajSqlrowiterDone(sqli))
+    {
+        type = ajStrNew();
+        identifier = 0;
+
+        sqlr = ajSqlrowiterGet(sqli);
+
+        ajSqlcolumnToStr(sqlr, &type);
+        ajSqlcolumnToUint(sqlr, &identifier);
+
+        if(ajStrMatchC(type, "dna_align_feature"))
+        {
+            ensDNAAlignFeatureadaptorFetchByIdentifier(dafa,
+                                                       identifier,
+                                                       &baf);
+        }
+        else if(ajStrMatchC(type, "protein_align_feature"))
+        {
+            ensProteinalignfeatureadaptorFetchByIdentifier(pafa,
+                                                           identifier,
+                                                           &baf);
+        }
+        else
+            ajWarn("ensSupportingfeatureadaptorFetchAllByTranscript got "
+                   "unexpected value in "
+                   "transcript_supporting_feature.feature_type '%S'.\n", type);
+
+        if(baf)
+        {
+            ofeature = ensFeaturepairGetSourceFeature(baf->Featurepair);
+
+            nfeature = ensFeatureTransfer(ofeature, tslice);
+
+            ensFeaturepairSetSourceFeature(baf->Featurepair, nfeature);
+
+            ensFeatureDel(&nfeature);
+
+            ajListPushAppend(bafs, (void *) baf);
+        }
+        else
+        {
+            ajDebug("ensSupportingfeatureadaptorFetchAllByTranscript could "
+                    "not retrieve Supporting feature of type '%S' and "
+                    "identifier %u from database.\n", type, identifier);
+        }
+
+        ajStrDel(&type);
+    }
+
+    ajSqlrowiterDel(&sqli);
+
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
+
+    ajStrDel(&statement);
+
+    return ajTrue;
+}
+
+
+
+
+/* @datasection [EnsPTranscriptadaptor] Transcript Adaptor ********************
+**
+** Functions for manipulating Ensembl Transcript Adaptor objects
+**
+** @cc Bio::EnsEMBL::DBSQL::TranscriptAdaptor CVS Revision: 1.101
+**
+** @nam2rule Transcriptadaptor
+**
+******************************************************************************/
 
 
 
@@ -5320,7 +6272,7 @@ EnsPDatabaseadaptor ensTranscriptadaptorGetDatabaseadaptor(
 **
 ** Fetch all Ensembl Transcripts.
 **
-** @param [r] tca [const EnsPTranscriptadaptor] Ensembl Transcript Adaptor
+** @param [u] tca [EnsPTranscriptadaptor] Ensembl Transcript Adaptor
 ** @param [u] transcripts [AjPList] AJAX List of Ensembl Transcripts
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -6530,7 +7482,7 @@ AjBool ensTranscriptadaptorFetchAllIdentifiers(
 ** deleting the AJAX List.
 **
 ** @cc Bio::EnsEMBL::DBSQL::TranscriptAdaptor::list_stable_ids
-** @param [u] tca [EnsPTranscriptadaptor] Ensembl Transcript Adaptor
+** @param [r] tca [const EnsPTranscriptadaptor] Ensembl Transcript Adaptor
 ** @param [u] identifiers [AjPList] AJAX List of AJAX Strings
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -6565,950 +7517,4 @@ AjBool ensTranscriptadaptorFetchAllStableIdentifiers(
     ajStrDel(&primary);
 
     return value;
-}
-
-
-
-
-/* @section mapper ************************************************************
-**
-** Ensembl Transcript Mapper functions.
-**
-** @fdata [EnsPTranscript]
-** @fnote None
-**
-** @cc Bio::EnsEMBL::TranscriptMapper CVS Revision: 1.6
-**
-** @nam3rule Mapper Ensembl Transcript Mapper functions
-**
-** @argrule * transcript [EnsPTranscript] Ensembl Transcript
-**
-** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
-**
-** @fcategory new
-******************************************************************************/
-
-
-
-
-/* @func ensTranscriptMapperInit **********************************************
-**
-** Initialise the Ensembl Transcript Mapper of an Ensembl Transcript.
-**
-** @cc Bio::EnsEMBL::TranscriptMapper::new
-** @cc Bio::EnsEMBL::TranscriptMapper::_load_mapper
-** @param [r] transcript [EnsPTranscript] Ensembl Transcript
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-** Initialises a Transcript Mapper object which can be used to perform
-** various coordinate transformations relating to Transcripts.
-** Since the Transcript Mapper uses the Transcript state at the time of
-** initialisation to perform the conversions, it must be re-initialised if the
-** underlying Transcript is altered.
-** 'Genomic' coordinates are in fact relative to the Slice that the Transcript
-** is annotated on.
-******************************************************************************/
-
-AjBool ensTranscriptMapperInit(EnsPTranscript transcript)
-{
-    ajuint srid = 0;
-
-    /* Current and previous Feature (Exon) Slice coordinates */
-
-    ajuint curftrstart = 0;
-    ajuint curftrend   = 0;
-    ajint curftrstrand = 0;
-
-    ajuint prvftrstart = 0;
-    ajuint prvftrend   = 0;
-
-    /* Current and previous Transcript (cDNA) coordinates */
-
-    ajuint curtrcstart = 0;
-    ajuint curtrcend   = 0;
-
-    ajuint prvtrcstart  = 0;
-    ajuint prvtrcend    = 0;
-    ajuint prvtrclength = 0;
-
-    ajuint editshift = 0;
-
-    AjIList iter        = NULL;
-    const AjPList exons = NULL;
-    AjPList ses         = NULL;
-
-    AjPStr src = NULL;
-    AjPStr trg = NULL;
-
-    EnsPCoordsystem cs = NULL;
-
-    EnsPExon exon = NULL;
-
-    EnsPFeature feature = NULL;
-
-    EnsPSequenceEdit se = NULL;
-
-    EnsPSlice slice = NULL;
-
-    if(ajDebugTest("ensTranscriptMapperInit"))
-        ajDebug("ensTranscriptMapperInit\n"
-                "  transcript %p\n",
-                transcript);
-
-    if(!transcript)
-        return ajFalse;
-
-    if(transcript->ExonCoordMapper)
-        ensMapperClear(transcript->ExonCoordMapper);
-    else
-    {
-        src = ajStrNewC("transcript");
-        trg = ajStrNewC("slice");
-
-        cs = ensSliceGetCoordsystem(ensFeatureGetSlice(transcript->Feature));
-
-        transcript->ExonCoordMapper = ensMapperNew(src, trg, cs, cs);
-
-        ajStrDel(&src);
-        ajStrDel(&trg);
-    }
-
-    /* Get the Sequence Region Identifier for this Transcript. */
-
-    feature = ensTranscriptGetFeature(transcript);
-
-    slice = ensFeatureGetSlice(feature);
-
-    srid = ensSliceGetSeqregionIdentifier(slice);
-
-    /* Get all Exons of this Transcript. */
-
-    exons = ensTranscriptGetExons(transcript);
-
-    if(ajListGetLength(exons))
-    {
-        ajListPeekFirst(exons, (void **) &exon);
-
-        transcript->StartPhase = ensExonGetStartPhase(exon);
-    }
-    else
-        transcript->StartPhase = -1;
-
-    /* Load Mapper Bio::EnsEMBL::TranscriptMapper::_load_mapper */
-
-    ses = ajListNew();
-
-    if(transcript->EnableSequenceEdits)
-    {
-        ensTranscriptFetchAllSequenceEdits(transcript, ses);
-
-        ensSequenceEditSortByStartAscending(ses);
-    }
-
-    iter = ajListIterNewread(exons);
-
-    while(!ajListIterDone(iter))
-    {
-        exon = (EnsPExon) ajListIterGet(iter);
-
-        feature = ensExonGetFeature(exon);
-
-        curftrstart = ensFeatureGetStart(feature);
-
-        curftrend = ensFeatureGetEnd(feature);
-
-        curftrstrand = ensFeatureGetStrand(feature);
-
-        curtrcstart = curtrcend + 1;
-
-        curtrcend = curtrcstart + ensFeatureGetLength(feature) - 1;
-
-        /*
-        ** Add deletions and insertions into Mapper Pairs when Sequence Edits
-        ** are turned on and ignore mismatches, i.e. treat them as matches.
-        */
-
-        if(transcript->EnableSequenceEdits)
-        {
-            while(ajListPeekFirst(ses, (void **) &se) &&
-                  (ensSequenceEditGetStart(se) + editshift <= curtrcend))
-            {
-                if(ensSequenceEditGetLengthDifference(se))
-                {
-                    /*
-                    ** Break the Mapper Pair into two parts, finish the
-                    ** first Mapper Pair just before the Sequence Edit.
-                    */
-
-                    prvtrcend = ensSequenceEditGetStart(se) + editshift - 1;
-
-                    prvtrcstart = curtrcstart;
-
-                    prvtrclength = prvtrcend - prvtrcstart + 1;
-
-                    if(curftrstrand >= 0)
-                    {
-                        prvftrstart = curftrstart;
-
-                        prvftrend = curftrstart + prvtrclength - 1;
-                    }
-                    else
-                    {
-                        prvftrstart = curftrend - prvtrclength + 1;
-
-                        prvftrend = curftrend;
-                    }
-
-                    /*
-                    ** Only create a Mapper Pair if this is not a boundary
-                    ** case. Set the Ensembl Transcript identifier as source
-                    ** object identifier and the Sequence Region identifier
-                    ** of the Slice on which this Transcript is annotated
-                    ** as the target object identifier.
-                    */
-
-                    if(prvtrclength > 0)
-                        ensMapperAddCoordinates(transcript->ExonCoordMapper,
-                                                transcript->Identifier,
-                                                prvtrcstart,
-                                                prvtrcend,
-                                                curftrstrand,
-                                                srid,
-                                                prvftrstart,
-                                                prvftrend);
-
-                    curtrcstart = prvtrcend + 1;
-
-                    if(curftrstrand >= 0)
-                        curftrstart = prvftrend + 1;
-                    else
-                        curftrend = prvftrstart - 1;
-
-                    curtrcend += ensSequenceEditGetLengthDifference(se);
-
-                    if(ensSequenceEditGetLengthDifference(se) >= 0)
-                    {
-                        /*
-                        ** Positive length difference means insertion into
-                        ** Transcript.
-                        ** Shift Transcript coordinates along.
-                        */
-
-                        curtrcstart += ensSequenceEditGetLengthDifference(se);
-                    }
-                    else
-                    {
-                        /*
-                        ** Negative length difference means deletion from
-                        ** Transcript and insertion into Slice.
-                        ** Shift Slice coordinates along.
-                        */
-
-                        if(curftrstrand >= 0)
-                            curftrstart -=
-                                ensSequenceEditGetLengthDifference(se);
-                        else
-                            curftrend +=
-                                ensSequenceEditGetLengthDifference(se);
-                    }
-
-                    editshift += ensSequenceEditGetLengthDifference(se);
-                }
-
-                /* At this stage remove the Sequence Edit from the List. */
-
-                ajListPop(ses, (void **) &se);
-
-                ensSequenceEditDel(&se);
-            }
-        }
-
-        /*
-        ** Set the Transcript identifier as the source object identifier and
-        ** the Sequence Region identifier of the Slice on which this Transcript
-        ** is annotated as the target object identifier.
-        */
-
-        if((curtrcend - curtrcstart + 1) > 0)
-            ensMapperAddCoordinates(transcript->ExonCoordMapper,
-                                    transcript->Identifier,
-                                    curtrcstart,
-                                    curtrcend,
-                                    curftrstrand,
-                                    srid,
-                                    curftrstart,
-                                    curftrend);
-    }
-
-    ajListIterDel(&iter);
-
-    /* Delete any remaining Sequence Edits before deleting the List. */
-
-    while(ajListPop(ses, (void **) &se))
-        ensSequenceEditDel(&se);
-
-    ajListFree(&ses);
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ensTranscriptMapperTranscriptToSlice *********************************
-**
-** Map Transcript (cDNA) coordinates of an Ensembl Transcript into Slice
-** (genome) coordinates.
-**
-** @cc Bio::EnsEMBL::TranscriptMapper::cdna2genomic
-** @param [r] transcript [EnsPTranscript] Ensembl Transcript
-** @param [r] start [ajuint] Transcript start coordinate
-** @param [r] end [ajuint] Transcript end coordinate
-** @param [u] mrs [AjPList] AJAX List of Ensembl Mapper Results
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ensTranscriptMapperTranscriptToSlice(EnsPTranscript transcript,
-                                            ajuint start,
-                                            ajuint end,
-                                            AjPList mrs)
-{
-    AjPStr src = NULL;
-
-    if(!transcript)
-        return ajFalse;
-
-    if(!start)
-    {
-        ajDebug("ensTranscriptMapperTranscriptToSlice "
-                "requires a start coordinate.\n");
-
-        return ajFalse;
-    }
-
-    if(!end)
-    {
-        ajDebug("ensTranscriptMapperTranscriptToSlice "
-                "requires an end coordinate.\n");
-
-        return ajFalse;
-    }
-
-    if(!mrs)
-    {
-        ajDebug("ensTranscriptMapperTranscriptToSlice "
-                "requires an AJAX List of Ensembl Mapper Results.\n");
-
-        return ajFalse;
-    }
-
-    if(!transcript->ExonCoordMapper)
-        ensTranscriptMapperInit(transcript);
-
-    src = ajStrNewC("transcript");
-
-    ensMapperMapCoordinates(transcript->ExonCoordMapper,
-                            transcript->Identifier,
-                            start,
-                            end,
-                            1,
-                            src,
-                            mrs);
-
-    ajStrDel(&src);
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ensTranscriptMapperSliceToTranscript *********************************
-**
-** Map Slice (genome) coordinates of an Ensembl Transcript into
-** Transcript (cDNA) coordinates.
-**
-** @cc Bio::EnsEMBL::TranscriptMapper::genomic2cdna
-** @param [r] transcript [EnsPTranscript] Ensembl Transcript
-** @param [r] start [ajuint] Slice start coordinate
-** @param [r] end [ajuint] Slice end coordinate
-** @param [r] strand [ajint] Slice strand information
-** @param [u] mrs [AjPList] AJAX List of Ensembl Mapper Results
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-** Converts Slice coordinates to Transcript coordinates. The return value is an
-** AJAX List of Mapper Result coordinates and gaps. Gaps represent intronic
-** or upstream/downstream regions which do not comprise this transcript's
-** cDNA. Mapper Result Coordinate objects represent Slice regions which map
-** to Exons (UTRs included).
-******************************************************************************/
-
-AjBool ensTranscriptMapperSliceToTranscript(EnsPTranscript transcript,
-                                            ajuint start,
-                                            ajuint end,
-                                            ajint strand,
-                                            AjPList mrs)
-{
-    ajuint srid = 0;
-
-    AjPStr src = NULL;
-
-    EnsPSlice slice = NULL;
-
-    if(!transcript)
-        return ajFalse;
-
-    if(!start)
-    {
-        ajDebug("ensTranscriptMapperSliceToTranscript "
-                "requires a start coordinate.\n");
-
-        return ajFalse;
-    }
-
-    if(!end)
-    {
-        ajDebug("ensTranscriptMapperSliceToTranscript "
-                "requires an end coordinate.\n");
-
-        return ajFalse;
-    }
-
-    if(!strand)
-    {
-        ajDebug("ensTranscriptMapperSliceToTranscript "
-                "requires strand information.\n");
-
-        return ajFalse;
-    }
-
-    if(!mrs)
-    {
-        ajDebug("ensTranscriptMapperSliceToTranscript "
-                "requires an AJAX List of Ensembl Mapper Results.\n");
-
-        return ajFalse;
-    }
-
-    if(!transcript->ExonCoordMapper)
-        ensTranscriptMapperInit(transcript);
-
-    slice = ensFeatureGetSlice(transcript->Feature);
-
-    srid = ensSliceGetSeqregionIdentifier(slice);
-
-    src = ajStrNewC("slice");
-
-    ensMapperMapCoordinates(transcript->ExonCoordMapper,
-                            srid,
-                            start,
-                            end,
-                            strand,
-                            src,
-                            mrs);
-
-    ajStrDel(&src);
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ensTranscriptMapperTranslationToSlice ********************************
-**
-** Map Translation (Peptide) coordinates of an Ensembl Transcript into Slice
-** (genome) coordinates.
-**
-** @cc Bio::EnsEMBL::TranscriptMapper::pep2genomic
-** @param [r] transcript [EnsPTranscript] Ensembl Transcript
-** @param [r] start [ajuint] Transcript start coordinate
-** @param [r] end [ajuint] Transcript end coordinate
-** @param [u] mrs [AjPList] AJAX List of Ensembl Mapper Results
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-** Converts Translation coordinates into Slice coordinates. The Mapper Result
-** Coordinates returned are relative to the same slice that the Transcript
-** used to initialise this Transcript Mapper was on.
-******************************************************************************/
-
-AjBool ensTranscriptMapperTranslationToSlice(EnsPTranscript transcript,
-                                             ajuint start,
-                                             ajuint end,
-                                             AjPList mrs)
-{
-    if(!transcript)
-        return ajFalse;
-
-    if(!start)
-    {
-        ajDebug("ensTranscriptMapperTranslationToSlice "
-                "requires a start coordinate.\n");
-
-        return ajFalse;
-    }
-
-    if(!end)
-    {
-        ajDebug("ensTranscriptMapperTranslationToSlice "
-                "requires an end coordinate.\n");
-
-        return ajFalse;
-    }
-
-    if(!mrs)
-    {
-        ajDebug("ensTranscriptMapperTranslationToSlice "
-                "requires an AJAX List of Ensembl Mapper Results.\n");
-
-        return ajFalse;
-    }
-
-    /* Move start and end into cDNA coordinates. */
-
-    start = 3 * start - 2 + (transcript->TranscriptCodingStart - 1);
-
-    end = 3 * end + (transcript->TranscriptCodingStart - 1);
-
-    return ensTranscriptMapperTranscriptToSlice(transcript, start, end, mrs);
-}
-
-
-
-
-/* @func ensTranscriptMapperSliceToCDS ****************************************
-**
-** Map Translation (Peptide) coordinates of an Ensembl Transcript into coding
-** sequence coordinates.
-**
-** @cc Bio::EnsEMBL::TranscriptMapper::genomic2cds
-** @param [r] transcript [EnsPTranscript] Ensembl Transcript
-** @param [r] start  [ajuint] Transcript start coordinate
-** @param [r] end    [ajuint] Transcript end coordinate
-** @param [r] strand [ajint] Transcript strand
-** @param [u] mrs    [AjPList] AJAX List of Ensembl Mapper Results
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ensTranscriptMapperSliceToCDS(EnsPTranscript transcript,
-                                     ajuint start,
-                                     ajuint end,
-                                     ajint strand,
-                                     AjPList mrs)
-{
-    ajuint cdsstart = 0;
-    ajuint cdsend   = 0;
-
-    AjPList result = NULL;
-
-    EnsPMapperresult mr     = NULL;
-    EnsPMapperresult gcmr   = NULL;
-    EnsPMapperresult endgap = NULL;
-
-    if(!transcript)
-        return ajFalse;
-
-    if(!start)
-    {
-        ajDebug("ensTranscriptMapperSliceToCDS "
-                "requires a start coordinate.\n");
-
-        return ajFalse;
-    }
-
-    if(!end)
-    {
-        ajDebug("ensTranscriptMapperSliceToCDS "
-                "requires an end coordinate.\n");
-
-        return ajFalse;
-    }
-
-    if(!strand)
-    {
-        ajDebug("ensTranscriptMapperSliceToCDS "
-                "requires strand information.\n");
-
-        return ajFalse;
-    }
-
-    if(!mrs)
-    {
-        ajDebug("ensTranscriptMapperSliceToCDS "
-                "requires an AJAX List of Ensembl Mapper Results.\n");
-
-        return ajFalse;
-    }
-
-    if(start > (end + 1))
-        ajFatal("ensTranscriptMapperSliceToCDS requires start %u to be "
-                "less than end %u + 1.\n", start, end);
-
-    /*
-    ** For non-cooding Transcripts return a Mapper Result Gap as there is no
-    ** coding sequence.
-    */
-
-    if(!transcript->TranscriptCodingStart)
-    {
-        mr = MENSMAPPERGAPNEW(start, end, 0);
-
-        ajListPushAppend(mrs, (void *) mr);
-
-        return ajTrue;
-    }
-
-    result = ajListNew();
-
-    ensTranscriptMapperSliceToTranscript(transcript,
-                                         start,
-                                         end,
-                                         strand,
-                                         result);
-
-    while(ajListPop(result, (void **) &gcmr))
-    {
-        if(ensMapperresultGetType(gcmr) == ensEMapperresultGap)
-            ajListPushAppend(mrs, (void *) gcmr);
-        else
-        {
-            if((ensMapperresultGetStrand(gcmr) < 0) ||
-               (ensMapperresultGetEnd(gcmr) <
-                (ajint) transcript->TranscriptCodingStart) ||
-               (ensMapperresultGetStart(gcmr) >
-                (ajint) transcript->TranscriptCodingEnd))
-            {
-                /* All gap - does not map to peptide. */
-
-                mr = MENSMAPPERGAPNEW(start, end, 0);
-
-                ajListPushAppend(mrs, (void *) mr);
-            }
-            else
-            {
-                /* We know area is at least partially overlapping CDS. */
-
-                cdsstart = start - transcript->TranscriptCodingStart + 1;
-
-                cdsend = end - transcript->TranscriptCodingStart + 1;
-
-                if(start < transcript->TranscriptCodingStart)
-                {
-                    /* Start coordinate is in the 5' UTR. */
-
-                    mr = MENSMAPPERGAPNEW(
-                        start,
-                        transcript->TranscriptCodingStart - 1,
-                        0);
-
-                    ajListPushAppend(mrs, (void *) mr);
-
-                    /* Start is now relative to start of CDS. */
-
-                    cdsstart = 1;
-                }
-
-                endgap = NULL;
-
-                if(end > transcript->TranscriptCodingEnd)
-                {
-                    /* End coordinate is in the 3' UTR. */
-
-                    endgap = MENSMAPPERGAPNEW(
-                        transcript->TranscriptCodingEnd + 1,
-                        end,
-                        0);
-
-                    /* Adjust end coordinate relative to CDS start. */
-
-                    cdsend = transcript->TranscriptCodingEnd -
-                        transcript->TranscriptCodingStart + 1;
-                }
-
-                /*
-                ** Start and end are now entirely in CDS and relative
-                ** to CDS start.
-                */
-
-                mr = MENSMAPPERCOORDINATENEW(
-                    ensMapperresultGetObjectIdentifier(gcmr),
-                    cdsstart,
-                    cdsend,
-                    ensMapperresultGetStrand(gcmr),
-                    ensMapperresultGetCoordsystem(gcmr),
-                    0);
-
-                ajListPushAppend(mrs, (void *) mr);
-
-                if(endgap)
-                    ajListPushAppend(mrs, (void *) endgap);
-            }
-
-            ensMapperresultDel(&gcmr);
-        }
-    }
-
-    ajListFree(&result);
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ensTranscriptMapperSliceToTranslation ********************************
-**
-** Map Slice (genome) coordinates of an Ensembl Transcript into
-** Translation (peptide) coordinates.
-**
-** @cc Bio::EnsEMBL::TranscriptMapper::genomic2pep
-** @param [r] transcript [EnsPTranscript] Ensembl Transcript
-** @param [r] start [ajuint] Slice start coordinate
-** @param [r] end [ajuint] Slice end coordinate
-** @param [r] strand [ajint] Slice strand information
-** @param [u] mrs [AjPList] AJAX List of Ensembl Mapper Results
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ensTranscriptMapperSliceToTranslation(EnsPTranscript transcript,
-                                             ajuint start,
-                                             ajuint end,
-                                             ajint strand,
-                                             AjPList mrs)
-{
-    ajuint pepstart = 0;
-    ajuint pepend   = 0;
-    ajuint shift    = 0;
-
-    AjPList result = NULL;
-
-    EnsPMapperresult mr   = NULL;
-    EnsPMapperresult gcmr = NULL;
-
-    if(!transcript)
-        return ajFalse;
-
-    if(!start)
-    {
-        ajDebug("ensTranscriptMapperSliceToTranslation "
-                "requires a start coordinate.\n");
-
-        return ajFalse;
-    }
-
-    if(!end)
-    {
-        ajDebug("ensTranscriptMapperSliceToTranslation "
-                "requires an end coordinate.\n");
-
-        return ajFalse;
-    }
-
-    if(!strand)
-    {
-        ajDebug("ensTranscriptMapperSliceToTranslation "
-                "requires strand information.\n");
-
-        return ajFalse;
-    }
-
-    if(!mrs)
-    {
-        ajDebug("ensTranscriptMapperSliceToTranslation "
-                "requires an AJAX List of Ensembl Mapper Results.\n");
-
-        return ajFalse;
-    }
-
-    result = ajListNew();
-
-    ensTranscriptMapperSliceToCDS(transcript, start, end, strand, result);
-
-    /* Take possible N padding at beginning of CDS. */
-
-    shift = (transcript->StartPhase > 0) ? transcript->StartPhase : 0;
-
-    while(ajListPop(result, (void **) &gcmr))
-    {
-        if(ensMapperresultGetType(gcmr) == ensEMapperresultGap)
-            ajListPushAppend(mrs, (void *) gcmr);
-        else
-        {
-            /*
-            ** Start and end coordinates are now entirely in CDS and
-            ** relative to CDS start.
-            ** Convert to peptide coordinates.
-            */
-
-            pepstart = (ajuint)
-                ((ensMapperresultGetStart(gcmr) + shift + 2) / 3);
-
-            pepend = (ajuint) ((ensMapperresultGetEnd(gcmr) + shift + 2) / 3);
-
-            mr = MENSMAPPERCOORDINATENEW(
-                ensMapperresultGetObjectIdentifier(gcmr),
-                pepstart,
-                pepend,
-                ensMapperresultGetStrand(gcmr),
-                ensMapperresultGetCoordsystem(gcmr),
-                0);
-
-            ajListPushAppend(mrs, (void *) mr);
-
-            ensMapperresultDel(&gcmr);
-        }
-
-    }
-
-    ajListFree(&result);
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ensSupportingfeatureadaptorFetchAllByTranscript **********************
-**
-** Fetch Ensembl Supporting Features via an Ensembl Transcript.
-**
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @param [r] exon [EnsPTranscript] Ensembl Transcript
-** @param [u] bafs [AjPList] AJAX List of Ensembl Base Align Features
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ensSupportingfeatureadaptorFetchAllByTranscript(
-    EnsPDatabaseadaptor dba,
-    EnsPTranscript transcript,
-    AjPList bafs)
-{
-    ajuint identifier = 0;
-
-    AjPSqlstatement sqls = NULL;
-    AjISqlrow sqli       = NULL;
-    AjPSqlrow sqlr       = NULL;
-
-    AjPStr statement = NULL;
-    AjPStr type      = NULL;
-
-    EnsPFeature tfeature = NULL;
-    EnsPFeature nfeature = NULL;
-    EnsPFeature ofeature = NULL;
-
-    EnsPSlice tslice = NULL;
-
-    EnsPBasealignfeature baf = NULL;
-
-    EnsPDNAAlignFeatureadaptor dafa = NULL;
-
-    EnsPProteinalignfeatureadaptor pafa = NULL;
-
-    if(!dba)
-        return ajFalse;
-
-    if(!transcript)
-        return ajFalse;
-
-    if(!bafs)
-        return ajFalse;
-
-    if(!ensTranscriptGetIdentifier(transcript))
-    {
-        ajDebug("ensSupportingfeatureadaptorFetchAllByTranscript cannot get "
-                "Supporting Features for a Transcript without an "
-                "identifier.\n");
-
-        return ajFalse;
-    }
-
-    tfeature = ensTranscriptGetFeature(transcript);
-
-    tslice = ensFeatureGetSlice(tfeature);
-
-    dafa = ensRegistryGetDNAAlignFeatureadaptor(dba);
-
-    pafa = ensRegistryGetProteinalignfeatureadaptor(dba);
-
-    statement = ajFmtStr(
-        "SELECT "
-        "transcript_supporting_feature.feature_type, "
-        "transcript_supporting_feature.feature_id "
-        "FROM "
-        "transcript_supporting_feature "
-        "WHERE "
-        "transcript_supporting_feature.transcript_id = %u",
-        ensTranscriptGetIdentifier(transcript));
-
-    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
-
-    sqli = ajSqlrowiterNew(sqls);
-
-    while(!ajSqlrowiterDone(sqli))
-    {
-        type = ajStrNew();
-        identifier = 0;
-
-        sqlr = ajSqlrowiterGet(sqli);
-
-        ajSqlcolumnToStr(sqlr, &type);
-        ajSqlcolumnToUint(sqlr, &identifier);
-
-        if(ajStrMatchC(type, "dna_align_feature"))
-        {
-            ensDNAAlignFeatureadaptorFetchByIdentifier(dafa,
-                                                       identifier,
-                                                       &baf);
-        }
-        else if(ajStrMatchC(type, "protein_align_feature"))
-        {
-            ensProteinalignfeatureadaptorFetchByIdentifier(pafa,
-                                                           identifier,
-                                                           &baf);
-        }
-        else
-            ajWarn("ensSupportingfeatureadaptorFetchAllByTranscript got "
-                   "unexpected value in "
-                   "transcript_supporting_feature.feature_type '%S'.\n", type);
-
-        if(baf)
-        {
-            ofeature = ensFeaturepairGetSourceFeature(baf->Featurepair);
-
-            nfeature = ensFeatureTransfer(ofeature, tslice);
-
-            ensFeaturepairSetSourceFeature(baf->Featurepair, nfeature);
-
-            ensFeatureDel(&nfeature);
-
-            ajListPushAppend(bafs, (void *) baf);
-        }
-        else
-        {
-            ajDebug("ensSupportingfeatureadaptorFetchAllByTranscript could "
-                    "not retrieve Supporting feature of type '%S' and "
-                    "identifier %u from database.\n", type, identifier);
-        }
-
-        ajStrDel(&type);
-    }
-
-    ajSqlrowiterDel(&sqli);
-
-    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
-
-    ajStrDel(&statement);
-
-    return ajTrue;
 }

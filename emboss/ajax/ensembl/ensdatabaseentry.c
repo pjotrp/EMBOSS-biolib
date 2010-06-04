@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -450,6 +450,7 @@ void ensExternalreferenceDel(
 
 
 
+#if AJFALSE
 /* @func ensExternalreferenceGetAdaptor ***************************************
 **
 ** Get the Ensembl External Reference Adaptor element of an
@@ -462,8 +463,6 @@ void ensExternalreferenceDel(
 **                                              Adaptor
 ** @@
 ******************************************************************************/
-
-#if AJFALSE
 
 const EnsPExternalreferenceadaptor ensExternalreferenceGetAdaptor(
     const EnsPExternalreference er)
@@ -750,6 +749,7 @@ EnsEExternalreferenceInfoType ensExternalreferenceGetInfoType(
 
 
 
+#if AJFALSE
 /* @func ensExternalreferenceSetAdaptor ***************************************
 **
 ** Set the Ensembl External Reference Adaptor element of an
@@ -763,8 +763,6 @@ EnsEExternalreferenceInfoType ensExternalreferenceGetInfoType(
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
-
-#if AJFALSE
 
 AjBool ensExternalreferenceSetAdaptor(EnsPExternalreference er,
                                       EnsPExternalreferenceadaptor adaptor)
@@ -1222,7 +1220,7 @@ const char* ensExternalreferenceInfoTypeToChar(
 
 
 
-/* @func ensExternalreferenceGetMemSize ***************************************
+/* @func ensExternalreferenceGetMemsize ***************************************
 **
 ** Get the memory size in bytes of an Ensembl External Reference.
 **
@@ -1232,7 +1230,7 @@ const char* ensExternalreferenceInfoTypeToChar(
 ** @@
 ******************************************************************************/
 
-ajuint ensExternalreferenceGetMemSize(const EnsPExternalreference er)
+ajuint ensExternalreferenceGetMemsize(const EnsPExternalreference er)
 {
     ajuint size = 0;
 
@@ -1241,9 +1239,9 @@ ajuint ensExternalreferenceGetMemSize(const EnsPExternalreference er)
 
     size += (ajuint) sizeof (EnsOExternalreference);
 
-    size += ensAnalysisGetMemSize(er->Analysis);
+    size += ensAnalysisGetMemsize(er->Analysis);
 
-    size += ensExternaldatabaseGetMemSize(er->Externaldatabase);
+    size += ensExternaldatabaseGetMemsize(er->Externaldatabase);
 
     if(er->PrimaryIdentifier)
     {
@@ -1632,7 +1630,7 @@ ajint ensIdentityreferenceGetTargetStart(const EnsPIdentityreference ir)
 
 
 
-/* @func ensIdentityreferenceGettargetEnd *************************************
+/* @func ensIdentityreferenceGetTargetEnd *************************************
 **
 ** Get the target end element of an Ensembl Identity Reference.
 **
@@ -2055,7 +2053,7 @@ AjBool ensIdentityreferenceTrace(const EnsPIdentityreference ir, ajuint level)
 
 
 
-/* @func ensIdentityreferenceGetMemSize ***************************************
+/* @func ensIdentityreferenceGetMemsize ***************************************
 **
 ** Get the memory size in bytes of an Ensembl Identity Reference.
 **
@@ -2065,7 +2063,7 @@ AjBool ensIdentityreferenceTrace(const EnsPIdentityreference ir, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensIdentityreferenceGetMemSize(const EnsPIdentityreference ir)
+ajuint ensIdentityreferenceGetMemsize(const EnsPIdentityreference ir)
 {
     ajuint size = 0;
 
@@ -2657,7 +2655,7 @@ void ensDatabaseentryDel(EnsPDatabaseentry *Pdbe)
 ** @cc Bio::EnsEMBL::Storable::adaptor
 ** @param [r] dbe [const EnsPDatabaseentry] Ensembl Database Entry
 **
-** @return [const EnsPDatabaseentryadaptor] Ensembl Database Entry Adaptor
+** @return [EnsPDatabaseentryadaptor] Ensembl Database Entry Adaptor
 ** @@
 ******************************************************************************/
 
@@ -3235,7 +3233,7 @@ AjBool ensDatabaseentryTrace(const EnsPDatabaseentry dbe, ajuint level)
 
 
 
-/* @func ensDatabaseentryGetMemSize *******************************************
+/* @func ensDatabaseentryGetMemsize *******************************************
 **
 ** Get the memory size in bytes of an Ensembl Database Entry.
 **
@@ -3245,7 +3243,7 @@ AjBool ensDatabaseentryTrace(const EnsPDatabaseentry dbe, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensDatabaseentryGetMemSize(const EnsPDatabaseentry dbe)
+ajuint ensDatabaseentryGetMemsize(const EnsPDatabaseentry dbe)
 {
     ajuint size = 0;
 
@@ -3259,9 +3257,9 @@ ajuint ensDatabaseentryGetMemSize(const EnsPDatabaseentry dbe)
 
     size += (ajuint) sizeof (EnsODatabaseentry);
 
-    size += ensExternalreferenceGetMemSize(dbe->Externalreference);
+    size += ensExternalreferenceGetMemsize(dbe->Externalreference);
 
-    size += ensIdentityreferenceGetMemSize(dbe->Identityreference);
+    size += ensIdentityreferenceGetMemsize(dbe->Identityreference);
 
     /* Summarise the AJAX List of synonym AJAX Strings. */
 
@@ -5143,7 +5141,7 @@ static AjBool databaseentryadaptorFetchAllIdentifiersByExternalName(
 
 
 
-/* @funcstatic databasentryadaptorFetchAllIdentifiersByExternaldatabaseName **
+/* @funcstatic databaseentryadaptorFetchAllIdentifiersByExternaldatabaseName *
 **
 ** Fetch SQL database-internal Ensembl identifiers via an external database
 ** name.

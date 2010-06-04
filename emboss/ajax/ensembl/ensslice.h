@@ -130,7 +130,7 @@ ajint ensSliceGetCentrePoint(const EnsPSlice slice);
 
 ajuint ensSliceGetLength(const EnsPSlice slice);
 
-ajuint ensSliceGetMemSize(const EnsPSlice slice);
+ajuint ensSliceGetMemsize(const EnsPSlice slice);
 
 const AjPTrn ensSliceGetTranslation(EnsPSlice slice);
 

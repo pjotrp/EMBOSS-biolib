@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -645,7 +645,7 @@ AjBool ensGvsampleSetSize(EnsPGvsample gvs, ajuint size)
 
 
 
-/* @func ensGvsampleGetMemSize ************************************************
+/* @func ensGvsampleGetMemsize ************************************************
 **
 ** Get the memory size in bytes of an Ensembl Genetic Variation Sample.
 **
@@ -655,7 +655,7 @@ AjBool ensGvsampleSetSize(EnsPGvsample gvs, ajuint size)
 ** @@
 ******************************************************************************/
 
-ajuint ensGvsampleGetMemSize(const EnsPGvsample gvs)
+ajuint ensGvsampleGetMemsize(const EnsPGvsample gvs)
 {
     ajuint size = 0;
 
@@ -1059,8 +1059,8 @@ EnsPBaseadaptor ensGvsampleadaptorGetAdaptor(EnsPGvsampleadaptor gvsa)
 **
 ** Fetch all Ensembl Genetic Variation Samples by display.
 **
-** @param [r] gvsa [const EnsPGvsampleAdaptor] Ensembl Genetic Variation
-**                                             Sample Adaptor
+** @param [u] gvsa [EnsPGvsampleadaptor] Ensembl Genetic Variation
+**                                       Sample Adaptor
 ** @param [r] display [EnsEGvsampleDisplay] Display
 ** @param [u] gvss [AjPList] AJAX List of Ensembl Genetic Variation Samples
 **
@@ -1317,7 +1317,7 @@ AjBool ensGvsampleadaptorFetchAllIdentifiersBySynonym(
 ** identifier.
 **
 ** @cc Bio::EnsEMBL::Variation::DBSQL::SampleAdaptor::fetch_by_dbID
-** @param [u] gvsa [EnsPGvsampleAdaptor] Ensembl Genetic Variation
+** @param [u] gvsa [EnsPGvsampleadaptor] Ensembl Genetic Variation
 **                                       Sample Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @param [wP] Pgvs [EnsPGvsample*] Ensembl Genetic Variation Sample address

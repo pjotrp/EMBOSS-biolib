@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -657,7 +657,7 @@ ensGvalleleSetSubSNPIdentifier(EnsPGvallele gva, ajuint subsnpid)
 
 
 
-/* @func ensGvalleleGetMemSize ************************************************
+/* @func ensGvalleleGetMemsize ************************************************
 **
 ** Get the memory size in bytes of an Ensembl Genetic Variation Allele.
 **
@@ -667,7 +667,7 @@ ensGvalleleSetSubSNPIdentifier(EnsPGvallele gva, ajuint subsnpid)
 ** @@
 ******************************************************************************/
 
-ajuint ensGvalleleGetMemSize(const EnsPGvallele gva)
+ajuint ensGvalleleGetMemsize(const EnsPGvallele gva)
 {
     ajuint size = 0;
 
@@ -676,7 +676,7 @@ ajuint ensGvalleleGetMemSize(const EnsPGvallele gva)
 
     size += (ajuint) sizeof (EnsOGvallele);
 
-    size += ensGvpopulationGetMemSize(gva->Gvpopulation);
+    size += ensGvpopulationGetMemsize(gva->Gvpopulation);
 
     if(gva->Allele)
     {
@@ -1117,7 +1117,7 @@ AjPStr ensGvgenotypeGetAllele2(const EnsPGvgenotype gvg)
 ** Set the Ensembl Genetic Variation Genotype Adaptor element of an
 ** Ensembl Genetic Variation Genotype.
 **
-** @param [u] gvg [EnsPGvvsample] Ensembl Genetic Variation Genotype
+** @param [u] gvg [EnsPGvgenotype] Ensembl Genetic Variation Genotype
 ** @param [u] gvga [EnsPGvgenotypeadaptor] Ensembl Genetic Variation
 **                                         Genotype Adaptor
 **
@@ -1217,7 +1217,7 @@ AjBool ensGvgenotypeSetAllele2(EnsPGvgenotype gvg, AjPStr allele2)
 
 
 
-/* @func ensGvgenotypeGetMemSize **********************************************
+/* @func ensGvgenotypeGetMemsize **********************************************
 **
 ** Get the memory size in bytes of an Ensembl Genetic Variation Genotype.
 **
@@ -1227,7 +1227,7 @@ AjBool ensGvgenotypeSetAllele2(EnsPGvgenotype gvg, AjPStr allele2)
 ** @@
 ******************************************************************************/
 
-ajuint ensGvgenotypeGetMemSize(const EnsPGvgenotype gvg)
+ajuint ensGvgenotypeGetMemsize(const EnsPGvgenotype gvg)
 {
     ajuint size = 0;
 
@@ -2431,7 +2431,7 @@ AjBool ensGvvariationSetFailedDescription(EnsPGvvariation gvv,
 
 
 
-/* @func ensGvvariationGetMemSize *********************************************
+/* @func ensGvvariationGetMemsize *********************************************
 **
 ** Get the memory size in bytes of an
 ** Ensembl Genetic Variation Variation.
@@ -2442,7 +2442,7 @@ AjBool ensGvvariationSetFailedDescription(EnsPGvvariation gvv,
 ** @@
 ******************************************************************************/
 
-ajuint ensGvvariationGetMemSize(const EnsPGvvariation gvv)
+ajuint ensGvvariationGetMemsize(const EnsPGvvariation gvv)
 {
     ajuint size = 0;
 
@@ -3690,8 +3690,8 @@ AjBool ensGvvariationadaptorFetchByName(EnsPGvvariationadaptor gvva,
 ** Ensembl Genetic Variation Variations before deleting the AJAX List.
 **
 ** @cc Bio::EnsEMBL::Variation::DBSQL::VariationAdaptor::fetch_all_by_source
-** @param [u] gvva [const EnsPGvvariationadaptor] Ensembl Genetic Variation
-**                                                Variation Adaptor
+** @param [u] gvva [EnsPGvvariationadaptor] Ensembl Genetic Variation
+**                                          Variation Adaptor
 ** @param [r] source [const AjPStr] Source
 ** @param [r] primary [AjBool] Primary
 ** @param [u] gvvs [AjPList] AJAX List of Ensembl Genetic Variation Variations
@@ -3850,7 +3850,7 @@ AjBool ensGvvariationadaptorFetchAllBySource(EnsPGvvariationadaptor gvva,
 
 
 
-/* @func ensGvvariationAdaptorFetchAllByGgvopulation **************************
+/* @func ensGvvariationadaptorFetchAllByGvpopulation **************************
 **
 ** Fetch all Ensembl Genetic Variation Variations via an
 ** Ensembl Genetic Variation Population.
@@ -3868,7 +3868,7 @@ AjBool ensGvvariationadaptorFetchAllBySource(EnsPGvvariationadaptor gvva,
 ** @@
 ******************************************************************************/
 
-AjBool ensGvvariationAdaptorFetchAllByGvpopulation(EnsPGvvariationadaptor gvva,
+AjBool ensGvvariationadaptorFetchAllByGvpopulation(EnsPGvvariationadaptor gvva,
                                                    const EnsPGvpopulation gvp,
                                                    AjPList gvvs)
 {
@@ -4008,16 +4008,16 @@ AjBool ensGvvariationadaptorFetchAllSources(EnsPGvvariationadaptor gvva,
 
 
 
-/* @func ensGvvariationAdaptorFetchSourceVersion ******************************
+/* @func ensGvvariationadaptorFetchSourceVersion ******************************
 **
 ** Fetch the version of a source.
 ** The caller is responsible for deleting the AJAX String.
 **
 ** @cc Bio::EnsEMBL::Variation::DBSQL::VariationAdaptor::get_source_version
-** @param [r] gvva [const EnsPGvvariationadaptor] Ensembl Genetic Variation
-**                                                Variation Adaptor
+** @param [u] gvva [EnsPGvvariationadaptor] Ensembl Genetic Variation
+**                                          Variation Adaptor
 ** @param [r] source [const AjPStr] Source
-** @param [u] version [AjPStr] Version
+** @param [u] Pversion [AjPStr*] Version returned
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
@@ -4088,9 +4088,9 @@ AjBool ensGvvariationadaptorFetchSourceVersion(EnsPGvvariationadaptor gvva,
 ** The caller is responsible for deleting the AJAX String.
 **
 ** @cc Bio::EnsEMBL::Variation::DBSQL::VariationAdaptor::get_default_source
-** @param [r] gvva [const EnsPGVVariationAdaptor] Ensembl Genetic Variation
-**                                                Variation Adaptor
-** @param [u] source [AjStr] Source
+** @param [u] gvva [EnsPGvvariationadaptor] Ensembl Genetic Variation
+**                                          Variation Adaptor
+** @param [u] Psource [AjPStr*] Source returned
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
@@ -4914,7 +4914,7 @@ AjBool ensGvvariationfeatureSetAdaptor(EnsPGvvariationfeature gvvf,
 
 
 
-/* @func ensGvvariationSetIdentifier ******************************************
+/* @func ensGvvariationfeatureSetIdentifier ***********************************
 **
 ** Set the SQL database-internal identifier element of an
 ** Ensembl Genetic Variation Variation Feature.
@@ -5143,7 +5143,7 @@ AjBool ensGvvariationfeatureSetMapWeight(EnsPGvvariationfeature gvvf,
 
 
 
-/* @func ensGvvariationfeatureGetMemSize **************************************
+/* @func ensGvvariationfeatureGetMemsize **************************************
 **
 ** Get the memory size in bytes of an
 ** Ensembl Genetic Variation Variation Feature.
@@ -5155,7 +5155,7 @@ AjBool ensGvvariationfeatureSetMapWeight(EnsPGvvariationfeature gvvf,
 ** @@
 ******************************************************************************/
 
-ajuint ensGvvariationfeatureGetMemSize(const EnsPGvvariationfeature gvvf)
+ajuint ensGvvariationfeatureGetMemsize(const EnsPGvvariationfeature gvvf)
 {
     ajuint size = 0;
 
@@ -5164,9 +5164,9 @@ ajuint ensGvvariationfeatureGetMemSize(const EnsPGvvariationfeature gvvf)
 
     size += (ajuint) sizeof (EnsOGvvariationfeature);
 
-    size += ensFeatureGetMemSize(gvvf->Feature);
+    size += ensFeatureGetMemsize(gvvf->Feature);
 
-    size += ensGvvariationGetMemSize(gvvf->Gvvariation);
+    size += ensGvvariationGetMemsize(gvvf->Gvvariation);
 
     if(gvvf->Name)
     {

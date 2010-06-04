@@ -13,12 +13,13 @@ extern "C"
 
 
 
-/* @data EnsPGvalleleadaptor **************************************************
+/* #data EnsPGvalleleadaptor **************************************************
 **
 ** Ensembl Genetic Variation Allele Adaptor.
+** Defined as an alias in EnsPDatabaseadaptor
 **
-** @alias EnsPDatabaseadaptor
-** @@
+** #alias EnsPDatabaseadaptor
+** ##
 ** NOTE: Although the Bio::EnsEMBL::Variation::Allele object is based on the
 ** Bio::EnsEMBL::Storable object, there is actually no
 ** Bio::EnsEMBL::Variation::DBSQL::AlleleAdaptor as such in the
@@ -66,12 +67,13 @@ typedef struct EnsSGvallele
 
 
 
-/* @data EnsPGvgenotypeadaptor ************************************************
+/* #data EnsPGvgenotypeadaptor ************************************************
 **
 ** Ensembl Genetic Variation Genotype Adaptor.
+** Defined as an alias in EnsPDatabaseadaptor
 **
-** @alias EnsPDatabaseadaptor
-** @@
+** #alias EnsPDatabaseadaptor
+** ##
 ******************************************************************************/
 
 #define EnsPGvgenotypeadaptor EnsPDatabaseadaptor
@@ -111,12 +113,13 @@ typedef struct EnsSGvgenotype
 
 
 
-/* @data EnsPGvvariationadaptor ***********************************************
+/* #data EnsPGvvariationadaptor ***********************************************
 **
 ** Ensembl Genetic Variation Variation Adaptor.
+** Defined as an alias in EnsPDatabaseadaptor
 **
-** @alias EnsPDatabaseadaptor
-** @@
+** #alias EnsPDatabaseadaptor
+** ##
 ******************************************************************************/
 
 #define EnsPGvvariationadaptor EnsPDatabaseadaptor
@@ -311,7 +314,7 @@ AjBool ensGvalleleSetFrequency(EnsPGvallele gva, float frequency);
 
 AjBool ensGvalleleSetSubSNPIdentifier(EnsPGvallele gva, ajuint subsnpid);
 
-ajuint ensGvalleleGetMemSize(const EnsPGvallele gva);
+ajuint ensGvalleleGetMemsize(const EnsPGvallele gva);
 
 AjBool ensGvalleleTrace(const EnsPGvallele gva, ajuint level);
 
@@ -350,7 +353,7 @@ AjBool ensGvgenotypeSetAllele1(EnsPGvgenotype gvg, AjPStr allele1);
 
 AjBool ensGvgenotypeSetAllele2(EnsPGvgenotype gvg, AjPStr allele2);
 
-ajuint ensGvgenotypeGetMemSize(const EnsPGvgenotype gvg);
+ajuint ensGvgenotypeGetMemsize(const EnsPGvgenotype gvg);
 
 AjBool ensGvgenotypeTrace(const EnsPGvgenotype gvg, ajuint level);
 
@@ -427,7 +430,7 @@ AjBool ensGvvariationSetThreePrimeFlank(EnsPGvvariation gvv,
 AjBool ensGvvariationSetFailedDescription(EnsPGvvariation gvv,
                                           AjPStr faileddescription);
 
-ajuint ensGvvariationGetMemSize(const EnsPGvvariation gvv);
+ajuint ensGvvariationGetMemsize(const EnsPGvvariation gvv);
 
 AjBool ensGvvariationTrace(const EnsPGvvariation gvv, ajuint level);
 
@@ -474,7 +477,7 @@ AjBool ensGvvariationadaptorFetchAllBySource(EnsPGvvariationadaptor gvva,
                                              AjBool primary,
                                              AjPList gvvs);
 
-AjBool ensGvvariationAdaptorFetchAllByGvpopulation(EnsPGvvariationadaptor gvva,
+AjBool ensGvvariationadaptorFetchAllByGvpopulation(EnsPGvvariationadaptor gvva,
                                                    const EnsPGvpopulation gvp,
                                                    AjPList gvvs);
 
@@ -561,7 +564,7 @@ AjBool ensGvvariationfeatureSetConsequenceType(EnsPGvvariationfeature gvvf,
 AjBool ensGvvariationfeatureSetMapWeight(EnsPGvvariationfeature gvvf,
                                          ajuint mapweight);
 
-ajuint ensGvvariationfeatureGetMemSize(const EnsPGvvariationfeature gvvf);
+ajuint ensGvvariationfeatureGetMemsize(const EnsPGvvariationfeature gvvf);
 
 AjBool ensGvvariationfeatureTrace(const EnsPGvvariationfeature gvvf,
                                   ajuint level);

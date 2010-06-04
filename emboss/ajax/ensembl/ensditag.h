@@ -11,12 +11,12 @@ extern "C"
 
 
 
-/* @data EnsPDitagadaptor *****************************************************
+/* #data EnsPDitagadaptor *****************************************************
 **
-** Ensembl Ditag Adaptor.
+** Ensembl Ditag Adaptor. Defined as an alias in EnsPDatabaseadaptor
 **
-** @alias EnsPDatabaseadaptor
-** @@
+** #alias EnsPDatabaseadaptor
+** ##
 ******************************************************************************/
 
 #define EnsPDitagadaptor EnsPDatabaseadaptor
@@ -191,7 +191,7 @@ AjBool ensDitagSetCount(EnsPDitag dt, ajuint count);
 
 AjBool ensDitagTrace(const EnsPDitag dt, ajuint level);
 
-ajuint ensDitagGetMemSize(const EnsPDitag dt);
+ajuint ensDitagGetMemsize(const EnsPDitag dt);
 
 /* Ensembl Ditag Adaptor */
 
@@ -279,7 +279,7 @@ AjBool ensDitagfeatureSetPairIdentifier(EnsPDitagfeature dtf, ajuint pairid);
 
 AjBool ensDitagfeatureTrace(const EnsPDitagfeature dtf, ajuint level);
 
-ajuint ensDitagfeatureGetMemSize(const EnsPDitagfeature dtf);
+ajuint ensDitagfeatureGetMemsize(const EnsPDitagfeature dtf);
 
 EnsEDitagfeatureSide ensDitagfeatureSideFromStr(const AjPStr side);
 

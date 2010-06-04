@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -379,7 +379,7 @@ AjPStr ensMarkersynonymGetSource(const EnsPMarkersynonym ms)
 
 
 
-/* @func ensMarkerSourceGetName ***********************************************
+/* @func ensMarkersynonymGetName **********************************************
 **
 ** Get the name element of an Ensembl Marker Synonym.
 **
@@ -455,7 +455,7 @@ AjBool ensMarkersynonymSetIdentifier(EnsPMarkersynonym ms, ajuint identifier)
 **
 ** @cc Bio::EnsEMBL::Map::MarkerSynonym::source
 ** @param [u] ms [EnsPMarkersynonym] Ensembl Marker Synonym
-** @param [u] synonym [AjPStr] Synonym
+** @param [u] source [AjPStr] Source
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
@@ -562,7 +562,7 @@ AjBool ensMarkersynonymTrace(const EnsPMarkersynonym ms, ajuint level)
 
 
 
-/* @func ensMarkersynonymGetMemSize *******************************************
+/* @func ensMarkersynonymGetMemsize *******************************************
 **
 ** Get the memory size in bytes of an Ensembl Marker Synonym.
 **
@@ -572,7 +572,7 @@ AjBool ensMarkersynonymTrace(const EnsPMarkersynonym ms, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensMarkersynonymGetMemSize(const EnsPMarkersynonym ms)
+ajuint ensMarkersynonymGetMemsize(const EnsPMarkersynonym ms)
 {
     ajuint size = 0;
 
@@ -1396,7 +1396,7 @@ AjBool ensMarkermaplocationTrace(const EnsPMarkermaplocation mml,
 
 
 
-/* @func ensMarkermaplocationGetMemSize ***************************************
+/* @func ensMarkermaplocationGetMemsize ***************************************
 **
 ** Get the memory size in bytes of an Ensembl Marker Map Location.
 **
@@ -1406,7 +1406,7 @@ AjBool ensMarkermaplocationTrace(const EnsPMarkermaplocation mml,
 ** @@
 ******************************************************************************/
 
-ajuint ensMarkermaplocationGetMemSize(const EnsPMarkermaplocation mml)
+ajuint ensMarkermaplocationGetMemsize(const EnsPMarkermaplocation mml)
 {
     ajuint size = 0;
 
@@ -1415,7 +1415,7 @@ ajuint ensMarkermaplocationGetMemSize(const EnsPMarkermaplocation mml)
 
     size += (ajuint) sizeof (EnsOMarkermaplocation);
 
-    size += ensMarkersynonymGetMemSize(mml->Markersynonym);
+    size += ensMarkersynonymGetMemsize(mml->Markersynonym);
 
     if(mml->MapName)
     {
@@ -2706,7 +2706,7 @@ AjBool ensMarkerTrace(const EnsPMarker marker, ajuint level)
 
 
 
-/* @func ensMarkerGetMemSize **************************************************
+/* @func ensMarkerGetMemsize **************************************************
 **
 ** Get the memory size in bytes of an Ensembl Marker.
 **
@@ -2716,7 +2716,7 @@ AjBool ensMarkerTrace(const EnsPMarker marker, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensMarkerGetMemSize(const EnsPMarker marker)
+ajuint ensMarkerGetMemsize(const EnsPMarker marker)
 {
     ajuint size = 0;
 
@@ -2731,7 +2731,7 @@ ajuint ensMarkerGetMemSize(const EnsPMarker marker)
 
     size += (ajuint) sizeof (EnsOMarker);
 
-    size += ensMarkersynonymGetMemSize(marker->DisplaySynonym);
+    size += ensMarkersynonymGetMemsize(marker->DisplaySynonym);
 
     if(marker->LeftPrimer)
     {
@@ -2755,7 +2755,7 @@ ajuint ensMarkerGetMemSize(const EnsPMarker marker)
     {
         ms = (EnsPMarkersynonym) ajListIterGet(iter);
 
-        size += ensMarkersynonymGetMemSize(ms);
+        size += ensMarkersynonymGetMemsize(ms);
     }
 
     ajListIterDel(&iter);
@@ -2768,7 +2768,7 @@ ajuint ensMarkerGetMemSize(const EnsPMarker marker)
     {
         mml = (EnsPMarkermaplocation) ajListIterGet(iter);
 
-        size += ensMarkermaplocationGetMemSize(mml);
+        size += ensMarkermaplocationGetMemsize(mml);
     }
 
     ajListIterDel(&iter);
@@ -3517,10 +3517,10 @@ static void markeradaptorClearIdentifierTable(void **key,
 ** the AJAX List.
 **
 ** @cc Bio::EnsEMBL::Map::DBSQL::MarkerAdaptor::fetch_all_by_synonym
-** @param [r] ma [const EnsPMarkeradaptor] Ensembl Marker Adaptor
-** @param [r] synonym [const AjPStr] Marker Synonym name
-** @param [rN] source [const AjPStr] Marker Synonym source
-** @param [w] markers [AjPList] AJAX List of Ensembl Markers
+** @param [r]  ma      [const EnsPMarkeradaptor] Ensembl Marker Adaptor
+** @param [r]  name    [const AjPStr] Marker Synonym name
+** @param [rN] source  [const AjPStr] Marker Synonym source
+** @param [w]  markers [AjPList] AJAX List of Ensembl Markers
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
@@ -3637,22 +3637,10 @@ AjBool ensMarkeradaptorFetchAllBySynonym(const EnsPMarkeradaptor ma,
 
 
 
-/* @func ensMarkeradaptorFetchAttributes **************************************
-**
+/*
 ** Fetch Ensembl Marker Synonyms and Ensembl Maker Map Locations of an
 ** Ensembl Marker.
 **
-** Deperecated. Use ensMarkerGetMarkersynonyms and
-** ensMarkerGetMarkermaplocations instead.
-**
-** @cc Bio::EnsEMBL::Map::DBSQL::MarkerAdaptor::fetch_attributes
-** @param [r] ma [const EnsPMarkeradaptor] Ensembl Marker Adaptor
-** @param [u] marker [EnsPMarker] Ensembl Marker
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @see ensMarkerGetMarkersynonyms
-** @see ensMarkerGetMarkermaplocations
-** @@
 ** NOTE: This function is not ideal as it requires a Marker Adaptor although
 ** a Marker Adaptor is most likely already set in the Marker object.
 ** The Perl API version of this function does not test whether the Marker
@@ -3660,7 +3648,16 @@ AjBool ensMarkeradaptorFetchAllBySynonym(const EnsPMarkeradaptor ma,
 ** By loading Marker Synonyms and Marker Map Locations via ensMarkerGetSynonyms
 ** and ensMarkerGetLocations, respectively, it is ensured that Marker and
 ** Attribute objects come from the same database.
-******************************************************************************/
+*/
+
+
+
+
+/* @obsolete ensMarkeradaptorFetchAttributes
+**
+** @remove ensMarkerGetMarkersynonyms or ensMarkerGetMarkermaplocations
+**
+*/
 
 __deprecated AjBool ensMarkeradaptorFetchAttributes(const EnsPMarkeradaptor ma,
                                                     EnsPMarker marker)
@@ -4413,7 +4410,7 @@ AjBool ensMarkerfeatureTrace(const EnsPMarkerfeature mf, ajuint level)
 
 
 
-/* @func ensMarkerfeatureGetMemSize *******************************************
+/* @func ensMarkerfeatureGetMemsize *******************************************
 **
 ** Get the memory size in bytes of an Ensembl Marker Feature.
 **
@@ -4423,7 +4420,7 @@ AjBool ensMarkerfeatureTrace(const EnsPMarkerfeature mf, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensMarkerfeatureGetMemSize(const EnsPMarkerfeature mf)
+ajuint ensMarkerfeatureGetMemsize(const EnsPMarkerfeature mf)
 {
     ajuint size = 0;
 
@@ -4432,8 +4429,8 @@ ajuint ensMarkerfeatureGetMemSize(const EnsPMarkerfeature mf)
 
     size += (ajuint) sizeof (EnsOMarkerfeature);
 
-    size += ensFeatureGetMemSize(mf->Feature);
-    size += ensMarkerGetMemSize(mf->Marker);
+    size += ensFeatureGetMemsize(mf->Feature);
+    size += ensMarkerGetMemsize(mf->Marker);
 
     return size;
 }
@@ -4701,7 +4698,7 @@ static void markerfeatureadaptorClearMarkerTable(void **key,
 ** @param [r] statement [const AjPStr] SQL statement
 ** @param [uN] am [EnsPAssemblymapper] Ensembl Assembly Mapper
 ** @param [uN] slice [EnsPSlice] Ensembl Slice
-** @param [u] mflist [AjPList] AJAX List of Ensembl Marker Features
+** @param [u] mfs [AjPList] AJAX List of Ensembl Marker Features
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
@@ -5105,13 +5102,13 @@ static AjBool markerfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** Wrapper function to reference an Ensembl Marker Feature
 ** from an Ensembl Cache.
 **
-** @param [r] value [void *] Ensembl Marker Feature
+** @param [r] value [void*] Ensembl Marker Feature
 **
-** @return [void *] Ensembl Marker Feature or NULL
+** @return [void*] Ensembl Marker Feature or NULL
 ** @@
 ******************************************************************************/
 
-static void *markerfeatureadaptorCacheReference(void *value)
+static void* markerfeatureadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -5162,7 +5159,7 @@ static ajuint markerfeatureadaptorCacheSize(const void *value)
     if(!value)
         return 0;
 
-    return ensMarkerfeatureGetMemSize((const EnsPMarkerfeature) value);
+    return ensMarkerfeatureGetMemsize((const EnsPMarkerfeature) value);
 }
 
 
@@ -5490,7 +5487,6 @@ AjBool ensMarkerfeatureadaptorFetchAllBySlice(
 ** @param [r] mfa [const EnsPMarkerfeatureadaptor] Ensembl Marker
 **                                                 Feature Adaptor
 ** @param [u] slice [EnsPSlice] Ensembl Slice
-** @param [r] priority [ajint] Priority
 ** @param [r] name [const AjPStr] Ensembl Marker name
 ** @param [u] mfs [AjPList] AJAX List of Ensembl Marker Features
 **

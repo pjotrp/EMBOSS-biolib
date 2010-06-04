@@ -86,7 +86,7 @@ AjBool ensTranscriptGetEnableSequenceEdits(EnsPTranscript transcript);
 
 ajuint ensTranscriptGetLength(EnsPTranscript transcript);
 
-ajuint ensTranscriptGetMemSize(const EnsPTranscript transcript);
+ajuint ensTranscriptGetMemsize(const EnsPTranscript transcript);
 
 AjBool ensTranscriptSetAdaptor(EnsPTranscript transcript,
                                EnsPTranscriptadaptor tca);

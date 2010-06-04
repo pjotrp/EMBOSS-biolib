@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -458,48 +458,45 @@ void ensAnalysisDel(EnsPAnalysis* Panalysis)
 ** @nam3rule Get Return Analysis attribute(s)
 ** @nam4rule GetAdaptor Return the Ensembl Analysis Adaptor
 ** @nam4rule GetIdentifier Return the SQL database-internal identifier
-** @nam4rule GetCreationDate Return the creation date
+** @nam4rule GetCreationdate Return the creation date
 ** @nam4rule GetName Return the name
-** @nam4rule GetDatabase Return database elements
-** @nam5rule GetDatabaseName Return the database name
-** @nam5rule GetDatabaseVersion Return the database version
-** @nam5rule GetDatabaseFile Return the database file
-** @nam4rule GetProgram Return program elements
-** @nam5rule GetProgramName Return the program name
-** @nam5rule GetProgramVersion Return the program version
-** @nam5rule GetProgramFile Return the program file
+** @nam4rule GetDatabasename Return the database name
+** @nam4rule GetDatabaseversion Return the database version
+** @nam4rule GetDatabasefile Return the database file
+** @nam4rule GetProgramname Return the program name
+** @nam4rule GetProgramversion Return the program version
+** @nam4rule GetProgramfile Return the program file
 ** @nam4rule GetParameters Return the parameters
-** @nam4rule GetModule Return module elements
-** @nam5rule GetModuleName Return the module name
-** @nam5rule GetModuleVersion Return the module version
-** @nam4rule GetGFF Return GFF elements
-** @nam5rule GetGFFSource Return the GFF source
-** @nam5rule GetGFFFeature Return the GFF feature
+** @nam4rule GetModulename Return the module name
+** @nam4rule GetModuleversion Return the module version
+** @nam4rule GetGffsource Return the GFF source
+** @nam4rule GetGfffeature Return the GFF feature
 ** @nam4rule GetDescription Return the description
-** @nam4rule GetDisplayLabel Return the display label
-** @nam4rule GetWebData Return the web data
+** @nam4rule GetDisplaylabel Return the display label
+** @nam4rule GetMemsize Return the memory size used
+** @nam4rule GetWebdata Return the web data
 ** @nam4rule GetDisplayable Return the displayable element
 **
 ** @argrule * analysis [const EnsPAnalysis] Analysis
 **
 ** @valrule Adaptor [EnsPAnalysisadaptor] Ensembl Analysis Adaptor
 ** @valrule Identifier [ajuint] SQL database-internal identifier
-** @valrule CreationDate [const AjPStr] Creation date
+** @valrule Creationdate [const AjPStr] Creation date
 ** @valrule Name [const AjPStr] Name
-** @valrule DatabaseName [const AjPStr] Database name
-** @valrule DatabaseVersion [const AjPStr] Database version
-** @valrule DatabaseFile [const AjPStr] Database file
-** @valrule ProgramName [const AjPStr] Program name
-** @valrule ProgramVersion [const AjPStr] Program version
-** @valrule ProgramFile [const AjPStr] Program file
+** @valrule Databasename [const AjPStr] Database name
+** @valrule Databaseversion [const AjPStr] Database version
+** @valrule Databasefile [const AjPStr] Database file
+** @valrule Programname [const AjPStr] Program name
+** @valrule Programversion [const AjPStr] Program version
+** @valrule Programfile [const AjPStr] Program file
 ** @valrule Parameters [const AjPStr] Parameters
-** @valrule ModuleName [const AjPStr] Module name
-** @valrule ModuleVersion [const AjPStr] Module version
-** @valrule GFFSource [const AjPStr] GFF source
-** @valrule GFFFeature [const AjPStr] GFF feature
+** @valrule Modulename [const AjPStr] Module name
+** @valrule Moduleversion [const AjPStr] Module version
+** @valrule Gffsource [const AjPStr] GFF source
+** @valrule Gfffeature [const AjPStr] GFF feature
 ** @valrule Description [const AjPStr] Description
-** @valrule DisplayLabel [const AjPStr] Display label
-** @valrule WebData [const AjPStr] Web data
+** @valrule Displaylabel [const AjPStr] Display label
+** @valrule Webdata [const AjPStr] Web data
 ** @valrule Displayable [AjBool] Displayable element
 **
 ** @fcategory use
@@ -530,29 +527,7 @@ EnsPAnalysisadaptor ensAnalysisGetAdaptor(const EnsPAnalysis analysis)
 
 
 
-/* @func ensAnalysisGetIdentifier *********************************************
-**
-** Get the SQL database-internal identifier element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Storable::dbID
-** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
-**
-** @return [ajuint] Internal database identifier
-** @@
-******************************************************************************/
-
-ajuint ensAnalysisGetIdentifier(const EnsPAnalysis analysis)
-{
-    if(!analysis)
-        return 0;
-
-    return analysis->Identifier;
-}
-
-
-
-
-/* @func ensAnalysisGetCreationDate *******************************************
+/* @func ensAnalysisGetCreationdate *******************************************
 **
 ** Get the creation date element of an Ensembl Analysis.
 **
@@ -563,7 +538,7 @@ ajuint ensAnalysisGetIdentifier(const EnsPAnalysis analysis)
 ** @@
 ******************************************************************************/
 
-const AjPStr ensAnalysisGetCreationDate(const EnsPAnalysis analysis)
+const AjPStr ensAnalysisGetCreationdate(const EnsPAnalysis analysis)
 {
     if(!analysis)
         return NULL;
@@ -574,29 +549,7 @@ const AjPStr ensAnalysisGetCreationDate(const EnsPAnalysis analysis)
 
 
 
-/* @func ensAnalysisGetName ***************************************************
-**
-** Get the name element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::logic_name
-** @param  [r] analysis [const EnsPAnalysis] Ensembl Analysis
-**
-** @return [const AjPStr] Name
-** @@
-******************************************************************************/
-
-const AjPStr ensAnalysisGetName(const EnsPAnalysis analysis)
-{
-    if(!analysis)
-        return NULL;
-
-    return analysis->Name;
-}
-
-
-
-
-/* @func ensAnalysisGetDatabaseName *******************************************
+/* @func ensAnalysisGetDatabasename *******************************************
 **
 ** Get the database name element of an Ensembl Analysis.
 **
@@ -607,7 +560,7 @@ const AjPStr ensAnalysisGetName(const EnsPAnalysis analysis)
 ** @@
 ******************************************************************************/
 
-const AjPStr ensAnalysisGetDatabaseName(const EnsPAnalysis analysis)
+const AjPStr ensAnalysisGetDatabasename(const EnsPAnalysis analysis)
 {
     if(!analysis)
         return NULL;
@@ -618,29 +571,7 @@ const AjPStr ensAnalysisGetDatabaseName(const EnsPAnalysis analysis)
 
 
 
-/* @func ensAnalysisGetDatabaseVersion ****************************************
-**
-** Get the database version element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::db_version
-** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
-**
-** @return [const AjPStr] Database version
-** @@
-******************************************************************************/
-
-const AjPStr ensAnalysisGetDatabaseVersion(const EnsPAnalysis analysis)
-{
-    if(!analysis)
-        return NULL;
-
-    return analysis->DatabaseVersion;
-}
-
-
-
-
-/* @func ensAnalysisGetDatabaseFile *******************************************
+/* @func ensAnalysisGetDatabasefile *******************************************
 **
 ** Get the database file element of an Ensembl Analysis.
 **
@@ -651,7 +582,7 @@ const AjPStr ensAnalysisGetDatabaseVersion(const EnsPAnalysis analysis)
 ** @@
 ******************************************************************************/
 
-const AjPStr ensAnalysisGetDatabaseFile(const EnsPAnalysis analysis)
+const AjPStr ensAnalysisGetDatabasefile(const EnsPAnalysis analysis)
 {
     if(!analysis)
         return NULL;
@@ -662,177 +593,23 @@ const AjPStr ensAnalysisGetDatabaseFile(const EnsPAnalysis analysis)
 
 
 
-/* @func ensAnalysisGetProgramName ********************************************
+/* @func ensAnalysisGetDatabaseversion ****************************************
 **
-** Get the program name element of an Ensembl Analysis.
+** Get the database version element of an Ensembl Analysis.
 **
-** @cc Bio::EnsEMBL::Analysis::program
+** @cc Bio::EnsEMBL::Analysis::db_version
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
-** @return [const AjPStr] Program name
+** @return [const AjPStr] Database version
 ** @@
 ******************************************************************************/
 
-const AjPStr ensAnalysisGetProgramName(const EnsPAnalysis analysis)
+const AjPStr ensAnalysisGetDatabaseversion(const EnsPAnalysis analysis)
 {
     if(!analysis)
         return NULL;
 
-    return analysis->ProgramName;
-}
-
-
-
-
-/* @func ensAnalysisGetProgramVersion *****************************************
-**
-** Get the program version element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::program_version
-** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
-**
-** @return [const AjPStr] Program version
-** @@
-******************************************************************************/
-
-const AjPStr ensAnalysisGetProgramVersion(const EnsPAnalysis analysis)
-{
-    if(!analysis)
-        return NULL;
-
-    return analysis->ProgramVersion;
-}
-
-
-
-
-/* @func ensAnalysisGetProgramFile ********************************************
-**
-** Get the program file element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::program_file
-** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
-**
-** @return [const AjPStr] Program file
-** @@
-******************************************************************************/
-
-const AjPStr ensAnalysisGetProgramFile(const EnsPAnalysis analysis)
-{
-    if(!analysis)
-        return NULL;
-
-    return analysis->ProgramFile;
-}
-
-
-
-
-/* @func ensAnalysisGetParameters *********************************************
-**
-** Get the parameters element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::parameters
-** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
-**
-** @return [const AjPStr] Parameters
-** @@
-******************************************************************************/
-
-const AjPStr ensAnalysisGetParameters(const EnsPAnalysis analysis)
-{
-    if(!analysis)
-        return NULL;
-
-    return analysis->Parameters;
-}
-
-
-
-
-/* @func ensAnalysisGetModuleName *********************************************
-**
-** Get the module name element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::module
-** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
-**
-** @return [const AjPStr] Module name
-** @@
-******************************************************************************/
-
-const AjPStr ensAnalysisGetModuleName(const EnsPAnalysis analysis)
-{
-    if(!analysis)
-        return NULL;
-
-    return analysis->ModuleName;
-}
-
-
-
-
-/* @func ensAnalysisGetModuleVersion ******************************************
-**
-** Get the module version element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::module_version
-** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
-**
-** @return [const AjPStr] Module version
-** @@
-******************************************************************************/
-
-const AjPStr ensAnalysisGetModuleVersion(const EnsPAnalysis analysis)
-{
-    if(!analysis)
-        return NULL;
-
-    return analysis->ModuleVersion;
-}
-
-
-
-
-/* @func ensAnalysisGetGFFSource **********************************************
-**
-** Get the GFF source element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::gff_source
-** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
-**
-** @return [const AjPStr] GFF source
-** @@
-******************************************************************************/
-
-const AjPStr ensAnalysisGetGFFSource(const EnsPAnalysis analysis)
-{
-    if(!analysis)
-        return NULL;
-
-    return analysis->GFFSource;
-}
-
-
-
-
-/* @func ensAnalysisGetGFFFeature *********************************************
-**
-** Get the GFF feature element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::gff_feature
-** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
-**
-** @return [const AjPStr] GFF feature
-** @@
-******************************************************************************/
-
-const AjPStr ensAnalysisGetGFFFeature(const EnsPAnalysis analysis)
-{
-    if(!analysis)
-        return NULL;
-
-    return analysis->GFFFeature;
+    return analysis->DatabaseVersion;
 }
 
 
@@ -860,50 +637,6 @@ const AjPStr ensAnalysisGetDescription(const EnsPAnalysis analysis)
 
 
 
-/* @func ensAnalysisGetDisplayLabel *******************************************
-**
-** Get the display label element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::display_label
-** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
-**
-** @return [const AjPStr] Display label
-** @@
-******************************************************************************/
-
-const AjPStr ensAnalysisGetDisplayLabel(const EnsPAnalysis analysis)
-{
-    if(!analysis)
-        return NULL;
-
-    return analysis->DisplayLabel;
-}
-
-
-
-
-/* @func ensAnalysisGetWebData ************************************************
-**
-** Get the web data element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::web_data
-** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
-**
-** @return [const AjPStr] Web data
-** @@
-******************************************************************************/
-
-const AjPStr ensAnalysisGetWebData(const EnsPAnalysis analysis)
-{
-    if(!analysis)
-        return NULL;
-
-    return analysis->WebData;
-}
-
-
-
-
 /* @func ensAnalysisGetDisplayable ********************************************
 **
 ** Get the displayable element of an Ensembl Analysis.
@@ -926,6 +659,408 @@ AjBool ensAnalysisGetDisplayable(const EnsPAnalysis analysis)
 
 
 
+/* @func ensAnalysisGetDisplaylabel *******************************************
+**
+** Get the display label element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::display_label
+** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
+**
+** @return [const AjPStr] Display label
+** @@
+******************************************************************************/
+
+const AjPStr ensAnalysisGetDisplaylabel(const EnsPAnalysis analysis)
+{
+    if(!analysis)
+        return NULL;
+
+    return analysis->DisplayLabel;
+}
+
+
+
+
+/* @func ensAnalysisGetGfffeature *********************************************
+**
+** Get the GFF feature element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::gff_feature
+** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
+**
+** @return [const AjPStr] GFF feature
+** @@
+******************************************************************************/
+
+const AjPStr ensAnalysisGetGfffeature(const EnsPAnalysis analysis)
+{
+    if(!analysis)
+        return NULL;
+
+    return analysis->GFFFeature;
+}
+
+
+
+
+/* @func ensAnalysisGetGffsource **********************************************
+**
+** Get the GFF source element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::gff_source
+** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
+**
+** @return [const AjPStr] GFF source
+** @@
+******************************************************************************/
+
+const AjPStr ensAnalysisGetGffsource(const EnsPAnalysis analysis)
+{
+    if(!analysis)
+        return NULL;
+
+    return analysis->GFFSource;
+}
+
+
+
+
+/* @func ensAnalysisGetIdentifier *********************************************
+**
+** Get the SQL database-internal identifier element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Storable::dbID
+** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
+**
+** @return [ajuint] Internal database identifier
+** @@
+******************************************************************************/
+
+ajuint ensAnalysisGetIdentifier(const EnsPAnalysis analysis)
+{
+    if(!analysis)
+        return 0;
+
+    return analysis->Identifier;
+}
+
+
+
+
+/* @func ensAnalysisGetMemsize ************************************************
+**
+** Get the memory size in bytes of an Ensembl Analysis.
+**
+** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
+**
+** @return [ajuint] Memory size
+** @@
+******************************************************************************/
+
+ajuint ensAnalysisGetMemsize(const EnsPAnalysis analysis)
+{
+    ajuint size = 0;
+
+    if(!analysis)
+        return 0;
+
+    size += (ajuint) sizeof (EnsOAnalysis);
+
+    if(analysis->CreationDate)
+    {
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(analysis->CreationDate);
+    }
+
+    if(analysis->Name)
+    {
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(analysis->Name);
+    }
+
+    if(analysis->DatabaseName)
+    {
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(analysis->DatabaseName);
+    }
+
+    if(analysis->DatabaseVersion)
+    {
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(analysis->DatabaseVersion);
+    }
+
+    if(analysis->DatabaseFile)
+    {
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(analysis->DatabaseFile);
+    }
+
+    if(analysis->ProgramName)
+    {
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(analysis->ProgramName);
+    }
+
+    if(analysis->ProgramVersion)
+    {
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(analysis->ProgramVersion);
+    }
+
+    if(analysis->ProgramFile)
+    {
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(analysis->ProgramFile);
+    }
+
+    if(analysis->Parameters)
+    {
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(analysis->Parameters);
+    }
+
+    if(analysis->ModuleName)
+    {
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(analysis->ModuleName);
+    }
+
+    if(analysis->ModuleVersion)
+    {
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(analysis->ModuleVersion);
+    }
+
+    if(analysis->GFFSource)
+    {
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(analysis->GFFSource);
+    }
+
+    if(analysis->GFFFeature)
+    {
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(analysis->GFFFeature);
+    }
+
+    if(analysis->Description)
+    {
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(analysis->Description);
+    }
+
+    if(analysis->DisplayLabel)
+    {
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(analysis->DisplayLabel);
+    }
+
+    if(analysis->WebData)
+    {
+        size += (ajuint) sizeof (AjOStr);
+
+        size += ajStrGetRes(analysis->WebData);
+    }
+
+    return size;
+}
+
+
+
+
+/* @func ensAnalysisGetModulename *********************************************
+**
+** Get the module name element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::module
+** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
+**
+** @return [const AjPStr] Module name
+** @@
+******************************************************************************/
+
+const AjPStr ensAnalysisGetModulename(const EnsPAnalysis analysis)
+{
+    if(!analysis)
+        return NULL;
+
+    return analysis->ModuleName;
+}
+
+
+
+
+/* @func ensAnalysisGetModuleversion ******************************************
+**
+** Get the module version element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::module_version
+** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
+**
+** @return [const AjPStr] Module version
+** @@
+******************************************************************************/
+
+const AjPStr ensAnalysisGetModuleversion(const EnsPAnalysis analysis)
+{
+    if(!analysis)
+        return NULL;
+
+    return analysis->ModuleVersion;
+}
+
+
+
+
+/* @func ensAnalysisGetName ***************************************************
+**
+** Get the name element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::logic_name
+** @param  [r] analysis [const EnsPAnalysis] Ensembl Analysis
+**
+** @return [const AjPStr] Name
+** @@
+******************************************************************************/
+
+const AjPStr ensAnalysisGetName(const EnsPAnalysis analysis)
+{
+    if(!analysis)
+        return NULL;
+
+    return analysis->Name;
+}
+
+
+
+
+/* @func ensAnalysisGetParameters *********************************************
+**
+** Get the parameters element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::parameters
+** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
+**
+** @return [const AjPStr] Parameters
+** @@
+******************************************************************************/
+
+const AjPStr ensAnalysisGetParameters(const EnsPAnalysis analysis)
+{
+    if(!analysis)
+        return NULL;
+
+    return analysis->Parameters;
+}
+
+
+
+
+/* @func ensAnalysisGetProgramfile ********************************************
+**
+** Get the program file element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::program_file
+** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
+**
+** @return [const AjPStr] Program file
+** @@
+******************************************************************************/
+
+const AjPStr ensAnalysisGetProgramfile(const EnsPAnalysis analysis)
+{
+    if(!analysis)
+        return NULL;
+
+    return analysis->ProgramFile;
+}
+
+
+
+
+/* @func ensAnalysisGetProgramname ********************************************
+**
+** Get the program name element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::program
+** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
+**
+** @return [const AjPStr] Program name
+** @@
+******************************************************************************/
+
+const AjPStr ensAnalysisGetProgramname(const EnsPAnalysis analysis)
+{
+    if(!analysis)
+        return NULL;
+
+    return analysis->ProgramName;
+}
+
+
+
+
+/* @func ensAnalysisGetProgramversion *****************************************
+**
+** Get the program version element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::program_version
+** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
+**
+** @return [const AjPStr] Program version
+** @@
+******************************************************************************/
+
+const AjPStr ensAnalysisGetProgramversion(const EnsPAnalysis analysis)
+{
+    if(!analysis)
+        return NULL;
+
+    return analysis->ProgramVersion;
+}
+
+
+
+
+
+/* @func ensAnalysisGetWebdata ************************************************
+**
+** Get the web data element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::web_data
+** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
+**
+** @return [const AjPStr] Web data
+** @@
+******************************************************************************/
+
+const AjPStr ensAnalysisGetWebdata(const EnsPAnalysis analysis)
+{
+    if(!analysis)
+        return NULL;
+
+    return analysis->WebData;
+}
+
+
+
+
 /* @section element assignment ************************************************
 **
 ** Functions for assigning elements of an Ensembl Analysis object.
@@ -936,22 +1071,22 @@ AjBool ensAnalysisGetDisplayable(const EnsPAnalysis analysis)
 ** @nam3rule Set Set one element of an Ensembl Analysis
 ** @nam4rule SetAdaptor Set the Ensembl Analysis Adaptor
 ** @nam4rule SetIdentifier Set the SQL database-internal identifier
-** @nam4rule SetCreationDate Set the creation date
+** @nam4rule SetCreationdate Set the creation date
 ** @nam4rule SetName Set the name
-** @nam4rule SetDatabaseName Set the database name
-** @nam4rule SetDatabaseVersion Set the database version
-** @nam4rule SetDatabaseFile Set the database file
-** @nam4rule SetProgramName Set the program name
-** @nam4rule SetProgramVersion Set the program version
-** @nam4rule SetProgramFile Set the program file
+** @nam4rule SetDatabasename Set the database name
+** @nam4rule SetDatabaseversion Set the database version
+** @nam4rule SetDatabasefile Set the database file
+** @nam4rule SetProgramname Set the program name
+** @nam4rule SetProgramversion Set the program version
+** @nam4rule SetProgramfile Set the program file
 ** @nam4rule SetParameters Set the parameters
-** @nam4rule SetModuleName Set the module name
-** @nam4rule SetModuleVersion Set the module version
-** @nam4rule SetGFFSource Set the GFF source
-** @nam4rule SetGFFFeature Set the GFF feature
+** @nam4rule SetModulename Set the module name
+** @nam4rule SetModuleversion Set the module version
+** @nam4rule SetGffsource Set the GFF source
+** @nam4rule SetGfffeature Set the GFF feature
 ** @nam4rule SetDescription Set the description
-** @nam4rule SetDisplayLabel Set the display label
-** @nam4rule SetWebData Set the web data
+** @nam4rule SetDisplaylabel Set the display label
+** @nam4rule SetWebdata Set the web data
 ** @nam4rule SetDisplayable Set the displayable element
 **
 ** @argrule * analysis [EnsPAnalysis] Ensembl Analysis object
@@ -990,32 +1125,7 @@ AjBool ensAnalysisSetAdaptor(EnsPAnalysis analysis,
 
 
 
-/* @func ensAnalysisSetIdentifier *********************************************
-**
-** Set the SQL database-internal identifier element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Storable::dbID
-** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [r] identifier [ajuint] SQL database-internal identifier
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ensAnalysisSetIdentifier(EnsPAnalysis analysis, ajuint identifier)
-{
-    if(!analysis)
-        return ajFalse;
-
-    analysis->Identifier = identifier;
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ensAnalysisSetCreationDate *******************************************
+/* @func ensAnalysisSetCreationdate *******************************************
 **
 ** Set the creation date element of an Ensembl Analysis.
 **
@@ -1027,7 +1137,7 @@ AjBool ensAnalysisSetIdentifier(EnsPAnalysis analysis, ajuint identifier)
 ** @@
 ******************************************************************************/
 
-AjBool ensAnalysisSetCreationDate(EnsPAnalysis analysis, AjPStr cdate)
+AjBool ensAnalysisSetCreationdate(EnsPAnalysis analysis, AjPStr cdate)
 {
     if(!analysis)
         return ajFalse;
@@ -1042,34 +1152,7 @@ AjBool ensAnalysisSetCreationDate(EnsPAnalysis analysis, AjPStr cdate)
 
 
 
-/* @func ensAnalysisSetName ***************************************************
-**
-** Set the name element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::logic_name
-** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [u] name [AjPStr] Name
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ensAnalysisSetName(EnsPAnalysis analysis, AjPStr name)
-{
-    if(!analysis)
-        return ajFalse;
-
-    ajStrDel(&analysis->Name);
-
-    analysis->Name = ajStrNewRef(name);
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ensAnalysisSetDatabaseName *******************************************
+/* @func ensAnalysisSetDatabasename *******************************************
 **
 ** Set the database name element of an Ensembl Analysis.
 **
@@ -1081,7 +1164,7 @@ AjBool ensAnalysisSetName(EnsPAnalysis analysis, AjPStr name)
 ** @@
 ******************************************************************************/
 
-AjBool ensAnalysisSetDatabaseName(EnsPAnalysis analysis, AjPStr databasename)
+AjBool ensAnalysisSetDatabasename(EnsPAnalysis analysis, AjPStr databasename)
 {
     if(!analysis)
         return ajFalse;
@@ -1096,35 +1179,7 @@ AjBool ensAnalysisSetDatabaseName(EnsPAnalysis analysis, AjPStr databasename)
 
 
 
-/* @func ensAnalysisSetDatabaseVersion ****************************************
-**
-** Set the database version element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::db_version
-** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [u] databaseversion [AjPStr] Database version
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ensAnalysisSetDatabaseVersion(EnsPAnalysis analysis,
-                                     AjPStr databaseversion)
-{
-    if(!analysis)
-        return ajFalse;
-
-    ajStrDel(&analysis->DatabaseVersion);
-
-    analysis->DatabaseVersion = ajStrNewRef(databaseversion);
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ensAnalysisSetDatabaseFile *******************************************
+/* @func ensAnalysisSetDatabasefile *******************************************
 **
 ** Set the database file element of an Ensembl Analysis.
 **
@@ -1136,7 +1191,7 @@ AjBool ensAnalysisSetDatabaseVersion(EnsPAnalysis analysis,
 ** @@
 ******************************************************************************/
 
-AjBool ensAnalysisSetDatabaseFile(EnsPAnalysis analysis, AjPStr databasefile)
+AjBool ensAnalysisSetDatabasefile(EnsPAnalysis analysis, AjPStr databasefile)
 {
     if(!analysis)
         return ajFalse;
@@ -1151,217 +1206,27 @@ AjBool ensAnalysisSetDatabaseFile(EnsPAnalysis analysis, AjPStr databasefile)
 
 
 
-/* @func ensAnalysisSetProgramName ********************************************
+/* @func ensAnalysisSetDatabaseversion ****************************************
 **
-** Set the program name element of an Ensembl Analysis.
+** Set the database version element of an Ensembl Analysis.
 **
-** @cc Bio::EnsEMBL::Analysis::program
+** @cc Bio::EnsEMBL::Analysis::db_version
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [u] programname [AjPStr] Program name
+** @param [u] databaseversion [AjPStr] Database version
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ensAnalysisSetProgramName(EnsPAnalysis analysis, AjPStr programname)
+AjBool ensAnalysisSetDatabaseversion(EnsPAnalysis analysis,
+                                     AjPStr databaseversion)
 {
     if(!analysis)
         return ajFalse;
 
-    ajStrDel(&analysis->ProgramName);
+    ajStrDel(&analysis->DatabaseVersion);
 
-    analysis->ProgramName = ajStrNewRef(programname);
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ensAnalysisSetProgramVersion *****************************************
-**
-** Set the program version element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::program_version
-** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [u] programversion [AjPStr] Program version
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ensAnalysisSetProgramVersion(EnsPAnalysis analysis,
-                                    AjPStr programversion)
-{
-    if(!analysis)
-        return ajFalse;
-
-    ajStrDel(&analysis->ProgramVersion);
-
-    analysis->ProgramVersion = ajStrNewRef(programversion);
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ensAnalysisSetProgramFile ********************************************
-**
-** Set the program file element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::program_file
-** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [u] programfile [AjPStr] Program file
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ensAnalysisSetProgramFile(EnsPAnalysis analysis, AjPStr programfile)
-{
-    if(!analysis)
-        return ajFalse;
-
-    ajStrDel(&analysis->ProgramFile);
-
-    analysis->ProgramFile = ajStrNewRef(programfile);
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ensAnalysisSetParameters *********************************************
-**
-** Set the parameters element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::parameters
-** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [u] parameters [AjPStr] Parameters
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ensAnalysisSetParameters(EnsPAnalysis analysis, AjPStr parameters)
-{
-    if(!analysis)
-        return ajFalse;
-
-    ajStrDel(&analysis->Parameters);
-
-    analysis->Parameters = ajStrNewRef(parameters);
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ensAnalysisSetModuleName *********************************************
-**
-** Set the module name element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::module
-** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [u] modulename [AjPStr] Module name
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ensAnalysisSetModuleName(EnsPAnalysis analysis, AjPStr modulename)
-{
-    if(!analysis)
-        return ajFalse;
-
-    ajStrDel(&analysis->ModuleName);
-
-    analysis->ModuleName = ajStrNewRef(modulename);
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ensAnalysisSetModuleVersion ******************************************
-**
-** Set the module version element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::module_version
-** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [u] moduleversion [AjPStr] Module version
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ensAnalysisSetModuleVersion(EnsPAnalysis analysis,
-                                   AjPStr moduleversion)
-{
-    if(!analysis)
-        return ajFalse;
-
-    ajStrDel(&analysis->ModuleVersion);
-
-    analysis->ModuleVersion = ajStrNewRef(moduleversion);
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ensAnalysisSetGFFSource **********************************************
-**
-** Set the GFF source element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::gff_source
-** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [u] gffsource [AjPStr] GFF source
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ensAnalysisSetGFFSource(EnsPAnalysis analysis, AjPStr gffsource)
-{
-    if(!analysis)
-        return ajFalse;
-
-    ajStrDel(&analysis->GFFSource);
-
-    analysis->GFFSource = ajStrNewRef(gffsource);
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ensAnalysisSetGFFFeature *********************************************
-**
-** Set the GFF feature element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::gff_feature
-** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [u] gfffeature [AjPStr] GFF feature
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ensAnalysisSetGFFFeature(EnsPAnalysis analysis, AjPStr gfffeature)
-{
-    if(!analysis)
-        return ajFalse;
-
-    ajStrDel(&analysis->GFFFeature);
-
-    analysis->GFFFeature = ajStrNewRef(gfffeature);
+    analysis->DatabaseVersion = ajStrNewRef(databaseversion);
 
     return ajTrue;
 }
@@ -1396,60 +1261,6 @@ AjBool ensAnalysisSetDescription(EnsPAnalysis analysis, AjPStr description)
 
 
 
-/* @func ensAnalysisSetDisplayLabel *******************************************
-**
-** Set the display label element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::display_label
-** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [u] displaylabel [AjPStr] Display label
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ensAnalysisSetDisplayLabel(EnsPAnalysis analysis, AjPStr displaylabel)
-{
-    if(!analysis)
-        return ajFalse;
-
-    ajStrDel(&analysis->DisplayLabel);
-
-    analysis->DisplayLabel = ajStrNewRef(displaylabel);
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ensAnalysisSetWebData ************************************************
-**
-** Set the web data element of an Ensembl Analysis.
-**
-** @cc Bio::EnsEMBL::Analysis::web_data
-** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [u] webdata [AjPStr] Web data
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-AjBool ensAnalysisSetWebData(EnsPAnalysis analysis, AjPStr webdata)
-{
-    if(!analysis)
-        return ajFalse;
-
-    ajStrDel(&analysis->WebData);
-
-    analysis->WebData = ajStrNewRef(webdata);
-
-    return ajTrue;
-}
-
-
-
-
 /* @func ensAnalysisSetDisplayable ********************************************
 **
 ** Set the displayable element of an Ensembl Analysis.
@@ -1468,6 +1279,330 @@ AjBool ensAnalysisSetDisplayable(EnsPAnalysis analysis, AjBool displayable)
         return ajFalse;
 
     analysis->Displayable = displayable;
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensAnalysisSetDisplaylabel *******************************************
+**
+** Set the display label element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::display_label
+** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
+** @param [u] displaylabel [AjPStr] Display label
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensAnalysisSetDisplaylabel(EnsPAnalysis analysis, AjPStr displaylabel)
+{
+    if(!analysis)
+        return ajFalse;
+
+    ajStrDel(&analysis->DisplayLabel);
+
+    analysis->DisplayLabel = ajStrNewRef(displaylabel);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensAnalysisSetIdentifier *********************************************
+**
+** Set the SQL database-internal identifier element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Storable::dbID
+** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
+** @param [r] identifier [ajuint] SQL database-internal identifier
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensAnalysisSetIdentifier(EnsPAnalysis analysis, ajuint identifier)
+{
+    if(!analysis)
+        return ajFalse;
+
+    analysis->Identifier = identifier;
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensAnalysisSetModulename *********************************************
+**
+** Set the module name element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::module
+** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
+** @param [u] modulename [AjPStr] Module name
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensAnalysisSetModulename(EnsPAnalysis analysis, AjPStr modulename)
+{
+    if(!analysis)
+        return ajFalse;
+
+    ajStrDel(&analysis->ModuleName);
+
+    analysis->ModuleName = ajStrNewRef(modulename);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensAnalysisSetModuleversion ******************************************
+**
+** Set the module version element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::module_version
+** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
+** @param [u] moduleversion [AjPStr] Module version
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensAnalysisSetModuleversion(EnsPAnalysis analysis,
+                                   AjPStr moduleversion)
+{
+    if(!analysis)
+        return ajFalse;
+
+    ajStrDel(&analysis->ModuleVersion);
+
+    analysis->ModuleVersion = ajStrNewRef(moduleversion);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensAnalysisSetName ***************************************************
+**
+** Set the name element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::logic_name
+** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
+** @param [u] name [AjPStr] Name
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensAnalysisSetName(EnsPAnalysis analysis, AjPStr name)
+{
+    if(!analysis)
+        return ajFalse;
+
+    ajStrDel(&analysis->Name);
+
+    analysis->Name = ajStrNewRef(name);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensAnalysisSetParameters *********************************************
+**
+** Set the parameters element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::parameters
+** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
+** @param [u] parameters [AjPStr] Parameters
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensAnalysisSetParameters(EnsPAnalysis analysis, AjPStr parameters)
+{
+    if(!analysis)
+        return ajFalse;
+
+    ajStrDel(&analysis->Parameters);
+
+    analysis->Parameters = ajStrNewRef(parameters);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensAnalysisSetProgramfile ********************************************
+**
+** Set the program file element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::program_file
+** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
+** @param [u] programfile [AjPStr] Program file
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensAnalysisSetProgramfile(EnsPAnalysis analysis, AjPStr programfile)
+{
+    if(!analysis)
+        return ajFalse;
+
+    ajStrDel(&analysis->ProgramFile);
+
+    analysis->ProgramFile = ajStrNewRef(programfile);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensAnalysisSetProgramname ********************************************
+**
+** Set the program name element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::program
+** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
+** @param [u] programname [AjPStr] Program name
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensAnalysisSetProgramname(EnsPAnalysis analysis, AjPStr programname)
+{
+    if(!analysis)
+        return ajFalse;
+
+    ajStrDel(&analysis->ProgramName);
+
+    analysis->ProgramName = ajStrNewRef(programname);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensAnalysisSetProgramversion *****************************************
+**
+** Set the program version element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::program_version
+** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
+** @param [u] programversion [AjPStr] Program version
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensAnalysisSetProgramversion(EnsPAnalysis analysis,
+                                    AjPStr programversion)
+{
+    if(!analysis)
+        return ajFalse;
+
+    ajStrDel(&analysis->ProgramVersion);
+
+    analysis->ProgramVersion = ajStrNewRef(programversion);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensAnalysisSetGfffeature *********************************************
+**
+** Set the GFF feature element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::gff_feature
+** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
+** @param [u] gfffeature [AjPStr] GFF feature
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensAnalysisSetGfffeature(EnsPAnalysis analysis, AjPStr gfffeature)
+{
+    if(!analysis)
+        return ajFalse;
+
+    ajStrDel(&analysis->GFFFeature);
+
+    analysis->GFFFeature = ajStrNewRef(gfffeature);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensAnalysisSetGffsource **********************************************
+**
+** Set the GFF source element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::gff_source
+** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
+** @param [u] gffsource [AjPStr] GFF source
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensAnalysisSetGffsource(EnsPAnalysis analysis, AjPStr gffsource)
+{
+    if(!analysis)
+        return ajFalse;
+
+    ajStrDel(&analysis->GFFSource);
+
+    analysis->GFFSource = ajStrNewRef(gffsource);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensAnalysisSetWebdata ************************************************
+**
+** Set the web data element of an Ensembl Analysis.
+**
+** @cc Bio::EnsEMBL::Analysis::web_data
+** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
+** @param [u] webdata [AjPStr] Web data
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensAnalysisSetWebdata(EnsPAnalysis analysis, AjPStr webdata)
+{
+    if(!analysis)
+        return ajFalse;
+
+    ajStrDel(&analysis->WebData);
+
+    analysis->WebData = ajStrNewRef(webdata);
 
     return ajTrue;
 }
@@ -1704,143 +1839,6 @@ AjBool ensAnalysisMatch(const EnsPAnalysis analysis1,
         return ajFalse;
 
     return ajTrue;
-}
-
-
-
-
-/* @func ensAnalysisGetMemSize ************************************************
-**
-** Get the memory size in bytes of an Ensembl Analysis.
-**
-** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
-**
-** @return [ajuint] Memory size
-** @@
-******************************************************************************/
-
-ajuint ensAnalysisGetMemSize(const EnsPAnalysis analysis)
-{
-    ajuint size = 0;
-
-    if(!analysis)
-        return 0;
-
-    size += (ajuint) sizeof (EnsOAnalysis);
-
-    if(analysis->CreationDate)
-    {
-        size += (ajuint) sizeof (AjOStr);
-
-        size += ajStrGetRes(analysis->CreationDate);
-    }
-
-    if(analysis->Name)
-    {
-        size += (ajuint) sizeof (AjOStr);
-
-        size += ajStrGetRes(analysis->Name);
-    }
-
-    if(analysis->DatabaseName)
-    {
-        size += (ajuint) sizeof (AjOStr);
-
-        size += ajStrGetRes(analysis->DatabaseName);
-    }
-
-    if(analysis->DatabaseVersion)
-    {
-        size += (ajuint) sizeof (AjOStr);
-
-        size += ajStrGetRes(analysis->DatabaseVersion);
-    }
-
-    if(analysis->DatabaseFile)
-    {
-        size += (ajuint) sizeof (AjOStr);
-
-        size += ajStrGetRes(analysis->DatabaseFile);
-    }
-
-    if(analysis->ProgramName)
-    {
-        size += (ajuint) sizeof (AjOStr);
-
-        size += ajStrGetRes(analysis->ProgramName);
-    }
-
-    if(analysis->ProgramVersion)
-    {
-        size += (ajuint) sizeof (AjOStr);
-
-        size += ajStrGetRes(analysis->ProgramVersion);
-    }
-
-    if(analysis->ProgramFile)
-    {
-        size += (ajuint) sizeof (AjOStr);
-
-        size += ajStrGetRes(analysis->ProgramFile);
-    }
-
-    if(analysis->Parameters)
-    {
-        size += (ajuint) sizeof (AjOStr);
-
-        size += ajStrGetRes(analysis->Parameters);
-    }
-
-    if(analysis->ModuleName)
-    {
-        size += (ajuint) sizeof (AjOStr);
-
-        size += ajStrGetRes(analysis->ModuleName);
-    }
-
-    if(analysis->ModuleVersion)
-    {
-        size += (ajuint) sizeof (AjOStr);
-
-        size += ajStrGetRes(analysis->ModuleVersion);
-    }
-
-    if(analysis->GFFSource)
-    {
-        size += (ajuint) sizeof (AjOStr);
-
-        size += ajStrGetRes(analysis->GFFSource);
-    }
-
-    if(analysis->GFFFeature)
-    {
-        size += (ajuint) sizeof (AjOStr);
-
-        size += ajStrGetRes(analysis->GFFFeature);
-    }
-
-    if(analysis->Description)
-    {
-        size += (ajuint) sizeof (AjOStr);
-
-        size += ajStrGetRes(analysis->Description);
-    }
-
-    if(analysis->DisplayLabel)
-    {
-        size += (ajuint) sizeof (AjOStr);
-
-        size += ajStrGetRes(analysis->DisplayLabel);
-    }
-
-    if(analysis->WebData)
-    {
-        size += (ajuint) sizeof (AjOStr);
-
-        size += ajStrGetRes(analysis->WebData);
-    }
-
-    return size;
 }
 
 
@@ -2173,6 +2171,7 @@ static AjBool analysisadaptorCacheInsert(EnsPAnalysisadaptor aa,
 
 
 
+#if AJFALSE
 /* @funcstatic analysisadaptorCacheRemove *************************************
 **
 ** Remove an Ensembl Analysis from the Analysis Adaptor-internal cache.
@@ -2183,8 +2182,6 @@ static AjBool analysisadaptorCacheInsert(EnsPAnalysisadaptor aa,
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
-
-#if AJFALSE
 
 static AjBool analysisadaptorCacheRemove(EnsPAnalysisadaptor aa,
                                          EnsPAnalysis analysis)
@@ -2949,7 +2946,7 @@ static const char* analysisadaptorFeatureClasses[] =
 
 
 
-/* @func ensAnalysisadaptorFetchAllByFeatureClass *****************************
+/* @func ensAnalysisadaptorFetchAllByFeatureclass *****************************
 **
 ** Fetch all Ensembl Analyses referenced by an Ensembl Feature Class.
 **
@@ -2968,7 +2965,7 @@ static const char* analysisadaptorFeatureClasses[] =
 ** @@
 ******************************************************************************/
 
-AjBool ensAnalysisadaptorFetchAllByFeatureClass(EnsPAnalysisadaptor aa,
+AjBool ensAnalysisadaptorFetchAllByFeatureclass(EnsPAnalysisadaptor aa,
                                                 const AjPStr class,
                                                 AjPList analyses)
 {
@@ -3027,7 +3024,7 @@ AjBool ensAnalysisadaptorFetchAllByFeatureClass(EnsPAnalysisadaptor aa,
             if(analysis)
                 ajListPushAppend(analyses, (void *) analysis);
             else
-                ajWarn("ensAnalysisadaptorFetchAllByFeatureClass found "
+                ajWarn("ensAnalysisadaptorFetchAllByFeatureclass found "
                        "Ensembl Analysis identifier %u in the '%s' table, "
                        "which is not referenced in the 'analysis' table.\n",
                        identifier,
@@ -3042,7 +3039,7 @@ AjBool ensAnalysisadaptorFetchAllByFeatureClass(EnsPAnalysisadaptor aa,
     }
     else
     {
-        ajDebug("ensAnalysisadaptorFetchAllByFeatureClass got invalid "
+        ajDebug("ensAnalysisadaptorFetchAllByFeatureclass got invalid "
                 "Feature class '%S'\n",
                 class);
 

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1006,7 +1006,7 @@ AjBool ensQcsequenceSetDescription(EnsPQcsequence qcs, AjPStr description)
 
 
 
-/* @func ensQcsequenceGetMemSize **********************************************
+/* @func ensQcsequenceGetMemsize **********************************************
 **
 ** Get the memory size in bytes of an Ensembl QC Sequence.
 **
@@ -1016,7 +1016,7 @@ AjBool ensQcsequenceSetDescription(EnsPQcsequence qcs, AjPStr description)
 ** @@
 ******************************************************************************/
 
-ajuint ensQcsequenceGetMemSize(const EnsPQcsequence qcs)
+ajuint ensQcsequenceGetMemsize(const EnsPQcsequence qcs)
 {
     ajuint size = 0;
 
@@ -1025,7 +1025,7 @@ ajuint ensQcsequenceGetMemSize(const EnsPQcsequence qcs)
 
     size += (ajuint) sizeof (EnsOQcsequence);
 
-    size += ensQcdatabaseGetMemSize(qcs->Qcdatabase);
+    size += ensQcdatabaseGetMemsize(qcs->Qcdatabase);
 
     if(qcs->Name)
     {
@@ -1250,16 +1250,16 @@ AjBool ensQcsequenceMatch(const EnsPQcsequence qcs1,
 ** colons (":"), and periods (".").
 ** http://www.w3.org/TR/html401/types.html#type-name
 **
-** @param [w] Pstr [AjPStr *] AjAX String
+** @param [w] Pstr [AjPStr*] AjAX String
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-/* FIXME: This function should move! */
-
 AjBool ensHTMLEncodeSGMLID(AjPStr *Pstr)
 {
+/* FIXME: This function should move! */
+
     const char *txtstr = NULL;
 
     if(!Pstr)
@@ -1294,17 +1294,17 @@ AjBool ensHTMLEncodeSGMLID(AjPStr *Pstr)
 **
 ** http://www.w3.org/TR/html401/charset.html#h-5.3.2
 **
-** @param [r] PStr [AjPStr*] URL string
+** @param [r] Pstr [AjPStr*] URL string
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ** NOTE: Since EMBOSS is limited to ASCII only " & < and > need replacing.
 ******************************************************************************/
 
-/* FIXME: This function should move! */
-
 AjBool ensHTMLEncodeEntities(AjPStr *Pstr)
 {
+/* FIXME: This function should move! */
+
     if(!Pstr)
         return ajFalse;
 
@@ -1324,7 +1324,7 @@ AjBool ensHTMLEncodeEntities(AjPStr *Pstr)
 ** Fetch an external URL for an Ensembl QC Sequence.
 **
 ** @param [r] qcs [const EnsPQcsequence] Ensembl QC Sequence
-** @param [r] PStr [AjPStr*] URL string
+** @param [r] Pstr [AjPStr*] URL string
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@

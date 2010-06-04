@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -187,7 +187,7 @@ static void externaldatabaseadaptorFetchAll(const void *key,
 ** Default constructor for an Ensembl External Database.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] edba [EnsPExternaldatabaseadaptor] External Database Adaptor
+** @param [u] edba [EnsPExternaldatabaseadaptor] External Database Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::DBEntry::new
 ** @param [u] name [AjPStr] Database name
@@ -200,7 +200,7 @@ static void externaldatabaseadaptorFetchAll(const void *key,
 ** @param [r] displaylinkable [AjBool] Display identifier is linkable
 ** @param [r] status [EnsEExternaldatabaseStatus] Status
 ** @param [r] type [EnsEExternaldatabaseType] Type
-** @param [r] prority [ajint] Display priority
+** @param [r] priority [ajint] Display priority
 **
 ** @return [EnsPExternaldatabase] Ensembl External Database or NULL
 ** @@
@@ -1167,6 +1167,18 @@ AjBool ensExternaldatabaseTrace(const EnsPExternaldatabase edb, ajuint level)
 
 
 
+/* @datasection [AjPStr] to datatype conversion functions **********************
+**
+** Functions for manipulating Functions for manipulating Ensembl
+** External Database objects using strings
+**
+** @nam2rule Externaldatabase
+**
+*/
+
+
+
+
 /* @section external database from datatype conversion functions **************
 **
 ** Functions for converting External Database elements to other datatypes.
@@ -1174,9 +1186,9 @@ AjBool ensExternaldatabaseTrace(const EnsPExternaldatabase edb, ajuint level)
 ** @fdata [AjPStr]
 ** @fnote None
 **
-** @nam3rule Status Convert string value to a n Ensembl External Database
+** @nam3rule Status Convert string value to an Ensembl External Database
 **                Status element
-** @nam3rule Type Convert string value to a n Ensembl External Database
+** @nam3rule Type Convert string value to an Ensembl External Database
 **                Type element
 ** @nam4rule FromStr Convert from string
 **
@@ -1260,11 +1272,23 @@ EnsEExternaldatabaseType ensExternaldatabaseTypeFromStr(
 
 
 
+/* @datasection [none] to datatype conversion functions ************************
+**
+** Functions for manipulating Functions for converting Ensembl
+** External Database object status as strings
+**
+** @nam2rule Externaldatabase
+**
+*/
+
+
+
+
 /* @section external database to datatype conversion functions ****************
 **
 ** Functions for converting External Database elements to other datatypes.
 **
-** @fdata None
+** @fdata [none]
 ** @fnote None
 **
 ** @nam3rule To Convert string value to a different datatype
@@ -1347,7 +1371,7 @@ const char* ensExternaldatabaseTypeToChar(EnsEExternaldatabaseType type)
 
 
 
-/* @func ensExternaldatabaseGetMemSize ****************************************
+/* @func ensExternaldatabaseGetMemsize ****************************************
 **
 ** Get the memory size in bytes of an Ensembl External Database.
 **
@@ -1357,7 +1381,7 @@ const char* ensExternaldatabaseTypeToChar(EnsEExternaldatabaseType type)
 ** @@
 ******************************************************************************/
 
-ajuint ensExternaldatabaseGetMemSize(const EnsPExternaldatabase edb)
+ajuint ensExternaldatabaseGetMemsize(const EnsPExternaldatabase edb)
 {
     ajuint size = 0;
 
@@ -1486,8 +1510,7 @@ static const char *externaldatabaseadaptorFinalCondition = NULL;
 ** Run a SQL statement against an Ensembl Database Adaptor and consolidate the
 ** results into an AJAX List of Ensembl External Database objects.
 **
-** @param [r] edba [EnsPExternaldatabaseadaptor] Ensembl External
-**                                               Database Adaptor
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 ** @param [r] statement [const AjPStr] SQL statement
 ** @param [uN] am [EnsPAssemblymapper] Ensembl Assembly Mapper
 ** @param [uN] slice [EnsPSlice] Ensembl Slice
@@ -1743,24 +1766,23 @@ static AjBool externaldatabaseadaptorCacheInsert(
 
 
 
+#if AJFALSE
 /* @funcstatic externaldatabaseadaptorCacheRemove *****************************
 **
 ** Remove an Ensembl External database from an
 ** External Database Adaptor-internal cache.
 **
-** @param [u] dbea [EnsPExternaldatabaseadaptor] Ensembl External
+** @param [u] edba [EnsPExternaldatabaseadaptor] Ensembl External
 **                                               Database Adaptor
-** @param [r] dbe [EnsPExternaldatabase] Ensembl External Database
+** @param [r] edb [const EnsPExternaldatabase] Ensembl External Database
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
 
-#if AJFALSE
-
 static AjBool externaldatabaseadaptorCacheRemove(
     EnsPExternaldatabaseadaptor edba,
-    EnsPExternaldatabase edb)
+    const EnsPExternaldatabase edb)
 {
     ajuint *Pidentifier = NULL;
 
@@ -2409,7 +2431,7 @@ AjBool ensExternaldatabaseadaptorFetchByIdentifier(
 **
 ** @param [r] edba [EnsPExternaldatabaseadaptor] Ensembl External Database
 **                                               Adaptor
-** @param [r] identifier [ajuint] SQL database-internal identifier
+** @param [r] name [const AjPStr] Database name
 ** @param [wP] Pedb [EnsPExternaldatabase*] Ensembl External Database address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise

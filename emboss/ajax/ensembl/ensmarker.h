@@ -241,7 +241,7 @@ AjBool ensMarkersynonymSetName(EnsPMarkersynonym ms, AjPStr name);
 
 AjBool ensMarkersynonymTrace(const EnsPMarkersynonym ms, ajuint level);
 
-ajuint ensMarkersynonymGetMemSize(const EnsPMarkersynonym ms);
+ajuint ensMarkersynonymGetMemsize(const EnsPMarkersynonym ms);
 
 /* Ensembl Marker Synonym Adaptor */
 
@@ -298,7 +298,7 @@ AjBool ensMarkermaplocationSetLODScore(EnsPMarkermaplocation mml,
 AjBool ensMarkermaplocationTrace(const EnsPMarkermaplocation mml,
                                  ajuint level);
 
-ajuint ensMarkermaplocationGetMemSize(const EnsPMarkermaplocation mml);
+ajuint ensMarkermaplocationGetMemsize(const EnsPMarkermaplocation mml);
 
 /* Ensembl Marker Map Location Adaptor */
 
@@ -370,7 +370,7 @@ AjBool ensMarkerSetPriority(EnsPMarker marker, ajint priority);
 
 AjBool ensMarkerTrace(const EnsPMarker marker, ajuint level);
 
-ajuint ensMarkerGetMemSize(const EnsPMarker marker);
+ajuint ensMarkerGetMemsize(const EnsPMarker marker);
 
 AjBool ensMarkerAddMarkersynonym(EnsPMarker marker, EnsPMarkersynonym ms);
 
@@ -450,7 +450,7 @@ AjBool ensMarkerfeatureSetMapWeight(EnsPMarkerfeature mf, ajint mapweight);
 
 AjBool ensMarkerfeatureTrace(const EnsPMarkerfeature mf, ajuint level);
 
-ajuint ensMarkerfeatureGetMemSize(const EnsPMarkerfeature mf);
+ajuint ensMarkerfeatureGetMemsize(const EnsPMarkerfeature mf);
 
 AjBool ensMarkerfeatureSortByStartAscending(AjPList mfs);
 

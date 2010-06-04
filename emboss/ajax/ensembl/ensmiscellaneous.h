@@ -164,7 +164,7 @@ AjPStr ensMiscellaneoussetGetName(const EnsPMiscellaneousset ms);
 
 AjPStr ensMiscellaneoussetGetDescription(const EnsPMiscellaneousset ms);
 
-ajuint ensMiscellaneoussetGetMaximumLength(const EnsPMiscellaneousset ms);
+ajuint ensMiscellaneoussetGetMaximumlength(const EnsPMiscellaneousset ms);
 
 AjBool ensMiscellaneoussetSetAdaptor(EnsPMiscellaneousset ms,
                                      EnsPMiscellaneoussetadaptor msa);
@@ -179,10 +179,10 @@ AjBool ensMiscellaneoussetSetName(EnsPMiscellaneousset ms, AjPStr name);
 AjBool ensMiscellaneoussetSetDescription(EnsPMiscellaneousset ms,
                                          AjPStr description);
 
-AjBool ensMiscellaneoussetSetMaximumLength(EnsPMiscellaneousset ms,
+AjBool ensMiscellaneoussetSetMaximumlength(EnsPMiscellaneousset ms,
                                            ajuint maxlen);
 
-ajuint ensMiscellaneoussetGetMemSize(const EnsPMiscellaneousset ms);
+ajuint ensMiscellaneoussetGetMemsize(const EnsPMiscellaneousset ms);
 
 AjBool ensMiscellaneoussetTrace(const EnsPMiscellaneousset ms, ajuint level);
 
@@ -261,7 +261,7 @@ AjBool ensMiscellaneousfeatureAddMiscellaneousset(EnsPMiscellaneousfeature mf,
 AjBool ensMiscellaneousfeatureTrace(const EnsPMiscellaneousfeature mf,
                                     ajuint level);
 
-ajuint ensMiscellaneousfeatureGetMemSize(const EnsPMiscellaneousfeature mf);
+ajuint ensMiscellaneousfeatureGetMemsize(const EnsPMiscellaneousfeature mf);
 
 AjBool ensMiscellaneousfeatureFetchAllAttributes(EnsPMiscellaneousfeature mf,
                                                  const AjPStr code,

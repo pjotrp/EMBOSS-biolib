@@ -66,6 +66,13 @@ typedef enum EnsODatabaseadaptorGroup
 ** @alias EnsSDatabaseadaptor
 ** @alias EnsODatabaseadaptor
 **
+** @alias EnsPAttributeadaptor
+** @alias EnsPDitagadaptor
+** @alias EnsPRepeatconsensusadaptor
+** @alias EnsPGvalleleadaptor
+** @alias EnsPGvgenotypeadaptor
+** @alias EnsPGvvariationadaptor
+**
 ** @attr Databaseconnection [EnsPDatabaseconnection] Ensembl Database
 **                                                   Connection
 ** @attr Species [AjPStr] Species

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.14 $
+** @version $Revision: 1.15 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -832,12 +832,12 @@ ajuint ensTranslationGetEnd(const EnsPTranslation translation)
 
 
 
-/* @func ensTranscriptGetStableIdentifier *************************************
+/* @func ensTranslationGetStableIdentifier ************************************
 **
 ** Get the stable identifier element of an Ensembl Translation.
 **
 ** @cc Bio::EnsEMBL::Translation::stable_id
-** @param [r] transcript [const EnsPTranslation] Ensembl Translation
+** @param [r] translation [const EnsPTranslation] Ensembl Translation
 **
 ** @return [AjPStr] Stable identifier
 ** @@
@@ -854,7 +854,7 @@ AjPStr ensTranslationGetStableIdentifier(const EnsPTranslation translation)
 
 
 
-/* @func ensTranscriptGetVersion **********************************************
+/* @func ensTranslationGetVersion *********************************************
 **
 ** Get the version element of an Ensembl Translation.
 **
@@ -1319,7 +1319,7 @@ ajuint ensTranslationGetSliceEnd(EnsPTranslation translation)
 
 
 
-/* @func ensTranslationGetMemSize *********************************************
+/* @func ensTranslationGetMemsize *********************************************
 **
 ** Get the memory size in bytes of an Ensembl Translation.
 **
@@ -1329,7 +1329,7 @@ ajuint ensTranslationGetSliceEnd(EnsPTranslation translation)
 ** @@
 ******************************************************************************/
 
-ajuint ensTranslationGetMemSize(const EnsPTranslation translation)
+ajuint ensTranslationGetMemsize(const EnsPTranslation translation)
 {
     ajuint size = 0;
 
@@ -1346,9 +1346,9 @@ ajuint ensTranslationGetMemSize(const EnsPTranslation translation)
 
     size += (ajuint) sizeof (EnsOTranslation);
 
-    size += ensExonGetMemSize(translation->StartExon);
+    size += ensExonGetMemsize(translation->StartExon);
 
-    size += ensExonGetMemSize(translation->EndExon);
+    size += ensExonGetMemsize(translation->EndExon);
 
     if(translation->Sequence)
     {
@@ -1390,7 +1390,7 @@ ajuint ensTranslationGetMemSize(const EnsPTranslation translation)
         {
             attribute = (EnsPAttribute) ajListIterGet(iter);
 
-            size += ensAttributeGetMemSize(attribute);
+            size += ensAttributeGetMemsize(attribute);
         }
 
         ajListIterDel(&iter);
@@ -1408,7 +1408,7 @@ ajuint ensTranslationGetMemSize(const EnsPTranslation translation)
         {
             dbe = (EnsPDatabaseentry) ajListIterGet(iter);
 
-            size += ensDatabaseentryGetMemSize(dbe);
+            size += ensDatabaseentryGetMemsize(dbe);
         }
 
         ajListIterDel(&iter);
@@ -1426,7 +1426,7 @@ ajuint ensTranslationGetMemSize(const EnsPTranslation translation)
         {
             pf = (EnsPProteinfeature) ajListIterGet(iter);
 
-            size += ensProteinfeatureGetMemSize(pf);
+            size += ensProteinfeatureGetMemsize(pf);
         }
 
         ajListIterDel(&iter);
@@ -3834,7 +3834,7 @@ AjBool ensTranslationadaptorFetchAllIdentifiers(
 ** deleting the AJAX List.
 **
 ** @cc Bio::EnsEMBL::DBSQL::TranslationAdaptor::list_stable_ids
-** @param [u] tla [EnsPTranslationadaptor] Ensembl Translation Adaptor
+** @param [r] tla [const EnsPTranslationadaptor] Ensembl Translation Adaptor
 ** @param [u] identifiers [AjPList] AJAX List of AJAX Strings
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise

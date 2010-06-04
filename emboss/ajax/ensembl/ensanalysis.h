@@ -47,37 +47,37 @@ EnsPAnalysisadaptor ensAnalysisGetAdaptor(const EnsPAnalysis analysis);
 
 ajuint ensAnalysisGetIdentifier(const EnsPAnalysis analysis);
 
-const AjPStr ensAnalysisGetCreationDate(const EnsPAnalysis analysis);
+const AjPStr ensAnalysisGetCreationdate(const EnsPAnalysis analysis);
 
 const AjPStr ensAnalysisGetName(const EnsPAnalysis analysis);
 
-const AjPStr ensAnalysisGetDatabaseName(const EnsPAnalysis analysis);
+const AjPStr ensAnalysisGetDatabasename(const EnsPAnalysis analysis);
 
-const AjPStr ensAnalysisGetDatabaseVersion(const EnsPAnalysis analysis);
+const AjPStr ensAnalysisGetDatabaseversion(const EnsPAnalysis analysis);
 
-const AjPStr ensAnalysisGetDatabaseFile(const EnsPAnalysis analysis);
+const AjPStr ensAnalysisGetDatabasefile(const EnsPAnalysis analysis);
 
-const AjPStr ensAnalysisGetProgramName(const EnsPAnalysis analysis);
+const AjPStr ensAnalysisGetProgramname(const EnsPAnalysis analysis);
 
-const AjPStr ensAnalysisGetProgramVersion(const EnsPAnalysis analysis);
+const AjPStr ensAnalysisGetProgramversion(const EnsPAnalysis analysis);
 
-const AjPStr ensAnalysisGetProgramFile(const EnsPAnalysis analysis);
+const AjPStr ensAnalysisGetProgramfile(const EnsPAnalysis analysis);
 
 const AjPStr ensAnalysisGetParameters(const EnsPAnalysis analysis);
 
-const AjPStr ensAnalysisGetModuleName(const EnsPAnalysis analysis);
+const AjPStr ensAnalysisGetModulename(const EnsPAnalysis analysis);
 
-const AjPStr ensAnalysisGetModuleVersion(const EnsPAnalysis analysis);
+const AjPStr ensAnalysisGetModuleversion(const EnsPAnalysis analysis);
 
-const AjPStr ensAnalysisGetGFFSource(const EnsPAnalysis analysis);
+const AjPStr ensAnalysisGetGffsource(const EnsPAnalysis analysis);
 
-const AjPStr ensAnalysisGetGFFFeature(const EnsPAnalysis analysis);
+const AjPStr ensAnalysisGetGfffeature(const EnsPAnalysis analysis);
 
 const AjPStr ensAnalysisGetDescription(const EnsPAnalysis analysis);
 
-const AjPStr ensAnalysisGetDisplayLabel(const EnsPAnalysis analysis);
+const AjPStr ensAnalysisGetDisplaylabel(const EnsPAnalysis analysis);
 
-const AjPStr ensAnalysisGetWebData(const EnsPAnalysis analysis);
+const AjPStr ensAnalysisGetWebdata(const EnsPAnalysis analysis);
 
 AjBool ensAnalysisGetDisplayable(const EnsPAnalysis analysis);
 
@@ -86,40 +86,40 @@ AjBool ensAnalysisSetAdaptor(EnsPAnalysis analysis,
 
 AjBool ensAnalysisSetIdentifier(EnsPAnalysis analysis, ajuint identifier);
 
-AjBool ensAnalysisSetCreationDate(EnsPAnalysis analysis, AjPStr cdate);
+AjBool ensAnalysisSetCreationdate(EnsPAnalysis analysis, AjPStr cdate);
 
 AjBool ensAnalysisSetName(EnsPAnalysis analysis, AjPStr name);
 
-AjBool ensAnalysisSetDatabaseName(EnsPAnalysis analysis, AjPStr databasename);
+AjBool ensAnalysisSetDatabasename(EnsPAnalysis analysis, AjPStr databasename);
 
-AjBool ensAnalysisSetDatabaseVersion(EnsPAnalysis analysis,
+AjBool ensAnalysisSetDatabaseversion(EnsPAnalysis analysis,
                                      AjPStr databaseversion);
 
-AjBool ensAnalysisSetDatabaseFile(EnsPAnalysis analysis, AjPStr databasefile);
+AjBool ensAnalysisSetDatabasefile(EnsPAnalysis analysis, AjPStr databasefile);
 
-AjBool ensAnalysisSetProgramName(EnsPAnalysis analysis, AjPStr programname);
+AjBool ensAnalysisSetProgramname(EnsPAnalysis analysis, AjPStr programname);
 
-AjBool ensAnalysisSetProgramVersion(EnsPAnalysis analysis,
+AjBool ensAnalysisSetProgramversion(EnsPAnalysis analysis,
                                     AjPStr programversion);
 
-AjBool ensAnalysisSetProgramFile(EnsPAnalysis analysis, AjPStr programfile);
+AjBool ensAnalysisSetProgramfile(EnsPAnalysis analysis, AjPStr programfile);
 
 AjBool ensAnalysisSetParameters(EnsPAnalysis analysis, AjPStr parameters);
 
-AjBool ensAnalysisSetModuleName(EnsPAnalysis analysis, AjPStr modulename);
+AjBool ensAnalysisSetModulename(EnsPAnalysis analysis, AjPStr modulename);
 
-AjBool ensAnalysisSetModuleVersion(EnsPAnalysis analysis,
+AjBool ensAnalysisSetModuleversion(EnsPAnalysis analysis,
                                    AjPStr moduleversion);
 
-AjBool ensAnalysisSetGFFSource(EnsPAnalysis analysis, AjPStr gffsource);
+AjBool ensAnalysisSetGffsource(EnsPAnalysis analysis, AjPStr gffsource);
 
-AjBool ensAnalysisSetGFFFeature(EnsPAnalysis analysis, AjPStr gfffeature);
+AjBool ensAnalysisSetGfffeature(EnsPAnalysis analysis, AjPStr gfffeature);
 
 AjBool ensAnalysisSetDescription(EnsPAnalysis analysis, AjPStr description);
 
-AjBool ensAnalysisSetDisplayLabel(EnsPAnalysis analysis, AjPStr displaylabel);
+AjBool ensAnalysisSetDisplaylabel(EnsPAnalysis analysis, AjPStr displaylabel);
 
-AjBool ensAnalysisSetWebData(EnsPAnalysis analysis, AjPStr webdata);
+AjBool ensAnalysisSetWebdata(EnsPAnalysis analysis, AjPStr webdata);
 
 AjBool ensAnalysisSetDisplayable(EnsPAnalysis analysis, AjBool displayable);
 
@@ -130,7 +130,7 @@ AjBool ensAnalysisIsDatabase(const EnsPAnalysis analysis);
 AjBool ensAnalysisMatch(const EnsPAnalysis analysis1,
                         const EnsPAnalysis analysis2);
 
-ajuint ensAnalysisGetMemSize(const EnsPAnalysis analysis);
+ajuint ensAnalysisGetMemsize(const EnsPAnalysis analysis);
 
 /* Ensembl Analysis Adaptor */
 
@@ -159,7 +159,7 @@ AjBool ensAnalysisadaptorFetchByName(EnsPAnalysisadaptor aa,
                                      const AjPStr name,
                                      EnsPAnalysis *Panalysis);
 
-AjBool ensAnalysisadaptorFetchAllByFeatureClass(EnsPAnalysisadaptor aa,
+AjBool ensAnalysisadaptorFetchAllByFeatureclass(EnsPAnalysisadaptor aa,
                                                 const AjPStr class,
                                                 AjPList analyses);
 

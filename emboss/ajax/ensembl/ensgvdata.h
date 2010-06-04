@@ -11,12 +11,13 @@ extern "C"
 
 
 
-/* @data EnsPGvsampleadaptor **************************************************
+/* #data EnsPGvsampleadaptor **************************************************
 **
 ** Ensembl Genetic Variation Sample Adaptor.
+** Defined as an alias in EnsPBaseadaptor
 **
-** @alias EnsPBaseadaptor
-** @@
+** #alias EnsPBaseadaptor
+** ##
 ******************************************************************************/
 
 #define EnsPGvsampleadaptor EnsPBaseadaptor
@@ -78,12 +79,13 @@ typedef struct EnsSGvsample
 
 
 
-/* @data EnsPGvindividualadaptor **********************************************
+/* #data EnsPGvindividualadaptor **********************************************
 **
 ** Ensembl Genetic Variation Individual Adaptor.
+** Defined as an alias in EnsPBaseadaptor
 **
-** @alias EnsPBaseadaptor
-** @@
+** #alias EnsPBaseadaptor
+** ##
 ******************************************************************************/
 
 #define EnsPGvindividualadaptor EnsPBaseadaptor
@@ -168,12 +170,13 @@ typedef struct EnsSGvindividual
 
 
 
-/* @data EnsPGvpopulationadaptor **********************************************
+/* #data EnsPGvpopulationadaptor **********************************************
 **
 ** Ensembl Genetic Variation Population Adaptor.
+** Defined as an alias in EnsPBaseadaptor
 **
-** @alias EnsPBaseadaptor
-** @@
+** #alias EnsPBaseadaptor
+** ##
 ******************************************************************************/
 
 #define EnsPGvpopulationadaptor EnsPBaseadaptor

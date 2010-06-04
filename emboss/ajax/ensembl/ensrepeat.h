@@ -12,12 +12,12 @@ extern "C"
 
 
 
-/* @data EnsPRepeatconsensusadaptor *******************************************
+/* #data EnsPRepeatconsensusadaptor *******************************************
 **
 ** Ensembl Repeat Consensus Adaptor.
-**
-** @alias EnsPDatabaseadaptor
-** @@
+** Defined as an alias in EnsPDatabaseadaptor
+** #alias EnsPDatabaseadaptor
+** ##
 ******************************************************************************/
 
 #define EnsPRepeatconsensusadaptor EnsPDatabaseadaptor
@@ -175,7 +175,7 @@ AjBool ensRepeatconsensusSetConsensus(EnsPRepeatconsensus rc,
 
 AjBool ensRepeatconsensusSetLength(EnsPRepeatconsensus rc, ajuint length);
 
-ajuint ensRepeatconsensusGetMemSize(const EnsPRepeatconsensus rc);
+ajuint ensRepeatconsensusGetMemsize(const EnsPRepeatconsensus rc);
 
 AjBool ensRepeatconsensusTrace(const EnsPRepeatconsensus rc, ajuint level);
 
@@ -261,7 +261,7 @@ AjBool ensRepeatfeatureSetScore(EnsPRepeatfeature rf, double score);
 
 AjBool ensRepeatfeatureTrace(const EnsPRepeatfeature rf, ajuint level);
 
-ajuint ensRepeatfeatureGetMemSize(const EnsPRepeatfeature rf);
+ajuint ensRepeatfeatureGetMemsize(const EnsPRepeatfeature rf);
 
 AjBool ensRepeatfeatureSortByStartAscending(AjPList rfs);
 

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -781,7 +781,7 @@ AjBool ensRepeatconsensusTrace(const EnsPRepeatconsensus rc, ajuint level)
 
 
 
-/* @func ensRepeatconsensusGetMemSize *****************************************
+/* @func ensRepeatconsensusGetMemsize *****************************************
 **
 ** Get the memory size in bytes of an Ensembl Repeat Consensus.
 **
@@ -791,7 +791,7 @@ AjBool ensRepeatconsensusTrace(const EnsPRepeatconsensus rc, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensRepeatconsensusGetMemSize(const EnsPRepeatconsensus rc)
+ajuint ensRepeatconsensusGetMemsize(const EnsPRepeatconsensus rc)
 {
     ajuint size = 0;
 
@@ -1368,7 +1368,7 @@ AjBool ensRepeatconsensusadaptorFetchAllByClassConsensus(
 ** @param [r] hend [ajint] Repeat Consensus hit end
 ** @param [r] score [double] Repeat Consensus score
 **
-** @return [EnsPRepeatconsensus] Ensembl Repeat Consensus
+** @return [EnsPRepeatfeature] Ensembl Repeat Feature
 ** @@
 ******************************************************************************/
 
@@ -2031,7 +2031,7 @@ AjBool ensRepeatfeatureTrace(const EnsPRepeatfeature rf, ajuint level)
 
 
 
-/* @func ensRepeatfeatureGetMemSize *******************************************
+/* @func ensRepeatfeatureGetMemsize *******************************************
 **
 ** Get the memory size in bytes of an Ensembl Repeat Feature.
 **
@@ -2041,7 +2041,7 @@ AjBool ensRepeatfeatureTrace(const EnsPRepeatfeature rf, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensRepeatfeatureGetMemSize(const EnsPRepeatfeature rf)
+ajuint ensRepeatfeatureGetMemsize(const EnsPRepeatfeature rf)
 {
     ajuint size = 0;
 
@@ -2050,9 +2050,9 @@ ajuint ensRepeatfeatureGetMemSize(const EnsPRepeatfeature rf)
 
     size += (ajuint) sizeof (EnsORepeatfeature);
 
-    size += ensFeatureGetMemSize(rf->Feature);
+    size += ensFeatureGetMemsize(rf->Feature);
 
-    size += ensRepeatconsensusGetMemSize(rf->Repeatconsensus);
+    size += ensRepeatconsensusGetMemsize(rf->Repeatconsensus);
 
     return size;
 }
@@ -2228,7 +2228,7 @@ AjBool ensRepeatfeatureSortByStartDescending(AjPList rfs)
 ** @@
 ******************************************************************************/
 
-static void *repeatfeatureadaptorCacheReference(void *value)
+static void* repeatfeatureadaptorCacheReference(void *value)
 {
     if(ajDebugTest("repeatfeatureadaptorCacheReference"))
         ajDebug("repeatfeatureadaptorCacheReference\n"
@@ -2289,7 +2289,7 @@ static ajuint repeatfeatureadaptorCacheSize(const void *value)
     if(!value)
         return 0;
 
-    return ensRepeatfeatureGetMemSize((const EnsPRepeatfeature) value);
+    return ensRepeatfeatureGetMemsize((const EnsPRepeatfeature) value);
 }
 
 

@@ -115,7 +115,7 @@ AjBool ensMetainformationSetSpecies(EnsPMetainformation mi, ajuint species);
 
 AjBool ensMetainformationTrace(const EnsPMetainformation mi, ajuint level);
 
-ajuint ensMetainformationGetMemSize(const EnsPMetainformation mi);
+ajuint ensMetainformationGetMemsize(const EnsPMetainformation mi);
 
 /* Ensembl Meta-Information Adaptor */
 

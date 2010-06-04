@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -130,8 +130,9 @@ static AjBool gvindividualadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @nam4rule NewObj Constructor with existing object
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule Obj object [EnsPGvindividual] Ensembl Genetic Variation Individual
-** @argrule Ref object [EnsPGvindividual] Ensembl Genetic Variation Individual
+** @argrule Obj object [const EnsPGvindividual] Ensembl Genetic Variation
+**                                              Individual
+** @argrule Ref gvi [EnsPGvindividual] Ensembl Genetic Variation Individual
 **
 ** @valrule * [EnsPGvindividual] Ensembl Genetic Variation Individual
 **
@@ -146,16 +147,16 @@ static AjBool gvindividualadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** Default constructor for an Ensembl Genetic Variation Individual.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] gvia [EnsPGvindividualadaptor] Ensembl Genetic Variation
+** @param [u] gvia [EnsPGvindividualadaptor] Ensembl Genetic Variation
 **                                           Individual Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::Variation::Sample::new
-** @param [u] sample [EnsPGvsample] Ensembl Genetic Variation Sample
+** @param [u] gvs [EnsPGvsample] Ensembl Genetic Variation Sample
 ** @cc Bio::EnsEMBL::Variation::Individual::new
 ** @param [u] father [EnsPGvindividual] Father
 ** @param [u] mother [EnsPGvindividual] Mother
-** @param [r] gender [EnsEGvindividualGender] Gender
-** @param [r] type [EnsEGvindividualType] Type
+** @param [u] gender [EnsEGvindividualGender] Gender
+** @param [u] type [EnsEGvindividualType] Type
 ** @param [u] description [AjPStr] Description
 **
 ** @return [EnsPGvindividual] Ensembl Genetic Variation Individual or NULL
@@ -938,7 +939,7 @@ const char* ensGvindividualTypeToChar(EnsEGvindividualType type)
 
 
 
-/* @func ensGvindividualGetMemSize ********************************************
+/* @func ensGvindividualGetMemsize ********************************************
 **
 ** Get the memory size in bytes of an Ensembl Genetic Variation Individual.
 **
@@ -948,7 +949,7 @@ const char* ensGvindividualTypeToChar(EnsEGvindividualType type)
 ** @@
 ******************************************************************************/
 
-ajuint ensGvindividualGetMemSize(const EnsPGvindividual gvi)
+ajuint ensGvindividualGetMemsize(const EnsPGvindividual gvi)
 {
     ajuint size = 0;
 
@@ -957,11 +958,11 @@ ajuint ensGvindividualGetMemSize(const EnsPGvindividual gvi)
 
     size += (ajuint) sizeof (EnsOGvindividual);
 
-    size += ensGvsampleGetMemSize(gvi->Gvsample);
+    size += ensGvsampleGetMemsize(gvi->Gvsample);
 
-    size += ensGvindividualGetMemSize(gvi->Father);
+    size += ensGvindividualGetMemsize(gvi->Father);
 
-    size += ensGvindividualGetMemSize(gvi->Mother);
+    size += ensGvindividualGetMemsize(gvi->Mother);
 
     if(gvi->Description)
     {
@@ -989,8 +990,6 @@ ajuint ensGvindividualGetMemSize(const EnsPGvindividual gvi)
 ** @argrule Trace level [ajuint] Indentation level
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
-**
-** @valrule * [void]
 **
 ** @fcategory misc
 ******************************************************************************/
@@ -1284,7 +1283,7 @@ static AjBool gvindividualadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** @see ensRegistryGetGvindividualadaptor
 **
 ** @cc Bio::EnsEMBL::Variation::DBSQL::Individualadaptor::new
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
 ** @return [EnsPGvindividualadaptor] Ensembl Genetic Variation
 **                                   Individual Adaptor or NULL
@@ -1320,7 +1319,7 @@ EnsPGvindividualadaptor ensGvindividualadaptorNew(
 ** destroyed directly. Upon exit, the Ensembl Registry will call this function
 ** if required.
 **
-** @param [d] Pgvia [EnsPGvindividualadaptor*] Ensembl Genetic Variation
+** @param [d] Pgvi [EnsPGvindividualadaptor*] Ensembl Genetic Variation
 **                                             Individual Adaptor address
 **
 ** @return [void]

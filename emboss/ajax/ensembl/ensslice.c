@@ -7,7 +7,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.15 $
+** @version $Revision: 1.16 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -712,7 +712,7 @@ AjBool ensSliceSetSequence(EnsPSlice slice, AjPStr sequence)
 **
 ** Trace an Ensembl Slice.
 **
-** @param [r] cs [const EnsPSlice] Ensembl Slice
+** @param [r] slice [const EnsPSlice] Ensembl Slice
 ** @param [r] level [ajuint] Indentation level
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -961,7 +961,7 @@ ajuint ensSliceGetLength(const EnsPSlice slice)
 
 
 
-/* @func ensSliceGetMemSize ***************************************************
+/* @func ensSliceGetMemsize ***************************************************
 **
 ** Get the memory size in bytes of an Ensembl Slice.
 **
@@ -971,7 +971,7 @@ ajuint ensSliceGetLength(const EnsPSlice slice)
 ** @@
 ******************************************************************************/
 
-ajuint ensSliceGetMemSize(const EnsPSlice slice)
+ajuint ensSliceGetMemsize(const EnsPSlice slice)
 {
     ajuint size = 0;
 
@@ -980,7 +980,7 @@ ajuint ensSliceGetMemSize(const EnsPSlice slice)
 
     size += (ajuint) sizeof (EnsOSlice);
 
-    size += ensSeqregionGetMemSize(slice->Seqregion);
+    size += ensSeqregionGetMemsize(slice->Seqregion);
 
     if(slice->Sequence)
     {
@@ -2904,7 +2904,7 @@ static ajuint sliceadaptorCacheSize(const void* value)
     if(!value)
         return 0;
 
-    return ensSliceGetMemSize((const EnsPSlice) value);
+    return ensSliceGetMemsize((const EnsPSlice) value);
 }
 
 

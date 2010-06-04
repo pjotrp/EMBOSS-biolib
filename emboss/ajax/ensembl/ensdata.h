@@ -13,12 +13,12 @@ extern "C"
 
 
 
-/* @data EnsPAttributeadaptor *************************************************
+/* #data EnsPAttributeadaptor *************************************************
 **
-** Ensembl Attribute Adaptor.
+** Ensembl Attribute Adaptor. (defined as an alias in EnsPDatabaseadaptor)
 **
-** @alias EnsPDatabaseadaptor
-** @@
+** #alias EnsPDatabaseadaptor
+** ##
 ******************************************************************************/
 
 #define EnsPAttributeadaptor EnsPDatabaseadaptor
@@ -429,6 +429,10 @@ typedef struct EnsSBaseadaptorLeftJoin {
 **
 ** @alias EnsSBaseadaptor
 ** @alias EnsOBaseadaptor
+**
+** @alias EnsPGvsampleadaptor
+** @alias EnsPGvindividualadaptor
+** @alias EnsPGvpopulationadaptor
 **
 ** @attr Adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor.
 ** @attr Tables [const char**] One dimensional array of table name character

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -184,7 +184,7 @@ EnsPAttribute ensAttributeNewObj(const EnsPAttribute object)
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] feature [EnsPAttribute] Ensembl Attribute
+** @param [u] attribute [EnsPAttribute] Ensembl Attribute
 **
 ** @return [EnsPAttribute] Ensembl Attribute or NULL
 ** @@
@@ -386,7 +386,7 @@ AjPStr ensAttributeGetValue(const EnsPAttribute attribute)
 
 
 
-/* @func ensAttributeGetMemSize ***********************************************
+/* @func ensAttributeGetMemsize ***********************************************
 **
 ** Get the memory size in bytes of an Ensembl Attribute.
 **
@@ -396,7 +396,7 @@ AjPStr ensAttributeGetValue(const EnsPAttribute attribute)
 ** @@
 ******************************************************************************/
 
-ajuint ensAttributeGetMemSize(const EnsPAttribute attribute)
+ajuint ensAttributeGetMemsize(const EnsPAttribute attribute)
 {
     ajuint size = 0;
 

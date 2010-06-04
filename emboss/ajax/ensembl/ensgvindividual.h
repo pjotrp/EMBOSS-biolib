@@ -80,7 +80,7 @@ const char *ensGvindividualGenderToChar(EnsEGvindividualGender gender);
 
 const char *ensGvindividualTypeToChar(EnsEGvindividualType type);
 
-ajuint ensGvindividualGetMemSize(const EnsPGvindividual gvi);
+ajuint ensGvindividualGetMemsize(const EnsPGvindividual gvi);
 
 AjBool ensGvindividualTrace(const EnsPGvindividual gvi, ajuint level);
 

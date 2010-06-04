@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -104,7 +104,7 @@ static AjBool qcalignmentadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** Default constructor for an Ensembl QC Alignment.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [u] qca [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor
+** @param [u] qcaa [EnsPQcalignmentadaptor] Ensembl QC Alignment Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::QC::Alignment::new
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
@@ -1174,7 +1174,7 @@ AjBool ensQcalignmentSetVULGAR(EnsPQcalignment qca,
 
 
 
-/* @func ensQcalignmentGetMemSize *********************************************
+/* @func ensQcalignmentGetMemsize *********************************************
 **
 ** Get the memory size in bytes of an Ensembl QC Alignment.
 **
@@ -1184,7 +1184,7 @@ AjBool ensQcalignmentSetVULGAR(EnsPQcalignment qca,
 ** @@
 ******************************************************************************/
 
-ajuint ensQcalignmentGetMemSize(const EnsPQcalignment qca)
+ajuint ensQcalignmentGetMemsize(const EnsPQcalignment qca)
 {
     ajuint size = 0;
 
@@ -1193,11 +1193,11 @@ ajuint ensQcalignmentGetMemSize(const EnsPQcalignment qca)
 
     size += (ajuint) sizeof (EnsOQcalignment);
 
-    size += ensAnalysisGetMemSize(qca->Analysis);
+    size += ensAnalysisGetMemsize(qca->Analysis);
 
-    size += ensQcsequenceGetMemSize(qca->QuerySequence);
+    size += ensQcsequenceGetMemsize(qca->QuerySequence);
 
-    size += ensQcsequenceGetMemSize(qca->TargetSequence);
+    size += ensQcsequenceGetMemsize(qca->TargetSequence);
 
     return size;
 }
@@ -1893,7 +1893,7 @@ static const char *qcalignmentProteinToGenomeQueryCoverageProperties[] =
 
 
 
-/* @func ensQcalignmentCalculateProteinToProteinQueryCoverage *****************
+/* @func ensQcalignmentCalculateProteinToGenomeQueryCoverage ******************
 **
 ** Calculates the alignment coverage score for a query of type 'protein'
 ** against a target of class 'genome' and sets the score in the coverage
@@ -3858,7 +3858,7 @@ AjBool ensQcalignmentadaptorDelete(EnsPQcalignmentadaptor qcaa,
 **
 ******************************************************************************/
 
-void endQcalignmentDummyFunction(void)
+void ensQcalignmentDummyFunction(void)
 {
     (void) qcalignmentProteinToProteinQueryCoverageProperties[0];
     (void) qcalignmentProteinToGenomeQueryCoverageProperties[0];

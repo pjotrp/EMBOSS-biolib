@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -644,7 +644,7 @@ AjBool ensMetainformationTrace(const EnsPMetainformation mi, ajuint level)
 
 
 
-/* @func ensMetainformationGetMemSize *****************************************
+/* @func ensMetainformationGetMemsize *****************************************
 **
 ** Get the memory size in bytes of an Ensembl Meta-Information.
 **
@@ -654,7 +654,7 @@ AjBool ensMetainformationTrace(const EnsPMetainformation mi, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensMetainformationGetMemSize(const EnsPMetainformation mi)
+ajuint ensMetainformationGetMemsize(const EnsPMetainformation mi)
 {
     ajuint size = 0;
 

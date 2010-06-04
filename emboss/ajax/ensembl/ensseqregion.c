@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -793,7 +793,7 @@ AjBool ensSeqregionTrace(const EnsPSeqregion sr, ajuint level)
 
 
 
-/* @func ensSeqregionGetMemSize ***********************************************
+/* @func ensSeqregionGetMemsize ***********************************************
 **
 ** Get the memory size in bytes of an Ensembl Sequence Region.
 **
@@ -803,7 +803,7 @@ AjBool ensSeqregionTrace(const EnsPSeqregion sr, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensSeqregionGetMemSize(const EnsPSeqregion sr)
+ajuint ensSeqregionGetMemsize(const EnsPSeqregion sr)
 {
     ajuint size = 0;
 
@@ -816,7 +816,7 @@ ajuint ensSeqregionGetMemSize(const EnsPSeqregion sr)
 
     size += (ajuint) sizeof (EnsOSeqregion);
 
-    size += ensCoordsystemGetMemSize(sr->Coordsystem);
+    size += ensCoordsystemGetMemsize(sr->Coordsystem);
 
     if(sr->Name)
     {
@@ -833,7 +833,7 @@ ajuint ensSeqregionGetMemSize(const EnsPSeqregion sr)
         {
             attribute = (EnsPAttribute) ajListIterGet(iter);
 
-            size += ensAttributeGetMemSize(attribute);
+            size += ensAttributeGetMemsize(attribute);
         }
 
         ajListIterDel(&iter);
@@ -1164,7 +1164,7 @@ static ajuint seqregionadaptorCacheSize(const void* value)
     if(!value)
         return 0;
 
-    return ensSeqregionGetMemSize((const EnsPSeqregion) value);
+    return ensSeqregionGetMemsize((const EnsPSeqregion) value);
 }
 
 
@@ -2501,7 +2501,7 @@ AjBool ensSeqregionadaptorFetchAllByAttributeCodeValue(
 ** This function uses an Ensembl Sequence Region Adaptor-internal cache.
 **
 ** @param [u] sra [EnsPSeqregionadaptor] Ensembl Sequence Region Adaptor
-** @param [r] code [const EnsPseqregion] Ensembl Sequence Region
+** @param [r] sr [const EnsPSeqregion] Ensembl Sequence Region
 ** @param [u] Presult [AjBool*] ajTrue:  This Sequence region has the
 **                                       'non_ref' attribute set.
 **                              ajFalse: This Sequence Region is part of the

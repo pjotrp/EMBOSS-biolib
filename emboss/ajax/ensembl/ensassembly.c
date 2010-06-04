@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.5 $
+** @version $Revision: 1.6 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -386,7 +386,7 @@ ajuint ensAssemblyGetComponentSeqregionId(const EnsPAssembly assembly)
 
 
 
-/* @func ensComponentGetAssembledStart ****************************************
+/* @func ensAssemblyGetComponentStart *****************************************
 **
 ** Get the component Ensembl Sequence Region start element of an
 ** Ensembl Assembly.
@@ -519,7 +519,7 @@ AjBool ensAssemblyTrace(const EnsPAssembly assembly, ajuint level)
 
 
 
-/* @func ensAssemblyGetMemSize ************************************************
+/* @func ensAssemblyGetMemsize ************************************************
 **
 ** Get the memory size in bytes of an Ensembl Assembly.
 **
@@ -529,7 +529,7 @@ AjBool ensAssemblyTrace(const EnsPAssembly assembly, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyGetMemSize(const EnsPAssembly assembly)
+ajuint ensAssemblyGetMemsize(const EnsPAssembly assembly)
 {
     ajuint size = 0;
 

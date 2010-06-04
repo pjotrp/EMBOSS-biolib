@@ -147,7 +147,7 @@ AjBool ensCoordsystemMappingPathTrace(const AjPList css, ajuint level);
 AjBool ensCoordsystemMatch(const EnsPCoordsystem cs1,
                            const EnsPCoordsystem cs2);
 
-ajuint ensCoordsystemGetMemSize(const EnsPCoordsystem cs);
+ajuint ensCoordsystemGetMemsize(const EnsPCoordsystem cs);
 
 AjPStr ensCoordsystemGetSpecies(EnsPCoordsystem cs);
 

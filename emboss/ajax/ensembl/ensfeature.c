@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.15 $
+** @version $Revision: 1.16 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -521,7 +521,7 @@ EnsPSlice ensFeatureGetSlice(const EnsPFeature feature)
 ** @cc Bio::EnsEMBL::Feature::seqname
 ** @param [r] feature [const EnsPFeature] Ensembl Feature
 **
-** @return [AjPStr*] Sequence name or NULL
+** @return [AjPStr] Sequence name or NULL
 ** @@
 ******************************************************************************/
 
@@ -874,7 +874,7 @@ ajuint ensFeatureGetLength(const EnsPFeature feature)
 
 
 
-/* @func ensFeatureGetMemSize *************************************************
+/* @func ensFeatureGetMemsize *************************************************
 **
 ** Get the memory size in bytes of an Ensembl Feature.
 **
@@ -884,7 +884,7 @@ ajuint ensFeatureGetLength(const EnsPFeature feature)
 ** @@
 ******************************************************************************/
 
-ajuint ensFeatureGetMemSize(const EnsPFeature feature)
+ajuint ensFeatureGetMemsize(const EnsPFeature feature)
 {
     ajuint size = 0;
 
@@ -893,9 +893,9 @@ ajuint ensFeatureGetMemSize(const EnsPFeature feature)
 
     size += (ajuint) sizeof (EnsOFeature);
 
-    size += ensSliceGetMemSize(feature->Slice);
+    size += ensSliceGetMemsize(feature->Slice);
 
-    size += ensAnalysisGetMemSize(feature->Analysis);
+    size += ensAnalysisGetMemsize(feature->Analysis);
 
     if(feature->SequenceName)
     {
@@ -1632,15 +1632,15 @@ EnsPFeature ensFeatureTransfer(EnsPFeature feature, EnsPSlice slice)
 ** @@
 ******************************************************************************/
 
+AjBool ensFeatureFetchAllAlternativeLocations(EnsPFeature feature,
+                                              AjBool all,
+                                              AjPList features)
+{
 /*
 ** TODO: The Perl API requires a second parameter $return_all,
 ** which is not documented!
 */
 
-AjBool ensFeatureFetchAllAlternativeLocations(EnsPFeature feature,
-                                              AjBool all,
-                                              AjPList features)
-{
     ajint alength = 0;
     ajint rlength = 0;
 
@@ -2420,8 +2420,8 @@ static ajuint featureadaptorCacheMaxSize = 0;
 ** @param [r] Pcolumns [const char**] Column names
 ** @param [r] leftjoin [EnsOBaseadaptorLeftJoin*] Ensembl Base Adaptor
 **                                                Left Join Statements
-** @param [r] condition [const char *] Default SQL condition
-** @param [r] final [const char *] Final SQL condition
+** @param [r] condition [const char*] Default SQL condition
+** @param [r] final [const char*] Final SQL condition
 ** @param [f] Fquery [AjBool function] Function address to handle the
 **                              Ensembl Object-specific SQL statement
 ** @param [f] Fread [void* function] Function address to read further value
@@ -2913,7 +2913,7 @@ AjBool ensFeatureadaptorSetColumns(EnsPFeatureadaptor fa,
 ** 'coord_system.species_id' field to the default SQL condition.
 **
 ** @param [r] fa [EnsPFeatureadaptor] Ensembl Feature Adaptor
-** @param [r] condition [const char *] Default SQL condition
+** @param [r] condition [const char*] Default SQL condition
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
@@ -2973,7 +2973,7 @@ AjBool ensFeatureadaptorSetDefaultCondition(EnsPFeatureadaptor fa,
 ** Ensembl Base Adaptor element of an Ensembl Base Adaptor.
 **
 ** @param [r] fa [EnsPFeatureadaptor] Ensembl Feature Adaptor
-** @param [r] final [const char *] Final SQL condition
+** @param [r] final [const char*] Final SQL condition
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
@@ -3072,7 +3072,7 @@ AjBool ensFeatureadaptorEscapeS(EnsPFeatureadaptor fa,
 ** Build an SQL statement constraint from an Ensembl Analysis name.
 **
 ** @cc Bio::EnsEMBL::DBSQL::BaseFeatureAdaptor::_logic_name_to_constraint
-** @param [r] fa [EnsPFeatureadaptor] Ensembl Feature Adaptor
+** @param [r] fa [const EnsPFeatureadaptor] Ensembl Feature Adaptor
 ** @param [u] Pconstraint [AjPStr*] Address of an AJAX String constraint that
 **                                  will be enhanced by Analysis-specific
 **                                  conditions
@@ -3562,7 +3562,7 @@ static AjBool featureadaptorSliceFetch(EnsPFeatureadaptor fa,
                 key = ajStrNewC(table);
 
                 fa->MaxFeatureLength =
-                    ensMetacoordinateadaptorGetMaximumLength(mca, cs, key);
+                    ensMetacoordinateadaptorGetMaximumlength(mca, cs, key);
 
                 ajStrDel(&key);
             }
@@ -3752,7 +3752,7 @@ static AjBool featureadaptorSliceFetch(EnsPFeatureadaptor fa,
                     key = ajStrNewC(table);
 
                     fa->MaxFeatureLength =
-                        ensMetacoordinateadaptorGetMaximumLength(mca,
+                        ensMetacoordinateadaptorGetMaximumlength(mca,
                                                                  cs,
                                                                  key);
 
@@ -5374,17 +5374,17 @@ AjBool ensFeaturepairTrace(const EnsPFeaturepair fp, ajuint level)
 
 
 
-/* @func ensFeaturepairGetMemSize *********************************************
+/* @func ensFeaturepairGetMemsize *********************************************
 **
 ** Get the memory size in bytes of an Ensembl Feature Pair.
 **
-** @param [r] baf [const EnsPFeaturepair] Ensembl Feature Pair
+** @param [r] fp [const EnsPFeaturepair] Ensembl Feature Pair
 **
 ** @return [ajuint] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensFeaturepairGetMemSize(const EnsPFeaturepair fp)
+ajuint ensFeaturepairGetMemsize(const EnsPFeaturepair fp)
 {
     ajuint size = 0;
 
@@ -5393,9 +5393,9 @@ ajuint ensFeaturepairGetMemSize(const EnsPFeaturepair fp)
 
     size += (ajuint) sizeof (EnsOFeaturepair);
 
-    size += ensFeatureGetMemSize(fp->SourceFeature);
+    size += ensFeatureGetMemsize(fp->SourceFeature);
 
-    size += ensFeatureGetMemSize(fp->TargetFeature);
+    size += ensFeatureGetMemsize(fp->TargetFeature);
 
     if(fp->ExtraData)
     {
@@ -5708,14 +5708,15 @@ AjBool ensFeaturepairSortBySourceFeatureStartDescending(AjPList fps)
 ** @@
 ******************************************************************************/
 
+static AjBool basealignfeatureParseFeatures(EnsPBasealignfeature baf,
+                                            AjPList objects)
+{
+
 /*
 ** FIXME: The Perl API assigns to $start1 $start2 and $ori but never uses
 ** these values.
 */
 
-static AjBool basealignfeatureParseFeatures(EnsPBasealignfeature baf,
-                                            AjPList objects)
-{
     void *Pobject = NULL;
 
     ajint srcstart = 0;
@@ -6945,11 +6946,11 @@ EnsPFeature ensBasealignfeatureGetFeature(const EnsPBasealignfeature baf)
 ** @cc Bio::EnsEMBL::Storable::adaptor
 ** @param [r] baf [const EnsPBasealignfeature] Ensembl Base Align Feature
 **
-** @return [void *] Ensembl DNA or Protein Align Feature Adaptor
+** @return [void*] Ensembl DNA or Protein Align Feature Adaptor
 ** @@
 ******************************************************************************/
 
-void *ensBasealignfeatureGetAdaptor(const EnsPBasealignfeature baf)
+void* ensBasealignfeatureGetAdaptor(const EnsPBasealignfeature baf)
 {
     void *Padaptor = NULL;
 
@@ -7071,7 +7072,7 @@ ajuint ensBasealignfeatureGetTargetUnit(const EnsPBasealignfeature baf)
 
 
 
-/* @func ensBasealignfeatureGetMemSize ****************************************
+/* @func ensBasealignfeatureGetMemsize ****************************************
 **
 ** Get the memory size in bytes of an Ensembl Base Align Feature.
 **
@@ -7081,7 +7082,7 @@ ajuint ensBasealignfeatureGetTargetUnit(const EnsPBasealignfeature baf)
 ** @@
 ******************************************************************************/
 
-ajuint ensBasealignfeatureGetMemSize(const EnsPBasealignfeature baf)
+ajuint ensBasealignfeatureGetMemsize(const EnsPBasealignfeature baf)
 {
     ajuint size = 0;
 
@@ -7090,7 +7091,7 @@ ajuint ensBasealignfeatureGetMemSize(const EnsPBasealignfeature baf)
 
     size += (ajuint) sizeof (EnsOBasealignfeature);
 
-    size += ensFeaturepairGetMemSize(baf->Featurepair);
+    size += ensFeaturepairGetMemsize(baf->Featurepair);
 
     if(baf->Cigar)
     {
@@ -7468,13 +7469,13 @@ AjBool ensBasealignfeatureSortBySourceFeatureStartDescending(AjPList bafs)
 ** Wrapper function to reference an Ensembl Base Align Feature
 ** from an Ensembl Cache.
 **
-** @param [r] value [void *] Ensembl Base Align Feature
+** @param [r] value [void*] Ensembl Base Align Feature
 **
-** @return [void *] Ensembl Base Align Feature or NULL
+** @return [void*] Ensembl Base Align Feature or NULL
 ** @@
 ******************************************************************************/
 
-static void *basealignfeatureadaptorCacheReference(void *value)
+static void* basealignfeatureadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -7525,7 +7526,7 @@ static ajuint basealignfeatureadaptorCacheSize(const void *value)
     if(!value)
         return 0;
 
-    return ensBasealignfeatureGetMemSize((const EnsPBasealignfeature) value);
+    return ensBasealignfeatureGetMemsize((const EnsPBasealignfeature) value);
 }
 
 
@@ -9661,18 +9662,18 @@ AjBool ensProteinalignfeatureadaptorFetchAllIdentifiers(
 ** @@
 ******************************************************************************/
 
-/*
-** FIXME: CVS Revision 1.11 introduces a translation_id method, but the
-** POD is a copy of the idesc.
-** TODO: Report to the Ensembl Core team.
-*/
-
 EnsPProteinfeature ensProteinfeatureNew(EnsPProteinfeatureadaptor pfa,
                                         ajuint identifier,
                                         EnsPFeaturepair fp,
                                         AjPStr accession,
                                         AjPStr description)
 {
+/*
+** FIXME: CVS Revision 1.11 introduces a translation_id method, but the
+** POD is a copy of the idesc.
+** TODO: Report to the Ensembl Core team.
+*/
+
     EnsPProteinfeature pf = NULL;
 
     AJNEW0(pf);
@@ -9736,7 +9737,7 @@ EnsPProteinfeature ensProteinfeatureNewObj(const EnsPProteinfeature object)
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] baf [EnsPProteinfeature] Ensembl Protein Feature
+** @param [u] pf [EnsPProteinfeature] Ensembl Protein Feature
 **
 ** @return [EnsPProteinfeature] Ensembl Protein Feature or NULL
 ** @@
@@ -10177,7 +10178,7 @@ AjBool ensProteinfeatureTrace(const EnsPProteinfeature pf, ajuint level)
 
 
 
-/* @func ensProteinfeatureGetMemSize ******************************************
+/* @func ensProteinfeatureGetMemsize ******************************************
 **
 ** Get the memory size in bytes of an Ensembl Protein Feature.
 **
@@ -10187,7 +10188,7 @@ AjBool ensProteinfeatureTrace(const EnsPProteinfeature pf, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensProteinfeatureGetMemSize(const EnsPProteinfeature pf)
+ajuint ensProteinfeatureGetMemsize(const EnsPProteinfeature pf)
 {
     ajuint size = 0;
 
@@ -10196,7 +10197,7 @@ ajuint ensProteinfeatureGetMemSize(const EnsPProteinfeature pf)
 
     size += (ajuint) sizeof (EnsOProteinfeature);
 
-    size += ensFeaturepairGetMemSize(pf->Featurepair);
+    size += ensFeaturepairGetMemsize(pf->Featurepair);
 
     if(pf->Accession)
     {
@@ -11249,7 +11250,7 @@ AjBool ensSimplefeatureTrace(const EnsPSimplefeature sf, ajuint level)
 
 
 
-/* @func ensSimplefeatureGetMemSize *******************************************
+/* @func ensSimplefeatureGetMemsize *******************************************
 **
 ** Get the memory size in bytes of an Ensembl Simple Feature.
 **
@@ -11259,7 +11260,7 @@ AjBool ensSimplefeatureTrace(const EnsPSimplefeature sf, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensSimplefeatureGetMemSize(const EnsPSimplefeature sf)
+ajuint ensSimplefeatureGetMemsize(const EnsPSimplefeature sf)
 {
     ajuint size = 0;
 
@@ -11268,7 +11269,7 @@ ajuint ensSimplefeatureGetMemSize(const EnsPSimplefeature sf)
 
     size += (ajuint) sizeof (EnsOSimplefeature);
 
-    size += ensFeatureGetMemSize(sf->Feature);
+    size += ensFeatureGetMemsize(sf->Feature);
 
     if(sf->DisplayLabel)
     {
@@ -11826,13 +11827,13 @@ static AjBool simplefeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** Wrapper function to reference an Ensembl Simple Feature
 ** from an Ensembl Cache.
 **
-** @param [r] value [void *] Ensembl Simple Feature
+** @param [r] value [void*] Ensembl Simple Feature
 **
-** @return [void *] Ensembl Simple Feature or NULL
+** @return [void*] Ensembl Simple Feature or NULL
 ** @@
 ******************************************************************************/
 
-static void *simplefeatureadaptorCacheReference(void *value)
+static void* simplefeatureadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -11883,7 +11884,7 @@ static ajuint simplefeatureadaptorCacheSize(const void *value)
     if(!value)
         return 0;
 
-    return ensSimplefeatureGetMemSize((const EnsPSimplefeature) value);
+    return ensSimplefeatureGetMemsize((const EnsPSimplefeature) value);
 }
 
 

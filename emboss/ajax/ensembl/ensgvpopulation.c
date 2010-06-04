@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -110,7 +110,7 @@ static AjBool gvpopulationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 **                                           Population Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::Variation::Sample::new
-** @param [u] gvs [EnsPGvvsample] Ensembl Genetic Variation Sample
+** @param [u] gvs [EnsPGvsample] Ensembl Genetic Variation Sample
 ** @cc Bio::EnsEMBL::Variation::Population::new
 ** @param [r] subpopulations [AjPList] AJAX List of Ensembl Genetic
 **                                     Variation (Sub-) Populations
@@ -580,7 +580,7 @@ AjBool ensGvpopulationAddSubPopulation(EnsPGvpopulation gvp,
 
 
 
-/* @func ensGvpopulationGetMemSize ********************************************
+/* @func ensGvpopulationGetMemsize ********************************************
 **
 ** Get the memory size in bytes of an Ensembl Genetic Variation Population.
 **
@@ -590,7 +590,7 @@ AjBool ensGvpopulationAddSubPopulation(EnsPGvpopulation gvp,
 ** @@
 ******************************************************************************/
 
-ajuint ensGvpopulationGetMemSize(const EnsPGvpopulation gvp)
+ajuint ensGvpopulationGetMemsize(const EnsPGvpopulation gvp)
 {
     ajuint size = 0;
 
@@ -603,7 +603,7 @@ ajuint ensGvpopulationGetMemSize(const EnsPGvpopulation gvp)
 
     size += (ajuint) sizeof (EnsOGvpopulation);
 
-    size += ensGvsampleGetMemSize(gvp->Gvsample);
+    size += ensGvsampleGetMemsize(gvp->Gvsample);
 
     /*
     ** Summarise the AJAX List of Ensembl Genetic Variation
@@ -616,7 +616,7 @@ ajuint ensGvpopulationGetMemSize(const EnsPGvpopulation gvp)
     {
         subgvp = (EnsPGvpopulation) ajListIterGet(iter);
 
-        size += ensGvpopulationGetMemSize(subgvp);
+        size += ensGvpopulationGetMemsize(subgvp);
     }
 
     ajListIterDel(&iter);
@@ -1041,7 +1041,7 @@ AjBool ensGvpopulationadaptorFetchByIdentifier(
 ** @param [u] gvpa [EnsPGvpopulationadaptor] Ensembl Genetic Variation
 **                                           Population Adaptor
 ** @param [r] name [const AjPStr] Ensembl Genetic Variation Population name
-** @param [w] Pgvp [EnsPGvpopulation] Ensembl Genetic Variation Population
+** @param [w] Pgvp [EnsPGvpopulation*] Ensembl Genetic Variation Population
 **                                    address
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -1111,9 +1111,9 @@ AjBool ensGvpopulationadaptorFetchByName(
 
 
 
-/* @func ensGvindividualadaptorFetchAllBySynonym ******************************
+/* @func ensGvpopulationadaptorFetchAllBySynonym ******************************
 **
-** Fetch all Ensembl Genetic Variation Individuals by an
+** Fetch a Ensembl Genetic Variation Population by an
 ** Ensembl Genetic Variation Sample synonym.
 **
 ** @cc Bio::EnsEMBL::Variation::DBSQL::PopulationAdaptor::
@@ -1436,7 +1436,7 @@ AjBool ensGvpopulationadaptorFetchAllByIndvividual(
 ** Fetch the Ensembl Genetic Variation Population, which is used as a default
 ** in the LD display of the pairwise LD data.
 **
-** @param [r] gvpa [const EnsPGvpopulationAdaptor] Ensembl Genetic Variation
+** @param [r] gvpa [const EnsPGvpopulationadaptor] Ensembl Genetic Variation
 **                                                 Population Adaptor
 ** @param [wP] Pgvp [EnsPGvpopulation*] Ensembl Genetic Variation Population
 **                                      address

@@ -36,7 +36,7 @@ AjPStr ensAttributeGetDescription(const EnsPAttribute attribute);
 
 AjPStr ensAttributeGetValue(const EnsPAttribute attribute);
 
-ajuint ensAttributeGetMemSize(const EnsPAttribute attribute);
+ajuint ensAttributeGetMemsize(const EnsPAttribute attribute);
 
 AjBool ensAttributeTrace(const EnsPAttribute attribute, ajuint level);
 

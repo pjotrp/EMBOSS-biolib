@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -731,7 +731,7 @@ AjBool ensDitagTrace(const EnsPDitag dt, ajuint level)
 
 
 
-/* @func ensDitagGetMemSize ***************************************************
+/* @func ensDitagGetMemsize ***************************************************
 **
 ** Get the memory size in bytes of an Ensembl Ditag.
 **
@@ -741,7 +741,7 @@ AjBool ensDitagTrace(const EnsPDitag dt, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensDitagGetMemSize(const EnsPDitag dt)
+ajuint ensDitagGetMemsize(const EnsPDitag dt)
 {
     ajuint size = 0;
 
@@ -920,7 +920,7 @@ EnsPDatabaseadaptor ensDitagadaptorGetDatabaseadaptor(EnsPDitagadaptor dta)
 ** Functions for retrieving Ensembl Ditag objects from an
 ** Ensembl Core database.
 **
-** @fdata [EnsPDatabaseadaptor]
+** @fdata [EnsPDitagadaptor]
 ** @fnote None
 **
 ** @nam3rule Fetch Retrieve Ensembl Ditag object(s)
@@ -1029,7 +1029,7 @@ AjBool ensDitagadaptorFetchByIdentifier(EnsPDitagadaptor dta,
 ** @cc Bio::EnsEMBL::Map::DBSQL::DitagAdaptor::fetch_all
 ** @cc Bio::EnsEMBL::Map::DBSQL::DitagAdaptor::fetch_all_by_name
 ** @cc Bio::EnsEMBL::Map::DBSQL::DitagAdaptor::fetch_all_by_type
-** @param [u] dta [const EnsPDitagadaptor] Ensembl Ditag Adaptor
+** @param [u] dta [EnsPDitagadaptor] Ensembl Ditag Adaptor
 ** @param [rN] name [const AjPStr] Name
 ** @param [rN] type [const AjPStr] Type
 ** @param [u] dts [AjPList] AJAX List of Ensembl Ditags
@@ -1112,7 +1112,7 @@ AjBool ensDitagadaptorFetchAll(EnsPDitagadaptor dta,
 ** deleting the AJAX List.
 **
 ** @cc Bio::EnsEMBL::Map::DBSQL::DitagAdaptor::fetch_all_by_name
-** @param [u] dta [const EnsPDiatagadaptor] Ensembl Ditag Adaptor
+** @param [u] dta [EnsPDitagadaptor] Ensembl Ditag Adaptor
 ** @param [r] name [const AjPStr] Name
 ** @param [u] dts [AjPList] AJAX List of Ensembl Ditags
 **
@@ -1178,7 +1178,7 @@ AjBool ensDitagadaptorFetchAllByName(EnsPDitagadaptor dta,
 ** deleting the AJAX List.
 **
 ** @cc Bio::EnsEMBL::Map::DBSQL::DitagAdaptor::fetch_all_by_type
-** @param [u] dta [const EnsPDitagadaptor] Ensembl Ditag Adaptor
+** @param [u] dta [EnsPDitagadaptor] Ensembl Ditag Adaptor
 ** @param [r] type [const AjPStr] Type
 ** @param [u] dts [AjPList] AJAX List of Ensembl Ditags
 **
@@ -1292,7 +1292,7 @@ AjBool ensDitagadaptorFetchAllByType(EnsPDitagadaptor dta,
 ** @param [r] tstrand [ajint] Target strand
 ** @param [r] pairid [ajuint] Pair identifier
 **
-** @return [EnsPDitag] Ensembl Ditag or NULL
+** @return [EnsPDitagfeature] Ensembl Ditag Feature or NULL
 ** @@
 ******************************************************************************/
 
@@ -2102,7 +2102,7 @@ AjBool ensDitagfeatureTrace(const EnsPDitagfeature dtf, ajuint level)
 
 
 
-/* @func ensDitagfeatureGetMemSize ********************************************
+/* @func ensDitagfeatureGetMemsize ********************************************
 **
 ** Get the memory size in bytes of an Ensembl Ditag Feature.
 **
@@ -2112,7 +2112,7 @@ AjBool ensDitagfeatureTrace(const EnsPDitagfeature dtf, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensDitagfeatureGetMemSize(const EnsPDitagfeature dtf)
+ajuint ensDitagfeatureGetMemsize(const EnsPDitagfeature dtf)
 {
     ajuint size = 0;
 
@@ -2121,9 +2121,9 @@ ajuint ensDitagfeatureGetMemSize(const EnsPDitagfeature dtf)
 
     size += (ajuint) sizeof (EnsODitagfeature);
 
-    size += ensFeatureGetMemSize(dtf->Feature);
+    size += ensFeatureGetMemsize(dtf->Feature);
 
-    size += ensDitagGetMemSize(dtf->Ditag);
+    size += ensDitagGetMemsize(dtf->Ditag);
 
     if(dtf->Cigar)
     {
@@ -2766,13 +2766,13 @@ static AjBool ditagfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** Wrapper function to reference an Ensembl Ditag Feature
 ** from an Ensembl Cache.
 **
-** @param [r] value [void *] Ensembl Ditag Feature
+** @param [r] value [void*] Ensembl Ditag Feature
 **
-** @return [void *] Ensembl Ditag Feature or NULL
+** @return [void*] Ensembl Ditag Feature or NULL
 ** @@
 ******************************************************************************/
 
-static void *ditagfeatureadaptorCacheReference(void *value)
+static void* ditagfeatureadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -2807,7 +2807,7 @@ static void ditagfeatureadaptorCacheDelete(void **value)
 
 
 
-/* @funcstatic DitagfeatureadaptorCacheSize ***********************************
+/* @funcstatic ditagfeatureadaptorCacheSize ***********************************
 **
 ** Wrapper function to determine the memory size of an Ensembl Ditag Feature
 ** via an Ensembl Cache.
@@ -2823,7 +2823,7 @@ static ajuint ditagfeatureadaptorCacheSize(const void *value)
     if(!value)
         return 0;
 
-    return ensDitagfeatureGetMemSize((const EnsPDitagfeature) value);
+    return ensDitagfeatureGetMemsize((const EnsPDitagfeature) value);
 }
 
 
@@ -2989,7 +2989,7 @@ void ensDitagfeatureadaptorDel(EnsPDitagfeatureadaptor *Pdtfa)
 
 
 
-/* @func ensDitagfeatureadaptorFetchByIdentifier ******************************
+/* @func ensDitagadaptorFetchAllByIdentifier **********************************
 **
 ** Fetch an Ensembl Ditag Feature via its SQL database-internal identifier.
 **
@@ -3039,9 +3039,9 @@ AjBool ensDitagadaptorFetchAllByIdentifier(
 ** deleting the AJAX List.
 **
 ** @cc Bio::EnsEMBL::Map::DBSQL::DitagFeatureAdaptor::fetch_all_by_ditagID
-** @param [r] dtfa [EnsPDitagfeatureadaptor] Ensembl Ditag
+** @param [r] dtfa [const EnsPDitagfeatureadaptor] Ensembl Ditag
 **                                           Feature Adaptor
-** @param [r] ditag [const EnsPDitag] Ensembl Ditag
+** @param [r] dt [const EnsPDitag] Ensembl Ditag
 ** @param [u] dtfs [AjPList] AJAX List of Ensembl Ditag Features
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -3095,7 +3095,7 @@ AjBool ensDitagfeatureadaptorFetchAllByDitag(
 **
 ** @cc Bio::EnsEMBL::Map::DBSQL::DitagFeatureAdaptor::fetch_all
 ** @cc Bio::EnsEMBL::Map::DBSQL::DitagFeatureAdaptor::fetch_all_by_type
-** @param [r] dtfa [const EnsPDitagFeatureAdaptor] Ensembl Ditag
+** @param [r] dtfa [const EnsPDitagfeatureadaptor] Ensembl Ditag
 **                                                 Feature Adaptor
 ** @param [rN] type [const AjPStr] Ensembl Ditag type
 ** @param [u] dtfs [AjPList] AJAX List of Ensembl Ditag Features

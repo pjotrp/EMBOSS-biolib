@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -950,7 +950,7 @@ AjBool ensCoordsystemMatch(const EnsPCoordsystem cs1,
 
 
 
-/* @func ensCoordsystemGetMemSize *********************************************
+/* @func ensCoordsystemGetMemsize *********************************************
 **
 ** Get the memory size in bytes of an Ensembl Coordinate System.
 **
@@ -960,7 +960,7 @@ AjBool ensCoordsystemMatch(const EnsPCoordsystem cs1,
 ** @@
 ******************************************************************************/
 
-ajuint ensCoordsystemGetMemSize(const EnsPCoordsystem cs)
+ajuint ensCoordsystemGetMemsize(const EnsPCoordsystem cs)
 {
     ajuint size = 0;
 
@@ -998,7 +998,7 @@ ajuint ensCoordsystemGetMemSize(const EnsPCoordsystem cs)
 ** @cc Bio::EnsEMBL::CoordSystem::species
 ** @param [r] cs [EnsPCoordsystem] Ensembl Coordinate System
 **
-** @return [const AjPStr] Ensembl Database Adaptor species
+** @return [AjPStr] Ensembl Database Adaptor species
 ** @@
 ******************************************************************************/
 

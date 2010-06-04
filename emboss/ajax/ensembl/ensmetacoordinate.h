@@ -52,12 +52,12 @@ EnsPMetacoordinateadaptor ensMetacoordinateadaptorNew(
 void ensMetacoordinateadaptorDel(EnsPMetacoordinateadaptor *Pmca);
 
 AjBool ensMetacoordinateadaptorFetchAllCoordsystems(
-    EnsPMetacoordinateadaptor mca,
+    const EnsPMetacoordinateadaptor mca,
     const AjPStr name,
     AjPList css);
 
-ajuint ensMetacoordinateadaptorGetMaximumLength(
-    EnsPMetacoordinateadaptor mca,
+ajuint ensMetacoordinateadaptorGetMaximumlength(
+    const EnsPMetacoordinateadaptor mca,
     const EnsPCoordsystem cs,
     const AjPStr name);
 

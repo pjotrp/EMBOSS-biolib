@@ -54,7 +54,7 @@ AjBool ensGvsampleSetDisplay(EnsPGvsample gvs, EnsEGvsampleDisplay display);
 
 AjBool ensGvsampleSetSize(EnsPGvsample gvs, ajuint size);
 
-ajuint ensGvsampleGetMemSize(const EnsPGvsample gvs);
+ajuint ensGvsampleGetMemsize(const EnsPGvsample gvs);
 
 AjBool ensGvsampleTrace(const EnsPGvsample gvs, ajuint level);
 

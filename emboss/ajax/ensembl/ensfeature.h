@@ -396,7 +396,7 @@ AjBool ensFeatureTrace(const EnsPFeature feature, ajuint level);
 
 ajuint ensFeatureGetLength(const EnsPFeature feature);
 
-ajuint ensFeatureGetMemSize(const EnsPFeature feature);
+ajuint ensFeatureGetMemsize(const EnsPFeature feature);
 
 const EnsPSeqregion ensFeatureGetSeqregion(const EnsPFeature feature);
 
@@ -603,7 +603,7 @@ AjBool ensFeaturepairTrace(const EnsPFeaturepair fp, ajuint level);
 
 AjBool ensFeaturepairSetSequenceIdentity(EnsPFeaturepair fp, float identity);
 
-ajuint ensFeaturepairGetMemSize(const EnsPFeaturepair fp);
+ajuint ensFeaturepairGetMemsize(const EnsPFeaturepair fp);
 
 EnsPFeaturepair ensFeaturepairTransform(const EnsPFeaturepair fp,
                                         const AjPStr csname,
@@ -674,7 +674,7 @@ ajuint ensBasealignfeatureGetSourceUnit(const EnsPBasealignfeature baf);
 
 ajuint ensBasealignfeatureGetTargetUnit(const EnsPBasealignfeature baf);
 
-ajuint ensBasealignfeatureGetMemSize(const EnsPBasealignfeature baf);
+ajuint ensBasealignfeatureGetMemsize(const EnsPBasealignfeature baf);
 
 EnsPBasealignfeature ensBasealignfeatureTransform(
     const EnsPBasealignfeature baf,
@@ -838,7 +838,7 @@ AjBool ensProteinfeatureSetDescription(EnsPProteinfeature pf,
 
 AjBool ensProteinfeatureTrace(const EnsPProteinfeature pf, ajuint level);
 
-ajuint ensProteinfeatureGetMemSize(const EnsPProteinfeature pf);
+ajuint ensProteinfeatureGetMemsize(const EnsPProteinfeature pf);
 
 /* Ensembl Protein Feature Adaptor */
 
@@ -897,7 +897,7 @@ AjBool ensSimplefeatureSetScore(EnsPSimplefeature sf, double score);
 
 AjBool ensSimplefeatureTrace(const EnsPSimplefeature sf, ajuint level);
 
-ajuint ensSimplefeatureGetMemSize(const EnsPSimplefeature sf);
+ajuint ensSimplefeatureGetMemsize(const EnsPSimplefeature sf);
 
 AjBool ensSimplefeatureSortByStartAscending(AjPList sfs);
 

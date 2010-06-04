@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -116,8 +116,8 @@ static EnsPFeature karyotypebandadaptorGetFeature(const void *value);
 ** Default Ensembl Karyotype Band constructor.
 **
 ** @cc Bio::EnsEMBL::Karyotypeband::new
-** @param [u] kba [EnsPKaryotypebandadaptor]
-** @param [r] identifier [ajuint]
+** @param [u] kba [EnsPKaryotypebandadaptor] Ensembl Karyotype Band Adaptor
+** @param [r] identifier [ajuint] Identifier
 ** @cc Bio::EnsEMBL::Feature::new
 ** @param [u] feature [EnsPFeature] Ensembl Feature
 ** @param [u] name [AjPStr] Name
@@ -337,14 +337,14 @@ EnsPKaryotypebandadaptor ensKaryotypebandGetAdaptor(const EnsPKaryotypeband kb)
 
 
 
-/* @func ensExonGetIdentifier *************************************************
+/* @func ensKaryotypebandGetIdentifier ****************************************
 **
 ** Get the SQL database-internal identifier element of an
 ** Ensembl Karyotype Band.
 **
 ** @param [r] kb [const EnsPKaryotypeband] Ensembl Karyotype Band
 **
-** @return [EnsPKaryotypebandadaptor] Internal database identifier
+** @return [ajuint] Internal database identifier
 ** @@
 ******************************************************************************/
 
@@ -637,7 +637,7 @@ AjBool ensKaryotypebandTrace(const EnsPKaryotypeband kb, ajuint level)
 
 
 
-/* @func ensKaryotypebandGetMemSize *******************************************
+/* @func ensKaryotypebandGetMemsize *******************************************
 **
 ** Get the memory size in bytes of an Ensembl Karyotype Band.
 **
@@ -647,7 +647,7 @@ AjBool ensKaryotypebandTrace(const EnsPKaryotypeband kb, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensKaryotypebandGetMemSize(const EnsPKaryotypeband kb)
+ajuint ensKaryotypebandGetMemsize(const EnsPKaryotypeband kb)
 {
     ajuint size = 0;
 
@@ -656,7 +656,7 @@ ajuint ensKaryotypebandGetMemSize(const EnsPKaryotypeband kb)
 
     size += sizeof (EnsOKaryotypeband);
 
-    size += ensFeatureGetMemSize(kb->Feature);
+    size += ensFeatureGetMemsize(kb->Feature);
 
     if(kb->Name)
     {
@@ -798,7 +798,7 @@ static int karyotypebandCompareStartDescending(const void* P1, const void* P2)
 
 
 
-/* @func enskaryotypebandSortByStartDescending ********************************
+/* @func ensKaryotypebandSortByStartDescending ********************************
 **
 ** Sort Ensembl Karyotype Band by their Ensembl Feature start coordinate
 ** in descending order.
@@ -1006,13 +1006,13 @@ static AjBool karyotypebandadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** Wrapper function to reference an Ensembl Karyotype Band
 ** from an Ensembl Cache.
 **
-** @param [r] value [void *] Ensembl Karyotype Band
+** @param [r] value [void*] Ensembl Karyotype Band
 **
-** @return [void *] Ensembl Karyotype Band or NULL
+** @return [void*] Ensembl Karyotype Band or NULL
 ** @@
 ******************************************************************************/
 
-static void *karyotypebandadaptorCacheReference(void *value)
+static void* karyotypebandadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -1063,7 +1063,7 @@ static ajuint karyotypebandadaptorCacheSize(const void *value)
     if(!value)
         return 0;
 
-    return ensKaryotypebandGetMemSize((const EnsPKaryotypeband) value);
+    return ensKaryotypebandGetMemsize((const EnsPKaryotypeband) value);
 }
 
 

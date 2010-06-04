@@ -190,7 +190,7 @@ AjBool ensQcalignmentSetIdentity(EnsPQcalignment qca,
 AjBool ensQcalignmentSetVULGAR(EnsPQcalignment qca,
                                AjPStr vulgar);
 
-ajuint ensQcalignmentGetMemSize(const EnsPQcalignment qca);
+ajuint ensQcalignmentGetMemsize(const EnsPQcalignment qca);
 
 AjBool ensQcalignmentTrace(const EnsPQcalignment qca, ajuint level);
 
@@ -300,7 +300,7 @@ AjBool ensQcalignmentadaptorUpdate(EnsPQcalignmentadaptor qcaa,
 AjBool ensQcalignmentadaptorDelete(EnsPQcalignmentadaptor qcaa,
                                    EnsPQcalignment qca);
 
-void endQcalignmentDummyFunction(void);
+void ensQcalignmentDummyFunction(void);
 
 /*
 ** End of prototype definitions

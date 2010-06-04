@@ -3,8 +3,8 @@
 **
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
-** @modified $Date: 2010/05/31 19:55:44 $ by $Author: mks $
-** @version $Revision: 1.10 $
+** @modified $Date: 2010/06/04 12:29:25 $ by $Author: rice $
+** @version $Revision: 1.11 $
 **
 ** This library is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU Library General Public
@@ -606,10 +606,12 @@ AjESqlClient ensDatabaseconnectionGetSqlClientType(
 **
 ** @cc Bio::EnsEMBL::DBSQL::DBConnection::disconnect_when_inactive
 ** @param [u] dbc [EnsPDatabaseconnection] Ensembl Database Connection
-** @param [AjBool] Auto disconnect flag
+** @param [r] autodisconnect [AjBool] Auto disconnect flag
+**
 **                  ajTrue: The Ensembl Database Connection will automatically
 **                          disconnect, i.e. delete the AJAX SQL Connection,
 **                          if no AJAX SQL Statement is active.
+**
 **                  ajFalse: No automatic disconnects will occur.
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
@@ -747,7 +749,7 @@ AjBool ensDatabaseconnectionConnect(EnsPDatabaseconnection dbc)
 ** reference to the AJAX SQL Connection, i.e. no AJAX SQL Statement is active.
 **
 ** @cc Bio::EnsEMBL::DBSQL::DBConnection::disconnect_if_idle
-** @param [u] Pdbc [EnsPDatabaseconnection] Ensembl Database Connection
+** @param [u] dbc [EnsPDatabaseconnection] Ensembl Database Connection
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@

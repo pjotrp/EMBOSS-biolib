@@ -167,7 +167,7 @@ AjBool ensPredictionexonTrace(const EnsPPredictionexon pe, ajuint level);
 
 ajint ensPredictionexonGetEndPhase(const EnsPPredictionexon pe);
 
-ajuint ensPredictionexonGetMemSize(const EnsPPredictionexon pe);
+ajuint ensPredictionexonGetMemsize(const EnsPPredictionexon pe);
 
 EnsPPredictionexon ensPredictionexonTransform(EnsPPredictionexon pe,
                                               const AjPStr csname,
@@ -250,7 +250,7 @@ AjBool ensPredictiontranscriptTrace(
     const EnsPPredictiontranscript pt,
     ajuint level);
 
-ajuint ensPredictiontranscriptGetMemSize(
+ajuint ensPredictiontranscriptGetMemsize(
     const EnsPPredictiontranscript pt);
 
 const AjPList ensPredictiontranscriptGetExons(

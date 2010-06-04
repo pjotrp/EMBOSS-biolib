@@ -81,7 +81,7 @@ EnsPDatabaseadaptor ensRegistryNewDatabaseadaptor(
     AjBool multi,
     ajuint identifier);
 
-EnsPDatabaseadaptor ensRegistryNewReferencedaptor(
+EnsPDatabaseadaptor ensRegistryNewReferenceadaptor(
     EnsPDatabaseadaptor dba,
     EnsPDatabaseconnection dbc,
     AjPStr database,

@@ -57,7 +57,7 @@ AjBool ensSeqregionAddAttribute(EnsPSeqregion sr, EnsPAttribute attribute);
 
 AjBool ensSeqregionTrace(const EnsPSeqregion sr, ajuint level);
 
-ajuint ensSeqregionGetMemSize(const EnsPSeqregion sr);
+ajuint ensSeqregionGetMemsize(const EnsPSeqregion sr);
 
 AjBool ensSeqregionMatch(const EnsPSeqregion sr1, const EnsPSeqregion sr2);
 

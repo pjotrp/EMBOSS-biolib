@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -117,9 +117,9 @@ static AjBool baseadaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
 ** @param [r] leftjoin [EnsOBaseadaptorLeftJoin*] Address of an array of
 **                                                Ensembl Base Adaptor
 **                                                LEFT JOIN statements
-** @param [r] condition [const char *] Default WHERE condition in a
+** @param [r] condition [const char*] Default WHERE condition in a
 **                                     SQL SELECT statement
-** @param [r] final [const char *] Final condition in a
+** @param [r] final [const char*] Final condition in a
 **                                 SQL SELECT statement
 ** @param [f] Fquery [AjBool function] Pointer to a function to handle the
 **                              Ensembl Object-specific SQL statement
@@ -287,7 +287,7 @@ EnsPDatabaseadaptor ensBaseadaptorGetDatabaseadaptor(const EnsPBaseadaptor ba)
 ** @@
 ******************************************************************************/
 
-const char **ensBaseadaptorGetTables(const EnsPBaseadaptor ba)
+const char** ensBaseadaptorGetTables(const EnsPBaseadaptor ba)
 {
     if(!ba)
         return NULL;
@@ -310,7 +310,7 @@ const char **ensBaseadaptorGetTables(const EnsPBaseadaptor ba)
 ** @@
 ******************************************************************************/
 
-const char **ensBaseadaptorGetColumns(const EnsPBaseadaptor ba)
+const char** ensBaseadaptorGetColumns(const EnsPBaseadaptor ba)
 {
     if(!ba)
         return NULL;
@@ -408,7 +408,7 @@ AjBool ensBaseadaptorSetColumns(EnsPBaseadaptor ba, const char ** Pcolumns)
 **
 ** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::_default_where_clause
 ** @param [r] ba [EnsPBaseadaptor] Ensembl Base Adaptor
-** @param [r] condition [const char *] Default SQL condition
+** @param [r] condition [const char*] Default SQL condition
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
@@ -434,7 +434,7 @@ AjBool ensBaseadaptorSetDefaultCondition(EnsPBaseadaptor ba,
 **
 ** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::_final_clause
 ** @param [r] ba [EnsPBaseadaptor] Ensembl Base Adaptor
-** @param [r] final [const char *] Final SQL condition
+** @param [r] final [const char*] Final SQL condition
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
@@ -460,12 +460,12 @@ AjBool ensBaseadaptorSetFinalCondition(EnsPBaseadaptor ba, const char *final)
 **
 ** @param [r] ba [const EnsPBaseadaptor] Ensembl Base Adaptor
 **
-** @return [const char *] Address of the primary table name character strings
+** @return [const char*] Address of the primary table name character strings
 **                        or NULL
 ** @@
 ******************************************************************************/
 
-const char *ensBaseadaptorGetPrimaryTable(const EnsPBaseadaptor ba)
+const char* ensBaseadaptorGetPrimaryTable(const EnsPBaseadaptor ba)
 {
     if(!ba)
         return NULL;
@@ -811,11 +811,11 @@ AjBool ensBaseadaptorGenericFetch(const EnsPBaseadaptor ba,
 ** @param [r] ba [const EnsPBaseadaptor] Ensembl Base Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 **
-** @return [void *] Ensembl Object or NULL
+** @return [void*] Ensembl Object or NULL
 ** @@
 ******************************************************************************/
 
-void *ensBaseadaptorFetchByIdentifier(const EnsPBaseadaptor ba,
+void* ensBaseadaptorFetchByIdentifier(const EnsPBaseadaptor ba,
                                       ajuint identifier)
 {
     void *Pobject = NULL;

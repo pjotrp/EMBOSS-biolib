@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -523,7 +523,7 @@ double ensPredictionexonGetPvalue(const EnsPPredictionexon pe)
 
 
 
-/* @func ensPrediction<ExonSetAdaptor *****************************************
+/* @func ensPredictionexonSetAdaptor ******************************************
 **
 ** Set the Ensembl Prediction Exon Adaptor element of an
 ** Ensembl Prediction Exon.
@@ -772,7 +772,7 @@ AjBool ensPredictionexonTrace(const EnsPPredictionexon pe, ajuint level)
 
 
 
-/* @func ensPredictionexonGetMemSize ******************************************
+/* @func ensPredictionexonGetMemsize ******************************************
 **
 ** Get the memory size in bytes of an Ensembl Prediction Exon.
 **
@@ -782,7 +782,7 @@ AjBool ensPredictionexonTrace(const EnsPPredictionexon pe, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensPredictionexonGetMemSize(const EnsPPredictionexon pe)
+ajuint ensPredictionexonGetMemsize(const EnsPPredictionexon pe)
 {
     ajuint size = 0;
 
@@ -791,7 +791,7 @@ ajuint ensPredictionexonGetMemSize(const EnsPPredictionexon pe)
 
     size += (ajuint) sizeof (EnsOPredictionexon);
 
-    size += ensFeatureGetMemSize(pe->Feature);
+    size += ensFeatureGetMemsize(pe->Feature);
 
     return size;
 }
@@ -1548,13 +1548,13 @@ static AjBool predictionexonadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** Wrapper function to reference an Ensembl Prediction Exon from an
 ** Ensembl Cache.
 **
-** @param [r] value [void *] Ensembl Prediction Exon
+** @param [r] value [void*] Ensembl Prediction Exon
 **
-** @return [void *] Ensembl Prediction Exon or NULL
+** @return [void*] Ensembl Prediction Exon or NULL
 ** @@
 ******************************************************************************/
 
-static void *predictionexonadaptorCacheReference(void *value)
+static void* predictionexonadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -1604,7 +1604,7 @@ static ajuint predictionexonadaptorCacheSize(const void *value)
     if(!value)
         return 0;
 
-    return ensPredictionexonGetMemSize((const EnsPPredictionexon) value);
+    return ensPredictionexonGetMemsize((const EnsPPredictionexon) value);
 }
 
 
@@ -2469,7 +2469,7 @@ AjBool ensPredictiontranscriptTrace(
 
 
 
-/* @func ensPredictiontranscriptGetMemSize ************************************
+/* @func ensPredictiontranscriptGetMemsize ************************************
 **
 ** Get the memory size in bytes of an Ensembl Prediction Transcript.
 **
@@ -2479,7 +2479,7 @@ AjBool ensPredictiontranscriptTrace(
 ** @@
 ******************************************************************************/
 
-ajuint ensPredictiontranscriptGetMemSize(
+ajuint ensPredictiontranscriptGetMemsize(
     const EnsPPredictiontranscript pt)
 {
     ajuint size = 0;
@@ -2493,7 +2493,7 @@ ajuint ensPredictiontranscriptGetMemSize(
 
     size += (ajuint) sizeof (EnsOPredictiontranscript);
 
-    size += ensFeatureGetMemSize(pt->Feature);
+    size += ensFeatureGetMemsize(pt->Feature);
 
     if(pt->DisplayLabel)
     {
@@ -2514,7 +2514,7 @@ ajuint ensPredictiontranscriptGetMemSize(
         {
             pe = (EnsPPredictionexon) ajListIterGet(iter);
 
-            size += ensPredictionexonGetMemSize(pe);
+            size += ensPredictionexonGetMemsize(pe);
         }
 
         ajListIterDel(&iter);
@@ -2526,7 +2526,7 @@ ajuint ensPredictiontranscriptGetMemSize(
 
 
 
-/* @func ensPredictiontranscriptGetPredictionexons ****************************
+/* @func ensPredictiontranscriptGetExons **************************************
 **
 ** Get all Ensembl Prediction Exons of an Ensembl Prediction Transcript.
 **
@@ -3497,13 +3497,13 @@ static AjBool predictiontranscriptadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** Wrapper function to reference an Ensembl Prediction Transcript
 ** from an Ensembl Cache.
 **
-** @param [r] value [void *] Ensembl Prediction Transcript
+** @param [r] value [void*] Ensembl Prediction Transcript
 **
-** @return [void *] Ensembl Transcript or NULL
+** @return [void*] Ensembl Transcript or NULL
 ** @@
 ******************************************************************************/
 
-static void *predictiontranscriptadaptorCacheReference(void *value)
+static void* predictiontranscriptadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -3555,7 +3555,7 @@ static ajuint predictiontranscriptadaptorCacheSize(const void *value)
     if(!value)
         return 0;
 
-    return ensPredictiontranscriptGetMemSize((const EnsPPredictiontranscript)
+    return ensPredictiontranscriptGetMemsize((const EnsPPredictiontranscript)
                                              value);
 }
 

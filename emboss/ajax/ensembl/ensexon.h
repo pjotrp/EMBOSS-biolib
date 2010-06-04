@@ -86,7 +86,7 @@ AjBool ensExonTrace(const EnsPExon exon, ajuint level);
 
 ajint ensExonGetFrame(const EnsPExon exon);
 
-ajuint ensExonGetMemSize(const EnsPExon exon);
+ajuint ensExonGetMemsize(const EnsPExon exon);
 
 EnsPExon ensExonTransform(EnsPExon exon, const AjPStr csname,
                           const AjPStr csversion);

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.17 $
+** @version $Revision: 1.18 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -852,7 +852,7 @@ AjBool ensDensitytypeTrace(const EnsPDensitytype dt, ajuint level)
 
 
 
-/* @func ensDensitytypeGetMemSize *********************************************
+/* @func ensDensitytypeGetMemsize *********************************************
 **
 ** Get the memory size in bytes of an Ensembl Density Type.
 **
@@ -862,7 +862,7 @@ AjBool ensDensitytypeTrace(const EnsPDensitytype dt, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensDensitytypeGetMemSize(const EnsPDensitytype dt)
+ajuint ensDensitytypeGetMemsize(const EnsPDensitytype dt)
 {
     ajuint size = 0;
 
@@ -871,7 +871,7 @@ ajuint ensDensitytypeGetMemSize(const EnsPDensitytype dt)
 
     size += (ajuint) sizeof (EnsODensitytype);
 
-    size += ensAnalysisGetMemSize(dt->Analysis);
+    size += ensAnalysisGetMemsize(dt->Analysis);
 
     return size;
 }
@@ -1545,7 +1545,7 @@ EnsPDatabaseadaptor ensDensitytypeadaptorGetDatabaseadaptor(
 ** An ajTableMap 'apply' function to return all Density Type objects from the
 ** Ensembl Density Type Adaptor-internal cache.
 **
-** @param [u] key [const void *] AJAX unsigned integer key data address
+** @param [u] key [const void*] AJAX unsigned integer key data address
 ** @param [u] value [void**] Ensembl Density Type value data address
 ** @param [u] cl [void*] AJAX List of Ensembl Density Type objects,
 **                       passed in via ajTableMap
@@ -2334,7 +2334,7 @@ AjBool ensDensityfeatureTrace(const EnsPDensityfeature df, ajuint level)
 
 
 
-/* @func ensDensityfeatureGetMemSize ******************************************
+/* @func ensDensityfeatureGetMemsize ******************************************
 **
 ** Get the memory size in bytes of an Ensembl Density Feature.
 **
@@ -2344,7 +2344,7 @@ AjBool ensDensityfeatureTrace(const EnsPDensityfeature df, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensDensityfeatureGetMemSize(const EnsPDensityfeature df)
+ajuint ensDensityfeatureGetMemsize(const EnsPDensityfeature df)
 {
     ajuint size = 0;
 
@@ -2353,9 +2353,9 @@ ajuint ensDensityfeatureGetMemSize(const EnsPDensityfeature df)
 
     size += (ajuint) sizeof (EnsODensityfeature);
 
-    size += ensFeatureGetMemSize(df->Feature);
+    size += ensFeatureGetMemsize(df->Feature);
 
-    size += ensDensitytypeGetMemSize(df->Densitytype);
+    size += ensDensitytypeGetMemsize(df->Densitytype);
 
     return size;
 }
@@ -2880,13 +2880,13 @@ static AjBool densityfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** Wrapper function to reference an Ensembl Density Feature
 ** from an Ensembl Cache.
 **
-** @param [r] value [void *] Ensembl Density Feature
+** @param [r] value [void*] Ensembl Density Feature
 **
-** @return [void *] Ensembl Density Feature or NULL
+** @return [void*] Ensembl Density Feature or NULL
 ** @@
 ******************************************************************************/
 
-static void *densityfeatureadaptorCacheReference(void *value)
+static void* densityfeatureadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -2937,7 +2937,7 @@ static ajuint densityfeatureadaptorCacheSize(const void *value)
     if(!value)
         return 0;
 
-    return ensDensityfeatureGetMemSize((const EnsPDensityfeature) value);
+    return ensDensityfeatureGetMemsize((const EnsPDensityfeature) value);
 }
 
 

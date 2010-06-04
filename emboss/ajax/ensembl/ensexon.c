@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -138,7 +138,7 @@ static ExonPCoordinates exonCoordinatesNew(void)
 **
 ** Object-based constructor function, which returns an independent object.
 **
-** @param object [ExonPCoordinates] Exon Coordinates
+** @param [u] object [ExonPCoordinates] Exon Coordinates
 **
 ** @return [ExonPCoordinates] Exon Coordinates
 ** @@
@@ -170,7 +170,7 @@ static ExonPCoordinates exonCoordinatesNewObj(ExonPCoordinates object)
 **
 ** Default Exon Coordinates destructor.
 **
-** @param Pec [ExonPCoordinates*] Exon Coordinates address
+** @param [d] Pec [ExonPCoordinates*] Exon Coordinates address
 **
 ** @return [void]
 ** @@
@@ -362,7 +362,7 @@ EnsPExon ensExonNew(EnsPExonadaptor ea,
 **
 ** An ajTableMap 'apply' function to copy Exon Coordinates objects.
 **
-** @param [u] key [const void *] AJAX unsigned integer key data address
+** @param [u] key [const void*] AJAX unsigned integer key data address
 ** @param [u] value [void**] Exon Coordinates value data address
 ** @param [u] cl [void*] AJAX Table of Exon Coordinates objects,
 **                       passed in via ajTableMap
@@ -1625,7 +1625,7 @@ ajint ensExonGetFrame(const EnsPExon exon)
 
 
 
-/* @func ensExonGetMemSize ****************************************************
+/* @func ensExonGetMemsize ****************************************************
 **
 ** Get the memory size in bytes of an Ensembl Exon.
 **
@@ -1635,7 +1635,7 @@ ajint ensExonGetFrame(const EnsPExon exon)
 ** @@
 ******************************************************************************/
 
-ajuint ensExonGetMemSize(const EnsPExon exon)
+ajuint ensExonGetMemsize(const EnsPExon exon)
 {
     ajuint size = 0;
 
@@ -1648,7 +1648,7 @@ ajuint ensExonGetMemSize(const EnsPExon exon)
 
     size += (ajuint) sizeof (EnsOExon);
 
-    size += ensFeatureGetMemSize(exon->Feature);
+    size += ensFeatureGetMemsize(exon->Feature);
 
     if(exon->StableIdentifier)
     {
@@ -1703,7 +1703,7 @@ ajuint ensExonGetMemSize(const EnsPExon exon)
         {
             baf = (EnsPBasealignfeature) ajListIterGet(iter);
 
-            size += ensBasealignfeatureGetMemSize(baf);
+            size += ensBasealignfeatureGetMemsize(baf);
         }
 
         ajListIterDel(&iter);
@@ -3045,13 +3045,13 @@ static AjBool exonadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 **
 ** Wrapper function to reference an Ensembl Exon from an Ensembl Cache.
 **
-** @param [r] value [void *] Ensembl Exon
+** @param [r] value [void*] Ensembl Exon
 **
-** @return [void *] Ensembl Exon or NULL
+** @return [void*] Ensembl Exon or NULL
 ** @@
 ******************************************************************************/
 
-static void *exonadaptorCacheReference(void *value)
+static void* exonadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -3101,7 +3101,7 @@ static ajuint exonadaptorCacheSize(const void *value)
     if(!value)
         return 0;
 
-    return ensExonGetMemSize((const EnsPExon) value);
+    return ensExonGetMemsize((const EnsPExon) value);
 }
 
 
@@ -3869,7 +3869,7 @@ AjBool ensExonadaptorFetchAllIdentifiers(const EnsPExonadaptor ea,
 ** deleting the AJAX List.
 **
 ** @cc Bio::EnsEMBL::DBSQL::ExonAdaptor::list_stable_ids
-** @param [u] ea [EnsPExonadaptor] Ensembl Exon Adaptor
+** @param [r] ea [const EnsPExonadaptor] Ensembl Exon Adaptor
 ** @param [u] identifiers [AjPList] AJAX List of AJAX Strings
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise

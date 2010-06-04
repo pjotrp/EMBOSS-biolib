@@ -47,7 +47,7 @@ AjBool ensGvpopulationSetGvsample(EnsPGvpopulation gvp, EnsPGvsample gvs);
 AjBool ensGvpopulationAddSubPopulation(EnsPGvpopulation gvp,
                                        EnsPGvpopulation subgvp);
 
-ajuint ensGvpopulationGetMemSize(const EnsPGvpopulation gvp);
+ajuint ensGvpopulationGetMemsize(const EnsPGvpopulation gvp);
 
 AjBool ensGvpopulationTrace(const EnsPGvpopulation gvp, ajuint level);
 

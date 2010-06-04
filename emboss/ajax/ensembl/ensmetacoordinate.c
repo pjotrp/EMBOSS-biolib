@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.7 $
+** @version $Revision: 1.8 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -270,7 +270,7 @@ static AjBool metacoordinateadaptorCacheInit(EnsPMetacoordinateadaptor mca)
 ** @see ensRegistryGetMetacoordinateadaptor
 **
 ** @cc Bio::EnsEMBL::DBSQL::MetaCoordContainer::new
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+** @param [u] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
 **
 ** @return [EnsPMetacoordinateadaptor] Ensembl Meta-Coordinate Adaptor or NULL
 ** @@
@@ -515,6 +515,35 @@ void ensMetacoordinateadaptorDel(EnsPMetacoordinateadaptor *Pmca)
 
 
 
+/* @section element retrieval *************************************************
+**
+** Functions for returning Ensembl Coordinate Systems.
+**
+** @fdata [EnsPMetacoordinateadaptor]
+** @fnote None
+**
+** @nam3rule Fetch Fetch Fetch data
+** @nam4rule FetchAll Fetch all data
+** @nam5rule FetchAllCoordsystems Fetch coordinate systems
+** @nam3rule Get   Return an attribute
+** @nam4rule GetMaximumlength   Return maximum length
+**
+** @argrule * mca [const EnsPMetacoordinateadaptor] Ensembl Meta-Coordinate
+**                                                Adaptor
+** @argrule Fetch name [const AjPStr] Ensembl Feature (i.e. SQL table) name
+** @argrule Fetch css [AjPList] AJAX List of Ensembl Coordinate Systems
+** @argrule Get cs [const EnsPCoordsystem] Ensembl Coordinate System
+** @argrule Get name [const AjPStr] Ensembl Feature (i.e. SQL table) name
+**
+** @valrule * [AjBool] True on success
+** @valrule *Maximumlength [ajuint] Maximum length
+**
+** @fcategory use
+******************************************************************************/
+
+
+
+
 /* @func ensMetacoordinateadaptorFetchAllCoordsystems *************************
 **
 ** Fetch all Ensembl Coordinate Systems associated with a particular
@@ -522,7 +551,8 @@ void ensMetacoordinateadaptorDel(EnsPMetacoordinateadaptor *Pmca)
 **
 ** @cc Bio::EnsEMBL::DBSQL::MetaCoordContainer::
 **     fetch_all_Coordsystems_by_feature_type
-** @param [r] mca [EnsPMetacoordinateadaptor] Ensembl Meta-Coordinate Adaptor
+** @param [r] mca [const EnsPMetacoordinateadaptor] Ensembl Meta-Coordinate
+**                                                 Adaptor
 ** @param [r] name [const AjPStr] Ensembl Feature (i.e. SQL table) name
 ** @param [u] css [AjPList] AJAX List of Ensembl Coordinate Systems
 **
@@ -531,7 +561,7 @@ void ensMetacoordinateadaptorDel(EnsPMetacoordinateadaptor *Pmca)
 ******************************************************************************/
 
 AjBool ensMetacoordinateadaptorFetchAllCoordsystems(
-    EnsPMetacoordinateadaptor mca,
+    const EnsPMetacoordinateadaptor mca,
     const AjPStr name,
     AjPList css)
 {
@@ -594,14 +624,15 @@ AjBool ensMetacoordinateadaptorFetchAllCoordsystems(
 
 
 
-/* @func ensMetacoordinateadaptorGetMaximumLength *****************************
+/* @func ensMetacoordinateadaptorGetMaximumlength *****************************
 **
 ** Get the maximum length of a particular Ensembl Feature type in an
 ** Ensembl Coordinate System.
 **
 ** @cc Bio::EnsEMBL::DBSQL::MetaCoordContainer::
 **     fetch_max_length_by_Coordsystem_feature_type
-** @param [r] mca [EnsPMetacoordinateadaptor] Ensembl Meta-Coordinate Adaptor
+** @param [r] mca [const EnsPMetacoordinateadaptor] Ensembl Meta-Coordinate
+**                                                  Adaptor
 ** @param [r] cs [const EnsPCoordsystem] Ensembl Coordinate System
 ** @param [r] name [const AjPStr] Ensembl Feature (i.e. SQL table) name
 **
@@ -609,8 +640,8 @@ AjBool ensMetacoordinateadaptorFetchAllCoordsystems(
 ** @@
 ******************************************************************************/
 
-ajuint ensMetacoordinateadaptorGetMaximumLength(
-    EnsPMetacoordinateadaptor mca,
+ajuint ensMetacoordinateadaptorGetMaximumlength(
+    const EnsPMetacoordinateadaptor mca,
     const EnsPCoordsystem cs,
     const AjPStr name)
 {

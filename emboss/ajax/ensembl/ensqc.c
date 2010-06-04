@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -235,21 +235,21 @@ static AjBool qcsubmissionadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 ** Default constructor for an Ensembl QC DAS Feature.
 **
 ** @cc Bio::EnsEMBL::Storable::new
-** @param [r] qcdasfa [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
+** @param [u] qcdasfa [EnsPQcdasfeatureadaptor] Ensembl QC DAS Feature Adaptor
 ** @param [r] identifier [ajuint] SQL database-internal identifier
 ** @cc Bio::EnsEMBL::QC::DASFeature::new
 ** @param [u] qca [EnsPQcalignment] Ensembl QC Alignment
 ** @param [u] analysis [EnsPAnalysis] Ensembl Analysis
-** @param [u] ssequence [EnsPQcsequence] Segment Ensembl QC Sequence
+** @param [u] segment [EnsPQcsequence] Segment Ensembl QC Sequence
 ** @param [r] segstart [ajuint] Segment start
 ** @param [r] segend [ajuint] Segment end
 ** @param [r] segstrand [ajint] Segment strand
-** @param [u] fsequence [EnsPQcsequence] Feature Ensembl QC Sequence
-** @param [r] tstart [ajuint] Feature start
-** @param [r] tend [ajuint] Feature end
+** @param [u] feature [EnsPQcsequence] Feature Ensembl QC Sequence
+** @param [r] fstart [ajuint] Feature start
+** @param [r] fend [ajuint] Feature end
 ** @param [r] phase [ajint] Phase
-** @param [r] category [EnsEQcdasfeatureCategory] Category
-** @param [r] type [EnsEQcdasfeatureType] Type
+** @param [u] category [EnsEQcdasfeatureCategory] Category
+** @param [u] type [EnsEQcdasfeatureType] Type
 **
 ** @return [EnsPQcdasfeature] Ensembl QC DAS Feature or NULL
 ** @@
@@ -1230,7 +1230,7 @@ AjBool ensQcdasfeatureSetType(EnsPQcdasfeature qcdasf,
 
 
 
-/* @func ensQcdasfeatureGetMemSize ********************************************
+/* @func ensQcdasfeatureGetMemsize ********************************************
 **
 ** Get the memory size in bytes of an Ensembl QC DAS Feature.
 **
@@ -1240,7 +1240,7 @@ AjBool ensQcdasfeatureSetType(EnsPQcdasfeature qcdasf,
 ** @@
 ******************************************************************************/
 
-ajuint ensQcdasfeatureGetMemSize(const EnsPQcdasfeature qcdasf)
+ajuint ensQcdasfeatureGetMemsize(const EnsPQcdasfeature qcdasf)
 {
     ajuint size = 0;
 
@@ -1249,13 +1249,13 @@ ajuint ensQcdasfeatureGetMemSize(const EnsPQcdasfeature qcdasf)
 
     size += (ajuint) sizeof (EnsOQcdasfeature);
 
-    size += ensAnalysisGetMemSize(qcdasf->Analysis);
+    size += ensAnalysisGetMemsize(qcdasf->Analysis);
 
-    size += ensQcalignmentGetMemSize(qcdasf->Qcalignment);
+    size += ensQcalignmentGetMemsize(qcdasf->Qcalignment);
 
-    size += ensQcsequenceGetMemSize(qcdasf->SegmentSequence);
+    size += ensQcsequenceGetMemsize(qcdasf->SegmentSequence);
 
-    size += ensQcsequenceGetMemSize(qcdasf->FeatureSequence);
+    size += ensQcsequenceGetMemsize(qcdasf->FeatureSequence);
 
     return size;
 }
@@ -1460,7 +1460,7 @@ const char* ensQcdasfeatureCategoryToChar(EnsEQcdasfeatureCategory category)
 ** @@
 ******************************************************************************/
 
-const char *ensQcdasfeatureTypeToChar(EnsEQcdasfeatureType type)
+const char* ensQcdasfeatureTypeToChar(EnsEQcdasfeatureType type)
 {
     register EnsEQcdasfeatureType i = ensEQcdasfeatureTypeNULL;
 
@@ -1809,7 +1809,7 @@ EnsPQcdasfeatureadaptor ensQcdasfeatureadaptorNew(
 ** destroyed directly. Upon exit, the Ensembl Registry will call this function
 ** if required.
 **
-** @param [d] Pqcfasfa [EnsPQcdasfeatureadaptor*] Ensembl QC DAS Feature
+** @param [d] Pqcdasfa [EnsPQcdasfeatureadaptor*] Ensembl QC DAS Feature
 **                                                Adaptor address
 **
 ** @return [void]
@@ -2420,7 +2420,7 @@ AjBool ensQcdasfeatureadaptorDelete(EnsPQcdasfeatureadaptor qcdasfa,
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
 ** @argrule Obj object [EnsPQcvariation] Ensembl QC Variation
-** @argrule Ref object [EnsPQcvariation] Ensembl QC Variation
+** @argrule Ref qcv [EnsPQcvariation] Ensembl QC Variation
 **
 ** @valrule * [EnsPQcvariation] Ensembl QC Variation
 **
@@ -2580,7 +2580,7 @@ EnsPQcvariation ensQcvariationNewObj(const EnsPQcvariation object)
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] qca [EnsPQcvariation] Ensembl Variation
+** @param [u] qcv [EnsPQcvariation] Ensembl Variation
 **
 ** @return [EnsPQcvariation] Ensembl QC Variation
 ** @@
@@ -3467,7 +3467,7 @@ AjBool ensQcvariationSetState(EnsPQcvariation qcv,
 
 
 
-/* @func ensQcvariationGetMemSize *********************************************
+/* @func ensQcvariationGetMemsize *********************************************
 **
 ** Get the memory size in bytes of an Ensembl QC Variation.
 **
@@ -3477,7 +3477,7 @@ AjBool ensQcvariationSetState(EnsPQcvariation qcv,
 ** @@
 ******************************************************************************/
 
-ajuint ensQcvariationGetMemSize(const EnsPQcvariation qcv)
+ajuint ensQcvariationGetMemsize(const EnsPQcvariation qcv)
 {
     ajuint size = 0;
 
@@ -3486,12 +3486,12 @@ ajuint ensQcvariationGetMemSize(const EnsPQcvariation qcv)
 
     size += (ajuint) sizeof (EnsOQcvariation);
 
-    size += ensQcalignmentGetMemSize(qcv->Qcalignment);
+    size += ensQcalignmentGetMemsize(qcv->Qcalignment);
 
-    size += ensAnalysisGetMemSize(qcv->Analysis);
+    size += ensAnalysisGetMemsize(qcv->Analysis);
 
-    size += ensQcsequenceGetMemSize(qcv->QuerySequence);
-    size += ensQcsequenceGetMemSize(qcv->TargetSequence);
+    size += ensQcsequenceGetMemsize(qcv->QuerySequence);
+    size += ensQcsequenceGetMemsize(qcv->TargetSequence);
 
     if(qcv->QueryString)
     {
@@ -3700,13 +3700,13 @@ EnsEQcvariationState ensQcvariationStateFromStr(const AjPStr state)
 **
 ** Convert an Ensembl QC Variation class element into a C-type (char*) string.
 **
-** @param [r] class [EnsEQcvariationClass] Ensembl QC Variation class
+** @param [r] vclass [EnsEQcvariationClass] Ensembl QC Variation class
 **
 ** @return [const char*] Ensembl QC Variation class C-type (char*) string
 ** @@
 ******************************************************************************/
 
-const char *ensQcvariationClassToChar(EnsEQcvariationClass vclass)
+const char* ensQcvariationClassToChar(EnsEQcvariationClass vclass)
 {
     register EnsEQcvariationClass i = ensEQcvariationClassNULL;
 
@@ -3737,7 +3737,7 @@ const char *ensQcvariationClassToChar(EnsEQcvariationClass vclass)
 ** @@
 ******************************************************************************/
 
-const char *ensQcvariationTypeToChar(EnsEQcvariationType type)
+const char* ensQcvariationTypeToChar(EnsEQcvariationType type)
 {
     register EnsEQcvariationType i = ensEQcvariationTypeNULL;
 
@@ -3768,7 +3768,7 @@ const char *ensQcvariationTypeToChar(EnsEQcvariationType type)
 ** @@
 ******************************************************************************/
 
-const char *ensQcvariationStateToChar(EnsEQcvariationState state)
+const char* ensQcvariationStateToChar(EnsEQcvariationState state)
 {
     register EnsEQcvariationState i = ensEQcvariationStateNULL;
 
@@ -5561,7 +5561,7 @@ AjBool ensQcsubmissionSetAnalysisJobIdentifier(EnsPQcsubmission qcsb,
 
 
 
-/* @func ensQcsubmissionGetMemSize *********************************************
+/* @func ensQcsubmissionGetMemsize *********************************************
 **
 ** Get the memory size in bytes of an Ensembl QC Submission.
 **
@@ -5571,7 +5571,7 @@ AjBool ensQcsubmissionSetAnalysisJobIdentifier(EnsPQcsubmission qcsb,
 ** @@
 ******************************************************************************/
 
-ajuint ensQcsubmissionGetMemSize(const EnsPQcsubmission qcsb)
+ajuint ensQcsubmissionGetMemsize(const EnsPQcsubmission qcsb)
 {
     ajuint size = 0;
 
@@ -5580,10 +5580,10 @@ ajuint ensQcsubmissionGetMemSize(const EnsPQcsubmission qcsb)
 
     size += (ajuint) sizeof (EnsOQcsubmission);
 
-    size += ensAnalysisGetMemSize(qcsb->Analysis);
+    size += ensAnalysisGetMemsize(qcsb->Analysis);
 
-    size += ensQcsequenceGetMemSize(qcsb->QuerySequence);
-    size += ensQcsequenceGetMemSize(qcsb->TargetSequence);
+    size += ensQcsequenceGetMemsize(qcsb->QuerySequence);
+    size += ensQcsequenceGetMemsize(qcsb->TargetSequence);
 
     return size;
 }

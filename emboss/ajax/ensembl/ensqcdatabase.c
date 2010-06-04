@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -177,7 +177,6 @@ static AjBool qcdatabaseadaptorCacheExit(EnsPQcdatabaseadaptor qcdba);
 ** @param [u] directory [AjPStr] Directory
 ** @param [u] file [AjPStr] File
 ** @param [u] externalurl [AjPStr] External URL
-** @param [u] internalurl [AjPStr] Internal URL
 **
 ** @return [EnsPQcdatabase] Ensembl QC Database or NULL
 ** @@
@@ -1252,7 +1251,7 @@ AjBool ensQcdatabaseSetInternalURL(EnsPQcdatabase qcdb, AjPStr url)
 
 
 
-/* @func ensQcdatabaseGetMemSize **********************************************
+/* @func ensQcdatabaseGetMemsize **********************************************
 **
 ** Get the memory size in bytes of an Ensembl QC Database.
 **
@@ -1262,7 +1261,7 @@ AjBool ensQcdatabaseSetInternalURL(EnsPQcdatabase qcdb, AjPStr url)
 ** @@
 ******************************************************************************/
 
-ajuint ensQcdatabaseGetMemSize(const EnsPQcdatabase qcdb)
+ajuint ensQcdatabaseGetMemsize(const EnsPQcdatabase qcdb)
 {
     ajuint size = 0;
 
@@ -1271,7 +1270,7 @@ ajuint ensQcdatabaseGetMemSize(const EnsPQcdatabase qcdb)
 
     size += (ajuint) sizeof (EnsOQcdatabase);
 
-    size += ensAnalysisGetMemSize(qcdb->Analysis);
+    size += ensAnalysisGetMemsize(qcdb->Analysis);
 
     if(qcdb->Name)
     {

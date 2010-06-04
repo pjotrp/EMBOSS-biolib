@@ -91,7 +91,7 @@ ajint ensAssemblyGetOrientation(const EnsPAssembly assembly);
 
 AjBool ensAssemblyTrace(const EnsPAssembly assembly, ajuint level);
 
-ajuint ensAssemblyGetMemSize(const EnsPAssembly assembly);
+ajuint ensAssemblyGetMemsize(const EnsPAssembly assembly);
 
 /*
 ** End of prototype definitions

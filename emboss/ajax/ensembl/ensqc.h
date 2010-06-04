@@ -416,7 +416,7 @@ AjBool ensQcdasfeatureSetCategory(EnsPQcdasfeature qcdasf,
 AjBool ensQcdasfeatureSetType(EnsPQcdasfeature qcdasf,
                               EnsEQcdasfeatureType type);
 
-ajuint ensQcdasfeatureGetMemSize(const EnsPQcdasfeature qcdasf);
+ajuint ensQcdasfeatureGetMemsize(const EnsPQcdasfeature qcdasf);
 
 AjBool ensQcdasfeatureTrace(const EnsPQcdasfeature qcdasf, ajuint level);
 
@@ -583,7 +583,7 @@ AjBool ensQcvariationSetType(EnsPQcvariation qcv,
 AjBool ensQcvariationSetState(EnsPQcvariation qcv,
                               EnsEQcvariationState state);
 
-ajuint ensQcvariationGetMemSize(const EnsPQcvariation qcv);
+ajuint ensQcvariationGetMemsize(const EnsPQcvariation qcv);
 
 AjBool ensQcvariationTrace(const EnsPQcvariation qcv, ajuint level);
 
@@ -725,7 +725,7 @@ AjBool ensQcsubmissionSetTargetStrand(EnsPQcsubmission qcsb,
 AjBool ensQcsubmissionSetAnalysisJobIdentifier(EnsPQcsubmission qcsb,
                                                ajuint jobid);
 
-ajuint ensQcsubmissionGetMemSize(const EnsPQcsubmission qcsb);
+ajuint ensQcsubmissionGetMemsize(const EnsPQcsubmission qcsb);
 
 AjBool ensQcsubmissionTrace(const EnsPQcsubmission qcsb, ajuint level);
 

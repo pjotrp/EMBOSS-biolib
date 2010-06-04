@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -470,7 +470,7 @@ EnsPAssemblymapperadaptor ensGenericassemblymapperGetAdaptor(
 
 
 
-/* @func ensGenericassemblymapperGetAssembledCoordinateSystem *****************
+/* @func ensGenericassemblymapperGetAssembledCoordsystem **********************
 **
 ** Get the assembled Ensembl Coordinate System element of an
 ** Ensembl Generic Assembly Mapper.
@@ -495,7 +495,7 @@ const EnsPCoordsystem ensGenericassemblymapperGetAssembledCoordsystem(
 
 
 
-/* @func ensAssemblyGenericMapperGetComponentCoordinateSystem *****************
+/* @func ensGenericassemblymapperGetComponentCoordsystem **********************
 **
 ** Get the component Ensembl Coordinate System element of an
 ** Ensembl Generic Assembly Mapper.
@@ -1005,7 +1005,7 @@ AjBool ensGenericassemblymapperMap(EnsPGenericassemblymapper gam,
 
 
 
-/* @func ensChainedassemblymapperFastMap **************************************
+/* @func ensGenericassemblymapperFastMap **************************************
 **
 ** Transform coordinates from one Ensembl Coordinate System to another by means
 ** of an Ensembl Generic Assembly Mapper.
@@ -1268,7 +1268,7 @@ EnsPChainedassemblymapper ensChainedassemblymapperNew(
 ** Ensembl Object referencing function, which returns a pointer to the
 ** Ensembl Object passed in and increases its reference count.
 **
-** @param [u] gam [EnsPChainedassemblymapper] Ensembl Chained Assembly Mapper
+** @param [u] cam [EnsPChainedassemblymapper] Ensembl Chained Assembly Mapper
 **
 ** @return [EnsPChainedassemblymapper] Ensembl Chained Assembly Mapper or NULL
 ** @@
@@ -2678,7 +2678,7 @@ AjBool ensToplevelassemblymapperMap(EnsPToplevelassemblymapper tlam,
 ** @param [u] ama [EnsPAssemblymapperadaptor] Ensembl Assembly Mapper Adaptor
 ** @param [u] gam [EnsPGenericassemblymapper] Ensembl Generic Assembly Mapper
 ** @param [u] cam [EnsPChainedassemblymapper] Ensembl Chained Assembly Mapper
-** @param [u] gam [EnsPToplevelassemblymapper] Ensembl Top-Level
+** @param [u] tlam [EnsPToplevelassemblymapper] Ensembl Top-Level
 **                                             Assembly Mapper
 **
 ** @return [EnsPAssemblymapper] Ensembl Assembly Mapper or NULL
@@ -4644,7 +4644,7 @@ AjBool ensAssemblymapperadaptorRegisterAll(EnsPAssemblymapperadaptor ama,
 ** @param [u] srctrgmapper [EnsPMapper] Ensembl Mapper for source to target
 **                                      Coordinate System mapping,
 **                                      the combined Mapper
-** @param [r] srctype [AjPStr] Source mapping type
+** @param [r] srctype [const AjPStr] Source mapping type
 **
 ** @return [AjBool] ajTrue on success, ajFalse otherwise
 ** @@

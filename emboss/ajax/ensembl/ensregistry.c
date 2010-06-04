@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.15 $
+** @version $Revision: 1.16 $
 ** @@
 **
 ** Bio::EnsEMBL::Registry CVS Revision: 1.165
@@ -214,7 +214,7 @@ typedef struct RegistrySCoreStyle
 **         Ensembl Genetic Variation Individual Adaptor
 ** @attr Populationadaptor [EnsPGvpopulationadaptor]
 **         Ensembl Genetic Variation Population Adaptor
-** @attr Sampleadaptor [EnsPGvvsampleadaptor]
+** @attr Sampleadaptor [EnsPGvsampleadaptor]
 **         Ensembl Genetic Variation Sample Adaptor
 ** @attr Variationadaptor [EnsPGvvariationadaptor]
 **         Ensembl Genetic Variation Variation Adaptor
@@ -1967,7 +1967,7 @@ EnsPDatabaseadaptor ensRegistryNewDatabaseadaptor(
 ** @param [r] multi [AjBool] Multiple species
 ** @param [r] identifier [ajuint] Species identifier
 **
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @return [EnsPDatabaseadaptor] Ensembl Database Adpator
 ** @@
 ** This function aims to resolve an eventual alias to a valid species name.
 ** If the alias has not been registered before, it will strip underscores from
@@ -1979,7 +1979,7 @@ EnsPDatabaseadaptor ensRegistryNewDatabaseadaptor(
 ** Connection or an Ensembl data file (EnsemblAliases.dat) before.
 ******************************************************************************/
 
-EnsPDatabaseadaptor ensRegistryNewReferencedaptor(
+EnsPDatabaseadaptor ensRegistryNewReferenceadaptor(
     EnsPDatabaseadaptor dba,
     EnsPDatabaseconnection dbc,
     AjPStr database,
@@ -1992,9 +1992,9 @@ EnsPDatabaseadaptor ensRegistryNewReferencedaptor(
 
     EnsPDatabaseadaptor rsa = NULL;
 
-    if(ajDebugTest("ensRegistryNewReferencedaptor"))
+    if(ajDebugTest("ensRegistryNewReferenceadaptor"))
     {
-        ajDebug("ensRegistryNewReferencedaptor\n"
+        ajDebug("ensRegistryNewReferenceadaptor\n"
                 "  dba %p\n"
                 "  dbc %p\n"
                 "  database '%S'\n"
@@ -5586,7 +5586,7 @@ EnsPGvalleleadaptor ensRegistryGetGvalleleadaptor(
 
 
 
-/* @func ensRegistryGetGvgenotypeAdaptor **************************************
+/* @func ensRegistryGetGvgenotypeadaptor **************************************
 **
 ** Get an Ensembl Genetic Variation Genotype Adaptor from the
 ** Ensembl Registry.

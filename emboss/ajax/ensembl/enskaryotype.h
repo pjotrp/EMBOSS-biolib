@@ -107,7 +107,7 @@ AjBool ensKaryotypebandSetStain(EnsPKaryotypeband kb, AjPStr stain);
 
 AjBool ensKaryotypebandTrace(const EnsPKaryotypeband kb, ajuint level);
 
-ajuint ensKaryotypebandGetMemSize(const EnsPKaryotypeband kb);
+ajuint ensKaryotypebandGetMemsize(const EnsPKaryotypeband kb);
 
 AjBool ensKaryotypebandSortByStartAscending(AjPList kbs);
 

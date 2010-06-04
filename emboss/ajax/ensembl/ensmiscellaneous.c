@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -365,7 +365,7 @@ void ensMiscellaneoussetDel(EnsPMiscellaneousset *Pms)
 ** @nam4rule GetCode Return the code
 ** @nam4rule GetName Return the name
 ** @nam4rule GetDescription Return the description
-** @nam4rule GetMaximumLength Return the maximum length
+** @nam4rule GetMaximumlength Return the maximum length
 **
 ** @argrule * ms [const EnsPMiscellaneousset] Ensembl Miscellaneous Set
 **
@@ -375,7 +375,7 @@ void ensMiscellaneoussetDel(EnsPMiscellaneousset *Pms)
 ** @valrule Code [AjPStr] Code
 ** @valrule Name [AjPStr] Name
 ** @valrule Description [AjPStr] Description
-** @valrule MaximumLength [ajuint] Maximum length
+** @valrule Maximumlength [ajuint] Maximum length
 **
 ** @fcategory use
 ******************************************************************************/
@@ -496,7 +496,7 @@ AjPStr ensMiscellaneoussetGetDescription(const EnsPMiscellaneousset ms)
 
 
 
-/* @func ensMiscellaneoussetGetMaximumLength **********************************
+/* @func ensMiscellaneoussetGetMaximumlength **********************************
 **
 ** Get the maximum length element of an Ensembl Miscellaneous Set.
 **
@@ -507,7 +507,7 @@ AjPStr ensMiscellaneoussetGetDescription(const EnsPMiscellaneousset ms)
 ** @@
 ******************************************************************************/
 
-ajuint ensMiscellaneoussetGetMaximumLength(const EnsPMiscellaneousset ms)
+ajuint ensMiscellaneoussetGetMaximumlength(const EnsPMiscellaneousset ms)
 {
     if(!ms)
         return 0;
@@ -531,7 +531,7 @@ ajuint ensMiscellaneoussetGetMaximumLength(const EnsPMiscellaneousset ms)
 ** @nam4rule SetCode Set the code
 ** @nam4rule SetName Set the name
 ** @nam4rule SetDescription Set the description
-** @nam4rule SetMaximumLength Set the maximum length
+** @nam4rule SetMaximumlength Set the maximum length
 **
 ** @argrule * ms [EnsPMiscellaneousset] Ensembl Miscellaneous Set object
 **
@@ -680,7 +680,7 @@ AjBool ensMiscellaneoussetSetDescription(EnsPMiscellaneousset ms,
 
 
 
-/* @func ensMiscellaneoussetSetMaximumLength **********************************
+/* @func ensMiscellaneoussetSetMaximumlength **********************************
 **
 ** Set the maximum length element of an Ensembl Miscellaneous Set.
 **
@@ -692,7 +692,7 @@ AjBool ensMiscellaneoussetSetDescription(EnsPMiscellaneousset ms,
 ** @@
 ******************************************************************************/
 
-AjBool ensMiscellaneoussetSetMaximumLength(EnsPMiscellaneousset ms,
+AjBool ensMiscellaneoussetSetMaximumlength(EnsPMiscellaneousset ms,
                                            ajuint maxlen)
 {
     if(!ms)
@@ -771,7 +771,7 @@ AjBool ensMiscellaneoussetTrace(const EnsPMiscellaneousset ms, ajuint level)
 
 
 
-/* @func ensMiscellaneoussetGetMemSize ****************************************
+/* @func ensMiscellaneoussetGetMemsize ****************************************
 **
 ** Get the memory size in bytes of an Ensembl Miscellaneous Set.
 **
@@ -781,7 +781,7 @@ AjBool ensMiscellaneoussetTrace(const EnsPMiscellaneousset ms, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensMiscellaneoussetGetMemSize(const EnsPMiscellaneousset ms)
+ajuint ensMiscellaneoussetGetMemsize(const EnsPMiscellaneousset ms)
 {
     ajuint size = 0;
 
@@ -1020,6 +1020,7 @@ static AjBool miscellaneoussetadaptorCacheInsert(
 
 
 
+#if AJFALSE
 /* @funcstatic miscellaneoussetadaptorCacheRemove *****************************
 **
 ** Remove an Ensembl Miscellaneous Set from the
@@ -1032,8 +1033,6 @@ static AjBool miscellaneoussetadaptorCacheInsert(
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
 ******************************************************************************/
-
-#if AJFALSE
 
 static AjBool miscellaneoussetadaptorCacheRemove(
     EnsPMiscellaneoussetadaptor msa,
@@ -1498,7 +1497,7 @@ const EnsPDatabaseadaptor ensMiscellaneoussetadaptorGetDatabaseadaptor(
 ** An ajTableMap 'apply' function to return all Miscellaneous Set objects
 ** from the Ensembl Miscellaneous Set Adaptor-internal cache.
 **
-** @param [u] key [const void *] AJAX unsigned integer key data address
+** @param [u] key [const void*] AJAX unsigned integer key data address
 ** @param [u] value [void**] Ensembl Miscellaneous Set value data address
 ** @param [u] cl [void*] AJAX List of Ensembl Miscellaneous Set objects,
 **                       passed in via ajTableMap
@@ -2412,7 +2411,7 @@ AjBool ensMiscellaneousfeatureTrace(const EnsPMiscellaneousfeature mf,
 
 
 
-/* @func ensMiscellaneousfeatureGetMemSize ************************************
+/* @func ensMiscellaneousfeatureGetMemsize ************************************
 **
 ** Get the memory size in bytes of an Ensembl Miscellaneous Feature.
 **
@@ -2423,7 +2422,7 @@ AjBool ensMiscellaneousfeatureTrace(const EnsPMiscellaneousfeature mf,
 ** @@
 ******************************************************************************/
 
-ajuint ensMiscellaneousfeatureGetMemSize(const EnsPMiscellaneousfeature mf)
+ajuint ensMiscellaneousfeatureGetMemsize(const EnsPMiscellaneousfeature mf)
 {
     ajuint size = 0;
 
@@ -2438,7 +2437,7 @@ ajuint ensMiscellaneousfeatureGetMemSize(const EnsPMiscellaneousfeature mf)
 
     size += (ajuint) sizeof (EnsOMiscellaneousfeature);
 
-    size += ensFeatureGetMemSize(mf->Feature);
+    size += ensFeatureGetMemsize(mf->Feature);
 
     if(mf->Attributes)
     {
@@ -2448,7 +2447,7 @@ ajuint ensMiscellaneousfeatureGetMemSize(const EnsPMiscellaneousfeature mf)
         {
             attribute = (EnsPAttribute) ajListIterGet(iter);
 
-            size += ensAttributeGetMemSize(attribute);
+            size += ensAttributeGetMemsize(attribute);
         }
 
         ajListIterDel(&iter);
@@ -2462,7 +2461,7 @@ ajuint ensMiscellaneousfeatureGetMemSize(const EnsPMiscellaneousfeature mf)
         {
             ms = (EnsPMiscellaneousset) ajListIterGet(iter);
 
-            size += ensMiscellaneoussetGetMemSize(ms);
+            size += ensMiscellaneoussetGetMemsize(ms);
         }
 
         ajListIterDel(&iter);
@@ -3454,13 +3453,13 @@ static AjBool miscellaneousfeatureadaptorFetchAllBySQL(
 ** Wrapper function to reference an Ensembl Miscellaneous Feature
 ** from an Ensembl Cache.
 **
-** @param [r] value [void *] Ensembl Miscellaneous Feature
+** @param [r] value [void*] Ensembl Miscellaneous Feature
 **
-** @return [void *] Ensembl Miscellaneous Feature or NULL
+** @return [void*] Ensembl Miscellaneous Feature or NULL
 ** @@
 ******************************************************************************/
 
-static void *miscellaneousfeatureadaptorCacheReference(void *value)
+static void* miscellaneousfeatureadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -3512,7 +3511,7 @@ static ajuint miscellaneousfeatureadaptorCacheSize(const void *value)
     if(!value)
         return 0;
 
-    return ensMiscellaneousfeatureGetMemSize(
+    return ensMiscellaneousfeatureGetMemsize(
         (const EnsPMiscellaneousfeature) value);
 }
 
@@ -3776,8 +3775,8 @@ AjBool ensMiscellaneousfeatureadaptorFetchAllBySliceAndSetCode(
 
         if(ms)
         {
-            maxlen = (ensMiscellaneoussetGetMaximumLength(ms) > maxlen) ?
-                ensMiscellaneoussetGetMaximumLength(ms) : maxlen;
+            maxlen = (ensMiscellaneoussetGetMaximumlength(ms) > maxlen) ?
+                ensMiscellaneoussetGetMaximumlength(ms) : maxlen;
 
             ajListPushAppend(mss, (void *) ms);
         }

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.14 $
+** @version $Revision: 1.15 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -150,7 +150,7 @@ static EnsPFeature geneadaptorGetFeature(const void *value);
 ** @cc Bio::EnsEMBL::Gene::new
 ** @param [u] displaydbe [EnsPDatabaseentry] Ensembl display Database Entry
 ** @param [u] description [AjPStr] Description
-** @param [r] source [AjBool] Source
+** @param [u] source [AjPStr] Source
 ** @param [u] biotype [AjPStr] Biotype
 ** @param [r] status [EnsEGeneStatus] Status
 ** @param [r] current [AjBool] Current
@@ -1779,7 +1779,7 @@ AjBool ensGeneTrace(const EnsPGene gene, ajuint level)
 
 
 
-/* @func ensGeneGetMemSize ****************************************************
+/* @func ensGeneGetMemsize ****************************************************
 **
 ** Get the memory size in bytes of an Ensembl Gene.
 **
@@ -1789,7 +1789,7 @@ AjBool ensGeneTrace(const EnsPGene gene, ajuint level)
 ** @@
 ******************************************************************************/
 
-ajuint ensGeneGetMemSize(const EnsPGene gene)
+ajuint ensGeneGetMemsize(const EnsPGene gene)
 {
     ajuint size = 0;
 
@@ -1806,9 +1806,9 @@ ajuint ensGeneGetMemSize(const EnsPGene gene)
 
     size += (ajuint) sizeof (EnsOGene);
 
-    size += ensFeatureGetMemSize(gene->Feature);
+    size += ensFeatureGetMemsize(gene->Feature);
 
-    size += ensDatabaseentryGetMemSize(gene->DisplayReference);
+    size += ensDatabaseentryGetMemsize(gene->DisplayReference);
 
     if(gene->Description)
     {
@@ -1871,7 +1871,7 @@ ajuint ensGeneGetMemSize(const EnsPGene gene)
         {
             attribute = (EnsPAttribute) ajListIterGet(iter);
 
-            size += ensAttributeGetMemSize(attribute);
+            size += ensAttributeGetMemsize(attribute);
         }
 
         ajListIterDel(&iter);
@@ -1889,7 +1889,7 @@ ajuint ensGeneGetMemSize(const EnsPGene gene)
         {
             dbe = (EnsPDatabaseentry) ajListIterGet(iter);
 
-            size += ensDatabaseentryGetMemSize(dbe);
+            size += ensDatabaseentryGetMemsize(dbe);
         }
 
         ajListIterDel(&iter);
@@ -1907,7 +1907,7 @@ ajuint ensGeneGetMemSize(const EnsPGene gene)
         {
             transcript = (EnsPTranscript) ajListIterGet(iter);
 
-            size += ensTranscriptGetMemSize(transcript);
+            size += ensTranscriptGetMemsize(transcript);
         }
 
         ajListIterDel(&iter);
@@ -3448,13 +3448,13 @@ static AjBool geneadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 **
 ** Wrapper function to reference an Ensembl Gene from an Ensembl Cache.
 **
-** @param [r] value [void *] Ensembl Gene
+** @param [r] value [void*] Ensembl Gene
 **
-** @return [void *] Ensembl Gene or NULL
+** @return [void*] Ensembl Gene or NULL
 ** @@
 ******************************************************************************/
 
-static void *geneadaptorCacheReference(void *value)
+static void* geneadaptorCacheReference(void *value)
 {
     if(!value)
         return NULL;
@@ -3504,7 +3504,7 @@ static ajuint geneadaptorCacheSize(const void *value)
     if(!value)
         return 0;
 
-    return ensGeneGetMemSize((const EnsPGene) value);
+    return ensGeneGetMemsize((const EnsPGene) value);
 }
 
 
@@ -3861,7 +3861,8 @@ AjBool ensGeneadaptorFetchAllByBiotype(EnsPGeneadaptor ga,
 ** @param [r] ga [EnsPGeneadaptor] Ensembl Gene Adaptor
 ** @param [r] slice [EnsPSlice] Ensembl Slice
 ** @param [r] anname [const AjPStr] Ensembl Analysis name
-** @param [r] constraint [const AjPStr] SQL constraint
+** @param [r] source [const AjPStr] Source name
+** @param [r] biotype [const AjPStr] Biotype name
 ** @param [r] loadtranscripts [AjBool] Load Ensembl Transcripts
 ** @param [u] genes [AjPList] AJAX List of Ensembl Genes
 **
@@ -4521,7 +4522,7 @@ AjBool ensGeneadaptorFetchAllIdentifiers(const EnsPGeneadaptor ga,
 ** deleting the AJAX List.
 **
 ** @cc Bio::EnsEMBL::DBSQL::GeneAdaptor::list_stable_ids
-** @param [u] ga [EnsPGeneadaptor] Ensembl Gene Adaptor
+** @param [r] ga [const EnsPGeneadaptor] Ensembl Gene Adaptor
 ** @param [u] identifiers [AjPList] AJAX List of AJAX Strings
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
