@@ -2148,6 +2148,7 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
 	    score  = path[ip];
 	    gapcnt = 0;
 	    ix     = xpos-1;
+            bimble = 0.0;
 
 	    while(ip>0)
 	    {
@@ -2180,6 +2181,7 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
 	    score  = path[ip];
 	    gapcnt = 0;
 	    iy = ypos-1;
+            bimble = 0.0;
 
 	    while(1)
 	    {
@@ -2484,6 +2486,7 @@ void embAlignWalkProfileMatrix(const float *path, const ajint *compass,
 	{
 	    gapcnt  = 0;
 	    ix     = column-1;
+            bimble = 0.0;
 
 	    while(1)
 	    {
@@ -2515,8 +2518,9 @@ void embAlignWalkProfileMatrix(const float *path, const ajint *compass,
 	{
 	    gapcnt  = 0;
             iy = row -1 ;
-	    while(1)
+            bimble = 0.0;
 
+	    while(1)
 	    {
 		bimble = path[iy*seqlen+column] -
                          pmatrix[row-1][GAPO]*gapopen -
@@ -3339,6 +3343,8 @@ void embAlignReportProfile(AjPAlign align,
 **
 ** @param [r] path [const float*] Alignment path matrix to be printed 
 ** @param [r] compass [const ajint*] Path direction pointer array
+** @param [r] a [const char*] first sequence
+** @param [r] b [const char*] second sequence
 ** @param [r] lena [ajuint] length of first sequence
 ** @param [r] lenb [ajuint] length of second sequence
 ** 
