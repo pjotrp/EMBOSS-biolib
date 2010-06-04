@@ -8761,29 +8761,35 @@ static AjBool seqReadBiomart(AjPSeq thys, AjPSeqin seqin)
             seqReadLine);
 
     ifields = ajStrCalcCountK(seqReadLine, '\t');
+    ++ifields;
+    
     ajDebug("fields: %u\n", ifields);
+
     if(ifields < 2) 
         return ajFalse;
 
     seqin->Records++;
     
-    ajStrTokenAssignC(&handle, seqReadLine, "\t");
-    ajStrTokenNextParseNoskip(&handle,&token); /* identifier*/
-    seqSetName(thys, token);
-
-    for(i = 1; i < ifields; i++)
-    {
-        ajStrTokenNextParseNoskip(&handle,&token); /* non-sequence*/
-        if(ajStrGetLen(token))
-        {
-            if(i > 1)
-                ajStrAppendK(&thys->Desc, ' ');
-            ajStrAppendS(&thys->Desc, token);
-        }
-    }
+    ajStrTokenAssignC(&handle, seqReadLine, "\t\n");
 
     ajStrTokenNextParseNoskip(&handle,&token); /* sequence */
     seqAppend(&thys->Seq, token);
+
+    ajStrTokenNextParseNoskip(&handle,&token); /* identifier*/
+    seqSetName(thys, token);
+
+    for(i = 2; i < ifields; i++)
+    {
+        ajStrTokenNextParseNoskip(&handle,&token); /* non-sequence*/
+
+        if(ajStrGetLen(token))
+        {
+            if(i > 2)
+                ajStrAppendK(&thys->Desc, ' ');
+
+            ajStrAppendS(&thys->Desc, token);
+        }
+    }
 
     ajFilebuffClear(buff, 0);
 
