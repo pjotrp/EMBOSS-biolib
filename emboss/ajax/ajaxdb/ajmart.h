@@ -346,10 +346,10 @@ AjBool ajMartGetFiltersSchema(AjPSeqin seqin, const AjPStr dataset,
 AjBool ajMartGetFiltersRetry(AjPSeqin seqin, const AjPStr dataset);
     
 
-AjBool ajMartFilterMatch(AjPTable atab, AjPMartFilter filt);
+AjBool ajMartFilterMatch(AjPTable atab, const AjPMartFilter filt);
 AjBool ajMartAssociate(AjPSeqin seqin);
 
-void ajMartMakeQueryXml(AjPMartqinfo qinfo, AjPSeqin seqin);
+void ajMartMakeQueryXml(const AjPMartqinfo qinfo, AjPSeqin seqin);
 
 void ajMartFixMart(AjPSeqin seqin);
 void ajMartFixRegistry(AjPSeqin seqin);
@@ -358,13 +358,13 @@ AjBool ajMartCheckQinfo(AjPSeqin seqin, AjPMartqinfo qinfo);
 
 AjBool ajMartSendQuery(AjPSeqin seqin);
 
-const AjPStr ajMartGetMarthost(AjPSeqin seqin);
-const AjPStr ajMartGetMartpath(AjPSeqin seqin);
-ajuint ajMartGetMartport(AjPSeqin seqin);
+const AjPStr ajMartGetMarthost(const AjPSeqin seqin);
+const AjPStr ajMartGetMartpath(const AjPSeqin seqin);
+ajuint ajMartGetMartport(const AjPSeqin seqin);
 
-const AjPStr ajMartGetReghost(AjPSeqin seqin);
-const AjPStr ajMartGetRegpath(AjPSeqin seqin);
-ajuint ajMartGetRegport(AjPSeqin seqin);
+const AjPStr ajMartGetReghost(const AjPSeqin seqin);
+const AjPStr ajMartGetRegpath(const AjPSeqin seqin);
+ajuint ajMartGetRegport(const AjPSeqin seqin);
 
 AjBool ajMartSetMarthostC(AjPSeqin seqin, const char *marthost);
 AjBool ajMartSetMartpathC(AjPSeqin seqin, const char *martpath);
