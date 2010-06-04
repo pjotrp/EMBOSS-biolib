@@ -6734,7 +6734,7 @@ static AjBool seqAccessMart(AjPSeqin seqin)
 
     ajDebug("seqAccessMart %S:%S\n", qry->DbAlias, qry->Id);
 
-    if(!seqHttpUrl(qry, &iport, &host, &path))
+    if(!ajMartHttpUrl(qry, &iport, &host, &path))
     {
 	ajStrDel(&host);
 	ajStrDel(&path);

@@ -352,6 +352,54 @@ void ajStrUrlSplitPort(AjPUrl urli)
 
 
 
+/* @func ajMartHttpUrl ***************************************************
+**
+** Returns the components of a URL (IPV4/6)
+** An equivalent for seqHttpUrl().
+**
+** @param [r] qry [const AjPSeqQuery] Query object
+** @param [w] iport [ajint*] Port
+** @param [w] host [AjPStr*] Host name
+** @param [w] urlget [AjPStr*] URL for the HTTP header GET
+** @return [AjBool] ajTrue if the URL was parsed
+** @@
+******************************************************************************/
+
+AjBool ajMartHttpUrl(const AjPSeqQuery qry, ajint* iport, AjPStr* host,
+                     AjPStr* urlget)
+{
+    AjPStr url = NULL;
+    AjPUrl uo = NULL;
+    
+    url = ajStrNew();
+
+    if(!ajNamDbGetUrl(qry->DbName, &url))
+    {
+	ajErr("no URL defined for database %S", qry->DbName);
+
+	return ajFalse;
+    }
+
+    uo = ajStrUrlNew();
+    
+    ajStrUrlParseC(&uo, ajStrGetPtr(url));
+    ajStrUrlSplitPort(uo);
+    
+    ajStrAssignS(host,uo->Host);
+    ajFmtPrintS(urlget,"/%S",uo->Absolute);
+
+    if(ajStrGetLen(uo->Port))
+        ajStrToInt(uo->Port,iport);
+
+    ajStrDel(&url);
+    ajStrUrlDel(&uo);
+
+    return ajTrue;
+}
+
+
+
+
 /* @funcstatic martGetVirtualSchema ******************************************
 **
 ** Return a virtual schema given a dataset name
@@ -4412,6 +4460,7 @@ AjBool ajMartCheckQinfo(AjPSeqin seqin, AjPMartqinfo qinfo)
         {
             ajListPop(dsinfo->Attributes,(void **)&listval);
             ajListPushAppend(dsinfo->Attributes,(void *)listval);
+
             if(!martMatchAttribute(listval, att))
             {
                 ajWarn("ajMartCheckQinfo: Attribute %S not in dataset %S",

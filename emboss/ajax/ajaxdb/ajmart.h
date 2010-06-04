@@ -301,6 +301,8 @@ AjPUrl ajStrUrlNew(void);
 void   ajStrUrlDel(AjPUrl *thys);
 void   ajStrUrlParseC(AjPUrl *parts, const char *url);
 void   ajStrUrlSplitPort(AjPUrl urli);
+AjBool ajMartHttpUrl(const AjPSeqQuery qry, ajint* iport, AjPStr* host,
+                     AjPStr* urlget);
     
 AjPMartLoc ajMartLocNew(void);
 void ajMartLocDel(AjPMartLoc *thys);
