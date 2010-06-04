@@ -260,7 +260,7 @@ int main(ajint argc, char **argv)
 			ajAcdGetpathC("stride"),
                         pdb_name, randomname);
 	    ajFmtPrint("%S\n", syscmd);
-	    ajSysExecOutnameAppendErrS(syscmd, serrname);
+	    ajSysExecOutnameErrAppendS(syscmd, serrname);
 
 	    
 	    /* Open the stride output file */
@@ -397,7 +397,7 @@ int main(ajint argc, char **argv)
 	    ajFmtPrintS(&syscmd, "%S %S",  
 			ajAcdGetpathC("naccess"), pdb_name);
 	    ajFmtPrint("%S\n", syscmd);
-	    ajSysExecOutnameAppendErrS(syscmd, nerrname);
+	    ajSysExecOutnameErrAppendS(syscmd, nerrname);
 
 
 	    
