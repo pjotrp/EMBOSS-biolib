@@ -24,7 +24,7 @@ enum AjEXrefType {
     XREF_MAX            /* to test we are within bounds */
 };
 
-typedef struct SeqSAccess SeqSAccess;
+typedef struct AjSSeqAccess AjSSeqAccess;
 
 
 
@@ -299,7 +299,7 @@ typedef struct AjSSeqXref {
 ** @attr Fpos [ajlong] File position from fseek
 ** @attr Type [enum AjEQryType] Enumerated query type
 ** @attr QryDone [AjBool] Has the query been done yet
-** @attr Access [SeqSAccess*] Access function : see ajseqdb.h
+** @attr Access [AjSSeqAccess*] Access function : see ajseqdb.h
 ** @attr QryData [void*] Private data for access function
 ** @attr Wild [AjBool] True if query contains '*' or '?'
 ** @attr Padding [char[4]] Padding to alignment boundary
@@ -348,7 +348,7 @@ typedef struct AjSSeqQuery {
   ajlong Fpos;
   enum AjEQryType Type;
   AjBool QryDone;
-  SeqSAccess* Access;
+  AjSSeqAccess* Access;
   void* QryData;
   AjBool Wild;
   char Padding[4];
@@ -478,7 +478,7 @@ typedef struct AjSSeqin {
 
 
 
-/* @data SeqPAccess ***********************************************************
+/* @data AjPSeqAccess *********************************************************
 **
 ** Ajax Sequence Access database reading object.
 **
@@ -492,7 +492,9 @@ typedef struct AjSSeqin {
 ** This should be a static data object but is needed for the definition
 ** of AjPSeqin.
 **
-** @alias SeqSAccess
+** @alias AjSSeqAccess
+** @alias AjOSeqAccess
+**
 ** @new ajSeqMethod returns a copy of a known access method definition.
 ** @other AjPSeqin Sequence input
 **
@@ -507,7 +509,7 @@ typedef struct AjSSeqin {
 ** @@
 ******************************************************************************/
 
-typedef struct SeqSAccess {
+typedef struct AjSSeqAccess {
   const char *Name;
   AjBool Alias;
   AjBool Entry;
@@ -516,9 +518,9 @@ typedef struct SeqSAccess {
   AjBool (*Access) (AjPSeqin seqin);
   AjBool (*AccessFree) (void* qry);
   const char* Desc;
-} SeqOAccess;
+} AjOSeqAccess;
 
-#define SeqPAccess SeqOAccess*
+#define AjPSeqAccess AjOSeqAccess*
 
 
 
