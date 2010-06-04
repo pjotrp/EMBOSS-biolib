@@ -161,17 +161,17 @@ ajint         ajSysExecOutnameAppendS(const AjPStr clstr,
                                       const AjPStr outfname);
 ajint         ajSysExecOutnameErrC(const char* cl, const char* outfnametxt);
 ajint         ajSysExecOutnameErrS(const AjPStr clstr, const AjPStr outfname);
-ajint         ajSysExecOutnameAppendErrC(const char* cl,
+ajint         ajSysExecOutnameErrAppendC(const char* cl,
                                          const char* outfnametxt);
-ajint         ajSysExecOutnameAppendErrS(const AjPStr clstr,
+ajint         ajSysExecOutnameErrAppendS(const AjPStr clstr,
                                          const AjPStr outfname);
 void          ajSysSocketclose(struct AJSOCKET sock);
 
 int           ajSysTimeoutSet(struct AJTIMEOUT *ts);
 int           ajSysTimeoutUnset(struct AJTIMEOUT *ts);
 
-AjPFile       ajSysCreateNewInPipeC(const char* commandtxt);
-AjPFile       ajSysCreateNewInPipeS(const AjPStr command);
+AjPFile       ajSysCreateInpipeC(const char* commandtxt);
+AjPFile       ajSysCreateInpipeS(const AjPStr command);
 AjBool        ajSysExecRedirectC(const char *command, int **pipeto,
                                  int **pipefrom);
 
