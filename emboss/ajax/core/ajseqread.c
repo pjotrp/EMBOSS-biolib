@@ -19,11 +19,7 @@
 #include <math.h>
 #include <errno.h>
 
-/*
-//  #include "samtoolsbam.h"
-//   #include "samtoolsbgzf.h"
-//  #include "samtoolskseq.h"
-*/
+#include "ajseqbam.h"
 
 AjPTable seqDbMethods = NULL;
 
@@ -622,7 +618,7 @@ static void       seqQryWildComp(void);
 static AjBool     seqRead(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadAce(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadAcedb(AjPSeq thys, AjPSeqin seqin);
-/* static AjBool     seqReadBam(AjPSeq thys, AjPSeqin seqin); */
+static AjBool     seqReadBam(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadBiomart(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadClustal(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadCodata(AjPSeq thys, AjPSeqin seqin);
@@ -828,11 +824,9 @@ static SeqOInFormat seqInFormatDef[] =
   {"sam",         "Sequence Alignment/Map (SAM) format",
        AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE, seqReadSam, AJFALSE, AJFALSE},
-/*
-**  {"bam",         "Binary Sequence Alignment/Map (BAM) format",
-**       AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
-**       AJFALSE, AJTRUE, seqReadBam, AJFALSE, AJTRUE},
-*/
+  {"bam",         "Binary Sequence Alignment/Map (BAM) format",
+       AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, seqReadBam, AJFALSE, AJTRUE},
   {"genbank",     "Genbank entry format",
        AJFALSE, AJTRUE,  AJTRUE,  AJFALSE,
        AJTRUE,  AJTRUE,  seqReadGenbank, AJFALSE, AJFALSE},
@@ -6699,7 +6693,8 @@ static AjBool seqReadPhylipnon(AjPSeq thys, AjPSeqin seqin)
 	    ajDebug("line: '%S'\n", seqReadLine);
 	    ajRegSubI(seqRegPhylipHead, 1, &tmpstr);
 
-	    if(!ajStrIsWhite(tmpstr)) {
+	    if(!ajStrIsWhite(tmpstr))
+            {
 		/* check previous sequence */
 		if(jseq)
 		{
@@ -8956,186 +8951,343 @@ static AjBool seqReadMase(AjPSeq thys, AjPSeqin seqin)
 
 
 
-/* #funcstatic seqReadBam ****************************************************
+/* @funcstatic seqReadBam ****************************************************
 **
 ** Given data in a sequence structure, tries to read everything needed
 ** using binary alignment/map (BAM) format.
 **
-** #param [w] thys [AjPSeq] Sequence object
-** #param [u] seqin [AjPSeqin] Sequence input object
-** #return [AjBool] ajTrue on success
-** ##
+** @param [w] thys [AjPSeq] Sequence object
+** @param [u] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
 ******************************************************************************/
 
-/*
-//static AjBool seqReadBam(AjPSeq thys, AjPSeqin seqin)
-//{
-//    AjBool ok = ajTrue;
-//    AjPFilebuff buff;
-//    AjPFile infile;
-//    AjPStrTok handle = NULL;
-//    AjPStr token = NULL;
-//    AjBool badformat = ajFalse;
-//    ajuint seqlen = 0;
-//    const char *cp;
-//    ajuint i;
-//    ajint iqual;
-//    ajint qmin = 33;
-//    ajint qmax = 126;
-//    ajuint flags;
-//    bamFile gzfile = NULL;
-//    ajuint ilen;
-//    ajuint ntargets;
-//    char bambuf [4] = "   ";
-//    char* refname;
-//    char** targetname;
-//    ajuint *targetlen;
-//    int status;
-//    bam1_t *b = NULL;
-//    unsigned char d = '\0';
-//    ajint ret = 0;
-//    struct bamdata
-//    {
-//        ajuint Count;
-//        ajuint Nseqs;
-//        char** Name;
-//        char** Seq;
-//        char** Accuracy;
-//    } *bamdata;
-//
-//    buff = seqin->Filebuff;
-//    infile = ajFilebuffGetFile(buff);
-//
-//    if(!seqin->Data)
-//    {
-//        AJNEW0(bamdata);
-//        seqin->Data = bamdata;
-//
-//        /# reset to beginning of file - has at least been tested for blank lines #/
-//        ajFileSeek(ajFilebuffGetFile(buff), 0L, 0);
-//
-//        ajUser("bam input file '%F' fd %d", infile,
-//               fileno(ajFilebuffGetFileptr(buff)));
-//        /# reopen BAM file as a BGZF file #/
-//        gzfile = bgzf_fdopen(fileno(ajFilebuffGetFileptr(buff)), "rb");
-//        ajUser("gzfile %x  fd:%d file:%x ubs:%d cbs:%d blen:%d boff:%d cache:%d open:'%c'",
-//               gzfile, gzfile->file_descriptor, gzfile->file,
-//               gzfile->uncompressed_block_size, gzfile->compressed_block_size,
-//               gzfile->block_length, gzfile->block_offset, gzfile->cache_size,
-//               gzfile->open_mode);
-//
-//	status = bgzf_check_EOF(gzfile);
-//	if (status < 0) {
-//            // If the file is a pipe, checking the EOF marker will *always* fail
-//            // with ESPIPE.  Suppress the error message in this case.
-//            if (errno != ESPIPE) perror("[bam_header_read] bgzf_check_EOF");
-//	}
-//	else if (status == 0) fprintf(stderr, "[bam_header_read] EOF marker is absent.\n");
-//        status = bgzf_read(gzfile, bambuf, 4);
-//
-//        if(status < 0)
-//            ajUser("bgzf_read status %d BAD error '%s'", status, gzfile->error);
-//        else
-//            ajUser("bgzf_read status %d OK error '%s'", status, gzfile->error);
-//        ajUser("gzfile %x  fd:%d file:%x ubs:%d cbs:%d blen:%d boff:%d cache:%d open:'%c'",
-//               gzfile, gzfile->file_descriptor, gzfile->file,
-//               gzfile->uncompressed_block_size, gzfile->compressed_block_size,
-//               gzfile->block_length, gzfile->block_offset, gzfile->cache_size,
-//               gzfile->open_mode);
-//
-//        if (strncmp(bambuf, "BAM\001", 4))
-//            ajUser("bam bad magic bytes '%x' '%x' '%x' '%x'",
-//                   (int) bambuf[0], (int) bambuf[1],
-//                   (int) bambuf[2], (int) bambuf[3]);
-//        if (strncmp(bambuf, "BAM\001", 4))
-//            return ajFalse;
-//
-//        /# BAM header #/
-//
-//	/# read plain text and the number of reference sequences #/
-//        status = bgzf_read(gzfile, &ilen, 4);
-//        if(status != 4)
-//            ajErr("seqReadBam failed to read reference length %F", infile);
-//#ifdef BENDIAN
-//        ajByteRevLen4(&ilen);
-//#endif
-//        refname = ajCharNewRes(ilen+1);
-//        bgzf_read(gzfile, refname, ilen);
-//        ajUser("bam text %u '%s'", ilen, refname);
-//
-//        /# read reference sequence names and lengths #/
-//        bgzf_read(gzfile, &ntargets, 4);
-//#ifdef BENDIAN
-//        ajByteRevLen4(&ntargets);
-//#endif
-//        ajUser("bam targets %u", ntargets);
-//
-//        targetname = AJCALLOC(ntargets, sizeof(char*));
-//        targetlen = AJCALLOC(ntargets, sizeof(ajuint));
-//        for(i=0; i < ntargets; i++) 
-//        {
-//            bgzf_read(gzfile, &targetlen[i], 4);
-//#ifdef BENDIAN
-//            ajByteRevLen4(&targetlen[i]);
-//#endif
-//            targetname[i] = ajCharNewRes(targetlen[i]+1);
-//            bgzf_read(gzfile, targetname[i], targetlen[i]);
-//            ajUser("i:%u", i);
-//            ajUser("i:%u len:%u", i, targetlen[i]);
-//            ajUser("bam target[%u] %u '%s'", i, targetlen[i], targetname[i]);
-//        }
-//
-//        /# BAM records #/
-//
-//	b = (bam1_t*)calloc(1, sizeof(bam1_t));
-//	while ((ret = bam_read1(gzfile, b)) >= 0) {
-/#
-//            d = bam_aux_get(b, tag);
-//            if (d) {
-//                printf("%s\t%d\t", bam1_qname(b), b->core.flag);
-//                if (d[0] == 'Z' || d[0] == 'H') printf("%s\n", bam_aux2Z(d));
-//                else if (d[0] == 'f') printf("%f\n", bam_aux2f(d));
-//                else if (d[0] == 'd') printf("%lf\n", bam_aux2d(d));
-//                else if (d[0] == 'A') printf("%c\n", bam_aux2A(d));
-//                else if (d[0] == 'c' || d[0] == 's' || d[0] == 'i') printf("%d\n", bam_aux2i(d));
-//                else if (d[0] == 'C' || d[0] == 'S' || d[0] == 'I') printf("%u\n", bam_aux2i(d));
-//                else printf("\n");
-//            }
-#/
-//	}
-//	if (ret < -1) fprintf(stderr, "[bam_view] truncated file? Continue anyway. (%d)\n", ret);
-//	free(b->data); free(b);
-//
-//
-//        /# BAM close #/
-//        return ajTrue;
-//        seqin->Records++;
-//    }
-//
-//    bamdata = seqin->Data;
-//
-//    if(bamdata->Count >= bamdata->Nseqs)
-//    {
-//	ajFilebuffClear(seqin->Filebuff, 0);
-//	seqMsfDataDel((SeqPMsfData*)&seqin->Data);
-//
-//	return ajFalse;
-//    }
-//
-//    i = bamdata->Count;
-//    ajDebug("returning [%d] '%s'\n", i, bamdata->Name[i]);
-//    ajDebug("Sequence '%s'\n", bamdata->Seq[i]);
-//    ajDebug("Accuracy '%s'\n", bamdata->Accuracy[i]);
-//    ajStrAssignC(&thys->Name, bamdata->Name[i]);
-//
-//    ajStrAssignC(&thys->Seq, bamdata->Seq[i]);
-//
-//
-//    bamdata->Count++;
-//
-//    return ajTrue;
-//}
-*/
+
+static AjBool seqReadBam(AjPSeq thys, AjPSeqin seqin)
+{
+    AjPFilebuff buff;
+    AjPFile infile;
+    ajuint i;
+    ajuint ilen;
+    ajuint ntargets;
+    char bambuf [4] = "   ";
+    char* refname;
+    char** targetname;
+    ajuint *targetlen;
+    int status;
+    ajuint namelen = 0;
+    AjPSeqBam b = NULL;
+    AjPSeqBamCore c;
+    ajint ret = 0;
+    struct bamdata
+    {
+        ajuint Count;
+        ajuint Nref;
+        AjPSeqBamBgzf gzfile;
+        AjPSeqBam bam;
+    } *bamdata = NULL;
+    static AjBool called = ajFalse;
+    static AjBool bigendian = ajFalse;
+    unsigned char* d;
+    ajuint dpos;
+    int cigop;
+    ajuint cigend;
+    ajuint cigint;
+    AjPStr cigarstr = NULL;
+    AjPStr namestr = NULL;
+    AjPStr seqstr = NULL;
+    AjPStr qualstr = NULL;
+    AjPStr tagstr = NULL;
+    unsigned char dp;
+
+    if(!called)
+    {
+        called = ajTrue;
+        bigendian = ajUtilGetBigendian();
+        ajDebug("ajSeqReadBam bam bigendian: %B\n", bigendian);
+    }
+
+    buff = seqin->Filebuff;
+    infile = ajFilebuffGetFile(buff);
+
+    if(!seqin->Data)
+    {
+        AJNEW0(bamdata);
+        seqin->Data = bamdata;
+
+        /* reset to beginning of file -
+        ** has at least been tested for blank lines */
+        ajFileSeek(ajFilebuffGetFile(buff), 0L, 0);
+
+        ajDebug("bam input file '%F' fd %d\n", infile,
+               fileno(ajFilebuffGetFileptr(buff)));
+        /* reopen BAM file as a BGZF file */
+        bamdata->gzfile = ajSeqBamBgzfOpenfd(fileno(ajFilebuffGetFileptr(buff)),
+                                             "rb");
+        ajDebug("gzfile %x  fd:%d file:%x ubs:%d cbs:%d blen:%d boff:%d cache:%d open:'%c'\n",
+               bamdata->gzfile, bamdata->gzfile->file_descriptor,
+               bamdata->gzfile->file,
+               bamdata->gzfile->uncompressed_block_size,
+               bamdata->gzfile->compressed_block_size,
+               bamdata->gzfile->block_length, bamdata->gzfile->block_offset,
+               bamdata->gzfile->cache_size,
+               bamdata->gzfile->open_mode);
+
+	status = ajSeqBamBgzfEof(bamdata->gzfile);
+
+	if (status < 0)
+        {
+            /*
+            ** If the file is a pipe, checking the EOF marker will *always* fail
+            ** with ESPIPE.  Suppress the error message in this case.
+            */
+            if (errno != ESPIPE)
+                perror("seqReadBam ajSeqBamBgzfEof");
+	}
+	else if (status == 0)
+            fprintf(stderr, "seqReadBam EOF marker is absent.\n");
+
+        status = ajSeqBamBgzfRead(bamdata->gzfile, bambuf, 4);
+
+        if(status < 0)
+            ajErr("seqReadBam status %d BAD error '%s'",
+                  status, bamdata->gzfile->error);
+        else
+            ajDebug("seqReadBam status %d OK\n", status);
+
+        ajDebug("gzfile %x  fd:%d file:%x ubs:%d cbs:%d blen:%d "
+               "boff:%d cache:%d open:'%c'\n",
+               bamdata->gzfile, bamdata->gzfile->file_descriptor,
+               bamdata->gzfile->file,
+               bamdata->gzfile->uncompressed_block_size,
+               bamdata->gzfile->compressed_block_size,
+               bamdata->gzfile->block_length,
+               bamdata->gzfile->block_offset, bamdata->gzfile->cache_size,
+               bamdata->gzfile->open_mode);
+
+        if (strncmp(bambuf, "BAM\001", 4))
+            ajErr("bam bad magic bytes '%x' '%x' '%x' '%x'",
+                   (int) bambuf[0], (int) bambuf[1],
+                   (int) bambuf[2], (int) bambuf[3]);
+
+        if (strncmp(bambuf, "BAM\001", 4))
+            return ajFalse;
+
+        /* BAM header */
+
+	/* read plain text and the number of reference sequences */
+        status = ajSeqBamBgzfRead(bamdata->gzfile, &ilen, 4);
+
+        if(status != 4)
+            ajErr("seqReadBam failed to read reference length %F", infile);
+
+        if(bigendian)
+            ajByteRevUint(&ilen);
+
+        refname = ajCharNewRes(ilen+1);
+        ajSeqBamBgzfRead(bamdata->gzfile, refname, ilen);
+        ajDebug("bam text %u '%s'\n", ilen, refname);
+
+        ajSeqBamBgzfRead(bamdata->gzfile, &ntargets, 4);
+
+        if(bigendian)
+            ajByteRevUint(&ntargets);
+
+        ajDebug("bam targets %u\n", ntargets);
+        bamdata->Nref = ntargets;
+
+        /* read reference sequence names and lengths */
+        targetname = AJCALLOC(ntargets, sizeof(char*));
+        targetlen = AJCALLOC(ntargets, sizeof(ajuint));
+
+        for(i=0; i < ntargets; i++) 
+        {
+            ajSeqBamBgzfRead(bamdata->gzfile, &namelen, 4);
+
+            if(bigendian)
+                ajByteRevUint(&namelen);
+
+            targetname[i] = ajCharNewRes(namelen+1);
+            ajSeqBamBgzfRead(bamdata->gzfile, targetname[i], namelen);
+            ajSeqBamBgzfRead(bamdata->gzfile, &targetlen[i], 4);
+
+            if(bigendian)
+                ajByteRevUint(&targetlen[i]);
+
+            ajDebug("bam target[%u] %u '%s'\b", i, targetlen[i], targetname[i]);
+        }
+
+        bamdata->bam = (AjPSeqBam)calloc(1, sizeof(AjOSeqBam));
+    }
+
+    /* next BAM record */
+
+    bamdata = seqin->Data;
+    b = bamdata->bam;
+    ret = ajSeqBamRead(bamdata->gzfile, b);
+    if(ret < -1)
+        ajErr("seqReadBam truncated file return %d\n", ret);
+
+    if(ret == -1)
+    {
+        ajSeqBamBgzfClose(bamdata->gzfile);
+	ajFilebuffClear(seqin->Filebuff, 0);
+	/*seqMsfDataDel((SeqPMsfData*)&seqin->Data);*/
+        free(bamdata->bam->data); free(bamdata->bam);
+
+        AJFREE(seqin->Data);
+	return ajFalse;
+    }
+
+    c = &b->core;
+    ajDebug("rID: %d pos: %d bin: %hd mapQual: %d read_name_len: %d"
+            " flag_nc: %hd cigar_len: %hd read_len: %d"
+            " mate_rID: %d mate_pos: %d ins_size: %d\n",
+            c->tid, c->pos, c->bin, c->qual, c->l_qname,
+            c->flag, c->n_cigar, c->l_qseq,
+            c->mtid, c->mpos, c->isize);
+    ajDebug("l_aux: %d data_len:%d m_data:%d\n",
+            b->l_aux, b->data_len, b->m_data);
+    d = b->data;
+    dpos = 0;
+    ajStrAssignC(&namestr, (const char*) &d[dpos]);
+    ajSeqSetName(thys, namestr);
+    ajDebug("read name: '%s'\n", &d[dpos]);
+    dpos += (c->l_qname); /* l_qname includes trailing null */
+    ajStrAssignC(&cigarstr, "");
+
+    for(i=0; i < c->n_cigar; i++)
+    {
+        memcpy(&cigint, &d[dpos], 4);
+        cigop = cigint & BAM_CIGAR_MASK;
+        cigend = cigint >> BAM_CIGAR_SHIFT;
+
+        ajFmtPrintAppS(&cigarstr, " %u%c",
+                       cigend, cigarcode[cigop]);
+        dpos += 4;
+    }
+
+    ajDebug("cigar: %S\n", cigarstr);
+
+    ajStrAssignC(&seqstr, "");
+    for(i=0; i < (ajuint) c->l_qseq; i++)
+    {
+        ajStrAppendK(&seqstr,
+                     bam_nt16_rev_table[MAJSEQBAMSEQI(&d[dpos], i)]);
+    }
+    ajDebug("seq: '%S'\n", seqstr);
+    dpos += (c->l_qseq+1)/2;
+
+    ajStrAssignS(&thys->Seq, seqstr);
+
+    if(d[dpos] == 0xFF)
+    {
+        AJFREE(thys->Accuracy);
+        thys->Qualsize = 0;
+        ajDebug("qual: MISSING\n");
+        dpos++;
+    }
+    else
+    {
+        ajStrAssignC(&qualstr, "");
+
+        if(thys->Qualsize < (ajuint) c->l_qseq)
+        {
+            AJCRESIZE(thys->Accuracy, c->l_qseq);
+            thys->Qualsize = c->l_qseq;
+        }
+
+        for(i=0; i < (ajuint) c->l_qseq; i++)
+        {
+            ajFmtPrintAppS(&qualstr, " %02x", 33+d[dpos]);
+            thys->Accuracy[i] = 33+d[dpos++];
+        }
+
+        ajDebug("qual: %S\n", qualstr);
+    }
+
+    ajStrAssignC(&tagstr, "");
+
+    while (dpos < (ajuint) b->data_len)
+    {
+        ajStrAppendK(&tagstr, ' ');
+        ajStrAppendK(&tagstr, d[dpos++]);
+        ajStrAppendK(&tagstr, d[dpos++]);
+        ajStrAppendK(&tagstr, ':');
+        dp = d[dpos++];
+        ajStrAppendK(&tagstr, dp);
+        ajStrAppendK(&tagstr, ':');
+
+        if (dp == 'Z' || dp == 'H')
+        {
+            ajFmtPrintAppS(&tagstr,"%s", &d[dpos]);
+            while(d[dpos])
+                dpos++;
+            dpos++;
+        }
+        else if (dp == 'f')
+        {
+            ajFmtPrintAppS(&tagstr,"%f", (float) *(&d[dpos]));
+            dpos += 4;
+        }
+        else if (dp == 'd')
+        {
+            ajFmtPrintAppS(&tagstr,"%lf", (double) *(&d[dpos]));
+            dpos += 8;
+        }
+        else if (dp == 'A')
+        {
+            ajFmtPrintAppS(&tagstr,"%c", &d[dpos++]);
+        }
+        else if (dp == 'c')
+        {
+            ajFmtPrintAppS(&tagstr,"%d",
+                           (ajint) (signed char) d[dpos++]);
+        }
+        else if (dp == 's')
+        {
+            ajFmtPrintAppS(&tagstr,"%hd",
+                           (ajshort) *(&d[dpos]));
+            dpos += 2;
+        }
+        else if (dp == 'i')
+        {
+            ajFmtPrintAppS(&tagstr,"%d",
+                           (ajint) *(&d[dpos]));
+            dpos += 4;
+        }
+        else if (dp == 'C')
+        {
+            ajFmtPrintAppS(&tagstr,"%u",
+                           (ajuint) d[dpos++]);
+        }
+        else if (dp == 'S')
+        {
+            ajFmtPrintAppS(&tagstr,"%hu",
+                           (ajushort) *(&d[dpos]));
+            dpos += 2;
+        }
+        else if (dp == 'I')
+        {
+            ajFmtPrintAppS(&tagstr,"%u",
+                           (ajuint) d[dpos]);
+            dpos += 4;
+        }
+        else {
+            ajWarn("Unknown BAM aux type '%c'", dp);
+            ajFmtPrintAppS(&tagstr,"???");
+        }
+    }
+
+    ajDebug("tags: '%S'\n", tagstr);
+
+    seqin->Records++;
+
+    bamdata->Count++;
+
+    return ajTrue;
+}
+
 
 
 
