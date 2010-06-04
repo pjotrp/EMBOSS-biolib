@@ -331,8 +331,8 @@ int main(int argc, char **argv)
 ** @param [r] max [const EmbPWordMatch] match with maximum similarity
 ** @param [r] trgseq [const AjPSeq] target sequence
 ** @param [r] qryseq [const AjPSeq] query sequence
-** @param [r] trgstart [ajint] start in target sequence
-** @param [r] qrystart [ajint] start in query sequence
+** @param [w] trgstart [ajint*] start in target sequence
+** @param [w] qrystart [ajint*] start in query sequence
 ** @param [w] trgend [ajint*] end in target sequence
 ** @param [w] qryend [ajint*] end in query sequence
 ** @return [void]

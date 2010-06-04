@@ -363,8 +363,6 @@ static void prophet_read_profile(AjPFile inf, AjPStr *name, AjPStr *mname,
 
 
 
-
-
 /* @funcstatic prophet_scan_profile ******************************************
 **
 ** Scan sequence with profile

@@ -1102,8 +1102,8 @@ static const AjPStr showalign_OutputNums(ajint nrefseq, const AjPSeq ref,
 ** @param [r] nrefseq [ajint] the sequence being displayed
 **                            skip gaps if it is not -1 (consensus)
 ** @param [r] ref [const AjPSeq] Reference sequence
-** @param [r] firstpos [ajuint*] length of left hand margin
-** @param [r] lastpos [ajuint*] length of left hand margin
+** @param [w] firstpos [ajuint*] length of left hand margin
+** @param [w] lastpos [ajuint*] length of left hand margin
 ** @return [const AjPStr] Tick line matching reference sequence
 ** @@
 ******************************************************************************/

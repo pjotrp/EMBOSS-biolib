@@ -3353,7 +3353,7 @@ static void jembossctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
 **
 ** Sanity check on socket commands
 **
-** @param [r] buf [char*] socket buffer
+** @param [u] buf [char*] socket buffer
 ** @param [r] mlen [int] buffer length
 **
 ** @return [AjBool] true if sane

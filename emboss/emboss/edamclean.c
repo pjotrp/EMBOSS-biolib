@@ -347,7 +347,7 @@ static PTerm       ajTermNew(void);
 static PNamespace  ajNamespaceNew(void);
 static void        ajTermDel(PTerm *P);
 static void        ajNamespaceDel(PNamespace *P);
-static AjPStr      FindTerm(ajint namespace, AjPStr termname,
+static AjPStr      FindTerm(ajint namespace, const AjPStr termname,
                             PNamespace *namespaces);
 
 
@@ -414,7 +414,7 @@ static PNamespace ajNamespaceNew(void)
 **
 ** Term destructor
 **
-** @param [r] P       [PTerm*]  Term object to delete
+** @param [d] P       [PTerm*]  Term object to delete
 ** @return [void] 
 ** @@
 ******************************************************************************/
@@ -442,7 +442,7 @@ static void ajTermDel(PTerm *P)
 **
 ** Namespace destructor
 **
-** @param [r] P       [PNamespace*]  Namespace object to delete
+** @param [d] P       [PNamespace*]  Namespace object to delete
 ** @return [void] 
 ** @@
 ******************************************************************************/
@@ -483,13 +483,14 @@ static void ajNamespaceDel(PNamespace *P)
 ** Returns NULL if term is not found
 ** 
 ** @param [r] namespace    [ajint]  Namespace as integer
-** @param [r] termname     [AjPStr] Name of term
-** @param [r] namespaces   [AjPStr] Array of namespace objects
-** @return [AjPStr] 
+** @param [r] termname     [const AjPStr] Name of term
+** @param [u] namespaces   [PNamespace*] Array of namespace objects
+** @return [AjPStr] ID from the namespace objects provided
 ** @@
 ******************************************************************************/
 
-static AjPStr FindTerm(ajint namespace, AjPStr termname, PNamespace *namespaces)
+static AjPStr FindTerm(ajint namespace, const AjPStr termname,
+                       PNamespace *namespaces)
 {
     ajint x;
 
@@ -519,7 +520,6 @@ int main(ajint argc, char **argv)
     AjPFile    ouf_edam        = NULL;    /* Name of EDAM (output) file     */
     AjPFile    ouf_log         = NULL;    /* Name of report (output) file   */
     AjPStr     mode            = NULL;    /* Mode of operation              */
-
     AjPList    list_tmp        = NULL;    /* Temporary list                 */
     AjPStr    *fields          = NULL;    /* Array of valid tokens for first
                                              word in line */
@@ -590,8 +590,6 @@ int main(ajint argc, char **argv)
     mode      = ajAcdGetSelectSingle("mode");
 
     ajFmtPrint("MODE : %S\n", mode);
-   
-   
 
     /* Memory allocation */
     line       = ajStrNew();
