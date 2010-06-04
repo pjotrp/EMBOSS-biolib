@@ -57,71 +57,88 @@
 
 #include "zlib.h"
 
-/* TODO: Clean up bool, true, false */
 
-#ifdef HAVE_STDBOOL_H
-#include <stdbool.h>
-#else
-#define bool	char
-#define true	1
-#define false	0
-#endif
+/* @data AjPSeqBamBgzf ********************************************************
+**
+** BGZF file handling object
+**
+** @alias AjOSeqBamBgzf
+** @alias AjSSeqBamBgzf
+**
+** @attr file [FILE*] File object
+** @attr cache [AjPTable] Block cache
+** @attr uncompressed_block [void*] Uncompressed block data
+** @attr compressed_block [void*] Compressed block data
+** @attr error [const char*] Error description
+** @attr block_address [ajlong] Block offset
+** @attr file_descriptor [int] File descriptor
+** @attr cache_size [int] Cache size
+** @attr uncompressed_block_size [int] Uncompressed block size
+** @attr compressed_block_size [int] Compressed block size
+** @attr block_length [int] Block length
+** @attr block_offset [int] Block offset
+** @attr open_mode [char] Open_mode 'r' or 'w'
+** @attr owned_file [char] Boolean
+** @attr is_uncompressed [char] Boolean
+** @attr padbool [char] Padding
+**
+******************************************************************************/
 
-typedef struct {
-    int file_descriptor;
-    char open_mode;  // 'r' or 'w'
-    bool owned_file, is_uncompressed;
-    bool padbool;
+typedef struct AjSSeqBamBgzf {
     FILE* file;
-    int uncompressed_block_size;
-    int compressed_block_size;
+    AjPTable cache;
     void* uncompressed_block;
     void* compressed_block;
+    const char* error;
     ajlong block_address;
+    int file_descriptor;
+    int cache_size;
+    int uncompressed_block_size;
+    int compressed_block_size;
     int block_length;
     int block_offset;
-	int cache_size;
-    int padding;
-    const char* error;
-	AjPTable cache; // a pointer to a hash table
-} BGZF;
+    char open_mode;
+    char owned_file;
+    char is_uncompressed;
+    char padbool;
+} AjOSeqBamBgzf;
+
+#define AjPSeqBamBgzf AjOSeqBamBgzf*
 
 #define BAM_VIRTUAL_OFFSET16
-/* #include "samtoolsbgzf.h" */ /* included below */
+
 /*! #abstract BAM file handler */
-typedef BGZF *bamFile;
-#define bam_open(fn, mode) bgzf_open(fn, mode)
-#define bam_dopen(fd, mode) bgzf_fdopen(fd, mode)
-#define bam_close(fp) bgzf_close(fp)
-#define bam_read(fp, buf, size) bgzf_read(fp, buf, size)
-#define bam_write(fp, buf, size) bgzf_write(fp, buf, size)
-#define bam_tell(fp) bgzf_tell(fp)
-#define bam_seek(fp, pos, dir) bgzf_seek(fp, pos, dir)
 
-/*! #typedef
-  #abstract Structure for the alignment header.
-  #field n_targets   number of reference sequences
-  #field target_name names of the reference sequences
-  #field target_len  lengths of the referene sequences
-  #field dict        header dictionary
-  #field hash        hash table for fast name lookup
-  #field rg2lib      hash table for @RG-ID -> LB lookup
-  #field l_text      length of the plain text in the header
-  #field text        plain text
+/* @data AjPSeqBamHeader *******************************************************
+**
+** BAM alignment file header data
+**
+** @attr  target_name [char**] names of the reference sequences
+** @attr  target_len  [ajuint*] lengths of the reference sequences
+** @attr  dict        [AjPList] header dictionary
+** @attr  hash        [AjPTable] hash table for fast name lookup
+** @attr  rg2lib      [AjPTable] hash table for @RG-ID -> LB lookup
+** @attr  text        [char*] plain text
+** @attr  n_targets   [ajint] number of reference sequences
+** @attr  l_text      [ajint] length of the plain text in the header
+**
+** @@
+** discussion Field hash points to null by default. It is a private
+**  member.
+******************************************************************************/
 
-  #discussion Field hash points to null by default. It is a private
-  member.
- */
-typedef struct {
-    ajint n_targets;
+typedef struct AjSSeqBamheader {
     char **target_name;
     ajuint *target_len;
     AjPList dict;
     AjPTable hash;
     AjPTable rg2lib;
-    ajint l_text;
     char *text;
-} bam_header_t;
+    ajint n_targets;
+    ajint l_text;
+} AjOSeqBamHeader;
+
+#define AjPSeqBamHeader AjOSeqBamHeader*
 
 /*! #abstract the read is paired in sequencing, no matter whether it is mapped in a pair */
 #define BAM_FPAIRED        1
@@ -153,77 +170,104 @@ typedef struct {
 /*! #abstract defautl mask for pileup */
 #define BAM_DEF_MASK (BAM_FUNMAP | BAM_FSECONDARY | BAM_FQCFAIL | BAM_FDUP)
 
-#define BAM_CORE_SIZE   sizeof(bam1_core_t)
+#define BAM_CORE_SIZE   sizeof(AjOSeqBamCore)
 
-/**
- * Describing how CIGAR operation/length is packed in a 32-bit integer.
- */
+/*
+** Describing how CIGAR operation/length is packed in a 32-bit integer.
+*/
+
 #define BAM_CIGAR_SHIFT 4
 #define BAM_CIGAR_MASK  ((1 << BAM_CIGAR_SHIFT) - 1)
 
 /*
-  CIGAR operations.
- */
-/*! #abstract CIGAR: match */
+**  CIGAR operations.
+*/
+
+/*! #abstract CIGAR: M match */
 #define BAM_CMATCH      0
-/*! #abstract CIGAR: insertion to the reference */
+/*! #abstract CIGAR: I insertion to the reference */
 #define BAM_CINS        1
-/*! #abstract CIGAR: deletion from the reference */
+/*! #abstract CIGAR: D deletion from the reference */
 #define BAM_CDEL        2
-/*! #abstract CIGAR: skip on the reference (e.g. spliced alignment) */
+/*! #abstract CIGAR: N skip on the reference (e.g. spliced alignment) */
 #define BAM_CREF_SKIP   3
-/*! #abstract CIGAR: clip on the read with clipped sequence present in qseq */
+/*! #abstract CIGAR: S clip on the read with clipped sequence present in qseq */
 #define BAM_CSOFT_CLIP  4
-/*! #abstract CIGAR: clip on the read with clipped sequence trimmed off */
+/*! #abstract CIGAR: H clip on the read with clipped sequence trimmed off */
 #define BAM_CHARD_CLIP  5
-/*! #abstract CIGAR: padding */
+/*! #abstract CIGAR: P padding */
 #define BAM_CPAD        6
 
-/*! #typedef
-  #abstract Structure for core alignment information.
-  #field  tid     chromosome ID, defined by bam_header_t
-  #field  pos     0-based leftmost coordinate
-  #field  strand  strand; 0 for forward and 1 otherwise
-  #field  bin     bin calculated by bam_reg2bin()
-  #field  qual    mapping quality
-  #field  l_qname length of the query name
-  #field  flag    bitwise flag
-  #field  n_cigar number of CIGAR operations
-  #field  l_qseq  length of the query sequence (read)
- */
-typedef struct {
-	ajint tid;
-	ajint pos;
-	ajuint bin:16, qual:8, l_qname:8;
-	ajuint flag:16, n_cigar:16;
-	ajint l_qseq;
-	ajint mtid;
-	ajint mpos;
-	ajint isize;
-} bam1_core_t;
+extern const char* cigarcode;
+extern const char* bam_nt16_rev_table;
 
-/*! #typedef
-  #abstract Structure for one alignment.
-  #field  core       core information about the alignment
-  #field  l_aux      length of auxiliary data
-  #field  data_len   current length of bam1_t::data
-  #field  m_data     maximum length of bam1_t::data
-  #field  data       all variable-length data, concatenated; structure: cigar-qname-seq-qual-aux
+/* @data AjPSeqBamCore ********************************************************
+**
+** Structure for core alignment information.
+**
+** @attr  tid     [ajint]  read ID, defined by AjPSeqBamheader
+** @attr  pos     [ajint]  0-based leftmost coordinate
+** @attr  bin     [ajushort]  bin calculated by bam_reg2bin()
+** @attr  qual    [unsigned char]  mapping quality
+** @attr  l_qname [unsigned char]  length of the query name
+** @attr  flag    [ajushort]  bitwise flag
+** @attr  n_cigar [ajushort]  number of CIGAR operations
+** @attr  l_qseq  [ajint]  length of the query sequence (read)
+** @attr  mtid  [ajint]  paired reead (mate) ID
+** @attr  mpos  [ajint]  paire read (mate) position
+** @attr  isize  [ajint]  insert size for paired reads
+*******************************************************************************/
 
-  #discussion Notes:
- 
-   1. qname is zero tailing and core.l_qname includes the tailing '\0'.
-   2. l_qseq is calculated from the total length of an alignment block
-      on reading or from CIGAR.
- */
-typedef struct {
-	bam1_core_t core;
-	int l_aux, data_len, m_data;
-	uint8_t *data;
-} bam1_t;
+typedef struct AjSBamSeqCore {
+    ajint tid;
+    ajint pos;
+    ajushort bin;
+    unsigned char qual;
+    unsigned char l_qname;
+    ajushort flag;
+    ajushort n_cigar;
+    ajint l_qseq;
+    ajint mtid;
+    ajint mpos;
+    ajint isize;
+} AjOSeqBamCore;
 
-#define bam1_strand(b) (((b)->core.flag&BAM_FREVERSE) != 0)
-#define bam1_mstrand(b) (((b)->core.flag&BAM_FMREVERSE) != 0)
+#define AjPSeqBamCore AjOSeqBamCore*
+
+/* @data AjPSeqBam ************************************************************
+**
+** Structure for one alignment.
+**
+** @alias AjSSeqBam
+** @alias AjOSeqBam
+**
+** @attr  core      [AjOSeqBamCore]  core information about the alignment
+** @attr  l_aux      [int]  length of auxiliary data
+** @attr  data_len   [int]  current length of data
+** @attr  m_data     [int]  maximum reserved size of data
+** @attr   data    [unsigned char*]   all variable-length data, concatenated;
+**                             structure: cigar-qname-seq-qual-aux
+**
+** @@
+** discussion Notes:
+**
+**   1. qname is zero tailed and core.l_qname includes the tailing '\0'.
+**
+**   2. l_qseq is calculated from the total length of an alignment block
+**      on reading or from CIGAR.
+******************************************************************************/
+typedef struct AjSSeqBam {
+    AjOSeqBamCore core;
+    int l_aux;
+    int data_len;
+    int m_data;
+    unsigned char *data;
+} AjOSeqBam;
+
+#define AjPSeqBam AjOSeqBam*
+
+#define MAJSEQBAMSTRAND(b) (((b)->core.flag&BAM_FREVERSE) != 0)
+#define MAJSEQBAMMSTRAND(b) (((b)->core.flag&BAM_FMREVERSE) != 0)
 
 /*! #function
   #abstract  Get the CIGAR array
@@ -234,14 +278,14 @@ typedef struct {
   lower 4 bits gives a CIGAR operation and the higher 28 bits keep the
   length of a CIGAR.
  */
-#define bam1_cigar(b) ((ajuint*)((b)->data + (b)->core.l_qname))
+#define MAJSEQBAMCIGAR(b) ((ajuint*)((b)->data + (b)->core.l_qname))
 
 /*! #function
   #abstract  Get the name of the query
   #param  b  pointer to an alignment
   #return    pointer to the name string, null terminated
  */
-#define bam1_qname(b) ((char*)((b)->data))
+#define MAJSEQBAMQNAME(b) ((char*)((b)->data))
 
 /*! #function
   #abstract  Get query sequence
@@ -253,14 +297,14 @@ typedef struct {
   at the higher 4 bits having smaller coordinate on the read. It is
   recommended to use bam1_seqi() macro to get the base.
  */
-#define bam1_seq(b) ((b)->data + (b)->core.n_cigar*4 + (b)->core.l_qname)
+#define MAJSEQBAMSEQ(b) ((b)->data + (b)->core.n_cigar*4 + (b)->core.l_qname)
 
 /*! #function
   #abstract  Get query quality
   #param  b  pointer to an alignment
   #return    pointer to quality string
  */
-#define bam1_qual(b) ((b)->data + (b)->core.n_cigar*4 + (b)->core.l_qname + ((b)->core.l_qseq + 1)/2)
+#define MAJSEQBAMQUAL(b) ((b)->data + (b)->core.n_cigar*4 + (b)->core.l_qname + ((b)->core.l_qseq + 1)/2)
 
 /*! #function
   #abstract  Get a base on read
@@ -268,7 +312,7 @@ typedef struct {
   #param  i  The i-th position, 0-based
   #return    4-bit integer representing the base.
  */
-#define bam1_seqi(s, i) ((s)[(i)/2] >> 4*(1-(i)%2) & 0xf)
+#define MAJSEQBAMSEQI(s, i) ((s)[(i)/2] >> 4*(1-(i)%2) & 0xf)
 
 /*! #function
   #abstract  Get query sequence and quality
@@ -286,10 +330,6 @@ typedef struct {
 #define kroundup32(x) (--(x), (x)|=(x)>>1, (x)|=(x)>>2, (x)|=(x)>>4, (x)|=(x)>>8, (x)|=(x)>>16, ++(x))
 #endif
 
-/*!
-  #abstract Whether the machine is big-endian; modified only in
-  bam_header_init().
- */
 
 /*! #abstract Table for converting a nucleotide character to the 4-bit encoding. */
 
@@ -306,436 +346,31 @@ extern "C" {
  * A subsequent bgzf_close will not close the file descriptor.
  * Returns null on error.
  */
-BGZF* bgzf_fdopen(int fd, const char* __restrict mode);
+AjPSeqBamBgzf ajSeqBamBgzfOpenfd(int fd, const char* __restrict mode);
 
 /*
  * Open the specified file for reading or writing.
  * Mode must be either "r" or "w".
  * Returns null on error.
  */
-BGZF* bgzf_open(const char* path, const char* __restrict mode);
+AjPSeqBamBgzf ajSeqBamBgzfOpenC(const char* path, const char* __restrict mode);
 
-/*
- * Close the BGZ file and free all associated resources.
- * Does not close the underlying file descriptor if created with bgzf_fdopen.
- * Returns zero on success, -1 on error.
- */
-int bgzf_close(BGZF* fp);
+int ajSeqBamBgzfClose(AjPSeqBamBgzf fp);
+int ajSeqBamBgzfEof(AjPSeqBamBgzf fp);
+int ajSeqBamBgzfRead(AjPSeqBamBgzf fp, void* data, int length);
+int ajSeqBamBgzfWrite(AjPSeqBamBgzf fp, const void* data, int length);
 
-/*
- * Read up to length bytes from the file storing into data.
- * Returns the number of bytes actually read.
- * Returns zero on end of file.
- * Returns -1 on error.
- */
-int bgzf_read(BGZF* fp, void* data, int length);
+AjPSeqBamHeader ajSeqBamHeaderNew(void);
 
-/*
- * Write length bytes from data to the file.
- * Returns the number of bytes written.
- * Returns -1 on error.
- */
-int bgzf_write(BGZF* fp, const void* data, int length);
+void ajSeqBamHeaderDestroy(AjPSeqBamHeader *Pheader);
 
-/*
- * Return a virtual file pointer to the current location in the file.
- * No interpetation of the value should be made, other than a subsequent
- * call to bgzf_seek can be used to position the file at the same point.
- * Return value is non-negative on success.
- * Returns -1 on error.
- */
-ajlong bgzf_tell(BGZF* fp);
+int ajSeqBamHeaderWrite(AjPSeqBamBgzf fp, const AjPSeqBamHeader header);
 
-/*
- * Set the file to read from the location specified by pos, which must
- * be a value previously returned by bgzf_tell for this file (but not
- * necessarily one returned by this file handle).
- * The where argument must be SEEK_SET.
- * Seeking on a file opened for write is not supported.
- * Returns zero on success, -1 on error.
- */
-ajlong bgzf_seek(BGZF* fp, ajlong pos, int where);
+int ajSeqBamRead(AjPSeqBamBgzf fp, AjPSeqBam b);
 
-/*
- * Set the cache size. Zero to disable. By default, caching is
- * disabled. The recommended cache size for frequent random access is
- * about 8M bytes.
- */
-void bgzf_set_cache_size(BGZF *fp, int cache_size);
+int ajSeqBamWrite(AjPSeqBamBgzf fp, const AjPSeqBam b);
 
-int bgzf_check_EOF(BGZF *fp);
-
-
-	/*! #abstract TAM file handler */
-	typedef struct __tamFile_t *tamFile;
-
-	/*!
-	  #abstract   Open a SAM file for reading, either uncompressed or compressed by gzip/zlib.
-	  #param  fn  SAM file name
-	  #return     SAM file handler
-	 */
-	tamFile sam_open(const char *fn);
-
-	/*!
-	  #abstract   Close a SAM file handler
-	  #param  fp  SAM file handler
-	 */
-	void sam_close(tamFile fp);
-
-	/*!
-	  #abstract      Read one alignment from a SAM file handler
-	  #param  fp     SAM file handler
-	  #param  header header information (ordered names of chromosomes)
-	  #param  b      read alignment; all members in b will be updated
-	  #return        0 if successful; otherwise negative
-	 */
-	int sam_read1(tamFile fp, bam_header_t *header, bam1_t *b);
-
-	/*!
-	  #abstract       Read header information from a TAB-delimited list file.
-	  #param  fn_list file name for the list
-	  #return         a pointer to the header structure
-
-	  #discussion Each line in this file consists of chromosome name and
-	  the length of chromosome.
-	 */
-	bam_header_t *sam_header_read2(const char *fn_list);
-
-	/*!
-	  #abstract       Read header from a SAM file (if present)
-	  #param  fp      SAM file handler
-	  #return         pointer to header struct; 0 if no @SQ lines available
-	 */
-	bam_header_t *sam_header_read(tamFile fp);
-
-	/*!
-	  #abstract       Parse @SQ lines a update a header struct
-	  #param  h       pointer to the header struct to be updated
-	  #return         number of target sequences
-
-	  #discussion bam_header_t::{n_targets,target_len,target_name} will
-	  be destroyed in the first place.
-	 */
-	int sam_header_parse(bam_header_t *h);
-
-	/*!
-	  #abstract       Parse @RG lines a update a header struct
-	  #param  h       pointer to the header struct to be updated
-	  #return         number of @RG lines
-
-	  #discussion bam_header_t::rg2lib will be destroyed in the first
-	  place.
-	 */
-	int sam_header_parse_rg(bam_header_t *h);
-
-#define sam_write1(header, b) bam_view1(header, b)
-
-	int bam_strmap_put(void *strmap, const char *rg, const char *lib);
-	const char *bam_strmap_get(const void *strmap, const char *rg);
-	void *bam_strmap_dup(const void*);
-	void *bam_strmap_init(void);
-	void bam_strmap_destroy(void *strmap);
-
-	/*!
-	  #abstract Initialize a header structure.
-	  #return   the pointer to the header structure
-
-	  #discussion This function also modifies the global variable
-	  bam_is_be.
-	 */
-	bam_header_t *bam_header_init(void);
-
-	/*!
-	  #abstract        Destroy a header structure.
-	  #param  header  pointer to the header
-	 */
-	void bam_header_destroy(bam_header_t *header);
-
-	/*!
-	  #abstract   Read a header structure from BAM.
-	  #param  fp  BAM file handler, opened by bam_open()
-	  #return     pointer to the header structure
-
-	  #discussion The file position indicator must be placed at the
-	  beginning of the file. Upon success, the position indicator will
-	  be set at the start of the first alignment.
-	 */
-	bam_header_t *bam_header_read(bamFile fp);
-
-	/*!
-	  #abstract      Write a header structure to BAM.
-	  #param  fp     BAM file handler
-	  #param  header pointer to the header structure
-	  #return        always 0 currently
-	 */
-	int bam_header_write(bamFile fp, const bam_header_t *header);
-
-	/*!
-	  #abstract   Read an alignment from BAM.
-	  #param  fp  BAM file handler
-	  #param  b   read alignment; all members are updated.
-	  #return     number of bytes read from the file
-
-	  #discussion The file position indicator must be
-	  placed right before an alignment. Upon success, this function
-	  will set the position indicator to the start of the next
-	  alignment. This function is not affected by the machine
-	  endianness.
-	 */
-	int bam_read1(bamFile fp, bam1_t *b);
-
-	/*!
-	  #abstract Write an alignment to BAM.
-	  #param  fp       BAM file handler
-	  #param  c        pointer to the bam1_core_t structure
-	  #param  data_len total length of variable size data related to
-	                   the alignment
-	  #param  data     pointer to the concatenated data
-	  #return          number of bytes written to the file
-
-	  #discussion This function is not affected by the machine
-	  endianness.
-	 */
-	int bam_write1_core(bamFile fp, const bam1_core_t *c, int data_len, uint8_t *data);
-
-	/*!
-	  #abstract   Write an alignment to BAM.
-	  #param  fp  BAM file handler
-	  #param  b   alignment to write
-	  #return     number of bytes written to the file
-
-	  #abstract It is equivalent to:
-	    bam_write1_core(fp, &b->core, b->data_len, b->data)
-	 */
-	int bam_write1(bamFile fp, const bam1_t *b);
-
-	/*! #function
-	  #abstract  Initiate a pointer to bam1_t struct
-	 */
-#define bam_init1() ((bam1_t*)calloc(1, sizeof(bam1_t)))
-
-	/*! #function
-	  #abstract  Free the memory allocated for an alignment.
-	  #param  b  pointer to an alignment
-	 */
-#define bam_destroy1(b) do {					\
-		if (b) { free((b)->data); free(b); }	\
-	} while (0)
-
-	/*!
-	  #abstract       Format a BAM record in the SAM format
-	  #param  header  pointer to the header structure
-	  #param  b       alignment to print
-	  #return         a pointer to the SAM string
-	 */
-	char *bam_format1(const bam_header_t *header, const bam1_t *b);
-
-	char *bam_format1_core(const bam_header_t *header, const bam1_t *b, int of);
-
-	const char *bam_get_library(bam_header_t *header, const bam1_t *b);
-
-	/*! #typedef
-	  #abstract Structure for one alignment covering the pileup position.
-	  #field  b      pointer to the alignment
-	  #field  qpos   position of the read base at the pileup site, 0-based
-	  #field  indel  indel length; 0 for no indel, positive for ins and negative for del
-	  #field  is_del 1 iff the base on the padded read is a deletion
-	  #field  level  the level of the read in the "viewer" mode
-
-	  #discussion See also bam_plbuf_push() and bam_lplbuf_push(). The
-	  difference between the two functions is that the former does not
-	  set bam_pileup1_t::level, while the later does. Level helps the
-	  implementation of alignment viewers, but calculating this has some
-	  overhead.
-	 */
-	typedef struct {
-		bam1_t *b;
-		ajint qpos;
-		int indel, level;
-		ajuint is_del:1, is_head:1, is_tail:1;
-	} bam_pileup1_t;
-
-	struct __bam_plbuf_t;
-	/*! #abstract pileup buffer */
-	typedef struct __bam_plbuf_t bam_plbuf_t;
-
-	void bam_plbuf_set_mask(bam_plbuf_t *buf, int mask);
-
-	/*! #typedef
-	  #abstract    Type of function to be called by bam_plbuf_push().
-	  #param  tid  chromosome ID as is defined in the header
-	  #param  pos  start coordinate of the alignment, 0-based
-	  #param  n    number of elements in pl array
-	  #param  pl   array of alignments
-	  #param  data user provided data
-	  #discussion  See also bam_plbuf_push(), bam_plbuf_init() and bam_pileup1_t.
-	 */
-	typedef int (*bam_pileup_f)(ajuint tid, ajuint pos, int n, const bam_pileup1_t *pl, void *data);
-
-	/*!
-	  #abstract     Reset a pileup buffer for another pileup process
-	  #param  buf   the pileup buffer to be reset
-	 */
-	void bam_plbuf_reset(bam_plbuf_t *buf);
-
-	/*!
-	  #abstract     Initialize a buffer for pileup.
-	  #param  func  fucntion to be called by bam_pileup_core()
-	  #param  data  user provided data
-	  #return       pointer to the pileup buffer
-	 */
-	bam_plbuf_t *bam_plbuf_init(bam_pileup_f func, void *data);
-
-	/*!
-	  #abstract    Destroy a pileup buffer.
-	  #param  buf  pointer to the pileup buffer
-	 */
-	void bam_plbuf_destroy(bam_plbuf_t *buf);
-
-	/*!
-	  #abstract    Push an alignment to the pileup buffer.
-	  #param  b    alignment to be pushed
-	  #param  buf  pileup buffer
-	  #see         bam_plbuf_init()
-	  #return      always 0 currently
-
-	  #discussion If all the alignments covering a particular site have
-	  been collected, this function will call the user defined function
-	  as is provided to bam_plbuf_init(). The coordinate of the site and
-	  all the alignments will be transferred to the user defined
-	  function as function parameters.
-	 
-	  When all the alignments are pushed to the buffer, this function
-	  needs to be called with b equal to NULL. This will flush the
-	  buffer. A pileup buffer can only be reused when bam_plbuf_reset()
-	  is called.
-	 */
-	int bam_plbuf_push(const bam1_t *b, bam_plbuf_t *buf);
-
-	int bam_pileup_file(bamFile fp, int mask, bam_pileup_f func, void *func_data);
-
-	struct __bam_lplbuf_t;
-	typedef struct __bam_lplbuf_t bam_lplbuf_t;
-
-	void bam_lplbuf_reset(bam_lplbuf_t *buf);
-
-	/*! #abstract  bam_plbuf_init() equivalent with level calculated. */
-	bam_lplbuf_t *bam_lplbuf_init(bam_pileup_f func, void *data);
-
-	/*! #abstract  bam_plbuf_destroy() equivalent with level calculated. */
-	void bam_lplbuf_destroy(bam_lplbuf_t *tv);
-
-	/*! #abstract  bam_plbuf_push() equivalent with level calculated. */
-	int bam_lplbuf_push(const bam1_t *b, bam_lplbuf_t *buf);
-
-	struct __bam_index_t;
-	typedef struct __bam_index_t bam_index_t;
-
-	/*!
-	  #abstract   Build index for a BAM file.
-	  #discussion Index file "fn.bai" will be created.
-	  #param  fn  name of the BAM file
-	  #return     always 0 currently
-	 */
-	int bam_index_build(const char *fn);
-
-	/*!
-	  #abstract   Load index from file "fn.bai".
-	  #param  fn  name of the BAM file (NOT the index file)
-	  #return     pointer to the index structure
-	 */
-	bam_index_t *bam_index_load(const char *fn);
-
-	/*!
-	  #abstract    Destroy an index structure.
-	  #param  idx  pointer to the index structure
-	 */
-	void bam_index_destroy(bam_index_t *idx);
-
-	/*! #typedef
-	  #abstract      Type of function to be called by bam_fetch().
-	  #param  b     the alignment
-	  #param  data  user provided data
-	 */
-	typedef int (*bam_fetch_f)(const bam1_t *b, void *data);
-
-	/*!
-	  #abstract Retrieve the alignments that are overlapped with the
-	  specified region.
-
-	  #discussion A user defined function will be called for each
-	  retrieved alignment ordered by its start position.
-
-	  #param  fp    BAM file handler
-	  #param  idx   pointer to the alignment index
-	  #param  tid   chromosome ID as is defined in the header
-	  #param  beg   start coordinate, 0-based
-	  #param  end   end coordinate, 0-based
-	  #param  data  user provided data (will be transferred to func)
-	  #param  func  user defined function
-	 */
-	int bam_fetch(bamFile fp, const bam_index_t *idx, int tid, int beg, int end, void *data, bam_fetch_f func);
-
-	/*!
-	  #abstract       Parse a region in the format: "chr2:100,000-200,000".
-	  #discussion     bam_header_t::hash will be initialized if empty.
-	  #param  header  pointer to the header structure
-	  #param  str     string to be parsed
-	  #param  ref_id  the returned chromosome ID
-	  #param  begin   the returned start coordinate
-	  #param  end     the returned end coordinate
-	  #return         0 on success; -1 on failure
-	 */
-	int bam_parse_region(bam_header_t *header, const char *str, int *ref_id, int *begin, int *end);
-
-	/*!
-	  #abstract       Retrieve data of a tag
-	  #param  b       pointer to an alignment struct
-	  #param  tag     two-character tag to be retrieved
-
-	  #return  pointer to the type and data. The first character is the
-	  type that can be 'iIsScCdfAZH'.
-
-	  #discussion  Use bam_aux2?() series to convert the returned data to
-	  the corresponding type.
-	*/
-	uint8_t *bam_aux_get(const bam1_t *b, const char tag[2]);
-
-	ajint bam_aux2i(const uint8_t *s);
-	float bam_aux2f(const uint8_t *s);
-	double bam_aux2d(const uint8_t *s);
-	char bam_aux2A(const uint8_t *s);
-	char *bam_aux2Z(const uint8_t *s);
-
-	int bam_aux_del(bam1_t *b, uint8_t *s);
-	void bam_aux_append(bam1_t *b, const char tag[2], char type, int len, uint8_t *data);
-	uint8_t *bam_aux_get_core(bam1_t *b, const char tag[2]); // an alias of bam_aux_get()
-
-	/*!  
-	  #abstract Calculate the rightmost coordinate of an alignment on the
-	  reference genome.
-
-	  #param  c      pointer to the bam1_core_t structure
-	  #param  cigar  the corresponding CIGAR array (from bam1_t::cigar)
-	  #return        the rightmost coordinate, 0-based
-	*/
-	ajuint bam_calend(const bam1_core_t *c, const ajuint *cigar);
-
-	/*!
-	  #abstract      Calculate the length of the query sequence from CIGAR.
-	  #param  c      pointer to the bam1_core_t structure
-	  #param  cigar  the corresponding CIGAR array (from bam1_t::cigar)
-	  #return        length of the query sequence
-	*/
-	ajint bam_cigar2qlen(const bam1_core_t *c, const ajuint *cigar);
-
-
-    void sam_header_free(AjPList *header);
-    AjPList sam_header_parse2(const char *headerText);
-    AjPTable sam_header2tbl(const AjPList _dict, const char type[2],
-                         const char key_tag[2], const char value_tag[2]);
-    char **sam_header2list(const AjPList _dict, char type[2],
-                           char key_tag[2], int *_n);
+const char *ajSeqBamGetLibrary(AjPSeqBamHeader header, const AjPSeqBam b);
 
 #ifdef __cplusplus
 }
@@ -764,36 +399,21 @@ static inline int bam_reg2bin(ajuint beg, ajuint end)
   #param  bsrc  source alignment struct
   #return       pointer to the destination alignment struct
  */
-static inline bam1_t *bam_copy1(bam1_t *bdst, const bam1_t *bsrc)
+static inline AjPSeqBam bam_copy1(AjPSeqBam bdst, const AjPSeqBam bsrc)
 {
-	uint8_t *data = bdst->data;
-	int m_data = bdst->m_data;   // backup data and m_data
-	if (m_data < bsrc->m_data) { // double the capacity
+	unsigned char *data = bdst->data;
+	int m_data = bdst->m_data;   /* backup data and m_data */
+	if (m_data < bsrc->m_data) { /* double the capacity */
 		m_data = bsrc->m_data; kroundup32(m_data);
-		data = (uint8_t*)realloc(data, m_data);
+		data = (unsigned char*)realloc(data, m_data);
 	}
-	memcpy(data, bsrc->data, bsrc->data_len); // copy var-len data
-	*bdst = *bsrc; // copy the rest
-	// restore the backup
+	memcpy(data, bsrc->data, bsrc->data_len); /* copy var-len data */
+	*bdst = *bsrc; /* copy the rest */
+	/* restore the backup */
 	bdst->m_data = m_data;
 	bdst->data = data;
 	return bdst;
 }
 
-/*!
-  #abstract     Duplicate an alignment
-  #param  src   source alignment struct
-  #return       pointer to the destination alignment struct
- */
-static inline bam1_t *bam_dup1(const bam1_t *src)
-{
-	bam1_t *b;
-	b = bam_init1();
-	*b = *src;
-	b->m_data = b->data_len;
-	b->data = (uint8_t*)calloc(b->data_len, 1);
-	memcpy(b->data, src->data, b->data_len);
-	return b;
-}
 
 #endif
