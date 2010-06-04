@@ -1388,7 +1388,7 @@ while ($source =~ m"((\s+)([#]if[^\n]+\n)?)([/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])
 	    }
 	    ($code,$var,$cast, $prest) = ($data =~ m/[\[]([^\]]+)[\]]\s*(\S*)\s*[\[]([^\]]+[\]]?)[\]]\s*(.*)/gos);
 	    if (!defined($code)) {
-		print "bad \@param syntax:\n$data";
+		print "bad paramsyntax:\n$data";
 		next;
 	    }
 
@@ -1486,26 +1486,26 @@ while ($source =~ m"((\s+)([#]if[^\n]+\n)?)([/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])
 	    print SRS "PD $drest\n";
 	    print SRS "PX\n";
 
-	    if (!$prest) {print "bad \@param '$var', no description\n"}
+	    if (!$prest) {print "bad paramdescription '$var', no description\n"}
 	    $ftable .= "<tr><td>$cast</td><td>$var</td><td>$codename</td><td>$prest</td></tr>\n";
 
 	    if ($simpletype{$cast}) {
 # Simple C types (not structs)
 # and EMBOSS types that resolve to simple types
 		if ($code !~ /r/) {
-		    print "bad \@param '$var' pass by value, code '$code'\n";
+		    print "bad paramcode '$var' pass by value, code '$code'\n";
 		}
 	    }
 	    elsif ($functype{$cast}) {
 # Known function types - C and EMBOSS-specific
 		if ($code !~ /f/) {
-		    print "bad \@param '$var' function type '$cast', code '$code'\n";
+		    print "bad paramcode '$var' function type '$cast', code '$code'\n";
 		}
 	    }
 	    elsif ($cast =~ / function$/) {
 # other function types
 		if ($code !~ /f/) {
-		    print "bad \@param '$var' function type '$cast', code '$code'\n";
+		    print "bad paramcode '$var' function type '$cast', code '$code'\n";
 		}
 	    }
 	    elsif ($cast =~ /^const .*[*][*]/) {
@@ -1514,7 +1514,7 @@ while ($source =~ m"((\s+)([#]if[^\n]+\n)?)([/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])
 # e.g. pcre error pointers
 # but can be d (e.g. in ajTableMapDel functions)
 		if ($code !~ /[rwud]/) {
-		    print "bad \@param '$var' const ** but code '$code'\n";
+		    print "bad paramcode '$var' const ** but code '$code'\n";
 		}
 	    }
 	    elsif ($cast =~ /^const /) {
@@ -1523,16 +1523,16 @@ while ($source =~ m"((\s+)([#]if[^\n]+\n)?)([/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])
 		if ($cast =~ /const[^a-z].*[*]/)
 		{
 		    if ($code !~ /[rwud]/) {
-			print "bad \@param '$var' const($cast) but code '$code'\n";
+			print "bad paramcode '$var' const($cast) but code '$code'\n";
 		    }
 		}
 		elsif ($code !~ /r/) {
-		    print "bad \@param '$var' const but code '$code'\n";
+		    print "bad paramcode '$var' const but code '$code'\n";
 		}
 	    }
 	    elsif ($cast =~ /^struct /) {
-		if ($code !~ /r/) {
-		    print "bad \@param '$var' struct but code '$code'\n";
+		if ($code !~ /u/) {
+		    print "bad paramcode '$var' struct but code '$code'\n";
 		}
 	    }
 	    elsif ($cast =~ / const[^a-z]/) {
@@ -1542,44 +1542,44 @@ while ($source =~ m"((\s+)([#]if[^\n]+\n)?)([/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])
 		if ($cast =~ / const[^a-z].*[*]/)
 		{
 		    if ($code !~ /[rwud]/) {
-			print "bad \@param '$var' const($cast) but code '$code'\n";
+			print "bad paramcode '$var' const($cast) but code '$code'\n";
 		    }
 		}
 		elsif ($code !~ /r/) {
-			print "bad \@param '$var' const($cast) but code '$code'\n";
+			print "bad paramcode '$var' const($cast) but code '$code'\n";
 		}
 	    }
 	    elsif ($cast =~ / const$/) {
 # For char* const (so far no examples)
 # There could be exceptions - but not yet!
 		if ($code !~ /r/) {
-		    print "bad \@param '$var' const($cast) but code '$code'\n";
+		    print "bad paramcode '$var' const($cast) but code '$code'\n";
 		}
 	    }
 	    elsif ($cast =~ /^[.][.][.]$/) {
 # varargs can be ...
 		if ($code !~ /v/) {
-		    print "bad \@param '$var' type '...' but code '$code'\n";
+		    print "bad paramcode '$var' type '...' but code '$code'\n";
 		}
 	    }
 	    elsif ($cast =~ /^va_list$/) {
 # varargs can also be va_list down the list
 # we did use 'a' for this instead of 'v' but it is too confusing
 		if ($code !~ /v/) {
-		    print "bad \@param '$var' type '$cast' but code '$code'\n";
+		    print "bad paramcode '$var' type '$cast' but code '$code'\n";
 		}
 	    }
 	    elsif ($cast =~ /^void[*]$/) {
 # hard to check - can be read, write, update or delete
 		if ($code =~ /[?]/) {
-		    print "bad \@param '$var' code '$code'\n";
+		    print "bad paramcode '$var' code '$code'\n";
 		}
 	    }
 	    elsif ($cast =~ /^void[*]+$/) {
 # hard to check - can be read, write, update or delete
 # Note: maybe we can put a placeholder in the @param cast
 		if ($code =~ /[?]/) {
-		    print "bad \@param '$var' code '$code'\n";
+		    print "bad paramcode '$var' code '$code'\n";
 		}
 	    }
 	    elsif ($cast =~ /[\]]$/) {
@@ -1587,7 +1587,7 @@ while ($source =~ m"((\s+)([#]if[^\n]+\n)?)([/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])
 # because we can't use const for these
 # Note: maybe we can put a placeholder in the @param cast
 		if ($code =~ /[?]/) {
-		    print "bad \@param '$var' code '$code'\n";
+		    print "bad paramcode '$var' code '$code'\n";
 		}
 		if ($code =~ /r/) {
 		    if ($cast =~ /^CONST +/) {
@@ -1595,7 +1595,7 @@ while ($source =~ m"((\s+)([#]if[^\n]+\n)?)([/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])
 		    }
 		    else
 		    {
-			print "bad \@param '$var' code '$code' but '$cast'\n";
+			print "bad paramcode '$var' code '$code' but '$cast'\n";
 		    }
 		}
 	    }
@@ -1604,7 +1604,7 @@ while ($source =~ m"((\s+)([#]if[^\n]+\n)?)([/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])
 # because we can't use const for these
 # Note: maybe we can put a placeholder in the @param cast
 		if ($code =~ /[?]/) {
-		    print "bad \@param '$var' code '$code'\n";
+		    print "bad paramcode '$var' code '$code'\n";
 		}
 		if ($code =~ /r/) {
 		    if ($cast =~ /^CONST +/) {
@@ -1612,17 +1612,17 @@ while ($source =~ m"((\s+)([#]if[^\n]+\n)?)([/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])
 		    }
 		    else
 		    {
-			print "bad \@param '$var' code '$code' but '$cast'\n";
+			print "bad paramcode '$var' code '$code' but '$cast'\n";
 		    }
 		}
 	    }
 	    else {
 # Standard checks for anything else
 		if ($code =~ /r/) {
-		    print "bad \@param '$var' code '$code' but not const\n";
+		    print "bad paramcode '$var' code '$code' but not const\n";
 		}
 		if ($code =~ /[?]/) {
-		    print "bad \@param '$var' code '$code'\n";
+		    print "bad paramcode '$var' code '$code'\n";
 		}
 	    }
 	}
@@ -1649,7 +1649,7 @@ while ($source =~ m"((\s+)([#]if[^\n]+\n)?)([/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])
 		print "bad return type <$rtype> <$ftype>\n";
 	    }
 	    if (!$rrest && $rtype ne "void") {
-		print "bad \@return [$rtype], no description\n";
+		print "bad returndescription [$rtype], no description\n";
 	    }
 
 	    if($rtype eq "void") {
@@ -2096,7 +2096,7 @@ while ($source =~ m"((\s+)([#]if[^\n]+\n)?)([/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])
 		    if(defined($namrules[$i])) {
 #			print LOG "calling isnamrule i: $i rules $#{$namrules[$i]} names $#nameparts\n";
 			if(!isnamrule($i, @{$namrules[$i]}, @nameparts)) {
-			    print "bad name $fname: '$f' not found\n";
+			    print "bad namerule $fname: '$f' not found\n";
 			    print "** \@nam$j";
 			    if($j == $#nameparts) {
 				print "rule $f $frest\n";
@@ -2108,7 +2108,7 @@ while ($source =~ m"((\s+)([#]if[^\n]+\n)?)([/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])
 			}
 		    }
 		    else {
-			print "bad name $fname: '$f' beyond last rule\n";
+			print "bad namerule $fname: '$f' beyond last rule\n";
 			last;
 		    }
 		}
@@ -2210,7 +2210,7 @@ while ($source =~ m"((\s+)([#]if[^\n]+\n)?)([/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])
 	    else {
 		print LOG "++ val [$genvaltype[0]] ... [$rtype]\n";
 		if($rtype ne $genvaltype[0]) {
-		    print "bad return <$rtype> rule <$genvaltype[0]>\n";
+		    print "bad return: <$rtype> rule <$genvaltype[0]>\n";
 		}
 	    }
 	    if($dosecttest && $fdata ne "") {
