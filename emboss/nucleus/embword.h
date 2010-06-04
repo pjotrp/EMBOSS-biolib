@@ -83,18 +83,21 @@ typedef struct EmbSWordSeqLocs {
 ** during preprocessing to find out a minimum length that can be skipped
 ** safely when a word is matched.
 **
+** The first 5 fields (seqindxs-nseqs) are set during initialisation,
+** and the last 3 fields (nMatches, lenMatches, nSeqMatches) are calculated
+** during search.
+**
 ** @attr word [const EmbPWord] Original word object
 ** @attr seqindxs [ajuint*] Positions in the seqset
 **                          for each sequence the word has been seen
 ** @attr nnseqlocs [ajuint*] Number of word start positions for each sequence
 ** @attr locs [ajuint**] List of word start positions for each sequence
 ** @attr hash [ajulong] Hash value for the word
-** @attr nseqs [ajuint] Number of sequences word has been seen
-** @attr nAllMatches [ajuint] Total number of all matches in all sequences
-** @attr nSeqMatches [ajuint] Number of sequences with at least one match
-**                               in all sequences
-** @attr Padding [char[4]] Padding to alignment boundary
-** @attr lenAllMatches [ajulong] Total score/length of all the matches
+** @attr nseqs [ajuint] Number of pattern-sequences word has been seen
+** @attr nMatches [ajuint] Number of matches in query sequences
+** @attr lenMatches [ajulong] Total length of extended matches
+** @attr nSeqMatches [ajuint] Number of matches
+**                            recorded on per pattern-sequence base
 ** @@
 ******************************************************************************/
 
@@ -105,10 +108,9 @@ typedef struct EmbSWordRK {
     ajuint** locs;
     ajulong hash;
     ajuint nseqs;
-    ajuint nAllMatches;
-    ajuint nSeqMatches;
-    char Padding[4];
-    ajulong lenAllMatches;
+    ajuint nMatches;
+    ajulong lenMatches;
+    ajuint* nSeqMatches;
 } EmbOWordRK;
 
 #define EmbPWordRK EmbOWordRK*

@@ -1665,6 +1665,7 @@ ajuint embWordRabinKarpInit(const AjPTable table, EmbPWordRK** newwords,
         AJCNEW(newword->seqindxs, nseqlocs);
         AJCNEW(newword->locs, nseqlocs);
         AJCNEW(newword->nnseqlocs, nseqlocs);
+        AJCNEW(newword->nSeqMatches, nseqlocs);
 
         for(j=0; j<nseqlocs; j++)
         {
@@ -1818,8 +1819,6 @@ ajuint embWordRabinKarpSearch(const AjPStr sseq,
                             matchlen++;
                         }
 
-                        (*bsres)->nAllMatches++;
-
                         /* this is where we extend matches */
                         ii = seq2start+plen;
 
@@ -1839,14 +1838,16 @@ ajuint embWordRabinKarpSearch(const AjPStr sseq,
 
                         if(ii > maxloc)
                             maxloc = ii;
-                        (*bsres)->lenAllMatches += matchlen;
+
+                        (*bsres)->lenMatches += matchlen;
+                        (*bsres)->nMatches++;
+                        (*bsres)->nSeqMatches[k]++;
 
                     }
 
                     if(maxloc>0)
                     {
                         lastlocation[seqsetindx] = maxloc;
-                        (*bsres)->nSeqMatches++;
                     }
                 }
             }
