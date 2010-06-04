@@ -1,7 +1,7 @@
 /******************************************************************************
-** @Source AJAX OBO handling functions
+** @Source AJAX NCBI Taxonomy handling functions
 **
-** @author Copyright (C) 2010 Jon Ison
+** @author Copyright (C) 2010 Peter Rice
 ** @version 1.0
 ** @modified May 5 pmr First AJAX version
 ** @@
@@ -38,6 +38,10 @@ static AjPTable taxEmblcodeTable = NULL;
 #define TAXFLAG_INHERITMITO   0x04
 #define TAXFLAG_HIDDENGENBANK 0x10
 #define TAXFLAG_HIDDENSUBTREE 0x20
+
+
+static ajint taxTableCmp(const void *x, const void *y);
+static ajuint taxTableHash(const void *key, ajuint hashsize);
 
 
 
@@ -125,7 +129,7 @@ AjPTaxDel ajTaxDelNew(void)
 
 
 
-/* @func ajTaxNewDiv **********************************************************
+/* @func ajTaxDivNew **********************************************************
 **
 ** Taxonomy division constructor
 **
@@ -165,7 +169,7 @@ AjPTaxMerge ajTaxMergeNew(void)
 
 
 
-/* @func ajTaxNewName **********************************************************
+/* @func ajTaxNameNew **********************************************************
 **
 ** Taxonomy names constructor
 **
@@ -189,7 +193,7 @@ AjPTaxName ajTaxNameNew(void)
 **
 ** Taxonomy node destructor
 **
-** @param [r] Ptax       [AjPTax*]  Taxonomy node object to delete
+** @param [d] Ptax [AjPTax*]  Taxonomy node object to delete
 ** @return [void] 
 ** @@
 ******************************************************************************/
@@ -240,11 +244,12 @@ AjBool ajTaxParse(AjPFile taxfile)
 **
 ** Parse an NCBI Taxonomy database
 **
-** @param [r] taxdir [AjPDir] NCBI Taxonomy database directory
+** @param [r] taxdir [const AjPDir] NCBI Taxonomy database directory
 ** @return [AjBool] True on success
+**
 ******************************************************************************/
 
-AjBool ajTaxLoad(AjPDir taxdir)
+AjBool ajTaxLoad(const AjPDir taxdir)
 {
     AjPFile infile;
     AjPStr line    = NULL;
@@ -261,14 +266,15 @@ AjBool ajTaxLoad(AjPDir taxdir)
     AjPTaxMerge taxmerge = NULL;
     AjPTaxCit taxcit = NULL;
     ajuint nfield = 0;
-    ajuint taxid  = 0;
-    AjPStr idstr  = NULL;
-    ajuint tmpid  = 0;
+    ajlong taxid = 0;
+    AjPStr idstr = NULL;
+    ajuint tmpid = 0;
     AjPStr tablestr = NULL;
-    AjPStr tmpkey   = NULL;
-    AjPStr tmpval   = NULL;
+    AjPStr tmpkey = NULL;
+    AjPStr tmpval = NULL;
+    ajlong *ptaxid;
 
-    taxidtable = ajTableNewLen(600000);
+    taxidtable = ajTableNewFunctionLen(600000, taxTableCmp, taxTableHash);
     taxnametable = ajTablestrNewLen(900000);
     taxRankTable = ajTablestrNewLen(20);
     taxNameclassTable = ajTablestrNewLen(20);
@@ -527,12 +533,13 @@ AjBool ajTaxLoad(AjPDir taxdir)
         lasti = i+3;
         nfield++;
 
-        oldtax = ajTablePut(taxidtable, (void*)tax->Taxid, tax);
-
+        AJNEW0(ptaxid);
+        *ptaxid = tax->Taxid;
+        oldtax = ajTablePut(taxidtable, (void*) ptaxid, tax);
         if(oldtax)
-            ajWarn("%F line %u: Duplicate taxon id '%u'",
-                   infile, linecnt, tax->Taxid);
-
+            ajWarn("%F line %u: Duplicate taxon id '%u' (%Lu) found %u",
+                   infile, linecnt, tax->Taxid, *ptaxid, oldtax->Taxid);
+        ptaxid = NULL;
         tax = NULL;
     }
 
@@ -562,7 +569,7 @@ AjBool ajTaxLoad(AjPDir taxdir)
 
         ajStrAssignSubS(&tmpstr, line, lasti, i-1);
 
-        if(!ajStrToUint(tmpstr, &taxid))
+        if(!ajStrToLong(tmpstr, &taxid))
             ajWarn("%F line %u: invalid taxid '%S'",
                    infile, linecnt, tmpstr);
 
@@ -624,7 +631,7 @@ AjBool ajTaxLoad(AjPDir taxdir)
             tax = ajTableFetch(taxnametable, taxname->Name);
 
             if(!tax)
-                ajTablePut(taxnametable, taxname->Name, (void*) taxid);
+                ajTablePut(taxnametable, taxname->Name, (void*) &taxid);
         }
 
         if(!ajStrMatchC(taxname->NameClass, "authority") &&
@@ -633,10 +640,10 @@ AjBool ajTaxLoad(AjPDir taxdir)
             tax = ajTableFetch(taxnametable, taxname->Name);
 
             if(!tax)
-                ajTablePut(taxnametable, taxname->Name, (void*) taxid);
+                ajTablePut(taxnametable, taxname->Name, (void*) &taxid);
         }
 
-        tax =  ajTableFetch(taxidtable, (const void*)taxid);
+        tax = ajTableFetch(taxidtable, (const void*) &taxid);
 
         if(!tax)
             ajWarn("%F line %u: unknown taxon id '%u' '%S''",
@@ -1007,11 +1014,10 @@ AjBool ajTaxLoad(AjPDir taxdir)
         {
             ajStrAssignSubS(&idstr, tmpstr, lasti, i-1);
 
-            if(!ajStrToUint(idstr, &taxid))
-                ajWarn("%F line %u: invalid taxid '%S'",
-                       infile, linecnt, idstr);
-
-            tax =  ajTableFetch(taxidtable, (const void*) taxid);
+            if(!ajStrToLong(idstr, &taxid))
+            ajWarn("%F line %u: invalid taxid '%S'",
+                   infile, linecnt, idstr);
+            tax =  ajTableFetch(taxidtable, (const void*) &taxid);
 
             if(!tax)
                 ajWarn("%F line %u: unknown taxon id '%u' '%S' '%S''",
@@ -1041,4 +1047,48 @@ AjBool ajTaxLoad(AjPDir taxdir)
     ajUser("sizes node: %u", (ajuint) sizeof(*tax));
 
     return ajTrue;
+}
+
+
+
+
+/* @funcstatic taxTableCmp ****************************************************
+**
+** Default comparison function for key comparison
+**
+** @param [r] x [const void*] First key
+** @param [r] y [const void*] Second key
+** @return [ajint] 0 for success, 1 for different keys
+** @@
+******************************************************************************/
+
+static ajint taxTableCmp(const void *x, const void *y)
+{
+    ajlong ix = *(const ajlong*)x;
+    ajlong iy = *(const ajlong*)y;
+
+    if(ix == iy)
+        return 0;
+
+    return 1;
+}
+
+
+
+
+/* @funcstatic taxTableHash ***************************************************
+**
+** Hash function for the cache table
+**
+** @param [r] key [const void*] Key
+** @param [r] hashsize [ajuint] Hash size (maximum hash value)
+** @return [ajuint] Hash value in range 0 to hashsize-1
+** @@
+******************************************************************************/
+
+static ajuint taxTableHash(const void *key, ajuint hashsize)
+{
+    ajlong pageno = *(const ajlong*)key;
+
+    return(pageno % hashsize);
 }
