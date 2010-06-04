@@ -1,7 +1,7 @@
 /******************************************************************************
 ** @source AJAX OBO handling functions
 **
-** @author Copyright (C) 2010 Jon Ison
+** @author Copyright (C) 2010 Peter Rice
 ** @version 1.0
 ** @modified May 5 pmr First AJAX version
 ** @@
@@ -312,7 +312,7 @@ static void   oboWarn(const AjPFile obofile, ajuint linecnt,
 **
 ** Term constructor
 **
-** @return [AjPOboTerm] New object
+** @return [AjPObo] New object
 ** @@
 ******************************************************************************/
 
@@ -386,7 +386,7 @@ AjPOboTerm ajOboTermNew(void)
 **
 ** Tag destructor
 **
-** @param [r] Ptag       [AjPOboTag*]  Tag object to delete
+** @param [d] Ptag       [AjPOboTag*]  Tag object to delete
 ** @return [void] 
 ** @@
 ******************************************************************************/
@@ -415,7 +415,7 @@ void ajOboTagDel(AjPOboTag *Ptag)
 **
 ** Term destructor
 **
-** @param [r] Pterm       [AjPOboTerm*]  Term object to delete
+** @param [d] Pterm       [AjPOboTerm*]  Term object to delete
 ** @return [void] 
 ** @@
 ******************************************************************************/
@@ -481,7 +481,7 @@ static AjBool oboInit(void)
 **
 ** @param [u] obofile [AjPFile] OBO format input file
 ** @param [r] validations [const char*] Validations to turn on or off
-** @return [AjBool] Ontology object
+** @return [AjPObo] Ontology object
 ******************************************************************************/
 
 AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
@@ -559,7 +559,7 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
             }
             else if(ajStrMatchC(tmpstr, "noidorder"))
                 obovalididorder = ajFalse;
-            else if(ajStrMatchC(tmpstr, "noidunk"))
+            else if(ajStrMatchC(tmpstr, "nounkid"))
                 obovalididunk = ajFalse;
             else
                 ajWarn("ajOboParseObo called with unknown validation '%S'",
@@ -1176,7 +1176,6 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
 ** Clean up escaped characters
 **
 ** @param [u] Pline [AjPStr*] Line with possible comment text
-** @param [u] Pcomment [AjPStr*] Comment text
 ** @return [AjBool] True if an escaped character was found
 ******************************************************************************/
 
