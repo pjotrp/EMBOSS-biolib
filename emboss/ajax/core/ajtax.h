@@ -23,7 +23,8 @@ extern "C"
 ** @attr Divid            [unsigned char]  Division id
 ** @attr Gencode          [unsigned char]  Genetic code id
 ** @attr Mitocode         [unsigned char]  Mitochondrial genetic code id
-** @attr Flags            [unsigned char]  Flags:
+** @attr Padchar          [unsigned char]  Padding to alignment boundary
+** @attr Flags            [ajuint]  Flags:
 **                            if node inherits division from parent
 **                            if node inherits genetic code from parent
 **                            if node inherits mito gencode from parent
@@ -31,8 +32,8 @@ extern "C"
 **                            if this subtree has no sequence data yet
 ** @attr Rank             [AjPStr]  Rank in taxomony hierarchy
 ** @attr Emblcode         [AjPStr]  EMBL locus name prefix (not unique)
-** @attr Comments         [AjPStr]  Comments
-** @attr Names            [AjPList] Names list
+** @attr Comment          [AjPStr]  Comment
+** @attr Namelist         [AjPList] Names list
 ** @attr Citations        [AjPList] Citation id list
 **
 ******************************************************************************/
@@ -44,7 +45,7 @@ typedef struct AjSTax
     unsigned char Divid;
     unsigned char Gencode;
     unsigned char Mitocode;
-    unsigned char PadChar;
+    unsigned char Padchar;
     ajuint Flags;
     AjPStr Rank;
     AjPStr Emblcode;
@@ -227,7 +228,7 @@ AjPTaxMerge  ajTaxMergeNew(void);
 AjPTaxName   ajTaxNameNew(void);
 void         ajTaxDel(AjPTax *Ptax);
 AjBool       ajTaxParse(AjPFile taxfile);
-AjBool       ajTaxLoad(AjPDir taxdir);
+AjBool       ajTaxLoad(const AjPDir taxdir);
 
 /*
 ** End of prototype definitions

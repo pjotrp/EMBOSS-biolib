@@ -44,6 +44,7 @@ typedef struct AjSObo
 **
 ** @attr Name [AjPStr] Tag name
 ** @attr Value [AjPStr] Tag value
+** @attr Modifier [AjPStr] Tag modifier
 ** @attr Comment [AjPStr] Tag comment
 ** @attr Linenumber [ajuint] OBO file line number
 ** @attr Padding [ajuint] Padding to align structure
