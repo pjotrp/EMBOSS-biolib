@@ -859,7 +859,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
     ajStrDel(&seq1);
     ajStrDel(&seq2);
     return ret;	
-}	
+}
 
 
 
@@ -3213,7 +3213,7 @@ void ajVdwallDel(AjPVdwall *ptr)
     *ptr = NULL;
 
     return;
-}	
+}
 
 
 
@@ -3244,7 +3244,7 @@ void ajVdwresDel(AjPVdwres *ptr)
     *ptr = NULL;
 
     return;
-}	
+}
 
 
 
@@ -3295,7 +3295,7 @@ void ajCmapDel(AjPCmap *ptr)
     *ptr = NULL;
 
     return;
-}	
+}
 
 
 
@@ -5057,7 +5057,7 @@ ajint ajResidueEnv11(const AjPResidue res, char SEnv, AjPStr *OEnv,
     ajStrDel(&BEnv);
 
     return 24;
-} 
+}
 
 
 
@@ -5210,7 +5210,7 @@ ajint ajResidueEnv12(const AjPResidue res, char SEnv, AjPStr *OEnv,
     ajStrDel(&BEnv);
 
     return 24;
-} 
+}
 
 
 
@@ -5357,7 +5357,7 @@ ajint ajResidueEnv13(const AjPResidue res, char SEnv, AjPStr *OEnv,
     ajStrDel(&BEnv);
 
     return 24;
-} 
+}
 
 
 
@@ -5503,7 +5503,7 @@ ajint ajResidueEnv14(const AjPResidue res, char SEnv, AjPStr *OEnv,
     ajStrDel(&BEnv);
 
     return 24;
-} 
+}
 
 
 
@@ -5650,7 +5650,7 @@ ajint ajResidueEnv15(const AjPResidue res, char SEnv, AjPStr *OEnv,
     ajStrDel(&BEnv);
 
     return 24;
-} 
+}
 
 
 
@@ -5796,7 +5796,7 @@ ajint ajResidueEnv16(const AjPResidue res, char SEnv, AjPStr *OEnv,
     ajStrDel(&BEnv);
 
     return 24;
-} 
+}
 
 
 
@@ -6179,7 +6179,7 @@ AjBool ajPdbWriteAll(AjPFile outf, const AjPPdb obj)
 	    }
 
 	    ajListIterDel(&iter);			
-	} 	
+	}
     }
 
 
@@ -6245,7 +6245,7 @@ AjBool ajPdbWriteAll(AjPFile outf, const AjPPdb obj)
 	    }
 
 	    ajListIterDel(&iter);			
-	} 	
+	}
 
 	/* Print out group-specific coordinates for this model */
 	iter=ajListIterNewread(obj->Groups);
@@ -6398,9 +6398,9 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
 	/* Residue numbers start at 1 ! */
 	start++;
 	end = start + MAJSTRGETLEN(segment) - 1;
-    }  	  
-    
-    
+    }
+
+
     /* Write header info. to domain coordinate file */
     ajFmtPrintF(outf, "%-5s%S\n", "ID", domain);
     ajFmtPrintF(outf, "XX\n");

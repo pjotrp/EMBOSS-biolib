@@ -3533,8 +3533,6 @@ void ajReportAppendSubheaderS(AjPReport thys, const AjPStr header)
 
 
 
-
-
 /* @obsolete ajReportAppendSubHeader
 ** @rename ajReportAppendSubheaderS
 */
@@ -3735,8 +3733,6 @@ void ajReportAppendTailS(AjPReport thys, const AjPStr tail)
 
 
 
-
-
 /* @obsolete ajReportAppendTail
 ** @rename ajReportAppendTailS
 */
@@ -3746,7 +3742,6 @@ __deprecated void ajReportAppendTail(AjPReport thys, const AjPStr tail)
     ajReportAppendTailS(thys, tail);
     return;
 }
-
 
 
 
@@ -3997,8 +3992,6 @@ const AjPStr ajReportGetSeqnameSeq(const AjPReport thys, const AjPSeq seq)
 
 
 
-
-
 /* @obsolete ajReportSeqName
 ** @rename ajReportGetSeqnameSeq
 */
@@ -4044,7 +4037,6 @@ void ajReportAddFileF(AjPReport thys, AjPFile file, const AjPStr type)
 
     return;
 }
-
 
 
 

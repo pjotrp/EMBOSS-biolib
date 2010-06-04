@@ -3539,7 +3539,7 @@ static AjBool NumberChains(AjPPdbfile pdbfile, AjPFile flog)
 	ajWarn("Bad args passed to NumberChains\n");
 
 	return ajFalse;
-    }    
+    }
 
     /* Allocate memory */
     gpns = ajIntNew();
@@ -4480,7 +4480,7 @@ static AjBool StandardiseNumbering(AjPPdbfile pdbfile, AjPFile flog)
 	ajWarn("Bad args passed to StandardiseNumbering\n");
 
 	return ajFalse;
-    }    
+    }
 
 
     /* Check whether the integer part of the original pdb 
@@ -4535,7 +4535,7 @@ static AjBool StandardiseNumbering(AjPPdbfile pdbfile, AjPFile flog)
 		break;
 	    }
 	}
-    } 
+    }
     
 
 
@@ -6494,7 +6494,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile flog, ajuint lim,
 	ajIntDel(&idx[i]);
 	ajIntDel(&idx_full[i]);
 
-    }    
+    }
     
     AJFREE(seq1);
     AJFREE(seq2);
@@ -6835,7 +6835,7 @@ static AjBool PdbfileToPdb(AjPPdb *ret, AjPPdbfile pdb)
     ajStrDel(&eId);
 
     return ajTrue;
-}	
+}
 
 
 
@@ -7842,7 +7842,7 @@ AjBool ajPdbWriteAllRaw(ajint mode, const AjPPdb pdb,
     
     return ajTrue;
 
-}    
+}
 
 
 
@@ -7918,7 +7918,7 @@ AjBool ajPdbWriteDomainRaw(ajint mode, const AjPPdb pdb, const AjPScop scop,
 	ajWarn("Error writing file in ajPdbWriteDomainRaw"); 
 
 	return ajFalse;
-    } 
+    }
 
 
     /* Write MODEL record, if appropriate */
@@ -7932,7 +7932,7 @@ AjBool ajPdbWriteDomainRaw(ajint mode, const AjPPdb pdb, const AjPScop scop,
 	ajWarn("Error writing file in ajPdbWriteDomainRaw"); 
 
 	return ajFalse;
-    }  
+    }
 
     
     /* Write END/ENDMDL records */
