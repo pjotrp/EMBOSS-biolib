@@ -538,7 +538,7 @@ static void       seqSocketTimeout(int sig);
 **
 ******************************************************************************/
 
-static SeqOAccess seqAccess[] =
+static AjOSeqAccess seqAccess[] =
 {
     /*Name        Alias    Entry    Query    All
          AccessFunction   FreeFunction
@@ -651,13 +651,13 @@ void ajSeqdbInit(void)
 ** Sets the access function for a named method for sequence reading.
 **
 ** @param [r] method [const AjPStr] Method required.
-** @return [SeqPAccess] Access function to use
-** @category new [SeqPAccess] returns a copy of a known access
+** @return [AjPSeqAccess] Access function to use
+** @category new [AjPSeqAccess] returns a copy of a known access
 **                method definition.
 ** @@
 ******************************************************************************/
 
-SeqPAccess ajSeqMethod(const AjPStr method)
+AjPSeqAccess ajSeqMethod(const AjPStr method)
 {
     return ajCallTableGetS(ajSeqtableGetDb(),method);
 }
@@ -7585,7 +7585,7 @@ FILE* ajSeqHttpGetProxy(const AjPSeqQuery qry, const AjPStr proxyname,
 ** Send HTTP GET request to an open socket
 **
 ** @param [r] qry [const AjPSeqQuery] Query object
-** @param [r] sock [struct AJSOCKET] Socket structure
+** @param [u] sock [struct AJSOCKET] Socket structure
 ** @param [r] host [const AjPStr] Host name for Host header line
 ** @param [r] iport [ajint] Port for Host header line
 ** @param [r] get [const AjPStr] GET string
