@@ -99,7 +99,7 @@ static void CALLBACK sysTimeoutAbort(LPVOID arg, DWORD low, DWORD high);
 ** @suffix    C            Accept C character string parameters
 ** @suffix    S            Accept string object parameters
 ** 
-** @argrule C   cmdline   [const char *] Original command line
+** @argrule C   cmdline   [const char*] Original command line
 ** @argrule S   cmdline   [const AjPStr] Original command line
 ** @argrule Build   Pname     [char**] Returned program name
 ** @argrule Arglist PParglist [char***] Returns argument array
@@ -118,7 +118,7 @@ static void CALLBACK sysTimeoutAbort(LPVOID arg, DWORD low, DWORD high);
 **
 ** Generates a program name and argument list from a command line string.
 **
-** @param [r] cmdline [const AjPStr] Command line.
+** @param [r] cmdline [const char*] Command line.
 ** @param [w] Pname [char**] Program name.
 ** @param [w] PParglist [char***] Argument list.
 ** @return [AjBool] ajTrue on success.
@@ -397,7 +397,7 @@ __deprecated unsigned char ajSysItoUC(ajint v)
 **
 ** Forcibly delete a directory tree
 **
-** @param [r] path [const char *] Directory path
+** @param [r] path [const char*] Directory path
 ** @return [AjBool] true if deleted false otherwise
 ** @@
 ******************************************************************************/
@@ -479,7 +479,7 @@ AjBool ajSysFileRmrfC(const char *path)
 **
 ** Deletes a file or link
 **
-** @param [r] filename [const AjPStr] Filename in AjStr.
+** @param [r] filename [const char*] Filename in AjStr.
 ** @return [AjBool] true if deleted false otherwise
 ** @@
 ******************************************************************************/
@@ -834,8 +834,8 @@ __deprecated AjBool ajSysWhichEnv(AjPStr *Pfilename, char * const env[])
 **
 ** Copy a file
 **
-** @param [r] name  [const AjPStr] Source filename
-** @param [r] name2 [const AjPStr] Target filename
+** @param [r] name  [const char*] Source filename
+** @param [r] name2 [const char*] Target filename
 ** @return [AjBool] True on success
 **
 ******************************************************************************/
@@ -1030,8 +1030,8 @@ AjBool ajSysCommandRemovedirS(const AjPStr strname)
 **
 ** Rename a file
 **
-** @param [r] name  [const AjPStr] Source filename
-** @param [r] name2 [const AjPStr] Target filename
+** @param [r] name  [const char*] Source filename
+** @param [r] name2 [const char*] Target filename
 ** @return [AjBool] True on success
 **
 ******************************************************************************/
@@ -1073,7 +1073,7 @@ AjBool ajSysCommandRenameS(const AjPStr strname, const AjPStr strname2)
 ** Place non-ANSI fdopen here
 **
 ** @param [r] filedes [ajint] file descriptor
-** @param [r] mode [const char *] file mode
+** @param [r] mode [const char*] file mode
 ** @return [FILE*] file pointer
 ** @@
 ******************************************************************************/
@@ -1186,7 +1186,7 @@ __deprecated char* ajSysFgets(char *buf, int size, FILE *fp)
 **
 ** An fopen replacement to cope with cygwin and windows
 **
-** @param [r] name [const char *] file to open
+** @param [r] name [const char*] file to open
 ** @param [r] flags [const char*] r/w/a flags
 **
 ** @return [FILE*] file or NULL
@@ -1263,7 +1263,7 @@ SOCKRET ajSysFuncSocket(int domain, int type, int protocol)
 **
 ** Duplicate BSD strdup function for very strict ANSI compilers
 **
-** @param [r] dupstr [const char *] string to duplicate
+** @param [r] dupstr [const char*] string to duplicate
 ** @return [char*] Text string as for strdup
 ** @@
 ******************************************************************************/
@@ -1296,8 +1296,8 @@ __deprecated char* ajSysStrdup(const char *s)
 **
 ** strtok that doesn't corrupt the source string
 **
-** @param [r] srcstr [const char *] source string
-** @param [r] delimstr [const char *] delimiter string
+** @param [r] srcstr [const char*] source string
+** @param [r] delimstr [const char*] delimiter string
 **
 ** @return [char*] pointer or NULL when nothing is found
 ** @@
@@ -1353,10 +1353,10 @@ __deprecated char* ajSysStrtok(const char *s, const char *t)
 ** Reentrant strtok that doesn't corrupt the source string.
 ** This function uses a string buffer provided by the caller.
 **
-** @param [u] srcstr  [const char *] source string
-** @param [r] delimstr [const char *] delimiter string
-** @param [u] ptrptr [const char **] ptr save
-** @param [w] buf [AjPStr *] result buffer
+** @param [u] srcstr  [const char*] source string
+** @param [r] delimstr [const char*] delimiter string
+** @param [u] ptrptr [const char**] ptr save
+** @param [w] buf [AjPStr*] result buffer
 **
 ** @return [char*] pointer or NULL
 ** @@
@@ -1407,6 +1407,20 @@ __deprecated char* ajSysStrtokR(const char *s, const char *t,
 {
     return ajSysFuncStrtokR(s, t, ptrptr, buf);
 }
+
+
+
+
+/* @section executing commands ************************************************
+**
+** Functions for executing commands
+**
+** @fdata [none]
+** @fcategory misc
+**
+** @nam3rule  Exec          Execute the equivalent of a command
+**
+******************************************************************************/
 
 
 
@@ -1517,6 +1531,143 @@ ajint ajSysExecC(const char* cmdlinetxt)
 ajint ajSysExecS(const AjPStr cmdline)
 {
     return ajSysExecC(MAJSTRGETPTR(cmdline));
+}
+
+
+
+
+/* @func ajSysExecEnvC ********************************************************
+**
+** Exec a command line as if from the C shell
+**
+** This routine must be passed the environment received from
+** main(ajint argc, char **argv, char **env)
+** The environment is used to extract the PATH list (see ajWhich)
+**
+** Note that the environment is passed through unaltered. The exec'd
+** program is passed a new argv array
+**
+** @param [r] cmdlinetxt [const char*] The command line
+** @param [r] env [char* const[]] The environment
+** @return [ajint] Exit status
+** @@
+******************************************************************************/
+
+ajint ajSysExecEnvC(const char* cmdlinetxt, char * const env[])
+{
+    ajint status = 0;
+
+#ifndef WIN32
+    pid_t pid;
+    pid_t retval;
+    char *pgm = NULL;
+    char **argptr = NULL;
+    ajint i;
+
+    AjPStr pname = NULL;
+
+    if(!ajSysArglistBuildC(cmdlinetxt, &pgm, &argptr))
+	return -1;
+
+    pname = ajStrNew();
+
+    ajDebug("ajSysSystemEnv '%s' %s \n", pgm, cmdlinetxt);
+    ajStrAssignC(&pname, pgm);
+    if(!ajSysFileWhichEnv(&pname, env))
+	ajFatal("cannot find program '%S'", pname);
+
+    ajDebug("ajSysSystemEnv %S = %s\n", pname, cmdlinetxt);
+    for (i=0;argptr[i]; i++)
+    {
+	ajDebug("%4d '%s'\n", i, argptr[i]);
+    }
+
+    pid = fork();
+    if(pid==-1)
+	ajFatal("System fork failed");
+
+    if(pid)
+    {
+	while((retval=waitpid(pid,&status,0))!=pid)
+	{
+	    if(retval == -1)
+		if(errno != EINTR)
+		    break;
+	}
+    }
+    else
+    {
+	execve(ajStrGetPtr(pname), argptr, env);
+	ajExitAbort();			/* just in case */
+    }
+
+    ajStrDel(&pname);
+
+    i = 0;
+    while(argptr[i])
+    {
+	AJFREE(argptr[i]);
+	++i;
+    }
+    AJFREE(argptr);
+
+    AJFREE(pgm);
+
+#endif
+
+    return status;
+}
+
+
+
+
+/* @func ajSysExecEnvS ********************************************************
+**
+** Exec a command line as if from the C shell
+**
+** This routine must be passed the environment received from
+** main(ajint argc, char **argv, char **env)
+** The environment is used to extract the PATH list (see ajWhich)
+**
+** Note that the environment is passed through unaltered. The exec'd
+** program is passed a new argv array
+**
+** @param [r] cmdline [const AjPStr] The command line
+** @param [r] env [char* const[]] The environment
+** @return [ajint] Exit status
+** @@
+******************************************************************************/
+
+ajint ajSysExecEnvS(const AjPStr cmdline, char * const env[])
+{
+    return ajSysExecEnvC(MAJSTRGETPTR(cmdline), env);
+}
+
+
+
+
+/* @obsolete ajSystemEnv
+** @rename ajSysExecEnvS
+*/
+
+__deprecated void ajSystemEnv(const AjPStr cl, char * const env[])
+{
+    ajSysExecEnvS(cl, env);
+    return;
+}
+
+
+
+
+/* @obsolete ajSysSystemEnv
+** @rename ajSysExecEnvS
+*/
+
+__deprecated void ajSysSystemEnv(const AjPStr cmdline, char * const env[])
+{
+    ajSysExecEnvS(cmdline, env);
+
+    return;
 }
 
 
@@ -1638,329 +1789,6 @@ ajint ajSysExecLocaleS(const AjPStr cmdline, const AjPStr localestr)
 
 
 
-/* @func ajSysExecPathC *******************************************************
-**
-** Exec a command line with a test for the program name in the current path
-**
-** The exec'd program is passed a new argv array in argptr
-**
-** @param [r] cmdlinetxt [const char*] The command line
-** @return [ajint Exit status
-** @@
-******************************************************************************/
-
-ajint ajSysExecPathC(const char* cmdlinetxt)
-{
-#ifndef WIN32
-    pid_t pid;
-    pid_t retval;
-    ajint status = 0;
-    char *pgm;
-    char **argptr;
-    ajint i;
-
-    AjPStr pname = NULL;
-
-    ajDebug("ajSysExecPathS '%s'\n", cmdlinetxt);
-
-    if(!ajSysArglistBuildC(cmdlinetxt, &pgm, &argptr))
-	return -1;
-
-    pname = ajStrNewC(pgm);
-
-    pid=fork();
-
-    if(pid==-1)
-	ajFatal("System fork failed");
-
-    if(pid)
-    {
-	while((retval=waitpid(pid,&status,0))!=pid)
-	{
-	    if(retval == -1)
-		if(errno != EINTR)
-		    break;
-	}
-    }
-    else
-    {
-	execvp(ajStrGetPtr(pname), argptr);
-	ajExitAbort();			/* just in case */
-    }
-
-    ajStrDel(&pname);
-
-    i = 0;
-    while(argptr[i])
-    {
-	AJFREE(argptr[i]);
-	++i;
-    }
-    AJFREE(argptr);
-
-    AJFREE(pgm);
-
-#else
-    PROCESS_INFORMATION procInfo;
-    STARTUPINFO startInfo;
-    ajint status = 0;
-
-    ajDebug ("Launching process '%s'\n", cmdlinetxt);
-    
-    ZeroMemory(&startInfo, sizeof(startInfo));
-    startInfo.cb = sizeof(startInfo);
-    
-    if (!CreateProcess(NULL, (char *)cmdlinetxt, NULL, NULL, FALSE,
-		       CREATE_NO_WINDOW, NULL, NULL, &startInfo, &procInfo))
-	ajFatal("CreateProcess failed");
-
-    if(!WaitForSingleObject(procInfo.hProcess, INFINITE))
-        status = 0;
-    else
-        status = -1;
-
-#endif
-
-    return status;
-}
-
-
-
-/* @func ajSysExecPathS *******************************************************
-**
-** Exec a command line with a test for the program name in the current path
-**
-** The exec'd program is passed a new argv array in argptr
-**
-** @param [r] cmdline [const AjPStr] The command line
-** @return [ajint Exit status
-** @@
-******************************************************************************/
-
-ajint ajSysExecPathS(const AjPStr cmdline)
-{
-    return ajSysExecPathC(MAJSTRGETPTR(cmdline));
-}
-
-
-
-
-/* @obsolete ajSystem
-** @rename ajSysSystem
-*/
-
-__deprecated void ajSystem(const AjPStr cl)
-{
-    ajSysExecS(cl);
-    return;
-}
-
-
-
-
-/* @obsolete ajSysSystem
-** @rename ajSysExecS
-*/
-
-__deprecated void ajSysSystem(const AjPStr cmdline)
-{
-    ajSysExecS(cmdline);
-    return;
-}
-
-
-
-
-/* @func ajSysExecProgArgEnvNowaitC *******************************************
-**
-** Exec a command line with no parent wait
-**
-** This routine must be passed a program, an argument list and an environment.
-** The wait handling is performed by user-supplied parent process code and
-** is therefore used by the Java Native Interface software.
-**
-** @param [r] prog[const char *] The command line
-** @param [r] arg [char* const[]] Argument list
-** @param [r] env [char* const[]] An environment
-** @return [ajint] Exit status
-** @@
-******************************************************************************/
-
-ajint  ajSysExecProgArgEnvNowaitC(const char *prog, char * const arg[],
-                                char * const env[])
-{
-#ifndef WIN32
-    if(execve(prog,arg,env) == -1)
-        ajFatal("ajSysExecProgArgEnvNowaitC: Cannot exec application %s",
-                prog);
-#endif
-
-    return 0;
-}
-
-
-
-
-/* @func ajSysExecProgArgEnvNowaitS *******************************************
-**
-** Exec a command line with no parent wait
-**
-** This routine must be passed a program, an argument list and an environment.
-** The wait handling is performed by user-supplied parent process code and
-** is therefore used by the Java Native Interface software.
-**
-** @param [r] progstr [const AjPStr] The command line
-** @param [r] arg [char* const[]] Argument list
-** @param [r] env [char* const[]] An environment
-** @return [ajint] Exit status
-** @@
-******************************************************************************/
-
-ajint ajSysExecProgArgEnvNowaitS(const AjPStr progstr, char * const arg[],
-                                 char * const env[])
-{
-    return ajSysExecProgArgEnvNowaitC(MAJSTRGETPTR(progstr), arg, env);
-}
-
-
-
-
-/* @func ajSysExecEnvC ********************************************************
-**
-** Exec a command line as if from the C shell
-**
-** This routine must be passed the environment received from
-** main(ajint argc, char **argv, char **env)
-** The environment is used to extract the PATH list (see ajWhich)
-**
-** Note that the environment is passed through unaltered. The exec'd
-** program is passed a new argv array
-**
-** @param [r] cmdlinetxt [const char*] The command line
-** @param [r] env [char* const[]] The environment
-** @return [ajint] Exit status
-** @@
-******************************************************************************/
-
-ajint ajSysExecEnvC(const char* cmdlinetxt, char * const env[])
-{
-    ajint status = 0;
-
-#ifndef WIN32
-    pid_t pid;
-    pid_t retval;
-    char *pgm = NULL;
-    char **argptr = NULL;
-    ajint i;
-
-    AjPStr pname = NULL;
-
-    if(!ajSysArglistBuildC(cmdlinetxt, &pgm, &argptr))
-	return -1;
-
-    pname = ajStrNew();
-
-    ajDebug("ajSysSystemEnv '%s' %s \n", pgm, cmdlinetxt);
-    ajStrAssignC(&pname, pgm);
-    if(!ajSysFileWhichEnv(&pname, env))
-	ajFatal("cannot find program '%S'", pname);
-
-    ajDebug("ajSysSystemEnv %S = %s\n", pname, cmdlinetxt);
-    for (i=0;argptr[i]; i++)
-    {
-	ajDebug("%4d '%s'\n", i, argptr[i]);
-    }
-
-    pid = fork();
-    if(pid==-1)
-	ajFatal("System fork failed");
-
-    if(pid)
-    {
-	while((retval=waitpid(pid,&status,0))!=pid)
-	{
-	    if(retval == -1)
-		if(errno != EINTR)
-		    break;
-	}
-    }
-    else
-    {
-	execve(ajStrGetPtr(pname), argptr, env);
-	ajExitAbort();			/* just in case */
-    }
-
-    ajStrDel(&pname);
-
-    i = 0;
-    while(argptr[i])
-    {
-	AJFREE(argptr[i]);
-	++i;
-    }
-    AJFREE(argptr);
-
-    AJFREE(pgm);
-
-#endif
-
-    return status;
-}
-
-
-
-/* @func ajSysExecEnvS ********************************************************
-**
-** Exec a command line as if from the C shell
-**
-** This routine must be passed the environment received from
-** main(ajint argc, char **argv, char **env)
-** The environment is used to extract the PATH list (see ajWhich)
-**
-** Note that the environment is passed through unaltered. The exec'd
-** program is passed a new argv array
-**
-** @param [r] cmdline [const AjPStr] The command line
-** @param [r] env [char* const[]] The environment
-** @return [ajint] Exit status
-** @@
-******************************************************************************/
-
-ajint ajSysExecEnvS(const AjPStr cmdline, char * const env[])
-{
-    return ajSysExecEnvC(MAJSTRGETPTR(cmdline), env);
-}
-
-
-
-
-/* @obsolete ajSystemEnv
-** @rename ajSysExecEnvS
-*/
-
-__deprecated void ajSystemEnv(const AjPStr cl, char * const env[])
-{
-    ajSysExecEnvS(cl, env);
-    return;
-}
-
-
-
-
-/* @obsolete ajSystemEnv
-** @rename ajSysExecEnvS
-*/
-
-__deprecated void ajSysSystemEnv(const AjPStr cmdline, char * const env[])
-{
-    ajSysExecEnvS(cmdline, env);
-
-    return;
-}
-
-
-
-
 /* @func ajSysExecOutnameC *************************************************
 **
 ** Exec a command line as if from the C shell with standard output redirected
@@ -1968,8 +1796,8 @@ __deprecated void ajSysSystemEnv(const AjPStr cmdline, char * const env[])
 **
 ** The exec'd program is passed a new argv array in argptr
 **
-** @param [r] cmdline [const char*] The command line
-** @param [r] outfname [const char*] The output file name
+** @param [r] cmdlinetxt [const char*] The command line
+** @param [r] outfnametxt [const char*] The output file name
 ** @return [ajint] Exit status
 ** @@
 ******************************************************************************/
@@ -2105,7 +1933,7 @@ ajint ajSysExecOutnameS(const AjPStr cmdline, const AjPStr outfname)
 {
     return ajSysExecOutnameC(MAJSTRGETPTR(cmdline), MAJSTRGETPTR(outfname));
 }
-       
+
 
 
 
@@ -2440,7 +2268,7 @@ __deprecated void ajSysSystemOut(const AjPStr cmdline, const AjPStr outfname)
 
 
 
-/* @func ajSysExecOutnameAppendErrC *******************************************
+/* @func ajSysExecOutnameErrAppendC *******************************************
 **
 ** Exec a command line as if from the C shell with standard output and
 ** standard error redirected and appended to a named file
@@ -2453,7 +2281,7 @@ __deprecated void ajSysSystemOut(const AjPStr cmdline, const AjPStr outfname)
 ** @@
 ******************************************************************************/
 
-ajint ajSysExecOutnameAppendErrC(const char* cmdlinetxt,
+ajint ajSysExecOutnameErrAppendC(const char* cmdlinetxt,
                                  const char* outfnametxt)
 {
 #ifndef WIN32
@@ -2570,7 +2398,7 @@ ajint ajSysExecOutnameAppendErrC(const char* cmdlinetxt,
 
 
 
-/* @func ajSysExecOutnameAppendErrS *******************************************
+/* @func ajSysExecOutnameErrAppendS *******************************************
 **
 ** Exec a command line as if from the C shell with standard output and
 ** standard error redirected and appended to a named file
@@ -2583,10 +2411,198 @@ ajint ajSysExecOutnameAppendErrC(const char* cmdlinetxt,
 ** @@
 ******************************************************************************/
 
-ajint ajSysExecOutnameAppendErrS(const AjPStr cmdline, const AjPStr outfname)
+ajint ajSysExecOutnameErrAppendS(const AjPStr cmdline, const AjPStr outfname)
 {
-    return ajSysExecOutnameAppendErrC(MAJSTRGETPTR(cmdline),
+    return ajSysExecOutnameErrAppendC(MAJSTRGETPTR(cmdline),
                                       MAJSTRGETPTR(outfname));
+}
+
+
+
+
+/* @func ajSysExecPathC *******************************************************
+**
+** Exec a command line with a test for the program name in the current path
+**
+** The exec'd program is passed a new argv array in argptr
+**
+** @param [r] cmdlinetxt [const char*] The command line
+** @return [ajint] Exit status
+** @@
+******************************************************************************/
+
+ajint ajSysExecPathC(const char* cmdlinetxt)
+{
+#ifndef WIN32
+    pid_t pid;
+    pid_t retval;
+    ajint status = 0;
+    char *pgm;
+    char **argptr;
+    ajint i;
+
+    AjPStr pname = NULL;
+
+    ajDebug("ajSysExecPathS '%s'\n", cmdlinetxt);
+
+    if(!ajSysArglistBuildC(cmdlinetxt, &pgm, &argptr))
+	return -1;
+
+    pname = ajStrNewC(pgm);
+
+    pid=fork();
+
+    if(pid==-1)
+	ajFatal("System fork failed");
+
+    if(pid)
+    {
+	while((retval=waitpid(pid,&status,0))!=pid)
+	{
+	    if(retval == -1)
+		if(errno != EINTR)
+		    break;
+	}
+    }
+    else
+    {
+	execvp(ajStrGetPtr(pname), argptr);
+	ajExitAbort();			/* just in case */
+    }
+
+    ajStrDel(&pname);
+
+    i = 0;
+    while(argptr[i])
+    {
+	AJFREE(argptr[i]);
+	++i;
+    }
+    AJFREE(argptr);
+
+    AJFREE(pgm);
+
+#else
+    PROCESS_INFORMATION procInfo;
+    STARTUPINFO startInfo;
+    ajint status = 0;
+
+    ajDebug ("Launching process '%s'\n", cmdlinetxt);
+    
+    ZeroMemory(&startInfo, sizeof(startInfo));
+    startInfo.cb = sizeof(startInfo);
+    
+    if (!CreateProcess(NULL, (char *)cmdlinetxt, NULL, NULL, FALSE,
+		       CREATE_NO_WINDOW, NULL, NULL, &startInfo, &procInfo))
+	ajFatal("CreateProcess failed");
+
+    if(!WaitForSingleObject(procInfo.hProcess, INFINITE))
+        status = 0;
+    else
+        status = -1;
+
+#endif
+
+    return status;
+}
+
+
+
+
+/* @func ajSysExecPathS *******************************************************
+**
+** Exec a command line with a test for the program name in the current path
+**
+** The exec'd program is passed a new argv array in argptr
+**
+** @param [r] cmdline [const AjPStr] The command line
+** @return [ajint] Exit status
+** @@
+******************************************************************************/
+
+ajint ajSysExecPathS(const AjPStr cmdline)
+{
+    return ajSysExecPathC(MAJSTRGETPTR(cmdline));
+}
+
+
+
+
+/* @obsolete ajSystem
+** @rename ajSysSystem
+*/
+
+__deprecated void ajSystem(const AjPStr cl)
+{
+    ajSysExecS(cl);
+    return;
+}
+
+
+
+
+/* @obsolete ajSysSystem
+** @rename ajSysExecS
+*/
+
+__deprecated void ajSysSystem(const AjPStr cmdline)
+{
+    ajSysExecS(cmdline);
+    return;
+}
+
+
+
+
+/* @func ajSysExecProgArgEnvNowaitC *******************************************
+**
+** Exec a command line with no parent wait
+**
+** This routine must be passed a program, an argument list and an environment.
+** The wait handling is performed by user-supplied parent process code and
+** is therefore used by the Java Native Interface software.
+**
+** @param [r] prog[const char*] The command line
+** @param [r] arg [char* const[]] Argument list
+** @param [r] env [char* const[]] An environment
+** @return [ajint] Exit status
+** @@
+******************************************************************************/
+
+ajint  ajSysExecProgArgEnvNowaitC(const char *prog, char * const arg[],
+                                char * const env[])
+{
+#ifndef WIN32
+    if(execve(prog,arg,env) == -1)
+        ajFatal("ajSysExecProgArgEnvNowaitC: Cannot exec application %s",
+                prog);
+#endif
+
+    return 0;
+}
+
+
+
+
+/* @func ajSysExecProgArgEnvNowaitS *******************************************
+**
+** Exec a command line with no parent wait
+**
+** This routine must be passed a program, an argument list and an environment.
+** The wait handling is performed by user-supplied parent process code and
+** is therefore used by the Java Native Interface software.
+**
+** @param [r] progstr [const AjPStr] The command line
+** @param [r] arg [char* const[]] Argument list
+** @param [r] env [char* const[]] An environment
+** @return [ajint] Exit status
+** @@
+******************************************************************************/
+
+ajint ajSysExecProgArgEnvNowaitS(const AjPStr progstr, char * const arg[],
+                                 char * const env[])
+{
+    return ajSysExecProgArgEnvNowaitC(MAJSTRGETPTR(progstr), arg, env);
 }
 
 
@@ -2656,7 +2672,7 @@ void ajSysCanon(AjBool state)
 ** @@
 ******************************************************************************/
 
-FILE *ajSysFdFromSocket(struct AJSOCKET sock, const char *mode)
+FILE* ajSysFdFromSocket(struct AJSOCKET sock, const char *mode)
 {
     FILE *ret;
 #ifdef WIN32
@@ -2713,28 +2729,6 @@ void ajSysSocketclose(struct AJSOCKET sock)
 #else
     closesocket(sock.sock);
 #endif
-
-    return;
-}
-
-
-
-
-/* @func ajSysExit ************************************************************
-**
-** Cleans up system internals memory
-**
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajSysExit(void)
-{
-    ajStrDel(&sysFname);
-    ajStrDel(&sysTname);
-    ajStrDel(&sysTokSou);
-    ajStrDel(&sysTokRets);
-    ajStrDel(&sysUserPath);
 
     return;
 }
@@ -2816,6 +2810,7 @@ int ajSysTimeoutUnset(struct AJTIMEOUT *ts)
 
 
 
+#ifndef WIN32
 /* @funcstatic sysTimeoutAbort ********************************************
 **
 ** Fatal error if a socket read hangs
@@ -2825,7 +2820,6 @@ int ajSysTimeoutUnset(struct AJTIMEOUT *ts)
 ** @return [void]
 ** @@
 ******************************************************************************/
-#ifndef WIN32
 static void sysTimeoutAbort(int sig)
 {
     (void) sig;
@@ -2903,7 +2897,29 @@ __deprecated AjBool ajSysIsRegular(const char *s)
 
 
 
-/* @func ajSysCreateNewInPipeC ************************************************
+/* @section piped commands ****************************************************
+**
+** system command lines piped to a file
+**
+** @fdata [none]
+** @fcategory misc
+**
+** @nam3rule  Create         Create a new input
+** @nam3rule  Inpipe         Create a new input
+**
+** @suffix C C character string arguments
+** @suffix S String object arguments
+** 
+** @argrule C commandtxt [const char*] Command line
+** @argrule S command [const AjPStr] Command line
+** @valrule   *Inpipe  [AjPFile]
+**
+******************************************************************************/
+
+
+
+
+/* @func ajSysCreateInpipeC ***************************************************
 **
 ** Return a new file object from which to read the output from a command.
 **
@@ -2913,7 +2929,7 @@ __deprecated AjBool ajSysIsRegular(const char *s)
 ** @@
 ******************************************************************************/
 
-AjPFile ajSysCreateNewInPipeC(const char* commandtxt)
+AjPFile ajSysCreateInpipeC(const char* commandtxt)
 {
     AjPFile thys;
     AjPStr cmdstr = NULL;
@@ -2945,7 +2961,7 @@ AjPFile ajSysCreateNewInPipeC(const char* commandtxt)
     AJNEW0(thys);
     ajStrAssignC(&cmdstr, commandtxt);
 
-    ajDebug("ajSysCreateNewInPipeC: '%s'\n", commandtxt);
+    ajDebug("ajSysCreateInpipeC: '%s'\n", commandtxt);
 
     /* pipe character at end */
     if(ajStrGetCharLast(cmdstr) == '|')
@@ -2955,13 +2971,13 @@ AjPFile ajSysCreateNewInPipeC(const char* commandtxt)
 #ifndef WIN32
 
     if(pipe(pipefds) < 0)
-	ajFatal("ajSysCreateNewInPipe: pipe create failed");
+	ajFatal("ajSysCreateInpipeC: pipe create failed");
 
     /* negative return indicates failure */
     thys->Pid = fork();
 
     if(thys->Pid < 0)
-	ajFatal("ajSysCreateNewInPipe: fork create failed");
+	ajFatal("ajSysCreateInpipeC: fork create failed");
 
     /* pid is zero in the child, but is the child PID in the parent */
     
@@ -2973,14 +2989,14 @@ AjPFile ajSysCreateNewInPipeC(const char* commandtxt)
 	dup2(pipefds[1], 1);
 	close(pipefds[1]);
 	ajSysArglistBuildS(cmdstr, &pgm, &arglist);
-	ajDebug("ajSysCreateNewInPipe: execvp ('%S', NULL)\n", cmdstr);
+	ajDebug("ajSysCreateInpipeC: execvp ('%S', NULL)\n", cmdstr);
 	execvp(pgm, arglist);
-	ajErr("ajSysCreateNewInPipe: execvp ('%S', NULL) failed: '%s'\n",
+	ajErr("ajSysCreateInpipeC: execvp ('%S', NULL) failed: '%s'\n",
 		cmdstr, strerror(errno));
 	ajExitAbort();
     }
     
-    ajDebug("ajSysCreateNewInPipe: pid %d, pipe '%d', '%d'\n",
+    ajDebug("ajSysCreateInpipeC: pid %d, pipe '%d', '%d'\n",
 	    thys->Pid, pipefds[0], pipefds[1]);
 
     /* fp is what we read from the pipe */
@@ -2996,15 +3012,15 @@ AjPFile ajSysCreateNewInPipeC(const char* commandtxt)
     svstdout = GetStdHandle(STD_OUTPUT_HANDLE);
 
     if(!CreatePipe(&cstdoutr, &cstdoutw, &sa,  0))
-        ajFatal("ajSysCreateNewInPipeC: pipe create failed");
+        ajFatal("ajSysCreateInpipeC: pipe create failed");
 
     if(!SetHandleInformation(cstdoutr, HANDLE_FLAG_INHERIT, 0))
-        ajFatal("ajSysCreateNewInPipeC: Can't set no-inherit on child stdout "
+        ajFatal("ajSysCreateInpipeC: Can't set no-inherit on child stdout "
 		"read handle");
 
 
     if(!SetStdHandle(STD_OUTPUT_HANDLE, cstdoutw)) 
-        ajFatal("ajSysCreateNewInPipeC: redirecting of STDOUT failed");
+        ajFatal("ajSysCreateInpipeC: redirecting of STDOUT failed");
 
     ret = DuplicateHandle(GetCurrentProcess(),
 			  cstdoutr,
@@ -3013,7 +3029,7 @@ AjPFile ajSysCreateNewInPipeC(const char* commandtxt)
 			  FALSE,
 			  DUPLICATE_SAME_ACCESS);
     if(!ret)
-      ajFatal("ajSysCreateNewInPipeC: Could not duplicate stdout read handle");
+      ajFatal("ajSysCreateInpipeC: Could not duplicate stdout read handle");
 
     CloseHandle(cstdoutr);
 
@@ -3027,7 +3043,7 @@ AjPFile ajSysCreateNewInPipeC(const char* commandtxt)
 			NULL, NULL, &sinf, &pinf);
 
     if(!ret)
-        ajFatal("ajSysCreateNewInPipeC: CreateProcess failed");
+        ajFatal("ajSysCreateInpipeC: CreateProcess failed");
 
     thys->Process = pinf.hProcess;
     thys->Thread  = pinf.hThread;
@@ -3057,9 +3073,7 @@ AjPFile ajSysCreateNewInPipeC(const char* commandtxt)
 
 
 
-        
-
-/* @func ajSysCreateNewInPipeS ************************************************
+/* @func ajSysCreateInpipeS ***************************************************
 **
 ** Return a new file object from which to read the output from a command.
 **
@@ -3069,9 +3083,9 @@ AjPFile ajSysCreateNewInPipeC(const char* commandtxt)
 ** @@
 ******************************************************************************/
 
-AjPFile ajSysCreateNewInPipeS(const AjPStr command)
+AjPFile ajSysCreateInpipeS(const AjPStr command)
 {
-    return ajSysCreateNewInPipeC(MAJSTRGETPTR(command));
+    return ajSysCreateInpipeC(MAJSTRGETPTR(command));
 }
 
 
@@ -3081,10 +3095,10 @@ AjPFile ajSysCreateNewInPipeS(const AjPStr command)
 **
 ** Execute an application redirecting its stdin/out to pipe fds
 **
-** @param [r] command [const char *] Command string.
+** @param [r] command [const char*] Command string.
 **                    The string may end with a trailing pipe character.
-** @param [w] pipeto [int **] pipes to the process
-** @param [w] pipefrom [int **] pipes from the process
+** @param [w] pipeto [int**] pipes to the process
+** @param [w] pipefrom [int**] pipes from the process
 ** @return [AjBool] True on success
 ** @@
 ******************************************************************************/
@@ -3329,12 +3343,12 @@ AjBool ajSysExecRedirectC(const char *command, int **pipeto, int **pipefrom)
 **
 ** Get a home directory location from  a username
 **
-** @param [r] username [const char *] Username
-** @return [char *] Home directory or NULL
+** @param [r] username [const char*] Username
+** @return [char*] Home directory or NULL
 ** @@
 ******************************************************************************/
 
-char *ajSysGetHomedirFromName(const char *username)
+char* ajSysGetHomedirFromName(const char *username)
 {
     char *hdir = NULL;
 #ifndef WIN32
@@ -3456,11 +3470,11 @@ char *ajSysGetHomedirFromName(const char *username)
 **
 ** Get the home directory of the current user
 **
-** @return [char *] Home directory or NULL
+** @return [char*] Home directory or NULL
 ** @@
 ******************************************************************************/
 
-char *ajSysGetHomedir(void)
+char* ajSysGetHomedir(void)
 {
     char *hdir = NULL;
 #ifndef WIN32
@@ -3484,4 +3498,44 @@ char *ajSysGetHomedir(void)
 #endif
 
     return hdir;
+}
+
+
+
+
+/* @section exit **************************************************************
+**
+** Functions called on exit from the program by ajExit to do
+** any necessary cleanup and to report internal statistics to the debug file
+**
+** @fdata      [none]
+** @fnote     general exit functions, no arguments
+**
+** @nam3rule Exit Cleanup and report on exit
+**
+** @valrule * [void]
+**
+** @fcategory misc
+*/
+
+
+
+
+/* @func ajSysExit ************************************************************
+**
+** Cleans up system internals memory
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSysExit(void)
+{
+    ajStrDel(&sysFname);
+    ajStrDel(&sysTname);
+    ajStrDel(&sysTokSou);
+    ajStrDel(&sysTokRets);
+    ajStrDel(&sysUserPath);
+
+    return;
 }
