@@ -259,8 +259,6 @@ int main(int argc, char **argv)
 
 
 
-
-
 /* @funcstatic silent_relistdel ***********************************************
 **
 ** Undocumented.

@@ -416,9 +416,6 @@ static AjBool infoseq_printheader(AjBool html,  AjBool instring,
 
 
 
-
-
-
 /* @funcstatic infoseq_print **************************************************
 **
 ** Prints out a sequence information record to html or text file. 

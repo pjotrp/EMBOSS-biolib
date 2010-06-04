@@ -134,8 +134,6 @@ int main(int argc, char **argv)
 
 
 
-
-
 /* @funcstatic skipredundant_SeqsetToList **************************************
 **
 ** Builds a list of sequences from a sequence set.

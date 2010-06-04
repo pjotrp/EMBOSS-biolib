@@ -5519,7 +5519,7 @@ static void edialign_plot_calc(ajint num , ajint e_len, float *w_count,
     }
 
     return;
-}  
+}
 
 
 
@@ -5597,7 +5597,7 @@ static void edialign_av_tree_print(void)
 	all_clades[i].member[0] = i;
 	all_clades[i].valid = 1;
 	all_clades[i].depth = 0;
-    } 
+    }
 
 
 
@@ -5606,7 +5606,7 @@ static void edialign_av_tree_print(void)
 	{
 	    clade_similarity[i][j] =  glob_sim[i][j];
 	    clade_similarity[j][i] =  glob_sim[i][j];
-	} 
+	}
 
 
     for(tconnect = 1 ; tconnect < seqnum ; tconnect++)
@@ -5624,7 +5624,7 @@ static void edialign_av_tree_print(void)
 			    max_sim =  clade_similarity[i][j];
 			    max_pair[0] = i;  
 			    max_pair[1] = j;  
-			}  
+			}
 
   
         depth = (float) (1 / ( max_sim + 1 )); 
@@ -5681,7 +5681,7 @@ static void edialign_av_tree_print(void)
 	    {
                 branch_len[k] = depth - all_clades[ max_pair[k] ].depth;
                 sprintf( l_name[k],":%f", branch_len[k]);
-	    } 
+	    }
 
 
             all_clades[m1].depth = depth;
@@ -5758,7 +5758,7 @@ static void edialign_print_log(struct multi_frag *d,FILE *fp_l,FILE *fp_fs)
 	    fprintf(fp_l,"  ------------");
         else
 	    fprintf(fp_l,"  -------------");
-    } 
+    }
 
 
     for(i= 0 ; i<seqnum ; i++)
@@ -5863,8 +5863,8 @@ static void edialign_print_log(struct multi_frag *d,FILE *fp_l,FILE *fp_fs)
 			    fprintf(fp_fs," %d %d ", diagonal->b[0],
 				    diagonal->b[1]); 
 			    fprintf(fp_fs," %d \n", diagonal->ext);
-			} 
-		    }                
+			}
+		    }
 
 		    if(long_output)
 		    {
@@ -5898,7 +5898,7 @@ static void edialign_print_log(struct multi_frag *d,FILE *fp_l,FILE *fp_fs)
 				if( ( pv % 3 ) == 2 )
 				    fprintf(fp_l,"\\");
 
-			    } 
+			    }
 			}
 
 			fprintf(fp_l,"\n           "); 
@@ -5937,7 +5937,7 @@ static void edialign_print_log(struct multi_frag *d,FILE *fp_l,FILE *fp_fs)
 			}
 
 			fprintf(fp_l,"\n \n");
-		    }   
+		    }
 		} /*  if( diagonal->s[0] == i && diagonal->s[1] == j)  */
 
 		diagonal = diagonal->next;
@@ -5994,7 +5994,7 @@ static ajint edialign_word_count( char *str )
     }
 
     return( word_len ) ; 
-} 
+}
 
 
 
@@ -6417,7 +6417,7 @@ static void edialign_tp400_read( ajint w_type , double **pr_ptr )
     {
 	etpfile = ajDatafileNewInNameC("tp400_dna");
 /*	strcpy( suffix , "dna" );*/
-    }  
+    }
 
     else if ( w_type == 2 )
     {
@@ -6645,7 +6645,7 @@ static void edialign_print_fragments(struct multi_frag *d , FILE *fp_ff2 )
 			else
 			    fprintf( fp_ff2, " +" );
 		    }
-	    } 
+	    }
 
 
 	    fprintf( fp_ff2, "\n" );
@@ -6825,7 +6825,7 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 		printf("not enough memory available for fragments!\n");   
 		fprintf(fp,"not enough memory available for fragments!\n");   
 		embExitBad();
-	    } 
+	    }
 
 	for( hv = 1 ; hv <= fragno ; hv++)
 	{
@@ -6847,7 +6847,7 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 	{
 	    begin[hv] = 1;
 	    end[hv] = seqlen[hv]+1; 
-	}  
+	}
       
 	b_size = 0;
 
@@ -6855,7 +6855,7 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 	{
 	    b_len[i] = end[i] - begin[i];
 	    edialign_maxi(&b_size,b_len[i]);
-	}  
+	}
 
 	for(i=0;i<seqnum;i++)
 	    for(hv=0;hv<(ajuint) b_len[i];hv++)
@@ -6884,7 +6884,7 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 			{
 			    edialign_new_shift(s1,b1+l,dif);
 			    shift_cond = 1;
-			}   
+			}
 		    }
 		}
 	} /*  while (shift_cond)  */
@@ -7152,9 +7152,9 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 		    pl_int = (ajint) (9 * plot[ k * char_per_line + i ] /
 				      plot_num);
 		    fprintf(fp, "%d", pl_int );
-		} 
+		}
 		fprintf(fp, " \n");
-	    } 
+	    }
 
 /***********************************************************************
 	      
@@ -7172,9 +7172,9 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 	      i++ ) { 
 	      if( !(i%10) )fprintf(fp, " ");
 	      fprintf(fp, "%d", plus_count[ k * char_per_line + i ] );
-	      } 
+	      }
 	      fprintf(fp, " \n");
-	      } 
+	      }
 	      
 	      if( wgt_type > 1 ) {
 	      for( i = 0 ; i < SEQ_NAME_LEN ; i++ ) { 
@@ -7187,9 +7187,9 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 	      i++ ) { 
 	      if( !(i%10) )fprintf(fp, " ");
 	      fprintf(fp, "%d", minus_count[ k * char_per_line + i ] );
-	      } 
+	      }
 	      fprintf(fp, " \n");
-	      } 
+	      }
 	      
 	      if( wgt_type > 1 ) {
 	      for( i = 0 ; i < SEQ_NAME_LEN ; i++ ) { 
@@ -7202,10 +7202,10 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 	      i++ ) { 
 	      if( !(i%10) )fprintf(fp, " ");
 	      fprintf(fp, "%d", nuc_count[ k * char_per_line + i ] );
-	      } 
+	      }
 	      fprintf(fp, " \n");
 	      fprintf(fp, " \n");
-	      } 
+	      }
 	      
 ************************************************************************/
 
@@ -7262,12 +7262,12 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 			    if ( frac_nuc > strong_wgt_type_thr )
 				sim_char = 'N' ; 
 
-			}  
+			}
 			fprintf(fp, "%c", sim_char );
-		    } 
+		    }
 		    fprintf(fp, " \n");
 		    fprintf(fp, " \n");
-		} 
+		}
 
        
        
@@ -7311,7 +7311,7 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 	    }
 */
             ajSeqoutClose(seqout);
-	}     
+	}
    
        
 	if( cw_file )
@@ -7333,7 +7333,7 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 		}
 		fprintf(fp4,"\n\n");
 		block_no++; 
-	    } 
+	    }
 
 
 	}
@@ -7372,11 +7372,11 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 			    fprintf(fp3,".");
 			else
 			    fprintf(fp3,"%c", endseq[sv][add + i]);
-		    } 
+		    }
 		    fprintf(fp3,"\n"); 
 		}
 		fprintf(fp3,"\n\n");
-	    } 
+	    }
 
 	}
 
@@ -7523,7 +7523,7 @@ static void edialign_para_print( char *s_f, FILE *fpi )
 
 	fprintf(fpi,"         ***************************************"
 		"*********************\n \n");
-    } 
+    }
 
     if( online )
     { 
@@ -7673,7 +7673,7 @@ static void edialign_para_read( int num , char ** arg )
             printf("\n \n   Arguments in command line make no sense! \n \n");
             printf("\n   Unknown option %s \n \n \n \n",  arg[an] );
             embExitBad();
-	}  
+	}
 
         if( !strcmp( arg[an] , "-afc") )
 	    afc_file = 1;
@@ -7881,7 +7881,7 @@ static void edialign_para_read( int num , char ** arg )
 	    { 
 		strcpy( output_name , arg[++an] );
 		default_name = 0;
-	    } 
+	    }
 	    else
 	    {
 		printf("\n \n   Arguments in command line don't make sense! "
@@ -8007,7 +8007,7 @@ static void edialign_para_read( int num , char ** arg )
 		printf("   (subst. mat. threshod not properly specified) "
 		       "\n \n");
 		embExitBad();
-	    }  
+	    }
 	}
 	
 
@@ -8036,7 +8036,7 @@ static void edialign_para_read( int num , char ** arg )
         /********************************************************************/
 
         an++;
-    } 
+    }
 
     return;
 }
@@ -8706,7 +8706,7 @@ static void edialign_rel_wgt_calc(ajint l1, ajint l2, float **rel_wgt)
 	tpr = tp400_prot ;
 	mss = max_sim_score ;
 	av_sim_score = av_sim_score_pep ; 
-    } 
+    }
     
     if( rel_wgt == wgt_dna )
     {
@@ -8755,7 +8755,7 @@ static void edialign_rel_wgt_calc(ajint l1, ajint l2, float **rel_wgt)
 		    if( ent > threshold )
 			rel_wgt[l][m] = ent;
 		}
-	} 
+	}
 
     return;
 }
@@ -8998,7 +8998,7 @@ static void edialign_mem_alloc(void)
 		embExitBad();
 	    }
 	}
-    }     
+    }
 
     return;
 }

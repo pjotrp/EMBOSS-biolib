@@ -752,7 +752,7 @@ static PHit twofeat_HitsNew(void)
     AJNEW0(pthis);
 	    
     return pthis;
-} 
+}
 
 
 
