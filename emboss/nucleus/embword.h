@@ -73,7 +73,7 @@ typedef struct EmbSWordSeqLocs {
 
 
 
-/* @datastatic EmbPWordRK *****************************************************
+/* @data EmbPWordRK ***********************************************************
 **
 ** Data structure that extends EmbPWord objects for efficient access
 ** by Rabin-Karp search. It is constructed using embWordInitRabinKarpSearch
@@ -92,9 +92,9 @@ typedef struct EmbSWordSeqLocs {
 ** @attr nseqs [ajuint] Number of sequences word has been seen
 ** @attr nAllMatches [ajuint] Total number of all matches in all sequences
 ** @attr nSeqMatches [ajuint] Number of sequences with at least one match
-** @attr lenAllMatches [ajulong] Total score/length of all the matches
 **                               in all sequences
-** @attr Padding [char[8]] Padding to alignment boundary
+** @attr Padding [char[4]] Padding to alignment boundary
+** @attr lenAllMatches [ajulong] Total score/length of all the matches
 ** @@
 ******************************************************************************/
 
@@ -144,7 +144,7 @@ void    embWordMatchListConvToFeat(const AjPList list,
 void    embWordMatchMin(AjPList matchlist);
 void    embWordUnused(void);
 
-EmbPWordMatch embWordMatchFirstMax(AjPList matches);
+EmbPWordMatch embWordMatchFirstMax(const AjPList matches);
 
 ajuint embWordRabinKarpSearch(const AjPStr sseq,
                               const AjPSeqset seqset,

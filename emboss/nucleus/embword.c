@@ -72,6 +72,7 @@ static ajulong  wordRabinKarpConstant(ajuint m);
 
 
 
+
 /* @funcstatic wordCmpStr *****************************************************
 **
 ** Compare two words for first n chars. n set by embWordLength.
@@ -1503,12 +1504,12 @@ void embWordMatchMin(AjPList matchlist)
 **
 ** Given list of matches returns the first match with maximum similarity/score.
 **
-** @param [r] matchlist [AjPList] list of matches
+** @param [r] matchlist [const AjPList] list of matches
 ** @return [EmbPWordMatch] maximum match
 ** @@
 ******************************************************************************/
 
-EmbPWordMatch embWordMatchFirstMax(AjPList matchlist)
+EmbPWordMatch embWordMatchFirstMax(const AjPList matchlist)
 {
     ajint maxmatch = 0;
     EmbPWordMatch p;
@@ -1578,8 +1579,8 @@ static ajulong wordRabinKarpConstant(ajuint m)
 **
 ** Comparison function for EmbPWordRK objects, based on their hash values
 **
-** @param [r] a [const void *] First EmbPWordRK object
-** @param [r] b [const void *] Second EmbPWordRK object
+** @param [r] trgseq [const void *] First EmbPWordRK object
+** @param [r] qryseq [const void *] Second EmbPWordRK object
 **
 ** @return [ajint] difference of hash values
 ******************************************************************************/
@@ -1712,7 +1713,7 @@ ajuint embWordRabinKarpInit(const AjPTable table, EmbPWordRK** newwords,
 
 
 
-/* @funcstatic embWordPatRabinKarpSearch **************************************
+/* @func embWordRabinKarpSearch ***********************************************
 **
 ** Rabin Karp search for multiple patterns.
 **
