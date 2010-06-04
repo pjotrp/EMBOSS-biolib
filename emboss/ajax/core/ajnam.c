@@ -775,7 +775,12 @@ AjBool ajNamDbDetails(const AjPStr name, AjPStr* type, AjBool* id,
 	    if(ajStrGetLen(dbattr[i]))
 	    {
 		if(!strcmp("type", namDbAttrs[i].Name))
-		    ajStrAssignS(type, dbattr[i]);
+                {
+                    if(ajStrPrefixCaseC(dbattr[i], "N"))
+                        ajStrAssignC(type, "Nucleotide");
+                    else
+                        ajStrAssignC(type, "Protein");
+                }
 
 		if(!strcmp("method", namDbAttrs[i].Name))
 		{
@@ -880,50 +885,17 @@ AjBool ajNamDbDetails(const AjPStr name, AjPStr* type, AjBool* id,
 
 static ajint namMethod2Scope(const AjPStr method)
 {
-
+    AjPSeqAccess methoddata;
     ajint result = 0;
 
-    if(!ajStrCmpC(method, "dbfetch"))
-	result = METHOD_ENTRY;
-    else if(!ajStrCmpC(method, "emboss"))
-	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
-    else if(!ajStrCmpC(method, "emblcd"))
-	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
-    else if(!ajStrCmpC(method, "srs"))
-	result = (METHOD_ENTRY | METHOD_QUERY);
-    else if(!ajStrCmpC(method, "mrs"))
-	result = (METHOD_ENTRY | METHOD_QUERY);
-    else if(!ajStrCmpC(method, "mrs3"))
-	result = (METHOD_ENTRY | METHOD_QUERY);
-    else if(!ajStrCmpC(method, "srsfasta"))
-	result = (METHOD_ENTRY | METHOD_QUERY);
-    else if(!ajStrCmpC(method, "srswww"))
-	result = METHOD_ENTRY;
-    else if(!ajStrCmpC(method, "mrs"))
-	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
-    else if(!ajStrCmpC(method, "entrez"))
-	result = (METHOD_ENTRY | METHOD_QUERY);
-    else if(!ajStrCmpC(method, "seqhound"))
-	result = (METHOD_ENTRY | METHOD_QUERY);
-    else if(!ajStrCmpC(method, "url"))
-	result = METHOD_ENTRY;
-    else if(!ajStrCmpC(method, "app"))
-	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
-    else if(!ajStrCmpC(method, "external"))
-	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
-    else if(!ajStrCmpC(method, "direct"))
-	result = (METHOD_ALL | SLOW_QUERY | SLOW_ENTRY );
-    else if(!ajStrCmpC(method, "gcg"))
-	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
-    else if(!ajStrCmpC(method, "embossgcg"))
-	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
-    else if(!ajStrCmpC(method, "blast"))
-	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
-    /* not in ajseqdb seqAccess list */
-    /*
-       else if(!ajStrCmpC(method, "corba"))
-       result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
-       */
+    methoddata = ajCallTableGetS(seqDbMethods, method);
+
+    if(methoddata->Entry)
+	result |= METHOD_ENTRY;
+    if(methoddata->Query)
+	result |= METHOD_QUERY;
+    if(methoddata->All)
+	result |= METHOD_ALL;
 
     return result;
 }
@@ -2611,6 +2583,7 @@ AjBool ajNamDbData(AjPSeqQuery qry)
     NamPEntry data;
 
     const AjPStr* dbattr;
+    AjPStr dbtype = NULL;
 
     data = ajTableFetch(namDbMasterTable, ajStrGetPtr(qry->DbName));
 
@@ -2621,7 +2594,11 @@ AjBool ajNamDbData(AjPSeqQuery qry)
 
     /* general defaults */
 
-    namDbSetAttrStr(dbattr, "type", &qry->DbType);
+    namDbSetAttrStr(dbattr, "type", &dbtype);
+    if(ajStrPrefixCaseC(dbtype, "n"))
+        ajStrAssignC(&qry->DbType, "Nucleotide");
+    else
+        ajStrAssignC(&qry->DbType, "Protein");
     namDbSetAttrStr(dbattr, "method", &qry->Method);
     namDbSetAttrStr(dbattr, "format", &qry->Formatstr);
     namDbSetAttrStr(dbattr, "app", &qry->Application);
