@@ -2,7 +2,7 @@ Makefile.in Makefile *.o
 .deps .libs
 
 aaindexextract abiview
-acdc acdpretty acdtable acdtrace acdvalid
+acdc acdgalaxy acdpretty acdtable acdtrace acdvalid
 aligncopy aligncopypair antigenic
 backtranambig backtranseq banana biosed btwisted
 cai chaos charge checktrans chips
