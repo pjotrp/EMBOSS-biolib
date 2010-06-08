@@ -110,10 +110,10 @@ int main(int argc, char **argv)
     checkmode = !dumpFeature && !dumpAlign;
     embWordLength(wordlen);
 
-    ajFmtPrintF(logfile, "Sequence file for patterns: %S\n",
-            ajSeqsetGetFilename(seqset));
-    ajFmtPrintF(logfile, "Sequence file to be scanned for patterns: %S\n",
-            ajSeqallGetFilename(seqall));
+    ajFmtPrintF(logfile, "Small sequence/file for constructing"
+	    " target patterns: %S\n", ajSeqsetGetFilename(seqset));
+    ajFmtPrintF(logfile, "Large sequence/file to be scanned"
+	    " for patterns: %S\n", ajSeqallGetFilename(seqall));
     ajFmtPrintF(logfile, "Number of sequences in the patterns file: %u\n",
             seqsetsize);
     ajFmtPrintF(logfile, "Pattern/word length: %u\n", wordlen);
@@ -130,7 +130,7 @@ int main(int argc, char **argv)
     {
         npatterns = embWordRabinKarpInit(wordsTable,
                                        &wordsw, wordlen, seqset);
-        ajFmtPrintF(logfile, "Number of patterns/words: %u\n", npatterns);
+        ajFmtPrintF(logfile, "Number of patterns/words found: %u\n", npatterns);
 
         while(ajSeqallNext(seqall,&seqofseqall))
         {
@@ -213,43 +213,45 @@ int main(int argc, char **argv)
                 "for patterns: %u\n", ajSeqallGetCount(seqall));
         ajFmtPrintF(logfile, "Number of all matches: %Lu"
                 " (wordmatch finds exact matches only)\n", nAllMatches);
-        ajFmtPrintF(logfile, "Sum of match lengths: %Lu\n", sumAllScore);
-        ajFmtPrintF(logfile, "Average match length: %.2f\n",
-                sumAllScore*1.0/nAllMatches);
 
-        ajFmtPrintF(logfile, "\nDistribution of the matches among pattern"
-                " sequences:\n");
-        ajFmtPrintF(logfile, "-----------------------------------------"
-                "-----------\n");
-
-        for(i=0;i<ajSeqsetGetSize(seqset);i++)
+        if(nAllMatches>0)
         {
-            if (nmatchesseqset[i]>0)
-                ajFmtPrintF(logfile, "%-42s: %8u\n",
-                        ajSeqGetNameC(ajSeqsetGetseqSeq(seqset, i)),
-                        nmatchesseqset[i]);
+            ajFmtPrintF(logfile, "Sum of match lengths: %Lu\n", sumAllScore);
+            ajFmtPrintF(logfile, "Average match length: %.2f\n",
+        	    sumAllScore*1.0/nAllMatches);
 
-            ajFeattableWrite(ftoutforseqsetseq, seqsetftables[i]);
-            ajFeattableDel(&seqsetftables[i]);
+            ajFmtPrintF(logfile, "\nDistribution of the matches among pattern"
+        	    " sequences:\n");
+            ajFmtPrintF(logfile, "-----------------------------------------"
+        	    "-----------\n");
+
+            for(i=0;i<ajSeqsetGetSize(seqset);i++)
+            {
+        	if (nmatchesseqset[i]>0)
+        	    ajFmtPrintF(logfile, "%-42s: %8u\n",
+        	                ajSeqGetNameC(ajSeqsetGetseqSeq(seqset, i)),
+        	                nmatchesseqset[i]);
+
+        	ajFeattableWrite(ftoutforseqsetseq, seqsetftables[i]);
+        	ajFeattableDel(&seqsetftables[i]);
+            }
+
+            ajFmtPrintF(logfile, "\nPattern statistics:\n");
+            ajFmtPrintF(logfile, "-------------------\n");
+            if(wordlen>7)
+        	ajStrAppendCountK(&padding, ' ', wordlen-7);
+            paddedheader = ajFmtString(header,padding);
+            ajFmtPrintF(logfile, paddedheader);
+
+            for(i=0;i<npatterns;i++)
+        	if (wordsw[i]->nMatches>0)
+        	    ajFmtPrintF(logfile, "%-7s: %12u  %12u %17.2f\n",
+        	                wordsw[i]->word->fword, wordsw[i]->nseqs,
+        	                wordsw[i]->nMatches,
+        	                wordsw[i]->lenMatches*1.0/wordsw[i]->nMatches);
         }
 
-        ajFmtPrintF(logfile, "\nPattern statistics:\n");
-        ajFmtPrintF(logfile, "-------------------\n");
-        if(wordlen>7)
-            ajStrAppendCountK(&padding, ' ', wordlen-7);
-        paddedheader = ajFmtString(header,padding);
-        ajFmtPrintF(logfile, paddedheader);
-
-        for(i=0;i<npatterns;i++)
-            if (wordsw[i]->nMatches>0)
-                ajFmtPrintF(logfile, "%-7s: %12u  %12u %17.2f\n",
-                        wordsw[i]->word->fword, wordsw[i]->nseqs,
-                        wordsw[i]->nMatches,
-                        wordsw[i]->lenMatches*1.0/wordsw[i]->nMatches);
-
     }
-    
-        AJFREE(seqsetftables);
 
     for(i=0;i<npatterns;i++)
     {
@@ -269,6 +271,7 @@ int main(int argc, char **argv)
     AJFREE(matchlist);
     AJFREE(lastlocation);
     AJFREE(nmatchesseqset);
+    AJFREE(seqsetftables);
 
     if(dumpAlign)
     {
