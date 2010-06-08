@@ -51,6 +51,7 @@
 **
 ******************************************************************************/
 
+#if 0
 static const char *oboBuiltin[] =
 {
     "OBO:TYPE", 
@@ -69,7 +70,7 @@ static const char *oboBuiltin[] =
     "xsd:date",
     NULL
 };
-
+#endif
 
 
 
@@ -113,6 +114,7 @@ typedef struct OboSTagdef
     ajint       Min;
     ajint       Count;
     ajint       Type;
+    ajint       Padding;
     const char* Obsolete;
 } OboOTagdef;
 
@@ -121,34 +123,34 @@ typedef struct OboSTagdef
 
 static OboOTagdef oboTermTags[] =
 {
-    {"id",              TAG_ID,   1, 1, NULL}, 
-    {"is_anonymous",    TAG_BOOL, 0, 1, NULL}, 
-    {"name",            TAG_NAME, 1, 1, NULL}, 
-    {"namespace",       TAG_ANY, 0, 1, NULL}, 
-    {"alt_id",          TAG_ANY, 0, 0, NULL}, 
-    {"def",             TAG_DBX, 0, 1, NULL}, 
-    {"comment",         TAG_ANY, 0, 1, NULL}, 
-    {"subset",          TAG_QXREF, 0, 0, NULL}, 
-    {"synonym",         TAG_NAME, 0, 0, NULL},
-    {"exact_synonym",   TAG_NAME, 0, 0, "synonym EXACT"},
-    {"narrow_synonym",  TAG_NAME, 0, 0, "synonym NARROW"},
-    {"broad_synonym",   TAG_NAME, 0, 0, "synonym BROAD"},
-    {"xref",            TAG_ID, 0, 0, NULL}, 
-    {"xref_analog",     TAG_ID, 0, 0, "xref"}, 
-    {"xref_unk",        TAG_ID, 0, 0, "xref"}, 
-    {"is_a",            TAG_ID, 0, 0, NULL},  
-    {"intersection_of", TAG_ANY, 0, 2, NULL},
-    {"union_of",        TAG_ANY, 0, 2, NULL}, 
-    {"disjoint_from",   TAG_ID, 0, 0, NULL}, 
-    {"relationship",    TAG_ANY, 0, 0, NULL}, 
-    {"is_obsolete",     TAG_BOOL, 0, 1, NULL}, 
-    {"replaced_by",     TAG_ID, 0, 0, NULL},          /* for is_obsolete */
-    {"consider",        TAG_ANY, 0, 0, NULL},         /* for is_obsolete */
-    {"use_term",        TAG_ANY, 0, 0, "consider"}, 
-    {"builtin",         TAG_BOOL, 0, 1, NULL},
-    {"created_by",      TAG_ANY, 0, 1, NULL},               /* new in 1.3 */
-    {"creation_date",   TAG_ANY, 0, 1, NULL},            /* new in 1.3 */
-    {NULL, 0, 0, 0, NULL}
+    {"id",              TAG_ID,   1, 1, 0, NULL}, 
+    {"is_anonymous",    TAG_BOOL, 0, 1, 0, NULL}, 
+    {"name",            TAG_NAME, 1, 1, 0, NULL}, 
+    {"namespace",       TAG_ANY, 0, 1, 0, NULL}, 
+    {"alt_id",          TAG_ANY, 0, 0, 0, NULL}, 
+    {"def",             TAG_DBX, 0, 1, 0, NULL}, 
+    {"comment",         TAG_ANY, 0, 1, 0, NULL}, 
+    {"subset",          TAG_QXREF, 0, 0, 0, NULL}, 
+    {"synonym",         TAG_NAME, 0, 0, 0, NULL},
+    {"exact_synonym",   TAG_NAME, 0, 0, 0, "synonym EXACT"},
+    {"narrow_synonym",  TAG_NAME, 0, 0, 0, "synonym NARROW"},
+    {"broad_synonym",   TAG_NAME, 0, 0, 0, "synonym BROAD"},
+    {"xref",            TAG_ID, 0, 0, 0, NULL}, 
+    {"xref_analog",     TAG_ID, 0, 0, 0, "xref"}, 
+    {"xref_unk",        TAG_ID, 0, 0, 0, "xref"}, 
+    {"is_a",            TAG_ID, 0, 0, 0, NULL},  
+    {"intersection_of", TAG_ANY, 0, 2, 0, NULL},
+    {"union_of",        TAG_ANY, 0, 2, 0, NULL}, 
+    {"disjoint_from",   TAG_ID, 0, 0, 0, NULL}, 
+    {"relationship",    TAG_ANY, 0, 0, 0, NULL}, 
+    {"is_obsolete",     TAG_BOOL, 0, 1, 0, NULL}, 
+    {"replaced_by",     TAG_ID, 0, 0, 0, NULL},          /* for is_obsolete */
+    {"consider",        TAG_ANY, 0, 0, 0, NULL},         /* for is_obsolete */
+    {"use_term",        TAG_ANY, 0, 0, 0, "consider"}, 
+    {"builtin",         TAG_BOOL, 0, 1, 0, NULL},
+    {"created_by",      TAG_ANY, 0, 1, 0, NULL},               /* new in 1.3 */
+    {"creation_date",   TAG_ANY, 0, 1, 0, NULL},            /* new in 1.3 */
+    {NULL, 0, 0, 0, 0, NULL}
 };
 
 
@@ -197,7 +199,7 @@ static const char *oboTypedefTags[] =
 
 
 
-
+#if 0
 static const char *oboInstanceTags[] =
 {
     "id", 
@@ -261,7 +263,7 @@ static const char *oboFormulaTags[] =      /* new and undocumented in 1.3 */
     "formula",
     NULL
 };
-
+#endif /* #if 0 */
 
 
 
@@ -300,7 +302,9 @@ static ajuint     oboErrorCount = 0;
 static AjBool oboInit(void);
 static AjBool oboCutComment(AjPStr *Pline, AjPStr *Pcomment);
 static AjBool oboCutModifier(AjPStr *Pline, AjPStr *Pmodifier);
+#if 0
 static AjBool oboCutDbxref(AjPStr *Pline, AjPStr *Pdbxref);
+#endif
 static AjBool oboEscape(AjPStr *Pline);
 static void   oboWarn(const AjPFile obofile, ajuint linecnt,
                       const char* fmt, ...);
@@ -1310,6 +1314,7 @@ static AjBool oboCutComment(AjPStr *Pline, AjPStr *Pcomment)
 ** @return [AjBool] True if a trailing dbxref was found
 ******************************************************************************/
 
+#if 0
 static AjBool oboCutDbxref(AjPStr *Pline, AjPStr *Pdbxref)
 {
     ajint i = 0;
@@ -1341,6 +1346,7 @@ static AjBool oboCutDbxref(AjPStr *Pline, AjPStr *Pdbxref)
  
     return ajTrue;
 }
+#endif
 
 
 
