@@ -293,11 +293,17 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
     
     ajDebug("embAlignPathCalcWithEndGapPenalties\n");
     
+    if (!endweight)
+    {
+	endgapopen=0;
+	endgapextend=0;
+    }
+
     match = sub[ajSeqcvtGetCodeK(cvt, a[0])][ajSeqcvtGetCodeK(cvt, b[0])];
     compass[0] = 0;
 
-    ix[0] = INT_MIN;
-    iy[0] = INT_MIN;
+    ix[0] = endweight ? -endgapopen-endgapextend : INT_MIN;
+    iy[0] = endweight ? -endgapopen-endgapextend : INT_MIN;
     m[0] = match;
 
     /* First initialise the first column and row */
@@ -409,7 +415,12 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
             }
             else
             {
-        	testog = m[++cursorp] - gapopen;
+        	testog = m[++cursorp];
+        	
+        	if (testog<ix[cursorp])
+        	    testog = ix[cursorp];
+        	
+        	testog -= gapopen;
         	testeg = iy[cursorp] - gapextend;
             }
             
@@ -427,7 +438,12 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
             }
             else
             {
-        	testog = m[--cursorp] - gapopen;
+        	testog = m[--cursorp];
+        	
+        	if (testog<iy[cursorp])
+        	    testog = iy[cursorp];
+        	
+        	testog -= gapopen;
         	testeg = ix[cursorp] - gapextend;
             }
             
@@ -452,19 +468,22 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
      * 2 means: go up in the matrix, i.e. gap in the second sequence(seq b)
      */
     cursorp=0;
-    while (xpos != 0 || ypos != 0){
+    cursor=1;
+    
+    while (cursor>0){
 	cursor = ypos * lenb + xpos;
 	mp = m[cursor];
 
-	if(cursorp == 1 && E_FPEQ(gapextend,(ix[cursor]-ix[cursor+1]),U_FEPS))
+	if(cursorp == 1 && E_FPEQ((ypos==0?endgapextend:gapextend),
+		(ix[cursor]-ix[cursor+1]),U_FEPS))
 	{
-	    compass[cursor] = 1;
+	    compass[cursor] = LEFT;
 	    xpos--;
 	}
-	else if(cursorp== 2 && E_FPEQ(gapextend,(iy[cursor]-iy[cursor+lenb]),
-                                      U_FEPS))
+	else if(cursorp== 2 && E_FPEQ((xpos==0?endgapextend:gapextend),
+		(iy[cursor]-iy[cursor+lenb]),U_FEPS))
 	{
-	    compass[cursor] = 2;
+	    compass[cursor] = DOWN;
 	    ypos--;
 	}
 	else if(mp >= ix[cursor] && mp>= iy[cursor])
@@ -472,17 +491,18 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
 
 	    if(cursorp == 1 && E_FPEQ(mp,ix[cursor],U_FEPS))
 	    {
-		compass[cursor] = 1;
+		compass[cursor] = LEFT;
 		xpos--;
 	    }
 	    else if(cursorp == 2 && E_FPEQ(mp,iy[cursor],U_FEPS))
 	    {
-		compass[cursor] = 2;
+		compass[cursor] = DOWN;
 		ypos--;
 	    }
 	    else
 	    {
 		compass[cursor] = 0;
+		
 		if (ypos>0)
 		    ypos--;
 		if (xpos>0)
@@ -492,12 +512,12 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
 	}
 	else if(ix[cursor]>=iy[cursor] && xpos!=0)
 	{
-	    compass[cursor] = 1;
+	    compass[cursor] = LEFT;
 	    xpos--;
 	}
 	else if(ypos!=0)
 	{
-	    compass[cursor] = 2;
+	    compass[cursor] = DOWN;
 	    ypos--;
 	}
 	else
@@ -3367,15 +3387,17 @@ static void printPathMatrix(const float* path, const ajint* compass,
 
         for(j = 0; j < lenb; j++)
         {
-            if(compass[i * lenb + j] == 1)
+            if(compass[i * lenb + j] == LEFT)
                 compasschar = '<';
-            else if(compass[i * lenb + j] == 2)
+            else if(compass[i * lenb + j] == DOWN)
                 compasschar = '^';
             else
                 compasschar = ' ';
 
-            ajDebug("%6.2f%c ", path[i * lenb + j],
-                    compasschar);
+            if (path[i * lenb + j]==INT_MIN)
+        	ajDebug("  -inf%c ", compasschar);
+            else
+        	ajDebug("%6.2f%c ", path[i * lenb + j], compasschar);
         }
         ajDebug("\n");
     }
