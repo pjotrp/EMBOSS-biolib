@@ -1807,7 +1807,7 @@ void embPatBYPInit(const AjPStr pat, ajuint len, EmbPPatBYPNode offset,
 
 /* @func embPatPushHit ********************************************************
 **
-** Put a matching BYP search hit on the heap
+** Put a matching string search hit on the heap
 ** as an EmbPMatMatch structure
 **
 ** @param [u] l [AjPList] list to push to
@@ -5009,7 +5009,7 @@ ajuint embPatGetTypeII (AjPPatComp thys, const AjPStr pattern, ajuint mismatch,
 
     if(!range && !dontcare && !fclass && !compl && !mismatch && plen>AJWORD)
     {
-	/* Boyer Moore Horspool is the choice for ajlong exact patterns */
+	/* Boyer Moore Horspool is the choice for long exact patterns */
 	type = 1;
     }
     else if(mismatch && !dontcare && !range && !fclass && !compl &&
