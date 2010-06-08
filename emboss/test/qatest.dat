@@ -21051,6 +21051,24 @@ FP /^asis +1 ----ca--atagactggtccgttcgc--/
 FC = 39
 //
 
+ID needle-indel
+AP needle
+CL asis:cttttcgtggtatta asis:gcgaccatgagagag
+CL -auto -gapo 1 -gape 1 -endw -endo 1 -ende 1 stdout
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +7\/23 \(30\.4%\)/
+FP /^# Gaps:    +16\/23 \(69\.6%\)/
+FP /^# Score: +19\.0\n/
+FP /^asis +1 -cttttcg----tg-gta[ta-]{5}/
+FP /      +        ||    || | |   |/
+FP /^asis +1 g-----cgaccatgag-a[ga-]{5}/
+FC = 42
+//
+
 ID needleall-withendweight
 AP needleall
 CL -auto -stdout -endweight -aformat simple
