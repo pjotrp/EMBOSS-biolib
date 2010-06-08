@@ -18567,7 +18567,7 @@ FI HBB_HUMAN.gff
 FZ = 382
 FP /^HBB_HUMAN\twordmatch\tpolypeptide_region\t64\t68\t1\.000\t/
 FI wordmatch.log
-FP /Number of patterns\/words: 139/
+FP /Number of patterns\/words found: 139/
 //
 
 ID wossname-ex
@@ -20055,7 +20055,7 @@ FI V00294.gff
 FZ = 186
 FP /^V00294\twordmatch\tsequence_feature\t1\t1113\t1\.000\t/
 FI wordmatch.log
-FP /Number of patterns\/words: 1064/
+FP /Number of patterns\/words found: 1064/
 FP /Sum of match lengths: 1113/
 //
 
