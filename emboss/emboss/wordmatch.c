@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     AjBool dumpFeature = ajTrue;
     AjBool checkmode = ajFalse;
     EmbPWordRK* wordsw = NULL;
-    ajuint npatterns;
+    ajuint npatterns = 0;
     ajuint seqsetsize;
     ajuint nmatches;
     ajuint* nmatchesseqset;
@@ -253,7 +253,6 @@ int main(int argc, char **argv)
 
     for(i=0;i<npatterns;i++)
     {
-
         for(j=0;j<wordsw[i]->nseqs;j++)
             AJFREE(wordsw[i]->locs[j]);
 
