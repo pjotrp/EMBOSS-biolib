@@ -150,6 +150,7 @@
     <ClCompile Include="..\..\..\ajax\core\ajreport.c" />
     <ClCompile Include="..\..\..\ajax\core\ajseq.c" />
     <ClCompile Include="..\..\..\ajax\core\ajseqabi.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajseqbam.c" />
     <ClCompile Include="..\..\..\ajax\core\ajseqread.c" />
     <ClCompile Include="..\..\..\ajax\core\ajseqtype.c" />
     <ClCompile Include="..\..\..\ajax\core\ajseqwrite.c" />
@@ -206,6 +207,7 @@
     <ClInclude Include="..\..\..\ajax\core\ajreport.h" />
     <ClInclude Include="..\..\..\ajax\core\ajseq.h" />
     <ClInclude Include="..\..\..\ajax\core\ajseqabi.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajseqbam.h" />
     <ClInclude Include="..\..\..\ajax\core\ajseqdata.h" />
     <ClInclude Include="..\..\..\ajax\core\ajseqread.h" />
     <ClInclude Include="..\..\..\ajax\core\ajseqtype.h" />
