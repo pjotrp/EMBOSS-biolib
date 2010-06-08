@@ -21,6 +21,10 @@
 
 #include "ajseqbam.h"
 
+#ifdef WIN32
+#define fileno _fileno
+#endif
+
 AjPTable seqDbMethods = NULL;
 
 static ajint seqMaxGcglines = 5000;
@@ -9200,7 +9204,7 @@ static AjBool seqReadBam(AjPSeq thys, AjPSeqin seqin)
         for(i=0; i < (ajuint) c->l_qseq; i++)
         {
             ajFmtPrintAppS(&qualstr, " %02x", 33+d[dpos]);
-            thys->Accuracy[i] = 33+d[dpos++];
+            thys->Accuracy[i] = (float) (33 + d[dpos++]);
         }
 
         ajDebug("qual: %S\n", qualstr);
